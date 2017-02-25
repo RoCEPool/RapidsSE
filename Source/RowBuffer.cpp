@@ -358,9 +358,9 @@ bool RowBuffer::bInsertRow(TxRef* pTxRef, char* pRecord, i8 iLength)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
-  i8 nBytesRequired = StrVal::nBytesRequired(iLength);
+  i8 nSizeBytes = StrVal::nSizeRequired(iLength);
   
-  Row* pRow = pAllocRow(nBytesRequired);
+  Row* pRow = pAllocRow(nSizeBytes);
   if (!pRow)
     return false;
   

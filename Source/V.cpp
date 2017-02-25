@@ -157,7 +157,7 @@ i8 V::iSize(Object* pObject)
       
     case CN_STRVAL: {
       StrVal* pStrVal = _pStrVal(pObject);
-      nBytes = pStrVal->iSize();
+      nBytes = pStrVal->nSize();
       break;
     }
       

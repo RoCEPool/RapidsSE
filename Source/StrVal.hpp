@@ -20,48 +20,35 @@ namespace Values
   
     StrVal(eCN eClassNo);
     StrVal(StrVal* pThis);
-    StrVal(StrVal* pThis, i8 iChars);
-    StrVal(eCN eClass, i8 iSize);
+    StrVal(StrVal* pThis, i8 nBytes);
+    StrVal(eCN eClass, i8 nBytes);
   
     ~StrVal(void);
   
-    void operator = (const char* aArg);
-    void operator = (char* aArg);
-    void operator = (StrVal& rArg);
+    static i8 nSizeRequired(i8 iLength);
   
+    void operator =(const char* aArg);
+    void operator =(char* aArg);
+    void operator =(StrVal& rArg);
   
-  
-  
-    // from s::
-    void  vAppend(const char c);
-    void  vAppend(const char* aArg);
+    void  vAppend(const char cChar);
+    void  vAppend(const char* aStr);
     void  vAssign(const char* aStr);
     void  vAssign(const char* aStr, i8 iLength);
-    void  vCopy(const char* aArg);
+    void  vCopy(const char* aStr);
     void  vCopy(const char* aStr, i8 iLength);
+    char* aDataArea(void);
+    i8    nDataBytes(void);
+    void  vDataBytes(void);
     bool  bEnds(const char* aSuffix);
     bool  bIsEqual(StrVal& sArg, i8 iCase);
     i8    iLength(void);
-  
-  
-  
-    // from sFactor::
-    i8   iSize(void) const;
-  //void vSize(void);
+    i8    nSize(void) const;
     char* aStr(void);
-    
-    void vToCommand(char* aWorkspace);
-    void vToString(char* aWorkspace);
-    
+    void  vToCommand(char* aStr);
+    void  vToString(char* aStr);
   
-    static i8 nBytesRequired(i8 iLength);
-  
-
-    i8    nDataBytes(void);
-    void  vDataBytes(void);
-
   private:
-    char* pDataArea(void);
   
     Footer* pFooter(void);
   };

@@ -5,13 +5,17 @@
 #include "Values.h"
 
 /*----------------------------------------------------------------------------*/
+/*-- LifeCycle ---------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
 StrVal* Values::_pStrVal(void* pAddr)
 {
   StrVal* psRefactor = reinterpret_cast<StrVal*>(pAddr);
   
-  RASSERT( !psRefactor
+  RASSERT( ! psRefactor
           || CN_VALWSP == psRefactor->eClass()
           || CN_STRVAL == psRefactor->eClass()
           || CN_STRFXD == psRefactor->eClass()
@@ -26,6 +30,7 @@ StrVal* Values::_pStrVal(void* pAddr)
 void* StrVal::operator new(size_t iSize)
 {
   RASSERT(iSize);
+  
   vFatal("fatal: StrVal class cannot be new'd\n");
   
   RASSERT(0);
@@ -68,16 +73,16 @@ StrVal::StrVal(StrVal* pThis)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-StrVal::StrVal(StrVal* pThis, i8 nChars)
+StrVal::StrVal(StrVal* pThis, i8 nBytes)
 : Value(CN_STRVAL)
 {
   _precondition_(_MAGIC_,CN_STRVAL);
   
   ASSERT(this == pThis);
   
-  m_nDataBytes = nChars;
+  m_nDataBytes = nBytes;
   
-  Memory::vZero(pDataArea(),m_nDataBytes);
+  Memory::vZero(aDataArea(),m_nDataBytes);
   
   _checkInitialised_(CN_STRVAL);
 }
@@ -85,14 +90,14 @@ StrVal::StrVal(StrVal* pThis, i8 nChars)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-StrVal::StrVal(eCN eClassNo, i8 nChars)
+StrVal::StrVal(eCN eClassNo, i8 nBytes)
 : Value(eClassNo)
 {
   _precondition_(_MAGIC_,eClassNo);
   
-  m_nDataBytes = nChars;
+  m_nDataBytes = nBytes;
   
-  Memory::vZero(pDataArea(),nChars);
+  Memory::vZero(aDataArea(),m_nDataBytes);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -105,13 +110,31 @@ StrVal::~StrVal(void)
 
 
 /*----------------------------------------------------------------------------*/
+/*-- Static ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* calculate number of bytes required to hold string of given length          */
+/*----------------------------------------------------------------------------*/
+i8 StrVal::nSizeRequired(i8 iLength)
+{
+  i8 nBytes = sizeof(StrVal) + iLength + 1;
+  
+  return nBytes;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
 /* assignment operator                                                        */
 /*----------------------------------------------------------------------------*/
-void StrVal::operator = (const char* aArg)
+void StrVal::operator =(const char* aArg)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  String::vCopyLen(pDataArea(),aArg,m_nDataBytes-1);
+  String::vCopyLen(aDataArea(),aArg,m_nDataBytes-1);
   
   _postcondition_(_MAGIC_,_FOOTER_);
 }
@@ -119,11 +142,11 @@ void StrVal::operator = (const char* aArg)
 /*----------------------------------------------------------------------------*/
 /* assignment operator                                                        */
 /*----------------------------------------------------------------------------*/
-void StrVal::operator = (char* aArg)
+void StrVal::operator =(char* aArg)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  String::vCopyLen(pDataArea(),aArg,m_nDataBytes-1);
+  String::vCopyLen(aDataArea(),aArg,m_nDataBytes-1);
   
   _postcondition_(_MAGIC_,_FOOTER_);
 }
@@ -131,7 +154,7 @@ void StrVal::operator = (char* aArg)
 /*----------------------------------------------------------------------------*/
 /* assignment operator                                                        */
 /*----------------------------------------------------------------------------*/
-void StrVal::operator = (StrVal& rArg)
+void StrVal::operator =(StrVal& rArg)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -141,86 +164,84 @@ void StrVal::operator = (StrVal& rArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* append given character                                                     */
+/* append given char                                                          */
 /*----------------------------------------------------------------------------*/
-void StrVal::vAppend(const char c)
+void StrVal::vAppend(const char cChar)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
   // limit???
   
-  String::vConcat(pDataArea(),c);
+  String::vConcat(aDataArea(),cChar);
   
   _postcondition_(_MAGIC_,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
-/* append argument                                                            */
+/* append given str                                                           */
 /*----------------------------------------------------------------------------*/
-void StrVal::vAppend(const char* aArg)
+void StrVal::vAppend(const char* aStr)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  String::vConcat(pDataArea(),aArg);
+  String::vConcat(aDataArea(),aStr);
   
   _postcondition_(_MAGIC_,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
-/* assign argument                                                             */
+/* assign given str                                                           */
 /*----------------------------------------------------------------------------*/
 void StrVal::vAssign(const char* aStr)
 {
   //ASSERT(m_nDataBytes);
   
-  String::vCopy(pDataArea(),aStr);
-  m_nDataBytes = String::iSize(pDataArea());
+  String::vCopy(aDataArea(),aStr);
+  m_nDataBytes = String::iSize(aDataArea());
 }
 
 /*----------------------------------------------------------------------------*/
-/* assign argument                                                            */
+/* assign str of given lengt                                                  */
 /*----------------------------------------------------------------------------*/
 void StrVal::vAssign(const char* aStr, i8 iLength)
 {
   //ASSERT(m_nDataBytes);
   
-  String::vCopyLen(pDataArea(),aStr,iLength);
+  String::vCopyLen(aDataArea(),aStr,iLength);
   
-  pDataArea()[iLength] = '\0';
+  aDataArea()[iLength] = '\0';
   
   m_nDataBytes = iLength;
 }
 
 /*----------------------------------------------------------------------------*/
-/* copy argument                                                              */
+/* copy given str                                                             */
 /*----------------------------------------------------------------------------*/
-void StrVal::vCopy(const char* aArg)
+void StrVal::vCopy(const char* aStr)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  String::vCopyLen(pDataArea(),aArg,m_nDataBytes-1);
+  String::vCopyLen(aDataArea(),aStr,m_nDataBytes-1);
   
   _postcondition_(_MAGIC_,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
-/* copy a string into workspace                                               */
+/* copy str of given length                                                   */
 /*----------------------------------------------------------------------------*/
 void StrVal::vCopy(const char* aStr, i8 iLength)
 {
   vClass(CN_STRVAL);
   
-  String::vCopyLen(pDataArea(),aStr,iLength);
+  String::vCopyLen(aDataArea(),aStr,iLength);
   
-  m_nDataBytes = String::iSize(pDataArea());
+  m_nDataBytes = String::iSize(aDataArea());
 }
-
-
 
 /*----------------------------------------------------------------------------*/
 /* get address of data area                                                   */
 /*----------------------------------------------------------------------------*/
-char* StrVal::pDataArea(void)
+char* StrVal::aDataArea(void)
 {
   //_precondition_(_MAGIC_,_FOOTER_);
   
@@ -246,18 +267,8 @@ void StrVal::vDataBytes(void)
 {
   //_precondition_(_MAGIC_,_FOOTER_);
   
-  m_nDataBytes = String::iSize(pDataArea());
+  m_nDataBytes = String::iSize(aDataArea());
 }
-
-/*----------------------------------------------------------------------------*/
-/* set size in bytes                                                          */
-/*----------------------------------------------------------------------------*/
-//void StrVal::vSize(void)
-//{
-//  m_nDataBytes = String::iSize(pDataArea());
-//}
-
-
 
 /*----------------------------------------------------------------------------*/
 /* test if string ends with given suffix                                      */
@@ -266,41 +277,38 @@ bool StrVal::bEnds(const char* aSuffix)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  bool b = String::bEnds(pDataArea(),aSuffix);
+  bool b = String::bEnds(aDataArea(),aSuffix);
   
   return b;
 }
 
 /*----------------------------------------------------------------------------*/
-/* is euqal to given argument?                                                */
+/* is equal to given argument?                                                */
 /*----------------------------------------------------------------------------*/
 bool StrVal::bIsEqual(StrVal& sArg, i8 iCase)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  bool b = String::bEqualTo(pDataArea(),sArg.pDataArea(),iCase);
+  bool b = String::bEqualTo(aDataArea(),sArg.aDataArea(),iCase);
   
   return b;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get length of string in data area                                          */
+/* get length of str in data area                                             */
 /*----------------------------------------------------------------------------*/
 i8 StrVal::iLength(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  return String::iLength(pDataArea());
+  return String::iLength(aDataArea());
 }
-
 
 /*----------------------------------------------------------------------------*/
 /* get size of this StrVal in bytes                                           */
 /*----------------------------------------------------------------------------*/
-i8 StrVal::iSize(void) const
+i8 StrVal::nSize(void) const
 {
-  //i8 iOverrun = m_nDataBytes > 8 ? m_nDataBytes - 8 : 0;
-  
   i8 nBytes = sizeof(StrVal) + m_nDataBytes;
   
   return nBytes;
@@ -311,42 +319,26 @@ i8 StrVal::iSize(void) const
 /*----------------------------------------------------------------------------*/
 char* StrVal::aStr(void)
 {
-  return pDataArea();
+  return aDataArea();
 }
 
 /*----------------------------------------------------------------------------*/
 /* convert to command                                                         */
 /*----------------------------------------------------------------------------*/
-void StrVal::vToCommand(char* aWorkspace)
+void StrVal::vToCommand(char* aStr)
 {
-  String::vCopy(aWorkspace,"\"");
-  String::vCopy(aWorkspace,pDataArea());
-  String::vCopy(aWorkspace,"\"");
+  String::vCopy(aStr,"\"");
+  String::vCopy(aStr,aDataArea());
+  String::vCopy(aStr,"\"");
 }
 
 /*----------------------------------------------------------------------------*/
 /* convert to string                                                          */
 /*----------------------------------------------------------------------------*/
-void StrVal::vToString(char* aWorkspace)
+void StrVal::vToString(char* aStr)
 {
-  String::vCopy(aWorkspace,pDataArea());
+  String::vCopy(aStr,aDataArea());
 }
-
-/*----------------------------------------------------------------------------*/
-/*-- Static ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* calculate number of bytes required to hold string of given length          */
-/*----------------------------------------------------------------------------*/
-i8 StrVal::nBytesRequired(i8 iLength)
-{
-  i8 nBytes = sizeof(StrVal) + iLength + 1;
-  
-  return nBytes;
-}
-
-
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
