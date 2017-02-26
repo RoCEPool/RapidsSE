@@ -33,7 +33,10 @@ namespace DBobjects
     i8    nEntries(void);
     void  vEntryCount(void);
     void  vInsertEntry(EntWsp& xEntWsp);
+    bool  bInsertEntry(EntWsp& xEntWsp);
+    IndexBuffer* pFindBuffer(EntWsp& xEntWsp);
     void  vShow(void);
+    void  vSplitBuffer(void);
     void  vVerify(void);
   
     Entry* pFirstEntry();
