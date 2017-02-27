@@ -4,23 +4,6 @@
 
 "requests.sen" .verbose
 
-
-/*----------------------------------------------------------------------------*/
-/* make an index (run by participant)                                         */
-/*----------------------------------------------------------------------------*/
-: makeIndex allParticipants 3 checkResult ( "<indexNm>" "<tableNm>" "<columnNm>"-- true n# true )
-
-tp: makingIndex
-
-  locals| columnNm tableNm indexNm |
-
-  args.tracepoint if
-  indexNm tableNm columnNm "MAKING INDEX %V on table %V using column %V" str.format .
-  then
-
-  true <SUCCESS_RESULT>
-;
-
 /*----------------------------------------------------------------------------*/
 /* create an index on a table                                                 */
 /*----------------------------------------------------------------------------*/

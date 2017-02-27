@@ -175,6 +175,50 @@ void IndexBuffer::vEntryCount(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* find index buffer for this entWsp                                          */
+/*----------------------------------------------------------------------------*/
+IndexBuffer* IndexBuffer::pFindBuffer(EntWsp& xEntWsp)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
+  
+  Entry* pNewEntry;
+  
+  // get the size of the EntWsp
+  i8 nBytes = xEntWsp.iSize();
+  
+  // get the value of the EntWsp key
+  Key* pNewKey = xEntWsp.pKey();
+  
+  IndexBuffer* pIndexBuffer = this;
+  IndexBuffer* pLastBuffer = nullptr;
+  
+  while (pIndexBuffer) {
+    
+    // find the position for the new entry in the index buffer
+    Entry* pEntry = pIndexBuffer->pFirstEntry();
+    
+    while (pEntry) {
+      
+      Key* pKey = pEntry->pKey();
+      
+      //pKey->vShow();
+      
+      if (*pNewKey < pKey ) {
+        return pIndexBuffer;
+      }
+      
+      // get next entry
+      pEntry = pIndexBuffer->pNextEntry(pEntry);
+    }
+    
+    pLastBuffer = pIndexBuffer;
+    pIndexBuffer = pIndexBuffer->pNextBuffer();
+  }
+  
+  return pLastBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
 /* insert an entry into the index buffer                                      */
 /*----------------------------------------------------------------------------*/
 void IndexBuffer::vInsertEntry(EntWsp& xEntWsp)
@@ -188,8 +232,82 @@ void IndexBuffer::vInsertEntry(EntWsp& xEntWsp)
   
   // test sufficient free space
   //if (nFreeBytes() < nBytes) {
-    //return nullptr;
+    // split the buffer
+  //  vSplitBuffer();
   //}
+  
+  // get the pDst as the staring of the free space in the buffer
+  void* pDst = pAdd<void*>(pDataArea(),nBytesUsed());
+  
+  // get the vale of the EntWsp key
+  Key* pNewKey = xEntWsp.pKey();
+  
+  // find the position for the new entry in the index buffer
+  Entry* pEntry = pFirstEntry();
+  
+  while (pEntry) {
+    
+    Key* pKey = pEntry->pKey();
+    
+    if (*pNewKey < pKey ) {
+      
+      // position the pDst at pEntry
+      pDst = pEntry;
+      
+      // shuffle right pEntry making space for new entry
+      i8 nSize = nBytesUsed() - nSub(pEntry,pDataArea());
+      
+      // calculate new postion to shuffle to
+      void* pShuffleTo = pAdd<void*>(pEntry,nBytes);
+      
+      // do the shuffle
+      Memory::vCopy(pShuffleTo,pEntry,nSize);
+      break;
+    }
+    
+    // get next entry
+    pEntry = pNextEntry(pEntry);
+  }
+  
+  // map the pDst to an Entry
+  pNewEntry = reinterpret_cast<Entry*>(pDst);
+  
+  // copy EntWsp into Index buffer pNewEntry
+  pNewEntry->vEntry(xEntWsp);
+  
+  // size of EntWsp whould be the same as this NewEntry we just created
+  ASSERT(nBytes == pNewEntry->iSize());
+  
+  // recalculate beginning of free space
+  m_pFreeSpace = pAdd<char*>(m_pFreeSpace,nBytes);
+  
+  // inc the number of entries in this buffer
+  m_nEntries++;
+}
+
+/*----------------------------------------------------------------------------*/
+/* insert an entry into the index buffer                                      */
+/*----------------------------------------------------------------------------*/
+bool IndexBuffer::bInsertEntry(EntWsp& xEntWsp)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
+  
+  Entry* pNewEntry;
+  
+  // get the size of the EntWsp
+  i8 nBytes = xEntWsp.iSize();
+  
+  // test sufficient free space
+  //if (nFreeBytes() < (C_1MB - 1000))
+  if (nFreeBytes() < nBytes) {
+    i8 iFree = nFreeBytes();
+    i8 iBytesUsed = nBytesUsed();
+    
+    // split the buffer
+    vSplitBuffer();
+    
+    return false;
+  }
   
   // get the pDst as the staring of the free space in the buffer
   void* pDst = pAdd<void*>(pDataArea(),nBytesUsed());
@@ -203,8 +321,6 @@ void IndexBuffer::vInsertEntry(EntWsp& xEntWsp)
   while (pEntry) {
     
     Key* pKey = pEntry->pKey();
-  
-    pKey->vShow();
     
     if (*pNewKey < pKey ) {
       
@@ -240,6 +356,8 @@ void IndexBuffer::vInsertEntry(EntWsp& xEntWsp)
   
   // inc the number of entries in this buffer
   m_nEntries++;
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -247,14 +365,72 @@ void IndexBuffer::vInsertEntry(EntWsp& xEntWsp)
 /*----------------------------------------------------------------------------*/
 void IndexBuffer::vShow(void)
 {
-  vTrace("IndexBuffer %p: entries %lld freeSpace %p (%lld bytes)"
+  vTrace("IndexBuffer %p: entries %lld freeSpace %p (%lld bytes) bytesUsed %lld"
          " prevBuffer %p nextBuffer %p\n",
          this,
          m_nEntries,
          m_pFreeSpace,
          nFreeBytes(),
+         nBytesUsed(),
          m_pPrevBuffer,
          m_pNextBuffer);
+}
+
+/*----------------------------------------------------------------------------*/
+/* split this index buffer into two                                           */
+/*----------------------------------------------------------------------------*/
+void IndexBuffer::vSplitBuffer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
+  
+  // split the buffer into two
+  i8 iSplitAtEntry = m_nEntries/2;
+  
+  // find the position for the new entry in the index buffer
+  Entry* pEntry = pFirstEntry();
+  
+  i8 iEntries = 0;
+  while (pEntry) {
+    
+    iEntries++;
+    
+    if (iEntries == iSplitAtEntry)
+      break;
+    
+    // get next entry
+    pEntry = pNextEntry(pEntry);
+  }
+  
+  // get the address of the entry to split at
+  char* pSplitAt = reinterpret_cast<char*>(pEntry);
+  
+  // allocate a new buffer
+  IndexBuffer* pNewBuffer = new IndexBuffer;
+  
+  // get size of entries to be copied to new buffer
+  i8 nSize = nSub(m_pFreeSpace,pEntry);
+  
+  // calculate new postion to shuffle to
+  void* pNewDst = pNewBuffer->pDataArea();
+  
+  // do the shuffle
+  Memory::vCopy(pNewDst,pEntry,nSize);
+  
+  pNewBuffer->m_pFreeSpace = pAdd<char*>(pNewBuffer->m_pFreeSpace,nSize);
+  pNewBuffer->m_nEntries = iSplitAtEntry;
+  
+  // reset freespace in original buffer
+  m_pFreeSpace = pSplitAt;
+  i8 iFreeSpace = nFreeBytes();
+  i8 iNewFree = pNewBuffer->nFreeBytes();
+  
+  m_nEntries -= iSplitAtEntry;
+
+  // now link the two buffers
+  pNewBuffer->vNextBuffer(pNextBuffer());
+  pNewBuffer->vPrevBuffer(this);
+  
+  vNextBuffer(pNewBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -278,7 +454,7 @@ void IndexBuffer::vVerify(void)
     pKeyA->vShow();
     pKeyB->vShow();
     
-    ASSERT(*pEntryA->pKey() < pEntryB->pKey());
+    ASSERT(*pEntryA->pKey() <= pEntryB->pKey());
     
     pEntryA = pEntryB;
     pEntryB = pNextEntry(pEntryA);

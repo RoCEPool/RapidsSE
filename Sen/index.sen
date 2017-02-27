@@ -1,0 +1,275 @@
+/*============================================================================*/
+/* index.sen -- index related words                                           */
+/*============================================================================*/
+
+"index.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* index is use as a kind of word to identify indexes                          */
+/*----------------------------------------------------------------------------*/
+: index ;
+
+/*----------------------------------------------------------------------------*/
+/* make an indexes folder under given named table                             */
+/*----------------------------------------------------------------------------*/
+: makeIndexes ( "<tableNm>" -- )
+
+  args.tracepoint if
+    dup "MAKING INDEXES FOR TABLE " swap str.cat " on NODE " str.cat grid.thisNode@ >str str.cat .
+  then
+
+  find execute ( dic )
+  "indexes"     ( dic "indexes" )
+  swap         ( "indexes" dic )
+  :folder      ( )
+;
+
+: isIndex word.kind@ ' index eql ;
+
+/*----------------------------------------------------------------------------*/
+/* create an index using name from input stream (doesnt leave index on stk)   */
+/*----------------------------------------------------------------------------*/
+: index:
+
+  create
+  WT_OBJECT word.this word.type!
+  sizeof_index allot
+  word.this >body object.magic!
+  CN_INDEX word.this >body object.class!
+  word.this >body index.init
+  true word.this >body object.wordbody!
+  ' index word.this word.kind!
+  does>
+;
+
+/*----------------------------------------------------------------------------*/
+/* create a table using name on the stack (leaves index on stack)             */
+/*----------------------------------------------------------------------------*/
+: :index
+
+  >create
+  WT_OBJECT word.this word.type!
+  sizeof_index allot
+  word.this >body object.magic!
+  CN_TABLE word.this >body object.class!
+  word.this >body table.init
+  true word.this >body object.wordbody!
+  ' index word.this word.kind!
+  word.this
+  does>
+;
+
+/*----------------------------------------------------------------------------*/
+/* se> checking                                                               */
+/*----------------------------------------------------------------------------*/
+
+: withinIndexes
+
+  0 pathPick dic.name "indexes" str.equal
+;
+
+: withinIndexes
+
+  withinTables if true exit then
+
+  EC_NOT_IN_INDEXES false
+;
+
+/*----------------------------------------------------------------------------*/
+/* check word is an index                                                     */
+/*----------------------------------------------------------------------------*/
+: checkIsIndex ( "<indexNm>" -- "<indexNm>" true | errorCode false )
+
+  dup ( "<indexNm>" "<indexNm>" )
+
+  find ( "<indexNm>" ^w:index )
+
+  dup ( "<indexNm>" ^w:index ^w:index )
+  not ( "<indexNm>" ^w:index bool )
+  if
+    drop ( "<indexNm>" )
+    drop ( )
+    EC_NO_SUCH_INDEX false ( errorCode false )
+  exit
+  then
+
+  dup ( "<indexNm>" ^w:index ^w:index )
+
+  word.kind@ ( "<indexNm>" ^w:index ^word )
+  ' table ( "<indexNm>" ^w:index ^word ^word )
+  eql ( "<indexNm>" ^w:index bool )
+  if
+    drop ( "<indexNm>" )
+    true ( "<indexNm>" true )
+    exit
+  then
+
+  drop ( "<indexNm>" )
+  drop ( )
+  EC_NOT_A_TABLE false ( errorCode false )
+;
+
+: checkIsNotIndex ( word )
+  dup findInCurrent not if true exit then
+  EC_INDEX_EXISTS false
+;
+
+/*----------------------------------------------------------------------------*/
+: pushTable ( "<indexNm>" -- )
+
+  checkIsIndex not if EC_NO_SUCH_INDEX false exit then
+
+  find execute table.subDic pathPush
+
+  true
+;
+
+: popTable
+    pathDrop
+;
+
+/*----------------------------------------------------------------------------*/
+/*
+: getIndexRef ( "<indexNm>" -- <R> )
+
+  checkInIndex not if false exit then
+
+  checkIsIndex not if EC_NO_SUCH_INDEX false exit then
+
+  find execute ( index )
+
+  task.this task.seitf@ seitf.indexRef
+
+    true
+;
+
+
+/*----------------------------------------------------------------------------*/
+: returnIndexRef ( )
+
+  task.this task.seitf@ seitf.indexRef
+
+  true
+;
+*/
+/*----------------------------------------------------------------------------*/
+/* any outstanding index references                                           */
+/*----------------------------------------------------------------------------*/
+: IndexInUse ( "<indexNm>" -- <R> )
+
+  find execute
+
+  index.ref
+  if true else false then
+;
+
+/*----------------------------------------------------------------------------*/
+/* check if word is a makeable table                                          */
+/*----------------------------------------------------------------------------*/
+: checkMakeIndex ( "<indexNm>" -- "<indexNm>" true | "<indexNm>" errorCode false )
+
+  checkInTables   not if false exit then
+  checkIsNotTable not if false exit then
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* check if word is a removable table folder                                  */
+/*----------------------------------------------------------------------------*/
+: checkRemoveTable ( "<indexNm>" -- "<indexNm>" true | "<indexNm>" errorCode false )
+
+  checkInTables not if false exit then ( "<indexNm>" )
+  checkIsTable not if false exit then ( "<indexNm>" )
+  dup tableInUse if EC_TABLE_IN_USE false exit then ( "<indexNm>" )
+
+  true ( "<indexNm>" true )
+;
+
+/*----------------------------------------------------------------------------*/
+/* get size of table                                                          */
+/*----------------------------------------------------------------------------*/
+: sizeTable ( "<indexNm>" -- "<size>" )
+
+  find execute ( table )
+
+  table.space >str
+;
+
+////////////////////////////////////////////////////////////////////////////////
+
+: dumpTable ( "<indexNm>" )
+
+  find execute ( table )
+
+  "__row_cursor" find dup
+  if
+  else
+    drop
+    "__row_cursor" :selCursor
+  then
+  execute
+
+  >r
+  // r0 ^selCursor
+
+  r0 selCursor.table!
+  grid.slots 0
+  do
+    // r2 ^selCursor
+    I r2 selCursor.begin
+    r2 selCursor.first
+    begin
+      while
+      r2 selCursor.get
+      .
+      r2 selCursor.next
+      repeat
+
+      r2 selCursor.end
+  loop
+
+  rdrop
+
+  "__row_cursor" find word.forget
+;
+
+////////////////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* make an index (run by participant)                                         */
+/*----------------------------------------------------------------------------*/
+: makeIndex allParticipants 1 checkResult ( "<indexNm>" -- true n# true )
+
+tp: makingIndex
+
+  args.tracepoint if
+  dup "MAKING INDEX " swap str.cat " on NODE " str.cat grid.thisNode@ >str str.cat .
+  then
+
+  dup ( "<indexNm>" "<tableNm>" )
+
+  :index ( "<indexNm>" ^table )
+
+  drop ( "<indexNm>" )
+
+  true <SUCCESS_RESULT>
+;
+
+/*----------------------------------------------------------------------------*/
+/* remove an index                                                            */
+/*----------------------------------------------------------------------------*/
+: removeIndex allParticipants 1 checkResult ( "<indexNm>" -- true n# true )
+
+tp: removingIndex
+
+  dup find execute ( "<indexNm>" table )
+
+  :forget
+
+  true <SUCCESS_RESULT>
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
