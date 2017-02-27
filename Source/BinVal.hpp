@@ -11,8 +11,8 @@ namespace Values
   class BinVal : public Value
   {
   private:
-    i8   m_iBytes;
-    char m_cArray[8];  // should be ..data..
+    i8   m_nAreaSize; // size of the data area 
+    char m_cArea[8];  // should be ..data..
     
   public:
     void* operator new(size_t);

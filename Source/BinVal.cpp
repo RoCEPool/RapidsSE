@@ -46,7 +46,7 @@ void* BinVal::operator new(size_t iSize, BinVal* pBinVal)
 BinVal::BinVal(void)
 : Value(CN_BINVAL)
 {
-  m_iBytes = 0;
+  m_nAreaSize = 0;
   
   _checkInitialised_(CN_BINVAL);
 }
@@ -57,9 +57,9 @@ BinVal::BinVal(void)
 BinVal::BinVal(i8 iChars)
 : Value(CN_BINVAL)
 {
-  m_iBytes = iChars;
+  m_nAreaSize = iChars;
   
-  Memory::vZero(pData(),m_iBytes);
+  Memory::vZero(pData(),m_nAreaSize);
   
   _checkInitialised_(CN_BINVAL);
 }
@@ -69,9 +69,9 @@ BinVal::BinVal(i8 iChars)
 /*----------------------------------------------------------------------------*/
 void BinVal::operator =(const Object* pObject)
 {
-  m_iBytes = giClassSize[pObject->eClass()];
+  m_nAreaSize = giClassSize[pObject->eClass()];
   
-  Memory::vCopy(m_cArray, pObject, m_iBytes);
+  Memory::vCopy(m_cArea, pObject, m_nAreaSize);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -79,7 +79,7 @@ void BinVal::operator =(const Object* pObject)
 /*----------------------------------------------------------------------------*/
 i8 BinVal::iBytes(void) const
 {
-  return m_iBytes;
+  return m_nAreaSize;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -87,7 +87,7 @@ i8 BinVal::iBytes(void) const
 /*----------------------------------------------------------------------------*/
 char* BinVal::pData(void)
 {
-  return &m_cArray[0];
+  return &m_cArea[0];
 }
 
 /*----------------------------------------------------------------------------*/
@@ -105,7 +105,7 @@ eCN BinVal::eObjectClass(void)
 /*----------------------------------------------------------------------------*/
 void BinVal::vReset(void)
 {
-  m_iBytes = 0;
+  m_nAreaSize = 0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -113,7 +113,7 @@ void BinVal::vReset(void)
 /*----------------------------------------------------------------------------*/
 i8 BinVal::nSize(void) const
 {
-  i8 iOverrun = m_iBytes > 8 ? m_iBytes - 8 : 0;
+  i8 iOverrun = m_nAreaSize > 8 ? m_nAreaSize - 8 : 0;
   
   i8 iSize = sizeof(BinVal) + iOverrun;
   
@@ -126,7 +126,7 @@ i8 BinVal::nSize(void) const
 void BinVal::vSize(void)
 {
   ASSERT(0);
-  //m_iBytes = String::iSize(m_sStr);
+  //m_nAreaSize = String::iSize(m_sStr);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -134,7 +134,7 @@ void BinVal::vSize(void)
 /*----------------------------------------------------------------------------*/
 void BinVal::vSize(i8 iSize)
 {
-  m_iBytes = iSize;
+  m_nAreaSize = iSize;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -147,7 +147,7 @@ void BinVal::vToString(char* aWorkspace)
   String::vSprint(aWorkspace,"%p BinVal [%s of %lld bytes]",
                   this,
                   pCN[pEmbedded->eClass()],
-                  m_iBytes);
+                  m_nAreaSize);
 }
 
 /*----------------------------------------------------------------------------*/
