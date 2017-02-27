@@ -18,8 +18,8 @@ namespace Values
   class Wsp : public Part
   {
   private:
-    char m_mByteArea[SIZE];
-    i8   m_nBytesUsed;
+    char m_cArea[SIZE];  // ..dataArea..
+    i8   m_nAreaUsed;    // bytes used in the area (must be after m_cArea)
   
   public:
     Wsp(void);
@@ -41,18 +41,18 @@ using namespace Values;
 template<int SIZE>
 Wsp<SIZE>::Wsp(void)
 {
-  m_nBytesUsed = 0;
+  m_nAreaUsed = 0;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get next available chunk in data area                                      */
+/* append source bytes to data area                                           */
 /*----------------------------------------------------------------------------*/
 template<int SIZE>
 void Wsp<SIZE>::vWspAppend(void* pSrc, i8 nBytes)
 {
   void* pDst = pWspNext();
 
-  ASSERT(m_nBytesUsed + nBytes <= SIZE);
+  ASSERT(m_nAreaUsed + nBytes <= SIZE);
   
   Memory::vCopy(pDst,pSrc,nBytes);
   
@@ -60,12 +60,12 @@ void Wsp<SIZE>::vWspAppend(void* pSrc, i8 nBytes)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get ptr to byte area                                                       */
+/* get ptr to data area                                                       */
 /*----------------------------------------------------------------------------*/
 template<int SIZE>
 char* Wsp<SIZE>::pWspArea(void)
 {
-  return m_mByteArea;
+  return m_cArea;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -74,7 +74,7 @@ char* Wsp<SIZE>::pWspArea(void)
 template<int SIZE>
 i8 Wsp<SIZE>::nWspUsed(void)
 {
-  return m_nBytesUsed;
+  return m_nAreaUsed;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -83,11 +83,11 @@ i8 Wsp<SIZE>::nWspUsed(void)
 template<int SIZE>
 char* Wsp<SIZE>::pWspNext(void)
 {
-  return &m_mByteArea[m_nBytesUsed];
+  return &m_cArea[m_nAreaUsed];
 }
 
 /*----------------------------------------------------------------------------*/
-/* get size of byte area                                                      */
+/* get size of data area                                                      */
 /*----------------------------------------------------------------------------*/
 template<int SIZE>
 i8 Wsp<SIZE>::nWspSize(void)
@@ -96,14 +96,14 @@ i8 Wsp<SIZE>::nWspSize(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get next available chunk in data area                                      */
+/* take chunk in data area                                                    */
 /*----------------------------------------------------------------------------*/
 template<int SIZE>
 void Wsp<SIZE>::vWspTake(i8 nBytes)
 {
-  m_nBytesUsed += nBytes;
+  m_nAreaUsed += nBytes;
   
-  ASSERT(m_nBytesUsed <= SIZE);
+  ASSERT(m_nAreaUsed <= SIZE);
 }
 
 /*============================================================================*/
