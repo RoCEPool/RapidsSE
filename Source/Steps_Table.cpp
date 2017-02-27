@@ -221,7 +221,7 @@ ENTRY("vTableInsert");
   pTable->vInsertRow(iPartition,
                      pTxRef,
                      _pStrVal(&xRow)->aStr(),
-                     _pStrVal(&xRow)->nDataBytes());
+                     _pStrVal(&xRow)->nAreaSize());
   
   EXIT();
 }

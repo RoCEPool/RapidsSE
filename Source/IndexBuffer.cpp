@@ -184,7 +184,7 @@ IndexBuffer* IndexBuffer::pFindBuffer(EntWsp& xEntWsp)
   Entry* pNewEntry;
   
   // get the size of the EntWsp
-  i8 nBytes = xEntWsp.iSize();
+  i8 nBytes = xEntWsp.nSize();
   
   // get the value of the EntWsp key
   Key* pNewKey = xEntWsp.pKey();
@@ -276,7 +276,7 @@ void IndexBuffer::vInsertEntry(EntWsp& xEntWsp)
   pNewEntry->vEntry(xEntWsp);
   
   // size of EntWsp whould be the same as this NewEntry we just created
-  ASSERT(nBytes == pNewEntry->iSize());
+  ASSERT(nBytes == pNewEntry->nSize());
   
   // recalculate beginning of free space
   m_pFreeSpace = pAdd<char*>(m_pFreeSpace,nBytes);
@@ -295,7 +295,7 @@ bool IndexBuffer::bInsertEntry(EntWsp& xEntWsp)
   Entry* pNewEntry;
   
   // get the size of the EntWsp
-  i8 nBytes = xEntWsp.iSize();
+  i8 nBytes = xEntWsp.nSize();
   
   // test sufficient free space
   //if (nFreeBytes() < (C_1MB - 1000))

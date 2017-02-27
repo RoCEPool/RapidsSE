@@ -65,7 +65,7 @@ StrVal::StrVal(StrVal* pThis)
   
   ASSERT(this == pThis);
   
-  m_nDataBytes = 0;
+  m_nAreaSize = 0;
   
   _checkInitialised_(CN_STRVAL);
 }
@@ -80,9 +80,9 @@ StrVal::StrVal(StrVal* pThis, i8 nBytes)
   
   ASSERT(this == pThis);
   
-  m_nDataBytes = nBytes;
+  m_nAreaSize = nBytes;
   
-  Memory::vZero(aDataArea(),m_nDataBytes);
+  Memory::vZero(aArea(),m_nAreaSize);
   
   _checkInitialised_(CN_STRVAL);
 }
@@ -95,9 +95,9 @@ StrVal::StrVal(eCN eClassNo, i8 nBytes)
 {
   _precondition_(_MAGIC_,eClassNo);
   
-  m_nDataBytes = nBytes;
+  m_nAreaSize = nBytes;
   
-  Memory::vZero(aDataArea(),m_nDataBytes);
+  Memory::vZero(aArea(),m_nAreaSize);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -116,7 +116,7 @@ StrVal::~StrVal(void)
 /*----------------------------------------------------------------------------*/
 /* calculate number of bytes required to hold string of given length          */
 /*----------------------------------------------------------------------------*/
-i8 StrVal::nSizeRequired(i8 iLength)
+i8 StrVal::nAreaRequired(i8 iLength)
 {
   i8 nBytes = sizeof(StrVal) + iLength + 1;
   
@@ -134,7 +134,7 @@ void StrVal::operator =(const char* aArg)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  String::vCopyLen(aDataArea(),aArg,m_nDataBytes-1);
+  String::vCopyLen(aArea(),aArg,m_nAreaSize-1);
   
   _postcondition_(_MAGIC_,_FOOTER_);
 }
@@ -146,7 +146,7 @@ void StrVal::operator =(char* aArg)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  String::vCopyLen(aDataArea(),aArg,m_nDataBytes-1);
+  String::vCopyLen(aArea(),aArg,m_nAreaSize-1);
   
   _postcondition_(_MAGIC_,_FOOTER_);
 }
@@ -172,7 +172,7 @@ void StrVal::vAppend(const char cChar)
   
   // limit???
   
-  String::vConcat(aDataArea(),cChar);
+  String::vConcat(aArea(),cChar);
   
   _postcondition_(_MAGIC_,_FOOTER_);
 }
@@ -184,64 +184,15 @@ void StrVal::vAppend(const char* aStr)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  String::vConcat(aDataArea(),aStr);
+  String::vConcat(aArea(),aStr);
   
   _postcondition_(_MAGIC_,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* assign given str                                                           */
-/*----------------------------------------------------------------------------*/
-void StrVal::vAssign(const char* aStr)
-{
-  //ASSERT(m_nDataBytes);
-  
-  String::vCopy(aDataArea(),aStr);
-  m_nDataBytes = String::iSize(aDataArea());
-}
-
-/*----------------------------------------------------------------------------*/
-/* assign str of given lengt                                                  */
-/*----------------------------------------------------------------------------*/
-void StrVal::vAssign(const char* aStr, i8 iLength)
-{
-  //ASSERT(m_nDataBytes);
-  
-  String::vCopyLen(aDataArea(),aStr,iLength);
-  
-  aDataArea()[iLength] = '\0';
-  
-  m_nDataBytes = iLength;
-}
-
-/*----------------------------------------------------------------------------*/
-/* copy given str                                                             */
-/*----------------------------------------------------------------------------*/
-void StrVal::vCopy(const char* aStr)
-{
-  _precondition_(_MAGIC_,_FOOTER_);
-  
-  String::vCopyLen(aDataArea(),aStr,m_nDataBytes-1);
-  
-  _postcondition_(_MAGIC_,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* copy str of given length                                                   */
-/*----------------------------------------------------------------------------*/
-void StrVal::vCopy(const char* aStr, i8 iLength)
-{
-  vClass(CN_STRVAL);
-  
-  String::vCopyLen(aDataArea(),aStr,iLength);
-  
-  m_nDataBytes = String::iSize(aDataArea());
 }
 
 /*----------------------------------------------------------------------------*/
 /* get address of data area                                                   */
 /*----------------------------------------------------------------------------*/
-char* StrVal::aDataArea(void)
+char* StrVal::aArea(void)
 {
   //_precondition_(_MAGIC_,_FOOTER_);
   
@@ -253,21 +204,70 @@ char* StrVal::aDataArea(void)
 /*----------------------------------------------------------------------------*/
 /* get size of data area                                                      */
 /*----------------------------------------------------------------------------*/
-i8 StrVal::nDataBytes(void)
+i8 StrVal::nAreaSize(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  return m_nDataBytes;
+  return m_nAreaSize;
 }
 
 /*----------------------------------------------------------------------------*/
-/* set limit of data size (based on the string size)                          */
+/* set data area size (based on the string size)                              */
 /*----------------------------------------------------------------------------*/
-void StrVal::vDataBytes(void)
+void StrVal::vAreaSize(void)
 {
   //_precondition_(_MAGIC_,_FOOTER_);
   
-  m_nDataBytes = String::iSize(aDataArea());
+  m_nAreaSize = String::iSize(aArea());
+}
+
+/*----------------------------------------------------------------------------*/
+/* assign given str                                                           */
+/*----------------------------------------------------------------------------*/
+void StrVal::vAssign(const char* aStr)
+{
+  //ASSERT(m_nAreaSize);
+  
+  String::vCopy(aArea(),aStr);
+  m_nAreaSize = String::iSize(aArea());
+}
+
+/*----------------------------------------------------------------------------*/
+/* assign str of given length                                                 */
+/*----------------------------------------------------------------------------*/
+void StrVal::vAssign(const char* aStr, i8 iLength)
+{
+  //ASSERT(m_nAreaSize);
+  
+  String::vCopyLen(aArea(),aStr,iLength);
+  
+  aArea()[iLength] = '\0';
+  
+  m_nAreaSize = iLength;
+}
+
+/*----------------------------------------------------------------------------*/
+/* copy given str                                                             */
+/*----------------------------------------------------------------------------*/
+void StrVal::vCopy(const char* aStr)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+  
+  String::vCopyLen(aArea(),aStr,m_nAreaSize-1);
+  
+  _postcondition_(_MAGIC_,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* copy str of given length                                                   */
+/*----------------------------------------------------------------------------*/
+void StrVal::vCopy(const char* aStr, i8 iLength)
+{
+  vClass(CN_STRVAL);
+  
+  String::vCopyLen(aArea(),aStr,iLength);
+  
+  m_nAreaSize = String::iSize(aArea());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -277,7 +277,7 @@ bool StrVal::bEnds(const char* aSuffix)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  bool b = String::bEnds(aDataArea(),aSuffix);
+  bool b = String::bEnds(aArea(),aSuffix);
   
   return b;
 }
@@ -289,7 +289,7 @@ bool StrVal::bIsEqual(StrVal& sArg, i8 iCase)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  bool b = String::bEqualTo(aDataArea(),sArg.aDataArea(),iCase);
+  bool b = String::bEqualTo(aArea(),sArg.aArea(),iCase);
   
   return b;
 }
@@ -301,7 +301,7 @@ i8 StrVal::iLength(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  return String::iLength(aDataArea());
+  return String::iLength(aArea());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -309,7 +309,7 @@ i8 StrVal::iLength(void)
 /*----------------------------------------------------------------------------*/
 i8 StrVal::nSize(void) const
 {
-  i8 nBytes = sizeof(StrVal) + m_nDataBytes;
+  i8 nBytes = sizeof(StrVal) + m_nAreaSize;
   
   return nBytes;
 }
@@ -319,7 +319,7 @@ i8 StrVal::nSize(void) const
 /*----------------------------------------------------------------------------*/
 char* StrVal::aStr(void)
 {
-  return aDataArea();
+  return aArea();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -328,7 +328,7 @@ char* StrVal::aStr(void)
 void StrVal::vToCommand(char* aStr)
 {
   String::vCopy(aStr,"\"");
-  String::vCopy(aStr,aDataArea());
+  String::vCopy(aStr,aArea());
   String::vCopy(aStr,"\"");
 }
 
@@ -337,7 +337,7 @@ void StrVal::vToCommand(char* aStr)
 /*----------------------------------------------------------------------------*/
 void StrVal::vToString(char* aStr)
 {
-  String::vCopy(aStr,aDataArea());
+  String::vCopy(aStr,aArea());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -351,7 +351,7 @@ Footer* StrVal::pFooter(void)
 {
   _precondition_(_MAGIC_);
   
-  Footer* pFooter = pAdd<Footer*>(this,sizeof(StrVal)+m_nDataBytes);
+  Footer* pFooter = pAdd<Footer*>(this,sizeof(StrVal)+m_nAreaSize);
   
   return pFooter;
 }

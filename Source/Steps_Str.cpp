@@ -117,7 +117,9 @@ void Task::vStrCat(NNP_Task nnpTask)
   xStrR = xStrA;
   
   String::vConcat(_pStrVal(&xStrR)->aStr(),_pStrVal(&xStrB)->aStr());
-  _pStrVal(&xStrR)->vDataBytes();
+  
+  // adjust area size
+  _pStrVal(&xStrR)->vAreaSize();
   
   nnpTask->m_pDataStack->vPush(xStrR);
   
@@ -312,7 +314,9 @@ void Task::vStrPad(NNP_Task nnpTask)
     THROW_INVALID_DSTACK("str.pad");
   
   String::vPad(_pStrVal(&xStringA)->aStr(),iLength,' ');
-  _pStrVal(&xStringA)->vDataBytes();
+  
+  // adjust area size
+  _pStrVal(&xStringA)->vAreaSize();
   
   nnpTask->m_pDataStack->vPush(xStringA);
   
@@ -359,7 +363,9 @@ void Task::vStrPrepend(NNP_Task nnpTask)
   xStrR = xStrB;
   
   String::vConcat(_pStrVal(&xStrR)->aStr(),_pStrVal(&xStrA)->aStr());
-  _pStrVal(&xStrR)->vDataBytes();
+  
+  // adjust area size
+  _pStrVal(&xStrR)->vAreaSize();
   
   nnpTask->m_pDataStack->vPush(xStrR);
   

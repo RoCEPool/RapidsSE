@@ -9,6 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : create_index ( "<indexNm>" "<tableNm>" "<columnNm>"-- <R> )
 
+/*
 tp: create_index
   ddlLock.grabWrite
 
@@ -18,6 +19,7 @@ tp: create_index
   makeIndex ( ) assert.stack_0
 
   <OK>
+*/
 ;
 
 /*----------------------------------------------------------------------------*/

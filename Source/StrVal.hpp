@@ -11,7 +11,7 @@ namespace Values
   class StrVal : public Value
   {
   protected:
-    i8   m_nDataBytes; // size of the data area (may not be length of the string)
+    i8   m_nAreaSize; // size of the data area (may not be length of aStr)
     // ..dataArea..
   
   public:
@@ -25,7 +25,7 @@ namespace Values
   
     ~StrVal(void);
   
-    static i8 nSizeRequired(i8 iLength);
+    static i8 nAreaRequired(i8 iLength);
   
     void operator =(const char* aArg);
     void operator =(char* aArg);
@@ -33,13 +33,13 @@ namespace Values
   
     void  vAppend(const char cChar);
     void  vAppend(const char* aStr);
+    char* aArea(void);
+    i8    nAreaSize(void);
+    void  vAreaSize(void);
     void  vAssign(const char* aStr);
     void  vAssign(const char* aStr, i8 iLength);
     void  vCopy(const char* aStr);
     void  vCopy(const char* aStr, i8 iLength);
-    char* aDataArea(void);
-    i8    nDataBytes(void);
-    void  vDataBytes(void);
     bool  bEnds(const char* aSuffix);
     bool  bIsEqual(StrVal& sArg, i8 iCase);
     i8    iLength(void);
