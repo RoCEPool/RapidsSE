@@ -11,7 +11,7 @@ namespace Values
   class StrFxd : public StrVal
   {
   private:
-    char m_mDataArea[SIZE]; // string data area
+    char m_cArea[SIZE]; // string data area
     
     // must be last
     Footer m_xFooter;
