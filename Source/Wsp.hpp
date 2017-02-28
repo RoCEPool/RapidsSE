@@ -24,10 +24,10 @@ namespace Values
   public:
     Wsp(void);
 
-    void  vWspAppend(void* pSrc, i8 nBytes);
-    char* pWspArea(void);
+    void  vWspAppend(void* aSrc, i8 nBytes);
+    char* aWspArea(void);
     i8    nWspUsed(void);
-    char* pWspNext(void);
+    char* aWspNext(void);
     i8    nWspSize(void);
     void  vWspTake(i8 nBytes);
   };
@@ -48,13 +48,13 @@ Wsp<SIZE>::Wsp(void)
 /* append source bytes to data area                                           */
 /*----------------------------------------------------------------------------*/
 template<int SIZE>
-void Wsp<SIZE>::vWspAppend(void* pSrc, i8 nBytes)
+void Wsp<SIZE>::vWspAppend(void* aSrc, i8 nBytes)
 {
-  void* pDst = pWspNext();
+  void* aDst = aWspNext();
 
   ASSERT(m_nAreaUsed + nBytes <= SIZE);
   
-  Memory::vCopy(pDst,pSrc,nBytes);
+  Memory::vCopy(aDst,aSrc,nBytes);
   
   vWspTake(nBytes);
 }
@@ -63,7 +63,7 @@ void Wsp<SIZE>::vWspAppend(void* pSrc, i8 nBytes)
 /* get ptr to data area                                                       */
 /*----------------------------------------------------------------------------*/
 template<int SIZE>
-char* Wsp<SIZE>::pWspArea(void)
+char* Wsp<SIZE>::aWspArea(void)
 {
   return m_cArea;
 }
@@ -81,7 +81,7 @@ i8 Wsp<SIZE>::nWspUsed(void)
 /* get next available chunk in data area                                      */
 /*----------------------------------------------------------------------------*/
 template<int SIZE>
-char* Wsp<SIZE>::pWspNext(void)
+char* Wsp<SIZE>::aWspNext(void)
 {
   return &m_cArea[m_nAreaUsed];
 }

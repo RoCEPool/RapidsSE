@@ -64,7 +64,7 @@ void EntWsp::vShow(void)
 //  i8* pKeyData = reinterpret_cast<i8*>(m_mDataArea);
 //  memcpy(&iKey,m_mDataArea,8);
   
-  V::vCopyIntDatum(&iKey,pWspArea());
+  V::vCopyIntDatum(&iKey,aWspArea());
   
   vTrace("EntWsp %p: rowId %llu.%llu key (size:%lld value:%lld)\n",
          this,
@@ -108,7 +108,7 @@ i8 EntWsp::nSize(void)
 /*----------------------------------------------------------------------------*/
 Key* EntWsp::pKey(void)
 {
-  Key* pKey = reinterpret_cast<Key*>(pWspArea());
+  Key* pKey = reinterpret_cast<Key*>(aWspArea());
   
   return pKey;
 }
@@ -118,7 +118,7 @@ Key* EntWsp::pKey(void)
 /*----------------------------------------------------------------------------*/
 void EntWsp::vAddKey(KeyWsp& xKeyWsp)
 {
-  char* pSrc = xKeyWsp.pWspArea();
+  char* pSrc = xKeyWsp.aWspArea();
   i8 nBytes  = xKeyWsp.nWspUsed();
   
   vWspAppend(pSrc,nBytes);
