@@ -65,8 +65,6 @@ StrVal::StrVal(StrVal* pThis)
   
   ASSERT(this == pThis);
   
-  m_nAreaSize = 0;
-  
   _checkInitialised_(CN_STRVAL);
 }
 
@@ -80,9 +78,9 @@ StrVal::StrVal(StrVal* pThis, i8 nBytes)
   
   ASSERT(this == pThis);
   
-  m_nAreaSize = nBytes;
+  vVspUsed(nBytes);
   
-  Memory::vZero(aArea(),m_nAreaSize);
+  vVspZero();
   
   _checkInitialised_(CN_STRVAL);
 }
@@ -95,9 +93,9 @@ StrVal::StrVal(eCN eClassNo, i8 nBytes)
 {
   _precondition_(_MAGIC_,eClassNo);
   
-  m_nAreaSize = nBytes;
+  vVspUsed(nBytes);
   
-  Memory::vZero(aArea(),m_nAreaSize);
+  vVspZero();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -134,7 +132,7 @@ void StrVal::operator =(const char* aArg)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  String::vCopyLen(aArea(),aArg,m_nAreaSize-1);
+  String::vCopyLen(aArea(),aArg,nVspUsed()-1);
   
   _postcondition_(_MAGIC_,_FOOTER_);
 }
@@ -146,7 +144,7 @@ void StrVal::operator =(char* aArg)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  String::vCopyLen(aArea(),aArg,m_nAreaSize-1);
+  String::vCopyLen(aArea(),aArg,nVspUsed()-1);
   
   _postcondition_(_MAGIC_,_FOOTER_);
 }
@@ -196,9 +194,9 @@ char* StrVal::aArea(void)
 {
   //_precondition_(_MAGIC_,_FOOTER_);
   
-  char* p = pAdd<char*>(this,sizeof(StrVal));
+  char* aAddr = aVspArea();
   
-  return p;
+  return aAddr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -208,7 +206,9 @@ i8 StrVal::nAreaSize(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  return m_nAreaSize;
+  i8 nBytes = nVspUsed();
+  
+  return nBytes;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -218,7 +218,9 @@ void StrVal::vAreaSize(void)
 {
   //_precondition_(_MAGIC_,_FOOTER_);
   
-  m_nAreaSize = String::iSize(aArea());
+  i8 nBytes = String::iSize(aArea());
+  
+  vVspUsed(nBytes);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -229,7 +231,8 @@ void StrVal::vAssign(const char* aStr)
   //ASSERT(m_nAreaSize);
   
   String::vCopy(aArea(),aStr);
-  m_nAreaSize = String::iSize(aArea());
+  
+  vAreaSize();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -243,7 +246,7 @@ void StrVal::vAssign(const char* aStr, i8 iLength)
   
   aArea()[iLength] = '\0';
   
-  m_nAreaSize = iLength;
+  vVspUsed(iLength);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -253,7 +256,7 @@ void StrVal::vCopy(const char* aStr)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  String::vCopyLen(aArea(),aStr,m_nAreaSize-1);
+  String::vCopyLen(aArea(),aStr,nVspUsed()-1);
   
   _postcondition_(_MAGIC_,_FOOTER_);
 }
@@ -267,7 +270,7 @@ void StrVal::vCopy(const char* aStr, i8 iLength)
   
   String::vCopyLen(aArea(),aStr,iLength);
   
-  m_nAreaSize = String::iSize(aArea());
+  vAreaSize();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -307,9 +310,9 @@ i8 StrVal::iLength(void)
 /*----------------------------------------------------------------------------*/
 /* get size of this StrVal in bytes                                           */
 /*----------------------------------------------------------------------------*/
-i8 StrVal::nSize(void) const
+i8 StrVal::nSize(void)
 {
-  i8 nBytes = sizeof(StrVal) + m_nAreaSize;
+  i8 nBytes = sizeof(StrVal) + nVspUsed();
   
   return nBytes;
 }
@@ -351,7 +354,7 @@ Footer* StrVal::pFooter(void)
 {
   _precondition_(_MAGIC_);
   
-  Footer* pFooter = pAdd<Footer*>(this,sizeof(StrVal)+m_nAreaSize);
+  Footer* pFooter = pAdd<Footer*>(this,sizeof(StrVal) + nVspUsed());
   
   return pFooter;
 }

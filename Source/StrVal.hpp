@@ -8,12 +8,11 @@
 
 namespace Values
 {
-  class StrVal : public Value
+  class StrVal : public Value,
+                 public Vsp
   {
-  protected:
-    i8   m_nAreaSize; // size of the data area (may not be length of aStr)
-    // ..dataArea..
-  
+  private:
+    
   public:
     void* operator new(size_t);
     void* operator new(size_t, StrVal* pThis);
@@ -43,7 +42,7 @@ namespace Values
     bool  bEnds(const char* aSuffix);
     bool  bIsEqual(StrVal& sArg, i8 iCase);
     i8    iLength(void);
-    i8    nSize(void) const;
+    i8    nSize(void);
     char* aStr(void);
     void  vToCommand(char* aStr);
     void  vToString(char* aStr);
