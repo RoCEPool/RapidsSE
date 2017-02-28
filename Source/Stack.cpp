@@ -64,7 +64,7 @@ Stack::Stack(void)
   _postcondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   //m_xHazard.vAssertFooter();
-  _hazard_footer_();
+  _hazard_();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -834,7 +834,7 @@ void Stack::vDiscard(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   //m_xHazard.vAssertFooter();
-  _hazard_footer_();
+  _hazard_();
 
   Value* pValue = reinterpret_cast<Value*>(m_pTop);
   i8 iSize = V::iSize(pValue);
@@ -843,7 +843,7 @@ void Stack::vDiscard(void)
   m_iValues--;
   
   //m_xHazard.vAssertFooter();
-  _hazard_footer_();
+  _hazard_();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1058,7 +1058,7 @@ void Stack::vPopVal(Value* pValue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   //m_xHazard.vAssertFooter();
-  _hazard_footer_();
+  _hazard_();
   
   i8 iSize = V::iSize(pTopValue());
   
@@ -1067,7 +1067,7 @@ void Stack::vPopVal(Value* pValue)
   m_iValues--;
   
   //m_xHazard.vAssertFooter();
-  _hazard_footer_();
+  _hazard_();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1077,7 +1077,7 @@ void Stack::vPushVal(Value* pValue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   //m_xHazard.vAssertFooter();
-  _hazard_footer_();
+  _hazard_();
   
   i8 iSize = V::iSize(pValue);
   
@@ -1086,7 +1086,7 @@ void Stack::vPushVal(Value* pValue)
   m_iValues++;
   
   //m_xHazard.vAssertFooter();
-  _hazard_footer_();
+  _hazard_();
 }
 
 /*----------------------------------------------------------------------------*/
