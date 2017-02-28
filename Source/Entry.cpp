@@ -95,7 +95,7 @@ void Entry::vContentDump(void)
   //_precondition_(_MAGIC_,CN_ENTRY);
   
   i8 iKeyData;
-  V::nCopyDatum(CN_INTVAL, &iKeyData, pDataArea());
+  V::nCopyDatum(CN_INTVAL, &iKeyData,aVspArea());
   
   vTrace("Entry %p: Row %llu.%llu Key (size:%lld value:%lld)\n",
          this,
@@ -136,7 +136,7 @@ void Entry::vEntry(EntWsp& xEntWsp)
 
   vRowId(xEntWsp.xRowId());
 
-  char* pDst = pDataArea();
+  char* pDst = aVspArea();
   char* pSrc = xEntWsp.aWspArea();
   i8 nBytes  = xEntWsp.nWspUsed();
 
@@ -152,7 +152,7 @@ Key& Entry::xKey(void)
 {
   //_precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
   
-  Key* pKey = reinterpret_cast<Key*>(pDataArea());
+  Key* pKey = reinterpret_cast<Key*>(aVspArea());
 
   return reinterpret_cast<Key&>(pKey);
 }
@@ -164,7 +164,7 @@ Key* Entry::pKey(void)
 {
   //_precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
   
-  Key* pKey = reinterpret_cast<Key*>(pDataArea());
+  Key* pKey = reinterpret_cast<Key*>(aVspArea());
   
   return pKey;
 }
@@ -176,7 +176,7 @@ void Entry::vKey(Key& xKey)
 {
   //_precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
   
-  Key* pKey = reinterpret_cast<Key*>(pDataArea());
+  Key* pKey = reinterpret_cast<Key*>(aVspArea());
 
   pKey->vKey(xKey);
   
@@ -190,53 +190,13 @@ void Entry::vKey(KeyWsp& xKeyWsp)
 {
   //_precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
   
-  Key* pKey = reinterpret_cast<Key*>(pDataArea());
+  Key* pKey = reinterpret_cast<Key*>(aVspArea());
   
   pKey->vKey(xKeyWsp);
 }
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get data area                                                              */
-/*----------------------------------------------------------------------------*/
-char* Entry::pDataArea(void)
-{
-  //_precondition_(_MAGIC_,CN_ENTRY);
-  
-  char* pDataAddr = pAdd<char*>(this,sizeof(Entry));
-  
-  return pDataAddr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get data bytes                                                             */
-/*----------------------------------------------------------------------------*/
-i8 Entry::nDataBytes(void)
-{
-  //_precondition_(_MAGIC_,CN_ENTRY);
-  
-  return nVspUsed();
-}
-
-/*----------------------------------------------------------------------------*/
-/* set data bytes                                                             */
-/*----------------------------------------------------------------------------*/
-void Entry::vDataBytes(i8 nDataBytes)
-{
-  //_precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
-  
-  vVspUsed(nDataBytes);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get next avaliable point in data area                                      */
-/*----------------------------------------------------------------------------*/
-char* Entry::pDataNext(void)
-{
-  return &pDataArea()[nVspUsed()];
-}
 
 /*----------------------------------------------------------------------------*/
 /* get size in bytes of this entry                                            */

@@ -38,10 +38,6 @@ namespace DBobjects
   
     //------
   
-    char* pDataArea(void);
-    i8    nDataBytes(void);
-    void  vDataBytes(i8 iDataBytes);
-    char* pDataNext(void);
     i8    nSize(void);
   
     Footer* pFooter(void);
