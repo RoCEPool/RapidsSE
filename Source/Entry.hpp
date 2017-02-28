@@ -8,10 +8,10 @@
 
 namespace DBobjects
 {
-  class Entry : public RowId
+  class Entry : public RowId,
+                public Vsp
   {
   private:
-    i8    m_nDataBytes;  // number of data bytes
     // ..data..
     
   public:

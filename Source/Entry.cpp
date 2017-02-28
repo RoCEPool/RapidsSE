@@ -50,7 +50,7 @@ Entry::Entry(i8 iDataBytes)
 {
   //_precondition_(_MAGIC_,CN_ENTRY);
 
-  m_nDataBytes = iDataBytes;
+  vVspUsed(iDataBytes);
 
   //_setFooter_();
   
@@ -101,7 +101,7 @@ void Entry::vContentDump(void)
          this,
          uBuffer(),
          uRow(),
-         m_nDataBytes,
+         nVspUsed(),
          iKeyData
          );
 }
@@ -142,7 +142,7 @@ void Entry::vEntry(EntWsp& xEntWsp)
 
   Memory::vCopy(pDst,pSrc,nBytes);
   
-  m_nDataBytes = nBytes;
+  vVspUsed(nBytes);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -179,7 +179,8 @@ void Entry::vKey(Key& xKey)
   Key* pKey = reinterpret_cast<Key*>(pDataArea());
 
   pKey->vKey(xKey);
-  m_nDataBytes += pKey->nSize();
+  
+  vVspTake(pKey->nSize());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -216,7 +217,7 @@ i8 Entry::nDataBytes(void)
 {
   //_precondition_(_MAGIC_,CN_ENTRY);
   
-  return m_nDataBytes;
+  return nVspUsed();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -226,7 +227,7 @@ void Entry::vDataBytes(i8 nDataBytes)
 {
   //_precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
   
-  m_nDataBytes = nDataBytes;
+  vVspUsed(nDataBytes);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -234,7 +235,7 @@ void Entry::vDataBytes(i8 nDataBytes)
 /*----------------------------------------------------------------------------*/
 char* Entry::pDataNext(void)
 {
-  return &pDataArea()[m_nDataBytes];
+  return &pDataArea()[nVspUsed()];
 }
 
 /*----------------------------------------------------------------------------*/
@@ -244,7 +245,7 @@ i8 Entry::nSize(void)
 {
   //_precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
 
-  i8 nBytes = sizeof(Entry) + m_nDataBytes;
+  i8 nBytes = sizeof(Entry) + nVspUsed();
   
   return nBytes;
 }
@@ -260,7 +261,7 @@ Footer* Entry::pFooter(void)
 {
   //_precondition_(_MAGIC_,CN_ENTRY);
   
-  Footer* pFooter = pAdd<Footer*>(this,sizeof(Entry) + m_nDataBytes);
+  Footer* pFooter = pAdd<Footer*>(this,sizeof(Entry) + nVspUsed());
   
   return pFooter;
 }
