@@ -158,7 +158,7 @@ char* ScanBuffer::pScan(i8& nMessageBytes)
   
     if (*m_pNextMsg == '\n') {
       nMessageBytes = nSub(m_pNextMsg,pMsg);
-      ASSERT(nMessageBytes <= C_WORKAREA);
+      ASSERT(nMessageBytes <= nWspSize());
       m_pNextMsg++;
       ASSERT(m_pEndData >= pFirstByte() - 1);
       ASSERT(m_pEndData <= pLastByte());
@@ -214,7 +214,7 @@ i8 ScanBuffer::iBytesAvailable(void)
   ASSERT(m_pEndData <= pLastByte());
   
   i8 nBytes = nSub(pLastByte(),m_pEndData);
-  ASSERT(nBytes <= C_WORKAREA);
+  ASSERT(nBytes <= nWspSize());
   
   return nBytes;
 }
@@ -254,7 +254,7 @@ void ScanBuffer::vCopyUp(char* pDangling)
   
   // copy dangling data bytes to begining of workarea
   i8 nDanglingBytes = nSub(pLastByte(),pDangling) + 1;
-  ASSERT(nDanglingBytes <= C_WORKAREA);
+  ASSERT(nDanglingBytes <= nWspSize());
   
   Memory::vCopy(pFirstByte(),pDangling,nDanglingBytes);
   m_pEndData = pAdd<char*>(pFirstByte(),nDanglingBytes - 1);
@@ -285,7 +285,7 @@ char* ScanBuffer::pFirstByte(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SCANBUFFER,_FOOTER_);
   
-  char* pFirst = &m_wWorkarea[0];
+  char* pFirst = &aWspArea()[0];
   
   return pFirst;
 }
@@ -297,7 +297,7 @@ char* ScanBuffer::pLastByte(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SCANBUFFER,_FOOTER_);
   
-  char* pLast = &m_wWorkarea[C_WORKAREA - 1];
+  char* pLast = &aWspArea()[nWspSize() - 1];
   
   return pLast;
 }
@@ -324,7 +324,7 @@ void ScanBuffer::vReset(void)
   m_pNextMsg = nullptr;
   vWipe();
   
-  ASSERT(C_WORKAREA == iBytesAvailable());
+  ASSERT(nWspSize() == iBytesAvailable());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -334,7 +334,7 @@ void ScanBuffer::vWipe(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SCANBUFFER,_FOOTER_);
   
-  Memory::vSet(m_wWorkarea,0xEF,C_WORKAREA);
+  vWspFill(0xEF);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_SCANBUFFER,_FOOTER_);
 }
@@ -346,7 +346,7 @@ void ScanBuffer::vWipe(char* pFrom)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SCANBUFFER,_FOOTER_);
   
-  ASSERT(pFrom >= m_wWorkarea);
+  ASSERT(pFrom >= aWspArea());
   
   i8 nBytes = nSub(pLastByte(),pFrom) + 1;
   

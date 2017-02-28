@@ -8,16 +8,13 @@
 
 namespace Structures
 {
-  class ScanBuffer : public Buffer
+  class ScanBuffer : public Buffer,
+                     public Wsp<C_1M>
   {
   private:
-    static const i8 C_WORKAREA = C_1M;
-    
     char* m_pNextMsg;  // area where next message starts
     char* m_pEndData;  // area where data ends
-    
-    char  m_wWorkarea[C_WORKAREA];
-    
+        
   public:
     void* operator new(size_t);
     void  operator delete(void*);
