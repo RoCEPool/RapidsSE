@@ -32,6 +32,7 @@ namespace Values
     i8    nWspSize(void);
     void  vWspTake(i8 nBytes);
     i8    nWspUsed(void);
+    void  vWspZero(void);
   };
 }
 
@@ -126,6 +127,15 @@ template<int SIZE>
 i8 Wsp<SIZE>::nWspUsed(void)
 {
   return m_nAreaUsed;
+}
+
+/*----------------------------------------------------------------------------*/
+/* zero fill data area                                                        */
+/*----------------------------------------------------------------------------*/
+template<int SIZE>
+void Wsp<SIZE>::vWspZero(void)
+{
+  Memory::vZero(m_cArea,SIZE);
 }
 
 /*============================================================================*/

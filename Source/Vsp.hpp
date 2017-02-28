@@ -25,10 +25,12 @@ namespace Magic
 
     void  vVspAppend(void* aSrc, i8 nBytes);
     char* aVspArea(void);
+    void  vVspFill(char cByte);
     i8    nVspUsed(void);
     void  vVspUsed(i8 nBytes);
     char* aVspNext(void);
     void  vVspTake(i8 nBytes);
+    void  vVspZero(void);
   };
 }
 
