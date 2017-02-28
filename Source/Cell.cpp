@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Cell.hpp - a cell in parameter/body area of word                           */
+/* Cell.hpp - a cell in the body of a word                                    */
 /*============================================================================*/
 
 #include "Dictionaries.h"
