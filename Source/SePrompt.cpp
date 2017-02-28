@@ -72,8 +72,8 @@ SePrompt::SePrompt(void)
   
   // initialise the token set
   for (i8 iToken = 0; iToken < C_TOKENS; iToken++) {
-    m_pToken[iToken] = &m_wTokenArea[C_TOKEN_SPACE * iToken];
-    m_pToken2[iToken] = &m_wTokenArea2[C_TOKEN_SPACE * iToken];
+    m_pToken[iToken]  = &m_xTokenArea.aWspArea()[C_TOKEN_SPACE * iToken];
+    m_pToken2[iToken] = &m_xTokenArea2.aWspArea()[C_TOKEN_SPACE * iToken];
   }
   
   //m_wWorkarea
