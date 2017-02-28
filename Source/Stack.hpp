@@ -13,11 +13,12 @@ namespace Dictionaries
 
 namespace Structures
 {
+  static const i8 C_STACK_AREA = C_SIZE_POOL_BUFFER - C_1K;
+  
   class Stack : public Buffer
   {
   private:
-    static const i8 C_STACK_AREA = C_SIZE_POOL_BUFFER - C_1K;
-    
+  
   private:
     i8     m_iValues; // number of values currently on stack
     Value* m_pTop;    // current top of stack
@@ -27,7 +28,7 @@ namespace Structures
     
     Footer m_xHazard;
     
-    char   m_mSpace[C_STACK_AREA];
+    Wsp<C_STACK_AREA> m_xWsp;
     
     // must be last
     Footer m_xFooter;
