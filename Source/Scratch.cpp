@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Scratch.cpp -- scratch space                                               */
+/* Scratch.cpp -- scratch area                                                */
 /*============================================================================*/
 
 #include "Timer.hpp"
@@ -61,7 +61,7 @@ Scratch::Scratch(void)
 {
   _precondition_(_MAGIC_,CN_SCRATCH,_FOOTER_);
 
-  Memory::vZero(m_wWorkarea,C_WORKAREA);
+  vWspFill(0x00);
   
   _checkInitialised_(CN_SCRATCH);
 
@@ -79,11 +79,11 @@ Scratch::~Scratch(void)
 /*----------------------------------------------------------------------------*/
 /* get work area                                                              */
 /*----------------------------------------------------------------------------*/
-char* Scratch::pWorkArea(void)
+char* Scratch::aScratchArea(void)
 {
   _precondition_(_MAGIC_,CN_SCRATCH,_FOOTER_);
   
-  return m_wWorkarea;
+  return aWspArea();
 }
 
 /*----------------------------------------------------------------------------*/

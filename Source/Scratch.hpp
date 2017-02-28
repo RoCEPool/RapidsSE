@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Scratch.hpp -- scratch space                                               */
+/* Scratch.hpp -- scratch area                                                */
 /*============================================================================*/
 #pragma once
 
@@ -7,13 +7,10 @@
 
 namespace Common
 {
-  class Scratch : public Object
+  class Scratch : public Object,
+                  public Wsp<C_512KB>
   {
   private:
-    static const i8 C_WORKAREA = C_512KB;
-    
-    char m_wWorkarea[C_WORKAREA];
-    
     // must be last
     Footer m_xFooter;
     
@@ -24,7 +21,7 @@ namespace Common
     Scratch(void);
     ~Scratch(void);
 
-    char* pWorkArea(void);
+    char* aScratchArea(void);
     
     Footer* pFooter(void);
   };
