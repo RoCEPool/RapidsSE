@@ -18,18 +18,9 @@ namespace Common
   
   static const i8 C_PATH_MAX = 256;
   
-//  static const char* C_OPEN_READ;
-//  static const char* C_OPEN_WRITE;
-//  static const char* C_OPEN_APPEND;
-//  static const char* C_OPEN_READ_WRITE_EXIST;
-//  static const char* C_OPEN_READ_WRITE_CREATE;
-//  static const char* C_OPEN_READ_APPEND;
-
   class File : public Object
   {
   private:
-    static const i8 C_WORKAREA = C_256KB;
-    
     s256    m_sFilePath;   // the path of the file (relative or absolute)
     s32     m_sOpenMode;   // open mode
     i8      m_iTraceLevel;
