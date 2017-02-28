@@ -21,9 +21,9 @@ void* ScanBuffer::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 /* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
-void ScanBuffer::operator delete(void* pBufferAddress)
+void ScanBuffer::operator delete(void* aBufferAddress)
 {
-  Buffer* pBuffer = static_cast<Buffer*>(pBufferAddress);
+  Buffer* pBuffer = static_cast<Buffer*>(aBufferAddress);
   
   Heap::vFree(pBuffer);
 }
@@ -38,7 +38,7 @@ ScanBuffer::ScanBuffer(void)
 
   vReset();
   
-  ASSERT(m_pEndData);
+  ASSERT(m_aEndData);
   
   _checkInitialised_(CN_SCANBUFFER);
   
@@ -56,7 +56,7 @@ ScanBuffer::~ScanBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* get into area and number of available bytes                                */
 /*----------------------------------------------------------------------------*/
-char* ScanBuffer::pInto(i8& iAvailableBytes)
+char* ScanBuffer::aInto(i8& iAvailableBytes)
 {
   //
   // a) no previous dangling portion
@@ -65,7 +65,7 @@ char* ScanBuffer::pInto(i8& iAvailableBytes)
   // +---------------------------------------------------------------------+
   // | ..available..                                                       |
   // +---------------------------------------------------------------------+
-  // ^- m_pEndData
+  // ^- m_aEndData
   //
   
   //
@@ -75,17 +75,17 @@ char* ScanBuffer::pInto(i8& iAvailableBytes)
   // +---------------------------------------------------------------------+
   // | dangling...| ..available..                                          |
   // +---------------------------------------------------------------------+
-  //              ^- m_pEndData (of copied up dangling portion)
+  //              ^- m_aEndData (of copied up dangling portion)
   //
   
   _precondition_(_ADDRESS_,_MAGIC_,CN_SCANBUFFER,_FOOTER_);
   
   iAvailableBytes = iBytesAvailable();
   
-  ASSERT(m_pEndData >= pFirstByte() - 1);
-  ASSERT(m_pEndData <= pLastByte());
+  ASSERT(m_aEndData >= aFirstByte() - 1);
+  ASSERT(m_aEndData <= aLastByte());
   
-  return m_pEndData + 1;
+  return m_aEndData + 1;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -100,7 +100,7 @@ void ScanBuffer::vMore(i8& iBytesRead)
   // +---------------------------------------------------------------------+
   // | data...                                                             |
   // +---------------------------------------------------------------------+
-  //                                                           m_pEndData -^
+  //                                                           m_aEndData -^
   //
   // b) data doesnt fill workarea
   //
@@ -108,15 +108,15 @@ void ScanBuffer::vMore(i8& iBytesRead)
   // +---------------------------------------------------------------------+
   // | data...                                                | ..no data..|
   // +---------------------------------------------------------------------+
-  //                                              m_pEndData -^
+  //                                              m_aEndData -^
   
   _precondition_(_ADDRESS_,_MAGIC_,CN_SCANBUFFER,_FOOTER_);
   
-  m_pEndData = pAdd<char*>(m_pEndData,iBytesRead);
+  m_aEndData = pAdd<char*>(m_aEndData,iBytesRead);
   
-  m_pNextMsg = pFirstByte();
-  ASSERT(m_pEndData >= pFirstByte() - 1);
-  ASSERT(m_pEndData <= pLastByte());
+  m_aNextMsg = aFirstByte();
+  ASSERT(m_aEndData >= aFirstByte() - 1);
+  ASSERT(m_aEndData <= aLastByte());
   
   
 //  printf("More: ");
@@ -132,49 +132,49 @@ void ScanBuffer::vMore(i8& iBytesRead)
 /*----------------------------------------------------------------------------*/
 /* scan for next message                                                      */
 /*----------------------------------------------------------------------------*/
-char* ScanBuffer::pScan(i8& nMessageBytes)
+char* ScanBuffer::aScan(i8& nMessageBytes)
 {
   //
   // v- pFirstByte()                                          pLastByte() -v
   // +---------------------------------------------------------------------+
   // | msg1\nmsg2\nmsg3\n...                                               |
   // +---------------------------------------------------------------------+
-  //         ^- m_pNextMsg                                     m_pEndData -^
+  //         ^- m_aNextMsg                                     m_aEndData -^
   //
   
   _precondition_(_ADDRESS_,_MAGIC_,CN_SCANBUFFER,_FOOTER_);
   
   // initial case of no data
-  if ( ! m_pNextMsg ) {
+  if ( ! m_aNextMsg ) {
     nMessageBytes = 0;
-    ASSERT(m_pEndData >= pFirstByte() - 1);
-    ASSERT(m_pEndData <= pLastByte());
+    ASSERT(m_aEndData >= aFirstByte() - 1);
+    ASSERT(m_aEndData <= aLastByte());
     return nullptr;
   }
   
   // look for end of next record
-  char* pMsg = m_pNextMsg;
-  while (m_pNextMsg <= m_pEndData) {
+  char* pMsg = m_aNextMsg;
+  while (m_aNextMsg <= m_aEndData) {
   
-    if (*m_pNextMsg == '\n') {
-      nMessageBytes = nSub(m_pNextMsg,pMsg);
+    if (*m_aNextMsg == '\n') {
+      nMessageBytes = nSub(m_aNextMsg,pMsg);
       ASSERT(nMessageBytes <= nWspSize());
-      m_pNextMsg++;
-      ASSERT(m_pEndData >= pFirstByte() - 1);
-      ASSERT(m_pEndData <= pLastByte());
+      m_aNextMsg++;
+      ASSERT(m_aEndData >= aFirstByte() - 1);
+      ASSERT(m_aEndData <= aLastByte());
       return pMsg;
     }
     
-    m_pNextMsg++;
+    m_aNextMsg++;
   }
   
   // no records left, copy dangling bytes to start of workarea
   vCopyUp(pMsg);
   
   nMessageBytes = 0;
-  ASSERT(m_pEndData >= pFirstByte() - 1);
-  ASSERT(m_pEndData <= pLastByte());
-  m_pNextMsg = nullptr;
+  ASSERT(m_aEndData >= aFirstByte() - 1);
+  ASSERT(m_aEndData <= aLastByte());
+  m_aNextMsg = nullptr;
   
   return nullptr;
 }
@@ -195,7 +195,7 @@ i8 ScanBuffer::iBytesAvailable(void)
   // +---------------------------------------------------------------------+
   // | ..available..                                                       |
   // +---------------------------------------------------------------------+
-  // ^- m_pEndData
+  // ^- m_aEndData
   //
   
   //
@@ -205,15 +205,15 @@ i8 ScanBuffer::iBytesAvailable(void)
   // +---------------------------------------------------------------------+
   // | dangling...| ..available..                                          |
   // +---------------------------------------------------------------------+
-  //              ^- m_pEndData (of prev copied up dangling portion)
+  //              ^- m_aEndData (of prev copied up dangling portion)
   //
   
   _precondition_(_ADDRESS_,_MAGIC_,CN_SCANBUFFER,_FOOTER_);
   
-  ASSERT(m_pEndData >= pFirstByte() - 1);
-  ASSERT(m_pEndData <= pLastByte());
+  ASSERT(m_aEndData >= aFirstByte() - 1);
+  ASSERT(m_aEndData <= aLastByte());
   
-  i8 nBytes = nSub(pLastByte(),m_pEndData);
+  i8 nBytes = nSub(aLastByte(),m_aEndData);
   ASSERT(nBytes <= nWspSize());
   
   return nBytes;
@@ -222,15 +222,15 @@ i8 ScanBuffer::iBytesAvailable(void)
 /*----------------------------------------------------------------------------*/
 /* copy dangling portion to beginning of workarea                             */
 /*----------------------------------------------------------------------------*/
-void ScanBuffer::vCopyUp(char* pDangling)
+void ScanBuffer::vCopyUp(char* aDangling)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SCANBUFFER,_FOOTER_);
   
   // used all of the workarea?
-  if (pDangling > pLastByte()) {
+  if (aDangling > aLastByte()) {
     vReset();
-    ASSERT(m_pEndData >= pFirstByte() - 1);
-    ASSERT(m_pEndData <= pLastByte());
+    ASSERT(m_aEndData >= aFirstByte() - 1);
+    ASSERT(m_aEndData <= aLastByte());
     return;
   }
   
@@ -246,42 +246,42 @@ void ScanBuffer::vCopyUp(char* pDangling)
   // +---------------------------------------------------------------------+
   // | dangling... | ..available..                                         |
   // +---------------------------------------------------------------------+
-  //               ^- m_pEndData (of copied up dangling portion)
+  //               ^- m_aEndData (of copied up dangling portion)
   //
   
-  ASSERT(pDangling >= pFirstByte() - 1);
-  ASSERT(pDangling <= pLastByte());
+  ASSERT(aDangling >= aFirstByte() - 1);
+  ASSERT(aDangling <= aLastByte());
   
   // copy dangling data bytes to begining of workarea
-  i8 nDanglingBytes = nSub(pLastByte(),pDangling) + 1;
+  i8 nDanglingBytes = nSub(aLastByte(),aDangling) + 1;
   ASSERT(nDanglingBytes <= nWspSize());
   
-  Memory::vCopy(pFirstByte(),pDangling,nDanglingBytes);
-  m_pEndData = pAdd<char*>(pFirstByte(),nDanglingBytes - 1);
+  Memory::vCopy(aFirstByte(),aDangling,nDanglingBytes);
+  m_aEndData = pAdd<char*>(aFirstByte(),nDanglingBytes - 1);
   
 //  if (iDanglingBytes < 1000) {
 //    printf("CopyUp %lld: ",nDanglingBytes);
-//    for (char* c = pFirstByte(); c <= m_pEndData; c++) {
+//    for (char* c = pFirstByte(); c <= m_aEndData; c++) {
 //      ASSERT(*c != 0xEF);
 //      printf("%c",*c);
 //    }
 //    printf("\n");
 //  }
   
-  ASSERT(m_pEndData >= pFirstByte() - 1);
-  ASSERT(m_pEndData <= pLastByte());
+  ASSERT(m_aEndData >= aFirstByte() - 1);
+  ASSERT(m_aEndData <= aLastByte());
   
   // invalidate starting position (requires more)
-  m_pNextMsg = nullptr;
+  m_aNextMsg = nullptr;
   
   // wipe the remaining data area (debug)
-  vWipe(m_pEndData+1);
+  vWipe(m_aEndData+1);
 }
 
 /*----------------------------------------------------------------------------*/
 /* first byte of workarea                                                     */
 /*----------------------------------------------------------------------------*/
-char* ScanBuffer::pFirstByte(void)
+char* ScanBuffer::aFirstByte(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SCANBUFFER,_FOOTER_);
   
@@ -293,7 +293,7 @@ char* ScanBuffer::pFirstByte(void)
 /*----------------------------------------------------------------------------*/
 /* last byte of workarea                                                      */
 /*----------------------------------------------------------------------------*/
-char* ScanBuffer::pLastByte(void)
+char* ScanBuffer::aLastByte(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SCANBUFFER,_FOOTER_);
   
@@ -317,11 +317,11 @@ void ScanBuffer::vReset(void)
   
   _precondition_(_ADDRESS_,_MAGIC_,CN_SCANBUFFER,_FOOTER_);
   
-  m_pEndData = pFirstByte() - 1;
-  ASSERT(m_pEndData >= pFirstByte() - 1);
-  ASSERT(m_pEndData <= pLastByte());
+  m_aEndData = aFirstByte() - 1;
+  ASSERT(m_aEndData >= aFirstByte() - 1);
+  ASSERT(m_aEndData <= aLastByte());
   
-  m_pNextMsg = nullptr;
+  m_aNextMsg = nullptr;
   vWipe();
   
   ASSERT(nWspSize() == iBytesAvailable());
@@ -342,15 +342,15 @@ void ScanBuffer::vWipe(void)
 /*----------------------------------------------------------------------------*/
 /* wipe work area                                                             */
 /*----------------------------------------------------------------------------*/
-void ScanBuffer::vWipe(char* pFrom)
+void ScanBuffer::vWipe(char* aFrom)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SCANBUFFER,_FOOTER_);
   
-  ASSERT(pFrom >= aWspArea());
+  ASSERT(aFrom >= aWspArea());
   
-  i8 nBytes = nSub(pLastByte(),pFrom) + 1;
+  i8 nBytes = nSub(aLastByte(),aFrom) + 1;
   
-  Memory::vSet(pFrom,0xEF,nBytes);
+  Memory::vSet(aFrom,0xEF,nBytes);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_SCANBUFFER,_FOOTER_);
 }
