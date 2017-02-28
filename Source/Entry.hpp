@@ -8,10 +8,9 @@
 
 namespace DBobjects
 {
-  class Entry 
+  class Entry : public RowId
   {
   private:
-    RowId m_xRowId;      // row number
     i8    m_nDataBytes;  // number of data bytes
     // ..data..
     

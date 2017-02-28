@@ -50,7 +50,6 @@ Entry::Entry(i8 iDataBytes)
 {
   //_precondition_(_MAGIC_,CN_ENTRY);
 
-  //m_xRowId
   m_nDataBytes = iDataBytes;
 
   //_setFooter_();
@@ -100,8 +99,8 @@ void Entry::vContentDump(void)
   
   vTrace("Entry %p: Row %llu.%llu Key (size:%lld value:%lld)\n",
          this,
-         m_xRowId.uBuffer(),
-         m_xRowId.uRow(),
+         uBuffer(),
+         uRow(),
          m_nDataBytes,
          iKeyData
          );
@@ -114,7 +113,8 @@ RowId& Entry::xRowId(void)
 {
   //_precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
   
-  return m_xRowId;
+  // return reference to the RowId inherited class
+  return dynamic_cast<RowId&>(*this);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -124,7 +124,7 @@ void Entry::vRowId(RowId& xRowId)
 {
   //_precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
   
-  m_xRowId = xRowId;
+  Entry::xRowId() = xRowId;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -134,7 +134,7 @@ void Entry::vEntry(EntWsp& xEntWsp)
 {
   //_precondition_(_MAGIC_,CN_ENTRY);
 
-  m_xRowId = xEntWsp.xRowId();
+  vRowId(xEntWsp.xRowId());
 
   char* pDst = pDataArea();
   char* pSrc = xEntWsp.aWspArea();
