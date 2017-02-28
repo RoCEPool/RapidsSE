@@ -9,29 +9,37 @@
 /*----------------------------------------------------------------------------*/
 Vsp::Vsp(void)
 {
-  m_nBytesUsed = 0;
+  m_nAreaUsed = 0;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get next available chunk in data area                                      */
+/* append source bytes to data area                                           */
 /*----------------------------------------------------------------------------*/
-void Vsp::vVspAppend(void* pSrc, i8 nBytes)
+void Vsp::vVspAppend(void* aSrc, i8 nBytes)
 {
-  void* pDst = pVspNext();
+  void* aDst = aVspNext();
   
-  Memory::vCopy(pDst,pSrc,nBytes);
+  Memory::vCopy(aDst,aSrc,nBytes);
   
   vVspTake(nBytes);
 }
 
 /*----------------------------------------------------------------------------*/
-/* get ptr to byte area                                                       */
+/* get address of data area                                                   */
 /*----------------------------------------------------------------------------*/
-char* Vsp::pVspArea(void)
+char* Vsp::aVspArea(void)
 {
-  char* pArea = pAdd<char*>(&m_nBytesUsed,sizeof(m_nBytesUsed));
+  char* aArea = pAdd<char*>(&m_nAreaUsed,sizeof(m_nAreaUsed));
   
-  return pArea;
+  return aArea;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get next available chunk in data area                                      */
+/*----------------------------------------------------------------------------*/
+char* Vsp::aVspNext(void)
+{
+  return &aVspArea()[m_nAreaUsed];
 }
 
 /*----------------------------------------------------------------------------*/
@@ -39,7 +47,7 @@ char* Vsp::pVspArea(void)
 /*----------------------------------------------------------------------------*/
 i8 Vsp::nVspUsed(void)
 {
-  return m_nBytesUsed;
+  return m_nAreaUsed;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -47,25 +55,16 @@ i8 Vsp::nVspUsed(void)
 /*----------------------------------------------------------------------------*/
 void Vsp::vVspUsed(i8 nBytes)
 {
-  m_nBytesUsed = nBytes;
+  m_nAreaUsed = nBytes;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get next available chunk in data area                                      */
-/*----------------------------------------------------------------------------*/
-char* Vsp::pVspNext(void)
-{
-  return &pVspArea()[m_nBytesUsed];
-}
-
-/*----------------------------------------------------------------------------*/
-/* get next available chunk in data area                                      */
+/* take chunk in data area                                                    */
 /*----------------------------------------------------------------------------*/
 void Vsp::vVspTake(i8 nBytes)
 {
-  m_nBytesUsed += nBytes;
+  m_nAreaUsed += nBytes;
 }
-
 
 /*============================================================================*/
 /* end                                                                        */
