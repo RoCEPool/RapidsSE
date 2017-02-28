@@ -27,6 +27,7 @@ namespace Values
     void  vWspAppend(void* aSrc, i8 nBytes);
     char* aWspArea(void);
     void  vWspFill(char cByte);
+    i8    nWspFree(void);
     char* aWspNext(void);
     i8    nWspSize(void);
     void  vWspTake(i8 nBytes);
@@ -76,6 +77,17 @@ template<int SIZE>
 void Wsp<SIZE>::vWspFill(char cByte)
 {
   Memory::vSet(m_cArea,cByte,SIZE);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of free bytes in data area                                      */
+/*----------------------------------------------------------------------------*/
+template<int SIZE>
+i8 Wsp<SIZE>::nWspFree(void)
+{
+  i8 nBytes = SIZE - m_nAreaUsed;
+  
+  return nBytes;
 }
 
 /*----------------------------------------------------------------------------*/
