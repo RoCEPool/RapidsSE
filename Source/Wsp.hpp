@@ -26,10 +26,11 @@ namespace Values
 
     void  vWspAppend(void* aSrc, i8 nBytes);
     char* aWspArea(void);
-    i8    nWspUsed(void);
+    void  vWspFill(char cByte);
     char* aWspNext(void);
     i8    nWspSize(void);
     void  vWspTake(i8 nBytes);
+    i8    nWspUsed(void);
   };
 }
 
@@ -60,7 +61,7 @@ void Wsp<SIZE>::vWspAppend(void* aSrc, i8 nBytes)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get ptr to data area                                                       */
+/* get address of data area                                                   */
 /*----------------------------------------------------------------------------*/
 template<int SIZE>
 char* Wsp<SIZE>::aWspArea(void)
@@ -69,12 +70,12 @@ char* Wsp<SIZE>::aWspArea(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get number of used bytes                                                   */
+/* fill data area with given byte                                             */
 /*----------------------------------------------------------------------------*/
 template<int SIZE>
-i8 Wsp<SIZE>::nWspUsed(void)
+void Wsp<SIZE>::vWspFill(char cByte)
 {
-  return m_nAreaUsed;
+  Memory::vSet(m_cArea,cByte,SIZE);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -104,6 +105,15 @@ void Wsp<SIZE>::vWspTake(i8 nBytes)
   m_nAreaUsed += nBytes;
   
   ASSERT(m_nAreaUsed <= SIZE);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of used bytes                                                   */
+/*----------------------------------------------------------------------------*/
+template<int SIZE>
+i8 Wsp<SIZE>::nWspUsed(void)
+{
+  return m_nAreaUsed;
 }
 
 /*============================================================================*/
