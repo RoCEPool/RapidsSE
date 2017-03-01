@@ -58,7 +58,7 @@ RowStrand::~RowStrand(void)
 /*----------------------------------------------------------------------------*/
 /* dump rowbuffer                                                             */
 /*----------------------------------------------------------------------------*/
-void RowStrand::vDump(eCN eClass, Object* pObject, const char* pTab)
+void RowStrand::vDump(eCN eClass, Object* pObject, const char* aTab)
 {
   ASSERT(eClass == CN_ROWSTRAND);
   ASSERT(pObject->eClass() == CN_ROWSTRAND);

@@ -76,7 +76,7 @@ NodeCursor::~NodeCursor(void)
 /*----------------------------------------------------------------------------*/
 /* dump node cursor                                                           */
 /*----------------------------------------------------------------------------*/
-void NodeCursor::vDump(eCN eClass, Object* pObject, const char* pTab)
+void NodeCursor::vDump(eCN eClass, Object* pObject, const char* aTab)
 {
   ASSERT(eClass == CN_NODECURSOR);
   ASSERT(pObject->eClass() == CN_NODECURSOR);

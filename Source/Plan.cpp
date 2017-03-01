@@ -118,7 +118,7 @@ Plan::~Plan(void)
 /*----------------------------------------------------------------------------*/
 /* dump                                                                       */
 /*----------------------------------------------------------------------------*/
-void Plan::vDump(eCN eClass, Object* pObject, const char* pTab)
+void Plan::vDump(eCN eClass, Object* pObject, const char* aTab)
 {
   ASSERT(eClass == CN_PLAN);
   ASSERT(pObject->eClass() == CN_PLAN);

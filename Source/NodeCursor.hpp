@@ -24,7 +24,7 @@ namespace GridModel
     NodeCursor(List_t<Node>* pList);
     ~NodeCursor(void);
     
-    static void vDump(eCN eClass, Object* pObject, const char* pTab);
+    static void vDump(eCN eClass, Object* pObject, const char* aTab);
 
     void vInit(void);
     

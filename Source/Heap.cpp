@@ -69,7 +69,7 @@ Heap::~Heap(void)
 /*----------------------------------------------------------------------------*/
 /* dump this heap                                                             */
 /*----------------------------------------------------------------------------*/
-void Heap::vDump(eCN eClass, Object* pObject, const char* pTab)
+void Heap::vDump(eCN eClass, Object* pObject, const char* aTab)
 {
   ASSERT(eClass == CN_SMALLHEAP || eClass == CN_MEDIUMHEAP);
   ASSERT(pObject->eClass() == CN_SMALLHEAP || pObject->eClass() == CN_MEDIUMHEAP);
@@ -87,14 +87,14 @@ void Heap::vDump(eCN eClass, Object* pObject, const char* pTab)
   
 //  pHeap->vAnalyse(iCountObjects);
 //  
-//  vTrace("%s  Objects:\n", pTab);
+//  vTrace("%s  Objects:\n", aTab);
 //  for (i8 index = 0; index < CN_ENUMS; index++) {
 //    eCN eClass = (eCN)index;
 //    
 //    if (iCountObjects[eClass] == 0)
 //      continue;
 //    
-//    vTrace("%s    %s %lld \n", pTab, pCN[eClass], iCountObjects[eClass]);
+//    vTrace("%s    %s %lld \n", aTab, pCN[eClass], iCountObjects[eClass]);
 //  }
 //  vTrace("\n");  
 }

@@ -24,7 +24,7 @@ namespace Plans
     PlanList(void);
     ~PlanList(void);
     
-    static void vDump(eCN eClass, Object* pObject, const char* pTab);
+    static void vDump(eCN eClass, Object* pObject, const char* aTab);
     
     void vContentDump(void);
     

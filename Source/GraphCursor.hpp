@@ -25,7 +25,7 @@ namespace Structures
     GraphCursor(void);
     ~GraphCursor(void);
     
-    static void vDump(eCN eClass, Object* pObject, const char* pTab);
+    static void vDump(eCN eClass, Object* pObject, const char* aTab);
     
   private:
     

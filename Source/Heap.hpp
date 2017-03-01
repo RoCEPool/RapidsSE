@@ -51,7 +51,7 @@ namespace Pool
     Heap(eCN eClass, i8 iObjectSize);
     ~Heap(void);
     
-    static void vDump(eCN eClass, Object* pObject, const char* pTab);
+    static void vDump(eCN eClass, Object* pObject, const char* aTab);
     static Object* pAllocate(eCN eClass);
     static void vFree(Object* pObject);
 

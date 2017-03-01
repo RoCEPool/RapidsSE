@@ -56,7 +56,7 @@ TxArray::~TxArray(void)
 /*----------------------------------------------------------------------------*/
 /* dump                                                                       */
 /*----------------------------------------------------------------------------*/
-void TxArray::vDump(eCN eClass, Object* pObject, const char* pTab)
+void TxArray::vDump(eCN eClass, Object* pObject, const char* aTab)
 {
   ASSERT(eClass == CN_TXARRAY);
   ASSERT(pObject->eClass() == CN_TXARRAY);

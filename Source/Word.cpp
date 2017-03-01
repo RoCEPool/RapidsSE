@@ -363,7 +363,7 @@ void Word::vDistributed(eDT eDistributed)
 /*----------------------------------------------------------------------------*/
 /* dump dictionary                                                            */
 /*----------------------------------------------------------------------------*/
-void Word::vDump(eCN eClass, Object* pObject, const char* pTab)
+void Word::vDump(eCN eClass, Object* pObject, const char* aTab)
 {
   ASSERT(eClass == CN_WORD);
   ASSERT(pObject->eClass() == CN_WORD);
@@ -372,7 +372,7 @@ void Word::vDump(eCN eClass, Object* pObject, const char* pTab)
   
   // dump only the objects
   if (WT_OBJECT == pWord->m_eWordType)
-    pWord->vObjectDump(pTab);
+    pWord->vObjectDump(aTab);
   
   //for (Word* pWord = m_pCurrentWord; pWord; pWord = pWord->pPrevWord())
   //  pWord->vDump();
@@ -585,7 +585,7 @@ StrVal& Word::sName(void)
 /*----------------------------------------------------------------------------*/
 /* dump object word                                                           */
 /*----------------------------------------------------------------------------*/
-void Word::vObjectDump(const char* pTab)
+void Word::vObjectDump(const char* aTab)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   

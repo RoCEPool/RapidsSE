@@ -89,12 +89,12 @@ i8 QueueBuffer::iCount(void)
 /*----------------------------------------------------------------------------*/
 /* dump this queue buffer                                                     */
 /*----------------------------------------------------------------------------*/
-void QueueBuffer::vContentDump(const char* pTab)
+void QueueBuffer::vContentDump(const char* aTab)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUEBUFFER,_FOOTER_);
   
   vTrace("%sQueueBuffer: %p Count %lld TopValue %p NextFree %p\n",
-         pTab,
+         aTab,
          this,
          m_nValues,
          m_pTopValue,
@@ -104,7 +104,7 @@ void QueueBuffer::vContentDump(const char* pTab)
 /*----------------------------------------------------------------------------*/
 /* dump grid                                                                  */
 /*----------------------------------------------------------------------------*/
-void QueueBuffer::vDump(eCN eClass, Object* pObject, const char* pTab)
+void QueueBuffer::vDump(eCN eClass, Object* pObject, const char* aTab)
 {
   ASSERT(eClass == CN_QUEUEBUFFER);
   ASSERT(pObject->eClass() == CN_QUEUEBUFFER);

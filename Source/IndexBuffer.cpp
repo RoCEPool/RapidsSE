@@ -91,7 +91,7 @@ IndexBuffer* IndexBuffer::pNewIndexBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* dump index buffer                                                          */
 /*----------------------------------------------------------------------------*/
-void IndexBuffer::vDump(eCN eClass, Object* pObject, const char* pTab)
+void IndexBuffer::vDump(eCN eClass, Object* pObject, const char* aTab)
 {
   ASSERT(eClass == CN_INDEXBUFFER);
   ASSERT(pObject->eClass() == CN_INDEXBUFFER);

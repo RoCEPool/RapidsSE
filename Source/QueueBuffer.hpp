@@ -26,11 +26,11 @@ namespace Structures
     QueueBuffer(void);
     ~QueueBuffer(void);
     
-    static void vDump(eCN eClass, Object* pObject, const char* pTab);
+    static void vDump(eCN eClass, Object* pObject, const char* aTab);
 
     bool     bAppend(Value* pValue);
     i8       iCount(void);
-    void     vContentDump(const char* pTab);
+    void     vContentDump(const char* aTab);
     QueueBuffer* pNext(void);
     void     vNext(QueueBuffer* pQbuffer);
     bool     bPop(ValWsp* pValWsp, bool& bDiscard);

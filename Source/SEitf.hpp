@@ -48,7 +48,7 @@ namespace Interface
     SEitf(i8 iPartition);
     ~SEitf(void);
     
-    static void vDump(eCN eClass, Object* pObject, const char* pTab);
+    static void vDump(eCN eClass, Object* pObject, const char* aTab);
     
     DicPath* pPathStack(void);
     

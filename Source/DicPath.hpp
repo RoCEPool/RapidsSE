@@ -28,7 +28,7 @@ namespace Dictionaries
     ~DicPath(void);
     
     static DicPath* _pDicStack(void* aAddr);
-    static void vDump(eCN eClass, Object* pObject, const char* pTab);
+    static void vDump(eCN eClass, Object* pObject, const char* aTab);
 
     i8   iCount(void);
 

@@ -13,7 +13,7 @@ extern BufferPool*  gpBufferPool;
 /*----------------------------------------------------------------------------*/
 /* dump data                                                                  */
 /*----------------------------------------------------------------------------*/
-void Index::vDump(eCN eClass, Object* pObject, const char* pTab)
+void Index::vDump(eCN eClass, Object* pObject, const char* aTab)
 {
   ASSERT(eClass == CN_INDEX);
   ASSERT(pObject->eClass() == CN_INDEX);

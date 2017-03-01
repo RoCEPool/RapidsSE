@@ -78,7 +78,7 @@ Stack::~Stack(void)
 /*----------------------------------------------------------------------------*/
 /* dump grid                                                                  */
 /*----------------------------------------------------------------------------*/
-void Stack::vDump(eCN eClass, Object* pObject, const char* pTab)
+void Stack::vDump(eCN eClass, Object* pObject, const char* aTab)
 {
   ASSERT(eClass == CN_STACK);
   ASSERT(pObject->eClass() == CN_STACK);

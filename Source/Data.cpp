@@ -57,7 +57,7 @@ Data::~Data(void)
 /*----------------------------------------------------------------------------*/
 /* dump data                                                                  */
 /*----------------------------------------------------------------------------*/
-void Data::vDump(eCN eClass, Object* pObject, const char* pTab)
+void Data::vDump(eCN eClass, Object* pObject, const char* aTab)
 {
   ASSERT(eClass == CN_DATA);
   ASSERT(pObject->eClass() == CN_DATA);

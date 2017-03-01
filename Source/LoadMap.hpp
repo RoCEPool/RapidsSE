@@ -35,7 +35,7 @@ namespace DBobjects
     LoadMap(void);
     ~LoadMap(void);
 
-    static void vDump(eCN eClass, Object* pObject, const char* pTab);
+    static void vDump(eCN eClass, Object* pObject, const char* aTab);
     
     void vFilePath(StrVal& sPath);
     

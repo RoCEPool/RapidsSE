@@ -48,7 +48,7 @@ namespace StorageEngine
     void vGetGlobals(void);
     void vRecordGlobals(void);
     
-    static void vDump(eCN eClass, Object* pObject, const char* pTab);
+    static void vDump(eCN eClass, Object* pObject, const char* aTab);
     
     Footer* pFooter(void);
   };

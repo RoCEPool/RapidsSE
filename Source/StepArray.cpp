@@ -67,14 +67,14 @@ StepAccum* StepArray::pAllocAccum(const char* pFnName)
 /*----------------------------------------------------------------------------*/
 /* dump grid                                                                  */
 /*----------------------------------------------------------------------------*/
-void StepArray::vDump(eCN eClass, Object* pObject, const char* pTab)
+void StepArray::vDump(eCN eClass, Object* pObject, const char* aTab)
 {
   ASSERT(eClass == CN_STEPARRAY);
   ASSERT(pObject->eClass() == CN_STEPARRAY);
   
   StepArray* pStepArray = reinterpret_cast<StepArray*>(pObject);
   
-  vTrace("\n", pTab, pStepArray);
+  vTrace("\n", aTab, pStepArray);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -57,7 +57,7 @@ eIT   m_eIndexDefnType;
 /*----------------------------------------------------------------------------*/
 /* dump index                                                                 */
 /*----------------------------------------------------------------------------*/
-void IndexDefn::vDump(eCN eClass, Object* pObject, const char* pTab)
+void IndexDefn::vDump(eCN eClass, Object* pObject, const char* aTab)
 {
   ASSERT(eClass == CN_INDEXDEFN);
   ASSERT(pObject->eClass() == CN_INDEXDEFN);

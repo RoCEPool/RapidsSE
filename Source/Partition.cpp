@@ -16,7 +16,7 @@ extern AttachMap*   gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* dump partition                                                             */
 /*----------------------------------------------------------------------------*/
-void Partition::vDump(eCN eClass, Object* pObject, const char* pTab)
+void Partition::vDump(eCN eClass, Object* pObject, const char* aTab)
 {
   ASSERT(eClass == CN_PARTITION);
   ASSERT(pObject->eClass() == CN_PARTITION);

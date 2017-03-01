@@ -1143,7 +1143,7 @@ void Task::vDebug(void)
 /*----------------------------------------------------------------------------*/
 /* dump                                                                       */
 /*----------------------------------------------------------------------------*/
-void Task::vDump(eCN eClass, Object* pObject, const char* pTab)
+void Task::vDump(eCN eClass, Object* pObject, const char* aTab)
 {
   ASSERT(eClass == CN_TASK);
   ASSERT(pObject->eClass() == CN_TASK);

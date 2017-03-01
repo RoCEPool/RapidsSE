@@ -88,7 +88,7 @@ namespace Dictionaries
     Word(const char* sName);
     ~Word(void);
     
-    static void vDump(eCN eClass, Object* pObject, const char* pTab);
+    static void vDump(eCN eClass, Object* pObject, const char* aTab);
     
     char* pAllot(i8 iBytes);
     void* pAppend(Cell* pCell);
@@ -130,7 +130,7 @@ namespace Dictionaries
     void  vKind(Word* pKind);
     Cell* pLastCell(void);
     StrVal&    sName(void);
-    void  vObjectDump(const char* pTab);
+    void  vObjectDump(const char* aTab);
     void  vParams(i8 iParams);
     i8    iParams(void);
     Word* pPrevWord(void);

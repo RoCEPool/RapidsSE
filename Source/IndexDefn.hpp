@@ -34,7 +34,7 @@ namespace DBobjects
     void* operator new(size_t);
     void  operator delete(void*);
     
-    static void vDump(eCN eClass, Object* pObject, const char* pTab);
+    static void vDump(eCN eClass, Object* pObject, const char* aTab);
     
     IndexDefn(const char* pIndexName);
     ~IndexDefn(void);

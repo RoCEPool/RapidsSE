@@ -29,7 +29,7 @@ namespace GridModel
     Node(i8 iNodeNo, char* pName, char* pIpAddress, i8 iPort);
     ~Node(void);
     
-    static void vDump(eCN eClass, Object* pObject, const char* pTab);
+    static void vDump(eCN eClass, Object* pObject, const char* aTab);
     
     void vInit(void);
     char* pNodeIP(void);

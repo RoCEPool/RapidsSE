@@ -72,7 +72,7 @@ Graph::~Graph(void)
 /*----------------------------------------------------------------------------*/
 /* dump the graph                                                             */
 /*----------------------------------------------------------------------------*/
-void Graph::vDump(eCN eClass, Object* pObject, const char* pTab)
+void Graph::vDump(eCN eClass, Object* pObject, const char* aTab)
 {
   vTrace("\n");
 }

@@ -41,7 +41,7 @@ namespace Structures
     ~Stack(void);
     
     static Stack* _pStack(void* aAddr);
-    static void vDump(eCN eClass, Object* pObject, const char* pTab);
+    static void vDump(eCN eClass, Object* pObject, const char* aTab);
     
     bool bGuard(i8 iCount);
     bool bGuard(eCN eClass0);

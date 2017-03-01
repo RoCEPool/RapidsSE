@@ -49,7 +49,7 @@ namespace DBobjects
     
     static RowBuffer* pNewRowBuffer(void);
     
-    static void vDump(eCN eClass, Object* pObject, const char* pTab);
+    static void vDump(eCN eClass, Object* pObject, const char* aTab);
     
     eRD        eDurability(void);
     void       vDurability(eRD eDurability);

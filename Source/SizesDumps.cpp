@@ -403,11 +403,11 @@ eHT geWhichHeap[]
 /*----------------------------------------------------------------------------*/
 /* dummy dump                                                                 */
 /*----------------------------------------------------------------------------*/
-void Dump::vDummy(eCN eClass, Object* pObject, const char* pTab)
+void Dump::vDummy(eCN eClass, Object* pObject, const char* aTab)
 {
   ASSERT(eClass != CN_NONE);
   ASSERT(pObject != nullptr);
-  ASSERT(pTab != nullptr);
+  ASSERT(aTab != nullptr);
   // do nothing
   
   vTrace("\n");
@@ -416,34 +416,34 @@ void Dump::vDummy(eCN eClass, Object* pObject, const char* pTab)
 /*----------------------------------------------------------------------------*/
 /* dummy dump                                                                 */
 /*----------------------------------------------------------------------------*/
-void Dump::vEnums(eCN eClass, Object* pObject, const char* pTab)
+void Dump::vEnums(eCN eClass, Object* pObject, const char* aTab)
 {
   ASSERT(eClass == CN_ENUMS);
   ASSERT(pObject != nullptr);
-  ASSERT(pTab != nullptr);
+  ASSERT(aTab != nullptr);
   // do nothing
 }
 
 /*----------------------------------------------------------------------------*/
 /* dump this attachmap                                                        */
 /*----------------------------------------------------------------------------*/
-void Dump::vInvalid(eCN eClass, Object* pObject, const char* pTab)
+void Dump::vInvalid(eCN eClass, Object* pObject, const char* aTab)
 {
   ASSERT(eClass != CN_ENUMS);
   ASSERT(pObject != nullptr);
-  ASSERT(pTab != nullptr);
-  vTrace("%sInvalid Class %s in Buffer Pool\n", pTab, pCN[eClass]);
+  ASSERT(aTab != nullptr);
+  vTrace("%sInvalid Class %s in Buffer Pool\n", aTab, pCN[eClass]);
 }
 
 /*----------------------------------------------------------------------------*/
 /* dump not defined                                                           */
 /*----------------------------------------------------------------------------*/
-void Dump::vUndefined(eCN eClass, Object* pObject, const char* pTab)
+void Dump::vUndefined(eCN eClass, Object* pObject, const char* aTab)
 {
   ASSERT(eClass != CN_NONE);
   ASSERT(pObject != nullptr);
-  ASSERT(pTab != nullptr);
-  vTrace("%s%s: **dump function not defined for class**\n", pTab, pCN[eClass]);
+  ASSERT(aTab != nullptr);
+  vTrace("%s%s: **dump function not defined for class**\n", aTab, pCN[eClass]);
 }
 
 /*============================================================================*/

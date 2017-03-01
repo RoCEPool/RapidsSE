@@ -72,7 +72,7 @@ Tokeniser::~Tokeniser(void)
 /*----------------------------------------------------------------------------*/
 /* dump tokeniser                                                             */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vDump(eCN eClass, Object* pObject, const char* pTab)
+void Tokeniser::vDump(eCN eClass, Object* pObject, const char* aTab)
 {
   ASSERT(eClass == CN_TOKENISER);
   ASSERT(pObject->eClass() == CN_TOKENISER);

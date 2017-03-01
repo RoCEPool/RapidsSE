@@ -33,7 +33,7 @@ namespace Dictionaries
     Dic(void);
     ~Dic(void);
     
-    static void vDump(eCN eClass, Object* pObject, const char* pTab);
+    static void vDump(eCN eClass, Object* pObject, const char* aTab);
 
     void  vAddWord(Word* pWord);
     Word* pDicKind(void);

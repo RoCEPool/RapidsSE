@@ -91,7 +91,7 @@ void Grid::vInit(void)
 /*----------------------------------------------------------------------------*/
 /* dump grid                                                                  */
 /*----------------------------------------------------------------------------*/
-void Grid::vDump(eCN eClass, Object* pObject, const char* pTab)
+void Grid::vDump(eCN eClass, Object* pObject, const char* aTab)
 {
   ASSERT(eClass == CN_GRID);
   ASSERT(pObject->eClass() == CN_GRID);

@@ -78,7 +78,7 @@ Socket::~Socket()
 /*----------------------------------------------------------------------------*/
 /* dump                                                                       */
 /*----------------------------------------------------------------------------*/
-void Socket::vDump(eCN eClass, Object* pObject, const char* pTab)
+void Socket::vDump(eCN eClass, Object* pObject, const char* aTab)
 {
   ASSERT(eClass == CN_SOCKET);
   ASSERT(pObject->eClass() == CN_SOCKET);

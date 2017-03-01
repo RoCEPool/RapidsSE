@@ -11,10 +11,10 @@ namespace StorageEngine
   class Dump
   {
   public:
-    static void vDummy(eCN eClass, Object* pObject, const char* pTab);
-    static void vEnums(eCN eClass, Object* pObject, const char* pTab);
-    static void vInvalid(eCN eClass, Object* pObject, const char* pTab);
-    static void vUndefined(eCN eClass, Object* pObject, const char* pTab);
+    static void vDummy(eCN eClass, Object* pObject, const char* aTab);
+    static void vEnums(eCN eClass, Object* pObject, const char* aTab);
+    static void vInvalid(eCN eClass, Object* pObject, const char* aTab);
+    static void vUndefined(eCN eClass, Object* pObject, const char* aTab);
   };
 }
 

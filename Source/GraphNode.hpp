@@ -27,7 +27,7 @@ namespace Structures
     GraphNode(void);
     ~GraphNode(void);
     
-    static void vDump(eCN eClass, Object* pObject, const char* pTab);
+    static void vDump(eCN eClass, Object* pObject, const char* aTab);
     
     GraphNode* pChild(void);
     void       vChild(GraphNode* pChild);

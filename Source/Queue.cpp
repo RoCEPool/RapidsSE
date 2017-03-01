@@ -119,23 +119,23 @@ i8 Queue::iCount(void)
 /*----------------------------------------------------------------------------*/
 /* dump the queue                                                             */
 /*----------------------------------------------------------------------------*/
-void Queue::vContentDump(const char* pTab)
+void Queue::vContentDump(const char* aTab)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUE,_FOOTER_);
   
-  vTrace("%sQueue: %p\n", pTab, this);
-  vTrace("%s  Count %lld\n", pTab, m_iCount);
-  vTrace("%s  TopBuffer %p\n", pTab, m_pTopBuffer);
-  vTrace("%s  EndBuffer %p\n", pTab, m_pEndBuffer);
+  vTrace("%sQueue: %p\n", aTab, this);
+  vTrace("%s  Count %lld\n", aTab, m_iCount);
+  vTrace("%s  TopBuffer %p\n", aTab, m_pTopBuffer);
+  vTrace("%s  EndBuffer %p\n", aTab, m_pEndBuffer);
   
   for (QueueBuffer* pQbuffer = m_pTopBuffer; pQbuffer; pQbuffer = pQbuffer->pNext())
-    pQbuffer->vContentDump(pTab);
+    pQbuffer->vContentDump(aTab);
 }
 
 /*----------------------------------------------------------------------------*/
 /* dump grid                                                                  */
 /*----------------------------------------------------------------------------*/
-void Queue::vDump(eCN eClass, Object* pObject, const char* pTab)
+void Queue::vDump(eCN eClass, Object* pObject, const char* aTab)
 {
   ASSERT(eClass == CN_QUEUE);
   ASSERT(pObject->eClass() == CN_QUEUE);

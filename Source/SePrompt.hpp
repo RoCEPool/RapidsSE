@@ -48,7 +48,7 @@ public:
   SePrompt(void);
   ~SePrompt(void);
   
-  static void vDump(eCN eClass, Object* pObject, const char* pTab);
+  static void vDump(eCN eClass, Object* pObject, const char* aTab);
   
   void vLoop(void);
   bool bExecuteString(StrVal& sCommand, eEC& eErrorCode);

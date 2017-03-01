@@ -50,7 +50,7 @@ namespace Parsing
     ~Tokeniser(void);
     
     static Tokeniser* _pTokeniser(void* aAddr);
-    static void vDump(eCN eClass, Object* pObject, const char* pTab);
+    static void vDump(eCN eClass, Object* pObject, const char* aTab);
     
     void vPush(void);
     bool bPop(void);

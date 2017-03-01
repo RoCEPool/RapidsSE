@@ -21,7 +21,7 @@ namespace DBobjects
     Footer m_xFooter;
     
   public:
-    static void vDump(eCN eClass, Object* pObject, const char* pTab);
+    static void vDump(eCN eClass, Object* pObject, const char* aTab);
   
     void* operator new(size_t);
     void  operator delete(void*);
