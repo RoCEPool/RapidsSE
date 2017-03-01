@@ -9,7 +9,7 @@
 namespace DBobjects
 {
   class Entry : public RowId,
-                public Vsp
+                public WspVbl
   {
   private:
     // ..data..

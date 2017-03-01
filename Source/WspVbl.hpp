@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Vsp.hpp -- variable-sized workspace                                        */
+/* WspVbl.hpp -- variable-sized workspace                                     */
 /*============================================================================*/
 
 /*
@@ -14,23 +14,23 @@
 
 namespace Magic
 {
-  class Vsp : public Part
+  class WspVbl : public Part
   {
   private:
     i8   m_nAreaUsed;
     // ..dataArea..
   
   public:
-    Vsp(void);
+    WspVbl(void);
 
-    void  vVspAppend(void* aSrc, i8 nBytes);
-    char* aVspArea(void);
-    void  vVspFill(char cByte);
-    i8    nVspUsed(void);
-    void  vVspUsed(i8 nBytes);
-    char* aVspNext(void);
-    void  vVspTake(i8 nBytes);
-    void  vVspZero(void);
+    void  vWspAppend(void* aSrc, i8 nBytes);
+    char* aWspArea(void);
+    void  vWspFill(char cByte);
+    i8    nWspUsed(void);
+    void  vWspUsed(i8 nBytes);
+    char* aWspNext(void);
+    void  vWspTake(i8 nBytes);
+    void  vWspZero(void);
   };
 }
 

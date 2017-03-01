@@ -9,7 +9,7 @@
 namespace Values
 {
   class StrVal : public Value,
-                 public Vsp
+                 public WspVbl
   {
   private:
     

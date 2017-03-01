@@ -50,7 +50,7 @@ Entry::Entry(i8 iDataBytes)
 {
   //_precondition_(_MAGIC_,CN_ENTRY);
 
-  vVspUsed(iDataBytes);
+  vWspUsed(iDataBytes);
 
   //_setFooter_();
   
@@ -95,13 +95,13 @@ void Entry::vContentDump(void)
   //_precondition_(_MAGIC_,CN_ENTRY);
   
   i8 iKeyData;
-  V::nCopyDatum(CN_INTVAL, &iKeyData,aVspArea());
+  V::nCopyDatum(CN_INTVAL, &iKeyData,aWspArea());
   
   vTrace("Entry %p: Row %llu.%llu Key (size:%lld value:%lld)\n",
          this,
          uBuffer(),
          uRow(),
-         nVspUsed(),
+         nWspUsed(),
          iKeyData
          );
 }
@@ -136,13 +136,13 @@ void Entry::vEntry(EntWsp& xEntWsp)
 
   vRowId(xEntWsp.xRowId());
 
-  char* pDst = aVspArea();
+  char* pDst = aWspArea();
   char* pSrc = xEntWsp.aWspArea();
   i8 nBytes  = xEntWsp.nWspUsed();
 
   Memory::vCopy(pDst,pSrc,nBytes);
   
-  vVspUsed(nBytes);
+  vWspUsed(nBytes);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -152,7 +152,7 @@ Key& Entry::xKey(void)
 {
   //_precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
   
-  Key* pKey = reinterpret_cast<Key*>(aVspArea());
+  Key* pKey = reinterpret_cast<Key*>(aWspArea());
 
   return reinterpret_cast<Key&>(pKey);
 }
@@ -164,7 +164,7 @@ Key* Entry::pKey(void)
 {
   //_precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
   
-  Key* pKey = reinterpret_cast<Key*>(aVspArea());
+  Key* pKey = reinterpret_cast<Key*>(aWspArea());
   
   return pKey;
 }
@@ -176,11 +176,11 @@ void Entry::vKey(Key& xKey)
 {
   //_precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
   
-  Key* pKey = reinterpret_cast<Key*>(aVspArea());
+  Key* pKey = reinterpret_cast<Key*>(aWspArea());
 
   pKey->vKey(xKey);
   
-  vVspTake(pKey->nSize());
+  vWspTake(pKey->nSize());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -190,7 +190,7 @@ void Entry::vKey(KeyWsp& xKeyWsp)
 {
   //_precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
   
-  Key* pKey = reinterpret_cast<Key*>(aVspArea());
+  Key* pKey = reinterpret_cast<Key*>(aWspArea());
   
   pKey->vKey(xKeyWsp);
 }
@@ -205,7 +205,7 @@ i8 Entry::nSize(void)
 {
   //_precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
 
-  i8 nBytes = sizeof(Entry) + nVspUsed();
+  i8 nBytes = sizeof(Entry) + nWspUsed();
   
   return nBytes;
 }
@@ -221,7 +221,7 @@ Footer* Entry::pFooter(void)
 {
   //_precondition_(_MAGIC_,CN_ENTRY);
   
-  Footer* pFooter = pAdd<Footer*>(this,sizeof(Entry) + nVspUsed());
+  Footer* pFooter = pAdd<Footer*>(this,sizeof(Entry) + nWspUsed());
   
   return pFooter;
 }
