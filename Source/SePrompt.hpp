@@ -31,8 +31,8 @@ private:
   s48K       m_sResponse;  // response from seitf
   SeHistory m_xHistory;   // command history
   
-  char*     m_pToken[C_TOKENS];
-  char*     m_pToken2[C_TOKENS];
+  char*     m_aToken[C_TOKENS];
+  char*     m_aToken2[C_TOKENS];
   Tokeniser* m_pTokeniser; // input stream tokeniser
 
   WspFxd<C_TOKEN_AREA> m_xTokenArea;

@@ -72,8 +72,8 @@ SePrompt::SePrompt(void)
   
   // initialise the token set
   for (i8 iToken = 0; iToken < C_TOKENS; iToken++) {
-    m_pToken[iToken]  = &m_xTokenArea.aWspArea()[C_TOKEN_SPACE * iToken];
-    m_pToken2[iToken] = &m_xTokenArea2.aWspArea()[C_TOKEN_SPACE * iToken];
+    m_aToken[iToken]  = &m_xTokenArea.aWspArea()[C_TOKEN_SPACE * iToken];
+    m_aToken2[iToken] = &m_xTokenArea2.aWspArea()[C_TOKEN_SPACE * iToken];
   }
   
   //m_wWorkarea
@@ -148,7 +148,7 @@ void SePrompt::vLoop(void)
     
     vGetCommand();
     
-    if (0 == String::iLength(m_pToken[0]))
+    if (0 == String::iLength(m_aToken[0]))
       continue;
     
     bool b = bProcessCommand();
@@ -163,9 +163,9 @@ void SePrompt::vLoop(void)
     if (m_bEcho) {
       vTrace("cmd: ");
       for (i8 iToken = 0; iToken < C_TOKENS; iToken++) {
-        if (String::bEqualTo("",m_pToken[iToken]))
+        if (String::bEqualTo("",m_aToken[iToken]))
           break;
-        vTrace("%s ",m_pToken[iToken]);
+        vTrace("%s ",m_aToken[iToken]);
       }
       vTrace(": got: %s\n",m_sResponse.aStr());
       continue;
@@ -204,9 +204,9 @@ bool SePrompt::bExecuteString(StrVal& sRequest, eEC& eErrorCode)
   
   m_pTokeniser->vUseString(sRequest);
   i8 iToken = 0;
-  while (TK_NONE != m_pTokeniser->eNextToken(m_pToken[iToken])) {
+  while (TK_NONE != m_pTokeniser->eNextToken(m_aToken[iToken])) {
     
-    //vTrace("vGetCommand : [%lld] %s\n",iToken,m_pToken[iToken]);
+    //vTrace("vGetCommand : [%lld] %s\n",iToken,m_aToken[iToken]);
     
     iToken++;
     ASSERT(iToken < C_TOKENS);
@@ -227,9 +227,9 @@ bool SePrompt::bExecuteString(StrVal& sRequest, eEC& eErrorCode, StrVal& sRespon
   
   m_pTokeniser->vUseString(sRequest);
   i8 iToken = 0;
-  while (TK_NONE != m_pTokeniser->eNextToken(m_pToken[iToken])) {
+  while (TK_NONE != m_pTokeniser->eNextToken(m_aToken[iToken])) {
     
-    //vTrace("vGetCommand : [%lld] %s\n",iToken,m_pToken[iToken]);
+    //vTrace("vGetCommand : [%lld] %s\n",iToken,m_aToken[iToken]);
     
     iToken++;
     ASSERT(iToken < C_TOKENS);
@@ -251,9 +251,9 @@ bool SePrompt::bExecuteString(StrVal& sRequest, eEC& eErrorCode, char** ppRowPtr
   
   m_pTokeniser->vUseString(sRequest);
   i8 iToken = 0;
-  while (TK_NONE != m_pTokeniser->eNextToken(m_pToken[iToken])) {
+  while (TK_NONE != m_pTokeniser->eNextToken(m_aToken[iToken])) {
     
-    //vTrace("vGetCommand : [%lld] %s\n",iToken,m_pToken[iToken]);
+    //vTrace("vGetCommand : [%lld] %s\n",iToken,m_aToken[iToken]);
     
     iToken++;
     ASSERT(iToken < C_TOKENS);
@@ -286,13 +286,13 @@ void SePrompt::vGetCommandArgument(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  //String::vCopy(m_pToken[0],gxArguments.m_sCommand.aStr());
-  //String::vCopy(m_pToken[1],"");
+  //String::vCopy(m_aToken[0],gxArguments.m_sCommand.aStr());
+  //String::vCopy(m_aToken[1],"");
 
   i8 iToken = 0;
-  while (TK_NONE != m_pTokeniser->eNextToken(m_pToken[iToken])) {
+  while (TK_NONE != m_pTokeniser->eNextToken(m_aToken[iToken])) {
     
-    //vTrace("vGetCommand : [%lld] %s\n",iToken,m_pToken[iToken]);
+    //vTrace("vGetCommand : [%lld] %s\n",iToken,m_aToken[iToken]);
     
     iToken++;
     ASSERT(iToken < C_TOKENS);
@@ -310,12 +310,12 @@ void SePrompt::vGetCommandInput(void)
   
   while (true) {
     
-    m_pTokeniser->vResetTokens(m_pToken,C_TOKENS);
+    m_pTokeniser->vResetTokens(m_aToken,C_TOKENS);
     
     i8 iToken = 0;
-    while (TK_NONE != m_pTokeniser->eNextToken(m_pToken[iToken])) {
+    while (TK_NONE != m_pTokeniser->eNextToken(m_aToken[iToken])) {
       
-      //vTrace("vGetCommand : [%lld] %s\n",iToken,m_pToken[iToken]);
+      //vTrace("vGetCommand : [%lld] %s\n",iToken,m_aToken[iToken]);
       
       iToken++;
       ASSERT(iToken < C_TOKENS);
@@ -341,13 +341,13 @@ bool SePrompt::bProcessCommand(bool bPostProcess)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   // - test for echo prefix
-  if (String::bEqualTo("echo",m_pToken[0],C_NO_CASE))
+  if (String::bEqualTo("echo",m_aToken[0],C_NO_CASE))
     vSetEcho();
   else
     vClearEcho();
   
   // - test for expect prefix
-  if (String::bEqualTo("expect",m_pToken[0],C_NO_CASE))
+  if (String::bEqualTo("expect",m_aToken[0],C_NO_CASE))
     vSetExpect();
   else
     vClearExpect();
@@ -355,146 +355,146 @@ bool SePrompt::bProcessCommand(bool bPostProcess)
   
   // - test for builtin comands
   
-  if (String::bEqualTo("?",   m_pToken[0],C_NO_CASE) ||
-      String::bEqualTo("help",m_pToken[0],C_NO_CASE)) {
+  if (String::bEqualTo("?",   m_aToken[0],C_NO_CASE) ||
+      String::bEqualTo("help",m_aToken[0],C_NO_CASE)) {
     vHelp();
     return true;
   }
   
-  if (String::bEqualTo("bye",m_pToken[0],C_NO_CASE)) {
+  if (String::bEqualTo("bye",m_aToken[0],C_NO_CASE)) {
     m_bContinue = false;
     return true;
   }
   
-  if (String::bEqualTo("sleep",m_pToken[0],C_NO_CASE)) {
+  if (String::bEqualTo("sleep",m_aToken[0],C_NO_CASE)) {
     return bSleep();
   }
   
-  if (String::bEqualTo("cd",m_pToken[0],C_NO_CASE)) {
+  if (String::bEqualTo("cd",m_aToken[0],C_NO_CASE)) {
     return bChangeWorkingDir();
   }
   
-  if (String::bEqualTo("cf",m_pToken[0],C_NO_CASE)) {
+  if (String::bEqualTo("cf",m_aToken[0],C_NO_CASE)) {
     return bExecuteRequest();
   }
   
-  if (String::bEqualTo("docol",m_pToken[0],C_NO_CASE)) {
+  if (String::bEqualTo("docol",m_aToken[0],C_NO_CASE)) {
     return bDocol();
   }
   
-  if (String::bEqualTo("history",m_pToken[0],C_NO_CASE)) {
+  if (String::bEqualTo("history",m_aToken[0],C_NO_CASE)) {
     m_xHistory.vPrint();
     return true;
   }
   
-  if (String::bEqualTo("!!",m_pToken[0],C_NO_CASE)) {
-    if (! m_xHistory.bRecall(m_pToken,C_TOKENS))
+  if (String::bEqualTo("!!",m_aToken[0],C_NO_CASE)) {
+    if (! m_xHistory.bRecall(m_aToken,C_TOKENS))
       return true;
   }
   
-  if ('!' == *m_pToken[0]) {
-    if (! m_xHistory.bRecall(m_pToken,C_TOKENS))
+  if ('!' == *m_aToken[0]) {
+    if (! m_xHistory.bRecall(m_aToken,C_TOKENS))
       return true;
   }
   
-  if (String::bEqualTo("begin",m_pToken[0],C_NO_CASE)) {
-    if (String::bEqualTo("insert",m_pToken[1],C_NO_CASE)) {
+  if (String::bEqualTo("begin",m_aToken[0],C_NO_CASE)) {
+    if (String::bEqualTo("insert",m_aToken[1],C_NO_CASE)) {
       return bBeginInsert();
     }
   }
   
-  if (String::bEqualTo("create",m_pToken[0],C_NO_CASE)) {
+  if (String::bEqualTo("create",m_aToken[0],C_NO_CASE)) {
     
-    if (String::bEqualTo("tenant",m_pToken[1],C_NO_CASE)) {
+    if (String::bEqualTo("tenant",m_aToken[1],C_NO_CASE)) {
       return bCreateTenant();
     }
-    if (String::bEqualTo("catalog",m_pToken[1],C_NO_CASE)) {
+    if (String::bEqualTo("catalog",m_aToken[1],C_NO_CASE)) {
       return bCreateCatalog();
     }
-    if (String::bEqualTo("schema",m_pToken[1],C_NO_CASE)) {
+    if (String::bEqualTo("schema",m_aToken[1],C_NO_CASE)) {
       return bCreateSchema();
     }
-    if (String::bEqualTo("table",m_pToken[1],C_NO_CASE)) {
+    if (String::bEqualTo("table",m_aToken[1],C_NO_CASE)) {
       return bCreateTable();
     }
-    if (String::bEqualTo("index",m_pToken[1],C_NO_CASE)) {
+    if (String::bEqualTo("index",m_aToken[1],C_NO_CASE)) {
       return bCreateIndex();
     }
   }
   
-  if (String::bEqualTo("connectCluster",m_pToken[0],C_NO_CASE)) {
+  if (String::bEqualTo("connectCluster",m_aToken[0],C_NO_CASE)) {
     return bConnectCluster();
   }
   
-  if (String::bEqualTo("drop",m_pToken[0],C_NO_CASE)) {
-    if (String::bEqualTo("tenant",m_pToken[1],C_NO_CASE)) {
+  if (String::bEqualTo("drop",m_aToken[0],C_NO_CASE)) {
+    if (String::bEqualTo("tenant",m_aToken[1],C_NO_CASE)) {
       return bDropTenant();
     }
-    if (String::bEqualTo("catalog",m_pToken[1],C_NO_CASE)) {
+    if (String::bEqualTo("catalog",m_aToken[1],C_NO_CASE)) {
       return bDropCatalog();
     }
-    if (String::bEqualTo("schema",m_pToken[1],C_NO_CASE)) {
+    if (String::bEqualTo("schema",m_aToken[1],C_NO_CASE)) {
       return bDropSchema();
     }
-    if (String::bEqualTo("table",m_pToken[1],C_NO_CASE)) {
+    if (String::bEqualTo("table",m_aToken[1],C_NO_CASE)) {
       return bDropTable();
     }
   }
   
-  if (String::bEqualTo("end",m_pToken[0],C_NO_CASE)) {
-    if (String::bEqualTo("insert",m_pToken[1],C_NO_CASE)) {
+  if (String::bEqualTo("end",m_aToken[0],C_NO_CASE)) {
+    if (String::bEqualTo("insert",m_aToken[1],C_NO_CASE)) {
       return bEndInsert();
     }
   }
   
-  if (String::bEqualTo("antbl",m_pToken[0],C_NO_CASE)) {
+  if (String::bEqualTo("antbl",m_aToken[0],C_NO_CASE)) {
     return bAnalyzeTable();
   }
   
-  if (String::bEqualTo("dantbl",m_pToken[0],C_NO_CASE)) {
+  if (String::bEqualTo("dantbl",m_aToken[0],C_NO_CASE)) {
     return bDanalyzeTable();
   }
   
-  if (String::bEqualTo("pwd",m_pToken[0],C_NO_CASE)) {
+  if (String::bEqualTo("pwd",m_aToken[0],C_NO_CASE)) {
     return bPrintWorkingDir();
   }
   
-  if (String::bEqualTo("ls",m_pToken[0],C_NO_CASE)) {
+  if (String::bEqualTo("ls",m_aToken[0],C_NO_CASE)) {
     return bListDir();
   }
   
-  if (String::bEqualTo("first",m_pToken[0],C_NO_CASE)) {
+  if (String::bEqualTo("first",m_aToken[0],C_NO_CASE)) {
     return bGetFirstRow();
   }
   
-  if (String::bEqualTo("insert",m_pToken[0],C_NO_CASE)) {
-    if (String::bEqualTo("row",m_pToken[1],C_NO_CASE)) {
+  if (String::bEqualTo("insert",m_aToken[0],C_NO_CASE)) {
+    if (String::bEqualTo("row",m_aToken[1],C_NO_CASE)) {
       return bInsertRow();
     }
   }
   
-  if (String::bEqualTo("next",m_pToken[0],C_NO_CASE)) {
+  if (String::bEqualTo("next",m_aToken[0],C_NO_CASE)) {
     return bGetNextRow();
   }
 
-  if (String::bEqualTo("object",m_pToken[0],C_NO_CASE)) {
+  if (String::bEqualTo("object",m_aToken[0],C_NO_CASE)) {
     return bObject();
   }
   
-  if (String::bEqualTo("space",m_pToken[0],C_NO_CASE)) {
+  if (String::bEqualTo("space",m_aToken[0],C_NO_CASE)) {
     return bPoolSpace();
   }
 
-  if (String::bEqualTo("use",m_pToken[0],C_NO_CASE)) {
-    if (String::bEqualTo("schema",m_pToken[1],C_NO_CASE)) {
+  if (String::bEqualTo("use",m_aToken[0],C_NO_CASE)) {
+    if (String::bEqualTo("schema",m_aToken[1],C_NO_CASE)) {
       return bUseSchema();
     }
   }
   
-  m_xHistory.vAppend(m_pToken);
+  m_xHistory.vAppend(m_aToken);
   
-  if (bTestFile(m_pToken[0])) {
-    vPushFile(m_pToken[0]);
+  if (bTestFile(m_aToken[0])) {
+    vPushFile(m_aToken[0]);
     m_pTokeniser->vLineMode(true);
     m_sResponse = "<ok>";
     return true;
@@ -508,14 +508,14 @@ bool SePrompt::bProcessCommand(bool bPostProcess)
     return true;
   
   // - post process requests
-  if (String::bEqualTo("sel",m_pToken[0],C_NO_CASE)) {
+  if (String::bEqualTo("sel",m_aToken[0],C_NO_CASE)) {
     vIterateRows();
     return bReturnTable();
   }
   
   // - the following never return
   
-  if (String::bEqualTo("mon",m_pToken[0],C_NO_CASE)) {
+  if (String::bEqualTo("mon",m_aToken[0],C_NO_CASE)) {
     while (true) {
       PosixThread::vSleepSec(10);
       if (!bExecuteRequest())
@@ -523,7 +523,7 @@ bool SePrompt::bProcessCommand(bool bPostProcess)
     }
   }
   
-  if (String::bEqualTo("x",m_pToken[0],C_NO_CASE)) {
+  if (String::bEqualTo("x",m_aToken[0],C_NO_CASE)) {
     while (true) {
       bExecuteRequest();
     }
@@ -556,7 +556,7 @@ void SePrompt::vClearEcho(void)
 /*----------------------------------------------------------------------------*/
 void SePrompt::vSetExpect(void)
 {
-  m_sExpect = m_pToken[1];
+  m_sExpect = m_aToken[1];
   
   m_bExpect = true;
   
@@ -582,9 +582,9 @@ void SePrompt::vClipTokens(i8 nTokens)
   
   for (i8 iFromToken = nTokens; iFromToken < C_TOKENS; iFromToken++) {
     
-    String::vCopy(m_pToken[iToToken++],m_pToken[iFromToken]);
+    String::vCopy(m_aToken[iToToken++],m_aToken[iFromToken]);
     
-    if (String::bEqualTo("",m_pToken[iFromToken]))
+    if (String::bEqualTo("",m_aToken[iFromToken]))
       break;
   }
   
@@ -605,10 +605,10 @@ bool SePrompt::bExecuteRequest(void)
   
   // get count of words in pWords
   for (iTokens = 0; iTokens < C_TOKENS; iTokens++)
-    if (String::bEqualTo("",m_pToken[iTokens]))
+    if (String::bEqualTo("",m_aToken[iTokens]))
       break;
   
-  bool bResult = RapidsSE_ExecuteRequest(m_pSEitf,m_pToken,iTokens,&aResponse);
+  bool bResult = RapidsSE_ExecuteRequest(m_pSEitf,m_aToken,iTokens,&aResponse);
   
   if (bResult)
     m_sResponse = aResponse ? aResponse : "";
@@ -658,8 +658,8 @@ bool SePrompt::bReturnTable(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  String::vCopy(m_pToken[0], "rettbl");
-  String::vCopy(m_pToken[1], "");
+  String::vCopy(m_aToken[0], "rettbl");
+  String::vCopy(m_aToken[1], "");
   
   if (!bExecuteRequest()) {
     vTrace("bReturnTable: (%s) Return Table FAILED!!! : %s\n", m_sResponse.aStr());
@@ -827,16 +827,16 @@ bool SePrompt::bBeginInsert(void)
   i8 iToken;
   i8 iNumTokens;
   
-  ASSERT(String::bEqualTo(m_pToken[0],"begin"));
-  ASSERT(String::bEqualTo(m_pToken[1],"insert"));
+  ASSERT(String::bEqualTo(m_aToken[0],"begin"));
+  ASSERT(String::bEqualTo(m_aToken[1],"insert"));
   
   vCollectStatement();
   
   for (iToken = 0; iToken < C_TOKENS; iToken++) {
-    if (! *m_pToken[iToken])
+    if (! *m_aToken[iToken])
       break;
-    String::vCopy(m_pToken2[iToken], m_pToken[iToken]);
-    String::vCopy(m_pToken[iToken], "");
+    String::vCopy(m_aToken2[iToken], m_aToken[iToken]);
+    String::vCopy(m_aToken[iToken], "");
   }
   
   iNumTokens = iToken;
@@ -847,14 +847,14 @@ bool SePrompt::bBeginInsert(void)
   }
   
   // last token should be ';'
-  if (!String::bEqualTo(m_pToken2[3] , ";")) {
+  if (!String::bEqualTo(m_aToken2[3] , ";")) {
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
   }
   
   // get table pointer
-  String::vCopy(m_pToken[0], "gettbl");
-  String::vCopy(m_pToken[1], m_pToken2[2]);
+  String::vCopy(m_aToken[0], "gettbl");
+  String::vCopy(m_aToken[1], m_aToken2[2]);
   if (!bExecuteRequest()) {
     vTrace("SePrompt::bBeginInsert : gettbl FAILED!!!\n");
     return false;
@@ -877,9 +877,9 @@ bool SePrompt::bSleep(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  ASSERT(String::bEqualTo(m_pToken[0],"sleep"));
+  ASSERT(String::bEqualTo(m_aToken[0],"sleep"));
   
-  i8 nSeconds = String::iToI8(m_pToken[1]);
+  i8 nSeconds = String::iToI8(m_aToken[1]);
 
   PosixThread::vSleepSec(nSeconds);
   
@@ -896,15 +896,15 @@ bool SePrompt::bChangeWorkingDir(void)
   s256 sDir;
   Dir xDir;
   
-  ASSERT(String::bEqualTo(m_pToken[0],"cd"));
+  ASSERT(String::bEqualTo(m_aToken[0],"cd"));
   
-  String::vCopy(sDir.aStr(), m_pToken[1]);
+  String::vCopy(sDir.aStr(), m_aToken[1]);
   
   i8 iToken;
   for (iToken = 2; iToken < C_TOKENS; iToken++) {
-    if (! *m_pToken[iToken])
+    if (! *m_aToken[iToken])
       break;
-    String::vConcat(sDir.aStr(), m_pToken[iToken]);
+    String::vConcat(sDir.aStr(), m_aToken[iToken]);
   }
 
   if ( ! xDir.bChangeCurrent(sDir) ) {
@@ -924,7 +924,7 @@ bool SePrompt::bAnalyzeTable(void)
   s256 sDir;
   Dir xDir;
   
-  ASSERT(String::bEqualTo(m_pToken[0],"antbl"));
+  ASSERT(String::bEqualTo(m_aToken[0],"antbl"));
   
   return bExecuteRequest();
 }
@@ -939,7 +939,7 @@ bool SePrompt::bDanalyzeTable(void)
   s256 sDir;
   Dir xDir;
   
-  ASSERT(String::bEqualTo(m_pToken[0],"dantbl"));
+  ASSERT(String::bEqualTo(m_aToken[0],"dantbl"));
   
   return bExecuteRequest();
 }
@@ -951,7 +951,7 @@ bool SePrompt::bDocol(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  ASSERT(String::bEqualTo(m_pToken[0],"docol"));
+  ASSERT(String::bEqualTo(m_aToken[0],"docol"));
   return bExecuteRequest();
 }
 
@@ -962,19 +962,19 @@ bool SePrompt::bCreateCatalog(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  ASSERT(String::bEqualTo(m_pToken[0],"create"));
-  ASSERT(String::bEqualTo(m_pToken[1],"catalog"));
+  ASSERT(String::bEqualTo(m_aToken[0],"create"));
+  ASSERT(String::bEqualTo(m_aToken[1],"catalog"));
   vCollectStatement();
   
   i8 iToken;
   
-  // copy tokens from m_pToken to m_pToken2
+  // copy tokens from m_aToken to m_aToken2
   // while doing that also validate the create statament
   for (iToken = 0; iToken < C_TOKENS; iToken++) {
-    if (! *m_pToken[iToken])
+    if (! *m_aToken[iToken])
       break;
-    String::vCopy(m_pToken2[iToken], m_pToken[iToken]);
-    String::vCopy(m_pToken[iToken], "");
+    String::vCopy(m_aToken2[iToken], m_aToken[iToken]);
+    String::vCopy(m_aToken[iToken], "");
   }
   
   i8 iNumTokens = iToken;
@@ -985,19 +985,19 @@ bool SePrompt::bCreateCatalog(void)
   }
   
   // last token should be ';'
-  if (!String::bEqualTo(m_pToken2[3] , ";")) {
+  if (!String::bEqualTo(m_aToken2[3] , ";")) {
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
   }
   
   // create a catalog
-  String::vCopy(m_pToken[0], "mkcat");
-  String::vCopy(m_pToken[1], m_pToken2[2]);
+  String::vCopy(m_aToken[0], "mkcat");
+  String::vCopy(m_aToken[1], m_aToken2[2]);
   
   if (!bExecuteRequest())
     return false;
   
-  //vTrace("Catalog created: %s\n", m_pToken2[2]);
+  //vTrace("Catalog created: %s\n", m_aToken2[2]);
   return true;
 }
 
@@ -1008,19 +1008,19 @@ bool SePrompt::bCreateIndex(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  ASSERT(String::bEqualTo(m_pToken[0],"create"));
-  ASSERT(String::bEqualTo(m_pToken[1],"index"));
+  ASSERT(String::bEqualTo(m_aToken[0],"create"));
+  ASSERT(String::bEqualTo(m_aToken[1],"index"));
   vCollectStatement();
   
   i8 iToken;
   
-  // copy tokens from m_pToken to m_pToken2
+  // copy tokens from m_aToken to m_aToken2
   // while doing that also validate the create statament
   for (iToken = 0; iToken < C_TOKENS; iToken++) {
-    if (! *m_pToken[iToken])
+    if (! *m_aToken[iToken])
       break;
-    String::vCopy(m_pToken2[iToken], m_pToken[iToken]);
-    String::vCopy(m_pToken[iToken], "");
+    String::vCopy(m_aToken2[iToken], m_aToken[iToken]);
+    String::vCopy(m_aToken[iToken], "");
   }
   
   i8 iValue;
@@ -1034,34 +1034,34 @@ bool SePrompt::bCreateIndex(void)
   }
   
   // token[3] should be 'on'
-  if (!String::bEqualTo(m_pToken2[3] , "on")) {
+  if (!String::bEqualTo(m_aToken2[3] , "on")) {
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
   }
   
   // token[5] should be '('
-  if (!String::bEqualTo(m_pToken2[5] , "(")) {
+  if (!String::bEqualTo(m_aToken2[5] , "(")) {
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
   }
   
   // 7 token should be ')'
-  if (!String::bEqualTo(m_pToken2[7] , ")")) {
+  if (!String::bEqualTo(m_aToken2[7] , ")")) {
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
   }
   
   // last token should be ';'
-  if (!String::bEqualTo(m_pToken2[iNumTokens-1] , ";")) {
+  if (!String::bEqualTo(m_aToken2[iNumTokens-1] , ";")) {
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
   }
   
   // create the index
-  String::vCopy(m_pToken[0], "mkidx");
-  String::vCopy(m_pToken[1], m_pToken2[2]);
-  String::vCopy(m_pToken[2], m_pToken2[4]);
-  String::vCopy(m_pToken[3], m_pToken2[6]);
+  String::vCopy(m_aToken[0], "mkidx");
+  String::vCopy(m_aToken[1], m_aToken2[2]);
+  String::vCopy(m_aToken[2], m_aToken2[4]);
+  String::vCopy(m_aToken[3], m_aToken2[6]);
   
   if (!bExecuteRequest())
     return false;
@@ -1076,19 +1076,19 @@ bool SePrompt::bCreateSchema(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
 
-  ASSERT(String::bEqualTo(m_pToken[0],"create"));
-  ASSERT(String::bEqualTo(m_pToken[1],"schema"));
+  ASSERT(String::bEqualTo(m_aToken[0],"create"));
+  ASSERT(String::bEqualTo(m_aToken[1],"schema"));
   vCollectStatement();
   
   i8 iToken;
   
-  // copy tokens from m_pToken to m_pToken2
+  // copy tokens from m_aToken to m_aToken2
   // while doing that also validate the create statament
   for (iToken = 0; iToken < C_TOKENS; iToken++) {
-    if (! *m_pToken[iToken])
+    if (! *m_aToken[iToken])
       break;
-    String::vCopy(m_pToken2[iToken], m_pToken[iToken]);
-    String::vCopy(m_pToken[iToken], "");
+    String::vCopy(m_aToken2[iToken], m_aToken[iToken]);
+    String::vCopy(m_aToken[iToken], "");
   }
   
   i8 iNumTokens = iToken;
@@ -1100,19 +1100,19 @@ bool SePrompt::bCreateSchema(void)
   }
   
   // last token should be ';'
-  if (!String::bEqualTo(m_pToken2[3] , ";")) {
+  if (!String::bEqualTo(m_aToken2[3] , ";")) {
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
   }
   
   // create a schema
-  String::vCopy(m_pToken[0], "mksch");
-  String::vCopy(m_pToken[1], m_pToken2[2]);
+  String::vCopy(m_aToken[0], "mksch");
+  String::vCopy(m_aToken[1], m_aToken2[2]);
   
   if (!bExecuteRequest())
     return false;
   
-  //vTrace("Schema created: %s\n", m_pToken2[2]);
+  //vTrace("Schema created: %s\n", m_aToken2[2]);
   return true;
 }
 
@@ -1123,19 +1123,19 @@ bool SePrompt::bCreateTenant(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  ASSERT(String::bEqualTo(m_pToken[0],"create"));
-  ASSERT(String::bEqualTo(m_pToken[1],"tenant"));
+  ASSERT(String::bEqualTo(m_aToken[0],"create"));
+  ASSERT(String::bEqualTo(m_aToken[1],"tenant"));
   vCollectStatement();
   
   i8 iToken;
   
-  // copy tokens from m_pToken to m_pToken2
+  // copy tokens from m_aToken to m_aToken2
   // while doing that also validate the create statament
   for (iToken = 0; iToken < C_TOKENS; iToken++) {
-    if (! *m_pToken[iToken])
+    if (! *m_aToken[iToken])
       break;
-    String::vCopy(m_pToken2[iToken], m_pToken[iToken]);
-    String::vCopy(m_pToken[iToken], "");
+    String::vCopy(m_aToken2[iToken], m_aToken[iToken]);
+    String::vCopy(m_aToken[iToken], "");
   }
   
   i8 iNumTokens = iToken;
@@ -1147,19 +1147,19 @@ bool SePrompt::bCreateTenant(void)
   }
   
   // last token should be ';'
-  if (!String::bEqualTo(m_pToken2[3] , ";")) {
+  if (!String::bEqualTo(m_aToken2[3] , ";")) {
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
   }
   
   // create a tenant
-  String::vCopy(m_pToken[0], "mkten");
-  String::vCopy(m_pToken[1], m_pToken2[2]);
+  String::vCopy(m_aToken[0], "mkten");
+  String::vCopy(m_aToken[1], m_aToken2[2]);
   
   if (!bExecuteRequest())
     return false;
   
-  //vTrace("Tenant created: %s\n", m_pToken2[2]);
+  //vTrace("Tenant created: %s\n", m_aToken2[2]);
   return true;
 }
 
@@ -1170,19 +1170,19 @@ bool SePrompt::bCreateTable(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  ASSERT(String::bEqualTo(m_pToken[0],"create"));
-  ASSERT(String::bEqualTo(m_pToken[1],"table"));
+  ASSERT(String::bEqualTo(m_aToken[0],"create"));
+  ASSERT(String::bEqualTo(m_aToken[1],"table"));
   vCollectStatement();
   
   i8 iToken;
   
-  // copy tokens from m_pToken to m_pToken2
+  // copy tokens from m_aToken to m_aToken2
   // while doing that also validate the create statament
   for (iToken = 0; iToken < C_TOKENS; iToken++) {
-    if (! *m_pToken[iToken])
+    if (! *m_aToken[iToken])
       break;
-    String::vCopy(m_pToken2[iToken], m_pToken[iToken]);
-    String::vCopy(m_pToken[iToken], "");
+    String::vCopy(m_aToken2[iToken], m_aToken[iToken]);
+    String::vCopy(m_aToken[iToken], "");
   }
   
   i8 iValue;
@@ -1196,40 +1196,40 @@ bool SePrompt::bCreateTable(void)
   }
   
   // token[3] should be '('
-  if (!String::bEqualTo(m_pToken2[3] , "(")) {
+  if (!String::bEqualTo(m_aToken2[3] , "(")) {
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
   }
   
   // last-1 token should be ')'
-  if (!String::bEqualTo(m_pToken2[iNumTokens-2] , ")")) {
+  if (!String::bEqualTo(m_aToken2[iNumTokens-2] , ")")) {
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
   }
     
   // last token should be ';'
-  if (!String::bEqualTo(m_pToken2[iNumTokens-1] , ";")) {
+  if (!String::bEqualTo(m_aToken2[iNumTokens-1] , ";")) {
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
   }
       
   // create the table
-  String::vCopy(m_pToken[0], "mktbl");
-  String::vCopy(m_pToken[1], m_pToken2[2]);
+  String::vCopy(m_aToken[0], "mktbl");
+  String::vCopy(m_aToken[1], m_aToken2[2]);
   
   if (!bExecuteRequest())
     return false;
   
   // get reference to pTable
-  String::vCopy(m_pToken[0], "gettbl");
-  String::vCopy(m_pToken[1], m_pToken2[2]);
+  String::vCopy(m_aToken[0], "gettbl");
+  String::vCopy(m_aToken[1], m_aToken2[2]);
   
   if (!bExecuteRequest()) {
     vTrace("SePrompt::bCreateTable : gettbl FAILED!!!\n");
     
     // create the table
-    String::vCopy(m_pToken[0], "rmtbl");
-    String::vCopy(m_pToken[1], m_pToken2[2]);
+    String::vCopy(m_aToken[0], "rmtbl");
+    String::vCopy(m_aToken[1], m_aToken2[2]);
     
     if (!bExecuteRequest()) {      
       return false;
@@ -1242,158 +1242,158 @@ bool SePrompt::bCreateTable(void)
   i8 iCurrentToken = 4;
   while(iCurrentToken < iNumTokens - 2) {
     
-    if (iCurrentToken != 4 && !String::bEqualTo(m_pToken2[iCurrentToken++],",")) {
-      bDropReturnTable(m_pToken2[2]);
+    if (iCurrentToken != 4 && !String::bEqualTo(m_aToken2[iCurrentToken++],",")) {
+      bDropReturnTable(m_aToken2[2]);
       m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
       return false;
     }
     
     // add columns to the table
     i8 j = 0;
-    String::vCopy(m_pToken[j++], "add");
-    String::vCopy(m_pToken[j++], m_pToken2[2]);
-    String::vCopy(m_pToken[j++], m_pToken2[iCurrentToken++]);
+    String::vCopy(m_aToken[j++], "add");
+    String::vCopy(m_aToken[j++], m_aToken2[2]);
+    String::vCopy(m_aToken[j++], m_aToken2[iCurrentToken++]);
     
-    if (String::bEqualTo(m_pToken2[iCurrentToken], "integer", C_NO_CASE) ||
-        String::bEqualTo(m_pToken2[iCurrentToken], "varchar", C_NO_CASE) ||
-        String::bEqualTo(m_pToken2[iCurrentToken], "varbinary", C_NO_CASE) ||
-        String::bEqualTo(m_pToken2[iCurrentToken], "char", C_NO_CASE) ||
-        String::bEqualTo(m_pToken2[iCurrentToken], "float", C_NO_CASE)) {
+    if (String::bEqualTo(m_aToken2[iCurrentToken], "integer", C_NO_CASE) ||
+        String::bEqualTo(m_aToken2[iCurrentToken], "varchar", C_NO_CASE) ||
+        String::bEqualTo(m_aToken2[iCurrentToken], "varbinary", C_NO_CASE) ||
+        String::bEqualTo(m_aToken2[iCurrentToken], "char", C_NO_CASE) ||
+        String::bEqualTo(m_aToken2[iCurrentToken], "float", C_NO_CASE)) {
       
       // copy varchar/char
-      String::vCopy(m_pToken[j], m_pToken2[iCurrentToken++]);
+      String::vCopy(m_aToken[j], m_aToken2[iCurrentToken++]);
       
-      if (String::bEqualTo(m_pToken2[iCurrentToken], "(")) {
+      if (String::bEqualTo(m_aToken2[iCurrentToken], "(")) {
         
         // str.cat '('
-        String::vConcat(m_pToken[j], m_pToken2[iCurrentToken++]);
+        String::vConcat(m_aToken[j], m_aToken2[iCurrentToken++]);
         
         // str.cat the size
-        String::vConcat(m_pToken[j], m_pToken2[iCurrentToken]);
+        String::vConcat(m_aToken[j], m_aToken2[iCurrentToken]);
         
         // check if it was numeric
-        if (!String::bExtractI8(&m_pToken2[iCurrentToken++], &iValue)) {
+        if (!String::bExtractI8(&m_aToken2[iCurrentToken++], &iValue)) {
           // drop the table
-          bDropReturnTable(m_pToken2[2]);
+          bDropReturnTable(m_aToken2[2]);
           m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
           return false;
         }
         
-        if (!String::bEqualTo(m_pToken2[iCurrentToken],")")) {
+        if (!String::bEqualTo(m_aToken2[iCurrentToken],")")) {
           // drop the table
-          bDropReturnTable(m_pToken2[2]);
+          bDropReturnTable(m_aToken2[2]);
           m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
           return false;
         }
         
         // str.cat ')'
-        String::vConcat(m_pToken[j], m_pToken2[iCurrentToken++]);
+        String::vConcat(m_aToken[j], m_aToken2[iCurrentToken++]);
         
       }
     }
-    else if (String::bEqualTo(m_pToken2[iCurrentToken], "decimal", C_NO_CASE)) {
+    else if (String::bEqualTo(m_aToken2[iCurrentToken], "decimal", C_NO_CASE)) {
       
       // copy varchar/char
-      String::vCopy(m_pToken[j], m_pToken2[iCurrentToken++]);
+      String::vCopy(m_aToken[j], m_aToken2[iCurrentToken++]);
       
-      if (String::bEqualTo(m_pToken2[iCurrentToken], "(")) {
+      if (String::bEqualTo(m_aToken2[iCurrentToken], "(")) {
         
         // str.cat '('
-        String::vConcat(m_pToken[j], m_pToken2[iCurrentToken++]);
+        String::vConcat(m_aToken[j], m_aToken2[iCurrentToken++]);
         
         // str.cat the size
-        String::vConcat(m_pToken[j], m_pToken2[iCurrentToken]);
+        String::vConcat(m_aToken[j], m_aToken2[iCurrentToken]);
         
         // check if it was numeric
-        if (!String::bExtractI8(&m_pToken2[iCurrentToken++], &iValue)) {
-          bDropReturnTable(m_pToken2[2]);
+        if (!String::bExtractI8(&m_aToken2[iCurrentToken++], &iValue)) {
+          bDropReturnTable(m_aToken2[2]);
           m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
           return false;
         }
         
-        if (!String::bEqualTo(m_pToken2[iCurrentToken],",")) {
-          bDropReturnTable(m_pToken2[2]);
+        if (!String::bEqualTo(m_aToken2[iCurrentToken],",")) {
+          bDropReturnTable(m_aToken2[2]);
           m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
           return false;
         }
         
         // str.cat ','
-        String::vConcat(m_pToken[j], m_pToken2[iCurrentToken++]);
+        String::vConcat(m_aToken[j], m_aToken2[iCurrentToken++]);
         
         // str.cat the size
-        String::vConcat(m_pToken[j], m_pToken2[iCurrentToken]);
+        String::vConcat(m_aToken[j], m_aToken2[iCurrentToken]);
         
         // check if it was numeric
-        if (!String::bExtractI8(&m_pToken2[iCurrentToken++], &iValue)) {
-          bDropReturnTable(m_pToken2[2]);
+        if (!String::bExtractI8(&m_aToken2[iCurrentToken++], &iValue)) {
+          bDropReturnTable(m_aToken2[2]);
           m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
           return false;
         }
         
-        if (!String::bEqualTo(m_pToken2[iCurrentToken],")")) {
-          bDropReturnTable(m_pToken2[2]);
+        if (!String::bEqualTo(m_aToken2[iCurrentToken],")")) {
+          bDropReturnTable(m_aToken2[2]);
           m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
           return false;
         }
         
         // str.cat ')'
-        String::vConcat(m_pToken[j], m_pToken2[iCurrentToken++]);
+        String::vConcat(m_aToken[j], m_aToken2[iCurrentToken++]);
       }
     }
-    else if (String::bEqualTo(m_pToken2[iCurrentToken], "date", C_NO_CASE) ||
-             String::bEqualTo(m_pToken2[iCurrentToken], "timestamp", C_NO_CASE) ||
-             String::bEqualTo(m_pToken2[iCurrentToken], "interval", C_NO_CASE) ||
-             String::bEqualTo(m_pToken2[iCurrentToken], "boolean", C_NO_CASE)) {
-      String::vCopy(m_pToken[j], m_pToken2[iCurrentToken++]);
+    else if (String::bEqualTo(m_aToken2[iCurrentToken], "date", C_NO_CASE) ||
+             String::bEqualTo(m_aToken2[iCurrentToken], "timestamp", C_NO_CASE) ||
+             String::bEqualTo(m_aToken2[iCurrentToken], "interval", C_NO_CASE) ||
+             String::bEqualTo(m_aToken2[iCurrentToken], "boolean", C_NO_CASE)) {
+      String::vCopy(m_aToken[j], m_aToken2[iCurrentToken++]);
     }
     else {
       // drop the table that was created
-      bDropReturnTable(m_pToken2[2]);
+      bDropReturnTable(m_aToken2[2]);
       m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
       return false;
     }
     
     // check for NOT NULL
-    if (String::bEqualTo(m_pToken2[iCurrentToken],"not", C_NO_CASE)) {
+    if (String::bEqualTo(m_aToken2[iCurrentToken],"not", C_NO_CASE)) {
       
-      String::vConcat(m_pToken[j], " ");
-      String::vConcat(m_pToken[j], m_pToken2[iCurrentToken++]);
+      String::vConcat(m_aToken[j], " ");
+      String::vConcat(m_aToken[j], m_aToken2[iCurrentToken++]);
       
-      if (!String::bEqualTo(m_pToken2[iCurrentToken],"null", C_NO_CASE)) {
-        bDropReturnTable(m_pToken2[2]);
+      if (!String::bEqualTo(m_aToken2[iCurrentToken],"null", C_NO_CASE)) {
+        bDropReturnTable(m_aToken2[2]);
         m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
         return false;
       }
-      String::vConcat(m_pToken[j], " ");
-      String::vConcat(m_pToken[j], m_pToken2[iCurrentToken++]);
+      String::vConcat(m_aToken[j], " ");
+      String::vConcat(m_aToken[j], m_aToken2[iCurrentToken++]);
     }
     
     // check for PRIMARY KEY
-    if (String::bEqualTo(m_pToken2[iCurrentToken],"primary", C_NO_CASE)) {
+    if (String::bEqualTo(m_aToken2[iCurrentToken],"primary", C_NO_CASE)) {
       
-      String::vConcat(m_pToken[j], " ");
-      String::vConcat(m_pToken[j], m_pToken2[iCurrentToken++]);
+      String::vConcat(m_aToken[j], " ");
+      String::vConcat(m_aToken[j], m_aToken2[iCurrentToken++]);
       
-      if (!String::bEqualTo(m_pToken2[iCurrentToken],"key", C_NO_CASE)) {
-        bDropReturnTable(m_pToken2[2]);
+      if (!String::bEqualTo(m_aToken2[iCurrentToken],"key", C_NO_CASE)) {
+        bDropReturnTable(m_aToken2[2]);
         m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
         return false;
       }
-      String::vConcat(m_pToken[j], " ");
-      String::vConcat(m_pToken[j], m_pToken2[iCurrentToken++]);
+      String::vConcat(m_aToken[j], " ");
+      String::vConcat(m_aToken[j], m_aToken2[iCurrentToken++]);
     }
 
     // check for UNIQUE
-    if (String::bEqualTo(m_pToken2[iCurrentToken],"unique", C_NO_CASE)) {
+    if (String::bEqualTo(m_aToken2[iCurrentToken],"unique", C_NO_CASE)) {
       
-      String::vConcat(m_pToken[j], " ");
-      String::vConcat(m_pToken[j], m_pToken2[iCurrentToken++]);
+      String::vConcat(m_aToken[j], " ");
+      String::vConcat(m_aToken[j], m_aToken2[iCurrentToken++]);
     }
 
     
     // now we should see a column type
     // validate it
-    String::vToLower(m_pToken[j]);
+    String::vToLower(m_aToken[j]);
     
     // add the column
     if (!bExecuteRequest()) {
@@ -1402,7 +1402,7 @@ bool SePrompt::bCreateTable(void)
       eEC eError = m_pSEitf->eGetLastError();
       
       // drop the table that was created
-      bDropReturnTable(m_pToken2[2]);
+      bDropReturnTable(m_aToken2[2]);
       
       // return error returned by addColumn
       m_pSEitf->vSetLastError(eError);
@@ -1414,7 +1414,7 @@ bool SePrompt::bCreateTable(void)
   bool bResult = bReturnTable();
   ASSERT(bResult);
 
-  //vTrace("Table created: %s\n", m_pToken2[2]);
+  //vTrace("Table created: %s\n", m_aToken2[2]);
   return true;
 }
 
@@ -1426,17 +1426,17 @@ void SePrompt::vCollectStatement(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   // we should have a first token (e.g. create or drop)
-  ASSERT(! String::bEqualTo(m_pToken[0],""));
+  ASSERT(! String::bEqualTo(m_aToken[0],""));
 
   // have we already seen the ';'
-  i8 iToken = m_pTokeniser->iFindToken(";",m_pToken,C_TOKENS);
+  i8 iToken = m_pTokeniser->iFindToken(";",m_aToken,C_TOKENS);
   
   if (iToken >= 0) {
-    //m_pTokeniser->vDumpTokens("\nCommand : ",m_pToken,C_TOKENS);
+    //m_pTokeniser->vDumpTokens("\nCommand : ",m_aToken,C_TOKENS);
     return;
   }
   
-  iToken = m_pTokeniser->iCountTokens(m_pToken,C_TOKENS);
+  iToken = m_pTokeniser->iCountTokens(m_aToken,C_TOKENS);
   
   // switch to terminal mode
   m_pTokeniser->vLineMode(false);
@@ -1447,11 +1447,11 @@ void SePrompt::vCollectStatement(void)
   // get tokens delimited by ';'
   for ( ; iToken < C_TOKENS; iToken++) {
     
-    eTK eToken = m_pTokeniser->eNextToken(m_pToken[iToken]);
+    eTK eToken = m_pTokeniser->eNextToken(m_aToken[iToken]);
     ASSERT(TK_NONE != eToken);
     
     // look for terminal
-    if (String::bEqualTo(m_pToken[iToken],";"))
+    if (String::bEqualTo(m_aToken[iToken],";"))
       break;
   }
   
@@ -1459,7 +1459,7 @@ void SePrompt::vCollectStatement(void)
   m_pTokeniser->vLineMode(true);
   m_pTokeniser->vPrompt(m_sPrompt);
   
-  //m_pTokeniser->vDumpTokens("Command : ",m_pToken,C_TOKENS);
+  //m_pTokeniser->vDumpTokens("Command : ",m_aToken,C_TOKENS);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1469,7 +1469,7 @@ bool SePrompt::bConnectCluster(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  ASSERT(String::bEqualTo(m_pToken[0],"connectCluster"));
+  ASSERT(String::bEqualTo(m_aToken[0],"connectCluster"));
   
   if (!bExecuteRequest()) {
     return false;
@@ -1488,16 +1488,16 @@ bool SePrompt::bDropCatalog(void)
   i8 iToken;
   i8 iNumTokens;
   
-  ASSERT(String::bEqualTo(m_pToken[0],"drop"));
-  ASSERT(String::bEqualTo(m_pToken[1],"catalog"));
+  ASSERT(String::bEqualTo(m_aToken[0],"drop"));
+  ASSERT(String::bEqualTo(m_aToken[1],"catalog"));
   
   vCollectStatement();
   
   for (iToken = 0; iToken < C_TOKENS; iToken++) {
-    if (! *m_pToken[iToken])
+    if (! *m_aToken[iToken])
       break;
-    String::vCopy(m_pToken2[iToken], m_pToken[iToken]);
-    String::vCopy(m_pToken[iToken], "");
+    String::vCopy(m_aToken2[iToken], m_aToken[iToken]);
+    String::vCopy(m_aToken[iToken], "");
   }
   
   iNumTokens = iToken;
@@ -1509,18 +1509,18 @@ bool SePrompt::bDropCatalog(void)
   }
   
   // last token should be ';'
-  if (!String::bEqualTo(m_pToken2[3] , ";")) {
+  if (!String::bEqualTo(m_aToken2[3] , ";")) {
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
   }
   
   // drop a catalog
-  String::vCopy(m_pToken[0], "rmcat");
-  String::vCopy(m_pToken[1], m_pToken2[2]);
+  String::vCopy(m_aToken[0], "rmcat");
+  String::vCopy(m_aToken[1], m_aToken2[2]);
   if (!bExecuteRequest())
     return false;
   
-  //vTrace("Catalog dropped: %s\n", m_pToken2[2]);
+  //vTrace("Catalog dropped: %s\n", m_aToken2[2]);
   return true;
 }
 
@@ -1534,16 +1534,16 @@ bool SePrompt::bDropSchema(void)
   i8 iToken;
   i8 iNumTokens;
   
-  ASSERT(String::bEqualTo(m_pToken[0],"drop"));
-  ASSERT(String::bEqualTo(m_pToken[1],"schema"));
+  ASSERT(String::bEqualTo(m_aToken[0],"drop"));
+  ASSERT(String::bEqualTo(m_aToken[1],"schema"));
   
   vCollectStatement();
   
   for (iToken = 0; iToken < C_TOKENS; iToken++) {
-    if (! *m_pToken[iToken])
+    if (! *m_aToken[iToken])
       break;
-    String::vCopy(m_pToken2[iToken], m_pToken[iToken]);
-    String::vCopy(m_pToken[iToken], "");
+    String::vCopy(m_aToken2[iToken], m_aToken[iToken]);
+    String::vCopy(m_aToken[iToken], "");
   }
   
   iNumTokens = iToken;
@@ -1554,18 +1554,18 @@ bool SePrompt::bDropSchema(void)
   }
   
   // last token should be ';'
-  if (!String::bEqualTo(m_pToken2[3] , ";")) {
+  if (!String::bEqualTo(m_aToken2[3] , ";")) {
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
   }
   
   // drop a schema
-  String::vCopy(m_pToken[0], "rmsch");
-  String::vCopy(m_pToken[1], m_pToken2[2]);
+  String::vCopy(m_aToken[0], "rmsch");
+  String::vCopy(m_aToken[1], m_aToken2[2]);
   if (!bExecuteRequest())
     return false;
   
-  //vTrace("Schema dropped: %s\n", m_pToken2[2]);
+  //vTrace("Schema dropped: %s\n", m_aToken2[2]);
   return true;
 }
 
@@ -1579,16 +1579,16 @@ bool SePrompt::bDropTable(void)
   i8 iToken;
   i8 iNumTokens;
   
-  ASSERT(String::bEqualTo(m_pToken[0],"drop"));
-  ASSERT(String::bEqualTo(m_pToken[1],"table"));
+  ASSERT(String::bEqualTo(m_aToken[0],"drop"));
+  ASSERT(String::bEqualTo(m_aToken[1],"table"));
   
   vCollectStatement();
   
   for (iToken = 0; iToken < C_TOKENS; iToken++) {
-    if (! *m_pToken[iToken])
+    if (! *m_aToken[iToken])
       break;
-    String::vCopy(m_pToken2[iToken], m_pToken[iToken]);
-    String::vCopy(m_pToken[iToken], "");
+    String::vCopy(m_aToken2[iToken], m_aToken[iToken]);
+    String::vCopy(m_aToken[iToken], "");
   }
   
   iNumTokens = iToken;
@@ -1600,18 +1600,18 @@ bool SePrompt::bDropTable(void)
   }
   
   // last token should be ';'
-  if (!String::bEqualTo(m_pToken2[3] , ";")) {
+  if (!String::bEqualTo(m_aToken2[3] , ";")) {
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
   }
   
   // drop a table
-  String::vCopy(m_pToken[0], "rmtbl");
-  String::vCopy(m_pToken[1], m_pToken2[2]);
+  String::vCopy(m_aToken[0], "rmtbl");
+  String::vCopy(m_aToken[1], m_aToken2[2]);
   if (!bExecuteRequest())
     return false;
   
-  //vTrace("Table dropped: %s\n", m_pToken2[2]);
+  //vTrace("Table dropped: %s\n", m_aToken2[2]);
   return true;
 }
 
@@ -1626,9 +1626,9 @@ bool SePrompt::bDropReturnTable(char* pTableName)
   bool bResult = bReturnTable();
   ASSERT(bResult);
   
-  String::vCopy(m_pToken[0], "rmtbl");
-  String::vCopy(m_pToken[1], pTableName);
-  String::vCopy(m_pToken[2], "");
+  String::vCopy(m_aToken[0], "rmtbl");
+  String::vCopy(m_aToken[1], pTableName);
+  String::vCopy(m_aToken[2], "");
   
   if (!bExecuteRequest()) {
     //vTrace("Error: (%s) Drop Table %s\n", m_sResponse.aStr(), pTableName);
@@ -1647,16 +1647,16 @@ bool SePrompt::bDropTenant(void)
   i8 iToken;
   i8 iNumTokens;
   
-  ASSERT(String::bEqualTo(m_pToken[0],"drop"));
-  ASSERT(String::bEqualTo(m_pToken[1],"tenant"));
+  ASSERT(String::bEqualTo(m_aToken[0],"drop"));
+  ASSERT(String::bEqualTo(m_aToken[1],"tenant"));
   
   vCollectStatement();
   
   for (iToken = 0; iToken < C_TOKENS; iToken++) {
-    if (! *m_pToken[iToken])
+    if (! *m_aToken[iToken])
       break;
-    String::vCopy(m_pToken2[iToken], m_pToken[iToken]);
-    String::vCopy(m_pToken[iToken], "");
+    String::vCopy(m_aToken2[iToken], m_aToken[iToken]);
+    String::vCopy(m_aToken[iToken], "");
   }
   
   iNumTokens = iToken;
@@ -1668,19 +1668,19 @@ bool SePrompt::bDropTenant(void)
   }
   
   // last token should be ';'
-  if (!String::bEqualTo(m_pToken2[3] , ";")) {
+  if (!String::bEqualTo(m_aToken2[3] , ";")) {
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
   }
   
   // drop a tenant
-  String::vCopy(m_pToken[0], "rmten");
-  String::vCopy(m_pToken[1], m_pToken2[2]);
+  String::vCopy(m_aToken[0], "rmten");
+  String::vCopy(m_aToken[1], m_aToken2[2]);
   if (!bExecuteRequest()) {
     return false;
   }
   
-  //vTrace("Tenant dropped: %s\n", m_pToken2[2]);
+  //vTrace("Tenant dropped: %s\n", m_aToken2[2]);
   
   return true;
 }
@@ -1695,16 +1695,16 @@ bool SePrompt::bEndInsert(void)
   i8 iToken;
   i8 iNumTokens;
   
-  ASSERT(String::bEqualTo(m_pToken[0],"end"));
-  ASSERT(String::bEqualTo(m_pToken[1],"insert"));
+  ASSERT(String::bEqualTo(m_aToken[0],"end"));
+  ASSERT(String::bEqualTo(m_aToken[1],"insert"));
   
   vCollectStatement();
   
   for (iToken = 0; iToken < C_TOKENS; iToken++) {
-    if (! *m_pToken[iToken])
+    if (! *m_aToken[iToken])
       break;
-    String::vCopy(m_pToken2[iToken], m_pToken[iToken]);
-    String::vCopy(m_pToken[iToken], "");
+    String::vCopy(m_aToken2[iToken], m_aToken[iToken]);
+    String::vCopy(m_aToken[iToken], "");
   }
   
   iNumTokens = iToken;
@@ -1715,7 +1715,7 @@ bool SePrompt::bEndInsert(void)
   }
   
   // last token should be ';'
-  if (!String::bEqualTo(m_pToken2[3] , ";")) {
+  if (!String::bEqualTo(m_aToken2[3] , ";")) {
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
   }
@@ -1771,16 +1771,16 @@ bool SePrompt::bInsertRow(void)
   i8 iToken;
   i8 iNumTokens;
   
-  ASSERT(String::bEqualTo(m_pToken[0],"insert"));
-  ASSERT(String::bEqualTo(m_pToken[1],"row"));
+  ASSERT(String::bEqualTo(m_aToken[0],"insert"));
+  ASSERT(String::bEqualTo(m_aToken[1],"row"));
   
   vCollectStatement();
   
   for (iToken = 0; iToken < C_TOKENS; iToken++) {
-    if (! *m_pToken[iToken])
+    if (! *m_aToken[iToken])
       break;
-    String::vCopy(m_pToken2[iToken], m_pToken[iToken]);
-    String::vCopy(m_pToken[iToken], "");
+    String::vCopy(m_aToken2[iToken], m_aToken[iToken]);
+    String::vCopy(m_aToken[iToken], "");
   }
   
   iNumTokens = iToken;
@@ -1791,7 +1791,7 @@ bool SePrompt::bInsertRow(void)
   }
   
   // last token should be ';'
-  if (!String::bEqualTo(m_pToken2[3] , ";")) {
+  if (!String::bEqualTo(m_aToken2[3] , ";")) {
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
   }
@@ -1809,7 +1809,7 @@ bool SePrompt::bInsertRow(void)
     return EC_NO_SUCH_TABLE;
   }
   
-  char* pRow = m_pToken2[2];
+  char* pRow = m_aToken2[2];
   bool bResult = m_pSEitf->bInsertRow(pRow);
   
   if (!bResult) {
@@ -1832,7 +1832,7 @@ bool SePrompt::bListDir(void)
   s256 sDirEntry;
   i8 iEntryType;
   
-  ASSERT(String::bEqualTo(m_pToken[0],"ls"));
+  ASSERT(String::bEqualTo(m_aToken[0],"ls"));
   
   // get the current directory
   if (!xDir.bGetCurrent(sDir)) {
@@ -1869,7 +1869,7 @@ bool SePrompt::bObject(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  ASSERT(String::bEqualTo(m_pToken[0],"object"));
+  ASSERT(String::bEqualTo(m_aToken[0],"object"));
   
   if (!bExecuteRequest()) {
     return false;
@@ -1885,7 +1885,7 @@ bool SePrompt::bPoolSpace(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  ASSERT(String::bEqualTo(m_pToken[0],"space"));
+  ASSERT(String::bEqualTo(m_aToken[0],"space"));
     
   if (!bExecuteRequest()) {
     return false;
@@ -1901,7 +1901,7 @@ bool SePrompt::bNodeStatus(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  ASSERT(String::bEqualTo(m_pToken[0],"status"));
+  ASSERT(String::bEqualTo(m_aToken[0],"status"));
   
   if (!bExecuteRequest()) {
     return false;
@@ -1920,7 +1920,7 @@ bool SePrompt::bPrintWorkingDir(void)
   Dir xDir;
   s256 sDir;
   
-  ASSERT(String::bEqualTo(m_pToken[0],"pwd"));
+  ASSERT(String::bEqualTo(m_aToken[0],"pwd"));
   
   if (xDir.bGetCurrent(sDir)) {
     vTrace("%s", sDir.aStr());
@@ -1942,16 +1942,16 @@ bool SePrompt::bUseSchema(void)
   i8 iToken;
   i8 iNumTokens;
   
-  ASSERT(String::bEqualTo(m_pToken[0],"use"));
-  ASSERT(String::bEqualTo(m_pToken[1],"schema"));
+  ASSERT(String::bEqualTo(m_aToken[0],"use"));
+  ASSERT(String::bEqualTo(m_aToken[1],"schema"));
   
   vCollectStatement();
   
   for (iToken = 0; iToken < C_TOKENS; iToken++) {
-    if (! *m_pToken[iToken])
+    if (! *m_aToken[iToken])
       break;
-    String::vCopy(m_pToken2[iToken], m_pToken[iToken]);
-    String::vCopy(m_pToken[iToken], "");
+    String::vCopy(m_aToken2[iToken], m_aToken[iToken]);
+    String::vCopy(m_aToken[iToken], "");
   }
   
   iNumTokens = iToken;
@@ -1962,18 +1962,18 @@ bool SePrompt::bUseSchema(void)
   }
   
   // last token should be ';'
-  if (!String::bEqualTo(m_pToken2[3] , ";")) {
+  if (!String::bEqualTo(m_aToken2[3] , ";")) {
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
   }
   
   // drop a schema
-  String::vCopy(m_pToken[0], "usesch");
-  String::vCopy(m_pToken[1], m_pToken2[2]);
+  String::vCopy(m_aToken[0], "usesch");
+  String::vCopy(m_aToken[1], m_aToken2[2]);
   if (!bExecuteRequest())
     return false;
   
-  //vTrace("Schema changed: %s\n", m_pToken2[2]);
+  //vTrace("Schema changed: %s\n", m_aToken2[2]);
   return true;
 }
 
