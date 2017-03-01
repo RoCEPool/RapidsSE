@@ -9,7 +9,7 @@
 namespace DBobjects
 {
   class EntWsp : public Object,
-                 public Wsp<C_1KB*15>
+                 public WspFxd<C_1KB*15>
   {
   private:
     RowId  m_xRowId;   // row id
