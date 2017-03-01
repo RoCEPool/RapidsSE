@@ -9,7 +9,7 @@
 namespace DBobjects
 {
   class KeyWsp : public Object,
-                 public WspFxd<C_1KB*15>
+                 public Wsp<C_1KB*15>
   {
   private:
     Footer m_xFooter;

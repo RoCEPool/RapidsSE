@@ -8,7 +8,7 @@
 namespace Common
 {
   class Scratch : public Object,
-                  public WspFxd<C_512KB>
+                  public Wsp<C_512KB>
   {
   private:
     // must be last

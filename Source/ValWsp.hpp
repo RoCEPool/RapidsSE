@@ -9,7 +9,7 @@
 namespace Values
 {
   class ValWsp : public Value,
-                 public WspFxd<C_64K>
+                 public Wsp<C_64K>
   {
   private:
   

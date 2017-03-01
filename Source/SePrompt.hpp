@@ -35,8 +35,8 @@ private:
   char*     m_pToken2[C_TOKENS];
   Tokeniser* m_pTokeniser; // input stream tokeniser
 
-  WspFxd<C_TOKEN_AREA> m_xTokenArea;
-  WspFxd<C_TOKEN_AREA> m_xTokenArea2;
+  Wsp<C_TOKEN_AREA> m_xTokenArea;
+  Wsp<C_TOKEN_AREA> m_xTokenArea2;
   
   // must be last
   Footer m_xFooter;

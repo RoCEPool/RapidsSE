@@ -11,7 +11,7 @@ namespace Structures
   static const i8 C_LOADCHUNK_SIZE = C_1M; // its 1M not 1MB (i.e. < 1MB)
   
   class LoadChunk : public Buffer,
-                    public WspFxd<C_LOADCHUNK_SIZE> 
+                    public Wsp<C_LOADCHUNK_SIZE> 
   {
   private:
     File  m_xFile;       // file being loaded
