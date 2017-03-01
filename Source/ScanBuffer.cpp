@@ -158,7 +158,7 @@ char* ScanBuffer::aScan(i8& nMessageBytes)
   
     if (*m_aNextMsg == '\n') {
       nMessageBytes = nSub(m_aNextMsg,pMsg);
-      ASSERT(nMessageBytes <= nWspSize());
+      ASSERT(nMessageBytes <= nWspLength());
       m_aNextMsg++;
       ASSERT(m_aEndData >= aFirstByte() - 1);
       ASSERT(m_aEndData <= aLastByte());
@@ -214,7 +214,7 @@ i8 ScanBuffer::iBytesAvailable(void)
   ASSERT(m_aEndData <= aLastByte());
   
   i8 nBytes = nSub(aLastByte(),m_aEndData);
-  ASSERT(nBytes <= nWspSize());
+  ASSERT(nBytes <= nWspLength());
   
   return nBytes;
 }
@@ -254,7 +254,7 @@ void ScanBuffer::vCopyUp(char* aDangling)
   
   // copy dangling data bytes to begining of workarea
   i8 nDanglingBytes = nSub(aLastByte(),aDangling) + 1;
-  ASSERT(nDanglingBytes <= nWspSize());
+  ASSERT(nDanglingBytes <= nWspLength());
   
   Memory::vCopy(aFirstByte(),aDangling,nDanglingBytes);
   m_aEndData = pAdd<char*>(aFirstByte(),nDanglingBytes - 1);
@@ -297,7 +297,7 @@ char* ScanBuffer::aLastByte(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SCANBUFFER,_FOOTER_);
   
-  char* pLast = &aWspArea()[nWspSize() - 1];
+  char* pLast = &aWspArea()[nWspLength() - 1];
   
   return pLast;
 }
@@ -324,7 +324,7 @@ void ScanBuffer::vReset(void)
   m_aNextMsg = nullptr;
   vWipe();
   
-  ASSERT(nWspSize() == iBytesAvailable());
+  ASSERT(nWspLength() == iBytesAvailable());
 }
 
 /*----------------------------------------------------------------------------*/

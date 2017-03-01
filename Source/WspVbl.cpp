@@ -51,6 +51,14 @@ i8 WspVbl::nWspFree(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get length of data area                                                    */
+/*----------------------------------------------------------------------------*/
+i8 WspVbl::nWspLength(void)
+{  
+  return m_nAreaUsed;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get next available chunk in data area                                      */
 /*----------------------------------------------------------------------------*/
 char* WspVbl::aWspNext(void)
@@ -59,14 +67,14 @@ char* WspVbl::aWspNext(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get size of data area                                                      */
+/* get size of this WspVbl                                                    */
 /*----------------------------------------------------------------------------*/
-i8 WspVbl::nWspSize(void)
-{
-  i8 nSize = sizeof(WspVbl) + m_nAreaUsed;
-  
-  return nSize;
-}
+//i8 WspVbl::nWspSize(void)
+//{
+//  i8 nSize = sizeof(WspVbl) + m_nAreaUsed;
+//  
+//  return nSize;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* take chunk in data area                                                    */

@@ -630,7 +630,7 @@ bool File::bReadLine(StrVal& s)
     
     if (m_pNext == m_pLimit) {
       m_pNext = m_pScratch->aScratchArea();
-      i8 iBytesRead = fread(m_pNext,1,m_pScratch->nWspSize(),m_pFilePtr);
+      i8 iBytesRead = fread(m_pNext,1,m_pScratch->nWspLength(),m_pFilePtr);
       
       if ( ! iBytesRead )
         break;
@@ -695,7 +695,7 @@ bool File::bReadRecord(void)
     
     if (m_pNext == m_pLimit) {
       m_pNext = m_pScratch->aScratchArea();
-      i8 iBytesRead = fread(m_pNext,1,m_pScratch->nWspSize(),m_pFilePtr);
+      i8 iBytesRead = fread(m_pNext,1,m_pScratch->nWspLength(),m_pFilePtr);
       
       if ( ! iBytesRead )
         break;

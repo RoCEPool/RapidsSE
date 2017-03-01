@@ -27,8 +27,8 @@ namespace Magic
     char* aWspArea(void);
     void  vWspFill(char cByte);
     i8    nWspFree(void);
+    i8    nWspLength(void);
     char* aWspNext(void);
-    i8    nWspSize(void);
     void  vWspTake(i8 nBytes);
     i8    nWspUsed(void);
     void  vWspUsed(i8 nBytes);
