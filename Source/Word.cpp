@@ -66,10 +66,12 @@ Word::Word(const char* sName)
   m_bImmediate    = false;
   m_iParams       = 0;
   m_sFinalRoutine = "";
-  m_iDataBytes    = 0;
+//  m_iDataBytes    = 0;
   m_pPrevWord     = nullptr;
   m_iVariable     = 0;
 
+  m_xBody.vWspZero();
+  
   _setFooter_();
   
   m_pEntryStep   = &Tasks::Task::vEnterRoutine;
@@ -93,16 +95,29 @@ Word::~Word(void)
 /*----------------------------------------------------------------------------*/
 /* allot data space                                                           */
 /*----------------------------------------------------------------------------*/
-char* Word::pAllot(i8 iBytes)
+//char* Word::pAllot(i8 iBytes)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+//
+//  char* aAddress = pAdd<char*>(pFirstCell(),m_iDataBytes);
+//  
+//  //gpMainDic->vExtendLinear(iBytes);
+//  
+//  m_iDataBytes += iBytes;
+//
+//  _setFooter_();
+//  
+//  _postcondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+//  
+//  return aAddress;
+//}
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+char* Word::pAllot(i8 nBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
-
-  char* aAddress = pAdd<char*>(pFirstCell(),m_iDataBytes);
   
-  //gpMainDic->vExtendLinear(iBytes);
+  char* aAddress = m_xBody.aWspAllot(nBytes);
   
-  m_iDataBytes += iBytes;
-
   _setFooter_();
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
@@ -229,7 +244,8 @@ void Word::vContentDump(void)
          m_pKind->m_sName.aStr(),
          m_bIndirect,
          m_bImmediate,
-         m_iDataBytes,
+//       m_iDataBytes,
+         m_xBody.nWspUsed(),
          m_pEntryStep,
          pStepWord ? pStepWord->sName().aStr() : "<not-found>",
          pFirstCell()
@@ -279,35 +295,60 @@ void Word::vEntryStep(TaskStep pStep)
 /*----------------------------------------------------------------------------*/
 /* get ptr to data area                                                       */
 /*----------------------------------------------------------------------------*/
+//char* Word::aBodyArea(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+//  
+//  char* aDataArea = pAdd<char*>(this,sizeof(Word));
+//  
+//  return pPoolCheck<char*>((void*)aDataArea);
+//}
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 char* Word::aBodyArea(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  char* aDataArea = pAdd<char*>(this,sizeof(Word));
+  char* aBody = m_xBody.aWspArea();
   
-  return pPoolCheck<char*>((void*)aDataArea);
+  return pPoolCheck<char*>((void*)aBody);
 }
 
 /*----------------------------------------------------------------------------*/
 /* get latter part (current logical end) of body                              */
 /*----------------------------------------------------------------------------*/
+//char* Word::aBodyLatter(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+//  
+//  char* pDataEnd = pAdd<char*>(this,sizeof(Word) + m_iDataBytes);
+//  
+//  return pPoolCheck<char*>((void*)pDataEnd);
+//}
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 char* Word::aBodyLatter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  char* pDataEnd = pAdd<char*>(this,sizeof(Word) + m_iDataBytes);
+  char* aLatter = m_xBody.aWspLatter();
   
-  return pPoolCheck<char*>((void*)pDataEnd);
+  return pPoolCheck<char*>((void*)aLatter);
 }
 
 /*----------------------------------------------------------------------------*/
 /* get number of data bytes                                                   */
 /*----------------------------------------------------------------------------*/
+//i8 Word::nBodyUsed(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+//  
+//  return m_iDataBytes;
+//}
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 i8 Word::nBodyUsed(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  return m_iDataBytes;
+  return m_xBody.nWspUsed();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -463,12 +504,21 @@ char* Word::pFinalRoutine(void)
 /*----------------------------------------------------------------------------*/
 /* get pointer to first cell in data area                                     */
 /*----------------------------------------------------------------------------*/
+//Cell* Word::pFirstCell(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+//
+//  Cell* pFirst = pAdd<Cell*>((void*)this,sizeof(Word));
+//                                         
+//  return pPoolCheck<Cell*>(pFirst);
+//}
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Cell* Word::pFirstCell(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
-
-  Cell* pFirst = pAdd<Cell*>((void*)this,sizeof(Word));
-                                         
+  
+  Cell* pFirst = reinterpret_cast<Cell*>(m_xBody.aWspArea());
+  
   return pPoolCheck<Cell*>(pFirst);
 }
 
@@ -563,11 +613,20 @@ void Word::vKind(Word* pKind)
 /*----------------------------------------------------------------------------*/
 /* get pointer to last cell                                                   */
 /*----------------------------------------------------------------------------*/
+//Cell* Word::pLastCell(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+//  
+//  Cell* pLast = pAdd<Cell*>((void*)this,sizeof(Word) + m_iDataBytes);
+//  
+//  return pPoolCheck<Cell*>(pLast);
+//}
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Cell* Word::pLastCell(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  Cell* pLast = pAdd<Cell*>((void*)this,sizeof(Word) + m_iDataBytes);
+  Cell* pLast = reinterpret_cast<Cell*>(m_xBody.aWspLatter());
   
   return pPoolCheck<Cell*>(pLast);
 }
@@ -597,7 +656,8 @@ void Word::vObjectDump(const char* aTab)
          pWT[m_eWordType],
          m_bIndirect ? "Indirect" : "Not Indirect",
          m_bImmediate ? "Immediate" : "Not Immediate",
-         m_iDataBytes,
+//       m_iDataBytes,
+         m_xBody.nWspUsed(),
          m_pEntryStep,
          pFirstCell()
          );
@@ -646,14 +706,23 @@ void Word::vPrevWord(Word* pPrevWord)
 /*----------------------------------------------------------------------------*/
 /* get size in bytes of this word                                             */
 /*----------------------------------------------------------------------------*/
-i8 Word::iSize(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
-  
-  i8 nBytes = sizeof(Word) - 1 + m_iDataBytes;
-
-  return nBytes;
-}
+//i8 Word::iSize(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+//  
+//  i8 nBytes = sizeof(Word) - 1 + m_iDataBytes;
+//
+//  return nBytes;
+//}
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//i8 Word::iSize(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+//  
+//  i8 nBytes = sizeof(Word);
+//  
+//  return nBytes;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* get variable number                                                        */
@@ -702,11 +771,27 @@ void Word::vWordType(eWT eWordType)
 /*----------------------------------------------------------------------------*/
 /* get the outer word of this data ptr                                        */
 /*----------------------------------------------------------------------------*/
-Word* Word::pToWord(void* pData)
+//Word* Word::pToWord(void* pData)
+//{
+//  // static function
+//  
+//  Word* pWord = _pWord( (char*)(pData) - sizeof(Word) );
+//  
+//  ASSERT(pWord->eClass() == CN_WORD);
+//  
+//  return pWord;
+//}
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Word* Word::pToWord(void* pBody)
 {
   // static function
   
-  Word* pWord = _pWord( (char*)(pData) - sizeof(Word) );
+  Word* pWord = pAdd<Word*>(pBody,
+                            -( sizeof(Word)
+                              - sizeof(WspFxd<C_SIZE_MEDIUM_OBJECT - C_1KB>)
+                              - sizeof(Footer)
+                              )
+                            );
   
   ASSERT(pWord->eClass() == CN_WORD);
   
@@ -720,13 +805,20 @@ Word* Word::pToWord(void* pData)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
+//Footer* Word::pFooter(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD);
+//  
+//  Footer* pFooter = pAdd<Footer*>(this,sizeof(Word)+m_iDataBytes);
+//
+//  return pFooter;
+//}
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Footer* Word::pFooter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD);
   
-  Footer* pFooter = pAdd<Footer*>(this,sizeof(Word)+m_iDataBytes);
-
-  return pFooter;
+  return &m_xFooter;
 }
 
 /*============================================================================*/

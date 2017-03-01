@@ -48,8 +48,16 @@ void Task::vEnterObject(NNP_Task nnpTask)
   nnpTask->m_pReturnStack->vPush(nnpTask->IP.m_pCell);
   nnpTask->IP.m_pCell = *(Cell**)nnpTask->m_pEntryCell;
   
-  Word* pWord = pAdd<Word*>(nnpTask->m_pEntryCell,-(sizeof(Word)-sizeof(Cell*)));
-  
+  //  Word* pWord = pAdd<Word*>(nnpTask->m_pEntryCell,-(sizeof(Word)-sizeof(Cell*)));
+
+  Word* pWord = pAdd<Word*>(nnpTask->m_pEntryCell,
+                            -( sizeof(Word)
+                               - sizeof(Cell*)
+                               - sizeof(WspFxd<C_SIZE_MEDIUM_OBJECT - C_1KB>)
+                               - sizeof(Footer)
+                             )
+                            );
+
   ASSERT(WT_OBJECT == pWord->eWordType());
   
   Object* pObject = (Object*)pWord->pFirstCell();

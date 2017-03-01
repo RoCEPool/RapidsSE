@@ -71,7 +71,7 @@ namespace Dictionaries
     s32      m_sFinalRoutine; // final routine to be called after all participants repond
     Word*    m_pPrevWord;    // previous word in dictionary
     i8       m_iVariable;    // variable number
-    i8       m_iDataBytes;   // number of data bytes
+//  i8       m_iDataBytes;   // number of data bytes
     TaskStep m_pEntryStep;   // entry step for this word
     Cell*    m_pEntryCell;   // the cell to start executing from
                              //   for normal words this will be the first cell
@@ -81,7 +81,9 @@ namespace Dictionaries
                              //   for primitives this will be null
     // ..data..
   
-  //WspFxd<C_SIZE_MEDIUM_OBJECT - C_1KB> m_xBody;
+    WspFxd<C_SIZE_MEDIUM_OBJECT - C_1KB> m_xBody;
+  
+  Footer m_xFooter;
   
    public:
     void* operator new(size_t, Dic* pDic);
