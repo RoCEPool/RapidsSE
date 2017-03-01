@@ -28,7 +28,7 @@ namespace Structures
     
     Footer m_xHazard;
     
-    Wsp<C_STACK_AREA> m_xWsp;
+    WspFxd<C_STACK_AREA> m_xWsp;
     
     // must be last
     Footer m_xFooter;

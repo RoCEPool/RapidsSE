@@ -9,7 +9,7 @@
 namespace Structures
 {
   class ScanBuffer : public Buffer,
-                     public Wsp<C_1M>
+                     public WspFxd<C_1M>
   {
   private:
     char* m_aNextMsg;  // area where next message starts
