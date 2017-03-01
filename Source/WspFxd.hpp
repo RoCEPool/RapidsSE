@@ -15,7 +15,7 @@
 namespace Magic
 {
   template<int SIZE>
-  class WspFxd : public WspAbs
+  class WspFxd : public Wsp
   {
   private:
     char m_cArea[SIZE];  // ..dataArea..
@@ -68,7 +68,7 @@ void WspFxd<SIZE>::vWspAppend(void* aSrc, i8 nBytes)
 template<int SIZE>
 char* WspFxd<SIZE>::aWspArea(void)
 {
-  char* aArea = WspAbs::aWspArea();
+  char* aArea = Wsp::aWspArea();
   
   return aArea;
 }
@@ -79,7 +79,7 @@ char* WspFxd<SIZE>::aWspArea(void)
 template<int SIZE>
 void WspFxd<SIZE>::vWspFill(char cByte)
 {
-  WspAbs::vWspFill(cByte,SIZE);
+  Wsp::vWspFill(cByte,SIZE);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -139,7 +139,7 @@ i8 WspFxd<SIZE>::nWspUsed(void)
 template<int SIZE>
 void WspFxd<SIZE>::vWspZero(void)
 {
-  WspAbs::vWspZero(SIZE);
+  Wsp::vWspZero(SIZE);
 }
 
 /*============================================================================*/

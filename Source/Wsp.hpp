@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* WspAbs.hpp -- fixed-sized workspace (abstract)                             */
+/* Wsp.hpp -- abstract workspace                                              */
 /*============================================================================*/
 
 /*
@@ -14,12 +14,12 @@
 
 namespace Magic
 {
-  class WspAbs : public Part
+  class Wsp : public Part
   {
   private:
   
   public:
-    WspAbs(void);
+    Wsp(void);
 
     void  vWspAppend(void* aSrc, i8 nBytes);
     char* aWspArea(void);
