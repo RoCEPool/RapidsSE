@@ -17,7 +17,7 @@ WspVbl::WspVbl(void)
 /*----------------------------------------------------------------------------*/
 void WspVbl::vWspAppend(void* aSrc, i8 nBytes)
 {
-  void* aDst = aWspNext();
+  void* aDst = aWspLatter();
   
   Memory::vCopy(aDst,aSrc,nBytes);
   
@@ -61,7 +61,7 @@ i8 WspVbl::nWspLength(void)
 /*----------------------------------------------------------------------------*/
 /* get next available chunk in data area                                      */
 /*----------------------------------------------------------------------------*/
-char* WspVbl::aWspNext(void)
+char* WspVbl::aWspLatter(void)
 {
   return &aWspArea()[m_nAreaUsed];
 }

@@ -28,8 +28,8 @@ namespace Magic
     char* aWspArea(void);
     void  vWspFill(char cByte);
     i8    nWspFree(void);
+    char* aWspLatter(void);
     i8    nWspLength(void);
-    char* aWspNext(void);
     i8    nWspSize(void);
     void  vWspTake(i8 nBytes);
     i8    nWspUsed(void);
@@ -56,7 +56,7 @@ void WspFxd<LENGTH>::vWspAppend(void* aSrc, i8 nBytes)
 {
   ASSERT(nWspUsed() + nBytes <= LENGTH);
   
-  void* aDst = aWspNext();
+  void* aDst = aWspLatter();
 
   Memory::vCopy(aDst,aSrc,nBytes);
   
@@ -107,7 +107,7 @@ i8 WspFxd<LENGTH>::nWspLength(void)
 /* get address of next available chunk in byte area                           */
 /*----------------------------------------------------------------------------*/
 template<int LENGTH>
-char* WspFxd<LENGTH>::aWspNext(void)
+char* WspFxd<LENGTH>::aWspLatter(void)
 {
   char* aNext = &aWspArea()[nWspUsed()];
   

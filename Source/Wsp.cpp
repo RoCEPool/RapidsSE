@@ -68,9 +68,9 @@ i8 Wsp::nWspLength(void)
 /*----------------------------------------------------------------------------*/
 /* get next available chunk in byte area                                      */
 /*----------------------------------------------------------------------------*/
-char* Wsp::aWspNext(void)
+char* Wsp::aWspLatter(void)
 {
-  vFatal("Wsp::nWspNext: not overridden\n");
+  vFatal("Wsp::nWspLatter: not overridden\n");
   
   return nullptr;
 }
