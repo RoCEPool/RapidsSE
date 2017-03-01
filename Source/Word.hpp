@@ -80,7 +80,9 @@ namespace Dictionaries
                              //     does in the defining word
                              //   for primitives this will be null
     // ..data..
-    
+  
+  //WspFxd<C_SIZE_MEDIUM_OBJECT - C_1KB> m_xBody;
+  
    public:
     void* operator new(size_t, Dic* pDic);
     void  operator delete(void* pWordAddress);
@@ -100,9 +102,11 @@ namespace Dictionaries
     void* pAppend(Value* pValue);
     void  vAppend(Value* pValue);
     void  vContentDump(void);
-    char* pDataArea(void);
-    i8    iDataBytes(void);
-    char* pDataEnd(void);
+  
+    char* aBodyArea(void);
+    char* aBodyLatter(void);
+    i8    nBodyUsed(void);
+  
     Dic*  pDic(void);
     i8    iEpoch(void);
     void  vEntryCell(Cell* pCell);

@@ -171,7 +171,7 @@ ENTRY("vSEitfCursorInit");
   sName = "seitflist";
   Word* pWord = nnpTask->m_xPathStack.pFindWord(sName.aStr());
   ASSERT(pWord);
-  SEitfList* pSEitfList = reinterpret_cast<SEitfList*>(pWord->pDataArea());
+  SEitfList* pSEitfList = reinterpret_cast<SEitfList*>(pWord->aBodyArea());
   
   
   new(pSEitfCursor) SEitfCursor(pSEitfList);

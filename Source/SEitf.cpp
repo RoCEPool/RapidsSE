@@ -183,7 +183,7 @@ void SEitf::vInit(void)
   // request queue
   Word* pReqQueWord = gpMainDic->pFindWord("requestQueue");
   ASSERT(pReqQueWord);
-  m_pRequestQueue = reinterpret_cast<Queue*>(pReqQueWord->pDataArea());
+  m_pRequestQueue = reinterpret_cast<Queue*>(pReqQueWord->aBodyArea());
   
   // response queue
   m_pResponseQueue = new Queue;

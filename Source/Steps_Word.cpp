@@ -848,7 +848,7 @@ void Task::vSubDic(NNP_Task nnpTask)
   if ( ! pWordSubDic )
     THROW("No such subDic: %s",sNameSubDic.aStr());
   
-  Dic* pDic = _pDic(pWordSubDic->pDataArea());
+  Dic* pDic = _pDic(pWordSubDic->aBodyArea());
   
   nnpTask->m_xPathStack.vPush(pDic);
 

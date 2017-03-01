@@ -279,35 +279,35 @@ void Word::vEntryStep(TaskStep pStep)
 /*----------------------------------------------------------------------------*/
 /* get ptr to data area                                                       */
 /*----------------------------------------------------------------------------*/
-char* Word::pDataArea(void)
+char* Word::aBodyArea(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  char* pDataArea = pAdd<char*>(this,sizeof(Word));
+  char* aDataArea = pAdd<char*>(this,sizeof(Word));
   
-  return pPoolCheck<char*>((void*)pDataArea);
+  return pPoolCheck<char*>((void*)aDataArea);
 }
 
 /*----------------------------------------------------------------------------*/
-/* get number of data bytes                                                   */
+/* get latter part (current logical end) of body                              */
 /*----------------------------------------------------------------------------*/
-i8 Word::iDataBytes(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
-  
-  return m_iDataBytes;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get current end of data                                                    */
-/*----------------------------------------------------------------------------*/
-char* Word::pDataEnd(void)
+char* Word::aBodyLatter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
   char* pDataEnd = pAdd<char*>(this,sizeof(Word) + m_iDataBytes);
   
   return pPoolCheck<char*>((void*)pDataEnd);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of data bytes                                                   */
+/*----------------------------------------------------------------------------*/
+i8 Word::nBodyUsed(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+  
+  return m_iDataBytes;
 }
 
 /*----------------------------------------------------------------------------*/

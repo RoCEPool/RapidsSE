@@ -111,7 +111,7 @@ ENTRY("vCommonSlash");
     Word* pWordDic = nnpTask->m_xPathStack.pFindWord(sDicName);
     if (pWordDic) {
       // use that dictionary
-      pSubDic = _pDic(pWordDic->pDataArea());
+      pSubDic = _pDic(pWordDic->aBodyArea());
       nnpTask->m_nVariables = pSubDic->nWords();
     }
     else {
@@ -120,7 +120,7 @@ ENTRY("vCommonSlash");
       pWordDic->vWordType(WT_OBJECT);
       pWordDic->pAllot(sizeof(Dic));
       
-      pSubDic = new((Dic*)pWordDic->pDataArea()) Dic;
+      pSubDic = new((Dic*)pWordDic->aBodyArea()) Dic;
       nnpTask->m_nVariables = 0;
     }
     
