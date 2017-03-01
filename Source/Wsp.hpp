@@ -10,9 +10,9 @@
 
 #pragma once
 
-#include "Values.h"
+#include "Magic.h"
 
-namespace Values
+namespace Magic
 {
   template<int SIZE>
   class Wsp : public Part
@@ -36,7 +36,7 @@ namespace Values
   };
 }
 
-using namespace Values;
+using namespace Magic;
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */

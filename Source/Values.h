@@ -8,7 +8,6 @@
 
 #include "V.hpp"
 
-#include "Wsp.hpp"
 
 #include "Value.hpp"
 #include "ValWsp.hpp"

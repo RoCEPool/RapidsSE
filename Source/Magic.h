@@ -30,6 +30,8 @@ static const u8 C_MEMORY_MARKERF   = 0x070605040302010f;
 #include "Footer.hpp"
 #include "Object.hpp"
 #include "Vsp.hpp"
+#include "WspAbs.hpp"
+#include "Wsp.hpp"
 
 #include "NP.hpp"
 #include "NNP.hpp"
