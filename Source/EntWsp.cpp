@@ -92,7 +92,7 @@ void EntWsp::vRowId(RowId& xRowId)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get size in bytes of this entry                                            */
+/* get size in bytes of this entry instance                                   */
 /*----------------------------------------------------------------------------*/
 i8 EntWsp::nSize(void)
 {

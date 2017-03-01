@@ -103,7 +103,7 @@ File::~File(void)
 {
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
   
-  if (m_pFilePtr) {
+  if (m_aFilePtr) {
     vWarn("File::~File file not closed: %s %s\n",m_sFilePath.aStr(),m_sOpenMode.aStr());
 
     vClose();
@@ -128,9 +128,9 @@ void File::vBuffer(i8 nBytes)
   int iResult;
   
   if (nBytes == 0)
-    iResult = setvbuf(m_pFilePtr,NULL,_IONBF,(int)0);
+    iResult = setvbuf(m_aFilePtr,NULL,_IONBF,(int)0);
   else
-    iResult = setvbuf(m_pFilePtr,NULL,_IOFBF,(int)nBytes);
+    iResult = setvbuf(m_aFilePtr,NULL,_IOFBF,(int)nBytes);
   
   if (iResult)
     vWarn("File::vBuffer: setvbuf failed: %s",m_sFilePath.aStr());
@@ -149,7 +149,7 @@ void File::vClear(void)
   m_sFilePath   = "";
   m_sOpenMode   = "";
   m_iTraceLevel = 0;
-  m_pFilePtr    = nullptr;
+  m_aFilePtr    = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -167,18 +167,18 @@ void File::vClose(void)
   if (m_iTraceLevel)
     vTrace("File::vClose: closing file %s mode %s",m_sFilePath.aStr(),m_sOpenMode.aStr());
   
-  if ( ! m_pFilePtr ) {
+  if ( ! m_aFilePtr ) {
     m_xSysCall.vFailure(0);
     vWarn("File::vClose: file not open: %s",m_sFilePath.aStr());
     return;
   }
   
-  i8 rCode = fclose(m_pFilePtr);
+  i8 rCode = fclose(m_aFilePtr);
   
   if ((char)EOF == rCode) {
     m_xSysCall.vError(errno);
     vWarn("File::vClose: fclose(%p) error; errno=%d : %s %s",
-          m_pFilePtr,errno,m_sFilePath.aStr(),m_sOpenMode.aStr());
+          m_aFilePtr,errno,m_sFilePath.aStr(),m_sOpenMode.aStr());
     return;
   }
   
@@ -199,7 +199,7 @@ void File::vFileDump(void)
   vTrace("%sFile:\n", m_sFilePath.aStr());
   vTrace("%s  Open Mode %s\n", m_sOpenMode.aStr());
   vTrace("%s  Trace level %lld\n", m_iTraceLevel);
-  vTrace("%s  File Pointer 0x%p\n", m_pFilePtr);
+  vTrace("%s  File Pointer 0x%p\n", m_aFilePtr);
 }
 
 /*---------------------------------------------------------------------------*/
@@ -240,7 +240,7 @@ void File::vFlush(void)
 
   m_xSysCall.vClear();
   
-  i8 rCode = fflush(m_pFilePtr);
+  i8 rCode = fflush(m_aFilePtr);
 
   if ((char)EOF == rCode) {
     m_xSysCall.vError(errno);
@@ -258,10 +258,10 @@ char File::cGetChar(void)
 {
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
 
-  if ( ! m_pFilePtr )
+  if ( ! m_aFilePtr )
     return 0;
 
-  char cChar = getc(m_pFilePtr);
+  char cChar = getc(m_aFilePtr);
   if ((char)EOF == cChar)
     cChar = 0;
   
@@ -279,11 +279,11 @@ void File::vInit(void)
   
   //m_sFilePath
   //m_sOpenMode
-  m_pFilePtr    = nullptr;
+  m_aFilePtr    = nullptr;
   m_iTraceLevel = 0;
   
-  m_pLimit    = nullptr;
-  m_pNext     = nullptr;
+  m_aLimit    = nullptr;
+  m_aNext     = nullptr;
   m_pScratch  = nullptr;
   m_pRecord   = nullptr;
   m_iRecordLength = 0;
@@ -298,7 +298,7 @@ bool File::bIsClosed(void)
 {
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
 
-  if ( ! m_pFilePtr )
+  if ( ! m_aFilePtr )
     return true;
   else
     return false;
@@ -311,7 +311,7 @@ bool File::bIsOpen(void)
 {
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
 
-  if (m_pFilePtr)
+  if (m_aFilePtr)
     return true;
   else
     return false;
@@ -324,7 +324,7 @@ bool File::bIsStdin(void)
 {
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
 
-  if (stdin == m_pFilePtr)
+  if (stdin == m_aFilePtr)
     return true;
   else
     return false;
@@ -337,7 +337,7 @@ bool File::bIsStdout(void)
 {
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
 
-  if (stdout == m_pFilePtr)
+  if (stdout == m_aFilePtr)
     return true;
   else
     return false;
@@ -352,7 +352,7 @@ bool File::bOpen(void)
 
   m_xSysCall.vClear();
   
-  if (m_pFilePtr) {
+  if (m_aFilePtr) {
     vWarn("File::bOpen: previous file not closed: %s",m_sFilePath.aStr());
     vClose();
   }
@@ -360,9 +360,9 @@ bool File::bOpen(void)
   if (m_iTraceLevel)
     vTrace("File::bOpen: opening file %s mode %s",m_sFilePath.aStr(),m_sOpenMode.aStr());
   
-  m_pFilePtr = fopen(m_sFilePath.aStr(),m_sOpenMode.aStr());
+  m_aFilePtr = fopen(m_sFilePath.aStr(),m_sOpenMode.aStr());
   
-  if ( ! m_pFilePtr ) {
+  if ( ! m_aFilePtr ) {
     vWarn("File::bOpen: fopen(%s,%s) error; errno=%d",
           m_sFilePath.aStr(),m_sOpenMode.aStr(),errno);
     return false;
@@ -382,7 +382,7 @@ bool File::bOpen(const char* aOpenMode, i8 iTraceLevel)
 
   m_xSysCall.vClear();
   
-  if (m_pFilePtr) {
+  if (m_aFilePtr) {
     vWarn("File::bOpen: previous file not closed: %s\n",m_sFilePath.aStr());
     vClose();
   }
@@ -393,9 +393,9 @@ bool File::bOpen(const char* aOpenMode, i8 iTraceLevel)
   if (m_iTraceLevel)
     vTrace("File::bOpen: opening file %s mode %s\n",m_sFilePath.aStr(),m_sOpenMode.aStr());
   
-  m_pFilePtr = fopen(m_sFilePath.aStr(),m_sOpenMode.aStr());
+  m_aFilePtr = fopen(m_sFilePath.aStr(),m_sOpenMode.aStr());
   
-  if ( ! m_pFilePtr ) {
+  if ( ! m_aFilePtr ) {
     vWarn("File::bOpen: fopen(%s,%s) error; errno=%d\n",
           m_sFilePath.aStr(),m_sOpenMode.aStr(),errno);
     return false;
@@ -415,7 +415,7 @@ bool File::bOpen(const char* aFilePath, const char* aOpenMode, i8 iTraceLevel)
 
   m_xSysCall.vClear();
 
-  if (m_pFilePtr) {
+  if (m_aFilePtr) {
     vWarn("File::bOpen: previous file not closed: %s\n",m_sFilePath.aStr());
     vClose();
   }
@@ -425,9 +425,9 @@ bool File::bOpen(const char* aFilePath, const char* aOpenMode, i8 iTraceLevel)
   if (m_iTraceLevel)
     vTrace("File::bOpen: opening file %s mode %s\n",m_sFilePath.aStr(),m_sOpenMode.aStr());
   
-  m_pFilePtr = fopen(m_sFilePath.aStr(),m_sOpenMode.aStr());
+  m_aFilePtr = fopen(m_sFilePath.aStr(),m_sOpenMode.aStr());
   
-  if ( ! m_pFilePtr ) {
+  if ( ! m_aFilePtr ) {
     m_xSysCall.vError(errno);
     vWarn("File::bOpen: fopen(%s,%s) error; errno=%d\n",
           m_sFilePath.aStr(),m_sOpenMode.aStr(),errno);
@@ -458,7 +458,7 @@ void File::vPath(const char* aFilePath)
 
   m_xSysCall.vClear();
   
-  if (m_pFilePtr) {
+  if (m_aFilePtr) {
     vWarn("File::vPath: previous file not closed: %s\n",m_sFilePath.aStr());
     vClose();
   }
@@ -475,7 +475,7 @@ void File::vPath(StrVal& sFilePath)
 
   m_xSysCall.vClear();
   
-  if (m_pFilePtr) {
+  if (m_aFilePtr) {
     vWarn("File::vPath: previous file not closed: %s\n",m_sFilePath.aStr());
     vClose();
   }
@@ -495,7 +495,7 @@ void File::vPrint(const char* sFormat, ...)
   va_list args;
 
   va_start(args,sFormat);
-  i8 nPrinted = vfprintf(m_pFilePtr,sFormat,args);
+  i8 nPrinted = vfprintf(m_aFilePtr,sFormat,args);
   va_end(args);
 
   if (-1 == nPrinted) {
@@ -516,7 +516,7 @@ i8 File::iReadChunk(void* pChunk, i8 nBytes)
 
   m_xSysCall.vClear();
   
-  i8 iBytesRead = fread(pChunk,1,nBytes,m_pFilePtr);
+  i8 iBytesRead = fread(pChunk,1,nBytes,m_aFilePtr);
   
   return iBytesRead;
 }
@@ -534,16 +534,16 @@ bool File::bReadLine(char* aBuffer)
   
   //i8 nItems;
   
-  //  if (stdin == m_pFilePtr)
-  //    nItems = fscanf(m_pFilePtr,"%[^\n]%*c",s.aStr());
+  //  if (stdin == m_aFilePtr)
+  //    nItems = fscanf(m_aFilePtr,"%[^\n]%*c",s.aStr());
   //  else
-  //    nItems = fscanf(m_pFilePtr,"%[^\n]\n",s.aStr());
+  //    nItems = fscanf(m_aFilePtr,"%[^\n]\n",s.aStr());
   
   char *y = aBuffer;
   
   *y = '\0';
   for (;;) {
-    char c = getc(m_pFilePtr);
+    char c = getc(m_aFilePtr);
     if ('\n' == c || (char)EOF ==c) {
       break;
     }
@@ -574,14 +574,14 @@ bool File::bReadLine(char* aBuffer)
 //
 //  //i8 nItems;
 //  
-////  if (stdin == m_pFilePtr)
-////    nItems = fscanf(m_pFilePtr,"%[^\n]%*c",s.aStr());
+////  if (stdin == m_aFilePtr)
+////    nItems = fscanf(m_aFilePtr,"%[^\n]%*c",s.aStr());
 ////  else
-////    nItems = fscanf(m_pFilePtr,"%[^\n]\n",s.aStr());
+////    nItems = fscanf(m_aFilePtr,"%[^\n]\n",s.aStr());
 //
 ////  *s.aStr() = '\0';
 ////  for (;;) {
-////     char c = getc(m_pFilePtr);
+////     char c = getc(m_aFilePtr);
 ////     if ('\n' == c || (char)EOF ==c)
 ////       break;
 ////     else
@@ -592,7 +592,7 @@ bool File::bReadLine(char* aBuffer)
 //  
 //  *z = '\0';
 //  for (;;) {
-//    char c = getc(m_pFilePtr);
+//    char c = getc(m_aFilePtr);
 //    if ('\n' == c || (char)EOF ==c)
 //      break;
 //    else
@@ -618,8 +618,8 @@ bool File::bReadLine(StrVal& s)
   
   if ( ! m_pScratch ) {
     m_pScratch = new Scratch;
-    m_pNext  = m_pScratch->aScratchArea();
-    m_pLimit = m_pScratch->aScratchArea();
+    m_aNext  = m_pScratch->aScratchArea();
+    m_aLimit = m_pScratch->aScratchArea();
   }
   
   char* z = s.aStr();
@@ -628,17 +628,17 @@ bool File::bReadLine(StrVal& s)
   i8 nChars = 0;
   for (;;) {
     
-    if (m_pNext == m_pLimit) {
-      m_pNext = m_pScratch->aScratchArea();
-      i8 iBytesRead = fread(m_pNext,1,m_pScratch->nWspLength(),m_pFilePtr);
+    if (m_aNext == m_aLimit) {
+      m_aNext = m_pScratch->aScratchArea();
+      i8 iBytesRead = fread(m_aNext,1,m_pScratch->nWspLength(),m_aFilePtr);
       
       if ( ! iBytesRead )
         break;
       
-      m_pLimit = m_pNext + iBytesRead;
+      m_aLimit = m_aNext + iBytesRead;
     }
     
-    char c = *m_pNext++;
+    char c = *m_aNext++;
     nChars++;
     
     if ('\n' == c || (char)EOF == c)
@@ -665,7 +665,7 @@ void File::vReset(void)
 {
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
 
-  m_pFilePtr = nullptr;
+  m_aFilePtr = nullptr;
   vSet("","");
 }
 
@@ -681,8 +681,8 @@ bool File::bReadRecord(void)
   if ( ! m_pScratch ) {
     m_pScratch = new Scratch;
     m_pRecord  = new Scratch;
-    m_pNext  = m_pScratch->aScratchArea();
-    m_pLimit = m_pScratch->aScratchArea();
+    m_aNext  = m_pScratch->aScratchArea();
+    m_aLimit = m_pScratch->aScratchArea();
     
     vBuffer(C_256KB);
   }
@@ -693,17 +693,17 @@ bool File::bReadRecord(void)
   
   for (;;) {
     
-    if (m_pNext == m_pLimit) {
-      m_pNext = m_pScratch->aScratchArea();
-      i8 iBytesRead = fread(m_pNext,1,m_pScratch->nWspLength(),m_pFilePtr);
+    if (m_aNext == m_aLimit) {
+      m_aNext = m_pScratch->aScratchArea();
+      i8 iBytesRead = fread(m_aNext,1,m_pScratch->nWspLength(),m_aFilePtr);
       
       if ( ! iBytesRead )
         break;
       
-      m_pLimit = m_pNext + iBytesRead;
+      m_aLimit = m_aNext + iBytesRead;
     }
     
-    char c = *m_pNext++;
+    char c = *m_aNext++;
     
     if ('\n' == c || (char)EOF == c)
       break;
@@ -753,7 +753,7 @@ void File::vSeek(i8 iOffset)
 
   m_xSysCall.vClear();
   
-  i8 rCode = fseeko(m_pFilePtr,iOffset,SEEK_SET);
+  i8 rCode = fseeko(m_aFilePtr,iOffset,SEEK_SET);
   
   if (rCode) {
     m_xSysCall.vError(errno);
@@ -773,7 +773,7 @@ void File::vSeekEnd(void)
 
   m_xSysCall.vClear();
   
-  i8 rCode = fseeko(m_pFilePtr,0,SEEK_END);
+  i8 rCode = fseeko(m_aFilePtr,0,SEEK_END);
   
   if (rCode) {
     m_xSysCall.vError(errno);
@@ -793,7 +793,7 @@ void File::vSet(const char* aFilePath, const char* aOpenMode, i8 iTraceLevel)
 
   m_xSysCall.vClear();
   
-  if (m_pFilePtr) {
+  if (m_aFilePtr) {
     vWarn("File::vSet: previous file not closed: %s\n",m_sFilePath.aStr());
     vClose();
   }
@@ -812,14 +812,14 @@ void File::vSet(FILE* pFilePtr, const char* aFilePath, const char* aOpenMode, i8
 
   m_xSysCall.vClear();
   
-  if (m_pFilePtr) {
+  if (m_aFilePtr) {
     vWarn("File::vSet: previous file not closed: %s\n",m_sFilePath.aStr());
     vClose();
   }
   
   m_sFilePath   = aFilePath;
   m_sOpenMode   = aOpenMode;
-  m_pFilePtr    = pFilePtr;
+  m_aFilePtr    = pFilePtr;
   m_iTraceLevel = iTraceLevel;
 }
 
@@ -842,7 +842,7 @@ i8 File::iTell(void)
   
   m_xSysCall.vClear();
   
-  i8 rCode = ftello(m_pFilePtr);
+  i8 rCode = ftello(m_aFilePtr);
   
   if (-1 == rCode) {
     m_xSysCall.vError(errno);
@@ -882,10 +882,10 @@ void File::vUngetChar(char cChar)
 {
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
 
-  if ( ! m_pFilePtr )
+  if ( ! m_aFilePtr )
     return;
   
-  i8 iResult = ungetc(cChar,m_pFilePtr);
+  i8 iResult = ungetc(cChar,m_aFilePtr);
   
   if ((char)EOF == iResult)
     vWarn("File::vUngetChar: unget failed: '%c' %s\n",cChar,m_sFilePath.aStr());
@@ -903,7 +903,7 @@ void File::vZero(void)
   m_sFilePath   = "";
   m_sOpenMode   = "";
   m_iTraceLevel = 0;
-  m_pFilePtr    = nullptr;
+  m_aFilePtr    = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

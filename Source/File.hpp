@@ -24,12 +24,12 @@ namespace Common
     s256    m_sFilePath;   // the path of the file (relative or absolute)
     s32     m_sOpenMode;   // open mode
     i8      m_iTraceLevel;
-    FILE*   m_pFilePtr;
+    FILE*   m_aFilePtr;
   
     SysCall m_xSysCall;
     
-    char*   m_pLimit;
-    char*   m_pNext;
+    char*   m_aLimit;
+    char*   m_aNext;
     
     Scratch* m_pScratch;
     Scratch* m_pRecord;
