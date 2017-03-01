@@ -12,7 +12,7 @@ Wsp::Wsp(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* append source bytes to data area                                           */
+/* append source bytes to byte area                                           */
 /*----------------------------------------------------------------------------*/
 void Wsp::vWspAppend(void* aSrc, i8 nBytes)
 {
@@ -20,7 +20,7 @@ void Wsp::vWspAppend(void* aSrc, i8 nBytes)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get address of data area                                                   */
+/* get address of byte area                                                   */
 /*----------------------------------------------------------------------------*/
 char* Wsp::aWspArea(void)
 {
@@ -28,7 +28,7 @@ char* Wsp::aWspArea(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* fill data area with given byte                                             */
+/* fill byte area with given byte                                             */
 /*----------------------------------------------------------------------------*/
 void Wsp::vWspFill(char cByte)
 {
@@ -36,7 +36,7 @@ void Wsp::vWspFill(char cByte)
 }
 
 /*----------------------------------------------------------------------------*/
-/* fill data area with given byte                                             */
+/* fill byte area with given byte                                             */
 /*----------------------------------------------------------------------------*/
 void Wsp::vWspFill(char cByte, i8 nBytes)
 {
@@ -46,7 +46,7 @@ void Wsp::vWspFill(char cByte, i8 nBytes)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get number of free bytes in data area                                      */
+/* get number of free bytes in byte area                                      */
 /*----------------------------------------------------------------------------*/
 i8 Wsp::nWspFree(void)
 {
@@ -56,7 +56,7 @@ i8 Wsp::nWspFree(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get length of data area                                                    */
+/* get length of byte area                                                    */
 /*----------------------------------------------------------------------------*/
 i8 Wsp::nWspLength(void)
 {
@@ -66,7 +66,7 @@ i8 Wsp::nWspLength(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get next available chunk in data area                                      */
+/* get next available chunk in byte area                                      */
 /*----------------------------------------------------------------------------*/
 char* Wsp::aWspNext(void)
 {
@@ -76,7 +76,7 @@ char* Wsp::aWspNext(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get total size of wsp                                                      */
+/* get total size of Wsp                                                      */
 /*----------------------------------------------------------------------------*/
 i8 Wsp::nWspSize(void)
 {
@@ -86,7 +86,7 @@ i8 Wsp::nWspSize(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* take chunk in data area                                                    */
+/* take chunk in byte area                                                    */
 /*----------------------------------------------------------------------------*/
 void Wsp::vWspTake(i8 nBytes)
 {
@@ -104,7 +104,7 @@ i8 Wsp::nWspUsed(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* zero fill data area                                                        */
+/* zero fill the byte area                                                    */
 /*----------------------------------------------------------------------------*/
 void Wsp::vWspZero(void)
 {
@@ -112,7 +112,7 @@ void Wsp::vWspZero(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* zero fill data area                                                        */
+/* zero fill the byte area                                                    */
 /*----------------------------------------------------------------------------*/
 void Wsp::vWspZero(i8 nBytes)
 {
