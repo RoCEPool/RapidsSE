@@ -30,6 +30,7 @@ namespace Magic
     i8    nWspFree(void);
     i8    nWspLength(void);
     char* aWspNext(void);
+    i8    nWspSize(void);
     void  vWspTake(i8 nBytes);
     i8    nWspUsed(void);
     void  vWspZero(void);
@@ -111,6 +112,15 @@ char* WspFxd<LENGTH>::aWspNext(void)
   char* aNext = &aWspArea()[nWspUsed()];
   
   return aNext;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get total size of this WspFxd                                              */
+/*----------------------------------------------------------------------------*/
+template<int LENGTH>
+i8 WspFxd<LENGTH>::nWspSize(void)
+{
+  return sizeof(WspFxd<LENGTH>);
 }
 
 /*----------------------------------------------------------------------------*/

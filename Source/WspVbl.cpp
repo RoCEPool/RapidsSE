@@ -67,14 +67,14 @@ char* WspVbl::aWspNext(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get size of this WspVbl                                                    */
+/* get total size of this WspVbl                                              */
 /*----------------------------------------------------------------------------*/
-//i8 WspVbl::nWspSize(void)
-//{
-//  i8 nSize = sizeof(WspVbl) + m_nAreaUsed;
-//  
-//  return nSize;
-//}
+i8 WspVbl::nWspSize(void)
+{
+  i8 nSize = sizeof(WspVbl) + m_nAreaUsed;
+  
+  return nSize;
+}
 
 /*----------------------------------------------------------------------------*/
 /* take chunk in data area                                                    */
