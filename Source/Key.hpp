@@ -8,7 +8,7 @@
 
 namespace DBobjects
 {
-  class Key 
+  class Key : public Wsp
   {
   private:
     // ..dataArea..
@@ -27,10 +27,7 @@ namespace DBobjects
   
     void  vKey(Key& xKey);
     void  vKey(KeyWsp& xKeyWsp);
-  
-    //----
-  
-    char* pDataArea(void);
+    
     i8    nSize(void);
   };
 }

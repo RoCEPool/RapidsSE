@@ -52,8 +52,8 @@ Key::~Key(void)
 /*----------------------------------------------------------------------------*/
 bool Key::operator <(Key* pKeyArg)
 {
-  i8 iDatumA = *(i8*)pDataArea();
-  i8 iDatumB = *(i8*)pKeyArg->pDataArea();
+  i8 iDatumA = *(i8*)aWspArea();
+  i8 iDatumB = *(i8*)pKeyArg->aWspArea();
   
   bool b = iDatumA < iDatumB;
   
@@ -65,8 +65,8 @@ bool Key::operator <(Key* pKeyArg)
 /*----------------------------------------------------------------------------*/
 bool Key::operator <=(Key* pKeyArg)
 {
-  i8 iDatumA = *(i8*)pDataArea();
-  i8 iDatumB = *(i8*)pKeyArg->pDataArea();
+  i8 iDatumA = *(i8*)aWspArea();
+  i8 iDatumB = *(i8*)pKeyArg->aWspArea();
   
   bool b = iDatumA <= iDatumB;
   
@@ -79,7 +79,7 @@ bool Key::operator <=(Key* pKeyArg)
 void Key::vKey(Key& xKey)
 {
   // more ???
-  char* pDst = pDataArea();
+  char* pDst = aWspArea();
   i8 nBytes  = xKey.nSize();
   Memory::vCopy(pDst,&xKey,nBytes);
 }
@@ -89,7 +89,7 @@ void Key::vKey(Key& xKey)
 /*----------------------------------------------------------------------------*/
 void Key::vKey(KeyWsp& xKeyWsp)
 {
-  char* pDst = pDataArea();
+  char* pDst = aWspArea();
   char* pSrc = xKeyWsp.aWspArea();
   i8 nBytes  = xKeyWsp.nWspUsed();
   
@@ -102,30 +102,13 @@ void Key::vKey(KeyWsp& xKeyWsp)
 void Key::vShow(void)
 {
   i8 iKey;
-  V::vCopyIntDatum(&iKey,pDataArea());
+  V::vCopyIntDatum(&iKey,aWspArea());
   
   vTrace("Key %p: (size %lld value:%lld)\n",
          this,
          nSize(),
          iKey
          );
-}
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get pointer to data area                                                   */
-/*----------------------------------------------------------------------------*/
-char* Key::pDataArea(void)
-{
-  //i8 iKeySize = sizeof(Key);
-  //char* pDataArea = reinterpret_cast<char*>(this); //pAdd<char*>(this,sizeof(Key));
-  //return pPoolCheck<char*>(pDataArea);
-  
-  char* pDataArea = reinterpret_cast<char*>(this);
-  
-  return pDataArea;
 }
 
 /*----------------------------------------------------------------------------*/
