@@ -78,22 +78,23 @@ bool Key::operator <=(Key* pKeyArg)
 /*----------------------------------------------------------------------------*/
 void Key::vKey(Key& xKey)
 {
-  // more ???
-  char* pDst = aWspArea();
+  char* aSrc = reinterpret_cast<char*>(&xKey);
+  char* aDst = aWspArea();
   i8 nBytes  = xKey.nSize();
-  Memory::vCopy(pDst,&xKey,nBytes);
+  
+  Memory::vCopy(aDst,&xKey,nBytes);
 }
 
 /*----------------------------------------------------------------------------*/
-/* set key from key wsp                                                       */
+/* set key from given key workspace                                           */
 /*----------------------------------------------------------------------------*/
 void Key::vKey(KeyWsp& xKeyWsp)
 {
-  char* pDst = aWspArea();
-  char* pSrc = xKeyWsp.aWspArea();
+  char* aDst = aWspArea();
+  char* aSrc = xKeyWsp.aWspArea();
   i8 nBytes  = xKeyWsp.nWspUsed();
   
-  Memory::vCopy(pDst,pSrc,nBytes);
+  Memory::vCopy(aDst,aSrc,nBytes);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -101,8 +102,7 @@ void Key::vKey(KeyWsp& xKeyWsp)
 /*----------------------------------------------------------------------------*/
 void Key::vShow(void)
 {
-  i8 iKey;
-  V::vCopyIntDatum(&iKey,aWspArea());
+  i8 iKey = *(i8*)aWspArea();
   
   vTrace("Key %p: (size %lld value:%lld)\n",
          this,
