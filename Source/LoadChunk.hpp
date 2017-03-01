@@ -8,15 +8,15 @@
 
 namespace Structures
 {
-  static const i8 C_LOADCHUNK_SIZE = C_1M; // its 1M not 1MB (i.e. < 1MB)
+  static const i8 C_LOADCHUNK_LENGTH = C_1M; // its 1M not 1MB (i.e. < 1MB)
   
   class LoadChunk : public Buffer,
-                    public WspFxd<C_LOADCHUNK_SIZE> 
+                    public WspFxd<C_LOADCHUNK_LENGTH>
   {
   private:
     File  m_xFile;       // file being loaded
-    char* m_pEndChunk;   // last byte of where chunk ends
-    char* m_pNextRecord; // first byte of next record
+    char* m_aEndChunk;   // last byte of where chunk ends
+    char* m_aNextRecord; // first byte of next record
         
   public:
     void* operator new(size_t);

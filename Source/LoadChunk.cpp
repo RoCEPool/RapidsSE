@@ -39,8 +39,8 @@ LoadChunk::LoadChunk(void)
   
   vReset();
   
-  ASSERT(! m_pEndChunk);
-  ASSERT(! m_pNextRecord);
+  ASSERT(! m_aEndChunk);
+  ASSERT(! m_aNextRecord);
  
   _checkInitialised_(CN_LOADCHUNK);
   
@@ -89,33 +89,33 @@ char* LoadChunk::pNextRecord(i8& iRecordBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADCHUNK,_FOOTER_);
   
-  ASSERT(m_pEndChunk);
-  ASSERT(m_pNextRecord);
+  ASSERT(m_aEndChunk);
+  ASSERT(m_aNextRecord);
   
   //
-  // At this point, m_pNextRecord is the address of the next record
+  // At this point, m_aNextRecord is the address of the next record
   // in the chunk.
   //
   
   // have we exhausted the chunk?
-  if (m_pNextRecord > m_pEndChunk) {
+  if (m_aNextRecord > m_aEndChunk) {
     iRecordBytes = 0;
     vReset();
     return nullptr;
   }
   
   // get start address of next record
-  char* pRecord = m_pNextRecord;
+  char* pRecord = m_aNextRecord;
   
   // find end of next record
-  while ('\n' != *m_pNextRecord)
-    m_pNextRecord++;
+  while ('\n' != *m_aNextRecord)
+    m_aNextRecord++;
   
   // compute the number of bytes
-  iRecordBytes = m_pNextRecord - pRecord;
+  iRecordBytes = m_aNextRecord - pRecord;
   
   // advance to beginning of next record for next time
-  m_pNextRecord++;
+  m_aNextRecord++;
   
   return pRecord;
 }
@@ -150,8 +150,8 @@ void LoadChunk::vReadChunk(i8 iSeek, i8 nBytes)
   
   i8 iBytesRead = m_xFile.iReadChunk(aWspArea(),nBytes);
 
-  m_pEndChunk   = &aWspArea()[iBytesRead - 1];
-  m_pNextRecord = aWspArea();
+  m_aEndChunk   = &aWspArea()[iBytesRead - 1];
+  m_aNextRecord = aWspArea();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -165,8 +165,8 @@ void LoadChunk::vReset(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADCHUNK,_FOOTER_);
   
-  m_pEndChunk   = nullptr;
-  m_pNextRecord = nullptr;
+  m_aEndChunk   = nullptr;
+  m_aNextRecord = nullptr;
 }
 
 /*============================================================================*/
