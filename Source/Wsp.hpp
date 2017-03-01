@@ -15,7 +15,7 @@
 namespace Magic
 {
   template<int SIZE>
-  class Wsp : public Part
+  class Wsp : public WspAbs
   {
   private:
     char m_cArea[SIZE];  // ..dataArea..
@@ -53,10 +53,10 @@ Wsp<SIZE>::Wsp(void)
 template<int SIZE>
 void Wsp<SIZE>::vWspAppend(void* aSrc, i8 nBytes)
 {
+  ASSERT(nWspUsed() + nBytes <= SIZE);
+  
   void* aDst = aWspNext();
 
-  ASSERT(m_nAreaUsed + nBytes <= SIZE);
-  
   Memory::vCopy(aDst,aSrc,nBytes);
   
   vWspTake(nBytes);
@@ -68,7 +68,9 @@ void Wsp<SIZE>::vWspAppend(void* aSrc, i8 nBytes)
 template<int SIZE>
 char* Wsp<SIZE>::aWspArea(void)
 {
-  return m_cArea;
+  char* aArea = WspAbs::aWspArea();
+  
+  return aArea;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -77,7 +79,7 @@ char* Wsp<SIZE>::aWspArea(void)
 template<int SIZE>
 void Wsp<SIZE>::vWspFill(char cByte)
 {
-  Memory::vSet(m_cArea,cByte,SIZE);
+  WspAbs::vWspFill(cByte,SIZE);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -86,18 +88,20 @@ void Wsp<SIZE>::vWspFill(char cByte)
 template<int SIZE>
 i8 Wsp<SIZE>::nWspFree(void)
 {
-  i8 nBytes = SIZE - m_nAreaUsed;
+  i8 nFree = SIZE - nWspUsed();
   
-  return nBytes;
+  return nFree;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get next available chunk in data area                                      */
+/* get address of next available chunk in data area                           */
 /*----------------------------------------------------------------------------*/
 template<int SIZE>
 char* Wsp<SIZE>::aWspNext(void)
 {
-  return &m_cArea[m_nAreaUsed];
+  char* aNext = &aWspArea()[nWspUsed()];
+  
+  return aNext;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -135,7 +139,7 @@ i8 Wsp<SIZE>::nWspUsed(void)
 template<int SIZE>
 void Wsp<SIZE>::vWspZero(void)
 {
-  Memory::vZero(m_cArea,SIZE);
+  WspAbs::vWspZero(SIZE);
 }
 
 /*============================================================================*/

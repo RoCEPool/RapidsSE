@@ -16,11 +16,7 @@ WspAbs::WspAbs(void)
 /*----------------------------------------------------------------------------*/
 void WspAbs::vWspAppend(void* aSrc, i8 nBytes)
 {
-  void* aDst = aWspNext();
-  
-  Memory::vCopy(aDst,aSrc,nBytes);
-  
-  vWspTake(nBytes);
+  vFatal("WspAbs::vWspAppend: not overridden\n");
 }
 
 /*----------------------------------------------------------------------------*/
