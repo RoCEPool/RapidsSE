@@ -80,7 +80,7 @@ void Key::vKey(Key& xKey)
 {
   // more ???
   char* pDst = pDataArea();
-  i8 nBytes  = xKey.nDataBytes();
+  i8 nBytes  = xKey.nSize();
   Memory::vCopy(pDst,&xKey,nBytes);
 }
 
@@ -129,20 +129,12 @@ char* Key::pDataArea(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get number of data bytes in the key                                        */
-/*----------------------------------------------------------------------------*/
-i8 Key::nDataBytes(void)
-{
-  return sizeof(i8);
-}
-
-/*----------------------------------------------------------------------------*/
 /* get size in bytes of this key                                              */
 /*----------------------------------------------------------------------------*/
 i8 Key::nSize(void)
 {
-  //i8 nBytes = sizeof(Key) + sizeof(i8);
   i8 nBytes = sizeof(i8);
+  
   return nBytes;
 }
 

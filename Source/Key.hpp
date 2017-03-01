@@ -31,7 +31,6 @@ namespace DBobjects
     //----
   
     char* pDataArea(void);
-    i8    nDataBytes(void);
     i8    nSize(void);
   };
 }
