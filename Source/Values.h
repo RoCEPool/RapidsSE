@@ -26,9 +26,8 @@
 
 typedef StrFxd<32>    s32;
 typedef StrFxd<256>   s256;
-typedef StrFxd<C_48K> s48K;
-typedef StrFxd<C_1M>  s1M;
-
+typedef StrFxd<C_48K> s48K;  // note this is 48K not 48KB
+typedef StrFxd<C_1M>  s1M;   // note this is 1M not 1MB
 //-----------------------------------------------------------------------------
 namespace Values
 {
