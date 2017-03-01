@@ -34,7 +34,7 @@ namespace Plans
     Footer* pFooter(void);
   };
   
-  PlanList* _pPlanList(void* pAddr);
+  PlanList* _pPlanList(void* aAddr);
 }
 
 /*============================================================================*/

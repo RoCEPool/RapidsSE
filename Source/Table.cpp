@@ -13,9 +13,9 @@ extern Grid* gpGrid;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Table* DBobjects::_pTable(void* pAddr)
+Table* DBobjects::_pTable(void* aAddr)
 {
-  Table* pTable = reinterpret_cast<Table*>(pAddr);
+  Table* pTable = reinterpret_cast<Table*>(aAddr);
   
   RASSERT( !pTable || CN_TABLE == pTable->eClass() );
   

@@ -31,7 +31,7 @@ namespace Tasks
     Footer* pFooter(void);
   };
   
-  TaskList* _pTaskList(void* pAddr);
+  TaskList* _pTaskList(void* aAddr);
 }
 
 /*============================================================================*/

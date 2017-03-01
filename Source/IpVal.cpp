@@ -9,9 +9,9 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-IpVal* Values::_pIpVal(void* pAddr)
+IpVal* Values::_pIpVal(void* aAddr)
 {
-  IpVal* pIpVal = reinterpret_cast<IpVal*>(pAddr);
+  IpVal* pIpVal = reinterpret_cast<IpVal*>(aAddr);
   
   RASSERT( !pIpVal || CN_IPVAL == pIpVal->eClass() );
   

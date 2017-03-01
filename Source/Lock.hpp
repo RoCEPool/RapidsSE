@@ -57,7 +57,7 @@ namespace Common
     Footer* pFooter(void);
   };
   
-  Lock* _pLock(void* pAddr);
+  Lock* _pLock(void* aAddr);
   
 }
 

@@ -47,7 +47,7 @@ namespace Parsing
     Parser(Parser* pNext);
     ~Parser(void);
     
-    static Parser* _pParser(void* pAddr);
+    static Parser* _pParser(void* aAddr);
     static void vDump(eCN eClass, Object* pObject, const char* pTab);
    
     

@@ -13,9 +13,9 @@ extern Arguments gxArguments;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Parser* Parser::_pParser(void* pAddr)
+Parser* Parser::_pParser(void* aAddr)
 {
-  Parser* pParser = reinterpret_cast<Parser*>(pAddr);
+  Parser* pParser = reinterpret_cast<Parser*>(aAddr);
   
   RASSERT( !pParser || CN_PARSER == pParser->eClass() );
   

@@ -32,7 +32,7 @@ namespace Structures
     Footer* pFooter(void);
   };
   
-  GraphCursor* _pGraphCursor(void* pAddr);
+  GraphCursor* _pGraphCursor(void* aAddr);
 }
 
 /*============================================================================*/

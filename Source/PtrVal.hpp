@@ -29,7 +29,7 @@ namespace Values
     void vToString(char* aWorkspace);
   };
   
-  PtrVal* _pPtrVal(void* pAddr);
+  PtrVal* _pPtrVal(void* aAddr);
 }
 
 /*============================================================================*/

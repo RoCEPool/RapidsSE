@@ -14,9 +14,9 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Word* Dictionaries::_pWord(void* pAddr)
+Word* Dictionaries::_pWord(void* aAddr)
 {
-  Word* pWord = reinterpret_cast<Word*>(pAddr);
+  Word* pWord = reinterpret_cast<Word*>(aAddr);
   
   RASSERT( !pWord || CN_WORD == pWord->eClass() );
 
@@ -97,7 +97,7 @@ char* Word::pAllot(i8 iBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
 
-  char* pAddress = pAdd<char*>(pFirstCell(),m_iDataBytes);
+  char* aAddress = pAdd<char*>(pFirstCell(),m_iDataBytes);
   
   //gpMainDic->vExtendLinear(iBytes);
   
@@ -107,7 +107,7 @@ char* Word::pAllot(i8 iBytes)
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  return pAddress;
+  return aAddress;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -117,8 +117,8 @@ void Word::vAppend(Cell* pCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  void* pAddress = pAppend(pCell);
-  ASSERT(pAddress);
+  void* aAddress = pAppend(pCell);
+  ASSERT(aAddress);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -142,8 +142,8 @@ void Word::vAppend(i8 iInt)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  void* pAddress = pAppend(iInt);
-  ASSERT(pAddress);
+  void* aAddress = pAppend(iInt);
+  ASSERT(aAddress);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -167,8 +167,8 @@ void Word::vAppend(Value* pValue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
 
-  void* pAddress = pAppend(pValue);
-  ASSERT(pAddress);
+  void* aAddress = pAppend(pValue);
+  ASSERT(aAddress);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -194,8 +194,8 @@ void Word::vAppend(TaskStep* ppCalledWord)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
 
-  void* pAddress = pAppend(ppCalledWord);
-  ASSERT(pAddress);
+  void* aAddress = pAppend(ppCalledWord);
+  ASSERT(aAddress);
 }
 
 /*----------------------------------------------------------------------------*/

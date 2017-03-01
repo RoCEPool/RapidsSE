@@ -11,9 +11,9 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-StrVal* Values::_pStrVal(void* pAddr)
+StrVal* Values::_pStrVal(void* aAddr)
 {
-  StrVal* psRefactor = reinterpret_cast<StrVal*>(pAddr);
+  StrVal* psRefactor = reinterpret_cast<StrVal*>(aAddr);
   
   RASSERT( ! psRefactor
           || CN_VALWSP == psRefactor->eClass()

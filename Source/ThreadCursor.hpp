@@ -29,7 +29,7 @@ namespace Threads
     Footer* pFooter(void);
   };
   
-  ThreadCursor* _pThreadCursor(void* pAddr);
+  ThreadCursor* _pThreadCursor(void* aAddr);
 }
 
 /*============================================================================*/

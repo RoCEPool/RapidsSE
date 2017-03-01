@@ -123,8 +123,8 @@ void Task::vAllot(NNP_Task nnpTask)
   
   Word* pCurrentWord = nnpTask->m_pCurrentWord;
   
-  char* pAddress = pCurrentWord->pAllot(iBytes);
-  ASSERT(pAddress);
+  char* aAddress = pCurrentWord->pAllot(iBytes);
+  ASSERT(aAddress);
   
   EXIT();
 }

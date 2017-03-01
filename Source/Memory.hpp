@@ -16,15 +16,15 @@ namespace Platform
     static const i8 SIZEOF_WORD = static_cast<i8>(sizeof(i8));
     
   public:
-    static void* pAddBytes(void* pAddress, i8 iBytes);
-    static void  vCheckInitialised(void* pAddress, eCN eClass);
-    static void  vCheckInitialised(void* pAddress, i8 nBytes);
+    static void* pAddBytes(void* aAddress, i8 iBytes);
+    static void  vCheckInitialised(void* aAddress, eCN eClass);
+    static void  vCheckInitialised(void* aAddress, i8 nBytes);
     static void  vCopy(void* pDst, const void* pSrc, i8 iBytes);
-    static void  vHexDump(void *pAddress, i8 iSize);
+    static void  vHexDump(void *aAddress, i8 iSize);
     static void  vMove(void* pDst, const void* pSrc, i8 iBytes);
-    static void  vScribble(void* pAddress, i8 nBytes);
+    static void  vScribble(void* aAddress, i8 nBytes);
     static void  vSet(void* pDst, char bByte, i8 iTimes);
-    static void  vWordDump(void *pAddress, i8 iSize, i8 iHighlightWord=-1);
+    static void  vWordDump(void *aAddress, i8 iSize, i8 iHighlightWord=-1);
     static void  vZero(void* pDst, i8 iBytes);
     
   private:

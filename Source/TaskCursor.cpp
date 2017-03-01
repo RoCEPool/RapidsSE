@@ -10,9 +10,9 @@ extern TaskList*   gpTaskList;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-TaskCursor* Tasks::_pTaskCursor(void* pAddr)
+TaskCursor* Tasks::_pTaskCursor(void* aAddr)
 {
-  TaskCursor* pTaskCursor = reinterpret_cast<TaskCursor*>(pAddr);
+  TaskCursor* pTaskCursor = reinterpret_cast<TaskCursor*>(aAddr);
   
   RASSERT( !pTaskCursor || CN_TASKCURSOR == pTaskCursor->eClass() );
   

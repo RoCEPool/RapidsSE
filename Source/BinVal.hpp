@@ -37,7 +37,7 @@ namespace Values
     static i8 nBytesRequired(i8 iLength);
   };
   
-  BinVal* _pBinVal(void* pAddr);
+  BinVal* _pBinVal(void* aAddr);
 }
 
 /*============================================================================*/

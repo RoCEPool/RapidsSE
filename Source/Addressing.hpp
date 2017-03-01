@@ -7,22 +7,22 @@
 
 namespace Platform
 {
-  i8 nSub(void* pAddress0, void* pAddress1);
+  i8 nSub(void* aAddress0, void* aAddress1);
   
-  void vCheckAddress(void* pAddress);
+  void vCheckAddress(void* aAddress);
 }
 
 /*----------------------------------------------------------------------------*/
 /* pAdd: add bytes to given address                                           */
 /*----------------------------------------------------------------------------*/
 template <class CAST>
-static CAST pAdd(void* pAddress, i8 nBytes)
+static CAST pAdd(void* aAddress, i8 nBytes)
 {
-  char* pAddr0 = reinterpret_cast<char*>(pAddress);
+  char* aAddr0 = reinterpret_cast<char*>(aAddress);
   
-  char* pAddr1 = pAddr0 + nBytes;
+  char* aAddr1 = aAddr0 + nBytes;
 
-  return reinterpret_cast<CAST>(pAddr1);
+  return reinterpret_cast<CAST>(aAddr1);
 }
 
 /*============================================================================*/

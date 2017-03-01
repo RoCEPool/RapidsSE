@@ -41,9 +41,9 @@ const char* C_OPEN_READ_APPEND = "a+";
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-File* Common::_pFile(void* pAddr)
+File* Common::_pFile(void* aAddr)
 {
-  File* pFile = reinterpret_cast<File*>(pAddr);
+  File* pFile = reinterpret_cast<File*>(aAddr);
   
   RASSERT( !pFile || CN_FILE == pFile->eClass() );
   

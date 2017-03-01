@@ -7,9 +7,9 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Graph* Structures::_pGraph(void* pAddr)
+Graph* Structures::_pGraph(void* aAddr)
 {
-  Graph* pGraph = reinterpret_cast<Graph*>(pAddr);
+  Graph* pGraph = reinterpret_cast<Graph*>(aAddr);
   
   RASSERT( !pGraph || CN_GRAPH == pGraph->eClass() );
   

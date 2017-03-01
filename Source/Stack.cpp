@@ -11,9 +11,9 @@ extern BufferPool* gpBufferPool;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Stack* Stack::_pStack(void* pAddr)
+Stack* Stack::_pStack(void* aAddr)
 {
-  Stack* pStack = reinterpret_cast<Stack*>(pAddr);
+  Stack* pStack = reinterpret_cast<Stack*>(aAddr);
   
   RASSERT( !pStack || CN_STACK == pStack->eClass() );
   
@@ -1012,10 +1012,10 @@ Value* Stack::pGetValue(i8 iNthValue)
   
   Value* pValue = pTopValue();
   while (iNthValue--) {
-    char* pAddress = reinterpret_cast<char*>(pValue);
+    char* aAddress = reinterpret_cast<char*>(pValue);
     i8 iSize = V::iSize(pValue);
-    pAddress += iSize;
-    pValue = reinterpret_cast<Value*>(pAddress);
+    aAddress += iSize;
+    pValue = reinterpret_cast<Value*>(aAddress);
   }
   
   return pValue;

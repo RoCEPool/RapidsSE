@@ -9,9 +9,9 @@ extern BufferPool*  gpBufferPool;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Queue* Structures::_pQueue(void* pAddr)
+Queue* Structures::_pQueue(void* aAddr)
 {
-  Queue* pQueue = reinterpret_cast<Queue*>(pAddr);
+  Queue* pQueue = reinterpret_cast<Queue*>(aAddr);
   
   RASSERT( !pQueue || CN_QUEUE == pQueue->eClass() );
   

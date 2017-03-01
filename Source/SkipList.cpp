@@ -7,9 +7,9 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-SkipList* Structures::_pSkipList(void* pAddr)
+SkipList* Structures::_pSkipList(void* aAddr)
 {
-  SkipList* pSkipList = reinterpret_cast<SkipList*>(pAddr);
+  SkipList* pSkipList = reinterpret_cast<SkipList*>(aAddr);
   
   RASSERT( !pSkipList || CN_SKIPLIST == pSkipList->eClass() );
   

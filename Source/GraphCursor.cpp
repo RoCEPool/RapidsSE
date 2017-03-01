@@ -7,9 +7,9 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-GraphCursor* Structures::_pGraphCursor(void* pAddr)
+GraphCursor* Structures::_pGraphCursor(void* aAddr)
 {
-  GraphCursor* pGraphCursor = reinterpret_cast<GraphCursor*>(pAddr);
+  GraphCursor* pGraphCursor = reinterpret_cast<GraphCursor*>(aAddr);
   
   RASSERT( !pGraphCursor || CN_GRAPHCURSOR == pGraphCursor->eClass() );
   

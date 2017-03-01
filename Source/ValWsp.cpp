@@ -7,9 +7,9 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-ValWsp* Values::_pValWsp(void* pAddr)
+ValWsp* Values::_pValWsp(void* aAddr)
 {
-  ValWsp* pValWsp = reinterpret_cast<ValWsp*>(pAddr);
+  ValWsp* pValWsp = reinterpret_cast<ValWsp*>(aAddr);
   
   RASSERT( !pValWsp || CN_VALWSP == pValWsp->eClass() );
   

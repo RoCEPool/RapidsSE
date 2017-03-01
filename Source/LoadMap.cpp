@@ -11,9 +11,9 @@ extern Arguments gxArguments;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-LoadMap* DBobjects::_pSeekMap(void* pAddr)
+LoadMap* DBobjects::_pSeekMap(void* aAddr)
 {
-  LoadMap* pLoadMap = reinterpret_cast<LoadMap*>(pAddr);
+  LoadMap* pLoadMap = reinterpret_cast<LoadMap*>(aAddr);
   
   RASSERT( !pLoadMap || CN_LOADMAP == pLoadMap->eClass() );
   

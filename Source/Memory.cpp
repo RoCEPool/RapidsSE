@@ -9,9 +9,9 @@ extern i8 giClassSize[];
 /*----------------------------------------------------------------------------*/
 /* map a new an anonymous region of memory (private or shared)                */
 /*----------------------------------------------------------------------------*/
-void* Memory::pAddBytes(void* pAddress, i8 iBytes)
+void* Memory::pAddBytes(void* aAddress, i8 iBytes)
 {
-  char* pOrigin = reinterpret_cast<char*>(pAddress);
+  char* pOrigin = reinterpret_cast<char*>(aAddress);
   
   char* pNew = pOrigin + iBytes;
   
@@ -21,16 +21,16 @@ void* Memory::pAddBytes(void* pAddress, i8 iBytes)
 /*----------------------------------------------------------------------------*/
 /* check memory has been intialised                                           */
 /*----------------------------------------------------------------------------*/
-void Memory::vCheckInitialised(void* pAddress, eCN eClass)
+void Memory::vCheckInitialised(void* aAddress, eCN eClass)
 {
-  u8* pMchWord = reinterpret_cast<u8*>(pAddress);
+  u8* pMchWord = reinterpret_cast<u8*>(aAddress);
   i8  nBytes = giClassSize[eClass];
   i8  nWords = nBytes / 8;
 
   for (i8 iWord = 0; iWord < nWords; iWord++) {
     
     if (C_SCRIBBLE_PATTERN == *pMchWord) {
-      Memory::vWordDump(pAddress,nBytes,iWord);
+      Memory::vWordDump(aAddress,nBytes,iWord);
       vDebugTrap();
     }
     
@@ -42,15 +42,15 @@ void Memory::vCheckInitialised(void* pAddress, eCN eClass)
 /*----------------------------------------------------------------------------*/
 /* check memory has been intialised                                           */
 /*----------------------------------------------------------------------------*/
-void Memory::vCheckInitialised(void* pAddress, i8 nBytes)
+void Memory::vCheckInitialised(void* aAddress, i8 nBytes)
 {
-  u8* pMchWord = reinterpret_cast<u8*>(pAddress);
+  u8* pMchWord = reinterpret_cast<u8*>(aAddress);
   i8  nWords = nBytes / 8;
   
   for (i8 iWord = 0; iWord < nWords; iWord++) {
     
     if (C_SCRIBBLE_PATTERN == *pMchWord) {
-      Memory::vWordDump(pAddress,nBytes,iWord);
+      Memory::vWordDump(aAddress,nBytes,iWord);
       vDebugTrap();
     }
     
@@ -70,7 +70,7 @@ void Memory::vCopy(void* pDst, const void* pSrc, i8 iBytes)
 /*----------------------------------------------------------------------------*/
 /* dump given bytes of memory at given address                                */
 /*----------------------------------------------------------------------------*/
-void Memory::vHexDump(void *pAddress, i8 iBytes)
+void Memory::vHexDump(void *aAddress, i8 iBytes)
 {
   
   i8 iOffset = 0;
@@ -88,11 +88,11 @@ void Memory::vHexDump(void *pAddress, i8 iBytes)
     
     // beginning of line, dump the address
     if (iByte == 0) {
-      vTrace("0x%016x ", (i8)((u1*)pAddress + iOffset));
+      vTrace("0x%016x ", (i8)((u1*)aAddress + iOffset));
       vTrace("0x%06x ", iOffset);
     }
     
-    vTrace("%02x ", (i8)(*((u1*)pAddress + i)));
+    vTrace("%02x ", (i8)(*((u1*)aAddress + i)));
     
     iByte++;
     
@@ -106,7 +106,7 @@ void Memory::vHexDump(void *pAddress, i8 iBytes)
       
       for (i8 i = 0; i < C_BYTES_PER_LINE; i++) {
         
-        u1 cChar = *((u1*)pAddress + iOffset + i);
+        u1 cChar = *((u1*)aAddress + iOffset + i);
         
         if (cChar < C_ASCII_MIN || cChar > C_ASCII_MAX) {
           vTrace("%c", '.');
@@ -137,7 +137,7 @@ void Memory::vHexDump(void *pAddress, i8 iBytes)
     }
     
     for (i8 i= 0; i < iByte; i++) {
-      u1 cChar = *((u1*)pAddress + iOffset + i);
+      u1 cChar = *((u1*)aAddress + iOffset + i);
       if (cChar < C_ASCII_MIN || cChar > C_ASCII_MAX) {
         vTrace("%c", '.');
       } else {
@@ -168,9 +168,9 @@ void Memory::vMove(void* pDst, const void* pSrc, i8 iBytes)
 /*----------------------------------------------------------------------------*/
 /* scribble on memory                                                         */
 /*----------------------------------------------------------------------------*/
-void Memory::vScribble(void* pAddress, i8 nBytes)
+void Memory::vScribble(void* aAddress, i8 nBytes)
 {
-  u8* pMchWord = reinterpret_cast<u8*>(pAddress);
+  u8* pMchWord = reinterpret_cast<u8*>(aAddress);
   i8  nWords = nBytes / 8;
   
   for (i8 iWord = 0; iWord < nWords; iWord++)
@@ -180,7 +180,7 @@ void Memory::vScribble(void* pAddress, i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* dump given words of memory at given address                                */
 /*----------------------------------------------------------------------------*/
-void Memory::vWordDump(void *pAddress, i8 iBytes, i8 iHighlightWord)
+void Memory::vWordDump(void *aAddress, i8 iBytes, i8 iHighlightWord)
 {
   i8 iOffset = 0;
   i8 iWord   = 0;
@@ -209,16 +209,16 @@ void Memory::vWordDump(void *pAddress, i8 iBytes, i8 iHighlightWord)
     if (iWord == 0) {
       vTrace("%6d ", i);
       vTrace("0x%06llx ", iOffset);
-      vTrace("0x%016llx ", (i8)((u1*)pAddress + iOffset));
+      vTrace("0x%016llx ", (i8)((u1*)aAddress + iOffset));
     }
     
-    vTrace("%016llx ", (i8)(*((i8*)pAddress + i)));
+    vTrace("%016llx ", (i8)(*((i8*)aAddress + i)));
     
     iWord++;
       
     for (i8 i = 0; i < SIZEOF_WORD; i++) {
       
-      u1 cChar = *((u1*)pAddress + iOffset + i);
+      u1 cChar = *((u1*)aAddress + iOffset + i);
       
       if (cChar < C_ASCII_MIN || cChar > C_ASCII_MAX) {
         vTrace("%c", '.');
@@ -230,37 +230,37 @@ void Memory::vWordDump(void *pAddress, i8 iBytes, i8 iHighlightWord)
     if (i == iHighlightWord)
       vTrace(" <<==== OBSERVE");
     
-    if ((u8)(*((i8*)pAddress + i)) == C_MEMORY_MARKER0)
+    if ((u8)(*((i8*)aAddress + i)) == C_MEMORY_MARKER0)
       vTrace(" <<==== MARKER 0");
-    if ((u8)(*((i8*)pAddress + i)) == C_MEMORY_MARKER1)
+    if ((u8)(*((i8*)aAddress + i)) == C_MEMORY_MARKER1)
       vTrace(" <<==== MARKER 1");
-    if ((u8)(*((i8*)pAddress + i)) == C_MEMORY_MARKER2)
+    if ((u8)(*((i8*)aAddress + i)) == C_MEMORY_MARKER2)
       vTrace(" <<==== MARKER 2");
-    if ((u8)(*((i8*)pAddress + i)) == C_MEMORY_MARKER3)
+    if ((u8)(*((i8*)aAddress + i)) == C_MEMORY_MARKER3)
       vTrace(" <<==== MARKER 3");
-    if ((u8)(*((i8*)pAddress + i)) == C_MEMORY_MARKER4)
+    if ((u8)(*((i8*)aAddress + i)) == C_MEMORY_MARKER4)
       vTrace(" <<==== MARKER 4");
-    if ((u8)(*((i8*)pAddress + i)) == C_MEMORY_MARKER5)
+    if ((u8)(*((i8*)aAddress + i)) == C_MEMORY_MARKER5)
       vTrace(" <<==== MARKER 5");
-    if ((u8)(*((i8*)pAddress + i)) == C_MEMORY_MARKER6)
+    if ((u8)(*((i8*)aAddress + i)) == C_MEMORY_MARKER6)
       vTrace(" <<==== MARKER 6");
-    if ((u8)(*((i8*)pAddress + i)) == C_MEMORY_MARKER7)
+    if ((u8)(*((i8*)aAddress + i)) == C_MEMORY_MARKER7)
       vTrace(" <<==== MARKER 7");
-    if ((u8)(*((i8*)pAddress + i)) == C_MEMORY_MARKER8)
+    if ((u8)(*((i8*)aAddress + i)) == C_MEMORY_MARKER8)
       vTrace(" <<==== MARKER 8");
-    if ((u8)(*((i8*)pAddress + i)) == C_MEMORY_MARKER9)
+    if ((u8)(*((i8*)aAddress + i)) == C_MEMORY_MARKER9)
       vTrace(" <<==== MARKER 9");
-    if ((u8)(*((i8*)pAddress + i)) == C_MEMORY_MARKERA)
+    if ((u8)(*((i8*)aAddress + i)) == C_MEMORY_MARKERA)
       vTrace(" <<==== MARKER A");
-    if ((u8)(*((i8*)pAddress + i)) == C_MEMORY_MARKERB)
+    if ((u8)(*((i8*)aAddress + i)) == C_MEMORY_MARKERB)
       vTrace(" <<==== MARKER B");
-    if ((u8)(*((i8*)pAddress + i)) == C_MEMORY_MARKERC)
+    if ((u8)(*((i8*)aAddress + i)) == C_MEMORY_MARKERC)
       vTrace(" <<==== MARKER C");
-    if ((u8)(*((i8*)pAddress + i)) == C_MEMORY_MARKERD)
+    if ((u8)(*((i8*)aAddress + i)) == C_MEMORY_MARKERD)
       vTrace(" <<==== MARKER D");
-    if ((u8)(*((i8*)pAddress + i)) == C_MEMORY_MARKERE)
+    if ((u8)(*((i8*)aAddress + i)) == C_MEMORY_MARKERE)
       vTrace(" <<==== MARKER E");
-    if ((u8)(*((i8*)pAddress + i)) == C_MEMORY_MARKERF)
+    if ((u8)(*((i8*)aAddress + i)) == C_MEMORY_MARKERF)
       vTrace(" <<==== MARKER F");
     
     iWord = 0;
@@ -272,7 +272,7 @@ void Memory::vWordDump(void *pAddress, i8 iBytes, i8 iHighlightWord)
   if (iWord > 0 && iWord < SIZEOF_WORD) {
     
     for (i8 i= 0; i < iWord; i++) {
-      u1 cChar = *((u1*)pAddress + iOffset + i);
+      u1 cChar = *((u1*)aAddress + iOffset + i);
       if (cChar < C_ASCII_MIN || cChar > C_ASCII_MAX) {
         vTrace("%c", '.');
       } else {

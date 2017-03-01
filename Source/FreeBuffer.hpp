@@ -26,7 +26,7 @@ namespace Pool
     void vZeroData(void);
     void vSetFooter(void);
     
-    Buffer* _pFreeBuffer(void* pAddr);
+    Buffer* _pFreeBuffer(void* aAddr);
   };
 }
 

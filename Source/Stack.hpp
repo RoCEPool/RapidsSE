@@ -40,7 +40,7 @@ namespace Structures
     Stack(void);
     ~Stack(void);
     
-    static Stack* _pStack(void* pAddr);
+    static Stack* _pStack(void* aAddr);
     static void vDump(eCN eClass, Object* pObject, const char* pTab);
     
     bool bGuard(i8 iCount);

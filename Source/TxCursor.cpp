@@ -9,9 +9,9 @@ extern Heap* gpSmallHeap;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-TxCursor* Transactions::_pTxCursor(void* pAddr)
+TxCursor* Transactions::_pTxCursor(void* aAddr)
 {
-  TxCursor* pTxCursor = reinterpret_cast<TxCursor*>(pAddr);
+  TxCursor* pTxCursor = reinterpret_cast<TxCursor*>(aAddr);
   
   RASSERT( !pTxCursor || CN_TXCURSOR == pTxCursor->eClass() );
   

@@ -29,7 +29,7 @@ namespace Values
     Footer* pFooter(void);
   };
   
-  void* _pStrFxd(void* pAddr);
+  void* _pStrFxd(void* aAddr);
 }
 
 using namespace Values;

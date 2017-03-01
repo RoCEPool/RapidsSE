@@ -26,7 +26,7 @@ namespace Tasks
     Footer* pFooter(void);
   };
   
-  TaskCursor* _pTaskCursor(void* pAddr);
+  TaskCursor* _pTaskCursor(void* aAddr);
 }
 
 /*============================================================================*/

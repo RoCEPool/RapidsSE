@@ -70,7 +70,7 @@ namespace DBobjects
     Footer* pFooter(void);
   };
   
-  Table* _pTable(void* pAddr);
+  Table* _pTable(void* aAddr);
 }
 
 /*============================================================================*/

@@ -13,9 +13,9 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-IndexBuffer* DBobjects::_pIndexBuffer(void* pAddr)
+IndexBuffer* DBobjects::_pIndexBuffer(void* aAddr)
 {
-  IndexBuffer* pIndexBuffer = reinterpret_cast<IndexBuffer*>(pAddr);
+  IndexBuffer* pIndexBuffer = reinterpret_cast<IndexBuffer*>(aAddr);
   
   RASSERT( !pIndexBuffer || CN_INDEXBUFFER == pIndexBuffer->eClass() );
   

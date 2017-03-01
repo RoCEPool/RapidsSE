@@ -48,7 +48,7 @@ namespace Dictionaries
     Footer* pFooter(void);
   };
   
-  RegFrame* _pRegFrame(void* pAddr);
+  RegFrame* _pRegFrame(void* aAddr);
 }
 
 /*============================================================================*/

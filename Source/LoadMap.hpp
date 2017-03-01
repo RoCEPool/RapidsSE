@@ -52,7 +52,7 @@ namespace DBobjects
     Footer* pFooter(void);
   };
   
-  LoadMap* _pSeekMap(void* pAddr);
+  LoadMap* _pSeekMap(void* aAddr);
 }
 
 /*============================================================================*/

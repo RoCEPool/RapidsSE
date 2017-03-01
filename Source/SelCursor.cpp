@@ -9,9 +9,9 @@ extern Heap* gpSmallHeap;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-SelCursor* DBobjects::_pSelCursor(void* pAddr)
+SelCursor* DBobjects::_pSelCursor(void* aAddr)
 {
-  SelCursor* pSelCursor = reinterpret_cast<SelCursor*>(pAddr);
+  SelCursor* pSelCursor = reinterpret_cast<SelCursor*>(aAddr);
   
   RASSERT( !pSelCursor || CN_SELCURSOR == pSelCursor->eClass() );
   

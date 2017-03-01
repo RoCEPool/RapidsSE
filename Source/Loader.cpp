@@ -12,9 +12,9 @@ extern Heap*     gpMediumHeap;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Loader* DBobjects::_pLoader(void* pAddr)
+Loader* DBobjects::_pLoader(void* aAddr)
 {
-  Loader* pLoader = reinterpret_cast<Loader*>(pAddr);
+  Loader* pLoader = reinterpret_cast<Loader*>(aAddr);
   
   RASSERT( !pLoader || CN_LOADER == pLoader->eClass() );
   

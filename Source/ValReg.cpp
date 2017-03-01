@@ -7,9 +7,9 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-ValReg* Values::_pValReg(void* pAddr)
+ValReg* Values::_pValReg(void* aAddr)
 {
-  ValReg* pValReg = reinterpret_cast<ValReg*>(pAddr);
+  ValReg* pValReg = reinterpret_cast<ValReg*>(aAddr);
   
   RASSERT( !pValReg || CN_VALREG == pValReg->eClass() );
   

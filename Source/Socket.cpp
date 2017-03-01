@@ -93,29 +93,29 @@ void Socket::vDump(eCN eClass, Object* pObject, const char* pTab)
 /*----------------------------------------------------------------------------*/
 /* initialize a sockaddr_in structure                                         */
 /*----------------------------------------------------------------------------*/
-void Socket::vAddrInit(sockaddr_in* pAddr, int iPort)
+void Socket::vAddrInit(sockaddr_in* aAddr, int iPort)
 {
   _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
   
-  Memory::vZero(pAddr,sizeof(sockaddr_in));
+  Memory::vZero(aAddr,sizeof(sockaddr_in));
   
-  pAddr->sin_family      = AF_INET;
-  pAddr->sin_addr.s_addr = htonl(INADDR_ANY);
-  pAddr->sin_port        = htons((int)iPort);
+  aAddr->sin_family      = AF_INET;
+  aAddr->sin_addr.s_addr = htonl(INADDR_ANY);
+  aAddr->sin_port        = htons((int)iPort);
 }
 
 /*----------------------------------------------------------------------------*/
 /* initialize a sockaddr_in structure                                         */
 /*----------------------------------------------------------------------------*/
-void Socket::vAddrInit(sockaddr_in* pAddr, const char* sAddr, int iPort)
+void Socket::vAddrInit(sockaddr_in* aAddr, const char* sAddr, int iPort)
 {
   _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
   
-  Memory::vZero(pAddr,sizeof(sockaddr_in));
+  Memory::vZero(aAddr,sizeof(sockaddr_in));
   
-  pAddr->sin_family      = AF_INET;
-  pAddr->sin_addr.s_addr = sAddr == nullptr ? -1 : inet_addr(sAddr);
-  pAddr->sin_port        = htons((int)iPort);
+  aAddr->sin_family      = AF_INET;
+  aAddr->sin_addr.s_addr = sAddr == nullptr ? -1 : inet_addr(sAddr);
+  aAddr->sin_port        = htons((int)iPort);
 }
 
 /*----------------------------------------------------------------------------*/

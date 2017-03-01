@@ -10,9 +10,9 @@ extern Atomic    gzPlanId;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Plan* Plans::_pPlan(void* pAddr)
+Plan* Plans::_pPlan(void* aAddr)
 {
-  Plan* pPlan = reinterpret_cast<Plan*>(pAddr);
+  Plan* pPlan = reinterpret_cast<Plan*>(aAddr);
   
   RASSERT( !pPlan || CN_PLAN == pPlan->eClass() );
 

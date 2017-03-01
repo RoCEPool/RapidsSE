@@ -11,9 +11,9 @@ extern Grid*   gpGrid;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-NodeCursor* GridModel::_pNodeCursor(void* pAddr)
+NodeCursor* GridModel::_pNodeCursor(void* aAddr)
 {
-  NodeCursor* pNodeCursor = reinterpret_cast<NodeCursor*>(pAddr);
+  NodeCursor* pNodeCursor = reinterpret_cast<NodeCursor*>(aAddr);
   
   RASSERT( !pNodeCursor || CN_NODECURSOR == pNodeCursor->eClass() );
   

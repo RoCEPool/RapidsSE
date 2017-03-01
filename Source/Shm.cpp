@@ -123,7 +123,7 @@ bool Shm::bCreate(StrVal& sRegionName, i8 iSize, int& iFD,
 /*----------------------------------------------------------------------------*/
 /* map a new an anonymous region of memory (private or shared)                */
 /*----------------------------------------------------------------------------*/
-void* Shm::pMap(int iFd, void* pAddress, i8 iBytes, bool bShared, bool bHugeTlb, SysCall& SysCall)
+void* Shm::pMap(int iFd, void* aAddress, i8 iBytes, bool bShared, bool bHugeTlb, SysCall& SysCall)
 {
   SysCall.vClear();
   
@@ -137,10 +137,10 @@ void* Shm::pMap(int iFd, void* pAddress, i8 iBytes, bool bShared, bool bHugeTlb,
   
 #ifdef __APPLE__
   int iFlags =   (bShared  ? MAP_SHARED : MAP_PRIVATE | MAP_ANONYMOUS)
-               | (pAddress ? MAP_FIXED  : 0);
+               | (aAddress ? MAP_FIXED  : 0);
 #else
   int iFlags =   (bShared  ? MAP_SHARED : MAP_PRIVATE)
-               | (pAddress ? MAP_FIXED  : 0)
+               | (aAddress ? MAP_FIXED  : 0)
                | (bHugeTlb ? MAP_HUGETLB | MAP_ANONYMOUS : 0);
 #endif
   
@@ -149,7 +149,7 @@ void* Shm::pMap(int iFd, void* pAddress, i8 iBytes, bool bShared, bool bHugeTlb,
   if (gxArguments.m_bVerbose)
     vTrace("Shm::pMap C\n");
   
-  void* pRegion = mmap(pAddress, // starting address
+  void* pRegion = mmap(aAddress, // starting address
                        iBytes,   // length of the region
                        iProt,    // region protection
                        iFlags,   // mapping flags
@@ -174,11 +174,11 @@ void* Shm::pMap(int iFd, void* pAddress, i8 iBytes, bool bShared, bool bHugeTlb,
 /*----------------------------------------------------------------------------*/
 /* unmap an existing memory region                                            */
 /*----------------------------------------------------------------------------*/
-bool Shm::bUnmap(void *pAddress, i8 iBytes, SysCall& xSysCall)
+bool Shm::bUnmap(void *aAddress, i8 iBytes, SysCall& xSysCall)
 {
   xSysCall.vClear();
   
-  int rCode = munmap(pAddress, // starting address
+  int rCode = munmap(aAddress, // starting address
                      iBytes    // length of the region
                      );
   

@@ -11,9 +11,9 @@ extern TaskList*    gpTaskList;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-TaskList* Tasks::_pTaskList(void* pAddr)
+TaskList* Tasks::_pTaskList(void* aAddr)
 {
-  TaskList* pTaskList = reinterpret_cast<TaskList*>(pAddr);
+  TaskList* pTaskList = reinterpret_cast<TaskList*>(aAddr);
   
   RASSERT( !pTaskList || CN_TASKLIST == pTaskList->eClass() );
   

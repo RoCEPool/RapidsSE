@@ -124,7 +124,7 @@ namespace Common
 //    
   };
   
-  File* _pFile(void* pAddr);
+  File* _pFile(void* aAddr);
 
 }
 

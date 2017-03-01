@@ -9,9 +9,9 @@ extern Heap* gpMediumHeap;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-RegFrame* Dictionaries::_pRegFrame(void* pAddr)
+RegFrame* Dictionaries::_pRegFrame(void* aAddr)
 {
-  RegFrame* pRegFrame = reinterpret_cast<RegFrame*>(pAddr);
+  RegFrame* pRegFrame = reinterpret_cast<RegFrame*>(aAddr);
   
   RASSERT( !pRegFrame || CN_REGFRAME == pRegFrame->eClass() );
 

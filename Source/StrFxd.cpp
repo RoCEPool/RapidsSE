@@ -7,9 +7,9 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-void* Values::_pStrFxd(void* pAddr)
+void* Values::_pStrFxd(void* aAddr)
 {
-  Object* pStrFxd = reinterpret_cast<Object*>(pAddr);
+  Object* pStrFxd = reinterpret_cast<Object*>(aAddr);
   
   RASSERT( !pStrFxd || CN_STRFXD == pStrFxd->eClass() );
   

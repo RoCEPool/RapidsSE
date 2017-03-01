@@ -31,7 +31,7 @@ namespace GridModel
     Footer* pFooter(void);
   };
   
-  NodeCursor* _pNodeCursor(void* pAddr);
+  NodeCursor* _pNodeCursor(void* aAddr);
 }
 
 /*============================================================================*/

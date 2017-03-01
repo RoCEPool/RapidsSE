@@ -30,7 +30,7 @@ namespace Values
     Footer* pFooter(void);
   };
   
-  ValWsp* _pValWsp(void* pAddr);
+  ValWsp* _pValWsp(void* aAddr);
 }
 
 /*============================================================================*/

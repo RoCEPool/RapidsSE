@@ -57,7 +57,7 @@ namespace Dictionaries
     Footer* pFooter(void);
   };
   
-  Dic* _pDic(void* pAddr);
+  Dic* _pDic(void* aAddr);
 }
 
 /*============================================================================*/

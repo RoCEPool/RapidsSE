@@ -53,7 +53,7 @@ namespace DBobjects
     i8    nFreeBytes(void);
   };
   
-  IndexBuffer* _pIndexBuffer(void* pAddr);
+  IndexBuffer* _pIndexBuffer(void* aAddr);
 }
 
 /*============================================================================*/

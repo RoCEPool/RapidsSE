@@ -32,7 +32,7 @@ namespace Values
     void vToString(char* aWorkspace);
   };
   
-  IpVal* _pIpVal(void* pAddr);
+  IpVal* _pIpVal(void* aAddr);
 }
 
 /*============================================================================*/

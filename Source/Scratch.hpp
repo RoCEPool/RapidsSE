@@ -17,7 +17,7 @@ namespace Common
   public:
     void* operator new(size_t);
     void* operator new(size_t, Scratch* pScratch);
-    void operator delete(void* pAddress);
+    void operator delete(void* aAddress);
     Scratch(void);
     ~Scratch(void);
 
@@ -26,7 +26,7 @@ namespace Common
     Footer* pFooter(void);
   };
   
-  Scratch* _pScratch(void* pAddress);
+  Scratch* _pScratch(void* aAddress);
 }
 
 /*============================================================================*/

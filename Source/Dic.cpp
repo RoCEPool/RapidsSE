@@ -11,9 +11,9 @@ extern BufferPool* gpBufferPool;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Dic* Dictionaries::_pDic(void* pAddr)
+Dic* Dictionaries::_pDic(void* aAddr)
 {
-  Dic* pDic = reinterpret_cast<Dic*>(pAddr);
+  Dic* pDic = reinterpret_cast<Dic*>(aAddr);
   
   RASSERT( !pDic || CN_DIC == pDic->eClass() );
 

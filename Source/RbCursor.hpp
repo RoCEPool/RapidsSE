@@ -40,7 +40,7 @@ namespace DBobjects
     Footer* pFooter(void);
   };
   
-  RbCursor* _pRbCursor(void* pAddr);
+  RbCursor* _pRbCursor(void* aAddr);
 }
 
 /*============================================================================*/

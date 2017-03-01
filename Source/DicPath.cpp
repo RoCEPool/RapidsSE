@@ -9,9 +9,9 @@ extern Dic* gpMainDic;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-DicPath* DicPath::_pDicStack(void* pAddr)
+DicPath* DicPath::_pDicStack(void* aAddr)
 {
-  DicPath* pDicPath = reinterpret_cast<DicPath*>(pAddr);
+  DicPath* pDicPath = reinterpret_cast<DicPath*>(aAddr);
   
   RASSERT( !pDicPath || CN_DICPATH == pDicPath->eClass() );
   
@@ -32,9 +32,9 @@ void* DicPath::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 /* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
-void DicPath::operator delete(void* pAddress)
+void DicPath::operator delete(void* aAddress)
 {
-  RASSERT(pAddress);
+  RASSERT(aAddress);
   vFatal("fatal: DictionaryStack class cannot be deleted");
   
   RASSERT(0);

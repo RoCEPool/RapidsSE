@@ -10,9 +10,9 @@ extern TxCollection* gpTxCollection;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-TxMap* Transactions::_pTxMap(void* pAddr)
+TxMap* Transactions::_pTxMap(void* aAddr)
 {
-  TxMap* pTxMap = reinterpret_cast<TxMap*>(pAddr);
+  TxMap* pTxMap = reinterpret_cast<TxMap*>(aAddr);
   
   RASSERT( !pTxMap || CN_TXMAP == pTxMap->eClass() );
   

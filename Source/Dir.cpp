@@ -12,9 +12,9 @@ extern Heap* gpSmallHeap;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Dir* Common::_pDir(void* pAddr)
+Dir* Common::_pDir(void* aAddr)
 {
-  Dir* pDir = reinterpret_cast<Dir*>(pAddr);
+  Dir* pDir = reinterpret_cast<Dir*>(aAddr);
   
   RASSERT( !pDir || CN_DIR == pDir->eClass() );
   

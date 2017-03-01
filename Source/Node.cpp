@@ -7,9 +7,9 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Node* GridModel::_pNode(void* pAddr)
+Node* GridModel::_pNode(void* aAddr)
 {
-  Node* pNode = reinterpret_cast<Node*>(pAddr);
+  Node* pNode = reinterpret_cast<Node*>(aAddr);
   
   RASSERT( !pNode || CN_NODE == pNode->eClass() );
   

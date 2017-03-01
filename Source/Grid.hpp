@@ -52,7 +52,7 @@ namespace GridModel
     Footer* pFooter(void);
   };
     
-  Grid* _pGrid(void* pAddr);
+  Grid* _pGrid(void* aAddr);
 }
 
 /*============================================================================*/

@@ -37,7 +37,7 @@ namespace Transactions
     Footer* pFooter(void);
   };
   
-  TxMap* _pTxMap(void* pAddr);
+  TxMap* _pTxMap(void* aAddr);
 }
 
 /*============================================================================*/

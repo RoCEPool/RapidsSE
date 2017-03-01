@@ -7,9 +7,9 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-IntVal* Values::_pIntVal(void* pAddr)
+IntVal* Values::_pIntVal(void* aAddr)
 {
-  IntVal* pIntVal = reinterpret_cast<IntVal*>(pAddr);
+  IntVal* pIntVal = reinterpret_cast<IntVal*>(aAddr);
   
   RASSERT( !pIntVal || CN_INTVAL == pIntVal->eClass() );
   

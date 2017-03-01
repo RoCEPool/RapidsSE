@@ -63,7 +63,7 @@ namespace Plans
     Footer* pFooter(void);
   };
   
-  Plan* _pPlan(void* pAddr);
+  Plan* _pPlan(void* aAddr);
   Plan* _pPlan(i8 iAddr);
 }
 

@@ -58,7 +58,7 @@ namespace DBobjects
     Footer* pFooter(void);
   };
   
-  LoaderSub* _pLoaderSub(void* pAddr);
+  LoaderSub* _pLoaderSub(void* aAddr);
 }
 
 /*============================================================================*/

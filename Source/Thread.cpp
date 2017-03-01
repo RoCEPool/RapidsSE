@@ -19,9 +19,9 @@ extern pthread_key_t  giTLS_ThreadKey;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Thread* Threads::_pThread(void* pAddr)
+Thread* Threads::_pThread(void* aAddr)
 {
-  Thread* pThread = reinterpret_cast<Thread*>(pAddr);
+  Thread* pThread = reinterpret_cast<Thread*>(aAddr);
   
   RASSERT( !pThread || CN_THREAD == pThread->eClass() );
   

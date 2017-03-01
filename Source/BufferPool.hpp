@@ -48,7 +48,7 @@ namespace Pool
     bn   nBufferNext(bn nBuffer);
     bn   nBufferPrev(bn nBuffer);
     i8   iBufferSize(void);
-    void vCheckAddress(const void* pAddress);
+    void vCheckAddress(const void* aAddress);
     bool bDetachPool(void);
     void vFree(Buffer* pBuffer);
     i8   iFreeCount(void);
@@ -61,7 +61,7 @@ namespace Pool
     Buffer* pToBuffer(bn nBuffer);
     FreeBuffer* pToFreeBuffer(bn nBuffer);
     FreeBuffer* pToFreeBuffer(Buffer* pBuffer);
-    bool bValidAddress(const void* pAddress);
+    bool bValidAddress(const void* aAddress);
     void vVerifyPool(void);
     
     Footer* pFooter(void);

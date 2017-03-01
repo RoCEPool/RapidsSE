@@ -12,9 +12,9 @@ extern Arguments gxArguments;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-ValSet* Values::_pValSet(void* pAddr)
+ValSet* Values::_pValSet(void* aAddr)
 {
-  ValSet* pValSet = reinterpret_cast<ValSet*>(pAddr);
+  ValSet* pValSet = reinterpret_cast<ValSet*>(aAddr);
   
   RASSERT( !pValSet || CN_VALSET == pValSet->eClass() );
   

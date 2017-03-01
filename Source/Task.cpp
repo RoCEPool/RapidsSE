@@ -31,9 +31,9 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Task* Tasks::_pTask(void* pAddr)
+Task* Tasks::_pTask(void* aAddr)
 {
-  Task* pTask = reinterpret_cast<Task*>(pAddr);
+  Task* pTask = reinterpret_cast<Task*>(aAddr);
   
   RASSERT( !pTask || CN_TASK == pTask->eClass() );
 

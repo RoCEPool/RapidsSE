@@ -7,9 +7,9 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-GraphNode* Structures::_pGraphNode(void* pAddr)
+GraphNode* Structures::_pGraphNode(void* aAddr)
 {
-  GraphNode* pGraphNode = reinterpret_cast<GraphNode*>(pAddr);
+  GraphNode* pGraphNode = reinterpret_cast<GraphNode*>(aAddr);
   
   RASSERT( !pGraphNode || CN_GRAPHNODE == pGraphNode->eClass() );
   

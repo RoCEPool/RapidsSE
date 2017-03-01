@@ -59,7 +59,7 @@ namespace Common
     Footer* pFooter(void);
   };
 
-  Dir* _pDir(void* pAddr);
+  Dir* _pDir(void* aAddr);
 }
 
 /*============================================================================*/

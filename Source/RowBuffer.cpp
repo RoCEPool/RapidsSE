@@ -9,9 +9,9 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-RowBuffer* DBobjects::_pRowBuffer(void* pAddr)
+RowBuffer* DBobjects::_pRowBuffer(void* aAddr)
 {
-  RowBuffer* pRowBuffer = reinterpret_cast<RowBuffer*>(pAddr);
+  RowBuffer* pRowBuffer = reinterpret_cast<RowBuffer*>(aAddr);
   
   RASSERT( !pRowBuffer || CN_ROWBUFFER == pRowBuffer->eClass() );
   
@@ -32,11 +32,11 @@ void* RowBuffer::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 /* fetch a new buffer from buffer pool                                        */
 /*----------------------------------------------------------------------------*/
-void* RowBuffer::operator new(size_t iSize, void* pAddr)
+void* RowBuffer::operator new(size_t iSize, void* aAddr)
 {
   RASSERT(iSize);
   
-  return pAddr;
+  return aAddr;
 }
 
 /*----------------------------------------------------------------------------*/

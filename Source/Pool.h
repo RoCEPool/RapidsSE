@@ -40,14 +40,14 @@ extern BufferPool* gpBufferPool;
 /* pCheck: check address                                                     */
 /*---------------------------------------------------------------------------*/
 template <class OBJECT>
-static OBJECT pPoolCheck(void* pAddress)
+static OBJECT pPoolCheck(void* aAddress)
 {
 #ifdef ADDRESS_CHECK
-  if (pAddress)
-    gpBufferPool->vCheckAddress(pAddress);
+  if (aAddress)
+    gpBufferPool->vCheckAddress(aAddress);
 #endif
   
-  return static_cast<OBJECT>(pAddress);
+  return static_cast<OBJECT>(aAddress);
 }
 
 /*============================================================================*/

@@ -7,9 +7,9 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-ObjVal* Values::_pObjVal(void* pAddr)
+ObjVal* Values::_pObjVal(void* aAddr)
 {
-  ObjVal* pObjVal = reinterpret_cast<ObjVal*>(pAddr);
+  ObjVal* pObjVal = reinterpret_cast<ObjVal*>(aAddr);
   
   RASSERT( !pObjVal || CN_OBJVAL == pObjVal->eClass() );
   

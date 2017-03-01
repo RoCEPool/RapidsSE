@@ -10,9 +10,9 @@ extern ThreadList*  gpThreadList;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-ThreadList* Threads::_pThreadList(void* pAddr)
+ThreadList* Threads::_pThreadList(void* aAddr)
 {
-  ThreadList* pThreadList = reinterpret_cast<ThreadList*>(pAddr);
+  ThreadList* pThreadList = reinterpret_cast<ThreadList*>(aAddr);
   
   RASSERT( !pThreadList || CN_THREADLIST == pThreadList->eClass() );
   

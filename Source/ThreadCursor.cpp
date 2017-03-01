@@ -11,9 +11,9 @@ extern ThreadList* gpThreadList;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-ThreadCursor* Threads::_pThreadCursor(void* pAddr)
+ThreadCursor* Threads::_pThreadCursor(void* aAddr)
 {
-  ThreadCursor* pThreadCursor = reinterpret_cast<ThreadCursor*>(pAddr);
+  ThreadCursor* pThreadCursor = reinterpret_cast<ThreadCursor*>(aAddr);
   
   RASSERT( !pThreadCursor || CN_THREADCURSOR == pThreadCursor->eClass() );
   

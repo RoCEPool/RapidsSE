@@ -64,7 +64,7 @@ namespace Structures
     
   };
   
-  SkipList* _pSkipList(void* pAddr);
+  SkipList* _pSkipList(void* aAddr);
   
   void vSkipListTest(void);
 }

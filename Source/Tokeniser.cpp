@@ -7,9 +7,9 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Tokeniser* Tokeniser::_pTokeniser(void* pAddr)
+Tokeniser* Tokeniser::_pTokeniser(void* aAddr)
 {
-  Tokeniser* pTokeniser = reinterpret_cast<Tokeniser*>(pAddr);
+  Tokeniser* pTokeniser = reinterpret_cast<Tokeniser*>(aAddr);
   
   RASSERT( !pTokeniser || CN_TOKENISER == pTokeniser->eClass() );
   

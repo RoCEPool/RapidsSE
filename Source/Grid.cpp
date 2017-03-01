@@ -12,9 +12,9 @@ extern Arguments gxArguments;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Grid* GridModel::_pGrid(void* pAddr)
+Grid* GridModel::_pGrid(void* aAddr)
 {
-  Grid* pGrid = reinterpret_cast<Grid*>(pAddr);
+  Grid* pGrid = reinterpret_cast<Grid*>(aAddr);
   
   RASSERT( !pGrid || CN_GRID == pGrid->eClass() );
   

@@ -46,7 +46,7 @@ namespace Structures
     Footer* pFooter(void);
   };
   
-  GraphNode* _pGraphNode(void* pAddr);
+  GraphNode* _pGraphNode(void* aAddr);
 }
 
 /*============================================================================*/

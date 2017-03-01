@@ -9,9 +9,9 @@ extern BufferPool* gpBufferPool;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Buffer* FreeBuffer::_pFreeBuffer(void* pAddr)
+Buffer* FreeBuffer::_pFreeBuffer(void* aAddr)
 {
-  Buffer* pBuffer = reinterpret_cast<Buffer*>(pAddr);
+  Buffer* pBuffer = reinterpret_cast<Buffer*>(aAddr);
   
   RASSERT( !pBuffer || CN_FREEBUFFER == pBuffer->eClass() );
   

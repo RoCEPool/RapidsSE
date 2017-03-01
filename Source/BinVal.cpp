@@ -10,9 +10,9 @@ extern i8 giClassSize[];
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-BinVal* Values::_pBinVal(void* pAddr)
+BinVal* Values::_pBinVal(void* aAddr)
 {
-  BinVal* pBinVal = reinterpret_cast<BinVal*>(pAddr);
+  BinVal* pBinVal = reinterpret_cast<BinVal*>(aAddr);
   
   RASSERT( !pBinVal || CN_BINVAL == pBinVal->eClass() );
   

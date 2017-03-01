@@ -11,9 +11,9 @@ extern BufferPool* gpBufferPool;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Scratch* Common::_pScratch(void* pAddress)
+Scratch* Common::_pScratch(void* aAddress)
 {
-  Scratch* pScratch = reinterpret_cast<Scratch*>(pAddress);
+  Scratch* pScratch = reinterpret_cast<Scratch*>(aAddress);
   
   RASSERT( !pScratch || CN_SCRATCH == pScratch->eClass() );
   
@@ -44,11 +44,11 @@ void* Scratch::operator new(size_t iSize, Scratch* pScratch)
 /*----------------------------------------------------------------------------*/
 /* delete operator                                                            */
 /*----------------------------------------------------------------------------*/
-void Scratch::operator delete(void* pAddress)
+void Scratch::operator delete(void* aAddress)
 {
-  ASSERT(pAddress);
+  ASSERT(aAddress);
   
-  Object* pObject = reinterpret_cast<Object*>(pAddress);
+  Object* pObject = reinterpret_cast<Object*>(aAddress);
   
   Heap::vFree(pObject);
 }

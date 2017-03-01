@@ -52,7 +52,7 @@ namespace Values
     Footer* pFooter(void);
   };
 
-  StrVal* _pStrVal(void* pAddr);
+  StrVal* _pStrVal(void* aAddr);
 }
 
 /*============================================================================*/

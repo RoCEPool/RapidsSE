@@ -31,7 +31,7 @@ namespace Structures
     static i8 iMaxSize(void);
   };
   
-  SkipNode* _pSkipNode(void* pAddr);
+  SkipNode* _pSkipNode(void* aAddr);
 }
 
 /*============================================================================*/

@@ -11,9 +11,9 @@ extern PlanList*    gpPlanList;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-PlanList* Plans::_pPlanList(void* pAddr)
+PlanList* Plans::_pPlanList(void* aAddr)
 {
-  PlanList* pPlanList = reinterpret_cast<PlanList*>(pAddr);
+  PlanList* pPlanList = reinterpret_cast<PlanList*>(aAddr);
   
   RASSERT( !pPlanList || CN_PLANLIST == pPlanList->eClass() );
   

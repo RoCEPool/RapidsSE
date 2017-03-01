@@ -8,9 +8,9 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Lock* Common::_pLock(void* pAddr)
+Lock* Common::_pLock(void* aAddr)
 {
-  Lock* pLock = reinterpret_cast<Lock*>(pAddr);
+  Lock* pLock = reinterpret_cast<Lock*>(aAddr);
   
   RASSERT( !pLock || CN_LOCK == pLock->eClass() );
   

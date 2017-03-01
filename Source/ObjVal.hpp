@@ -20,7 +20,7 @@ namespace Values
     i8 nSize(void) const;
   };
   
-  ObjVal* _pObjVal(void* pAddr);
+  ObjVal* _pObjVal(void* aAddr);
 }
 
 /*============================================================================*/

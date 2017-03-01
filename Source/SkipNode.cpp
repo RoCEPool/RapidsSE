@@ -7,9 +7,9 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-SkipNode* Structures::_pSkipNode(void* pAddr)
+SkipNode* Structures::_pSkipNode(void* aAddr)
 {
-  SkipNode* pSkipNode = reinterpret_cast<SkipNode*>(pAddr);
+  SkipNode* pSkipNode = reinterpret_cast<SkipNode*>(aAddr);
   
   RASSERT( !pSkipNode || CN_SKIPNODE == pSkipNode->eClass() );
   

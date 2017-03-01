@@ -14,9 +14,9 @@ extern Grid*      gpGrid;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-SEitf* Interface::_pSEitf(void* pAddr)
+SEitf* Interface::_pSEitf(void* aAddr)
 {
-  SEitf* pSEitf = reinterpret_cast<SEitf*>(pAddr);
+  SEitf* pSEitf = reinterpret_cast<SEitf*>(aAddr);
   
   RASSERT( !pSEitf || CN_SEITF == pSEitf->eClass() );
   

@@ -9,9 +9,9 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-PtrVal* Values::_pPtrVal(void* pAddr)
+PtrVal* Values::_pPtrVal(void* aAddr)
 {
-  PtrVal* pPtrVal = reinterpret_cast<PtrVal*>(pAddr);
+  PtrVal* pPtrVal = reinterpret_cast<PtrVal*>(aAddr);
   
   RASSERT( !pPtrVal || CN_PTRVAL == pPtrVal->eClass() );
   

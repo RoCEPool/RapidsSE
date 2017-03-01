@@ -18,9 +18,9 @@ void* TaskSet::operator new(size_t iSize, TaskSet* pTaskSet)
 /*----------------------------------------------------------------------------*/
 /* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
-void TaskSet::operator delete(void* pAddress)
+void TaskSet::operator delete(void* aAddress)
 {
-  RASSERT(pAddress);
+  RASSERT(aAddress);
   vFatal("fatal: TaskSet class cannot be deleted");
   
   RASSERT(0);

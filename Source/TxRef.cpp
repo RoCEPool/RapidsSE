@@ -10,9 +10,9 @@ extern TxCollection* gpTxCollection;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-TxRef* Transactions::_pTxRef(void* pAddr)
+TxRef* Transactions::_pTxRef(void* aAddr)
 {
-  TxRef* pTxRef = reinterpret_cast<TxRef*>(pAddr);
+  TxRef* pTxRef = reinterpret_cast<TxRef*>(aAddr);
   
   RASSERT( !pTxRef || CN_TXREF == pTxRef->eClass() );
   

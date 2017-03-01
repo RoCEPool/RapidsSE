@@ -26,7 +26,7 @@ namespace Dictionaries
     };
   };
   
-  Cell* _pCell(void* pAddr);
+  Cell* _pCell(void* aAddr);
 }
 
 /*============================================================================*/

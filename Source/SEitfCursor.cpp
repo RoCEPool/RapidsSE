@@ -10,9 +10,9 @@ extern SEitfList*   gpSEitfList;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-SEitfCursor* Interface::_pSEitfCursor(void* pAddr)
+SEitfCursor* Interface::_pSEitfCursor(void* aAddr)
 {
-  SEitfCursor* pSEitfCursor = reinterpret_cast<SEitfCursor*>(pAddr);
+  SEitfCursor* pSEitfCursor = reinterpret_cast<SEitfCursor*>(aAddr);
   
   RASSERT( !pSEitfCursor || CN_SEITFCURSOR == pSEitfCursor->eClass() );
   

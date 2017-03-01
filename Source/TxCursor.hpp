@@ -29,7 +29,7 @@ namespace Transactions
     Footer* pFooter(void);
   };
   
-  TxCursor* _pTxCursor(void* pAddr);
+  TxCursor* _pTxCursor(void* aAddr);
 }
 
 /*============================================================================*/

@@ -1167,7 +1167,7 @@ namespace Tasks
     #endif
   };
   
-  Task* _pTask(void* pAddr);
+  Task* _pTask(void* aAddr);
   Task* _pTask(i8 iAddr);
 }
 

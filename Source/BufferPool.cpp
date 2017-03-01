@@ -180,10 +180,10 @@ i8 BufferPool::iBufferSize(void)
 /*----------------------------------------------------------------------------*/
 /* check address is in pool                                                   */
 /*----------------------------------------------------------------------------*/
-void BufferPool::vCheckAddress(const void* pAddress)
+void BufferPool::vCheckAddress(const void* aAddress)
 {
-  ASSERT(pAddress >= m_pBase);
-  ASSERT(pAddress <  m_pLimit);
+  ASSERT(aAddress >= m_pBase);
+  ASSERT(aAddress <  m_pLimit);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -451,9 +451,9 @@ FreeBuffer* BufferPool::pToFreeBuffer(Buffer* pBuffer)
 /*----------------------------------------------------------------------------*/
 /* is address in pool?                                                        */
 /*----------------------------------------------------------------------------*/
-bool BufferPool::bValidAddress(const void* pAddress)
+bool BufferPool::bValidAddress(const void* aAddress)
 {
-  if ((pAddress >= m_pBase) && (pAddress <  m_pLimit))
+  if ((aAddress >= m_pBase) && (aAddress <  m_pLimit))
     return true;
   else
     return false;
@@ -495,9 +495,9 @@ Footer* BufferPool::pFooter(void)
 /*----------------------------------------------------------------------------*/
 /*-- CheckAddress ------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-void Platform::vCheckAddress(void *pAddress)
+void Platform::vCheckAddress(void *aAddress)
 {
-  gpBufferPool->vCheckAddress(pAddress);
+  gpBufferPool->vCheckAddress(aAddress);
 }
 /*============================================================================*/
 /* end                                                                        */

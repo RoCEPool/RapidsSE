@@ -7,9 +7,9 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Cell* Dictionaries::_pCell(void* pAddr)
+Cell* Dictionaries::_pCell(void* aAddr)
 {
-  Cell* pCell = reinterpret_cast<Cell*>(pAddr);
+  Cell* pCell = reinterpret_cast<Cell*>(aAddr);
   
   return pCell;
 }

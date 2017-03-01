@@ -10,9 +10,9 @@ extern SEitfList*   gpSEitfList;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-SEitfList* Interface::_pSEitfList(void* pAddr)
+SEitfList* Interface::_pSEitfList(void* aAddr)
 {
-  SEitfList* pSEitfList = reinterpret_cast<SEitfList*>(pAddr);
+  SEitfList* pSEitfList = reinterpret_cast<SEitfList*>(aAddr);
   
   RASSERT( !pSEitfList || CN_SEITFLIST == pSEitfList->eClass() );
   

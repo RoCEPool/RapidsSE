@@ -7,12 +7,12 @@
 /*----------------------------------------------------------------------------*/
 /* compute byte difference between two addresses                              */
 /*----------------------------------------------------------------------------*/
-i8 Platform::nSub(void* pAddress0, void* pAddress1)
+i8 Platform::nSub(void* aAddress0, void* aAddress1)
 {
-  char* pAddr0 = reinterpret_cast<char*>(pAddress0);
-  char* pAddr1 = reinterpret_cast<char*>(pAddress1);
+  char* aAddr0 = reinterpret_cast<char*>(aAddress0);
+  char* aAddr1 = reinterpret_cast<char*>(aAddress1);
  
-  i8 nBytes = pAddr0 - pAddr1;
+  i8 nBytes = aAddr0 - aAddr1;
   
   return nBytes;
 }

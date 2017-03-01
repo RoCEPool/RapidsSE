@@ -30,8 +30,8 @@ namespace Common
     
     static void vDump(eCN eClass, Object* pObject, const char* pTab);
 
-    void vAddrInit(sockaddr_in* pAddr, int iPort);
-    void vAddrInit(sockaddr_in* pAddr, const char* sAddr, int iPort);
+    void vAddrInit(sockaddr_in* aAddr, int iPort);
+    void vAddrInit(sockaddr_in* aAddr, const char* sAddr, int iPort);
     
     void vCopy(Socket* pSource);
     bool bIsOpen();
@@ -52,7 +52,7 @@ namespace Common
     bool bSocket(SysCall& SysCall);
     bool bBind(SysCall& SysCall);
     bool bBind(int iPort, SysCall& SysCall);
-    bool bBind(const char* pAddr, int iPort, SysCall& SysCall);
+    bool bBind(const char* aAddr, int iPort, SysCall& SysCall);
     bool bServer(const char* sAddr, int iPort, SysCall& SysCall);
     bool bSendTo(i8 nBytes, void* pBuffer, SysCall& SysCall);
     bool bRecvFrom(int nBytes, void* pBuffer, i8* pRecv, SysCall& SysCall);

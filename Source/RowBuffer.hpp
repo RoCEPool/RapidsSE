@@ -40,7 +40,7 @@ namespace DBobjects
     
   public:
     void* operator new(size_t);
-    void* operator new(size_t, void* pAddress);
+    void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
     
     RowBuffer(void);
@@ -83,7 +83,7 @@ namespace DBobjects
     i8      iFreeSpace(void);
   };
   
-  RowBuffer* _pRowBuffer(void* pAddr);
+  RowBuffer* _pRowBuffer(void* aAddr);
 }
 
 /*============================================================================*/

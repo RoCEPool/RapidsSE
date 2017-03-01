@@ -43,7 +43,7 @@ namespace DBobjects
     Footer* pFooter(void);
   };
   
-  SelCursor* _pSelCursor(void* pAddr);
+  SelCursor* _pSelCursor(void* aAddr);
 }
 
 /*============================================================================*/

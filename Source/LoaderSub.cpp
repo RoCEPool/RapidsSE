@@ -12,9 +12,9 @@ extern Grid*     gpGrid;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-LoaderSub* DBobjects::_pLoaderSub(void* pAddr)
+LoaderSub* DBobjects::_pLoaderSub(void* aAddr)
 {
-  LoaderSub* pLoaderSub = reinterpret_cast<LoaderSub*>(pAddr);
+  LoaderSub* pLoaderSub = reinterpret_cast<LoaderSub*>(aAddr);
   
   RASSERT( !pLoaderSub || CN_LOADERSUB == pLoaderSub->eClass() );
   

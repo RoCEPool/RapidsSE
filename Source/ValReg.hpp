@@ -25,7 +25,7 @@ namespace Values
     void operator =(const char* pStr);
   };
   
-  ValReg* _pValReg(void* pAddr);
+  ValReg* _pValReg(void* aAddr);
 }
 
 /*============================================================================*/
