@@ -9,11 +9,11 @@
 namespace Structures
 {
   class ScanBuffer : public Buffer,
-                     public WspFxd<C_1M>
+                     public WspFxd<C_1M> // note this is 1M not 1MB
   {
   private:
-    char* m_aNextMsg;  // area where next message starts
-    char* m_aEndData;  // area where data ends
+    char* m_aNextMsg;  // address where next message starts
+    char* m_aEndData;  // address where data ends
         
   public:
     void* operator new(size_t);
