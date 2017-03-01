@@ -13,7 +13,7 @@ namespace Dictionaries
 
 namespace Structures
 {
-  static const i8 C_STACK_AREA = C_SIZE_POOL_BUFFER - C_1K;
+  static const i8 C_STACK_LENGTH = C_SIZE_POOL_BUFFER - C_1KB;
   
   class Stack : public Buffer
   {
@@ -28,7 +28,7 @@ namespace Structures
     
     Footer m_xHazard;
     
-    WspFxd<C_STACK_AREA> m_xWsp;
+    WspFxd<C_STACK_LENGTH> m_xWsp;
     
     // must be last
     Footer m_xFooter;
