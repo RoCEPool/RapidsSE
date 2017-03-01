@@ -24,6 +24,7 @@ namespace Magic
   public:
     WspFxd(void);
 
+    char* aWspAllot(i8 nBytes);
     void  vWspAppend(void* aSrc, i8 nBytes);
     char* aWspArea(void);
     void  vWspFill(char cByte);
@@ -46,6 +47,19 @@ template<int LENGTH>
 WspFxd<LENGTH>::WspFxd(void)
 {
   m_nAreaUsed = 0;
+}
+
+/*----------------------------------------------------------------------------*/
+/* allot bytes from byte area                                                 */
+/*----------------------------------------------------------------------------*/
+template<int LENGTH>
+char* WspFxd<LENGTH>::aWspAllot(i8 nBytes)
+{
+  char* aAllotted = aWspLatter();
+  
+  vWspTake(nBytes);
+  
+  return aAllotted;
 }
 
 /*----------------------------------------------------------------------------*/

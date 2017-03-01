@@ -23,6 +23,7 @@ namespace Magic
   public:
     WspVbl(void);
 
+    char* aWspAllot(i8 nBytes);
     void  vWspAppend(void* aSrc, i8 nBytes);
     char* aWspArea(void);
     void  vWspFill(char cByte);
