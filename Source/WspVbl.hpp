@@ -26,10 +26,12 @@ namespace Magic
     void  vWspAppend(void* aSrc, i8 nBytes);
     char* aWspArea(void);
     void  vWspFill(char cByte);
+    i8    nWspFree(void);
+    char* aWspNext(void);
+    i8    nWspSize(void);
+    void  vWspTake(i8 nBytes);
     i8    nWspUsed(void);
     void  vWspUsed(i8 nBytes);
-    char* aWspNext(void);
-    void  vWspTake(i8 nBytes);
     void  vWspZero(void);
   };
 }
