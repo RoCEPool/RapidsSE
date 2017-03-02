@@ -158,7 +158,7 @@ char* ScanBuffer::aScan(i8& nMessageBytes)
   
     if (*m_aNextMsg == '\n') {
       nMessageBytes = nSub(m_aNextMsg,pMsg);
-      ASSERT(nMessageBytes <= nWspLength());
+      ASSERT(nMessageBytes <= m_xWsp.nWspLength());
       m_aNextMsg++;
       ASSERT(m_aEndData >= aFirstByte() - 1);
       ASSERT(m_aEndData <= aLastByte());
@@ -214,7 +214,7 @@ i8 ScanBuffer::iBytesAvailable(void)
   ASSERT(m_aEndData <= aLastByte());
   
   i8 nBytes = nSub(aLastByte(),m_aEndData);
-  ASSERT(nBytes <= nWspLength());
+  ASSERT(nBytes <= m_xWsp.nWspLength());
   
   return nBytes;
 }
@@ -254,7 +254,7 @@ void ScanBuffer::vCopyUp(char* aDangling)
   
   // copy dangling data bytes to begining of workarea
   i8 nDanglingBytes = nSub(aLastByte(),aDangling) + 1;
-  ASSERT(nDanglingBytes <= nWspLength());
+  ASSERT(nDanglingBytes <= m_xWsp.nWspLength());
   
   Memory::vCopy(aFirstByte(),aDangling,nDanglingBytes);
   m_aEndData = pAdd<char*>(aFirstByte(),nDanglingBytes - 1);
@@ -285,7 +285,7 @@ char* ScanBuffer::aFirstByte(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SCANBUFFER,_FOOTER_);
   
-  char* pFirst = &aWspArea()[0];
+  char* pFirst = &m_xWsp.aWspArea()[0];
   
   return pFirst;
 }
@@ -297,7 +297,7 @@ char* ScanBuffer::aLastByte(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SCANBUFFER,_FOOTER_);
   
-  char* pLast = &aWspArea()[nWspLength() - 1];
+  char* pLast = &m_xWsp.aWspArea()[m_xWsp.nWspLength() - 1];
   
   return pLast;
 }
@@ -324,7 +324,7 @@ void ScanBuffer::vReset(void)
   m_aNextMsg = nullptr;
   vWipe();
   
-  ASSERT(nWspLength() == iBytesAvailable());
+  ASSERT(m_xWsp.nWspLength() == iBytesAvailable());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -334,7 +334,7 @@ void ScanBuffer::vWipe(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SCANBUFFER,_FOOTER_);
   
-  vWspFill(0xEF);
+  m_xWsp.vWspFill(0xEF);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_SCANBUFFER,_FOOTER_);
 }
@@ -346,7 +346,7 @@ void ScanBuffer::vWipe(char* aFrom)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SCANBUFFER,_FOOTER_);
   
-  ASSERT(aFrom >= aWspArea());
+  ASSERT(aFrom >= m_xWsp.aWspArea());
   
   i8 nBytes = nSub(aLastByte(),aFrom) + 1;
   
