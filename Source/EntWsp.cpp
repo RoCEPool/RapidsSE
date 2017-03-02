@@ -64,13 +64,13 @@ void EntWsp::vShow(void)
 //  i8* pKeyData = reinterpret_cast<i8*>(m_mDataArea);
 //  memcpy(&iKey,m_mDataArea,8);
   
-  V::vCopyIntDatum(&iKey,aWspArea());
+  V::vCopyIntDatum(&iKey,m_xWsp.aWspArea());
   
   vTrace("EntWsp %p: rowId %llu.%llu key (size:%lld value:%lld)\n",
          this,
          m_xRowId.uBuffer(),
          m_xRowId.uRow(),
-         nWspUsed(),
+         m_xWsp.nWspUsed(),
          iKey
          );
 }
@@ -98,7 +98,7 @@ i8 EntWsp::nSize(void)
 {
   //_precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
   
-  i8 nBytes = sizeof(RowId) + sizeof(i8) + nWspUsed();
+  i8 nBytes = sizeof(RowId) + sizeof(i8) + m_xWsp.nWspUsed();
   
   return nBytes;
 }
@@ -108,7 +108,7 @@ i8 EntWsp::nSize(void)
 /*----------------------------------------------------------------------------*/
 Key* EntWsp::pKey(void)
 {
-  Key* pKey = reinterpret_cast<Key*>(aWspArea());
+  Key* pKey = reinterpret_cast<Key*>(m_xWsp.aWspArea());
   
   return pKey;
 }
@@ -121,7 +121,23 @@ void EntWsp::vAddKey(KeyWsp& xKeyWsp)
   char* pSrc = xKeyWsp.aWspArea();
   i8 nBytes  = xKeyWsp.nWspUsed();
   
-  vWspAppend(pSrc,nBytes);
+  m_xWsp.vWspAppend(pSrc,nBytes);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get wsp area                                                               */
+/*----------------------------------------------------------------------------*/
+char* EntWsp::aWspArea(void)
+{
+  return m_xWsp.aWspArea();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get wsp bytes used                                                         */
+/*----------------------------------------------------------------------------*/
+i8 EntWsp::nWspUsed(void)
+{
+  return m_xWsp.nWspUsed();
 }
 
 /*----------------------------------------------------------------------------*/
