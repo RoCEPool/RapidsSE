@@ -8,11 +8,11 @@
 
 namespace Values
 {
-  class StrVal : public Value,
-                 public WspVbl
+  class StrVal : public Value
   {
   private:
-    
+    WspVbl m_xWsp;
+  
   public:
     void* operator new(size_t);
     void* operator new(size_t, StrVal* pThis);

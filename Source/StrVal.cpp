@@ -78,9 +78,9 @@ StrVal::StrVal(StrVal* pThis, i8 nBytes)
   
   ASSERT(this == pThis);
   
-  vWspUsed(nBytes);
+  m_xWsp.vWspUsed(nBytes);
   
-  vWspZero();
+  m_xWsp.vWspZero();
   
   _checkInitialised_(CN_STRVAL);
 }
@@ -93,9 +93,9 @@ StrVal::StrVal(eCN eClassNo, i8 nBytes)
 {
   _precondition_(_MAGIC_,eClassNo);
   
-  vWspUsed(nBytes);
+  m_xWsp.vWspUsed(nBytes);
   
-  vWspZero();
+  m_xWsp.vWspZero();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -132,7 +132,7 @@ void StrVal::operator =(const char* aArg)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  String::vCopyLen(aArea(),aArg,nWspUsed()-1);
+  String::vCopyLen(aArea(),aArg,m_xWsp.nWspUsed()-1);
   
   _postcondition_(_MAGIC_,_FOOTER_);
 }
@@ -144,7 +144,7 @@ void StrVal::operator =(char* aArg)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  String::vCopyLen(aArea(),aArg,nWspUsed()-1);
+  String::vCopyLen(aArea(),aArg,m_xWsp.nWspUsed()-1);
   
   _postcondition_(_MAGIC_,_FOOTER_);
 }
@@ -194,7 +194,7 @@ char* StrVal::aArea(void)
 {
   //_precondition_(_MAGIC_,_FOOTER_);
   
-  char* aAddr = aWspArea();
+  char* aAddr = m_xWsp.aWspArea();
   
   return aAddr;
 }
@@ -206,7 +206,7 @@ i8 StrVal::nAreaSize(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  i8 nBytes = nWspUsed();
+  i8 nBytes = m_xWsp.nWspUsed();
   
   return nBytes;
 }
@@ -220,7 +220,7 @@ void StrVal::vAreaSize(void)
   
   i8 nBytes = String::iSize(aArea());
   
-  vWspUsed(nBytes);
+  m_xWsp.vWspUsed(nBytes);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -246,7 +246,7 @@ void StrVal::vAssign(const char* aStr, i8 iLength)
   
   aArea()[iLength] = '\0';
   
-  vWspUsed(iLength);
+  m_xWsp.vWspUsed(iLength);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -256,7 +256,7 @@ void StrVal::vCopy(const char* aStr)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  String::vCopyLen(aArea(),aStr,nWspUsed()-1);
+  String::vCopyLen(aArea(),aStr,m_xWsp.nWspUsed()-1);
   
   _postcondition_(_MAGIC_,_FOOTER_);
 }
@@ -312,7 +312,7 @@ i8 StrVal::iLength(void)
 /*----------------------------------------------------------------------------*/
 i8 StrVal::nSize(void)
 {
-  i8 nBytes = sizeof(StrVal) + nWspUsed();
+  i8 nBytes = sizeof(StrVal) + m_xWsp.nWspUsed();
   
   return nBytes;
 }
@@ -354,7 +354,7 @@ Footer* StrVal::pFooter(void)
 {
   _precondition_(_MAGIC_);
   
-  Footer* pFooter = pAdd<Footer*>(this,sizeof(StrVal) + nWspUsed());
+  Footer* pFooter = pAdd<Footer*>(this,sizeof(StrVal) + m_xWsp.nWspUsed());
   
   return pFooter;
 }
