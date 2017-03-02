@@ -4,14 +4,14 @@
 
 #pragma once
 
-#include "Platform.h"
+#include "Base.h"
 
-namespace Platform
+namespace Base
 {
   static const int C_NO_CASE = 0;
   static const int C_CASE    = 1;
   
-  class String : public Static
+  class String
   {
   private:
     static const i8 C_STRING_ARRAY = 16 * C_1KB;

@@ -22,7 +22,6 @@
 #include "Scratch.hpp"
 #include "Shell.hpp"
 #include "Shm.hpp"
-#include "String.hpp"
 #include "Time_se.hpp"
 #include "Timer.hpp"
 

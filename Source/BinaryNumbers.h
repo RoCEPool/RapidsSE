@@ -1,13 +1,8 @@
 /*============================================================================*/
-/* Magnitudes.h -- Various Useful Magnitude Values                            */
+/* BinaryNumbers.h -- useful binary numbers                                   */
 /*============================================================================*/
+
 #pragma once
-
-#include "Platform.h"
-
-namespace Platform { }
-
-using namespace Platform;
 
 // the 1024^n magnitudes
 const i8 C_1KB = 1024LL;          // 1 kilobyte = 1,024

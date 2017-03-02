@@ -5,15 +5,21 @@
 
 #include "HashDefs.h"
 #include "MachineTypes.h"
-
+#include "SystemIncludes.h"
 
 //-----------------------------------------------------------------------------
+
 namespace Base
 {
   void vCheckAssumptions(void);
 }
 
 using namespace Base;
+
+//-----------------------------------------------------------------------------
+
+#include "BinaryNumbers.h"
+#include "String.hpp"
 
 /*============================================================================*/
 /* end                                                                        */
