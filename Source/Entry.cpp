@@ -99,8 +99,8 @@ void Entry::vContentDump(void)
   
   vTrace("Entry %p: Row %llu.%llu Key (size:%lld value:%lld)\n",
          this,
-         uBuffer(),
-         uRow(),
+         m_xRowId.uBuffer(),
+         m_xRowId.uRow(),
          m_xWspVbl.nWspUsed(),
          iKeyData
          );
@@ -114,7 +114,9 @@ RowId& Entry::xRowId(void)
   //_precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
   
   // return reference to the RowId inherited class
-  return dynamic_cast<RowId&>(*this);
+  //return dynamic_cast<RowId&>(*this);
+  
+  return m_xRowId;
 }
 
 /*----------------------------------------------------------------------------*/

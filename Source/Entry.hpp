@@ -8,9 +8,10 @@
 
 namespace DBobjects
 {
-  class Entry : public RowId
+  class Entry
   {
   private:
+    RowId  m_xRowId;
     WspVbl m_xWspVbl;
   
   public:
