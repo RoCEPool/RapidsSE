@@ -4,10 +4,9 @@
 
 #pragma once
 
-#include "Magic.h"
+#include "Datums.h"
 
 #include "V.hpp"
-
 
 #include "Value.hpp"
 #include "ValWsp.hpp"
