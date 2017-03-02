@@ -56,7 +56,7 @@ IndexBuffer::IndexBuffer(void)
   m_pPrevBuffer = nullptr;
   m_pNextBuffer = nullptr;
   
-  m_xWsp.vWspZero();
+  m_xWsp.vZero();
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
 
@@ -101,7 +101,7 @@ void IndexBuffer::vDump(eCN eClass, Object* pObject, const char* aTab)
   
   vTrace("entries %lld free %lld bytes prevBuffer %p nextBuffer %p\n",
          pIndexBuffer->m_nEntries,
-         pIndexBuffer->m_xWsp.nWspFree(),
+         pIndexBuffer->m_xWsp.nFree(),
          pIndexBuffer->m_pPrevBuffer,
          pIndexBuffer->m_pNextBuffer);
 }
@@ -118,9 +118,9 @@ void IndexBuffer::vAppendBuffer(IndexBuffer* pArgBuffer)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
   // copy arg entries into this buffer
-  void* pDst = pAdd<void*>(m_xWsp.aWspArea(),m_xWsp.nWspUsed());
-  void* pSrc = pArgBuffer->m_xWsp.aWspArea();
-  i8 nBytes  = pArgBuffer->m_xWsp.nWspUsed();
+  void* pDst = pAdd<void*>(m_xWsp.aArea(),m_xWsp.nUsed());
+  void* pSrc = pArgBuffer->m_xWsp.aArea();
+  i8 nBytes  = pArgBuffer->m_xWsp.nUsed();
   Memory::vCopy(pDst,pSrc,nBytes);
   
   //m_pFreeSpace = pAdd<char*>(m_pFreeSpace,nBytes);
@@ -137,11 +137,11 @@ void IndexBuffer::vCopyBuffer(IndexBuffer* pFromBuffer)
 {                                            //! i'm not sure about this fn -ray
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
-  i8 nBytes = pFromBuffer->m_xWsp.nWspUsed();
+  i8 nBytes = pFromBuffer->m_xWsp.nUsed();
   
-  Memory::vCopy(m_xWsp.aWspArea(),pFromBuffer->m_xWsp.aWspArea(),nBytes);
+  Memory::vCopy(m_xWsp.aArea(),pFromBuffer->m_xWsp.aArea(),nBytes);
   
-  m_xWsp.vWspTake(nBytes);
+  m_xWsp.vTake(nBytes);
   
   vEntryCount();
   
@@ -235,7 +235,7 @@ void IndexBuffer::vInsertEntry(EntWsp& xEntWsp)
   //}
   
   // get the pDst as the starting of the free space in the buffer
-  void* pDst = reinterpret_cast<void*>(m_xWsp.aWspLatter());
+  void* pDst = reinterpret_cast<void*>(m_xWsp.aLatter());
   
   // get the vale of the EntWsp key
   Key* pNewKey = xEntWsp.pKey();
@@ -253,7 +253,7 @@ void IndexBuffer::vInsertEntry(EntWsp& xEntWsp)
       pDst = pEntry;
       
       // shuffle right pEntry making space for new entry
-      i8 nSize = nSub(m_xWsp.aWspLatter(),reinterpret_cast<char*>(pEntry));
+      i8 nSize = nSub(m_xWsp.aLatter(),reinterpret_cast<char*>(pEntry));
       
       // calculate new postion to shuffle to
       void* pShuffleTo = pAdd<void*>(pEntry,nBytes);
@@ -277,7 +277,7 @@ void IndexBuffer::vInsertEntry(EntWsp& xEntWsp)
   ASSERT(nBytes == pNewEntry->nSize());
   
   // we have taken nBytes from the wsp
-  m_xWsp.vWspTake(nBytes);
+  m_xWsp.vTake(nBytes);
   
   // inc the number of entries in this buffer
   m_nEntries++;
@@ -296,10 +296,10 @@ bool IndexBuffer::bInsertEntry(EntWsp& xEntWsp)
   i8 nBytes = xEntWsp.nSize();
   
   // test sufficient free space
-  if (m_xWsp.nWspFree() < (C_1MB - 5000)) {
+  if (m_xWsp.nFree() < (C_1MB - 5000)) {
   //if (m_xWsp.nWspFree() < nBytes) {
-    i8 iFree = m_xWsp.nWspFree();
-    i8 iBytesUsed = m_xWsp.nWspUsed();
+    i8 iFree = m_xWsp.nFree();
+    i8 iBytesUsed = m_xWsp.nUsed();
     
     // split the buffer
     vSplitBuffer();
@@ -308,7 +308,7 @@ bool IndexBuffer::bInsertEntry(EntWsp& xEntWsp)
   }
   
   // get the pDst as the starting of the free space in the buffer
-  void* pDst = reinterpret_cast<void*>(m_xWsp.aWspLatter());
+  void* pDst = reinterpret_cast<void*>(m_xWsp.aLatter());
 
   // get the vale of the EntWsp key
   Key* pNewKey = xEntWsp.pKey();
@@ -326,7 +326,7 @@ bool IndexBuffer::bInsertEntry(EntWsp& xEntWsp)
       pDst = pEntry;
       
       // shuffle right pEntry making space for new entry
-      i8 nSize = nSub(m_xWsp.aWspLatter(),reinterpret_cast<char*>(pEntry));
+      i8 nSize = nSub(m_xWsp.aLatter(),reinterpret_cast<char*>(pEntry));
       
       // calculate new postion to shuffle to
       void* pShuffleTo = pAdd<void*>(pEntry,nBytes);
@@ -350,7 +350,7 @@ bool IndexBuffer::bInsertEntry(EntWsp& xEntWsp)
   ASSERT(nBytes == pNewEntry->nSize());
   
   // we have taken nBytes from the wsp
-  m_xWsp.vWspTake(nBytes);
+  m_xWsp.vTake(nBytes);
   
   // inc the number of entries in this buffer
   m_nEntries++;
@@ -367,8 +367,8 @@ void IndexBuffer::vShow(void)
          " prevBuffer %p nextBuffer %p\n",
          this,
          m_nEntries,
-         m_xWsp.nWspFree(),
-         m_xWsp.nWspUsed(),
+         m_xWsp.nFree(),
+         m_xWsp.nUsed(),
          m_pPrevBuffer,
          m_pNextBuffer);
 }
@@ -402,24 +402,24 @@ void IndexBuffer::vSplitBuffer(void)
   char* pSplitAt = reinterpret_cast<char*>(pEntry);
   
   // calculate bytes to copy to new buffer
-  i8 nSize = nSub(m_xWsp.aWspLatter(), pSplitAt);
+  i8 nSize = nSub(m_xWsp.aLatter(), pSplitAt);
   
   // allocate a new buffer
   IndexBuffer* pNewBuffer = new IndexBuffer;
   
   // calculate new postion to shuffle to
-  void* pNewDst = pNewBuffer->m_xWsp.aWspArea();
+  void* pNewDst = pNewBuffer->m_xWsp.aArea();
   
   // do the shuffle
   Memory::vCopy(pNewDst,pEntry,nSize);
   
-  pNewBuffer->m_xWsp.vWspTake(nSize);
+  pNewBuffer->m_xWsp.vTake(nSize);
   
   //pNewBuffer->m_pFreeSpace = pAdd<char*>(pNewBuffer->aWspLatter(),nSize);
   pNewBuffer->m_nEntries = iSplitAtEntry;
   
   // give back nSize bytes to wsp in original buffer
-  m_xWsp.vWspGive(nSize);
+  m_xWsp.vGive(nSize);
   
   m_nEntries -= iSplitAtEntry;
 
@@ -465,9 +465,9 @@ Entry* IndexBuffer::pFirstEntry(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
-  Entry* pFirst = reinterpret_cast<Entry*>(m_xWsp.aWspArea());
+  Entry* pFirst = reinterpret_cast<Entry*>(m_xWsp.aArea());
   
-  if ((char*)pFirst < m_xWsp.aWspLatter())
+  if ((char*)pFirst < m_xWsp.aLatter())
     return pFirst;
   else
     return nullptr;
@@ -482,7 +482,7 @@ Entry* IndexBuffer::pNextEntry(Entry* pCurr)
   
   Entry* pNext = pAdd<Entry*>(pCurr,iSize);
   
-  if ((char*)pNext < m_xWsp.aWspLatter())
+  if ((char*)pNext < m_xWsp.aLatter())
     return pNext;
   else
     return nullptr;

@@ -24,18 +24,18 @@ namespace Magic
   public:
     WspFxd(void);
 
-    char* aWspAllot(i8 nBytes);
-    void  vWspAppend(void* aSrc, i8 nBytes);
-    char* aWspArea(void);
-    void  vWspFill(char cByte);
-    i8    nWspFree(void);
-    void  vWspGive(i8 nBytes);
-    char* aWspLatter(void);
-    i8    nWspLength(void);
-    i8    nWspSize(void);
-    void  vWspTake(i8 nBytes);
-    i8    nWspUsed(void);
-    void  vWspZero(void);
+    char* aAllot(i8 nBytes);
+    void  vAppend(void* aSrc, i8 nBytes);
+    char* aArea(void);
+    void  vFill(char cByte);
+    i8    nFree(void);
+    void  vGive(i8 nBytes);
+    char* aLatter(void);
+    i8    nLength(void);
+    i8    nSize(void);
+    void  vTake(i8 nBytes);
+    i8    nUsed(void);
+    void  vZero(void);
   };
 }
 
@@ -54,11 +54,11 @@ WspFxd<LENGTH>::WspFxd(void)
 /* allot bytes from byte area                                                 */
 /*----------------------------------------------------------------------------*/
 template<int LENGTH>
-char* WspFxd<LENGTH>::aWspAllot(i8 nBytes)
+char* WspFxd<LENGTH>::aAllot(i8 nBytes)
 {
-  char* aAllotted = aWspLatter();
+  char* aAllotted = aLatter();
   
-  vWspTake(nBytes);
+  vTake(nBytes);
   
   return aAllotted;
 }
@@ -67,24 +67,24 @@ char* WspFxd<LENGTH>::aWspAllot(i8 nBytes)
 /* append source bytes to byte area                                           */
 /*----------------------------------------------------------------------------*/
 template<int LENGTH>
-void WspFxd<LENGTH>::vWspAppend(void* aSrc, i8 nBytes)
+void WspFxd<LENGTH>::vAppend(void* aSrc, i8 nBytes)
 {
-  ASSERT(nWspUsed() + nBytes <= LENGTH);
+  ASSERT(nUsed() + nBytes <= LENGTH);
   
-  void* aDst = aWspLatter();
+  void* aDst = aLatter();
 
   Memory::vCopy(aDst,aSrc,nBytes);
   
-  vWspTake(nBytes);
+  vTake(nBytes);
 }
 
 /*----------------------------------------------------------------------------*/
 /* get address of byte area                                                   */
 /*----------------------------------------------------------------------------*/
 template<int LENGTH>
-char* WspFxd<LENGTH>::aWspArea(void)
+char* WspFxd<LENGTH>::aArea(void)
 {
-  char* aArea = Wsp::aWspArea();
+  char* aArea = Wsp::aArea();
   
   return aArea;
 }
@@ -93,18 +93,18 @@ char* WspFxd<LENGTH>::aWspArea(void)
 /* fill byte area with given byte                                             */
 /*----------------------------------------------------------------------------*/
 template<int LENGTH>
-void WspFxd<LENGTH>::vWspFill(char cByte)
+void WspFxd<LENGTH>::vFill(char cByte)
 {
-  Wsp::vWspFill(cByte,LENGTH);
+  Wsp::vFill(cByte,LENGTH);
 }
 
 /*----------------------------------------------------------------------------*/
 /* get number of free bytes in byte area                                      */
 /*----------------------------------------------------------------------------*/
 template<int LENGTH>
-i8 WspFxd<LENGTH>::nWspFree(void)
+i8 WspFxd<LENGTH>::nFree(void)
 {
-  i8 nFree = LENGTH - nWspUsed();
+  i8 nFree = LENGTH - nUsed();
   
   return nFree;
 }
@@ -113,7 +113,7 @@ i8 WspFxd<LENGTH>::nWspFree(void)
 /* get length of byte area                                                    */
 /*----------------------------------------------------------------------------*/
 template<int LENGTH>
-i8 WspFxd<LENGTH>::nWspLength(void)
+i8 WspFxd<LENGTH>::nLength(void)
 {
   return LENGTH;
 }
@@ -122,9 +122,9 @@ i8 WspFxd<LENGTH>::nWspLength(void)
 /* get address of next available chunk in byte area                           */
 /*----------------------------------------------------------------------------*/
 template<int LENGTH>
-char* WspFxd<LENGTH>::aWspLatter(void)
+char* WspFxd<LENGTH>::aLatter(void)
 {
-  char* aNext = &aWspArea()[nWspUsed()];
+  char* aNext = &aArea()[nUsed()];
   
   return aNext;
 }
@@ -133,7 +133,7 @@ char* WspFxd<LENGTH>::aWspLatter(void)
 /* get total size of this WspFxd                                              */
 /*----------------------------------------------------------------------------*/
 template<int LENGTH>
-i8 WspFxd<LENGTH>::nWspSize(void)
+i8 WspFxd<LENGTH>::nSize(void)
 {
   return sizeof(WspFxd<LENGTH>);
 }
@@ -142,7 +142,7 @@ i8 WspFxd<LENGTH>::nWspSize(void)
 /* take chunk from byte area                                                  */
 /*----------------------------------------------------------------------------*/
 template<int LENGTH>
-void WspFxd<LENGTH>::vWspTake(i8 nBytes)
+void WspFxd<LENGTH>::vTake(i8 nBytes)
 {
   m_nAreaUsed += nBytes;
   
@@ -153,7 +153,7 @@ void WspFxd<LENGTH>::vWspTake(i8 nBytes)
 /* give chunk back to byte area                                               */
 /*----------------------------------------------------------------------------*/
 template<int LENGTH>
-void WspFxd<LENGTH>::vWspGive(i8 nBytes)
+void WspFxd<LENGTH>::vGive(i8 nBytes)
 {
   ASSERT(m_nAreaUsed <= LENGTH);
 
@@ -164,7 +164,7 @@ void WspFxd<LENGTH>::vWspGive(i8 nBytes)
 /* get number of used bytes                                                   */
 /*----------------------------------------------------------------------------*/
 template<int LENGTH>
-i8 WspFxd<LENGTH>::nWspUsed(void)
+i8 WspFxd<LENGTH>::nUsed(void)
 {
   return m_nAreaUsed;
 }
@@ -173,9 +173,9 @@ i8 WspFxd<LENGTH>::nWspUsed(void)
 /* zero fill the byte area                                                    */
 /*----------------------------------------------------------------------------*/
 template<int LENGTH>
-void WspFxd<LENGTH>::vWspZero(void)
+void WspFxd<LENGTH>::vZero(void)
 {
-  Wsp::vWspZero(LENGTH);
+  Wsp::vZero(LENGTH);
 }
 
 /*============================================================================*/

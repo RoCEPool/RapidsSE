@@ -17,6 +17,8 @@ namespace Datums
   
     Str(void);
     ~Str(void);
+  
+    Str(const char* aLiteral) { };
   };
 }
 

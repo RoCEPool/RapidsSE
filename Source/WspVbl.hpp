@@ -23,18 +23,18 @@ namespace Magic
   public:
     WspVbl(void);
 
-    char* aWspAllot(i8 nBytes);
-    void  vWspAppend(void* aSrc, i8 nBytes);
-    char* aWspArea(void);
-    void  vWspFill(char cByte);
-    i8    nWspFree(void);
-    char* aWspLatter(void);
-    i8    nWspLength(void);
-    i8    nWspSize(void);
-    void  vWspTake(i8 nBytes);
-    i8    nWspUsed(void);
-    void  vWspUsed(i8 nBytes);
-    void  vWspZero(void);
+    char* aAllot(i8 nBytes);
+    void  vAppend(void* aSrc, i8 nBytes);
+    char* aArea(void);
+    void  vFill(char cByte);
+    i8    nFree(void);
+    char* aLatter(void);
+    i8    nLength(void);
+    i8    nSize(void);
+    void  vTake(i8 nBytes);
+    i8    nUsed(void);
+    void  vUsed(i8 nBytes);
+    void  vZero(void);
   };
 }
 

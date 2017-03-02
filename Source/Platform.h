@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-#include "HashDefs.h"
+#include "Base.h"
 
 #include "MachineTypes.h"
 

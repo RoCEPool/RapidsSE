@@ -70,7 +70,7 @@ Word::Word(const char* sName)
   m_pPrevWord     = nullptr;
   m_iVariable     = 0;
 
-  m_xBody.vWspZero();
+  m_xBody.vZero();
   
   _setFooter_();
   
@@ -116,7 +116,7 @@ char* Word::pAllot(i8 nBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  char* aAddress = m_xBody.aWspAllot(nBytes);
+  char* aAddress = m_xBody.aAllot(nBytes);
   
   _setFooter_();
   
@@ -245,7 +245,7 @@ void Word::vContentDump(void)
          m_bIndirect,
          m_bImmediate,
 //       m_iDataBytes,
-         m_xBody.nWspUsed(),
+         m_xBody.nUsed(),
          m_pEntryStep,
          pStepWord ? pStepWord->sName().aStr() : "<not-found>",
          pFirstCell()
@@ -308,7 +308,7 @@ char* Word::aBodyArea(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  char* aBody = m_xBody.aWspArea();
+  char* aBody = m_xBody.aArea();
   
   return pPoolCheck<char*>((void*)aBody);
 }
@@ -329,7 +329,7 @@ char* Word::aBodyLatter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  char* aLatter = m_xBody.aWspLatter();
+  char* aLatter = m_xBody.aLatter();
   
   return pPoolCheck<char*>((void*)aLatter);
 }
@@ -348,7 +348,7 @@ i8 Word::nBodyUsed(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  return m_xBody.nWspUsed();
+  return m_xBody.nUsed();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -517,7 +517,7 @@ Cell* Word::pFirstCell(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  Cell* pFirst = reinterpret_cast<Cell*>(m_xBody.aWspArea());
+  Cell* pFirst = reinterpret_cast<Cell*>(m_xBody.aArea());
   
   return pPoolCheck<Cell*>(pFirst);
 }
@@ -626,7 +626,7 @@ Cell* Word::pLastCell(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  Cell* pLast = reinterpret_cast<Cell*>(m_xBody.aWspLatter());
+  Cell* pLast = reinterpret_cast<Cell*>(m_xBody.aLatter());
   
   return pPoolCheck<Cell*>(pLast);
 }
@@ -657,7 +657,7 @@ void Word::vObjectDump(const char* aTab)
          m_bIndirect ? "Indirect" : "Not Indirect",
          m_bImmediate ? "Immediate" : "Not Immediate",
 //       m_iDataBytes,
-         m_xBody.nWspUsed(),
+         m_xBody.nUsed(),
          m_pEntryStep,
          pFirstCell()
          );

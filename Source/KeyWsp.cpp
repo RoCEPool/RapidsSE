@@ -77,14 +77,14 @@ void KeyWsp::vAddElement(Values::ValWsp &xValWsp)
   ASSERT( ! nWspUsed() );
   
   eCN eClass = xValWsp.eClass();
-  char* pDst = m_xWsp.aWspLatter();
+  char* pDst = m_xWsp.aLatter();
   char* pSrc = xValWsp.aWspArea();
   
   i8 iSrc = *(i8*)pSrc;
 
   i8 nBytesTaken = V::nCopyDatum(eClass,pDst,pSrc);
   
-  m_xWsp.vWspTake(nBytesTaken);
+  m_xWsp.vTake(nBytesTaken);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -94,7 +94,7 @@ char* KeyWsp::aWspArea(void)
 {
   _precondition_(_MAGIC_,CN_KEYWSP,_FOOTER_);
   
-  return m_xWsp.aWspArea();
+  return m_xWsp.aArea();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -104,7 +104,7 @@ i8 KeyWsp::nWspUsed(void)
 {
   _precondition_(_MAGIC_,CN_KEYWSP,_FOOTER_);
   
-  return m_xWsp.nWspUsed();
+  return m_xWsp.nUsed();
 }
 
 /*----------------------------------------------------------------------------*/

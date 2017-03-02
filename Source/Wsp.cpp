@@ -14,7 +14,7 @@ Wsp::Wsp(void)
 /*----------------------------------------------------------------------------*/
 /* allot bytes from byte area                                                 */
 /*----------------------------------------------------------------------------*/
-char* Wsp::aWspAllot(i8 nBytes)
+char* Wsp::aAllot(i8 nBytes)
 {
   vFatal("Wsp::aWspAllot: not overridden\n");
   
@@ -24,7 +24,7 @@ char* Wsp::aWspAllot(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* append source bytes to byte area                                           */
 /*----------------------------------------------------------------------------*/
-void Wsp::vWspAppend(void* aSrc, i8 nBytes)
+void Wsp::vAppend(void* aSrc, i8 nBytes)
 {
   vFatal("Wsp::vWspAppend: not overridden\n");
 }
@@ -32,7 +32,7 @@ void Wsp::vWspAppend(void* aSrc, i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* get address of byte area                                                   */
 /*----------------------------------------------------------------------------*/
-char* Wsp::aWspArea(void)
+char* Wsp::aArea(void)
 {
   return reinterpret_cast<char*>(this);
 }
@@ -40,7 +40,7 @@ char* Wsp::aWspArea(void)
 /*----------------------------------------------------------------------------*/
 /* fill byte area with given byte                                             */
 /*----------------------------------------------------------------------------*/
-void Wsp::vWspFill(char cByte)
+void Wsp::vFill(char cByte)
 {
   vFatal("Wsp::nWspFill: not overridden\n");
 }
@@ -48,9 +48,9 @@ void Wsp::vWspFill(char cByte)
 /*----------------------------------------------------------------------------*/
 /* fill byte area with given byte                                             */
 /*----------------------------------------------------------------------------*/
-void Wsp::vWspFill(char cByte, i8 nBytes)
+void Wsp::vFill(char cByte, i8 nBytes)
 {
-  void* aDst = aWspArea();
+  void* aDst = aArea();
   
   Memory::vSet(aDst,cByte,nBytes);
 }
@@ -58,7 +58,7 @@ void Wsp::vWspFill(char cByte, i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* get number of free bytes in byte area                                      */
 /*----------------------------------------------------------------------------*/
-i8 Wsp::nWspFree(void)
+i8 Wsp::nFree(void)
 {
   vFatal("Wsp::nWspFree: not overridden\n");
   
@@ -68,7 +68,7 @@ i8 Wsp::nWspFree(void)
 /*----------------------------------------------------------------------------*/
 /* get length of byte area                                                    */
 /*----------------------------------------------------------------------------*/
-i8 Wsp::nWspLength(void)
+i8 Wsp::nLength(void)
 {
   vFatal("Wsp::nWspLength: not overridden\n");
   
@@ -78,7 +78,7 @@ i8 Wsp::nWspLength(void)
 /*----------------------------------------------------------------------------*/
 /* get next available chunk in byte area                                      */
 /*----------------------------------------------------------------------------*/
-char* Wsp::aWspLatter(void)
+char* Wsp::aLatter(void)
 {
   vFatal("Wsp::nWspLatter: not overridden\n");
   
@@ -88,7 +88,7 @@ char* Wsp::aWspLatter(void)
 /*----------------------------------------------------------------------------*/
 /* get total size of Wsp                                                      */
 /*----------------------------------------------------------------------------*/
-i8 Wsp::nWspSize(void)
+i8 Wsp::nSize(void)
 {
   vFatal("Wsp::nWspSize: not overridden\n");
   
@@ -98,7 +98,7 @@ i8 Wsp::nWspSize(void)
 /*----------------------------------------------------------------------------*/
 /* take chunk in byte area                                                    */
 /*----------------------------------------------------------------------------*/
-void Wsp::vWspTake(i8 nBytes)
+void Wsp::vTake(i8 nBytes)
 {
   vFatal("Wsp::vWspTake: not overridden\n");
 }
@@ -106,7 +106,7 @@ void Wsp::vWspTake(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* get number of used bytes                                                   */
 /*----------------------------------------------------------------------------*/
-i8 Wsp::nWspUsed(void)
+i8 Wsp::nUsed(void)
 {
   vFatal("Wsp::nWspUsed: not overridden\n");
   
@@ -116,7 +116,7 @@ i8 Wsp::nWspUsed(void)
 /*----------------------------------------------------------------------------*/
 /* zero fill the byte area                                                    */
 /*----------------------------------------------------------------------------*/
-void Wsp::vWspZero(void)
+void Wsp::vZero(void)
 {
   vFatal("Wsp::vWspZero: not overridden\n");
 }
@@ -124,9 +124,9 @@ void Wsp::vWspZero(void)
 /*----------------------------------------------------------------------------*/
 /* zero fill the byte area                                                    */
 /*----------------------------------------------------------------------------*/
-void Wsp::vWspZero(i8 nBytes)
+void Wsp::vZero(i8 nBytes)
 {
-  void* aDst = aWspArea();
+  void* aDst = aArea();
   
   Memory::vZero(aDst,nBytes);
 }

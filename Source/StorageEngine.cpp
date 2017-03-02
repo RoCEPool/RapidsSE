@@ -12,6 +12,7 @@ extern eHT geWhichHeap[];
 void StorageEngine::vCheckAllAssumptions(void)
 {
   // this is in reverse order of the spaces in the project
+  Base::vCheckAssumptions();
   Platform::vCheckAssumptions();
   Debugging::vCheckAssumptions();
   Magic::vCheckAssumptions();

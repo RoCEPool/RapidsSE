@@ -15,11 +15,11 @@ WspVbl::WspVbl(void)
 /*----------------------------------------------------------------------------*/
 /* allot bytes from byte area                                                 */
 /*----------------------------------------------------------------------------*/
-char* WspVbl::aWspAllot(i8 nBytes)
+char* WspVbl::aAllot(i8 nBytes)
 {
-  char* aAllotted = aWspLatter();
+  char* aAllotted = aLatter();
   
-  vWspTake(nBytes);
+  vTake(nBytes);
   
   return aAllotted;
 }
@@ -27,19 +27,19 @@ char* WspVbl::aWspAllot(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* append source bytes to data area                                           */
 /*----------------------------------------------------------------------------*/
-void WspVbl::vWspAppend(void* aSrc, i8 nBytes)
+void WspVbl::vAppend(void* aSrc, i8 nBytes)
 {
-  void* aDst = aWspLatter();
+  void* aDst = aLatter();
   
   Memory::vCopy(aDst,aSrc,nBytes);
   
-  vWspTake(nBytes);
+  vTake(nBytes);
 }
 
 /*----------------------------------------------------------------------------*/
 /* get address of data area                                                   */
 /*----------------------------------------------------------------------------*/
-char* WspVbl::aWspArea(void)
+char* WspVbl::aArea(void)
 {
   char* aArea = pAdd<char*>(&m_nAreaUsed,sizeof(m_nAreaUsed));
   
@@ -49,15 +49,15 @@ char* WspVbl::aWspArea(void)
 /*----------------------------------------------------------------------------*/
 /* fill data area with given byte                                             */
 /*----------------------------------------------------------------------------*/
-void WspVbl::vWspFill(char cByte)
+void WspVbl::vFill(char cByte)
 {
-  Memory::vSet(aWspArea(),cByte,m_nAreaUsed);
+  Memory::vSet(aArea(),cByte,m_nAreaUsed);
 }
 
 /*----------------------------------------------------------------------------*/
 /* get number of free bytes in data area                                      */
 /*----------------------------------------------------------------------------*/
-i8 WspVbl::nWspFree(void)
+i8 WspVbl::nFree(void)
 {
   return 0;
 }
@@ -65,7 +65,7 @@ i8 WspVbl::nWspFree(void)
 /*----------------------------------------------------------------------------*/
 /* get length of data area                                                    */
 /*----------------------------------------------------------------------------*/
-i8 WspVbl::nWspLength(void)
+i8 WspVbl::nLength(void)
 {  
   return m_nAreaUsed;
 }
@@ -73,15 +73,15 @@ i8 WspVbl::nWspLength(void)
 /*----------------------------------------------------------------------------*/
 /* get next available chunk in data area                                      */
 /*----------------------------------------------------------------------------*/
-char* WspVbl::aWspLatter(void)
+char* WspVbl::aLatter(void)
 {
-  return &aWspArea()[m_nAreaUsed];
+  return &aArea()[m_nAreaUsed];
 }
 
 /*----------------------------------------------------------------------------*/
 /* get total size of this WspVbl                                              */
 /*----------------------------------------------------------------------------*/
-i8 WspVbl::nWspSize(void)
+i8 WspVbl::nSize(void)
 {
   i8 nSize = sizeof(WspVbl) + m_nAreaUsed;
   
@@ -91,7 +91,7 @@ i8 WspVbl::nWspSize(void)
 /*----------------------------------------------------------------------------*/
 /* take chunk in data area                                                    */
 /*----------------------------------------------------------------------------*/
-void WspVbl::vWspTake(i8 nBytes)
+void WspVbl::vTake(i8 nBytes)
 {
   m_nAreaUsed += nBytes;
 }
@@ -99,7 +99,7 @@ void WspVbl::vWspTake(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* get number of used bytes                                                   */
 /*----------------------------------------------------------------------------*/
-i8 WspVbl::nWspUsed(void)
+i8 WspVbl::nUsed(void)
 {
   return m_nAreaUsed;
 }
@@ -107,7 +107,7 @@ i8 WspVbl::nWspUsed(void)
 /*----------------------------------------------------------------------------*/
 /* set bytes used                                                             */
 /*----------------------------------------------------------------------------*/
-void WspVbl::vWspUsed(i8 nBytes)
+void WspVbl::vUsed(i8 nBytes)
 {
   m_nAreaUsed = nBytes;
 }
@@ -115,9 +115,9 @@ void WspVbl::vWspUsed(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* fill data area with given byte                                             */
 /*----------------------------------------------------------------------------*/
-void WspVbl::vWspZero(void)
+void WspVbl::vZero(void)
 {
-  Memory::vZero(aWspArea(),m_nAreaUsed);
+  Memory::vZero(aArea(),m_nAreaUsed);
 }
 
 /*============================================================================*/

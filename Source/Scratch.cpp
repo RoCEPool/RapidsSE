@@ -61,7 +61,7 @@ Scratch::Scratch(void)
 {
   _precondition_(_MAGIC_,CN_SCRATCH,_FOOTER_);
 
-  m_xWsp.vWspFill(0x00);
+  m_xWsp.vFill(0x00);
   
   _checkInitialised_(CN_SCRATCH);
 
@@ -83,7 +83,7 @@ char* Scratch::aWspArea(void)
 {
   _precondition_(_MAGIC_,CN_SCRATCH,_FOOTER_);
   
-  return m_xWsp.aWspArea();
+  return m_xWsp.aArea();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -93,7 +93,7 @@ i8 Scratch::nWspLength(void)
 {
   _precondition_(_MAGIC_,CN_SCRATCH,_FOOTER_);
 
-  return m_xWsp.nWspLength();
+  return m_xWsp.nLength();
 }
 
 /*----------------------------------------------------------------------------*/
