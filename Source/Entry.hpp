@@ -8,12 +8,11 @@
 
 namespace DBobjects
 {
-  class Entry : public RowId,
-                public WspVbl
+  class Entry : public RowId
   {
   private:
-    // ..data..
-    
+    WspVbl m_xWspVbl;
+  
   public:
     static i8 iBytesRequired(i8 iDataBytes);
   
