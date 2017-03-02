@@ -29,6 +29,7 @@ namespace Magic
     char* aWspArea(void);
     void  vWspFill(char cByte);
     i8    nWspFree(void);
+    void  vWspGive(i8 nBytes);
     char* aWspLatter(void);
     i8    nWspLength(void);
     i8    nWspSize(void);
@@ -146,6 +147,17 @@ void WspFxd<LENGTH>::vWspTake(i8 nBytes)
   m_nAreaUsed += nBytes;
   
   ASSERT(m_nAreaUsed <= LENGTH);
+}
+
+/*----------------------------------------------------------------------------*/
+/* give chunk back to byte area                                               */
+/*----------------------------------------------------------------------------*/
+template<int LENGTH>
+void WspFxd<LENGTH>::vWspGive(i8 nBytes)
+{
+  ASSERT(m_nAreaUsed <= LENGTH);
+
+  m_nAreaUsed -= nBytes;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -58,7 +58,6 @@ void Task::vIndexIbDump(NNP_Task nnpTask)
   while (pIndexBuffer) {
     pIndexBuffer->vShow();
     
-    vTrace("\nIndex buffer (%p) dump: (free %lld)\n", pIndexBuffer, pIndexBuffer->nFreeBytes());
     Entry* pEntry = pIndexBuffer->pFirstEntry();
     
     while (pEntry) {
@@ -110,7 +109,7 @@ void Task::vIndexEntryTest(NNP_Task nnpTask)
   
 
   //i8 iKey0 = String::iToI8(sRow.aStr());
-  i8 iKey0 = Random::iRandom(0,100);
+  i8 iKey0 = Random::iRandom(0,1000);
 
   xValWsp = iKey0;
   
@@ -122,15 +121,15 @@ void Task::vIndexEntryTest(NNP_Task nnpTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // show
-  xEntWsp.vShow();
+  //xEntWsp.vShow();
  
   // insert entry into index buffer
-  pIndexBuffer->vInsertEntry(xEntWsp);
+  //pIndexBuffer->vInsertEntry(xEntWsp);
 
   // verify index buffer
-  pIndexBuffer->vVerify();
+  //pIndexBuffer->vVerify();
   
-/*
+
   bool bResult = false;
   IndexBuffer* pFirstBuffer = pIndexBuffer;
   
@@ -138,7 +137,7 @@ void Task::vIndexEntryTest(NNP_Task nnpTask)
     pIndexBuffer = pFirstBuffer->pFindBuffer(xEntWsp);
   
     // insert entry into index buffer
-    bResult = pIndexBuffer->vInsertEntry(xEntWsp);
+    bResult = pIndexBuffer->bInsertEntry(xEntWsp);
   }
  
   pIndexBuffer = pFirstBuffer;
@@ -147,7 +146,7 @@ void Task::vIndexEntryTest(NNP_Task nnpTask)
     
     pIndexBuffer = pIndexBuffer->pNextBuffer();
   }
-  */
+
   
   EXIT();
 }
