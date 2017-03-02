@@ -204,6 +204,7 @@ namespace Tasks
     void vAddPrimitives_Flow(void);
     void vAddPrimitives_Grid(void);
     void vAddPrimitives_Index(void);
+    void vAddPrimitives_IndexDefn(void);
     void vAddPrimitives_Input(void);
     void vAddPrimitives_Int(void);
     void vAddPrimitives_Loader(void);
@@ -513,9 +514,14 @@ namespace Tasks
   
     // index
     static void vIndexIbDump(NNP_Task nnpTask);
+    static void vIndexDefnStore(NNP_Task nnpTask);
     static void vIndexEntryTest(NNP_Task nnpTask);
     static void vIndexIbNew(NNP_Task nnpTask);
+    static void vIndexInit(NNP_Task nnpTask);
   
+    // indexDefn
+    static void vIndexDefnInit(NNP_Task nnpTask);
+    
     // input
     static void vInputAccept(NNP_Task nnpTask);
     static void vInputClose(NNP_Task nnpTask);
@@ -780,6 +786,7 @@ namespace Tasks
     static void vSEitfDelete(NNP_Task nnpTask);
     static void vSEitfDicStack(NNP_Task nnpTask);
     static void vSEitfDump(NNP_Task nnpTask);
+    static void vSEitfIndexRef(NNP_Task nnpTask);
     static void vSEitfPid(NNP_Task nnpTask);
     static void vSEitfReqFetch(NNP_Task nnpTask);
     static void vSEitfReqStore(NNP_Task nnpTask);

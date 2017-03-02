@@ -35,6 +35,8 @@ extern SEitfList*      gpSEitfList;
 void Task::vAddPrimitives_Index(void)
 {
   vAddPrimitive("index::ibDump",     &vIndexIbDump,     false);
+  vAddPrimitive("index.indexDefn@",  &vIndexDefnStore,  false);
+  vAddPrimitive("index.init",        &vIndexInit,       false);
   vAddPrimitive("index::entryTest",  &vIndexEntryTest,  false);
   vAddPrimitive("index::ibNew",      &vIndexIbNew,      false);
 }
@@ -66,6 +68,32 @@ void Task::vIndexIbDump(NNP_Task nnpTask)
     }
     pIndexBuffer = pIndexBuffer->pNextBuffer();
   }
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* index.indexDefn@ -- store the indexDefn in the index                       */
+/*----------------------------------------------------------------------------*/
+void Task::vIndexDefnStore(NNP_Task nnpTask)
+{
+  ENTRY("vIndexDefnStore");
+  Object* pPtrIndex = nullptr;
+  Object* pPtrIndexDefn = nullptr;
+  
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrIndex) )
+    THROW_INVALID_DSTACK("index.indexDefn@");
+  
+  Index* pIndex = _pIndex(pPtrIndex);
+  ASSERT(CN_INDEX == pIndex->eClass());
+  
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrIndexDefn) )
+    THROW_INVALID_DSTACK("index.indexDefnStore");
+  
+  IndexDefn* pIndexDefn = _pIndexDefn(pPtrIndexDefn);
+  ASSERT(CN_INDEXDEFN == pIndexDefn->eClass());
+  
+  pIndex->vIndexDefn(pIndexDefn);
   
   EXIT();
 }
@@ -163,6 +191,25 @@ void Task::vIndexIbNew(NNP_Task nnpTask)
   
   nnpTask->m_pDataStack->vPush(pIndexBuffer);
 
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* index::init -- initialize the index                                        */
+/*----------------------------------------------------------------------------*/
+void Task::vIndexInit(NNP_Task nnpTask)
+{
+  ENTRY("vIndexInit");
+  Object* pPtrIndex = nullptr;
+  
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrIndex) )
+    THROW_INVALID_DSTACK("index::vIndexInit");
+  
+  Index* pIndex = _pIndex(pPtrIndex);
+  ASSERT(CN_INDEX == pIndex->eClass());
+  
+  new(pIndex) Index;
+  
   EXIT();
 }
 

@@ -35,6 +35,7 @@ namespace Debugging
   /* 18 */ EC_NO_SUCH_CATALOG,
   /* 19 */ EC_NO_SUCH_DIRECTORY,
   /* 20 */ EC_NO_SUCH_FOLDER,
+  /*    */ EC_NO_SUCH_INDEX,
   /* 21 */ EC_NO_SUCH_SCHEMA,
   /* 22 */ EC_NO_SUCH_TABLE,
   /* 23 */ EC_NO_SUCH_TENANT,
@@ -48,6 +49,7 @@ namespace Debugging
     
   /* 30 */ EC_NOT_IN_CATALOGS,
   /* 31 */ EC_NOT_IN_COLUMNS,
+  /*    */ EC_NOT_IN_INDEXES,
   /* 32 */ EC_NOT_IN_SCHEMAS,
   /* 33 */ EC_NOT_IN_TABLES,
   /* 34 */ EC_NOT_IN_TENANTS,
@@ -60,6 +62,7 @@ namespace Debugging
   /* 39 */ EC_SEND_FAILURE,
   /* 40 */ EC_SE_NOT_RUNNING,
   
+  /*    */ EC_INDEX_EXISTS,
   /* 41 */ EC_TABLE_EXISTS,
   /* 42 */ EC_TABLE_IN_USE,
   /* 43 */ EC_TENANT_EXISTS,

@@ -307,6 +307,8 @@ tp: makingTable
 
   drop ( "<tableNm>" )
 
+  //"makeIndexes" find execute
+
   // forward reference :-(
   "makeColumns" find execute
 

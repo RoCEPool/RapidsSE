@@ -7,6 +7,17 @@
 extern BufferPool*  gpBufferPool;
 
 /*----------------------------------------------------------------------------*/
+/* safe cast                                                                  */
+/*----------------------------------------------------------------------------*/
+IndexDefn* DBobjects::_pIndexDefn(void* pAddr)
+{
+  IndexDefn* pIndexDefn = reinterpret_cast<IndexDefn*>(pAddr);
+  
+  RASSERT( !pIndexDefn || CN_INDEXDEFN == pIndexDefn->eClass() );
+  
+  return pIndexDefn;
+}
+/*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
 void* IndexDefn::operator new(size_t iSize)
@@ -14,6 +25,15 @@ void* IndexDefn::operator new(size_t iSize)
   RASSERT(iSize);
   IndexDefn* pIndexDefn = nullptr;
   
+  return pIndexDefn;
+}
+
+/*----------------------------------------------------------------------------*/
+/* operator new                                                               */
+/*----------------------------------------------------------------------------*/
+void* IndexDefn::operator new(size_t iSize, IndexDefn* pIndexDefn)
+{
+  RASSERT(iSize);
   return pIndexDefn;
 }
 
@@ -28,12 +48,16 @@ void IndexDefn::operator delete(void* pIndexDefnAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-IndexDefn::IndexDefn(const char* pIndexName)
+IndexDefn::IndexDefn(void)
 : Object(CN_INDEXDEFN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEFN,_FOOTER_);
   
-  m_sIndexName = pIndexName;
+  Word* pWord = Word::pToWord(this);
+  
+  m_iIndexNo   = 0;
+  m_sIndexName = pWord->sName();
+  m_eIndexType = IT_SKIP;
   
   _class_(CN_INDEXDEFN);
   

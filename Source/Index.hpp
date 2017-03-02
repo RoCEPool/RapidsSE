@@ -20,6 +20,7 @@ namespace DBobjects
     
   public:
     void* operator new(size_t);
+    void* operator new(size_t, Index* pIndex);
     void  operator delete(void*);
     
     static void vDump(eCN eClass, Object* pObject, const char* aTab);
@@ -27,8 +28,12 @@ namespace DBobjects
     Index(void);
     ~Index(void);
     
+    void vIndexDefn(IndexDefn* pIndexDefn);
+    
     Footer* pFooter(void);
   };
+  
+  Index* _pIndex(void* pAddr);
 }
 
 /*============================================================================*/

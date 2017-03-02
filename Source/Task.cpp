@@ -429,6 +429,7 @@ void Task::vAddConstants(void)
   /* 27 */ vAddConstant("CN_HEAPBUFFER",   CN_HEAPBUFFER);
   
   /* 28 */ vAddConstant("CN_INDEX",        CN_INDEX);
+  /*    */ vAddConstant("CN_INDEXDEFN",    CN_INDEXDEFN);
 
   /* 29 */ vAddConstant("CN_JUMBOHEAP",    CN_JUMBOHEAP);
 
@@ -543,6 +544,7 @@ void Task::vAddConstants(void)
   /* 18 */ vAddConstant("EC_NO_SUCH_CATALOG",    EC_NO_SUCH_CATALOG);
   /* 19 */ vAddConstant("EC_NO_SUCH_DIRECTORY",  EC_NO_SUCH_DIRECTORY);
   /* 20 */ vAddConstant("EC_NO_SUCH_FOLDER",     EC_NO_SUCH_FOLDER);
+  /*    */ vAddConstant("EC_NO_SUCH_INDEX",      EC_NO_SUCH_INDEX);
   /* 21 */ vAddConstant("EC_NO_SUCH_SCHEMA",     EC_NO_SUCH_SCHEMA);
   /* 22 */ vAddConstant("EC_NO_SUCH_TABLE",      EC_NO_SUCH_TABLE);
   /* 23 */ vAddConstant("EC_NO_SUCH_TENANT",     EC_NO_SUCH_TENANT);
@@ -554,6 +556,7 @@ void Task::vAddConstants(void)
   /* 29 */ vAddConstant("EC_NOT_A_TENANT",       EC_NOT_A_TENANT);
   /* 30 */ vAddConstant("EC_NOT_IN_CATALOGS",    EC_NOT_IN_CATALOGS);
   /* 31 */ vAddConstant("EC_NOT_IN_COLUMNS",     EC_NOT_IN_COLUMNS);
+  /* 31 */ vAddConstant("EC_NOT_IN_INDEXES",     EC_NOT_IN_INDEXES);
   /* 32 */ vAddConstant("EC_NOT_IN_SCHEMAS",     EC_NOT_IN_SCHEMAS);
   /* 33 */ vAddConstant("EC_NOT_IN_TABLES",      EC_NOT_IN_TABLES);
   /* 34 */ vAddConstant("EC_NOT_IN_TENANTS",     EC_NOT_IN_TENANTS);
@@ -563,6 +566,7 @@ void Task::vAddConstants(void)
   /* 38 */ vAddConstant("EC_SCHEMA_EXISTS",      EC_SCHEMA_EXISTS);
   /* 39 */ vAddConstant("EC_SEND_FAILURE",       EC_SEND_FAILURE);
   /* 40 */ vAddConstant("EC_SE_NOT_RUNNING",     EC_SE_NOT_RUNNING);
+  /* 41 */ vAddConstant("EC_INDEX_EXISTS",       EC_INDEX_EXISTS);
   /* 41 */ vAddConstant("EC_TABLE_EXISTS",       EC_TABLE_EXISTS);
   /* 42 */ vAddConstant("EC_TABLE_IN_USE",       EC_TABLE_IN_USE);
   /* 43 */ vAddConstant("EC_TENANT_EXISTS",      EC_TENANT_EXISTS);
@@ -598,6 +602,7 @@ void Task::vAddConstants(void)
   /* 18 */ vAddConstant("SIZEOF_FREECHUNK",    sizeof(FreeChunk));
   /* 19 */ vAddConstant("SIZEOF_GRID",         sizeof(Grid));
   /* 20 */ vAddConstant("SIZEOF_HEAPBUFFER",   sizeof(HeapBuffer));
+  /*    */ vAddConstant("SIZEOF_INDEX",        sizeof(Index));
   /* 21 */ vAddConstant("SIZEOF_INDEXDEFN",    sizeof(IndexDefn));
   /* 22 */ vAddConstant("SIZEOF_LOADER",       sizeof(Loader));
   /* 23 */ vAddConstant("SIZEOF_LOADERSUB",    sizeof(LoaderSub));
@@ -756,6 +761,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitives_Flow();
   vAddPrimitives_Grid();
   vAddPrimitives_Index();
+  vAddPrimitives_IndexDefn();
   vAddPrimitives_Input();
   vAddPrimitives_Int();
   vAddPrimitives_Loader();

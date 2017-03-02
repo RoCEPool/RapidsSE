@@ -51,8 +51,8 @@
   WT_OBJECT word.this word.type!
   sizeof_index allot
   word.this >body object.magic!
-  CN_TABLE word.this >body object.class!
-  word.this >body table.init
+  CN_INDEX word.this >body object.class!
+  word.this >body index.init
   true word.this >body object.wordbody!
   ' index word.this word.kind!
   word.this
@@ -143,8 +143,7 @@
     true
 ;
 
-
-/*----------------------------------------------------------------------------*/
+?*----------------------------------------------------------------------------*?
 : returnIndexRef ( )
 
   task.this task.seitf@ seitf.indexRef
@@ -159,7 +158,7 @@
 
   find execute
 
-  index.ref
+  //index.ref
   if true else false then
 ;
 
@@ -198,10 +197,10 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 
-: dumpTable ( "<indexNm>" )
+: dumpIndex ( "<indexNm>" )
 
-  find execute ( table )
-
+  find execute ( index^ )
+/*
   "__row_cursor" find dup
   if
   else
@@ -232,6 +231,7 @@
   rdrop
 
   "__row_cursor" find word.forget
+*/
 ;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -247,11 +247,23 @@ tp: makingIndex
   dup "MAKING INDEX " swap str.cat " on NODE " str.cat grid.thisNode@ >str str.cat .
   then
 
-  dup ( "<indexNm>" "<tableNm>" )
+  dup ( "<indexNm>" "<indexNm>" )
+  :index ( "<indexNm>" ^index )
 
-  :index ( "<indexNm>" ^table )
+  drop ( "<indexNme>" )
+  dup ( "<indexNm>" "<indexNm>" )
+  find execute ( "<indexNm>" ^index )
+  swap ( ^index "<indexNm>" )
 
-  drop ( "<indexNm>" )
+  dup ( ^index "<indexNm>" "<indexNm>" )
+
+  :indexDefn ( ^index  "<indexNm>" ^indexDefn )
+  drop
+  find execute
+  swap ( ^indexDefn ^index )
+
+stk
+  index.indexDefn@
 
   true <SUCCESS_RESULT>
 ;
