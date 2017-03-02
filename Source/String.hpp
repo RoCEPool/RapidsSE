@@ -8,13 +8,13 @@
 
 namespace Platform
 {
-  static const int C_NO_CASE    = 0;
-  static const int C_CASE       = 1;
+  static const int C_NO_CASE = 0;
+  static const int C_CASE    = 1;
   
   class String : public Static
   {
   private:
-    static const i8 C_STACK_WSP = 16 * C_1KB;
+    static const i8 C_STRING_ARRAY = 16 * C_1KB;
     
   public:
     static char* wAllocate(i8 nBytes);

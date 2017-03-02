@@ -5,8 +5,6 @@
 
 #include "Base.h"
 
-#include "MachineTypes.h"
-
 #include "SystemIncludes.h"
 #include "System.hpp"
 #include "PosixThread.hpp"

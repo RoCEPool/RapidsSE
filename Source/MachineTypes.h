@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Platform
+namespace Base
 {
   typedef char               i1;  // 1 byte signed integer
   typedef short              i2;  // 2 byte signed integer

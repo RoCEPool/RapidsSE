@@ -318,7 +318,7 @@ void String::vCopyTill(char* psDst, const char* psSrc, char ccTill)
 /*----------------------------------------------------------------------------*/
 void String::vDump(const char* s, i8 nMax, const char* pSuffix)
 {
-  char w[C_STACK_WSP];
+  char w[C_STRING_ARRAY];
   char *z = w;
   
   for (int i = 0; i < nMax && i < C_16KB - 1; i++)
@@ -970,7 +970,7 @@ i8 String::iLength(const char* s, const char cTerm, i8 iMax)
 /*----------------------------------------------------------------------------*/
 char* String::sNew(const char* sFormat, ...)
 {
-  char w[C_STACK_WSP];
+  char w[C_STRING_ARRAY];
   
   va_list args;
   
