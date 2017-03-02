@@ -35,7 +35,7 @@ LoadChunk::LoadChunk(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADCHUNK,_FOOTER_);
 
-  vWspFill(0xEF);
+  m_xWsp.vWspFill(0xEF);
   
   vReset();
   
@@ -148,10 +148,10 @@ void LoadChunk::vReadChunk(i8 iSeek, i8 nBytes)
   
   m_xFile.vSeek(iSeek);
   
-  i8 iBytesRead = m_xFile.iReadChunk(aWspArea(),nBytes);
+  i8 iBytesRead = m_xFile.iReadChunk(m_xWsp.aWspArea(),nBytes);
 
-  m_aEndChunk   = &aWspArea()[iBytesRead - 1];
-  m_aNextRecord = aWspArea();
+  m_aEndChunk   = &m_xWsp.aWspArea()[iBytesRead - 1];
+  m_aNextRecord = m_xWsp.aWspArea();
 }
 
 /*----------------------------------------------------------------------------*/
