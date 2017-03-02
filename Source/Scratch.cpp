@@ -61,7 +61,7 @@ Scratch::Scratch(void)
 {
   _precondition_(_MAGIC_,CN_SCRATCH,_FOOTER_);
 
-  vWspFill(0x00);
+  m_xWsp.vWspFill(0x00);
   
   _checkInitialised_(CN_SCRATCH);
 
@@ -79,11 +79,21 @@ Scratch::~Scratch(void)
 /*----------------------------------------------------------------------------*/
 /* get work area                                                              */
 /*----------------------------------------------------------------------------*/
-char* Scratch::aScratchArea(void)
+char* Scratch::aWspArea(void)
 {
   _precondition_(_MAGIC_,CN_SCRATCH,_FOOTER_);
   
-  return aWspArea();
+  return m_xWsp.aWspArea();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get wsp bytes used                                                         */
+/*----------------------------------------------------------------------------*/
+i8 Scratch::nWspLength(void)
+{
+  _precondition_(_MAGIC_,CN_SCRATCH,_FOOTER_);
+
+  return m_xWsp.nWspLength();
 }
 
 /*----------------------------------------------------------------------------*/

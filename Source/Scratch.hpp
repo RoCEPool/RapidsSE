@@ -7,10 +7,11 @@
 
 namespace Common
 {
-  class Scratch : public Object,
-                  public WspFxd<C_512KB>
+  class Scratch : public Object
   {
   private:
+    WspFxd<C_512KB> m_xWsp;
+  
     // must be last
     Footer m_xFooter;
     
@@ -21,8 +22,9 @@ namespace Common
     Scratch(void);
     ~Scratch(void);
 
-    char* aScratchArea(void);
-    
+    char* aWspArea(void);
+    i8    nWspLength(void);
+  
     Footer* pFooter(void);
   };
   

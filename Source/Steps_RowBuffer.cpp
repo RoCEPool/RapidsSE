@@ -103,7 +103,7 @@ void Task::vRowBufferAppendRecord(NNP_Task nnpTask)
   
   File* pFile = _pFile(pPtrFile);
   
-  char* aRecord = pFile->pRecord()->aScratchArea();
+  char* aRecord = pFile->pRecord()->aWspArea();
   
 //  i8 iLength = String::iLength(aRecord);
   i8 iLength = pFile->iRecordLength();
