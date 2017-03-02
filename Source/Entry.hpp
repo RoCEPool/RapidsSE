@@ -12,7 +12,7 @@ namespace DBobjects
   {
   private:
     RowId  m_xRowId;
-    WspVbl m_xWspVbl;
+    WspVbl m_xWsp;
   
   public:
     static i8 iBytesRequired(i8 iDataBytes);
