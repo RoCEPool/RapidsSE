@@ -8,11 +8,11 @@
 
 namespace DBobjects
 {
-  class KeyWsp : public Object,
-                 public WspFxd<C_1KB*15>
+  class KeyWsp : public Object
   {
   private:
-    Footer m_xFooter;
+    WspFxd<C_1KB*15> m_xWsp;
+    Footer           m_xFooter;
     
   public:
     void* operator new(size_t);
@@ -25,6 +25,9 @@ namespace DBobjects
 
     void vAddElement(ValWsp& xValWsp);
   
+    char* aWspArea(void);
+    i8    nWspUsed(void);
+
     Footer* pFooter(void);
   };
 }
