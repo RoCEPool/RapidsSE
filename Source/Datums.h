@@ -6,6 +6,9 @@
 
 #include "Magic.h"
 
+#include "Int.hpp"
+#include "Str.hpp"
+
 //-----------------------------------------------------------------------------
 namespace Datums
 {
