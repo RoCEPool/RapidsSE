@@ -8,12 +8,11 @@
 
 namespace Values
 {
-  class ValWsp : public Value,
-                 public WspFxd<C_64K>
+  class ValWsp : public Value
   {
   private:
-  
-    Footer m_xFooter;
+    WspFxd<C_64K> m_xWsp;
+    Footer        m_xFooter;
   
   public:
     void* operator new(size_t);
@@ -26,6 +25,8 @@ namespace Values
     
     i8    iAsInt(void);
     void vAssignBinary(Object* pObject);
+  
+    char* aWspArea(void);
   
     Footer* pFooter(void);
   };
