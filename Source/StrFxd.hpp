@@ -3,8 +3,6 @@
 /*============================================================================*/
 #pragma once
 
-#include "Values.h"
-
 namespace Values
 {
   template <int SIZE>

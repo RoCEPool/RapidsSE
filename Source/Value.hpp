@@ -1,10 +1,7 @@
 /*============================================================================*/
 /* Value.hpp -- Base Class for a Self-Describing Value                        */
 /*============================================================================*/
-
 #pragma once
-
-#include "Values.h"
 
 namespace Tasks {
   class Task;
@@ -34,11 +31,7 @@ namespace Values
   public:
     void* operator new(size_t);
     
-    Value(eCN eClass);
-    
-    
-    
-        
+    Value(eCN eClass);        
   };
 }
 
