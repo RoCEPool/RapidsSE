@@ -3,11 +3,11 @@
 /*============================================================================*/
 #pragma once
 
-#include "Platform.h"
+#include "Base.h"
 
-namespace Platform
+namespace Base
 {
-  class Memory : public Static
+  class Memory
   {
   private:
     static const u1 C_ASCII_MIN = 32;
