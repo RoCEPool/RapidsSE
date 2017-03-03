@@ -6,7 +6,8 @@
 
 #include "RowBuffer.hpp"
 
-#include "Arguments.hpp"
+#include "StorageEngine.h"
+
 extern Arguments gxArguments;
 
 /*----------------------------------------------------------------------------*/

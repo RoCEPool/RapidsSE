@@ -1,10 +1,7 @@
 /*============================================================================*/
 /* Arguments.hpp - command line arguments                                     */
 /*============================================================================*/
-
 #pragma once
-
-#include "StorageEngine.h"
 
 namespace StorageEngine
 {

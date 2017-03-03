@@ -3,7 +3,8 @@
 /*============================================================================*/
 
 #include "DBobjects.h"
-#include "Arguments.hpp"
+
+#include "StorageEngine.h"
 
 extern Heap* gpJumboHeap;
 extern Arguments gxArguments;

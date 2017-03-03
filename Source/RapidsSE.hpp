@@ -1,10 +1,7 @@
 /*============================================================================*/
 /* RapidsSE.hpp -- Rapids Storage Engine                                      */
 /*============================================================================*/
-
 #pragma once
-
-#include "StorageEngine.h"
 
 #define RAPIDSSE_VERSION_STRING "0.2.1"
 

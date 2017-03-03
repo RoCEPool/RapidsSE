@@ -1,10 +1,7 @@
 /*============================================================================*/
 /* AttachMap.hpp - map of addresses when process attaches                     */
 /*============================================================================*/
-
 #pragma once
-
-#include "StorageEngine.h"
 
 namespace StorageEngine
 {

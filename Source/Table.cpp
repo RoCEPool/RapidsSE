@@ -3,8 +3,9 @@
 /*============================================================================*/
 
 #include "DBobjects.h"
-#include "Word.hpp"
-#include "Arguments.hpp"
+
+//#include "Word.hpp"
+#include "StorageEngine.h"
 
 extern BufferPool*  gpBufferPool;
 extern Arguments    gxArguments;
