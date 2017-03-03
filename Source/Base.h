@@ -20,6 +20,7 @@ using namespace Base;
 
 #include "Addressing.hpp"
 #include "BinaryNumbers.h"
+#include "ByteLiterals.hpp"
 #include "ClassNumbers.hpp"
 #include "Memory.hpp"
 #include "String.hpp"

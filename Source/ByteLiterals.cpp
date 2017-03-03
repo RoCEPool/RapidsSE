@@ -2,12 +2,12 @@
 /* ByteLiterals.cpp -- Byte Literals                                          */
 /*============================================================================*/
 
-#include "Platform.h"
+#include "Base.h"
   
 /*----------------------------------------------------------------------------*/
 /* _KB literal suffix                                                         */
 /*----------------------------------------------------------------------------*/
-i8 Platform::operator "" _KB(unsigned long long i)
+i8 Base::operator "" _KB(unsigned long long i)
 {
   return i * C_1KB;
 }
@@ -15,7 +15,7 @@ i8 Platform::operator "" _KB(unsigned long long i)
 /*----------------------------------------------------------------------------*/
 /* _MB literal suffix                                                         */
 /*----------------------------------------------------------------------------*/
-i8 Platform::operator "" _MB(unsigned long long i)
+i8 Base::operator "" _MB(unsigned long long i)
 {
   return i * C_1MB;
 }
@@ -23,7 +23,7 @@ i8 Platform::operator "" _MB(unsigned long long i)
 /*----------------------------------------------------------------------------*/
 /* _GB literal suffix                                                         */
 /*----------------------------------------------------------------------------*/
-i8 Platform::operator "" _GB(unsigned long long i)
+i8 Base::operator "" _GB(unsigned long long i)
 {
   return i * C_1GB;
 }
@@ -31,7 +31,7 @@ i8 Platform::operator "" _GB(unsigned long long i)
 /*----------------------------------------------------------------------------*/
 /* _TB literal suffix                                                         */
 /*----------------------------------------------------------------------------*/
-i8 Platform::operator "" _TB(unsigned long long i)
+i8 Base::operator "" _TB(unsigned long long i)
 {
   return i * C_1TB;
 }
@@ -39,7 +39,7 @@ i8 Platform::operator "" _TB(unsigned long long i)
 /*----------------------------------------------------------------------------*/
 /* _PB literal suffix                                                         */
 /*----------------------------------------------------------------------------*/
-i8 Platform::operator "" _PB(unsigned long long i)
+i8 Base::operator "" _PB(unsigned long long i)
 {
   return i * C_1PB;
 }
@@ -47,11 +47,51 @@ i8 Platform::operator "" _PB(unsigned long long i)
 /*----------------------------------------------------------------------------*/
 /* _EB literal suffix                                                         */
 /*----------------------------------------------------------------------------*/
-i8 Platform::operator "" _EB(unsigned long long i)
+i8 Base::operator "" _EB(unsigned long long i)
 {
   return i * C_1EB;
 }
   
+/*----------------------------------------------------------------------------*/
+/* _K literal suffix                                                          */
+/*----------------------------------------------------------------------------*/
+i8 Base::operator "" _K(unsigned long long i)
+{
+  return i * C_1K;
+}
+
+/*----------------------------------------------------------------------------*/
+/* _M literal suffix                                                          */
+/*----------------------------------------------------------------------------*/
+i8 Base::operator "" _M(unsigned long long i)
+{
+  return i * C_1M;
+}
+
+/*----------------------------------------------------------------------------*/
+/* _B literal suffix                                                          */
+/*----------------------------------------------------------------------------*/
+i8 Base::operator "" _B(unsigned long long i)
+{
+  return i * C_1B;
+}
+
+/*----------------------------------------------------------------------------*/
+/* _T literal suffix                                                          */
+/*----------------------------------------------------------------------------*/
+i8 Base::operator "" _T(unsigned long long i)
+{
+  return i * C_1T;
+}
+
+/*----------------------------------------------------------------------------*/
+/* _Q literal suffix                                                          */
+/*----------------------------------------------------------------------------*/
+i8 Base::operator "" _Q(unsigned long long i)
+{
+  return i * C_1Q;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

@@ -3,9 +3,9 @@
 /*============================================================================*/
 #pragma once
 
-#include "Platform.h"
+#include "Base.h"
 
-namespace Platform
+namespace Base
 {
   i8 operator "" _KB(unsigned long long i);
   i8 operator "" _MB(unsigned long long i);
@@ -14,6 +14,11 @@ namespace Platform
   i8 operator "" _PB(unsigned long long i);
   i8 operator "" _EB(unsigned long long i);
 
+  i8 operator "" _K(unsigned long long i);
+  i8 operator "" _M(unsigned long long i);
+  i8 operator "" _B(unsigned long long i);
+  i8 operator "" _T(unsigned long long i);
+  i8 operator "" _Q(unsigned long long i);
 }
 
 /*============================================================================*/

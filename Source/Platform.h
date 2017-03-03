@@ -14,7 +14,6 @@
 
 #include "Synch.hpp"
 
-#include "ByteLiterals.hpp"
 
 //-----------------------------------------------------------------------------
 namespace Platform

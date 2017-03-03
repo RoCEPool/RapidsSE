@@ -28,6 +28,7 @@ const i8 C_1K   = 1000LL;         // 1 thousand
 const i8 C_1M   = C_1K * C_1K;    // 1 million
 const i8 C_1B   = C_1M * C_1K;    // 1 billion
 const i8 C_1T   = C_1B * C_1K;    // 1 trillion
+const i8 C_1Q   = C_1T * C_1K;    // 1 quadrillion
 
 const i8 C_2K   = C_1K * 2;       // 8 thousand
 const i8 C_4K   = C_1K * 4;       // 8 thousand
