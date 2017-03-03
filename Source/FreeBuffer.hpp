@@ -1,12 +1,7 @@
 /*============================================================================*/
 /* FreeBuffer.hpp - a buffer when its in the buffer pool free chain           */
 /*============================================================================*/
-
 #pragma once
-
-#include "Pool.h"
-
-using namespace System;
 
 namespace Pool
 {

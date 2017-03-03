@@ -1,11 +1,7 @@
 /*============================================================================*/
-/*  BPA.hpp - buffer pool analyzer                                            */
+/* BPA.hpp -- buffer pool analyzer                                            */
 /*============================================================================*/
 #pragma once
-
-#include "System.h"
-
-using namespace System;
 
 namespace Pool
 {

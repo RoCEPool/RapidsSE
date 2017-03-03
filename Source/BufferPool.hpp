@@ -3,17 +3,12 @@
 /*============================================================================*/
 #pragma once
 
-#include "Pool.h"
-
-using namespace System;
-
 namespace Pool
 {
   class Buffer;
 
   class BufferPool : public Object
   {
-    
     friend class BPA;
     
   private:
