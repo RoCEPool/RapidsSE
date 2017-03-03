@@ -7,6 +7,8 @@
 
 namespace Parsing
 {
+  const char C_END_OF_LINE = '\n';
+  
   class Parser : public Object
   {
   private:

@@ -1,14 +1,10 @@
 /*============================================================================*/
-/* StringLiterals.hpp -- String Literals                                      */
+/* Tabs.hpp -- tabbing                                                        */
 /*============================================================================*/
 #pragma once
 
-#include "Debugging.h"
-
 namespace Debugging
 {
-  const char  C_END_OF_LINE = '\n';
-  
   const char* aSingleTab(void);
   const char* aDoubleTab(void);
   

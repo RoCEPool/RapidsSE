@@ -3,8 +3,6 @@
 /*============================================================================*/
 #pragma once
 
-#include "Debugging.h"
-
 namespace Debugging
 {
   static const i8 C_REPORT_TIMESTAMP    = 1;
