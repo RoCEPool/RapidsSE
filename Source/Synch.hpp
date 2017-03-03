@@ -1,10 +1,7 @@
 /*============================================================================*/
 /* Synch.hpp -- Threading independent synchronisation                          */
 /*============================================================================*/
-
 #pragma once
-
-#include "Threading.h"
 
 namespace Threading
 {
