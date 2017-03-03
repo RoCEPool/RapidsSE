@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-#include "Debugging.h"
+#include "ThirdParty.h"
 
 static const u8 MAGIC = 0x4F4E434947414D5E; // ^MAGICNO
 

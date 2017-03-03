@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "Magic.h"
+#include "Debugging.h"
 
 #include "Int.hpp"
 #include "Str.hpp"

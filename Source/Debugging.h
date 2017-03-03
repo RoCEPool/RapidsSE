@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-#include "ThirdParty.h"
+#include "Base.h"
 
 #include "Debug.hpp"
 #include "Error.hpp"
