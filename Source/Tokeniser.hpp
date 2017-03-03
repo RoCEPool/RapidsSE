@@ -1,10 +1,7 @@
 /*============================================================================*/
 /* Tokenizer.hpp -- Tokenizer : divide input stream into tokens               */
 /*============================================================================*/
-
 #pragma once
-
-#include "Parsing.h"
 
 namespace Parsing
 {
