@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "Platform.h"
+#include "Threading.h"
 
 #include "bzlib.h"
 #include "lz4.h"

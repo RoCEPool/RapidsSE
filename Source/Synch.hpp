@@ -1,12 +1,12 @@
 /*============================================================================*/
-/* Synch.hpp -- platform independent synchronisation                          */
+/* Synch.hpp -- Threading independent synchronisation                          */
 /*============================================================================*/
 
 #pragma once
 
-#include "Platform.h"
+#include "Threading.h"
 
-namespace Platform
+namespace Threading
 {
   class Synch
   {

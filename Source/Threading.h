@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Platform.h - includes for Platform namespace                               */
+/* Threading.h - includes for Threading namespace                               */
 /*============================================================================*/
 #pragma once
 
@@ -15,12 +15,12 @@
 
 
 //-----------------------------------------------------------------------------
-namespace Platform
+namespace Threading
 {
   void vCheckAssumptions(void);
 }
 
-using namespace Platform;
+using namespace Threading;
 
 /*============================================================================*/
 /* end                                                                        */

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Synch.cpp -- platform independent synchronisation                          */
+/* Synch.cpp -- Threading independent synchronisation                          */
 /*============================================================================*/
 
 #include "Common.h"

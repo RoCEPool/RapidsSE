@@ -4,9 +4,9 @@
 
 #pragma once
 
-#include "Platform.h"
+#include "Threading.h"
 
-namespace Platform
+namespace Threading
 {
   extern "C" u8 iCpuid(u8 iEax, u8 iReg); // not used
   

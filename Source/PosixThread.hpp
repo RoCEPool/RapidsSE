@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* OSthread.hpp - an os thread                                                */
+/* PosixThread.hpp - posix thread                                             */
 /*============================================================================*/
 #pragma once
 
-#include "Platform.h"
+#include "Threading.h"
 
-namespace Platform
+namespace Threading
 {
   static const i8 C_THREAD_BOOST = 8;
   

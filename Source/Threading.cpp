@@ -1,13 +1,13 @@
 /*============================================================================*/
-/* Platform.cpp - platform functions                                          */
+/* Threading.cpp - Threading functions                                          */
 /*============================================================================*/
 
-#include "Platform.h"
+#include "Threading.h"
 
 /*----------------------------------------------------------------------------*/
 /* things to check at boot time                                               */
 /*----------------------------------------------------------------------------*/
-void Platform::vCheckAssumptions(void)
+void Threading::vCheckAssumptions(void)
 {
 }
 
