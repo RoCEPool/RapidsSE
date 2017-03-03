@@ -14,7 +14,7 @@
 
 namespace Magic
 {
-  class WspVbl : public Part
+  class WspVbl
   {
   private:
     i8   m_nAreaUsed;

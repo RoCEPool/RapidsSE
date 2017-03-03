@@ -8,7 +8,7 @@
 
 namespace DBobjects
 {
-  class RowId : public Part
+  class RowId
   {
   private:
   struct {

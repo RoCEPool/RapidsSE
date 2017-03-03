@@ -12,7 +12,6 @@
   #include "Asm.h"
 #endif
 
-#include "Part.hpp"
 #include "Synch.hpp"
 #include "Addressing.hpp"
 

@@ -14,7 +14,7 @@
 
 namespace Magic
 {
-  class Wsp : public Part
+  class Wsp
   {
   private:
   
