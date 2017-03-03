@@ -5,10 +5,6 @@
 
 #include "Base.h"
 
-#include "Debug.hpp"
-#include "Error.hpp"
-#include "Report.hpp"
-
 //-----------------------------------------------------------------------------
 
 namespace Debugging
@@ -16,8 +12,14 @@ namespace Debugging
   void vCheckAssumptions(void);
 }
 
+//-----------------------------------------------------------------------------
+
 using namespace Debugging;
 
+#include "Debug.hpp"
+#include "Error.hpp"
+#include "Report.hpp"
+#include "Tabs.hpp"
 
 /*============================================================================*/
 /* end                                                                        */
