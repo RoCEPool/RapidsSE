@@ -3,8 +3,6 @@
 /*============================================================================*/
 #pragma once
 
-#include "Structures.h"
-
 namespace Structures
 {
   typedef bool (*compare)(void* pSearchEntry, void* pListEntry, bool *bMatch);

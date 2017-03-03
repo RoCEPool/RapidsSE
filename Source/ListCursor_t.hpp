@@ -1,10 +1,7 @@
 /*============================================================================*/
 /* ListCursor_t.hpp -- Template for List Cursor                               */
 /*============================================================================*/
-
 #pragma once
-
-#include "Structures.h"
 
 namespace Structures
 {

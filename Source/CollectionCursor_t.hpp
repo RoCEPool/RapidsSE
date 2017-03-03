@@ -1,10 +1,7 @@
 /*============================================================================*/
 /* CollectionCursor_t.hpp -- Template for Collection Cursor                   */
 /*============================================================================*/
-
 #pragma once
-
-#include "Structures.h"
 
 namespace Structures
 {

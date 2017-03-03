@@ -1,10 +1,7 @@
 /*============================================================================*/
 /* Collection_t.hpp -- Template for Collections                               */
 /*============================================================================*/
-
 #pragma once
-
-#include "Structures.h"
 
 namespace Structures
 {
