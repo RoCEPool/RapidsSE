@@ -1,13 +1,10 @@
 /*============================================================================*/
-/* ThreadList.hpp - Thread Set                                                */
+/* ThreadList.hpp -- Thread List                                              */
 /*============================================================================*/
-
 #pragma once
 
-#include "Threads.h"
-
-namespace Threads {
-    
+namespace Threads
+{    
   class ThreadList : public Object,
                      public List_t<Thread>
   {

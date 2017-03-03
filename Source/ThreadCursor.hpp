@@ -1,10 +1,7 @@
 /*============================================================================*/
 /* ThreadCursor.hpp -- Cursor over Threads in ThreadList                      */
 /*============================================================================*/
-
 #pragma once
-
-#include "Threads.h"
 
 namespace Threads
 {

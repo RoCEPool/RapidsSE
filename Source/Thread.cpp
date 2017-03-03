@@ -1,8 +1,9 @@
 /*============================================================================*/
-/* Thread.cpp - thread                                                        */
+/* Thread.cpp -- thread                                                       */
 /*============================================================================*/
 
 #include "Threads.h"
+
 #include "Arguments.hpp"
 
 extern BufferPool*  gpBufferPool;
