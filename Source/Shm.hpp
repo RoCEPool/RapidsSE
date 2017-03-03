@@ -10,7 +10,7 @@ namespace Common
   static const bool C_SHARED_REGION = true;
   static const bool C_HUGE_PAGES = true;
   
-  class Shm : public Static
+  class Shm
   {
   public:
     static bool  bAttach(StrVal& sName, int& iShmFD, SysCall& SysCall);

@@ -7,7 +7,7 @@
 
 namespace Common {
   
-  class Env : public Static
+  class Env
   {
   public:
     static bool bGet(s256& sName, s256& sValue);

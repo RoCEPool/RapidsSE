@@ -7,7 +7,7 @@
 
 namespace Common
 {
-  class Process : public Static
+  class Process
   {
   public:
     static i8   iGetPid(void);

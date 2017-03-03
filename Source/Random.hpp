@@ -8,7 +8,7 @@
 
 namespace Common
 {
-  class Random : public Static
+  class Random
   {
   public:
     static i8 iRandom(void);

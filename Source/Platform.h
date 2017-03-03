@@ -13,7 +13,6 @@
 #endif
 
 #include "Part.hpp"
-#include "Static.hpp"
 #include "Synch.hpp"
 #include "Addressing.hpp"
 
