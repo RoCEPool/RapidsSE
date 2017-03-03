@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* cn.hpp - class number                                                      */
+/* ClassNumbers.hpp - class numbers                                           */
 /*============================================================================*/
 #pragma once
 
-#include "Platform.h"
+#include "Base.h"
 
-namespace Platform
+namespace Base
 {
   enum eCN // Class Number
   {
