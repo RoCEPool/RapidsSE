@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "Api.hpp"
+#include "Interface.h"
 #include "SeHistory.hpp"
 #include "Error.hpp"
 

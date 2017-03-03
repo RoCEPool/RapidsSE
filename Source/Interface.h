@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "Threads.h"
+#include "GridModel.h"
 
 //-----------------------------------------------------------------------------
 
@@ -20,6 +20,7 @@ using namespace Interface;
 #include "SEitf.hpp"
 #include "SEitfList.hpp"
 #include "SEitfCursor.hpp"
+#include "Api.hpp"
 
 /*============================================================================*/
 /* end                                                                        */

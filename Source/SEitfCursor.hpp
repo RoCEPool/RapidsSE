@@ -1,13 +1,12 @@
 /*============================================================================*/
 /* SEitfCursor.hpp - cursor over SEitf list                                   */
 /*============================================================================*/
-
 #pragma once
 
 #include "Interface.h"
 
-namespace Interface {
-    
+namespace Interface
+{    
   class SEitfCursor : public Object,
                       public ListCursor_t<SEitf>
   {

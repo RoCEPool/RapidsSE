@@ -2,7 +2,8 @@
 /* Api.cpp - RapidsSE Api funcstions                                          */
 /*============================================================================*/
 
-#include "Api.hpp"
+#include "Interface.h"
+#include "StorageEngine.h"
 
 extern BufferPool* gpBufferPool;
 extern AttachMap*  gpAttachMap;

@@ -6,8 +6,8 @@
 
 #include "Interface.h"
 
-namespace Interface {
-    
+namespace Interface
+{    
   class SEitfList : public Object,
                     public List_t<SEitf>
   {

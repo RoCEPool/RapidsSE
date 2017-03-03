@@ -1,10 +1,7 @@
 /*============================================================================*/
 /* Api.h - RapidsSE Api                                                       */
 /*============================================================================*/
-
 #pragma once
-
-#include "StorageEngine.h"
 
 // external SE API calls
 extern "C" eEC RapidsSE_AddColumn(SEitf* pSEitf, char* pColumnName, char* pColumnType);

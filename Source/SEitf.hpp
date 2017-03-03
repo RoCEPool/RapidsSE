@@ -1,14 +1,12 @@
 /*============================================================================*/
 /* SEitf.hpp - se interface                                                   */
 /*============================================================================*/
-
 #pragma once
 
 #include "Interface.h"
 
 namespace Interface
 {
-  
   class SEitf : public Object,
                 public ListNode_t<SEitf>
   {
