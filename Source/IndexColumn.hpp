@@ -5,9 +5,9 @@
 #pragma once
 
 #include <stdio.h>
-#include "Common.h"
+#include "System.h"
 
-using namespace Common;
+using namespace System;
 
 namespace DBobjects
 {

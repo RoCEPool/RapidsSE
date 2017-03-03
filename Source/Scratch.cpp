@@ -11,7 +11,7 @@ extern BufferPool* gpBufferPool;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Scratch* Common::_pScratch(void* aAddress)
+Scratch* System::_pScratch(void* aAddress)
 {
   Scratch* pScratch = reinterpret_cast<Scratch*>(aAddress);
   

@@ -6,7 +6,7 @@
 
 #include "Pool.h"
 
-using namespace Common;
+using namespace System;
 
 namespace Pool
 {

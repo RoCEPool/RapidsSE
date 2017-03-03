@@ -2,7 +2,7 @@
 /* Synch.cpp -- Threading independent synchronisation                          */
 /*============================================================================*/
 
-#include "Common.h"
+#include "System.h"
 
 //const u8 C_WRITELOCK = 0x8000000000000000;
 

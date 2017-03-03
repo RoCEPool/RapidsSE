@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-#include "Common.h"
+#include "System.h"
 
 extern const char* C_OPEN_READ;
 extern const char* C_OPEN_WRITE;
@@ -12,7 +12,7 @@ extern const char* C_OPEN_READ_WRITE_EXIST;
 extern const char* C_OPEN_READ_WRITE_CREATE;
 extern const char* C_OPEN_READ_APPEND;
 
-namespace Common
+namespace System
 {
   class Scratch;
   

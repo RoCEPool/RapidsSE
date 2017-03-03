@@ -2,7 +2,7 @@
 /* File.cpp -- os file                                                        */
 /*============================================================================*/
 
-#include "Common.h"
+#include "System.h"
 
 #include "Pool.h"
 
@@ -41,7 +41,7 @@ const char* C_OPEN_READ_APPEND = "a+";
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-File* Common::_pFile(void* aAddr)
+File* System::_pFile(void* aAddr)
 {
   File* pFile = reinterpret_cast<File*>(aAddr);
   

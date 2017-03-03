@@ -7,7 +7,7 @@
 //#include <stdio.h>
 #include "DBobjects.h"
 
-using namespace Common;
+using namespace System;
 
 namespace DBobjects
 {  

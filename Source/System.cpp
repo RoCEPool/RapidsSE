@@ -1,14 +1,15 @@
 /*============================================================================*/
-/* Common.cpp -- Common Functions                                             */
+/* System.cpp -- System Functions                                             */
 /*============================================================================*/
 
-#include "Common.h"
+#include "System.h"
+
 #include "Pool.h"
 
 /*----------------------------------------------------------------------------*/
 /* things to check at boot time                                               */
 /*----------------------------------------------------------------------------*/
-void Common::vCheckAssumptions(void)
+void System::vCheckAssumptions(void)
 {
   ASSERT(Process::bTestPid(Process::iGetPid()));
   ASSERT(4  == sizeof(eCN));

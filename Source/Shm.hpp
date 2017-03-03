@@ -3,9 +3,9 @@
 /*============================================================================*/
 #pragma once
 
-#include "Common.h"
+#include "System.h"
 
-namespace Common
+namespace System
 {
   static const bool C_SHARED_REGION = true;
   static const bool C_HUGE_PAGES = true;

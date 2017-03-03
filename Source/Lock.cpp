@@ -2,13 +2,13 @@
 /* Lock.cpp -- Shared Read / Exclusive Write Lock                             */
 /*============================================================================*/
 
-#include "Common.h"
+#include "System.h"
 #include "Pool.h"
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Lock* Common::_pLock(void* aAddr)
+Lock* System::_pLock(void* aAddr)
 {
   Lock* pLock = reinterpret_cast<Lock*>(aAddr);
   

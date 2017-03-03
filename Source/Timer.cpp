@@ -11,7 +11,7 @@ extern BufferPool* gpBufferPool;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Timer* Common::_pTimer(void* aAddr)
+Timer* System::_pTimer(void* aAddr)
 {
   Timer* pTimer = reinterpret_cast<Timer*>(aAddr);
   

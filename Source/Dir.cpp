@@ -12,7 +12,7 @@ extern Heap* gpSmallHeap;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Dir* Common::_pDir(void* aAddr)
+Dir* System::_pDir(void* aAddr)
 {
   Dir* pDir = reinterpret_cast<Dir*>(aAddr);
   

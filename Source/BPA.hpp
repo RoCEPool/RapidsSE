@@ -3,9 +3,9 @@
 /*============================================================================*/
 #pragma once
 
-#include "Common.h"
+#include "System.h"
 
-using namespace Common;
+using namespace System;
 
 namespace Pool
 {

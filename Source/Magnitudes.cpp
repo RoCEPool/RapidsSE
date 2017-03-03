@@ -2,7 +2,7 @@
 /* Magnitudes.cpp -- Various Useful Magnitude functions                       */
 /*============================================================================*/
 
-#include "Common.h"
+#include "System.h"
 
 /*----------------------------------------------------------------------------*/
 /* pMagnitue -- convert bytes to its magnitude equivalent                     */

@@ -3,9 +3,9 @@
 /*============================================================================*/
 #pragma once
 
-#include "Common.h"
+#include "System.h"
 
-namespace Common
+namespace System
 {
   class Dir : public Object
   {

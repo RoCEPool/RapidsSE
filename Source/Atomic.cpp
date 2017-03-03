@@ -2,7 +2,7 @@
 /* Atomic.cpp -- atomic integer                                               */
 /*============================================================================*/
 
-#include "Common.h"
+#include "System.h"
 
 #include "Pool.h"
 

@@ -2,7 +2,7 @@
 /* PosixThread - a posix thread                                               */
 /*============================================================================*/
 
-#include "Common.h"
+#include "System.h"
 
 Atomic gzThreadOpenCount;
 

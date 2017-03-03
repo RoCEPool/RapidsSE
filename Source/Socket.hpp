@@ -6,7 +6,7 @@
 
 #include "Tasks.h"
 
-namespace Common
+namespace System
 {
   class Socket : public Object
   {

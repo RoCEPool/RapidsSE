@@ -4,9 +4,9 @@
 
 #pragma once
 
-#include "Common.h"
+#include "System.h"
 
-namespace Common
+namespace System
 {
   class Since : public Object
   {
