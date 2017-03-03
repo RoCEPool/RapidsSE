@@ -17,7 +17,6 @@ using namespace Plans;
 
 //-----------------------------------------------------------------------------
 
-
 #include "Plan.hpp"
 #include "PlanList.hpp"
 

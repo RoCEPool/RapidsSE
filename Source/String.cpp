@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* String.cpp - char* string utility                                          */
+/* String.cpp -- char* string utility                                         */
 /*============================================================================*/
 
-#include "String.hpp"
+#include "Base.h"
 
 /*----------------------------------------------------------------------------*/
 /* wAllocate: allocate a workspace/string of given size                       */

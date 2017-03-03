@@ -3,8 +3,6 @@
 /*============================================================================*/
 #pragma once
 
-#include "Base.h"
-
 namespace Base
 {
   i8 nSub(void* aAddress0, void* aAddress1);

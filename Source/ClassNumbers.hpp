@@ -9,10 +9,6 @@ namespace Base
 {
   enum eCN // Class Number
   {
-    //
-    // if you change this enum, change Task::vBoot()
-    //
-    
     /*  0 */ CN_NONE=0,
     
     /*  1 */ CN_BINVAL,

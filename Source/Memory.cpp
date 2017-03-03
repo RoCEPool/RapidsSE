@@ -1,8 +1,10 @@
 /*============================================================================*/
-/*  Memory.cpp - Memory                                                       */
+/* Memory.cpp -- Memory                                                       */
 /*============================================================================*/
 
-#include "Common.h"
+#include "Base.h"
+
+#include "Debugging.h"
 
 extern i8 giClassSize[];
 

@@ -4,8 +4,6 @@
 
 #pragma once
 
-#include "Base.h"
-
 namespace Base
 {
   static const int C_NO_CASE = 0;

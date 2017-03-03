@@ -16,11 +16,11 @@ using namespace Threading;
 
 //-----------------------------------------------------------------------------
 
-#include "PosixThread.hpp"
-
 #if !( (defined(__APPLE__) || defined(__LINUX__)) )
   #include "Asm.h"
 #endif
+
+#include "PosixThread.hpp"
 
 #include "Synch.hpp"
 
