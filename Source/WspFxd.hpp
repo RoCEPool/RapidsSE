@@ -1,16 +1,13 @@
 /*============================================================================*/
 /* WspFxd.hpp -- fixed-sized workspace                                        */
 /*============================================================================*/
+#pragma once
 
 /*
  
  Description:
  
  */
-
-#pragma once
-
-#include "Magic.h"
 
 namespace Magic
 {

@@ -1,16 +1,13 @@
 /*============================================================================*/
 /* WspVbl.hpp -- variable-sized workspace                                     */
 /*============================================================================*/
+#pragma once
 
 /*
  
  Description:
  
  */
-
-#pragma once
-
-#include "Magic.h"
 
 namespace Magic
 {

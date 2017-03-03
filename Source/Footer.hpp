@@ -3,8 +3,6 @@
 /*============================================================================*/
 #pragma once
 
-#include "Magic.h"
-
 namespace Magic
 {
   static const u8 FOOTER = 0x245245544F4F4624; // $FOOTER$

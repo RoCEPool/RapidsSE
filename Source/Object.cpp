@@ -3,6 +3,7 @@
 /*============================================================================*/
 
 #include "Magic.h"
+
 #include "StorageEngine.h"
 
 extern BufferPool*  gpBufferPool;
