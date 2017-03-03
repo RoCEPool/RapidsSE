@@ -2,8 +2,9 @@
 /* Partition.cpp - table partition                                            */
 /*============================================================================*/
 
-#include "StorageEngine.h"
 #include "DBobjects.h"
+
+#include "StorageEngine.h"
 
 extern Arguments    gxArguments;
 extern Grid*        gpGrid;

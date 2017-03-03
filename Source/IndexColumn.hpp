@@ -1,11 +1,9 @@
 /*============================================================================*/
 /* IndexColumn.hpp - Index Column                                             */
 /*============================================================================*/
-
 #pragma once
 
-#include <stdio.h>
-#include "System.h"
+#include "DBobjects.h"
 
 using namespace System;
 
