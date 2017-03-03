@@ -1,10 +1,7 @@
 /*============================================================================*/
 /* RelationalOps.h -- The Standard Relational Operators                       */
 /*============================================================================*/
-
 #pragma once
-
-#include "System.h"
 
 namespace System
 {

@@ -2,7 +2,8 @@
 /* Dir.cpp -- directory services                                              */
 /*============================================================================*/
 
-#include "Dir.hpp"
+#include "System.h"
+
 #include "StorageEngine.h"
 
 Atomic gzDirOpenCount;

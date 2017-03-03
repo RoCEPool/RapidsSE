@@ -3,8 +3,6 @@
 /*============================================================================*/
 #pragma once
 
-#include "System.h"
-
 namespace System
 {
   static const i8 C_THREAD_BOOST = 8;

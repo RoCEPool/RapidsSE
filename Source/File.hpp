@@ -3,8 +3,6 @@
 /*============================================================================*/
 #pragma once
 
-#include "System.h"
-
 extern const char* C_OPEN_READ;
 extern const char* C_OPEN_WRITE;
 extern const char* C_OPEN_APPEND;

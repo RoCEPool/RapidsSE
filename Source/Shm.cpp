@@ -2,7 +2,8 @@
 /* Shm.cpp -- shared memory                                                   */
 /*============================================================================*/
 
-#include "Env.hpp"
+#include "System.h"
+
 #include "Arguments.hpp"
 
 Atomic gzShmOpenCount;

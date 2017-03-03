@@ -3,8 +3,6 @@
 /*============================================================================*/
 #pragma once
 
-#include "System.h"
-
 namespace System
 {
   class Shell

@@ -3,8 +3,6 @@
 /*============================================================================*/
 #pragma once
 
-#include "System.h"
-
 namespace System
 {
   static const bool C_SHARED_REGION = true;
