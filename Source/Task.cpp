@@ -660,7 +660,7 @@ void Task::vAddConstants(void)
   /* 71 */ vAddConstant("SIZEOF_TXCURSOR",     sizeof(TxCursor));
   /* 72 */ vAddConstant("SIZEOF_TXMAP",        sizeof(TxMap));
   /* 73 */ vAddConstant("SIZEOF_TXREF",        sizeof(TxRef));
-  /* 74 */ vAddConstant("SIZEOF_WORD",         sizeof(Word));
+  /* 74 */ vAddConstant("C_SIZEOF_WORD",         sizeof(Word));
 
   /*  0 */ vAddConstant("SIZEOF_S32",          sizeof(s32));
   /*  1 */ vAddConstant("SIZEOF_S256",         sizeof(s256));

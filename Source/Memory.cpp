@@ -184,7 +184,7 @@ void Memory::vWordDump(void *aAddress, i8 iBytes, i8 iHighlightWord)
 {
   i8 iOffset = 0;
   i8 iWord   = 0;
-  i8 iWords  = iBytes/SIZEOF_WORD;
+  i8 iWords  = iBytes/C_SIZEOF_WORD;
 
   // dump a header
   vTrace("\n");
@@ -216,7 +216,7 @@ void Memory::vWordDump(void *aAddress, i8 iBytes, i8 iHighlightWord)
     
     iWord++;
       
-    for (i8 i = 0; i < SIZEOF_WORD; i++) {
+    for (i8 i = 0; i < C_SIZEOF_WORD; i++) {
       
       u1 cChar = *((u1*)aAddress + iOffset + i);
       
@@ -264,12 +264,12 @@ void Memory::vWordDump(void *aAddress, i8 iBytes, i8 iHighlightWord)
       vTrace(" <<==== MARKER F");
     
     iWord = 0;
-    iOffset += SIZEOF_WORD;
+    iOffset += C_SIZEOF_WORD;
     vTrace("\n");
   }
   
   // end of buffer and not at 16-byte boundary ?
-  if (iWord > 0 && iWord < SIZEOF_WORD) {
+  if (iWord > 0 && iWord < C_SIZEOF_WORD) {
     
     for (i8 i= 0; i < iWord; i++) {
       u1 cChar = *((u1*)aAddress + iOffset + i);
