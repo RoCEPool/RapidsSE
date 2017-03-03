@@ -3,8 +3,6 @@
 /*============================================================================*/
 #pragma once
 
-#include "UnitTests.h"
-
 namespace UnitTests
 {
   class RunTests
