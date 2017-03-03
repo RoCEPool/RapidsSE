@@ -22,6 +22,7 @@ using namespace Base;
 #include "BinaryNumbers.h"
 #include "ByteLiterals.hpp"
 #include "ClassNumbers.hpp"
+#include "System.hpp"
 #include "Memory.hpp"
 #include "String.hpp"
 

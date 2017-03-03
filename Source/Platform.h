@@ -5,7 +5,6 @@
 
 #include "Datums.h"
 
-#include "System.hpp"
 #include "PosixThread.hpp"
 
 #if !( (defined(__APPLE__) || defined(__LINUX__)) )
