@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* single tab                                                                 */
 /*----------------------------------------------------------------------------*/
-const char* Debugging::pSingleTab(void)
+const char* Debugging::aSingleTab(void)
 {
   return "  ";
 }
@@ -15,7 +15,7 @@ const char* Debugging::pSingleTab(void)
 /*----------------------------------------------------------------------------*/
 /* double tab                                                                 */
 /*----------------------------------------------------------------------------*/
-const char* Debugging::pDoubleTab(void)
+const char* Debugging::aDoubleTab(void)
 {
   return "      ";
 }

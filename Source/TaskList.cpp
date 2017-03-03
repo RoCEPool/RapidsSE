@@ -81,7 +81,7 @@ TaskList::~TaskList(void)
 /*----------------------------------------------------------------------------*/
 void TaskList::vContentDump(void)
 {
-  vDump(CN_TASKLIST, this, pSingleTab());
+  vDump(CN_TASKLIST, this, aSingleTab());
 }
 
 /*----------------------------------------------------------------------------*/

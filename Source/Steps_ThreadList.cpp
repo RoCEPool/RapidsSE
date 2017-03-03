@@ -52,7 +52,7 @@ ENTRY("vThreadListDump");
   ThreadList* pThreadList = _pThreadList(pPtrThreadList);
   ASSERT(CN_THREADLIST == pThreadList->eClass());
 
-  pThreadList->vContentDump("ThreadList:", pSingleTab());
+  pThreadList->vContentDump("ThreadList:", aSingleTab());
   
   EXIT();
 }

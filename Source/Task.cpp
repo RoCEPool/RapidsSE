@@ -1173,7 +1173,7 @@ void Task::vContentDump(void)
   _poolAddress_(this);
   
   vTrace("%sTask %02lld %p: %16s state %8s txId %lld\n",
-         pDoubleTab(),
+         aDoubleTab(),
          m_iTaskNo,
          this,
          m_sName.aStr(),

@@ -219,7 +219,7 @@ void RapidsSE::vAttachObjects(void)
   gpAttachMap->vGetGlobals();
   
   if (gxArguments.m_bVerbose)
-    AttachMap::vDump(CN_ATTACHMAP, gpAttachMap, pSingleTab());
+    AttachMap::vDump(CN_ATTACHMAP, gpAttachMap, aSingleTab());
 }
 
 /*----------------------------------------------------------------------------*/

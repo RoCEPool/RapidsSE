@@ -96,7 +96,7 @@ void Task::vObjectDump(NNP_Task nnpTask)
   
   pDUMPFUN* pDumpFun =gpDump[eClass];
   
-  (pDumpFun)(pObject->eClass(), pObject, pSingleTab());
+  (pDumpFun)(pObject->eClass(), pObject, aSingleTab());
   
   EXIT();
 }

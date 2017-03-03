@@ -81,7 +81,7 @@ PlanList::~PlanList(void)
 /*----------------------------------------------------------------------------*/
 void PlanList::vContentDump(void)
 {
-  vDump(CN_PLANLIST, this, pSingleTab());
+  vDump(CN_PLANLIST, this, aSingleTab());
 }
 
 /*----------------------------------------------------------------------------*/

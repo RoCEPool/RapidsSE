@@ -55,9 +55,9 @@ void BPA::vBufferDump(Buffer* pBuffer)
   
   pDUMPFUN* pDumpFun = gpDump[eClass];
   
-  vTrace("%s%p %-12s: ",pDoubleTab(),pBuffer,pCN[eClass]);
+  vTrace("%s%p %-12s: ",aDoubleTab(),pBuffer,pCN[eClass]);
 
-  (pDumpFun)(pBuffer->eClass(), pBuffer, pSingleTab());
+  (pDumpFun)(pBuffer->eClass(), pBuffer, aSingleTab());
   
 //  if (pBuffer->eClass() == CN_MEDIUMHEAP ||
 //      pBuffer->eClass() == CN_SMALLHEAP ) {
@@ -76,7 +76,7 @@ void BPA::vHeapDump(Heap* pHeap)
   
   vTrace("\n");
   vTrace("%sObjects in %s Heap:\n",
-         pSingleTab(),
+         aSingleTab(),
          pHeap->iObjectSize() == C_SIZE_SMALL_OBJECT ? "Small" : "Medium");
   
   pHeap->vGrabLock();
@@ -103,9 +103,9 @@ void BPA::vHeapDump(Heap* pHeap)
       
       pDUMPFUN* pDumpFun = gpDump[eClass];
       
-      vTrace("%s%p %-12s: ",pDoubleTab(),pHeap,pCN[eClass]);
+      vTrace("%s%p %-12s: ",aDoubleTab(),pHeap,pCN[eClass]);
 
-      (pDumpFun)(eClass, pChunk, pDoubleTab());
+      (pDumpFun)(eClass, pChunk, aDoubleTab());
     }
   }
   
@@ -123,7 +123,7 @@ void BPA::vHeapDump(Heap* pHeap, i8 iEpoch)
   
   vTrace("\n");
   vTrace("%sWords in %s Heap:\n",
-         pDoubleTab(),
+         aDoubleTab(),
          pHeap->iObjectSize() == C_SIZE_SMALL_OBJECT ? "Small" : "Medium");
   
   pHeap->vGrabLock();
@@ -155,9 +155,9 @@ void BPA::vHeapDump(Heap* pHeap, i8 iEpoch)
       
       pDUMPFUN* pDumpFun = gpDump[eClass];
       
-      vTrace("%s%p %-12s: ",pDoubleTab(),pHeap,pCN[eClass]);
+      vTrace("%s%p %-12s: ",aDoubleTab(),pHeap,pCN[eClass]);
       
-      (pDumpFun)(eClass, pChunk, pDoubleTab());
+      (pDumpFun)(eClass, pChunk, aDoubleTab());
     }
   }
   
@@ -172,7 +172,7 @@ void BPA::vObjectList(void)
   _precondition_(_MAGIC_,CN_BPA,_FOOTER_);
   
   vTrace("\n");
-  vTrace("%sObjects in Buffer Pool:\n",pSingleTab());
+  vTrace("%sObjects in Buffer Pool:\n",aSingleTab());
   
   Buffer* pMediumHeap = nullptr;
   Buffer* pSmallHeap  = nullptr;

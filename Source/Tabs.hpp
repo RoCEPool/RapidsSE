@@ -9,8 +9,8 @@ namespace Debugging
 {
   const char  C_END_OF_LINE = '\n';
   
-  const char* pSingleTab(void);
-  const char* pDoubleTab(void);
+  const char* aSingleTab(void);
+  const char* aDoubleTab(void);
   
   const char* aTab(i8 iDepth);
 }
