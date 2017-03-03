@@ -2,7 +2,10 @@
 /* Word.cpp -- Word in Dictionary                                             */
 /*============================================================================*/
 
+#include "Dictionaries.h"
+
 #include "Tasks.h" // needed for Task::vEnter
+
 #include "AttachMap.hpp"
 
 extern BufferPool* gpBufferPool;

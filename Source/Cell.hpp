@@ -1,10 +1,7 @@
 /*============================================================================*/
 /* Cell.hpp -- cell in the routine area of a word                             */
 /*============================================================================*/
-
 #pragma once
-
-#include "Dictionaries.h"
 
 namespace Dictionaries
 {

@@ -4,7 +4,7 @@
 
 #include "Structures.h"
 
-#include "Cell.hpp"
+#include "Dictionaries.h"
 
 extern BufferPool* gpBufferPool;
 
