@@ -1,10 +1,7 @@
 /*============================================================================*/
 /* gpTxCollection.hpp -- Transaction Collection                               */
 /*============================================================================*/
-
 #pragma once
-
-#include "Transactions.h"
 
 namespace Transactions
 {

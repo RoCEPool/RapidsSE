@@ -1,10 +1,7 @@
 /*============================================================================*/
 /* TxCursor.hpp -- Cursor over Tx's in TxCollection                           */
 /*============================================================================*/
-
 #pragma once
-
-#include "Transactions.h"
 
 namespace Transactions
 {
