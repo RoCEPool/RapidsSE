@@ -12,9 +12,9 @@ namespace Debugging
   void vCheckAssumptions(void);
 }
 
-//-----------------------------------------------------------------------------
-
 using namespace Debugging;
+
+//-----------------------------------------------------------------------------
 
 #include "Debug.hpp"
 #include "Error.hpp"

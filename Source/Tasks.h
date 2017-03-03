@@ -1,10 +1,21 @@
 /*============================================================================*/
-/* Tasks.h - includes for Tasks namespace                                 */
+/* Tasks.h -- Tasks namespace                                                 */
 /*============================================================================*/
 
 #pragma once
 
 #include "Plans.h"
+
+//-----------------------------------------------------------------------------
+
+namespace Tasks
+{
+  void vCheckAssumptions(void);
+}
+
+using namespace Tasks;
+
+//-----------------------------------------------------------------------------
 
 #include "StepAccum.hpp"
 #include "StepArray.hpp"
@@ -17,16 +28,6 @@
 #include "TaskSet.hpp"
 
 #include "TaskCursor.hpp"
-
-//-----------------------------------------------------------------------------
-namespace Tasks
-{
-  void vCheckAssumptions(void);
-}
-
-using namespace Tasks;
-
-
 
 /*============================================================================*/
 /* end                                                                        */

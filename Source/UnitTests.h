@@ -1,9 +1,21 @@
 /*============================================================================*/
-/* UnitTests.h - unit tests                                                   */
+/* UnitTests.h -- UnitTests namespace                                         */
 /*============================================================================*/
 #pragma once
 
 #include "StorageEngine.h"
+
+//-----------------------------------------------------------------------------
+
+namespace UnitTests
+{
+  void vCheckAssumptions(void);
+}
+
+using namespace UnitTests;
+
+//-----------------------------------------------------------------------------
+
 #include "SePrompt.hpp"
 #include "RunTests.hpp"
 #include "Tests.hpp"
@@ -15,15 +27,6 @@
 #include "TableTests.hpp"
 #include "LoadTests.hpp"
 #include "InsertTests.hpp"
-
-//-----------------------------------------------------------------------------
-namespace UnitTests
-{
-  //extern RunTests* gpRunTests;
-  void vCheckAssumptions(void);
-}
-
-using namespace UnitTests;
 
 /*============================================================================*/
 /* end                                                                        */

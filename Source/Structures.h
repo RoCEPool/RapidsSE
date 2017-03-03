@@ -1,9 +1,20 @@
 /*============================================================================*/
-/* Structures.h -- Includes for the Structures namespace                      */
+/* Structures.h -- Structures namespace                                       */
 /*============================================================================*/
 #pragma once
 
 #include "Pool.h"
+
+//-----------------------------------------------------------------------------
+
+namespace Structures
+{
+  void vCheckAssumptions(void);
+}
+
+using namespace Structures;
+
+//-----------------------------------------------------------------------------
 
 #include "CollectionCursor_t.hpp"
 #include "CollectionNode_t.hpp"
@@ -27,16 +38,6 @@
 #include "GraphNode.hpp"
 #include "Graph.hpp"
 #include "GraphCursor.hpp"
-
-
-
-//-----------------------------------------------------------------------------
-namespace Structures
-{
-  void vCheckAssumptions(void);
-}
-
-using namespace Structures;
 
 /*============================================================================*/
 /* end                                                                        */

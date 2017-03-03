@@ -1,10 +1,22 @@
 /*============================================================================*/
-/* StorageEngine.h - includes for StorageEngine namespace                     */
+/* StorageEngine.h -- StorageEngine namespace                                 */
 /*============================================================================*/
 
 #pragma once
 
 #include "GridModel.h"
+
+//-----------------------------------------------------------------------------
+
+namespace StorageEngine
+{
+  void vCheckAllAssumptions(void);
+  void vCheckAssumptions(void);
+}
+
+using namespace StorageEngine;
+
+//-----------------------------------------------------------------------------
 
 #include "Arguments.hpp"
 #include "AttachMap.hpp"
@@ -16,15 +28,6 @@
 typedef void (pDUMPFUN)(eCN eClass, Object* pObject, const char*);
 extern pDUMPFUN *gpDump[];
 extern i8 giClassSize[];
-
-//-----------------------------------------------------------------------------
-namespace StorageEngine
-{
-  void vCheckAllAssumptions(void);
-  void vCheckAssumptions(void);
-}
-
-using namespace StorageEngine;
 
 /*============================================================================*/
 /* end                                                                        */

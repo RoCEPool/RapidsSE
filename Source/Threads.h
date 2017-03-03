@@ -1,15 +1,10 @@
 /*============================================================================*/
-/* Threads.h -- includes for Threads namespace                                */
+/* Threads.h -- Threads namespace                                             */
 /*============================================================================*/
 
 #pragma once
 
 #include "Tasks.h"
-
-#include "TlsKeys.hpp"
-#include "Thread.hpp"
-#include "ThreadList.hpp"
-#include "ThreadCursor.hpp"
 
 //-----------------------------------------------------------------------------
 namespace Threads
@@ -18,6 +13,13 @@ namespace Threads
 }
 
 using namespace Threads;
+
+//-----------------------------------------------------------------------------
+
+#include "TlsKeys.hpp"
+#include "Thread.hpp"
+#include "ThreadList.hpp"
+#include "ThreadCursor.hpp"
 
 /*============================================================================*/
 /* end                                                                        */

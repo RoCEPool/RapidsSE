@@ -1,10 +1,21 @@
 /*============================================================================*/
-/* Values.h -- Self-Describing Values                                         */
+/* Values.h -- Values namespace                                               */
 /*============================================================================*/
 
 #pragma once
 
 #include "Magic.h"
+
+//-----------------------------------------------------------------------------
+
+namespace Values
+{
+  void vCheckAssumptions(void);
+}
+
+using namespace Values;
+
+//-----------------------------------------------------------------------------
 
 #include "V.hpp"
 
@@ -27,13 +38,6 @@ typedef StrFxd<32>    s32;
 typedef StrFxd<256>   s256;
 typedef StrFxd<C_48K> s48K;  // note this is 48K not 48KB
 typedef StrFxd<C_1M>  s1M;   // note this is 1M not 1MB
-//-----------------------------------------------------------------------------
-namespace Values
-{
-  void vCheckAssumptions(void);
-}
-
-using namespace Values;
 
 /*============================================================================*/
 /* end                                                                        */

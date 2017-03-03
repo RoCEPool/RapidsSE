@@ -1,12 +1,20 @@
 /*============================================================================*/
-/* Magic.h - includes for Magic namespace                                     */
+/* Magic.h -- Magic namespace                                                 */
 /*============================================================================*/
 #pragma once
 
 #include "ThirdParty.h"
 
+//-----------------------------------------------------------------------------
 
+namespace Magic
+{
+  void vCheckAssumptions(void);
+}
 
+using namespace Magic;
+
+//-----------------------------------------------------------------------------
 
 #include "Footer.hpp"
 #include "Object.hpp"
@@ -16,17 +24,6 @@
 
 #include "NP.hpp"
 #include "NNP.hpp"
-
-
-
-
-//-----------------------------------------------------------------------------
-namespace Magic
-{
-  void vCheckAssumptions(void);
-}
-
-using namespace Magic;
 
 /*============================================================================*/
 /* end                                                                        */

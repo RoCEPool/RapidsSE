@@ -1,24 +1,27 @@
 /*============================================================================*/
-/* GridModel.h -- includes for Grid Model namespace                           */
+/* GridModel.h -- GridModel namespace                                         */
 /*============================================================================*/
 
 #pragma once
 
 #include "Interface.h"
 
-#include "Node.hpp"
-#include "NodeCursor.hpp"
-#include "Proxy.hpp"
-#include "ProxySet.hpp"
-#include "Grid.hpp"
-
 //-----------------------------------------------------------------------------
+
 namespace GridModel
 {
   void vCheckAssumptions(void);
 }
 
 using namespace GridModel;
+
+//-----------------------------------------------------------------------------
+
+#include "Node.hpp"
+#include "NodeCursor.hpp"
+#include "Proxy.hpp"
+#include "ProxySet.hpp"
+#include "Grid.hpp"
 
 /*============================================================================*/
 /* end                                                                        */

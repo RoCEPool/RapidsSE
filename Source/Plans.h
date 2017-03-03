@@ -1,21 +1,25 @@
 /*============================================================================*/
-/* Plans.h - includes for Tasks namespace                                 */
+/* Plans.h -- includes for Plans namespace                                    */
 /*============================================================================*/
 
 #pragma once
 
 #include "DBobjects.h"
 
-#include "Plan.hpp"
-#include "PlanList.hpp"
-
 //-----------------------------------------------------------------------------
+
 namespace Plans
 {
   void vCheckAssumptions(void);
 }
 
 using namespace Plans;
+
+//-----------------------------------------------------------------------------
+
+
+#include "Plan.hpp"
+#include "PlanList.hpp"
 
 /*============================================================================*/
 /* end                                                                        */

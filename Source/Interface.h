@@ -1,22 +1,25 @@
 /*============================================================================*/
-/* Interface.h - includes for Interface namespace                             */
+/* Interface.h -- Interface namespace                                         */
 /*============================================================================*/
 
 #pragma once
 
 #include "Threads.h"
 
-#include "SEitf.hpp"
-#include "SEitfList.hpp"
-#include "SEitfCursor.hpp"
-
 //-----------------------------------------------------------------------------
+
 namespace Interface
 {
   void vCheckAssumptions(void);
 }
 
 using namespace Interface;
+
+//-----------------------------------------------------------------------------
+
+#include "SEitf.hpp"
+#include "SEitfList.hpp"
+#include "SEitfCursor.hpp"
 
 /*============================================================================*/
 /* end                                                                        */

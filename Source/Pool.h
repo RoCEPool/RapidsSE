@@ -1,10 +1,20 @@
 /*============================================================================*/
-/* Pool.h -- includes for Memory Management                                   */
+/* Pool.h -- Pool namespace                                                   */
 /*============================================================================*/
 
 #pragma once
 
 #include "Common.h"
+
+//-----------------------------------------------------------------------------
+namespace Pool
+{
+  void vCheckAssumptions(void);
+}
+
+using namespace Pool;
+
+//-----------------------------------------------------------------------------
 
 static const u8 C_SIZE_POOL_BUFFER   = C_1MB;
 
@@ -25,14 +35,6 @@ static const u8 C_SIZE_JUMBO_OBJECT  = C_SIZE_POOL_BUFFER * C_JUMBO_RATIO;
 #include "FreeChunk.hpp"
 #include "HeapBuffer.hpp"
 #include "Heap.hpp"
-
-//-----------------------------------------------------------------------------
-namespace Pool
-{
-  void vCheckAssumptions(void);
-}
-
-using namespace Pool;
 
 extern BufferPool* gpBufferPool;
 

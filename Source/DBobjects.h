@@ -1,10 +1,21 @@
 /*============================================================================*/
-/* DBobjects.h - includes for DBobjects namespace                             */
+/* DBobjects.h -- DBobjects namespace                                         */
 /*============================================================================*/
 
 #pragma once
 
 #include "Dictionaries.h"
+
+//------------------------------------------------------------------------------
+
+namespace DBobjects
+{
+  void vCheckAssumptions(void);
+}
+
+using namespace DBobjects;
+
+//------------------------------------------------------------------------------
 
 #include "Row.hpp"
 #include "RowBuffer.hpp"
@@ -43,14 +54,6 @@
 #include "User.hpp"
 
 #include "RowWsp.hpp"
-
-//------------------------------------------------------------------------------
-namespace DBobjects
-{
-  void vCheckAssumptions(void);
-}
-
-using namespace DBobjects;
 
 /*============================================================================*/
 /* end                                                                        */

@@ -1,9 +1,20 @@
 /*============================================================================*/
-/* Threading.h - includes for Threading namespace                               */
+/* Threading.h -- Threading namespace                                         */
 /*============================================================================*/
 #pragma once
 
 #include "Datums.h"
+
+//-----------------------------------------------------------------------------
+
+namespace Threading
+{
+  void vCheckAssumptions(void);
+}
+
+using namespace Threading;
+
+//-----------------------------------------------------------------------------
 
 #include "PosixThread.hpp"
 
@@ -12,15 +23,6 @@
 #endif
 
 #include "Synch.hpp"
-
-
-//-----------------------------------------------------------------------------
-namespace Threading
-{
-  void vCheckAssumptions(void);
-}
-
-using namespace Threading;
 
 /*============================================================================*/
 /* end                                                                        */

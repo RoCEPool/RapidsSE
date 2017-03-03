@@ -1,21 +1,24 @@
 /*============================================================================*/
-/* Datums.h -- datums (single units of data)                                  */
+/* Datums.h -- Datums namespace (single units of data)                        */
 /*============================================================================*/
 
 #pragma once
 
 #include "Debugging.h"
 
-#include "Int.hpp"
-#include "Str.hpp"
-
 //-----------------------------------------------------------------------------
+
 namespace Datums
 {
   void vCheckAssumptions(void);
 }
 
 using namespace Datums;
+
+//-----------------------------------------------------------------------------
+
+#include "Int.hpp"
+#include "Str.hpp"
 
 /*============================================================================*/
 /* end                                                                        */

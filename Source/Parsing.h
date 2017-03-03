@@ -1,21 +1,24 @@
 /*============================================================================*/
-/* Parsing.h -- Includes for the Parsing namespace                            */
+/* Parsing.h -- Parsing namespace                                             */
 /*============================================================================*/
 
 #pragma once
 
 #include "Structures.h"
 
-#include "Parser.hpp"
-#include "Tokeniser.hpp"
-
 //-----------------------------------------------------------------------------
+
 namespace Parsing
 {
   void vCheckAssumptions(void);
 }
 
 using namespace Parsing;
+
+//-----------------------------------------------------------------------------
+
+#include "Parser.hpp"
+#include "Tokeniser.hpp"
 
 /*============================================================================*/
 /* end                                                                        */
