@@ -2,12 +2,14 @@
 /* PosixThread - a posix thread                                               */
 /*============================================================================*/
 
-#include "Common.h"
+#include "Base.h"
+
+#include "Debugging.h"
 
 /*----------------------------------------------------------------------------*/
 /* get clock frequency of this machine                                        */
 /*----------------------------------------------------------------------------*/
-i8 System::iClockFrequency(void)
+i8 Hardware::iClockFrequency(void)
 {
   
 #ifdef __APPLE__
@@ -62,7 +64,7 @@ i8 System::iClockFrequency(void)
 /*----------------------------------------------------------------------------*/
 /* get number of logical cores                                                */
 /*----------------------------------------------------------------------------*/
-i8 System::iCoreCount(void)
+i8 Hardware::iCoreCount(void)
 {
   
   i8 iCount = sysconf(_SC_NPROCESSORS_ONLN);
@@ -77,7 +79,7 @@ i8 System::iCoreCount(void)
 /*----------------------------------------------------------------------------*/
 /* get the no of cou's on this machine                                        */
 /*----------------------------------------------------------------------------*/
-i8 System::iCpuCount(void)
+i8 Hardware::iCpuCount(void)
 {
  
 #ifdef __APPLE__
@@ -104,7 +106,7 @@ i8 System::iCpuCount(void)
 /*----------------------------------------------------------------------------*/
 /* get amount of physical memory                                              */
 /*----------------------------------------------------------------------------*/
-i8 System::iPhysicalMemory(void)
+i8 Hardware::iPhysicalMemory(void)
 {
   i8 iNumPages = sysconf(_SC_PHYS_PAGES);
   if (iNumPages == -1) {

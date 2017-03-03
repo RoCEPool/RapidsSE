@@ -12,7 +12,7 @@ namespace Base
   #define SYSCTL_CORE_COUNT   "machdep.cpu.core_count"
 #endif 
   
-  class System
+  class Hardware
   {    
   public:
     static i8 iClockFrequency(void);

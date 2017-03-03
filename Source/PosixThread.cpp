@@ -38,7 +38,7 @@ PosixThread::~PosixThread(void)
 bool PosixThread::bBindThread(i8 iCpu)
 {
   
-  i8 iCpuCount = System::iCpuCount();
+  i8 iCpuCount = Hardware::iCpuCount();
   
   if (iCpu > iCpuCount) {
     vWarn("Unable to bind to Cpu %lld on a system having %lld cores!\n", iCpu, iCpuCount);

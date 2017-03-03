@@ -15,7 +15,7 @@ Arguments::Arguments(void)
   _precondition_(_MAGIC_,CN_ARGUMENTS,_FOOTER_);
   
   // calc the number of pool buffers taken by jumbo buffers
-  m_nJumboBuffers = C_JUMBO_COEFFICIENT * System::iCoreCount();
+  m_nJumboBuffers = C_JUMBO_COEFFICIENT * Hardware::iCoreCount();
   m_nJumboTook    = C_JUMBO_RATIO * m_nJumboBuffers;
   m_iJumboSize    = m_nJumboTook * C_SIZE_POOL_BUFFER;
   

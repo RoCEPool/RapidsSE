@@ -707,9 +707,9 @@ void Task::vAddConstants(void)
   
   // miscellaneous
   /*  0 */ vAddConstant("CLOCK_FREQUENCY", Synch::iTickFrequency());
-  /*  0 */ vAddConstant("CORE_COUNT",      System::iCoreCount());
-  /*  0 */ vAddConstant("CPU_COUNT",       System::iCpuCount());
-  /*  0 */ vAddConstant("PHYSICAL_MEMORY", System::iPhysicalMemory());
+  /*  0 */ vAddConstant("CORE_COUNT",      Hardware::iCoreCount());
+  /*  0 */ vAddConstant("CPU_COUNT",       Hardware::iCpuCount());
+  /*  0 */ vAddConstant("PHYSICAL_MEMORY", Hardware::iPhysicalMemory());
   
   vAddConstant("listerTaskPrint",    (i8)0);
   vAddConstant("monitorTaskPrint",   (i8)0);
