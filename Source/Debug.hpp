@@ -38,7 +38,7 @@ namespace Debugging
   #endif
   
   #ifdef ADDRESS_CHECK
-  #define _poolAddress_(pArg) Platform::vCheckAddress(pArg)
+  #define _poolAddress_(pArg) Base::vCheckAddress(pArg)
   #else
   #define _poolAddress_(pArg)
   #endif

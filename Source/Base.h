@@ -18,6 +18,7 @@ using namespace Base;
 
 //-----------------------------------------------------------------------------
 
+#include "Addressing.hpp"
 #include "BinaryNumbers.h"
 #include "ClassNumbers.hpp"
 #include "Memory.hpp"

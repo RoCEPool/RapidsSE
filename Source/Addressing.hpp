@@ -3,9 +3,9 @@
 /*============================================================================*/
 #pragma once
 
-#include "Platform.h"
+#include "Base.h"
 
-namespace Platform
+namespace Base
 {
   i8 nSub(void* aAddress0, void* aAddress1);
   

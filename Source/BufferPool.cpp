@@ -495,7 +495,7 @@ Footer* BufferPool::pFooter(void)
 /*----------------------------------------------------------------------------*/
 /*-- CheckAddress ------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-void Platform::vCheckAddress(void *aAddress)
+void Base::vCheckAddress(void *aAddress)
 {
   gpBufferPool->vCheckAddress(aAddress);
 }

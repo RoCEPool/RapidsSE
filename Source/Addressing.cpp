@@ -2,12 +2,12 @@
 /* Addressing.cpp -- Functions for Manipulating Addresses                     */
 /*============================================================================*/
 
-#include "Magic.h"
+#include "Base.h"
 
 /*----------------------------------------------------------------------------*/
 /* compute byte difference between two addresses                              */
 /*----------------------------------------------------------------------------*/
-i8 Platform::nSub(void* aAddress0, void* aAddress1)
+i8 Base::nSub(void* aAddress0, void* aAddress1)
 {
   char* aAddr0 = reinterpret_cast<char*>(aAddress0);
   char* aAddr1 = reinterpret_cast<char*>(aAddress1);
