@@ -21,7 +21,7 @@
 /*----------------------------------------------------------------------------*/
 : list_columns ( "<tableNm>" -- <R> )
 
-  checkInTables not if <NIP+ERROR> exit then
+  dup checkInTable not if <NIP+ERROR> exit then
 
   listColumns
 

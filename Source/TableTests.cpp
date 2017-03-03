@@ -105,9 +105,12 @@ void TableTests::vRun(RunTests* pRunTests)
   sCommand = "create table t (col0 integer);";
   vRequire(sCommand, true, EC_NONE);
   
+  sCommand = "cf ..";
+  vRequire(sCommand, true, EC_NONE);
+  
   sCommand = "create table t (col0 integer);";
   vRequire(sCommand, false, EC_TABLE_EXISTS);
-  
+
   sCommand = "drop table t;";
   vRequire(sCommand, true, EC_NONE);
   
@@ -118,9 +121,18 @@ void TableTests::vRun(RunTests* pRunTests)
   vRequire(sCommand, true, EC_NONE);
   
   sCommand = "drop table x;";
+  vRequire(sCommand, false, EC_NOT_IN_TABLES);
+
+  sCommand = "cf ..";
+  vRequire(sCommand, true, EC_NONE);
+  
+  sCommand = "drop table x;";
   vRequire(sCommand, true, EC_NONE);
   
   sCommand = "create table t (col0 decimal, col1 char, col3 integer, col4 varchar, col5 char, col6 boolean, col7 date);";
+  vRequire(sCommand, true, EC_NONE);
+  
+  sCommand = "cf ..";
   vRequire(sCommand, true, EC_NONE);
   
   sCommand = "drop table t;";
@@ -129,11 +141,17 @@ void TableTests::vRun(RunTests* pRunTests)
   sCommand = "create table t (col0 decimal(2,3), col1 char(3), col3 integer, col4 varchar(40), col5 char(5), col6 timestamp, col7 date);";
   vRequire(sCommand, true, EC_NONE);
   
+  sCommand = "cf ..";
+  vRequire(sCommand, true, EC_NONE);
+  
   sCommand = "drop table t;";
   vRequire(sCommand, true, EC_NONE);
   
   sCommand = "create table t (col0 decimal[1]);";
   vRequire(sCommand, false, EC_INVALID_COMMAND);
+  
+  //sCommand = "cf ..";
+  //vRequire(sCommand, true, EC_NONE);
   
   sCommand = "drop table t;";
   vRequire(sCommand, false, EC_NO_SUCH_TABLE);
@@ -201,18 +219,27 @@ void TableTests::vRun(RunTests* pRunTests)
   sCommand = "create table t (col0 integer primary key);";
   vRequire(sCommand, true, EC_NONE);
   
+  sCommand = "cf ..";
+  vRequire(sCommand, true, EC_NONE);
+
   sCommand = "drop table t;";
   vRequire(sCommand, true, EC_NONE);
   
   sCommand = "create table t (col0 integer unique);";
   vRequire(sCommand, true, EC_NONE);
   
+  sCommand = "cf ..";
+  vRequire(sCommand, true, EC_NONE);
+
   sCommand = "drop table t;";
   vRequire(sCommand, true, EC_NONE);
   
   sCommand = "create table t (col0 varchar unique);";
   vRequire(sCommand, true, EC_NONE);
   
+  sCommand = "cf ..";
+  vRequire(sCommand, true, EC_NONE);
+
   sCommand = "drop table t;";
   vRequire(sCommand, true, EC_NONE);
   
@@ -231,30 +258,45 @@ void TableTests::vRun(RunTests* pRunTests)
   sCommand = "create table t (col0 integer not null);";
   vRequire(sCommand, true, EC_NONE);
   
+  sCommand = "cf ..";
+  vRequire(sCommand, true, EC_NONE);
+
   sCommand = "drop table t;";
   vRequire(sCommand, true, EC_NONE);
   
   sCommand = "create table t (col0 char not null);";
   vRequire(sCommand, true, EC_NONE);
   
+  sCommand = "cf ..";
+  vRequire(sCommand, true, EC_NONE);
+
   sCommand = "drop table t;";
   vRequire(sCommand, true, EC_NONE);
   
   sCommand = "create table t (col0 varchar not null);";
   vRequire(sCommand, true, EC_NONE);
   
+  sCommand = "cf ..";
+  vRequire(sCommand, true, EC_NONE);
+
   sCommand = "drop table t;";
   vRequire(sCommand, true, EC_NONE);
   
   sCommand = "create table t (col0 decimal not null, col1 date not null);";
   vRequire(sCommand, true, EC_NONE);
   
+  sCommand = "cf ..";
+  vRequire(sCommand, true, EC_NONE);
+
   sCommand = "drop table t;";
   vRequire(sCommand, true, EC_NONE);
   
   sCommand = "create table t (col0 decimal(2,3) not null, col1 varchar(10) not null);";
   vRequire(sCommand, true, EC_NONE);
   
+  sCommand = "cf ..";
+  vRequire(sCommand, true, EC_NONE);
+
   sCommand = "drop table t;";
   vRequire(sCommand, true, EC_NONE);
 
@@ -264,24 +306,33 @@ void TableTests::vRun(RunTests* pRunTests)
   sCommand = "create table t (col0 integer primary key, col1 boolean not null);";
   vRequire(sCommand, true, EC_NONE);
   
+  sCommand = "cf ..";
+  vRequire(sCommand, true, EC_NONE);
+
   sCommand = "drop table t;";
   vRequire(sCommand, true, EC_NONE);
 
   sCommand = "create table t (col0 integer unique, col1 timestamp not null);";
   vRequire(sCommand, true, EC_NONE);
   
+  sCommand = "cf ..";
+  vRequire(sCommand, true, EC_NONE);
+
   sCommand = "drop table t;";
   vRequire(sCommand, true, EC_NONE);
   
   sCommand = "create table t (col0 integer(10) unique, col1 timestamp not null);";
   vRequire(sCommand, true, EC_NONE);
   
+  sCommand = "cf ..";
+  vRequire(sCommand, true, EC_NONE);
+
   sCommand = "drop table t;";
   vRequire(sCommand, true, EC_NONE);
   
   sCommand = "create table t (col0 integer(10) unique, col1 timestamp(1) not null);";
   vRequire(sCommand, false, EC_INVALID_COMMAND);
-  
+
   sCommand = "drop table t;";
   vRequire(sCommand, false, EC_NO_SUCH_TABLE);
 
@@ -290,8 +341,11 @@ void TableTests::vRun(RunTests* pRunTests)
                     "create table t%d (col0 integer unique, col1 timestamp not null);",
                     iIndex);
     vRequire(sCommand, true, EC_NONE);
+    
+    sCommand = "cf ..";
+    vRequire(sCommand, true, EC_NONE);
   }
-  
+
   for (i8 iIndex=0 ; iIndex<1000; iIndex++) {
     String::vSprint(sCommand.aStr(),
                     "drop table t%d;",

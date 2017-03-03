@@ -6,8 +6,8 @@
 
 "selCursor.sen" include
 "table.sen" include
-//"indexDefn.sen" include
-//"index.sen" include
+"indexDefn.sen" include
+"index.sen" include
 "column.sen" include
 "schema.sen" include
 "catalog.sen" include

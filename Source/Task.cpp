@@ -560,6 +560,7 @@ void Task::vAddConstants(void)
   /* 33 */ vAddConstant("EC_NOT_IN_COLUMNS",     EC_NOT_IN_COLUMNS);
   /* 34 */ vAddConstant("EC_NOT_IN_INDEXES",     EC_NOT_IN_INDEXES);
   /* 35 */ vAddConstant("EC_NOT_IN_SCHEMAS",     EC_NOT_IN_SCHEMAS);
+  /*    */ vAddConstant("EC_NOT_IN_TABLE",       EC_NOT_IN_TABLE);
   /* 36 */ vAddConstant("EC_NOT_IN_TABLES",      EC_NOT_IN_TABLES);
   /* 37 */ vAddConstant("EC_NOT_IN_TENANTS",     EC_NOT_IN_TENANTS);
   /* 38 */ vAddConstant("EC_NULL_INTERFACE",     EC_NULL_INTERFACE);

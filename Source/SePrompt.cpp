@@ -1220,6 +1220,24 @@ bool SePrompt::bCreateTable(void)
   if (!bExecuteRequest())
     return false;
   
+  // change folder to table
+  String::vCopy(m_aToken[0], "cf");
+  String::vCopy(m_aToken[1], m_aToken2[2]);
+  
+  if (!bExecuteRequest()) {
+    vTrace("SePrompt::bCreateTable : cf FAILED!!!\n");
+    
+    // create the table
+    String::vCopy(m_aToken[0], "rmtbl");
+    String::vCopy(m_aToken[1], m_aToken2[2]);
+    
+    if (!bExecuteRequest()) {
+      return false;
+    }
+    
+    return false;
+  }
+  
   // get reference to pTable
   String::vCopy(m_aToken[0], "gettbl");
   String::vCopy(m_aToken[1], m_aToken2[2]);
@@ -1626,6 +1644,13 @@ bool SePrompt::bDropReturnTable(char* pTableName)
   bool bResult = bReturnTable();
   ASSERT(bResult);
   
+  // change folder to table
+  String::vCopy(m_aToken[0], "cf");
+  String::vCopy(m_aToken[1], "..");
+  
+  if (!bExecuteRequest()) {
+    return false;
+  }
   String::vCopy(m_aToken[0], "rmtbl");
   String::vCopy(m_aToken[1], pTableName);
   String::vCopy(m_aToken[2], "");

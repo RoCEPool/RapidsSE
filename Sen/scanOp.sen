@@ -19,6 +19,7 @@ common/ scan rbCrs /
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set path (hardcoded for the moment)
+
   "tables" "tpchSchema" "schemas" "rapidsse" "catalogs" "boray" "tenants" 7 dicPath.set
 
   // [0] push thePlan's dictionary onto path stack
@@ -28,6 +29,9 @@ common/ scan rbCrs /
   profile thePlan plan.opFrame? opFrame.push // [1]
   //pathDump
 
+  // push tableNm folder on the dictionary path
+  $$tableNm find execute
+  pathPush
 
   // [2] create a new rowCursor and record in opFrame.rbCrs
   rbCursor.new toCommon rbCrs

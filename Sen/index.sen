@@ -115,7 +115,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-: pushTable ( "<indexNm>" -- )
+: pushIndex ( "<indexNm>" -- )
 
   checkIsIndex not if EC_NO_SUCH_INDEX false exit then
 
@@ -174,9 +174,9 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* check if word is a removable table folder                                  */
+/* check if word is a removable index folder                                  */
 /*----------------------------------------------------------------------------*/
-: checkRemoveTable ( "<indexNm>" -- "<indexNm>" true | "<indexNm>" errorCode false )
+: checkRemoveIndex ( "<indexNm>" -- "<indexNm>" true | "<indexNm>" errorCode false )
 
   checkInTables not if false exit then ( "<indexNm>" )
   checkIsTable not if false exit then ( "<indexNm>" )
@@ -262,7 +262,7 @@ tp: makingIndex
   find execute
   swap ( ^indexDefn ^index )
 
-stk
+//stk
   index.indexDefn@
 
   true <SUCCESS_RESULT>

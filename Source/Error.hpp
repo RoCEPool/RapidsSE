@@ -34,7 +34,7 @@ namespace Debugging
   
   /* 19 */ EC_NO_SUCH_CATALOG,
   /* 20 */ EC_NO_SUCH_DIRECTORY,
-  /* 210 */ EC_NO_SUCH_FOLDER,
+  /* 21 */ EC_NO_SUCH_FOLDER,
   /* 22 */ EC_NO_SUCH_INDEX,
   /* 23 */ EC_NO_SUCH_SCHEMA,
   /* 24 */ EC_NO_SUCH_TABLE,
@@ -51,7 +51,8 @@ namespace Debugging
   /* 33 */ EC_NOT_IN_COLUMNS,
   /* 34 */ EC_NOT_IN_INDEXES,
   /* 35 */ EC_NOT_IN_SCHEMAS,
-  /* 36 */ EC_NOT_IN_TABLES,
+  /* 36 */ EC_NOT_IN_TABLE,
+  /*    */ EC_NOT_IN_TABLES,
   /* 37 */ EC_NOT_IN_TENANTS,
   
   /* 38 */ EC_NULL_INTERFACE,
@@ -116,7 +117,8 @@ namespace Debugging
   /* 33 */ "not in columns",
   /* 34 */ "not in indexes",
   /* 35 */ "not in schemas",
-  /* 36 */ "not in tables",
+  /* 36 */ "not in table",
+  /*    */ "not in tables",
   /* 37 */ "not in tenants",
   
   /* 38 */ "null interface",

@@ -13,7 +13,8 @@ tp: dropTable
 
 ddlLock.grabWrite
 
-  checkInTables      not if <NIP+ERROR> exit then
+  dup
+  checkInTable      not if <NIP+ERROR> exit then
   checkIsTable       not if <NIP+ERROR> exit then
 
   tp ( "<tableNm>" )
@@ -34,7 +35,8 @@ ddlLock.grabWrite
 
   ddlLock.grabWrite
 
-  checkInTables      not if <NIP+ERROR> exit then
+  dup
+  checkInTable       not if <NIP+ERROR> exit then
   checkIsTable       not if <NIP+ERROR> exit then
 
   tp ( "<tableNm>" )
@@ -67,7 +69,8 @@ ddlLock.grabRead
 ddlLock.grabRead
 
   checkEnoughBuffers not if <NIP+ERROR> exit then
-  checkInTables      not if <NIP+ERROR> exit then
+  dup
+  checkInTable      not if <NIP+ERROR> exit then
   checkIsTable       not if <NIP+ERROR> exit then
 
   //bp.freespace .
@@ -101,7 +104,8 @@ ddlLock.grabWrite
 
 ddlLock.grabRead
 
-  checkInTables not if <NIP+ERROR> exit then
+  dup
+  checkInTable  not if <NIP+ERROR> exit then
   checkIsTable  not if <NIP+ERROR> exit then
 
   distTableExporter not if <NIP+ERROR> exit then
@@ -154,7 +158,8 @@ ddlLock.grabWrite
 
 ddlLock.grabRead
 
-  checkInTables not if <NIP+ERROR> exit then
+  dup
+  checkInTable not if <NIP+ERROR> exit then
   checkIsTable  not if <NIP+ERROR> exit then
 
   dumpTable
@@ -169,7 +174,8 @@ ddlLock.grabRead
 
 ddlLock.grabRead
 
-  checkInTables not if <NIP+ERROR> exit then
+  dup
+  checkInTable not if <NIP+ERROR> exit then
   checkIsTable  not if <NIP+ERROR> exit then
 
   tableExporter not if <NIP+ERROR> exit then
@@ -208,7 +214,8 @@ ddlLock.grabRead
 
 ddlLock.grabRead
 
-  checkInTables not if <NIP+ERROR> exit then
+  dup
+  checkInTable  not if <NIP+ERROR> exit then
   checkIsTable  not if <NIP+ERROR> exit then
 
   //bp.freespace .
@@ -249,7 +256,8 @@ snap1:
 
   ddlLock.grabRead
 
-  checkInTables not if <NIP+ERROR> exit then
+  dup
+  checkInTable  not if <NIP+ERROR> exit then
   checkIsTable  not if <NIP+ERROR> exit then
 
   //bp.freespace .
@@ -292,7 +300,8 @@ ddlLock.grabRead
 
 ddlLock.grabWrite
 
-  checkInTables not if <NIP+ERROR> exit then
+  dup
+  checkInTable  not if <NIP+ERROR> exit then
   checkIsTable  not if <NIP+ERROR> exit then
 
   sizeTable ( "<size>" )
@@ -307,7 +316,8 @@ ddlLock.grabWrite
 
 ddlLock.grabRead
 
-  checkInTables not if <NIP+ERROR> exit then
+  dup
+  checkInTable  not if <NIP+ERROR> exit then
   checkIsTable  not if <NIP+ERROR> exit then
 
   truncateTable
@@ -320,7 +330,8 @@ ddlLock.grabRead
 /*----------------------------------------------------------------------------*/
 : table_inuse ( "<tableNm>" -- <R> )
 
-  checkInTables not if <NIP+ERROR> exit then
+  dup
+  checkInTable  not if <NIP+ERROR> exit then
   checkIsTable  not if <NIP+ERROR> exit then
 
   tableInUse

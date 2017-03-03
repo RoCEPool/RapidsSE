@@ -45,10 +45,10 @@
 
   locals| tableNm columnNm |
 
-  checkInTables not if false exit then
+  tableNm checkInTable not if false exit then
 
   tableNm
-  pushTable   assert // not if false exit then
+  pushTableSub   assert // not if false exit then
 
   columnNm
   pushColumns assert // not if false exit then
@@ -59,7 +59,7 @@
 
   popColumns
 
-  popTable
+  popTableSub
 
   columnNm
   tableNm
@@ -72,7 +72,7 @@
 /*----------------------------------------------------------------------------*/
 : listColumns ( -- )
 
-  pushTable     assert
+  pushTableSub  assert
   pushColumns   assert
 
   ""                             // initial ls string
@@ -99,7 +99,7 @@
   //"\n" str.cat
 
   popColumns
-  popTable
+  popTableSub
 ;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -114,7 +114,7 @@
   then
 
   tp: addingColumn
-  pushTable   assert // not if false exit then
+  pushTableSub   assert // not if false exit then
 
   pushColumns assert // not if false exit then
 
@@ -122,7 +122,7 @@
 
   popColumns
 
-  popTable
+  popTableSub
 
   true <SUCCESS_RESULT>
 ;

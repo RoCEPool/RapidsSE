@@ -28,6 +28,20 @@ int: queryCount
   :folder      ( )
 ;
 
+/*----------------------------------------------------------------------------*/
+/* make a tableNm folder under tables                                         */
+/*----------------------------------------------------------------------------*/
+: makeTableDic ( "<tableNm>" -- )
+
+  args.tracepoint if
+    dup "MAKING TABLE DIC " swap str.cat " on NODE " str.cat grid.thisNode@ >str str.cat .
+  then
+
+  0 pathPick
+  :folder      ( )
+;
+
+
 : isTable word.kind@ ' table eql ;
 
 /*----------------------------------------------------------------------------*/
@@ -64,19 +78,39 @@ int: queryCount
 ;
 
 /*----------------------------------------------------------------------------*/
-/* se> checking                                                               */
+/* check within tables                                                        */
 /*----------------------------------------------------------------------------*/
-
 : withinTables
 
   0 pathPick dic.name "tables" str.equal
 ;
 
+/*----------------------------------------------------------------------------*/
+/* check in tables                                                            */
+/*----------------------------------------------------------------------------*/
 : checkInTables
 
   withinTables if true exit then
 
   EC_NOT_IN_TABLES false
+;
+
+/*----------------------------------------------------------------------------*/
+/* check within a table                                                       */
+/*----------------------------------------------------------------------------*/
+: withinTable
+
+  0 pathPick dic.name str.equal
+;
+
+/*----------------------------------------------------------------------------*/
+/* check in table                                                             */
+/*----------------------------------------------------------------------------*/
+: checkInTable
+
+  withinTable if true exit then
+
+  EC_NOT_IN_TABLE false
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -121,6 +155,18 @@ int: queryCount
 /*----------------------------------------------------------------------------*/
 : pushTable ( "<tableName>" -- )
 
+  find execute pathPush
+
+  true
+;
+
+: popTable
+  pathDrop
+;
+
+/*----------------------------------------------------------------------------*/
+: pushTableSub ( "<tableName>" -- )
+
   checkIsTable not if EC_NO_SUCH_TABLE false exit then
 
   find execute table.subDic pathPush
@@ -128,14 +174,14 @@ int: queryCount
   true
 ;
 
-: popTable
+: popTableSub
     pathDrop
 ;
 
 /*----------------------------------------------------------------------------*/
 : getTableRef ( "<tableNm>" -- <R> )
 
-  checkInTables not if false exit then
+  dup checkInTable not if false exit then
 
   checkIsTable not if EC_NO_SUCH_TABLE false exit then
 
@@ -182,8 +228,17 @@ int: queryCount
 : checkRemoveTable ( "<tableNm>" -- "<tableNm>" true | "<tableNm>" errorCode false )
 
   checkInTables not if false exit then ( "<tableNm>" )
+
+  dup checkIsWord not if EC_NO_SUCH_TABLE false exit then ( "<tableNm>" )
+  drop
+
+  // push table dictionary
+  dup pushTable assert
+
   checkIsTable not if false exit then ( "<tableNm>" )
   dup tableInUse if EC_TABLE_IN_USE false exit then ( "<tableNm>" )
+
+  popTable
 
   true ( "<tableNm>" true )
 ;
@@ -301,13 +356,19 @@ tp: makingTable
   dup "MAKING TABLE " swap str.cat " on NODE " str.cat grid.thisNode@ >str str.cat .
   then
 
-  dup ( "<tableNm>" "<tableNm>" )
+  dup dup
+  makeTableDic
+
+  dup
+  find execute pathPush
+  dup
+
+  "makeIndexes" find execute
 
   :table ( "<tableNm>" ^table )
 
   drop ( "<tableNm>" )
 
-  //"makeIndexes" find execute
 
   // forward reference :-(
   "makeColumns" find execute
@@ -324,10 +385,13 @@ tp: removeTable
 
 //traceon
 
-  dup find execute ( "<tableNm>" table )
+  locals| tableNm |
+
+  tableNm pushTable assert
+  tableNm find execute ( table )
 
   // drop all rows
-  dup table.truncate ( "<tableNm>" table )
+  dup table.truncate ( table )
 
   // forget all column names in the columns dictionary of table sub-dictionary
   dup table.subDic
@@ -338,7 +402,14 @@ tp: removeTable
   // forget the columns dictionary in the table sub-dictionary
   table.subDic forgetAll
 
-  :forget
+  //"indexes" stk find execute
+  //:forget
+
+  tableNm :forget
+
+  popTable
+
+  tableNm :forget
 
 //traceoff
 

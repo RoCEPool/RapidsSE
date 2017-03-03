@@ -1,8 +1,7 @@
 /*============================================================================*/
-/* _ie -- index entry testing                                                 */
+/* _jindex -- index entry testing                                             */
 /*============================================================================*/
 
-//docol ieTest
 cf ~
 cf boray
 cf catalogs
@@ -15,13 +14,14 @@ mksch boraySchema
 cf boraySchema
 cf tables
 
+pwf
 create table j100 (
   j100_key   INTEGER NOT NULL,
   j100_name  VARCHAR(32) NOT NULL,
   j100_j10   INTEGER NOT NULL
 );
 
-create index idx on j100 (j100_key);
+//create index idx on j100 (j100_key);
 
 /*============================================================================*/
 /* end                                                                        */
