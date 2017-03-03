@@ -1,8 +1,6 @@
 /*============================================================================*/
-/* Synch.cpp -- Threading independent synchronisation                          */
+/* Synch.cpp -- Threading independent synchronisation                         */
 /*============================================================================*/
-
-#include "Threading.h"
 
 #include "System.h"
 

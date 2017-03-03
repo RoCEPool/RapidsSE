@@ -28,11 +28,13 @@ using namespace System;
 #include "File.hpp"
 #include "Lock.hpp"
 #include "Magnitudes.hpp"
+#include "PosixThread.hpp"
 #include "Process.hpp"
 #include "Random.hpp"
 #include "Scratch.hpp"
 #include "Shell.hpp"
 #include "Shm.hpp"
+#include "Synch.hpp"
 #include "Time_se.hpp"
 #include "Timer.hpp"
 

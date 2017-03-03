@@ -4,7 +4,7 @@
 
 #pragma once
 
-namespace Threading
+namespace System
 {
   extern "C" u8 iCpuid(u8 iEax, u8 iReg); // not used
   

@@ -3,9 +3,9 @@
 /*============================================================================*/
 #pragma once
 
-#include "Threading.h"
+#include "System.h"
 
-namespace Threading
+namespace System
 {
   static const i8 C_THREAD_BOOST = 8;
   

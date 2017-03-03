@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Threading
+namespace System
 {
   class Synch
   {
