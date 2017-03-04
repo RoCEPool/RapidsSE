@@ -8,11 +8,25 @@
 
 namespace DBobjects
 {
+  enum eIT // Index Type
+  {
+    /* 0 */ IT_NONE=0,
+    /* 1 */ IT_SKIP_LIST
+  };
+  
+  static const char* const pIT[]
+  {
+    /* 0 */ "NONE",
+    /* 1 */ "SKIP_LIST"
+  };
+
   class Index : public Object
   {
   private:
 
-    IndexDefn*   m_pIndexDefn;  
+    i8           m_iIndexNo;
+    s32          m_sIndexName;
+    eIT          m_eIndexType;
     IndexLevels* m_pIndexLevels;
   
     // must be last
@@ -27,9 +41,7 @@ namespace DBobjects
     
     Index(void);
     ~Index(void);
-    
-    void vIndexDefn(IndexDefn* pIndexDefn);
-    
+  
     Footer* pFooter(void);
   };
   

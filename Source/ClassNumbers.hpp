@@ -50,7 +50,7 @@ namespace Base
     
     /* 30 */ CN_INDEX,
     /* 31 */ CN_INDEXBUFFER,
-    /* 32 */ CN_INDEXDEFN,
+    /* 32 */ //CN_INDEXDEFN,
     /* 33 */ CN_INDEXLEVELS,
   
     /* 34 */ CN_JUMBOHEAP,
@@ -177,7 +177,7 @@ namespace Base
     
     /* 30 */ "INDEX",
     /* 31 */ "INDEXBUFFER",
-    /* 32 */ "INDEXDEFN",
+    /* 32 */ //"INDEXDEFN",
     /* 33 */ "INDEXLEVELS",
 
     /* 34 */ "JUMBOHEAP",

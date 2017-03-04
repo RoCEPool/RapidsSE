@@ -21,7 +21,7 @@ create table j100 (
   j100_j10   INTEGER NOT NULL
 );
 
-//create index idx on j100 (j100_key);
+create index idx on j100 (j100_key);
 
 /*============================================================================*/
 /* end                                                                        */

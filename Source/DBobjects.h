@@ -23,8 +23,6 @@ using namespace DBobjects;
 
 #include "Data.hpp"
 
-#include "IndexDefn.hpp"
-
 #include "RowId.hpp"
 #include "KeyWsp.hpp"
 #include "Key.hpp"

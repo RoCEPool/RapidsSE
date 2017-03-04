@@ -76,7 +76,9 @@ Index::Index(void)
   
   Word* pWord = Word::pToWord(this);
   
-  m_pIndexDefn = nullptr;
+  m_iIndexNo = 0;
+  m_sIndexName = pWord->sName();;
+  m_eIndexType = IT_SKIP_LIST;
   m_pIndexLevels = nullptr;
   
   _checkInitialised_(CN_INDEX);
@@ -95,16 +97,6 @@ Index::~Index(void)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* set indexDefn in index                                                     */
-/*----------------------------------------------------------------------------*/
-void Index::vIndexDefn(IndexDefn* pIndexDefn)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
-  
-  m_pIndexDefn = pIndexDefn;
-}
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/

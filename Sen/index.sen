@@ -163,6 +163,24 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* check within indexes                                                       */
+/*----------------------------------------------------------------------------*/
+: withinTables
+
+  0 pathPick dic.name "indexes" str.equal
+;
+
+/*----------------------------------------------------------------------------*/
+/* check in indexes                                                           */
+/*----------------------------------------------------------------------------*/
+: checkInTables
+
+  withinTables if true exit then
+
+  EC_NOT_IN_INDEXES false
+;
+
+/*----------------------------------------------------------------------------*/
 /* check if word is a makeable table                                          */
 /*----------------------------------------------------------------------------*/
 : checkMakeIndex ( "<indexNm>" -- "<indexNm>" true | "<indexNm>" errorCode false )
@@ -247,23 +265,7 @@ tp: makingIndex
   dup "MAKING INDEX " swap str.cat " on NODE " str.cat grid.thisNode@ >str str.cat .
   then
 
-  dup ( "<indexNm>" "<indexNm>" )
   :index ( "<indexNm>" ^index )
-
-  drop ( "<indexNme>" )
-  dup ( "<indexNm>" "<indexNm>" )
-  find execute ( "<indexNm>" ^index )
-  swap ( ^index "<indexNm>" )
-
-  dup ( ^index "<indexNm>" "<indexNm>" )
-
-  :indexDefn ( ^index  "<indexNm>" ^indexDefn )
-  drop
-  find execute
-  swap ( ^indexDefn ^index )
-
-//stk
-  index.indexDefn@
 
   true <SUCCESS_RESULT>
 ;

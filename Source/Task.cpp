@@ -429,7 +429,7 @@ void Task::vAddConstants(void)
   /* 27 */ vAddConstant("CN_HEAPBUFFER",   CN_HEAPBUFFER);
   
   /* 28 */ vAddConstant("CN_INDEX",        CN_INDEX);
-  /*    */ vAddConstant("CN_INDEXDEFN",    CN_INDEXDEFN);
+  /*    */ //vAddConstant("CN_INDEXDEFN",    CN_INDEXDEFN);
 
   /* 29 */ vAddConstant("CN_JUMBOHEAP",    CN_JUMBOHEAP);
 
@@ -606,7 +606,7 @@ void Task::vAddConstants(void)
   /* 19 */ vAddConstant("SIZEOF_GRID",         sizeof(Grid));
   /* 20 */ vAddConstant("SIZEOF_HEAPBUFFER",   sizeof(HeapBuffer));
   /*    */ vAddConstant("SIZEOF_INDEX",        sizeof(Index));
-  /* 21 */ vAddConstant("SIZEOF_INDEXDEFN",    sizeof(IndexDefn));
+  /* 21 */ //vAddConstant("SIZEOF_INDEXDEFN",    sizeof(IndexDefn));
   /* 22 */ vAddConstant("SIZEOF_LOADER",       sizeof(Loader));
   /* 23 */ vAddConstant("SIZEOF_LOADERSUB",    sizeof(LoaderSub));
   /* 24 */ vAddConstant("SIZEOF_LOCK",         sizeof(Lock));
@@ -764,7 +764,6 @@ void Task::vAddPrimitives(void)
   vAddPrimitives_Flow();
   vAddPrimitives_Grid();
   vAddPrimitives_Index();
-  vAddPrimitives_IndexDefn();
   vAddPrimitives_Input();
   vAddPrimitives_Int();
   vAddPrimitives_Loader();

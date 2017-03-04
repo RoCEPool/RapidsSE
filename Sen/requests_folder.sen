@@ -122,6 +122,11 @@ tp: droppedDic
       object@ execute table.space bytes.magnitude str.cat
     then
 
+    object@ isIndex if
+      "index" str.cat
+      //object@ execute table.space bytes.magnitude str.cat
+    then
+
     object@ isFolder if
       object@ execute dic.kind@ word.name str.cat
     then
