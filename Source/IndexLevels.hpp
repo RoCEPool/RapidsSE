@@ -1,10 +1,7 @@
 /*============================================================================*/
 /* IndexLevels.hpp - set of index buffers by level for an index partition     */
 /*============================================================================*/
-
 #pragma once
-
-#include "DBobjects.h"
 
 namespace DBobjects
 {

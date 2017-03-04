@@ -4,8 +4,6 @@
 
 #include "Values.h"
 
-#include "RowBuffer.hpp"
-
 #include "StorageEngine.h"
 
 extern Arguments gxArguments;

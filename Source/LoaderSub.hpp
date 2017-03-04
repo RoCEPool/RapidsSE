@@ -1,10 +1,7 @@
 /*============================================================================*/
 /* LoaderSub.hpp -- Subordinate Parallel Table Loader                         */
 /*============================================================================*/
-
 #pragma once
-
-#include "DBobjects.h"
 
 namespace DBobjects
 {

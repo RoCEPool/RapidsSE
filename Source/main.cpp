@@ -13,11 +13,32 @@ void vTest1(void);
 
 void vKillPrev(void);
 
+
+void vStrTest(Str* pStr)
+{
+  pStr->vPrint();
+}
+
 /*----------------------------------------------------------------------------*/
 /* main                                                                       */
 /*----------------------------------------------------------------------------*/
 int main(int argc, const char* argv[])
 {
+  
+  //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  vStrTest("This is an Str literal"_Str);
+  
+  char* a = *"This is an Str literal"_Str;
+  
+  // this compiles but doesnt work.  not even sure what it means
+  Str xStr = "abc";
+  xStr.vPrint();
+  
+  // this works.  _Str takes a cons char* and casts it to a Str*
+  Str* pStr = "abc"_Str;
+  pStr->vPrint();
+  //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  
   printf(
          "sizeof(eCN) %lu; sizeof(bool) %lu; \n"
          "sizeof(Object) %lu; sizeof(StrVal) %lu; \n"
