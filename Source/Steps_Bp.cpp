@@ -108,7 +108,7 @@ void Task::vBpEpochDump(NNP_Task nnpTask)
   
   for (i8 iIndex =0 ; iIndex < CN_ENUMS; iIndex++) {
     if (iCountObjects[iIndex] != giCountObjects[iIndex])
-      vTrace("%s  %12s %-6lld \n", aSingleTab(), pCN[iIndex],
+      vTrace("%s  %12s %-6lld \n", aSingleTab(), aCN[iIndex],
              iCountObjects[iIndex] - giCountObjects[iIndex]);
   }
   EXIT();

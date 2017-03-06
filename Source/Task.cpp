@@ -1499,7 +1499,7 @@ void Task::vStackContents(Stack* pStack, StrVal& sStackContents)
     if (CN_BINVAL == eClass) {
       Object* pObject = _pBinVal(pValWsp)->pNewObject();
       StrLib::vSprintCat(a,"(BINVAL)^%s=%p",
-                         pCN[pObject->eClass()],
+                         aCN[pObject->eClass()],
                          pObject);
     }
     else if (CN_INTVAL == eClass) {
@@ -1514,27 +1514,27 @@ void Task::vStackContents(Stack* pStack, StrVal& sStackContents)
         
         if (CN_WORD == ePtrClass)
           StrLib::vSprintCat(a,"^%s=%p:%s",
-                             pCN[ePtrClass],
+                             aCN[ePtrClass],
                              pPtr,
                              ((Word*)pPtr)->sName().aStr());
         else if (CN_QUEUE == ePtrClass) {
           Word* pWord = Word::pToWord(pPtr);
           StrLib::vSprintCat(a,"^%s=%p:%s",
-                             pCN[ePtrClass],
+                             aCN[ePtrClass],
                              pPtr,
                              pWord->sName().aStr());
         }
         else if (CN_TASK == ePtrClass) {
           Task* pTask = _pTask(pPtr);
           StrLib::vSprintCat(a,"^%s=%p:%s",
-                             pCN[ePtrClass],
+                             aCN[ePtrClass],
                              pPtr,
                              pTask->sName().aStr());
         }
         else {
           if (pPtr->iMagic() == MAGIC && pPtr->eClass() < CN_ENUMS)
             StrLib::vSprintCat(a,"^%s=%p",
-                               pCN[ePtrClass],
+                               aCN[ePtrClass],
                                pPtr);
           //else
           //  StrLib::vSprintCat(a,"%p",

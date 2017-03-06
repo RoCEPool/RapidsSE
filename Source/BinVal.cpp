@@ -146,7 +146,7 @@ void BinVal::vToString(char* aWorkspace)
   
   StrLib::vSprint(aWorkspace,"%p BinVal [%s of %lld bytes]",
                   this,
-                  pCN[pEmbedded->eClass()],
+                  aCN[pEmbedded->eClass()],
                   m_nAreaSize);
 }
 

@@ -55,7 +55,7 @@ void BPA::vBufferDump(Buffer* pBuffer)
   
   pDUMPFUN* pDumpFun = gpDump[eClass];
   
-  vTrace("%s%p %-12s: ",aDoubleTab(),pBuffer,pCN[eClass]);
+  vTrace("%s%p %-12s: ",aDoubleTab(),pBuffer,aCN[eClass]);
 
   (pDumpFun)(pBuffer->eClass(), pBuffer, aSingleTab());
   
@@ -103,7 +103,7 @@ void BPA::vHeapDump(Heap* pHeap)
       
       pDUMPFUN* pDumpFun = gpDump[eClass];
       
-      vTrace("%s%p %-12s: ",aDoubleTab(),pHeap,pCN[eClass]);
+      vTrace("%s%p %-12s: ",aDoubleTab(),pHeap,aCN[eClass]);
 
       (pDumpFun)(eClass, pChunk, aDoubleTab());
     }
@@ -155,7 +155,7 @@ void BPA::vHeapDump(Heap* pHeap, i8 iEpoch)
       
       pDUMPFUN* pDumpFun = gpDump[eClass];
       
-      vTrace("%s%p %-12s: ",aDoubleTab(),pHeap,pCN[eClass]);
+      vTrace("%s%p %-12s: ",aDoubleTab(),pHeap,aCN[eClass]);
       
       (pDumpFun)(eClass, pChunk, aDoubleTab());
     }
@@ -232,7 +232,7 @@ void BPA::vObjectSummary(void)
     if (iCountObjects[eClass] == 0)
       continue;
     
-    vTrace("  %12s %-6lld \n", pCN[eClass], iCountObjects[eClass]);
+    vTrace("  %12s %-6lld \n", aCN[eClass], iCountObjects[eClass]);
   }
   
   gpSmallHeap->vAnalyse(iCountObjects);
@@ -245,7 +245,7 @@ void BPA::vObjectSummary(void)
     if (iCountObjects[eClass] == 0)
       continue;
     
-    vTrace("  %12s %-6lld \n", pCN[eClass], iCountObjects[eClass]);
+    vTrace("  %12s %-6lld \n", aCN[eClass], iCountObjects[eClass]);
   }
   
   gpMediumHeap->vAnalyse(iCountObjects);
@@ -258,7 +258,7 @@ void BPA::vObjectSummary(void)
     if (iCountObjects[eClass] == 0)
       continue;
     
-    vTrace("  %12s %-6lld \n", pCN[eClass], iCountObjects[eClass]);
+    vTrace("  %12s %-6lld \n", aCN[eClass], iCountObjects[eClass]);
   }
   
   for (i8 index = 0; index < CN_ENUMS; index++)
@@ -274,7 +274,7 @@ void BPA::vObjectSummary(void)
 //    if (iCountObjects[eClass] == 0)
 //      continue;
 //    
-//    vTrace("  %12s %-6lld \n", pCN[eClass], iCountObjects[eClass]);
+//    vTrace("  %12s %-6lld \n", aCN[eClass], iCountObjects[eClass]);
 //  }
   
   _postcondition_(_MAGIC_,CN_BPA,_FOOTER_);

@@ -136,7 +136,7 @@ namespace Base
     /*101 */ CN_ENUMS
   };
   
-  static Str* pCN[]
+  static Str* aCN[]
   {
     /*  0 */ "NONE"_Str,
     

@@ -38,7 +38,7 @@ void StorageEngine::vCheckAllAssumptions(void)
 /*----------------------------------------------------------------------------*/
 void StorageEngine::vCheckAssumptions(void)
 {
-  // No of entries in eCN , pCN and gpDump should match
+  // No of entries in eCN , aCN and gpDump should match
   i8 iEntriesECN = CN_ENUMS;
   i8 iEntriesPCN = 0;
   i8 iEntriesGPDUMP = 0;
@@ -46,9 +46,9 @@ void StorageEngine::vCheckAssumptions(void)
   
   bool bFoundEnum = false;
   
-  // find number of entries in pCN
+  // find number of entries in aCN
   for (i8 i = 0; i <= CN_ENUMS; i++) {
-    if (StrLib::bEqualTo(pCN[i]->a(), "ENUMS")) {
+    if (StrLib::bEqualTo(aCN[i]->a(), "ENUMS")) {
       bFoundEnum = true;
       break;
     }
@@ -56,10 +56,10 @@ void StorageEngine::vCheckAssumptions(void)
   }
   
   if (!bFoundEnum)
-    vFatal("Entry for CN_ENUM not found in pCN\n");
+    vFatal("Entry for CN_ENUM not found in aCN\n");
     
   if (iEntriesECN != iEntriesPCN) {
-    vFatal("\n!!!ALERT!!! No of entries in pCN (%lld) do not match the no in eCN (%lld)\n\n",
+    vFatal("\n!!!ALERT!!! No of entries in aCN (%lld) do not match the no in eCN (%lld)\n\n",
            iEntriesPCN, iEntriesECN);
   }
   

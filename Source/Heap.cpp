@@ -94,7 +94,7 @@ void Heap::vDump(eCN eClass, Object* pObject, const char* aTab)
 //    if (iCountObjects[eClass] == 0)
 //      continue;
 //    
-//    vTrace("%s    %s %lld \n", aTab, pCN[eClass], iCountObjects[eClass]);
+//    vTrace("%s    %s %lld \n", aTab, aCN[eClass], iCountObjects[eClass]);
 //  }
 //  vTrace("\n");  
 }
@@ -111,7 +111,7 @@ Object* Heap::pAllocate(eCN eAllocClass)
   switch(eHeap) {
     case HT_INVALID:
       vFatal("Heap::pAllocate: Invalid heap allocation: class %lld %lls\n",
-             eAllocClass,pCN[eAllocClass]);
+             eAllocClass,aCN[eAllocClass]);
     
     case HT_SMALL:
       pObject = gpSmallHeap->pAllocObject(eAllocClass);
@@ -153,7 +153,7 @@ void Heap::vFree(Object* pObject)
   switch(eHeap) {
     case HT_INVALID:
       vFatal("Heap::vFree: Invalid heap free: class %lld %lls\n",
-             eAllocClass,pCN[eAllocClass]);
+             eAllocClass,aCN[eAllocClass]);
       
     case HT_SMALL:
       gpSmallHeap->vFreeObject(pObject);

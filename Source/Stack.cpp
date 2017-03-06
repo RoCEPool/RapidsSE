@@ -872,7 +872,7 @@ void Stack::vContentDump(const char* aPrefix, const char* aTitle)
       Object* pObject = pPtrVal->pPtr();
       eCN ePtdClass   = pObject->eClass();
       vTrace("[%s] [%2lld] %s (%s %s)\n",
-        aPrefix,iVal,sWorkspace.aStr(),aClass,pCN[ePtdClass]);
+        aPrefix,iVal,sWorkspace.aStr(),aClass,aCN[ePtdClass]);
     }
     else if (CN_IPVAL == eClass) {                                       //RAY??
       IpVal* pIpVal = _pIpVal(&xValWsp);

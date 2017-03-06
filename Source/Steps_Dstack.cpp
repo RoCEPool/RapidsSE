@@ -220,7 +220,7 @@ void Task::vDstackDump(NNP_Task nnpTask)
     Object* pObject = pPtrVal->pPtr();
     eCN ePtdClass   = pObject->eClass();
     vTrace("[%s] %s (%s %s)\n",
-          nnpTask->m_sName.aStr(),sWorkspace.aStr(),aClass,pCN[ePtdClass]);
+          nnpTask->m_sName.aStr(),sWorkspace.aStr(),aClass,aCN[ePtdClass]);
   }
   else if (CN_IPVAL == eClass) {                                         //RAY??
     IpVal* pIpVal = _pIpVal(&xValWsp);
