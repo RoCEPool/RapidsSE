@@ -11,10 +11,10 @@ namespace DBobjects
     /* 1 */ IT_SKIP_LIST
   };
   
-  static const char* const pIT[]
+  static Str* aIT[]
   {
-    /* 0 */ "NONE",
-    /* 1 */ "SKIP_LIST"
+    /* 0 */ "NONE"_Str,
+    /* 1 */ "SKIP_LIST"_Str
   };
 
   class Table;
