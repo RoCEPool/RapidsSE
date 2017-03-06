@@ -40,14 +40,14 @@ namespace Dictionaries
     /*  5 */ DT_ENUMS
   };
   
-  static const char* const pDT[]
+  static Str* aDT[]
   {
-    /*  0 */ "NONE",
-    /*  1 */ "ALLPARTICIPANTS",
-    /*  2 */ "ONEPARTICIPANT",
-    /*  3 */ "NOPARTICIPANT",
-    /*  4 */ "LOCALCALLS",
-    /*  5 */ "ENUMS",
+    /*  0 */ "NONE"_Str,
+    /*  1 */ "ALLPARTICIPANTS"_Str,
+    /*  2 */ "ONEPARTICIPANT"_Str,
+    /*  3 */ "NOPARTICIPANT"_Str,
+    /*  4 */ "LOCALCALLS"_Str,
+    /*  5 */ "ENUMS"_Str,
   };
   
   class Word : public Object
