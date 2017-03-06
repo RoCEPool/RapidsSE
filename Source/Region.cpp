@@ -13,7 +13,7 @@ extern void* C_ADDR_POOL;
 /*----------------------------------------------------------------------------*/
 /* attach to an existing shm region                                           */
 /*----------------------------------------------------------------------------*/
-bool Region::bAttach(StrVal& sRegionName)
+bool Region::bAttach(StrVbl& sRegionName)
 {
   int iFD;
   SysCall xSysCall;
@@ -89,7 +89,7 @@ bool Region::bAttach(StrVal& sRegionName)
 /*----------------------------------------------------------------------------*/
 /* create new shm region                                                      */
 /*----------------------------------------------------------------------------*/
-void Region::vCreate(StrVal& sRegionName)
+void Region::vCreate(StrVbl& sRegionName)
 {
   int iFD;
   SysCall xSysCall;
@@ -153,7 +153,7 @@ void Region::vCreate(StrVal& sRegionName)
 /*----------------------------------------------------------------------------*/
 /* test for region                                                            */
 /*----------------------------------------------------------------------------*/
-bool Region::bTest(StrVal& sRegionName)
+bool Region::bTest(StrVbl& sRegionName)
 {
   int iFD;
   SysCall xSysCall;
@@ -171,7 +171,7 @@ bool Region::bTest(StrVal& sRegionName)
 /*----------------------------------------------------------------------------*/
 /* unlink region                                                              */
 /*----------------------------------------------------------------------------*/
-void Region::vUnlink(StrVal& sRegionName)
+void Region::vUnlink(StrVbl& sRegionName)
 {
   SysCall xSysCall;
   
@@ -186,7 +186,7 @@ void Region::vUnlink(StrVal& sRegionName)
 /*----------------------------------------------------------------------------*/
 /* attempt to open a pool                                                     */
 /*----------------------------------------------------------------------------*/
-void* Region::pOpen(StrVal& sRegionName, int& iFD)
+void* Region::pOpen(StrVbl& sRegionName, int& iFD)
 {
   SysCall xSysCall;
   bool bResult;

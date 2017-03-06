@@ -22,7 +22,7 @@ ObjVal* Values::_pObjVal(void* aAddr)
 void* ObjVal::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  vFatal("fatal: StrVal class cannot be new'd\n");
+  vFatal("fatal: StrVbl class cannot be new'd\n");
   
   RASSERT(0);
 }

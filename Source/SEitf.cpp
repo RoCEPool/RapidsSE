@@ -1645,7 +1645,7 @@ bool SEitf::bX(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* append request to request queue                                            */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bAppendRequest(StrVal& sRequest)
+bool SEitf::bAppendRequest(StrVbl& sRequest)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1715,7 +1715,7 @@ eEC SEitf::eGetResponse(void)
 /*----------------------------------------------------------------------------*/
 /* pop response from response queue                                           */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bPopResponse(eEC& eResult, StrVal& sResponse)
+bool SEitf::bPopResponse(eEC& eResult, StrVbl& sResponse)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1734,7 +1734,7 @@ bool SEitf::bPopResponse(eEC& eResult, StrVal& sResponse)
   
   b = xValSet.bExtract(pCursor,pValWsp);
   ASSERT(b);
-  *_pStrVal(&sResponse) = _pStrVal(pValWsp)->aStr();
+  *_pStrVbl(&sResponse) = _pStrVbl(pValWsp)->aStr();
   
   b = xValSet.bExtract(pCursor,pValWsp);
   ASSERT(! b);

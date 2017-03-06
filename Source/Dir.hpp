@@ -37,7 +37,7 @@ namespace System
     //--
     
     void vClose(void);
-    StrVal&   sEntryName(void);
+    StrVbl&   sEntryName(void);
     i8   iEntryType(void);
     //bool bExists(void);
     //bool bGetCurrent(void);
@@ -45,7 +45,7 @@ namespace System
     bool bIsOpen(void);
     //bool bMake(void);
     bool bOpen(void);
-    StrVal&   sPath(void);
+    StrVbl&   sPath(void);
     void vPath(s256& sPath);
     bool bRead(void);
     //bool bRemove(void);

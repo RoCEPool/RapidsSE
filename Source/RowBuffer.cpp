@@ -335,7 +335,7 @@ bool RowBuffer::bInsertRow(TxRef* pTxRef, char* pRecord, i8 iLength)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
-  i8 nSizeBytes = StrVal::nAreaRequired(iLength);
+  i8 nSizeBytes = StrVbl::nAreaRequired(iLength);
   
   Row* pRow = pAllocRow(nSizeBytes);
   if (!pRow)
@@ -347,7 +347,7 @@ bool RowBuffer::bInsertRow(TxRef* pTxRef, char* pRecord, i8 iLength)
   
   char* pData = pRow->pData();
   
-  StrVal* pStr = new((StrVal*)pData) StrVal((StrVal*)pData);
+  StrVbl* pStr = new((StrVbl*)pData) StrVbl((StrVbl*)pData);
   
   pStr->vAssign(pRecord,iLength);  
   

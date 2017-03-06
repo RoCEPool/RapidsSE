@@ -1,15 +1,15 @@
 /*============================================================================*/
-/* StrFxd.hpp -- fixed-length string template                                 */
+/* StrFxd.hpp -- fixed-length string value template                           */
 /*============================================================================*/
 #pragma once
 
 namespace Values
 {
   template <int SIZE>
-  class StrFxd : public StrVal
+  class StrFxd : public StrVbl
   {
   private:
-    char m_cArea[SIZE]; // string data area
+    char m_cArea[SIZE]; // Str byte area
     
     // must be last
     Footer m_xFooter;
@@ -20,9 +20,15 @@ namespace Values
     StrFxd(StrFxd* pThis);
    ~StrFxd(void);
     
-    void operator = (const char* aArg);
-    void operator = (char* aArg);
-    void operator = (StrVal& xArg);
+    void operator =(const char* aArg);
+    void operator =(char* aArg);
+    void operator =(StrVbl& xArg);
+  
+//    operator Str  (void);
+//    operator Str& (void);
+//    operator Str* (void);
+  
+    void vTest(void);
   
     Footer* pFooter(void);
   };
@@ -32,13 +38,12 @@ namespace Values
 
 using namespace Values;
 
-
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 template <int SIZE>
 StrFxd<SIZE>::StrFxd(void)
-: StrVal(CN_STRFXD,SIZE)
+: StrVbl(CN_STRFXD,SIZE)
 {
   _precondition_(_MAGIC_,CN_STRFXD,_FOOTER_);
   
@@ -50,11 +55,11 @@ StrFxd<SIZE>::StrFxd(void)
 /*----------------------------------------------------------------------------*/
 template <int SIZE>
 StrFxd<SIZE>::StrFxd(const char* aArg)
-: StrVal(CN_STRFXD,SIZE)
+: StrVbl(CN_STRFXD,SIZE)
 {
   _precondition_(_MAGIC_,CN_STRFXD,_FOOTER_);
   
-  StrVal::vCopy(aArg);
+  StrVbl::vCopy(aArg);
   
   _checkInitialisedSize_(SIZE);
 }
@@ -64,7 +69,7 @@ StrFxd<SIZE>::StrFxd(const char* aArg)
 /*----------------------------------------------------------------------------*/
 template <int SIZE>
 StrFxd<SIZE>::StrFxd(StrFxd* pThis)
-: StrVal(CN_STRFXD,SIZE)
+: StrVbl(CN_STRFXD,SIZE)
 {
   _precondition_(_MAGIC_,CN_STRFXD,_FOOTER_);
   
@@ -84,33 +89,82 @@ StrFxd<SIZE>::~StrFxd(void)
 /* assignment operator                                                        */
 /*----------------------------------------------------------------------------*/
 template <int SIZE>
-void StrFxd<SIZE>::operator = (const char* aArg)
+void StrFxd<SIZE>::operator =(const char* aArg)
 {
   _precondition_(_MAGIC_,CN_STRFXD,_FOOTER_);
   
-  StrVal::vCopy(aArg);
+  StrVbl::vCopy(aArg);
 }
 
 /*----------------------------------------------------------------------------*/
 /* assignment operator                                                        */
 /*----------------------------------------------------------------------------*/
 template <int SIZE>
-void StrFxd<SIZE>::operator = (char* aArg)
+void StrFxd<SIZE>::operator =(char* aArg)
 {
   _precondition_(_MAGIC_,CN_STRFXD,_FOOTER_);
   
-  StrVal::vCopy(aArg);
+  StrVbl::vCopy(aArg);
 }
 
 /*----------------------------------------------------------------------------*/
 /* assignment operator                                                        */
 /*----------------------------------------------------------------------------*/
 template <int SIZE>
-void StrFxd<SIZE>::operator = (StrVal& rArg)
+void StrFxd<SIZE>::operator =(StrVbl& rArg)
 {
   _precondition_(_MAGIC_,CN_STRFXD,_FOOTER_);
   
   vCopy(rArg.aStr());
+}
+
+/*----------------------------------------------------------------------------*/
+/* get reference to Str area                                                  */
+/*----------------------------------------------------------------------------*/
+//template <int SIZE>
+//StrFxd<SIZE>::operator Str&(void)
+//{
+//  _precondition_(_MAGIC_);
+//  
+//  // return reference to the RowId inherited class
+//  char* aAddr = pAdd<char*>(this,sizeof(StrVbl));
+//  
+//  return reinterpret_cast<Str&>(*aAddr);
+//}
+
+/*----------------------------------------------------------------------------*/
+/* get address of Str area                                                    */
+/*----------------------------------------------------------------------------*/
+//template <int SIZE>
+//StrFxd<SIZE>::operator Str(void)
+//{
+//  _precondition_(_MAGIC_);
+//  
+//  // return reference to the RowId inherited class
+//  return reinterpret_cast<Str>(*pAdd<char*>(this,sizeof(StrVbl)));
+//}
+//
+/*----------------------------------------------------------------------------*/
+/* get address of Str area                                                    */
+/*----------------------------------------------------------------------------*/
+//template <int SIZE>
+//StrFxd<SIZE>::operator Str*(void)
+//{
+//  _precondition_(_MAGIC_);
+//  
+//  // return reference to the RowId inherited class
+//  return reinterpret_cast<Str*>(pAdd<char*>(this,sizeof(StrVbl)));
+//}
+//
+/*----------------------------------------------------------------------------*/
+/* test Str                                                                   */
+/*----------------------------------------------------------------------------*/
+template <int SIZE>
+void StrFxd<SIZE>::vTest(void)
+{
+  _precondition_(_MAGIC_,CN_STRFXD);
+
+  aStrArea()->vPrint();
 }
 
 /*----------------------------------------------------------------------------*/

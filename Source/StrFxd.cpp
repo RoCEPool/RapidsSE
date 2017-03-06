@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* StrFxd.cpp -- fixed-length string template                                 */
+/* StrFxd.cpp -- fixed-length string value template                           */
 /*============================================================================*/
 
 #include "Values.h"

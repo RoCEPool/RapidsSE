@@ -30,6 +30,7 @@ using namespace Values;
 #include "PtrVal.hpp"
 
 #include "StrVal.hpp"
+#include "StrVbl.hpp"
 #include "StrFxd.hpp"
 
 #include "ValSet.hpp"

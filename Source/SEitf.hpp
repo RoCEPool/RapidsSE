@@ -143,10 +143,10 @@ namespace Interface
     bool bPrint(char* pWords[]);
     
     //--------------------------------------------------------------------------
-    bool bAppendRequest(StrVal& sRequest);
+    bool bAppendRequest(StrVbl& sRequest);
     
     eEC  eGetResponse(void);
-    bool bPopResponse(eEC& eResult, StrVal& sResponse);
+    bool bPopResponse(eEC& eResult, StrVbl& sResponse);
     
     //--------------------------------------------------------------------------
     void         vClearLastError(void);

@@ -20,11 +20,11 @@ namespace UnitTests
     
     static void vAssertFailed(void);
     
-    void vRequire(StrVal& sCommand, bool bResult, eEC eErrorExpected);
-    void vRequire(StrVal& sCommand, bool bResult, eEC eErrorExpected, i8 iExpectedRows);
-    void vRequire(StrVal& sCommand, bool bResult, eEC eErrorExpected, StrVal& sResponse);
+    void vRequire(StrVbl& sCommand, bool bResult, eEC eErrorExpected);
+    void vRequire(StrVbl& sCommand, bool bResult, eEC eErrorExpected, i8 iExpectedRows);
+    void vRequire(StrVbl& sCommand, bool bResult, eEC eErrorExpected, StrVbl& sResponse);
     
-    char* pRequire(StrVal& sCommand, bool bResult, eEC eErrorExpected);
+    char* pRequire(StrVbl& sCommand, bool bResult, eEC eErrorExpected);
 
 
   };

@@ -34,7 +34,7 @@ void Tests::vAssertFailed(void) {
 /*----------------------------------------------------------------------------*/
 /* run unit tests                                                             */
 /*----------------------------------------------------------------------------*/
-void Tests::vRequire(StrVal& sCommand, bool bResult, eEC eErrorExpected)
+void Tests::vRequire(StrVbl& sCommand, bool bResult, eEC eErrorExpected)
 {
   eEC eErrorReturned;
   
@@ -58,7 +58,7 @@ void Tests::vRequire(StrVal& sCommand, bool bResult, eEC eErrorExpected)
 /*----------------------------------------------------------------------------*/
 /* run unit tests                                                             */
 /*----------------------------------------------------------------------------*/
-char* Tests::pRequire(StrVal& sCommand, bool bResult, eEC eErrorExpected)
+char* Tests::pRequire(StrVbl& sCommand, bool bResult, eEC eErrorExpected)
 {
   eEC eErrorReturned;
   s256 sResponseReturned;
@@ -86,7 +86,7 @@ char* Tests::pRequire(StrVal& sCommand, bool bResult, eEC eErrorExpected)
 /*----------------------------------------------------------------------------*/
 /* run unit tests                                                             */
 /*----------------------------------------------------------------------------*/
-void Tests::vRequire(StrVal& sCommand, bool bResult, eEC eErrorExpected, StrVal& sResponseExpected)
+void Tests::vRequire(StrVbl& sCommand, bool bResult, eEC eErrorExpected, StrVbl& sResponseExpected)
 {
   eEC eErrorReturned;
   s256 sResponseReturned;
@@ -116,7 +116,7 @@ void Tests::vRequire(StrVal& sCommand, bool bResult, eEC eErrorExpected, StrVal&
 /*----------------------------------------------------------------------------*/
 /* run unit tests                                                             */
 /*----------------------------------------------------------------------------*/
-void Tests::vRequire(StrVal& sCommand, bool bResult, eEC eErrorExpected, i8 iExpectedRows)
+void Tests::vRequire(StrVbl& sCommand, bool bResult, eEC eErrorExpected, i8 iExpectedRows)
 {
   eEC eErrorReturned;
   s256 sResponseReturned;
@@ -135,10 +135,10 @@ void Tests::vRequire(StrVal& sCommand, bool bResult, eEC eErrorExpected, i8 iExp
       m_iTestsFailed++;
       Tests::vAssertFailed();
     }
-    *_pStrVal(&sCommand) = "first";
+    *_pStrVbl(&sCommand) = "first";
     bReturn = m_pSePrompt->bExecuteString(sCommand, eErrorReturned, &pRowPtr);
     
-    *_pStrVal(&sCommand) = "next";
+    *_pStrVbl(&sCommand) = "next";
     while(bReturn) {
       iRecvdRows++;
       bReturn = m_pSePrompt->bExecuteString(sCommand, eErrorReturned, &pRowPtr);

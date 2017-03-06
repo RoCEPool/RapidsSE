@@ -154,7 +154,7 @@ char* RowCursor::pRowAsStr(void)
   if (! m_pRow)
     return nullptr;
   
-  StrVal* pStrVal = reinterpret_cast<StrVal*>(m_pRow->pData());
+  StrVbl* pStrVal = reinterpret_cast<StrVbl*>(m_pRow->pData());
   
   if (pStrVal)
     return pStrVal->aStr();
