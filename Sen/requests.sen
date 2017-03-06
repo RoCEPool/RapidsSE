@@ -55,12 +55,10 @@ Table Requests:
 antbl   analyze_table
 dantbl  danalyze_table
 gettbl  get_table
-mkidx   create_index
 mktbl   create_table
 lstbl   list_tables
 add     add_column
 lscol   list_columns
-lsidx   list_indices
 ld      load_table
 tblInUse  table_inuse
 sel     select_table
@@ -73,6 +71,10 @@ tr      truncate_table
 rettbl  return_table
 rmtbl   drop_table
 
+Index Requests:
+mkidx   create_index
+lsidx   list_indexes
+ 
 Dictionary Requests:
 
 cf      cf ..

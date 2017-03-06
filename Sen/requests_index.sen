@@ -23,13 +23,13 @@ tp: create_index
 /*----------------------------------------------------------------------------*/
 /* get list of indices                                                        */
 /*----------------------------------------------------------------------------*/
-: list_indices ( "<tableNm>" -- <R> )
+: list_indexes ( "<tableNm>" -- <R> )
 
 ddlLock.grabRead
 
   checkInTables not if <NIP+ERROR> exit then
 
-  //listIndices
+  listContents
 
   <SUCCESS>
 ;
