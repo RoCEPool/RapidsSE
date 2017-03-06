@@ -59,7 +59,7 @@ tp: removeFolder
   then
 
   // push sub-folder
-  find
+  findInCurrent
   checkIsDic not if <NIP+ERROR> exit then
   execute pathPush
 

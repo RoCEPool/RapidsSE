@@ -19,9 +19,19 @@
 
   0 locals| dexPlan |
 
+  // push schema name
+  1 pathPick dic.name  ( "<fileNm>" "<tableNm>" "<schemaNm>" )
+
+  // push catalog name
+  3 pathPick dic.name  ( "<fileNm>" "<tableNm>" "<schemaNm>" "<catalogNm>" )
+
+  4  // 4 values to revers
+  reverse  ( "<catalogNm>" "<schemaNm>" "<tableNm>" "<fileNm>" )
+  dexPlanner to dexPlan
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // prepare plan
-  swap dexPlanner to dexPlan
+  //swap dexPlanner to dexPlan
 
   // set this task as the executing task in the plan
   task.this dexPlan plan.executingTask!

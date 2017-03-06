@@ -9,16 +9,18 @@
 /*----------------------------------------------------------------------------*/
 /* distributed export planner (initial, single node version)                  */
 /*----------------------------------------------------------------------------*/
-: dexPlanner_singular ( tableNm fileNm -- dexPlan )
+: dexPlanner_singular ( catalogNm schemaNm tableNm fileNm -- dexPlan )
 
-  locals| fileNm tableNm |
+  locals| fileNm tableNm schemaNm catalogNm |
   0 locals| partitionId |
 
   // create a distributed export plan
   plan::new locals| dexPlan |
 
   // synthesise any plan-level symbolic arguments into the lambda text of plan
-  tableNm dexPlan ##: $$tableNm
+  tableNm   dexPlan  ##: $$tableNm
+  schemaNm  dexPlan  ##: $$schemaNm
+  catalogNm dexPlan  ##: $$catalogNm
   // nb: the above could have been a frame level, but left it as an example
 
   "triggerOp" str.format dexPlan plan.opFrame++ drop
@@ -58,18 +60,21 @@
 /*----------------------------------------------------------------------------*/
 /* distributed export planner (multi-node version)                            */
 /*----------------------------------------------------------------------------*/
-: dexPlanner_distributed ( tableNm fileNm -- dexPlan )
+: dexPlanner_distributed ( catalogNm schemaNm tableNm fileNm -- dexPlan )
 
   //"dexPlanner_distributed" .
 
-  locals| fileNm tableNm |
+locals| fileNm tableNm schemaNm catalogNm |
+
 
   // create a distributed export plan
   plan::new locals| dexPlan |
   0 locals| partitionId |
 
   // synthesise any plan-level symbolic arguments into the lambda text of plan
-  tableNm dexPlan ##: $$tableNm
+  tableNm   dexPlan  ##: $$tableNm
+  schemaNm  dexPlan  ##: $$schemaNm
+  catalogNm dexPlan  ##: $$catalogNm
   // nb: the above could have been a frame level, but left it as an example
 
   "triggerOp" str.format dexPlan plan.opFrame++ drop
@@ -107,7 +112,7 @@
 /*----------------------------------------------------------------------------*/
 /* distributed export planner                                                 */
 /*----------------------------------------------------------------------------*/
-: dexPlanner ( tableNm fileNm -- dexPlan )
+: dexPlanner ( catalogNm schemaNm tableNm fileNm -- dexPlan )
 
   distDexPlan if dexPlanner_distributed else dexPlanner_singular then
 ;
