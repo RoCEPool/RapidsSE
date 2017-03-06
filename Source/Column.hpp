@@ -11,10 +11,10 @@ namespace DBobjects
     /* 1 */ CT_XYZ
   };
 
-  static const char* const pCT[]
+  static Str* aCT[]
   {
-    /* 0 */ "NONE",
-    /* 1 */ "XYZ"
+    /* 0 */ "NONE"_Str,
+    /* 1 */ "XYZ"_Str
   };
 
   class Column
