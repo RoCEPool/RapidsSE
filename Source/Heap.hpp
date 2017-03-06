@@ -15,14 +15,14 @@ namespace Pool
     /*  5 */ HT_ENUMS
   };
   
-  static const char* const pHT[]
+  static Str* aHT[]
   {
-    /*  0 */ "INVALID",
-    /*  1 */ "SMALL",
-    /*  2 */ "MEDIUM",
-    /*  3 */ "LARGE",
-    /*  4 */ "JUMBO",
-    /*  5 */ "ENUMS"
+    /*  0 */ "INVALID"_Str,
+    /*  1 */ "SMALL"_Str,
+    /*  2 */ "MEDIUM"_Str,
+    /*  3 */ "LARGE"_Str,
+    /*  4 */ "JUMBO"_Str,
+    /*  5 */ "ENUMS"_Str
   };
   
   class Heap : public Buffer
