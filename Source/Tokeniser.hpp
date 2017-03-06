@@ -15,14 +15,14 @@ namespace Parsing
     /*  5 */ TK_ENUMS
   };
   
-  static const char* const pTK[]
+  static Str* aTK[]
   {
-    /*  0 */ "NONE",
-    /*  1 */ "INTEGER",
-    /*  2 */ "NAME",
-    /*  3 */ "OTHER",
-    /*  4 */ "STRING",
-    /*  5 */ "ENUMS",
+    /*  0 */ "NONE"_Str,
+    /*  1 */ "INTEGER"_Str,
+    /*  2 */ "NAME"_Str,
+    /*  3 */ "OTHER"_Str,
+    /*  4 */ "STRING"_Str,
+    /*  5 */ "ENUMS"_Str,
   };
   
   class Tokeniser : public Object
