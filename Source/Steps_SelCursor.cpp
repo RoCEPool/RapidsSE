@@ -34,17 +34,17 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_SelCursor(void)
 {
-  vAddPrimitive("selCursor.begin",     &vSelCursorBegin,      false);
-  vAddPrimitive("selCursor.delete",    &vSelCursorDelete,     false);
-  vAddPrimitive("selCursor.end",       &vSelCursorEnd,        false);
-  vAddPrimitive("selCursor.first",     &vSelCursorFirst,      false);
-  vAddPrimitive("selCursor.get",       &vSelCursorGet,        false);
-  vAddPrimitive("selCursor.init",      &vSelCursorInit,       false);
-  vAddPrimitive("selCursor.new",       &vSelCursorNew,        false);
-  vAddPrimitive("selCursor.next",      &vSelCursorNext,       false);
-  vAddPrimitive("selCursor.rowBuffer", &vSelCursorRowBuffer,  false);
-  vAddPrimitive("selCursor.table@",    &vSelCursorTableFetch, false);
-  vAddPrimitive("selCursor.table!",    &vSelCursorTableStore, false);
+  vAddPrimitive("selCursor.begin"_Str,     &vSelCursorBegin,      false);
+  vAddPrimitive("selCursor.delete"_Str,    &vSelCursorDelete,     false);
+  vAddPrimitive("selCursor.end"_Str,       &vSelCursorEnd,        false);
+  vAddPrimitive("selCursor.first"_Str,     &vSelCursorFirst,      false);
+  vAddPrimitive("selCursor.get"_Str,       &vSelCursorGet,        false);
+  vAddPrimitive("selCursor.init"_Str,      &vSelCursorInit,       false);
+  vAddPrimitive("selCursor.new"_Str,       &vSelCursorNew,        false);
+  vAddPrimitive("selCursor.next"_Str,      &vSelCursorNext,       false);
+  vAddPrimitive("selCursor.rowBuffer"_Str, &vSelCursorRowBuffer,  false);
+  vAddPrimitive("selCursor.table@"_Str,    &vSelCursorTableFetch, false);
+  vAddPrimitive("selCursor.table!"_Str,    &vSelCursorTableStore, false);
 }
 
 /*----------------------------------------------------------------------------*/

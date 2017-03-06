@@ -36,8 +36,8 @@ void Task::vAddPrimitives_Cast(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  vAddPrimitive("(int)",           &vCastInt,          false);
-  vAddPrimitive("(ptr)",           &vCastPtr,          false);
+  vAddPrimitive("(int)"_Str,           &vCastInt,          false);
+  vAddPrimitive("(ptr)"_Str,           &vCastPtr,          false);
 }
 
 /*----------------------------------------------------------------------------*/

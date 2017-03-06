@@ -34,7 +34,7 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Env(void)
 {
-  vAddPrimitive("env@",            &vEnvGet,           false);
+  vAddPrimitive("env@"_Str,            &vEnvGet,           false);
 }
 
 /*----------------------------------------------------------------------------*/

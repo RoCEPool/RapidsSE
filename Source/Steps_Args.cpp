@@ -35,7 +35,7 @@ void Task::vAddPrimitives_Args(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  vAddPrimitive("args.print",      &vArgsPrint,     false);
+  vAddPrimitive("args.print"_Str,      &vArgsPrint,     false);
 }
 
 /*----------------------------------------------------------------------------*/

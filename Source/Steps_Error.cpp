@@ -34,7 +34,7 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Error(void)
 {
-  vAddPrimitive("error.msg",       &vErrorMsg,         false);
+  vAddPrimitive("error.msg"_Str,       &vErrorMsg,         false);
 }
 
 /*----------------------------------------------------------------------------*/

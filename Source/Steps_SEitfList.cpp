@@ -34,8 +34,8 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_SEitfList(void)
 {
-  vAddPrimitive("seitfList.dump",  &vSEitfListDump,    false);
-  vAddPrimitive("seitfList.init",  &vSEitfListInit,    false);
+  vAddPrimitive("seitfList.dump"_Str,  &vSEitfListDump,    false);
+  vAddPrimitive("seitfList.init"_Str,  &vSEitfListInit,    false);
 }
 
 /*----------------------------------------------------------------------------*/

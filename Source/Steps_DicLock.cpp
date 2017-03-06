@@ -34,8 +34,8 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_DicLock(void)
 {
-  vAddPrimitive("dicLock.dropWrite",&vDicLockDropWrite, false);
-  vAddPrimitive("dicLock.grabWrite",&vDicLockGrabWrite, false);
+  vAddPrimitive("dicLock.dropWrite"_Str,&vDicLockDropWrite, false);
+  vAddPrimitive("dicLock.grabWrite"_Str,&vDicLockGrabWrite, false);
 }
 
 /*----------------------------------------------------------------------------*/

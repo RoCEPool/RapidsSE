@@ -34,8 +34,8 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Cursor(void)
 {
-  vAddPrimitive("cursor@",         &vCursorFetch,      false);
-  vAddPrimitive("cursor!",         &vCursorStore,      false);
+  vAddPrimitive("cursor@"_Str,         &vCursorFetch,      false);
+  vAddPrimitive("cursor!"_Str,         &vCursorStore,      false);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -34,8 +34,8 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_OpFrame(void)
 {
-  vAddPrimitive("opFrame.dic",       &vOpFrameDic,       false);
-  vAddPrimitive("opFrame.name",      &vOpFrameName,      false);
+  vAddPrimitive("opFrame.dic"_Str,       &vOpFrameDic,       false);
+  vAddPrimitive("opFrame.name"_Str,      &vOpFrameName,      false);
 }
 
 /*----------------------------------------------------------------------------*/

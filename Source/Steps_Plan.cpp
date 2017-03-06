@@ -34,22 +34,22 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Plan(void)
 {
-  vAddPrimitive("plan.delete",         &vPlanDelete,             false);
-  vAddPrimitive("plan.dic",            &vPlanDic,                false);
-  vAddPrimitive("plan.executingTask@", &vPlanExecutingTaskFetch, false);
-  vAddPrimitive("plan.executingTask!", &vPlanExecutingTaskStore, false);
-  vAddPrimitive("plan.finished",       &vPlanFinished,           false);
-  vAddPrimitive("plan.id@",            &vPlanIdFetch,            false);
-  vAddPrimitive("plan.lambda+",        &vPlanLambdaAppend,       false);
-  vAddPrimitive("plan.lambda@",        &vPlanLambdaFetch,        false);
-  vAddPrimitive("plan.lambda!",        &vPlanLambdaStore,        false);
-  vAddPrimitive("plan.name@",          &vPlanNameFetch,          false);
-  vAddPrimitive("plan.name!",          &vPlanNameStore,          false);
-  vAddPrimitive("plan::new",           &vPlanNew,                false);
-  vAddPrimitive("plan.opFrame++",      &vPlanOpFrameAdd,         false);
-  vAddPrimitive("plan.opFrame?",       &vPlanOpFrameFind,        false);
-  vAddPrimitive("plan.opFrame0",       &vPlanOpFrameTop,         false);
-  vAddPrimitive("plan.show",           &vPlanShow,               false);
+  vAddPrimitive("plan.delete"_Str,         &vPlanDelete,             false);
+  vAddPrimitive("plan.dic"_Str,            &vPlanDic,                false);
+  vAddPrimitive("plan.executingTask@"_Str, &vPlanExecutingTaskFetch, false);
+  vAddPrimitive("plan.executingTask!"_Str, &vPlanExecutingTaskStore, false);
+  vAddPrimitive("plan.finished"_Str,       &vPlanFinished,           false);
+  vAddPrimitive("plan.id@"_Str,            &vPlanIdFetch,            false);
+  vAddPrimitive("plan.lambda+"_Str,        &vPlanLambdaAppend,       false);
+  vAddPrimitive("plan.lambda@"_Str,        &vPlanLambdaFetch,        false);
+  vAddPrimitive("plan.lambda!"_Str,        &vPlanLambdaStore,        false);
+  vAddPrimitive("plan.name@"_Str,          &vPlanNameFetch,          false);
+  vAddPrimitive("plan.name!"_Str,          &vPlanNameStore,          false);
+  vAddPrimitive("plan::new"_Str,           &vPlanNew,                false);
+  vAddPrimitive("plan.opFrame++"_Str,      &vPlanOpFrameAdd,         false);
+  vAddPrimitive("plan.opFrame?"_Str,       &vPlanOpFrameFind,        false);
+  vAddPrimitive("plan.opFrame0"_Str,       &vPlanOpFrameTop,         false);
+  vAddPrimitive("plan.show"_Str,           &vPlanShow,               false);
 }
 
 /*----------------------------------------------------------------------------*/

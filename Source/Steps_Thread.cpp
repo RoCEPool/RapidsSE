@@ -34,25 +34,25 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Thread(void)
 {
-  vAddPrimitive("thread.append",      &vThreadAppend,      false);
-  vAddPrimitive("thread.bind",        &vThreadBind,        false);
-  vAddPrimitive("thread.condSignal",  &vThreadCondSignal,  false);
-  vAddPrimitive("thread.condWait",    &vThreadCondWait,    false);
-  vAddPrimitive("thread.cpu",         &vThreadCpu,         false);
-  vAddPrimitive("thread.dump",        &vThreadDump,        false);
-  vAddPrimitive("thread.init",        &vThreadInit,        false);
-  vAddPrimitive("thread.id",          &vThreadId,          false);
-  vAddPrimitive("thread.mutexLock",   &vThreadMutexLock,   false);
-  vAddPrimitive("thread.mutexUnlock", &vThreadMutexUnlock, false);
-  vAddPrimitive("thread.name@",       &vThreadNameFetch,   false);
-  vAddPrimitive("thread.name!",       &vThreadNameStore,   false);
-  vAddPrimitive("thread.taskset@",    &vThreadSfetch,      false);
-  vAddPrimitive("thread.taskset!",    &vThreadSstore,      false);
-  vAddPrimitive("thread.sleep_s",     &vThreadSleep_s,     false);
-  vAddPrimitive("thread.sleep_ms",    &vThreadSleep_ms,    false);
-  vAddPrimitive("thread.sleep_us",    &vThreadSleep_us,    false);
-  vAddPrimitive("thread.sleep_ns",    &vThreadSleep_ns,    false);
-  vAddPrimitive("thread.spawn",       &vThreadSpawn,       false);
+  vAddPrimitive("thread.append"_Str,      &vThreadAppend,      false);
+  vAddPrimitive("thread.bind"_Str,        &vThreadBind,        false);
+  vAddPrimitive("thread.condSignal"_Str,  &vThreadCondSignal,  false);
+  vAddPrimitive("thread.condWait"_Str,    &vThreadCondWait,    false);
+  vAddPrimitive("thread.cpu"_Str,         &vThreadCpu,         false);
+  vAddPrimitive("thread.dump"_Str,        &vThreadDump,        false);
+  vAddPrimitive("thread.init"_Str,        &vThreadInit,        false);
+  vAddPrimitive("thread.id"_Str,          &vThreadId,          false);
+  vAddPrimitive("thread.mutexLock"_Str,   &vThreadMutexLock,   false);
+  vAddPrimitive("thread.mutexUnlock"_Str, &vThreadMutexUnlock, false);
+  vAddPrimitive("thread.name@"_Str,       &vThreadNameFetch,   false);
+  vAddPrimitive("thread.name!"_Str,       &vThreadNameStore,   false);
+  vAddPrimitive("thread.taskset@"_Str,    &vThreadSfetch,      false);
+  vAddPrimitive("thread.taskset!"_Str,    &vThreadSstore,      false);
+  vAddPrimitive("thread.sleep_s"_Str,     &vThreadSleep_s,     false);
+  vAddPrimitive("thread.sleep_ms"_Str,    &vThreadSleep_ms,    false);
+  vAddPrimitive("thread.sleep_us"_Str,    &vThreadSleep_us,    false);
+  vAddPrimitive("thread.sleep_ns"_Str,    &vThreadSleep_ns,    false);
+  vAddPrimitive("thread.spawn"_Str,       &vThreadSpawn,       false);
 }
 
 /*----------------------------------------------------------------------------*/

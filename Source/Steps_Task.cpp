@@ -34,36 +34,36 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Task(void)
 {
-  vAddPrimitive("task.ack",       &vTaskAck,           false);
-  vAddPrimitive("task.acks@",     &vTaskAcksFetch,     false);
-  vAddPrimitive("task.acks!",     &vTaskAcksStore,     false);
-  vAddPrimitive("task.comment@",  &vTaskCommentFetch,  false);
-  vAddPrimitive("task.comment!",  &vTaskCommentStore,  false);
-  vAddPrimitive("task.dicStack",  &vTaskDicStack,      false);
-  vAddPrimitive("task.dump",      &vTaskDump,          false);
-  vAddPrimitive("task.init",      &vTaskInit,          false);
-  vAddPrimitive("task.jobQueue@", &vTaskJobQueueFetch, false);
-  vAddPrimitive("task.jobQueue!", &vTaskJobQueueStore, false);
-  vAddPrimitive("task.name@",     &vTaskNameFetch,     false);
-  vAddPrimitive("task.name!",     &vTaskNameStore,     false);
-  vAddPrimitive("task.new",       &vTaskNew,           false);
-  vAddPrimitive("task.parent@",   &vTaskParentFetch,   false);
-  vAddPrimitive("task.parent!",   &vTaskParentStore,   false);
-  vAddPrimitive("task.plan@",     &vTaskPlanFetch,     false);
-  vAddPrimitive("task.plan!",     &vTaskPlanStore,     false);
-  vAddPrimitive("task.seed",      &vTaskSeed,          false);
-  vAddPrimitive("task.seitf@",    &vTaskSeitfFetch,    false);
-  vAddPrimitive("task.seitf!",    &vTaskSeitfStore,    false);
-  vAddPrimitive("task.socket@",   &vTaskSocketFetch,   false);
-  vAddPrimitive("task.socket!",   &vTaskSocketStore,   false);
-  vAddPrimitive("task.state@",    &vTaskStateFetch,    false);
-  vAddPrimitive("task.state!",    &vTaskStateStore,    false);
-  vAddPrimitive("task.taskset@",  &vTaskTaskSetFetch,  false);
-  vAddPrimitive("task.taskset!",  &vTaskTaskSetStore,  false);
-  vAddPrimitive("task.this",      &vTaskThis,          false);
-  vAddPrimitive("task.thread",    &vTaskThread,        false);
-  vAddPrimitive("task.wait",      &vTaskWait,          false);
-  vAddPrimitive("task.yield",     &vTaskYield,         false);
+  vAddPrimitive("task.ack"_Str,       &vTaskAck,           false);
+  vAddPrimitive("task.acks@"_Str,     &vTaskAcksFetch,     false);
+  vAddPrimitive("task.acks!"_Str,     &vTaskAcksStore,     false);
+  vAddPrimitive("task.comment@"_Str,  &vTaskCommentFetch,  false);
+  vAddPrimitive("task.comment!"_Str,  &vTaskCommentStore,  false);
+  vAddPrimitive("task.dicStack"_Str,  &vTaskDicStack,      false);
+  vAddPrimitive("task.dump"_Str,      &vTaskDump,          false);
+  vAddPrimitive("task.init"_Str,      &vTaskInit,          false);
+  vAddPrimitive("task.jobQueue@"_Str, &vTaskJobQueueFetch, false);
+  vAddPrimitive("task.jobQueue!"_Str, &vTaskJobQueueStore, false);
+  vAddPrimitive("task.name@"_Str,     &vTaskNameFetch,     false);
+  vAddPrimitive("task.name!"_Str,     &vTaskNameStore,     false);
+  vAddPrimitive("task.new"_Str,       &vTaskNew,           false);
+  vAddPrimitive("task.parent@"_Str,   &vTaskParentFetch,   false);
+  vAddPrimitive("task.parent!"_Str,   &vTaskParentStore,   false);
+  vAddPrimitive("task.plan@"_Str,     &vTaskPlanFetch,     false);
+  vAddPrimitive("task.plan!"_Str,     &vTaskPlanStore,     false);
+  vAddPrimitive("task.seed"_Str,      &vTaskSeed,          false);
+  vAddPrimitive("task.seitf@"_Str,    &vTaskSeitfFetch,    false);
+  vAddPrimitive("task.seitf!"_Str,    &vTaskSeitfStore,    false);
+  vAddPrimitive("task.socket@"_Str,   &vTaskSocketFetch,   false);
+  vAddPrimitive("task.socket!"_Str,   &vTaskSocketStore,   false);
+  vAddPrimitive("task.state@"_Str,    &vTaskStateFetch,    false);
+  vAddPrimitive("task.state!"_Str,    &vTaskStateStore,    false);
+  vAddPrimitive("task.taskset@"_Str,  &vTaskTaskSetFetch,  false);
+  vAddPrimitive("task.taskset!"_Str,  &vTaskTaskSetStore,  false);
+  vAddPrimitive("task.this"_Str,      &vTaskThis,          false);
+  vAddPrimitive("task.thread"_Str,    &vTaskThread,        false);
+  vAddPrimitive("task.wait"_Str,      &vTaskWait,          false);
+  vAddPrimitive("task.yield"_Str,     &vTaskYield,         false);
 }
 
 /*----------------------------------------------------------------------------*/

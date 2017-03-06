@@ -34,10 +34,10 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Queue(void)
 {
-  vAddPrimitive("queue.append",    &vQueueAppend,      false);
-  vAddPrimitive("queue.dump",      &vQueueDump,        false);
-  vAddPrimitive("queue.init",      &vQueueInit,        false);
-  vAddPrimitive("queue.pop",       &vQueuePop,         false);
+  vAddPrimitive("queue.append"_Str,    &vQueueAppend,      false);
+  vAddPrimitive("queue.dump"_Str,      &vQueueDump,        false);
+  vAddPrimitive("queue.init"_Str,      &vQueueInit,        false);
+  vAddPrimitive("queue.pop"_Str,       &vQueuePop,         false);
 }
 
 /*----------------------------------------------------------------------------*/

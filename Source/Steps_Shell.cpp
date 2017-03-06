@@ -34,7 +34,7 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Shell(void)
 {
-  vAddPrimitive("shell.execute",  &vShellExecute,  false);
+  vAddPrimitive("shell.execute"_Str,  &vShellExecute,  false);
 }
 
 /*----------------------------------------------------------------------------*/

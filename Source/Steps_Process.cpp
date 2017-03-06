@@ -34,9 +34,9 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Process(void)
 {
-  vAddPrimitive("process.getPid",  &vProcessGetPid,    false);
-  vAddPrimitive("process.quit",    &vProcessQuit,      false);
-  vAddPrimitive("process.testPid", &vProcessTestPid,   false);
+  vAddPrimitive("process.getPid"_Str,  &vProcessGetPid,    false);
+  vAddPrimitive("process.quit"_Str,    &vProcessQuit,      false);
+  vAddPrimitive("process.testPid"_Str, &vProcessTestPid,   false);
 }
 
 /*----------------------------------------------------------------------------*/

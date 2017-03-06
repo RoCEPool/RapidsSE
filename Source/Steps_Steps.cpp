@@ -34,8 +34,8 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Steps(void)
 {
-  vAddPrimitive("steps.list",  &vStepsList,  false);
-  vAddPrimitive("steps.reset", &vStepsReset, false);
+  vAddPrimitive("steps.list"_Str,  &vStepsList,  false);
+  vAddPrimitive("steps.reset"_Str, &vStepsReset, false);
 }
 
 /*----------------------------------------------------------------------------*/

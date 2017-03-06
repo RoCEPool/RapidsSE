@@ -34,16 +34,16 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_File(void)
 {
-  vAddPrimitive("file.close",      &vFileClose,        false);
-  vAddPrimitive("file.delete",     &vFileDelete,       false);
-  vAddPrimitive("file.init",       &vFileInit,         false);
-  vAddPrimitive("file.new",        &vFileNew,          false);
-  vAddPrimitive("file.open",       &vFileOpen,         false);
-  vAddPrimitive("file.path@",      &vFilePathGet,      false);
-  vAddPrimitive("file.path!",      &vFilePathSet,      false);
-  vAddPrimitive("file.read",       &vFileRead,         false);
-  vAddPrimitive("file.readRecord", &vFileReadRecord,   false);
-  vAddPrimitive("file.write",      &vFileWrite,        false);
+  vAddPrimitive("file.close"_Str,      &vFileClose,        false);
+  vAddPrimitive("file.delete"_Str,     &vFileDelete,       false);
+  vAddPrimitive("file.init"_Str,       &vFileInit,         false);
+  vAddPrimitive("file.new"_Str,        &vFileNew,          false);
+  vAddPrimitive("file.open"_Str,       &vFileOpen,         false);
+  vAddPrimitive("file.path@"_Str,      &vFilePathGet,      false);
+  vAddPrimitive("file.path!"_Str,      &vFilePathSet,      false);
+  vAddPrimitive("file.read"_Str,       &vFileRead,         false);
+  vAddPrimitive("file.readRecord"_Str, &vFileReadRecord,   false);
+  vAddPrimitive("file.write"_Str,      &vFileWrite,        false);
 }
 
 /*----------------------------------------------------------------------------*/

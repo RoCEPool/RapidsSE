@@ -34,10 +34,10 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_RowBuffer(void)
 {
-  vAddPrimitive("rowBuffer.append", &vRowBufferAppend, false);
-  vAddPrimitive("rowBuffer.appendRecord", &vRowBufferAppendRecord, false);
-  vAddPrimitive("rowBuffer.dump",   &vRowBufferDump,    false);
-  vAddPrimitive("rowBuffer.new",    &vRowBufferNew,    false);
+  vAddPrimitive("rowBuffer.append"_Str, &vRowBufferAppend, false);
+  vAddPrimitive("rowBuffer.appendRecord"_Str, &vRowBufferAppendRecord, false);
+  vAddPrimitive("rowBuffer.dump"_Str,   &vRowBufferDump,    false);
+  vAddPrimitive("rowBuffer.new"_Str,    &vRowBufferNew,    false);
 }
 
 /*----------------------------------------------------------------------------*/

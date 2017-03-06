@@ -34,14 +34,14 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_TaskCursor(void)
 {
-  vAddPrimitive("taskCursor.begin",  &vTaskCursorBegin,  false);
-  vAddPrimitive("taskCursor.delete", &vTaskCursorDelete, false);
-  vAddPrimitive("taskCursor.end",    &vTaskCursorEnd,    false);
-  vAddPrimitive("taskCursor.first",  &vTaskCursorFirst,  false);
-  vAddPrimitive("taskcursor.get",    &vTaskCursorGet,    false);
-  vAddPrimitive("taskcursor.init",   &vTaskCursorInit,   false);
-  vAddPrimitive("taskcursor.new",    &vTaskCursorNew,    false);
-  vAddPrimitive("taskcursor.next",   &vTaskCursorNext,   false);
+  vAddPrimitive("taskCursor.begin"_Str,  &vTaskCursorBegin,  false);
+  vAddPrimitive("taskCursor.delete"_Str, &vTaskCursorDelete, false);
+  vAddPrimitive("taskCursor.end"_Str,    &vTaskCursorEnd,    false);
+  vAddPrimitive("taskCursor.first"_Str,  &vTaskCursorFirst,  false);
+  vAddPrimitive("taskcursor.get"_Str,    &vTaskCursorGet,    false);
+  vAddPrimitive("taskcursor.init"_Str,   &vTaskCursorInit,   false);
+  vAddPrimitive("taskcursor.new"_Str,    &vTaskCursorNew,    false);
+  vAddPrimitive("taskcursor.next"_Str,   &vTaskCursorNext,   false);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -34,18 +34,18 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Input(void)
 {
-  vAddPrimitive("accept",          &vInputAccept,      false);
-  vAddPrimitive("input.close",     &vInputClose,       false);
-  vAddPrimitive("input.depth",     &vInputDepth,       false);
-  vAddPrimitive("input.next",      &vInputNext,        false);
-  vAddPrimitive("input.open",      &vInputOpen,        false);
-  vAddPrimitive("input.pop",       &vInputPop,         false);
-  vAddPrimitive("input.push",      &vInputPush,        false);
-  vAddPrimitive("input.stdin",     &vInputStdin,       false);
-  vAddPrimitive("input.text",      &vInputText,        false);
-  vAddPrimitive("input.token",     &vInputToken,       false);
-  vAddPrimitive("input.type",      &vInputType,        false);
-  vAddPrimitive("token:",          &vTokenColon,       false);
+  vAddPrimitive("accept"_Str,          &vInputAccept,      false);
+  vAddPrimitive("input.close"_Str,     &vInputClose,       false);
+  vAddPrimitive("input.depth"_Str,     &vInputDepth,       false);
+  vAddPrimitive("input.next"_Str,      &vInputNext,        false);
+  vAddPrimitive("input.open"_Str,      &vInputOpen,        false);
+  vAddPrimitive("input.pop"_Str,       &vInputPop,         false);
+  vAddPrimitive("input.push"_Str,      &vInputPush,        false);
+  vAddPrimitive("input.stdin"_Str,     &vInputStdin,       false);
+  vAddPrimitive("input.text"_Str,      &vInputText,        false);
+  vAddPrimitive("input.token"_Str,     &vInputToken,       false);
+  vAddPrimitive("input.type"_Str,      &vInputType,        false);
+  vAddPrimitive("token:"_Str,          &vTokenColon,       false);
 }
 
 /*----------------------------------------------------------------------------*/

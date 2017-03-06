@@ -35,10 +35,10 @@ extern PlanList*       gpPlanList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_PlanList(void)
 {
-  vAddPrimitive("planList::addPlan",    &vPlanListAddPlan,    false);
-  vAddPrimitive("planList::findPlan",   &vPlanListFindPlan,   false);
-  vAddPrimitive("planList::removePlan", &vPlanListRemovePlan, false);
-  vAddPrimitive("planList::show",       &vPlanListShow,       false);
+  vAddPrimitive("planList::addPlan"_Str,    &vPlanListAddPlan,    false);
+  vAddPrimitive("planList::findPlan"_Str,   &vPlanListFindPlan,   false);
+  vAddPrimitive("planList::removePlan"_Str, &vPlanListRemovePlan, false);
+  vAddPrimitive("planList::show"_Str,       &vPlanListShow,       false);
 }
 
 /*----------------------------------------------------------------------------*/

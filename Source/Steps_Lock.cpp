@@ -34,11 +34,11 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Lock(void)
 {
-  vAddPrimitive("lock.dropRead",   &vLockDropRead,     false);
-  vAddPrimitive("lock.dropWrite",  &vLockDropWrite,    false);
-  vAddPrimitive("lock.grabRead",   &vLockGrabRead,     false);
-  vAddPrimitive("lock.grabWrite",  &vLockGrabWrite,    false);
-  vAddPrimitive("lock.init",       &vLockInit,         false);
+  vAddPrimitive("lock.dropRead"_Str,   &vLockDropRead,     false);
+  vAddPrimitive("lock.dropWrite"_Str,  &vLockDropWrite,    false);
+  vAddPrimitive("lock.grabRead"_Str,   &vLockGrabRead,     false);
+  vAddPrimitive("lock.grabWrite"_Str,  &vLockGrabWrite,    false);
+  vAddPrimitive("lock.init"_Str,       &vLockInit,         false);
 }
 
 /*----------------------------------------------------------------------------*/

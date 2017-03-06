@@ -40,9 +40,9 @@ void Task::vAddPrimitives_Address(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  vAddPrimitive("eql",             &vAddressEqual,     false);
-  vAddPrimitive("@",               &vAddressFetch,     false);
-  vAddPrimitive("!",               &vAddressStore,     false);
+  vAddPrimitive("eql"_Str,             &vAddressEqual,     false);
+  vAddPrimitive("@"_Str,               &vAddressFetch,     false);
+  vAddPrimitive("!"_Str,               &vAddressStore,     false);
 }
 
 /*----------------------------------------------------------------------------*/

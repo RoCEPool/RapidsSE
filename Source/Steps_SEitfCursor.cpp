@@ -34,14 +34,14 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_SEitfCursor(void)
 {
-  vAddPrimitive("seitfCursor.begin",  &vSEitfCursorBegin,  false);
-  vAddPrimitive("seitfCursor.delete", &vSEitfCursorDelete, false);
-  vAddPrimitive("seitfCursor.end",    &vSEitfCursorEnd,    false);
-  vAddPrimitive("seitfCursor.first",  &vSEitfCursorFirst,  false);
-  vAddPrimitive("seitfCursor.get",    &vSEitfCursorGet,    false);
-  vAddPrimitive("seitfCursor.init",   &vSEitfCursorInit,   false);
-  vAddPrimitive("seitfCursor.new",    &vSEitfCursorNew,    false);
-  vAddPrimitive("seitfCursor.next",   &vSEitfCursorNext,   false);
+  vAddPrimitive("seitfCursor.begin"_Str,  &vSEitfCursorBegin,  false);
+  vAddPrimitive("seitfCursor.delete"_Str, &vSEitfCursorDelete, false);
+  vAddPrimitive("seitfCursor.end"_Str,    &vSEitfCursorEnd,    false);
+  vAddPrimitive("seitfCursor.first"_Str,  &vSEitfCursorFirst,  false);
+  vAddPrimitive("seitfCursor.get"_Str,    &vSEitfCursorGet,    false);
+  vAddPrimitive("seitfCursor.init"_Str,   &vSEitfCursorInit,   false);
+  vAddPrimitive("seitfCursor.new"_Str,    &vSEitfCursorNew,    false);
+  vAddPrimitive("seitfCursor.next"_Str,   &vSEitfCursorNext,   false);
 }
 
 /*----------------------------------------------------------------------------*/

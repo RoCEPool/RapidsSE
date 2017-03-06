@@ -34,7 +34,7 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Comment(void)
 {
-  vAddPrimitive("(",               &vComment,          true );
+  vAddPrimitive("("_Str,               &vComment,          true );
 }
 
 /*----------------------------------------------------------------------------*/

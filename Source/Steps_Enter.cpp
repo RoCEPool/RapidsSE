@@ -34,8 +34,8 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Enter(void)
 {
-  vAddPrimitive("enterObject",     &vEnterObject,      false);
-  vAddPrimitive("enterRoutine",    &vEnterRoutine,     false);
+  vAddPrimitive("enterObject"_Str,     &vEnterObject,      false);
+  vAddPrimitive("enterRoutine"_Str,    &vEnterRoutine,     false);
 }
 
 /*----------------------------------------------------------------------------*/

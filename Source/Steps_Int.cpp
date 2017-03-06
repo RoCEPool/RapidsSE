@@ -34,19 +34,19 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Int(void)
 {
-  vAddPrimitive("+",               &vIntAdd,           false);
-  vAddPrimitive("/",               &vIntDivide,        false);
-  vAddPrimitive("==",              &vIntEqual,         false);
-  vAddPrimitive(">",               &vIntGreater,       false);
-  vAddPrimitive(">=",              &vIntGreaterEqual,  false);
-  vAddPrimitive("hash",            &vIntHash,          false);
-  vAddPrimitive("<",               &vIntLess,          false);
-  vAddPrimitive("<=",              &vIntLessEqual,     false);
-  vAddPrimitive("%",               &vIntModulo,        false);
-  vAddPrimitive("*",               &vIntMultiply,      false);
-  vAddPrimitive("neg",             &vIntNeg,           false);
-  vAddPrimitive("!=",              &vIntNotEqual,      false);
-  vAddPrimitive("-",               &vIntSubtract,      false);
+  vAddPrimitive("+"_Str,               &vIntAdd,           false);
+  vAddPrimitive("/"_Str,               &vIntDivide,        false);
+  vAddPrimitive("=="_Str,              &vIntEqual,         false);
+  vAddPrimitive(">"_Str,               &vIntGreater,       false);
+  vAddPrimitive(">="_Str,              &vIntGreaterEqual,  false);
+  vAddPrimitive("hash"_Str,            &vIntHash,          false);
+  vAddPrimitive("<"_Str,               &vIntLess,          false);
+  vAddPrimitive("<="_Str,              &vIntLessEqual,     false);
+  vAddPrimitive("%"_Str,               &vIntModulo,        false);
+  vAddPrimitive("*"_Str,               &vIntMultiply,      false);
+  vAddPrimitive("neg"_Str,             &vIntNeg,           false);
+  vAddPrimitive("!="_Str,              &vIntNotEqual,      false);
+  vAddPrimitive("-"_Str,               &vIntSubtract,      false);
 }
 
 /*----------------------------------------------------------------------------*/

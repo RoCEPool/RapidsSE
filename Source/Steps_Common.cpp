@@ -34,13 +34,13 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Common(void)
 {
-  vAddPrimitive("common.fetch",    &vCommonFetch,      false);
-  vAddPrimitive("common.store",    &vCommonStore,      false);
-  vAddPrimitive("common/",         &vCommonSlash,      true);
-  vAddPrimitive("toCommon",        &vCommonToCommon,   true);
+  vAddPrimitive("common.fetch"_Str,    &vCommonFetch,      false);
+  vAddPrimitive("common.store"_Str,    &vCommonStore,      false);
+  vAddPrimitive("common/"_Str,         &vCommonSlash,      true);
+  vAddPrimitive("toCommon"_Str,        &vCommonToCommon,   true);
 
-  vAddPrimitive("opFrame.drop",    &vOpFrameDrop,      false);
-  vAddPrimitive("opFrame.push",    &vOpFramePush,      false);
+  vAddPrimitive("opFrame.drop"_Str,    &vOpFrameDrop,      false);
+  vAddPrimitive("opFrame.push"_Str,    &vOpFramePush,      false);
 }
 
 /*----------------------------------------------------------------------------*/

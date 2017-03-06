@@ -34,17 +34,17 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Flow(void)
 {
-  vAddPrimitive("begin_",          &vFlowBegin_,       false);
-  vAddPrimitive("execute",         &vFlowExecute,      false);
-  vAddPrimitive("hazard",          &vFlowHazard,       false);
-  vAddPrimitive("jump",            &vFlowJump,         false);
-  vAddPrimitive("jumpBegin_",      &vFlowJumpBegin_,   false);
-  vAddPrimitive("jumpFalse",       &vFlowJumpFalse,    false);
-  vAddPrimitive("jumpTrue",        &vFlowJumpTrue,     false);
-  vAddPrimitive("nop",             &vFlowNop,          false);
-  vAddPrimitive("retryPoint",      &vFlowRetryPoint,   false);
-  vAddPrimitive("test",            &vFlowTest,         false);
-  vAddPrimitive("throw",           &vFlowThrow,        false);
+  vAddPrimitive("begin_"_Str,          &vFlowBegin_,       false);
+  vAddPrimitive("execute"_Str,         &vFlowExecute,      false);
+  vAddPrimitive("hazard"_Str,          &vFlowHazard,       false);
+  vAddPrimitive("jump"_Str,            &vFlowJump,         false);
+  vAddPrimitive("jumpBegin_"_Str,      &vFlowJumpBegin_,   false);
+  vAddPrimitive("jumpFalse"_Str,       &vFlowJumpFalse,    false);
+  vAddPrimitive("jumpTrue"_Str,        &vFlowJumpTrue,     false);
+  vAddPrimitive("nop"_Str,             &vFlowNop,          false);
+  vAddPrimitive("retryPoint"_Str,      &vFlowRetryPoint,   false);
+  vAddPrimitive("test"_Str,            &vFlowTest,         false);
+  vAddPrimitive("throw"_Str,           &vFlowThrow,        false);
 }
 
 /*----------------------------------------------------------------------------*/

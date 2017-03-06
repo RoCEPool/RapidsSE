@@ -34,12 +34,12 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Object(void)
 {
-  vAddPrimitive("object.class@",     &vObjectClassFetch, false);
-  vAddPrimitive("object.class!",     &vObjectClassStore, false);
-  vAddPrimitive("object@",           &vObjectFetch,      false);
-  vAddPrimitive("object.magic!",    &vObjectMagicMark,  false);
-  vAddPrimitive("object!",           &vObjectStore,      false);
-  vAddPrimitive("object.wordbody!",  &vObjectWordBodySet,false);
+  vAddPrimitive("object.class@"_Str,     &vObjectClassFetch, false);
+  vAddPrimitive("object.class!"_Str,     &vObjectClassStore, false);
+  vAddPrimitive("object@"_Str,           &vObjectFetch,      false);
+  vAddPrimitive("object.magic!"_Str,    &vObjectMagicMark,  false);
+  vAddPrimitive("object!"_Str,           &vObjectStore,      false);
+  vAddPrimitive("object.wordbody!"_Str,  &vObjectWordBodySet,false);
 }
 
 /*----------------------------------------------------------------------------*/

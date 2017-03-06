@@ -34,10 +34,10 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Docol(void)
 {
-  vAddPrimitive("]",                     &vDocolCompiling,      false);
-  vAddPrimitive("[",                     &vDocolInterpreting,   true );
-  vAddPrimitive("docol.isCompiling",     &vDocolIsCompiling,    false);
-  vAddPrimitive("docol.isInterpreting",  &vDocolIsInterpreting, false);
+  vAddPrimitive("]"_Str,                     &vDocolCompiling,      false);
+  vAddPrimitive("["_Str,                     &vDocolInterpreting,   true );
+  vAddPrimitive("docol.isCompiling"_Str,     &vDocolIsCompiling,    false);
+  vAddPrimitive("docol.isInterpreting"_Str,  &vDocolIsInterpreting, false);
 }
 
 /*----------------------------------------------------------------------------*/

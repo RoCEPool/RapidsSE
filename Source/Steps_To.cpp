@@ -34,15 +34,15 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_To(void)
 {
-  vAddPrimitive(">binval",     &vToBinVal,     false);
-  vAddPrimitive(">body",       &vToBody,       false);
-  vAddPrimitive(">cmd",        &vToCmd,        false);
-  vAddPrimitive(">digitName",  &vToDigitName,  false);
-  vAddPrimitive(">int",        &vToInt,        false);
-  vAddPrimitive(">object",     &vToObject,     false);
-  vAddPrimitive(">seitf",      &vToSEitf,      false);
-  vAddPrimitive(">str",        &vToStr,        false);
-  vAddPrimitive(">task",       &vToTask,       false);
+  vAddPrimitive(">binval"_Str,     &vToBinVal,     false);
+  vAddPrimitive(">body"_Str,       &vToBody,       false);
+  vAddPrimitive(">cmd"_Str,        &vToCmd,        false);
+  vAddPrimitive(">digitName"_Str,  &vToDigitName,  false);
+  vAddPrimitive(">int"_Str,        &vToInt,        false);
+  vAddPrimitive(">object"_Str,     &vToObject,     false);
+  vAddPrimitive(">seitf"_Str,      &vToSEitf,      false);
+  vAddPrimitive(">str"_Str,        &vToStr,        false);
+  vAddPrimitive(">task"_Str,       &vToTask,       false);
 }
 
 /*----------------------------------------------------------------------------*/

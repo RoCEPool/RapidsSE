@@ -40,20 +40,20 @@ void Task::vAddPrimitives_Bp(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  vAddPrimitive("_bp_analyze",     &vBpAnalyze,        false);
-  vAddPrimitive("_bp_dump",        &vBpDump,           false);
-  vAddPrimitive("bp.freeBuffers",  &vFreeBuffers,      false);
-  vAddPrimitive("bp.freePercent",  &vFreePercent,      false);
-  vAddPrimitive("bp.freeSpace",    &vFreeSpace,        false);
-  vAddPrimitive("bp.inUseSpace",   &vInUseSpace,       false);
-  vAddPrimitive("bp.snapshot",     &vSnapshot,         false);
-  vAddPrimitive("bp.totalSpace",   &vTotalSpace,       false);
+  vAddPrimitive("_bp_analyze"_Str,     &vBpAnalyze,        false);
+  vAddPrimitive("_bp_dump"_Str,        &vBpDump,           false);
+  vAddPrimitive("bp.freeBuffers"_Str,  &vFreeBuffers,      false);
+  vAddPrimitive("bp.freePercent"_Str,  &vFreePercent,      false);
+  vAddPrimitive("bp.freeSpace"_Str,    &vFreeSpace,        false);
+  vAddPrimitive("bp.inUseSpace"_Str,   &vInUseSpace,       false);
+  vAddPrimitive("bp.snapshot"_Str,     &vSnapshot,         false);
+  vAddPrimitive("bp.totalSpace"_Str,   &vTotalSpace,       false);
 
-  vAddPrimitive("bpa",             &vBpAnalyze,        false);
-  vAddPrimitive("bpd",             &vBpDump,           false);
+  vAddPrimitive("bpa"_Str,             &vBpAnalyze,        false);
+  vAddPrimitive("bpd"_Str,             &vBpDump,           false);
  
-  vAddPrimitive("epochDump",       &vBpEpochDump,      false);
-  vAddPrimitive("epochTake",       &vBpEpochTake,      false);
+  vAddPrimitive("epochDump"_Str,       &vBpEpochDump,      false);
+  vAddPrimitive("epochTake"_Str,       &vBpEpochTake,      false);
 }
 
 /*----------------------------------------------------------------------------*/

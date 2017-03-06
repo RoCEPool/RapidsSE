@@ -34,14 +34,14 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_ThreadCursor(void)
 {
-  vAddPrimitive("threadCursor.begin",  &vThreadCursorBegin,  false);
-  vAddPrimitive("threadCursor.delete", &vThreadCursorDelete, false);
-  vAddPrimitive("threadCursor.end",    &vThreadCursorEnd,    false);
-  vAddPrimitive("threadCursor.first",  &vThreadCursorFirst,  false);
-  vAddPrimitive("threadCursor.get",    &vThreadCursorGet,    false);
-  vAddPrimitive("threadCursor.init",   &vThreadCursorInit,   false);
-  vAddPrimitive("threadCursor.new",    &vThreadCursorNew,    false);
-  vAddPrimitive("threadCursor.next",   &vThreadCursorNext,   false);
+  vAddPrimitive("threadCursor.begin"_Str,  &vThreadCursorBegin,  false);
+  vAddPrimitive("threadCursor.delete"_Str, &vThreadCursorDelete, false);
+  vAddPrimitive("threadCursor.end"_Str,    &vThreadCursorEnd,    false);
+  vAddPrimitive("threadCursor.first"_Str,  &vThreadCursorFirst,  false);
+  vAddPrimitive("threadCursor.get"_Str,    &vThreadCursorGet,    false);
+  vAddPrimitive("threadCursor.init"_Str,   &vThreadCursorInit,   false);
+  vAddPrimitive("threadCursor.new"_Str,    &vThreadCursorNew,    false);
+  vAddPrimitive("threadCursor.next"_Str,   &vThreadCursorNext,   false);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -34,23 +34,23 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_LoaderSub(void)
 {
-  vAddPrimitive("loaderSub.appendBuffer",&vLoaderSubAppendBuffer,false);
-  vAddPrimitive("loaderSub.begin",       &vLoaderSubBegin,       false);
-  vAddPrimitive("loaderSub.delete",      &vLoaderSubDelete,      false);
-  vAddPrimitive("loaderSub.end",         &vLoaderSubEnd,         false);
-  vAddPrimitive("loaderSub.fetchRecord", &vLoaderSubFetchRecord, false);
-  vAddPrimitive("loaderSub.hashPartition",&vLoaderSubHashPartition, false);
-  vAddPrimitive("loaderSub.hashRecord",  &vLoaderSubHashRecord,  false);
-  vAddPrimitive("loaderSub.init",        &vLoaderSubInit,        false);
-  vAddPrimitive("loaderSub.insertRow",   &vLoaderSubInsertRow,   false);
-  vAddPrimitive("loaderSub.insertRow?",  &vLoaderSubInsertRow2,  false);
-  vAddPrimitive("loaderSub.loader!",     &vLoaderSubLoaderStore, false);
-  vAddPrimitive("loaderSub.new",         &vLoaderSubNew,         false);
-  vAddPrimitive("loaderSub.partition",   &vLoaderSubPartition,   false);
-  vAddPrimitive("loaderSub.partition!",  &vLoaderSubPartitionStore, false);
-  vAddPrimitive("loaderSub.rowBuffer",   &vLoaderSubRowBuffer,   false);
-  vAddPrimitive("loaderSub.rowBuffer!",  &vLoaderSubRowBufferStore, false);
-  vAddPrimitive("loaderSub.table",       &vLoaderSubTable,       false);
+  vAddPrimitive("loaderSub.appendBuffer"_Str,&vLoaderSubAppendBuffer,false);
+  vAddPrimitive("loaderSub.begin"_Str,       &vLoaderSubBegin,       false);
+  vAddPrimitive("loaderSub.delete"_Str,      &vLoaderSubDelete,      false);
+  vAddPrimitive("loaderSub.end"_Str,         &vLoaderSubEnd,         false);
+  vAddPrimitive("loaderSub.fetchRecord"_Str, &vLoaderSubFetchRecord, false);
+  vAddPrimitive("loaderSub.hashPartition"_Str,&vLoaderSubHashPartition, false);
+  vAddPrimitive("loaderSub.hashRecord"_Str,  &vLoaderSubHashRecord,  false);
+  vAddPrimitive("loaderSub.init"_Str,        &vLoaderSubInit,        false);
+  vAddPrimitive("loaderSub.insertRow"_Str,   &vLoaderSubInsertRow,   false);
+  vAddPrimitive("loaderSub.insertRow?"_Str,  &vLoaderSubInsertRow2,  false);
+  vAddPrimitive("loaderSub.loader!"_Str,     &vLoaderSubLoaderStore, false);
+  vAddPrimitive("loaderSub.new"_Str,         &vLoaderSubNew,         false);
+  vAddPrimitive("loaderSub.partition"_Str,   &vLoaderSubPartition,   false);
+  vAddPrimitive("loaderSub.partition!"_Str,  &vLoaderSubPartitionStore, false);
+  vAddPrimitive("loaderSub.rowBuffer"_Str,   &vLoaderSubRowBuffer,   false);
+  vAddPrimitive("loaderSub.rowBuffer!"_Str,  &vLoaderSubRowBufferStore, false);
+  vAddPrimitive("loaderSub.table"_Str,       &vLoaderSubTable,       false);
 }
 
 /*----------------------------------------------------------------------------*/

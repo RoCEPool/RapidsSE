@@ -34,23 +34,23 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Grid(void)
 {
-  vAddPrimitive("grid.appendNodes",   &vGridAppendNodes,       false);
-  vAddPrimitive("grid.find",          &vGridFindNode,          false);
-  vAddPrimitive("grid.init",          &vGridInit,              false);
-  vAddPrimitive("grid.node",          &vGridNode,              false);
-  vAddPrimitive("grid.nodes",         &vGridNodes,             false);
-  vAddPrimitive("grid.partitions",    &vGridPartitions,        false);
-  vAddPrimitive("grid.slots",         &vGridSlots,             false);
-  vAddPrimitive("grid.started!",      &vGridStartedStore,      false);
-  vAddPrimitive("grid.started@",      &vGridStartedFetch,      false);
-  vAddPrimitive("grid.startNode!",    &vGridStartNodeStore,    false);
-  vAddPrimitive("grid.startNode@",    &vGridStartNodeFetch,    false);
-  vAddPrimitive("grid.thisNode!",     &vGridThisNodeStore,     false);
-  vAddPrimitive("grid.thisNode@",     &vGridThisNodeFetch,     false);
-  vAddPrimitive("grid.thisNodeName@", &vGridThisNodeNameFetch, false);
-  vAddPrimitive("grid::toNode",       &vGridToNode,            false);
-  vAddPrimitive("grid::toPartition",  &vGridToPartition,       false);
-  vAddPrimitive("grid::toSlot",       &vGridToSlot,            false);
+  vAddPrimitive("grid.appendNodes"_Str,   &vGridAppendNodes,       false);
+  vAddPrimitive("grid.find"_Str,          &vGridFindNode,          false);
+  vAddPrimitive("grid.init"_Str,          &vGridInit,              false);
+  vAddPrimitive("grid.node"_Str,          &vGridNode,              false);
+  vAddPrimitive("grid.nodes"_Str,         &vGridNodes,             false);
+  vAddPrimitive("grid.partitions"_Str,    &vGridPartitions,        false);
+  vAddPrimitive("grid.slots"_Str,         &vGridSlots,             false);
+  vAddPrimitive("grid.started!"_Str,      &vGridStartedStore,      false);
+  vAddPrimitive("grid.started@"_Str,      &vGridStartedFetch,      false);
+  vAddPrimitive("grid.startNode!"_Str,    &vGridStartNodeStore,    false);
+  vAddPrimitive("grid.startNode@"_Str,    &vGridStartNodeFetch,    false);
+  vAddPrimitive("grid.thisNode!"_Str,     &vGridThisNodeStore,     false);
+  vAddPrimitive("grid.thisNode@"_Str,     &vGridThisNodeFetch,     false);
+  vAddPrimitive("grid.thisNodeName@"_Str, &vGridThisNodeNameFetch, false);
+  vAddPrimitive("grid::toNode"_Str,       &vGridToNode,            false);
+  vAddPrimitive("grid::toPartition"_Str,  &vGridToPartition,       false);
+  vAddPrimitive("grid::toSlot"_Str,       &vGridToSlot,            false);
 }
 
 /*----------------------------------------------------------------------------*/

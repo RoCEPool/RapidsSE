@@ -34,31 +34,31 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Rstack(void)
 {
-  vAddPrimitive("cs-pick",         &vRstackCsPick,     false);
-  vAddPrimitive("cs-roll",         &vRstackCsRoll,     false);
-  vAddPrimitive("rdepth",          &vRstackDepth,      false);
-  vAddPrimitive("rdrop",           &vRstackDrop,       false);
-  vAddPrimitive("r@",              &vRstackFetch,      false);
-  vAddPrimitive("2r@",             &vRstackFetchTwo,   false);
-  vAddPrimitive("rpick",           &vRstackPick,       false);
-  vAddPrimitive("rreverse",        &vRstackReverse,    false);
-  vAddPrimitive("rroll",           &vRstackRoll,       false);
-  vAddPrimitive("-rroll",          &vRstackRollInv,    false);
-//  vAddPrimitive("rstk",            &vRstackStk,       false);
-  vAddPrimitive("rswap",           &vRstackSwap,       false);
-  vAddPrimitive("r>",              &vRstackToP,        false);
-  vAddPrimitive(">r",              &vRstackToR,        false);
-  vAddPrimitive("2>r",             &vRstackToRTwo,     false);
-  vAddPrimitive("r0",              &vRstack0,          false);
-  vAddPrimitive("r1",              &vRstack1,          false);
-  vAddPrimitive("r2",              &vRstack2,          false);
-  vAddPrimitive("r3",              &vRstack3,          false);
-  vAddPrimitive("r4",              &vRstack4,          false);
-  vAddPrimitive("r5",              &vRstack5,          false);
-  vAddPrimitive("r6",              &vRstack6,          false);
-  vAddPrimitive("r7",              &vRstack7,          false);
-  vAddPrimitive("r8",              &vRstack8,          false);
-  vAddPrimitive("r9",              &vRstack9,          false);
+  vAddPrimitive("cs-pick"_Str,         &vRstackCsPick,     false);
+  vAddPrimitive("cs-roll"_Str,         &vRstackCsRoll,     false);
+  vAddPrimitive("rdepth"_Str,          &vRstackDepth,      false);
+  vAddPrimitive("rdrop"_Str,           &vRstackDrop,       false);
+  vAddPrimitive("r@"_Str,              &vRstackFetch,      false);
+  vAddPrimitive("2r@"_Str,             &vRstackFetchTwo,   false);
+  vAddPrimitive("rpick"_Str,           &vRstackPick,       false);
+  vAddPrimitive("rreverse"_Str,        &vRstackReverse,    false);
+  vAddPrimitive("rroll"_Str,           &vRstackRoll,       false);
+  vAddPrimitive("-rroll"_Str,          &vRstackRollInv,    false);
+//  vAddPrimitive("rstk"_Str,            &vRstackStk,       false);
+  vAddPrimitive("rswap"_Str,           &vRstackSwap,       false);
+  vAddPrimitive("r>"_Str,              &vRstackToP,        false);
+  vAddPrimitive(">r"_Str,              &vRstackToR,        false);
+  vAddPrimitive("2>r"_Str,             &vRstackToRTwo,     false);
+  vAddPrimitive("r0"_Str,              &vRstack0,          false);
+  vAddPrimitive("r1"_Str,              &vRstack1,          false);
+  vAddPrimitive("r2"_Str,              &vRstack2,          false);
+  vAddPrimitive("r3"_Str,              &vRstack3,          false);
+  vAddPrimitive("r4"_Str,              &vRstack4,          false);
+  vAddPrimitive("r5"_Str,              &vRstack5,          false);
+  vAddPrimitive("r6"_Str,              &vRstack6,          false);
+  vAddPrimitive("r7"_Str,              &vRstack7,          false);
+  vAddPrimitive("r8"_Str,              &vRstack8,          false);
+  vAddPrimitive("r9"_Str,              &vRstack9,          false);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -34,18 +34,18 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_RowCursor(void)
 {
-  vAddPrimitive("rowCursor.begin",      &vRowCursorBegin,           false);
-  vAddPrimitive("rowCursor.delete",     &vRowCursorDelete,          false);
-  vAddPrimitive("rowCursor.end",        &vRowCursorEnd,             false);
-  vAddPrimitive("rowCursor.first",      &vRowCursorFirst,           false);
-  vAddPrimitive("rowCursor.init",       &vRowCursorInit,            false);
-  vAddPrimitive("rowCursor.new",        &vRowCursorNew,             false);
-  vAddPrimitive("rowCursor.next",       &vRowCursorNext,            false);
-  vAddPrimitive("rowCursor.row",        &vRowCursorRow,             false);
-  vAddPrimitive("rowCursor.rowBuffer@", &vRowCursorRowBufferFetch,  false);
-  vAddPrimitive("rowCursor.rowBuffer!", &vRowCursorRowBufferStore,  false);
-  vAddPrimitive("rowCursor.table@",     &vRowCursorTableFetch,      false);
-  vAddPrimitive("rowCursor.table!",     &vRowCursorTableStore,      false);
+  vAddPrimitive("rowCursor.begin"_Str,      &vRowCursorBegin,           false);
+  vAddPrimitive("rowCursor.delete"_Str,     &vRowCursorDelete,          false);
+  vAddPrimitive("rowCursor.end"_Str,        &vRowCursorEnd,             false);
+  vAddPrimitive("rowCursor.first"_Str,      &vRowCursorFirst,           false);
+  vAddPrimitive("rowCursor.init"_Str,       &vRowCursorInit,            false);
+  vAddPrimitive("rowCursor.new"_Str,        &vRowCursorNew,             false);
+  vAddPrimitive("rowCursor.next"_Str,       &vRowCursorNext,            false);
+  vAddPrimitive("rowCursor.row"_Str,        &vRowCursorRow,             false);
+  vAddPrimitive("rowCursor.rowBuffer@"_Str, &vRowCursorRowBufferFetch,  false);
+  vAddPrimitive("rowCursor.rowBuffer!"_Str, &vRowCursorRowBufferStore,  false);
+  vAddPrimitive("rowCursor.table@"_Str,     &vRowCursorTableFetch,      false);
+  vAddPrimitive("rowCursor.table!"_Str,     &vRowCursorTableStore,      false);
 }
 
 /*----------------------------------------------------------------------------*/

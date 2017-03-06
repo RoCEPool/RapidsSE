@@ -34,17 +34,17 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Timer(void)
 {
-  vAddPrimitive("timer.delete",    &vTimerDelete,      false);
-  vAddPrimitive("timer.init",      &vTimerInit,        false);
-  vAddPrimitive("timer.microsecs", &vTimerMicrosecs,   false);
-  vAddPrimitive("timer.millisecs", &vTimerMillisecs,   false);
-  vAddPrimitive("timer.nanosecs",  &vTimerNanosecs,    false);
-  vAddPrimitive("timer.new",       &vTimerNew,         false);
-  vAddPrimitive("timer.reset",     &vTimerReset,       false);
-  vAddPrimitive("timer.secs",      &vTimerSecs,        false);
-  vAddPrimitive("timer.start",     &vTimerStart,       false);
-  vAddPrimitive("timer.ticks",     &vTimerTicks,       false);
-  vAddPrimitive("timer.update",    &vTimerUpdate,      false);
+  vAddPrimitive("timer.delete"_Str,    &vTimerDelete,      false);
+  vAddPrimitive("timer.init"_Str,      &vTimerInit,        false);
+  vAddPrimitive("timer.microsecs"_Str, &vTimerMicrosecs,   false);
+  vAddPrimitive("timer.millisecs"_Str, &vTimerMillisecs,   false);
+  vAddPrimitive("timer.nanosecs"_Str,  &vTimerNanosecs,    false);
+  vAddPrimitive("timer.new"_Str,       &vTimerNew,         false);
+  vAddPrimitive("timer.reset"_Str,     &vTimerReset,       false);
+  vAddPrimitive("timer.secs"_Str,      &vTimerSecs,        false);
+  vAddPrimitive("timer.start"_Str,     &vTimerStart,       false);
+  vAddPrimitive("timer.ticks"_Str,     &vTimerTicks,       false);
+  vAddPrimitive("timer.update"_Str,    &vTimerUpdate,      false);
 }
 
 /*----------------------------------------------------------------------------*/

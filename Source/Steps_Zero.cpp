@@ -34,12 +34,12 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Zero(void)
 {
-  vAddPrimitive("0<",              &vZeroLess,         false);
-  vAddPrimitive("0<=",             &vZeroLessEqual,    false);
-  vAddPrimitive("0==",             &vZeroEqual,        false);
-  vAddPrimitive("0!=",             &vZeroNotEqual,     false);
-  vAddPrimitive("0>=",             &vZeroGreaterEqual, false);
-  vAddPrimitive("0>",              &vZeroGreater,      false);
+  vAddPrimitive("0<"_Str,              &vZeroLess,         false);
+  vAddPrimitive("0<="_Str,             &vZeroLessEqual,    false);
+  vAddPrimitive("0=="_Str,             &vZeroEqual,        false);
+  vAddPrimitive("0!="_Str,             &vZeroNotEqual,     false);
+  vAddPrimitive("0>="_Str,             &vZeroGreaterEqual, false);
+  vAddPrimitive("0>"_Str,              &vZeroGreater,      false);
 }
 
 /*----------------------------------------------------------------------------*/

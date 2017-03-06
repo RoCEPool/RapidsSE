@@ -34,10 +34,10 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Trace(void)
 {
-  vAddPrimitive("traceOff",        &vTraceOff,         false);
-  vAddPrimitive("traceOn",         &vTraceOn,          false);
-  vAddPrimitive("tracePoint",      &vTracePoint,       false);
-  vAddPrimitive("trace!",          &vTraceSet,         false);
+  vAddPrimitive("traceOff"_Str,        &vTraceOff,         false);
+  vAddPrimitive("traceOn"_Str,         &vTraceOn,          false);
+  vAddPrimitive("tracePoint"_Str,      &vTracePoint,       false);
+  vAddPrimitive("trace!"_Str,          &vTraceSet,         false);
 }
 
 /*----------------------------------------------------------------------------*/

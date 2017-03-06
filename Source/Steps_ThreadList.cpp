@@ -34,8 +34,8 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_ThreadList(void)
 {
-  vAddPrimitive("threadList.dump", &vThreadListDump,   false);
-  vAddPrimitive("threadList.init", &vThreadListInit,   false);
+  vAddPrimitive("threadList.dump"_Str, &vThreadListDump,   false);
+  vAddPrimitive("threadList.init"_Str, &vThreadListInit,   false);
 }
 
 /*----------------------------------------------------------------------------*/

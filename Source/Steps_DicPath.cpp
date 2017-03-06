@@ -34,11 +34,11 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_DicStack(void)
 {
-  vAddPrimitive("dicPath.depth",    &vDicPathDepth,    false);
-  vAddPrimitive("dicPath.drop",     &vDicPathDrop,     false);
-  vAddPrimitive("dicPath.dump",     &vDicPathDump,     false);
-  vAddPrimitive("dicPath.pick",     &vDicPathPick,     false);
-  vAddPrimitive("dicPath.push",     &vDicPathPush,     false);
+  vAddPrimitive("dicPath.depth"_Str,    &vDicPathDepth,    false);
+  vAddPrimitive("dicPath.drop"_Str,     &vDicPathDrop,     false);
+  vAddPrimitive("dicPath.dump"_Str,     &vDicPathDump,     false);
+  vAddPrimitive("dicPath.pick"_Str,     &vDicPathPick,     false);
+  vAddPrimitive("dicPath.push"_Str,     &vDicPathPush,     false);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -34,17 +34,17 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Dic(void)
 {
-  vAddPrimitive("dic.frozen@",     &vDicFrozenGet,     false);
-  vAddPrimitive("dic.frozen!",     &vDicFrozenSet,     false);
-  vAddPrimitive("dic.init",        &vDicInit,          false);
-  vAddPrimitive("dic.isCompiled",  &vDicIsCompiled,    false);
-  vAddPrimitive("dic.kind@",       &vDicKindGet,       false);
-  vAddPrimitive("dic.kind!",       &vDicKindSet,       false);
-  vAddPrimitive("dic.lastWord",    &vDicLastWord,      false);
-  vAddPrimitive("dic.main",        &vDicMain,          false);
-  vAddPrimitive("dic.name",        &vDicName,          false);
-  vAddPrimitive("dic.ref",         &vDicRef,           false);
-  vAddPrimitive("dic.wordCount",   &vDicWordCount,     false);
+  vAddPrimitive("dic.frozen@"_Str,     &vDicFrozenGet,     false);
+  vAddPrimitive("dic.frozen!"_Str,     &vDicFrozenSet,     false);
+  vAddPrimitive("dic.init"_Str,        &vDicInit,          false);
+  vAddPrimitive("dic.isCompiled"_Str,  &vDicIsCompiled,    false);
+  vAddPrimitive("dic.kind@"_Str,       &vDicKindGet,       false);
+  vAddPrimitive("dic.kind!"_Str,       &vDicKindSet,       false);
+  vAddPrimitive("dic.lastWord"_Str,    &vDicLastWord,      false);
+  vAddPrimitive("dic.main"_Str,        &vDicMain,          false);
+  vAddPrimitive("dic.name"_Str,        &vDicName,          false);
+  vAddPrimitive("dic.ref"_Str,         &vDicRef,           false);
+  vAddPrimitive("dic.wordCount"_Str,   &vDicWordCount,     false);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -34,13 +34,13 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Socket(void)
 {
-  vAddPrimitive("socket.accept",   &vSocketAccept,     false);
-  vAddPrimitive("socket.close",    &vSocketClose,      false);
-  vAddPrimitive("socket.connect",  &vSocketConnect,    false);
-  vAddPrimitive("socket.listen",   &vSocketListen,     false);
-  vAddPrimitive("socket.open",     &vSocketOpen,       false);
-  vAddPrimitive("socket.recv",     &vSocketRecv,       false);
-  vAddPrimitive("socket.send",     &vSocketSend,       false);
+  vAddPrimitive("socket.accept"_Str,   &vSocketAccept,     false);
+  vAddPrimitive("socket.close"_Str,    &vSocketClose,      false);
+  vAddPrimitive("socket.connect"_Str,  &vSocketConnect,    false);
+  vAddPrimitive("socket.listen"_Str,   &vSocketListen,     false);
+  vAddPrimitive("socket.open"_Str,     &vSocketOpen,       false);
+  vAddPrimitive("socket.recv"_Str,     &vSocketRecv,       false);
+  vAddPrimitive("socket.send"_Str,     &vSocketSend,       false);
 }
 
 /*----------------------------------------------------------------------------*/

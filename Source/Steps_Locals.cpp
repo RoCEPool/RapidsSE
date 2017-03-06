@@ -34,12 +34,12 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Locals(void)
 {
-  vAddPrimitive("local.fetch",     &vLocalFetch,       false);
-  vAddPrimitive("local.store",     &vLocalStore,       false);
-  vAddPrimitive("locals|",         &vLocalsBar,        true);
-  vAddPrimitive("locals.pop",      &vLocalsPop,        false);
-  vAddPrimitive("locals.push",     &vLocalsPush,       false);
-  vAddPrimitive("to",              &vLocalsTo,         true);
+  vAddPrimitive("local.fetch"_Str,     &vLocalFetch,       false);
+  vAddPrimitive("local.store"_Str,     &vLocalStore,       false);
+  vAddPrimitive("locals|"_Str,         &vLocalsBar,        true);
+  vAddPrimitive("locals.pop"_Str,      &vLocalsPop,        false);
+  vAddPrimitive("locals.push"_Str,     &vLocalsPush,       false);
+  vAddPrimitive("to"_Str,              &vLocalsTo,         true);
 }
 
 /*----------------------------------------------------------------------------*/

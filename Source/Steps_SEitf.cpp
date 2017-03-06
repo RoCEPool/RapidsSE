@@ -34,20 +34,20 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_SEitf(void)
 {
-  vAddPrimitive("seitf.count",         &vSEitfCount,         false);
-  vAddPrimitive("seitf.delete",        &vSEitfDelete,        false);
-  vAddPrimitive("seitf.dicStack",      &vSEitfDicStack,      false);
-  vAddPrimitive("seitf.dump",          &vSEitfDump,          false);
-  vAddPrimitive("seitf.indexRef",      &vSEitfIndexRef,      false);
-  vAddPrimitive("seitf.pid",           &vSEitfPid,           false);
-  vAddPrimitive("seitf.req@",          &vSEitfReqFetch,      false);
-  vAddPrimitive("seitf.req!",          &vSEitfReqStore,      false);
-  vAddPrimitive("seitf.rsp@",          &vSEitfRspFetch,      false);
-  vAddPrimitive("seitf.rsp!",          &vSEitfRspStore,      false);
-  vAddPrimitive("seitf.responseQueue", &vSEitfResponseQueue, false);
-  vAddPrimitive("seitf.table@",        &vSEitfTableFetch,    false);
-  vAddPrimitive("seitf.tableRef",      &vSEitfTableRef,      false);
-  vAddPrimitive("seitf.tableDeref",    &vSEitfTableDeref,    false);
+  vAddPrimitive("seitf.count"_Str,         &vSEitfCount,         false);
+  vAddPrimitive("seitf.delete"_Str,        &vSEitfDelete,        false);
+  vAddPrimitive("seitf.dicStack"_Str,      &vSEitfDicStack,      false);
+  vAddPrimitive("seitf.dump"_Str,          &vSEitfDump,          false);
+  vAddPrimitive("seitf.indexRef"_Str,      &vSEitfIndexRef,      false);
+  vAddPrimitive("seitf.pid"_Str,           &vSEitfPid,           false);
+  vAddPrimitive("seitf.req@"_Str,          &vSEitfReqFetch,      false);
+  vAddPrimitive("seitf.req!"_Str,          &vSEitfReqStore,      false);
+  vAddPrimitive("seitf.rsp@"_Str,          &vSEitfRspFetch,      false);
+  vAddPrimitive("seitf.rsp!"_Str,          &vSEitfRspStore,      false);
+  vAddPrimitive("seitf.responseQueue"_Str, &vSEitfResponseQueue, false);
+  vAddPrimitive("seitf.table@"_Str,        &vSEitfTableFetch,    false);
+  vAddPrimitive("seitf.tableRef"_Str,      &vSEitfTableRef,      false);
+  vAddPrimitive("seitf.tableDeref"_Str,    &vSEitfTableDeref,    false);
 }
 
 /*----------------------------------------------------------------------------*/

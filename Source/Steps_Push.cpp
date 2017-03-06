@@ -34,10 +34,10 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Push(void)
 {
-  vAddPrimitive("i",               &vPushI,            false);
-  vAddPrimitive("j",               &vPushJ,            false);
-  vAddPrimitive("nullPtr",         &vPushNullPtr,      false);
-  vAddPrimitive("pushValue",       &vPushValue,        false);
+  vAddPrimitive("i"_Str,               &vPushI,            false);
+  vAddPrimitive("j"_Str,               &vPushJ,            false);
+  vAddPrimitive("nullPtr"_Str,         &vPushNullPtr,      false);
+  vAddPrimitive("pushValue"_Str,       &vPushValue,        false);
 }
 
 /*----------------------------------------------------------------------------*/

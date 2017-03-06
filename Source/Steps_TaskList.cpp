@@ -34,10 +34,10 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_TaskList(void)
 {
-  vAddPrimitive("taskList",        &vTaskList,         false);
-  vAddPrimitive("taskList.append", &vTaskListAppend,   false);
-  vAddPrimitive("taskList.dump",   &vTaskListDump,     false);
-  vAddPrimitive("taskList.init",   &vTaskListInit,     false);
+  vAddPrimitive("taskList"_Str,        &vTaskList,         false);
+  vAddPrimitive("taskList.append"_Str, &vTaskListAppend,   false);
+  vAddPrimitive("taskList.dump"_Str,   &vTaskListDump,     false);
+  vAddPrimitive("taskList.init"_Str,   &vTaskListInit,     false);
 }
 
 /*----------------------------------------------------------------------------*/

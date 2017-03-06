@@ -299,11 +299,11 @@ void Task::vAddConstant(const char* aName, const char* aValue)
 /*----------------------------------------------------------------------------*/
 /* add primitive word into main dictionary                                    */
 /*----------------------------------------------------------------------------*/
-void Task::vAddPrimitive(const char* pName, TaskStep pStep, bool bImmediate)
+void Task::vAddPrimitive(Str* aName, TaskStep pStep, bool bImmediate)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
     
-  Word* pNewWord = new(gpMainDic) Word(pName);
+  Word* pNewWord = new(gpMainDic) Word(aName->a());
   
   m_pCurrentWord = pNewWord;
   
@@ -733,7 +733,7 @@ void Task::vAddPrimitives(void)
   if (gxArguments.m_bVerbose)
     vTrace("[[mainThread]] Adding primitives...\n");
   
-  vAddPrimitive("word",            &vWord,             false);
+  vAddPrimitive("word"_Str,            &vWord,             false);
   gpWord = gpMainDic->pFindWord("word");
 
   vAddPrimitives_Address();

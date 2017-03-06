@@ -35,17 +35,17 @@ void Task::vAddPrimitives_Assert(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  vAddPrimitive("assert",          &vAssert,            false);
-  vAddPrimitive("assert.stack_0",  &vAssertStack_0,     false);
-  vAddPrimitive("assert.stack_0+", &vAssertStack_0more, false);
-  vAddPrimitive("assert.stack_1",  &vAssertStack_1,     false);
-  vAddPrimitive("assert.stack_1+", &vAssertStack_1more, false);
-  vAddPrimitive("assert.stack_2",  &vAssertStack_2,     false);
-  vAddPrimitive("assert.stack_2+", &vAssertStack_2more, false);
-  vAddPrimitive("assert.stack_3",  &vAssertStack_3,     false);
-  vAddPrimitive("assert.stack_3+", &vAssertStack_3more, false);
-  vAddPrimitive("assert.stack_4",  &vAssertStack_4,     false);
-  vAddPrimitive("assert.stack_5+", &vAssertStack_4more, false);
+  vAddPrimitive("assert"_Str,          &vAssert,            false);
+  vAddPrimitive("assert.stack_0"_Str,  &vAssertStack_0,     false);
+  vAddPrimitive("assert.stack_0+"_Str, &vAssertStack_0more, false);
+  vAddPrimitive("assert.stack_1"_Str,  &vAssertStack_1,     false);
+  vAddPrimitive("assert.stack_1+"_Str, &vAssertStack_1more, false);
+  vAddPrimitive("assert.stack_2"_Str,  &vAssertStack_2,     false);
+  vAddPrimitive("assert.stack_2+"_Str, &vAssertStack_2more, false);
+  vAddPrimitive("assert.stack_3"_Str,  &vAssertStack_3,     false);
+  vAddPrimitive("assert.stack_3+"_Str, &vAssertStack_3more, false);
+  vAddPrimitive("assert.stack_4"_Str,  &vAssertStack_4,     false);
+  vAddPrimitive("assert.stack_5+"_Str, &vAssertStack_4more, false);
 }
 
 /*----------------------------------------------------------------------------*/

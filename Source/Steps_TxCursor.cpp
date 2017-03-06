@@ -34,14 +34,14 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_TxCursor(void)
 {
-  vAddPrimitive("txCursor.begin",  &vTxCursorBegin,  false);
-  vAddPrimitive("txCursor.delete", &vTxCursorDelete, false);
-  vAddPrimitive("txCursor.end",    &vTxCursorEnd,    false);
-  vAddPrimitive("txCursor.first",  &vTxCursorFirst,  false);
-  vAddPrimitive("txCursor.get",    &vTxCursorGet,    false);
-  vAddPrimitive("txCursor.init",   &vTxCursorInit,   false);
-  vAddPrimitive("txCursor.new",    &vTxCursorNew,    false);
-  vAddPrimitive("txCursor.next",   &vTxCursorNext,   false);
+  vAddPrimitive("txCursor.begin"_Str,  &vTxCursorBegin,  false);
+  vAddPrimitive("txCursor.delete"_Str, &vTxCursorDelete, false);
+  vAddPrimitive("txCursor.end"_Str,    &vTxCursorEnd,    false);
+  vAddPrimitive("txCursor.first"_Str,  &vTxCursorFirst,  false);
+  vAddPrimitive("txCursor.get"_Str,    &vTxCursorGet,    false);
+  vAddPrimitive("txCursor.init"_Str,   &vTxCursorInit,   false);
+  vAddPrimitive("txCursor.new"_Str,    &vTxCursorNew,    false);
+  vAddPrimitive("txCursor.next"_Str,   &vTxCursorNext,   false);
 }
 
 /*----------------------------------------------------------------------------*/

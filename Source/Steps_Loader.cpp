@@ -34,15 +34,15 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Loader(void)
 {
-  vAddPrimitive("loader.delete",      &vLoaderDelete,      false);
-  vAddPrimitive("loader.finalize",    &vLoaderFinalize,    false);
-  vAddPrimitive("loader.findChunk",   &vLoaderFindChunk,   false);
-  vAddPrimitive("loader.init",        &vLoaderInit,        false);
-  vAddPrimitive("loader.new",         &vLoaderNew,         false);
-  vAddPrimitive("loader.newSub",      &vLoaderNewSub,      false);
-  vAddPrimitive("loader.path!",       &vLoaderPathStore,   false);
-  vAddPrimitive("loader.table!",      &vLoaderTableStore,  false);
-  vAddPrimitive("loader.txref!",      &vLoaderTxRefStore,  false);
+  vAddPrimitive("loader.delete"_Str,      &vLoaderDelete,      false);
+  vAddPrimitive("loader.finalize"_Str,    &vLoaderFinalize,    false);
+  vAddPrimitive("loader.findChunk"_Str,   &vLoaderFindChunk,   false);
+  vAddPrimitive("loader.init"_Str,        &vLoaderInit,        false);
+  vAddPrimitive("loader.new"_Str,         &vLoaderNew,         false);
+  vAddPrimitive("loader.newSub"_Str,      &vLoaderNewSub,      false);
+  vAddPrimitive("loader.path!"_Str,       &vLoaderPathStore,   false);
+  vAddPrimitive("loader.table!"_Str,      &vLoaderTableStore,  false);
+  vAddPrimitive("loader.txref!"_Str,      &vLoaderTxRefStore,  false);
 }
 
 /*----------------------------------------------------------------------------*/

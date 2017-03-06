@@ -34,7 +34,7 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Exit(void)
 {
-  vAddPrimitive("exit",            &vExit,             false);
+  vAddPrimitive("exit"_Str,            &vExit,             false);
 }
 
 /*----------------------------------------------------------------------------*/

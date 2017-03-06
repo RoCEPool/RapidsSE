@@ -34,11 +34,11 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_TxRef(void)
 {
-  vAddPrimitive("txRef.init",      &vTxRefInit,        false);
-  vAddPrimitive("txRef.begin",     &vTxRefBegin,       false);
-  vAddPrimitive("txRef.end",       &vTxRefEnd,         false);
-  vAddPrimitive("txRef.commit",    &vTxRefCommit,      false);
-  vAddPrimitive("txRef.rollback",  &vTxRefRollback,    false);
+  vAddPrimitive("txRef.init"_Str,      &vTxRefInit,        false);
+  vAddPrimitive("txRef.begin"_Str,     &vTxRefBegin,       false);
+  vAddPrimitive("txRef.end"_Str,       &vTxRefEnd,         false);
+  vAddPrimitive("txRef.commit"_Str,    &vTxRefCommit,      false);
+  vAddPrimitive("txRef.rollback"_Str,  &vTxRefRollback,    false);
 }
 
 /*----------------------------------------------------------------------------*/

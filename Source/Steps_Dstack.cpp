@@ -34,27 +34,27 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Dstack(void)
 {
-  vAddPrimitive("stack.class",     &vDstackClass,      false);
-  vAddPrimitive("depth",           &vDstackDepth,      false);
-  vAddPrimitive("drop",            &vDstackDrop,       false);
-  vAddPrimitive("2drop",           &vDstackDropTwo,    false);
-  vAddPrimitive("dump",            &vDstackDump,       false);
-  vAddPrimitive("dup",             &vDstackDup,        false);
-  vAddPrimitive("?dup",            &vDstackDupNonZero, false);
-  vAddPrimitive("nip",             &vDstackNip,        false);
-  vAddPrimitive("over",            &vDstackOver,       false);
-  vAddPrimitive("pick",            &vDstackPick,       false);
-  vAddPrimitive("reverse",         &vDstackReverse,    false);
-  vAddPrimitive("roll",            &vDstackRoll,       false);
-  vAddPrimitive("-roll",           &vDstackRollInv,    false);
-  vAddPrimitive("rot",             &vDstackRot,        false);
-  vAddPrimitive("-rot",            &vDstackRotInv,     false);
-  vAddPrimitive("stk",             &vDstackStk,        false);
-  vAddPrimitive("swap",            &vDstackSwap,       false);
-  vAddPrimitive("valset>",         &vDstackToValues,   false);
-  vAddPrimitive(">valset",         &vDstackToValSet,   false);
-  vAddPrimitive(">DStack",         &vDstackTransfer,   false);
-  vAddPrimitive("tuck",            &vDstackTuck,       false);
+  vAddPrimitive("stack.class"_Str,     &vDstackClass,      false);
+  vAddPrimitive("depth"_Str,           &vDstackDepth,      false);
+  vAddPrimitive("drop"_Str,            &vDstackDrop,       false);
+  vAddPrimitive("2drop"_Str,           &vDstackDropTwo,    false);
+  vAddPrimitive("dump"_Str,            &vDstackDump,       false);
+  vAddPrimitive("dup"_Str,             &vDstackDup,        false);
+  vAddPrimitive("?dup"_Str,            &vDstackDupNonZero, false);
+  vAddPrimitive("nip"_Str,             &vDstackNip,        false);
+  vAddPrimitive("over"_Str,            &vDstackOver,       false);
+  vAddPrimitive("pick"_Str,            &vDstackPick,       false);
+  vAddPrimitive("reverse"_Str,         &vDstackReverse,    false);
+  vAddPrimitive("roll"_Str,            &vDstackRoll,       false);
+  vAddPrimitive("-roll"_Str,           &vDstackRollInv,    false);
+  vAddPrimitive("rot"_Str,             &vDstackRot,        false);
+  vAddPrimitive("-rot"_Str,            &vDstackRotInv,     false);
+  vAddPrimitive("stk"_Str,             &vDstackStk,        false);
+  vAddPrimitive("swap"_Str,            &vDstackSwap,       false);
+  vAddPrimitive("valset>"_Str,         &vDstackToValues,   false);
+  vAddPrimitive(">valset"_Str,         &vDstackToValSet,   false);
+  vAddPrimitive(">DStack"_Str,         &vDstackTransfer,   false);
+  vAddPrimitive("tuck"_Str,            &vDstackTuck,       false);
   
 }
 

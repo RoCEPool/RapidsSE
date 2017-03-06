@@ -34,7 +34,7 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_TxMap(void)
 {
-  vAddPrimitive("txMap.init",      &vTxMapInit,        false);
+  vAddPrimitive("txMap.init"_Str,      &vTxMapInit,        false);
 }
 
 /*----------------------------------------------------------------------------*/

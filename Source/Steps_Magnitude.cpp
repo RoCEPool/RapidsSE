@@ -34,9 +34,9 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Magnitude(void)
 {
-  vAddPrimitive("toDigitName",     &vToDigitName,   false);
-  vAddPrimitive("bytes.magnitude", &vBytesMagnitude,   false);
-  vAddPrimitive("number.magnitude", &vNumberMagnitude, false);
+  vAddPrimitive("toDigitName"_Str,     &vToDigitName,   false);
+  vAddPrimitive("bytes.magnitude"_Str, &vBytesMagnitude,   false);
+  vAddPrimitive("number.magnitude"_Str, &vNumberMagnitude, false);
 }
 
 /*----------------------------------------------------------------------------*/

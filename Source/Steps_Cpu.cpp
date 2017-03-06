@@ -34,7 +34,7 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Cpu(void)
 {
-  vAddPrimitive("cpu.rdtscp",      &vCpuRdtscp,        false);
+  vAddPrimitive("cpu.rdtscp"_Str,      &vCpuRdtscp,        false);
 }
 
 /*----------------------------------------------------------------------------*/

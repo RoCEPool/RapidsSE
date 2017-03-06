@@ -34,17 +34,17 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Table(void)
 {
-  vAddPrimitive("table.analyze",      &vTableAnalyze,      false);
-  vAddPrimitive("table.append",       &vTableAppend,       false);
-  vAddPrimitive("table.appendBuffer", &vTableAppendBuffer, false);
-  vAddPrimitive("table.drop",         &vTableDrop,         false);
-  vAddPrimitive("table.init",         &vTableInit,         false);
-  vAddPrimitive("table.insert",       &vTableInsert,       false);
-  vAddPrimitive("table.name",         &vTableName,         false);
-  vAddPrimitive("table.ref",          &vTableRef,          false);
-  vAddPrimitive("table.space",        &vTableSpace,        false);
-  vAddPrimitive("table.subDic",       &vTableSubDic,       false);
-  vAddPrimitive("table.truncate",     &vTableTruncate,     false);
+  vAddPrimitive("table.analyze"_Str,      &vTableAnalyze,      false);
+  vAddPrimitive("table.append"_Str,       &vTableAppend,       false);
+  vAddPrimitive("table.appendBuffer"_Str, &vTableAppendBuffer, false);
+  vAddPrimitive("table.drop"_Str,         &vTableDrop,         false);
+  vAddPrimitive("table.init"_Str,         &vTableInit,         false);
+  vAddPrimitive("table.insert"_Str,       &vTableInsert,       false);
+  vAddPrimitive("table.name"_Str,         &vTableName,         false);
+  vAddPrimitive("table.ref"_Str,          &vTableRef,          false);
+  vAddPrimitive("table.space"_Str,        &vTableSpace,        false);
+  vAddPrimitive("table.subDic"_Str,       &vTableSubDic,       false);
+  vAddPrimitive("table.truncate"_Str,     &vTableTruncate,     false);
 }
 
 /*----------------------------------------------------------------------------*/

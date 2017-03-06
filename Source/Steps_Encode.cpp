@@ -34,19 +34,19 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Encode(void)
 {
-  vAddPrimitive("again",               &vEncodeAgain,         true );
-  vAddPrimitive("ahead",               &vEncodeAhead,         true );
-  vAddPrimitive("encodeCallPrimitive", &vEncodeCallPrimitive, false);
-  vAddPrimitive("encodeCallRoutine",   &vEncodeCallRoutine,   false);
-  vAddPrimitive("continue",            &vEncodeContinue,      true);
-  vAddPrimitive("here",                &vEncodeHere,          false);
-  vAddPrimitive("if",                  &vEncodeIf,            true );
-  vAddPrimitive("loop",                &vEncodeLoop,          true );
-  vAddPrimitive("+loop",               &vEncodeLoopPlus,      true );
-  vAddPrimitive("next",                &vEncodeNext,          true );
-  vAddPrimitive("encodePushValue",     &vEncodePushValue,     false);
-  vAddPrimitive("then",                &vEncodeThen,          true );
-  vAddPrimitive("until",               &vEncodeUntil,         true );
+  vAddPrimitive("again"_Str,               &vEncodeAgain,         true );
+  vAddPrimitive("ahead"_Str,               &vEncodeAhead,         true );
+  vAddPrimitive("encodeCallPrimitive"_Str, &vEncodeCallPrimitive, false);
+  vAddPrimitive("encodeCallRoutine"_Str,   &vEncodeCallRoutine,   false);
+  vAddPrimitive("continue"_Str,            &vEncodeContinue,      true);
+  vAddPrimitive("here"_Str,                &vEncodeHere,          false);
+  vAddPrimitive("if"_Str,                  &vEncodeIf,            true );
+  vAddPrimitive("loop"_Str,                &vEncodeLoop,          true );
+  vAddPrimitive("+loop"_Str,               &vEncodeLoopPlus,      true );
+  vAddPrimitive("next"_Str,                &vEncodeNext,          true );
+  vAddPrimitive("encodePushValue"_Str,     &vEncodePushValue,     false);
+  vAddPrimitive("then"_Str,                &vEncodeThen,          true );
+  vAddPrimitive("until"_Str,               &vEncodeUntil,         true );
 }
 
 /*----------------------------------------------------------------------------*/

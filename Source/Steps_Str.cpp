@@ -34,26 +34,26 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Str(void)
 {
-  vAddPrimitive("s256.init",    &vS256Init,      false);
+  vAddPrimitive("s256.init"_Str,    &vS256Init,      false);
   
-  vAddPrimitive("str::algebra", &vStrAlgebra,    false);
-  vAddPrimitive("strAlgebra",   &vStrAlgebra,    false);
+  vAddPrimitive("str::algebra"_Str, &vStrAlgebra,    false);
+  vAddPrimitive("strAlgebra"_Str,   &vStrAlgebra,    false);
   
-  vAddPrimitive("str.cat",      &vStrCat,        false);
-  vAddPrimitive("str.clip",     &vStrClip,       false);
-  vAddPrimitive("str.equal",    &vStrEqual,      false);
-  vAddPrimitive("str.escape",   &vStrEscape,     false);
-  vAddPrimitive("str.firstCsv", &vStrFirstCsv,   false);
-  vAddPrimitive("str.format",   &vStrFormat,     false);
-  vAddPrimitive("str.left",     &vStrLeft,       false);
-  vAddPrimitive("str.length",   &vStrLength,     false);
-  vAddPrimitive("str.pad",      &vStrPad,        false);
-  vAddPrimitive("str.prepend",  &vStrPrepend,    false);
-  vAddPrimitive("str.random",   &vStrRandom,     false);
-  vAddPrimitive("str.replace",  &vStrReplace,    false);
-  vAddPrimitive("str.right",    &vStrRight,      false);
-  vAddPrimitive("str.sub",      &vStrSub,        false);
-  vAddPrimitive("str.tailInt",  &vStrTailInt,    false);
+  vAddPrimitive("str.cat"_Str,      &vStrCat,        false);
+  vAddPrimitive("str.clip"_Str,     &vStrClip,       false);
+  vAddPrimitive("str.equal"_Str,    &vStrEqual,      false);
+  vAddPrimitive("str.escape"_Str,   &vStrEscape,     false);
+  vAddPrimitive("str.firstCsv"_Str, &vStrFirstCsv,   false);
+  vAddPrimitive("str.format"_Str,   &vStrFormat,     false);
+  vAddPrimitive("str.left"_Str,     &vStrLeft,       false);
+  vAddPrimitive("str.length"_Str,   &vStrLength,     false);
+  vAddPrimitive("str.pad"_Str,      &vStrPad,        false);
+  vAddPrimitive("str.prepend"_Str,  &vStrPrepend,    false);
+  vAddPrimitive("str.random"_Str,   &vStrRandom,     false);
+  vAddPrimitive("str.replace"_Str,  &vStrReplace,    false);
+  vAddPrimitive("str.right"_Str,    &vStrRight,      false);
+  vAddPrimitive("str.sub"_Str,      &vStrSub,        false);
+  vAddPrimitive("str.tailInt"_Str,  &vStrTailInt,    false);
 }
 
 /*----------------------------------------------------------------------------*/

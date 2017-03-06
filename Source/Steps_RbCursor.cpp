@@ -34,17 +34,17 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_RbCursor(void)
 {
-  vAddPrimitive("rbCursor.begin",     &vRbCursorBegin,      false);
-  vAddPrimitive("rbCursor.delete",    &vRbCursorDelete,     false);
-  vAddPrimitive("rbCursor.end",       &vRbCursorEnd,        false);
-  vAddPrimitive("rbCursor.first",     &vRbCursorFirst,      false);
-  vAddPrimitive("rbCursor.get",       &vRbCursorGet,        false);
-  vAddPrimitive("rbCursor.init",      &vRbCursorInit,       false);
-  vAddPrimitive("rbCursor.new",       &vRbCursorNew,        false);
-  vAddPrimitive("rbCursor.next",      &vRbCursorNext,       false);
-  vAddPrimitive("rbCursor.rowBuffer", &vRbCursorRowBuffer,  false);
-  vAddPrimitive("rbCursor.table@",    &vRbCursorTableFetch, false);
-  vAddPrimitive("rbCursor.table!",    &vRbCursorTableStore, false);
+  vAddPrimitive("rbCursor.begin"_Str,     &vRbCursorBegin,      false);
+  vAddPrimitive("rbCursor.delete"_Str,    &vRbCursorDelete,     false);
+  vAddPrimitive("rbCursor.end"_Str,       &vRbCursorEnd,        false);
+  vAddPrimitive("rbCursor.first"_Str,     &vRbCursorFirst,      false);
+  vAddPrimitive("rbCursor.get"_Str,       &vRbCursorGet,        false);
+  vAddPrimitive("rbCursor.init"_Str,      &vRbCursorInit,       false);
+  vAddPrimitive("rbCursor.new"_Str,       &vRbCursorNew,        false);
+  vAddPrimitive("rbCursor.next"_Str,      &vRbCursorNext,       false);
+  vAddPrimitive("rbCursor.rowBuffer"_Str, &vRbCursorRowBuffer,  false);
+  vAddPrimitive("rbCursor.table@"_Str,    &vRbCursorTableFetch, false);
+  vAddPrimitive("rbCursor.table!"_Str,    &vRbCursorTableStore, false);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -34,9 +34,9 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Logic(void)
 {
-  vAddPrimitive("and",             &vLogicAnd,         false);
-  vAddPrimitive("not",             &vLogicNot,         false);
-  vAddPrimitive("or",              &vLogicOr,          false);
+  vAddPrimitive("and"_Str,             &vLogicAnd,         false);
+  vAddPrimitive("not"_Str,             &vLogicNot,         false);
+  vAddPrimitive("or"_Str,              &vLogicOr,          false);
 }
 
 /*----------------------------------------------------------------------------*/

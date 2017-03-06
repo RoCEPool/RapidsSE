@@ -35,31 +35,31 @@ void Task::vAddPrimitives_Astack(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  vAddPrimitive("astack.class",    &vAstackClass,      false);
-  vAddPrimitive("adepth",          &vAstackDepth,      false);
-  vAddPrimitive("adrop",           &vAstackDrop,       false);
-  vAddPrimitive("adup",            &vAstackDup,        false);
-  vAddPrimitive("a@",              &vAstackFetch,      false);
-  vAddPrimitive("anip",            &vAstackNip,        false);
-  vAddPrimitive("apick",           &vAstackPick,       false);
-  vAddPrimitive("areverse",        &vAstackReverse,    false);
-  vAddPrimitive("astk",            &vAstackStk,        false);
-  vAddPrimitive(">a",              &vAstackToA,        false);
-  vAddPrimitive("a>",              &vAstackToP,        false);
-  vAddPrimitive(">auxStack",       &vAstackTransfer,   false);
-  vAddPrimitive("aswap",           &vAstackSwap,       false);
-  vAddPrimitive("avalset>",        &vAstackToValues,   false);
-  vAddPrimitive(">avalset",        &vAstackToValSet,   false);
-  vAddPrimitive("a0",              &vAstack0,          false);
-  vAddPrimitive("a1",              &vAstack1,          false);
-  vAddPrimitive("a2",              &vAstack2,          false);
-  vAddPrimitive("a3",              &vAstack3,          false);
-  vAddPrimitive("a4",              &vAstack4,          false);
-  vAddPrimitive("a5",              &vAstack5,          false);
-  vAddPrimitive("a6",              &vAstack6,          false);
-  vAddPrimitive("a7",              &vAstack7,          false);
-  vAddPrimitive("a8",              &vAstack8,          false);
-  vAddPrimitive("a9",              &vAstack9,          false);
+  vAddPrimitive("astack.class"_Str,    &vAstackClass,      false);
+  vAddPrimitive("adepth"_Str,          &vAstackDepth,      false);
+  vAddPrimitive("adrop"_Str,           &vAstackDrop,       false);
+  vAddPrimitive("adup"_Str,            &vAstackDup,        false);
+  vAddPrimitive("a@"_Str,              &vAstackFetch,      false);
+  vAddPrimitive("anip"_Str,            &vAstackNip,        false);
+  vAddPrimitive("apick"_Str,           &vAstackPick,       false);
+  vAddPrimitive("areverse"_Str,        &vAstackReverse,    false);
+  vAddPrimitive("astk"_Str,            &vAstackStk,        false);
+  vAddPrimitive(">a"_Str,              &vAstackToA,        false);
+  vAddPrimitive("a>"_Str,              &vAstackToP,        false);
+  vAddPrimitive(">auxStack"_Str,       &vAstackTransfer,   false);
+  vAddPrimitive("aswap"_Str,           &vAstackSwap,       false);
+  vAddPrimitive("avalset>"_Str,        &vAstackToValues,   false);
+  vAddPrimitive(">avalset"_Str,        &vAstackToValSet,   false);
+  vAddPrimitive("a0"_Str,              &vAstack0,          false);
+  vAddPrimitive("a1"_Str,              &vAstack1,          false);
+  vAddPrimitive("a2"_Str,              &vAstack2,          false);
+  vAddPrimitive("a3"_Str,              &vAstack3,          false);
+  vAddPrimitive("a4"_Str,              &vAstack4,          false);
+  vAddPrimitive("a5"_Str,              &vAstack5,          false);
+  vAddPrimitive("a6"_Str,              &vAstack6,          false);
+  vAddPrimitive("a7"_Str,              &vAstack7,          false);
+  vAddPrimitive("a8"_Str,              &vAstack8,          false);
+  vAddPrimitive("a9"_Str,              &vAstack9,          false);
 }
 
 /*----------------------------------------------------------------------------*/

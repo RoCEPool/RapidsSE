@@ -34,7 +34,7 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Vector(void)
 {
-  vAddPrimitive("vector.diff",     &vVectorDifference,  false );
+  vAddPrimitive("vector.diff"_Str,     &vVectorDifference,  false );
 }
 
 /*----------------------------------------------------------------------------*/

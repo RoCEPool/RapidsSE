@@ -34,13 +34,13 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_NodeCursor(void)
 {
-  vAddPrimitive("nodeCursor.begin",  &vNodeCursorBegin,  false);
-  vAddPrimitive("nodeCursor.delete", &vNodeCursorDelete, false);
-  vAddPrimitive("nodeCursor.first",  &vNodeCursorFirst,  false);
-  vAddPrimitive("nodeCursor.get",    &vNodeCursorGet,    false);
-  vAddPrimitive("nodeCursor.init",   &vNodeCursorInit,   false);
-  vAddPrimitive("nodeCursor.new",    &vNodeCursorNew,    false);
-  vAddPrimitive("nodeCursor.next",   &vNodeCursorNext,   false);
+  vAddPrimitive("nodeCursor.begin"_Str,  &vNodeCursorBegin,  false);
+  vAddPrimitive("nodeCursor.delete"_Str, &vNodeCursorDelete, false);
+  vAddPrimitive("nodeCursor.first"_Str,  &vNodeCursorFirst,  false);
+  vAddPrimitive("nodeCursor.get"_Str,    &vNodeCursorGet,    false);
+  vAddPrimitive("nodeCursor.init"_Str,   &vNodeCursorInit,   false);
+  vAddPrimitive("nodeCursor.new"_Str,    &vNodeCursorNew,    false);
+  vAddPrimitive("nodeCursor.next"_Str,   &vNodeCursorNext,   false);
 }
 
 /*----------------------------------------------------------------------------*/

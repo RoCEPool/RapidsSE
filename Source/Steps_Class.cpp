@@ -36,7 +36,7 @@ void Task::vAddPrimitives_Class(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  vAddPrimitive("class.name",      &vClassName,    false);
+  vAddPrimitive("class.name"_Str,      &vClassName,    false);
 }
 
 /*----------------------------------------------------------------------------*/

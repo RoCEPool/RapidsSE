@@ -34,15 +34,15 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Index(void)
 {
-  vAddPrimitive("index.dump",        &vIndexDump,       false);
-  vAddPrimitive("index.init",        &vIndexInit,       false);
-  vAddPrimitive("index.populate",    &vIndexPopulate,   false);
-  vAddPrimitive("index.table!",      &vIndexTableStore, false);
+  vAddPrimitive("index.dump"_Str,        &vIndexDump,       false);
+  vAddPrimitive("index.init"_Str,        &vIndexInit,       false);
+  vAddPrimitive("index.populate"_Str,    &vIndexPopulate,   false);
+  vAddPrimitive("index.table!"_Str,      &vIndexTableStore, false);
 
   // these should go !!!
-  vAddPrimitive("index::entryTest",  &vIndexEntryTest,  false);
-  vAddPrimitive("index::ibNew",      &vIndexIbNew,      false);
-  vAddPrimitive("index::ibDump",     &vIndexIbDump,     false);
+  vAddPrimitive("index::entryTest"_Str,  &vIndexEntryTest,  false);
+  vAddPrimitive("index::ibNew"_Str,      &vIndexIbNew,      false);
+  vAddPrimitive("index::ibDump"_Str,     &vIndexIbDump,     false);
 }
 
 /*----------------------------------------------------------------------------*/
