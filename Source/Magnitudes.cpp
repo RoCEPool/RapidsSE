@@ -46,33 +46,33 @@ bool Magnitudes::bBytes(const char* psBuf, i8& iBytes)
   
   sString = psBuf;
   
-  String::vToLower(sString.aStr());
+  StrLib::vToLower(sString.aStr());
   
-  if (String::bContains(sString.aStr(), "kb")) {
-    String::vCopyTill(sNumber.aStr(), sString.aStr(), 'k');
+  if (StrLib::bContains(sString.aStr(), "kb")) {
+    StrLib::vCopyTill(sNumber.aStr(), sString.aStr(), 'k');
     iMagnitude = C_1KB;
     
-  } else if (String::bContains(sString.aStr(), "mb")) {
-    String::vCopyTill(sNumber.aStr(), sString.aStr(), 'm');
+  } else if (StrLib::bContains(sString.aStr(), "mb")) {
+    StrLib::vCopyTill(sNumber.aStr(), sString.aStr(), 'm');
     iMagnitude = C_1MB;
     
-  } else if (String::bContains(sString.aStr(), "gb")) {
-    String::vCopyTill(sNumber.aStr(), sString.aStr(), 'g');
+  } else if (StrLib::bContains(sString.aStr(), "gb")) {
+    StrLib::vCopyTill(sNumber.aStr(), sString.aStr(), 'g');
     iMagnitude = C_1GB;
     
-  } else if (String::bContains(sString.aStr(), "tb")) {
-    String::vCopyTill(sNumber.aStr(), sString.aStr(), 't');
+  } else if (StrLib::bContains(sString.aStr(), "tb")) {
+    StrLib::vCopyTill(sNumber.aStr(), sString.aStr(), 't');
     iMagnitude = C_1TB;
     
-  } else if (String::bContains(sString.aStr(), "pb")) {
-    String::vCopyTill(sNumber.aStr(), sString.aStr(), 'p');
+  } else if (StrLib::bContains(sString.aStr(), "pb")) {
+    StrLib::vCopyTill(sNumber.aStr(), sString.aStr(), 'p');
     iMagnitude = C_1PB;
     
-  } else if (String::bContains(sString.aStr(), "b")) {
-    if (!String::bEqualTo(String::sLast(sString.aStr()), "b")) {
+  } else if (StrLib::bContains(sString.aStr(), "b")) {
+    if (!StrLib::bEqualTo(StrLib::sLast(sString.aStr()), "b")) {
       return false;
     }
-    String::vCopyTill(sNumber.aStr(), sString.aStr(), 'b');
+    StrLib::vCopyTill(sNumber.aStr(), sString.aStr(), 'b');
     iMagnitude = 1;
   } else {
     sNumber = sString.aStr();
@@ -81,11 +81,11 @@ bool Magnitudes::bBytes(const char* psBuf, i8& iBytes)
   char* ps = sNumber.aStr();
   i8 iVal;
   
-  if (!String::bIsNumeric(ps)){
+  if (!StrLib::bIsNumeric(ps)){
     return false;
   }
   
-  if (String::bExtractI8(&ps, &iVal)) {
+  if (StrLib::bExtractI8(&ps, &iVal)) {
     iBytes = iVal*iMagnitude;
   }
   else {

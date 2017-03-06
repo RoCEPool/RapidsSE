@@ -48,7 +48,7 @@ void StorageEngine::vCheckAssumptions(void)
   
   // find number of entries in pCN
   for (i8 i = 0; i <= CN_ENUMS; i++) {
-    if (String::bEqualTo(pCN[i], "ENUMS")) {
+    if (StrLib::bEqualTo(pCN[i], "ENUMS")) {
       bFoundEnum = true;
       break;
     }

@@ -12,7 +12,7 @@ Error::Error(i8 iErrorCode, const char* aFileName, i8 iLineNo)
   m_iErrorCode = iErrorCode;
   m_aErrorMsg[0] = '\0';
 
-  String::vCopyLen(m_aFileName, aFileName, sizeof(m_aFileName));
+  StrLib::vCopyLen(m_aFileName, aFileName, sizeof(m_aFileName));
   m_iLineNo = iLineNo;
   
   //_checkInitialisedSize_(sizeof(Error));
@@ -24,9 +24,9 @@ Error::Error(i8 iErrorCode, const char* aFileName, i8 iLineNo)
 Error::Error(i8 iErrorCode, const char* aErrorMsg, const char* aFileName, i8 iLineNo)
 {
   m_iErrorCode = iErrorCode;
-  String::vCopyLen(m_aErrorMsg, aErrorMsg, sizeof(m_aErrorMsg));
+  StrLib::vCopyLen(m_aErrorMsg, aErrorMsg, sizeof(m_aErrorMsg));
 
-  String::vCopyLen(m_aFileName, aFileName, sizeof(m_aFileName));
+  StrLib::vCopyLen(m_aFileName, aFileName, sizeof(m_aFileName));
   m_iLineNo = iLineNo;
 
   //_checkInitialisedSize_(sizeof(Error));

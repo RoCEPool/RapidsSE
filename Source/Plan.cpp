@@ -142,7 +142,7 @@ void Plan::vAppendToLambda(s48K& sText)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLAN,_FOOTER_);
   
-  String::vConcat(m_sLambda.aStr(), sText.aStr());
+  StrLib::vConcat(m_sLambda.aStr(), sText.aStr());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -260,7 +260,7 @@ RegFrame* Plan::pRegFrameFind(s32& sName)
   RegFrame* pRegFrame = nullptr;
   
   for (pRegFrame = m_pRegList; pRegFrame; pRegFrame = pRegFrame->pNext())
-    if (String::bSame(pRegFrame->sName().aStr(), sName.aStr()))
+    if (StrLib::bSame(pRegFrame->sName().aStr(), sName.aStr()))
       break;
   
   return pRegFrame;

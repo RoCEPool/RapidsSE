@@ -103,7 +103,7 @@ ENTRY("vLocalsBar");
     nnpTask->m_pTokeniser->vNextToken();
     
     // end of locals declaration?
-    if (String::bEqualTo("|",nnpTask->m_pTokeniser->sToken().aStr()))
+    if (StrLib::bEqualTo("|",nnpTask->m_pTokeniser->sToken().aStr()))
       break;
 
     // test for first use of locals|

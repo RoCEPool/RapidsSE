@@ -124,7 +124,7 @@ void StepBoard::vName(i8 iThread, const char* aName)
     exit(EXIT_FAILURE);
   }
 
-  String::vCopyLen(m_aStepName[iThread],aName,C_STEPBOARD_NAME-1);
+  StrLib::vCopyLen(m_aStepName[iThread],aName,C_STEPBOARD_NAME-1);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -148,7 +148,7 @@ void StepBoard::vReset(void)
   m_iThreads = 0;
   
   for (i8 iThread = 0; iThread < C_STEPBOARD_THREADS; iThread++) {
-    String::vCopyLen(m_aStepName[iThread],"<none>",C_STEPBOARD_NAME-1);
+    StrLib::vCopyLen(m_aStepName[iThread],"<none>",C_STEPBOARD_NAME-1);
     m_iStepPoint[iThread] = -1;
   }
 }

@@ -88,7 +88,7 @@ s48K Random::sRandomString(i8 iLength) {
   
   ASSERT(iLength < static_cast<i8>(sizeof(s48K)));
   
-  i8 iCharSetSize = String::iSize(sCharSet);
+  i8 iCharSetSize = StrLib::iSize(sCharSet);
   
   for (i8 i = 0;i < iLength; i++) {
     i8 iKey = iRandom(iCharSetSize-1);

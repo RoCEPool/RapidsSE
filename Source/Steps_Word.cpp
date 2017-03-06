@@ -94,7 +94,7 @@ void Task::vAllParticipants(NNP_Task nnpTask)
   
   // convert string to integer
   char* aToken = nnpTask->m_pTokeniser->sToken().aStr();
-  i8 iParams = String::iToI8(aToken);
+  i8 iParams = StrLib::iToI8(aToken);
   
   // set the number of parameters in the current word
   pCurrentWord->vParams(iParams);
@@ -552,7 +552,7 @@ void Task::vOneParticipant(NNP_Task nnpTask)
   nnpTask->m_pTokeniser->vNextToken();
   
   // convert token to integer
-  i8 iParams = String::iToI8(nnpTask->m_pTokeniser->sToken().aStr());
+  i8 iParams = StrLib::iToI8(nnpTask->m_pTokeniser->sToken().aStr());
   
   // set the number of parameters in the current word
   pCurrentWord->vParams(iParams);
@@ -589,7 +589,7 @@ void Task::vOpDic(NNP_Task nnpTask)
     
     // create a op dictionary
     s32 sNameDic;
-    String::vSprint(sNameDic.aStr(),"<%s>",sNameOpFrame.aStr());
+    StrLib::vSprint(sNameDic.aStr(),"<%s>",sNameOpFrame.aStr());
     
     pOpDic = new Dic;
     pOpDic->vName(sNameDic.aStr());
@@ -778,7 +778,7 @@ void Task::vSemicolon(NNP_Task nnpTask)
     
     s32 sTildeName;
     sTildeName = "~";
-    String::vConcat(sTildeName.aStr(),pCurrentWord->sName().aStr());
+    StrLib::vConcat(sTildeName.aStr(),pCurrentWord->sName().aStr());
     
     // create new word for tilde of current word
     Dic* pDic;
@@ -867,7 +867,7 @@ void Task::vTick(NNP_Task nnpTask)
   nnpTask->m_pTokeniser->vNextToken();
   
   //  if ( ! bExtracted ) {
-  //    String::vSprint(nnpTask->m_sException,"No name: ' ");
+  //    StrLib::vSprint(nnpTask->m_sException,"No name: ' ");
   //    nnpTask->m_sFile = __FILE__;
   //    throw (i8)__LINE__;
   //  }

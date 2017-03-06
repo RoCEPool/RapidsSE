@@ -15,7 +15,7 @@ bool Env::bGet(s256& sName, s256& sValue)
   if ( ! aValue )
     return false;
   
-  String::vCopyLen(sValue.aStr(),aValue,256);
+  StrLib::vCopyLen(sValue.aStr(),aValue,256);
   
   return true;
 }

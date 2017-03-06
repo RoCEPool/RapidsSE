@@ -116,7 +116,7 @@ void Task::vStrCat(NNP_Task nnpTask)
   
   xStrR = xStrA;
   
-  String::vConcat(_pStrVal(&xStrR)->aStr(),_pStrVal(&xStrB)->aStr());
+  StrLib::vConcat(_pStrVal(&xStrR)->aStr(),_pStrVal(&xStrB)->aStr());
   
   // adjust area size
   _pStrVal(&xStrR)->vAreaSize();
@@ -142,7 +142,7 @@ void Task::vStrClip(NNP_Task nnpTask)
     THROW_INVALID_DSTACK("str.clip");
   
   // validate length
-  i8 iHasLength = String::iLength(sString.aStr());
+  i8 iHasLength = StrLib::iLength(sString.aStr());
   
   if ( iLength < 0 || llabs(iLength) >= iHasLength)
     THROW("Invalid length for: str.clip");
@@ -154,7 +154,7 @@ void Task::vStrClip(NNP_Task nnpTask)
   else
     pStart = sString.aStr() + iHasLength - 1 - llabs(iLength);
   
-  String::vCopyLen(sSubStr.aStr(),pStart,llabs(iLength));
+  StrLib::vCopyLen(sSubStr.aStr(),pStart,llabs(iLength));
   
   nnpTask->m_pDataStack->vPush(sSubStr);
   
@@ -175,7 +175,7 @@ void Task::vStrEqual(NNP_Task nnpTask)
   if ( ! nnpTask->m_pDataStack->bPop(xStringB,xStringA) )
     THROW_INVALID_DSTACK("str.equal");
   
-  i8 iEqual = String::bEqualTo(_pStrVal(&xStringA)->aStr(),
+  i8 iEqual = StrLib::bEqualTo(_pStrVal(&xStringA)->aStr(),
                                _pStrVal(&xStringB)->aStr());
   
   nnpTask->m_pDataStack->vPush(iEqual);
@@ -197,7 +197,7 @@ void Task::vStrEscape(NNP_Task nnpTask)
   if ( ! nnpTask->m_pDataStack->bPop(xArg) )
     THROW_INVALID_DSTACK("str.escape");
   
-  String::vEscape(xArg.aStr(),xEscaped.aStr());
+  StrLib::vEscape(xArg.aStr(),xEscaped.aStr());
   
   nnpTask->m_pDataStack->vPush(xEscaped);
   
@@ -219,7 +219,7 @@ void Task::vStrFirstCsv(NNP_Task nnpTask)
   
   char* z = _pStrVal(&xStr)->aStr();
   
-  if (! String::bExtractItem(&z,sFirstValue.aStr()))
+  if (! StrLib::bExtractItem(&z,sFirstValue.aStr()))
     sFirstValue = "";
   
   nnpTask->m_pDataStack->vPush(sFirstValue);
@@ -263,14 +263,14 @@ void Task::vStrLeft(NNP_Task nnpTask)
     THROW_INVALID_DSTACK("str.left");
   
   // validate length
-  i8 iHasLength = String::iLength(sString.aStr());
+  i8 iHasLength = StrLib::iLength(sString.aStr());
   
   if ( iLength < 0)
     THROW("Invalid length for: str.left");
   
   char* pStart = sString.aStr();
   
-  String::vCopyLen(sSubStr.aStr(),pStart,iLength);
+  StrLib::vCopyLen(sSubStr.aStr(),pStart,iLength);
   
   nnpTask->m_pDataStack->vPush(sSubStr);
   
@@ -291,7 +291,7 @@ void Task::vStrLength(NNP_Task nnpTask)
   if ( ! nnpTask->m_pDataStack->bPop(sString) )
     THROW_INVALID_DSTACK("str.length");
   
-  iLength = String::iLength(sString.aStr());
+  iLength = StrLib::iLength(sString.aStr());
   
   nnpTask->m_pDataStack->vPush(iLength);
   
@@ -313,7 +313,7 @@ void Task::vStrPad(NNP_Task nnpTask)
   if ( ! nnpTask->m_pDataStack->bPop(iLength,xStringA) )
     THROW_INVALID_DSTACK("str.pad");
   
-  String::vPad(_pStrVal(&xStringA)->aStr(),iLength,' ');
+  StrLib::vPad(_pStrVal(&xStringA)->aStr(),iLength,' ');
   
   // adjust area size
   _pStrVal(&xStringA)->vAreaSize();
@@ -362,7 +362,7 @@ void Task::vStrPrepend(NNP_Task nnpTask)
   
   xStrR = xStrB;
   
-  String::vConcat(_pStrVal(&xStrR)->aStr(),_pStrVal(&xStrA)->aStr());
+  StrLib::vConcat(_pStrVal(&xStrR)->aStr(),_pStrVal(&xStrA)->aStr());
   
   // adjust area size
   _pStrVal(&xStrR)->vAreaSize();
@@ -414,7 +414,7 @@ void Task::vStrReplace(NNP_Task nnpTask)
   
   s48K sReplaced;
   
-  String::bReplace(sReplaced.aStr(),sString.aStr(),sThis.aStr(),sThat.aStr());
+  StrLib::bReplace(sReplaced.aStr(),sString.aStr(),sThis.aStr(),sThat.aStr());
   
   nnpTask->m_pDataStack->vPush(sReplaced);
   
@@ -437,7 +437,7 @@ void Task::vStrRight(NNP_Task nnpTask)
     THROW_INVALID_DSTACK("str.right");
   
   // validate length
-  i8 iHasLength = String::iLength(sString.aStr());
+  i8 iHasLength = StrLib::iLength(sString.aStr());
   
   if ( iLength < 0)
     THROW("Invalid length for: str.right");
@@ -447,7 +447,7 @@ void Task::vStrRight(NNP_Task nnpTask)
   
   char* pStart = sString.aStr() + iHasLength - iLength;
   
-  String::vCopyLen(sSubStr.aStr(),pStart,iLength);
+  StrLib::vCopyLen(sSubStr.aStr(),pStart,iLength);
   
   nnpTask->m_pDataStack->vPush(sSubStr);
   
@@ -470,7 +470,7 @@ void Task::vStrSub(NNP_Task nnpTask)
   if ( ! nnpTask->m_pDataStack->bPop(sString,iStart,iLength) )
     THROW_INVALID_DSTACK("str.sub");
   
-  i8 iHasLength = String::iLength(sString.aStr());
+  i8 iHasLength = StrLib::iLength(sString.aStr());
   
   // validate start index
   if ( iStart < 0 || iStart >= iHasLength)
@@ -485,7 +485,7 @@ void Task::vStrSub(NNP_Task nnpTask)
   
   char* pStart = sString.aStr() + iStart;
   
-  String::vCopyLen(sSubStr.aStr(),pStart,iLength);
+  StrLib::vCopyLen(sSubStr.aStr(),pStart,iLength);
   
   nnpTask->m_pDataStack->vPush(sSubStr);
   
@@ -505,23 +505,23 @@ void Task::vStrTailInt(NNP_Task nnpTask)
     THROW_INVALID_DSTACK("str.tailInt");
   
   // get last char in string
-  char* aLast = String::sLast(sString.aStr());
+  char* aLast = StrLib::sLast(sString.aStr());
   
   // return false if not a digit
-  if ( ! String::bIsDigit(*aLast) ) {
+  if ( ! StrLib::bIsDigit(*aLast) ) {
     nnpTask->m_pDataStack->vPush((i8)0);
     return;
   }
   
   // move backward to start of digit sequence
   char* aDigit = aLast;
-  while (String::bIsDigit(*aDigit))
+  while (StrLib::bIsDigit(*aDigit))
     aDigit--;
   aDigit++;
   
   // step forward through each digit, computing int
   i8 iInt = 0;
-  while (String::bIsDigit(*aDigit))
+  while (StrLib::bIsDigit(*aDigit))
     iInt = (iInt * 10) + (*aDigit++ - '0');
   
   // return ( int true )
@@ -598,7 +598,7 @@ void Task::vSprint(s48K& sFormat, s48K& sString)
       m_pDataStack->bPop(iValue);
       
       char aValue[32];
-      String::wToString(iValue,aValue);
+      StrLib::wToString(iValue,aValue);
       
       for (char* pv = aValue; *pv; )
       *ps++ = *pv++;

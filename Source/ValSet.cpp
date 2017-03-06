@@ -285,7 +285,7 @@ void ValSet::vToCommand(char* aWorkspace)
 /*----------------------------------------------------------------------------*/
 void ValSet::vToString(char* aWorkspace)
 {
-  String::wToPointer(this,aWorkspace);
+  StrLib::wToPointer(this,aWorkspace);
 }
 
 /*----------------------------------------------------------------------------*/

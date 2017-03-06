@@ -78,7 +78,7 @@ void IpVal::vToCommand(char* aWorkspace)
 /*----------------------------------------------------------------------------*/
 void IpVal::vToString(char* aWorkspace)
 {
-  String::wToPointer(m_pPtr,aWorkspace);
+  StrLib::wToPointer(m_pPtr,aWorkspace);
 }
 
 /*============================================================================*/

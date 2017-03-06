@@ -94,11 +94,11 @@ void Arguments::vEnvironmentVariables(void)
 
   sVarName = "SE_INSTANCE_SIZE";
   if (Env::bGet(sVarName,sRegionSize))
-    m_iRegionSize = String::iToI8(sRegionSize.aStr());
+    m_iRegionSize = StrLib::iToI8(sRegionSize.aStr());
 
   sVarName = "SE_PARTITIONS";
   if (Env::bGet(sVarName,sPartitions))
-    m_nSlots = String::iToI8(sPartitions.aStr());
+    m_nSlots = StrLib::iToI8(sPartitions.aStr());
   
   sVarName = "SE_WORKING_FOLDER";
   if (Env::bGet(sVarName,sFolder))
@@ -117,7 +117,7 @@ bool Arguments::bParse(int argc, const char* argv[])
   for (i8 iArg = 1; iArg < argc; iArg++) {
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (String::bEqualTo("--command",argv[iArg],C_NO_CASE)) {
+    if (StrLib::bEqualTo("--command",argv[iArg],C_NO_CASE)) {
       m_sCommand = argv[++iArg];
       m_bCommand = true;
       m_bPrompt  = true;
@@ -126,47 +126,47 @@ bool Arguments::bParse(int argc, const char* argv[])
     }
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (String::bEqualTo("--commands",argv[iArg],C_NO_CASE)) {
+    if (StrLib::bEqualTo("--commands",argv[iArg],C_NO_CASE)) {
       m_sCommands = argv[++iArg];
       continue;
     }
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (String::bEqualTo("--sen",argv[iArg],C_NO_CASE)) {
+    if (StrLib::bEqualTo("--sen",argv[iArg],C_NO_CASE)) {
       m_sSen = argv[++iArg];
       continue;
     }
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (String::bEqualTo("--docol",argv[iArg],C_NO_CASE)) {
+    if (StrLib::bEqualTo("--docol",argv[iArg],C_NO_CASE)) {
       m_bDocol = true;
       continue;
     }
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (
-        String::bEqualTo("--help",argv[iArg],C_NO_CASE)
-        || String::bEqualTo("-help",argv[iArg],C_NO_CASE)
-        || String::bEqualTo("help",argv[iArg],C_NO_CASE)
-        || String::bEqualTo("--?",argv[iArg],C_NO_CASE)
-        || String::bEqualTo("-?",argv[iArg],C_NO_CASE)
-        || String::bEqualTo("?",argv[iArg],C_NO_CASE)
+        StrLib::bEqualTo("--help",argv[iArg],C_NO_CASE)
+        || StrLib::bEqualTo("-help",argv[iArg],C_NO_CASE)
+        || StrLib::bEqualTo("help",argv[iArg],C_NO_CASE)
+        || StrLib::bEqualTo("--?",argv[iArg],C_NO_CASE)
+        || StrLib::bEqualTo("-?",argv[iArg],C_NO_CASE)
+        || StrLib::bEqualTo("?",argv[iArg],C_NO_CASE)
         )  {
       vPrintHelp();
       exit(EXIT_SUCCESS);
     }
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (String::bEqualTo("--name",argv[iArg],C_NO_CASE)) {
+    if (StrLib::bEqualTo("--name",argv[iArg],C_NO_CASE)) {
       m_sNodeName = argv[++iArg];
       continue;
     }
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (String::bEqualTo("--node",argv[iArg],C_NO_CASE)) {
+    if (StrLib::bEqualTo("--node",argv[iArg],C_NO_CASE)) {
       m_xNodes[iNode].m_sNodeName = argv[++iArg];;
       m_xNodes[iNode].m_sIPAddress = argv[++iArg];
-      m_xNodes[iNode].m_iPortNo =  String::iToI8(argv[++iArg]);
+      m_xNodes[iNode].m_iPortNo =  StrLib::iToI8(argv[++iArg]);
       iNode++;
       
       if (m_nNodes > C_MAX_NODES) {
@@ -177,8 +177,8 @@ bool Arguments::bParse(int argc, const char* argv[])
     }
 
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (String::bEqualTo("--partitionsPerNode",argv[iArg],C_NO_CASE)) {
-      m_nSlots = String::iToI8(argv[++iArg]);
+    if (StrLib::bEqualTo("--partitionsPerNode",argv[iArg],C_NO_CASE)) {
+      m_nSlots = StrLib::iToI8(argv[++iArg]);
       if (m_nSlots > C_SLOTS_PER_NODE) {
         vTrace("Maximum number of partitions allowed per node is %lld\n",
           C_SLOTS_PER_NODE);
@@ -189,31 +189,31 @@ bool Arguments::bParse(int argc, const char* argv[])
     }
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (String::bEqualTo("--region",argv[iArg],C_NO_CASE)) {
+    if (StrLib::bEqualTo("--region",argv[iArg],C_NO_CASE)) {
       m_sRegionName = argv[++iArg];
       continue;
     }
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (String::bEqualTo("--regionPrefix",argv[iArg],C_NO_CASE)) {
+    if (StrLib::bEqualTo("--regionPrefix",argv[iArg],C_NO_CASE)) {
       m_sRegionPrefix = argv[++iArg];
       continue;
     }
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (String::bEqualTo("--address",argv[iArg],C_NO_CASE)) {
-      m_pRegionAddr = (void*)String::iToI8(argv[++iArg]);
+    if (StrLib::bEqualTo("--address",argv[iArg],C_NO_CASE)) {
+      m_pRegionAddr = (void*)StrLib::iToI8(argv[++iArg]);
       continue;
     }
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (String::bEqualTo("--seprompt",argv[iArg],C_NO_CASE)) {
+    if (StrLib::bEqualTo("--seprompt",argv[iArg],C_NO_CASE)) {
       m_bPrompt = true;
       continue;
     }
 
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (String::bEqualTo("--prompt",argv[iArg],C_NO_CASE)) {
+    if (StrLib::bEqualTo("--prompt",argv[iArg],C_NO_CASE)) {
 
       if (m_bStop) {
         vTrace("Incorrect argument: --stop with %s\n",argv[iArg]);
@@ -229,8 +229,8 @@ bool Arguments::bParse(int argc, const char* argv[])
     }
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (String::bEqualTo("--size",argv[iArg],C_NO_CASE)) {
-      //m_iRegionSize = String::iToI8(argv[++iArg]);
+    if (StrLib::bEqualTo("--size",argv[iArg],C_NO_CASE)) {
+      //m_iRegionSize = StrLib::iToI8(argv[++iArg]);
       bool bResult = Magnitudes::bBytes(argv[++iArg], m_iRegionSize);
       if (!bResult) {
         vTrace("Invalid size argument: --size %s\n",argv[iArg]);
@@ -243,7 +243,7 @@ bool Arguments::bParse(int argc, const char* argv[])
     }
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (String::bEqualTo("--start",argv[iArg],C_NO_CASE)) {
+    if (StrLib::bEqualTo("--start",argv[iArg],C_NO_CASE)) {
 
       if (m_bStop) {
         vTrace("Incorrect argument: --stop with %s\n",argv[iArg]);
@@ -259,7 +259,7 @@ bool Arguments::bParse(int argc, const char* argv[])
     }
 
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (String::bEqualTo("--status",argv[iArg],C_NO_CASE)) {
+    if (StrLib::bEqualTo("--status",argv[iArg],C_NO_CASE)) {
       if (m_bStop) {
         vTrace("Incorrect argument: --stop with %s\n",argv[iArg]);
         return false;
@@ -278,7 +278,7 @@ bool Arguments::bParse(int argc, const char* argv[])
     }
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (String::bEqualTo("--stop",argv[iArg],C_NO_CASE)) {
+    if (StrLib::bEqualTo("--stop",argv[iArg],C_NO_CASE)) {
 
       if (m_bStart) {
         vTrace("Incorrect argument: --start with %s\n",argv[iArg]);
@@ -298,107 +298,107 @@ bool Arguments::bParse(int argc, const char* argv[])
     }
 
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (String::bEqualTo("--unlink",argv[iArg],C_NO_CASE)) {
+    if (StrLib::bEqualTo("--unlink",argv[iArg],C_NO_CASE)) {
       m_bUnlink = true;
       continue;
     }
     
     // options -----------------------------------------------------------------
     
-    if (String::bEqualTo("--bgtasks",argv[iArg],C_NO_CASE)) {
+    if (StrLib::bEqualTo("--bgtasks",argv[iArg],C_NO_CASE)) {
       m_bBgTasks = true;
       continue;
     }
     
-    if (String::bEqualTo("--config",argv[iArg],C_NO_CASE)) {
+    if (StrLib::bEqualTo("--config",argv[iArg],C_NO_CASE)) {
       m_bConfig = true;
       continue;
     }
     
-    if (String::bEqualTo("--hugepages",argv[iArg],C_NO_CASE)) {
+    if (StrLib::bEqualTo("--hugepages",argv[iArg],C_NO_CASE)) {
       m_bHugePages = true;
       continue;
     }
     
-    if (String::bEqualTo("--progress",argv[iArg],C_NO_CASE)) {
+    if (StrLib::bEqualTo("--progress",argv[iArg],C_NO_CASE)) {
       m_bProgress = true;
       continue;
     }
-    if (String::bEqualTo("--noprogress",argv[iArg],C_NO_CASE)) {
+    if (StrLib::bEqualTo("--noprogress",argv[iArg],C_NO_CASE)) {
       m_bProgress = false;
       continue;
     }
     
-    //if (String::bEqualTo("--restart",argv[iArg],C_NO_CASE)) {
+    //if (StrLib::bEqualTo("--restart",argv[iArg],C_NO_CASE)) {
     //  m_bRestart = true;
     //  continue;
     //}
     
-    if (String::bEqualTo("--touch",argv[iArg],C_NO_CASE)) {
+    if (StrLib::bEqualTo("--touch",argv[iArg],C_NO_CASE)) {
       m_bTouch = true;
       continue;
     }
-    if (String::bEqualTo("--notouch",argv[iArg],C_NO_CASE)) {
+    if (StrLib::bEqualTo("--notouch",argv[iArg],C_NO_CASE)) {
       m_bTouch = false;
       continue;
     }
     
-    if (String::bEqualTo("--Traceapi",argv[iArg],C_NO_CASE)) {
+    if (StrLib::bEqualTo("--Traceapi",argv[iArg],C_NO_CASE)) {
       m_bTraceapi = true;
       continue;
     }
     
-    if (String::bEqualTo("--tracepoint",argv[iArg],C_NO_CASE)) {
+    if (StrLib::bEqualTo("--tracepoint",argv[iArg],C_NO_CASE)) {
       m_bTracepoint = true;
       continue;
     }
     
-    if (String::bEqualTo("--tracing",argv[iArg],C_NO_CASE)) {
+    if (StrLib::bEqualTo("--tracing",argv[iArg],C_NO_CASE)) {
       m_bTracing = true;
       continue;
     }
     
-    if (String::bEqualTo("--unittests",argv[iArg],C_NO_CASE)) {
+    if (StrLib::bEqualTo("--unittests",argv[iArg],C_NO_CASE)) {
       m_bUnitTests = true;
       continue;
     }
     
-    if (String::bEqualTo("--verbose",argv[iArg],C_NO_CASE)) {
+    if (StrLib::bEqualTo("--verbose",argv[iArg],C_NO_CASE)) {
       m_bVerbose = true;
       continue;
     }
     
-    if (String::bEqualTo("--welcome",argv[iArg],C_NO_CASE)) {
+    if (StrLib::bEqualTo("--welcome",argv[iArg],C_NO_CASE)) {
       m_bWelcome = true;
       continue;
     }
     
-    if (String::bEqualTo("--nowelcome",argv[iArg],C_NO_CASE)) {
+    if (StrLib::bEqualTo("--nowelcome",argv[iArg],C_NO_CASE)) {
       m_bWelcome = false;
       continue;
     }
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (String::bEqualTo("--sleep",argv[iArg],C_NO_CASE)) {
-      m_iSleep = String::iToI8(argv[++iArg]);
+    if (StrLib::bEqualTo("--sleep",argv[iArg],C_NO_CASE)) {
+      m_iSleep = StrLib::iToI8(argv[++iArg]);
       continue;
     }
     
-    if (String::bEqualTo("--munged",argv[iArg],C_NO_CASE)) {
+    if (StrLib::bEqualTo("--munged",argv[iArg],C_NO_CASE)) {
       m_bMunged = true;
       continue;
     }
   
-    if (String::bEqualTo("--killPrev",argv[iArg],C_NO_CASE)) {
+    if (StrLib::bEqualTo("--killPrev",argv[iArg],C_NO_CASE)) {
       m_bKillPrev = true;
       continue;
     }
     
   /*
-    if (String::iLength(m_sCommand.aStr()))
-      String::vConcat(m_sCommand.aStr(),' ');
+    if (StrLib::iLength(m_sCommand.aStr()))
+      StrLib::vConcat(m_sCommand.aStr(),' ');
     
-    String::vConcat(m_sCommand.aStr(),argv[iArg]);
+    StrLib::vConcat(m_sCommand.aStr(),argv[iArg]);
     m_bCommand = true;
     m_bPrompt  = true;
     m_bWelcome = false;
@@ -427,7 +427,7 @@ bool Arguments::bParse(int argc, const char* argv[])
     // the current node should have been specfied in the --node
     bool bFound = false;
     for (i8 iIndex = 0; iIndex < m_nNodes; iIndex++) {
-      if (String::bEqualTo(m_xNodes[iIndex].m_sNodeName.aStr(), m_sNodeName.aStr(), C_NO_CASE)) {
+      if (StrLib::bEqualTo(m_xNodes[iIndex].m_sNodeName.aStr(), m_sNodeName.aStr(), C_NO_CASE)) {
         bFound = true;
         break;
       }
@@ -447,10 +447,10 @@ bool Arguments::bParse(int argc, const char* argv[])
   }
 
   // if no regionName then form region name using regionPrefix and node name
-  if (String::bEqualTo(m_sRegionName.aStr(),"")) {
-    String::vConcat( m_sRegionName.aStr(), m_sRegionPrefix.aStr());
-    String::vConcat( m_sRegionName.aStr(), "_");
-    String::vConcat( m_sRegionName.aStr(), m_sNodeName.aStr());
+  if (StrLib::bEqualTo(m_sRegionName.aStr(),"")) {
+    StrLib::vConcat( m_sRegionName.aStr(), m_sRegionPrefix.aStr());
+    StrLib::vConcat( m_sRegionName.aStr(), "_");
+    StrLib::vConcat( m_sRegionName.aStr(), m_sNodeName.aStr());
   }
   else {
     if (m_bStart && m_nNodes > 1) {

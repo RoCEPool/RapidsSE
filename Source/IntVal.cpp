@@ -69,7 +69,7 @@ i8 IntVal::nSize(void) const
 /*----------------------------------------------------------------------------*/
 void IntVal::vToCommand(char* aWorkspace)
 {
-  String::wToString(m_iInt,aWorkspace);
+  StrLib::wToString(m_iInt,aWorkspace);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -77,7 +77,7 @@ void IntVal::vToCommand(char* aWorkspace)
 /*----------------------------------------------------------------------------*/
 void IntVal::vToString(char* aWorkspace)
 {
-  String::wToString(m_iInt,aWorkspace);
+  StrLib::wToString(m_iInt,aWorkspace);
 }
 
 /*============================================================================*/

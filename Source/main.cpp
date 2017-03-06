@@ -33,7 +33,7 @@ int main(int argc, const char* argv[])
 {
   
   //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  // call Fun(Str&) with a ""_Str parameter
+  // call Fun(Str&) with a ""_Str parameter (ptr to a Str datum)
   vStrTestPtr("This is a Str literal"_Str);
   
   // dereference a ""_Str parameter
@@ -70,11 +70,11 @@ int main(int argc, const char* argv[])
          sizeof(Value),sizeof(IntVal),sizeof(ValWsp)
   );
   
-  const char *aRelDbg;
+  Str* aRelDbg;
 #ifdef _DEBUG
-  aRelDbg = "debug";
+  aRelDbg = "debug"_Str;
 #else
-  aRelDbg = "release";
+  aRelDbg = "release"_Str;
 #endif
   
   //vTest1();
@@ -89,7 +89,7 @@ int main(int argc, const char* argv[])
            RAPIDSSE_VERSION_STRING,
            __DATE__,
            __TIME__,
-           aRelDbg,
+           (char*)aRelDbg,
            Process::iGetPid()
            );
 
@@ -190,7 +190,7 @@ void vKillPrev(void)
   
   for (i8 iIndex=0; iIndex < gxArguments.m_nNodes; iIndex++) {
     
-    String::vSprint(sRegionName.aStr(),"%s_%s",
+    StrLib::vSprint(sRegionName.aStr(),"%s_%s",
       gxArguments.m_sRegionPrefix.aStr(),
       gxArguments.m_xNodes[iIndex].m_sNodeName.aStr());
     

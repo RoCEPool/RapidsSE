@@ -70,7 +70,7 @@ void SeHistory::vOpen(void)
   
   char wFileName[C_1KB];
   
-  String::vSprint(wFileName,"/tmp/SEitf_%lld_history.txt",Process::iGetPid());
+  StrLib::vSprint(wFileName,"/tmp/SEitf_%lld_history.txt",Process::iGetPid());
   
   bool b = m_xFile.bOpen(wFileName,C_OPEN_READ_WRITE_CREATE);
   ASSERT(b);
@@ -102,17 +102,17 @@ bool SeHistory::bRecall(char* pToken[], i8 nTokens)
   
   i8 iCommand;
   
-  if (String::bEqualTo("!!",pToken[0],C_NO_CASE)) {
+  if (StrLib::bEqualTo("!!",pToken[0],C_NO_CASE)) {
     iCommand = m_iCommands;
     if (! iCommand)
       return false;
   }
   else {
     // get command number
-    if (String::iLength(pToken[0]) < 2)
+    if (StrLib::iLength(pToken[0]) < 2)
       return false;
     
-    iCommand = String::iToI8(pToken[0]+1);
+    iCommand = StrLib::iToI8(pToken[0]+1);
   }
   
   vTrace("Recall: %lld\n",iCommand);

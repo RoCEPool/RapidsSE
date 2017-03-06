@@ -96,7 +96,7 @@ void Row::vContentDump(void)
          m_iTxId,
          m_iDataBytes,
          pData(),
-         String::iSize(pData()),
+         StrLib::iSize(pData()),
          pStr->aStr()
          );
 }
@@ -142,7 +142,7 @@ void Row::vTxId(i8 iTxId)
 /*----------------------------------------------------------------------------*/
 i8 Row::iBytesRequired(const char* w)
 { 
-  i8 iBytes = sizeof(Row) + sizeof(Footer) + String::iSize(w);
+  i8 iBytes = sizeof(Row) + sizeof(Footer) + StrLib::iSize(w);
   
   return iBytes;
 }

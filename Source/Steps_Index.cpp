@@ -168,7 +168,7 @@ void Task::vIndexEntryTest(NNP_Task nnpTask)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set rowId
   RowId xRowId;
-  i8 iRowNo = String::iToI8(sRow.aStr());
+  i8 iRowNo = StrLib::iToI8(sRow.aStr());
   
   xRowId.vBuffer(999);
   xRowId.vRow(iRowNo);
@@ -180,7 +180,7 @@ void Task::vIndexEntryTest(NNP_Task nnpTask)
   ValWsp xValWsp;
   
   
-  //i8 iKey0 = String::iToI8(sRow.aStr());
+  //i8 iKey0 = StrLib::iToI8(sRow.aStr());
   i8 iKey0 = Random::iRandom(0,1000);
   
   xValWsp = iKey0;

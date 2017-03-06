@@ -156,7 +156,7 @@ void StrVal::operator =(const char* aArg)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  String::vCopyLen(aArea(),aArg,m_xWsp.nUsed()-1);
+  StrLib::vCopyLen(aArea(),aArg,m_xWsp.nUsed()-1);
   
   _postcondition_(_MAGIC_,_FOOTER_);
 }
@@ -168,7 +168,7 @@ void StrVal::operator =(char* aArg)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  String::vCopyLen(aArea(),aArg,m_xWsp.nUsed()-1);
+  StrLib::vCopyLen(aArea(),aArg,m_xWsp.nUsed()-1);
   
   _postcondition_(_MAGIC_,_FOOTER_);
 }
@@ -194,7 +194,7 @@ void StrVal::vAppend(const char cChar)
   
   // limit???
   
-  String::vConcat(aArea(),cChar);
+  StrLib::vConcat(aArea(),cChar);
   
   _postcondition_(_MAGIC_,_FOOTER_);
 }
@@ -206,7 +206,7 @@ void StrVal::vAppend(const char* aStr)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  String::vConcat(aArea(),aStr);
+  StrLib::vConcat(aArea(),aStr);
   
   _postcondition_(_MAGIC_,_FOOTER_);
 }
@@ -242,7 +242,7 @@ void StrVal::vAreaSize(void)
 {
   //_precondition_(_MAGIC_,_FOOTER_);
   
-  i8 nBytes = String::iSize(aArea());
+  i8 nBytes = StrLib::iSize(aArea());
   
   m_xWsp.vUsed(nBytes);
 }
@@ -254,7 +254,7 @@ void StrVal::vAssign(const char* aStr)
 {
   //ASSERT(m_nAreaSize);
   
-  String::vCopy(aArea(),aStr);
+  StrLib::vCopy(aArea(),aStr);
   
   vAreaSize();
 }
@@ -266,7 +266,7 @@ void StrVal::vAssign(const char* aStr, i8 iLength)
 {
   //ASSERT(m_nAreaSize);
   
-  String::vCopyLen(aArea(),aStr,iLength);
+  StrLib::vCopyLen(aArea(),aStr,iLength);
   
   aArea()[iLength] = '\0';
   
@@ -280,7 +280,7 @@ void StrVal::vCopy(const char* aStr)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  String::vCopyLen(aArea(),aStr,m_xWsp.nUsed()-1);
+  StrLib::vCopyLen(aArea(),aStr,m_xWsp.nUsed()-1);
   
   _postcondition_(_MAGIC_,_FOOTER_);
 }
@@ -292,7 +292,7 @@ void StrVal::vCopy(const char* aStr, i8 iLength)
 {
   vClass(CN_STRVAL);
   
-  String::vCopyLen(aArea(),aStr,iLength);
+  StrLib::vCopyLen(aArea(),aStr,iLength);
   
   vAreaSize();
 }
@@ -304,7 +304,7 @@ bool StrVal::bEnds(const char* aSuffix)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  bool b = String::bEnds(aArea(),aSuffix);
+  bool b = StrLib::bEnds(aArea(),aSuffix);
   
   return b;
 }
@@ -316,7 +316,7 @@ bool StrVal::bIsEqual(StrVal& sArg, i8 iCase)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  bool b = String::bEqualTo(aArea(),sArg.aArea(),iCase);
+  bool b = StrLib::bEqualTo(aArea(),sArg.aArea(),iCase);
   
   return b;
 }
@@ -328,7 +328,7 @@ i8 StrVal::iLength(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  return String::iLength(aArea());
+  return StrLib::iLength(aArea());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -354,9 +354,9 @@ char* StrVal::aStr(void)
 /*----------------------------------------------------------------------------*/
 void StrVal::vToCommand(char* aStr)
 {
-  String::vCopy(aStr,"\"");
-  String::vCopy(aStr,aArea());
-  String::vCopy(aStr,"\"");
+  StrLib::vCopy(aStr,"\"");
+  StrLib::vCopy(aStr,aArea());
+  StrLib::vCopy(aStr,"\"");
 }
 
 /*----------------------------------------------------------------------------*/
@@ -364,7 +364,7 @@ void StrVal::vToCommand(char* aStr)
 /*----------------------------------------------------------------------------*/
 void StrVal::vToString(char* aStr)
 {
-  String::vCopy(aStr,aArea());
+  StrLib::vCopy(aStr,aArea());
 }
 
 /*----------------------------------------------------------------------------*/

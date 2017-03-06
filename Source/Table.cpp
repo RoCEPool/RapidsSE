@@ -112,7 +112,7 @@ char* Table::pAnalyze(bool bDetailed)
   i8 nStrandsTotal = 0;
   s48K sAnalysis;
   
-  String::vSprintCat(sAnalysis.aStr(),
+  StrLib::vSprintCat(sAnalysis.aStr(),
                      "N%lld: Analysis of Table %s\n",
                      gpGrid->iThisNode(),
                      m_sTableName.aStr());
@@ -140,7 +140,7 @@ char* Table::pAnalyze(bool bDetailed)
           nRowBuffer++;
           nRowsInBuffer = pRowBuffer->nRows();
           pRowBuffer = pRowBuffer->pNextBuffer();
-          String::vSprintCat(sAnalysis.aStr(),
+          StrLib::vSprintCat(sAnalysis.aStr(),
                              "   strand:%lld rowBuffer%lld: %lld rows\n",
                              nStrands,
                              nRowBuffer,
@@ -153,14 +153,14 @@ char* Table::pAnalyze(bool bDetailed)
       pStrand = pStrand->pNextStrand();
     }
     
-    String::vSprintCat(sAnalysis.aStr(),
+    StrLib::vSprintCat(sAnalysis.aStr(),
                        "  partition %lld: %3lld strands; %5lld buffers; %lld rows\n",
                        iPartition,nStrands,nBuffers,nRows);
     nRowsTotal += nRows;
     nBuffersTotal += nBuffers;
     nStrandsTotal += nStrands;
   }
-  String::vSprintCat(sAnalysis.aStr(),
+  StrLib::vSprintCat(sAnalysis.aStr(),
                      "        total: %3lld strands; %5lld buffers; %lld rows\n",
                      nStrandsTotal,nBuffersTotal,nRowsTotal);
   

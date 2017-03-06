@@ -87,33 +87,33 @@ void Time::vAppendUtc(char** pz)
   i8 iYear  = m_iYear + 1900;
   i8 iMilli = DIV(m_iMicro,1000);
   
-  String::vAppendDecimal(&z,iYear);
-  String::vAppendChar(&z,'-');
+  StrLib::vAppendDecimal(&z,iYear);
+  StrLib::vAppendChar(&z,'-');
   
-  if (m_iMonth < 10) String::vAppendChar(&z,'0');
-  String::vAppendDecimal(&z,m_iMonth);
-  String::vAppendChar(&z,'-');
+  if (m_iMonth < 10) StrLib::vAppendChar(&z,'0');
+  StrLib::vAppendDecimal(&z,m_iMonth);
+  StrLib::vAppendChar(&z,'-');
   
-  if (m_iDay < 10) String::vAppendChar(&z,'0');
-  String::vAppendDecimal(&z,m_iDay);
-  String::vAppendChar(&z,'T');
+  if (m_iDay < 10) StrLib::vAppendChar(&z,'0');
+  StrLib::vAppendDecimal(&z,m_iDay);
+  StrLib::vAppendChar(&z,'T');
   
-  if (m_iHour < 10) String::vAppendChar(&z,'0');
-  String::vAppendDecimal(&z,m_iHour);
-  String::vAppendChar(&z,':');
+  if (m_iHour < 10) StrLib::vAppendChar(&z,'0');
+  StrLib::vAppendDecimal(&z,m_iHour);
+  StrLib::vAppendChar(&z,':');
   
-  if (m_iMinute < 10) String::vAppendChar(&z,'0');
-  String::vAppendDecimal(&z,m_iMinute);
-  String::vAppendChar(&z,':');
+  if (m_iMinute < 10) StrLib::vAppendChar(&z,'0');
+  StrLib::vAppendDecimal(&z,m_iMinute);
+  StrLib::vAppendChar(&z,':');
   
-  if (m_iSecond < 10) String::vAppendChar(&z,'0');
-  String::vAppendDecimal(&z,m_iSecond);
-  String::vAppendChar(&z,'.');
+  if (m_iSecond < 10) StrLib::vAppendChar(&z,'0');
+  StrLib::vAppendDecimal(&z,m_iSecond);
+  StrLib::vAppendChar(&z,'.');
   
-  if (iMilli < 100) String::vAppendChar(&z,'0');
-  if (iMilli < 10)  String::vAppendChar(&z,'0');
-  String::vAppendDecimal(&z,iMilli);
-  String::vAppendChar(&z,'Z');
+  if (iMilli < 100) StrLib::vAppendChar(&z,'0');
+  if (iMilli < 10)  StrLib::vAppendChar(&z,'0');
+  StrLib::vAppendDecimal(&z,iMilli);
+  StrLib::vAppendChar(&z,'Z');
   
   *z = '\0';
   
@@ -138,17 +138,17 @@ bool Time::bExtractUTC(char** ps)
   
   i8 v;
   
-  if ( ! String::bExtractI8(ps,&v) ) return false;
+  if ( ! StrLib::bExtractI8(ps,&v) ) return false;
   m_iYear = (unsigned int)v - 1900;
   
   if ('-' != *(*ps)++) return false;
   
-  if ( ! String::bExtractI8(ps,&v) ) return false;
+  if ( ! StrLib::bExtractI8(ps,&v) ) return false;
   m_iMonth = (unsigned int)v;
   
   if ('-' != *(*ps)++) return false;
   
-  if ( ! String::bExtractI8(ps,&v) ) return false;
+  if ( ! StrLib::bExtractI8(ps,&v) ) return false;
   m_iDay = (unsigned int)v;
   
   // - - -
@@ -157,23 +157,23 @@ bool Time::bExtractUTC(char** ps)
   
   (*ps)++;
   
-  if ( ! String::bExtractI8(ps,&v) ) return true;
+  if ( ! StrLib::bExtractI8(ps,&v) ) return true;
   m_iHour = (unsigned int)v;
   
   if (':' != *(*ps)++) return true;
   
-  if ( ! String::bExtractI8(ps,&v) ) return true;
+  if ( ! StrLib::bExtractI8(ps,&v) ) return true;
   m_iMinute = (unsigned int)v;
   
   if (':' != *(*ps)++) return true;
   
-  if ( ! String::bExtractI8(ps,&v) ) return true;
+  if ( ! StrLib::bExtractI8(ps,&v) ) return true;
   m_iSecond = (unsigned int)v;
   
   if ('.' == **ps)
   {
     (*ps)++;
-    if ( String::bExtractI8(ps,&v) )
+    if ( StrLib::bExtractI8(ps,&v) )
       m_iMicro  = (unsigned int)(v*1000);
   }
   

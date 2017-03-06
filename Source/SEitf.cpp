@@ -320,64 +320,64 @@ bool SEitf::bDecode(char* pWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
-  if (0 == String::iLength(pWords[0]))
+  if (0 == StrLib::iLength(pWords[0]))
     return false;
   
-  if (String::bSame("antbl",pWords[0])) return bAnalyzeTable(pWords, iWords);
-  if (String::bSame("add",pWords[0])) return bAddColumn(pWords, iWords);
-  if (String::bSame("cf",pWords[0])) return bPushDic(pWords);
-  if (String::bSame("con",pWords[0])) return bConnect(pWords);
-  if (String::bSame("connectCluster",pWords[0])) return bConnectCluster(pWords);
-  if (String::bSame("cp",pWords[0])) return bCopyTable(pWords, iWords);
-  if (String::bSame("dantbl",pWords[0])) return bDanalyzeTable(pWords, iWords);
-  if (String::bSame("dex",pWords[0])) return bDistExportTable(pWords, iWords);
-  if (String::bSame("dis",pWords[0])) return bDisconnect(pWords);
-  if (String::bSame("docol",pWords[0])) return bDocol(pWords);
-  if (String::bSame("dump",pWords[0])) return bDumpTable(pWords, iWords);
-  if (String::bSame("ex",pWords[0])) return bExportTable(pWords, iWords);
-  if (String::bSame("getFreeSpace",pWords[0])) return bGetFreeSpace(pWords);
-  if (String::bSame("getInUseSpace",pWords[0])) return bGetInUseSpace(pWords);
-  if (String::bSame("gettbl",pWords[0])) return bGetTable(pWords, iWords);
-  if (String::bSame("getTotalSpace",pWords[0])) return bGetTotalSpace(pWords);
-  if (String::bSame("idump",pWords[0])) return bDumpIndex(pWords, iWords);
-  if (String::bSame("TblInUse",pWords[0])) return bInUseTable(pWords, iWords);
-  if (String::bSame("ld",pWords[0])) return bLoadTable(pWords, iWords);
-  if (String::bSame("lds",pWords[0])) return bLoadTableStream(pWords, iWords);
-  if (String::bSame("lf",pWords[0])) return bGetDicContents(pWords);
-  if (String::bSame("lfG",pWords[0])) return bGetDicContentsG(pWords);
-  if (String::bSame("lscat",pWords[0])) return bListCatalogs(pWords, iWords);
-  if (String::bSame("lscol",pWords[0])) return bListColumns(pWords, iWords);
-  if (String::bSame("lsidx",pWords[0])) return bListIndices(pWords, iWords);
-  if (String::bSame("lssch",pWords[0])) return bListSchemas(pWords, iWords);
-  if (String::bSame("lstbl",pWords[0])) return bListTables(pWords, iWords);
-  if (String::bSame("lsten",pWords[0])) return bListTenants(pWords, iWords);
-  if (String::bSame("mkcat",pWords[0])) return bCreateCatalog(pWords, iWords);
-  if (String::bSame("mkidx",pWords[0])) return bCreateIndex(pWords, iWords);
-  if (String::bSame("mksch",pWords[0])) return bCreateSchema(pWords, iWords);
-  if (String::bSame("mktbl",pWords[0])) return bCreateTable(pWords, iWords);
-  if (String::bSame("mkten",pWords[0])) return bCreateTenant(pWords, iWords);
-  if (String::bSame("object",pWords[0])) return bObject(pWords);
-  if (String::bSame("pRB",pWords[0])) return bPrintRowBuffer(pWords);
-  if (String::bSame("pwf",pWords[0])) return bGetDicPath(pWords);
-  if (String::bSame("rettbl",pWords[0])) return bRetTable(pWords, iWords);
-  if (String::bSame("rf",pWords[0])) return bRemoveFolder(pWords, iWords);
-  if (String::bSame("rmcat",pWords[0])) return bDropCatalog(pWords, iWords);
-  if (String::bSame("rmdic",pWords[0])) return bRemoveFolder(pWords, iWords);
-  if (String::bSame("rmsch",pWords[0])) return bDropSchema(pWords, iWords);
-  if (String::bSame("rmtbl",pWords[0])) return bDropTable(pWords, iWords);
-  if (String::bSame("rmten",pWords[0])) return bDropTenant(pWords, iWords);
-  if (String::bSame("sel",pWords[0])) return bSelectTable(pWords, iWords);
-  if (String::bSame("space",pWords[0])) return bPoolSpace(pWords, iWords);
-  if (String::bSame("status",pWords[0])) return bNodeStatus(pWords, iWords);
-  if (String::bSame("sz",pWords[0])) return bSizeTable(pWords, iWords);
-  if (String::bSame("tr",pWords[0])) return bTruncateTable(pWords, iWords);
-  if (String::bSame("usesch",pWords[0])) return bUseSchema(pWords, iWords);
-  if (String::bSame("__x",pWords[0])) return bX(pWords);
-  if (String::bSame("ping",pWords[0])) return bPing(pWords);
-  if (String::bSame("mon",pWords[0])) return bGetMonitor(pWords);
-  if (String::bSame("print",pWords[0])) return ! bPrint(pWords);
-  if (String::bSame("seitf",pWords[0])) return bSeitfCount(pWords);
-  if (String::bSame("version",pWords[0])) return bGetVersion(pWords);
+  if (StrLib::bSame("antbl",pWords[0])) return bAnalyzeTable(pWords, iWords);
+  if (StrLib::bSame("add",pWords[0])) return bAddColumn(pWords, iWords);
+  if (StrLib::bSame("cf",pWords[0])) return bPushDic(pWords);
+  if (StrLib::bSame("con",pWords[0])) return bConnect(pWords);
+  if (StrLib::bSame("connectCluster",pWords[0])) return bConnectCluster(pWords);
+  if (StrLib::bSame("cp",pWords[0])) return bCopyTable(pWords, iWords);
+  if (StrLib::bSame("dantbl",pWords[0])) return bDanalyzeTable(pWords, iWords);
+  if (StrLib::bSame("dex",pWords[0])) return bDistExportTable(pWords, iWords);
+  if (StrLib::bSame("dis",pWords[0])) return bDisconnect(pWords);
+  if (StrLib::bSame("docol",pWords[0])) return bDocol(pWords);
+  if (StrLib::bSame("dump",pWords[0])) return bDumpTable(pWords, iWords);
+  if (StrLib::bSame("ex",pWords[0])) return bExportTable(pWords, iWords);
+  if (StrLib::bSame("getFreeSpace",pWords[0])) return bGetFreeSpace(pWords);
+  if (StrLib::bSame("getInUseSpace",pWords[0])) return bGetInUseSpace(pWords);
+  if (StrLib::bSame("gettbl",pWords[0])) return bGetTable(pWords, iWords);
+  if (StrLib::bSame("getTotalSpace",pWords[0])) return bGetTotalSpace(pWords);
+  if (StrLib::bSame("idump",pWords[0])) return bDumpIndex(pWords, iWords);
+  if (StrLib::bSame("TblInUse",pWords[0])) return bInUseTable(pWords, iWords);
+  if (StrLib::bSame("ld",pWords[0])) return bLoadTable(pWords, iWords);
+  if (StrLib::bSame("lds",pWords[0])) return bLoadTableStream(pWords, iWords);
+  if (StrLib::bSame("lf",pWords[0])) return bGetDicContents(pWords);
+  if (StrLib::bSame("lfG",pWords[0])) return bGetDicContentsG(pWords);
+  if (StrLib::bSame("lscat",pWords[0])) return bListCatalogs(pWords, iWords);
+  if (StrLib::bSame("lscol",pWords[0])) return bListColumns(pWords, iWords);
+  if (StrLib::bSame("lsidx",pWords[0])) return bListIndices(pWords, iWords);
+  if (StrLib::bSame("lssch",pWords[0])) return bListSchemas(pWords, iWords);
+  if (StrLib::bSame("lstbl",pWords[0])) return bListTables(pWords, iWords);
+  if (StrLib::bSame("lsten",pWords[0])) return bListTenants(pWords, iWords);
+  if (StrLib::bSame("mkcat",pWords[0])) return bCreateCatalog(pWords, iWords);
+  if (StrLib::bSame("mkidx",pWords[0])) return bCreateIndex(pWords, iWords);
+  if (StrLib::bSame("mksch",pWords[0])) return bCreateSchema(pWords, iWords);
+  if (StrLib::bSame("mktbl",pWords[0])) return bCreateTable(pWords, iWords);
+  if (StrLib::bSame("mkten",pWords[0])) return bCreateTenant(pWords, iWords);
+  if (StrLib::bSame("object",pWords[0])) return bObject(pWords);
+  if (StrLib::bSame("pRB",pWords[0])) return bPrintRowBuffer(pWords);
+  if (StrLib::bSame("pwf",pWords[0])) return bGetDicPath(pWords);
+  if (StrLib::bSame("rettbl",pWords[0])) return bRetTable(pWords, iWords);
+  if (StrLib::bSame("rf",pWords[0])) return bRemoveFolder(pWords, iWords);
+  if (StrLib::bSame("rmcat",pWords[0])) return bDropCatalog(pWords, iWords);
+  if (StrLib::bSame("rmdic",pWords[0])) return bRemoveFolder(pWords, iWords);
+  if (StrLib::bSame("rmsch",pWords[0])) return bDropSchema(pWords, iWords);
+  if (StrLib::bSame("rmtbl",pWords[0])) return bDropTable(pWords, iWords);
+  if (StrLib::bSame("rmten",pWords[0])) return bDropTenant(pWords, iWords);
+  if (StrLib::bSame("sel",pWords[0])) return bSelectTable(pWords, iWords);
+  if (StrLib::bSame("space",pWords[0])) return bPoolSpace(pWords, iWords);
+  if (StrLib::bSame("status",pWords[0])) return bNodeStatus(pWords, iWords);
+  if (StrLib::bSame("sz",pWords[0])) return bSizeTable(pWords, iWords);
+  if (StrLib::bSame("tr",pWords[0])) return bTruncateTable(pWords, iWords);
+  if (StrLib::bSame("usesch",pWords[0])) return bUseSchema(pWords, iWords);
+  if (StrLib::bSame("__x",pWords[0])) return bX(pWords);
+  if (StrLib::bSame("ping",pWords[0])) return bPing(pWords);
+  if (StrLib::bSame("mon",pWords[0])) return bGetMonitor(pWords);
+  if (StrLib::bSame("print",pWords[0])) return ! bPrint(pWords);
+  if (StrLib::bSame("seitf",pWords[0])) return bSeitfCount(pWords);
+  if (StrLib::bSame("version",pWords[0])) return bGetVersion(pWords);
   
   vSetLastError(EC_INVALID_COMMAND);
   return false;
@@ -392,7 +392,7 @@ bool SEitf::bConnect(char* pWords[])
   
   s256 sRequest;
   
-  ASSERT(String::bEqualTo(pWords[0],"con"));
+  ASSERT(StrLib::bEqualTo(pWords[0],"con"));
   sRequest = "connect";
   return bAppendRequest(sRequest);
 }
@@ -406,7 +406,7 @@ bool SEitf::bConnectCluster(char* pWords[])
   
   s256 sRequest;
   
-  ASSERT(String::bEqualTo(pWords[0],"connectCluster"));
+  ASSERT(StrLib::bEqualTo(pWords[0],"connectCluster"));
   sRequest = "connectCluster";
   return bAppendRequest(sRequest);
 }
@@ -420,7 +420,7 @@ bool SEitf::bDisconnect(char* pWords[])
   
   s256 sRequest;
   
-  ASSERT(String::bEqualTo(pWords[0],"dic"));
+  ASSERT(StrLib::bEqualTo(pWords[0],"dic"));
   sRequest = "disconnect";
   return bAppendRequest(sRequest);
 }
@@ -436,11 +436,11 @@ bool SEitf::bRemoveFolder(char* pWords[], i8 iWords)
   
   char* a = sRequest.aStr();
   
-  String::vCopy(a,"\"");
-  String::vConcat(a,pWords[1]);
-  String::vConcat(a,"\"");
+  StrLib::vCopy(a,"\"");
+  StrLib::vConcat(a,pWords[1]);
+  StrLib::vConcat(a,"\"");
   
-  String::vConcat(a," remove_folder");
+  StrLib::vConcat(a," remove_folder");
   
   return bAppendRequest(sRequest);
 }
@@ -461,11 +461,11 @@ bool SEitf::bCreateTenant(char* pWords[], i8 iWords)
     return false;
   }
 
-  String::vCopy(a,"\"");
-  String::vConcat(a,pWords[1]);
-  String::vConcat(a,"\"");
+  StrLib::vCopy(a,"\"");
+  StrLib::vConcat(a,pWords[1]);
+  StrLib::vConcat(a,"\"");
   
-  String::vConcat(a," create_tenant");
+  StrLib::vConcat(a," create_tenant");
   
   return bAppendRequest(sRequest);
 }
@@ -484,7 +484,7 @@ bool SEitf::bListTenants(char* pWords[], i8 iWords)
     return false;
   }
 
-  ASSERT(String::bEqualTo(pWords[0],"lsten"));
+  ASSERT(StrLib::bEqualTo(pWords[0],"lsten"));
   sRequest = "list_tenants";
   return bAppendRequest(sRequest);
 }
@@ -505,11 +505,11 @@ bool SEitf::bDropTenant(char* pWords[], i8 iWords)
     return false;
   }
   
-  String::vCopy(a,"\"");
-  String::vConcat(a,pWords[1]);
-  String::vConcat(a,"\"");
+  StrLib::vCopy(a,"\"");
+  StrLib::vConcat(a,pWords[1]);
+  StrLib::vConcat(a,"\"");
   
-  String::vConcat(a," drop_tenant");
+  StrLib::vConcat(a," drop_tenant");
   
   return bAppendRequest(sRequest);
 }
@@ -530,11 +530,11 @@ bool SEitf::bCreateCatalog(char* pWords[], i8 iWords)
     return false;
   }
   
-  String::vCopy(a,"\"");
-  String::vConcat(a,pWords[1]);
-  String::vConcat(a,"\"");
+  StrLib::vCopy(a,"\"");
+  StrLib::vConcat(a,pWords[1]);
+  StrLib::vConcat(a,"\"");
   
-  String::vConcat(a," create_catalog");
+  StrLib::vConcat(a," create_catalog");
   
   return bAppendRequest(sRequest);
 }
@@ -553,7 +553,7 @@ bool SEitf::bListCatalogs(char* pWords[], i8 iWords)
     return false;
   }
   
-  ASSERT(String::bEqualTo(pWords[0],"lscat"));
+  ASSERT(StrLib::bEqualTo(pWords[0],"lscat"));
   sRequest = "list_catalogs";
   return bAppendRequest(sRequest);
 }
@@ -574,11 +574,11 @@ bool SEitf::bDropCatalog(char* pWords[], i8 iWords)
     return false;
   }
 
-  String::vCopy(a,"\"");
-  String::vConcat(a,pWords[1]);
-  String::vConcat(a,"\"");
+  StrLib::vCopy(a,"\"");
+  StrLib::vConcat(a,pWords[1]);
+  StrLib::vConcat(a,"\"");
   
-  String::vConcat(a," drop_catalog");
+  StrLib::vConcat(a," drop_catalog");
   
   return bAppendRequest(sRequest);
 }
@@ -599,11 +599,11 @@ bool SEitf::bCreateSchema(char* pWords[], i8 iWords)
     return false;
   }
   
-  String::vCopy(a,"\"");
-  String::vConcat(a,pWords[1]);
-  String::vConcat(a,"\"");
+  StrLib::vCopy(a,"\"");
+  StrLib::vConcat(a,pWords[1]);
+  StrLib::vConcat(a,"\"");
   
-  String::vConcat(a," create_schema");
+  StrLib::vConcat(a," create_schema");
   
   return bAppendRequest(sRequest);
 }
@@ -622,7 +622,7 @@ bool SEitf::bListSchemas(char* pWords[], i8 iWords)
     return false;
   }
   
-  ASSERT(String::bEqualTo(pWords[0],"lssch"));
+  ASSERT(StrLib::bEqualTo(pWords[0],"lssch"));
   sRequest = "list_schemas";
   return bAppendRequest(sRequest);
 }
@@ -643,11 +643,11 @@ bool SEitf::bDropSchema(char* pWords[], i8 iWords)
     return false;
   }
 
-  String::vCopy(a,"\"");
-  String::vConcat(a,pWords[1]);
-  String::vConcat(a,"\"");
+  StrLib::vCopy(a,"\"");
+  StrLib::vConcat(a,pWords[1]);
+  StrLib::vConcat(a,"\"");
   
-  String::vConcat(a," drop_schema");
+  StrLib::vConcat(a," drop_schema");
   
   return bAppendRequest(sRequest);
 }
@@ -668,11 +668,11 @@ bool SEitf::bUseSchema(char* pWords[], i8 iWords)
     return false;
   }
   
-  String::vCopy(a,"\"");
-  String::vConcat(a,pWords[1]);
-  String::vConcat(a,"\"");
+  StrLib::vCopy(a,"\"");
+  StrLib::vConcat(a,pWords[1]);
+  StrLib::vConcat(a,"\"");
   
-  String::vConcat(a," use_schema");
+  StrLib::vConcat(a," use_schema");
   
   return bAppendRequest(sRequest);
 }
@@ -693,19 +693,19 @@ bool SEitf::bCreateIndex(char* pWords[], i8 iWords)
     return false;
   }
   
-  String::vCopy(a,"\"");
-  String::vConcat(a,pWords[3]);
-  String::vConcat(a,"\"");
+  StrLib::vCopy(a,"\"");
+  StrLib::vConcat(a,pWords[3]);
+  StrLib::vConcat(a,"\"");
   
-  String::vConcat(a," \"");
-  String::vConcat(a,pWords[2]);
-  String::vConcat(a,"\"");
+  StrLib::vConcat(a," \"");
+  StrLib::vConcat(a,pWords[2]);
+  StrLib::vConcat(a,"\"");
   
-  String::vConcat(a," \"");
-  String::vConcat(a,pWords[1]);
-  String::vConcat(a,"\"");
+  StrLib::vConcat(a," \"");
+  StrLib::vConcat(a,pWords[1]);
+  StrLib::vConcat(a,"\"");
   
-  String::vConcat(a," create_index");
+  StrLib::vConcat(a," create_index");
   
   return bAppendRequest(sRequest);
 }
@@ -724,7 +724,7 @@ bool SEitf::bListIndices(char* pWords[], i8 iWords)
     return false;
   }
   
-  ASSERT(String::bEqualTo(pWords[0],"lsidx"));
+  ASSERT(StrLib::bEqualTo(pWords[0],"lsidx"));
   sRequest = "list_indexes";
   return bAppendRequest(sRequest);
 }
@@ -745,11 +745,11 @@ bool SEitf::bCreateTable(char* pWords[], i8 iWords)
     return false;
   }
   
-  String::vCopy(a,"\"");
-  String::vConcat(a,pWords[1]);
-  String::vConcat(a,"\"");
+  StrLib::vCopy(a,"\"");
+  StrLib::vConcat(a,pWords[1]);
+  StrLib::vConcat(a,"\"");
   
-  String::vConcat(a," create_table");
+  StrLib::vConcat(a," create_table");
   
   return bAppendRequest(sRequest);
 }
@@ -768,7 +768,7 @@ bool SEitf::bListTables(char* pWords[], i8 iWords)
     return false;
   }
   
-  ASSERT(String::bEqualTo(pWords[0],"lstbl"));
+  ASSERT(StrLib::bEqualTo(pWords[0],"lstbl"));
   sRequest = "list_tables";
   return bAppendRequest(sRequest);
 }
@@ -789,11 +789,11 @@ bool SEitf::bDumpIndex(char* pWords[], i8 iWords)
     return false;
   }
   
-  String::vCopy(a,"\"");
-  String::vConcat(a,pWords[1]);
-  String::vConcat(a,"\"");
+  StrLib::vCopy(a,"\"");
+  StrLib::vConcat(a,pWords[1]);
+  StrLib::vConcat(a,"\"");
   
-  String::vConcat(a," dump_index");
+  StrLib::vConcat(a," dump_index");
   
   return bAppendRequest(sRequest);
 }
@@ -814,11 +814,11 @@ bool SEitf::bDumpTable(char* pWords[], i8 iWords)
     return false;
   }
   
-  String::vCopy(a,"\"");
-  String::vConcat(a,pWords[1]);
-  String::vConcat(a,"\"");
+  StrLib::vCopy(a,"\"");
+  StrLib::vConcat(a,pWords[1]);
+  StrLib::vConcat(a,"\"");
   
-  String::vConcat(a," dump_table");
+  StrLib::vConcat(a," dump_table");
   
   return bAppendRequest(sRequest);
 }
@@ -834,12 +834,12 @@ bool SEitf::bDocol(char* pWords[])
   
   char* a = sRequest.aStr();
   
-  String::vCopy(a,"\"");
-  String::vConcat(a,pWords[1]);
-  String::vConcat(a,"\"");
+  StrLib::vCopy(a,"\"");
+  StrLib::vConcat(a,pWords[1]);
+  StrLib::vConcat(a,"\"");
   
   //
-  String::vConcat(a," docol_command");
+  StrLib::vConcat(a," docol_command");
   
   return bAppendRequest(sRequest);
 }
@@ -860,11 +860,11 @@ bool SEitf::bDropTable(char* pWords[], i8 iWords)
     return false;
   }
   
-  String::vCopy(a,"\"");
-  String::vConcat(a,pWords[1]);
-  String::vConcat(a,"\"");
+  StrLib::vCopy(a,"\"");
+  StrLib::vConcat(a,pWords[1]);
+  StrLib::vConcat(a,"\"");
   
-  String::vConcat(a," drop_table");
+  StrLib::vConcat(a," drop_table");
   
   return bAppendRequest(sRequest);
 }
@@ -885,19 +885,19 @@ bool SEitf::bAddColumn(char* pWords[16], i8 iWords)
     return false;
   }
   
-  String::vCopy(a,"\"");
-  String::vConcat(a,pWords[3]);
-  String::vConcat(a,"\"");
+  StrLib::vCopy(a,"\"");
+  StrLib::vConcat(a,pWords[3]);
+  StrLib::vConcat(a,"\"");
   
-  String::vConcat(a," \"");
-  String::vConcat(a,pWords[2]);
-  String::vConcat(a,"\"");
+  StrLib::vConcat(a," \"");
+  StrLib::vConcat(a,pWords[2]);
+  StrLib::vConcat(a,"\"");
   
-  String::vConcat(a," \"");
-  String::vConcat(a,pWords[1]);
-  String::vConcat(a,"\"");
+  StrLib::vConcat(a," \"");
+  StrLib::vConcat(a,pWords[1]);
+  StrLib::vConcat(a,"\"");
   
-  String::vConcat(a," add_column");
+  StrLib::vConcat(a," add_column");
   
   return bAppendRequest(sRequest);
 }
@@ -918,11 +918,11 @@ bool SEitf::bListColumns(char* pWords[], i8 iWords)
     return false;
   }
   
-  String::vCopy(a,"\"");
-  String::vConcat(a,pWords[1]);
-  String::vConcat(a,"\"");
+  StrLib::vCopy(a,"\"");
+  StrLib::vConcat(a,pWords[1]);
+  StrLib::vConcat(a,"\"");
   
-  String::vConcat(a," list_columns");
+  StrLib::vConcat(a," list_columns");
   
   return bAppendRequest(sRequest);
 }
@@ -943,11 +943,11 @@ bool SEitf::bAnalyzeTable(char* pWords[], i8 iWords)
     return false;
   }
   
-  String::vCopy(a,"\"");
-  String::vConcat(a,pWords[1]);
-  String::vConcat(a,"\"");
+  StrLib::vCopy(a,"\"");
+  StrLib::vConcat(a,pWords[1]);
+  StrLib::vConcat(a,"\"");
   
-  String::vConcat(a," analyze_table");
+  StrLib::vConcat(a," analyze_table");
   
   return bAppendRequest(sRequest);
 }
@@ -968,11 +968,11 @@ bool SEitf::bDanalyzeTable(char* pWords[], i8 iWords)
     return false;
   }
   
-  String::vCopy(a,"\"");
-  String::vConcat(a,pWords[1]);
-  String::vConcat(a,"\"");
+  StrLib::vCopy(a,"\"");
+  StrLib::vConcat(a,pWords[1]);
+  StrLib::vConcat(a,"\"");
   
-  String::vConcat(a," danalyze_table");
+  StrLib::vConcat(a," danalyze_table");
   
   return bAppendRequest(sRequest);
 }
@@ -993,15 +993,15 @@ bool SEitf::bCopyTable(char* pWords[], i8 iWords)
     return false;
   }
   
-  String::vCopy(a,"\"");
-  String::vConcat(a,pWords[2]);
-  String::vConcat(a,"\"");
+  StrLib::vCopy(a,"\"");
+  StrLib::vConcat(a,pWords[2]);
+  StrLib::vConcat(a,"\"");
   
-  String::vConcat(a," \"");
-  String::vConcat(a,pWords[1]);
-  String::vConcat(a,"\"");
+  StrLib::vConcat(a," \"");
+  StrLib::vConcat(a,pWords[1]);
+  StrLib::vConcat(a,"\"");
   
-  String::vConcat(a," copy_table");
+  StrLib::vConcat(a," copy_table");
   
   return bAppendRequest(sRequest);
 }
@@ -1022,15 +1022,15 @@ bool SEitf::bDistExportTable(char* pWords[], i8 iWords)
     return false;
   }
   
-  String::vCopy(a,"\"");
-  String::vConcat(a,pWords[2]);
-  String::vConcat(a,"\"");
+  StrLib::vCopy(a,"\"");
+  StrLib::vConcat(a,pWords[2]);
+  StrLib::vConcat(a,"\"");
   
-  String::vConcat(a," \"");
-  String::vConcat(a,pWords[1]);
-  String::vConcat(a,"\"");
+  StrLib::vConcat(a," \"");
+  StrLib::vConcat(a,pWords[1]);
+  StrLib::vConcat(a,"\"");
   
-  String::vConcat(a," dist_export_table");
+  StrLib::vConcat(a," dist_export_table");
   
   return bAppendRequest(sRequest);
 }
@@ -1051,15 +1051,15 @@ bool SEitf::bExportTable(char* pWords[], i8 iWords)
     return false;
   }
   
-  String::vCopy(a,"\"");
-  String::vConcat(a,pWords[2]);
-  String::vConcat(a,"\"");
+  StrLib::vCopy(a,"\"");
+  StrLib::vConcat(a,pWords[2]);
+  StrLib::vConcat(a,"\"");
   
-  String::vConcat(a," \"");
-  String::vConcat(a,pWords[1]);
-  String::vConcat(a,"\"");
+  StrLib::vConcat(a," \"");
+  StrLib::vConcat(a,pWords[1]);
+  StrLib::vConcat(a,"\"");
   
-  String::vConcat(a," export_table");
+  StrLib::vConcat(a," export_table");
   
   return bAppendRequest(sRequest);
 }
@@ -1080,15 +1080,15 @@ bool SEitf::bLoadTable(char* pWords[], i8 iWords)
     return false;
   }
   
-  String::vCopy(a,"\"");
-  String::vConcat(a,pWords[2]);
-  String::vConcat(a,"\"");
+  StrLib::vCopy(a,"\"");
+  StrLib::vConcat(a,pWords[2]);
+  StrLib::vConcat(a,"\"");
   
-  String::vConcat(a," \"");
-  String::vConcat(a,pWords[1]);
-  String::vConcat(a,"\"");
+  StrLib::vConcat(a," \"");
+  StrLib::vConcat(a,pWords[1]);
+  StrLib::vConcat(a,"\"");
   
-  String::vConcat(a," load_table");
+  StrLib::vConcat(a," load_table");
   
   return bAppendRequest(sRequest);
 }
@@ -1109,15 +1109,15 @@ bool SEitf::bLoadTableStream(char* pWords[], i8 iWords)
     return false;
   }
   
-  String::vCopy(a,"\"");
-  String::vConcat(a,pWords[2]);
-  String::vConcat(a,"\"");
+  StrLib::vCopy(a,"\"");
+  StrLib::vConcat(a,pWords[2]);
+  StrLib::vConcat(a,"\"");
   
-  String::vConcat(a," \"");
-  String::vConcat(a,pWords[1]);
-  String::vConcat(a,"\"");
+  StrLib::vConcat(a," \"");
+  StrLib::vConcat(a,pWords[1]);
+  StrLib::vConcat(a,"\"");
   
-  String::vConcat(a," load_table_stream");
+  StrLib::vConcat(a," load_table_stream");
   
   return bAppendRequest(sRequest);
 }
@@ -1138,11 +1138,11 @@ bool SEitf::bSelectTable(char* pWords[], i8 iWords)
     return false;
   }
   
-  String::vCopy(a,"\"");
-  String::vConcat(a,pWords[1]);
-  String::vConcat(a,"\"");
+  StrLib::vCopy(a,"\"");
+  StrLib::vConcat(a,pWords[1]);
+  StrLib::vConcat(a,"\"");
   
-  String::vConcat(a," select_table");
+  StrLib::vConcat(a," select_table");
   
   return bAppendRequest(sRequest);
 }
@@ -1163,11 +1163,11 @@ bool SEitf::bGetTable(char* pWords[], i8 iWords)
     return false;
   }
   
-  String::vCopy(a,"\"");
-  String::vConcat(a,pWords[1]);
-  String::vConcat(a,"\"");
+  StrLib::vCopy(a,"\"");
+  StrLib::vConcat(a,pWords[1]);
+  StrLib::vConcat(a,"\"");
   
-  String::vConcat(a," get_table");
+  StrLib::vConcat(a," get_table");
   
   return bAppendRequest(sRequest);
 }
@@ -1188,11 +1188,11 @@ bool SEitf::bInUseTable(char* pWords[], i8 iWords)
     return false;
   }
   
-  String::vCopy(a,"\"");
-  String::vConcat(a,pWords[1]);
-  String::vConcat(a,"\"");
+  StrLib::vCopy(a,"\"");
+  StrLib::vConcat(a,pWords[1]);
+  StrLib::vConcat(a,"\"");
 
-  String::vConcat(a," table_inuse");
+  StrLib::vConcat(a," table_inuse");
   
   return bAppendRequest(sRequest);
 }
@@ -1213,7 +1213,7 @@ bool SEitf::bRetTable(char* pWords[], i8 iWords)
     return false;
   }
   
-  String::vConcat(a," return_table");
+  StrLib::vConcat(a," return_table");
   
   return bAppendRequest(sRequest);
 }
@@ -1234,7 +1234,7 @@ bool SEitf::bPoolSpace(char* pWords[], i8 iWords)
     return false;
   }
   
-  String::vConcat(a," space");
+  StrLib::vConcat(a," space");
   
   return bAppendRequest(sRequest);
 }
@@ -1255,7 +1255,7 @@ bool SEitf::bNodeStatus(char* pWords[], i8 iWords)
     return false;
   }
   
-  String::vConcat(a," status");
+  StrLib::vConcat(a," status");
   
   return bAppendRequest(sRequest);
 }
@@ -1276,11 +1276,11 @@ bool SEitf::bSizeTable(char* pWords[], i8 iWords)
     return false;
   }
   
-  String::vCopy(a,"\"");
-  String::vConcat(a,pWords[1]);
-  String::vConcat(a,"\"");
+  StrLib::vCopy(a,"\"");
+  StrLib::vConcat(a,pWords[1]);
+  StrLib::vConcat(a,"\"");
   
-  String::vConcat(a," size_table");
+  StrLib::vConcat(a," size_table");
   
   return bAppendRequest(sRequest);
 }
@@ -1301,11 +1301,11 @@ bool SEitf::bTruncateTable(char* pWords[], i8 iWords)
     return false;
   }
 
-  String::vCopy(a,"\"");
-  String::vConcat(a,pWords[1]);
-  String::vConcat(a,"\"");
+  StrLib::vCopy(a,"\"");
+  StrLib::vConcat(a,pWords[1]);
+  StrLib::vConcat(a,"\"");
   
-  String::vConcat(a," truncate_table");
+  StrLib::vConcat(a," truncate_table");
   
   return bAppendRequest(sRequest);
 }
@@ -1333,7 +1333,7 @@ bool SEitf::bInsertRow(char* pRow)
   vTrace("Buffer: %s Partition:%d\n",pRowBuffer, m_iPartition);
   
   // insert row into working buffer
-  if (pRowBuffer->bInsertRow(m_pTxRef,pRow,String::iSize(pRow)))
+  if (pRowBuffer->bInsertRow(m_pTxRef,pRow,StrLib::iSize(pRow)))
     return true;
     
   // buffer full, append working buffer into table
@@ -1363,7 +1363,7 @@ bool SEitf::bInsertRow(char* pRow)
   pRowBuffer = m_pRowBuffer[m_iPartition];
   
   // insert row into new working buffer
-  bool bInserted = pRowBuffer->bInsertRow(m_pTxRef,pRow,String::iSize(pRow));
+  bool bInserted = pRowBuffer->bInsertRow(m_pTxRef,pRow,StrLib::iSize(pRow));
   
   return bInserted;
   
@@ -1410,22 +1410,22 @@ bool SEitf::bInsertBuffer(RowBuffer* pRowBuffer, i8 iPartition)
 
   char* a = sRequest.aStr();
   
-  String::wToString(iSlot, sBuffer.aStr());
-  String::vCopy(a,"\"");
-  String::vConcat(a,sBuffer.aStr());
-  String::vConcat(a,"\"");
+  StrLib::wToString(iSlot, sBuffer.aStr());
+  StrLib::vCopy(a,"\"");
+  StrLib::vConcat(a,sBuffer.aStr());
+  StrLib::vConcat(a,"\"");
   
-  String::wToString((i8)pRowBuffer, sBuffer.aStr());
-  String::vConcat(a," \"");
-  String::vConcat(a,sBuffer.aStr());
-  String::vConcat(a,"\"");
+  StrLib::wToString((i8)pRowBuffer, sBuffer.aStr());
+  StrLib::vConcat(a," \"");
+  StrLib::vConcat(a,sBuffer.aStr());
+  StrLib::vConcat(a,"\"");
   
-  String::wToString((i8)m_pCurrentTable, sBuffer.aStr());
-  String::vConcat(a," \"");
-  String::vConcat(a,sBuffer.aStr());
-  String::vConcat(a,"\"");
+  StrLib::wToString((i8)m_pCurrentTable, sBuffer.aStr());
+  StrLib::vConcat(a," \"");
+  StrLib::vConcat(a,sBuffer.aStr());
+  StrLib::vConcat(a,"\"");
   
-  String::vConcat(a," append_table");
+  StrLib::vConcat(a," append_table");
   
   vTrace("%s\n",a);
   
@@ -1443,11 +1443,11 @@ bool SEitf::bPushDic(char* pWords[])
   
   char* a = sRequest.aStr();
   
-  String::vCopy(a,"\"");
-  String::vConcat(a,pWords[1]);
-  String::vConcat(a,"\"");
+  StrLib::vCopy(a,"\"");
+  StrLib::vConcat(a,pWords[1]);
+  StrLib::vConcat(a,"\"");
   
-  String::vConcat(a," cf");
+  StrLib::vConcat(a," cf");
   
   return bAppendRequest(sRequest);
 }
@@ -1473,7 +1473,7 @@ bool SEitf::bGetDicPath(char* pWords[])
   
   s256 sRequest;
   
-  ASSERT(String::bEqualTo(pWords[0],"pwf"));
+  ASSERT(StrLib::bEqualTo(pWords[0],"pwf"));
   sRequest = "pwf";
   return bAppendRequest(sRequest);
 }
@@ -1487,7 +1487,7 @@ bool SEitf::bGetDicContents(char* pWords[])
   
   s256 sRequest;
   
-  ASSERT(String::bEqualTo(pWords[0],"lf"));
+  ASSERT(StrLib::bEqualTo(pWords[0],"lf"));
   sRequest = "lf";
   return bAppendRequest(sRequest);
 }
@@ -1501,7 +1501,7 @@ bool SEitf::bGetDicContentsG(char* pWords[])
   
   s256 sRequest;
   
-  ASSERT(String::bEqualTo(pWords[0],"lfG"));
+  ASSERT(StrLib::bEqualTo(pWords[0],"lfG"));
   sRequest = "lfG";
   return bAppendRequest(sRequest);
 }
@@ -1515,7 +1515,7 @@ bool SEitf::bGetMonitor(char* pWords[])
   
   s256 sRequest;
   
-  ASSERT(String::bEqualTo(pWords[0],"mon"));
+  ASSERT(StrLib::bEqualTo(pWords[0],"mon"));
   sRequest = "get_monitor";
   return bAppendRequest(sRequest);
 }
@@ -1529,7 +1529,7 @@ bool SEitf::bGetFreeSpace(char* pWords[])
   
   s256 sRequest;
   
-  ASSERT(String::bEqualTo(pWords[0],"getFreeSpace"));
+  ASSERT(StrLib::bEqualTo(pWords[0],"getFreeSpace"));
   sRequest = "getFreeSpace";
   return bAppendRequest(sRequest);
 }
@@ -1543,7 +1543,7 @@ bool SEitf::bGetInUseSpace(char* pWords[])
   
   s256 sRequest;
   
-  ASSERT(String::bEqualTo(pWords[0],"getInUseSpace"));
+  ASSERT(StrLib::bEqualTo(pWords[0],"getInUseSpace"));
   sRequest = "getInUseSpace";
   return bAppendRequest(sRequest);
 }
@@ -1557,7 +1557,7 @@ bool SEitf::bGetTotalSpace(char* pWords[])
   
   s256 sRequest;
   
-  ASSERT(String::bEqualTo(pWords[0],"getTotalSpace"));
+  ASSERT(StrLib::bEqualTo(pWords[0],"getTotalSpace"));
   sRequest = "getTotalSpace";
   return bAppendRequest(sRequest);
 }
@@ -1571,7 +1571,7 @@ bool SEitf::bGetVersion(char* pWords[])
   
   s256 sRequest;
   
-  ASSERT(String::bEqualTo(pWords[0],"version"));
+  ASSERT(StrLib::bEqualTo(pWords[0],"version"));
   sRequest = "get_version";
   return bAppendRequest(sRequest);
 }
@@ -1585,7 +1585,7 @@ bool SEitf::bPing(char* pWords[])
   
   s256 sRequest;
   
-  ASSERT(String::bEqualTo(pWords[0],"ping"));
+  ASSERT(StrLib::bEqualTo(pWords[0],"ping"));
   sRequest = "ping";
   return bAppendRequest(sRequest);
 }
@@ -1600,7 +1600,7 @@ bool SEitf::bObject(char* pWords[])
   s256 sRequest;
   char* a = sRequest.aStr();
   
-  String::vConcat(a,"object");
+  StrLib::vConcat(a,"object");
   
   return bAppendRequest(sRequest);
 }
@@ -1615,12 +1615,12 @@ bool SEitf::bPrintRowBuffer(char* pWords[])
   s256 sRequest;
   char* a = sRequest.aStr();
   
-  String::vCopy(a,"\"");
-  String::vConcat(a,pWords[1]);
-  String::vConcat(a,"\"");
+  StrLib::vCopy(a,"\"");
+  StrLib::vConcat(a,pWords[1]);
+  StrLib::vConcat(a,"\"");
 
-  ASSERT(String::bEqualTo(pWords[0],"pRB"));
-  String::vConcat(a," pRB");
+  ASSERT(StrLib::bEqualTo(pWords[0],"pRB"));
+  StrLib::vConcat(a," pRB");
   
   return bAppendRequest(sRequest);
 }
@@ -1634,7 +1634,7 @@ bool SEitf::bSeitfCount(char* pWords[])
   
   s256 sRequest;
   
-  ASSERT(String::bEqualTo(pWords[0],"seitf"));
+  ASSERT(StrLib::bEqualTo(pWords[0],"seitf"));
   sRequest = "seitf_count";
   return bAppendRequest(sRequest);
 }
@@ -1648,7 +1648,7 @@ bool SEitf::bX(char* pWords[])
   
   s256 sRequest;
   
-  ASSERT(String::bEqualTo(pWords[0],"ping"));
+  ASSERT(StrLib::bEqualTo(pWords[0],"ping"));
   sRequest = "ping";
   
   //  static bool bFirst = true;
@@ -1692,9 +1692,9 @@ bool SEitf::bAppendRequest(StrVal& sRequest)
     return false;
   }
   
-  String::wToString((i8)this,wItfAddr);
-  String::vCopy(wWorkspace,wItfAddr);
-  String::vConcat(wWorkspace," >seitf task.this task.seitf! ");
+  StrLib::wToString((i8)this,wItfAddr);
+  StrLib::vCopy(wWorkspace,wItfAddr);
+  StrLib::vConcat(wWorkspace," >seitf task.this task.seitf! ");
   xVal = wWorkspace;
   //vTrace("%s\n",xVal.aStr());
   xValSet.vAppend(pCursor,xVal);
@@ -1793,7 +1793,7 @@ void SEitf::vClearLastError(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   m_eErrorCode = EC_NONE;
-  String::vCopy(m_sErrorMsg.aStr(), "");
+  StrLib::vCopy(m_sErrorMsg.aStr(), "");
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1817,12 +1817,12 @@ void SEitf::vSetLastError(eEC eError)
   ASSERT(eError <  EC_ENUMS);
   
   m_eErrorCode = eError;
-  String::vCopy(m_sErrorMsg.aStr(), pEC[m_eErrorCode]);
+  StrLib::vCopy(m_sErrorMsg.aStr(), pEC[m_eErrorCode]);
   
-//  if (String::iLength(m_sResponse.aStr()) != 0) {
-//    String::vConcat(m_sInterfaceError.aStr(), " (");
-//    String::vConcat(m_sInterfaceError.aStr(), m_sResponse.aStr());
-//    String::vConcat(m_sInterfaceError.aStr(), ") ");
+//  if (StrLib::iLength(m_sResponse.aStr()) != 0) {
+//    StrLib::vConcat(m_sInterfaceError.aStr(), " (");
+//    StrLib::vConcat(m_sInterfaceError.aStr(), m_sResponse.aStr());
+//    StrLib::vConcat(m_sInterfaceError.aStr(), ") ");
 //  }
 }
 

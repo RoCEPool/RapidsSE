@@ -322,7 +322,7 @@ bool Socket::bReadVch(char** ppChar, SysCall& SysCall)
     return false;
   }
   
-  *ppChar = String::wAllocate(aWorkspace);
+  *ppChar = StrLib::wAllocate(aWorkspace);
   
   SysCall.vSuccess();
   return true;
@@ -460,7 +460,7 @@ bool Socket::bWriteVch(char* pChar, SysCall& SysCall)
   
   SysCall.vClear();
   
-  i8 nBytes = String::iLength(pChar);
+  i8 nBytes = StrLib::iLength(pChar);
   
   i8 nSent = send(m_iSocketId, pChar, nBytes,0);
   

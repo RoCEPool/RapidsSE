@@ -132,7 +132,7 @@ void Task::vEncodeCallRoutine(NNP_Task nnpTask)
   else {
     s32 sTildeName;
     sTildeName = "~";
-    String::vConcat(sTildeName.aStr(),pCalledWord->sName().aStr());
+    StrLib::vConcat(sTildeName.aStr(),pCalledWord->sName().aStr());
     
     Word* pWordTilde = nnpTask->m_xPathStack.pFindWord(sTildeName.aStr());
     ppCalledEntryStep = pWordTilde->ppEntryStep();

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* String.cpp -- char* string utility                                         */
+/* StrLib.cpp -- char* string utility                                         */
 /*============================================================================*/
 
 #include "Base.h"
@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* wAllocate: allocate a workspace/string of given size                       */
 /*----------------------------------------------------------------------------*/
-char* String::wAllocate(i8 nBytes)
+char* StrLib::wAllocate(i8 nBytes)
 {
   char* w = static_cast<char*>(malloc(nBytes));
   
@@ -19,7 +19,7 @@ char* String::wAllocate(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* wAllocate: allocate a workspace/string and initialize with given string    */
 /*----------------------------------------------------------------------------*/
-char* String::wAllocate(const char* s)
+char* StrLib::wAllocate(const char* s)
 {
   i8 nBytes = iSize(s);
   
@@ -33,7 +33,7 @@ char* String::wAllocate(const char* s)
 /*----------------------------------------------------------------------------*/
 /* vAppendChar: append character to end of workspace                          */
 /*----------------------------------------------------------------------------*/
-void String::vAppendChar(char** pz, char cChar)
+void StrLib::vAppendChar(char** pz, char cChar)
 {
   *(*pz)++ = cChar;
 }
@@ -41,7 +41,7 @@ void String::vAppendChar(char** pz, char cChar)
 /*----------------------------------------------------------------------------*/
 /* vAppendDecimal: append number in decimal to workspace                      */
 /*----------------------------------------------------------------------------*/
-void String::vAppendDecimal(char** pz, i8 iNumber)
+void StrLib::vAppendDecimal(char** pz, i8 iNumber)
 {
   char* pBwd = *pz;
   char* pFwd = *pz;
@@ -69,7 +69,7 @@ void String::vAppendDecimal(char** pz, i8 iNumber)
 /*----------------------------------------------------------------------------*/
 /* vAppendHex: append number in hexadecimal to workspace                      */
 /*----------------------------------------------------------------------------*/
-void String::vAppendHex(char** pz, i8 iNumber)
+void StrLib::vAppendHex(char** pz, i8 iNumber)
 {
   char* pBwd = *pz;
   char* pFwd = *pz;
@@ -96,7 +96,7 @@ void String::vAppendHex(char** pz, i8 iNumber)
 /*----------------------------------------------------------------------------*/
 /* vAppendNull: append null character to end of workspace                     */
 /*----------------------------------------------------------------------------*/
-void String::vAppendNull(char** pz)
+void StrLib::vAppendNull(char** pz)
 {
   *(*pz)++ = '\0';
 }
@@ -104,7 +104,7 @@ void String::vAppendNull(char** pz)
 /*----------------------------------------------------------------------------*/
 /* vAppendString: append string to workspace                                  */
 /*----------------------------------------------------------------------------*/
-void String::vAppendString(char** pz, const char* pString)
+void StrLib::vAppendString(char** pz, const char* pString)
 {
   char *z = *pz;
   
@@ -117,7 +117,7 @@ void String::vAppendString(char** pz, const char* pString)
 /*----------------------------------------------------------------------------*/
 /* bBackward: scan backwards to find given character                          */
 /*----------------------------------------------------------------------------*/
-bool String::bBackward(const char** ps, char* pBegin, const char c)
+bool StrLib::bBackward(const char** ps, char* pBegin, const char c)
 {
   const char *p = *ps;
   
@@ -145,7 +145,7 @@ bool String::bBackward(const char** ps, char* pBegin, const char c)
 /*----------------------------------------------------------------------------*/
 /* iCompare: standard compare of the two args                                 */
 /*----------------------------------------------------------------------------*/
-i8 String::iCompare(const char* pArg1, const char* pArg2)
+i8 StrLib::iCompare(const char* pArg1, const char* pArg2)
 {
   i8 iDiff = strcmp(pArg1,pArg2);
   
@@ -155,7 +155,7 @@ i8 String::iCompare(const char* pArg1, const char* pArg2)
 /*----------------------------------------------------------------------------*/
 /* iCompare: standard case-insensitive compare of the two args                */
 /*----------------------------------------------------------------------------*/
-bool String::iCompare(const char* pArg1, const char* pArg2, i8 iCase)
+bool StrLib::iCompare(const char* pArg1, const char* pArg2, i8 iCase)
 {
   i8 iDiff;
   
@@ -170,7 +170,7 @@ bool String::iCompare(const char* pArg1, const char* pArg2, i8 iCase)
 /*----------------------------------------------------------------------------*/
 /* vConcat: concatenate character to workspace                                */
 /*----------------------------------------------------------------------------*/
-void String::vConcat(char* pWS, char cChar)
+void StrLib::vConcat(char* pWS, char cChar)
 {
   i8 i = iLength(pWS);
   pWS[i] = cChar;
@@ -180,7 +180,7 @@ void String::vConcat(char* pWS, char cChar)
 /*----------------------------------------------------------------------------*/
 /* vConcat: concatenate arg onto dst string                                   */
 /*----------------------------------------------------------------------------*/
-void String::vConcat(char* psDst, const char* psArg)
+void StrLib::vConcat(char* psDst, const char* psArg)
 {
   strcat(psDst,psArg);
 }
@@ -188,7 +188,7 @@ void String::vConcat(char* psDst, const char* psArg)
 /*----------------------------------------------------------------------------*/
 /* vConcat: concatenate arg1 & arg2 onto dst string                           */
 /*----------------------------------------------------------------------------*/
-void String::vConcat(char* psDst, const char* psArg1, const char* psArg2)
+void StrLib::vConcat(char* psDst, const char* psArg1, const char* psArg2)
 {
   strcat(psDst,psArg1);
   strcat(psDst,psArg2);
@@ -197,7 +197,7 @@ void String::vConcat(char* psDst, const char* psArg1, const char* psArg2)
 /*----------------------------------------------------------------------------*/
 /* vConcat: concatenate i8 arg onto dst string                                */
 /*----------------------------------------------------------------------------*/
-void String::vConcat(char* psDst, i8 iArg)
+void StrLib::vConcat(char* psDst, i8 iArg)
 {
   char aInt[32];
   
@@ -208,7 +208,7 @@ void String::vConcat(char* psDst, i8 iArg)
 /*----------------------------------------------------------------------------*/
 /* sConcat: concatenate two strings                                           */
 /*----------------------------------------------------------------------------*/
-char* String::wConcat(const char* s1, const char* s2)
+char* StrLib::wConcat(const char* s1, const char* s2)
 {
   i8 iLen1 = iLength(s1);
   i8 iLen2 = iLength(s2);
@@ -226,7 +226,7 @@ char* String::wConcat(const char* s1, const char* s2)
 /*----------------------------------------------------------------------------*/
 /* bContains: test if arg is in substr                                        */
 /*----------------------------------------------------------------------------*/
-bool String::bContains(char* s, const char cArg)
+bool StrLib::bContains(char* s, const char cArg)
 {
   char* f = strchr(s,cArg);
   
@@ -239,7 +239,7 @@ bool String::bContains(char* s, const char cArg)
 /*----------------------------------------------------------------------------*/
 /* bContains: test if arg is in substr                                        */
 /*----------------------------------------------------------------------------*/
-bool String::bContains(char* s, const char* sArg)
+bool StrLib::bContains(char* s, const char* sArg)
 {
   char* f = strstr(s,sArg);
   
@@ -252,7 +252,7 @@ bool String::bContains(char* s, const char* sArg)
 /*----------------------------------------------------------------------------*/
 /* vCopy: copy src into dst                                                   */
 /*----------------------------------------------------------------------------*/
-void String::vCopy(char* psDst, const char* psSrc)
+void StrLib::vCopy(char* psDst, const char* psSrc)
 {
   strcpy(psDst,psSrc);
 }
@@ -260,7 +260,7 @@ void String::vCopy(char* psDst, const char* psSrc)
 /*----------------------------------------------------------------------------*/
 /* vCopyLen: copy src into dst uptill nBytes                                  */
 /*----------------------------------------------------------------------------*/
-void String::vCopyLen(char* psDst, const char* psSrc, i8 nBytes)
+void StrLib::vCopyLen(char* psDst, const char* psSrc, i8 nBytes)
 {
   char *d = psDst;
   const char *s = psSrc;
@@ -276,7 +276,7 @@ void String::vCopyLen(char* psDst, const char* psSrc, i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* vCopySplit: copy src into w1, then w2 divided at cSplit                    */
 /*----------------------------------------------------------------------------*/
-void String::vCopySplit(char* w1, char* w2, const char* sSrc, char cSplit)
+void StrLib::vCopySplit(char* w1, char* w2, const char* sSrc, char cSplit)
 {
   const char *s = sSrc;
   
@@ -302,7 +302,7 @@ void String::vCopySplit(char* w1, char* w2, const char* sSrc, char cSplit)
 /*----------------------------------------------------------------------------*/
 /* vCopyTill: copy src into dst uptill but not including ccTill               */
 /*----------------------------------------------------------------------------*/
-void String::vCopyTill(char* psDst, const char* psSrc, char ccTill)
+void StrLib::vCopyTill(char* psDst, const char* psSrc, char ccTill)
 {
   char *d = psDst;
   const char *s = psSrc;
@@ -316,7 +316,7 @@ void String::vCopyTill(char* psDst, const char* psSrc, char ccTill)
 /*----------------------------------------------------------------------------*/
 /* vDump: dump string                                                         */
 /*----------------------------------------------------------------------------*/
-void String::vDump(const char* s, i8 nMax, const char* pSuffix)
+void StrLib::vDump(const char* s, i8 nMax, const char* pSuffix)
 {
   char w[C_STRING_ARRAY];
   char *z = w;
@@ -358,13 +358,13 @@ void String::vDump(const char* s, i8 nMax, const char* pSuffix)
 /*----------------------------------------------------------------------------*/
 /* sDupe: duplicate string                                                    */
 /*----------------------------------------------------------------------------*/
-char* String::sDupe(const char* psArg)
+char* StrLib::sDupe(const char* psArg)
 {
-  i8 iSize = String::iSize(psArg);
+  i8 iSize = StrLib::iSize(psArg);
 
   char* psString = wAllocate(iSize);
 
-  String::vCopy(psString,psArg);
+  StrLib::vCopy(psString,psArg);
 
   return psString;
 }
@@ -372,12 +372,12 @@ char* String::sDupe(const char* psArg)
 /*----------------------------------------------------------------------------*/
 /* sDupeStripped: duplicate stripped string                                   */
 /*----------------------------------------------------------------------------*/
-char* String::sDupeStripped(const char* s)
+char* StrLib::sDupeStripped(const char* s)
 {
   if ('"' != *s)
     return sDupe(s);
   
-  i8 iSize = String::iSize(s) - 2;
+  i8 iSize = StrLib::iSize(s) - 2;
   
   char* psString = wAllocate(iSize);
   
@@ -397,7 +397,7 @@ char* String::sDupeStripped(const char* s)
 /*----------------------------------------------------------------------------*/
 /* bEnds: test if string ends with given char                                 */
 /*----------------------------------------------------------------------------*/
-bool String::bEnds(const char* s, const char c)
+bool StrLib::bEnds(const char* s, const char c)
 {
   const char* z = sLast(s);
   
@@ -410,7 +410,7 @@ bool String::bEnds(const char* s, const char c)
 /*----------------------------------------------------------------------------*/
 /* bEnds: test if string ends with given substr arg                           */
 /*----------------------------------------------------------------------------*/
-bool String::bEnds(const char* sArg, const char* sEnd)
+bool StrLib::bEnds(const char* sArg, const char* sEnd)
 {
   i8 nLen  = iLength(sArg);
   i8 nBack = iLength(sEnd);
@@ -429,7 +429,7 @@ bool String::bEnds(const char* sArg, const char* sEnd)
 /*----------------------------------------------------------------------------*/
 /* vEscape: put a '\' before and '"'                                          */
 /*----------------------------------------------------------------------------*/
-void String::vEscape(const char* sArg, char* sEscaped)
+void StrLib::vEscape(const char* sArg, char* sEscaped)
 {
   const char* aSrc = sArg;
   char* aDst = sEscaped;
@@ -450,7 +450,7 @@ void String::vEscape(const char* sArg, char* sEscaped)
 /*----------------------------------------------------------------------------*/
 /* bEqualTo: test if the two args match                                       */
 /*----------------------------------------------------------------------------*/
-bool String::bEqualTo(const char* s1, const char* s2)
+bool StrLib::bEqualTo(const char* s1, const char* s2)
 {
   i8 iDiff = strcmp(s1,s2);
   
@@ -463,7 +463,7 @@ bool String::bEqualTo(const char* s1, const char* s2)
 /*----------------------------------------------------------------------------*/
 /* bEqualTo: are two arguments equal (case or no case)                        */
 /*----------------------------------------------------------------------------*/
-bool String::bEqualTo(const char* pArg1, const char* pArg2, i8 iCase)
+bool StrLib::bEqualTo(const char* pArg1, const char* pArg2, i8 iCase)
 {
   i8 iDiff;
   
@@ -481,7 +481,7 @@ bool String::bEqualTo(const char* pArg1, const char* pArg2, i8 iCase)
 /*----------------------------------------------------------------------------*/
 /* bExtractArg: extract an argument from substr                               */
 /*----------------------------------------------------------------------------*/
-bool String::bExtractArg(char** ps, char* pArg)
+bool StrLib::bExtractArg(char** ps, char* pArg)
 {
   if ( ! *ps )
     return false;
@@ -501,7 +501,7 @@ bool String::bExtractArg(char** ps, char* pArg)
 /*----------------------------------------------------------------------------*/
 /* bExtractI8: extract an integer from substr                                 */
 /*----------------------------------------------------------------------------*/
-bool String::bExtractI8(char** ps, i8* pInw)
+bool StrLib::bExtractI8(char** ps, i8* pInw)
 {
   char *s = *ps;
   
@@ -534,7 +534,7 @@ bool String::bExtractI8(char** ps, i8* pInw)
 /*----------------------------------------------------------------------------*/
 /* bExtractItem: extract an item from substr                                  */
 /*----------------------------------------------------------------------------*/
-bool String::bExtractItem(char** ps, char* pItem)
+bool StrLib::bExtractItem(char** ps, char* pItem)
 {
   if ( ! *ps )
     return false;
@@ -560,7 +560,7 @@ bool String::bExtractItem(char** ps, char* pItem)
 /*----------------------------------------------------------------------------*/
 /* bExtractPath: extract a path from substr                                   */
 /*----------------------------------------------------------------------------*/
-bool String::bExtractPath(char** ps, char* pPath)
+bool StrLib::bExtractPath(char** ps, char* pPath)
 {
   if ( ! *ps )
     return false;
@@ -580,7 +580,7 @@ bool String::bExtractPath(char** ps, char* pPath)
 /*----------------------------------------------------------------------------*/
 /* bExtractPort: extract a port number from substr                            */
 /*----------------------------------------------------------------------------*/
-bool String::bExtractPort(char** ps, u2* pPort)
+bool StrLib::bExtractPort(char** ps, u2* pPort)
 {
   if ( ! *ps )
     return false;
@@ -608,7 +608,7 @@ bool String::bExtractPort(char** ps, u2* pPort)
 /*----------------------------------------------------------------------------*/
 /* bExtractUTC: extract a utc time from substr       yyyy-mm-ddThh:mi:ss.fffZ */
 /*----------------------------------------------------------------------------*/
-//bool String::bExtractUTC(char** ps, Time* pTime)
+//bool StrLib::bExtractUTC(char** ps, Time* pTime)
 //{
 //  // refer: http://en.wikipedia.org/wiki/ISO_8601
 //  
@@ -669,7 +669,7 @@ bool String::bExtractPort(char** ps, u2* pPort)
 /*----------------------------------------------------------------------------*/
 /* bExtractString: extract a quoted string from substr                        */
 /*----------------------------------------------------------------------------*/
-bool String::bExtractString(char** ps, char* pString)
+bool StrLib::bExtractString(char** ps, char* pString)
 {
   if ( ! *ps )
     return false;
@@ -697,7 +697,7 @@ bool String::bExtractString(char** ps, char* pString)
 /*----------------------------------------------------------------------------*/
 /* bExtractWord: extract a word from substr                                   */
 /*----------------------------------------------------------------------------*/
-bool String::bExtractWord(char** ps, char* pWord)
+bool StrLib::bExtractWord(char** ps, char* pWord)
 {
   if ( ! *ps )
     return false;
@@ -723,7 +723,7 @@ bool String::bExtractWord(char** ps, char* pWord)
 /*----------------------------------------------------------------------------*/
 /* bExtractWord: extract a word or quoted string                              */
 /*----------------------------------------------------------------------------*/
-bool String::bExtractWordString(char** ps, char* pWord)
+bool StrLib::bExtractWordString(char** ps, char* pWord)
 {
   if ( ! *ps )
     return false;
@@ -755,7 +755,7 @@ bool String::bExtractWordString(char** ps, char* pWord)
 /*----------------------------------------------------------------------------*/
 /* bFind: find start of ScanChar in substr                                    */
 /*----------------------------------------------------------------------------*/
-bool String::bFind(char** ps, const char cArg)
+bool StrLib::bFind(char** ps, const char cArg)
 {
   char* f = strchr(*ps,cArg);
   
@@ -771,7 +771,7 @@ bool String::bFind(char** ps, const char cArg)
 /*----------------------------------------------------------------------------*/
 /* bFind: find start of arg in substr                                         */
 /*----------------------------------------------------------------------------*/
-bool String::bFind(char** ps, const char* sArg)
+bool StrLib::bFind(char** ps, const char* sArg)
 {
   char* f = strstr(*ps,sArg);
   
@@ -787,7 +787,7 @@ bool String::bFind(char** ps, const char* sArg)
 /*----------------------------------------------------------------------------*/
 /* bFind: find start of arg in substr                                         */
 /*----------------------------------------------------------------------------*/
-bool String::bFind(char** ps, const char* sArg, i8 iLenArg)
+bool StrLib::bFind(char** ps, const char* sArg, i8 iLenArg)
 {
   char *s = *ps;
   
@@ -814,7 +814,7 @@ bool String::bFind(char** ps, const char* sArg, i8 iLenArg)
 /*----------------------------------------------------------------------------*/
 /* vFree: free a dynamic string                                               */
 /*----------------------------------------------------------------------------*/
-void String::vFree(char** ps)
+void StrLib::vFree(char** ps)
 {
   free(*ps);
   
@@ -824,7 +824,7 @@ void String::vFree(char** ps)
 /*----------------------------------------------------------------------------*/
 /* iHexToInw: convert hex character to i8 (-1 on error)                       */
 /*----------------------------------------------------------------------------*/
-i8 String::iHexToInw(const char c)
+i8 StrLib::iHexToInw(const char c)
 {
   if (c >= 'a' && c <= 'f') return c - 'a' + 10;
   if (c >= 'A' && c <= 'F') return c - 'A' + 10;
@@ -836,7 +836,7 @@ i8 String::iHexToInw(const char c)
 /*----------------------------------------------------------------------------*/
 /* bIsAlpha: is char an alphabetic character?                                 */
 /*----------------------------------------------------------------------------*/
-bool String::bIsAlpha(const char c)
+bool StrLib::bIsAlpha(const char c)
 {
   if (isalpha(c))
     return true;
@@ -847,7 +847,7 @@ bool String::bIsAlpha(const char c)
 /*----------------------------------------------------------------------------*/
 /* bIsAlphaDigit: is char an alphabetic or numeric digit character?           */
 /*----------------------------------------------------------------------------*/
-bool String::bIsAlphaDigit(const char c)
+bool StrLib::bIsAlphaDigit(const char c)
 {
   if (isalpha(c) || isdigit(c))
     return true;
@@ -858,7 +858,7 @@ bool String::bIsAlphaDigit(const char c)
 /*----------------------------------------------------------------------------*/
 /* is char an alphabetic, numeric digit or '_' character?                     */
 /*----------------------------------------------------------------------------*/
-bool String::bIsAlphaDigitUnder(const char c)
+bool StrLib::bIsAlphaDigitUnder(const char c)
 {
   if (isalpha(c) || isdigit(c) || '_' == c)
     return true;
@@ -869,7 +869,7 @@ bool String::bIsAlphaDigitUnder(const char c)
 /*----------------------------------------------------------------------------*/
 /* bIsAlphaUnder: is char an alphabetic or '_' character?                     */
 /*----------------------------------------------------------------------------*/
-bool String::bIsAlphaUnder(const char c)
+bool StrLib::bIsAlphaUnder(const char c)
 {
   if (isalpha(c) || '_' == c)
     return true;
@@ -880,7 +880,7 @@ bool String::bIsAlphaUnder(const char c)
 /*----------------------------------------------------------------------------*/
 /* bIsDigit: is char a numeric decimal digit?                                 */
 /*----------------------------------------------------------------------------*/
-bool String::bIsDigit(const char c)
+bool StrLib::bIsDigit(const char c)
 {
   if (isdigit(c))
     return true;
@@ -891,7 +891,7 @@ bool String::bIsDigit(const char c)
 /*----------------------------------------------------------------------------*/
 /* bIsNumeric: is the string numeric ?                                        */
 /*----------------------------------------------------------------------------*/
-bool String::bIsNumeric(char* ps)
+bool StrLib::bIsNumeric(char* ps)
 {
   for ( ; *ps; (ps)++)
     if (!isdigit(*ps))
@@ -903,7 +903,7 @@ bool String::bIsNumeric(char* ps)
 /*----------------------------------------------------------------------------*/
 /* bIsHex: is char a hexadecimal digit?                                       */
 /*----------------------------------------------------------------------------*/
-bool String::bIsHex(const char c)
+bool StrLib::bIsHex(const char c)
 {
   if (c >= 'a' && c <= 'f') return true;
   if (c >= 'A' && c <= 'F') return true;
@@ -915,7 +915,7 @@ bool String::bIsHex(const char c)
 /*----------------------------------------------------------------------------*/
 /* bIsWhite: is char white space?                                             */
 /*----------------------------------------------------------------------------*/
-bool String::bIsWhite(const char c)
+bool StrLib::bIsWhite(const char c)
 {
   if (c == ' ')  return true;
   if (c == '\n') return true;
@@ -929,7 +929,7 @@ bool String::bIsWhite(const char c)
 /*----------------------------------------------------------------------------*/
 /* sLast: return pointer to last char in s                                    */
 /*----------------------------------------------------------------------------*/
-char* String::sLast(const char* s)
+char* StrLib::sLast(const char* s)
 {
   i8 nLen  = iLength(s);
   
@@ -941,7 +941,7 @@ char* String::sLast(const char* s)
 /*----------------------------------------------------------------------------*/
 /* iLength: get length in bytes of arg (not including terminating null)       */
 /*----------------------------------------------------------------------------*/
-i8 String::iLength(const char* s)
+i8 StrLib::iLength(const char* s)
 {
   i8 iLen = strlen(s);
   
@@ -951,7 +951,7 @@ i8 String::iLength(const char* s)
 /*----------------------------------------------------------------------------*/
 /* iLength: get length in bytes of arg (not including terminating null)       */
 /*----------------------------------------------------------------------------*/
-i8 String::iLength(const char* s, const char cTerm, i8 iMax)
+i8 StrLib::iLength(const char* s, const char cTerm, i8 iMax)
 {
   if (! *s)
     return 0;
@@ -968,7 +968,7 @@ i8 String::iLength(const char* s, const char cTerm, i8 iMax)
 /*----------------------------------------------------------------------------*/
 /* sNew: new a string from formatted args                                     */
 /*----------------------------------------------------------------------------*/
-char* String::sNew(const char* sFormat, ...)
+char* StrLib::sNew(const char* sFormat, ...)
 {
   char w[C_STRING_ARRAY];
   
@@ -986,7 +986,7 @@ char* String::sNew(const char* sFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* vPad: pad string to given length with char                                 */
 /*----------------------------------------------------------------------------*/
-void String::vPad(char* w, i8 iToLength, const char cWith)
+void StrLib::vPad(char* w, i8 iToLength, const char cWith)
 {
   i8 iCurrLength = iLength(w);
   
@@ -1004,7 +1004,7 @@ void String::vPad(char* w, i8 iToLength, const char cWith)
 /*----------------------------------------------------------------------------*/
 /* vRemove: remove any leading character                                      */
 /*----------------------------------------------------------------------------*/
-void String::vRemove(char *w, const char cLeading)
+void StrLib::vRemove(char *w, const char cLeading)
 {
   if (*w != cLeading || cLeading == '\0')
     return;
@@ -1024,7 +1024,7 @@ void String::vRemove(char *w, const char cLeading)
 /*----------------------------------------------------------------------------*/
 /* bReplace: replace sub-string                                               */
 /*----------------------------------------------------------------------------*/
-bool String::bReplace(char *pString, const char *pThis, const char *pThat)
+bool StrLib::bReplace(char *pString, const char *pThis, const char *pThat)
 {
   //note: this function does the replacement within the given string
   //      therefore it must be large enough to handle expancesion
@@ -1086,7 +1086,7 @@ bool String::bReplace(char *pString, const char *pThis, const char *pThat)
 /*----------------------------------------------------------------------------*/
 /* bReplace: replace sub-string                                               */
 /*----------------------------------------------------------------------------*/
-bool String::bReplace(char *pDst, const char* pSrc,
+bool StrLib::bReplace(char *pDst, const char* pSrc,
                       const char *pThis, const char *pThat)
 {
   bool bReplaced = false;
@@ -1138,7 +1138,7 @@ NextIteration:
 /*----------------------------------------------------------------------------*/
 /* bSame: are two arguments equal (no case)                                   */
 /*----------------------------------------------------------------------------*/
-bool String::bSame(const char* pArg1, const char* pArg2)
+bool StrLib::bSame(const char* pArg1, const char* pArg2)
 {
   i8 iDiff = strcasecmp(pArg1,pArg2);
   
@@ -1151,7 +1151,7 @@ bool String::bSame(const char* pArg1, const char* pArg2)
 /*----------------------------------------------------------------------------*/
 /* iSize: get size in bytes of arg                                            */
 /*----------------------------------------------------------------------------*/
-i8 String::iSize(const char* s)
+i8 StrLib::iSize(const char* s)
 {
   i8 nBytes = strlen(s) + 1;
 
@@ -1161,7 +1161,7 @@ i8 String::iSize(const char* s)
 /*----------------------------------------------------------------------------*/
 /* bSkipEOL: skip till end of line                                            */
 /*----------------------------------------------------------------------------*/
-bool String::bSkipEOL(char** ps)
+bool StrLib::bSkipEOL(char** ps)
 {
   while (**ps && '\n' != **ps)
     (*ps)++;
@@ -1176,7 +1176,7 @@ bool String::bSkipEOL(char** ps)
 /*----------------------------------------------------------------------------*/
 /* bSkipNonAlnum: skip non-alphanumeric sequence in substr                    */
 /*----------------------------------------------------------------------------*/
-bool String::bSkipNonAlnum(char** ps)
+bool StrLib::bSkipNonAlnum(char** ps)
 {
   for ( ; **ps; (*ps)++)
     if (isalnum(**ps))
@@ -1191,7 +1191,7 @@ bool String::bSkipNonAlnum(char** ps)
 /*----------------------------------------------------------------------------*/
 /* bSkipNonDigit: skip non digit sequence in substr                           */
 /*----------------------------------------------------------------------------*/
-bool String::bSkipNonDigit(char** ps)
+bool StrLib::bSkipNonDigit(char** ps)
 {
   char *s = *ps;
   
@@ -1210,7 +1210,7 @@ bool String::bSkipNonDigit(char** ps)
 /*----------------------------------------------------------------------------*/
 /* vSkipWhite: skip whitespace                                                */
 /*----------------------------------------------------------------------------*/
-void String::vSkipWhite(char** ps)
+void StrLib::vSkipWhite(char** ps)
 {
   for ( ; **ps; (*ps)++)
     if (!bIsWhite(**ps))
@@ -1220,7 +1220,7 @@ void String::vSkipWhite(char** ps)
 /*----------------------------------------------------------------------------*/
 /* vSprint: formatted sprint                                                  */
 /*----------------------------------------------------------------------------*/
-void String::vSprint(char* sDst, const char* sFormat, ...)
+void StrLib::vSprint(char* sDst, const char* sFormat, ...)
 {
   va_list args;
   
@@ -1232,7 +1232,7 @@ void String::vSprint(char* sDst, const char* sFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* vSprint: formatted sprint                                                  */
 /*----------------------------------------------------------------------------*/
-void String::vSprint(char* sDst, va_list args, const char* sFormat)
+void StrLib::vSprint(char* sDst, va_list args, const char* sFormat)
 {
   vsprintf(sDst,sFormat,args);
 }
@@ -1240,7 +1240,7 @@ void String::vSprint(char* sDst, va_list args, const char* sFormat)
 /*----------------------------------------------------------------------------*/
 /* vSprintCat: formatted concatenated sprint                                  */
 /*----------------------------------------------------------------------------*/
-void String::vSprintCat(char* sDst, const char* sFormat, ...)
+void StrLib::vSprintCat(char* sDst, const char* sFormat, ...)
 {
   va_list args;
   
@@ -1254,7 +1254,7 @@ void String::vSprintCat(char* sDst, const char* sFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* vSprintCat: formatted concatenated sprint                                  */
 /*----------------------------------------------------------------------------*/
-void String::vSprintCat(char* sDst, va_list args, const char* sFormat)
+void StrLib::vSprintCat(char* sDst, va_list args, const char* sFormat)
 {
   char* sEnd = sDst + iLength(sDst);
   
@@ -1264,7 +1264,7 @@ void String::vSprintCat(char* sDst, va_list args, const char* sFormat)
 /*----------------------------------------------------------------------------*/
 /* vStrip: test last char and remove                                          */
 /*----------------------------------------------------------------------------*/
-void String::vStrip(char* s, char c)
+void StrLib::vStrip(char* s, char c)
 {
   i8 nBytes = strlen(s);
   
@@ -1280,13 +1280,13 @@ void String::vStrip(char* s, char c)
 /*----------------------------------------------------------------------------*/
 /* bToBool: convert arg to boolean                                            */
 /*----------------------------------------------------------------------------*/
-bool String::bToBool(const char* s)
+bool StrLib::bToBool(const char* s)
 {
-  if (String::bEqualTo(s,"true" ,C_NO_CASE)) return true;
-  if (String::bEqualTo(s,"1"    ,C_NO_CASE)) return true;
+  if (StrLib::bEqualTo(s,"true" ,C_NO_CASE)) return true;
+  if (StrLib::bEqualTo(s,"1"    ,C_NO_CASE)) return true;
   
-  if (String::bEqualTo(s,"false",C_NO_CASE)) return false;
-  if (String::bEqualTo(s,"0"    ,C_NO_CASE)) return false;
+  if (StrLib::bEqualTo(s,"false",C_NO_CASE)) return false;
+  if (StrLib::bEqualTo(s,"0"    ,C_NO_CASE)) return false;
   
   return false;
 }
@@ -1294,7 +1294,7 @@ bool String::bToBool(const char* s)
 /*----------------------------------------------------------------------------*/
 /* cToHex: convert value to hexadecimal character                             */
 /*----------------------------------------------------------------------------*/
-char String::cToHex(i8 i)
+char StrLib::cToHex(i8 i)
 {
   char c;
   
@@ -1309,7 +1309,7 @@ char String::cToHex(i8 i)
 /*----------------------------------------------------------------------------*/
 /* iToI8: convert arg to i8                                                   */
 /*----------------------------------------------------------------------------*/
-i8 String::iToI8(const char* s)
+i8 StrLib::iToI8(const char* s)
 {
   //i8 i = atoll(s);
 
@@ -1341,7 +1341,7 @@ i8 String::iToI8(const char* s)
 /*----------------------------------------------------------------------------*/
 /* vToLower: convert arg to lower case                                        */
 /*----------------------------------------------------------------------------*/
-void String::vToLower(char* s)
+void StrLib::vToLower(char* s)
 {
   while (*s) {
     *s = (char)tolower((unsigned char)*s);
@@ -1352,7 +1352,7 @@ void String::vToLower(char* s)
 /*----------------------------------------------------------------------------*/
 /* wToPointer: convert given integer into its char/str form                   */
 /*----------------------------------------------------------------------------*/
-char* String::wToPointer(void* pArg, char* wArg)
+char* StrLib::wToPointer(void* pArg, char* wArg)
 {
   i8 i = reinterpret_cast<i8>(pArg);
   
@@ -1381,7 +1381,7 @@ char* String::wToPointer(void* pArg, char* wArg)
 /*----------------------------------------------------------------------------*/
 /* wToString: convert given integer into its char/str form                    */
 /*----------------------------------------------------------------------------*/
-char* String::wToString(i8 i, char* w)
+char* StrLib::wToString(i8 i, char* w)
 {
   bool bNegative = false;
   
@@ -1412,7 +1412,7 @@ char* String::wToString(i8 i, char* w)
 /*----------------------------------------------------------------------------*/
 /* zTerminator: get ptr to null terminator                                    */
 /*----------------------------------------------------------------------------*/
-char* String::zTerminator(char* s)
+char* StrLib::zTerminator(char* s)
 {
   i8 nLen  = iLength(s);
   

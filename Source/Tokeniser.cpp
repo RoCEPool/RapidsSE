@@ -253,7 +253,7 @@ i8 Tokeniser::iFindToken(const char* pLookFor, char* pToken[], i8 nTokens)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
   for (i8 iToken = 0; iToken < nTokens; iToken++)
-    if (String::bEqualTo(pLookFor,pToken[iToken],C_NO_CASE))
+    if (StrLib::bEqualTo(pLookFor,pToken[iToken],C_NO_CASE))
       return iToken;
   
   return -1;
@@ -267,7 +267,7 @@ i8 Tokeniser::iCountTokens(char* pToken[], i8 nTokens)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
   for (i8 iToken = 0; iToken < nTokens; iToken++)
-    if (String::bEqualTo("",pToken[iToken]))
+    if (StrLib::bEqualTo("",pToken[iToken]))
       return iToken;
   
   ASSERT("Should never be reached");
@@ -482,7 +482,7 @@ eTK Tokeniser::eParseNormalName(char* wToken)
   ASSERT(bStartNormalName());
   
   // collect the characters of the name
-  while ( String::bIsAlphaDigitUnder(m_cParsedChar) ) {
+  while ( StrLib::bIsAlphaDigitUnder(m_cParsedChar) ) {
     *z++ = m_cParsedChar;
     vGetNextStripped();
   }
@@ -767,7 +767,7 @@ bool Tokeniser::bHaveWhitespace(void)
   
   // do we have a current parsed character, which is a white char?
   if (m_cParsedChar) {
-    if (String::bIsWhite(m_cParsedChar))
+    if (StrLib::bIsWhite(m_cParsedChar))
       return true;
     else
       return false;
@@ -794,7 +794,7 @@ bool Tokeniser::bStartNormalInteger(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  if (String::bIsDigit(m_cParsedChar))
+  if (StrLib::bIsDigit(m_cParsedChar))
     return true;
   
   return false;
@@ -807,7 +807,7 @@ bool Tokeniser::bStartNormalName(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  if (String::bIsAlphaUnder(m_cParsedChar))
+  if (StrLib::bIsAlphaUnder(m_cParsedChar))
     return true;
   
   return false;
@@ -820,7 +820,7 @@ bool Tokeniser::bStartNormalOther(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  if (! String::bIsAlphaDigitUnder(m_cParsedChar))
+  if (! StrLib::bIsAlphaDigitUnder(m_cParsedChar))
     return true;
   
   return false;
@@ -859,7 +859,7 @@ bool Tokeniser::bStartSpecialInteger(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  if (String::bIsDigit(m_cParsedChar))
+  if (StrLib::bIsDigit(m_cParsedChar))
     return true;
   
   return false;
@@ -911,7 +911,7 @@ bool Tokeniser::bIsDigit(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  if (String::bIsDigit(m_cParsedChar))
+  if (StrLib::bIsDigit(m_cParsedChar))
     return true;
   
   return false;
@@ -937,7 +937,7 @@ bool Tokeniser::bIsHex(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  if (String::bIsHex(m_cParsedChar))
+  if (StrLib::bIsHex(m_cParsedChar))
     return true;
   
   return false;
@@ -963,7 +963,7 @@ bool Tokeniser::bIsWhite(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  if (String::bIsWhite(m_cParsedChar))
+  if (StrLib::bIsWhite(m_cParsedChar))
     return true;
   
   return false;

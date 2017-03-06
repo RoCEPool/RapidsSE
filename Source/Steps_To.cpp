@@ -104,9 +104,9 @@ void Task::vToCmd(NNP_Task nnpTask)
     nnpTask->m_pDataStack->vPeek(i,&xValWsp);
     
     if (i)
-      String::vConcat(sCmd.aStr()," ");
+      StrLib::vConcat(sCmd.aStr()," ");
     
-    char* aCmdEnd = String::zTerminator(sCmd.aStr());
+    char* aCmdEnd = StrLib::zTerminator(sCmd.aStr());
     
     V::vToCommand(&xValWsp,aCmdEnd);
   }
@@ -132,7 +132,7 @@ void Task::vToInt(NNP_Task nnpTask)
   s256 sBuff;
   V::vToString(&xStr,sBuff.aStr());
   
-  i8 i = String::iToI8(sBuff.aStr());
+  i8 i = StrLib::iToI8(sBuff.aStr());
   
   nnpTask->m_pDataStack->vPush(i);
   

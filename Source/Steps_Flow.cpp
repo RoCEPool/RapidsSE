@@ -222,7 +222,7 @@ void Task::vFlowThrow(NNP_Task nnpTask)
   
   char wBuffer[256];
   
-  String::vSprint(wBuffer,"THROW TEST");
+  StrLib::vSprint(wBuffer,"THROW TEST");
   
   throw wBuffer;
   

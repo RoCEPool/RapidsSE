@@ -229,7 +229,7 @@ eEC RapidsSE_CheckLibraryVersion(char* pVersion)
 {
   vTrace("Library version %s; versionString %s\n", RAPIDSSE_VERSION_STRING, pVersion);
   
-  if (!String::bEqualTo(pVersion, RAPIDSSE_VERSION_STRING)) {
+  if (!StrLib::bEqualTo(pVersion, RAPIDSSE_VERSION_STRING)) {
     vTrace("RapidsDB at version %s does not match RapidsSE library version %s",
            pVersion, RAPIDSSE_VERSION_STRING);
     return EC_VERSION_MISMATCH;
@@ -957,7 +957,7 @@ eEC RapidsSE_GetNextRow(SEitf* pSEitf, void** ppRow)
     return EC_NULLPTR;
   }
 
-  i8 iAddress = String::iToI8( pSEitf->m_sResponse.aStr());
+  i8 iAddress = StrLib::iToI8( pSEitf->m_sResponse.aStr());
   
   SelCursor* pSelCursor = reinterpret_cast<SelCursor*>(iAddress);
   ASSERT(CN_SELCURSOR == pSelCursor->eClass());
@@ -1588,7 +1588,7 @@ eEC RapidsSE_ScanTable(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTabl
 
   ASSERT(pSEitf->pCurrentTable() != nullptr);
   
-  i8 iAddress = String::iToI8(pSEitf->m_sResponse.aStr());
+  i8 iAddress = StrLib::iToI8(pSEitf->m_sResponse.aStr());
   
   SelCursor* pSelCursor = reinterpret_cast<SelCursor*>(iAddress);
   ASSERT(CN_SELCURSOR == pSelCursor->eClass());
@@ -1674,10 +1674,10 @@ eEC eExecuteRequest(SEitf* pSEitf, const char* pCommand, const char* pParameter1
   };
   
   // execute command
-  String::vCopy(pWords[0], pCommand);
-  String::vCopy(pWords[1], pParameter1);
-  String::vCopy(pWords[2], pParameter2);
-  String::vCopy(pWords[3], pParameter3);
+  StrLib::vCopy(pWords[0], pCommand);
+  StrLib::vCopy(pWords[1], pParameter1);
+  StrLib::vCopy(pWords[2], pParameter2);
+  StrLib::vCopy(pWords[3], pParameter3);
   
   bResult = pSEitf->bDecode(pWords, 4);
   
@@ -1700,8 +1700,8 @@ eEC eExecuteRequest(SEitf* pSEitf, const char* pCommand, const char* pParameter)
   };
 
   // execute command
-  String::vCopy(pWords[0], pCommand);
-  String::vCopy(pWords[1], pParameter);
+  StrLib::vCopy(pWords[0], pCommand);
+  StrLib::vCopy(pWords[1], pParameter);
   
   bResult = pSEitf->bDecode(pWords, 2);
   
@@ -1720,7 +1720,7 @@ eEC eExecuteRequest(SEitf* pSEitf, const char* pCommand)
   };
   
   // execute command pCommand
-  String::vCopy(pWords[0], pCommand);
+  StrLib::vCopy(pWords[0], pCommand);
   
   bResult = pSEitf->bDecode(pWords, 1);
   

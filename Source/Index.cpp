@@ -163,7 +163,7 @@ void Index::vPopulate(void)
             char* pChar = pStrVal->aStr();
             
             // extract the key from the first field
-            String::bExtractI8(&pChar, &iKey);
+            StrLib::bExtractI8(&pChar, &iKey);
             
             // add the key to the KeyWsp
             xValWsp = iKey;

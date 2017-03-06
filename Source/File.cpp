@@ -585,7 +585,7 @@ bool File::bReadLine(char* aBuffer)
 ////     if ('\n' == c || (char)EOF ==c)
 ////       break;
 ////     else
-////       String::vConcat(s.aStr(),c);
+////       StrLib::vConcat(s.aStr(),c);
 ////  }
 //
 //  char* z = s.aStr();
@@ -596,10 +596,10 @@ bool File::bReadLine(char* aBuffer)
 //    if ('\n' == c || (char)EOF ==c)
 //      break;
 //    else
-//      String::vAppendChar(&z,c);
+//      StrLib::vAppendChar(&z,c);
 //  }
 //  
-//  String::vAppendChar(&z,'\0');
+//  StrLib::vAppendChar(&z,'\0');
 //  
 //  if (*s.aStr()) {
 //    m_xSysCall.vSuccess();

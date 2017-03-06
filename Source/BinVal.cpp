@@ -126,7 +126,7 @@ i8 BinVal::nSize(void) const
 void BinVal::vSize(void)
 {
   ASSERT(0);
-  //m_nAreaSize = String::iSize(m_sStr);
+  //m_nAreaSize = StrLib::iSize(m_sStr);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -144,7 +144,7 @@ void BinVal::vToString(char* aWorkspace)
 {
   Object* pEmbedded = (Object*)pData();
   
-  String::vSprint(aWorkspace,"%p BinVal [%s of %lld bytes]",
+  StrLib::vSprint(aWorkspace,"%p BinVal [%s of %lld bytes]",
                   this,
                   pCN[pEmbedded->eClass()],
                   m_nAreaSize);

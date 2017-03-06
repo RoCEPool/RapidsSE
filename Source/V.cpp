@@ -38,7 +38,7 @@ i8 V::iCompareIntDatum(void* pArg1, void* pArg2)
 /*----------------------------------------------------------------------------*/
 i8 V::iCompareStrDatum(void* pArg1, void* pArg2)
 {
-  i8 iCmp = String::iCompare((char*)pArg1,(char*)pArg2);
+  i8 iCmp = StrLib::iCompare((char*)pArg1,(char*)pArg2);
   
   return iCmp;
 }
@@ -101,9 +101,9 @@ void V::vCopyIntDatum(void* pDst, void* pSrc)
 /*----------------------------------------------------------------------------*/
 i8 V::nCopyStrDatum(void* pDst, void* pSrc)
 {
-  String::vCopy((char*)pDst,(char*)pSrc);                //! could return length
+  StrLib::vCopy((char*)pDst,(char*)pSrc);                //! could return length
   
-  return String::iLength((char*)pSrc);
+  return StrLib::iLength((char*)pSrc);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -111,7 +111,7 @@ i8 V::nCopyStrDatum(void* pDst, void* pSrc)
 /*----------------------------------------------------------------------------*/
 void V::vCopyStrDatum(void* pDst, void* pSrc)
 {
-  String::vCopy((char*)pDst,(char*)pSrc);
+  StrLib::vCopy((char*)pDst,(char*)pSrc);
 }
 
 /*----------------------------------------------------------------------------*/
