@@ -49,7 +49,7 @@ int main(int argc, const char* argv[])
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  // s32 is a StrFxd : StrVal : StrVal which has a Str area
+  // s32 is a StrVar : StrVal : StrVal which has a Str area
   s32 x32 = "boo";
   vStrTestRef(x32);
   x32 = "hoo";

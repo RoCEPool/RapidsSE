@@ -18,7 +18,7 @@ StrVal* Values::_pStrVal(void* aAddr)
   RASSERT( ! psRefactor
           || CN_VALWSP == psRefactor->eClass()
           || CN_STRVAL == psRefactor->eClass()
-          || CN_STRFXD == psRefactor->eClass()
+          || CN_STRVAR == psRefactor->eClass()
           );
   
   return psRefactor;

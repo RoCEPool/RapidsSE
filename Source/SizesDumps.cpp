@@ -21,8 +21,8 @@ pDUMPFUN *gpDump[]
   /*  4 */ &Dump::vInvalid,         // CN_IPVAL
   /*  5 */ &Dump::vInvalid,         // CN_OBJVAL
   /*  6 */ &Dump::vInvalid,         // CN_PTRVAL
-  /*  7 */ &Dump::vInvalid,         // CN_STRFXD
-  /*  8 */ &Dump::vInvalid,         // CN_STRVAL
+  /*  7 */ &Dump::vInvalid,         // CN_STRVAL
+  /*  8 */ &Dump::vInvalid,         // CN_STRVAR
   /*  9 */ &Dump::vInvalid,         // CN_VALREG
   /* 10 */ &Dump::vInvalid,         // CN_VALSET
   /* 11 */ &Dump::vInvalid,         // CN_VALWSP
@@ -150,8 +150,8 @@ i8 giClassSize[]
   /*  4 */ sizeof(PtrVal),             // CN_IPVAL
   /*  5 */ sizeof(ObjVal),             // CN_OBJVAL
   /*  6 */ sizeof(PtrVal),             // CN_PTRVAL
-  /*  7 */ sizeof(s32),                // CN_STRFXD
-  /*  8 */ sizeof(StrVal),             // CN_STRVAL
+  /*  7 */ sizeof(StrVal),             // CN_STRVAL
+  /*  8 */ sizeof(s32),                // CN_STRVAR
   /*  9 */ sizeof(ValReg),             // CN_VALREG
   /* 10 */ sizeof(ValWsp), // correct  // CN_VALSET
   /* 11 */ sizeof(ValWsp),             // CN_VALWSP
@@ -278,8 +278,8 @@ eHT geWhichHeap[]
   /*  4 */ HT_INVALID, // CN_IPVAL
   /*  5 */ HT_INVALID, // CN_OBJVAL
   /*  6 */ HT_INVALID, // CN_PTRVAL
-  /*  7 */ HT_INVALID, // CN_STRFXD
-  /*  8 */ HT_INVALID, // CN_STRVAL
+  /*  7 */ HT_INVALID, // CN_STRVAL
+  /*  8 */ HT_INVALID, // CN_STRVAR
   /*  9 */ HT_INVALID, // CN_VALREG
   /* 10 */ HT_INVALID, // CN_VALSET
   /* 11 */ HT_INVALID, // CN_VALWSP
