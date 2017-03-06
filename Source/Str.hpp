@@ -23,6 +23,8 @@ namespace Base
     operator const char*();
   
     void vPrint(void);
+  
+    char* a(void);
   };
   
   Str* operator "" _Str(const char* aLiteral, size_t nSize);

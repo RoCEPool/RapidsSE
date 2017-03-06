@@ -52,7 +52,7 @@ void Task::vClassName(NNP_Task nnpTask)
   
   s32 sClassName;
   
-  sClassName = pCN[iClassNo];
+  sClassName = pCN[iClassNo]->a();
   
   nnpTask->m_pDataStack->vPush(sClassName);
   
