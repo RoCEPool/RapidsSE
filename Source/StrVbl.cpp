@@ -372,7 +372,7 @@ void StrVbl::vToString(char* aStr)
 /*----------------------------------------------------------------------------*/
 Str* StrVbl::aStrArea(void)
 {
-  char* aAddr = pAdd<char*>(this,sizeof(StrVal));
+  char* aAddr = pAdd<char*>(this,sizeof(StrVbl));
   
   return reinterpret_cast<Str*>(aAddr);
 }
