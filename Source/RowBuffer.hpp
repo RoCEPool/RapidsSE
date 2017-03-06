@@ -17,12 +17,12 @@ namespace DBobjects
   /* 3 */ RD_ENUMS
   };
   
-  static const char* const pRD[]
+  static Str* aRD[]
   {
-  /* 0 */ "NONE",
-  /* 1 */ "TEMPORARY",
-  /* 2 */ "PERMANENT",
-  /* 3 */ "ENUMS",
+  /* 0 */ "NONE"_Str,
+  /* 1 */ "TEMPORARY"_Str,
+  /* 2 */ "PERMANENT"_Str,
+  /* 3 */ "ENUMS"_Str,
   };
   
   class RowBuffer : public Buffer
