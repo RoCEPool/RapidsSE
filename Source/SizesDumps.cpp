@@ -312,7 +312,7 @@ eHT geWhichHeap[]
   /* 32 */ HT_INVALID, // CN_INDEX
   /* 33 */ HT_LARGE,   // CN_INDEXBUFFER
   /* 34 */ //HT_INVALID, // CN_INDEXDEFN
-  /* 35 */ HT_INVALID, // CN_INDEXLEVELS
+  /* 35 */ HT_MEDIUM, // CN_INDEXLEVELS
 
   /* 36 */ HT_INVALID, // CN_JUMBOHEAP
   

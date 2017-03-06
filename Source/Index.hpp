@@ -17,13 +17,16 @@ namespace DBobjects
     /* 1 */ "SKIP_LIST"
   };
 
+  class Table;
+  class Partition;
+  
   class Index : public Object
   {
   private:
-
     i8           m_iIndexNo;
     s32          m_sIndexName;
     eIT          m_eIndexType;
+    Table*       m_pTable;
     IndexLevels* m_pIndexLevels;
   
     // must be last
@@ -39,6 +42,10 @@ namespace DBobjects
     Index(void);
     ~Index(void);
   
+    IndexBuffer* pFirstBuffer(void);
+    void vPopulate(void);
+    void vTable(Table* pTable);
+    
     Footer* pFooter(void);
   };
   

@@ -15,13 +15,14 @@ cf boraySchema
 cf tables
 
 pwf
-create table j100 (
-  j100_key   INTEGER NOT NULL,
-  j100_name  VARCHAR(32) NOT NULL,
-  j100_j10   INTEGER NOT NULL
+create table j1000 (
+  j1000_key   INTEGER NOT NULL,
+  j1000_name  VARCHAR(32) NOT NULL
 );
 
-create index idx on j100 (j100_key);
+print "loading j10.tbl..."
+ld j1000 "../JTEST/j1000.csv"
+create index idx on j1000 (j1000_key);
 
 /*============================================================================*/
 /* end                                                                        */

@@ -43,6 +43,7 @@ namespace Debugging
   
   /* 27 */ EC_NOT_A_CATALOG,
   /* 28 */ EC_NOT_A_FOLDER,
+  /*    */ EC_NOT_AN_INDEX,
   /* 29 */ EC_NOT_A_SCHEMA,
   /* 30 */ EC_NOT_A_TABLE,
   /* 31 */ EC_NOT_A_TENANT,
@@ -109,6 +110,7 @@ namespace Debugging
   
   /* 27 */ "not a catalog",
   /* 28 */ "not a folder",
+  /*    */ "not an index",
   /* 29 */ "not a schema",
   /* 30 */ "not a table",
   /* 31 */ "not a tenant",

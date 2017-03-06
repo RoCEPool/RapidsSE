@@ -147,6 +147,9 @@ int: queryCount
   EC_NOT_A_TABLE false ( errorCode false )
 ;
 
+/*----------------------------------------------------------------------------*/
+/* check word is not a table                                                  */
+/*----------------------------------------------------------------------------*/
 : checkIsNotTable ( word )
   dup findInCurrent not if true exit then
   EC_TABLE_EXISTS false

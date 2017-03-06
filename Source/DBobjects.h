@@ -30,13 +30,13 @@ using namespace DBobjects;
 #include "Entry.hpp"
 #include "IndexBuffer.hpp"
 #include "IndexLevels.hpp"
-#include "Index.hpp"
 
 #include "Partition.hpp"
 #include "Slots.hpp"
 
 #include "Ring.hpp"
 
+#include "Index.hpp"
 #include "Table.hpp"
 
 #include "RbCursor.hpp"

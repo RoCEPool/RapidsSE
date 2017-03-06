@@ -60,17 +60,19 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* se> checking                                                               */
+/* check within indexes folder                                                */
 /*----------------------------------------------------------------------------*/
-
 : withinIndexes
 
   0 pathPick dic.name "indexes" str.equal
 ;
 
-: withinIndexes
+/*----------------------------------------------------------------------------*/
+/* check in indexes                                                           */
+/*----------------------------------------------------------------------------*/
+: checkInIndexes
 
-  withinTables if true exit then
+  withinIndexes if true exit then
 
   EC_NOT_IN_INDEXES false
 ;
@@ -96,7 +98,7 @@
   dup ( "<indexNm>" ^w:index ^w:index )
 
   word.kind@ ( "<indexNm>" ^w:index ^word )
-  ' table ( "<indexNm>" ^w:index ^word ^word )
+  ' index ( "<indexNm>" ^w:index ^word ^word )
   eql ( "<indexNm>" ^w:index bool )
   if
     drop ( "<indexNm>" )
@@ -106,9 +108,12 @@
 
   drop ( "<indexNm>" )
   drop ( )
-  EC_NOT_A_TABLE false ( errorCode false )
+  EC_NOT_AN_INDEX false ( errorCode false )
 ;
 
+/*----------------------------------------------------------------------------*/
+/* check word is not an index                                                 */
+/*----------------------------------------------------------------------------*/
 : checkIsNotIndex ( word )
   dup findInCurrent not if true exit then
   EC_INDEX_EXISTS false
@@ -151,6 +156,7 @@
   true
 ;
 */
+
 /*----------------------------------------------------------------------------*/
 /* any outstanding index references                                           */
 /*----------------------------------------------------------------------------*/
@@ -185,8 +191,8 @@
 /*----------------------------------------------------------------------------*/
 : checkMakeIndex ( "<indexNm>" -- "<indexNm>" true | "<indexNm>" errorCode false )
 
-  checkInTables   not if false exit then
-  checkIsNotTable not if false exit then
+  //checkInIndexes  not if false exit then
+  checkIsNotIndex not if false exit then
 
   true
 ;
@@ -203,61 +209,12 @@
   true ( "<indexNm>" true )
 ;
 
-/*----------------------------------------------------------------------------*/
-/* get size of table                                                          */
-/*----------------------------------------------------------------------------*/
-: sizeTable ( "<indexNm>" -- "<size>" )
-
-  find execute ( table )
-
-  table.space >str
-;
-
-////////////////////////////////////////////////////////////////////////////////
-
-: dumpIndex ( "<indexNm>" )
-
-  find execute ( index^ )
-/*
-  "__row_cursor" find dup
-  if
-  else
-    drop
-    "__row_cursor" :selCursor
-  then
-  execute
-
-  >r
-  // r0 ^selCursor
-
-  r0 selCursor.table!
-  grid.slots 0
-  do
-    // r2 ^selCursor
-    I r2 selCursor.begin
-    r2 selCursor.first
-    begin
-      while
-      r2 selCursor.get
-      .
-      r2 selCursor.next
-      repeat
-
-      r2 selCursor.end
-  loop
-
-  rdrop
-
-  "__row_cursor" find word.forget
-*/
-;
-
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
 /* make an index (run by participant)                                         */
 /*----------------------------------------------------------------------------*/
-: makeIndex allParticipants 1 checkResult ( "<indexNm>" -- true n# true )
+: makeIndex allParticipants 3 checkResult ( "<columnNm>" "<tableNm>" "<indexNm>"  -- true n# true )
 
 tp: makingIndex
 
@@ -267,7 +224,37 @@ tp: makingIndex
 
   "indexes"
   find execute pathPush
-  :index ( "<indexNm>" ^index )
+
+  // create the index
+  dup :index ( "<columnNm>" "<tableNm>" "<indexNm>" ^index )
+
+  // drop the index word
+  drop ( "<columnNm>" "<tableNm>" "<indexNm>" )
+
+  // find the index
+  find execute ( "<columnNm>" ^table ^index )
+
+  // save the index
+  locals| index | ( "<columnNm>" ^table )
+
+  // push the index
+  index ( "<columnNm>" "<tableNm>" ^index )
+  swap ( "<columnNm>" ^index "<tableNm>" )
+
+  // find the table
+  find execute ( "<columnNm>" ^index ^table )
+
+  swap ( "<columnNm>" ^table ^index )
+
+  // set the table in the index
+  index.table! ( "<columnNm>" )
+
+  // now populate the index
+  index ( ^index )
+  index.populate
+
+  // drop the columnNm (not being used)
+  drop
 
   true <SUCCESS_RESULT>
 ;

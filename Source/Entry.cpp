@@ -104,6 +104,8 @@ void Entry::vContentDump(void)
          m_xWsp.nUsed(),
          iKeyData
          );
+  
+  //m_xRowId.pRow()->vContentDump();
 }
 
 /*----------------------------------------------------------------------------*/

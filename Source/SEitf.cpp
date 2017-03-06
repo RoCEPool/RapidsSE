@@ -339,6 +339,7 @@ bool SEitf::bDecode(char* pWords[], i8 iWords)
   if (String::bSame("getInUseSpace",pWords[0])) return bGetInUseSpace(pWords);
   if (String::bSame("gettbl",pWords[0])) return bGetTable(pWords, iWords);
   if (String::bSame("getTotalSpace",pWords[0])) return bGetTotalSpace(pWords);
+  if (String::bSame("idump",pWords[0])) return bDumpIndex(pWords, iWords);
   if (String::bSame("TblInUse",pWords[0])) return bInUseTable(pWords, iWords);
   if (String::bSame("ld",pWords[0])) return bLoadTable(pWords, iWords);
   if (String::bSame("lds",pWords[0])) return bLoadTableStream(pWords, iWords);
@@ -769,6 +770,31 @@ bool SEitf::bListTables(char* pWords[], i8 iWords)
   
   ASSERT(String::bEqualTo(pWords[0],"lstbl"));
   sRequest = "list_tables";
+  return bAppendRequest(sRequest);
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump an index                                                              */
+/*----------------------------------------------------------------------------*/
+bool SEitf::bDumpIndex(char* pWords[], i8 iWords)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  s256 sRequest;
+  
+  char* a = sRequest.aStr();
+  
+  if (iWords != 2) {
+    vSetLastError(EC_INVALID_PARAMETERS);
+    return false;
+  }
+  
+  String::vCopy(a,"\"");
+  String::vConcat(a,pWords[1]);
+  String::vConcat(a,"\"");
+  
+  String::vConcat(a," dump_index");
+  
   return bAppendRequest(sRequest);
 }
 

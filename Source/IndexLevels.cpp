@@ -31,9 +31,9 @@ void IndexLevels::vDump(eCN eClass, Object* pObject, const char* aTab)
 void* IndexLevels::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  IndexLevels* pIndexLevels = nullptr;
+  void* pObject = Heap::pAllocate(CN_INDEXLEVELS);
   
-  return pIndexLevels;
+  return pObject;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -73,6 +73,40 @@ IndexLevels::~IndexLevels(void)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* insert a row                                                               */
+/*----------------------------------------------------------------------------*/
+IndexBuffer* IndexLevels::pFirstBuffer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXLEVELS,_FOOTER_);
+  
+  return m_pIndexBuffer[0];
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* insert a row                                                               */
+/*----------------------------------------------------------------------------*/
+void IndexLevels::vInsertEntry(EntWsp& xEntWsp)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXLEVELS,_FOOTER_);
+  
+  
+  if (!m_pIndexBuffer[0])
+    m_pIndexBuffer[0] = new IndexBuffer;
+
+  bool bResult = false;
+  IndexBuffer* pIndexBuffer = m_pIndexBuffer[0];
+  
+  while ( ! bResult) {
+    pIndexBuffer = pIndexBuffer->pFindBuffer(xEntWsp);
+ 
+    // insert entry into index buffer
+    bResult = pIndexBuffer->bInsertEntry(xEntWsp);
+  }
+  
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/

@@ -117,6 +117,23 @@ void RowId::vRowId(RowId& xRowId)
   m_uRow    = xRowId.m_uRow;
 }
 
+/*----------------------------------------------------------------------------*/
+/* get row from buffer                                                        */
+/*----------------------------------------------------------------------------*/
+Row* RowId::pRow(void)
+{
+  RowBuffer* pRowBuffer = reinterpret_cast<RowBuffer*>(gpBufferPool->pToBuffer(m_uBuffer));
+  
+  Row* pRow = pRowBuffer->pFirstRow();
+  u8 uRowNo = 0;
+  while (m_uRow != uRowNo) {
+    pRow = pRowBuffer->pNextRow(pRow);
+    uRowNo++;
+  }
+  ASSERT(pRow);
+  return pRow;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

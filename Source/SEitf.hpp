@@ -91,6 +91,7 @@ namespace Interface
     bool bUseSchema(char* pWords[], i8 iWords);
     
     bool bCreateIndex(char* pWords[], i8 iWords);
+    bool bDumpIndex(char* pWords[], i8 iWords);
     bool bListIndices(char* pWords[], i8 iWords);
     
     bool bCreateTable(char* pWords[], i8 iWords);

@@ -26,6 +26,10 @@ namespace DBobjects
     IndexLevels(void);
     ~IndexLevels(void);
     
+    IndexBuffer* pFirstBuffer(void);
+    
+    void vInsertEntry(EntWsp& xEntWsp);
+    
     Footer* pFooter(void);
   };
 }

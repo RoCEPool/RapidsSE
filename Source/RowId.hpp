@@ -32,6 +32,8 @@ namespace DBobjects
     void  vRow(u8 uRow);
 
     void  vRowId(RowId& xRowId);
+    
+    Row*  pRow(void);
   };
 }
 

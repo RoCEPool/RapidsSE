@@ -13,9 +13,25 @@ tp: create_index
   ddlLock.grabWrite
 
   checkEnoughBuffers not if <NIP+ERROR> exit then
-  //1 pick getTableRef not if <NIP+ERROR> exit then
+  checkMakeIndex     not if <NIP+ERROR> exit then
 
   makeIndex ( ) assert.stack_0
+
+  <OK>
+;
+
+/*----------------------------------------------------------------------------*/
+/* dump index                                                                 */
+/*----------------------------------------------------------------------------*/
+: dump_index ( "<indexNm>" -- <R> )
+
+  ddlLock.grabRead
+
+  checkInIndexes not if <NIP+ERROR> exit then
+  checkIsIndex  not if <NIP+ERROR> exit then
+
+  find execute
+  index.dump
 
   <OK>
 ;

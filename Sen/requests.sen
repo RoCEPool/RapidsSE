@@ -74,6 +74,7 @@ rmtbl   drop_table
 Index Requests:
 mkidx   create_index
 lsidx   list_indexes
+idump   dump_index
  
 Dictionary Requests:
 

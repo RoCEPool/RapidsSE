@@ -5,6 +5,8 @@
 
 namespace DBobjects
 {
+  class Index;
+  
   // allow for maximum 8 indexes per table
   static const i8 C_INDEXES_PER_TABLE = 8;
   
