@@ -72,72 +72,72 @@ namespace Debugging
   /* 50 */ EC_ENUMS
   };
   
-  static const char* const pEC[]
+  static Str* aEC[]
   {
-  /*  0 */ "none",
-  /*  1 */ "assert",
-  /*  2 */ "begin transaction failed",
-  /*  3 */ "catalog exists",
-  /*  4 */ "cluster not started",
+  /*  0 */ "none"_Str,
+  /*  1 */ "assert"_Str,
+  /*  2 */ "begin transaction failed"_Str,
+  /*  3 */ "catalog exists"_Str,
+  /*  4 */ "cluster not started"_Str,
   
-  /*  5 */ "duplicate column",
-  /*  6 */ "folder in use",
-  /*  7 */ "folder not empty",
+  /*  5 */ "duplicate column"_Str,
+  /*  6 */ "folder in use"_Str,
+  /*  7 */ "folder not empty"_Str,
   
-  /*  8 */ "index exists",
+  /*  8 */ "index exists"_Str,
     
-  /*  9 */ "invalid class",
-  /* 10 */ "invalid command",
-  /* 11 */ "invalid file",
-  /* 12 */ "invalid interface",
-  /* 13 */ "invalid parameter",
-  /* 14 */ "invalid parameters",
-  /* 15 */ "invalid instance",
-  /* 16 */ "invalid syntax",
+  /*  9 */ "invalid class"_Str,
+  /* 10 */ "invalid command"_Str,
+  /* 11 */ "invalid file"_Str,
+  /* 12 */ "invalid interface"_Str,
+  /* 13 */ "invalid parameter"_Str,
+  /* 14 */ "invalid parameters"_Str,
+  /* 15 */ "invalid instance"_Str,
+  /* 16 */ "invalid syntax"_Str,
   
-  /* 17 */ "low buffers",
+  /* 17 */ "low buffers"_Str,
   
-  /* 18 */ "no columns dictionary",
+  /* 18 */ "no columns dictionary"_Str,
   
-  /* 19 */ "no such catalog",
-  /* 20 */ "no such directory",
-  /* 21 */ "no such folder",
-  /* 22 */ "no such index",
-  /* 23 */ "no such schema",
-  /* 24 */ "no such table",
-  /* 25 */ "no such tenant",
-  /* 26 */ "no such word",
+  /* 19 */ "no such catalog"_Str,
+  /* 20 */ "no such directory"_Str,
+  /* 21 */ "no such folder"_Str,
+  /* 22 */ "no such index"_Str,
+  /* 23 */ "no such schema"_Str,
+  /* 24 */ "no such table"_Str,
+  /* 25 */ "no such tenant"_Str,
+  /* 26 */ "no such word"_Str,
   
-  /* 27 */ "not a catalog",
-  /* 28 */ "not a folder",
-  /* 29 */ "not an index",
-  /* 30 */ "not a schema",
-  /* 31 */ "not a table",
-  /* 32 */ "not a tenant",
+  /* 27 */ "not a catalog"_Str,
+  /* 28 */ "not a folder"_Str,
+  /* 29 */ "not an index"_Str,
+  /* 30 */ "not a schema"_Str,
+  /* 31 */ "not a table"_Str,
+  /* 32 */ "not a tenant"_Str,
     
-  /* 33 */ "not in catalogs",
-  /* 34 */ "not in columns",
-  /* 35 */ "not in indexes",
-  /* 36 */ "not in schemas",
-  /* 37 */ "not in table",
-  /* 38 */ "not in tables",
-  /* 39 */ "not in tenants",
+  /* 33 */ "not in catalogs"_Str,
+  /* 34 */ "not in columns"_Str,
+  /* 35 */ "not in indexes"_Str,
+  /* 36 */ "not in schemas"_Str,
+  /* 37 */ "not in table"_Str,
+  /* 38 */ "not in tables"_Str,
+  /* 39 */ "not in tenants"_Str,
   
-  /* 40 */ "null interface",
-  /* 41 */ "nullptr",
+  /* 40 */ "null interface"_Str,
+  /* 41 */ "nullptr"_Str,
   
-  /* 42 */ "response pending",
+  /* 42 */ "response pending"_Str,
   
-  /* 43 */ "schema exists",
-  /* 44 */ "SE is not running",
-  /* 45 */ "send failure",
-  /* 46 */ "table exists",
-  /* 47 */ "table in use",
-  /* 48 */ "tenant exists",
+  /* 43 */ "schema exists"_Str,
+  /* 44 */ "SE is not running"_Str,
+  /* 45 */ "send failure"_Str,
+  /* 46 */ "table exists"_Str,
+  /* 47 */ "table in use"_Str,
+  /* 48 */ "tenant exists"_Str,
 
-  /* 49 */ "version mismatch",
+  /* 49 */ "version mismatch"_Str,
   
-  /* 50 */ "enums"
+  /* 50 */ "enums"_Str
   
   };
   

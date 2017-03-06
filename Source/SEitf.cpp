@@ -75,7 +75,7 @@ SEitf::SEitf(i8 iPartition)
   m_pRequestQueue   = nullptr;
   m_pResponseQueue  = nullptr;
   m_eErrorCode      = EC_NONE;
-  m_sErrorMsg       = pEC[m_eErrorCode];
+  m_sErrorMsg       = aEC[m_eErrorCode]->a();
   m_sResponse       = "";
   m_pRowPtr         = nullptr;
   m_pCurrentTable   = nullptr;
@@ -1817,7 +1817,7 @@ void SEitf::vSetLastError(eEC eError)
   ASSERT(eError <  EC_ENUMS);
   
   m_eErrorCode = eError;
-  StrLib::vCopy(m_sErrorMsg.aStr(), pEC[m_eErrorCode]);
+  StrLib::vCopy(m_sErrorMsg.aStr(), aEC[m_eErrorCode]->a());
   
 //  if (StrLib::iLength(m_sResponse.aStr()) != 0) {
 //    StrLib::vConcat(m_sInterfaceError.aStr(), " (");
