@@ -33,7 +33,7 @@ void* ValReg::operator new(size_t iSize)
 ValReg::ValReg(void)
 : Value(CN_VALREG)
 {
-  Memory::vZero(m_wWorkspace,C_VALREG_WORKSPACE);
+  MemLib::vZero(m_wWorkspace,C_VALREG_WORKSPACE);
   
   *(this) = (i8)0;
   

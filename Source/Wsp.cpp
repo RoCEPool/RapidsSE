@@ -52,7 +52,7 @@ void Wsp::vFill(char cByte, i8 nBytes)
 {
   void* aDst = aArea();
   
-  Memory::vSet(aDst,cByte,nBytes);
+  MemLib::vSet(aDst,cByte,nBytes);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -128,7 +128,7 @@ void Wsp::vZero(i8 nBytes)
 {
   void* aDst = aArea();
   
-  Memory::vZero(aDst,nBytes);
+  MemLib::vZero(aDst,nBytes);
 }
 
 /*============================================================================*/

@@ -121,7 +121,7 @@ void IndexBuffer::vAppendBuffer(IndexBuffer* pArgBuffer)
   void* pDst = pAdd<void*>(m_xWsp.aArea(),m_xWsp.nUsed());
   void* pSrc = pArgBuffer->m_xWsp.aArea();
   i8 nBytes  = pArgBuffer->m_xWsp.nUsed();
-  Memory::vCopy(pDst,pSrc,nBytes);
+  MemLib::vCopy(pDst,pSrc,nBytes);
   
   //m_pFreeSpace = pAdd<char*>(m_pFreeSpace,nBytes);
   
@@ -139,7 +139,7 @@ void IndexBuffer::vCopyBuffer(IndexBuffer* pFromBuffer)
   
   i8 nBytes = pFromBuffer->m_xWsp.nUsed();
   
-  Memory::vCopy(m_xWsp.aArea(),pFromBuffer->m_xWsp.aArea(),nBytes);
+  MemLib::vCopy(m_xWsp.aArea(),pFromBuffer->m_xWsp.aArea(),nBytes);
   
   m_xWsp.vTake(nBytes);
   
@@ -259,7 +259,7 @@ void IndexBuffer::vInsertEntry(EntWsp& xEntWsp)
       void* pShuffleTo = pAdd<void*>(pEntry,nBytes);
       
       // do the shuffle
-      Memory::vCopy(pShuffleTo,pEntry,nSize);
+      MemLib::vCopy(pShuffleTo,pEntry,nSize);
       break;
     }
     
@@ -332,7 +332,7 @@ bool IndexBuffer::bInsertEntry(EntWsp& xEntWsp)
       void* pShuffleTo = pAdd<void*>(pEntry,nBytes);
       
       // do the shuffle
-      Memory::vCopy(pShuffleTo,pEntry,nSize);
+      MemLib::vCopy(pShuffleTo,pEntry,nSize);
       break;
     }
     
@@ -411,7 +411,7 @@ void IndexBuffer::vSplitBuffer(void)
   void* pNewDst = pNewBuffer->m_xWsp.aArea();
   
   // do the shuffle
-  Memory::vCopy(pNewDst,pEntry,nSize);
+  MemLib::vCopy(pNewDst,pEntry,nSize);
   
   pNewBuffer->m_xWsp.vTake(nSize);
   

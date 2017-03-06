@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Memory.cpp -- Memory                                                       */
+/* MemLib.cpp -- MemLib                                                       */
 /*============================================================================*/
 #pragma once
 
@@ -25,7 +25,7 @@ namespace Base
   static const u8 C_MEMORY_MARKERE   = 0x070605040302010e;
   static const u8 C_MEMORY_MARKERF   = 0x070605040302010f;
   
-  class Memory
+  class MemLib
   {
   private:
     static const u1 C_ASCII_MIN = 32;

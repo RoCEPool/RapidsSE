@@ -67,7 +67,7 @@ bool QueueBuffer::bAppend(Value* pValue)
   if (pFinalByteOfValue > Buffer::pLastUsableByte())
     return false;
   
-  Memory::vCopy(m_pNextFree,pValue,nBytes);
+  MemLib::vCopy(m_pNextFree,pValue,nBytes);
   
   m_pNextFree = pAdd<Value*>(m_pNextFree,nBytes);
   
@@ -153,7 +153,7 @@ bool QueueBuffer::bPop(ValWsp* pValWsp, bool& bDiscardable)
   
   i8 nBytes = V::iSize(m_pTopValue);
 
-  Memory::vCopy(pValWsp,m_pTopValue,nBytes);
+  MemLib::vCopy(pValWsp,m_pTopValue,nBytes);
   
   //m_pTopValue = pNextValue(m_pTopValue);
   m_pTopValue = pAdd<Value*>(m_pTopValue,nBytes);
@@ -189,7 +189,7 @@ bool QueueBuffer::bPop(ValSet* pValSet, bool& bDiscardable)
   
   i8 nBytes = V::iSize(m_pTopValue);
   
-  Memory::vCopy(pValSet,m_pTopValue,nBytes);
+  MemLib::vCopy(pValSet,m_pTopValue,nBytes);
   
   //m_pTopValue = pNextValue(m_pTopValue);
   m_pTopValue = pAdd<Value*>(m_pTopValue,nBytes);

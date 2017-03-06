@@ -60,7 +60,7 @@ LoadMap::LoadMap(void)
 
   //m_xChunkFile
   m_iChunkNext = 0;
-  Memory::vZero(m_xBlockTest,C_LOADMAP_BLOCK);
+  MemLib::vZero(m_xBlockTest,C_LOADMAP_BLOCK);
   m_iChunkTell = 0;
   
   _checkInitialised_(CN_LOADMAP);

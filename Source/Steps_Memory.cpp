@@ -55,7 +55,7 @@ ENTRY("vMemoryByteDump");
   Word* pWord = _pWord(pWordObject);
   
   //pWord->vByteDump(iSize);
-  Memory::vHexDump(pWord,iSize);
+  MemLib::vHexDump(pWord,iSize);
   
   EXIT();
 }
@@ -77,7 +77,7 @@ ENTRY("vMemoryWordDump");
   Word* pWord = _pWord(pWordObject);
   
   //pWord->vWordDump(iSize);
-  Memory::vWordDump(pWord,iSize);
+  MemLib::vWordDump(pWord,iSize);
   
   EXIT();
 }

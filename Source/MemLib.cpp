@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Memory.cpp -- Memory                                                       */
+/* MemLib.cpp -- MemLib                                                       */
 /*============================================================================*/
 
 #include "Base.h"
@@ -11,7 +11,7 @@ extern i8 giClassSize[];
 /*----------------------------------------------------------------------------*/
 /* map a new an anonymous region of memory (private or shared)                */
 /*----------------------------------------------------------------------------*/
-void* Memory::pAddBytes(void* aAddress, i8 iBytes)
+void* MemLib::pAddBytes(void* aAddress, i8 iBytes)
 {
   char* pOrigin = reinterpret_cast<char*>(aAddress);
   
@@ -23,7 +23,7 @@ void* Memory::pAddBytes(void* aAddress, i8 iBytes)
 /*----------------------------------------------------------------------------*/
 /* check memory has been intialised                                           */
 /*----------------------------------------------------------------------------*/
-void Memory::vCheckInitialised(void* aAddress, eCN eClass)
+void MemLib::vCheckInitialised(void* aAddress, eCN eClass)
 {
   u8* pMchWord = reinterpret_cast<u8*>(aAddress);
   i8  nBytes = giClassSize[eClass];
@@ -32,7 +32,7 @@ void Memory::vCheckInitialised(void* aAddress, eCN eClass)
   for (i8 iWord = 0; iWord < nWords; iWord++) {
     
     if (C_SCRIBBLE_PATTERN == *pMchWord) {
-      Memory::vWordDump(aAddress,nBytes,iWord);
+      MemLib::vWordDump(aAddress,nBytes,iWord);
       vDebugTrap();
     }
     
@@ -44,7 +44,7 @@ void Memory::vCheckInitialised(void* aAddress, eCN eClass)
 /*----------------------------------------------------------------------------*/
 /* check memory has been intialised                                           */
 /*----------------------------------------------------------------------------*/
-void Memory::vCheckInitialised(void* aAddress, i8 nBytes)
+void MemLib::vCheckInitialised(void* aAddress, i8 nBytes)
 {
   u8* pMchWord = reinterpret_cast<u8*>(aAddress);
   i8  nWords = nBytes / 8;
@@ -52,7 +52,7 @@ void Memory::vCheckInitialised(void* aAddress, i8 nBytes)
   for (i8 iWord = 0; iWord < nWords; iWord++) {
     
     if (C_SCRIBBLE_PATTERN == *pMchWord) {
-      Memory::vWordDump(aAddress,nBytes,iWord);
+      MemLib::vWordDump(aAddress,nBytes,iWord);
       vDebugTrap();
     }
     
@@ -64,7 +64,7 @@ void Memory::vCheckInitialised(void* aAddress, i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* copy from src to dst                                                       */
 /*----------------------------------------------------------------------------*/
-void Memory::vCopy(void* pDst, const void* pSrc, i8 iBytes)
+void MemLib::vCopy(void* pDst, const void* pSrc, i8 iBytes)
 {
   memcpy(pDst,pSrc,iBytes);
 }
@@ -72,7 +72,7 @@ void Memory::vCopy(void* pDst, const void* pSrc, i8 iBytes)
 /*----------------------------------------------------------------------------*/
 /* dump given bytes of memory at given address                                */
 /*----------------------------------------------------------------------------*/
-void Memory::vHexDump(void *aAddress, i8 iBytes)
+void MemLib::vHexDump(void *aAddress, i8 iBytes)
 {
   
   i8 iOffset = 0;
@@ -80,7 +80,7 @@ void Memory::vHexDump(void *aAddress, i8 iBytes)
   
   // dump a header
   vTrace("\n%18s %8s %49s %16s\n",
-         "Memory address", "Offset", "Hex dump", "Context");
+         "MemLib address", "Offset", "Hex dump", "Context");
   vTrace("%18s %8s %49s %16s\n",
          "------------------", "--------",
          "-------------------------------------------------", "----------------");
@@ -154,7 +154,7 @@ void Memory::vHexDump(void *aAddress, i8 iBytes)
 /*----------------------------------------------------------------------------*/
 /* memset dst                                                                 */
 /*----------------------------------------------------------------------------*/
-void Memory::vSet(void* pDst, char iByte, i8 iTimes)
+void MemLib::vSet(void* pDst, char iByte, i8 iTimes)
 {
   memset(pDst,iByte,iTimes);
 }
@@ -162,7 +162,7 @@ void Memory::vSet(void* pDst, char iByte, i8 iTimes)
 /*----------------------------------------------------------------------------*/
 /* move from src to dst                                                       */
 /*----------------------------------------------------------------------------*/
-void Memory::vMove(void* pDst, const void* pSrc, i8 iBytes)
+void MemLib::vMove(void* pDst, const void* pSrc, i8 iBytes)
 {
   memmove(pDst,pSrc,iBytes);
 }
@@ -170,7 +170,7 @@ void Memory::vMove(void* pDst, const void* pSrc, i8 iBytes)
 /*----------------------------------------------------------------------------*/
 /* scribble on memory                                                         */
 /*----------------------------------------------------------------------------*/
-void Memory::vScribble(void* aAddress, i8 nBytes)
+void MemLib::vScribble(void* aAddress, i8 nBytes)
 {
   u8* pMchWord = reinterpret_cast<u8*>(aAddress);
   i8  nWords = nBytes / 8;
@@ -182,7 +182,7 @@ void Memory::vScribble(void* aAddress, i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* dump given words of memory at given address                                */
 /*----------------------------------------------------------------------------*/
-void Memory::vWordDump(void *aAddress, i8 iBytes, i8 iHighlightWord)
+void MemLib::vWordDump(void *aAddress, i8 iBytes, i8 iHighlightWord)
 {
   i8 iOffset = 0;
   i8 iWord   = 0;
@@ -291,7 +291,7 @@ void Memory::vWordDump(void *aAddress, i8 iBytes, i8 iHighlightWord)
 /*----------------------------------------------------------------------------*/
 /* zero dst                                                                   */
 /*----------------------------------------------------------------------------*/
-void Memory::vZero(void* pDst, i8 iBytes)
+void MemLib::vZero(void* pDst, i8 iBytes)
 {
   vSet(pDst,(char)0,iBytes);
 }

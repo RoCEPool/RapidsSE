@@ -57,7 +57,7 @@ int LZ4_versionNumber (void);
 **************************************/
 /*
  * LZ4_MEMORY_USAGE :
- * Memory usage formula : N->2^N Bytes (examples : 10 -> 1KB; 12 -> 4KB ; 16 -> 64KB; 20 -> 1MB; etc.)
+ * MemLib usage formula : N->2^N Bytes (examples : 10 -> 1KB; 12 -> 4KB ; 16 -> 64KB; 20 -> 1MB; etc.)
  * Increasing memory usage improves compression ratio
  * Reduced memory usage can improve speed, due to cache effect
  * Default value is 14, for 16KB, which nicely fits into Intel x86 L1 cache

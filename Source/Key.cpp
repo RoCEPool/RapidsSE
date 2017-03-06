@@ -82,7 +82,7 @@ void Key::vKey(Key& xKey)
   char* aDst = aWspArea();
   i8 nBytes  = xKey.nSize();
   
-  Memory::vCopy(aDst,&xKey,nBytes);
+  MemLib::vCopy(aDst,&xKey,nBytes);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -94,7 +94,7 @@ void Key::vKey(KeyWsp& xKeyWsp)
   char* aSrc = xKeyWsp.aWspArea();
   i8 nBytes  = xKeyWsp.nWspUsed();
   
-  Memory::vCopy(aDst,aSrc,nBytes);
+  MemLib::vCopy(aDst,aSrc,nBytes);
 }
 
 /*----------------------------------------------------------------------------*/

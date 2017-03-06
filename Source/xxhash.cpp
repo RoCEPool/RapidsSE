@@ -78,7 +78,7 @@ You can contact the author at :
 #endif
 
 //**************************************
-// Includes & Memory related functions
+// Includes & MemLib related functions
 //**************************************
 #include "xxhash.hpp"
 // Modify the local functions below should you wish to use some other memory routines
@@ -217,7 +217,7 @@ static const int one = 1;
 
 
 //****************************
-// Memory reads
+// MemLib reads
 //****************************
 typedef enum { XXH_aligned, XXH_unaligned } XXH_alignment;
 

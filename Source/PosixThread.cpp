@@ -11,7 +11,7 @@ Atomic gzThreadOpenCount;
 /*----------------------------------------------------------------------------*/
 PosixThread::PosixThread()
 {
-  Memory::vZero(this,sizeof(PosixThread));
+  MemLib::vZero(this,sizeof(PosixThread));
   
   m_iOpSysThreadId = 0;
   m_iPosixThreadId = 0;

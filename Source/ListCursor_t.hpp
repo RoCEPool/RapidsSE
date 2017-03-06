@@ -45,7 +45,7 @@ ListCursor_t<OBJECT>::ListCursor_t(List_t<OBJECT>* pList)
   m_pObject  = nullptr;
   m_bHasLock = false;
   
-  //Memory::vCheckInitialised(this,sizeof(ListCursor_t<OBJECT>));
+  //MemLib::vCheckInitialised(this,sizeof(ListCursor_t<OBJECT>));
   _checkInitialisedSize_(sizeof(ListCursor_t<OBJECT>));
 }
 

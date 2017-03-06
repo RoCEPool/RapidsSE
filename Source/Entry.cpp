@@ -144,7 +144,7 @@ void Entry::vEntry(EntWsp& xEntWsp)
   char* pSrc = xEntWsp.aWspArea();
   i8 nBytes  = xEntWsp.nWspUsed();
 
-  Memory::vCopy(pDst,pSrc,nBytes);
+  MemLib::vCopy(pDst,pSrc,nBytes);
   
   m_xWsp.vUsed(nBytes);
 }

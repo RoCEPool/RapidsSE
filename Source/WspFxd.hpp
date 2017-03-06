@@ -70,7 +70,7 @@ void WspFxd<LENGTH>::vAppend(void* aSrc, i8 nBytes)
   
   void* aDst = aLatter();
 
-  Memory::vCopy(aDst,aSrc,nBytes);
+  MemLib::vCopy(aDst,aSrc,nBytes);
   
   vTake(nBytes);
 }

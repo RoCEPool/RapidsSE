@@ -97,7 +97,7 @@ void Socket::vAddrInit(sockaddr_in* aAddr, int iPort)
 {
   _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
   
-  Memory::vZero(aAddr,sizeof(sockaddr_in));
+  MemLib::vZero(aAddr,sizeof(sockaddr_in));
   
   aAddr->sin_family      = AF_INET;
   aAddr->sin_addr.s_addr = htonl(INADDR_ANY);
@@ -111,7 +111,7 @@ void Socket::vAddrInit(sockaddr_in* aAddr, const char* sAddr, int iPort)
 {
   _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
   
-  Memory::vZero(aAddr,sizeof(sockaddr_in));
+  MemLib::vZero(aAddr,sizeof(sockaddr_in));
   
   aAddr->sin_family      = AF_INET;
   aAddr->sin_addr.s_addr = sAddr == nullptr ? -1 : inet_addr(sAddr);

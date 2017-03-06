@@ -256,7 +256,7 @@ void ScanBuffer::vCopyUp(char* aDangling)
   i8 nDanglingBytes = nSub(aLastByte(),aDangling) + 1;
   ASSERT(nDanglingBytes <= m_xWsp.nLength());
   
-  Memory::vCopy(aFirstByte(),aDangling,nDanglingBytes);
+  MemLib::vCopy(aFirstByte(),aDangling,nDanglingBytes);
   m_aEndData = pAdd<char*>(aFirstByte(),nDanglingBytes - 1);
   
 //  if (iDanglingBytes < 1000) {
@@ -350,7 +350,7 @@ void ScanBuffer::vWipe(char* aFrom)
   
   i8 nBytes = nSub(aLastByte(),aFrom) + 1;
   
-  Memory::vSet(aFrom,0xEF,nBytes);
+  MemLib::vSet(aFrom,0xEF,nBytes);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_SCANBUFFER,_FOOTER_);
 }

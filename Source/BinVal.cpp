@@ -59,7 +59,7 @@ BinVal::BinVal(i8 iChars)
 {
   m_nAreaSize = iChars;
   
-  Memory::vZero(pData(),m_nAreaSize);
+  MemLib::vZero(pData(),m_nAreaSize);
   
   _checkInitialised_(CN_BINVAL);
 }
@@ -71,7 +71,7 @@ void BinVal::operator =(const Object* pObject)
 {
   m_nAreaSize = giClassSize[pObject->eClass()];
   
-  Memory::vCopy(m_cArea, pObject, m_nAreaSize);
+  MemLib::vCopy(m_cArea, pObject, m_nAreaSize);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -161,7 +161,7 @@ Object* BinVal::pNewObject(void)
   
   i8 iSize = this->nSize();
   Object* pObject = Heap::pAllocate(eObjectClass());
-  Memory::vCopy(pObject, pData(), iSize);
+  MemLib::vCopy(pObject, pData(), iSize);
   
   return pObject;
 }

@@ -200,7 +200,7 @@ void* Word::pAppend(Value* pValue)
   
   char* pValueAddress = pAllot(iSize);
   
-  Memory::vCopy(pValueAddress,pValue,iSize);
+  MemLib::vCopy(pValueAddress,pValue,iSize);
   
   return pValueAddress;
 }

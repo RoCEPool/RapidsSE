@@ -921,7 +921,7 @@ void Stack::vPeek(i8 iNthValue, Value* pValue)
   
   //vTrace("Peek: %lld %p %lld\n",iNthValue,pPeekedValue,iSize);
   
-  Memory::vCopy(pValue,pPeekedValue,iSize);
+  MemLib::vCopy(pValue,pPeekedValue,iSize);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -935,7 +935,7 @@ void Stack::vPoke(i8 iNthValue, Value* pValue)
   
   Value* pPokeAddress = pPeek(iNthValue);
   
-  Memory::vCopy(pPokeAddress,pValue,iSize);
+  MemLib::vCopy(pPokeAddress,pValue,iSize);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1062,7 +1062,7 @@ void Stack::vPopVal(Value* pValue)
   
   i8 iSize = V::iSize(pTopValue());
   
-  Memory::vCopy(pValue,m_pTop,iSize);
+  MemLib::vCopy(pValue,m_pTop,iSize);
   vPopBy(iSize);
   m_iValues--;
   
@@ -1082,7 +1082,7 @@ void Stack::vPushVal(Value* pValue)
   i8 iSize = V::iSize(pValue);
   
   vPushBy(iSize);
-  Memory::vCopy(m_pTop,pValue,iSize);
+  MemLib::vCopy(m_pTop,pValue,iSize);
   m_iValues++;
   
   //m_xHazard.vAssertFooter();

@@ -39,7 +39,7 @@ ValSet::ValSet(void)
 {
   ASSERT(sizeof(ValSet) <= sizeof(ValWsp));
   
-  Memory::vZero(m_wWorkspace,C_VALSET_DATAAREA);
+  MemLib::vZero(m_wWorkspace,C_VALSET_DATAAREA);
   
   m_iBytes = 0;
   
@@ -75,7 +75,7 @@ void ValSet::vAppend(char*& pCursor, ValWsp& xVal)
     }
   }
   
-  Memory::vCopy(pCursor,&xVal,iSize);
+  MemLib::vCopy(pCursor,&xVal,iSize);
   
   m_iBytes += iSize;
   pCursor  += iSize;

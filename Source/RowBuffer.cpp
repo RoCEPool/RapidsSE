@@ -191,7 +191,7 @@ void RowBuffer::vAppendBuffer(RowBuffer* pArgBuffer)
   void* pDst = pAdd<void*>(pDataArea(),iBytesUsed());
   void* pSrc = pArgBuffer->pDataArea();
   i8 nBytes  = pArgBuffer->iBytesUsed();
-  Memory::vCopy(pDst,pSrc,nBytes);
+  MemLib::vCopy(pDst,pSrc,nBytes);
   
   m_pFreeSpace = pAdd<Object*>(m_pFreeSpace,nBytes);
   
@@ -317,7 +317,7 @@ void RowBuffer::vCopyBuffer(RowBuffer* pFromBuffer)
   
   i8 iBytes = pFromBuffer->iBytesUsed();
   
-  Memory::vCopy(pDataArea(),pFromBuffer->pDataArea(),iBytes);
+  MemLib::vCopy(pDataArea(),pFromBuffer->pDataArea(),iBytes);
   
   char* pRevised = pAdd<char*>(pDataArea(),iBytes);
   

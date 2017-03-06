@@ -31,7 +31,7 @@ void WspVbl::vAppend(void* aSrc, i8 nBytes)
 {
   void* aDst = aLatter();
   
-  Memory::vCopy(aDst,aSrc,nBytes);
+  MemLib::vCopy(aDst,aSrc,nBytes);
   
   vTake(nBytes);
 }
@@ -51,7 +51,7 @@ char* WspVbl::aArea(void)
 /*----------------------------------------------------------------------------*/
 void WspVbl::vFill(char cByte)
 {
-  Memory::vSet(aArea(),cByte,m_nAreaUsed);
+  MemLib::vSet(aArea(),cByte,m_nAreaUsed);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -117,7 +117,7 @@ void WspVbl::vUsed(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 void WspVbl::vZero(void)
 {
-  Memory::vZero(aArea(),m_nAreaUsed);
+  MemLib::vZero(aArea(),m_nAreaUsed);
 }
 
 /*============================================================================*/

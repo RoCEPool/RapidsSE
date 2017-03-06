@@ -121,11 +121,11 @@ namespace Debugging
   
   // check initialized
   #define _checkInitialised_(eClass) \
-    Memory::vCheckInitialised(this,eClass);
+    MemLib::vCheckInitialised(this,eClass);
   
   // check initialized
   #define _checkInitialisedSize_(iSize) \
-    Memory::vCheckInitialised(this,iSize);
+    MemLib::vCheckInitialised(this,iSize);
 
   #else
   
