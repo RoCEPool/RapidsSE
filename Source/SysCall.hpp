@@ -13,12 +13,12 @@ namespace System
     /* 1  */ eSysCall_SUCCESS = 1,  // success status
   };
   
-  static const char* const pSysCall[]
+  static Str* aSysCall[]
   {
-    /* -2 */ "NOTSET",
-    /* -1 */ "ERROR",
-    /* 0  */ "FAILURE",
-    /* 1  */ "SUCCESS"
+    /* -2 */ "NOTSET"_Str,
+    /* -1 */ "ERROR"_Str,
+    /* 0  */ "FAILURE"_Str,
+    /* 1  */ "SUCCESS"_Str
   };
 
   class SysCall : public Object
