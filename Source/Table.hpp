@@ -11,10 +11,10 @@ namespace DBobjects
     /* 1 */ TT_NORMAL
   };
 
-  static const char* const pTT[]
+  static Str* aTT[]
   {
-    /* 0 */ "NONE",
-    /* 1 */ "NORMAL"
+    /* 0 */ "NONE"_Str,
+    /* 1 */ "NORMAL"_Str
   };
     
   class Table : public Object

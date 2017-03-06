@@ -260,7 +260,7 @@ void Table::vDump(eCN eClass, Object* pObject, const char* aTab)
   
   vTrace("name %s type %s\n",
          pTable->m_sTableName.aStr(),
-         pTT[pTable->m_eTableType]);
+         aTT[pTable->m_eTableType]->a());
 }
 
 /*----------------------------------------------------------------------------*/
