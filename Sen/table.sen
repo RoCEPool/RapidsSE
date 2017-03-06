@@ -363,7 +363,7 @@ tp: makingTable
   find execute pathPush
   dup
 
-  //"makeIndexes" find execute
+  "makeIndexes" find execute
 
   :table ( "<tableNm>" ^table )
 

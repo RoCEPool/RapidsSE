@@ -724,7 +724,7 @@ bool SEitf::bListIndices(char* pWords[], i8 iWords)
   }
   
   ASSERT(String::bEqualTo(pWords[0],"lsidx"));
-  sRequest = "list_indices";
+  sRequest = "list_indexes";
   return bAppendRequest(sRequest);
 }
 
