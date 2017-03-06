@@ -160,7 +160,7 @@ void Tokeniser::vNormal(bool bNormal)
 /*----------------------------------------------------------------------------*/
 /* set prompt                                                                 */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vPrompt(StrVbl& sPrompt)
+void Tokeniser::vPrompt(StrVal& sPrompt)
 {  
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
@@ -170,7 +170,7 @@ void Tokeniser::vPrompt(StrVbl& sPrompt)
 /*----------------------------------------------------------------------------*/
 /* use file                                                                   */
 /*----------------------------------------------------------------------------*/
-bool Tokeniser::bUseFile(StrVbl& sPath)
+bool Tokeniser::bUseFile(StrVal& sPath)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
@@ -192,7 +192,7 @@ void Tokeniser::vUseStdin(void)
 /*----------------------------------------------------------------------------*/
 /* use string                                                                 */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vUseString(StrVbl& sString)
+void Tokeniser::vUseString(StrVal& sString)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   

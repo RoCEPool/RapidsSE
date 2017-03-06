@@ -29,7 +29,7 @@ using namespace Values;
 #include "ObjVal.hpp"
 #include "PtrVal.hpp"
 
-#include "StrVbl.hpp"
+#include "StrVal.hpp"
 #include "StrFxd.hpp"
 
 #include "ValSet.hpp"

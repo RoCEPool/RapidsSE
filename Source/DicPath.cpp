@@ -140,7 +140,7 @@ void DicPath::vDump(eCN eClass, Object* pObject, const char* aTab)
 /*----------------------------------------------------------------------------*/
 /* find word in stack of dictionaries                                         */
 /*----------------------------------------------------------------------------*/
-Word* DicPath::pFindWord(StrVbl& sName)
+Word* DicPath::pFindWord(StrVal& sName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICPATH,_FOOTER_);
   
@@ -213,7 +213,7 @@ Word* DicPath::pFindStep(TaskStep pStep)
 /*----------------------------------------------------------------------------*/
 /* forget word in stack of dictionaries                                       */
 /*----------------------------------------------------------------------------*/
-bool DicPath::bForget(StrVbl& sName)
+bool DicPath::bForget(StrVal& sName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICPATH,_FOOTER_);
   

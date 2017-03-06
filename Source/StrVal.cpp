@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* StrVbl.cpp -- variable-length string value                                 */
+/* StrVal.cpp -- null-terminated string value                                 */
 /*============================================================================*/
 
 #include "Values.h"
@@ -11,9 +11,9 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-StrVbl* Values::_pStrVbl(void* aAddr)
+StrVal* Values::_pStrVal(void* aAddr)
 {
-  StrVbl* psRefactor = reinterpret_cast<StrVbl*>(aAddr);
+  StrVal* psRefactor = reinterpret_cast<StrVal*>(aAddr);
   
   RASSERT( ! psRefactor
           || CN_VALWSP == psRefactor->eClass()
@@ -27,11 +27,11 @@ StrVbl* Values::_pStrVbl(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* StrVbl::operator new(size_t iSize)
+void* StrVal::operator new(size_t iSize)
 {
   RASSERT(iSize);
   
-  vFatal("fatal: StrVbl class cannot be new'd\n");
+  vFatal("fatal: StrVal class cannot be new'd\n");
   
   RASSERT(0);
 }
@@ -39,7 +39,7 @@ void* StrVbl::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* StrVbl::operator new(size_t iSize, StrVbl* pThis)
+void* StrVal::operator new(size_t iSize, StrVal* pThis)
 {
   RASSERT(iSize);
   
@@ -49,7 +49,7 @@ void* StrVbl::operator new(size_t iSize, StrVbl* pThis)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-StrVbl::StrVbl(eCN eClassNo)
+StrVal::StrVal(eCN eClassNo)
 : Value(eClassNo)
 {
   _precondition_(_MAGIC_);
@@ -58,7 +58,7 @@ StrVbl::StrVbl(eCN eClassNo)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-StrVbl::StrVbl(eCN eClassNo, i8 nBytes)
+StrVal::StrVal(eCN eClassNo, i8 nBytes)
 : Value(eClassNo)
 {
   _precondition_(_MAGIC_,eClassNo);
@@ -71,7 +71,7 @@ StrVbl::StrVbl(eCN eClassNo, i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-StrVbl::StrVbl(StrVbl* pThis)
+StrVal::StrVal(StrVal* pThis)
 : Value(CN_STRVAL)
 {
   _precondition_(_MAGIC_,CN_STRVAL);
@@ -84,7 +84,7 @@ StrVbl::StrVbl(StrVbl* pThis)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-StrVbl::StrVbl(StrVbl* pThis, i8 nBytes)
+StrVal::StrVal(StrVal* pThis, i8 nBytes)
 : Value(CN_STRVAL)
 {
   _precondition_(_MAGIC_,CN_STRVAL);
@@ -101,7 +101,7 @@ StrVbl::StrVbl(StrVbl* pThis, i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-StrVbl::~StrVbl(void)
+StrVal::~StrVal(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 }
@@ -109,24 +109,24 @@ StrVbl::~StrVbl(void)
 /*----------------------------------------------------------------------------*/
 /* get address of Str area                                                    */
 /*----------------------------------------------------------------------------*/
-StrVbl::operator Str*(void)
+StrVal::operator Str*(void)
 {
   _precondition_(_MAGIC_);
   
   // return address to char byte area
-  return reinterpret_cast<Str*>(pAdd<char*>(this,sizeof(StrVbl)));
+  return reinterpret_cast<Str*>(pAdd<char*>(this,sizeof(StrVal)));
 }
 
 
 /*----------------------------------------------------------------------------*/
 /* get reference to Str area                                                  */
 /*----------------------------------------------------------------------------*/
-StrVbl::operator Str&(void)
+StrVal::operator Str&(void)
 {
   _precondition_(_MAGIC_);
   
   // return reference to char byte area
-  return reinterpret_cast<Str&>(*(pAdd<char*>(this,sizeof(StrVbl))));
+  return reinterpret_cast<Str&>(*(pAdd<char*>(this,sizeof(StrVal))));
 }
 
 
@@ -138,9 +138,9 @@ StrVbl::operator Str&(void)
 /*----------------------------------------------------------------------------*/
 /* calculate number of bytes required to hold string of given length          */
 /*----------------------------------------------------------------------------*/
-i8 StrVbl::nAreaRequired(i8 iLength)
+i8 StrVal::nAreaRequired(i8 iLength)
 {
-  i8 nBytes = sizeof(StrVbl) + iLength + 1;
+  i8 nBytes = sizeof(StrVal) + iLength + 1;
   
   return nBytes;
 }
@@ -152,7 +152,7 @@ i8 StrVbl::nAreaRequired(i8 iLength)
 /*----------------------------------------------------------------------------*/
 /* assignment operator                                                        */
 /*----------------------------------------------------------------------------*/
-void StrVbl::operator =(const char* aArg)
+void StrVal::operator =(const char* aArg)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -164,7 +164,7 @@ void StrVbl::operator =(const char* aArg)
 /*----------------------------------------------------------------------------*/
 /* assignment operator                                                        */
 /*----------------------------------------------------------------------------*/
-void StrVbl::operator =(char* aArg)
+void StrVal::operator =(char* aArg)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -176,7 +176,7 @@ void StrVbl::operator =(char* aArg)
 /*----------------------------------------------------------------------------*/
 /* assignment operator                                                        */
 /*----------------------------------------------------------------------------*/
-void StrVbl::operator =(StrVbl& rArg)
+void StrVal::operator =(StrVal& rArg)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -188,7 +188,7 @@ void StrVbl::operator =(StrVbl& rArg)
 /*----------------------------------------------------------------------------*/
 /* append given char                                                          */
 /*----------------------------------------------------------------------------*/
-void StrVbl::vAppend(const char cChar)
+void StrVal::vAppend(const char cChar)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -202,7 +202,7 @@ void StrVbl::vAppend(const char cChar)
 /*----------------------------------------------------------------------------*/
 /* append given str                                                           */
 /*----------------------------------------------------------------------------*/
-void StrVbl::vAppend(const char* aStr)
+void StrVal::vAppend(const char* aStr)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -214,7 +214,7 @@ void StrVbl::vAppend(const char* aStr)
 /*----------------------------------------------------------------------------*/
 /* get address of data area                                                   */
 /*----------------------------------------------------------------------------*/
-char* StrVbl::aArea(void)
+char* StrVal::aArea(void)
 {
   //_precondition_(_MAGIC_,_FOOTER_);
   
@@ -226,7 +226,7 @@ char* StrVbl::aArea(void)
 /*----------------------------------------------------------------------------*/
 /* get size of data area                                                      */
 /*----------------------------------------------------------------------------*/
-i8 StrVbl::nAreaSize(void)
+i8 StrVal::nAreaSize(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -238,7 +238,7 @@ i8 StrVbl::nAreaSize(void)
 /*----------------------------------------------------------------------------*/
 /* set data area size (based on the string size)                              */
 /*----------------------------------------------------------------------------*/
-void StrVbl::vAreaSize(void)
+void StrVal::vAreaSize(void)
 {
   //_precondition_(_MAGIC_,_FOOTER_);
   
@@ -250,7 +250,7 @@ void StrVbl::vAreaSize(void)
 /*----------------------------------------------------------------------------*/
 /* assign given str                                                           */
 /*----------------------------------------------------------------------------*/
-void StrVbl::vAssign(const char* aStr)
+void StrVal::vAssign(const char* aStr)
 {
   //ASSERT(m_nAreaSize);
   
@@ -262,7 +262,7 @@ void StrVbl::vAssign(const char* aStr)
 /*----------------------------------------------------------------------------*/
 /* assign str of given length                                                 */
 /*----------------------------------------------------------------------------*/
-void StrVbl::vAssign(const char* aStr, i8 iLength)
+void StrVal::vAssign(const char* aStr, i8 iLength)
 {
   //ASSERT(m_nAreaSize);
   
@@ -276,7 +276,7 @@ void StrVbl::vAssign(const char* aStr, i8 iLength)
 /*----------------------------------------------------------------------------*/
 /* copy given str                                                             */
 /*----------------------------------------------------------------------------*/
-void StrVbl::vCopy(const char* aStr)
+void StrVal::vCopy(const char* aStr)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -288,7 +288,7 @@ void StrVbl::vCopy(const char* aStr)
 /*----------------------------------------------------------------------------*/
 /* copy str of given length                                                   */
 /*----------------------------------------------------------------------------*/
-void StrVbl::vCopy(const char* aStr, i8 iLength)
+void StrVal::vCopy(const char* aStr, i8 iLength)
 {
   vClass(CN_STRVAL);
   
@@ -300,7 +300,7 @@ void StrVbl::vCopy(const char* aStr, i8 iLength)
 /*----------------------------------------------------------------------------*/
 /* test if string ends with given suffix                                      */
 /*----------------------------------------------------------------------------*/
-bool StrVbl::bEnds(const char* aSuffix)
+bool StrVal::bEnds(const char* aSuffix)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -312,7 +312,7 @@ bool StrVbl::bEnds(const char* aSuffix)
 /*----------------------------------------------------------------------------*/
 /* is equal to given argument?                                                */
 /*----------------------------------------------------------------------------*/
-bool StrVbl::bIsEqual(StrVbl& sArg, i8 iCase)
+bool StrVal::bIsEqual(StrVal& sArg, i8 iCase)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -324,7 +324,7 @@ bool StrVbl::bIsEqual(StrVbl& sArg, i8 iCase)
 /*----------------------------------------------------------------------------*/
 /* get length of str in data area                                             */
 /*----------------------------------------------------------------------------*/
-i8 StrVbl::iLength(void)
+i8 StrVal::iLength(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -332,11 +332,11 @@ i8 StrVbl::iLength(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get size of this StrVbl in bytes                                           */
+/* get size of this StrVal in bytes                                           */
 /*----------------------------------------------------------------------------*/
-i8 StrVbl::nSize(void)
+i8 StrVal::nSize(void)
 {
-  i8 nBytes = sizeof(StrVbl) + m_xWsp.nUsed();
+  i8 nBytes = sizeof(StrVal) + m_xWsp.nUsed();
   
   return nBytes;
 }
@@ -344,7 +344,7 @@ i8 StrVbl::nSize(void)
 /*----------------------------------------------------------------------------*/
 /* get aStr                                                                   */
 /*----------------------------------------------------------------------------*/
-char* StrVbl::aStr(void)
+char* StrVal::aStr(void)
 {
   return aArea();
 }
@@ -352,7 +352,7 @@ char* StrVbl::aStr(void)
 /*----------------------------------------------------------------------------*/
 /* convert to command                                                         */
 /*----------------------------------------------------------------------------*/
-void StrVbl::vToCommand(char* aStr)
+void StrVal::vToCommand(char* aStr)
 {
   String::vCopy(aStr,"\"");
   String::vCopy(aStr,aArea());
@@ -362,7 +362,7 @@ void StrVbl::vToCommand(char* aStr)
 /*----------------------------------------------------------------------------*/
 /* convert to string                                                          */
 /*----------------------------------------------------------------------------*/
-void StrVbl::vToString(char* aStr)
+void StrVal::vToString(char* aStr)
 {
   String::vCopy(aStr,aArea());
 }
@@ -370,9 +370,9 @@ void StrVbl::vToString(char* aStr)
 /*----------------------------------------------------------------------------*/
 /* get adddress of Str area                                                   */
 /*----------------------------------------------------------------------------*/
-Str* StrVbl::aStrArea(void)
+Str* StrVal::aStrArea(void)
 {
-  char* aAddr = pAdd<char*>(this,sizeof(StrVbl));
+  char* aAddr = pAdd<char*>(this,sizeof(StrVal));
   
   return reinterpret_cast<Str*>(aAddr);
 }
@@ -384,11 +384,11 @@ Str* StrVbl::aStrArea(void)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* StrVbl::pFooter(void)
+Footer* StrVal::pFooter(void)
 {
   _precondition_(_MAGIC_);
   
-  Footer* pFooter = pAdd<Footer*>(this,sizeof(StrVbl) + m_xWsp.nUsed());
+  Footer* pFooter = pAdd<Footer*>(this,sizeof(StrVal) + m_xWsp.nUsed());
   
   return pFooter;
 }

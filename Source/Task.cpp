@@ -588,7 +588,7 @@ void Task::vAddConstants(void)
   /*  2 */ vAddConstant("SIZEOF_IPVAL",  sizeof(IpVal));
   /*  3 */ vAddConstant("SIZEOF_OBJVAL", sizeof(ObjVal));
   /*  4 */ vAddConstant("SIZEOF_PTRVAL", sizeof(PtrVal));
-  /*  5 */ vAddConstant("SIZEOF_STRVAL", sizeof(StrVbl));
+  /*  5 */ vAddConstant("SIZEOF_STRVAL", sizeof(StrVal));
   /*  6 */ vAddConstant("SIZEOF_VALSET", sizeof(ValWsp)); // correct
   /*  7 */ vAddConstant("SIZEOF_VALWSP", sizeof(ValWsp)); // correct
   
@@ -873,7 +873,7 @@ void Task::vAddRoutines(void)
   "        jumpBegin_"
   "      then"
   
-  "      docol.isCompiling if"    // compile encodes push StrVbl
+  "      docol.isCompiling if"    // compile encodes push StrVal
   "        encodePushValue"
   "        jumpBegin_"
   "      then"
@@ -1019,7 +1019,7 @@ void Task::vAddRoutines(void)
 /*----------------------------------------------------------------------------*/
 /* compile given : routine                                                    */
 /*----------------------------------------------------------------------------*/
-Word* Task::pCompileColon(StrVbl& sDefinition)
+Word* Task::pCompileColon(StrVal& sDefinition)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
@@ -1108,7 +1108,7 @@ Word* Task::pCompileColon(StrVbl& sDefinition)
 /*----------------------------------------------------------------------------*/
 /* compile a constant definition                                              */
 /*----------------------------------------------------------------------------*/
-Word* Task::pCompileConstant(StrVbl& sDefinition)
+Word* Task::pCompileConstant(StrVal& sDefinition)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
@@ -1132,7 +1132,7 @@ Word* Task::pCompileConstant(StrVbl& sDefinition)
   m_pTokeniser->vNextToken();
   //vTrace("CompileConstant: %s\n",m_pTokeniser->sToken().aStr());
 
-  vAddConstant(m_pTokeniser->sToken().aStr(),_pStrVbl(&xValWsp)->aStr());
+  vAddConstant(m_pTokeniser->sToken().aStr(),_pStrVal(&xValWsp)->aStr());
   
   m_pTokeniser->vNextToken();
   
@@ -1184,7 +1184,7 @@ void Task::vContentDump(void)
 /*----------------------------------------------------------------------------*/
 /* set exception                                                              */
 /*----------------------------------------------------------------------------*/
-void Task::vException(StrVbl& sFile, StrVbl& eException)
+void Task::vException(StrVal& sFile, StrVal& eException)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
@@ -1195,7 +1195,7 @@ void Task::vException(StrVbl& sFile, StrVbl& eException)
 /*----------------------------------------------------------------------------*/
 /* is given name?                                                             */
 /*----------------------------------------------------------------------------*/
-bool Task::bIsName(StrVbl& sName)
+bool Task::bIsName(StrVal& sName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
@@ -1233,7 +1233,7 @@ void Task::vLocalsPush(void)
 /*----------------------------------------------------------------------------*/
 /* get name of this task                                                      */
 /*----------------------------------------------------------------------------*/
-StrVbl& Task::sName(void)
+StrVal& Task::sName(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
@@ -1243,7 +1243,7 @@ StrVbl& Task::sName(void)
 /*----------------------------------------------------------------------------*/
 /* set name of this task                                                      */
 /*----------------------------------------------------------------------------*/
-void Task::vName(StrVbl& sName)
+void Task::vName(StrVal& sName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
@@ -1477,7 +1477,7 @@ void Task::vSeedDocol(void)
 /*----------------------------------------------------------------------------*/
 /* stack contents as string                                                   */
 /*----------------------------------------------------------------------------*/
-void Task::vStackContents(Stack* pStack, StrVbl& sStackContents)
+void Task::vStackContents(Stack* pStack, StrVal& sStackContents)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
@@ -1547,7 +1547,7 @@ void Task::vStackContents(Stack* pStack, StrVbl& sStackContents)
       String::vSprintCat(a,"%p",_pIpVal(pValWsp)->pIpPtr());
     }
     else if (CN_STRVAL == eClass) {
-      String::vSprintCat(a,"\"%lls\"",_pStrVbl(pValWsp)->aStr());
+      String::vSprintCat(a,"\"%lls\"",_pStrVal(pValWsp)->aStr());
     }
     else if (CN_VALSET == eClass) {
       String::vSprintCat(a,"<%s>=%p",pValWsp->aClass(),pValWsp);

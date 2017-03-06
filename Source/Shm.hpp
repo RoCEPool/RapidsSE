@@ -11,14 +11,14 @@ namespace System
   class Shm
   {
   public:
-    static bool  bAttach(StrVbl& sName, int& iShmFD, SysCall& SysCall);
+    static bool  bAttach(StrVal& sName, int& iShmFD, SysCall& SysCall);
     static bool  bClose(int iShmFD, SysCall& xSysCall);
-    static bool  bCreate(StrVbl& sName, i8 iSize, int& iShmFD,
+    static bool  bCreate(StrVal& sName, i8 iSize, int& iShmFD,
                            bool bRecreate, SysCall& SysCall);
     static void* pMap(int iFd, void* aAddress, i8 iBytes, bool bShared,
                            bool bHugeTlb, SysCall& SysCall);
     static bool  bUnmap(void* aAddress, i8 iBytes, SysCall& xSysCall);
-    static bool  bUnlink(StrVbl& sName, SysCall& xSysCall);
+    static bool  bUnlink(StrVal& sName, SysCall& xSysCall);
   };
 }
 

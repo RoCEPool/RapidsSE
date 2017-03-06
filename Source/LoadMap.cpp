@@ -96,7 +96,7 @@ void LoadMap::vDump(eCN eClass, Object* pObject, const char* aTab)
 /*----------------------------------------------------------------------------*/
 /* set file path                                                              */
 /*----------------------------------------------------------------------------*/
-void LoadMap::vFilePath(StrVbl& sPath)
+void LoadMap::vFilePath(StrVal& sPath)
 {
   m_xChunkFile.vPath(sPath);
 }

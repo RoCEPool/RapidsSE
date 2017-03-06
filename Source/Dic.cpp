@@ -192,7 +192,7 @@ Word* Dic::pFindStep(TaskStep pStep)
 /*----------------------------------------------------------------------------*/
 /* forget a word given name                                                   */
 /*----------------------------------------------------------------------------*/
-bool Dic::bForget(StrVbl& sName)
+bool Dic::bForget(StrVal& sName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
 
@@ -295,7 +295,7 @@ void Dic::vInit(void)
 /*----------------------------------------------------------------------------*/
 /* is given name?                                                             */
 /*----------------------------------------------------------------------------*/
-bool Dic::bIsName(StrVbl& sName)
+bool Dic::bIsName(StrVal& sName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
@@ -317,7 +317,7 @@ Word* Dic::pLastWord(void)
 /*----------------------------------------------------------------------------*/
 /* get name of this dictionary                                                */
 /*----------------------------------------------------------------------------*/
-StrVbl& Dic::sName(void)
+StrVal& Dic::sName(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   

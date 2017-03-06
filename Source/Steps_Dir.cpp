@@ -393,7 +393,7 @@ ENTRY("vDirPathSet");
     THROW_INVALID_DSTACK("dir.path!");
   
   s256 sPath;
-  sPath = _pStrVbl(&xWspPath)->aStr();
+  sPath = _pStrVal(&xWspPath)->aStr();
   
   pDir->vPath(sPath);
   

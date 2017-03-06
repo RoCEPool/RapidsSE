@@ -49,7 +49,7 @@ int main(int argc, const char* argv[])
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  // s32 is a StrFxd : StrVbl : StrVal which has a Str area
+  // s32 is a StrFxd : StrVal : StrVal which has a Str area
   s32 x32 = "boo";
   vStrTestRef(x32);
   x32 = "hoo";
@@ -60,12 +60,12 @@ int main(int argc, const char* argv[])
   
   printf(
          "sizeof(eCN) %lu; sizeof(bool) %lu; \n"
-         "sizeof(Object) %lu; sizeof(StrVbl) %lu; \n"
+         "sizeof(Object) %lu; sizeof(StrVal) %lu; \n"
          "sizeof(s32) %lu; sizeof(s256) %lu; \n"
          "sizeof(Value) %lu; sizeof(IntVal) %lu; sizeof(ValWsp) %lu \n"
          "\n",
          sizeof(eCN),sizeof(bool),
-         sizeof(Object),sizeof(StrVbl),
+         sizeof(Object),sizeof(StrVal),
          sizeof(s32),sizeof(s256),
          sizeof(Value),sizeof(IntVal),sizeof(ValWsp)
   );

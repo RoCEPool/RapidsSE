@@ -156,7 +156,7 @@ i8 V::iSize(Object* pObject)
     }
       
     case CN_STRVAL: {
-      StrVbl* pStrVal = _pStrVbl(pObject);
+      StrVal* pStrVal = _pStrVal(pObject);
       nBytes = pStrVal->nSize();
       break;
     }
@@ -203,7 +203,7 @@ void V::vToCommand(Object* pObject, char* aCharArray)
     }
       
     case CN_STRVAL: {
-      StrVbl* pStrVal = _pStrVbl(pObject);
+      StrVal* pStrVal = _pStrVal(pObject);
       pStrVal->vToCommand(aCharArray);
       break;
     }
@@ -248,7 +248,7 @@ void V::vToString(Object* pObject, char* aCharArray)
     }
       
     case CN_STRVAL: {
-      StrVbl* pStrVal = _pStrVbl(pObject);
+      StrVal* pStrVal = _pStrVal(pObject);
       pStrVal->vToString(aCharArray);
       break;
     }

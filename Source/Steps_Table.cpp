@@ -220,8 +220,8 @@ ENTRY("vTableInsert");
   
   pTable->vInsertRow(iPartition,
                      pTxRef,
-                     _pStrVbl(&xRow)->aStr(),
-                     _pStrVbl(&xRow)->nAreaSize());
+                     _pStrVal(&xRow)->aStr(),
+                     _pStrVal(&xRow)->nAreaSize());
   
   EXIT();
 }

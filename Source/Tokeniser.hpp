@@ -56,11 +56,11 @@ namespace Parsing
     void vLineMode(bool bLineMode);
     void vMalloc(bool bMalloc);
     void vNormal(bool bNormal);
-    void vPrompt(StrVbl& sPrompt);
+    void vPrompt(StrVal& sPrompt);
     
-    bool bUseFile(StrVbl& sPath);
+    bool bUseFile(StrVal& sPath);
     void vUseStdin(void);
-    void vUseString(StrVbl& sString);
+    void vUseString(StrVal& sString);
     void vUseEnd(void);
 
     eTK  eNextToken(char* wToken);

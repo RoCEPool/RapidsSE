@@ -108,7 +108,7 @@ void Parser::vDump(eCN eClass, Object* pObject, const char* aTab)
 /*----------------------------------------------------------------------------*/
 /* set user prompt                                                            */
 /*----------------------------------------------------------------------------*/
-void Parser::vPrompt(StrVbl& sPrompt)
+void Parser::vPrompt(StrVal& sPrompt)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
   
@@ -132,7 +132,7 @@ void Parser::vLineMode(bool bLineMode)
 /*----------------------------------------------------------------------------*/
 /* use given file for parsing                                                 */
 /*----------------------------------------------------------------------------*/
-bool Parser::bUseFile(StrVbl& sPath)
+bool Parser::bUseFile(StrVal& sPath)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
   
@@ -164,7 +164,7 @@ void Parser::vUseStdin(void)
 /*----------------------------------------------------------------------------*/
 /* use given string for parsing                                               */
 /*----------------------------------------------------------------------------*/
-void Parser::vUseString(StrVbl& sString)
+void Parser::vUseString(StrVal& sString)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
   

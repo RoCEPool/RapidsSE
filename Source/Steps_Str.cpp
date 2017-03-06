@@ -87,13 +87,13 @@ void Task::vStrAlgebra(NNP_Task nnpTask)
   ENTRY("vStrAlgebra");
  
   // (1) StrVal's cannot be declared as local variables
-  //StrVbl xStrval;  // uncommenting this line should produce a compile error
+  //StrVal xStrval;  // uncommenting this line should produce a compile error
   
   // declaring a fixed length string
   s32 xString("A test");
   
   ValWsp xValWsp;
-  StrVbl* pStrVal = _pStrVbl(&xValWsp);
+  StrVal* pStrVal = _pStrVal(&xValWsp);
   
   
   
@@ -116,10 +116,10 @@ void Task::vStrCat(NNP_Task nnpTask)
   
   xStrR = xStrA;
   
-  String::vConcat(_pStrVbl(&xStrR)->aStr(),_pStrVbl(&xStrB)->aStr());
+  String::vConcat(_pStrVal(&xStrR)->aStr(),_pStrVal(&xStrB)->aStr());
   
   // adjust area size
-  _pStrVbl(&xStrR)->vAreaSize();
+  _pStrVal(&xStrR)->vAreaSize();
   
   nnpTask->m_pDataStack->vPush(xStrR);
   
@@ -175,8 +175,8 @@ void Task::vStrEqual(NNP_Task nnpTask)
   if ( ! nnpTask->m_pDataStack->bPop(xStringB,xStringA) )
     THROW_INVALID_DSTACK("str.equal");
   
-  i8 iEqual = String::bEqualTo(_pStrVbl(&xStringA)->aStr(),
-                               _pStrVbl(&xStringB)->aStr());
+  i8 iEqual = String::bEqualTo(_pStrVal(&xStringA)->aStr(),
+                               _pStrVal(&xStringB)->aStr());
   
   nnpTask->m_pDataStack->vPush(iEqual);
   
@@ -217,7 +217,7 @@ void Task::vStrFirstCsv(NNP_Task nnpTask)
   
   s256 sFirstValue;
   
-  char* z = _pStrVbl(&xStr)->aStr();
+  char* z = _pStrVal(&xStr)->aStr();
   
   if (! String::bExtractItem(&z,sFirstValue.aStr()))
     sFirstValue = "";
@@ -313,10 +313,10 @@ void Task::vStrPad(NNP_Task nnpTask)
   if ( ! nnpTask->m_pDataStack->bPop(iLength,xStringA) )
     THROW_INVALID_DSTACK("str.pad");
   
-  String::vPad(_pStrVbl(&xStringA)->aStr(),iLength,' ');
+  String::vPad(_pStrVal(&xStringA)->aStr(),iLength,' ');
   
   // adjust area size
-  _pStrVbl(&xStringA)->vAreaSize();
+  _pStrVal(&xStringA)->vAreaSize();
   
   nnpTask->m_pDataStack->vPush(xStringA);
   
@@ -362,10 +362,10 @@ void Task::vStrPrepend(NNP_Task nnpTask)
   
   xStrR = xStrB;
   
-  String::vConcat(_pStrVbl(&xStrR)->aStr(),_pStrVbl(&xStrA)->aStr());
+  String::vConcat(_pStrVal(&xStrR)->aStr(),_pStrVal(&xStrA)->aStr());
   
   // adjust area size
-  _pStrVbl(&xStrR)->vAreaSize();
+  _pStrVal(&xStrR)->vAreaSize();
   
   nnpTask->m_pDataStack->vPush(xStrR);
   
@@ -567,7 +567,7 @@ void Task::vSprint(s48K& sFormat, s48K& sString)
     
     Value* pValue0 = m_pDataStack->pPeek(0);
     
-    // test for StrVbl
+    // test for StrVal
     if (CN_STRVAL == pValue0->eClass()) {
       
       //*pf = 's';                                                    //! Defect??

@@ -36,7 +36,7 @@ namespace System
     void vAppendUtc(char** pz);
     bool bExtractUTC(char** ps);
     
-    void vUTC(StrVbl& sUTC);
+    void vUTC(StrVal& sUTC);
     
     Footer* pFooter(void);
   };

@@ -1,25 +1,25 @@
 /*============================================================================*/
-/* StrVbl.hpp -- null terminated variable-length string                       */
+/* StrVal.hpp -- null terminated string value                                 */
 /*============================================================================*/
 #pragma once
 
 namespace Values
 {
-  class StrVbl : public Value
+  class StrVal : public Value
   {
   protected:
     WspVbl m_xWsp;
   
   public:
     void* operator new(size_t);
-    void* operator new(size_t, StrVbl* pThis);
+    void* operator new(size_t, StrVal* pThis);
   
-    StrVbl(eCN eClassNo);
-    StrVbl(eCN eClass, i8 nBytes);
-    StrVbl(StrVbl* pThis);
-    StrVbl(StrVbl* pThis, i8 nBytes);
+    StrVal(eCN eClassNo);
+    StrVal(eCN eClass, i8 nBytes);
+    StrVal(StrVal* pThis);
+    StrVal(StrVal* pThis, i8 nBytes);
   
-    ~StrVbl(void);
+    ~StrVal(void);
   
     operator Str& (void);
     operator Str* (void);
@@ -29,7 +29,7 @@ namespace Values
   
     void operator =(const char* aArg);
     void operator =(char* aArg);
-    void operator =(StrVbl& rArg);
+    void operator =(StrVal& rArg);
   
     void  vAppend(const char cChar);
     void  vAppend(const char* aStr);
@@ -41,7 +41,7 @@ namespace Values
     void  vCopy(const char* aStr);
     void  vCopy(const char* aStr, i8 iLength);
     bool  bEnds(const char* aSuffix);
-    bool  bIsEqual(StrVbl& sArg, i8 iCase);
+    bool  bIsEqual(StrVal& sArg, i8 iCase);
     i8    iLength(void);
     i8    nSize(void);
     char* aStr(void);
@@ -55,7 +55,7 @@ namespace Values
     Footer* pFooter(void);
   };
 
-  StrVbl* _pStrVbl(void* aAddr);
+  StrVal* _pStrVal(void* aAddr);
 }
 
 /*============================================================================*/

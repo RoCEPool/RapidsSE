@@ -715,7 +715,7 @@ void Task::vSee(NNP_Task nnpTask)
       ValWsp* pValue = reinterpret_cast<ValWsp*>(pDoesCell);
       
       if (CN_STRVAL == pValue->eClass()) {
-        vTrace(" \"%s\"\n",_pStrVbl(pValue)->aStr());
+        vTrace(" \"%s\"\n",_pStrVal(pValue)->aStr());
       }
       else {
         V::vToString(pValue,sWorkspace.aStr());

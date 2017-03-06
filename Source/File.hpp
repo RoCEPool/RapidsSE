@@ -60,10 +60,10 @@ namespace System
     bool bOpen(const char* aFilePath, const char* aOpenMode, i8 iTraceLevel=0);
     s256& sPath(void);
     void vPath(const char* aFilePath);
-    void vPath(StrVbl& sFilePath);
+    void vPath(StrVal& sFilePath);
     void vPrint(const char* sFormat,...);
     i8   iReadChunk(void* pChunk, i8 nBytes);
-    bool bReadLine(StrVbl& s);
+    bool bReadLine(StrVal& s);
     bool bReadLine(char* y);
     bool bReadRecord(void);
     Scratch* pRecord(void);

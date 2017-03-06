@@ -52,7 +52,7 @@ namespace DBobjects
     void vTruncate(void);
         
     char* pTableName(void);
-    void  vTableName(StrVbl& sName);
+    void  vTableName(StrVal& sName);
     void  vContentDump(void);
     
     void  vRefDec(void);

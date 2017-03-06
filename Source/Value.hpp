@@ -21,7 +21,7 @@ namespace Values
   class IntVal;
   class IpVal;
   class PtrVal;
-  class StrVbl;
+  class StrVal;
   class ValAcc;
   class ValSet;
   class ValWsp;

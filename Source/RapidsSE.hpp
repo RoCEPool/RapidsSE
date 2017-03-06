@@ -21,7 +21,7 @@ namespace StorageEngine
     static void   vExecute(void);
     static void   vPoolClose(void);
     static void   vPoolOpen(void);
-    static bool   bPoolOpen(StrVbl& sPoolName);
+    static bool   bPoolOpen(StrVal& sPoolName);
     static void   vSEitfDelete(SEitf* pSEitf);
 
     //-------------------------------------------------------------------------

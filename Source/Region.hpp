@@ -8,14 +8,14 @@ namespace StorageEngine
   class Region
   {
   public:
-    static bool bAttach(StrVbl& sRegionName);
-    static void vCreate(StrVbl& sRegionName);
-    static bool bTest(StrVbl& sRegionName);
-    static void vUnlink(StrVbl& sRegionName);
+    static bool bAttach(StrVal& sRegionName);
+    static void vCreate(StrVal& sRegionName);
+    static bool bTest(StrVal& sRegionName);
+    static void vUnlink(StrVal& sRegionName);
     
     ////////////////////////////////////////////////////////////////////////////
 
-    static void* pOpen(StrVbl& sRegionName, int& iFD);
+    static void* pOpen(StrVal& sRegionName, int& iFD);
     static void  vClose(void* pRegion, int iFD);
   };
 }

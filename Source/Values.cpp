@@ -16,7 +16,7 @@ void Values::vCheckAssumptions(void)
   ASSERT(sizeof(Value) + sizeof(void*)  == sizeof(IpVal));
   ASSERT(sizeof(Value) + sizeof(i8)     == sizeof(ObjVal));
   ASSERT(sizeof(Value) + sizeof(void*)  == sizeof(PtrVal));
-  ASSERT(sizeof(Value) + sizeof(i8)     == sizeof(StrVbl));
+  ASSERT(sizeof(Value) + sizeof(i8)     == sizeof(StrVal));
   ASSERT(sizeof(Value) + C_8KB          == sizeof(ValReg));
   ASSERT(sizeof(Value) + C_64K + 16     == sizeof(ValWsp));
   
@@ -24,12 +24,12 @@ void Values::vCheckAssumptions(void)
          ==  sizeof(ValSet));
 
 
-  ASSERT(24 == sizeof(StrVbl));
+  ASSERT(24 == sizeof(StrVal));
   
-  ASSERT(sizeof(StrVbl) + sizeof(Footer) + 32    == sizeof(s32));
-  ASSERT(sizeof(StrVbl) + sizeof(Footer) + 256   == sizeof(s256));
-  ASSERT(sizeof(StrVbl) + sizeof(Footer) + C_48K == sizeof(s48K));
-  ASSERT(sizeof(StrVbl) + sizeof(Footer) + C_1M  == sizeof(s1M));
+  ASSERT(sizeof(StrVal) + sizeof(Footer) + 32    == sizeof(s32));
+  ASSERT(sizeof(StrVal) + sizeof(Footer) + 256   == sizeof(s256));
+  ASSERT(sizeof(StrVal) + sizeof(Footer) + C_48K == sizeof(s48K));
+  ASSERT(sizeof(StrVal) + sizeof(Footer) + C_1M  == sizeof(s1M));
 }
 
 /*============================================================================*/

@@ -186,7 +186,7 @@ bool Time::bExtractUTC(char** ps)
 /*----------------------------------------------------------------------------*/
 /* put time into sUTC as utc string                  yyyy-mm-ddThh:mi:ss.fffZ */
 /*----------------------------------------------------------------------------*/
-void Time::vUTC(StrVbl& sUTC)
+void Time::vUTC(StrVal& sUTC)
 {
   _precondition_(_MAGIC_,CN_TIME,_FOOTER_);
 

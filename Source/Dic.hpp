@@ -37,14 +37,14 @@ namespace Dictionaries
     void  vDicKind(Word* pDicKind);
     Word* pFindWord(const char* aName);
     Word* pFindStep(TaskStep pStep);
-    bool  bForget(StrVbl& sName);
+    bool  bForget(StrVal& sName);
     bool  bFrozen(void);
     void  vFrozen(bool bFrozen);
     bool  bHasWords(void);
     void  vInit(void);
-    bool  bIsName(StrVbl& sName);
+    bool  bIsName(StrVal& sName);
     Word* pLastWord(void);
-    StrVbl&    sName(void);
+    StrVal&    sName(void);
     void  vName(const char* aName);
     void  vRefDec(void);
     void  vRefInc(void);

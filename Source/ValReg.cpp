@@ -71,7 +71,7 @@ void ValReg::operator =(char* pStr)
 {
   vClass(CN_STRVAL);
 
-  _pStrVbl(this)->vAssign(pStr);
+  _pStrVal(this)->vAssign(pStr);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -81,7 +81,7 @@ void ValReg::operator =(const char* pStr)
 {
   vClass(CN_STRVAL);
 
-  _pStrVbl(this)->vAssign(pStr);
+  _pStrVal(this)->vAssign(pStr);
 }
 
 /*----------------------------------------------------------------------------*/

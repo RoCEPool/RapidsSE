@@ -146,7 +146,7 @@ namespace Base
     /*  5 */ "OBJVAL",
     /*  6 */ "PTRVAL",
     /*  7 */ "STRFXD",
-    /*  8 */ "StrVbl",
+    /*  8 */ "STRVAL",
     /*  9 */ "VALREG",
     /* 10 */ "VALSET",
     /* 11 */ "VALWSP",

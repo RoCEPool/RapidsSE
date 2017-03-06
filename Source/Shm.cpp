@@ -13,7 +13,7 @@ extern Arguments gxArguments;
 /*----------------------------------------------------------------------------*/
 /* attach/open to an existing shared memory region                            */
 /*----------------------------------------------------------------------------*/
-bool Shm::bAttach(StrVbl& sRegionName, int& iFD, SysCall& xSysCall)
+bool Shm::bAttach(StrVal& sRegionName, int& iFD, SysCall& xSysCall)
 {
   xSysCall.vClear();
     
@@ -56,7 +56,7 @@ bool Shm::bClose(int iFD, SysCall& xSysCall)
 /*----------------------------------------------------------------------------*/
 /* create/open a new shared memory region                                     */
 /*----------------------------------------------------------------------------*/
-bool Shm::bCreate(StrVbl& sRegionName, i8 iSize, int& iFD,
+bool Shm::bCreate(StrVal& sRegionName, i8 iSize, int& iFD,
                     bool bRecreate, SysCall& xSysCall)
 {
   int rCode;
@@ -197,7 +197,7 @@ bool Shm::bUnmap(void *aAddress, i8 iBytes, SysCall& xSysCall)
 /*----------------------------------------------------------------------------*/
 /* unlink an existing memory region                                           */
 /*----------------------------------------------------------------------------*/
-bool Shm::bUnlink(StrVbl& sRegionName, SysCall& xSysCall)
+bool Shm::bUnlink(StrVal& sRegionName, SysCall& xSysCall)
 {
   xSysCall.vClear();
   
