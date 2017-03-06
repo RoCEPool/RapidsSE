@@ -108,7 +108,7 @@ void Task::vToCmd(NNP_Task nnpTask)
     
     char* aCmdEnd = StrLib::zTerminator(sCmd.aStr());
     
-    V::vToCommand(&xValWsp,aCmdEnd);
+    ValLib::vToCommand(&xValWsp,aCmdEnd);
   }
   
   xStr = sCmd.aStr();
@@ -130,7 +130,7 @@ void Task::vToInt(NNP_Task nnpTask)
     THROW_INVALID_DSTACK(">int");
   
   s256 sBuff;
-  V::vToString(&xStr,sBuff.aStr());
+  ValLib::vToString(&xStr,sBuff.aStr());
   
   i8 i = StrLib::iToI8(sBuff.aStr());
   
@@ -189,7 +189,7 @@ void Task::vToStr(NNP_Task nnpTask)
     THROW_INVALID_DSTACK(">str");
   
   s48K sString;
-  V::vToString(&xVal,sString.aStr());
+  ValLib::vToString(&xVal,sString.aStr());
   
   nnpTask->m_pDataStack->vPush(sString);
   

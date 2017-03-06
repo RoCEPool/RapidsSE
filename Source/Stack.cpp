@@ -837,7 +837,7 @@ void Stack::vDiscard(void)
   _hazard_();
 
   Value* pValue = reinterpret_cast<Value*>(m_pTop);
-  i8 iSize = V::iSize(pValue);
+  i8 iSize = ValLib::iSize(pValue);
   
   vPopBy(iSize);
   m_iValues--;
@@ -862,7 +862,7 @@ void Stack::vContentDump(const char* aPrefix, const char* aTitle)
     
     vPeek(iVal,&xValWsp);
     
-    V::vToString(&xValWsp,sWorkspace.aStr());
+    ValLib::vToString(&xValWsp,sWorkspace.aStr());
     char* aClass = xValWsp.aClass();
     
     eCN eClass = xValWsp.eClass();
@@ -917,7 +917,7 @@ void Stack::vPeek(i8 iNthValue, Value* pValue)
   
   Value* pPeekedValue = pPeek(iNthValue);
 
-  i8 iSize = V::iSize(pPeekedValue);
+  i8 iSize = ValLib::iSize(pPeekedValue);
   
   //vTrace("Peek: %lld %p %lld\n",iNthValue,pPeekedValue,iSize);
   
@@ -931,7 +931,7 @@ void Stack::vPoke(i8 iNthValue, Value* pValue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
 
-  i8 iSize = V::iSize(pValue);
+  i8 iSize = ValLib::iSize(pValue);
   
   Value* pPokeAddress = pPeek(iNthValue);
   
@@ -1013,7 +1013,7 @@ Value* Stack::pGetValue(i8 iNthValue)
   Value* pValue = pTopValue();
   while (iNthValue--) {
     char* aAddress = reinterpret_cast<char*>(pValue);
-    i8 iSize = V::iSize(pValue);
+    i8 iSize = ValLib::iSize(pValue);
     aAddress += iSize;
     pValue = reinterpret_cast<Value*>(aAddress);
   }
@@ -1060,7 +1060,7 @@ void Stack::vPopVal(Value* pValue)
   //m_xHazard.vAssertFooter();
   _hazard_();
   
-  i8 iSize = V::iSize(pTopValue());
+  i8 iSize = ValLib::iSize(pTopValue());
   
   MemLib::vCopy(pValue,m_pTop,iSize);
   vPopBy(iSize);
@@ -1079,7 +1079,7 @@ void Stack::vPushVal(Value* pValue)
   //m_xHazard.vAssertFooter();
   _hazard_();
   
-  i8 iSize = V::iSize(pValue);
+  i8 iSize = ValLib::iSize(pValue);
   
   vPushBy(iSize);
   MemLib::vCopy(m_pTop,pValue,iSize);

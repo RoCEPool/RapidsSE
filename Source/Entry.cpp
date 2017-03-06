@@ -95,7 +95,7 @@ void Entry::vContentDump(void)
   //_precondition_(_MAGIC_,CN_ENTRY);
   
   i8 iKeyData;
-  V::nCopyDatum(CN_INTVAL, &iKeyData,m_xWsp.aArea());
+  ValLib::nCopyDatum(CN_INTVAL, &iKeyData,m_xWsp.aArea());
   
   vTrace("Entry %p: Row %llu.%llu Key (size:%lld value:%lld)\n",
          this,

@@ -82,7 +82,7 @@ void KeyWsp::vAddElement(Values::ValWsp &xValWsp)
   
   i8 iSrc = *(i8*)pSrc;
 
-  i8 nBytesTaken = V::nCopyDatum(eClass,pDst,pSrc);
+  i8 nBytesTaken = ValLib::nCopyDatum(eClass,pDst,pSrc);
   
   m_xWsp.vTake(nBytesTaken);
 }

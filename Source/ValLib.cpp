@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* V - value helper                                                           */
+/* ValLib - value helper                                                           */
 /*============================================================================*/
 
 #include "Pool.h"
@@ -8,7 +8,7 @@
 /*----------------------------------------------------------------------------*/
 /* compare datum (return -ve, 0, +ve)                                         */
 /*----------------------------------------------------------------------------*/
-i8 V::iCompareDatum(eCN eClass, void* pArg1, void* pArg2)
+i8 ValLib::iCompareDatum(eCN eClass, void* pArg1, void* pArg2)
 {
   switch (eClass) {
       
@@ -17,7 +17,7 @@ i8 V::iCompareDatum(eCN eClass, void* pArg1, void* pArg2)
     case CN_STRVAL: return iCompareStrDatum(pArg1,pArg2);
       
     default:
-      vFatal("V::iCompareDatum: Invalid compare: eClass %lld\n",
+      vFatal("ValLib::iCompareDatum: Invalid compare: eClass %lld\n",
              eClass);
       return -1;
   }
@@ -26,7 +26,7 @@ i8 V::iCompareDatum(eCN eClass, void* pArg1, void* pArg2)
 /*----------------------------------------------------------------------------*/
 /* compare two int datums                                                     */
 /*----------------------------------------------------------------------------*/
-i8 V::iCompareIntDatum(void* pArg1, void* pArg2)
+i8 ValLib::iCompareIntDatum(void* pArg1, void* pArg2)
 {
   i8 iCmp = *(i8*)pArg1 - *(i8*)pArg2;
   
@@ -36,7 +36,7 @@ i8 V::iCompareIntDatum(void* pArg1, void* pArg2)
 /*----------------------------------------------------------------------------*/
 /* compare two str datums                                                     */
 /*----------------------------------------------------------------------------*/
-i8 V::iCompareStrDatum(void* pArg1, void* pArg2)
+i8 ValLib::iCompareStrDatum(void* pArg1, void* pArg2)
 {
   i8 iCmp = StrLib::iCompare((char*)pArg1,(char*)pArg2);
   
@@ -46,7 +46,7 @@ i8 V::iCompareStrDatum(void* pArg1, void* pArg2)
 /*----------------------------------------------------------------------------*/
 /* copy datum (return the number of bytes copied)                             */
 /*----------------------------------------------------------------------------*/
-i8 V::nCopyDatum(eCN eClass, void* pDst, void* pSrc)
+i8 ValLib::nCopyDatum(eCN eClass, void* pDst, void* pSrc)
 {
   switch (eClass) {
       
@@ -55,7 +55,7 @@ i8 V::nCopyDatum(eCN eClass, void* pDst, void* pSrc)
     case CN_STRVAL: return nCopyStrDatum(pDst,pSrc);
       
     default:
-      vFatal("V::vCopyDatum: Invalid copy: eClass %lld\n",
+      vFatal("ValLib::vCopyDatum: Invalid copy: eClass %lld\n",
              eClass);
       return -1;
   }
@@ -64,7 +64,7 @@ i8 V::nCopyDatum(eCN eClass, void* pDst, void* pSrc)
 /*----------------------------------------------------------------------------*/
 /* copy datum                                                                 */
 /*----------------------------------------------------------------------------*/
-void V::vCopyDatum(eCN eClass, void* pDst, void* pSrc)
+void ValLib::vCopyDatum(eCN eClass, void* pDst, void* pSrc)
 {
   switch (eClass) {
 
@@ -73,7 +73,7 @@ void V::vCopyDatum(eCN eClass, void* pDst, void* pSrc)
     case CN_STRVAL: vCopyStrDatum(pDst,pSrc); return;
       
     default:
-      vFatal("V::vCopyDatum: Invalid copy: eClass %lld\n",
+      vFatal("ValLib::vCopyDatum: Invalid copy: eClass %lld\n",
              eClass);
   }
 }
@@ -81,7 +81,7 @@ void V::vCopyDatum(eCN eClass, void* pDst, void* pSrc)
 /*----------------------------------------------------------------------------*/
 /* copy int datum                                                             */
 /*----------------------------------------------------------------------------*/
-i8 V::nCopyIntDatum(void* pDst, void* pSrc)
+i8 ValLib::nCopyIntDatum(void* pDst, void* pSrc)
 {
   *(i8*)pDst = *(i8*)pSrc;
   
@@ -91,7 +91,7 @@ i8 V::nCopyIntDatum(void* pDst, void* pSrc)
 /*----------------------------------------------------------------------------*/
 /* copy int datum                                                             */
 /*----------------------------------------------------------------------------*/
-void V::vCopyIntDatum(void* pDst, void* pSrc)
+void ValLib::vCopyIntDatum(void* pDst, void* pSrc)
 {
   *(i8*)pDst = *(i8*)pSrc;
 }
@@ -99,7 +99,7 @@ void V::vCopyIntDatum(void* pDst, void* pSrc)
 /*----------------------------------------------------------------------------*/
 /* copy str datum                                                             */
 /*----------------------------------------------------------------------------*/
-i8 V::nCopyStrDatum(void* pDst, void* pSrc)
+i8 ValLib::nCopyStrDatum(void* pDst, void* pSrc)
 {
   StrLib::vCopy((char*)pDst,(char*)pSrc);                //! could return length
   
@@ -109,7 +109,7 @@ i8 V::nCopyStrDatum(void* pDst, void* pSrc)
 /*----------------------------------------------------------------------------*/
 /* copy str datum                                                             */
 /*----------------------------------------------------------------------------*/
-void V::vCopyStrDatum(void* pDst, void* pSrc)
+void ValLib::vCopyStrDatum(void* pDst, void* pSrc)
 {
   StrLib::vCopy((char*)pDst,(char*)pSrc);
 }
@@ -117,7 +117,7 @@ void V::vCopyStrDatum(void* pDst, void* pSrc)
 /*----------------------------------------------------------------------------*/
 /* get size (in bytes) of value                                               */
 /*----------------------------------------------------------------------------*/
-i8 V::iSize(Object* pObject)
+i8 ValLib::iSize(Object* pObject)
 {
   i8 nBytes = 0;
   
@@ -168,7 +168,7 @@ i8 V::iSize(Object* pObject)
     }
       
     default:
-      THROW("V::iSize -- invalid eClass %lld",eClass);
+      THROW("ValLib::iSize -- invalid eClass %lld",eClass);
       break;
   }
   
@@ -178,7 +178,7 @@ i8 V::iSize(Object* pObject)
 /*----------------------------------------------------------------------------*/
 /* convert to command                                                         */
 /*----------------------------------------------------------------------------*/
-void V::vToCommand(Object* pObject, char* aCharArray)
+void ValLib::vToCommand(Object* pObject, char* aCharArray)
 {
   eCN eClass = pObject->eClass();
   
@@ -217,7 +217,7 @@ void V::vToCommand(Object* pObject, char* aCharArray)
 /*----------------------------------------------------------------------------*/
 /* convert to string                                                          */
 /*----------------------------------------------------------------------------*/
-void V::vToString(Object* pObject, char* aCharArray)
+void ValLib::vToString(Object* pObject, char* aCharArray)
 {
   eCN eClass = pObject->eClass();
   

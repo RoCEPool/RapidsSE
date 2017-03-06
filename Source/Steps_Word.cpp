@@ -718,11 +718,11 @@ void Task::vSee(NNP_Task nnpTask)
         vTrace(" \"%s\"\n",_pStrVal(pValue)->aStr());
       }
       else {
-        V::vToString(pValue,sWorkspace.aStr());
+        ValLib::vToString(pValue,sWorkspace.aStr());
         vTrace(" %s\n",sWorkspace.aStr());
       }
       
-      i8 iBytes = V::iSize(pValue);
+      i8 iBytes = ValLib::iSize(pValue);
       pDoesCell = pAdd<Cell*>(pDoesCell,iBytes);
       
       continue;
