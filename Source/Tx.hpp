@@ -19,18 +19,18 @@ namespace Transactions
     /* 9 */ TP_ENUMS
   };
   
-  static const char* const pTP[]
+  static Str* pTP[]
   {
-    /* 0 */ "FREE",
-    /* 1 */ "ALLOCATED",
-    /* 2 */ "EXECUTING",
-    /* 3 */ "COMMITTING",
-    /* 4 */ "COMMITTED",
-    /* 5 */ "PREPARING",
-    /* 6 */ "PREPARED",
-    /* 7 */ "ROLLINGBACK",
-    /* 8 */ "ROLLEDBACK",
-    /* 9 */ "ENUMS"
+    /* 0 */ "FREE"_Str,
+    /* 1 */ "ALLOCATED"_Str,
+    /* 2 */ "EXECUTING"_Str,
+    /* 3 */ "COMMITTING"_Str,
+    /* 4 */ "COMMITTED"_Str,
+    /* 5 */ "PREPARING"_Str,
+    /* 6 */ "PREPARED"_Str,
+    /* 7 */ "ROLLINGBACK"_Str,
+    /* 8 */ "ROLLEDBACK"_Str,
+    /* 9 */ "ENUMS"_Str
   };
   
   class Tx : public Object,
