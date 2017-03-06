@@ -50,7 +50,7 @@ void* StrVbl::operator new(size_t iSize, StrVbl* pThis)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 StrVbl::StrVbl(eCN eClassNo)
-: StrVal(eClassNo)
+: Value(eClassNo)
 {
   _precondition_(_MAGIC_);
 }
@@ -59,7 +59,7 @@ StrVbl::StrVbl(eCN eClassNo)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 StrVbl::StrVbl(eCN eClassNo, i8 nBytes)
-: StrVal(eClassNo)
+: Value(eClassNo)
 {
   _precondition_(_MAGIC_,eClassNo);
   
@@ -72,7 +72,7 @@ StrVbl::StrVbl(eCN eClassNo, i8 nBytes)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 StrVbl::StrVbl(StrVbl* pThis)
-: StrVal(CN_STRVAL)
+: Value(CN_STRVAL)
 {
   _precondition_(_MAGIC_,CN_STRVAL);
   
@@ -85,7 +85,7 @@ StrVbl::StrVbl(StrVbl* pThis)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 StrVbl::StrVbl(StrVbl* pThis, i8 nBytes)
-: StrVal(CN_STRVAL)
+: Value(CN_STRVAL)
 {
   _precondition_(_MAGIC_,CN_STRVAL);
   
@@ -105,6 +105,30 @@ StrVbl::~StrVbl(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 }
+
+/*----------------------------------------------------------------------------*/
+/* get address of Str area                                                    */
+/*----------------------------------------------------------------------------*/
+StrVbl::operator Str*(void)
+{
+  _precondition_(_MAGIC_);
+  
+  // return address to char byte area
+  return reinterpret_cast<Str*>(pAdd<char*>(this,sizeof(StrVbl)));
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* get reference to Str area                                                  */
+/*----------------------------------------------------------------------------*/
+StrVbl::operator Str&(void)
+{
+  _precondition_(_MAGIC_);
+  
+  // return reference to char byte area
+  return reinterpret_cast<Str&>(*(pAdd<char*>(this,sizeof(StrVbl))));
+}
+
 
 
 /*----------------------------------------------------------------------------*/
@@ -341,6 +365,16 @@ void StrVbl::vToCommand(char* aStr)
 void StrVbl::vToString(char* aStr)
 {
   String::vCopy(aStr,aArea());
+}
+
+/*----------------------------------------------------------------------------*/
+/* get adddress of Str area                                                   */
+/*----------------------------------------------------------------------------*/
+Str* StrVbl::aStrArea(void)
+{
+  char* aAddr = pAdd<char*>(this,sizeof(StrVal));
+  
+  return reinterpret_cast<Str*>(aAddr);
 }
 
 /*----------------------------------------------------------------------------*/

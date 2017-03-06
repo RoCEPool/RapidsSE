@@ -5,9 +5,10 @@
 
 namespace Values
 {
-  class StrVbl : public StrVal
+  class StrVbl : public Value
   {
-  private:
+  protected:
+    WspVbl m_xWsp;
   
   public:
     void* operator new(size_t);
@@ -19,6 +20,10 @@ namespace Values
     StrVbl(StrVbl* pThis, i8 nBytes);
   
     ~StrVbl(void);
+  
+    operator Str& (void);
+    operator Str* (void);
+  
   
     static i8 nAreaRequired(i8 iLength);
   
@@ -43,7 +48,9 @@ namespace Values
     void  vToCommand(char* aStr);
     void  vToString(char* aStr);
   
+    Str* aStrArea(void);
   private:
+  
   
     Footer* pFooter(void);
   };
