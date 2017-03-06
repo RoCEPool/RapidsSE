@@ -20,14 +20,14 @@ namespace Dictionaries
     /*  5 */ WT_ENUMS
   };
   
-  static const char* const pWT[]
+  static Str* aWT[]
   {
-    /*  0 */ "NONE",
-    /*  1 */ "OBJECT",
-    /*  2 */ "PRIMITIVE",
-    /*  3 */ "ROUTINE",
-    /*  4 */ "LOCAL",
-    /*  5 */ "ENUMS",
+    /*  0 */ "NONE"_Str,
+    /*  1 */ "OBJECT"_Str,
+    /*  2 */ "PRIMITIVE"_Str,
+    /*  3 */ "ROUTINE"_Str,
+    /*  4 */ "LOCAL"_Str,
+    /*  5 */ "ENUMS"_Str,
   };
   
   enum eDT // distributed type
