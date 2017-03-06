@@ -24,6 +24,7 @@ using namespace Base;
 #include "ClassNumbers.hpp"
 #include "Hardware.hpp"
 #include "MemLib.hpp"
+#include "Str.hpp"
 #include "StrLib.hpp"
 
 /*============================================================================*/

@@ -2,7 +2,9 @@
 /* Str.cpp -- str datum                                                       */
 /*============================================================================*/
 
-#include "Datums.h"
+#include "Base.h"
+
+#include "Debugging.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -64,7 +66,7 @@ void Str::vPrint(void)
 /*----------------------------------------------------------------------------*/
 /* _Str literal suffix (which converts const char* to Str*)                   */
 /*----------------------------------------------------------------------------*/
-Str* Datums::operator "" _Str(const char* aArg, size_t nSize)
+Str* Base::operator "" _Str(const char* aArg, size_t nSize)
 {
   return (Str*)(aArg);
 }
