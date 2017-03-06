@@ -552,30 +552,30 @@ void Task::vAddConstants(void)
   
   /* 27 */ vAddConstant("EC_NOT_A_CATALOG",      EC_NOT_A_CATALOG);
   /* 28 */ vAddConstant("EC_NOT_A_FOLDER",       EC_NOT_A_FOLDER);
-  /*    */ vAddConstant("EC_NOT_AN_INDEX",       EC_NOT_AN_INDEX);
-  /* 29 */ vAddConstant("EC_NOT_A_SCHEMA",       EC_NOT_A_SCHEMA);
-  /* 30 */ vAddConstant("EC_NOT_A_TABLE",        EC_NOT_A_TABLE);
-  /* 31 */ vAddConstant("EC_NOT_A_TENANT",       EC_NOT_A_TENANT);
+  /* 29 */ vAddConstant("EC_NOT_AN_INDEX",       EC_NOT_AN_INDEX);
+  /* 30 */ vAddConstant("EC_NOT_A_SCHEMA",       EC_NOT_A_SCHEMA);
+  /* 31 */ vAddConstant("EC_NOT_A_TABLE",        EC_NOT_A_TABLE);
+  /* 32 */ vAddConstant("EC_NOT_A_TENANT",       EC_NOT_A_TENANT);
   
-  /* 32 */ vAddConstant("EC_NOT_IN_CATALOGS",    EC_NOT_IN_CATALOGS);
-  /* 33 */ vAddConstant("EC_NOT_IN_COLUMNS",     EC_NOT_IN_COLUMNS);
-  /* 34 */ vAddConstant("EC_NOT_IN_INDEXES",     EC_NOT_IN_INDEXES);
-  /* 35 */ vAddConstant("EC_NOT_IN_SCHEMAS",     EC_NOT_IN_SCHEMAS);
-  /*    */ vAddConstant("EC_NOT_IN_TABLE",       EC_NOT_IN_TABLE);
-  /* 36 */ vAddConstant("EC_NOT_IN_TABLES",      EC_NOT_IN_TABLES);
-  /* 37 */ vAddConstant("EC_NOT_IN_TENANTS",     EC_NOT_IN_TENANTS);
-  /* 38 */ vAddConstant("EC_NULL_INTERFACE",     EC_NULL_INTERFACE);
-  /* 39 */ vAddConstant("EC_NULLPTR",            EC_NULLPTR);
-  /* 40 */ vAddConstant("EC_RESPONSE_PENDING",   EC_RESPONSE_PENDING);
-  /* 41 */ vAddConstant("EC_SCHEMA_EXISTS",      EC_SCHEMA_EXISTS);
-  /* 42 */ vAddConstant("EC_SE_NOT_RUNNING",     EC_SE_NOT_RUNNING);
-  /* 43 */ vAddConstant("EC_SEND_FAILURE",       EC_SEND_FAILURE);
+  /* 33 */ vAddConstant("EC_NOT_IN_CATALOGS",    EC_NOT_IN_CATALOGS);
+  /* 34 */ vAddConstant("EC_NOT_IN_COLUMNS",     EC_NOT_IN_COLUMNS);
+  /* 35 */ vAddConstant("EC_NOT_IN_INDEXES",     EC_NOT_IN_INDEXES);
+  /* 36 */ vAddConstant("EC_NOT_IN_SCHEMAS",     EC_NOT_IN_SCHEMAS);
+  /* 37 */ vAddConstant("EC_NOT_IN_TABLE",       EC_NOT_IN_TABLE);
+  /* 38 */ vAddConstant("EC_NOT_IN_TABLES",      EC_NOT_IN_TABLES);
+  /* 39 */ vAddConstant("EC_NOT_IN_TENANTS",     EC_NOT_IN_TENANTS);
+  /* 40 */ vAddConstant("EC_NULL_INTERFACE",     EC_NULL_INTERFACE);
+  /* 41 */ vAddConstant("EC_NULLPTR",            EC_NULLPTR);
+  /* 42 */ vAddConstant("EC_RESPONSE_PENDING",   EC_RESPONSE_PENDING);
+  /* 43 */ vAddConstant("EC_SCHEMA_EXISTS",      EC_SCHEMA_EXISTS);
+  /* 44 */ vAddConstant("EC_SE_NOT_RUNNING",     EC_SE_NOT_RUNNING);
+  /* 45 */ vAddConstant("EC_SEND_FAILURE",       EC_SEND_FAILURE);
   
-  /* 44 */ vAddConstant("EC_TABLE_EXISTS",       EC_TABLE_EXISTS);
-  /* 45 */ vAddConstant("EC_TABLE_IN_USE",       EC_TABLE_IN_USE);
-  /* 46 */ vAddConstant("EC_TENANT_EXISTS",      EC_TENANT_EXISTS);
-  /* 47 */ vAddConstant("EC_VERSION_MISMATCH",   EC_VERSION_MISMATCH);
-  /* 48 */ vAddConstant("EC_ENUMS",              EC_ENUMS);
+  /* 46 */ vAddConstant("EC_TABLE_EXISTS",       EC_TABLE_EXISTS);
+  /* 47 */ vAddConstant("EC_TABLE_IN_USE",       EC_TABLE_IN_USE);
+  /* 48 */ vAddConstant("EC_TENANT_EXISTS",      EC_TENANT_EXISTS);
+  /* 49 */ vAddConstant("EC_VERSION_MISMATCH",   EC_VERSION_MISMATCH);
+  /* 50 */ vAddConstant("EC_ENUMS",              EC_ENUMS);
 
   // TK_ : token types
   /*  0 */ vAddConstant("TK_NONE",    TK_NONE);

@@ -43,33 +43,33 @@ namespace Debugging
   
   /* 27 */ EC_NOT_A_CATALOG,
   /* 28 */ EC_NOT_A_FOLDER,
-  /*    */ EC_NOT_AN_INDEX,
-  /* 29 */ EC_NOT_A_SCHEMA,
-  /* 30 */ EC_NOT_A_TABLE,
-  /* 31 */ EC_NOT_A_TENANT,
+  /* 29   */ EC_NOT_AN_INDEX,
+  /* 30 */ EC_NOT_A_SCHEMA,
+  /* 31 */ EC_NOT_A_TABLE,
+  /* 32 */ EC_NOT_A_TENANT,
     
-  /* 32 */ EC_NOT_IN_CATALOGS,
-  /* 33 */ EC_NOT_IN_COLUMNS,
-  /* 34 */ EC_NOT_IN_INDEXES,
-  /* 35 */ EC_NOT_IN_SCHEMAS,
-  /* 36 */ EC_NOT_IN_TABLE,
-  /*    */ EC_NOT_IN_TABLES,
-  /* 37 */ EC_NOT_IN_TENANTS,
+  /* 33 */ EC_NOT_IN_CATALOGS,
+  /* 34 */ EC_NOT_IN_COLUMNS,
+  /* 35 */ EC_NOT_IN_INDEXES,
+  /* 36 */ EC_NOT_IN_SCHEMAS,
+  /* 37 */ EC_NOT_IN_TABLE,
+  /* 38 */ EC_NOT_IN_TABLES,
+  /* 39 */ EC_NOT_IN_TENANTS,
   
-  /* 38 */ EC_NULL_INTERFACE,
-  /* 39 */ EC_NULLPTR,
+  /* 40 */ EC_NULL_INTERFACE,
+  /* 41 */ EC_NULLPTR,
   
-  /* 40 */ EC_RESPONSE_PENDING,
-  /* 41 */ EC_SCHEMA_EXISTS,
-  /* 42 */ EC_SE_NOT_RUNNING,
-  /* 43 */ EC_SEND_FAILURE,
+  /* 42 */ EC_RESPONSE_PENDING,
+  /* 43 */ EC_SCHEMA_EXISTS,
+  /* 44 */ EC_SE_NOT_RUNNING,
+  /* 45 */ EC_SEND_FAILURE,
   
-  /* 44 */ EC_TABLE_EXISTS,
-  /* 45 */ EC_TABLE_IN_USE,
-  /* 46 */ EC_TENANT_EXISTS,
+  /* 46 */ EC_TABLE_EXISTS,
+  /* 47 */ EC_TABLE_IN_USE,
+  /* 48 */ EC_TENANT_EXISTS,
   
-  /* 47 */ EC_VERSION_MISMATCH,
-  /* 48 */ EC_ENUMS
+  /* 49 */ EC_VERSION_MISMATCH,
+  /* 50 */ EC_ENUMS
   };
   
   static const char* const pEC[]
@@ -110,34 +110,34 @@ namespace Debugging
   
   /* 27 */ "not a catalog",
   /* 28 */ "not a folder",
-  /*    */ "not an index",
-  /* 29 */ "not a schema",
-  /* 30 */ "not a table",
-  /* 31 */ "not a tenant",
+  /* 29 */ "not an index",
+  /* 30 */ "not a schema",
+  /* 31 */ "not a table",
+  /* 32 */ "not a tenant",
     
-  /* 32 */ "not in catalogs",
-  /* 33 */ "not in columns",
-  /* 34 */ "not in indexes",
-  /* 35 */ "not in schemas",
-  /* 36 */ "not in table",
-  /*    */ "not in tables",
-  /* 37 */ "not in tenants",
+  /* 33 */ "not in catalogs",
+  /* 34 */ "not in columns",
+  /* 35 */ "not in indexes",
+  /* 36 */ "not in schemas",
+  /* 37 */ "not in table",
+  /* 38 */ "not in tables",
+  /* 39 */ "not in tenants",
   
-  /* 38 */ "null interface",
-  /* 39 */ "nullptr",
+  /* 40 */ "null interface",
+  /* 41 */ "nullptr",
   
-  /* 40 */ "response pending",
+  /* 42 */ "response pending",
   
-  /* 41 */ "schema exists",
-  /* 42 */ "SE is not running",
-  /* 43 */ "send failure",
-  /* 44 */ "table exists",
-  /* 45 */ "table in use",
-  /* 46 */ "tenant exists",
+  /* 43 */ "schema exists",
+  /* 44 */ "SE is not running",
+  /* 45 */ "send failure",
+  /* 46 */ "table exists",
+  /* 47 */ "table in use",
+  /* 48 */ "tenant exists",
+
+  /* 49 */ "version mismatch",
   
-  /* 47 */ "version mismatch",
-  
-  /* 48 */ "enums"
+  /* 50 */ "enums"
   
   };
   
