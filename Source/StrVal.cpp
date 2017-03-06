@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* StrVal.cpp -- string value                                                 */
+/* StrVal.cpp -- null-terminated string value                                 */
 /*============================================================================*/
 
 #include "Values.h"
@@ -18,7 +18,7 @@ StrVal* Values::_pStrVal(void* aAddr)
   RASSERT( ! psRefactor
           || CN_VALWSP == psRefactor->eClass()
           || CN_STRVAL == psRefactor->eClass()
-          || CN_STRFXD == psRefactor->eClass()
+          || CN_STRVAR == psRefactor->eClass()
           );
   
   return psRefactor;
@@ -58,6 +58,19 @@ StrVal::StrVal(eCN eClassNo)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
+StrVal::StrVal(eCN eClassNo, i8 nBytes)
+: Value(eClassNo)
+{
+  _precondition_(_MAGIC_,eClassNo);
+  
+  m_xWsp.vUsed(nBytes);
+  
+  m_xWsp.vZero();
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
 StrVal::StrVal(StrVal* pThis)
 : Value(CN_STRVAL)
 {
@@ -86,25 +99,36 @@ StrVal::StrVal(StrVal* pThis, i8 nBytes)
 }
 
 /*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-StrVal::StrVal(eCN eClassNo, i8 nBytes)
-: Value(eClassNo)
-{
-  _precondition_(_MAGIC_,eClassNo);
-  
-  m_xWsp.vUsed(nBytes);
-  
-  m_xWsp.vZero();
-}
-
-/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 StrVal::~StrVal(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 }
+
+/*----------------------------------------------------------------------------*/
+/* get address of Str area                                                    */
+/*----------------------------------------------------------------------------*/
+StrVal::operator Str*(void)
+{
+  _precondition_(_MAGIC_);
+  
+  // return address to char byte area
+  return reinterpret_cast<Str*>(pAdd<char*>(this,sizeof(StrVal)));
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* get reference to Str area                                                  */
+/*----------------------------------------------------------------------------*/
+StrVal::operator Str&(void)
+{
+  _precondition_(_MAGIC_);
+  
+  // return reference to char byte area
+  return reinterpret_cast<Str&>(*(pAdd<char*>(this,sizeof(StrVal))));
+}
+
 
 
 /*----------------------------------------------------------------------------*/
@@ -341,6 +365,16 @@ void StrVal::vToCommand(char* aStr)
 void StrVal::vToString(char* aStr)
 {
   String::vCopy(aStr,aArea());
+}
+
+/*----------------------------------------------------------------------------*/
+/* get adddress of Str area                                                   */
+/*----------------------------------------------------------------------------*/
+Str* StrVal::aStrArea(void)
+{
+  char* aAddr = pAdd<char*>(this,sizeof(StrVal));
+  
+  return reinterpret_cast<Str*>(aAddr);
 }
 
 /*----------------------------------------------------------------------------*/

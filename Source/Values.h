@@ -30,14 +30,14 @@ using namespace Values;
 #include "PtrVal.hpp"
 
 #include "StrVal.hpp"
-#include "StrFxd.hpp"
+#include "StrVar.hpp"
 
 #include "ValSet.hpp"
 
-typedef StrFxd<32>    s32;
-typedef StrFxd<256>   s256;
-typedef StrFxd<C_48K> s48K;  // note this is 48K not 48KB
-typedef StrFxd<C_1M>  s1M;   // note this is 1M not 1MB
+typedef StrVar<32>    s32;
+typedef StrVar<256>   s256;
+typedef StrVar<C_48K> s48K;  // note this is 48K not 48KB
+typedef StrVar<C_1M>  s1M;   // note this is 1M not 1MB
 
 /*============================================================================*/
 /* end                                                                        */

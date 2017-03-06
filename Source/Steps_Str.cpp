@@ -68,9 +68,9 @@ void Task::vS256Init(NNP_Task nnpTask)
   if ( ! nnpTask->m_pDataStack->bPop(pPtrStrVal) )
     THROW_INVALID_DSTACK("s256.init");
   
-  s256* ps256 = (s256*)_pStrFxd(pPtrStrVal);
+  s256* ps256 = (s256*)_pStrVar(pPtrStrVal);
   
-  ASSERT(CN_STRFXD == ps256->eClass());
+  ASSERT(CN_STRVAR == ps256->eClass());
   
   new(ps256) s256(ps256);
   
@@ -567,7 +567,7 @@ void Task::vSprint(s48K& sFormat, s48K& sString)
     
     Value* pValue0 = m_pDataStack->pPeek(0);
     
-    // test for strval
+    // test for StrVal
     if (CN_STRVAL == pValue0->eClass()) {
       
       //*pf = 's';                                                    //! Defect??

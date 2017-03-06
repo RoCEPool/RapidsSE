@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* StrFxd.cpp -- fixed-length string template                                 */
+/* StrVar.cpp -- fixed-length string variable (template)                       */
 /*============================================================================*/
 
 #include "Values.h"
@@ -7,13 +7,13 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-void* Values::_pStrFxd(void* aAddr)
+void* Values::_pStrVar(void* aAddr)
 {
-  Object* pStrFxd = reinterpret_cast<Object*>(aAddr);
+  Object* pStrVar = reinterpret_cast<Object*>(aAddr);
   
-  RASSERT( !pStrFxd || CN_STRFXD == pStrFxd->eClass() );
+  RASSERT( !pStrVar || CN_STRVAR == pStrVar->eClass() );
   
-  return pStrFxd;
+  return pStrVar;
 }
 
 /*============================================================================*/

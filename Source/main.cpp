@@ -14,9 +14,16 @@ void vTest1(void);
 void vKillPrev(void);
 
 
-void vStrTest(Str* pStr)
+void vStrTestPtr(Str* pStr)
 {
+  printf("StrTestPtr: ");
   pStr->vPrint();
+}
+
+void vStrTestRef(Str& xStr)
+{
+  printf("StrTestRef: ");
+  xStr.vPrint();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -26,17 +33,29 @@ int main(int argc, const char* argv[])
 {
   
   //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  vStrTest("This is an Str literal"_Str);
+  // call Fun(Str&) with a ""_Str parameter
+  vStrTestPtr("This is a Str literal"_Str);
   
-  char* a = *"This is an Str literal"_Str;
+  // dereference a ""_Str parameter
+  char* a = *"This is a Str literal"_Str;
   
   // this compiles but doesnt work.  not even sure what it means
   Str xStr = "abc";
   xStr.vPrint();
   
-  // this works.  _Str takes a cons char* and casts it to a Str*
+  // this works.  _Str takes a const char* and casts it to a Str*
   Str* pStr = "abc"_Str;
   pStr->vPrint();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // s32 is a StrVar : StrVal : StrVal which has a Str area
+  s32 x32 = "boo";
+  vStrTestRef(x32);
+  x32 = "hoo";
+  vStrTestPtr(x32);
+  x32.vTest();
+  
   //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   
   printf(

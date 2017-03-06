@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* StrVal.hpp -- string value                                                 */
+/* StrVal.hpp -- null terminated string value                                 */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@ namespace Values
 {
   class StrVal : public Value
   {
-  private:
+  protected:
     WspVbl m_xWsp;
   
   public:
@@ -15,11 +15,15 @@ namespace Values
     void* operator new(size_t, StrVal* pThis);
   
     StrVal(eCN eClassNo);
+    StrVal(eCN eClass, i8 nBytes);
     StrVal(StrVal* pThis);
     StrVal(StrVal* pThis, i8 nBytes);
-    StrVal(eCN eClass, i8 nBytes);
   
     ~StrVal(void);
+  
+    operator Str& (void);
+    operator Str* (void);
+  
   
     static i8 nAreaRequired(i8 iLength);
   
@@ -44,7 +48,9 @@ namespace Values
     void  vToCommand(char* aStr);
     void  vToString(char* aStr);
   
+    Str* aStrArea(void);
   private:
+  
   
     Footer* pFooter(void);
   };
