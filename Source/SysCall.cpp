@@ -10,7 +10,7 @@
 SysCall::SysCall(void)
 : Object(CN_SYSCALL)
 {
-  m_eStatus  = eSysCall_NOTSET;
+  m_eStatus  = SC_NOTSET;
   m_iErrNo   = 0;
   
   _checkInitialised_(CN_SYSCALL);
@@ -32,7 +32,7 @@ void SysCall::vClear(void)
 {
   _magic_();
   
-  m_eStatus = eSysCall_NOTSET;
+  m_eStatus = SC_NOTSET;
   m_iErrNo = 0;
 }
 
@@ -43,7 +43,7 @@ void SysCall::vError(i8 iErrNo)
 {
   _magic_();
   
-  m_eStatus = eSysCall_ERROR;
+  m_eStatus = SC_ERROR;
   m_iErrNo = iErrNo;
 }
 
@@ -64,7 +64,7 @@ void SysCall::vFailure(i8 iErrNo)
 {
   _magic_();
   
-  m_eStatus = eSysCall_SUCCESS;
+  m_eStatus = SC_SUCCESS;
   m_iErrNo  = iErrNo;
 }
 
@@ -75,7 +75,7 @@ void SysCall::vSuccess(void)
 {
   _magic_();
   
-  m_eStatus = eSysCall_SUCCESS;
+  m_eStatus = SC_SUCCESS;
   m_iErrNo  = 0;
 }
 
@@ -86,7 +86,7 @@ bool SysCall::bHadError(void)
 {
   _magic_();
 
-  if (eSysCall_ERROR == m_eStatus)
+  if (SC_ERROR == m_eStatus)
     return true;
   else
     return false;

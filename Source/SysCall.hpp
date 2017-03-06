@@ -5,15 +5,15 @@
 
 namespace System
 {
-  enum eSysCall
+  enum eSC // system call
   {
-    /* -2 */ eSysCall_NOTSET  = -2, // status code not yet set
-    /* -1 */ eSysCall_ERROR   = -1, // error status
-    /* 0  */ eSysCall_FAILURE = 0,  // failure status
-    /* 1  */ eSysCall_SUCCESS = 1,  // success status
+    /* -2 */ SC_NOTSET  = -2, // status code not yet set
+    /* -1 */ SC_ERROR   = -1, // error status
+    /* 0  */ SC_FAILURE = 0,  // failure status
+    /* 1  */ SC_SUCCESS = 1,  // success status
   };
   
-  static Str* aSysCall[]
+  static Str* aSC[]
   {
     /* -2 */ "NOTSET"_Str,
     /* -1 */ "ERROR"_Str,
@@ -24,8 +24,8 @@ namespace System
   class SysCall : public Object
   {
   public:
-    eSysCall m_eStatus;  // return status
-    i8       m_iErrNo;   // error number
+    eSC  m_eStatus;  // return status
+    i8   m_iErrNo;   // error number
     
     // must be last
     Footer m_xFooter;
