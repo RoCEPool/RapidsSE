@@ -30,17 +30,17 @@ namespace Tasks
   /* 8 */ TS_ENUMS
   };
   
-  static const char* const pTS[]
+  static Str* aTS[]
   {
-    /* 0 */ "NONE",
-    /* 1 */ "BLOCKED",
-    /* 2 */ "EXITED",
-    /* 3 */ "RUNNING",
-    /* 4 */ "SLEEPING",
-    /* 5 */ "SUSPENDED",
-    /* 6 */ "WAITING",
-    /* 7 */ "YIELDED",
-    /* 8 */ "ENUMS",
+    /* 0 */ "NONE"_Str,
+    /* 1 */ "BLOCKED"_Str,
+    /* 2 */ "EXITED"_Str,
+    /* 3 */ "RUNNING"_Str,
+    /* 4 */ "SLEEPING"_Str,
+    /* 5 */ "SUSPENDED"_Str,
+    /* 6 */ "WAITING"_Str,
+    /* 7 */ "YIELDED"_Str,
+    /* 8 */ "ENUMS"_Str,
   };
   
   typedef NP<Task,CN_TASK> NP_Task;

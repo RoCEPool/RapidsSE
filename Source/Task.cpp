@@ -1162,7 +1162,7 @@ void Task::vDump(eCN eClass, Object* pObject, const char* aTab)
   vTrace("%s TaskNo %lld state %s txId %lld\n",
          pTask->m_sName.aStr(),
          pTask->m_iTaskNo,
-         pTS[pTask->m_eState],
+         aTS[pTask->m_eState]->a(),
          pTask->m_iTxId);
 }
 
@@ -1178,7 +1178,7 @@ void Task::vContentDump(void)
          m_iTaskNo,
          this,
          m_sName.aStr(),
-         pTS[m_eState],
+         aTS[m_eState]->a(),
          m_iTxId);
 }
 
