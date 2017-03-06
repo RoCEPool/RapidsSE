@@ -18,18 +18,18 @@ namespace System
     /* 79 */ RO_ENUMS
   };
   
-  static const char* const pRO[]
+  static Str* aRO[]
   {
-    /*  0 */ "NONE",
+    /*  0 */ "NONE"_Str,
     
-    /*  1 */ "<",
-    /*  2 */ "<=",
-    /*  3 */ "==",
-    /*  4 */ "!=",
-    /*  5 */ ">=",
-    /*  6 */ ">",
+    /*  1 */ "<"_Str,
+    /*  2 */ "<="_Str,
+    /*  3 */ "=="_Str,
+    /*  4 */ "!="_Str,
+    /*  5 */ ">="_Str,
+    /*  6 */ ">"_Str,
     
-    /*  7 */ "ENUMS"
+    /*  7 */ "ENUMS"_Str
   };
   
 }
