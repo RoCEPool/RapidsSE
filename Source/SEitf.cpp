@@ -316,68 +316,68 @@ void SEitf::vEndTx()
 /*----------------------------------------------------------------------------*/
 /* decode request                                                             */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDecode(char* pWords[], i8 iWords)
+bool SEitf::bDecode(char* aWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
-  if (0 == StrLib::iLength(pWords[0]))
+  if (0 == StrLib::iLength(aWords[0]))
     return false;
   
-  if (StrLib::bSame("antbl",pWords[0])) return bAnalyzeTable(pWords, iWords);
-  if (StrLib::bSame("add",pWords[0])) return bAddColumn(pWords, iWords);
-  if (StrLib::bSame("cf",pWords[0])) return bPushDic(pWords);
-  if (StrLib::bSame("con",pWords[0])) return bConnect(pWords);
-  if (StrLib::bSame("connectCluster",pWords[0])) return bConnectCluster(pWords);
-  if (StrLib::bSame("cp",pWords[0])) return bCopyTable(pWords, iWords);
-  if (StrLib::bSame("dantbl",pWords[0])) return bDanalyzeTable(pWords, iWords);
-  if (StrLib::bSame("dex",pWords[0])) return bDistExportTable(pWords, iWords);
-  if (StrLib::bSame("dis",pWords[0])) return bDisconnect(pWords);
-  if (StrLib::bSame("docol",pWords[0])) return bDocol(pWords);
-  if (StrLib::bSame("dump",pWords[0])) return bDumpTable(pWords, iWords);
-  if (StrLib::bSame("ex",pWords[0])) return bExportTable(pWords, iWords);
-  if (StrLib::bSame("getFreeSpace",pWords[0])) return bGetFreeSpace(pWords);
-  if (StrLib::bSame("getInUseSpace",pWords[0])) return bGetInUseSpace(pWords);
-  if (StrLib::bSame("gettbl",pWords[0])) return bGetTable(pWords, iWords);
-  if (StrLib::bSame("getTotalSpace",pWords[0])) return bGetTotalSpace(pWords);
-  if (StrLib::bSame("idump",pWords[0])) return bDumpIndex(pWords, iWords);
-  if (StrLib::bSame("TblInUse",pWords[0])) return bInUseTable(pWords, iWords);
-  if (StrLib::bSame("ld",pWords[0])) return bLoadTable(pWords, iWords);
-  if (StrLib::bSame("lds",pWords[0])) return bLoadTableStream(pWords, iWords);
-  if (StrLib::bSame("lf",pWords[0])) return bGetDicContents(pWords);
-  if (StrLib::bSame("lfG",pWords[0])) return bGetDicContentsG(pWords);
-  if (StrLib::bSame("lscat",pWords[0])) return bListCatalogs(pWords, iWords);
-  if (StrLib::bSame("lscol",pWords[0])) return bListColumns(pWords, iWords);
-  if (StrLib::bSame("lsidx",pWords[0])) return bListIndices(pWords, iWords);
-  if (StrLib::bSame("lssch",pWords[0])) return bListSchemas(pWords, iWords);
-  if (StrLib::bSame("lstbl",pWords[0])) return bListTables(pWords, iWords);
-  if (StrLib::bSame("lsten",pWords[0])) return bListTenants(pWords, iWords);
-  if (StrLib::bSame("mkcat",pWords[0])) return bCreateCatalog(pWords, iWords);
-  if (StrLib::bSame("mkidx",pWords[0])) return bCreateIndex(pWords, iWords);
-  if (StrLib::bSame("mksch",pWords[0])) return bCreateSchema(pWords, iWords);
-  if (StrLib::bSame("mktbl",pWords[0])) return bCreateTable(pWords, iWords);
-  if (StrLib::bSame("mkten",pWords[0])) return bCreateTenant(pWords, iWords);
-  if (StrLib::bSame("object",pWords[0])) return bObject(pWords);
-  if (StrLib::bSame("pRB",pWords[0])) return bPrintRowBuffer(pWords);
-  if (StrLib::bSame("pwf",pWords[0])) return bGetDicPath(pWords);
-  if (StrLib::bSame("rettbl",pWords[0])) return bRetTable(pWords, iWords);
-  if (StrLib::bSame("rf",pWords[0])) return bRemoveFolder(pWords, iWords);
-  if (StrLib::bSame("rmcat",pWords[0])) return bDropCatalog(pWords, iWords);
-  if (StrLib::bSame("rmdic",pWords[0])) return bRemoveFolder(pWords, iWords);
-  if (StrLib::bSame("rmsch",pWords[0])) return bDropSchema(pWords, iWords);
-  if (StrLib::bSame("rmtbl",pWords[0])) return bDropTable(pWords, iWords);
-  if (StrLib::bSame("rmten",pWords[0])) return bDropTenant(pWords, iWords);
-  if (StrLib::bSame("sel",pWords[0])) return bSelectTable(pWords, iWords);
-  if (StrLib::bSame("space",pWords[0])) return bPoolSpace(pWords, iWords);
-  if (StrLib::bSame("status",pWords[0])) return bNodeStatus(pWords, iWords);
-  if (StrLib::bSame("sz",pWords[0])) return bSizeTable(pWords, iWords);
-  if (StrLib::bSame("tr",pWords[0])) return bTruncateTable(pWords, iWords);
-  if (StrLib::bSame("usesch",pWords[0])) return bUseSchema(pWords, iWords);
-  if (StrLib::bSame("__x",pWords[0])) return bX(pWords);
-  if (StrLib::bSame("ping",pWords[0])) return bPing(pWords);
-  if (StrLib::bSame("mon",pWords[0])) return bGetMonitor(pWords);
-  if (StrLib::bSame("print",pWords[0])) return ! bPrint(pWords);
-  if (StrLib::bSame("seitf",pWords[0])) return bSeitfCount(pWords);
-  if (StrLib::bSame("version",pWords[0])) return bGetVersion(pWords);
+  if (StrLib::bSame("antbl",aWords[0])) return bAnalyzeTable(aWords, iWords);
+  if (StrLib::bSame("add",aWords[0])) return bAddColumn(aWords, iWords);
+  if (StrLib::bSame("cf",aWords[0])) return bPushDic(aWords);
+  if (StrLib::bSame("con",aWords[0])) return bConnect(aWords);
+  if (StrLib::bSame("connectCluster",aWords[0])) return bConnectCluster(aWords);
+  if (StrLib::bSame("cp",aWords[0])) return bCopyTable(aWords, iWords);
+  if (StrLib::bSame("dantbl",aWords[0])) return bDanalyzeTable(aWords, iWords);
+  if (StrLib::bSame("dex",aWords[0])) return bDistExportTable(aWords, iWords);
+  if (StrLib::bSame("dis",aWords[0])) return bDisconnect(aWords);
+  if (StrLib::bSame("docol",aWords[0])) return bDocol(aWords);
+  if (StrLib::bSame("dump",aWords[0])) return bDumpTable(aWords, iWords);
+  if (StrLib::bSame("ex",aWords[0])) return bExportTable(aWords, iWords);
+  if (StrLib::bSame("getFreeSpace",aWords[0])) return bGetFreeSpace(aWords);
+  if (StrLib::bSame("getInUseSpace",aWords[0])) return bGetInUseSpace(aWords);
+  if (StrLib::bSame("gettbl",aWords[0])) return bGetTable(aWords, iWords);
+  if (StrLib::bSame("getTotalSpace",aWords[0])) return bGetTotalSpace(aWords);
+  if (StrLib::bSame("idump",aWords[0])) return bDumpIndex(aWords, iWords);
+  if (StrLib::bSame("TblInUse",aWords[0])) return bInUseTable(aWords, iWords);
+  if (StrLib::bSame("ld",aWords[0])) return bLoadTable(aWords, iWords);
+  if (StrLib::bSame("lds",aWords[0])) return bLoadTableStream(aWords, iWords);
+  if (StrLib::bSame("lf",aWords[0])) return bGetDicContents(aWords);
+  if (StrLib::bSame("lfG",aWords[0])) return bGetDicContentsG(aWords);
+  if (StrLib::bSame("lscat",aWords[0])) return bListCatalogs(aWords, iWords);
+  if (StrLib::bSame("lscol",aWords[0])) return bListColumns(aWords, iWords);
+  if (StrLib::bSame("lsidx",aWords[0])) return bListIndices(aWords, iWords);
+  if (StrLib::bSame("lssch",aWords[0])) return bListSchemas(aWords, iWords);
+  if (StrLib::bSame("lstbl",aWords[0])) return bListTables(aWords, iWords);
+  if (StrLib::bSame("lsten",aWords[0])) return bListTenants(aWords, iWords);
+  if (StrLib::bSame("mkcat",aWords[0])) return bCreateCatalog(aWords, iWords);
+  if (StrLib::bSame("mkidx",aWords[0])) return bCreateIndex(aWords, iWords);
+  if (StrLib::bSame("mksch",aWords[0])) return bCreateSchema(aWords, iWords);
+  if (StrLib::bSame("mktbl",aWords[0])) return bCreateTable(aWords, iWords);
+  if (StrLib::bSame("mkten",aWords[0])) return bCreateTenant(aWords, iWords);
+  if (StrLib::bSame("object",aWords[0])) return bObject(aWords);
+  if (StrLib::bSame("pRB",aWords[0])) return bPrintRowBuffer(aWords);
+  if (StrLib::bSame("pwf",aWords[0])) return bGetDicPath(aWords);
+  if (StrLib::bSame("rettbl",aWords[0])) return bRetTable(aWords, iWords);
+  if (StrLib::bSame("rf",aWords[0])) return bRemoveFolder(aWords, iWords);
+  if (StrLib::bSame("rmcat",aWords[0])) return bDropCatalog(aWords, iWords);
+  if (StrLib::bSame("rmdic",aWords[0])) return bRemoveFolder(aWords, iWords);
+  if (StrLib::bSame("rmsch",aWords[0])) return bDropSchema(aWords, iWords);
+  if (StrLib::bSame("rmtbl",aWords[0])) return bDropTable(aWords, iWords);
+  if (StrLib::bSame("rmten",aWords[0])) return bDropTenant(aWords, iWords);
+  if (StrLib::bSame("sel",aWords[0])) return bSelectTable(aWords, iWords);
+  if (StrLib::bSame("space",aWords[0])) return bPoolSpace(aWords, iWords);
+  if (StrLib::bSame("status",aWords[0])) return bNodeStatus(aWords, iWords);
+  if (StrLib::bSame("sz",aWords[0])) return bSizeTable(aWords, iWords);
+  if (StrLib::bSame("tr",aWords[0])) return bTruncateTable(aWords, iWords);
+  if (StrLib::bSame("usesch",aWords[0])) return bUseSchema(aWords, iWords);
+  if (StrLib::bSame("__x",aWords[0])) return bX(aWords);
+  if (StrLib::bSame("ping",aWords[0])) return bPing(aWords);
+  if (StrLib::bSame("mon",aWords[0])) return bGetMonitor(aWords);
+  if (StrLib::bSame("print",aWords[0])) return ! bPrint(aWords);
+  if (StrLib::bSame("seitf",aWords[0])) return bSeitfCount(aWords);
+  if (StrLib::bSame("version",aWords[0])) return bGetVersion(aWords);
   
   vSetLastError(EC_INVALID_COMMAND);
   return false;
@@ -386,13 +386,13 @@ bool SEitf::bDecode(char* pWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* connect to se                                                              */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bConnect(char* pWords[])
+bool SEitf::bConnect(char* aWords[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  ASSERT(StrLib::bEqualTo(pWords[0],"con"));
+  ASSERT(StrLib::bEqualTo(aWords[0],"con"));
   sRequest = "connect"_Str;
   return bAppendRequest(sRequest);
 }
@@ -400,13 +400,13 @@ bool SEitf::bConnect(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* connect the se cluster nodes                                               */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bConnectCluster(char* pWords[])
+bool SEitf::bConnectCluster(char* aWords[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  ASSERT(StrLib::bEqualTo(pWords[0],"connectCluster"));
+  ASSERT(StrLib::bEqualTo(aWords[0],"connectCluster"));
   sRequest = "connectCluster"_Str;
   return bAppendRequest(sRequest);
 }
@@ -414,13 +414,13 @@ bool SEitf::bConnectCluster(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* disconnect from se                                                         */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDisconnect(char* pWords[])
+bool SEitf::bDisconnect(char* aWords[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  ASSERT(StrLib::bEqualTo(pWords[0],"dic"));
+  ASSERT(StrLib::bEqualTo(aWords[0],"dic"));
   sRequest = "disconnect"_Str;
   return bAppendRequest(sRequest);
 }
@@ -428,7 +428,7 @@ bool SEitf::bDisconnect(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* remove a folder                                                            */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bRemoveFolder(char* pWords[], i8 iWords)
+bool SEitf::bRemoveFolder(char* aWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -437,7 +437,7 @@ bool SEitf::bRemoveFolder(char* pWords[], i8 iWords)
   char* a = sRequest.aStr();
   
   StrLib::vCopy(a,"\"");
-  StrLib::vConcat(a,pWords[1]);
+  StrLib::vConcat(a,aWords[1]);
   StrLib::vConcat(a,"\"");
   
   StrLib::vConcat(a," remove_folder");
@@ -448,7 +448,7 @@ bool SEitf::bRemoveFolder(char* pWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* create a tenant                                                            */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bCreateTenant(char* pWords[], i8 iWords)
+bool SEitf::bCreateTenant(char* aWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -462,7 +462,7 @@ bool SEitf::bCreateTenant(char* pWords[], i8 iWords)
   }
 
   StrLib::vCopy(a,"\"");
-  StrLib::vConcat(a,pWords[1]);
+  StrLib::vConcat(a,aWords[1]);
   StrLib::vConcat(a,"\"");
   
   StrLib::vConcat(a," create_tenant");
@@ -473,7 +473,7 @@ bool SEitf::bCreateTenant(char* pWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* list tenants                                                               */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bListTenants(char* pWords[], i8 iWords)
+bool SEitf::bListTenants(char* aWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -484,7 +484,7 @@ bool SEitf::bListTenants(char* pWords[], i8 iWords)
     return false;
   }
 
-  ASSERT(StrLib::bEqualTo(pWords[0],"lsten"));
+  ASSERT(StrLib::bEqualTo(aWords[0],"lsten"));
   sRequest = "list_tenants"_Str;
   return bAppendRequest(sRequest);
 }
@@ -492,7 +492,7 @@ bool SEitf::bListTenants(char* pWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* drop a tenant                                                              */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDropTenant(char* pWords[], i8 iWords)
+bool SEitf::bDropTenant(char* aWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -506,7 +506,7 @@ bool SEitf::bDropTenant(char* pWords[], i8 iWords)
   }
   
   StrLib::vCopy(a,"\"");
-  StrLib::vConcat(a,pWords[1]);
+  StrLib::vConcat(a,aWords[1]);
   StrLib::vConcat(a,"\"");
   
   StrLib::vConcat(a," drop_tenant");
@@ -517,7 +517,7 @@ bool SEitf::bDropTenant(char* pWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* create a catalog                                                           */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bCreateCatalog(char* pWords[], i8 iWords)
+bool SEitf::bCreateCatalog(char* aWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -531,7 +531,7 @@ bool SEitf::bCreateCatalog(char* pWords[], i8 iWords)
   }
   
   StrLib::vCopy(a,"\"");
-  StrLib::vConcat(a,pWords[1]);
+  StrLib::vConcat(a,aWords[1]);
   StrLib::vConcat(a,"\"");
   
   StrLib::vConcat(a," create_catalog");
@@ -542,7 +542,7 @@ bool SEitf::bCreateCatalog(char* pWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* list catalogs                                                              */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bListCatalogs(char* pWords[], i8 iWords)
+bool SEitf::bListCatalogs(char* aWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -553,7 +553,7 @@ bool SEitf::bListCatalogs(char* pWords[], i8 iWords)
     return false;
   }
   
-  ASSERT(StrLib::bEqualTo(pWords[0],"lscat"));
+  ASSERT(StrLib::bEqualTo(aWords[0],"lscat"));
   sRequest = "list_catalogs"_Str;
   return bAppendRequest(sRequest);
 }
@@ -561,7 +561,7 @@ bool SEitf::bListCatalogs(char* pWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* drop a catalog                                                             */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDropCatalog(char* pWords[], i8 iWords)
+bool SEitf::bDropCatalog(char* aWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -575,7 +575,7 @@ bool SEitf::bDropCatalog(char* pWords[], i8 iWords)
   }
 
   StrLib::vCopy(a,"\"");
-  StrLib::vConcat(a,pWords[1]);
+  StrLib::vConcat(a,aWords[1]);
   StrLib::vConcat(a,"\"");
   
   StrLib::vConcat(a," drop_catalog");
@@ -586,7 +586,7 @@ bool SEitf::bDropCatalog(char* pWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* create a schema                                                            */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bCreateSchema(char* pWords[], i8 iWords)
+bool SEitf::bCreateSchema(char* aWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -600,7 +600,7 @@ bool SEitf::bCreateSchema(char* pWords[], i8 iWords)
   }
   
   StrLib::vCopy(a,"\"");
-  StrLib::vConcat(a,pWords[1]);
+  StrLib::vConcat(a,aWords[1]);
   StrLib::vConcat(a,"\"");
   
   StrLib::vConcat(a," create_schema");
@@ -611,7 +611,7 @@ bool SEitf::bCreateSchema(char* pWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* list schemas                                                               */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bListSchemas(char* pWords[], i8 iWords)
+bool SEitf::bListSchemas(char* aWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -622,7 +622,7 @@ bool SEitf::bListSchemas(char* pWords[], i8 iWords)
     return false;
   }
   
-  ASSERT(StrLib::bEqualTo(pWords[0],"lssch"));
+  ASSERT(StrLib::bEqualTo(aWords[0],"lssch"));
   sRequest = "list_schemas"_Str;
   return bAppendRequest(sRequest);
 }
@@ -630,7 +630,7 @@ bool SEitf::bListSchemas(char* pWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* drop a schema                                                              */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDropSchema(char* pWords[], i8 iWords)
+bool SEitf::bDropSchema(char* aWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -644,7 +644,7 @@ bool SEitf::bDropSchema(char* pWords[], i8 iWords)
   }
 
   StrLib::vCopy(a,"\"");
-  StrLib::vConcat(a,pWords[1]);
+  StrLib::vConcat(a,aWords[1]);
   StrLib::vConcat(a,"\"");
   
   StrLib::vConcat(a," drop_schema");
@@ -655,7 +655,7 @@ bool SEitf::bDropSchema(char* pWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* use a schema                                                               */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bUseSchema(char* pWords[], i8 iWords)
+bool SEitf::bUseSchema(char* aWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -669,7 +669,7 @@ bool SEitf::bUseSchema(char* pWords[], i8 iWords)
   }
   
   StrLib::vCopy(a,"\"");
-  StrLib::vConcat(a,pWords[1]);
+  StrLib::vConcat(a,aWords[1]);
   StrLib::vConcat(a,"\"");
   
   StrLib::vConcat(a," use_schema");
@@ -680,7 +680,7 @@ bool SEitf::bUseSchema(char* pWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* create an index                                                            */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bCreateIndex(char* pWords[], i8 iWords)
+bool SEitf::bCreateIndex(char* aWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -694,15 +694,15 @@ bool SEitf::bCreateIndex(char* pWords[], i8 iWords)
   }
   
   StrLib::vCopy(a,"\"");
-  StrLib::vConcat(a,pWords[3]);
+  StrLib::vConcat(a,aWords[3]);
   StrLib::vConcat(a,"\"");
   
   StrLib::vConcat(a," \"");
-  StrLib::vConcat(a,pWords[2]);
+  StrLib::vConcat(a,aWords[2]);
   StrLib::vConcat(a,"\"");
   
   StrLib::vConcat(a," \"");
-  StrLib::vConcat(a,pWords[1]);
+  StrLib::vConcat(a,aWords[1]);
   StrLib::vConcat(a,"\"");
   
   StrLib::vConcat(a," create_index");
@@ -713,7 +713,7 @@ bool SEitf::bCreateIndex(char* pWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* list indices                                                               */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bListIndices(char* pWords[], i8 iWords)
+bool SEitf::bListIndices(char* aWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -724,7 +724,7 @@ bool SEitf::bListIndices(char* pWords[], i8 iWords)
     return false;
   }
   
-  ASSERT(StrLib::bEqualTo(pWords[0],"lsidx"));
+  ASSERT(StrLib::bEqualTo(aWords[0],"lsidx"));
   sRequest = "list_indexes"_Str;
   return bAppendRequest(sRequest);
 }
@@ -732,7 +732,7 @@ bool SEitf::bListIndices(char* pWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* create a table                                                             */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bCreateTable(char* pWords[], i8 iWords)
+bool SEitf::bCreateTable(char* aWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -746,7 +746,7 @@ bool SEitf::bCreateTable(char* pWords[], i8 iWords)
   }
   
   StrLib::vCopy(a,"\"");
-  StrLib::vConcat(a,pWords[1]);
+  StrLib::vConcat(a,aWords[1]);
   StrLib::vConcat(a,"\"");
   
   StrLib::vConcat(a," create_table");
@@ -757,7 +757,7 @@ bool SEitf::bCreateTable(char* pWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* list tables                                                                */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bListTables(char* pWords[], i8 iWords)
+bool SEitf::bListTables(char* aWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -768,7 +768,7 @@ bool SEitf::bListTables(char* pWords[], i8 iWords)
     return false;
   }
   
-  ASSERT(StrLib::bEqualTo(pWords[0],"lstbl"));
+  ASSERT(StrLib::bEqualTo(aWords[0],"lstbl"));
   sRequest = "list_tables"_Str;
   return bAppendRequest(sRequest);
 }
@@ -776,7 +776,7 @@ bool SEitf::bListTables(char* pWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* dump an index                                                              */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDumpIndex(char* pWords[], i8 iWords)
+bool SEitf::bDumpIndex(char* aWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -790,7 +790,7 @@ bool SEitf::bDumpIndex(char* pWords[], i8 iWords)
   }
   
   StrLib::vCopy(a,"\"");
-  StrLib::vConcat(a,pWords[1]);
+  StrLib::vConcat(a,aWords[1]);
   StrLib::vConcat(a,"\"");
   
   StrLib::vConcat(a," dump_index");
@@ -801,7 +801,7 @@ bool SEitf::bDumpIndex(char* pWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* dump a table                                                               */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDumpTable(char* pWords[], i8 iWords)
+bool SEitf::bDumpTable(char* aWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -815,7 +815,7 @@ bool SEitf::bDumpTable(char* pWords[], i8 iWords)
   }
   
   StrLib::vCopy(a,"\"");
-  StrLib::vConcat(a,pWords[1]);
+  StrLib::vConcat(a,aWords[1]);
   StrLib::vConcat(a,"\"");
   
   StrLib::vConcat(a," dump_table");
@@ -826,7 +826,7 @@ bool SEitf::bDumpTable(char* pWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* docol                                                                      */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDocol(char* pWords[])
+bool SEitf::bDocol(char* aWords[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -835,7 +835,7 @@ bool SEitf::bDocol(char* pWords[])
   char* a = sRequest.aStr();
   
   StrLib::vCopy(a,"\"");
-  StrLib::vConcat(a,pWords[1]);
+  StrLib::vConcat(a,aWords[1]);
   StrLib::vConcat(a,"\"");
   
   //
@@ -847,7 +847,7 @@ bool SEitf::bDocol(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* drop a table                                                               */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDropTable(char* pWords[], i8 iWords)
+bool SEitf::bDropTable(char* aWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -861,7 +861,7 @@ bool SEitf::bDropTable(char* pWords[], i8 iWords)
   }
   
   StrLib::vCopy(a,"\"");
-  StrLib::vConcat(a,pWords[1]);
+  StrLib::vConcat(a,aWords[1]);
   StrLib::vConcat(a,"\"");
   
   StrLib::vConcat(a," drop_table");
@@ -872,7 +872,7 @@ bool SEitf::bDropTable(char* pWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* add a column                                                               */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bAddColumn(char* pWords[16], i8 iWords)
+bool SEitf::bAddColumn(char* aWords[16], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -886,15 +886,15 @@ bool SEitf::bAddColumn(char* pWords[16], i8 iWords)
   }
   
   StrLib::vCopy(a,"\"");
-  StrLib::vConcat(a,pWords[3]);
+  StrLib::vConcat(a,aWords[3]);
   StrLib::vConcat(a,"\"");
   
   StrLib::vConcat(a," \"");
-  StrLib::vConcat(a,pWords[2]);
+  StrLib::vConcat(a,aWords[2]);
   StrLib::vConcat(a,"\"");
   
   StrLib::vConcat(a," \"");
-  StrLib::vConcat(a,pWords[1]);
+  StrLib::vConcat(a,aWords[1]);
   StrLib::vConcat(a,"\"");
   
   StrLib::vConcat(a," add_column");
@@ -905,7 +905,7 @@ bool SEitf::bAddColumn(char* pWords[16], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* list columns                                                               */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bListColumns(char* pWords[], i8 iWords)
+bool SEitf::bListColumns(char* aWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -919,7 +919,7 @@ bool SEitf::bListColumns(char* pWords[], i8 iWords)
   }
   
   StrLib::vCopy(a,"\"");
-  StrLib::vConcat(a,pWords[1]);
+  StrLib::vConcat(a,aWords[1]);
   StrLib::vConcat(a,"\"");
   
   StrLib::vConcat(a," list_columns");
@@ -930,7 +930,7 @@ bool SEitf::bListColumns(char* pWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* analyze a table                                                            */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bAnalyzeTable(char* pWords[], i8 iWords)
+bool SEitf::bAnalyzeTable(char* aWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -944,7 +944,7 @@ bool SEitf::bAnalyzeTable(char* pWords[], i8 iWords)
   }
   
   StrLib::vCopy(a,"\"");
-  StrLib::vConcat(a,pWords[1]);
+  StrLib::vConcat(a,aWords[1]);
   StrLib::vConcat(a,"\"");
   
   StrLib::vConcat(a," analyze_table");
@@ -955,7 +955,7 @@ bool SEitf::bAnalyzeTable(char* pWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* analyze a table                                                            */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDanalyzeTable(char* pWords[], i8 iWords)
+bool SEitf::bDanalyzeTable(char* aWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -969,7 +969,7 @@ bool SEitf::bDanalyzeTable(char* pWords[], i8 iWords)
   }
   
   StrLib::vCopy(a,"\"");
-  StrLib::vConcat(a,pWords[1]);
+  StrLib::vConcat(a,aWords[1]);
   StrLib::vConcat(a,"\"");
   
   StrLib::vConcat(a," danalyze_table");
@@ -980,7 +980,7 @@ bool SEitf::bDanalyzeTable(char* pWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* copy a table                                                               */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bCopyTable(char* pWords[], i8 iWords)
+bool SEitf::bCopyTable(char* aWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -994,11 +994,11 @@ bool SEitf::bCopyTable(char* pWords[], i8 iWords)
   }
   
   StrLib::vCopy(a,"\"");
-  StrLib::vConcat(a,pWords[2]);
+  StrLib::vConcat(a,aWords[2]);
   StrLib::vConcat(a,"\"");
   
   StrLib::vConcat(a," \"");
-  StrLib::vConcat(a,pWords[1]);
+  StrLib::vConcat(a,aWords[1]);
   StrLib::vConcat(a,"\"");
   
   StrLib::vConcat(a," copy_table");
@@ -1009,7 +1009,7 @@ bool SEitf::bCopyTable(char* pWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* distributed export of a table                                              */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDistExportTable(char* pWords[], i8 iWords)
+bool SEitf::bDistExportTable(char* aWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1023,11 +1023,11 @@ bool SEitf::bDistExportTable(char* pWords[], i8 iWords)
   }
   
   StrLib::vCopy(a,"\"");
-  StrLib::vConcat(a,pWords[2]);
+  StrLib::vConcat(a,aWords[2]);
   StrLib::vConcat(a,"\"");
   
   StrLib::vConcat(a," \"");
-  StrLib::vConcat(a,pWords[1]);
+  StrLib::vConcat(a,aWords[1]);
   StrLib::vConcat(a,"\"");
   
   StrLib::vConcat(a," dist_export_table");
@@ -1038,7 +1038,7 @@ bool SEitf::bDistExportTable(char* pWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* export a table                                                             */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bExportTable(char* pWords[], i8 iWords)
+bool SEitf::bExportTable(char* aWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1052,11 +1052,11 @@ bool SEitf::bExportTable(char* pWords[], i8 iWords)
   }
   
   StrLib::vCopy(a,"\"");
-  StrLib::vConcat(a,pWords[2]);
+  StrLib::vConcat(a,aWords[2]);
   StrLib::vConcat(a,"\"");
   
   StrLib::vConcat(a," \"");
-  StrLib::vConcat(a,pWords[1]);
+  StrLib::vConcat(a,aWords[1]);
   StrLib::vConcat(a,"\"");
   
   StrLib::vConcat(a," export_table");
@@ -1067,7 +1067,7 @@ bool SEitf::bExportTable(char* pWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* load a table from file                                                     */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bLoadTable(char* pWords[], i8 iWords)
+bool SEitf::bLoadTable(char* aWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1081,11 +1081,11 @@ bool SEitf::bLoadTable(char* pWords[], i8 iWords)
   }
   
   StrLib::vCopy(a,"\"");
-  StrLib::vConcat(a,pWords[2]);
+  StrLib::vConcat(a,aWords[2]);
   StrLib::vConcat(a,"\"");
   
   StrLib::vConcat(a," \"");
-  StrLib::vConcat(a,pWords[1]);
+  StrLib::vConcat(a,aWords[1]);
   StrLib::vConcat(a,"\"");
   
   StrLib::vConcat(a," load_table");
@@ -1096,7 +1096,7 @@ bool SEitf::bLoadTable(char* pWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* load a table from stream                                                   */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bLoadTableStream(char* pWords[], i8 iWords)
+bool SEitf::bLoadTableStream(char* aWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1110,11 +1110,11 @@ bool SEitf::bLoadTableStream(char* pWords[], i8 iWords)
   }
   
   StrLib::vCopy(a,"\"");
-  StrLib::vConcat(a,pWords[2]);
+  StrLib::vConcat(a,aWords[2]);
   StrLib::vConcat(a,"\"");
   
   StrLib::vConcat(a," \"");
-  StrLib::vConcat(a,pWords[1]);
+  StrLib::vConcat(a,aWords[1]);
   StrLib::vConcat(a,"\"");
   
   StrLib::vConcat(a," load_table_stream");
@@ -1125,7 +1125,7 @@ bool SEitf::bLoadTableStream(char* pWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* select rows from a table                                                   */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bSelectTable(char* pWords[], i8 iWords)
+bool SEitf::bSelectTable(char* aWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1139,7 +1139,7 @@ bool SEitf::bSelectTable(char* pWords[], i8 iWords)
   }
   
   StrLib::vCopy(a,"\"");
-  StrLib::vConcat(a,pWords[1]);
+  StrLib::vConcat(a,aWords[1]);
   StrLib::vConcat(a,"\"");
   
   StrLib::vConcat(a," select_table");
@@ -1150,7 +1150,7 @@ bool SEitf::bSelectTable(char* pWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* get address/reference of a table                                           */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bGetTable(char* pWords[], i8 iWords)
+bool SEitf::bGetTable(char* aWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1164,7 +1164,7 @@ bool SEitf::bGetTable(char* pWords[], i8 iWords)
   }
   
   StrLib::vCopy(a,"\"");
-  StrLib::vConcat(a,pWords[1]);
+  StrLib::vConcat(a,aWords[1]);
   StrLib::vConcat(a,"\"");
   
   StrLib::vConcat(a," get_table");
@@ -1175,7 +1175,7 @@ bool SEitf::bGetTable(char* pWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* return whether table is in use or not                                      */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bInUseTable(char* pWords[], i8 iWords)
+bool SEitf::bInUseTable(char* aWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1189,7 +1189,7 @@ bool SEitf::bInUseTable(char* pWords[], i8 iWords)
   }
   
   StrLib::vCopy(a,"\"");
-  StrLib::vConcat(a,pWords[1]);
+  StrLib::vConcat(a,aWords[1]);
   StrLib::vConcat(a,"\"");
 
   StrLib::vConcat(a," table_inuse");
@@ -1200,7 +1200,7 @@ bool SEitf::bInUseTable(char* pWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* return address/refernce of a table                                         */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bRetTable(char* pWords[], i8 iWords)
+bool SEitf::bRetTable(char* aWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1221,7 +1221,7 @@ bool SEitf::bRetTable(char* pWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* get pool space                                                             */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bPoolSpace(char* pWords[], i8 iWords)
+bool SEitf::bPoolSpace(char* aWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1242,7 +1242,7 @@ bool SEitf::bPoolSpace(char* pWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* get node status                                                            */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bNodeStatus(char* pWords[], i8 iWords)
+bool SEitf::bNodeStatus(char* aWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1263,7 +1263,7 @@ bool SEitf::bNodeStatus(char* pWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* size of table                                                              */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bSizeTable(char* pWords[], i8 iWords)
+bool SEitf::bSizeTable(char* aWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1277,7 +1277,7 @@ bool SEitf::bSizeTable(char* pWords[], i8 iWords)
   }
   
   StrLib::vCopy(a,"\"");
-  StrLib::vConcat(a,pWords[1]);
+  StrLib::vConcat(a,aWords[1]);
   StrLib::vConcat(a,"\"");
   
   StrLib::vConcat(a," size_table");
@@ -1288,7 +1288,7 @@ bool SEitf::bSizeTable(char* pWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* truncate a table                                                           */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bTruncateTable(char* pWords[], i8 iWords)
+bool SEitf::bTruncateTable(char* aWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1302,7 +1302,7 @@ bool SEitf::bTruncateTable(char* pWords[], i8 iWords)
   }
 
   StrLib::vCopy(a,"\"");
-  StrLib::vConcat(a,pWords[1]);
+  StrLib::vConcat(a,aWords[1]);
   StrLib::vConcat(a,"\"");
   
   StrLib::vConcat(a," truncate_table");
@@ -1313,7 +1313,7 @@ bool SEitf::bTruncateTable(char* pWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* insert row into row buffer                                                 */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bInsertRow(char* pRow)
+bool SEitf::bInsertRow(char* aRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
                               
@@ -1333,7 +1333,7 @@ bool SEitf::bInsertRow(char* pRow)
   vTrace("Buffer: %s Partition:%d\n"_Str,pRowBuffer, m_iPartition);
   
   // insert row into working buffer
-  if (pRowBuffer->bInsertRow(m_pTxRef,pRow,StrLib::iSize(pRow)))
+  if (pRowBuffer->bInsertRow(m_pTxRef,aRow,StrLib::iSize(aRow)))
     return true;
     
   // buffer full, append working buffer into table
@@ -1363,7 +1363,7 @@ bool SEitf::bInsertRow(char* pRow)
   pRowBuffer = m_pRowBuffer[m_iPartition];
   
   // insert row into new working buffer
-  bool bInserted = pRowBuffer->bInsertRow(m_pTxRef,pRow,StrLib::iSize(pRow));
+  bool bInserted = pRowBuffer->bInsertRow(m_pTxRef,aRow,StrLib::iSize(aRow));
   
   return bInserted;
   
@@ -1400,7 +1400,7 @@ bool SEitf::bInsertBuffer(RowBuffer* pRowBuffer, i8 iPartition)
   i8 iSlot = Partition::iPartitionToSlot(iPartition);
                               
   char xArray[C_1KB * 2];
-  char* pWords[16] = {
+  char* aWords[16] = {
     &xArray[C_1KB * 0],
     &xArray[C_1KB * 1]
   };
@@ -1435,7 +1435,7 @@ bool SEitf::bInsertBuffer(RowBuffer* pRowBuffer, i8 iPartition)
 /*----------------------------------------------------------------------------*/
 /* push dictionary                                                            */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bPushDic(char* pWords[])
+bool SEitf::bPushDic(char* aWords[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1444,7 +1444,7 @@ bool SEitf::bPushDic(char* pWords[])
   char* a = sRequest.aStr();
   
   StrLib::vCopy(a,"\"");
-  StrLib::vConcat(a,pWords[1]);
+  StrLib::vConcat(a,aWords[1]);
   StrLib::vConcat(a,"\"");
   
   StrLib::vConcat(a," cf");
@@ -1455,11 +1455,11 @@ bool SEitf::bPushDic(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* print                                                                      */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bPrint(char* pWords[])
+bool SEitf::bPrint(char* aWords[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
-  printf("%s\n",pWords[1]);
+  printf("%s\n",aWords[1]);
   
   return true;
 }
@@ -1467,13 +1467,13 @@ bool SEitf::bPrint(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* get dictionary path                                                        */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bGetDicPath(char* pWords[])
+bool SEitf::bGetDicPath(char* aWords[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  ASSERT(StrLib::bEqualTo(pWords[0],"pwf"));
+  ASSERT(StrLib::bEqualTo(aWords[0],"pwf"));
   sRequest = "pwf"_Str;
   return bAppendRequest(sRequest);
 }
@@ -1481,13 +1481,13 @@ bool SEitf::bGetDicPath(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* get dictionary contents                                                    */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bGetDicContents(char* pWords[])
+bool SEitf::bGetDicContents(char* aWords[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  ASSERT(StrLib::bEqualTo(pWords[0],"lf"));
+  ASSERT(StrLib::bEqualTo(aWords[0],"lf"));
   sRequest = "lf"_Str;
   return bAppendRequest(sRequest);
 }
@@ -1495,13 +1495,13 @@ bool SEitf::bGetDicContents(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* get dictionary contents                                                    */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bGetDicContentsG(char* pWords[])
+bool SEitf::bGetDicContentsG(char* aWords[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  ASSERT(StrLib::bEqualTo(pWords[0],"lfG"));
+  ASSERT(StrLib::bEqualTo(aWords[0],"lfG"));
   sRequest = "lfG"_Str;
   return bAppendRequest(sRequest);
 }
@@ -1509,13 +1509,13 @@ bool SEitf::bGetDicContentsG(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* get monitor string                                                         */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bGetMonitor(char* pWords[])
+bool SEitf::bGetMonitor(char* aWords[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  ASSERT(StrLib::bEqualTo(pWords[0],"mon"));
+  ASSERT(StrLib::bEqualTo(aWords[0],"mon"));
   sRequest = "get_monitor"_Str;
   return bAppendRequest(sRequest);
 }
@@ -1523,13 +1523,13 @@ bool SEitf::bGetMonitor(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* get free space                                                             */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bGetFreeSpace(char* pWords[])
+bool SEitf::bGetFreeSpace(char* aWords[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  ASSERT(StrLib::bEqualTo(pWords[0],"getFreeSpace"));
+  ASSERT(StrLib::bEqualTo(aWords[0],"getFreeSpace"));
   sRequest = "getFreeSpace"_Str;
   return bAppendRequest(sRequest);
 }
@@ -1537,13 +1537,13 @@ bool SEitf::bGetFreeSpace(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* get inUse space                                                            */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bGetInUseSpace(char* pWords[])
+bool SEitf::bGetInUseSpace(char* aWords[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  ASSERT(StrLib::bEqualTo(pWords[0],"getInUseSpace"));
+  ASSERT(StrLib::bEqualTo(aWords[0],"getInUseSpace"));
   sRequest = "getInUseSpace"_Str;
   return bAppendRequest(sRequest);
 }
@@ -1551,13 +1551,13 @@ bool SEitf::bGetInUseSpace(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* get total space                                                            */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bGetTotalSpace(char* pWords[])
+bool SEitf::bGetTotalSpace(char* aWords[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  ASSERT(StrLib::bEqualTo(pWords[0],"getTotalSpace"));
+  ASSERT(StrLib::bEqualTo(aWords[0],"getTotalSpace"));
   sRequest = "getTotalSpace"_Str;
   return bAppendRequest(sRequest);
 }
@@ -1565,13 +1565,13 @@ bool SEitf::bGetTotalSpace(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* get version                                                                */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bGetVersion(char* pWords[])
+bool SEitf::bGetVersion(char* aWords[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  ASSERT(StrLib::bEqualTo(pWords[0],"version"));
+  ASSERT(StrLib::bEqualTo(aWords[0],"version"));
   sRequest = "get_version"_Str;
   return bAppendRequest(sRequest);
 }
@@ -1579,13 +1579,13 @@ bool SEitf::bGetVersion(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* ping test                                                                  */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bPing(char* pWords[])
+bool SEitf::bPing(char* aWords[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  ASSERT(StrLib::bEqualTo(pWords[0],"ping"));
+  ASSERT(StrLib::bEqualTo(aWords[0],"ping"));
   sRequest = "ping"_Str;
   return bAppendRequest(sRequest);
 }
@@ -1593,7 +1593,7 @@ bool SEitf::bPing(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* send object                                                                */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bObject(char* pWords[])
+bool SEitf::bObject(char* aWords[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1608,7 +1608,7 @@ bool SEitf::bObject(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* print row buffer                                                           */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bPrintRowBuffer(char* pWords[])
+bool SEitf::bPrintRowBuffer(char* aWords[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1616,10 +1616,10 @@ bool SEitf::bPrintRowBuffer(char* pWords[])
   char* a = sRequest.aStr();
   
   StrLib::vCopy(a,"\"");
-  StrLib::vConcat(a,pWords[1]);
+  StrLib::vConcat(a,aWords[1]);
   StrLib::vConcat(a,"\"");
 
-  ASSERT(StrLib::bEqualTo(pWords[0],"pRB"));
+  ASSERT(StrLib::bEqualTo(aWords[0],"pRB"));
   StrLib::vConcat(a," pRB");
   
   return bAppendRequest(sRequest);
@@ -1628,13 +1628,13 @@ bool SEitf::bPrintRowBuffer(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* get seitf count                                                            */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bSeitfCount(char* pWords[])
+bool SEitf::bSeitfCount(char* aWords[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  ASSERT(StrLib::bEqualTo(pWords[0],"seitf"));
+  ASSERT(StrLib::bEqualTo(aWords[0],"seitf"));
   sRequest = "seitf_count"_Str;
   return bAppendRequest(sRequest);
 }
@@ -1642,13 +1642,13 @@ bool SEitf::bSeitfCount(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* x test                                                                     */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bX(char* pWords[])
+bool SEitf::bX(char* aWords[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  ASSERT(StrLib::bEqualTo(pWords[0],"ping"));
+  ASSERT(StrLib::bEqualTo(aWords[0],"ping"));
   sRequest = "ping"_Str;
   
   //  static bool bFirst = true;
@@ -1677,7 +1677,7 @@ bool SEitf::bAppendRequest(StrVal& sRequest)
   
   char wItfAddr[32];
   char wWorkspace[C_1KB * 16];
-  char* pCursor = nullptr;
+  char* aCursor = nullptr;
   
   ValWsp xVal;
   ValSet xValSet;
@@ -1697,11 +1697,11 @@ bool SEitf::bAppendRequest(StrVal& sRequest)
   StrLib::vConcat(wWorkspace," >seitf task.this task.seitf! ");
   xVal = wWorkspace;
   //vTrace("%s\n"_Str,xVal.aStr());
-  xValSet.vAppend(pCursor,xVal);
+  xValSet.vAppend(aCursor,xVal);
   
   xVal = sRequest.aStr();
   //vTrace("%s\n"_Str,xVal.aStr());
-  xValSet.vAppend(pCursor,xVal);
+  xValSet.vAppend(aCursor,xVal);
   
   // if the current request id matches the next request id, it means
   // we have not read a response of the previous request
@@ -1747,22 +1747,22 @@ bool SEitf::bPopResponse(eEC& eResult, StrVal& sResponse)
   
   bool b;
   ValSet xValSet;
-  char* pCursor = nullptr;
+  char* aCursor = nullptr;
   
   if (! m_pResponseQueue->bPop(&xValSet))
     return false;
   
   ValWsp* pValWsp;
   
-  b = xValSet.bExtract(pCursor,pValWsp);
+  b = xValSet.bExtract(aCursor,pValWsp);
   ASSERT(b);
   eResult = (eEC)_pIntVal(pValWsp)->iInt();
   
-  b = xValSet.bExtract(pCursor,pValWsp);
+  b = xValSet.bExtract(aCursor,pValWsp);
   ASSERT(b);
   *_pStrVal(&sResponse) = _pStrVal(pValWsp)->aStr();
   
-  b = xValSet.bExtract(pCursor,pValWsp);
+  b = xValSet.bExtract(aCursor,pValWsp);
   ASSERT(! b);
   
 //  vTrace("sResponse: >>>\n%s\n<<<\n\n"_Str,sResponse.aStr());
