@@ -34,7 +34,7 @@ TaskSet::TaskSet(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASKSET,_FOOTER_);
   
-  m_xLock.vInit("TaskSet::m_xLock");
+  m_xLock.vInit("TaskSet::m_xLock"_Str);
   
   m_iCount = 0;
   m_npHead = nullptr;

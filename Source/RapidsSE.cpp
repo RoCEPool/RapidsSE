@@ -45,9 +45,9 @@ Atomic              gzPlanId;
 /*----------------------------------------------------------------------------*/
 void RapidsSE::vExecute(void)
 {
-  gxDdlLock.vInit("gxDdlLock");
+  gxDdlLock.vInit("gxDdlLock"_Str);
   
-  gxDicLock.vInit("gxDicLock");
+  gxDicLock.vInit("gxDicLock"_Str);
   
   try {
     if (gxArguments.m_bCommand) {

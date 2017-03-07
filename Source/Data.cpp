@@ -36,7 +36,7 @@ Data::Data(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DATA,_FOOTER_);
   
-  m_zLock.vInit("Data::m_zLock");
+  m_zLock.vInit("Data::m_zLock"_Str);
   m_iRowStrands = 0;
   m_pHeadStrand = nullptr;
   m_pTailStrand = nullptr;

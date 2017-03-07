@@ -76,11 +76,11 @@ Lock::~Lock(void)
 /*----------------------------------------------------------------------------*/
 /* set name of lock                                                           */
 /*----------------------------------------------------------------------------*/
-void Lock::vInit(const char* aName)
+void Lock::vInit(Str* aName)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   
-  m_aName = aName;
+  m_aName = aName->a();
   
   ASSERT(0 == m_uLockWord); // logic check
 }

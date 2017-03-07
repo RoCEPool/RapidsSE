@@ -485,7 +485,7 @@ bool SEitf::bListTenants(char* pWords[], i8 iWords)
   }
 
   ASSERT(StrLib::bEqualTo(pWords[0],"lsten"));
-  sRequest = "list_tenants";
+  sRequest = "list_tenants"_Str;
   return bAppendRequest(sRequest);
 }
 
@@ -554,7 +554,7 @@ bool SEitf::bListCatalogs(char* pWords[], i8 iWords)
   }
   
   ASSERT(StrLib::bEqualTo(pWords[0],"lscat"));
-  sRequest = "list_catalogs";
+  sRequest = "list_catalogs"_Str;
   return bAppendRequest(sRequest);
 }
 
@@ -623,7 +623,7 @@ bool SEitf::bListSchemas(char* pWords[], i8 iWords)
   }
   
   ASSERT(StrLib::bEqualTo(pWords[0],"lssch"));
-  sRequest = "list_schemas";
+  sRequest = "list_schemas"_Str;
   return bAppendRequest(sRequest);
 }
 
@@ -725,7 +725,7 @@ bool SEitf::bListIndices(char* pWords[], i8 iWords)
   }
   
   ASSERT(StrLib::bEqualTo(pWords[0],"lsidx"));
-  sRequest = "list_indexes";
+  sRequest = "list_indexes"_Str;
   return bAppendRequest(sRequest);
 }
 
@@ -769,7 +769,7 @@ bool SEitf::bListTables(char* pWords[], i8 iWords)
   }
   
   ASSERT(StrLib::bEqualTo(pWords[0],"lstbl"));
-  sRequest = "list_tables";
+  sRequest = "list_tables"_Str;
   return bAppendRequest(sRequest);
 }
 
@@ -1474,7 +1474,7 @@ bool SEitf::bGetDicPath(char* pWords[])
   s256 sRequest;
   
   ASSERT(StrLib::bEqualTo(pWords[0],"pwf"));
-  sRequest = "pwf";
+  sRequest = "pwf"_Str;
   return bAppendRequest(sRequest);
 }
 
@@ -1488,7 +1488,7 @@ bool SEitf::bGetDicContents(char* pWords[])
   s256 sRequest;
   
   ASSERT(StrLib::bEqualTo(pWords[0],"lf"));
-  sRequest = "lf";
+  sRequest = "lf"_Str;
   return bAppendRequest(sRequest);
 }
 
@@ -1502,7 +1502,7 @@ bool SEitf::bGetDicContentsG(char* pWords[])
   s256 sRequest;
   
   ASSERT(StrLib::bEqualTo(pWords[0],"lfG"));
-  sRequest = "lfG";
+  sRequest = "lfG"_Str;
   return bAppendRequest(sRequest);
 }
 
@@ -1516,7 +1516,7 @@ bool SEitf::bGetMonitor(char* pWords[])
   s256 sRequest;
   
   ASSERT(StrLib::bEqualTo(pWords[0],"mon"));
-  sRequest = "get_monitor";
+  sRequest = "get_monitor"_Str;
   return bAppendRequest(sRequest);
 }
 
@@ -1530,7 +1530,7 @@ bool SEitf::bGetFreeSpace(char* pWords[])
   s256 sRequest;
   
   ASSERT(StrLib::bEqualTo(pWords[0],"getFreeSpace"));
-  sRequest = "getFreeSpace";
+  sRequest = "getFreeSpace"_Str;
   return bAppendRequest(sRequest);
 }
 
@@ -1544,7 +1544,7 @@ bool SEitf::bGetInUseSpace(char* pWords[])
   s256 sRequest;
   
   ASSERT(StrLib::bEqualTo(pWords[0],"getInUseSpace"));
-  sRequest = "getInUseSpace";
+  sRequest = "getInUseSpace"_Str;
   return bAppendRequest(sRequest);
 }
 
@@ -1558,7 +1558,7 @@ bool SEitf::bGetTotalSpace(char* pWords[])
   s256 sRequest;
   
   ASSERT(StrLib::bEqualTo(pWords[0],"getTotalSpace"));
-  sRequest = "getTotalSpace";
+  sRequest = "getTotalSpace"_Str;
   return bAppendRequest(sRequest);
 }
 
@@ -1572,7 +1572,7 @@ bool SEitf::bGetVersion(char* pWords[])
   s256 sRequest;
   
   ASSERT(StrLib::bEqualTo(pWords[0],"version"));
-  sRequest = "get_version";
+  sRequest = "get_version"_Str;
   return bAppendRequest(sRequest);
 }
 
