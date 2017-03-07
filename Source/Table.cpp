@@ -204,7 +204,7 @@ i8 Table::iRowPartition(char* pRow)
   // modulo to get partition number
   i8 iPartition = iHash % (gxArguments.m_nSlots * gpGrid->iNodes());
   
-  //vTrace("Partition: %lld\n",m_iPartition);
+  //vTrace("Partition: %lld\n"_Str,m_iPartition);
   return iPartition;
 }
 
@@ -258,7 +258,7 @@ void Table::vDump(eCN eClass, Object* pObject, const char* aTab)
   
   Table* pTable = reinterpret_cast<Table*>(pObject);
   
-  vTrace("name %s type %s\n",
+  vTrace("name %s type %s\n"_Str,
          pTable->m_sTableName.aStr(),
          aTT[pTable->m_eTableType]->a());
 }

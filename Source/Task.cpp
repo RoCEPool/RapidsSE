@@ -1033,11 +1033,11 @@ Word* Task::pCompileColon(StrVal& sDefinition)
   
   // get :
   m_pTokeniser->vNextToken();
-  //vTrace("CompileColon: %s\n",m_sToken.aStr());
+  //vTrace("CompileColon: %s\n"_Str,m_sToken.aStr());
   
   // get name of word
   m_pTokeniser->vNextToken();
-  //vTrace("CompileColon: %s\n",m_sToken.aStr());
+  //vTrace("CompileColon: %s\n"_Str,m_sToken.aStr());
   
   Dic* pDic;
   if (m_xPathStack.iCount())
@@ -1053,7 +1053,7 @@ Word* Task::pCompileColon(StrVal& sDefinition)
   
   while (TK_NONE != m_pTokeniser->eToken()) {
     
-    //vTrace("CompileColon: %s\n",m_sToken.aStr());
+    //vTrace("CompileColon: %s\n"_Str,m_sToken.aStr());
     
     if (StrLib::bEqualTo(";",m_pTokeniser->sToken().aStr()))
       break;
@@ -1122,16 +1122,16 @@ Word* Task::pCompileConstant(StrVal& sDefinition)
   
   // get string
   m_pTokeniser->vNextToken();
-  //vTrace("CompileConstant: %s\n",m_pTokeniser->sToken().aStr());
+  //vTrace("CompileConstant: %s\n"_Str,m_pTokeniser->sToken().aStr());
   xValWsp = m_pTokeniser->sToken().aStr();
   
   // get CONSTANT
   m_pTokeniser->vNextToken();
-  //vTrace("CompileConstant: %s\n",m_pTokeniser->sToken().aStr());
+  //vTrace("CompileConstant: %s\n"_Str,m_pTokeniser->sToken().aStr());
   
   // get name of word
   m_pTokeniser->vNextToken();
-  //vTrace("CompileConstant: %s\n",m_pTokeniser->sToken().aStr());
+  //vTrace("CompileConstant: %s\n"_Str,m_pTokeniser->sToken().aStr());
 
   Str* aName = (Str*)m_pTokeniser->sToken().aStr();
   vAddConstant(aName,_pStrVal(&xValWsp)->aStr());
@@ -1160,7 +1160,7 @@ void Task::vDump(eCN eClass, Object* pObject, const char* aTab)
   
   Task* pTask = reinterpret_cast<Task*>(pObject);
   
-  vTrace("%s TaskNo %lld state %s txId %lld\n",
+  vTrace("%s TaskNo %lld state %s txId %lld\n"_Str,
          pTask->m_sName.aStr(),
          pTask->m_iTaskNo,
          aTS[pTask->m_eState]->a(),
@@ -1174,7 +1174,7 @@ void Task::vContentDump(void)
 {
   _poolAddress_(this);
   
-  vTrace("%sTask %02lld %p: %16s state %8s txId %lld\n",
+  vTrace("%sTask %02lld %p: %16s state %8s txId %lld\n"_Str,
          aDoubleTab(),
          m_iTaskNo,
          this,
@@ -1346,7 +1346,7 @@ void Task::vPrimitive(const char* aPrimitive)
   s48K sStackContents;
   vStackContents(m_pDataStack, sStackContents);
   
-  vTrace("%s\n",sStackContents.aStr());
+  vTrace("%s\n"_Str,sStackContents.aStr());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1627,7 +1627,7 @@ void Task::vTracePoint(const char* aMark)
   i8 iAuxValues    = m_pAuxStack->iValues();
   i8 iDataValues   = m_pDataStack->iValues();
   i8 iReturnValues = m_pReturnStack->iValues();
-  vTrace("[%s(N%d):%8s\\%lld %-11s] %-16s %-16s : a%2lld=",
+  vTrace("[%s(N%d):%8s\\%lld %-11s] %-16s %-16s : a%2lld="_Str,
          
          gpGrid->pThisNode()->pNodeName(),
          gpGrid->iThisNode(),
@@ -1642,13 +1642,13 @@ void Task::vTracePoint(const char* aMark)
   s48K sStackContents;
   vStackContents(m_pAuxStack, sStackContents);
   
-  vTrace("%s",sStackContents.aStr());
+  vTrace("%s"_Str,sStackContents.aStr());
   
-  vTrace(" r%2lld  d%2lld=", iReturnValues, iDataValues);
+  vTrace(" r%2lld  d%2lld="_Str, iReturnValues, iDataValues);
 
   vStackContents(m_pDataStack, sStackContents);
   
-  vTrace("%s\n",sStackContents.aStr());
+  vTrace("%s\n"_Str,sStackContents.aStr());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1691,7 +1691,7 @@ void Task::vLoop(void)
     
     m_pEntryCell = IP.m_pCell->m_ppEntryStep + 1;
     
-    //vTrace("pTaskStep %p\n",pTaskStep);
+    //vTrace("pTaskStep %p\n"_Str,pTaskStep);
     
     IP.m_pCell++;
     

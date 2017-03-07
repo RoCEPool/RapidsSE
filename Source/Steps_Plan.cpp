@@ -354,7 +354,7 @@ void Task::vPlanOpFrameFind(NNP_Task nnpTask)
     THROW_INVALID_DSTACK("plan.opFrame?");
   
   if (nnpTask->m_iTracing) {
-    vTrace("Find frame %s\n",sName.aStr());
+    vTrace("Find frame %s\n"_Str,sName.aStr());
     i8 i = 0;
   }
   

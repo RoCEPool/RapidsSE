@@ -96,7 +96,7 @@ void TaskSet::vContentDump(void)
   
   m_xLock.vGrabWrite();
 
-  vTrace("TaskSet %p: Count %lld Head %pd Tail %p\n",
+  vTrace("TaskSet %p: Count %lld Head %pd Tail %p\n"_Str,
          this,
          m_iCount,
          m_npHead,

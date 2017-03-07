@@ -161,7 +161,7 @@ void Task::vIndexEntryTest(NNP_Task nnpTask)
   if ( ! nnpTask->m_pDataStack->bPop(sRow) )
     THROW_INVALID_DSTACK("index::entryTest");
   
-  vTrace("index::entryTest -- %s\n",sRow.aStr());
+  vTrace("index::entryTest -- %s\n"_Str,sRow.aStr());
   
   EntWsp xEntWsp;
   

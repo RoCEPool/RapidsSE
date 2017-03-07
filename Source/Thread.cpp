@@ -90,7 +90,7 @@ void* Thread::vEntry(void* pArg)
   Thread* pThread = static_cast<Thread*>(pArg);
   
   if (gxArguments.m_bVerbose)
-    vTrace("[[%s]] Thread::vEntry %p\n",pThread->sName().aStr(),pThread);
+    vTrace("[[%s]] Thread::vEntry %p\n"_Str,pThread->sName().aStr(),pThread);
   
   try {
     pThread->vLoop();
@@ -116,7 +116,7 @@ void* Thread::vEntry(void* pArg)
 
 
   if (gxArguments.m_bVerbose)
-    vTrace("[[%s]] Thread:;vEntry %p exiting\n",pThread->sName().aStr(),pThread);
+    vTrace("[[%s]] Thread:;vEntry %p exiting\n"_Str,pThread->sName().aStr(),pThread);
   
   delete pThread;
   
@@ -171,7 +171,7 @@ i8 Thread::iCpu(void)
 /*----------------------------------------------------------------------------*/
 void Thread::vContentDump(void) const
 {
-  vTrace("Thread %p: OpSysThreadId %lld PosixThreadId %llx\n",
+  vTrace("Thread %p: OpSysThreadId %lld PosixThreadId %llx\n"_Str,
          this,
          m_xPosixThread.m_iOpSysThreadId,
          m_xPosixThread.m_iPosixThreadId);
@@ -185,18 +185,18 @@ void Thread::vLoop(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
   if (gxArguments.m_bVerbose)
-    vTrace("Thread %p: %s loop\n",this,m_sName.aStr());
+    vTrace("Thread %p: %s loop\n"_Str,this,m_sName.aStr());
   
   m_xPosixThread.vSetOSThreadId();
   
-//  vTrace("Thread %p: priority %lld\n",
+//  vTrace("Thread %p: priority %lld\n"_Str,
 //         this,
 //         m_xPosixThread.iThreadPriority()
 //         );
   
   //m_xPosixThread.vThreadBoost(C_THREAD_BOOST);                //! RANDOM ERROR
   
-//  vTrace("Thread %p: priority %lld\n",
+//  vTrace("Thread %p: priority %lld\n"_Str,
 //         this,
 //         m_xPosixThread.iThreadPriority()
 //         );
@@ -226,7 +226,7 @@ void Thread::vLoop(void)
       
       if ( ! m_npTask ) {
         //if (bWarn && gxArguments.m_bVerbose)
-        //  vTrace("[[%s]] Thread::vLoop no task\n",m_sName.aStr());
+        //  vTrace("[[%s]] Thread::vLoop no task\n"_Str,m_sName.aStr());
         bWarn = false;
         //m_xPosixThread.vNanoSleep(10_MB);
         //m_xPosixThread.vSecSleep(1);
@@ -242,7 +242,7 @@ void Thread::vLoop(void)
       m_npTask->vState(TS_RUNNING);
       
 //      if (gxArguments.m_bVerbose)
-//        vTrace("[[%s]] Thread::vLoop running [%s] %p\n",m_sName.aStr(),m_npTask->sName().aStr(),*m_npTask);
+//        vTrace("[[%s]] Thread::vLoop running [%s] %p\n"_Str,m_sName.aStr(),m_npTask->sName().aStr(),*m_npTask);
       
       // set rdtscp
       m_npTask->vThread(this);

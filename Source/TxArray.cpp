@@ -69,7 +69,7 @@ void TxArray::vDump(eCN eClass, Object* pObject, const char* aTab)
     if (pTxArray->m_pTx[iTx] != nullptr)
       iTxCount++;
   
-  vTrace("tx count %lld\n",
+  vTrace("tx count %lld\n"_Str,
          iTxCount);
 }
 

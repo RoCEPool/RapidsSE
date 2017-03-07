@@ -85,7 +85,7 @@ void Task::vAllParticipants(NNP_Task nnpTask)
   
   Word* pCurrentWord = nnpTask->m_pCurrentWord;
   
-  //vTrace("Task::vImmediate: %s\n",pCurrentWord->sName().aStr());
+  //vTrace("Task::vImmediate: %s\n"_Str,pCurrentWord->sName().aStr());
   
   pCurrentWord->vDistributed(DT_ALLPARTICIPANTS);
   
@@ -469,7 +469,7 @@ void Task::vIndirect(NNP_Task nnpTask)
   
   Word* pCurrentWord = nnpTask->m_pCurrentWord;
   
-  //vTrace("Task::vImmediate: %s\n",pCurrentWord->sName().aStr());
+  //vTrace("Task::vImmediate: %s\n"_Str,pCurrentWord->sName().aStr());
   
   pCurrentWord->vIndirect(true);
   
@@ -485,7 +485,7 @@ void Task::vImmediate(NNP_Task nnpTask)
   
   Word* pCurrentWord = nnpTask->m_pCurrentWord;
   
-  //vTrace("Task::vImmediate: %s\n",pCurrentWord->sName().aStr());
+  //vTrace("Task::vImmediate: %s\n"_Str,pCurrentWord->sName().aStr());
   
   pCurrentWord->vImmediate(true);
   
@@ -544,7 +544,7 @@ void Task::vOneParticipant(NNP_Task nnpTask)
   
   Word* pCurrentWord = nnpTask->m_pCurrentWord;
   
-  //vTrace("Task::vImmediate: %s\n",pCurrentWord->sName().aStr());
+  //vTrace("Task::vImmediate: %s\n"_Str,pCurrentWord->sName().aStr());
   
   pCurrentWord->vDistributed(DT_ONEPARTICIPANT);
   
@@ -674,11 +674,11 @@ void Task::vSee(NNP_Task nnpTask)
   
   Word* pWord = nnpTask->m_xPathStack.pFindWord(nnpTask->m_pTokeniser->sToken().aStr());
   if ( ! pWord ) {
-    vTrace("See: %s unknown\n",nnpTask->m_pTokeniser->sToken().aStr());
+    vTrace("See: %s unknown\n"_Str,nnpTask->m_pTokeniser->sToken().aStr());
     return;
   }
   
-  vTrace("See: %s\n",pWord->sName().aStr());
+  vTrace("See: %s\n"_Str,pWord->sName().aStr());
   
   Cell* pDoesCell = pWord->pEntryCell();
   
@@ -694,11 +694,11 @@ void Task::vSee(NNP_Task nnpTask)
         *pDoesCell->m_ppEntryStep == Task::vFlowJumpFalse ||
         *pDoesCell->m_ppEntryStep == Task::vFlowJumpTrue ) {
       
-      vTrace("%p: %s",pDoesCell,pCallsWord->sName().aStr());
+      vTrace("%p: %s"_Str,pDoesCell,pCallsWord->sName().aStr());
       
       pDoesCell++;
       
-      vTrace(" %p\n",pDoesCell->m_pJumpTo);
+      vTrace(" %p\n"_Str,pDoesCell->m_pJumpTo);
       
       pDoesCell++;
       
@@ -708,18 +708,18 @@ void Task::vSee(NNP_Task nnpTask)
     // push
     if ( *pDoesCell->m_ppEntryStep == Task::vPushValue ) {
       
-      vTrace("%p: %s",pDoesCell,pCallsWord->sName().aStr());
+      vTrace("%p: %s"_Str,pDoesCell,pCallsWord->sName().aStr());
       
       pDoesCell++;
       
       ValWsp* pValue = reinterpret_cast<ValWsp*>(pDoesCell);
       
       if (CN_STRVAL == pValue->eClass()) {
-        vTrace(" \"%s\"\n",_pStrVal(pValue)->aStr());
+        vTrace(" \"%s\"\n"_Str,_pStrVal(pValue)->aStr());
       }
       else {
         ValLib::vToString(pValue,sWorkspace.aStr());
-        vTrace(" %s\n",sWorkspace.aStr());
+        vTrace(" %s\n"_Str,sWorkspace.aStr());
       }
       
       i8 iBytes = ValLib::iSize(pValue);
@@ -734,13 +734,13 @@ void Task::vSee(NNP_Task nnpTask)
       Word* pCallsWord = (Word*)( ((u8)pDoesCell->m_ppEntryStep & (u8)~0xFFFF)
                                  + sizeof(HeapBuffer));
       
-      vTrace("%p: %s\n",pDoesCell,pCallsWord->sName().aStr());
+      vTrace("%p: %s\n"_Str,pDoesCell,pCallsWord->sName().aStr());
       pDoesCell++;
       continue;
     }
     
     // other
-    vTrace("%p: %s\n",pDoesCell,pCallsWord->sName().aStr());
+    vTrace("%p: %s\n"_Str,pDoesCell,pCallsWord->sName().aStr());
     
     pDoesCell++;
   }
