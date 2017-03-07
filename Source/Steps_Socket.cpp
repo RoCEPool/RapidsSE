@@ -145,13 +145,13 @@ void Task::vSocketConnect(NNP_Task nnpTask)
       
       if (iError == ETIMEDOUT) {
         if (0 == iTimedOutCount++)
-          vTrace("Connect timedout... retrying...\n");
+          vTrace("Connect timedout... retrying...\n"_Str);
         continue;
       }
       
       if (iError == ECONNREFUSED) {
         if (0 == iConnRefusedCount++)
-          vTrace("Connect refused... retrying...\n");
+          vTrace("Connect refused... retrying...\n"_Str);
         continue;
       }
       

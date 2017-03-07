@@ -55,7 +55,7 @@ void BPA::vBufferDump(Buffer* pBuffer)
   
   pDUMPFUN* pDumpFun = gpDump[eClass];
   
-  vTrace("%s%p %-12s: ",aDoubleTab(),pBuffer,aCN[eClass]);
+  vTrace("%s%p %-12s: "_Str,aDoubleTab(),pBuffer,aCN[eClass]);
 
   (pDumpFun)(pBuffer->eClass(), pBuffer, aSingleTab());
   
@@ -74,7 +74,7 @@ void BPA::vHeapDump(Heap* pHeap)
   
   HeapBuffer* pHeapBuffer;
   
-  vTrace("\n");
+  vTrace("\n"_Str);
   vTrace("%sObjects in %s Heap:\n"_Str,
          aSingleTab(),
          pHeap->iObjectSize() == C_SIZE_SMALL_OBJECT ? "Small" : "Medium");
@@ -103,7 +103,7 @@ void BPA::vHeapDump(Heap* pHeap)
       
       pDUMPFUN* pDumpFun = gpDump[eClass];
       
-      vTrace("%s%p %-12s: ",aDoubleTab(),pHeap,aCN[eClass]);
+      vTrace("%s%p %-12s: "_Str,aDoubleTab(),pHeap,aCN[eClass]);
 
       (pDumpFun)(eClass, pChunk, aDoubleTab());
     }
@@ -121,7 +121,7 @@ void BPA::vHeapDump(Heap* pHeap, i8 iEpoch)
   
   HeapBuffer* pHeapBuffer;
   
-  vTrace("\n");
+  vTrace("\n"_Str);
   vTrace("%sWords in %s Heap:\n"_Str,
          aDoubleTab(),
          pHeap->iObjectSize() == C_SIZE_SMALL_OBJECT ? "Small" : "Medium");
@@ -155,7 +155,7 @@ void BPA::vHeapDump(Heap* pHeap, i8 iEpoch)
       
       pDUMPFUN* pDumpFun = gpDump[eClass];
       
-      vTrace("%s%p %-12s: ",aDoubleTab(),pHeap,aCN[eClass]);
+      vTrace("%s%p %-12s: "_Str,aDoubleTab(),pHeap,aCN[eClass]);
       
       (pDumpFun)(eClass, pChunk, aDoubleTab());
     }
@@ -171,7 +171,7 @@ void BPA::vObjectList(void)
 {
   _precondition_(_MAGIC_,CN_BPA,_FOOTER_);
   
-  vTrace("\n");
+  vTrace("\n"_Str);
   vTrace("%sObjects in Buffer Pool:\n"_Str,aSingleTab());
   
   Buffer* pMediumHeap = nullptr;
@@ -224,8 +224,8 @@ void BPA::vObjectSummary(void)
     iCountObjects[pBuffer->eClass()]++;
   }
   
-  vTrace("\n");
-  vTrace("  BufferPool Object Summary:\n");
+  vTrace("\n"_Str);
+  vTrace("  BufferPool Object Summary:\n"_Str);
   for (i8 index = 0; index < CN_ENUMS; index++) {
     eCN eClass = (eCN)index;
     
@@ -237,8 +237,8 @@ void BPA::vObjectSummary(void)
   
   gpSmallHeap->vAnalyse(iCountObjects);
   
-  vTrace("\n");
-  vTrace("  SmallHeap Object Summary:\n");
+  vTrace("\n"_Str);
+  vTrace("  SmallHeap Object Summary:\n"_Str);
   for (i8 index = 0; index < CN_ENUMS; index++) {
     eCN eClass = (eCN)index;
     
@@ -250,8 +250,8 @@ void BPA::vObjectSummary(void)
   
   gpMediumHeap->vAnalyse(iCountObjects);
   
-  vTrace("\n");
-  vTrace("  MediumHeap Object Summary:\n");
+  vTrace("\n"_Str);
+  vTrace("  MediumHeap Object Summary:\n"_Str);
   for (i8 index = 0; index < CN_ENUMS; index++) {
     eCN eClass = (eCN)index;
     
@@ -266,8 +266,8 @@ void BPA::vObjectSummary(void)
   
 //  gpJumboHeap->vAnalyse(iCountObjects);
 //  
-//  vTrace("\n");
-//  vTrace("  JumboHeap Object s:\n");
+//  vTrace("\n"_Str);
+//  vTrace("  JumboHeap Object s:\n"_Str);
 //  for (i8 index = 0; index < CN_ENUMS; index++) {
 //    eCN eClass = (eCN)index;
 //    
@@ -314,16 +314,16 @@ void BPA::vPoolAnalyze(void)
   // increment the epoch
   gpAttachMap->m_iEpoch++;
   
-  vTrace("\n");
-  vTrace("****************************************************************\n");
-  vTrace("* Buffer Pool Analysis                                         *\n");
-  vTrace("****************************************************************\n");
+  vTrace("\n"_Str);
+  vTrace("****************************************************************\n"_Str);
+  vTrace("* Buffer Pool Analysis                                         *\n"_Str);
+  vTrace("****************************************************************\n"_Str);
   
   vRegionSummary();
   vObjectSummary();
   vResourceSummary();
   
-  vTrace("\n");
+  vTrace("\n"_Str);
   
   _postcondition_(_MAGIC_,CN_BPA,_FOOTER_);
 }
@@ -338,17 +338,17 @@ void BPA::vPoolDump(void)
   // increment the epoch
   gpAttachMap->m_iEpoch++;
   
-  vTrace("\n");
-  vTrace("****************************************************************\n");
-  vTrace("* Buffer Pool Dump                                             *\n");
-  vTrace("****************************************************************\n");
+  vTrace("\n"_Str);
+  vTrace("****************************************************************\n"_Str);
+  vTrace("* Buffer Pool Dump                                             *\n"_Str);
+  vTrace("****************************************************************\n"_Str);
   
   vRegionSummary();
   vObjectSummary();
   vObjectList();
   vResourceSummary();
   
-  vTrace("\n");
+  vTrace("\n"_Str);
   
   _postcondition_(_MAGIC_,CN_BPA,_FOOTER_);
 }
@@ -366,14 +366,14 @@ void BPA::vRegionSummary(void)
   s32 sMagLarge;  Magnitudes::vMagnitude(C_SIZE_LARGE_OBJECT, sMagLarge.aStr());
   s32 sMagJumbo;  Magnitudes::vMagnitude(C_SIZE_JUMBO_OBJECT, sMagJumbo.aStr());
   
-  vTrace("\n");
+  vTrace("\n"_Str);
   vTrace("  Region %s %p size %lldB epoch %lld\n"_Str,
          gxArguments.m_sRegionName.aStr(),
          gpBufferPool,
          gxArguments.m_iRegionSize,
          gpAttachMap->m_iEpoch);
   
-  vTrace("\n");
+  vTrace("\n"_Str);
   
   vTrace("  BufferPool (%4s) buffers %-6lld alloc %-6lld free %-6lld \n"_Str,
          sMagLarge.aStr(),
@@ -410,15 +410,15 @@ void BPA::vResourceSummary(void)
 {
   _precondition_(_MAGIC_,CN_BPA,_FOOTER_);
   
-  vTrace("\n");
-  vTrace("****************************************************************\n");
+  vTrace("\n"_Str);
+  vTrace("****************************************************************\n"_Str);
   vTrace(" Resources: dir %lld file %lld shm %lld socket %lld thread %lld\n"_Str,
          *gzDirOpenCount,
          *gzFileOpenCount,
          *gzShmOpenCount,
          *gzSocketOpenCount,
          *gzThreadOpenCount);
-  vTrace("****************************************************************\n");
+  vTrace("****************************************************************\n"_Str);
   
   _postcondition_(_MAGIC_,CN_BPA,_FOOTER_);
 }

@@ -255,7 +255,7 @@ bool RowStrand::bExtendStrand(void)
 
   RowBuffer* pNewBuffer = RowBuffer::pNewRowBuffer();
   if (! pNewBuffer) {
-    vTrace("RowBuffer allocation failed\n");
+    vTrace("RowBuffer allocation failed\n"_Str);
     return false;
   }
   

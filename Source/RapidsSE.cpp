@@ -100,7 +100,7 @@ void RapidsSE::vExecute(void)
       Region::vUnlink(gxArguments.m_sRegionName);
     }
     else {
-      vTrace("Unknown command line argument\n");
+      vTrace("Unknown command line argument\n"_Str);
       printf("RapidsSE exits\n");
       exit(EXIT_FAILURE);
 
@@ -179,7 +179,7 @@ void RapidsSE::vPoolOpen(void)
   bResult = Region::bAttach(gxArguments.m_sRegionName);
   ASSERT(bResult);
   vAttachObjects();
-  //vTrace("Error: RapidsSE missing arguments\n");
+  //vTrace("Error: RapidsSE missing arguments\n"_Str);
   //exit(EXIT_FAILURE);
 }
 
@@ -243,7 +243,7 @@ void RapidsSE::vCreateObjects(void)
 void RapidsSE::vDicCompile(NP_Task npRootTask)
 {
   if (gxArguments.m_bVerbose)
-    vTrace("[[mainThread]] DicCompile...\n");
+    vTrace("[[mainThread]] DicCompile...\n"_Str);
   
   npRootTask->vInitialiseMain();
   
@@ -369,7 +369,7 @@ void RapidsSE::vStartActors(void)
     vTrace("Shm region initialised at: %s\n"_Str,gpAttachMap->m_sUTC.aStr());
 
   if (gxArguments.m_bVerbose)
-    vTrace("Starting actors\n");
+    vTrace("Starting actors\n"_Str);
 
   
   // seed root task to start the system

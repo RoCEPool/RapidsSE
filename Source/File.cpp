@@ -165,7 +165,7 @@ void File::vClose(void)
   ASSERT(! bIsStdin() );
   
   if (m_iTraceLevel)
-    vTrace("File::vClose: closing file %s mode %s",m_sFilePath.aStr(),m_sOpenMode.aStr());
+    vTrace("File::vClose: closing file %s mode %s"_Str,m_sFilePath.aStr(),m_sOpenMode.aStr());
   
   if ( ! m_aFilePtr ) {
     m_xSysCall.vFailure(0);
@@ -358,7 +358,7 @@ bool File::bOpen(void)
   }
   
   if (m_iTraceLevel)
-    vTrace("File::bOpen: opening file %s mode %s",m_sFilePath.aStr(),m_sOpenMode.aStr());
+    vTrace("File::bOpen: opening file %s mode %s"_Str,m_sFilePath.aStr(),m_sOpenMode.aStr());
   
   m_aFilePtr = fopen(m_sFilePath.aStr(),m_sOpenMode.aStr());
   

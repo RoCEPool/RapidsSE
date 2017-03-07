@@ -16,8 +16,7 @@ namespace Debugging
   
   void  vReportOption(i8 iReportOption);
   
-  void  vInfo(Str* aFormat,...);
-  void  vTrace(const char* pFormat,...);
+  void  vInfo(Str* pFormat,...);
   void  vTrace(Str* aFormat,...);
   void  vWarn(Str* aFormat,...);
   void  vError(Str* aFormat,...);

@@ -98,7 +98,7 @@ void Grid::vDump(eCN eClass, Object* pObject, const char* aTab)
   
   Grid* pGrid = reinterpret_cast<Grid*>(pObject);
   
-  vTrace("\n");
+  vTrace("\n"_Str);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -111,7 +111,7 @@ void Grid::vDumpPartitioning(void)
   for (i8 iIndex = 0; iIndex < m_nPartitions; iIndex++)
     vTrace("Partition: %lld; Node: %lld\n"_Str, iIndex,
            Partition::iPartitionToNode(iIndex));
-  vTrace("\n");
+  vTrace("\n"_Str);
 }
 
 /*----------------------------------------------------------------------------*/

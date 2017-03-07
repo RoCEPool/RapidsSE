@@ -41,20 +41,6 @@ void Debugging::vInfo(Str* aFormat, ...)
 /*---------------------------------------------------------------------------*/
 /* report a trace message                                                    */
 /*---------------------------------------------------------------------------*/
-void Debugging::vTrace(const char* psFormat, ...)
-{
-  va_list xArgs;
-  
-  va_start(xArgs,psFormat);
-  
-  vReport(C_REPORT_TRACE,psFormat,xArgs);
-  
-  va_end(xArgs);
-}
-
-/*---------------------------------------------------------------------------*/
-/* report a trace message                                                    */
-/*---------------------------------------------------------------------------*/
 void Debugging::vTrace(Str* aFormat, ...)
 {
   va_list xArgs;

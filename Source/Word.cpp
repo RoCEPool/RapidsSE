@@ -239,8 +239,8 @@ void Word::vContentDump(void)
   
   Word* pStepWord = gpMainDic->pFindStep(m_pEntryStep);
   
-  vTrace("Word %p: %s %s Kind %s Indirect %d Immediate %d DataBytes %lld "
-         "Step %p %s ..Data.. %p\n",
+  vTrace("Word %p: %s %s Kind %s Indirect %d Immediate %d DataBytes %lld "_Str
+         "Step %p %s ..Data.. %p\n"_Str,
          this,
          m_sName.aStr(),
          aWT[m_eWordType]->a(),
@@ -651,14 +651,14 @@ void Word::vObjectDump(const char* aTab)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  vTrace("epoch %lld %s (%s) %s %s %s DataBytes %lld "
-         "Step %p ..Data.. %p\n",
+  vTrace("epoch %lld %s (%s) %s %s %s DataBytes %lld "_Str
+         "Step %p ..Data.. %p\n"_Str,
          m_iEpoch,
          m_sName.aStr(),
          m_pDic->sName().aStr(),
          aWT[m_eWordType]->a(),
-         m_bIndirect ? "Indirect" : "Not Indirect",
-         m_bImmediate ? "Immediate" : "Not Immediate",
+         m_bIndirect ? "Indirect"_Str : "Not Indirect"_Str,
+         m_bImmediate ? "Immediate"_Str : "Not Immediate"_Str,
 //       m_iDataBytes,
          m_xBody.nUsed(),
          m_pEntryStep,

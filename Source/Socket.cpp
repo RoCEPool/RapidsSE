@@ -520,7 +520,7 @@ bool Socket::bBind(int iPort, SysCall& SysCall)
   
   vAddrInit(&xAddr,iPort);
   
-  vTrace("sin_port %d; sin_addr.s_add %d\n"
+  vTrace("sin_port %d; sin_addr.s_add %d\n"_Str
     ,xAddr.sin_port
     ,xAddr.sin_addr.s_addr
     );
@@ -552,7 +552,7 @@ bool Socket::bBind(const char* sAddr, int iPort, SysCall& SysCall)
   
   vAddrInit(&xAddr,sAddr,iPort);
   
-  vTrace("sin_port %d; sin_addr.s_add %d\n"
+  vTrace("sin_port %d; sin_addr.s_add %d\n"_Str
     ,xAddr.sin_port
     ,xAddr.sin_addr.s_addr
     );
@@ -613,7 +613,7 @@ bool Socket::bServer(const char* sAddr, int iPort, SysCall& SysCall)
   
   vAddrInit(&m_xServAddr,sAddr,iPort);
   
-  vTrace("sin_port %d; sin_addr.s_add %d\n"
+  vTrace("sin_port %d; sin_addr.s_add %d\n"_Str
     ,m_xServAddr.sin_port
     ,m_xServAddr.sin_addr.s_addr
     );

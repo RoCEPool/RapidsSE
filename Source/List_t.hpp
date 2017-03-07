@@ -125,7 +125,7 @@ void List_t<OBJECT>::vContentDump(const char* aTitle, const char* aTab)
     pObject->vContentDump();
   }
   xCursor.vEnd();
-  vTrace("\n");
+  vTrace("\n"_Str);
   
   //vReadUnlock();
   
