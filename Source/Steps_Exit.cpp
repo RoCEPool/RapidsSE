@@ -44,7 +44,7 @@ void Task::vExit(NNP_Task nnpTask)
 {
   ENTRY("vExit");
   
-  //vTrace("Exit: return stack %lld\n", nnpTask->m_pReturnStack->iValues());
+  //vTrace("Exit: return stack %lld\n"_Str, nnpTask->m_pReturnStack->iValues());
   
   if ( (nnpTask->m_iTracing & C_TRACE_ROUTINES) )
     nnpTask->vTracePoint("<");

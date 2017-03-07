@@ -330,7 +330,7 @@ void Task::vSocketRecv(NNP_Task nnpTask)
   pSocket = reinterpret_cast<Socket*>(pObject);
   
   if (gxArguments.m_bTracepoint)
-    vTrace("[N%lld:%8s\\%lld %-11s] receiving on %lld\n",
+    vTrace("[N%lld:%8s\\%lld %-11s] receiving on %lld\n"_Str,
            gpGrid->iThisNode(),
            nnpTask->m_sName.aStr(),
            *nnpTask->m_zAcks,

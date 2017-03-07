@@ -79,9 +79,9 @@ void Tokeniser::vDump(eCN eClass, Object* pObject, const char* aTab)
   
   Tokeniser* pTokeniser = reinterpret_cast<Tokeniser*>(pObject);
   
-  vTrace("parser %p %s\n",
+  vTrace("parser %p %s\n"_Str,
          pTokeniser->m_pParser,
-         pTokeniser->m_bMalloc == true ? "malloc" : "pool");
+         pTokeniser->m_bMalloc == true ? "malloc"_Str : "pool"_Str);
 }
 
 /*----------------------------------------------------------------------------*/
