@@ -96,7 +96,7 @@ void Heap::vDump(eCN eClass, Object* pObject, const char* aTab)
 //    
 //    vTrace("%s    %s %lld \n"_Str, aTab, aCN[eClass], iCountObjects[eClass]);
 //  }
-//  vTrace("\n");  
+//  vTrace("\n"_Str);  
 }
 
 /*----------------------------------------------------------------------------*/

@@ -1321,7 +1321,7 @@ bool SEitf::bInsertRow(char* pRow)
   if (! m_pRowBuffer[m_iPartition]) {
     m_pRowBuffer[m_iPartition] = RowBuffer::pNewRowBuffer();
     if (! m_pRowBuffer[m_iPartition]) {
-      vTrace("RowBuffer allocation failed\n");
+      vTrace("RowBuffer allocation failed\n"_Str);
       m_eErrorCode = EC_LOW_BUFFERS;
       return false;
     }

@@ -420,7 +420,7 @@ bool Arguments::bParse(int argc, const char* argv[])
     
     // there should be at aleast 2 nodes ina cluster
     if (m_nNodes < 2) {
-      vTrace("Minimum two nodes should be there in a cluster\n");
+      vTrace("Minimum two nodes should be there in a cluster\n"_Str);
       return false;
     }
     
@@ -434,7 +434,7 @@ bool Arguments::bParse(int argc, const char* argv[])
     }
     
     if ( ! bFound ) {
-      vTrace("Add argument --name with name of this node from the --node definitions\n");
+      vTrace("Add argument --name with name of this node from the --node definitions\n"_Str);
       return false;
     }
     
@@ -454,7 +454,7 @@ bool Arguments::bParse(int argc, const char* argv[])
   }
   else {
     if (m_bStart && m_nNodes > 1) {
-      vTrace("--region not allowed with --start in a cluster\n");
+      vTrace("--region not allowed with --start in a cluster\n"_Str);
       return false;
     }
   }
@@ -469,15 +469,15 @@ void Arguments::vPrint(void)
 {
   _precondition_(_MAGIC_,CN_ARGUMENTS,_FOOTER_);
   
-  vTrace("Args:\n");
+  vTrace("Args:\n"_Str);
   
-  if (m_bCommand)  vTrace("  --command\n");
-  if (m_bDocol)    vTrace("  --docol\n");
-  if (m_bHelp)     vTrace("  --help\n");
-  if (m_bPrompt)   vTrace("  --seprompt\n");
-  if (m_bStart)    vTrace("  --start\n");
-  if (m_bStatus)   vTrace("  --status\n");
-  if (m_bStop)     vTrace("  --stop\n");
+  if (m_bCommand)  vTrace("  --command\n"_Str);
+  if (m_bDocol)    vTrace("  --docol\n"_Str);
+  if (m_bHelp)     vTrace("  --help\n"_Str);
+  if (m_bPrompt)   vTrace("  --seprompt\n"_Str);
+  if (m_bStart)    vTrace("  --start\n"_Str);
+  if (m_bStatus)   vTrace("  --status\n"_Str);
+  if (m_bStop)     vTrace("  --stop\n"_Str);
 
   vTrace("  --name %s\n"_Str,m_sNodeName.aStr());
   vTrace("  --regionPrefix %s\n"_Str,m_sRegionPrefix.aStr());
@@ -496,7 +496,7 @@ void Arguments::vPrint(void)
 //#ifdef _DEBUG
   vTrace("  --sen %s\n"_Str,m_sSen.aStr());
 //#endif
-  if (m_bMunged) vTrace("  --munged\n");
+  if (m_bMunged) vTrace("  --munged\n"_Str);
   
 
 }

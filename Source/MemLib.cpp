@@ -189,7 +189,7 @@ void MemLib::vWordDump(void *aAddress, i8 iBytes, i8 iHighlightWord)
   i8 iWords  = iBytes/C_SIZEOF_WORD;
 
   // dump a header
-  vTrace("\n");
+  vTrace("\n"_Str);
   vTrace("%6s %8s %18s %16s %8s\n"_Str,
          "Word"_Str,
          "Offset"_Str,

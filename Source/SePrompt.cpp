@@ -161,11 +161,11 @@ void SePrompt::vLoop(void)
     }
     
     if (m_bEcho) {
-      vTrace("cmd: ");
+      vTrace("cmd: "_Str);
       for (i8 iToken = 0; iToken < C_TOKENS; iToken++) {
         if (StrLib::bEqualTo("",m_aToken[iToken]))
           break;
-        vTrace("%s ",m_aToken[iToken]);
+        vTrace("%s "_Str,m_aToken[iToken]);
       }
       vTrace(": got: %s\n"_Str,m_sResponse.aStr());
       continue;
@@ -764,53 +764,53 @@ void SePrompt::vHelp(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  vTrace("se temporary commands:\n");
-  vTrace("add    -- add column to table\n");
-  vTrace("gettbl -- get address of table\n");
-  vTrace("bye    -- quit se prompt\n");
-  vTrace("cd     -- change directory\n");
-  vTrace("cf     -- change folder\n");
-  //vTrace("con    -- connect\n");
-  vTrace("connectCluster    -- connect the cluster\n");
-  vTrace("cp     -- copy table\n");
-  vTrace("create -- create table\n");
-  //vTrace("dis    -- disconnect\n");
-  vTrace("do     -- do shorthand\n");
-  vTrace("drop   -- dropTable\n");
-  vTrace("dump   -- dump table\n");
-  vTrace("ex     -- export table t\n");
-  vTrace("ld     -- load table t\n");
-  vTrace("lf     -- list folder contents\n");
-  vTrace("ls     -- list directory contents\n");
-  vTrace("lscat  -- list catalogs contents\n");
-  vTrace("lscol  -- list columns\n");
-  vTrace("lsidx  -- list indices\n");
-  vTrace("lssch  -- list schemas contents\n");
-  vTrace("lstbl  -- list tables contents\n");
-  vTrace("lsten  -- list tenants contents\n");
-  vTrace("mkcat  -- create catalog\n");
-  vTrace("mkidx  -- create index\n");
-  vTrace("mksch  -- create schema\n");
-  vTrace("mktbl  -- create table\n");
-  vTrace("mkten  -- create tenant\n");
-  vTrace("print  -- print string\n");
-  vTrace("pwf    -- print working folder\n");
-  vTrace("pwd    -- print working directory\n");
-  vTrace("rettbl -- return usage of table\n");
-  vTrace("rmcat  -- drop catalog\n");
-  vTrace("rmdic  -- drop dictionary\n");
-  vTrace("rmsch  -- drop schema\n");
-  vTrace("rmtbl  -- drop table\n");
-  vTrace("rmten  -- drop tenant\n");
-  vTrace("sel    -- select * from table\n");
-  vTrace("space  -- pool space\n");
-  vTrace("status -- grid status\n");
-  vTrace("sz     -- size of table\n");
-  vTrace("tpch   -- tpch shorthand\n");
-  vTrace("tr     -- truncate table\n");
-  vTrace("usesch -- use schema\n");
-  vTrace("?      -- print this help\n");
-  vTrace("help   -- print this help\n");
+  vTrace("se temporary commands:\n"_Str);
+  vTrace("add    -- add column to table\n"_Str);
+  vTrace("gettbl -- get address of table\n"_Str);
+  vTrace("bye    -- quit se prompt\n"_Str);
+  vTrace("cd     -- change directory\n"_Str);
+  vTrace("cf     -- change folder\n"_Str);
+  //vTrace("con    -- connect\n"_Str);
+  vTrace("connectCluster    -- connect the cluster\n"_Str);
+  vTrace("cp     -- copy table\n"_Str);
+  vTrace("create -- create table\n"_Str);
+  //vTrace("dis    -- disconnect\n"_Str);
+  vTrace("do     -- do shorthand\n"_Str);
+  vTrace("drop   -- dropTable\n"_Str);
+  vTrace("dump   -- dump table\n"_Str);
+  vTrace("ex     -- export table t\n"_Str);
+  vTrace("ld     -- load table t\n"_Str);
+  vTrace("lf     -- list folder contents\n"_Str);
+  vTrace("ls     -- list directory contents\n"_Str);
+  vTrace("lscat  -- list catalogs contents\n"_Str);
+  vTrace("lscol  -- list columns\n"_Str);
+  vTrace("lsidx  -- list indices\n"_Str);
+  vTrace("lssch  -- list schemas contents\n"_Str);
+  vTrace("lstbl  -- list tables contents\n"_Str);
+  vTrace("lsten  -- list tenants contents\n"_Str);
+  vTrace("mkcat  -- create catalog\n"_Str);
+  vTrace("mkidx  -- create index\n"_Str);
+  vTrace("mksch  -- create schema\n"_Str);
+  vTrace("mktbl  -- create table\n"_Str);
+  vTrace("mkten  -- create tenant\n"_Str);
+  vTrace("print  -- print string\n"_Str);
+  vTrace("pwf    -- print working folder\n"_Str);
+  vTrace("pwd    -- print working directory\n"_Str);
+  vTrace("rettbl -- return usage of table\n"_Str);
+  vTrace("rmcat  -- drop catalog\n"_Str);
+  vTrace("rmdic  -- drop dictionary\n"_Str);
+  vTrace("rmsch  -- drop schema\n"_Str);
+  vTrace("rmtbl  -- drop table\n"_Str);
+  vTrace("rmten  -- drop tenant\n"_Str);
+  vTrace("sel    -- select * from table\n"_Str);
+  vTrace("space  -- pool space\n"_Str);
+  vTrace("status -- grid status\n"_Str);
+  vTrace("sz     -- size of table\n"_Str);
+  vTrace("tpch   -- tpch shorthand\n"_Str);
+  vTrace("tr     -- truncate table\n"_Str);
+  vTrace("usesch -- use schema\n"_Str);
+  vTrace("?      -- print this help\n"_Str);
+  vTrace("help   -- print this help\n"_Str);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -856,7 +856,7 @@ bool SePrompt::bBeginInsert(void)
   StrLib::vCopy(m_aToken[0], "gettbl");
   StrLib::vCopy(m_aToken[1], m_aToken2[2]);
   if (!bExecuteRequest()) {
-    vTrace("SePrompt::bBeginInsert : gettbl FAILED!!!\n");
+    vTrace("SePrompt::bBeginInsert : gettbl FAILED!!!\n"_Str);
     return false;
   }
   
@@ -1225,7 +1225,7 @@ bool SePrompt::bCreateTable(void)
   StrLib::vCopy(m_aToken[1], m_aToken2[2]);
   
   if (!bExecuteRequest()) {
-    vTrace("SePrompt::bCreateTable : cf FAILED!!!\n");
+    vTrace("SePrompt::bCreateTable : cf FAILED!!!\n"_Str);
     
     // create the table
     StrLib::vCopy(m_aToken[0], "rmtbl");
@@ -1243,7 +1243,7 @@ bool SePrompt::bCreateTable(void)
   StrLib::vCopy(m_aToken[1], m_aToken2[2]);
   
   if (!bExecuteRequest()) {
-    vTrace("SePrompt::bCreateTable : gettbl FAILED!!!\n");
+    vTrace("SePrompt::bCreateTable : gettbl FAILED!!!\n"_Str);
     
     // create the table
     StrLib::vCopy(m_aToken[0], "rmtbl");
@@ -1768,7 +1768,7 @@ bool SePrompt::bEndInsert(void)
   
   //eEC eResult = eExecuteRequest(m_pSEitf, "rettbl");
   //if (EC_NONE != eResult) {
-  //  vTrace("SePrompt::bEndInsert : rettbl FAILED!!!\n");
+  //  vTrace("SePrompt::bEndInsert : rettbl FAILED!!!\n"_Str);
   //  return eResult;
   //}
   
@@ -1948,7 +1948,7 @@ bool SePrompt::bPrintWorkingDir(void)
   ASSERT(StrLib::bEqualTo(m_aToken[0],"pwd"));
   
   if (xDir.bGetCurrent(sDir)) {
-    vTrace("%s", sDir.aStr());
+    vTrace("%s"_Str, sDir.aStr());
   }
   
   // clear the respnse

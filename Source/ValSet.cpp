@@ -207,7 +207,7 @@ bool ValSet::bHasRowBuffer(void)
     
     if (CN_ROWBUFFER == eClassNo) {
       if (gxArguments.m_bTracepoint)
-        vTrace("HAS ROW BUFFER\n");
+        vTrace("HAS ROW BUFFER\n"_Str);
       return true;
     }
     
@@ -244,7 +244,7 @@ bool ValSet::bSetRowBuffer(DBobjects::RowBuffer* pRowBuffer)
     
     if (CN_ROWBUFFER == eClassNo) {
       PtrVal* pPtrVal = (PtrVal*)pValWsp;
-      //vTrace("SETTING ROW BUFFER\n");
+      //vTrace("SETTING ROW BUFFER\n"_Str);
       m_pRowBuffer = pRowBuffer;
       m_iRowBufferBytes = pRowBuffer->iBytesUsed();
       return true;

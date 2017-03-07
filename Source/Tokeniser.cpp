@@ -281,16 +281,16 @@ void Tokeniser::vDumpTokens(const char* pTitle, char* pToken[], i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  vTrace("%s",pTitle);
+  vTrace("%s"_Str,pTitle);
   
   for (i8 iToken = 0; iToken < nTokens; iToken++) {
     
     if (! *pToken[iToken])
       break;
     
-    vTrace("%s ", pToken[iToken]);
+    vTrace("%s "_Str, pToken[iToken]);
   }
-  vTrace("\n");
+  vTrace("\n"_Str);
 }
 
 /*----------------------------------------------------------------------------*/

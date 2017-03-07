@@ -101,7 +101,7 @@ void LoaderSub::vDump(eCN eClass, Object* pObject, const char* aTab)
   
   LoaderSub* pLoader = reinterpret_cast<LoaderSub*>(pObject);
   
-  vTrace("\n");
+  vTrace("\n"_Str);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -232,7 +232,7 @@ bool LoaderSub::bInsertRow(void)
   if (! m_pRowBuffer[m_iPartition]) {
     m_pRowBuffer[m_iPartition] = RowBuffer::pNewRowBuffer();
     if (! m_pRowBuffer[m_iPartition]) {
-      vTrace("RowBuffer allocation failed\n");
+      vTrace("RowBuffer allocation failed\n"_Str);
       return false;
     }
   }
@@ -250,7 +250,7 @@ bool LoaderSub::bInsertRow(void)
   // get a new working buffer
   m_pRowBuffer[m_iPartition] = RowBuffer::pNewRowBuffer();
   if (! m_pRowBuffer[m_iPartition]) {
-    vTrace("RowBuffer allocation failed\n");
+    vTrace("RowBuffer allocation failed\n"_Str);
     return false;
   }
   
@@ -275,7 +275,7 @@ bool LoaderSub::bInsertRow2(void)
   if (! m_pRowBuffer[m_iPartition]) {
     m_pRowBuffer[m_iPartition] = RowBuffer::pNewRowBuffer();
     if (! m_pRowBuffer[m_iPartition]) {
-      vTrace("RowBuffer allocation failed\n");
+      vTrace("RowBuffer allocation failed\n"_Str);
       return false;
     }
   }
@@ -344,7 +344,7 @@ bool LoaderSub::bReadChunk(void)
     if (bNext)
       break;
     
-    //vTrace("Waiting for map\n");
+    //vTrace("Waiting for map\n"_Str);
   }
   
   if (gxArguments.m_bProgress) {

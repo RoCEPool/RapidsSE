@@ -233,7 +233,7 @@ eEC RapidsSE_CheckLibraryVersion(char* pVersion)
   vTrace("Library version %s; versionString %s\n"_Str, RAPIDSSE_VERSION_STRING, pVersion);
   
   if (!StrLib::bEqualTo(pVersion, RAPIDSSE_VERSION_STRING)) {
-    vTrace("RapidsDB at version %s does not match RapidsSE library version %s",
+    vTrace("RapidsDB at version %s does not match RapidsSE library version %s"_Str,
            pVersion, RAPIDSSE_VERSION_STRING);
     return EC_VERSION_MISMATCH;
   }

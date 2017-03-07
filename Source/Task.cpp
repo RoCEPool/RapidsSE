@@ -342,7 +342,7 @@ void Task::vAddConstants(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   if (gxArguments.m_bVerbose)
-    vTrace("[[mainThread]] Adding constants...\n");
+    vTrace("[[mainThread]] Adding constants...\n"_Str);
   
 #ifdef _DEBUG
   vAddConstant("_DEBUG"_Str,1);
@@ -731,7 +731,7 @@ void Task::vAddPrimitives(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   if (gxArguments.m_bVerbose)
-    vTrace("[[mainThread]] Adding primitives...\n");
+    vTrace("[[mainThread]] Adding primitives...\n"_Str);
   
   vAddPrimitive("word"_Str,            &vWord,             false);
   gpWord = gpMainDic->pFindWord("word");
@@ -825,7 +825,7 @@ void Task::vAddRoutines(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   if (gxArguments.m_bVerbose)
-    vTrace("[[mainThread]] Adding routines...\n");
+    vTrace("[[mainThread]] Adding routines...\n"_Str);
   
   s48K sDefinition;
 
@@ -1314,7 +1314,7 @@ void Task::vPrimitive(const char* aPrimitive)
   
   i8 iDataValues  = m_pDataStack->iValues();
   i8 iReturnValues = m_pReturnStack->iValues();
-  vTrace("%-15s %15s : r%lld ; d%2d=",
+  vTrace("%-15s %15s : r%lld ; d%2d="_Str,
          aRoutine,aPrimitive,iReturnValues,iDataValues);
   
 //  for (i8 iValue = iParamValues - 1; iValue >= 0; iValue--) {
@@ -1411,7 +1411,7 @@ void Task::vSeedDicCompileSen(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   if (gxArguments.m_bVerbose)
-    vTrace("[[mainThread]] Seeding Dic Compile...\n");
+    vTrace("[[mainThread]] Seeding Dic Compile...\n"_Str);
   
   Word* pBootSen = gpMainDic->pFindWord("::dicCompile");
   ASSERT(pBootSen);

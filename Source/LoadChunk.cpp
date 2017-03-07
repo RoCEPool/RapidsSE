@@ -65,7 +65,7 @@ void LoadChunk::vDump(eCN eClass, Object* pObject, const char* aTab)
   
   LoadChunk* pLoadChunk = reinterpret_cast<LoadChunk*>(pObject);
   
-  vTrace("\n");
+  vTrace("\n"_Str);
 }
 
 /*----------------------------------------------------------------------------*/

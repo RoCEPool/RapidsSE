@@ -157,7 +157,7 @@ void Task::vTableDump(NNP_Task nnpTask)
 {
 ENTRY("vTableDump");
   
-  vTrace("TableDump\n");
+  vTrace("TableDump\n"_Str);
   
   Object* pPtrTable;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTable) )

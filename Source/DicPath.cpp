@@ -120,18 +120,18 @@ void DicPath::vDump(eCN eClass, Object* pObject, const char* aTab)
   
   DicPath* pDicPath = reinterpret_cast<DicPath*>(pObject);
   
-  vTrace("top %p:",pDicPath->m_iTop);
+  vTrace("top %p:"_Str,pDicPath->m_iTop);
   //for (i8 i = pDicPath->m_iTop; i >= 0; i--)
     //vTrace("%s  Dic %p %lld %s\n"_Str,aTab, pDicPath->m_pDic[i],i,
            //pDicPath->m_pDic[i]->sName().aStr());
   
   for (i8 i = pDicPath->m_iTop; i >= 0; i--) {
-    vTrace(" dic %p %lld %s",aTab, pDicPath->m_pDic[i],i,
+    vTrace(" dic %p %lld %s"_Str,aTab, pDicPath->m_pDic[i],i,
            pDicPath->m_pDic[i]->sName().aStr());
     //Dic::vDump(CN_DIC, pDicPath->m_pDic[i], aTab);
   }
 
-  vTrace("\n");
+  vTrace("\n"_Str);
 
   //for (Word* pWord = m_pCurrentWord; pWord; pWord = pWord->pPrevWord())
   //  pWord->vDump();

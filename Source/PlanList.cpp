@@ -94,7 +94,7 @@ void PlanList::vDump(eCN eClass, Object* pObject, const char* aTab)
   
   PlanList* pPlanList = reinterpret_cast<PlanList*>(pObject);
   
-  vTrace("\n");
+  vTrace("\n"_Str);
 }
 
 /*----------------------------------------------------------------------------*/

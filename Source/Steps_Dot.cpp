@@ -92,7 +92,7 @@ void Task::vDotPut(NNP_Task nnpTask)
     THROW_INVALID_DSTACK(".put");
   
   ValLib::vToString(&xValWsp,sWorkspace.aStr());
-  vTrace("%s",sWorkspace.aStr());
+  vTrace("%s"_Str,sWorkspace.aStr());
   
   EXIT();
 }
@@ -104,7 +104,7 @@ void Task::vDotNewline(NNP_Task nnpTask)
 {
   ENTRY("vDotNewline");
   
-  vTrace("\n");
+  vTrace("\n"_Str);
   
   EXIT();
 }

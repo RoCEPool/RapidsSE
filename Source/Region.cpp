@@ -38,7 +38,7 @@ bool Region::bAttach(StrVal& sRegionName)
                        gxArguments.m_bHugePages,
                        xSysCall);
   if ( ! mpRegion )  {
-    vTrace("RapidsSE::vAttach failed to map\n");
+    vTrace("RapidsSE::vAttach failed to map\n"_Str);
     Shm::bClose(iFD,xSysCall);
     return false;
   }
@@ -72,7 +72,7 @@ bool Region::bAttach(StrVal& sRegionName)
                        gxArguments.m_bHugePages,
                        xSysCall);
   if ( ! mpRegion )  {
-    vTrace("RapidsSE::vAttach failed to map\n");
+    vTrace("RapidsSE::vAttach failed to map\n"_Str);
     Shm::bClose(iFD,xSysCall);
     return false;
   }
@@ -103,7 +103,7 @@ void Region::vCreate(StrVal& sRegionName)
          gxArguments.m_iRegionSize);
   
   if (gxArguments.m_bVerbose)
-    vTrace("Region::vCreate A\n");
+    vTrace("Region::vCreate A\n"_Str);
   
   // open a new shm region
   bool bResult = Shm::bCreate(sRegionName,
@@ -113,7 +113,7 @@ void Region::vCreate(StrVal& sRegionName)
                               xSysCall);
 
   if (gxArguments.m_bVerbose)
-    vTrace("Region::vCreate B\n");
+    vTrace("Region::vCreate B\n"_Str);
   
   if ( ! bResult ) {
     vTrace("RapidsSE::vCreate: failed to create region %s\n"_Str,
@@ -133,18 +133,18 @@ void Region::vCreate(StrVal& sRegionName)
     vTrace("Region::vCreate C; mpRegion=%p\n"_Str,mpRegion);
   
   if ( ! mpRegion )  {
-    vTrace("RapidsSE::vCreate failed to map!\n");
+    vTrace("RapidsSE::vCreate failed to map!\n"_Str);
     Shm::bClose(iFD,xSysCall);
     ASSERT(0);
   }
   
   if (gxArguments.m_bVerbose)
-    vTrace("Region::vCreate D\n");
+    vTrace("Region::vCreate D\n"_Str);
   
   gpBufferPool = new(mpRegion) BufferPool;
 
   if (gxArguments.m_bVerbose)
-    vTrace("Region::vCreate E\n");
+    vTrace("Region::vCreate E\n"_Str);
   
   if (gxArguments.m_bVerbose)
     vTrace("Shm mapped at %p\n"_Str,mpRegion);
@@ -209,7 +209,7 @@ void* Region::pOpen(StrVal& sRegionName, int& iFD)
                             gxArguments.m_bHugePages,
                             xSysCall);
   if ( ! pRegion )  {
-    vTrace("Region::pOpen failed to map\n");
+    vTrace("Region::pOpen failed to map\n"_Str);
     Shm::bClose(iFD,xSysCall);
     return nullptr;
   }

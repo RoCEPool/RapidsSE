@@ -83,7 +83,7 @@ void NodeCursor::vDump(eCN eClass, Object* pObject, const char* aTab)
   
   NodeCursor* pNodeCursor = reinterpret_cast<NodeCursor*>(pObject);
   
-  vTrace("\n");
+  vTrace("\n"_Str);
 }
 
 /*----------------------------------------------------------------------------*/

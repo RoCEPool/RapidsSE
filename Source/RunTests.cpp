@@ -26,7 +26,7 @@ RunTests::~RunTests(void) {
 /*----------------------------------------------------------------------------*/
 void RunTests::vRunTests(void) {
   
-  vTrace("Running Unit Tests...\n");
+  vTrace("Running Unit Tests...\n"_Str);
   
   //ClusterTests* pClusterTests
 
