@@ -83,7 +83,7 @@ char* Scratch::aWspArea(void)
 {
   _precondition_(_MAGIC_,CN_SCRATCH,_FOOTER_);
   
-  return m_xWsp.aArea();
+  return m_xWsp.sArea();
 }
 
 /*----------------------------------------------------------------------------*/

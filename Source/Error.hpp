@@ -145,9 +145,9 @@ namespace Debugging
   {
   private:
     i8    m_iErrorCode;
-    char  m_aFileName[256];
+    char  m_sFileName[256];
     i8    m_iLineNo;
-    char  m_aErrorMsg[256];
+    char  m_sErrorMsg[256];
   
   public:
     Error(i8 iErrorCode, Str* aFileName, i8 iLineNo);

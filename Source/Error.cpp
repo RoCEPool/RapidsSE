@@ -10,9 +10,9 @@
 Error::Error(i8 iErrorCode, Str* aFileName, i8 iLineNo)
 {
   m_iErrorCode = iErrorCode;
-  m_aErrorMsg[0] = '\0';
+  m_sErrorMsg[0] = '\0';
 
-  StrLib::vCopyLen(m_aFileName, aFileName->a(), sizeof(m_aFileName));
+  StrLib::vCopyLen(m_sFileName, aFileName->a(), sizeof(m_sFileName));
   m_iLineNo = iLineNo;
   
   //_checkInitialisedSize_(sizeof(Error));
@@ -24,9 +24,9 @@ Error::Error(i8 iErrorCode, Str* aFileName, i8 iLineNo)
 Error::Error(i8 iErrorCode, Str* aErrorMsg, Str* aFileName, i8 iLineNo)
 {
   m_iErrorCode = iErrorCode;
-  StrLib::vCopyLen(m_aErrorMsg, aErrorMsg->a(), sizeof(m_aErrorMsg));
+  StrLib::vCopyLen(m_sErrorMsg, aErrorMsg->a(), sizeof(m_sErrorMsg));
 
-  StrLib::vCopyLen(m_aFileName, aFileName->a(), sizeof(m_aFileName));
+  StrLib::vCopyLen(m_sFileName, aFileName->a(), sizeof(m_sFileName));
   m_iLineNo = iLineNo;
 
   //_checkInitialisedSize_(sizeof(Error));
@@ -37,7 +37,7 @@ Error::Error(i8 iErrorCode, Str* aErrorMsg, Str* aFileName, i8 iLineNo)
 /*----------------------------------------------------------------------------*/
 Str* Error::aErrorMsg(void)
 {
-  return (Str*)m_aErrorMsg;
+  return (Str*)m_sErrorMsg;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -45,7 +45,7 @@ Str* Error::aErrorMsg(void)
 /*----------------------------------------------------------------------------*/
 Str* Error::aFileName(void)
 {
-  return (Str*)m_aFileName;
+  return (Str*)m_sFileName;
 }
 
 /*----------------------------------------------------------------------------*/

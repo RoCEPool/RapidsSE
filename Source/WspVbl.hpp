@@ -22,10 +22,10 @@ namespace Magic
 
     char* aAllot(i8 nBytes);
     void  vAppend(void* aSrc, i8 nBytes);
-    char* aArea(void);
+    char* sArea(void);
     void  vFill(char cByte);
     i8    nFree(void);
-    char* aLatter(void);
+    char* sLatter(void);
     i8    nLength(void);
     i8    nSize(void);
     void  vTake(i8 nBytes);

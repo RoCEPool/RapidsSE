@@ -95,7 +95,7 @@ void Entry::vContentDump(void)
   //_precondition_(_MAGIC_,CN_ENTRY);
   
   i8 iKeyData;
-  ValLib::nCopyDatum(CN_INTVAL, &iKeyData,m_xWsp.aArea());
+  ValLib::nCopyDatum(CN_INTVAL, &iKeyData,m_xWsp.sArea());
   
   vTrace("Entry %p: Row %llu.%llu Key (size:%lld value:%lld)\n"_Str,
          this,
@@ -140,7 +140,7 @@ void Entry::vEntry(EntWsp& xEntWsp)
 
   vRowId(xEntWsp.xRowId());
 
-  char* pDst = m_xWsp.aArea();
+  char* pDst = m_xWsp.sArea();
   char* pSrc = xEntWsp.aWspArea();
   i8 nBytes  = xEntWsp.nWspUsed();
 
@@ -156,7 +156,7 @@ Key& Entry::xKey(void)
 {
   //_precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
   
-  Key* pKey = reinterpret_cast<Key*>(m_xWsp.aArea());
+  Key* pKey = reinterpret_cast<Key*>(m_xWsp.sArea());
 
   return reinterpret_cast<Key&>(pKey);
 }
@@ -168,7 +168,7 @@ Key* Entry::pKey(void)
 {
   //_precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
   
-  Key* pKey = reinterpret_cast<Key*>(m_xWsp.aArea());
+  Key* pKey = reinterpret_cast<Key*>(m_xWsp.sArea());
   
   return pKey;
 }
@@ -180,7 +180,7 @@ void Entry::vKey(Key& xKey)
 {
   //_precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
   
-  Key* pKey = reinterpret_cast<Key*>(m_xWsp.aArea());
+  Key* pKey = reinterpret_cast<Key*>(m_xWsp.sArea());
 
   pKey->vKey(xKey);
   
@@ -194,7 +194,7 @@ void Entry::vKey(KeyWsp& xKeyWsp)
 {
   //_precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
   
-  Key* pKey = reinterpret_cast<Key*>(m_xWsp.aArea());
+  Key* pKey = reinterpret_cast<Key*>(m_xWsp.sArea());
   
   pKey->vKey(xKeyWsp);
 }

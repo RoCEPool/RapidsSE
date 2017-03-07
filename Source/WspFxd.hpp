@@ -15,7 +15,7 @@ namespace Magic
   class WspFxd : public Wsp
   {
   private:
-    char m_cArea[LENGTH]; // byte area
+    char m_sArea[LENGTH]; // byte area
     i8   m_nAreaUsed;     // bytes used in the area (must be after m_cArea)
   
   public:
@@ -23,11 +23,11 @@ namespace Magic
 
     char* aAllot(i8 nBytes);
     void  vAppend(void* aSrc, i8 nBytes);
-    char* aArea(void);
+    char* sArea(void);
     void  vFill(char cByte);
     i8    nFree(void);
     void  vGive(i8 nBytes);
-    char* aLatter(void);
+    char* sLatter(void);
     i8    nLength(void);
     i8    nSize(void);
     void  vTake(i8 nBytes);
@@ -53,7 +53,7 @@ WspFxd<LENGTH>::WspFxd(void)
 template<int LENGTH>
 char* WspFxd<LENGTH>::aAllot(i8 nBytes)
 {
-  char* aAllotted = aLatter();
+  char* aAllotted = sLatter();
   
   vTake(nBytes);
   
@@ -68,7 +68,7 @@ void WspFxd<LENGTH>::vAppend(void* aSrc, i8 nBytes)
 {
   ASSERT(nUsed() + nBytes <= LENGTH);
   
-  void* aDst = aLatter();
+  void* aDst = sLatter();
 
   MemLib::vCopy(aDst,aSrc,nBytes);
   
@@ -79,9 +79,9 @@ void WspFxd<LENGTH>::vAppend(void* aSrc, i8 nBytes)
 /* get address of byte area                                                   */
 /*----------------------------------------------------------------------------*/
 template<int LENGTH>
-char* WspFxd<LENGTH>::aArea(void)
+char* WspFxd<LENGTH>::sArea(void)
 {
-  char* aArea = Wsp::aArea();
+  char* aArea = Wsp::sArea();
   
   return aArea;
 }
@@ -119,9 +119,9 @@ i8 WspFxd<LENGTH>::nLength(void)
 /* get address of next available chunk in byte area                           */
 /*----------------------------------------------------------------------------*/
 template<int LENGTH>
-char* WspFxd<LENGTH>::aLatter(void)
+char* WspFxd<LENGTH>::sLatter(void)
 {
-  char* aNext = &aArea()[nUsed()];
+  char* aNext = &sArea()[nUsed()];
   
   return aNext;
 }

@@ -311,7 +311,7 @@ char* Word::aBodyArea(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  char* aBody = m_xBody.aArea();
+  char* aBody = m_xBody.sArea();
   
   return pPoolCheck<char*>((void*)aBody);
 }
@@ -332,7 +332,7 @@ char* Word::aBodyLatter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  char* aLatter = m_xBody.aLatter();
+  char* aLatter = m_xBody.sLatter();
   
   return pPoolCheck<char*>((void*)aLatter);
 }
@@ -520,7 +520,7 @@ Cell* Word::pFirstCell(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  Cell* pFirst = reinterpret_cast<Cell*>(m_xBody.aArea());
+  Cell* pFirst = reinterpret_cast<Cell*>(m_xBody.sArea());
   
   return pPoolCheck<Cell*>(pFirst);
 }
@@ -629,7 +629,7 @@ Cell* Word::pLastCell(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  Cell* pLast = reinterpret_cast<Cell*>(m_xBody.aLatter());
+  Cell* pLast = reinterpret_cast<Cell*>(m_xBody.sLatter());
   
   return pPoolCheck<Cell*>(pLast);
 }

@@ -32,7 +32,7 @@ void Wsp::vAppend(void* aSrc, i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* get address of byte area                                                   */
 /*----------------------------------------------------------------------------*/
-char* Wsp::aArea(void)
+char* Wsp::sArea(void)
 {
   return reinterpret_cast<char*>(this);
 }
@@ -50,7 +50,7 @@ void Wsp::vFill(char cByte)
 /*----------------------------------------------------------------------------*/
 void Wsp::vFill(char cByte, i8 nBytes)
 {
-  void* aDst = aArea();
+  void* aDst = sArea();
   
   MemLib::vSet(aDst,cByte,nBytes);
 }
@@ -78,7 +78,7 @@ i8 Wsp::nLength(void)
 /*----------------------------------------------------------------------------*/
 /* get next available chunk in byte area                                      */
 /*----------------------------------------------------------------------------*/
-char* Wsp::aLatter(void)
+char* Wsp::sLatter(void)
 {
   vFatal("Wsp::nWspLatter: not overridden\n"_Str);
   
@@ -126,7 +126,7 @@ void Wsp::vZero(void)
 /*----------------------------------------------------------------------------*/
 void Wsp::vZero(i8 nBytes)
 {
-  void* aDst = aArea();
+  void* aDst = sArea();
   
   MemLib::vZero(aDst,nBytes);
 }

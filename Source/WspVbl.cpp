@@ -17,7 +17,7 @@ WspVbl::WspVbl(void)
 /*----------------------------------------------------------------------------*/
 char* WspVbl::aAllot(i8 nBytes)
 {
-  char* aAllotted = aLatter();
+  char* aAllotted = sLatter();
   
   vTake(nBytes);
   
@@ -29,7 +29,7 @@ char* WspVbl::aAllot(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 void WspVbl::vAppend(void* aSrc, i8 nBytes)
 {
-  void* aDst = aLatter();
+  void* aDst = sLatter();
   
   MemLib::vCopy(aDst,aSrc,nBytes);
   
@@ -39,7 +39,7 @@ void WspVbl::vAppend(void* aSrc, i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* get address of data area                                                   */
 /*----------------------------------------------------------------------------*/
-char* WspVbl::aArea(void)
+char* WspVbl::sArea(void)
 {
   char* aArea = pAdd<char*>(&m_nAreaUsed,sizeof(m_nAreaUsed));
   
@@ -51,7 +51,7 @@ char* WspVbl::aArea(void)
 /*----------------------------------------------------------------------------*/
 void WspVbl::vFill(char cByte)
 {
-  MemLib::vSet(aArea(),cByte,m_nAreaUsed);
+  MemLib::vSet(sArea(),cByte,m_nAreaUsed);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -73,9 +73,9 @@ i8 WspVbl::nLength(void)
 /*----------------------------------------------------------------------------*/
 /* get next available chunk in data area                                      */
 /*----------------------------------------------------------------------------*/
-char* WspVbl::aLatter(void)
+char* WspVbl::sLatter(void)
 {
-  return &aArea()[m_nAreaUsed];
+  return &sArea()[m_nAreaUsed];
 }
 
 /*----------------------------------------------------------------------------*/
@@ -117,7 +117,7 @@ void WspVbl::vUsed(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 void WspVbl::vZero(void)
 {
-  MemLib::vZero(aArea(),m_nAreaUsed);
+  MemLib::vZero(sArea(),m_nAreaUsed);
 }
 
 /*============================================================================*/

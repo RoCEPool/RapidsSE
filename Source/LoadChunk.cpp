@@ -148,10 +148,10 @@ void LoadChunk::vReadChunk(i8 iSeek, i8 nBytes)
   
   m_xFile.vSeek(iSeek);
   
-  i8 iBytesRead = m_xFile.iReadChunk(m_xWsp.aArea(),nBytes);
+  i8 iBytesRead = m_xFile.iReadChunk(m_xWsp.sArea(),nBytes);
 
-  m_aEndChunk   = &m_xWsp.aArea()[iBytesRead - 1];
-  m_aNextRecord = m_xWsp.aArea();
+  m_aEndChunk   = &m_xWsp.sArea()[iBytesRead - 1];
+  m_aNextRecord = m_xWsp.sArea();
 }
 
 /*----------------------------------------------------------------------------*/

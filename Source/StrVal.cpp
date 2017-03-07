@@ -218,7 +218,7 @@ char* StrVal::aArea(void)
 {
   //_precondition_(_MAGIC_,_FOOTER_);
   
-  char* aAddr = m_xWsp.aArea();
+  char* aAddr = m_xWsp.sArea();
   
   return aAddr;
 }

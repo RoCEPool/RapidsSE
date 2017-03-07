@@ -10,11 +10,11 @@ namespace Magic
   private:
     union {
       u8   m_uMagic;
-      char m_cMagic[8];
+      char m_sMagic[8];
     };
     eCN  m_eClass;
     bool m_bWordBody;
-    char m_uFiller[3];
+    char m_sFiller[3];
   
   public:
     Object(eCN eClass);
