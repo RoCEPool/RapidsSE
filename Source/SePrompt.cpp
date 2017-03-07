@@ -65,9 +65,9 @@ SePrompt::SePrompt(void)
   m_bEcho   = false;
   
   m_bExpect = false;
-  m_sExpect = "";
+  m_sExpect = ""_Str;
   
-  m_sResponse  = "";
+  m_sResponse  = ""_Str;
   //m_xHistory
   
   // initialise the token set
@@ -496,7 +496,7 @@ bool SePrompt::bProcessCommand(bool bPostProcess)
   if (bTestFile(m_aToken[0])) {
     vPushFile(m_aToken[0]);
     m_pTokeniser->vLineMode(true);
-    m_sResponse = "<ok>";
+    m_sResponse = "<ok>"_Str;
     return true;
   }
   
@@ -568,7 +568,7 @@ void SePrompt::vSetExpect(void)
 /*----------------------------------------------------------------------------*/
 void SePrompt::vClearExpect(void)
 {
-  m_sExpect = "";
+  m_sExpect = ""_Str;
   
   m_bExpect = false;
 }
@@ -611,9 +611,9 @@ bool SePrompt::bExecuteRequest(void)
   bool bResult = RapidsSE_ExecuteRequest(m_pSEitf,m_aToken,iTokens,&aResponse);
   
   if (bResult)
-    m_sResponse = aResponse ? aResponse : "";
+    m_sResponse = aResponse ? (Str*)aResponse : ""_Str;
   else
-    m_sResponse = aResponse ? aResponse : "";
+    m_sResponse = aResponse ? (Str*)aResponse : ""_Str;
   
   xTimer.vUpdate();
   
@@ -1882,7 +1882,7 @@ bool SePrompt::bListDir(void)
   xDir.vClose();
   
   // clear the response
-  m_sResponse = "";
+  m_sResponse = ""_Str;
   
   return true;
 }
@@ -1952,7 +1952,7 @@ bool SePrompt::bPrintWorkingDir(void)
   }
   
   // clear the respnse
-  m_sResponse = "";
+  m_sResponse = ""_Str;
   
   return true;
 }

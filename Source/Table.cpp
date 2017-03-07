@@ -83,7 +83,7 @@ Table::Table(const char* pTableName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
-  m_sTableName = pTableName;
+  m_sTableName = (Str*)pTableName;
   
   _class_(CN_TABLE);
 }

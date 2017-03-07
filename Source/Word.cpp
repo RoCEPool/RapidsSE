@@ -58,7 +58,7 @@ Word::Word(const char* sName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD);
   
-  m_sName         = sName;
+  m_sName         = (Str*)sName;
   m_eWordType     = WT_ROUTINE;
   m_eDistributed  = DT_NOPARTICIPANT;
   //m_pDic        = pDic;
@@ -68,7 +68,7 @@ Word::Word(const char* sName)
   m_bIndirect     = false;
   m_bImmediate    = false;
   m_iParams       = 0;
-  m_sFinalRoutine = "";
+  m_sFinalRoutine = ""_Str;
 //  m_iDataBytes    = 0;
   m_pPrevWord     = nullptr;
   m_iVariable     = 0;
@@ -491,7 +491,7 @@ void Word::vFinalRoutine(const char* pRoutine)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  m_sFinalRoutine = pRoutine;
+  m_sFinalRoutine = (Str*)pRoutine;
 }
 
 /*----------------------------------------------------------------------------*/

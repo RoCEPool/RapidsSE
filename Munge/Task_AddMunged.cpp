@@ -23,7 +23,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT 1m.sen"
+  " CONSTANT 1m.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -73,7 +73,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT actors.sen"
+  " CONSTANT actors.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -99,7 +99,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT aggregateOp.sen"
+  " CONSTANT aggregateOp.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -205,7 +205,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT answerTask.sen"
+  " CONSTANT answerTask.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -236,7 +236,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT arithmeticTests.sen"
+  " CONSTANT arithmeticTests.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -368,7 +368,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT catalog.sen"
+  " CONSTANT catalog.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -491,7 +491,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT column.sen"
+  " CONSTANT column.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -517,7 +517,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT common.sen"
+  " CONSTANT common.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -582,7 +582,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT compile.sen"
+  " CONSTANT compile.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -680,7 +680,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT connectorTask.sen"
+  " CONSTANT connectorTask.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -734,7 +734,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT coordinatorProxy.sen"
+  " CONSTANT coordinatorProxy.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -1009,7 +1009,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT coordinatorTask.sen"
+  " CONSTANT coordinatorTask.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -1102,7 +1102,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT copier.sen"
+  " CONSTANT copier.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -1674,7 +1674,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT core.sen"
+  " CONSTANT core.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -1705,7 +1705,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT dbobjects.sen"
+  " CONSTANT dbobjects.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -1925,7 +1925,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT ddlLocking.sen"
+  " CONSTANT ddlLocking.sen"_Str
   ;
 
   pCompileConstant(sDefinition);

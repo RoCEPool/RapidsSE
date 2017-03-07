@@ -51,7 +51,7 @@ Tokeniser::Tokeniser(void)
   m_bMalloc = false;
   m_bNormal = false;
   
-  m_sToken  = "";
+  m_sToken  = ""_Str;
   m_eToken  = TK_NONE;
   
   _checkInitialised_(CN_TOKENISER);

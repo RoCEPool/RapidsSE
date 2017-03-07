@@ -12,66 +12,66 @@ void TenantTests::vRun(RunTests* pRunTests)
   s256 sCommand;
   s256 sResponse;
   
-  sCommand = "docol epochTake";
+  sCommand = "docol epochTake"_Str;
   vRequire(sCommand, true, EC_NONE);
   
   // start with /tenants folder
-  sCommand = "cf ~";
+  sCommand = "cf ~"_Str;
   vRequire(sCommand, true, EC_NONE);
   
-  sCommand = "create tenant;";
+  sCommand = "create tenant;"_Str;
   vRequire(sCommand, false, EC_INVALID_COMMAND);
   
-  sCommand = "create tenant ten;";
+  sCommand = "create tenant ten;"_Str;
   vRequire(sCommand, true, EC_NONE);
   
-  sCommand = "create tenant ten;";
+  sCommand = "create tenant ten;"_Str;
   vRequire(sCommand, false, EC_TENANT_EXISTS);
   
-  sCommand = "create tenant ten;";
+  sCommand = "create tenant ten;"_Str;
   vRequire(sCommand, false, EC_TENANT_EXISTS);
   
-  sCommand = "drop tenant;";
+  sCommand = "drop tenant;"_Str;
   vRequire(sCommand, false, EC_INVALID_COMMAND);
   
-  sCommand = "drop tenant ten;";
+  sCommand = "drop tenant ten;"_Str;
   vRequire(sCommand, false, EC_FOLDER_NOT_EMPTY);
   
-  sCommand = "cf ten ";
+  sCommand = "cf ten "_Str;
   vRequire(sCommand, true, EC_NONE);
   
-  sCommand = "rf catalogs";
+  sCommand = "rf catalogs"_Str;
   vRequire(sCommand, true, EC_NONE);
   
-  sCommand = "drop tenant ten;";
+  sCommand = "drop tenant ten;"_Str;
   vRequire(sCommand, false, EC_NOT_IN_TENANTS);
   
-  sCommand = "cf .. ";
+  sCommand = "cf .. "_Str;
   vRequire(sCommand, true, EC_NONE);
   
-  sCommand = "drop tenant ten;";
+  sCommand = "drop tenant ten;"_Str;
   vRequire(sCommand, true, EC_NONE);
   
-  sCommand = "drop tenant ten;";
+  sCommand = "drop tenant ten;"_Str;
   vRequire(sCommand, false, EC_NO_SUCH_WORD);
   
-  sCommand = "create tenant x;";
+  sCommand = "create tenant x;"_Str;
   vRequire(sCommand, true, EC_NONE);
   
-  sCommand = "lsten";
-  sResponse = "x boray ";
+  sCommand = "lsten"_Str;
+  sResponse = "x boray "_Str;
   vRequire(sCommand, true, EC_NONE, sResponse);
   
-  sCommand = "cf x ";
+  sCommand = "cf x "_Str;
   vRequire(sCommand, true, EC_NONE);
   
-  sCommand = "rf catalogs";
+  sCommand = "rf catalogs"_Str;
   vRequire(sCommand, true, EC_NONE);
   
-  sCommand = "cf .. ";
+  sCommand = "cf .. "_Str;
   vRequire(sCommand, true, EC_NONE);
   
-  sCommand = "drop tenant x;";
+  sCommand = "drop tenant x;"_Str;
   vRequire(sCommand, true, EC_NONE);
   
   pRunTests->m_iTestsTotal += m_iTestsTotal;

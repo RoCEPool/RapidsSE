@@ -342,7 +342,7 @@ void RapidsSE::vSystemInit(void)
   
   gnpRootTask = new Task;
   s32 sName;
-  sName = "rootTask";
+  sName = "rootTask"_Str;
   gnpRootTask->vName(sName);
   
   vDicCompile(gnpRootTask);

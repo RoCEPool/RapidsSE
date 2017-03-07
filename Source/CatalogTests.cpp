@@ -12,79 +12,79 @@ void CatalogTests::vRun(RunTests* pRunTests)
   s256 sCommand;
   
   // start with /tenants folder
-  sCommand = "cf ~";
+  sCommand = "cf ~"_Str;
   vRequire(sCommand, true, EC_NONE);
   
-  sCommand = "create catalog;";
+  sCommand = "create catalog;"_Str;
   vRequire(sCommand, false, EC_INVALID_COMMAND);
 
-  sCommand = "drop catalog;";
+  sCommand = "drop catalog;"_Str;
   vRequire(sCommand, false, EC_INVALID_COMMAND);
   
-  sCommand = "create catalog cat;";
+  sCommand = "create catalog cat;"_Str;
   vRequire(sCommand, false, EC_NOT_IN_CATALOGS);
 
-  sCommand = "drop catalog cat;";
+  sCommand = "drop catalog cat;"_Str;
   vRequire(sCommand, false, EC_NOT_IN_CATALOGS);
 
-  sCommand = "create tenant ten;";
+  sCommand = "create tenant ten;"_Str;
   vRequire(sCommand, true, EC_NONE);
   
-  sCommand = "create catalog cat;";
+  sCommand = "create catalog cat;"_Str;
   vRequire(sCommand, false, EC_NOT_IN_CATALOGS);
   
-  sCommand = "drop catalog cat;";
+  sCommand = "drop catalog cat;"_Str;
   vRequire(sCommand, false, EC_NOT_IN_CATALOGS);
   
-  sCommand = "cf ten";
+  sCommand = "cf ten"_Str;
   vRequire(sCommand, true, EC_NONE);
   
-  sCommand = "create catalog cat;";
+  sCommand = "create catalog cat;"_Str;
   vRequire(sCommand, false, EC_NOT_IN_CATALOGS);
   
-  sCommand = "drop catalog cat;";
+  sCommand = "drop catalog cat;"_Str;
   vRequire(sCommand, false, EC_NOT_IN_CATALOGS);
   
-  sCommand = "cf catalogs";
+  sCommand = "cf catalogs"_Str;
   vRequire(sCommand, true, EC_NONE);
   
-  sCommand = "create catalog cat;";
+  sCommand = "create catalog cat;"_Str;
   vRequire(sCommand, true, EC_NONE);
   
-  sCommand = "create catalog cat;";
+  sCommand = "create catalog cat;"_Str;
   vRequire(sCommand, false, EC_CATALOG_EXISTS);
   
-  sCommand = "drop catalog cat;";
+  sCommand = "drop catalog cat;"_Str;
   vRequire(sCommand, false, EC_FOLDER_NOT_EMPTY);
   
-  sCommand = "cf cat ";
+  sCommand = "cf cat "_Str;
   vRequire(sCommand, true, EC_NONE);
 
-  sCommand = "rf schemas";
+  sCommand = "rf schemas"_Str;
   vRequire(sCommand, true, EC_NONE);
   
-  sCommand = "drop catalog cat;";
+  sCommand = "drop catalog cat;"_Str;
   vRequire(sCommand, false, EC_NOT_IN_CATALOGS);
   
-  sCommand = "cf .. ";
+  sCommand = "cf .. "_Str;
   vRequire(sCommand, true, EC_NONE);
   
-  sCommand = "drop catalog cat;";
+  sCommand = "drop catalog cat;"_Str;
   vRequire(sCommand, true, EC_NONE);
   
-  sCommand = "drop catalog cat;";
+  sCommand = "drop catalog cat;"_Str;
   vRequire(sCommand, false, EC_NO_SUCH_WORD);                         //??CHECK
   
-  sCommand = "cf .. ";
+  sCommand = "cf .. "_Str;
   vRequire(sCommand, true, EC_NONE);
   
-  sCommand = "rf catalogs";
+  sCommand = "rf catalogs"_Str;
   vRequire(sCommand, true, EC_NONE);
   
-  sCommand = "cf .. ";
+  sCommand = "cf .. "_Str;
   vRequire(sCommand, true, EC_NONE);
   
-  sCommand = "drop tenant ten;";
+  sCommand = "drop tenant ten;"_Str;
   vRequire(sCommand, true, EC_NONE);
 
   pRunTests->m_iTestsTotal += m_iTestsTotal;

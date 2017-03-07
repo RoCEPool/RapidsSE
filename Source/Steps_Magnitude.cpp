@@ -55,17 +55,17 @@ void Task::vToDigitName(NNP_Task nnpTask)
   s32 sName;
   
   switch (iDigit) {
-    case 0: sName = "zero";    break;
-    case 1: sName = "one";     break;
-    case 2: sName = "two";     break;
-    case 3: sName = "three";   break;
-    case 4: sName = "four";    break;
-    case 5: sName = "five";    break;
-    case 6: sName = "six";     break;
-    case 7: sName = "seven";   break;
-    case 8: sName = "eight";   break;
-    case 9: sName = "nine";    break;
-    default:sName = "invalid"; break;
+    case 0: sName = "zero"_Str;    break;
+    case 1: sName = "one"_Str;     break;
+    case 2: sName = "two"_Str;     break;
+    case 3: sName = "three"_Str;   break;
+    case 4: sName = "four"_Str;    break;
+    case 5: sName = "five"_Str;    break;
+    case 6: sName = "six"_Str;     break;
+    case 7: sName = "seven"_Str;   break;
+    case 8: sName = "eight"_Str;   break;
+    case 9: sName = "nine"_Str;    break;
+    default:sName = "invalid"_Str; break;
   }
   
   nnpTask->m_pDataStack->vPush(sName);

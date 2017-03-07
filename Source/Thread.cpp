@@ -62,7 +62,7 @@ Thread::Thread(void)
   static Atomic zThreadNo;
   
   m_iThreadNo = ++zThreadNo;
-  m_sName     = "<no thread name>";
+  m_sName     = "<no thread name>"_Str;
   m_pTaskSet  = nullptr;
   m_npTask    = nullptr;
 

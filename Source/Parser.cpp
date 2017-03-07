@@ -65,7 +65,7 @@ Parser::Parser(Parser* pNext)
   //m_bMalloc set in new
   m_pNext   = pNext;
   m_iDepth  = 0;
-  m_sPrompt = "Parser> ";
+  m_sPrompt = "Parser> "_Str;
   
   vResetParser();
   
@@ -322,7 +322,7 @@ void Parser::vResetParser(void)
   m_eSource   = IS_NONE;
   m_xFile.vZero();
   m_bLineMode = false;
-  m_sRawLine  = "";
+  m_sRawLine  = ""_Str;
   m_aRawLine  = m_sRawLine.aStr();
   m_pRawChar  = m_sRawLine.aStr();
  

@@ -20,25 +20,25 @@ Arguments::Arguments(void)
   m_iJumboSize    = m_nJumboTook * C_SIZE_POOL_BUFFER;
   
   m_pRegionAddr = C_ADDR_POOL;
-  m_sRegionName = "";
-  m_sRegionPrefix = "/SE";
+  m_sRegionName = ""_Str;
+  m_sRegionPrefix = "/SE"_Str;
   m_iRegionSize = 1_GB * 4 + m_iJumboSize;
   m_nSlots      = 4;
-  m_sNodeName   = "node";
+  m_sNodeName   = "node"_Str;
   m_nNodes      = 0;
   m_bTraceapi   = false;
   m_bTracepoint = false;
   
 #ifdef __APPLE__
-  m_sCommands   = "../../../../Commands";
-  m_sSen        = "../Sen/";
+  m_sCommands   = "../../../../Commands"_Str;
+  m_sSen        = "../Sen/"_Str;
 #else
-  m_sCommands   = "../../Commands";
-  m_sSen        = "../Sen/";
+  m_sCommands   = "../../Commands"_Str;
+  m_sSen        = "../Sen/"_Str;
 #endif
   
   
-  m_sCommand    = "";
+  m_sCommand    = ""_Str;
   
   m_bCommand    = false;
   m_bDocol      = false;
@@ -51,7 +51,7 @@ Arguments::Arguments(void)
 
   m_bBgTasks    = true;
   m_bConfig     = true;
-  m_sFolder     = "";
+  m_sFolder     = ""_Str;
   m_bHugePages  = false;
   m_bProgress   = false;
   m_bRestart    = true;
@@ -88,19 +88,19 @@ void Arguments::vEnvironmentVariables(void)
   s256 sPartitions;
   s256 sFolder;
   
-  sVarName = "SE_INSTANCE_NAME";
+  sVarName = "SE_INSTANCE_NAME"_Str;
   if (Env::bGet(sVarName,sRegionName))
     m_sRegionName = sRegionName;
 
-  sVarName = "SE_INSTANCE_SIZE";
+  sVarName = "SE_INSTANCE_SIZE"_Str;
   if (Env::bGet(sVarName,sRegionSize))
     m_iRegionSize = StrLib::iToI8(sRegionSize.aStr());
 
-  sVarName = "SE_PARTITIONS";
+  sVarName = "SE_PARTITIONS"_Str;
   if (Env::bGet(sVarName,sPartitions))
     m_nSlots = StrLib::iToI8(sPartitions.aStr());
   
-  sVarName = "SE_WORKING_FOLDER";
+  sVarName = "SE_WORKING_FOLDER"_Str;
   if (Env::bGet(sVarName,sFolder))
     m_sFolder = sFolder;
 }
@@ -118,7 +118,7 @@ bool Arguments::bParse(int argc, const char* argv[])
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (StrLib::bEqualTo("--command",argv[iArg],C_NO_CASE)) {
-      m_sCommand = argv[++iArg];
+      m_sCommand = (Str*)argv[++iArg];
       m_bCommand = true;
       m_bPrompt  = true;
       m_bWelcome = false;
@@ -127,13 +127,13 @@ bool Arguments::bParse(int argc, const char* argv[])
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (StrLib::bEqualTo("--commands",argv[iArg],C_NO_CASE)) {
-      m_sCommands = argv[++iArg];
+      m_sCommands = (Str*)argv[++iArg];
       continue;
     }
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (StrLib::bEqualTo("--sen",argv[iArg],C_NO_CASE)) {
-      m_sSen = argv[++iArg];
+      m_sSen = (Str*)argv[++iArg];
       continue;
     }
     
@@ -158,14 +158,14 @@ bool Arguments::bParse(int argc, const char* argv[])
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (StrLib::bEqualTo("--name",argv[iArg],C_NO_CASE)) {
-      m_sNodeName = argv[++iArg];
+      m_sNodeName = (Str*)argv[++iArg];
       continue;
     }
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (StrLib::bEqualTo("--node",argv[iArg],C_NO_CASE)) {
-      m_xNodes[iNode].m_sNodeName = argv[++iArg];;
-      m_xNodes[iNode].m_sIPAddress = argv[++iArg];
+      m_xNodes[iNode].m_sNodeName = (Str*)argv[++iArg];;
+      m_xNodes[iNode].m_sIPAddress = (Str*)argv[++iArg];
       m_xNodes[iNode].m_iPortNo =  StrLib::iToI8(argv[++iArg]);
       iNode++;
       
@@ -190,13 +190,13 @@ bool Arguments::bParse(int argc, const char* argv[])
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (StrLib::bEqualTo("--region",argv[iArg],C_NO_CASE)) {
-      m_sRegionName = argv[++iArg];
+      m_sRegionName = (Str*)argv[++iArg];
       continue;
     }
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (StrLib::bEqualTo("--regionPrefix",argv[iArg],C_NO_CASE)) {
-      m_sRegionPrefix = argv[++iArg];
+      m_sRegionPrefix = (Str*)argv[++iArg];
       continue;
     }
     
@@ -442,7 +442,7 @@ bool Arguments::bParse(int argc, const char* argv[])
     // add a single node
     m_nNodes = 1;
     m_xNodes[0].m_sNodeName = m_sNodeName;
-    m_xNodes[0].m_sIPAddress = "";
+    m_xNodes[0].m_sIPAddress = ""_Str;
     m_xNodes[0].m_iPortNo =  -1;
   }
 

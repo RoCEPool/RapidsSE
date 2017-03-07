@@ -56,8 +56,8 @@ Node::Node(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
   
   m_iNodeNo   = -1;
-  m_sNodeName = "";
-  m_sNodeIP   = "";
+  m_sNodeName = ""_Str;
+  m_sNodeIP   = ""_Str;
   m_iPortNo   = -1;
   
   _checkInitialised_(CN_NODE);

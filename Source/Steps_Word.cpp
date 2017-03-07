@@ -777,7 +777,7 @@ void Task::vSemicolon(NNP_Task nnpTask)
       DT_ONEPARTICIPANT  == pCurrentWord->eDistributed()) {
     
     s32 sTildeName;
-    sTildeName = "~";
+    sTildeName = "~"_Str;
     StrLib::vConcat(sTildeName.aStr(),pCurrentWord->sName().aStr());
     
     // create new word for tilde of current word
