@@ -138,7 +138,7 @@ ENTRY("vFileOpen");
   s32 sMode;
   
   if ( ! nnpTask->m_pDataStack->bPop(sMode) )
-    THROW("file.open");
+    THROW("file.open"_Str);
   
   bool bOpened = pFile->bOpen(sMode.aStr());
   

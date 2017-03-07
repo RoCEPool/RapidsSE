@@ -109,7 +109,7 @@ void Task::vAstackDrop(NNP_Task nnpTask)
   
   ValWsp xValA;
   if ( ! nnpTask->m_pAuxStack->bPop(xValA) )
-    THROW_INVALID_ASTACK("adrop");
+    THROW_INVALID_ASTACK("adrop"_Str);
   
   EXIT();
 }
@@ -162,7 +162,7 @@ void Task::vAstackNip(NNP_Task nnpTask)
   ValWsp xValB;
   
   if ( ! nnpTask->m_pAuxStack->bPop(xValA,xValB) )
-  THROW_INVALID_ASTACK("anip");
+  THROW_INVALID_ASTACK("anip"_Str);
   
   nnpTask->m_pAuxStack->vPush(&xValA);
   
@@ -217,7 +217,7 @@ void Task::vAstackReverse(NNP_Task nnpTask)
   
   for (i8 i = 0; i < nValues; i++) {
     if ( ! nnpTask->m_pAuxStack->bPop(apValWsp[i]) )
-      THROW_INVALID_ASTACK("areverse");
+      THROW_INVALID_ASTACK("areverse"_Str);
   }
   
   for (i8 i = 0; i < nValues; i++) {

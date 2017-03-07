@@ -100,7 +100,7 @@ void Task::vFlowHazard(NNP_Task nnpTask)
 {
   ENTRY("vFlowHazard");
   
-  THROW("Entered hazard");
+  THROW("Entered hazard"_Str);
   
   EXIT();
 }
@@ -222,7 +222,7 @@ void Task::vFlowThrow(NNP_Task nnpTask)
   
   char wBuffer[256];
   
-  StrLib::vSprint(wBuffer,"THROW TEST");
+  StrLib::vSprint(wBuffer,"THROW TEST"_Str);
   
   throw wBuffer;
   

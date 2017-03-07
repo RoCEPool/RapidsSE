@@ -672,7 +672,7 @@ char Parser::cFromRawInput(void)
       break;
       
     default:
-      THROW("Invalid m_eSource %lld",m_eSource);
+      THROW("Invalid m_eSource %lld"_Str,m_eSource);
   }
   
   return cRaw;

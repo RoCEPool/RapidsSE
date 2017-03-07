@@ -65,7 +65,7 @@ void Task::vSocketAccept(NNP_Task nnpTask)
   bool bResult = pSocket->bAcceptClient(iSocketId, xSysCall);
   
   if ( ! bResult )
-    THROW("Unable to accept connection: Errno %d!", xSysCall.iError());
+    THROW("Unable to accept connection: Errno %d!"_Str, xSysCall.iError());
   
   Task* pTask = (Task*)0x208f500c8;
   
@@ -96,7 +96,7 @@ void Task::vSocketClose(NNP_Task nnpTask)
   bool bResult = pSocket->bClose(xSysCall);
   
   if ( ! bResult )
-    THROW("Unable to close socket: Errno %d!", xSysCall.iError());
+    THROW("Unable to close socket: Errno %d!"_Str, xSysCall.iError());
   
   EXIT();
 }
@@ -155,7 +155,7 @@ void Task::vSocketConnect(NNP_Task nnpTask)
         continue;
       }
       
-      THROW("Unable to connect: Errno %d!", iError);
+      THROW("Unable to connect: Errno %d!"_Str, iError);
     }
   }
   
@@ -184,7 +184,7 @@ void Task::vSocketListen(NNP_Task nnpTask)
   bool bResult = pSocket->bCreateServer((int)iPort, xSysCall);
   
   if ( ! bResult )
-    THROW("Unable to listen for connections: Errno %d!", xSysCall.iError());
+    THROW("Unable to listen for connections: Errno %d!"_Str, xSysCall.iError());
   
   // return new socket
   Object* pPtrSocket = pSocket;
@@ -207,7 +207,7 @@ void Task::vSocketOpen(NNP_Task nnpTask)
   bool bResult = pSocket->bSocket(xSysCall);
   
   if ( ! bResult )
-    THROW("Unable to create socker: Errno %d!", xSysCall.iError());
+    THROW("Unable to create socker: Errno %d!"_Str, xSysCall.iError());
   
   // return pSocket
   Object* pPtrSocket = pSocket;
@@ -344,7 +344,7 @@ void Task::vSocketRecv(NNP_Task nnpTask)
   bool bResult = pSocket->bRecvBytes(sizeof(iBytes), reinterpret_cast<void*>(&iBytes), xSysCall);
   
   if ( ! bResult )
-    THROW("Unable to recvFrom socket: Errno %d!", xSysCall.iError());
+    THROW("Unable to recvFrom socket: Errno %d!"_Str, xSysCall.iError());
   
   //******************************************************************
   // Receive the valset
@@ -352,7 +352,7 @@ void Task::vSocketRecv(NNP_Task nnpTask)
   bResult = pSocket->bRecvBytes(iBytes, reinterpret_cast<void*>(&xValSet), xSysCall);
   
   if ( ! bResult )
-    THROW("Unable to recvFrom socket: Errno %d!", xSysCall.iError());
+    THROW("Unable to recvFrom socket: Errno %d!"_Str, xSysCall.iError());
   
   //******************************************************************
   // Check if valset has a row buffer
@@ -367,7 +367,7 @@ void Task::vSocketRecv(NNP_Task nnpTask)
     bResult = pSocket->bRecvBytes(sizeof(iBytes), reinterpret_cast<void*>(&iBytes), xSysCall);
     
     if ( ! bResult )
-      THROW("Unable to recvFrom socket: Errno %d!", xSysCall.iError());
+      THROW("Unable to recvFrom socket: Errno %d!"_Str, xSysCall.iError());
     
     //******************************************************************
     // receive rowBuffer
@@ -376,7 +376,7 @@ void Task::vSocketRecv(NNP_Task nnpTask)
     bResult = pSocket->bRecvBytes(iBytes, reinterpret_cast<void*>(pRowBuffer->pDataArea()), xSysCall);
     
     if ( ! bResult )
-      THROW("Unable to recvFrom socket: Errno %d!", xSysCall.iError());
+      THROW("Unable to recvFrom socket: Errno %d!"_Str, xSysCall.iError());
     
     pRowBuffer->vRowCount();
     

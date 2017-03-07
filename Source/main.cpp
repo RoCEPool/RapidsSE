@@ -190,7 +190,7 @@ void vKillPrev(void)
   
   for (i8 iIndex=0; iIndex < gxArguments.m_nNodes; iIndex++) {
     
-    StrLib::vSprint(sRegionName.aStr(),"%s_%s",
+    StrLib::vSprint(sRegionName.aStr(),"%s_%s"_Str,
       gxArguments.m_sRegionPrefix.aStr(),
       gxArguments.m_xNodes[iIndex].m_sNodeName.aStr());
     

@@ -145,7 +145,7 @@ void Task::vStrClip(NNP_Task nnpTask)
   i8 iHasLength = StrLib::iLength(sString.aStr());
   
   if ( iLength < 0 || llabs(iLength) >= iHasLength)
-    THROW("Invalid length for: str.clip");
+    THROW("Invalid length for: str.clip"_Str);
   
   char* pStart;
   
@@ -266,7 +266,7 @@ void Task::vStrLeft(NNP_Task nnpTask)
   i8 iHasLength = StrLib::iLength(sString.aStr());
   
   if ( iLength < 0)
-    THROW("Invalid length for: str.left");
+    THROW("Invalid length for: str.left"_Str);
   
   char* pStart = sString.aStr();
   
@@ -440,7 +440,7 @@ void Task::vStrRight(NNP_Task nnpTask)
   i8 iHasLength = StrLib::iLength(sString.aStr());
   
   if ( iLength < 0)
-    THROW("Invalid length for: str.right");
+    THROW("Invalid length for: str.right"_Str);
 
   if (iLength > iHasLength)
     iLength = iHasLength;
@@ -474,14 +474,14 @@ void Task::vStrSub(NNP_Task nnpTask)
   
   // validate start index
   if ( iStart < 0 || iStart >= iHasLength)
-    THROW("Invalid start index for: str.sub");
+    THROW("Invalid start index for: str.sub"_Str);
   
   // handle to end of string case
   if (-1 == iLength)
     iLength = iHasLength - iStart;
   
   if ( iLength <= 0 || iStart + iLength > iHasLength)
-    THROW("Invalid length for: str.sub");
+    THROW("Invalid length for: str.sub"_Str);
   
   char* pStart = sString.aStr() + iStart;
   

@@ -60,7 +60,7 @@ void Task::vAssert(NNP_Task nnpTask)
     THROW_INVALID_DSTACK("assert");
   
   if ( ! iTrue )
-    THROW("assert");
+    THROW("assert"_Str);
   
   EXIT();
 }
@@ -75,7 +75,7 @@ ENTRY("vAssertStack_0");
   i8 iStackValues = nnpTask->m_pDataStack->iValues();
   
   if ( ! (0 == iStackValues)  )
-    THROW("assert.stack_0");
+    THROW("assert.stack_0"_Str);
   
   EXIT();
 }
@@ -90,7 +90,7 @@ ENTRY("vAssertStack_0more");
   i8 iStackValues = nnpTask->m_pDataStack->iValues();
   
   if ( ! (0 <= iStackValues) )
-    THROW("assert.stack0+");
+    THROW("assert.stack0+"_Str);
   
   EXIT();
 }
@@ -105,7 +105,7 @@ ENTRY("vAssertStack_1");
   i8 iStackValues = nnpTask->m_pDataStack->iValues();
   
   if ( ! (1 == iStackValues)  )
-    THROW("assert.stack_1");
+    THROW("assert.stack_1"_Str);
   
   EXIT();
 }
@@ -120,7 +120,7 @@ ENTRY("vAssertStack_1more");
   i8 iStackValues = nnpTask->m_pDataStack->iValues();
   
   if ( ! (1 <= iStackValues) )
-    THROW("assert.stack1+");
+    THROW("assert.stack1+"_Str);
   
   EXIT();
 }
@@ -135,7 +135,7 @@ ENTRY("vAssertStack_2");
   i8 iStackValues = nnpTask->m_pDataStack->iValues();
   
   if ( ! (2 == iStackValues)  )
-    THROW("assert.stack_2");
+    THROW("assert.stack_2"_Str);
   
   EXIT();
 }
@@ -150,7 +150,7 @@ ENTRY("vAssertStack_2more");
   i8 iStackValues = nnpTask->m_pDataStack->iValues();
   
   if ( ! (2 <= iStackValues) )
-    THROW("assert.stack0+");
+    THROW("assert.stack0+"_Str);
   
   EXIT();
 }
@@ -165,7 +165,7 @@ ENTRY("vAssertStack_3");
   i8 iStackValues = nnpTask->m_pDataStack->iValues();
   
   if ( ! (3 == iStackValues)  )
-    THROW("assert.stack_3");
+    THROW("assert.stack_3"_Str);
   
   EXIT();
 }
@@ -180,7 +180,7 @@ ENTRY("vAssertStack_3more");
   i8 iStackValues = nnpTask->m_pDataStack->iValues();
   
   if ( ! (0 <= iStackValues) )
-    THROW("assert.stack3+");
+    THROW("assert.stack3+"_Str);
   
   EXIT();
 }
@@ -195,7 +195,7 @@ ENTRY("vAssertStack_4");
   i8 iStackValues = nnpTask->m_pDataStack->iValues();
   
   if ( ! (4 == iStackValues)  )
-    THROW("assert.stack_4");
+    THROW("assert.stack_4"_Str);
   
   EXIT();
 }
@@ -210,7 +210,7 @@ ENTRY("vAssertStack_4more");
   i8 iStackValues = nnpTask->m_pDataStack->iValues();
   
   if ( ! (0 <= iStackValues) )
-    THROW("assert.stack4+");
+    THROW("assert.stack4+"_Str);
   
   EXIT();
 }

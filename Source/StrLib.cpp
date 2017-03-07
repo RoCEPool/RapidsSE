@@ -1220,12 +1220,12 @@ void StrLib::vSkipWhite(char** ps)
 /*----------------------------------------------------------------------------*/
 /* vSprint: formatted sprint                                                  */
 /*----------------------------------------------------------------------------*/
-void StrLib::vSprint(char* sDst, const char* sFormat, ...)
+void StrLib::vSprint(char* sDst, Str* aFormat, ...)
 {
   va_list args;
   
-  va_start(args,sFormat);
-  vsprintf(sDst,sFormat,args);
+  va_start(args,aFormat);
+  vsprintf(sDst,aFormat->a(),args);
   va_end(args);
 }
 

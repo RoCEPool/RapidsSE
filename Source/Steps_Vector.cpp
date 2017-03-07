@@ -48,10 +48,10 @@ void Task::vVectorDifference(NNP_Task nnpTask)
   ValSet xValSet2;
   
   if ( ! nnpTask->m_pDataStack->bPop(xValSet2) )
-    THROW_INVALID_DSTACK("vector.difference");
+    THROW_INVALID_DSTACK("vector.difference"_Str);
   
   if ( ! nnpTask->m_pDataStack->bPop(xValSet1) )
-    THROW_INVALID_DSTACK("vector.difference");
+    THROW_INVALID_DSTACK("vector.difference"_Str);
   
   ValWsp* pValWsp1;
   ValWsp* pValWsp2;

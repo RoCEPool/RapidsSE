@@ -1080,7 +1080,7 @@ Word* Task::pCompileColon(StrVal& sDefinition)
           pNewWord->vEncode(ppCalledEntryStep);
         }
         else {
-          THROW("Invalid eWordType %lld",pCalledWord->eWordType());
+          THROW("Invalid eWordType %lld"_Str,pCalledWord->eWordType());
         }
         break;
         
@@ -1091,7 +1091,7 @@ Word* Task::pCompileColon(StrVal& sDefinition)
       }
         
       default:
-        THROW("Invalid m_eToken %lld",m_pTokeniser->eToken());
+        THROW("Invalid m_eToken %lld"_Str,m_pTokeniser->eToken());
     }
     
     m_pTokeniser->vNextToken();
@@ -1391,7 +1391,7 @@ Thread* Task::pRootThread(void)
   Object* pThreadEmb;
   
   if ( ! m_pDataStack->bPop(pThreadEmb) ) {
-    StrLib::vSprint(m_sException.aStr(),"Invalid data stack  for: h.spawn");
+    StrLib::vSprint(m_sException.aStr(),"Invalid data stack  for: h.spawn"_Str);
     m_sFile = (Str*)__FILE__;
     throw (i8)__LINE__;
   }

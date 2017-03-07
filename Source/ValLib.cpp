@@ -168,7 +168,7 @@ i8 ValLib::iSize(Object* pObject)
     }
       
     default:
-      THROW("ValLib::iSize -- invalid eClass %lld",eClass);
+      THROW("ValLib::iSize -- invalid eClass %lld"_Str,eClass);
       break;
   }
   
@@ -209,7 +209,7 @@ void ValLib::vToCommand(Object* pObject, char* aCharArray)
     }
       
     default:
-      THROW("Invalid eClass %lld",eClass);
+      THROW("Invalid eClass %lld"_Str,eClass);
       break;
   }
 }
@@ -260,7 +260,7 @@ void ValLib::vToString(Object* pObject, char* aCharArray)
     }
       
     default:
-      THROW("Invalid eClass %lld",eClass);
+      THROW("Invalid eClass %lld"_Str,eClass);
       break;
   }
 }

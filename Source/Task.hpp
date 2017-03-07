@@ -1108,19 +1108,19 @@ namespace Tasks
     // throw invalid auxiliary stack
     #define THROW_INVALID_ASTACK(primitive) \
     { \
-      THROW("Invalid aux stack for: %s",primitive); \
+      THROW("Invalid aux stack for: %s"_Str,primitive); \
     }
         
     // throw invalid data stack
     #define THROW_INVALID_DSTACK(primitive) \
     { \
-      THROW("Invalid data stack for: %s",primitive); \
+      THROW("Invalid data stack for: %s"_Str,primitive); \
     }
         
     // throw invalid return stack
     #define THROW_INVALID_RSTACK(primitive) \
     { \
-      THROW("Invalid return stack for: %s",primitive); \
+      THROW("Invalid return stack for: %s"_Str,primitive); \
     }
         
     #ifdef ENTRY_EXIT

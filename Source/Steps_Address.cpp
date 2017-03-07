@@ -103,7 +103,7 @@ void Task::vAddressFetch(NNP_Task nnpTask)
       break;
   
     default:
-      THROW("Invalid eClass %lld",eClass);
+      THROW("Invalid eClass %lld"_Str,eClass);
   }
   
   nnpTask->m_pDataStack->vPush(xValFetched);
@@ -149,7 +149,7 @@ void Task::vAddressStore(NNP_Task nnpTask)
       break;
   
     default:
-      THROW("Invalid eClass %lld",eClass);
+      THROW("Invalid eClass %lld"_Str,eClass);
   }
   
   EXIT();

@@ -265,7 +265,7 @@ void Task::vDicWhich(NNP_Task nnpTask)
   // get current plan
   Plan* pPlan = nnpTask->m_pPlan;
   if ( ! pPlan )
-    THROW("dic?: no current plan in task");
+    THROW("dic?: no current plan in task"_Str);
   
   // sub dic is either latest op dic (if there is one), or the plan dic
   Dic* pSubDic;
@@ -373,7 +373,7 @@ ENTRY("vForget");
   Word* pWord = nnpTask->m_xPathStack.pFindWord(nnpTask->m_pTokeniser->sToken().aStr());
   
   if ( ! pWord )
-    THROW("No such word: %s",nnpTask->m_pTokeniser->sToken().aStr());
+    THROW("No such word: %s"_Str,nnpTask->m_pTokeniser->sToken().aStr());
   
   bool bResult = nnpTask->m_xPathStack.bForget(nnpTask->m_pTokeniser->sToken());
   ASSERT(bResult);
@@ -589,7 +589,7 @@ void Task::vOpDic(NNP_Task nnpTask)
     
     // create a op dictionary
     s32 sNameDic;
-    StrLib::vSprint(sNameDic.aStr(),"<%s>",sNameOpFrame.aStr());
+    StrLib::vSprint(sNameDic.aStr(),"<%s>"_Str,sNameOpFrame.aStr());
     
     pOpDic = new Dic;
     pOpDic->vName(sNameDic.aStr());
@@ -634,7 +634,7 @@ void Task::vPostpone(NNP_Task nnpTask)
   // find the word in dic stack
   Word* pCalledWord = nnpTask->m_xPathStack.pFindWord(nnpTask->m_pTokeniser->sToken().aStr());
   if ( ! pCalledWord )
-    THROW("No word: %s ",nnpTask->m_pTokeniser->sToken().aStr());
+    THROW("No word: %s "_Str,nnpTask->m_pTokeniser->sToken().aStr());
   
   if (pCalledWord->bImmediate()) {
     
@@ -846,7 +846,7 @@ void Task::vSubDic(NNP_Task nnpTask)
   
   Word* pWordSubDic = nnpTask->m_xPathStack.pFindWord(sNameSubDic);
   if ( ! pWordSubDic )
-    THROW("No such subDic: %s",sNameSubDic.aStr());
+    THROW("No such subDic: %s"_Str,sNameSubDic.aStr());
   
   Dic* pDic = _pDic(pWordSubDic->aBodyArea());
   
@@ -875,7 +875,7 @@ void Task::vTick(NNP_Task nnpTask)
   Word* pWord = nnpTask->m_xPathStack.pFindWord(nnpTask->m_pTokeniser->sToken());
   
   if ( ! pWord )
-    THROW("No word: %s ",nnpTask->m_pTokeniser->sToken().aStr());
+    THROW("No word: %s "_Str,nnpTask->m_pTokeniser->sToken().aStr());
   
   if (nnpTask->m_bCompiling) {
     Word* pCurrentWord = nnpTask->m_pCurrentWord;

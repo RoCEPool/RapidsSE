@@ -74,7 +74,7 @@ void Task::vDirChangeCurrent(NNP_Task nnpTask)
   
   Dir xDir;
   if ( ! xDir.bChangeCurrent(sDir) )
-    THROW("Unable to change current directory");
+    THROW("Unable to change current directory"_Str);
   
   EXIT();
 }
@@ -116,7 +116,7 @@ void Task::vDirGetCurrent(NNP_Task nnpTask)
     nnpTask->m_pDataStack->vPush(&xStrVal);
   }
   else {
-    THROW("Unable to get current directory");
+    THROW("Unable to get current directory"_Str);
   }
   
   EXIT();

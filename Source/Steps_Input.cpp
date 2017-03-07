@@ -130,7 +130,7 @@ ENTRY("vInputOpen");
   bool bOpened = nnpTask->m_pTokeniser->bUseFile(sFilePath);
   
   if ( ! bOpened )
-    THROW("No such file: %s",sFilePath.aStr());
+    THROW("No such file: %s"_Str,sFilePath.aStr());
   
   EXIT();
 }

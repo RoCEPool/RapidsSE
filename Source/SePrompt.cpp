@@ -51,7 +51,7 @@ SePrompt::SePrompt(void)
   //StrLib::vConcat(m_sPrompt.aStr(), "> ");
   
   StrLib::vSprint(m_sPrompt.aStr(),
-                  "[N%lld %lld] se %s%c> ",
+                  "[N%lld %lld] se %s%c> "_Str,
                   gpGrid->iThisNode(),
                   Process::iGetPid(),
                   RAPIDSSE_VERSION_STRING,
