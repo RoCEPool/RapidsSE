@@ -270,7 +270,7 @@ i8 Tokeniser::iCountTokens(char* pToken[], i8 nTokens)
     if (StrLib::bEqualTo("",pToken[iToken]))
       return iToken;
   
-  ASSERT("Should never be reached");
+  ASSERT("Should never be reached"_Str);
   return -1;
 }
 

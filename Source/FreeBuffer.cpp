@@ -28,7 +28,7 @@ FreeBuffer::FreeBuffer(void)
   
   _checkInitialised_(CN_FREEBUFFER);
   
-  ASSERT("Should never be reached");
+  ASSERT("Should never be reached"_Str);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -38,7 +38,7 @@ FreeBuffer::~FreeBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FREEBUFFER,_FOOTER_);
   
-  ASSERT("Should never be reached");
+  ASSERT("Should never be reached"_Str);
 }
 
 /*----------------------------------------------------------------------------*/

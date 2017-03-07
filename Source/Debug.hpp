@@ -90,7 +90,7 @@ namespace Debugging
         _footer_();                        \
       }                                    \
       else {                               \
-        ASSERT("Should never be reached"); \
+        ASSERT("Should never be reached"_Str); \
       }                                    \
     }                                      \
     else {                                 \

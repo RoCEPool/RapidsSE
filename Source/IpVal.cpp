@@ -70,7 +70,7 @@ Cell* IpVal::pIpPtr(void) const
 void IpVal::vToCommand(char* aWorkspace)
 {
   ASSERT(aWorkspace);
-  ASSERT("Should never be called");
+  ASSERT("Should never be called"_Str);
 }
 
 /*----------------------------------------------------------------------------*/

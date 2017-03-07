@@ -277,7 +277,7 @@ i8 ValSet::nSize(void)
 void ValSet::vToCommand(char* aWorkspace)
 {
   ASSERT(aWorkspace);
-  ASSERT("Should never be called");
+  ASSERT("Should never be called"_Str);
 }
 
 /*----------------------------------------------------------------------------*/
