@@ -67,23 +67,12 @@ void ValWsp::operator =(Object* pPtr)
 /*----------------------------------------------------------------------------*/
 /* assign/copy a string into workspace                                        */
 /*----------------------------------------------------------------------------*/
-void ValWsp::operator =(char* pStr)
+void ValWsp::operator =(Str* pStr)
 {
   vClass(CN_STRVAL);
   _precondition_(_MAGIC_,CN_STRVAL);
 
-  _pStrVal(this)->vAssign(pStr);
-}
-
-/*----------------------------------------------------------------------------*/
-/* assign/copy a string into workspace                                        */
-/*----------------------------------------------------------------------------*/
-void ValWsp::operator =(const char* pStr)
-{
-  vClass(CN_STRVAL);
-  _precondition_(_MAGIC_,CN_STRVAL);
-
-  _pStrVal(this)->vAssign(pStr);
+  _pStrVal(this)->vAssign(pStr->a());
 }
 
 /*----------------------------------------------------------------------------*/

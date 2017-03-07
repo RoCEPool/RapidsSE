@@ -131,7 +131,6 @@ namespace Tasks
     
     void vAdjustNext(i8 iBytes);
     void vAddConstant(Str* aName, i8 iVal);
-    void vAddConstant(Str* aName, const char* aValue);
     void vAddConstant(Str* aName, Str* aValue);
 
     void vAddConstants(void);

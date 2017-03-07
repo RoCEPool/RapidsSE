@@ -290,22 +290,6 @@ void Task::vAddConstant(Str* aName, Str* aValue)
   Word* pNewWord = new(gpMainDic) Word(aName);
   
   ValWsp xWspStr;
-  xWspStr = aValue->a();
-  
-  pNewWord->vEncode("pushValue"_Str,&xWspStr);
-  pNewWord->vEncode("exit"_Str);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add constant to main dictionary                                            */
-/*----------------------------------------------------------------------------*/
-void Task::vAddConstant(Str* aName, const char* aValue)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  Word* pNewWord = new(gpMainDic) Word(aName);
-  
-  ValWsp xWspStr;
   xWspStr = aValue;
   
   pNewWord->vEncode("pushValue"_Str,&xWspStr);
@@ -366,7 +350,7 @@ void Task::vAddConstants(void)
   vAddConstant("_DEBUG"_Str,(i8)0);
 #endif
   
-  vAddConstant("version"_Str,          RAPIDSSE_VERSION_STRING);
+  vAddConstant("version"_Str,          (Str*)RAPIDSSE_VERSION_STRING);
   
   vAddConstant("jumbobuffersize"_Str,  C_SIZE_JUMBO_OBJECT);
   vAddConstant("largebuffersize"_Str,  C_SIZE_POOL_BUFFER);
@@ -381,13 +365,13 @@ void Task::vAddConstants(void)
   //vAddConstant("grid.nodes"_Str,       gxArguments.m_nNodes);
   vAddConstant("args.partitionsPerNode"_Str, gxArguments.m_nSlots);
   vAddConstant("args.progress"_Str,          gxArguments.m_bProgress);
-  vAddConstant("args.regionPrefix"_Str,gxArguments.m_sRegionPrefix.aStr());
+  vAddConstant("args.regionPrefix"_Str,gxArguments.m_sRegionPrefix);
   vAddConstant("args.regionSize"_Str,  gxArguments.m_iRegionSize - gxArguments.m_iJumboSize);
   vAddConstant("args.sleep"_Str,       gxArguments.m_iSleep);
   vAddConstant("args.Traceapi"_Str,    gxArguments.m_bTraceapi);
   vAddConstant("args.tracepoint"_Str,  gxArguments.m_bTracepoint);
   vAddConstant("args.verbose"_Str,     gxArguments.m_bVerbose);
-  vAddConstant("args.sen"_Str,         gxArguments.m_sSen.aStr());
+  vAddConstant("args.sen"_Str,         gxArguments.m_sSen);
   
   vAddConstant("true"_Str,    (i8)1);
   vAddConstant("false"_Str,   (i8)0);
@@ -1101,7 +1085,7 @@ Word* Task::pCompileColon(StrVal& sDefinition)
         break;
         
       case TK_STRING: {
-        xValWsp = m_pTokeniser->sToken().aStr();
+        xValWsp = m_pTokeniser->sToken();
         pNewWord->vEncode("pushValue"_Str,&xValWsp);
         break;
       }
@@ -1139,7 +1123,7 @@ Word* Task::pCompileConstant(StrVal& sDefinition)
   // get string
   m_pTokeniser->vNextToken();
   //vTrace("CompileConstant: %s\n"_Str,m_pTokeniser->sToken().aStr());
-  xValWsp = m_pTokeniser->sToken().aStr();
+  xValWsp = m_pTokeniser->sToken();
   
   // get CONSTANT
   m_pTokeniser->vNextToken();
@@ -1150,7 +1134,7 @@ Word* Task::pCompileConstant(StrVal& sDefinition)
   //vTrace("CompileConstant: %s\n"_Str,m_pTokeniser->sToken().aStr());
 
   Str* aName = (Str*)m_pTokeniser->sToken().aStr();
-  vAddConstant(aName,_pStrVal(&xValWsp)->aStr());
+  vAddConstant(aName,(Str*)xValWsp.aWspArea());
   
   m_pTokeniser->vNextToken();
   

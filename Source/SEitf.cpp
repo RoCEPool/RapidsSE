@@ -1703,7 +1703,7 @@ bool SEitf::bAppendRequest(StrVal& sRequest)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   char wItfAddr[32];
-  char wWorkspace[C_1KB * 16];
+  s48K xWorkspace;
   char* aCursor = nullptr;
   
   ValWsp xVal;
@@ -1720,13 +1720,13 @@ bool SEitf::bAppendRequest(StrVal& sRequest)
   }
   
   StrLib::wToString((i8)this,wItfAddr);
-  StrLib::vCopy(wWorkspace,wItfAddr);
-  StrLib::vConcat(wWorkspace," >seitf task.this task.seitf! ");
-  xVal = wWorkspace;
+  StrLib::vCopy(xWorkspace.aArea(),wItfAddr);
+  StrLib::vConcat(xWorkspace.aArea()," >seitf task.this task.seitf! ");
+  xVal = xWorkspace;
   //vTrace("%s\n"_Str,xVal.aStr());
   xValSet.vAppend(aCursor,xVal);
   
-  xVal = sRequest.aStr();
+  xVal = sRequest;
   //vTrace("%s\n"_Str,xVal.aStr());
   xValSet.vAppend(aCursor,xVal);
   

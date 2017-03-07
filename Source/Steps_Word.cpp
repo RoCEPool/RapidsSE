@@ -415,7 +415,7 @@ void Task::vHashHashColon(NNP_Task nnpTask)
   
   // we dont have an opFrame, only a plan
   pW->vEncode("drop"_Str);            //   drop the null opFrame pointer
-  xWsp = "planDic ";
+  xWsp = "planDic "_Str;
   pW->vEncode("pushValue"_Str,&xWsp); //   push "planDic "
 
   pW->vEncode("jump"_Str);            //   forward jump to colon etc
@@ -425,22 +425,22 @@ void Task::vHashHashColon(NNP_Task nnpTask)
   pOpFrameJumpArg->m_pJumpTo = pW->pLastCell();
   
   pW->vEncode("opFrame.name"_Str);    //   get name of opframe
-  xWsp = "opDic ";
+  xWsp = "opDic "_Str;
   pW->vEncode("pushValue"_Str,&xWsp); //   push "opDic "
   pW->vEncode("str.prepend"_Str);     //   form "opDic <opDicNm>"
   
   // we have an opFrame
   pToColonJumpArg->m_pJumpTo = pW->pLastCell();
   
-  xWsp = " : ";
+  xWsp = " : "_Str;
   pW->vEncode("pushValue"_Str,&xWsp); //   push " : "
   pW->vEncode("str.cat"_Str);         //   form "opDic <opDicNm> : "
   
-  xWsp = sSymbolicArg.aStr();
+  xWsp = sSymbolicArg;
   pW->vEncode("pushValue"_Str,&xWsp); //   push "<symNm>"
   pW->vEncode("str.cat"_Str);         //   form "opDic <opDicNm> : <symNm>"
   
-  xWsp = " %V ; ";
+  xWsp = " %V ; "_Str;
   pW->vEncode("pushValue"_Str,&xWsp); //   push " %V ; "
   pW->vEncode("str.cat"_Str);         //   form "opDic <opDicNm> : <symNm> %V ; "
   
@@ -792,7 +792,7 @@ void Task::vSemicolon(NNP_Task nnpTask)
     // encode the word
     ValWsp xValWsp;
     
-    xValWsp = sTildeName.aStr();
+    xValWsp = sTildeName;
     pWordTilde->vEncode("pushValue"_Str,&xValWsp);
     pWordTilde->vEncode("tracePoint"_Str);
     
@@ -800,10 +800,10 @@ void Task::vSemicolon(NNP_Task nnpTask)
     pWordTilde->vEncode("pushValue"_Str,&xValWsp);
     pWordTilde->vEncode("put$$"_Str);
     
-    xValWsp = pCurrentWord->sName().aStr();
+    xValWsp = pCurrentWord->sName();
     pWordTilde->vEncode("pushValue"_Str,&xValWsp);
     
-    xValWsp = "theIndirectCall";
+    xValWsp = "theIndirectCall"_Str;
     pWordTilde->vEncode("pushValue"_Str,&xValWsp);
     pWordTilde->vEncode("tracePoint"_Str);
     
@@ -814,7 +814,7 @@ void Task::vSemicolon(NNP_Task nnpTask)
     else
       pWordTilde->vEncode(">>oneParticipant>"_Str);
     
-    xValWsp = sTildeName.aStr();
+    xValWsp = sTildeName;
     pWordTilde->vEncode("pushValue"_Str,&xValWsp);
     pWordTilde->vEncode("tracePoint"_Str);
     

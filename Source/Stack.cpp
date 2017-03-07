@@ -769,7 +769,7 @@ void Stack::vPush(s32& sArg1)
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   ValWsp xStrVal1;
-  xStrVal1 = sArg1.aStr();
+  xStrVal1 = sArg1;
   
   vPush(xStrVal1);
 }
@@ -782,7 +782,7 @@ void Stack::vPush(s256& sArg1)
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   ValWsp xStrVal1;
-  xStrVal1 = sArg1.aStr();
+  xStrVal1 = sArg1;
   
   vPush(xStrVal1);
 }
@@ -795,7 +795,7 @@ void Stack::vPush(s48K& sArg1)
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   ValWsp xStrVal1;
-  xStrVal1 = sArg1.aStr();
+  xStrVal1 = sArg1;
   
   vPush(xStrVal1);
 }

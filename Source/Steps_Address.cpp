@@ -91,7 +91,7 @@ void Task::vAddressFetch(NNP_Task nnpTask)
       break;
       
     case CN_STRVAL:
-      xValFetched = _pStrVal(pValue)->aStr();
+      xValFetched = _pStrVal(pValue);
       break;
       
     case CN_PTRVAL:

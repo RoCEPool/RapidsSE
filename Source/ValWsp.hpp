@@ -17,8 +17,7 @@ namespace Values
     
     void operator =(i8 iInt);
     void operator =(Object* pObject);
-    void operator =(char* pStr);
-    void operator =(const char* pStr);
+    void operator =(Str* aStr);
     
     i8    iAsInt(void);
     void vAssignBinary(Object* pObject);

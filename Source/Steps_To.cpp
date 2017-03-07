@@ -97,7 +97,7 @@ void Task::vToCmd(NNP_Task nnpTask)
   s48K sCmd;
   
   ValWsp xStr;
-  xStr = "<cmd>";
+  xStr = "<cmd>"_Str;
   
   for (i8 i = 0; i < nValues; i++) {
     ValWsp xValWsp;
@@ -111,7 +111,7 @@ void Task::vToCmd(NNP_Task nnpTask)
     ValLib::vToCommand(&xValWsp,aCmdEnd);
   }
   
-  xStr = sCmd.aStr();
+  xStr = sCmd;
   
   nnpTask->m_pDataStack->vPush(&xStr);
   

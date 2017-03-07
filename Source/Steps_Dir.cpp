@@ -109,10 +109,10 @@ void Task::vDirGetCurrent(NNP_Task nnpTask)
   ValWsp xStrVal;
   
   Dir xDir;
-  s256 sDir;
+  s256 xDirPath;
   
-  if (xDir.bGetCurrent(sDir)) {
-    xStrVal = sDir.aStr();
+  if (xDir.bGetCurrent(xDirPath)) {
+    xStrVal = xDirPath;
     nnpTask->m_pDataStack->vPush(&xStrVal);
   }
   else {
