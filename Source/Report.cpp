@@ -55,13 +55,13 @@ void Debugging::vTrace(const char* psFormat, ...)
 /*---------------------------------------------------------------------------*/
 /* report a warning message                                                  */
 /*---------------------------------------------------------------------------*/
-void Debugging::vWarn(const char* psFormat, ...)
+void Debugging::vWarn(Str* aFormat, ...)
 {
   va_list xArgs;
   
-  va_start(xArgs,psFormat);
+  va_start(xArgs,aFormat);
   
-  vReport(C_REPORT_WARNING,psFormat,xArgs);
+  vReport(C_REPORT_WARNING,aFormat->a(),xArgs);
   
   va_end(xArgs);
 }

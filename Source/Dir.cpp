@@ -131,7 +131,7 @@ bool Dir::bGetCurrent(s256& rPath)
   
   if ( ! aDirPath ) {
     m_xSysCall.vError(errno);
-    vWarn("Dir::bGet: getcwd() error; errno=%d",errno);
+    vWarn("Dir::bGet: getcwd() error; errno=%d"_Str,errno);
     return false;
   }
   
@@ -165,7 +165,7 @@ bool Dir::bMake(s256& rPath)
 
   if (mkdir(aPath,0777) != 0 && EEXIST != errno) {
     m_xSysCall.vError(errno);
-    vWarn("Dir::bMake: mkdir() error; errno=%d",errno);
+    vWarn("Dir::bMake: mkdir() error; errno=%d"_Str,errno);
     return false;
   }
 
@@ -188,7 +188,7 @@ bool Dir::bRemove(s256& rPath)
 
   if (-1 == rCode) {
     m_xSysCall.vError(errno);
-    vWarn("Dir::bRemove: rmdir() error; errno=%d",errno);
+    vWarn("Dir::bRemove: rmdir() error; errno=%d"_Str,errno);
     return false;
   }
 
@@ -234,7 +234,7 @@ void Dir::vClose(void)
   i8 iResult = closedir(m_pDirPtr);
   if (-1 == iResult) {
     m_xSysCall.vError(errno);
-    vWarn("Dir::vClose: closedir() error; errno=%d",errno);
+    vWarn("Dir::vClose: closedir() error; errno=%d"_Str,errno);
     return;
   }
 
@@ -305,7 +305,7 @@ bool Dir::bOpen(void)
   m_pDirPtr = opendir(wPath);
   if (! m_pDirPtr) {
     m_xSysCall.vError(errno);
-    vWarn("Dir::bOpen: opendir() error; errno=%d",errno);
+    vWarn("Dir::bOpen: opendir() error; errno=%d"_Str,errno);
     return false;
   }
 

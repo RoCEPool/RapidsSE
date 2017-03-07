@@ -18,7 +18,7 @@ namespace Debugging
   
   void  vInfo(const char* pFormat,...);
   void  vTrace(const char* pFormat,...);
-  void  vWarn(const char* pFormat,...);
+  void  vWarn(Str* aFormat,...);
   void  vError(const char* pFormat,...);
   void  vFatal(const char* pFormat,...);
   
