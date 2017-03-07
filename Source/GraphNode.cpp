@@ -77,7 +77,7 @@ GraphNode::~GraphNode(void)
 /*----------------------------------------------------------------------------*/
 /* dump the graph node                                                        */
 /*----------------------------------------------------------------------------*/
-void GraphNode::vDump(eCN eClass, Object* pObject, const char* aTab)
+void GraphNode::vDump(eCN eClass, Object* pObject, Str* aTab)
 {
   vTrace("\n"_Str);
 }

@@ -113,7 +113,7 @@ void DicPath::vDiscard(void)
 /*----------------------------------------------------------------------------*/
 /* dump dictionary                                                            */
 /*----------------------------------------------------------------------------*/
-void DicPath::vDump(eCN eClass, Object* pObject, const char* aTab)
+void DicPath::vDump(eCN eClass, Object* pObject, Str* aTab)
 {
   ASSERT(eClass == CN_DICPATH);
   ASSERT(pObject->eClass() == CN_DICPATH);

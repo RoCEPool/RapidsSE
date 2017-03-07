@@ -70,7 +70,7 @@ RegFrame::~RegFrame(void)
 /*----------------------------------------------------------------------------*/
 /* dump register frame                                                        */
 /*----------------------------------------------------------------------------*/
-void RegFrame::vDump(eCN eClass, Object* pObject, const char* aTab)
+void RegFrame::vDump(eCN eClass, Object* pObject, Str* aTab)
 {
   ASSERT(eClass == CN_REGFRAME);
   ASSERT(pObject->eClass() == CN_REGFRAME);

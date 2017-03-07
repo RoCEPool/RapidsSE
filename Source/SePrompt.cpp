@@ -120,7 +120,7 @@ SePrompt::~SePrompt(void)
 /*----------------------------------------------------------------------------*/
 /* dump seprompt                                                              */
 /*----------------------------------------------------------------------------*/
-void SePrompt::vDump(eCN eClass, Object* pObject, const char* aTab)
+void SePrompt::vDump(eCN eClass, Object* pObject, Str* aTab)
 {
   ASSERT(eClass == CN_SEPROMPT);
   ASSERT(pObject->eClass() == CN_SEPROMPT);

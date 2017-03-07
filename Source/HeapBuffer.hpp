@@ -19,7 +19,7 @@ namespace Pool
     HeapBuffer(void);
    ~HeapBuffer(void);
     
-    static void vDump(eCN eClass, Object* pObject, const char* aTab);
+    static void vDump(eCN eClass, Object* pObject, Str* aTab);
     
     void vAnalyse(i8 nBytes, i8 xCounts[]);
     HeapBuffer* pNextBuffer(void);

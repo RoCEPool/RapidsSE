@@ -155,7 +155,7 @@ void SEitf::vContentDump(void)
 /*----------------------------------------------------------------------------*/
 /* dump seitf                                                                 */
 /*----------------------------------------------------------------------------*/
-void SEitf::vDump(eCN eClass, Object* pObject, const char* aTab)
+void SEitf::vDump(eCN eClass, Object* pObject, Str* aTab)
 {
   ASSERT(eClass == CN_SEITF);
   ASSERT(pObject->eClass() == CN_SEITF);

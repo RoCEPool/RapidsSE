@@ -26,7 +26,7 @@ namespace Dictionaries
     RegFrame(void);
     ~RegFrame(void);
     
-    static void vDump(eCN eClass, Object* pObject, const char* aTab);
+    static void vDump(eCN eClass, Object* pObject, Str* aTab);
     
     RegFrame* pNext(void);
     void      vNext(RegFrame* pRegFrame);

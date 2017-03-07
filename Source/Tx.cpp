@@ -140,7 +140,7 @@ void Tx::vContentDump(void)
 /*----------------------------------------------------------------------------*/
 /* dump dictionary                                                            */
 /*----------------------------------------------------------------------------*/
-void Tx::vDump(eCN eClass, Object* pObject, const char* aTab)
+void Tx::vDump(eCN eClass, Object* pObject, Str* aTab)
 {
   ASSERT(eClass == CN_TX);
   ASSERT(pObject->eClass() == CN_TX);

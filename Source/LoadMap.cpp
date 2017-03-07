@@ -79,7 +79,7 @@ LoadMap::~LoadMap(void)
 /*----------------------------------------------------------------------------*/
 /* dump seekmap                                                               */
 /*----------------------------------------------------------------------------*/
-void LoadMap::vDump(eCN eClass, Object* pObject, const char* aTab)
+void LoadMap::vDump(eCN eClass, Object* pObject, Str* aTab)
 {
   ASSERT(eClass == CN_LOADMAP);
   ASSERT(pObject->eClass() == CN_LOADMAP);

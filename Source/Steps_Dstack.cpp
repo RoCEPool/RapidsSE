@@ -450,7 +450,7 @@ void Task::vDstackStk(NNP_Task nnpTask)
 {
   ENTRY("vDstackStk");
   
-  nnpTask->m_pDataStack->vContentDump(nnpTask->m_sName.aStr(),"DataStack:");
+  nnpTask->m_pDataStack->vContentDump(nnpTask->m_sName,"DataStack:"_Str);
   
   EXIT();
 }

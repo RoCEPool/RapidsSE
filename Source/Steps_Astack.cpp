@@ -232,7 +232,7 @@ void Task::vAstackStk(NNP_Task nnpTask)
 {
   ENTRY("vAstackStk");
   
-  nnpTask->m_pAuxStack->vContentDump(nnpTask->m_sName.aStr(),"AuxStack:");
+  nnpTask->m_pAuxStack->vContentDump(nnpTask->m_sName,"AuxStack:"_Str);
   
   EXIT();
 }

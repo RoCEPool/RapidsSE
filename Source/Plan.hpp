@@ -30,7 +30,7 @@ namespace Plans
     void vInit(void);                     //# I like the position of this -- ray
     ~Plan(void);
     
-    static void vDump(eCN eClass, Object* pObject, const char* aTab);
+    static void vDump(eCN eClass, Object* pObject, Str* aTab);
     
     void vAppendToLambda(s48K& sText);
     

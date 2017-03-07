@@ -132,7 +132,7 @@ void Dic::vDicKind(Word* pDicKind)
 /*----------------------------------------------------------------------------*/
 /* dump dictionary                                                            */
 /*----------------------------------------------------------------------------*/
-void Dic::vDump(eCN eClass, Object* pObject, const char* aTab)
+void Dic::vDump(eCN eClass, Object* pObject, Str* aTab)
 {
   ASSERT(eClass == CN_DIC);
   ASSERT(pObject->eClass() == CN_DIC);

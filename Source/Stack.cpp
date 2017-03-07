@@ -78,7 +78,7 @@ Stack::~Stack(void)
 /*----------------------------------------------------------------------------*/
 /* dump grid                                                                  */
 /*----------------------------------------------------------------------------*/
-void Stack::vDump(eCN eClass, Object* pObject, const char* aTab)
+void Stack::vDump(eCN eClass, Object* pObject, Str* aTab)
 {
   ASSERT(eClass == CN_STACK);
   ASSERT(pObject->eClass() == CN_STACK);
@@ -849,7 +849,7 @@ void Stack::vDiscard(void)
 /*----------------------------------------------------------------------------*/
 /* stk -- dump the data stack                                                 */
 /*----------------------------------------------------------------------------*/
-void Stack::vContentDump(const char* aPrefix, const char* aTitle)
+void Stack::vContentDump(Str* aPrefix, Str* aTitle)
 {
   vTrace("[%s]%s:\n"_Str,aPrefix,aTitle);
   

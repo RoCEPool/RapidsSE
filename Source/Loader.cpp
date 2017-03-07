@@ -83,7 +83,7 @@ Loader::~Loader(void)
 /*----------------------------------------------------------------------------*/
 /* dump Loader                                                                */
 /*----------------------------------------------------------------------------*/
-void Loader::vDump(eCN eClass, Object* pObject, const char* aTab)
+void Loader::vDump(eCN eClass, Object* pObject, Str* aTab)
 {
   ASSERT(eClass == CN_LOADER);
   ASSERT(pObject->eClass() == CN_LOADER);

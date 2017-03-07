@@ -5,10 +5,10 @@
 
 namespace Debugging
 {
-  const char* aSingleTab(void);
-  const char* aDoubleTab(void);
+  Str* aSingleTab(void);
+  Str* aDoubleTab(void);
   
-  const char* aTab(i8 iDepth);
+  Str* aTab(i8 iDepth);
 }
 
 /*============================================================================*/

@@ -28,7 +28,7 @@ Index* DBobjects::_pIndex(void* pAddr)
 /*----------------------------------------------------------------------------*/
 /* dump data                                                                  */
 /*----------------------------------------------------------------------------*/
-void Index::vDump(eCN eClass, Object* pObject, const char* aTab)
+void Index::vDump(eCN eClass, Object* pObject, Str* aTab)
 {
   ASSERT(eClass == CN_INDEX);
   ASSERT(pObject->eClass() == CN_INDEX);

@@ -58,7 +58,7 @@ LoadChunk::~LoadChunk(void)
 /*----------------------------------------------------------------------------*/
 /* dump LoaderSub                                                             */
 /*----------------------------------------------------------------------------*/
-void LoadChunk::vDump(eCN eClass, Object* pObject, const char* aTab)
+void LoadChunk::vDump(eCN eClass, Object* pObject, Str* aTab)
 {
   ASSERT(eClass == CN_LOADCHUNK);
   ASSERT(pObject->eClass() == CN_LOADCHUNK);

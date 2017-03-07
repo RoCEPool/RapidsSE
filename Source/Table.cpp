@@ -251,7 +251,7 @@ void Table::vContentDump(void)
 /*----------------------------------------------------------------------------*/
 /* dump table                                                                 */
 /*----------------------------------------------------------------------------*/
-void Table::vDump(eCN eClass, Object* pObject, const char* aTab)
+void Table::vDump(eCN eClass, Object* pObject, Str* aTab)
 {
   ASSERT(eClass == CN_TABLE);
   ASSERT(pObject->eClass() == CN_TABLE);

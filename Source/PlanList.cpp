@@ -87,7 +87,7 @@ void PlanList::vContentDump(void)
 /*----------------------------------------------------------------------------*/
 /* dump                                                                       */
 /*----------------------------------------------------------------------------*/
-void PlanList::vDump(eCN eClass, Object* pObject, const char* aTab)
+void PlanList::vDump(eCN eClass, Object* pObject, Str* aTab)
 {
   ASSERT(eClass == CN_PLANLIST);
   ASSERT(pObject->eClass() == CN_PLANLIST);

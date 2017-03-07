@@ -94,7 +94,7 @@ LoaderSub::~LoaderSub(void)
 /*----------------------------------------------------------------------------*/
 /* dump LoaderSub                                                             */
 /*----------------------------------------------------------------------------*/
-void LoaderSub::vDump(eCN eClass, Object* pObject, const char* aTab)
+void LoaderSub::vDump(eCN eClass, Object* pObject, Str* aTab)
 {
   ASSERT(eClass == CN_LOADERSUB);
   ASSERT(pObject->eClass() == CN_LOADERSUB);

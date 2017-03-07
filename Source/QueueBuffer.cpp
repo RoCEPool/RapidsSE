@@ -89,7 +89,7 @@ i8 QueueBuffer::iCount(void)
 /*----------------------------------------------------------------------------*/
 /* dump this queue buffer                                                     */
 /*----------------------------------------------------------------------------*/
-void QueueBuffer::vContentDump(const char* aTab)
+void QueueBuffer::vContentDump(Str* aTab)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUEBUFFER,_FOOTER_);
   
@@ -104,7 +104,7 @@ void QueueBuffer::vContentDump(const char* aTab)
 /*----------------------------------------------------------------------------*/
 /* dump grid                                                                  */
 /*----------------------------------------------------------------------------*/
-void QueueBuffer::vDump(eCN eClass, Object* pObject, const char* aTab)
+void QueueBuffer::vDump(eCN eClass, Object* pObject, Str* aTab)
 {
   ASSERT(eClass == CN_QUEUEBUFFER);
   ASSERT(pObject->eClass() == CN_QUEUEBUFFER);

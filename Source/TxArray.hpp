@@ -25,7 +25,7 @@ namespace Transactions
     TxArray(void);
     ~TxArray(void);
     
-    static void vDump(eCN eClass, Object* pObject, const char * aTab);
+    static void vDump(eCN eClass, Object* pObject, Str* aTab);
     
     Footer* pFooter(void);
   };

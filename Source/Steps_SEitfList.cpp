@@ -52,7 +52,7 @@ ENTRY("vSEitfListDump");
   SEitfList* pSEitfList = _pSEitfList(pPtrSEitfList);
   ASSERT(CN_SEITFLIST == pSEitfList->eClass());
   
-  pSEitfList->vContentDump("SEitfList:", aSingleTab());
+  pSEitfList->vContentDump("SEitfList:"_Str, aSingleTab());
   
   EXIT();
 }

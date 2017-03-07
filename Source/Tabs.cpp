@@ -7,43 +7,43 @@
 /*----------------------------------------------------------------------------*/
 /* single tab                                                                 */
 /*----------------------------------------------------------------------------*/
-const char* Debugging::aSingleTab(void)
+Str* Debugging::aSingleTab(void)
 {
-  return "  ";
+  return "  "_Str;
 }
 
 /*----------------------------------------------------------------------------*/
 /* double tab                                                                 */
 /*----------------------------------------------------------------------------*/
-const char* Debugging::aDoubleTab(void)
+Str* Debugging::aDoubleTab(void)
 {
-  return "      ";
+  return "      "_Str;
 }
 
 /*----------------------------------------------------------------------------*/
 /* get tab                                                                    */
 /*----------------------------------------------------------------------------*/
-const char* Debugging::aTab(i8 iDepth)
+Str* Debugging::aTab(i8 iDepth)
 {
   switch(iDepth) {
-    case  0:  return "";
-    case  1:  return "  ";
-    case  2:  return "    ";
-    case  3:  return "      ";
-    case  4:  return "        ";
-    case  5:  return "          ";
-    case  6:  return "            ";
-    case  7:  return "              ";
-    case  8:  return "                ";
-    case  9:  return "                  ";
-    case 10:  return "                    ";
-    case 11:  return "                      ";
-    case 12:  return "                        ";
-    case 13:  return "                          ";
-    case 14:  return "                            ";
-    case 15:  return "                              ";
-    case 16:  return "                                ";
-    default:  return "  (tabbed-out)                    ";
+    case  0:  return ""_Str;
+    case  1:  return "  "_Str;
+    case  2:  return "    "_Str;
+    case  3:  return "      "_Str;
+    case  4:  return "        "_Str;
+    case  5:  return "          "_Str;
+    case  6:  return "            "_Str;
+    case  7:  return "              "_Str;
+    case  8:  return "                "_Str;
+    case  9:  return "                  "_Str;
+    case 10:  return "                    "_Str;
+    case 11:  return "                      "_Str;
+    case 12:  return "                        "_Str;
+    case 13:  return "                          "_Str;
+    case 14:  return "                            "_Str;
+    case 15:  return "                              "_Str;
+    case 16:  return "                                "_Str;
+    default:  return "  (tabbed-out)                    "_Str;
   }
 }
 

@@ -407,7 +407,7 @@ void Word::vDistributed(eDT eDistributed)
 /*----------------------------------------------------------------------------*/
 /* dump dictionary                                                            */
 /*----------------------------------------------------------------------------*/
-void Word::vDump(eCN eClass, Object* pObject, const char* aTab)
+void Word::vDump(eCN eClass, Object* pObject, Str* aTab)
 {
   ASSERT(eClass == CN_WORD);
   ASSERT(pObject->eClass() == CN_WORD);
@@ -647,7 +647,7 @@ StrVal& Word::sName(void)
 /*----------------------------------------------------------------------------*/
 /* dump object word                                                           */
 /*----------------------------------------------------------------------------*/
-void Word::vObjectDump(const char* aTab)
+void Word::vObjectDump(Str* aTab)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   

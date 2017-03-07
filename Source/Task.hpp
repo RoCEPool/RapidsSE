@@ -127,7 +127,7 @@ namespace Tasks
     void vInit(const char* aLambda);
     ~Task(void);
     
-    static void vDump(eCN eClass, Object* pObject, const char* aTab);
+    static void vDump(eCN eClass, Object* pObject, Str* aTab);
     
     void vAdjustNext(i8 iBytes);
     void vAddConstant(Str* aName, i8 iVal);

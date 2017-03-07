@@ -102,7 +102,7 @@ void Node::vInit(void)
 /*----------------------------------------------------------------------------*/
 /* dump                                                                       */
 /*----------------------------------------------------------------------------*/
-void Node::vDump(eCN eClass, Object* pObject, const char* aTab)
+void Node::vDump(eCN eClass, Object* pObject, Str* aTab)
 {
   ASSERT(eClass == CN_NODE);
   ASSERT(pObject->eClass() == CN_NODE);

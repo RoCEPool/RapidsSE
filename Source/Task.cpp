@@ -1169,7 +1169,7 @@ void Task::vDebug(void)
 /*----------------------------------------------------------------------------*/
 /* dump                                                                       */
 /*----------------------------------------------------------------------------*/
-void Task::vDump(eCN eClass, Object* pObject, const char* aTab)
+void Task::vDump(eCN eClass, Object* pObject, Str* aTab)
 {
   ASSERT(eClass == CN_TASK);
   ASSERT(pObject->eClass() == CN_TASK);
@@ -1336,26 +1336,26 @@ void Task::vPrimitive(const char* aPrimitive)
 //  for (i8 iValue = iParamValues - 1; iValue >= 0; iValue--) {
 //    
 //    if (iValue != iParamValues-1)
-//      vTrace(",");
+//      vTrace(","_Str);
 //    
 //    ValWsp* pValWsp = static_cast<ValWsp*>(m_pDataStack->pPeek(iValue));
 //    
 //    eCN eClass = pValWsp->eClass();
 //    
 //    if (CN_INTVAL == eClass) {
-//      vTrace("%lld",pValWsp->iInt());
+//      vTrace("%lld"_Str,pValWsp->iInt());
 //    }
 //    else if (CN_PTRVAL == eClass) {
-//      vTrace("%p (%s)",pValWsp->pPtr(),pValWsp->aClass());
+//      vTrace("%p (%s)"_Str,pValWsp->pPtr(),pValWsp->aClass());
 //    }
 //    else if (CN_STRVAL == eClass) {
-//      vTrace("\"%lls\"",pValWsp->aStr());
+//      vTrace("\"%lls\""_Str,pValWsp->aStr());
 //    }
 //    else if (CN_VALSET == eClass) {
-//      vTrace("%p (%s)",pValWsp,pValWsp->aClass());
+//      vTrace("%p (%s)"_Str,pValWsp,pValWsp->aClass());
 //    }
 //    else {
-//      vTrace("unknown value on stack: class=%lld",pValWsp->eClass());
+//      vTrace("unknown value on stack: class=%lld"_Str,pValWsp->eClass());
 //    }
 //  }
 

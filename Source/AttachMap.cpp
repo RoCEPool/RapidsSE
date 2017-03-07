@@ -126,7 +126,7 @@ void AttachMap::vRecordGlobals(void)
 /*----------------------------------------------------------------------------*/
 /* dump this attachmap                                                        */
 /*----------------------------------------------------------------------------*/
-void AttachMap::vDump(eCN eClass, Object* pObject, const char* aTab)
+void AttachMap::vDump(eCN eClass, Object* pObject, Str* aTab)
 {
   ASSERT(CN_ATTACHMAP == eClass);
   AttachMap* pAttachMap = reinterpret_cast<AttachMap*>(pObject);

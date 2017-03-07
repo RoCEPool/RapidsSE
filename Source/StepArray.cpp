@@ -67,7 +67,7 @@ StepAccum* StepArray::pAllocAccum(const char* pFnName)
 /*----------------------------------------------------------------------------*/
 /* dump grid                                                                  */
 /*----------------------------------------------------------------------------*/
-void StepArray::vDump(eCN eClass, Object* pObject, const char* aTab)
+void StepArray::vDump(eCN eClass, Object* pObject, Str* aTab)
 {
   ASSERT(eClass == CN_STEPARRAY);
   ASSERT(pObject->eClass() == CN_STEPARRAY);

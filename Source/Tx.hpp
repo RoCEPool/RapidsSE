@@ -52,7 +52,7 @@ namespace Transactions
     
     Tx(void);
     
-    static void vDump(eCN eClass, Object* pObject, const char* aTab);
+    static void vDump(eCN eClass, Object* pObject, Str* aTab);
     
     i8 iTxSlot(void);
     void vTxSlot(i8 iTxSlot);

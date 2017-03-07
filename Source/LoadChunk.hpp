@@ -22,7 +22,7 @@ namespace Structures
     LoadChunk(void);
     ~LoadChunk(void);
 
-    static void vDump(eCN eClass, Object* pObject, const char* aTab);
+    static void vDump(eCN eClass, Object* pObject, Str* aTab);
     
     void  vCloseFile(void);
     i8    iNextRecord(void);

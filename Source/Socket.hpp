@@ -25,7 +25,7 @@ namespace System
     Socket(int iSocketId);
     ~Socket();
     
-    static void vDump(eCN eClass, Object* pObject, const char* aTab);
+    static void vDump(eCN eClass, Object* pObject, Str* aTab);
 
     void vAddrInit(sockaddr_in* aAddr, int iPort);
     void vAddrInit(sockaddr_in* aAddr, const char* sAddr, int iPort);

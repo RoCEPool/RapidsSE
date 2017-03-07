@@ -69,7 +69,7 @@ Heap::~Heap(void)
 /*----------------------------------------------------------------------------*/
 /* dump this heap                                                             */
 /*----------------------------------------------------------------------------*/
-void Heap::vDump(eCN eClass, Object* pObject, const char* aTab)
+void Heap::vDump(eCN eClass, Object* pObject, Str* aTab)
 {
   ASSERT(eClass == CN_SMALLHEAP || eClass == CN_MEDIUMHEAP);
   ASSERT(pObject->eClass() == CN_SMALLHEAP || pObject->eClass() == CN_MEDIUMHEAP);

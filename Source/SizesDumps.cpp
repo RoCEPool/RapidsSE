@@ -399,7 +399,7 @@ eHT geWhichHeap[]
 /*----------------------------------------------------------------------------*/
 /* dummy dump                                                                 */
 /*----------------------------------------------------------------------------*/
-void Dump::vDummy(eCN eClass, Object* pObject, const char* aTab)
+void Dump::vDummy(eCN eClass, Object* pObject, Str* aTab)
 {
   ASSERT(eClass != CN_NONE);
   ASSERT(pObject != nullptr);
@@ -412,7 +412,7 @@ void Dump::vDummy(eCN eClass, Object* pObject, const char* aTab)
 /*----------------------------------------------------------------------------*/
 /* dummy dump                                                                 */
 /*----------------------------------------------------------------------------*/
-void Dump::vEnums(eCN eClass, Object* pObject, const char* aTab)
+void Dump::vEnums(eCN eClass, Object* pObject, Str* aTab)
 {
   ASSERT(eClass == CN_ENUMS);
   ASSERT(pObject != nullptr);
@@ -423,7 +423,7 @@ void Dump::vEnums(eCN eClass, Object* pObject, const char* aTab)
 /*----------------------------------------------------------------------------*/
 /* dump this attachmap                                                        */
 /*----------------------------------------------------------------------------*/
-void Dump::vInvalid(eCN eClass, Object* pObject, const char* aTab)
+void Dump::vInvalid(eCN eClass, Object* pObject, Str* aTab)
 {
   ASSERT(eClass != CN_ENUMS);
   ASSERT(pObject != nullptr);
@@ -434,7 +434,7 @@ void Dump::vInvalid(eCN eClass, Object* pObject, const char* aTab)
 /*----------------------------------------------------------------------------*/
 /* dump not defined                                                           */
 /*----------------------------------------------------------------------------*/
-void Dump::vUndefined(eCN eClass, Object* pObject, const char* aTab)
+void Dump::vUndefined(eCN eClass, Object* pObject, Str* aTab)
 {
   ASSERT(eClass != CN_NONE);
   ASSERT(pObject != nullptr);

@@ -35,7 +35,7 @@ namespace DBobjects
     LoaderSub(void);
     ~LoaderSub(void);
     
-    static void vDump(eCN eClass, Object* pObject, const char* aTab);
+    static void vDump(eCN eClass, Object* pObject, Str* aTab);
     
     void vAppendBuffer(void);
     void vBegin(void);

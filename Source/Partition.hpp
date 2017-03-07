@@ -21,7 +21,7 @@ namespace DBobjects
     Footer m_xFooter;
     
   public:
-    static void vDump(eCN eClass, Object* pObject, const char* aTab);
+    static void vDump(eCN eClass, Object* pObject, Str* aTab);
     static i8   iPartitionToNode(i8 iPartition);
     static i8   iPartitionToSlot(i8 iPartition);
     static i8   iSlotToPartition(i8 iSlot);

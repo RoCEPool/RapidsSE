@@ -24,7 +24,7 @@ namespace Structures
     Collection_t(void);
         
     OBJECT* pAllocObject(void);
-    void    vContentDump(const char* aTitle);
+    void    vContentDump(Str* aTitle);
     void    vFreeObject(OBJECT* pObject);
     
     void    vAppendList(OBJECT*& pNode);
@@ -94,7 +94,7 @@ OBJECT* Collection_t<OBJECT>::pAllocObject(void)
 /* dump each object in collection                                             */
 /*----------------------------------------------------------------------------*/
 template <class OBJECT>
-void Collection_t<OBJECT>::vContentDump(const char* aTitle)
+void Collection_t<OBJECT>::vContentDump(Str* aTitle)
 {
   vReadLock();
   

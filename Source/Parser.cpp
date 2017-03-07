@@ -88,7 +88,7 @@ Parser::~Parser(void)
 /*----------------------------------------------------------------------------*/
 /* dump parser                                                                */
 /*----------------------------------------------------------------------------*/
-void Parser::vDump(eCN eClass, Object* pObject, const char* aTab)
+void Parser::vDump(eCN eClass, Object* pObject, Str* aTab)
 {
   ASSERT(eClass == CN_PARSER);
   ASSERT(pObject->eClass() == CN_PARSER);

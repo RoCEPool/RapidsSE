@@ -31,7 +31,7 @@ namespace GridModel
     Grid(void);
     ~Grid(void);
     
-    static void vDump(eCN eClass, Object* pObject, const char* aTab);
+    static void vDump(eCN eClass, Object* pObject, Str* aTab);
     void vDumpPartitioning(void);
     void vHasStarted(bool bHasStarted);
     bool bHasStarted(void);

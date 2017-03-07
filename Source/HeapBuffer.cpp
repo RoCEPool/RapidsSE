@@ -79,7 +79,7 @@ void HeapBuffer::vAnalyse(i8 nBytes, i8 xCounts[])
 /*----------------------------------------------------------------------------*/
 /* dump this heap buffer                                                      */
 /*----------------------------------------------------------------------------*/
-void HeapBuffer::vDump(eCN eClass, Object* pObject, const char* aTab)
+void HeapBuffer::vDump(eCN eClass, Object* pObject, Str* aTab)
 {
   ASSERT(eClass == CN_HEAPBUFFER);
   ASSERT(pObject->eClass() == CN_HEAPBUFFER);

@@ -115,7 +115,7 @@ RowBuffer* RowBuffer::pNewRowBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* dump rowbuffer                                                             */
 /*----------------------------------------------------------------------------*/
-void RowBuffer::vDump(eCN eClass, Object* pObject, const char* aTab)
+void RowBuffer::vDump(eCN eClass, Object* pObject, Str* aTab)
 {
   ASSERT(eClass == CN_ROWBUFFER);
   ASSERT(pObject->eClass() == CN_ROWBUFFER);
