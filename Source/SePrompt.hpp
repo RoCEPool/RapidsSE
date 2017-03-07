@@ -90,6 +90,7 @@ private:
   bool bConnectCluster(void);
   
   bool bDropCatalog(void);
+  bool bDropIndex(void);
   bool bDropSchema(void);
   bool bDropTable(void);
   bool bDropReturnTable(char* pTableName);

@@ -104,11 +104,24 @@ Index::~Index(void)
 /*----------------------------------------------------------------------------*/
 /* set the table                                                              */
 /*----------------------------------------------------------------------------*/
-IndexBuffer* Index::pFirstBuffer(void)
+void Index::vDump(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
-  
-  return m_pIndexLevels->pFirstBuffer();
+
+  IndexBuffer* pIndexBuffer = m_pIndexLevels->pFirstBuffer();
+
+  while (pIndexBuffer) {
+    pIndexBuffer->vShow();
+    
+    Entry* pEntry = pIndexBuffer->pFirstEntry();
+    
+    while (pEntry) {
+      pEntry->vContentDump();
+      
+      pEntry = pIndexBuffer->pNextEntry(pEntry);
+    }
+    pIndexBuffer = pIndexBuffer->pNextBuffer();
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -199,6 +212,16 @@ void Index::vTable(Table* pTable)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
   
   m_pTable = pTable;
+}
+
+/*----------------------------------------------------------------------------*/
+/* truncate the index                                                         */
+/*----------------------------------------------------------------------------*/
+void Index::vTruncate(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
+  
+  m_pIndexLevels->vTruncate();
 }
 
 /*----------------------------------------------------------------------------*/

@@ -42,9 +42,11 @@ namespace DBobjects
     Index(void);
     ~Index(void);
   
+    void vDump(void);
     IndexBuffer* pFirstBuffer(void);
     void vPopulate(void);
     void vTable(Table* pTable);
+    void vTruncate(void);
     
     Footer* pFooter(void);
   };

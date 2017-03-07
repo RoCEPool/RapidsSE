@@ -21,6 +21,26 @@ tp: create_index
 ;
 
 /*----------------------------------------------------------------------------*/
+/* drop an index                                                              */
+/*----------------------------------------------------------------------------*/
+: drop_index ( "<indexNm>" -- <R> )
+
+  tp: dropIndex
+
+  ddlLock.grabWrite
+
+  checkRemoveIndex not if <NIP+ERROR> exit then
+
+  tp ( "<indexNm>" )
+
+  removeIndex ( ) assert.stack_0
+
+  tp: droppedIndex
+
+  <OK>
+;
+
+/*----------------------------------------------------------------------------*/
 /* dump index                                                                 */
 /*----------------------------------------------------------------------------*/
 : dump_index ( "<indexNm>" -- <R> )

@@ -391,10 +391,17 @@ tp: removeTable
   locals| tableNm |
 
   tableNm pushTable assert
-  tableNm find execute ( table )
+  tableNm find execute ( ^table )
 
   // drop all rows
-  dup table.truncate ( table )
+  dup table.truncate ( ^table )
+
+  // drop all indexes
+  //"indexes"
+  //find execute pathPush
+
+  // forget the indexes dictionary
+  "indexes" :forget
 
   // forget all column names in the columns dictionary of table sub-dictionary
   dup table.subDic
@@ -402,11 +409,9 @@ tp: removeTable
     "columns" find execute forgetAll
   pathDrop
 
+
   // forget the columns dictionary in the table sub-dictionary
   table.subDic forgetAll
-
-  //"indexes" stk find execute
-  //:forget
 
   tableNm :forget
 

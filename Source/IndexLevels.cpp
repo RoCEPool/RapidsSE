@@ -42,6 +42,9 @@ void* IndexLevels::operator new(size_t iSize)
 void IndexLevels::operator delete(void* pIndexLevelsAddress)
 {
   RASSERT(pIndexLevelsAddress);
+  Buffer* pBuffer = static_cast<Buffer*>(pIndexLevelsAddress);
+  
+  Heap::vFree(pBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -84,7 +87,6 @@ IndexBuffer* IndexLevels::pFirstBuffer(void)
   return m_pIndexBuffer[0];
 }
 
-
 /*----------------------------------------------------------------------------*/
 /* insert a row                                                               */
 /*----------------------------------------------------------------------------*/
@@ -106,6 +108,27 @@ void IndexLevels::vInsertEntry(EntWsp& xEntWsp)
     bResult = pIndexBuffer->bInsertEntry(xEntWsp);
   }
   
+}
+
+/*----------------------------------------------------------------------------*/
+/* truncate all levels                                                        */
+/*----------------------------------------------------------------------------*/
+void IndexLevels::vTruncate(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXLEVELS,_FOOTER_);
+  
+  m_zLock.vGrabWrite();
+  
+  IndexBuffer* pIndexBuffer = m_pIndexBuffer[0];
+  IndexBuffer* pNextIndexBuffer;
+  
+  while(pIndexBuffer) {
+    pNextIndexBuffer = pIndexBuffer->pNextBuffer();
+    delete pIndexBuffer;
+    pIndexBuffer = pNextIndexBuffer;
+  }
+  
+  m_zLock.vDropWrite();
 }
 
 /*----------------------------------------------------------------------------*/

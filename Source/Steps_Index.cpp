@@ -38,6 +38,7 @@ void Task::vAddPrimitives_Index(void)
   vAddPrimitive("index.init"_Str,        &vIndexInit,       false);
   vAddPrimitive("index.populate"_Str,    &vIndexPopulate,   false);
   vAddPrimitive("index.table!"_Str,      &vIndexTableStore, false);
+  vAddPrimitive("index.truncate"_Str,    &vIndexTruncate,   false);
 
   // these should go !!!
   vAddPrimitive("index::entryTest"_Str,  &vIndexEntryTest,  false);
@@ -59,20 +60,7 @@ void Task::vIndexDump(NNP_Task nnpTask)
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
   
-  IndexBuffer* pIndexBuffer = pIndex->pFirstBuffer();
-  
-  while (pIndexBuffer) {
-    pIndexBuffer->vShow();
-    
-    Entry* pEntry = pIndexBuffer->pFirstEntry();
-    
-    while (pEntry) {
-      pEntry->vContentDump();
-      
-      pEntry = pIndexBuffer->pNextEntry(pEntry);
-    }
-    pIndexBuffer = pIndexBuffer->pNextBuffer();
-  }
+  pIndex->vDump();
   
   EXIT();
 }
@@ -122,6 +110,7 @@ void Task::vIndexPopulate(NNP_Task nnpTask)
 void Task::vIndexTableStore(NNP_Task nnpTask)
 {
   ENTRY("vIndexTableStore");
+  
   Object* pPtrIndex = nullptr;
   Object* pPtrTable = nullptr;
   
@@ -138,6 +127,26 @@ void Task::vIndexTableStore(NNP_Task nnpTask)
   ASSERT(CN_TABLE == pTable->eClass());
   
   pIndex->vTable(pTable);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* index.truncate -- truncate the index                                       */
+/*----------------------------------------------------------------------------*/
+void Task::vIndexTruncate(NNP_Task nnpTask)
+{
+  ENTRY("vIndexTruncate");
+  
+  Object* pPtrIndex = nullptr;
+  
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrIndex) )
+    THROW_INVALID_DSTACK("index.truncate");
+  
+  Index* pIndex = _pIndex(pPtrIndex);
+  ASSERT(CN_INDEX == pIndex->eClass());
+  
+  pIndex->vTruncate();
   
   EXIT();
 }
