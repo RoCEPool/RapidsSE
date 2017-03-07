@@ -98,14 +98,14 @@ void Debugging::vFatal(Str* aFormat, ...)
 /*---------------------------------------------------------------------------*/
 /* vReport: common reporter                                                  */
 /*---------------------------------------------------------------------------*/
-void Debugging::vReport(i8 iLevel, Str* psFormat, va_list xArgs)
+void Debugging::vReport(i8 iLevel, Str* aFormat, va_list xArgs)
 {
   i8 iLen = 0;
   char* s = gaReportBuffer;
   *s = '\0';
   
   assert(iLevel != 0);
-  vsnprintf(s,sizeof(gaReportBuffer)-iLen-3,psFormat->a(),xArgs);
+  vsnprintf(s,sizeof(gaReportBuffer)-iLen-3,aFormat->a(),xArgs);
     
   // print to file
   fprintf(stderr,"%s",gaReportBuffer);

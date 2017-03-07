@@ -16,7 +16,7 @@ namespace Debugging
   
   void  vReportOption(i8 iReportOption);
   
-  void  vInfo(Str* pFormat,...);
+  void  vInfo(Str* aFormat,...);
   void  vTrace(Str* aFormat,...);
   void  vWarn(Str* aFormat,...);
   void  vError(Str* aFormat,...);
@@ -24,7 +24,7 @@ namespace Debugging
   
   void  vDumpAscii(Str* aText, i8 nBytes);
 
-  void  vReport(i8 iLevel, Str* pFormat, va_list xArgs);
+  void  vReport(i8 iLevel, Str* aFormat, va_list xArgs);
 }
 
 /*============================================================================*/
