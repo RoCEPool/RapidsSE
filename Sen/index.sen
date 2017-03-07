@@ -259,6 +259,35 @@ tp: makingIndex
   true <SUCCESS_RESULT>
 ;
 
+
+/*----------------------------------------------------------------------------*/
+/* make an index (run by participant)                                         */
+/*----------------------------------------------------------------------------*/
+: loadIndexes allParticipants 0 checkResult ( -- true n# true )
+
+tp: loadIndexes
+
+  args.tracepoint if
+    "LOADING INDEXES on NODE " grid.thisNode@ >str str.cat .
+  then
+
+  "indexes"
+  find execute pathPush
+
+  listContents .
+  pathDepth .
+
+  0 pathPick dic.lastWord dup
+    iterate
+    object@ word.name
+    find execute ( ^index )
+    index.populate
+    object@ word.prev object!
+  next
+
+  true <SUCCESS_RESULT>
+;
+
 /*----------------------------------------------------------------------------*/
 /* remove an index                                                            */
 /*----------------------------------------------------------------------------*/
