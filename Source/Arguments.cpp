@@ -170,7 +170,7 @@ bool Arguments::bParse(int argc, const char* argv[])
       iNode++;
       
       if (m_nNodes > C_MAX_NODES) {
-        vTrace("Maximum number of nodes allowed in the cluster is %lld\n",C_MAX_NODES);
+        vTrace("Maximum number of nodes allowed in the cluster is %lld\n"_Str,C_MAX_NODES);
         return false;
       }
       continue;
@@ -180,7 +180,7 @@ bool Arguments::bParse(int argc, const char* argv[])
     if (StrLib::bEqualTo("--partitionsPerNode",argv[iArg],C_NO_CASE)) {
       m_nSlots = StrLib::iToI8(argv[++iArg]);
       if (m_nSlots > C_SLOTS_PER_NODE) {
-        vTrace("Maximum number of partitions allowed per node is %lld\n",
+        vTrace("Maximum number of partitions allowed per node is %lld\n"_Str,
           C_SLOTS_PER_NODE);
         return false;
       }
@@ -216,11 +216,11 @@ bool Arguments::bParse(int argc, const char* argv[])
     if (StrLib::bEqualTo("--prompt",argv[iArg],C_NO_CASE)) {
 
       if (m_bStop) {
-        vTrace("Incorrect argument: --stop with %s\n",argv[iArg]);
+        vTrace("Incorrect argument: --stop with %s\n"_Str,argv[iArg]);
         return false;
       }
       if (m_bStatus) {
-        vTrace("Incorrect argument: --status with %s\n",argv[iArg]);
+        vTrace("Incorrect argument: --status with %s\n"_Str,argv[iArg]);
         return false;
       }
 
@@ -233,7 +233,7 @@ bool Arguments::bParse(int argc, const char* argv[])
       //m_iRegionSize = StrLib::iToI8(argv[++iArg]);
       bool bResult = Magnitudes::bBytes(argv[++iArg], m_iRegionSize);
       if (!bResult) {
-        vTrace("Invalid size argument: --size %s\n",argv[iArg]);
+        vTrace("Invalid size argument: --size %s\n"_Str,argv[iArg]);
         return false;
       }
       
@@ -246,11 +246,11 @@ bool Arguments::bParse(int argc, const char* argv[])
     if (StrLib::bEqualTo("--start",argv[iArg],C_NO_CASE)) {
 
       if (m_bStop) {
-        vTrace("Incorrect argument: --stop with %s\n",argv[iArg]);
+        vTrace("Incorrect argument: --stop with %s\n"_Str,argv[iArg]);
         return false;
       }
       if (m_bStatus) {
-        vTrace("Incorrect argument: --status with %s\n",argv[iArg]);
+        vTrace("Incorrect argument: --status with %s\n"_Str,argv[iArg]);
         return false;
       }
 
@@ -261,15 +261,15 @@ bool Arguments::bParse(int argc, const char* argv[])
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (StrLib::bEqualTo("--status",argv[iArg],C_NO_CASE)) {
       if (m_bStop) {
-        vTrace("Incorrect argument: --stop with %s\n",argv[iArg]);
+        vTrace("Incorrect argument: --stop with %s\n"_Str,argv[iArg]);
         return false;
       }
       if (m_bStart) {
-        vTrace("Incorrect argument: --start with %s\n",argv[iArg]);
+        vTrace("Incorrect argument: --start with %s\n"_Str,argv[iArg]);
         return false;
       }
       if (m_bPrompt) {
-        vTrace("Incorrect argument: --prompt with %s\n",argv[iArg]);
+        vTrace("Incorrect argument: --prompt with %s\n"_Str,argv[iArg]);
         return false;
       }
 
@@ -281,15 +281,15 @@ bool Arguments::bParse(int argc, const char* argv[])
     if (StrLib::bEqualTo("--stop",argv[iArg],C_NO_CASE)) {
 
       if (m_bStart) {
-        vTrace("Incorrect argument: --start with %s\n",argv[iArg]);
+        vTrace("Incorrect argument: --start with %s\n"_Str,argv[iArg]);
         return false;
       }
       if (m_bStatus) {
-        vTrace("Incorrect argument: --status with %s\n",argv[iArg]);
+        vTrace("Incorrect argument: --status with %s\n"_Str,argv[iArg]);
         return false;
       }
       if (m_bPrompt) {
-        vTrace("Incorrect argument: --prompt with %s\n",argv[iArg]);
+        vTrace("Incorrect argument: --prompt with %s\n"_Str,argv[iArg]);
         return false;
       }
 
@@ -406,7 +406,7 @@ bool Arguments::bParse(int argc, const char* argv[])
     continue;
   */
     
-    vTrace("Unrecognized command argument: %s\n",argv[iArg]);
+    vTrace("Unrecognized command argument: %s\n"_Str,argv[iArg]);
     return false;
   }
   
@@ -479,22 +479,22 @@ void Arguments::vPrint(void)
   if (m_bStatus)   vTrace("  --status\n");
   if (m_bStop)     vTrace("  --stop\n");
 
-  vTrace("  --name %s\n",m_sNodeName.aStr());
-  vTrace("  --regionPrefix %s\n",m_sRegionPrefix.aStr());
-  vTrace("  --address %p\n",m_pRegionAddr);
-  vTrace("  --size %lld\n",m_iRegionSize);
+  vTrace("  --name %s\n"_Str,m_sNodeName.aStr());
+  vTrace("  --regionPrefix %s\n"_Str,m_sRegionPrefix.aStr());
+  vTrace("  --address %p\n"_Str,m_pRegionAddr);
+  vTrace("  --size %lld\n"_Str,m_iRegionSize);
   
   for (i8 iIndex=0; iIndex < m_nNodes; iIndex++) {
-    vTrace("  --node %s %s %lld\n",
+    vTrace("  --node %s %s %lld\n"_Str,
       m_xNodes[iIndex].m_sNodeName.aStr(),
       m_xNodes[iIndex].m_sIPAddress.aStr(),
       m_xNodes[iIndex].m_iPortNo);
   }
   
-  vTrace("  --partitionsPerNode %lld\n",m_nSlots);
-  vTrace("  --commands %s\n",m_sCommands.aStr());
+  vTrace("  --partitionsPerNode %lld\n"_Str,m_nSlots);
+  vTrace("  --commands %s\n"_Str,m_sCommands.aStr());
 //#ifdef _DEBUG
-  vTrace("  --sen %s\n",m_sSen.aStr());
+  vTrace("  --sen %s\n"_Str,m_sSen.aStr());
 //#endif
   if (m_bMunged) vTrace("  --munged\n");
   
