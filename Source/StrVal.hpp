@@ -42,16 +42,18 @@ namespace Values
     void  vCopy(const char* aStr, i8 iLength);
     bool  bEnds(const char* aSuffix);
     bool  bIsEqual(StrVal& sArg, i8 iCase);
+    bool  bEqual(Str* aArg);
+
     i8    iLength(void);
+    bool  bSame(Str* aArg);
     i8    nSize(void);
     char* aStr(void);
     void  vToCommand(char* aStr);
     void  vToString(char* aStr);
   
     Str* aStrArea(void);
+
   private:
-  
-  
     Footer* pFooter(void);
   };
 

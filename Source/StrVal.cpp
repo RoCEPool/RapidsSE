@@ -322,6 +322,18 @@ bool StrVal::bIsEqual(StrVal& sArg, i8 iCase)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is equal to given argument? (same case)                                    */
+/*----------------------------------------------------------------------------*/
+bool StrVal::bEqual(Str* aArg)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+  
+  bool b = StrLib::bEqualTo(aArea(),(const char*)aArg);
+  
+  return b;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get length of str in data area                                             */
 /*----------------------------------------------------------------------------*/
 i8 StrVal::iLength(void)
@@ -329,6 +341,18 @@ i8 StrVal::iLength(void)
   _precondition_(_MAGIC_,_FOOTER_);
   
   return StrLib::iLength(aArea());
+}
+
+/*----------------------------------------------------------------------------*/
+/* is same as given argument?  (ignores case)                                 */
+/*----------------------------------------------------------------------------*/
+bool StrVal::bSame(Str* aArg)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+  
+  bool b = StrLib::bSame(aArea(),(const char*)aArg);
+  
+  return b;
 }
 
 /*----------------------------------------------------------------------------*/
