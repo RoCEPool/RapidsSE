@@ -36,8 +36,8 @@ namespace Values
     
     i8   nSize(void);
     
-    void vToCommand(char* aWorkspace);
-    void vToString(char* aWorkspace);
+    void vToCommand(Str* aWorkspace);
+    void vToString(Str* aWorkspace);
 
   private:
     char* pFirstByte(void);

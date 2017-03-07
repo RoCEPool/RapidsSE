@@ -274,7 +274,7 @@ i8 ValSet::nSize(void)
 /*----------------------------------------------------------------------------*/
 /* convert to command                                                         */
 /*----------------------------------------------------------------------------*/
-void ValSet::vToCommand(char* aWorkspace)
+void ValSet::vToCommand(Str* aWorkspace)
 {
   ASSERT(aWorkspace);
   ASSERT("Should never be called"_Str);
@@ -283,9 +283,9 @@ void ValSet::vToCommand(char* aWorkspace)
 /*----------------------------------------------------------------------------*/
 /* convert to string                                                          */
 /*----------------------------------------------------------------------------*/
-void ValSet::vToString(char* aWorkspace)
+void ValSet::vToString(Str* aWorkspace)
 {
-  StrLib::wToPointer(this,aWorkspace);
+  StrLib::wToPointer(this,aWorkspace->a());
 }
 
 /*----------------------------------------------------------------------------*/

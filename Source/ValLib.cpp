@@ -255,7 +255,7 @@ void ValLib::vToString(Object* pObject, char* aCharArray)
       
     case CN_VALSET: {
       ValSet* pValSet = _pValSet(pObject);
-      pValSet->vToString(aCharArray);
+      pValSet->vToString((Str*)aCharArray);
       break;
     }
       
