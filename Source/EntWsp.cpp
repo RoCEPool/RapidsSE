@@ -66,7 +66,7 @@ void EntWsp::vShow(void)
   
   ValLib::vCopyIntDatum(&iKey,m_xWsp.aArea());
   
-  vTrace("EntWsp %p: rowId %llu.%llu key (size:%lld value:%lld)\n",
+  vTrace("EntWsp %p: rowId %llu.%llu key (size:%lld value:%lld)\n"_Str,
          this,
          m_xRowId.uBuffer(),
          m_xRowId.uRow(),

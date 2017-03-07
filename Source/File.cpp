@@ -196,10 +196,10 @@ void File::vFileDump(void)
 {
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
 
-  vTrace("%sFile:\n", m_sFilePath.aStr());
-  vTrace("%s  Open Mode %s\n", m_sOpenMode.aStr());
-  vTrace("%s  Trace level %lld\n", m_iTraceLevel);
-  vTrace("%s  File Pointer 0x%p\n", m_aFilePtr);
+  vTrace("%sFile:\n"_Str, m_sFilePath.aStr());
+  vTrace("%s  Open Mode %s\n"_Str, m_sOpenMode.aStr());
+  vTrace("%s  Trace level %lld\n"_Str, m_iTraceLevel);
+  vTrace("%s  File Pointer 0x%p\n"_Str, m_aFilePtr);
 }
 
 /*---------------------------------------------------------------------------*/
@@ -391,7 +391,7 @@ bool File::bOpen(const char* aOpenMode, i8 iTraceLevel)
   m_iTraceLevel = iTraceLevel;
   
   if (m_iTraceLevel)
-    vTrace("File::bOpen: opening file %s mode %s\n",m_sFilePath.aStr(),m_sOpenMode.aStr());
+    vTrace("File::bOpen: opening file %s mode %s\n"_Str,m_sFilePath.aStr(),m_sOpenMode.aStr());
   
   m_aFilePtr = fopen(m_sFilePath.aStr(),m_sOpenMode.aStr());
   
@@ -423,7 +423,7 @@ bool File::bOpen(const char* aFilePath, const char* aOpenMode, i8 iTraceLevel)
   vSet(aFilePath,aOpenMode,iTraceLevel);
   
   if (m_iTraceLevel)
-    vTrace("File::bOpen: opening file %s mode %s\n",m_sFilePath.aStr(),m_sOpenMode.aStr());
+    vTrace("File::bOpen: opening file %s mode %s\n"_Str,m_sFilePath.aStr(),m_sOpenMode.aStr());
   
   m_aFilePtr = fopen(m_sFilePath.aStr(),m_sOpenMode.aStr());
   

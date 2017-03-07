@@ -109,7 +109,7 @@ void Grid::vDumpPartitioning(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
   
   for (i8 iIndex = 0; iIndex < m_nPartitions; iIndex++)
-    vTrace("Partition: %lld; Node: %lld\n", iIndex,
+    vTrace("Partition: %lld; Node: %lld\n"_Str, iIndex,
            Partition::iPartitionToNode(iIndex));
   vTrace("\n");
 }

@@ -76,7 +76,7 @@ void Heap::vDump(eCN eClass, Object* pObject, const char* aTab)
   
   Heap* pHeap = reinterpret_cast<Heap*>(pObject);
   
-  vTrace("BufferCount %lld FreeCount %lld\n",
+  vTrace("BufferCount %lld FreeCount %lld\n"_Str,
          pHeap->m_iBufferCount,
          pHeap->m_iFreeCount);
   
@@ -87,14 +87,14 @@ void Heap::vDump(eCN eClass, Object* pObject, const char* aTab)
   
 //  pHeap->vAnalyse(iCountObjects);
 //  
-//  vTrace("%s  Objects:\n", aTab);
+//  vTrace("%s  Objects:\n"_Str, aTab);
 //  for (i8 index = 0; index < CN_ENUMS; index++) {
 //    eCN eClass = (eCN)index;
 //    
 //    if (iCountObjects[eClass] == 0)
 //      continue;
 //    
-//    vTrace("%s    %s %lld \n", aTab, aCN[eClass], iCountObjects[eClass]);
+//    vTrace("%s    %s %lld \n"_Str, aTab, aCN[eClass], iCountObjects[eClass]);
 //  }
 //  vTrace("\n");  
 }
@@ -431,7 +431,7 @@ bool Heap::bExtendHeap(void)
     //pFreeChunk->vSetMagic();
     new(pFreeChunk) FreeChunk;
     vPushFree(pFreeChunk);
-    //vTrace("bExtendHeap %p : %p\n",pHeapBuffer,pFreeChunk);
+    //vTrace("bExtendHeap %p : %p\n"_Str,pHeapBuffer,pFreeChunk);
   }
   
   return true;

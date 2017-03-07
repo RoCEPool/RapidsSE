@@ -97,7 +97,7 @@ void Entry::vContentDump(void)
   i8 iKeyData;
   ValLib::nCopyDatum(CN_INTVAL, &iKeyData,m_xWsp.aArea());
   
-  vTrace("Entry %p: Row %llu.%llu Key (size:%lld value:%lld)\n",
+  vTrace("Entry %p: Row %llu.%llu Key (size:%lld value:%lld)\n"_Str,
          this,
          m_xRowId.uBuffer(),
          m_xRowId.uRow(),

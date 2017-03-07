@@ -297,7 +297,7 @@ void BufferPool::vInitialise(void)
   m_iFreeCount  = 0;
   m_nFreeHead   = nBufferFirst();
   
-  //vTrace("FirstBuffer %lld LastBuffer %lld\n",*nBufferFirst(),*nBufferLast());
+  //vTrace("FirstBuffer %lld LastBuffer %lld\n"_Str,*nBufferFirst(),*nBufferLast());
   
 //  bn nBuffer = nBufferFirst();
 //  for (FreeBuffer* pFreeBuffer : *this) {
@@ -368,7 +368,7 @@ Buffer* BufferPool::pNextJumbo(Buffer* pPrev)
       pJumbo = nullptr;
   }
   
-  //vTrace("Jumbo %p %lld\n",pJumbo,iSub(pJumbo,pPrev));
+  //vTrace("Jumbo %p %lld\n"_Str,pJumbo,iSub(pJumbo,pPrev));
   return pJumbo;
 }
 
@@ -380,7 +380,7 @@ void BufferPool::vPoolDump(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
   
   vTrace("RegionSize %lld BufferSize %lld BufferCount %lld Base %p Limit %p\n"
-         "InUse %lld FreeCount %lld FreeHead %lld\n",
+         "InUse %lld FreeCount %lld FreeHead %lld\n"_Str,
          gxArguments.m_iRegionSize,
          C_SIZE_POOL_BUFFER,
          m_nBuffers,
@@ -392,7 +392,7 @@ void BufferPool::vPoolDump(void)
          );
   
   //  for (FreeBuffer* pFreeBuffer : *this)
-  //    vTrace("%p: BufferNo %lld NextFree %lld\n",
+  //    vTrace("%p: BufferNo %lld NextFree %lld\n"_Str,
   //           pFreeBuffer,
   //           *pFreeBuffer->nBufferNo(),
   //           *pFreeBuffer->nNextFree());
@@ -400,7 +400,7 @@ void BufferPool::vPoolDump(void)
   bn nBuffer = m_nFreeHead;
   while (bn::nNil() != nBuffer) {
     FreeBuffer* pFreeBuffer = pToFreeBuffer(nBuffer);
-    vTrace("%p: BufferNo %lld NextFree %lld\n",
+    vTrace("%p: BufferNo %lld NextFree %lld\n"_Str,
            pFreeBuffer,
            *pFreeBuffer->nBufferNo(),
            *pFreeBuffer->nNextFree());

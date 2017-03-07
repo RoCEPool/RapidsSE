@@ -91,7 +91,7 @@ void CatalogTests::vRun(RunTests* pRunTests)
   pRunTests->m_iTestsPassed += m_iTestsPassed;
   pRunTests->m_iTestsFailed += m_iTestsFailed;
   
-  vTrace("%-15s - Total: %lld Passed: %lld Failed: %lld\n",
+  vTrace("%-15s - Total: %lld Passed: %lld Failed: %lld\n"_Str,
     "Catalog Tests", m_iTestsTotal, m_iTestsPassed, m_iTestsFailed);
   
 }

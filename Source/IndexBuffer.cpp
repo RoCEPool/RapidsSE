@@ -99,7 +99,7 @@ void IndexBuffer::vDump(eCN eClass, Object* pObject, const char* aTab)
   
   IndexBuffer* pIndexBuffer = reinterpret_cast<IndexBuffer*>(pObject);
   
-  vTrace("entries %lld free %lld bytes prevBuffer %p nextBuffer %p\n",
+  vTrace("entries %lld free %lld bytes prevBuffer %p nextBuffer %p\n"_Str,
          pIndexBuffer->m_nEntries,
          pIndexBuffer->m_xWsp.nFree(),
          pIndexBuffer->m_pPrevBuffer,
@@ -364,7 +364,7 @@ bool IndexBuffer::bInsertEntry(EntWsp& xEntWsp)
 void IndexBuffer::vShow(void)
 {
   vTrace("IndexBuffer %p: entries %lld FreeSpace %lld bytes bytesUsed %lld"
-         " prevBuffer %p nextBuffer %p\n",
+         " prevBuffer %p nextBuffer %p\n"_Str,
          this,
          m_nEntries,
          m_xWsp.nFree(),
