@@ -344,7 +344,7 @@ ENTRY("vFind");
 /*----------------------------------------------------------------------------*/
 void Task::vFindInCurrent(NNP_Task nnpTask)
 {
-  ENTRY("vFind");
+  ENTRY("vFindInCurrent");
   
   s256 sName;
   if ( ! nnpTask->m_pDataStack->bPop(sName) )

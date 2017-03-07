@@ -169,24 +169,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* check within indexes                                                       */
-/*----------------------------------------------------------------------------*/
-: withinTables
-
-  0 pathPick dic.name "indexes" str.equal
-;
-
-/*----------------------------------------------------------------------------*/
-/* check in indexes                                                           */
-/*----------------------------------------------------------------------------*/
-: checkInTables
-
-  withinTables if true exit then
-
-  EC_NOT_IN_INDEXES false
-;
-
-/*----------------------------------------------------------------------------*/
 /* check if word is a makeable table                                          */
 /*----------------------------------------------------------------------------*/
 : checkMakeIndex ( "<indexNm>" -- "<indexNm>" true | "<indexNm>" errorCode false )
@@ -202,9 +184,9 @@
 /*----------------------------------------------------------------------------*/
 : checkRemoveIndex ( "<indexNm>" -- "<indexNm>" true | "<indexNm>" errorCode false )
 
-  checkInTables not if false exit then ( "<indexNm>" )
-  checkIsTable not if false exit then ( "<indexNm>" )
-  dup tableInUse if EC_TABLE_IN_USE false exit then ( "<indexNm>" )
+  checkInIndexes not if false exit then ( "<indexNm>" )
+  checkIsIndex not if false exit then ( "<indexNm>" )
+  //dup indexInUse if EC_INDEX_IN_USE false exit then ( "<indexNm>" )
 
   true ( "<indexNm>" true )
 ;
@@ -274,9 +256,6 @@ tp: loadIndexes
   "indexes"
   find execute pathPush
 
-  listContents .
-  pathDepth .
-
   0 pathPick dic.lastWord dup
     iterate
     object@ word.name
@@ -293,14 +272,18 @@ tp: loadIndexes
 /*----------------------------------------------------------------------------*/
 : removeIndex allParticipants 1 checkResult ( "<indexNm>" -- true n# true )
 
-tp: removingIndex
+  tp: removeIndex
+  locals| indexNm |
 
-  dup find execute ( "<indexNm>" table )
+  indexNm find execute ( ^index )
 
-  :forget
+  index.truncate
+
+  indexNm :forget
 
   true <SUCCESS_RESULT>
 ;
+
 
 /*============================================================================*/
 /* end                                                                        */

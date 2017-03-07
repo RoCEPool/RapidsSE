@@ -75,6 +75,7 @@ Index Requests:
 mkidx   create_index
 lsidx   list_indexes
 idump   dump_index
+rmidx   drop_index
  
 Dictionary Requests:
 

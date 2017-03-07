@@ -515,6 +515,7 @@ namespace Tasks
     static void vIndexInit(NNP_Task nnpTask);
     static void vIndexPopulate(NNP_Task nnpTask);
     static void vIndexTableStore(NNP_Task nnpTask);
+    static void vIndexTruncate(NNP_Task nnpTask);
     // need to go
     static void vIndexEntryTest(NNP_Task nnpTask);
     static void vIndexIbDump(NNP_Task nnpTask);

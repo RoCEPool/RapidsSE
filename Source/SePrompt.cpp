@@ -433,6 +433,9 @@ bool SePrompt::bProcessCommand(bool bPostProcess)
     if (StrLib::bEqualTo("catalog",m_aToken[1],C_NO_CASE)) {
       return bDropCatalog();
     }
+    if (StrLib::bEqualTo("index",m_aToken[1],C_NO_CASE)) {
+      return bDropIndex();
+    }
     if (StrLib::bEqualTo("schema",m_aToken[1],C_NO_CASE)) {
       return bDropSchema();
     }
@@ -799,6 +802,7 @@ void SePrompt::vHelp(void)
   vTrace("rettbl -- return usage of table\n"_Str);
   vTrace("rmcat  -- drop catalog\n"_Str);
   vTrace("rmdic  -- drop dictionary\n"_Str);
+  vTrace("rmidx  -- drop index\n"_Str);
   vTrace("rmsch  -- drop schema\n"_Str);
   vTrace("rmtbl  -- drop table\n"_Str);
   vTrace("rmten  -- drop tenant\n"_Str);
@@ -1539,6 +1543,52 @@ bool SePrompt::bDropCatalog(void)
     return false;
   
   //vTrace("Catalog dropped: %s\n"_Str, m_aToken2[2]);
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* drop index                                                                 */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bDropIndex(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  i8 iToken;
+  i8 iNumTokens;
+  
+  ASSERT(StrLib::bEqualTo(m_aToken[0],"drop"));
+  ASSERT(StrLib::bEqualTo(m_aToken[1],"index"));
+  
+  vCollectStatement();
+  
+  for (iToken = 0; iToken < C_TOKENS; iToken++) {
+    if (! *m_aToken[iToken])
+      break;
+    StrLib::vCopy(m_aToken2[iToken], m_aToken[iToken]);
+    StrLib::vCopy(m_aToken[iToken], "");
+  }
+  
+  iNumTokens = iToken;
+  
+  // there should be 4 tokens
+  if (iNumTokens != 4) {
+    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+    return false;
+  }
+  
+  // last token should be ';'
+  if (!StrLib::bEqualTo(m_aToken2[3] , ";")) {
+    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+    return false;
+  }
+  
+  // drop a table
+  StrLib::vCopy(m_aToken[0], "rmidx");
+  StrLib::vCopy(m_aToken[1], m_aToken2[2]);
+  if (!bExecuteRequest())
+    return false;
+  
+  //vTrace("Table dropped: %s\n"_Str, m_aToken2[2]);
   return true;
 }
 

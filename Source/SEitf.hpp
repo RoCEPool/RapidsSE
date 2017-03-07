@@ -92,6 +92,7 @@ namespace Interface
     
     bool bCreateIndex(char* aWords[], i8 iWords);
     bool bDumpIndex(char* aWords[], i8 iWords);
+    bool bDropIndex(char* aWords[], i8 iWords);
     bool bListIndices(char* aWords[], i8 iWords);
     
     bool bCreateTable(char* aWords[], i8 iWords);

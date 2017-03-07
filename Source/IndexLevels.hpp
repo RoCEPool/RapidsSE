@@ -29,6 +29,7 @@ namespace DBobjects
     IndexBuffer* pFirstBuffer(void);
     
     void vInsertEntry(EntWsp& xEntWsp);
+    void vTruncate(void);
     
     Footer* pFooter(void);
   };

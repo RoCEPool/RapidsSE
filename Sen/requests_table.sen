@@ -132,24 +132,6 @@ ddlLock.grabWrite
 
   <OK>
 ;
-/*
-: drop_table ( "<tableNm>" -- <R> )
-
-tp: dropTable
-
-ddlLock.grabWrite
-
-  checkRemoveTable not if <NIP+ERROR> exit then
-
-  tp ( "<tableNm>" )
-
-  removeTable ( ) assert.stack_0
-
-  tp: droppedTable
-
-  <OK>
-;
-*/
 
 /*----------------------------------------------------------------------------*/
 /* dump table                                                                 */
