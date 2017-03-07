@@ -22,9 +22,9 @@ namespace Debugging
   void  vError(Str* aFormat,...);
   void  vFatal(Str* aFormat,...);
   
-  void  vDumpAscii(const char* aText, i8 nBytes);
+  void  vDumpAscii(Str* aText, i8 nBytes);
 
-  void  vReport(i8 iLevel, const char* pFormat, va_list xArgs);
+  void  vReport(i8 iLevel, Str* pFormat, va_list xArgs);
 }
 
 /*============================================================================*/

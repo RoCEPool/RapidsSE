@@ -33,7 +33,7 @@ void Debugging::vInfo(Str* aFormat, ...)
   
   va_start(xArgs,aFormat);
   
-  vReport(C_REPORT_INFO,aFormat->a(),xArgs);
+  vReport(C_REPORT_INFO,aFormat,xArgs);
   
   va_end(xArgs);
 }
@@ -47,7 +47,7 @@ void Debugging::vTrace(Str* aFormat, ...)
   
   va_start(xArgs,aFormat);
   
-  vReport(C_REPORT_TRACE,aFormat->a(),xArgs);
+  vReport(C_REPORT_TRACE,aFormat,xArgs);
   
   va_end(xArgs);
 }
@@ -61,7 +61,7 @@ void Debugging::vWarn(Str* aFormat, ...)
   
   va_start(xArgs,aFormat);
   
-  vReport(C_REPORT_WARNING,aFormat->a(),xArgs);
+  vReport(C_REPORT_WARNING,aFormat,xArgs);
   
   va_end(xArgs);
 }
@@ -75,7 +75,7 @@ void Debugging::vError(Str* aFormat, ...)
   
   va_start(xArgs,aFormat);
   
-  vReport(C_REPORT_ERROR,aFormat->a(),xArgs);
+  vReport(C_REPORT_ERROR,aFormat,xArgs);
   
   va_end(xArgs);
 }
@@ -89,7 +89,7 @@ void Debugging::vFatal(Str* aFormat, ...)
   
   va_start(xArgs,aFormat);
   
-  vReport(C_REPORT_FATAL,aFormat->a(),xArgs);
+  vReport(C_REPORT_FATAL,aFormat,xArgs);
   
   va_end(xArgs);
   exit(EXIT_FAILURE);
@@ -98,14 +98,14 @@ void Debugging::vFatal(Str* aFormat, ...)
 /*---------------------------------------------------------------------------*/
 /* vReport: common reporter                                                  */
 /*---------------------------------------------------------------------------*/
-void Debugging::vReport(i8 iLevel, const char* psFormat, va_list xArgs)
+void Debugging::vReport(i8 iLevel, Str* psFormat, va_list xArgs)
 {
   i8 iLen = 0;
   char* s = gaReportBuffer;
   *s = '\0';
   
   assert(iLevel != 0);
-  vsnprintf(s,sizeof(gaReportBuffer)-iLen-3,psFormat,xArgs);
+  vsnprintf(s,sizeof(gaReportBuffer)-iLen-3,psFormat->a(),xArgs);
     
   // print to file
   fprintf(stderr,"%s",gaReportBuffer);
@@ -120,11 +120,13 @@ void Debugging::vReport(i8 iLevel, const char* psFormat, va_list xArgs)
 /*---------------------------------------------------------------------------*/
 /* dump ascii string                                                         */
 /*---------------------------------------------------------------------------*/
-void Debugging::vDumpAscii(const char* aText, i8 nBytes)
+void Debugging::vDumpAscii(Str* aText, i8 nBytes)
 {
   printf(">>>");
-  while (nBytes--)
-    printf("%c",*aText++);
+  while (nBytes--) {
+    printf("%c",*aText->a());
+    aText++;
+  }
   printf("<<<\n");
 }
 

@@ -47,7 +47,7 @@ namespace Base
     
   private:
     template <class T>
-    static void vPrintColor(const char* pFmt, const T& Value, const char* pColour);
+    static void vPrintColor(Str* pFmt, const T& Value, Str* pColour);
   };
 }
 
