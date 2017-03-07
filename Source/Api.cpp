@@ -58,7 +58,10 @@ eEC RapidsSE_AddColumn(SEitf* pSEitf, char* pColumnName, char* pColumnType)
     vTrace("Table: %s\n", pTable->pTableName());
 
   // add a column
-  eResult = eExecuteRequest(pSEitf, "add", pTable->pTableName(), pColumnName, pColumnType);
+  eResult = eExecuteRequest(pSEitf, "add"_Str,
+                            (Str*)pTable->pTableName(),
+                            (Str*)pColumnName,
+                            (Str*)pColumnType);
   if (EC_NONE != eResult) {
     return eResult;
   }
@@ -116,7 +119,7 @@ eEC RapidsSE_BeginInsert(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTa
   }
   
   // change directory to ~
-  eResult = eExecuteRequest(pSEitf, "cf", "~");
+  eResult = eExecuteRequest(pSEitf, "cf"_Str, "~"_Str);
   if (EC_NONE != eResult) {
     return eResult;
   }
@@ -128,7 +131,7 @@ eEC RapidsSE_BeginInsert(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTa
   }
   
   // change directory to boray
-  eResult = eExecuteRequest(pSEitf, "cf", "boray");
+  eResult = eExecuteRequest(pSEitf, "cf"_Str, "boray"_Str);
   if (EC_NONE != eResult) {
     return eResult;
   }
@@ -140,7 +143,7 @@ eEC RapidsSE_BeginInsert(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTa
   }
   
   // change directory to catalogs
-  eResult = eExecuteRequest(pSEitf, "cf", "catalogs");
+  eResult = eExecuteRequest(pSEitf, "cf"_Str, "catalogs"_Str);
   if (EC_NONE != eResult) {
     return eResult;
   }
@@ -152,7 +155,7 @@ eEC RapidsSE_BeginInsert(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTa
   }
   
   // change directory to pCatalog
-  eResult = eExecuteRequest(pSEitf, "cf", pCatalog);
+  eResult = eExecuteRequest(pSEitf, "cf"_Str, (Str*)pCatalog);
   if (EC_NONE != eResult) {
     return eResult;
   }
@@ -164,7 +167,7 @@ eEC RapidsSE_BeginInsert(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTa
   }
   
   // change directory to schemas
-  eResult = eExecuteRequest(pSEitf, "cf", "schemas");
+  eResult = eExecuteRequest(pSEitf, "cf"_Str, "schemas"_Str);
   if (EC_NONE != eResult) {
     return eResult;
   }
@@ -176,7 +179,7 @@ eEC RapidsSE_BeginInsert(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTa
   }
   
   // change directory to pSchema
-  eResult = eExecuteRequest(pSEitf, "cf", pSchema);
+  eResult = eExecuteRequest(pSEitf, "cf"_Str, (Str*)pSchema);
   if (EC_NONE != eResult) {
     return eResult;
   }
@@ -188,7 +191,7 @@ eEC RapidsSE_BeginInsert(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTa
   }
   
   // change directory to tables
-  eResult = eExecuteRequest(pSEitf, "cf", "tables");
+  eResult = eExecuteRequest(pSEitf, "cf"_Str, "tables"_Str);
   if (EC_NONE != eResult) {
     return eResult;
   }
@@ -200,7 +203,7 @@ eEC RapidsSE_BeginInsert(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTa
   }
   
   // get pTable
-  eResult = eExecuteRequest(pSEitf, "gettbl", pTable);
+  eResult = eExecuteRequest(pSEitf, "gettbl"_Str, (Str*)pTable);
   if (EC_NONE != eResult) {
     vTrace("RapidsSE_BeginInsert : gettbl FAILED!!!\n");
     return eResult;
@@ -282,7 +285,7 @@ eEC RapidsSE_CreateTable(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTa
   }
   
   // change directory to ~
-  eResult = eExecuteRequest(pSEitf, "cf", "~");
+  eResult = eExecuteRequest(pSEitf, "cf"_Str, "~"_Str);
   if (EC_NONE != eResult) {
     return eResult;
   }
@@ -294,7 +297,7 @@ eEC RapidsSE_CreateTable(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTa
   }
          
   // change directory to boray
-  eResult = eExecuteRequest(pSEitf, "cf", "boray");
+  eResult = eExecuteRequest(pSEitf, "cf"_Str, "boray"_Str);
   if (EC_NONE != eResult) {
     return eResult;
   }
@@ -306,7 +309,7 @@ eEC RapidsSE_CreateTable(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTa
   }
 
   // change directory to catalogs
-  eResult = eExecuteRequest(pSEitf, "cf", "catalogs");
+  eResult = eExecuteRequest(pSEitf, "cf"_Str, "catalogs"_Str);
   if (EC_NONE != eResult) {
     return eResult;
   }
@@ -318,7 +321,7 @@ eEC RapidsSE_CreateTable(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTa
   }
 
   // change directory to pCatalog
-  eResult = eExecuteRequest(pSEitf, "cf", pCatalog);
+  eResult = eExecuteRequest(pSEitf, "cf"_Str, (Str*)pCatalog);
   if (EC_NONE != eResult) {
     return eResult;
   }
@@ -330,7 +333,7 @@ eEC RapidsSE_CreateTable(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTa
   }
   
   // change directory to schemas
-  eResult = eExecuteRequest(pSEitf, "cf", "schemas");
+  eResult = eExecuteRequest(pSEitf, "cf"_Str, "schemas"_Str);
   if (EC_NONE != eResult) {
     return eResult;
   }
@@ -342,7 +345,7 @@ eEC RapidsSE_CreateTable(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTa
   }
   
   // change directory to pSchema
-  eResult = eExecuteRequest(pSEitf, "cf", pSchema);
+  eResult = eExecuteRequest(pSEitf, "cf"_Str, (Str*)pSchema);
   if (EC_NONE != eResult) {
     return eResult;
   }
@@ -354,7 +357,7 @@ eEC RapidsSE_CreateTable(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTa
   }
   
   // change directory to tables
-  eResult = eExecuteRequest(pSEitf, "cf", "tables");
+  eResult = eExecuteRequest(pSEitf, "cf"_Str, "tables"_Str);
   if (EC_NONE != eResult) {
     return eResult;
   }
@@ -366,7 +369,7 @@ eEC RapidsSE_CreateTable(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTa
   }
   
   // create a table
-  eResult = eExecuteRequest(pSEitf, "mktbl", pTable);
+  eResult = eExecuteRequest(pSEitf, "mktbl"_Str, (Str*)pTable);
   if (EC_NONE != eResult) {
     return eResult;
   }
@@ -378,12 +381,12 @@ eEC RapidsSE_CreateTable(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTa
   }
   
   // get pTable
-  eResult = eExecuteRequest(pSEitf, "gettbl", pTable);
+  eResult = eExecuteRequest(pSEitf, "gettbl"_Str, (Str*)pTable);
   if (EC_NONE != eResult) {
     vTrace("RapidsSE_CreateTable: gettbl FAILED!!!\n");
     
     // remove the table
-    eResult = eExecuteRequest(pSEitf, "rmtbl", pTable);
+    eResult = eExecuteRequest(pSEitf, "rmtbl"_Str, (Str*)pTable);
     if (EC_NONE != eResult) {
       return eResult;
     }
@@ -450,7 +453,7 @@ eEC RapidsSE_DropTable(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTabl
   }
   
   // change directory to ~
-  eResult = eExecuteRequest(pSEitf, "cf", "~");
+  eResult = eExecuteRequest(pSEitf, "cf"_Str, "~"_Str);
   if (EC_NONE != eResult) {
     return eResult;
   }
@@ -462,7 +465,7 @@ eEC RapidsSE_DropTable(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTabl
   }
   
   // change directory to boray
-  eResult = eExecuteRequest(pSEitf, "cf", "boray");
+  eResult = eExecuteRequest(pSEitf, "cf"_Str, "boray"_Str);
   if (EC_NONE != eResult) {
     return eResult;
   }
@@ -474,7 +477,7 @@ eEC RapidsSE_DropTable(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTabl
   }
   
   // change directory to catalogs
-  eResult = eExecuteRequest(pSEitf, "cf", "catalogs");
+  eResult = eExecuteRequest(pSEitf, "cf"_Str, "catalogs"_Str);
   if (EC_NONE != eResult) {
     return eResult;
   }
@@ -486,7 +489,7 @@ eEC RapidsSE_DropTable(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTabl
   }
   
   // change directory to pCatalog
-  eResult = eExecuteRequest(pSEitf, "cf", pCatalog);
+  eResult = eExecuteRequest(pSEitf, "cf"_Str, (Str*)pCatalog);
   if (EC_NONE != eResult) {
     return eResult;
   }
@@ -498,7 +501,7 @@ eEC RapidsSE_DropTable(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTabl
   }
   
   // change directory to schemas
-  eResult = eExecuteRequest(pSEitf, "cf", "schemas");
+  eResult = eExecuteRequest(pSEitf, "cf"_Str, "schemas"_Str);
   if (EC_NONE != eResult) {
     return eResult;
   }
@@ -510,7 +513,7 @@ eEC RapidsSE_DropTable(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTabl
   }
   
   // change directory to pSchema
-  eResult = eExecuteRequest(pSEitf, "cf", pSchema);
+  eResult = eExecuteRequest(pSEitf, "cf"_Str, (Str*)pSchema);
   if (EC_NONE != eResult) {
     return eResult;
   }
@@ -522,7 +525,7 @@ eEC RapidsSE_DropTable(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTabl
   }
   
   // change directory to tables
-  eResult = eExecuteRequest(pSEitf, "cf", "tables");
+  eResult = eExecuteRequest(pSEitf, "cf"_Str, "tables"_Str);
   if (EC_NONE != eResult) {
     return eResult;
   }
@@ -534,7 +537,7 @@ eEC RapidsSE_DropTable(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTabl
   }
   
   // drop table
-  eResult = eExecuteRequest(pSEitf, "rmtbl", pTable);
+  eResult = eExecuteRequest(pSEitf, "rmtbl"_Str, (Str*)pTable);
   if (EC_NONE != eResult) {
     return eResult;
   }
@@ -567,7 +570,7 @@ eEC RapidsSE_EndCreate(SEitf* pSEitf)
   // clear the last error
   pSEitf->vClearLastError();
   
-  eEC eResult = eExecuteRequest(pSEitf, "rettbl");
+  eEC eResult = eExecuteRequest(pSEitf, "rettbl"_Str);
   if (EC_NONE != eResult) {
     vTrace("RapidsSE_EndCreate: rettbl FAILED!!!\n");
     return eResult;
@@ -621,7 +624,7 @@ eEC RapidsSE_EndInsert(SEitf* pSEitf)
     }
   }
   
-  eEC eResult = eExecuteRequest(pSEitf, "rettbl");
+  eEC eResult = eExecuteRequest(pSEitf, "rettbl"_Str);
   if (EC_NONE != eResult) {
     vTrace("RapidsSE_EndInsert : rettbl FAILED!!!\n");
     return eResult;
@@ -702,7 +705,7 @@ eEC RapidsSE_GetCatalogs(SEitf* pSEitf, void** ppCatalogs)
   }
 
   // change directory to ~
-  eResult = eExecuteRequest(pSEitf, "cf", "~");
+  eResult = eExecuteRequest(pSEitf, "cf"_Str, "~"_Str);
   if (EC_NONE != eResult) {
     return eResult;
   }
@@ -714,7 +717,7 @@ eEC RapidsSE_GetCatalogs(SEitf* pSEitf, void** ppCatalogs)
   }
 
   // change directory to boray
-  eResult = eExecuteRequest(pSEitf, "cf", "boray");
+  eResult = eExecuteRequest(pSEitf, "cf"_Str, "boray"_Str);
   if (EC_NONE != eResult) {
     return eResult;
   }
@@ -726,7 +729,7 @@ eEC RapidsSE_GetCatalogs(SEitf* pSEitf, void** ppCatalogs)
   }
   
   // change directory to catalogs
-  eResult = eExecuteRequest(pSEitf, "cf", "catalogs");
+  eResult = eExecuteRequest(pSEitf, "cf"_Str, "catalogs"_Str);
   if (EC_NONE != eResult) {
     return eResult;
   }
@@ -738,7 +741,7 @@ eEC RapidsSE_GetCatalogs(SEitf* pSEitf, void** ppCatalogs)
   }
   
   // list all catalogs
-  eResult = eExecuteRequest(pSEitf, "lscat");
+  eResult = eExecuteRequest(pSEitf, "lscat"_Str);
   if (EC_NONE != eResult) {
     return eResult;
   }
@@ -809,7 +812,7 @@ eEC RapidsSE_GetColumns(SEitf* pSEitf, char* pCatalog, char* pSchema,
   }
 
   // change directory to ~
-  eResult = eExecuteRequest(pSEitf, "cf", "~");
+  eResult = eExecuteRequest(pSEitf, "cf"_Str, "~"_Str);
   if (EC_NONE != eResult) {
     return eResult;
   }
@@ -821,7 +824,7 @@ eEC RapidsSE_GetColumns(SEitf* pSEitf, char* pCatalog, char* pSchema,
   }
 
   // change directory to boray
-  eResult = eExecuteRequest(pSEitf, "cf", "boray");
+  eResult = eExecuteRequest(pSEitf, "cf"_Str, "boray"_Str);
   if (EC_NONE != eResult) {
     return eResult;
   }
@@ -833,7 +836,7 @@ eEC RapidsSE_GetColumns(SEitf* pSEitf, char* pCatalog, char* pSchema,
   }
   
   // change directory to catalogs
-  eResult = eExecuteRequest(pSEitf, "cf", "catalogs");
+  eResult = eExecuteRequest(pSEitf, "cf"_Str, "catalogs"_Str);
   if (EC_NONE != eResult) {
     return eResult;
   }
@@ -845,7 +848,7 @@ eEC RapidsSE_GetColumns(SEitf* pSEitf, char* pCatalog, char* pSchema,
   }
   
   // change directory to pCatalog
-  eResult = eExecuteRequest(pSEitf, "cf", pCatalog);
+  eResult = eExecuteRequest(pSEitf, "cf"_Str, (Str*)pCatalog);
   if (EC_NONE != eResult) {
     return eResult;
   }
@@ -857,7 +860,7 @@ eEC RapidsSE_GetColumns(SEitf* pSEitf, char* pCatalog, char* pSchema,
   }
   
   // change directory to schemas
-  eResult = eExecuteRequest(pSEitf, "cf", "schemas");
+  eResult = eExecuteRequest(pSEitf, "cf"_Str, "schemas"_Str);
   if (EC_NONE != eResult) {
     return eResult;
   }
@@ -869,7 +872,7 @@ eEC RapidsSE_GetColumns(SEitf* pSEitf, char* pCatalog, char* pSchema,
   }
   
   // change directory to pSchema
-  eResult = eExecuteRequest(pSEitf, "cf", pSchema);
+  eResult = eExecuteRequest(pSEitf, "cf"_Str, (Str*)pSchema);
   if (EC_NONE != eResult) {
     return eResult;
   }
@@ -881,7 +884,7 @@ eEC RapidsSE_GetColumns(SEitf* pSEitf, char* pCatalog, char* pSchema,
   }
   
   // change directory to tables
-  eResult = eExecuteRequest(pSEitf, "cf", "tables");
+  eResult = eExecuteRequest(pSEitf, "cf"_Str, "tables"_Str);
   if (EC_NONE != eResult) {
     return eResult;
   }
@@ -893,7 +896,7 @@ eEC RapidsSE_GetColumns(SEitf* pSEitf, char* pCatalog, char* pSchema,
   }
   
   // list all the columns of pTable
-  eResult = eExecuteRequest(pSEitf, "lscol", pTable);
+  eResult = eExecuteRequest(pSEitf, "lscol"_Str, (Str*)pTable);
   if (EC_NONE != eResult) {
     return eResult;
   }
@@ -967,7 +970,7 @@ eEC RapidsSE_GetNextRow(SEitf* pSEitf, void** ppRow)
     delete pSelCursor;
     
     // return the table
-    eEC eResult = eExecuteRequest(pSEitf, "rettbl");
+    eEC eResult = eExecuteRequest(pSEitf, "rettbl"_Str);
     if (EC_NONE != eResult) {
       vTrace("RapidsSE_GetNextRow : rettbl FAILED!!!\n");
       return eResult;
@@ -1070,7 +1073,7 @@ eEC RapidsSE_GetSchemas(SEitf* pSEitf, char* pCatalog, void** ppSchemas)
   }
   
   // change directory to ~
-  eResult = eExecuteRequest(pSEitf, "cf", "~");
+  eResult = eExecuteRequest(pSEitf, "cf"_Str, "~"_Str);
   if (EC_NONE != eResult) {
     return eResult;
   }
@@ -1082,7 +1085,7 @@ eEC RapidsSE_GetSchemas(SEitf* pSEitf, char* pCatalog, void** ppSchemas)
   }
 
   // change directory to boray
-  eResult = eExecuteRequest(pSEitf, "cf", "boray");
+  eResult = eExecuteRequest(pSEitf, "cf"_Str, "boray"_Str);
   if (EC_NONE != eResult) {
     return eResult;
   }
@@ -1094,7 +1097,7 @@ eEC RapidsSE_GetSchemas(SEitf* pSEitf, char* pCatalog, void** ppSchemas)
   }
   
   // change directory to catalogs
-  eResult = eExecuteRequest(pSEitf, "cf", "catalogs");
+  eResult = eExecuteRequest(pSEitf, "cf"_Str, "catalogs"_Str);
   if (EC_NONE != eResult) {
     return eResult;
   }
@@ -1106,7 +1109,7 @@ eEC RapidsSE_GetSchemas(SEitf* pSEitf, char* pCatalog, void** ppSchemas)
   }
   
   // change directory to pCatalog
-  eResult = eExecuteRequest(pSEitf, "cf", pCatalog);
+  eResult = eExecuteRequest(pSEitf, "cf"_Str, (Str*)pCatalog);
   if (EC_NONE != eResult) {
     return eResult;
   }
@@ -1118,7 +1121,7 @@ eEC RapidsSE_GetSchemas(SEitf* pSEitf, char* pCatalog, void** ppSchemas)
   }
   
   // change directory to schemas
-  eResult = eExecuteRequest(pSEitf, "cf", "schemas");
+  eResult = eExecuteRequest(pSEitf, "cf"_Str, "schemas"_Str);
   if (EC_NONE != eResult) {
     return eResult;
   }
@@ -1130,7 +1133,7 @@ eEC RapidsSE_GetSchemas(SEitf* pSEitf, char* pCatalog, void** ppSchemas)
   }
   
   // list all schemas in pCatalog
-  eResult = eExecuteRequest(pSEitf, "lssch");
+  eResult = eExecuteRequest(pSEitf, "lssch"_Str);
   if (EC_NONE != eResult) {
     return eResult;
   }
@@ -1176,7 +1179,7 @@ eEC RapidsSE_GetEngineVersion(SEitf* pSEitf, void** ppVersion)
   pSEitf->vClearLastError();
   
   // change directory to ~
-  eResult = eExecuteRequest(pSEitf, "version");
+  eResult = eExecuteRequest(pSEitf, "version"_Str);
   if (EC_NONE != eResult) {
     return eResult;
   }
@@ -1234,7 +1237,7 @@ eEC RapidsSE_GetTables(SEitf* pSEitf, char* pCatalog, char* pSchema, void** ppTa
     return EC_INVALID_PARAMETER;
   
   // change directory to ~
-  eResult = eExecuteRequest(pSEitf, "cf", "~");
+  eResult = eExecuteRequest(pSEitf, "cf"_Str, "~"_Str);
   if (EC_NONE != eResult) {
     return eResult;
   }
@@ -1246,7 +1249,7 @@ eEC RapidsSE_GetTables(SEitf* pSEitf, char* pCatalog, char* pSchema, void** ppTa
   }
 
   // change directory to boray
-  eResult = eExecuteRequest(pSEitf, "cf", "boray");
+  eResult = eExecuteRequest(pSEitf, "cf"_Str, "boray"_Str);
   if (EC_NONE != eResult) {
     return eResult;
   }
@@ -1258,7 +1261,7 @@ eEC RapidsSE_GetTables(SEitf* pSEitf, char* pCatalog, char* pSchema, void** ppTa
   }
   
   // change directory to catalogs
-  eResult = eExecuteRequest(pSEitf, "cf", "catalogs");
+  eResult = eExecuteRequest(pSEitf, "cf"_Str, "catalogs"_Str);
   if (EC_NONE != eResult) {
     return eResult;
   }
@@ -1270,7 +1273,7 @@ eEC RapidsSE_GetTables(SEitf* pSEitf, char* pCatalog, char* pSchema, void** ppTa
   }
  
   // change directory to pCatalog
-  eResult = eExecuteRequest(pSEitf, "cf", pCatalog);
+  eResult = eExecuteRequest(pSEitf, "cf"_Str, (Str*)pCatalog);
   if (EC_NONE != eResult) {
     return eResult;
   }
@@ -1282,7 +1285,7 @@ eEC RapidsSE_GetTables(SEitf* pSEitf, char* pCatalog, char* pSchema, void** ppTa
   }
   
   // change directory to schemas
-  eResult = eExecuteRequest(pSEitf, "cf", "schemas");
+  eResult = eExecuteRequest(pSEitf, "cf"_Str, "schemas"_Str);
   if (EC_NONE != eResult) {
     return eResult;
   }
@@ -1294,7 +1297,7 @@ eEC RapidsSE_GetTables(SEitf* pSEitf, char* pCatalog, char* pSchema, void** ppTa
   }
   
   // change directory to pSchema
-  eResult = eExecuteRequest(pSEitf, "cf", pSchema);
+  eResult = eExecuteRequest(pSEitf, "cf"_Str, (Str*)pSchema);
   if (EC_NONE != eResult) {
     return eResult;
   }
@@ -1306,7 +1309,7 @@ eEC RapidsSE_GetTables(SEitf* pSEitf, char* pCatalog, char* pSchema, void** ppTa
   }
 
   // change directory to tables
-  eResult = eExecuteRequest(pSEitf, "cf", "tables");
+  eResult = eExecuteRequest(pSEitf, "cf"_Str, "tables"_Str);
   if (EC_NONE != eResult) {
     return eResult;
   }
@@ -1318,7 +1321,7 @@ eEC RapidsSE_GetTables(SEitf* pSEitf, char* pCatalog, char* pSchema, void** ppTa
   }
 
   // list all the tables in pSchema of pCatalog
-  eResult = eExecuteRequest(pSEitf, "lstbl");
+  eResult = eExecuteRequest(pSEitf, "lstbl"_Str);
   if (EC_NONE != eResult) {
     return eResult;
   }
@@ -1491,7 +1494,7 @@ eEC RapidsSE_ScanTable(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTabl
   }
   
   // change directory to ~
-  eResult = eExecuteRequest(pSEitf, "cf", "~");
+  eResult = eExecuteRequest(pSEitf, "cf"_Str, "~"_Str);
   if (EC_NONE != eResult) {
     return eResult;
   }
@@ -1503,7 +1506,7 @@ eEC RapidsSE_ScanTable(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTabl
   }
 
   // change directory to boray
-  eResult = eExecuteRequest(pSEitf, "cf", "boray");
+  eResult = eExecuteRequest(pSEitf, "cf"_Str, "boray"_Str);
   if (EC_NONE != eResult) {
     return eResult;
   }
@@ -1515,7 +1518,7 @@ eEC RapidsSE_ScanTable(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTabl
   }
   
   // change directory to catalogs
-  eResult = eExecuteRequest(pSEitf, "cf", "catalogs");
+  eResult = eExecuteRequest(pSEitf, "cf"_Str, "catalogs"_Str);
   if (EC_NONE != eResult) {
     return eResult;
   }
@@ -1527,7 +1530,7 @@ eEC RapidsSE_ScanTable(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTabl
   }
   
   // change directory to pCatalog
-  eResult = eExecuteRequest(pSEitf, "cf", pCatalog);
+  eResult = eExecuteRequest(pSEitf, "cf"_Str, (Str*)pCatalog);
   if (EC_NONE != eResult) {
     return eResult;
   }
@@ -1539,7 +1542,7 @@ eEC RapidsSE_ScanTable(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTabl
   }
   
   // change directory to schemas
-  eResult = eExecuteRequest(pSEitf, "cf", "schemas");
+  eResult = eExecuteRequest(pSEitf, "cf"_Str, "schemas"_Str);
   if (EC_NONE != eResult) {
     return eResult;
   }
@@ -1551,7 +1554,7 @@ eEC RapidsSE_ScanTable(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTabl
   }
   
   // change directory to pSchema
-  eResult = eExecuteRequest(pSEitf, "cf", pSchema);
+  eResult = eExecuteRequest(pSEitf, "cf"_Str, (Str*)pSchema);
   if (EC_NONE != eResult) {
     return eResult;
   }
@@ -1563,7 +1566,7 @@ eEC RapidsSE_ScanTable(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTabl
   }
   
   // change directory to tables
-  eResult = eExecuteRequest(pSEitf, "cf", "tables");
+  eResult = eExecuteRequest(pSEitf, "cf"_Str, "tables"_Str);
   if (EC_NONE != eResult) {
     return eResult;
   }
@@ -1575,7 +1578,7 @@ eEC RapidsSE_ScanTable(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTabl
   }
 
   // select * from pTable
-  eResult = eExecuteRequest(pSEitf, "sel", pTable);
+  eResult = eExecuteRequest(pSEitf, "sel"_Str, (Str*)pTable);
   if (EC_NONE != eResult) {
     return eResult;
   }
@@ -1656,10 +1659,53 @@ eEC RapidsSE_SEitfNew(void* pAttachMap, void** ppSEitf, i8 iPartition)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* execute command                                                          */
+/* execute command                                                            */
 /*----------------------------------------------------------------------------*/
-eEC eExecuteRequest(SEitf* pSEitf, const char* pCommand, const char* pParameter1,
-                    const char* pParameter2, const char* pParameter3)
+eEC eExecuteRequest(SEitf* pSEitf, Str* aCommand)
+{
+  bool bResult;
+  char xArray[C_1KB * 1];
+  char* pWords[16] = {
+    &xArray[C_1KB * 0],
+  };
+  
+  // execute command pCommand
+  StrLib::vCopy(pWords[0], aCommand->a());
+  
+  bResult = pSEitf->bDecode(pWords, 1);
+  
+  return pSEitf->eGetLastError();
+}
+
+/*----------------------------------------------------------------------------*/
+/* execute command                                                            */
+/*----------------------------------------------------------------------------*/
+eEC eExecuteRequest(SEitf* pSEitf, Str* aCommand, Str* aParameter)
+{
+  // clear the last error
+  pSEitf->vClearLastError();
+  
+  bool bResult;
+  char xArray[C_1KB * 2];
+  char* pWords[16] = {
+    &xArray[C_1KB * 0],
+    &xArray[C_1KB * 1]
+  };
+  
+  // execute command
+  StrLib::vCopy(pWords[0], aCommand->a());
+  StrLib::vCopy(pWords[1], aParameter->a());
+  
+  bResult = pSEitf->bDecode(pWords, 2);
+  
+  return pSEitf->eGetLastError();
+}
+
+/*----------------------------------------------------------------------------*/
+/* execute command                                                           */
+/*----------------------------------------------------------------------------*/
+eEC eExecuteRequest(SEitf* pSEitf, Str* aCommand, Str* aParameter1,
+                    Str* aParameter2, Str* aParameter3)
 {
   // clear the last error
   pSEitf->vClearLastError();
@@ -1674,55 +1720,12 @@ eEC eExecuteRequest(SEitf* pSEitf, const char* pCommand, const char* pParameter1
   };
   
   // execute command
-  StrLib::vCopy(pWords[0], pCommand);
-  StrLib::vCopy(pWords[1], pParameter1);
-  StrLib::vCopy(pWords[2], pParameter2);
-  StrLib::vCopy(pWords[3], pParameter3);
+  StrLib::vCopy(pWords[0], aCommand->a());
+  StrLib::vCopy(pWords[1], aParameter1->a());
+  StrLib::vCopy(pWords[2], aParameter2->a());
+  StrLib::vCopy(pWords[3], aParameter3->a());
   
   bResult = pSEitf->bDecode(pWords, 4);
-  
-  return pSEitf->eGetLastError();
-}
-
-/*----------------------------------------------------------------------------*/
-/* execute command                                                          */
-/*----------------------------------------------------------------------------*/
-eEC eExecuteRequest(SEitf* pSEitf, const char* pCommand, const char* pParameter)
-{
-  // clear the last error
-  pSEitf->vClearLastError();
-  
-  bool bResult;
-  char xArray[C_1KB * 2];
-  char* pWords[16] = {
-    &xArray[C_1KB * 0],
-    &xArray[C_1KB * 1]
-  };
-
-  // execute command
-  StrLib::vCopy(pWords[0], pCommand);
-  StrLib::vCopy(pWords[1], pParameter);
-  
-  bResult = pSEitf->bDecode(pWords, 2);
-  
-  return pSEitf->eGetLastError();
-}
-
-/*----------------------------------------------------------------------------*/
-/* execute command                                                            */
-/*----------------------------------------------------------------------------*/
-eEC eExecuteRequest(SEitf* pSEitf, const char* pCommand)
-{
-  bool bResult;
-  char xArray[C_1KB * 1];
-  char* pWords[16] = {
-    &xArray[C_1KB * 0],
-  };
-  
-  // execute command pCommand
-  StrLib::vCopy(pWords[0], pCommand);
-  
-  bResult = pSEitf->bDecode(pWords, 1);
   
   return pSEitf->eGetLastError();
 }
