@@ -112,7 +112,7 @@ void List_t<OBJECT>::vContentDump(const char* aTitle, const char* aTab)
   
   xCursor.vBegin();
   
-  vTrace("%s%s %p: %lld tasks; head %p tail %p\n",
+  vTrace("%s%s %p: %lld tasks; head %p tail %p\n"_Str,
          aTab,
          aTitle,
          this,

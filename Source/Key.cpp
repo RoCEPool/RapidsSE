@@ -104,7 +104,7 @@ void Key::vShow(void)
 {
   i8 iKey = *(i8*)aWspArea();
   
-  vTrace("Key %p: (size %lld value:%lld)\n",
+  vTrace("Key %p: (size %lld value:%lld)\n"_Str,
          this,
          nSize(),
          iKey
