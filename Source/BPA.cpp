@@ -75,7 +75,7 @@ void BPA::vHeapDump(Heap* pHeap)
   HeapBuffer* pHeapBuffer;
   
   vTrace("\n");
-  vTrace("%sObjects in %s Heap:\n",
+  vTrace("%sObjects in %s Heap:\n"_Str,
          aSingleTab(),
          pHeap->iObjectSize() == C_SIZE_SMALL_OBJECT ? "Small" : "Medium");
   
@@ -122,7 +122,7 @@ void BPA::vHeapDump(Heap* pHeap, i8 iEpoch)
   HeapBuffer* pHeapBuffer;
   
   vTrace("\n");
-  vTrace("%sWords in %s Heap:\n",
+  vTrace("%sWords in %s Heap:\n"_Str,
          aDoubleTab(),
          pHeap->iObjectSize() == C_SIZE_SMALL_OBJECT ? "Small" : "Medium");
   
@@ -172,7 +172,7 @@ void BPA::vObjectList(void)
   _precondition_(_MAGIC_,CN_BPA,_FOOTER_);
   
   vTrace("\n");
-  vTrace("%sObjects in Buffer Pool:\n",aSingleTab());
+  vTrace("%sObjects in Buffer Pool:\n"_Str,aSingleTab());
   
   Buffer* pMediumHeap = nullptr;
   Buffer* pSmallHeap  = nullptr;
@@ -232,7 +232,7 @@ void BPA::vObjectSummary(void)
     if (iCountObjects[eClass] == 0)
       continue;
     
-    vTrace("  %12s %-6lld \n", aCN[eClass], iCountObjects[eClass]);
+    vTrace("  %12s %-6lld \n"_Str, aCN[eClass], iCountObjects[eClass]);
   }
   
   gpSmallHeap->vAnalyse(iCountObjects);
@@ -245,7 +245,7 @@ void BPA::vObjectSummary(void)
     if (iCountObjects[eClass] == 0)
       continue;
     
-    vTrace("  %12s %-6lld \n", aCN[eClass], iCountObjects[eClass]);
+    vTrace("  %12s %-6lld \n"_Str, aCN[eClass], iCountObjects[eClass]);
   }
   
   gpMediumHeap->vAnalyse(iCountObjects);
@@ -258,7 +258,7 @@ void BPA::vObjectSummary(void)
     if (iCountObjects[eClass] == 0)
       continue;
     
-    vTrace("  %12s %-6lld \n", aCN[eClass], iCountObjects[eClass]);
+    vTrace("  %12s %-6lld \n"_Str, aCN[eClass], iCountObjects[eClass]);
   }
   
   for (i8 index = 0; index < CN_ENUMS; index++)
@@ -274,7 +274,7 @@ void BPA::vObjectSummary(void)
 //    if (iCountObjects[eClass] == 0)
 //      continue;
 //    
-//    vTrace("  %12s %-6lld \n", aCN[eClass], iCountObjects[eClass]);
+//    vTrace("  %12s %-6lld \n"_Str, aCN[eClass], iCountObjects[eClass]);
 //  }
   
   _postcondition_(_MAGIC_,CN_BPA,_FOOTER_);
@@ -367,7 +367,7 @@ void BPA::vRegionSummary(void)
   s32 sMagJumbo;  Magnitudes::vMagnitude(C_SIZE_JUMBO_OBJECT, sMagJumbo.aStr());
   
   vTrace("\n");
-  vTrace("  Region %s %p size %lldB epoch %lld\n",
+  vTrace("  Region %s %p size %lldB epoch %lld\n"_Str,
          gxArguments.m_sRegionName.aStr(),
          gpBufferPool,
          gxArguments.m_iRegionSize,
@@ -375,26 +375,26 @@ void BPA::vRegionSummary(void)
   
   vTrace("\n");
   
-  vTrace("  BufferPool (%4s) buffers %-6lld alloc %-6lld free %-6lld \n",
+  vTrace("  BufferPool (%4s) buffers %-6lld alloc %-6lld free %-6lld \n"_Str,
          sMagLarge.aStr(),
          gpBufferPool->m_nBuffers,
          gpBufferPool->m_iAllocCount,
          gpBufferPool->m_iFreeCount
          );
   
-  vTrace("   SmallHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n",
+  vTrace("   SmallHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Str,
          sMagSmall.aStr(),
          gpSmallHeap->iBufferCount(),
          gpSmallHeap->iAllocCount(),
          gpSmallHeap->iFreeCount());
   
-  vTrace("  MediumHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n",
+  vTrace("  MediumHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Str,
          sMagMedium.aStr(),
          gpMediumHeap->iBufferCount(),
          gpMediumHeap->iAllocCount(),
          gpMediumHeap->iFreeCount());
   
-  vTrace("   JumboHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n",
+  vTrace("   JumboHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Str,
          sMagJumbo.aStr(),
          gpJumboHeap->iBufferCount(),
          gpJumboHeap->iAllocCount(),
@@ -412,7 +412,7 @@ void BPA::vResourceSummary(void)
   
   vTrace("\n");
   vTrace("****************************************************************\n");
-  vTrace(" Resources: dir %lld file %lld shm %lld socket %lld thread %lld\n",
+  vTrace(" Resources: dir %lld file %lld shm %lld socket %lld thread %lld\n"_Str,
          *gzDirOpenCount,
          *gzFileOpenCount,
          *gzShmOpenCount,

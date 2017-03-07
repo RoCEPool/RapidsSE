@@ -67,7 +67,7 @@ void HeapBuffer::vAnalyse(i8 nBytes, i8 xCounts[])
        pChunk = pNextChunk(pChunk,nBytes), iChunk++) {
 
     eCN eClass = pChunk->eClass();
-    //vTrace("Analyse %p : %p %lld\n",this,pChunk,eClass);
+    //vTrace("Analyse %p : %p %lld\n"_Str,this,pChunk,eClass);
     
     if (CN_FREECHUNK == eClass)
       continue;
@@ -86,7 +86,7 @@ void HeapBuffer::vDump(eCN eClass, Object* pObject, const char* aTab)
   
   HeapBuffer* pHeapBuffer = reinterpret_cast<HeapBuffer*>(pObject);
   
-  vTrace("nextBuffer %p prevBuffer %p\n",
+  vTrace("nextBuffer %p prevBuffer %p\n"_Str,
          pHeapBuffer->m_pNextBuffer,
          pHeapBuffer->m_pPrevBuffer);
 }

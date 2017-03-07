@@ -142,7 +142,7 @@ bool LoadMap::bFindChunk(void)
   i8 nBytes = Base::nSub((void*)z,m_xBlockTest) + 1;
   
   i8 iEolOffset = iTestSeek + nBytes - 1;
-  //vTrace("EolOffset %lld\n",iEolOffset);
+  //vTrace("EolOffset %lld\n"_Str,iEolOffset);
   vEolOffset(iEolOffset);
   
   m_iChunkNext = iEolOffset + 1;
@@ -172,7 +172,7 @@ void LoadMap::vChunkTest(void)
       }
     }
     
-    //vTrace("Test Seek %lld Bytes %lld\n",iSeek,nBytes);
+    //vTrace("Test Seek %lld Bytes %lld\n"_Str,iSeek,nBytes);
     
     if (iSeek) {
       m_xChunkFile.vSeek(iSeek - 1);
@@ -231,7 +231,7 @@ void LoadMap::vDone(bool bDone)
   
   m_bDone = bDone;
   
-  vTrace("LoadMap closed with %lld entries\n",m_iEntries);
+  vTrace("LoadMap closed with %lld entries\n"_Str,m_iEntries);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -282,7 +282,7 @@ void LoadMap::vStats(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADMAP);
   
-  vTrace("LoadMap: lock writes %lld write collisions %lld\n",
+  vTrace("LoadMap: lock writes %lld write collisions %lld\n"_Str,
          m_zLock.iWriteGrabs(),
          m_zLock.iWriteCollisions());
 }

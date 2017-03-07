@@ -21,8 +21,9 @@ create table j1000 (
 );
 
 print "loading j10.tbl..."
-ld j1000 "../JTEST/j1000.csv"
 create index idx on j1000 (j1000_key);
+ld j1000 "../JTEST/j1000.csv"
+
 
 /*============================================================================*/
 /* end                                                                        */

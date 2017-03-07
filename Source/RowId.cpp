@@ -69,7 +69,7 @@ void RowId::operator =(RowId& xRowId)
 /*----------------------------------------------------------------------------*/
 void RowId::vContentDump(void)
 {
-  vTrace("RowId %p: %llu.%llu\n",
+  vTrace("RowId %p: %llu.%llu\n"_Str,
          this,
          m_uBuffer,
          m_uRow

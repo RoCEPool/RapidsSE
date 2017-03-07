@@ -428,7 +428,7 @@ void Dump::vInvalid(eCN eClass, Object* pObject, const char* aTab)
   ASSERT(eClass != CN_ENUMS);
   ASSERT(pObject != nullptr);
   ASSERT(aTab != nullptr);
-  vTrace("%sInvalid Class %s in Buffer Pool\n", aTab, aCN[eClass]);
+  vTrace("%sInvalid Class %s in Buffer Pool\n"_Str, aTab, aCN[eClass]);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -439,7 +439,7 @@ void Dump::vUndefined(eCN eClass, Object* pObject, const char* aTab)
   ASSERT(eClass != CN_NONE);
   ASSERT(pObject != nullptr);
   ASSERT(aTab != nullptr);
-  vTrace("%s%s: **dump function not defined for class**\n", aTab, aCN[eClass]);
+  vTrace("%s%s: **dump function not defined for class**\n"_Str, aTab, aCN[eClass]);
 }
 
 /*============================================================================*/

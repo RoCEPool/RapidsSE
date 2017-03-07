@@ -127,7 +127,7 @@ void SePrompt::vDump(eCN eClass, Object* pObject, const char* aTab)
   
   SePrompt* pSePrompt = reinterpret_cast<SePrompt*>(pObject);
   
-  vTrace("partition %lld seitf %p continue %s\n",
+  vTrace("partition %lld seitf %p continue %s\n"_Str,
          pSePrompt->m_iPartition,
          pSePrompt->m_pSEitf,
          pSePrompt->m_bContinue ? "true" : "false");
@@ -155,7 +155,7 @@ void SePrompt::vLoop(void)
     
     if (m_bExpect) {
       if ( ! StrLib::bEqualTo(m_sExpect.aStr(),m_sResponse.aStr(),C_NO_CASE)) {
-        vTrace("Expected \"%s\" : Got \"%s\"\n",m_sExpect.aStr(),m_sResponse.aStr());
+        vTrace("Expected \"%s\" : Got \"%s\"\n"_Str,m_sExpect.aStr(),m_sResponse.aStr());
         PosixThread::vSleepSec(10000);
       }
     }
@@ -167,20 +167,20 @@ void SePrompt::vLoop(void)
           break;
         vTrace("%s ",m_aToken[iToken]);
       }
-      vTrace(": got: %s\n",m_sResponse.aStr());
+      vTrace(": got: %s\n"_Str,m_sResponse.aStr());
       continue;
     }
     
     if (b) {
       if ( ! m_bExpect )
         if ( ! StrLib::bEqualTo(m_sResponse.aStr(), "<ok>") ) {
-          vTrace("%s\n",m_sResponse.aStr());
+          vTrace("%s\n"_Str,m_sResponse.aStr());
       }
     }
     else {
       if (m_pSEitf->eGetLastError() != EC_NONE)
         if ( ! m_bExpect )
-         vTrace("Error: %s\n",m_pSEitf->pGetLastError());
+         vTrace("Error: %s\n"_Str,m_pSEitf->pGetLastError());
     }
   }
   
@@ -206,7 +206,7 @@ bool SePrompt::bExecuteString(StrVal& sRequest, eEC& eErrorCode)
   i8 iToken = 0;
   while (TK_NONE != m_pTokeniser->eNextToken(m_aToken[iToken])) {
     
-    //vTrace("vGetCommand : [%lld] %s\n",iToken,m_aToken[iToken]);
+    //vTrace("vGetCommand : [%lld] %s\n"_Str,iToken,m_aToken[iToken]);
     
     iToken++;
     ASSERT(iToken < C_TOKENS);
@@ -229,7 +229,7 @@ bool SePrompt::bExecuteString(StrVal& sRequest, eEC& eErrorCode, StrVal& sRespon
   i8 iToken = 0;
   while (TK_NONE != m_pTokeniser->eNextToken(m_aToken[iToken])) {
     
-    //vTrace("vGetCommand : [%lld] %s\n",iToken,m_aToken[iToken]);
+    //vTrace("vGetCommand : [%lld] %s\n"_Str,iToken,m_aToken[iToken]);
     
     iToken++;
     ASSERT(iToken < C_TOKENS);
@@ -253,7 +253,7 @@ bool SePrompt::bExecuteString(StrVal& sRequest, eEC& eErrorCode, char** ppRowPtr
   i8 iToken = 0;
   while (TK_NONE != m_pTokeniser->eNextToken(m_aToken[iToken])) {
     
-    //vTrace("vGetCommand : [%lld] %s\n",iToken,m_aToken[iToken]);
+    //vTrace("vGetCommand : [%lld] %s\n"_Str,iToken,m_aToken[iToken]);
     
     iToken++;
     ASSERT(iToken < C_TOKENS);
@@ -292,7 +292,7 @@ void SePrompt::vGetCommandArgument(void)
   i8 iToken = 0;
   while (TK_NONE != m_pTokeniser->eNextToken(m_aToken[iToken])) {
     
-    //vTrace("vGetCommand : [%lld] %s\n",iToken,m_aToken[iToken]);
+    //vTrace("vGetCommand : [%lld] %s\n"_Str,iToken,m_aToken[iToken]);
     
     iToken++;
     ASSERT(iToken < C_TOKENS);
@@ -315,7 +315,7 @@ void SePrompt::vGetCommandInput(void)
     i8 iToken = 0;
     while (TK_NONE != m_pTokeniser->eNextToken(m_aToken[iToken])) {
       
-      //vTrace("vGetCommand : [%lld] %s\n",iToken,m_aToken[iToken]);
+      //vTrace("vGetCommand : [%lld] %s\n"_Str,iToken,m_aToken[iToken]);
       
       iToken++;
       ASSERT(iToken < C_TOKENS);
@@ -635,13 +635,13 @@ void SePrompt::vIterateRows(void)
   i8 iRowCount = 0;
   
   for (i8 iPartition = 0; iPartition < gxArguments.m_nSlots; iPartition++) {
-    vTrace("Partition %lld: \n", Partition::iSlotToPartition(iPartition));
+    vTrace("Partition %lld: \n"_Str, Partition::iSlotToPartition(iPartition));
     pSelCursor->vBegin(iPartition);
     pSelCursor->vFirst();
     char* pStr = pSelCursor->pRowAsStr();
     while (pStr) {
       iRowCount++;
-      vTrace("Row: %s\n",pStr);
+      vTrace("Row: %s\n"_Str,pStr);
       pSelCursor->vNext();
       pStr = pSelCursor->pRowAsStr();
     }
@@ -662,7 +662,7 @@ bool SePrompt::bReturnTable(void)
   StrLib::vCopy(m_aToken[1], "");
   
   if (!bExecuteRequest()) {
-    vTrace("bReturnTable: (%s) Return Table FAILED!!! : %s\n", m_sResponse.aStr());
+    vTrace("bReturnTable: (%s) Return Table FAILED!!! : %s\n"_Str, m_sResponse.aStr());
     return false;
   }
   return true;
@@ -997,7 +997,7 @@ bool SePrompt::bCreateCatalog(void)
   if (!bExecuteRequest())
     return false;
   
-  //vTrace("Catalog created: %s\n", m_aToken2[2]);
+  //vTrace("Catalog created: %s\n"_Str, m_aToken2[2]);
   return true;
 }
 
@@ -1112,7 +1112,7 @@ bool SePrompt::bCreateSchema(void)
   if (!bExecuteRequest())
     return false;
   
-  //vTrace("Schema created: %s\n", m_aToken2[2]);
+  //vTrace("Schema created: %s\n"_Str, m_aToken2[2]);
   return true;
 }
 
@@ -1159,7 +1159,7 @@ bool SePrompt::bCreateTenant(void)
   if (!bExecuteRequest())
     return false;
   
-  //vTrace("Tenant created: %s\n", m_aToken2[2]);
+  //vTrace("Tenant created: %s\n"_Str, m_aToken2[2]);
   return true;
 }
 
@@ -1432,7 +1432,7 @@ bool SePrompt::bCreateTable(void)
   bool bResult = bReturnTable();
   ASSERT(bResult);
 
-  //vTrace("Table created: %s\n", m_aToken2[2]);
+  //vTrace("Table created: %s\n"_Str, m_aToken2[2]);
   return true;
 }
 
@@ -1538,7 +1538,7 @@ bool SePrompt::bDropCatalog(void)
   if (!bExecuteRequest())
     return false;
   
-  //vTrace("Catalog dropped: %s\n", m_aToken2[2]);
+  //vTrace("Catalog dropped: %s\n"_Str, m_aToken2[2]);
   return true;
 }
 
@@ -1583,7 +1583,7 @@ bool SePrompt::bDropSchema(void)
   if (!bExecuteRequest())
     return false;
   
-  //vTrace("Schema dropped: %s\n", m_aToken2[2]);
+  //vTrace("Schema dropped: %s\n"_Str, m_aToken2[2]);
   return true;
 }
 
@@ -1629,7 +1629,7 @@ bool SePrompt::bDropTable(void)
   if (!bExecuteRequest())
     return false;
   
-  //vTrace("Table dropped: %s\n", m_aToken2[2]);
+  //vTrace("Table dropped: %s\n"_Str, m_aToken2[2]);
   return true;
 }
 
@@ -1656,7 +1656,7 @@ bool SePrompt::bDropReturnTable(char* pTableName)
   StrLib::vCopy(m_aToken[2], "");
   
   if (!bExecuteRequest()) {
-    //vTrace("Error: (%s) Drop Table %s\n", m_sResponse.aStr(), pTableName);
+    //vTrace("Error: (%s) Drop Table %s\n"_Str, m_sResponse.aStr(), pTableName);
     return false;
   }
   return true;
@@ -1705,7 +1705,7 @@ bool SePrompt::bDropTenant(void)
     return false;
   }
   
-  //vTrace("Tenant dropped: %s\n", m_aToken2[2]);
+  //vTrace("Tenant dropped: %s\n"_Str, m_aToken2[2]);
   
   return true;
 }
@@ -1875,7 +1875,7 @@ bool SePrompt::bListDir(void)
   while(xDir.bRead()) {
     sDirEntry = xDir.sEntryName();
     iEntryType = xDir.iEntryType();
-    vTrace("%c %s\n", iEntryType == DT_DIR ? 'd' : 'f', sDirEntry.aStr());
+    vTrace("%c %s\n"_Str, iEntryType == DT_DIR ? 'd' : 'f', sDirEntry.aStr());
   }
   
   // close the current directory
@@ -1998,7 +1998,7 @@ bool SePrompt::bUseSchema(void)
   if (!bExecuteRequest())
     return false;
   
-  //vTrace("Schema changed: %s\n", m_aToken2[2]);
+  //vTrace("Schema changed: %s\n"_Str, m_aToken2[2]);
   return true;
 }
 

@@ -141,13 +141,13 @@ Table* SEitf::pCurrentTable(void)
 /*----------------------------------------------------------------------------*/
 void SEitf::vContentDump(void)
 {
-  vTrace("SEitf %p: pid %lld (%s)\n",
+  vTrace("SEitf %p: pid %lld (%s)\n"_Str,
          this,
          m_iPid,
-         Process::bTestPid(m_iPid) ? "exists" : "non-existant"
+         Process::bTestPid(m_iPid) ? "exists"_Str : "non-existant"_Str
          );
   
-  vTrace("  RequestQueue %p  ResponseQueue %p\n",
+  vTrace("  RequestQueue %p  ResponseQueue %p\n"_Str,
          m_pRequestQueue,
          m_pResponseQueue);
 }
@@ -162,10 +162,10 @@ void SEitf::vDump(eCN eClass, Object* pObject, const char* aTab)
   
   SEitf* pSEitf = reinterpret_cast<SEitf*>(pObject);
   
-  vTrace("pid %lld %s partitions %lld partition %lld"
-         " requestQ %p responseQ %p response '%s'\n",
+  vTrace("pid %lld %s partitions %lld partition %lld"_Str
+         " requestQ %p responseQ %p response '%s'\n"_Str,
          pSEitf->m_iPid,
-         Process::bTestPid(pSEitf->m_iPid) ? "exists" : "non-existant",
+         Process::bTestPid(pSEitf->m_iPid) ? "exists"_Str : "non-existant"_Str,
          pSEitf->m_iSlots,
          pSEitf->m_iPartition,
          pSEitf->m_pRequestQueue,
@@ -284,7 +284,7 @@ bool SEitf::bBeginTx()
   
   m_pTxRef = new TxRef();
   
-  //vTrace("txref: %x\n", m_pTxRef);
+  //vTrace("txref: %x\n"_Str, m_pTxRef);
   bool bResult = m_pTxRef->bBeginTx();
   return bResult;
 }
@@ -1330,7 +1330,7 @@ bool SEitf::bInsertRow(char* pRow)
   // get working buffer
   RowBuffer* pRowBuffer = m_pRowBuffer[m_iPartition];
   
-  vTrace("Buffer: %s Partition:%d\n",pRowBuffer, m_iPartition);
+  vTrace("Buffer: %s Partition:%d\n"_Str,pRowBuffer, m_iPartition);
   
   // insert row into working buffer
   if (pRowBuffer->bInsertRow(m_pTxRef,pRow,StrLib::iSize(pRow)))
@@ -1339,7 +1339,7 @@ bool SEitf::bInsertRow(char* pRow)
   // buffer full, append working buffer into table
   //m_pCurrentTable->vAppendBuffer(m_iPartition,pRowBuffer);
   
-  vTrace("Buffer full... Inserting buffer\n");
+  vTrace("Buffer full... Inserting buffer\n"_Str);
   bool bResult = bInsertBuffer(pRowBuffer, m_iPartition);
   
   if (!bResult)
@@ -1355,7 +1355,7 @@ bool SEitf::bInsertRow(char* pRow)
   // get a new working buffer
   m_pRowBuffer[m_iPartition] = RowBuffer::pNewRowBuffer();
   if (! m_pRowBuffer[m_iPartition]) {
-    vTrace("RowBuffer allocation failed\n");
+    vTrace("RowBuffer allocation failed\n"_Str);
     m_eErrorCode = EC_LOW_BUFFERS;
     return false;
   }
@@ -1427,7 +1427,7 @@ bool SEitf::bInsertBuffer(RowBuffer* pRowBuffer, i8 iPartition)
   
   StrLib::vConcat(a," append_table");
   
-  vTrace("%s\n",a);
+  vTrace("%s\n"_Str,a);
   
   return bAppendRequest(sRequest);
 }
@@ -1687,7 +1687,7 @@ bool SEitf::bAppendRequest(StrVal& sRequest)
   i8 iPid = gpAttachMap->m_iPid;
   if (!Process::bTestPid(iPid)) {
     // SE is not running anymore!
-    vTrace("Cannot find pid %lld\n", gpAttachMap->m_iPid);
+    vTrace("Cannot find pid %lld\n"_Str, gpAttachMap->m_iPid);
     vSetLastError(EC_SE_NOT_RUNNING);
     return false;
   }
@@ -1696,17 +1696,17 @@ bool SEitf::bAppendRequest(StrVal& sRequest)
   StrLib::vCopy(wWorkspace,wItfAddr);
   StrLib::vConcat(wWorkspace," >seitf task.this task.seitf! ");
   xVal = wWorkspace;
-  //vTrace("%s\n",xVal.aStr());
+  //vTrace("%s\n"_Str,xVal.aStr());
   xValSet.vAppend(pCursor,xVal);
   
   xVal = sRequest.aStr();
-  //vTrace("%s\n",xVal.aStr());
+  //vTrace("%s\n"_Str,xVal.aStr());
   xValSet.vAppend(pCursor,xVal);
   
   // if the current request id matches the next request id, it means
   // we have not read a response of the previous request
   if (m_iCurrentRequestId == m_iNextRequestId) {
-    vTrace("Response for previous request not retrieved. Out-Of-Sync request-response.\n");
+    vTrace("Response for previous request not retrieved. Out-Of-Sync request-response.\n"_Str);
     vSetLastError(EC_RESPONSE_PENDING);
     return false;
   }
@@ -1733,7 +1733,7 @@ eEC SEitf::eGetResponse(void)
   
   // generate a random number and send it back
   m_iNextRequestId = Random::iRandom();
-  //vTrace("NextRequest %lld\n", m_iNextRequestId);
+  //vTrace("NextRequest %lld\n"_Str, m_iNextRequestId);
   
   return m_eErrorCode;
 }
@@ -1765,8 +1765,8 @@ bool SEitf::bPopResponse(eEC& eResult, StrVal& sResponse)
   b = xValSet.bExtract(pCursor,pValWsp);
   ASSERT(! b);
   
-//  vTrace("sResponse: >>>\n%s\n<<<\n\n",sResponse.aStr());
-//  vTrace("\n---\n\n",sResponse.aStr());
+//  vTrace("sResponse: >>>\n%s\n<<<\n\n"_Str,sResponse.aStr());
+//  vTrace("\n---\n\n"_Str,sResponse.aStr());
   
   return true;
 }

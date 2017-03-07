@@ -146,7 +146,7 @@ void Lock::vGrabRead(void)
     xTimer.vUpdate();
     if (xTimer.iMilliseconds() > 100 && ! bReported) {
       bReported = true;
-      vTrace("Lock::vGrabRead -- Unable to grab read lock %p %s\n",
+      vTrace("Lock::vGrabRead -- Unable to grab read lock %p %s\n"_Str,
              this,
              m_aName ? m_aName : "<noName>");
     }
@@ -234,7 +234,7 @@ void Lock::vGrabWrite(void)
   
   ASSERT(m_aName);
 
-//  vTrace("Lock::vGrabWrite -- Grabbing write lock %p %s\n",
+//  vTrace("Lock::vGrabWrite -- Grabbing write lock %p %s\n"_Str,
 //         this,
 //         m_aName ? m_aName : "<noName>");
 
@@ -255,7 +255,7 @@ void Lock::vGrabWrite(void)
     xTimer.vUpdate();
     if (xTimer.iMilliseconds() > 100 && ! bReported) {
       bReported = true;
-      vTrace("Lock::vGrabWrite -- Unable to grab write lock %p %s\n",
+      vTrace("Lock::vGrabWrite -- Unable to grab write lock %p %s\n"_Str,
              this,
              m_aName ? m_aName : "<noName>");
     }

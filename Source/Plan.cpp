@@ -125,7 +125,7 @@ void Plan::vDump(eCN eClass, Object* pObject, const char* aTab)
   
   Plan* pPlan = reinterpret_cast<Plan*>(pObject);
   
-  vTrace("planId %lld.%lld name %s\n",
+  vTrace("planId %lld.%lld name %s\n"_Str,
          pPlan->m_uPlanId >> 48,
          pPlan->m_uPlanId & 0x00FFFFFFFFFFFFFF,
          pPlan->m_sName.aStr());
@@ -295,7 +295,7 @@ void Plan::vShow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLAN,_FOOTER_);
 
-  vTrace("  plan %p id %lld.%lld %s\n",
+  vTrace("  plan %p id %lld.%lld %s\n"_Str,
          this,
          m_uPlanId >> 48,
          m_uPlanId & 0x00FFFFFFFFFFFFFF,

@@ -103,7 +103,7 @@ bool Shm::bCreate(StrVal& sRegionName, i8 iSize, int& iFD,
       vTrace("Shm::bCreate F\n");
    
     xSysCall.vError(errno);
-    vTrace("Shm::bCreate: ftruncate() error; errno=%d %s\n",errno,strerror(errno));
+    vTrace("Shm::bCreate: ftruncate() error; errno=%d %s\n"_Str,errno,strerror(errno));
     
     int rCode = shm_unlink(sRegionName.aStr());
     

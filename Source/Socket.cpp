@@ -85,9 +85,9 @@ void Socket::vDump(eCN eClass, Object* pObject, const char* aTab)
   
   Socket* pSocket = reinterpret_cast<Socket*>(pObject);
 
-  vTrace("id %lld %s\n",
+  vTrace("id %lld %s\n"_Str,
          pSocket->m_iSocketId,
-         pSocket->m_bBlocking ? "blocking" : "non-blocking");
+         pSocket->m_bBlocking ? "blocking"_Str : "non-blocking"_Str);
 }
 
 /*----------------------------------------------------------------------------*/

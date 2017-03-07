@@ -85,7 +85,7 @@ void Stack::vDump(eCN eClass, Object* pObject, const char* aTab)
   
   Stack* pStack = _pStack(pObject);
   
-  vTrace("values %lld top %p\n",
+  vTrace("values %lld top %p\n"_Str,
          pStack->m_iValues,
          pStack->m_pTop);
 }
@@ -851,7 +851,7 @@ void Stack::vDiscard(void)
 /*----------------------------------------------------------------------------*/
 void Stack::vContentDump(const char* aPrefix, const char* aTitle)
 {
-  vTrace("[%s]%s:\n",aPrefix,aTitle);
+  vTrace("[%s]%s:\n"_Str,aPrefix,aTitle);
   
   ValWsp xValWsp;
   
@@ -871,17 +871,17 @@ void Stack::vContentDump(const char* aPrefix, const char* aTitle)
       PtrVal* pPtrVal = _pPtrVal(&xValWsp);
       Object* pObject = pPtrVal->pPtr();
       eCN ePtdClass   = pObject->eClass();
-      vTrace("[%s] [%2lld] %s (%s %s)\n",
+      vTrace("[%s] [%2lld] %s (%s %s)\n"_Str,
         aPrefix,iVal,sWorkspace.aStr(),aClass,aCN[ePtdClass]);
     }
     else if (CN_IPVAL == eClass) {                                       //RAY??
       IpVal* pIpVal = _pIpVal(&xValWsp);
       Cell* pCell = pIpVal->pIpPtr();
-      vTrace("[%s] [%2lld] nullptr\n",aPrefix,iVal);  //RAY: should trace pIpVal
-//    vTrace("[%s] [%2lld] %p\n",aPrefix,iVal,pIpVal);
+      vTrace("[%s] [%2lld] nullptr\n"_Str,aPrefix,iVal);  //RAY: should trace pIpVal
+//    vTrace("[%s] [%2lld] %p\n"_Str,aPrefix,iVal,pIpVal);
     }
     else {
-      vTrace("[%s] [%2lld] %s (%s)\n",
+      vTrace("[%s] [%2lld] %s (%s)\n"_Str,
              aPrefix,iVal,sWorkspace.aStr(),aClass);
     }
   }
@@ -919,7 +919,7 @@ void Stack::vPeek(i8 iNthValue, Value* pValue)
 
   i8 iSize = ValLib::iSize(pPeekedValue);
   
-  //vTrace("Peek: %lld %p %lld\n",iNthValue,pPeekedValue,iSize);
+  //vTrace("Peek: %lld %p %lld\n"_Str,iNthValue,pPeekedValue,iSize);
   
   MemLib::vCopy(pValue,pPeekedValue,iSize);
 }

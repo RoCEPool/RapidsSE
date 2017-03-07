@@ -79,28 +79,28 @@ void MemLib::vHexDump(void *aAddress, i8 iBytes)
   i8 iByte = 0;
   
   // dump a header
-  vTrace("\n%18s %8s %49s %16s\n",
-         "MemLib address", "Offset", "Hex dump", "Context");
-  vTrace("%18s %8s %49s %16s\n",
-         "------------------", "--------",
-         "-------------------------------------------------", "----------------");
+  vTrace("\n%18s %8s %49s %16s\n"_Str,
+         "MemLib address"_Str, "Offset"_Str, "Hex dump"_Str, "Context"_Str);
+  vTrace("%18s %8s %49s %16s\n"_Str,
+         "------------------"_Str, "--------"_Str,
+         "-------------------------------------------------"_Str, "----------------"_Str);
   
   // dump the memory
   for (i8 i = 0; i < iBytes; i++) {
     
     // beginning of line, dump the address
     if (iByte == 0) {
-      vTrace("0x%016x ", (i8)((u1*)aAddress + iOffset));
-      vTrace("0x%06x ", iOffset);
+      vTrace("0x%016x "_Str, (i8)((u1*)aAddress + iOffset));
+      vTrace("0x%06x "_Str, iOffset);
     }
     
-    vTrace("%02x ", (i8)(*((u1*)aAddress + i)));
+    vTrace("%02x "_Str, (i8)(*((u1*)aAddress + i)));
     
     iByte++;
     
     // middle of line ?
     if (iByte == C_BYTES_PER_LINE/2) {
-      vTrace("- ");
+      vTrace("- "_Str);
     }
     
     // newline ?
@@ -111,15 +111,15 @@ void MemLib::vHexDump(void *aAddress, i8 iBytes)
         u1 cChar = *((u1*)aAddress + iOffset + i);
         
         if (cChar < C_ASCII_MIN || cChar > C_ASCII_MAX) {
-          vTrace("%c", '.');
+          vTrace("%c"_Str, '.');
         } else {
-          vTrace("%c", cChar);
+          vTrace("%c"_Str, cChar);
         }
       }
       
       iByte = 0;
       iOffset += C_BYTES_PER_LINE;
-      vTrace("\n");
+      vTrace("\n"_Str);
     }
   }
   
@@ -130,10 +130,10 @@ void MemLib::vHexDump(void *aAddress, i8 iBytes)
     
     while (i) {
       
-      vTrace("%s ", "__");
+      vTrace("%s "_Str, "__"_Str);
       iByte++;
       if (iByte == C_BYTES_PER_LINE/2) {
-        vTrace("- ");
+        vTrace("- "_Str);
       }
       i--;
     }
@@ -141,14 +141,14 @@ void MemLib::vHexDump(void *aAddress, i8 iBytes)
     for (i8 i= 0; i < iByte; i++) {
       u1 cChar = *((u1*)aAddress + iOffset + i);
       if (cChar < C_ASCII_MIN || cChar > C_ASCII_MAX) {
-        vTrace("%c", '.');
+        vTrace("%c"_Str, '.');
       } else {
-        vTrace("%c", cChar);
+        vTrace("%c"_Str, cChar);
       }
     }
-    vTrace("\n");
+    vTrace("\n"_Str);
   }
-  vTrace("\n");
+  vTrace("\n"_Str);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -190,31 +190,31 @@ void MemLib::vWordDump(void *aAddress, i8 iBytes, i8 iHighlightWord)
 
   // dump a header
   vTrace("\n");
-  vTrace("%6s %8s %18s %16s %8s\n",
-         "Word",
-         "Offset",
-         "Address",
-         "Hex",
-         "Ascii");
+  vTrace("%6s %8s %18s %16s %8s\n"_Str,
+         "Word"_Str,
+         "Offset"_Str,
+         "Address"_Str,
+         "Hex"_Str,
+         "Ascii"_Str);
   
-  vTrace("%6s %8s %18s %16s %8s\n",
-         "------",
-         "--------",
-         "------------------",
-         "-------><-------",
-         "--------");
+  vTrace("%6s %8s %18s %16s %8s\n"_Str,
+         "------"_Str,
+         "--------"_Str,
+         "------------------"_Str,
+         "-------><-------"_Str,
+         "--------"_Str);
   
   // dump the memory
   for (i8 i = 0; i < iWords; i++) {
     
     // beginning of line, dump the address
     if (iWord == 0) {
-      vTrace("%6d ", i);
-      vTrace("0x%06llx ", iOffset);
-      vTrace("0x%016llx ", (i8)((u1*)aAddress + iOffset));
+      vTrace("%6d "_Str, i);
+      vTrace("0x%06llx "_Str, iOffset);
+      vTrace("0x%016llx "_Str, (i8)((u1*)aAddress + iOffset));
     }
     
-    vTrace("%016llx ", (i8)(*((i8*)aAddress + i)));
+    vTrace("%016llx "_Str, (i8)(*((i8*)aAddress + i)));
     
     iWord++;
       
@@ -223,51 +223,51 @@ void MemLib::vWordDump(void *aAddress, i8 iBytes, i8 iHighlightWord)
       u1 cChar = *((u1*)aAddress + iOffset + i);
       
       if (cChar < C_ASCII_MIN || cChar > C_ASCII_MAX) {
-        vTrace("%c", '.');
+        vTrace("%c"_Str, '.');
       } else {
-        vTrace("%c", cChar);
+        vTrace("%c"_Str, cChar);
       }
     }
     
     if (i == iHighlightWord)
-      vTrace(" <<==== OBSERVE");
+      vTrace(" <<==== OBSERVE"_Str);
     
     if ((u8)(*((i8*)aAddress + i)) == C_MEMORY_MARKER0)
-      vTrace(" <<==== MARKER 0");
+      vTrace(" <<==== MARKER 0"_Str);
     if ((u8)(*((i8*)aAddress + i)) == C_MEMORY_MARKER1)
-      vTrace(" <<==== MARKER 1");
+      vTrace(" <<==== MARKER 1"_Str);
     if ((u8)(*((i8*)aAddress + i)) == C_MEMORY_MARKER2)
-      vTrace(" <<==== MARKER 2");
+      vTrace(" <<==== MARKER 2"_Str);
     if ((u8)(*((i8*)aAddress + i)) == C_MEMORY_MARKER3)
-      vTrace(" <<==== MARKER 3");
+      vTrace(" <<==== MARKER 3"_Str);
     if ((u8)(*((i8*)aAddress + i)) == C_MEMORY_MARKER4)
-      vTrace(" <<==== MARKER 4");
+      vTrace(" <<==== MARKER 4"_Str);
     if ((u8)(*((i8*)aAddress + i)) == C_MEMORY_MARKER5)
-      vTrace(" <<==== MARKER 5");
+      vTrace(" <<==== MARKER 5"_Str);
     if ((u8)(*((i8*)aAddress + i)) == C_MEMORY_MARKER6)
-      vTrace(" <<==== MARKER 6");
+      vTrace(" <<==== MARKER 6"_Str);
     if ((u8)(*((i8*)aAddress + i)) == C_MEMORY_MARKER7)
-      vTrace(" <<==== MARKER 7");
+      vTrace(" <<==== MARKER 7"_Str);
     if ((u8)(*((i8*)aAddress + i)) == C_MEMORY_MARKER8)
-      vTrace(" <<==== MARKER 8");
+      vTrace(" <<==== MARKER 8"_Str);
     if ((u8)(*((i8*)aAddress + i)) == C_MEMORY_MARKER9)
-      vTrace(" <<==== MARKER 9");
+      vTrace(" <<==== MARKER 9"_Str);
     if ((u8)(*((i8*)aAddress + i)) == C_MEMORY_MARKERA)
-      vTrace(" <<==== MARKER A");
+      vTrace(" <<==== MARKER A"_Str);
     if ((u8)(*((i8*)aAddress + i)) == C_MEMORY_MARKERB)
-      vTrace(" <<==== MARKER B");
+      vTrace(" <<==== MARKER B"_Str);
     if ((u8)(*((i8*)aAddress + i)) == C_MEMORY_MARKERC)
-      vTrace(" <<==== MARKER C");
+      vTrace(" <<==== MARKER C"_Str);
     if ((u8)(*((i8*)aAddress + i)) == C_MEMORY_MARKERD)
-      vTrace(" <<==== MARKER D");
+      vTrace(" <<==== MARKER D"_Str);
     if ((u8)(*((i8*)aAddress + i)) == C_MEMORY_MARKERE)
-      vTrace(" <<==== MARKER E");
+      vTrace(" <<==== MARKER E"_Str);
     if ((u8)(*((i8*)aAddress + i)) == C_MEMORY_MARKERF)
-      vTrace(" <<==== MARKER F");
+      vTrace(" <<==== MARKER F"_Str);
     
     iWord = 0;
     iOffset += C_SIZEOF_WORD;
-    vTrace("\n");
+    vTrace("\n"_Str);
   }
   
   // end of buffer and not at 16-byte boundary ?
@@ -276,16 +276,16 @@ void MemLib::vWordDump(void *aAddress, i8 iBytes, i8 iHighlightWord)
     for (i8 i= 0; i < iWord; i++) {
       u1 cChar = *((u1*)aAddress + iOffset + i);
       if (cChar < C_ASCII_MIN || cChar > C_ASCII_MAX) {
-        vTrace("%c", '.');
+        vTrace("%c"_Str, '.');
       } else {
-        vTrace("%c", cChar);
+        vTrace("%c"_Str, cChar);
       }
     }
     
-    vTrace("\n");
+    vTrace("\n"_Str);
   }
   
-  vTrace("\n");
+  vTrace("\n"_Str);
 }
 
 /*----------------------------------------------------------------------------*/

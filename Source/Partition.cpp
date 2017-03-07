@@ -24,7 +24,7 @@ void Partition::vDump(eCN eClass, Object* pObject, const char* aTab)
   
   Partition* pPartition = reinterpret_cast<Partition*>(pObject);
   
-  vTrace("Data %p\n",
+  vTrace("Data %p\n"_Str,
          pPartition->m_pData);
 }
 

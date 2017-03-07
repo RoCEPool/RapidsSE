@@ -91,7 +91,7 @@ void Row::vContentDump(void)
   
   StrVal* pStr = (StrVal*)pData();
   
-  vTrace("Row %p: TxId %lld DataBytes %lld %s (%lld bytes) %s\n",
+  vTrace("Row %p: TxId %lld DataBytes %lld %s (%lld bytes) %s\n"_Str,
          this,
          m_iTxId,
          m_iDataBytes,

@@ -95,7 +95,7 @@ void Parser::vDump(eCN eClass, Object* pObject, const char* aTab)
   
   Parser* pParser = _pParser(pObject);
   
-  vTrace("%s depth %lld next %p\n",
+  vTrace("%s depth %lld next %p\n"_Str,
          pParser->m_bMalloc == true ? "malloc" : "pool",
          pParser->m_iDepth,
          pParser->m_pNext);

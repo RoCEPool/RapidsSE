@@ -128,7 +128,7 @@ void PlanList::vShow(void)
   
   m_zLock.vGrabRead();
   
-  vTrace("  planList %p count %lld\n",
+  vTrace("  planList %p count %lld\n"_Str,
          this,
          iCount());
   

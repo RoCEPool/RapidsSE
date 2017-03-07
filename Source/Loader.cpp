@@ -90,7 +90,7 @@ void Loader::vDump(eCN eClass, Object* pObject, const char* aTab)
   
   Loader* pLoader = reinterpret_cast<Loader*>(pObject);
   
-  vTrace("table %s\n",pLoader->m_pTable->pTableName());
+  vTrace("table %s\n"_Str,pLoader->m_pTable->pTableName());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -190,7 +190,7 @@ void Loader::vTxRef(TxRef* pTxRef)
 
   m_pTxRef = pTxRef;
   
-  //vTrace("TxId %lld\n",pTxRef->iTxId());
+  //vTrace("TxId %lld\n"_Str,pTxRef->iTxId());
 }
 
 /*----------------------------------------------------------------------------*/

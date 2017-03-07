@@ -99,7 +99,7 @@ int main(int argc, const char* argv[])
 //    printf("dir: %s\n",sCurrent.aStr());
   
   
-//  vTrace("Task::vWord %p\n",Task::vWord);
+//  vTrace("Task::vWord %p\n"_Str,Task::vWord);
   
 //  Timer xTimer;
 //  
@@ -109,7 +109,7 @@ int main(int argc, const char* argv[])
 //  
 //  xTimer.vUpdate();
 //  
-//  vTrace("duration %lldns\n",xTimer.iNanoseconds());
+//  vTrace("duration %lldns\n"_Str,xTimer.iNanoseconds());
   
 //  if (gxArguments.m_bVerbose)
     gxArguments.vPrint();
@@ -208,9 +208,9 @@ void vKillPrev(void)
       
       b = Process::bKillPid(pAttachMap->m_iPid);
       if ( b )
-        vTrace("vKillPrev: process %lld killed\n",pAttachMap->m_iPid);
+        vTrace("vKillPrev: process %lld killed\n"_Str,pAttachMap->m_iPid);
       else
-        vTrace("vKillPrev: process %lld not killed\n",pAttachMap->m_iPid);
+        vTrace("vKillPrev: process %lld not killed\n"_Str,pAttachMap->m_iPid);
     }
     
     Region::vClose(pRegion,iFD);
@@ -229,7 +229,7 @@ void vTest1(void)
   char buffer[iChunk];
   Timer xTimer;
   
-  vTrace("Reading lineitem.tbl in chunks of %lld\n", iChunk);
+  vTrace("Reading lineitem.tbl in chunks of %lld\n"_Str, iChunk);
   xFile.vPath("/Volumes/Data/Users/alkayamarti/tpch_SF10/lineitem.tbl");
   bool b = xFile.bOpen(C_OPEN_READ);
   ASSERT(b);
@@ -241,7 +241,7 @@ void vTest1(void)
     iBytesRead = xFile.iReadChunk(buffer,iChunk);
   }
   xTimer.vUpdate();
-  vTrace("duration %lldms\n",xTimer.iMilliseconds());
+  vTrace("duration %lldms\n"_Str,xTimer.iMilliseconds());
   
   xFile.vClose();
 }

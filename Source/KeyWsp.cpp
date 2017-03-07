@@ -60,7 +60,7 @@ void KeyWsp::vShow(void)
 {
   _precondition_(_MAGIC_,CN_KEYWSP,_FOOTER_);
   
-  vTrace("KeyWsp %p: bytesUsed %lld\n",
+  vTrace("KeyWsp %p: bytesUsed %lld\n"_Str,
          this,
          nWspUsed()
          );

@@ -93,7 +93,7 @@ void QueueBuffer::vContentDump(const char* aTab)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUEBUFFER,_FOOTER_);
   
-  vTrace("%sQueueBuffer: %p Count %lld TopValue %p NextFree %p\n",
+  vTrace("%sQueueBuffer: %p Count %lld TopValue %p NextFree %p\n"_Str,
          aTab,
          this,
          m_nValues,
@@ -111,7 +111,7 @@ void QueueBuffer::vDump(eCN eClass, Object* pObject, const char* aTab)
   
   QueueBuffer* pQueueBuffer = reinterpret_cast<QueueBuffer*>(pObject);
   
-  vTrace("values %lld top %p next %p\n",
+  vTrace("values %lld top %p next %p\n"_Str,
          pQueueBuffer->m_nValues,
          pQueueBuffer->m_pTopValue,
          pQueueBuffer->m_pNextFree);

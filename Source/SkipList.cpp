@@ -493,7 +493,7 @@ void Structures::vSkipListTest(void)
   SkipNode* pNode = pSkipList->pFirst();
   while (pNode) {
     i8 i = (i8)pNode->m_pObject;
-    vTrace("Node %p : %lld\n",pNode,(i8)pNode->m_pObject);
+    vTrace("Node %p : %lld\n"_Str,pNode,(i8)pNode->m_pObject);
     pNode = pSkipList->pNext(pNode);
   }
   

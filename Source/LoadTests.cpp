@@ -116,7 +116,7 @@ void LoadTests::vRun(RunTests* pRunTests)
   //char* pSpace = pRequire(sCommand, true, EC_NONE);
   //if (pSpace != nullptr)
   //  inUseSpace = StrLib::iToI8(pSpace);
-  //vTrace("InUseSpace: %lld\n", inUseSpace);
+  //vTrace("InUseSpace: %lld\n"_Str, inUseSpace);
   
   sCommand = "sel lineitem"_Str;
   vRequire(sCommand, true, EC_NONE, 6001215);
@@ -134,7 +134,7 @@ void LoadTests::vRun(RunTests* pRunTests)
   pRunTests->m_iTestsPassed += m_iTestsPassed;
   pRunTests->m_iTestsFailed += m_iTestsFailed;
   
-  vTrace("%-15s - Total: %lld Passed: %lld Failed: %lld\n",
+  vTrace("%-15s - Total: %lld Passed: %lld Failed: %lld\n"_Str,
          "Load Tests", m_iTestsTotal, m_iTestsPassed, m_iTestsFailed);}
 
 /*============================================================================*/
