@@ -111,7 +111,7 @@ bool Dir::bExists(s256& rPath)
 
   m_xSysCall.vError(errno);
   
-  vError("Dir::bExists: stat(%s) error; errno=%d",rPath.aStr(),errno);
+  vError("Dir::bExists: stat(%s) error; errno=%d"_Str,rPath.aStr(),errno);
 
   return false;
 }

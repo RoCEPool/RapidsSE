@@ -169,7 +169,7 @@ void* SkipList::pPop(bool* bWasRemoved, i8 iFrom)
   *bWasRemoved = bRemove(pObject);
   //ASSERT(b); // logic check
   if ( ! *bWasRemoved )
-    vError("pPop: failed to remove; from %lld",iFrom);
+    vError("pPop: failed to remove; from %lld"_Str,iFrom);
   
   return pObject;
 }

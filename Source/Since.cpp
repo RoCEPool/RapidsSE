@@ -137,7 +137,7 @@ void Since::vToTime(Time* pTime)
   void* pTimeResult = gmtime_r(&iSeconds,&xTimeResult);
   
   if ( ! pTimeResult )
-    vError("gmtime_r() error; errno=%d",errno);
+    vError("gmtime_r() error; errno=%d"_Str,errno);
   
   pTime->m_iYear   = xTimeResult.tm_year;
   pTime->m_iMonth  = xTimeResult.tm_mon+1;
@@ -166,7 +166,7 @@ void Since::vGetTimeOfDay(i8& iSeconds, i8& iMicroseconds, SysCall& xSysCall)
   
   if (rCode) {
     xSysCall.vError(errno);
-    vError("gettimeofday() error; errno=%d",errno);
+    vError("gettimeofday() error; errno=%d"_Str,errno);
     return;
   }
   

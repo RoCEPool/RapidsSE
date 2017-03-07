@@ -268,7 +268,7 @@ void RapidsSE::vHandler(Error* pError)
   ps = StrLib::sLast(pError->aFileName());
   StrLib::bBackward(&ps,(char*)pError->aFileName(),'/');
   StrLib::vCopy(wFileName,ps+1);
-  vError("%s: line %lld in %s\n",
+  vError("%s: line %lld in %s\n"_Str,
          pError->aErrorMsg(),
          pError->iLineNo(),
          wFileName);

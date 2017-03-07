@@ -1713,7 +1713,7 @@ void Task::vLoop(void)
       else {
         StrLib::vCopy(wFileName, m_sFile.aStr());
       }
-      vError("[%s] %s : line %lld in %s\n",
+      vError("[%s] %s : line %lld in %s\n"_Str,
              m_sName.aStr(),
              m_sException.aStr(),
              iException,
@@ -1729,7 +1729,7 @@ void Task::vLoop(void)
       ps = StrLib::sLast(pError->aFileName());
       StrLib::bBackward(&ps,(char*)pError->aFileName(),'/');
       StrLib::vCopy(wFileName,ps+1);
-      vError("[%s] %s: line %lld in %s\n",
+      vError("[%s] %s: line %lld in %s\n"_Str,
              m_sName.aStr(),
              pError->aErrorMsg(),
              pError->iLineNo(),

@@ -69,13 +69,13 @@ void Debugging::vWarn(Str* aFormat, ...)
 /*---------------------------------------------------------------------------*/
 /* report a recoverable error message                                        */
 /*---------------------------------------------------------------------------*/
-void Debugging::vError(const char* psFormat, ...)
+void Debugging::vError(Str* aFormat, ...)
 {
   va_list xArgs;
   
-  va_start(xArgs,psFormat);
+  va_start(xArgs,aFormat);
   
-  vReport(C_REPORT_ERROR,psFormat,xArgs);
+  vReport(C_REPORT_ERROR,aFormat->a(),xArgs);
   
   va_end(xArgs);
 }
