@@ -1665,14 +1665,14 @@ eEC eExecuteRequest(SEitf* pSEitf, Str* aCommand)
 {
   bool bResult;
   char xArray[C_1KB * 1];
-  char* pWords[16] = {
+  char* aWords[16] = {
     &xArray[C_1KB * 0],
   };
   
   // execute command pCommand
-  StrLib::vCopy(pWords[0], aCommand->a());
+  StrLib::vCopy(aWords[0], aCommand->a());
   
-  bResult = pSEitf->bDecode(pWords, 1);
+  bResult = pSEitf->bDecode((Str**)aWords, 1);
   
   return pSEitf->eGetLastError();
 }
@@ -1687,16 +1687,16 @@ eEC eExecuteRequest(SEitf* pSEitf, Str* aCommand, Str* aParameter)
   
   bool bResult;
   char xArray[C_1KB * 2];
-  char* pWords[16] = {
+  char* aWords[16] = {
     &xArray[C_1KB * 0],
     &xArray[C_1KB * 1]
   };
   
   // execute command
-  StrLib::vCopy(pWords[0], aCommand->a());
-  StrLib::vCopy(pWords[1], aParameter->a());
+  StrLib::vCopy(aWords[0], aCommand->a());
+  StrLib::vCopy(aWords[1], aParameter->a());
   
-  bResult = pSEitf->bDecode(pWords, 2);
+  bResult = pSEitf->bDecode((Str**)aWords, 2);
   
   return pSEitf->eGetLastError();
 }
@@ -1712,7 +1712,7 @@ eEC eExecuteRequest(SEitf* pSEitf, Str* aCommand, Str* aParameter1,
   
   bool bResult;
   char xArray[C_1KB * 4];
-  char* pWords[16] = {
+  char* aWords[16] = {
     &xArray[C_1KB * 0],
     &xArray[C_1KB * 1],
     &xArray[C_1KB * 2],
@@ -1720,12 +1720,12 @@ eEC eExecuteRequest(SEitf* pSEitf, Str* aCommand, Str* aParameter1,
   };
   
   // execute command
-  StrLib::vCopy(pWords[0], aCommand->a());
-  StrLib::vCopy(pWords[1], aParameter1->a());
-  StrLib::vCopy(pWords[2], aParameter2->a());
-  StrLib::vCopy(pWords[3], aParameter3->a());
+  StrLib::vCopy(aWords[0], aCommand->a());
+  StrLib::vCopy(aWords[1], aParameter1->a());
+  StrLib::vCopy(aWords[2], aParameter2->a());
+  StrLib::vCopy(aWords[3], aParameter3->a());
   
-  bResult = pSEitf->bDecode(pWords, 4);
+  bResult = pSEitf->bDecode((Str**)aWords, 4);
   
   return pSEitf->eGetLastError();
 }
@@ -1733,12 +1733,12 @@ eEC eExecuteRequest(SEitf* pSEitf, Str* aCommand, Str* aParameter1,
 /*----------------------------------------------------------------------------*/
 /* execute command                                                            */
 /*----------------------------------------------------------------------------*/
-bool bExecuteRequest(SEitf* pSEitf, char* pWords[], i8 iWords)
+bool bExecuteRequest(SEitf* pSEitf, char* aWords[], i8 iWords)
 {
   bool bResult;
   
   // execute command
-  bResult = pSEitf->bDecode(pWords, iWords);
+  bResult = pSEitf->bDecode((Str**)aWords, iWords);
   
   return bResult;
 }

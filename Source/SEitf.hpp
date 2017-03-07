@@ -69,79 +69,79 @@ namespace Interface
     void vCommitTx(void);
     void vEndTx(void);
     
-    bool bDecode(char* aWords[], i8 iWords);
+    bool bDecode(Str* aWords[], i8 iWords);
     
-    bool bConnect(char* aWords[]);
-    bool bConnectCluster(char* aWords[]);
-    bool bDisconnect(char* aWords[]);
+    bool bConnect(Str* aWords[]);
+    bool bConnectCluster(Str* aWords[]);
+    bool bDisconnect(Str* aWords[]);
     
-    bool bRemoveFolder(char* aWords[], i8 iWords);
+    bool bRemoveFolder(Str* aWords[], i8 iWords);
 
-    bool bCreateTenant(char* aWords[], i8 iWords);
-    bool bListTenants(char* aWords[], i8 iWords);
-    bool bDropTenant(char* aWords[], i8 iWords);
+    bool bCreateTenant(Str* aWords[], i8 iWords);
+    bool bListTenants(Str* aWords[], i8 iWords);
+    bool bDropTenant(Str* aWords[], i8 iWords);
 
-    bool bCreateCatalog(char* aWords[], i8 iWords);
-    bool bListCatalogs(char* aWords[], i8 iWords);
-    bool bDropCatalog(char* aWords[], i8 iWords);
+    bool bCreateCatalog(Str* aWords[], i8 iWords);
+    bool bListCatalogs(Str* aWords[], i8 iWords);
+    bool bDropCatalog(Str* aWords[], i8 iWords);
     
-    bool bCreateSchema(char* aWords[], i8 iWords);
-    bool bListSchemas(char* aWords[], i8 iWords);
-    bool bDropSchema(char* aWords[], i8 iWords);
-    bool bUseSchema(char* aWords[], i8 iWords);
+    bool bCreateSchema(Str* aWords[], i8 iWords);
+    bool bListSchemas(Str* aWords[], i8 iWords);
+    bool bDropSchema(Str* aWords[], i8 iWords);
+    bool bUseSchema(Str* aWords[], i8 iWords);
     
-    bool bCreateIndex(char* aWords[], i8 iWords);
-    bool bDumpIndex(char* aWords[], i8 iWords);
-    bool bListIndices(char* aWords[], i8 iWords);
+    bool bCreateIndex(Str* aWords[], i8 iWords);
+    bool bDumpIndex(Str* aWords[], i8 iWords);
+    bool bListIndices(Str* aWords[], i8 iWords);
     
-    bool bCreateTable(char* aWords[], i8 iWords);
+    bool bCreateTable(Str* aWords[], i8 iWords);
     
-    bool bListTables(char* aWords[], i8 iWords);
-    bool bDocol(char* aWords[]);
-    bool bDropTable(char* aWords[], i8 iWords);
-    bool bDumpTable(char* aWords[], i8 iWords);
+    bool bListTables(Str* aWords[], i8 iWords);
+    bool bDocol(Str* aWords[]);
+    bool bDropTable(Str* aWords[], i8 iWords);
+    bool bDumpTable(Str* aWords[], i8 iWords);
    
-    bool bAddColumn(char* aWords[], i8 iWords);
-    bool bListColumns(char* aWords[], i8 iWords);
+    bool bAddColumn(Str* aWords[], i8 iWords);
+    bool bListColumns(Str* aWords[], i8 iWords);
     
-    bool bAnalyzeTable(char* aWords[], i8 iWords);
-    bool bCopyTable(char* aWords[], i8 iWords);
-    bool bExportTable(char* aWords[], i8 iWords);
-    bool bDanalyzeTable(char* aWords[], i8 iWords);
-    bool bDistExportTable(char* aWords[], i8 iWords);
-    bool bLoadTable(char* aWords[], i8 iWords);
-    bool bLoadTableStream(char* aWords[], i8 iWords);
-    bool bSelectTable(char* aWords[], i8 iWords);
-    bool bGetTable(char* aWords[], i8 iWords);
-    bool bInUseTable(char* aWords[], i8 iWords);
-    bool bRetTable(char* aWords[], i8 iWords);
-    bool bNodeStatus(char* aWords[], i8 iWords);
-    bool bPoolSpace(char* aWords[], i8 iWords);
-    bool bSizeTable(char* aWords[], i8 iWords);
-    bool bTruncateTable(char* aWords[], i8 iWords);
+    bool bAnalyzeTable(Str* aWords[], i8 iWords);
+    bool bCopyTable(Str* aWords[], i8 iWords);
+    bool bExportTable(Str* aWords[], i8 iWords);
+    bool bDanalyzeTable(Str* aWords[], i8 iWords);
+    bool bDistExportTable(Str* aWords[], i8 iWords);
+    bool bLoadTable(Str* aWords[], i8 iWords);
+    bool bLoadTableStream(Str* aWords[], i8 iWords);
+    bool bSelectTable(Str* aWords[], i8 iWords);
+    bool bGetTable(Str* aWords[], i8 iWords);
+    bool bInUseTable(Str* aWords[], i8 iWords);
+    bool bRetTable(Str* aWords[], i8 iWords);
+    bool bNodeStatus(Str* aWords[], i8 iWords);
+    bool bPoolSpace(Str* aWords[], i8 iWords);
+    bool bSizeTable(Str* aWords[], i8 iWords);
+    bool bTruncateTable(Str* aWords[], i8 iWords);
     
     bool bInsertRow(char* pRow);
     bool bInsertBuffer(void);
     bool bInsertBuffer(RowBuffer* pRowBuffer, i8 iPartition);
     
-    bool bPushDic(char* aWords[]);
-    bool bGetDicPath(char* aWords[]);
-    bool bGetDicContents(char* aWords[]);
-    bool bGetDicContentsG(char* aWords[]);
+    bool bPushDic(Str* aWords[]);
+    bool bGetDicPath(Str* aWords[]);
+    bool bGetDicContents(Str* aWords[]);
+    bool bGetDicContentsG(Str* aWords[]);
 
-    bool bGetMonitor(char* aWords[]);
-    bool bGetFreeSpace(char* aWords[]);
-    bool bGetInUseSpace(char* aWords[]);
-    bool bGetTotalSpace(char* aWords[]);
-    bool bGetVersion(char* aWords[]);
-    bool bSeitfCount(char* aWords[]);
+    bool bGetMonitor(Str* aWords[]);
+    bool bGetFreeSpace(Str* aWords[]);
+    bool bGetInUseSpace(Str* aWords[]);
+    bool bGetTotalSpace(Str* aWords[]);
+    bool bGetVersion(Str* aWords[]);
+    bool bSeitfCount(Str* aWords[]);
     
-    bool bObject(char* aWords[]);
-    bool bPing(char* aWords[]);
-    bool bPrintRowBuffer(char* aWords[]);
+    bool bObject(Str* aWords[]);
+    bool bPing(Str* aWords[]);
+    bool bPrintRowBuffer(Str* aWords[]);
     
-    bool bX(char* aWords[]);
-    bool bPrint(char* aWords[]);
+    bool bX(Str* aWords[]);
+    bool bPrint(Str* aWords[]);
     
     //--------------------------------------------------------------------------
     bool bAppendRequest(StrVal& sRequest);
