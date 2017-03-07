@@ -47,7 +47,7 @@ namespace Debugging
   { \
     if ( !(condition) ) { \
       Debugging::vAssertTrap(); \
-      THROW_ERROR_MSG(EC_ASSERT,(__builtin_expect(!(condition), 0) ? #condition : "")); \
+      THROW_ERROR_MSG(EC_ASSERT,(__builtin_expect(!(condition), 0) ? (Str*) #condition : ""_Str)); \
     } \
   }
   #else
@@ -58,7 +58,7 @@ namespace Debugging
   { \
     if ( !(condition) ) { \
       Debugging::vAssertTrap(); \
-      THROW_ERROR_MSG(EC_ASSERT,(__builtin_expect(!(condition), 0) ? #condition : "")); \
+      THROW_ERROR_MSG(EC_ASSERT,(__builtin_expect(!(condition), 0) ? (Str*) #condition : ""_Str)); \
     } \
   }
 
@@ -149,10 +149,10 @@ namespace Debugging
   
   // throw
   #define THROW_ERROR(exception) \
-    throw new Error(exception,__FILE__,__LINE__);
+    throw new Error(exception,(Str*)__FILE__,__LINE__);
   
   #define THROW_ERROR_MSG(exception, msg) \
-    throw new Error(exception,msg,__FILE__,__LINE__);
+    throw new Error(exception,msg,(Str*)__FILE__,__LINE__);
 
 };
 

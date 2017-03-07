@@ -150,13 +150,13 @@ namespace Debugging
     char  m_aErrorMsg[256];
   
   public:
-    Error(i8 iErrorCode, const char* aFileName, i8 iLineNo);
-    Error(i8 iErrorCode, const char* aErrorMsg, const char* aFileName, i8 iLineNo);
+    Error(i8 iErrorCode, Str* aFileName, i8 iLineNo);
+    Error(i8 iErrorCode, Str* aErrorMsg, Str* aFileName, i8 iLineNo);
     
-    i8          iErrorCode(void);
-    const char* aErrorMsg(void);
-    const char* aFileName(void);
-    i8          iLineNo(void);
+    i8   iErrorCode(void);
+    Str* aErrorMsg(void);
+    Str* aFileName(void);
+    i8   iLineNo(void);
   };
 }
 

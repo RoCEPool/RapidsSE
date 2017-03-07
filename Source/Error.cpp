@@ -7,12 +7,12 @@
 /*----------------------------------------------------------------------------*/
 /* Constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Error::Error(i8 iErrorCode, const char* aFileName, i8 iLineNo)
+Error::Error(i8 iErrorCode, Str* aFileName, i8 iLineNo)
 {
   m_iErrorCode = iErrorCode;
   m_aErrorMsg[0] = '\0';
 
-  StrLib::vCopyLen(m_aFileName, aFileName, sizeof(m_aFileName));
+  StrLib::vCopyLen(m_aFileName, aFileName->a(), sizeof(m_aFileName));
   m_iLineNo = iLineNo;
   
   //_checkInitialisedSize_(sizeof(Error));
@@ -21,12 +21,12 @@ Error::Error(i8 iErrorCode, const char* aFileName, i8 iLineNo)
 /*----------------------------------------------------------------------------*/
 /* Constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Error::Error(i8 iErrorCode, const char* aErrorMsg, const char* aFileName, i8 iLineNo)
+Error::Error(i8 iErrorCode, Str* aErrorMsg, Str* aFileName, i8 iLineNo)
 {
   m_iErrorCode = iErrorCode;
-  StrLib::vCopyLen(m_aErrorMsg, aErrorMsg, sizeof(m_aErrorMsg));
+  StrLib::vCopyLen(m_aErrorMsg, aErrorMsg->a(), sizeof(m_aErrorMsg));
 
-  StrLib::vCopyLen(m_aFileName, aFileName, sizeof(m_aFileName));
+  StrLib::vCopyLen(m_aFileName, aFileName->a(), sizeof(m_aFileName));
   m_iLineNo = iLineNo;
 
   //_checkInitialisedSize_(sizeof(Error));
@@ -35,17 +35,17 @@ Error::Error(i8 iErrorCode, const char* aErrorMsg, const char* aFileName, i8 iLi
 /*----------------------------------------------------------------------------*/
 /* return error message                                                       */
 /*----------------------------------------------------------------------------*/
-const char* Error::aErrorMsg(void)
+Str* Error::aErrorMsg(void)
 {
-  return m_aErrorMsg;
+  return (Str*)m_aErrorMsg;
 }
 
 /*----------------------------------------------------------------------------*/
 /* return filename                                                            */
 /*----------------------------------------------------------------------------*/
-const char* Error::aFileName(void)
+Str* Error::aFileName(void)
 {
-  return m_aFileName;
+  return (Str*)m_aFileName;
 }
 
 /*----------------------------------------------------------------------------*/

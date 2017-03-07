@@ -100,13 +100,13 @@ void* Thread::vEntry(void* pArg)
     
     const char* ps;
     
-    ps = StrLib::sLast(pError->aFileName());
+    ps = StrLib::sLast(pError->aFileName()->a());
     bool bBackSlash = StrLib::bBackward(&ps,(char*)pError->aFileName(),'/');
     if (bBackSlash) {
       StrLib::vCopy(wFileName,ps+1);
     }
     else {
-      StrLib::vCopy(wFileName, pError->aFileName());
+      StrLib::vCopy(wFileName, pError->aFileName()->a());
     }
     vFatal("ERROR: [ThreadLoop] %s: line %lld in %s\n"_Str,
           pError->aErrorMsg(),
