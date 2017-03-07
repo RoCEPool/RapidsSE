@@ -61,10 +61,10 @@ Dir::Dir(void)
 {
   _precondition_(_MAGIC_,CN_DIR,_FOOTER_);
   
-  m_sDirPath   = "<none>";
+  m_sDirPath   = "<none>"_Str;
   
   m_pDirPtr    = nullptr;
-  m_sEntryName = "<none>";
+  m_sEntryName = "<none>"_Str;
   m_iEntryType = 0;
   
   //m_xSysCall
@@ -148,7 +148,7 @@ void Dir::vInit(void)
   
   m_xSysCall.vSetMagic();
   
-  m_sDirPath = "";
+  m_sDirPath = ""_Str;
   m_xSysCall.vClear();
 }
 
@@ -352,7 +352,7 @@ bool Dir::bRead(void)
   pDirEnt = readdir(m_pDirPtr);
   
   if ( ! pDirEnt ) {
-    m_sEntryName = "<none>";
+    m_sEntryName = "<none>"_Str;
     m_iEntryType = 0;
     m_xSysCall.vSuccess();
     return false;

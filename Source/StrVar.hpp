@@ -20,7 +20,7 @@ namespace Values
     StrVar(StrVar* pThis);
    ~StrVar(void);
     
-    void operator =(const char* aArg);
+    void operator =(Str* aArg);
     void operator =(char* aArg);
     void operator =(StrVal& xArg);
   
@@ -89,11 +89,11 @@ StrVar<SIZE>::~StrVar(void)
 /* assignment operator                                                        */
 /*----------------------------------------------------------------------------*/
 template <int SIZE>
-void StrVar<SIZE>::operator =(const char* aArg)
+void StrVar<SIZE>::operator =(Str* aArg)
 {
   _precondition_(_MAGIC_,CN_STRVAR,_FOOTER_);
   
-  StrVal::vCopy(aArg);
+  StrVal::vCopy(aArg->a());
 }
 
 /*----------------------------------------------------------------------------*/

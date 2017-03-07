@@ -190,7 +190,7 @@ void Task::vInit(const char* aLambda)
   // basic state
   m_xLock.vInit("Task::m_xLock");
   m_iTaskNo     = iTaskNo++;
-  m_sName       = "<no task name>";
+  m_sName       = "<no task name>"_Str;
   m_eState      = TS_NONE;
   m_iTxId       = -1;
   m_npNextInSet = nullptr;
@@ -201,7 +201,7 @@ void Task::vInit(const char* aLambda)
   m_pThread     = nullptr;
   m_pTaskSet    = nullptr;
   
-  m_sComment    = "";
+  m_sComment    = ""_Str;
   
   m_pJobQueue   = nullptr;
   
@@ -225,7 +225,7 @@ void Task::vInit(const char* aLambda)
   m_pCurrentWord = nullptr;
   m_nSubDic      = 0;
   
-  m_sLambda = aLambda;
+  m_sLambda = (Str*)aLambda;
   if (m_sLambda.iLength())
     StrLib::vConcat(m_sLambda.aStr()," exit");
   
@@ -830,7 +830,7 @@ void Task::vAddRoutines(void)
   s48K sDefinition;
 
   sDefinition =
-  ": __nil ;";
+  ": __nil ;"_Str;
   
   pCompileColon(sDefinition);
   
@@ -920,7 +920,7 @@ void Task::vAddRoutines(void)
   
   "  jumpBegin_"
   
-  " ;";
+  " ;"_Str;
   
   pCompileColon(sDefinition);
   
@@ -928,7 +928,7 @@ void Task::vAddRoutines(void)
   sDefinition =
   ": ::task_exit"
   "  TS_EXITED task.this task.state!"
-  "  ;";
+  "  ;"_Str;
   
   pCompileColon(sDefinition);
   
@@ -938,7 +938,7 @@ void Task::vAddRoutines(void)
   //  "  input.text"
   "  docol"
   "  ::task_exit"
-  "  ;";
+  "  ;"_Str;
   
   pCompileColon(sDefinition);
   
@@ -949,7 +949,7 @@ void Task::vAddRoutines(void)
   "  input.stdin"
   "  docol"
   "  ::task_exit"
-  "  ;";
+  "  ;"_Str;
   
   pCompileColon(sDefinition);
   
@@ -962,7 +962,7 @@ void Task::vAddRoutines(void)
   "  docol"
   "  input.close"
   "  input.pop"
-  "  ;";
+  "  ;"_Str;
   
   pCompileColon(sDefinition);
   
@@ -974,7 +974,7 @@ void Task::vAddRoutines(void)
   "  input.text"
   "  docol"
   "  input.pop"
-  "  ;";
+  "  ;"_Str;
   
   pCompileColon(sDefinition);
   
@@ -990,7 +990,7 @@ void Task::vAddRoutines(void)
   "    . debug.trap"
   "  then"
   "  include-file"
-  "  ;";
+  "  ;"_Str;
   
   pCompileColon(sDefinition);
   
@@ -1004,7 +1004,7 @@ void Task::vAddRoutines(void)
   "  \"compile.sen\" include"
   "  \"::dicCompile exit\" .verbose"
   "  ::task_exit"
-  "  ;";
+  "  ;"_Str;
 #else
   sDefinition =
   ": ::dicCompile"
@@ -1012,7 +1012,7 @@ void Task::vAddRoutines(void)
   "  \"compile.sen\" include"
   "  \"::dicCompile exit\" .verbose"
   "  ::task_exit"
-  "  ;";
+  "  ;"_Str;
 #endif
   pCompileColon(sDefinition);
 }
@@ -1359,7 +1359,7 @@ void Task::vReset(void)
   IP.m_pCell    = m_pResetIP;
   m_pBeginIP = nullptr;
   
-  m_pTokeniser->sToken() = "";
+  m_pTokeniser->sToken() = ""_Str;
   
   m_pDataStack->vReset();
   m_pReturnStack->vReset();
@@ -1375,7 +1375,7 @@ void Task::vRetry(void)
   IP.m_pCell    = m_pResetIP;
   m_pBeginIP = nullptr;
   
-  m_pTokeniser->sToken() = "";
+  m_pTokeniser->sToken() = ""_Str;
   
   m_pDataStack->vRetry();
   m_pReturnStack->vRetry();
@@ -1392,7 +1392,7 @@ Thread* Task::pRootThread(void)
   
   if ( ! m_pDataStack->bPop(pThreadEmb) ) {
     StrLib::vSprint(m_sException.aStr(),"Invalid data stack  for: h.spawn");
-    m_sFile = __FILE__;
+    m_sFile = (Str*)__FILE__;
     throw (i8)__LINE__;
   }
   
@@ -1423,7 +1423,7 @@ void Task::vSeedDicCompileSen(void)
   m_pDataStack->vReset();
   m_pReturnStack->vReset();
   
-  m_sLambda = "";
+  m_sLambda = ""_Str;
   
   m_pTokeniser->vUseString(m_sLambda);
 }
@@ -1444,7 +1444,7 @@ void Task::vSeedWord(const char* aLambda)
   m_pDataStack->vReset();
   m_pReturnStack->vReset();
   
-  m_sLambda = aLambda;
+  m_sLambda = (Str*)aLambda;
   if (m_sLambda.iLength())
     StrLib::vConcat(m_sLambda.aStr()," ::task_exit");
   
@@ -1467,7 +1467,7 @@ void Task::vSeedDocol(void)
   m_pDataStack->vReset();
   m_pReturnStack->vReset();
   
-  m_sLambda = "";
+  m_sLambda = ""_Str;
   
   s32 sPrompt("docol> ");
   m_pTokeniser->vPrompt(sPrompt);

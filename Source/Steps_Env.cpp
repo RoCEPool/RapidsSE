@@ -52,7 +52,7 @@ void Task::vEnvGet(NNP_Task nnpTask)
   s256 sEnvVal;
   
   if (! Env::bGet(sEnvName,sEnvVal))
-    sEnvVal = "";
+    sEnvVal = ""_Str;
   
   nnpTask->m_pDataStack->vPush(sEnvVal);
   

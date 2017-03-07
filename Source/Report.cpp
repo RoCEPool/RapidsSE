@@ -27,13 +27,13 @@ void Debugging::vReportOption(i8 iTrace)
 /*---------------------------------------------------------------------------*/
 /* report an information message                                             */
 /*---------------------------------------------------------------------------*/
-void Debugging::vInfo(const char* psFormat, ...)
+void Debugging::vInfo(Str* aFormat, ...)
 {
   va_list xArgs;
   
-  va_start(xArgs,psFormat);
+  va_start(xArgs,aFormat);
   
-  vReport(C_REPORT_INFO,psFormat,xArgs);
+  vReport(C_REPORT_INFO,aFormat->a(),xArgs);
   
   va_end(xArgs);
 }

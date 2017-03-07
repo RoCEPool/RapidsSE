@@ -44,7 +44,7 @@ bool Magnitudes::bBytes(const char* psBuf, i8& iBytes)
   s256 sString;
   i8 iMagnitude = 1;
   
-  sString = psBuf;
+  sString = (Str*)psBuf;
   
   StrLib::vToLower(sString.aStr());
   

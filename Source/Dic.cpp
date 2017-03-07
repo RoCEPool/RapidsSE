@@ -62,7 +62,7 @@ Dic::Dic(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
-  m_sName    = "<no-name>";
+  m_sName    = "<no-name>"_Str;
   m_pDicKind = nullptr;
   m_bFrozen  = false;
   m_zRefCount.vCheckInit();
@@ -331,7 +331,7 @@ void Dic::vName(const char* aName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
-  m_sName = aName;
+  m_sName = (Str*)aName;
 }
 
 /*----------------------------------------------------------------------------*/

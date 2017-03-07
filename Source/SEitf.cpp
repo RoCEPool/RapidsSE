@@ -76,7 +76,7 @@ SEitf::SEitf(i8 iPartition)
   m_pResponseQueue  = nullptr;
   m_eErrorCode      = EC_NONE;
   m_sErrorMsg       = aEC[m_eErrorCode]->a();
-  m_sResponse       = "";
+  m_sResponse       = ""_Str;
   m_pRowPtr         = nullptr;
   m_pCurrentTable   = nullptr;
   m_pTxRef          = nullptr;
@@ -393,7 +393,7 @@ bool SEitf::bConnect(char* pWords[])
   s256 sRequest;
   
   ASSERT(StrLib::bEqualTo(pWords[0],"con"));
-  sRequest = "connect";
+  sRequest = "connect"_Str;
   return bAppendRequest(sRequest);
 }
 
@@ -407,7 +407,7 @@ bool SEitf::bConnectCluster(char* pWords[])
   s256 sRequest;
   
   ASSERT(StrLib::bEqualTo(pWords[0],"connectCluster"));
-  sRequest = "connectCluster";
+  sRequest = "connectCluster"_Str;
   return bAppendRequest(sRequest);
 }
 
@@ -421,7 +421,7 @@ bool SEitf::bDisconnect(char* pWords[])
   s256 sRequest;
   
   ASSERT(StrLib::bEqualTo(pWords[0],"dic"));
-  sRequest = "disconnect";
+  sRequest = "disconnect"_Str;
   return bAppendRequest(sRequest);
 }
 

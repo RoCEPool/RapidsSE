@@ -15,51 +15,51 @@ void InsertTests::vRun(RunTests* pRunTests)
   i8 iInUseEnd = 0;
   char* pSpace;
   
-  sCommand = "getInUseSpace";
+  sCommand = "getInUseSpace"_Str;
   pSpace = pRequire(sCommand, true, EC_NONE);
   if (pSpace != nullptr)
     iInUseStart = StrLib::iToI8(pSpace);
   
-  sCommand = "docol bpa";
+  sCommand = "docol bpa"_Str;
   vRequire(sCommand, true, EC_NONE);
   
   // start with /tenants folder
-  sCommand = "cf ~";
+  sCommand = "cf ~"_Str;
   vRequire(sCommand, true, EC_NONE);
   
-  sCommand = "create tenant ten;";
+  sCommand = "create tenant ten;"_Str;
   vRequire(sCommand, true, EC_NONE);
   
-  sCommand = "cf ten";
+  sCommand = "cf ten"_Str;
   vRequire(sCommand, true, EC_NONE);
   
-  sCommand = "cf catalogs";
+  sCommand = "cf catalogs"_Str;
   vRequire(sCommand, true, EC_NONE);
   
-  sCommand = "create catalog cat;";
+  sCommand = "create catalog cat;"_Str;
   vRequire(sCommand, true, EC_NONE);
   
-  sCommand = "cf cat";
+  sCommand = "cf cat"_Str;
   vRequire(sCommand, true, EC_NONE);
   
-  sCommand = "cf schemas";
+  sCommand = "cf schemas"_Str;
   vRequire(sCommand, true, EC_NONE);
   
-  sCommand = "create schema sch;";
+  sCommand = "create schema sch;"_Str;
   vRequire(sCommand, true, EC_NONE);
   
-  sCommand = "cf sch";
+  sCommand = "cf sch"_Str;
   vRequire(sCommand, true, EC_NONE);
   
-  sCommand = "cf tables";
+  sCommand = "cf tables"_Str;
   vRequire(sCommand, true, EC_NONE);
   
   sCommand = "create table tbl ( "
   "col0   integer not null, "
-  "col1   varchar(32) not null);";
+  "col1   varchar(32) not null);"_Str;
   vRequire(sCommand, true, EC_NONE);
   
-  sCommand = "begin insert tbl;";
+  sCommand = "begin insert tbl;"_Str;
   vRequire(sCommand, true, EC_NONE);
   
   for (i8 iIdx = 0; iIdx < 1000; iIdx++) {
@@ -67,13 +67,13 @@ void InsertTests::vRun(RunTests* pRunTests)
     vRequire(sCommand, true, EC_NONE);
   }
   
-  sCommand = "end insert;";
+  sCommand = "end insert;"_Str;
   vRequire(sCommand, true, EC_NONE);
   
-  sCommand = "sel tbl";
+  sCommand = "sel tbl"_Str;
   vRequire(sCommand, true, EC_NONE, 1000);
   
-  sCommand = "begin insert tbl;";
+  sCommand = "begin insert tbl;"_Str;
   vRequire(sCommand, true, EC_NONE);
   
   for (i8 iIdx = 1000; iIdx < 2000; iIdx++) {
@@ -81,29 +81,29 @@ void InsertTests::vRun(RunTests* pRunTests)
     vRequire(sCommand, true, EC_NONE);
   }
   
-  sCommand = "end insert;";
+  sCommand = "end insert;"_Str;
   vRequire(sCommand, true, EC_NONE);
   
-  sCommand = "sel tbl";
+  sCommand = "sel tbl"_Str;
   vRequire(sCommand, true, EC_NONE, 2000);
   
-  sCommand = "drop table tbl;";
+  sCommand = "drop table tbl;"_Str;
   vRequire(sCommand, true, EC_NONE);
   
-  sCommand = "cf ~;";
+  sCommand = "cf ~;"_Str;
   vRequire(sCommand, true, EC_NONE);
   
-  sCommand = "drop tenant ten;";
+  sCommand = "drop tenant ten;"_Str;
   vRequire(sCommand, true, EC_NONE);
   
-  sCommand = "getInUseSpace";
+  sCommand = "getInUseSpace"_Str;
   pSpace = pRequire(sCommand, true, EC_NONE);
   if (pSpace != nullptr)
     iInUseEnd = StrLib::iToI8(pSpace);
 
   //ASSERT(iInUseEnd == iInUseStart);
   
-  sCommand = "docol bpa";
+  sCommand = "docol bpa"_Str;
   vRequire(sCommand, true, EC_NONE);
   
   pRunTests->m_iTestsTotal += m_iTestsTotal;

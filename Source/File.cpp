@@ -146,8 +146,8 @@ void File::vClear(void)
   
   m_xSysCall.vClear();
     
-  m_sFilePath   = "";
-  m_sOpenMode   = "";
+  m_sFilePath   = ""_Str;
+  m_sOpenMode   = ""_Str;
   m_iTraceLevel = 0;
   m_aFilePtr    = nullptr;
 }
@@ -387,7 +387,7 @@ bool File::bOpen(const char* aOpenMode, i8 iTraceLevel)
     vClose();
   }
   
-  m_sOpenMode   = aOpenMode;
+  m_sOpenMode   = (Str*)aOpenMode;
   m_iTraceLevel = iTraceLevel;
   
   if (m_iTraceLevel)
@@ -463,7 +463,7 @@ void File::vPath(const char* aFilePath)
     vClose();
   }
   
-  m_sFilePath = aFilePath;
+  m_sFilePath = (Str*)aFilePath;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -798,8 +798,8 @@ void File::vSet(const char* aFilePath, const char* aOpenMode, i8 iTraceLevel)
     vClose();
   }
   
-  m_sFilePath   = aFilePath;
-  m_sOpenMode   = aOpenMode;
+  m_sFilePath   = (Str*)aFilePath;
+  m_sOpenMode   = (Str*)aOpenMode;
   m_iTraceLevel = iTraceLevel;
 }
 
@@ -817,8 +817,8 @@ void File::vSet(FILE* pFilePtr, const char* aFilePath, const char* aOpenMode, i8
     vClose();
   }
   
-  m_sFilePath   = aFilePath;
-  m_sOpenMode   = aOpenMode;
+  m_sFilePath   = (Str*)aFilePath;
+  m_sOpenMode   = (Str*)aOpenMode;
   m_aFilePtr    = pFilePtr;
   m_iTraceLevel = iTraceLevel;
 }
@@ -900,8 +900,8 @@ void File::vZero(void)
 
   m_xSysCall.vClear();
   
-  m_sFilePath   = "";
-  m_sOpenMode   = "";
+  m_sFilePath   = ""_Str;
+  m_sOpenMode   = ""_Str;
   m_iTraceLevel = 0;
   m_aFilePtr    = nullptr;
 }

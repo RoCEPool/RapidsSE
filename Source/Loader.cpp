@@ -60,7 +60,7 @@ Loader::Loader(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
   
-  m_sPath    = "<none>";
+  m_sPath    = "<none>"_Str;
   m_pTable   = nullptr;
   m_pTxRef   = nullptr;
   m_pLoadMap = new LoadMap;
