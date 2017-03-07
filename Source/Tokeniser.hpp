@@ -69,7 +69,7 @@ namespace Parsing
     void vResetTokens(char* pToken[], i8 nTokens);
     i8   iFindToken(Str* pLookFor, char* pToken[], i8 nTokens);
     i8   iCountTokens(char* pToken[], i8 nTokens);
-    void vDumpTokens(const char* pTitle, char* pToken[], i8 nTokens);
+    void vDumpTokens(Str* pTitle, char* pToken[], i8 nTokens);
     
     bool bEOF(void);
     bool bLineMode(void);

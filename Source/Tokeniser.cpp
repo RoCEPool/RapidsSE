@@ -277,7 +277,7 @@ i8 Tokeniser::iCountTokens(char* pToken[], i8 nTokens)
 /*----------------------------------------------------------------------------*/
 /* dump token array                                                           */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vDumpTokens(const char* pTitle, char* pToken[], i8 nTokens)
+void Tokeniser::vDumpTokens(Str* pTitle, char* pToken[], i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
