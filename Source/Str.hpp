@@ -27,6 +27,8 @@ namespace Base
     bool bSame(Str* aArg);
 
     i8 iToI8(void);
+  
+    i8 iLength(void);
 
     char* a(void);
   };
