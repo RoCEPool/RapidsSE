@@ -72,8 +72,8 @@ SePrompt::SePrompt(void)
   
   // initialise the token set
   for (i8 iToken = 0; iToken < C_TOKENS; iToken++) {
-    m_aToken[iToken]  = &m_xTokenArea.aArea()[C_TOKEN_SPACE * iToken];
-    m_aToken2[iToken] = &m_xTokenArea2.aArea()[C_TOKEN_SPACE * iToken];
+    m_aToken[iToken]  = (Str*)&m_xTokenArea.aArea()[C_TOKEN_SPACE * iToken];
+    m_aToken2[iToken] = (Str*)&m_xTokenArea2.aArea()[C_TOKEN_SPACE * iToken];
   }
   
   //m_wWorkarea
@@ -148,13 +148,13 @@ void SePrompt::vLoop(void)
     
     vGetCommand();
     
-    if (0 == StrLib::iLength(m_aToken[0]))
+    if (0 == m_aToken[0]->iLength())
       continue;
     
     bool b = bProcessCommand();
     
     if (m_bExpect) {
-      if ( ! StrLib::bEqualTo(m_sExpect.aStr(),m_sResponse.aStr(),C_NO_CASE)) {
+      if ( ! m_sExpect.bSame(m_sResponse) ) {
         vTrace("Expected \"%s\" : Got \"%s\"\n"_Str,m_sExpect.aStr(),m_sResponse.aStr());
         PosixThread::vSleepSec(10000);
       }
@@ -163,7 +163,7 @@ void SePrompt::vLoop(void)
     if (m_bEcho) {
       vTrace("cmd: "_Str);
       for (i8 iToken = 0; iToken < C_TOKENS; iToken++) {
-        if (StrLib::bEqualTo("",m_aToken[iToken]))
+        if (m_aToken[iToken]->bEqual(""_Str))
           break;
         vTrace("%s "_Str,m_aToken[iToken]);
       }
@@ -173,7 +173,7 @@ void SePrompt::vLoop(void)
     
     if (b) {
       if ( ! m_bExpect )
-        if ( ! StrLib::bEqualTo(m_sResponse.aStr(), "<ok>") ) {
+        if ( !m_sResponse.bEqual("<ok>"_Str) ) {
           vTrace("%s\n"_Str,m_sResponse.aStr());
       }
     }
@@ -204,7 +204,7 @@ bool SePrompt::bExecuteString(StrVal& sRequest, eEC& eErrorCode)
   
   m_pTokeniser->vUseString(sRequest);
   i8 iToken = 0;
-  while (TK_NONE != m_pTokeniser->eNextToken(m_aToken[iToken])) {
+  while (TK_NONE != m_pTokeniser->eNextToken(m_aToken[iToken]->a())) {
     
     //vTrace("vGetCommand : [%lld] %s\n"_Str,iToken,m_aToken[iToken]);
     
@@ -227,7 +227,7 @@ bool SePrompt::bExecuteString(StrVal& sRequest, eEC& eErrorCode, StrVal& sRespon
   
   m_pTokeniser->vUseString(sRequest);
   i8 iToken = 0;
-  while (TK_NONE != m_pTokeniser->eNextToken(m_aToken[iToken])) {
+  while (TK_NONE != m_pTokeniser->eNextToken(m_aToken[iToken]->a())) {
     
     //vTrace("vGetCommand : [%lld] %s\n"_Str,iToken,m_aToken[iToken]);
     
@@ -251,7 +251,7 @@ bool SePrompt::bExecuteString(StrVal& sRequest, eEC& eErrorCode, char** ppRowPtr
   
   m_pTokeniser->vUseString(sRequest);
   i8 iToken = 0;
-  while (TK_NONE != m_pTokeniser->eNextToken(m_aToken[iToken])) {
+  while (TK_NONE != m_pTokeniser->eNextToken(m_aToken[iToken]->a())) {
     
     //vTrace("vGetCommand : [%lld] %s\n"_Str,iToken,m_aToken[iToken]);
     
@@ -290,7 +290,7 @@ void SePrompt::vGetCommandArgument(void)
   //StrLib::vCopy(m_aToken[1],"");
 
   i8 iToken = 0;
-  while (TK_NONE != m_pTokeniser->eNextToken(m_aToken[iToken])) {
+  while (TK_NONE != m_pTokeniser->eNextToken(m_aToken[iToken]->a())) {
     
     //vTrace("vGetCommand : [%lld] %s\n"_Str,iToken,m_aToken[iToken]);
     
@@ -313,7 +313,7 @@ void SePrompt::vGetCommandInput(void)
     m_pTokeniser->vResetTokens(m_aToken,C_TOKENS);
     
     i8 iToken = 0;
-    while (TK_NONE != m_pTokeniser->eNextToken(m_aToken[iToken])) {
+    while (TK_NONE != m_pTokeniser->eNextToken(m_aToken[iToken]->a())) {
       
       //vTrace("vGetCommand : [%lld] %s\n"_Str,iToken,m_aToken[iToken]);
       
@@ -341,13 +341,13 @@ bool SePrompt::bProcessCommand(bool bPostProcess)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   // - test for echo prefix
-  if (StrLib::bEqualTo("echo",m_aToken[0],C_NO_CASE))
+  if (m_aToken[0]->bEqual("echo"_Str))
     vSetEcho();
   else
     vClearEcho();
   
   // - test for expect prefix
-  if (StrLib::bEqualTo("expect",m_aToken[0],C_NO_CASE))
+  if (m_aToken[0]->bEqual("expect"_Str))
     vSetExpect();
   else
     vClearExpect();
@@ -355,149 +355,149 @@ bool SePrompt::bProcessCommand(bool bPostProcess)
   
   // - test for builtin comands
   
-  if (StrLib::bEqualTo("?",   m_aToken[0],C_NO_CASE) ||
-      StrLib::bEqualTo("help",m_aToken[0],C_NO_CASE)) {
+  if (m_aToken[0]->bEqual("?"_Str) ||
+      m_aToken[0]->bEqual("help"_Str)) {
     vHelp();
     return true;
   }
   
-  if (StrLib::bEqualTo("bye",m_aToken[0],C_NO_CASE)) {
+  if (m_aToken[0]->bEqual("bye"_Str)) {
     m_bContinue = false;
     return true;
   }
   
-  if (StrLib::bEqualTo("sleep",m_aToken[0],C_NO_CASE)) {
+  if (m_aToken[0]->bEqual("sleep"_Str)) {
     return bSleep();
   }
   
-  if (StrLib::bEqualTo("cd",m_aToken[0],C_NO_CASE)) {
+  if (m_aToken[0]->bEqual("cd"_Str)) {
     return bChangeWorkingDir();
   }
   
-  if (StrLib::bEqualTo("cf",m_aToken[0],C_NO_CASE)) {
+  if (m_aToken[0]->bEqual("cf"_Str)) {
     return bExecuteRequest();
   }
   
-  if (StrLib::bEqualTo("docol",m_aToken[0],C_NO_CASE)) {
+  if (m_aToken[0]->bEqual("docol"_Str)) {
     return bDocol();
   }
   
-  if (StrLib::bEqualTo("history",m_aToken[0],C_NO_CASE)) {
+  if (m_aToken[0]->bEqual("history"_Str)) {
     m_xHistory.vPrint();
     return true;
   }
   
-  if (StrLib::bEqualTo("!!",m_aToken[0],C_NO_CASE)) {
+  if (m_aToken[0]->bEqual("!!"_Str)) {
     if (! m_xHistory.bRecall(m_aToken,C_TOKENS))
       return true;
   }
   
-  if ('!' == *m_aToken[0]) {
+  if ('!' == *m_aToken[0]->a()) {
     if (! m_xHistory.bRecall(m_aToken,C_TOKENS))
       return true;
   }
   
-  if (StrLib::bEqualTo("begin",m_aToken[0],C_NO_CASE)) {
-    if (StrLib::bEqualTo("insert",m_aToken[1],C_NO_CASE)) {
+  if (m_aToken[0]->bEqual("begin"_Str)) {
+    if (m_aToken[1]->bEqual("insert"_Str)) {
       return bBeginInsert();
     }
   }
   
-  if (StrLib::bEqualTo("create",m_aToken[0],C_NO_CASE)) {
+  if (m_aToken[0]->bEqual("create"_Str)) {
     
-    if (StrLib::bEqualTo("tenant",m_aToken[1],C_NO_CASE)) {
+    if (m_aToken[1]->bEqual("tenant"_Str)) {
       return bCreateTenant();
     }
-    if (StrLib::bEqualTo("catalog",m_aToken[1],C_NO_CASE)) {
+    if (m_aToken[1]->bEqual("catalog"_Str)) {
       return bCreateCatalog();
     }
-    if (StrLib::bEqualTo("schema",m_aToken[1],C_NO_CASE)) {
+    if (m_aToken[1]->bEqual("schema"_Str)) {
       return bCreateSchema();
     }
-    if (StrLib::bEqualTo("table",m_aToken[1],C_NO_CASE)) {
+    if (m_aToken[1]->bEqual("table"_Str)) {
       return bCreateTable();
     }
-    if (StrLib::bEqualTo("index",m_aToken[1],C_NO_CASE)) {
+    if (m_aToken[1]->bEqual("index"_Str)) {
       return bCreateIndex();
     }
   }
   
-  if (StrLib::bEqualTo("connectCluster",m_aToken[0],C_NO_CASE)) {
+  if (m_aToken[0]->bEqual("connectCluster"_Str)) {
     return bConnectCluster();
   }
   
-  if (StrLib::bEqualTo("drop",m_aToken[0],C_NO_CASE)) {
-    if (StrLib::bEqualTo("tenant",m_aToken[1],C_NO_CASE)) {
+  if (m_aToken[0]->bEqual("drop"_Str)) {
+    if (m_aToken[1]->bEqual("tenant"_Str)) {
       return bDropTenant();
     }
-    if (StrLib::bEqualTo("catalog",m_aToken[1],C_NO_CASE)) {
+    if (m_aToken[1]->bEqual("catalog"_Str)) {
       return bDropCatalog();
     }
-    if (StrLib::bEqualTo("index",m_aToken[1],C_NO_CASE)) {
+    if (m_aToken[1]->bEqual("index"_Str)) {
       return bDropIndex();
     }
-    if (StrLib::bEqualTo("schema",m_aToken[1],C_NO_CASE)) {
+    if (m_aToken[1]->bEqual("schema"_Str)) {
       return bDropSchema();
     }
-    if (StrLib::bEqualTo("table",m_aToken[1],C_NO_CASE)) {
+    if (m_aToken[1]->bEqual("table"_Str)) {
       return bDropTable();
     }
   }
   
-  if (StrLib::bEqualTo("end",m_aToken[0],C_NO_CASE)) {
-    if (StrLib::bEqualTo("insert",m_aToken[1],C_NO_CASE)) {
+  if (m_aToken[0]->bEqual("end"_Str)) {
+    if (m_aToken[1]->bEqual("insert"_Str)) {
       return bEndInsert();
     }
   }
   
-  if (StrLib::bEqualTo("antbl",m_aToken[0],C_NO_CASE)) {
+  if (m_aToken[0]->bEqual("antbl"_Str)) {
     return bAnalyzeTable();
   }
   
-  if (StrLib::bEqualTo("dantbl",m_aToken[0],C_NO_CASE)) {
+  if (m_aToken[0]->bEqual("dantbl"_Str)) {
     return bDanalyzeTable();
   }
   
-  if (StrLib::bEqualTo("pwd",m_aToken[0],C_NO_CASE)) {
+  if (m_aToken[0]->bEqual("pwd"_Str)) {
     return bPrintWorkingDir();
   }
   
-  if (StrLib::bEqualTo("ls",m_aToken[0],C_NO_CASE)) {
+  if (m_aToken[0]->bEqual("ls"_Str)) {
     return bListDir();
   }
   
-  if (StrLib::bEqualTo("first",m_aToken[0],C_NO_CASE)) {
+  if (m_aToken[0]->bEqual("first"_Str)) {
     return bGetFirstRow();
   }
   
-  if (StrLib::bEqualTo("insert",m_aToken[0],C_NO_CASE)) {
-    if (StrLib::bEqualTo("row",m_aToken[1],C_NO_CASE)) {
+  if (m_aToken[0]->bEqual("insert"_Str)) {
+    if (m_aToken[1]->bEqual("row"_Str)) {
       return bInsertRow();
     }
   }
   
-  if (StrLib::bEqualTo("next",m_aToken[0],C_NO_CASE)) {
+  if (m_aToken[0]->bEqual("next"_Str)) {
     return bGetNextRow();
   }
 
-  if (StrLib::bEqualTo("object",m_aToken[0],C_NO_CASE)) {
+  if (m_aToken[0]->bEqual("object"_Str)) {
     return bObject();
   }
   
-  if (StrLib::bEqualTo("space",m_aToken[0],C_NO_CASE)) {
+  if (m_aToken[0]->bEqual("space"_Str)) {
     return bPoolSpace();
   }
 
-  if (StrLib::bEqualTo("use",m_aToken[0],C_NO_CASE)) {
-    if (StrLib::bEqualTo("schema",m_aToken[1],C_NO_CASE)) {
+  if (m_aToken[0]->bEqual("use"_Str)) {
+    if (m_aToken[1]->bEqual("schema"_Str)) {
       return bUseSchema();
     }
   }
   
   m_xHistory.vAppend(m_aToken);
   
-  if (bTestFile(m_aToken[0])) {
-    vPushFile(m_aToken[0]);
+  if (bTestFile(m_aToken[0]->a())) {
+    vPushFile(m_aToken[0]->a());
     m_pTokeniser->vLineMode(true);
     m_sResponse = "<ok>"_Str;
     return true;
@@ -511,14 +511,14 @@ bool SePrompt::bProcessCommand(bool bPostProcess)
     return true;
   
   // - post process requests
-  if (StrLib::bEqualTo("sel",m_aToken[0],C_NO_CASE)) {
+  if (m_aToken[0]->bEqual("sel"_Str)) {
     vIterateRows();
     return bReturnTable();
   }
   
   // - the following never return
   
-  if (StrLib::bEqualTo("mon",m_aToken[0],C_NO_CASE)) {
+  if (m_aToken[0]->bEqual("mon"_Str)) {
     while (true) {
       PosixThread::vSleepSec(10);
       if (!bExecuteRequest())
@@ -526,7 +526,7 @@ bool SePrompt::bProcessCommand(bool bPostProcess)
     }
   }
   
-  if (StrLib::bEqualTo("x",m_aToken[0],C_NO_CASE)) {
+  if (m_aToken[0]->bEqual("x"_Str)) {
     while (true) {
       bExecuteRequest();
     }
@@ -585,9 +585,9 @@ void SePrompt::vClipTokens(i8 nTokens)
   
   for (i8 iFromToken = nTokens; iFromToken < C_TOKENS; iFromToken++) {
     
-    StrLib::vCopy(m_aToken[iToToken++],m_aToken[iFromToken]);
+    StrLib::vCopy(m_aToken[iToToken++]->a(),m_aToken[iFromToken]->a());
     
-    if (StrLib::bEqualTo("",m_aToken[iFromToken]))
+    if (m_aToken[iFromToken]->bEqual(""_Str))
       break;
   }
   
@@ -608,8 +608,11 @@ bool SePrompt::bExecuteRequest(void)
   
   // get count of words in pWords
   for (iTokens = 0; iTokens < C_TOKENS; iTokens++)
-    if (StrLib::bEqualTo("",m_aToken[iTokens]))
+    if (m_aToken[iTokens]->bEqual(""_Str))
       break;
+
+                                                 //! make this part of verbose??
+  //m_pTokeniser->vDumpTokens("Command : "_Str,m_aToken,C_TOKENS);
   
   bool bResult = RapidsSE_ExecuteRequest(m_pSEitf,m_aToken,iTokens,&aResponse);
   
@@ -661,8 +664,8 @@ bool SePrompt::bReturnTable(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  StrLib::vCopy(m_aToken[0], "rettbl");
-  StrLib::vCopy(m_aToken[1], "");
+  StrLib::vCopy(m_aToken[0]->a(), "rettbl");
+  StrLib::vCopy(m_aToken[1]->a(), "");
   
   if (!bExecuteRequest()) {
     vTrace("bReturnTable: (%s) Return Table FAILED!!! : %s\n"_Str, m_sResponse.aStr());
@@ -831,16 +834,16 @@ bool SePrompt::bBeginInsert(void)
   i8 iToken;
   i8 iNumTokens;
   
-  ASSERT(StrLib::bEqualTo(m_aToken[0],"begin"));
-  ASSERT(StrLib::bEqualTo(m_aToken[1],"insert"));
+  ASSERT(m_aToken[0]->bEqual("begin"_Str));
+  ASSERT(m_aToken[1]->bEqual("insert"_Str));
   
   vCollectStatement();
   
   for (iToken = 0; iToken < C_TOKENS; iToken++) {
-    if (! *m_aToken[iToken])
+    if (! *m_aToken[iToken]->a())
       break;
-    StrLib::vCopy(m_aToken2[iToken], m_aToken[iToken]);
-    StrLib::vCopy(m_aToken[iToken], "");
+    StrLib::vCopy(m_aToken2[iToken]->a(), m_aToken[iToken]->a());
+    StrLib::vCopy(m_aToken[iToken]->a(), "");
   }
   
   iNumTokens = iToken;
@@ -851,14 +854,14 @@ bool SePrompt::bBeginInsert(void)
   }
   
   // last token should be ';'
-  if (!StrLib::bEqualTo(m_aToken2[3] , ";")) {
+  if (!m_aToken2[3]->bEqual(";"_Str)) {
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
   }
   
   // get table pointer
-  StrLib::vCopy(m_aToken[0], "gettbl");
-  StrLib::vCopy(m_aToken[1], m_aToken2[2]);
+  StrLib::vCopy(m_aToken[0]->a(), "gettbl");
+  StrLib::vCopy(m_aToken[1]->a(), m_aToken2[2]->a());
   if (!bExecuteRequest()) {
     vTrace("SePrompt::bBeginInsert : gettbl FAILED!!!\n"_Str);
     return false;
@@ -881,9 +884,9 @@ bool SePrompt::bSleep(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  ASSERT(StrLib::bEqualTo(m_aToken[0],"sleep"));
+  ASSERT(m_aToken[0]->bEqual("sleep"_Str));
   
-  i8 nSeconds = StrLib::iToI8(m_aToken[1]);
+  i8 nSeconds = m_aToken[1]->iToI8();
 
   PosixThread::vSleepSec(nSeconds);
   
@@ -900,15 +903,15 @@ bool SePrompt::bChangeWorkingDir(void)
   s256 sDir;
   Dir xDir;
   
-  ASSERT(StrLib::bEqualTo(m_aToken[0],"cd"));
+  ASSERT(m_aToken[0]->bEqual("cd"_Str));
   
-  StrLib::vCopy(sDir.aStr(), m_aToken[1]);
+  StrLib::vCopy(sDir.aStr(), m_aToken[1]->a());
   
   i8 iToken;
   for (iToken = 2; iToken < C_TOKENS; iToken++) {
-    if (! *m_aToken[iToken])
+    if (! *m_aToken[iToken]->a())
       break;
-    StrLib::vConcat(sDir.aStr(), m_aToken[iToken]);
+    StrLib::vConcat(sDir.aStr(), m_aToken[iToken]->a());
   }
 
   if ( ! xDir.bChangeCurrent(sDir) ) {
@@ -928,7 +931,7 @@ bool SePrompt::bAnalyzeTable(void)
   s256 sDir;
   Dir xDir;
   
-  ASSERT(StrLib::bEqualTo(m_aToken[0],"antbl"));
+  ASSERT(m_aToken[0]->bEqual("antbl"_Str));
   
   return bExecuteRequest();
 }
@@ -943,7 +946,7 @@ bool SePrompt::bDanalyzeTable(void)
   s256 sDir;
   Dir xDir;
   
-  ASSERT(StrLib::bEqualTo(m_aToken[0],"dantbl"));
+  ASSERT(m_aToken[0]->bEqual("dantbl"_Str));
   
   return bExecuteRequest();
 }
@@ -955,7 +958,7 @@ bool SePrompt::bDocol(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  ASSERT(StrLib::bEqualTo(m_aToken[0],"docol"));
+  ASSERT(m_aToken[0]->bEqual("docol"_Str));
   return bExecuteRequest();
 }
 
@@ -966,8 +969,8 @@ bool SePrompt::bCreateCatalog(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  ASSERT(StrLib::bEqualTo(m_aToken[0],"create"));
-  ASSERT(StrLib::bEqualTo(m_aToken[1],"catalog"));
+  ASSERT(m_aToken[0]->bEqual("create"_Str));
+  ASSERT(m_aToken[1]->bEqual("catalog"_Str));
   vCollectStatement();
   
   i8 iToken;
@@ -975,10 +978,10 @@ bool SePrompt::bCreateCatalog(void)
   // copy tokens from m_aToken to m_aToken2
   // while doing that also validate the create statament
   for (iToken = 0; iToken < C_TOKENS; iToken++) {
-    if (! *m_aToken[iToken])
+    if (! *m_aToken[iToken]->a())
       break;
-    StrLib::vCopy(m_aToken2[iToken], m_aToken[iToken]);
-    StrLib::vCopy(m_aToken[iToken], "");
+    StrLib::vCopy(m_aToken2[iToken]->a(), m_aToken[iToken]->a());
+    StrLib::vCopy(m_aToken[iToken]->a(), "");
   }
   
   i8 iNumTokens = iToken;
@@ -989,14 +992,14 @@ bool SePrompt::bCreateCatalog(void)
   }
   
   // last token should be ';'
-  if (!StrLib::bEqualTo(m_aToken2[3] , ";")) {
+  if (!m_aToken2[3]->bEqual(";"_Str)) {
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
   }
   
   // create a catalog
-  StrLib::vCopy(m_aToken[0], "mkcat");
-  StrLib::vCopy(m_aToken[1], m_aToken2[2]);
+  StrLib::vCopy(m_aToken[0]->a(), "mkcat");
+  StrLib::vCopy(m_aToken[1]->a(), m_aToken2[2]->a());
   
   if (!bExecuteRequest())
     return false;
@@ -1012,8 +1015,8 @@ bool SePrompt::bCreateIndex(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  ASSERT(StrLib::bEqualTo(m_aToken[0],"create"));
-  ASSERT(StrLib::bEqualTo(m_aToken[1],"index"));
+  ASSERT(m_aToken[0]->bEqual("create"_Str));
+  ASSERT(m_aToken[1]->bEqual("index"_Str));
   vCollectStatement();
   
   i8 iToken;
@@ -1021,10 +1024,10 @@ bool SePrompt::bCreateIndex(void)
   // copy tokens from m_aToken to m_aToken2
   // while doing that also validate the create statament
   for (iToken = 0; iToken < C_TOKENS; iToken++) {
-    if (! *m_aToken[iToken])
+    if (! *m_aToken[iToken]->a())
       break;
-    StrLib::vCopy(m_aToken2[iToken], m_aToken[iToken]);
-    StrLib::vCopy(m_aToken[iToken], "");
+    StrLib::vCopy(m_aToken2[iToken]->a(), m_aToken[iToken]->a());
+    StrLib::vCopy(m_aToken[iToken]->a(), "");
   }
   
   i8 iValue;
@@ -1038,34 +1041,34 @@ bool SePrompt::bCreateIndex(void)
   }
   
   // token[3] should be 'on'
-  if (!StrLib::bEqualTo(m_aToken2[3] , "on")) {
+  if (!m_aToken2[3]->bEqual("on"_Str)) {
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
   }
   
   // token[5] should be '('
-  if (!StrLib::bEqualTo(m_aToken2[5] , "(")) {
+  if (!m_aToken2[5]->bEqual("("_Str)) {
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
   }
   
   // 7 token should be ')'
-  if (!StrLib::bEqualTo(m_aToken2[7] , ")")) {
+  if (!m_aToken2[7] ->bEqual(")"_Str)) {
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
   }
   
   // last token should be ';'
-  if (!StrLib::bEqualTo(m_aToken2[iNumTokens-1] , ";")) {
+  if (!m_aToken2[iNumTokens-1]->bEqual(";"_Str)) {
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
   }
   
   // create the index
-  StrLib::vCopy(m_aToken[0], "mkidx");
-  StrLib::vCopy(m_aToken[1], m_aToken2[2]);
-  StrLib::vCopy(m_aToken[2], m_aToken2[4]);
-  StrLib::vCopy(m_aToken[3], m_aToken2[6]);
+  StrLib::vCopy(m_aToken[0]->a(), "mkidx");
+  StrLib::vCopy(m_aToken[1]->a(), m_aToken2[2]->a());
+  StrLib::vCopy(m_aToken[2]->a(), m_aToken2[4]->a());
+  StrLib::vCopy(m_aToken[3]->a(), m_aToken2[6]->a());
   
   if (!bExecuteRequest())
     return false;
@@ -1080,8 +1083,8 @@ bool SePrompt::bCreateSchema(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
 
-  ASSERT(StrLib::bEqualTo(m_aToken[0],"create"));
-  ASSERT(StrLib::bEqualTo(m_aToken[1],"schema"));
+  ASSERT(m_aToken[0]->bEqual("create"_Str));
+  ASSERT(m_aToken[1]->bEqual("schema"_Str));
   vCollectStatement();
   
   i8 iToken;
@@ -1089,10 +1092,10 @@ bool SePrompt::bCreateSchema(void)
   // copy tokens from m_aToken to m_aToken2
   // while doing that also validate the create statament
   for (iToken = 0; iToken < C_TOKENS; iToken++) {
-    if (! *m_aToken[iToken])
+    if (! *m_aToken[iToken]->a())
       break;
-    StrLib::vCopy(m_aToken2[iToken], m_aToken[iToken]);
-    StrLib::vCopy(m_aToken[iToken], "");
+    StrLib::vCopy(m_aToken2[iToken]->a(), m_aToken[iToken]->a());
+    StrLib::vCopy(m_aToken[iToken]->a(), "");
   }
   
   i8 iNumTokens = iToken;
@@ -1104,14 +1107,14 @@ bool SePrompt::bCreateSchema(void)
   }
   
   // last token should be ';'
-  if (!StrLib::bEqualTo(m_aToken2[3] , ";")) {
+  if (!m_aToken2[3]->bEqual(";"_Str)) {
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
   }
   
   // create a schema
-  StrLib::vCopy(m_aToken[0], "mksch");
-  StrLib::vCopy(m_aToken[1], m_aToken2[2]);
+  StrLib::vCopy(m_aToken[0]->a(), "mksch");
+  StrLib::vCopy(m_aToken[1]->a(), m_aToken2[2]->a());
   
   if (!bExecuteRequest())
     return false;
@@ -1127,8 +1130,8 @@ bool SePrompt::bCreateTenant(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  ASSERT(StrLib::bEqualTo(m_aToken[0],"create"));
-  ASSERT(StrLib::bEqualTo(m_aToken[1],"tenant"));
+  ASSERT(m_aToken[0]->bEqual("create"_Str));
+  ASSERT(m_aToken[1]->bEqual("tenant"_Str));
   vCollectStatement();
   
   i8 iToken;
@@ -1136,10 +1139,10 @@ bool SePrompt::bCreateTenant(void)
   // copy tokens from m_aToken to m_aToken2
   // while doing that also validate the create statament
   for (iToken = 0; iToken < C_TOKENS; iToken++) {
-    if (! *m_aToken[iToken])
+    if (! *m_aToken[iToken]->a())
       break;
-    StrLib::vCopy(m_aToken2[iToken], m_aToken[iToken]);
-    StrLib::vCopy(m_aToken[iToken], "");
+    StrLib::vCopy(m_aToken2[iToken]->a(), m_aToken[iToken]->a());
+    StrLib::vCopy(m_aToken[iToken]->a(), "");
   }
   
   i8 iNumTokens = iToken;
@@ -1151,14 +1154,14 @@ bool SePrompt::bCreateTenant(void)
   }
   
   // last token should be ';'
-  if (!StrLib::bEqualTo(m_aToken2[3] , ";")) {
+  if (!m_aToken2[3]->bEqual(";"_Str)) {
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
   }
   
   // create a tenant
-  StrLib::vCopy(m_aToken[0], "mkten");
-  StrLib::vCopy(m_aToken[1], m_aToken2[2]);
+  StrLib::vCopy(m_aToken[0]->a(), "mkten");
+  StrLib::vCopy(m_aToken[1]->a(), m_aToken2[2]->a());
   
   if (!bExecuteRequest())
     return false;
@@ -1174,8 +1177,8 @@ bool SePrompt::bCreateTable(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  ASSERT(StrLib::bEqualTo(m_aToken[0],"create"));
-  ASSERT(StrLib::bEqualTo(m_aToken[1],"table"));
+  ASSERT(m_aToken[0]->bSame("create"_Str));
+  ASSERT(m_aToken[1]->bSame("table"_Str));
   vCollectStatement();
   
   i8 iToken;
@@ -1183,10 +1186,10 @@ bool SePrompt::bCreateTable(void)
   // copy tokens from m_aToken to m_aToken2
   // while doing that also validate the create statament
   for (iToken = 0; iToken < C_TOKENS; iToken++) {
-    if (! *m_aToken[iToken])
+    if (! *m_aToken[iToken]->a())
       break;
-    StrLib::vCopy(m_aToken2[iToken], m_aToken[iToken]);
-    StrLib::vCopy(m_aToken[iToken], "");
+    StrLib::vCopy(m_aToken2[iToken]->a(), m_aToken[iToken]->a());
+    StrLib::vCopy(m_aToken[iToken]->a(), "");
   }
   
   i8 iValue;
@@ -1200,40 +1203,40 @@ bool SePrompt::bCreateTable(void)
   }
   
   // token[3] should be '('
-  if (!StrLib::bEqualTo(m_aToken2[3] , "(")) {
+  if (!m_aToken2[3]->bEqual("("_Str)) {
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
   }
   
   // last-1 token should be ')'
-  if (!StrLib::bEqualTo(m_aToken2[iNumTokens-2] , ")")) {
+  if (!m_aToken2[iNumTokens-2]->bEqual(")"_Str)) {
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
   }
     
   // last token should be ';'
-  if (!StrLib::bEqualTo(m_aToken2[iNumTokens-1] , ";")) {
+  if (!m_aToken2[iNumTokens-1]->bEqual(";"_Str)) {
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
   }
       
   // create the table
-  StrLib::vCopy(m_aToken[0], "mktbl");
-  StrLib::vCopy(m_aToken[1], m_aToken2[2]);
+  StrLib::vCopy(m_aToken[0]->a(), "mktbl");
+  StrLib::vCopy(m_aToken[1]->a(), m_aToken2[2]->a());
   
   if (!bExecuteRequest())
     return false;
   
   // change folder to table
-  StrLib::vCopy(m_aToken[0], "cf");
-  StrLib::vCopy(m_aToken[1], m_aToken2[2]);
+  StrLib::vCopy(m_aToken[0]->a(), "cf");
+  StrLib::vCopy(m_aToken[1]->a(), m_aToken2[2]->a());
   
   if (!bExecuteRequest()) {
     vTrace("SePrompt::bCreateTable : cf FAILED!!!\n"_Str);
     
     // create the table
-    StrLib::vCopy(m_aToken[0], "rmtbl");
-    StrLib::vCopy(m_aToken[1], m_aToken2[2]);
+    StrLib::vCopy(m_aToken[0]->a(), "rmtbl");
+    StrLib::vCopy(m_aToken[1]->a(), m_aToken2[2]->a());
     
     if (!bExecuteRequest()) {
       return false;
@@ -1243,15 +1246,15 @@ bool SePrompt::bCreateTable(void)
   }
   
   // get reference to pTable
-  StrLib::vCopy(m_aToken[0], "gettbl");
-  StrLib::vCopy(m_aToken[1], m_aToken2[2]);
+  StrLib::vCopy(m_aToken[0]->a(), "gettbl");
+  StrLib::vCopy(m_aToken[1]->a(), m_aToken2[2]->a());
   
   if (!bExecuteRequest()) {
     vTrace("SePrompt::bCreateTable : gettbl FAILED!!!\n"_Str);
     
     // create the table
-    StrLib::vCopy(m_aToken[0], "rmtbl");
-    StrLib::vCopy(m_aToken[1], m_aToken2[2]);
+    StrLib::vCopy(m_aToken[0]->a(), "rmtbl");
+    StrLib::vCopy(m_aToken[1]->a(), m_aToken2[2]->a());
     
     if (!bExecuteRequest()) {      
       return false;
@@ -1264,158 +1267,161 @@ bool SePrompt::bCreateTable(void)
   i8 iCurrentToken = 4;
   while(iCurrentToken < iNumTokens - 2) {
     
-    if (iCurrentToken != 4 && !StrLib::bEqualTo(m_aToken2[iCurrentToken++],",")) {
-      bDropReturnTable(m_aToken2[2]);
+    if (iCurrentToken != 4 && !m_aToken2[iCurrentToken++]->bEqual(","_Str)) {
+      bDropReturnTable(m_aToken2[2]->a());
       m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
       return false;
     }
     
     // add columns to the table
     i8 j = 0;
-    StrLib::vCopy(m_aToken[j++], "add");
-    StrLib::vCopy(m_aToken[j++], m_aToken2[2]);
-    StrLib::vCopy(m_aToken[j++], m_aToken2[iCurrentToken++]);
+    StrLib::vCopy(m_aToken[j++]->a(), "add");
+    StrLib::vCopy(m_aToken[j++]->a(), m_aToken2[2]->a());
+    StrLib::vCopy(m_aToken[j++]->a(), m_aToken2[iCurrentToken++]->a());
     
-    if (StrLib::bEqualTo(m_aToken2[iCurrentToken], "integer", C_NO_CASE) ||
-        StrLib::bEqualTo(m_aToken2[iCurrentToken], "varchar", C_NO_CASE) ||
-        StrLib::bEqualTo(m_aToken2[iCurrentToken], "varbinary", C_NO_CASE) ||
-        StrLib::bEqualTo(m_aToken2[iCurrentToken], "char", C_NO_CASE) ||
-        StrLib::bEqualTo(m_aToken2[iCurrentToken], "float", C_NO_CASE)) {
+    if (m_aToken2[iCurrentToken]->bSame("integer"_Str) ||
+        m_aToken2[iCurrentToken]->bSame("varchar"_Str) ||
+        m_aToken2[iCurrentToken]->bSame("varbinary"_Str) ||
+        m_aToken2[iCurrentToken]->bSame("char"_Str) ||
+        m_aToken2[iCurrentToken]->bSame("float"_Str)) {
       
       // copy varchar/char
-      StrLib::vCopy(m_aToken[j], m_aToken2[iCurrentToken++]);
+      StrLib::vCopy(m_aToken[j]->a(), m_aToken2[iCurrentToken++]->a());
       
-      if (StrLib::bEqualTo(m_aToken2[iCurrentToken], "(")) {
+      if (m_aToken2[iCurrentToken]->bEqual("("_Str)) {
         
         // str.cat '('
-        StrLib::vConcat(m_aToken[j], m_aToken2[iCurrentToken++]);
+        StrLib::vConcat(m_aToken[j]->a(), m_aToken2[iCurrentToken++]->a());
         
         // str.cat the size
-        StrLib::vConcat(m_aToken[j], m_aToken2[iCurrentToken]);
+        StrLib::vConcat(m_aToken[j]->a(), m_aToken2[iCurrentToken]->a());
         
         // check if it was numeric
-        if (!StrLib::bExtractI8(&m_aToken2[iCurrentToken++], &iValue)) {
+        char* a = m_aToken2[iCurrentToken++]->a();
+        if (!StrLib::bExtractI8(&a, &iValue)) {
           // drop the table
-          bDropReturnTable(m_aToken2[2]);
+          bDropReturnTable(m_aToken2[2]->a());
           m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
           return false;
         }
         
-        if (!StrLib::bEqualTo(m_aToken2[iCurrentToken],")")) {
+        if (!m_aToken2[iCurrentToken]->bEqual(")"_Str)) {
           // drop the table
-          bDropReturnTable(m_aToken2[2]);
+          bDropReturnTable(m_aToken2[2]->a());
           m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
           return false;
         }
         
         // str.cat ')'
-        StrLib::vConcat(m_aToken[j], m_aToken2[iCurrentToken++]);
+        StrLib::vConcat(m_aToken[j]->a(), m_aToken2[iCurrentToken++]->a());
         
       }
     }
-    else if (StrLib::bEqualTo(m_aToken2[iCurrentToken], "decimal", C_NO_CASE)) {
+    else if (m_aToken2[iCurrentToken]->bSame("decimal"_Str)) {
       
       // copy varchar/char
-      StrLib::vCopy(m_aToken[j], m_aToken2[iCurrentToken++]);
+      StrLib::vCopy(m_aToken[j]->a(), m_aToken2[iCurrentToken++]->a());
       
-      if (StrLib::bEqualTo(m_aToken2[iCurrentToken], "(")) {
+      if (m_aToken2[iCurrentToken]->bEqual("("_Str)) {
         
         // str.cat '('
-        StrLib::vConcat(m_aToken[j], m_aToken2[iCurrentToken++]);
+        StrLib::vConcat(m_aToken[j]->a(), m_aToken2[iCurrentToken++]->a());
         
         // str.cat the size
-        StrLib::vConcat(m_aToken[j], m_aToken2[iCurrentToken]);
+        StrLib::vConcat(m_aToken[j]->a(), m_aToken2[iCurrentToken]->a());
         
         // check if it was numeric
-        if (!StrLib::bExtractI8(&m_aToken2[iCurrentToken++], &iValue)) {
-          bDropReturnTable(m_aToken2[2]);
+        char* a = m_aToken2[iCurrentToken++]->a();
+        if (!StrLib::bExtractI8(&a, &iValue)) {
+          bDropReturnTable(m_aToken2[2]->a());
           m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
           return false;
         }
         
-        if (!StrLib::bEqualTo(m_aToken2[iCurrentToken],",")) {
-          bDropReturnTable(m_aToken2[2]);
+        if (!m_aToken2[iCurrentToken]->bEqual(","_Str)) {
+          bDropReturnTable(m_aToken2[2]->a());
           m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
           return false;
         }
         
         // str.cat ','
-        StrLib::vConcat(m_aToken[j], m_aToken2[iCurrentToken++]);
+        StrLib::vConcat(m_aToken[j]->a(), m_aToken2[iCurrentToken++]->a());
         
         // str.cat the size
-        StrLib::vConcat(m_aToken[j], m_aToken2[iCurrentToken]);
+        StrLib::vConcat(m_aToken[j]->a(), m_aToken2[iCurrentToken]->a());
         
         // check if it was numeric
-        if (!StrLib::bExtractI8(&m_aToken2[iCurrentToken++], &iValue)) {
-          bDropReturnTable(m_aToken2[2]);
+        a = m_aToken2[iCurrentToken++]->a();
+        if (!StrLib::bExtractI8(&a, &iValue)) {
+          bDropReturnTable(m_aToken2[2]->a());
           m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
           return false;
         }
         
-        if (!StrLib::bEqualTo(m_aToken2[iCurrentToken],")")) {
-          bDropReturnTable(m_aToken2[2]);
+        if (!m_aToken2[iCurrentToken]->bEqual(")"_Str)) {
+          bDropReturnTable(m_aToken2[2]->a());
           m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
           return false;
         }
         
         // str.cat ')'
-        StrLib::vConcat(m_aToken[j], m_aToken2[iCurrentToken++]);
+        StrLib::vConcat(m_aToken[j]->a(), m_aToken2[iCurrentToken++]->a());
       }
     }
-    else if (StrLib::bEqualTo(m_aToken2[iCurrentToken], "date", C_NO_CASE) ||
-             StrLib::bEqualTo(m_aToken2[iCurrentToken], "timestamp", C_NO_CASE) ||
-             StrLib::bEqualTo(m_aToken2[iCurrentToken], "interval", C_NO_CASE) ||
-             StrLib::bEqualTo(m_aToken2[iCurrentToken], "boolean", C_NO_CASE)) {
-      StrLib::vCopy(m_aToken[j], m_aToken2[iCurrentToken++]);
+    else if (m_aToken2[iCurrentToken]->bSame("date"_Str) ||
+             m_aToken2[iCurrentToken]->bSame("timestamp"_Str) ||
+             m_aToken2[iCurrentToken]->bSame("interval"_Str) ||
+             m_aToken2[iCurrentToken]->bSame("boolean"_Str)) {
+      StrLib::vCopy(m_aToken[j]->a(), m_aToken2[iCurrentToken++]->a());
     }
     else {
       // drop the table that was created
-      bDropReturnTable(m_aToken2[2]);
+      bDropReturnTable(m_aToken2[2]->a());
       m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
       return false;
     }
     
     // check for NOT NULL
-    if (StrLib::bEqualTo(m_aToken2[iCurrentToken],"not", C_NO_CASE)) {
+    if (m_aToken2[iCurrentToken]->bSame("not"_Str)) {
       
-      StrLib::vConcat(m_aToken[j], " ");
-      StrLib::vConcat(m_aToken[j], m_aToken2[iCurrentToken++]);
+      StrLib::vConcat(m_aToken[j]->a(), " ");
+      StrLib::vConcat(m_aToken[j]->a(), m_aToken2[iCurrentToken++]->a());
       
-      if (!StrLib::bEqualTo(m_aToken2[iCurrentToken],"null", C_NO_CASE)) {
-        bDropReturnTable(m_aToken2[2]);
+      if (!m_aToken2[iCurrentToken]->bSame("null"_Str)) {
+        bDropReturnTable(m_aToken2[2]->a());
         m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
         return false;
       }
-      StrLib::vConcat(m_aToken[j], " ");
-      StrLib::vConcat(m_aToken[j], m_aToken2[iCurrentToken++]);
+      StrLib::vConcat(m_aToken[j]->a(), " ");
+      StrLib::vConcat(m_aToken[j]->a(), m_aToken2[iCurrentToken++]->a());
     }
     
     // check for PRIMARY KEY
-    if (StrLib::bEqualTo(m_aToken2[iCurrentToken],"primary", C_NO_CASE)) {
+    if (m_aToken2[iCurrentToken]->bSame("primary"_Str)) {
       
-      StrLib::vConcat(m_aToken[j], " ");
-      StrLib::vConcat(m_aToken[j], m_aToken2[iCurrentToken++]);
+      StrLib::vConcat(m_aToken[j]->a(), " ");
+      StrLib::vConcat(m_aToken[j]->a(), m_aToken2[iCurrentToken++]->a());
       
-      if (!StrLib::bEqualTo(m_aToken2[iCurrentToken],"key", C_NO_CASE)) {
-        bDropReturnTable(m_aToken2[2]);
+      if (!m_aToken2[iCurrentToken]->bSame("key"_Str)) {
+        bDropReturnTable(m_aToken2[2]->a());
         m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
         return false;
       }
-      StrLib::vConcat(m_aToken[j], " ");
-      StrLib::vConcat(m_aToken[j], m_aToken2[iCurrentToken++]);
+      StrLib::vConcat(m_aToken[j]->a(), " ");
+      StrLib::vConcat(m_aToken[j]->a(), m_aToken2[iCurrentToken++]->a());
     }
 
     // check for UNIQUE
-    if (StrLib::bEqualTo(m_aToken2[iCurrentToken],"unique", C_NO_CASE)) {
+    if (m_aToken2[iCurrentToken]->bSame("unique"_Str)) {
       
-      StrLib::vConcat(m_aToken[j], " ");
-      StrLib::vConcat(m_aToken[j], m_aToken2[iCurrentToken++]);
+      StrLib::vConcat(m_aToken[j]->a(), " ");
+      StrLib::vConcat(m_aToken[j]->a(), m_aToken2[iCurrentToken++]->a());
     }
 
     
     // now we should see a column type
     // validate it
-    StrLib::vToLower(m_aToken[j]);
+    StrLib::vToLower(m_aToken[j]->a());
     
     // add the column
     if (!bExecuteRequest()) {
@@ -1424,7 +1430,7 @@ bool SePrompt::bCreateTable(void)
       eEC eError = m_pSEitf->eGetLastError();
       
       // drop the table that was created
-      bDropReturnTable(m_aToken2[2]);
+      bDropReturnTable(m_aToken2[2]->a());
       
       // return error returned by addColumn
       m_pSEitf->vSetLastError(eError);
@@ -1448,7 +1454,7 @@ void SePrompt::vCollectStatement(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   // we should have a first token (e.g. create or drop)
-  ASSERT(! StrLib::bEqualTo(m_aToken[0],""));
+  ASSERT(! m_aToken[0]->bEqual(""_Str));
 
   // have we already seen the ';'
   i8 iToken = m_pTokeniser->iFindToken(";"_Str,m_aToken,C_TOKENS);
@@ -1469,11 +1475,11 @@ void SePrompt::vCollectStatement(void)
   // get tokens delimited by ';'
   for ( ; iToken < C_TOKENS; iToken++) {
     
-    eTK eToken = m_pTokeniser->eNextToken(m_aToken[iToken]);
+    eTK eToken = m_pTokeniser->eNextToken(m_aToken[iToken]->a());
     ASSERT(TK_NONE != eToken);
     
     // look for terminal
-    if (StrLib::bEqualTo(m_aToken[iToken],";"))
+    if (m_aToken[iToken]->bEqual(";"_Str))
       break;
   }
   
@@ -1491,7 +1497,7 @@ bool SePrompt::bConnectCluster(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  ASSERT(StrLib::bEqualTo(m_aToken[0],"connectCluster"));
+  ASSERT(m_aToken[0]->bEqual("connectCluster"_Str));
   
   if (!bExecuteRequest()) {
     return false;
@@ -1510,16 +1516,16 @@ bool SePrompt::bDropCatalog(void)
   i8 iToken;
   i8 iNumTokens;
   
-  ASSERT(StrLib::bEqualTo(m_aToken[0],"drop"));
-  ASSERT(StrLib::bEqualTo(m_aToken[1],"catalog"));
+  ASSERT(m_aToken[0]->bEqual("drop"_Str));
+  ASSERT(m_aToken[1]->bEqual("catalog"_Str));
   
   vCollectStatement();
   
   for (iToken = 0; iToken < C_TOKENS; iToken++) {
-    if (! *m_aToken[iToken])
+    if (! *m_aToken[iToken]->a())
       break;
-    StrLib::vCopy(m_aToken2[iToken], m_aToken[iToken]);
-    StrLib::vCopy(m_aToken[iToken], "");
+    StrLib::vCopy(m_aToken2[iToken]->a(), m_aToken[iToken]->a());
+    StrLib::vCopy(m_aToken[iToken]->a(), "");
   }
   
   iNumTokens = iToken;
@@ -1531,14 +1537,14 @@ bool SePrompt::bDropCatalog(void)
   }
   
   // last token should be ';'
-  if (!StrLib::bEqualTo(m_aToken2[3] , ";")) {
+  if (!m_aToken2[3]->bEqual(";"_Str)) {
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
   }
   
   // drop a catalog
-  StrLib::vCopy(m_aToken[0], "rmcat");
-  StrLib::vCopy(m_aToken[1], m_aToken2[2]);
+  StrLib::vCopy(m_aToken[0]->a(), "rmcat");
+  StrLib::vCopy(m_aToken[1]->a(), m_aToken2[2]->a());
   if (!bExecuteRequest())
     return false;
   
@@ -1556,16 +1562,16 @@ bool SePrompt::bDropIndex(void)
   i8 iToken;
   i8 iNumTokens;
   
-  ASSERT(StrLib::bEqualTo(m_aToken[0],"drop"));
-  ASSERT(StrLib::bEqualTo(m_aToken[1],"index"));
+  ASSERT(m_aToken[0]->bEqual("drop"_Str));
+  ASSERT(m_aToken[1]->bEqual("index"_Str));
   
   vCollectStatement();
   
   for (iToken = 0; iToken < C_TOKENS; iToken++) {
-    if (! *m_aToken[iToken])
+    if (! *m_aToken[iToken]->a())
       break;
-    StrLib::vCopy(m_aToken2[iToken], m_aToken[iToken]);
-    StrLib::vCopy(m_aToken[iToken], "");
+    StrLib::vCopy(m_aToken2[iToken]->a(), m_aToken[iToken]->a());
+    StrLib::vCopy(m_aToken[iToken]->a(), "");
   }
   
   iNumTokens = iToken;
@@ -1577,14 +1583,14 @@ bool SePrompt::bDropIndex(void)
   }
   
   // last token should be ';'
-  if (!StrLib::bEqualTo(m_aToken2[3] , ";")) {
+  if (!m_aToken2[3] ->bEqual(";"_Str)) {
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
   }
   
   // drop a table
-  StrLib::vCopy(m_aToken[0], "rmidx");
-  StrLib::vCopy(m_aToken[1], m_aToken2[2]);
+  StrLib::vCopy(m_aToken[0]->a(), "rmidx");
+  StrLib::vCopy(m_aToken[1]->a(), m_aToken2[2]->a());
   if (!bExecuteRequest())
     return false;
   
@@ -1602,16 +1608,16 @@ bool SePrompt::bDropSchema(void)
   i8 iToken;
   i8 iNumTokens;
   
-  ASSERT(StrLib::bEqualTo(m_aToken[0],"drop"));
-  ASSERT(StrLib::bEqualTo(m_aToken[1],"schema"));
+  ASSERT(m_aToken[0]->bEqual("drop"_Str));
+  ASSERT(m_aToken[1]->bEqual("schema"_Str));
   
   vCollectStatement();
   
   for (iToken = 0; iToken < C_TOKENS; iToken++) {
-    if (! *m_aToken[iToken])
+    if (! *m_aToken[iToken]->a())
       break;
-    StrLib::vCopy(m_aToken2[iToken], m_aToken[iToken]);
-    StrLib::vCopy(m_aToken[iToken], "");
+    StrLib::vCopy(m_aToken2[iToken]->a(), m_aToken[iToken]->a());
+    StrLib::vCopy(m_aToken[iToken]->a(), "");
   }
   
   iNumTokens = iToken;
@@ -1622,14 +1628,14 @@ bool SePrompt::bDropSchema(void)
   }
   
   // last token should be ';'
-  if (!StrLib::bEqualTo(m_aToken2[3] , ";")) {
+  if (!m_aToken2[3]->bEqual(";"_Str)) {
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
   }
   
   // drop a schema
-  StrLib::vCopy(m_aToken[0], "rmsch");
-  StrLib::vCopy(m_aToken[1], m_aToken2[2]);
+  StrLib::vCopy(m_aToken[0]->a(), "rmsch");
+  StrLib::vCopy(m_aToken[1]->a(), m_aToken2[2]->a());
   if (!bExecuteRequest())
     return false;
   
@@ -1647,16 +1653,16 @@ bool SePrompt::bDropTable(void)
   i8 iToken;
   i8 iNumTokens;
   
-  ASSERT(StrLib::bEqualTo(m_aToken[0],"drop"));
-  ASSERT(StrLib::bEqualTo(m_aToken[1],"table"));
+  ASSERT(m_aToken[0]->bEqual("drop"_Str));
+  ASSERT(m_aToken[1]->bEqual("table"_Str));
   
   vCollectStatement();
   
   for (iToken = 0; iToken < C_TOKENS; iToken++) {
-    if (! *m_aToken[iToken])
+    if (! *m_aToken[iToken]->a())
       break;
-    StrLib::vCopy(m_aToken2[iToken], m_aToken[iToken]);
-    StrLib::vCopy(m_aToken[iToken], "");
+    StrLib::vCopy(m_aToken2[iToken]->a(), m_aToken[iToken]->a());
+    StrLib::vCopy(m_aToken[iToken]->a(), "");
   }
   
   iNumTokens = iToken;
@@ -1668,14 +1674,14 @@ bool SePrompt::bDropTable(void)
   }
   
   // last token should be ';'
-  if (!StrLib::bEqualTo(m_aToken2[3] , ";")) {
+  if (!m_aToken2[3]->bEqual(";"_Str)) {
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
   }
   
   // drop a table
-  StrLib::vCopy(m_aToken[0], "rmtbl");
-  StrLib::vCopy(m_aToken[1], m_aToken2[2]);
+  StrLib::vCopy(m_aToken[0]->a(), "rmtbl");
+  StrLib::vCopy(m_aToken[1]->a(), m_aToken2[2]->a());
   if (!bExecuteRequest())
     return false;
   
@@ -1695,15 +1701,15 @@ bool SePrompt::bDropReturnTable(char* pTableName)
   ASSERT(bResult);
   
   // change folder to table
-  StrLib::vCopy(m_aToken[0], "cf");
-  StrLib::vCopy(m_aToken[1], "..");
+  StrLib::vCopy(m_aToken[0]->a(), "cf");
+  StrLib::vCopy(m_aToken[1]->a(), "..");
   
   if (!bExecuteRequest()) {
     return false;
   }
-  StrLib::vCopy(m_aToken[0], "rmtbl");
-  StrLib::vCopy(m_aToken[1], pTableName);
-  StrLib::vCopy(m_aToken[2], "");
+  StrLib::vCopy(m_aToken[0]->a(), "rmtbl");
+  StrLib::vCopy(m_aToken[1]->a(), pTableName);
+  StrLib::vCopy(m_aToken[2]->a(), "");
   
   if (!bExecuteRequest()) {
     //vTrace("Error: (%s) Drop Table %s\n"_Str, m_sResponse.aStr(), pTableName);
@@ -1722,16 +1728,16 @@ bool SePrompt::bDropTenant(void)
   i8 iToken;
   i8 iNumTokens;
   
-  ASSERT(StrLib::bEqualTo(m_aToken[0],"drop"));
-  ASSERT(StrLib::bEqualTo(m_aToken[1],"tenant"));
+  ASSERT(m_aToken[0]->bEqual("drop"_Str));
+  ASSERT(m_aToken[1]->bEqual("tenant"_Str));
   
   vCollectStatement();
   
   for (iToken = 0; iToken < C_TOKENS; iToken++) {
-    if (! *m_aToken[iToken])
+    if (! *m_aToken[iToken]->a())
       break;
-    StrLib::vCopy(m_aToken2[iToken], m_aToken[iToken]);
-    StrLib::vCopy(m_aToken[iToken], "");
+    StrLib::vCopy(m_aToken2[iToken]->a(), m_aToken[iToken]->a());
+    StrLib::vCopy(m_aToken[iToken]->a(), "");
   }
   
   iNumTokens = iToken;
@@ -1743,14 +1749,14 @@ bool SePrompt::bDropTenant(void)
   }
   
   // last token should be ';'
-  if (!StrLib::bEqualTo(m_aToken2[3] , ";")) {
+  if (!m_aToken2[3]->bEqual(";"_Str)) {
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
   }
   
   // drop a tenant
-  StrLib::vCopy(m_aToken[0], "rmten");
-  StrLib::vCopy(m_aToken[1], m_aToken2[2]);
+  StrLib::vCopy(m_aToken[0]->a(), "rmten");
+  StrLib::vCopy(m_aToken[1]->a(), m_aToken2[2]->a());
   if (!bExecuteRequest()) {
     return false;
   }
@@ -1770,16 +1776,16 @@ bool SePrompt::bEndInsert(void)
   i8 iToken;
   i8 iNumTokens;
   
-  ASSERT(StrLib::bEqualTo(m_aToken[0],"end"));
-  ASSERT(StrLib::bEqualTo(m_aToken[1],"insert"));
+  ASSERT(m_aToken[0]->bEqual("end"_Str));
+  ASSERT(m_aToken[1]->bEqual("insert"_Str));
   
   vCollectStatement();
   
   for (iToken = 0; iToken < C_TOKENS; iToken++) {
-    if (! *m_aToken[iToken])
+    if (! *m_aToken[iToken]->a())
       break;
-    StrLib::vCopy(m_aToken2[iToken], m_aToken[iToken]);
-    StrLib::vCopy(m_aToken[iToken], "");
+    StrLib::vCopy(m_aToken2[iToken]->a(), m_aToken[iToken]->a());
+    StrLib::vCopy(m_aToken[iToken]->a(), "");
   }
   
   iNumTokens = iToken;
@@ -1790,7 +1796,7 @@ bool SePrompt::bEndInsert(void)
   }
   
   // last token should be ';'
-  if (!StrLib::bEqualTo(m_aToken2[3] , ";")) {
+  if (!m_aToken2[3]->bEqual(";"_Str)) {
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
   }
@@ -1846,16 +1852,16 @@ bool SePrompt::bInsertRow(void)
   i8 iToken;
   i8 iNumTokens;
   
-  ASSERT(StrLib::bEqualTo(m_aToken[0],"insert"));
-  ASSERT(StrLib::bEqualTo(m_aToken[1],"row"));
+  ASSERT(m_aToken[0]->bEqual("insert"_Str));
+  ASSERT(m_aToken[1]->bEqual("row"_Str));
   
   vCollectStatement();
   
   for (iToken = 0; iToken < C_TOKENS; iToken++) {
-    if (! *m_aToken[iToken])
+    if (! *m_aToken[iToken]->a())
       break;
-    StrLib::vCopy(m_aToken2[iToken], m_aToken[iToken]);
-    StrLib::vCopy(m_aToken[iToken], "");
+    StrLib::vCopy(m_aToken2[iToken]->a(), m_aToken[iToken]->a());
+    StrLib::vCopy(m_aToken[iToken]->a(), "");
   }
   
   iNumTokens = iToken;
@@ -1866,7 +1872,7 @@ bool SePrompt::bInsertRow(void)
   }
   
   // last token should be ';'
-  if (!StrLib::bEqualTo(m_aToken2[3] , ";")) {
+  if (!m_aToken2[3]->bEqual(";"_Str)) {
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
   }
@@ -1884,7 +1890,7 @@ bool SePrompt::bInsertRow(void)
     return EC_NO_SUCH_TABLE;
   }
   
-  char* pRow = m_aToken2[2];
+  char* pRow = m_aToken2[2]->a();
   bool bResult = m_pSEitf->bInsertRow(pRow);
   
   if (!bResult) {
@@ -1907,7 +1913,7 @@ bool SePrompt::bListDir(void)
   s256 sDirEntry;
   i8 iEntryType;
   
-  ASSERT(StrLib::bEqualTo(m_aToken[0],"ls"));
+  ASSERT(m_aToken[0]->bEqual("ls"_Str));
   
   // get the current directory
   if (!xDir.bGetCurrent(sDir)) {
@@ -1944,7 +1950,7 @@ bool SePrompt::bObject(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  ASSERT(StrLib::bEqualTo(m_aToken[0],"object"));
+  ASSERT(m_aToken[0]->bEqual("object"_Str));
   
   if (!bExecuteRequest()) {
     return false;
@@ -1960,7 +1966,7 @@ bool SePrompt::bPoolSpace(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  ASSERT(StrLib::bEqualTo(m_aToken[0],"space"));
+  ASSERT(m_aToken[0]->bEqual("space"_Str));
     
   if (!bExecuteRequest()) {
     return false;
@@ -1976,7 +1982,7 @@ bool SePrompt::bNodeStatus(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  ASSERT(StrLib::bEqualTo(m_aToken[0],"status"));
+  ASSERT(m_aToken[0]->bEqual("status"_Str));
   
   if (!bExecuteRequest()) {
     return false;
@@ -1995,7 +2001,7 @@ bool SePrompt::bPrintWorkingDir(void)
   Dir xDir;
   s256 sDir;
   
-  ASSERT(StrLib::bEqualTo(m_aToken[0],"pwd"));
+  ASSERT(m_aToken[0]->bEqual("pwd"_Str));
   
   if (xDir.bGetCurrent(sDir)) {
     vTrace("%s"_Str, sDir.aStr());
@@ -2017,16 +2023,16 @@ bool SePrompt::bUseSchema(void)
   i8 iToken;
   i8 iNumTokens;
   
-  ASSERT(StrLib::bEqualTo(m_aToken[0],"use"));
-  ASSERT(StrLib::bEqualTo(m_aToken[1],"schema"));
+  ASSERT(m_aToken[0]->bEqual("use"_Str));
+  ASSERT(m_aToken[1]->bEqual("schema"_Str));
   
   vCollectStatement();
   
   for (iToken = 0; iToken < C_TOKENS; iToken++) {
-    if (! *m_aToken[iToken])
+    if (! *m_aToken[iToken]->a())
       break;
-    StrLib::vCopy(m_aToken2[iToken], m_aToken[iToken]);
-    StrLib::vCopy(m_aToken[iToken], "");
+    StrLib::vCopy(m_aToken2[iToken]->a(), m_aToken[iToken]->a());
+    StrLib::vCopy(m_aToken[iToken]->a(), "");
   }
   
   iNumTokens = iToken;
@@ -2037,14 +2043,14 @@ bool SePrompt::bUseSchema(void)
   }
   
   // last token should be ';'
-  if (!StrLib::bEqualTo(m_aToken2[3] , ";")) {
+  if (!m_aToken2[3]->bEqual(";"_Str)) {
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
   }
   
   // drop a schema
-  StrLib::vCopy(m_aToken[0], "usesch");
-  StrLib::vCopy(m_aToken[1], m_aToken2[2]);
+  StrLib::vCopy(m_aToken[0]->a(), "usesch");
+  StrLib::vCopy(m_aToken[1]->a(), m_aToken2[2]->a());
   if (!bExecuteRequest())
     return false;
   

@@ -34,16 +34,16 @@ SeHistory::~SeHistory(void)
 /*----------------------------------------------------------------------------*/
 /* append command to history file                                             */
 /*----------------------------------------------------------------------------*/
-void SeHistory::vAppend(char* pToken[])
+void SeHistory::vAppend(Str* aToken[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEHISTORY,_FOOTER_);
   
   vSeekEnd();
   
-  for (i8 i = 0; *pToken[i]; i++) {
+  for (i8 i = 0; *aToken[i]->a(); i++) {
     if (i)
       m_xFile.vPrint("%s"_Str," ");
-    m_xFile.vPrint("%s"_Str,pToken[i]);
+    m_xFile.vPrint("%s"_Str,aToken[i]->a());
   }
   m_xFile.vPrint("%s"_Str,"\n");
   m_xFile.vFlush();
@@ -96,28 +96,28 @@ void SeHistory::vPrint(void)
 /*----------------------------------------------------------------------------*/
 /* recall command from history file                                           */
 /*----------------------------------------------------------------------------*/
-bool SeHistory::bRecall(char* pToken[], i8 nTokens)
+bool SeHistory::bRecall(Str* aToken[], i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEHISTORY,_FOOTER_);
   
   i8 iCommand;
   
-  if (StrLib::bEqualTo("!!",pToken[0],C_NO_CASE)) {
+  if (StrLib::bEqualTo("!!",aToken[0]->a(),C_NO_CASE)) {
     iCommand = m_iCommands;
     if (! iCommand)
       return false;
   }
   else {
     // get command number
-    if (StrLib::iLength(pToken[0]) < 2)
+    if (StrLib::iLength(aToken[0]->a()) < 2)
       return false;
     
-    iCommand = StrLib::iToI8(pToken[0]+1);
+    iCommand = StrLib::iToI8(aToken[0]->a()+1);
   }
   
   vTrace("Recall: %lld\n"_Str,iCommand);
   
-  bool bRecalled = bGet(iCommand,pToken,nTokens);
+  bool bRecalled = bGet(iCommand,aToken,nTokens);
   
   return bRecalled;
 }
@@ -129,7 +129,7 @@ bool SeHistory::bRecall(char* pToken[], i8 nTokens)
 /*----------------------------------------------------------------------------*/
 /* get command from history file                                              */
 /*----------------------------------------------------------------------------*/
-bool SeHistory::bGet(i8 iCommand, char* pToken[], i8 nTokens)
+bool SeHistory::bGet(i8 iCommand, Str* aToken[], i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEHISTORY,_FOOTER_);
   
@@ -147,10 +147,10 @@ bool SeHistory::bGet(i8 iCommand, char* pToken[], i8 nTokens)
       
       m_pTokeniser->vUseString(sCommand);
       
-      m_pTokeniser->vResetTokens(pToken,nTokens);
+      m_pTokeniser->vResetTokens(aToken,nTokens);
       
       i8 i = 0;
-      while (TK_NONE != m_pTokeniser->eNextToken(pToken[i])) {
+      while (TK_NONE != m_pTokeniser->eNextToken(aToken[i]->a())) {
         //vTrace("Word [%lld] %s\n"_Str,i,pWords[i]);
         i++;
       }

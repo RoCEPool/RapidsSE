@@ -237,23 +237,23 @@ void Tokeniser::vNextToken(void)
 /*----------------------------------------------------------------------------*/
 /* reset token array                                                          */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vResetTokens(char* pToken[], i8 nTokens)
+void Tokeniser::vResetTokens(Str* aToken[], i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
   for (i8 iToken = 0; iToken < nTokens; iToken++)
-    *pToken[iToken] = '\0';
+    *aToken[iToken]->a() = '\0';
 }
 
 /*----------------------------------------------------------------------------*/
 /* find token in token array                                                  */
 /*----------------------------------------------------------------------------*/
-i8 Tokeniser::iFindToken(Str* pLookFor, char* pToken[], i8 nTokens)
+i8 Tokeniser::iFindToken(Str* aLookFor, Str* aToken[], i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
   for (i8 iToken = 0; iToken < nTokens; iToken++)
-    if (StrLib::bEqualTo(pLookFor->a(),pToken[iToken],C_NO_CASE))
+    if (aLookFor->bSame(aToken[iToken]))
       return iToken;
   
   return -1;
@@ -262,12 +262,12 @@ i8 Tokeniser::iFindToken(Str* pLookFor, char* pToken[], i8 nTokens)
 /*----------------------------------------------------------------------------*/
 /* count tokens in token array                                                */
 /*----------------------------------------------------------------------------*/
-i8 Tokeniser::iCountTokens(char* pToken[], i8 nTokens)
+i8 Tokeniser::iCountTokens(Str* aToken[], i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
   for (i8 iToken = 0; iToken < nTokens; iToken++)
-    if (StrLib::bEqualTo("",pToken[iToken]))
+    if (aToken[iToken]->bEqual(""_Str))
       return iToken;
   
   ASSERT("Should never be reached"_Str);
@@ -277,7 +277,7 @@ i8 Tokeniser::iCountTokens(char* pToken[], i8 nTokens)
 /*----------------------------------------------------------------------------*/
 /* dump token array                                                           */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vDumpTokens(Str* pTitle, char* pToken[], i8 nTokens)
+void Tokeniser::vDumpTokens(Str* pTitle, Str* aToken[], i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
@@ -285,10 +285,10 @@ void Tokeniser::vDumpTokens(Str* pTitle, char* pToken[], i8 nTokens)
   
   for (i8 iToken = 0; iToken < nTokens; iToken++) {
     
-    if (! *pToken[iToken])
+    if (! *aToken[iToken]->a())
       break;
     
-    vTrace("%s "_Str, pToken[iToken]);
+    vTrace("%s "_Str, aToken[iToken]->a());
   }
   vTrace("\n"_Str);
 }

@@ -19,16 +19,16 @@ public:
   SeHistory(void);
   ~SeHistory(void);
   
-  void vAppend(char* pToken[]);
+  void vAppend(Str* aToken[]);
   void vClose(void);
   void vOpen(void);
   void vPrint(void);
-  bool bRecall(char* pToken[], i8 nTokens);
+  bool bRecall(Str* aToken[], i8 nTokens);
   
 private:
   void vSeekStart(void);
   void vSeekEnd(void);
-  bool bGet(i8 iCommand, char* pToken[], i8 nTokens);
+  bool bGet(i8 iCommand, Str* aToken[], i8 nTokens);
   bool bRead(char* wCommand);
   
   Footer* pFooter(void);

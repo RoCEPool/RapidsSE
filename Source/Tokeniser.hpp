@@ -63,13 +63,13 @@ namespace Parsing
     void vUseString(StrVal& sString);
     void vUseEnd(void);
 
-    eTK  eNextToken(char* wToken);
+    eTK  eNextToken(char* aToken);
     void vNextToken(void);
     
-    void vResetTokens(char* pToken[], i8 nTokens);
-    i8   iFindToken(Str* pLookFor, char* pToken[], i8 nTokens);
-    i8   iCountTokens(char* pToken[], i8 nTokens);
-    void vDumpTokens(Str* pTitle, char* pToken[], i8 nTokens);
+    void vResetTokens(Str* aToken[], i8 nTokens);
+    i8   iFindToken(Str* pLookFor, Str* aToken[], i8 nTokens);
+    i8   iCountTokens(Str* pToken[], i8 nTokens);
+    void vDumpTokens(Str* pTitle, Str* aToken[], i8 nTokens);
     
     bool bEOF(void);
     bool bLineMode(void);

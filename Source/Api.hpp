@@ -28,7 +28,7 @@ extern "C" eEC RapidsSE_SEitfNew(void* pAttachMap, void** ppSEitf, i8 iPartition
 
 extern "C" bool RapidsSE_SEitfInvalid(int eError);
 
-bool RapidsSE_ExecuteRequest(SEitf* pSEitf, char* pWords[], i8 iWords, char** ppResponse);
+bool RapidsSE_ExecuteRequest(SEitf* pSEitf, Str* aWords[], i8 iWords, char** ppResponse);
 
 // private calls
 eEC eExecuteRequest(SEitf* pSEitf, Str* aCommand);
@@ -36,7 +36,7 @@ eEC eExecuteRequest(SEitf* pSEitf, Str* aCommand, Str* aParameter);
 eEC eExecuteRequest(SEitf* pSEitf, Str* aCommand, Str* aParameter1,
                     Str* aParameter2, Str* aParameter3);
 
-bool bExecuteRequest(SEitf* pSEitf, char* pWords[], i8 iWords);
+bool bExecuteRequest(SEitf* pSEitf, Str* aWords[], i8 iWords);
 eEC eGetResponse(SEitf* pSEitf);
 
 /*============================================================================*/

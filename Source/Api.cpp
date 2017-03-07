@@ -647,7 +647,7 @@ eEC RapidsSE_EndInsert(SEitf* pSEitf)
 /*----------------------------------------------------------------------------*/
 /* Execute a request                                                          */
 /*----------------------------------------------------------------------------*/
-bool RapidsSE_ExecuteRequest(SEitf* pSEitf, char* pWords[], i8 iWords, char** ppResponse)
+bool RapidsSE_ExecuteRequest(SEitf* pSEitf, Str* aWords[], i8 iWords, char** ppResponse)
 {
   bool bResult;
   
@@ -655,7 +655,7 @@ bool RapidsSE_ExecuteRequest(SEitf* pSEitf, char* pWords[], i8 iWords, char** pp
   pSEitf->vClearLastError();
   
   // send request to se
-  bResult = bExecuteRequest(pSEitf, pWords, iWords);
+  bResult = bExecuteRequest(pSEitf, aWords, iWords);
   if (!bResult) {
     *ppResponse = nullptr;
     return bResult;
@@ -1733,12 +1733,12 @@ eEC eExecuteRequest(SEitf* pSEitf, Str* aCommand, Str* aParameter1,
 /*----------------------------------------------------------------------------*/
 /* execute command                                                            */
 /*----------------------------------------------------------------------------*/
-bool bExecuteRequest(SEitf* pSEitf, char* aWords[], i8 iWords)
+bool bExecuteRequest(SEitf* pSEitf, Str* aWords[], i8 iWords)
 {
   bool bResult;
   
   // execute command
-  bResult = pSEitf->bDecode((Str**)aWords, iWords);
+  bResult = pSEitf->bDecode(aWords, iWords);
   
   return bResult;
 }
