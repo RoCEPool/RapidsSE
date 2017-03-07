@@ -118,7 +118,7 @@ int main(int argc, const char* argv[])
   // used by shell script to start se prompt
   if (gxArguments.m_bStart) {
     File xFile;
-    xFile.vPath("./se.region");
+    xFile.vPath("./se.region"_Str);
     bool b = xFile.bOpen(C_OPEN_READ_WRITE_CREATE);
     ASSERT(b);
     xFile.vPrint("%s\n"_Str,gxArguments.m_sRegionName.aStr());
@@ -230,7 +230,7 @@ void vTest1(void)
   Timer xTimer;
   
   vTrace("Reading lineitem.tbl in chunks of %lld\n"_Str, iChunk);
-  xFile.vPath("/Volumes/Data/Users/alkayamarti/tpch_SF10/lineitem.tbl");
+  xFile.vPath("/Volumes/Data/Users/alkayamarti/tpch_SF10/lineitem.tbl"_Str);
   bool b = xFile.bOpen(C_OPEN_READ);
   ASSERT(b);
   

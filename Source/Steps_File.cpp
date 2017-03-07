@@ -140,7 +140,7 @@ ENTRY("vFileOpen");
   if ( ! nnpTask->m_pDataStack->bPop(sMode) )
     THROW("file.open"_Str);
   
-  bool bOpened = pFile->bOpen(sMode.aStr());
+  bool bOpened = pFile->bOpen(sMode);
   
   nnpTask->m_pDataStack->vPush(bOpened);
   
@@ -187,7 +187,7 @@ ENTRY("vFilePathSet");
   if ( ! nnpTask->m_pDataStack->bPop(sPath) )
     THROW_INVALID_DSTACK("file.path!");
   
-  pFile->vPath(sPath.aStr());
+  pFile->vPath(sPath);
   
   EXIT();
 }

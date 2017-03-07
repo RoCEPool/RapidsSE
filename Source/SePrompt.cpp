@@ -736,7 +736,7 @@ bool SePrompt::bTestFile(char* pWord)
   
   File xFile;
   
-  if (xFile.bExists(pWord))
+  if (xFile.bExists((Str*)pWord))
     return true;
   else
     return false;

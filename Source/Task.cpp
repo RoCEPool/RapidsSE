@@ -283,6 +283,22 @@ void Task::vAddConstant(Str* aName, i8 iVal)
 /*----------------------------------------------------------------------------*/
 /* add constant to main dictionary                                            */
 /*----------------------------------------------------------------------------*/
+void Task::vAddConstant(Str* aName, Str* aValue)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  Word* pNewWord = new(gpMainDic) Word(aName->a());
+  
+  ValWsp xWspStr;
+  xWspStr = aValue->a();
+  
+  pNewWord->vEncode("pushValue",&xWspStr);
+  pNewWord->vEncode("exit");
+}
+
+/*----------------------------------------------------------------------------*/
+/* add constant to main dictionary                                            */
+/*----------------------------------------------------------------------------*/
 void Task::vAddConstant(Str* aName, const char* aValue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);

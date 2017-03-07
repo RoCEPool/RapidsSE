@@ -72,7 +72,7 @@ void SeHistory::vOpen(void)
   
   StrLib::vSprint(wFileName,"/tmp/SEitf_%lld_history.txt"_Str,Process::iGetPid());
   
-  bool b = m_xFile.bOpen(wFileName,C_OPEN_READ_WRITE_CREATE);
+  bool b = m_xFile.bOpen((Str*)wFileName,C_OPEN_READ_WRITE_CREATE);
   ASSERT(b);
 }
 
@@ -173,7 +173,7 @@ bool SeHistory::bRead(char* wCommand)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEHISTORY,_FOOTER_);
   
-  bool bResult = m_xFile.bReadLine(wCommand);
+  bool bResult = m_xFile.bReadLine((Str*)wCommand);
   
   return bResult;
 }

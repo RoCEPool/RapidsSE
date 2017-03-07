@@ -14,29 +14,29 @@ Atomic gzFileOpenCount;
 
 // Opens for reading. If the file does not exist or cannot be found, the
 // fopen call fails.
-const char* C_OPEN_READ = "r";
+Str* C_OPEN_READ = "r"_Str;
 
 // Opens an empty file for writing. If the given file exists, its contents
 // are destroyed.
-const char* C_OPEN_WRITE = "w";
+Str* C_OPEN_WRITE = "w"_Str;
 
 // Opens for writing at the end of the file (appending) without removing
 // the end-of-file (EOF) marker before new data is written to the file.
 // Creates the file if it does not exist.
-const char* C_OPEN_APPEND = "a";
+Str* C_OPEN_APPEND = "a"_Str;
 
 // Opens for both reading and writing. The file must exist.
-const char* C_OPEN_READ_WRITE_EXIST = "r+";
+Str* C_OPEN_READ_WRITE_EXIST = "r+"_Str;
 
 // Opens an empty file for both reading and writing. If the file exists, its
 // contents are destroyed.
-const char* C_OPEN_READ_WRITE_CREATE = "w+";
+Str* C_OPEN_READ_WRITE_CREATE = "w+"_Str;
 
 // Opens for reading and appending. The appending operation includes the
 // removal of the EOF marker before new data is written to the file. The EOF
 // marker is not restored after writing is complete. Creates the file if it
 // does not exist.
-const char* C_OPEN_READ_APPEND = "a+";
+Str* C_OPEN_READ_APPEND = "a+"_Str;
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
@@ -205,7 +205,7 @@ void File::vFileDump(void)
 /*---------------------------------------------------------------------------*/
 /* test if named file exists                                                 */
 /*---------------------------------------------------------------------------*/
-bool File::bExists(const char *psFileName)
+bool File::bExists(Str* psFileName)
 {
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
 
@@ -213,7 +213,7 @@ bool File::bExists(const char *psFileName)
   
   struct stat xStat;
   
-  int rCode = stat(psFileName,&xStat);
+  int rCode = stat(psFileName->a(),&xStat);
   
   if (0 == rCode && (xStat.st_mode & S_IFREG)) {
     m_xSysCall.vSuccess();
@@ -376,7 +376,7 @@ bool File::bOpen(void)
 /*----------------------------------------------------------------------------*/
 /* open file                                                                  */
 /*----------------------------------------------------------------------------*/
-bool File::bOpen(const char* aOpenMode, i8 iTraceLevel)
+bool File::bOpen(Str* aOpenMode, i8 iTraceLevel)
 {
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
 
@@ -409,7 +409,7 @@ bool File::bOpen(const char* aOpenMode, i8 iTraceLevel)
 /*----------------------------------------------------------------------------*/
 /* open file                                                                  */
 /*----------------------------------------------------------------------------*/
-bool File::bOpen(const char* aFilePath, const char* aOpenMode, i8 iTraceLevel)
+bool File::bOpen(Str* aFilePath, Str* aOpenMode, i8 iTraceLevel)
 {
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
 
@@ -420,7 +420,7 @@ bool File::bOpen(const char* aFilePath, const char* aOpenMode, i8 iTraceLevel)
     vClose();
   }
   
-  vSet(aFilePath,aOpenMode,iTraceLevel);
+  vSet((Str*)aFilePath,aOpenMode,iTraceLevel);
   
   if (m_iTraceLevel)
     vTrace("File::bOpen: opening file %s mode %s\n"_Str,m_sFilePath.aStr(),m_sOpenMode.aStr());
@@ -452,7 +452,7 @@ s256& File::sPath(void)
 /*----------------------------------------------------------------------------*/
 /* set path                                                                   */
 /*----------------------------------------------------------------------------*/
-void File::vPath(const char* aFilePath)
+void File::vPath(Str* aFilePath)
 {
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
 
@@ -524,7 +524,7 @@ i8 File::iReadChunk(void* pChunk, i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* read next line                                                             */
 /*----------------------------------------------------------------------------*/
-bool File::bReadLine(char* aBuffer)
+bool File::bReadLine(Str* aBuffer)
 {
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
 
@@ -539,7 +539,7 @@ bool File::bReadLine(char* aBuffer)
   //  else
   //    nItems = fscanf(m_aFilePtr,"%[^\n]\n",s.aStr());
   
-  char *y = aBuffer;
+  char *y = aBuffer->a();
   
   *y = '\0';
   for (;;) {
@@ -552,7 +552,7 @@ bool File::bReadLine(char* aBuffer)
   
   *y = '\0';
   
-  if (*aBuffer) {
+  if (*aBuffer->a()) {
     m_xSysCall.vSuccess();
     return true;
   }
@@ -666,7 +666,7 @@ void File::vReset(void)
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
 
   m_aFilePtr = nullptr;
-  vSet("","");
+  vSet(""_Str,""_Str);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -787,7 +787,7 @@ void File::vSeekEnd(void)
 /*----------------------------------------------------------------------------*/
 /* set file arguments                                                         */
 /*----------------------------------------------------------------------------*/
-void File::vSet(const char* aFilePath, const char* aOpenMode, i8 iTraceLevel)
+void File::vSet(Str* aFilePath, Str* aOpenMode, i8 iTraceLevel)
 {
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
 
@@ -806,7 +806,7 @@ void File::vSet(const char* aFilePath, const char* aOpenMode, i8 iTraceLevel)
 /*----------------------------------------------------------------------------*/
 /* set file arguments                                                         */
 /*----------------------------------------------------------------------------*/
-void File::vSet(FILE* pFilePtr, const char* aFilePath, const char* aOpenMode, i8 iTraceLevel)
+void File::vSet(FILE* pFilePtr, Str* aFilePath, Str* aOpenMode, i8 iTraceLevel)
 {
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
 

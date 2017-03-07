@@ -3,12 +3,12 @@
 /*============================================================================*/
 #pragma once
 
-extern const char* C_OPEN_READ;
-extern const char* C_OPEN_WRITE;
-extern const char* C_OPEN_APPEND;
-extern const char* C_OPEN_READ_WRITE_EXIST;
-extern const char* C_OPEN_READ_WRITE_CREATE;
-extern const char* C_OPEN_READ_APPEND;
+extern Str* C_OPEN_READ;
+extern Str* C_OPEN_WRITE;
+extern Str* C_OPEN_APPEND;
+extern Str* C_OPEN_READ_WRITE_EXIST;
+extern Str* C_OPEN_READ_WRITE_CREATE;
+extern Str* C_OPEN_READ_APPEND;
 
 namespace System
 {
@@ -46,7 +46,7 @@ namespace System
     void vBuffer(i8 nBytes);
     void vClear(void);
     void vClose(void);
-    bool bExists(const char *aFilePath);
+    bool bExists(Str *aFilePath);
     char cGetChar(void);
     void vFileDump(void);
     void vFlush(void);
@@ -56,23 +56,23 @@ namespace System
     bool bIsStdin(void);
     bool bIsStdout(void);
     bool bOpen(void);
-    bool bOpen(const char* aOpenMode, i8 iTraceLevel=0);
-    bool bOpen(const char* aFilePath, const char* aOpenMode, i8 iTraceLevel=0);
+    bool bOpen(Str* aOpenMode, i8 iTraceLevel=0);
+    bool bOpen(Str* aFilePath, Str* aOpenMode, i8 iTraceLevel=0);
     s256& sPath(void);
-    void vPath(const char* aFilePath);
+    void vPath(Str* aFilePath);
     void vPath(StrVal& sFilePath);
     void vPrint(Str* aFormat,...);
     i8   iReadChunk(void* pChunk, i8 nBytes);
     bool bReadLine(StrVal& s);
-    bool bReadLine(char* y);
+    bool bReadLine(Str* y);
     bool bReadRecord(void);
     Scratch* pRecord(void);
     i8 iRecordLength(void);
     void vReset(void);
     void vSeek(i8 iOffset);
     void vSeekEnd(void);
-    void vSet(const char* aFilePath, const char* aOpenMode, i8 iTraceLevel=0);
-    void vSet(FILE* pFilePtr, const char* aFilePath, const char* aOpenMode, i8 iTraceLevel=0);
+    void vSet(Str* aFilePath, Str* aOpenMode, i8 iTraceLevel=0);
+    void vSet(FILE* pFilePtr, Str* aFilePath, Str* aOpenMode, i8 iTraceLevel=0);
     SysCall& rSysCall(void);
     i8   iTell(void);
     i8   iTraceLevel(void);

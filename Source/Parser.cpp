@@ -156,7 +156,7 @@ void Parser::vUseStdin(void)
   
   vResetParser();
   
-  m_xFile.vSet(stdin,"stdin",C_OPEN_READ);
+  m_xFile.vSet(stdin,"stdin"_Str,C_OPEN_READ);
   m_eSource = IS_STDIN;
   m_bRead = true;
 }
