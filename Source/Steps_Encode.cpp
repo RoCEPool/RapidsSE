@@ -64,7 +64,7 @@ void Task::vEncodeAgain(NNP_Task nnpTask)
     THROW_INVALID_DSTACK("again");
   
   // append : jump to known backward address
-  pCurrentWord->vEncode("jump",pKnownDestination);
+  pCurrentWord->vEncode("jump"_Str,pKnownDestination);
   
   EXIT();
 }
@@ -79,7 +79,7 @@ void Task::vEncodeAhead(NNP_Task nnpTask)
   Word* pCurrentWord = nnpTask->m_pCurrentWord;
   
   // append : jump to unknown forward address
-  pCurrentWord->vEncode("jump");
+  pCurrentWord->vEncode("jump"_Str);
   Cell* pUnknownOrigin = (Cell*)pCurrentWord->pAppend((Cell*)nullptr);
   
   // cstack: push unknown forward address
@@ -158,7 +158,7 @@ void Task::vEncodeContinue(NNP_Task nnpTask)
     THROW_INVALID_DSTACK("continue");
   
   // append : jump on true to known backward address
-  pCurrentWord->vEncode("jumpTrue",pKnownBackward);
+  pCurrentWord->vEncode("jumpTrue"_Str,pKnownBackward);
   
   // cstack: push known backward address
   nnpTask->m_pDataStack->vPush(pKnownBackward);
@@ -193,7 +193,7 @@ void Task::vEncodeIf(NNP_Task nnpTask)
   Word* pCurrentWord = nnpTask->m_pCurrentWord;
   
   // append : jumpFalse to unknown forward address
-  pCurrentWord->vEncode("jumpFalse");
+  pCurrentWord->vEncode("jumpFalse"_Str);
   Cell* pUnknownOrigin = (Cell*)pCurrentWord->pAppend((Cell*)nullptr);
   
   // cstack: push unknown forward address
@@ -212,9 +212,9 @@ void Task::vEncodeLoop(NNP_Task nnpTask)
   Word* pCurrentWord = nnpTask->m_pCurrentWord;
   
   // increment index:
-  pCurrentWord->vEncode("r>");
-  pCurrentWord->vEncode("1+");
-  pCurrentWord->vEncode(">r");
+  pCurrentWord->vEncode("r>"_Str);
+  pCurrentWord->vEncode("1+"_Str);
+  pCurrentWord->vEncode(">r"_Str);
   
   i8 iIsDo;
   // cstack: is do ?
@@ -229,8 +229,8 @@ void Task::vEncodeLoop(NNP_Task nnpTask)
     pDoLimitTest->m_pJumpTo = pCurrentWord->pLastCell();
   }
   
-  pCurrentWord->vEncode("2r@"); // copy index limit to dstack
-  pCurrentWord->vEncode("!=");   // test for limit > index
+  pCurrentWord->vEncode("2r@"_Str); // copy index limit to dstack
+  pCurrentWord->vEncode("!="_Str);   // test for limit > index
   
   if (iIsDo) {
     // jump on true to doHere:
@@ -238,14 +238,14 @@ void Task::vEncodeLoop(NNP_Task nnpTask)
     // cstack: pop destination address of backward jump
     if ( ! nnpTask->m_pDataStack->bPop(pDoHere) )
       THROW_INVALID_DSTACK("loop");
-    pCurrentWord->vEncode("jumpTrue",pDoHere);
+    pCurrentWord->vEncode("jumpTrue"_Str,pDoHere);
   }
   else {
-    pCurrentWord->vEncode("jumpTrue",pDoLimitTest+1);
+    pCurrentWord->vEncode("jumpTrue"_Str,pDoLimitTest+1);
   }
   
-  pCurrentWord->vEncode("rdrop");
-  pCurrentWord->vEncode("rdrop");
+  pCurrentWord->vEncode("rdrop"_Str);
+  pCurrentWord->vEncode("rdrop"_Str);
   
   EXIT();
 }
@@ -260,9 +260,9 @@ void Task::vEncodeLoopPlus(NNP_Task nnpTask)
   Word* pCurrentWord = nnpTask->m_pCurrentWord;
   
   // increment index:
-  pCurrentWord->vEncode("r>");
-  pCurrentWord->vEncode("+");
-  pCurrentWord->vEncode(">r");
+  pCurrentWord->vEncode("r>"_Str);
+  pCurrentWord->vEncode("+"_Str);
+  pCurrentWord->vEncode(">r"_Str);
   
   i8 iIsDo;
   // cstack: is do ?
@@ -277,8 +277,8 @@ void Task::vEncodeLoopPlus(NNP_Task nnpTask)
     pDoLimitTest->m_pJumpTo = pCurrentWord->pLastCell();
   }
   
-  pCurrentWord->vEncode("2r@"); // copy index limit to dstack
-  pCurrentWord->vEncode("!=");   // test for limit > index
+  pCurrentWord->vEncode("2r@"_Str); // copy index limit to dstack
+  pCurrentWord->vEncode("!="_Str);   // test for limit > index
   
   if (iIsDo) {
     // jump on true to doHere:
@@ -286,14 +286,14 @@ void Task::vEncodeLoopPlus(NNP_Task nnpTask)
     // cstack: pop destination address of backward jump
     if ( ! nnpTask->m_pDataStack->bPop(pDoHere) )
       THROW_INVALID_DSTACK("loop");
-    pCurrentWord->vEncode("jumpTrue",pDoHere);
+    pCurrentWord->vEncode("jumpTrue"_Str,pDoHere);
   }
   else {
-    pCurrentWord->vEncode("jumpTrue",pDoLimitTest+1);
+    pCurrentWord->vEncode("jumpTrue"_Str,pDoLimitTest+1);
   }
   
-  pCurrentWord->vEncode("rdrop");
-  pCurrentWord->vEncode("rdrop");
+  pCurrentWord->vEncode("rdrop"_Str);
+  pCurrentWord->vEncode("rdrop"_Str);
   
   EXIT();
 }
@@ -313,12 +313,12 @@ void Task::vEncodeNext(NNP_Task nnpTask)
     THROW_INVALID_DSTACK("loop");
   pDoLimitTest->m_pJumpTo = pCurrentWord->pLastCell();
   
-  pCurrentWord->vEncode("r@"); // copy index limit to dstack
+  pCurrentWord->vEncode("r@"_Str); // copy index limit to dstack
   
-  pCurrentWord->vEncode("jumpTrue",pDoLimitTest+1);
+  pCurrentWord->vEncode("jumpTrue"_Str,pDoLimitTest+1);
   
-  pCurrentWord->vEncode("rdrop");
-  pCurrentWord->vEncode("rdrop");
+  pCurrentWord->vEncode("rdrop"_Str);
+  pCurrentWord->vEncode("rdrop"_Str);
   
   EXIT();
 }
@@ -336,7 +336,7 @@ void Task::vEncodePushValue(NNP_Task nnpTask)
   
   Word* pCurrentWord = nnpTask->m_pCurrentWord;
   
-  pCurrentWord->vEncode("pushValue",&xValA);
+  pCurrentWord->vEncode("pushValue"_Str,&xValA);
   
   EXIT();
 }
@@ -376,7 +376,7 @@ void Task::vEncodeUntil(NNP_Task nnpTask)
     THROW_INVALID_DSTACK("until");
   
   // append : jump on false to known backward address
-  pCurrentWord->vEncode("jumpFalse",pKnownDestination);
+  pCurrentWord->vEncode("jumpFalse"_Str,pKnownDestination);
   
   EXIT();
 }

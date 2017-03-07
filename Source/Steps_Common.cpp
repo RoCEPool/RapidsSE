@@ -138,9 +138,9 @@ ENTRY("vCommonSlash");
     
     // encode the word
     xValWsp = nnpTask->m_nVariables;
-    pWordCommon->vEncode("pushValue",&xValWsp);
-    pWordCommon->vEncode("common.fetch");
-    pWordCommon->vEncode("exit");
+    pWordCommon->vEncode("pushValue"_Str,&xValWsp);
+    pWordCommon->vEncode("common.fetch"_Str);
+    pWordCommon->vEncode("exit"_Str);
     
     // accept /
     nnpTask->m_pTokeniser->vNextToken();
@@ -170,8 +170,8 @@ ENTRY("vCommonToCommon");
   ValWsp xValWsp;
   xValWsp = pWordCommon->iVariable();
   
-  pCurrentWord->vEncode("pushValue",&xValWsp);
-  pCurrentWord->vEncode("common.store");
+  pCurrentWord->vEncode("pushValue"_Str,&xValWsp);
+  pCurrentWord->vEncode("common.store"_Str);
 
   EXIT();
 }

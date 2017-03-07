@@ -425,7 +425,7 @@ void Word::vDump(eCN eClass, Object* pObject, const char* aTab)
 /*----------------------------------------------------------------------------*/
 /* encode call to named word                                                  */
 /*----------------------------------------------------------------------------*/
-void Word::vEncode(const char* aWord)
+void Word::vEncode(Str* aWord)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
@@ -440,7 +440,7 @@ void Word::vEncode(const char* aWord)
 /*----------------------------------------------------------------------------*/
 /* encode call to named word which has a cell* argument                       */
 /*----------------------------------------------------------------------------*/
-void Word::vEncode(const char* aWord, Cell* pCell)
+void Word::vEncode(Str* aWord, Cell* pCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
@@ -452,7 +452,7 @@ void Word::vEncode(const char* aWord, Cell* pCell)
 /*----------------------------------------------------------------------------*/
 /* encode call to named word which has a value argument                       */
 /*----------------------------------------------------------------------------*/
-void Word::vEncode(const char* aWord, Value* pValue)
+void Word::vEncode(Str* aWord, Value* pValue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
 
@@ -464,7 +464,7 @@ void Word::vEncode(const char* aWord, Value* pValue)
 /*----------------------------------------------------------------------------*/
 /* encode call to named word which has a word* argument                       */
 /*----------------------------------------------------------------------------*/
-void Word::vEncode(const char* aWord, Word* pWord)
+void Word::vEncode(Str* aWord, Word* pWord)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   

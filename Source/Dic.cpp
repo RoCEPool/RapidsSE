@@ -150,14 +150,14 @@ void Dic::vDump(eCN eClass, Object* pObject, const char* aTab)
 /*----------------------------------------------------------------------------*/
 /* find a word given name                                                     */
 /*----------------------------------------------------------------------------*/
-Word* Dic::pFindWord(const char* aName)
+Word* Dic::pFindWord(Str* aName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
   m_xLock.vGrabRead();
   
   for (Word* pWord = m_pLastWord; pWord; pWord = pWord->pPrevWord()) {
-    if (StrLib::bEqualTo(aName,pWord->sName().aStr(),C_NO_CASE)) {
+    if (StrLib::bEqualTo(aName->a(),pWord->sName().aStr(),C_NO_CASE)) {
       m_xLock.vDropRead();
       return pWord;
     }

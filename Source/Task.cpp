@@ -276,8 +276,8 @@ void Task::vAddConstant(Str* aName, i8 iVal)
   IntVal xIntVal;
   xIntVal = iVal;
   
-  pNewWord->vEncode("pushValue",&xIntVal);
-  pNewWord->vEncode("exit");
+  pNewWord->vEncode("pushValue"_Str,&xIntVal);
+  pNewWord->vEncode("exit"_Str);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -292,8 +292,8 @@ void Task::vAddConstant(Str* aName, Str* aValue)
   ValWsp xWspStr;
   xWspStr = aValue->a();
   
-  pNewWord->vEncode("pushValue",&xWspStr);
-  pNewWord->vEncode("exit");
+  pNewWord->vEncode("pushValue"_Str,&xWspStr);
+  pNewWord->vEncode("exit"_Str);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -308,8 +308,8 @@ void Task::vAddConstant(Str* aName, const char* aValue)
   ValWsp xWspStr;
   xWspStr = aValue;
   
-  pNewWord->vEncode("pushValue",&xWspStr);
-  pNewWord->vEncode("exit");
+  pNewWord->vEncode("pushValue"_Str,&xWspStr);
+  pNewWord->vEncode("exit"_Str);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -750,7 +750,7 @@ void Task::vAddPrimitives(void)
     vTrace("[[mainThread]] Adding primitives...\n"_Str);
   
   vAddPrimitive("word"_Str,            &vWord,             false);
-  gpWord = gpMainDic->pFindWord("word");
+  gpWord = gpMainDic->pFindWord("word"_Str);
 
   vAddPrimitives_Address();
   vAddPrimitives_Args();
@@ -1078,7 +1078,7 @@ Word* Task::pCompileColon(StrVal& sDefinition)
         
       case TK_INTEGER:
         xValWsp = StrLib::iToI8(m_pTokeniser->sToken().aStr());
-        pNewWord->vEncode("pushValue",&xValWsp);
+        pNewWord->vEncode("pushValue"_Str,&xValWsp);
         break;
         
       case TK_NAME:
@@ -1102,7 +1102,7 @@ Word* Task::pCompileColon(StrVal& sDefinition)
         
       case TK_STRING: {
         xValWsp = m_pTokeniser->sToken().aStr();
-        pNewWord->vEncode("pushValue",&xValWsp);
+        pNewWord->vEncode("pushValue"_Str,&xValWsp);
         break;
       }
         
@@ -1113,7 +1113,7 @@ Word* Task::pCompileColon(StrVal& sDefinition)
     m_pTokeniser->vNextToken();
   }
   
-  pNewWord->vEncode("exit");
+  pNewWord->vEncode("exit"_Str);
   
 
   // reset scanning
@@ -1429,7 +1429,7 @@ void Task::vSeedDicCompileSen(void)
   if (gxArguments.m_bVerbose)
     vTrace("[[mainThread]] Seeding Dic Compile...\n"_Str);
   
-  Word* pBootSen = gpMainDic->pFindWord("::dicCompile");
+  Word* pBootSen = gpMainDic->pFindWord("::dicCompile"_Str);
   ASSERT(pBootSen);
   
   IP.m_pCell = pBootSen->pFirstCell();
@@ -1451,7 +1451,7 @@ void Task::vSeedWord(const char* aLambda)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  Word* pShellEnter = gpMainDic->pFindWord("::docmd");
+  Word* pShellEnter = gpMainDic->pFindWord("::docmd"_Str);
   
   IP.m_pCell = pShellEnter->pFirstCell();
   
@@ -1474,7 +1474,7 @@ void Task::vSeedDocol(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  Word* pShellEnter = gpMainDic->pFindWord("::enter");
+  Word* pShellEnter = gpMainDic->pFindWord("::enter"_Str);
   
   IP.m_pCell = pShellEnter->pFirstCell();
   

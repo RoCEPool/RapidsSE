@@ -70,7 +70,7 @@ bool PosixThread::bBindThread(i8 iCpu)
   
     iResult = pthread_setafffinity_np(m_iPosixThreadId, sizeof(cpu_set_t), &xAffinity);
     if (iResult == -1) {
-      vWarn("Error in pthread_setafffinity_np() : %lld\n", errno);
+      vWarn("Error in pthread_setafffinity_np() : %lld\n"_Str, errno);
       
     }
   */
@@ -155,7 +155,7 @@ i8 PosixThread::iThreadCpu(void)
   
   iResult = pthread_getafffinity_np(m_iPosixThreadId, sizeof(cpu_set_t), &xAffinity);
   if (iResult == -1) {
-    vWarn("Error in pthread_getafffinity_np() : %lld\n", errno);
+    vWarn("Error in pthread_getafffinity_np() : %lld\n"_Str, errno);
   }
   
   i8 cpu_set_size = static_cast<i8>(sizeof(cpu_set_t));

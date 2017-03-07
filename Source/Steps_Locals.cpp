@@ -115,7 +115,7 @@ ENTRY("vLocalsBar");
       nnpTask->m_xPathStack.vPush(pDic);
       
       // enocde locals frame push
-      pCurrentWord->vEncode("locals.push");
+      pCurrentWord->vEncode("locals.push"_Str);
     }
     
     // create new word for local in current dictionary
@@ -128,13 +128,13 @@ ENTRY("vLocalsBar");
     
     // encode the word
     xValWsp = nnpTask->m_nVariables;
-    pWordLocal->vEncode("pushValue",&xValWsp);
-    pWordLocal->vEncode("local.fetch");
-    pWordLocal->vEncode("exit");
+    pWordLocal->vEncode("pushValue"_Str,&xValWsp);
+    pWordLocal->vEncode("local.fetch"_Str);
+    pWordLocal->vEncode("exit"_Str);
 
     // initialise the local from dstack
-    pCurrentWord->vEncode("pushValue",&xValWsp);
-    pCurrentWord->vEncode("local.store");
+    pCurrentWord->vEncode("pushValue"_Str,&xValWsp);
+    pCurrentWord->vEncode("local.store"_Str);
     
     nnpTask->m_nVariables++;
   }
@@ -197,8 +197,8 @@ ENTRY("vLocalsTo");
   ValWsp xValWsp;
   xValWsp = pWordVariable->iVariable();
   
-  pCurrentWord->vEncode("pushValue",&xValWsp);
-  pCurrentWord->vEncode("local.store");
+  pCurrentWord->vEncode("pushValue"_Str,&xValWsp);
+  pCurrentWord->vEncode("local.store"_Str);
 
   EXIT();
 }

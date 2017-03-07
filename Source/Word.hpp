@@ -115,10 +115,10 @@ namespace Dictionaries
     TaskStep* ppEntryStep(void);
     void  vDistributed(eDT eDistributed);
     eDT   eDistributed(void);
-    void  vEncode(const char* aWord);
-    void  vEncode(const char* aWord, Cell* pCell);
-    void  vEncode(const char* aWord, Word* pWord);
-    void  vEncode(const char* aWord, Value* pValue);
+    void  vEncode(Str* aWord);
+    void  vEncode(Str* aWord, Cell* pCell);
+    void  vEncode(Str* aWord, Word* pWord);
+    void  vEncode(Str* aWord, Value* pValue);
     void  vEncode(TaskStep* ppEntryStep);
     void  vFinalRoutine(const char* pRoutine);
     char* pFinalRoutine(void);

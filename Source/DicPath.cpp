@@ -162,11 +162,11 @@ Word* DicPath::pFindWord(const char* aName)
     
     Dic* pDic = m_pDic[iDic];
     
-    if ( (pWord = pDic->pFindWord(aName)) )
+    if ( (pWord = pDic->pFindWord((Str*)aName)) )
       return pWord;
   }
   
-  if ( (pWord = gpMainDic->pFindWord(aName)) )
+  if ( (pWord = gpMainDic->pFindWord((Str*)aName)) )
     return pWord;
   
   return nullptr;
@@ -183,7 +183,7 @@ Word* DicPath::pFindInCurrent(const char* aName)
   
   Word* pWord;
   
-  if ( (pWord = m_pDic[m_iTop]->pFindWord(aName)) )
+  if ( (pWord = m_pDic[m_iTop]->pFindWord((Str*)aName)) )
     return pWord;
   
   return nullptr;

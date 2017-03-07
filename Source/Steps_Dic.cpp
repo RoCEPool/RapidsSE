@@ -117,7 +117,7 @@ void Task::vDicIsCompiled(NNP_Task nnpTask)
 {
   ENTRY("vDicIsCompiled");
   
-  Word* pWord = gpMainDic->pFindWord("__compiled__");
+  Word* pWord = gpMainDic->pFindWord("__compiled__"_Str);
   
   i8 bIsCompiled = pWord ? true : false;
   

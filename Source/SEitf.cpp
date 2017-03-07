@@ -181,7 +181,7 @@ void SEitf::vInit(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   // request queue
-  Word* pReqQueWord = gpMainDic->pFindWord("requestQueue");
+  Word* pReqQueWord = gpMainDic->pFindWord("requestQueue"_Str);
   ASSERT(pReqQueWord);
   m_pRequestQueue = reinterpret_cast<Queue*>(pReqQueWord->aBodyArea());
   
@@ -191,7 +191,7 @@ void SEitf::vInit(void)
   // set up initial default path
   
   // /tenants
-  Word* pTenants = gpMainDic->pFindWord("tenants");
+  Word* pTenants = gpMainDic->pFindWord("tenants"_Str);
   ASSERT(pTenants);
   Cell* pCell = pTenants->pFirstCell();
   m_xPathStack.vPush(reinterpret_cast<Dic*>(pCell));

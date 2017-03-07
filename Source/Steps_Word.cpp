@@ -182,8 +182,8 @@ void Task::vComma(NNP_Task nnpTask)
   if ( ! nnpTask->m_pDataStack->bPop(xValWsp) )
     THROW_INVALID_DSTACK("comma");
   
-  pCurrentWord->vEncode("pushValue",&xValWsp);
-  pCurrentWord->vEncode("exit");
+  pCurrentWord->vEncode("pushValue"_Str,&xValWsp);
+  pCurrentWord->vEncode("exit"_Str);
   
   EXIT();
 }
@@ -294,8 +294,8 @@ ENTRY("vDoes");
   
   Word* pCurrentWord = nnpTask->m_pCurrentWord;
   
-  pCurrentWord->vEncode("does_rt");
-  pCurrentWord->vEncode("exit");
+  pCurrentWord->vEncode("does_rt"_Str);
+  pCurrentWord->vEncode("exit"_Str);
   
   //pCurrentWord->vEncode("pushBody");
   
@@ -405,54 +405,54 @@ void Task::vHashHashColon(NNP_Task nnpTask)
   // at runtime the dstack will be ( plan value )
   
                                   // at runtime we synthesise by:
-  pW->vEncode("dup");             //   ( value plan plan )
-  pW->vEncode("-rot");            //   ( plan value plan )
+  pW->vEncode("dup"_Str);             //   ( value plan plan )
+  pW->vEncode("-rot"_Str);            //   ( plan value plan )
   
-  pW->vEncode("plan.opFrame0");   //   get top opframe of plan
-  pW->vEncode("dup");             //   dup
-  pW->vEncode("jumpTrue");        //   forward jump if we have an opFrame
+  pW->vEncode("plan.opFrame0"_Str);   //   get top opframe of plan
+  pW->vEncode("dup"_Str);             //   dup
+  pW->vEncode("jumpTrue"_Str);        //   forward jump if we have an opFrame
   pOpFrameJumpArg = (Cell*)pW->pAppend((Cell*)nullptr);
   
   // we dont have an opFrame, only a plan
-  pW->vEncode("drop");            //   drop the null opFrame pointer
+  pW->vEncode("drop"_Str);            //   drop the null opFrame pointer
   xWsp = "planDic ";
-  pW->vEncode("pushValue",&xWsp); //   push "planDic "
+  pW->vEncode("pushValue"_Str,&xWsp); //   push "planDic "
 
-  pW->vEncode("jump");            //   forward jump to colon etc
+  pW->vEncode("jump"_Str);            //   forward jump to colon etc
   pToColonJumpArg = (Cell*)pW->pAppend((Cell*)nullptr);
 
   // we have an opFrame
   pOpFrameJumpArg->m_pJumpTo = pW->pLastCell();
   
-  pW->vEncode("opFrame.name");    //   get name of opframe
+  pW->vEncode("opFrame.name"_Str);    //   get name of opframe
   xWsp = "opDic ";
-  pW->vEncode("pushValue",&xWsp); //   push "opDic "
-  pW->vEncode("str.prepend");     //   form "opDic <opDicNm>"
+  pW->vEncode("pushValue"_Str,&xWsp); //   push "opDic "
+  pW->vEncode("str.prepend"_Str);     //   form "opDic <opDicNm>"
   
   // we have an opFrame
   pToColonJumpArg->m_pJumpTo = pW->pLastCell();
   
   xWsp = " : ";
-  pW->vEncode("pushValue",&xWsp); //   push " : "
-  pW->vEncode("str.cat");         //   form "opDic <opDicNm> : "
+  pW->vEncode("pushValue"_Str,&xWsp); //   push " : "
+  pW->vEncode("str.cat"_Str);         //   form "opDic <opDicNm> : "
   
   xWsp = sSymbolicArg.aStr();
-  pW->vEncode("pushValue",&xWsp); //   push "<symNm>"
-  pW->vEncode("str.cat");         //   form "opDic <opDicNm> : <symNm>"
+  pW->vEncode("pushValue"_Str,&xWsp); //   push "<symNm>"
+  pW->vEncode("str.cat"_Str);         //   form "opDic <opDicNm> : <symNm>"
   
   xWsp = " %V ; ";
-  pW->vEncode("pushValue",&xWsp); //   push " %V ; "
-  pW->vEncode("str.cat");         //   form "opDic <opDicNm> : <symNm> %V ; "
+  pW->vEncode("pushValue"_Str,&xWsp); //   push " %V ; "
+  pW->vEncode("str.cat"_Str);         //   form "opDic <opDicNm> : <symNm> %V ; "
   
-  pW->vEncode("str.format");      //   replace %V to yield concrete defn
+  pW->vEncode("str.format"_Str);      //   replace %V to yield concrete defn
   
   // at runtime this should produce a code text of the form:
   //      "planDic : <symNm> <value> ; "
   //   or
   //      "opDic <opDicNm> : <symNm> <value> ; "
   
-  pW->vEncode("swap");               //   dstack is ( codeText plan )
-  pW->vEncode("plan.lambda+");       //   append to lambda text
+  pW->vEncode("swap"_Str);               //   dstack is ( codeText plan )
+  pW->vEncode("plan.lambda+"_Str);       //   append to lambda text
   
   // at runtime the dstack will be ( )
   
@@ -651,11 +651,11 @@ void Task::vPostpone(NNP_Task nnpTask)
     // put call to normal word into some future definition
     
     // copy indirect pointer into the current word
-    pCurrentWord->vEncode("pushValue",pCalledWord);
+    pCurrentWord->vEncode("pushValue"_Str,pCalledWord);
     if (WT_PRIMITIVE == pCalledWord->eWordType())
-      pCurrentWord->vEncode("encodeCallPrimitive");
+      pCurrentWord->vEncode("encodeCallPrimitive"_Str);
     else
-      pCurrentWord->vEncode("encodeCallRoutine");
+      pCurrentWord->vEncode("encodeCallRoutine"_Str);
   }
   
   EXIT();
@@ -766,10 +766,10 @@ void Task::vSemicolon(NNP_Task nnpTask)
     nnpTask->m_xPathStack.vDiscard();
     
     // enocde locals frame pop
-    pCurrentWord->vEncode("locals.pop");
+    pCurrentWord->vEncode("locals.pop"_Str);
   }
   
-  pCurrentWord->vEncode("exit");
+  pCurrentWord->vEncode("exit"_Str);
   
   nnpTask->m_bCompiling = false;
   
@@ -793,34 +793,34 @@ void Task::vSemicolon(NNP_Task nnpTask)
     ValWsp xValWsp;
     
     xValWsp = sTildeName.aStr();
-    pWordTilde->vEncode("pushValue",&xValWsp);
-    pWordTilde->vEncode("tracePoint");
+    pWordTilde->vEncode("pushValue"_Str,&xValWsp);
+    pWordTilde->vEncode("tracePoint"_Str);
     
     xValWsp = pCurrentWord->iParams();
-    pWordTilde->vEncode("pushValue",&xValWsp);
-    pWordTilde->vEncode("put$$");
+    pWordTilde->vEncode("pushValue"_Str,&xValWsp);
+    pWordTilde->vEncode("put$$"_Str);
     
     xValWsp = pCurrentWord->sName().aStr();
-    pWordTilde->vEncode("pushValue",&xValWsp);
+    pWordTilde->vEncode("pushValue"_Str,&xValWsp);
     
     xValWsp = "theIndirectCall";
-    pWordTilde->vEncode("pushValue",&xValWsp);
-    pWordTilde->vEncode("tracePoint");
+    pWordTilde->vEncode("pushValue"_Str,&xValWsp);
+    pWordTilde->vEncode("tracePoint"_Str);
     
-    pWordTilde->vEncode(">>");
+    pWordTilde->vEncode(">>"_Str);
     
     if (DT_ALLPARTICIPANTS == pCurrentWord->eDistributed())
-      pWordTilde->vEncode(">>allParticipants>");
+      pWordTilde->vEncode(">>allParticipants>"_Str);
     else
-      pWordTilde->vEncode(">>oneParticipant>");
+      pWordTilde->vEncode(">>oneParticipant>"_Str);
     
     xValWsp = sTildeName.aStr();
-    pWordTilde->vEncode("pushValue",&xValWsp);
-    pWordTilde->vEncode("tracePoint");
+    pWordTilde->vEncode("pushValue"_Str,&xValWsp);
+    pWordTilde->vEncode("tracePoint"_Str);
     
-    pWordTilde->vEncode(pCurrentWord->pFinalRoutine());
+    pWordTilde->vEncode((Str*)pCurrentWord->pFinalRoutine());
     
-    pWordTilde->vEncode("exit");
+    pWordTilde->vEncode("exit"_Str);
   }
     
   // discard subDic use
@@ -879,7 +879,7 @@ void Task::vTick(NNP_Task nnpTask)
   
   if (nnpTask->m_bCompiling) {
     Word* pCurrentWord = nnpTask->m_pCurrentWord;
-    pCurrentWord->vEncode("pushValue",pWord);
+    pCurrentWord->vEncode("pushValue"_Str,pWord);
   }
   else {
     nnpTask->m_pDataStack->vPush(pWord);

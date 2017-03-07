@@ -353,7 +353,7 @@ void RapidsSE::vSystemInit(void)
   gzPlanId =  gpGrid->iThisNode() << 48;
   
   // get the trace file
-  Word* pTraceFileWord = gpMainDic->pFindWord("trace_file");
+  Word* pTraceFileWord = gpMainDic->pFindWord("trace_file"_Str);
   gpTraceFile = reinterpret_cast<File*>(pTraceFileWord->aBodyArea());
   
   // the root thread is on dstack of root task
