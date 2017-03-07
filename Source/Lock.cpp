@@ -80,7 +80,7 @@ void Lock::vInit(Str* aName)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   
-  m_aName = aName->a();
+  m_aName = aName;
   
   ASSERT(0 == m_uLockWord); // logic check
 }
@@ -148,7 +148,7 @@ void Lock::vGrabRead(void)
       bReported = true;
       vTrace("Lock::vGrabRead -- Unable to grab read lock %p %s\n"_Str,
              this,
-             m_aName ? m_aName : "<noName>");
+             m_aName ? m_aName : "<noName>"_Str);
     }
     
     rCode = Synch::iLockGrabRead(&m_uLockWord);
@@ -257,7 +257,7 @@ void Lock::vGrabWrite(void)
       bReported = true;
       vTrace("Lock::vGrabWrite -- Unable to grab write lock %p %s\n"_Str,
              this,
-             m_aName ? m_aName : "<noName>");
+             m_aName ? m_aName : "<noName>"_Str);
     }
     
     rCode = Synch::iLockGrabWrite(&m_uLockWord);
