@@ -14,7 +14,7 @@
 void* Key::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  vFatal("fatal: Key class cannot be new'd\n");
+  vFatal("fatal: Key class cannot be new'd\n"_Str);
   
   RASSERT(0);
 }

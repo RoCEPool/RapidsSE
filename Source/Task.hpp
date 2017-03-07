@@ -130,8 +130,8 @@ namespace Tasks
     static void vDump(eCN eClass, Object* pObject, const char* aTab);
     
     void vAdjustNext(i8 iBytes);
-    void vAddConstant(const char* aName, i8 iVal);
-    void vAddConstant(const char* aName, const char* aValue);
+    void vAddConstant(Str* aName, i8 iVal);
+    void vAddConstant(Str* aName, const char* aValue);
     void vAddConstants(void);
     void vAddMunged(NNP_Task nnpTask);
     void vAddPrimitive(Str* aName, TaskStep pStep, bool bImmediate);

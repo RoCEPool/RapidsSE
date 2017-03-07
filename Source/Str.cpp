@@ -17,7 +17,7 @@ void* Str::operator new(size_t iSize)
 {
   RASSERT(iSize);
   
-  vFatal("fatal: Str class cannot be new'd\n");
+  vFatal("fatal: Str class cannot be new'd\n"_Str);
   
   RASSERT(0);
 }

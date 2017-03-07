@@ -14,7 +14,7 @@
 void* KeyWsp::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  vFatal("fatal: KeyWsp class cannot be new'd\n");
+  vFatal("fatal: KeyWsp class cannot be new'd\n"_Str);
   
   RASSERT(0);
 }

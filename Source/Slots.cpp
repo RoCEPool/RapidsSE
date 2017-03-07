@@ -14,7 +14,7 @@ extern Arguments gxArguments;
 void* Slots::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  vFatal("fatal: Slots class cannot be new'd");
+  vFatal("fatal: Slots class cannot be new'd"_Str);
   
   RASSERT(0);
 }
@@ -25,7 +25,7 @@ void* Slots::operator new(size_t iSize)
 void Slots::operator delete(void* pBufferAddress)
 {
   RASSERT(pBufferAddress);
-  vFatal("fatal: Slots class cannot be deleted");
+  vFatal("fatal: Slots class cannot be deleted"_Str);
   
   RASSERT(0);
 }

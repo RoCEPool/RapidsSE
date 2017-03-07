@@ -31,11 +31,11 @@ extern "C" bool RapidsSE_SEitfInvalid(int eError);
 bool RapidsSE_ExecuteRequest(SEitf* pSEitf, char* pWords[], i8 iWords, char** ppResponse);
 
 // private calls
-eEC eExecuteRequest(SEitf* pSEitf, const char* pCommand, const char* pParameter);
-eEC eExecuteRequest(SEitf* pSEitf, const char* pCommand,
-    const char* pParameter1, const char* pParameter2, const char* pParameter3);
+eEC eExecuteRequest(SEitf* pSEitf, Str* aCommand);
+eEC eExecuteRequest(SEitf* pSEitf, Str* aCommand, Str* aParameter);
+eEC eExecuteRequest(SEitf* pSEitf, Str* aCommand, Str* aParameter1,
+                    Str* aParameter2, Str* aParameter3);
 
-eEC eExecuteRequest(SEitf* pSEitf, const char* pCommand);
 bool bExecuteRequest(SEitf* pSEitf, char* pWords[], i8 iWords);
 eEC eGetResponse(SEitf* pSEitf);
 

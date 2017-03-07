@@ -49,7 +49,7 @@ using namespace Structures;
 template <class OBJECT>
 void* List_t<OBJECT>::operator new(size_t iSize)
 {
-  vFatal("fatal: List_t class cannot be new'd");
+  vFatal("fatal: List_t class cannot be new'd"_Str);
   
   RASSERT(0);
 }

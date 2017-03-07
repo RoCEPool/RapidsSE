@@ -14,7 +14,7 @@ extern BufferPool* gpBufferPool;
 void* Time::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  vFatal("fatal: Time class cannot be new'd");
+  vFatal("fatal: Time class cannot be new'd"_Str);
   
   RASSERT(0);
 }
@@ -62,7 +62,7 @@ void Time::vSet(Since* pSince)
   void* pTimeResult = gmtime_r(&iSeconds,&xTimeResult);
   
   if ( ! pTimeResult )
-    vError("gmtime_r() error; errno=%d",errno);
+    vError("gmtime_r() error; errno=%d"_Str,errno);
   
   m_iYear   = xTimeResult.tm_year;
   m_iMonth  = xTimeResult.tm_mon+1;

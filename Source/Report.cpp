@@ -55,13 +55,13 @@ void Debugging::vTrace(const char* psFormat, ...)
 /*---------------------------------------------------------------------------*/
 /* report a warning message                                                  */
 /*---------------------------------------------------------------------------*/
-void Debugging::vWarn(const char* psFormat, ...)
+void Debugging::vWarn(Str* aFormat, ...)
 {
   va_list xArgs;
   
-  va_start(xArgs,psFormat);
+  va_start(xArgs,aFormat);
   
-  vReport(C_REPORT_WARNING,psFormat,xArgs);
+  vReport(C_REPORT_WARNING,aFormat->a(),xArgs);
   
   va_end(xArgs);
 }
@@ -69,13 +69,13 @@ void Debugging::vWarn(const char* psFormat, ...)
 /*---------------------------------------------------------------------------*/
 /* report a recoverable error message                                        */
 /*---------------------------------------------------------------------------*/
-void Debugging::vError(const char* psFormat, ...)
+void Debugging::vError(Str* aFormat, ...)
 {
   va_list xArgs;
   
-  va_start(xArgs,psFormat);
+  va_start(xArgs,aFormat);
   
-  vReport(C_REPORT_ERROR,psFormat,xArgs);
+  vReport(C_REPORT_ERROR,aFormat->a(),xArgs);
   
   va_end(xArgs);
 }
@@ -83,13 +83,13 @@ void Debugging::vError(const char* psFormat, ...)
 /*---------------------------------------------------------------------------*/
 /* vFatal: report a non-recoverable fatal message                            */
 /*---------------------------------------------------------------------------*/
-void Debugging::vFatal(const char* psFormat, ...)
+void Debugging::vFatal(Str* aFormat, ...)
 {
   va_list xArgs;
   
-  va_start(xArgs,psFormat);
+  va_start(xArgs,aFormat);
   
-  vReport(C_REPORT_FATAL,psFormat,xArgs);
+  vReport(C_REPORT_FATAL,aFormat->a(),xArgs);
   
   va_end(xArgs);
   exit(EXIT_FAILURE);

@@ -110,7 +110,7 @@ Object* Heap::pAllocate(eCN eAllocClass)
   
   switch(eHeap) {
     case HT_INVALID:
-      vFatal("Heap::pAllocate: Invalid heap allocation: class %lld %lls\n",
+      vFatal("Heap::pAllocate: Invalid heap allocation: class %lld %lls\n"_Str,
              eAllocClass,aCN[eAllocClass]);
     
     case HT_SMALL:
@@ -130,7 +130,7 @@ Object* Heap::pAllocate(eCN eAllocClass)
       return pObject;
       
     default:
-      vFatal("Heap::pAllocate: Invalid heap allocation: eHeap %lld\n",
+      vFatal("Heap::pAllocate: Invalid heap allocation: eHeap %lld\n"_Str,
              eHeap);
       
   }
@@ -152,7 +152,7 @@ void Heap::vFree(Object* pObject)
   
   switch(eHeap) {
     case HT_INVALID:
-      vFatal("Heap::vFree: Invalid heap free: class %lld %lls\n",
+      vFatal("Heap::vFree: Invalid heap free: class %lld %lls\n"_Str,
              eAllocClass,aCN[eAllocClass]);
       
     case HT_SMALL:
@@ -172,7 +172,7 @@ void Heap::vFree(Object* pObject)
       return;
       
     default:
-      vFatal("Heap::vFree: Invalid heap free: eHeap %lld\n",
+      vFatal("Heap::vFree: Invalid heap free: eHeap %lld\n"_Str,
              eHeap);
       
   }
@@ -225,7 +225,7 @@ Object* Heap::pAllocObject(eCN eAllocClass)
   if (! m_pFreeHead ) {
     if (! bExtendHeap()) {
       // error: we have run out of space
-      vWarn("Heap::pAllocObject: unable to extend heap\n");
+      vWarn("Heap::pAllocObject: unable to extend heap\n"_Str);
       m_zLock.vDropWrite();
       return nullptr;
     }

@@ -44,7 +44,7 @@ void* Thread::operator new(size_t iSize, Thread* pThread)
 void Thread::operator delete(void* pTxAddress)
 {
   RASSERT(pTxAddress);
-  vFatal("fatal: Thread class cannot be deleted");
+  vFatal("fatal: Thread class cannot be deleted"_Str);
 
   RASSERT(0);
 }
@@ -108,7 +108,7 @@ void* Thread::vEntry(void* pArg)
     else {
       StrLib::vCopy(wFileName, pError->aFileName());
     }
-    vFatal("ERROR: [ThreadLoop] %s: line %lld in %s\n",
+    vFatal("ERROR: [ThreadLoop] %s: line %lld in %s\n"_Str,
           pError->aErrorMsg(),
           pError->iLineNo(),
           wFileName);

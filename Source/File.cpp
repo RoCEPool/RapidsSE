@@ -104,12 +104,12 @@ File::~File(void)
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
   
   if (m_aFilePtr) {
-    vWarn("File::~File file not closed: %s %s\n",m_sFilePath.aStr(),m_sOpenMode.aStr());
+    vWarn("File::~File file not closed: %s %s\n"_Str,m_sFilePath.aStr(),m_sOpenMode.aStr());
 
     vClose();
     
     if (m_xSysCall.bHadError())
-      vWarn("File::~File: file could not be closed: %s",m_sFilePath.aStr());
+      vWarn("File::~File: file could not be closed: %s"_Str,m_sFilePath.aStr());
   }
 }
 
@@ -133,7 +133,7 @@ void File::vBuffer(i8 nBytes)
     iResult = setvbuf(m_aFilePtr,NULL,_IOFBF,(int)nBytes);
   
   if (iResult)
-    vWarn("File::vBuffer: setvbuf failed: %s",m_sFilePath.aStr());
+    vWarn("File::vBuffer: setvbuf failed: %s"_Str,m_sFilePath.aStr());
   
 }
 
@@ -169,7 +169,7 @@ void File::vClose(void)
   
   if ( ! m_aFilePtr ) {
     m_xSysCall.vFailure(0);
-    vWarn("File::vClose: file not open: %s",m_sFilePath.aStr());
+    vWarn("File::vClose: file not open: %s"_Str,m_sFilePath.aStr());
     return;
   }
   
@@ -177,7 +177,7 @@ void File::vClose(void)
   
   if ((char)EOF == rCode) {
     m_xSysCall.vError(errno);
-    vWarn("File::vClose: fclose(%p) error; errno=%d : %s %s",
+    vWarn("File::vClose: fclose(%p) error; errno=%d : %s %s"_Str,
           m_aFilePtr,errno,m_sFilePath.aStr(),m_sOpenMode.aStr());
     return;
   }
@@ -226,7 +226,7 @@ bool File::bExists(const char *psFileName)
   }
   
   m_xSysCall.vError(errno);
-  vWarn("File::bExists: stat() error; errno=%d",errno);
+  vWarn("File::bExists: stat() error; errno=%d"_Str,errno);
   
   return false;
 }
@@ -244,7 +244,7 @@ void File::vFlush(void)
 
   if ((char)EOF == rCode) {
     m_xSysCall.vError(errno);
-    vWarn("File::vFlush: fflush() error; errno=%d",errno);
+    vWarn("File::vFlush: fflush() error; errno=%d"_Str,errno);
     return;
   }
 
@@ -353,7 +353,7 @@ bool File::bOpen(void)
   m_xSysCall.vClear();
   
   if (m_aFilePtr) {
-    vWarn("File::bOpen: previous file not closed: %s",m_sFilePath.aStr());
+    vWarn("File::bOpen: previous file not closed: %s"_Str,m_sFilePath.aStr());
     vClose();
   }
   
@@ -363,7 +363,7 @@ bool File::bOpen(void)
   m_aFilePtr = fopen(m_sFilePath.aStr(),m_sOpenMode.aStr());
   
   if ( ! m_aFilePtr ) {
-    vWarn("File::bOpen: fopen(%s,%s) error; errno=%d",
+    vWarn("File::bOpen: fopen(%s,%s) error; errno=%d"_Str,
           m_sFilePath.aStr(),m_sOpenMode.aStr(),errno);
     return false;
   }
@@ -383,7 +383,7 @@ bool File::bOpen(const char* aOpenMode, i8 iTraceLevel)
   m_xSysCall.vClear();
   
   if (m_aFilePtr) {
-    vWarn("File::bOpen: previous file not closed: %s\n",m_sFilePath.aStr());
+    vWarn("File::bOpen: previous file not closed: %s\n"_Str,m_sFilePath.aStr());
     vClose();
   }
   
@@ -396,7 +396,7 @@ bool File::bOpen(const char* aOpenMode, i8 iTraceLevel)
   m_aFilePtr = fopen(m_sFilePath.aStr(),m_sOpenMode.aStr());
   
   if ( ! m_aFilePtr ) {
-    vWarn("File::bOpen: fopen(%s,%s) error; errno=%d\n",
+    vWarn("File::bOpen: fopen(%s,%s) error; errno=%d\n"_Str,
           m_sFilePath.aStr(),m_sOpenMode.aStr(),errno);
     return false;
   }
@@ -416,7 +416,7 @@ bool File::bOpen(const char* aFilePath, const char* aOpenMode, i8 iTraceLevel)
   m_xSysCall.vClear();
 
   if (m_aFilePtr) {
-    vWarn("File::bOpen: previous file not closed: %s\n",m_sFilePath.aStr());
+    vWarn("File::bOpen: previous file not closed: %s\n"_Str,m_sFilePath.aStr());
     vClose();
   }
   
@@ -429,7 +429,7 @@ bool File::bOpen(const char* aFilePath, const char* aOpenMode, i8 iTraceLevel)
   
   if ( ! m_aFilePtr ) {
     m_xSysCall.vError(errno);
-    vWarn("File::bOpen: fopen(%s,%s) error; errno=%d\n",
+    vWarn("File::bOpen: fopen(%s,%s) error; errno=%d\n"_Str,
           m_sFilePath.aStr(),m_sOpenMode.aStr(),errno);
     return false;
   }
@@ -459,7 +459,7 @@ void File::vPath(const char* aFilePath)
   m_xSysCall.vClear();
   
   if (m_aFilePtr) {
-    vWarn("File::vPath: previous file not closed: %s\n",m_sFilePath.aStr());
+    vWarn("File::vPath: previous file not closed: %s\n"_Str,m_sFilePath.aStr());
     vClose();
   }
   
@@ -476,7 +476,7 @@ void File::vPath(StrVal& sFilePath)
   m_xSysCall.vClear();
   
   if (m_aFilePtr) {
-    vWarn("File::vPath: previous file not closed: %s\n",m_sFilePath.aStr());
+    vWarn("File::vPath: previous file not closed: %s\n"_Str,m_sFilePath.aStr());
     vClose();
   }
   
@@ -500,7 +500,7 @@ void File::vPrint(const char* sFormat, ...)
 
   if (-1 == nPrinted) {
     m_xSysCall.vError(errno);
-    vWarn("File::vPrint: vfprintf() error; errno=%d",errno);
+    vWarn("File::vPrint: vfprintf() error; errno=%d"_Str,errno);
     return;
   }
   
@@ -757,7 +757,7 @@ void File::vSeek(i8 iOffset)
   
   if (rCode) {
     m_xSysCall.vError(errno);
-    vWarn("File::vSeek: fseeko() error; errno=%d",errno);
+    vWarn("File::vSeek: fseeko() error; errno=%d"_Str,errno);
     return;
   }
   
@@ -777,7 +777,7 @@ void File::vSeekEnd(void)
   
   if (rCode) {
     m_xSysCall.vError(errno);
-    vWarn("File::vSeek: fseeko() error; errno=%d",errno);
+    vWarn("File::vSeek: fseeko() error; errno=%d"_Str,errno);
     return;
   }
   
@@ -794,7 +794,7 @@ void File::vSet(const char* aFilePath, const char* aOpenMode, i8 iTraceLevel)
   m_xSysCall.vClear();
   
   if (m_aFilePtr) {
-    vWarn("File::vSet: previous file not closed: %s\n",m_sFilePath.aStr());
+    vWarn("File::vSet: previous file not closed: %s\n"_Str,m_sFilePath.aStr());
     vClose();
   }
   
@@ -813,7 +813,7 @@ void File::vSet(FILE* pFilePtr, const char* aFilePath, const char* aOpenMode, i8
   m_xSysCall.vClear();
   
   if (m_aFilePtr) {
-    vWarn("File::vSet: previous file not closed: %s\n",m_sFilePath.aStr());
+    vWarn("File::vSet: previous file not closed: %s\n"_Str,m_sFilePath.aStr());
     vClose();
   }
   
@@ -846,7 +846,7 @@ i8 File::iTell(void)
   
   if (-1 == rCode) {
     m_xSysCall.vError(errno);
-    vWarn("File::iTell: ftello() error; errno=%d",errno);
+    vWarn("File::iTell: ftello() error; errno=%d"_Str,errno);
     return -1;
   }
   
@@ -888,7 +888,7 @@ void File::vUngetChar(char cChar)
   i8 iResult = ungetc(cChar,m_aFilePtr);
   
   if ((char)EOF == iResult)
-    vWarn("File::vUngetChar: unget failed: '%c' %s\n",cChar,m_sFilePath.aStr());
+    vWarn("File::vUngetChar: unget failed: '%c' %s\n"_Str,cChar,m_sFilePath.aStr());
 }
 
 /*----------------------------------------------------------------------------*/

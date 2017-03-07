@@ -26,7 +26,7 @@ ValSet* Values::_pValSet(void* aAddr)
 void* ValSet::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  vFatal("fatal: ValSet class cannot be new'd\n");
+  vFatal("fatal: ValSet class cannot be new'd\n"_Str);
   
   RASSERT(0);
 }

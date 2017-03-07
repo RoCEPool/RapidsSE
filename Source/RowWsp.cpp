@@ -10,7 +10,7 @@
 void* RowWsp::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  vFatal("fatal: RowWsp class cannot be new'd\n");
+  vFatal("fatal: RowWsp class cannot be new'd\n"_Str);
   
   RASSERT(0);
 }

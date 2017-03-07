@@ -42,7 +42,7 @@ bool Shm::bClose(int iFD, SysCall& xSysCall)
   
   if (0 != rCode) {
     xSysCall.vError(errno);
-    vWarn("Shm::bClose: munmap() error; errno=%d %s\n",errno,strerror(errno));
+    vWarn("Shm::bClose: munmap() error; errno=%d %s\n"_Str,errno,strerror(errno));
     return false;
   }
   
@@ -83,7 +83,7 @@ bool Shm::bCreate(StrVal& sRegionName, i8 iSize, int& iFD,
   
   if (iFD == -1) {
     xSysCall.vError(errno);
-    vWarn("Shm::bCreate: shm_open() error; errno=%d %s\n",errno,strerror(errno));
+    vWarn("Shm::bCreate: shm_open() error; errno=%d %s\n"_Str,errno,strerror(errno));
     return false;
   }
   
@@ -109,7 +109,7 @@ bool Shm::bCreate(StrVal& sRegionName, i8 iSize, int& iFD,
     
     if (0 != rCode) {
       xSysCall.vError(errno);
-      vWarn("Shm::bCreate: shm_unlink() error; errno=%d %s\n",errno,strerror(errno));
+      vWarn("Shm::bCreate: shm_unlink() error; errno=%d %s\n"_Str,errno,strerror(errno));
       return false;
     }
     
@@ -160,7 +160,7 @@ void* Shm::pMap(int iFd, void* aAddress, i8 iBytes, bool bShared, bool bHugeTlb,
   
   if (MAP_FAILED == pRegion) {
     SysCall.vError(errno);
-    vWarn("Shm::pMap: mmap() error; errno=%d %s line=%d\n",errno,strerror(errno), __LINE__);
+    vWarn("Shm::pMap: mmap() error; errno=%d %s line=%d\n"_Str,errno,strerror(errno), __LINE__);
     return nullptr;
   }
   
@@ -185,7 +185,7 @@ bool Shm::bUnmap(void *aAddress, i8 iBytes, SysCall& xSysCall)
   
   if (0 != rCode) {
     xSysCall.vError(errno);
-    vWarn("Shm::bUnmap: munmap() error; errno=%d %s\n",errno,strerror(errno));
+    vWarn("Shm::bUnmap: munmap() error; errno=%d %s\n"_Str,errno,strerror(errno));
     return false;
   }
   
@@ -205,7 +205,7 @@ bool Shm::bUnlink(StrVal& sRegionName, SysCall& xSysCall)
 
   if (0 != rCode) {
     xSysCall.vError(errno);
-    vWarn("Shm::bUnlink: shm_unlink() error; errno=%d %s\n",errno,strerror(errno));
+    vWarn("Shm::bUnlink: shm_unlink() error; errno=%d %s\n"_Str,errno,strerror(errno));
     return false;
   }
   

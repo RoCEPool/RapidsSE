@@ -71,7 +71,7 @@ Socket::~Socket()
   _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
   
   if (-1 != m_iSocketId) {
-    vWarn("Socket %d not closed!\n", m_iSocketId);
+    vWarn("Socket %d not closed!\n"_Str, m_iSocketId);
   }
 }
 
@@ -669,7 +669,7 @@ bool Socket::bSendTo(i8 nBytes, void* pBuffer, SysCall& SysCall)
   
   if (iResult < nBytes)
   {
-    vWarn("sendto() less bytes sent; %lld v %lld\n"
+    vWarn("sendto() less bytes sent; %lld v %lld\n"_Str
       ,iResult
       ,nBytes
       );

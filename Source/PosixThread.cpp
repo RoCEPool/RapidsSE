@@ -41,7 +41,7 @@ bool PosixThread::bBindThread(i8 iCpu)
   i8 iCpuCount = Hardware::iCpuCount();
   
   if (iCpu > iCpuCount) {
-    vWarn("Unable to bind to Cpu %lld on a system having %lld cores!\n", iCpu, iCpuCount);
+    vWarn("Unable to bind to Cpu %lld on a system having %lld cores!\n"_Str, iCpu, iCpuCount);
     return false;
   }
   
@@ -49,7 +49,7 @@ bool PosixThread::bBindThread(i8 iCpu)
   
     thread_port_t mach_thread;
 
-    vWarn("binding to core %d\n", (int)iCpu);
+    vWarn("binding to core %d\n"_Str, (int)iCpu);
   
     thread_affinity_policy_data_t policy = { (int)iCpu };
     mach_thread = pthread_mach_thread_np(m_iPosixThreadId);
@@ -91,7 +91,7 @@ void PosixThread::vSetOSThreadId(void)
 #endif
   
   if (-1 == iOpSysThreadId)
-    vWarn("syscall(SYS_gettid) error; errno=%d\n",errno);
+    vWarn("syscall(SYS_gettid) error; errno=%d\n"_Str,errno);
   else
     m_iOpSysThreadId = iOpSysThreadId;
 }
@@ -111,7 +111,7 @@ bool PosixThread::bSpawnThread(void* pFun(void*), void* pArg)
                              );
   
   if (rCode) {
-    vWarn("pthread_create() error; rCode=%lld\n",rCode);
+    vWarn("pthread_create() error; rCode=%lld\n"_Str,rCode);
     return false;
   }
   
@@ -140,7 +140,7 @@ i8 PosixThread::iThreadCpu(void)
 {
 #ifdef __APPLE__
   
-  vWarn("Get thread Cpu affinity not implemented!\n");
+  vWarn("Get thread Cpu affinity not implemented!\n"_Str);
   return 0;
   
 #else
@@ -262,7 +262,7 @@ void PosixThread::vCondBroadcast(void)
   if (0 == rCode)
     return;
   
-  vWarn("pthread_cond_broadcast() error; rCode=%lld\n",rCode);
+  vWarn("pthread_cond_broadcast() error; rCode=%lld\n"_Str,rCode);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -275,7 +275,7 @@ void PosixThread::vCondSignal(void)
   if (0 == rCode)
     return;
   
-  vWarn("pthread_cond_signal() error; rCode=%lld\n",rCode);
+  vWarn("pthread_cond_signal() error; rCode=%lld\n"_Str,rCode);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -298,7 +298,7 @@ void PosixThread::vCondWait(void)
   if (0 == rCode)
     return;
   
-  vWarn("pthread_cond_wait() error; rCode=%lld\n",rCode);
+  vWarn("pthread_cond_wait() error; rCode=%lld\n"_Str,rCode);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -323,7 +323,7 @@ void PosixThread::vCondTimedWait(i8 iMicroSeconds)
   if (0 == rCode || ETIMEDOUT == rCode)
     return;
   
-  vWarn("pthread_cond_wait() error; rCode=%lld\n",rCode);
+  vWarn("pthread_cond_wait() error; rCode=%lld\n"_Str,rCode);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -338,7 +338,7 @@ void PosixThread::vMutexLock(void)
     return;
   }
   
-  vWarn("pthread_mutex_lock() error; rCode=%lld\n",rCode);
+  vWarn("pthread_mutex_lock() error; rCode=%lld\n"_Str,rCode);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -356,7 +356,7 @@ bool PosixThread::bMutexLock(void)
   if (EBUSY == rCode)
     return false;
   
-  vWarn("pthread_mutex_trylock() error; rCode=%lld\n",rCode);
+  vWarn("pthread_mutex_trylock() error; rCode=%lld\n"_Str,rCode);
   
   return false;
 }
@@ -373,7 +373,7 @@ void PosixThread::vMutexUnlock(void)
     return;
   }
   
-  vWarn("pthread_mutex_unlock() error; rCode=%lld\n",rCode);
+  vWarn("pthread_mutex_unlock() error; rCode=%lld\n"_Str,rCode);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -418,7 +418,7 @@ void PosixThread::vSleepMicro(i8 nMicroSeconds)
   i8 rCode = nanosleep(&xReq,&xRem);
   
   if (rCode && errno != EINTR) {
-    vWarn("PosixThread::vSleepMicro error; errno=%lld\n",errno);
+    vWarn("PosixThread::vSleepMicro error; errno=%lld\n"_Str,errno);
   }
 }
 
@@ -442,7 +442,7 @@ void PosixThread::vSleepMilli(i8 nMilliSeconds)
   i8 rCode = nanosleep(&xReq,&xRem);
   
   if (rCode && errno != EINTR) {
-    vWarn("PosixThread::vSleepMilli error; errno=%lld\n",errno);
+    vWarn("PosixThread::vSleepMilli error; errno=%lld\n"_Str,errno);
   }
 }
 
@@ -466,7 +466,7 @@ void PosixThread::vSleepNano(i8 nNanoSeconds)
   i8 rCode = nanosleep(&xReq,&xRem);
   
   if (rCode && errno != EINTR) {
-    vWarn("PosixThread::vSleepNano error; errno=%lld\n",errno);
+    vWarn("PosixThread::vSleepNano error; errno=%lld\n"_Str,errno);
   }
 }
 

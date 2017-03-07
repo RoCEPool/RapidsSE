@@ -34,7 +34,7 @@ i8 Hardware::iClockFrequency(void)
   // open the /Proc/cpuinfo file
   FILE* fp = fopen("/proc/cpuinfo", "r");
   if ( !fp ) {
-    vWarn("File::bOpen: fopen(/proc/cpuinfo,r) error; errno=%d", errno);
+    vWarn("File::bOpen: fopen(/proc/cpuinfo,r) error; errno=%d"_Str, errno);
     return 0;
   }
   
@@ -69,7 +69,7 @@ i8 Hardware::iCoreCount(void)
   
   i8 iCount = sysconf(_SC_NPROCESSORS_ONLN);
   if (iCount == -1) {
-    vWarn("Error while getting cpu count %lld\n", iCount);
+    vWarn("Error while getting cpu count %lld\n"_Str, iCount);
     return 0;
   }
  
@@ -89,7 +89,7 @@ i8 Hardware::iCpuCount(void)
   
   i8 iReturn = sysctlbyname(SYSCTL_CORE_COUNT, &iCount, &len, 0, 0);
   if (iReturn) {
-    vWarn("Error while getting cpu count %lld\n", iReturn);
+    vWarn("Error while getting cpu count %lld\n"_Str, iReturn);
     return 0;
   }
   return iCount;
@@ -110,12 +110,12 @@ i8 Hardware::iPhysicalMemory(void)
 {
   i8 iNumPages = sysconf(_SC_PHYS_PAGES);
   if (iNumPages == -1) {
-    vWarn("Error while getting physical memory %lld\n", iNumPages);
+    vWarn("Error while getting physical memory %lld\n"_Str, iNumPages);
     return 0;
   }
   i8 iPageSize = sysconf(_SC_PAGESIZE);
   if (iPageSize == -1) {
-    vWarn("Error while getting physical memory %lld\n", iPageSize);
+    vWarn("Error while getting physical memory %lld\n"_Str, iPageSize);
     return 0;
   }
 

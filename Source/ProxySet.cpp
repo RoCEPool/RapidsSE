@@ -10,7 +10,7 @@
 void* ProxySet::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  vFatal("fatal: ProxySet class cannot be new'd");
+  vFatal("fatal: ProxySet class cannot be new'd"_Str);
   
   RASSERT(0);
 }
@@ -21,7 +21,7 @@ void* ProxySet::operator new(size_t iSize)
 void ProxySet::operator delete(void* pBufferAddress)
 {
   RASSERT(pBufferAddress);
-  vFatal("fatal: ProxySet class cannot be deleted");
+  vFatal("fatal: ProxySet class cannot be deleted"_Str);
   
   RASSERT(0);
 }
