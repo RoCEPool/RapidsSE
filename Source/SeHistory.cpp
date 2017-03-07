@@ -88,7 +88,7 @@ void SeHistory::vPrint(void)
   vSeekStart();
   
   for (i8 i = 1; bRead(wCommand); i++)
-    vTrace("  %lld  %s\n",i,wCommand);
+    vTrace("  %lld  %s\n"_Str,i,wCommand);
   
   vSeekEnd();
 }
@@ -115,7 +115,7 @@ bool SeHistory::bRecall(char* pToken[], i8 nTokens)
     iCommand = StrLib::iToI8(pToken[0]+1);
   }
   
-  vTrace("Recall: %lld\n",iCommand);
+  vTrace("Recall: %lld\n"_Str,iCommand);
   
   bool bRecalled = bGet(iCommand,pToken,nTokens);
   
@@ -151,7 +151,7 @@ bool SeHistory::bGet(i8 iCommand, char* pToken[], i8 nTokens)
       
       i8 i = 0;
       while (TK_NONE != m_pTokeniser->eNextToken(pToken[i])) {
-        //vTrace("Word [%lld] %s\n",i,pWords[i]);
+        //vTrace("Word [%lld] %s\n"_Str,i,pWords[i]);
         i++;
       }
       

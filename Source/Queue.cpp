@@ -123,10 +123,10 @@ void Queue::vContentDump(const char* aTab)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUE,_FOOTER_);
   
-  vTrace("%sQueue: %p\n", aTab, this);
-  vTrace("%s  Count %lld\n", aTab, m_iCount);
-  vTrace("%s  TopBuffer %p\n", aTab, m_pTopBuffer);
-  vTrace("%s  EndBuffer %p\n", aTab, m_pEndBuffer);
+  vTrace("%sQueue: %p\n"_Str, aTab, this);
+  vTrace("%s  Count %lld\n"_Str, aTab, m_iCount);
+  vTrace("%s  TopBuffer %p\n"_Str, aTab, m_pTopBuffer);
+  vTrace("%s  EndBuffer %p\n"_Str, aTab, m_pEndBuffer);
   
   for (QueueBuffer* pQbuffer = m_pTopBuffer; pQbuffer; pQbuffer = pQbuffer->pNext())
     pQbuffer->vContentDump(aTab);
@@ -142,7 +142,7 @@ void Queue::vDump(eCN eClass, Object* pObject, const char* aTab)
   
   Queue* pQueue = reinterpret_cast<Queue*>(pObject);
   
-  vTrace("count %lld top %p end %p\n",
+  vTrace("count %lld top %p end %p\n"_Str,
          pQueue->m_iCount,
          pQueue->m_pTopBuffer,
          pQueue->m_pEndBuffer);

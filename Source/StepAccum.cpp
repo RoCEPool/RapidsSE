@@ -45,7 +45,7 @@ void StepAccum::vPrint(void)
   i8 iInvokeMircos = DIV(iTicksPerInvoke,iTicksPerNanos);
 
   
-  vTrace("  %20s %12lld %12lld %8lldns\n",
+  vTrace("  %20s %12lld %12lld %8lldns\n"_Str,
          m_aFnName,
          m_nInvoked,
          m_nCycles,

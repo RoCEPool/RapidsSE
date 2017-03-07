@@ -98,17 +98,17 @@ void Task::vBpEpochDump(NNP_Task nnpTask)
   BPA* pBPA = new BPA;
   i8 iCountObjects[CN_ENUMS];
   
-  vTrace("\n");
-  vTrace("%sWords created since last epoch:\n",aSingleTab());
+  vTrace("\n"_Str);
+  vTrace("%sWords created since last epoch:\n"_Str,aSingleTab());
   
   pBPA->vWordList(gpAttachMap->m_iEpoch);
   pBPA->vObjectSnapshot(&iCountObjects[0]);
   
-  vTrace("\n%sObjects created since last epoch:\n\n",aSingleTab());
+  vTrace("\n%sObjects created since last epoch:\n\n"_Str,aSingleTab());
   
   for (i8 iIndex =0 ; iIndex < CN_ENUMS; iIndex++) {
     if (iCountObjects[iIndex] != giCountObjects[iIndex])
-      vTrace("%s  %12s %-6lld \n", aSingleTab(), aCN[iIndex],
+      vTrace("%s  %12s %-6lld \n"_Str, aSingleTab(), aCN[iIndex],
              iCountObjects[iIndex] - giCountObjects[iIndex]);
   }
   EXIT();

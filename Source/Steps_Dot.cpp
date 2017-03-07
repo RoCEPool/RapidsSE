@@ -55,7 +55,7 @@ void Task::vDot(NNP_Task nnpTask)
   
   ValLib::vToString(&xValWsp,sWorkspace.aStr());
   /*
-  vTrace("[N%lld:%8s\\%lld %-11s] %s\n",
+  vTrace("[N%lld:%8s\\%lld %-11s] %s\n"_Str,
          
          gpGrid->iNode(),
          nnpTask->m_sName.aStr(),
@@ -65,7 +65,7 @@ void Task::vDot(NNP_Task nnpTask)
          sWorkspace.aStr()
          );
   */
-  vTrace("[%8s\\%lld %-11s] %s\n",
+  vTrace("[%8s\\%lld %-11s] %s\n"_Str,
          
          nnpTask->m_sName.aStr(),
          *nnpTask->m_zAcks,
@@ -124,7 +124,7 @@ void Task::vDotVerbose(NNP_Task nnpTask)
   
   if (gxArguments.m_bVerbose) {
     ValLib::vToString(&xValWsp,sWorkspace.aStr());
-    vTrace("[%p %s] %s\n",*nnpTask,nnpTask->m_sName.aStr(),sWorkspace.aStr());
+    vTrace("[%p %s] %s\n"_Str,*nnpTask,nnpTask->m_sName.aStr(),sWorkspace.aStr());
   }
   
   EXIT();

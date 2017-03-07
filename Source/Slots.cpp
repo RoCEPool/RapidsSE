@@ -64,7 +64,7 @@ Partition* Slots::pPartition(i8 iSlot)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SLOTS,_FOOTER_);
   
-  //vTrace("Partition %lld\n",iPartition);
+  //vTrace("Partition %lld\n"_Str,iPartition);
   
   return &m_xPartition[iSlot];
 }

@@ -74,7 +74,7 @@ void StepArray::vDump(eCN eClass, Object* pObject, const char* aTab)
   
   StepArray* pStepArray = reinterpret_cast<StepArray*>(pObject);
   
-  vTrace("\n", aTab, pStepArray);
+  vTrace("\n"_Str, aTab, pStepArray);
 }
 
 /*----------------------------------------------------------------------------*/

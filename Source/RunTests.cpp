@@ -54,11 +54,11 @@ void RunTests::vRunTests(void) {
   EndTests* pEndTests = new EndTests();
   pEndTests->vRun(this);
   
-  vTrace("\n--------------------------------------\n");
-  vTrace("Total Tests Executed : %lld\n", m_iTestsTotal);
-  vTrace("Total Tests Passed   : %lld\n", m_iTestsPassed);
-  vTrace("Total Tests Failed   : %lld\n", m_iTestsFailed);
-  vTrace("---------------------------------------\n");
+  vTrace("\n--------------------------------------\n"_Str);
+  vTrace("Total Tests Executed : %lld\n"_Str, m_iTestsTotal);
+  vTrace("Total Tests Passed   : %lld\n"_Str, m_iTestsPassed);
+  vTrace("Total Tests Failed   : %lld\n"_Str, m_iTestsFailed);
+  vTrace("---------------------------------------\n"_Str);
 }
 
 /*============================================================================*/
