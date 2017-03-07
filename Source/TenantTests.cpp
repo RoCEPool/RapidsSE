@@ -79,7 +79,7 @@ void TenantTests::vRun(RunTests* pRunTests)
   pRunTests->m_iTestsFailed += m_iTestsFailed;
 
   vTrace("%-15s - Total: %lld Passed: %lld Failed: %lld\n"_Str,
-    "Tenant Tests", m_iTestsTotal, m_iTestsPassed, m_iTestsFailed);
+    "Tenant Tests"_Str, m_iTestsTotal, m_iTestsPassed, m_iTestsFailed);
 }
 
 /*============================================================================*/

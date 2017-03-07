@@ -363,7 +363,7 @@ bool IndexBuffer::bInsertEntry(EntWsp& xEntWsp)
 /*----------------------------------------------------------------------------*/
 void IndexBuffer::vShow(void)
 {
-  vTrace("IndexBuffer %p: entries %lld FreeSpace %lld bytes bytesUsed %lld"
+  vTrace("IndexBuffer %p: entries %lld FreeSpace %lld bytes bytesUsed %lld"_Str
          " prevBuffer %p nextBuffer %p\n"_Str,
          this,
          m_nEntries,

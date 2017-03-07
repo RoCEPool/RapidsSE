@@ -77,7 +77,7 @@ void BPA::vHeapDump(Heap* pHeap)
   vTrace("\n"_Str);
   vTrace("%sObjects in %s Heap:\n"_Str,
          aSingleTab(),
-         pHeap->iObjectSize() == C_SIZE_SMALL_OBJECT ? "Small" : "Medium");
+         pHeap->iObjectSize() == C_SIZE_SMALL_OBJECT ? "Small"_Str : "Medium"_Str);
   
   pHeap->vGrabLock();
   
@@ -124,7 +124,7 @@ void BPA::vHeapDump(Heap* pHeap, i8 iEpoch)
   vTrace("\n"_Str);
   vTrace("%sWords in %s Heap:\n"_Str,
          aDoubleTab(),
-         pHeap->iObjectSize() == C_SIZE_SMALL_OBJECT ? "Small" : "Medium");
+         pHeap->iObjectSize() == C_SIZE_SMALL_OBJECT ? "Small"_Str : "Medium"_Str);
   
   pHeap->vGrabLock();
   

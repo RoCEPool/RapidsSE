@@ -236,7 +236,7 @@ void Lock::vGrabWrite(void)
 
 //  vTrace("Lock::vGrabWrite -- Grabbing write lock %p %s\n"_Str,
 //         this,
-//         m_aName ? m_aName : "<noName>");
+//         m_aName ? m_aName : "<noName>"_Str);
 
   ++m_zWriteGrabs;
   i8 rCode = Synch::iLockGrabWrite(&m_uLockWord);

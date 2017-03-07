@@ -439,7 +439,7 @@ void RapidsSE::vSystemStop(void)
 void RapidsSE::vWaitFlag(void)
 {
   if (gxArguments.m_bVerbose)
-    vTrace("[[mainThread]] Waiting on stop %s\n"_Str,"...");
+    vTrace("[[mainThread]] Waiting on stop %s\n"_Str,"..."_Str);
 
   // this primary thread waits for flag indicationg systems is to stop
   while ( ! gpAttachMap->m_iQuit && ! gpAttachMap->m_iStop )

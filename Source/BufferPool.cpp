@@ -379,7 +379,7 @@ void BufferPool::vPoolDump(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
   
-  vTrace("RegionSize %lld BufferSize %lld BufferCount %lld Base %p Limit %p\n"
+  vTrace("RegionSize %lld BufferSize %lld BufferCount %lld Base %p Limit %p\n"_Str
          "InUse %lld FreeCount %lld FreeHead %lld\n"_Str,
          gxArguments.m_iRegionSize,
          C_SIZE_POOL_BUFFER,

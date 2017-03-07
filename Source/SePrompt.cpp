@@ -130,7 +130,7 @@ void SePrompt::vDump(eCN eClass, Object* pObject, const char* aTab)
   vTrace("partition %lld seitf %p continue %s\n"_Str,
          pSePrompt->m_iPartition,
          pSePrompt->m_pSEitf,
-         pSePrompt->m_bContinue ? "true" : "false");
+         pSePrompt->m_bContinue ? "true"_Str : "false"_Str);
 }
 
 /*----------------------------------------------------------------------------*/
