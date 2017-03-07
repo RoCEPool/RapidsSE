@@ -68,11 +68,11 @@ void SeHistory::vOpen(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEHISTORY,_FOOTER_);
   
-  char wFileName[C_1KB];
+  s256 xFileName;
   
-  StrLib::vSprint(wFileName,"/tmp/SEitf_%lld_history.txt"_Str,Process::iGetPid());
+  StrLib::vSprint(xFileName.aArea(),"/tmp/SEitf_%lld_history.txt"_Str,Process::iGetPid());
   
-  bool b = m_xFile.bOpen((Str*)wFileName,C_OPEN_READ_WRITE_CREATE);
+  bool b = m_xFile.bOpen((Str*)xFileName.aArea(),C_OPEN_READ_WRITE_CREATE);
   ASSERT(b);
 }
 
@@ -83,12 +83,12 @@ void SeHistory::vPrint(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEHISTORY,_FOOTER_);
   
-  char wCommand[C_4KB];
+  s48K xCommand;
   
   vSeekStart();
   
-  for (i8 i = 1; bRead(wCommand); i++)
-    vTrace("  %lld  %s\n"_Str,i,wCommand);
+  for (i8 i = 1; bRead(xCommand.aArea()); i++)
+    vTrace("  %lld  %s\n"_Str,i,xCommand.aArea());
   
   vSeekEnd();
 }
@@ -109,10 +109,10 @@ bool SeHistory::bRecall(Str* aToken[], i8 nTokens)
   }
   else {
     // get command number
-    if (StrLib::iLength(aToken[0]->a()) < 2)
+    if (StrLib::iLength(aToken[1]->a()) < 1)
       return false;
     
-    iCommand = StrLib::iToI8(aToken[0]->a()+1);
+    iCommand = StrLib::iToI8(aToken[1]->a());
   }
   
   vTrace("Recall: %lld\n"_Str,iCommand);
@@ -135,15 +135,14 @@ bool SeHistory::bGet(i8 iCommand, Str* aToken[], i8 nTokens)
   
   vSeekStart();
   
-  char wCommand[C_4KB];
-  
   s48K sCommand;
   
   i8 i = 0;
-  while (bRead(wCommand)) {
+  while (bRead(sCommand.aArea())) {
+    
     if (++i == iCommand) {
+      
       vSeekEnd();
-      sCommand = wCommand;
       
       m_pTokeniser->vUseString(sCommand);
       
