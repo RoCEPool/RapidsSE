@@ -93,15 +93,15 @@ void Task::vAllParticipants(NNP_Task nnpTask)
   nnpTask->m_pTokeniser->vNextToken();
   
   // convert string to integer
-  char* aToken = nnpTask->m_pTokeniser->sToken().aStr();
-  i8 iParams = StrLib::iToI8(aToken);
+  Str* aToken = nnpTask->m_pTokeniser->sToken();
+  i8 iParams = StrLib::iToI8(aToken->a());
   
   // set the number of parameters in the current word
   pCurrentWord->vParams(iParams);
   
   // get result routine name to be called after all participants have responded
   nnpTask->m_pTokeniser->vNextToken();
-  aToken = nnpTask->m_pTokeniser->sToken().aStr();
+  aToken = nnpTask->m_pTokeniser->sToken();
   
   // set the distributed result routine name in the word
   pCurrentWord->vFinalRoutine(aToken);
@@ -162,7 +162,7 @@ void Task::vColon(NNP_Task nnpTask)
     pDic = nnpTask->m_xPathStack.pTop();
   else
     pDic = gpMainDic;
-  Word* pNewWord = new(pDic) Word(sName.aStr());
+  Word* pNewWord = new(pDic) Word(sName);
   
   nnpTask->m_pCurrentWord = pNewWord;
   
@@ -224,7 +224,7 @@ ENTRY("vCreate");
   else
     pDic = gpMainDic;
   
-  Word* pNewWord = new(pDic) Word(nnpTask->m_pTokeniser->sToken().aStr());
+  Word* pNewWord = new(pDic) Word(nnpTask->m_pTokeniser->sToken());
   
   nnpTask->m_pCurrentWord = pNewWord;
   
@@ -248,7 +248,7 @@ ENTRY("vCreateFrom");
   else
     pDic = gpMainDic;
   
-  Word* pNewWord = new(pDic) Word(sName.aStr());
+  Word* pNewWord = new(pDic) Word(sName);
   
   nnpTask->m_pCurrentWord = pNewWord;
   
@@ -786,7 +786,7 @@ void Task::vSemicolon(NNP_Task nnpTask)
       pDic = nnpTask->m_xPathStack.pTop();
     else
       pDic = gpMainDic;
-    Word* pWordTilde = new(pDic) Word(sTildeName.aStr());
+    Word* pWordTilde = new(pDic) Word(sTildeName);
     // ** do not set as current word **
     
     // encode the word

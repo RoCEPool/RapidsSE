@@ -119,7 +119,7 @@ ENTRY("vLocalsBar");
     }
     
     // create new word for local in current dictionary
-    Word* pWordLocal = new(pDic) Word(nnpTask->m_pTokeniser->sToken().aStr());
+    Word* pWordLocal = new(pDic) Word(nnpTask->m_pTokeniser->sToken());
     // ** do not set as current word **
     
     // set word as local variable

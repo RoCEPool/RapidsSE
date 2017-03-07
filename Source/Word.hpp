@@ -86,7 +86,7 @@ namespace Dictionaries
     void* operator new(size_t, Dic* pDic);
     void  operator delete(void* pWordAddress);
     
-    Word(const char* sName);
+    Word(Str* sName);
     ~Word(void);
     
     static void vDump(eCN eClass, Object* pObject, Str* aTab);
@@ -120,7 +120,7 @@ namespace Dictionaries
     void  vEncode(Str* aWord, Word* pWord);
     void  vEncode(Str* aWord, Value* pValue);
     void  vEncode(TaskStep* ppEntryStep);
-    void  vFinalRoutine(const char* pRoutine);
+    void  vFinalRoutine(Str* pRoutine);
     char* pFinalRoutine(void);
     Cell* pFirstCell(void);
     bool  bHasCell(Cell* pCell);

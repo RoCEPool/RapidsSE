@@ -271,7 +271,7 @@ void Task::vAddConstant(Str* aName, i8 iVal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
 
-  Word* pNewWord = new(gpMainDic) Word(aName->a());
+  Word* pNewWord = new(gpMainDic) Word(aName);
   
   IntVal xIntVal;
   xIntVal = iVal;
@@ -287,7 +287,7 @@ void Task::vAddConstant(Str* aName, Str* aValue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  Word* pNewWord = new(gpMainDic) Word(aName->a());
+  Word* pNewWord = new(gpMainDic) Word(aName);
   
   ValWsp xWspStr;
   xWspStr = aValue->a();
@@ -303,7 +303,7 @@ void Task::vAddConstant(Str* aName, const char* aValue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  Word* pNewWord = new(gpMainDic) Word(aName->a());
+  Word* pNewWord = new(gpMainDic) Word(aName);
   
   ValWsp xWspStr;
   xWspStr = aValue;
@@ -319,7 +319,7 @@ void Task::vAddPrimitive(Str* aName, TaskStep pStep, bool bImmediate)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
     
-  Word* pNewWord = new(gpMainDic) Word(aName->a());
+  Word* pNewWord = new(gpMainDic) Word(aName);
   
   m_pCurrentWord = pNewWord;
   
@@ -1061,7 +1061,7 @@ Word* Task::pCompileColon(StrVal& sDefinition)
   else
     pDic = gpMainDic;
 
-  pNewWord = new(pDic) Word(m_pTokeniser->sToken().aStr());
+  pNewWord = new(pDic) Word(m_pTokeniser->sToken());
   
   m_pCurrentWord = pNewWord;
 

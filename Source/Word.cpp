@@ -53,12 +53,12 @@ void Word::operator delete(void* pWordAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Word::Word(const char* sName)
+Word::Word(Str* sName)
 : Object(CN_WORD)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD);
   
-  m_sName         = (Str*)sName;
+  m_sName         = sName;
   m_eWordType     = WT_ROUTINE;
   m_eDistributed  = DT_NOPARTICIPANT;
   //m_pDic        = pDic;
@@ -487,7 +487,7 @@ void Word::vEncode(TaskStep* ppEntryStep)
 /*----------------------------------------------------------------------------*/
 /* set the final routine (invoked after all participants have responded)      */
 /*----------------------------------------------------------------------------*/
-void Word::vFinalRoutine(const char* pRoutine)
+void Word::vFinalRoutine(Str* pRoutine)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
