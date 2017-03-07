@@ -248,12 +248,12 @@ void Tokeniser::vResetTokens(char* pToken[], i8 nTokens)
 /*----------------------------------------------------------------------------*/
 /* find token in token array                                                  */
 /*----------------------------------------------------------------------------*/
-i8 Tokeniser::iFindToken(const char* pLookFor, char* pToken[], i8 nTokens)
+i8 Tokeniser::iFindToken(Str* pLookFor, char* pToken[], i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
   for (i8 iToken = 0; iToken < nTokens; iToken++)
-    if (StrLib::bEqualTo(pLookFor,pToken[iToken],C_NO_CASE))
+    if (StrLib::bEqualTo(pLookFor->a(),pToken[iToken],C_NO_CASE))
       return iToken;
   
   return -1;

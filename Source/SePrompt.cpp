@@ -1447,10 +1447,10 @@ void SePrompt::vCollectStatement(void)
   ASSERT(! StrLib::bEqualTo(m_aToken[0],""));
 
   // have we already seen the ';'
-  i8 iToken = m_pTokeniser->iFindToken(";",m_aToken,C_TOKENS);
+  i8 iToken = m_pTokeniser->iFindToken(";"_Str,m_aToken,C_TOKENS);
   
   if (iToken >= 0) {
-    //m_pTokeniser->vDumpTokens("\nCommand : ",m_aToken,C_TOKENS);
+    //m_pTokeniser->vDumpTokens("\nCommand : "_Str,m_aToken,C_TOKENS);
     return;
   }
   
@@ -1477,7 +1477,7 @@ void SePrompt::vCollectStatement(void)
   m_pTokeniser->vLineMode(true);
   m_pTokeniser->vPrompt(m_sPrompt);
   
-  //m_pTokeniser->vDumpTokens("Command : ",m_aToken,C_TOKENS);
+  //m_pTokeniser->vDumpTokens("Command : "_Str,m_aToken,C_TOKENS);
 }
 
 /*----------------------------------------------------------------------------*/
