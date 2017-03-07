@@ -80,7 +80,7 @@ locals| senFile cppFile |
 
 "  \" CONSTANT " cppFile file.write
 senFile file.path@ cppFile file.write
-"\"\n" cppFile file.write
+"\"_Str\n" cppFile file.write
 ;
 
 /*----------------------------------------------------------------------------*/

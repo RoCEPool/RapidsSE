@@ -112,7 +112,7 @@ void Debugging::vReport(i8 iLevel, const char* psFormat, va_list xArgs)
   fflush(stderr);
   
   if (gpTraceFile) {
-    gpTraceFile->vPrint("%s",gaReportBuffer);
+    gpTraceFile->vPrint("%s"_Str,gaReportBuffer);
     gpTraceFile->vFlush();
   }
 }

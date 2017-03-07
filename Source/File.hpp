@@ -61,7 +61,7 @@ namespace System
     s256& sPath(void);
     void vPath(const char* aFilePath);
     void vPath(StrVal& sFilePath);
-    void vPrint(const char* sFormat,...);
+    void vPrint(Str* aFormat,...);
     i8   iReadChunk(void* pChunk, i8 nBytes);
     bool bReadLine(StrVal& s);
     bool bReadLine(char* y);

@@ -33,7 +33,7 @@ namespace System
     Lock(void);
     ~Lock(void);
   
-    void vInit(const char* aName);
+    void vInit(Str* aName);
   
     bool bIsLocked(void);
     

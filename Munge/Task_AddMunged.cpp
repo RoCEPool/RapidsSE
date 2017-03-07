@@ -422,7 +422,26 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "\n"
     ": checkAddColumn ( -- true | eEC false )\n"
     "\n"
-    "  checkInTables not if false exit then\n"
+    "  locals| tableNm columnNm |\n"
+    "\n"
+    "  tableNm checkInTable not if false exit then\n"
+    "\n"
+    "  tableNm\n"
+    "  pushTableSub   assert // not if false exit then\n"
+    "\n"
+    "  columnNm\n"
+    "  pushColumns assert // not if false exit then\n"
+    "\n"
+    "  // column should not already exist\n"
+    "  find\n"
+    "  if EC_DUPLICATE_COLUMN false popColumns popTable exit then\n"
+    "\n"
+    "  popColumns\n"
+    "\n"
+    "  popTableSub\n"
+    "\n"
+    "  columnNm\n"
+    "  tableNm\n"
     "\n"
     "  true\n"
     ";\n"
@@ -432,7 +451,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/*----------------------------------------------------------------------------*/\n"
     ": listColumns ( -- )\n"
     "\n"
-    "  pushTable     assert\n"
+    "  pushTableSub  assert\n"
     "  pushColumns   assert\n"
     "\n"
     "  \\\"\\\"                             // initial ls string\n"
@@ -459,7 +478,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "  //\\\"\\\\n\\\" str.cat\n"
     "\n"
     "  popColumns\n"
-    "  popTable\n"
+    "  popTableSub\n"
     ";\n"
     "\n"
     "////////////////////////////////////////////////////////////////////////////////\n"
@@ -474,7 +493,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "  then\n"
     "\n"
     "  tp: addingColumn\n"
-    "  pushTable   assert // not if false exit then\n"
+    "  pushTableSub   assert // not if false exit then\n"
     "\n"
     "  pushColumns assert // not if false exit then\n"
     "\n"
@@ -482,7 +501,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "\n"
     "  popColumns\n"
     "\n"
-    "  popTable\n"
+    "  popTableSub\n"
     "\n"
     "  true <SUCCESS_RESULT>\n"
     ";\n"
@@ -1691,6 +1710,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "\n"
     "\\\"selCursor.sen\\\" include\n"
     "\\\"table.sen\\\" include\n"
+    "\\\"index.sen\\\" include\n"
     "\\\"column.sen\\\" include\n"
     "\\\"schema.sen\\\" include\n"
     "\\\"catalog.sen\\\" include\n"
@@ -1951,7 +1971,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT deciderOp.sen"
+  " CONSTANT deciderOp.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -1971,16 +1991,18 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/*----------------------------------------------------------------------------*/\n"
     "/* distributed export planner (initial, single node version)                  */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": dexPlanner_singular ( tableNm fileNm -- dexPlan )\n"
+    ": dexPlanner_singular ( catalogNm schemaNm tableNm fileNm -- dexPlan )\n"
     "\n"
-    "  locals| fileNm tableNm |\n"
+    "  locals| fileNm tableNm schemaNm catalogNm |\n"
     "  0 locals| partitionId |\n"
     "\n"
     "  // create a distributed export plan\n"
     "  plan::new locals| dexPlan |\n"
     "\n"
     "  // synthesise any plan-level symbolic arguments into the lambda text of plan\n"
-    "  tableNm dexPlan ##: $$tableNm\n"
+    "  tableNm   dexPlan ##: $$tableNm\n"
+    "  schemaNm  dexPlan ##: $$schemaNm\n"
+    "  catalogNm dexPlan ##: $$catalogNm\n"
     "  // nb: the above could have been a frame level, but left it as an example\n"
     "\n"
     "  \\\"triggerOp\\\" str.format dexPlan plan.opFrame++ drop\n"
@@ -2020,20 +2042,23 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/*----------------------------------------------------------------------------*/\n"
     "/* distributed export planner (multi-node version)                            */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": dexPlanner_distributed ( tableNm fileNm -- dexPlan )\n"
+    ": dexPlanner_distributed ( catalogNm schemaNm tableNm fileNm -- dexPlan )\n"
     "\n"
     "  //\\\"dexPlanner_distributed\\\" .\n"
     "\n"
-    "  locals| fileNm tableNm |\n"
+    "  locals| fileNm tableNm schemaNm catalogNm |\n"
     "\n"
     "  // create a distributed export plan\n"
     "  plan::new locals| dexPlan |\n"
     "  0 locals| partitionId |\n"
     "\n"
     "  // synthesise any plan-level symbolic arguments into the lambda text of plan\n"
-    "  tableNm dexPlan ##: $$tableNm\n"
+    "  tableNm   dexPlan  ##: $$tableNm\n"
+    "  schemaNm  dexPlan  ##: $$schemaNm\n"
+    "  catalogNm dexPlan  ##: $$catalogNm\n"
     "  // nb: the above could have been a frame level, but left it as an example\n"
     "\n"
+    "  //schemaNm .\n"
     "  \\\"triggerOp\\\" str.format dexPlan plan.opFrame++ drop\n"
     "\n"
     "  // create the named opFrames in plan and any fame-level symbolic arguments\n"
@@ -2069,7 +2094,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/*----------------------------------------------------------------------------*/\n"
     "/* distributed export planner                                                 */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": dexPlanner ( tableNm fileNm -- dexPlan )\n"
+    ": dexPlanner ( catalogNm schemaNm tableNm fileNm -- dexPlan )\n"
     "\n"
     "  distDexPlan if dexPlanner_distributed else dexPlanner_singular then\n"
     ";\n"
@@ -2078,7 +2103,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT dexPlanner.sen"
+  " CONSTANT dexPlanner.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -2155,7 +2180,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/*----------------------------------------------------------------------------*/\n"
     ": checkNotUsed ( dic -- true | error false )\n"
     "\n"
-    "  dicHasRef \\\" dic ref \\\" .put .put .\\\\n\n"
+    "  //dicHasRef \\\" dic ref \\\" .put .put .\\\\n\n"
     "\n"
     "  dicHasRef if EC_FOLDER_IN_USE false exit then\n"
     "\n"
@@ -2176,7 +2201,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT dic.sen"
+  " CONSTANT dic.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -2413,7 +2438,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT dicPath.sen"
+  " CONSTANT dicPath.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -2496,7 +2521,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT dir.sen"
+  " CONSTANT dir.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -2526,9 +2551,19 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "\n"
     "  0 locals| dexPlan |\n"
     "\n"
+    "  // push schema name\n"
+    "  2 pathPick dic.name  ( \\\"<fileNm>\\\" \\\"<tableNm>\\\" \\\"<schemaNm>\\\" )\n"
+    "\n"
+    "  // push catalog name\n"
+    "  4 pathPick dic.name  ( \\\"<fileNm>\\\" \\\"<tableNm>\\\" \\\"<schemaNm>\\\" \\\"<catalogNm>\\\" )\n"
+    "\n"
     "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     "  // prepare plan\n"
-    "  swap dexPlanner to dexPlan\n"
+    "  4  // 5 values to revers\n"
+    "  reverse  ( \\\"<catalogNm>\\\" \\\"<schemaNm>\\\" \\\"<tableNm>\\\" \\\"<fileNm>\\\" )\n"
+    "  dexPlanner to dexPlan\n"
+    "\n"
+    "  //swap dexPlanner to dexPlan\n"
     "\n"
     "  // set this task as the executing task in the plan\n"
     "  task.this dexPlan plan.executingTask!\n"
@@ -2563,7 +2598,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT distExporter.sen"
+  " CONSTANT distExporter.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -2589,7 +2624,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT distinctOp.sen"
+  " CONSTANT distinctOp.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -2615,7 +2650,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT emitOp.sen"
+  " CONSTANT emitOp.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -2707,7 +2742,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT exporter.sen"
+  " CONSTANT exporter.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -2733,7 +2768,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT extractOp.sen"
+  " CONSTANT extractOp.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -2759,7 +2794,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT fanOp.sen"
+  " CONSTANT fanOp.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -2785,7 +2820,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT fetchOp.sen"
+  " CONSTANT fetchOp.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -2870,7 +2905,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT file.sen"
+  " CONSTANT file.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -2944,7 +2979,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT fileGen.sen"
+  " CONSTANT fileGen.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -2970,7 +3005,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT filterOp.sen"
+  " CONSTANT filterOp.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -3015,7 +3050,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT flowTests.sen"
+  " CONSTANT flowTests.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -3095,7 +3130,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT generalThreads.sen"
+  " CONSTANT generalThreads.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -3337,7 +3372,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT grid.sen"
+  " CONSTANT grid.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -3528,7 +3563,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT gridCalls.sen"
+  " CONSTANT gridCalls.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -3566,7 +3601,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT gridModel.sen"
+  " CONSTANT gridModel.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -4241,7 +4276,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT gridPrimitives.sen"
+  " CONSTANT gridPrimitives.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -4266,9 +4301,9 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "  index::ibNew locals| ib |\n"
     "\n"
     "  // generate rows, calling entry test\n"
-    "  10 0 do\n"
+    "  1000 0 do\n"
     "\n"
-    "    16 str.random I \\\"%v|%v|\\\" str.format\n"
+    "    16 str.random I 10 + \\\"%v|%v|\\\" str.format\n"
     "\n"
     "    ib\n"
     "\n"
@@ -4285,7 +4320,324 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT ieTesting.sen"
+  " CONSTANT ieTesting.sen"_Str
+  ;
+
+  pCompileConstant(sDefinition);
+
+  // munge of index.sen
+  sDefinition =
+    "\""
+    "\\\"munged index.sen\\\" .verbose \n"
+    "/*============================================================================*/\n"
+    "/* index.sen -- index related words                                           */\n"
+    "/*============================================================================*/\n"
+    "\n"
+    "\\\"index.sen\\\" .verbose\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* index is use as a kind of word to identify indexes                          */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    ": index ;\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* make an indexes folder under given named table                             */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    ": makeIndexes ( \\\"<tableNm>\\\" -- )\n"
+    "\n"
+    "  args.tracepoint if\n"
+    "    dup \\\"MAKING INDEXES FOR TABLE \\\" swap str.cat \\\" on NODE \\\" str.cat grid.thisNode@ >str str.cat .\n"
+    "  then\n"
+    "\n"
+    "  find execute ( dic )\n"
+    "  \\\"indexes\\\"     ( dic \\\"indexes\\\" )\n"
+    "  swap         ( \\\"indexes\\\" dic )\n"
+    "  :folder      ( )\n"
+    ";\n"
+    "\n"
+    ": isIndex word.kind@ ' index eql ;\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* create an index using name from input stream (doesnt leave index on stk)   */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    ": index:\n"
+    "\n"
+    "  create\n"
+    "  WT_OBJECT word.this word.type!\n"
+    "  sizeof_index allot\n"
+    "  word.this >body object.magic!\n"
+    "  CN_INDEX word.this >body object.class!\n"
+    "  word.this >body index.init\n"
+    "  true word.this >body object.wordbody!\n"
+    "  ' index word.this word.kind!\n"
+    "  does>\n"
+    ";\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* create a table using name on the stack (leaves index on stack)             */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    ": :index\n"
+    "\n"
+    "  >create\n"
+    "  WT_OBJECT word.this word.type!\n"
+    "  sizeof_index allot\n"
+    "  word.this >body object.magic!\n"
+    "  CN_INDEX word.this >body object.class!\n"
+    "  word.this >body index.init\n"
+    "  true word.this >body object.wordbody!\n"
+    "  ' index word.this word.kind!\n"
+    "  word.this\n"
+    "  does>\n"
+    ";\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* check within indexes folder                                                */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    ": withinIndexes\n"
+    "\n"
+    "  0 pathPick dic.name \\\"indexes\\\" str.equal\n"
+    ";\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* check in indexes                                                           */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    ": checkInIndexes\n"
+    "\n"
+    "  withinIndexes if true exit then\n"
+    "\n"
+    "  EC_NOT_IN_INDEXES false\n"
+    ";\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* check word is an index                                                     */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    ": checkIsIndex ( \\\"<indexNm>\\\" -- \\\"<indexNm>\\\" true | errorCode false )\n"
+    "\n"
+    "  dup ( \\\"<indexNm>\\\" \\\"<indexNm>\\\" )\n"
+    "\n"
+    "  find ( \\\"<indexNm>\\\" ^w:index )\n"
+    "\n"
+    "  dup ( \\\"<indexNm>\\\" ^w:index ^w:index )\n"
+    "  not ( \\\"<indexNm>\\\" ^w:index bool )\n"
+    "  if\n"
+    "    drop ( \\\"<indexNm>\\\" )\n"
+    "    drop ( )\n"
+    "    EC_NO_SUCH_INDEX false ( errorCode false )\n"
+    "  exit\n"
+    "  then\n"
+    "\n"
+    "  dup ( \\\"<indexNm>\\\" ^w:index ^w:index )\n"
+    "\n"
+    "  word.kind@ ( \\\"<indexNm>\\\" ^w:index ^word )\n"
+    "  ' index ( \\\"<indexNm>\\\" ^w:index ^word ^word )\n"
+    "  eql ( \\\"<indexNm>\\\" ^w:index bool )\n"
+    "  if\n"
+    "    drop ( \\\"<indexNm>\\\" )\n"
+    "    true ( \\\"<indexNm>\\\" true )\n"
+    "    exit\n"
+    "  then\n"
+    "\n"
+    "  drop ( \\\"<indexNm>\\\" )\n"
+    "  drop ( )\n"
+    "  EC_NOT_AN_INDEX false ( errorCode false )\n"
+    ";\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* check word is not an index                                                 */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    ": checkIsNotIndex ( word )\n"
+    "  dup findInCurrent not if true exit then\n"
+    "  EC_INDEX_EXISTS false\n"
+    ";\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    ": pushIndex ( \\\"<indexNm>\\\" -- )\n"
+    "\n"
+    "  checkIsIndex not if EC_NO_SUCH_INDEX false exit then\n"
+    "\n"
+    "  find execute table.subDic pathPush\n"
+    "\n"
+    "  true\n"
+    ";\n"
+    "\n"
+    ": popTable\n"
+    "    pathDrop\n"
+    ";\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/*\n"
+    ": getIndexRef ( \\\"<indexNm>\\\" -- <R> )\n"
+    "\n"
+    "  checkInIndex not if false exit then\n"
+    "\n"
+    "  checkIsIndex not if EC_NO_SUCH_INDEX false exit then\n"
+    "\n"
+    "  find execute ( index )\n"
+    "\n"
+    "  task.this task.seitf@ seitf.indexRef\n"
+    "\n"
+    "    true\n"
+    ";\n"
+    "\n"
+    "?*----------------------------------------------------------------------------*?\n"
+    ": returnIndexRef ( )\n"
+    "\n"
+    "  task.this task.seitf@ seitf.indexRef\n"
+    "\n"
+    "  true\n"
+    ";\n"
+    "*/\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* any outstanding index references                                           */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    ": IndexInUse ( \\\"<indexNm>\\\" -- <R> )\n"
+    "\n"
+    "  find execute\n"
+    "\n"
+    "  //index.ref\n"
+    "  if true else false then\n"
+    ";\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* check within indexes                                                       */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    ": withinTables\n"
+    "\n"
+    "  0 pathPick dic.name \\\"indexes\\\" str.equal\n"
+    ";\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* check in indexes                                                           */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    ": checkInTables\n"
+    "\n"
+    "  withinTables if true exit then\n"
+    "\n"
+    "  EC_NOT_IN_INDEXES false\n"
+    ";\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* check if word is a makeable table                                          */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    ": checkMakeIndex ( \\\"<indexNm>\\\" -- \\\"<indexNm>\\\" true | \\\"<indexNm>\\\" errorCode false )\n"
+    "\n"
+    "  //checkInIndexes  not if false exit then\n"
+    "  checkIsNotIndex not if false exit then\n"
+    "\n"
+    "  true\n"
+    ";\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* check if word is a removable index folder                                  */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    ": checkRemoveIndex ( \\\"<indexNm>\\\" -- \\\"<indexNm>\\\" true | \\\"<indexNm>\\\" errorCode false )\n"
+    "\n"
+    "  checkInTables not if false exit then ( \\\"<indexNm>\\\" )\n"
+    "  checkIsTable not if false exit then ( \\\"<indexNm>\\\" )\n"
+    "  dup tableInUse if EC_TABLE_IN_USE false exit then ( \\\"<indexNm>\\\" )\n"
+    "\n"
+    "  true ( \\\"<indexNm>\\\" true )\n"
+    ";\n"
+    "\n"
+    "////////////////////////////////////////////////////////////////////////////////\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* make an index (run by participant)                                         */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    ": makeIndex allParticipants 3 checkResult ( \\\"<columnNm>\\\" \\\"<tableNm>\\\" \\\"<indexNm>\\\"  -- true n# true )\n"
+    "\n"
+    "tp: makingIndex\n"
+    "\n"
+    "  args.tracepoint if\n"
+    "  dup \\\"MAKING INDEX \\\" swap str.cat \\\" on NODE \\\" str.cat grid.thisNode@ >str str.cat .\n"
+    "  then\n"
+    "\n"
+    "  \\\"indexes\\\"\n"
+    "  find execute pathPush\n"
+    "\n"
+    "  // create the index\n"
+    "  dup :index ( \\\"<columnNm>\\\" \\\"<tableNm>\\\" \\\"<indexNm>\\\" ^index )\n"
+    "\n"
+    "  // drop the index word\n"
+    "  drop ( \\\"<columnNm>\\\" \\\"<tableNm>\\\" \\\"<indexNm>\\\" )\n"
+    "\n"
+    "  // find the index\n"
+    "  find execute ( \\\"<columnNm>\\\" ^table ^index )\n"
+    "\n"
+    "  // save the index\n"
+    "  locals| index | ( \\\"<columnNm>\\\" ^table )\n"
+    "\n"
+    "  // push the index\n"
+    "  index ( \\\"<columnNm>\\\" \\\"<tableNm>\\\" ^index )\n"
+    "  swap ( \\\"<columnNm>\\\" ^index \\\"<tableNm>\\\" )\n"
+    "\n"
+    "  // find the table\n"
+    "  find execute ( \\\"<columnNm>\\\" ^index ^table )\n"
+    "\n"
+    "  swap ( \\\"<columnNm>\\\" ^table ^index )\n"
+    "\n"
+    "  // set the table in the index\n"
+    "  index.table! ( \\\"<columnNm>\\\" )\n"
+    "\n"
+    "  // now populate the index\n"
+    "  index ( ^index )\n"
+    "  index.populate\n"
+    "\n"
+    "  // drop the columnNm (not being used)\n"
+    "  drop\n"
+    "\n"
+    "  true <SUCCESS_RESULT>\n"
+    ";\n"
+    "\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* make an index (run by participant)                                         */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    ": loadIndexes allParticipants 0 checkResult ( -- true n# true )\n"
+    "\n"
+    "tp: loadIndexes\n"
+    "\n"
+    "  args.tracepoint if\n"
+    "    \\\"LOADING INDEXES on NODE \\\" grid.thisNode@ >str str.cat .\n"
+    "  then\n"
+    "\n"
+    "  \\\"indexes\\\"\n"
+    "  find execute pathPush\n"
+    "\n"
+    "  listContents .\n"
+    "  pathDepth .\n"
+    "\n"
+    "  0 pathPick dic.lastWord dup\n"
+    "    iterate\n"
+    "    object@ word.name\n"
+    "    find execute ( ^index )\n"
+    "    index.populate\n"
+    "    object@ word.prev object!\n"
+    "  next\n"
+    "\n"
+    "  true <SUCCESS_RESULT>\n"
+    ";\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* remove an index                                                            */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    ": removeIndex allParticipants 1 checkResult ( \\\"<indexNm>\\\" -- true n# true )\n"
+    "\n"
+    "tp: removingIndex\n"
+    "\n"
+    "  dup find execute ( \\\"<indexNm>\\\" table )\n"
+    "\n"
+    "  :forget\n"
+    "\n"
+    "  true <SUCCESS_RESULT>\n"
+    ";\n"
+    "\n"
+    "/*============================================================================*/\n"
+    "/* end                                                                        */\n"
+    "/*============================================================================*/\n"
+    "\""
+  " CONSTANT index.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -4307,7 +4659,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT interface.sen"
+  " CONSTANT interface.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -4358,7 +4710,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT ipc.sen"
+  " CONSTANT ipc.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -4480,7 +4832,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT jData.sen"
+  " CONSTANT jData.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -4506,7 +4858,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT joinOp.sen"
+  " CONSTANT joinOp.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -4532,7 +4884,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT limitOp.sen"
+  " CONSTANT limitOp.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -4616,7 +4968,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT listerTask.sen"
+  " CONSTANT listerTask.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -4862,7 +5214,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT loader.sen"
+  " CONSTANT loader.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -5084,7 +5436,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT loaderSub.sen"
+  " CONSTANT loaderSub.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -5143,7 +5495,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT lock.sen"
+  " CONSTANT lock.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -5180,7 +5532,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT logicTests.sen"
+  " CONSTANT logicTests.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -5206,7 +5558,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT lowerOp.sen"
+  " CONSTANT lowerOp.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -5232,7 +5584,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT markOp.sen"
+  " CONSTANT markOp.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -5258,7 +5610,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT mergeOp.sen"
+  " CONSTANT mergeOp.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -5520,7 +5872,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT miscTesting.sen"
+  " CONSTANT miscTesting.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -5611,7 +5963,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT monitorTask.sen"
+  " CONSTANT monitorTask.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -5702,7 +6054,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "\n"
     "\\\"  \\\\\\\" CONSTANT \\\" cppFile file.write\n"
     "senFile file.path@ cppFile file.write\n"
-    "\\\"\\\\\\\"\\\\n\\\" cppFile file.write\n"
+    "\\\"\\\\\\\"_Str\\\\n\\\" cppFile file.write\n"
     ";\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -5850,7 +6202,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT munge.sen"
+  " CONSTANT munge.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -5876,7 +6228,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT nextOp.sen"
+  " CONSTANT nextOp.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -5935,7 +6287,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT node.sen"
+  " CONSTANT node.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -6020,7 +6372,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT nodeCursor.sen"
+  " CONSTANT nodeCursor.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -6080,7 +6432,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT operator.sen"
+  " CONSTANT operator.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -6146,7 +6498,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT operators.sen"
+  " CONSTANT operators.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -6227,7 +6579,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT participantProxy.sen"
+  " CONSTANT participantProxy.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -6291,7 +6643,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT participantTask.sen"
+  " CONSTANT participantTask.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -6503,7 +6855,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT plan.sen"
+  " CONSTANT plan.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -6524,7 +6876,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT planners.sen"
+  " CONSTANT planners.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -6580,7 +6932,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT planTesting.sen"
+  " CONSTANT planTesting.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -6606,7 +6958,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT projectOp.sen"
+  " CONSTANT projectOp.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -6654,7 +7006,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT queue.sen"
+  " CONSTANT queue.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -6680,7 +7032,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT rangeOp.sen"
+  " CONSTANT rangeOp.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -6706,7 +7058,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT readOp.sen"
+  " CONSTANT readOp.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -6762,7 +7114,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT receiverTask.sen"
+  " CONSTANT receiverTask.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -6885,7 +7237,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT reclaimTask.sen"
+  " CONSTANT reclaimTask.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -6911,7 +7263,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT recvOp.sen"
+  " CONSTANT recvOp.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -6977,12 +7329,10 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "antbl   analyze_table\n"
     "dantbl  danalyze_table\n"
     "gettbl  get_table\n"
-    "mkidx   create_index\n"
     "mktbl   create_table\n"
     "lstbl   list_tables\n"
     "add     add_column\n"
     "lscol   list_columns\n"
-    "lsidx   list_indices\n"
     "ld      load_table\n"
     "tblInUse  table_inuse\n"
     "sel     select_table\n"
@@ -6995,6 +7345,11 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "rettbl  return_table\n"
     "rmtbl   drop_table\n"
     "\n"
+    "Index Requests:\n"
+    "mkidx   create_index\n"
+    "lsidx   list_indexes\n"
+    "idump   dump_index\n"
+    " \n"
     "Dictionary Requests:\n"
     "\n"
     "cf      cf ..\n"
@@ -7022,7 +7377,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT requests.sen"
+  " CONSTANT requests.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -7080,7 +7435,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT requests_basics.sen"
+  " CONSTANT requests_basics.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -7146,7 +7501,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT requests_catalog.sen"
+  " CONSTANT requests_catalog.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -7178,7 +7533,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/*----------------------------------------------------------------------------*/\n"
     ": list_columns ( \\\"<tableNm>\\\" -- <R> )\n"
     "\n"
-    "  checkInTables not if <NIP+ERROR> exit then\n"
+    "  dup checkInTable not if <NIP+ERROR> exit then\n"
     "\n"
     "  listColumns\n"
     "\n"
@@ -7189,7 +7544,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT requests_column.sen"
+  " CONSTANT requests_column.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -7235,7 +7590,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT requests_connection.sen"
+  " CONSTANT requests_connection.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -7305,7 +7660,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "  then\n"
     "\n"
     "  // push sub-folder\n"
-    "  find\n"
+    "  findInCurrent\n"
     "  checkIsDic not if <NIP+ERROR> exit then\n"
     "  execute pathPush\n"
     "\n"
@@ -7366,6 +7721,11 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "    object@ isTable if\n"
     "      \\\"table \\\" str.cat\n"
     "      object@ execute table.space bytes.magnitude str.cat\n"
+    "    then\n"
+    "\n"
+    "    object@ isIndex if\n"
+    "      \\\"index\\\" str.cat\n"
+    "      //object@ execute table.space bytes.magnitude str.cat\n"
     "    then\n"
     "\n"
     "    object@ isFolder if\n"
@@ -7522,7 +7882,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT requests_folder.sen"
+  " CONSTANT requests_folder.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -7567,7 +7927,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT requests_grid.sen"
+  " CONSTANT requests_grid.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -7582,23 +7942,6 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "\n"
     "\\\"requests.sen\\\" .verbose\n"
     "\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/* make an index (run by participant)                                         */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    ": makeIndex allParticipants 3 checkResult ( \\\"<indexNm>\\\" \\\"<tableNm>\\\" \\\"<columnNm>\\\"-- true n# true )\n"
-    "\n"
-    "tp: makingIndex\n"
-    "\n"
-    "  locals| columnNm tableNm indexNm |\n"
-    "\n"
-    "  args.tracepoint if\n"
-    "  indexNm tableNm columnNm \\\"MAKING INDEX %V on table %V using column %V\\\" str.format .\n"
-    "  then\n"
-    "\n"
-    "  true <SUCCESS_RESULT>\n"
-    ";\n"
-    "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* create an index on a table                                                 */\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -7608,7 +7951,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "  ddlLock.grabWrite\n"
     "\n"
     "  checkEnoughBuffers not if <NIP+ERROR> exit then\n"
-    "  1 pick getTableRef not if <NIP+ERROR> exit then\n"
+    "  checkMakeIndex     not if <NIP+ERROR> exit then\n"
     "\n"
     "  makeIndex ( ) assert.stack_0\n"
     "\n"
@@ -7616,15 +7959,31 @@ void Task::vAddMunged(NNP_Task nnpTask)
     ";\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
+    "/* dump index                                                                 */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    ": dump_index ( \\\"<indexNm>\\\" -- <R> )\n"
+    "\n"
+    "  ddlLock.grabRead\n"
+    "\n"
+    "  checkInIndexes not if <NIP+ERROR> exit then\n"
+    "  checkIsIndex  not if <NIP+ERROR> exit then\n"
+    "\n"
+    "  find execute\n"
+    "  index.dump\n"
+    "\n"
+    "  <OK>\n"
+    ";\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
     "/* get list of indices                                                        */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": list_indices ( \\\"<tableNm>\\\" -- <R> )\n"
+    ": list_indexes ( \\\"<tableNm>\\\" -- <R> )\n"
     "\n"
     "ddlLock.grabRead\n"
     "\n"
     "  checkInTables not if <NIP+ERROR> exit then\n"
     "\n"
-    "  //listIndices\n"
+    "  listContents\n"
     "\n"
     "  <SUCCESS>\n"
     ";\n"
@@ -7633,7 +7992,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT requests_index.sen"
+  " CONSTANT requests_index.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -7697,7 +8056,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT requests_misc.sen"
+  " CONSTANT requests_misc.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -7768,7 +8127,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT requests_object.sen"
+  " CONSTANT requests_object.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -7893,7 +8252,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT requests_rowBuffer.sen"
+  " CONSTANT requests_rowBuffer.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -7993,7 +8352,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT requests_schema.sen"
+  " CONSTANT requests_schema.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -8078,7 +8437,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT requests_space.sen"
+  " CONSTANT requests_space.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -8102,7 +8461,8 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "\n"
     "ddlLock.grabWrite\n"
     "\n"
-    "  checkInTables      not if <NIP+ERROR> exit then\n"
+    "  dup\n"
+    "  checkInTable      not if <NIP+ERROR> exit then\n"
     "  checkIsTable       not if <NIP+ERROR> exit then\n"
     "\n"
     "  tp ( \\\"<tableNm>\\\" )\n"
@@ -8123,7 +8483,8 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "\n"
     "  ddlLock.grabWrite\n"
     "\n"
-    "  checkInTables      not if <NIP+ERROR> exit then\n"
+    "  dup\n"
+    "  checkInTable       not if <NIP+ERROR> exit then\n"
     "  checkIsTable       not if <NIP+ERROR> exit then\n"
     "\n"
     "  tp ( \\\"<tableNm>\\\" )\n"
@@ -8156,7 +8517,8 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "ddlLock.grabRead\n"
     "\n"
     "  checkEnoughBuffers not if <NIP+ERROR> exit then\n"
-    "  checkInTables      not if <NIP+ERROR> exit then\n"
+    "  dup\n"
+    "  checkInTable      not if <NIP+ERROR> exit then\n"
     "  checkIsTable       not if <NIP+ERROR> exit then\n"
     "\n"
     "  //bp.freespace .\n"
@@ -8190,7 +8552,8 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "\n"
     "ddlLock.grabRead\n"
     "\n"
-    "  checkInTables not if <NIP+ERROR> exit then\n"
+    "  dup\n"
+    "  checkInTable  not if <NIP+ERROR> exit then\n"
     "  checkIsTable  not if <NIP+ERROR> exit then\n"
     "\n"
     "  distTableExporter not if <NIP+ERROR> exit then\n"
@@ -8243,7 +8606,8 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "\n"
     "ddlLock.grabRead\n"
     "\n"
-    "  checkInTables not if <NIP+ERROR> exit then\n"
+    "  dup\n"
+    "  checkInTable not if <NIP+ERROR> exit then\n"
     "  checkIsTable  not if <NIP+ERROR> exit then\n"
     "\n"
     "  dumpTable\n"
@@ -8258,7 +8622,8 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "\n"
     "ddlLock.grabRead\n"
     "\n"
-    "  checkInTables not if <NIP+ERROR> exit then\n"
+    "  dup\n"
+    "  checkInTable not if <NIP+ERROR> exit then\n"
     "  checkIsTable  not if <NIP+ERROR> exit then\n"
     "\n"
     "  tableExporter not if <NIP+ERROR> exit then\n"
@@ -8297,7 +8662,8 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "\n"
     "ddlLock.grabRead\n"
     "\n"
-    "  checkInTables not if <NIP+ERROR> exit then\n"
+    "  dup\n"
+    "  checkInTable  not if <NIP+ERROR> exit then\n"
     "  checkIsTable  not if <NIP+ERROR> exit then\n"
     "\n"
     "  //bp.freespace .\n"
@@ -8305,6 +8671,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "snap0:\n"
     "\n"
     "  tableLoader   not if <NIP+ERROR> exit then\n"
+    "  loadIndexes\n"
     "\n"
     "  //bp.freespace .\n"
     "\n"
@@ -8338,7 +8705,8 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "\n"
     "  ddlLock.grabRead\n"
     "\n"
-    "  checkInTables not if <NIP+ERROR> exit then\n"
+    "  dup\n"
+    "  checkInTable  not if <NIP+ERROR> exit then\n"
     "  checkIsTable  not if <NIP+ERROR> exit then\n"
     "\n"
     "  //bp.freespace .\n"
@@ -8381,7 +8749,8 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "\n"
     "ddlLock.grabWrite\n"
     "\n"
-    "  checkInTables not if <NIP+ERROR> exit then\n"
+    "  dup\n"
+    "  checkInTable  not if <NIP+ERROR> exit then\n"
     "  checkIsTable  not if <NIP+ERROR> exit then\n"
     "\n"
     "  sizeTable ( \\\"<size>\\\" )\n"
@@ -8396,7 +8765,8 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "\n"
     "ddlLock.grabRead\n"
     "\n"
-    "  checkInTables not if <NIP+ERROR> exit then\n"
+    "  dup\n"
+    "  checkInTable  not if <NIP+ERROR> exit then\n"
     "  checkIsTable  not if <NIP+ERROR> exit then\n"
     "\n"
     "  truncateTable\n"
@@ -8409,7 +8779,8 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/*----------------------------------------------------------------------------*/\n"
     ": table_inuse ( \\\"<tableNm>\\\" -- <R> )\n"
     "\n"
-    "  checkInTables not if <NIP+ERROR> exit then\n"
+    "  dup\n"
+    "  checkInTable  not if <NIP+ERROR> exit then\n"
     "  checkIsTable  not if <NIP+ERROR> exit then\n"
     "\n"
     "  tableInUse\n"
@@ -8426,7 +8797,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT requests_table.sen"
+  " CONSTANT requests_table.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -8506,7 +8877,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT requests_tenant.sen"
+  " CONSTANT requests_tenant.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -8715,7 +9086,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT requestTask.sen"
+  " CONSTANT requestTask.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -8784,7 +9155,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT responseOp.sen"
+  " CONSTANT responseOp.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -8803,7 +9174,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT row.sen"
+  " CONSTANT row.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -8822,7 +9193,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT rowBuffer.sen"
+  " CONSTANT rowBuffer.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -8849,10 +9220,12 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "\n"
     "  // record the plan and profile\n"
     "  locals| thePlan profile |\n"
-    "  \n"
+    "\n"
     "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     "  // set path (hardcoded for the moment)\n"
-    "  \\\"tables\\\" \\\"tpchSchema\\\" \\\"schemas\\\" \\\"rapidsse\\\" \\\"catalogs\\\" \\\"boray\\\" \\\"tenants\\\" 7 dicPath.set\n"
+    "\n"
+    "  //\\\"tables\\\" \\\"tpchSchema\\\" \\\"schemas\\\" \\\"rapidsse\\\" \\\"catalogs\\\" \\\"boray\\\" \\\"tenants\\\" 7 dicPath.set\n"
+    "  \\\"tenants\\\" 1 dicPath.set\n"
     "\n"
     "  // [0] push thePlan's dictionary onto path stack\n"
     "  thePlan plan.dic pathPush\n"
@@ -8861,6 +9234,43 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "  profile thePlan plan.opFrame? opFrame.push // [1]\n"
     "  //pathDump\n"
     "\n"
+    "  $$tableNm   locals| tableNm   |\n"
+    "  $$schemaNm  locals| schemaNm  |\n"
+    "  $$catalogNm locals| catalogNm |\n"
+    "\n"
+    "  // drop the dictionary path\n"
+    "  pathDrop\n"
+    "\n"
+    "  // now create the dictionary path again with the catalog and schemaNm\n"
+    "  \\\"catalogs\\\" \\\"boray\\\" \\\"tenants\\\" 3 dicPath.set\n"
+    "\n"
+    "  // push tableNm folder on the dictionary path\n"
+    "  catalogNm find execute\n"
+    "  pathPush\n"
+    "\n"
+    "  // push tableNm folder on the dictionary path\n"
+    "  \\\"schemas\\\" find execute\n"
+    "  pathPush\n"
+    "\n"
+    "  // push tableNm folder on the dictionary path\n"
+    "  schemaNm find execute\n"
+    "  pathPush\n"
+    "\n"
+    "  // push tableNm folder on the dictionary path\n"
+    "  \\\"tables\\\" find execute\n"
+    "  pathPush\n"
+    "\n"
+    "  // push tableNm on the dictionary path\n"
+    "  tableNm find execute\n"
+    "  pathPush\n"
+    "\n"
+    "  //pathDump\n"
+    "\n"
+    "  // [0] push thePlan's dictionary onto path stack\n"
+    "  thePlan plan.dic pathPush\n"
+    "\n"
+    "  // [1] find and push opFrame (along with its dictionary onto path stack)\n"
+    "  profile thePlan plan.opFrame? opFrame.push // [1]\n"
     "\n"
     "  // [2] create a new rowCursor and record in opFrame.rbCrs\n"
     "  rbCursor.new toCommon rbCrs\n"
@@ -8937,7 +9347,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT scanOp.sen"
+  " CONSTANT scanOp.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -9072,7 +9482,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT schema.sen"
+  " CONSTANT schema.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -9157,7 +9567,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT seitfCursor.sen"
+  " CONSTANT seitfCursor.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -9200,7 +9610,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT seitfList.sen"
+  " CONSTANT seitfList.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -9250,7 +9660,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT selCursor.sen"
+  " CONSTANT selCursor.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -9314,7 +9724,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT senderTask.sen"
+  " CONSTANT senderTask.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -9340,7 +9750,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT sendOp.sen"
+  " CONSTANT sendOp.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -9401,7 +9811,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT sinkOp.sen"
+  " CONSTANT sinkOp.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -9423,7 +9833,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT socket.sen"
+  " CONSTANT socket.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -9442,7 +9852,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "    \\\"client sent : hello there\\\" .\n"
     ";\n"
     "\""
-  " CONSTANT socket_client.sen"
+  " CONSTANT socket_client.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -9463,7 +9873,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "    .\n"
     "; \n"
     "\""
-  " CONSTANT socket_server.sen"
+  " CONSTANT socket_server.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -9489,7 +9899,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT sortOp.sen"
+  " CONSTANT sortOp.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -9561,7 +9971,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT streamLoader.sen"
+  " CONSTANT streamLoader.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -9582,7 +9992,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT structures.sen"
+  " CONSTANT structures.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -9603,6 +10013,8 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "symArg: $$nStreams\n"
     "symArg: $$partition\n"
     "symArg: $$tableNm\n"
+    "symArg: $$schemaNm\n"
+    "symArg: $$catalogNm\n"
     "\n"
     "symArg: $$nextOp\n"
     "symArg: $$nextProfile\n"
@@ -9611,7 +10023,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT symbolicArgs.sen"
+  " CONSTANT symbolicArgs.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -9657,7 +10069,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT systemObjects.sen"
+  " CONSTANT systemObjects.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -9696,6 +10108,20 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "  :folder      ( )\n"
     ";\n"
     "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* make a tableNm folder under tables                                         */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    ": makeTableDic ( \\\"<tableNm>\\\" -- )\n"
+    "\n"
+    "  args.tracepoint if\n"
+    "    dup \\\"MAKING TABLE DIC \\\" swap str.cat \\\" on NODE \\\" str.cat grid.thisNode@ >str str.cat .\n"
+    "  then\n"
+    "\n"
+    "  0 pathPick\n"
+    "  :folder      ( )\n"
+    ";\n"
+    "\n"
+    "\n"
     ": isTable word.kind@ ' table eql ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -9732,19 +10158,39 @@ void Task::vAddMunged(NNP_Task nnpTask)
     ";\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
-    "/* se> checking                                                               */\n"
+    "/* check within tables                                                        */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    "\n"
     ": withinTables\n"
     "\n"
     "  0 pathPick dic.name \\\"tables\\\" str.equal\n"
     ";\n"
     "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* check in tables                                                            */\n"
+    "/*----------------------------------------------------------------------------*/\n"
     ": checkInTables\n"
     "\n"
     "  withinTables if true exit then\n"
     "\n"
     "  EC_NOT_IN_TABLES false\n"
+    ";\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* check within a table                                                       */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    ": withinTable\n"
+    "\n"
+    "  0 pathPick dic.name str.equal\n"
+    ";\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* check in table                                                             */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    ": checkInTable\n"
+    "\n"
+    "  withinTable if true exit then\n"
+    "\n"
+    "  EC_NOT_IN_TABLE false\n"
     ";\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -9781,6 +10227,9 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "  EC_NOT_A_TABLE false ( errorCode false )\n"
     ";\n"
     "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* check word is not a table                                                  */\n"
+    "/*----------------------------------------------------------------------------*/\n"
     ": checkIsNotTable ( word )\n"
     "  dup findInCurrent not if true exit then\n"
     "  EC_TABLE_EXISTS false\n"
@@ -9789,6 +10238,18 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/*----------------------------------------------------------------------------*/\n"
     ": pushTable ( \\\"<tableName>\\\" -- )\n"
     "\n"
+    "  find execute pathPush\n"
+    "\n"
+    "  true\n"
+    ";\n"
+    "\n"
+    ": popTable\n"
+    "  pathDrop\n"
+    ";\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    ": pushTableSub ( \\\"<tableName>\\\" -- )\n"
+    "\n"
     "  checkIsTable not if EC_NO_SUCH_TABLE false exit then\n"
     "\n"
     "  find execute table.subDic pathPush\n"
@@ -9796,14 +10257,14 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "  true\n"
     ";\n"
     "\n"
-    ": popTable\n"
+    ": popTableSub\n"
     "    pathDrop\n"
     ";\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     ": getTableRef ( \\\"<tableNm>\\\" -- <R> )\n"
     "\n"
-    "  checkInTables not if false exit then\n"
+    "  dup checkInTable not if false exit then\n"
     "\n"
     "  checkIsTable not if EC_NO_SUCH_TABLE false exit then\n"
     "\n"
@@ -9850,8 +10311,17 @@ void Task::vAddMunged(NNP_Task nnpTask)
     ": checkRemoveTable ( \\\"<tableNm>\\\" -- \\\"<tableNm>\\\" true | \\\"<tableNm>\\\" errorCode false )\n"
     "\n"
     "  checkInTables not if false exit then ( \\\"<tableNm>\\\" )\n"
+    "\n"
+    "  dup checkIsWord not if EC_NO_SUCH_TABLE false exit then ( \\\"<tableNm>\\\" )\n"
+    "  drop\n"
+    "\n"
+    "  // push table dictionary\n"
+    "  dup pushTable assert\n"
+    "\n"
     "  checkIsTable not if false exit then ( \\\"<tableNm>\\\" )\n"
     "  dup tableInUse if EC_TABLE_IN_USE false exit then ( \\\"<tableNm>\\\" )\n"
+    "\n"
+    "  popTable\n"
     "\n"
     "  true ( \\\"<tableNm>\\\" true )\n"
     ";\n"
@@ -9969,11 +10439,19 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "  dup \\\"MAKING TABLE \\\" swap str.cat \\\" on NODE \\\" str.cat grid.thisNode@ >str str.cat .\n"
     "  then\n"
     "\n"
-    "  dup ( \\\"<tableNm>\\\" \\\"<tableNm>\\\" )\n"
+    "  dup dup\n"
+    "  makeTableDic\n"
+    "\n"
+    "  dup\n"
+    "  find execute pathPush\n"
+    "  dup\n"
+    "\n"
+    "  \\\"makeIndexes\\\" find execute\n"
     "\n"
     "  :table ( \\\"<tableNm>\\\" ^table )\n"
     "\n"
     "  drop ( \\\"<tableNm>\\\" )\n"
+    "\n"
     "\n"
     "  // forward reference :-(\n"
     "  \\\"makeColumns\\\" find execute\n"
@@ -9990,10 +10468,13 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "\n"
     "//traceon\n"
     "\n"
-    "  dup find execute ( \\\"<tableNm>\\\" table )\n"
+    "  locals| tableNm |\n"
+    "\n"
+    "  tableNm pushTable assert\n"
+    "  tableNm find execute ( table )\n"
     "\n"
     "  // drop all rows\n"
-    "  dup table.truncate ( \\\"<tableNm>\\\" table )\n"
+    "  dup table.truncate ( table )\n"
     "\n"
     "  // forget all column names in the columns dictionary of table sub-dictionary\n"
     "  dup table.subDic\n"
@@ -10004,7 +10485,14 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "  // forget the columns dictionary in the table sub-dictionary\n"
     "  table.subDic forgetAll\n"
     "\n"
-    "  :forget\n"
+    "  //\\\"indexes\\\" stk find execute\n"
+    "  //:forget\n"
+    "\n"
+    "  tableNm :forget\n"
+    "\n"
+    "  popTable\n"
+    "\n"
+    "  tableNm :forget\n"
     "\n"
     "//traceoff\n"
     "\n"
@@ -10015,7 +10503,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT table.sen"
+  " CONSTANT table.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -10063,7 +10551,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT task.sen"
+  " CONSTANT task.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -10148,7 +10636,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT taskCursor.sen"
+  " CONSTANT taskCursor.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -10192,7 +10680,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT taskList.sen"
+  " CONSTANT taskList.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -10217,7 +10705,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT tasks.sen"
+  " CONSTANT tasks.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -10265,7 +10753,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT taskSet.sen"
+  " CONSTANT taskSet.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -10291,7 +10779,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT teeOp.sen"
+  " CONSTANT teeOp.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -10423,7 +10911,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT tenant.sen"
+  " CONSTANT tenant.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -10449,7 +10937,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT testing.sen"
+  " CONSTANT testing.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -10497,7 +10985,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT thread.sen"
+  " CONSTANT thread.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -10582,7 +11070,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT threadCursor.sen"
+  " CONSTANT threadCursor.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -10613,7 +11101,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT threadList.sen"
+  " CONSTANT threadList.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -10636,7 +11124,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT threads.sen"
+  " CONSTANT threads.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -10696,7 +11184,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT timer.sen"
+  " CONSTANT timer.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -10732,7 +11220,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT trace.sen"
+  " CONSTANT trace.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -10756,7 +11244,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT transactions.sen"
+  " CONSTANT transactions.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -10840,7 +11328,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT triggerOp.sen"
+  " CONSTANT triggerOp.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -10871,7 +11359,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT txCollection.sen"
+  " CONSTANT txCollection.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -10956,7 +11444,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT txCursor.sen"
+  " CONSTANT txCursor.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -10987,7 +11475,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT txMap.sen"
+  " CONSTANT txMap.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -11056,7 +11544,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT txRef.sen"
+  " CONSTANT txRef.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -11094,7 +11582,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT unitTests.sen"
+  " CONSTANT unitTests.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -11120,7 +11608,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT upperOp.sen"
+  " CONSTANT upperOp.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -11148,7 +11636,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT useful.sen"
+  " CONSTANT useful.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -11167,7 +11655,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT user.sen"
+  " CONSTANT user.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -11194,7 +11682,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT utilities.sen"
+  " CONSTANT utilities.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -11295,7 +11783,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "  WT_OBJECT word.this word.type!\n"
     "  sizeof_strval sizeof_s256 + allot\n"
     "  word.this >body object.magic!\n"
-    "  CN_STRVAL word.this >body object.class!\n"
+    "  CN_STRVAR word.this >body object.class!\n"
     "  word.this >body s256.init\n"
     "  true word.this >body object.wordbody!\n"
     "  does>\n"
@@ -11305,7 +11793,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT var.sen"
+  " CONSTANT var.sen"_Str
   ;
 
   pCompileConstant(sDefinition);
@@ -11492,7 +11980,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT writeOp.sen"
+  " CONSTANT writeOp.sen"_Str
   ;
 
   pCompileConstant(sDefinition);

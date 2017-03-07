@@ -42,10 +42,10 @@ void SeHistory::vAppend(char* pToken[])
   
   for (i8 i = 0; *pToken[i]; i++) {
     if (i)
-      m_xFile.vPrint("%s"," ");
-    m_xFile.vPrint("%s",pToken[i]);
+      m_xFile.vPrint("%s"_Str," ");
+    m_xFile.vPrint("%s"_Str,pToken[i]);
   }
-  m_xFile.vPrint("%s","\n");
+  m_xFile.vPrint("%s"_Str,"\n");
   m_xFile.vFlush();
   
   m_iCommands++;

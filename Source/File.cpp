@@ -486,7 +486,7 @@ void File::vPath(StrVal& sFilePath)
 /*----------------------------------------------------------------------------*/
 /* formatted print                                                            */
 /*----------------------------------------------------------------------------*/
-void File::vPrint(const char* sFormat, ...)
+void File::vPrint(Str* aFormat, ...)
 {
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
 
@@ -494,8 +494,8 @@ void File::vPrint(const char* sFormat, ...)
   
   va_list args;
 
-  va_start(args,sFormat);
-  i8 nPrinted = vfprintf(m_aFilePtr,sFormat,args);
+  va_start(args,aFormat);
+  i8 nPrinted = vfprintf(m_aFilePtr,aFormat->a(),args);
   va_end(args);
 
   if (-1 == nPrinted) {

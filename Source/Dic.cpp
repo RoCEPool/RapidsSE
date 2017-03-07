@@ -67,7 +67,7 @@ Dic::Dic(void)
   m_bFrozen  = false;
   m_zRefCount.vCheckInit();
 
-  m_xLock.vInit("Dic::m_xLock");
+  m_xLock.vInit("Dic::m_xLock"_Str);
   m_pLastWord = nullptr;
   m_nWords = 0;
   
