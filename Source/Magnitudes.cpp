@@ -38,7 +38,7 @@ void Magnitudes::vMagnitude(i8 iValue, i8 iDecimals, char* psBuf)
 /*----------------------------------------------------------------------------*/
 /* iBytes -- convert magnitude to equivalent bytes                            */
 /*----------------------------------------------------------------------------*/
-bool Magnitudes::bBytes(const char* psBuf, i8& iBytes)
+bool Magnitudes::bBytes(Str* psBuf, i8& iBytes)
 {
   s256 sNumber;
   s256 sString;

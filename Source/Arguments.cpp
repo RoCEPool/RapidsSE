@@ -231,7 +231,7 @@ bool Arguments::bParse(int argc, const char* argv[])
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (StrLib::bEqualTo("--size",argv[iArg],C_NO_CASE)) {
       //m_iRegionSize = StrLib::iToI8(argv[++iArg]);
-      bool bResult = Magnitudes::bBytes(argv[++iArg], m_iRegionSize);
+      bool bResult = Magnitudes::bBytes((Str*)argv[++iArg], m_iRegionSize);
       if (!bResult) {
         vTrace("Invalid size argument: --size %s\n"_Str,argv[iArg]);
         return false;
