@@ -121,7 +121,7 @@ int main(int argc, const char* argv[])
     xFile.vPath("./se.region");
     bool b = xFile.bOpen(C_OPEN_READ_WRITE_CREATE);
     ASSERT(b);
-    xFile.vPrint("%s\n",gxArguments.m_sRegionName.aStr());
+    xFile.vPrint("%s\n"_Str,gxArguments.m_sRegionName.aStr());
     xFile.vClose();
   }
   

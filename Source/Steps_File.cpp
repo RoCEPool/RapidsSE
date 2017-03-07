@@ -267,7 +267,7 @@ ENTRY("vFileWrite");
   
   char* wStr = sLine.aStr();
   
-  pFile->vPrint("%s",wStr);
+  pFile->vPrint("%s"_Str,wStr);
   
   EXIT();
 }

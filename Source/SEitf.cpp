@@ -1586,7 +1586,7 @@ bool SEitf::bPing(char* pWords[])
   s256 sRequest;
   
   ASSERT(StrLib::bEqualTo(pWords[0],"ping"));
-  sRequest = "ping";
+  sRequest = "ping"_Str;
   return bAppendRequest(sRequest);
 }
 
@@ -1635,7 +1635,7 @@ bool SEitf::bSeitfCount(char* pWords[])
   s256 sRequest;
   
   ASSERT(StrLib::bEqualTo(pWords[0],"seitf"));
-  sRequest = "seitf_count";
+  sRequest = "seitf_count"_Str;
   return bAppendRequest(sRequest);
 }
 
@@ -1649,7 +1649,7 @@ bool SEitf::bX(char* pWords[])
   s256 sRequest;
   
   ASSERT(StrLib::bEqualTo(pWords[0],"ping"));
-  sRequest = "ping";
+  sRequest = "ping"_Str;
   
   //  static bool bFirst = true;
   //  if (bFirst) {
