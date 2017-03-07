@@ -81,7 +81,7 @@ int main(int argc, const char* argv[])
   
   StorageEngine::vCheckAllAssumptions();
   
-  if ( ! gxArguments.bParse(argc,argv) )
+  if ( ! gxArguments.bParse(argc,(Str**)argv) )
     exit(EXIT_FAILURE);
   
   if (gxArguments.m_bWelcome && ! gxArguments.m_bStatus)

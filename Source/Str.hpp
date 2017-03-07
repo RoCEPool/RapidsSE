@@ -25,7 +25,9 @@ namespace Base
     void vPrint(void);
     bool bEqual(Str* aArg);
     bool bSame(Str* aArg);
-  
+
+    i8 iToI8(void);
+
     char* a(void);
   };
   

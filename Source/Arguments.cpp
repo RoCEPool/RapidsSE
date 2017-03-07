@@ -108,7 +108,7 @@ void Arguments::vEnvironmentVariables(void)
 /*----------------------------------------------------------------------------*/
 /* parse command line arguments                                               */
 /*----------------------------------------------------------------------------*/
-bool Arguments::bParse(int argc, const char* argv[])
+bool Arguments::bParse(int argc, Str* argv[])
 {
   _precondition_(_MAGIC_,CN_ARGUMENTS,_FOOTER_);
   
@@ -117,7 +117,7 @@ bool Arguments::bParse(int argc, const char* argv[])
   for (i8 iArg = 1; iArg < argc; iArg++) {
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (StrLib::bEqualTo("--command",argv[iArg],C_NO_CASE)) {
+    if (argv[iArg]->bSame("--command"_Str)) {
       m_sCommand = (Str*)argv[++iArg];
       m_bCommand = true;
       m_bPrompt  = true;
@@ -126,47 +126,47 @@ bool Arguments::bParse(int argc, const char* argv[])
     }
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (StrLib::bEqualTo("--commands",argv[iArg],C_NO_CASE)) {
+    if (argv[iArg]->bSame("--commands"_Str)) {
       m_sCommands = (Str*)argv[++iArg];
       continue;
     }
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (StrLib::bEqualTo("--sen",argv[iArg],C_NO_CASE)) {
+    if (argv[iArg]->bSame("--sen"_Str)) {
       m_sSen = (Str*)argv[++iArg];
       continue;
     }
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (StrLib::bEqualTo("--docol",argv[iArg],C_NO_CASE)) {
+    if (argv[iArg]->bSame("--docol"_Str)) {
       m_bDocol = true;
       continue;
     }
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (
-        StrLib::bEqualTo("--help",argv[iArg],C_NO_CASE)
-        || StrLib::bEqualTo("-help",argv[iArg],C_NO_CASE)
-        || StrLib::bEqualTo("help",argv[iArg],C_NO_CASE)
-        || StrLib::bEqualTo("--?",argv[iArg],C_NO_CASE)
-        || StrLib::bEqualTo("-?",argv[iArg],C_NO_CASE)
-        || StrLib::bEqualTo("?",argv[iArg],C_NO_CASE)
+        argv[iArg]->bSame("--help"_Str)
+        || argv[iArg]->bSame("-help"_Str)
+        || argv[iArg]->bSame("help"_Str)
+        || argv[iArg]->bSame("--?"_Str)
+        || argv[iArg]->bSame("-?"_Str)
+        || argv[iArg]->bSame("?"_Str)
         )  {
       vPrintHelp();
       exit(EXIT_SUCCESS);
     }
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (StrLib::bEqualTo("--name",argv[iArg],C_NO_CASE)) {
+    if (argv[iArg]->bSame("--name"_Str)) {
       m_sNodeName = (Str*)argv[++iArg];
       continue;
     }
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (StrLib::bEqualTo("--node",argv[iArg],C_NO_CASE)) {
+    if (argv[iArg]->bSame("--node"_Str)) {
       m_xNodes[iNode].m_sNodeName = (Str*)argv[++iArg];;
       m_xNodes[iNode].m_sIPAddress = (Str*)argv[++iArg];
-      m_xNodes[iNode].m_iPortNo =  StrLib::iToI8(argv[++iArg]);
+      m_xNodes[iNode].m_iPortNo = argv[++iArg]->iToI8();
       iNode++;
       
       if (m_nNodes > C_MAX_NODES) {
@@ -177,8 +177,8 @@ bool Arguments::bParse(int argc, const char* argv[])
     }
 
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (StrLib::bEqualTo("--partitionsPerNode",argv[iArg],C_NO_CASE)) {
-      m_nSlots = StrLib::iToI8(argv[++iArg]);
+    if (argv[iArg]->bSame("--partitionsPerNode"_Str)) {
+      m_nSlots = argv[++iArg]->iToI8();
       if (m_nSlots > C_SLOTS_PER_NODE) {
         vTrace("Maximum number of partitions allowed per node is %lld\n"_Str,
           C_SLOTS_PER_NODE);
@@ -189,31 +189,31 @@ bool Arguments::bParse(int argc, const char* argv[])
     }
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (StrLib::bEqualTo("--region",argv[iArg],C_NO_CASE)) {
+    if (argv[iArg]->bSame("--region"_Str)) {
       m_sRegionName = (Str*)argv[++iArg];
       continue;
     }
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (StrLib::bEqualTo("--regionPrefix",argv[iArg],C_NO_CASE)) {
+    if (argv[iArg]->bSame("--regionPrefix"_Str)) {
       m_sRegionPrefix = (Str*)argv[++iArg];
       continue;
     }
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (StrLib::bEqualTo("--address",argv[iArg],C_NO_CASE)) {
-      m_pRegionAddr = (void*)StrLib::iToI8(argv[++iArg]);
+    if (argv[iArg]->bSame("--address"_Str)) {
+      m_pRegionAddr = (void*)argv[++iArg]->iToI8();
       continue;
     }
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (StrLib::bEqualTo("--seprompt",argv[iArg],C_NO_CASE)) {
+    if (argv[iArg]->bSame("--seprompt"_Str)) {
       m_bPrompt = true;
       continue;
     }
 
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (StrLib::bEqualTo("--prompt",argv[iArg],C_NO_CASE)) {
+    if (argv[iArg]->bSame("--prompt"_Str)) {
 
       if (m_bStop) {
         vTrace("Incorrect argument: --stop with %s\n"_Str,argv[iArg]);
@@ -229,7 +229,7 @@ bool Arguments::bParse(int argc, const char* argv[])
     }
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (StrLib::bEqualTo("--size",argv[iArg],C_NO_CASE)) {
+    if (argv[iArg]->bSame("--size"_Str)) {
       //m_iRegionSize = StrLib::iToI8(argv[++iArg]);
       bool bResult = Magnitudes::bBytes((Str*)argv[++iArg], m_iRegionSize);
       if (!bResult) {
@@ -243,7 +243,7 @@ bool Arguments::bParse(int argc, const char* argv[])
     }
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (StrLib::bEqualTo("--start",argv[iArg],C_NO_CASE)) {
+    if (argv[iArg]->bSame("--start"_Str)) {
 
       if (m_bStop) {
         vTrace("Incorrect argument: --stop with %s\n"_Str,argv[iArg]);
@@ -259,7 +259,7 @@ bool Arguments::bParse(int argc, const char* argv[])
     }
 
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (StrLib::bEqualTo("--status",argv[iArg],C_NO_CASE)) {
+    if (argv[iArg]->bSame("--status"_Str)) {
       if (m_bStop) {
         vTrace("Incorrect argument: --stop with %s\n"_Str,argv[iArg]);
         return false;
@@ -278,7 +278,7 @@ bool Arguments::bParse(int argc, const char* argv[])
     }
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (StrLib::bEqualTo("--stop",argv[iArg],C_NO_CASE)) {
+    if (argv[iArg]->bSame("--stop"_Str)) {
 
       if (m_bStart) {
         vTrace("Incorrect argument: --start with %s\n"_Str,argv[iArg]);
@@ -298,98 +298,98 @@ bool Arguments::bParse(int argc, const char* argv[])
     }
 
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (StrLib::bEqualTo("--unlink",argv[iArg],C_NO_CASE)) {
+    if (argv[iArg]->bSame("--unlink"_Str)) {
       m_bUnlink = true;
       continue;
     }
     
     // options -----------------------------------------------------------------
     
-    if (StrLib::bEqualTo("--bgtasks",argv[iArg],C_NO_CASE)) {
+    if (argv[iArg]->bSame("--bgtasks"_Str)) {
       m_bBgTasks = true;
       continue;
     }
     
-    if (StrLib::bEqualTo("--config",argv[iArg],C_NO_CASE)) {
+    if (argv[iArg]->bSame("--config"_Str)) {
       m_bConfig = true;
       continue;
     }
     
-    if (StrLib::bEqualTo("--hugepages",argv[iArg],C_NO_CASE)) {
+    if (argv[iArg]->bSame("--hugepages"_Str)) {
       m_bHugePages = true;
       continue;
     }
     
-    if (StrLib::bEqualTo("--progress",argv[iArg],C_NO_CASE)) {
+    if (argv[iArg]->bSame("--progress"_Str)) {
       m_bProgress = true;
       continue;
     }
-    if (StrLib::bEqualTo("--noprogress",argv[iArg],C_NO_CASE)) {
+    if (argv[iArg]->bSame("--noprogress"_Str)) {
       m_bProgress = false;
       continue;
     }
     
-    //if (StrLib::bEqualTo("--restart",argv[iArg],C_NO_CASE)) {
+    //if (argv[iArg]->bSame("--restart"_Str)) {
     //  m_bRestart = true;
     //  continue;
     //}
     
-    if (StrLib::bEqualTo("--touch",argv[iArg],C_NO_CASE)) {
+    if (argv[iArg]->bSame("--touch"_Str)) {
       m_bTouch = true;
       continue;
     }
-    if (StrLib::bEqualTo("--notouch",argv[iArg],C_NO_CASE)) {
+    if (argv[iArg]->bSame("--notouch"_Str)) {
       m_bTouch = false;
       continue;
     }
     
-    if (StrLib::bEqualTo("--Traceapi",argv[iArg],C_NO_CASE)) {
+    if (argv[iArg]->bSame("--Traceapi"_Str)) {
       m_bTraceapi = true;
       continue;
     }
     
-    if (StrLib::bEqualTo("--tracepoint",argv[iArg],C_NO_CASE)) {
+    if (argv[iArg]->bSame("--tracepoint"_Str)) {
       m_bTracepoint = true;
       continue;
     }
     
-    if (StrLib::bEqualTo("--tracing",argv[iArg],C_NO_CASE)) {
+    if (argv[iArg]->bSame("--tracing"_Str)) {
       m_bTracing = true;
       continue;
     }
     
-    if (StrLib::bEqualTo("--unittests",argv[iArg],C_NO_CASE)) {
+    if (argv[iArg]->bSame("--unittests"_Str)) {
       m_bUnitTests = true;
       continue;
     }
     
-    if (StrLib::bEqualTo("--verbose",argv[iArg],C_NO_CASE)) {
+    if (argv[iArg]->bSame("--verbose"_Str)) {
       m_bVerbose = true;
       continue;
     }
     
-    if (StrLib::bEqualTo("--welcome",argv[iArg],C_NO_CASE)) {
+    if (argv[iArg]->bSame("--welcome"_Str)) {
       m_bWelcome = true;
       continue;
     }
     
-    if (StrLib::bEqualTo("--nowelcome",argv[iArg],C_NO_CASE)) {
+    if (argv[iArg]->bSame("--nowelcome"_Str)) {
       m_bWelcome = false;
       continue;
     }
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (StrLib::bEqualTo("--sleep",argv[iArg],C_NO_CASE)) {
-      m_iSleep = StrLib::iToI8(argv[++iArg]);
+    if (argv[iArg]->bSame("--sleep"_Str)) {
+      m_iSleep = argv[++iArg]->iToI8();
       continue;
     }
     
-    if (StrLib::bEqualTo("--munged",argv[iArg],C_NO_CASE)) {
+    if (argv[iArg]->bSame("--munged"_Str)) {
       m_bMunged = true;
       continue;
     }
   
-    if (StrLib::bEqualTo("--killPrev",argv[iArg],C_NO_CASE)) {
+    if (argv[iArg]->bSame("--killPrev"_Str)) {
       m_bKillPrev = true;
       continue;
     }
