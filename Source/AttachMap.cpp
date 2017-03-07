@@ -53,7 +53,7 @@ AttachMap::AttachMap(void)
   // the attach map must always be the first buffer in the buffer pool
   ASSERT(nBufferNo() == 1_bn);
   
-  m_xMainDic.vName("<main>");
+  m_xMainDic.vName("<main>"_Str);
   
   _checkInitialised_(CN_ATTACHMAP);
   

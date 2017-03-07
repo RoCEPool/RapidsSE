@@ -111,7 +111,7 @@ ENTRY("vLocalsBar");
       
       // create a locals dictionary
       pDic = new Dic;
-      pDic->vName("<localsDic>");
+      pDic->vName("<localsDic>"_Str);
       nnpTask->m_xPathStack.vPush(pDic);
       
       // enocde locals frame push

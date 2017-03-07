@@ -327,7 +327,7 @@ void Task::vPlanOpFrameAdd(NNP_Task nnpTask)
   StrLib::vSprint(sNameDic.aStr(),"<%s>"_Str,sNameFrame.aStr());
   
   Dic* pOpDic = new Dic;
-  pOpDic->vName(sNameDic.aStr());
+  pOpDic->vName(sNameDic);
   pRegFrame->vOpDic(pOpDic);
   
   // push regFrame onto dstack

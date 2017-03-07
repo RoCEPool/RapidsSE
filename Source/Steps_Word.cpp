@@ -592,7 +592,7 @@ void Task::vOpDic(NNP_Task nnpTask)
     StrLib::vSprint(sNameDic.aStr(),"<%s>"_Str,sNameOpFrame.aStr());
     
     pOpDic = new Dic;
-    pOpDic->vName(sNameDic.aStr());
+    pOpDic->vName(sNameDic);
     pOpFrame->vOpDic(pOpDic);
   }
   

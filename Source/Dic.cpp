@@ -327,11 +327,11 @@ StrVal& Dic::sName(void)
 /*----------------------------------------------------------------------------*/
 /* set name of this dictionary                                                */
 /*----------------------------------------------------------------------------*/
-void Dic::vName(const char* aName)
+void Dic::vName(Str* aName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
-  m_sName = (Str*)aName;
+  m_sName = aName;
 }
 
 /*----------------------------------------------------------------------------*/

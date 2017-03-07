@@ -45,7 +45,7 @@ namespace Dictionaries
     bool  bIsName(StrVal& sName);
     Word* pLastWord(void);
     StrVal&    sName(void);
-    void  vName(const char* aName);
+    void  vName(Str* aName);
     void  vRefDec(void);
     void  vRefInc(void);
     bool  bRefOut(void);
