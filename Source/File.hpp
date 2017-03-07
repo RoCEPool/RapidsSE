@@ -81,49 +81,9 @@ namespace System
     void vZero(void);
   
     Footer* pFooter(void);
-  //    File(const char* aFilePath, const char* aOpenMode, i8 iTraceLevel);
-  //    File(FILE* pFile, const char* aFilePath, const char* saOpenMode, i8 iTraceLevel);
-  
-//
-//    void  vChmod(SysCall& SysCall);
-//    void  vClose(SysCall& SysCall);
-//    const char* sFileName(void);
-//    void  vFlush(SysCall& SysCall);
-//    i8    iGetPos(SysCall& SysCall);
-//    void  vInclude(const char* sString, SysCall& SysCall);
-//    bool  bOpened(void);
-//    void  vPrint(SysCall& SysCall, const char* sFormat,...);
-//    void  vPrintArgs(SysCall& SysCall, const char* sFormat,va_list* pxArgs);
-//    void  vRead(void* pBuffer, i8 nBytes, SysCall& SysCall);
-//    i8    iReadInt(SysCall& SysCall);
-//    i8    iReadLine(SysCall& SysCall);
-//    void  vReadLine(char* w, SysCall& SysCall);
-//    void  vSeek(i8 iOffset, SysCall& SysCall);
-//    i8    iSize(SysCall& SysCall);
-//    void  vSkipLine(SysCall& SysCall);
-//    void  vWrite(void* pBuffer, i8 nBytes, SysCall& SysCall);
-//    void  vWriteCS(void* pBuffer, i8 nBytes, SysCall& SysCall);
-//    
-//    static i8   iSizeFile(const char* aFilePath, SysCall& SysCall);
-//    static void vDeleteFile(const char* aFilePath, SysCall& SysCall);
-//    static void vExtractFileName(char* aFileName, const char* aFilePath);
-//    static void vRename(const char *aOld, const char *aNew, SysCall& SysCall);
-//    
-//    static FILE* pOpen(const char* aFilePath, const char* aMode);
-//    
-//    /////////////////////////////////////////////////////////////////////////////
-//    
-//    bool bGet(char* w, i8 nSize);
-//  
-//    bool bPut(const char* w);
-//    void vPut(const char* w);
-//
-//    void vPrint(const char* sFormat,...);
-//    
   };
   
   File* _pFile(void* aAddr);
-
 }
 
 /*============================================================================*/
