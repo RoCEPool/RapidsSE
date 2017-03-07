@@ -34,7 +34,7 @@ i8 Hardware::iClockFrequency(void)
   // open the /Proc/cpuinfo file
   FILE* fp = fopen("/proc/cpuinfo", "r");
   if ( !fp ) {
-    vWarn("File::bOpen: fopen(/proc/cpuinfo,r) error; errno=%d", errno);
+    vWarn("File::bOpen: fopen(/proc/cpuinfo,r) error; errno=%d"_Str, errno);
     return 0;
   }
   

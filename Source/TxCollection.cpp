@@ -35,7 +35,7 @@ void* TxCollection::operator new(size_t iSize, TxCollection* pTxCollection)
 void TxCollection::operator delete(void* pBufferAddress)
 {
   RASSERT(pBufferAddress);
-  vFatal("fatal: gpTxCollection class cannot be deleted");
+  vFatal("fatal: gpTxCollection class cannot be deleted"_Str);
   
   RASSERT(0);
 }

@@ -28,7 +28,7 @@ i8 Entry::iBytesRequired(i8 iDataBytes)
 void* Entry::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  vFatal("fatal: Entry class cannot be new'd\n");
+  vFatal("fatal: Entry class cannot be new'd\n"_Str);
   
   RASSERT(0);
 }

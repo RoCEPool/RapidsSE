@@ -14,7 +14,7 @@
 void* EntWsp::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  vFatal("fatal: EntWsp class cannot be new'd\n");
+  vFatal("fatal: EntWsp class cannot be new'd\n"_Str);
   
   RASSERT(0);
 }

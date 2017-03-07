@@ -24,7 +24,7 @@ IpVal* Values::_pIpVal(void* aAddr)
 void* IpVal::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  vFatal("fatal: IpVal class cannot be new'd\n");
+  vFatal("fatal: IpVal class cannot be new'd\n"_Str);
   
   RASSERT(0);
 }

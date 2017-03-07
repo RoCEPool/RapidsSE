@@ -22,7 +22,7 @@ ValWsp* Values::_pValWsp(void* aAddr)
 void* ValWsp::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  vFatal("fatal: ValWsp class cannot be new'd\n");
+  vFatal("fatal: ValWsp class cannot be new'd\n"_Str);
   
   RASSERT(0);
 }

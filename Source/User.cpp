@@ -10,7 +10,7 @@
 void* User::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  vFatal("fatal: User class cannot be new'd");
+  vFatal("fatal: User class cannot be new'd"_Str);
   
   RASSERT(0);
 }
@@ -30,7 +30,7 @@ void* User::operator new(size_t iSize, User* pUser)
 void User::operator delete(void* pBufferAddress)
 {
   RASSERT(pBufferAddress);
-  vFatal("fatal: User class cannot be deleted");
+  vFatal("fatal: User class cannot be deleted"_Str);
   
   RASSERT(0);
 }

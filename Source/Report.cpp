@@ -83,13 +83,13 @@ void Debugging::vError(Str* aFormat, ...)
 /*---------------------------------------------------------------------------*/
 /* vFatal: report a non-recoverable fatal message                            */
 /*---------------------------------------------------------------------------*/
-void Debugging::vFatal(const char* psFormat, ...)
+void Debugging::vFatal(Str* aFormat, ...)
 {
   va_list xArgs;
   
-  va_start(xArgs,psFormat);
+  va_start(xArgs,aFormat);
   
-  vReport(C_REPORT_FATAL,psFormat,xArgs);
+  vReport(C_REPORT_FATAL,aFormat->a(),xArgs);
   
   va_end(xArgs);
   exit(EXIT_FAILURE);

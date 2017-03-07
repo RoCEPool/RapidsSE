@@ -11,7 +11,7 @@
 void* Value::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  vFatal("fatal: Value class cannot be new'd\n");
+  vFatal("fatal: Value class cannot be new'd\n"_Str);
   
   RASSERT(0);
 }

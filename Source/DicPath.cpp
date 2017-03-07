@@ -24,7 +24,7 @@ DicPath* DicPath::_pDicStack(void* aAddr)
 void* DicPath::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  vFatal("fatal: DictionaryStack class cannot be new'd");
+  vFatal("fatal: DictionaryStack class cannot be new'd"_Str);
   
   RASSERT(0);
 }
@@ -35,7 +35,7 @@ void* DicPath::operator new(size_t iSize)
 void DicPath::operator delete(void* aAddress)
 {
   RASSERT(aAddress);
-  vFatal("fatal: DictionaryStack class cannot be deleted");
+  vFatal("fatal: DictionaryStack class cannot be deleted"_Str);
   
   RASSERT(0);
 }

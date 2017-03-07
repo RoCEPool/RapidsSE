@@ -38,7 +38,7 @@ using namespace Structures;
 template <class OBJECT>
 void* CollectionNode_t<OBJECT>::operator new(size_t iSize)
 {
-  vFatal("fatal: ListNode_t class cannot be new'd");
+  vFatal("fatal: ListNode_t class cannot be new'd"_Str);
   
   RASSERT(0);
 }

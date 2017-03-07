@@ -17,7 +17,7 @@ i8 ValLib::iCompareDatum(eCN eClass, void* pArg1, void* pArg2)
     case CN_STRVAL: return iCompareStrDatum(pArg1,pArg2);
       
     default:
-      vFatal("ValLib::iCompareDatum: Invalid compare: eClass %lld\n",
+      vFatal("ValLib::iCompareDatum: Invalid compare: eClass %lld\n"_Str,
              eClass);
       return -1;
   }
@@ -55,7 +55,7 @@ i8 ValLib::nCopyDatum(eCN eClass, void* pDst, void* pSrc)
     case CN_STRVAL: return nCopyStrDatum(pDst,pSrc);
       
     default:
-      vFatal("ValLib::vCopyDatum: Invalid copy: eClass %lld\n",
+      vFatal("ValLib::vCopyDatum: Invalid copy: eClass %lld\n"_Str,
              eClass);
       return -1;
   }
@@ -73,7 +73,7 @@ void ValLib::vCopyDatum(eCN eClass, void* pDst, void* pSrc)
     case CN_STRVAL: vCopyStrDatum(pDst,pSrc); return;
       
     default:
-      vFatal("ValLib::vCopyDatum: Invalid copy: eClass %lld\n",
+      vFatal("ValLib::vCopyDatum: Invalid copy: eClass %lld\n"_Str,
              eClass);
   }
 }
