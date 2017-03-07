@@ -363,6 +363,7 @@ bool SEitf::bDecode(Str* aWords[], i8 iWords)
   if (aWords[0]->bSame("rf"_Str)) return bRemoveFolder(aWords, iWords);
   if (aWords[0]->bSame("rmcat"_Str)) return bDropCatalog(aWords, iWords);
   if (aWords[0]->bSame("rmdic"_Str)) return bRemoveFolder(aWords, iWords);
+  if (aWords[0]->bSame("rmidx"_Str)) return bDropIndex(aWords, iWords);
   if (aWords[0]->bSame("rmsch"_Str)) return bDropSchema(aWords, iWords);
   if (aWords[0]->bSame("rmtbl"_Str)) return bDropTable(aWords, iWords);
   if (aWords[0]->bSame("rmten"_Str)) return bDropTenant(aWords, iWords);
@@ -843,6 +844,32 @@ bool SEitf::bDocol(Str* aWords[])
   
   return bAppendRequest(sRequest);
 }
+
+/*----------------------------------------------------------------------------*/
+/* drop an index                                                              */
+/*----------------------------------------------------------------------------*/
+bool SEitf::bDropIndex(Str* aWords[], i8 iWords)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  s256 sRequest;
+  
+  char* a = sRequest.aStr();
+  
+  if (iWords != 2) {
+    vSetLastError(EC_INVALID_PARAMETERS);
+    return false;
+  }
+  
+  StrLib::vCopy(a,"\"");
+  StrLib::vConcat(a,aWords[1]->a());
+  StrLib::vConcat(a,"\"");
+  
+  StrLib::vConcat(a," drop_index");
+  
+  return bAppendRequest(sRequest);
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* drop a table                                                               */

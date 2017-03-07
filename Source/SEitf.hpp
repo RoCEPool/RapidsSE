@@ -91,6 +91,7 @@ namespace Interface
     bool bUseSchema(Str* aWords[], i8 iWords);
     
     bool bCreateIndex(Str* aWords[], i8 iWords);
+    bool bDropIndex(Str* aWords[], i8 iWords);
     bool bDumpIndex(Str* aWords[], i8 iWords);
     bool bListIndices(Str* aWords[], i8 iWords);
     
