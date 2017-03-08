@@ -396,9 +396,9 @@ bool Arguments::bParse(int argc, Str* argv[])
     
   /*
     if (StrLib::iLength(m_sCommand.aStr()))
-      StrLib::vConcat(m_sCommand.aStr(),' ');
+      m_sCommand.vConcat(" "_Str);
     
-    StrLib::vConcat(m_sCommand.aStr(),argv[iArg]);
+    m_sCommand.vConcat(argv[iArg]);
     m_bCommand = true;
     m_bPrompt  = true;
     m_bWelcome = false;
@@ -448,9 +448,7 @@ bool Arguments::bParse(int argc, Str* argv[])
 
   // if no regionName then form region name using regionPrefix and node name
   if (StrLib::bEqualTo(m_sRegionName.aStr(),"")) {
-    StrLib::vConcat( m_sRegionName.aStr(), m_sRegionPrefix.aStr());
-    StrLib::vConcat( m_sRegionName.aStr(), "_");
-    StrLib::vConcat( m_sRegionName.aStr(), m_sNodeName.aStr());
+    m_sRegionName.vCat(m_sRegionPrefix,"_"_Str,m_sNodeName.aStr(),nullptr);
   }
   else {
     if (m_bStart && m_nNodes > 1) {
