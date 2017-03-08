@@ -601,7 +601,7 @@ bool SePrompt::bExecuteRequest(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   Timer xTimer;
-  char* aResponse = nullptr;
+  Str* aResponse = nullptr;
   i8 iTokens;
   
   xTimer.vStart();

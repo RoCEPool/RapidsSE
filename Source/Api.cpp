@@ -12,7 +12,7 @@ extern Grid*       gpGrid;
 /*----------------------------------------------------------------------------*/
 /* add a column to a table                                                    */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_AddColumn(SEitf* pSEitf, char* pColumnName, char* pColumnType)
+eEC RapidsSE_AddColumn(SEitf* pSEitf, Str* pColumnName, Str* pColumnType)
 {
   if (gpGrid->m_bTraceapi)
     vTrace("RapidsSE_AddColumn: 0x%x %s %s\n"_Str, pSEitf, pColumnName, pColumnType);
@@ -78,7 +78,7 @@ eEC RapidsSE_AddColumn(SEitf* pSEitf, char* pColumnName, char* pColumnType)
 /*----------------------------------------------------------------------------*/
 /* begin insert                                                               */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_BeginInsert(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTable)
+eEC RapidsSE_BeginInsert(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable)
 {
   eEC eResult;
   
@@ -228,11 +228,11 @@ eEC RapidsSE_BeginInsert(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTa
 /*----------------------------------------------------------------------------*/
 /* check the library version against version passed                           */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_CheckLibraryVersion(char* pVersion)
+eEC RapidsSE_CheckLibraryVersion(Str* pVersion)
 {
   vTrace("Library version %s; versionString %s\n"_Str, RAPIDSSE_VERSION_STRING, pVersion);
   
-  if (!StrLib::bEqualTo(pVersion, RAPIDSSE_VERSION_STRING)) {
+  if (!StrLib::bEqualTo(pVersion->a(), RAPIDSSE_VERSION_STRING)) {
     vTrace("RapidsDB at version %s does not match RapidsSE library version %s"_Str,
            pVersion, RAPIDSSE_VERSION_STRING);
     return EC_VERSION_MISMATCH;
@@ -244,7 +244,7 @@ eEC RapidsSE_CheckLibraryVersion(char* pVersion)
 /*----------------------------------------------------------------------------*/
 /* create table                                                               */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_CreateTable(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTable)
+eEC RapidsSE_CreateTable(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable)
 {
   if (gpGrid->m_bTraceapi)
     vTrace("RapidsSE_CreateTable: 0x%x %s %s %s\n"_Str, pSEitf, pCatalog, pSchema, pTable);
@@ -412,7 +412,7 @@ eEC RapidsSE_CreateTable(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTa
 /*----------------------------------------------------------------------------*/
 /* drop table                                                                 */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_DropTable(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTable)
+eEC RapidsSE_DropTable(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable)
 {
   if (gpGrid->m_bTraceapi)
     vTrace("RapidsSE_DropTable: 0x%x %s %s %s\n"_Str, pSEitf, pCatalog, pSchema, pTable);
@@ -647,7 +647,7 @@ eEC RapidsSE_EndInsert(SEitf* pSEitf)
 /*----------------------------------------------------------------------------*/
 /* Execute a request                                                          */
 /*----------------------------------------------------------------------------*/
-bool RapidsSE_ExecuteRequest(SEitf* pSEitf, Str* aWords[], i8 iWords, char** ppResponse)
+bool RapidsSE_ExecuteRequest(SEitf* pSEitf, Str* aWords[], i8 iWords, Str** ppResponse)
 {
   bool bResult;
   
@@ -665,7 +665,7 @@ bool RapidsSE_ExecuteRequest(SEitf* pSEitf, Str* aWords[], i8 iWords, char** ppR
   eEC eResult = eGetResponse(pSEitf);
   
   // put response into caller
-  *ppResponse = pSEitf->m_sResponse.aStr();
+  *ppResponse = pSEitf->m_sResponse;
   
   if (eResult == EC_NONE)
     return true;
@@ -761,8 +761,8 @@ eEC RapidsSE_GetCatalogs(SEitf* pSEitf, void** ppCatalogs)
 /*----------------------------------------------------------------------------*/
 /* get list of columns for given table of given catalog and schema            */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_GetColumns(SEitf* pSEitf, char* pCatalog, char* pSchema,
-                        char* pTable, void** ppColumns)
+eEC RapidsSE_GetColumns(SEitf* pSEitf, Str* pCatalog, Str* pSchema,
+                        Str* pTable, void** ppColumns)
 {
   if (gpGrid->m_bTraceapi)
     vTrace("RapidsSE_GetColumns: %s %s %s\n"_Str, pCatalog, pSchema, pTable);
@@ -885,6 +885,18 @@ eEC RapidsSE_GetColumns(SEitf* pSEitf, char* pCatalog, char* pSchema,
   
   // change directory to tables
   eResult = eExecuteRequest(pSEitf, "cf"_Str, "tables"_Str);
+  if (EC_NONE != eResult) {
+    return eResult;
+  }
+  
+  // get response
+  eResult = eGetResponse(pSEitf);
+  if (EC_NONE != eResult) {
+    return eResult;
+  }
+  
+  // change directory to the table
+  eResult = eExecuteRequest(pSEitf, "cf"_Str, pTable);
   if (EC_NONE != eResult) {
     return eResult;
   }
@@ -1036,7 +1048,7 @@ eEC RapidsSE_GetPartitions(SEitf* pSEitf, void** ppPartitions, void** ppCount)
 /*----------------------------------------------------------------------------*/
 /* get list of schemas for given catalog                                      */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_GetSchemas(SEitf* pSEitf, char* pCatalog, void** ppSchemas)
+eEC RapidsSE_GetSchemas(SEitf* pSEitf, Str* pCatalog, void** ppSchemas)
 {
   if (gpGrid->m_bTraceapi)
     vTrace("RapidsSE_GetSchemas: %s\n"_Str, pCatalog);
@@ -1199,7 +1211,7 @@ eEC RapidsSE_GetEngineVersion(SEitf* pSEitf, void** ppVersion)
 /*----------------------------------------------------------------------------*/
 /* get list of tables for given schema of given catalog                       */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_GetTables(SEitf* pSEitf, char* pCatalog, char* pSchema, void** ppTables)
+eEC RapidsSE_GetTables(SEitf* pSEitf, Str* pCatalog, Str* pSchema, void** ppTables)
 {
   if (gpGrid->m_bTraceapi)
     vTrace("RapidsSE_GetTables: %s %s\n"_Str, pCatalog, pSchema);
@@ -1341,7 +1353,7 @@ eEC RapidsSE_GetTables(SEitf* pSEitf, char* pCatalog, char* pSchema, void** ppTa
 /*----------------------------------------------------------------------------*/
 /* insert the given row into a table                                          */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_HashRowPartition(SEitf* pSEitf, char* pRow, void** ppPartition)
+eEC RapidsSE_HashRowPartition(SEitf* pSEitf, Str* pRow, void** ppPartition)
 {
   if (gpGrid->m_bTraceapi)
     vTrace("RapidsSE_InsertRow(%lld:0x%x) %s\n"_Str, pSEitf->iPartition(), pSEitf, pRow);
@@ -1374,7 +1386,7 @@ eEC RapidsSE_HashRowPartition(SEitf* pSEitf, char* pRow, void** ppPartition)
     return EC_NO_SUCH_TABLE;
   }
   
-  pSEitf->m_iRowPartition = pSEitf->pCurrentTable()->iRowPartition(pRow);
+  pSEitf->m_iRowPartition = pSEitf->pCurrentTable()->iRowPartition(pRow->a());
   *ppPartition = &pSEitf->m_iRowPartition;
   
   return EC_NONE;
@@ -1383,7 +1395,7 @@ eEC RapidsSE_HashRowPartition(SEitf* pSEitf, char* pRow, void** ppPartition)
 /*----------------------------------------------------------------------------*/
 /* insert the given row into a table                                          */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_InsertRow(SEitf* pSEitf, char* pRow)
+eEC RapidsSE_InsertRow(SEitf* pSEitf, Str* pRow)
 {
   if (gpGrid->m_bTraceapi)
     vTrace("RapidsSE_InsertRow(%lld:0x%x) %s\n"_Str, pSEitf->iPartition(), pSEitf, pRow);
@@ -1416,7 +1428,7 @@ eEC RapidsSE_InsertRow(SEitf* pSEitf, char* pRow)
     return EC_NO_SUCH_TABLE;
   }
   
-  bool bResult = pSEitf->bInsertRow(pRow);
+  bool bResult = pSEitf->bInsertRow(pRow->a());
   
   if (!bResult) {
     pSEitf->vSetLastError(pSEitf->m_eErrorCode);
@@ -1429,7 +1441,7 @@ eEC RapidsSE_InsertRow(SEitf* pSEitf, char* pRow)
 /*----------------------------------------------------------------------------*/
 /* open the shared memory buffer pool                                         */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_PoolOpen(char* pInstanceName, void** ppInstance)
+eEC RapidsSE_PoolOpen(Str* pInstanceName, void** ppInstance)
 {
   vTrace("vRapidsSE_PoolOpen %s %x %x\n"_Str, pInstanceName, ppInstance, *ppInstance);
   
@@ -1452,7 +1464,7 @@ eEC RapidsSE_PoolOpen(char* pInstanceName, void** ppInstance)
 /*----------------------------------------------------------------------------*/
 /* scan table                                                                 */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_ScanTable(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTable)
+eEC RapidsSE_ScanTable(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable)
 {
   if (gpGrid->m_bTraceapi)
     vTrace("pRapidsSE_ScanTable: 0x%x %s %s %s %lld\n"_Str,
