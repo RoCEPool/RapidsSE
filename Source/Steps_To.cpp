@@ -54,7 +54,7 @@ void Task::vToBinVal(NNP_Task nnpTask)
   
   Object* pObject;
   if ( ! nnpTask->m_pDataStack->bPop(pObject) )
-    THROW_INVALID_RSTACK(">BinVal");
+    THROW_INVALID_RSTACK(">BinVal"_Str);
   
   nnpTask->m_pDataStack->vPushBinary(pObject);
   
@@ -70,7 +70,7 @@ void Task::vToBody(NNP_Task nnpTask)
   
   Object* pWordObject;
   if ( ! nnpTask->m_pDataStack->bPop(pWordObject) )
-    THROW_INVALID_DSTACK(">body");
+    THROW_INVALID_DSTACK(">body"_Str);
   Word* pWord = _pWord(pWordObject);
   
   //  char* pBody = pAdd<char*>(pWord,sizeof(Word));
@@ -92,7 +92,7 @@ void Task::vToCmd(NNP_Task nnpTask)
   
   i8 nValues;
   if ( ! nnpTask->m_pDataStack->bPop(nValues) )
-    THROW_INVALID_DSTACK(">cmd");
+    THROW_INVALID_DSTACK(">cmd"_Str);
   
   s48K sCmd;
   
@@ -127,7 +127,7 @@ void Task::vToInt(NNP_Task nnpTask)
   
   ValWsp xStr;
   if ( ! nnpTask->m_pDataStack->bPop(xStr) )
-    THROW_INVALID_DSTACK(">int");
+    THROW_INVALID_DSTACK(">int"_Str);
   
   s256 sBuff;
   ValLib::vToString(&xStr,sBuff.aStr());
@@ -148,7 +148,7 @@ void Task::vToObject(NNP_Task nnpTask)
   
   Object* pObject;
   if ( ! nnpTask->m_pDataStack->bPopBinary(pObject) )
-    THROW_INVALID_RSTACK(">Object");
+    THROW_INVALID_RSTACK(">Object"_Str);
   
   nnpTask->m_pDataStack->vPush(pObject);
   
@@ -165,7 +165,7 @@ void Task::vToSEitf(NNP_Task nnpTask)
   i8 iVal;
   
   if ( ! nnpTask->m_pDataStack->bPop(iVal) )
-    THROW_INVALID_DSTACK(">seitf");
+    THROW_INVALID_DSTACK(">seitf"_Str);
   
   SEitf* pSEitf = _pSEitf(iVal);
   RASSERT(pSEitf->eClass() == CN_SEITF);
@@ -186,7 +186,7 @@ void Task::vToStr(NNP_Task nnpTask)
   
   ValWsp xVal;
   if ( ! nnpTask->m_pDataStack->bPop(xVal) )
-    THROW_INVALID_DSTACK(">str");
+    THROW_INVALID_DSTACK(">str"_Str);
   
   s48K sString;
   ValLib::vToString(&xVal,sString.aStr());
@@ -205,7 +205,7 @@ void Task::vToTask(NNP_Task nnpTask)
   
   i8 iVal;
   if ( ! nnpTask->m_pDataStack->bPop(iVal) )
-    THROW_INVALID_DSTACK(">task");
+    THROW_INVALID_DSTACK(">task"_Str);
   
   Object* pPtrTask = _pTask(iVal);
   

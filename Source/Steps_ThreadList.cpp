@@ -47,7 +47,7 @@ ENTRY("vThreadListDump"_Str);
   
   Object* pPtrThreadList;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrThreadList) )
-    THROW_INVALID_DSTACK("threadlist.dump");
+    THROW_INVALID_DSTACK("threadlist.dump"_Str);
   
   ThreadList* pThreadList = _pThreadList(pPtrThreadList);
   ASSERT(CN_THREADLIST == pThreadList->eClass());
@@ -66,7 +66,7 @@ ENTRY("vThreadListInit"_Str);
   
   Object* pPtrThreadList;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrThreadList) )
-    THROW_INVALID_DSTACK("threadlist.init");
+    THROW_INVALID_DSTACK("threadlist.init"_Str);
   
   ThreadList* pThreadList = _pThreadList(pPtrThreadList);
   ASSERT(CN_THREADLIST == pThreadList->eClass());

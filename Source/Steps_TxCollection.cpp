@@ -47,7 +47,7 @@ ENTRY("vTxCollectionDump"_Str);
   
   Object* pPtrTxCollection;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTxCollection) )
-    THROW_INVALID_DSTACK("txCollection.dump");
+    THROW_INVALID_DSTACK("txCollection.dump"_Str);
   
   TxCollection* pTxCollection = _pTxCollection(pPtrTxCollection);
   ASSERT(CN_TXCOLLECTION == pTxCollection->eClass());
@@ -66,7 +66,7 @@ ENTRY("vTxCollectionInit"_Str);
   
   Object* pPtrTxCollection;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTxCollection) )
-    THROW_INVALID_DSTACK("txCollection.init");
+    THROW_INVALID_DSTACK("txCollection.init"_Str);
   
   TxCollection* pTxCollection = _pTxCollection(pPtrTxCollection);
   ASSERT(CN_TXCOLLECTION == pTxCollection->eClass());

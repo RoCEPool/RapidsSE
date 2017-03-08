@@ -51,7 +51,7 @@ void Task::vZeroLess(NNP_Task nnpTask)
   
   i8 iZero;
   if ( ! nnpTask->m_pDataStack->bPopParamInt(iZero) )
-    THROW_INVALID_DSTACK("0<");
+    THROW_INVALID_DSTACK("0<"_Str);
   
   if (iZero < 0)
     nnpTask->m_pDataStack->vPush((i8)1);
@@ -70,7 +70,7 @@ void Task::vZeroLessEqual(NNP_Task nnpTask)
   
   i8 iZero;
   if ( ! nnpTask->m_pDataStack->bPopParamInt(iZero) )
-    THROW_INVALID_DSTACK("0<=");
+    THROW_INVALID_DSTACK("0<="_Str);
   
   if (iZero <= 0)
     nnpTask->m_pDataStack->vPush((i8)1);
@@ -89,7 +89,7 @@ void Task::vZeroEqual(NNP_Task nnpTask)
   
   i8 iZero;
   if ( ! nnpTask->m_pDataStack->bPopParamInt(iZero) )
-    THROW_INVALID_DSTACK("0==");
+    THROW_INVALID_DSTACK("0=="_Str);
   
   if (iZero == 0)
     nnpTask->m_pDataStack->vPush((i8)1);
@@ -108,7 +108,7 @@ void Task::vZeroNotEqual(NNP_Task nnpTask)
   
   i8 iZero;
   if ( ! nnpTask->m_pDataStack->bPopParamInt(iZero) )
-    THROW_INVALID_DSTACK("0!=");
+    THROW_INVALID_DSTACK("0!="_Str);
   
   if (iZero != 0)
     nnpTask->m_pDataStack->vPush((i8)1);
@@ -127,7 +127,7 @@ void Task::vZeroGreaterEqual(NNP_Task nnpTask)
   
   i8 iZero;
   if ( ! nnpTask->m_pDataStack->bPopParamInt(iZero) )
-    THROW_INVALID_DSTACK("0>=");
+    THROW_INVALID_DSTACK("0>="_Str);
   
   if (iZero >= 0)
     nnpTask->m_pDataStack->vPush((i8)1);
@@ -146,7 +146,7 @@ void Task::vZeroGreater(NNP_Task nnpTask)
   
   i8 iZero;
   if ( ! nnpTask->m_pDataStack->bPopParamInt(iZero) )
-    THROW_INVALID_DSTACK("0>");
+    THROW_INVALID_DSTACK("0>"_Str);
   
   if (iZero > 0)
     nnpTask->m_pDataStack->vPush((i8)1);

@@ -50,7 +50,7 @@ ENTRY("vTxRefInit"_Str);
   
   Object* pPtrTxRef;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTxRef) )
-    THROW_INVALID_DSTACK("txRef.init");
+    THROW_INVALID_DSTACK("txRef.init"_Str);
   
   TxRef* pTxRef = _pTxRef(pPtrTxRef);
   ASSERT(CN_TXREF == pTxRef->eClass());
@@ -70,7 +70,7 @@ ENTRY("vTxRefBegin"_Str);
   Object* pPtrTxRef;
   
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTxRef) )
-    THROW_INVALID_DSTACK("tx.begin");
+    THROW_INVALID_DSTACK("tx.begin"_Str);
   
   TxRef* pTxRef = _pTxRef(pPtrTxRef);
   ASSERT(CN_TXREF == pTxRef->eClass());
@@ -92,7 +92,7 @@ ENTRY("vTxRefEnd"_Str);
   Object* pPtrTxRef;
   
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTxRef) )
-    THROW_INVALID_DSTACK("txRef.end");
+    THROW_INVALID_DSTACK("txRef.end"_Str);
   
   TxRef* pTxRef = _pTxRef(pPtrTxRef);
   ASSERT(CN_TXREF == pTxRef->eClass());
@@ -114,7 +114,7 @@ ENTRY("vTxRefCommit"_Str);
   Object* pPtrTxRef;
   
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTxRef) )
-    THROW_INVALID_DSTACK("txRef.commit");
+    THROW_INVALID_DSTACK("txRef.commit"_Str);
   
   TxRef* pTxRef = _pTxRef(pPtrTxRef);
   ASSERT(CN_TXREF == pTxRef->eClass());
@@ -136,7 +136,7 @@ ENTRY("vTxRefRollback"_Str);
   Object* pPtrTxRef;
   
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTxRef) )
-    THROW_INVALID_DSTACK("txRef.rollback");
+    THROW_INVALID_DSTACK("txRef.rollback"_Str);
   
   TxRef* pTxRef = _pTxRef(pPtrTxRef);
   ASSERT(CN_TXREF == pTxRef->eClass());

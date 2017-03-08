@@ -46,7 +46,7 @@ ENTRY("vTxMapInit"_Str);
   
   Object* pPtrTxMap;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTxMap) )
-    THROW_INVALID_DSTACK("txMap.init");
+    THROW_INVALID_DSTACK("txMap.init"_Str);
   
   TxMap* pTxMap = _pTxMap(pPtrTxMap);
   ASSERT(CN_TXMAP == pTxMap->eClass());

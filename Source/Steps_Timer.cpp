@@ -57,7 +57,7 @@ ENTRY("vTimeDelete"_Str);
   Object* pPtrTimer;
   
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTimer) )
-    THROW_INVALID_DSTACK("timer.delete");
+    THROW_INVALID_DSTACK("timer.delete"_Str);
   
   Timer* pTimer = _pTimer(pPtrTimer);
   ASSERT(CN_TIMER == pTimer->eClass());
@@ -80,7 +80,7 @@ ENTRY("vTimerInit"_Str);
   
   Object* pPtrTimer;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTimer) )
-    THROW_INVALID_DSTACK("timer.init");
+    THROW_INVALID_DSTACK("timer.init"_Str);
   
   Timer* pTimer = _pTimer(pPtrTimer);
   ASSERT(CN_TIMER == pTimer->eClass());
@@ -99,7 +99,7 @@ ENTRY("vTimerMicrosecs"_Str);
   
   Object* pPtrTimer;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTimer) )
-    THROW_INVALID_DSTACK("timer.microsecs");
+    THROW_INVALID_DSTACK("timer.microsecs"_Str);
   
   Timer* pTimer = _pTimer(pPtrTimer);
   ASSERT(CN_TIMER == pTimer->eClass());
@@ -120,7 +120,7 @@ ENTRY("vTimerMillisecs"_Str);
   
   Object* pPtrTimer;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTimer) )
-    THROW_INVALID_DSTACK("timer.millisecs");
+    THROW_INVALID_DSTACK("timer.millisecs"_Str);
   
   Timer* pTimer = _pTimer(pPtrTimer);
   ASSERT(CN_TIMER == pTimer->eClass());
@@ -141,7 +141,7 @@ ENTRY("vTimerNanosecs"_Str);
   
   Object* pPtrTimer;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTimer) )
-    THROW_INVALID_DSTACK("timer.nanosecs");
+    THROW_INVALID_DSTACK("timer.nanosecs"_Str);
   
   Timer* pTimer = _pTimer(pPtrTimer);
   ASSERT(CN_TIMER == pTimer->eClass());
@@ -184,7 +184,7 @@ ENTRY("vTimerReset"_Str);
   
   Object* pPtrTimer;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTimer) )
-    THROW_INVALID_DSTACK("timer.reset");
+    THROW_INVALID_DSTACK("timer.reset"_Str);
   
   Timer* pTimer = _pTimer(pPtrTimer);
   ASSERT(CN_TIMER == pTimer->eClass());
@@ -203,7 +203,7 @@ ENTRY("vTimerSecs"_Str);
   
   Object* pPtrTimer;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTimer) )
-    THROW_INVALID_DSTACK("timer.secs");
+    THROW_INVALID_DSTACK("timer.secs"_Str);
   
   Timer* pTimer = _pTimer(pPtrTimer);
   ASSERT(CN_TIMER == pTimer->eClass());
@@ -224,7 +224,7 @@ ENTRY("vTimerStart"_Str);
   
   Object* pPtrTimer;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTimer) )
-    THROW_INVALID_DSTACK("timer.Start");
+    THROW_INVALID_DSTACK("timer.Start"_Str);
   
   Timer* pTimer = _pTimer(pPtrTimer);
   ASSERT(CN_TIMER == pTimer->eClass());
@@ -243,7 +243,7 @@ ENTRY("vTimerTicks"_Str);
   
   Object* pPtrTimer;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTimer) )
-    THROW_INVALID_DSTACK("timer.ticks");
+    THROW_INVALID_DSTACK("timer.ticks"_Str);
   
   Timer* pTimer = _pTimer(pPtrTimer);
   ASSERT(CN_TIMER == pTimer->eClass());
@@ -264,7 +264,7 @@ ENTRY("vTimerUpdate"_Str);
   
   Object* pPtrTimer;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTimer) )
-    THROW_INVALID_DSTACK("timer.update");
+    THROW_INVALID_DSTACK("timer.update"_Str);
   
   Timer* pTimer = _pTimer(pPtrTimer);
   ASSERT(CN_TIMER == pTimer->eClass());

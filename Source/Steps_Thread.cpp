@@ -94,10 +94,10 @@ ENTRY("vThreadBind"_Str);
   Object* pObject;
   
   if ( ! nnpTask->m_pDataStack->bPop(iCpu) )
-    THROW_INVALID_DSTACK("thread.bind");
+    THROW_INVALID_DSTACK("thread.bind"_Str);
   
   if ( ! nnpTask->m_pDataStack->bPop(pObject) )
-    THROW_INVALID_DSTACK("thread.bind");
+    THROW_INVALID_DSTACK("thread.bind"_Str);
   
   ASSERT(CN_THREAD == pObject->eClass());
   
@@ -117,7 +117,7 @@ void Task::vThreadCondSignal(NNP_Task nnpTask)
   
   Object* pThreadObject;
   if ( ! nnpTask->m_pDataStack->bPop(pThreadObject) )
-    THROW_INVALID_DSTACK("thread.condSignal");
+    THROW_INVALID_DSTACK("thread.condSignal"_Str);
   
   Thread* pThread = _pThread(pThreadObject);
   ASSERT(CN_THREAD == pThread->eClass());
@@ -136,7 +136,7 @@ void Task::vThreadCondWait(NNP_Task nnpTask)
   
   Object* pThreadObject;
   if ( ! nnpTask->m_pDataStack->bPop(pThreadObject) )
-    THROW_INVALID_DSTACK("thread.condWait");
+    THROW_INVALID_DSTACK("thread.condWait"_Str);
   
   Thread* pThread = _pThread(pThreadObject);
   ASSERT(CN_THREAD == pThread->eClass());
@@ -156,7 +156,7 @@ ENTRY("vThreadCpu"_Str);
   Object* pObject;
   
   if ( ! nnpTask->m_pDataStack->bPop(pObject) )
-    THROW_INVALID_DSTACK("thread.cpu");
+    THROW_INVALID_DSTACK("thread.cpu"_Str);
   
   ASSERT(CN_THREAD == pObject->eClass());
   
@@ -177,7 +177,7 @@ ENTRY("vThreadDump"_Str);
   Object* pObject;
   
   if ( ! nnpTask->m_pDataStack->bPop(pObject) )
-    THROW_INVALID_DSTACK("thread.dump");
+    THROW_INVALID_DSTACK("thread.dump"_Str);
   
   ASSERT(CN_THREAD == pObject->eClass());
   
@@ -198,7 +198,7 @@ ENTRY("vThreadId"_Str);
   Object* pObject;
   
   if ( ! nnpTask->m_pDataStack->bPop(pObject) )
-    THROW_INVALID_DSTACK("thread.id");
+    THROW_INVALID_DSTACK("thread.id"_Str);
   
   ASSERT(CN_THREAD == pObject->eClass());
   
@@ -219,7 +219,7 @@ ENTRY("vThreadInit"_Str);
   Object* pObject;
   
   if ( ! nnpTask->m_pDataStack->bPop(pObject) )
-    THROW_INVALID_DSTACK("thread.init");
+    THROW_INVALID_DSTACK("thread.init"_Str);
   
   ASSERT(CN_THREAD == pObject->eClass());
   
@@ -246,7 +246,7 @@ ENTRY("vThreadMutexLock"_Str);
   
   Object* pThreadObject;
   if ( ! nnpTask->m_pDataStack->bPop(pThreadObject) )
-    THROW_INVALID_DSTACK("thread.mutexLock");
+    THROW_INVALID_DSTACK("thread.mutexLock"_Str);
   
   Thread* pThread = _pThread(pThreadObject);
   ASSERT(CN_THREAD == pThread->eClass());
@@ -265,7 +265,7 @@ ENTRY("vThreadMutexUnlock"_Str);
 
   Object* pThreadObject;
   if ( ! nnpTask->m_pDataStack->bPop(pThreadObject) )
-    THROW_INVALID_DSTACK("thread.mutexUnlock");
+    THROW_INVALID_DSTACK("thread.mutexUnlock"_Str);
   
   Thread* pThread = _pThread(pThreadObject);
   ASSERT(CN_THREAD == pThread->eClass());
@@ -285,7 +285,7 @@ ENTRY("vThreadNameFetch"_Str);
   Object* pObject;
   
   if ( ! nnpTask->m_pDataStack->bPop(pObject) )
-    THROW_INVALID_DSTACK("thread.name@");
+    THROW_INVALID_DSTACK("thread.name@"_Str);
   
   ASSERT(CN_THREAD == pObject->eClass());
   
@@ -309,7 +309,7 @@ ENTRY("vThreadNameStore"_Str);
   Object* pObject;
   
   if ( ! nnpTask->m_pDataStack->bPop(pObject) )
-    THROW_INVALID_DSTACK("thread.name!");
+    THROW_INVALID_DSTACK("thread.name!"_Str);
   
   ASSERT(CN_THREAD == pObject->eClass());
   
@@ -318,7 +318,7 @@ ENTRY("vThreadNameStore"_Str);
   s32 sName;
   ValWsp xNameWsp;
   if ( ! nnpTask->m_pDataStack->bPop(xNameWsp) )
-    THROW_INVALID_DSTACK("thread.name!");
+    THROW_INVALID_DSTACK("thread.name!"_Str);
   
   sName = _pStrVal(&xNameWsp);
   
@@ -337,7 +337,7 @@ ENTRY("vThreadSfetch"_Str);
   Object* pThreadEmb;
   
   if ( ! nnpTask->m_pDataStack->bPop(pThreadEmb) )
-    THROW_INVALID_DSTACK("thread.taskset@");
+    THROW_INVALID_DSTACK("thread.taskset@"_Str);
   
   ASSERT(CN_THREAD == pThreadEmb->eClass());
   
@@ -362,7 +362,7 @@ ENTRY("vThreadSstore"_Str);
   Object* pThreadEmb;
   
   if ( ! nnpTask->m_pDataStack->bPop(pThreadEmb) )
-    THROW_INVALID_DSTACK("thread.taskset!");
+    THROW_INVALID_DSTACK("thread.taskset!"_Str);
   
   ASSERT(CN_THREAD == pThreadEmb->eClass());
   
@@ -371,7 +371,7 @@ ENTRY("vThreadSstore"_Str);
   Object* pTaskSetEmb;
   
   if ( ! nnpTask->m_pDataStack->bPop(pTaskSetEmb) )
-    THROW_INVALID_DSTACK("thread.taskset!");
+    THROW_INVALID_DSTACK("thread.taskset!"_Str);
   
   ASSERT(CN_TASKSET == pTaskSetEmb->eClass());
   
@@ -392,7 +392,7 @@ ENTRY("vThreadSleep_s"_Str);
   i8 nSeconds;
   
   if ( ! nnpTask->m_pDataStack->bPop(nSeconds) )
-    THROW_INVALID_DSTACK("sleep_s");
+    THROW_INVALID_DSTACK("sleep_s"_Str);
   
   Thread* pThread = Thread::pThread();
   
@@ -411,7 +411,7 @@ ENTRY("vThreadSleep_ms"_Str);
   i8 nMilliseconds;
   
   if ( ! nnpTask->m_pDataStack->bPop(nMilliseconds) )
-    THROW_INVALID_DSTACK("sleep_ms");
+    THROW_INVALID_DSTACK("sleep_ms"_Str);
   
   Thread* pThread = Thread::pThread();
   
@@ -430,7 +430,7 @@ ENTRY("vThreadSleep_us"_Str);
   i8 nMicroseconds;
   
   if ( ! nnpTask->m_pDataStack->bPop(nMicroseconds) )
-    THROW_INVALID_DSTACK("sleep_us");
+    THROW_INVALID_DSTACK("sleep_us"_Str);
   
   Thread* pThread = Thread::pThread();
   
@@ -449,7 +449,7 @@ ENTRY("vThreadSleep_ns"_Str);
   i8 nNanoseconds;
   
   if ( ! nnpTask->m_pDataStack->bPop(nNanoseconds) )
-    THROW_INVALID_DSTACK("sleep_ns");
+    THROW_INVALID_DSTACK("sleep_ns"_Str);
   
   Thread* pThread = Thread::pThread();
   
@@ -468,7 +468,7 @@ ENTRY("vThreadSpawn"_Str);
   Object* pThreadEmb;
   
   if ( ! nnpTask->m_pDataStack->bPop(pThreadEmb) )
-    THROW_INVALID_DSTACK("thread.spawn");
+    THROW_INVALID_DSTACK("thread.spawn"_Str);
   
   ASSERT(CN_THREAD == pThreadEmb->eClass());
   

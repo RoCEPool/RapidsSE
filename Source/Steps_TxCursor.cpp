@@ -53,7 +53,7 @@ ENTRY("vTxCursorBegin"_Str);
   
   Object* pPtrTxCursor;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTxCursor) )
-    THROW_INVALID_DSTACK("txCursor.begin");
+    THROW_INVALID_DSTACK("txCursor.begin"_Str);
   
   TxCursor* pTxCursor = _pTxCursor(pPtrTxCursor);
   ASSERT(CN_TXCURSOR == pTxCursor->eClass());
@@ -72,7 +72,7 @@ ENTRY("vTxCursorDelete"_Str);
   
   Object* pPtrTxCursor;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTxCursor) )
-    THROW_INVALID_DSTACK("txCursor.delete");
+    THROW_INVALID_DSTACK("txCursor.delete"_Str);
   
   TxCursor* pTxCursor = _pTxCursor(pPtrTxCursor);
   ASSERT(CN_TXCURSOR == pTxCursor->eClass());
@@ -91,7 +91,7 @@ ENTRY("vTxCursorEnd"_Str);
   
   Object* pPtrTxCursor;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTxCursor) )
-    THROW_INVALID_DSTACK("txcursor.end");
+    THROW_INVALID_DSTACK("txcursor.end"_Str);
   
   TxCursor* pTxCursor = _pTxCursor(pPtrTxCursor);
   ASSERT(CN_TXCURSOR == pTxCursor->eClass());
@@ -110,7 +110,7 @@ ENTRY("vTxCursorFirst"_Str);
   
   Object* pPtrTxCursor;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTxCursor) )
-    THROW_INVALID_DSTACK("txCursor.first");
+    THROW_INVALID_DSTACK("txCursor.first"_Str);
   
   TxCursor* pTxCursor = _pTxCursor(pPtrTxCursor);
   ASSERT(CN_TXCURSOR == pTxCursor->eClass());
@@ -133,7 +133,7 @@ ENTRY("vTxCursorGet"_Str);
   
   Object* pPtrTxCursor;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTxCursor) )
-    THROW_INVALID_DSTACK("txCursor.get");
+    THROW_INVALID_DSTACK("txCursor.get"_Str);
   
   TxCursor* pTxCursor = _pTxCursor(pPtrTxCursor);
   ASSERT(CN_TXCURSOR == pTxCursor->eClass());
@@ -154,7 +154,7 @@ ENTRY("vTxCursorInit"_Str);
   
   Object* pPtrTxCursor;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTxCursor) )
-    THROW_INVALID_DSTACK("txCursor.init");
+    THROW_INVALID_DSTACK("txCursor.init"_Str);
   
   TxCursor* pTxCursor = _pTxCursor(pPtrTxCursor);
   ASSERT(CN_TXCURSOR == pTxCursor->eClass());
@@ -183,7 +183,7 @@ ENTRY("vTxCursorNext"_Str);
   
   Object* pPtrTxCursor;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTxCursor) )
-    THROW_INVALID_DSTACK("txCursor.next");
+    THROW_INVALID_DSTACK("txCursor.next"_Str);
   
   TxCursor* pTxCursor = _pTxCursor(pPtrTxCursor);
   ASSERT(CN_THREADCURSOR == pTxCursor->eClass());
