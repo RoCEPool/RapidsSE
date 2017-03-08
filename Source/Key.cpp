@@ -78,8 +78,8 @@ bool Key::operator <=(Key* pKeyArg)
 /*----------------------------------------------------------------------------*/
 void Key::vKey(Key& xKey)
 {
-  char* aSrc = reinterpret_cast<char*>(&xKey);
-  char* aDst = aWspArea();
+  Str* aSrc = reinterpret_cast<Str*>(&xKey);
+  Str* aDst = aWspArea();
   i8 nBytes  = xKey.nSize();
   
   MemLib::vCopy(aDst,&xKey,nBytes);
@@ -90,7 +90,7 @@ void Key::vKey(Key& xKey)
 /*----------------------------------------------------------------------------*/
 void Key::vKey(KeyWsp& xKeyWsp)
 {
-  char* aDst = aWspArea();
+  Str* aDst = aWspArea();
   Str* aSrc = xKeyWsp.aWspArea();
   i8 nBytes  = xKeyWsp.nWspUsed();
   
@@ -114,9 +114,17 @@ void Key::vShow(void)
 /*----------------------------------------------------------------------------*/
 /* get wsp area                                                               */
 /*----------------------------------------------------------------------------*/
-char* Key::aWspArea(void)
+char* Key::sWspArea(void)
 {
   return m_xWsp.sArea();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get wsp area                                                               */
+/*----------------------------------------------------------------------------*/
+Str* Key::aWspArea(void)
+{
+  return m_xWsp.aArea();
 }
 
 /*----------------------------------------------------------------------------*/

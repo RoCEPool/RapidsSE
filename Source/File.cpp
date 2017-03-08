@@ -618,8 +618,8 @@ bool File::bReadLine(StrVal& s)
   
   if ( ! m_pScratch ) {
     m_pScratch = new Scratch;
-    m_aNext  = m_pScratch->aWspArea();
-    m_aLimit = m_pScratch->aWspArea();
+    m_aNext  = m_pScratch->sWspArea();
+    m_aLimit = m_pScratch->sWspArea();
   }
   
   char* z = s.aStr();
@@ -629,7 +629,7 @@ bool File::bReadLine(StrVal& s)
   for (;;) {
     
     if (m_aNext == m_aLimit) {
-      m_aNext = m_pScratch->aWspArea();
+      m_aNext = m_pScratch->sWspArea();
       i8 iBytesRead = fread(m_aNext,1,m_pScratch->nWspLength(),m_aFilePtr);
       
       if ( ! iBytesRead )
@@ -681,20 +681,20 @@ bool File::bReadRecord(void)
   if ( ! m_pScratch ) {
     m_pScratch = new Scratch;
     m_pRecord  = new Scratch;
-    m_aNext  = m_pScratch->aWspArea();
-    m_aLimit = m_pScratch->aWspArea();
+    m_aNext  = m_pScratch->sWspArea();
+    m_aLimit = m_pScratch->sWspArea();
     
     vBuffer(C_256KB);
   }
   
-  char* z = m_pRecord->aWspArea();
+  char* z = m_pRecord->sWspArea();
   *z = '\0';
   m_iRecordLength = 0;
   
   for (;;) {
     
     if (m_aNext == m_aLimit) {
-      m_aNext = m_pScratch->aWspArea();
+      m_aNext = m_pScratch->sWspArea();
       i8 iBytesRead = fread(m_aNext,1,m_pScratch->nWspLength(),m_aFilePtr);
       
       if ( ! iBytesRead )
@@ -715,7 +715,7 @@ bool File::bReadRecord(void)
   *z = '\0';
   m_iRecordLength++;
   
-  if (*m_pRecord->aWspArea()) {
+  if (*m_pRecord->sWspArea()) {
     m_xSysCall.vSuccess();
     return true;
   }

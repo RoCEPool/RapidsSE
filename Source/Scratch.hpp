@@ -20,7 +20,8 @@ namespace System
     Scratch(void);
     ~Scratch(void);
 
-    char* aWspArea(void);
+    char* sWspArea(void);
+    Str*  aWspArea(void);
     i8    nWspLength(void);
   
     Footer* pFooter(void);
