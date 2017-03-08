@@ -29,7 +29,7 @@ private:
   void vSeekStart(void);
   void vSeekEnd(void);
   bool bGet(i8 iCommand, Str* aToken[], i8 nTokens);
-  bool bRead(char* wCommand);
+  bool bRead(Str* aCommand);
   
   Footer* pFooter(void);
 };

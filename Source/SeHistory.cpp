@@ -87,7 +87,7 @@ void SeHistory::vPrint(void)
   
   vSeekStart();
   
-  for (i8 i = 1; bRead(xCommand.aArea()); i++)
+  for (i8 i = 1; bRead((Str*)xCommand.aArea()); i++)
     vTrace("  %lld  %s\n"_Str,i,xCommand.aArea());
   
   vSeekEnd();
@@ -138,7 +138,7 @@ bool SeHistory::bGet(i8 iCommand, Str* aToken[], i8 nTokens)
   s48K sCommand;
   
   i8 i = 0;
-  while (bRead(sCommand.aArea())) {
+  while (bRead((Str*)sCommand.aArea())) {
     
     if (++i == iCommand) {
       
@@ -168,11 +168,11 @@ bool SeHistory::bGet(i8 iCommand, Str* aToken[], i8 nTokens)
 /*----------------------------------------------------------------------------*/
 /* read line from command history file                                        */
 /*----------------------------------------------------------------------------*/
-bool SeHistory::bRead(char* wCommand)
+bool SeHistory::bRead(Str* aCommand)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEHISTORY,_FOOTER_);
   
-  bool bResult = m_xFile.bReadLine((Str*)wCommand);
+  bool bResult = m_xFile.bReadLine(aCommand);
   
   return bResult;
 }
