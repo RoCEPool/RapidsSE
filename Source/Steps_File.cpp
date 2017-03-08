@@ -265,7 +265,7 @@ ENTRY("vFileWrite"_Str);
   if ( ! nnpTask->m_pDataStack->bPop(sLine) )
     THROW_INVALID_DSTACK("file.write"_Str);
   
-  char* wStr = sLine.aStr();
+  Str* wStr = sLine;
   
   pFile->vPrint("%s"_Str,wStr);
   
