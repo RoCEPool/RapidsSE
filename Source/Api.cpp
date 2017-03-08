@@ -977,7 +977,7 @@ eEC RapidsSE_GetNextRow(SEitf* pSEitf, void** ppRow)
   SelCursor* pSelCursor = reinterpret_cast<SelCursor*>(iAddress);
   ASSERT(CN_SELCURSOR == pSelCursor->eClass());
   
-  *ppRow = pSelCursor->pRowAsStr();
+  *ppRow = pSelCursor->aRowAsStr();
   if (!*ppRow) {
     delete pSelCursor;
     

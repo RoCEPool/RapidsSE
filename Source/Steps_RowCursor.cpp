@@ -128,7 +128,7 @@ ENTRY("vRowCursorFirst"_Str);
   
   pRowCursor->vFirst();
   
-  i8 bRow = pRowCursor->pRowAsStr() ? 1 : 0;
+  i8 bRow = pRowCursor->aRowAsStr() ? 1 : 0;
   
   nnpTask->m_pDataStack->vPush(bRow);
   
@@ -185,7 +185,7 @@ ENTRY("vRowCursorNext"_Str);
   
   pRowCursor->vNext();
   
-  i8 bRow = pRowCursor->pRowAsStr() ? 1 : 0;
+  i8 bRow = pRowCursor->aRowAsStr() ? 1 : 0;
   
   nnpTask->m_pDataStack->vPush(bRow);
   
@@ -207,7 +207,7 @@ void Task::vRowCursorRow(NNP_Task nnpTask)
   ASSERT(CN_ROWCURSOR == pRowCursor->eClass());
   
   s48K xRow;
-  xRow = (Str*)pRowCursor->pRowAsStr();
+  xRow = (Str*)pRowCursor->aRowAsStr();
   
   nnpTask->m_pDataStack->vPush(xRow);
   

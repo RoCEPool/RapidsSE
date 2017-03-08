@@ -644,12 +644,12 @@ void SePrompt::vIterateRows(void)
     vTrace("Partition %lld: \n"_Str, Partition::iSlotToPartition(iPartition));
     pSelCursor->vBegin(iPartition);
     pSelCursor->vFirst();
-    Str* pStr = pSelCursor->pRowAsStr();
+    Str* pStr = pSelCursor->aRowAsStr();
     while (pStr) {
       iRowCount++;
       vTrace("Row: %s\n"_Str,pStr);
       pSelCursor->vNext();
-      pStr = pSelCursor->pRowAsStr();
+      pStr = pSelCursor->aRowAsStr();
     }
   }
   
@@ -688,7 +688,7 @@ bool SePrompt::bGetFirstRow(void)
   
   pSelCursor->vBegin(m_iPartition);
   pSelCursor->vFirst();
-  Str* pStr = pSelCursor->pRowAsStr();
+  Str* pStr = pSelCursor->aRowAsStr();
   
   if (pStr == nullptr) {
     pSelCursor->vEnd();
@@ -715,7 +715,7 @@ bool SePrompt::bGetNextRow(void)
   ASSERT(CN_SELCURSOR == pSelCursor->eClass());
   
   pSelCursor->vNext();
-  Str* pStr = pSelCursor->pRowAsStr();
+  Str* pStr = pSelCursor->aRowAsStr();
   
   if (pStr == nullptr) {
     pSelCursor->vEnd();

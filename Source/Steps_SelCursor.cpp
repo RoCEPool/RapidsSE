@@ -127,7 +127,7 @@ ENTRY("vSelCursorFirst"_Str);
   
   pSelCursor->vFirst();
   
-  i8 bRow = pSelCursor->pRowAsStr() ? 1 : 0;
+  i8 bRow = pSelCursor->aRowAsStr() ? 1 : 0;
   
   nnpTask->m_pDataStack->vPush(bRow);
   
@@ -149,7 +149,7 @@ ENTRY("vSelCursorGet"_Str);
   ASSERT(CN_SELCURSOR == pSelCursor->eClass());
   
   s48K xRow;
-  xRow = (Str*)pSelCursor->pRowAsStr();
+  xRow = (Str*)pSelCursor->aRowAsStr();
   
   nnpTask->m_pDataStack->vPush(xRow);
   
@@ -206,7 +206,7 @@ ENTRY("vSelCursorNext"_Str);
   
   pSelCursor->vNext();
   
-  i8 bRow = pSelCursor->pRowAsStr() ? 1 : 0;
+  i8 bRow = pSelCursor->aRowAsStr() ? 1 : 0;
   
   nnpTask->m_pDataStack->vPush(bRow);
   
