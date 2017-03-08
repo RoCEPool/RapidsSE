@@ -154,7 +154,7 @@ FreeChunk* HeapBuffer::pNextChunk(FreeChunk* pChunk, i8 nBytes)
   FreeChunk* pNextChunk = pAdd<FreeChunk*>(pChunk,nBytes);
 
   // check next buffer ends within this segment
-  if (pChunkEnd(pNextChunk,nBytes) > m_pLastByte)
+  if (aChunkEnd(pNextChunk,nBytes) > m_aLastByte)
     return nullptr;
   
   return pNextChunk;
@@ -184,13 +184,13 @@ void HeapBuffer::vVerify(i8 iChunkSize)
 /*----------------------------------------------------------------------------*/
 /* calculate address of the last byte of given buffer                         */
 /*----------------------------------------------------------------------------*/
-char* HeapBuffer::pChunkEnd(FreeChunk* pChunk, i8 nBytes)
+Str* HeapBuffer::aChunkEnd(FreeChunk* pChunk, i8 nBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_HEAPBUFFER,_FOOTER_);
   
-  char* pChunkEnd = pAdd<char*>(pChunk,nBytes - 1);
+  Str* aChunkEnd = pAdd<Str*>(pChunk,nBytes - 1);
   
-  return pChunkEnd;
+  return aChunkEnd;
 }
 
 /*============================================================================*/

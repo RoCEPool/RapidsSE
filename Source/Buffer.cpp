@@ -35,7 +35,7 @@ Buffer::Buffer(eCN eClassNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
   
-  m_pLastByte = pLastUsableByte();
+  m_aLastByte = aLastUsableByte();
   
   _setFooter_();
   
@@ -83,17 +83,17 @@ void Buffer::vBufferNo(bn nBufferNo)
 /*----------------------------------------------------------------------------*/
 /* get address of last usable byte in buffer                                  */
 /*----------------------------------------------------------------------------*/
-char* Buffer::pLastUsableByte(void)
+Str* Buffer::aLastUsableByte(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 
   // last byte in buffer
-  char* pLastByte = reinterpret_cast<char*>(this) + C_SIZE_POOL_BUFFER - 1;
+  Str* pLastByte = reinterpret_cast<Str*>(this) + C_SIZE_POOL_BUFFER - 1;
   
   // last byte before footer
-  char* pLastUsableByte = pLastByte - sizeof(FOOTER);
+  Str* aLastUsableByte = pLastByte - sizeof(FOOTER);
   
-  return pLastUsableByte;
+  return aLastUsableByte;
 }
 
 /*----------------------------------------------------------------------------*/

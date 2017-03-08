@@ -62,9 +62,9 @@ bool QueueBuffer::bAppend(Value* pValue)
   
   i8 nBytes = ValLib::iSize(pValue);
   
-  char* pFinalByteOfValue = pAdd<char*>(m_pNextFree,nBytes-1);
+  Str* aFinalByteOfValue = pAdd<Str*>(m_pNextFree,nBytes-1);
   
-  if (pFinalByteOfValue > Buffer::pLastUsableByte())
+  if (aFinalByteOfValue > Buffer::aLastUsableByte())
     return false;
   
   MemLib::vCopy(m_pNextFree,pValue,nBytes);

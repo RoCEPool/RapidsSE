@@ -379,7 +379,7 @@ i8 RowBuffer::iFreeSpace(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
-  i8 nBytes = nSub(m_pLastByte,m_pFreeSpace);
+  i8 nBytes = nSub(m_aLastByte,m_pFreeSpace);
 
   nBytes -= sizeof(Footer);
   

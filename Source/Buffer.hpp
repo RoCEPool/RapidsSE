@@ -8,9 +8,9 @@ namespace Pool
   class Buffer : public Object
   {
   protected:
-    bn     m_nBufferNo;        // this buffer number
-    bn     m_nOverflowBuffer;  // logical overflow
-    char*  m_pLastByte;
+    bn   m_nBufferNo;        // this buffer number
+    bn   m_nOverflowBuffer;  // logical overflow
+    Str* m_aLastByte;
     // ..data..
     
   public:
@@ -25,7 +25,7 @@ namespace Pool
     void  vBufferNo(bn nBufferNo);
     //void  vClass(eCN eClassNo);
     //eCN   eClassNo(void);
-    char* pLastUsableByte(void);
+    Str*  aLastUsableByte(void);
     bn    nOverflowBuffer(void);
     void  vOverflowBuffer(bn nOverflowBuffer);
     

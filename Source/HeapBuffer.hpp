@@ -33,7 +33,7 @@ namespace Pool
     void vVerify(i8 iChunkSize);
     
   private:
-    char* pChunkEnd(FreeChunk* pChunk, i8 nBytes);
+    Str* aChunkEnd(FreeChunk* pChunk, i8 nBytes);
     
   };
 }
