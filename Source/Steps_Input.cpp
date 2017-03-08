@@ -125,7 +125,7 @@ ENTRY("vInputOpen"_Str);
   s256 sFilePath;
   
   if ( ! nnpTask->m_pDataStack->bPop(sFilePath) )
-    THROW_INVALID_DSTACK("input.open");
+    THROW_INVALID_DSTACK("input.open"_Str);
   
   bool bOpened = nnpTask->m_pTokeniser->bUseFile(sFilePath);
   
@@ -186,7 +186,7 @@ ENTRY("vInputText"_Str);
   s48K sInput;                                             //! NEED STACK CHECKS
   
   if ( ! nnpTask->m_pDataStack->bPop(sInput) )
-    THROW_INVALID_DSTACK("input.text");
+    THROW_INVALID_DSTACK("input.text"_Str);
     
   nnpTask->m_pTokeniser->vUseString(sInput);
   

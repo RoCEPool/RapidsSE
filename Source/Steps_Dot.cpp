@@ -51,7 +51,7 @@ void Task::vDot(NNP_Task nnpTask)
   
   ValWsp xValWsp;
   if ( ! nnpTask->m_pDataStack->bPop(xValWsp) )
-    THROW_INVALID_DSTACK(".");
+    THROW_INVALID_DSTACK("."_Str);
   
   ValLib::vToString(&xValWsp,sWorkspace.aStr());
   /*
@@ -89,7 +89,7 @@ void Task::vDotPut(NNP_Task nnpTask)
   
   ValWsp xValWsp;
   if ( ! nnpTask->m_pDataStack->bPop(xValWsp) )
-    THROW_INVALID_DSTACK(".put");
+    THROW_INVALID_DSTACK(".put"_Str);
   
   ValLib::vToString(&xValWsp,sWorkspace.aStr());
   vTrace("%s"_Str,sWorkspace.aStr());
@@ -120,7 +120,7 @@ void Task::vDotVerbose(NNP_Task nnpTask)
   
   ValWsp xValWsp;
   if ( ! nnpTask->m_pDataStack->bPop(xValWsp) )
-    THROW_INVALID_DSTACK(".verbose");
+    THROW_INVALID_DSTACK(".verbose"_Str);
   
   if (gxArguments.m_bVerbose) {
     ValLib::vToString(&xValWsp,sWorkspace.aStr());

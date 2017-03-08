@@ -74,7 +74,7 @@ ENTRY("vProcessTestPid"_Str);
 
   i8 iPid;
   if ( ! nnpTask->m_pDataStack->bPop(iPid) )
-    THROW_INVALID_DSTACK("process.testpid");
+    THROW_INVALID_DSTACK("process.testpid"_Str);
   
   i8 iExists = Process::bTestPid(iPid);
   

@@ -65,7 +65,7 @@ ENTRY("vThreadAppend"_Str);
   Object* pThreadEmb;
   
   if ( ! nnpTask->m_pDataStack->bPop(pThreadEmb) )
-    THROW_INVALID_DSTACK("thread.append");
+    THROW_INVALID_DSTACK("thread.append"_Str);
   
   ASSERT(CN_THREAD == pThreadEmb->eClass());
   
@@ -75,7 +75,7 @@ ENTRY("vThreadAppend"_Str);
   
   Object* pTaskObject;
   if ( ! nnpTask->m_pDataStack->bPop(pTaskObject) )
-    THROW_INVALID_DSTACK("task.dump");
+    THROW_INVALID_DSTACK("task.dump"_Str);
   Task* pThatTask = _pTask(pTaskObject);
   
   pTaskSet->vAppend(pThatTask);

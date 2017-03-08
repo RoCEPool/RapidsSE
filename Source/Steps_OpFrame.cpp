@@ -48,7 +48,7 @@ void Task::vOpFrameDic(NNP_Task nnpTask)
   Object* pPtrOpFrame;
   
   if ( ! nnpTask->m_pDataStack->bPop(pPtrOpFrame) )
-    THROW_INVALID_DSTACK("opFrame.dic");
+    THROW_INVALID_DSTACK("opFrame.dic"_Str);
   
   RegFrame* pOpFrame = _pRegFrame(pPtrOpFrame);
   
@@ -69,7 +69,7 @@ void Task::vOpFrameName(NNP_Task nnpTask)
   Object* pPtrOpFrame;
   
   if ( ! nnpTask->m_pDataStack->bPop(pPtrOpFrame) )
-    THROW_INVALID_DSTACK("opFrame.dic");
+    THROW_INVALID_DSTACK("opFrame.dic"_Str);
   
   RegFrame* pOpFrame = _pRegFrame(pPtrOpFrame);
   

@@ -58,10 +58,10 @@ void Task::vTableAnalyze(NNP_Task nnpTask)
   i8 iDetailed;
   
   if ( ! nnpTask->m_pDataStack->bPop(iDetailed) )
-    THROW_INVALID_DSTACK("table.analyze");
+    THROW_INVALID_DSTACK("table.analyze"_Str);
   
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTable) )
-    THROW_INVALID_DSTACK("table.analyze");
+    THROW_INVALID_DSTACK("table.analyze"_Str);
   
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
@@ -83,19 +83,19 @@ void Task::vTableAppend(NNP_Task nnpTask)
   s48K sString;
   
   if ( ! nnpTask->m_pDataStack->bPop(sString) )
-    THROW_INVALID_DSTACK("table.append");
+    THROW_INVALID_DSTACK("table.append"_Str);
   
   Table* pTable = reinterpret_cast<Table*>(StrLib::iToI8(sString.aStr()));
   ASSERT(CN_TABLE == pTable->eClass());
   
   if ( ! nnpTask->m_pDataStack->bPop(sString) )
-    THROW_INVALID_DSTACK("table.append");
+    THROW_INVALID_DSTACK("table.append"_Str);
   
   RowBuffer* pRowBuffer = reinterpret_cast<RowBuffer*>(StrLib::iToI8(sString.aStr()));
   ASSERT(CN_ROWBUFFER == pRowBuffer->eClass());
   
   if ( ! nnpTask->m_pDataStack->bPop(sString) )
-    THROW_INVALID_DSTACK("table.append");
+    THROW_INVALID_DSTACK("table.append"_Str);
   
   iPartition = StrLib::iToI8(sString.aStr());
   pTable->vAppendBuffer(iPartition,pRowBuffer);
@@ -112,17 +112,17 @@ void Task::vTableAppendBuffer(NNP_Task nnpTask)
 
   Object* pPtrTable;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTable) )
-    THROW_INVALID_DSTACK("table.appendBuffer");
+    THROW_INVALID_DSTACK("table.appendBuffer"_Str);
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
   
   i8 iPartition = 0;
   if ( ! nnpTask->m_pDataStack->bPop(iPartition) )
-    THROW_INVALID_DSTACK("table.appendBuffer");
+    THROW_INVALID_DSTACK("table.appendBuffer"_Str);
   
   Object* pPtrRowBuffer;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrRowBuffer) )
-    THROW_INVALID_DSTACK("table.appendBuffer");
+    THROW_INVALID_DSTACK("table.appendBuffer"_Str);
   RowBuffer* pRowBuffer = _pRowBuffer(pPtrRowBuffer);
   ASSERT(CN_ROWBUFFER == pRowBuffer->eClass());
   
@@ -142,7 +142,7 @@ ENTRY("vTableDrop"_Str);
   
   Object* pPtrTable;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTable) )
-    THROW_INVALID_DSTACK("table.drop");
+    THROW_INVALID_DSTACK("table.drop"_Str);
   
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
@@ -161,7 +161,7 @@ ENTRY("vTableDump"_Str);
   
   Object* pPtrTable;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTable) )
-    THROW_INVALID_DSTACK("table.dump");
+    THROW_INVALID_DSTACK("table.dump"_Str);
   
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
@@ -180,7 +180,7 @@ ENTRY("vTableInit"_Str);
   
   Object* pPtrTable;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTable) )
-    THROW_INVALID_DSTACK("table.init");
+    THROW_INVALID_DSTACK("table.init"_Str);
   
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
@@ -202,15 +202,15 @@ ENTRY("vTableInsert"_Str);
   ValWsp xRow;
   
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTable) )
-    THROW_INVALID_DSTACK("table.insert");
+    THROW_INVALID_DSTACK("table.insert"_Str);
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTxRef) )
-    THROW_INVALID_DSTACK("table.insert");
+    THROW_INVALID_DSTACK("table.insert"_Str);
   if ( ! nnpTask->m_pDataStack->bPop(xRow) )
-    THROW_INVALID_DSTACK("table.insert");
+    THROW_INVALID_DSTACK("table.insert"_Str);
 
   i8 iPartition;
   if ( ! nnpTask->m_pDataStack->bPop(iPartition) )
-    THROW_INVALID_DSTACK("table.insert");
+    THROW_INVALID_DSTACK("table.insert"_Str);
   
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
@@ -235,7 +235,7 @@ void Task::vTableName(NNP_Task nnpTask)
   
   Object* pPtrTable;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTable) )
-    THROW_INVALID_DSTACK("table.init");
+    THROW_INVALID_DSTACK("table.init"_Str);
   
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
@@ -259,7 +259,7 @@ void Task::vTableRef(NNP_Task nnpTask)
   Object* pPtrTable;
   
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTable) )
-    THROW_INVALID_DSTACK("table.ref");
+    THROW_INVALID_DSTACK("table.ref"_Str);
   
   Table* pTable = _pTable(pPtrTable);
   
@@ -279,7 +279,7 @@ void Task::vTableSubDic(NNP_Task nnpTask)
   
   Object* pPtrTable;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTable) )
-    THROW_INVALID_DSTACK("table.subDic");
+    THROW_INVALID_DSTACK("table.subDic"_Str);
   
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
@@ -300,7 +300,7 @@ ENTRY("vTableSpace"_Str);
   
   Object* pPtrTable;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTable) )
-    THROW_INVALID_DSTACK("table.space");
+    THROW_INVALID_DSTACK("table.space"_Str);
   
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
@@ -322,7 +322,7 @@ void Task::vTableTruncate(NNP_Task nnpTask)
   
   Object* pPtrTable;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTable) )
-    THROW_INVALID_DSTACK("table.truncate");
+    THROW_INVALID_DSTACK("table.truncate"_Str);
   
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());

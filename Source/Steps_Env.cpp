@@ -47,7 +47,7 @@ void Task::vEnvGet(NNP_Task nnpTask)
   s256 sEnvName;
   
   if ( ! nnpTask->m_pDataStack->bPop(sEnvName) )
-    THROW_INVALID_DSTACK("env@");
+    THROW_INVALID_DSTACK("env@"_Str);
   
   s256 sEnvVal;
   

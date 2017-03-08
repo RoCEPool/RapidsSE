@@ -47,7 +47,7 @@ ENTRY("vSEitfListDump"_Str);
   
   Object* pPtrSEitfList;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitfList) )
-    THROW_INVALID_DSTACK("seitflist.dump");
+    THROW_INVALID_DSTACK("seitflist.dump"_Str);
   
   SEitfList* pSEitfList = _pSEitfList(pPtrSEitfList);
   ASSERT(CN_SEITFLIST == pSEitfList->eClass());
@@ -66,7 +66,7 @@ ENTRY("vSEitfListInit"_Str);
   
   Object* pPtrSEitfList;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitfList) )
-    THROW_INVALID_DSTACK("seitflist.init");
+    THROW_INVALID_DSTACK("seitflist.init"_Str);
   
   SEitfList* pSEitfList = _pSEitfList(pPtrSEitfList);
   ASSERT(CN_SEITFLIST == pSEitfList->eClass());

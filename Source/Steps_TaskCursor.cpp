@@ -53,7 +53,7 @@ ENTRY("vTaskCursorBegin"_Str);
   
   Object* pPtrTaskCursor;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTaskCursor) )
-    THROW_INVALID_DSTACK("taskCursor.begin");
+    THROW_INVALID_DSTACK("taskCursor.begin"_Str);
   
   TaskCursor* pTaskCursor = _pTaskCursor(pPtrTaskCursor);
   ASSERT(CN_TASKCURSOR == pTaskCursor->eClass());
@@ -72,7 +72,7 @@ ENTRY("vTaskCursorDelete"_Str);
   
   Object* pPtrTaskCursor;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTaskCursor) )
-    THROW_INVALID_DSTACK("taskCursor.delete");
+    THROW_INVALID_DSTACK("taskCursor.delete"_Str);
   
   TaskCursor* pTaskCursor = _pTaskCursor(pPtrTaskCursor);
   ASSERT(CN_TASKCURSOR == pTaskCursor->eClass());
@@ -94,7 +94,7 @@ ENTRY("vTaskCursorEnd"_Str);
   
   Object* pPtrTaskCursor;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTaskCursor) )
-    THROW_INVALID_DSTACK("taskCursor.end");
+    THROW_INVALID_DSTACK("taskCursor.end"_Str);
   
   TaskCursor* pTaskCursor = _pTaskCursor(pPtrTaskCursor);
   ASSERT(CN_TASKCURSOR == pTaskCursor->eClass());
@@ -113,7 +113,7 @@ ENTRY("vTaskCursorFirst"_Str);
   
   Object* pPtrTaskCursor;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTaskCursor) )
-    THROW_INVALID_DSTACK("taskCursor.first");
+    THROW_INVALID_DSTACK("taskCursor.first"_Str);
   
   TaskCursor* pTaskCursor = _pTaskCursor(pPtrTaskCursor);
   ASSERT(CN_TASKCURSOR == pTaskCursor->eClass());
@@ -136,7 +136,7 @@ ENTRY("vTaskCursorGet"_Str);
   
   Object* pPtrTaskCursor;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTaskCursor) )
-    THROW_INVALID_DSTACK("taskCursor.get");
+    THROW_INVALID_DSTACK("taskCursor.get"_Str);
   
   TaskCursor* pTaskCursor = _pTaskCursor(pPtrTaskCursor);
   ASSERT(CN_TASKCURSOR == pTaskCursor->eClass());
@@ -159,7 +159,7 @@ ENTRY("vTaskCursorInit"_Str);
   
   Object* pPtrTaskCursor;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTaskCursor) )
-    THROW_INVALID_DSTACK("taskCursor.init");
+    THROW_INVALID_DSTACK("taskCursor.init"_Str);
     
   TaskCursor* pTaskCursor = _pTaskCursor(pPtrTaskCursor);
   ASSERT(CN_TASKCURSOR == pTaskCursor->eClass());
@@ -188,7 +188,7 @@ ENTRY("vTaskCursorNext"_Str);
   
   Object* pPtrTaskCursor;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTaskCursor) )
-    THROW_INVALID_DSTACK("taskCursor.next");
+    THROW_INVALID_DSTACK("taskCursor.next"_Str);
   
   TaskCursor* pTaskCursor = _pTaskCursor(pPtrTaskCursor);
   ASSERT(CN_TASKCURSOR == pTaskCursor->eClass());

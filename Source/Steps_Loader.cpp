@@ -54,7 +54,7 @@ void Task::vLoaderDelete(NNP_Task nnpTask)
   
   Object* pPtrLoader;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrLoader) )
-    THROW_INVALID_DSTACK("loader.delete");
+    THROW_INVALID_DSTACK("loader.delete"_Str);
   
   Loader* pLoader = _pLoader(pPtrLoader);
   ASSERT(CN_LOADER == pLoader->eClass());
@@ -73,7 +73,7 @@ void Task::vLoaderFinalize(NNP_Task nnpTask)
   
   Object* pPtrLoader;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrLoader) )
-    THROW_INVALID_DSTACK("loader.finalize");
+    THROW_INVALID_DSTACK("loader.finalize"_Str);
   
   Loader* pLoader = _pLoader(pPtrLoader);
   ASSERT(CN_LOADER == pLoader->eClass());
@@ -92,7 +92,7 @@ void Task::vLoaderFindChunk(NNP_Task nnpTask)
   
   Object* pPtrLoader;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrLoader) )
-    THROW_INVALID_DSTACK("loader.findChunk");
+    THROW_INVALID_DSTACK("loader.findChunk"_Str);
   
   Loader* pLoader = _pLoader(pPtrLoader);
   ASSERT(CN_LOADER == pLoader->eClass());
@@ -113,7 +113,7 @@ void Task::vLoaderInit(NNP_Task nnpTask)
   
   Object* pPtrLoader;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrLoader) )
-    THROW_INVALID_DSTACK("loader.init");
+    THROW_INVALID_DSTACK("loader.init"_Str);
   
   Loader* pLoader = _pLoader(pPtrLoader);
   ASSERT(CN_LOADER == pLoader->eClass());
@@ -147,7 +147,7 @@ void Task::vLoaderNewSub(NNP_Task nnpTask)
   
   Object* pPtrLoader;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrLoader) )
-    THROW_INVALID_DSTACK("loader.newSub");
+    THROW_INVALID_DSTACK("loader.newSub"_Str);
   
   Loader* pLoader = _pLoader(pPtrLoader);
   ASSERT(CN_LOADER == pLoader->eClass());
@@ -172,7 +172,7 @@ void Task::vLoaderPathStore(NNP_Task nnpTask)
   ValWsp xWspPath;
   Object* pPtrLoader;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrLoader,xWspPath) )
-    THROW_INVALID_DSTACK("loader.path!");
+    THROW_INVALID_DSTACK("loader.path!"_Str);
   
   Loader* pLoader = _pLoader(pPtrLoader);
   ASSERT(CN_LOADER == pLoader->eClass());
@@ -195,7 +195,7 @@ void Task::vLoaderTableStore(NNP_Task nnpTask)
   Object* pPtrTable;
   Object* pPtrLoader;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrLoader,pPtrTable) )
-    THROW_INVALID_DSTACK("loader.tableStore");
+    THROW_INVALID_DSTACK("loader.tableStore"_Str);
   
   Loader* pLoader = _pLoader(pPtrLoader);
   ASSERT(CN_LOADER == pLoader->eClass());
@@ -219,7 +219,7 @@ void Task::vLoaderTxRefStore(NNP_Task nnpTask)
   Object* pPtrLoader;
   Object* pPtrTxRef;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrLoader,pPtrTxRef) )
-    THROW_INVALID_DSTACK("loader.txref!");
+    THROW_INVALID_DSTACK("loader.txref!"_Str);
   
   Loader* pLoader = _pLoader(pPtrLoader);
   ASSERT(CN_LOADER == pLoader->eClass());

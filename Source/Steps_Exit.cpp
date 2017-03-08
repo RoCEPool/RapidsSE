@@ -56,7 +56,7 @@ void Task::vExit(NNP_Task nnpTask)
   
   Cell* pCell;
   if ( ! nnpTask->m_pReturnStack->bPop(pCell) )
-    THROW_INVALID_RSTACK("exit");
+    THROW_INVALID_RSTACK("exit"_Str);
   
   nnpTask->IP.m_pCell = pCell;
   

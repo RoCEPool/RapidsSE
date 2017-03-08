@@ -47,7 +47,7 @@ void Task::vErrorMsg(NNP_Task nnpTask)
   
   i8 iErrorCode;
   if ( ! nnpTask->m_pDataStack->bPop(iErrorCode) )
-    THROW_INVALID_DSTACK("error.msg");
+    THROW_INVALID_DSTACK("error.msg"_Str);
   
   if (iErrorCode < EC_NONE || iErrorCode > EC_ENUMS)
     THROW("error.msg"_Str);

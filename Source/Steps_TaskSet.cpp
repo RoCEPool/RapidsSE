@@ -49,7 +49,7 @@ ENTRY("vTaskSetAppend"_Str);
   Object* pObject;
   
   if ( ! nnpTask->m_pDataStack->bPop(pObject) )
-    THROW_INVALID_DSTACK("taskset.append");
+    THROW_INVALID_DSTACK("taskset.append"_Str);
   
   ASSERT(CN_TASKSET == pObject->eClass());
   
@@ -57,7 +57,7 @@ ENTRY("vTaskSetAppend"_Str);
   
   Object* pTaskObject;
   if ( ! nnpTask->m_pDataStack->bPop(pTaskObject) )
-    THROW_INVALID_DSTACK("taskset.append");
+    THROW_INVALID_DSTACK("taskset.append"_Str);
   Task* pThatTask = _pTask(pTaskObject);
   
   pTaskSet->vAppend(pThatTask);
@@ -75,7 +75,7 @@ ENTRY("vTaskSetDump"_Str);
   Object* pObject;
   
   if ( ! nnpTask->m_pDataStack->bPop(pObject) )
-    THROW_INVALID_DSTACK("taskset.dump");
+    THROW_INVALID_DSTACK("taskset.dump"_Str);
   
   ASSERT(CN_TASKSET == pObject->eClass());
   
@@ -96,7 +96,7 @@ ENTRY("vTaskSetInit"_Str);
   Object* pObject;
   
   if ( ! nnpTask->m_pDataStack->bPop(pObject) )
-    THROW_INVALID_DSTACK("taskset.init");
+    THROW_INVALID_DSTACK("taskset.init"_Str);
   
   ASSERT(CN_TASKSET == pObject->eClass());
   

@@ -53,7 +53,7 @@ ENTRY("vSEitfCursorBegin"_Str);
   
   Object* pPtrSEitfCursor;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitfCursor) )
-    THROW_INVALID_DSTACK("seitfcursor.begin");
+    THROW_INVALID_DSTACK("seitfcursor.begin"_Str);
   
   SEitfCursor* pSEitfCursor = _pSEitfCursor(pPtrSEitfCursor);
   ASSERT(CN_SEITFCURSOR == pSEitfCursor->eClass());
@@ -77,7 +77,7 @@ ENTRY("vSEitfCursorDelete"_Str);
   
   Object* pPtrSEitfCursor;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitfCursor) )
-    THROW_INVALID_DSTACK("seitfcursor.delete");
+    THROW_INVALID_DSTACK("seitfcursor.delete"_Str);
   
   SEitfCursor* pSEitfCursor = _pSEitfCursor(pPtrSEitfCursor);
   ASSERT(CN_SEITFCURSOR == pSEitfCursor->eClass());
@@ -99,7 +99,7 @@ ENTRY("vSEitfCursorEnd"_Str);
   
   Object* pPtrSEitfCursor;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitfCursor) )
-    THROW_INVALID_DSTACK("seitfcursor.end");
+    THROW_INVALID_DSTACK("seitfcursor.end"_Str);
   
   SEitfCursor* pSEitfCursor = _pSEitfCursor(pPtrSEitfCursor);
   ASSERT(CN_SEITFCURSOR == pSEitfCursor->eClass());
@@ -118,7 +118,7 @@ ENTRY("vSEitfCursorFirst"_Str);
   
   Object* pPtrSEitfCursor;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitfCursor) )
-    THROW_INVALID_DSTACK("seitfcursor.first");
+    THROW_INVALID_DSTACK("seitfcursor.first"_Str);
   
   SEitfCursor* pSEitfCursor = _pSEitfCursor(pPtrSEitfCursor);
   ASSERT(CN_SEITFCURSOR == pSEitfCursor->eClass());
@@ -141,7 +141,7 @@ ENTRY("vSEitfCursorGet"_Str);
   
   Object* pPtrSEitfCursor;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitfCursor) )
-    THROW_INVALID_DSTACK("seitfcursor.get");
+    THROW_INVALID_DSTACK("seitfcursor.get"_Str);
   
   SEitfCursor* pSEitfCursor = _pSEitfCursor(pPtrSEitfCursor);
   ASSERT(CN_SEITFCURSOR == pSEitfCursor->eClass());
@@ -162,7 +162,7 @@ ENTRY("vSEitfCursorInit"_Str);
   
   Object* pPtrSEitfCursor;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitfCursor) )
-    THROW_INVALID_DSTACK("seitfcursor.init");
+    THROW_INVALID_DSTACK("seitfcursor.init"_Str);
   
   SEitfCursor* pSEitfCursor = _pSEitfCursor(pPtrSEitfCursor);
   ASSERT(CN_SEITFCURSOR == pSEitfCursor->eClass());
@@ -188,7 +188,7 @@ ENTRY("vSEitfCursorNew"_Str);
   
   Object* pPtrSEitfList;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitfList) )
-    THROW_INVALID_DSTACK("seitfcursor.new");
+    THROW_INVALID_DSTACK("seitfcursor.new"_Str);
   
   SEitfList* pSEitfList = _pSEitfList(pPtrSEitfList);
   ASSERT(CN_SEITFLIST == pSEitfList->eClass());
@@ -213,7 +213,7 @@ ENTRY("vSEitfCursorNext"_Str);
   
   Object* pPtrSEitfCursor;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitfCursor) )
-    THROW_INVALID_DSTACK("seitfcursor.next");
+    THROW_INVALID_DSTACK("seitfcursor.next"_Str);
   
   SEitfCursor* pSEitfCursor = _pSEitfCursor(pPtrSEitfCursor);
   ASSERT(CN_SEITFCURSOR == pSEitfCursor->eClass());

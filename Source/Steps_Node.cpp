@@ -53,7 +53,7 @@ ENTRY("vNodeInit"_Str);
   Object* pPtrNode;
   
   if ( ! nnpTask->m_pDataStack->bPop(pPtrNode) )
-    THROW_INVALID_DSTACK("node.init");
+    THROW_INVALID_DSTACK("node.init"_Str);
   
   Node* pNode = _pNode(pPtrNode);
   ASSERT(CN_NODE == pNode->eClass());
@@ -73,7 +73,7 @@ void Task::vNodeIP(NNP_Task nnpTask)
   Object* pPtrNode;
   
   if ( ! nnpTask->m_pDataStack->bPop(pPtrNode) )
-    THROW_INVALID_DSTACK("node.IP");
+    THROW_INVALID_DSTACK("node.IP"_Str);
   
   Node* pNode = _pNode(pPtrNode);
   ASSERT(CN_NODE == pNode->eClass());
@@ -95,7 +95,7 @@ ENTRY("vNodeNew"_Str);
   i8 iNodeNo;
   
   if ( ! nnpTask->m_pDataStack->bPop(iNodeNo) )
-    THROW_INVALID_DSTACK("node.new");
+    THROW_INVALID_DSTACK("node.new"_Str);
   
   Node* pNode = new Node(iNodeNo,
                          gxArguments.m_xNodes[iNodeNo].m_sNodeName.aStr(),
@@ -118,7 +118,7 @@ void Task::vNodeName(NNP_Task nnpTask)
   Object* pPtrNode;
   
   if ( ! nnpTask->m_pDataStack->bPop(pPtrNode) )
-    THROW_INVALID_DSTACK("node.name");
+    THROW_INVALID_DSTACK("node.name"_Str);
   
   Node* pNode = _pNode(pPtrNode);
   ASSERT(CN_NODE == pNode->eClass());
@@ -140,7 +140,7 @@ ENTRY("vNodeNo"_Str);
   Object* pPtrNode;
   
   if ( ! nnpTask->m_pDataStack->bPop(pPtrNode) )
-    THROW_INVALID_DSTACK("node.no");
+    THROW_INVALID_DSTACK("node.no"_Str);
   
   Node* pNode = _pNode(pPtrNode);
   ASSERT(CN_NODE == pNode->eClass());
@@ -160,7 +160,7 @@ void Task::vNodePort(NNP_Task nnpTask)
   Object* pPtrNode;
   
   if ( ! nnpTask->m_pDataStack->bPop(pPtrNode) )
-    THROW_INVALID_DSTACK("node.port");
+    THROW_INVALID_DSTACK("node.port"_Str);
   
   Node* pNode = _pNode(pPtrNode);
   ASSERT(CN_NODE == pNode->eClass());

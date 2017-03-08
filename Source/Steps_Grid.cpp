@@ -81,7 +81,7 @@ void Task::vGridFindNode(NNP_Task nnpTask)
   s256 sPtrNodeName;
   
   if ( ! nnpTask->m_pDataStack->bPop(sPtrNodeName) )
-    THROW_INVALID_DSTACK("grid.find");
+    THROW_INVALID_DSTACK("grid.find"_Str);
   
   Node* pNode = gpGrid->pFindNode(sPtrNodeName.aStr());
   
@@ -100,7 +100,7 @@ ENTRY("vGridInit"_Str);
   Object* pPtrGrid;
   
   if ( ! nnpTask->m_pDataStack->bPop(pPtrGrid) )
-    THROW_INVALID_DSTACK("grid.init");
+    THROW_INVALID_DSTACK("grid.init"_Str);
   
   Grid* pGrid = _pGrid(pPtrGrid);
   ASSERT(CN_GRID == pGrid->eClass());
@@ -120,7 +120,7 @@ void Task::vGridNode(NNP_Task nnpTask)
   i8 iNode;
   
   if ( ! nnpTask->m_pDataStack->bPop(iNode) )
-    THROW_INVALID_DSTACK("grid.node");
+    THROW_INVALID_DSTACK("grid.node"_Str);
   
   nnpTask->m_pDataStack->vPush(gpGrid->pFindNode(iNode));
   
@@ -227,7 +227,7 @@ void Task::vGridStartedStore(NNP_Task nnpTask)
   i8 iStarted;
   
   if ( ! nnpTask->m_pDataStack->bPop(iStarted) )
-    THROW_INVALID_DSTACK("grid.started!");
+    THROW_INVALID_DSTACK("grid.started!"_Str);
   
   gpGrid->vHasStarted(iStarted == 1 ? true : false);
   
@@ -256,7 +256,7 @@ void Task::vGridStartNodeStore(NNP_Task nnpTask)
   i8 iStartNode;
   
   if ( ! nnpTask->m_pDataStack->bPop(iStartNode) )
-    THROW_INVALID_DSTACK("grid.startNode!");
+    THROW_INVALID_DSTACK("grid.startNode!"_Str);
   
   gpGrid->vStartNode(iStartNode);
   
@@ -284,7 +284,7 @@ void Task::vGridToNode(NNP_Task nnpTask)
   
   i8 iParitionId;
   if ( ! nnpTask->m_pDataStack->bPop(iParitionId) )
-    THROW_INVALID_DSTACK("grid::toNode");
+    THROW_INVALID_DSTACK("grid::toNode"_Str);
   
   // for the moment its always node 0                      //! DISCUSS WITH ALKA
   //nnpTask->m_pDataStack->vPush((i8)0);
@@ -305,7 +305,7 @@ void Task::vGridToPartition(NNP_Task nnpTask)
   
   i8 iSlot;
   if ( ! nnpTask->m_pDataStack->bPop(iSlot) )
-    THROW_INVALID_DSTACK("grid::toPartition");
+    THROW_INVALID_DSTACK("grid::toPartition"_Str);
   
   i8 iPartitionId = Partition::iSlotToPartition(iSlot);
   
@@ -323,7 +323,7 @@ void Task::vGridToSlot(NNP_Task nnpTask)
   
   i8 iPartitionId;
   if ( ! nnpTask->m_pDataStack->bPop(iPartitionId) )
-    THROW_INVALID_DSTACK("grid::toSlot");
+    THROW_INVALID_DSTACK("grid::toSlot"_Str);
   
   i8 iSlot = Partition::iPartitionToSlot(iPartitionId);
   

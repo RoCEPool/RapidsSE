@@ -57,14 +57,14 @@ ENTRY("vRowCursorBegin"_Str);
   
   Object* pPtrRpwCursor;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrRpwCursor) )
-    THROW_INVALID_DSTACK("rowCursor.begin");
+    THROW_INVALID_DSTACK("rowCursor.begin"_Str);
   
   RowCursor* pRowCursor = _pRowCursor(pPtrRpwCursor);
   ASSERT(CN_ROWCURSOR == pRowCursor->eClass());
   
   i8 iPartn;
   if ( ! nnpTask->m_pDataStack->bPop(iPartn) )
-    THROW_INVALID_DSTACK("rowCursor.begin");
+    THROW_INVALID_DSTACK("rowCursor.begin"_Str);
   
   pRowCursor->vBegin(iPartn);
   
@@ -80,7 +80,7 @@ ENTRY("vRowCursorDelete"_Str);
   
   Object* pPtrRpwCursor;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrRpwCursor) )
-    THROW_INVALID_DSTACK("rowCursor.delete");
+    THROW_INVALID_DSTACK("rowCursor.delete"_Str);
   
   RowCursor* pRowCursor = _pRowCursor(pPtrRpwCursor);
   ASSERT(CN_ROWCURSOR == pRowCursor->eClass());
@@ -102,7 +102,7 @@ ENTRY("vRowCursorEnd"_Str);
   
   Object* pPtrRpwCursor;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrRpwCursor) )
-    THROW_INVALID_DSTACK("rowCursor.end");
+    THROW_INVALID_DSTACK("rowCursor.end"_Str);
   
   RowCursor* pRowCursor = _pRowCursor(pPtrRpwCursor);
   ASSERT(CN_ROWCURSOR == pRowCursor->eClass());
@@ -121,7 +121,7 @@ ENTRY("vRowCursorFirst"_Str);
   
   Object* pPtrRpwCursor;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrRpwCursor) )
-    THROW_INVALID_DSTACK("rowCursor.first");
+    THROW_INVALID_DSTACK("rowCursor.first"_Str);
   
   RowCursor* pRowCursor = _pRowCursor(pPtrRpwCursor);
   ASSERT(CN_ROWCURSOR == pRowCursor->eClass());
@@ -144,7 +144,7 @@ ENTRY("vRowCursorInit"_Str);
   
   Object* pPtrRpwCursor;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrRpwCursor) )
-    THROW_INVALID_DSTACK("rowCursor.init");
+    THROW_INVALID_DSTACK("rowCursor.init"_Str);
   
   RowCursor* pRowCursor = _pRowCursor(pPtrRpwCursor);
   ASSERT(CN_ROWCURSOR == pRowCursor->eClass());
@@ -178,7 +178,7 @@ ENTRY("vRowCursorNext"_Str);
   
   Object* pPtrRpwCursor;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrRpwCursor) )
-    THROW_INVALID_DSTACK("rowCursor.next");
+    THROW_INVALID_DSTACK("rowCursor.next"_Str);
   
   RowCursor* pRowCursor = _pRowCursor(pPtrRpwCursor);
   ASSERT(CN_ROWCURSOR == pRowCursor->eClass());
@@ -201,7 +201,7 @@ void Task::vRowCursorRow(NNP_Task nnpTask)
   
   Object* pPtrRpwCursor;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrRpwCursor) )
-    THROW_INVALID_DSTACK("rowCursor.row");
+    THROW_INVALID_DSTACK("rowCursor.row"_Str);
   
   RowCursor* pRowCursor = _pRowCursor(pPtrRpwCursor);
   ASSERT(CN_ROWCURSOR == pRowCursor->eClass());
@@ -223,7 +223,7 @@ void Task::vRowCursorRowBufferFetch(NNP_Task nnpTask)
   
   Object* pPtrRpwCursor;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrRpwCursor) )
-  THROW_INVALID_DSTACK("rowCursor.rowBuffer@");
+  THROW_INVALID_DSTACK("rowCursor.rowBuffer@"_Str);
   
   RowCursor* pRowCursor = _pRowCursor(pPtrRpwCursor);
   ASSERT(CN_ROWCURSOR == pRowCursor->eClass());
@@ -245,14 +245,14 @@ void Task::vRowCursorRowBufferStore(NNP_Task nnpTask)
   
   Object* pPtrRpwCursor;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrRpwCursor) )
-    THROW_INVALID_DSTACK("rowCursor.rowBuffer!");
+    THROW_INVALID_DSTACK("rowCursor.rowBuffer!"_Str);
   
   RowCursor* pRowCursor = _pRowCursor(pPtrRpwCursor);
   ASSERT(CN_ROWCURSOR == pRowCursor->eClass());
   
   Object* pPtrRowBuffer;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrRowBuffer) )
-    THROW_INVALID_DSTACK("rowCursor.rowBuffer!");
+    THROW_INVALID_DSTACK("rowCursor.rowBuffer!"_Str);
   
   RowBuffer* pRowBuffer = _pRowBuffer(pPtrRowBuffer);
   ASSERT(CN_ROWBUFFER == pRowBuffer->eClass());
@@ -271,7 +271,7 @@ ENTRY("vRowCursorTableFetch"_Str);
   
   Object* pPtrRpwCursor;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrRpwCursor) )
-    THROW_INVALID_DSTACK("rowCursor.table@");
+    THROW_INVALID_DSTACK("rowCursor.table@"_Str);
   
   RowCursor* pRowCursor = _pRowCursor(pPtrRpwCursor);
   ASSERT(CN_ROWCURSOR == pRowCursor->eClass());
@@ -292,14 +292,14 @@ ENTRY("vRowCursorTableStore"_Str);
   
   Object* pPtrRpwCursor;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrRpwCursor) )
-    THROW_INVALID_DSTACK("rowCursor.table!");
+    THROW_INVALID_DSTACK("rowCursor.table!"_Str);
   
   RowCursor* pRowCursor = _pRowCursor(pPtrRpwCursor);
   ASSERT(CN_ROWCURSOR == pRowCursor->eClass());
   
   Object* pPtrTable;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTable) )
-    THROW_INVALID_DSTACK("rowCursor.table!");
+    THROW_INVALID_DSTACK("rowCursor.table!"_Str);
   
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());

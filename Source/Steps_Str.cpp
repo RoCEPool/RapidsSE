@@ -66,7 +66,7 @@ void Task::vS256Init(NNP_Task nnpTask)
   Object* pPtrStrVal;
   
   if ( ! nnpTask->m_pDataStack->bPop(pPtrStrVal) )
-    THROW_INVALID_DSTACK("s256.init");
+    THROW_INVALID_DSTACK("s256.init"_Str);
   
   s256* ps256 = (s256*)_pStrVar(pPtrStrVal);
   
@@ -112,7 +112,7 @@ void Task::vStrCat(NNP_Task nnpTask)
   ValWsp xStrA;
   
   if ( ! nnpTask->m_pDataStack->bPop(xStrB,xStrA) )
-    THROW_INVALID_DSTACK("str.cat");
+    THROW_INVALID_DSTACK("str.cat"_Str);
   
   xStrR = xStrA;
   
@@ -139,7 +139,7 @@ void Task::vStrClip(NNP_Task nnpTask)
   
   // get the arguments
   if ( ! nnpTask->m_pDataStack->bPop(sString,iLength) )
-    THROW_INVALID_DSTACK("str.clip");
+    THROW_INVALID_DSTACK("str.clip"_Str);
   
   // validate length
   i8 iHasLength = StrLib::iLength(sString.aStr());
@@ -173,7 +173,7 @@ void Task::vStrEqual(NNP_Task nnpTask)
   
   // get the arguments
   if ( ! nnpTask->m_pDataStack->bPop(xStringB,xStringA) )
-    THROW_INVALID_DSTACK("str.equal");
+    THROW_INVALID_DSTACK("str.equal"_Str);
   
   i8 iEqual = StrLib::bEqualTo(_pStrVal(&xStringA)->aStr(),
                                _pStrVal(&xStringB)->aStr());
@@ -195,7 +195,7 @@ void Task::vStrEscape(NNP_Task nnpTask)
   
   // get the arguments
   if ( ! nnpTask->m_pDataStack->bPop(xArg) )
-    THROW_INVALID_DSTACK("str.escape");
+    THROW_INVALID_DSTACK("str.escape"_Str);
   
   StrLib::vEscape(xArg.aStr(),xEscaped.aStr());
   
@@ -213,7 +213,7 @@ void Task::vStrFirstCsv(NNP_Task nnpTask)
   
   ValWsp xStr;
   if ( ! nnpTask->m_pDataStack->bPop(xStr) )
-    THROW_INVALID_DSTACK("str.firstCsv");
+    THROW_INVALID_DSTACK("str.firstCsv"_Str);
   
   s256 sFirstValue;
   
@@ -236,7 +236,7 @@ void Task::vStrFormat(NNP_Task nnpTask)
   
   s48K sFormat;
   if ( ! nnpTask->m_pDataStack->bPop(sFormat) )
-    THROW_INVALID_DSTACK("str.format");
+    THROW_INVALID_DSTACK("str.format"_Str);
   
   s48K sString;
   
@@ -260,7 +260,7 @@ void Task::vStrLeft(NNP_Task nnpTask)
   
   // get the arguments
   if ( ! nnpTask->m_pDataStack->bPop(sString,iLength) )
-    THROW_INVALID_DSTACK("str.left");
+    THROW_INVALID_DSTACK("str.left"_Str);
   
   // validate length
   i8 iHasLength = StrLib::iLength(sString.aStr());
@@ -289,7 +289,7 @@ void Task::vStrLength(NNP_Task nnpTask)
   
   // get the arguments
   if ( ! nnpTask->m_pDataStack->bPop(sString) )
-    THROW_INVALID_DSTACK("str.length");
+    THROW_INVALID_DSTACK("str.length"_Str);
   
   iLength = StrLib::iLength(sString.aStr());
   
@@ -311,7 +311,7 @@ void Task::vStrPad(NNP_Task nnpTask)
   
   // get the arguments
   if ( ! nnpTask->m_pDataStack->bPop(iLength,xStringA) )
-    THROW_INVALID_DSTACK("str.pad");
+    THROW_INVALID_DSTACK("str.pad"_Str);
   
   StrLib::vPad(_pStrVal(&xStringA)->aStr(),iLength,' ');
   
@@ -338,7 +338,7 @@ void Task::vStrPrepend(NNP_Task nnpTask)
   ValWsp xValB;
   
   if ( ! nnpTask->m_pDataStack->bPop(xValB,xValA) )
-    THROW_INVALID_DSTACK("str.prepend");
+    THROW_INVALID_DSTACK("str.prepend"_Str);
   
   // If received INTEGER convert to STRING
   if (xValA.eClass() == CN_INTVAL) {
@@ -381,7 +381,7 @@ void Task::vStrRandom(NNP_Task nnpTask)
   
   i8 iLength;
   if ( ! nnpTask->m_pDataStack->bPop(iLength) )
-    THROW_INVALID_DSTACK("str.random");
+    THROW_INVALID_DSTACK("str.random"_Str);
   
   s48K sRnd;
   
@@ -404,13 +404,13 @@ void Task::vStrReplace(NNP_Task nnpTask)
   s48K sThis;
   
   if ( ! nnpTask->m_pDataStack->bPop(sString) )
-    THROW_INVALID_DSTACK("str.replace");
+    THROW_INVALID_DSTACK("str.replace"_Str);
 
   if ( ! nnpTask->m_pDataStack->bPop(sThat) )
-    THROW_INVALID_DSTACK("str.replace");
+    THROW_INVALID_DSTACK("str.replace"_Str);
   
   if ( ! nnpTask->m_pDataStack->bPop(sThis) )
-    THROW_INVALID_DSTACK("str.replace");
+    THROW_INVALID_DSTACK("str.replace"_Str);
   
   s48K sReplaced;
   
@@ -434,7 +434,7 @@ void Task::vStrRight(NNP_Task nnpTask)
   
   // get the arguments
   if ( ! nnpTask->m_pDataStack->bPop(sString,iLength) )
-    THROW_INVALID_DSTACK("str.right");
+    THROW_INVALID_DSTACK("str.right"_Str);
   
   // validate length
   i8 iHasLength = StrLib::iLength(sString.aStr());
@@ -468,7 +468,7 @@ void Task::vStrSub(NNP_Task nnpTask)
   
   // get the arguments
   if ( ! nnpTask->m_pDataStack->bPop(sString,iStart,iLength) )
-    THROW_INVALID_DSTACK("str.sub");
+    THROW_INVALID_DSTACK("str.sub"_Str);
   
   i8 iHasLength = StrLib::iLength(sString.aStr());
   
@@ -502,7 +502,7 @@ void Task::vStrTailInt(NNP_Task nnpTask)
   // get the string
   s48K sString;
   if ( ! nnpTask->m_pDataStack->bPop(sString) )
-    THROW_INVALID_DSTACK("str.tailInt");
+    THROW_INVALID_DSTACK("str.tailInt"_Str);
   
   // get last char in string
   char* aLast = StrLib::sLast(sString.aStr());

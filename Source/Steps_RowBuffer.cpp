@@ -49,19 +49,19 @@ ENTRY("vRowBufferAppend"_Str);
   
   Object* pPtrRowBuffer;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrRowBuffer) )
-    THROW_INVALID_DSTACK("rowbuffer.append");
+    THROW_INVALID_DSTACK("rowbuffer.append"_Str);
   RowBuffer* pRowBuffer = _pRowBuffer(pPtrRowBuffer);
   ASSERT(CN_ROWBUFFER == pRowBuffer->eClass());
 
   Object* pPtrTxRef;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTxRef) )
-    THROW_INVALID_DSTACK("rowbuffer.append");
+    THROW_INVALID_DSTACK("rowbuffer.append"_Str);
   TxRef* pTxRef = _pTxRef(pPtrTxRef);
   ASSERT(CN_TXREF == pTxRef->eClass());
   
   s48K sRecord;
   if ( ! nnpTask->m_pDataStack->bPop(sRecord) )
-    THROW_INVALID_DSTACK("rowbuffer.append");
+    THROW_INVALID_DSTACK("rowbuffer.append"_Str);
 
   i8 iLength = sRecord.iLength();
   
@@ -87,19 +87,19 @@ void Task::vRowBufferAppendRecord(NNP_Task nnpTask)
   
   Object* pPtrRowBuffer;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrRowBuffer) )
-    THROW_INVALID_DSTACK("rowBuffer.appendRecord");
+    THROW_INVALID_DSTACK("rowBuffer.appendRecord"_Str);
   RowBuffer* pRowBuffer = _pRowBuffer(pPtrRowBuffer);
   ASSERT(CN_ROWBUFFER == pRowBuffer->eClass());
   
   Object* pPtrTxRef;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTxRef) )
-    THROW_INVALID_DSTACK("rowBuffer.appendRecord");
+    THROW_INVALID_DSTACK("rowBuffer.appendRecord"_Str);
   TxRef* pTxRef = _pTxRef(pPtrTxRef);
   ASSERT(CN_TXREF == pTxRef->eClass());
   
   Object* pPtrFile;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrFile) )
-    THROW_INVALID_DSTACK("rowBuffer.appendRecord");
+    THROW_INVALID_DSTACK("rowBuffer.appendRecord"_Str);
   
   File* pFile = _pFile(pPtrFile);
   
@@ -129,7 +129,7 @@ void Task::vRowBufferDump(NNP_Task nnpTask)
   
   Object* pPtrRowBuffer;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrRowBuffer) )
-    THROW_INVALID_DSTACK("rowbuffer.dump");
+    THROW_INVALID_DSTACK("rowbuffer.dump"_Str);
   RowBuffer* pRowBuffer = _pRowBuffer(pPtrRowBuffer);
   ASSERT(CN_ROWBUFFER == pRowBuffer->eClass());
 

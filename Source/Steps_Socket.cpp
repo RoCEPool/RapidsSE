@@ -56,7 +56,7 @@ void Task::vSocketAccept(NNP_Task nnpTask)
   ENTRY("vSocketAccept"_Str);
   
   if ( ! nnpTask->m_pDataStack->bPop(pObject) )
-    THROW_INVALID_DSTACK("socket.accept");
+    THROW_INVALID_DSTACK("socket.accept"_Str);
   
   // get pSocket
   pSocket = reinterpret_cast<Socket*>(pObject);
@@ -87,7 +87,7 @@ void Task::vSocketClose(NNP_Task nnpTask)
   ENTRY("vSocketClose"_Str);
   
   if ( ! nnpTask->m_pDataStack->bPop(pObject) )
-    THROW_INVALID_DSTACK("socketclose");
+    THROW_INVALID_DSTACK("socketclose"_Str);
   
   // get pSocket
   pSocket = reinterpret_cast<Socket*>(pObject);
@@ -116,13 +116,13 @@ void Task::vSocketConnect(NNP_Task nnpTask)
   ENTRY("vSocketConnect"_Str);
   
   if ( ! nnpTask->m_pDataStack->bPop(pObject) )
-    THROW_INVALID_DSTACK("socket.connect");
+    THROW_INVALID_DSTACK("socket.connect"_Str);
   
   if ( ! nnpTask->m_pDataStack->bPop(xNode) )
-    THROW_INVALID_DSTACK("socket.connect");
+    THROW_INVALID_DSTACK("socket.connect"_Str);
   
   if ( ! nnpTask->m_pDataStack->bPop(iPort) )
-    THROW_INVALID_DSTACK("socket.connect");
+    THROW_INVALID_DSTACK("socket.connect"_Str);
   
   // get address of node
   const char* sAddr = reinterpret_cast<char*>(_pStrVal(&xNode)->aStr());
@@ -178,7 +178,7 @@ void Task::vSocketListen(NNP_Task nnpTask)
   ENTRY("vSocketListen"_Str);
   
   if ( ! nnpTask->m_pDataStack->bPop(iPort) )
-    THROW_INVALID_DSTACK("socketlisten");
+    THROW_INVALID_DSTACK("socketlisten"_Str);
   
   pSocket = new Socket;
   bool bResult = pSocket->bCreateServer((int)iPort, xSysCall);
@@ -230,10 +230,10 @@ void Task::vSocketSend(NNP_Task nnpTask)
   bool    bResult;
   
   if ( ! nnpTask->m_pDataStack->bPop(pObject) )
-    THROW_INVALID_DSTACK("socket.send");
+    THROW_INVALID_DSTACK("socket.send"_Str);
   
   if ( ! nnpTask->m_pDataStack->bPop(xValSet) )
-    THROW_INVALID_DSTACK("socket.send");
+    THROW_INVALID_DSTACK("socket.send"_Str);
   
   pSocket = reinterpret_cast<Socket*>(pObject);
   
@@ -325,7 +325,7 @@ void Task::vSocketRecv(NNP_Task nnpTask)
   i8 iBytes;
   
   if ( ! nnpTask->m_pDataStack->bPop(pObject) )
-    THROW_INVALID_DSTACK("socketrecv");
+    THROW_INVALID_DSTACK("socketrecv"_Str);
   
   pSocket = reinterpret_cast<Socket*>(pObject);
   

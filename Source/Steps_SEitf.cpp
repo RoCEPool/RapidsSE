@@ -74,7 +74,7 @@ ENTRY("vSEitfDelete"_Str);
   Object* pPtrSEitf;
   
   if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitf) )
-    THROW_INVALID_DSTACK("seitf.delete");
+    THROW_INVALID_DSTACK("seitf.delete"_Str);
 
   SEitf* pSEitf = _pSEitf(pPtrSEitf);
   ASSERT(CN_SEITF == pSEitf->eClass());
@@ -93,7 +93,7 @@ void Task::vSEitfDicStack(NNP_Task nnpTask)
   
   Object* pPtrSEitf;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitf) )
-    THROW_INVALID_DSTACK("seitf.dicStack");
+    THROW_INVALID_DSTACK("seitf.dicStack"_Str);
   
   SEitf* pSEitf = _pSEitf(pPtrSEitf);
   ASSERT(CN_SEITF == pSEitf->eClass());
@@ -112,7 +112,7 @@ ENTRY("vSEitfDump"_Str);
   
   Object* pPtrSEitf;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitf) )
-    THROW_INVALID_DSTACK("seitf.dump");
+    THROW_INVALID_DSTACK("seitf.dump"_Str);
   
   SEitf* pSEitf = _pSEitf(pPtrSEitf);
   ASSERT(CN_SEITF == pSEitf->eClass());
@@ -131,7 +131,7 @@ void Task::vSEitfIndexRef(NNP_Task nnpTask)
   
   Object* pPtrSEitf;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitf) )
-    THROW_INVALID_DSTACK("seitf.indexRef");
+    THROW_INVALID_DSTACK("seitf.indexRef"_Str);
   
   SEitf* pSEitf = _pSEitf(pPtrSEitf);
   ASSERT(CN_SEITF == pSEitf->eClass());
@@ -139,7 +139,7 @@ void Task::vSEitfIndexRef(NNP_Task nnpTask)
   Object* pPtrIndex;
   
   if ( ! nnpTask->m_pDataStack->bPop(pPtrIndex) )
-    THROW_INVALID_DSTACK("seitf.indexRef");
+    THROW_INVALID_DSTACK("seitf.indexRef"_Str);
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_TABLE == pIndex->eClass());
@@ -160,7 +160,7 @@ void Task::vSEitfPid(NNP_Task nnpTask)
   
   Object* pPtrSEitf;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitf) )
-    THROW_INVALID_DSTACK("seitf.pid");
+    THROW_INVALID_DSTACK("seitf.pid"_Str);
   
   SEitf* pSEitf = _pSEitf(pPtrSEitf);
   ASSERT(CN_SEITF == pSEitf->eClass());
@@ -179,7 +179,7 @@ ENTRY("vSEitfReqFetch"_Str);
   
   Object* pPtrSEitf;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitf) )
-    THROW_INVALID_DSTACK("seitf.req@");
+    THROW_INVALID_DSTACK("seitf.req@"_Str);
   
   SEitf* pSEitf = _pSEitf(pPtrSEitf);
   ASSERT(CN_SEITF == pSEitf->eClass());
@@ -200,7 +200,7 @@ ENTRY("vSEitfReqStore"_Str);
   
   Object* pPtrSEitf;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitf) )
-    THROW_INVALID_DSTACK("seitf.req!");
+    THROW_INVALID_DSTACK("seitf.req!"_Str);
   
   SEitf* pSEitf = _pSEitf(pPtrSEitf);
   ASSERT(CN_SEITF == pSEitf->eClass());
@@ -208,7 +208,7 @@ ENTRY("vSEitfReqStore"_Str);
   Object* pPtrQueue;
   
   if ( ! nnpTask->m_pDataStack->bPop(pPtrQueue) )
-    THROW_INVALID_DSTACK("seitf.req!");
+    THROW_INVALID_DSTACK("seitf.req!"_Str);
   
   Queue* pQueue = _pQueue(pPtrQueue);
   ASSERT(CN_QUEUE == pQueue->eClass());
@@ -227,7 +227,7 @@ ENTRY("vSEitfRspFetch"_Str);
   
   Object* pPtrSEitf;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitf) )
-    THROW_INVALID_DSTACK("seitf.rsp@");
+    THROW_INVALID_DSTACK("seitf.rsp@"_Str);
   
   SEitf* pSEitf = _pSEitf(pPtrSEitf);
   ASSERT(CN_SEITF == pSEitf->eClass());
@@ -248,7 +248,7 @@ ENTRY("vSEitfRspStore"_Str);
   
   Object* pPtrSEitf;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitf) )
-    THROW_INVALID_DSTACK("seitf.rsp!");
+    THROW_INVALID_DSTACK("seitf.rsp!"_Str);
   
   SEitf* pSEitf = _pSEitf(pPtrSEitf);
   ASSERT(CN_SEITF == pSEitf->eClass());
@@ -256,7 +256,7 @@ ENTRY("vSEitfRspStore"_Str);
   Object* pPtrQueue;
   
   if ( ! nnpTask->m_pDataStack->bPop(pPtrQueue) )
-    THROW_INVALID_DSTACK("seitf.rsp!");
+    THROW_INVALID_DSTACK("seitf.rsp!"_Str);
   
   Queue* pQueue = _pQueue(pPtrQueue);
   ASSERT(CN_QUEUE == pQueue->eClass());
@@ -275,7 +275,7 @@ void Task::vSEitfResponseQueue(NNP_Task nnpTask)
   
   Object* pPtrSEitf;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitf) )
-    THROW_INVALID_DSTACK("seitf.responseQueue");
+    THROW_INVALID_DSTACK("seitf.responseQueue"_Str);
   
   SEitf* pSEitf = _pSEitf(pPtrSEitf);
   ASSERT(CN_SEITF == pSEitf->eClass());
@@ -294,7 +294,7 @@ void Task::vSEitfTableFetch(NNP_Task nnpTask)
   
   Object* pPtrSEitf;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitf) )
-    THROW_INVALID_DSTACK("seitf.rsp!");
+    THROW_INVALID_DSTACK("seitf.rsp!"_Str);
   
   SEitf* pSEitf = _pSEitf(pPtrSEitf);
   ASSERT(CN_SEITF == pSEitf->eClass());
@@ -313,7 +313,7 @@ void Task::vSEitfTableDeref(NNP_Task nnpTask)
   
   Object* pPtrSEitf;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitf) )
-    THROW_INVALID_DSTACK("seitf.tableDeref");
+    THROW_INVALID_DSTACK("seitf.tableDeref"_Str);
   
   SEitf* pSEitf = _pSEitf(pPtrSEitf);
   ASSERT(CN_SEITF == pSEitf->eClass());
@@ -337,7 +337,7 @@ void Task::vSEitfTableRef(NNP_Task nnpTask)
   
   Object* pPtrSEitf;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitf) )
-    THROW_INVALID_DSTACK("seitf.tableRef");
+    THROW_INVALID_DSTACK("seitf.tableRef"_Str);
   
   SEitf* pSEitf = _pSEitf(pPtrSEitf);
   ASSERT(CN_SEITF == pSEitf->eClass());
@@ -345,7 +345,7 @@ void Task::vSEitfTableRef(NNP_Task nnpTask)
   Object* pPtrTable;
   
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTable) )
-    THROW_INVALID_DSTACK("seitf.tableRef");
+    THROW_INVALID_DSTACK("seitf.tableRef"_Str);
   
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());

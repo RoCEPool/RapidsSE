@@ -56,14 +56,14 @@ ENTRY("vSelCursorBegin"_Str);
   
   Object* pPtrSelCursor;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrSelCursor) )
-    THROW_INVALID_DSTACK("selCursor.begin");
+    THROW_INVALID_DSTACK("selCursor.begin"_Str);
   
   SelCursor* pSelCursor = _pSelCursor(pPtrSelCursor);
   ASSERT(CN_SELCURSOR == pSelCursor->eClass());
   
   i8 iPartn;
   if ( ! nnpTask->m_pDataStack->bPop(iPartn) )
-    THROW_INVALID_DSTACK("selCursor.begin");
+    THROW_INVALID_DSTACK("selCursor.begin"_Str);
   
   pSelCursor->vBegin(iPartn);
   
@@ -79,7 +79,7 @@ ENTRY("vSelCursorDelete"_Str);
   
   Object* pPtrSelCursor;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrSelCursor) )
-    THROW_INVALID_DSTACK("selCursor.delete");
+    THROW_INVALID_DSTACK("selCursor.delete"_Str);
   
   SelCursor* pSelCursor = _pSelCursor(pPtrSelCursor);
   ASSERT(CN_SELCURSOR == pSelCursor->eClass());
@@ -101,7 +101,7 @@ ENTRY("vSelCursorEnd"_Str);
   
   Object* pPtrSelCursor;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrSelCursor) )
-    THROW_INVALID_DSTACK("selCursor.end");
+    THROW_INVALID_DSTACK("selCursor.end"_Str);
   
   SelCursor* pSelCursor = _pSelCursor(pPtrSelCursor);
   ASSERT(CN_SELCURSOR == pSelCursor->eClass());
@@ -120,7 +120,7 @@ ENTRY("vSelCursorFirst"_Str);
   
   Object* pPtrSelCursor;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrSelCursor) )
-    THROW_INVALID_DSTACK("selCursor.first");
+    THROW_INVALID_DSTACK("selCursor.first"_Str);
   
   SelCursor* pSelCursor = _pSelCursor(pPtrSelCursor);
   ASSERT(CN_SELCURSOR == pSelCursor->eClass());
@@ -143,7 +143,7 @@ ENTRY("vSelCursorGet"_Str);
   
   Object* pPtrSelCursor;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrSelCursor) )
-    THROW_INVALID_DSTACK("selCursor.get");
+    THROW_INVALID_DSTACK("selCursor.get"_Str);
   
   SelCursor* pSelCursor = _pSelCursor(pPtrSelCursor);
   ASSERT(CN_SELCURSOR == pSelCursor->eClass());
@@ -165,7 +165,7 @@ ENTRY("vSelCursorInit"_Str);
   
   Object* pPtrSelCursor;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrSelCursor) )
-    THROW_INVALID_DSTACK("selCursor.init");
+    THROW_INVALID_DSTACK("selCursor.init"_Str);
   
   SelCursor* pSelCursor = _pSelCursor(pPtrSelCursor);
   ASSERT(CN_SELCURSOR == pSelCursor->eClass());
@@ -199,7 +199,7 @@ ENTRY("vSelCursorNext"_Str);
   
   Object* pPtrSelCursor;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrSelCursor) )
-    THROW_INVALID_DSTACK("selCursor.next");
+    THROW_INVALID_DSTACK("selCursor.next"_Str);
   
   SelCursor* pSelCursor = _pSelCursor(pPtrSelCursor);
   ASSERT(CN_SELCURSOR == pSelCursor->eClass());
@@ -222,7 +222,7 @@ void Task::vSelCursorRowBuffer(NNP_Task nnpTask)
   
   Object* pPtrSelCursor;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrSelCursor) )
-  THROW_INVALID_DSTACK("selCursor.rowBuffer");
+  THROW_INVALID_DSTACK("selCursor.rowBuffer"_Str);
   
   SelCursor* pSelCursor = _pSelCursor(pPtrSelCursor);
   ASSERT(CN_SELCURSOR == pSelCursor->eClass());
@@ -244,7 +244,7 @@ ENTRY("vSelCursorTableFetch"_Str);
   
   Object* pPtrSelCursor;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrSelCursor) )
-    THROW_INVALID_DSTACK("selCursor.table@");
+    THROW_INVALID_DSTACK("selCursor.table@"_Str);
   
   SelCursor* pSelCursor = _pSelCursor(pPtrSelCursor);
   ASSERT(CN_SELCURSOR == pSelCursor->eClass());
@@ -265,14 +265,14 @@ ENTRY("vSelCursorTableStore"_Str);
   
   Object* pPtrSelCursor;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrSelCursor) )
-    THROW_INVALID_DSTACK("selCursor.table!");
+    THROW_INVALID_DSTACK("selCursor.table!"_Str);
   
   SelCursor* pSelCursor = _pSelCursor(pPtrSelCursor);
   ASSERT(CN_SELCURSOR == pSelCursor->eClass());
   
   Object* pPtrTable;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTable) )
-    THROW_INVALID_DSTACK("selCursor.table!");
+    THROW_INVALID_DSTACK("selCursor.table!"_Str);
   
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());

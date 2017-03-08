@@ -62,7 +62,7 @@ void Task::vPlanDelete(NNP_Task nnpTask)
   Object* pPtrPlan;
   
   if ( ! nnpTask->m_pDataStack->bPop(pPtrPlan) )
-    THROW_INVALID_DSTACK("plan.delete");
+    THROW_INVALID_DSTACK("plan.delete"_Str);
   
   Plan* pPlan = _pPlan(pPtrPlan);
   
@@ -81,7 +81,7 @@ void Task::vPlanDic(NNP_Task nnpTask)
   Object* pPtrPlan;
   
   if ( ! nnpTask->m_pDataStack->bPop(pPtrPlan) )
-    THROW_INVALID_DSTACK("plan.dic");
+    THROW_INVALID_DSTACK("plan.dic"_Str);
   
   Plan* pPlan = _pPlan(pPtrPlan);
   
@@ -102,7 +102,7 @@ void Task::vPlanExecutingTaskFetch(NNP_Task nnpTask)
   Object* pPtrPlan;
   
   if ( ! nnpTask->m_pDataStack->bPop(pPtrPlan) )
-    THROW_INVALID_DSTACK("plan.executingTask@");
+    THROW_INVALID_DSTACK("plan.executingTask@"_Str);
   
   Plan* pPlan = _pPlan(pPtrPlan);
   
@@ -124,11 +124,11 @@ void Task::vPlanExecutingTaskStore(NNP_Task nnpTask)
   Object* pPtrTask;
   
   if ( ! nnpTask->m_pDataStack->bPop(pPtrPlan) )
-    THROW_INVALID_DSTACK("plan.executingTask");
+    THROW_INVALID_DSTACK("plan.executingTask"_Str);
   Plan* pPlan = _pPlan(pPtrPlan);
   
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTask) )
-    THROW_INVALID_DSTACK("plan.executingTask");
+    THROW_INVALID_DSTACK("plan.executingTask"_Str);
   Task* pTask = _pTask(pPtrTask);
   
   pPlan->vExecutingTask(pTask);
@@ -145,7 +145,7 @@ void Task::vPlanFinished(NNP_Task nnpTask)
   
   Object* pPtrPlan;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrPlan) )
-    THROW_INVALID_DSTACK("plan.dic");
+    THROW_INVALID_DSTACK("plan.dic"_Str);
   
   Plan* pPlan = _pPlan(pPtrPlan);
   
@@ -164,7 +164,7 @@ void Task::vPlanIdFetch(NNP_Task nnpTask)
   Object* pPtrPlan;
   
   if ( ! nnpTask->m_pDataStack->bPop(pPtrPlan) )
-    THROW_INVALID_DSTACK("plan.id@");
+    THROW_INVALID_DSTACK("plan.id@"_Str);
   
   Plan* pPlan = _pPlan(pPtrPlan);
   
@@ -186,10 +186,10 @@ void Task::vPlanLambdaAppend(NNP_Task nnpTask)
   s48K sCode;
   
   if ( ! nnpTask->m_pDataStack->bPop(pPtrPlan) )
-    THROW_INVALID_DSTACK("plan.lambda+");
+    THROW_INVALID_DSTACK("plan.lambda+"_Str);
   
   if ( ! nnpTask->m_pDataStack->bPop(sCode) )
-    THROW_INVALID_DSTACK("plan.lambda+");
+    THROW_INVALID_DSTACK("plan.lambda+"_Str);
   
   Plan* pPlan = _pPlan(pPtrPlan);
   pPlan->vAppendToLambda(sCode);
@@ -208,7 +208,7 @@ void Task::vPlanLambdaFetch(NNP_Task nnpTask)
   s48K sCode;
   
   if ( ! nnpTask->m_pDataStack->bPop(pPtrPlan) )
-    THROW_INVALID_DSTACK("plan.lambda!");
+    THROW_INVALID_DSTACK("plan.lambda!"_Str);
   
   Plan* pPlan = _pPlan(pPtrPlan);
   s48K sLambda = pPlan->sLambda();
@@ -229,10 +229,10 @@ void Task::vPlanLambdaStore(NNP_Task nnpTask)
   s48K sCode;
   
   if ( ! nnpTask->m_pDataStack->bPop(pPtrPlan) )
-    THROW_INVALID_DSTACK("plan.lambda!");
+    THROW_INVALID_DSTACK("plan.lambda!"_Str);
   
   if ( ! nnpTask->m_pDataStack->bPop(sCode) )
-    THROW_INVALID_DSTACK("plan.lambda!");
+    THROW_INVALID_DSTACK("plan.lambda!"_Str);
   
   Plan* pPlan = _pPlan(pPtrPlan);
   pPlan->vLambda(sCode);
@@ -249,7 +249,7 @@ void Task::vPlanNameFetch(NNP_Task nnpTask)
   Object* pPtrPlan;
   
   if ( ! nnpTask->m_pDataStack->bPop(pPtrPlan) )
-    THROW_INVALID_DSTACK("plan.name@");
+    THROW_INVALID_DSTACK("plan.name@"_Str);
   
   Plan* pPlan = _pPlan(pPtrPlan);
   
@@ -270,14 +270,14 @@ void Task::vPlanNameStore(NNP_Task nnpTask)
   Object* pPtrPlan;
   
   if ( ! nnpTask->m_pDataStack->bPop(pPtrPlan) )
-    THROW_INVALID_DSTACK("plan.name!");
+    THROW_INVALID_DSTACK("plan.name!"_Str);
   
   Plan* pPlan = _pPlan(pPtrPlan);
   
   s32 sName;
   
   if ( ! nnpTask->m_pDataStack->bPop(sName) )
-    THROW_INVALID_DSTACK("plan.name!");
+    THROW_INVALID_DSTACK("plan.name!"_Str);
   
   pPlan->vName(sName);
   
@@ -307,12 +307,12 @@ void Task::vPlanOpFrameAdd(NNP_Task nnpTask)
   
   Object* pPtrPlan;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrPlan) )
-    THROW_INVALID_DSTACK("plan.opFrame++");
+    THROW_INVALID_DSTACK("plan.opFrame++"_Str);
   Plan* pPlan = _pPlan(pPtrPlan);
   
   s32 sNameFrame;
   if ( ! nnpTask->m_pDataStack->bPop(sNameFrame) )
-    THROW_INVALID_DSTACK("plan.opFrame++");
+    THROW_INVALID_DSTACK("plan.opFrame++"_Str);
   
   RegFrame* pRegFrame = pPlan->pRegFrameFind(sNameFrame);
   if ( pRegFrame )
@@ -346,12 +346,12 @@ void Task::vPlanOpFrameFind(NNP_Task nnpTask)
   
   Object* pPtrPlan;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrPlan) )
-    THROW_INVALID_DSTACK("plan.opFrame?");
+    THROW_INVALID_DSTACK("plan.opFrame?"_Str);
   Plan* pPlan = _pPlan(pPtrPlan);
   
   s32 sName;
   if ( ! nnpTask->m_pDataStack->bPop(sName) )
-    THROW_INVALID_DSTACK("plan.opFrame?");
+    THROW_INVALID_DSTACK("plan.opFrame?"_Str);
   
   if (nnpTask->m_iTracing) {
     vTrace("Find frame %s\n"_Str,sName.aStr());
@@ -374,7 +374,7 @@ void Task::vPlanOpFrameTop(NNP_Task nnpTask)
   
   Object* pPtrPlan;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrPlan) )
-    THROW_INVALID_DSTACK("plan.opFrame0");
+    THROW_INVALID_DSTACK("plan.opFrame0"_Str);
   Plan* pPlan = _pPlan(pPtrPlan);
     
   RegFrame* pRegFrame = pPlan->pRegFrameTop();
@@ -394,7 +394,7 @@ void Task::vPlanShow(NNP_Task nnpTask)
   Object* pPtrPlan;
   
   if ( ! nnpTask->m_pDataStack->bPop(pPtrPlan) )
-    THROW_INVALID_DSTACK("plan.show");
+    THROW_INVALID_DSTACK("plan.show"_Str);
   
   Plan* pPlan = _pPlan(pPtrPlan);
   

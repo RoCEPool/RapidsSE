@@ -51,7 +51,7 @@ void Task::vPlanListAddPlan(NNP_Task nnpTask)
   Object* pPtrPlan;
   
   if ( ! nnpTask->m_pDataStack->bPop(pPtrPlan) )
-    THROW_INVALID_DSTACK("planList.addPlan");
+    THROW_INVALID_DSTACK("planList.addPlan"_Str);
   
   Plan* pPlan = _pPlan(pPtrPlan);
   
@@ -70,7 +70,7 @@ void Task::vPlanListFindPlan(NNP_Task nnpTask)
   i8 iPlanId;
   
   if ( ! nnpTask->m_pDataStack->bPop(iPlanId) )
-    THROW_INVALID_DSTACK("planList.findPlan");
+    THROW_INVALID_DSTACK("planList.findPlan"_Str);
   
   Plan* pPlan = gpPlanList->pFind((u8)iPlanId);
   
@@ -95,7 +95,7 @@ void Task::vPlanListRemovePlan(NNP_Task nnpTask)
   Object* pPtrPlan;
   
   if ( ! nnpTask->m_pDataStack->bPop(pPtrPlan) )
-    THROW_INVALID_DSTACK("planList.removePlan");
+    THROW_INVALID_DSTACK("planList.removePlan"_Str);
   
   Plan* pPlan = _pPlan(pPtrPlan);
   

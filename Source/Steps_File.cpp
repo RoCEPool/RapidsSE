@@ -56,7 +56,7 @@ ENTRY("vFileClose"_Str);
   Object* pPtrFile;
   
   if ( ! nnpTask->m_pDataStack->bPop(pPtrFile) )
-    THROW_INVALID_DSTACK("file.close");
+    THROW_INVALID_DSTACK("file.close"_Str);
   
   File* pFile = _pFile(pPtrFile);
   
@@ -75,7 +75,7 @@ ENTRY("vFileDelete"_Str);
   Object* pPtrFile;
   
   if ( ! nnpTask->m_pDataStack->bPop(pPtrFile) )
-    THROW_INVALID_DSTACK("file.delete");
+    THROW_INVALID_DSTACK("file.delete"_Str);
   
   File* pFile = _pFile(pPtrFile);
 
@@ -95,7 +95,7 @@ ENTRY("vFileInit"_Str);
   Object* pPtrFile;
   
   if ( ! nnpTask->m_pDataStack->bPop(pPtrFile) )
-    THROW_INVALID_DSTACK("file.init");
+    THROW_INVALID_DSTACK("file.init"_Str);
   
   File* pFile = _pFile(pPtrFile);
   
@@ -131,7 +131,7 @@ ENTRY("vFileOpen"_Str);
   Object* pPtrFile;
   
   if ( ! nnpTask->m_pDataStack->bPop(pPtrFile) )
-    THROW_INVALID_DSTACK("file.open");
+    THROW_INVALID_DSTACK("file.open"_Str);
   
   File* pFile = _pFile(pPtrFile);
   
@@ -157,7 +157,7 @@ ENTRY("vFilePathGet"_Str);
   Object* pPtrFile;
   
   if ( ! nnpTask->m_pDataStack->bPop(pPtrFile) )
-    THROW_INVALID_DSTACK("file.path@");
+    THROW_INVALID_DSTACK("file.path@"_Str);
   
   File* pFile = _pFile(pPtrFile);
 
@@ -178,14 +178,14 @@ ENTRY("vFilePathSet"_Str);
   Object* pPtrFile;
   
   if ( ! nnpTask->m_pDataStack->bPop(pPtrFile) )
-    THROW_INVALID_DSTACK("file.path!");
+    THROW_INVALID_DSTACK("file.path!"_Str);
   
   File* pFile = _pFile(pPtrFile);
   
   s256 sPath;
   
   if ( ! nnpTask->m_pDataStack->bPop(sPath) )
-    THROW_INVALID_DSTACK("file.path!");
+    THROW_INVALID_DSTACK("file.path!"_Str);
   
   pFile->vPath(sPath);
   
@@ -202,7 +202,7 @@ ENTRY("vFileRead"_Str);
   Object* pPtrFile;
   
   if ( ! nnpTask->m_pDataStack->bPop(pPtrFile) )
-    THROW_INVALID_DSTACK("file.read");
+    THROW_INVALID_DSTACK("file.read"_Str);
   
   File* pFile = _pFile(pPtrFile);
   ASSERT(pFile);
@@ -230,7 +230,7 @@ void Task::vFileReadRecord(NNP_Task nnpTask)
   Object* pPtrFile;
   
   if ( ! nnpTask->m_pDataStack->bPop(pPtrFile) )
-    THROW_INVALID_DSTACK("file.readRecord");
+    THROW_INVALID_DSTACK("file.readRecord"_Str);
   
   File* pFile = _pFile(pPtrFile);
   ASSERT(pFile);
@@ -255,7 +255,7 @@ ENTRY("vFileWrite"_Str);
   Object* pPtrFile;
   
   if ( ! nnpTask->m_pDataStack->bPop(pPtrFile) )
-    THROW_INVALID_DSTACK("file.write");
+    THROW_INVALID_DSTACK("file.write"_Str);
   
   File* pFile = _pFile(pPtrFile);
   ASSERT(pFile);
@@ -263,7 +263,7 @@ ENTRY("vFileWrite"_Str);
   s48K sLine;
   
   if ( ! nnpTask->m_pDataStack->bPop(sLine) )
-    THROW_INVALID_DSTACK("file.write");
+    THROW_INVALID_DSTACK("file.write"_Str);
   
   char* wStr = sLine.aStr();
   

@@ -47,7 +47,7 @@ void Task::vShellExecute(NNP_Task nnpTask)
   ValWsp xCommand;
   
   if ( ! nnpTask->m_pDataStack->bPop(xCommand) )
-    THROW_INVALID_DSTACK("shell.execute");
+    THROW_INVALID_DSTACK("shell.execute"_Str);
   
   SysCall xSysCall;
   

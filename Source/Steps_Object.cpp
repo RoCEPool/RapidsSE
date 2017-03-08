@@ -51,7 +51,7 @@ void Task::vObjectClassFetch(NNP_Task nnpTask)
   
   Object* pObject;
   if ( ! nnpTask->m_pDataStack->bPop(pObject) )
-    THROW_INVALID_DSTACK("object.class@");
+    THROW_INVALID_DSTACK("object.class@"_Str);
   
   eCN eClassNo;
   eClassNo = pObject->eClass();
@@ -70,11 +70,11 @@ void Task::vObjectClassStore(NNP_Task nnpTask)
   
   Object* pObject;
   if ( ! nnpTask->m_pDataStack->bPop(pObject) )
-    THROW_INVALID_DSTACK("object.object.class!");
+    THROW_INVALID_DSTACK("object.object.class!"_Str);
   
   eCN eClassNo;
   if ( ! nnpTask->m_pDataStack->bPop(eClassNo) )
-    THROW_INVALID_DSTACK("object.object.class!");
+    THROW_INVALID_DSTACK("object.object.class!"_Str);
   
   pObject->vClass(eClassNo);
   
@@ -90,7 +90,7 @@ void Task::vObjectDump(NNP_Task nnpTask)
   
   Object* pObject;
   if ( ! nnpTask->m_pDataStack->bPop(pObject) )
-    THROW_INVALID_DSTACK("object.dump");
+    THROW_INVALID_DSTACK("object.dump"_Str);
   
   eCN eClass = pObject->eClass();
   
@@ -128,7 +128,7 @@ void Task::vObjectMagicMark(NNP_Task nnpTask)
   
   Object* pObject;
   if ( ! nnpTask->m_pDataStack->bPop(pObject) )
-    THROW_INVALID_RSTACK("object.magic!");
+    THROW_INVALID_RSTACK("object.magic!"_Str);
   
   pObject->vSetMagic();
   
@@ -147,7 +147,7 @@ void Task::vObjectStore(NNP_Task nnpTask)
   ValWsp xObjectWsp;
   
   if ( ! nnpTask->m_pDataStack->bPop(xObjectWsp) )
-    THROW_INVALID_DSTACK("object!");
+    THROW_INVALID_DSTACK("object!"_Str);
   
   nnpTask->m_pReturnStack->vPoke(iPeek,&xObjectWsp);
   
@@ -163,11 +163,11 @@ void Task::vObjectWordBodySet(NNP_Task nnpTask)
   
   Object* pObject;
   if ( ! nnpTask->m_pDataStack->bPop(pObject) )
-    THROW_INVALID_DSTACK("object.wordbody!");
+    THROW_INVALID_DSTACK("object.wordbody!"_Str);
   
   i8 iIsBody;
   if ( ! nnpTask->m_pDataStack->bPop(iIsBody) )
-    THROW_INVALID_DSTACK("object.object.class!");
+    THROW_INVALID_DSTACK("object.object.class!"_Str);
   
   pObject->vWordBody(iIsBody);
   

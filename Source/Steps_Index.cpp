@@ -55,7 +55,7 @@ void Task::vIndexDump(NNP_Task nnpTask)
   
   Object* pPtrIndex;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrIndex) )
-    THROW_INVALID_DSTACK("index.dump");
+    THROW_INVALID_DSTACK("index.dump"_Str);
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
@@ -74,7 +74,7 @@ void Task::vIndexInit(NNP_Task nnpTask)
   Object* pPtrIndex = nullptr;
   
   if ( ! nnpTask->m_pDataStack->bPop(pPtrIndex) )
-    THROW_INVALID_DSTACK("index::vIndexInit");
+    THROW_INVALID_DSTACK("index::vIndexInit"_Str);
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
@@ -94,7 +94,7 @@ void Task::vIndexPopulate(NNP_Task nnpTask)
   Object* pPtrTable = nullptr;
   
   if ( ! nnpTask->m_pDataStack->bPop(pPtrIndex) )
-    THROW_INVALID_DSTACK("index.populate!");
+    THROW_INVALID_DSTACK("index.populate!"_Str);
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
@@ -115,13 +115,13 @@ void Task::vIndexTableStore(NNP_Task nnpTask)
   Object* pPtrTable = nullptr;
   
   if ( ! nnpTask->m_pDataStack->bPop(pPtrIndex) )
-    THROW_INVALID_DSTACK("index.table!");
+    THROW_INVALID_DSTACK("index.table!"_Str);
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
   
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTable) )
-    THROW_INVALID_DSTACK("index.table!");
+    THROW_INVALID_DSTACK("index.table!"_Str);
   
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
@@ -141,7 +141,7 @@ void Task::vIndexTruncate(NNP_Task nnpTask)
   Object* pPtrIndex = nullptr;
   
   if ( ! nnpTask->m_pDataStack->bPop(pPtrIndex) )
-    THROW_INVALID_DSTACK("index.truncate");
+    THROW_INVALID_DSTACK("index.truncate"_Str);
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
@@ -161,14 +161,14 @@ void Task::vIndexEntryTest(NNP_Task nnpTask)
   Object* pPtrIb = nullptr;
   
   if ( ! nnpTask->m_pDataStack->bPop(pPtrIb) )
-    THROW_INVALID_DSTACK("index::entryTest");
+    THROW_INVALID_DSTACK("index::entryTest"_Str);
   
   IndexBuffer* pIndexBuffer = _pIndexBuffer(pPtrIb);
   ASSERT(CN_INDEXBUFFER == pIndexBuffer->eClass());
   
   s48K sRow;
   if ( ! nnpTask->m_pDataStack->bPop(sRow) )
-    THROW_INVALID_DSTACK("index::entryTest");
+    THROW_INVALID_DSTACK("index::entryTest"_Str);
   
   vTrace("index::entryTest -- %s\n"_Str,sRow.aStr());
   
@@ -241,7 +241,7 @@ void Task::vIndexIbDump(NNP_Task nnpTask)
   
   Object* pPtrIB;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrIB) )
-    THROW_INVALID_DSTACK("index::ibDump");
+    THROW_INVALID_DSTACK("index::ibDump"_Str);
   
   IndexBuffer* pIndexBuffer = _pIndexBuffer(pPtrIB);
   ASSERT(CN_INDEXBUFFER == pIndexBuffer->eClass());

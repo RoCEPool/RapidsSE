@@ -50,7 +50,7 @@ void Task::vToDigitName(NNP_Task nnpTask)
   
   // get the arguments
   if ( ! nnpTask->m_pDataStack->bPop(iDigit) )
-    THROW_INVALID_DSTACK(">DigitName");
+    THROW_INVALID_DSTACK(">DigitName"_Str);
   
   s32 sName;
   
@@ -82,7 +82,7 @@ void Task::vBytesMagnitude(NNP_Task nnpTask)
   
   i8 iBytes;
   if ( ! nnpTask->m_pDataStack->bPop(iBytes) )
-    THROW_INVALID_DSTACK("bytes.magnitude");
+    THROW_INVALID_DSTACK("bytes.magnitude"_Str);
   
   s256 sMag;
   Magnitudes::vMagnitude(iBytes, sMag.aStr());
@@ -103,10 +103,10 @@ void Task::vNumberMagnitude(NNP_Task nnpTask)
   i8 iScale;
   
   if ( ! nnpTask->m_pDataStack->bPop(iNumber) )
-    THROW_INVALID_DSTACK("number.magnitude");
+    THROW_INVALID_DSTACK("number.magnitude"_Str);
   
   if ( ! nnpTask->m_pDataStack->bPop(iScale) )
-    THROW_INVALID_DSTACK("number.magnitude");
+    THROW_INVALID_DSTACK("number.magnitude"_Str);
   
   s256 s;
   

@@ -52,7 +52,7 @@ ENTRY("vNodeCursorBegin"_Str);
   
   Object* pPtrNodeCursor;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrNodeCursor) )
-    THROW_INVALID_DSTACK("nodeCursor.begin");
+    THROW_INVALID_DSTACK("nodeCursor.begin"_Str);
   
   NodeCursor* pNodeCursor = _pNodeCursor(pPtrNodeCursor);
   ASSERT(CN_NODECURSOR == pNodeCursor->eClass());
@@ -71,7 +71,7 @@ ENTRY("vNodeCursorDelete"_Str);
   
   Object* pPtrNodeCursor;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrNodeCursor) )
-    THROW_INVALID_DSTACK("nodeCursor.delete");
+    THROW_INVALID_DSTACK("nodeCursor.delete"_Str);
   
   NodeCursor* pNodeCursor = _pNodeCursor(pPtrNodeCursor);
   ASSERT(CN_NODECURSOR == pNodeCursor->eClass());
@@ -90,7 +90,7 @@ ENTRY("vNodeCursorEnd"_Str);
   
   Object* pPtrNodeCursor;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrNodeCursor) )
-    THROW_INVALID_DSTACK("nodecursor.end");
+    THROW_INVALID_DSTACK("nodecursor.end"_Str);
   
   NodeCursor* pNodeCursor = _pNodeCursor(pPtrNodeCursor);
   ASSERT(CN_NODECURSOR == pNodeCursor->eClass());
@@ -109,7 +109,7 @@ ENTRY("vNodeCursorFirst"_Str);
   
   Object* pPtrNodeCursor;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrNodeCursor) )
-    THROW_INVALID_DSTACK("nodeCursor.first");
+    THROW_INVALID_DSTACK("nodeCursor.first"_Str);
   
   NodeCursor* pNodeCursor = _pNodeCursor(pPtrNodeCursor);
   ASSERT(CN_NODECURSOR == pNodeCursor->eClass());
@@ -132,7 +132,7 @@ ENTRY("vNodeCursorGet"_Str);
   
   Object* pPtrNodeCursor;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrNodeCursor) )
-    THROW_INVALID_DSTACK("nodeCursor.get");
+    THROW_INVALID_DSTACK("nodeCursor.get"_Str);
   
   NodeCursor* pNodeCursor = _pNodeCursor(pPtrNodeCursor);
   ASSERT(CN_NODECURSOR == pNodeCursor->eClass());
@@ -153,7 +153,7 @@ ENTRY("vNodeCursorInit"_Str);
   
   Object* pPtrNodeCursor;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrNodeCursor) )
-    THROW_INVALID_DSTACK("nodeCursor.init");
+    THROW_INVALID_DSTACK("nodeCursor.init"_Str);
   
   NodeCursor* pNodeCursor = _pNodeCursor(pPtrNodeCursor);
   ASSERT(CN_NODECURSOR == pNodeCursor->eClass());
@@ -187,7 +187,7 @@ ENTRY("vNodeCursorNext"_Str);
   
   Object* pPtrNodeCursor;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrNodeCursor) )
-    THROW_INVALID_DSTACK("nodeCursor.next");
+    THROW_INVALID_DSTACK("nodeCursor.next"_Str);
   
   NodeCursor* pNodeCursor = _pNodeCursor(pPtrNodeCursor);
   ASSERT(CN_NODECURSOR == pNodeCursor->eClass());

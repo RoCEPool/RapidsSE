@@ -61,14 +61,14 @@ ENTRY("vTaskListAppend"_Str);
   
   Object* pPtrTaskList;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTaskList) )
-    THROW_INVALID_DSTACK("tasklist.append");
+    THROW_INVALID_DSTACK("tasklist.append"_Str);
   
   TaskList* pTaskList = _pTaskList(pPtrTaskList);
   ASSERT(CN_TASKLIST == pTaskList->eClass());
   
   Object* pTaskObject;
   if ( ! nnpTask->m_pDataStack->bPop(pTaskObject) )
-    THROW_INVALID_DSTACK("task.dump");
+    THROW_INVALID_DSTACK("task.dump"_Str);
   Task* pThatTask = _pTask(pTaskObject);
   
   pTaskList->vAppend(pThatTask);
@@ -85,7 +85,7 @@ ENTRY("vTaskListDump"_Str);
   
   Object* pPtrTaskList;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTaskList) )
-    THROW_INVALID_DSTACK("tasklist.dump");
+    THROW_INVALID_DSTACK("tasklist.dump"_Str);
   
   TaskList* pTaskList = _pTaskList(pPtrTaskList);
   ASSERT(CN_TASKLIST == pTaskList->eClass());

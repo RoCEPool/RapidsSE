@@ -68,7 +68,7 @@ void Task::vFlowExecute(NNP_Task nnpTask)
   
   Object* pWordObject;
   if ( ! nnpTask->m_pDataStack->bPop(pWordObject) )
-    THROW_INVALID_DSTACK("execute");
+    THROW_INVALID_DSTACK("execute"_Str);
   Word* pWord = _pWord(pWordObject);
   
   if (WT_PRIMITIVE == pWord->eWordType()) {
@@ -138,7 +138,7 @@ void Task::vFlowJumpFalse(NNP_Task nnpTask)
   
   i8 iVal;
   if ( ! nnpTask->m_pDataStack->bPopParamInt(iVal) )
-    THROW_INVALID_DSTACK("jumpFalse");
+    THROW_INVALID_DSTACK("jumpFalse"_Str);
   
   // n.b. the IP points to the jump arg
   
@@ -161,7 +161,7 @@ void Task::vFlowJumpTrue(NNP_Task nnpTask)
   
   i8 iVal;
   if ( ! nnpTask->m_pDataStack->bPopParamInt(iVal) )
-    THROW_INVALID_DSTACK("jumpTrue");
+    THROW_INVALID_DSTACK("jumpTrue"_Str);
   
   // n.b. the IP points to the jump arg
   
