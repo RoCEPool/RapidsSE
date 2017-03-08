@@ -1340,7 +1340,7 @@ bool SEitf::bTruncateTable(Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* insert row into row buffer                                                 */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bInsertRow(char* aRow)
+bool SEitf::bInsertRow(Str* aRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
                               
@@ -1360,7 +1360,7 @@ bool SEitf::bInsertRow(char* aRow)
   vTrace("Buffer: %s Partition:%d\n"_Str,pRowBuffer, m_iPartition);
   
   // insert row into working buffer
-  if (pRowBuffer->bInsertRow(m_pTxRef,aRow,StrLib::iSize(aRow)))
+  if (pRowBuffer->bInsertRow(m_pTxRef,aRow,StrLib::iSize(aRow->a())))
     return true;
     
   // buffer full, append working buffer into table
@@ -1390,7 +1390,7 @@ bool SEitf::bInsertRow(char* aRow)
   pRowBuffer = m_pRowBuffer[m_iPartition];
   
   // insert row into new working buffer
-  bool bInserted = pRowBuffer->bInsertRow(m_pTxRef,aRow,StrLib::iSize(aRow));
+  bool bInserted = pRowBuffer->bInsertRow(m_pTxRef,aRow,StrLib::iSize(aRow->a()));
   
   return bInserted;
   

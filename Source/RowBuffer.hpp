@@ -71,7 +71,7 @@ namespace DBobjects
  
     void       vCopyBuffer(RowBuffer* pFromBuffer);
     
-    bool       bInsertRow(TxRef* pTxRef, char* pRecord, i8 iLength);
+    bool       bInsertRow(TxRef* pTxRef, Str* pRecord, i8 iLength);
     
     Object*    pDataArea(void);
     

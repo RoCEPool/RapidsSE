@@ -250,11 +250,11 @@ void StrVal::vAreaSize(void)
 /*----------------------------------------------------------------------------*/
 /* assign given str                                                           */
 /*----------------------------------------------------------------------------*/
-void StrVal::vAssign(const char* aStr)
+void StrVal::vAssign(Str* aStr)
 {
   //ASSERT(m_nAreaSize);
   
-  StrLib::vCopy(aArea(),aStr);
+  StrLib::vCopy(aArea(),aStr->a());
   
   vAreaSize();
 }
@@ -262,11 +262,11 @@ void StrVal::vAssign(const char* aStr)
 /*----------------------------------------------------------------------------*/
 /* assign str of given length                                                 */
 /*----------------------------------------------------------------------------*/
-void StrVal::vAssign(const char* aStr, i8 iLength)
+void StrVal::vAssign(Str* aStr, i8 iLength)
 {
   //ASSERT(m_nAreaSize);
   
-  StrLib::vCopyLen(aArea(),aStr,iLength);
+  StrLib::vCopyLen(aArea(),aStr->a(),iLength);
   
   aArea()[iLength] = '\0';
   

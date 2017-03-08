@@ -92,7 +92,7 @@ bool RowStrand::bAppendBuffer(RowBuffer* pRowBuffer)
 /*----------------------------------------------------------------------------*/
 /* insert a row into this strand                                              */
 /*----------------------------------------------------------------------------*/
-bool RowStrand::bInsertRow(TxRef* pTxRef, char* pRecord, i8 iLength)
+bool RowStrand::bInsertRow(TxRef* pTxRef, Str* pRecord, i8 iLength)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSTRAND,_FOOTER_);
   

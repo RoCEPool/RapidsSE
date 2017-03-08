@@ -1890,7 +1890,7 @@ bool SePrompt::bInsertRow(void)
     return EC_NO_SUCH_TABLE;
   }
   
-  char* pRow = m_aToken2[2]->a();
+  Str* pRow = m_aToken2[2];
   bool bResult = m_pSEitf->bInsertRow(pRow);
   
   if (!bResult) {

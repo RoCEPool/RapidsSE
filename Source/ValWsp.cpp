@@ -72,7 +72,7 @@ void ValWsp::operator =(Str* pStr)
   vClass(CN_STRVAL);
   _precondition_(_MAGIC_,CN_STRVAL);
 
-  _pStrVal(this)->vAssign(pStr->a());
+  _pStrVal(this)->vAssign(pStr);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -38,16 +38,16 @@ namespace DBobjects
     void  operator delete(void*);
     
     Table(void);
-    Table(const char* pTableName);
+    Table(Str* pTableName);
     ~Table(void);
     
     static void vDump(eCN eClass, Object* pObject, Str* aTab);
     
-    char* pAnalyze(bool bDetailed);
+    Str* pAnalyze(bool bDetailed);
     void vAppendBuffer(i8 iPartition, RowBuffer* pRowBuffer);
     i8   iRowPartition(char* pRow);
     Dic* pSubDic(void);
-    void vInsertRow(i8 iPartition, TxRef* pTxRef, char* pRecord, i8 iLength);
+    void vInsertRow(i8 iPartition, TxRef* pTxRef, Str* pRecord, i8 iLength);
     i8   nRowBuffers(void);
     void vTruncate(void);
         

@@ -331,7 +331,7 @@ void RowBuffer::vCopyBuffer(RowBuffer* pFromBuffer)
 /*----------------------------------------------------------------------------*/
 /* insert row into this buffer                                                */
 /*----------------------------------------------------------------------------*/
-bool RowBuffer::bInsertRow(TxRef* pTxRef, char* pRecord, i8 iLength)
+bool RowBuffer::bInsertRow(TxRef* pTxRef, Str* pRecord, i8 iLength)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   

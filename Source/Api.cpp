@@ -1428,7 +1428,7 @@ eEC RapidsSE_InsertRow(SEitf* pSEitf, Str* pRow)
     return EC_NO_SUCH_TABLE;
   }
   
-  bool bResult = pSEitf->bInsertRow(pRow->a());
+  bool bResult = pSEitf->bInsertRow(pRow);
   
   if (!bResult) {
     pSEitf->vSetLastError(pSEitf->m_eErrorCode);

@@ -65,7 +65,7 @@ ENTRY("vRowBufferAppend"_Str);
 
   i8 iLength = sRecord.iLength();
   
-  bool b = pRowBuffer->bInsertRow(pTxRef,sRecord.aStr(),iLength);
+  bool b = pRowBuffer->bInsertRow(pTxRef,sRecord,iLength);
   
   if (b) {
     nnpTask->m_pDataStack->vPush((i8)1);
@@ -103,7 +103,7 @@ void Task::vRowBufferAppendRecord(NNP_Task nnpTask)
   
   File* pFile = _pFile(pPtrFile);
   
-  char* aRecord = pFile->pRecord()->aWspArea();
+  Str* aRecord = (Str*)pFile->pRecord()->aWspArea();
   
 //  i8 iLength = StrLib::iLength(aRecord);
   i8 iLength = pFile->iRecordLength();

@@ -78,12 +78,12 @@ Table::Table(void)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Table::Table(const char* pTableName)
+Table::Table(Str* pTableName)
 : Object(CN_TABLE)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
-  m_sTableName = (Str*)pTableName;
+  m_sTableName = pTableName;
   
   _class_(CN_TABLE);
 }
@@ -103,7 +103,7 @@ Table::~Table(void)
 /*----------------------------------------------------------------------------*/
 /*analyze table                                                               */
 /*----------------------------------------------------------------------------*/
-char* Table::pAnalyze(bool bDetailed)
+Str* Table::pAnalyze(bool bDetailed)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
@@ -164,7 +164,7 @@ char* Table::pAnalyze(bool bDetailed)
                      "        total: %3lld strands; %5lld buffers; %lld rows\n",
                      nStrandsTotal,nBuffersTotal,nRowsTotal);
   
-  return sAnalysis.aStr();
+  return sAnalysis;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -266,7 +266,7 @@ void Table::vDump(eCN eClass, Object* pObject, Str* aTab)
 /*----------------------------------------------------------------------------*/
 /* insert a row in the table                                                  */
 /*----------------------------------------------------------------------------*/
-void Table::vInsertRow(i8 iPartition, TxRef* pTxRef, char* pRecord, i8 iLength)
+void Table::vInsertRow(i8 iPartition, TxRef* pTxRef, Str* pRecord, i8 iLength)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
 

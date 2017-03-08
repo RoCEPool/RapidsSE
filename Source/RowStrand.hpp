@@ -31,7 +31,7 @@ namespace DBobjects
     static void vDump(eCN eClass, Object* pObject, Str* aTab);
     
     bool bAppendBuffer(RowBuffer* pRowBuffer);
-    bool bInsertRow(TxRef* pTxRef, char* pRecord, i8 iLength);
+    bool bInsertRow(TxRef* pTxRef, Str* pRecord, i8 iLength);
     i8   nRows(void);
     i8   nRowBuffers(void);
     

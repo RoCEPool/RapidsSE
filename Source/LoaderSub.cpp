@@ -241,7 +241,7 @@ bool LoaderSub::bInsertRow(void)
   RowBuffer* pRowBuffer = m_pRowBuffer[m_iPartition];
 
   // insert row into working buffer
-  if (pRowBuffer->bInsertRow(m_pTxRef,m_pRecord,m_iLength))
+  if (pRowBuffer->bInsertRow(m_pTxRef,(Str*)m_pRecord,m_iLength))
     return true;
   
   // buffer full, append working buffer into table
@@ -257,7 +257,7 @@ bool LoaderSub::bInsertRow(void)
   pRowBuffer = m_pRowBuffer[m_iPartition];
   
   // insert row into new working buffer
-  bool bInserted = pRowBuffer->bInsertRow(m_pTxRef,m_pRecord,m_iLength);
+  bool bInserted = pRowBuffer->bInsertRow(m_pTxRef,(Str*)m_pRecord,m_iLength);
   
   return bInserted;
 }
@@ -284,7 +284,7 @@ bool LoaderSub::bInsertRow2(void)
   RowBuffer* pRowBuffer = m_pRowBuffer[m_iPartition];
   
   // insert row into working buffer
-  bool b = pRowBuffer->bInsertRow(m_pTxRef,m_pRecord,m_iLength);
+  bool b = pRowBuffer->bInsertRow(m_pTxRef,(Str*)m_pRecord,m_iLength);
   
   return b;
 }

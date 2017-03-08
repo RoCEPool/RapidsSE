@@ -36,8 +36,8 @@ namespace Values
     char* aArea(void);
     i8    nAreaSize(void);
     void  vAreaSize(void);
-    void  vAssign(const char* aStr);
-    void  vAssign(const char* aStr, i8 iLength);
+    void  vAssign(Str* aStr);
+    void  vAssign(Str* aStr, i8 iLength);
     void  vCopy(const char* aStr);
     void  vCopy(const char* aStr, i8 iLength);
     bool  bEnds(const char* aSuffix);

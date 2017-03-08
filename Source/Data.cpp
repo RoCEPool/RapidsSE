@@ -104,7 +104,7 @@ void Data::vAppendBuffer(RowBuffer* pRowBuffer)
 /*----------------------------------------------------------------------------*/
 /* insert a row into this strand                                              */
 /*----------------------------------------------------------------------------*/
-bool Data::bInsertRow(Transactions::TxRef* pTxRef, char* pRecord, i8 iLength)
+bool Data::bInsertRow(Transactions::TxRef* pTxRef, Str* pRecord, i8 iLength)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DATA,_FOOTER_);
   
