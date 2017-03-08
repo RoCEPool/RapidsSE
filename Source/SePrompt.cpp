@@ -46,10 +46,6 @@ SePrompt::SePrompt(void)
   
   m_bContinue = true;
   
-  //m_sPrompt = "se ";
-  //StrLib::vConcat(m_sPrompt.aStr(), RAPIDSSE_VERSION_STRING);
-  //StrLib::vConcat(m_sPrompt.aStr(), "> ");
-  
   StrLib::vSprint(m_sPrompt.aStr(),
                   "[N%lld %lld] se %s%c> "_Str,
                   gpGrid->iThisNode(),
@@ -911,7 +907,7 @@ bool SePrompt::bChangeWorkingDir(void)
   for (iToken = 2; iToken < C_TOKENS; iToken++) {
     if (! *m_aToken[iToken]->a())
       break;
-    StrLib::vConcat(sDir.aStr(), m_aToken[iToken]->a());
+    sDir.vConcat(m_aToken[iToken]);
   }
 
   if ( ! xDir.bChangeCurrent(sDir) ) {
