@@ -1287,10 +1287,10 @@ bool SePrompt::bCreateTable(void)
       if (m_aToken2[iCurrentToken]->bEqual("("_Str)) {
         
         // str.cat '('
-        StrLib::vConcat(m_aToken[j]->a(), m_aToken2[iCurrentToken++]->a());
+        m_aToken[j]->vConcat(m_aToken2[iCurrentToken++]);
         
         // str.cat the size
-        StrLib::vConcat(m_aToken[j]->a(), m_aToken2[iCurrentToken]->a());
+        m_aToken[j]->vConcat(m_aToken2[iCurrentToken]);
         
         // check if it was numeric
         char* a = m_aToken2[iCurrentToken++]->a();
@@ -1309,7 +1309,7 @@ bool SePrompt::bCreateTable(void)
         }
         
         // str.cat ')'
-        StrLib::vConcat(m_aToken[j]->a(), m_aToken2[iCurrentToken++]->a());
+        m_aToken[j]->vConcat(m_aToken2[iCurrentToken++]);
         
       }
     }
@@ -1321,10 +1321,10 @@ bool SePrompt::bCreateTable(void)
       if (m_aToken2[iCurrentToken]->bEqual("("_Str)) {
         
         // str.cat '('
-        StrLib::vConcat(m_aToken[j]->a(), m_aToken2[iCurrentToken++]->a());
+        m_aToken[j]->vConcat(m_aToken2[iCurrentToken++]);
         
         // str.cat the size
-        StrLib::vConcat(m_aToken[j]->a(), m_aToken2[iCurrentToken]->a());
+        m_aToken[j]->vConcat(m_aToken2[iCurrentToken]);
         
         // check if it was numeric
         char* a = m_aToken2[iCurrentToken++]->a();
@@ -1341,10 +1341,10 @@ bool SePrompt::bCreateTable(void)
         }
         
         // str.cat ','
-        StrLib::vConcat(m_aToken[j]->a(), m_aToken2[iCurrentToken++]->a());
+        m_aToken[j]->vConcat(m_aToken2[iCurrentToken++]);
         
         // str.cat the size
-        StrLib::vConcat(m_aToken[j]->a(), m_aToken2[iCurrentToken]->a());
+        m_aToken[j]->vConcat(m_aToken2[iCurrentToken]);
         
         // check if it was numeric
         a = m_aToken2[iCurrentToken++]->a();
@@ -1361,7 +1361,7 @@ bool SePrompt::bCreateTable(void)
         }
         
         // str.cat ')'
-        StrLib::vConcat(m_aToken[j]->a(), m_aToken2[iCurrentToken++]->a());
+        m_aToken[j]->vConcat(m_aToken2[iCurrentToken++]);
       }
     }
     else if (m_aToken2[iCurrentToken]->bSame("date"_Str) ||
@@ -1380,38 +1380,38 @@ bool SePrompt::bCreateTable(void)
     // check for NOT NULL
     if (m_aToken2[iCurrentToken]->bSame("not"_Str)) {
       
-      StrLib::vConcat(m_aToken[j]->a(), " ");
-      StrLib::vConcat(m_aToken[j]->a(), m_aToken2[iCurrentToken++]->a());
+      m_aToken[j]->vConcat(" "_Str);
+      m_aToken[j]->vConcat(m_aToken2[iCurrentToken++]);
       
       if (!m_aToken2[iCurrentToken]->bSame("null"_Str)) {
         bDropReturnTable(m_aToken2[2]->a());
         m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
         return false;
       }
-      StrLib::vConcat(m_aToken[j]->a(), " ");
-      StrLib::vConcat(m_aToken[j]->a(), m_aToken2[iCurrentToken++]->a());
+      m_aToken[j]->vConcat(" "_Str);
+      m_aToken[j]->vConcat(m_aToken2[iCurrentToken++]);
     }
     
     // check for PRIMARY KEY
     if (m_aToken2[iCurrentToken]->bSame("primary"_Str)) {
       
-      StrLib::vConcat(m_aToken[j]->a(), " ");
-      StrLib::vConcat(m_aToken[j]->a(), m_aToken2[iCurrentToken++]->a());
+      m_aToken[j]->vConcat(" "_Str);
+      m_aToken[j]->vConcat(m_aToken2[iCurrentToken++]);
       
       if (!m_aToken2[iCurrentToken]->bSame("key"_Str)) {
         bDropReturnTable(m_aToken2[2]->a());
         m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
         return false;
       }
-      StrLib::vConcat(m_aToken[j]->a(), " ");
-      StrLib::vConcat(m_aToken[j]->a(), m_aToken2[iCurrentToken++]->a());
+      m_aToken[j]->vConcat(" "_Str);
+      m_aToken[j]->vConcat(m_aToken2[iCurrentToken++]);
     }
 
     // check for UNIQUE
     if (m_aToken2[iCurrentToken]->bSame("unique"_Str)) {
       
-      StrLib::vConcat(m_aToken[j]->a(), " ");
-      StrLib::vConcat(m_aToken[j]->a(), m_aToken2[iCurrentToken++]->a());
+      m_aToken[j]->vConcat(" "_Str);
+      m_aToken[j]->vConcat(m_aToken2[iCurrentToken++]);
     }
 
     
