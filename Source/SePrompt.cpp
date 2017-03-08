@@ -261,7 +261,7 @@ bool SePrompt::bExecuteString(StrVal& sRequest, eEC& eErrorCode, char** ppRowPtr
   bool bResult = bProcessCommand(false);
   
   eErrorCode = m_pSEitf->m_eErrorCode;
-  *ppRowPtr = m_pSEitf->m_pRowPtr;
+  *ppRowPtr = m_pSEitf->m_aRowPtr->a();
   
   return bResult;
 }
@@ -644,7 +644,7 @@ void SePrompt::vIterateRows(void)
     vTrace("Partition %lld: \n"_Str, Partition::iSlotToPartition(iPartition));
     pSelCursor->vBegin(iPartition);
     pSelCursor->vFirst();
-    char* pStr = pSelCursor->pRowAsStr();
+    Str* pStr = pSelCursor->pRowAsStr();
     while (pStr) {
       iRowCount++;
       vTrace("Row: %s\n"_Str,pStr);
@@ -688,16 +688,16 @@ bool SePrompt::bGetFirstRow(void)
   
   pSelCursor->vBegin(m_iPartition);
   pSelCursor->vFirst();
-  char* pStr = pSelCursor->pRowAsStr();
+  Str* pStr = pSelCursor->pRowAsStr();
   
   if (pStr == nullptr) {
     pSelCursor->vEnd();
     delete pSelCursor;
-    m_pSEitf->m_pRowPtr = nullptr;
+    m_pSEitf->m_aRowPtr = nullptr;
     return false;
   }
   else {
-    m_pSEitf->m_pRowPtr = pStr;
+    m_pSEitf->m_aRowPtr = pStr;
     return true;
   }
 }
@@ -715,12 +715,12 @@ bool SePrompt::bGetNextRow(void)
   ASSERT(CN_SELCURSOR == pSelCursor->eClass());
   
   pSelCursor->vNext();
-  char* pStr = pSelCursor->pRowAsStr();
+  Str* pStr = pSelCursor->pRowAsStr();
   
   if (pStr == nullptr) {
     pSelCursor->vEnd();
     delete pSelCursor;
-    m_pSEitf->m_pRowPtr = nullptr;
+    m_pSEitf->m_aRowPtr = nullptr;
     
     // now return the table
     bool bResult = bReturnTable();
@@ -728,7 +728,7 @@ bool SePrompt::bGetNextRow(void)
     return false;
   }
   else {
-    m_pSEitf->m_pRowPtr = pStr;
+    m_pSEitf->m_aRowPtr = pStr;
     return true;
   }
 }

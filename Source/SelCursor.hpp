@@ -32,7 +32,7 @@ namespace DBobjects
     void    vFirst(void);
     void    vNext(void);
     Row*    pRow(void);
-    char*   pRowAsStr(void);
+    Str*    aRowAsStr(void);
     RowBuffer* pRowBuffer(void);
     Table*  pTable(void);
     void    vTable(Table* pTable);

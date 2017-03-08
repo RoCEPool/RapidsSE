@@ -27,7 +27,7 @@ namespace Interface
     s256   m_sErrorMsg;
     
     Table* m_pCurrentTable;
-    char*  m_pRowPtr;
+    Str*   m_aRowPtr;
     TxRef* m_pTxRef;
     
     i8     m_iCurrentRequestId;

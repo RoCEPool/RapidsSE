@@ -147,7 +147,7 @@ Row* RowCursor::pRow(void)
 /*----------------------------------------------------------------------------*/
 /* get current row (as a char*)                                               */
 /*----------------------------------------------------------------------------*/
-char* RowCursor::pRowAsStr(void)
+Str* RowCursor::aRowAsStr(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCURSOR,_FOOTER_);
   
@@ -157,7 +157,7 @@ char* RowCursor::pRowAsStr(void)
   StrVal* pStrVal = reinterpret_cast<StrVal*>(m_pRow->pData());
   
   if (pStrVal)
-    return pStrVal->aStr();
+    return pStrVal->aStrArea();
   else
     return nullptr;
 }
