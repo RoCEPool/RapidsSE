@@ -600,12 +600,6 @@ bool SEitf::bCreateSchema(Str* aWords[], i8 iWords)
     return false;
   }
   
-//  StrLib::vCopy(a,"\"");
-//  StrLib::vConcat(a,aWords[1]->a());
-//  StrLib::vConcat(a,"\"");
-//
-//  StrLib::vConcat(a," create_schema");
-
   sRequest.vCopyCat("\""_Str,aWords[1]->a(),"\""_Str,
                     " create_schema"_Str,
                     nullptr);
@@ -1682,16 +1676,6 @@ bool SEitf::bX(Str* aWords[])
   ASSERT(aWords[0]->bEqual("ping"_Str));
   sRequest = "ping"_Str;
   
-  //  static bool bFirst = true;
-  //  if (bFirst) {
-  //    bFirst = false;
-  //    vAppendRequest(sRequest);
-  //    vAppendRequest(sRequest);
-  //    vAppendRequest(sRequest);
-  //    vAppendRequest(sRequest);
-  //    vAppendRequest(sRequest);
-  //  }
-  
   return bAppendRequest(sRequest);
 }
 
@@ -1850,11 +1834,6 @@ void SEitf::vSetLastError(eEC eError)
   m_eErrorCode = eError;
   StrLib::vCopy(m_sErrorMsg.aStr(), aEC[m_eErrorCode]->a());
   
-//  if (StrLib::iLength(m_sResponse.aStr()) != 0) {
-//    StrLib::vConcat(m_sInterfaceError.aStr(), " (");
-//    StrLib::vConcat(m_sInterfaceError.aStr(), m_sResponse.aStr());
-//    StrLib::vConcat(m_sInterfaceError.aStr(), ") ");
-//  }
 }
 
 /*----------------------------------------------------------------------------*/
