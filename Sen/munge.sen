@@ -61,6 +61,10 @@
 
     str.escape str.escape to senLine
 
+    senLine ";" str.equal if
+      " ;" to senLine
+    then
+
     "    \""  cppFile file.write
     senLine   cppFile file.write
     "\\n\""   cppFile file.write
@@ -76,11 +80,11 @@
 /*----------------------------------------------------------------------------*/
 : mungeSenConstant ( cppFile senFile -- )
 
-locals| senFile cppFile |
+  locals| senFile cppFile |
 
-"  \" CONSTANT " cppFile file.write
-senFile file.path@ cppFile file.write
-"\"_Str\n" cppFile file.write
+  "  \" CONSTANT " cppFile file.write
+  senFile file.path@ cppFile file.write
+  "\"_Str\n" cppFile file.write
 ;
 
 /*----------------------------------------------------------------------------*/
