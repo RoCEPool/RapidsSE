@@ -437,11 +437,11 @@ bool SEitf::bRemoveFolder(Str* aWords[], i8 iWords)
   
   char* a = sRequest.aStr();
   
-  StrLib::vCopy(a,"\"");
-  StrLib::vConcat(a,aWords[1]->a());
-  StrLib::vConcat(a,"\"");
+  sRequest.vCopy("\""_Str);
+  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat("\""_Str);
   
-  StrLib::vConcat(a," remove_folder");
+  sRequest.vConcat(" remove_folder"_Str);
   
   return bAppendRequest(sRequest);
 }
@@ -462,11 +462,11 @@ bool SEitf::bCreateTenant(Str* aWords[], i8 iWords)
     return false;
   }
 
-  StrLib::vCopy(a,"\"");
-  StrLib::vConcat(a,aWords[1]->a());
-  StrLib::vConcat(a,"\"");
+  sRequest.vCopy("\""_Str);
+  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat("\""_Str);
   
-  StrLib::vConcat(a," create_tenant");
+  sRequest.vConcat(" create_tenant"_Str);
   
   return bAppendRequest(sRequest);
 }
@@ -506,11 +506,11 @@ bool SEitf::bDropTenant(Str* aWords[], i8 iWords)
     return false;
   }
   
-  StrLib::vCopy(a,"\"");
-  StrLib::vConcat(a,aWords[1]->a());
-  StrLib::vConcat(a,"\"");
+  sRequest.vCopy("\""_Str);
+  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat("\""_Str);
   
-  StrLib::vConcat(a," drop_tenant");
+  sRequest.vConcat(" drop_tenant"_Str);
   
   return bAppendRequest(sRequest);
 }
@@ -531,11 +531,11 @@ bool SEitf::bCreateCatalog(Str* aWords[], i8 iWords)
     return false;
   }
   
-  StrLib::vCopy(a,"\"");
-  StrLib::vConcat(a,aWords[1]->a());
-  StrLib::vConcat(a,"\"");
+  sRequest.vCopy("\""_Str);
+  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat("\""_Str);
   
-  StrLib::vConcat(a," create_catalog");
+  sRequest.vConcat(" create_catalog"_Str);
   
   return bAppendRequest(sRequest);
 }
@@ -575,11 +575,11 @@ bool SEitf::bDropCatalog(Str* aWords[], i8 iWords)
     return false;
   }
 
-  StrLib::vCopy(a,"\"");
-  StrLib::vConcat(a,aWords[1]->a());
-  StrLib::vConcat(a,"\"");
+  sRequest.vCopy("\""_Str);
+  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat("\""_Str);
   
-  StrLib::vConcat(a," drop_catalog");
+  sRequest.vConcat(" drop_catalog"_Str);
   
   return bAppendRequest(sRequest);
 }
@@ -642,11 +642,11 @@ bool SEitf::bDropSchema(Str* aWords[], i8 iWords)
     return false;
   }
 
-  StrLib::vCopy(a,"\"");
-  StrLib::vConcat(a,aWords[1]->a());
-  StrLib::vConcat(a,"\"");
+  sRequest.vCopy("\""_Str);
+  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat("\""_Str);
   
-  StrLib::vConcat(a," drop_schema");
+  sRequest.vConcat(" drop_schema"_Str);
   
   return bAppendRequest(sRequest);
 }
@@ -667,11 +667,11 @@ bool SEitf::bUseSchema(Str* aWords[], i8 iWords)
     return false;
   }
   
-  StrLib::vCopy(a,"\"");
-  StrLib::vConcat(a,aWords[1]->a());
-  StrLib::vConcat(a,"\"");
+  sRequest.vCopy("\""_Str);
+  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat("\""_Str);
   
-  StrLib::vConcat(a," use_schema");
+  sRequest.vConcat(" use_schema"_Str);
   
   return bAppendRequest(sRequest);
 }
@@ -692,19 +692,19 @@ bool SEitf::bCreateIndex(Str* aWords[], i8 iWords)
     return false;
   }
   
-  StrLib::vCopy(a,"\"");
-  StrLib::vConcat(a,aWords[3]->a());
-  StrLib::vConcat(a,"\"");
+  sRequest.vCopy("\""_Str);
+  sRequest.vConcat(aWords[3]);
+  sRequest.vConcat("\""_Str);
   
-  StrLib::vConcat(a," \"");
-  StrLib::vConcat(a,aWords[2]->a());
-  StrLib::vConcat(a,"\"");
+  sRequest.vConcat(" \""_Str);
+  sRequest.vConcat(aWords[2]);
+  sRequest.vConcat("\""_Str);
   
-  StrLib::vConcat(a," \"");
-  StrLib::vConcat(a,aWords[1]->a());
-  StrLib::vConcat(a,"\"");
+  sRequest.vConcat(" \""_Str);
+  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat("\""_Str);
   
-  StrLib::vConcat(a," create_index");
+  sRequest.vConcat(" create_index"_Str);
   
   return bAppendRequest(sRequest);
 }
@@ -744,11 +744,11 @@ bool SEitf::bCreateTable(Str* aWords[], i8 iWords)
     return false;
   }
   
-  StrLib::vCopy(a,"\"");
-  StrLib::vConcat(a,aWords[1]->a());
-  StrLib::vConcat(a,"\"");
+  sRequest.vCopy("\""_Str);
+  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat("\""_Str);
   
-  StrLib::vConcat(a," create_table");
+  sRequest.vConcat(" create_table"_Str);
   
   return bAppendRequest(sRequest);
 }
@@ -788,11 +788,11 @@ bool SEitf::bDumpIndex(Str* aWords[], i8 iWords)
     return false;
   }
   
-  StrLib::vCopy(a,"\"");
-  StrLib::vConcat(a,aWords[1]->a());
-  StrLib::vConcat(a,"\"");
+  sRequest.vCopy("\""_Str);
+  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat("\""_Str);
   
-  StrLib::vConcat(a," dump_index");
+  sRequest.vConcat(" dump_index"_Str);
   
   return bAppendRequest(sRequest);
 }
@@ -813,11 +813,11 @@ bool SEitf::bDumpTable(Str* aWords[], i8 iWords)
     return false;
   }
   
-  StrLib::vCopy(a,"\"");
-  StrLib::vConcat(a,aWords[1]->a());
-  StrLib::vConcat(a,"\"");
+  sRequest.vCopy("\""_Str);
+  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat("\""_Str);
   
-  StrLib::vConcat(a," dump_table");
+  sRequest.vConcat(" dump_table"_Str);
   
   return bAppendRequest(sRequest);
 }
@@ -833,12 +833,12 @@ bool SEitf::bDocol(Str* aWords[])
   
   char* a = sRequest.aStr();
   
-  StrLib::vCopy(a,"\"");
-  StrLib::vConcat(a,aWords[1]->a());
-  StrLib::vConcat(a,"\"");
+  sRequest.vCopy("\""_Str);
+  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat("\""_Str);
   
   //
-  StrLib::vConcat(a," docol_command");
+  sRequest.vConcat(" docol_command"_Str);
   
   return bAppendRequest(sRequest);
 }
@@ -859,11 +859,11 @@ bool SEitf::bDropIndex(Str* aWords[], i8 iWords)
     return false;
   }
   
-  StrLib::vCopy(a,"\"");
-  StrLib::vConcat(a,aWords[1]->a());
-  StrLib::vConcat(a,"\"");
+  sRequest.vCopy("\""_Str);
+  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat("\""_Str);
   
-  StrLib::vConcat(a," drop_index");
+  sRequest.vConcat(" drop_index"_Str);
   
   return bAppendRequest(sRequest);
 }
@@ -885,11 +885,11 @@ bool SEitf::bDropTable(Str* aWords[], i8 iWords)
     return false;
   }
   
-  StrLib::vCopy(a,"\"");
-  StrLib::vConcat(a,aWords[1]->a());
-  StrLib::vConcat(a,"\"");
+  sRequest.vCopy("\""_Str);
+  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat("\""_Str);
   
-  StrLib::vConcat(a," drop_table");
+  sRequest.vConcat(" drop_table"_Str);
   
   return bAppendRequest(sRequest);
 }
@@ -910,19 +910,19 @@ bool SEitf::bAddColumn(Str* aWords[16], i8 iWords)
     return false;
   }
   
-  StrLib::vCopy(a,"\"");
-  StrLib::vConcat(a,aWords[3]->a());
-  StrLib::vConcat(a,"\"");
+  sRequest.vCopy("\""_Str);
+  sRequest.vConcat(aWords[3]);
+  sRequest.vConcat("\""_Str);
   
-  StrLib::vConcat(a," \"");
-  StrLib::vConcat(a,aWords[2]->a());
-  StrLib::vConcat(a,"\"");
+  sRequest.vConcat(" \""_Str);
+  sRequest.vConcat(aWords[2]);
+  sRequest.vConcat("\""_Str);
   
-  StrLib::vConcat(a," \"");
-  StrLib::vConcat(a,aWords[1]->a());
-  StrLib::vConcat(a,"\"");
+  sRequest.vConcat(" \""_Str);
+  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat("\""_Str);
   
-  StrLib::vConcat(a," add_column");
+  sRequest.vConcat(" add_column"_Str);
   
   return bAppendRequest(sRequest);
 }
@@ -943,11 +943,11 @@ bool SEitf::bListColumns(Str* aWords[], i8 iWords)
     return false;
   }
   
-  StrLib::vCopy(a,"\"");
-  StrLib::vConcat(a,aWords[1]->a());
-  StrLib::vConcat(a,"\"");
+  sRequest.vCopy("\""_Str);
+  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat("\""_Str);
   
-  StrLib::vConcat(a," list_columns");
+  sRequest.vConcat(" list_columns"_Str);
   
   return bAppendRequest(sRequest);
 }
@@ -968,11 +968,11 @@ bool SEitf::bAnalyzeTable(Str* aWords[], i8 iWords)
     return false;
   }
   
-  StrLib::vCopy(a,"\"");
-  StrLib::vConcat(a,aWords[1]->a());
-  StrLib::vConcat(a,"\"");
+  sRequest.vCopy("\""_Str);
+  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat("\""_Str);
   
-  StrLib::vConcat(a," analyze_table");
+  sRequest.vConcat(" analyze_table"_Str);
   
   return bAppendRequest(sRequest);
 }
@@ -993,11 +993,11 @@ bool SEitf::bDanalyzeTable(Str* aWords[], i8 iWords)
     return false;
   }
   
-  StrLib::vCopy(a,"\"");
-  StrLib::vConcat(a,aWords[1]->a());
-  StrLib::vConcat(a,"\"");
+  sRequest.vCopy("\""_Str);
+  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat("\""_Str);
   
-  StrLib::vConcat(a," danalyze_table");
+  sRequest.vConcat(" danalyze_table"_Str);
   
   return bAppendRequest(sRequest);
 }
@@ -1018,15 +1018,15 @@ bool SEitf::bCopyTable(Str* aWords[], i8 iWords)
     return false;
   }
   
-  StrLib::vCopy(a,"\"");
-  StrLib::vConcat(a,aWords[2]->a());
-  StrLib::vConcat(a,"\"");
+  sRequest.vCopy("\""_Str);
+  sRequest.vConcat(aWords[2]);
+  sRequest.vConcat("\""_Str);
   
-  StrLib::vConcat(a," \"");
-  StrLib::vConcat(a,aWords[1]->a());
-  StrLib::vConcat(a,"\"");
+  sRequest.vConcat(" \""_Str);
+  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat("\""_Str);
   
-  StrLib::vConcat(a," copy_table");
+  sRequest.vConcat(" copy_table"_Str);
   
   return bAppendRequest(sRequest);
 }
@@ -1047,15 +1047,15 @@ bool SEitf::bDistExportTable(Str* aWords[], i8 iWords)
     return false;
   }
   
-  StrLib::vCopy(a,"\"");
-  StrLib::vConcat(a,aWords[2]->a());
-  StrLib::vConcat(a,"\"");
+  sRequest.vCopy("\""_Str);
+  sRequest.vConcat(aWords[2]);
+  sRequest.vConcat("\""_Str);
   
-  StrLib::vConcat(a," \"");
-  StrLib::vConcat(a,aWords[1]->a());
-  StrLib::vConcat(a,"\"");
+  sRequest.vConcat(" \""_Str);
+  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat("\""_Str);
   
-  StrLib::vConcat(a," dist_export_table");
+  sRequest.vConcat(" dist_export_table"_Str);
   
   return bAppendRequest(sRequest);
 }
@@ -1076,15 +1076,15 @@ bool SEitf::bExportTable(Str* aWords[], i8 iWords)
     return false;
   }
   
-  StrLib::vCopy(a,"\"");
-  StrLib::vConcat(a,aWords[2]->a());
-  StrLib::vConcat(a,"\"");
+  sRequest.vCopy("\""_Str);
+  sRequest.vConcat(aWords[2]);
+  sRequest.vConcat("\""_Str);
   
-  StrLib::vConcat(a," \"");
-  StrLib::vConcat(a,aWords[1]->a());
-  StrLib::vConcat(a,"\"");
+  sRequest.vConcat(" \""_Str);
+  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat("\""_Str);
   
-  StrLib::vConcat(a," export_table");
+  sRequest.vConcat(" export_table"_Str);
   
   return bAppendRequest(sRequest);
 }
@@ -1105,15 +1105,15 @@ bool SEitf::bLoadTable(Str* aWords[], i8 iWords)
     return false;
   }
   
-  StrLib::vCopy(a,"\"");
-  StrLib::vConcat(a,aWords[2]->a());
-  StrLib::vConcat(a,"\"");
+  sRequest.vCopy("\""_Str);
+  sRequest.vConcat(aWords[2]);
+  sRequest.vConcat("\""_Str);
   
-  StrLib::vConcat(a," \"");
-  StrLib::vConcat(a,aWords[1]->a());
-  StrLib::vConcat(a,"\"");
+  sRequest.vConcat(" \""_Str);
+  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat("\""_Str);
   
-  StrLib::vConcat(a," load_table");
+  sRequest.vConcat(" load_table"_Str);
   
   return bAppendRequest(sRequest);
 }
@@ -1134,15 +1134,15 @@ bool SEitf::bLoadTableStream(Str* aWords[], i8 iWords)
     return false;
   }
   
-  StrLib::vCopy(a,"\"");
-  StrLib::vConcat(a,aWords[2]->a());
-  StrLib::vConcat(a,"\"");
+  sRequest.vCopy("\""_Str);
+  sRequest.vConcat(aWords[2]);
+  sRequest.vConcat("\""_Str);
   
-  StrLib::vConcat(a," \"");
-  StrLib::vConcat(a,aWords[1]->a());
-  StrLib::vConcat(a,"\"");
+  sRequest.vConcat(" \""_Str);
+  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat("\""_Str);
   
-  StrLib::vConcat(a," load_table_stream");
+  sRequest.vConcat(" load_table_stream"_Str);
   
   return bAppendRequest(sRequest);
 }
@@ -1163,11 +1163,11 @@ bool SEitf::bSelectTable(Str* aWords[], i8 iWords)
     return false;
   }
   
-  StrLib::vCopy(a,"\"");
-  StrLib::vConcat(a,aWords[1]->a());
-  StrLib::vConcat(a,"\"");
+  sRequest.vCopy("\""_Str);
+  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat("\""_Str);
   
-  StrLib::vConcat(a," select_table");
+  sRequest.vConcat(" select_table"_Str);
   
   return bAppendRequest(sRequest);
 }
@@ -1188,11 +1188,11 @@ bool SEitf::bGetTable(Str* aWords[], i8 iWords)
     return false;
   }
   
-  StrLib::vCopy(a,"\"");
-  StrLib::vConcat(a,aWords[1]->a());
-  StrLib::vConcat(a,"\"");
+  sRequest.vCopy("\""_Str);
+  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat("\""_Str);
   
-  StrLib::vConcat(a," get_table");
+  sRequest.vConcat(" get_table"_Str);
   
   return bAppendRequest(sRequest);
 }
@@ -1213,11 +1213,11 @@ bool SEitf::bInUseTable(Str* aWords[], i8 iWords)
     return false;
   }
   
-  StrLib::vCopy(a,"\"");
-  StrLib::vConcat(a,aWords[1]->a());
-  StrLib::vConcat(a,"\"");
+  sRequest.vCopy("\""_Str);
+  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat("\""_Str);
 
-  StrLib::vConcat(a," table_inuse");
+  sRequest.vConcat(" table_inuse"_Str);
   
   return bAppendRequest(sRequest);
 }
@@ -1238,7 +1238,7 @@ bool SEitf::bRetTable(Str* aWords[], i8 iWords)
     return false;
   }
   
-  StrLib::vConcat(a," return_table");
+  sRequest.vConcat(" return_table"_Str);
   
   return bAppendRequest(sRequest);
 }
@@ -1259,7 +1259,7 @@ bool SEitf::bPoolSpace(Str* aWords[], i8 iWords)
     return false;
   }
   
-  StrLib::vConcat(a," space");
+  sRequest.vConcat(" space"_Str);
   
   return bAppendRequest(sRequest);
 }
@@ -1280,7 +1280,7 @@ bool SEitf::bNodeStatus(Str* aWords[], i8 iWords)
     return false;
   }
   
-  StrLib::vConcat(a," status");
+  sRequest.vConcat(" status"_Str);
   
   return bAppendRequest(sRequest);
 }
@@ -1301,11 +1301,11 @@ bool SEitf::bSizeTable(Str* aWords[], i8 iWords)
     return false;
   }
   
-  StrLib::vCopy(a,"\"");
-  StrLib::vConcat(a,aWords[1]->a());
-  StrLib::vConcat(a,"\"");
+  sRequest.vCopy("\""_Str);
+  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat("\""_Str);
   
-  StrLib::vConcat(a," size_table");
+  sRequest.vConcat(" size_table"_Str);
   
   return bAppendRequest(sRequest);
 }
@@ -1326,11 +1326,11 @@ bool SEitf::bTruncateTable(Str* aWords[], i8 iWords)
     return false;
   }
 
-  StrLib::vCopy(a,"\"");
-  StrLib::vConcat(a,aWords[1]->a());
-  StrLib::vConcat(a,"\"");
+  sRequest.vCopy("\""_Str);
+  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat("\""_Str);
   
-  StrLib::vConcat(a," truncate_table");
+  sRequest.vConcat(" truncate_table"_Str);
   
   return bAppendRequest(sRequest);
 }
@@ -1436,21 +1436,21 @@ bool SEitf::bInsertBuffer(RowBuffer* pRowBuffer, i8 iPartition)
   char* a = sRequest.aStr();
   
   StrLib::wToString(iSlot, sBuffer.aStr());
-  StrLib::vCopy(a,"\"");
-  StrLib::vConcat(a,sBuffer.aStr());
-  StrLib::vConcat(a,"\"");
+  sRequest.vCopy("\""_Str);
+  sRequest.vConcat(sBuffer);
+  sRequest.vConcat("\""_Str);
   
   StrLib::wToString((i8)pRowBuffer, sBuffer.aStr());
-  StrLib::vConcat(a," \"");
-  StrLib::vConcat(a,sBuffer.aStr());
-  StrLib::vConcat(a,"\"");
+  sRequest.vConcat(" \""_Str);
+  sRequest.vConcat(sBuffer);
+  sRequest.vConcat("\""_Str);
   
   StrLib::wToString((i8)m_pCurrentTable, sBuffer.aStr());
-  StrLib::vConcat(a," \"");
-  StrLib::vConcat(a,sBuffer.aStr());
-  StrLib::vConcat(a,"\"");
+  sRequest.vConcat(" \""_Str);
+  sRequest.vConcat(sBuffer);
+  sRequest.vConcat("\""_Str);
   
-  StrLib::vConcat(a," append_table");
+  sRequest.vConcat(" append_table"_Str);
   
   vTrace("%s\n"_Str,a);
   
@@ -1468,11 +1468,11 @@ bool SEitf::bPushDic(Str* aWords[])
   
   char* a = sRequest.aStr();
   
-  StrLib::vCopy(a,"\"");
-  StrLib::vConcat(a,aWords[1]->a());
-  StrLib::vConcat(a,"\"");
+  sRequest.vCopy("\""_Str);
+  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat("\""_Str);
   
-  StrLib::vConcat(a," cf");
+  sRequest.vConcat(" cf"_Str);
   
   return bAppendRequest(sRequest);
 }
@@ -1625,7 +1625,7 @@ bool SEitf::bObject(Str* aWords[])
   s256 sRequest;
   char* a = sRequest.aStr();
   
-  StrLib::vConcat(a,"object");
+  sRequest.vConcat("object"_Str);
   
   return bAppendRequest(sRequest);
 }
@@ -1640,12 +1640,12 @@ bool SEitf::bPrintRowBuffer(Str* aWords[])
   s256 sRequest;
   char* a = sRequest.aStr();
   
-  StrLib::vCopy(a,"\"");
-  StrLib::vConcat(a,aWords[1]->a());
-  StrLib::vConcat(a,"\"");
+  sRequest.vCopy("\""_Str);
+  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat("\""_Str);
 
   ASSERT(aWords[0]->bEqual("pRB"_Str));
-  StrLib::vConcat(a," pRB");
+  sRequest.vConcat(" pRB"_Str);
   
   return bAppendRequest(sRequest);
 }
