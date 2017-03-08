@@ -103,7 +103,7 @@ Task::Task(void)
 //    throw (i8)__LINE__;
 //  }
   
-  vInit("");
+  vInit(""_Str);
     
   _checkInitialised_(CN_TASK);
   
@@ -125,7 +125,7 @@ Task::Task(NNP_Task nnpTask)
   ASSERT(*nnpTask);
   ASSERT(gpTaskList);
   
-  vInit("");
+  vInit(""_Str);
   
   _checkInitialised_(CN_TASK);
   
@@ -139,7 +139,7 @@ Task::Task(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Task::Task(const char* aLambdaInput)
+Task::Task(Str* aLambdaInput)
 : Object(CN_TASK)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
@@ -181,7 +181,7 @@ Task::~Task(void)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-void Task::vInit(const char* aLambda)
+void Task::vInit(Str* aLambda)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   

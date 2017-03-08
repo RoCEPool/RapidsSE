@@ -123,8 +123,8 @@ namespace Tasks
     
     Task(void);
     Task(NNP_Task nnpTask);
-    Task(const char* aLambda);
-    void vInit(const char* aLambda);
+    Task(Str* aLambda);
+    void vInit(Str* aLambda);
     ~Task(void);
     
     static void vDump(eCN eClass, Object* pObject, Str* aTab);
