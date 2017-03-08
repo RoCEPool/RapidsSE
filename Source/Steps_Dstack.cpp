@@ -211,7 +211,7 @@ void Task::vDstackDump(NNP_Task nnpTask)
   
   s48K sWorkspace;
   ValLib::vToString(&xValWsp,sWorkspace.aStr());
-  char* aClass = xValWsp.aClass();
+  Str* aClass = xValWsp.aClass();
   
   eCN eClass = xValWsp.eClass();
   

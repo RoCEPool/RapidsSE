@@ -23,7 +23,7 @@ namespace Magic
     void  vSetMagic(void);
     i8    iMagic(void) const;
   
-    char* aClass(void);
+    Str*  aClass(void);
     eCN   eClass(void) const;
     void  vClass(eCN eClassNo);
 
