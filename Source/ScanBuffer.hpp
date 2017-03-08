@@ -8,8 +8,8 @@ namespace Structures
   class ScanBuffer : public Buffer
   {
   private:
-    char* m_aNextMsg;  // address where next message starts
-    char* m_aEndData;  // address where data ends
+    Str* m_aNextMsg;  // address where next message starts
+    Str* m_aEndData;  // address where data ends
     WspFxd<C_1M> m_xWsp; // note this is 1M not 1MB
   
   public:
@@ -19,18 +19,18 @@ namespace Structures
     ScanBuffer(void);
     ~ScanBuffer(void);
     
-    char* aInto(i8& iAvailableBytes);
-    void  vMore(i8& iMoreBytes);
-    char* aScan(i8& iMessageBytes);
+    Str* aInto(i8& iAvailableBytes);
+    void vMore(i8& iMoreBytes);
+    Str* aScan(i8& iMessageBytes);
     
   private:
-    i8    iBytesAvailable(void);
-    void  vCopyUp(char* aDangling);
-    char* aFirstByte(void);
-    char* aLastByte(void);
-    void  vReset(void);
-    void  vWipe(void);
-    void  vWipe(char* aFrom);
+    i8   iBytesAvailable(void);
+    void vCopyUp(Str* aDangling);
+    Str* aFirstByte(void);
+    Str* aLastByte(void);
+    void vReset(void);
+    void vWipe(void);
+    void vWipe(Str* aFrom);
   };
 }
 

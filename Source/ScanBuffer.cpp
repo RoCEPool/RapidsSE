@@ -56,7 +56,7 @@ ScanBuffer::~ScanBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* get into area and number of available bytes                                */
 /*----------------------------------------------------------------------------*/
-char* ScanBuffer::aInto(i8& iAvailableBytes)
+Str* ScanBuffer::aInto(i8& iAvailableBytes)
 {
   //
   // a) no previous dangling portion
@@ -112,7 +112,7 @@ void ScanBuffer::vMore(i8& iBytesRead)
   
   _precondition_(_ADDRESS_,_MAGIC_,CN_SCANBUFFER,_FOOTER_);
   
-  m_aEndData = pAdd<char*>(m_aEndData,iBytesRead);
+  m_aEndData = pAdd<Str*>(m_aEndData,iBytesRead);
   
   m_aNextMsg = aFirstByte();
   ASSERT(m_aEndData >= aFirstByte() - 1);
@@ -132,7 +132,7 @@ void ScanBuffer::vMore(i8& iBytesRead)
 /*----------------------------------------------------------------------------*/
 /* scan for next message                                                      */
 /*----------------------------------------------------------------------------*/
-char* ScanBuffer::aScan(i8& nMessageBytes)
+Str* ScanBuffer::aScan(i8& nMessageBytes)
 {
   //
   // v- pFirstByte()                                          pLastByte() -v
@@ -153,10 +153,10 @@ char* ScanBuffer::aScan(i8& nMessageBytes)
   }
   
   // look for end of next record
-  char* pMsg = m_aNextMsg;
+  Str* pMsg = m_aNextMsg;
   while (m_aNextMsg <= m_aEndData) {
   
-    if (*m_aNextMsg == '\n') {
+    if (*(char*)m_aNextMsg == '\n') {
       nMessageBytes = nSub(m_aNextMsg,pMsg);
       ASSERT(nMessageBytes <= m_xWsp.nLength());
       m_aNextMsg++;
@@ -222,7 +222,7 @@ i8 ScanBuffer::iBytesAvailable(void)
 /*----------------------------------------------------------------------------*/
 /* copy dangling portion to beginning of workarea                             */
 /*----------------------------------------------------------------------------*/
-void ScanBuffer::vCopyUp(char* aDangling)
+void ScanBuffer::vCopyUp(Str* aDangling)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SCANBUFFER,_FOOTER_);
   
@@ -257,7 +257,7 @@ void ScanBuffer::vCopyUp(char* aDangling)
   ASSERT(nDanglingBytes <= m_xWsp.nLength());
   
   MemLib::vCopy(aFirstByte(),aDangling,nDanglingBytes);
-  m_aEndData = pAdd<char*>(aFirstByte(),nDanglingBytes - 1);
+  m_aEndData = pAdd<Str*>(aFirstByte(),nDanglingBytes - 1);
   
 //  if (iDanglingBytes < 1000) {
 //    vInfo("CopyUp %lld: "_Str,nDanglingBytes);
@@ -281,11 +281,11 @@ void ScanBuffer::vCopyUp(char* aDangling)
 /*----------------------------------------------------------------------------*/
 /* first byte of workarea                                                     */
 /*----------------------------------------------------------------------------*/
-char* ScanBuffer::aFirstByte(void)
+Str* ScanBuffer::aFirstByte(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SCANBUFFER,_FOOTER_);
   
-  char* pFirst = &m_xWsp.sArea()[0];
+  Str* pFirst = &m_xWsp.aArea()[0];
   
   return pFirst;
 }
@@ -293,11 +293,11 @@ char* ScanBuffer::aFirstByte(void)
 /*----------------------------------------------------------------------------*/
 /* last byte of workarea                                                      */
 /*----------------------------------------------------------------------------*/
-char* ScanBuffer::aLastByte(void)
+Str* ScanBuffer::aLastByte(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SCANBUFFER,_FOOTER_);
   
-  char* pLast = &m_xWsp.sArea()[m_xWsp.nLength() - 1];
+  Str* pLast = &m_xWsp.aArea()[m_xWsp.nLength() - 1];
   
   return pLast;
 }
@@ -342,11 +342,11 @@ void ScanBuffer::vWipe(void)
 /*----------------------------------------------------------------------------*/
 /* wipe work area                                                             */
 /*----------------------------------------------------------------------------*/
-void ScanBuffer::vWipe(char* aFrom)
+void ScanBuffer::vWipe(Str* aFrom)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SCANBUFFER,_FOOTER_);
   
-  ASSERT(aFrom >= m_xWsp.sArea());
+  ASSERT(aFrom >= m_xWsp.aArea());
   
   i8 nBytes = nSub(aLastByte(),aFrom) + 1;
   
