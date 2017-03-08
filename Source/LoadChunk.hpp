@@ -10,9 +10,9 @@ namespace Structures
   class LoadChunk : public Buffer
   {
   private:
-    File  m_xFile;       // file being loaded
-    char* m_aEndChunk;   // last byte of where chunk ends
-    char* m_aNextRecord; // first byte of next record
+    File m_xFile;       // file being loaded
+    Str* m_aEndChunk;   // last byte of where chunk ends
+    Str* m_aNextRecord; // first byte of next record
     WspFxd<C_LOADCHUNK_LENGTH> m_xWsp; // workspace
   
   public:
@@ -26,7 +26,7 @@ namespace Structures
     
     void  vCloseFile(void);
     i8    iNextRecord(void);
-    char* pNextRecord(i8& iRecordBytes);
+    Str*  aNextRecord(i8& iRecordBytes);
     void  vOpenFile(s256& sPath);
     void  vReadChunk(i8 iSeek, i8 nBytes);
     

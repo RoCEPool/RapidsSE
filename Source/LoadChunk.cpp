@@ -85,7 +85,7 @@ void LoadChunk::vCloseFile(void)
 /*----------------------------------------------------------------------------*/
 /* get address of next record and its byte length                             */
 /*----------------------------------------------------------------------------*/
-char* LoadChunk::pNextRecord(i8& iRecordBytes)
+Str* LoadChunk::aNextRecord(i8& iRecordBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADCHUNK,_FOOTER_);
   
@@ -105,10 +105,10 @@ char* LoadChunk::pNextRecord(i8& iRecordBytes)
   }
   
   // get start address of next record
-  char* pRecord = m_aNextRecord;
+  Str* pRecord = m_aNextRecord;
   
   // find end of next record
-  while ('\n' != *m_aNextRecord)
+  while ('\n' != *((char*)m_aNextRecord))
     m_aNextRecord++;
   
   // compute the number of bytes
@@ -150,8 +150,8 @@ void LoadChunk::vReadChunk(i8 iSeek, i8 nBytes)
   
   i8 iBytesRead = m_xFile.iReadChunk(m_xWsp.sArea(),nBytes);
 
-  m_aEndChunk   = &m_xWsp.sArea()[iBytesRead - 1];
-  m_aNextRecord = m_xWsp.sArea();
+  m_aEndChunk   = &m_xWsp.aArea()[iBytesRead - 1];
+  m_aNextRecord = m_xWsp.aArea();
 }
 
 /*----------------------------------------------------------------------------*/

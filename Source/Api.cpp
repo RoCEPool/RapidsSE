@@ -1386,7 +1386,7 @@ eEC RapidsSE_HashRowPartition(SEitf* pSEitf, Str* pRow, void** ppPartition)
     return EC_NO_SUCH_TABLE;
   }
   
-  pSEitf->m_iRowPartition = pSEitf->pCurrentTable()->iRowPartition(pRow->a());
+  pSEitf->m_iRowPartition = pSEitf->pCurrentTable()->iRowPartition(pRow);
   *ppPartition = &pSEitf->m_iRowPartition;
   
   return EC_NONE;

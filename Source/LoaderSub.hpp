@@ -16,7 +16,7 @@ namespace DBobjects
     TxRef*   m_pTxRef;   // tx
     LoadMap* m_pLoadMap; // load map
     
-    char*    m_pRecord;      // record from file
+    Str*     m_aRecord;      // record from file
     i8       m_iLength;      // length of record
     i8       m_iPartition;   // partition of record
     

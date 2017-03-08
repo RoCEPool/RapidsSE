@@ -66,7 +66,7 @@ LoaderSub::LoaderSub(void)
   m_pTxRef   = nullptr;
   m_pLoadMap = nullptr;
   
-  m_pRecord  = nullptr;
+  m_aRecord  = nullptr;
   m_iLength  = 0;
   m_iPartition  = 0;
   m_bMoreChunks = false;
@@ -180,9 +180,9 @@ bool LoaderSub::bFetchRecord(void)
     return false;
   
   // fetch next record from current chunk
-  m_pRecord = m_pLoadChunk->pNextRecord(m_iLength);
-  if (m_pRecord) {
-    //vDumpAscii(m_pRecord,m_iLength);
+  m_aRecord = m_pLoadChunk->aNextRecord(m_iLength);
+  if (m_aRecord) {
+    //vDumpAscii(m_aRecord,m_iLength);
     return true;
   }
   
@@ -192,8 +192,8 @@ bool LoaderSub::bFetchRecord(void)
     return false;
   
   // fetch first record from chunk just read
-  m_pRecord = m_pLoadChunk->pNextRecord(m_iLength);
-  if (m_pRecord)
+  m_aRecord = m_pLoadChunk->aNextRecord(m_iLength);
+  if (m_aRecord)
     return true;
   
   return false;
@@ -208,15 +208,15 @@ void LoaderSub::vHashRecord(void)
 
   // calculate length of first field
   i8 iLength = 0;
-  char* pChar = m_pRecord;
+  char* pChar = (char*)m_aRecord;
   while ('|' != *pChar++)
     iLength++;
   
   // hash the field using xxhash
-  //m_iHash = XXH32(m_pRecord,iLength,0);
+  //m_iHash = XXH32(m_aRecord,iLength,0);
   //m_iPartition = m_iHash % (gxArguments.m_nSlots * gpGrid->iNodes());
   
-  m_iPartition = m_pTable->iRowPartition(m_pRecord);
+  m_iPartition = m_pTable->iRowPartition(m_aRecord);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -241,7 +241,7 @@ bool LoaderSub::bInsertRow(void)
   RowBuffer* pRowBuffer = m_pRowBuffer[m_iPartition];
 
   // insert row into working buffer
-  if (pRowBuffer->bInsertRow(m_pTxRef,(Str*)m_pRecord,m_iLength))
+  if (pRowBuffer->bInsertRow(m_pTxRef,m_aRecord,m_iLength))
     return true;
   
   // buffer full, append working buffer into table
@@ -257,7 +257,7 @@ bool LoaderSub::bInsertRow(void)
   pRowBuffer = m_pRowBuffer[m_iPartition];
   
   // insert row into new working buffer
-  bool bInserted = pRowBuffer->bInsertRow(m_pTxRef,(Str*)m_pRecord,m_iLength);
+  bool bInserted = pRowBuffer->bInsertRow(m_pTxRef,m_aRecord,m_iLength);
   
   return bInserted;
 }
@@ -284,7 +284,7 @@ bool LoaderSub::bInsertRow2(void)
   RowBuffer* pRowBuffer = m_pRowBuffer[m_iPartition];
   
   // insert row into working buffer
-  bool b = pRowBuffer->bInsertRow(m_pTxRef,(Str*)m_pRecord,m_iLength);
+  bool b = pRowBuffer->bInsertRow(m_pTxRef,m_aRecord,m_iLength);
   
   return b;
 }

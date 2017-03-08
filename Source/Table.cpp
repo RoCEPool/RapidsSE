@@ -188,13 +188,13 @@ void Table::vAppendBuffer(i8 iPartition, RowBuffer* pRowBuffer)
 /*----------------------------------------------------------------------------*/
 /* hash the first field of row return partition                               */
 /*----------------------------------------------------------------------------*/
-i8 Table::iRowPartition(char* pRow)
+i8 Table::iRowPartition(Str* pRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
   // calculate length of first field
   i8 iLength = 0;
-  char* pChar = pRow;
+  char* pChar = (char*)pRow;
   while ('|' != *pChar++)
     iLength++;
   
