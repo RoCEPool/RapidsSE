@@ -600,11 +600,15 @@ bool SEitf::bCreateSchema(Str* aWords[], i8 iWords)
     return false;
   }
   
-  StrLib::vCopy(a,"\"");
-  StrLib::vConcat(a,aWords[1]->a());
-  StrLib::vConcat(a,"\"");
-  
-  StrLib::vConcat(a," create_schema");
+//  StrLib::vCopy(a,"\"");
+//  StrLib::vConcat(a,aWords[1]->a());
+//  StrLib::vConcat(a,"\"");
+//
+//  StrLib::vConcat(a," create_schema");
+
+  sRequest.vCopyCat("\""_Str,aWords[1]->a(),"\""_Str,
+                    " create_schema"_Str,
+                    nullptr);
   
   return bAppendRequest(sRequest);
 }

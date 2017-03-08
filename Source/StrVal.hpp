@@ -40,6 +40,8 @@ namespace Values
     void  vAssign(Str* aStr, i8 iLength);
     void  vCopy(const char* aStr);
     void  vCopy(const char* aStr, i8 iLength);
+    void  vCopy(Str* aStr);
+    void  vCopyCat(Str* aStr, ...);
     bool  bEnds(const char* aSuffix);
     bool  bIsEqual(StrVal& sArg, i8 iCase);
     bool  bEqual(Str* aArg);

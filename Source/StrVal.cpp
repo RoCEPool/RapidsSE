@@ -298,6 +298,39 @@ void StrVal::vCopy(const char* aStr, i8 iLength)
 }
 
 /*----------------------------------------------------------------------------*/
+/* copy given Str                                                             */
+/*----------------------------------------------------------------------------*/
+void StrVal::vCopy(Str* aStr)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+  
+  StrLib::vCopyLen(aArea(),aStr->a(),m_xWsp.nSize()-1);
+  
+  _postcondition_(_MAGIC_,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* copy cat given Strs                                                        */
+/*----------------------------------------------------------------------------*/
+void StrVal::vCopyCat(Str* aStr, ...)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+  
+  va_list xVarArgs;
+  
+  va_start(xVarArgs,aStr);
+  
+  StrLib::vCopyLen(aArea(),aStr->a(),m_xWsp.nSize()-1);
+
+  while (Str* aArg = va_arg(xVarArgs,Str*))
+    StrLib::vConcat(aArea(),aArg->a());
+  
+  va_end(xVarArgs);
+
+  _postcondition_(_MAGIC_,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
 /* test if string ends with given suffix                                      */
 /*----------------------------------------------------------------------------*/
 bool StrVal::bEnds(const char* aSuffix)
