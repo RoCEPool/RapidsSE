@@ -778,7 +778,7 @@ void Task::vSemicolon(NNP_Task nnpTask)
     
     s32 sTildeName;
     sTildeName = "~"_Str;
-    StrLib::vConcat(sTildeName.aStr(),pCurrentWord->sName().aStr());
+    sTildeName.vConcat(pCurrentWord->sName());
     
     // create new word for tilde of current word
     Dic* pDic;

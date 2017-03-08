@@ -225,9 +225,9 @@ void Task::vInit(Str* aLambda)
   m_pCurrentWord = nullptr;
   m_nSubDic      = 0;
   
-  m_sLambda = (Str*)aLambda;
+  m_sLambda = aLambda;
   if (m_sLambda.iLength())
-    StrLib::vConcat(m_sLambda.aStr()," exit");
+    m_sLambda.vConcat(" exit"_Str);
   
   m_pTokeniser = new Tokeniser;
   m_pTokeniser->vPush();

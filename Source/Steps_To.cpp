@@ -104,7 +104,7 @@ void Task::vToCmd(NNP_Task nnpTask)
     nnpTask->m_pDataStack->vPeek(i,&xValWsp);
     
     if (i)
-      StrLib::vConcat(sCmd.aStr()," ");
+      sCmd.vConcat(" "_Str);
     
     char* aCmdEnd = StrLib::zTerminator(sCmd.aStr());
     
