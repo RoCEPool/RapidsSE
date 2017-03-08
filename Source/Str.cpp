@@ -71,6 +71,14 @@ char* Str::a(void)
 /*----------------------------------------------------------------------------*/
 /* bEqual: test if this Str is equal to arg (same case)                       */
 /*----------------------------------------------------------------------------*/
+void Str::vConcat(Str* aArg)
+{
+  StrLib::vConcat(a(),aArg->a());
+}
+
+/*----------------------------------------------------------------------------*/
+/* bEqual: test if this Str is equal to arg (same case)                       */
+/*----------------------------------------------------------------------------*/
 bool Str::bEqual(Str* aArg)
 {
   i8 iDiff = strcmp(a(),aArg->a());
@@ -93,7 +101,6 @@ bool Str::bSame(Str* aArg)
   else
     return false;
 }
-
 
 /*----------------------------------------------------------------------------*/
 /* iToI8: convert arg to i8                                                   */
