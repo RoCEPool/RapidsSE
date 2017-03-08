@@ -21,12 +21,8 @@ namespace Values
    ~StrVar(void);
     
     void operator =(Str* aArg);
-    void operator =(char* aArg);
     void operator =(StrVal& xArg);
-  
-//    operator Str  (void);
-//    operator Str& (void);
-//    operator Str* (void);
+    void operator =(StrVal* pArg);
   
     void vTest(void);
   
@@ -100,22 +96,22 @@ void StrVar<SIZE>::operator =(Str* aArg)
 /* assignment operator                                                        */
 /*----------------------------------------------------------------------------*/
 template <int SIZE>
-void StrVar<SIZE>::operator =(char* aArg)
+void StrVar<SIZE>::operator =(StrVal& rArg)
 {
   _precondition_(_MAGIC_,CN_STRVAR,_FOOTER_);
   
-  StrVal::vCopy(aArg);
+  vCopy(rArg.aStr());
 }
 
 /*----------------------------------------------------------------------------*/
 /* assignment operator                                                        */
 /*----------------------------------------------------------------------------*/
 template <int SIZE>
-void StrVar<SIZE>::operator =(StrVal& rArg)
+void StrVar<SIZE>::operator =(StrVal* pArg)
 {
   _precondition_(_MAGIC_,CN_STRVAR,_FOOTER_);
   
-  vCopy(rArg.aStr());
+  vCopy(pArg->aArea());
 }
 
 /*----------------------------------------------------------------------------*/

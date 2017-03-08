@@ -74,8 +74,8 @@ Node::Node(i8 iNodeNo, char* pName, char* pIpAddress, i8 iPortNo)
   _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
   
   m_iNodeNo   = iNodeNo;
-  m_sNodeName = pName;
-  m_sNodeIP   = pIpAddress;
+  m_sNodeName = (Str*)pName;
+  m_sNodeIP   = (Str*)pIpAddress;
   m_iPortNo   = iPortNo;
   
   _checkInitialised_(CN_NODE);

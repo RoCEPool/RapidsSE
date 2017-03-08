@@ -149,7 +149,7 @@ ENTRY("vSelCursorGet");
   ASSERT(CN_SELCURSOR == pSelCursor->eClass());
   
   s48K xRow;
-  xRow = pSelCursor->pRowAsStr();
+  xRow = (Str*)pSelCursor->pRowAsStr();
   
   nnpTask->m_pDataStack->vPush(xRow);
   

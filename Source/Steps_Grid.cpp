@@ -210,7 +210,7 @@ void Task::vGridThisNodeNameFetch(NNP_Task nnpTask)
   ENTRY("vGridThisNodeNameFetch");
   
   s256 sName;
-  sName = gpGrid->pThisNode()->pNodeName();
+  sName = (Str*)gpGrid->pThisNode()->pNodeName();
   
   nnpTask->m_pDataStack->vPush(sName);
   

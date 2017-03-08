@@ -75,7 +75,7 @@ bool Magnitudes::bBytes(Str* psBuf, i8& iBytes)
     StrLib::vCopyTill(sNumber.aStr(), sString.aStr(), 'b');
     iMagnitude = 1;
   } else {
-    sNumber = sString.aStr();
+    sNumber = sString;
   }
   
   char* ps = sNumber.aStr();

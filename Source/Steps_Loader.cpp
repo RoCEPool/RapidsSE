@@ -178,7 +178,7 @@ void Task::vLoaderPathStore(NNP_Task nnpTask)
   ASSERT(CN_LOADER == pLoader->eClass());
   
   s256 sPath;
-  sPath = _pStrVal(&xWspPath)->aStr();
+  sPath = _pStrVal(&xWspPath);
   
   pLoader->vPath(sPath);
   

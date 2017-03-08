@@ -1436,7 +1436,7 @@ eEC RapidsSE_PoolOpen(char* pInstanceName, void** ppInstance)
   // open the pool
   s256 sPoolName;
   
-  sPoolName = pInstanceName;
+  sPoolName = (Str*)pInstanceName;
   bool bResult = RapidsSE::bPoolOpen(sPoolName);
   
   if (!bResult) {

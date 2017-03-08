@@ -79,7 +79,7 @@ void Task::vNodeIP(NNP_Task nnpTask)
   ASSERT(CN_NODE == pNode->eClass());
   
   s256 sIP;
-  sIP = pNode->pNodeIP();
+  sIP = (Str*)pNode->pNodeIP();
   nnpTask->m_pDataStack->vPush(sIP);
   
   EXIT();
@@ -124,7 +124,7 @@ void Task::vNodeName(NNP_Task nnpTask)
   ASSERT(CN_NODE == pNode->eClass());
   
   s256 sName;
-  sName = pNode->pNodeName();
+  sName = (Str*)pNode->pNodeName();
   nnpTask->m_pDataStack->vPush(sName);
   
   EXIT();

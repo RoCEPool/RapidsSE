@@ -127,7 +127,7 @@ bool Dir::bGetCurrent(s256& rPath)
   
   char* aDirPath = getcwd(rPath.aStr(),rPath.nAreaSize());
 
-  m_sDirPath = aDirPath;
+  m_sDirPath = (Str*)aDirPath;
   
   if ( ! aDirPath ) {
     m_xSysCall.vError(errno);
@@ -358,7 +358,7 @@ bool Dir::bRead(void)
     return false;
   }
   
-  m_sEntryName = pDirEnt->d_name;
+  m_sEntryName = (Str*)pDirEnt->d_name;
   
   m_iEntryType = pDirEnt->d_type;
   
