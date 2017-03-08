@@ -90,7 +90,7 @@ void Loader::vDump(eCN eClass, Object* pObject, Str* aTab)
   
   Loader* pLoader = reinterpret_cast<Loader*>(pObject);
   
-  vTrace("table %s\n"_Str,pLoader->m_pTable->pTableName());
+  vTrace("table %s\n"_Str,pLoader->m_pTable->aTableName());
 }
 
 /*----------------------------------------------------------------------------*/

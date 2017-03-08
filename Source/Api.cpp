@@ -55,11 +55,11 @@ eEC RapidsSE_AddColumn(SEitf* pSEitf, Str* pColumnName, Str* pColumnType)
   }
   
   if (gpGrid->m_bTraceapi)
-    vTrace("Table: %s\n"_Str, pTable->pTableName());
+    vTrace("Table: %s\n"_Str, pTable->aTableName());
 
   // add a column
   eResult = eExecuteRequest(pSEitf, "add"_Str,
-                            (Str*)pTable->pTableName(),
+                            (Str*)pTable->aTableName(),
                             (Str*)pColumnName,
                             (Str*)pColumnType);
   if (EC_NONE != eResult) {

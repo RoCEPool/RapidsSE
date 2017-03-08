@@ -290,11 +290,11 @@ void Table::vTruncate(void)
 /*----------------------------------------------------------------------------*/
 /* get the table name                                                         */
 /*----------------------------------------------------------------------------*/
-char* Table::pTableName(void)
+Str* Table::aTableName(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
-  return m_sTableName.aStr();
+  return m_sTableName;
 }
 
 /*----------------------------------------------------------------------------*/

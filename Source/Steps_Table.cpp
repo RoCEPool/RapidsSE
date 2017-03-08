@@ -242,7 +242,7 @@ void Task::vTableName(NNP_Task nnpTask)
   
   s32 sName;
   
-  sName = (Str*)pTable->pTableName();
+  sName = (Str*)pTable->aTableName();
   
   nnpTask->m_pDataStack->vPush(sName);
 

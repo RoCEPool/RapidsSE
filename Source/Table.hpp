@@ -38,7 +38,7 @@ namespace DBobjects
     void  operator delete(void*);
     
     Table(void);
-    Table(Str* pTableName);
+    Table(Str* aTableName);
     ~Table(void);
     
     static void vDump(eCN eClass, Object* pObject, Str* aTab);
@@ -51,7 +51,7 @@ namespace DBobjects
     i8   nRowBuffers(void);
     void vTruncate(void);
         
-    char* pTableName(void);
+    Str*  aTableName(void);
     void  vTableName(StrVal& sName);
     void  vContentDump(void);
     
