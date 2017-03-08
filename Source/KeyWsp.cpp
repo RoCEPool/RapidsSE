@@ -90,11 +90,21 @@ void KeyWsp::vAddElement(Values::ValWsp &xValWsp)
 /*----------------------------------------------------------------------------*/
 /* get wsp area                                                               */
 /*----------------------------------------------------------------------------*/
-char* KeyWsp::aWspArea(void)
+char* KeyWsp::sWspArea(void)
 {
   _precondition_(_MAGIC_,CN_KEYWSP,_FOOTER_);
   
   return m_xWsp.sArea();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get wsp area                                                               */
+/*----------------------------------------------------------------------------*/
+Str* KeyWsp::aWspArea(void)
+{
+  _precondition_(_MAGIC_,CN_KEYWSP,_FOOTER_);
+  
+  return m_xWsp.aArea();
 }
 
 /*----------------------------------------------------------------------------*/

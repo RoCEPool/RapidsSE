@@ -118,7 +118,7 @@ Key* EntWsp::pKey(void)
 /*----------------------------------------------------------------------------*/
 void EntWsp::vAddKey(KeyWsp& xKeyWsp)
 {
-  char* pSrc = xKeyWsp.aWspArea();
+  Str* pSrc = xKeyWsp.aWspArea();
   i8 nBytes  = xKeyWsp.nWspUsed();
   
   m_xWsp.vAppend(pSrc,nBytes);

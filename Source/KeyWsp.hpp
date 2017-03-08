@@ -22,7 +22,8 @@ namespace DBobjects
 
     void vAddElement(ValWsp& xValWsp);
   
-    char* aWspArea(void);
+    char* sWspArea(void);
+    Str*  aWspArea(void);
     i8    nWspUsed(void);
 
     Footer* pFooter(void);
