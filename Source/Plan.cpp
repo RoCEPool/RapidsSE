@@ -142,7 +142,7 @@ void Plan::vAppendToLambda(s48K& sText)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLAN,_FOOTER_);
   
-  StrLib::vConcat(m_sLambda.aStr(), sText.aStr());
+  m_sLambda.vConcat(sText);
 }
 
 /*----------------------------------------------------------------------------*/
