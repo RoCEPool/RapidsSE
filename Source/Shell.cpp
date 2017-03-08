@@ -7,11 +7,11 @@
 /*----------------------------------------------------------------------------*/
 /* iExecute: execute shell command (returns exit code)                        */
 /*----------------------------------------------------------------------------*/
-i8 Shell::iExecute(const char* sCommand, SysCall& xSysCall)
+i8 Shell::iExecute(Str* sCommand, SysCall& xSysCall)
 {
   xSysCall.vClear();
 
-  i8 iExit = system(sCommand);
+  i8 iExit = system(sCommand->a());
   
   if (-1 == iExit || 127 == iExit) {
     xSysCall.vError(errno);
