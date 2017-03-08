@@ -564,52 +564,6 @@ bool File::bReadLine(Str* aBuffer)
 /*----------------------------------------------------------------------------*/
 /* read next line                                                             */
 /*----------------------------------------------------------------------------*/
-//bool File::bReadLine(StrVal& s)
-//{
-//  _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
-//
-//  m_xSysCall.vClear();
-//  
-//  // nb: man fscanf does not indicate that errno gets set???
-//
-//  //i8 nItems;
-//  
-////  if (stdin == m_aFilePtr)
-////    nItems = fscanf(m_aFilePtr,"%[^\n]%*c",s.aStr());
-////  else
-////    nItems = fscanf(m_aFilePtr,"%[^\n]\n",s.aStr());
-//
-////  *s.aStr() = '\0';
-////  for (;;) {
-////     char c = getc(m_aFilePtr);
-////     if ('\n' == c || (char)EOF ==c)
-////       break;
-////     else
-////       StrLib::vConcat(s.aStr(),c);
-////  }
-//
-//  char* z = s.aStr();
-//  
-//  *z = '\0';
-//  for (;;) {
-//    char c = getc(m_aFilePtr);
-//    if ('\n' == c || (char)EOF ==c)
-//      break;
-//    else
-//      StrLib::vAppendChar(&z,c);
-//  }
-//  
-//  StrLib::vAppendChar(&z,'\0');
-//  
-//  if (*s.aStr()) {
-//    m_xSysCall.vSuccess();
-//    return true;
-//  }
-//  else {
-//    return false;
-//  }
-//}
-//------------------------------------------------------------------------------
 bool File::bReadLine(StrVal& s)
 {
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
