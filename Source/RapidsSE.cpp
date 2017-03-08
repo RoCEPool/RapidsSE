@@ -297,7 +297,7 @@ void RapidsSE::vInitJumboHeap(void)
 void RapidsSE::vRunCommand(void)
 {
   // seed root task to run command using the docol interpreter
-  gnpRootTask->vSeedWord(gxArguments.m_sCommand.aStr());
+  gnpRootTask->vSeedWord(gxArguments.m_sCommand);
   
   // append root task onto root thread's task set
   // root thread will pop the root task and run it
@@ -373,7 +373,7 @@ void RapidsSE::vStartActors(void)
 
   
   // seed root task to start the system
-  gnpRootTask->vSeedWord("startActors");
+  gnpRootTask->vSeedWord("startActors"_Str);
   
   if (gxArguments.m_bVerbose)
     vTrace("[[mainThread]] RapidsSE::vStartActors launching [%s] %p\n"_Str,

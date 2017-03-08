@@ -364,7 +364,6 @@ ENTRY("vTaskNew"_Str);
   s32 sSeed;
   if ( ! nnpTask->m_pDataStack->bPop(sSeed) )
     THROW_INVALID_DSTACK("task.new"_Str);
-  char* aSeedWord = sSeed.aStr();
   
   i8 nTaskArgs;
   if ( ! nnpTask->m_pDataStack->bPop(nTaskArgs) )
@@ -378,7 +377,7 @@ ENTRY("vTaskNew"_Str);
   NNP_Task nnpNewTask = new Task;
   
   nnpNewTask->m_pParentTask = pParentTask;
-  nnpNewTask->vSeedWord(aSeedWord);
+  nnpNewTask->vSeedWord(sSeed);
   
   // copy task arguments to new task (preserving stack order)
   ValWsp xValWsp;
@@ -495,7 +494,7 @@ ENTRY("vTaskSeed"_Str);
   s32 sSeed;
   if ( ! nnpTask->m_pDataStack->bPop(sSeed) )
     THROW_INVALID_DSTACK("task.seed"_Str);
-  pThatTask->vSeedWord(sSeed.aStr());
+  pThatTask->vSeedWord(sSeed);
 
   i8 nTaskArgs;
   if ( ! nnpTask->m_pDataStack->bPop(nTaskArgs) )

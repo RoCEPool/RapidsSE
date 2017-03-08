@@ -1431,7 +1431,7 @@ void Task::vSeedDicCompileSen(void)
 /*----------------------------------------------------------------------------*/
 /* seed task to run given lamda                                               */
 /*----------------------------------------------------------------------------*/
-void Task::vSeedWord(const char* aLambda)
+void Task::vSeedWord(Str* aLambda)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
@@ -1444,9 +1444,9 @@ void Task::vSeedWord(const char* aLambda)
   m_pDataStack->vReset();
   m_pReturnStack->vReset();
   
-  m_sLambda = (Str*)aLambda;
+  m_sLambda = aLambda;
   if (m_sLambda.iLength())
-    StrLib::vConcat(m_sLambda.aStr()," ::task_exit");
+    m_sLambda.vConcat(" ::task_exit"_Str);
   
   m_pTokeniser->vUseString(m_sLambda);
 }

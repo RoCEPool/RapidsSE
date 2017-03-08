@@ -160,7 +160,7 @@ namespace Tasks
     Threads::Thread* pRootThread(void);
     void vSeedDicCompileSen(void);
     void vSeedDocol(void);
-    void vSeedWord(const char *aWord);
+    void vSeedWord(Str *aWord);
     void vSprint(s48K& sFormat, s48K& sString);
     void vStackContents(Stack* pStack, StrVal& sStackContents);
     eTS  eState(void);
