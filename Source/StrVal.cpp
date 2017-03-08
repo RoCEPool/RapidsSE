@@ -198,6 +198,18 @@ void StrVal::operator =(Str* aStr)
 }
 
 /*----------------------------------------------------------------------------*/
+/* assignment operator                                                        */
+/*----------------------------------------------------------------------------*/
+void StrVal::operator =(ValWsp& rArg)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+  
+  vCopy(rArg.aWspArea());
+  
+  _postcondition_(_MAGIC_,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
 /* append given char                                                          */
 /*----------------------------------------------------------------------------*/
 void StrVal::vAppend(const char cChar)
