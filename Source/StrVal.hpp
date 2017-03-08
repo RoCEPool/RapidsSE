@@ -21,15 +21,16 @@ namespace Values
   
     ~StrVal(void);
   
-    operator Str& (void);
-    operator Str* (void);
-  
-  
+    operator Str&(void);
+    operator Str*(void);
+
+
     static i8 nAreaRequired(i8 iLength);
   
     void operator =(const char* aArg);
     void operator =(char* aArg);
     void operator =(StrVal& rArg);
+    void operator =(Str*);
   
     void  vAppend(const char cChar);
     void  vAppend(const char* aStr);
@@ -38,6 +39,8 @@ namespace Values
     void  vAreaSize(void);
     void  vAssign(Str* aStr);
     void  vAssign(Str* aStr, i8 iLength);
+    void  vCat(Str* aStr, ...);
+    void  vConcat(Str* aStr);
     void  vCopy(const char* aStr);
     void  vCopy(const char* aStr, i8 iLength);
     void  vCopy(Str* aStr);

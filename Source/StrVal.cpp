@@ -186,6 +186,18 @@ void StrVal::operator =(StrVal& rArg)
 }
 
 /*----------------------------------------------------------------------------*/
+/* assignment operator                                                        */
+/*----------------------------------------------------------------------------*/
+void StrVal::operator =(Str* aStr)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+  
+  vCopy(aStr->a());
+  
+  _postcondition_(_MAGIC_,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
 /* append given char                                                          */
 /*----------------------------------------------------------------------------*/
 void StrVal::vAppend(const char cChar)
@@ -274,6 +286,39 @@ void StrVal::vAssign(Str* aStr, i8 iLength)
 }
 
 /*----------------------------------------------------------------------------*/
+/* cat given variable sequence of Str's                                       */
+/*----------------------------------------------------------------------------*/
+void StrVal::vCat(Str* aStr, ...)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+  
+  va_list xVarArgs;
+  
+  va_start(xVarArgs,aStr);
+
+  StrLib::vConcat(aArea(),aStr->a());
+  
+  while (Str* aArg = va_arg(xVarArgs,Str*))
+    StrLib::vConcat(aArea(),aArg->a());
+  
+  va_end(xVarArgs);
+  
+  _postcondition_(_MAGIC_,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* concat given Str                                                           */
+/*----------------------------------------------------------------------------*/
+void StrVal::vConcat(Str* aStr)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+  
+  StrLib::vConcat(aArea(),aStr->a());
+  
+  _postcondition_(_MAGIC_,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
 /* copy given str                                                             */
 /*----------------------------------------------------------------------------*/
 void StrVal::vCopy(const char* aStr)
@@ -310,7 +355,7 @@ void StrVal::vCopy(Str* aStr)
 }
 
 /*----------------------------------------------------------------------------*/
-/* copy cat given Strs                                                        */
+/* copy given Str, then concat variable sequence of Str's                     */
 /*----------------------------------------------------------------------------*/
 void StrVal::vCopyCat(Str* aStr, ...)
 {
