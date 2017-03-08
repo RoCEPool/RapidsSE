@@ -42,7 +42,7 @@ void Task::vAddPrimitives_Vector(void)
 /*----------------------------------------------------------------------------*/
 void Task::vVectorDifference(NNP_Task nnpTask)
 {
-  ENTRY("vVectorDifference");
+  ENTRY("vVectorDifference"_Str);
   
   ValSet xValSet1;
   ValSet xValSet2;

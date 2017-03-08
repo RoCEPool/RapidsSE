@@ -49,7 +49,7 @@ StepArray::~StepArray(void)
 /*----------------------------------------------------------------------------*/
 /* allocate a step accumulator                                                */
 /*----------------------------------------------------------------------------*/
-StepAccum* StepArray::pAllocAccum(const char* pFnName)
+StepAccum* StepArray::pAllocAccum(Str* aFnName)
 {
   m_zLock.vGrabWrite();
 
@@ -59,7 +59,7 @@ StepAccum* StepArray::pAllocAccum(const char* pFnName)
  
   ASSERT(iAccum < C_STEPS);
   
-  m_xStepAccum[iAccum].m_aFnName = pFnName;
+  m_xStepAccum[iAccum].m_aFnName = aFnName;
   
   return &m_xStepAccum[iAccum];
 }

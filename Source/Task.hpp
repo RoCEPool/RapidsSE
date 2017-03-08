@@ -154,7 +154,7 @@ namespace Tasks
     void vNextInSet(NP_Task npNext);
     NP_Task npPrevInSet(void);
     void vPrevInSet(NP_Task npPrev);
-    void vPrimitive(const char *aPrimitive);
+    void vPrimitive(Str *aPrimitive);
     void vReset(void);
     void vRetry(void);
     Threads::Thread* pRootThread(void);

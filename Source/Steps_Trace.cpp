@@ -45,7 +45,7 @@ void Task::vAddPrimitives_Trace(void)
 /*----------------------------------------------------------------------------*/
 void Task::vTraceOff(NNP_Task nnpTask)
 {
-  ENTRY("vTraceOff");
+  ENTRY("vTraceOff"_Str);
   
   nnpTask->m_iTracing = 0;
   
@@ -57,7 +57,7 @@ void Task::vTraceOff(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTraceOn(NNP_Task nnpTask)
 {
-  ENTRY("vTraceOn");
+  ENTRY("vTraceOn"_Str);
   
   nnpTask->m_iTracing = C_TRACE_STEPS;
   
@@ -69,7 +69,7 @@ void Task::vTraceOn(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTracePoint(NNP_Task nnpTask)
 {
-  ENTRY("vTracePoint");
+  ENTRY("vTracePoint"_Str);
   
   s256 sPointName;
   
@@ -87,7 +87,7 @@ void Task::vTracePoint(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTraceSet(NNP_Task nnpTask)
 {
-  ENTRY("vTraceSet");
+  ENTRY("vTraceSet"_Str);
   
   i8 iTrace;
   

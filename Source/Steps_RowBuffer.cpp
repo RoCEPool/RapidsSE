@@ -45,7 +45,7 @@ void Task::vAddPrimitives_RowBuffer(void)
 /*----------------------------------------------------------------------------*/
 void Task::vRowBufferAppend(NNP_Task nnpTask)
 {
-ENTRY("vRowBufferAppend");
+ENTRY("vRowBufferAppend"_Str);
   
   Object* pPtrRowBuffer;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrRowBuffer) )
@@ -83,7 +83,7 @@ ENTRY("vRowBufferAppend");
 /*----------------------------------------------------------------------------*/
 void Task::vRowBufferAppendRecord(NNP_Task nnpTask)
 {
-  ENTRY("vRowBufferAppendRecord");
+  ENTRY("vRowBufferAppendRecord"_Str);
   
   Object* pPtrRowBuffer;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrRowBuffer) )
@@ -125,7 +125,7 @@ void Task::vRowBufferAppendRecord(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRowBufferDump(NNP_Task nnpTask)
 {
-  ENTRY("vRowBufferDump");
+  ENTRY("vRowBufferDump"_Str);
   
   Object* pPtrRowBuffer;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrRowBuffer) )
@@ -148,7 +148,7 @@ void Task::vRowBufferDump(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRowBufferNew(NNP_Task nnpTask)
 {
-  ENTRY("vRowBufferNew");
+  ENTRY("vRowBufferNew"_Str);
   
   RowBuffer* pRowBuffer = new RowBuffer;
   ASSERT(CN_ROWBUFFER == pRowBuffer->eClass());

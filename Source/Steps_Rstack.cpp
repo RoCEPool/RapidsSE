@@ -66,7 +66,7 @@ void Task::vAddPrimitives_Rstack(void)
 /*----------------------------------------------------------------------------*/
 void Task::vRstackCsPick(NNP_Task nnpTask)
 {
-  ENTRY("vRstackCsPick");
+  ENTRY("vRstackCsPick"_Str);
   
   // could do this directly on stack
   
@@ -96,7 +96,7 @@ void Task::vRstackCsPick(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRstackCsRoll(NNP_Task nnpTask)
 {
-  ENTRY("vRstackCsRoll");
+  ENTRY("vRstackCsRoll"_Str);
   
   // pop n values
   i8 nValues;
@@ -133,7 +133,7 @@ void Task::vRstackCsRoll(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRstackDepth(NNP_Task nnpTask)
 {
-  ENTRY("vRstackDepth");
+  ENTRY("vRstackDepth"_Str);
   
   i8 iDepth = nnpTask->m_pReturnStack->iValues();
   
@@ -147,7 +147,7 @@ void Task::vRstackDepth(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRstackDrop(NNP_Task nnpTask)
 {
-  ENTRY("vRstackDrop");
+  ENTRY("vRstackDrop"_Str);
   
   // should just discard on stack
   
@@ -163,7 +163,7 @@ void Task::vRstackDrop(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRstackFetch(NNP_Task nnpTask)
 {
-  ENTRY("vRstackFetch");
+  ENTRY("vRstackFetch"_Str);
   
   // could do this directly on stack
   
@@ -181,7 +181,7 @@ void Task::vRstackFetch(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRstackFetchTwo(NNP_Task nnpTask)
 {
-  ENTRY("vRstackFetchTwo");
+  ENTRY("vRstackFetchTwo"_Str);
   
   // could do this directly on stack
   
@@ -202,7 +202,7 @@ void Task::vRstackFetchTwo(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRstackPick(NNP_Task nnpTask)
 {
-  ENTRY("vRstackPick");
+  ENTRY("vRstackPick"_Str);
   
   i8 iPick;
   if ( ! nnpTask->m_pDataStack->bPopParamInt(iPick) )
@@ -224,7 +224,7 @@ void Task::vRstackPick(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRstackReverse(NNP_Task nnpTask)
 {
-  ENTRY("vRstackReverse");
+  ENTRY("vRstackReverse"_Str);
   
   ValWsp xVal0;
   ValWsp xVal1;
@@ -258,7 +258,7 @@ void Task::vRstackReverse(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRstackRoll(NNP_Task nnpTask)
 {
-  ENTRY("vRstackRoll");
+  ENTRY("vRstackRoll"_Str);
   
   ValWsp xValA;
   ValWsp xValX;
@@ -294,7 +294,7 @@ void Task::vRstackRoll(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRstackRollInv(NNP_Task nnpTask)
 {
-  ENTRY("vRstackRollInv");
+  ENTRY("vRstackRollInv"_Str);
   
   ValWsp xValZ;
   ValWsp xValX;
@@ -332,7 +332,7 @@ void Task::vRstackRollInv(NNP_Task nnpTask)
 /*
 void Task::vRstackStk(NNP_Task nnpTask)
 {
-  ENTRY("vRstackStk");
+  ENTRY("vRstackStk"_Str);
   
   nnpTask->m_pReturnStack->vDump(nnpTask->m_sName.aStr(),"ReturnStack:");
   
@@ -345,7 +345,7 @@ void Task::vRstackStk(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRstackSwap(NNP_Task nnpTask)
 {
-  ENTRY("vRstackSwap");
+  ENTRY("vRstackSwap"_Str);
   
   ValWsp xValA;
   ValWsp xValB;
@@ -364,7 +364,7 @@ void Task::vRstackSwap(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRstackToP(NNP_Task nnpTask)
 {
-  ENTRY("vRstackToP");
+  ENTRY("vRstackToP"_Str);
   
   ValWsp xVal;
   if ( ! nnpTask->m_pReturnStack->bPop(xVal) )
@@ -380,7 +380,7 @@ void Task::vRstackToP(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRstackToR(NNP_Task nnpTask)
 {
-  ENTRY("vRstackToR");
+  ENTRY("vRstackToR"_Str);
   
   ValWsp xValOpaque;
   if ( ! nnpTask->m_pDataStack->bPop(xValOpaque) )
@@ -396,7 +396,7 @@ void Task::vRstackToR(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRstackToRTwo(NNP_Task nnpTask)
 {
-  ENTRY("vRstackToRTwo");
+  ENTRY("vRstackToRTwo"_Str);
   
   ValWsp xValX0;
   ValWsp xValX1;
@@ -414,7 +414,7 @@ void Task::vRstackToRTwo(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRstack0(NNP_Task nnpTask)
 {
-  ENTRY("vRstack0");
+  ENTRY("vRstack0"_Str);
   
   // could do this directly on stack
   
@@ -432,7 +432,7 @@ void Task::vRstack0(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRstack1(NNP_Task nnpTask)
 {
-  ENTRY("vRstack1");
+  ENTRY("vRstack1"_Str);
   
   // could do this directly on stack
   
@@ -450,7 +450,7 @@ void Task::vRstack1(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRstack2(NNP_Task nnpTask)
 {
-  ENTRY("vRstack2");
+  ENTRY("vRstack2"_Str);
   
   // could do this directly on stack
   
@@ -468,7 +468,7 @@ void Task::vRstack2(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRstack3(NNP_Task nnpTask)
 {
-  ENTRY("vRstack3");
+  ENTRY("vRstack3"_Str);
   
   // could do this directly on stack
   
@@ -486,7 +486,7 @@ void Task::vRstack3(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRstack4(NNP_Task nnpTask)
 {
-  ENTRY("vRstack4");
+  ENTRY("vRstack4"_Str);
   
   // could do this directly on stack
   
@@ -504,7 +504,7 @@ void Task::vRstack4(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRstack5(NNP_Task nnpTask)
 {
-  ENTRY("vRstack5");
+  ENTRY("vRstack5"_Str);
   
   // could do this directly on stack
   
@@ -522,7 +522,7 @@ void Task::vRstack5(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRstack6(NNP_Task nnpTask)
 {
-  ENTRY("vRstack6");
+  ENTRY("vRstack6"_Str);
   
   // could do this directly on stack
   
@@ -540,7 +540,7 @@ void Task::vRstack6(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRstack7(NNP_Task nnpTask)
 {
-  ENTRY("vRstack7");
+  ENTRY("vRstack7"_Str);
   
   // could do this directly on stack
   
@@ -558,7 +558,7 @@ void Task::vRstack7(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRstack8(NNP_Task nnpTask)
 {
-  ENTRY("vRstack8");
+  ENTRY("vRstack8"_Str);
   
   // could do this directly on stack
   
@@ -576,7 +576,7 @@ void Task::vRstack8(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRstack9(NNP_Task nnpTask)
 {
-  ENTRY("vRstack9");
+  ENTRY("vRstack9"_Str);
   
   // could do this directly on stack
   

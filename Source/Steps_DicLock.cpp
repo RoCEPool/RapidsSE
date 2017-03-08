@@ -43,7 +43,7 @@ void Task::vAddPrimitives_DicLock(void)
 /*----------------------------------------------------------------------------*/
 void Task::vDicLockDropWrite(NNP_Task nnpTask)
 {
-  ENTRY("vDicLockDropWrite");
+  ENTRY("vDicLockDropWrite"_Str);
   
   gxDicLock.vDropWrite();
   
@@ -56,7 +56,7 @@ void Task::vDicLockDropWrite(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDicLockGrabWrite(NNP_Task nnpTask)
 {
-  ENTRY("vDicLockGrabWrite");
+  ENTRY("vDicLockGrabWrite"_Str);
   
   gxDicLock.vGrabWrite();
     

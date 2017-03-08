@@ -45,7 +45,7 @@ void Task::vAddPrimitives_Cast(void)
 /*----------------------------------------------------------------------------*/
 void Task::vCastInt(NNP_Task nnpTask)
 {
-  ENTRY("vCastInt");
+  ENTRY("vCastInt"_Str);
   
   Object* pPtr;
   if ( ! nnpTask->m_pDataStack->bPop(pPtr) )
@@ -61,7 +61,7 @@ void Task::vCastInt(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vCastPtr(NNP_Task nnpTask)
 {
-  ENTRY("vCastPtr");
+  ENTRY("vCastPtr"_Str);
   
   i8 iInt;
   if ( ! nnpTask->m_pDataStack->bPop(iInt) )

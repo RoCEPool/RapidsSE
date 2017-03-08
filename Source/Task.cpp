@@ -1296,7 +1296,7 @@ void Task::vPrevInSet(NP_Task npPrevInSet)
 /*----------------------------------------------------------------------------*/
 /* primitive entry                                                            */
 /*----------------------------------------------------------------------------*/
-void Task::vPrimitive(const char* aPrimitive)
+void Task::vPrimitive(Str* aPrimitive)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   

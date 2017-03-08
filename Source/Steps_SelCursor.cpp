@@ -52,7 +52,7 @@ void Task::vAddPrimitives_SelCursor(void)
 /*----------------------------------------------------------------------------*/
 void Task::vSelCursorBegin(NNP_Task nnpTask)
 {
-ENTRY("vSelCursorBegin");
+ENTRY("vSelCursorBegin"_Str);
   
   Object* pPtrSelCursor;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrSelCursor) )
@@ -75,7 +75,7 @@ ENTRY("vSelCursorBegin");
 /*----------------------------------------------------------------------------*/
 void Task::vSelCursorDelete(NNP_Task nnpTask)
 {
-ENTRY("vSelCursorDelete");
+ENTRY("vSelCursorDelete"_Str);
   
   Object* pPtrSelCursor;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrSelCursor) )
@@ -97,7 +97,7 @@ ENTRY("vSelCursorDelete");
 /*----------------------------------------------------------------------------*/
 void Task::vSelCursorEnd(NNP_Task nnpTask)
 {
-ENTRY("vSelCursorEnd");
+ENTRY("vSelCursorEnd"_Str);
   
   Object* pPtrSelCursor;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrSelCursor) )
@@ -116,7 +116,7 @@ ENTRY("vSelCursorEnd");
 /*----------------------------------------------------------------------------*/
 void Task::vSelCursorFirst(NNP_Task nnpTask)
 {
-ENTRY("vSelCursorFirst");
+ENTRY("vSelCursorFirst"_Str);
   
   Object* pPtrSelCursor;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrSelCursor) )
@@ -139,7 +139,7 @@ ENTRY("vSelCursorFirst");
 /*----------------------------------------------------------------------------*/
 void Task::vSelCursorGet(NNP_Task nnpTask)
 {
-ENTRY("vSelCursorGet");
+ENTRY("vSelCursorGet"_Str);
   
   Object* pPtrSelCursor;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrSelCursor) )
@@ -161,7 +161,7 @@ ENTRY("vSelCursorGet");
 /*----------------------------------------------------------------------------*/
 void Task::vSelCursorInit(NNP_Task nnpTask)
 {
-ENTRY("vSelCursorInit");
+ENTRY("vSelCursorInit"_Str);
   
   Object* pPtrSelCursor;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrSelCursor) )
@@ -180,7 +180,7 @@ ENTRY("vSelCursorInit");
 /*----------------------------------------------------------------------------*/
 void Task::vSelCursorNew(NNP_Task nnpTask)
 {
-ENTRY("vSelCursorNew");
+ENTRY("vSelCursorNew"_Str);
   
   SelCursor* pSelCursor = new SelCursor;
   ASSERT(CN_SELCURSOR == pSelCursor->eClass());
@@ -195,7 +195,7 @@ ENTRY("vSelCursorNew");
 /*----------------------------------------------------------------------------*/
 void Task::vSelCursorNext(NNP_Task nnpTask)
 {
-ENTRY("vSelCursorNext");
+ENTRY("vSelCursorNext"_Str);
   
   Object* pPtrSelCursor;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrSelCursor) )
@@ -218,7 +218,7 @@ ENTRY("vSelCursorNext");
 /*----------------------------------------------------------------------------*/
 void Task::vSelCursorRowBuffer(NNP_Task nnpTask)
 {
-  ENTRY("vSelCursorRowBuffer");
+  ENTRY("vSelCursorRowBuffer"_Str);
   
   Object* pPtrSelCursor;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrSelCursor) )
@@ -240,7 +240,7 @@ void Task::vSelCursorRowBuffer(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vSelCursorTableFetch(NNP_Task nnpTask)
 {
-ENTRY("vSelCursorTableFetch");
+ENTRY("vSelCursorTableFetch"_Str);
   
   Object* pPtrSelCursor;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrSelCursor) )
@@ -261,7 +261,7 @@ ENTRY("vSelCursorTableFetch");
 /*----------------------------------------------------------------------------*/
 void Task::vSelCursorTableStore(NNP_Task nnpTask)
 {
-ENTRY("vSelCursorTableStore");
+ENTRY("vSelCursorTableStore"_Str);
   
   Object* pPtrSelCursor;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrSelCursor) )

@@ -77,7 +77,7 @@ void Task::vAddPrimitives_Reg(void)
 /*----------------------------------------------------------------------------*/
 void Task::vRegPop(NNP_Task nnpTask)
 {
-  ENTRY("vRegPop");
+  ENTRY("vRegPop"_Str);
   
   RegFrame* pRegFrame = nnpTask->m_pRegFrame;
   
@@ -98,7 +98,7 @@ void Task::vRegPop(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRegPush(NNP_Task nnpTask)
 {
-ENTRY("vRegPush");
+ENTRY("vRegPush"_Str);
   
   RegFrame* pRegFrame = new RegFrame;
   
@@ -114,7 +114,7 @@ ENTRY("vRegPush");
 /*----------------------------------------------------------------------------*/
 void Task::vRegReg0(NNP_Task nnpTask)
 {
-ENTRY("vRegReg0");
+ENTRY("vRegReg0"_Str);
   
   if ( ! nnpTask->m_pRegFrame )
     THROW_INVALID_DSTACK("reg0");
@@ -131,7 +131,7 @@ ENTRY("vRegReg0");
 /*----------------------------------------------------------------------------*/
 void Task::vRegReg1(NNP_Task nnpTask)
 {
-  ENTRY("vRegReg1");
+  ENTRY("vRegReg1"_Str);
   
   if ( ! nnpTask->m_pRegFrame )
     THROW_INVALID_DSTACK("reg1");
@@ -148,7 +148,7 @@ void Task::vRegReg1(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRegReg2(NNP_Task nnpTask)
 {
-  ENTRY("vRegReg2");
+  ENTRY("vRegReg2"_Str);
   
   if ( ! nnpTask->m_pRegFrame )
     THROW_INVALID_DSTACK("reg2");
@@ -165,7 +165,7 @@ void Task::vRegReg2(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRegReg3(NNP_Task nnpTask)
 {
-  ENTRY("vRegReg3");
+  ENTRY("vRegReg3"_Str);
   
   if ( ! nnpTask->m_pRegFrame )
     THROW_INVALID_DSTACK("reg3");
@@ -182,7 +182,7 @@ void Task::vRegReg3(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRegReg4(NNP_Task nnpTask)
 {
-  ENTRY("vRegReg4");
+  ENTRY("vRegReg4"_Str);
   
   if ( ! nnpTask->m_pRegFrame )
     THROW_INVALID_DSTACK("reg4");
@@ -199,7 +199,7 @@ void Task::vRegReg4(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRegReg5(NNP_Task nnpTask)
 {
-  ENTRY("vRegReg5");
+  ENTRY("vRegReg5"_Str);
   
   if ( ! nnpTask->m_pRegFrame )
     THROW_INVALID_DSTACK("reg5");
@@ -216,7 +216,7 @@ void Task::vRegReg5(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRegReg6(NNP_Task nnpTask)
 {
-  ENTRY("vRegReg6");
+  ENTRY("vRegReg6"_Str);
   
   if ( ! nnpTask->m_pRegFrame )
     THROW_INVALID_DSTACK("reg6");
@@ -233,7 +233,7 @@ void Task::vRegReg6(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRegReg7(NNP_Task nnpTask)
 {
-  ENTRY("vRegReg7");
+  ENTRY("vRegReg7"_Str);
   
   if ( ! nnpTask->m_pRegFrame )
     THROW_INVALID_DSTACK("reg7");
@@ -250,7 +250,7 @@ void Task::vRegReg7(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRegReg8(NNP_Task nnpTask)
 {
-  ENTRY("vRegReg8");
+  ENTRY("vRegReg8"_Str);
   
   if ( ! nnpTask->m_pRegFrame )
     THROW_INVALID_DSTACK("reg8");
@@ -267,7 +267,7 @@ void Task::vRegReg8(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRegReg9(NNP_Task nnpTask)
 {
-  ENTRY("vRegReg9");
+  ENTRY("vRegReg9"_Str);
   
   if ( ! nnpTask->m_pRegFrame )
     THROW_INVALID_DSTACK("reg9");
@@ -284,7 +284,7 @@ void Task::vRegReg9(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRegRegA(NNP_Task nnpTask)
 {
-  ENTRY("vRegRegA");
+  ENTRY("vRegRegA"_Str);
   
   if ( ! nnpTask->m_pRegFrame )
     THROW_INVALID_DSTACK("regA");
@@ -301,7 +301,7 @@ void Task::vRegRegA(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRegRegB(NNP_Task nnpTask)
 {
-  ENTRY("vRegRegB");
+  ENTRY("vRegRegB"_Str);
   
   if ( ! nnpTask->m_pRegFrame )
     THROW_INVALID_DSTACK("regB");
@@ -318,7 +318,7 @@ void Task::vRegRegB(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRegRegC(NNP_Task nnpTask)
 {
-  ENTRY("vRegRegC");
+  ENTRY("vRegRegC"_Str);
   
   if ( ! nnpTask->m_pRegFrame )
     THROW_INVALID_DSTACK("regC");
@@ -335,7 +335,7 @@ void Task::vRegRegC(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRegRegD(NNP_Task nnpTask)
 {
-  ENTRY("vRegRegD");
+  ENTRY("vRegRegD"_Str);
   
   if ( ! nnpTask->m_pRegFrame )
     THROW_INVALID_DSTACK("regD");
@@ -352,7 +352,7 @@ void Task::vRegRegD(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRegRegE(NNP_Task nnpTask)
 {
-  ENTRY("vRegRegE");
+  ENTRY("vRegRegE"_Str);
   
   if ( ! nnpTask->m_pRegFrame )
     THROW_INVALID_DSTACK("regE");
@@ -369,7 +369,7 @@ void Task::vRegRegE(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRegRegF(NNP_Task nnpTask)
 {
-  ENTRY("vRegRegF");
+  ENTRY("vRegRegF"_Str);
   
   if ( ! nnpTask->m_pRegFrame )
     THROW_INVALID_DSTACK("regF");
@@ -386,7 +386,7 @@ void Task::vRegRegF(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRegRegNth(NNP_Task nnpTask)
 {
-  ENTRY("vRegRegNth");
+  ENTRY("vRegRegNth"_Str);
   
   if ( ! nnpTask->m_pRegFrame )
     THROW_INVALID_DSTACK("regN");
@@ -407,7 +407,7 @@ void Task::vRegRegNth(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRegToReg0(NNP_Task nnpTask)
 {
-ENTRY("vRegToReg0");
+ENTRY("vRegToReg0"_Str);
   
   if ( ! nnpTask->m_pRegFrame )
     THROW_INVALID_DSTACK(">reg0");
@@ -424,7 +424,7 @@ ENTRY("vRegToReg0");
 /*----------------------------------------------------------------------------*/
 void Task::vRegToReg1(NNP_Task nnpTask)
 {
-  ENTRY("vRegToReg1");
+  ENTRY("vRegToReg1"_Str);
   
   if ( ! nnpTask->m_pRegFrame )
     THROW_INVALID_DSTACK(">reg1");
@@ -441,7 +441,7 @@ void Task::vRegToReg1(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRegToReg2(NNP_Task nnpTask)
 {
-  ENTRY("vRegToReg2");
+  ENTRY("vRegToReg2"_Str);
   
   if ( ! nnpTask->m_pRegFrame )
     THROW_INVALID_DSTACK(">reg2");
@@ -458,7 +458,7 @@ void Task::vRegToReg2(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRegToReg3(NNP_Task nnpTask)
 {
-  ENTRY("vRegToReg3");
+  ENTRY("vRegToReg3"_Str);
   
   if ( ! nnpTask->m_pRegFrame )
     THROW_INVALID_DSTACK(">reg3");
@@ -475,7 +475,7 @@ void Task::vRegToReg3(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRegToReg4(NNP_Task nnpTask)
 {
-  ENTRY("vRegToReg4");
+  ENTRY("vRegToReg4"_Str);
   
   if ( ! nnpTask->m_pRegFrame )
     THROW_INVALID_DSTACK(">reg4");
@@ -492,7 +492,7 @@ void Task::vRegToReg4(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRegToReg5(NNP_Task nnpTask)
 {
-  ENTRY("vRegToReg5");
+  ENTRY("vRegToReg5"_Str);
   
   if ( ! nnpTask->m_pRegFrame )
     THROW_INVALID_DSTACK(">reg5");
@@ -509,7 +509,7 @@ void Task::vRegToReg5(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRegToReg6(NNP_Task nnpTask)
 {
-  ENTRY("vRegToReg6");
+  ENTRY("vRegToReg6"_Str);
   
   if ( ! nnpTask->m_pRegFrame )
     THROW_INVALID_DSTACK(">reg6");
@@ -526,7 +526,7 @@ void Task::vRegToReg6(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRegToReg7(NNP_Task nnpTask)
 {
-  ENTRY("vRegToReg7");
+  ENTRY("vRegToReg7"_Str);
   
   if ( ! nnpTask->m_pRegFrame )
     THROW_INVALID_DSTACK(">reg7");
@@ -543,7 +543,7 @@ void Task::vRegToReg7(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRegToReg8(NNP_Task nnpTask)
 {
-  ENTRY("vRegToReg8");
+  ENTRY("vRegToReg8"_Str);
   
   if ( ! nnpTask->m_pRegFrame )
     THROW_INVALID_DSTACK(">reg8");
@@ -560,7 +560,7 @@ void Task::vRegToReg8(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRegToReg9(NNP_Task nnpTask)
 {
-  ENTRY("vRegToReg9");
+  ENTRY("vRegToReg9"_Str);
   
   if ( ! nnpTask->m_pRegFrame )
     THROW_INVALID_DSTACK(">reg9");
@@ -577,7 +577,7 @@ void Task::vRegToReg9(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRegToRegA(NNP_Task nnpTask)
 {
-  ENTRY("vRegToRegA");
+  ENTRY("vRegToRegA"_Str);
   
   if ( ! nnpTask->m_pRegFrame )
     THROW_INVALID_DSTACK(">regA");
@@ -594,7 +594,7 @@ void Task::vRegToRegA(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRegToRegB(NNP_Task nnpTask)
 {
-  ENTRY("vRegToRegB");
+  ENTRY("vRegToRegB"_Str);
   
   if ( ! nnpTask->m_pRegFrame )
     THROW_INVALID_DSTACK(">regB");
@@ -611,7 +611,7 @@ void Task::vRegToRegB(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRegToRegC(NNP_Task nnpTask)
 {
-  ENTRY("vRegToRegC");
+  ENTRY("vRegToRegC"_Str);
   
   if ( ! nnpTask->m_pRegFrame )
     THROW_INVALID_DSTACK(">regC");
@@ -628,7 +628,7 @@ void Task::vRegToRegC(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRegToRegD(NNP_Task nnpTask)
 {
-  ENTRY("vRegToRegD");
+  ENTRY("vRegToRegD"_Str);
   
   if ( ! nnpTask->m_pRegFrame )
     THROW_INVALID_DSTACK(">regD");
@@ -645,7 +645,7 @@ void Task::vRegToRegD(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRegToRegE(NNP_Task nnpTask)
 {
-  ENTRY("vRegToRegE");
+  ENTRY("vRegToRegE"_Str);
   
   if ( ! nnpTask->m_pRegFrame )
     THROW_INVALID_DSTACK(">regE");
@@ -662,7 +662,7 @@ void Task::vRegToRegE(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRegToRegF(NNP_Task nnpTask)
 {
-  ENTRY("vRegToRegF");
+  ENTRY("vRegToRegF"_Str);
   
   if ( ! nnpTask->m_pRegFrame )
     THROW_INVALID_DSTACK(">regF");
@@ -679,7 +679,7 @@ void Task::vRegToRegF(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRegToRegNth(NNP_Task nnpTask)
 {
-  ENTRY("vRegToRegNth");
+  ENTRY("vRegToRegNth"_Str);
   
   if ( ! nnpTask->m_pRegFrame )
     THROW_INVALID_DSTACK(">regN");

@@ -47,7 +47,7 @@ void Task::vAddPrimitives_Locals(void)
 /*----------------------------------------------------------------------------*/
 void Task::vLocalFetch(NNP_Task nnpTask)
 {
-  ENTRY("vLocalFetch");
+  ENTRY("vLocalFetch"_Str);
   
   if ( ! nnpTask->m_pLocalsFrame )
     THROW_INVALID_DSTACK("local.fetch");
@@ -68,7 +68,7 @@ void Task::vLocalFetch(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vLocalStore(NNP_Task nnpTask)
 {
-  ENTRY("vLocalStore");
+  ENTRY("vLocalStore"_Str);
   
   if ( ! nnpTask->m_pLocalsFrame )
     THROW_INVALID_DSTACK("localStore");
@@ -89,7 +89,7 @@ void Task::vLocalStore(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vLocalsBar(NNP_Task nnpTask)
 {
-ENTRY("vLocalsBar");
+ENTRY("vLocalsBar"_Str);
   
   Word* pCurrentWord = nnpTask->m_pCurrentWord;
   
@@ -147,7 +147,7 @@ ENTRY("vLocalsBar");
 /*----------------------------------------------------------------------------*/
 void Task::vLocalsPop(NNP_Task nnpTask)
 {
-ENTRY("vLocalsPop");
+ENTRY("vLocalsPop"_Str);
   
   RegFrame* pLocalsFrame = nnpTask->m_pLocalsFrame;
   
@@ -166,7 +166,7 @@ ENTRY("vLocalsPop");
 /*----------------------------------------------------------------------------*/
 void Task::vLocalsPush(NNP_Task nnpTask)
 {
-ENTRY("vLocalsPush");
+ENTRY("vLocalsPush"_Str);
   
   RegFrame* pLocalsFrame = new RegFrame;
   
@@ -184,7 +184,7 @@ ENTRY("vLocalsPush");
 /*----------------------------------------------------------------------------*/
 void Task::vLocalsTo(NNP_Task nnpTask)
 {
-ENTRY("vLocalsTo");
+ENTRY("vLocalsTo"_Str);
   
   Word* pCurrentWord = nnpTask->m_pCurrentWord;
   

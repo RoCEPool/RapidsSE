@@ -63,7 +63,7 @@ void Task::vAddPrimitives_Dstack(void)
 /*----------------------------------------------------------------------------*/
 void Task::vDstackTransfer(NNP_Task nnpTask)
 {
-  ENTRY("vDstackTransfer");
+  ENTRY("vDstackTransfer"_Str);
   
   Object* pPtrTask;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTask) )
@@ -87,7 +87,7 @@ void Task::vDstackTransfer(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDstackClass(NNP_Task nnpTask)
 {
-  ENTRY("vDstackClass");
+  ENTRY("vDstackClass"_Str);
   
   i8 nTh;
   if ( ! nnpTask->m_pDataStack->bPop(nTh) )
@@ -109,7 +109,7 @@ void Task::vDstackClass(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDstackDepth(NNP_Task nnpTask)
 {
-  ENTRY("vDstackDepth");
+  ENTRY("vDstackDepth"_Str);
   
   i8 iDepth = nnpTask->m_pDataStack->iValues();
   
@@ -123,7 +123,7 @@ void Task::vDstackDepth(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDstackDrop(NNP_Task nnpTask)
 {
-  ENTRY("vDstackDrop");
+  ENTRY("vDstackDrop"_Str);
   
   // should just discard on stack
   
@@ -139,7 +139,7 @@ void Task::vDstackDrop(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDstackDropTwo(NNP_Task nnpTask)
 {
-  ENTRY("vDstackDrop");
+  ENTRY("vDstackDrop"_Str);
   
   // should just discard on stack
   
@@ -156,7 +156,7 @@ void Task::vDstackDropTwo(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDstackDup(NNP_Task nnpTask)
 {
-  ENTRY("vDstackDup");
+  ENTRY("vDstackDup"_Str);
   
   if (nnpTask->m_iTracing) {
     ASSERT(nnpTask->m_iTracing);
@@ -179,7 +179,7 @@ void Task::vDstackDup(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDstackDupNonZero(NNP_Task nnpTask)
 {
-  ENTRY("vDstackDupNonZero");
+  ENTRY("vDstackDupNonZero"_Str);
   
   // could just copy from stack back into stack
   
@@ -202,7 +202,7 @@ void Task::vDstackDupNonZero(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDstackDump(NNP_Task nnpTask)
 {
-  ENTRY("vDstackDump");
+  ENTRY("vDstackDump"_Str);
   
   
   ValWsp xValWsp;
@@ -241,7 +241,7 @@ void Task::vDstackDump(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDstackNip(NNP_Task nnpTask)
 {
-  ENTRY("vDstackNip");
+  ENTRY("vDstackNip"_Str);
   
   ValWsp xValA;
   ValWsp xValB;
@@ -259,7 +259,7 @@ void Task::vDstackNip(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDstackOver(NNP_Task nnpTask)
 {
-  ENTRY("vDstackOver");
+  ENTRY("vDstackOver"_Str);
   
   // could do this directly on stack
   
@@ -277,7 +277,7 @@ void Task::vDstackOver(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDstackPick(NNP_Task nnpTask)
 {
-  ENTRY("vDstackPick");
+  ENTRY("vDstackPick"_Str);
   
   i8 iPick;
   if ( ! nnpTask->m_pDataStack->bPopParamInt(iPick) )
@@ -299,7 +299,7 @@ void Task::vDstackPick(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDstackReverse(NNP_Task nnpTask)
 {
-  ENTRY("vDstackReverse");
+  ENTRY("vDstackReverse"_Str);
   
   ValWsp xVal0;
   ValWsp xVal1;
@@ -333,7 +333,7 @@ void Task::vDstackReverse(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDstackRoll(NNP_Task nnpTask)
 {
-  ENTRY("vDstackRoll");
+  ENTRY("vDstackRoll"_Str);
   
   ValWsp xValA;
   ValWsp xValX;
@@ -369,7 +369,7 @@ void Task::vDstackRoll(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDstackRollInv(NNP_Task nnpTask)
 {
-  ENTRY("vDstackRollInv");
+  ENTRY("vDstackRollInv"_Str);
   
   ValWsp xValZ;
   ValWsp xValX;
@@ -406,7 +406,7 @@ void Task::vDstackRollInv(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDstackRot(NNP_Task nnpTask)
 {
-  ENTRY("vDstackRot");
+  ENTRY("vDstackRot"_Str);
   
   ValWsp xValA;
   ValWsp xValB;
@@ -427,7 +427,7 @@ void Task::vDstackRot(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDstackRotInv(NNP_Task nnpTask)
 {
-  ENTRY("vDstackRotInv");
+  ENTRY("vDstackRotInv"_Str);
   
   ValWsp xValA;
   ValWsp xValB;
@@ -448,7 +448,7 @@ void Task::vDstackRotInv(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDstackStk(NNP_Task nnpTask)
 {
-  ENTRY("vDstackStk");
+  ENTRY("vDstackStk"_Str);
   
   nnpTask->m_pDataStack->vContentDump(nnpTask->m_sName,"DataStack:"_Str);
   
@@ -460,7 +460,7 @@ void Task::vDstackStk(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDstackSwap(NNP_Task nnpTask)
 {
-  ENTRY("vDstackSwap");
+  ENTRY("vDstackSwap"_Str);
   
   ValWsp xValA;
   ValWsp xValB;
@@ -479,7 +479,7 @@ void Task::vDstackSwap(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDstackToValSet(NNP_Task nnpTask)
 {
-  ENTRY("vDstackToValSet");
+  ENTRY("vDstackToValSet"_Str);
   
   i8 nVal;
   
@@ -525,7 +525,7 @@ void Task::vDstackToValSet(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDstackToValues(NNP_Task nnpTask)
 {
-  ENTRY("vDstackToValues");
+  ENTRY("vDstackToValues"_Str);
   
   ValSet xValSet;
   
@@ -552,7 +552,7 @@ void Task::vDstackToValues(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDstackTuck(NNP_Task nnpTask)
 {
-  ENTRY("vDstackTuck");
+  ENTRY("vDstackTuck"_Str);
   
   ValWsp xValA;
   ValWsp xValB;

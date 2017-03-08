@@ -42,7 +42,7 @@ void Task::vAddPrimitives_Error(void)
 /*----------------------------------------------------------------------------*/
 void Task::vErrorMsg(NNP_Task nnpTask)
 {
-  ENTRY("vErrorMsg");
+  ENTRY("vErrorMsg"_Str);
   
   
   i8 iErrorCode;

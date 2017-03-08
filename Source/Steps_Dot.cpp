@@ -45,7 +45,7 @@ void Task::vAddPrimitives_Dot(void)
 /*----------------------------------------------------------------------------*/
 void Task::vDot(NNP_Task nnpTask)
 {
-  ENTRY("vDot");
+  ENTRY("vDot"_Str);
   
   s48K sWorkspace;
   
@@ -83,7 +83,7 @@ void Task::vDot(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDotPut(NNP_Task nnpTask)
 {
-  ENTRY("vDotPut");
+  ENTRY("vDotPut"_Str);
   
   s48K sWorkspace;
   
@@ -102,7 +102,7 @@ void Task::vDotPut(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDotNewline(NNP_Task nnpTask)
 {
-  ENTRY("vDotNewline");
+  ENTRY("vDotNewline"_Str);
   
   vTrace("\n"_Str);
   
@@ -114,7 +114,7 @@ void Task::vDotNewline(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDotVerbose(NNP_Task nnpTask)
 {
-  ENTRY("vDotVerbose");
+  ENTRY("vDotVerbose"_Str);
   
   s48K sWorkspace;
   

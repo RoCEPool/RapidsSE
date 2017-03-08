@@ -55,7 +55,7 @@ void Task::vAddPrimitives_SEitf(void)
 /*----------------------------------------------------------------------------*/
 void Task::vSEitfCount(NNP_Task nnpTask)
 {
-  ENTRY("vSEitfCount");
+  ENTRY("vSEitfCount"_Str);
   
   Object* pPtrSEitf;
   
@@ -69,7 +69,7 @@ void Task::vSEitfCount(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vSEitfDelete(NNP_Task nnpTask)
 {
-ENTRY("vSEitfDelete");
+ENTRY("vSEitfDelete"_Str);
   
   Object* pPtrSEitf;
   
@@ -89,7 +89,7 @@ ENTRY("vSEitfDelete");
 /*----------------------------------------------------------------------------*/
 void Task::vSEitfDicStack(NNP_Task nnpTask)
 {
-  ENTRY("vSEitfDicStack");
+  ENTRY("vSEitfDicStack"_Str);
   
   Object* pPtrSEitf;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitf) )
@@ -108,7 +108,7 @@ void Task::vSEitfDicStack(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vSEitfDump(NNP_Task nnpTask)
 {
-ENTRY("vSEitfDump");
+ENTRY("vSEitfDump"_Str);
   
   Object* pPtrSEitf;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitf) )
@@ -127,7 +127,7 @@ ENTRY("vSEitfDump");
 /*----------------------------------------------------------------------------*/
 void Task::vSEitfIndexRef(NNP_Task nnpTask)
 {
-  ENTRY("vSEitfIndexRef");
+  ENTRY("vSEitfIndexRef"_Str);
   
   Object* pPtrSEitf;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitf) )
@@ -156,7 +156,7 @@ void Task::vSEitfIndexRef(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vSEitfPid(NNP_Task nnpTask)
 {
-  ENTRY("vSEitfPid");
+  ENTRY("vSEitfPid"_Str);
   
   Object* pPtrSEitf;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitf) )
@@ -175,7 +175,7 @@ void Task::vSEitfPid(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vSEitfReqFetch(NNP_Task nnpTask)
 {
-ENTRY("vSEitfReqFetch");
+ENTRY("vSEitfReqFetch"_Str);
   
   Object* pPtrSEitf;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitf) )
@@ -196,7 +196,7 @@ ENTRY("vSEitfReqFetch");
 /*----------------------------------------------------------------------------*/
 void Task::vSEitfReqStore(NNP_Task nnpTask)
 {
-ENTRY("vSEitfReqStore");
+ENTRY("vSEitfReqStore"_Str);
   
   Object* pPtrSEitf;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitf) )
@@ -223,7 +223,7 @@ ENTRY("vSEitfReqStore");
 /*----------------------------------------------------------------------------*/
 void Task::vSEitfRspFetch(NNP_Task nnpTask)
 {
-ENTRY("vSEitfRspFetch");
+ENTRY("vSEitfRspFetch"_Str);
   
   Object* pPtrSEitf;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitf) )
@@ -244,7 +244,7 @@ ENTRY("vSEitfRspFetch");
 /*----------------------------------------------------------------------------*/
 void Task::vSEitfRspStore(NNP_Task nnpTask)
 {
-ENTRY("vSEitfRspStore");
+ENTRY("vSEitfRspStore"_Str);
   
   Object* pPtrSEitf;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitf) )
@@ -271,7 +271,7 @@ ENTRY("vSEitfRspStore");
 /*----------------------------------------------------------------------------*/
 void Task::vSEitfResponseQueue(NNP_Task nnpTask)
 {
-  ENTRY("vSEitfeResponseQueue");
+  ENTRY("vSEitfeResponseQueue"_Str);
   
   Object* pPtrSEitf;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitf) )
@@ -290,7 +290,7 @@ void Task::vSEitfResponseQueue(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vSEitfTableFetch(NNP_Task nnpTask)
 {
-  ENTRY("vSEitfTableFetch");
+  ENTRY("vSEitfTableFetch"_Str);
   
   Object* pPtrSEitf;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitf) )
@@ -309,7 +309,7 @@ void Task::vSEitfTableFetch(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vSEitfTableDeref(NNP_Task nnpTask)
 {
-  ENTRY("vSEitfRspStore");
+  ENTRY("vSEitfRspStore"_Str);
   
   Object* pPtrSEitf;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitf) )
@@ -333,7 +333,7 @@ void Task::vSEitfTableDeref(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vSEitfTableRef(NNP_Task nnpTask)
 {
-  ENTRY("vSEitfTableRef");
+  ENTRY("vSEitfTableRef"_Str);
   
   Object* pPtrSEitf;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitf) )

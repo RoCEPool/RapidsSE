@@ -45,7 +45,7 @@ void Task::vAddPrimitives_Push(void)
 /*----------------------------------------------------------------------------*/
 void Task::vPushI(NNP_Task nnpTask)
 {
-  ENTRY("vPushI");
+  ENTRY("vPushI"_Str);
   
   Value* pI = nnpTask->m_pReturnStack->pPeek();
   
@@ -59,7 +59,7 @@ void Task::vPushI(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vPushJ(NNP_Task nnpTask)
 {
-  ENTRY("vPushJ");
+  ENTRY("vPushJ"_Str);
   
   Value* pI = nnpTask->m_pReturnStack->pPeek(3);
   
@@ -73,7 +73,7 @@ void Task::vPushJ(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vPushNullPtr(NNP_Task nnpTask)
 {
-  ENTRY("vPushNullPtr");
+  ENTRY("vPushNullPtr"_Str);
   
   PtrVal xPtrVal;
   xPtrVal = (Object*)nullptr;
@@ -88,7 +88,7 @@ void Task::vPushNullPtr(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vPushValue(NNP_Task nnpTask)
 {
-  ENTRY("vPushValue");
+  ENTRY("vPushValue"_Str);
   
   if (nnpTask->m_iTracing) {
     ASSERT(nnpTask->m_iTracing);

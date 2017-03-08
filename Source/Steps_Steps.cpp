@@ -43,7 +43,7 @@ void Task::vAddPrimitives_Steps(void)
 /*----------------------------------------------------------------------------*/
 void Task::vStepsList(NNP_Task nnpTask)
 {
-ENTRY("vStepsList");
+ENTRY("vStepsList"_Str);
 
   gpStepArray->vList();
   
@@ -55,7 +55,7 @@ ENTRY("vStepsList");
 /*----------------------------------------------------------------------------*/
 void Task::vStepsReset(NNP_Task nnpTask)
 {
-  ENTRY("vStepsReset");
+  ENTRY("vStepsReset"_Str);
   
   gpStepArray->vReset();
   

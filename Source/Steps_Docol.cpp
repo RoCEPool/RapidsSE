@@ -45,7 +45,7 @@ void Task::vAddPrimitives_Docol(void)
 /*----------------------------------------------------------------------------*/
 void Task::vDocolCompiling(NNP_Task nnpTask)
 {
-  ENTRY("vDocolCompiling");
+  ENTRY("vDocolCompiling"_Str);
   
   nnpTask->m_bCompiling = true;
   
@@ -57,7 +57,7 @@ void Task::vDocolCompiling(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDocolInterpreting(NNP_Task nnpTask)
 {
-  ENTRY("vDocolInterpreting");
+  ENTRY("vDocolInterpreting"_Str);
   
   nnpTask->m_bCompiling = false;
   
@@ -69,7 +69,7 @@ void Task::vDocolInterpreting(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDocolIsCompiling(NNP_Task nnpTask)
 {
-  ENTRY("vDocolIsCompiling");
+  ENTRY("vDocolIsCompiling"_Str);
   
   i8 iIsCompiling = nnpTask->m_bCompiling ? 1 : 0;
   
@@ -83,7 +83,7 @@ void Task::vDocolIsCompiling(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDocolIsInterpreting(NNP_Task nnpTask)
 {
-  ENTRY("vDocolIsInterpreting");
+  ENTRY("vDocolIsInterpreting"_Str);
   
   i8 iIsInterpreting = nnpTask->m_bCompiling ? 0 : 1;
   

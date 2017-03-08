@@ -43,7 +43,7 @@ void Task::vAddPrimitives_SEitfList(void)
 /*----------------------------------------------------------------------------*/
 void Task::vSEitfListDump(NNP_Task nnpTask)
 {
-ENTRY("vSEitfListDump");
+ENTRY("vSEitfListDump"_Str);
   
   Object* pPtrSEitfList;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitfList) )
@@ -62,7 +62,7 @@ ENTRY("vSEitfListDump");
 /*----------------------------------------------------------------------------*/
 void Task::vSEitfListInit(NNP_Task nnpTask)
 {
-ENTRY("vSEitfListInit");
+ENTRY("vSEitfListInit"_Str);
   
   Object* pPtrSEitfList;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitfList) )

@@ -81,7 +81,7 @@ void Task::vAddPrimitives_Word(void)
 /*----------------------------------------------------------------------------*/
 void Task::vAllParticipants(NNP_Task nnpTask)
 {
-  ENTRY("vAllParticipants");
+  ENTRY("vAllParticipants"_Str);
   
   Word* pCurrentWord = nnpTask->m_pCurrentWord;
   
@@ -114,7 +114,7 @@ void Task::vAllParticipants(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vAllot(NNP_Task nnpTask)
 {
-  ENTRY("vAllot");
+  ENTRY("vAllot"_Str);
   
   i8 iBytes;
   
@@ -134,7 +134,7 @@ void Task::vAllot(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vCell(NNP_Task nnpTask)
 {
-  ENTRY("vCell");
+  ENTRY("vCell"_Str);
   
   i8 nBytes = sizeof(void*);
   
@@ -148,7 +148,7 @@ void Task::vCell(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vColon(NNP_Task nnpTask)
 {
-  ENTRY("vColon");
+  ENTRY("vColon"_Str);
   
   s32 sName;
   
@@ -174,7 +174,7 @@ void Task::vColon(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vComma(NNP_Task nnpTask)
 {
-  ENTRY("vComma");
+  ENTRY("vComma"_Str);
   
   Word* pCurrentWord = nnpTask->m_pCurrentWord;
   
@@ -193,7 +193,7 @@ void Task::vComma(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vCompileComma(NNP_Task nnpTask)
 {
-  ENTRY("vCompileComma");
+  ENTRY("vCompileComma"_Str);
   
   Object* pWordObject;
   if ( ! nnpTask->m_pDataStack->bPop(pWordObject) )
@@ -214,7 +214,7 @@ void Task::vCompileComma(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vCreate(NNP_Task nnpTask)
 {
-ENTRY("vCreate");
+ENTRY("vCreate"_Str);
   
   nnpTask->m_pTokeniser->vNextToken();
   
@@ -236,7 +236,7 @@ ENTRY("vCreate");
 /*----------------------------------------------------------------------------*/
 void Task::vCreateFrom(NNP_Task nnpTask)
 {
-ENTRY("vCreateFrom");
+ENTRY("vCreateFrom"_Str);
 
   s32 sName;
   if ( ! nnpTask->m_pDataStack->bPop(sName) )
@@ -260,7 +260,7 @@ ENTRY("vCreateFrom");
 /*----------------------------------------------------------------------------*/
 void Task::vDicWhich(NNP_Task nnpTask)
 {
-  ENTRY("vDicWhich");
+  ENTRY("vDicWhich"_Str);
   
   // get current plan
   Plan* pPlan = nnpTask->m_pPlan;
@@ -290,7 +290,7 @@ void Task::vDicWhich(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDoes(NNP_Task nnpTask)
 {
-ENTRY("vDoes");
+ENTRY("vDoes"_Str);
   
   Word* pCurrentWord = nnpTask->m_pCurrentWord;
   
@@ -307,7 +307,7 @@ ENTRY("vDoes");
 /*----------------------------------------------------------------------------*/
 void Task::vDoes_RT(NNP_Task nnpTask)
 {
-  ENTRY("vDoes_RT");
+  ENTRY("vDoes_RT"_Str);
   
   Word* pCurrentWord = nnpTask->m_pCurrentWord;
   
@@ -322,7 +322,7 @@ void Task::vDoes_RT(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vFind(NNP_Task nnpTask)
 {
-ENTRY("vFind");
+ENTRY("vFind"_Str);
   
   s256 sName;
   if ( ! nnpTask->m_pDataStack->bPop(sName) )
@@ -344,7 +344,7 @@ ENTRY("vFind");
 /*----------------------------------------------------------------------------*/
 void Task::vFindInCurrent(NNP_Task nnpTask)
 {
-  ENTRY("vFindInCurrent");
+  ENTRY("vFindInCurrent"_Str);
   
   s256 sName;
   if ( ! nnpTask->m_pDataStack->bPop(sName) )
@@ -366,7 +366,7 @@ void Task::vFindInCurrent(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vForget(NNP_Task nnpTask)
 {
-ENTRY("vForget");
+ENTRY("vForget"_Str);
   
   nnpTask->m_pTokeniser->vNextToken();
   
@@ -386,7 +386,7 @@ ENTRY("vForget");
 /*----------------------------------------------------------------------------*/
 void Task::vHashHashColon(NNP_Task nnpTask)
 {
-  ENTRY("vHashHashColon");
+  ENTRY("vHashHashColon"_Str);
   
   ValWsp xWsp;
   Cell* pOpFrameJumpArg = nullptr;
@@ -465,7 +465,7 @@ void Task::vHashHashColon(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vIndirect(NNP_Task nnpTask)
 {
-  ENTRY("vIndirect");
+  ENTRY("vIndirect"_Str);
   
   Word* pCurrentWord = nnpTask->m_pCurrentWord;
   
@@ -481,7 +481,7 @@ void Task::vIndirect(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vImmediate(NNP_Task nnpTask)
 {
-  ENTRY("vImmediate");
+  ENTRY("vImmediate"_Str);
   
   Word* pCurrentWord = nnpTask->m_pCurrentWord;
   
@@ -497,7 +497,7 @@ void Task::vImmediate(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vLocalCalls(NNP_Task nnpTask)
 {
-  ENTRY("vLocalCalls");
+  ENTRY("vLocalCalls"_Str);
   
   Word* pCurrentWord = nnpTask->m_pCurrentWord;
   
@@ -511,7 +511,7 @@ void Task::vLocalCalls(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vLocate(NNP_Task nnpTask)
 {
-  ENTRY("vLocate");
+  ENTRY("vLocate"_Str);
   
   i8 iAddrAsInt;
   if ( ! nnpTask->m_pDataStack->bPopParamInt(iAddrAsInt) )
@@ -540,7 +540,7 @@ void Task::vLocate(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vOneParticipant(NNP_Task nnpTask)
 {
-  ENTRY("vAllParticipants");
+  ENTRY("vAllParticipants"_Str);
   
   Word* pCurrentWord = nnpTask->m_pCurrentWord;
   
@@ -565,7 +565,7 @@ void Task::vOneParticipant(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vOpDic(NNP_Task nnpTask)
 {
-  ENTRY("vOpDic");
+  ENTRY("vOpDic"_Str);
   
   Dic* pOpDic = nullptr;
 
@@ -608,7 +608,7 @@ void Task::vOpDic(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vPlanDicTask(NNP_Task nnpTask)
 {
-  ENTRY("vPlanDicTask");
+  ENTRY("vPlanDicTask"_Str);
   
   Dic* pPlanDic = nnpTask->m_pPlan->pDic();
   
@@ -624,7 +624,7 @@ void Task::vPlanDicTask(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vPostpone(NNP_Task nnpTask)
 {
-  ENTRY("vPostpone");
+  ENTRY("vPostpone"_Str);
   
   Word* pCurrentWord = nnpTask->m_pCurrentWord;
   
@@ -666,7 +666,7 @@ void Task::vPostpone(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vSee(NNP_Task nnpTask)
 {
-  ENTRY("vSee");
+  ENTRY("vSee"_Str);
   
   s48K sWorkspace;
   
@@ -753,7 +753,7 @@ void Task::vSee(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vSemicolon(NNP_Task nnpTask)
 {
-  ENTRY("vSemicolon");
+  ENTRY("vSemicolon"_Str);
   
   Word* pCurrentWord = nnpTask->m_pCurrentWord;
   
@@ -837,7 +837,7 @@ void Task::vSemicolon(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vSubDic(NNP_Task nnpTask)
 {
-  ENTRY("vSubDic");
+  ENTRY("vSubDic"_Str);
   
   nnpTask->m_pTokeniser->vNextToken();
   
@@ -862,7 +862,7 @@ void Task::vSubDic(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTick(NNP_Task nnpTask)
 {
-  ENTRY("vTick");
+  ENTRY("vTick"_Str);
   
   nnpTask->m_pTokeniser->vNextToken();
   
@@ -893,7 +893,7 @@ void Task::vTick(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vWord(NNP_Task nnpTask)
 {
-  ENTRY("vWord");
+  ENTRY("vWord"_Str);
   EXIT();
 }
 
@@ -902,7 +902,7 @@ void Task::vWord(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vWordForget(NNP_Task nnpTask)
 {
-ENTRY("vWordForget");
+ENTRY("vWordForget"_Str);
   
   Object* pWordObject;
   if ( ! nnpTask->m_pDataStack->bPop(pWordObject) )
@@ -920,7 +920,7 @@ ENTRY("vWordForget");
 /*----------------------------------------------------------------------------*/
 void Task::vWordDump(NNP_Task nnpTask)
 {
-ENTRY("vWordDump");
+ENTRY("vWordDump"_Str);
   
   Object* pWordObject;
   if ( ! nnpTask->m_pDataStack->bPop(pWordObject) )
@@ -937,7 +937,7 @@ ENTRY("vWordDump");
 /*----------------------------------------------------------------------------*/
 void Task::vWordImmediateGet(NNP_Task nnpTask)
 {
-  ENTRY("vWordImmediateGet");
+  ENTRY("vWordImmediateGet"_Str);
   
   Object* pWordObject;
   if ( ! nnpTask->m_pDataStack->bPop(pWordObject) )
@@ -956,7 +956,7 @@ void Task::vWordImmediateGet(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vWordImmediateSet(NNP_Task nnpTask)
 {
-  ENTRY("vWordImmediateSet");
+  ENTRY("vWordImmediateSet"_Str);
   
   Object* pWordObject;
   if ( ! nnpTask->m_pDataStack->bPop(pWordObject) )
@@ -978,7 +978,7 @@ void Task::vWordImmediateSet(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vWordIsImmediate(NNP_Task nnpTask)
 {
-  ENTRY("vWordIsImmediate");
+  ENTRY("vWordIsImmediate"_Str);
   
   // we should just modify the pointers rather than actually pop
   
@@ -999,7 +999,7 @@ void Task::vWordIsImmediate(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vWordIsPrimitive(NNP_Task nnpTask)
 {
-  ENTRY("vWordIsPrimitive");
+  ENTRY("vWordIsPrimitive"_Str);
   
   Object* pWordObject;
   if ( ! nnpTask->m_pDataStack->bPop(pWordObject) )
@@ -1018,7 +1018,7 @@ void Task::vWordIsPrimitive(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vWordKindGet(NNP_Task nnpTask)
 {
-ENTRY("vWordKindGet");
+ENTRY("vWordKindGet"_Str);
   
   Object* pWordObject;
   if ( ! nnpTask->m_pDataStack->bPop(pWordObject) )
@@ -1037,7 +1037,7 @@ ENTRY("vWordKindGet");
 /*----------------------------------------------------------------------------*/
 void Task::vWordKindSet(NNP_Task nnpTask)
 {
-ENTRY("vWordKindSet");
+ENTRY("vWordKindSet"_Str);
   
   Object* pWordObject;
   if ( ! nnpTask->m_pDataStack->bPop(pWordObject) )
@@ -1058,7 +1058,7 @@ ENTRY("vWordKindSet");
 /*----------------------------------------------------------------------------*/
 void Task::vWordName(NNP_Task nnpTask)
 {
-ENTRY("vWordName");
+ENTRY("vWordName"_Str);
   
   Object* pWordObject;
   if ( ! nnpTask->m_pDataStack->bPop(pWordObject) )
@@ -1077,7 +1077,7 @@ ENTRY("vWordName");
 /*----------------------------------------------------------------------------*/
 void Task::vWordPrev(NNP_Task nnpTask)
 {
-  ENTRY("vWordPrev");
+  ENTRY("vWordPrev"_Str);
   
   Object* pWordObject;
   if ( ! nnpTask->m_pDataStack->bPop(pWordObject) )
@@ -1096,7 +1096,7 @@ void Task::vWordPrev(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vWordThis(NNP_Task nnpTask)
 {
-ENTRY("vWordThis");
+ENTRY("vWordThis"_Str);
   
   Word* pWord = nnpTask->m_pCurrentWord;
   
@@ -1110,7 +1110,7 @@ ENTRY("vWordThis");
 /*----------------------------------------------------------------------------*/
 void Task::vWordTypeGet(NNP_Task nnpTask)
 {
-  ENTRY("vWordTypeGet");
+  ENTRY("vWordTypeGet"_Str);
   
   Object* pWordObject;
   if ( ! nnpTask->m_pDataStack->bPop(pWordObject) )
@@ -1129,7 +1129,7 @@ void Task::vWordTypeGet(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vWordTypeSet(NNP_Task nnpTask)
 {
-  ENTRY("vWordTypeSet");
+  ENTRY("vWordTypeSet"_Str);
   
   Object* pWordObject;
   if ( ! nnpTask->m_pDataStack->bPop(pWordObject) )

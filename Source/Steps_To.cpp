@@ -50,7 +50,7 @@ void Task::vAddPrimitives_To(void)
 /*----------------------------------------------------------------------------*/
 void Task::vToBinVal(NNP_Task nnpTask)
 {
-  ENTRY("vToBinVal");
+  ENTRY("vToBinVal"_Str);
   
   Object* pObject;
   if ( ! nnpTask->m_pDataStack->bPop(pObject) )
@@ -66,7 +66,7 @@ void Task::vToBinVal(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vToBody(NNP_Task nnpTask)
 {
-  ENTRY("vToBody");
+  ENTRY("vToBody"_Str);
   
   Object* pWordObject;
   if ( ! nnpTask->m_pDataStack->bPop(pWordObject) )
@@ -88,7 +88,7 @@ void Task::vToBody(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vToCmd(NNP_Task nnpTask)
 {
-  ENTRY("vToCmd");
+  ENTRY("vToCmd"_Str);
   
   i8 nValues;
   if ( ! nnpTask->m_pDataStack->bPop(nValues) )
@@ -123,7 +123,7 @@ void Task::vToCmd(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vToInt(NNP_Task nnpTask)
 {
-  ENTRY("vToInt");
+  ENTRY("vToInt"_Str);
   
   ValWsp xStr;
   if ( ! nnpTask->m_pDataStack->bPop(xStr) )
@@ -144,7 +144,7 @@ void Task::vToInt(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vToObject(NNP_Task nnpTask)
 {
-  ENTRY("vToObject");
+  ENTRY("vToObject"_Str);
   
   Object* pObject;
   if ( ! nnpTask->m_pDataStack->bPopBinary(pObject) )
@@ -160,7 +160,7 @@ void Task::vToObject(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vToSEitf(NNP_Task nnpTask)
 {
-  ENTRY("vToSEitf");
+  ENTRY("vToSEitf"_Str);
   
   i8 iVal;
   
@@ -182,7 +182,7 @@ void Task::vToSEitf(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vToStr(NNP_Task nnpTask)
 {
-  ENTRY("vToStr");
+  ENTRY("vToStr"_Str);
   
   ValWsp xVal;
   if ( ! nnpTask->m_pDataStack->bPop(xVal) )
@@ -201,7 +201,7 @@ void Task::vToStr(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vToTask(NNP_Task nnpTask)
 {
-  ENTRY("vToTask");
+  ENTRY("vToTask"_Str);
   
   i8 iVal;
   if ( ! nnpTask->m_pDataStack->bPop(iVal) )

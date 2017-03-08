@@ -43,7 +43,7 @@ void Task::vAddPrimitives_OpFrame(void)
 /*----------------------------------------------------------------------------*/
 void Task::vOpFrameDic(NNP_Task nnpTask)
 {
-  ENTRY("vOpFrameDic");
+  ENTRY("vOpFrameDic"_Str);
   
   Object* pPtrOpFrame;
   
@@ -64,7 +64,7 @@ void Task::vOpFrameDic(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vOpFrameName(NNP_Task nnpTask)
 {
-  ENTRY("vOpFrameName");
+  ENTRY("vOpFrameName"_Str);
   
   Object* pPtrOpFrame;
   

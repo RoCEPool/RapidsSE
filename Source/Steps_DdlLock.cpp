@@ -50,7 +50,7 @@ void Task::vAddPrimitives_DdlLock(void)
 /*----------------------------------------------------------------------------*/
 void Task::vDdlLockDropRead(NNP_Task nnpTask)
 {
-  ENTRY("vDdlLockDropRead");
+  ENTRY("vDdlLockDropRead"_Str);
   
   ASSERT(C_HAVE_READ_LOCK == nnpTask->m_iDdlLocked);
   
@@ -66,7 +66,7 @@ void Task::vDdlLockDropRead(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDdlLockDropWrite(NNP_Task nnpTask)
 {
-  ENTRY("vDdlLockDropWrite");
+  ENTRY("vDdlLockDropWrite"_Str);
   
   ASSERT(C_HAVE_WRITE_LOCK == nnpTask->m_iDdlLocked);
   
@@ -82,7 +82,7 @@ void Task::vDdlLockDropWrite(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDdlLockGrabRead(NNP_Task nnpTask)
 {
-  ENTRY("vDdlLockGrabRead");
+  ENTRY("vDdlLockGrabRead"_Str);
   
   ASSERT(! nnpTask->m_iDdlLocked);
   
@@ -98,7 +98,7 @@ void Task::vDdlLockGrabRead(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDdlLockGrabWrite(NNP_Task nnpTask)
 {
-  ENTRY("vDdlLockGrabWrite");
+  ENTRY("vDdlLockGrabWrite"_Str);
   
   ASSERT(! nnpTask->m_iDdlLocked);
 
@@ -114,7 +114,7 @@ void Task::vDdlLockGrabWrite(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDdlLockTestDrop(NNP_Task nnpTask)
 {
-  ENTRY("vDdlLockTestDrop");
+  ENTRY("vDdlLockTestDrop"_Str);
   
   if (C_HAVE_READ_LOCK == nnpTask->m_iDdlLocked) {
     gxDdlLock.vDropRead();

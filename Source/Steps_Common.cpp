@@ -48,7 +48,7 @@ void Task::vAddPrimitives_Common(void)
 /*----------------------------------------------------------------------------*/
 void Task::vCommonFetch(NNP_Task nnpTask)
 {
-  ENTRY("vCommonFetch");
+  ENTRY("vCommonFetch"_Str);
   
   if ( ! nnpTask->m_pOpFrame )
     THROW_INVALID_DSTACK("common.fetch");
@@ -69,7 +69,7 @@ void Task::vCommonFetch(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vCommonStore(NNP_Task nnpTask)
 {
-  ENTRY("vCommonStore");
+  ENTRY("vCommonStore"_Str);
   
   if ( ! nnpTask->m_pOpFrame )
     THROW_INVALID_DSTACK("commonStore");
@@ -90,7 +90,7 @@ void Task::vCommonStore(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vCommonSlash(NNP_Task nnpTask)
 {
-ENTRY("vCommonSlash");
+ENTRY("vCommonSlash"_Str);
 
   Dic* pSubDic;
   
@@ -157,7 +157,7 @@ ENTRY("vCommonSlash");
 /*----------------------------------------------------------------------------*/
 void Task::vCommonToCommon(NNP_Task nnpTask)
 {
-ENTRY("vCommonToCommon");
+ENTRY("vCommonToCommon"_Str);
   
   Word* pCurrentWord = nnpTask->m_pCurrentWord;
   
@@ -181,7 +181,7 @@ ENTRY("vCommonToCommon");
 /*----------------------------------------------------------------------------*/
 void Task::vOpFrameDrop(NNP_Task nnpTask)
 {
-  ENTRY("vOpFrameDrop");
+  ENTRY("vOpFrameDrop"_Str);
   
   RegFrame* pOpFrame = nnpTask->m_pOpFrame;
   
@@ -202,7 +202,7 @@ void Task::vOpFrameDrop(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vOpFramePush(NNP_Task nnpTask)
 {
-  ENTRY("vOpFramePush");
+  ENTRY("vOpFramePush"_Str);
   
   Object* pObjectOpFrame;
   if ( ! nnpTask->m_pDataStack->bPop(pObjectOpFrame) )

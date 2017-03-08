@@ -46,7 +46,7 @@ void Task::vAddPrimitives_TxRef(void)
 /*----------------------------------------------------------------------------*/
 void Task::vTxRefInit(NNP_Task nnpTask)
 {
-ENTRY("vTxRefInit");
+ENTRY("vTxRefInit"_Str);
   
   Object* pPtrTxRef;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTxRef) )
@@ -65,7 +65,7 @@ ENTRY("vTxRefInit");
 /*----------------------------------------------------------------------------*/
 void Task::vTxRefBegin(NNP_Task nnpTask)
 {
-ENTRY("vTxRefBegin");
+ENTRY("vTxRefBegin"_Str);
   
   Object* pPtrTxRef;
   
@@ -87,7 +87,7 @@ ENTRY("vTxRefBegin");
 /*----------------------------------------------------------------------------*/
 void Task::vTxRefEnd(NNP_Task nnpTask)
 {
-ENTRY("vTxRefEnd");
+ENTRY("vTxRefEnd"_Str);
   
   Object* pPtrTxRef;
   
@@ -109,7 +109,7 @@ ENTRY("vTxRefEnd");
 /*----------------------------------------------------------------------------*/
 void Task::vTxRefCommit(NNP_Task nnpTask)
 {
-ENTRY("vTxRefCommit");
+ENTRY("vTxRefCommit"_Str);
   
   Object* pPtrTxRef;
   
@@ -131,7 +131,7 @@ ENTRY("vTxRefCommit");
 /*----------------------------------------------------------------------------*/
 void Task::vTxRefRollback(NNP_Task nnpTask)
 {
-ENTRY("vTxRefRollback");
+ENTRY("vTxRefRollback"_Str);
   
   Object* pPtrTxRef;
   

@@ -46,7 +46,7 @@ void Task::vAddPrimitives_PlanList(void)
 /*----------------------------------------------------------------------------*/
 void Task::vPlanListAddPlan(NNP_Task nnpTask)
 {
-  ENTRY("vPlanListAddPlan");
+  ENTRY("vPlanListAddPlan"_Str);
 
   Object* pPtrPlan;
   
@@ -65,7 +65,7 @@ void Task::vPlanListAddPlan(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vPlanListFindPlan(NNP_Task nnpTask)
 {
-  ENTRY("vPlanListFindPlan");
+  ENTRY("vPlanListFindPlan"_Str);
   
   i8 iPlanId;
   
@@ -90,7 +90,7 @@ void Task::vPlanListFindPlan(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vPlanListRemovePlan(NNP_Task nnpTask)
 {
-  ENTRY("vPlanListRemovePlan");
+  ENTRY("vPlanListRemovePlan"_Str);
   
   Object* pPtrPlan;
   
@@ -109,7 +109,7 @@ void Task::vPlanListRemovePlan(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vPlanListShow(NNP_Task nnpTask)
 {
-  ENTRY("vPlanListShow");
+  ENTRY("vPlanListShow"_Str);
   
   gpPlanList->vShow();
   

@@ -42,7 +42,7 @@ void Task::vAddPrimitives_Debug(void)
 /*----------------------------------------------------------------------------*/
 void Task::vDebugTrap(NNP_Task nnpTask)
 {
-ENTRY("vDebugTrap");
+ENTRY("vDebugTrap"_Str);
 
   Debugging::vDebugTrap();
   

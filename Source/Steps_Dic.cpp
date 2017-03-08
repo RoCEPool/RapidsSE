@@ -52,7 +52,7 @@ void Task::vAddPrimitives_Dic(void)
 /*----------------------------------------------------------------------------*/
 void Task::vDicFrozenGet(NNP_Task nnpTask)
 {
-ENTRY("vDicFrozenGet");
+ENTRY("vDicFrozenGet"_Str);
   
   Object* pPtrDic;
   
@@ -73,7 +73,7 @@ ENTRY("vDicFrozenGet");
 /*----------------------------------------------------------------------------*/
 void Task::vDicFrozenSet(NNP_Task nnpTask)
 {
-ENTRY("vDicFrozenSet");
+ENTRY("vDicFrozenSet"_Str);
 
   i8 iFrozen;
   Object* pPtrDic;
@@ -93,7 +93,7 @@ ENTRY("vDicFrozenSet");
 /*----------------------------------------------------------------------------*/
 void Task::vDicInit(NNP_Task nnpTask)
 {
-ENTRY("vDicInit");
+ENTRY("vDicInit"_Str);
   
   Object* pPtrDic;
   
@@ -115,7 +115,7 @@ ENTRY("vDicInit");
 /*----------------------------------------------------------------------------*/
 void Task::vDicIsCompiled(NNP_Task nnpTask)
 {
-  ENTRY("vDicIsCompiled");
+  ENTRY("vDicIsCompiled"_Str);
   
   Word* pWord = gpMainDic->pFindWord("__compiled__"_Str);
   
@@ -131,7 +131,7 @@ void Task::vDicIsCompiled(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDicKindGet(NNP_Task nnpTask)
 {
-  ENTRY("vDicFrozenGet");
+  ENTRY("vDicFrozenGet"_Str);
   
   Object* pPtrDic;
   
@@ -153,7 +153,7 @@ void Task::vDicKindGet(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDicKindSet(NNP_Task nnpTask)
 {
-  ENTRY("vDicKindSet");
+  ENTRY("vDicKindSet"_Str);
   
   Object* pPtrKind;
   Object* pPtrDic;
@@ -175,7 +175,7 @@ void Task::vDicKindSet(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDicLastWord(NNP_Task nnpTask)
 {
-ENTRY("vDicLastWord");
+ENTRY("vDicLastWord"_Str);
   
   Object* pPtrDic;
   
@@ -196,7 +196,7 @@ ENTRY("vDicLastWord");
 /*----------------------------------------------------------------------------*/
 void Task::vDicMain(NNP_Task nnpTask)
 {
-ENTRY("vDicMain");
+ENTRY("vDicMain"_Str);
   
   nnpTask->m_pDataStack->vPush(gpMainDic);
   
@@ -208,7 +208,7 @@ ENTRY("vDicMain");
 /*----------------------------------------------------------------------------*/
 void Task::vDicName(NNP_Task nnpTask)
 {
-ENTRY("vDicName");
+ENTRY("vDicName"_Str);
  
   Object* pPtrDic;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrDic) )
@@ -229,7 +229,7 @@ ENTRY("vDicName");
 /*----------------------------------------------------------------------------*/
 void Task::vDicRef(NNP_Task nnpTask)
 {
-  ENTRY("vDicRef");
+  ENTRY("vDicRef"_Str);
   
   Object* pPtrDic;
   
@@ -250,7 +250,7 @@ void Task::vDicRef(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDicWordCount(NNP_Task nnpTask)
 {
-  ENTRY("vDicWordCount");
+  ENTRY("vDicWordCount"_Str);
   
   Object* pPtrDic;
   

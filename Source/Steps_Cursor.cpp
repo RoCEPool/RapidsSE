@@ -43,7 +43,7 @@ void Task::vAddPrimitives_Cursor(void)
 /*----------------------------------------------------------------------------*/
 void Task::vCursorFetch(NNP_Task nnpTask)
 {
-  ENTRY("vCursorFetch");
+  ENTRY("vCursorFetch"_Str);
   
   i8 iPick = 1;
   
@@ -61,7 +61,7 @@ void Task::vCursorFetch(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vCursorStore(NNP_Task nnpTask)
 {
-  ENTRY("vCursorStore");
+  ENTRY("vCursorStore"_Str);
   
   i8 iPeek = 1;
   

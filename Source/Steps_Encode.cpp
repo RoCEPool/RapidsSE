@@ -54,7 +54,7 @@ void Task::vAddPrimitives_Encode(void)
 /*----------------------------------------------------------------------------*/
 void Task::vEncodeAgain(NNP_Task nnpTask)
 {
-  ENTRY("vAgain"); // ( dest -- / -- )
+  ENTRY("vAgain"_Str); // ( dest -- / -- )
   
   Word* pCurrentWord = nnpTask->m_pCurrentWord;
   
@@ -74,7 +74,7 @@ void Task::vEncodeAgain(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vEncodeAhead(NNP_Task nnpTask)
 {
-  ENTRY("vAhead");// ( -- orig / -- )
+  ENTRY("vAhead"_Str);// ( -- orig / -- )
   
   Word* pCurrentWord = nnpTask->m_pCurrentWord;
   
@@ -93,7 +93,7 @@ void Task::vEncodeAhead(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vEncodeCallPrimitive(NNP_Task nnpTask)
 {
-  ENTRY("vEncodeCallPrimitive");
+  ENTRY("vEncodeCallPrimitive"_Str);
   
   Object* pWordObject;
   if ( ! nnpTask->m_pDataStack->bPop(pWordObject) )
@@ -114,7 +114,7 @@ void Task::vEncodeCallPrimitive(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vEncodeCallRoutine(NNP_Task nnpTask)
 {
-  ENTRY("vEncodeCallRoutine");
+  ENTRY("vEncodeCallRoutine"_Str);
   
   Object* pWordObject;
   if ( ! nnpTask->m_pDataStack->bPop(pWordObject) )
@@ -148,7 +148,7 @@ void Task::vEncodeCallRoutine(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vEncodeContinue(NNP_Task nnpTask)
 {
-  ENTRY("vContinue"); // ( -- orig / flag -- )
+  ENTRY("vContinue"_Str); // ( -- orig / flag -- )
   
   Word* pCurrentWord = nnpTask->m_pCurrentWord;
   
@@ -171,7 +171,7 @@ void Task::vEncodeContinue(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vEncodeHere(NNP_Task nnpTask)
 {
-  ENTRY("vFlowHere");
+  ENTRY("vFlowHere"_Str);
   
   Word* pCurrentWord = nnpTask->m_pCurrentWord;
   
@@ -188,7 +188,7 @@ void Task::vEncodeHere(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vEncodeIf(NNP_Task nnpTask)
 {
-  ENTRY("vIf"); // ( -- orig / flag -- )
+  ENTRY("vIf"_Str); // ( -- orig / flag -- )
   
   Word* pCurrentWord = nnpTask->m_pCurrentWord;
   
@@ -207,7 +207,7 @@ void Task::vEncodeIf(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vEncodeLoop(NNP_Task nnpTask)
 {
-  ENTRY("vLoop");
+  ENTRY("vLoop"_Str);
   
   Word* pCurrentWord = nnpTask->m_pCurrentWord;
   
@@ -255,7 +255,7 @@ void Task::vEncodeLoop(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vEncodeLoopPlus(NNP_Task nnpTask)
 {
-  ENTRY("vLoopPlus");
+  ENTRY("vLoopPlus"_Str);
   
   Word* pCurrentWord = nnpTask->m_pCurrentWord;
   
@@ -303,7 +303,7 @@ void Task::vEncodeLoopPlus(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vEncodeNext(NNP_Task nnpTask)
 {
-  ENTRY("vLoop");
+  ENTRY("vLoop"_Str);
   
   Word* pCurrentWord = nnpTask->m_pCurrentWord;
   
@@ -328,7 +328,7 @@ void Task::vEncodeNext(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vEncodePushValue(NNP_Task nnpTask)
 {
-  ENTRY("vEncodePushValue");
+  ENTRY("vEncodePushValue"_Str);
   
   ValWsp xValA;
   if ( ! nnpTask->m_pDataStack->bPop(xValA) )
@@ -346,7 +346,7 @@ void Task::vEncodePushValue(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vEncodeThen(NNP_Task nnpTask)
 {
-  ENTRY("vThen");  // ( orig -- / -- )
+  ENTRY("vThen"_Str);  // ( orig -- / -- )
   
   Word* pCurrentWord = nnpTask->m_pCurrentWord;
   
@@ -366,7 +366,7 @@ void Task::vEncodeThen(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vEncodeUntil(NNP_Task nnpTask)
 {
-  ENTRY("vUntil"); // ( dest -- / flag -- )
+  ENTRY("vUntil"_Str); // ( dest -- / flag -- )
   
   Word* pCurrentWord = nnpTask->m_pCurrentWord;
   

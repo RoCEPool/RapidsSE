@@ -71,7 +71,7 @@ void Task::vAddPrimitives_Task(void)
 /*----------------------------------------------------------------------------*/
 void Task::vTaskAck(NNP_Task nnpTask)
 {
-  ENTRY("vTaskAck");
+  ENTRY("vTaskAck"_Str);
   
   Object* pTaskObject;
   if ( ! nnpTask->m_pDataStack->bPop(pTaskObject) )
@@ -125,7 +125,7 @@ void Task::vTaskAck(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTaskAcksFetch(NNP_Task nnpTask)
 {
-  ENTRY("vTaskAcksFetch");
+  ENTRY("vTaskAcksFetch"_Str);
   
   Object* pPtrTask;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTask) )
@@ -142,7 +142,7 @@ void Task::vTaskAcksFetch(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTaskAcksStore(NNP_Task nnpTask)
 {
-  ENTRY("vTaskAcksStore");
+  ENTRY("vTaskAcksStore"_Str);
   
   Object* pPtrTask;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTask) )
@@ -165,7 +165,7 @@ void Task::vTaskAcksStore(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTaskCommentFetch(NNP_Task nnpTask)
 {
-  ENTRY("vTaskCommentFetch");
+  ENTRY("vTaskCommentFetch"_Str);
   
   Object* pPtrTask;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTask) )
@@ -182,7 +182,7 @@ void Task::vTaskCommentFetch(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTaskCommentStore(NNP_Task nnpTask)
 {
-  ENTRY("vTaskCommentStore");
+  ENTRY("vTaskCommentStore"_Str);
   
   Object* pPtrTask;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTask) )
@@ -203,7 +203,7 @@ void Task::vTaskCommentStore(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTaskDicStack(NNP_Task nnpTask)
 {
-  ENTRY("vTaskDicStack");
+  ENTRY("vTaskDicStack"_Str);
   
   Object* pPtrTask;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTask) )
@@ -224,7 +224,7 @@ void Task::vTaskDicStack(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTaskDump(NNP_Task nnpTask)
 {
-ENTRY("vTaskDump");
+ENTRY("vTaskDump"_Str);
   
   Object* pObject;
   if ( ! nnpTask->m_pDataStack->bPop(pObject) )
@@ -241,7 +241,7 @@ ENTRY("vTaskDump");
 /*----------------------------------------------------------------------------*/
 void Task::vTaskInit(NNP_Task nnpTask)
 {
-ENTRY("vTaskInit");
+ENTRY("vTaskInit"_Str);
   
   Object* pPtrTask;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTask) )
@@ -267,7 +267,7 @@ ENTRY("vTaskInit");
 /*----------------------------------------------------------------------------*/
 void Task::vTaskJobQueueFetch(NNP_Task nnpTask)
 {
-  ENTRY("vTaskJobQueueFetch");
+  ENTRY("vTaskJobQueueFetch"_Str);
   
   Object* pTaskObject;
   if ( ! nnpTask->m_pDataStack->bPop(pTaskObject) )
@@ -288,7 +288,7 @@ void Task::vTaskJobQueueFetch(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTaskJobQueueStore(NNP_Task nnpTask)
 {
-  ENTRY("vTaskJobQueueStore");
+  ENTRY("vTaskJobQueueStore"_Str);
   
   Object* pTaskObject;
   if ( ! nnpTask->m_pDataStack->bPop(pTaskObject) )
@@ -312,7 +312,7 @@ void Task::vTaskJobQueueStore(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTaskNameFetch(NNP_Task nnpTask)
 {
-ENTRY("vTaskNameFetch");
+ENTRY("vTaskNameFetch"_Str);
   
   Object* pTaskObject;
   if ( ! nnpTask->m_pDataStack->bPop(pTaskObject) )
@@ -329,7 +329,7 @@ ENTRY("vTaskNameFetch");
 /*----------------------------------------------------------------------------*/
 void Task::vTaskNameStore(NNP_Task nnpTask)
 {
-ENTRY("vTaskNameStore");
+ENTRY("vTaskNameStore"_Str);
   
   Object* pTaskObject;
   if ( ! nnpTask->m_pDataStack->bPop(pTaskObject) )
@@ -350,7 +350,7 @@ ENTRY("vTaskNameStore");
 /*----------------------------------------------------------------------------*/
 void Task::vTaskNew(NNP_Task nnpTask)
 {
-ENTRY("vTaskNew");
+ENTRY("vTaskNew"_Str);
   //                                   pParent   sSeed     nTaskArgs
   if ( ! nnpTask->m_pDataStack->bGuard(CN_PTRVAL,CN_STRVAL,CN_INTVAL) )
     THROW_INVALID_DSTACK("task.new");
@@ -406,7 +406,7 @@ ENTRY("vTaskNew");
 /*----------------------------------------------------------------------------*/
 void Task::vTaskParentFetch(NNP_Task nnpTask)
 {
-  ENTRY("vTaskParentFetch");
+  ENTRY("vTaskParentFetch"_Str);
   
   nnpTask->m_pDataStack->vPush(nnpTask->m_pParentTask);
   
@@ -418,7 +418,7 @@ void Task::vTaskParentFetch(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTaskParentStore(NNP_Task nnpTask)
 {
-  ENTRY("vTaskParentStore");
+  ENTRY("vTaskParentStore"_Str);
   
   Object* pParent;
   if ( ! nnpTask->m_pDataStack->bPop(pParent) )
@@ -436,7 +436,7 @@ void Task::vTaskParentStore(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTaskPlanFetch(NNP_Task nnpTask)
 {
-  ENTRY("vTaskPlanFetch");
+  ENTRY("vTaskPlanFetch"_Str);
   
   Object* pObject;
   if ( ! nnpTask->m_pDataStack->bPop(pObject) )
@@ -457,7 +457,7 @@ void Task::vTaskPlanFetch(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTaskPlanStore(NNP_Task nnpTask)
 {
-  ENTRY("vTaskPlanStore");
+  ENTRY("vTaskPlanStore"_Str);
   
   Object* pTaskObject;
   if ( ! nnpTask->m_pDataStack->bPop(pTaskObject) )
@@ -481,7 +481,7 @@ void Task::vTaskPlanStore(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTaskSeed(NNP_Task nnpTask)
 {
-ENTRY("vTaskSeed");
+ENTRY("vTaskSeed"_Str);
   
 //  //                                   sSeed     nTaskArgs
 //  if ( ! nnpTask->m_pDataStack->bGuard(CN_STRVAL,CN_INTVAL) )
@@ -526,7 +526,7 @@ ENTRY("vTaskSeed");
 /*----------------------------------------------------------------------------*/
 void Task::vTaskSeitfFetch(NNP_Task nnpTask)
 {
-  ENTRY("vTaskSeitfFetch");
+  ENTRY("vTaskSeitfFetch"_Str);
   
   Object* pObject;
   if ( ! nnpTask->m_pDataStack->bPop(pObject) )
@@ -547,7 +547,7 @@ void Task::vTaskSeitfFetch(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTaskSeitfStore(NNP_Task nnpTask)
 {
-  ENTRY("vTaskSeitfStore");
+  ENTRY("vTaskSeitfStore"_Str);
   
   Object* pTaskObject;
   if ( ! nnpTask->m_pDataStack->bPop(pTaskObject) )
@@ -572,7 +572,7 @@ void Task::vTaskSeitfStore(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTaskSocketFetch(NNP_Task nnpTask)
 {
-  ENTRY("vTaskSocketFetch");
+  ENTRY("vTaskSocketFetch"_Str);
   
   Object* pTaskObject;
   if ( ! nnpTask->m_pDataStack->bPop(pTaskObject) )
@@ -593,7 +593,7 @@ void Task::vTaskSocketFetch(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTaskSocketStore(NNP_Task nnpTask)
 {
-  ENTRY("vTaskSocketStore");
+  ENTRY("vTaskSocketStore"_Str);
   
   Object* pTaskObject;
   if ( ! nnpTask->m_pDataStack->bPop(pTaskObject) )
@@ -617,7 +617,7 @@ void Task::vTaskSocketStore(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTaskStateFetch(NNP_Task nnpTask)
 {
-ENTRY("vTaskStateFetch");
+ENTRY("vTaskStateFetch"_Str);
   
   Object* pTaskObject;
   if ( ! nnpTask->m_pDataStack->bPop(pTaskObject) )
@@ -636,7 +636,7 @@ ENTRY("vTaskStateFetch");
 /*----------------------------------------------------------------------------*/
 void Task::vTaskStateStore(NNP_Task nnpTask)
 {
-ENTRY("vTaskStateStore");
+ENTRY("vTaskStateStore"_Str);
   
   Object* pTaskObject;
   if ( ! nnpTask->m_pDataStack->bPop(pTaskObject) )
@@ -658,7 +658,7 @@ ENTRY("vTaskStateStore");
 /*----------------------------------------------------------------------------*/
 void Task::vTaskTaskSetFetch(NNP_Task nnpTask)
 {
-  ENTRY("vTaskTaskSetFetch");
+  ENTRY("vTaskTaskSetFetch"_Str);
   
   Object* pTaskObject;
   if ( ! nnpTask->m_pDataStack->bPop(pTaskObject) )
@@ -679,7 +679,7 @@ void Task::vTaskTaskSetFetch(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTaskTaskSetStore(NNP_Task nnpTask)
 {
-  ENTRY("vTaskTaskSetStore");
+  ENTRY("vTaskTaskSetStore"_Str);
   
   Object* pTaskObject;
   if ( ! nnpTask->m_pDataStack->bPop(pTaskObject) )
@@ -703,7 +703,7 @@ void Task::vTaskTaskSetStore(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTaskThis(NNP_Task nnpTask)
 {
-ENTRY("vTaskThis");
+ENTRY("vTaskThis"_Str);
   
   Object* pTask = *nnpTask;
   
@@ -717,7 +717,7 @@ ENTRY("vTaskThis");
 /*----------------------------------------------------------------------------*/
 void Task::vTaskThread(NNP_Task nnpTask)
 {
-  ENTRY("vTaskThread");
+  ENTRY("vTaskThread"_Str);
   
   Object* pTaskObject;
   if ( ! nnpTask->m_pDataStack->bPop(pTaskObject) )
@@ -735,7 +735,7 @@ void Task::vTaskThread(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTaskWait(NNP_Task nnpTask)
 {
-  ENTRY("vTaskWait");
+  ENTRY("vTaskWait"_Str);
   
   // ..tbd..
   
@@ -747,7 +747,7 @@ void Task::vTaskWait(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTaskYield(NNP_Task nnpTask)
 {
-  ENTRY("vTaskYield");
+  ENTRY("vTaskYield"_Str);
   
   nnpTask->vState(TS_YIELDED);
   

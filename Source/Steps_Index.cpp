@@ -51,7 +51,7 @@ void Task::vAddPrimitives_Index(void)
 /*----------------------------------------------------------------------------*/
 void Task::vIndexDump(NNP_Task nnpTask)
 {
-  ENTRY("vIndexDump");
+  ENTRY("vIndexDump"_Str);
   
   Object* pPtrIndex;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrIndex) )
@@ -70,7 +70,7 @@ void Task::vIndexDump(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vIndexInit(NNP_Task nnpTask)
 {
-  ENTRY("vIndexInit");
+  ENTRY("vIndexInit"_Str);
   Object* pPtrIndex = nullptr;
   
   if ( ! nnpTask->m_pDataStack->bPop(pPtrIndex) )
@@ -89,7 +89,7 @@ void Task::vIndexInit(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vIndexPopulate(NNP_Task nnpTask)
 {
-  ENTRY("vIndexPopulate");
+  ENTRY("vIndexPopulate"_Str);
   Object* pPtrIndex = nullptr;
   Object* pPtrTable = nullptr;
   
@@ -109,7 +109,7 @@ void Task::vIndexPopulate(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vIndexTableStore(NNP_Task nnpTask)
 {
-  ENTRY("vIndexTableStore");
+  ENTRY("vIndexTableStore"_Str);
   
   Object* pPtrIndex = nullptr;
   Object* pPtrTable = nullptr;
@@ -136,7 +136,7 @@ void Task::vIndexTableStore(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vIndexTruncate(NNP_Task nnpTask)
 {
-  ENTRY("vIndexTruncate");
+  ENTRY("vIndexTruncate"_Str);
   
   Object* pPtrIndex = nullptr;
   
@@ -156,7 +156,7 @@ void Task::vIndexTruncate(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vIndexEntryTest(NNP_Task nnpTask)
 {
-  ENTRY("vIndexEntryTest");
+  ENTRY("vIndexEntryTest"_Str);
   
   Object* pPtrIb = nullptr;
   
@@ -237,7 +237,7 @@ void Task::vIndexEntryTest(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vIndexIbDump(NNP_Task nnpTask)
 {
-  ENTRY("vIndexIbDump");
+  ENTRY("vIndexIbDump"_Str);
   
   Object* pPtrIB;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrIB) )
@@ -268,7 +268,7 @@ void Task::vIndexIbDump(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vIndexIbNew(NNP_Task nnpTask)
 {
-  ENTRY("vIndexIbNew");
+  ENTRY("vIndexIbNew"_Str);
   
   IndexBuffer* pIndexBuffer = new IndexBuffer;
   ASSERT(CN_INDEXBUFFER == pIndexBuffer->eClass());

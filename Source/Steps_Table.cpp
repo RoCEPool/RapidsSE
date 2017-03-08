@@ -52,7 +52,7 @@ void Task::vAddPrimitives_Table(void)
 /*----------------------------------------------------------------------------*/
 void Task::vTableAnalyze(NNP_Task nnpTask)
 {
-  ENTRY("vTableAnalyze");
+  ENTRY("vTableAnalyze"_Str);
   
   Object* pPtrTable;
   i8 iDetailed;
@@ -78,7 +78,7 @@ void Task::vTableAnalyze(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTableAppend(NNP_Task nnpTask)
 {
-  ENTRY("vTableAppend");
+  ENTRY("vTableAppend"_Str);
   i8 iPartition;
   s48K sString;
   
@@ -108,7 +108,7 @@ void Task::vTableAppend(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTableAppendBuffer(NNP_Task nnpTask)
 {
-  ENTRY("vTableAppendBuffer");
+  ENTRY("vTableAppendBuffer"_Str);
 
   Object* pPtrTable;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTable) )
@@ -138,7 +138,7 @@ void Task::vTableAppendBuffer(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTableDrop(NNP_Task nnpTask)
 {
-ENTRY("vTableDrop");
+ENTRY("vTableDrop"_Str);
   
   Object* pPtrTable;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTable) )
@@ -155,7 +155,7 @@ ENTRY("vTableDrop");
 /*----------------------------------------------------------------------------*/
 void Task::vTableDump(NNP_Task nnpTask)
 {
-ENTRY("vTableDump");
+ENTRY("vTableDump"_Str);
   
   vTrace("TableDump\n"_Str);
   
@@ -176,7 +176,7 @@ ENTRY("vTableDump");
 /*----------------------------------------------------------------------------*/
 void Task::vTableInit(NNP_Task nnpTask)
 {
-ENTRY("vTableInit");
+ENTRY("vTableInit"_Str);
   
   Object* pPtrTable;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTable) )
@@ -195,7 +195,7 @@ ENTRY("vTableInit");
 /*----------------------------------------------------------------------------*/
 void Task::vTableInsert(NNP_Task nnpTask)
 {
-ENTRY("vTableInsert");
+ENTRY("vTableInsert"_Str);
   
   Object* pPtrTable;
   Object* pPtrTxRef;
@@ -231,7 +231,7 @@ ENTRY("vTableInsert");
 /*----------------------------------------------------------------------------*/
 void Task::vTableName(NNP_Task nnpTask)
 {
-  ENTRY("vTableName");
+  ENTRY("vTableName"_Str);
   
   Object* pPtrTable;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTable) )
@@ -254,7 +254,7 @@ void Task::vTableName(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTableRef(NNP_Task nnpTask)
 {
-  ENTRY("vTableRef");
+  ENTRY("vTableRef"_Str);
   
   Object* pPtrTable;
   
@@ -275,7 +275,7 @@ void Task::vTableRef(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTableSubDic(NNP_Task nnpTask)
 {
-  ENTRY("vTableSubDic");
+  ENTRY("vTableSubDic"_Str);
   
   Object* pPtrTable;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTable) )
@@ -296,7 +296,7 @@ void Task::vTableSubDic(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTableSpace(NNP_Task nnpTask)
 {
-ENTRY("vTableSpace");
+ENTRY("vTableSpace"_Str);
   
   Object* pPtrTable;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTable) )
@@ -318,7 +318,7 @@ ENTRY("vTableSpace");
 /*----------------------------------------------------------------------------*/
 void Task::vTableTruncate(NNP_Task nnpTask)
 {
-  ENTRY("vTableTruncate");
+  ENTRY("vTableTruncate"_Str);
   
   Object* pPtrTable;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTable) )

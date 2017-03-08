@@ -44,7 +44,7 @@ void Task::vAddPrimitives_Logic(void)
 /*----------------------------------------------------------------------------*/
 void Task::vLogicAnd(NNP_Task nnpTask)
 {
-  ENTRY("vLogicAnd");
+  ENTRY("vLogicAnd"_Str);
   
   i8 iArgB;
   if ( ! nnpTask->m_pDataStack->bPopParamInt(iArgB) )
@@ -66,7 +66,7 @@ void Task::vLogicAnd(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vLogicNot(NNP_Task nnpTask)
 {
-  ENTRY("vLogicNot");
+  ENTRY("vLogicNot"_Str);
   
   i8 iValA;
   if ( ! nnpTask->m_pDataStack->bPopParamInt(iValA) )
@@ -84,7 +84,7 @@ void Task::vLogicNot(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vLogicOr(NNP_Task nnpTask)
 {
-  ENTRY("vLogicOr");
+  ENTRY("vLogicOr"_Str);
   
   i8 iArgB;
   if ( ! nnpTask->m_pDataStack->bPopParamInt(iArgB) )

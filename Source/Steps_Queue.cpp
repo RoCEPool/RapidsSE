@@ -45,7 +45,7 @@ void Task::vAddPrimitives_Queue(void)
 /*----------------------------------------------------------------------------*/
 void Task::vQueueAppend(NNP_Task nnpTask)
 {
-ENTRY("vQueueAppend");
+ENTRY("vQueueAppend"_Str);
   
   Object* pObject;
   ValWsp xValWsp;
@@ -67,7 +67,7 @@ ENTRY("vQueueAppend");
 /*----------------------------------------------------------------------------*/
 void Task::vQueueDump(NNP_Task nnpTask)
 {
-ENTRY("vQueueDump");
+ENTRY("vQueueDump"_Str);
   
   Object* pObject;
   
@@ -88,7 +88,7 @@ ENTRY("vQueueDump");
 /*----------------------------------------------------------------------------*/
 void Task::vQueueInit(NNP_Task nnpTask)
 {
-ENTRY("vQueueInit");
+ENTRY("vQueueInit"_Str);
   
   Object* pObject;
   
@@ -109,7 +109,7 @@ ENTRY("vQueueInit");
 /*----------------------------------------------------------------------------*/
 void Task::vQueuePop(NNP_Task nnpTask)
 {
-ENTRY("vQueuePop");
+ENTRY("vQueuePop"_Str);
   
   Object* pObject;
   ValWsp xValWsp;

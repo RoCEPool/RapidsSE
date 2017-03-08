@@ -43,7 +43,7 @@ void Task::vAddPrimitives_Enter(void)
 /*----------------------------------------------------------------------------*/
 void Task::vEnterObject(NNP_Task nnpTask)
 {
-  ENTRY("vEnterObject");
+  ENTRY("vEnterObject"_Str);
   
   nnpTask->m_pReturnStack->vPush(nnpTask->IP.m_pCell);
   nnpTask->IP.m_pCell = *(Cell**)nnpTask->m_pEntryCell;
@@ -71,7 +71,7 @@ void Task::vEnterObject(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vEnterRoutine(NNP_Task nnpTask)
 {
-  ENTRY("vEnterRoutine");
+  ENTRY("vEnterRoutine"_Str);
   
   nnpTask->m_pReturnStack->vPush(nnpTask->IP.m_pCell);
   nnpTask->IP.m_pCell = *(Cell**)nnpTask->m_pEntryCell;

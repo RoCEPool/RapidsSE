@@ -51,7 +51,7 @@ void Task::vAddPrimitives_File(void)
 /*----------------------------------------------------------------------------*/
 void Task::vFileClose(NNP_Task nnpTask)
 {
-ENTRY("vFileClose");
+ENTRY("vFileClose"_Str);
   
   Object* pPtrFile;
   
@@ -70,7 +70,7 @@ ENTRY("vFileClose");
 /*----------------------------------------------------------------------------*/
 void Task::vFileDelete(NNP_Task nnpTask)
 {
-ENTRY("vFileDelete");
+ENTRY("vFileDelete"_Str);
   
   Object* pPtrFile;
   
@@ -90,7 +90,7 @@ ENTRY("vFileDelete");
 /*----------------------------------------------------------------------------*/
 void Task::vFileInit(NNP_Task nnpTask)
 {
-ENTRY("vFileInit");
+ENTRY("vFileInit"_Str);
   
   Object* pPtrFile;
   
@@ -109,7 +109,7 @@ ENTRY("vFileInit");
 /*----------------------------------------------------------------------------*/
 void Task::vFileNew(NNP_Task nnpTask)
 {
-ENTRY("vFileNew");
+ENTRY("vFileNew"_Str);
   
   File* pFile = new File;
   
@@ -126,7 +126,7 @@ ENTRY("vFileNew");
 /*----------------------------------------------------------------------------*/
 void Task::vFileOpen(NNP_Task nnpTask)
 {
-ENTRY("vFileOpen");
+ENTRY("vFileOpen"_Str);
   
   Object* pPtrFile;
   
@@ -152,7 +152,7 @@ ENTRY("vFileOpen");
 /*----------------------------------------------------------------------------*/
 void Task::vFilePathGet(NNP_Task nnpTask)
 {
-ENTRY("vFilePathGet");
+ENTRY("vFilePathGet"_Str);
   
   Object* pPtrFile;
   
@@ -173,7 +173,7 @@ ENTRY("vFilePathGet");
 /*----------------------------------------------------------------------------*/
 void Task::vFilePathSet(NNP_Task nnpTask)
 {
-ENTRY("vFilePathSet");
+ENTRY("vFilePathSet"_Str);
   
   Object* pPtrFile;
   
@@ -197,7 +197,7 @@ ENTRY("vFilePathSet");
 /*----------------------------------------------------------------------------*/
 void Task::vFileRead(NNP_Task nnpTask)
 {
-ENTRY("vFileRead");
+ENTRY("vFileRead"_Str);
   
   Object* pPtrFile;
   
@@ -225,7 +225,7 @@ ENTRY("vFileRead");
 /*----------------------------------------------------------------------------*/
 void Task::vFileReadRecord(NNP_Task nnpTask)
 {
-  ENTRY("vFileRead");
+  ENTRY("vFileRead"_Str);
   
   Object* pPtrFile;
   
@@ -250,7 +250,7 @@ void Task::vFileReadRecord(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vFileWrite(NNP_Task nnpTask)
 {
-ENTRY("vFileWrite");
+ENTRY("vFileWrite"_Str);
   
   Object* pPtrFile;
   

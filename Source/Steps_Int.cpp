@@ -54,7 +54,7 @@ void Task::vAddPrimitives_Int(void)
 /*----------------------------------------------------------------------------*/
 void Task::vIntAdd(NNP_Task nnpTask)
 {
-  ENTRY("vIntAdd");
+  ENTRY("vIntAdd"_Str);
   /*
   i8 r, j, i;
   
@@ -86,7 +86,7 @@ void Task::vIntAdd(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vIntDivide(NNP_Task nnpTask)
 {
-  ENTRY("vIntDivide");
+  ENTRY("vIntDivide"_Str);
   
   i8 r, j, i;
   
@@ -105,7 +105,7 @@ void Task::vIntDivide(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vIntEqual(NNP_Task nnpTask)
 {
-  ENTRY("vIntEqual");
+  ENTRY("vIntEqual"_Str);
   
   i8 r, j, i;
   
@@ -124,7 +124,7 @@ void Task::vIntEqual(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vIntGreater(NNP_Task nnpTask)
 {
-  ENTRY("vIntGreater");
+  ENTRY("vIntGreater"_Str);
   
   i8 r, j, i;
   
@@ -143,7 +143,7 @@ void Task::vIntGreater(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vIntGreaterEqual(NNP_Task nnpTask)
 {
-  ENTRY("vIntGreaterEqual");
+  ENTRY("vIntGreaterEqual"_Str);
   
   i8 r, j, i;
   
@@ -162,7 +162,7 @@ void Task::vIntGreaterEqual(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vIntHash(NNP_Task nnpTask)
 {
-  ENTRY("vIntHash");
+  ENTRY("vIntHash"_Str);
   
   s48K sString;
   if ( ! nnpTask->m_pDataStack->bPop(sString) )
@@ -182,7 +182,7 @@ void Task::vIntHash(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vIntLess(NNP_Task nnpTask)
 {
-  ENTRY("vIntLess");
+  ENTRY("vIntLess"_Str);
   
   i8 r, j, i;
   
@@ -201,7 +201,7 @@ void Task::vIntLess(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vIntLessEqual(NNP_Task nnpTask)
 {
-  ENTRY("vIntLessEqual");
+  ENTRY("vIntLessEqual"_Str);
   
   i8 r, j, i;
   
@@ -220,7 +220,7 @@ void Task::vIntLessEqual(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vIntModulo(NNP_Task nnpTask)
 {
-  ENTRY("vIntModulo");
+  ENTRY("vIntModulo"_Str);
   
   i8 r, j, i;
   
@@ -239,7 +239,7 @@ void Task::vIntModulo(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vIntMultiply(NNP_Task nnpTask)
 {
-  ENTRY("vIntMultiply");
+  ENTRY("vIntMultiply"_Str);
   
   i8 r, j, i;
   
@@ -258,7 +258,7 @@ void Task::vIntMultiply(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vIntNeg(NNP_Task nnpTask)
 {
-  ENTRY("vIntNeg");
+  ENTRY("vIntNeg"_Str);
   
   i8 r, i;
   
@@ -277,7 +277,7 @@ void Task::vIntNeg(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vIntNotEqual(NNP_Task nnpTask)
 {
-  ENTRY("vIntNotEqual");
+  ENTRY("vIntNotEqual"_Str);
   
   i8 r, j, i;
   
@@ -296,7 +296,7 @@ void Task::vIntNotEqual(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vIntSubtract(NNP_Task nnpTask)
 {
-  ENTRY("vIntSubtract");
+  ENTRY("vIntSubtract"_Str);
   
   i8 r, j, i;
   

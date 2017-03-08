@@ -8,9 +8,9 @@ namespace Tasks
   class StepAccum : public Object
   {
   public:
-    const char* m_aFnName;  // name of function
-    i8          m_nInvoked; // number of times invoked
-    i8          m_nCycles;  // total cycles
+    Str* m_aFnName;  // name of function
+    i8   m_nInvoked; // number of times invoked
+    i8   m_nCycles;  // total cycles
     
     // must be last
     Footer m_xFooter;

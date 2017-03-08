@@ -48,7 +48,7 @@ void Task::vAddPrimitives_NodeCursor(void)
 /*----------------------------------------------------------------------------*/
 void Task::vNodeCursorBegin(NNP_Task nnpTask)
 {
-ENTRY("vNodeCursorBegin");
+ENTRY("vNodeCursorBegin"_Str);
   
   Object* pPtrNodeCursor;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrNodeCursor) )
@@ -67,7 +67,7 @@ ENTRY("vNodeCursorBegin");
 /*----------------------------------------------------------------------------*/
 void Task::vNodeCursorDelete(NNP_Task nnpTask)
 {
-ENTRY("vNodeCursorDelete");
+ENTRY("vNodeCursorDelete"_Str);
   
   Object* pPtrNodeCursor;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrNodeCursor) )
@@ -86,7 +86,7 @@ ENTRY("vNodeCursorDelete");
 /*----------------------------------------------------------------------------*/
 void Task::vNodeCursorEnd(NNP_Task nnpTask)
 {
-ENTRY("vNodeCursorEnd");
+ENTRY("vNodeCursorEnd"_Str);
   
   Object* pPtrNodeCursor;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrNodeCursor) )
@@ -105,7 +105,7 @@ ENTRY("vNodeCursorEnd");
 /*----------------------------------------------------------------------------*/
 void Task::vNodeCursorFirst(NNP_Task nnpTask)
 {
-ENTRY("vNodeCursorFirst");
+ENTRY("vNodeCursorFirst"_Str);
   
   Object* pPtrNodeCursor;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrNodeCursor) )
@@ -128,7 +128,7 @@ ENTRY("vNodeCursorFirst");
 /*----------------------------------------------------------------------------*/
 void Task::vNodeCursorGet(NNP_Task nnpTask)
 {
-ENTRY("vNodeCursorGet");
+ENTRY("vNodeCursorGet"_Str);
   
   Object* pPtrNodeCursor;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrNodeCursor) )
@@ -149,7 +149,7 @@ ENTRY("vNodeCursorGet");
 /*----------------------------------------------------------------------------*/
 void Task::vNodeCursorInit(NNP_Task nnpTask)
 {
-ENTRY("vNodeCursorInit");
+ENTRY("vNodeCursorInit"_Str);
   
   Object* pPtrNodeCursor;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrNodeCursor) )
@@ -168,7 +168,7 @@ ENTRY("vNodeCursorInit");
 /*----------------------------------------------------------------------------*/
 void Task::vNodeCursorNew(NNP_Task nnpTask)
 {
-ENTRY("vNodeCursorNew");
+ENTRY("vNodeCursorNew"_Str);
   
   NodeCursor* pNodeCursor = new NodeCursor(gpGrid);
   ASSERT(CN_NODECURSOR == pNodeCursor->eClass());
@@ -183,7 +183,7 @@ ENTRY("vNodeCursorNew");
 /*----------------------------------------------------------------------------*/
 void Task::vNodeCursorNext(NNP_Task nnpTask)
 {
-ENTRY("vNodeCursorNext");
+ENTRY("vNodeCursorNext"_Str);
   
   Object* pPtrNodeCursor;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrNodeCursor) )

@@ -42,7 +42,7 @@ void Task::vAddPrimitives_Env(void)
 /*----------------------------------------------------------------------------*/
 void Task::vEnvGet(NNP_Task nnpTask)
 {
-  ENTRY("vEnvGet");
+  ENTRY("vEnvGet"_Str);
   
   s256 sEnvName;
   

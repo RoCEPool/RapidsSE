@@ -58,7 +58,7 @@ void Task::vAddPrimitives_LoaderSub(void)
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderSubAppendBuffer(NNP_Task nnpTask)
 {
-  ENTRY("vLoaderSubAppendBuffer");
+  ENTRY("vLoaderSubAppendBuffer"_Str);
   
   Object* pObject = _pPtrVal(nnpTask->m_pRegFrame->pValReg(0))->pPtr();
   
@@ -75,7 +75,7 @@ void Task::vLoaderSubAppendBuffer(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderSubBegin(NNP_Task nnpTask)
 {
-  ENTRY("vLoaderSubBegin");
+  ENTRY("vLoaderSubBegin"_Str);
   
   Object* pObject = _pPtrVal(nnpTask->m_pRegFrame->pValReg(0))->pPtr();
   
@@ -92,7 +92,7 @@ void Task::vLoaderSubBegin(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderSubDelete(NNP_Task nnpTask)
 {
-  ENTRY("vLoade3SubDelete");
+  ENTRY("vLoade3SubDelete"_Str);
   
   Object* pObject = _pPtrVal(nnpTask->m_pRegFrame->pValReg(0))->pPtr();
   
@@ -109,7 +109,7 @@ void Task::vLoaderSubDelete(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderSubEnd(NNP_Task nnpTask)
 {
-  ENTRY("vLoaderSubEnd");
+  ENTRY("vLoaderSubEnd"_Str);
   
   Object* pObject = _pPtrVal(nnpTask->m_pRegFrame->pValReg(0))->pPtr();
   
@@ -128,7 +128,7 @@ void Task::vLoaderSubEnd(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderSubFetchRecord(NNP_Task nnpTask)
 {
-  ENTRY("vLoaderSubFetchRecord");
+  ENTRY("vLoaderSubFetchRecord"_Str);
   
   Object* pObject = _pPtrVal(nnpTask->m_pRegFrame->pValReg(0))->pPtr();
   
@@ -147,7 +147,7 @@ void Task::vLoaderSubFetchRecord(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderSubHashPartition(NNP_Task nnpTask)
 {
-  ENTRY("vLoaderSubHashRecord");
+  ENTRY("vLoaderSubHashRecord"_Str);
   
   Object* pObject = _pPtrVal(nnpTask->m_pRegFrame->pValReg(0))->pPtr();
   
@@ -168,7 +168,7 @@ void Task::vLoaderSubHashPartition(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderSubHashRecord(NNP_Task nnpTask)
 {
-  ENTRY("vLoaderSubHashRecord");
+  ENTRY("vLoaderSubHashRecord"_Str);
   
   Object* pObject = _pPtrVal(nnpTask->m_pRegFrame->pValReg(0))->pPtr();
   
@@ -185,7 +185,7 @@ void Task::vLoaderSubHashRecord(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderSubInit(NNP_Task nnpTask)
 {
-  ENTRY("vLoaderInit");
+  ENTRY("vLoaderInit"_Str);
   
   Object* pPtrLoaderSub;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrLoaderSub) )
@@ -204,7 +204,7 @@ void Task::vLoaderSubInit(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderSubInsertRow(NNP_Task nnpTask)
 {
-  ENTRY("vLoaderSubInsertRow");
+  ENTRY("vLoaderSubInsertRow"_Str);
   
   Object* pObject = _pPtrVal(nnpTask->m_pRegFrame->pValReg(0))->pPtr();
   
@@ -223,7 +223,7 @@ void Task::vLoaderSubInsertRow(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderSubInsertRow2(NNP_Task nnpTask)
 {
-  ENTRY("vLoaderSubInsertRow?");
+  ENTRY("vLoaderSubInsertRow?"_Str);
   
   Object* pObject = _pPtrVal(nnpTask->m_pRegFrame->pValReg(0))->pPtr();
   
@@ -242,7 +242,7 @@ void Task::vLoaderSubInsertRow2(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderSubLoaderStore(NNP_Task nnpTask)
 {
-  ENTRY("vLoaderSubLoaderStore");
+  ENTRY("vLoaderSubLoaderStore"_Str);
   
   Object* pPtrLoaderSub;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrLoaderSub) )
@@ -266,7 +266,7 @@ void Task::vLoaderSubLoaderStore(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderSubNew(NNP_Task nnpTask)
 {
-  ENTRY("vLoaderSubNew");
+  ENTRY("vLoaderSubNew"_Str);
   
   LoaderSub* pLoaderSub = new LoaderSub;
   ASSERT(CN_LOADERSUB == pLoaderSub->eClass());
@@ -281,7 +281,7 @@ void Task::vLoaderSubNew(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderSubPartition(NNP_Task nnpTask)
 {
-  ENTRY("vLoaderSubPartition");
+  ENTRY("vLoaderSubPartition"_Str);
   
   Object* pObject = _pPtrVal(nnpTask->m_pRegFrame->pValReg(0))->pPtr();
   
@@ -300,7 +300,7 @@ void Task::vLoaderSubPartition(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderSubPartitionStore(NNP_Task nnpTask)
 {
-  ENTRY("vLoaderSubPartitionStore");
+  ENTRY("vLoaderSubPartitionStore"_Str);
   
   i8 iPartition;
   if ( ! nnpTask->m_pDataStack->bPop(iPartition) )
@@ -321,7 +321,7 @@ void Task::vLoaderSubPartitionStore(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderSubRowBuffer(NNP_Task nnpTask)
 {
-  ENTRY("vLoaderSubRowBuffer");
+  ENTRY("vLoaderSubRowBuffer"_Str);
   
   Object* pObject = _pPtrVal(nnpTask->m_pRegFrame->pValReg(0))->pPtr();
   
@@ -340,7 +340,7 @@ void Task::vLoaderSubRowBuffer(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderSubRowBufferStore(NNP_Task nnpTask)
 {
-  ENTRY("vLoaderSubRowBufferStore");
+  ENTRY("vLoaderSubRowBufferStore"_Str);
   
   Object* pPtrRowBuffer;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrRowBuffer) )
@@ -364,7 +364,7 @@ void Task::vLoaderSubRowBufferStore(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderSubTable(NNP_Task nnpTask)
 {
-  ENTRY("vLoaderSubTable");
+  ENTRY("vLoaderSubTable"_Str);
   
   Object* pObject = _pPtrVal(nnpTask->m_pRegFrame->pValReg(0))->pPtr();
   

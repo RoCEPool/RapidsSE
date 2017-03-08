@@ -50,7 +50,7 @@ void Task::vAddPrimitives_Address(void)
 /*----------------------------------------------------------------------------*/
 void Task::vAddressEqual(NNP_Task nnpTask)
 {
-  ENTRY("vAddressEql");
+  ENTRY("vAddressEql"_Str);
   
   ValWsp xAddressA;
   ValWsp xAddressB;
@@ -73,7 +73,7 @@ void Task::vAddressEqual(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vAddressFetch(NNP_Task nnpTask)
 {
-  ENTRY("vAddressFetch");
+  ENTRY("vAddressFetch"_Str);
   
   Object* pObject;
   if ( ! nnpTask->m_pDataStack->bPop(pObject) )
@@ -116,7 +116,7 @@ void Task::vAddressFetch(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vAddressStore(NNP_Task nnpTask)
 {
-  ENTRY("vAddressStore");
+  ENTRY("vAddressStore"_Str);
   
   Object* pObject;
   if ( ! nnpTask->m_pDataStack->bPop(pObject) )

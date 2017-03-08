@@ -53,7 +53,7 @@ void Task::vAddPrimitives_Assert(void)
 /*----------------------------------------------------------------------------*/
 void Task::vAssert(NNP_Task nnpTask)
 {
-  ENTRY("vAssert");
+  ENTRY("vAssert"_Str);
   
   i8 iTrue;
   if ( ! nnpTask->m_pDataStack->bPopParamInt(iTrue) )
@@ -70,7 +70,7 @@ void Task::vAssert(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vAssertStack_0(NNP_Task nnpTask)
 {
-ENTRY("vAssertStack_0");
+ENTRY("vAssertStack_0"_Str);
 
   i8 iStackValues = nnpTask->m_pDataStack->iValues();
   
@@ -85,7 +85,7 @@ ENTRY("vAssertStack_0");
 /*----------------------------------------------------------------------------*/
 void Task::vAssertStack_0more(NNP_Task nnpTask)
 {
-ENTRY("vAssertStack_0more");
+ENTRY("vAssertStack_0more"_Str);
   
   i8 iStackValues = nnpTask->m_pDataStack->iValues();
   
@@ -100,7 +100,7 @@ ENTRY("vAssertStack_0more");
 /*----------------------------------------------------------------------------*/
 void Task::vAssertStack_1(NNP_Task nnpTask)
 {
-ENTRY("vAssertStack_1");
+ENTRY("vAssertStack_1"_Str);
   
   i8 iStackValues = nnpTask->m_pDataStack->iValues();
   
@@ -115,7 +115,7 @@ ENTRY("vAssertStack_1");
 /*----------------------------------------------------------------------------*/
 void Task::vAssertStack_1more(NNP_Task nnpTask)
 {
-ENTRY("vAssertStack_1more");
+ENTRY("vAssertStack_1more"_Str);
   
   i8 iStackValues = nnpTask->m_pDataStack->iValues();
   
@@ -130,7 +130,7 @@ ENTRY("vAssertStack_1more");
 /*----------------------------------------------------------------------------*/
 void Task::vAssertStack_2(NNP_Task nnpTask)
 {
-ENTRY("vAssertStack_2");
+ENTRY("vAssertStack_2"_Str);
   
   i8 iStackValues = nnpTask->m_pDataStack->iValues();
   
@@ -145,7 +145,7 @@ ENTRY("vAssertStack_2");
 /*----------------------------------------------------------------------------*/
 void Task::vAssertStack_2more(NNP_Task nnpTask)
 {
-ENTRY("vAssertStack_2more");
+ENTRY("vAssertStack_2more"_Str);
   
   i8 iStackValues = nnpTask->m_pDataStack->iValues();
   
@@ -160,7 +160,7 @@ ENTRY("vAssertStack_2more");
 /*----------------------------------------------------------------------------*/
 void Task::vAssertStack_3(NNP_Task nnpTask)
 {
-ENTRY("vAssertStack_3");
+ENTRY("vAssertStack_3"_Str);
   
   i8 iStackValues = nnpTask->m_pDataStack->iValues();
   
@@ -175,7 +175,7 @@ ENTRY("vAssertStack_3");
 /*----------------------------------------------------------------------------*/
 void Task::vAssertStack_3more(NNP_Task nnpTask)
 {
-ENTRY("vAssertStack_3more");
+ENTRY("vAssertStack_3more"_Str);
   
   i8 iStackValues = nnpTask->m_pDataStack->iValues();
   
@@ -190,7 +190,7 @@ ENTRY("vAssertStack_3more");
 /*----------------------------------------------------------------------------*/
 void Task::vAssertStack_4(NNP_Task nnpTask)
 {
-ENTRY("vAssertStack_4");
+ENTRY("vAssertStack_4"_Str);
   
   i8 iStackValues = nnpTask->m_pDataStack->iValues();
   
@@ -205,7 +205,7 @@ ENTRY("vAssertStack_4");
 /*----------------------------------------------------------------------------*/
 void Task::vAssertStack_4more(NNP_Task nnpTask)
 {
-ENTRY("vAssertStack_4more");
+ENTRY("vAssertStack_4more"_Str);
   
   i8 iStackValues = nnpTask->m_pDataStack->iValues();
   

@@ -60,7 +60,7 @@ void Task::vAddPrimitives_Thread(void)
 /*----------------------------------------------------------------------------*/
 void Task::vThreadAppend(NNP_Task nnpTask)
 {
-ENTRY("vThreadAppend");
+ENTRY("vThreadAppend"_Str);
   
   Object* pThreadEmb;
   
@@ -88,7 +88,7 @@ ENTRY("vThreadAppend");
 /*----------------------------------------------------------------------------*/
 void Task::vThreadBind(NNP_Task nnpTask)
 {
-ENTRY("vThreadBind");
+ENTRY("vThreadBind"_Str);
   
   i8 iCpu;
   Object* pObject;
@@ -113,7 +113,7 @@ ENTRY("vThreadBind");
 /*----------------------------------------------------------------------------*/
 void Task::vThreadCondSignal(NNP_Task nnpTask)
 {
- ENTRY("vThreadCondSignal");
+ ENTRY("vThreadCondSignal"_Str);
   
   Object* pThreadObject;
   if ( ! nnpTask->m_pDataStack->bPop(pThreadObject) )
@@ -132,7 +132,7 @@ void Task::vThreadCondSignal(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vThreadCondWait(NNP_Task nnpTask)
 {
- ENTRY("vThreadCondWait");
+ ENTRY("vThreadCondWait"_Str);
   
   Object* pThreadObject;
   if ( ! nnpTask->m_pDataStack->bPop(pThreadObject) )
@@ -151,7 +151,7 @@ void Task::vThreadCondWait(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vThreadCpu(NNP_Task nnpTask)
 {
-ENTRY("vThreadCpu");
+ENTRY("vThreadCpu"_Str);
   
   Object* pObject;
   
@@ -172,7 +172,7 @@ ENTRY("vThreadCpu");
 /*----------------------------------------------------------------------------*/
 void Task::vThreadDump(NNP_Task nnpTask)
 {
-ENTRY("vThreadDump");
+ENTRY("vThreadDump"_Str);
   
   Object* pObject;
   
@@ -193,7 +193,7 @@ ENTRY("vThreadDump");
 /*----------------------------------------------------------------------------*/
 void Task::vThreadId(NNP_Task nnpTask)
 {
-ENTRY("vThreadId");
+ENTRY("vThreadId"_Str);
   
   Object* pObject;
   
@@ -214,7 +214,7 @@ ENTRY("vThreadId");
 /*----------------------------------------------------------------------------*/
 void Task::vThreadInit(NNP_Task nnpTask)
 {
-ENTRY("vThreadInit");
+ENTRY("vThreadInit"_Str);
   
   Object* pObject;
   
@@ -242,7 +242,7 @@ ENTRY("vThreadInit");
 /*----------------------------------------------------------------------------*/
 void Task::vThreadMutexLock(NNP_Task nnpTask)
 {
-ENTRY("vThreadMutexLock");
+ENTRY("vThreadMutexLock"_Str);
   
   Object* pThreadObject;
   if ( ! nnpTask->m_pDataStack->bPop(pThreadObject) )
@@ -261,7 +261,7 @@ ENTRY("vThreadMutexLock");
 /*----------------------------------------------------------------------------*/
 void Task::vThreadMutexUnlock(NNP_Task nnpTask)
 {
-ENTRY("vThreadMutexUnlock");
+ENTRY("vThreadMutexUnlock"_Str);
 
   Object* pThreadObject;
   if ( ! nnpTask->m_pDataStack->bPop(pThreadObject) )
@@ -280,7 +280,7 @@ ENTRY("vThreadMutexUnlock");
 /*----------------------------------------------------------------------------*/
 void Task::vThreadNameFetch(NNP_Task nnpTask)
 {
-ENTRY("vThreadNameFetch");
+ENTRY("vThreadNameFetch"_Str);
   
   Object* pObject;
   
@@ -304,7 +304,7 @@ ENTRY("vThreadNameFetch");
 /*----------------------------------------------------------------------------*/
 void Task::vThreadNameStore(NNP_Task nnpTask)
 {
-ENTRY("vThreadNameStore");
+ENTRY("vThreadNameStore"_Str);
   
   Object* pObject;
   
@@ -332,7 +332,7 @@ ENTRY("vThreadNameStore");
 /*----------------------------------------------------------------------------*/
 void Task::vThreadSfetch(NNP_Task nnpTask)
 {
-ENTRY("vThreadSfetch");
+ENTRY("vThreadSfetch"_Str);
  
   Object* pThreadEmb;
   
@@ -357,7 +357,7 @@ ENTRY("vThreadSfetch");
 /*----------------------------------------------------------------------------*/
 void Task::vThreadSstore(NNP_Task nnpTask)
 {
-ENTRY("vThreadSstore");
+ENTRY("vThreadSstore"_Str);
   
   Object* pThreadEmb;
   
@@ -387,7 +387,7 @@ ENTRY("vThreadSstore");
 /*----------------------------------------------------------------------------*/
 void Task::vThreadSleep_s(NNP_Task nnpTask)
 {
-ENTRY("vThreadSleep_s");
+ENTRY("vThreadSleep_s"_Str);
   
   i8 nSeconds;
   
@@ -406,7 +406,7 @@ ENTRY("vThreadSleep_s");
 /*----------------------------------------------------------------------------*/
 void Task::vThreadSleep_ms(NNP_Task nnpTask)
 {
-ENTRY("vThreadSleep_ms");
+ENTRY("vThreadSleep_ms"_Str);
   
   i8 nMilliseconds;
   
@@ -425,7 +425,7 @@ ENTRY("vThreadSleep_ms");
 /*----------------------------------------------------------------------------*/
 void Task::vThreadSleep_us(NNP_Task nnpTask)
 {
-ENTRY("vThreadSleep_us");
+ENTRY("vThreadSleep_us"_Str);
   
   i8 nMicroseconds;
   
@@ -444,7 +444,7 @@ ENTRY("vThreadSleep_us");
 /*----------------------------------------------------------------------------*/
 void Task::vThreadSleep_ns(NNP_Task nnpTask)
 {
-ENTRY("vThreadSleep_ns");
+ENTRY("vThreadSleep_ns"_Str);
   
   i8 nNanoseconds;
   
@@ -463,7 +463,7 @@ ENTRY("vThreadSleep_ns");
 /*----------------------------------------------------------------------------*/
 void Task::vThreadSpawn(NNP_Task nnpTask)
 {
-ENTRY("vThreadSpawn");
+ENTRY("vThreadSpawn"_Str);
   
   Object* pThreadEmb;
   

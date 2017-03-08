@@ -42,7 +42,7 @@ void Task::vAddPrimitives_Comment(void)
 /*----------------------------------------------------------------------------*/
 void Task::vComment(NNP_Task nnpTask)
 {
-  ENTRY("vComment");
+  ENTRY("vComment"_Str);
   
   for (;;) {
     nnpTask->m_pTokeniser->vNextToken();

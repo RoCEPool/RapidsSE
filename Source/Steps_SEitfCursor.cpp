@@ -49,7 +49,7 @@ void Task::vAddPrimitives_SEitfCursor(void)
 /*----------------------------------------------------------------------------*/
 void Task::vSEitfCursorBegin(NNP_Task nnpTask)
 {
-ENTRY("vSEitfCursorBegin");
+ENTRY("vSEitfCursorBegin"_Str);
   
   Object* pPtrSEitfCursor;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitfCursor) )
@@ -73,7 +73,7 @@ ENTRY("vSEitfCursorBegin");
 /*----------------------------------------------------------------------------*/
 void Task::vSEitfCursorDelete(NNP_Task nnpTask)
 {
-ENTRY("vSEitfCursorDelete");
+ENTRY("vSEitfCursorDelete"_Str);
   
   Object* pPtrSEitfCursor;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitfCursor) )
@@ -95,7 +95,7 @@ ENTRY("vSEitfCursorDelete");
 /*----------------------------------------------------------------------------*/
 void Task::vSEitfCursorEnd(NNP_Task nnpTask)
 {
-ENTRY("vSEitfCursorEnd");
+ENTRY("vSEitfCursorEnd"_Str);
   
   Object* pPtrSEitfCursor;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitfCursor) )
@@ -114,7 +114,7 @@ ENTRY("vSEitfCursorEnd");
 /*----------------------------------------------------------------------------*/
 void Task::vSEitfCursorFirst(NNP_Task nnpTask)
 {
-ENTRY("vSEitfCursorFirst");
+ENTRY("vSEitfCursorFirst"_Str);
   
   Object* pPtrSEitfCursor;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitfCursor) )
@@ -137,7 +137,7 @@ ENTRY("vSEitfCursorFirst");
 /*----------------------------------------------------------------------------*/
 void Task::vSEitfCursorGet(NNP_Task nnpTask)
 {
-ENTRY("vSEitfCursorGet");
+ENTRY("vSEitfCursorGet"_Str);
   
   Object* pPtrSEitfCursor;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitfCursor) )
@@ -158,7 +158,7 @@ ENTRY("vSEitfCursorGet");
 /*----------------------------------------------------------------------------*/
 void Task::vSEitfCursorInit(NNP_Task nnpTask)
 {
-ENTRY("vSEitfCursorInit");
+ENTRY("vSEitfCursorInit"_Str);
   
   Object* pPtrSEitfCursor;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitfCursor) )
@@ -184,7 +184,7 @@ ENTRY("vSEitfCursorInit");
 /*----------------------------------------------------------------------------*/
 void Task::vSEitfCursorNew(NNP_Task nnpTask)
 {
-ENTRY("vSEitfCursorNew");
+ENTRY("vSEitfCursorNew"_Str);
   
   Object* pPtrSEitfList;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitfList) )
@@ -209,7 +209,7 @@ ENTRY("vSEitfCursorNew");
 /*----------------------------------------------------------------------------*/
 void Task::vSEitfCursorNext(NNP_Task nnpTask)
 {
-ENTRY("vSEitfCursorNext");
+ENTRY("vSEitfCursorNext"_Str);
   
   Object* pPtrSEitfCursor;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitfCursor) )

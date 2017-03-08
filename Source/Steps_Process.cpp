@@ -44,7 +44,7 @@ void Task::vAddPrimitives_Process(void)
 /*----------------------------------------------------------------------------*/
 void Task::vProcessGetPid(NNP_Task nnpTask)
 {
-ENTRY("vProcessGetPid");
+ENTRY("vProcessGetPid"_Str);
   
   i8 iPid = Process::iGetPid();
   
@@ -58,7 +58,7 @@ ENTRY("vProcessGetPid");
 /*----------------------------------------------------------------------------*/
 void Task::vProcessQuit(NNP_Task nnpTask)
 {
-  ENTRY("vProcessQuit");
+  ENTRY("vProcessQuit"_Str);
   
   exit(EXIT_FAILURE);
   
@@ -70,7 +70,7 @@ void Task::vProcessQuit(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vProcessTestPid(NNP_Task nnpTask)
 {
-ENTRY("vProcessTestPid");
+ENTRY("vProcessTestPid"_Str);
 
   i8 iPid;
   if ( ! nnpTask->m_pDataStack->bPop(iPid) )

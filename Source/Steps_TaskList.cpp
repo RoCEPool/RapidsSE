@@ -45,7 +45,7 @@ void Task::vAddPrimitives_TaskList(void)
 /*----------------------------------------------------------------------------*/
 void Task::vTaskList(NNP_Task nnpTask)
 {
-ENTRY("vTaskList");
+ENTRY("vTaskList"_Str);
   
   nnpTask->m_pDataStack->vPush(gpTaskList);
   
@@ -57,7 +57,7 @@ ENTRY("vTaskList");
 /*----------------------------------------------------------------------------*/
 void Task::vTaskListAppend(NNP_Task nnpTask)
 {
-ENTRY("vTaskListAppend");
+ENTRY("vTaskListAppend"_Str);
   
   Object* pPtrTaskList;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTaskList) )
@@ -81,7 +81,7 @@ ENTRY("vTaskListAppend");
 /*----------------------------------------------------------------------------*/
 void Task::vTaskListDump(NNP_Task nnpTask)
 {
-ENTRY("vTaskListDump");
+ENTRY("vTaskListDump"_Str);
   
   Object* pPtrTaskList;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTaskList) )
@@ -100,7 +100,7 @@ ENTRY("vTaskListDump");
 /*----------------------------------------------------------------------------*/
 void Task::vTaskListInit(NNP_Task nnpTask)
 {
-ENTRY("vTaskListInit");
+ENTRY("vTaskListInit"_Str);
   
   EXIT();
 }

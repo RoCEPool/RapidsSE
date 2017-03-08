@@ -43,7 +43,7 @@ void Task::vAddPrimitives_Args(void)
 /*----------------------------------------------------------------------------*/
 void Task::vArgsPrint(NNP_Task nnpTask)
 {
-ENTRY("vArgsPrint");
+ENTRY("vArgsPrint"_Str);
   
   gxArguments.vPrint();
   

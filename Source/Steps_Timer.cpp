@@ -52,7 +52,7 @@ void Task::vAddPrimitives_Timer(void)
 /*----------------------------------------------------------------------------*/
 void Task::vTimerDelete(NNP_Task nnpTask)
 {
-ENTRY("vTimeDelete");
+ENTRY("vTimeDelete"_Str);
   
   Object* pPtrTimer;
   
@@ -76,7 +76,7 @@ ENTRY("vTimeDelete");
 /*----------------------------------------------------------------------------*/
 void Task::vTimerInit(NNP_Task nnpTask)
 {
-ENTRY("vTimerInit");
+ENTRY("vTimerInit"_Str);
   
   Object* pPtrTimer;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTimer) )
@@ -95,7 +95,7 @@ ENTRY("vTimerInit");
 /*----------------------------------------------------------------------------*/
 void Task::vTimerMicrosecs(NNP_Task nnpTask)
 {
-ENTRY("vTimerMicrosecs");
+ENTRY("vTimerMicrosecs"_Str);
   
   Object* pPtrTimer;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTimer) )
@@ -116,7 +116,7 @@ ENTRY("vTimerMicrosecs");
 /*----------------------------------------------------------------------------*/
 void Task::vTimerMillisecs(NNP_Task nnpTask)
 {
-ENTRY("vTimerMillisecs");
+ENTRY("vTimerMillisecs"_Str);
   
   Object* pPtrTimer;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTimer) )
@@ -137,7 +137,7 @@ ENTRY("vTimerMillisecs");
 /*----------------------------------------------------------------------------*/
 void Task::vTimerNanosecs(NNP_Task nnpTask)
 {
-ENTRY("vTimerNanosecs");
+ENTRY("vTimerNanosecs"_Str);
   
   Object* pPtrTimer;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTimer) )
@@ -158,7 +158,7 @@ ENTRY("vTimerNanosecs");
 /*----------------------------------------------------------------------------*/
 void Task::vTimerNew(NNP_Task nnpTask)
 {
-ENTRY("vTimerNew");
+ENTRY("vTimerNew"_Str);
   
   void* pObject = Heap::pAllocate(CN_ROWSTRAND);
 
@@ -180,7 +180,7 @@ ENTRY("vTimerNew");
 /*----------------------------------------------------------------------------*/
 void Task::vTimerReset(NNP_Task nnpTask)
 {
-ENTRY("vTimerReset");
+ENTRY("vTimerReset"_Str);
   
   Object* pPtrTimer;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTimer) )
@@ -199,7 +199,7 @@ ENTRY("vTimerReset");
 /*----------------------------------------------------------------------------*/
 void Task::vTimerSecs(NNP_Task nnpTask)
 {
-ENTRY("vTimerSecs");
+ENTRY("vTimerSecs"_Str);
   
   Object* pPtrTimer;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTimer) )
@@ -220,7 +220,7 @@ ENTRY("vTimerSecs");
 /*----------------------------------------------------------------------------*/
 void Task::vTimerStart(NNP_Task nnpTask)
 {
-ENTRY("vTimerStart");
+ENTRY("vTimerStart"_Str);
   
   Object* pPtrTimer;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTimer) )
@@ -239,7 +239,7 @@ ENTRY("vTimerStart");
 /*----------------------------------------------------------------------------*/
 void Task::vTimerTicks(NNP_Task nnpTask)
 {
-ENTRY("vTimerTicks");
+ENTRY("vTimerTicks"_Str);
   
   Object* pPtrTimer;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTimer) )
@@ -260,7 +260,7 @@ ENTRY("vTimerTicks");
 /*----------------------------------------------------------------------------*/
 void Task::vTimerUpdate(NNP_Task nnpTask)
 {
-ENTRY("vTimerUpdate");
+ENTRY("vTimerUpdate"_Str);
   
   Object* pPtrTimer;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTimer) )

@@ -61,7 +61,7 @@ void Task::vAddPrimitives_Bp(void)
 /*----------------------------------------------------------------------------*/
 void Task::vBpAnalyze(NNP_Task nnpTask)
 {
-  ENTRY("vBpa");
+  ENTRY("vBpa"_Str);
   
   BPA* pBPA = new BPA;
   
@@ -77,7 +77,7 @@ void Task::vBpAnalyze(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vBpDump(NNP_Task nnpTask)
 {
-  ENTRY("vBpDump");
+  ENTRY("vBpDump"_Str);
   
   BPA* pBPA = new BPA;
   
@@ -93,7 +93,7 @@ void Task::vBpDump(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vBpEpochDump(NNP_Task nnpTask)
 {
-  ENTRY("vBpEpochDump");
+  ENTRY("vBpEpochDump"_Str);
   
   BPA* pBPA = new BPA;
   i8 iCountObjects[CN_ENUMS];
@@ -119,7 +119,7 @@ void Task::vBpEpochDump(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vBpEpochTake(NNP_Task nnpTask)
 {
-  ENTRY("vBpEpochTake");
+  ENTRY("vBpEpochTake"_Str);
   
   // increment the epoch
   gpAttachMap->m_iEpoch++;
@@ -135,7 +135,7 @@ void Task::vBpEpochTake(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vFreeBuffers(NNP_Task nnpTask)
 {
-  ENTRY("vFreePercent");
+  ENTRY("vFreePercent"_Str);
   
   i8 iFreeBuffers = gpBufferPool->iFreeCount();
   
@@ -149,7 +149,7 @@ void Task::vFreeBuffers(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vFreePercent(NNP_Task nnpTask)
 {
-  ENTRY("vFreePercent");
+  ENTRY("vFreePercent"_Str);
   
   i8 iFreePercent = gpBufferPool->iFreePercent();
   
@@ -163,7 +163,7 @@ void Task::vFreePercent(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vFreeSpace(NNP_Task nnpTask)
 {
-  ENTRY("vFreeSpace");
+  ENTRY("vFreeSpace"_Str);
   
   i8 iFreeSpace = gpBufferPool->iFreeSpace();
   
@@ -177,7 +177,7 @@ void Task::vFreeSpace(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vInUseSpace(NNP_Task nnpTask)
 {
-  ENTRY("vInUseSpace");
+  ENTRY("vInUseSpace"_Str);
   
   i8 iInUseSpace = gxArguments.m_iRegionSize
                      - gxArguments.m_iJumboSize
@@ -193,7 +193,7 @@ void Task::vInUseSpace(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vSnapshot(NNP_Task nnpTask)
 {
-  ENTRY("vSnapshot");
+  ENTRY("vSnapshot"_Str);
   
   i8 iCountObjects[CN_ENUMS];
   for (i8 index = 0; index < CN_ENUMS; index++)
@@ -227,7 +227,7 @@ void Task::vSnapshot(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTotalSpace(NNP_Task nnpTask)
 {
-  ENTRY("vTotalSpace");
+  ENTRY("vTotalSpace"_Str);
   
   i8 iTotalSpace = gxArguments.m_iRegionSize - gxArguments.m_iJumboSize;
   

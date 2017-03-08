@@ -50,7 +50,7 @@ void Task::vAddPrimitives_Loader(void)
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderDelete(NNP_Task nnpTask)
 {
-  ENTRY("vLoaderDelete");
+  ENTRY("vLoaderDelete"_Str);
   
   Object* pPtrLoader;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrLoader) )
@@ -69,7 +69,7 @@ void Task::vLoaderDelete(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderFinalize(NNP_Task nnpTask)
 {
-  ENTRY("loader.finalize");
+  ENTRY("loader.finalize"_Str);
   
   Object* pPtrLoader;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrLoader) )
@@ -88,7 +88,7 @@ void Task::vLoaderFinalize(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderFindChunk(NNP_Task nnpTask)
 {
-  ENTRY("vLoaderFindChunk");
+  ENTRY("vLoaderFindChunk"_Str);
   
   Object* pPtrLoader;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrLoader) )
@@ -109,7 +109,7 @@ void Task::vLoaderFindChunk(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderInit(NNP_Task nnpTask)
 {
-  ENTRY("vLoaderInit");
+  ENTRY("vLoaderInit"_Str);
   
   Object* pPtrLoader;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrLoader) )
@@ -128,7 +128,7 @@ void Task::vLoaderInit(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderNew(NNP_Task nnpTask)
 {
-  ENTRY("vLoaderNew");
+  ENTRY("vLoaderNew"_Str);
   
   Loader* pLoader = new Loader;
   ASSERT(CN_LOADER == pLoader->eClass());
@@ -143,7 +143,7 @@ void Task::vLoaderNew(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderNewSub(NNP_Task nnpTask)
 {
-  ENTRY("vLoaderNewSub");
+  ENTRY("vLoaderNewSub"_Str);
   
   Object* pPtrLoader;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrLoader) )
@@ -167,7 +167,7 @@ void Task::vLoaderNewSub(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderPathStore(NNP_Task nnpTask)
 {
-  ENTRY("vLoaderPathStore");
+  ENTRY("vLoaderPathStore"_Str);
   
   ValWsp xWspPath;
   Object* pPtrLoader;
@@ -190,7 +190,7 @@ void Task::vLoaderPathStore(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderTableStore(NNP_Task nnpTask)
 {
-  ENTRY("vLoaderTableStore");
+  ENTRY("vLoaderTableStore"_Str);
   
   Object* pPtrTable;
   Object* pPtrLoader;
@@ -214,7 +214,7 @@ void Task::vLoaderTableStore(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderTxRefStore(NNP_Task nnpTask)
 {
-  ENTRY("vLoaderTxRefStore");
+  ENTRY("vLoaderTxRefStore"_Str);
   
   Object* pPtrLoader;
   Object* pPtrTxRef;

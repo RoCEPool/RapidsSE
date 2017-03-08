@@ -66,7 +66,7 @@ void Task::vAddPrimitives_Dir(void)
 /*----------------------------------------------------------------------------*/
 void Task::vDirChangeCurrent(NNP_Task nnpTask)
 {
-  ENTRY("vDirChangeCurrent");
+  ENTRY("vDirChangeCurrent"_Str);
   
   s256 sDir;
   if ( ! nnpTask->m_pDataStack->bPop(sDir) )
@@ -84,7 +84,7 @@ void Task::vDirChangeCurrent(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDirExists(NNP_Task nnpTask)
 {
-ENTRY("vDirExists");
+ENTRY("vDirExists"_Str);
   
   s256 sPath;
   
@@ -104,7 +104,7 @@ ENTRY("vDirExists");
 /*----------------------------------------------------------------------------*/
 void Task::vDirGetCurrent(NNP_Task nnpTask)
 {
-  ENTRY("vDirGetCurrent");
+  ENTRY("vDirGetCurrent"_Str);
   
   ValWsp xStrVal;
   
@@ -127,7 +127,7 @@ void Task::vDirGetCurrent(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDirMake(NNP_Task nnpTask)
 {
-ENTRY("vDirMake");
+ENTRY("vDirMake"_Str);
   
   s256 sPath;
   
@@ -147,7 +147,7 @@ ENTRY("vDirMake");
 /*----------------------------------------------------------------------------*/
 void Task::vDirRemove(NNP_Task nnpTask)
 {
-ENTRY("vDirRemove");
+ENTRY("vDirRemove"_Str);
   
   s256 sPath;
   
@@ -169,7 +169,7 @@ ENTRY("vDirRemove");
 /*----------------------------------------------------------------------------*/
 void Task::vDirClose(NNP_Task nnpTask)
 {
-ENTRY("vDirClose");
+ENTRY("vDirClose"_Str);
   
   Object* pPtrDir;
 
@@ -188,7 +188,7 @@ ENTRY("vDirClose");
 /*----------------------------------------------------------------------------*/
 void Task::vDirDelete(NNP_Task nnpTask)
 {
-ENTRY("vDirDelete");
+ENTRY("vDirDelete"_Str);
   
   Object* pPtrDir;
   
@@ -207,7 +207,7 @@ ENTRY("vDirDelete");
 /*----------------------------------------------------------------------------*/
 void Task::vDirEntryName(NNP_Task nnpTask)
 {
-ENTRY("vDirEntryName");
+ENTRY("vDirEntryName"_Str);
   
   Object* pPtrDir;
   
@@ -230,7 +230,7 @@ ENTRY("vDirEntryName");
 /*----------------------------------------------------------------------------*/
 void Task::vDirEntryType(NNP_Task nnpTask)
 {
-ENTRY("vDirEntryType");
+ENTRY("vDirEntryType"_Str);
   
   Object* pPtrDir;
   
@@ -253,7 +253,7 @@ ENTRY("vDirEntryType");
 /*----------------------------------------------------------------------------*/
 void Task::vDirInit(NNP_Task nnpTask)
 {
-ENTRY("vDirInit");
+ENTRY("vDirInit"_Str);
   
   Object* pPtrDir;
   
@@ -274,7 +274,7 @@ ENTRY("vDirInit");
 /*----------------------------------------------------------------------------*/
 void Task::vDirIsClosed(NNP_Task nnpTask)
 {
-ENTRY("vDirIsClosed");
+ENTRY("vDirIsClosed"_Str);
   
   Object* pPtrDir;
   
@@ -295,7 +295,7 @@ ENTRY("vDirIsClosed");
 /*----------------------------------------------------------------------------*/
 void Task::vDirIsOpen(NNP_Task nnpTask)
 {
-ENTRY("vDirIsOpen");
+ENTRY("vDirIsOpen"_Str);
   
   Object* pPtrDir;
   
@@ -316,7 +316,7 @@ ENTRY("vDirIsOpen");
 /*----------------------------------------------------------------------------*/
 void Task::vDirNew(NNP_Task nnpTask)
 {
-ENTRY("vDirNew");
+ENTRY("vDirNew"_Str);
   
   Dir* pDir = new Dir;
   
@@ -333,7 +333,7 @@ ENTRY("vDirNew");
 /*----------------------------------------------------------------------------*/
 void Task::vDirOpen(NNP_Task nnpTask)
 {
-ENTRY("vDirOpen");
+ENTRY("vDirOpen"_Str);
   
   Object* pPtrDir;
   
@@ -354,7 +354,7 @@ ENTRY("vDirOpen");
 /*----------------------------------------------------------------------------*/
 void Task::vDirPathGet(NNP_Task nnpTask)
 {
-ENTRY("vDirPathGet");
+ENTRY("vDirPathGet"_Str);
   
   Object* pPtrDir;
   
@@ -378,7 +378,7 @@ ENTRY("vDirPathGet");
 /*----------------------------------------------------------------------------*/
 void Task::vDirPathSet(NNP_Task nnpTask)
 {
-ENTRY("vDirPathSet");
+ENTRY("vDirPathSet"_Str);
   
   Object* pPtrDir;
   
@@ -405,7 +405,7 @@ ENTRY("vDirPathSet");
 /*----------------------------------------------------------------------------*/
 void Task::vDirRead(NNP_Task nnpTask)
 {
-ENTRY("vDirRead");
+ENTRY("vDirRead"_Str);
   
   Object* pPtrDir;
   
@@ -426,7 +426,7 @@ ENTRY("vDirRead");
 /*----------------------------------------------------------------------------*/
 void Task::vDirRewind(NNP_Task nnpTask)
 {
-ENTRY("vDirRewind");
+ENTRY("vDirRewind"_Str);
   
   Object* pPtrDir;
   
@@ -445,7 +445,7 @@ ENTRY("vDirRewind");
 /*----------------------------------------------------------------------------*/
 void Task::vDirSeek(NNP_Task nnpTask)
 {
-ENTRY("vDirSeek");
+ENTRY("vDirSeek"_Str);
   
   Object* pPtrDir;
   
@@ -468,7 +468,7 @@ ENTRY("vDirSeek");
 /*----------------------------------------------------------------------------*/
 void Task::vDirTell(NNP_Task nnpTask)
 {
-ENTRY("vDirTell");
+ENTRY("vDirTell"_Str);
   
   Object* pPtrDir;
   

@@ -52,7 +52,7 @@ void Task::vAddPrimitives_RbCursor(void)
 /*----------------------------------------------------------------------------*/
 void Task::vRbCursorBegin(NNP_Task nnpTask)
 {
-ENTRY("vRbCursorBegin");
+ENTRY("vRbCursorBegin"_Str);
   
   Object* pPtrRbCursor;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrRbCursor) )
@@ -75,7 +75,7 @@ ENTRY("vRbCursorBegin");
 /*----------------------------------------------------------------------------*/
 void Task::vRbCursorDelete(NNP_Task nnpTask)
 {
-ENTRY("vRbCursorDelete");
+ENTRY("vRbCursorDelete"_Str);
   
   Object* pPtrRbCursor;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrRbCursor) )
@@ -97,7 +97,7 @@ ENTRY("vRbCursorDelete");
 /*----------------------------------------------------------------------------*/
 void Task::vRbCursorEnd(NNP_Task nnpTask)
 {
-ENTRY("vRbCursorEnd");
+ENTRY("vRbCursorEnd"_Str);
   
   Object* pPtrRbCursor;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrRbCursor) )
@@ -116,7 +116,7 @@ ENTRY("vRbCursorEnd");
 /*----------------------------------------------------------------------------*/
 void Task::vRbCursorFirst(NNP_Task nnpTask)
 {
-ENTRY("vRbCursorFirst");
+ENTRY("vRbCursorFirst"_Str);
   
   Object* pPtrRbCursor;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrRbCursor) )
@@ -139,7 +139,7 @@ ENTRY("vRbCursorFirst");
 /*----------------------------------------------------------------------------*/
 void Task::vRbCursorGet(NNP_Task nnpTask)
 {
-ENTRY("vRbCursorGet");
+ENTRY("vRbCursorGet"_Str);
   
   Object* pPtrRbCursor;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrRbCursor) )
@@ -160,7 +160,7 @@ ENTRY("vRbCursorGet");
 /*----------------------------------------------------------------------------*/
 void Task::vRbCursorInit(NNP_Task nnpTask)
 {
-ENTRY("vRbCursorInit");
+ENTRY("vRbCursorInit"_Str);
   
   Object* pPtrRbCursor;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrRbCursor) )
@@ -179,7 +179,7 @@ ENTRY("vRbCursorInit");
 /*----------------------------------------------------------------------------*/
 void Task::vRbCursorNew(NNP_Task nnpTask)
 {
-ENTRY("vRbCursorNew");
+ENTRY("vRbCursorNew"_Str);
   
   RbCursor* pRbCursor = new RbCursor;
   ASSERT(CN_RBCURSOR == pRbCursor->eClass());
@@ -194,7 +194,7 @@ ENTRY("vRbCursorNew");
 /*----------------------------------------------------------------------------*/
 void Task::vRbCursorNext(NNP_Task nnpTask)
 {
-ENTRY("vRbCursorNext");
+ENTRY("vRbCursorNext"_Str);
   
   Object* pPtrRbCursor;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrRbCursor) )
@@ -217,7 +217,7 @@ ENTRY("vRbCursorNext");
 /*----------------------------------------------------------------------------*/
 void Task::vRbCursorRowBuffer(NNP_Task nnpTask)
 {
-  ENTRY("vRbCursorRowBuffer");
+  ENTRY("vRbCursorRowBuffer"_Str);
   
   Object* pPtrRbCursor;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrRbCursor) )
@@ -239,7 +239,7 @@ void Task::vRbCursorRowBuffer(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRbCursorTableFetch(NNP_Task nnpTask)
 {
-ENTRY("vRbCursorTableFetch");
+ENTRY("vRbCursorTableFetch"_Str);
   
   Object* pPtrRbCursor;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrRbCursor) )
@@ -260,7 +260,7 @@ ENTRY("vRbCursorTableFetch");
 /*----------------------------------------------------------------------------*/
 void Task::vRbCursorTableStore(NNP_Task nnpTask)
 {
-ENTRY("vRbCursorTableStore");
+ENTRY("vRbCursorTableStore"_Str);
   
   Object* pPtrRbCursor;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrRbCursor) )

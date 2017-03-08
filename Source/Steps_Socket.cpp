@@ -53,7 +53,7 @@ void Task::vSocketAccept(NNP_Task nnpTask)
   int     iSocketId;
   Object* pObject;
   
-  ENTRY("vSocketAccept");
+  ENTRY("vSocketAccept"_Str);
   
   if ( ! nnpTask->m_pDataStack->bPop(pObject) )
     THROW_INVALID_DSTACK("socket.accept");
@@ -84,7 +84,7 @@ void Task::vSocketClose(NNP_Task nnpTask)
   Socket* pSocket;
   Object* pObject;
   
-  ENTRY("vSocketClose");
+  ENTRY("vSocketClose"_Str);
   
   if ( ! nnpTask->m_pDataStack->bPop(pObject) )
     THROW_INVALID_DSTACK("socketclose");
@@ -113,7 +113,7 @@ void Task::vSocketConnect(NNP_Task nnpTask)
   
   i8 iPort;
   
-  ENTRY("vSocketConnect");
+  ENTRY("vSocketConnect"_Str);
   
   if ( ! nnpTask->m_pDataStack->bPop(pObject) )
     THROW_INVALID_DSTACK("socket.connect");
@@ -175,7 +175,7 @@ void Task::vSocketListen(NNP_Task nnpTask)
   Socket* pSocket;
   i8      iPort;
   
-  ENTRY("vSocketListen");
+  ENTRY("vSocketListen"_Str);
   
   if ( ! nnpTask->m_pDataStack->bPop(iPort) )
     THROW_INVALID_DSTACK("socketlisten");
@@ -201,7 +201,7 @@ void Task::vSocketOpen(NNP_Task nnpTask)
   SysCall xSysCall;
   Socket* pSocket;
   
-  ENTRY("vSocketOpen");
+  ENTRY("vSocketOpen"_Str);
   
   pSocket = new Socket;
   bool bResult = pSocket->bSocket(xSysCall);
@@ -221,7 +221,7 @@ void Task::vSocketOpen(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vSocketSend(NNP_Task nnpTask)
 {
-  ENTRY("vSocketSend");
+  ENTRY("vSocketSend"_Str);
   
   SysCall xSysCall;
   Socket* pSocket;
@@ -315,7 +315,7 @@ exit:
 /*----------------------------------------------------------------------------*/
 void Task::vSocketRecv(NNP_Task nnpTask)
 {
-  ENTRY("vSocketRecv");
+  ENTRY("vSocketRecv"_Str);
   
   SysCall xSysCall;
   Socket* pSocket;

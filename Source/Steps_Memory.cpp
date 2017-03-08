@@ -43,7 +43,7 @@ void Task::vAddPrimitives_Memory(void)
 /*----------------------------------------------------------------------------*/
 void Task::vMemoryByteDump(NNP_Task nnpTask)
 {
-ENTRY("vMemoryByteDump");
+ENTRY("vMemoryByteDump"_Str);
   
   i8 iSize;
   if ( ! nnpTask->m_pDataStack->bPop(iSize) )
@@ -65,7 +65,7 @@ ENTRY("vMemoryByteDump");
 /*----------------------------------------------------------------------------*/
 void Task::vMemoryWordDump(NNP_Task nnpTask)
 {
-ENTRY("vMemoryWordDump");
+ENTRY("vMemoryWordDump"_Str);
   
   i8 iSize;
   if ( ! nnpTask->m_pDataStack->bPop(iSize) )

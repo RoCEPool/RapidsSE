@@ -44,7 +44,7 @@ void Task::vAddPrimitives_Class(void)
 /*----------------------------------------------------------------------------*/
 void Task::vClassName(NNP_Task nnpTask)
 {
-  ENTRY("vClassName");
+  ENTRY("vClassName"_Str);
   
   i8 iClassNo;
   if ( ! nnpTask->m_pDataStack->bPop(iClassNo) )

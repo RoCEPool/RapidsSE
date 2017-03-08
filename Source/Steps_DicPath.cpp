@@ -46,7 +46,7 @@ void Task::vAddPrimitives_DicStack(void)
 /*----------------------------------------------------------------------------*/
 void Task::vDicPathDepth(NNP_Task nnpTask)
 {
-  ENTRY("vDicPathDepth");
+  ENTRY("vDicPathDepth"_Str);
   
   Object* pPtrDicStack;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrDicStack) )
@@ -67,7 +67,7 @@ void Task::vDicPathDepth(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDicPathDrop(NNP_Task nnpTask)
 {
-  ENTRY("vDicPathDrop");
+  ENTRY("vDicPathDrop"_Str);
   
   Object* pPtrDicStack;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrDicStack) )
@@ -86,7 +86,7 @@ void Task::vDicPathDrop(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDicPathDump(NNP_Task nnpTask)
 {
-  ENTRY("vDicPathDump");
+  ENTRY("vDicPathDump"_Str);
   
   Object* pPtrDicStack;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrDicStack) )
@@ -105,7 +105,7 @@ void Task::vDicPathDump(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDicPathPick(NNP_Task nnpTask)
 {
-  ENTRY("vDicPathPick");
+  ENTRY("vDicPathPick"_Str);
   
   Object* pPtrDicStack;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrDicStack) )
@@ -130,7 +130,7 @@ void Task::vDicPathPick(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDicPathPush(NNP_Task nnpTask)
 {
-  ENTRY("vDicPathPush");
+  ENTRY("vDicPathPush"_Str);
   
   Object* pPtrDicStack;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrDicStack) )

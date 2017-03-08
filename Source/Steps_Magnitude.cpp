@@ -44,7 +44,7 @@ void Task::vAddPrimitives_Magnitude(void)
 /*----------------------------------------------------------------------------*/
 void Task::vToDigitName(NNP_Task nnpTask)
 {
-  ENTRY("vToDigitName");
+  ENTRY("vToDigitName"_Str);
   
   i8 iDigit;
   
@@ -78,7 +78,7 @@ void Task::vToDigitName(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vBytesMagnitude(NNP_Task nnpTask)
 {
-  ENTRY("vBytesMagnitude");
+  ENTRY("vBytesMagnitude"_Str);
   
   i8 iBytes;
   if ( ! nnpTask->m_pDataStack->bPop(iBytes) )
@@ -97,7 +97,7 @@ void Task::vBytesMagnitude(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vNumberMagnitude(NNP_Task nnpTask)
 {
-  ENTRY("vNumberMagnitude");
+  ENTRY("vNumberMagnitude"_Str);
   
   i8 iNumber;
   i8 iScale;

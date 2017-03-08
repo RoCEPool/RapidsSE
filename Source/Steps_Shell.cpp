@@ -42,7 +42,7 @@ void Task::vAddPrimitives_Shell(void)
 /*----------------------------------------------------------------------------*/
 void Task::vShellExecute(NNP_Task nnpTask)
 {
-  ENTRY("vShellExecute");
+  ENTRY("vShellExecute"_Str);
   
   ValWsp xCommand;
   

@@ -58,7 +58,7 @@ void Task::vAddPrimitives_Grid(void)
 /*----------------------------------------------------------------------------*/
 void Task::vGridAppendNodes(NNP_Task nnpTask)
 {
-  ENTRY("vGridAppendNodes");
+  ENTRY("vGridAppendNodes"_Str);
   
   for (i8 iNode = 0; iNode < gxArguments.m_nNodes; iNode++) {
     Node* pNode = new Node(iNode,
@@ -76,7 +76,7 @@ void Task::vGridAppendNodes(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vGridFindNode(NNP_Task nnpTask)
 {
-  ENTRY("vGridNode");
+  ENTRY("vGridNode"_Str);
   
   s256 sPtrNodeName;
   
@@ -95,7 +95,7 @@ void Task::vGridFindNode(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vGridInit(NNP_Task nnpTask)
 {
-ENTRY("vGridInit");
+ENTRY("vGridInit"_Str);
   
   Object* pPtrGrid;
   
@@ -115,7 +115,7 @@ ENTRY("vGridInit");
 /*----------------------------------------------------------------------------*/
 void Task::vGridNode(NNP_Task nnpTask)
 {
-  ENTRY("vGridNode");
+  ENTRY("vGridNode"_Str);
   
   i8 iNode;
   
@@ -132,7 +132,7 @@ void Task::vGridNode(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vGridNodes(NNP_Task nnpTask)
 {
-  ENTRY("vGridNode");
+  ENTRY("vGridNode"_Str);
 
   nnpTask->m_pDataStack->vPush(gpGrid->m_nNodes);
   
@@ -144,7 +144,7 @@ void Task::vGridNodes(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vGridPartitions(NNP_Task nnpTask)
 {
-  ENTRY("vGridNode");
+  ENTRY("vGridNode"_Str);
   
   nnpTask->m_pDataStack->vPush(gpGrid->m_nPartitions);
   
@@ -156,7 +156,7 @@ void Task::vGridPartitions(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vGridSlots(NNP_Task nnpTask)
 {
-  ENTRY("vGridNode");
+  ENTRY("vGridNode"_Str);
   
   nnpTask->m_pDataStack->vPush(gpGrid->m_nSlots);
   
@@ -168,7 +168,7 @@ void Task::vGridSlots(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vGridThisNodeStore(NNP_Task nnpTask)
 {
-  ENTRY("vGridThisNodeStore");
+  ENTRY("vGridThisNodeStore"_Str);
   
   s256 sPtrNodeName;
   i8 iNode;
@@ -191,7 +191,7 @@ void Task::vGridThisNodeStore(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vGridThisNodeFetch(NNP_Task nnpTask)
 {
-  ENTRY("vGridThisNodeFetch");
+  ENTRY("vGridThisNodeFetch"_Str);
   
   Object* pPtrGrid;
   
@@ -207,7 +207,7 @@ void Task::vGridThisNodeFetch(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vGridThisNodeNameFetch(NNP_Task nnpTask)
 {
-  ENTRY("vGridThisNodeNameFetch");
+  ENTRY("vGridThisNodeNameFetch"_Str);
   
   s256 sName;
   sName = (Str*)gpGrid->pThisNode()->pNodeName();
@@ -222,7 +222,7 @@ void Task::vGridThisNodeNameFetch(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vGridStartedStore(NNP_Task nnpTask)
 {
-  ENTRY("vGridSetStarted");
+  ENTRY("vGridSetStarted"_Str);
   
   i8 iStarted;
   
@@ -239,7 +239,7 @@ void Task::vGridStartedStore(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vGridStartNodeFetch(NNP_Task nnpTask)
 {
-  ENTRY("vGridGetStarted");
+  ENTRY("vGridGetStarted"_Str);
   
   nnpTask->m_pDataStack->vPush(gpGrid->iStartNode());
   
@@ -251,7 +251,7 @@ void Task::vGridStartNodeFetch(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vGridStartNodeStore(NNP_Task nnpTask)
 {
-  ENTRY("vGridSetStarted");
+  ENTRY("vGridSetStarted"_Str);
   
   i8 iStartNode;
   
@@ -268,7 +268,7 @@ void Task::vGridStartNodeStore(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vGridStartedFetch(NNP_Task nnpTask)
 {
-  ENTRY("vGridGetStarted");
+  ENTRY("vGridGetStarted"_Str);
   
   nnpTask->m_pDataStack->vPush(gpGrid->bHasStarted());
   
@@ -280,7 +280,7 @@ void Task::vGridStartedFetch(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vGridToNode(NNP_Task nnpTask)
 {
-  ENTRY("vGridToNode");
+  ENTRY("vGridToNode"_Str);
   
   i8 iParitionId;
   if ( ! nnpTask->m_pDataStack->bPop(iParitionId) )
@@ -301,7 +301,7 @@ void Task::vGridToNode(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vGridToPartition(NNP_Task nnpTask)
 {
-  ENTRY("vGridToPartition");
+  ENTRY("vGridToPartition"_Str);
   
   i8 iSlot;
   if ( ! nnpTask->m_pDataStack->bPop(iSlot) )
@@ -319,7 +319,7 @@ void Task::vGridToPartition(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vGridToSlot(NNP_Task nnpTask)
 {
-  ENTRY("vGridToSlot");
+  ENTRY("vGridToSlot"_Str);
   
   i8 iPartitionId;
   if ( ! nnpTask->m_pDataStack->bPop(iPartitionId) )

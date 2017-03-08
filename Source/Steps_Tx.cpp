@@ -42,7 +42,7 @@ void Task::vAddPrimitives_Tx(void)
 /*----------------------------------------------------------------------------*/
 void Task::vTxDump(NNP_Task nnpTask)
 {
-ENTRY("vTxDump");
+ENTRY("vTxDump"_Str);
   
   Object* pPtrTx;
   

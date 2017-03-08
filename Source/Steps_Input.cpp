@@ -53,7 +53,7 @@ void Task::vAddPrimitives_Input(void)
 /*----------------------------------------------------------------------------*/
 void Task::vInputAccept(NNP_Task nnpTask)
 {
-  ENTRY("vInputAccept");
+  ENTRY("vInputAccept"_Str);
   
   ValWsp xWsp;
   xWsp.vClass(CN_STRVAL);
@@ -76,7 +76,7 @@ void Task::vInputAccept(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vInputClose(NNP_Task nnpTask)
 {
-ENTRY("vInputClose");
+ENTRY("vInputClose"_Str);
   
   nnpTask->m_pTokeniser->vUseEnd();
   
@@ -88,7 +88,7 @@ ENTRY("vInputClose");
 /*----------------------------------------------------------------------------*/
 void Task::vInputDepth(NNP_Task nnpTask)
 {
-ENTRY("vInputDepth");
+ENTRY("vInputDepth"_Str);
   
   i8 iDepth = nnpTask->m_pTokeniser->iDepth();
   
@@ -102,7 +102,7 @@ ENTRY("vInputDepth");
 /*----------------------------------------------------------------------------*/
 void Task::vInputNext(NNP_Task nnpTask)
 {
-ENTRY("vInputNext");
+ENTRY("vInputNext"_Str);
   
   if (nnpTask->m_iTracing) {
     ASSERT(nnpTask->m_iTracing);
@@ -120,7 +120,7 @@ ENTRY("vInputNext");
 /*----------------------------------------------------------------------------*/
 void Task::vInputOpen(NNP_Task nnpTask)
 {
-ENTRY("vInputOpen");
+ENTRY("vInputOpen"_Str);
   
   s256 sFilePath;
   
@@ -140,7 +140,7 @@ ENTRY("vInputOpen");
 /*----------------------------------------------------------------------------*/
 void Task::vInputPop(NNP_Task nnpTask)
 {
-ENTRY("vInputPop");
+ENTRY("vInputPop"_Str);
   
   bool bPopped = nnpTask->m_pTokeniser->bPop();
   ASSERT(bPopped);
@@ -153,7 +153,7 @@ ENTRY("vInputPop");
 /*----------------------------------------------------------------------------*/
 void Task::vInputPush(NNP_Task nnpTask)
 {
-ENTRY("vInputPush");
+ENTRY("vInputPush"_Str);
   
   nnpTask->m_pTokeniser->vPush();
   
@@ -165,7 +165,7 @@ ENTRY("vInputPush");
 /*----------------------------------------------------------------------------*/
 void Task::vInputStdin(NNP_Task nnpTask)
 {
-ENTRY("vInputStdin");
+ENTRY("vInputStdin"_Str);
   
   nnpTask->m_pTokeniser->vUseStdin();
   
@@ -177,7 +177,7 @@ ENTRY("vInputStdin");
 /*----------------------------------------------------------------------------*/
 void Task::vInputText(NNP_Task nnpTask)
 {
-ENTRY("vInputText");
+ENTRY("vInputText"_Str);
   
   if (nnpTask->m_iTracing) {
     ASSERT(nnpTask->m_iTracing);
@@ -198,7 +198,7 @@ ENTRY("vInputText");
 /*----------------------------------------------------------------------------*/
 void Task::vInputToken(NNP_Task nnpTask)
 {
-ENTRY("vInputToken");
+ENTRY("vInputToken"_Str);
   
   nnpTask->m_pDataStack->vPush(nnpTask->m_pTokeniser->sToken());
   
@@ -210,7 +210,7 @@ ENTRY("vInputToken");
 /*----------------------------------------------------------------------------*/
 void Task::vInputType(NNP_Task nnpTask)
 {
-ENTRY("vInputType");
+ENTRY("vInputType"_Str);
   
   eTK eTokenType = nnpTask->m_pTokeniser->eToken();
   
@@ -224,7 +224,7 @@ ENTRY("vInputType");
 /*----------------------------------------------------------------------------*/
 void Task::vTokenColon(NNP_Task nnpTask)
 {
-  ENTRY("vTokenColon");
+  ENTRY("vTokenColon"_Str);
   
   nnpTask->m_pTokeniser->vNextToken();
   

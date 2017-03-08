@@ -48,7 +48,7 @@ void Task::vAddPrimitives_Node(void)
 /*----------------------------------------------------------------------------*/
 void Task::vNodeInit(NNP_Task nnpTask)
 {
-ENTRY("vNodeInit");
+ENTRY("vNodeInit"_Str);
   
   Object* pPtrNode;
   
@@ -68,7 +68,7 @@ ENTRY("vNodeInit");
 /*----------------------------------------------------------------------------*/
 void Task::vNodeIP(NNP_Task nnpTask)
 {
-  ENTRY("vNodeIP");
+  ENTRY("vNodeIP"_Str);
   
   Object* pPtrNode;
   
@@ -90,7 +90,7 @@ void Task::vNodeIP(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vNodeNew(NNP_Task nnpTask)
 {
-ENTRY("vNodeNew");
+ENTRY("vNodeNew"_Str);
   
   i8 iNodeNo;
   
@@ -113,7 +113,7 @@ ENTRY("vNodeNew");
 /*----------------------------------------------------------------------------*/
 void Task::vNodeName(NNP_Task nnpTask)
 {
-  ENTRY("vNodeName");
+  ENTRY("vNodeName"_Str);
   
   Object* pPtrNode;
   
@@ -135,7 +135,7 @@ void Task::vNodeName(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vNodeNo(NNP_Task nnpTask)
 {
-ENTRY("vNodeNo");
+ENTRY("vNodeNo"_Str);
   
   Object* pPtrNode;
   
@@ -155,7 +155,7 @@ ENTRY("vNodeNo");
 /*----------------------------------------------------------------------------*/
 void Task::vNodePort(NNP_Task nnpTask)
 {
-  ENTRY("vNodeNo");
+  ENTRY("vNodeNo"_Str);
   
   Object* pPtrNode;
   
@@ -175,7 +175,7 @@ void Task::vNodePort(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vNodeStatus(NNP_Task nnpTask)
 {
-  ENTRY("vNodeStatus");
+  ENTRY("vNodeStatus"_Str);
 
   s256 s;
   

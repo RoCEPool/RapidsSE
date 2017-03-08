@@ -52,7 +52,7 @@ void Task::vAddPrimitives_Flow(void)
 /*----------------------------------------------------------------------------*/
 void Task::vFlowBegin_(NNP_Task nnpTask)
 {
-  ENTRY("vBegin_");
+  ENTRY("vBegin_"_Str);
   
   nnpTask->m_pBeginIP = nnpTask->IP.m_pCell;
   
@@ -64,7 +64,7 @@ void Task::vFlowBegin_(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vFlowExecute(NNP_Task nnpTask)
 {
-  ENTRY("vFlowExecute");
+  ENTRY("vFlowExecute"_Str);
   
   Object* pWordObject;
   if ( ! nnpTask->m_pDataStack->bPop(pWordObject) )
@@ -98,7 +98,7 @@ void Task::vFlowExecute(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vFlowHazard(NNP_Task nnpTask)
 {
-  ENTRY("vFlowHazard");
+  ENTRY("vFlowHazard"_Str);
   
   THROW("Entered hazard"_Str);
   
@@ -110,7 +110,7 @@ void Task::vFlowHazard(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vFlowJump(NNP_Task nnpTask)
 {
-  ENTRY("vJump");
+  ENTRY("vJump"_Str);
   
   nnpTask->IP.m_pCell = nnpTask->IP.m_pCell->m_pJumpTo;
   
@@ -122,7 +122,7 @@ void Task::vFlowJump(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vFlowJumpBegin_(NNP_Task nnpTask)
 {
-  ENTRY("vFlowJumpBegin_");
+  ENTRY("vFlowJumpBegin_"_Str);
   
   nnpTask->IP.m_pCell = nnpTask->m_pBeginIP;
   
@@ -134,7 +134,7 @@ void Task::vFlowJumpBegin_(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vFlowJumpFalse(NNP_Task nnpTask)
 {
-  ENTRY("vJumpFalse");
+  ENTRY("vJumpFalse"_Str);
   
   i8 iVal;
   if ( ! nnpTask->m_pDataStack->bPopParamInt(iVal) )
@@ -157,7 +157,7 @@ void Task::vFlowJumpFalse(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vFlowJumpTrue(NNP_Task nnpTask)
 {
-  ENTRY("vJumpTrue");
+  ENTRY("vJumpTrue"_Str);
   
   i8 iVal;
   if ( ! nnpTask->m_pDataStack->bPopParamInt(iVal) )
@@ -180,7 +180,7 @@ void Task::vFlowJumpTrue(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vFlowNop(NNP_Task nnpTask)
 {
-  ENTRY("vFlowNop");
+  ENTRY("vFlowNop"_Str);
   
   EXIT();
 }
@@ -190,7 +190,7 @@ void Task::vFlowNop(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vFlowRetryPoint(NNP_Task nnpTask)
 {
-  ENTRY("vFlowRetryPoint");
+  ENTRY("vFlowRetryPoint"_Str);
   
   nnpTask->m_pResetIP = nnpTask->IP.m_pCell;
   
@@ -206,7 +206,7 @@ void Task::vFlowRetryPoint(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vFlowTest(NNP_Task nnpTask)
 {
-  ENTRY("vFlowTest");
+  ENTRY("vFlowTest"_Str);
   
   vTrace("[%s] Test\n"_Str,nnpTask->m_sName.aStr());
   
@@ -218,7 +218,7 @@ void Task::vFlowTest(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vFlowThrow(NNP_Task nnpTask)
 {
-  ENTRY("vFlowThrow");
+  ENTRY("vFlowThrow"_Str);
   
   char wBuffer[256];
   

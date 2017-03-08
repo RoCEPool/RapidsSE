@@ -42,7 +42,7 @@ void Task::vAddPrimitives_Exit(void)
 /*----------------------------------------------------------------------------*/
 void Task::vExit(NNP_Task nnpTask)
 {
-  ENTRY("vExit");
+  ENTRY("vExit"_Str);
   
   //vTrace("Exit: return stack %lld\n"_Str, nnpTask->m_pReturnStack->iValues());
   

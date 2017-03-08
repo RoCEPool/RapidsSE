@@ -46,7 +46,7 @@ void Task::vAddPrimitives_Lock(void)
 /*----------------------------------------------------------------------------*/
 void Task::vLockDropRead(NNP_Task nnpTask)
 {
-ENTRY("vLockDropRead");
+ENTRY("vLockDropRead"_Str);
   
   Object* pPtrLock;;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrLock) )
@@ -66,7 +66,7 @@ ENTRY("vLockDropRead");
 /*----------------------------------------------------------------------------*/
 void Task::vLockDropWrite(NNP_Task nnpTask)
 {
-ENTRY("vLockDropWrite");
+ENTRY("vLockDropWrite"_Str);
 
   Object* pPtrLock;;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrLock) )
@@ -86,7 +86,7 @@ ENTRY("vLockDropWrite");
 /*----------------------------------------------------------------------------*/
 void Task::vLockGrabRead(NNP_Task nnpTask)
 {
-ENTRY("vLockGrabRead");
+ENTRY("vLockGrabRead"_Str);
 
   Object* pPtrLock;;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrLock) )
@@ -106,7 +106,7 @@ ENTRY("vLockGrabRead");
 /*----------------------------------------------------------------------------*/
 void Task::vLockGrabWrite(NNP_Task nnpTask)
 {
-ENTRY("vLockGrabWrite");
+ENTRY("vLockGrabWrite"_Str);
 
   Object* pPtrLock;;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrLock) )
@@ -126,7 +126,7 @@ ENTRY("vLockGrabWrite");
 /*----------------------------------------------------------------------------*/
 void Task::vLockInit(NNP_Task nnpTask)
 {
-ENTRY("vLockInit");
+ENTRY("vLockInit"_Str);
   
   Object* pPtrLock;;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrLock) )

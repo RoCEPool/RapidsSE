@@ -42,7 +42,7 @@ void Task::vAddPrimitives_Cpu(void)
 /*----------------------------------------------------------------------------*/
 void Task::vCpuRdtscp(NNP_Task nnpTask)
 {
-  ENTRY("vCpuRdtscp");
+  ENTRY("vCpuRdtscp"_Str);
   
   i8 iTscp = Synch::iTicks();
   

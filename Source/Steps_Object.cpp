@@ -47,7 +47,7 @@ void Task::vAddPrimitives_Object(void)
 /*----------------------------------------------------------------------------*/
 void Task::vObjectClassFetch(NNP_Task nnpTask)
 {
-  ENTRY("vObjectClassFetch");
+  ENTRY("vObjectClassFetch"_Str);
   
   Object* pObject;
   if ( ! nnpTask->m_pDataStack->bPop(pObject) )
@@ -66,7 +66,7 @@ void Task::vObjectClassFetch(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vObjectClassStore(NNP_Task nnpTask)
 {
-  ENTRY("vObjectClassStore");
+  ENTRY("vObjectClassStore"_Str);
   
   Object* pObject;
   if ( ! nnpTask->m_pDataStack->bPop(pObject) )
@@ -86,7 +86,7 @@ void Task::vObjectClassStore(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vObjectDump(NNP_Task nnpTask)
 {
-  ENTRY("vObjectDump");
+  ENTRY("vObjectDump"_Str);
   
   Object* pObject;
   if ( ! nnpTask->m_pDataStack->bPop(pObject) )
@@ -106,7 +106,7 @@ void Task::vObjectDump(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vObjectFetch(NNP_Task nnpTask)
 {
-  ENTRY("vObjectFetch");
+  ENTRY("vObjectFetch"_Str);
   
   i8 iPick = 0;
   
@@ -124,7 +124,7 @@ void Task::vObjectFetch(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vObjectMagicMark(NNP_Task nnpTask)
 {
-  ENTRY("vObjectMagicMark");
+  ENTRY("vObjectMagicMark"_Str);
   
   Object* pObject;
   if ( ! nnpTask->m_pDataStack->bPop(pObject) )
@@ -140,7 +140,7 @@ void Task::vObjectMagicMark(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vObjectStore(NNP_Task nnpTask)
 {
-  ENTRY("vObjectStore");
+  ENTRY("vObjectStore"_Str);
   
   i8 iPeek = 0;
   
@@ -159,7 +159,7 @@ void Task::vObjectStore(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vObjectWordBodySet(NNP_Task nnpTask)
 {
-  ENTRY("vObjectWordBodySet");
+  ENTRY("vObjectWordBodySet"_Str);
   
   Object* pObject;
   if ( ! nnpTask->m_pDataStack->bPop(pObject) )

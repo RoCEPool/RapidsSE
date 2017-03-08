@@ -43,7 +43,7 @@ void Task::vAddPrimitives_ThreadList(void)
 /*----------------------------------------------------------------------------*/
 void Task::vThreadListDump(NNP_Task nnpTask)
 {
-ENTRY("vThreadListDump");
+ENTRY("vThreadListDump"_Str);
   
   Object* pPtrThreadList;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrThreadList) )
@@ -62,7 +62,7 @@ ENTRY("vThreadListDump");
 /*----------------------------------------------------------------------------*/
 void Task::vThreadListInit(NNP_Task nnpTask)
 {
-ENTRY("vThreadListInit");
+ENTRY("vThreadListInit"_Str);
   
   Object* pPtrThreadList;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrThreadList) )

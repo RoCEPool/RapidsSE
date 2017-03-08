@@ -25,7 +25,7 @@ namespace Tasks
     
     static void vDump(eCN eClass, Object* pObject, Str* aTab);
 
-    StepAccum* pAllocAccum(const char* pFnName);
+    StepAccum* pAllocAccum(Str* aFnName);
     void vList(void);
     void vReset(void);
     

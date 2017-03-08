@@ -47,7 +47,7 @@ void Task::vAddPrimitives_Zero(void)
 /*----------------------------------------------------------------------------*/
 void Task::vZeroLess(NNP_Task nnpTask)
 {
-  ENTRY("vZeroLess");
+  ENTRY("vZeroLess"_Str);
   
   i8 iZero;
   if ( ! nnpTask->m_pDataStack->bPopParamInt(iZero) )
@@ -66,7 +66,7 @@ void Task::vZeroLess(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vZeroLessEqual(NNP_Task nnpTask)
 {
-  ENTRY("vZeroLessEqual");
+  ENTRY("vZeroLessEqual"_Str);
   
   i8 iZero;
   if ( ! nnpTask->m_pDataStack->bPopParamInt(iZero) )
@@ -85,7 +85,7 @@ void Task::vZeroLessEqual(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vZeroEqual(NNP_Task nnpTask)
 {
-  ENTRY("vZeroEqual");
+  ENTRY("vZeroEqual"_Str);
   
   i8 iZero;
   if ( ! nnpTask->m_pDataStack->bPopParamInt(iZero) )
@@ -104,7 +104,7 @@ void Task::vZeroEqual(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vZeroNotEqual(NNP_Task nnpTask)
 {
-  ENTRY("vZeroNotEqual");
+  ENTRY("vZeroNotEqual"_Str);
   
   i8 iZero;
   if ( ! nnpTask->m_pDataStack->bPopParamInt(iZero) )
@@ -123,7 +123,7 @@ void Task::vZeroNotEqual(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vZeroGreaterEqual(NNP_Task nnpTask)
 {
-  ENTRY("vZeroGreaterEqual");
+  ENTRY("vZeroGreaterEqual"_Str);
   
   i8 iZero;
   if ( ! nnpTask->m_pDataStack->bPopParamInt(iZero) )
@@ -142,7 +142,7 @@ void Task::vZeroGreaterEqual(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vZeroGreater(NNP_Task nnpTask)
 {
-  ENTRY("vZeroGreater");
+  ENTRY("vZeroGreater"_Str);
   
   i8 iZero;
   if ( ! nnpTask->m_pDataStack->bPopParamInt(iZero) )

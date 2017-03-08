@@ -61,7 +61,7 @@ void Task::vAddPrimitives_Str(void)
 /*----------------------------------------------------------------------------*/
 void Task::vS256Init(NNP_Task nnpTask)
 {
-  ENTRY("vS256Init");
+  ENTRY("vS256Init"_Str);
   
   Object* pPtrStrVal;
   
@@ -84,7 +84,7 @@ void Task::vS256Init(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vStrAlgebra(NNP_Task nnpTask)
 {
-  ENTRY("vStrAlgebra");
+  ENTRY("vStrAlgebra"_Str);
  
   // (1) StrVal's cannot be declared as local variables
   //StrVal xStrval;  // uncommenting this line should produce a compile error
@@ -105,7 +105,7 @@ void Task::vStrAlgebra(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vStrCat(NNP_Task nnpTask)
 {
-  ENTRY("vStrCat");
+  ENTRY("vStrCat"_Str);
   
   ValWsp xStrR;
   ValWsp xStrB;
@@ -131,7 +131,7 @@ void Task::vStrCat(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vStrClip(NNP_Task nnpTask)
 {
-  ENTRY("vStrClip");
+  ENTRY("vStrClip"_Str);
   
   i8 iLength;
   s48K sString;
@@ -166,7 +166,7 @@ void Task::vStrClip(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vStrEqual(NNP_Task nnpTask)
 {
-  ENTRY("vStrEql");
+  ENTRY("vStrEql"_Str);
   
   ValWsp xStringA;
   ValWsp xStringB;
@@ -188,7 +188,7 @@ void Task::vStrEqual(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vStrEscape(NNP_Task nnpTask)
 {
-  ENTRY("vStrEscape");
+  ENTRY("vStrEscape"_Str);
   
   s48K xArg;
   s48K xEscaped;
@@ -209,7 +209,7 @@ void Task::vStrEscape(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vStrFirstCsv(NNP_Task nnpTask)
 {
-  ENTRY("vStrFirstCsv");
+  ENTRY("vStrFirstCsv"_Str);
   
   ValWsp xStr;
   if ( ! nnpTask->m_pDataStack->bPop(xStr) )
@@ -232,7 +232,7 @@ void Task::vStrFirstCsv(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vStrFormat(NNP_Task nnpTask)
 {
-  ENTRY("vStrFormat");
+  ENTRY("vStrFormat"_Str);
   
   s48K sFormat;
   if ( ! nnpTask->m_pDataStack->bPop(sFormat) )
@@ -252,7 +252,7 @@ void Task::vStrFormat(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vStrLeft(NNP_Task nnpTask)
 {
-  ENTRY("vClip");
+  ENTRY("vClip"_Str);
   
   i8 iLength;
   s48K sString;
@@ -282,7 +282,7 @@ void Task::vStrLeft(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vStrLength(NNP_Task nnpTask)
 {
-  ENTRY("vStrLen");
+  ENTRY("vStrLen"_Str);
   
   i8 iLength;
   s48K sString;
@@ -303,7 +303,7 @@ void Task::vStrLength(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vStrPad(NNP_Task nnpTask)
 {
-  ENTRY("vStringPad");
+  ENTRY("vStringPad"_Str);
   
   i8 iLength;
   
@@ -328,7 +328,7 @@ void Task::vStrPad(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vStrPrepend(NNP_Task nnpTask)
 {
-  ENTRY("vStrPrepend");
+  ENTRY("vStrPrepend"_Str);
   
   ValWsp xStrR;
   ValWsp xStrB;
@@ -377,7 +377,7 @@ void Task::vStrPrepend(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vStrRandom(NNP_Task nnpTask)
 {
-  ENTRY("vStrRandom");
+  ENTRY("vStrRandom"_Str);
   
   i8 iLength;
   if ( ! nnpTask->m_pDataStack->bPop(iLength) )
@@ -397,7 +397,7 @@ void Task::vStrRandom(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vStrReplace(NNP_Task nnpTask)
 {
-  ENTRY("vStrReplace");
+  ENTRY("vStrReplace"_Str);
   
   s48K sString;
   s48K sThat;
@@ -426,7 +426,7 @@ void Task::vStrReplace(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vStrRight(NNP_Task nnpTask)
 {
-  ENTRY("vStrRight");
+  ENTRY("vStrRight"_Str);
   
   i8 iLength;
   s48K sString;
@@ -459,7 +459,7 @@ void Task::vStrRight(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vStrSub(NNP_Task nnpTask)
 {
-  ENTRY("vStrSub");
+  ENTRY("vStrSub"_Str);
   
   i8 iLength;
   i8 iStart;
@@ -497,7 +497,7 @@ void Task::vStrSub(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vStrTailInt(NNP_Task nnpTask)
 {
-  ENTRY("vStrTailInt");
+  ENTRY("vStrTailInt"_Str);
   
   // get the string
   s48K sString;

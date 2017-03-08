@@ -57,7 +57,7 @@ void Task::vAddPrimitives_Plan(void)
 /*----------------------------------------------------------------------------*/
 void Task::vPlanDelete(NNP_Task nnpTask)
 {
-  ENTRY("vPlanDelete");
+  ENTRY("vPlanDelete"_Str);
   
   Object* pPtrPlan;
   
@@ -76,7 +76,7 @@ void Task::vPlanDelete(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vPlanDic(NNP_Task nnpTask)
 {
-  ENTRY("vPlanDic");
+  ENTRY("vPlanDic"_Str);
   
   Object* pPtrPlan;
   
@@ -97,7 +97,7 @@ void Task::vPlanDic(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vPlanExecutingTaskFetch(NNP_Task nnpTask)
 {
-  ENTRY("vPlanExecutingTaskFetch");
+  ENTRY("vPlanExecutingTaskFetch"_Str);
   
   Object* pPtrPlan;
   
@@ -118,7 +118,7 @@ void Task::vPlanExecutingTaskFetch(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vPlanExecutingTaskStore(NNP_Task nnpTask)
 {
-  ENTRY("vPlanExecuteTaskStore");
+  ENTRY("vPlanExecuteTaskStore"_Str);
   
   Object* pPtrPlan;
   Object* pPtrTask;
@@ -141,7 +141,7 @@ void Task::vPlanExecutingTaskStore(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vPlanFinished(NNP_Task nnpTask)
 {
-  ENTRY("vPlanFinished");
+  ENTRY("vPlanFinished"_Str);
   
   Object* pPtrPlan;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrPlan) )
@@ -159,7 +159,7 @@ void Task::vPlanFinished(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vPlanIdFetch(NNP_Task nnpTask)
 {
-  ENTRY("vPlanIdFetch");
+  ENTRY("vPlanIdFetch"_Str);
   
   Object* pPtrPlan;
   
@@ -180,7 +180,7 @@ void Task::vPlanIdFetch(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vPlanLambdaAppend(NNP_Task nnpTask)
 {
-  ENTRY("vPlanLambdaAppend");
+  ENTRY("vPlanLambdaAppend"_Str);
   
   Object* pPtrPlan;
   s48K sCode;
@@ -202,7 +202,7 @@ void Task::vPlanLambdaAppend(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vPlanLambdaFetch(NNP_Task nnpTask)
 {
-  ENTRY("vPlanLambdaFetch");
+  ENTRY("vPlanLambdaFetch"_Str);
   
   Object* pPtrPlan;
   s48K sCode;
@@ -223,7 +223,7 @@ void Task::vPlanLambdaFetch(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vPlanLambdaStore(NNP_Task nnpTask)
 {
-  ENTRY("vPlanLambdaStore");
+  ENTRY("vPlanLambdaStore"_Str);
   
   Object* pPtrPlan;
   s48K sCode;
@@ -244,7 +244,7 @@ void Task::vPlanLambdaStore(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vPlanNameFetch(NNP_Task nnpTask)
 {
-  ENTRY("vPlanNameFetch");
+  ENTRY("vPlanNameFetch"_Str);
   
   Object* pPtrPlan;
   
@@ -265,7 +265,7 @@ void Task::vPlanNameFetch(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vPlanNameStore(NNP_Task nnpTask)
 {
-  ENTRY("vPlanNameStore");
+  ENTRY("vPlanNameStore"_Str);
   
   Object* pPtrPlan;
   
@@ -289,7 +289,7 @@ void Task::vPlanNameStore(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vPlanNew(NNP_Task nnpTask)
 {
-  ENTRY("vPlanNew");
+  ENTRY("vPlanNew"_Str);
   
   Plan* pPlan = new Plan;
   
@@ -303,7 +303,7 @@ void Task::vPlanNew(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vPlanOpFrameAdd(NNP_Task nnpTask)
 {
-  ENTRY("vPlanOpFrameAdd");
+  ENTRY("vPlanOpFrameAdd"_Str);
   
   Object* pPtrPlan;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrPlan) )
@@ -341,7 +341,7 @@ void Task::vPlanOpFrameAdd(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vPlanOpFrameFind(NNP_Task nnpTask)
 {
-  ENTRY("vPlanOpFrameFind");
+  ENTRY("vPlanOpFrameFind"_Str);
   
   
   Object* pPtrPlan;
@@ -370,7 +370,7 @@ void Task::vPlanOpFrameFind(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vPlanOpFrameTop(NNP_Task nnpTask)
 {
-  ENTRY("vPlanOpFrameTop");
+  ENTRY("vPlanOpFrameTop"_Str);
   
   Object* pPtrPlan;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrPlan) )
@@ -389,7 +389,7 @@ void Task::vPlanOpFrameTop(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vPlanShow(NNP_Task nnpTask)
 {
-  ENTRY("vPlanShow");
+  ENTRY("vPlanShow"_Str);
   
   Object* pPtrPlan;
   

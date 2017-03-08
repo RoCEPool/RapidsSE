@@ -43,7 +43,7 @@ void Task::vAddPrimitives_TxCollection(void)
 /*----------------------------------------------------------------------------*/
 void Task::vTxCollectionDump(NNP_Task nnpTask)
 {
-ENTRY("vTxCollectionDump");
+ENTRY("vTxCollectionDump"_Str);
   
   Object* pPtrTxCollection;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTxCollection) )
@@ -62,7 +62,7 @@ ENTRY("vTxCollectionDump");
 /*----------------------------------------------------------------------------*/
 void Task::vTxCollectionInit(NNP_Task nnpTask)
 {
-ENTRY("vTxCollectionInit");
+ENTRY("vTxCollectionInit"_Str);
   
   Object* pPtrTxCollection;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTxCollection) )

@@ -42,7 +42,7 @@ void Task::vAddPrimitives_TxMap(void)
 /*----------------------------------------------------------------------------*/
 void Task::vTxMapInit(NNP_Task nnpTask)
 {
-ENTRY("vTxMapInit");
+ENTRY("vTxMapInit"_Str);
   
   Object* pPtrTxMap;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTxMap) )

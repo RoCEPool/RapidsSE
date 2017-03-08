@@ -44,7 +44,7 @@ void Task::vAddPrimitives_TaskSet(void)
 /*----------------------------------------------------------------------------*/
 void Task::vTaskSetAppend(NNP_Task nnpTask)
 {
-ENTRY("vTaskSetAppend");
+ENTRY("vTaskSetAppend"_Str);
   
   Object* pObject;
   
@@ -70,7 +70,7 @@ ENTRY("vTaskSetAppend");
 /*----------------------------------------------------------------------------*/
 void Task::vTaskSetDump(NNP_Task nnpTask)
 {
-ENTRY("vTaskSetDump");
+ENTRY("vTaskSetDump"_Str);
   
   Object* pObject;
   
@@ -91,7 +91,7 @@ ENTRY("vTaskSetDump");
 /*----------------------------------------------------------------------------*/
 void Task::vTaskSetInit(NNP_Task nnpTask)
 {
-ENTRY("vTaskSetInit");
+ENTRY("vTaskSetInit"_Str);
   
   Object* pObject;
   
