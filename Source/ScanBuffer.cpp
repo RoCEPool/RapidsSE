@@ -61,7 +61,7 @@ Str* ScanBuffer::aInto(i8& iAvailableBytes)
   //
   // a) no previous dangling portion
   //
-  // v- pFirstByte()                                          pLastByte() -v
+  // v- aFirstByte()                                          aLastByte() -v
   // +---------------------------------------------------------------------+
   // | ..available..                                                       |
   // +---------------------------------------------------------------------+
@@ -71,7 +71,7 @@ Str* ScanBuffer::aInto(i8& iAvailableBytes)
   //
   // b) previous dangling portion
   //
-  // v- pFirstByte()                                          pLastByte() -v
+  // v- aFirstByte()                                          aLastByte() -v
   // +---------------------------------------------------------------------+
   // | dangling...| ..available..                                          |
   // +---------------------------------------------------------------------+
@@ -96,7 +96,7 @@ void ScanBuffer::vMore(i8& iBytesRead)
   //
   // a) data fills workarea
   //
-  // v- pFirstByte()                                          pLastByte() -v
+  // v- aFirstByte()                                          aLastByte() -v
   // +---------------------------------------------------------------------+
   // | data...                                                             |
   // +---------------------------------------------------------------------+
@@ -104,7 +104,7 @@ void ScanBuffer::vMore(i8& iBytesRead)
   //
   // b) data doesnt fill workarea
   //
-  // v- pFirstByte()                                          pLastByte() -v
+  // v- aFirstByte()                                          aLastByte() -v
   // +---------------------------------------------------------------------+
   // | data...                                                | ..no data..|
   // +---------------------------------------------------------------------+
@@ -120,7 +120,7 @@ void ScanBuffer::vMore(i8& iBytesRead)
   
   
 //  vInfo("More: "_Str);
-//  for (char* c = pFirstByte(); c <= pFirstByte() + 1000; c++) {
+//  for (char* c = aFirstByte(); c <= aFirstByte() + 1000; c++) {
 //    if (*c == '\n')
 //      break;
 //    vInfo("%c"_Str,*c);
@@ -135,7 +135,7 @@ void ScanBuffer::vMore(i8& iBytesRead)
 Str* ScanBuffer::aScan(i8& nMessageBytes)
 {
   //
-  // v- pFirstByte()                                          pLastByte() -v
+  // v- aFirstByte()                                          aLastByte() -v
   // +---------------------------------------------------------------------+
   // | msg1\nmsg2\nmsg3\n...                                               |
   // +---------------------------------------------------------------------+
@@ -191,7 +191,7 @@ i8 ScanBuffer::iBytesAvailable(void)
   //
   // a) no previous dangling portion
   //
-  // v- pFirstByte()                                          pLastByte() -v
+  // v- aFirstByte()                                          aLastByte() -v
   // +---------------------------------------------------------------------+
   // | ..available..                                                       |
   // +---------------------------------------------------------------------+
@@ -201,7 +201,7 @@ i8 ScanBuffer::iBytesAvailable(void)
   //
   // b) previous dangling portion
   //
-  // v- pFirstByte()                                          pLastByte() -v
+  // v- aFirstByte()                                          aLastByte() -v
   // +---------------------------------------------------------------------+
   // | dangling...| ..available..                                          |
   // +---------------------------------------------------------------------+
@@ -235,14 +235,14 @@ void ScanBuffer::vCopyUp(Str* aDangling)
   }
   
   //
-  // v- pFirstByte()                                          pLastByte() -v
+  // v- aFirstByte()                                          aLastByte() -v
   // +---------------------------------------------------------------------+
   // | msg1\nmsg2\nmsg3\n...                                 | dangling... |
   // +---------------------------------------------------------------------+
   //                                              pDangling -^
   //
   //
-  // v- pFirstByte()                                          pLastByte() -v
+  // v- aFirstByte()                                          aLastByte() -v
   // +---------------------------------------------------------------------+
   // | dangling... | ..available..                                         |
   // +---------------------------------------------------------------------+
@@ -261,7 +261,7 @@ void ScanBuffer::vCopyUp(Str* aDangling)
   
 //  if (iDanglingBytes < 1000) {
 //    vInfo("CopyUp %lld: "_Str,nDanglingBytes);
-//    for (char* c = pFirstByte(); c <= m_aEndData; c++) {
+//    for (char* c = aFirstByte(); c <= m_aEndData; c++) {
 //      ASSERT(*c != 0xEF);
 //      vInfo("%c"_Str,*c);
 //    }
@@ -308,7 +308,7 @@ Str* ScanBuffer::aLastByte(void)
 void ScanBuffer::vReset(void)
 {
   //
-  // v- pFirstByte()                                          pLastByte() -v
+  // v- aFirstByte()                                          aLastByte() -v
   // +---------------------------------------------------------------------+
   // | available...                                                        |
   // +---------------------------------------------------------------------+

@@ -489,7 +489,7 @@ void Task::vDstackToValSet(NNP_Task nnpTask)
   if ( ! nnpTask->m_pDataStack->bGuard(nVal) )
     THROW_INVALID_DSTACK(">valset"_Str);
   
-  char* pCursor = nullptr;
+  Str* pCursor = nullptr;
   ValSet xValSet;
   
   ValWsp xVal;
@@ -535,7 +535,7 @@ void Task::vDstackToValues(NNP_Task nnpTask)
   i8 nVal = 0;
   ValWsp* pValWsp[128];
   
-  char* pCursor = nullptr;
+  Str* pCursor = nullptr;
   while (xValSet.bExtract(pCursor,pValWsp[nVal]))
     nVal++;
   

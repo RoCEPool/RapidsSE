@@ -271,7 +271,7 @@ void Task::vAstackToValSet(NNP_Task nnpTask)
   if ( ! nnpTask->m_pAuxStack->bGuard(nVal) )
   THROW_INVALID_ASTACK(">avalset"_Str);
   
-  char* pCursor = nullptr;
+  Str* pCursor = nullptr;
   ValSet xValSet;
   
   ValWsp xVal;
@@ -305,7 +305,7 @@ void Task::vAstackToValues(NNP_Task nnpTask)
   i8 nVal = 0;
   ValWsp* pValWsp[128];
   
-  char* pCursor = nullptr;
+  Str* pCursor = nullptr;
   while (xValSet.bExtract(pCursor,pValWsp[nVal]))
     nVal++;
   

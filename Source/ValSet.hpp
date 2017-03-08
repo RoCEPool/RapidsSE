@@ -23,9 +23,9 @@ namespace Values
     void* operator new(size_t);
     ValSet(void);
     
-    void vAppend(char*& pCursor, ValWsp& xVal);
-    bool bExtract(char*& pCursor, ValWsp*& pVal);
-    bool bExtract(char*& pCursor, eCN& eClassNo, ValWsp*& pVal);
+    void vAppend(Str*& pCursor, ValWsp& xVal);
+    bool bExtract(Str*& pCursor, ValWsp*& pVal);
+    bool bExtract(Str*& pCursor, eCN& eClassNo, ValWsp*& pVal);
     
     DBobjects::RowBuffer* pRowBuffer(void);
     void vRowBuffer(DBobjects::RowBuffer* pRowBuffer);
@@ -40,9 +40,9 @@ namespace Values
     void vToString(Str* aWorkspace);
 
   private:
-    char* pFirstByte(void);
-    char* pLastByte(void);
-    ValWsp* pToValWsp(char* pCursor);
+    Str* aFirstByte(void);
+    Str* aLastByte(void);
+    ValWsp* pToValWsp(Str* pCursor);
   };
   
   ValSet* _pValSet(void* aAddr);

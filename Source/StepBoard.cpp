@@ -117,14 +117,14 @@ void StepBoard::vContentDump(void)
 /*----------------------------------------------------------------------------*/
 /* set step name of thread                                                    */
 /*----------------------------------------------------------------------------*/
-void StepBoard::vName(i8 iThread, const char* aName)
+void StepBoard::vName(i8 iThread, Str* aName)
 {
   if (iThread < 0 || iThread >= C_STEPBOARD_THREADS) {
     vInfo("iThread error: %lld\n"_Str,iThread);
     exit(EXIT_FAILURE);
   }
 
-  StrLib::vCopyLen(m_aStepName[iThread],aName,C_STEPBOARD_NAME-1);
+  StrLib::vCopyLen(m_aStepName[iThread],aName->a(),C_STEPBOARD_NAME-1);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -1704,7 +1704,7 @@ bool SEitf::bAppendRequest(StrVal& sRequest)
   
   char wItfAddr[32];
   s48K xWorkspace;
-  char* aCursor = nullptr;
+  Str* aCursor = nullptr;
   
   ValWsp xVal;
   ValSet xValSet;
@@ -1774,7 +1774,7 @@ bool SEitf::bPopResponse(eEC& eResult, StrVal& sResponse)
   
   bool b;
   ValSet xValSet;
-  char* aCursor = nullptr;
+  Str* aCursor = nullptr;
   
   if (! m_pResponseQueue->bPop(&xValSet))
     return false;

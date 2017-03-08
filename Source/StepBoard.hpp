@@ -23,7 +23,7 @@ namespace Tasks
     ~StepBoard(void);
     
     void vContentDump(void);
-    void vName(i8 iThread, const char* aName);
+    void vName(i8 iThread, Str* aName);
     void vPoint(i8 iThread, i8 iPoint);
     void vReset(void);
   };

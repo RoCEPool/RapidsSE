@@ -88,10 +88,10 @@ Str* Buffer::aLastUsableByte(void)
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 
   // last byte in buffer
-  Str* pLastByte = reinterpret_cast<Str*>(this) + C_SIZE_POOL_BUFFER - 1;
+  Str* aLastByte = reinterpret_cast<Str*>(this) + C_SIZE_POOL_BUFFER - 1;
   
   // last byte before footer
-  Str* aLastUsableByte = pLastByte - sizeof(FOOTER);
+  Str* aLastUsableByte = aLastByte - sizeof(FOOTER);
   
   return aLastUsableByte;
 }

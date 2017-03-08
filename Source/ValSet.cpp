@@ -52,14 +52,14 @@ ValSet::ValSet(void)
 /*----------------------------------------------------------------------------*/
 /* append value to valset                                                     */
 /*----------------------------------------------------------------------------*/
-void ValSet::vAppend(char*& pCursor, ValWsp& xVal)
+void ValSet::vAppend(Str*& pCursor, ValWsp& xVal)
 {
   i8 iSize = ValLib::iSize(&xVal);
   
   ASSERT(m_iBytes + iSize < C_VALSET_DATAAREA);
   
   if ( ! pCursor )
-    pCursor = pFirstByte();
+    pCursor = aFirstByte();
   
   // test for a rowbuffer pointer
   if (CN_PTRVAL == xVal.eClass()) {
@@ -85,12 +85,12 @@ void ValSet::vAppend(char*& pCursor, ValWsp& xVal)
 /*----------------------------------------------------------------------------*/
 /* extract next value from valset                                             */
 /*----------------------------------------------------------------------------*/
-bool ValSet::bExtract(char*& pCursor, ValWsp*& pVal)
+bool ValSet::bExtract(Str*& pCursor, ValWsp*& pVal)
 {
   if ( ! pCursor )
-    pCursor = pFirstByte();
+    pCursor = aFirstByte();
 
-  i8 iOffset = pCursor - pFirstByte();
+  i8 iOffset = pCursor - aFirstByte();
 
   if (iOffset >= m_iBytes)
     return false;
@@ -124,12 +124,12 @@ bool ValSet::bExtract(char*& pCursor, ValWsp*& pVal)
 /*----------------------------------------------------------------------------*/
 /* extract next value from valset                                             */
 /*----------------------------------------------------------------------------*/
-bool ValSet::bExtract(char*& pCursor, eCN& eClassNo, ValWsp*& pVal)
+bool ValSet::bExtract(Str*& pCursor, eCN& eClassNo, ValWsp*& pVal)
 {
   if ( ! pCursor )
-    pCursor = pFirstByte();
+    pCursor = aFirstByte();
   
-  i8 iOffset = pCursor - pFirstByte();
+  i8 iOffset = pCursor - aFirstByte();
   
   if (iOffset >= m_iBytes)
     return false;
@@ -167,7 +167,7 @@ DBobjects::RowBuffer* ValSet::pRowBuffer(void)
 DBobjects::RowBuffer* ValSet::pGetRowBuffer(void)
 {
   eCN eClassNo;
-  char* pCursor = nullptr;
+  Str* pCursor = nullptr;
   ValWsp* pValWsp;
   DBobjects::RowBuffer* pRowBuffer;
   
@@ -198,7 +198,7 @@ DBobjects::RowBuffer* ValSet::pGetRowBuffer(void)
 /*----------------------------------------------------------------------------*/
 bool ValSet::bHasRowBuffer(void)
 {
-  char* pCursor = nullptr;
+  Str* pCursor = nullptr;
   eCN eClassNo;
   ValWsp* pValWsp;
   bool bHasRowBuffer;
@@ -236,7 +236,7 @@ void ValSet::vRowBuffer(DBobjects::RowBuffer* pRowBuffer)
 bool ValSet::bSetRowBuffer(DBobjects::RowBuffer* pRowBuffer)
 {
   eCN eClassNo;
-  char* pCursor = nullptr;
+  Str* pCursor = nullptr;
   ValWsp* pValWsp;
   bool bSet;
   
@@ -266,7 +266,7 @@ bool ValSet::bSetRowBuffer(DBobjects::RowBuffer* pRowBuffer)
 /*----------------------------------------------------------------------------*/
 i8 ValSet::nSize(void)
 {
-  i8 iSize = pFirstByte() - (char*)this + m_iBytes;
+  i8 iSize = aFirstByte()->a() - (char*)this + m_iBytes;
   
   return iSize;
 }
@@ -295,23 +295,23 @@ void ValSet::vToString(Str* aWorkspace)
 /*----------------------------------------------------------------------------*/
 /* get ptr to first byte of workspace                                         */
 /*----------------------------------------------------------------------------*/
-char* ValSet::pFirstByte(void)
+Str* ValSet::aFirstByte(void)
 {
-  return &m_wWorkspace[0];
+  return (Str*)&m_wWorkspace[0];
 }
 
 /*----------------------------------------------------------------------------*/
 /* get ptr to last bytes of worksspace                                        */
 /*----------------------------------------------------------------------------*/
-char* ValSet::pLastByte(void)
+Str* ValSet::aLastByte(void)
 {
-  return &m_wWorkspace[C_VALSET_DATAAREA-1];
+  return (Str*)&m_wWorkspace[C_VALSET_DATAAREA-1];
 }
 
 /*----------------------------------------------------------------------------*/
 /* convert cursor to valwsp*                                                  */
 /*----------------------------------------------------------------------------*/
-ValWsp* ValSet::pToValWsp(char* pCursor)
+ValWsp* ValSet::pToValWsp(Str* pCursor)
 {
   return reinterpret_cast<ValWsp*>(pCursor);
 }
