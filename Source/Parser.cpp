@@ -833,7 +833,7 @@ void Parser::vReadLineStdin(void)
   if (gxArguments.m_bTracepoint)
     PosixThread::vSleepMilli(300);
   
-  printf("%s",m_sPrompt.aStr());
+  vInfo("%s"_Str,m_sPrompt.aStr());
   fflush(stdin);
   
   for (;;) {

@@ -119,13 +119,13 @@ void ScanBuffer::vMore(i8& iBytesRead)
   ASSERT(m_aEndData <= aLastByte());
   
   
-//  printf("More: ");
+//  vInfo("More: "_Str);
 //  for (char* c = pFirstByte(); c <= pFirstByte() + 1000; c++) {
 //    if (*c == '\n')
 //      break;
-//    printf("%c",*c);
+//    vInfo("%c"_Str,*c);
 //  }
-//  printf("\n");
+//  vInfo("\n"_Str);
   
 }
 
@@ -260,12 +260,12 @@ void ScanBuffer::vCopyUp(char* aDangling)
   m_aEndData = pAdd<char*>(aFirstByte(),nDanglingBytes - 1);
   
 //  if (iDanglingBytes < 1000) {
-//    printf("CopyUp %lld: ",nDanglingBytes);
+//    vInfo("CopyUp %lld: "_Str,nDanglingBytes);
 //    for (char* c = pFirstByte(); c <= m_aEndData; c++) {
 //      ASSERT(*c != 0xEF);
-//      printf("%c",*c);
+//      vInfo("%c"_Str,*c);
 //    }
-//    printf("\n");
+//    vInfo("\n"_Str);
 //  }
   
   ASSERT(m_aEndData >= aFirstByte() - 1);

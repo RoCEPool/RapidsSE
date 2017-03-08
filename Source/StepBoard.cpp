@@ -105,9 +105,9 @@ StepBoard::~StepBoard(void)
 /*----------------------------------------------------------------------------*/
 void StepBoard::vContentDump(void)
 {
-  printf("Thread Step Board:\n");
+  vInfo("Thread Step Board:\n"_Str);
   for (i8 iThread = 0; iThread < m_iThreads; iThread++)
-    printf("Thread %2lld: step %16s point %lld\n",
+    vInfo("Thread %2lld: step %16s point %lld\n"_Str,
            iThread,
            m_aStepName[iThread],
            m_iStepPoint[iThread]
@@ -120,7 +120,7 @@ void StepBoard::vContentDump(void)
 void StepBoard::vName(i8 iThread, const char* aName)
 {
   if (iThread < 0 || iThread >= C_STEPBOARD_THREADS) {
-    printf("iThread error: %lld\n",iThread);
+    vInfo("iThread error: %lld\n"_Str,iThread);
     exit(EXIT_FAILURE);
   }
 
@@ -133,7 +133,7 @@ void StepBoard::vName(i8 iThread, const char* aName)
 void StepBoard::vPoint(i8 iThread, i8 iPoint)
 {
   if (iThread < 0 || iThread >= C_STEPBOARD_THREADS) {
-    printf("iThread error: %lld\n",iThread);
+    vInfo("iThread error: %lld\n"_Str,iThread);
     exit(EXIT_FAILURE);
   }
   

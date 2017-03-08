@@ -122,12 +122,12 @@ void Debugging::vReport(i8 iLevel, Str* aFormat, va_list xArgs)
 /*---------------------------------------------------------------------------*/
 void Debugging::vDumpAscii(Str* aText, i8 nBytes)
 {
-  printf(">>>");
+  vInfo(">>>"_Str);
   while (nBytes--) {
-    printf("%c",*aText->a());
+    vInfo("%c"_Str,*aText->a());
     aText++;
   }
-  printf("<<<\n");
+  vInfo("<<<\n"_Str);
 }
 
 

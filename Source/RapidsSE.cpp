@@ -101,7 +101,7 @@ void RapidsSE::vExecute(void)
     }
     else {
       vTrace("Unknown command line argument\n"_Str);
-      printf("RapidsSE exits\n");
+      vInfo("RapidsSE exits\n"_Str);
       exit(EXIT_FAILURE);
 
     }

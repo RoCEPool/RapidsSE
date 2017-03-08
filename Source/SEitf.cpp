@@ -1486,7 +1486,7 @@ bool SEitf::bPrint(Str* aWords[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
-  printf("%s\n",aWords[1]->a());
+  vInfo("%s\n"_Str,aWords[1]->a());
   
   return true;
 }
