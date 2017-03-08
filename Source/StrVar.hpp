@@ -23,6 +23,7 @@ namespace Values
     void operator =(Str* aArg);
     void operator =(StrVal& xArg);
     void operator =(StrVal* pArg);
+    void operator =(ValWsp& rArg);
   
     void vTest(void);
   
@@ -112,6 +113,19 @@ void StrVar<SIZE>::operator =(StrVal* pArg)
   _precondition_(_MAGIC_,CN_STRVAR,_FOOTER_);
   
   vCopy(pArg->aArea());
+}
+
+/*----------------------------------------------------------------------------*/
+/* assignment operator                                                        */
+/*----------------------------------------------------------------------------*/
+template <int SIZE>
+void StrVar<SIZE>::operator =(ValWsp& rArg)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+  
+  vCopy(rArg.aWspArea());
+  
+  _postcondition_(_MAGIC_,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/

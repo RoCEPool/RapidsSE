@@ -327,9 +327,9 @@ void Task::vStrPrepend(NNP_Task nnpTask)
 {
   ENTRY("vStrPrepend"_Str);
   
-  ValWsp xStrR;
-  ValWsp xStrB;
-  ValWsp xStrA;
+  s48K xStrR;
+  s48K xStrB;
+  s48K xStrA;
   
   ValWsp xValA;
   ValWsp xValB;
@@ -344,7 +344,7 @@ void Task::vStrPrepend(NNP_Task nnpTask)
     xStrA = xString;
   }
   else {
-    xStrA = xValA;
+    xStrA = _pStrVal(&xValA);                          //! need to simplify this
   }
   
   // If received INTEGER convert to STRING
@@ -354,15 +354,12 @@ void Task::vStrPrepend(NNP_Task nnpTask)
     xStrB = xString;
   }
   else {
-    xStrB = xValB;
+    xStrB = _pStrVal(&xValB);
   }
   
   xStrR = xStrB;
   
-  StrLib::vConcat(_pStrVal(&xStrR)->aStr(),_pStrVal(&xStrA)->aStr());
-  
-  // adjust area size
-  _pStrVal(&xStrR)->vAreaSize();
+  xStrR.vConcat(xStrA);
   
   nnpTask->m_pDataStack->vPush(xStrR);
   
