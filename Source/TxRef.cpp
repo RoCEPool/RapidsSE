@@ -45,7 +45,7 @@ void* TxRef::operator new(size_t iSize)
 void TxRef::operator delete(void* pBufferAddress)
 {
   RASSERT(pBufferAddress);
-  //vFatal("fatal: TxMap class cannot be deleted");
+  //vFatal("fatal: TxMap class cannot be deleted"_Str);
   
   TxRef* pTxRef = static_cast<TxRef*>(pBufferAddress);
   
