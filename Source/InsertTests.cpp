@@ -63,7 +63,7 @@ void InsertTests::vRun(RunTests* pRunTests)
   vRequire(sCommand, true, EC_NONE);
   
   for (i8 iIdx = 0; iIdx < 1000; iIdx++) {
-    sprintf(sCommand.aStr(), "insert row \"%lld|%s\";", iIdx, "abcdef");
+    StrLib::vSprint(sCommand.aStr(), "insert row \"%lld|%s\";"_Str, iIdx, "abcdef"_Str);
     vRequire(sCommand, true, EC_NONE);
   }
   
@@ -77,7 +77,7 @@ void InsertTests::vRun(RunTests* pRunTests)
   vRequire(sCommand, true, EC_NONE);
   
   for (i8 iIdx = 1000; iIdx < 2000; iIdx++) {
-    sprintf(sCommand.aStr(), "insert row \"%lld|%s\";", iIdx, "abcdef");
+    StrLib::vSprint(sCommand.aStr(), "insert row \"%lld|%s\";"_Str, iIdx, "abcdef"_Str);
     vRequire(sCommand, true, EC_NONE);
   }
   
