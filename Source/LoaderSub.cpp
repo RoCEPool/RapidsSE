@@ -349,7 +349,7 @@ bool LoaderSub::bReadChunk(void)
   
   if (gxArguments.m_bProgress) {
     if (0 == iChunk % 1000) {
-      printf("read chunk %lld of %lld        \r",iChunk,nChunks);
+      vInfo("read chunk %lld of %lld        \r"_Str,iChunk,nChunks);
       fflush(stdout);
     }
   }

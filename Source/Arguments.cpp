@@ -508,23 +508,23 @@ void Arguments::vPrintHelp(void)
 {
   _precondition_(_MAGIC_,CN_ARGUMENTS,_FOOTER_);
   
-  printf("\n");
+  vInfo("\n"_Str);
   
-  printf("Help:\n");
-  printf("--command <cmd>   (run given command)\n");
-  printf("--help            (print this list)\n");
-  printf("--list            (print list of available systems)\n");
-  printf("--start           (start system)\n");
-  printf("--status          (print status of system)\n");
-  printf("--stop            (stop system)\n");
+  vInfo("Help:\n"_Str);
+  vInfo("--command <cmd>   (run given command)\n"_Str);
+  vInfo("--help            (print this list)\n"_Str);
+  vInfo("--list            (print list of available systems)\n"_Str);
+  vInfo("--start           (start system)\n"_Str);
+  vInfo("--status          (print status of system)\n"_Str);
+  vInfo("--stop            (stop system)\n"_Str);
   
-  printf("\n");
-  //printf("--partitionsPerNode <i>  (number of partitions per node)\n");
-  printf("--node <name> IP port (node information in the cluster)\n");
-  printf("--regionPrefix <name>    (prefix of shm region name)\n");
-  printf("--size <i>               (size in bytes of shm region)\n");
+  vInfo("\n"_Str);
+  //vInfo("--partitionsPerNode <i>  (number of partitions per node)\n"_Str);
+  vInfo("--node <name> IP port (node information in the cluster)\n"_Str);
+  vInfo("--regionPrefix <name>    (prefix of shm region name)\n"_Str);
+  vInfo("--size <i>               (size in bytes of shm region)\n"_Str);
 
-  printf("\n");
+  vInfo("\n"_Str);
 }
 
 /*----------------------------------------------------------------------------*/

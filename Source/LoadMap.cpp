@@ -167,7 +167,7 @@ void LoadMap::vChunkTest(void)
     
     if (gxArguments.m_bProgress) {
       if (0 == iChunk % 1000) {
-        printf("chunk %lld of %lld        \r",iChunk,nChunks);
+        vInfo("chunk %lld of %lld        \r"_Str,iChunk,nChunks);
         fflush(stdout);
       }
     }

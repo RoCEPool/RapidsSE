@@ -314,7 +314,7 @@ void BufferPool::vInitialise(void)
     if (gxArguments.m_bProgress) {
       iBufferMod = *nBuffer % 1000;
       if (! iBufferMod) {
-        printf("buffer %lld of %lld             \r",*nBuffer,*nBufferLast());
+        vInfo("buffer %lld of %lld             \r"_Str,*nBuffer,*nBufferLast());
         fflush(stdout);
       }
     }
@@ -345,7 +345,7 @@ void BufferPool::vInitialise(void)
   pLastBuffer->vNextFree(bn::nNil());
   
   if (gxArguments.m_bProgress)
-    printf("\n");
+    vInfo("\n"_Str);
   
   //vDump();
 }

@@ -16,13 +16,13 @@ void vKillPrev(void);
 
 void vStrTestPtr(Str* pStr)
 {
-  printf("StrTestPtr: ");
+  vInfo("StrTestPtr: "_Str);
   pStr->vPrint();
 }
 
 void vStrTestRef(Str& xStr)
 {
-  printf("StrTestRef: ");
+  vInfo("StrTestRef: "_Str);
   xStr.vPrint();
 }
 
@@ -58,12 +58,12 @@ int main(int argc, const char* argv[])
   
   //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   
-  printf(
-         "sizeof(eCN) %lu; sizeof(bool) %lu; \n"
-         "sizeof(Object) %lu; sizeof(StrVal) %lu; \n"
-         "sizeof(s32) %lu; sizeof(s256) %lu; \n"
-         "sizeof(Value) %lu; sizeof(IntVal) %lu; sizeof(ValWsp) %lu \n"
-         "\n",
+  vInfo(
+         "sizeof(eCN) %lu; sizeof(bool) %lu; \n"_Str
+         "sizeof(Object) %lu; sizeof(StrVal) %lu; \n"_Str
+         "sizeof(s32) %lu; sizeof(s256) %lu; \n"_Str
+         "sizeof(Value) %lu; sizeof(IntVal) %lu; sizeof(ValWsp) %lu \n"_Str
+         "\n"_Str,
          sizeof(eCN),sizeof(bool),
          sizeof(Object),sizeof(StrVal),
          sizeof(s32),sizeof(s256),
@@ -85,18 +85,18 @@ int main(int argc, const char* argv[])
     exit(EXIT_FAILURE);
   
   if (gxArguments.m_bWelcome && ! gxArguments.m_bStatus)
-    printf("RapidsSE v%s (%s %s -- %s) pid %lld\n",
+    vInfo("RapidsSE v%s (%s %s -- %s) pid %lld\n"_Str,
            RAPIDSSE_VERSION_STRING,
            __DATE__,
            __TIME__,
-           (char*)aRelDbg,
+           aRelDbg,
            Process::iGetPid()
            );
 
   Dir xDir;
   s256 sCurrent;
 //  if (xDir.bGetCurrent(sCurrent))
-//    printf("dir: %s\n",sCurrent.aStr());
+//    vInfo("dir: %s\n",sCurrent.aStr());
   
   
 //  vTrace("Task::vWord %p\n"_Str,Task::vWord);
@@ -154,7 +154,7 @@ int main(int argc, const char* argv[])
 //      bool bResult = xDir.bSetCurrent(gxArguments.m_sCommands);
 //      // ignore error
 //      if (xDir.bGetCurrent(sCurrent))
-//        printf("dir: %s\n",sCurrent.aStr());
+//        vInfo("dir: %s\n",sCurrent.);
 //    }
     SePrompt* pSePrompt = new SePrompt();
     pSePrompt->vLoop();
@@ -164,7 +164,7 @@ int main(int argc, const char* argv[])
   RapidsSE::vPoolClose();
 
   if (gxArguments.m_bVerbose)
-    printf("RapidsSE exits\n");
+    vInfo("RapidsSE exits\n"_Str);
     
   return EXIT_SUCCESS;
 }
@@ -248,13 +248,13 @@ void vTest1(void)
 
 //  i8 i = 0;
 //  Synch::uAtomicInc(&i);
-//  printf("AtomicInc i = %lld\n",i);
+//  vInfo("AtomicInc i = %lld\n"_Str,i);
 //  Synch::uAtomicDec(&i);
-//  printf("AtomicDec i = %lld\n",i);
+//  vInfo("AtomicDec i = %lld\n"_Str,i);
 //
 //  u8 u = 2;
 //  bool b = Synch::bTestAndSet(&u,1,3);
-//  printf("TestAndSet %s u = %lld\n",b ? "true" : "false",u);
+//  vInfo("TestAndSet %s u = %lld\n"_Str,b ? "true"_Str : "false"_Str,u);
 
 
 //  Timer xTimer;
@@ -262,7 +262,7 @@ void vTest1(void)
 //  PosixThread::vSleepMicro(500);
 //  xTimer.vUpdate();
 //
-//  printf("Timert %lld\n",xTimer.iMicroseconds());
+//  vInfo("Timert %lld\n"_Str,xTimer.iMicroseconds());
 
 
 /*============================================================================*/
