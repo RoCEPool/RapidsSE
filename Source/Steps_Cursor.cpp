@@ -68,7 +68,7 @@ void Task::vCursorStore(NNP_Task nnpTask)
   ValWsp xCursorWsp;
   
   if ( ! nnpTask->m_pDataStack->bPop(xCursorWsp) )
-    THROW_INVALID_DSTACK("cursor!");
+    THROW_INVALID_DSTACK("cursor!"_Str);
   
   nnpTask->m_pReturnStack->vPoke(iPeek,&xCursorWsp);
   

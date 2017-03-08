@@ -50,7 +50,7 @@ void Task::vDicPathDepth(NNP_Task nnpTask)
   
   Object* pPtrDicStack;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrDicStack) )
-    THROW_INVALID_DSTACK("dicPath.depth");
+    THROW_INVALID_DSTACK("dicPath.depth"_Str);
   
   DicPath* pDicPath = (DicPath*)(pPtrDicStack);
   ASSERT(CN_DICPATH == pDicPath->eClass());
@@ -71,7 +71,7 @@ void Task::vDicPathDrop(NNP_Task nnpTask)
   
   Object* pPtrDicStack;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrDicStack) )
-    THROW_INVALID_DSTACK("dicPath.drop");
+    THROW_INVALID_DSTACK("dicPath.drop"_Str);
   
   DicPath* pDicPath = (DicPath*)(pPtrDicStack);
   ASSERT(CN_DICPATH == pDicPath->eClass());
@@ -90,7 +90,7 @@ void Task::vDicPathDump(NNP_Task nnpTask)
   
   Object* pPtrDicStack;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrDicStack) )
-    THROW_INVALID_DSTACK("dicPath.dump");
+    THROW_INVALID_DSTACK("dicPath.dump"_Str);
   
   DicPath* pDicPath = (DicPath*)(pPtrDicStack);
   ASSERT(CN_DICPATH == pDicPath->eClass());
@@ -109,14 +109,14 @@ void Task::vDicPathPick(NNP_Task nnpTask)
   
   Object* pPtrDicStack;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrDicStack) )
-    THROW_INVALID_DSTACK("dicPath.pick");
+    THROW_INVALID_DSTACK("dicPath.pick"_Str);
   
   DicPath* pDicPath = (DicPath*)(pPtrDicStack);
   ASSERT(CN_DICPATH == pDicPath->eClass());
   
   i8 iDic;
   if ( ! nnpTask->m_pDataStack->bPop(iDic) )
-    THROW_INVALID_DSTACK("dicPath.pick");
+    THROW_INVALID_DSTACK("dicPath.pick"_Str);
   
   Object* pPtrDic = pDicPath->pPick(iDic);
 
@@ -134,7 +134,7 @@ void Task::vDicPathPush(NNP_Task nnpTask)
   
   Object* pPtrDicStack;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrDicStack) )
-    THROW_INVALID_DSTACK("dicPath.push");
+    THROW_INVALID_DSTACK("dicPath.push"_Str);
   
   DicPath* pDicPath = DicPath::_pDicStack(pPtrDicStack);
   ASSERT(CN_DICPATH == pDicPath->eClass());
@@ -142,7 +142,7 @@ void Task::vDicPathPush(NNP_Task nnpTask)
   Object* pPtrDic;
   
   if ( ! nnpTask->m_pDataStack->bPop(pPtrDic) )
-    THROW_INVALID_DSTACK("dicPath.push");
+    THROW_INVALID_DSTACK("dicPath.push"_Str);
   
   Dic* pDic = _pDic(pPtrDic);
   

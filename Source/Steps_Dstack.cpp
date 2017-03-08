@@ -129,7 +129,7 @@ void Task::vDstackDrop(NNP_Task nnpTask)
   
   ValWsp xValA;
   if ( ! nnpTask->m_pDataStack->bPop(xValA) )
-    THROW_INVALID_DSTACK("drop");
+    THROW_INVALID_DSTACK("drop"_Str);
   
   EXIT();
 }

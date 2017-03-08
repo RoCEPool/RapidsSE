@@ -57,7 +57,7 @@ void Task::vAssert(NNP_Task nnpTask)
   
   i8 iTrue;
   if ( ! nnpTask->m_pDataStack->bPopParamInt(iTrue) )
-    THROW_INVALID_DSTACK("assert");
+    THROW_INVALID_DSTACK("assert"_Str);
   
   if ( ! iTrue )
     THROW("assert"_Str);

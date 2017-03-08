@@ -70,7 +70,7 @@ void Task::vDirChangeCurrent(NNP_Task nnpTask)
   
   s256 sDir;
   if ( ! nnpTask->m_pDataStack->bPop(sDir) )
-    THROW_INVALID_DSTACK("dir.changeCurrent");
+    THROW_INVALID_DSTACK("dir.changeCurrent"_Str);
   
   Dir xDir;
   if ( ! xDir.bChangeCurrent(sDir) )
@@ -89,7 +89,7 @@ ENTRY("vDirExists"_Str);
   s256 sPath;
   
   if ( ! nnpTask->m_pDataStack->bPop(sPath) )
-    THROW_INVALID_DSTACK("dir.exists");
+    THROW_INVALID_DSTACK("dir.exists"_Str);
   
   Dir xDir;
   
@@ -132,7 +132,7 @@ ENTRY("vDirMake"_Str);
   s256 sPath;
   
   if ( ! nnpTask->m_pDataStack->bPop(sPath) )
-    THROW_INVALID_DSTACK("dir.make");
+    THROW_INVALID_DSTACK("dir.make"_Str);
   
   Dir xDir;
   
@@ -152,7 +152,7 @@ ENTRY("vDirRemove"_Str);
   s256 sPath;
   
   if ( ! nnpTask->m_pDataStack->bPop(sPath) )
-    THROW_INVALID_DSTACK("dir.remove");
+    THROW_INVALID_DSTACK("dir.remove"_Str);
   
   Dir xDir;
   

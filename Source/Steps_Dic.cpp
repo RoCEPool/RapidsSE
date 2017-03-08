@@ -57,7 +57,7 @@ ENTRY("vDicFrozenGet"_Str);
   Object* pPtrDic;
   
   if ( ! nnpTask->m_pDataStack->bPop(pPtrDic) )
-    THROW_INVALID_DSTACK("dic.frozen@");
+    THROW_INVALID_DSTACK("dic.frozen@"_Str);
   
   Dic* pDic = _pDic(pPtrDic);
   
@@ -79,7 +79,7 @@ ENTRY("vDicFrozenSet"_Str);
   Object* pPtrDic;
   
   if ( ! nnpTask->m_pDataStack->bPop(iFrozen,pPtrDic) )
-    THROW_INVALID_DSTACK("dic.frozen@");
+    THROW_INVALID_DSTACK("dic.frozen@"_Str);
   
   Dic* pDic = _pDic(pPtrDic);
   
@@ -98,7 +98,7 @@ ENTRY("vDicInit"_Str);
   Object* pPtrDic;
   
   if ( ! nnpTask->m_pDataStack->bPop(pPtrDic) )
-    THROW_INVALID_DSTACK("dic.init");
+    THROW_INVALID_DSTACK("dic.init"_Str);
   
   Dic* pDic = _pDic(pPtrDic);
 
@@ -136,7 +136,7 @@ void Task::vDicKindGet(NNP_Task nnpTask)
   Object* pPtrDic;
   
   if ( ! nnpTask->m_pDataStack->bPop(pPtrDic) )
-    THROW_INVALID_DSTACK("dic.kind@");
+    THROW_INVALID_DSTACK("dic.kind@"_Str);
   
   Dic* pDic = _pDic(pPtrDic);
   
@@ -159,7 +159,7 @@ void Task::vDicKindSet(NNP_Task nnpTask)
   Object* pPtrDic;
   
   if ( ! nnpTask->m_pDataStack->bPop(pPtrDic,pPtrKind) )
-    THROW_INVALID_DSTACK("dic.kind@");
+    THROW_INVALID_DSTACK("dic.kind@"_Str);
   
   Dic* pDic = _pDic(pPtrDic);
   
@@ -180,7 +180,7 @@ ENTRY("vDicLastWord"_Str);
   Object* pPtrDic;
   
   if ( ! nnpTask->m_pDataStack->bPop(pPtrDic) )
-    THROW_INVALID_DSTACK("dic.lastWord");
+    THROW_INVALID_DSTACK("dic.lastWord"_Str);
   
   Dic* pDic = _pDic(pPtrDic);
   
@@ -212,7 +212,7 @@ ENTRY("vDicName"_Str);
  
   Object* pPtrDic;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrDic) )
-    THROW_INVALID_DSTACK("dic.name");
+    THROW_INVALID_DSTACK("dic.name"_Str);
   
   Dic* pDic = _pDic(pPtrDic);
 
@@ -234,7 +234,7 @@ void Task::vDicRef(NNP_Task nnpTask)
   Object* pPtrDic;
   
   if ( ! nnpTask->m_pDataStack->bPop(pPtrDic) )
-    THROW_INVALID_DSTACK("dic.ref");
+    THROW_INVALID_DSTACK("dic.ref"_Str);
   
   Dic* pDic = _pDic(pPtrDic);
 
@@ -255,7 +255,7 @@ void Task::vDicWordCount(NNP_Task nnpTask)
   Object* pPtrDic;
   
   if ( ! nnpTask->m_pDataStack->bPop(pPtrDic) )
-    THROW_INVALID_DSTACK("dic.ref");
+    THROW_INVALID_DSTACK("dic.ref"_Str);
   
   Dic* pDic = _pDic(pPtrDic);
   

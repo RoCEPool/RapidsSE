@@ -71,7 +71,7 @@ void Task::vAstackClass(NNP_Task nnpTask)
   
   i8 nTh;
   if ( ! nnpTask->m_pDataStack->bPop(nTh) )
-    THROW_INVALID_DSTACK("astack.class");
+    THROW_INVALID_DSTACK("astack.class"_Str);
   
   ValWsp xValWsp;
   
@@ -125,7 +125,7 @@ void Task::vAstackDup(NNP_Task nnpTask)
   
   ValWsp xValA;
   if ( ! nnpTask->m_pAuxStack->bPop(xValA) )
-  THROW_INVALID_DSTACK("adup");
+  THROW_INVALID_DSTACK("adup"_Str);
   
   nnpTask->m_pAuxStack->vPush(xValA);
   nnpTask->m_pAuxStack->vPush(xValA);
@@ -178,7 +178,7 @@ void Task::vAstackPick(NNP_Task nnpTask)
   
   i8 iPick;
   if ( ! nnpTask->m_pDataStack->bPopParamInt(iPick) )
-    THROW_INVALID_DSTACK("apick");
+    THROW_INVALID_DSTACK("apick"_Str);
   
   // could do this directly on stack
   
@@ -213,7 +213,7 @@ void Task::vAstackReverse(NNP_Task nnpTask)
   
   i8 nValues;
   if ( ! nnpTask->m_pDataStack->bPop(nValues) )
-    THROW_INVALID_DSTACK("areverse");
+    THROW_INVALID_DSTACK("areverse"_Str);
   
   for (i8 i = 0; i < nValues; i++) {
     if ( ! nnpTask->m_pAuxStack->bPop(apValWsp[i]) )
@@ -248,7 +248,7 @@ void Task::vAstackSwap(NNP_Task nnpTask)
   ValWsp xValB;
   
   if ( ! nnpTask->m_pAuxStack->bPop(xValA,xValB) )
-  THROW_INVALID_ASTACK("aswap");
+  THROW_INVALID_ASTACK("aswap"_Str);
   
   nnpTask->m_pAuxStack->vPush(&xValA);
   nnpTask->m_pAuxStack->vPush(&xValB);
@@ -266,10 +266,10 @@ void Task::vAstackToValSet(NNP_Task nnpTask)
   i8 nVal;
   
   if ( ! nnpTask->m_pAuxStack->bPop(nVal) )
-  THROW_INVALID_ASTACK(">avalset");
+  THROW_INVALID_ASTACK(">avalset"_Str);
   
   if ( ! nnpTask->m_pAuxStack->bGuard(nVal) )
-  THROW_INVALID_ASTACK(">avalset");
+  THROW_INVALID_ASTACK(">avalset"_Str);
   
   char* pCursor = nullptr;
   ValSet xValSet;
@@ -278,7 +278,7 @@ void Task::vAstackToValSet(NNP_Task nnpTask)
   for (i8 iVal = 0; iVal < nVal; iVal++) {
     
     if ( ! nnpTask->m_pAuxStack->bPop(xVal) )
-    THROW_INVALID_ASTACK(">avalset");
+    THROW_INVALID_ASTACK(">avalset"_Str);
     
     xValSet.vAppend(pCursor,xVal);
   }
@@ -300,7 +300,7 @@ void Task::vAstackToValues(NNP_Task nnpTask)
   ValSet xValSet;
   
   if ( ! nnpTask->m_pAuxStack->bPop(xValSet) )
-    THROW_INVALID_ASTACK(">avalues");
+    THROW_INVALID_ASTACK(">avalues"_Str);
   
   i8 nVal = 0;
   ValWsp* pValWsp[128];
@@ -326,7 +326,7 @@ void Task::vAstackToA(NNP_Task nnpTask)
   
   ValWsp xValOpaque;
   if ( ! nnpTask->m_pDataStack->bPop(xValOpaque) )
-    THROW_INVALID_DSTACK(">a");
+    THROW_INVALID_DSTACK(">a"_Str);
   
   nnpTask->m_pAuxStack->vPush(xValOpaque);
   
@@ -342,7 +342,7 @@ void Task::vAstackToP(NNP_Task nnpTask)
   
   ValWsp xVal;
   if ( ! nnpTask->m_pAuxStack->bPop(xVal) )
-    THROW_INVALID_ASTACK("a>");
+    THROW_INVALID_ASTACK("a>"_Str);
   
   nnpTask->m_pDataStack->vPush(xVal);
   
@@ -358,12 +358,12 @@ void Task::vAstackTransfer(NNP_Task nnpTask)
   
   Object* pPtrTask;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTask) )
-    THROW_INVALID_DSTACK(">auxStack");
+    THROW_INVALID_DSTACK(">auxStack"_Str);
   Task* pThatTask = _pTask(pPtrTask);
   
   ValWsp xValWsp;
   if ( ! nnpTask->m_pDataStack->bPop(xValWsp) )
-    THROW_INVALID_DSTACK(">auxStack");
+    THROW_INVALID_DSTACK(">auxStack"_Str);
   
   pThatTask->m_xLock.vGrabWrite();
   pThatTask->m_pAuxStack->vPush(xValWsp);
