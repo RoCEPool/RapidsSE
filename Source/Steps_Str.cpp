@@ -107,21 +107,18 @@ void Task::vStrCat(NNP_Task nnpTask)
 {
   ENTRY("vStrCat"_Str);
   
-  ValWsp xStrR;
-  ValWsp xStrB;
-  ValWsp xStrA;
+  s48K sStrR;
+  s48K sStrB;
+  s48K sStrA;
   
-  if ( ! nnpTask->m_pDataStack->bPop(xStrB,xStrA) )
+  if ( ! nnpTask->m_pDataStack->bPop(sStrB,sStrA) )
     THROW_INVALID_DSTACK("str.cat"_Str);
   
-  xStrR = xStrA;
+  sStrR = sStrA;
   
-  StrLib::vConcat(_pStrVal(&xStrR)->aStr(),_pStrVal(&xStrB)->aStr());
+  sStrR.vConcat(sStrB);
   
-  // adjust area size
-  _pStrVal(&xStrR)->vAreaSize();
-  
-  nnpTask->m_pDataStack->vPush(xStrR);
+  nnpTask->m_pDataStack->vPush(sStrR);
   
   EXIT();
 }
