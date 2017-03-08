@@ -1232,6 +1232,18 @@ void StrLib::vSprint(char* sDst, Str* aFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* vSprint: formatted sprint                                                  */
 /*----------------------------------------------------------------------------*/
+void StrLib::vSprint(Str* sDst, Str* aFormat, ...)
+{
+  va_list args;
+  
+  va_start(args,aFormat);
+  vsprintf(sDst->a(),aFormat->a(),args);
+  va_end(args);
+}
+
+/*----------------------------------------------------------------------------*/
+/* vSprint: formatted sprint                                                  */
+/*----------------------------------------------------------------------------*/
 void StrLib::vSprint(char* sDst, va_list args, const char* sFormat)
 {
   vsprintf(sDst,sFormat,args);

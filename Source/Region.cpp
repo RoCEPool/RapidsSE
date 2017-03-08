@@ -95,7 +95,7 @@ void Region::vCreate(StrVal& sRegionName)
   SysCall xSysCall;
   s256 sSize;
   
-  Magnitudes::vMagnitude(gxArguments.m_iRegionSize, sSize.aStr());
+  Magnitudes::vMagnitude(gxArguments.m_iRegionSize, sSize);
 
   vTrace("Creating RapidsSE instance %s; size %s (%lldB)...\n"_Str,
          sRegionName.aStr(),

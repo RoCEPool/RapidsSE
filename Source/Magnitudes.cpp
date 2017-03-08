@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* pMagnitue -- convert bytes to its magnitude equivalent                     */
 /*----------------------------------------------------------------------------*/
-void Magnitudes::vMagnitude(i8 iValue, char* psBuf)
+void Magnitudes::vMagnitude(i8 iValue, Str* psBuf)
 {
   if (iValue < C_1KB) StrLib::vSprint(psBuf,"%lldB"_Str,iValue);
   else if (iValue < C_1MB) StrLib::vSprint(psBuf,"%lldKB"_Str,iValue/C_1KB);
@@ -20,7 +20,7 @@ void Magnitudes::vMagnitude(i8 iValue, char* psBuf)
 /*----------------------------------------------------------------------------*/
 /* pMagnitue -- convert bytes to its magnitude equivalent upto n decimals     */
 /*----------------------------------------------------------------------------*/
-void Magnitudes::vMagnitude(i8 iValue, i8 iDecimals, char* psBuf)
+void Magnitudes::vMagnitude(i8 iValue, i8 iDecimals, Str* psBuf)
 {
   ASSERT(iDecimals > 0);
   
