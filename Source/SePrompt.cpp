@@ -46,17 +46,16 @@ SePrompt::SePrompt(void)
   
   m_bContinue = true;
   
-  StrLib::vSprint(m_sPrompt.aStr(),
-                  "[N%lld %lld] se %s%c> "_Str,
-                  gpGrid->iThisNode(),
-                  Process::iGetPid(),
-                  RAPIDSSE_VERSION_STRING,
+  m_sPrompt.vSprint("[N%lld %lld] se %s%c> "_Str,
+                    gpGrid->iThisNode(),
+                    Process::iGetPid(),
+                    RAPIDSSE_VERSION_STRING,
 #ifdef _DEBUG
-                  'd'
+                    'd'
 #else
-                  'r'
+                    'r'
 #endif
-                  );
+                    );
   
   m_bEcho   = false;
   
