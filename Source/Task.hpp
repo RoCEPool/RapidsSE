@@ -1089,7 +1089,7 @@ namespace Tasks
     { \
       s256 sFile(__FILE__); \
       s256 sException; \
-      StrLib::vSprint(sException.aStr(),p1); \
+      sException.vSprint(p1); \
       Task* pTask = reinterpret_cast<Task*>(PosixThread::pTlsGet(giTLS_TaskKey)); \
       pTask->vException(sFile,sException); \
       Debugging::vThrowTrap(); \
@@ -1100,7 +1100,7 @@ namespace Tasks
     { \
       s256 sFile(__FILE__); \
       s256 sException; \
-      StrLib::vSprint(sException.aStr(),p1,p2); \
+      sException.vSprint(p1,p2); \
       Task* pTask = reinterpret_cast<Task*>(PosixThread::pTlsGet(giTLS_TaskKey)); \
       pTask->vException(sFile,sException); \
       Debugging::vThrowTrap(); \
