@@ -9,13 +9,11 @@
 /*----------------------------------------------------------------------------*/
 bool Env::bGet(s256& sName, s256& sValue)
 {
-  char* aValue;
-  
-  aValue = getenv(sName.aStr());
+  char* aValue = getenv(sName.aStr());
   if ( ! aValue )
     return false;
   
-  StrLib::vCopyLen(sValue.aStr(),aValue,256);
+  sValue.vCopy(aValue);
   
   return true;
 }
