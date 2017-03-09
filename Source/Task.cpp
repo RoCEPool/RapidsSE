@@ -1607,7 +1607,7 @@ void Task::vThread(Threads::Thread* pThread)
 /*----------------------------------------------------------------------------*/
 /* trace current point                                                        */
 /*----------------------------------------------------------------------------*/
-void Task::vTracePoint(const char* aMark)
+void Task::vTracePoint(Str* aMark)
 {
   if (gxArguments.m_nNodes > 1) {
     i8 iPause = Random::iRandom(999,99999);

@@ -77,7 +77,7 @@ void Task::vEnterRoutine(NNP_Task nnpTask)
   nnpTask->IP.m_pCell = *(Cell**)nnpTask->m_pEntryCell;
  
    if ( (nnpTask->m_iTracing & C_TRACE_ROUTINES) )
-    nnpTask->vTracePoint(">");
+    nnpTask->vTracePoint(">"_Str);
   
   EXIT();
 }

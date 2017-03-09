@@ -167,7 +167,7 @@ namespace Tasks
     void vState(eTS eState);
     Threads::Thread* pThread(void);
     void vThread(Threads::Thread* pThread);
-    void vTracePoint(const char* aMark);
+    void vTracePoint(Str* aMark);
     i8   iTxId(void);
     void vTxId(i8 iTxId);
     

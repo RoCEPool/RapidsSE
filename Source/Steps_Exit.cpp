@@ -47,7 +47,7 @@ void Task::vExit(NNP_Task nnpTask)
   //vTrace("Exit: return stack %lld\n"_Str, nnpTask->m_pReturnStack->iValues());
   
   if ( (nnpTask->m_iTracing & C_TRACE_ROUTINES) )
-    nnpTask->vTracePoint("<");
+    nnpTask->vTracePoint("<"_Str);
   
   if (nnpTask->m_pLocalsFrame &&
       nnpTask->m_pLocalsFrame->pStackPtr() ==
