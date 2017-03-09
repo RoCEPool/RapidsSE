@@ -157,7 +157,7 @@ Word* Dic::pFindWord(Str* aName)
   m_xLock.vGrabRead();
   
   for (Word* pWord = m_pLastWord; pWord; pWord = pWord->pPrevWord()) {
-    if (StrLib::bEqualTo(aName->a(),pWord->sName().aStr(),C_NO_CASE)) {
+    if (pWord->sName().bSame(aName)) {
       m_xLock.vDropRead();
       return pWord;
     }
