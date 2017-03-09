@@ -68,7 +68,7 @@ Node::Node(void)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Node::Node(i8 iNodeNo, char* pName, char* pIpAddress, i8 iPortNo)
+Node::Node(i8 iNodeNo, Str* pName, Str* pIpAddress, i8 iPortNo)
 : Object(CN_NODE)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
@@ -118,19 +118,19 @@ void Node::vDump(eCN eClass, Object* pObject, Str* aTab)
 /*----------------------------------------------------------------------------*/
 /* get node IP                                                                */
 /*----------------------------------------------------------------------------*/
-char* Node::pNodeIP(void)
+Str* Node::aNodeIP(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
-  return m_sNodeIP.aStr();
+  return m_sNodeIP;
 }
 
 /*----------------------------------------------------------------------------*/
 /* get node name                                                              */
 /*----------------------------------------------------------------------------*/
-char* Node::pNodeName(void)
+Str* Node::aNodeName(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
-  return m_sNodeName.aStr();
+  return m_sNodeName;
 }
 
 /*----------------------------------------------------------------------------*/

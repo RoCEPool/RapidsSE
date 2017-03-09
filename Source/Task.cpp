@@ -1629,7 +1629,7 @@ void Task::vTracePoint(Str* aMark)
   i8 iReturnValues = m_pReturnStack->iValues();
   vTrace("[%s(N%d):%8s\\%lld %-11s] %-16s %-16s : a%2lld="_Str,
          
-         gpGrid->pThisNode()->pNodeName(),
+         gpGrid->pThisNode()->aNodeName(),
          gpGrid->iThisNode(),
          m_sName.aStr(),
          *m_zAcks,

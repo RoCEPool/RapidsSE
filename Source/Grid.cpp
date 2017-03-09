@@ -137,7 +137,7 @@ bool Grid::bHasStarted(void)
 /*----------------------------------------------------------------------------*/
 /* find node                                                                  */
 /*----------------------------------------------------------------------------*/
-Node* Grid::pFindNode(char* pName)
+Node* Grid::pFindNode(Str* sName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
   
@@ -146,7 +146,7 @@ Node* Grid::pFindNode(char* pName)
   pNodeCursor->vFirst();
   Node* pNode = pNodeCursor->pObject();
   while (pNode) {
-    if (StrLib::bEqualTo(pNode->pNodeName(), pName, C_NO_CASE)) {
+    if (StrLib::bEqualTo(pNode->aNodeName()->a(), sName->a(), C_NO_CASE)) {
       break;
     }
     pNodeCursor->vNext();

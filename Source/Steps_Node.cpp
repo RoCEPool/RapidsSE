@@ -79,7 +79,7 @@ void Task::vNodeIP(NNP_Task nnpTask)
   ASSERT(CN_NODE == pNode->eClass());
   
   s256 sIP;
-  sIP = (Str*)pNode->pNodeIP();
+  sIP = pNode->aNodeIP();
   nnpTask->m_pDataStack->vPush(sIP);
   
   EXIT();
@@ -98,8 +98,8 @@ ENTRY("vNodeNew"_Str);
     THROW_INVALID_DSTACK("node.new"_Str);
   
   Node* pNode = new Node(iNodeNo,
-                         gxArguments.m_xNodes[iNodeNo].m_sNodeName.aStr(),
-                         gxArguments.m_xNodes[iNodeNo].m_sIPAddress.aStr(),
+                         gxArguments.m_xNodes[iNodeNo].m_sNodeName,
+                         gxArguments.m_xNodes[iNodeNo].m_sIPAddress,
                          gxArguments.m_xNodes[iNodeNo].m_iPortNo);
   ASSERT(CN_NODE == pNode->eClass());
 
@@ -124,7 +124,7 @@ void Task::vNodeName(NNP_Task nnpTask)
   ASSERT(CN_NODE == pNode->eClass());
   
   s256 sName;
-  sName = (Str*)pNode->pNodeName();
+  sName = pNode->aNodeName();
   nnpTask->m_pDataStack->vPush(sName);
   
   EXIT();

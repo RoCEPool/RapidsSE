@@ -35,7 +35,7 @@ namespace GridModel
     void vDumpPartitioning(void);
     void vHasStarted(bool bHasStarted);
     bool bHasStarted(void);
-    Node* pFindNode(char* pName);
+    Node* pFindNode(Str* pName);
     Node* pFindNode(i8 iNode);
     void vInit(void);
     i8   iNodes(void);
