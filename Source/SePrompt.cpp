@@ -973,8 +973,8 @@ bool SePrompt::bCreateCatalog(void)
   for (iToken = 0; iToken < C_TOKENS; iToken++) {
     if (! *m_aToken[iToken]->a())
       break;
-    StrLib::vCopy(m_aToken2[iToken]->a(), m_aToken[iToken]->a());
-    StrLib::vCopy(m_aToken[iToken]->a(), "");
+    m_aToken2[iToken]->vCopy(m_aToken[iToken]);
+    m_aToken[iToken]->vCopy(""_Str);
   }
   
   i8 iNumTokens = iToken;
@@ -991,8 +991,8 @@ bool SePrompt::bCreateCatalog(void)
   }
   
   // create a catalog
-  StrLib::vCopy(m_aToken[0]->a(), "mkcat");
-  StrLib::vCopy(m_aToken[1]->a(), m_aToken2[2]->a());
+  m_aToken[0]->vCopy("mkcat"_Str);
+  m_aToken[1]->vCopy(m_aToken2[2]);
   
   if (!bExecuteRequest())
     return false;
