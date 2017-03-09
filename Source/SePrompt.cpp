@@ -657,8 +657,8 @@ bool SePrompt::bReturnTable(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  StrLib::vCopy(m_aToken[0]->a(), "rettbl");
-  StrLib::vCopy(m_aToken[1]->a(), "");
+  m_aToken[0]->vCopy("rettbl"_Str);
+  m_aToken[1]->vCopy(""_Str);
   
   if (!bExecuteRequest()) {
     vTrace("bReturnTable: (%s) Return Table FAILED!!! : %s\n"_Str, m_sResponse.aStr());
