@@ -26,9 +26,10 @@ namespace Base
   
     void vCopy(Str* aArg);
     void vConcat(Str* aArg);
-    void vPrint(void);
     bool bEqual(Str* aArg);
+    void vPrint(void);
     bool bSame(Str* aArg);
+    void vSprint(Str* aFormat, ...);
 
     i8 iToI8(void);
   
