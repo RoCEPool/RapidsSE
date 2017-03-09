@@ -169,7 +169,7 @@ ENTRY("vSEitfCursorInit"_Str);
   
   s32 sName;
   sName = "seitflist"_Str;
-  Word* pWord = nnpTask->m_xPathStack.pFindWord(sName.aStr());
+  Word* pWord = nnpTask->m_xPathStack.pFindWord(sName);
   ASSERT(pWord);
   SEitfList* pSEitfList = reinterpret_cast<SEitfList*>(pWord->aBodyArea());
   

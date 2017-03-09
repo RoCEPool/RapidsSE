@@ -1066,7 +1066,7 @@ Word* Task::pCompileColon(StrVal& sDefinition)
         break;
         
       case TK_NAME:
-        pCalledWord = m_xPathStack.pFindWord(m_pTokeniser->sToken().aStr());
+        pCalledWord = m_xPathStack.pFindWord(m_pTokeniser->sToken());
         if (WT_PRIMITIVE == pCalledWord->eWordType()) {
           pStep = pCalledWord->pEntryStep();
           if (pCalledWord->bImmediate())

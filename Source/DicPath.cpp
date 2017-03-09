@@ -144,7 +144,7 @@ Word* DicPath::pFindWord(StrVal& sName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICPATH,_FOOTER_);
   
-  Word* pWord = pFindWord(sName.aStr());
+  Word* pWord = pFindWord(sName.aStrArea());
   
   return pWord;
 }
@@ -152,7 +152,7 @@ Word* DicPath::pFindWord(StrVal& sName)
 /*----------------------------------------------------------------------------*/
 /* find word in stack of dictionaries                                         */
 /*----------------------------------------------------------------------------*/
-Word* DicPath::pFindWord(const char* aName)
+Word* DicPath::pFindWord(Str* aName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICPATH,_FOOTER_);
   

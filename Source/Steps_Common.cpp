@@ -164,7 +164,7 @@ ENTRY("vCommonToCommon"_Str);
   // get name of common
   nnpTask->m_pTokeniser->vNextToken();
 
-  Word* pWordCommon = nnpTask->m_xPathStack.pFindWord(nnpTask->m_pTokeniser->sToken().aStr());
+  Word* pWordCommon = nnpTask->m_xPathStack.pFindWord(nnpTask->m_pTokeniser->sToken());
   ASSERT(pWordCommon);
  
   ValWsp xValWsp;

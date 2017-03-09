@@ -32,7 +32,7 @@ namespace Dictionaries
     void vContentDump(void);
     void vDiscard(void);
     Word* pFindWord(StrVal& sName);
-    Word* pFindWord(const char* aName);
+    Word* pFindWord(Str* aName);
     Word* pFindInCurrent(const char* aName);
     Word* pFindStep(TaskStep pStep);
     bool  bForget(StrVal& sName);
