@@ -1020,7 +1020,7 @@ bool SePrompt::bCreateIndex(void)
     if (! *m_aToken[iToken]->a())
       break;
     m_aToken2[iToken]->vCopy(m_aToken[iToken]);
-    StrLib::vCopy(m_aToken[iToken]->a(), "");
+    m_aToken[iToken]->vCopy(""_Str);
   }
   
   i8 iValue;
@@ -1058,10 +1058,10 @@ bool SePrompt::bCreateIndex(void)
   }
   
   // create the index
-  StrLib::vCopy(m_aToken[0]->a(), "mkidx");
-  StrLib::vCopy(m_aToken[1]->a(), m_aToken2[2]->a());
-  StrLib::vCopy(m_aToken[2]->a(), m_aToken2[4]->a());
-  StrLib::vCopy(m_aToken[3]->a(), m_aToken2[6]->a());
+  m_aToken[0]->vCopy("mkidx"_Str);
+  m_aToken[1]->vCopy(m_aToken2[2]);
+  m_aToken[2]->vCopy(m_aToken2[4]);
+  m_aToken[3]->vCopy(m_aToken2[6]);
   
   if (!bExecuteRequest())
     return false;
@@ -1088,7 +1088,7 @@ bool SePrompt::bCreateSchema(void)
     if (! *m_aToken[iToken]->a())
       break;
     m_aToken2[iToken]->vCopy(m_aToken[iToken]);
-    StrLib::vCopy(m_aToken[iToken]->a(), "");
+    m_aToken[iToken]->vCopy(""_Str);
   }
   
   i8 iNumTokens = iToken;
@@ -1106,8 +1106,8 @@ bool SePrompt::bCreateSchema(void)
   }
   
   // create a schema
-  StrLib::vCopy(m_aToken[0]->a(), "mksch");
-  StrLib::vCopy(m_aToken[1]->a(), m_aToken2[2]->a());
+  m_aToken[0]->vCopy("mksch"_Str);
+  m_aToken[1]->vCopy(m_aToken2[2]);
   
   if (!bExecuteRequest())
     return false;
@@ -1135,7 +1135,7 @@ bool SePrompt::bCreateTenant(void)
     if (! *m_aToken[iToken]->a())
       break;
     m_aToken2[iToken]->vCopy(m_aToken[iToken]);
-    StrLib::vCopy(m_aToken[iToken]->a(), "");
+    m_aToken[iToken]->vCopy(""_Str);
   }
   
   i8 iNumTokens = iToken;
@@ -1153,8 +1153,8 @@ bool SePrompt::bCreateTenant(void)
   }
   
   // create a tenant
-  StrLib::vCopy(m_aToken[0]->a(), "mkten");
-  StrLib::vCopy(m_aToken[1]->a(), m_aToken2[2]->a());
+  m_aToken[0]->vCopy("mkten"_Str);
+  m_aToken[1]->vCopy(m_aToken2[2]);
   
   if (!bExecuteRequest())
     return false;
@@ -1182,7 +1182,7 @@ bool SePrompt::bCreateTable(void)
     if (! *m_aToken[iToken]->a())
       break;
     m_aToken2[iToken]->vCopy(m_aToken[iToken]);
-    StrLib::vCopy(m_aToken[iToken]->a(), "");
+    m_aToken[iToken]->vCopy(""_Str);
   }
   
   i8 iValue;
@@ -1214,22 +1214,22 @@ bool SePrompt::bCreateTable(void)
   }
       
   // create the table
-  StrLib::vCopy(m_aToken[0]->a(), "mktbl");
-  StrLib::vCopy(m_aToken[1]->a(), m_aToken2[2]->a());
+  m_aToken[0]->vCopy("mktbl"_Str);
+  m_aToken[1]->vCopy(m_aToken2[2]);
   
   if (!bExecuteRequest())
     return false;
   
   // change folder to table
-  StrLib::vCopy(m_aToken[0]->a(), "cf");
-  StrLib::vCopy(m_aToken[1]->a(), m_aToken2[2]->a());
+  m_aToken[0]->vCopy("cf"_Str);
+  m_aToken[1]->vCopy(m_aToken2[2]);
   
   if (!bExecuteRequest()) {
     vTrace("SePrompt::bCreateTable : cf FAILED!!!\n"_Str);
     
     // create the table
-    StrLib::vCopy(m_aToken[0]->a(), "rmtbl");
-    StrLib::vCopy(m_aToken[1]->a(), m_aToken2[2]->a());
+    m_aToken[0]->vCopy("rmtbl"_Str);
+    m_aToken[1]->vCopy(m_aToken2[2]);
     
     if (!bExecuteRequest()) {
       return false;
@@ -1239,15 +1239,15 @@ bool SePrompt::bCreateTable(void)
   }
   
   // get reference to pTable
-  StrLib::vCopy(m_aToken[0]->a(), "gettbl");
-  StrLib::vCopy(m_aToken[1]->a(), m_aToken2[2]->a());
+  m_aToken[0]->vCopy("gettbl"_Str);
+  m_aToken[1]->vCopy(m_aToken2[2]);
   
   if (!bExecuteRequest()) {
     vTrace("SePrompt::bCreateTable : gettbl FAILED!!!\n"_Str);
     
     // create the table
-    StrLib::vCopy(m_aToken[0]->a(), "rmtbl");
-    StrLib::vCopy(m_aToken[1]->a(), m_aToken2[2]->a());
+    m_aToken[0]->vCopy("rmtbl"_Str);
+    m_aToken[1]->vCopy(m_aToken2[2]);
     
     if (!bExecuteRequest()) {      
       return false;
@@ -1268,9 +1268,9 @@ bool SePrompt::bCreateTable(void)
     
     // add columns to the table
     i8 j = 0;
-    StrLib::vCopy(m_aToken[j++]->a(), "add");
-    StrLib::vCopy(m_aToken[j++]->a(), m_aToken2[2]->a());
-    StrLib::vCopy(m_aToken[j++]->a(), m_aToken2[iCurrentToken++]->a());
+    m_aToken[j++]->vCopy("add"_Str);
+    m_aToken[j++]->vCopy(m_aToken2[2]);
+    m_aToken[j++]->vCopy(m_aToken2[iCurrentToken++]);
     
     if (m_aToken2[iCurrentToken]->bSame("integer"_Str) ||
         m_aToken2[iCurrentToken]->bSame("varchar"_Str) ||
@@ -1279,7 +1279,7 @@ bool SePrompt::bCreateTable(void)
         m_aToken2[iCurrentToken]->bSame("float"_Str)) {
       
       // copy varchar/char
-      StrLib::vCopy(m_aToken[j]->a(), m_aToken2[iCurrentToken++]->a());
+      m_aToken[j]->vCopy(m_aToken2[iCurrentToken++]);
       
       if (m_aToken2[iCurrentToken]->bEqual("("_Str)) {
         
@@ -1313,7 +1313,7 @@ bool SePrompt::bCreateTable(void)
     else if (m_aToken2[iCurrentToken]->bSame("decimal"_Str)) {
       
       // copy varchar/char
-      StrLib::vCopy(m_aToken[j]->a(), m_aToken2[iCurrentToken++]->a());
+      m_aToken[j]->vCopy(m_aToken2[iCurrentToken++]);
       
       if (m_aToken2[iCurrentToken]->bEqual("("_Str)) {
         
@@ -1365,7 +1365,7 @@ bool SePrompt::bCreateTable(void)
              m_aToken2[iCurrentToken]->bSame("timestamp"_Str) ||
              m_aToken2[iCurrentToken]->bSame("interval"_Str) ||
              m_aToken2[iCurrentToken]->bSame("boolean"_Str)) {
-      StrLib::vCopy(m_aToken[j]->a(), m_aToken2[iCurrentToken++]->a());
+      m_aToken[j]->vCopy(m_aToken2[iCurrentToken++]);
     }
     else {
       // drop the table that was created
@@ -1518,7 +1518,7 @@ bool SePrompt::bDropCatalog(void)
     if (! *m_aToken[iToken]->a())
       break;
     m_aToken2[iToken]->vCopy(m_aToken[iToken]);
-    StrLib::vCopy(m_aToken[iToken]->a(), "");
+    m_aToken[iToken]->vCopy(""_Str);
   }
   
   iNumTokens = iToken;
@@ -1536,8 +1536,8 @@ bool SePrompt::bDropCatalog(void)
   }
   
   // drop a catalog
-  StrLib::vCopy(m_aToken[0]->a(), "rmcat");
-  StrLib::vCopy(m_aToken[1]->a(), m_aToken2[2]->a());
+  m_aToken[0]->vCopy("rmcat"_Str);
+  m_aToken[1]->vCopy(m_aToken2[2]);
   if (!bExecuteRequest())
     return false;
   
@@ -1564,7 +1564,7 @@ bool SePrompt::bDropIndex(void)
     if (! *m_aToken[iToken]->a())
       break;
     m_aToken2[iToken]->vCopy(m_aToken[iToken]);
-    StrLib::vCopy(m_aToken[iToken]->a(), "");
+    m_aToken[iToken]->vCopy(""_Str);
   }
   
   iNumTokens = iToken;
@@ -1582,8 +1582,8 @@ bool SePrompt::bDropIndex(void)
   }
   
   // drop a table
-  StrLib::vCopy(m_aToken[0]->a(), "rmidx");
-  StrLib::vCopy(m_aToken[1]->a(), m_aToken2[2]->a());
+  m_aToken[0]->vCopy("rmidx"_Str);
+  m_aToken[1]->vCopy(m_aToken2[2]);
   if (!bExecuteRequest())
     return false;
   
@@ -1610,7 +1610,7 @@ bool SePrompt::bDropSchema(void)
     if (! *m_aToken[iToken]->a())
       break;
     m_aToken2[iToken]->vCopy(m_aToken[iToken]);
-    StrLib::vCopy(m_aToken[iToken]->a(), "");
+    m_aToken[iToken]->vCopy(""_Str);
   }
   
   iNumTokens = iToken;
@@ -1627,8 +1627,8 @@ bool SePrompt::bDropSchema(void)
   }
   
   // drop a schema
-  StrLib::vCopy(m_aToken[0]->a(), "rmsch");
-  StrLib::vCopy(m_aToken[1]->a(), m_aToken2[2]->a());
+  m_aToken[0]->vCopy("rmsch"_Str);
+  m_aToken[1]->vCopy(m_aToken2[2]);
   if (!bExecuteRequest())
     return false;
   
@@ -1655,7 +1655,7 @@ bool SePrompt::bDropTable(void)
     if (! *m_aToken[iToken]->a())
       break;
     m_aToken2[iToken]->vCopy(m_aToken[iToken]);
-    StrLib::vCopy(m_aToken[iToken]->a(), "");
+    m_aToken[iToken]->vCopy(""_Str);
   }
   
   iNumTokens = iToken;
@@ -1673,8 +1673,8 @@ bool SePrompt::bDropTable(void)
   }
   
   // drop a table
-  StrLib::vCopy(m_aToken[0]->a(), "rmtbl");
-  StrLib::vCopy(m_aToken[1]->a(), m_aToken2[2]->a());
+  m_aToken[0]->vCopy("rmtbl"_Str);
+  m_aToken[1]->vCopy(m_aToken2[2]);
   if (!bExecuteRequest())
     return false;
   
@@ -1694,15 +1694,15 @@ bool SePrompt::bDropReturnTable(char* pTableName)
   ASSERT(bResult);
   
   // change folder to table
-  StrLib::vCopy(m_aToken[0]->a(), "cf");
-  StrLib::vCopy(m_aToken[1]->a(), "..");
+  m_aToken[0]->vCopy("cf"_Str);
+  m_aToken[1]->vCopy(".."_Str);
   
   if (!bExecuteRequest()) {
     return false;
   }
-  StrLib::vCopy(m_aToken[0]->a(), "rmtbl");
-  StrLib::vCopy(m_aToken[1]->a(), pTableName);
-  StrLib::vCopy(m_aToken[2]->a(), "");
+  m_aToken[0]->vCopy("rmtbl"_Str);
+  m_aToken[1]->vCopy((Str*)pTableName);
+  m_aToken[2]->vCopy(""_Str);
   
   if (!bExecuteRequest()) {
     //vTrace("Error: (%s) Drop Table %s\n"_Str, m_sResponse.aStr(), pTableName);
@@ -1730,7 +1730,7 @@ bool SePrompt::bDropTenant(void)
     if (! *m_aToken[iToken]->a())
       break;
     m_aToken2[iToken]->vCopy(m_aToken[iToken]);
-    StrLib::vCopy(m_aToken[iToken]->a(), "");
+    m_aToken[iToken]->vCopy(""_Str);
   }
   
   iNumTokens = iToken;
@@ -1748,8 +1748,8 @@ bool SePrompt::bDropTenant(void)
   }
   
   // drop a tenant
-  StrLib::vCopy(m_aToken[0]->a(), "rmten");
-  StrLib::vCopy(m_aToken[1]->a(), m_aToken2[2]->a());
+  m_aToken[0]->vCopy("rmten"_Str);
+  m_aToken[1]->vCopy(m_aToken2[2]);
   if (!bExecuteRequest()) {
     return false;
   }
@@ -1778,7 +1778,7 @@ bool SePrompt::bEndInsert(void)
     if (! *m_aToken[iToken]->a())
       break;
     m_aToken2[iToken]->vCopy(m_aToken[iToken]);
-    StrLib::vCopy(m_aToken[iToken]->a(), "");
+    m_aToken[iToken]->vCopy(""_Str);
   }
   
   iNumTokens = iToken;
@@ -1815,7 +1815,7 @@ bool SePrompt::bEndInsert(void)
   if (!bResult)
     return false;
   
-  //eEC eResult = eExecuteRequest(m_pSEitf, "rettbl");
+  //eEC eResult = eExecuteRequest(m_pSEitf, "rettbl"_Str);
   //if (EC_NONE != eResult) {
   //  vTrace("SePrompt::bEndInsert : rettbl FAILED!!!\n"_Str);
   //  return eResult;
@@ -1854,7 +1854,7 @@ bool SePrompt::bInsertRow(void)
     if (! *m_aToken[iToken]->a())
       break;
     m_aToken2[iToken]->vCopy(m_aToken[iToken]);
-    StrLib::vCopy(m_aToken[iToken]->a(), "");
+    m_aToken[iToken]->vCopy(""_Str);
   }
   
   iNumTokens = iToken;
@@ -2025,7 +2025,7 @@ bool SePrompt::bUseSchema(void)
     if (! *m_aToken[iToken]->a())
       break;
     m_aToken2[iToken]->vCopy(m_aToken[iToken]);
-    StrLib::vCopy(m_aToken[iToken]->a(), "");
+    m_aToken[iToken]->vCopy(""_Str);
   }
   
   iNumTokens = iToken;
@@ -2042,8 +2042,8 @@ bool SePrompt::bUseSchema(void)
   }
   
   // drop a schema
-  StrLib::vCopy(m_aToken[0]->a(), "usesch");
-  StrLib::vCopy(m_aToken[1]->a(), m_aToken2[2]->a());
+  m_aToken[0]->vCopy("usesch"_Str);
+  m_aToken[1]->vCopy(m_aToken2[2]);
   if (!bExecuteRequest())
     return false;
   
