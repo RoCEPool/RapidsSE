@@ -9,12 +9,12 @@
 /*----------------------------------------------------------------------------*/
 void Magnitudes::vMagnitude(i8 iValue, Str* psBuf)
 {
-  if (iValue < C_1KB) StrLib::vSprint(psBuf,"%lldB"_Str,iValue);
-  else if (iValue < C_1MB) StrLib::vSprint(psBuf,"%lldKB"_Str,iValue/C_1KB);
-  else if (iValue < C_1GB) StrLib::vSprint(psBuf,"%lldMB"_Str,iValue/C_1MB);
-  else if (iValue < C_1TB) StrLib::vSprint(psBuf,"%lldGB"_Str,iValue/C_1GB);
-  else if (iValue < C_1PB) StrLib::vSprint(psBuf,"%lldTB"_Str,iValue/C_1TB);
-  else StrLib::vSprint(psBuf,"%lldPB"_Str,iValue/C_1PB);
+       if (iValue < C_1KB) psBuf->vSprint("%lldB"_Str, iValue);
+  else if (iValue < C_1MB) psBuf->vSprint("%lldKB"_Str,iValue/C_1KB);
+  else if (iValue < C_1GB) psBuf->vSprint("%lldMB"_Str,iValue/C_1MB);
+  else if (iValue < C_1TB) psBuf->vSprint("%lldGB"_Str,iValue/C_1GB);
+  else if (iValue < C_1PB) psBuf->vSprint("%lldTB"_Str,iValue/C_1TB);
+  else                     psBuf->vSprint("%lldPB"_Str,iValue/C_1PB);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -27,12 +27,12 @@ void Magnitudes::vMagnitude(i8 iValue, i8 iDecimals, Str* psBuf)
   d8 dValue = (d8)iValue;
   int iDecimalPoints = (int)iDecimals;
   
-  if (iValue < C_1KB) StrLib::vSprint(psBuf,"%.*fB"_Str, iDecimalPoints, dValue);
-  else if (iValue < C_1MB) StrLib::vSprint(psBuf,"%.*fKB"_Str, iDecimalPoints, dValue/C_1KB);
-  else if (iValue < C_1GB) StrLib::vSprint(psBuf,"%.*fMB"_Str, iDecimalPoints, dValue/C_1MB);
-  else if (iValue < C_1TB) StrLib::vSprint(psBuf,"%.*fGB"_Str, iDecimalPoints, dValue/C_1GB);
-  else if (iValue < C_1PB) StrLib::vSprint(psBuf,"%.*fTB"_Str, iDecimalPoints, dValue/C_1TB);
-  else StrLib::vSprint(psBuf,"%.*fPB"_Str, iDecimalPoints, dValue/C_1PB);
+       if (iValue < C_1KB) psBuf->vSprint("%.*fB"_Str,  iDecimalPoints, dValue);
+  else if (iValue < C_1MB) psBuf->vSprint("%.*fKB"_Str, iDecimalPoints, dValue/C_1KB);
+  else if (iValue < C_1GB) psBuf->vSprint("%.*fMB"_Str, iDecimalPoints, dValue/C_1MB);
+  else if (iValue < C_1TB) psBuf->vSprint("%.*fGB"_Str, iDecimalPoints, dValue/C_1GB);
+  else if (iValue < C_1PB) psBuf->vSprint("%.*fTB"_Str, iDecimalPoints, dValue/C_1TB);
+  else                     psBuf->vSprint("%.*fPB"_Str, iDecimalPoints, dValue/C_1PB);
 }
 
 /*----------------------------------------------------------------------------*/
