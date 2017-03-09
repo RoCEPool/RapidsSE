@@ -93,7 +93,7 @@ private:
   bool bDropIndex(void);
   bool bDropSchema(void);
   bool bDropTable(void);
-  bool bDropReturnTable(char* pTableName);
+  bool bDropReturnTable(Str* aTableName);
   bool bDropTenant(void);
   
   bool bEndInsert(void);

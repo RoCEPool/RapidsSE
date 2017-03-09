@@ -1261,7 +1261,7 @@ bool SePrompt::bCreateTable(void)
   while(iCurrentToken < iNumTokens - 2) {
     
     if (iCurrentToken != 4 && !m_aToken2[iCurrentToken++]->bEqual(","_Str)) {
-      bDropReturnTable(m_aToken2[2]->a());
+      bDropReturnTable(m_aToken2[2]);
       m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
       return false;
     }
@@ -1293,14 +1293,14 @@ bool SePrompt::bCreateTable(void)
         char* a = m_aToken2[iCurrentToken++]->a();
         if (!StrLib::bExtractI8(&a, &iValue)) {
           // drop the table
-          bDropReturnTable(m_aToken2[2]->a());
+          bDropReturnTable(m_aToken2[2]);
           m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
           return false;
         }
         
         if (!m_aToken2[iCurrentToken]->bEqual(")"_Str)) {
           // drop the table
-          bDropReturnTable(m_aToken2[2]->a());
+          bDropReturnTable(m_aToken2[2]);
           m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
           return false;
         }
@@ -1326,13 +1326,13 @@ bool SePrompt::bCreateTable(void)
         // check if it was numeric
         char* a = m_aToken2[iCurrentToken++]->a();
         if (!StrLib::bExtractI8(&a, &iValue)) {
-          bDropReturnTable(m_aToken2[2]->a());
+          bDropReturnTable(m_aToken2[2]);
           m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
           return false;
         }
         
         if (!m_aToken2[iCurrentToken]->bEqual(","_Str)) {
-          bDropReturnTable(m_aToken2[2]->a());
+          bDropReturnTable(m_aToken2[2]);
           m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
           return false;
         }
@@ -1346,13 +1346,13 @@ bool SePrompt::bCreateTable(void)
         // check if it was numeric
         a = m_aToken2[iCurrentToken++]->a();
         if (!StrLib::bExtractI8(&a, &iValue)) {
-          bDropReturnTable(m_aToken2[2]->a());
+          bDropReturnTable(m_aToken2[2]);
           m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
           return false;
         }
         
         if (!m_aToken2[iCurrentToken]->bEqual(")"_Str)) {
-          bDropReturnTable(m_aToken2[2]->a());
+          bDropReturnTable(m_aToken2[2]);
           m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
           return false;
         }
@@ -1369,7 +1369,7 @@ bool SePrompt::bCreateTable(void)
     }
     else {
       // drop the table that was created
-      bDropReturnTable(m_aToken2[2]->a());
+      bDropReturnTable(m_aToken2[2]);
       m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
       return false;
     }
@@ -1381,7 +1381,7 @@ bool SePrompt::bCreateTable(void)
       m_aToken[j]->vConcat(m_aToken2[iCurrentToken++]);
       
       if (!m_aToken2[iCurrentToken]->bSame("null"_Str)) {
-        bDropReturnTable(m_aToken2[2]->a());
+        bDropReturnTable(m_aToken2[2]);
         m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
         return false;
       }
@@ -1396,7 +1396,7 @@ bool SePrompt::bCreateTable(void)
       m_aToken[j]->vConcat(m_aToken2[iCurrentToken++]);
       
       if (!m_aToken2[iCurrentToken]->bSame("key"_Str)) {
-        bDropReturnTable(m_aToken2[2]->a());
+        bDropReturnTable(m_aToken2[2]);
         m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
         return false;
       }
@@ -1423,7 +1423,7 @@ bool SePrompt::bCreateTable(void)
       eEC eError = m_pSEitf->eGetLastError();
       
       // drop the table that was created
-      bDropReturnTable(m_aToken2[2]->a());
+      bDropReturnTable(m_aToken2[2]);
       
       // return error returned by addColumn
       m_pSEitf->vSetLastError(eError);
@@ -1683,9 +1683,9 @@ bool SePrompt::bDropTable(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* drop table                                                                 */
+/* drop return table                                                          */
 /*----------------------------------------------------------------------------*/
-bool SePrompt::bDropReturnTable(char* pTableName)
+bool SePrompt::bDropReturnTable(Str* aTableName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
@@ -1701,7 +1701,7 @@ bool SePrompt::bDropReturnTable(char* pTableName)
     return false;
   }
   m_aToken[0]->vCopy("rmtbl"_Str);
-  m_aToken[1]->vCopy((Str*)pTableName);
+  m_aToken[1]->vCopy(aTableName);
   m_aToken[2]->vCopy(""_Str);
   
   if (!bExecuteRequest()) {
