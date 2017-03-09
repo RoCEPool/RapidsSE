@@ -282,9 +282,6 @@ void SePrompt::vGetCommandArgument(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  //StrLib::vCopy(m_aToken[0],gxArguments.m_sCommand.aStr());
-  //StrLib::vCopy(m_aToken[1],"");
-
   i8 iToken = 0;
   while (TK_NONE != m_pTokeniser->eNextToken(m_aToken[iToken]->a())) {
     
