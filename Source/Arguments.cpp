@@ -94,11 +94,11 @@ void Arguments::vEnvironmentVariables(void)
 
   sVarName = "SE_INSTANCE_SIZE"_Str;
   if (Env::bGet(sVarName,sRegionSize))
-    m_iRegionSize = StrLib::iToI8(sRegionSize.aStr());
+    m_iRegionSize = sRegionSize.iToI8();
 
   sVarName = "SE_PARTITIONS"_Str;
   if (Env::bGet(sVarName,sPartitions))
-    m_nSlots = StrLib::iToI8(sPartitions.aStr());
+    m_nSlots = sPartitions.iToI8();
   
   sVarName = "SE_WORKING_FOLDER"_Str;
   if (Env::bGet(sVarName,sFolder))
@@ -230,7 +230,6 @@ bool Arguments::bParse(int argc, Str* argv[])
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (argv[iArg]->bSame("--size"_Str)) {
-      //m_iRegionSize = StrLib::iToI8(argv[++iArg]);
       bool bResult = Magnitudes::bBytes((Str*)argv[++iArg], m_iRegionSize);
       if (!bResult) {
         vTrace("Invalid size argument: --size %s\n"_Str,argv[iArg]);
@@ -393,19 +392,7 @@ bool Arguments::bParse(int argc, Str* argv[])
       m_bKillPrev = true;
       continue;
     }
-    
-  /*
-    if (StrLib::iLength(m_sCommand.aStr()))
-      m_sCommand.vConcat(" "_Str);
-    
-    m_sCommand.vConcat(argv[iArg]);
-    m_bCommand = true;
-    m_bPrompt  = true;
-    m_bWelcome = false;
- 
-    continue;
-  */
-    
+        
     vTrace("Unrecognized command argument: %s\n"_Str,argv[iArg]);
     return false;
   }

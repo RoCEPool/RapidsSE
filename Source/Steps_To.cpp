@@ -132,7 +132,7 @@ void Task::vToInt(NNP_Task nnpTask)
   s256 sBuff;
   ValLib::vToString(&xStr,sBuff.aStr());
   
-  i8 i = StrLib::iToI8(sBuff.aStr());
+  i8 i = sBuff.iToI8();
   
   nnpTask->m_pDataStack->vPush(i);
   

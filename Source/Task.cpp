@@ -1061,7 +1061,7 @@ Word* Task::pCompileColon(StrVal& sDefinition)
     switch (m_pTokeniser->eToken()) {
         
       case TK_INTEGER:
-        xValWsp = StrLib::iToI8(m_pTokeniser->sToken().aStr());
+        xValWsp = m_pTokeniser->sToken().iToI8();
         pNewWord->vEncode("pushValue"_Str,&xValWsp);
         break;
         

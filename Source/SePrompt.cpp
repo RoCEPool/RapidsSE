@@ -626,7 +626,7 @@ void SePrompt::vIterateRows(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  i8 iAddress = StrLib::iToI8(m_sResponse.aStr());
+  i8 iAddress = m_sResponse.iToI8();
   
   SelCursor* pSelCursor = reinterpret_cast<SelCursor*>(iAddress);
   ASSERT(CN_SELCURSOR == pSelCursor->eClass());
@@ -674,7 +674,7 @@ bool SePrompt::bGetFirstRow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  i8 iAddress = StrLib::iToI8(m_sResponse.aStr());
+  i8 iAddress = m_sResponse.iToI8();
   
   SelCursor* pSelCursor = reinterpret_cast<SelCursor*>(iAddress);
   ASSERT(CN_SELCURSOR == pSelCursor->eClass());
@@ -702,7 +702,7 @@ bool SePrompt::bGetNextRow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  i8 iAddress = StrLib::iToI8(m_sResponse.aStr());
+  i8 iAddress = m_sResponse.iToI8();
   
   SelCursor* pSelCursor = reinterpret_cast<SelCursor*>(iAddress);
   ASSERT(CN_SELCURSOR == pSelCursor->eClass());

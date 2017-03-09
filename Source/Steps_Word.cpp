@@ -94,7 +94,7 @@ void Task::vAllParticipants(NNP_Task nnpTask)
   
   // convert string to integer
   Str* aToken = nnpTask->m_pTokeniser->sToken();
-  i8 iParams = StrLib::iToI8(aToken->a());
+  i8 iParams = aToken->iToI8();
   
   // set the number of parameters in the current word
   pCurrentWord->vParams(iParams);
@@ -552,7 +552,7 @@ void Task::vOneParticipant(NNP_Task nnpTask)
   nnpTask->m_pTokeniser->vNextToken();
   
   // convert token to integer
-  i8 iParams = StrLib::iToI8(nnpTask->m_pTokeniser->sToken().aStr());
+  i8 iParams = nnpTask->m_pTokeniser->sToken().iToI8();
   
   // set the number of parameters in the current word
   pCurrentWord->vParams(iParams);

@@ -85,19 +85,19 @@ void Task::vTableAppend(NNP_Task nnpTask)
   if ( ! nnpTask->m_pDataStack->bPop(sString) )
     THROW_INVALID_DSTACK("table.append"_Str);
   
-  Table* pTable = reinterpret_cast<Table*>(StrLib::iToI8(sString.aStr()));
+  Table* pTable = reinterpret_cast<Table*>(sString.iToI8());
   ASSERT(CN_TABLE == pTable->eClass());
   
   if ( ! nnpTask->m_pDataStack->bPop(sString) )
     THROW_INVALID_DSTACK("table.append"_Str);
   
-  RowBuffer* pRowBuffer = reinterpret_cast<RowBuffer*>(StrLib::iToI8(sString.aStr()));
+  RowBuffer* pRowBuffer = reinterpret_cast<RowBuffer*>(sString.iToI8());
   ASSERT(CN_ROWBUFFER == pRowBuffer->eClass());
   
   if ( ! nnpTask->m_pDataStack->bPop(sString) )
     THROW_INVALID_DSTACK("table.append"_Str);
   
-  iPartition = StrLib::iToI8(sString.aStr());
+  iPartition = sString.iToI8();
   pTable->vAppendBuffer(iPartition,pRowBuffer);
   
   EXIT();

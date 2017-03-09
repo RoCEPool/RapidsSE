@@ -112,7 +112,7 @@ bool SeHistory::bRecall(Str* aToken[], i8 nTokens)
     if (StrLib::iLength(aToken[1]->a()) < 1)
       return false;
     
-    iCommand = StrLib::iToI8(aToken[1]->a());
+    iCommand = aToken[1]->iToI8();
   }
   
   vTrace("Recall: %lld\n"_Str,iCommand);
