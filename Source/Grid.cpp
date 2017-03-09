@@ -146,9 +146,8 @@ Node* Grid::pFindNode(Str* sName)
   pNodeCursor->vFirst();
   Node* pNode = pNodeCursor->pObject();
   while (pNode) {
-    if (StrLib::bEqualTo(pNode->aNodeName()->a(), sName->a(), C_NO_CASE)) {
+    if (pNode->aNodeName()->bSame(sName))
       break;
-    }
     pNodeCursor->vNext();
     pNode = pNodeCursor->pObject();
   }
