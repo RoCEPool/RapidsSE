@@ -1019,7 +1019,7 @@ bool SePrompt::bCreateIndex(void)
   for (iToken = 0; iToken < C_TOKENS; iToken++) {
     if (! *m_aToken[iToken]->a())
       break;
-    StrLib::vCopy(m_aToken2[iToken]->a(), m_aToken[iToken]->a());
+    m_aToken2[iToken]->vCopy(m_aToken[iToken]);
     StrLib::vCopy(m_aToken[iToken]->a(), "");
   }
   
@@ -1087,7 +1087,7 @@ bool SePrompt::bCreateSchema(void)
   for (iToken = 0; iToken < C_TOKENS; iToken++) {
     if (! *m_aToken[iToken]->a())
       break;
-    StrLib::vCopy(m_aToken2[iToken]->a(), m_aToken[iToken]->a());
+    m_aToken2[iToken]->vCopy(m_aToken[iToken]);
     StrLib::vCopy(m_aToken[iToken]->a(), "");
   }
   
@@ -1134,7 +1134,7 @@ bool SePrompt::bCreateTenant(void)
   for (iToken = 0; iToken < C_TOKENS; iToken++) {
     if (! *m_aToken[iToken]->a())
       break;
-    StrLib::vCopy(m_aToken2[iToken]->a(), m_aToken[iToken]->a());
+    m_aToken2[iToken]->vCopy(m_aToken[iToken]);
     StrLib::vCopy(m_aToken[iToken]->a(), "");
   }
   
@@ -1181,7 +1181,7 @@ bool SePrompt::bCreateTable(void)
   for (iToken = 0; iToken < C_TOKENS; iToken++) {
     if (! *m_aToken[iToken]->a())
       break;
-    StrLib::vCopy(m_aToken2[iToken]->a(), m_aToken[iToken]->a());
+    m_aToken2[iToken]->vCopy(m_aToken[iToken]);
     StrLib::vCopy(m_aToken[iToken]->a(), "");
   }
   
@@ -1517,7 +1517,7 @@ bool SePrompt::bDropCatalog(void)
   for (iToken = 0; iToken < C_TOKENS; iToken++) {
     if (! *m_aToken[iToken]->a())
       break;
-    StrLib::vCopy(m_aToken2[iToken]->a(), m_aToken[iToken]->a());
+    m_aToken2[iToken]->vCopy(m_aToken[iToken]);
     StrLib::vCopy(m_aToken[iToken]->a(), "");
   }
   
@@ -1563,7 +1563,7 @@ bool SePrompt::bDropIndex(void)
   for (iToken = 0; iToken < C_TOKENS; iToken++) {
     if (! *m_aToken[iToken]->a())
       break;
-    StrLib::vCopy(m_aToken2[iToken]->a(), m_aToken[iToken]->a());
+    m_aToken2[iToken]->vCopy(m_aToken[iToken]);
     StrLib::vCopy(m_aToken[iToken]->a(), "");
   }
   
@@ -1609,7 +1609,7 @@ bool SePrompt::bDropSchema(void)
   for (iToken = 0; iToken < C_TOKENS; iToken++) {
     if (! *m_aToken[iToken]->a())
       break;
-    StrLib::vCopy(m_aToken2[iToken]->a(), m_aToken[iToken]->a());
+    m_aToken2[iToken]->vCopy(m_aToken[iToken]);
     StrLib::vCopy(m_aToken[iToken]->a(), "");
   }
   
@@ -1654,7 +1654,7 @@ bool SePrompt::bDropTable(void)
   for (iToken = 0; iToken < C_TOKENS; iToken++) {
     if (! *m_aToken[iToken]->a())
       break;
-    StrLib::vCopy(m_aToken2[iToken]->a(), m_aToken[iToken]->a());
+    m_aToken2[iToken]->vCopy(m_aToken[iToken]);
     StrLib::vCopy(m_aToken[iToken]->a(), "");
   }
   
@@ -1729,7 +1729,7 @@ bool SePrompt::bDropTenant(void)
   for (iToken = 0; iToken < C_TOKENS; iToken++) {
     if (! *m_aToken[iToken]->a())
       break;
-    StrLib::vCopy(m_aToken2[iToken]->a(), m_aToken[iToken]->a());
+    m_aToken2[iToken]->vCopy(m_aToken[iToken]);
     StrLib::vCopy(m_aToken[iToken]->a(), "");
   }
   
@@ -1777,7 +1777,7 @@ bool SePrompt::bEndInsert(void)
   for (iToken = 0; iToken < C_TOKENS; iToken++) {
     if (! *m_aToken[iToken]->a())
       break;
-    StrLib::vCopy(m_aToken2[iToken]->a(), m_aToken[iToken]->a());
+    m_aToken2[iToken]->vCopy(m_aToken[iToken]);
     StrLib::vCopy(m_aToken[iToken]->a(), "");
   }
   
@@ -1853,7 +1853,7 @@ bool SePrompt::bInsertRow(void)
   for (iToken = 0; iToken < C_TOKENS; iToken++) {
     if (! *m_aToken[iToken]->a())
       break;
-    StrLib::vCopy(m_aToken2[iToken]->a(), m_aToken[iToken]->a());
+    m_aToken2[iToken]->vCopy(m_aToken[iToken]);
     StrLib::vCopy(m_aToken[iToken]->a(), "");
   }
   
@@ -2024,7 +2024,7 @@ bool SePrompt::bUseSchema(void)
   for (iToken = 0; iToken < C_TOKENS; iToken++) {
     if (! *m_aToken[iToken]->a())
       break;
-    StrLib::vCopy(m_aToken2[iToken]->a(), m_aToken[iToken]->a());
+    m_aToken2[iToken]->vCopy(m_aToken[iToken]);
     StrLib::vCopy(m_aToken[iToken]->a(), "");
   }
   
