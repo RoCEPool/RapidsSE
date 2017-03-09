@@ -70,7 +70,7 @@ void SeHistory::vOpen(void)
   
   s256 xFileName;
   
-  StrLib::vSprint(xFileName.aArea(),"/tmp/SEitf_%lld_history.txt"_Str,Process::iGetPid());
+  xFileName.vSprint("/tmp/SEitf_%lld_history.txt"_Str,Process::iGetPid());
   
   bool b = m_xFile.bOpen((Str*)xFileName.aArea(),C_OPEN_READ_WRITE_CREATE);
   ASSERT(b);
