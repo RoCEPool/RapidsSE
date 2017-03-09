@@ -22,6 +22,9 @@ namespace Base
     operator char*();
     operator const char*();
   
+    void operator =(Str*);
+  
+    void vCopy(Str* aArg);
     void vConcat(Str* aArg);
     void vPrint(void);
     bool bEqual(Str* aArg);
