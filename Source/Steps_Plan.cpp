@@ -324,7 +324,7 @@ void Task::vPlanOpFrameAdd(NNP_Task nnpTask)
   
   // create a op dictionary
   s32 sNameDic;
-  StrLib::vSprint(sNameDic.aStr(),"<%s>"_Str,sNameFrame.aStr());
+  sNameDic.vSprint("<%s>"_Str,sNameFrame.aStr());
   
   Dic* pOpDic = new Dic;
   pOpDic->vName(sNameDic);

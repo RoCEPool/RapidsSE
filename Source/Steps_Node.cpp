@@ -180,11 +180,11 @@ void Task::vNodeStatus(NNP_Task nnpTask)
   s256 s;
   
   if (Region::bTest(gxArguments.m_sRegionName))
-    StrLib::vSprint(s.aStr(),"RapidsSE instance %s running"_Str,
-                    gxArguments.m_sRegionName.aStr());
+    s.vSprint("RapidsSE instance %s running"_Str,
+              gxArguments.m_sRegionName.aStr());
   else
-    StrLib::vSprint(s.aStr(),"RapidsSE instance %s not running"_Str,
-                    gxArguments.m_sRegionName.aStr());
+    s.vSprint("RapidsSE instance %s not running"_Str,
+              gxArguments.m_sRegionName.aStr());
   
   nnpTask->m_pDataStack->vPush(s);
   

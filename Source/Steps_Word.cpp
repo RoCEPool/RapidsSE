@@ -589,7 +589,7 @@ void Task::vOpDic(NNP_Task nnpTask)
     
     // create a op dictionary
     s32 sNameDic;
-    StrLib::vSprint(sNameDic.aStr(),"<%s>"_Str,sNameOpFrame.aStr());
+    sNameDic.vSprint("<%s>"_Str,sNameOpFrame.aStr());
     
     pOpDic = new Dic;
     pOpDic->vName(sNameDic);
@@ -867,7 +867,7 @@ void Task::vTick(NNP_Task nnpTask)
   nnpTask->m_pTokeniser->vNextToken();
   
   //  if ( ! bExtracted ) {
-  //    StrLib::vSprint(nnpTask->m_sException,"No name: ' ");
+  //    nnpTask->m_sException.vSprint("No name: ' ");
   //    nnpTask->m_sFile = __FILE__;
   //    throw (i8)__LINE__;
   //  }
