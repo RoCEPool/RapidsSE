@@ -578,7 +578,7 @@ void SePrompt::vClipTokens(i8 nTokens)
   
   for (i8 iFromToken = nTokens; iFromToken < C_TOKENS; iFromToken++) {
     
-    StrLib::vCopy(m_aToken[iToToken++]->a(),m_aToken[iFromToken]->a());
+    m_aToken[iToToken++]->vCopy(m_aToken[iFromToken]);
     
     if (m_aToken[iFromToken]->bEqual(""_Str))
       break;
@@ -835,8 +835,8 @@ bool SePrompt::bBeginInsert(void)
   for (iToken = 0; iToken < C_TOKENS; iToken++) {
     if (! *m_aToken[iToken]->a())
       break;
-    StrLib::vCopy(m_aToken2[iToken]->a(), m_aToken[iToken]->a());
-    StrLib::vCopy(m_aToken[iToken]->a(), "");
+    m_aToken2[iToken]->vCopy(m_aToken[iToken]);
+    m_aToken[iToken]->vCopy(""_Str);
   }
   
   iNumTokens = iToken;
@@ -853,8 +853,8 @@ bool SePrompt::bBeginInsert(void)
   }
   
   // get table pointer
-  StrLib::vCopy(m_aToken[0]->a(), "gettbl");
-  StrLib::vCopy(m_aToken[1]->a(), m_aToken2[2]->a());
+  m_aToken[0]->vCopy("gettbl"_Str);
+  m_aToken[1]->vCopy(m_aToken2[2]);
   if (!bExecuteRequest()) {
     vTrace("SePrompt::bBeginInsert : gettbl FAILED!!!\n"_Str);
     return false;
