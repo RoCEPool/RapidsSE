@@ -107,14 +107,14 @@ void Socket::vAddrInit(sockaddr_in* aAddr, int iPort)
 /*----------------------------------------------------------------------------*/
 /* initialize a sockaddr_in structure                                         */
 /*----------------------------------------------------------------------------*/
-void Socket::vAddrInit(sockaddr_in* aAddr, const char* sAddr, int iPort)
+void Socket::vAddrInit(sockaddr_in* aAddr, Str* sAddr, int iPort)
 {
   _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
   
   MemLib::vZero(aAddr,sizeof(sockaddr_in));
   
   aAddr->sin_family      = AF_INET;
-  aAddr->sin_addr.s_addr = sAddr == nullptr ? -1 : inet_addr(sAddr);
+  aAddr->sin_addr.s_addr = sAddr->a() == nullptr ? -1 : inet_addr(sAddr->a());
   aAddr->sin_port        = htons((int)iPort);
 }
 
@@ -125,7 +125,7 @@ void Socket::vCopy(Socket* pSource)
 {
   _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
   
-  m_iSocketId    = pSource->m_iSocketId;
+  m_iSocketId = pSource->m_iSocketId;
   m_bBlocking = pSource->m_bBlocking;
 }
 
@@ -203,7 +203,7 @@ bool Socket::bClose(SysCall& SysCall)
 /*----------------------------------------------------------------------------*/
 /* connect this client with nominated server                                  */
 /*----------------------------------------------------------------------------*/
-bool Socket::bConnectServer(const char* sAddr, int iPort, SysCall& SysCall)
+bool Socket::bConnectServer(Str* sAddr, int iPort, SysCall& SysCall)
 {
   _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
   
@@ -307,7 +307,7 @@ bool Socket::bCreateServer(int iPort, SysCall& SysCall)
 /*----------------------------------------------------------------------------*/
 /* read string into a char buffer                                             */
 /*----------------------------------------------------------------------------*/
-bool Socket::bReadVch(char** ppChar, SysCall& SysCall)
+bool Socket::bReadVch(Str* ppChar, SysCall& SysCall)
 {
   _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
   
@@ -454,15 +454,15 @@ bool Socket::bTestForData(SysCall& SysCall)
 /*----------------------------------------------------------------------------*/
 /* write n bytes to this socket from given buffer                             */
 /*----------------------------------------------------------------------------*/
-bool Socket::bWriteVch(char* pChar, SysCall& SysCall)
+bool Socket::bWriteVch(Str* aChar, SysCall& SysCall)
 {
   _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
   
   SysCall.vClear();
   
-  i8 nBytes = StrLib::iLength(pChar);
+  i8 nBytes = StrLib::iLength(aChar->a());
   
-  i8 nSent = send(m_iSocketId, pChar, nBytes,0);
+  i8 nSent = send(m_iSocketId, aChar->a(), nBytes,0);
   
   if (nSent == nBytes) {
     SysCall.vSuccess();
@@ -542,7 +542,7 @@ bool Socket::bBind(int iPort, SysCall& SysCall)
 /*----------------------------------------------------------------------------*/
 /* identify (name) a UDP socket                                               */
 /*----------------------------------------------------------------------------*/
-bool Socket::bBind(const char* sAddr, int iPort, SysCall& SysCall)
+bool Socket::bBind(Str* sAddr, int iPort, SysCall& SysCall)
 {
   _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
   
@@ -603,7 +603,7 @@ bool Socket::bRecvBuffer(int nBytes, SysCall& SysCall)
 /*----------------------------------------------------------------------------*/
 /* set up for sendto server                                                   */
 /*----------------------------------------------------------------------------*/
-bool Socket::bServer(const char* sAddr, int iPort, SysCall& SysCall)
+bool Socket::bServer(Str* sAddr, int iPort, SysCall& SysCall)
 {
   _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
   

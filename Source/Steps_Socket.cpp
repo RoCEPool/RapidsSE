@@ -125,7 +125,7 @@ void Task::vSocketConnect(NNP_Task nnpTask)
     THROW_INVALID_DSTACK("socket.connect"_Str);
   
   // get address of node
-  const char* sAddr = reinterpret_cast<char*>(_pStrVal(&xNode)->aStr());
+  Str* sAddr = reinterpret_cast<Str*>(_pStrVal(&xNode)->aStr());
   
   // get pSocket
   pSocket = reinterpret_cast<Socket*>(pObject);

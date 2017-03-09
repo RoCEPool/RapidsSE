@@ -28,7 +28,7 @@ namespace System
     static void vDump(eCN eClass, Object* pObject, Str* aTab);
 
     void vAddrInit(sockaddr_in* aAddr, int iPort);
-    void vAddrInit(sockaddr_in* aAddr, const char* sAddr, int iPort);
+    void vAddrInit(sockaddr_in* aAddr, Str* sAddr, int iPort);
     
     void vCopy(Socket* pSource);
     bool bIsOpen();
@@ -36,21 +36,21 @@ namespace System
     bool bAcceptClient(int& pSocketId, SysCall& SysCall);
     bool bClose(SysCall& SysCall);
     
-    bool bConnectServer(const char* sAddr, int iPort, SysCall& SysCall);
+    bool bConnectServer(Str* sAddr, int iPort, SysCall& SysCall);
     bool bCreateServer(int iPort, SysCall& SysCall);
-    bool bReadVch(char** ppChar, SysCall& SysCall);
+    bool bReadVch(Str* ppChar, SysCall& SysCall);
     bool bRecvBuffer(int nBytes, SysCall& SysCall);
     bool bRecvBytes(i8 nBytes, void* pBuffer, SysCall& SysCall);
     bool bSendBytes(int nBytes, void* pBuffer, SysCall& SysCall);
     bool bSetNonBlocking(SysCall& SysCall);
     bool bTestForData(SysCall& SysCall);
-    bool bWriteVch(char* pVch, SysCall& SysCall);
+    bool bWriteVch(Str* pVch, SysCall& SysCall);
     
     bool bSocket(SysCall& SysCall);
     bool bBind(SysCall& SysCall);
     bool bBind(int iPort, SysCall& SysCall);
-    bool bBind(const char* aAddr, int iPort, SysCall& SysCall);
-    bool bServer(const char* sAddr, int iPort, SysCall& SysCall);
+    bool bBind(Str* aAddr, int iPort, SysCall& SysCall);
+    bool bServer(Str* sAddr, int iPort, SysCall& SysCall);
     bool bSendTo(i8 nBytes, void* pBuffer, SysCall& SysCall);
     bool bRecvFrom(int nBytes, void* pBuffer, i8* pRecv, SysCall& SysCall);
 
