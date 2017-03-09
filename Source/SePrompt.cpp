@@ -898,7 +898,7 @@ bool SePrompt::bChangeWorkingDir(void)
   
   ASSERT(m_aToken[0]->bEqual("cd"_Str));
   
-  StrLib::vCopy(sDir.aStr(), m_aToken[1]->a());
+  sDir = m_aToken[1];
   
   i8 iToken;
   for (iToken = 2; iToken < C_TOKENS; iToken++) {
