@@ -175,7 +175,7 @@ Word* DicPath::pFindWord(Str* aName)
 /*----------------------------------------------------------------------------*/
 /* find word in current dictionary                                            */
 /*----------------------------------------------------------------------------*/
-Word* DicPath::pFindInCurrent(const char* aName)
+Word* DicPath::pFindInCurrent(Str* aName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICPATH,_FOOTER_);
   

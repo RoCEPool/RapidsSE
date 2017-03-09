@@ -354,7 +354,7 @@ void Task::vFindInCurrent(NNP_Task nnpTask)
     i8 i = 0; i++;
   }
   
-  Word* pWord = nnpTask->m_xPathStack.pFindInCurrent(sName.aStr());
+  Word* pWord = nnpTask->m_xPathStack.pFindInCurrent(sName);
   
   nnpTask->m_pDataStack->vPush(pWord);
   

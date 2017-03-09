@@ -197,25 +197,25 @@ void SEitf::vInit(void)
   m_xPathStack.vPush(reinterpret_cast<Dic*>(pCell));
   
   // /tenants/boray
-  Word* pTenant = m_xPathStack.pFindInCurrent("boray");
+  Word* pTenant = m_xPathStack.pFindInCurrent("boray"_Str);
   ASSERT(pTenant);
   pCell = pTenant->pFirstCell();
   m_xPathStack.vPush(reinterpret_cast<Dic*>(pCell));
   
   // /tenants/boray/catalogs
-  Word* pCatalogs = m_xPathStack.pFindInCurrent("catalogs");
+  Word* pCatalogs = m_xPathStack.pFindInCurrent("catalogs"_Str);
   ASSERT(pCatalogs);
   pCell = pCatalogs->pFirstCell();
   m_xPathStack.vPush(reinterpret_cast<Dic*>(pCell));
  
   // /tenants/boray/catalogs/rapidsse
-  Word* pCatalog = m_xPathStack.pFindInCurrent("rapidsse");
+  Word* pCatalog = m_xPathStack.pFindInCurrent("rapidsse"_Str);
   ASSERT(pCatalog);
   pCell = pCatalog->pFirstCell();
   m_xPathStack.vPush(reinterpret_cast<Dic*>(pCell));
   
   // /tenants/boray/catalogs/rapidsse/schemas
-  Word* pSchema = m_xPathStack.pFindInCurrent("schemas");
+  Word* pSchema = m_xPathStack.pFindInCurrent("schemas"_Str);
   ASSERT(pSchema);
   pCell = pSchema->pFirstCell();
   m_xPathStack.vPush(reinterpret_cast<Dic*>(pCell));

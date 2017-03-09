@@ -33,7 +33,7 @@ namespace Dictionaries
     void vDiscard(void);
     Word* pFindWord(StrVal& sName);
     Word* pFindWord(Str* aName);
-    Word* pFindInCurrent(const char* aName);
+    Word* pFindInCurrent(Str* aName);
     Word* pFindStep(TaskStep pStep);
     bool  bForget(StrVal& sName);
     Word* pLocate(Cell* pCell);
