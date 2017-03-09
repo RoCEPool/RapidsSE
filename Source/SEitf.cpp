@@ -435,8 +435,6 @@ bool SEitf::bRemoveFolder(Str* aWords[], i8 iWords)
   
   s256 sRequest;
   
-  char* a = sRequest.aStr();
-  
   sRequest.vCopy("\""_Str);
   sRequest.vConcat(aWords[1]);
   sRequest.vConcat("\""_Str);
@@ -454,8 +452,6 @@ bool SEitf::bCreateTenant(Str* aWords[], i8 iWords)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
-  
-  char* a = sRequest.aStr();
   
   if (iWords != 2) {
     vSetLastError(EC_INVALID_PARAMETERS);
@@ -499,8 +495,6 @@ bool SEitf::bDropTenant(Str* aWords[], i8 iWords)
   
   s256 sRequest;
   
-  char* a = sRequest.aStr();
-  
   if (iWords != 2) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
@@ -523,8 +517,6 @@ bool SEitf::bCreateCatalog(Str* aWords[], i8 iWords)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
-  
-  char* a = sRequest.aStr();
   
   if (iWords != 2) {
     vSetLastError(EC_INVALID_PARAMETERS);
@@ -568,8 +560,6 @@ bool SEitf::bDropCatalog(Str* aWords[], i8 iWords)
   
   s256 sRequest;
   
-  char* a = sRequest.aStr();
-  
   if (iWords != 2) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
@@ -592,8 +582,6 @@ bool SEitf::bCreateSchema(Str* aWords[], i8 iWords)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
-  
-  char* a = sRequest.aStr();
   
   if (iWords != 2) {
     vSetLastError(EC_INVALID_PARAMETERS);
@@ -635,8 +623,6 @@ bool SEitf::bDropSchema(Str* aWords[], i8 iWords)
   
   s256 sRequest;
   
-  char* a = sRequest.aStr();
-  
   if (iWords != 2) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
@@ -660,8 +646,6 @@ bool SEitf::bUseSchema(Str* aWords[], i8 iWords)
   
   s256 sRequest;
   
-  char* a = sRequest.aStr();
-  
   if (iWords != 2) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
@@ -684,8 +668,6 @@ bool SEitf::bCreateIndex(Str* aWords[], i8 iWords)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
-  
-  char* a = sRequest.aStr();
   
   if (iWords != 4) {
     vSetLastError(EC_INVALID_PARAMETERS);
@@ -737,8 +719,6 @@ bool SEitf::bCreateTable(Str* aWords[], i8 iWords)
   
   s256 sRequest;
   
-  char* a = sRequest.aStr();
-  
   if (iWords != 2) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
@@ -781,8 +761,6 @@ bool SEitf::bDumpIndex(Str* aWords[], i8 iWords)
   
   s256 sRequest;
   
-  char* a = sRequest.aStr();
-  
   if (iWords != 2) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
@@ -805,8 +783,6 @@ bool SEitf::bDumpTable(Str* aWords[], i8 iWords)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
-  
-  char* a = sRequest.aStr();
   
   if (iWords != 2) {
     vSetLastError(EC_INVALID_PARAMETERS);
@@ -831,8 +807,6 @@ bool SEitf::bDocol(Str* aWords[])
   
   s256 sRequest;
   
-  char* a = sRequest.aStr();
-  
   sRequest.vCopy("\""_Str);
   sRequest.vConcat(aWords[1]);
   sRequest.vConcat("\""_Str);
@@ -851,8 +825,6 @@ bool SEitf::bDropIndex(Str* aWords[], i8 iWords)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
-  
-  char* a = sRequest.aStr();
   
   if (iWords != 2) {
     vSetLastError(EC_INVALID_PARAMETERS);
@@ -878,8 +850,6 @@ bool SEitf::bDropTable(Str* aWords[], i8 iWords)
   
   s256 sRequest;
   
-  char* a = sRequest.aStr();
-  
   if (iWords != 2) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
@@ -902,8 +872,6 @@ bool SEitf::bAddColumn(Str* aWords[16], i8 iWords)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
-  
-  char* a = sRequest.aStr();
   
   if (iWords != 4) {
     vSetLastError(EC_INVALID_PARAMETERS);
@@ -936,8 +904,6 @@ bool SEitf::bListColumns(Str* aWords[], i8 iWords)
   
   s256 sRequest;
   
-  char* a = sRequest.aStr();
-  
   if (iWords != 2) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
@@ -960,8 +926,6 @@ bool SEitf::bAnalyzeTable(Str* aWords[], i8 iWords)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
-  
-  char* a = sRequest.aStr();
   
   if (iWords != 2) {
     vSetLastError(EC_INVALID_PARAMETERS);
@@ -986,8 +950,6 @@ bool SEitf::bDanalyzeTable(Str* aWords[], i8 iWords)
   
   s256 sRequest;
   
-  char* a = sRequest.aStr();
-  
   if (iWords != 2) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
@@ -1010,8 +972,6 @@ bool SEitf::bCopyTable(Str* aWords[], i8 iWords)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
-  
-  char* a = sRequest.aStr();
   
   if (iWords != 3) {
     vSetLastError(EC_INVALID_PARAMETERS);
@@ -1040,8 +1000,6 @@ bool SEitf::bDistExportTable(Str* aWords[], i8 iWords)
   
   s256 sRequest;
   
-  char*  a = sRequest.aStr();
-  
   if (iWords != 3) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
@@ -1069,8 +1027,6 @@ bool SEitf::bExportTable(Str* aWords[], i8 iWords)
   
   s256 sRequest;
 
-  char*  a = sRequest.aStr();
-  
   if (iWords != 3) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
@@ -1097,8 +1053,6 @@ bool SEitf::bLoadTable(Str* aWords[], i8 iWords)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
-  
-  char* a = sRequest.aStr();
   
   if (iWords != 3) {
     vSetLastError(EC_INVALID_PARAMETERS);
@@ -1127,8 +1081,6 @@ bool SEitf::bLoadTableStream(Str* aWords[], i8 iWords)
   
   s256 sRequest;
   
-  char* a = sRequest.aStr();
-  
   if (iWords != 3) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
@@ -1156,8 +1108,6 @@ bool SEitf::bSelectTable(Str* aWords[], i8 iWords)
   
   s256 sRequest;
   
-  char* a = sRequest.aStr();
-  
   if (iWords != 2) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
@@ -1180,8 +1130,6 @@ bool SEitf::bGetTable(Str* aWords[], i8 iWords)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
-  
-  char* a = sRequest.aStr();
   
   if (iWords != 2) {
     vSetLastError(EC_INVALID_PARAMETERS);
@@ -1206,8 +1154,6 @@ bool SEitf::bInUseTable(Str* aWords[], i8 iWords)
   
   s256 sRequest;
   
-  char* a = sRequest.aStr();
-  
   if (iWords != 2) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
@@ -1231,8 +1177,6 @@ bool SEitf::bRetTable(Str* aWords[], i8 iWords)
   
   s256 sRequest;
   
-  char* a = sRequest.aStr();
-  
   if (iWords != 1) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
@@ -1251,8 +1195,6 @@ bool SEitf::bPoolSpace(Str* aWords[], i8 iWords)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
-  
-  char* a = sRequest.aStr();
   
   if (iWords != 1) {
     vSetLastError(EC_INVALID_PARAMETERS);
@@ -1273,8 +1215,6 @@ bool SEitf::bNodeStatus(Str* aWords[], i8 iWords)
   
   s256 sRequest;
   
-  char* a = sRequest.aStr();
-  
   if (iWords != 1) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
@@ -1293,8 +1233,6 @@ bool SEitf::bSizeTable(Str* aWords[], i8 iWords)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
-  
-  char* a = sRequest.aStr();
   
   if (iWords != 2) {
     vSetLastError(EC_INVALID_PARAMETERS);
@@ -1318,8 +1256,6 @@ bool SEitf::bTruncateTable(Str* aWords[], i8 iWords)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
-  
-  char* a = sRequest.aStr();
   
   if (iWords != 2) {
     vSetLastError(EC_INVALID_PARAMETERS);
@@ -1433,8 +1369,6 @@ bool SEitf::bInsertBuffer(RowBuffer* pRowBuffer, i8 iPartition)
   s256 sRequest;
   s256 sBuffer;
 
-  char* a = sRequest.aStr();
-  
   StrLib::wToString(iSlot, sBuffer.aStr());
   sRequest.vCopy("\""_Str);
   sRequest.vConcat(sBuffer);
@@ -1452,8 +1386,6 @@ bool SEitf::bInsertBuffer(RowBuffer* pRowBuffer, i8 iPartition)
   
   sRequest.vConcat(" append_table"_Str);
   
-  vTrace("%s\n"_Str,a);
-  
   return bAppendRequest(sRequest);
 }
 
@@ -1465,8 +1397,6 @@ bool SEitf::bPushDic(Str* aWords[])
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
-  
-  char* a = sRequest.aStr();
   
   sRequest.vCopy("\""_Str);
   sRequest.vConcat(aWords[1]);
@@ -1623,7 +1553,6 @@ bool SEitf::bObject(Str* aWords[])
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
-  char* a = sRequest.aStr();
   
   sRequest.vConcat("object"_Str);
   
@@ -1638,7 +1567,6 @@ bool SEitf::bPrintRowBuffer(Str* aWords[])
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
-  char* a = sRequest.aStr();
   
   sRequest.vCopy("\""_Str);
   sRequest.vConcat(aWords[1]);
@@ -1709,7 +1637,7 @@ bool SEitf::bAppendRequest(StrVal& sRequest)
   
   StrLib::wToString((i8)this,wItfAddr);
   StrLib::vCopy(xWorkspace.aArea(),wItfAddr);
-  StrLib::vConcat(xWorkspace.aArea()," >seitf task.this task.seitf! ");
+  xWorkspace.vConcat(" >seitf task.this task.seitf! "_Str);
   xVal = xWorkspace;
   //vTrace("%s\n"_Str,xVal.aStr());
   xValSet.vAppend(aCursor,xVal);
