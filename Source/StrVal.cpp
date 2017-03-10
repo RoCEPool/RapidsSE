@@ -325,7 +325,7 @@ void StrVal::vCatSprint(Str* aFormat, ...)
 {
   va_list args;
   
-  char* aEnd = pAdd<char*>(aFormat,aFormat->iLength());
+  char* aEnd = pAdd<char*>(aArea(),iLength());
   
   va_start(args,aFormat);
   vsprintf(aEnd,(char*)aFormat,args);

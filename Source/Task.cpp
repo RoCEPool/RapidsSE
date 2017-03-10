@@ -1476,15 +1476,14 @@ void Task::vStackContents(Stack* pStack, StrVal& sStackContents)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  char* a = sStackContents.aStr();
-  *a = '\0';
+  sStackContents = ""_Str;
   
   i8 iParamValues = pStack->iValues();
   
-  StrLib::vSprintCat(a,"(");
+  sStackContents.vCatSprint("("_Str);
   for (i8 iValue = iParamValues - 1; iValue >= 0; iValue--) {
     
-    StrLib::vSprintCat(a," ");
+    sStackContents.vCatSprint(" "_Str);
     
     ValWsp* pValWsp = static_cast<ValWsp*>(pStack->pPeek(iValue));
     
@@ -1492,12 +1491,12 @@ void Task::vStackContents(Stack* pStack, StrVal& sStackContents)
     
     if (CN_BINVAL == eClass) {
       Object* pObject = _pBinVal(pValWsp)->pNewObject();
-      StrLib::vSprintCat(a,"(BINVAL)^%s=%p",
-                         aCN[pObject->eClass()],
-                         pObject);
+      sStackContents.vCatSprint("(BINVAL)^%s=%p"_Str,
+                                aCN[pObject->eClass()],
+                                pObject);
     }
     else if (CN_INTVAL == eClass) {
-      StrLib::vSprintCat(a,"%lld",_pIntVal(pValWsp)->iInt());
+      sStackContents.vCatSprint("%lld"_Str,_pIntVal(pValWsp)->iInt());
     }
     else if (CN_PTRVAL == eClass) {
       if (_pPtrVal(pValWsp)->pPtr()) {
@@ -1507,52 +1506,59 @@ void Task::vStackContents(Stack* pStack, StrVal& sStackContents)
         eCN ePtrClass = _pPtrVal(pValWsp)->pPtr()->eClass();
         
         if (CN_WORD == ePtrClass)
-          StrLib::vSprintCat(a,"^%s=%p:%s",
-                             aCN[ePtrClass],
-                             pPtr,
-                             ((Word*)pPtr)->sName().aStr());
+          sStackContents.vCatSprint("^%s=%p:%s"_Str,
+                                    aCN[ePtrClass],
+                                    pPtr,
+                                    ((Word*)pPtr)->sName().aStr());
         else if (CN_QUEUE == ePtrClass) {
           Word* pWord = Word::pToWord(pPtr);
-          StrLib::vSprintCat(a,"^%s=%p:%s",
-                             aCN[ePtrClass],
-                             pPtr,
-                             pWord->sName().aStr());
+          sStackContents.vCatSprint("^%s=%p:%s"_Str,
+                                    aCN[ePtrClass],
+                                    pPtr,
+                                    pWord->sName().aStr());
         }
         else if (CN_TASK == ePtrClass) {
           Task* pTask = _pTask(pPtr);
-          StrLib::vSprintCat(a,"^%s=%p:%s",
-                             aCN[ePtrClass],
-                             pPtr,
-                             pTask->sName().aStr());
+          sStackContents.vCatSprint("^%s=%p:%s"_Str,
+                                    aCN[ePtrClass],
+                                    pPtr,
+                                    pTask->sName().aStr());
         }
         else {
           if (pPtr->iMagic() == MAGIC && pPtr->eClass() < CN_ENUMS)
-            StrLib::vSprintCat(a,"^%s=%p",
-                               aCN[ePtrClass],
-                               pPtr);
+            sStackContents.vCatSprint("^%s=%p"_Str,
+                                      aCN[ePtrClass],
+                                      pPtr);
           //else
-          //  StrLib::vSprintCat(a,"%p",
+          //  sStackContents.vCatSprint("%p"_Str,
           //                     pValWsp->pPtr());
         }
       }
       else
-        StrLib::vSprintCat(a,"^%s=%p",pValWsp->aClass(),_pPtrVal(pValWsp)->pPtr());
+        sStackContents.vCatSprint("^%s=%p"_Str,
+                                  pValWsp->aClass(),
+                                  _pPtrVal(pValWsp)->pPtr());
     }
     else if (CN_IPVAL == eClass) {                                      
-      StrLib::vSprintCat(a,"%p",_pIpVal(pValWsp)->pIpPtr());
+      sStackContents.vCatSprint("%p"_Str,
+                                _pIpVal(pValWsp)->pIpPtr());
     }
     else if (CN_STRVAL == eClass) {
-      StrLib::vSprintCat(a,"\"%lls\"",_pStrVal(pValWsp)->aStr());
+      sStackContents.vCatSprint("\"%lls\""_Str,
+                                _pStrVal(pValWsp)->aStr());
     }
     else if (CN_VALSET == eClass) {
-      StrLib::vSprintCat(a,"<%s>=%p",pValWsp->aClass(),pValWsp);
+      sStackContents.vCatSprint("<%s>=%p"_Str,
+                                pValWsp->aClass(),
+                                pValWsp);
     }
     else {
-      StrLib::vSprintCat(a,"<unknown:class=%lld>",pValWsp->eClass());
+      sStackContents.vCatSprint("<unknown:class=%lld>"_Str,
+                                pValWsp->eClass());
     }
   }
   
-  StrLib::vSprintCat(a," )");
+  sStackContents.vCatSprint(" )"_Str);
 }
 
 /*----------------------------------------------------------------------------*/
