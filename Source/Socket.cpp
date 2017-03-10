@@ -460,7 +460,7 @@ bool Socket::bWriteVch(Str* aChar, SysCall& SysCall)
   
   SysCall.vClear();
   
-  i8 nBytes = StrLib::iLength(aChar->a());
+  i8 nBytes = aChar->iLength();
   
   i8 nSent = send(m_iSocketId, aChar->a(), nBytes,0);
   

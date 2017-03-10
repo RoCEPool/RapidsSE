@@ -109,7 +109,7 @@ bool SeHistory::bRecall(Str* aToken[], i8 nTokens)
   }
   else {
     // get command number
-    if (StrLib::iLength(aToken[1]->a()) < 1)
+    if (aToken[1]->iLength() < 1)
       return false;
     
     iCommand = aToken[1]->iToI8();

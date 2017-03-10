@@ -139,7 +139,7 @@ void Task::vStrClip(NNP_Task nnpTask)
     THROW_INVALID_DSTACK("str.clip"_Str);
   
   // validate length
-  i8 iHasLength = StrLib::iLength(sString.aStr());
+  i8 iHasLength = sString.iLength();
   
   if ( iLength < 0 || llabs(iLength) >= iHasLength)
     THROW("Invalid length for: str.clip"_Str);
@@ -260,7 +260,7 @@ void Task::vStrLeft(NNP_Task nnpTask)
     THROW_INVALID_DSTACK("str.left"_Str);
   
   // validate length
-  i8 iHasLength = StrLib::iLength(sString.aStr());
+  i8 iHasLength = sString.iLength();
   
   if ( iLength < 0)
     THROW("Invalid length for: str.left"_Str);
@@ -288,7 +288,7 @@ void Task::vStrLength(NNP_Task nnpTask)
   if ( ! nnpTask->m_pDataStack->bPop(sString) )
     THROW_INVALID_DSTACK("str.length"_Str);
   
-  iLength = StrLib::iLength(sString.aStr());
+  iLength = sString.iLength();
   
   nnpTask->m_pDataStack->vPush(iLength);
   
@@ -431,7 +431,7 @@ void Task::vStrRight(NNP_Task nnpTask)
     THROW_INVALID_DSTACK("str.right"_Str);
   
   // validate length
-  i8 iHasLength = StrLib::iLength(sString.aStr());
+  i8 iHasLength = sString.iLength();
   
   if ( iLength < 0)
     THROW("Invalid length for: str.right"_Str);
@@ -464,7 +464,7 @@ void Task::vStrSub(NNP_Task nnpTask)
   if ( ! nnpTask->m_pDataStack->bPop(sString,iStart,iLength) )
     THROW_INVALID_DSTACK("str.sub"_Str);
   
-  i8 iHasLength = StrLib::iLength(sString.aStr());
+  i8 iHasLength = sString.iLength();
   
   // validate start index
   if ( iStart < 0 || iStart >= iHasLength)

@@ -105,7 +105,6 @@ void Task::vRowBufferAppendRecord(NNP_Task nnpTask)
   
   Str* aRecord = (Str*)pFile->pRecord()->aWspArea();
   
-//  i8 iLength = StrLib::iLength(aRecord);
   i8 iLength = pFile->iRecordLength();
   
   bool b = pRowBuffer->bInsertRow(pTxRef,aRecord,iLength);
