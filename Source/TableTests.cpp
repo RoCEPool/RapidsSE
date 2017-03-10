@@ -337,9 +337,9 @@ void TableTests::vRun(RunTests* pRunTests)
   vRequire(sCommand, false, EC_NO_SUCH_TABLE);
 
   for (i8 iIndex=0 ; iIndex<1000; iIndex++) {
-    StrLib::vSprint(sCommand.aStr(),
-                    "create table t%d (col0 integer unique, col1 timestamp not null);"_Str,
-                    iIndex);
+    sCommand.vSprint(
+      "create table t%d (col0 integer unique, col1 timestamp not null);"_Str,
+      iIndex);
     vRequire(sCommand, true, EC_NONE);
     
     sCommand = "cf .."_Str;
@@ -347,9 +347,7 @@ void TableTests::vRun(RunTests* pRunTests)
   }
 
   for (i8 iIndex=0 ; iIndex<1000; iIndex++) {
-    StrLib::vSprint(sCommand.aStr(),
-                    "drop table t%d;"_Str,
-                    iIndex);
+    sCommand.vSprint("drop table t%d;"_Str,iIndex);
     vRequire(sCommand, true, EC_NONE);
   }
  

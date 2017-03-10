@@ -96,13 +96,6 @@ Task::Task(void)
 
   ASSERT(gpTaskList);
   
-//  // this contructor is invoked only for root task creation
-//  if (gnpRootTask != nullptr) {
-//    StrLib::vSprint(m_sException.aStr(),"Root task already exits!");
-//    m_sFile = __FILE__;
-//    throw (i8)__LINE__;
-//  }
-  
   vInit(""_Str);
     
   _checkInitialised_(CN_TASK);
@@ -1391,7 +1384,7 @@ Thread* Task::pRootThread(void)
   Object* pThreadEmb;
   
   if ( ! m_pDataStack->bPop(pThreadEmb) ) {
-    StrLib::vSprint(m_sException.aStr(),"Invalid data stack  for: h.spawn"_Str);
+    m_sException.vSprint("Task::pRootThread: invalid data stack"_Str);
     m_sFile = (Str*)__FILE__;
     throw (i8)__LINE__;
   }
