@@ -83,21 +83,22 @@ u8 Random::uRandom(u8 uLow, u8 uHigh)
 /*---------------------------------------------------------------------------*/
 s48K Random::sRandomString(i8 iLength) {
   
-  char sCharSet[256] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789,.-#'?!";
+  s256 sCharSet =
+    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.-#?!";
+  
   s48K sRandomString;
   
   ASSERT(iLength < static_cast<i8>(sizeof(s48K)));
   
-  i8 iCharSetSize = StrLib::iSize(sCharSet);
+  i8 iCharSetSize = sCharSet.iLength() - 1;
   
-  for (i8 i = 0;i < iLength; i++) {
-    i8 iKey = iRandom(iCharSetSize-1);
-    sRandomString.vAppend(sCharSet[iKey]);
+  for (i8 i = 0; i < iLength; i++) {
+    i8 iKey = iRandom(iCharSetSize);
+    sRandomString.vAppend(sCharSet.aArea()[iKey]);
   }
   
   sRandomString.vAppend('\0');
 
-  
   return sRandomString;
 }
 
