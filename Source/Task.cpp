@@ -1296,49 +1296,25 @@ void Task::vPrimitive(Str* aPrimitive)
   if ( ! (m_iTracing & C_TRACE_STEPS) )
     return;
   
-  char aRoutine[128];
+  s256 sRoutine;
   
   Cell* pCell = IP.m_pCell;
   Word* pLocatedWord = m_xPathStack.pLocate(pCell);
   if (pLocatedWord)
-    StrLib::vCopy(aRoutine,pLocatedWord->sName().aStr());
+    sRoutine = pLocatedWord->sName();
   else
-    StrLib::vCopy(aRoutine,"<unknown>");
+    sRoutine = "<unknown>"_Str;
   
   i8 iDataValues  = m_pDataStack->iValues();
   i8 iReturnValues = m_pReturnStack->iValues();
   vTrace("%-15s %15s : r%lld ; d%2d="_Str,
-         aRoutine,aPrimitive,iReturnValues,iDataValues);
+         sRoutine.aArea(),
+         aPrimitive,
+         iReturnValues,
+         iDataValues);
   
-//  for (i8 iValue = iParamValues - 1; iValue >= 0; iValue--) {
-//    
-//    if (iValue != iParamValues-1)
-//      vTrace(","_Str);
-//    
-//    ValWsp* pValWsp = static_cast<ValWsp*>(m_pDataStack->pPeek(iValue));
-//    
-//    eCN eClass = pValWsp->eClass();
-//    
-//    if (CN_INTVAL == eClass) {
-//      vTrace("%lld"_Str,pValWsp->iInt());
-//    }
-//    else if (CN_PTRVAL == eClass) {
-//      vTrace("%p (%s)"_Str,pValWsp->pPtr(),pValWsp->aClass());
-//    }
-//    else if (CN_STRVAL == eClass) {
-//      vTrace("\"%lls\""_Str,pValWsp->aStr());
-//    }
-//    else if (CN_VALSET == eClass) {
-//      vTrace("%p (%s)"_Str,pValWsp,pValWsp->aClass());
-//    }
-//    else {
-//      vTrace("unknown value on stack: class=%lld"_Str,pValWsp->eClass());
-//    }
-//  }
-
   s48K sStackContents;
   vStackContents(m_pDataStack, sStackContents);
-  
   vTrace("%s\n"_Str,sStackContents.aStr());
 }
 
