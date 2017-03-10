@@ -18,6 +18,7 @@ void vKillPrev(void);
 /*----------------------------------------------------------------------------*/
 int main(int argc, const char* argv[])
 {
+  /*
   printf(
          "sizeof(eCN) %lu; sizeof(bool) %lu; \n"
          "sizeof(Object) %lu; sizeof(s) %lu; \n"
@@ -29,7 +30,7 @@ int main(int argc, const char* argv[])
          sizeof(s32),sizeof(s256),
          sizeof(Value),sizeof(IntVal),sizeof(ValWsp)
   );
-  
+  */
   const char *aRelDbg;
 #ifdef _DEBUG
   aRelDbg = "debug";
