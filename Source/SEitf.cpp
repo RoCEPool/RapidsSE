@@ -215,9 +215,21 @@ void SEitf::vInit(void)
   m_xPathStack.vPush(reinterpret_cast<Dic*>(pCell));
   
   // /tenants/boray/catalogs/rapidsse/schemas
-  Word* pSchema = m_xPathStack.pFindInCurrent("schemas");
+  Word* pSchemas = m_xPathStack.pFindInCurrent("schemas");
+  ASSERT(pSchemas);
+  pCell = pSchemas->pFirstCell();
+  m_xPathStack.vPush(reinterpret_cast<Dic*>(pCell));
+  
+  // /tenants/boray/catalogs/rapidsse/schemas/public
+  Word* pSchema = m_xPathStack.pFindInCurrent("public");
   ASSERT(pSchema);
   pCell = pSchema->pFirstCell();
+  m_xPathStack.vPush(reinterpret_cast<Dic*>(pCell));
+  
+  // /tenants/boray/catalogs/rapidsse/schemas/public/tables
+  Word* pTables = m_xPathStack.pFindInCurrent("tables");
+  ASSERT(pTables);
+  pCell = pTables->pFirstCell();
   m_xPathStack.vPush(reinterpret_cast<Dic*>(pCell));
 }
 

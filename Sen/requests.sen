@@ -19,7 +19,7 @@
 "requests_misc.sen"       include
 "requests_object.sen"     include
 
-// create /tenants/boray/catalogs/rapidsse
+// create /tenants/boray/catalogs/rapidsse/schemas/public
 createDefaultFolders
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
