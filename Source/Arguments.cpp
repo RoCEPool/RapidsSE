@@ -414,7 +414,7 @@ bool Arguments::bParse(int argc, Str* argv[])
     // the current node should have been specfied in the --node
     bool bFound = false;
     for (i8 iIndex = 0; iIndex < m_nNodes; iIndex++) {
-      if (StrLib::bEqualTo(m_xNodes[iIndex].m_sNodeName.aStr(), m_sNodeName.aStr(), C_NO_CASE)) {
+      if (m_xNodes[iIndex].m_sNodeName.bSame(m_sNodeName)) {
         bFound = true;
         break;
       }
@@ -434,7 +434,7 @@ bool Arguments::bParse(int argc, Str* argv[])
   }
 
   // if no regionName then form region name using regionPrefix and node name
-  if (StrLib::bEqualTo(m_sRegionName.aStr(),"")) {
+  if (m_sRegionName.bSame(""_Str)) {
     m_sRegionName.vCat(m_sRegionPrefix,"_"_Str,m_sNodeName.aStr(),nullptr);
   }
   else {
