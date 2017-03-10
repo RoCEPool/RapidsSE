@@ -112,10 +112,9 @@ Str* Table::pAnalyze(bool bDetailed)
   i8 nStrandsTotal = 0;
   s48K sAnalysis;
   
-  StrLib::vSprintCat(sAnalysis.aStr(),
-                     "N%lld: Analysis of Table %s\n",
-                     gpGrid->iThisNode(),
-                     m_sTableName.aStr());
+  sAnalysis.vCatSprint("N%lld: Analysis of Table %s\n"_Str,
+                       gpGrid->iThisNode(),
+                       m_sTableName.aStr());
 
   for (i8 iSlot = 0; iSlot < gxArguments.m_nSlots; iSlot++) {
     
@@ -140,11 +139,10 @@ Str* Table::pAnalyze(bool bDetailed)
           nRowBuffer++;
           nRowsInBuffer = pRowBuffer->nRows();
           pRowBuffer = pRowBuffer->pNextBuffer();
-          StrLib::vSprintCat(sAnalysis.aStr(),
-                             "   strand:%lld rowBuffer%lld: %lld rows\n",
-                             nStrands,
-                             nRowBuffer,
-                             nRowsInBuffer);
+          sAnalysis.vCatSprint("   strand:%lld rowBuffer%lld: %lld rows\n"_Str,
+                               nStrands,
+                               nRowBuffer,
+                               nRowsInBuffer);
         }
       }
       
@@ -153,16 +151,22 @@ Str* Table::pAnalyze(bool bDetailed)
       pStrand = pStrand->pNextStrand();
     }
     
-    StrLib::vSprintCat(sAnalysis.aStr(),
-                       "  partition %lld: %3lld strands; %5lld buffers; %lld rows\n",
-                       iPartition,nStrands,nBuffers,nRows);
+    sAnalysis.vCatSprint(
+      "  partition %lld: %3lld strands; %5lld buffers; %lld rows\n"_Str,
+      iPartition,
+      nStrands,
+      nBuffers,
+      nRows);
+    
     nRowsTotal += nRows;
     nBuffersTotal += nBuffers;
     nStrandsTotal += nStrands;
   }
-  StrLib::vSprintCat(sAnalysis.aStr(),
-                     "        total: %3lld strands; %5lld buffers; %lld rows\n",
-                     nStrandsTotal,nBuffersTotal,nRowsTotal);
+  sAnalysis.vCatSprint(
+    "        total: %3lld strands; %5lld buffers; %lld rows\n"_Str,
+    nStrandsTotal,
+    nBuffersTotal,
+    nRowsTotal);
   
   return sAnalysis;
 }
