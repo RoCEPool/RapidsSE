@@ -68,6 +68,17 @@ void Memory::vCopy(void* pDst, const void* pSrc, i8 iBytes)
 }
 
 /*----------------------------------------------------------------------------*/
+/* copy from src to dst                                                       */
+/*----------------------------------------------------------------------------*/
+i8 Memory::iGetTotalMemory(void)
+{
+  i8 iPages    = sysconf(_SC_PHYS_PAGES);
+  i8 iPageSize = sysconf(_SC_PAGE_SIZE);
+  
+  return iPages * iPageSize;
+}
+
+/*----------------------------------------------------------------------------*/
 /* dump given bytes of memory at given address                                */
 /*----------------------------------------------------------------------------*/
 void Memory::vHexDump(void *pAddress, i8 iBytes)

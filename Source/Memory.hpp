@@ -20,6 +20,7 @@ namespace Platform
     static void  vCheckInitialised(void* pAddress, eCN eClass);
     static void  vCheckInitialised(void* pAddress, i8 nBytes);
     static void  vCopy(void* pDst, const void* pSrc, i8 iBytes);
+    static i8    iGetTotalMemory(void);
     static void  vHexDump(void *pAddress, i8 iSize);
     static void  vMove(void* pDst, const void* pSrc, i8 iBytes);
     static void  vScribble(void* pAddress, i8 nBytes);

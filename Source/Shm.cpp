@@ -123,6 +123,25 @@ bool Shm::bCreate(s& sRegionName, i8 iSize, int& iFD,
 /*----------------------------------------------------------------------------*/
 /* map a new an anonymous region of memory (private or shared)                */
 /*----------------------------------------------------------------------------*/
+bool Shm::bLock(void* pAddress, i8 iBytes, SysCall& SysCall)
+{
+  SysCall.vClear();
+
+  if (gxArguments.m_bVerbose)
+    vTrace("Shm::vLock A\n");
+  
+  if (mlock(pAddress,iBytes) != 0) {
+    SysCall.vError(errno);
+    vWarn("Shm::vLock: mlock() error; errno=%d %s line=%d\n",errno,strerror(errno), __LINE__);
+    return false;
+  }
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* map a new an anonymous region of memory (private or shared)                */
+/*----------------------------------------------------------------------------*/
 void* Shm::pMap(int iFd, void* pAddress, i8 iBytes, bool bShared, bool bHugeTlb, SysCall& SysCall)
 {
   SysCall.vClear();
