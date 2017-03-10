@@ -260,7 +260,7 @@ RegFrame* Plan::pRegFrameFind(s32& sName)
   RegFrame* pRegFrame = nullptr;
   
   for (pRegFrame = m_pRegList; pRegFrame; pRegFrame = pRegFrame->pNext())
-    if (StrLib::bSame(pRegFrame->sName().aStr(), sName.aStr()))
+    if (pRegFrame->sName().bSame(sName))
       break;
   
   return pRegFrame;
