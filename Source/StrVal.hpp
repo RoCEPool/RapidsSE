@@ -40,6 +40,7 @@ namespace Values
     void  vAssign(Str* aStr);
     void  vAssign(Str* aStr, i8 iLength);
     void  vCat(Str* aStr, ...);
+    void  vCatSprint(Str* aFormat, ...);
     void  vConcat(Str* aStr);
     void  vCopy(const char* aStr);
     void  vCopy(const char* aStr, i8 iLength);

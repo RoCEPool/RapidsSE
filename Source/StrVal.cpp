@@ -319,6 +319,20 @@ void StrVal::vCat(Str* aStr, ...)
 }
 
 /*----------------------------------------------------------------------------*/
+/* vCatSprint: formatted concatenated sprint                                  */
+/*----------------------------------------------------------------------------*/
+void StrVal::vCatSprint(Str* aFormat, ...)
+{
+  va_list args;
+  
+  char* aEnd = pAdd<char*>(aFormat,aFormat->iLength());
+  
+  va_start(args,aFormat);
+  vsprintf(aEnd,(char*)aFormat,args);
+  va_end(args);
+}
+
+/*----------------------------------------------------------------------------*/
 /* concat given Str                                                           */
 /*----------------------------------------------------------------------------*/
 void StrVal::vConcat(Str* aStr)
