@@ -1736,7 +1736,7 @@ void SEitf::vClearLastError(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   m_eErrorCode = EC_NONE;
-  StrLib::vCopy(m_sErrorMsg.aStr(), "");
+  m_sErrorMsg = ""_Str;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1760,8 +1760,7 @@ void SEitf::vSetLastError(eEC eError)
   ASSERT(eError <  EC_ENUMS);
   
   m_eErrorCode = eError;
-  StrLib::vCopy(m_sErrorMsg.aStr(), aEC[m_eErrorCode]->a());
-  
+  m_sErrorMsg = aEC[m_eErrorCode];
 }
 
 /*----------------------------------------------------------------------------*/
