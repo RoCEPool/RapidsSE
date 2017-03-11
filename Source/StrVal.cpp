@@ -345,6 +345,26 @@ void StrVal::vConcat(Str* aStr)
 }
 
 /*----------------------------------------------------------------------------*/
+/* bContains: test if arg is in substr                                        */
+/*----------------------------------------------------------------------------*/
+bool StrVal::bContains(Str* aArg)
+{
+  return StrLib::bContains(aArea(),aArg->a());
+}
+
+/*----------------------------------------------------------------------------*/
+/* copy given Str, then concat variable sequence of Str's                     */
+/*----------------------------------------------------------------------------*/
+void StrVal::vCopyTill(Str* aSrc, char cTill)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+  
+  StrLib::vCopyTill(aArea(),aSrc->a(),cTill);
+  
+  _postcondition_(_MAGIC_,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
 /* copy given str                                                             */
 /*----------------------------------------------------------------------------*/
 void StrVal::vCopy(const char* aStr)
@@ -398,18 +418,6 @@ void StrVal::vCopyCat(Str* aStr, ...)
   
   va_end(xVarArgs);
 
-  _postcondition_(_MAGIC_,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* copy given Str, then concat variable sequence of Str's                     */
-/*----------------------------------------------------------------------------*/
-void StrVal::vCopyTill(Str* aSrc, char cTill)
-{
-  _precondition_(_MAGIC_,_FOOTER_);
-  
-  StrLib::vCopyTill(aArea(),aSrc->a(),cTill);
-  
   _postcondition_(_MAGIC_,_FOOTER_);
 }
 

@@ -42,6 +42,7 @@ namespace Values
     void  vCat(Str* aStr, ...);
     void  vCatSprint(Str* aFormat, ...);
     void  vConcat(Str* aStr);
+    bool  bContains(Str* aArg);
     void  vCopy(const char* aStr);
     void  vCopy(const char* aStr, i8 iLength);
     void  vCopy(Str* aStr);

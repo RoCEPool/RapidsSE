@@ -48,27 +48,27 @@ bool Magnitudes::bBytes(Str* psBuf, i8& iBytes)
   
   sString.vToLower();
   
-  if (StrLib::bContains(sString.aStr(), "kb")) {
+  if (sString.bContains("kb"_Str)) {
     sNumber.vCopyTill(sString,'k');
     iMagnitude = C_1KB;
   }
-  else if (StrLib::bContains(sString.aStr(), "mb")) {
+  else if (sString.bContains("mb"_Str)) {
     sNumber.vCopyTill(sString,'m');
     iMagnitude = C_1MB;
   }
-  else if (StrLib::bContains(sString.aStr(), "gb")) {
+  else if (sString.bContains("gb"_Str)) {
     sNumber.vCopyTill(sString,'g');
     iMagnitude = C_1GB;
   }
-  else if (StrLib::bContains(sString.aStr(), "tb")) {
+  else if (sString.bContains("tb"_Str)) {
     sNumber.vCopyTill(sString,'t');
     iMagnitude = C_1TB;
   }
-  else if (StrLib::bContains(sString.aStr(), "pb")) {
+  else if (sString.bContains("pb"_Str)) {
     sNumber.vCopyTill(sString,'p');
     iMagnitude = C_1PB;
   }
-  else if (StrLib::bContains(sString.aStr(), "b")) {
+  else if (sString.bContains("b"_Str)) {
     if (!StrLib::bEqualTo(StrLib::sLast(sString.aStr()), "b")) {
       return false;
     }
