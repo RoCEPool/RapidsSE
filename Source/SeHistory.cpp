@@ -102,7 +102,7 @@ bool SeHistory::bRecall(Str* aToken[], i8 nTokens)
   
   i8 iCommand;
   
-  if (StrLib::bEqualTo("!!",aToken[0]->a(),C_NO_CASE)) {
+  if (aToken[0]->bEqual("!!"_Str)) {
     iCommand = m_iCommands;
     if (! iCommand)
       return false;
