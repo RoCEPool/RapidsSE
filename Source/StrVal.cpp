@@ -402,6 +402,18 @@ void StrVal::vCopyCat(Str* aStr, ...)
 }
 
 /*----------------------------------------------------------------------------*/
+/* copy given Str, then concat variable sequence of Str's                     */
+/*----------------------------------------------------------------------------*/
+void StrVal::vCopyTill(Str* aSrc, char cTill)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+  
+  StrLib::vCopyTill(aArea(),aSrc->a(),cTill);
+  
+  _postcondition_(_MAGIC_,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
 /* test if string ends with given suffix                                      */
 /*----------------------------------------------------------------------------*/
 bool StrVal::bEnds(const char* aSuffix)

@@ -49,32 +49,33 @@ bool Magnitudes::bBytes(Str* psBuf, i8& iBytes)
   sString.vToLower();
   
   if (StrLib::bContains(sString.aStr(), "kb")) {
-    StrLib::vCopyTill(sNumber.aStr(), sString.aStr(), 'k');
+    sNumber.vCopyTill(sString,'k');
     iMagnitude = C_1KB;
-    
-  } else if (StrLib::bContains(sString.aStr(), "mb")) {
-    StrLib::vCopyTill(sNumber.aStr(), sString.aStr(), 'm');
+  }
+  else if (StrLib::bContains(sString.aStr(), "mb")) {
+    sNumber.vCopyTill(sString,'m');
     iMagnitude = C_1MB;
-    
-  } else if (StrLib::bContains(sString.aStr(), "gb")) {
-    StrLib::vCopyTill(sNumber.aStr(), sString.aStr(), 'g');
+  }
+  else if (StrLib::bContains(sString.aStr(), "gb")) {
+    sNumber.vCopyTill(sString,'g');
     iMagnitude = C_1GB;
-    
-  } else if (StrLib::bContains(sString.aStr(), "tb")) {
-    StrLib::vCopyTill(sNumber.aStr(), sString.aStr(), 't');
+  }
+  else if (StrLib::bContains(sString.aStr(), "tb")) {
+    sNumber.vCopyTill(sString,'t');
     iMagnitude = C_1TB;
-    
-  } else if (StrLib::bContains(sString.aStr(), "pb")) {
-    StrLib::vCopyTill(sNumber.aStr(), sString.aStr(), 'p');
+  }
+  else if (StrLib::bContains(sString.aStr(), "pb")) {
+    sNumber.vCopyTill(sString,'p');
     iMagnitude = C_1PB;
-    
-  } else if (StrLib::bContains(sString.aStr(), "b")) {
+  }
+  else if (StrLib::bContains(sString.aStr(), "b")) {
     if (!StrLib::bEqualTo(StrLib::sLast(sString.aStr()), "b")) {
       return false;
     }
-    StrLib::vCopyTill(sNumber.aStr(), sString.aStr(), 'b');
+    sNumber.vCopyTill(sString,'b');
     iMagnitude = 1;
-  } else {
+  }
+  else {
     sNumber = sString;
   }
   
