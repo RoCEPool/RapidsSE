@@ -57,6 +57,7 @@ namespace Values
     char* aStr(void);
     void  vToCommand(char* aStr);
     i8    iToI8(void);
+    void  vToLower(void);
     void  vToString(char* aStr);
   
     Str* aStrArea(void);

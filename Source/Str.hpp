@@ -31,7 +31,8 @@ namespace Base
     bool bSame(Str* aArg);
     void vSprint(Str* aFormat, ...);
 
-    i8 iToI8(void);
+    i8    iToI8(void);
+    void  vToLower(void);
   
     i8 iLength(void);
 

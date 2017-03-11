@@ -46,7 +46,7 @@ bool Magnitudes::bBytes(Str* psBuf, i8& iBytes)
   
   sString = (Str*)psBuf;
   
-  StrLib::vToLower(sString.aStr());
+  sString.vToLower();
   
   if (StrLib::bContains(sString.aStr(), "kb")) {
     StrLib::vCopyTill(sNumber.aStr(), sString.aStr(), 'k');

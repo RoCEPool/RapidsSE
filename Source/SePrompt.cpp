@@ -1413,7 +1413,7 @@ bool SePrompt::bCreateTable(void)
     
     // now we should see a column type
     // validate it
-    StrLib::vToLower(m_aToken[j]->a());
+    m_aToken[j]->vToLower();
     
     // add the column
     if (!bExecuteRequest()) {
