@@ -25,6 +25,7 @@ namespace Base
     void operator =(Str*);
   
     void vCopy(Str* aArg);
+    void vCopyLen(Str* aArg, i8 nBytes);
     void vConcat(Str* aArg);
     bool bEqual(Str* aArg);
     void vPrint(void);
