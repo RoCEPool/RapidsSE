@@ -1184,7 +1184,6 @@ bool SePrompt::bCreateTable(void)
     m_aToken[iToken]->vCopy(""_Str);
   }
   
-  i8 iValue;
   i8 iNumTokens = iToken;
   
   // some validations
@@ -1289,8 +1288,7 @@ bool SePrompt::bCreateTable(void)
         m_aToken[j]->vConcat(m_aToken2[iCurrentToken]);
         
         // check if it was numeric
-        char* a = m_aToken2[iCurrentToken++]->a();
-        if (!StrLib::bExtractI8(&a, &iValue)) {
+        if ( ! m_aToken2[iCurrentToken++]->bIsNumeric() ) {
           // drop the table
           bDropReturnTable(m_aToken2[2]);
           m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
@@ -1323,8 +1321,7 @@ bool SePrompt::bCreateTable(void)
         m_aToken[j]->vConcat(m_aToken2[iCurrentToken]);
         
         // check if it was numeric
-        char* a = m_aToken2[iCurrentToken++]->a();
-        if (!StrLib::bExtractI8(&a, &iValue)) {
+        if ( ! m_aToken2[iCurrentToken++]->bIsNumeric() ) {
           bDropReturnTable(m_aToken2[2]);
           m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
           return false;
@@ -1343,8 +1340,7 @@ bool SePrompt::bCreateTable(void)
         m_aToken[j]->vConcat(m_aToken2[iCurrentToken]);
         
         // check if it was numeric
-        a = m_aToken2[iCurrentToken++]->a();
-        if (!StrLib::bExtractI8(&a, &iValue)) {
+        if ( ! m_aToken2[iCurrentToken++]->bIsNumeric() ) {
           bDropReturnTable(m_aToken2[2]);
           m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
           return false;

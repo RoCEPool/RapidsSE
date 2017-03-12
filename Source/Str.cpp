@@ -114,6 +114,16 @@ bool Str::bEqual(Str* aArg)
 }
 
 /*----------------------------------------------------------------------------*/
+/* bIsNumeric: test if this Str is numeric                                    */
+/*----------------------------------------------------------------------------*/
+bool Str::bIsNumeric(void)
+{
+  bool bNumeric = StrLib::bIsNumeric(a());
+  
+  return bNumeric;
+}
+
+/*----------------------------------------------------------------------------*/
 /* bSame: test if this Str is same as arg (ignores case)                      */
 /*----------------------------------------------------------------------------*/
 bool Str::bSame(Str* aArg)

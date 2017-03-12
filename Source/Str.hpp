@@ -28,6 +28,8 @@ namespace Base
     void vCopyLen(Str* aArg, i8 nBytes);
     void vConcat(Str* aArg);
     bool bEqual(Str* aArg);
+    bool bIsNumeric(void);
+
     void vPrint(void);
     bool bSame(Str* aArg);
     void vSprint(Str* aFormat, ...);

@@ -48,7 +48,7 @@ void StorageEngine::vCheckAssumptions(void)
   
   // find number of entries in aCN
   for (i8 i = 0; i <= CN_ENUMS; i++) {
-    if (StrLib::bEqualTo(aCN[i]->a(), "ENUMS")) {
+    if (aCN[i]->bEqual("ENUMS"_Str)) {
       bFoundEnum = true;
       break;
     }
