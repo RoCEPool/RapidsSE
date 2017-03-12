@@ -176,6 +176,18 @@ void StrVal::operator =(StrVal& rArg)
 /*----------------------------------------------------------------------------*/
 /* assignment operator                                                        */
 /*----------------------------------------------------------------------------*/
+void StrVal::operator =(StrVal* pArg)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+  
+  vCopy(pArg->aStr());
+  
+  _postcondition_(_MAGIC_,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* assignment operator                                                        */
+/*----------------------------------------------------------------------------*/
 void StrVal::operator =(Str* aStr)
 {
   _precondition_(_MAGIC_,_FOOTER_);

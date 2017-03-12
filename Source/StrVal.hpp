@@ -28,6 +28,7 @@ namespace Values
   
     void operator =(char* aArg);
     void operator =(StrVal& rArg);
+    void operator =(StrVal* pArg);
     void operator =(Str*);
     void operator =(ValWsp& rArg);
   
