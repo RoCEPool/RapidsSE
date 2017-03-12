@@ -19,9 +19,6 @@ namespace Base
 
     ~Str(void);
     
-    operator char*();
-    operator const char*();
-  
     void operator =(Str*);
   
     void vCopy(Str* aArg);
