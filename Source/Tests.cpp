@@ -135,10 +135,10 @@ void Tests::vRequire(StrVal& sCommand, bool bResult, eEC eErrorExpected, i8 iExp
       m_iTestsFailed++;
       Tests::vAssertFailed();
     }
-    *_pStrVal(&sCommand) = "first";
+    *_pStrVal(&sCommand) = "first"_Str;
     bReturn = m_pSePrompt->bExecuteString(sCommand, eErrorReturned, &pRowPtr);
     
-    *_pStrVal(&sCommand) = "next";
+    *_pStrVal(&sCommand) = "next"_Str;
     while(bReturn) {
       iRecvdRows++;
       bReturn = m_pSePrompt->bExecuteString(sCommand, eErrorReturned, &pRowPtr);

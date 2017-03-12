@@ -152,18 +152,6 @@ i8 StrVal::nAreaRequired(i8 iLength)
 /*----------------------------------------------------------------------------*/
 /* assignment operator                                                        */
 /*----------------------------------------------------------------------------*/
-void StrVal::operator =(const char* aArg)
-{
-  _precondition_(_MAGIC_,_FOOTER_);
-  
-  StrLib::vCopyLen(aArea(),aArg,m_xWsp.nUsed()-1);
-  
-  _postcondition_(_MAGIC_,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* assignment operator                                                        */
-/*----------------------------------------------------------------------------*/
 void StrVal::operator =(char* aArg)
 {
   _precondition_(_MAGIC_,_FOOTER_);
