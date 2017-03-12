@@ -40,7 +40,7 @@ int main(int argc, const char* argv[])
   char* a = *"This is a Str literal"_Str;
   
   // this compiles but doesnt work.  not even sure what it means
-  Str xStr = "abc";
+  Str xStr("abc"_Str);
   xStr.vPrint();
   
   // this works.  _Str takes a const char* and casts it to a Str*

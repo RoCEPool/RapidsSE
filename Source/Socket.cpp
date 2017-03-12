@@ -322,7 +322,7 @@ bool Socket::bReadVch(Str* ppChar, SysCall& SysCall)
     return false;
   }
   
-  *ppChar = StrLib::wAllocate(aWorkspace);
+  *ppChar = (Str*)StrLib::wAllocate(aWorkspace);
   
   SysCall.vSuccess();
   return true;

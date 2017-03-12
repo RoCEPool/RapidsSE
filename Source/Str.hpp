@@ -12,13 +12,13 @@ namespace Base
   public:
     void* operator new(size_t);
   
-    Str() = default;
+  //Str() = default;
+    Str(void);
   
-  //Str(void);
+    Str(Str* aArg);
+
     ~Str(void);
-  
-    Str(const char* aLiteral) { };
-  
+    
     operator char*();
     operator const char*();
   
