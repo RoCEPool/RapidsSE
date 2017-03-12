@@ -212,18 +212,6 @@ void StrVal::vAppend(const char cChar)
 }
 
 /*----------------------------------------------------------------------------*/
-/* append given str                                                           */
-/*----------------------------------------------------------------------------*/
-void StrVal::vAppend(const char* aStr)
-{
-  _precondition_(_MAGIC_,_FOOTER_);
-  
-  StrLib::vConcat(aArea(),aStr);
-  
-  _postcondition_(_MAGIC_,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
 /* get address of data area                                                   */
 /*----------------------------------------------------------------------------*/
 char* StrVal::aArea(void)
