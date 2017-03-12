@@ -353,18 +353,6 @@ void StrVal::vCopy(const char* aStr)
 }
 
 /*----------------------------------------------------------------------------*/
-/* copy str of given length                                                   */
-/*----------------------------------------------------------------------------*/
-void StrVal::vCopy(const char* aStr, i8 iLength)
-{
-  vClass(CN_STRVAL);
-  
-  StrLib::vCopyLen(aArea(),aStr,iLength);
-  
-  vAreaSize();
-}
-
-/*----------------------------------------------------------------------------*/
 /* copy given Str                                                             */
 /*----------------------------------------------------------------------------*/
 void StrVal::vCopy(Str* aStr)
