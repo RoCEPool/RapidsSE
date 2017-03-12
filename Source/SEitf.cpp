@@ -1703,7 +1703,7 @@ bool SEitf::bPopResponse(eEC& eResult, StrVal& sResponse)
   
   b = xValSet.bExtract(aCursor,pValWsp);
   ASSERT(b);
-  *_pStrVal(&sResponse) = _pStrVal(pValWsp)->aStr();
+  *_pStrVal(&sResponse) = _pStrVal(pValWsp);
   
   b = xValSet.bExtract(aCursor,pValWsp);
   ASSERT(! b);
