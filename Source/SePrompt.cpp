@@ -488,8 +488,8 @@ bool SePrompt::bProcessCommand(bool bPostProcess)
   
   m_xHistory.vAppend(m_aToken);
   
-  if (bTestFile(m_aToken[0]->a())) {
-    vPushFile(m_aToken[0]->a());
+  if (bTestFile(m_aToken[0])) {
+    vPushFile(m_aToken[0]);
     m_pTokeniser->vLineMode(true);
     m_sResponse = "<ok>"_Str;
     return true;
@@ -728,13 +728,13 @@ bool SePrompt::bGetNextRow(void)
 /*----------------------------------------------------------------------------*/
 /* test for command file                                                      */
 /*----------------------------------------------------------------------------*/
-bool SePrompt::bTestFile(char* pWord)
+bool SePrompt::bTestFile(Str* aFileName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   File xFile;
   
-  if (xFile.bExists((Str*)pWord))
+  if (xFile.bExists(aFileName))
     return true;
   else
     return false;
@@ -743,11 +743,13 @@ bool SePrompt::bTestFile(char* pWord)
 /*----------------------------------------------------------------------------*/
 /* push command file                                                          */
 /*----------------------------------------------------------------------------*/
-void SePrompt::vPushFile(char* pPath)
+void SePrompt::vPushFile(Str* aFileName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  s256 sPath(pPath);
+  s256 sPath;
+  
+  sPath = aFileName;
   
   m_pTokeniser->vPush();
   

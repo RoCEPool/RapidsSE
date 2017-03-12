@@ -72,8 +72,8 @@ private:
   bool bGetNextRow(void);
   void vIterateRows(void);
   void vHelp(void);
-  bool bTestFile(char* pPath);
-  void vPushFile(char* pWord);
+  bool bTestFile(Str* aPath);
+  void vPushFile(Str* aPath);
   
   bool bBeginInsert(void);
   bool bChangeWorkingDir(void);

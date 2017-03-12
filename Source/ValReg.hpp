@@ -18,8 +18,6 @@ namespace Values
     
     void operator =(i8 iInt);
     void operator =(Object* pPtr);
-    void operator =(char* pStr);
-    void operator =(const char* pStr);
   };
   
   ValReg* _pValReg(void* aAddr);
