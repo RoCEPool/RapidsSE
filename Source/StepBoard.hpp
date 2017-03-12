@@ -12,7 +12,7 @@ namespace Tasks
   {
   public:
     i8   m_iThreads; // how many threads
-    char m_aStepName[C_STEPBOARD_THREADS][C_STEPBOARD_NAME]; // last step name
+    s256 m_sStepName[C_STEPBOARD_THREADS];  // last step name
     i8   m_iStepPoint[C_STEPBOARD_THREADS]; // last step point
     
   public:
