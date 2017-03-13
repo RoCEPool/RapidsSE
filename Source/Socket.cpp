@@ -305,30 +305,6 @@ bool Socket::bCreateServer(int iPort, SysCall& SysCall)
 }
 
 /*----------------------------------------------------------------------------*/
-/* read string into a char buffer                                             */
-/*----------------------------------------------------------------------------*/
-bool Socket::bReadVch(Str* ppChar, SysCall& SysCall)
-{
-  _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
-  
-  char aWorkspace[16_KB];
-  
-  SysCall.vClear();
-  
-  size_t nBytes = recv(m_iSocketId,aWorkspace,16_KB-1,0);
-  
-  if (!nBytes) {
-    SysCall.vError(errno);
-    return false;
-  }
-  
-  *ppChar = (Str*)StrLib::wAllocate(aWorkspace);
-  
-  SysCall.vSuccess();
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /* recv n bytes from this socket into given buffer                            */
 /*----------------------------------------------------------------------------*/
 bool Socket::bRecvBytes(i8 nBytes, void* pWS, SysCall& SysCall)

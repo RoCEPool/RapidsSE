@@ -38,7 +38,6 @@ namespace System
     
     bool bConnectServer(Str* sAddr, int iPort, SysCall& SysCall);
     bool bCreateServer(int iPort, SysCall& SysCall);
-    bool bReadVch(Str* ppChar, SysCall& SysCall);
     bool bRecvBuffer(int nBytes, SysCall& SysCall);
     bool bRecvBytes(i8 nBytes, void* pBuffer, SysCall& SysCall);
     bool bSendBytes(int nBytes, void* pBuffer, SysCall& SysCall);
