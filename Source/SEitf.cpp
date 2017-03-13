@@ -1369,17 +1369,17 @@ bool SEitf::bInsertBuffer(RowBuffer* pRowBuffer, i8 iPartition)
   s256 sRequest;
   s256 sBuffer;
 
-  StrLib::wToString(iSlot, sBuffer.aStr());
+  sBuffer = iSlot;
   sRequest.vCopy("\""_Str);
   sRequest.vConcat(sBuffer);
   sRequest.vConcat("\""_Str);
   
-  StrLib::wToString((i8)pRowBuffer, sBuffer.aStr());
+  sBuffer = (i8)pRowBuffer;
   sRequest.vConcat(" \""_Str);
   sRequest.vConcat(sBuffer);
   sRequest.vConcat("\""_Str);
   
-  StrLib::wToString((i8)m_pCurrentTable, sBuffer.aStr());
+  sBuffer = (i8)m_pCurrentTable;
   sRequest.vConcat(" \""_Str);
   sRequest.vConcat(sBuffer);
   sRequest.vConcat("\""_Str);

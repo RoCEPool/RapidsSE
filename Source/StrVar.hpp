@@ -92,7 +92,7 @@ void StrVar<SIZE>::operator =(i8 iArg)
 {
   _precondition_(_MAGIC_,CN_STRVAR,_FOOTER_);
   
-  StrLib::wToString(iArg,aStrArea());
+  StrLib::wToString(iArg,(char*)aStrArea());
 }
 
 /*----------------------------------------------------------------------------*/
