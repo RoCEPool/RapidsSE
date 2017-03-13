@@ -276,7 +276,7 @@ i8 ValSet::nSize(void)
 /*----------------------------------------------------------------------------*/
 void ValSet::vToString(Str* aWorkspace)
 {
-  StrLib::wToPointer(this,aWorkspace->a());
+  *aWorkspace = reinterpret_cast<void*>(this);
 }
 
 /*----------------------------------------------------------------------------*/
