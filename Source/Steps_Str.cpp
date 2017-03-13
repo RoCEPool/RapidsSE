@@ -90,7 +90,7 @@ void Task::vStrAlgebra(NNP_Task nnpTask)
   //StrVal xStrval;  // uncommenting this line should produce a compile error
   
   // declaring a fixed length string
-  s32 xString("A test");
+  s32 xString("A test"_Str);
   
   ValWsp xValWsp;
   StrVal* pStrVal = _pStrVal(&xValWsp);

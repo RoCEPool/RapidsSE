@@ -1087,7 +1087,7 @@ namespace Tasks
         
     #define THROW1(p1) \
     { \
-      s256 sFile(__FILE__); \
+      s256 sFile((Str*)__FILE__); \
       s256 sException; \
       sException.vSprint(p1); \
       Task* pTask = reinterpret_cast<Task*>(PosixThread::pTlsGet(giTLS_TaskKey)); \
@@ -1098,7 +1098,7 @@ namespace Tasks
         
     #define THROW2(p1, p2) \
     { \
-      s256 sFile(__FILE__); \
+      s256 sFile((Str*)__FILE__); \
       s256 sException; \
       sException.vSprint(p1,p2); \
       Task* pTask = reinterpret_cast<Task*>(PosixThread::pTlsGet(giTLS_TaskKey)); \

@@ -21,7 +21,7 @@ void* StepBoard::operator new(size_t iSize)
   void* pRegion;
   bool bResult;
   
-  s256 sRegionName("/RapidsSE_StepBoard");
+  s256 sRegionName("/RapidsSE_StepBoard"_Str);
   
   // open a shared memory region
   bResult = Shm::bAttach(sRegionName,iShmFD,xSysCall);

@@ -1065,7 +1065,7 @@ ENTRY("vWordName"_Str);
     THROW_INVALID_DSTACK("word.name"_Str);
   Word* pWord = _pWord(pWordObject);
   
-  s32 sWordName(pWord->sName().aStr());
+  s32 sWordName(pWord->sName());
   
   nnpTask->m_pDataStack->vPush(sWordName);
   

@@ -16,7 +16,7 @@ namespace Values
     
   public:    
     StrVar(void);
-    StrVar(const char* aArg);
+    StrVar(Str* aArg);
     StrVar(StrVar* pThis);
    ~StrVar(void);
     
@@ -51,12 +51,12 @@ StrVar<SIZE>::StrVar(void)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 template <int SIZE>
-StrVar<SIZE>::StrVar(const char* aArg)
+StrVar<SIZE>::StrVar(Str* aArg)
 : StrVal(CN_STRVAR,SIZE)
 {
   _precondition_(_MAGIC_,CN_STRVAR,_FOOTER_);
   
-  StrVal::vCopy((Str*)aArg);
+  StrVal::vCopy(aArg);
   
   _checkInitialisedSize_(SIZE);
 }

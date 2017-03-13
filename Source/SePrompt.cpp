@@ -1459,7 +1459,7 @@ void SePrompt::vCollectStatement(void)
   // switch to terminal mode
   m_pTokeniser->vLineMode(false);
   
-  s32 sContinuation("  > ");
+  s32 sContinuation("  > "_Str);
   m_pTokeniser->vPrompt(sContinuation);
   
   // get tokens delimited by ';'

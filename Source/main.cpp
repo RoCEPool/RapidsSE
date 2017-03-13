@@ -50,7 +50,7 @@ int main(int argc, const char* argv[])
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // s32 is a StrVar : StrVal : StrVal which has a Str area
-  s32 x32 = "boo";
+  s32 x32 = "boo"_Str;
   vStrTestRef(x32);
   x32 = "hoo"_Str;
   vStrTestPtr(x32);

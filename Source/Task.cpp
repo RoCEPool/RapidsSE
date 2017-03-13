@@ -1438,7 +1438,7 @@ void Task::vSeedDocol(void)
   
   m_sLambda = ""_Str;
   
-  s32 sPrompt("docol> ");
+  s32 sPrompt("docol> "_Str);
   m_pTokeniser->vPrompt(sPrompt);
   
   m_pTokeniser->vUseString(m_sLambda);

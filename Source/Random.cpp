@@ -84,7 +84,7 @@ u8 Random::uRandom(u8 uLow, u8 uHigh)
 s48K Random::sRandomString(i8 iLength) {
   
   s256 sCharSet =
-    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.-#?!";
+    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.-#?!"_Str;
   
   s48K sRandomString;
   
