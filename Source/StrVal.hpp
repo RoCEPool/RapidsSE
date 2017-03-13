@@ -26,6 +26,7 @@ namespace Values
 
     static i8 nAreaRequired(i8 iLength);
   
+    void operator =(i8);
     void operator =(StrVal& rArg);
     void operator =(StrVal* pArg);
     void operator =(Str*);
