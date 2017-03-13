@@ -65,15 +65,6 @@ Cell* IpVal::pIpPtr(void) const
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert to command                                                         */
-/*----------------------------------------------------------------------------*/
-void IpVal::vToCommand(char* aWorkspace)
-{
-  ASSERT(aWorkspace);
-  ASSERT("Should never be called"_Str);
-}
-
-/*----------------------------------------------------------------------------*/
 /* convert to string                                                          */
 /*----------------------------------------------------------------------------*/
 void IpVal::vToString(Str* aWorkspace)

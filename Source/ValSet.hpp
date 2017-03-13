@@ -36,7 +36,6 @@ namespace Values
     
     i8   nSize(void);
     
-    void vToCommand(Str* aWorkspace);
     void vToString(Str* aWorkspace);
 
   private:

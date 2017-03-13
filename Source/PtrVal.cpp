@@ -65,15 +65,6 @@ Object* PtrVal::pPtr(void) const
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert to command                                                         */
-/*----------------------------------------------------------------------------*/
-void PtrVal::vToCommand(char* aWorkspace)
-{
-  ASSERT(aWorkspace);
-  ASSERT("Should never be called"_Str);
-}
-
-/*----------------------------------------------------------------------------*/
 /* convert to string                                                          */
 /*----------------------------------------------------------------------------*/
 void PtrVal::vToString(Str* aWorkspace)

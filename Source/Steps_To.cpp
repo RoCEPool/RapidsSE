@@ -36,7 +36,6 @@ void Task::vAddPrimitives_To(void)
 {
   vAddPrimitive(">binval"_Str,     &vToBinVal,     false);
   vAddPrimitive(">body"_Str,       &vToBody,       false);
-  vAddPrimitive(">cmd"_Str,        &vToCmd,        false);
   vAddPrimitive(">digitName"_Str,  &vToDigitName,  false);
   vAddPrimitive(">int"_Str,        &vToInt,        false);
   vAddPrimitive(">object"_Str,     &vToObject,     false);
@@ -79,41 +78,6 @@ void Task::vToBody(NNP_Task nnpTask)
   Object* pPtrBody = reinterpret_cast<Object*>(pBody);
   
   nnpTask->m_pDataStack->vPush(pPtrBody);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* >cmd -- convert stack values to cmd string                                 */
-/*----------------------------------------------------------------------------*/
-void Task::vToCmd(NNP_Task nnpTask)
-{
-  ENTRY("vToCmd"_Str);
-  
-  i8 nValues;
-  if ( ! nnpTask->m_pDataStack->bPop(nValues) )
-    THROW_INVALID_DSTACK(">cmd"_Str);
-  
-  s48K sCmd;
-  
-  ValWsp xStr;
-  xStr = "<cmd>"_Str;
-  
-  for (i8 i = 0; i < nValues; i++) {
-    ValWsp xValWsp;
-    nnpTask->m_pDataStack->vPeek(i,&xValWsp);
-    
-    if (i)
-      sCmd.vConcat(" "_Str);
-    
-    char* aCmdEnd = StrLib::zTerminator(sCmd.aStr());
-    
-    ValLib::vToCommand(&xValWsp,aCmdEnd);
-  }
-  
-  xStr = sCmd;
-  
-  nnpTask->m_pDataStack->vPush(&xStr);
   
   EXIT();
 }

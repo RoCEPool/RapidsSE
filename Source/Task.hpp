@@ -979,7 +979,6 @@ namespace Tasks
     // to
     static void vToBinVal(NNP_Task nnpTask);
     static void vToBody(NNP_Task nnpTask);
-    static void vToCmd(NNP_Task nnpTask);
     static void vToInt(NNP_Task nnpTask);
     static void vToObject(NNP_Task nnpTask);
     static void vToSEitf(NNP_Task nnpTask);

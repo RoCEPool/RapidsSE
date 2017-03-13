@@ -53,7 +53,6 @@ namespace Values
     i8    nSize(void);
     void vSprint(Str* aFormat, ...);
     char* aStr(void);
-    void  vToCommand(char* aStr);
     i8    iToI8(void);
     void  vToLower(void);
     void  vToString(Str* aStr);
