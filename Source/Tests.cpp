@@ -102,7 +102,7 @@ void Tests::vRequire(StrVal& sCommand, bool bResult, eEC eErrorExpected, StrVal&
       m_iTestsFailed++;
       Tests::vAssertFailed();
     }
-    if (!StrLib::bEqualTo(sResponseReturned.aStr(), sResponseExpected.aStr())) {
+    if ( ! sResponseReturned.bEqual(sResponseExpected) ) {
       m_iTestsFailed++;
       Tests::vAssertFailed();
     }
