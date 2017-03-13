@@ -113,7 +113,7 @@ void LoadTests::vRun(RunTests* pRunTests)
   
   //sCommand = "getInUseSpace"_Str;
   //i8 inUseSpace = 0;
-  //char* pSpace = pRequire(sCommand, true, EC_NONE);
+  //Str* aSpace = aRequire(sCommand, true, EC_NONE);
   //if (pSpace != nullptr)
   //  inUseSpace = StrLib::iToI8(pSpace);
   //vTrace("InUseSpace: %lld\n"_Str, inUseSpace);

@@ -58,7 +58,7 @@ void Tests::vRequire(StrVal& sCommand, bool bResult, eEC eErrorExpected)
 /*----------------------------------------------------------------------------*/
 /* run unit tests                                                             */
 /*----------------------------------------------------------------------------*/
-char* Tests::pRequire(StrVal& sCommand, bool bResult, eEC eErrorExpected)
+Str* Tests::aRequire(StrVal& sCommand, bool bResult, eEC eErrorExpected)
 {
   eEC eErrorReturned;
   s256 sResponseReturned;
@@ -78,7 +78,7 @@ char* Tests::pRequire(StrVal& sCommand, bool bResult, eEC eErrorExpected)
     }
     else {
       m_iTestsPassed++;
-      return sResponseReturned.aStr();
+      return sResponseReturned;
     }
   }
 }

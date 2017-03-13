@@ -10,15 +10,14 @@
 void InsertTests::vRun(RunTests* pRunTests)
 {
   s256 sCommand;
-  char* pRowPtr;
   i8 iInUseStart = 0;
   i8 iInUseEnd = 0;
-  char* pSpace;
+  Str* aSpace;
   
   sCommand = "getInUseSpace"_Str;
-  pSpace = pRequire(sCommand, true, EC_NONE);
-  if (pSpace != nullptr)
-    iInUseStart = StrLib::iToI8(pSpace);
+  aSpace = aRequire(sCommand, true, EC_NONE);
+  if (aSpace != nullptr)
+    iInUseStart = StrLib::iToI8(aSpace->a());
   
   sCommand = "docol bpa"_Str;
   vRequire(sCommand, true, EC_NONE);
@@ -97,9 +96,9 @@ void InsertTests::vRun(RunTests* pRunTests)
   vRequire(sCommand, true, EC_NONE);
   
   sCommand = "getInUseSpace"_Str;
-  pSpace = pRequire(sCommand, true, EC_NONE);
-  if (pSpace != nullptr)
-    iInUseEnd = StrLib::iToI8(pSpace);
+  aSpace = aRequire(sCommand, true, EC_NONE);
+  if (aSpace != nullptr)
+    iInUseEnd = StrLib::iToI8(aSpace->a());
 
   //ASSERT(iInUseEnd == iInUseStart);
   
