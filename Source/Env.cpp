@@ -13,7 +13,7 @@ bool Env::bGet(s256& sName, s256& sValue)
   if ( ! aValue )
     return false;
   
-  sValue.vCopy(aValue);
+  sValue.vCopy((Str*)aValue);
   
   return true;
 }
