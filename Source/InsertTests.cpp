@@ -17,7 +17,7 @@ void InsertTests::vRun(RunTests* pRunTests)
   sCommand = "getInUseSpace"_Str;
   aSpace = aRequire(sCommand, true, EC_NONE);
   if (aSpace != nullptr)
-    iInUseStart = StrLib::iToI8(aSpace->a());
+    iInUseStart = aSpace->iToI8();
   
   sCommand = "docol bpa"_Str;
   vRequire(sCommand, true, EC_NONE);
@@ -98,7 +98,7 @@ void InsertTests::vRun(RunTests* pRunTests)
   sCommand = "getInUseSpace"_Str;
   aSpace = aRequire(sCommand, true, EC_NONE);
   if (aSpace != nullptr)
-    iInUseEnd = StrLib::iToI8(aSpace->a());
+    iInUseEnd = aSpace->iToI8();
 
   //ASSERT(iInUseEnd == iInUseStart);
   
