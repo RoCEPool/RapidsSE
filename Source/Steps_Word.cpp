@@ -718,7 +718,7 @@ void Task::vSee(NNP_Task nnpTask)
         vTrace(" \"%s\"\n"_Str,_pStrVal(pValue)->aStr());
       }
       else {
-        ValLib::vToString(pValue,sWorkspace.aStr());
+        ValLib::vToString(pValue,sWorkspace);
         vTrace(" %s\n"_Str,sWorkspace.aStr());
       }
       

@@ -210,7 +210,7 @@ void Task::vDstackDump(NNP_Task nnpTask)
     THROW_INVALID_DSTACK("dump"_Str);
   
   s48K sWorkspace;
-  ValLib::vToString(&xValWsp,sWorkspace.aStr());
+  ValLib::vToString(&xValWsp,sWorkspace);
   Str* aClass = xValWsp.aClass();
   
   eCN eClass = xValWsp.eClass();

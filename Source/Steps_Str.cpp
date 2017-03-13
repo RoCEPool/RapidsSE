@@ -340,7 +340,7 @@ void Task::vStrPrepend(NNP_Task nnpTask)
   // If received INTEGER convert to STRING
   if (xValA.eClass() == CN_INTVAL) {
     s48K xString;
-    ValLib::vToString(&xValA,xString.aStr());
+    ValLib::vToString(&xValA,xString);
     xStrA = xString;
   }
   else {
@@ -350,7 +350,7 @@ void Task::vStrPrepend(NNP_Task nnpTask)
   // If received INTEGER convert to STRING
   if (xValB.eClass() == CN_INTVAL) {
     s48K xString;
-    ValLib::vToString(&xValB,xString.aStr());
+    ValLib::vToString(&xValB,xString);
     xStrB = xString;
   }
   else {

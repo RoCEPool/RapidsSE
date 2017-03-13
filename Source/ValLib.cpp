@@ -217,7 +217,7 @@ void ValLib::vToCommand(Object* pObject, char* aCharArray)
 /*----------------------------------------------------------------------------*/
 /* convert to string                                                          */
 /*----------------------------------------------------------------------------*/
-void ValLib::vToString(Object* pObject, char* aCharArray)
+void ValLib::vToString(Object* pObject, Str* aString)
 {
   eCN eClass = pObject->eClass();
   
@@ -225,37 +225,37 @@ void ValLib::vToString(Object* pObject, char* aCharArray)
       
     case CN_BINVAL: {
       BinVal* pBinVal = _pBinVal(pObject);
-      pBinVal->vToString(aCharArray);
+      pBinVal->vToString(aString->a());
       break;
     }
       
     case CN_INTVAL: {
       IntVal* pIntVal = _pIntVal(pObject);
-      pIntVal->vToString(aCharArray);
+      pIntVal->vToString(aString->a());
       break;
     }
       
     case CN_IPVAL: {
       IpVal* pIpVal = _pIpVal(pObject);
-      pIpVal->vToString(aCharArray);
+      pIpVal->vToString(aString->a());
       break;
     }
       
     case CN_PTRVAL: {
       PtrVal* pPtrVal = _pPtrVal(pObject);
-      pPtrVal->vToString(aCharArray);
+      pPtrVal->vToString(aString->a());
       break;
     }
       
     case CN_STRVAL: {
       StrVal* pStrVal = _pStrVal(pObject);
-      pStrVal->vToString(aCharArray);
+      pStrVal->vToString(aString->a());
       break;
     }
       
     case CN_VALSET: {
       ValSet* pValSet = _pValSet(pObject);
-      pValSet->vToString((Str*)aCharArray);
+      pValSet->vToString((Str*)aString);
       break;
     }
       

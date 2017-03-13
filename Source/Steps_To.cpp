@@ -130,7 +130,7 @@ void Task::vToInt(NNP_Task nnpTask)
     THROW_INVALID_DSTACK(">int"_Str);
   
   s256 sBuff;
-  ValLib::vToString(&xStr,sBuff.aStr());
+  ValLib::vToString(&xStr,sBuff);
   
   i8 i = sBuff.iToI8();
   
@@ -189,7 +189,7 @@ void Task::vToStr(NNP_Task nnpTask)
     THROW_INVALID_DSTACK(">str"_Str);
   
   s48K sString;
-  ValLib::vToString(&xVal,sString.aStr());
+  ValLib::vToString(&xVal,sString);
   
   nnpTask->m_pDataStack->vPush(sString);
   
