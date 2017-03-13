@@ -44,7 +44,7 @@ namespace Values
     void  vCopy(Str* aStr);
     void  vCopyCat(Str* aStr, ...);
     void  vCopyTill(Str* aSrc, char cTill);
-    bool  bEnds(const char* aSuffix);
+    bool  bEnds(Str* aSuffix);
     bool  bIsEqual(StrVal& sArg, i8 iCase);
     bool  bEqual(Str* aArg);
 

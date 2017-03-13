@@ -376,11 +376,11 @@ void StrVal::vCopyCat(Str* aStr, ...)
 /*----------------------------------------------------------------------------*/
 /* test if string ends with given suffix                                      */
 /*----------------------------------------------------------------------------*/
-bool StrVal::bEnds(const char* aSuffix)
+bool StrVal::bEnds(Str* aSuffix)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  bool b = StrLib::bEnds(aArea(),aSuffix);
+  bool b = StrLib::bEnds(aArea(),aSuffix->a());
   
   return b;
 }
