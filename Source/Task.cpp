@@ -1590,15 +1590,15 @@ void Task::vTracePoint(Str* aMark)
     PosixThread::vSleepMicro(iPause);
   }
   
-  char aRoutine[128];
+  s256 sRoutine;
   
   Cell* pCell = IP.m_pCell;
   
   Word* pLocatedWord = m_xPathStack.pLocate(pCell);
   if (pLocatedWord)
-    StrLib::vCopy(aRoutine,pLocatedWord->sName().aStr());
+    sRoutine = pLocatedWord->sName();
   else
-    StrLib::vCopy(aRoutine,"<unknown>");
+    sRoutine = "<unknown>"_Str;
   
   i8 iAuxValues    = m_pAuxStack->iValues();
   i8 iDataValues   = m_pDataStack->iValues();
@@ -1611,7 +1611,7 @@ void Task::vTracePoint(Str* aMark)
          *m_zAcks,
          m_sComment.aStr(),
          
-         aRoutine,
+         sRoutine.aStr(),
          aMark,
          iAuxValues);
          
