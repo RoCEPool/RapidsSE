@@ -56,7 +56,7 @@ StrVar<SIZE>::StrVar(const char* aArg)
 {
   _precondition_(_MAGIC_,CN_STRVAR,_FOOTER_);
   
-  StrVal::vCopy(aArg);
+  StrVal::vCopy((Str*)aArg);
   
   _checkInitialisedSize_(SIZE);
 }
@@ -90,7 +90,7 @@ void StrVar<SIZE>::operator =(Str* aArg)
 {
   _precondition_(_MAGIC_,CN_STRVAR,_FOOTER_);
   
-  StrVal::vCopy(aArg->a());
+  StrVal::vCopy(aArg);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -101,7 +101,7 @@ void StrVar<SIZE>::operator =(StrVal& rArg)
 {
   _precondition_(_MAGIC_,CN_STRVAR,_FOOTER_);
   
-  vCopy(rArg.aStr());
+  vCopy(rArg);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -112,7 +112,7 @@ void StrVar<SIZE>::operator =(StrVal* pArg)
 {
   _precondition_(_MAGIC_,CN_STRVAR,_FOOTER_);
   
-  vCopy(pArg->aArea());
+  vCopy(pArg->aStrArea());
 }
 
 /*----------------------------------------------------------------------------*/

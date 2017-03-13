@@ -156,7 +156,7 @@ void StrVal::operator =(StrVal& rArg)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  vCopy(rArg.aStr());
+  vCopy(rArg);
   
   _postcondition_(_MAGIC_,_FOOTER_);
 }
@@ -168,7 +168,7 @@ void StrVal::operator =(StrVal* pArg)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  vCopy(pArg->aStr());
+  vCopy(pArg->aStrArea());
   
   _postcondition_(_MAGIC_,_FOOTER_);
 }
@@ -180,7 +180,7 @@ void StrVal::operator =(Str* aStr)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  vCopy(aStr->a());
+  vCopy(aStr);
   
   _postcondition_(_MAGIC_,_FOOTER_);
 }
@@ -192,7 +192,7 @@ void StrVal::operator =(ValWsp& rArg)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  vCopy(rArg.aWspArea());
+  vCopy((Str*)rArg.aWspArea());
   
   _postcondition_(_MAGIC_,_FOOTER_);
 }
@@ -336,18 +336,6 @@ void StrVal::vCopyTill(Str* aSrc, char cTill)
   _precondition_(_MAGIC_,_FOOTER_);
   
   StrLib::vCopyTill(aArea(),aSrc->a(),cTill);
-  
-  _postcondition_(_MAGIC_,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* copy given str                                                             */
-/*----------------------------------------------------------------------------*/
-void StrVal::vCopy(const char* aStr)
-{
-  _precondition_(_MAGIC_,_FOOTER_);
-  
-  StrLib::vCopyLen(aArea(),aStr,m_xWsp.nUsed()-1);
   
   _postcondition_(_MAGIC_,_FOOTER_);
 }
