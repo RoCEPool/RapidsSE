@@ -66,7 +66,7 @@ bool Region::bAttach(s& sRegionName)
   
   // allocate the full extent of memory required
   mpRegion = Shm::pMap(iFD,
-                      gxArguments.m_pRegionAddr,
+                       gxArguments.m_pRegionAddr,
                        iRegionSize,
                        C_SHARED_REGION,
                        gxArguments.m_bHugePages,
@@ -148,6 +148,24 @@ void Region::vCreate(s& sRegionName)
   
   if (gxArguments.m_bVerbose)
     vTrace("Shm mapped at %p\n",mpRegion);
+  
+  // lock the shared memory in
+  bResult = Shm::bLock(mpRegion,
+                       gxArguments.m_iRegionSize,
+                       xSysCall);
+  
+  if ( ! bResult )  {
+    vTrace("RapidsSE::vAttach failed to lock\n");
+    bResult = Shm::bUnmap(mpRegion, gxArguments.m_iRegionSize, xSysCall);
+    if ( ! bResult )  {
+      vTrace("RapidsSE::vAttach failed to unmap\n");
+    }
+    Shm::bClose(iFD,xSysCall);
+    exit(EXIT_FAILURE);
+  }
+  
+  if (gxArguments.m_bVerbose)
+    vTrace("Shm pages locked in memory\n");
 }
 
 /*----------------------------------------------------------------------------*/
@@ -191,7 +209,7 @@ void* Region::pOpen(s& sRegionName, int& iFD)
   SysCall xSysCall;
   bool bResult;
   
-  vTrace("Region::pOpen %s\n",sRegionName.a());
+  //vTrace("Region::pOpen %s\n",sRegionName.a());
   
   // open shm region
   bResult = Shm::bAttach(sRegionName,iFD,xSysCall);
