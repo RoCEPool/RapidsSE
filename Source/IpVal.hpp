@@ -26,7 +26,7 @@ namespace Values
     Dictionaries::Cell* pIpPtr(void) const;
     
     void vToCommand(char* aWorkspace);
-    void vToString(char* aWorkspace);
+    void vToString(Str* aWorkspace);
   };
   
   IpVal* _pIpVal(void* aAddr);

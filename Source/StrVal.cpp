@@ -493,9 +493,9 @@ void StrVal::vToLower(void)
 /*----------------------------------------------------------------------------*/
 /* convert to string                                                          */
 /*----------------------------------------------------------------------------*/
-void StrVal::vToString(char* aStr)
+void StrVal::vToString(Str* aStr)
 {
-  StrLib::vCopy(aStr,aArea());
+  StrLib::vCopy(aStr->a(),aArea());
 }
 
 /*----------------------------------------------------------------------------*/

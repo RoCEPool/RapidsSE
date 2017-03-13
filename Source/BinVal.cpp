@@ -140,14 +140,14 @@ void BinVal::vSize(i8 iSize)
 /*----------------------------------------------------------------------------*/
 /* convert to string                                                          */
 /*----------------------------------------------------------------------------*/
-void BinVal::vToString(char* aWorkspace)
+void BinVal::vToString(Str* aWorkspace)
 {
   Object* pEmbedded = (Object*)pData();
   
-  StrLib::vSprint(aWorkspace,"%p BinVal [%s of %lld bytes]"_Str,
-                  this,
-                  aCN[pEmbedded->eClass()],
-                  m_nAreaSize);
+  aWorkspace->vSprint("%p BinVal [%s of %lld bytes]"_Str,
+                      this,
+                      aCN[pEmbedded->eClass()],
+                      m_nAreaSize);
 }
 
 /*----------------------------------------------------------------------------*/

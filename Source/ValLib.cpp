@@ -225,37 +225,37 @@ void ValLib::vToString(Object* pObject, Str* aString)
       
     case CN_BINVAL: {
       BinVal* pBinVal = _pBinVal(pObject);
-      pBinVal->vToString(aString->a());
+      pBinVal->vToString(aString);
       break;
     }
       
     case CN_INTVAL: {
       IntVal* pIntVal = _pIntVal(pObject);
-      pIntVal->vToString(aString->a());
+      pIntVal->vToString(aString);
       break;
     }
       
     case CN_IPVAL: {
       IpVal* pIpVal = _pIpVal(pObject);
-      pIpVal->vToString(aString->a());
+      pIpVal->vToString(aString);
       break;
     }
       
     case CN_PTRVAL: {
       PtrVal* pPtrVal = _pPtrVal(pObject);
-      pPtrVal->vToString(aString->a());
+      pPtrVal->vToString(aString);
       break;
     }
       
     case CN_STRVAL: {
       StrVal* pStrVal = _pStrVal(pObject);
-      pStrVal->vToString(aString->a());
+      pStrVal->vToString(aString);
       break;
     }
       
     case CN_VALSET: {
       ValSet* pValSet = _pValSet(pObject);
-      pValSet->vToString((Str*)aString);
+      pValSet->vToString(aString);
       break;
     }
       

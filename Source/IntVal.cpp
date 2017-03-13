@@ -75,9 +75,9 @@ void IntVal::vToCommand(char* aWorkspace)
 /*----------------------------------------------------------------------------*/
 /* convert to string                                                          */
 /*----------------------------------------------------------------------------*/
-void IntVal::vToString(char* aWorkspace)
+void IntVal::vToString(Str* aWorkspace)
 {
-  StrLib::wToString(m_iInt,aWorkspace);
+  StrLib::wToString(m_iInt,aWorkspace->a());
 }
 
 /*============================================================================*/

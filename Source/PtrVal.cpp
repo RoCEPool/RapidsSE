@@ -76,9 +76,9 @@ void PtrVal::vToCommand(char* aWorkspace)
 /*----------------------------------------------------------------------------*/
 /* convert to string                                                          */
 /*----------------------------------------------------------------------------*/
-void PtrVal::vToString(char* aWorkspace)
+void PtrVal::vToString(Str* aWorkspace)
 {
-  StrLib::wToPointer(m_pPtr,aWorkspace);
+  StrLib::wToPointer(m_pPtr,aWorkspace->a());
 }
 
 /*============================================================================*/
