@@ -232,7 +232,7 @@ eEC RapidsSE_CheckLibraryVersion(Str* pVersion)
 {
   vTrace("Library version %s; versionString %s\n"_Str, RAPIDSSE_VERSION_STRING, pVersion);
   
-  if (!StrLib::bEqualTo(pVersion->a(), RAPIDSSE_VERSION_STRING)) {
+  if ( ! pVersion->bEqual((Str*)RAPIDSSE_VERSION_STRING)) {
     vTrace("RapidsDB at version %s does not match RapidsSE library version %s"_Str,
            pVersion, RAPIDSSE_VERSION_STRING);
     return EC_VERSION_MISMATCH;
@@ -972,7 +972,7 @@ eEC RapidsSE_GetNextRow(SEitf* pSEitf, void** ppRow)
     return EC_NULLPTR;
   }
 
-  i8 iAddress = StrLib::iToI8( pSEitf->m_sResponse.aStr());
+  i8 iAddress = pSEitf->m_sResponse.iToI8();
   
   SelCursor* pSelCursor = reinterpret_cast<SelCursor*>(iAddress);
   ASSERT(CN_SELCURSOR == pSelCursor->eClass());
@@ -1603,7 +1603,7 @@ eEC RapidsSE_ScanTable(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable)
 
   ASSERT(pSEitf->pCurrentTable() != nullptr);
   
-  i8 iAddress = StrLib::iToI8(pSEitf->m_sResponse.aStr());
+  i8 iAddress = pSEitf->m_sResponse.iToI8();
   
   SelCursor* pSelCursor = reinterpret_cast<SelCursor*>(iAddress);
   ASSERT(CN_SELCURSOR == pSelCursor->eClass());
