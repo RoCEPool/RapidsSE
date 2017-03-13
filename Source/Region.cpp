@@ -150,9 +150,11 @@ void Region::vCreate(s& sRegionName)
     vTrace("Shm mapped at %p\n",mpRegion);
   
   // lock the shared memory in
-  bResult = Shm::bLock(mpRegion,
+  if (gxArguments.m_bLock) {
+    bResult = Shm::bLock(mpRegion,
                        gxArguments.m_iRegionSize,
                        xSysCall);
+  }
   
   if ( ! bResult )  {
     vTrace("RapidsSE::vAttach failed to lock\n");

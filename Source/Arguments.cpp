@@ -49,6 +49,7 @@ Arguments::Arguments(void)
   m_bStatus     = false;
   m_bStop       = false;
   m_bUnlink     = false;
+  m_bLock       = false;
 
   m_bBgTasks    = true;
   m_bConfig     = true;
@@ -328,6 +329,12 @@ bool Arguments::bParse(int argc, const char* argv[])
     
     if (String::bEqualTo("--hugepages",argv[iArg],C_NO_CASE)) {
       m_bHugePages = true;
+      continue;
+    }
+    
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (String::bEqualTo("--lock",argv[iArg],C_NO_CASE)) {
+      m_bLock = true;
       continue;
     }
     
