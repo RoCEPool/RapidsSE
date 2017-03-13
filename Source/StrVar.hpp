@@ -20,6 +20,7 @@ namespace Values
     StrVar(StrVar* pThis);
    ~StrVar(void);
     
+    void operator =(i8);
     void operator =(Str* aArg);
     void operator =(StrVal& xArg);
     void operator =(StrVal* pArg);
@@ -80,6 +81,18 @@ template <int SIZE>
 StrVar<SIZE>::~StrVar(void)
 {
   _precondition_(_MAGIC_,CN_STRVAR,_FOOTER_);
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* assignment operator                                                        */
+/*----------------------------------------------------------------------------*/
+template <int SIZE>
+void StrVar<SIZE>::operator =(i8 iArg)
+{
+  _precondition_(_MAGIC_,CN_STRVAR,_FOOTER_);
+  
+  StrLib::wToString(iArg,aStrArea());
 }
 
 /*----------------------------------------------------------------------------*/
