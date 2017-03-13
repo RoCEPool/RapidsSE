@@ -19,8 +19,9 @@ namespace Base
 
     ~Str(void);
     
-    void operator =(Str*);
     void operator =(i8);
+    void operator =(Str*);
+    void operator =(void*);
   
     void vCopy(Str* aArg);
     void vCopyLen(Str* aArg, i8 nBytes);
