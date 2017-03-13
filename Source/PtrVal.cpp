@@ -69,7 +69,7 @@ Object* PtrVal::pPtr(void) const
 /*----------------------------------------------------------------------------*/
 void PtrVal::vToString(Str* aWorkspace)
 {
-  StrLib::wToPointer(m_pPtr,aWorkspace->a());
+  *aWorkspace = reinterpret_cast<void*>(m_pPtr);
 }
 
 /*============================================================================*/
