@@ -151,10 +151,10 @@ namespace Interface
     bool bPopResponse(eEC& eResult, StrVal& sResponse);
     
     //--------------------------------------------------------------------------
-    void         vClearLastError(void);
-    eEC          eGetLastError(void);
-    const char*  pGetLastError(void);
-    void         vSetLastError(eEC eInterfaceError);
+    void vClearLastError(void);
+    eEC  eGetLastError(void);
+    Str* pGetLastError(void);
+    void vSetLastError(eEC eInterfaceError);
     
     Footer* pFooter(void);
   };

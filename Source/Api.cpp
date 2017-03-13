@@ -1677,12 +1677,12 @@ eEC eExecuteRequest(SEitf* pSEitf, Str* aCommand)
 {
   bool bResult;
   char xArray[C_1KB * 1];
-  char* aWords[16] = {
-    &xArray[C_1KB * 0],
+  Str* aWords[16] = {
+    (Str*)&xArray[C_1KB * 0],
   };
   
   // execute command pCommand
-  StrLib::vCopy(aWords[0], aCommand->a());
+  aWords[0]->vCopy(aCommand);
   
   bResult = pSEitf->bDecode((Str**)aWords, 1);
   
@@ -1699,14 +1699,14 @@ eEC eExecuteRequest(SEitf* pSEitf, Str* aCommand, Str* aParameter)
   
   bool bResult;
   char xArray[C_1KB * 2];
-  char* aWords[16] = {
-    &xArray[C_1KB * 0],
-    &xArray[C_1KB * 1]
+  Str* aWords[16] = {
+    (Str*)&xArray[C_1KB * 0],
+    (Str*)&xArray[C_1KB * 1]
   };
   
   // execute command
-  StrLib::vCopy(aWords[0], aCommand->a());
-  StrLib::vCopy(aWords[1], aParameter->a());
+  aWords[0]->vCopy(aCommand);
+  aWords[1]->vCopy(aParameter);
   
   bResult = pSEitf->bDecode((Str**)aWords, 2);
   
@@ -1724,18 +1724,18 @@ eEC eExecuteRequest(SEitf* pSEitf, Str* aCommand, Str* aParameter1,
   
   bool bResult;
   char xArray[C_1KB * 4];
-  char* aWords[16] = {
-    &xArray[C_1KB * 0],
-    &xArray[C_1KB * 1],
-    &xArray[C_1KB * 2],
-    &xArray[C_1KB * 3]
+  Str* aWords[16] = {
+    (Str*)&xArray[C_1KB * 0],
+    (Str*)&xArray[C_1KB * 1],
+    (Str*)&xArray[C_1KB * 2],
+    (Str*)&xArray[C_1KB * 3]
   };
   
   // execute command
-  StrLib::vCopy(aWords[0], aCommand->a());
-  StrLib::vCopy(aWords[1], aParameter1->a());
-  StrLib::vCopy(aWords[2], aParameter2->a());
-  StrLib::vCopy(aWords[3], aParameter3->a());
+  aWords[0]->vCopy(aCommand);
+  aWords[1]->vCopy(aParameter1);
+  aWords[2]->vCopy(aParameter2);
+  aWords[3]->vCopy(aParameter3);
   
   bResult = pSEitf->bDecode((Str**)aWords, 4);
   

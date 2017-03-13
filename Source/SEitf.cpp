@@ -1361,9 +1361,9 @@ bool SEitf::bInsertBuffer(RowBuffer* pRowBuffer, i8 iPartition)
   i8 iSlot = Partition::iPartitionToSlot(iPartition);
                               
   char xArray[C_1KB * 2];
-  char* aWords[16] = {
-    &xArray[C_1KB * 0],
-    &xArray[C_1KB * 1]
+  Str* aWords[16] = {
+    (Str*)&xArray[C_1KB * 0],
+    (Str*)&xArray[C_1KB * 1]
   };
 
   s256 sRequest;
@@ -1721,11 +1721,11 @@ bool SEitf::bPopResponse(eEC& eResult, StrVal& sResponse)
 /*----------------------------------------------------------------------------*/
 /* get last error                                                             */
 /*----------------------------------------------------------------------------*/
-const char* SEitf::pGetLastError(void)
+Str* SEitf::pGetLastError(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
-  return m_sErrorMsg.aStr();
+  return m_sErrorMsg;
 }
 
 /*----------------------------------------------------------------------------*/
