@@ -1048,7 +1048,8 @@ Word* Task::pCompileColon(StrVal& sDefinition)
     
     //vTrace("CompileColon: %s\n"_Str,m_sToken.aStr());
     
-    if (StrLib::bEqualTo(";",m_pTokeniser->sToken().aStr()))
+//  if (StrLib::bEqualTo(";",m_pTokeniser->sToken().aStr()))
+    if (m_pTokeniser->sToken().bEqual(";"_Str))
       break;
     
     switch (m_pTokeniser->eToken()) {
