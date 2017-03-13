@@ -14,7 +14,7 @@ extern Grid*       gpGrid;
 eEC RapidsSE_AddColumn(SEitf* pSEitf, char* pColumnName, char* pColumnType)
 {
   if (gpGrid->m_bTraceapi)
-    vTrace("RapidsSE_AddColumn: 0x%x %s %s\n", pSEitf, pColumnName, pColumnType);
+    vTrace("RapidsSE_AddColumn: %p %s %s\n", pSEitf, pColumnName, pColumnType);
   
   eEC eResult;
   
@@ -243,7 +243,7 @@ eEC RapidsSE_CheckLibraryVersion(char* pVersion)
 eEC RapidsSE_CreateTable(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTable)
 {
   if (gpGrid->m_bTraceapi)
-    vTrace("RapidsSE_CreateTable: 0x%x %s %s %s\n", pSEitf, pCatalog, pSchema, pTable);
+    vTrace("RapidsSE_CreateTable: %p %s %s %s\n", pSEitf, pCatalog, pSchema, pTable);
   
   eEC eResult;
   
@@ -411,7 +411,7 @@ eEC RapidsSE_CreateTable(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTa
 eEC RapidsSE_DropTable(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTable)
 {
   if (gpGrid->m_bTraceapi)
-    vTrace("RapidsSE_DropTable: 0x%x %s %s %s\n", pSEitf, pCatalog, pSchema, pTable);
+    vTrace("RapidsSE_DropTable: %p %s %s %s\n", pSEitf, pCatalog, pSchema, pTable);
   
   eEC eResult;
   
@@ -930,7 +930,7 @@ eEC RapidsSE_GetLastError(SEitf* pSEitf, void** ppError)
 eEC RapidsSE_GetNextRow(SEitf* pSEitf, void** ppRow)
 {
   if (gpGrid->m_bTraceapi)
-    vTrace("pRapidsSE_GetNextRow(%lld:0x%x)\n", pSEitf->iPartition(), pSEitf);
+    vTrace("pRapidsSE_GetNextRow(%lld:%p)\n", pSEitf->iPartition(), pSEitf);
   
   // pSEitf cannot be null
   if (pSEitf == nullptr) {
@@ -983,7 +983,7 @@ eEC RapidsSE_GetNextRow(SEitf* pSEitf, void** ppRow)
     return EC_NONE;
   }
   if (gpGrid->m_bTraceapi)
-    vTrace("pRapidsSE_GetNextRow(%lld:0x%x) %s\n", pSEitf->iPartition(), pSEitf, *ppRow);
+    vTrace("pRapidsSE_GetNextRow(%lld:%p) %s\n", pSEitf->iPartition(), pSEitf, *ppRow);
   
   // move cursor to next row
   pSelCursor->vNext();
@@ -997,7 +997,7 @@ eEC RapidsSE_GetNextRow(SEitf* pSEitf, void** ppRow)
 eEC RapidsSE_GetPartitions(SEitf* pSEitf, void** ppPartitions, void** ppCount)
 {
   if (gpGrid->m_bTraceapi)
-    vTrace("RapidsSE_GetParitions: 0x%x\n", pSEitf);
+    vTrace("RapidsSE_GetParitions: %p\n", pSEitf);
   
   // pSEitf cannot be null
   if (pSEitf == nullptr) {
@@ -1340,7 +1340,7 @@ eEC RapidsSE_GetTables(SEitf* pSEitf, char* pCatalog, char* pSchema, void** ppTa
 eEC RapidsSE_HashRowPartition(SEitf* pSEitf, char* pRow, void** ppPartition)
 {
   if (gpGrid->m_bTraceapi)
-    vTrace("RapidsSE_InsertRow(%lld:0x%x) %s\n", pSEitf->iPartition(), pSEitf, pRow);
+    vTrace("RapidsSE_InsertRow(%lld:%p) %s\n", pSEitf->iPartition(), pSEitf, pRow);
   
   // pSEitf cannot be null
   if (pSEitf == nullptr) {
@@ -1382,7 +1382,7 @@ eEC RapidsSE_HashRowPartition(SEitf* pSEitf, char* pRow, void** ppPartition)
 eEC RapidsSE_InsertRow(SEitf* pSEitf, char* pRow)
 {
   if (gpGrid->m_bTraceapi)
-    vTrace("RapidsSE_InsertRow(%lld:0x%x) %s\n", pSEitf->iPartition(), pSEitf, pRow);
+    vTrace("RapidsSE_InsertRow(%lld:%p) %s\n", pSEitf->iPartition(), pSEitf, pRow);
   
   // pSEitf cannot be null
   if (pSEitf == nullptr) {
@@ -1451,7 +1451,7 @@ eEC RapidsSE_PoolOpen(char* pInstanceName, void** ppInstance)
 eEC RapidsSE_ScanTable(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTable)
 {
   if (gpGrid->m_bTraceapi)
-    vTrace("pRapidsSE_ScanTable: 0x%x %s %s %s %lld\n",
+    vTrace("pRapidsSE_ScanTable: %p %s %s %s %lld\n",
          pSEitf, pCatalog, pSchema, pTable, pSEitf->iPartition());
   
   eEC eResult;
@@ -1592,7 +1592,7 @@ eEC RapidsSE_ScanTable(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTabl
   SelCursor* pSelCursor = reinterpret_cast<SelCursor*>(iAddress);
   ASSERT(CN_SELCURSOR == pSelCursor->eClass());
 
-  //vTrace("pSEitf: 0x%x pSelCursor: 0x%x Slot: %lld\n", pSEitf, pSelCursor,
+  //vTrace("pSEitf: %p pSelCursor: %p Slot: %lld\n", pSEitf, pSelCursor,
   //       Partition::iPartitionToSlot(pSEitf->iPartition()));
   
   pSelCursor->vBegin(Partition::iPartitionToSlot(pSEitf->iPartition()));
@@ -1608,7 +1608,7 @@ eEC RapidsSE_ScanTable(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTabl
 eEC RapidsSE_SEitfDelete(void* pAttachMap, SEitf* pSEitf)
 {
   if (gpGrid->m_bTraceapi)
-    vTrace("RapidsSE_SEitfDelete: 0x%x\n", pSEitf);
+    vTrace("RapidsSE_SEitfDelete: %p\n", pSEitf);
   
   // clear the last error
   pSEitf->vClearLastError();

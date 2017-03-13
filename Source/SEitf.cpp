@@ -1689,6 +1689,10 @@ bool SEitf::bAppendRequest(s& sRequest)
   //vTrace("%s\n",xVal.sStr());
   xValSet.vAppend(pCursor,xVal);
   
+  if (gpGrid->m_bTraceapi)
+    vTrace("SEitf:%p CurrentRequest:%lld NextRequest:%lld\n",
+           this, m_iCurrentRequestId, m_iNextRequestId);
+  
   // if the current request id matches the next request id, it means
   // we have not read a response of the previous request
   if (m_iCurrentRequestId == m_iNextRequestId) {
@@ -1716,10 +1720,13 @@ eEC SEitf::eGetResponse(void)
     ;
   
   vSetLastError(m_eErrorCode);
-  
+
   // generate a random number and send it back
-  m_iNextRequestId = Random::iRandom();
+  m_iNextRequestId = Random::iRandom(0,99999);
   //vTrace("NextRequest %lld\n", m_iNextRequestId);
+  
+  if (gpGrid->m_bTraceapi)
+    vTrace("SEitf:%p NextRequest:%lld\n", this, m_iNextRequestId);
   
   return m_eErrorCode;
 }
