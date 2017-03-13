@@ -240,7 +240,7 @@ bool SePrompt::bExecuteString(StrVal& sRequest, eEC& eErrorCode, StrVal& sRespon
 /*----------------------------------------------------------------------------*/
 /* execute request from given string                                          */
 /*----------------------------------------------------------------------------*/
-bool SePrompt::bExecuteString(StrVal& sRequest, eEC& eErrorCode, char** ppRowPtr)
+bool SePrompt::bExecuteString(StrVal& sRequest, eEC& eErrorCode, Str** ppRowPtr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
@@ -256,7 +256,7 @@ bool SePrompt::bExecuteString(StrVal& sRequest, eEC& eErrorCode, char** ppRowPtr
   bool bResult = bProcessCommand(false);
   
   eErrorCode = m_pSEitf->m_eErrorCode;
-  *ppRowPtr = m_pSEitf->m_aRowPtr->a();
+  *ppRowPtr = m_pSEitf->m_aRowPtr;
   
   return bResult;
 }

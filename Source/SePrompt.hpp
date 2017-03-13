@@ -52,7 +52,7 @@ public:
   void vLoop(void);
   bool bExecuteString(StrVal& sCommand, eEC& eErrorCode);
   bool bExecuteString(StrVal& sCommand, eEC& eErrorCode, StrVal& sResponse);
-  bool bExecuteString(StrVal& sCommand, eEC& eErrorCode, char** ppRowPtr);
+  bool bExecuteString(StrVal& sCommand, eEC& eErrorCode, Str** ppRowPtr);
 
 private:
   void vGetCommand(void);

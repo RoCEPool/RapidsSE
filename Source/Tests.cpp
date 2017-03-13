@@ -120,7 +120,7 @@ void Tests::vRequire(StrVal& sCommand, bool bResult, eEC eErrorExpected, i8 iExp
 {
   eEC eErrorReturned;
   s256 sResponseReturned;
-  char* pRowPtr;
+  Str* aRowPtr;
   bool bReturn;
   i8 iRecvdRows = 0;
   
@@ -136,12 +136,12 @@ void Tests::vRequire(StrVal& sCommand, bool bResult, eEC eErrorExpected, i8 iExp
       Tests::vAssertFailed();
     }
     *_pStrVal(&sCommand) = "first"_Str;
-    bReturn = m_pSePrompt->bExecuteString(sCommand, eErrorReturned, &pRowPtr);
+    bReturn = m_pSePrompt->bExecuteString(sCommand, eErrorReturned, &aRowPtr);
     
     *_pStrVal(&sCommand) = "next"_Str;
     while(bReturn) {
       iRecvdRows++;
-      bReturn = m_pSePrompt->bExecuteString(sCommand, eErrorReturned, &pRowPtr);
+      bReturn = m_pSePrompt->bExecuteString(sCommand, eErrorReturned, &aRowPtr);
     }
     if (iExpectedRows != iRecvdRows) {
       m_iTestsFailed++;

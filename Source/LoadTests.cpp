@@ -10,7 +10,7 @@
 void LoadTests::vRun(RunTests* pRunTests)
 {
   s48K sCommand;
-  char* pRowPtr;
+  Str* aRowPtr;
   
   // start with /tenants folder
   sCommand = "cf ~"_Str;
