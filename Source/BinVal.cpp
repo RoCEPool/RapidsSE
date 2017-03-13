@@ -126,7 +126,6 @@ i8 BinVal::nSize(void) const
 void BinVal::vSize(void)
 {
   ASSERT(0);
-  //m_nAreaSize = StrLib::iSize(m_sStr);
 }
 
 /*----------------------------------------------------------------------------*/
