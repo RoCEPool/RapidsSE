@@ -69,7 +69,7 @@ Cell* IpVal::pIpPtr(void) const
 /*----------------------------------------------------------------------------*/
 void IpVal::vToString(Str* aWorkspace)
 {
-  StrLib::wToPointer(m_pPtr,aWorkspace->a());
+  *aWorkspace = reinterpret_cast<void*>(m_pPtr);
 }
 
 /*============================================================================*/
