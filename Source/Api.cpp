@@ -914,7 +914,8 @@ eEC RapidsSE_GetColumns(SEitf* pSEitf, char* pCatalog, char* pSchema,
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_GetLastError(SEitf* pSEitf, void** ppError)
 {
-  vTrace("RapidsSE_GetLastError\n");
+  if (gpGrid->m_bTraceapi)
+    vTrace("RapidsSE_GetLastError\n");
   
   *ppError = pSEitf->m_sErrorMsg.a();
   

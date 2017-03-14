@@ -1316,7 +1316,7 @@ bool SEitf::bInsertRow(char* pRow)
   // get working buffer
   RowBuffer* pRowBuffer = m_pRowBuffer[m_iPartition];
   
-  vTrace("Buffer: %s Partition:%d\n",pRowBuffer, m_iPartition);
+  //vTrace("Buffer: %s Partition:%d\n",pRowBuffer, m_iPartition);
   
   // insert row into working buffer
   if (pRowBuffer->bInsertRow(m_pTxRef,pRow,String::iSize(pRow)))
@@ -1325,7 +1325,7 @@ bool SEitf::bInsertRow(char* pRow)
   // buffer full, append working buffer into table
   //m_pCurrentTable->vAppendBuffer(m_iPartition,pRowBuffer);
   
-  vTrace("Buffer full... Inserting buffer\n");
+  //vTrace("Buffer full... Inserting buffer\n");
   bool bResult = bInsertBuffer(pRowBuffer, m_iPartition);
   
   if (!bResult)
@@ -1413,7 +1413,7 @@ bool SEitf::bInsertBuffer(RowBuffer* pRowBuffer, i8 iPartition)
   
   String::vConcat(a," append_table");
   
-  vTrace("%s\n",a);
+  //vTrace("%s\n",a);
   
   return bAppendRequest(sRequest);
 }
@@ -1697,6 +1697,7 @@ bool SEitf::bAppendRequest(s& sRequest)
   // we have not read a response of the previous request
   if (m_iCurrentRequestId == m_iNextRequestId) {
     vTrace("Response for previous request not retrieved. Out-Of-Sync request-response.\n");
+    vTrace("SEitf:%p CurrentId:%lld  NextRequest:%lld\n", this, m_iCurrentRequestId, m_iNextRequestId);
     vSetLastError(EC_RESPONSE_PENDING);
     return false;
   }
@@ -1722,11 +1723,14 @@ eEC SEitf::eGetResponse(void)
   vSetLastError(m_eErrorCode);
 
   // generate a random number and send it back
-  m_iNextRequestId = Random::iRandom(0,99999);
+  //do {
+    m_iNextRequestId = Random::iRandom(0,99999);
+  //} while (m_iNextRequestId == m_iCurrentRequestId);
+  
   //vTrace("NextRequest %lld\n", m_iNextRequestId);
   
-  if (gpGrid->m_bTraceapi)
-    vTrace("SEitf:%p NextRequest:%lld\n", this, m_iNextRequestId);
+  //if (gpGrid->m_bTraceapi)
+    vTrace("SEitf:%p CurrentId:%lld  NextRequest:%lld\n", this, m_iCurrentRequestId, m_iNextRequestId);
   
   return m_eErrorCode;
 }
