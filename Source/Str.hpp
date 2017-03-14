@@ -37,6 +37,7 @@ namespace Base
     void  vToLower(void);
   
     i8 iLength(void);
+    i8 nSize(void);
 
     char* a(void);
   };
