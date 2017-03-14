@@ -173,10 +173,9 @@ void Index::vPopulate(void)
             
             // get the first field (hardcoded)                            //ALKA
             StrVal* pStrVal = (StrVal*)pRow->pData();
-            char* pChar = pStrVal->aStr();
             
             // extract the key from the first field
-            StrLib::bExtractI8(&pChar, &iKey);
+            iKey = pStrVal->iToI8();
             
             // add the key to the KeyWsp
             xValWsp = iKey;
