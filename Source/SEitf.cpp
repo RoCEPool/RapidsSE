@@ -1723,13 +1723,13 @@ eEC SEitf::eGetResponse(void)
   vSetLastError(m_eErrorCode);
 
   // generate a random number and send it back
-  //do {
+  do {
     m_iNextRequestId = Random::iRandom(0,99999);
-  //} while (m_iNextRequestId == m_iCurrentRequestId);
+  } while (m_iNextRequestId == m_iCurrentRequestId);
   
   //vTrace("NextRequest %lld\n", m_iNextRequestId);
   
-  //if (gpGrid->m_bTraceapi)
+  if (gpGrid->m_bTraceapi)
     vTrace("SEitf:%p CurrentId:%lld  NextRequest:%lld\n", this, m_iCurrentRequestId, m_iNextRequestId);
   
   return m_eErrorCode;
