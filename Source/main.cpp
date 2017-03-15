@@ -158,6 +158,7 @@ int main(int argc, const char* argv[])
 //    }
     SePrompt* pSePrompt = new SePrompt();
     pSePrompt->vLoop();
+    delete pSePrompt;
   }
 
   // unmap from shm and optionally unlink it

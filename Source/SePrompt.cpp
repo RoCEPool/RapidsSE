@@ -103,7 +103,7 @@ SePrompt::~SePrompt(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   // close history file
-  m_xHistory.vClose();
+  //m_xHistory.vClose();
   
   // SHOULD REMOVE HISTORY FILE?
   
