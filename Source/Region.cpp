@@ -148,6 +148,26 @@ void Region::vCreate(StrVal& sRegionName)
   
   if (gxArguments.m_bVerbose)
     vTrace("Shm mapped at %p\n"_Str,mpRegion);
+  
+  // lock the shared memory in
+  if (gxArguments.m_bLock) {
+    bResult = Shm::bLock(mpRegion,
+                         gxArguments.m_iRegionSize,
+                         xSysCall);
+  }
+  
+  if ( ! bResult )  {
+    vTrace("RapidsSE::vAttach failed to lock\n"_Str);
+    bResult = Shm::bUnmap(mpRegion, gxArguments.m_iRegionSize, xSysCall);
+    if ( ! bResult )  {
+      vTrace("RapidsSE::vAttach failed to unmap\n"_Str);
+    }
+    Shm::bClose(iFD,xSysCall);
+    exit(EXIT_FAILURE);
+  }
+  
+  if (gxArguments.m_bVerbose)
+    vTrace("Shm pages locked in memory\n"_Str);
 }
 
 /*----------------------------------------------------------------------------*/

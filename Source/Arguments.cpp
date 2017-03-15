@@ -49,6 +49,7 @@ Arguments::Arguments(void)
   m_bStatus     = false;
   m_bStop       = false;
   m_bUnlink     = false;
+  m_bLock       = false;
 
   m_bBgTasks    = true;
   m_bConfig     = true;
@@ -331,6 +332,12 @@ bool Arguments::bParse(int argc, Str* argv[])
       continue;
     }
     
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (argv[iArg]->bSame("--lock"_Str)) {
+      m_bLock = true;
+      continue;
+    }
+
     if (argv[iArg]->bSame("--progress"_Str)) {
       m_bProgress = true;
       continue;

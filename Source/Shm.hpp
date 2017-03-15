@@ -15,6 +15,7 @@ namespace System
     static bool  bClose(int iShmFD, SysCall& xSysCall);
     static bool  bCreate(StrVal& sName, i8 iSize, int& iShmFD,
                            bool bRecreate, SysCall& SysCall);
+    static bool  bLock(void* pAddress, i8 iBytes, SysCall& SysCall);
     static void* pMap(int iFd, void* aAddress, i8 iBytes, bool bShared,
                            bool bHugeTlb, SysCall& SysCall);
     static bool  bUnmap(void* aAddress, i8 iBytes, SysCall& xSysCall);

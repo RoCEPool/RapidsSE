@@ -32,7 +32,8 @@ namespace StorageEngine
     bool m_bStatus;     // get status
     bool m_bStop;       // force stop system (kill tasks & threads, shm unmap & unlink)
     bool m_bUnlink;     // unlink shm region only
-    
+    bool m_bLock;       // lock shared memory
+
     // options
     bool m_bBgTasks;    // start background tasks
     bool m_bConfig;     // print configuration information
