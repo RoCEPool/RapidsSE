@@ -46,16 +46,16 @@ namespace DBobjects
     static RowBuffer* pNewRowBuffer(void);
     
     static void vDump(eCN eClass, Object* pObject, Str* aTab);
-    
+  
+    Row*       pAllocRow(i8 nDataBytes);
+  
+    void       vAppendBuffer(RowBuffer* pSrcBuffer);
+  
     eRD        eDurability(void);
     void       vDurability(eRD eDurability);
   
-    Row*       pAllocRow(i8 iDataBytes);
-
-    void       vAppendBuffer(RowBuffer* pArgBuffer);
-    
     Row*       pFirstRow(void);
-    Row*       pNextRow(Row* pCurr);
+    Row*       pNextRow(Row* pCurrRow);
     
     RowBuffer* pNextBuffer(void);
     void       vNextBuffer(RowBuffer* pNextBuffer);
@@ -67,12 +67,11 @@ namespace DBobjects
     i8         nRows(void);
     void       vRowCount(void);
 
- 
-    void       vCopyBuffer(RowBuffer* pFromBuffer);
+    void       vCopyBuffer(RowBuffer* pSrcBuffer);
     
     bool       bInsertRow(TxRef* pTxRef, Str* pRecord, i8 iLength);
     
-    Object*    pDataArea(void);
+    byte*      aDataArea(void);
     
   //private:
     

@@ -190,13 +190,13 @@ void RowBuffer::vAppendBuffer(RowBuffer* pSrcBuffer)
   
   // how many bytes to be copied from arg buffer
   i8 nBytes  = pSrcBuffer->iBytesUsed();
-  void* pSrc = pSrcBuffer->pDataArea();
+  byte* aSrc = pSrcBuffer->aDataArea();
 
   // allot space in this buffer
   void* pDst = m_xWsp.aAllot(nBytes);
 
   // copy arg rows into this buffer
-  MemLib::vCopy(pDst,pSrc,nBytes);
+  MemLib::vCopy(pDst,aSrc,nBytes);
   
   // inc the number of rows in this buffer
   i8 nSrcRows = pSrcBuffer->nRows();
@@ -320,14 +320,14 @@ void RowBuffer::vCopyBuffer(RowBuffer* pSrcBuffer)
   
   // how many bytes to be copied from src buffer
   i8 nBytes  = pSrcBuffer->iBytesUsed();
-  void* pSrc = pSrcBuffer->pDataArea();
+  byte* aSrc = pSrcBuffer->aDataArea();
   
   // reset and allot space in this buffer
   m_xWsp.vUsed(0);
   void* pDst = m_xWsp.aAllot(nBytes);
   
   // copy from rows into this buffer
-  MemLib::vCopy(pDst,pSrc,nBytes);
+  MemLib::vCopy(pDst,aSrc,nBytes);
   
   // set the number of rows in this buffer
   m_nRows = pSrcBuffer->nRows();
@@ -368,11 +368,11 @@ bool RowBuffer::bInsertRow(TxRef* pTxRef, Str* pRecord, i8 iLength)
 /*----------------------------------------------------------------------------*/
 /* get address of data area                                                   */
 /*----------------------------------------------------------------------------*/
-Object* RowBuffer::pDataArea(void)
+byte* RowBuffer::aDataArea(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
-  Object* pStart = reinterpret_cast<Object*>(m_xWsp.aArea());
+  byte* pStart = reinterpret_cast<byte*>(m_xWsp.aArea());
   
   return pStart;
 }

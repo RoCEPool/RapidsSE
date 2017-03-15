@@ -285,7 +285,7 @@ void Task::vSocketSend(NNP_Task nnpTask)
     
     // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     // send rowBuffer itself
-    bResult = pSocket->bSendTo(iBytes, pRowBuffer->pDataArea(), xSysCall);
+    bResult = pSocket->bSendTo(iBytes, pRowBuffer->aDataArea(), xSysCall);
     
     // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     // delete the rowbuffer if its temporary
@@ -373,7 +373,7 @@ void Task::vSocketRecv(NNP_Task nnpTask)
     // receive rowBuffer
     //******************************************************************
     RowBuffer* pRowBuffer = new RowBuffer(iBytes);
-    bResult = pSocket->bRecvBytes(iBytes, reinterpret_cast<void*>(pRowBuffer->pDataArea()), xSysCall);
+    bResult = pSocket->bRecvBytes(iBytes, reinterpret_cast<void*>(pRowBuffer->aDataArea()), xSysCall);
     
     if ( ! bResult )
       THROW("Unable to recvFrom socket: Errno %d!"_Str, xSysCall.iError());
