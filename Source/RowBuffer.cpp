@@ -222,7 +222,7 @@ byte* RowBuffer::aDataArea(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
-  byte* pStart = reinterpret_cast<byte*>(m_xWsp.aArea());
+  byte* pStart = reinterpret_cast<byte*>(m_xWsp.sArea());
   
   return pStart;
 }

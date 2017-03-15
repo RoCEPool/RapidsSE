@@ -21,7 +21,7 @@ namespace Magic
     char* aAllot(i8 nBytes);
     void  vAppend(void* aSrc, i8 nBytes);
     char* sArea(void);
-    Str*  aArea(void);
+    Str*  aStr(void);
     void  vFill(char cByte);
     void  vFill(char cByte, i8 nBytes);
     i8    nFree(void);

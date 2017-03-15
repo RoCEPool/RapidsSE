@@ -143,7 +143,7 @@ i8 WspFxd<LENGTH>::nSize(void)
 template<int LENGTH>
 Str* WspFxd<LENGTH>::aStr(void)
 {
-  Str* aArea = Wsp::aArea();
+  Str* aArea = Wsp::aStr();
   
   return aArea;
 }

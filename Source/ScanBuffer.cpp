@@ -285,7 +285,7 @@ Str* ScanBuffer::aFirstByte(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SCANBUFFER,_FOOTER_);
   
-  Str* pFirst = &m_xWsp.aArea()[0];
+  Str* pFirst = &m_xWsp.aStr()[0];
   
   return pFirst;
 }
@@ -297,7 +297,7 @@ Str* ScanBuffer::aLastByte(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SCANBUFFER,_FOOTER_);
   
-  Str* pLast = &m_xWsp.aArea()[m_xWsp.nLength() - 1];
+  Str* pLast = &m_xWsp.aStr()[m_xWsp.nLength() - 1];
   
   return pLast;
 }
@@ -346,7 +346,7 @@ void ScanBuffer::vWipe(Str* aFrom)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SCANBUFFER,_FOOTER_);
   
-  ASSERT(aFrom >= m_xWsp.aArea());
+  ASSERT(aFrom >= m_xWsp.aStr());
   
   i8 nBytes = nSub(aLastByte(),aFrom) + 1;
   
