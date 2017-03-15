@@ -455,7 +455,7 @@ void StrVal::vSprint(Str* aFormat, ...)
 /*----------------------------------------------------------------------------*/
 char* StrVal::s(void)
 {
-  char* aArea = m_xWsp.sArea();
+  char* aArea = m_xWsp.aArea();
   
   return aArea;
 }

@@ -39,7 +39,7 @@ void WspVbl::vAppend(void* aSrc, i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* get address of data area                                                   */
 /*----------------------------------------------------------------------------*/
-char* WspVbl::sArea(void)
+char* WspVbl::aArea(void)
 {
   char* aArea = pAdd<char*>(&m_nAreaUsed,sizeof(m_nAreaUsed));
   
@@ -51,7 +51,7 @@ char* WspVbl::sArea(void)
 /*----------------------------------------------------------------------------*/
 void WspVbl::vFill(char cByte)
 {
-  MemLib::vSet(sArea(),cByte,m_nAreaUsed);
+  MemLib::vSet(aArea(),cByte,m_nAreaUsed);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -75,7 +75,7 @@ i8 WspVbl::nLength(void)
 /*----------------------------------------------------------------------------*/
 char* WspVbl::sLatter(void)
 {
-  return &sArea()[m_nAreaUsed];
+  return &aArea()[m_nAreaUsed];
 }
 
 /*----------------------------------------------------------------------------*/
@@ -127,7 +127,7 @@ void WspVbl::vUsed(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 void WspVbl::vZero(void)
 {
-  MemLib::vZero(sArea(),m_nAreaUsed);
+  MemLib::vZero(aArea(),m_nAreaUsed);
 }
 
 /*============================================================================*/
