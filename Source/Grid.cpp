@@ -153,6 +153,8 @@ Node* Grid::pFindNode(Str* sName)
   }
   pNodeCursor->vEnd();
   
+  delete pNodeCursor;
+  
   return pNode;
 }
 
@@ -175,6 +177,8 @@ Node* Grid::pFindNode(i8 iNodeNo)
     pNode = pNodeCursor->pObject();
   }
   pNodeCursor->vEnd();
+  
+  delete pNodeCursor;
   
   return pNode;
 }
