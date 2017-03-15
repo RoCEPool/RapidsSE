@@ -52,8 +52,8 @@ Key::~Key(void)
 /*----------------------------------------------------------------------------*/
 bool Key::operator <(Key* pKeyArg)
 {
-  i8 iDatumA = *(i8*)aWspArea();
-  i8 iDatumB = *(i8*)pKeyArg->aWspArea();
+  i8 iDatumA = *(i8*)aWspStr();
+  i8 iDatumB = *(i8*)pKeyArg->aWspStr();
   
   bool b = iDatumA < iDatumB;
   
@@ -65,8 +65,8 @@ bool Key::operator <(Key* pKeyArg)
 /*----------------------------------------------------------------------------*/
 bool Key::operator <=(Key* pKeyArg)
 {
-  i8 iDatumA = *(i8*)aWspArea();
-  i8 iDatumB = *(i8*)pKeyArg->aWspArea();
+  i8 iDatumA = *(i8*)aWspStr();
+  i8 iDatumB = *(i8*)pKeyArg->aWspStr();
   
   bool b = iDatumA <= iDatumB;
   
@@ -79,7 +79,7 @@ bool Key::operator <=(Key* pKeyArg)
 void Key::vKey(Key& xKey)
 {
   Str* aSrc = reinterpret_cast<Str*>(&xKey);
-  Str* aDst = aWspArea();
+  Str* aDst = aWspStr();
   i8 nBytes  = xKey.nSize();
   
   MemLib::vCopy(aDst,&xKey,nBytes);
@@ -90,7 +90,7 @@ void Key::vKey(Key& xKey)
 /*----------------------------------------------------------------------------*/
 void Key::vKey(KeyWsp& xKeyWsp)
 {
-  Str* aDst = aWspArea();
+  Str* aDst = aWspStr();
   Str* aSrc = xKeyWsp.aWspStr();
   i8 nBytes  = xKeyWsp.nWspUsed();
   
@@ -102,7 +102,7 @@ void Key::vKey(KeyWsp& xKeyWsp)
 /*----------------------------------------------------------------------------*/
 void Key::vShow(void)
 {
-  i8 iKey = *(i8*)aWspArea();
+  i8 iKey = *(i8*)aWspStr();
   
   vTrace("Key %p: (size %lld value:%lld)\n"_Str,
          this,
@@ -114,7 +114,7 @@ void Key::vShow(void)
 /*----------------------------------------------------------------------------*/
 /* get wsp area                                                               */
 /*----------------------------------------------------------------------------*/
-char* Key::sWspArea(void)
+char* Key::aWspArea(void)
 {
   return m_xWsp.aArea();
 }
@@ -122,7 +122,7 @@ char* Key::sWspArea(void)
 /*----------------------------------------------------------------------------*/
 /* get wsp area                                                               */
 /*----------------------------------------------------------------------------*/
-Str* Key::aWspArea(void)
+Str* Key::aWspStr(void)
 {
   return m_xWsp.aStr();
 }
