@@ -1304,7 +1304,7 @@ bool SEitf::bInsertRow(Str* aRow)
   // get working buffer
   RowBuffer* pRowBuffer = m_pRowBuffer[m_iPartition];
   
-  vTrace("Buffer: %s Partition:%d\n"_Str,pRowBuffer, m_iPartition);
+  //vTrace("Buffer: %s Partition:%d\n"_Str,pRowBuffer, m_iPartition);
   
   // insert row into working buffer
   if (pRowBuffer->bInsertRow(m_pTxRef,aRow,aRow->nSize()))
@@ -1313,7 +1313,7 @@ bool SEitf::bInsertRow(Str* aRow)
   // buffer full, append working buffer into table
   //m_pCurrentTable->vAppendBuffer(m_iPartition,pRowBuffer);
   
-  vTrace("Buffer full... Inserting buffer\n"_Str);
+  //vTrace("Buffer full... Inserting buffer\n"_Str);
   bool bResult = bInsertBuffer(pRowBuffer, m_iPartition);
   
   if (!bResult)
@@ -1687,7 +1687,7 @@ eEC SEitf::eGetResponse(void)
   
   // generate a random number and send it back
   do {
-    m_iNextRequestId = Random::iRandom();
+    m_iNextRequestId = Random::iRandom(0,99999);
   } while (m_iNextRequestId == m_iCurrentRequestId);
 
   //vTrace("NextRequest %lld\n"_Str, m_iNextRequestId);
