@@ -92,7 +92,7 @@ void StrVar<SIZE>::operator =(i8 iArg)
 {
   _precondition_(_MAGIC_,CN_STRVAR,_FOOTER_);
   
-  StrLib::wToString(iArg,(char*)aStrArea());
+  StrLib::wToString(iArg,(char*)aStr());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -125,7 +125,7 @@ void StrVar<SIZE>::operator =(StrVal* pArg)
 {
   _precondition_(_MAGIC_,CN_STRVAR,_FOOTER_);
   
-  vCopy(pArg->aStrArea());
+  vCopy(pArg->aStr());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -187,7 +187,7 @@ void StrVar<SIZE>::vTest(void)
 {
   _precondition_(_MAGIC_,CN_STRVAR);
 
-  aStrArea()->vPrint();
+  aStr()->vPrint();
 }
 
 /*----------------------------------------------------------------------------*/

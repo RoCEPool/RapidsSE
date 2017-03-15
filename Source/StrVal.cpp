@@ -176,7 +176,7 @@ void StrVal::operator =(StrVal* pArg)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  vCopy(pArg->aStrArea());
+  vCopy(pArg->aStr());
   
   _postcondition_(_MAGIC_,_FOOTER_);
 }
@@ -499,7 +499,7 @@ void StrVal::vToString(Str* aStr)
 /*----------------------------------------------------------------------------*/
 /* get adddress of Str area                                                   */
 /*----------------------------------------------------------------------------*/
-Str* StrVal::aStrArea(void)
+Str* StrVal::aStr(void)
 {
   char* aAddr = pAdd<char*>(this,sizeof(StrVal));
   

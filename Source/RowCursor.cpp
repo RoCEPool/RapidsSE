@@ -157,7 +157,7 @@ Str* RowCursor::aRowAsStr(void)
   StrVal* pStrVal = reinterpret_cast<StrVal*>(m_pRow->pData());
   
   if (pStrVal)
-    return pStrVal->aStrArea();
+    return pStrVal->aStr();
   else
     return nullptr;
 }

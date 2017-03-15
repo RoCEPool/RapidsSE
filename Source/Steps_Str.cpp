@@ -379,7 +379,7 @@ void Task::vStrRandom(NNP_Task nnpTask)
   
   s48K sRnd;
   
-  sRnd = Random::sRandomString(iLength).aStrArea();
+  sRnd = Random::sRandomString(iLength).aStr();
   
   nnpTask->m_pDataStack->vPush(sRnd);
   

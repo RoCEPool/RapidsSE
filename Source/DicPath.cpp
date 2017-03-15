@@ -144,7 +144,7 @@ Word* DicPath::pFindWord(StrVal& sName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICPATH,_FOOTER_);
   
-  Word* pWord = pFindWord(sName.aStrArea());
+  Word* pWord = pFindWord(sName.aStr());
   
   return pWord;
 }

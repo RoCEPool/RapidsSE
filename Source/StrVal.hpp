@@ -52,13 +52,13 @@ namespace Values
     i8    iLength(void);
     bool  bSame(Str* aArg);
     i8    nSize(void);
-    void vSprint(Str* aFormat, ...);
+    void  vSprint(Str* aFormat, ...);
     char* s(void);
     i8    iToI8(void);
     void  vToLower(void);
     void  vToString(Str* aStr);
   
-    Str* aStrArea(void);
+    Str*  aStr(void);
 
   private:
     Footer* pFooter(void);
