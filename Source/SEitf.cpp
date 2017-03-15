@@ -229,6 +229,7 @@ void SEitf::vInit(void)
   // /tenants/boray/catalogs/rapidsse/schemas/public/tables
   Word* pTables = m_xPathStack.pFindInCurrent("tables"_Str);
   ASSERT(pTables);
+  
   pCell = pTables->pFirstCell();
   m_xPathStack.vPush(reinterpret_cast<Dic*>(pCell));
 }
@@ -1685,7 +1686,10 @@ eEC SEitf::eGetResponse(void)
   vSetLastError(m_eErrorCode);
   
   // generate a random number and send it back
-  m_iNextRequestId = Random::iRandom();
+  do {
+    m_iNextRequestId = Random::iRandom();
+  } while (m_iNextRequestId == m_iCurrentRequestId);
+
   //vTrace("NextRequest %lld\n"_Str, m_iNextRequestId);
   
   return m_eErrorCode;
