@@ -5,6 +5,7 @@
 #include "StorageEngine.h"
 
 void* C_ADDR_POOL = (void*)0x204800000;
+i8 C_MEMORY_PERCENT = 80;
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -236,6 +237,17 @@ bool Arguments::bParse(int argc, Str* argv[])
         return false;
       }
       
+      i8 iTotalMemory = MemLib::iGetTotalMemory();
+      if (m_iRegionSize > DIV(C_MEMORY_PERCENT * iTotalMemory, 100)) {
+        vTrace("Invalid size argument: --size %s\n"_Str,argv[iArg]);
+        s32 sMag;
+        Magnitudes::vMagnitude(iTotalMemory,sMag);
+        vTrace("Cannot set size > %lld%% of memory on this node (node has only %s of memory)\n"_Str,
+               C_MEMORY_PERCENT,
+               sMag.aStr());
+        return false;
+      }
+
       m_iRegionSize += m_iJumboSize;
       
       continue;
