@@ -753,7 +753,7 @@ eEC RapidsSE_GetCatalogs(SEitf* pSEitf, void** ppCatalogs)
   }
   
   // return list of catalogs
-  *ppCatalogs = pSEitf->m_sResponse.aStr();
+  *ppCatalogs = pSEitf->m_sResponse.s();
   
   return eResult;
 }
@@ -920,7 +920,7 @@ eEC RapidsSE_GetColumns(SEitf* pSEitf, Str* pCatalog, Str* pSchema,
   }
 
   // return the list of columns of pTable
-  *ppColumns = pSEitf->m_sResponse.aStr();
+  *ppColumns = pSEitf->m_sResponse.s();
   
   return eResult;
 }
@@ -933,7 +933,7 @@ eEC RapidsSE_GetLastError(SEitf* pSEitf, void** ppError)
   if (gpGrid->m_bTraceapi)
     vTrace("RapidsSE_GetLastError\n"_Str);
   
-  *ppError = pSEitf->m_sErrorMsg.aStr();
+  *ppError = pSEitf->m_sErrorMsg.s();
   
   if (gpGrid->m_bTraceapi)
     vTrace("Error : %s\n"_Str, *ppError);
@@ -1158,7 +1158,7 @@ eEC RapidsSE_GetSchemas(SEitf* pSEitf, Str* pCatalog, void** ppSchemas)
   }
   
   // return list of schemas in ppSchemas
-  *ppSchemas = pSEitf->m_sResponse.aStr();
+  *ppSchemas = pSEitf->m_sResponse.s();
   
   return eResult;
 }
@@ -1204,7 +1204,7 @@ eEC RapidsSE_GetEngineVersion(SEitf* pSEitf, void** ppVersion)
   }
   
   // return SE version
-  *ppVersion = pSEitf->m_sResponse.aStr();
+  *ppVersion = pSEitf->m_sResponse.s();
   
   return EC_NONE;
 }
@@ -1346,7 +1346,7 @@ eEC RapidsSE_GetTables(SEitf* pSEitf, Str* pCatalog, Str* pSchema, void** ppTabl
   }
   
   // return list of tables in ppSchemas
-  *ppTables = pSEitf->m_sResponse.aStr();
+  *ppTables = pSEitf->m_sResponse.s();
   
   return eResult;
 }
@@ -1764,7 +1764,7 @@ eEC eGetResponse(SEitf* pSEitf)
 {
   // get response
   eEC eError = pSEitf->eGetResponse();
-  //vTrace("rsp : %s %lld\n"_Str, pSEitf->m_sResponse.aStr(), eError);
+  //vTrace("rsp : %s %lld\n"_Str, pSEitf->m_sResponse.s(), eError);
   
   return eError;
 }

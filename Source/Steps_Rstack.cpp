@@ -334,7 +334,7 @@ void Task::vRstackStk(NNP_Task nnpTask)
 {
   ENTRY("vRstackStk"_Str);
   
-  nnpTask->m_pReturnStack->vDump(nnpTask->m_sName.aStr(),"ReturnStack:");
+  nnpTask->m_pReturnStack->vDump(nnpTask->m_sName.s(),"ReturnStack:");
   
   EXIT();
 }

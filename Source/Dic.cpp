@@ -140,7 +140,7 @@ void Dic::vDump(eCN eClass, Object* pObject, Str* aTab)
   Dic* pDic = reinterpret_cast<Dic*>(pObject);
   
   vTrace("name %s lastWord %p\n"_Str,
-         pDic->m_sName.aStr(),
+         pDic->m_sName.s(),
          pDic->m_pLastWord);
   
   //for (Word* pWord = m_pLastWord; pWord; pWord = pWord->pPrevWord())
@@ -343,7 +343,7 @@ void Dic::vRefDec(void)
   
   u8 iRef = --m_zRefCount;
   
-  //vTrace("DIC: %s --ref : %lld\n"_Str,m_sName.aStr(),iRef);
+  //vTrace("DIC: %s --ref : %lld\n"_Str,m_sName.s(),iRef);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -355,7 +355,7 @@ void Dic::vRefInc(void)
   
   u8 iRef = ++m_zRefCount;
   
-  //vTrace("DIC: %s ++ref : %lld\n"_Str,m_sName.aStr(),iRef);
+  //vTrace("DIC: %s ++ref : %lld\n"_Str,m_sName.s(),iRef);
 }
 
 /*----------------------------------------------------------------------------*/

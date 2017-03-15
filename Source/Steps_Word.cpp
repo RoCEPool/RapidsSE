@@ -85,7 +85,7 @@ void Task::vAllParticipants(NNP_Task nnpTask)
   
   Word* pCurrentWord = nnpTask->m_pCurrentWord;
   
-  //vTrace("Task::vImmediate: %s\n"_Str,pCurrentWord->sName().aStr());
+  //vTrace("Task::vImmediate: %s\n"_Str,pCurrentWord->sName().s());
   
   pCurrentWord->vDistributed(DT_ALLPARTICIPANTS);
   
@@ -373,7 +373,7 @@ ENTRY("vForget"_Str);
   Word* pWord = nnpTask->m_xPathStack.pFindWord(nnpTask->m_pTokeniser->sToken());
   
   if ( ! pWord )
-    THROW("No such word: %s"_Str,nnpTask->m_pTokeniser->sToken().aStr());
+    THROW("No such word: %s"_Str,nnpTask->m_pTokeniser->sToken().s());
   
   bool bResult = nnpTask->m_xPathStack.bForget(nnpTask->m_pTokeniser->sToken());
   ASSERT(bResult);
@@ -469,7 +469,7 @@ void Task::vIndirect(NNP_Task nnpTask)
   
   Word* pCurrentWord = nnpTask->m_pCurrentWord;
   
-  //vTrace("Task::vImmediate: %s\n"_Str,pCurrentWord->sName().aStr());
+  //vTrace("Task::vImmediate: %s\n"_Str,pCurrentWord->sName().s());
   
   pCurrentWord->vIndirect(true);
   
@@ -485,7 +485,7 @@ void Task::vImmediate(NNP_Task nnpTask)
   
   Word* pCurrentWord = nnpTask->m_pCurrentWord;
   
-  //vTrace("Task::vImmediate: %s\n"_Str,pCurrentWord->sName().aStr());
+  //vTrace("Task::vImmediate: %s\n"_Str,pCurrentWord->sName().s());
   
   pCurrentWord->vImmediate(true);
   
@@ -544,7 +544,7 @@ void Task::vOneParticipant(NNP_Task nnpTask)
   
   Word* pCurrentWord = nnpTask->m_pCurrentWord;
   
-  //vTrace("Task::vImmediate: %s\n"_Str,pCurrentWord->sName().aStr());
+  //vTrace("Task::vImmediate: %s\n"_Str,pCurrentWord->sName().s());
   
   pCurrentWord->vDistributed(DT_ONEPARTICIPANT);
   
@@ -576,7 +576,7 @@ void Task::vOpDic(NNP_Task nnpTask)
   
   RegFrame* pOpFrame = nnpTask->m_pPlan->pRegFrameFind(sNameOpFrame);
   //if ( ! pOpFrame )
-  //  THROW("No such op frame: %s",sNameOpFrame.aStr());
+  //  THROW("No such op frame: %s",sNameOpFrame.s());
   
   if ( pOpFrame ) {
     pOpDic = pOpFrame->pOpDic();
@@ -589,7 +589,7 @@ void Task::vOpDic(NNP_Task nnpTask)
     
     // create a op dictionary
     s32 sNameDic;
-    sNameDic.vSprint("<%s>"_Str,sNameOpFrame.aStr());
+    sNameDic.vSprint("<%s>"_Str,sNameOpFrame.s());
     
     pOpDic = new Dic;
     pOpDic->vName(sNameDic);
@@ -634,7 +634,7 @@ void Task::vPostpone(NNP_Task nnpTask)
   // find the word in dic stack
   Word* pCalledWord = nnpTask->m_xPathStack.pFindWord(nnpTask->m_pTokeniser->sToken());
   if ( ! pCalledWord )
-    THROW("No word: %s "_Str,nnpTask->m_pTokeniser->sToken().aStr());
+    THROW("No word: %s "_Str,nnpTask->m_pTokeniser->sToken().s());
   
   if (pCalledWord->bImmediate()) {
     
@@ -674,11 +674,11 @@ void Task::vSee(NNP_Task nnpTask)
   
   Word* pWord = nnpTask->m_xPathStack.pFindWord(nnpTask->m_pTokeniser->sToken());
   if ( ! pWord ) {
-    vTrace("See: %s unknown\n"_Str,nnpTask->m_pTokeniser->sToken().aStr());
+    vTrace("See: %s unknown\n"_Str,nnpTask->m_pTokeniser->sToken().s());
     return;
   }
   
-  vTrace("See: %s\n"_Str,pWord->sName().aStr());
+  vTrace("See: %s\n"_Str,pWord->sName().s());
   
   Cell* pDoesCell = pWord->pEntryCell();
   
@@ -694,7 +694,7 @@ void Task::vSee(NNP_Task nnpTask)
         *pDoesCell->m_ppEntryStep == Task::vFlowJumpFalse ||
         *pDoesCell->m_ppEntryStep == Task::vFlowJumpTrue ) {
       
-      vTrace("%p: %s"_Str,pDoesCell,pCallsWord->sName().aStr());
+      vTrace("%p: %s"_Str,pDoesCell,pCallsWord->sName().s());
       
       pDoesCell++;
       
@@ -708,18 +708,18 @@ void Task::vSee(NNP_Task nnpTask)
     // push
     if ( *pDoesCell->m_ppEntryStep == Task::vPushValue ) {
       
-      vTrace("%p: %s"_Str,pDoesCell,pCallsWord->sName().aStr());
+      vTrace("%p: %s"_Str,pDoesCell,pCallsWord->sName().s());
       
       pDoesCell++;
       
       ValWsp* pValue = reinterpret_cast<ValWsp*>(pDoesCell);
       
       if (CN_STRVAL == pValue->eClass()) {
-        vTrace(" \"%s\"\n"_Str,_pStrVal(pValue)->aStr());
+        vTrace(" \"%s\"\n"_Str,_pStrVal(pValue)->s());
       }
       else {
         ValLib::vToString(pValue,sWorkspace);
-        vTrace(" %s\n"_Str,sWorkspace.aStr());
+        vTrace(" %s\n"_Str,sWorkspace.s());
       }
       
       i8 iBytes = ValLib::iSize(pValue);
@@ -734,13 +734,13 @@ void Task::vSee(NNP_Task nnpTask)
       Word* pCallsWord = (Word*)( ((u8)pDoesCell->m_ppEntryStep & (u8)~0xFFFF)
                                  + sizeof(HeapBuffer));
       
-      vTrace("%p: %s\n"_Str,pDoesCell,pCallsWord->sName().aStr());
+      vTrace("%p: %s\n"_Str,pDoesCell,pCallsWord->sName().s());
       pDoesCell++;
       continue;
     }
     
     // other
-    vTrace("%p: %s\n"_Str,pDoesCell,pCallsWord->sName().aStr());
+    vTrace("%p: %s\n"_Str,pDoesCell,pCallsWord->sName().s());
     
     pDoesCell++;
   }
@@ -846,7 +846,7 @@ void Task::vSubDic(NNP_Task nnpTask)
   
   Word* pWordSubDic = nnpTask->m_xPathStack.pFindWord(sNameSubDic);
   if ( ! pWordSubDic )
-    THROW("No such subDic: %s"_Str,sNameSubDic.aStr());
+    THROW("No such subDic: %s"_Str,sNameSubDic.s());
   
   Dic* pDic = _pDic(pWordSubDic->aBodyArea());
   
@@ -875,7 +875,7 @@ void Task::vTick(NNP_Task nnpTask)
   Word* pWord = nnpTask->m_xPathStack.pFindWord(nnpTask->m_pTokeniser->sToken());
   
   if ( ! pWord )
-    THROW("No word: %s "_Str,nnpTask->m_pTokeniser->sToken().aStr());
+    THROW("No word: %s "_Str,nnpTask->m_pTokeniser->sToken().s());
   
   if (nnpTask->m_bCompiling) {
     Word* pCurrentWord = nnpTask->m_pCurrentWord;

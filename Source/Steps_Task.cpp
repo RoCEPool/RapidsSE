@@ -82,16 +82,16 @@ void Task::vTaskAck(NNP_Task nnpTask)
   
   if ( ! iMore ) {
     //    vTrace("Task::vTaskSignal: task %p %s resuming task %p %s\n"_Str,
-    //           *nnpTask,nnpTask->m_sName.aStr(),
-    //           pThatTask,pThatTask->m_sName.aStr());
+    //           *nnpTask,nnpTask->m_sName.s(),
+    //           pThatTask,pThatTask->m_sName.s());
     if (gxArguments.m_bTracepoint)
       vTrace("[N%lld:%8s\\%lld %-11s] ack resumes %s\\%lld\n"_Str,
              gpGrid->iThisNode(),
-             nnpTask->m_sName.aStr(),
+             nnpTask->m_sName.s(),
              *nnpTask->m_zAcks,
-             nnpTask->m_sComment.aStr(),
+             nnpTask->m_sComment.s(),
              
-             pThatTask->m_sName.aStr(),
+             pThatTask->m_sName.s(),
              *pThatTask->m_zAcks);
     
     while (TS_WAITING_ACK != pThatTask->m_eState)
@@ -104,15 +104,15 @@ void Task::vTaskAck(NNP_Task nnpTask)
   }
   else {
     //    vTrace("Task::vTaskSignal: task %p %s signalled task %p\\%lld %s\n"_Str,
-    //           *nnpTask,nnpTask->m_sName.aStr(),
-    //           pThatTask,iMore,pThatTask->m_sName.aStr());
+    //           *nnpTask,nnpTask->m_sName.s(),
+    //           pThatTask,iMore,pThatTask->m_sName.s());
 //    vTrace("[N%lld:%8s\\%lld %-11s] ack'd %s\\%lld\n"_Str,
 //           gpGrid->iThisNode(),
-//           nnpTask->m_sName.aStr(),
+//           nnpTask->m_sName.s(),
 //           *nnpTask->m_zAcks,
-//           nnpTask->m_sComment.aStr(),
+//           nnpTask->m_sComment.s(),
 //           
-//           pThatTask->m_sName.aStr(),
+//           pThatTask->m_sName.s(),
 //           iMore);
     
   }

@@ -170,7 +170,7 @@ void Task::vIntHash(NNP_Task nnpTask)
   
   i8 iLength = sString.iLength();
   
-  i8 iHash = XXH32(sString.aStr(),iLength,0);
+  i8 iHash = XXH32(sString.s(),iLength,0);
   
   nnpTask->m_pDataStack->vPush(iHash);
   

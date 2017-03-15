@@ -53,7 +53,7 @@ namespace Values
     bool  bSame(Str* aArg);
     i8    nSize(void);
     void vSprint(Str* aFormat, ...);
-    char* aStr(void);
+    char* s(void);
     i8    iToI8(void);
     void  vToLower(void);
     void  vToString(Str* aStr);

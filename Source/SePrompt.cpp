@@ -148,7 +148,7 @@ void SePrompt::vLoop(void)
     
     if (m_bExpect) {
       if ( ! m_sExpect.bSame(m_sResponse) ) {
-        vTrace("Expected \"%s\" : Got \"%s\"\n"_Str,m_sExpect.aStr(),m_sResponse.aStr());
+        vTrace("Expected \"%s\" : Got \"%s\"\n"_Str,m_sExpect.s(),m_sResponse.s());
         PosixThread::vSleepSec(10000);
       }
     }
@@ -160,14 +160,14 @@ void SePrompt::vLoop(void)
           break;
         vTrace("%s "_Str,m_aToken[iToken]);
       }
-      vTrace(": got: %s\n"_Str,m_sResponse.aStr());
+      vTrace(": got: %s\n"_Str,m_sResponse.s());
       continue;
     }
     
     if (b) {
       if ( ! m_bExpect )
         if ( !m_sResponse.bEqual("<ok>"_Str) ) {
-          vTrace("%s\n"_Str,m_sResponse.aStr());
+          vTrace("%s\n"_Str,m_sResponse.s());
       }
     }
     else {
@@ -658,7 +658,7 @@ bool SePrompt::bReturnTable(void)
   m_aToken[1]->vCopy(""_Str);
   
   if (!bExecuteRequest()) {
-    vTrace("bReturnTable: (%s) Return Table FAILED!!! : %s\n"_Str, m_sResponse.aStr());
+    vTrace("bReturnTable: (%s) Return Table FAILED!!! : %s\n"_Str, m_sResponse.s());
     return false;
   }
   return true;
@@ -1700,7 +1700,7 @@ bool SePrompt::bDropReturnTable(Str* aTableName)
   m_aToken[2]->vCopy(""_Str);
   
   if (!bExecuteRequest()) {
-    //vTrace("Error: (%s) Drop Table %s\n"_Str, m_sResponse.aStr(), pTableName);
+    //vTrace("Error: (%s) Drop Table %s\n"_Str, m_sResponse.s(), pTableName);
     return false;
   }
   return true;
@@ -1919,7 +1919,7 @@ bool SePrompt::bListDir(void)
   while(xDir.bRead()) {
     sDirEntry = xDir.sEntryName();
     iEntryType = xDir.iEntryType();
-    vTrace("%c %s\n"_Str, iEntryType == DT_DIR ? 'd' : 'f', sDirEntry.aStr());
+    vTrace("%c %s\n"_Str, iEntryType == DT_DIR ? 'd' : 'f', sDirEntry.s());
   }
   
   // close the current directory
@@ -1992,7 +1992,7 @@ bool SePrompt::bPrintWorkingDir(void)
   ASSERT(m_aToken[0]->bEqual("pwd"_Str));
   
   if (xDir.bGetCurrent(sDir)) {
-    vTrace("%s"_Str, sDir.aStr());
+    vTrace("%s"_Str, sDir.s());
   }
   
   // clear the respnse

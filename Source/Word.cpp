@@ -242,15 +242,15 @@ void Word::vContentDump(void)
   vTrace("Word %p: %s %s Kind %s Indirect %d Immediate %d DataBytes %lld "_Str
          "Step %p %s ..Data.. %p\n"_Str,
          this,
-         m_sName.aStr(),
+         m_sName.s(),
          aWT[m_eWordType]->a(),
-         m_pKind->m_sName.aStr(),
+         m_pKind->m_sName.s(),
          m_bIndirect,
          m_bImmediate,
 //       m_iDataBytes,
          m_xBody.nUsed(),
          m_pEntryStep,
-         pStepWord ? pStepWord->sName().aStr() : "<not-found>",
+         pStepWord ? pStepWord->sName().s() : "<not-found>",
          pFirstCell()
          );
 }
@@ -501,7 +501,7 @@ char* Word::pFinalRoutine(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  return m_sFinalRoutine.aStr();
+  return m_sFinalRoutine.s();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -654,8 +654,8 @@ void Word::vObjectDump(Str* aTab)
   vTrace("epoch %lld %s (%s) %s %s %s DataBytes %lld "_Str
          "Step %p ..Data.. %p\n"_Str,
          m_iEpoch,
-         m_sName.aStr(),
-         m_pDic->sName().aStr(),
+         m_sName.s(),
+         m_pDic->sName().s(),
          aWT[m_eWordType]->a(),
          m_bIndirect ? "Indirect"_Str : "Not Indirect"_Str,
          m_bImmediate ? "Immediate"_Str : "Not Immediate"_Str,

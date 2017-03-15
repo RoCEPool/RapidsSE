@@ -134,7 +134,7 @@ void AttachMap::vDump(eCN eClass, Object* pObject, Str* aTab)
   
   vTrace("pid %lld utc %s regionSize %lld\n"_Str,
          pAttachMap->m_iPid,
-         pAttachMap->m_sUTC.aStr(),
+         pAttachMap->m_sUTC.s(),
          pAttachMap->m_iRegionSize);
 }
 

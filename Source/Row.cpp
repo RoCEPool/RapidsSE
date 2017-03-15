@@ -97,7 +97,7 @@ void Row::vContentDump(void)
          m_iDataBytes,
          pData(),
          StrLib::iSize(pData()),
-         pStr->aStr()
+         pStr->s()
          );
 }
 

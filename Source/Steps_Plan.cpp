@@ -316,7 +316,7 @@ void Task::vPlanOpFrameAdd(NNP_Task nnpTask)
   
   RegFrame* pRegFrame = pPlan->pRegFrameFind(sNameFrame);
   if ( pRegFrame )
-    THROW("plan.opFrame++: op frame %s already exists"_Str,sNameFrame.aStr());
+    THROW("plan.opFrame++: op frame %s already exists"_Str,sNameFrame.s());
   
   pRegFrame = new RegFrame;
   pRegFrame->vName(sNameFrame);
@@ -324,7 +324,7 @@ void Task::vPlanOpFrameAdd(NNP_Task nnpTask)
   
   // create a op dictionary
   s32 sNameDic;
-  sNameDic.vSprint("<%s>"_Str,sNameFrame.aStr());
+  sNameDic.vSprint("<%s>"_Str,sNameFrame.s());
   
   Dic* pOpDic = new Dic;
   pOpDic->vName(sNameDic);
@@ -354,7 +354,7 @@ void Task::vPlanOpFrameFind(NNP_Task nnpTask)
     THROW_INVALID_DSTACK("plan.opFrame?"_Str);
   
   if (nnpTask->m_iTracing) {
-    vTrace("Find frame %s\n"_Str,sName.aStr());
+    vTrace("Find frame %s\n"_Str,sName.s());
     i8 i = 0;
   }
   

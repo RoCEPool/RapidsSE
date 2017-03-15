@@ -87,7 +87,7 @@ void DicPath::vContentDump(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICPATH,_FOOTER_);
   
   for (i8 i = m_iTop; i >= 0; i--)
-    vTrace("Dic %p %lld %s\n"_Str,m_pDic[i],i,m_pDic[i]->sName().aStr());
+    vTrace("Dic %p %lld %s\n"_Str,m_pDic[i],i,m_pDic[i]->sName().s());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -123,11 +123,11 @@ void DicPath::vDump(eCN eClass, Object* pObject, Str* aTab)
   vTrace("top %p:"_Str,pDicPath->m_iTop);
   //for (i8 i = pDicPath->m_iTop; i >= 0; i--)
     //vTrace("%s  Dic %p %lld %s\n"_Str,aTab, pDicPath->m_pDic[i],i,
-           //pDicPath->m_pDic[i]->sName().aStr());
+           //pDicPath->m_pDic[i]->sName().s());
   
   for (i8 i = pDicPath->m_iTop; i >= 0; i--) {
     vTrace(" dic %p %lld %s"_Str,aTab, pDicPath->m_pDic[i],i,
-           pDicPath->m_pDic[i]->sName().aStr());
+           pDicPath->m_pDic[i]->sName().s());
     //Dic::vDump(CN_DIC, pDicPath->m_pDic[i], aTab);
   }
 

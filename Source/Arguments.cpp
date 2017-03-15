@@ -245,7 +245,7 @@ bool Arguments::bParse(int argc, Str* argv[])
         Magnitudes::vMagnitude(iTotalMemory,sMag);
         vTrace("Cannot set size > %lld%% of memory on this node (node has only %s of memory)\n"_Str,
                C_MEMORY_PERCENT,
-               sMag.aStr());
+               sMag.s());
         return false;
       }
 
@@ -454,7 +454,7 @@ bool Arguments::bParse(int argc, Str* argv[])
 
   // if no regionName then form region name using regionPrefix and node name
   if (m_sRegionName.bSame(""_Str)) {
-    m_sRegionName.vCat(m_sRegionPrefix,"_"_Str,m_sNodeName.aStr(),nullptr);
+    m_sRegionName.vCat(m_sRegionPrefix,"_"_Str,m_sNodeName.s(),nullptr);
   }
   else {
     if (m_bStart && m_nNodes > 1) {
@@ -483,22 +483,22 @@ void Arguments::vPrint(void)
   if (m_bStatus)   vTrace("  --status\n"_Str);
   if (m_bStop)     vTrace("  --stop\n"_Str);
 
-  vTrace("  --name %s\n"_Str,m_sNodeName.aStr());
-  vTrace("  --regionPrefix %s\n"_Str,m_sRegionPrefix.aStr());
+  vTrace("  --name %s\n"_Str,m_sNodeName.s());
+  vTrace("  --regionPrefix %s\n"_Str,m_sRegionPrefix.s());
   vTrace("  --address %p\n"_Str,m_pRegionAddr);
   vTrace("  --size %lld\n"_Str,m_iRegionSize);
   
   for (i8 iIndex=0; iIndex < m_nNodes; iIndex++) {
     vTrace("  --node %s %s %lld\n"_Str,
-      m_xNodes[iIndex].m_sNodeName.aStr(),
-      m_xNodes[iIndex].m_sIPAddress.aStr(),
+      m_xNodes[iIndex].m_sNodeName.s(),
+      m_xNodes[iIndex].m_sIPAddress.s(),
       m_xNodes[iIndex].m_iPortNo);
   }
   
   vTrace("  --partitionsPerNode %lld\n"_Str,m_nSlots);
-  vTrace("  --commands %s\n"_Str,m_sCommands.aStr());
+  vTrace("  --commands %s\n"_Str,m_sCommands.s());
 //#ifdef _DEBUG
-  vTrace("  --sen %s\n"_Str,m_sSen.aStr());
+  vTrace("  --sen %s\n"_Str,m_sSen.s());
 //#endif
   if (m_bMunged) vTrace("  --munged\n"_Str);
   

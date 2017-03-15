@@ -24,7 +24,7 @@ namespace Parsing
     File    m_xFile;     // given file
     bool    m_bLineMode; // line mode?
     s48K    m_sRawLine;  // either raw line read from file or given string
-    char*   m_aRawLine;  // ptr into m_sLine.aStr() -- debug help
+    char*   m_aRawLine;  // ptr into m_sLine.s() -- debug help
     char*   m_pRawChar;  // next raw char in raw line
 
     // registers

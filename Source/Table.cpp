@@ -114,7 +114,7 @@ Str* Table::pAnalyze(bool bDetailed)
   
   sAnalysis.vCatSprint("N%lld: Analysis of Table %s\n"_Str,
                        gpGrid->iThisNode(),
-                       m_sTableName.aStr());
+                       m_sTableName.s());
 
   for (i8 iSlot = 0; iSlot < gxArguments.m_nSlots; iSlot++) {
     
@@ -263,7 +263,7 @@ void Table::vDump(eCN eClass, Object* pObject, Str* aTab)
   Table* pTable = reinterpret_cast<Table*>(pObject);
   
   vTrace("name %s type %s\n"_Str,
-         pTable->m_sTableName.aStr(),
+         pTable->m_sTableName.s(),
          aTT[pTable->m_eTableType]->a());
 }
 

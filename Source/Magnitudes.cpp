@@ -69,7 +69,7 @@ bool Magnitudes::bBytes(Str* psBuf, i8& iBytes)
     iMagnitude = C_1PB;
   }
   else if (sString.bContains("b"_Str)) {
-    if (!StrLib::bEqualTo(StrLib::sLast(sString.aStr()), "b")) {
+    if (!StrLib::bEqualTo(StrLib::sLast(sString.s()), "b")) {
       return false;
     }
     sNumber.vCopyTill(sString,'b');
@@ -79,7 +79,7 @@ bool Magnitudes::bBytes(Str* psBuf, i8& iBytes)
     sNumber = sString;
   }
   
-  char* ps = sNumber.aStr();
+  char* ps = sNumber.s();
   i8 iVal;
   
   if (!StrLib::bIsNumeric(ps)){

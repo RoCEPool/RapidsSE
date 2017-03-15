@@ -147,11 +147,11 @@ void Task::vStrClip(NNP_Task nnpTask)
   char* pStart;
   
   if (iLength > 0)
-    pStart = sString.aStr();
+    pStart = sString.s();
   else
-    pStart = sString.aStr() + iHasLength - 1 - llabs(iLength);
+    pStart = sString.s() + iHasLength - 1 - llabs(iLength);
   
-  StrLib::vCopyLen(sSubStr.aStr(),pStart,llabs(iLength));
+  StrLib::vCopyLen(sSubStr.s(),pStart,llabs(iLength));
   
   nnpTask->m_pDataStack->vPush(sSubStr);
   
@@ -172,8 +172,8 @@ void Task::vStrEqual(NNP_Task nnpTask)
   if ( ! nnpTask->m_pDataStack->bPop(xStringB,xStringA) )
     THROW_INVALID_DSTACK("str.equal"_Str);
   
-  i8 iEqual = StrLib::bEqualTo(_pStrVal(&xStringA)->aStr(),
-                               _pStrVal(&xStringB)->aStr());
+  i8 iEqual = StrLib::bEqualTo(_pStrVal(&xStringA)->s(),
+                               _pStrVal(&xStringB)->s());
   
   nnpTask->m_pDataStack->vPush(iEqual);
   
@@ -194,7 +194,7 @@ void Task::vStrEscape(NNP_Task nnpTask)
   if ( ! nnpTask->m_pDataStack->bPop(xArg) )
     THROW_INVALID_DSTACK("str.escape"_Str);
   
-  StrLib::vEscape(xArg.aStr(),xEscaped.aStr());
+  StrLib::vEscape(xArg.s(),xEscaped.s());
   
   nnpTask->m_pDataStack->vPush(xEscaped);
   
@@ -214,9 +214,9 @@ void Task::vStrFirstCsv(NNP_Task nnpTask)
   
   s256 sFirstValue;
   
-  char* z = _pStrVal(&xStr)->aStr();
+  char* z = _pStrVal(&xStr)->s();
   
-  if (! StrLib::bExtractItem(&z,sFirstValue.aStr()))
+  if (! StrLib::bExtractItem(&z,sFirstValue.s()))
     sFirstValue = ""_Str;
   
   nnpTask->m_pDataStack->vPush(sFirstValue);
@@ -265,9 +265,9 @@ void Task::vStrLeft(NNP_Task nnpTask)
   if ( iLength < 0)
     THROW("Invalid length for: str.left"_Str);
   
-  char* pStart = sString.aStr();
+  char* pStart = sString.s();
   
-  StrLib::vCopyLen(sSubStr.aStr(),pStart,iLength);
+  StrLib::vCopyLen(sSubStr.s(),pStart,iLength);
   
   nnpTask->m_pDataStack->vPush(sSubStr);
   
@@ -310,7 +310,7 @@ void Task::vStrPad(NNP_Task nnpTask)
   if ( ! nnpTask->m_pDataStack->bPop(iLength,xStringA) )
     THROW_INVALID_DSTACK("str.pad"_Str);
   
-  StrLib::vPad(_pStrVal(&xStringA)->aStr(),iLength,' ');
+  StrLib::vPad(_pStrVal(&xStringA)->s(),iLength,' ');
   
   // adjust area size
   _pStrVal(&xStringA)->vAreaSize();
@@ -408,7 +408,7 @@ void Task::vStrReplace(NNP_Task nnpTask)
   
   s48K sReplaced;
   
-  StrLib::bReplace(sReplaced.aStr(),sString.aStr(),sThis.aStr(),sThat.aStr());
+  StrLib::bReplace(sReplaced.s(),sString.s(),sThis.s(),sThat.s());
   
   nnpTask->m_pDataStack->vPush(sReplaced);
   
@@ -439,9 +439,9 @@ void Task::vStrRight(NNP_Task nnpTask)
   if (iLength > iHasLength)
     iLength = iHasLength;
   
-  char* pStart = sString.aStr() + iHasLength - iLength;
+  char* pStart = sString.s() + iHasLength - iLength;
   
-  StrLib::vCopyLen(sSubStr.aStr(),pStart,iLength);
+  StrLib::vCopyLen(sSubStr.s(),pStart,iLength);
   
   nnpTask->m_pDataStack->vPush(sSubStr);
   
@@ -477,9 +477,9 @@ void Task::vStrSub(NNP_Task nnpTask)
   if ( iLength <= 0 || iStart + iLength > iHasLength)
     THROW("Invalid length for: str.sub"_Str);
   
-  char* pStart = sString.aStr() + iStart;
+  char* pStart = sString.s() + iStart;
   
-  StrLib::vCopyLen(sSubStr.aStr(),pStart,iLength);
+  StrLib::vCopyLen(sSubStr.s(),pStart,iLength);
   
   nnpTask->m_pDataStack->vPush(sSubStr);
   
@@ -499,7 +499,7 @@ void Task::vStrTailInt(NNP_Task nnpTask)
     THROW_INVALID_DSTACK("str.tailInt"_Str);
   
   // get last char in string
-  char* aLast = StrLib::sLast(sString.aStr());
+  char* aLast = StrLib::sLast(sString.s());
   
   // return false if not a digit
   if ( ! StrLib::bIsDigit(*aLast) ) {
@@ -536,8 +536,8 @@ void Task::vSprint(s48K& sFormat, s48K& sString)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  char* pf = sFormat.aStr();
-  char* ps = sString.aStr();
+  char* pf = sFormat.s();
+  char* ps = sString.s();
   
   while (*pf) {
     
@@ -572,7 +572,7 @@ void Task::vSprint(s48K& sFormat, s48K& sString)
       if ('V' == *pf)
         *ps++ = '"';
       
-      for (char* pv = sValue.aStr(); *pv; )
+      for (char* pv = sValue.s(); *pv; )
       *ps++ = *pv++;
       
       if ('V' == *pf)

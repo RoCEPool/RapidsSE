@@ -60,7 +60,7 @@ void RapidsSE::vExecute(void)
       ASSERT(gpBufferPool);
       vSystemInit();
       vStartActors();
-      vTrace("RapidsSE instance %s started\n"_Str,gxArguments.m_sRegionName.aStr());
+      vTrace("RapidsSE instance %s started\n"_Str,gxArguments.m_sRegionName.s());
       gpGrid->vDumpPartitioning();
       
       //vSkipListTest();
@@ -138,7 +138,7 @@ void RapidsSE::vPoolOpen(void)
 #endif
     
     if (! gxArguments.m_bRestart && Region::bTest(gxArguments.m_sRegionName)) {
-      vTrace("Error: RapidsSE instance %s already started\n"_Str,gxArguments.m_sRegionName.aStr());
+      vTrace("Error: RapidsSE instance %s already started\n"_Str,gxArguments.m_sRegionName.s());
       exit(EXIT_FAILURE);
       return;
     }
@@ -154,7 +154,7 @@ void RapidsSE::vPoolOpen(void)
   
   if (gxArguments.m_bStop) {
     if (! Region::bTest(gxArguments.m_sRegionName)) {
-      vTrace("Error: RapidsSE instance was not started\n"_Str,gxArguments.m_sRegionName.aStr());
+      vTrace("Error: RapidsSE instance was not started\n"_Str,gxArguments.m_sRegionName.s());
       exit(EXIT_FAILURE);
       return;
     }
@@ -166,7 +166,7 @@ void RapidsSE::vPoolOpen(void)
   
   if (gxArguments.m_bPrompt) {
     if (! Region::bTest(gxArguments.m_sRegionName)) {
-      vTrace("Error: RapidsSE instance was not started\n"_Str,gxArguments.m_sRegionName.aStr());
+      vTrace("Error: RapidsSE instance was not started\n"_Str,gxArguments.m_sRegionName.s());
       exit(EXIT_FAILURE);
       return;
     }
@@ -251,7 +251,7 @@ void RapidsSE::vDicCompile(NP_Task npRootTask)
   
   if (gxArguments.m_bVerbose)
     vTrace("[[mainThread]] RapidsSE::vDicCompile running [%s] %p\n"_Str,
-           npRootTask->sName().aStr(),
+           npRootTask->sName().s(),
            *npRootTask);
   npRootTask->vLoop();
 }
@@ -366,7 +366,7 @@ void RapidsSE::vSystemInit(void)
 void RapidsSE::vStartActors(void)
 {
   if (gxArguments.m_bVerbose)
-    vTrace("Shm region initialised at: %s\n"_Str,gpAttachMap->m_sUTC.aStr());
+    vTrace("Shm region initialised at: %s\n"_Str,gpAttachMap->m_sUTC.s());
 
   if (gxArguments.m_bVerbose)
     vTrace("Starting actors\n"_Str);
@@ -377,7 +377,7 @@ void RapidsSE::vStartActors(void)
   
   if (gxArguments.m_bVerbose)
     vTrace("[[mainThread]] RapidsSE::vStartActors launching [%s] %p\n"_Str,
-         gnpRootTask->sName().aStr(),
+         gnpRootTask->sName().s(),
            *gnpRootTask);
   
   // append root task onto root thread's task set
@@ -408,13 +408,13 @@ void RapidsSE::vSystemStatus(void)
     // check if the Pid in the shm is still alive
     if ( Process::bTestPid(gpAttachMap->m_iPid) ) {
       vTrace("RapidsSE instance %s running\n"_Str,
-             gxArguments.m_sRegionName.aStr());
+             gxArguments.m_sRegionName.s());
       return;
     }
   }
   
   vTrace("RapidsSE instance %s not running\n"_Str,
-         gxArguments.m_sRegionName.aStr());
+         gxArguments.m_sRegionName.s());
 
 }
 
@@ -428,7 +428,7 @@ void RapidsSE::vSystemStop(void)
   gpAttachMap->m_iStop = 1;
   
   vTrace("RapidsSE instance %s stopped\n"_Str,
-         gxArguments.m_sRegionName.aStr());
+         gxArguments.m_sRegionName.s());
   
   // the system is now stopped
 }

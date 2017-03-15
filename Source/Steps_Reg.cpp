@@ -86,7 +86,7 @@ void Task::vRegPop(NNP_Task nnpTask)
   
   nnpTask->m_pRegFrame = nnpTask->m_pRegFrame->pNext();
   
-  //vTrace("Deleting frame %s\n"_Str,pRegFrame->m_sName.aStr());
+  //vTrace("Deleting frame %s\n"_Str,pRegFrame->m_sName.s());
   
   delete pRegFrame;
   
