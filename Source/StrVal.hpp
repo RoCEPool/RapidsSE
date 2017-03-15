@@ -49,15 +49,15 @@ namespace Values
     bool  bEqual(Str* aArg);
 
     i8    iLength(void);
+    char* s(void);
     bool  bSame(Str* aArg);
     i8    nSize(void);
     void  vSprint(Str* aFormat, ...);
-    char* s(void);
+    Str*  aStr(void);
     i8    iToI8(void);
     void  vToLower(void);
     void  vToString(Str* aStr);
   
-    Str*  aStr(void);
 
   private:
     Footer* pFooter(void);

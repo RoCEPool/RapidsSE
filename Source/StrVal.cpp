@@ -416,6 +416,16 @@ i8 StrVal::iLength(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get char*                                                                  */
+/*----------------------------------------------------------------------------*/
+char* StrVal::s(void)
+{
+  char* aArea = m_xWsp.aArea();
+  
+  return aArea;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is same as given argument?  (ignores case)                                 */
 /*----------------------------------------------------------------------------*/
 bool StrVal::bSame(Str* aArg)
@@ -451,13 +461,13 @@ void StrVal::vSprint(Str* aFormat, ...)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get char*                                                                  */
+/* get adddress of Str area                                                   */
 /*----------------------------------------------------------------------------*/
-char* StrVal::s(void)
+Str* StrVal::aStr(void)
 {
-  char* aArea = m_xWsp.aArea();
+  char* aAddr = pAdd<char*>(this,sizeof(StrVal));
   
-  return aArea;
+  return reinterpret_cast<Str*>(aAddr);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -484,16 +494,6 @@ void StrVal::vToLower(void)
 void StrVal::vToString(Str* aStr)
 {
   StrLib::vCopy(aStr->s(),s());
-}
-
-/*----------------------------------------------------------------------------*/
-/* get adddress of Str area                                                   */
-/*----------------------------------------------------------------------------*/
-Str* StrVal::aStr(void)
-{
-  char* aAddr = pAdd<char*>(this,sizeof(StrVal));
-  
-  return reinterpret_cast<Str*>(aAddr);
 }
 
 /*----------------------------------------------------------------------------*/
