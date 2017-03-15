@@ -154,7 +154,7 @@ i8 StrVal::nAreaRequired(i8 iLength)
 /*----------------------------------------------------------------------------*/
 void StrVal::operator =(i8 iArg)
 {
-  StrLib::wToString(iArg,aArea());
+  StrLib::wToString(iArg,s());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -214,21 +214,9 @@ void StrVal::vAppend(const char cChar)
   
   // limit???
   
-  StrLib::vConcat(aArea(),cChar);
+  StrLib::vConcat(s(),cChar);
   
   _postcondition_(_MAGIC_,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get address of data area                                                   */
-/*----------------------------------------------------------------------------*/
-char* StrVal::aArea(void)
-{
-  //_precondition_(_MAGIC_,_FOOTER_);
-  
-  char* aAddr = m_xWsp.sArea();
-  
-  return aAddr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -250,7 +238,7 @@ void StrVal::vAreaSize(void)
 {
   //_precondition_(_MAGIC_,_FOOTER_);
   
-  i8 nBytes = StrLib::iSize(aArea());
+  i8 nBytes = StrLib::iSize(s());
   
   m_xWsp.vUsed(nBytes);
 }
@@ -262,7 +250,7 @@ void StrVal::vAssign(Str* aStr)
 {
   //ASSERT(m_nAreaSize);
   
-  StrLib::vCopy(aArea(),aStr->s());
+  StrLib::vCopy(s(),aStr->s());
   
   vAreaSize();
 }
@@ -274,9 +262,9 @@ void StrVal::vAssign(Str* aStr, i8 iLength)
 {
   //ASSERT(m_nAreaSize);
   
-  StrLib::vCopyLen(aArea(),aStr->s(),iLength);
+  StrLib::vCopyLen(s(),aStr->s(),iLength);
   
-  aArea()[iLength] = '\0';
+  s()[iLength] = '\0';
   
   m_xWsp.vUsed(iLength);
 }
@@ -292,10 +280,10 @@ void StrVal::vCat(Str* aStr, ...)
   
   va_start(xVarArgs,aStr);
 
-  StrLib::vConcat(aArea(),aStr->s());
+  StrLib::vConcat(s(),aStr->s());
   
   while (Str* aArg = va_arg(xVarArgs,Str*))
-    StrLib::vConcat(aArea(),aArg->s());
+    StrLib::vConcat(s(),aArg->s());
   
   va_end(xVarArgs);
   
@@ -309,7 +297,7 @@ void StrVal::vCatSprint(Str* aFormat, ...)
 {
   va_list args;
   
-  char* aEnd = pAdd<char*>(aArea(),iLength());
+  char* aEnd = pAdd<char*>(s(),iLength());
   
   va_start(args,aFormat);
   vsprintf(aEnd,(char*)aFormat,args);
@@ -323,7 +311,7 @@ void StrVal::vConcat(Str* aStr)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  StrLib::vConcat(aArea(),aStr->s());
+  StrLib::vConcat(s(),aStr->s());
   
   _postcondition_(_MAGIC_,_FOOTER_);
 }
@@ -333,7 +321,7 @@ void StrVal::vConcat(Str* aStr)
 /*----------------------------------------------------------------------------*/
 bool StrVal::bContains(Str* aArg)
 {
-  return StrLib::bContains(aArea(),aArg->s());
+  return StrLib::bContains(s(),aArg->s());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -343,7 +331,7 @@ void StrVal::vCopyTill(Str* aSrc, char cTill)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  StrLib::vCopyTill(aArea(),aSrc->s(),cTill);
+  StrLib::vCopyTill(s(),aSrc->s(),cTill);
   
   _postcondition_(_MAGIC_,_FOOTER_);
 }
@@ -355,7 +343,7 @@ void StrVal::vCopy(Str* aStr)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  StrLib::vCopyLen(aArea(),aStr->s(),m_xWsp.nSize()-1);
+  StrLib::vCopyLen(s(),aStr->s(),m_xWsp.nSize()-1);
   
   _postcondition_(_MAGIC_,_FOOTER_);
 }
@@ -371,10 +359,10 @@ void StrVal::vCopyCat(Str* aStr, ...)
   
   va_start(xVarArgs,aStr);
   
-  StrLib::vCopyLen(aArea(),aStr->s(),m_xWsp.nSize()-1);
+  StrLib::vCopyLen(s(),aStr->s(),m_xWsp.nSize()-1);
 
   while (Str* aArg = va_arg(xVarArgs,Str*))
-    StrLib::vConcat(aArea(),aArg->s());
+    StrLib::vConcat(s(),aArg->s());
   
   va_end(xVarArgs);
 
@@ -388,7 +376,7 @@ bool StrVal::bEnds(Str* aSuffix)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  bool b = StrLib::bEnds(aArea(),aSuffix->s());
+  bool b = StrLib::bEnds(s(),aSuffix->s());
   
   return b;
 }
@@ -400,7 +388,7 @@ bool StrVal::bIsEqual(StrVal& sArg, i8 iCase)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  bool b = StrLib::bEqualTo(aArea(),sArg.aArea(),iCase);
+  bool b = StrLib::bEqualTo(s(),sArg.s(),iCase);
   
   return b;
 }
@@ -412,7 +400,7 @@ bool StrVal::bEqual(Str* aArg)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  bool b = StrLib::bEqualTo(aArea(),(const char*)aArg);
+  bool b = StrLib::bEqualTo(s(),(const char*)aArg);
   
   return b;
 }
@@ -424,7 +412,7 @@ i8 StrVal::iLength(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  return StrLib::iLength(aArea());
+  return StrLib::iLength(s());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -434,7 +422,7 @@ bool StrVal::bSame(Str* aArg)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  bool b = StrLib::bSame(aArea(),(const char*)aArg);
+  bool b = StrLib::bSame(s(),(const char*)aArg);
   
   return b;
 }
@@ -457,7 +445,7 @@ void StrVal::vSprint(Str* aFormat, ...)
   va_list args;
   va_start(args,aFormat);
   
-  vsprintf(aArea(),aFormat->s(),args);
+  vsprintf(s(),aFormat->s(),args);
   
   va_end(args);
 }
@@ -467,7 +455,9 @@ void StrVal::vSprint(Str* aFormat, ...)
 /*----------------------------------------------------------------------------*/
 char* StrVal::s(void)
 {
-  return aArea();
+  char* aArea = m_xWsp.sArea();
+  
+  return aArea;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -475,7 +465,7 @@ char* StrVal::s(void)
 /*----------------------------------------------------------------------------*/
 i8 StrVal::iToI8(void)
 {
-  i8 i = StrLib::iToI8(aArea());
+  i8 i = StrLib::iToI8(s());
   
   return i;
 }
@@ -485,7 +475,7 @@ i8 StrVal::iToI8(void)
 /*----------------------------------------------------------------------------*/
 void StrVal::vToLower(void)
 {
-  StrLib::vToLower(aArea());
+  StrLib::vToLower(s());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -493,7 +483,7 @@ void StrVal::vToLower(void)
 /*----------------------------------------------------------------------------*/
 void StrVal::vToString(Str* aStr)
 {
-  StrLib::vCopy(aStr->s(),aArea());
+  StrLib::vCopy(aStr->s(),s());
 }
 
 /*----------------------------------------------------------------------------*/

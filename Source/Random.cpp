@@ -94,7 +94,7 @@ s48K Random::sRandomString(i8 iLength) {
   
   for (i8 i = 0; i < iLength; i++) {
     i8 iKey = iRandom(iCharSetSize);
-    sRandomString.vAppend(sCharSet.aArea()[iKey]);
+    sRandomString.vAppend(sCharSet.s()[iKey]);
   }
   
   sRandomString.vAppend('\0');

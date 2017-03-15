@@ -1309,7 +1309,7 @@ void Task::vPrimitive(Str* aPrimitive)
   i8 iDataValues  = m_pDataStack->iValues();
   i8 iReturnValues = m_pReturnStack->iValues();
   vTrace("%-15s %15s : r%lld ; d%2d="_Str,
-         sRoutine.aArea(),
+         sRoutine.s(),
          aPrimitive,
          iReturnValues,
          iDataValues);

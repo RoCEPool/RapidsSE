@@ -109,7 +109,7 @@ void StepBoard::vContentDump(void)
   for (i8 iThread = 0; iThread < m_iThreads; iThread++)
     vInfo("Thread %2lld: step %16s point %lld\n"_Str,
            iThread,
-           m_sStepName[iThread].aArea(),
+           m_sStepName[iThread].s(),
            m_iStepPoint[iThread]
            );
 }

@@ -64,7 +64,7 @@ void SeHistory::vClose(void)
   // SHOULD REMOVE HISTORY FILE?
   bool bResult = File::bRemove(sHistory);
   if (!bResult) {
-    vWarn("Failed to delete history file: %s\n"_Str, sHistory.aArea());
+    vWarn("Failed to delete history file: %s\n"_Str, sHistory.s());
   }
 }
 
@@ -79,7 +79,7 @@ void SeHistory::vOpen(void)
   
   xFileName.vSprint("/tmp/SEitf_%lld_history.txt"_Str,Process::iGetPid());
   
-  bool b = m_xFile.bOpen((Str*)xFileName.aArea(),C_OPEN_READ_WRITE_CREATE);
+  bool b = m_xFile.bOpen((Str*)xFileName.s(),C_OPEN_READ_WRITE_CREATE);
   ASSERT(b);
 }
 
@@ -94,8 +94,8 @@ void SeHistory::vPrint(void)
   
   vSeekStart();
   
-  for (i8 i = 1; bRead((Str*)xCommand.aArea()); i++)
-    vTrace("  %lld  %s\n"_Str,i,xCommand.aArea());
+  for (i8 i = 1; bRead((Str*)xCommand.s()); i++)
+    vTrace("  %lld  %s\n"_Str,i,xCommand.s());
   
   vSeekEnd();
 }
@@ -145,7 +145,7 @@ bool SeHistory::bGet(i8 iCommand, Str* aToken[], i8 nTokens)
   s48K sCommand;
   
   i8 i = 0;
-  while (bRead((Str*)sCommand.aArea())) {
+  while (bRead((Str*)sCommand.s())) {
     
     if (++i == iCommand) {
       

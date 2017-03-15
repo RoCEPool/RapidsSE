@@ -33,7 +33,6 @@ namespace Values
     void operator =(ValWsp& rArg);
   
     void  vAppend(const char cChar);
-    char* aArea(void);
     i8    nAreaSize(void);
     void  vAreaSize(void);
     void  vAssign(Str* aStr);
