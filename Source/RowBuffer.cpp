@@ -222,7 +222,7 @@ byte* RowBuffer::aDataArea(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
-  byte* pStart = reinterpret_cast<byte*>(m_xWsp.sArea());
+  byte* pStart = reinterpret_cast<byte*>(m_xWsp.aArea());
   
   return pStart;
 }
@@ -247,7 +247,7 @@ Row* RowBuffer::pFirstRow(void)
   if ( ! m_xWsp.nSize() )
     return nullptr;
 
-  Row* pFirst = reinterpret_cast<Row*>(m_xWsp.sArea());
+  Row* pFirst = reinterpret_cast<Row*>(m_xWsp.aArea());
   
   return pFirst;
 }

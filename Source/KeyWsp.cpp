@@ -94,7 +94,7 @@ char* KeyWsp::sWspArea(void)
 {
   _precondition_(_MAGIC_,CN_KEYWSP,_FOOTER_);
   
-  return m_xWsp.sArea();
+  return m_xWsp.aArea();
 }
 
 /*----------------------------------------------------------------------------*/

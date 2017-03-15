@@ -1096,7 +1096,7 @@ Value* Stack::pStackBase(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  char* pBase = &m_xWsp.sArea()[C_STACK_LENGTH-1];
+  char* pBase = &m_xWsp.aArea()[C_STACK_LENGTH-1];
   
   return pPoolCheck<Value*>(pBase);
 }
@@ -1108,7 +1108,7 @@ Value* Stack::pStackLimit(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  char* pLimit = &m_xWsp.sArea()[0];
+  char* pLimit = &m_xWsp.aArea()[0];
   
   return pPoolCheck<Value*>(pLimit);
 }

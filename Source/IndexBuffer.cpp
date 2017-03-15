@@ -118,8 +118,8 @@ void IndexBuffer::vAppendBuffer(IndexBuffer* pArgBuffer)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
   // copy arg entries into this buffer
-  void* pDst = pAdd<void*>(m_xWsp.sArea(),m_xWsp.nUsed());
-  void* pSrc = pArgBuffer->m_xWsp.sArea();
+  void* pDst = pAdd<void*>(m_xWsp.aArea(),m_xWsp.nUsed());
+  void* pSrc = pArgBuffer->m_xWsp.aArea();
   i8 nBytes  = pArgBuffer->m_xWsp.nUsed();
   MemLib::vCopy(pDst,pSrc,nBytes);
   
@@ -139,7 +139,7 @@ void IndexBuffer::vCopyBuffer(IndexBuffer* pFromBuffer)
   
   i8 nBytes = pFromBuffer->m_xWsp.nUsed();
   
-  MemLib::vCopy(m_xWsp.sArea(),pFromBuffer->m_xWsp.sArea(),nBytes);
+  MemLib::vCopy(m_xWsp.aArea(),pFromBuffer->m_xWsp.aArea(),nBytes);
   
   m_xWsp.vTake(nBytes);
   
@@ -408,7 +408,7 @@ void IndexBuffer::vSplitBuffer(void)
   IndexBuffer* pNewBuffer = new IndexBuffer;
   
   // calculate new postion to shuffle to
-  void* pNewDst = pNewBuffer->m_xWsp.sArea();
+  void* pNewDst = pNewBuffer->m_xWsp.aArea();
   
   // do the shuffle
   MemLib::vCopy(pNewDst,pEntry,nSize);
@@ -465,7 +465,7 @@ Entry* IndexBuffer::pFirstEntry(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
-  Entry* pFirst = reinterpret_cast<Entry*>(m_xWsp.sArea());
+  Entry* pFirst = reinterpret_cast<Entry*>(m_xWsp.aArea());
   
   if ((char*)pFirst < m_xWsp.sLatter())
     return pFirst;

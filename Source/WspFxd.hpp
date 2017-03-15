@@ -23,14 +23,14 @@ namespace Magic
 
     char* aAllot(i8 nBytes);
     void  vAppend(void* aSrc, i8 nBytes);
-    char* sArea(void);
-    Str*  aStr(void);
+    char* aArea(void);
     void  vFill(char cByte);
     i8    nFree(void);
     void  vGive(i8 nBytes);
     char* sLatter(void);
     i8    nLength(void);
     i8    nSize(void);
+    Str*  aStr(void);
     void  vTake(i8 nBytes);
     i8    nUsed(void);
     void  vUsed(i8 nBytes);
@@ -81,7 +81,7 @@ void WspFxd<LENGTH>::vAppend(void* aSrc, i8 nBytes)
 /* get address of byte area                                                   */
 /*----------------------------------------------------------------------------*/
 template<int LENGTH>
-char* WspFxd<LENGTH>::sArea(void)
+char* WspFxd<LENGTH>::aArea(void)
 {
   char* aArea = Wsp::aArea();
   
@@ -123,7 +123,7 @@ i8 WspFxd<LENGTH>::nLength(void)
 template<int LENGTH>
 char* WspFxd<LENGTH>::sLatter(void)
 {
-  char* aNext = &sArea()[nUsed()];
+  char* aNext = &aArea()[nUsed()];
   
   return aNext;
 }

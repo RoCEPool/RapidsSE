@@ -311,7 +311,7 @@ char* Word::aBodyArea(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  char* aBody = m_xBody.sArea();
+  char* aBody = m_xBody.aArea();
   
   return pPoolCheck<char*>((void*)aBody);
 }
@@ -520,7 +520,7 @@ Cell* Word::pFirstCell(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  Cell* pFirst = reinterpret_cast<Cell*>(m_xBody.sArea());
+  Cell* pFirst = reinterpret_cast<Cell*>(m_xBody.aArea());
   
   return pPoolCheck<Cell*>(pFirst);
 }
