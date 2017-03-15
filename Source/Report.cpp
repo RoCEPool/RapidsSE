@@ -105,7 +105,7 @@ void Debugging::vReport(i8 iLevel, Str* aFormat, va_list xArgs)
   *s = '\0';
   
   assert(iLevel != 0);
-  vsnprintf(s,sizeof(gaReportBuffer)-iLen-3,aFormat->a(),xArgs);
+  vsnprintf(s,sizeof(gaReportBuffer)-iLen-3,aFormat->s(),xArgs);
     
   // print to file
   fprintf(stderr,"%s",gaReportBuffer);
@@ -124,7 +124,7 @@ void Debugging::vDumpAscii(Str* aText, i8 nBytes)
 {
   vInfo(">>>"_Str);
   while (nBytes--) {
-    vInfo("%c"_Str,*aText->a());
+    vInfo("%c"_Str,*aText->s());
     aText++;
   }
   vInfo("<<<\n"_Str);

@@ -34,7 +34,7 @@ Str::Str(void)
 /*----------------------------------------------------------------------------*/
 Str::Str(Str* aArg)
 {
-  StrLib::vCopy(a(),aArg->a());
+  StrLib::vCopy(s(),aArg->s());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -55,7 +55,7 @@ void Str::vPrint(void)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-char* Str::a(void)
+char* Str::s(void)
 {
   return (char*)this;
 }
@@ -65,7 +65,7 @@ char* Str::a(void)
 /*----------------------------------------------------------------------------*/
 void Str::operator =(i8 iArg)
 {
-  StrLib::wToString(iArg,a());
+  StrLib::wToString(iArg,s());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -73,7 +73,7 @@ void Str::operator =(i8 iArg)
 /*----------------------------------------------------------------------------*/
 void Str::operator =(Str* aArg)
 {
-  StrLib::vCopy(a(),aArg->a());
+  StrLib::vCopy(s(),aArg->s());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -81,7 +81,7 @@ void Str::operator =(Str* aArg)
 /*----------------------------------------------------------------------------*/
 void Str::operator =(void* aArg)
 {
-  StrLib::wToPointer(aArg,a());
+  StrLib::wToPointer(aArg,s());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -89,7 +89,7 @@ void Str::operator =(void* aArg)
 /*----------------------------------------------------------------------------*/
 void Str::vConcat(Str* aArg)
 {
-  StrLib::vConcat(a(),aArg->a());
+  StrLib::vConcat(s(),aArg->s());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -97,7 +97,7 @@ void Str::vConcat(Str* aArg)
 /*----------------------------------------------------------------------------*/
 void Str::vCopy(Str* aArg)
 {
-  StrLib::vCopy(a(),aArg->a());
+  StrLib::vCopy(s(),aArg->s());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -105,7 +105,7 @@ void Str::vCopy(Str* aArg)
 /*----------------------------------------------------------------------------*/
 void Str::vCopyLen(Str* aArg, i8 nChars)
 {
-  StrLib::vCopyLen(a(),aArg->a(),nChars);
+  StrLib::vCopyLen(s(),aArg->s(),nChars);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -113,7 +113,7 @@ void Str::vCopyLen(Str* aArg, i8 nChars)
 /*----------------------------------------------------------------------------*/
 bool Str::bEqual(Str* aArg)
 {
-  i8 iDiff = strcmp(a(),aArg->a());
+  i8 iDiff = strcmp(s(),aArg->s());
   
   if (0 == iDiff)
     return true;
@@ -126,7 +126,7 @@ bool Str::bEqual(Str* aArg)
 /*----------------------------------------------------------------------------*/
 bool Str::bIsNumeric(void)
 {
-  bool bNumeric = StrLib::bIsNumeric(a());
+  bool bNumeric = StrLib::bIsNumeric(s());
   
   return bNumeric;
 }
@@ -136,7 +136,7 @@ bool Str::bIsNumeric(void)
 /*----------------------------------------------------------------------------*/
 bool Str::bSame(Str* aArg)
 {
-  i8 iDiff = strcasecmp(a(),aArg->a());
+  i8 iDiff = strcasecmp(s(),aArg->s());
   
   if (0 == iDiff)
     return true;
@@ -152,7 +152,7 @@ void Str::vSprint(Str* aFormat, ...)
   va_list args;
   va_start(args,aFormat);
   
-  vsprintf(a(),aFormat->a(),args);
+  vsprintf(s(),aFormat->s(),args);
   
   va_end(args);
 }
@@ -166,24 +166,24 @@ i8 Str::iToI8(void)
   
   //return i;
   
-  const char* s = a();
+  const char* ps = s();
   
   i8 i = 0;
   
   // skip leading 0's
-  while (*s && '0' == *s)
-    s++;
+  while (*ps && '0' == *ps)
+    ps++;
   
-  if (*s && ('x' == *s || 'X' == *s)) {
-    s++;
-    while (*s && StrLib::bIsHex(*s)) {
-      i8 j = StrLib::iHexToInw(*s++);
+  if (*ps && ('x' == *ps || 'X' == *ps)) {
+    ps++;
+    while (*ps && StrLib::bIsHex(*ps)) {
+      i8 j = StrLib::iHexToInw(*ps++);
       i = i * 16 + j;
     }
   }
   else {
-    while (*s && StrLib::bIsDigit(*s)) {
-      i8 j = (*s++ - '0');
+    while (*ps && StrLib::bIsDigit(*ps)) {
+      i8 j = (*ps++ - '0');
       i = i * 10 + j;
     }
   }
@@ -196,7 +196,7 @@ i8 Str::iToI8(void)
 /*----------------------------------------------------------------------------*/
 void Str::vToLower(void)
 {
-  StrLib::vToLower(a());
+  StrLib::vToLower(s());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -204,7 +204,7 @@ void Str::vToLower(void)
 /*----------------------------------------------------------------------------*/
 i8 Str::iLength(void)
 {
-  i8 iLen = strlen(a());
+  i8 iLen = strlen(s());
   
   return iLen;
 }
@@ -214,7 +214,7 @@ i8 Str::iLength(void)
 /*----------------------------------------------------------------------------*/
 i8 Str::nSize(void)
 {
-  i8 n = StrLib::iSize(a());
+  i8 n = StrLib::iSize(s());
   
   return n;
 }

@@ -40,10 +40,10 @@ void SeHistory::vAppend(Str* aToken[])
   
   vSeekEnd();
   
-  for (i8 i = 0; *aToken[i]->a(); i++) {
+  for (i8 i = 0; *aToken[i]->s(); i++) {
     if (i)
       m_xFile.vPrint("%s"_Str," ");
-    m_xFile.vPrint("%s"_Str,aToken[i]->a());
+    m_xFile.vPrint("%s"_Str,aToken[i]->s());
   }
   m_xFile.vPrint("%s"_Str,"\n");
   m_xFile.vFlush();
@@ -156,7 +156,7 @@ bool SeHistory::bGet(i8 iCommand, Str* aToken[], i8 nTokens)
       m_pTokeniser->vResetTokens(aToken,nTokens);
       
       i8 i = 0;
-      while (TK_NONE != m_pTokeniser->eNextToken(aToken[i]->a())) {
+      while (TK_NONE != m_pTokeniser->eNextToken(aToken[i]->s())) {
         //vTrace("Word [%lld] %s\n"_Str,i,pWords[i]);
         i++;
       }

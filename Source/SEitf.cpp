@@ -601,7 +601,7 @@ bool SEitf::bCreateSchema(Str* aWords[], i8 iWords)
     return false;
   }
   
-  sRequest.vCopyCat("\""_Str,aWords[1]->a(),"\""_Str,
+  sRequest.vCopyCat("\""_Str,aWords[1]->s(),"\""_Str,
                     " create_schema"_Str,
                     nullptr);
   
@@ -1427,7 +1427,7 @@ bool SEitf::bPrint(Str* aWords[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
-  vInfo("%s\n"_Str,aWords[1]->a());
+  vInfo("%s\n"_Str,aWords[1]->s());
   
   return true;
 }

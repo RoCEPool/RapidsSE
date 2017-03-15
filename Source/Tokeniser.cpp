@@ -242,7 +242,7 @@ void Tokeniser::vResetTokens(Str* aToken[], i8 nTokens)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
   for (i8 iToken = 0; iToken < nTokens; iToken++)
-    *aToken[iToken]->a() = '\0';
+    *aToken[iToken]->s() = '\0';
 }
 
 /*----------------------------------------------------------------------------*/
@@ -285,10 +285,10 @@ void Tokeniser::vDumpTokens(Str* pTitle, Str* aToken[], i8 nTokens)
   
   for (i8 iToken = 0; iToken < nTokens; iToken++) {
     
-    if (! *aToken[iToken]->a())
+    if (! *aToken[iToken]->s())
       break;
     
-    vTrace("%s "_Str, aToken[iToken]->a());
+    vTrace("%s "_Str, aToken[iToken]->s());
   }
   vTrace("\n"_Str);
 }

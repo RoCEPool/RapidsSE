@@ -1157,7 +1157,7 @@ void Task::vDump(eCN eClass, Object* pObject, Str* aTab)
   vTrace("%s TaskNo %lld state %s txId %lld\n"_Str,
          pTask->m_sName.s(),
          pTask->m_iTaskNo,
-         aTS[pTask->m_eState]->a(),
+         aTS[pTask->m_eState]->s(),
          pTask->m_iTxId);
 }
 
@@ -1173,7 +1173,7 @@ void Task::vContentDump(void)
          m_iTaskNo,
          this,
          m_sName.s(),
-         aTS[m_eState]->a(),
+         aTS[m_eState]->s(),
          m_iTxId);
 }
 
@@ -1702,7 +1702,7 @@ void Task::vLoop(void)
       
       const char* ps;
       
-      ps = StrLib::sLast(pError->aFileName()->a());
+      ps = StrLib::sLast(pError->aFileName()->s());
       StrLib::bBackward(&ps,(char*)pError->aFileName(),'/');
       StrLib::vCopy(wFileName,ps+1);
       vError("[%s] %s: line %lld in %s\n"_Str,

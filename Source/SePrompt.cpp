@@ -197,7 +197,7 @@ bool SePrompt::bExecuteString(StrVal& sRequest, eEC& eErrorCode)
   
   m_pTokeniser->vUseString(sRequest);
   i8 iToken = 0;
-  while (TK_NONE != m_pTokeniser->eNextToken(m_aToken[iToken]->a())) {
+  while (TK_NONE != m_pTokeniser->eNextToken(m_aToken[iToken]->s())) {
     
     //vTrace("vGetCommand : [%lld] %s\n"_Str,iToken,m_aToken[iToken]);
     
@@ -220,7 +220,7 @@ bool SePrompt::bExecuteString(StrVal& sRequest, eEC& eErrorCode, StrVal& sRespon
   
   m_pTokeniser->vUseString(sRequest);
   i8 iToken = 0;
-  while (TK_NONE != m_pTokeniser->eNextToken(m_aToken[iToken]->a())) {
+  while (TK_NONE != m_pTokeniser->eNextToken(m_aToken[iToken]->s())) {
     
     //vTrace("vGetCommand : [%lld] %s\n"_Str,iToken,m_aToken[iToken]);
     
@@ -244,7 +244,7 @@ bool SePrompt::bExecuteString(StrVal& sRequest, eEC& eErrorCode, Str** ppRowPtr)
   
   m_pTokeniser->vUseString(sRequest);
   i8 iToken = 0;
-  while (TK_NONE != m_pTokeniser->eNextToken(m_aToken[iToken]->a())) {
+  while (TK_NONE != m_pTokeniser->eNextToken(m_aToken[iToken]->s())) {
     
     //vTrace("vGetCommand : [%lld] %s\n"_Str,iToken,m_aToken[iToken]);
     
@@ -280,7 +280,7 @@ void SePrompt::vGetCommandArgument(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   i8 iToken = 0;
-  while (TK_NONE != m_pTokeniser->eNextToken(m_aToken[iToken]->a())) {
+  while (TK_NONE != m_pTokeniser->eNextToken(m_aToken[iToken]->s())) {
     
     //vTrace("vGetCommand : [%lld] %s\n"_Str,iToken,m_aToken[iToken]);
     
@@ -303,7 +303,7 @@ void SePrompt::vGetCommandInput(void)
     m_pTokeniser->vResetTokens(m_aToken,C_TOKENS);
     
     i8 iToken = 0;
-    while (TK_NONE != m_pTokeniser->eNextToken(m_aToken[iToken]->a())) {
+    while (TK_NONE != m_pTokeniser->eNextToken(m_aToken[iToken]->s())) {
       
       //vTrace("vGetCommand : [%lld] %s\n"_Str,iToken,m_aToken[iToken]);
       
@@ -382,7 +382,7 @@ bool SePrompt::bProcessCommand(bool bPostProcess)
       return true;
   }
   
-  if ('!' == *m_aToken[0]->a()) {
+  if ('!' == *m_aToken[0]->s()) {
     if (! m_xHistory.bRecall(m_aToken,C_TOKENS))
       return true;
   }
@@ -832,7 +832,7 @@ bool SePrompt::bBeginInsert(void)
   vCollectStatement();
   
   for (iToken = 0; iToken < C_TOKENS; iToken++) {
-    if (! *m_aToken[iToken]->a())
+    if (! *m_aToken[iToken]->s())
       break;
     m_aToken2[iToken]->vCopy(m_aToken[iToken]);
     m_aToken[iToken]->vCopy(""_Str);
@@ -901,7 +901,7 @@ bool SePrompt::bChangeWorkingDir(void)
   
   i8 iToken;
   for (iToken = 2; iToken < C_TOKENS; iToken++) {
-    if (! *m_aToken[iToken]->a())
+    if (! *m_aToken[iToken]->s())
       break;
     sDir.vConcat(m_aToken[iToken]);
   }
@@ -970,7 +970,7 @@ bool SePrompt::bCreateCatalog(void)
   // copy tokens from m_aToken to m_aToken2
   // while doing that also validate the create statament
   for (iToken = 0; iToken < C_TOKENS; iToken++) {
-    if (! *m_aToken[iToken]->a())
+    if (! *m_aToken[iToken]->s())
       break;
     m_aToken2[iToken]->vCopy(m_aToken[iToken]);
     m_aToken[iToken]->vCopy(""_Str);
@@ -1016,7 +1016,7 @@ bool SePrompt::bCreateIndex(void)
   // copy tokens from m_aToken to m_aToken2
   // while doing that also validate the create statament
   for (iToken = 0; iToken < C_TOKENS; iToken++) {
-    if (! *m_aToken[iToken]->a())
+    if (! *m_aToken[iToken]->s())
       break;
     m_aToken2[iToken]->vCopy(m_aToken[iToken]);
     m_aToken[iToken]->vCopy(""_Str);
@@ -1084,7 +1084,7 @@ bool SePrompt::bCreateSchema(void)
   // copy tokens from m_aToken to m_aToken2
   // while doing that also validate the create statament
   for (iToken = 0; iToken < C_TOKENS; iToken++) {
-    if (! *m_aToken[iToken]->a())
+    if (! *m_aToken[iToken]->s())
       break;
     m_aToken2[iToken]->vCopy(m_aToken[iToken]);
     m_aToken[iToken]->vCopy(""_Str);
@@ -1131,7 +1131,7 @@ bool SePrompt::bCreateTenant(void)
   // copy tokens from m_aToken to m_aToken2
   // while doing that also validate the create statament
   for (iToken = 0; iToken < C_TOKENS; iToken++) {
-    if (! *m_aToken[iToken]->a())
+    if (! *m_aToken[iToken]->s())
       break;
     m_aToken2[iToken]->vCopy(m_aToken[iToken]);
     m_aToken[iToken]->vCopy(""_Str);
@@ -1178,7 +1178,7 @@ bool SePrompt::bCreateTable(void)
   // copy tokens from m_aToken to m_aToken2
   // while doing that also validate the create statament
   for (iToken = 0; iToken < C_TOKENS; iToken++) {
-    if (! *m_aToken[iToken]->a())
+    if (! *m_aToken[iToken]->s())
       break;
     m_aToken2[iToken]->vCopy(m_aToken[iToken]);
     m_aToken[iToken]->vCopy(""_Str);
@@ -1463,7 +1463,7 @@ void SePrompt::vCollectStatement(void)
   // get tokens delimited by ';'
   for ( ; iToken < C_TOKENS; iToken++) {
     
-    eTK eToken = m_pTokeniser->eNextToken(m_aToken[iToken]->a());
+    eTK eToken = m_pTokeniser->eNextToken(m_aToken[iToken]->s());
     ASSERT(TK_NONE != eToken);
     
     // look for terminal
@@ -1510,7 +1510,7 @@ bool SePrompt::bDropCatalog(void)
   vCollectStatement();
   
   for (iToken = 0; iToken < C_TOKENS; iToken++) {
-    if (! *m_aToken[iToken]->a())
+    if (! *m_aToken[iToken]->s())
       break;
     m_aToken2[iToken]->vCopy(m_aToken[iToken]);
     m_aToken[iToken]->vCopy(""_Str);
@@ -1556,7 +1556,7 @@ bool SePrompt::bDropIndex(void)
   vCollectStatement();
   
   for (iToken = 0; iToken < C_TOKENS; iToken++) {
-    if (! *m_aToken[iToken]->a())
+    if (! *m_aToken[iToken]->s())
       break;
     m_aToken2[iToken]->vCopy(m_aToken[iToken]);
     m_aToken[iToken]->vCopy(""_Str);
@@ -1602,7 +1602,7 @@ bool SePrompt::bDropSchema(void)
   vCollectStatement();
   
   for (iToken = 0; iToken < C_TOKENS; iToken++) {
-    if (! *m_aToken[iToken]->a())
+    if (! *m_aToken[iToken]->s())
       break;
     m_aToken2[iToken]->vCopy(m_aToken[iToken]);
     m_aToken[iToken]->vCopy(""_Str);
@@ -1647,7 +1647,7 @@ bool SePrompt::bDropTable(void)
   vCollectStatement();
   
   for (iToken = 0; iToken < C_TOKENS; iToken++) {
-    if (! *m_aToken[iToken]->a())
+    if (! *m_aToken[iToken]->s())
       break;
     m_aToken2[iToken]->vCopy(m_aToken[iToken]);
     m_aToken[iToken]->vCopy(""_Str);
@@ -1722,7 +1722,7 @@ bool SePrompt::bDropTenant(void)
   vCollectStatement();
   
   for (iToken = 0; iToken < C_TOKENS; iToken++) {
-    if (! *m_aToken[iToken]->a())
+    if (! *m_aToken[iToken]->s())
       break;
     m_aToken2[iToken]->vCopy(m_aToken[iToken]);
     m_aToken[iToken]->vCopy(""_Str);
@@ -1770,7 +1770,7 @@ bool SePrompt::bEndInsert(void)
   vCollectStatement();
   
   for (iToken = 0; iToken < C_TOKENS; iToken++) {
-    if (! *m_aToken[iToken]->a())
+    if (! *m_aToken[iToken]->s())
       break;
     m_aToken2[iToken]->vCopy(m_aToken[iToken]);
     m_aToken[iToken]->vCopy(""_Str);
@@ -1846,7 +1846,7 @@ bool SePrompt::bInsertRow(void)
   vCollectStatement();
   
   for (iToken = 0; iToken < C_TOKENS; iToken++) {
-    if (! *m_aToken[iToken]->a())
+    if (! *m_aToken[iToken]->s())
       break;
     m_aToken2[iToken]->vCopy(m_aToken[iToken]);
     m_aToken[iToken]->vCopy(""_Str);
@@ -2017,7 +2017,7 @@ bool SePrompt::bUseSchema(void)
   vCollectStatement();
   
   for (iToken = 0; iToken < C_TOKENS; iToken++) {
-    if (! *m_aToken[iToken]->a())
+    if (! *m_aToken[iToken]->s())
       break;
     m_aToken2[iToken]->vCopy(m_aToken[iToken]);
     m_aToken[iToken]->vCopy(""_Str);

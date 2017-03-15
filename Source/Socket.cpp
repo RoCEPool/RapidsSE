@@ -114,7 +114,7 @@ void Socket::vAddrInit(sockaddr_in* aAddr, Str* sAddr, int iPort)
   MemLib::vZero(aAddr,sizeof(sockaddr_in));
   
   aAddr->sin_family      = AF_INET;
-  aAddr->sin_addr.s_addr = sAddr->a() == nullptr ? -1 : inet_addr(sAddr->a());
+  aAddr->sin_addr.s_addr = sAddr->s() == nullptr ? -1 : inet_addr(sAddr->s());
   aAddr->sin_port        = htons((int)iPort);
 }
 
@@ -438,7 +438,7 @@ bool Socket::bWriteVch(Str* aChar, SysCall& SysCall)
   
   i8 nBytes = aChar->iLength();
   
-  i8 nSent = send(m_iSocketId, aChar->a(), nBytes,0);
+  i8 nSent = send(m_iSocketId, aChar->s(), nBytes,0);
   
   if (nSent == nBytes) {
     SysCall.vSuccess();

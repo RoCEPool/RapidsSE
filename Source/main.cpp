@@ -37,7 +37,7 @@ int main(int argc, const char* argv[])
   vStrTestPtr("This is a Str literal"_Str);
   
   // dereference a ""_Str parameter
-  char* a = "This is a Str literal"_Str->a();
+  char* a = "This is a Str literal"_Str->s();
   
   // this compiles but doesnt work.  not even sure what it means
   Str xStr("abc"_Str);

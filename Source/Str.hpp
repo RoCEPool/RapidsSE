@@ -39,7 +39,7 @@ namespace Base
     i8 iLength(void);
     i8 nSize(void);
 
-    char* a(void);
+    char* s(void);
   };
   
   Str* operator "" _Str(const char* aLiteral, size_t nSize);

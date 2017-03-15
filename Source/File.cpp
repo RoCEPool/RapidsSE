@@ -216,7 +216,7 @@ bool File::bExists(Str* psFileName)
   
   struct stat xStat;
   
-  int rCode = stat(psFileName->a(),&xStat);
+  int rCode = stat(psFileName->s(),&xStat);
   
   if (0 == rCode && (xStat.st_mode & S_IFREG)) {
     m_xSysCall.vSuccess();
@@ -498,7 +498,7 @@ void File::vPrint(Str* aFormat, ...)
   va_list args;
 
   va_start(args,aFormat);
-  i8 nPrinted = vfprintf(m_aFilePtr,aFormat->a(),args);
+  i8 nPrinted = vfprintf(m_aFilePtr,aFormat->s(),args);
   va_end(args);
 
   if (-1 == nPrinted) {
@@ -542,7 +542,7 @@ bool File::bReadLine(Str* aBuffer)
   //  else
   //    nItems = fscanf(m_aFilePtr,"%[^\n]\n",s.s());
   
-  char *y = aBuffer->a();
+  char *y = aBuffer->s();
   
   *y = '\0';
   for (;;) {
@@ -555,7 +555,7 @@ bool File::bReadLine(Str* aBuffer)
   
   *y = '\0';
   
-  if (*aBuffer->a()) {
+  if (*aBuffer->s()) {
     m_xSysCall.vSuccess();
     return true;
   }
