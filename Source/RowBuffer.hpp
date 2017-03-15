@@ -28,12 +28,11 @@ namespace DBobjects
   class RowBuffer : public Buffer
   {
   private:
-    eRD        m_eDurability; // row buffer durability
-    Object*    m_pFreeSpace;  // ptr to free space within this buffer
-    i8         m_nRows;       // number of rows in this buffer
-    RowBuffer* m_pPrevBuffer; // prev buffer
-    RowBuffer* m_pNextBuffer; // next buffer
-    // ..data..
+    eRD          m_eDurability; // row buffer durability
+    i8           m_nRows;       // number of rows in this buffer
+    RowBuffer*   m_pPrevBuffer; // prev buffer
+    RowBuffer*   m_pNextBuffer; // next buffer
+    WspFxd<C_1M> m_xWsp;        // ..data.. rows
     
   public:
     void* operator new(size_t);
@@ -77,7 +76,7 @@ namespace DBobjects
     
   //private:
     
-    i8      iFreeSpace(void);
+  i8      iFreeSpace(void);
   };
   
   RowBuffer* _pRowBuffer(void* aAddr);

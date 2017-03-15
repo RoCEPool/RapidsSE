@@ -33,6 +33,7 @@ namespace Magic
     i8    nSize(void);
     void  vTake(i8 nBytes);
     i8    nUsed(void);
+    void  vUsed(i8 nBytes);
     void  vZero(void);
   };
 }
@@ -167,6 +168,17 @@ void WspFxd<LENGTH>::vGive(i8 nBytes)
   ASSERT(m_nAreaUsed <= LENGTH);
 
   m_nAreaUsed -= nBytes;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of used bytes                                                   */
+/*----------------------------------------------------------------------------*/
+template<int LENGTH>
+void WspFxd<LENGTH>::vUsed(i8 nBytes)
+{
+  m_nAreaUsed = nBytes;
+  
+  ASSERT(m_nAreaUsed <= LENGTH);
 }
 
 /*----------------------------------------------------------------------------*/

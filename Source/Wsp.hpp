@@ -30,6 +30,7 @@ namespace Magic
     i8    nSize(void);
     void  vTake(i8 nBytes);
     i8    nUsed(void);
+    void  vUsed(i8 nBytes);
     void  vZero(void);
     void  vZero(i8 nBytes);
   };
