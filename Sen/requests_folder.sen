@@ -270,6 +270,18 @@ tp: lf
         // create catalog rapidsse (and schemas sub-folder)
         "rapidsse" makeCatalog drop drop drop
 
+          // push rapidsse folder
+          "rapidsse" findInCurrent execute
+          pathPush
+
+          // push schemas folder
+          "schemas" findInCurrent execute
+          pathPush
+
+          // create schema public (and tables sub-folder)
+          "public" makeSchema drop drop drop
+
+          pathDrop
       pathDrop
     pathDrop
   pathDrop
