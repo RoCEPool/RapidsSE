@@ -43,6 +43,8 @@ namespace System
     File(void);
    ~File();
     
+    static bool bRemove(s256& rPath);
+    
     void vBuffer(i8 nBytes);
     void vClear(void);
     void vClose(void);

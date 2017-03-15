@@ -58,7 +58,14 @@ void SeHistory::vClose(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEHISTORY,_FOOTER_);
   
+  s256 sHistory = m_xFile.sPath();
   m_xFile.vClose();
+  
+  // SHOULD REMOVE HISTORY FILE?
+  bool bResult = File::bRemove(sHistory);
+  if (!bResult) {
+    vWarn("Failed to delete history file: %s\n"_Str, sHistory.aArea());
+  }
 }
 
 /*----------------------------------------------------------------------------*/

@@ -105,8 +105,6 @@ SePrompt::~SePrompt(void)
   // close history file
   //m_xHistory.vClose();
   
-  // SHOULD REMOVE HISTORY FILE?
-  
   RapidsSE_SEitfDelete(gpAttachMap, m_pSEitf);
   
   delete m_pTokeniser;

@@ -616,6 +616,23 @@ bool File::bReadLine(StrVal& s)
 }
 
 /*----------------------------------------------------------------------------*/
+/* remove specified file                                                      */
+/*----------------------------------------------------------------------------*/
+bool File::bRemove(s256& rPath)
+{
+  char* aPath = rPath.aStr();
+  
+  int rCode = unlink(aPath);
+  
+  if (-1 == rCode) {
+    vWarn("File::bRemove: rmdir() error; errno=%d"_Str,errno);
+    return false;
+  }
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* reset file arguments                                                       */
 /*----------------------------------------------------------------------------*/
 void File::vReset(void)
