@@ -28,8 +28,8 @@ namespace DBobjects
     Key* pKey(void);
     i8   nSize(void);
   
-    char* sWspArea(void);
-    Str*  aWspArea(void);
+    char* aWspArea(void);
+    Str*  aWspStr(void);
     i8    nWspUsed(void);
   
     Footer* pFooter(void);

@@ -140,11 +140,11 @@ void Entry::vEntry(EntWsp& xEntWsp)
 
   vRowId(xEntWsp.xRowId());
 
-  Str* pDst = m_xWsp.aStr();
-  Str* pSrc = xEntWsp.aWspArea();
-  i8 nBytes  = xEntWsp.nWspUsed();
+  Str* aDst = m_xWsp.aStr();
+  Str* aSrc = xEntWsp.aWspStr();
+  i8 nBytes = xEntWsp.nWspUsed();
 
-  MemLib::vCopy(pDst,pSrc,nBytes);
+  MemLib::vCopy(aDst,aSrc,nBytes);
   
   m_xWsp.vUsed(nBytes);
 }

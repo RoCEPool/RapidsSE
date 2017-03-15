@@ -127,15 +127,15 @@ void EntWsp::vAddKey(KeyWsp& xKeyWsp)
 /*----------------------------------------------------------------------------*/
 /* get wsp area                                                               */
 /*----------------------------------------------------------------------------*/
-char* EntWsp::sWspArea(void)
+char* EntWsp::aWspArea(void)
 {
   return m_xWsp.aArea();
 }
 
 /*----------------------------------------------------------------------------*/
-/* get wsp area                                                               */
+/* get wsp area as Str                                                        */
 /*----------------------------------------------------------------------------*/
-Str* EntWsp::aWspArea(void)
+Str* EntWsp::aWspStr(void)
 {
   return m_xWsp.aStr();
 }
