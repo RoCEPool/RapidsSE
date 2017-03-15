@@ -332,7 +332,7 @@ char* Word::aBodyLatter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  char* aLatter = m_xBody.sLatter();
+  char* aLatter = m_xBody.aLatter();
   
   return pPoolCheck<char*>((void*)aLatter);
 }
@@ -629,7 +629,7 @@ Cell* Word::pLastCell(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  Cell* pLast = reinterpret_cast<Cell*>(m_xBody.sLatter());
+  Cell* pLast = reinterpret_cast<Cell*>(m_xBody.aLatter());
   
   return pPoolCheck<Cell*>(pLast);
 }

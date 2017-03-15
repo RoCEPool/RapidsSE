@@ -235,7 +235,7 @@ void IndexBuffer::vInsertEntry(EntWsp& xEntWsp)
   //}
   
   // get the pDst as the starting of the free space in the buffer
-  void* pDst = reinterpret_cast<void*>(m_xWsp.sLatter());
+  void* pDst = reinterpret_cast<void*>(m_xWsp.aLatter());
   
   // get the vale of the EntWsp key
   Key* pNewKey = xEntWsp.pKey();
@@ -253,7 +253,7 @@ void IndexBuffer::vInsertEntry(EntWsp& xEntWsp)
       pDst = pEntry;
       
       // shuffle right pEntry making space for new entry
-      i8 nSize = nSub(m_xWsp.sLatter(),reinterpret_cast<char*>(pEntry));
+      i8 nSize = nSub(m_xWsp.aLatter(),reinterpret_cast<char*>(pEntry));
       
       // calculate new postion to shuffle to
       void* pShuffleTo = pAdd<void*>(pEntry,nBytes);
@@ -308,7 +308,7 @@ bool IndexBuffer::bInsertEntry(EntWsp& xEntWsp)
   }
   
   // get the pDst as the starting of the free space in the buffer
-  void* pDst = reinterpret_cast<void*>(m_xWsp.sLatter());
+  void* pDst = reinterpret_cast<void*>(m_xWsp.aLatter());
 
   // get the vale of the EntWsp key
   Key* pNewKey = xEntWsp.pKey();
@@ -326,7 +326,7 @@ bool IndexBuffer::bInsertEntry(EntWsp& xEntWsp)
       pDst = pEntry;
       
       // shuffle right pEntry making space for new entry
-      i8 nSize = nSub(m_xWsp.sLatter(),reinterpret_cast<char*>(pEntry));
+      i8 nSize = nSub(m_xWsp.aLatter(),reinterpret_cast<char*>(pEntry));
       
       // calculate new postion to shuffle to
       void* pShuffleTo = pAdd<void*>(pEntry,nBytes);
@@ -402,7 +402,7 @@ void IndexBuffer::vSplitBuffer(void)
   char* pSplitAt = reinterpret_cast<char*>(pEntry);
   
   // calculate bytes to copy to new buffer
-  i8 nSize = nSub(m_xWsp.sLatter(), pSplitAt);
+  i8 nSize = nSub(m_xWsp.aLatter(), pSplitAt);
   
   // allocate a new buffer
   IndexBuffer* pNewBuffer = new IndexBuffer;
@@ -467,7 +467,7 @@ Entry* IndexBuffer::pFirstEntry(void)
   
   Entry* pFirst = reinterpret_cast<Entry*>(m_xWsp.aArea());
   
-  if ((char*)pFirst < m_xWsp.sLatter())
+  if ((char*)pFirst < m_xWsp.aLatter())
     return pFirst;
   else
     return nullptr;
@@ -482,7 +482,7 @@ Entry* IndexBuffer::pNextEntry(Entry* pCurr)
   
   Entry* pNext = pAdd<Entry*>(pCurr,iSize);
   
-  if ((char*)pNext < m_xWsp.sLatter())
+  if ((char*)pNext < m_xWsp.aLatter())
     return pNext;
   else
     return nullptr;

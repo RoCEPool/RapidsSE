@@ -27,7 +27,7 @@ namespace Magic
     void  vFill(char cByte);
     i8    nFree(void);
     void  vGive(i8 nBytes);
-    char* sLatter(void);
+    char* aLatter(void);
     i8    nLength(void);
     i8    nSize(void);
     Str*  aStr(void);
@@ -55,7 +55,7 @@ WspFxd<LENGTH>::WspFxd(void)
 template<int LENGTH>
 char* WspFxd<LENGTH>::aAllot(i8 nBytes)
 {
-  char* aAllotted = sLatter();
+  char* aAllotted = aLatter();
   
   vTake(nBytes);
   
@@ -70,7 +70,7 @@ void WspFxd<LENGTH>::vAppend(void* aSrc, i8 nBytes)
 {
   ASSERT(nUsed() + nBytes <= LENGTH);
   
-  void* aDst = sLatter();
+  void* aDst = aLatter();
 
   MemLib::vCopy(aDst,aSrc,nBytes);
   
@@ -121,7 +121,7 @@ i8 WspFxd<LENGTH>::nLength(void)
 /* get address of next available chunk in byte area                           */
 /*----------------------------------------------------------------------------*/
 template<int LENGTH>
-char* WspFxd<LENGTH>::sLatter(void)
+char* WspFxd<LENGTH>::aLatter(void)
 {
   char* aNext = &aArea()[nUsed()];
   

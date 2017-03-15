@@ -77,7 +77,7 @@ void KeyWsp::vAddElement(Values::ValWsp &xValWsp)
   ASSERT( ! nWspUsed() );
   
   eCN eClass = xValWsp.eClass();
-  char* pDst = m_xWsp.sLatter();
+  char* pDst = m_xWsp.aLatter();
   char* pSrc = xValWsp.aWspArea();
   
   i8 iSrc = *(i8*)pSrc;

@@ -323,7 +323,7 @@ Row* RowBuffer::pNextRow(Row* pCurr)
   
   Row* pNext = pAdd<Row*>(pCurr,nBytes);
   
-  if ((char*)pNext >= (char*)m_xWsp.sLatter())
+  if ((char*)pNext >= (char*)m_xWsp.aLatter())
     return nullptr;
   
   return pNext;

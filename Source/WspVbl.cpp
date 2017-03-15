@@ -17,7 +17,7 @@ WspVbl::WspVbl(void)
 /*----------------------------------------------------------------------------*/
 char* WspVbl::aAllot(i8 nBytes)
 {
-  char* aAllotted = sLatter();
+  char* aAllotted = aLatter();
   
   vTake(nBytes);
   
@@ -29,7 +29,7 @@ char* WspVbl::aAllot(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 void WspVbl::vAppend(void* aSrc, i8 nBytes)
 {
-  void* aDst = sLatter();
+  void* aDst = aLatter();
   
   MemLib::vCopy(aDst,aSrc,nBytes);
   
@@ -73,7 +73,7 @@ i8 WspVbl::nLength(void)
 /*----------------------------------------------------------------------------*/
 /* get next available chunk in data area                                      */
 /*----------------------------------------------------------------------------*/
-char* WspVbl::sLatter(void)
+char* WspVbl::aLatter(void)
 {
   return &aArea()[m_nAreaUsed];
 }
