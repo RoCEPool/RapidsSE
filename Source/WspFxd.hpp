@@ -83,7 +83,7 @@ void WspFxd<LENGTH>::vAppend(void* aSrc, i8 nBytes)
 template<int LENGTH>
 char* WspFxd<LENGTH>::sArea(void)
 {
-  char* aArea = Wsp::sArea();
+  char* aArea = Wsp::aArea();
   
   return aArea;
 }

@@ -32,7 +32,7 @@ void Wsp::vAppend(void* aSrc, i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* get address of byte area                                                   */
 /*----------------------------------------------------------------------------*/
-char* Wsp::sArea(void)
+char* Wsp::aArea(void)
 {
   return reinterpret_cast<char*>(this);
 }
@@ -50,7 +50,7 @@ void Wsp::vFill(char cByte)
 /*----------------------------------------------------------------------------*/
 void Wsp::vFill(char cByte, i8 nBytes)
 {
-  void* aDst = sArea();
+  void* aDst = aArea();
   
   MemLib::vSet(aDst,cByte,nBytes);
 }
@@ -142,7 +142,7 @@ void Wsp::vZero(void)
 /*----------------------------------------------------------------------------*/
 void Wsp::vZero(i8 nBytes)
 {
-  void* aDst = sArea();
+  void* aDst = aArea();
   
   MemLib::vZero(aDst,nBytes);
 }
