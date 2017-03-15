@@ -47,16 +47,6 @@ char* WspVbl::sArea(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get address of data area                                                   */
-/*----------------------------------------------------------------------------*/
-Str* WspVbl::aArea(void)
-{
-  Str* aArea = pAdd<Str*>(&m_nAreaUsed,sizeof(m_nAreaUsed));
-  
-  return aArea;
-}
-
-/*----------------------------------------------------------------------------*/
 /* fill data area with given byte                                             */
 /*----------------------------------------------------------------------------*/
 void WspVbl::vFill(char cByte)
@@ -96,6 +86,16 @@ i8 WspVbl::nSize(void)
   i8 nSize = sizeof(WspVbl) + m_nAreaUsed;
   
   return nSize;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get address of data area                                                   */
+/*----------------------------------------------------------------------------*/
+Str* WspVbl::aStr(void)
+{
+  Str* aArea = pAdd<Str*>(&m_nAreaUsed,sizeof(m_nAreaUsed));
+  
+  return aArea;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -140,7 +140,7 @@ void Entry::vEntry(EntWsp& xEntWsp)
 
   vRowId(xEntWsp.xRowId());
 
-  Str* pDst = m_xWsp.aArea();
+  Str* pDst = m_xWsp.aStr();
   Str* pSrc = xEntWsp.aWspArea();
   i8 nBytes  = xEntWsp.nWspUsed();
 
