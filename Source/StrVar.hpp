@@ -142,44 +142,6 @@ void StrVar<SIZE>::operator =(ValWsp& rArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get reference to Str area                                                  */
-/*----------------------------------------------------------------------------*/
-//template <int SIZE>
-//StrVar<SIZE>::operator Str&(void)
-//{
-//  _precondition_(_MAGIC_);
-//  
-//  // return reference to the RowId inherited class
-//  char* aAddr = pAdd<char*>(this,sizeof(StrVal));
-//  
-//  return reinterpret_cast<Str&>(*aAddr);
-//}
-
-/*----------------------------------------------------------------------------*/
-/* get address of Str area                                                    */
-/*----------------------------------------------------------------------------*/
-//template <int SIZE>
-//StrVar<SIZE>::operator Str(void)
-//{
-//  _precondition_(_MAGIC_);
-//  
-//  // return reference to the RowId inherited class
-//  return reinterpret_cast<Str>(*pAdd<char*>(this,sizeof(StrVal)));
-//}
-//
-/*----------------------------------------------------------------------------*/
-/* get address of Str area                                                    */
-/*----------------------------------------------------------------------------*/
-//template <int SIZE>
-//StrVar<SIZE>::operator Str*(void)
-//{
-//  _precondition_(_MAGIC_);
-//  
-//  // return reference to the RowId inherited class
-//  return reinterpret_cast<Str*>(pAdd<char*>(this,sizeof(StrVal)));
-//}
-//
-/*----------------------------------------------------------------------------*/
 /* test Str                                                                   */
 /*----------------------------------------------------------------------------*/
 template <int SIZE>

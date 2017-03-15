@@ -15,7 +15,7 @@ namespace Magic
   class WspFxd : public Wsp
   {
   private:
-    char m_sArea[LENGTH]; // byte area
+    char m_cArea[LENGTH]; // byte area
     i8   m_nAreaUsed;     // bytes used in the area (must be after m_cArea)
   
   public:
