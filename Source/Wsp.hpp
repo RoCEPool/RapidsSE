@@ -24,7 +24,7 @@ namespace Magic
     void  vFill(char cByte);
     void  vFill(char cByte, i8 nBytes);
     i8    nFree(void);
-    char* sLatter(void);
+    char* aLatter(void);
     i8    nLength(void);
     i8    nSize(void);
     Str*  aStr(void);

@@ -78,7 +78,7 @@ i8 Wsp::nLength(void)
 /*----------------------------------------------------------------------------*/
 /* get next available chunk in byte area                                      */
 /*----------------------------------------------------------------------------*/
-char* Wsp::sLatter(void)
+char* Wsp::aLatter(void)
 {
   vFatal("Wsp::nLatter: not overridden\n"_Str);
   
