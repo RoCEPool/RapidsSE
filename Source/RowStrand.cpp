@@ -294,8 +294,8 @@ bool RowStrand::bExtendStrand(RowBuffer* pNewRowBuffer)
   ASSERT(m_pLastBuffer);
 
   // can new buffer be copied into last buffer of this strand?
-  i8 iSrcBytesUsed = pNewRowBuffer->iBytesUsed();
-  i8 iDstBytesFree = m_pLastBuffer->iFreeSpace();
+  i8 iSrcBytesUsed = pNewRowBuffer->nUsedBytes();
+  i8 iDstBytesFree = m_pLastBuffer->nFreeBytes();
   if (iSrcBytesUsed <= iDstBytesFree) {
 
     m_pLastBuffer->vAppendBuffer(pNewRowBuffer);

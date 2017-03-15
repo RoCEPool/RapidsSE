@@ -267,7 +267,7 @@ void Task::vSocketSend(NNP_Task nnpTask)
     
     // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     // send rowBuffer size
-    i8 iBytes = pRowBuffer->iBytesUsed();
+    i8 iBytes = pRowBuffer->nUsedBytes();
     bResult = pSocket->bSendTo(sizeof(iBytes), &iBytes, xSysCall);
     
     if ( ! bResult ) {

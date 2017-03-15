@@ -48,34 +48,22 @@ namespace DBobjects
     static void vDump(eCN eClass, Object* pObject, Str* aTab);
   
     Row*       pAllocRow(i8 nDataBytes);
-  
     void       vAppendBuffer(RowBuffer* pSrcBuffer);
-  
+    void       vCopyBuffer(RowBuffer* pSrcBuffer);
+    byte*      aDataArea(void);
     eRD        eDurability(void);
     void       vDurability(eRD eDurability);
-  
     Row*       pFirstRow(void);
-    Row*       pNextRow(Row* pCurrRow);
-    
+    i8         nFreeBytes(void);
+    bool       bInsertRow(TxRef* pTxRef, Str* pRecord, i8 iLength);
     RowBuffer* pNextBuffer(void);
     void       vNextBuffer(RowBuffer* pNextBuffer);
-    
+    Row*       pNextRow(Row* pCurrRow);
     RowBuffer* pPrevBuffer(void);
     void       vPrevBuffer(RowBuffer* pPrevBuffer);
-    
-    i8         iBytesUsed(void);
     i8         nRows(void);
     void       vRowCount(void);
-
-    void       vCopyBuffer(RowBuffer* pSrcBuffer);
-    
-    bool       bInsertRow(TxRef* pTxRef, Str* pRecord, i8 iLength);
-    
-    byte*      aDataArea(void);
-    
-  //private:
-    
-  i8      iFreeSpace(void);
+    i8         nUsedBytes(void);
   };
   
   RowBuffer* _pRowBuffer(void* aAddr);

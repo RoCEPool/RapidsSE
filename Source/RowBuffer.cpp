@@ -138,26 +138,6 @@ void RowBuffer::vDump(eCN eClass, Object* pObject, Str* aTab)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get durability                                                             */
-/*----------------------------------------------------------------------------*/
-eRD RowBuffer::eDurability(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
-  
-  return m_eDurability;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set durability                                                             */
-/*----------------------------------------------------------------------------*/
-void RowBuffer::vDurability(eRD eDurability)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
-  
-  m_eDurability = eDurability;
-}
-
-/*----------------------------------------------------------------------------*/
 /* allocate a row in this segmented space                                     */
 /*----------------------------------------------------------------------------*/
 Row* RowBuffer::pAllocRow(i8 iDataBytes)
@@ -165,17 +145,17 @@ Row* RowBuffer::pAllocRow(i8 iDataBytes)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
   i8 nBytes = Row::iBytesRequired(iDataBytes);
-
+  
   // test  sufficient freespace
-  if (iFreeSpace() < nBytes) {
+  if (nFreeBytes() < nBytes) {
     return nullptr;
   }
-    
+  
   Row* pRow = reinterpret_cast<Row*>(m_xWsp.aAllot(nBytes));
   new(pRow) Row(iDataBytes);
   
   m_nRows++;
-    
+  
   _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_,CN_ROWBUFFER);
   
   return pRow;
@@ -189,18 +169,72 @@ void RowBuffer::vAppendBuffer(RowBuffer* pSrcBuffer)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
   // how many bytes to be copied from arg buffer
-  i8 nBytes  = pSrcBuffer->iBytesUsed();
+  i8 nBytes  = pSrcBuffer->nUsedBytes();
   byte* aSrc = pSrcBuffer->aDataArea();
-
+  
   // allot space in this buffer
   void* pDst = m_xWsp.aAllot(nBytes);
-
+  
   // copy arg rows into this buffer
   MemLib::vCopy(pDst,aSrc,nBytes);
   
   // inc the number of rows in this buffer
   i8 nSrcRows = pSrcBuffer->nRows();
   m_nRows += nSrcRows;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get durability                                                             */
+/*----------------------------------------------------------------------------*/
+eRD RowBuffer::eDurability(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
+  
+  return m_eDurability;
+}
+
+/*----------------------------------------------------------------------------*/
+/* copy given buffer                                                          */
+/*----------------------------------------------------------------------------*/
+void RowBuffer::vCopyBuffer(RowBuffer* pSrcBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
+  
+  // how many bytes to be copied from src buffer
+  i8 nBytes  = pSrcBuffer->nUsedBytes();
+  byte* aSrc = pSrcBuffer->aDataArea();
+  
+  // reset and allot space in this buffer
+  m_xWsp.vUsed(0);
+  void* pDst = m_xWsp.aAllot(nBytes);
+  
+  // copy from rows into this buffer
+  MemLib::vCopy(pDst,aSrc,nBytes);
+  
+  // set the number of rows in this buffer
+  m_nRows = pSrcBuffer->nRows();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get address of data area                                                   */
+/*----------------------------------------------------------------------------*/
+byte* RowBuffer::aDataArea(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
+  
+  byte* pStart = reinterpret_cast<byte*>(m_xWsp.aArea());
+  
+  return pStart;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set durability                                                             */
+/*----------------------------------------------------------------------------*/
+void RowBuffer::vDurability(eRD eDurability)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
+  
+  m_eDurability = eDurability;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -219,20 +253,43 @@ Row* RowBuffer::pFirstRow(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* next row                                                                   */
+/* how much free space (in bytes) left in segment?                            */
 /*----------------------------------------------------------------------------*/
-Row* RowBuffer::pNextRow(Row* pCurr)
+i8 RowBuffer::nFreeBytes(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
-  i8 nBytes = pCurr->nSize();
+  i8 nBytes = m_xWsp.nFree();
   
-  Row* pNext = pAdd<Row*>(pCurr,nBytes);
+  return nBytes;
+}
+
+/*----------------------------------------------------------------------------*/
+/* insert row into this buffer                                                */
+/*----------------------------------------------------------------------------*/
+bool RowBuffer::bInsertRow(TxRef* pTxRef, Str* pRecord, i8 iLength)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
-  if ((char*)pNext >= (char*)m_xWsp.sLatter())
-    return nullptr;
+  i8 nBytes = StrVal::nAreaRequired(iLength);
   
-  return pNext;
+  Row* pRow = pAllocRow(nBytes);
+  if (!pRow)
+    return false;
+  
+  i8 iTxId = pTxRef->iTxId();
+  
+  pRow->vTxId(iTxId);
+  
+  char* pData = pRow->pData();
+  
+  StrVal* pStr = new((StrVal*)pData) StrVal((StrVal*)pData);
+  
+  pStr->vAssign(pRecord,iLength);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_,CN_ROWBUFFER);
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -256,6 +313,23 @@ void RowBuffer::vNextBuffer(RowBuffer* pNextBuffer)
 }
 
 /*----------------------------------------------------------------------------*/
+/* next row                                                                   */
+/*----------------------------------------------------------------------------*/
+Row* RowBuffer::pNextRow(Row* pCurr)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
+  
+  i8 nBytes = pCurr->nSize();
+  
+  Row* pNext = pAdd<Row*>(pCurr,nBytes);
+  
+  if ((char*)pNext >= (char*)m_xWsp.sLatter())
+    return nullptr;
+  
+  return pNext;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get prev buffer                                                            */
 /*----------------------------------------------------------------------------*/
 RowBuffer* RowBuffer::pPrevBuffer(void)
@@ -273,18 +347,6 @@ void RowBuffer::vPrevBuffer(RowBuffer* pPrevBuffer)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
   m_pPrevBuffer = pPrevBuffer;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get bytes used                                                             */
-/*----------------------------------------------------------------------------*/
-i8 RowBuffer::iBytesUsed(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
-  
-  i8 nBytes = m_xWsp.nUsed();
-  
-  return nBytes;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -312,80 +374,14 @@ void RowBuffer::vRowCount(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* copy given buffer                                                          */
+/* get bytes used                                                             */
 /*----------------------------------------------------------------------------*/
-void RowBuffer::vCopyBuffer(RowBuffer* pSrcBuffer)
+i8 RowBuffer::nUsedBytes(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
-  // how many bytes to be copied from src buffer
-  i8 nBytes  = pSrcBuffer->iBytesUsed();
-  byte* aSrc = pSrcBuffer->aDataArea();
+  i8 nBytes = m_xWsp.nUsed();
   
-  // reset and allot space in this buffer
-  m_xWsp.vUsed(0);
-  void* pDst = m_xWsp.aAllot(nBytes);
-  
-  // copy from rows into this buffer
-  MemLib::vCopy(pDst,aSrc,nBytes);
-  
-  // set the number of rows in this buffer
-  m_nRows = pSrcBuffer->nRows();
-}
-
-/*----------------------------------------------------------------------------*/
-/* insert row into this buffer                                                */
-/*----------------------------------------------------------------------------*/
-bool RowBuffer::bInsertRow(TxRef* pTxRef, Str* pRecord, i8 iLength)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
-  
-  i8 nBytes = StrVal::nAreaRequired(iLength);
-  
-  Row* pRow = pAllocRow(nBytes);
-  if (!pRow)
-    return false;
-  
-  i8 iTxId = pTxRef->iTxId();
-  
-  pRow->vTxId(iTxId);
-  
-  char* pData = pRow->pData();
-  
-  StrVal* pStr = new((StrVal*)pData) StrVal((StrVal*)pData);
-  
-  pStr->vAssign(pRecord,iLength);  
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_,CN_ROWBUFFER);
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get address of data area                                                   */
-/*----------------------------------------------------------------------------*/
-byte* RowBuffer::aDataArea(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
-  
-  byte* pStart = reinterpret_cast<byte*>(m_xWsp.aArea());
-  
-  return pStart;
-}
-
-/*----------------------------------------------------------------------------*/
-/* how much free space (in bytes) left in segment?                            */
-/*----------------------------------------------------------------------------*/
-i8 RowBuffer::iFreeSpace(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
-  
-  i8 nBytes = m_xWsp.nFree();
-
   return nBytes;
 }
 

@@ -69,7 +69,7 @@ void ValSet::vAppend(Str*& pCursor, ValWsp& xVal)
     if (pPtrVal->pPtr() &&
         CN_ROWBUFFER == ((Object*)pPtrVal->pPtr())->eClass()) {
       m_pRowBuffer = (RowBuffer*)pPtrVal->pPtr();
-      m_iRowBufferBytes = m_pRowBuffer->iBytesUsed();
+      m_iRowBufferBytes = m_pRowBuffer->nUsedBytes();
       
       xVal = (Object*)C_ROWBUFFER_MARKER;
     }
@@ -246,7 +246,7 @@ bool ValSet::bSetRowBuffer(DBobjects::RowBuffer* pRowBuffer)
       PtrVal* pPtrVal = (PtrVal*)pValWsp;
       //vTrace("SETTING ROW BUFFER\n"_Str);
       m_pRowBuffer = pRowBuffer;
-      m_iRowBufferBytes = pRowBuffer->iBytesUsed();
+      m_iRowBufferBytes = pRowBuffer->nUsedBytes();
       return true;
     }
     
