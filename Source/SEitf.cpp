@@ -1668,6 +1668,9 @@ bool SEitf::bAppendRequest(s& sRequest)
   ValWsp xVal;
   ValSet xValSet;
   
+  if (gpGrid->m_bTraceapi)
+    vTrace("bAppendRequest: %p CurrentId:%lld\n", this, m_iCurrentRequestId);
+  
   // Before appending request for se, ensure that se is running
   // get the se pid from the attachmap
   i8 iPid = gpAttachMap->m_iPid;
@@ -1688,10 +1691,6 @@ bool SEitf::bAppendRequest(s& sRequest)
   xVal = sRequest.a();
   //vTrace("%s\n",xVal.sStr());
   xValSet.vAppend(pCursor,xVal);
-  
-  if (gpGrid->m_bTraceapi)
-    vTrace("SEitf:%p CurrentRequest:%lld NextRequest:%lld\n",
-           this, m_iCurrentRequestId, m_iNextRequestId);
   
   // if the current request id matches the next request id, it means
   // we have not read a response of the previous request
@@ -1722,15 +1721,13 @@ eEC SEitf::eGetResponse(void)
   
   vSetLastError(m_eErrorCode);
 
+  if (gpGrid->m_bTraceapi)
+    vTrace("eGetResponse: %p CurrentId:%lld\n", this, m_iCurrentRequestId);
+  
   // generate a random number and send it back
   do {
     m_iNextRequestId = Random::iRandom(0,99999);
   } while (m_iNextRequestId == m_iCurrentRequestId);
-  
-  //vTrace("NextRequest %lld\n", m_iNextRequestId);
-  
-  if (gpGrid->m_bTraceapi)
-    vTrace("SEitf:%p CurrentId:%lld  NextRequest:%lld\n", this, m_iCurrentRequestId, m_iNextRequestId);
   
   return m_eErrorCode;
 }
