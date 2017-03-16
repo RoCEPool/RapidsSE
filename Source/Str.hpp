@@ -23,23 +23,18 @@ namespace Base
     void operator =(Str*);
     void operator =(void*);
   
+    void vConcat(Str* aArg);
     void vCopy(Str* aArg);
     void vCopyLen(Str* aArg, i8 nBytes);
-    void vConcat(Str* aArg);
     bool bEqual(Str* aArg);
     bool bIsNumeric(void);
-
-    void vPrint(void);
-    bool bSame(Str* aArg);
-    void vSprint(Str* aFormat, ...);
-
-    i8    iToI8(void);
-    void  vToLower(void);
-  
     i8 iLength(void);
-    i8 nSize(void);
-
     char* s(void);
+    bool bSame(Str* aArg);
+    i8 nSize(void);
+    void vSprint(Str* aFormat, ...);
+    i8 iToI8(void);
+    void vToLower(void);
   };
   
   Str* operator "" _Str(const char* aLiteral, size_t nSize);

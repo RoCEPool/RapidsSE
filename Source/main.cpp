@@ -14,50 +14,11 @@ void vTest1(void);
 void vKillPrev(void);
 
 
-void vStrTestPtr(Str* pStr)
-{
-  vInfo("StrTestPtr: "_Str);
-  pStr->vPrint();
-}
-
-void vStrTestRef(Str& xStr)
-{
-  vInfo("StrTestRef: "_Str);
-  xStr.vPrint();
-}
-
 /*----------------------------------------------------------------------------*/
 /* main                                                                       */
 /*----------------------------------------------------------------------------*/
 int main(int argc, const char* argv[])
 {
-  
-  //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  // call Fun(Str&) with a ""_Str parameter (ptr to a Str datum)
-  vStrTestPtr("This is a Str literal"_Str);
-  
-  // dereference a ""_Str parameter
-  char* a = "This is a Str literal"_Str->s();
-  
-  // this compiles but doesnt work.  not even sure what it means
-  Str xStr("abc"_Str);
-  xStr.vPrint();
-  
-  // this works.  _Str takes a const char* and casts it to a Str*
-  Str* pStr = "abc"_Str;
-  pStr->vPrint();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  // s32 is a StrVar : StrVal : StrVal which has a Str area
-  s32 x32 = "boo"_Str;
-  vStrTestRef(x32);
-  x32 = "hoo"_Str;
-  vStrTestPtr(x32);
-  x32.vTest();
-  
-  //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  
   vInfo(
          "sizeof(eCN) %lu; sizeof(bool) %lu; \n"_Str
          "sizeof(Object) %lu; sizeof(StrVal) %lu; \n"_Str
