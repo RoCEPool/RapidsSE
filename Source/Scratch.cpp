@@ -79,7 +79,7 @@ Scratch::~Scratch(void)
 /*----------------------------------------------------------------------------*/
 /* get work area                                                              */
 /*----------------------------------------------------------------------------*/
-char* Scratch::sWspArea(void)
+char* Scratch::aWspArea(void)
 {
   _precondition_(_MAGIC_,CN_SCRATCH,_FOOTER_);
   
@@ -89,7 +89,7 @@ char* Scratch::sWspArea(void)
 /*----------------------------------------------------------------------------*/
 /* get work area                                                              */
 /*----------------------------------------------------------------------------*/
-Str* Scratch::aWspArea(void)
+Str* Scratch::aWspStr(void)
 {
   _precondition_(_MAGIC_,CN_SCRATCH,_FOOTER_);
   
