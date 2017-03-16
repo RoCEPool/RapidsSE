@@ -8645,7 +8645,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "  0 \\\"req.loop\\\" nullPtr task.new requestTaskSet taskSet.append\n"
     "\n"
     "  // set up second request processing task\n"
-    "  //0 \\\"req.loop\\\" nullPtr task.new requestTaskSet taskSet.append\n"
+    "  0 \\\"req.loop\\\" nullPtr task.new requestTaskSet taskSet.append\n"
     "\n"
     "  // set up the request thread\n"
     "  requestTaskSet  requestThread thread.taskset!\n"

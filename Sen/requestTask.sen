@@ -82,7 +82,7 @@ thread:  requestThread
   0 "req.loop" nullPtr task.new requestTaskSet taskSet.append
 
   // set up second request processing task
-  //0 "req.loop" nullPtr task.new requestTaskSet taskSet.append
+  0 "req.loop" nullPtr task.new requestTaskSet taskSet.append
 
   // set up the request thread
   requestTaskSet  requestThread thread.taskset!
