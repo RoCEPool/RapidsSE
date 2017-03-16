@@ -291,22 +291,19 @@ eEC RapidsSE_BeginInsert(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTa
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_CheckLibraryVersion(char* pVersion)
 {
-  if (gpGrid->m_bTraceapi)
-    vTrace("<RapidsSE_CheckLibraryVersion Library version %s; versionString %s\n", RAPIDSSE_VERSION_STRING, pVersion);
+  vTrace("<RapidsSE_CheckLibraryVersion Library version %s; versionString %s\n", RAPIDSSE_VERSION_STRING, pVersion);
   
   if (!String::bEqualTo(pVersion, RAPIDSSE_VERSION_STRING)) {
     
     vTrace("RapidsDB at version %s does not match RapidsSE library version %s",
            pVersion, RAPIDSSE_VERSION_STRING);
     
-    if (gpGrid->m_bTraceapi)
-      vTrace(">RapidsSE_CheckLibraryVersion\n");
+    vTrace(">RapidsSE_CheckLibraryVersion\n");
     
     return EC_VERSION_MISMATCH;
   }
   
-  if (gpGrid->m_bTraceapi)
-    vTrace(">RapidsSE_CheckLibraryVersion\n");
+  vTrace(">RapidsSE_CheckLibraryVersion\n");
            
   return EC_NONE;
 }
