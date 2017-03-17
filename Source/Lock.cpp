@@ -126,7 +126,7 @@ void Lock::vGrabRead(void)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   
-  ASSERT(m_aName);
+  //ASSERT(m_aName);
   
   ++m_zReadGrabs;
   
@@ -146,9 +146,11 @@ void Lock::vGrabRead(void)
     xTimer.vUpdate();
     if (xTimer.iMilliseconds() > 100 && ! bReported) {
       bReported = true;
-      vTrace("Lock::vGrabRead -- Unable to grab read lock %p %s\n",
-             this,
-             m_aName ? m_aName : "<noName>");
+      vTrace("Lock::vGrabRead -- Unable to grab read lock %p\n",
+             this);
+      //vTrace("Lock::vGrabRead -- Unable to grab read lock %p %s\n",
+      //       this,
+      //       m_aName ? m_aName : "<noName>");
     }
     
     rCode = Synch::iLockGrabRead(&m_uLockWord);
@@ -232,7 +234,7 @@ void Lock::vGrabWrite(void)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   
-  ASSERT(m_aName);
+  //ASSERT(m_aName);
 
 //  vTrace("Lock::vGrabWrite -- Grabbing write lock %p %s\n",
 //         this,
@@ -255,9 +257,11 @@ void Lock::vGrabWrite(void)
     xTimer.vUpdate();
     if (xTimer.iMilliseconds() > 100 && ! bReported) {
       bReported = true;
-      vTrace("Lock::vGrabWrite -- Unable to grab write lock %p %s\n",
-             this,
-             m_aName ? m_aName : "<noName>");
+      //vTrace("Lock::vGrabWrite -- Unable to grab write lock %p %s\n",
+      //       this,
+      //       m_aName ? m_aName : "<noName>");
+      vTrace("Lock::vGrabWrite -- Unable to grab write lock %p\n",
+             this);
     }
     
     rCode = Synch::iLockGrabWrite(&m_uLockWord);
