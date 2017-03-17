@@ -93,8 +93,8 @@ bool Queue::bAppend(Value* pValue)
   if ( ! m_pEndBuffer ) {
     ASSERT(0 == m_iCount);
     // need to add first buffer
-    if (gpGrid->m_bTraceapi)
-      vTrace("++Queue_a::bAppend: expanding at %d\n", nAppends);
+    //if (gpGrid->m_bTraceapi)
+    //  vTrace("++Queue_a::bAppend: expanding at %d\n", nAppends);
     
     vExpand();
   }
@@ -103,8 +103,8 @@ bool Queue::bAppend(Value* pValue)
   bool bAppended = m_pEndBuffer->bAppend(pValue);
   
   if ( ! bAppended ) {
-    if (gpGrid->m_bTraceapi)
-      vTrace("++Queue_b::bAppend: expanding at %d\n", nAppends);
+    //if (gpGrid->m_bTraceapi)
+    //  vTrace("++Queue_b::bAppend: expanding at %d\n", nAppends);
 
     vExpand();
     bool b = m_pEndBuffer->bAppend(pValue);
