@@ -1664,12 +1664,12 @@ bool SEitf::bAppendRequest(s& sRequest)
   char wItfAddr[32];
   char wWorkspace[C_1KB * 16];
   char* pCursor = nullptr;
-  
+    
   ValWsp xVal;
   ValSet xValSet;
   
   if (gpGrid->m_bTraceapi)
-    vTrace("bAppendRequest: %p CurrentId:%lld\n", this, m_iCurrentRequestId);
+    vTrace(">>bAppendRequest: %p CurrentId:%lld\n", this, m_iCurrentRequestId);
   
   // Before appending request for se, ensure that se is running
   // get the se pid from the attachmap
@@ -1705,6 +1705,10 @@ bool SEitf::bAppendRequest(s& sRequest)
   m_iCurrentRequestId = m_iNextRequestId;
   
   bool b = m_pRequestQueue->bAppend(&xValSet);
+  
+  if (gpGrid->m_bTraceapi)
+    vTrace("<<bAppendRequest: %p CurrentId:%lld %s\n", this,
+           m_iCurrentRequestId, b ? "true" : "false");
   
   return b;
 }

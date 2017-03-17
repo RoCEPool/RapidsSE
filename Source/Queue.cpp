@@ -3,8 +3,11 @@
 /*============================================================================*/
 
 #include "Structures.h"
+#include "Interface.h"
+#include "StorageEngine.h"
 
 extern BufferPool*  gpBufferPool;
+extern Grid* gpGrid;
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
@@ -82,11 +85,17 @@ bool Queue::bAppend(Value* pValue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUE,_FOOTER_);
   
+  static i8 nAppends = 0;
+
   m_zLock.vGrabWrite();
+  nAppends++;
   
   if ( ! m_pEndBuffer ) {
     ASSERT(0 == m_iCount);
     // need to add first buffer
+    if (gpGrid->m_bTraceapi)
+      vTrace("++Queue_a::bAppend: expanding at %d\n", nAppends);
+    
     vExpand();
   }
 
@@ -94,6 +103,9 @@ bool Queue::bAppend(Value* pValue)
   bool bAppended = m_pEndBuffer->bAppend(pValue);
   
   if ( ! bAppended ) {
+    if (gpGrid->m_bTraceapi)
+      vTrace("++Queue_b::bAppend: expanding at %d\n", nAppends);
+
     vExpand();
     bool b = m_pEndBuffer->bAppend(pValue);
     ASSERT(b);
@@ -102,7 +114,7 @@ bool Queue::bAppend(Value* pValue)
   m_iCount++;
   
   m_zLock.vDropWrite();
-
+  
   return true;
 }
 
