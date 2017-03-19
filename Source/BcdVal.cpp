@@ -35,7 +35,7 @@ BcdVal::BcdVal(void)
 {
   m_iBcd = 0;
   
-  _checkInitialised_(CN_INTVAL);
+  _checkInitialised_(CN_BOLVAL);
 }
 
 /*----------------------------------------------------------------------------*/
