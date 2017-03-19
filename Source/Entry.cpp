@@ -50,6 +50,7 @@ Entry::Entry(i8 iDataBytes)
 {
   //_precondition_(_MAGIC_,CN_ENTRY);
 
+  m_nLevels = 0;
   m_xWsp.vUsed(iDataBytes);
 
   //_setFooter_();
@@ -66,6 +67,7 @@ Entry::Entry(EntWsp& xEntWsp)
 {
   //_precondition_(_MAGIC_,CN_ENTRY);
   
+  m_nLevels = 0;
   vEntry(xEntWsp);
   
   //_setFooter_();
@@ -197,6 +199,26 @@ void Entry::vKey(KeyWsp& xKeyWsp)
   Key* pKey = reinterpret_cast<Key*>(m_xWsp.aArea());
   
   pKey->vKey(xKeyWsp);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get nLevels                                                                */
+/*----------------------------------------------------------------------------*/
+i8 Entry::nLevels(void)
+{
+  //_precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
+  
+  return m_nLevels;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set nLevels                                                                */
+/*----------------------------------------------------------------------------*/
+void Entry::vLevels(i8 nLevels)
+{
+  //_precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
+  
+  m_nLevels = nLevels;
 }
 
 /*----------------------------------------------------------------------------*/

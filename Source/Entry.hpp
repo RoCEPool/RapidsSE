@@ -8,8 +8,9 @@ namespace DBobjects
   class Entry
   {
   private:
-    RowId  m_xRowId;
-    WspVbl m_xWsp;
+    RowId  m_xRowId;  // rowid
+    i8     m_nLevels; // no of levels
+    WspVbl m_xWsp;    // workspace
   
   public:
     static i8 iBytesRequired(i8 iDataBytes);
@@ -32,6 +33,9 @@ namespace DBobjects
     Key*   pKey(void);
     void   vKey(Key& xKey);
     void   vKey(KeyWsp& xKeyWsp);
+  
+    i8     nLevels(void);
+    void   vLevels(i8 nLevels);
   
     //------
   

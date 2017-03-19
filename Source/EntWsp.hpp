@@ -9,6 +9,7 @@ namespace DBobjects
   {
   private:
     RowId            m_xRowId;   // row id
+    i8               m_nLevels;
     WspFxd<C_1KB*15> m_xWsp;     // workspace
     Footer           m_xFooter;  // footer
   
@@ -23,6 +24,9 @@ namespace DBobjects
   
     RowId& xRowId(void);
     void vRowId(RowId& xRowId);
+  
+    i8     nLevels(void);
+    void   vLevels(i8 nLevels);
   
     void vAddKey(KeyWsp& xKeyWsp);
     Key* pKey(void);

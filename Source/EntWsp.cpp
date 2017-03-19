@@ -37,6 +37,7 @@ EntWsp::EntWsp(void)
   _precondition_(_MAGIC_,CN_ENTWSP);
 
   //m_xRowId
+  m_nLevels = 0;
   
   _checkInitialisedSize_(sizeof(EntWsp));
   
@@ -92,13 +93,32 @@ void EntWsp::vRowId(RowId& xRowId)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get nLevels                                                                */
+/*----------------------------------------------------------------------------*/
+i8 EntWsp::nLevels(void)
+{
+  return m_nLevels;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set nLevels                                                                */
+/*----------------------------------------------------------------------------*/
+void EntWsp::vLevels(i8 nLevels)
+{
+  m_nLevels = nLevels;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get size in bytes of this entry instance                                   */
 /*----------------------------------------------------------------------------*/
 i8 EntWsp::nSize(void)
 {
   //_precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
   
-  i8 nBytes = sizeof(RowId) + sizeof(i8) + m_xWsp.nUsed();
+  i8 nBytes = sizeof(RowId)
+               + sizeof(i8)
+               + sizeof(i8)
+               + m_xWsp.nUsed();
   
   return nBytes;
 }
