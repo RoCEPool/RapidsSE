@@ -23,6 +23,7 @@ using namespace Values;
 #include "ValWsp.hpp"
 #include "ValReg.hpp"
 
+#include "BcdVal.hpp"
 #include "BinVal.hpp"
 #include "IntVal.hpp"
 #include "IpVal.hpp"
