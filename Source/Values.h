@@ -37,6 +37,8 @@ using namespace Values;
 #include "StrVal.hpp"
 #include "StrVar.hpp"
 
+#include "TmeVal.hpp"
+
 #include "ValSet.hpp"
 
 typedef StrVar<32>    s32;
