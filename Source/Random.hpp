@@ -17,6 +17,9 @@ namespace System
     static u8 uRandom(u8 uLow, u8 uHigh);
     
     static s48K sRandomString(i8 iLength);
+  
+    static i8 iLogLevel(i8 nLevels);
+  
   };
 }
 

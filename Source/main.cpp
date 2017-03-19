@@ -19,6 +19,14 @@ void vKillPrev(void);
 /*----------------------------------------------------------------------------*/
 int main(int argc, const char* argv[])
 {
+  //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//  for (i8 i = 0; i < 100; i++)
+//    printf("%lld\n",Random::iLogLevel(6));
+  //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  
+  
+  
+  
   vInfo(
          "sizeof(eCN) %lu; sizeof(bool) %lu; \n"_Str
          "sizeof(Object) %lu; sizeof(StrVal) %lu; \n"_Str

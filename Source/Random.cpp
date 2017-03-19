@@ -102,6 +102,37 @@ s48K Random::sRandomString(i8 iLength) {
   return sRandomString;
 }
 
+/*----------------------------------------------------------------------------*/
+/* choose a random logarithemic level (up to 8 levels)                        */
+/*----------------------------------------------------------------------------*/
+i8 Random::iLogLevel(i8 nLevels)
+{
+  // create a random 16 bit pattern
+  int iRandomPattern = (int)Random::iRandom(0,256*256-1);
+  
+  int iBitsLeft = (int)nLevels / 2;
+  
+  int iLevel = 0;
+  
+  int bBits;
+  do {
+    bBits = iRandomPattern & 0x3;
+    if ( ! bBits )
+      iLevel++;
+    
+    iRandomPattern >>= 2;
+    if (--iBitsLeft == 0) {
+      iRandomPattern = (int)Random::iRandom(0,256*256-1);
+      iBitsLeft = (int)nLevels / 2;
+    }
+    
+  } while ( !bBits );
+  
+  i8 iLogLevel = (iLevel > nLevels - 1) ? nLevels - 1 : iLevel;
+  
+  return iLogLevel;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

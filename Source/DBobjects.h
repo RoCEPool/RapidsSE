@@ -26,6 +26,7 @@ using namespace DBobjects;
 #include "RowId.hpp"
 #include "KeyWsp.hpp"
 #include "Key.hpp"
+#include "Levels.hpp"
 #include "EntWsp.hpp"
 #include "Entry.hpp"
 #include "IndexBuffer.hpp"
