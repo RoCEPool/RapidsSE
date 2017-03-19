@@ -27,6 +27,7 @@ using namespace Values;
 #include "BinVal.hpp"
 #include "BolVal.hpp"
 #include "DteVal.hpp"
+#include "FltVal.hpp"
 #include "IntVal.hpp"
 #include "IpVal.hpp"
 #include "ObjVal.hpp"
