@@ -18,6 +18,7 @@ using namespace Datums;
 
 #include "Dte.hpp"
 #include "Int.hpp"
+#include "Ivl.hpp"
 #include "Tme.hpp"
 #include "Tsp.hpp"
 
