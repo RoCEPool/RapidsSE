@@ -16,6 +16,8 @@ using namespace Datums;
 
 //-----------------------------------------------------------------------------
 
+#include "Bcd.hpp"
+#include "Bol.cpp"
 #include "Dte.hpp"
 #include "Flt.hpp"
 #include "Int.hpp"
