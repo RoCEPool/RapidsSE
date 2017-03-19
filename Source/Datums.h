@@ -17,7 +17,7 @@ using namespace Datums;
 //-----------------------------------------------------------------------------
 
 #include "Bcd.hpp"
-#include "Bol.cpp"
+#include "Bol.hpp"
 #include "Dte.hpp"
 #include "Flt.hpp"
 #include "Int.hpp"
