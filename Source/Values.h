@@ -33,11 +33,10 @@ using namespace Values;
 #include "IpVal.hpp"
 #include "ObjVal.hpp"
 #include "PtrVal.hpp"
-
 #include "StrVal.hpp"
 #include "StrVar.hpp"
-
 #include "TmeVal.hpp"
+#include "TspVal.hpp"
 
 #include "ValSet.hpp"
 
