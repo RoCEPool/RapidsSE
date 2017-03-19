@@ -29,6 +29,7 @@ using namespace Values;
 #include "DteVal.hpp"
 #include "FltVal.hpp"
 #include "IntVal.hpp"
+#include "IvlVal.hpp"
 #include "IpVal.hpp"
 #include "ObjVal.hpp"
 #include "PtrVal.hpp"
