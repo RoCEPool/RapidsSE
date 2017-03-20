@@ -41,6 +41,9 @@ const i8 C_128K = C_1K * 128;     // 128 thousand
 const i8 C_256K = C_1K * 256;     // 256 thousand
 const i8 C_512K = C_1K * 512;     // 512 thousand
 
+const u8 C_ALL_BITS_ON = 0XFFFFFFFFFFFFFFFFLL;
+const u8 C_BITS_PER_WORD = 64;
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

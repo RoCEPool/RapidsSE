@@ -1,12 +1,12 @@
 /*============================================================================*/
-/* Random.cpp -- generate a random number                                     */
+/* Random.cpp -- generate random number                                       */
 /*============================================================================*/
 
 #include "System.h"
 
-//---------------------------------------------------------------------------//
-// generate a random number                                                  //
-//---------------------------------------------------------------------------//
+/*---------------------------------------------------------------------------*/
+/* generate a random number                                                  */
+/*---------------------------------------------------------------------------*/
 i8 Random::iRandom(void)
 {
   i8 iRand = ThirdParty::genrand64_int63();
@@ -14,12 +14,12 @@ i8 Random::iRandom(void)
   return iRand;
 }
 
-//---------------------------------------------------------------------------//
-// generate a random number                                                  //
-//---------------------------------------------------------------------------//
+/*---------------------------------------------------------------------------*/
+/* generate a random number                                                  */
+/*---------------------------------------------------------------------------*/
 i8 Random::iRandom(i8 iMax)
 {
-  i8 iRand = ThirdParty::genrand64_int63() %iMax;
+  i8 iRand = ThirdParty::genrand64_int63() % iMax;
   
   return iRand;
 }
@@ -41,9 +41,9 @@ i8 Random::iRandom(i8 iLow, i8 iHigh)
   return n;
 }
 
-//---------------------------------------------------------------------------//
-// generate a random number                                                  //
-//---------------------------------------------------------------------------//
+/*---------------------------------------------------------------------------*/
+/* generate a random number                                                  */
+/*---------------------------------------------------------------------------*/
 u8 Random::uRandom(void)
 {
   u8 iRand = ThirdParty::genrand64_int64();
@@ -51,9 +51,9 @@ u8 Random::uRandom(void)
   return iRand;
 }
 
-//---------------------------------------------------------------------------//
-// generate a random number                                                  //
-//---------------------------------------------------------------------------//
+/*---------------------------------------------------------------------------*/
+/* generate a random number                                                  */
+/*---------------------------------------------------------------------------*/
 u8 Random::uRandom(u8 uMax)
 {
   u8 uRand = ThirdParty::genrand64_int64() % uMax;
@@ -103,76 +103,60 @@ s48K Random::sRandomString(i8 iLength) {
 }
 
 /*----------------------------------------------------------------------------*/
-/* choose a random logarithemic level (up to 8 levels)                        */
+/* choose a random logarithemic level (up to n levels, at given frequency)    */
 /*----------------------------------------------------------------------------*/
 u8 Random::uLogLevel(u8 nLevels, u8 uFrequency)
 {
-  /*
-   
+  //
+  // This function generates a number between 0 and nLevels - 1.
+  //
+  // A level 0 is generated most of the time,
+  //   the probability that a level 1 is generated is 1 / (2 ^ uFrequency),
+  //   the probability that a level 2 is generated is 1 / (2 ^ uFrequency ^ 2),
+  //   the probability that a level 3 is generated is 1 / (2 ^ uFrequency ^ 3).
+  //
+  // So if uFrequency is 2,
+  //   then level 1 will probably be generated once every 4 times,
+  //        level 2 will probably be generated once every 16 times,
+  //        level 4 will probably be generated once every 64 times.
+  //
   
-
-  // create a random 64 bit pattern
-  u8 uRandomPattern = Random::uRandom();
+  //
+  // The algorithm works by repeatedly examining a subset of bits from a
+  // random pattern.  The probability that all bits are zero is a function of
+  // the number of bits in the subset.  The more bits in the subset the
+  // less likely (logarithemically) that all bits are zero.
+  //
   
-  u8 uBitsRemaining = nLevels / uFrequency;
+  u8 uBitMask = C_ALL_BITS_ON >> (C_BITS_PER_WORD - uFrequency);
   
-  u8 uLevel = 0;
-  u8 uBits;
-  
-  do {
-    uBits = uRandomPattern & uBitPattern;
-    if ( ! uBits )
-      uLevel++;
-    else {
-      break;
-    }
-    
-    // shift right 2 bits (to check next 2 bits)
-    uRandomPattern >>= uFrequency;
-    
-    // regenerate the random number
-    if (--uBitsRemaining == 0) {
-      uRandomPattern = Random::uRandom();
-      uBitsRemaining = nLevels / uFrequency;
-    }
-    
-  } while ( !uBits );
-  
-  u8 uLogLevel = (uLevel > nLevels - 1) ? nLevels - 1 : uLevel;
-  
-  return uLogLevel;
- */
-  
-  u8 uBitPattern = (0XFFFFFFFFFFFFFFFFLL >> (64 - uFrequency));
-  u8 uLevel = 0;
-  u8 uBits;
-  u8 uBitsRemaining = 0;
+  u8 uBitSubset = 0;
+  u8 nSubsetsLeft = 0;
   u8 uRandomPattern = 0;
   
-  do {
+  // step thru bit subsets until we find a subset with some bits set
+  u8 nAllZeroSubsets;
+  for (nAllZeroSubsets = -1; ! uBitSubset; nAllZeroSubsets++) {
     
-    // generate the random number
-    if (uBitsRemaining == 0) {
+    // if all bits used from the random bit pattern, generate a new pattern
+    if (0 == nSubsetsLeft) {
       uRandomPattern = Random::uRandom();
-      uBitsRemaining = nLevels / uFrequency;
+      nSubsetsLeft = nLevels / uFrequency;
     }
-    
-    uBits = uRandomPattern & uBitPattern;
-    if ( ! uBits )
-      uLevel++;
-    
-    // shift right uFrequency bits (to check next uFrequency bits)
+
+    // take the next lower subset of bits
+    uBitSubset = uRandomPattern & uBitMask;
     uRandomPattern >>= uFrequency;
-    
-    // decrement bitsRemaining
-    uBitsRemaining--;
-    
-  } while ( !uBits );
+    nSubsetsLeft--;
+  }
   
-  u8 uLogLevel = (uLevel > nLevels - 1) ? nLevels - 1 : uLevel;
+  // compute the level based on the number of times we observed subsets
+  // whose bits were all zero
+  u8 uLevel = (nAllZeroSubsets >= nLevels)
+                ? nLevels - 1
+                : nAllZeroSubsets;
   
-  return uLogLevel;
-  
+  return uLevel;
 }
 
 /*============================================================================*/
