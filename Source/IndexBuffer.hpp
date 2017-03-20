@@ -11,7 +11,18 @@ namespace DBobjects
     i8           m_nEntries;    // number of entries in this buffer
     IndexBuffer* m_pPrevBuffer; // prev buffer
     IndexBuffer* m_pNextBuffer; // next buffer
-    
+  
+    // need to add skip list head
+    // head would be array of [FLAT_LEVELS - 1]
+    // array of byte offsets, not addresses
+    // will need a C_NIL say -1
+    // entries are in contigious key order
+    // so we dont keep L1, L1 is implied
+    // insert is memmove to right
+    // remove is memmove to left
+    //
+    // need to have verify & show fn's
+  
     WspFxd<C_SIZE_LARGE_OBJECT - C_1KB> m_xWsp;
     
   public:
