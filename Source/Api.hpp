@@ -14,6 +14,7 @@ extern "C" eEC RapidsSE_CreateTable(SEitf* seitf, char* catalog, char* pSchema, 
 extern "C" eEC RapidsSE_DropTable(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTable);
 extern "C" eEC RapidsSE_EndCreate(SEitf* pSEitf);
 extern "C" eEC RapidsSE_EndInsert(SEitf* pSEitf);
+extern "C" eEC RapidsSE_EndScan(SEitf* pSEitf);
 extern "C" eEC RapidsSE_GetCatalogs(SEitf* pSEitf, void** ppCatalog);
 extern "C" eEC RapidsSE_GetColumns(SEitf* pSEitf, char* pCatalog,  char* pSchema, char* pTable, void** ppColumns);
 extern "C" eEC RapidsSE_GetLastError(SEitf* pSEitf, void** ppError);

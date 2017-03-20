@@ -845,6 +845,63 @@ eEC RapidsSE_EndInsert(SEitf* pSEitf)
 }
 
 /*----------------------------------------------------------------------------*/
+/* end scan                                                                   */
+/*----------------------------------------------------------------------------*/
+eEC RapidsSE_EndScan(SEitf* pSEitf)
+{
+  if (gpGrid->m_bTraceapi)
+    vTrace(">RapidsSE_EndScan: %p\n", pSEitf);
+  
+  if (pSEitf == nullptr) {
+    if (gpGrid->m_bTraceapi)
+      vTrace("<RapidsSE_EndScan: %p\n", pSEitf);
+    return EC_INVALID_INTERFACE;
+  }
+  
+  if (!gpBufferPool->bValidAddress(pSEitf)) {
+    if (gpGrid->m_bTraceapi)
+      vTrace("<RapidsSE_EndScan: %p\n", pSEitf);
+    return EC_INVALID_INTERFACE;
+  }
+  
+  // clear the last error
+  pSEitf->vClearLastError();
+  
+  i8 iAddress = String::iToI8( pSEitf->m_sResponse.a());
+  
+  SelCursor* pSelCursor = reinterpret_cast<SelCursor*>(iAddress);
+  ASSERT(CN_SELCURSOR == pSelCursor->eClass());
+  delete pSelCursor;
+  
+  // return the table
+  eEC eResult = eExecuteRequest(pSEitf, "rettbl");
+  if (EC_NONE != eResult) {
+    
+    vTrace("RapidsSE_EndScan: rettbl FAILED!!!\n");
+    
+    if (gpGrid->m_bTraceapi)
+      vTrace("<RapidsSE_EndScan: %p\n", pSEitf);
+    
+    return eResult;
+  }
+  
+  // get response
+  eResult = eGetResponse(pSEitf);
+  if (EC_NONE != eResult) {
+    if (gpGrid->m_bTraceapi)
+      vTrace("<RapidsSE_EndScan: %p\n", pSEitf);
+    return eResult;
+  }
+  
+  ASSERT(pSEitf->pCurrentTable() == nullptr);
+  
+  if (gpGrid->m_bTraceapi)
+    vTrace("<RapidsSE_EndScan: %p\n", pSEitf);
+  
+  return EC_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
 /* Execute a request                                                          */
 /*----------------------------------------------------------------------------*/
 bool RapidsSE_ExecuteRequest(SEitf* pSEitf, char* pWords[], i8 iWords, char** ppResponse)
@@ -1255,6 +1312,7 @@ eEC RapidsSE_GetNextRow(SEitf* pSEitf, void** ppRow)
   
   *ppRow = pSelCursor->pRowAsStr();
   if (!*ppRow) {
+    /*
     delete pSelCursor;
     
     // return the table
@@ -1277,7 +1335,8 @@ eEC RapidsSE_GetNextRow(SEitf* pSEitf, void** ppRow)
     }
     
     ASSERT(pSEitf->pCurrentTable() == nullptr);
-
+    */
+    
     if (gpGrid->m_bTraceapi)
       vTrace("<RapidsSE_GetNextRow: %p\n", pSEitf);
     
