@@ -48,7 +48,7 @@ Lock::Lock(void)
   
   m_uLockWord = 0;
   
-  m_aName = nullptr;
+  m_sName = "<no-name>"_Str;
 
   m_zReadGrabs.vCheckInit();
   m_zReadCollisions.vCheckInit();
@@ -80,7 +80,7 @@ void Lock::vInit(Str* aName)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   
-  m_aName = aName;
+  m_sName = aName;
   
   ASSERT(0 == m_uLockWord); // logic check
 }
@@ -126,7 +126,7 @@ void Lock::vGrabRead(void)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   
-  ASSERT(m_aName);
+  ASSERT(m_sName);
   
   ++m_zReadGrabs;
   
@@ -148,7 +148,7 @@ void Lock::vGrabRead(void)
       bReported = true;
       vTrace("Lock::vGrabRead -- Unable to grab read lock %p %s\n"_Str,
              this,
-             m_aName ? m_aName : "<noName>"_Str);
+             m_sName.s());
     }
     
     rCode = Synch::iLockGrabRead(&m_uLockWord);
@@ -232,8 +232,8 @@ void Lock::vGrabWrite(void)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   
-  ASSERT(m_aName);
-
+  ASSERT(m_sName);
+  
 //  vTrace("Lock::vGrabWrite -- Grabbing write lock %p %s\n"_Str,
 //         this,
 //         m_aName ? m_aName : "<noName>"_Str);
@@ -257,7 +257,7 @@ void Lock::vGrabWrite(void)
       bReported = true;
       vTrace("Lock::vGrabWrite -- Unable to grab write lock %p %s\n"_Str,
              this,
-             m_aName ? m_aName : "<noName>"_Str);
+             m_sName.s());
     }
     
     rCode = Synch::iLockGrabWrite(&m_uLockWord);

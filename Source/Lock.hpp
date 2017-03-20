@@ -15,7 +15,7 @@ namespace System
   private:
     u8     m_uLockWord;        // lock word
   
-    Str*   m_aName;            // name
+    s32    m_sName;            // name
   
     Atomic m_zReadGrabs;       // number of read grabs
     Atomic m_zReadCollisions;  // number of read collisions
