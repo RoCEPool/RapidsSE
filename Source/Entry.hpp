@@ -9,7 +9,7 @@ namespace DBobjects
   {
   private:
     RowId  m_xRowId;  // rowid
-    i8     m_nLevels; // no of levels
+    u8     m_nLevels; // no of levels
     WspVbl m_xWsp;    // workspace
   
   public:

@@ -99,8 +99,9 @@ void Entry::vContentDump(void)
   i8 iKeyData;
   ValLib::nCopyDatum(CN_INTVAL, &iKeyData,m_xWsp.aArea());
   
-  vTrace("Entry %p: Row %llu.%llu Key (size:%lld value:%lld)\n"_Str,
+  vTrace("Entry %p: Levels: %llu Row %llu.%llu Key (size:%lld value:%lld)\n"_Str,
          this,
+         m_nLevels,
          m_xRowId.uBuffer(),
          m_xRowId.uRow(),
          m_xWsp.nUsed(),
@@ -141,7 +142,8 @@ void Entry::vEntry(EntWsp& xEntWsp)
   //_precondition_(_MAGIC_,CN_ENTRY);
 
   vRowId(xEntWsp.xRowId());
-
+  vLevels(xEntWsp.nLevels());
+  
   Str* aDst = m_xWsp.aStr();
   Str* aSrc = xEntWsp.aWspStr();
   i8 nBytes = xEntWsp.nWspUsed();

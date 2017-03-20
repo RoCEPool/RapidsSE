@@ -56,6 +56,9 @@ IndexBuffer::IndexBuffer(void)
   m_pPrevBuffer = nullptr;
   m_pNextBuffer = nullptr;
   
+  for (i8 iIndex=0; iIndex < C_FLAT_LEVELS; iIndex++)
+    m_nSkipHead[iIndex] = C_NIL;
+  
   m_xWsp.vZero();
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);

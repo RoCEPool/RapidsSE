@@ -25,8 +25,8 @@ namespace DBobjects
     RowId& xRowId(void);
     void vRowId(RowId& xRowId);
   
-    i8     nLevels(void);
-    void   vLevels(i8 nLevels);
+    u8     nLevels(void);
+    void   vLevels(u8 nLevels);
   
     void vAddKey(KeyWsp& xKeyWsp);
     Key* pKey(void);

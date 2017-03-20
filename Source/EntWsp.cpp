@@ -37,7 +37,9 @@ EntWsp::EntWsp(void)
   _precondition_(_MAGIC_,CN_ENTWSP);
 
   //m_xRowId
-  m_nLevels = 0;
+  
+  // generate logarithemic levels for this entry
+  m_nLevels = Random::uLogLevel(IndexBuffer::C_FLAT_LEVELS, 2);
   
   _checkInitialisedSize_(sizeof(EntWsp));
   
@@ -95,7 +97,7 @@ void EntWsp::vRowId(RowId& xRowId)
 /*----------------------------------------------------------------------------*/
 /* get nLevels                                                                */
 /*----------------------------------------------------------------------------*/
-i8 EntWsp::nLevels(void)
+u8 EntWsp::nLevels(void)
 {
   return m_nLevels;
 }
@@ -103,7 +105,7 @@ i8 EntWsp::nLevels(void)
 /*----------------------------------------------------------------------------*/
 /* set nLevels                                                                */
 /*----------------------------------------------------------------------------*/
-void EntWsp::vLevels(i8 nLevels)
+void EntWsp::vLevels(u8 nLevels)
 {
   m_nLevels = nLevels;
 }
