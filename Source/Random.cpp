@@ -107,8 +107,10 @@ s48K Random::sRandomString(i8 iLength) {
 /*----------------------------------------------------------------------------*/
 u8 Random::uLogLevel(u8 nLevels, u8 uFrequency)
 {
-  u8 uBitPattern = (0XFFFFFFFFFFFFFFFFLL >> (64 - uFrequency));
- 
+  /*
+   
+  
+
   // create a random 64 bit pattern
   u8 uRandomPattern = Random::uRandom();
   
@@ -139,6 +141,38 @@ u8 Random::uLogLevel(u8 nLevels, u8 uFrequency)
   u8 uLogLevel = (uLevel > nLevels - 1) ? nLevels - 1 : uLevel;
   
   return uLogLevel;
+ */
+  
+  u8 uBitPattern = (0XFFFFFFFFFFFFFFFFLL >> (64 - uFrequency));
+  u8 uLevel = 0;
+  u8 uBits;
+  u8 uBitsRemaining = 0;
+  u8 uRandomPattern = 0;
+  
+  do {
+    
+    // generate the random number
+    if (uBitsRemaining == 0) {
+      uRandomPattern = Random::uRandom();
+      uBitsRemaining = nLevels / uFrequency;
+    }
+    
+    uBits = uRandomPattern & uBitPattern;
+    if ( ! uBits )
+      uLevel++;
+    
+    // shift right uFrequency bits (to check next uFrequency bits)
+    uRandomPattern >>= uFrequency;
+    
+    // decrement bitsRemaining
+    uBitsRemaining--;
+    
+  } while ( !uBits );
+  
+  u8 uLogLevel = (uLevel > nLevels - 1) ? nLevels - 1 : uLevel;
+  
+  return uLogLevel;
+  
 }
 
 /*============================================================================*/
