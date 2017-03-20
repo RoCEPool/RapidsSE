@@ -21,12 +21,12 @@ int main(int argc, const char* argv[])
 {
   //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   i8 iLevels[6];
-  for (i8 iLevel = 0; iLevel < 6; iLevel++)
+  for (u8 iLevel = 0; iLevel < 6; iLevel++)
     iLevels[iLevel] = 0;
   
-  for (i8 i = 0; i < 10000; i++) {
-    //printf("%lld\n",Random::iLogLevel(6));
-    i8 iLevel = Random::iLogLevel(6);
+  for (u8 i = 0; i < 10000; i++) {
+    //printf("%lld\n",Random::uLogLevel(6, 2));
+    u8 iLevel = Random::uLogLevel(6, 2);
     iLevels[iLevel]++;
   }
   for (i8 iLevel = 0; iLevel < 6; iLevel++)

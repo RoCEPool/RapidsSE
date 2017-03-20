@@ -105,32 +105,40 @@ s48K Random::sRandomString(i8 iLength) {
 /*----------------------------------------------------------------------------*/
 /* choose a random logarithemic level (up to 8 levels)                        */
 /*----------------------------------------------------------------------------*/
-i8 Random::iLogLevel(i8 nLevels)
+u8 Random::uLogLevel(u8 nLevels, u8 uFrequency)
 {
-  // create a random 16 bit pattern
-  int iRandomPattern = (int)Random::iRandom(0,256*256-1);
+  u8 uBitPattern = (0XFFFFFFFFFFFFFFFFLL >> (64 - uFrequency));
+ 
+  // create a random 64 bit pattern
+  u8 uRandomPattern = Random::uRandom();
   
-  int iBitsLeft = (int)nLevels / 2;
+  u8 uBitsRemaining = nLevels / uFrequency;
   
-  int iLevel = 0;
+  u8 uLevel = 0;
+  u8 uBits;
   
-  int bBits;
   do {
-    bBits = iRandomPattern & 0x3;
-    if ( ! bBits )
-      iLevel++;
-    
-    iRandomPattern >>= 2;
-    if (--iBitsLeft == 0) {
-      iRandomPattern = (int)Random::iRandom(0,256*256-1);
-      iBitsLeft = (int)nLevels / 2;
+    uBits = uRandomPattern & uBitPattern;
+    if ( ! uBits )
+      uLevel++;
+    else {
+      break;
     }
     
-  } while ( !bBits );
+    // shift right 2 bits (to check next 2 bits)
+    uRandomPattern >>= uFrequency;
+    
+    // regenerate the random number
+    if (--uBitsRemaining == 0) {
+      uRandomPattern = Random::uRandom();
+      uBitsRemaining = nLevels / uFrequency;
+    }
+    
+  } while ( !uBits );
   
-  i8 iLogLevel = (iLevel > nLevels - 1) ? nLevels - 1 : iLevel;
+  u8 uLogLevel = (uLevel > nLevels - 1) ? nLevels - 1 : uLevel;
   
-  return iLogLevel;
+  return uLogLevel;
 }
 
 /*============================================================================*/

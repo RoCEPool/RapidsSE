@@ -18,7 +18,7 @@ namespace System
     
     static s48K sRandomString(i8 iLength);
   
-    static i8 iLogLevel(i8 nLevels);
+    static u8 uLogLevel(u8 nLevels, u8 iFrequency);
   
   };
 }
