@@ -50,6 +50,8 @@ Arguments::Arguments(void)
   m_bStop       = false;
   m_bUnlink     = false;
   m_bLock       = false;
+  m_uLevels     = 6;
+  m_uFrequency  = 2;
 
   m_bBgTasks    = true;
   m_bConfig     = true;
@@ -333,6 +335,16 @@ bool Arguments::bParse(int argc, Str* argv[])
     }
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (argv[iArg]->bSame("--levels"_Str)) {
+      m_uLevels = (u8)argv[++iArg]->iToI8();
+      continue;
+    }
+    
+    if (argv[iArg]->bSame("--frequency"_Str)) {
+      m_uFrequency = (u8)argv[++iArg]->iToI8();
+      continue;
+    }
+    
     if (argv[iArg]->bSame("--lock"_Str)) {
       m_bLock = true;
       continue;

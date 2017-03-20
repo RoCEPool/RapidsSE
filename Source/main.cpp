@@ -19,22 +19,6 @@ void vKillPrev(void);
 /*----------------------------------------------------------------------------*/
 int main(int argc, const char* argv[])
 {
-  //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  i8 iLevels[6];
-  for (u8 iLevel = 0; iLevel < 6; iLevel++)
-    iLevels[iLevel] = 0;
-  
-  for (u8 i = 0; i < 10000; i++) {
-    //printf("%lld\n",Random::uLogLevel(6, 2));
-    u8 iLevel = Random::uLogLevel(6, 2);
-    iLevels[iLevel]++;
-  }
-  for (i8 iLevel = 0; iLevel < 6; iLevel++)
-    printf("%lld: %lld\n",iLevel,iLevels[iLevel]);
-  //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  
-  
-  
   
   vInfo(
          "sizeof(eCN) %lu; sizeof(bool) %lu; \n"_Str
@@ -71,6 +55,21 @@ int main(int argc, const char* argv[])
            Process::iGetPid()
            );
 
+  
+  //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  i8 iLevels[gxArguments.m_uLevels];
+  for (u8 iLevel = 0; iLevel < gxArguments.m_uLevels; iLevel++)
+    iLevels[iLevel] = 0;
+  
+  for (u8 i = 0; i < 10000; i++) {
+    u8 iLevel = Random::uLogLevel(gxArguments.m_uLevels, gxArguments.m_uFrequency);
+    iLevels[iLevel]++;
+  }
+  for (i8 iLevel = 0; iLevel < gxArguments.m_uLevels; iLevel++)
+    printf("%lld: %lld\n",iLevel,iLevels[iLevel]);
+  //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  
+  
   Dir xDir;
   s256 sCurrent;
 //  if (xDir.bGetCurrent(sCurrent))

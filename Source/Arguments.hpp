@@ -33,6 +33,8 @@ namespace StorageEngine
     bool m_bStop;       // force stop system (kill tasks & threads, shm unmap & unlink)
     bool m_bUnlink;     // unlink shm region only
     bool m_bLock;       // lock shared memory
+    u8   m_uLevels;     // index levels
+    u8   m_uFrequency;  // index level frequency
 
     // options
     bool m_bBgTasks;    // start background tasks
