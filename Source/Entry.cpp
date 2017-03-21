@@ -96,17 +96,29 @@ void Entry::vContentDump(void)
 {
   //_precondition_(_MAGIC_,CN_ENTRY);
   
-  i8 iKeyData;
-  ValLib::nCopyDatum(CN_INTVAL, &iKeyData,m_xWsp.aArea());
+  i8 iKey;
   
-  vTrace("Entry %p: Levels: %llu Row %llu.%llu Key (size:%lld value:%lld)\n"_Str,
+  
+  vTrace("Entry %p: Levels: %llu "_Str,
          this,
-         m_nLevels,
+         m_nLevels
+         );
+  
+  ValLib::nCopyDatum(CN_INTVAL, &iKey,m_xWsp.aArea()  + sizeof(i8)*(m_nLevels-1));
+  vTrace("Row %llu.%llu Key (size:%lld value:%lld) "_Str,
          m_xRowId.uBuffer(),
          m_xRowId.uRow(),
-         m_xWsp.nUsed(),
-         iKeyData
+         m_xWsp.nUsed() - sizeof(i8)*(m_nLevels-1),
+         iKey
          );
+  
+  for (i8 iIndex=0; iIndex< m_nLevels - 1; iIndex++) {
+    vTrace("L%lld: %lld "_Str,
+           iIndex+1,
+           nOffset(iIndex));
+  }
+  
+  vTrace("\n"_Str);
   
   //m_xRowId.pRow()->vContentDump();
 }
@@ -141,8 +153,10 @@ void Entry::vEntry(EntWsp& xEntWsp)
 {
   //_precondition_(_MAGIC_,CN_ENTRY);
 
+  i8 iLevels = xEntWsp.nLevels();
+  
   vRowId(xEntWsp.xRowId());
-  vLevels(xEntWsp.nLevels());
+  vLevels(iLevels);
   
   Str* aDst = m_xWsp.aStr();
   Str* aSrc = xEntWsp.aWspStr();
@@ -172,7 +186,7 @@ Key* Entry::pKey(void)
 {
   //_precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
   
-  Key* pKey = reinterpret_cast<Key*>(m_xWsp.aArea());
+  Key* pKey = reinterpret_cast<Key*>(m_xWsp.aArea() + (sizeof(i8)*(m_nLevels-1)));
   
   return pKey;
 }
@@ -184,7 +198,7 @@ void Entry::vKey(Key& xKey)
 {
   //_precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
   
-  Key* pKey = reinterpret_cast<Key*>(m_xWsp.aArea());
+  Key* pKey = reinterpret_cast<Key*>(m_xWsp.aArea() + (sizeof(i8)*(m_nLevels-1)));
 
   pKey->vKey(xKey);
   
@@ -206,7 +220,7 @@ void Entry::vKey(KeyWsp& xKeyWsp)
 /*----------------------------------------------------------------------------*/
 /* get nLevels                                                                */
 /*----------------------------------------------------------------------------*/
-i8 Entry::nLevels(void)
+u8 Entry::nLevels(void)
 {
   //_precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
   
@@ -216,11 +230,29 @@ i8 Entry::nLevels(void)
 /*----------------------------------------------------------------------------*/
 /* set nLevels                                                                */
 /*----------------------------------------------------------------------------*/
-void Entry::vLevels(i8 nLevels)
+void Entry::vLevels(u8 nLevels)
 {
   //_precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
   
   m_nLevels = nLevels;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get next entry offset at level                                             */
+/*----------------------------------------------------------------------------*/
+u8 Entry::nOffset(u8 nLevel)
+{
+  i8* nLevels = reinterpret_cast<i8*>(m_xWsp.aArea());
+  return nLevels[nLevel];
+}
+
+/*----------------------------------------------------------------------------*/
+/* set next entry offset at level                                             */
+/*----------------------------------------------------------------------------*/
+void Entry::vOffset(u8 nLevel, u8 nOffset)
+{
+  i8* nLevels = reinterpret_cast<i8*>(m_xWsp.aArea());
+  nLevels[nLevel] = nOffset;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -185,6 +185,8 @@ void Index::vPopulate(void)
             // add key to entry
             xEntWsp.vAddKey(xKeyWsp);
 
+            xEntWsp.vShow();
+            
             // insert row entry in index
             m_pIndexLevels->vInsertEntry(xEntWsp);
             pRow = pRowBuffer->pNextRow(pRow);

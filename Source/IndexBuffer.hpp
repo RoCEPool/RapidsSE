@@ -10,15 +10,13 @@ namespace DBobjects
   {
   public:
     static const i8 C_FLAT_LEVELS = 3;
-    
-  private:
     static const i8 C_NIL = 0xFFFFFFFFFFFFFFFF;
     
   private:
     i8           m_nEntries;    // number of entries in this buffer
     IndexBuffer* m_pPrevBuffer; // prev buffer
     IndexBuffer* m_pNextBuffer; // next buffer
-    i8           m_nSkipHead[C_FLAT_LEVELS - 1];  // skip list head
+    i8           m_nSkipHead[C_FLAT_LEVELS];  // skip list head
     
     
     // need to add skip list head

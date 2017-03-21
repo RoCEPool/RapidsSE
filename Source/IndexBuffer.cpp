@@ -102,11 +102,15 @@ void IndexBuffer::vDump(eCN eClass, Object* pObject, Str* aTab)
   
   IndexBuffer* pIndexBuffer = reinterpret_cast<IndexBuffer*>(pObject);
   
-  vTrace("entries %lld free %lld bytes prevBuffer %p nextBuffer %p\n"_Str,
+  vTrace("entries %lld free %lld bytes prevBuffer %p nextBuffer %p"_Str,
          pIndexBuffer->m_nEntries,
          pIndexBuffer->m_xWsp.nFree(),
          pIndexBuffer->m_pPrevBuffer,
          pIndexBuffer->m_pNextBuffer);
+  for (i8 iIndex=0; iIndex < C_FLAT_LEVELS; iIndex++)
+    vTrace("skipHead[%lld] %lld\n"_Str,
+           iIndex,
+           pIndexBuffer->m_nSkipHead[iIndex]);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -269,7 +273,7 @@ void IndexBuffer::vInsertEntry(EntWsp& xEntWsp)
     // get next entry
     pEntry = pNextEntry(pEntry);
   }
-  
+    
   // map the pDst to an Entry
   pNewEntry = reinterpret_cast<Entry*>(pDst);
   
@@ -367,13 +371,21 @@ bool IndexBuffer::bInsertEntry(EntWsp& xEntWsp)
 void IndexBuffer::vShow(void)
 {
   vTrace("IndexBuffer %p: entries %lld FreeSpace %lld bytes bytesUsed %lld"_Str
-         " prevBuffer %p nextBuffer %p\n"_Str,
+         " prevBuffer %p nextBuffer %p "_Str,
          this,
          m_nEntries,
          m_xWsp.nFree(),
          m_xWsp.nUsed(),
          m_pPrevBuffer,
          m_pNextBuffer);
+  
+  for (i8 iIndex=0; iIndex < C_FLAT_LEVELS; iIndex++)
+    vTrace("skipHead[%lld] %lld "_Str,
+           iIndex,
+           m_nSkipHead[iIndex]);
+  
+  vTrace("\n"_Str);
+
 }
 
 /*----------------------------------------------------------------------------*/

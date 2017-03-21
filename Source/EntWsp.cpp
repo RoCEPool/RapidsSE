@@ -39,7 +39,15 @@ EntWsp::EntWsp(void)
   //m_xRowId
   
   // generate logarithemic levels for this entry
-  m_nLevels = Random::uLogLevel(IndexBuffer::C_FLAT_LEVELS, 2);
+  m_nLevels = Random::uLogLevel(IndexBuffer::C_FLAT_LEVELS, 2) + 1;
+  
+  if (m_nLevels >= 1)
+    int i = 1;
+  
+  // allocate space for the level offsets and initialize with C_NIL
+  i8 iLevelOffset = IndexBuffer::C_NIL;
+  for (i8 iIndex=0; iIndex < m_nLevels - 1; iIndex++)
+    m_xWsp.vAppend(&iLevelOffset,sizeof(i8));
   
   _checkInitialisedSize_(sizeof(EntWsp));
   
@@ -67,15 +75,28 @@ void EntWsp::vShow(void)
 //  i8* pKeyData = reinterpret_cast<i8*>(m_mDataArea);
 //  memcpy(&iKey,m_mDataArea,8);
   
-  ValLib::vCopyIntDatum(&iKey,m_xWsp.aArea());
   
-  vTrace("EntWsp %p: rowId %llu.%llu key (size:%lld value:%lld)\n"_Str,
+  
+  vTrace("EntWsp %p: Levels: %llu "_Str,
          this,
+         m_nLevels
+         );
+  
+  ValLib::vCopyIntDatum(&iKey,m_xWsp.aArea() + sizeof(i8)*(m_nLevels-1));
+  vTrace("Row %llu.%llu key (size:%lld value:%lld) "_Str,
          m_xRowId.uBuffer(),
          m_xRowId.uRow(),
-         m_xWsp.nUsed(),
+         m_xWsp.nUsed() - sizeof(i8)*(m_nLevels-1),
          iKey
          );
+  
+  for (i8 iIndex=0; iIndex < m_nLevels - 1; iIndex++)
+    vTrace("L%lld: %lld "_Str,
+           iIndex + 1,
+           nOffset(iIndex)
+           );
+  
+  vTrace("\n"_Str);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -103,11 +124,21 @@ u8 EntWsp::nLevels(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set nLevels                                                                */
+/* get next entry offset at level                                             */
 /*----------------------------------------------------------------------------*/
-void EntWsp::vLevels(u8 nLevels)
+u8 EntWsp::nOffset(u8 nLevel)
 {
-  m_nLevels = nLevels;
+  i8* nLevels = reinterpret_cast<i8*>(m_xWsp.aArea());
+  return nLevels[nLevel];
+}
+
+/*----------------------------------------------------------------------------*/
+/* set next entry offset at level                                             */
+/*----------------------------------------------------------------------------*/
+void EntWsp::vOffset(u8 nLevel, u8 nOffset)
+{
+  i8* nLevels = reinterpret_cast<i8*>(m_xWsp.aArea());
+  nLevels[nLevel] = nOffset;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -130,7 +161,7 @@ i8 EntWsp::nSize(void)
 /*----------------------------------------------------------------------------*/
 Key* EntWsp::pKey(void)
 {
-  Key* pKey = reinterpret_cast<Key*>(m_xWsp.aArea());
+  Key* pKey = reinterpret_cast<Key*>(m_xWsp.aArea() + sizeof(i8)*(m_nLevels -1));
   
   return pKey;
 }
