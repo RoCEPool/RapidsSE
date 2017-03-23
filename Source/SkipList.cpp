@@ -499,8 +499,6 @@ SkipNode* SkipList::pPosition(void* pObjectInsert, bool* bEqualTo, SkipNode** pR
  
  */
 
-#define goRight(pScan) pScan = pScan->m_pForward[iLevel];
-#define goDownLevel(iLevel) iLevel--;
 /*
 SkipNode* SkipList::pPosition(void* pObjectInsert, bool* bEqualTo, SkipNode** pRevise)
 {
@@ -553,6 +551,10 @@ SkipNode* SkipList::pPosition(void* pObjectInsert, bool* bEqualTo, SkipNode** pR
 }
 */
 
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#define goRight(pScan) pScan = pScan->m_pForward[iLevel];
+#define goDownLevel(iLevel) iLevel--;
+
 SkipNode* SkipList::pPosition(void* pObjectInsert, bool* bEqualTo, SkipNode** pRevise)
 {
   vTrace("Adding %lld\n"_Str,(i8)pObjectInsert);
@@ -604,6 +606,50 @@ SkipNode* SkipList::pPosition(void* pObjectInsert, bool* bEqualTo, SkipNode** pR
     }
     
   } while (iLevel >= 0);
+  
+  return pCurrent;
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+#define goRight(pScan) pScan = pScan->m_pForward[iLevel];
+#define goDownLevel(iLevel) iLevel--;
+
+SkipNode* SkipList::pPosition(void* pObjectInsert, bool* bEqualTo, SkipNode** pRevise)
+{
+  vTrace("Adding %lld\n"_Str,(i8)pObjectInsert);
+  
+  // start with head at known highest level
+  SkipNode* pCurrent = m_pHead;
+  i8 iLevel = m_iHeight;
+  
+  while (iLevel >= 0) {
+    
+    // get the object at next node
+    void* pObjectNext = pCurrent->m_pForward[iLevel]->m_pObject;
+    
+    // compare object to be inserted with next object
+    bool bGreater = m_fCompare(pObjectInsert, pObjectNext, bEqualTo);
+    
+    if (bGreater) {
+      // pObjectInsert is >= pObjectNext
+      vTrace("  %lld after %lld (level %lld)\n"_Str,
+             (i8)pObjectInsert,(i8)pObjectNext,iLevel);
+      
+      goRight(pCurrent);
+    }
+    else {
+      // pObjectInsert is < pObjectNext or pObjectNext is null
+      vTrace("  %lld before %lld (level %lld)\n"_Str,
+             (i8)pObjectInsert,(i8)pObjectNext,iLevel);
+      
+      // record cursor before going down a level
+      pRevise[iLevel] = pCurrent;
+      
+      // move backward and go down one level
+      goDownLevel(iLevel);
+    }
+    
+  }
   
   return pCurrent;
 }
