@@ -555,6 +555,8 @@ SkipNode* SkipList::pPosition(void* pObjectInsert, bool* bEqualTo, SkipNode** pR
 
 SkipNode* SkipList::pPosition(void* pObjectInsert, bool* bEqualTo, SkipNode** pRevise)
 {
+  vTrace("Adding %lld\n"_Str,(i8)pObjectInsert);
+  
   SkipNode* pCurrent ;
   SkipNode* pPrev;
   
@@ -580,6 +582,8 @@ SkipNode* SkipList::pPosition(void* pObjectInsert, bool* bEqualTo, SkipNode** pR
     
     if (bGreater) {
       // pObjectInsert is >= pObjectCurrent
+      vTrace("  %lld after %lld (level %lld)\n"_Str,
+             (i8)pObjectInsert,(i8)pObjectCurrent,iLevel);
       
       // save current as prev
       pPrev = pCurrent;
@@ -588,6 +592,8 @@ SkipNode* SkipList::pPosition(void* pObjectInsert, bool* bEqualTo, SkipNode** pR
     }
     else {
       // pObjectInsert is < pObjectCurrent or pObjectCurrent is null
+      vTrace("  %lld before %lld (level %lld)\n"_Str,
+             (i8)pObjectInsert,(i8)pObjectCurrent,iLevel);
       
       // record cursor before going down a level
       pRevise[iLevel] = pPrev;
@@ -640,6 +646,8 @@ bool bI8Compare(void* pObjectInsert, void* pObjectScan, bool* bMatch)
 void Structures::vSkipListDump(SkipList* pSkipList)
 {
   vTrace("----------------------------\n"_Str);
+
+  vTrace("HEAD 0x%llx\n"_Str, pSkipList->m_pHead);
   i8 iLevel = pSkipList->m_iHeight;
   do {
     vTrace("LEVEL %lld\n"_Str, iLevel);
@@ -652,10 +660,14 @@ void Structures::vSkipListDump(SkipList* pSkipList)
     }
   } while (--iLevel >= 0);
   vTrace("============================\n"_Str);
+  vTrace("\n"_Str);
 }
 
 void Structures::vSkipListTest(void)
 {
+  vTrace("SkipList Tests\n"_Str);
+  vTrace("\n"_Str);
+
   SkipList* pSkipList = new SkipList(true,bI8Compare);
   
   pSkipList->bInsert((void*)3); vSkipListDump(pSkipList);
