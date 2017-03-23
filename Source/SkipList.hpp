@@ -9,7 +9,7 @@ namespace Structures
   
   class SkipList : public Object
   {
-  protected:
+  public:
     
     SkipNode* m_pHead;     // head of the list
     SkipNode* m_pTail;     // tail of the list
@@ -46,8 +46,8 @@ namespace Structures
     void   vCheck();
     void*  pEach   (SkipCursor* pCursor);
     
-    SkipNode* pFirst();
-    SkipNode* pNext(SkipNode* pPrev);
+    SkipNode* pFirst(i8 iLevel);
+    SkipNode* pNext(SkipNode* pPrev, i8 iLevel);
     SkipNode* pHead();
     SkipNode* pTail();
     

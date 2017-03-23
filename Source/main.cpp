@@ -61,7 +61,7 @@ int main(int argc, const char* argv[])
   for (u8 iLevel = 0; iLevel < gxArguments.m_uLevels; iLevel++)
     iLevels[iLevel] = 0;
   
-  for (u8 i = 0; i < 10000; i++) {
+  for (u8 i = 0; i < 5; i++) {
     u8 iLevel = Random::uLogLevel(gxArguments.m_uLevels, gxArguments.m_uFrequency);
     iLevels[iLevel]++;
   }
@@ -111,6 +111,8 @@ int main(int argc, const char* argv[])
   // either create new shm region
   // or attach to an existing one
   RapidsSE::vPoolOpen();
+  
+  vSkipListTest();
   
   // execute the command line
   RapidsSE::vExecute();
