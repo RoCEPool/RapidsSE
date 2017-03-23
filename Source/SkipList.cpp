@@ -422,8 +422,8 @@ SkipNode* SkipList::pPosition(void* pObject, bool* bEqualTo)
 /*----------------------------------------------------------------------------*/
 /* position search on node just prior to lower bound                          */
 /*----------------------------------------------------------------------------*/
-SkipNode* SkipList::pPosition(void* pObjectInsert, bool* bEqualTo, SkipNode** pRevise)
 /*
+SkipNode* SkipList::pPosition(void* pObjectInsert, bool* bEqualTo, SkipNode** pRevise)
 {
   SkipNode* pScan = m_pHead;
   SkipNode* pPrev;
@@ -499,61 +499,107 @@ SkipNode* SkipList::pPosition(void* pObjectInsert, bool* bEqualTo, SkipNode** pR
  
  */
 
-#define goRightLevel(pScan) pScan = pScan->m_pForward[iLevel];
+#define goRight(pScan) pScan = pScan->m_pForward[iLevel];
 #define goDownLevel(iLevel) iLevel--;
-
+/*
+SkipNode* SkipList::pPosition(void* pObjectInsert, bool* bEqualTo, SkipNode** pRevise)
 {
-  SkipNode* pNext = m_pHead;
-  SkipNode* pScan;
+  SkipNode* pCurrent ;
+  SkipNode* pPrev;
   
   // start with the highest level
   i8 iLevel = m_iHeight;
-  pScan = pNext;
-  goRightLevel(pNext);
+  
+  // start with the head as current
+  pCurrent = m_pHead;
+  
+  // save current as prev
+  pPrev = pCurrent;
+  
+  // now go right at current level
+  goRight(pCurrent);
   
   do {
     
-    void* pObjectNext = pNext->m_pObject;
-    
-    if (!pObjectNext) {
-      // record cursor before going down a level
-      pRevise[iLevel] = pScan;
-      
-      // move backward
-      pNext = pScan;
-      
-      // no right pointer at iLevel
-      goDownLevel(iLevel);
-      continue;
-    }
-    
+    // get the object at current node
+    void* pObjectCurrent = pCurrent->m_pObject;
+ 
     // compare node to be inserted with NextNode
-    bool bGreater = m_fCompare(pObjectInsert, pObjectNext, bEqualTo);
+    bool bGreater = m_fCompare(pObjectInsert, pObjectCurrent, bEqualTo);
     
     if (bGreater) {
-      // pObjectInsert is >= pObjectNext
+      // pObjectInsert is >= pObjectCurrent
       
       // save
-      pScan = pNext;
+      pPrev = pCurrent;
       
-      goRightLevel(pNext);
+      goRight(pCurrent);
     }
     else {
-      // pObjectInsert is < pObjectNext
+      // pObjectInsert is < pObjectCurrent or pObjectCurrent is null
       
       // record cursor before going down a level
-      pRevise[iLevel] = pScan;
+      pRevise[iLevel] = pPrev;
       
       // move backward
-      pNext = pScan;
+      pCurrent = pPrev;
       
       goDownLevel(iLevel);
     }
     
   } while (iLevel >= 0);
   
+  return pCurrent;
+}
+*/
+
+SkipNode* SkipList::pPosition(void* pObjectInsert, bool* bEqualTo, SkipNode** pRevise)
+{
+  SkipNode* pCurrent ;
+  SkipNode* pPrev;
   
-  return pScan;
+  // start with the highest level
+  i8 iLevel = m_iHeight;
+  
+  // start with the head as current
+  pCurrent = m_pHead;
+  
+  // save current as prev
+  pPrev = pCurrent;
+  
+  // now go right at current level
+  goRight(pCurrent);
+  
+  do {
+    
+    // get the object at current node
+    void* pObjectCurrent = pCurrent->m_pObject;
+    
+    // compare node to be inserted with NextNode
+    bool bGreater = m_fCompare(pObjectInsert, pObjectCurrent, bEqualTo);
+    
+    if (bGreater) {
+      // pObjectInsert is >= pObjectCurrent
+      
+      // save current as prev
+      pPrev = pCurrent;
+      
+      goRight(pCurrent);
+    }
+    else {
+      // pObjectInsert is < pObjectCurrent or pObjectCurrent is null
+      
+      // record cursor before going down a level
+      pRevise[iLevel] = pPrev;
+      
+      // move backward and go down one level
+      pCurrent = pPrev;
+      goDownLevel(iLevel);
+    }
+    
+  } while (iLevel >= 0);
+  
+  return pCurrent;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -578,6 +624,9 @@ bool bI8Compare(void* pObjectInsert, void* pObjectScan, bool* bMatch)
 {
   i8 iInsertEntry = (i8)pObjectInsert;
   i8 iScanEntry   = (i8)pObjectScan;
+  
+  if ( ! pObjectScan )
+    return false;
   
   if (iInsertEntry == iScanEntry)
     *bMatch = true;
