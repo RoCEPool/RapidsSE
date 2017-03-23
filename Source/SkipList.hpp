@@ -65,6 +65,7 @@ namespace Structures
   SkipList* _pSkipList(void* aAddr);
   
   void vSkipListTest(void);
+  void vSkipListDump(SkipList* pSkipList);
 }
 
 /*============================================================================*/

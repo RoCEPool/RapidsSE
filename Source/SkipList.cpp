@@ -637,28 +637,9 @@ bool bI8Compare(void* pObjectInsert, void* pObjectScan, bool* bMatch)
     return false;
 }
 
-void Structures::vSkipListTest(void)
+void Structures::vSkipListDump(SkipList* pSkipList)
 {
-  SkipList* pSkipList = new SkipList(true,bI8Compare);
-  
-  
-  pSkipList->bInsert((void*)3);
-  pSkipList->bInsert((void*)1);
-
-  pSkipList->bInsert((void*)8);
-
-  pSkipList->bInsert((void*)2);
-  
-  pSkipList->bInsert((void*)4);
-  
-  pSkipList->bInsert((void*)7);
-  
-  pSkipList->bInsert((void*)5);
-
-  pSkipList->bInsert((void*)6);
-  pSkipList->bInsert((void*)9);
-
-  
+  vTrace("----------------------------\n"_Str);
   i8 iLevel = pSkipList->m_iHeight;
   do {
     vTrace("LEVEL %lld\n"_Str, iLevel);
@@ -670,7 +651,22 @@ void Structures::vSkipListTest(void)
       pNode = pSkipList->pNext(pNode, iLevel);
     }
   } while (--iLevel >= 0);
+  vTrace("============================\n"_Str);
+}
+
+void Structures::vSkipListTest(void)
+{
+  SkipList* pSkipList = new SkipList(true,bI8Compare);
   
+  pSkipList->bInsert((void*)3); vSkipListDump(pSkipList);
+  pSkipList->bInsert((void*)1); vSkipListDump(pSkipList);
+  pSkipList->bInsert((void*)8); vSkipListDump(pSkipList);
+  pSkipList->bInsert((void*)2); vSkipListDump(pSkipList);
+  pSkipList->bInsert((void*)4); vSkipListDump(pSkipList);
+  pSkipList->bInsert((void*)7); vSkipListDump(pSkipList);
+  pSkipList->bInsert((void*)5); vSkipListDump(pSkipList);
+  pSkipList->bInsert((void*)6); vSkipListDump(pSkipList);
+  pSkipList->bInsert((void*)9); vSkipListDump(pSkipList);
 }
 
 /*============================================================================*/
