@@ -358,6 +358,14 @@ bool RowBuffer::bInsertRow(TxRef* pTxRef, char* pRecord, i8 iLength)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
+  s32 sNull;
+  
+  if ( iLength == 1) {
+    sNull = "null|";
+    iLength = String::iLength(sNull.a());
+    pRecord = sNull.a();
+  }
+    
   i8 nBytesRequired = StrVal::nBytesRequired(iLength);
   
   Row* pRow = pAllocRow(nBytesRequired);
