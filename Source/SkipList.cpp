@@ -115,26 +115,26 @@ bool SkipList::bInsert(void* pObject)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
 
   bool bEqualTo;
-  SkipNode* pRevise[C_SKIPLIST_LEVELS];
+  SkipNode* pReviseVec[C_SKIPLIST_LEVELS];
   
-  SkipNode* pNode = pPosition(pObject,&bEqualTo,pRevise);
+  SkipNode* pNode = pPosition(pObject,&bEqualTo,pReviseVec);
   ASSERT(pNode); // logic check
   
   if (bEqualTo && m_bUniqueKey)
     return false;
   
-  i8 l = iRandomLevel();
-  if (l > m_iHeight) {
-    l = ++m_iHeight;
-    pRevise[l] = m_pHead;
+  i8 iLevel = iRandomLevel();
+  if (iLevel > m_iHeight) {
+    iLevel = ++m_iHeight;
+    pReviseVec[iLevel] = m_pHead;
 	}
   
-  SkipNode* pNew = new(l) SkipNode(pObject);
+  SkipNode* pNew = new(iLevel) SkipNode(pObject);
  
   do {
-    pNew->m_pRight[l] = pRevise[l]->m_pRight[l];
-    pRevise[l]->m_pRight[l] = pNew;
-	} while (--l >= 0);
+    pNew->m_pRight[iLevel] = pReviseVec[iLevel]->m_pRight[iLevel];
+    pReviseVec[iLevel]->m_pRight[iLevel] = pNew;
+	} while (--iLevel >= 0);
   
   m_nObjects++;
   
@@ -160,10 +160,10 @@ bool SkipList::bRemove(void* pObject)
 
   i8 l;
   bool bEqualTo;
-  SkipNode* pRevision[C_SKIPLIST_LEVELS];
+  SkipNode* pReviseVec[C_SKIPLIST_LEVELS];
   SkipNode* pRevise;
   
-  SkipNode* pNode = pPosition(pObject,&bEqualTo,pRevision);
+  SkipNode* pNode = pPosition(pObject,&bEqualTo,pReviseVec);
   ASSERT(pNode); // logic check
   
   if ( ! bEqualTo ) {
@@ -176,7 +176,7 @@ bool SkipList::bRemove(void* pObject)
   
   i8 iNewHeight = m_iHeight;
   for (l = 0;
-       l <= iNewHeight && (pRevise = pRevision[l])->m_pRight[l] == pNode;
+       l <= iNewHeight && (pRevise = pReviseVec[l])->m_pRight[l] == pNode;
        l++)
     pRevise->m_pRight[l] = pNode->m_pRight[l];
   
