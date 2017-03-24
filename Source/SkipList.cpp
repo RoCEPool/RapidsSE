@@ -611,47 +611,60 @@ SkipNode* SkipList::pPosition(void* pObjectInsert, bool* bEqualTo, SkipNode** pR
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#define goRight(pScan) pScan = pScan->m_pForward[iLevel];
+#define goRightNode(iLevel,pScan) pScan = pScan->m_pForward[iLevel];
 #define goDownLevel(iLevel) iLevel--;
 
-SkipNode* SkipList::pPosition(void* pObjectInsert, bool* bEqualTo, SkipNode** pRevise)
+SkipNode* SkipList::pPosition(void* pObjectInsert, bool* bEqualTo, SkipNode** pReviseVec)
 {
   vTrace("Adding %lld\n"_Str,(i8)pObjectInsert);
   
-  // start with head at known highest level
-  SkipNode* pCurrent = m_pHead;
-  i8 iLevel = m_iHeight;
+  // start from head at known highest level
+  SkipNode* pCurrentNode = m_pHead;
+  i8 iCurrentLevel = m_iHeight;
   
-  while (iLevel >= 0) {
+  do {
     
-    // get the object at next node
-    void* pObjectNext = pCurrent->m_pForward[iLevel]->m_pObject;
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // go right until we find ObjectInsert < ObjectNext at current level
     
-    // compare object to be inserted with next object
-    bool bGreater = m_fCompare(pObjectInsert, pObjectNext, bEqualTo);
-    
-    if (bGreater) {
-      // pObjectInsert is >= pObjectNext
-      vTrace("  %lld after %lld (level %lld)\n"_Str,
-             (i8)pObjectInsert,(i8)pObjectNext,iLevel);
+    for (;;) {
       
-      goRight(pCurrent);
+      // get object from next node
+      void* pObjectNext = pCurrentNode->m_pForward[iCurrentLevel]->m_pObject;
+      
+      // compare the inserting object with next object
+      bool bGreaterEqual = m_fCompare(pObjectInsert, pObjectNext, bEqualTo);
+      
+      if (bGreaterEqual) {
+        // pObjectInsert is >= pObjectNext
+        vTrace("  %lld after %lld (level %lld)\n"_Str,
+               (i8)pObjectInsert,(i8)pObjectNext,iCurrentLevel);
+        
+        // go right one node
+        goRightNode(iCurrentLevel,pCurrentNode);
+      }
+      else {
+        // pObjectInsert is < pObjectNext or pObjectNext is null
+        vTrace("  %lld before %lld (level %lld)\n"_Str,
+               (i8)pObjectInsert,(i8)pObjectNext,iCurrentLevel);
+        
+        break;
+      }
     }
-    else {
-      // pObjectInsert is < pObjectNext or pObjectNext is null
-      vTrace("  %lld before %lld (level %lld)\n"_Str,
-             (i8)pObjectInsert,(i8)pObjectNext,iLevel);
-      
-      // record cursor before going down a level
-      pRevise[iLevel] = pCurrent;
-      
-      // move backward and go down one level
-      goDownLevel(iLevel);
-    }
     
-  }
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // having gone right till pObjectInsert is < pObjectNext
+    // we will insert the object after current node at this level
+    
+    // therefore record current node as a revision point
+    pReviseVec[iCurrentLevel] = pCurrentNode;
+    
+    // go down one level and repeat till we have a complete revision vector
+    goDownLevel(iCurrentLevel);
+    
+  } while (iCurrentLevel >= 0);
   
-  return pCurrent;
+  return pCurrentNode;
 }
 
 /*----------------------------------------------------------------------------*/
