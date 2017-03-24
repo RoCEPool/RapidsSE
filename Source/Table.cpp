@@ -165,7 +165,7 @@ void Table::vAppendBuffer(i8 iPartition, RowBuffer* pRowBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
-  ASSERT(iPartition < gxArguments.m_nSlots);
+  ASSERT(iPartition < gpGrid->m_nSlots);
   
   // mark buffer as permanent
   pRowBuffer->vDurability(RD_PERMANENT);
@@ -193,7 +193,7 @@ i8 Table::iRowPartition(char* pRow)
   i8 iHash = XXH32(pRow,iLength,0);
   
   // modulo to get partition number
-  i8 iPartition = iHash % (gxArguments.m_nSlots * gpGrid->iNodes());
+  i8 iPartition = iHash % (gpGrid->m_nSlots * gpGrid->iNodes());
   
   //vTrace("Partition: %lld\n",m_iPartition);
   return iPartition;
