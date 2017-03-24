@@ -32,7 +32,7 @@ void* SkipNode::operator new(size_t iSize, i4 iLevel)
   //SkipNode* pSkipNode = (SkipNode*)gpSmallHeap->pAllocObject(CN_SKIPNODE,nMaxBytes);
   SkipNode* pSkipNode = (SkipNode*)Heap::pAllocate(CN_SKIPNODE);
   
-  pSkipNode->m_nForward = iLevel;
+  pSkipNode->m_nRight = iLevel;
   
   return pSkipNode;
 }
@@ -57,8 +57,8 @@ SkipNode::SkipNode(void* pObject)
   
   m_pObject = pObject;
   //m_nForward
-  for (i8 iForward = 0; iForward < m_nForward; iForward++)
-    m_pForward[iForward] = nullptr;
+  for (i8 iForward = 0; iForward < m_nRight; iForward++)
+    m_pRight[iForward] = nullptr;
   
   _setFooter_();
   
@@ -107,7 +107,7 @@ Footer* SkipNode::pFooter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPNODE);
   
-  i8 nSizeBytes = sizeof(SkipNode) + (sizeof(SkipNode*) * (m_nForward - 1));
+  i8 nSizeBytes = sizeof(SkipNode) + (sizeof(SkipNode*) * (m_nRight - 1));
   
   Footer* pFooter = pAdd<Footer*>(this,nSizeBytes);
   

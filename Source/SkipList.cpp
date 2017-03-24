@@ -64,9 +64,9 @@ SkipList::SkipList(bool bIsUniqueKey, compare fCompare)
   m_pTail    = new((i4)0) SkipNode(nullptr);
   
   for (i4 l = 0; l < C_SKIPLIST_LEVELS; l++)
-    m_pHead->m_pForward[l] = m_pTail;
+    m_pHead->m_pRight[l] = m_pTail;
   
-  m_pTail->m_pForward[0] = nullptr;
+  m_pTail->m_pRight[0] = nullptr;
   
   _checkInitialised_(CN_SKIPLIST);
   
@@ -101,7 +101,7 @@ bool SkipList::bExists(void* pObject)
   SkipNode* pNode = pPosition(pObject,&bEqualTo);
   ASSERT(pNode); // logic check
   
-  if (bEqualTo && pObject == pNode->m_pForward[0]->m_pObject)
+  if (bEqualTo && pObject == pNode->m_pRight[0]->m_pObject)
     return true;
   else
     return false;
@@ -132,8 +132,8 @@ bool SkipList::bInsert(void* pObject)
   SkipNode* pNew = new(l) SkipNode(pObject);
  
   do {
-    pNew->m_pForward[l] = pRevise[l]->m_pForward[l];
-    pRevise[l]->m_pForward[l] = pNew;
+    pNew->m_pRight[l] = pRevise[l]->m_pRight[l];
+    pRevise[l]->m_pRight[l] = pNew;
 	} while (--l >= 0);
   
   m_iObjects++;
@@ -194,16 +194,16 @@ bool SkipList::bRemove(void* pObject)
     return false;
   }
   
-  pNode = pNode->m_pForward[0];
+  pNode = pNode->m_pRight[0];
   ASSERT(pObject == pNode->m_pObject); // logic check
   
   i4 iNewHeight = m_iHeight;
   for (l = 0;
-       l <= iNewHeight && (pRevise = pRevision[l])->m_pForward[l] == pNode;
+       l <= iNewHeight && (pRevise = pRevision[l])->m_pRight[l] == pNode;
        l++)
-    pRevise->m_pForward[l] = pNode->m_pForward[l];
+    pRevise->m_pRight[l] = pNode->m_pRight[l];
   
-  while (m_pHead->m_pForward[iNewHeight] == m_pTail && iNewHeight > 0)
+  while (m_pHead->m_pRight[iNewHeight] == m_pTail && iNewHeight > 0)
     iNewHeight--;
   
   m_iHeight = iNewHeight;
@@ -228,10 +228,10 @@ void* SkipList::pFindFirst(void* pObject)
   SkipNode* pNode = pPosition(pObject,&bEqualTo);
   ASSERT(pNode); // logic check
   
-  if (pNode->m_pForward[0] == m_pTail)
+  if (pNode->m_pRight[0] == m_pTail)
     return nullptr;
   else if (bEqualTo)
-    return pNode->m_pForward[0]->m_pObject;
+    return pNode->m_pRight[0]->m_pObject;
   else
     return nullptr;
 }
@@ -243,9 +243,9 @@ void SkipList::vItemDump(void (*fvDump)(void* pObject))
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
 
-  for (SkipNode* pScan = m_pHead->m_pForward[0];
+  for (SkipNode* pScan = m_pHead->m_pRight[0];
        pScan && pScan != m_pTail;
-       pScan = pScan->m_pForward[0]) {
+       pScan = pScan->m_pRight[0]) {
     fvDump(pScan->m_pObject);
   }
 }
@@ -257,9 +257,9 @@ void SkipList::vCheck()
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
 
-  for (SkipNode* pNode = m_pHead->m_pForward[0];
+  for (SkipNode* pNode = m_pHead->m_pRight[0];
        pNode && pNode != m_pTail;
-       pNode = pNode->m_pForward[0])
+       pNode = pNode->m_pRight[0])
   {
 //    if (n->m_pKey->iElem(0) != n->m_pKey->pObject()->iAttr(0))
 //      vReportTrace("key <> OBJECT error\n");
@@ -295,8 +295,8 @@ SkipNode* SkipList::pFirst(i8 iLevel)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
 
-  if (m_pHead->m_pForward[iLevel] != m_pTail)
-    return m_pHead->m_pForward[iLevel];
+  if (m_pHead->m_pRight[iLevel] != m_pTail)
+    return m_pHead->m_pRight[iLevel];
   
   return nullptr;
 }
@@ -308,8 +308,8 @@ SkipNode* SkipList::pNext(SkipNode* pPrev, i8 iLevel)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
 
-  if (pPrev->m_pForward[iLevel] != m_pTail)
-    return pPrev->m_pForward[iLevel];
+  if (pPrev->m_pRight[iLevel] != m_pTail)
+    return pPrev->m_pRight[iLevel];
   
   return nullptr;
 }
@@ -407,7 +407,7 @@ SkipNode* SkipList::pPosition(void* pObject, bool* bEqualTo)
   //Node* pPrev = nullptr;
   do
   {
-    while (pNext = pScan->m_pForward[l],
+    while (pNext = pScan->m_pRight[l],
            pNext != m_pTail
            && m_fCompare(pObject,pNext->m_pObject,bEqualTo)) {
       //pPrev = pScan;
@@ -422,6 +422,34 @@ SkipNode* SkipList::pPosition(void* pObject, bool* bEqualTo)
 /*----------------------------------------------------------------------------*/
 /* position search on node just prior to lower bound                          */
 /*----------------------------------------------------------------------------*/
+/*
+ {
+   _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
+   
+   SkipNode* pNext = nullptr;
+   
+   *bEqualTo = false;
+   
+   i4 l = m_iHeight;
+   SkipNode* pScan = m_pHead;
+   //Node* pPrev = nullptr;
+   do
+   {
+     while (pNext = pScan->m_pRight[l],
+            pNext != m_pTail &&
+            m_fCompare(pObjectInsert,pNext->m_pObject,bEqualTo)) {
+       //pPrev = pScan;
+       pScan = pNext;
+     }
+   
+     pRevise[l] = pScan;
+   
+   } while(--l >= 0);
+   
+   return pScan;
+ }
+ 
+ */
 /*
 SkipNode* SkipList::pPosition(void* pObjectInsert, bool* bEqualTo, SkipNode** pRevise)
 {
@@ -469,35 +497,6 @@ SkipNode* SkipList::pPosition(void* pObjectInsert, bool* bEqualTo, SkipNode** pR
 }
 */
 
-/*
- {
- _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
- 
- SkipNode* pNext = nullptr;
- 
- *bEqualTo = false;
- 
- i4 l = m_iHeight;
- SkipNode* pScan = m_pHead;
- //Node* pPrev = nullptr;
- do
- {
-   while (pNext = pScan->m_pForward[l],
-   pNext != m_pTail
-   && m_fCompare(pObjectInsert,pNext->m_pObject,bEqualTo))
-   {
-   //pPrev = pScan;
-   pScan = pNext;
- }
- 
- pRevise[l] = pScan;
- 
- } while(--l >= 0);
- 
- return pScan;
- }
- 
- */
 
 /*
 SkipNode* SkipList::pPosition(void* pObjectInsert, bool* bEqualTo, SkipNode** pRevise)
@@ -552,7 +551,7 @@ SkipNode* SkipList::pPosition(void* pObjectInsert, bool* bEqualTo, SkipNode** pR
 */
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#define goRight(pScan) pScan = pScan->m_pForward[iLevel];
+#define goRight(pScan) pScan = pScan->m_pRight[iLevel];
 #define goDownLevel(iLevel) iLevel--;
 
 SkipNode* SkipList::pPosition(void* pObjectInsert, bool* bEqualTo, SkipNode** pRevise)
@@ -611,9 +610,65 @@ SkipNode* SkipList::pPosition(void* pObjectInsert, bool* bEqualTo, SkipNode** pR
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#define goRightNode(iLevel,pScan) pScan = pScan->m_pForward[iLevel];
+#define goRightNode(iLevel,pScan) pScan = pScan->m_pRight[iLevel];
 #define goDownLevel(iLevel) iLevel--;
 
+//SkipNode* SkipList::pPosition2(void* pObjectInsert, bool* bEqualTo, SkipNode** pReviseVec)
+//{
+//  vTrace("Adding %lld\n"_Str,(i8)pObjectInsert);
+//  
+//  // start from head at known highest level
+//  SkipNode* pCurrentNode = m_pHead;
+//  i8 iCurrentLevel = m_iHeight;
+//  
+//  do {
+//    
+//    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//    // inner loop: go right a number of nodes until we find
+//    //   ObjectInsert < ObjectNext at current level
+//    
+//    for (;;) {
+//      
+//      // get object from next node
+//      void* pObjectNext = pCurrentNode->m_pRight[iCurrentLevel]->m_pObject;
+//      
+//      // compare the inserting object with next object
+//      bool bGreaterEqual = m_fCompare(pObjectInsert, pObjectNext, bEqualTo);
+//      
+//      if (bGreaterEqual) {
+//        // pObjectInsert is >= pObjectNext
+//        vTrace("  %lld after %lld (level %lld)\n"_Str,
+//               (i8)pObjectInsert,(i8)pObjectNext,iCurrentLevel);
+//        
+//        // go right one node
+//        goRightNode(iCurrentLevel,pCurrentNode);
+//      }
+//      else {
+//        // pObjectInsert is < pObjectNext or pObjectNext is null
+//        vTrace("  %lld before %lld (level %lld)\n"_Str,
+//               (i8)pObjectInsert,(i8)pObjectNext,iCurrentLevel);
+//        
+//        break;
+//      }
+//    }
+//    
+//    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//    // outer loop: now having gone right as far as we go down one single level
+//    
+//    // first record current node as a revision point
+//    pReviseVec[iCurrentLevel] = pCurrentNode;
+//    
+//    // now go down one level
+//    goDownLevel(iCurrentLevel);
+//    
+//    // and repeat till we have a complete revision vector
+//  } while (iCurrentLevel >= 0);
+//  
+//  return pCurrentNode;
+//}
+
+#define goRightNode(iLevel,pScan) pScan = pScan->m_pRight[iLevel];
+#define goDownLevel(iLevel) iLevel--;
 SkipNode* SkipList::pPosition(void* pObjectInsert, bool* bEqualTo, SkipNode** pReviseVec)
 {
   vTrace("Adding %lld\n"_Str,(i8)pObjectInsert);
@@ -625,20 +680,18 @@ SkipNode* SkipList::pPosition(void* pObjectInsert, bool* bEqualTo, SkipNode** pR
   do {
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // go right until we find ObjectInsert < ObjectNext at current level
+    // inner loop: go right a number of nodes until we find
+    //   ObjectInsert < ObjectNext at current level
     
-    for (;;) {
-      
-      // get object from next node
-      void* pObjectNext = pCurrentNode->m_pForward[iCurrentLevel]->m_pObject;
+    while (SkipNode* pNextNode = pCurrentNode->m_pRight[iCurrentLevel]) {
       
       // compare the inserting object with next object
-      bool bGreaterEqual = m_fCompare(pObjectInsert, pObjectNext, bEqualTo);
+      bool bGreaterEqual = m_fCompare(pObjectInsert, pNextNode->m_pObject, bEqualTo);
       
       if (bGreaterEqual) {
         // pObjectInsert is >= pObjectNext
         vTrace("  %lld after %lld (level %lld)\n"_Str,
-               (i8)pObjectInsert,(i8)pObjectNext,iCurrentLevel);
+               (i8)pObjectInsert,(i8)pNextNode->m_pObject,iCurrentLevel);
         
         // go right one node
         goRightNode(iCurrentLevel,pCurrentNode);
@@ -646,22 +699,22 @@ SkipNode* SkipList::pPosition(void* pObjectInsert, bool* bEqualTo, SkipNode** pR
       else {
         // pObjectInsert is < pObjectNext or pObjectNext is null
         vTrace("  %lld before %lld (level %lld)\n"_Str,
-               (i8)pObjectInsert,(i8)pObjectNext,iCurrentLevel);
+               (i8)pObjectInsert,(i8)pNextNode->m_pObject,iCurrentLevel);
         
         break;
       }
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // having gone right till pObjectInsert is < pObjectNext
-    // we will insert the object after current node at this level
+    // outer loop: now having gone right as far as we go down one single level
     
-    // therefore record current node as a revision point
+    // first record current node as a revision point
     pReviseVec[iCurrentLevel] = pCurrentNode;
     
-    // go down one level and repeat till we have a complete revision vector
+    // now go down one level
     goDownLevel(iCurrentLevel);
     
+    // and repeat till we have a complete revision vector
   } while (iCurrentLevel >= 0);
   
   return pCurrentNode;
@@ -714,7 +767,7 @@ void Structures::vSkipListDump(SkipList* pSkipList)
     SkipNode* pNode = pSkipList->pFirst(iLevel);
     while (pNode) {
       i8 i = (i8)pNode->m_pObject;
-      vTrace("Node %p : %lld (L%lld)\n"_Str,pNode,(i8)pNode->m_pObject, pNode->m_nForward);
+      vTrace("Node %p : %lld (L%lld)\n"_Str,pNode,(i8)pNode->m_pObject, pNode->m_nRight);
       pNode = pSkipList->pNext(pNode, iLevel);
     }
   } while (--iLevel >= 0);

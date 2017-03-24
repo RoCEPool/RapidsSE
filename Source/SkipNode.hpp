@@ -10,9 +10,9 @@ namespace Structures
   class SkipNode : public Object
   {
   public:
-    void*     m_pObject;     // ptr to object
-    i4        m_nForward;    // number of forward pointers in the node
-    SkipNode* m_pForward[1]; // variable set of forward pointers
+    void*     m_pObject;    // ptr to object
+    i4        m_nRight;     // number of right pointers in the node
+    SkipNode* m_pRight[1]; // variable set of right pointers
 
     
   public:
