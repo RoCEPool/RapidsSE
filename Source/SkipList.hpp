@@ -20,7 +20,6 @@ namespace Structures
     Footer m_xFooter;
     
   public:
-
     void* operator new(size_t);
     void* operator new(size_t, SkipList* pSkipList);
     void  operator delete(void*);

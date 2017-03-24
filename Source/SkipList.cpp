@@ -273,7 +273,7 @@ i8 SkipList::nObjects(void)
 /*----------------------------------------------------------------------------*/
 /* remove object from list                                                    */
 /*----------------------------------------------------------------------------*/
-bool SkipList::bRemove(void* pObject)
+bool SkipList::bRemove(void* pObjectRemove)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
 
@@ -281,28 +281,35 @@ bool SkipList::bRemove(void* pObject)
   SkipNode* pReviseVec[C_SKIPLIST_LEVELS];
   SkipNode* pRevise;
   
-  SkipNode* pNode = pPosition(pObject,bEqualTo,pReviseVec);
-  ASSERT(pNode); // logic check
+  SkipNode* pNodePrev = pPosition(pObjectRemove,bEqualTo,pReviseVec);
+  ASSERT(pNodePrev); // logic check
   
   if ( ! bEqualTo ) {
     vTrace("SkipList::bRemove: failed to match"_Str);
     return false;
   }
   
-  pNode = pNode->m_pRight[0];
-  ASSERT(pObject == pNode->m_pObject); // logic check
+  // get node to be removed
+  SkipNode* pNodeRemove = pNodePrev->m_pRight[0];
+  ASSERT(pObjectRemove == pNodeRemove->m_pObject); // logic check
   
-  i8 iNewHeight = m_iHeight;
+  // we may be removing the last node of greatest height
+  // so we need to compute a revised height
+  i8 iRevisedHeight = m_iHeight;
+  
+  
   for (i8 iLevel = 0;
-       iLevel <= iNewHeight && (pRevise = pReviseVec[iLevel])->m_pRight[iLevel] == pNode;
+       iLevel <= iRevisedHeight &&
+       (pRevise = pReviseVec[iLevel])->m_pRight[iLevel] == pNodeRemove;
        iLevel++)
-    pRevise->m_pRight[iLevel] = pNode->m_pRight[iLevel];
+    pRevise->m_pRight[iLevel] = pNodeRemove->m_pRight[iLevel];
   
-  while ( ! m_pHead->m_pRight[iNewHeight] && iNewHeight > 0 )
-    iNewHeight--;
+  while ( ! m_pHead->m_pRight[iRevisedHeight] && iRevisedHeight > 0 )
+    iRevisedHeight--;
   
-  m_iHeight = iNewHeight;
+  m_iHeight = iRevisedHeight;
   
+  // one less object in the list
   m_nObjects--;
 
   return true;
@@ -498,6 +505,11 @@ void Structures::vSkipListTest(void)
   pSkipList->bInsert((void*)9); vSkipListDump(pSkipList);
   
   ASSERT(4 == (i8)pSkipList->pFind((void*)4));
+  
+  pSkipList->bRemove((void*)4); vSkipListDump(pSkipList);
+  pSkipList->bRemove((void*)5); vSkipListDump(pSkipList);
+  pSkipList->bRemove((void*)6); vSkipListDump(pSkipList);
+  
 }
 
 /*============================================================================*/
