@@ -588,6 +588,9 @@ i8 IndexBuffer::iLevel(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
+  i8 iRndLevel = Random::uLogLevel(3,2);
+  ASSERT(iRndLevel >= 0 && iRndLevel < 3);
+  
   return 0;
 }
 
@@ -598,7 +601,9 @@ Entry* IndexBuffer::pHeadEntry(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
-  return nullptr;
+  Entry* pHead = reinterpret_cast<Entry*>(m_xWsp.aArea());
+  
+  return pHead;
 }
 
 /*----------------------------------------------------------------------------*/
