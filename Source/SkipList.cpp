@@ -177,7 +177,7 @@ bool SkipList::bExists(void* pObject)
 
   bool bEqualTo;
   
-  SkipNode* pNode = pPosition(pObject,&bEqualTo,nullptr);
+  SkipNode* pNode = pPosition(pObject,bEqualTo,nullptr);
   ASSERT(pNode); // logic check
   
   if (bEqualTo && pObject == pNode->m_pRight[0]->m_pObject)
@@ -195,7 +195,7 @@ void* SkipList::pFind(void* pObject)
   
   bool bEqualTo;
   
-  SkipNode* pNode = pPosition(pObject,&bEqualTo,nullptr);
+  SkipNode* pNode = pPosition(pObject,bEqualTo,nullptr);
   ASSERT(pNode); // logic check
   
   if ( ! pNode->m_pRight[0] )
@@ -229,7 +229,7 @@ bool SkipList::bInsert(void* pObject)
   bool bEqualTo;
   SkipNode* pReviseVec[C_SKIPLIST_LEVELS];
   
-  SkipNode* pNode = pPosition(pObject,&bEqualTo,pReviseVec);
+  SkipNode* pNode = pPosition(pObject,bEqualTo,pReviseVec);
   ASSERT(pNode); // logic check
   
   if (bEqualTo && m_bUniqueKey)
@@ -270,12 +270,11 @@ bool SkipList::bRemove(void* pObject)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
 
-  i8 l;
   bool bEqualTo;
   SkipNode* pReviseVec[C_SKIPLIST_LEVELS];
   SkipNode* pRevise;
   
-  SkipNode* pNode = pPosition(pObject,&bEqualTo,pReviseVec);
+  SkipNode* pNode = pPosition(pObject,bEqualTo,pReviseVec);
   ASSERT(pNode); // logic check
   
   if ( ! bEqualTo ) {
@@ -287,7 +286,7 @@ bool SkipList::bRemove(void* pObject)
   ASSERT(pObject == pNode->m_pObject); // logic check
   
   i8 iNewHeight = m_iHeight;
-  for (l = 0;
+  for (i8 l = 0;
        l <= iNewHeight && (pRevise = pReviseVec[l])->m_pRight[l] == pNode;
        l++)
     pRevise->m_pRight[l] = pNode->m_pRight[l];
@@ -341,7 +340,7 @@ SkipNode* SkipList::pNext(SkipNode* pPrev, i8 iLevel)
 
 #define goRightNode(iLevel,pScan) pScan = pScan->m_pRight[iLevel];
 #define goDownLevel(iLevel) iLevel--;
-SkipNode* SkipList::pPosition(void* pObjectInsert, bool* bEqualTo, SkipNode** pReviseVec)
+SkipNode* SkipList::pPosition(void* pObjectInsert, bool& bEqualTo, SkipNode** pReviseVec)
 {
   vTrace("Adding %lld\n"_Str,(i8)pObjectInsert);
   
@@ -438,7 +437,7 @@ Footer* SkipList::pFooter(void)
 /*----------------------------------------------------------------------------*/
 /*-- Test --------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-bool bI8Compare(void* pObjectInsert, void* pObjectScan, bool* bMatch)
+bool bI8Compare(void* pObjectInsert, void* pObjectScan, bool& bMatch)
 {
   i8 iInsertEntry = (i8)pObjectInsert;
   i8 iScanEntry   = (i8)pObjectScan;
@@ -447,7 +446,9 @@ bool bI8Compare(void* pObjectInsert, void* pObjectScan, bool* bMatch)
     return false;
   
   if (iInsertEntry == iScanEntry)
-    *bMatch = true;
+    bMatch = true;
+  else
+    bMatch = false;
   
   if (iInsertEntry > iScanEntry)
     return true;

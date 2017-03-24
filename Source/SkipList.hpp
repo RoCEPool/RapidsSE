@@ -5,7 +5,7 @@
 
 namespace Structures
 {
-  typedef bool (*cmpFun)(void* pSearchEntry, void* pListEntry, bool *bMatch);
+  typedef bool (*cmpFun)(void* pSearchEntry, void* pListEntry, bool& bMatch);
   
   class SkipList : public Object
   {
@@ -42,7 +42,7 @@ namespace Structures
   
   private:
     i8 iRandomLevel(void);
-    SkipNode* pPosition(void* Ent, bool* bEqualTo, SkipNode** pRevise);
+    SkipNode* pPosition(void* Ent, bool& bEqualTo, SkipNode** pRevise);
   
     Footer* pFooter(void);
   };
