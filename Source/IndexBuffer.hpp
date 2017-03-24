@@ -75,8 +75,9 @@ namespace DBobjects
     i8     iLevel(void);
   
     Entry* pHeadEntry(void);
-    Entry* pNewEntry(i8 nBytes, i8 nLevels);
+    Entry* pNewEntry(Entry* pAfterEntry, i8 nBytes, i8 nLevels);
     Entry* pRightEntry(Entry* pEntry, i8 iLevel);
+    Entry* pNextEntrySL(Entry* pEntry);
 
     void   vMoveLeft(void* aDst, void* aSrc);
     void   vMoveRight(void* aSrc, i8 nBytes);

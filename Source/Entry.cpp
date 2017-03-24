@@ -63,6 +63,23 @@ Entry::Entry(i8 iDataBytes)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
+Entry::Entry(i8 nDataBytes, i8 nLevels)
+{
+  //_precondition_(_MAGIC_,CN_ENTRY);
+  
+  m_nLevels = nLevels;
+  m_xWsp.vUsed(nDataBytes);
+  
+  //_setFooter_();
+  
+  _checkInitialised_(CN_ENTRY);
+  
+  //_postcondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
 Entry::Entry(EntWsp& xEntWsp)
 {
   //_precondition_(_MAGIC_,CN_ENTRY);

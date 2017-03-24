@@ -609,13 +609,19 @@ Entry* IndexBuffer::pHeadEntry(void)
 /*----------------------------------------------------------------------------*/
 /* allot new entry                                                            */
 /*----------------------------------------------------------------------------*/
-Entry* IndexBuffer::pNewEntry(i8 nBytes, i8 nLevels)
+Entry* IndexBuffer::pNewEntry(Entry* pAfterEntry, i8 nBytes, i8 nLevels)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
+
+  m_xWsp.vTake(nBytes);
+
+  Entry* pNewEntry = pAdd<Entry*>(pAfterEntry,nBytes);
+
+  vMoveRight(pNewEntry,nBytes);
   
-  Entry* pEntry = reinterpret_cast<Entry*>(m_xWsp.aAllot(nBytes));
+  new (pNewEntry) Entry(nBytes,nLevels);
   
-  return pEntry;
+  return pNewEntry;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -638,6 +644,21 @@ Entry* IndexBuffer::pRightEntry(Entry* pEntry, i8 iLevel)
   pRightEntry = pEntry->pRightEntry(iLevel);
   
   return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get next entry after given entry                                           */
+/*----------------------------------------------------------------------------*/
+Entry* IndexBuffer::pNextEntrySL(Entry* pEntry)
+{
+  i8 nBytes = pEntry->nSize();
+  
+  Entry* pNext = pAdd<Entry*>(pEntry,nBytes);
+  
+  if ((char*)pNext < m_xWsp.aLatter())
+    return pNext;
+  else
+    return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
