@@ -79,7 +79,7 @@ namespace DBobjects
     Entry* pRightEntry(Entry* pEntry, i8 iLevel);
 
     void   vMoveLeft(void* aDst, void* aSrc);
-    void   vMoveRight(void* aDst, i8 nBytes);
+    void   vMoveRight(void* aSrc, i8 nBytes);
   };
   
   IndexBuffer* _pIndexBuffer(void* aAddr);

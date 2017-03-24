@@ -635,7 +635,7 @@ Entry* IndexBuffer::pRightEntry(Entry* pEntry, i8 iLevel)
     return pRightEntry;
   }
   
-  //u8* aRightVec = pEntry->aRightVec();
+  pRightEntry = pEntry->pRightEntry(iLevel);
   
   return nullptr;
 }
@@ -646,14 +646,34 @@ Entry* IndexBuffer::pRightEntry(Entry* pEntry, i8 iLevel)
 void IndexBuffer::vMoveLeft(void* aDst, void* aSrc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
+  
+  ASSERT(aDst < aSrc);
+  
+  // compute the number of bytes being moved
+  i8 nBytes = nSub(aSrc,aDst);
+  
+  // copy the bytes left
+  MemLib::vMove(aDst,aSrc,nBytes);
+  
+  // reduce used in wsp
+  m_xWsp.vGive(nBytes);
 }
 
 /*----------------------------------------------------------------------------*/
-/* move portion of the wsp right by given bytes                               */
+/* move part of the wsp right by given bytes                                  */
 /*----------------------------------------------------------------------------*/
-void IndexBuffer::vMoveRight(void* aDst, i8 nBytes)
+void IndexBuffer::vMoveRight(void* aSrc, i8 nBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
+  
+  // compute the destination address
+  void* aDst = pAdd<void*>(aSrc,nBytes);
+  
+  // increase used in wsp
+  m_xWsp.vTake(nBytes);
+  
+  // move the bytes right
+  MemLib::vMove(aDst,aSrc,nBytes);
 }
 
 /*============================================================================*/
