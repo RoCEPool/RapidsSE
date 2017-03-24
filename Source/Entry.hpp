@@ -46,6 +46,7 @@ namespace DBobjects
     i8    nSize(void);
   
     RightVec* aRightVec(void);
+    Entry* pRightEntry(i8 iLevel);
   
     Footer* pFooter(void);
   };
