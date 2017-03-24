@@ -1,6 +1,6 @@
 #Variables
 CPP = g++
-CPPFLAGS = -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3
+CPPFLAGS = -std=c++11 -D_DEBUG -D__LINUX__ -DMUNGED -Wall -Wextra -O3
 LIBFLAGS = -shared
 PICFLAGS = -fPIC
 DIR_GUARD=@mkdir -p $(@D)
