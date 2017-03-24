@@ -667,6 +667,20 @@ SkipNode* SkipList::pPosition(void* pObjectInsert, bool* bEqualTo, SkipNode** pR
 //  return pCurrentNode;
 //}
 
+/******************************************************************************
+ 
+                                   A Skip List
+                                   ===========
+ 
+             H
+             E [ ]--------------------->[ ]->[ ]---------------->0
+             A [ ]------>[ ]------>[ ]->[ ]->[ ]->[ ]->[ ]->[ ]->0
+             D [ ]->[ ]->[ ]->[ ]->[ ]->[ ]->[ ]->[ ]->[ ]->[ ]->0
+                     1    2    3    4    5    6    7    8    9
+ 
+ ******************************************************************************/
+
+
 #define goRightNode(iLevel,pScan) pScan = pScan->m_pRight[iLevel];
 #define goDownLevel(iLevel) iLevel--;
 SkipNode* SkipList::pPosition(void* pObjectInsert, bool* bEqualTo, SkipNode** pReviseVec)
