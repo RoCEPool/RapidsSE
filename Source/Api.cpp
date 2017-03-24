@@ -2197,10 +2197,20 @@ eEC RapidsSE_SEitfNew(void* pAttachMap, void** ppSEitf, i8 iPartition)
     vTrace(">RapidsSE_SEitfNew: (%lld)\n", iPartition);
   
   SEitf* pSEitf = new SEitf(iPartition);
+  
+  if (gpGrid->m_bTraceapi)
+    vTrace(">>RapidsSE_SEitfNew: %p (%lld) A\n", pSEitf, iPartition);
+  
   pSEitf->vInit();
+  
+  if (gpGrid->m_bTraceapi)
+    vTrace(">>RapidsSE_SEitfNew: %p (%lld) B\n", pSEitf, iPartition);
   
   // return the newly created SEitf
   *ppSEitf = pSEitf;
+  
+  if (gpGrid->m_bTraceapi)
+    vTrace(">>RapidsSE_SEitfNew: %p (%lld) C\n", pSEitf, iPartition);
   
   if (gpGrid->m_bTraceapi)
     vTrace("<RapidsSE_SEitfNew: %p (%lld)\n", pSEitf, iPartition);
