@@ -27,6 +27,7 @@ using namespace DBobjects;
 #include "KeyWsp.hpp"
 #include "Key.hpp"
 #include "Levels.hpp"
+#include "RightVec.hpp"
 #include "EntWsp.hpp"
 #include "Entry.hpp"
 #include "IndexBuffer.hpp"
