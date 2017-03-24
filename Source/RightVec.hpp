@@ -8,7 +8,9 @@ namespace DBobjects
   class RightVec
   {
   public:
-    u8     m_uOffset[1]; // variable array of offsets
+    u8 m_uOffset[1]; // variable array of offsets
+  
+    u8 operator [](i8 iOffset);
   };
 }
 
