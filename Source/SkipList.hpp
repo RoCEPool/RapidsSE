@@ -5,18 +5,15 @@
 
 namespace Structures
 {
-  typedef bool (*compare)(void* pSearchEntry, void* pListEntry, bool *bMatch);
+  typedef bool (*cmpFun)(void* pSearchEntry, void* pListEntry, bool *bMatch);
   
   class SkipList : public Object
   {
   public:
-    
-    SkipNode* m_pHead;      // head of the list
-
+    SkipNode* m_pHead;      // head node of the list
     bool      m_bUniqueKey; // is the key unique ?
-    compare   m_fCompare;   // compare function
-    
-    i8         m_nObjects;   // number of objects in the list
+    cmpFun    m_fCompare;   // compare function
+    i8        m_nObjects;   // number of objects in the list
     i8        m_iHeight;    // current max level in the list
     
     // must be last
@@ -28,34 +25,26 @@ namespace Structures
     void* operator new(size_t, SkipList* pSkipList);
     void  operator delete(void*);
     
-    SkipList(bool bUniqueKey, compare fCompare);
+    SkipList(bool bUniqueKey, cmpFun fCompare);
    ~SkipList(void);
     
+    void  vCheck(void);
+    void  vContents(void (*fvDump)(void* pObject));
+    bool  bDeleteAll(void);
+    void* pEach(SkipCursor* pCursor);
     bool  bExists(void* pObject);
+    void* pFind(void* pObject);
+    SkipNode* pFirst(i8 iLevel);
     bool  bInsert(void* pObject);
-
+    SkipNode* pNext(SkipNode* pPrev, i8 iLevel);
     i8    nObjects(void);
     bool  bRemove(void* pObject);
-    
-    // iteration functions
-    void* pFindFirst(void* pObject);
-    
-    void   vItemDump(void (*fvDump)(void* pObject));
-    void   vCheck(void);
-    void*  pEach(SkipCursor* pCursor);
-    
-    SkipNode* pFirst(i8 iLevel);
-    SkipNode* pNext(SkipNode* pPrev, i8 iLevel);
-    SkipNode* pHead(void);
-    
-    bool bDeleteAll(void);
-    
+  
   private:
     i8 iRandomLevel(void);
     SkipNode* pPosition(void* Ent, bool* bEqualTo, SkipNode** pRevise);
   
     Footer* pFooter(void);
-    
   };
   
   SkipList* _pSkipList(void* aAddr);
