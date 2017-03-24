@@ -48,7 +48,6 @@ namespace Structures
     SkipNode* pFirst(i8 iLevel);
     SkipNode* pNext(SkipNode* pPrev, i8 iLevel);
     SkipNode* pHead(void);
-    SkipNode* pTail(void);
     
     bool bDeleteAll(void);
     
