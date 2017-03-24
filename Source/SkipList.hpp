@@ -12,7 +12,6 @@ namespace Structures
   public:
     
     SkipNode* m_pHead;      // head of the list
-    SkipNode* m_pTail;      // tail of the list
 
     bool      m_bUniqueKey; // is the key unique ?
     compare   m_fCompare;   // compare function

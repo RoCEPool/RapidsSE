@@ -61,12 +61,9 @@ SkipList::SkipList(bool bUniqueKey, compare fCompare)
   m_bUniqueKey = bUniqueKey;
   m_fCompare = fCompare;
   m_pHead    = new(C_SKIPLIST_LEVELS) SkipNode(nullptr);
-  m_pTail    = new((i8)0) SkipNode(nullptr);
   
   for (i8 iLevel = 0; iLevel < C_SKIPLIST_LEVELS; iLevel++)
-    m_pHead->m_pRight[iLevel] = m_pTail;
-  
-  m_pTail->m_pRight[0] = nullptr;
+    m_pHead->m_pRight[iLevel] = nullptr;
   
   _checkInitialised_(CN_SKIPLIST);
   
@@ -180,7 +177,7 @@ bool SkipList::bRemove(void* pObject)
        l++)
     pRevise->m_pRight[l] = pNode->m_pRight[l];
   
-  while (m_pHead->m_pRight[iNewHeight] == m_pTail && iNewHeight > 0)
+  while ( ! m_pHead->m_pRight[iNewHeight] && iNewHeight > 0)
     iNewHeight--;
   
   m_iHeight = iNewHeight;
@@ -205,7 +202,7 @@ void* SkipList::pFindFirst(void* pObject)
   SkipNode* pNode = pPosition(pObject,&bEqualTo,nullptr);
   ASSERT(pNode); // logic check
   
-  if (pNode->m_pRight[0] == m_pTail)
+  if ( ! pNode->m_pRight[0] )
     return nullptr;
   else if (bEqualTo)
     return pNode->m_pRight[0]->m_pObject;
@@ -221,7 +218,7 @@ void SkipList::vItemDump(void (*fvDump)(void* pObject))
   _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
 
   for (SkipNode* pScan = m_pHead->m_pRight[0];
-       pScan && pScan != m_pTail;
+       pScan;
        pScan = pScan->m_pRight[0]) {
     fvDump(pScan->m_pObject);
   }
@@ -235,7 +232,7 @@ void SkipList::vCheck(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
 
   for (SkipNode* pNode = m_pHead->m_pRight[0];
-       pNode && pNode != m_pTail;
+       pNode;
        pNode = pNode->m_pRight[0])
   {
 //    if (n->m_pKey->iElem(0) != n->m_pKey->pObject()->iAttr(0))
@@ -272,7 +269,7 @@ SkipNode* SkipList::pFirst(i8 iLevel)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
 
-  if (m_pHead->m_pRight[iLevel] != m_pTail)
+  if (m_pHead->m_pRight[iLevel])
     return m_pHead->m_pRight[iLevel];
   
   return nullptr;
@@ -285,7 +282,7 @@ SkipNode* SkipList::pNext(SkipNode* pPrev, i8 iLevel)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
 
-  if (pPrev->m_pRight[iLevel] != m_pTail)
+  if (pPrev->m_pRight[iLevel])
     return pPrev->m_pRight[iLevel];
   
   return nullptr;
