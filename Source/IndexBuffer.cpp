@@ -588,8 +588,8 @@ i8 IndexBuffer::iLevel(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
-  i8 iRndLevel = Random::uLogLevel(3,2);
-  ASSERT(iRndLevel >= 0 && iRndLevel < 3);
+  i8 iRndLevel = Random::uLogLevel(C_FLAT_LEVELS,C_FLAT_FREQ);
+  ASSERT(iRndLevel >= 0 && iRndLevel < C_FLAT_LEVELS);
   
   return 0;
 }
@@ -609,11 +609,13 @@ Entry* IndexBuffer::pHeadEntry(void)
 /*----------------------------------------------------------------------------*/
 /* allot new entry                                                            */
 /*----------------------------------------------------------------------------*/
-Entry* IndexBuffer::pNewEntry(i8 nLevels)
+Entry* IndexBuffer::pNewEntry(i8 nBytes, i8 nLevels)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
-  return nullptr;
+  Entry* pEntry = reinterpret_cast<Entry*>(m_xWsp.aAllot(nBytes));
+  
+  return pEntry;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -622,6 +624,18 @@ Entry* IndexBuffer::pNewEntry(i8 nLevels)
 Entry* IndexBuffer::pRightEntry(Entry* pEntry, i8 iLevel)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
+  ASSERT(iLevel >= 0 && iLevel < C_FLAT_LEVELS);
+
+  Entry* pRightEntry;
+  
+  i8 nEntrySize = pEntry->nSize();
+  
+  if (0 == iLevel) {
+    pRightEntry = pAdd<Entry*>(pEntry,nEntrySize);
+    return pRightEntry;
+  }
+  
+  //u8* aRightVec = pEntry->aRightVec();
   
   return nullptr;
 }

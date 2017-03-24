@@ -44,6 +44,7 @@ namespace DBobjects
     //------
   
     i8    nSize(void);
+    
   
     Footer* pFooter(void);
   };

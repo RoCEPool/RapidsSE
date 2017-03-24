@@ -10,6 +10,7 @@ namespace DBobjects
   {
   public:
     static const i8 C_FLAT_LEVELS = 3;
+    static const i8 C_FLAT_FREQ = 2;
     static const i8 C_NIL = 0xFFFFFFFFFFFFFFFF;
     
   private:
@@ -74,7 +75,7 @@ namespace DBobjects
     i8     iLevel(void);
   
     Entry* pHeadEntry(void);
-    Entry* pNewEntry(i8 nLevels);
+    Entry* pNewEntry(i8 nBytes, i8 nLevels);
     Entry* pRightEntry(Entry* pEntry, i8 iLevel);
 
     void   vMoveLeft(void* aDst, void* aSrc);
