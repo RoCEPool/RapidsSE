@@ -293,21 +293,16 @@ bool SkipList::bRemove(void* pObjectRemove)
   SkipNode* pNodeRemove = pNodePrev->m_pRight[0];
   ASSERT(pObjectRemove == pNodeRemove->m_pObject); // logic check
   
-  // we may be removing the last node of greatest height
-  // so we need to compute a revised height
-  i8 iRevisedHeight = m_iHeight;
-  
-  
+  // cut out the node being removed
   for (i8 iLevel = 0;
-       iLevel <= iRevisedHeight &&
-       (pRevise = pReviseVec[iLevel])->m_pRight[iLevel] == pNodeRemove;
+       iLevel <= m_iHeight &&
+         (pRevise = pReviseVec[iLevel])->m_pRight[iLevel] == pNodeRemove;
        iLevel++)
     pRevise->m_pRight[iLevel] = pNodeRemove->m_pRight[iLevel];
   
-  while ( ! m_pHead->m_pRight[iRevisedHeight] && iRevisedHeight > 0 )
-    iRevisedHeight--;
-  
-  m_iHeight = iRevisedHeight;
+  // correct the height if we have removed the last tallest node
+  while ( ! m_pHead->m_pRight[m_iHeight] && m_iHeight > 0 )
+    m_iHeight--;
   
   // one less object in the list
   m_nObjects--;
@@ -471,7 +466,7 @@ void Structures::vSkipListDump(SkipList* pSkipList)
 {
   vTrace("----------------------------\n"_Str);
 
-  vTrace("HEAD 0x%llx\n"_Str, pSkipList->m_pHead);
+  vTrace("HEIGHT %lld HEAD 0x%llx\n"_Str,pSkipList->m_iHeight,pSkipList->m_pHead);
   i8 iLevel = pSkipList->m_iHeight;
   do {
     vTrace("LEVEL %lld\n"_Str, iLevel);
@@ -510,6 +505,7 @@ void Structures::vSkipListTest(void)
   pSkipList->bRemove((void*)5); vSkipListDump(pSkipList);
   pSkipList->bRemove((void*)6); vSkipListDump(pSkipList);
   
+  return;
 }
 
 /*============================================================================*/
