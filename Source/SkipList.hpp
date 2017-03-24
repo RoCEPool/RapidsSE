@@ -17,7 +17,7 @@ namespace Structures
     bool      m_bUniqueKey; // is the key unique ?
     compare   m_fCompare;   // compare function
     
-    i8        m_nObjects;   // number of objects in the list
+    i8         m_nObjects;   // number of objects in the list
     i8        m_iHeight;    // current max level in the list
     
     // must be last
@@ -54,7 +54,6 @@ namespace Structures
     
   private:
     i8 iRandomLevel(void);
-    SkipNode* pPosition(void* Ent, bool* bEqualTo);
     SkipNode* pPosition(void* Ent, bool* bEqualTo, SkipNode** pRevise);
   
     Footer* pFooter(void);

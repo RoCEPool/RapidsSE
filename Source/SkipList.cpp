@@ -63,8 +63,8 @@ SkipList::SkipList(bool bUniqueKey, compare fCompare)
   m_pHead    = new(C_SKIPLIST_LEVELS) SkipNode(nullptr);
   m_pTail    = new((i8)0) SkipNode(nullptr);
   
-  for (i8 l = 0; l < C_SKIPLIST_LEVELS; l++)
-    m_pHead->m_pRight[l] = m_pTail;
+  for (i8 iLevel = 0; iLevel < C_SKIPLIST_LEVELS; iLevel++)
+    m_pHead->m_pRight[iLevel] = m_pTail;
   
   m_pTail->m_pRight[0] = nullptr;
   
@@ -98,7 +98,7 @@ bool SkipList::bExists(void* pObject)
 
   bool bEqualTo;
   
-  SkipNode* pNode = pPosition(pObject,&bEqualTo);
+  SkipNode* pNode = pPosition(pObject,&bEqualTo,nullptr);
   ASSERT(pNode); // logic check
   
   if (bEqualTo && pObject == pNode->m_pRight[0]->m_pObject)
@@ -202,7 +202,7 @@ void* SkipList::pFindFirst(void* pObject)
 
   bool bEqualTo;
   
-  SkipNode* pNode = pPosition(pObject,&bEqualTo);
+  SkipNode* pNode = pPosition(pObject,&bEqualTo,nullptr);
   ASSERT(pNode); // logic check
   
   if (pNode->m_pRight[0] == m_pTail)
@@ -370,32 +370,6 @@ i8 SkipList::iRandomLevel(void)
   return (level > C_SKIPLIST_LEVELS - 1) ? C_SKIPLIST_LEVELS - 1: level;
 }
 
-/*----------------------------------------------------------------------------*/
-/* position search on node just prior to lower bound                          */
-/*----------------------------------------------------------------------------*/
-SkipNode* SkipList::pPosition(void* pObject, bool* bEqualTo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
-
-  SkipNode* pNext = nullptr;
-  
-  i8 l = m_iHeight;
-  SkipNode* pScan = m_pHead;
-  //Node* pPrev = nullptr;
-  do
-  {
-    while (pNext = pScan->m_pRight[l],
-           pNext != m_pTail
-           && m_fCompare(pObject,pNext->m_pObject,bEqualTo)) {
-      //pPrev = pScan;
-      pScan = pNext;
-    }
-    
-  } while(--l >= 0);
-  
-  return pScan;
-}
-
 
 #define goRightNode(iLevel,pScan) pScan = pScan->m_pRight[iLevel];
 #define goDownLevel(iLevel) iLevel--;
@@ -455,7 +429,8 @@ SkipNode* SkipList::pPosition(void* pObjectInsert, bool* bEqualTo, SkipNode** pR
     // outer loop: now having gone right as far as we go down one single level
     
     // first record current node as a revision point
-    pReviseVec[iCurrentLevel] = pCurrentNode;
+    if (pReviseVec)
+      pReviseVec[iCurrentLevel] = pCurrentNode;
     
     // now go down one level
     goDownLevel(iCurrentLevel);
@@ -537,6 +512,8 @@ void Structures::vSkipListTest(void)
   pSkipList->bInsert((void*)5); vSkipListDump(pSkipList);
   pSkipList->bInsert((void*)6); vSkipListDump(pSkipList);
   pSkipList->bInsert((void*)9); vSkipListDump(pSkipList);
+  
+  ASSERT(4 == (i8)pSkipList->pFindFirst((void*)4));
 }
 
 /*============================================================================*/
