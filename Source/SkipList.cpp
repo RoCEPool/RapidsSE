@@ -222,34 +222,41 @@ SkipNode* SkipList::pFirst(i8 iLevel)
 /*----------------------------------------------------------------------------*/
 /* insert object into list                                                    */
 /*----------------------------------------------------------------------------*/
-bool SkipList::bInsert(void* pObject)
+bool SkipList::bInsert(void* pObjectInsert)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
 
   bool bEqualTo;
   SkipNode* pReviseVec[C_SKIPLIST_LEVELS];
   
-  SkipNode* pNode = pPosition(pObject,bEqualTo,pReviseVec);
+  // get a positioned revise vector
+  SkipNode* pNode = pPosition(pObjectInsert,bEqualTo,pReviseVec);
   ASSERT(pNode); // logic check
   
+  // do not insert duplicates into a list of unique keys
   if (bEqualTo && m_bUniqueKey)
     return false;
   
-  i8 iLevel = iRandomLevel();
-  if (iLevel > m_iHeight) {
-    iLevel = ++m_iHeight;
-    pReviseVec[iLevel] = m_pHead;
+  // choose a random level for the new node
+  i8 iNodeLevel = iRandomLevel();
+  if (iNodeLevel > m_iHeight) {
+    iNodeLevel = ++m_iHeight;
+    pReviseVec[iNodeLevel] = m_pHead;
 	}
   
-  SkipNode* pNew = new(iLevel) SkipNode(pObject);
+  // create new node with inserted object
+  SkipNode* pNodeInsert = new(iNodeLevel) SkipNode(pObjectInsert);
  
+  // put new node into the list according the revise vector for random level
   do {
-    pNew->m_pRight[iLevel] = pReviseVec[iLevel]->m_pRight[iLevel];
-    pReviseVec[iLevel]->m_pRight[iLevel] = pNew;
-	} while (--iLevel >= 0);
+    pNodeInsert->m_pRight[iNodeLevel] = pReviseVec[iNodeLevel]->m_pRight[iNodeLevel];
+    pReviseVec[iNodeLevel]->m_pRight[iNodeLevel] = pNodeInsert;
+	} while (--iNodeLevel >= 0);
   
+  // one more object in the list
   m_nObjects++;
   
+  // succesful insert
   return true;
 }
 
@@ -286,18 +293,15 @@ bool SkipList::bRemove(void* pObject)
   ASSERT(pObject == pNode->m_pObject); // logic check
   
   i8 iNewHeight = m_iHeight;
-  for (i8 l = 0;
-       l <= iNewHeight && (pRevise = pReviseVec[l])->m_pRight[l] == pNode;
-       l++)
-    pRevise->m_pRight[l] = pNode->m_pRight[l];
+  for (i8 iLevel = 0;
+       iLevel <= iNewHeight && (pRevise = pReviseVec[iLevel])->m_pRight[iLevel] == pNode;
+       iLevel++)
+    pRevise->m_pRight[iLevel] = pNode->m_pRight[iLevel];
   
-  while ( ! m_pHead->m_pRight[iNewHeight] && iNewHeight > 0)
+  while ( ! m_pHead->m_pRight[iNewHeight] && iNewHeight > 0 )
     iNewHeight--;
   
   m_iHeight = iNewHeight;
-  
-  // alka
-  //tDelete(&pNode);
   
   m_nObjects--;
 

@@ -5,13 +5,13 @@
 
 namespace Structures
 {
-  static const i4 C_SKIPLIST_LEVELS = 16;
+  static const i8 C_SKIPLIST_LEVELS = 16;
   
   class SkipNode : public Object
   {
   public:
     void*     m_pObject;    // ptr to object
-    i4        m_nRight;     // number of right pointers in the node
+    i8        m_nRight;     // number of right pointers in the node
     SkipNode* m_pRight[1]; // variable set of right pointers
 
     
