@@ -56,7 +56,7 @@ SkipList::SkipList(bool bIsUniqueKey, compare fCompare)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
   
-  m_iObjects = 0;
+  m_nObjects = 0;
   m_iHeight  = 0;
   m_bIsUniqueKey = bIsUniqueKey;
   m_fCompare = fCompare;
@@ -80,7 +80,7 @@ SkipList::~SkipList()
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
 
-  ASSERT( ! m_iObjects ); // logic check
+  ASSERT( ! m_nObjects ); // logic check
 
 // alka
 //  tDelete(&m_pKey);
@@ -136,7 +136,7 @@ bool SkipList::bInsert(void* pObject)
     pRevise[l]->m_pRight[l] = pNew;
 	} while (--l >= 0);
   
-  m_iObjects++;
+  m_nObjects++;
   
   return true;
 }
@@ -144,34 +144,11 @@ bool SkipList::bInsert(void* pObject)
 /*----------------------------------------------------------------------------*/
 /* get numbr of objects in list                                               */
 /*----------------------------------------------------------------------------*/
-i8 SkipList::iObjects()
+i8 SkipList::nObjects()
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
 
-  return m_iObjects;
-}
-
-/*----------------------------------------------------------------------------*/
-/* pop top/first object from list                                             */
-/*----------------------------------------------------------------------------*/
-void* SkipList::pPop(bool* bWasRemoved, i8 iFrom)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
-
-  SkipNode* pFirstNode = pFirst(0);
-  if (!pFirstNode)
-    return nullptr;
-  
-  void* pObject = pFirstNode->m_pObject;
-  if (!pObject)
-    return nullptr;
-  
-  *bWasRemoved = bRemove(pObject);
-  //ASSERT(b); // logic check
-  if ( ! *bWasRemoved )
-    vError("pPop: failed to remove; from %lld"_Str,iFrom);
-  
-  return pObject;
+  return m_nObjects;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -211,7 +188,7 @@ bool SkipList::bRemove(void* pObject)
   // alka
   //tDelete(&pNode);
   
-  m_iObjects--;
+  m_nObjects--;
 
   return true;
 }

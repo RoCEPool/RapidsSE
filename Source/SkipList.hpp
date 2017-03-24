@@ -17,7 +17,7 @@ namespace Structures
     bool      m_bIsUniqueKey; // is the key unique ?
     compare   m_fCompare;     // compare function
     
-    i8        m_iObjects;  // number of objects in the list
+    i8        m_nObjects;  // number of objects in the list
     i4        m_iHeight;   // current max level in the list
     
     // must be last
@@ -35,8 +35,7 @@ namespace Structures
     bool  bExists (void* pObject);
     bool  bInsert (void* pObject);
 
-    i8    iObjects();
-    void* pPop    (bool*    bWasRemoved, i8 iFrom);
+    i8    nObjects();
     bool  bRemove (void*    pObject);
     
     // iteration functions
