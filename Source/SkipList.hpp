@@ -11,14 +11,14 @@ namespace Structures
   {
   public:
     
-    SkipNode* m_pHead;     // head of the list
-    SkipNode* m_pTail;     // tail of the list
+    SkipNode* m_pHead;      // head of the list
+    SkipNode* m_pTail;      // tail of the list
 
-    bool      m_bIsUniqueKey; // is the key unique ?
-    compare   m_fCompare;     // compare function
+    bool      m_bUniqueKey; // is the key unique ?
+    compare   m_fCompare;   // compare function
     
-    i8        m_nObjects;  // number of objects in the list
-    i4        m_iHeight;   // current max level in the list
+    i8        m_nObjects;   // number of objects in the list
+    i8        m_iHeight;    // current max level in the list
     
     // must be last
     Footer m_xFooter;
@@ -29,31 +29,31 @@ namespace Structures
     void* operator new(size_t, SkipList* pSkipList);
     void  operator delete(void*);
     
-    SkipList(bool bIsUniqueKey, compare fCompare);
-   ~SkipList();
+    SkipList(bool bUniqueKey, compare fCompare);
+   ~SkipList(void);
     
-    bool  bExists (void* pObject);
-    bool  bInsert (void* pObject);
+    bool  bExists(void* pObject);
+    bool  bInsert(void* pObject);
 
-    i8    nObjects();
-    bool  bRemove (void*    pObject);
+    i8    nObjects(void);
+    bool  bRemove(void* pObject);
     
     // iteration functions
-    void* pFindFirst   (void*    pObject);
+    void* pFindFirst(void* pObject);
     
     void   vItemDump(void (*fvDump)(void* pObject));
-    void   vCheck();
-    void*  pEach   (SkipCursor* pCursor);
+    void   vCheck(void);
+    void*  pEach(SkipCursor* pCursor);
     
     SkipNode* pFirst(i8 iLevel);
     SkipNode* pNext(SkipNode* pPrev, i8 iLevel);
-    SkipNode* pHead();
-    SkipNode* pTail();
+    SkipNode* pHead(void);
+    SkipNode* pTail(void);
     
-    bool   bDeleteAll(void);
+    bool bDeleteAll(void);
     
   private:
-    i4 iLevel();
+    i8 iRandomLevel(void);
     SkipNode* pPosition(void* Ent, bool* bEqualTo);
     SkipNode* pPosition(void* Ent, bool* bEqualTo, SkipNode** pRevise);
   
