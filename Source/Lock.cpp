@@ -236,9 +236,10 @@ void Lock::vGrabWrite(void)
   
   //ASSERT(m_aName);
 
-//  vTrace("Lock::vGrabWrite -- Grabbing write lock %p %s\n",
-//         this,
-//         m_aName ? m_aName : "<noName>");
+  
+  //vTrace("Lock::vGrabWrite -- Grabbing write lock %p %p\n",
+  //       this,
+  //       m_uLockWord);
 
   ++m_zWriteGrabs;
   i8 rCode = Synch::iLockGrabWrite(&m_uLockWord);
@@ -260,12 +261,18 @@ void Lock::vGrabWrite(void)
       //vTrace("Lock::vGrabWrite -- Unable to grab write lock %p %s\n",
       //       this,
       //       m_aName ? m_aName : "<noName>");
-      vTrace("Lock::vGrabWrite -- Unable to grab write lock %p\n",
-             this);
+      vTrace("Lock::vGrabWrite -- Unable to grab write lock %p %p\n",
+             this, m_uLockWord);
     }
     
     rCode = Synch::iLockGrabWrite(&m_uLockWord);
   } while ( ! rCode );
+  
+  if (bReported) {
+    vTrace("Lock::vGrabWrite -- Able to grab write lock %p %p\n",
+           this, m_uLockWord);
+  }
+  
   
   vCheckWrite();
 }

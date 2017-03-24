@@ -2203,7 +2203,7 @@ eEC RapidsSE_SEitfNew(void* pAttachMap, void** ppSEitf, i8 iPartition)
   *ppSEitf = pSEitf;
   
   if (gpGrid->m_bTraceapi)
-    vTrace("<RapidsSE_SEitfNew: %p (%lld)\n", pSEitf);
+    vTrace("<RapidsSE_SEitfNew: %p (%lld)\n", pSEitf, iPartition);
   
   return EC_NONE;
 }
