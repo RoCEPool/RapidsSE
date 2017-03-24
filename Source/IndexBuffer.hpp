@@ -62,6 +62,23 @@ namespace DBobjects
     
     IndexBuffer* pPrevBuffer(void);
     void         vPrevBuffer(IndexBuffer* pPrevBuffer);
+  
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+    // skip list support                                                     //
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+
+    bool   bInsert(Key* pKey, RowId xRowId);
+    bool   bRemove(Key* pKey);
+  
+    Entry* pPosition(Key* pKey, bool& bEqualTo, Entry** pReviseVec);
+    i8     iLevel(void);
+  
+    Entry* pHeadEntry(void);
+    Entry* pNewEntry(i8 nLevels);
+    Entry* pRightEntry(Entry* pEntry, i8 iLevel);
+
+    void   vMoveLeft(void* aDst, void* aSrc);
+    void   vMoveRight(void* aDst, i8 nBytes);
   };
   
   IndexBuffer* _pIndexBuffer(void* aAddr);

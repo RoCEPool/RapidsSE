@@ -333,10 +333,10 @@ SkipNode* SkipList::pNext(SkipNode* pPrev, i8 iLevel)
                                  ===========
  
            H
-           E [ ]--------------------->[ ]->[ ]---------------->0
-           A [ ]------>[ ]------>[ ]->[ ]->[ ]->[ ]->[ ]->[ ]->0
-           D [ ]->[ ]->[ ]->[ ]->[ ]->[ ]->[ ]->[ ]->[ ]->[ ]->0
-           1    2    3    4    5    6    7    8    9
+           E [ ]--------------------->[ ]->[ ]----------->0
+           A [ ]------>[ ]------>[ ]->[ ]->[ ]->[ ]->[ ]->0
+           D [ ]->[ ]->[ ]->[ ]->[ ]->[ ]->[ ]->[ ]->[ ]->0
+              1    2    3    4    5    6    7    8    9
  
  ******************************************************************************/
 
@@ -504,6 +504,10 @@ void Structures::vSkipListTest(void)
   pSkipList->bRemove((void*)4); vSkipListDump(pSkipList);
   pSkipList->bRemove((void*)5); vSkipListDump(pSkipList);
   pSkipList->bRemove((void*)6); vSkipListDump(pSkipList);
+  
+  pSkipList->bInsert((void*)6); vSkipListDump(pSkipList);
+  pSkipList->bInsert((void*)4); vSkipListDump(pSkipList);
+  pSkipList->bInsert((void*)5); vSkipListDump(pSkipList);
   
   return;
 }

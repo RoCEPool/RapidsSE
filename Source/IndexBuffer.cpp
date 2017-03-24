@@ -543,6 +543,100 @@ void IndexBuffer::vPrevBuffer(IndexBuffer* pPrevBuffer)
   m_pPrevBuffer = pPrevBuffer;
 }
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//
+//                              skip list support                             //
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//
+
+/*----------------------------------------------------------------------------*/
+/* insert new entry                                                           */
+/*----------------------------------------------------------------------------*/
+bool IndexBuffer::bInsert(Key* pKey, RowId xRowId)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* remove existing entry                                                      */
+/*----------------------------------------------------------------------------*/
+bool IndexBuffer::bRemove(Key* pKey)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* positition to entry (optional set revise vector)                           */
+/*----------------------------------------------------------------------------*/
+Entry* IndexBuffer::pPosition(Key* pKey, bool& bEqualTo, Entry** pReviseVec)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
+  
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* generate a new random level                                                */
+/*----------------------------------------------------------------------------*/
+i8 IndexBuffer::iLevel(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
+  
+  return 0;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get head entry                                                             */
+/*----------------------------------------------------------------------------*/
+Entry* IndexBuffer::pHeadEntry(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
+  
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* allot new entry                                                            */
+/*----------------------------------------------------------------------------*/
+Entry* IndexBuffer::pNewEntry(i8 nLevels)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
+  
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get right entry at given level                                             */
+/*----------------------------------------------------------------------------*/
+Entry* IndexBuffer::pRightEntry(Entry* pEntry, i8 iLevel)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
+  
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* move portion of the wsp left                                               */
+/*----------------------------------------------------------------------------*/
+void IndexBuffer::vMoveLeft(void* aDst, void* aSrc)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* move portion of the wsp right by given bytes                               */
+/*----------------------------------------------------------------------------*/
+void IndexBuffer::vMoveRight(void* aDst, i8 nBytes)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
