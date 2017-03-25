@@ -163,8 +163,8 @@ void Task::vIndexEntryTest(NNP_Task nnpTask)
   if ( ! nnpTask->m_pDataStack->bPop(pPtrIb) )
     THROW_INVALID_DSTACK("index::entryTest"_Str);
   
-  IndexBuffer* pIndexBuffer = _pIndexBuffer(pPtrIb);
-  ASSERT(CN_INDEXBUFFER == pIndexBuffer->eClass());
+  IndexBufferSeq* pIndexBufferSeq = _pIndexBufferSeq(pPtrIb);
+  ASSERT(CN_INDEXBUFFER == pIndexBufferSeq->eClass());
   
   s48K sRow;
   if ( ! nnpTask->m_pDataStack->bPop(sRow) )
@@ -205,27 +205,27 @@ void Task::vIndexEntryTest(NNP_Task nnpTask)
   //xEntWsp.vShow();
   
   // insert entry into index buffer
-  //pIndexBuffer->vInsertEntry(xEntWsp);
+  //pIndexBufferSeq->vInsertEntry(xEntWsp);
   
   // verify index buffer
-  //pIndexBuffer->vVerify();
+  //pIndexBufferSeq->vVerify();
   
   
   bool bResult = false;
-  IndexBuffer* pFirstBuffer = pIndexBuffer;
+  IndexBufferSeq* pFirstBuffer = pIndexBufferSeq;
   
   while (!bResult) {
-    pIndexBuffer = pFirstBuffer->pFindBuffer(xEntWsp);
+    pIndexBufferSeq = pFirstBuffer->pFindBuffer(xEntWsp);
     
     // insert entry into index buffer
-    bResult = pIndexBuffer->bInsertEntry(xEntWsp);
+    bResult = pIndexBufferSeq->bInsertEntry(xEntWsp);
   }
   
-  pIndexBuffer = pFirstBuffer;
-  while (pIndexBuffer) {
-    pIndexBuffer->vVerify();
+  pIndexBufferSeq = pFirstBuffer;
+  while (pIndexBufferSeq) {
+    pIndexBufferSeq->vVerify();
     
-    pIndexBuffer = pIndexBuffer->pNextBuffer();
+    pIndexBufferSeq = pIndexBufferSeq->pNextBuffer();
   }
   
   
@@ -243,21 +243,21 @@ void Task::vIndexIbDump(NNP_Task nnpTask)
   if ( ! nnpTask->m_pDataStack->bPop(pPtrIB) )
     THROW_INVALID_DSTACK("index::ibDump"_Str);
   
-  IndexBuffer* pIndexBuffer = _pIndexBuffer(pPtrIB);
-  ASSERT(CN_INDEXBUFFER == pIndexBuffer->eClass());
+  IndexBufferSeq* pIndexBufferSeq = _pIndexBufferSeq(pPtrIB);
+  ASSERT(CN_INDEXBUFFER == pIndexBufferSeq->eClass());
   
   vTrace("\n"_Str);
   
-  while (pIndexBuffer) {
-    pIndexBuffer->vShow();
+  while (pIndexBufferSeq) {
+    pIndexBufferSeq->vShow();
     
-    Entry* pEntry = pIndexBuffer->pFirstEntry();
+    Entry* pEntry = pIndexBufferSeq->pFirstEntry();
     
     while (pEntry) {
       pEntry->vContentDump();
-      pEntry = pIndexBuffer->pNextEntry(pEntry);
+      pEntry = pIndexBufferSeq->pNextEntry(pEntry);
     }
-    pIndexBuffer = pIndexBuffer->pNextBuffer();
+    pIndexBufferSeq = pIndexBufferSeq->pNextBuffer();
   }
   
   EXIT();
@@ -270,10 +270,10 @@ void Task::vIndexIbNew(NNP_Task nnpTask)
 {
   ENTRY("vIndexIbNew"_Str);
   
-  IndexBuffer* pIndexBuffer = new IndexBuffer;
-  ASSERT(CN_INDEXBUFFER == pIndexBuffer->eClass());
+  IndexBufferSeq* pIndexBufferSeq = new IndexBufferSeq;
+  ASSERT(CN_INDEXBUFFER == pIndexBufferSeq->eClass());
   
-  nnpTask->m_pDataStack->vPush(pIndexBuffer);
+  nnpTask->m_pDataStack->vPush(pIndexBufferSeq);
   
   EXIT();
 }
