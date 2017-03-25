@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* IndexBufferSeq.hpp -- Index Buffer (sequential)                            */
+/* IndexBufferSeq.hpp -- Index Buffer (sequential variant)                    */
 /*============================================================================*/
 #pragma once
 

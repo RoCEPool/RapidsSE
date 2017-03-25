@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* IndexBufferSeqSeq.cpp -- Index Buffer (sequential)                            */
+/* IndexBufferSeqSeq.cpp -- Index Buffer (sequential variant)                 */
 /*============================================================================*/
 
 #include "DBobjects.h"

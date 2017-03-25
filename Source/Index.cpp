@@ -108,19 +108,19 @@ void Index::vDump(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
 
-  IndexBuffer* pIndexBuffer = m_pIndexLevels->pFirstBuffer();
+  IndexBufferSeq* pIndexBufferSeq = m_pIndexLevels->pFirstBuffer();
 
-  while (pIndexBuffer) {
-    pIndexBuffer->vShow();
+  while (pIndexBufferSeq) {
+    pIndexBufferSeq->vShow();
     
-    Entry* pEntry = pIndexBuffer->pFirstEntry();
+    Entry* pEntry = pIndexBufferSeq->pFirstEntry();
     
     while (pEntry) {
       pEntry->vContentDump();
       
-      pEntry = pIndexBuffer->pNextEntry(pEntry);
+      pEntry = pIndexBufferSeq->pNextEntry(pEntry);
     }
-    pIndexBuffer = pIndexBuffer->pNextBuffer();
+    pIndexBufferSeq = pIndexBufferSeq->pNextBuffer();
   }
 }
 

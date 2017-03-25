@@ -80,7 +80,7 @@ IndexLevels::~IndexLevels(void)
 /*----------------------------------------------------------------------------*/
 /* insert a row                                                               */
 /*----------------------------------------------------------------------------*/
-IndexBuffer* IndexLevels::pFirstBuffer(void)
+IndexBufferSeq* IndexLevels::pFirstBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXLEVELS,_FOOTER_);
   
@@ -96,16 +96,16 @@ void IndexLevels::vInsertEntry(EntWsp& xEntWsp)
   
   
   if (!m_pIndexBuffer[0])
-    m_pIndexBuffer[0] = new IndexBuffer;
+    m_pIndexBuffer[0] = new IndexBufferSeq;
 
   bool bResult = false;
-  IndexBuffer* pIndexBuffer = m_pIndexBuffer[0];
+  IndexBufferSeq* pIndexBufferSeq = m_pIndexBuffer[0];
   
   while ( ! bResult) {
-    pIndexBuffer = pIndexBuffer->pFindBuffer(xEntWsp);
+    pIndexBufferSeq = pIndexBufferSeq->pFindBuffer(xEntWsp);
  
     // insert entry into index buffer
-    bResult = pIndexBuffer->bInsertEntry(xEntWsp);
+    bResult = pIndexBufferSeq->bInsertEntry(xEntWsp);
   }
   
 }
@@ -119,13 +119,13 @@ void IndexLevels::vTruncate(void)
   
   m_zLock.vGrabWrite();
   
-  IndexBuffer* pIndexBuffer = m_pIndexBuffer[0];
-  IndexBuffer* pNextIndexBuffer;
+  IndexBufferSeq* pIndexBufferSeq = m_pIndexBuffer[0];
+  IndexBufferSeq* pNextIndexBufferSeq;
   
-  while(pIndexBuffer) {
-    pNextIndexBuffer = pIndexBuffer->pNextBuffer();
-    delete pIndexBuffer;
-    pIndexBuffer = pNextIndexBuffer;
+  while(pIndexBufferSeq) {
+    pNextIndexBufferSeq = pIndexBufferSeq->pNextBuffer();
+    delete pIndexBufferSeq;
+    pIndexBufferSeq = pNextIndexBufferSeq;
   }
   
   m_zLock.vDropWrite();
