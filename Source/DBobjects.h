@@ -31,6 +31,7 @@ using namespace DBobjects;
 #include "EntWsp.hpp"
 #include "Entry.hpp"
 #include "IndexBuffer.hpp"
+#include "IndexBufferSeq.hpp"
 #include "IndexLevels.hpp"
 
 #include "Partition.hpp"

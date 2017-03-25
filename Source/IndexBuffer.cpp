@@ -595,12 +595,13 @@ i8 IndexBuffer::iLevel(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get head entry                                                             */
+/* get head entry of the skip list in this index buffer                       */
 /*----------------------------------------------------------------------------*/
 Entry* IndexBuffer::pHeadEntry(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
+  // the head entry is the first entry in wsp
   Entry* pHead = reinterpret_cast<Entry*>(m_xWsp.aArea());
   
   return pHead;
