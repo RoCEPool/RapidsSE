@@ -7,12 +7,13 @@ namespace DBobjects
 {
   class Levels
   {
-  private:
+  public:
+  i8  m_iRight[1];  //
   
   public:
     void* operator new(size_t);
     void* operator new(size_t, Levels*);
-    
+  
     Levels(void);
     ~Levels(void);
 

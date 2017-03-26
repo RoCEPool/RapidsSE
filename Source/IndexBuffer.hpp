@@ -17,7 +17,6 @@ namespace DBobjects
     i8           m_nEntries;    // number of entries in this buffer
     IndexBuffer* m_pPrevBuffer; // prev buffer
     IndexBuffer* m_pNextBuffer; // next buffer
-    i8           m_nSkipHead[C_FLAT_LEVELS];  // skip list head
     
     
     // need to add skip list head
