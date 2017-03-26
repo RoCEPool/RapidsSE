@@ -207,20 +207,47 @@ Entry* IndexBuffer::pNextEntrySL(Entry* pEntry)
 /*----------------------------------------------------------------------------*/
 /* move portion of the wsp left                                               */
 /*----------------------------------------------------------------------------*/
-void IndexBuffer::vMoveLeft(void* aDst, void* aSrc)
+void IndexBuffer::vMoveLeft(void* aDst, i8 nBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
-  ASSERT(aDst < aSrc);
+  /*
+   
+   we are in the process of removing entry E from between A..D and F..Z
+   
+   1) we compute the source address
+   2) we move the F..Z left
+   3) we give space back into wsp free space
+   
+         aDst --+   +-- aSrc
+                v   v
+     ------------------------------------------+
+        | A..D | E | F..Z |       free         |
+     ------------------------------------------+
+     ------------------------------------------+
+        | A..D | F..Z |         free           |
+     ------------------------------------------+
   
-  // compute the number of bytes being moved
-  i8 nBytes = nSub(aSrc,aDst);
+   aDst is the first byte of entry E
+   nBytes is the size of entry E
+   aSrc will be the first byte of F..Z
+   
+   note that MemLib::vMove() is used because the move/copy overlaps
+   
+   */
   
-  // copy the bytes left
+  // compute the source address
+  void* aSrc = pAdd<void*>(aDst,nBytes);
+
+  // move the bytes left
   MemLib::vMove(aDst,aSrc,nBytes);
   
-  // reduce used in wsp
+  // release space back to wsp
   m_xWsp.vGive(nBytes);
+
+  // for the moment we'll zero the bytes put back into the free area
+  void* aLatter = m_xWsp.aLatter();
+  MemLib::vZero(aLatter,nBytes);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -235,7 +262,7 @@ void IndexBuffer::vMoveRight(void* aSrc, i8 nBytes)
    we are in the process of inserting entry E between A..D and F..Z
    
    1) the caller has checked there is sufficient free space in wsp
-   2) we first allot space for E in wsp
+   2) we first take space for E in wsp
    3) compute the destination address
    3) then move F..Z right by bytes alloted for E
    
@@ -249,8 +276,10 @@ void IndexBuffer::vMoveRight(void* aSrc, i8 nBytes)
      ------------------------------------------+
    
    aSrc is the first byte where E is to be inserted (i.e. first byte of F)
-   nBytes is the size of E, and what was alloted from the freespace of wsp
-   aDst will be the first
+   nBytes is the size of E
+   aDst will be the first byte of alloted space
+   
+   note that MemLib::vMove() is used because the move/copy overlaps
    
    */
   

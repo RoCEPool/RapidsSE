@@ -53,7 +53,7 @@ namespace DBobjects
     Entry* pRightEntry(Entry* pEntry, i8 iLevel);
     Entry* pNextEntrySL(Entry* pEntry);
 
-    void   vMoveLeft(void* aDst, void* aSrc);
+    void   vMoveLeft(void* aDst, i8 nBytes);
     void   vMoveRight(void* aSrc, i8 nBytes);
   };
   
