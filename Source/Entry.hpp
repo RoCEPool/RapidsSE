@@ -51,6 +51,9 @@ namespace DBobjects
   
     Footer* pFooter(void);
   };
+  
+  Entry* _aEntry(void* aAddr);
+
 }
 
 /*============================================================================*/

@@ -170,21 +170,32 @@ Entry* IndexBuffer::pNewEntry(Entry* pAfterEntry, i8 nBytes, i8 nLevels)
 /*----------------------------------------------------------------------------*/
 /* get right entry at given level                                             */
 /*----------------------------------------------------------------------------*/
-Entry* IndexBuffer::pRightEntry(Entry* pEntry, i8 iLevel)
+Entry* IndexBuffer::pRightEntry(Entry* aEntry, i8 iLevel)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
-  ASSERT(iLevel >= 0 && iLevel < C_FLAT_LEVELS);
+  
+  /*
+   
+  1) entries are in key order within a given buffer
+  2) all entries have an implied level 0
+  2) this means the right entry for level 0 for an entry is 
+       the next entry in the buffer
+  3) entries may also have level 1 or level 1 & level 2 right entries
+  
+  pEntry is the entry we want a right entry from
+  iLevel is the level we want the right entry of
+   
+  */
+  
+  // the caller must request a valid right entry of pEntry
+  ASSERT(iLevel >= 0 && iLevel <= aEntry->nLevels());
 
-  Entry* pRightEntry;
-  
-  i8 nEntrySize = pEntry->nSize();
-  
-  if (0 == iLevel) {
-    pRightEntry = pAdd<Entry*>(pEntry,nEntrySize);
-    return pRightEntry;
-  }
-  
-  pRightEntry = pEntry->pRightEntry(iLevel);
+  // get right entry
+  Entry* aRightEntry;
+  if (0 == iLevel)
+    aRightEntry = pNextEntry(aEntry);
+  else
+   aRightEntry = aEntry->pRightEntry(iLevel);
   
   return nullptr;
 }
@@ -192,13 +203,13 @@ Entry* IndexBuffer::pRightEntry(Entry* pEntry, i8 iLevel)
 /*----------------------------------------------------------------------------*/
 /* get next entry after given entry                                           */
 /*----------------------------------------------------------------------------*/
-Entry* IndexBuffer::pNextEntrySL(Entry* pEntry)
+Entry* IndexBuffer::pNextEntry(Entry* pEntry)
 {
   i8 nBytes = pEntry->nSize();
   
   Entry* pNext = pAdd<Entry*>(pEntry,nBytes);
   
-  if ((char*)pNext < m_xWsp.aLatter())
+  if (pNext < _aEntry(m_xWsp.aLatter()))
     return pNext;
   else
     return nullptr;
