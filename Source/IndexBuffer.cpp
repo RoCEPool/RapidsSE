@@ -195,7 +195,7 @@ Entry* IndexBuffer::aRightEntry(Entry* aEntry, i8 iLevel)
   if (0 == iLevel)
     aRightEntry = aNextEntry(aEntry);
   else
-   aRightEntry = aEntry->pRightEntry(iLevel);
+   aRightEntry = aEntry->aRightEntry(iLevel);
   
   return nullptr;
 }

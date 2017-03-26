@@ -31,7 +31,7 @@ namespace DBobjects
     void   vEntry(EntWsp& xEntWsp);
 
     Key&   xKey(void);
-    Key*   pKey(void);
+    Key*   aKey(void);
     void   vKey(Key& xKey);
     void   vKey(KeyWsp& xKeyWsp);
   
@@ -47,7 +47,7 @@ namespace DBobjects
     i8    nSize(void);
   
     RightVec* aRightVec(void);
-    Entry* pRightEntry(i8 iLevel);
+    Entry* aRightEntry(i8 iLevel);
   
     Footer* pFooter(void);
   };

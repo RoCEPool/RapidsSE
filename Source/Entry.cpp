@@ -209,7 +209,7 @@ Key& Entry::xKey(void)
 /*----------------------------------------------------------------------------*/
 /* get key                                                                    */
 /*----------------------------------------------------------------------------*/
-Key* Entry::pKey(void)
+Key* Entry::aKey(void)
 {
   //_precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
   
@@ -310,7 +310,7 @@ RightVec* Entry::aRightVec(void)
 /*----------------------------------------------------------------------------*/
 /* get a right entry of this entry occurence                                  */
 /*----------------------------------------------------------------------------*/
-Entry* Entry::pRightEntry(i8 iLevel)
+Entry* Entry::aRightEntry(i8 iLevel)
 {
   //_precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
   

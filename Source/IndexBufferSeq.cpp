@@ -204,7 +204,7 @@ IndexBufferSeq* IndexBufferSeq::pFindBuffer(EntWsp& xEntWsp)
     
     while (pEntry) {
       
-      Key* pKey = pEntry->pKey();
+      Key* pKey = pEntry->aKey();
       
       //pKey->vShow();
       
@@ -252,7 +252,7 @@ void IndexBufferSeq::vInsertEntry(EntWsp& xEntWsp)
   
   while (pEntry) {
     
-    Key* pKey = pEntry->pKey();
+    Key* pKey = pEntry->aKey();
     
     if (*pNewKey < pKey ) {
       
@@ -325,7 +325,7 @@ bool IndexBufferSeq::bInsertEntry(EntWsp& xEntWsp)
   
   while (pEntry) {
     
-    Key* pKey = pEntry->pKey();
+    Key* pKey = pEntry->aKey();
     
     if (*pNewKey < pKey ) {
       
@@ -460,13 +460,13 @@ void IndexBufferSeq::vVerify(void)
   
   while (pEntryB) {
     
-    Key* pKeyA = pEntryA->pKey();
-    Key* pKeyB = pEntryB->pKey();
+    Key* pKeyA = pEntryA->aKey();
+    Key* pKeyB = pEntryB->aKey();
   
     //pKeyA->vShow();
     //pKeyB->vShow();
     
-    ASSERT(*pEntryA->pKey() <= pEntryB->pKey());
+    ASSERT(*pEntryA->aKey() <= pEntryB->aKey());
     
     pEntryA = pEntryB;
     pEntryB = pNextEntry(pEntryA);
