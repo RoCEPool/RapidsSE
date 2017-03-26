@@ -219,7 +219,7 @@ Entry* IndexBuffer::aNextEntry(Entry* aEntry)
 }
 
 /*----------------------------------------------------------------------------*/
-/* move portion of the wsp left                                               */
+/* move subset of entries left (thereby removing an entry)                    */
 /*----------------------------------------------------------------------------*/
 void IndexBuffer::vMoveLeft(void* aDst, i8 nBytes)
 {
@@ -265,7 +265,7 @@ void IndexBuffer::vMoveLeft(void* aDst, i8 nBytes)
 }
 
 /*----------------------------------------------------------------------------*/
-/* move part of the wsp right by given bytes                                  */
+/* move subset of entries right (thereby making space for a new entry)        */
 /*----------------------------------------------------------------------------*/
 void IndexBuffer::vMoveRight(void* aSrc, i8 nBytes)
 {
