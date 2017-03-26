@@ -168,7 +168,7 @@ Entry* IndexBuffer::aNewEntry(Entry* aAfterEntry, i8 nBytes, i8 nLevels)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get right entry at given level                                             */
+/* get right entry at given level (returns null if no right)                  */
 /*----------------------------------------------------------------------------*/
 Entry* IndexBuffer::aRightEntry(Entry* aEntry, i8 iLevel)
 {
@@ -201,7 +201,7 @@ Entry* IndexBuffer::aRightEntry(Entry* aEntry, i8 iLevel)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get next entry after given entry                                           */
+/* get next entry after given entry (returns null if no next)                 */
 /*----------------------------------------------------------------------------*/
 Entry* IndexBuffer::aNextEntry(Entry* aEntry)
 {
