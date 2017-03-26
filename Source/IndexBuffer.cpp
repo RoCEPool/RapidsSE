@@ -205,10 +205,13 @@ Entry* IndexBuffer::aRightEntry(Entry* aEntry, i8 iLevel)
 /*----------------------------------------------------------------------------*/
 Entry* IndexBuffer::aNextEntry(Entry* aEntry)
 {
+  // get the size of given entry
   i8 nBytes = aEntry->nSize();
   
+  // compute the address of possible next entry
   Entry* aNext = pAdd<Entry*>(aEntry,nBytes);
   
+  // check for valid entry
   if (aNext < _aEntry(m_xWsp.aLatter()))
     return aNext;
   else
