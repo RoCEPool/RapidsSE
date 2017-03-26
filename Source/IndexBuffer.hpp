@@ -49,7 +49,7 @@ namespace DBobjects
     i8     iLevel(void);
   
     Entry* aHeadEntry(void);
-    Entry* aNewEntry(Entry* aAfterEntry, i8 nBytes, i8 nLevels);
+    Entry* aNewEntry(i8 nBytes, i8 nLevels, Entry* aAfterEntry);
     Entry* aRightEntry(Entry* aEntry, i8 iLevel);
     Entry* aNextEntry(Entry* aEntry);
 

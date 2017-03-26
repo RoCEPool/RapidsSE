@@ -137,31 +137,43 @@ i8 IndexBuffer::iLevel(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get head entry of the skip list in this index buffer                       */
+/* get head entry of skip list in this index buffer                           */
 /*----------------------------------------------------------------------------*/
 Entry* IndexBuffer::aHeadEntry(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
+  // the head entry will have been alloted during constructor
+  ASSERT(m_xWsp.nUsed());
+  
   // the head entry is the first entry in wsp
-  Entry* pHead = reinterpret_cast<Entry*>(m_xWsp.aArea());
+  Entry* pHead = _aEntry(m_xWsp.aArea());
   
   return pHead;
 }
 
 /*----------------------------------------------------------------------------*/
-/* allot new entry                                                            */
+/* allot new entry after given entry (return null if insufficient space)      */
 /*----------------------------------------------------------------------------*/
-Entry* IndexBuffer::aNewEntry(Entry* aAfterEntry, i8 nBytes, i8 nLevels)
+Entry* IndexBuffer::aNewEntry(i8 nBytes, i8 nLevels, Entry* aAfterEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
-
+  
+  // check there is enough space for the new entry
+  if (m_xWsp.nFree() < nBytes)
+    return nullptr;
+  
+  // allot space for the new entry
   m_xWsp.vTake(nBytes);
 
-  Entry* aNewEntry = pAdd<Entry*>(aAfterEntry,nBytes);
+  // compute address of new entry
+  i8 nAfterBytes = aAfterEntry->nSize();
+  Entry* aNewEntry = pAdd<Entry*>(aAfterEntry,nAfterBytes);
 
+  // move subset of entries to right to make room for new entry
   vMoveRight(aNewEntry,nBytes);
   
+  // run the constructor of the new entry
   new (aNewEntry) Entry(nBytes,nLevels);
   
   return aNewEntry;
@@ -265,7 +277,7 @@ void IndexBuffer::vMoveLeft(void* aDst, i8 nBytes)
 }
 
 /*----------------------------------------------------------------------------*/
-/* move subset of entries right (thereby making space for a new entry)        */
+/* move subset of entries right (thereby making room for a new entry)         */
 /*----------------------------------------------------------------------------*/
 void IndexBuffer::vMoveRight(void* aSrc, i8 nBytes)
 {
