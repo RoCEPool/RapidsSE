@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* levels.hpp -- array of level pointers/references/offsets                   */
+/* Levels.hpp -- array of level pointers/references/offsets                   */
 /*============================================================================*/
 #pragma once
 
@@ -15,8 +15,11 @@ namespace DBobjects
     
     Levels(void);
     ~Levels(void);
-  
+
+    static i8 nBytesRequired(i8 nLevels);
   };
+  
+  Levels* _aLevels(void* aAddr);
 }
 
 /*============================================================================*/

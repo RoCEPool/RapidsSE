@@ -50,6 +50,7 @@ namespace DBobjects
   
     Entry* aHeadEntry(void);
     Entry* aNewEntry(i8 nBytes, i8 nLevels, Entry* aAfterEntry);
+    Levels* aNewHead(void);
     Entry* aRightEntry(Entry* aEntry, i8 iLevel);
     Entry* aNextEntry(Entry* aEntry);
 

@@ -180,6 +180,25 @@ Entry* IndexBuffer::aNewEntry(i8 nBytes, i8 nLevels, Entry* aAfterEntry)
 }
 
 /*----------------------------------------------------------------------------*/
+/* allot head (during constructor)                                            */
+/*----------------------------------------------------------------------------*/
+Levels* IndexBuffer::aNewHead(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
+
+  // must be the first item in wsp
+  ASSERT( !m_xWsp.nUsed());
+  
+  // how many bytes are required
+  i8 nBytes = Levels::nBytesRequired(C_FLAT_LEVELS - 1);
+  
+  // allot the head
+  Levels* aHead = _aLevels(m_xWsp.aAllot(nBytes));
+  
+  return aHead;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get right entry at given level (returns null if no right)                  */
 /*----------------------------------------------------------------------------*/
 Entry* IndexBuffer::aRightEntry(Entry* aEntry, i8 iLevel)
