@@ -96,7 +96,7 @@ IndexBuffer* IndexBuffer::pNewIndexBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* insert new entry                                                           */
 /*----------------------------------------------------------------------------*/
-bool IndexBuffer::bInsert(Key* pKey, RowId xRowId)
+bool IndexBuffer::bInsert(Key* aKey, RowId xRowId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
@@ -106,7 +106,7 @@ bool IndexBuffer::bInsert(Key* pKey, RowId xRowId)
 /*----------------------------------------------------------------------------*/
 /* remove existing entry                                                      */
 /*----------------------------------------------------------------------------*/
-bool IndexBuffer::bRemove(Key* pKey)
+bool IndexBuffer::bRemove(Key* aKey)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
@@ -116,7 +116,7 @@ bool IndexBuffer::bRemove(Key* pKey)
 /*----------------------------------------------------------------------------*/
 /* positition to entry (optional set revise vector)                           */
 /*----------------------------------------------------------------------------*/
-Entry* IndexBuffer::pPosition(Key* pKey, bool& bEqualTo, Entry** pReviseVec)
+Entry* IndexBuffer::aPosition(Key* aKey, bool& bEqualTo, Entry** aReviseVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
@@ -139,7 +139,7 @@ i8 IndexBuffer::iLevel(void)
 /*----------------------------------------------------------------------------*/
 /* get head entry of the skip list in this index buffer                       */
 /*----------------------------------------------------------------------------*/
-Entry* IndexBuffer::pHeadEntry(void)
+Entry* IndexBuffer::aHeadEntry(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
@@ -152,25 +152,25 @@ Entry* IndexBuffer::pHeadEntry(void)
 /*----------------------------------------------------------------------------*/
 /* allot new entry                                                            */
 /*----------------------------------------------------------------------------*/
-Entry* IndexBuffer::pNewEntry(Entry* pAfterEntry, i8 nBytes, i8 nLevels)
+Entry* IndexBuffer::aNewEntry(Entry* aAfterEntry, i8 nBytes, i8 nLevels)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
 
   m_xWsp.vTake(nBytes);
 
-  Entry* pNewEntry = pAdd<Entry*>(pAfterEntry,nBytes);
+  Entry* aNewEntry = pAdd<Entry*>(aAfterEntry,nBytes);
 
-  vMoveRight(pNewEntry,nBytes);
+  vMoveRight(aNewEntry,nBytes);
   
-  new (pNewEntry) Entry(nBytes,nLevels);
+  new (aNewEntry) Entry(nBytes,nLevels);
   
-  return pNewEntry;
+  return aNewEntry;
 }
 
 /*----------------------------------------------------------------------------*/
 /* get right entry at given level                                             */
 /*----------------------------------------------------------------------------*/
-Entry* IndexBuffer::pRightEntry(Entry* aEntry, i8 iLevel)
+Entry* IndexBuffer::aRightEntry(Entry* aEntry, i8 iLevel)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
@@ -193,7 +193,7 @@ Entry* IndexBuffer::pRightEntry(Entry* aEntry, i8 iLevel)
   // get right entry
   Entry* aRightEntry;
   if (0 == iLevel)
-    aRightEntry = pNextEntry(aEntry);
+    aRightEntry = aNextEntry(aEntry);
   else
    aRightEntry = aEntry->pRightEntry(iLevel);
   
@@ -203,14 +203,14 @@ Entry* IndexBuffer::pRightEntry(Entry* aEntry, i8 iLevel)
 /*----------------------------------------------------------------------------*/
 /* get next entry after given entry                                           */
 /*----------------------------------------------------------------------------*/
-Entry* IndexBuffer::pNextEntry(Entry* pEntry)
+Entry* IndexBuffer::aNextEntry(Entry* aEntry)
 {
-  i8 nBytes = pEntry->nSize();
+  i8 nBytes = aEntry->nSize();
   
-  Entry* pNext = pAdd<Entry*>(pEntry,nBytes);
+  Entry* aNext = pAdd<Entry*>(aEntry,nBytes);
   
-  if (pNext < _aEntry(m_xWsp.aLatter()))
-    return pNext;
+  if (aNext < _aEntry(m_xWsp.aLatter()))
+    return aNext;
   else
     return nullptr;
 }
