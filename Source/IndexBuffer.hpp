@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* IndexBuffer.hpp -- Index Buffer                                            */
+/* IndexBuffer.hpp -- Index Buffer (skip list variant)                        */
 /*============================================================================*/
 #pragma once
 
@@ -41,33 +41,7 @@ namespace DBobjects
     ~IndexBuffer(void);
     
     static IndexBuffer* pNewIndexBuffer(void);
-    
-    static void vDump(eCN eClass, Object* pObject, Str* aTab);
-    
-    void  vAppendBuffer(IndexBuffer* pArgBuffer);
-    void  vCopyBuffer(IndexBuffer* pFromBuffer);
-    i8    nEntries(void);
-    void  vEntryCount(void);
-    void  vInsertEntry(EntWsp& xEntWsp);
-    bool  bInsertEntry(EntWsp& xEntWsp);
-    IndexBuffer* pFindBuffer(EntWsp& xEntWsp);
-    void  vShow(void);
-    void  vSplitBuffer(void);
-    void  vVerify(void);
   
-    Entry* pFirstEntry();
-    Entry* pNextEntry(Entry* pCurr);
-    
-    IndexBuffer* pNextBuffer(void);
-    void         vNextBuffer(IndexBuffer* pNextBuffer);
-    
-    IndexBuffer* pPrevBuffer(void);
-    void         vPrevBuffer(IndexBuffer* pPrevBuffer);
-  
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-    // skip list support                                                     //
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-
     bool   bInsert(Key* pKey, RowId xRowId);
     bool   bRemove(Key* pKey);
   
