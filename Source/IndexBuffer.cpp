@@ -124,7 +124,7 @@ bool IndexBuffer::bRemove(Key* aKey)
 /*----------------------------------------------------------------------------*/
 /* get head entry of skip list in this index buffer                           */
 /*----------------------------------------------------------------------------*/
-Entry* IndexBuffer::aHeadEntry(void)
+Entry* IndexBuffer::aHead(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
@@ -246,16 +246,6 @@ void IndexBuffer::vMoveRight(void* aSrc, i8 nBytes)
 }
 
 /*----------------------------------------------------------------------------*/
-/* positition to entry (optional set revise vector)                           */
-/*----------------------------------------------------------------------------*/
-Entry* IndexBuffer::aPosition(Key* aKey, bool& bEqualTo, Entry** aReviseVec)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
-  
-  return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
 /* allot new entry after given entry (return null if insufficient space)      */
 /*----------------------------------------------------------------------------*/
 Entry* IndexBuffer::aNewEntry(i8 nBytes, i8 nLevels, Entry* aAfterEntry)
@@ -269,12 +259,18 @@ Entry* IndexBuffer::aNewEntry(i8 nBytes, i8 nLevels, Entry* aAfterEntry)
   // allot space for the new entry
   m_xWsp.vTake(nBytes);
 
+  Entry* aNewEntry;
+  if (aAfterEntry) {
   // compute address of new entry
-  i8 nAfterBytes = aAfterEntry->nSize();
-  Entry* aNewEntry = pAdd<Entry*>(aAfterEntry,nAfterBytes);
+    i8 nAfterBytes = aAfterEntry->nSize();
+    aNewEntry = pAdd<Entry*>(aAfterEntry,nAfterBytes);
 
-  // move subset of entries to right to make room for new entry
-  vMoveRight(aNewEntry,nBytes);
+    // move subset of entries to right to make room for new entry
+    vMoveRight(aNewEntry,nBytes);
+  }
+  else {
+    aNewEntry = _aEntry(m_xWsp.aArea());
+  }
   
   // run the constructor of the new entry
   new (aNewEntry) Entry(nBytes,nLevels);
@@ -283,28 +279,29 @@ Entry* IndexBuffer::aNewEntry(i8 nBytes, i8 nLevels, Entry* aAfterEntry)
 }
 
 /*----------------------------------------------------------------------------*/
-/* allot head (during constructor)                                            */
+/* allot head entry (during constructor)                                      */
 /*----------------------------------------------------------------------------*/
 void IndexBuffer::vNewHead(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
 
   // must be the first item in wsp
-  ASSERT( !m_xWsp.nUsed());
+  ASSERT( ! m_xWsp.nUsed() );
   
   // how many bytes are required
-  i8 nBytes = Levels::nBytesRequired(C_FLAT_LEVELS);
+  i8 nBytes = Levels::nBytesRequired(C_FLAT_LEVELS);                //! not correct
   
   // allot the head
-  Levels* aHead = _aLevels(m_xWsp.aAllot(nBytes));
-
+  Entry* aHead = aNewEntry(nBytes,C_FLAT_LEVELS,nullptr);
+  
   // initialize the head
   for (i8 iLevel = 0; iLevel < C_FLAT_LEVELS; iLevel++)
-    aHead->m_iRight[iLevel] = C_NIL;
+    ;
+  //aHead->m_iRight[iLevel] = C_NIL_OFFSET;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get next entry after given entry (returns null if no next)                 */
+/* get next entry (eq to right L0) after given entry (null if no next)        */
 /*----------------------------------------------------------------------------*/
 Entry* IndexBuffer::aNextEntry(Entry* aEntry)
 {
@@ -319,6 +316,16 @@ Entry* IndexBuffer::aNextEntry(Entry* aEntry)
     return aNext;
   else
     return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* positition to entry (optional set revise vector)                           */
+/*----------------------------------------------------------------------------*/
+Entry* IndexBuffer::aPosition(Key* aKey, bool& bEqualTo, Entry** aReviseVec)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
+  
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

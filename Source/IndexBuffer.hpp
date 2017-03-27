@@ -11,7 +11,7 @@ namespace DBobjects
   public:
     static const i8 C_FLAT_LEVELS = 3;
     static const i8 C_FLAT_FREQ = 2;
-    static const i8 C_NIL = 0xFFFFFFFFFFFFFFFF;
+    static const i8 C_NIL_OFFSET = 0xFFFFFFFFFFFFFFFF;
     
   private:
     i8           m_nEntries;    // number of entries in this buffer
@@ -45,7 +45,7 @@ namespace DBobjects
     bool   bRemove(Key* aKey);
   
   private:
-    Entry*  aHeadEntry(void);
+    Entry*  aHead(void);
     i8      iLevel(void);
     void    vMoveLeft(void* aDst, i8 nBytes);
     void    vMoveRight(void* aSrc, i8 nBytes);

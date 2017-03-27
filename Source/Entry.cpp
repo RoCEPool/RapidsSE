@@ -314,6 +314,17 @@ Entry* Entry::aRightEntry(i8 iLevel)
 {
   //_precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
   
+  /*
+   
+   we can't call with iLevel=0, because the caller should have used
+   IndexBuffer::aEntryNext()
+   
+   */
+  
+  ASSERT(iLevel > 0 && iLevel < IndexBuffer::C_FLAT_LEVELS);
+  
+  // i8 iLevelSub = iLevel - 1;
+  
   return nullptr;
 }
 

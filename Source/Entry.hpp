@@ -5,6 +5,17 @@
 
 namespace DBobjects
 {
+  /*
+   
+   important note: 
+     iLevel is assumed to be 0..C_FLAT_LEVELS-1
+     iLevelSub is iLevel - 1 (ie 0..C_FLAT_LEVELS-2)
+   
+     we never use iLevel - 1 when we mean iLevelSub
+     we always compute iLevelSub first
+   
+   */
+  
   class Entry
   {
   private:
