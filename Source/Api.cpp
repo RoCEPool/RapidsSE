@@ -1609,7 +1609,7 @@ eEC RapidsSE_ScanTable(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable)
     // pSEitf cannot be null
     if (pSEitf == nullptr) {
       if (gpGrid->m_bTraceapi)
-        vTrace(">RapidsSE_ScanTable: %p %lld %s\n"_Str, pSEitf,
+        vTrace(">RapidsSE_ScanTable(a): %p %lld %s\n"_Str, pSEitf,
                pSEitf->iPartition(), aEC[EC_INVALID_INTERFACE]);
       return EC_INVALID_INTERFACE;
     }
@@ -1617,7 +1617,7 @@ eEC RapidsSE_ScanTable(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable)
     // pSEitf should be a pool address
     if (!gpBufferPool->bValidAddress(pSEitf)) {
       if (gpGrid->m_bTraceapi)
-        vTrace(">RapidsSE_ScanTable: %p %lld %s\n"_Str, pSEitf,
+        vTrace(">RapidsSE_ScanTable(b): %p %lld %s\n"_Str, pSEitf,
                pSEitf->iPartition(), aEC[EC_INVALID_INTERFACE]);
       return EC_INVALID_INTERFACE;
     }
@@ -1625,7 +1625,7 @@ eEC RapidsSE_ScanTable(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable)
     // pSEitf should be an SEitf class
     if (pSEitf->eClass() != CN_SEITF) {
       if (gpGrid->m_bTraceapi)
-        vTrace(">RapidsSE_ScanTable: %p %lld %s\n"_Str, pSEitf,
+        vTrace(">RapidsSE_ScanTable(c): %p %lld %s\n"_Str, pSEitf,
                pSEitf->iPartition(), aEC[EC_INVALID_INTERFACE]);
       return EC_INVALID_INTERFACE;
     }
@@ -1636,7 +1636,7 @@ eEC RapidsSE_ScanTable(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable)
     if (!pCatalog) {
       pSEitf->vSetLastError(EC_INVALID_PARAMETER);
       if (gpGrid->m_bTraceapi)
-        vTrace(">RapidsSE_ScanTable: %p %lld %s\n"_Str, pSEitf,
+        vTrace(">RapidsSE_ScanTable(d): %p %lld %s\n"_Str, pSEitf,
                pSEitf->iPartition(), aEC[EC_INVALID_PARAMETER]);
       return EC_INVALID_PARAMETER;
     }
@@ -1644,7 +1644,7 @@ eEC RapidsSE_ScanTable(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable)
     if (!pSchema) {
       pSEitf->vSetLastError(EC_INVALID_PARAMETER);
       if (gpGrid->m_bTraceapi)
-        vTrace(">RapidsSE_ScanTable: %p %lld %s\n"_Str, pSEitf,
+        vTrace(">RapidsSE_ScanTable(e): %p %lld %s\n"_Str, pSEitf,
                pSEitf->iPartition(), aEC[EC_INVALID_PARAMETER]);
       return EC_INVALID_PARAMETER;
     }
@@ -1652,7 +1652,7 @@ eEC RapidsSE_ScanTable(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable)
     if (!pTable) {
       pSEitf->vSetLastError(EC_INVALID_PARAMETER);
       if (gpGrid->m_bTraceapi)
-        vTrace(">RapidsSE_ScanTable: %p %lld %s\n"_Str, pSEitf,
+        vTrace(">RapidsSE_ScanTable(f): %p %lld %s\n"_Str, pSEitf,
                pSEitf->iPartition(), aEC[EC_INVALID_PARAMETER]);
       return EC_INVALID_PARAMETER;
     }
@@ -1661,7 +1661,7 @@ eEC RapidsSE_ScanTable(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable)
     eResult = eExecuteRequest(pSEitf, "cf"_Str, "~"_Str);
     if (EC_NONE != eResult) {
       if (gpGrid->m_bTraceapi)
-        vTrace(">RapidsSE_ScanTable: %p %lld %s\n"_Str, pSEitf,
+        vTrace(">RapidsSE_ScanTable(g): %p %lld %s\n"_Str, pSEitf,
                pSEitf->iPartition(), aEC[eResult]);
       return eResult;
     }
@@ -1670,7 +1670,7 @@ eEC RapidsSE_ScanTable(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable)
     eResult = eGetResponse(pSEitf);
     if (EC_NONE != eResult) {
       if (gpGrid->m_bTraceapi)
-        vTrace(">RapidsSE_ScanTable: %p %lld %s\n"_Str, pSEitf,
+        vTrace(">RapidsSE_ScanTable(h): %p %lld %s\n"_Str, pSEitf,
                pSEitf->iPartition(), aEC[eResult]);
       return eResult;
     }
@@ -1679,7 +1679,7 @@ eEC RapidsSE_ScanTable(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable)
     eResult = eExecuteRequest(pSEitf, "cf"_Str, "boray"_Str);
     if (EC_NONE != eResult) {
       if (gpGrid->m_bTraceapi)
-        vTrace(">RapidsSE_ScanTable: %p %lld %s\n"_Str, pSEitf,
+        vTrace(">RapidsSE_ScanTable(i): %p %lld %s\n"_Str, pSEitf,
                pSEitf->iPartition(), aEC[eResult]);
       return eResult;
     }
@@ -1688,7 +1688,7 @@ eEC RapidsSE_ScanTable(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable)
     eResult = eGetResponse(pSEitf);
     if (EC_NONE != eResult) {
       if (gpGrid->m_bTraceapi)
-        vTrace(">RapidsSE_ScanTable: %p %lld %s\n"_Str, pSEitf,
+        vTrace(">RapidsSE_ScanTable(j): %p %lld %s\n"_Str, pSEitf,
                pSEitf->iPartition(), aEC[eResult]);
       return eResult;
     }
@@ -1697,7 +1697,7 @@ eEC RapidsSE_ScanTable(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable)
     eResult = eExecuteRequest(pSEitf, "cf"_Str, "catalogs"_Str);
     if (EC_NONE != eResult) {
       if (gpGrid->m_bTraceapi)
-        vTrace(">RapidsSE_ScanTable: %p %lld %s\n"_Str, pSEitf,
+        vTrace(">RapidsSE_ScanTable(k): %p %lld %s\n"_Str, pSEitf,
                pSEitf->iPartition(), aEC[eResult]);
       return eResult;
     }
@@ -1706,7 +1706,7 @@ eEC RapidsSE_ScanTable(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable)
     eResult = eGetResponse(pSEitf);
     if (EC_NONE != eResult) {
       if (gpGrid->m_bTraceapi)
-        vTrace(">RapidsSE_ScanTable: %p %lld %s\n"_Str, pSEitf,
+        vTrace(">RapidsSE_ScanTable(l): %p %lld %s\n"_Str, pSEitf,
                pSEitf->iPartition(), aEC[eResult]);
       return eResult;
     }
@@ -1715,7 +1715,7 @@ eEC RapidsSE_ScanTable(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable)
     eResult = eExecuteRequest(pSEitf, "cf"_Str, (Str*)pCatalog);
     if (EC_NONE != eResult) {
       if (gpGrid->m_bTraceapi)
-        vTrace(">RapidsSE_ScanTable: %p %lld %s\n"_Str, pSEitf,
+        vTrace(">RapidsSE_ScanTable(m): %p %lld %s\n"_Str, pSEitf,
                pSEitf->iPartition(), aEC[eResult]);
       return eResult;
     }
@@ -1724,7 +1724,7 @@ eEC RapidsSE_ScanTable(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable)
     eResult = eGetResponse(pSEitf);
     if (EC_NONE != eResult) {
       if (gpGrid->m_bTraceapi)
-        vTrace(">RapidsSE_ScanTable: %p %lld %s\n"_Str, pSEitf,
+        vTrace(">RapidsSE_ScanTable(n): %p %lld %s\n"_Str, pSEitf,
                pSEitf->iPartition(), aEC[eResult]);
       return eResult;
     }
@@ -1733,7 +1733,7 @@ eEC RapidsSE_ScanTable(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable)
     eResult = eExecuteRequest(pSEitf, "cf"_Str, "schemas"_Str);
     if (EC_NONE != eResult) {
       if (gpGrid->m_bTraceapi)
-        vTrace(">RapidsSE_ScanTable: %p %lld %s\n"_Str, pSEitf,
+        vTrace(">RapidsSE_ScanTable(o): %p %lld %s\n"_Str, pSEitf,
                pSEitf->iPartition(), aEC[eResult]);
       return eResult;
     }
@@ -1742,7 +1742,7 @@ eEC RapidsSE_ScanTable(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable)
     eResult = eGetResponse(pSEitf);
     if (EC_NONE != eResult) {
       if (gpGrid->m_bTraceapi)
-        vTrace(">RapidsSE_ScanTable: %p %lld %s\n"_Str, pSEitf,
+        vTrace(">RapidsSE_ScanTable(p): %p %lld %s\n"_Str, pSEitf,
                pSEitf->iPartition(), aEC[eResult]);
       return eResult;
     }
@@ -1751,7 +1751,7 @@ eEC RapidsSE_ScanTable(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable)
     eResult = eExecuteRequest(pSEitf, "cf"_Str, (Str*)pSchema);
     if (EC_NONE != eResult) {
       if (gpGrid->m_bTraceapi)
-        vTrace(">RapidsSE_ScanTable: %p %lld %s\n"_Str, pSEitf,
+        vTrace(">RapidsSE_ScanTable(q): %p %lld %s\n"_Str, pSEitf,
                pSEitf->iPartition(), aEC[eResult]);
       return eResult;
     }
@@ -1760,7 +1760,7 @@ eEC RapidsSE_ScanTable(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable)
     eResult = eGetResponse(pSEitf);
     if (EC_NONE != eResult) {
       if (gpGrid->m_bTraceapi)
-        vTrace(">RapidsSE_ScanTable: %p %lld %s\n"_Str, pSEitf,
+        vTrace(">RapidsSE_ScanTable(r): %p %lld %s\n"_Str, pSEitf,
                pSEitf->iPartition(), aEC[eResult]);
       return eResult;
     }
@@ -1769,7 +1769,7 @@ eEC RapidsSE_ScanTable(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable)
     eResult = eExecuteRequest(pSEitf, "cf"_Str, "tables"_Str);
     if (EC_NONE != eResult) {
       if (gpGrid->m_bTraceapi)
-        vTrace(">RapidsSE_ScanTable: %p %lld %s\n"_Str, pSEitf,
+        vTrace(">RapidsSE_ScanTable(s): %p %lld %s\n"_Str, pSEitf,
                pSEitf->iPartition(), aEC[eResult]);
       return eResult;
     }
@@ -1778,7 +1778,7 @@ eEC RapidsSE_ScanTable(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable)
     eResult = eGetResponse(pSEitf);
     if (EC_NONE != eResult) {
       if (gpGrid->m_bTraceapi)
-        vTrace(">RapidsSE_ScanTable: %p %lld %s\n"_Str, pSEitf,
+        vTrace(">RapidsSE_ScanTable(t): %p %lld %s\n"_Str, pSEitf,
                pSEitf->iPartition(), aEC[eResult]);
       return eResult;
     }
@@ -1787,7 +1787,7 @@ eEC RapidsSE_ScanTable(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable)
     eResult = eExecuteRequest(pSEitf, "cf"_Str, (Str*)pTable);
     if (EC_NONE != eResult) {
       if (gpGrid->m_bTraceapi)
-        vTrace(">RapidsSE_ScanTable: %p %lld %s\n"_Str, pSEitf,
+        vTrace(">RapidsSE_ScanTable(u): %p %lld %s\n"_Str, pSEitf,
                pSEitf->iPartition(), aEC[eResult]);
       return eResult;
     }
@@ -1796,16 +1796,41 @@ eEC RapidsSE_ScanTable(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable)
     eResult = eGetResponse(pSEitf);
     if (EC_NONE != eResult) {
       if (gpGrid->m_bTraceapi)
-        vTrace(">RapidsSE_ScanTable: %p %lld %s\n"_Str, pSEitf,
+        vTrace(">RapidsSE_ScanTable(v): %p %lld %s\n"_Str, pSEitf,
                pSEitf->iPartition(), aEC[eResult]);
       return eResult;
     }
+    
+    
+    
+    
+    // select * from pTable
+    eResult = eExecuteRequest(pSEitf, "pwf"_Str);
+    if (EC_NONE != eResult) {
+      if (gpGrid->m_bTraceapi)
+        vTrace(">RapidsSE_ScanTable(--): %p %lld %s\n"_Str, pSEitf,
+               pSEitf->iPartition(), aEC[eResult]);
+      return eResult;
+    }
+    
+    // get response
+    eResult = eGetResponse(pSEitf);
+    if (EC_NONE != eResult) {
+      if (gpGrid->m_bTraceapi)
+        vTrace(">RapidsSE_ScanTable(++): %p %lld %s(%lld)\n"_Str, pSEitf,
+               pSEitf->iPartition(), aEC[eResult], eResult);
+      return eResult;
+    }
+
+    
+    vTrace("pwf: %s\n"_Str, pSEitf->m_sResponse.aStr());
+    
     
     // select * from pTable
     eResult = eExecuteRequest(pSEitf, "sel"_Str, (Str*)pTable);
     if (EC_NONE != eResult) {
       if (gpGrid->m_bTraceapi)
-        vTrace(">RapidsSE_ScanTable: %p %lld %s\n"_Str, pSEitf,
+        vTrace(">RapidsSE_ScanTable(w): %p %lld %s\n"_Str, pSEitf,
                pSEitf->iPartition(), aEC[eResult]);
       return eResult;
     }
@@ -1814,8 +1839,8 @@ eEC RapidsSE_ScanTable(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable)
     eResult = eGetResponse(pSEitf);
     if (EC_NONE != eResult) {
       if (gpGrid->m_bTraceapi)
-        vTrace(">RapidsSE_ScanTable: %p %lld %s\n"_Str, pSEitf,
-               pSEitf->iPartition(), aEC[eResult]);
+        vTrace(">RapidsSE_ScanTable(x): %p %lld %s(%lld)\n"_Str, pSEitf,
+               pSEitf->iPartition(), aEC[eResult], eResult);
       return eResult;
     }
 
@@ -1833,17 +1858,21 @@ eEC RapidsSE_ScanTable(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable)
     
     pSelCursor->vFirst();
 
+    if (gpGrid->m_bTraceapi)
+      vTrace(">RapidsSE_ScanTable(y): %p %lld %s\n"_Str, pSEitf,
+             pSEitf->iPartition(), aEC[eResult]);
+
     return EC_NONE;
   }
   catch (Error* pError) {
     if (gpGrid->m_bTraceapi)
-      vTrace(">RapidsSE_AddColumn: %p %s\n"_Str, pSEitf, pError->aErrorMsg());
+      vTrace(">RapidsSE_AddColumn(z): %p %s\n"_Str, pSEitf, pError->aErrorMsg());
     RapidsSE::vHandler(pError);
     return pError->eErrorCode();
   }
   catch (...) {
     if (gpGrid->m_bTraceapi)
-      vTrace(">RapidsSE_AddColumn: %p %s\n"_Str, pSEitf, aEC[EC_SE_UNKNOWN_ERROR]);
+      vTrace(">RapidsSE_AddColumn(?): %p %s\n"_Str, pSEitf, aEC[EC_SE_UNKNOWN_ERROR]);
     return EC_SE_UNKNOWN_ERROR;
   }
 }
