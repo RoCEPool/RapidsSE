@@ -370,6 +370,20 @@ Entry* IndexBuffer::aToEntry(i8 iOffset)
   return aEntry;
 }
 
+/*----------------------------------------------------------------------------*/
+/* converts aEntry to iOffset                                                 */
+/*----------------------------------------------------------------------------*/
+i8 IndexBuffer::iToOffset(Entry* aEntry)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
+  
+  i8 iOffset = nSub(aEntry,m_xWsp.aArea());
+  
+  ASSERT(iOffset >= 0 && iOffset < m_xWsp.nSize());
+  
+  return iOffset;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

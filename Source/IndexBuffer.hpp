@@ -55,6 +55,7 @@ namespace DBobjects
     Entry*  aPosition(Key* aKey, bool& bEqualTo, Entry** aReviseVec);
     Entry*  aRightEntry(Entry* aEntry, i8 iLevel);
     Entry*  aToEntry(i8 iOffset);
+    i8      iToOffset(Entry* aEntry);
   };
   
   IndexBuffer* _pIndexBuffer(void* aAddr);
