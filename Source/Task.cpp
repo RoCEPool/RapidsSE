@@ -2,7 +2,7 @@
 /* Task.cpp - task                                                            */
 /*============================================================================*/
 
-#define MUNGED
+//#define MUNGED
 
 #include "StorageEngine.h"
 #include "SePrompt.hpp"

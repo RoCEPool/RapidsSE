@@ -65,8 +65,8 @@ int main(int argc, const char* argv[])
     u8 iLevel = Random::uLogLevel(gxArguments.m_uLevels, gxArguments.m_uFrequency);
     iLevels[iLevel]++;
   }
-  for (i8 iLevel = 0; iLevel < gxArguments.m_uLevels; iLevel++)
-    printf("%lld: %lld\n",iLevel,iLevels[iLevel]);
+  for (u8 uLevel = 0; uLevel < gxArguments.m_uLevels; uLevel++)
+    printf("%llu: %llu\n",uLevel,iLevels[uLevel]);
   //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   
   
