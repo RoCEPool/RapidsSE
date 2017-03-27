@@ -165,13 +165,13 @@ void IndexBuffer::vMoveLeft(void* aDst, i8 nBytes)
    2) we move the F..Z left
    3) we give space back into wsp free space
    
-   aDst --+   +-- aSrc
-   v   v
+       aDst --+   +-- aSrc
+              v   v
    ------------------------------------------+
-   | A..D | E | F..Z |       free         |
+      | A..D | E | F..Z |       free         |
    ------------------------------------------+
    ------------------------------------------+
-   | A..D | F..Z |         free           |
+      | A..D | F..Z |         free           |
    ------------------------------------------+
    
    aDst is the first byte of entry E
@@ -212,13 +212,13 @@ void IndexBuffer::vMoveRight(void* aSrc, i8 nBytes)
    3) compute the destination address
    3) then move F..Z right by bytes alloted for E
    
-   aSrc --+      +-- aDst
-   v      v
+       aSrc --+      +-- aDst
+              v      v
    ------------------------------------------+
-   | A..D | F..Z | alloted | free         |
+      | A..D | F..Z | alloted | free         |
    ------------------------------------------+
    ------------------------------------------+
-   | A..D | alloted | F..Z | free         |
+      | A..D | alloted | F..Z | free         |
    ------------------------------------------+
    
    aSrc is the first byte where E is to be inserted (i.e. first byte of F)
