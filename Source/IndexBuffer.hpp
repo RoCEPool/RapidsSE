@@ -17,7 +17,7 @@ namespace DBobjects
     i8           m_nEntries;    // number of entries in this buffer
     IndexBuffer* m_pPrevBuffer; // prev buffer
     IndexBuffer* m_pNextBuffer; // next buffer
-    
+  
     
     // need to add skip list head
     // head would be array of [FLAT_LEVELS - 1]
@@ -44,17 +44,16 @@ namespace DBobjects
     bool   bInsert(Key* aKey, RowId xRowId);
     bool   bRemove(Key* aKey);
   
-    Entry* aPosition(Key* aKey, bool& bEqualTo, Entry** aReviseVec);
-    i8     iLevel(void);
-  
-    Entry* aHeadEntry(void);
-    Entry* aNewEntry(i8 nBytes, i8 nLevels, Entry* aAfterEntry);
+  private:
+    Entry*  aHeadEntry(void);
+    i8      iLevel(void);
+    void    vMoveLeft(void* aDst, i8 nBytes);
+    void    vMoveRight(void* aSrc, i8 nBytes);
+    Entry*  aNewEntry(i8 nBytes, i8 nLevels, Entry* aAfterEntry);
     Levels* aNewHead(void);
-    Entry* aRightEntry(Entry* aEntry, i8 iLevel);
-    Entry* aNextEntry(Entry* aEntry);
-
-    void   vMoveLeft(void* aDst, i8 nBytes);
-    void   vMoveRight(void* aSrc, i8 nBytes);
+    Entry*  aNextEntry(Entry* aEntry);
+    Entry*  aPosition(Key* aKey, bool& bEqualTo, Entry** aReviseVec);
+    Entry*  aRightEntry(Entry* aEntry, i8 iLevel);
   };
   
   IndexBuffer* _pIndexBuffer(void* aAddr);
