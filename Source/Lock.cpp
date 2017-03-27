@@ -255,14 +255,20 @@ void Lock::vGrabWrite(void)
     xTimer.vUpdate();
     if (xTimer.iMilliseconds() > 100 && ! bReported) {
       bReported = true;
-      vTrace("Lock::vGrabWrite -- Unable to grab write lock %p %s\n"_Str,
+      vTrace("Lock::vGrabWrite -- Unable to grab write lock %p %s %p\n"_Str,
              this,
-             m_sName.s());
+             m_sName.s(),
+             m_uLockWord);
     }
     
     rCode = Synch::iLockGrabWrite(&m_uLockWord);
   } while ( ! rCode );
   
+  if (bReported) {
+    vTrace("Lock::vGrabWrite -- Able to grab write lock %p %p\n"_Str,
+           this, m_uLockWord);
+  }
+
   vCheckWrite();
 }
 
