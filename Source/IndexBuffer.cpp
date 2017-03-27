@@ -354,6 +354,22 @@ Entry* IndexBuffer::aRightEntry(Entry* aEntry, i8 iLevel)
   return nullptr;
 }
 
+/*----------------------------------------------------------------------------*/
+/* converts iOffset to aEntry                                                 */
+/*----------------------------------------------------------------------------*/
+Entry* IndexBuffer::aToEntry(i8 iOffset)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
+  
+  // check the offset is within bounds
+  ASSERT(iOffset >= 0 && iOffset < m_xWsp.nUsed());
+  
+  // calculate address of entry
+  Entry* aEntry = pAdd<Entry*>(m_xWsp.aArea(),iOffset);
+  
+  return aEntry;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
