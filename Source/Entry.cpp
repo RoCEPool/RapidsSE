@@ -218,7 +218,7 @@ Key& Entry::xKey(void)
   
   Key* pKey = reinterpret_cast<Key*>(m_xWsp.aArea());
 
-  return reinterpret_cast<Key&>(pKey);
+  return reinterpret_cast<Key&>(*pKey);
 }
 
 /*----------------------------------------------------------------------------*/
