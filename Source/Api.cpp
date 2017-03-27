@@ -645,6 +645,63 @@ eEC RapidsSE_EndInsert(SEitf* pSEitf)
 }
 
 /*----------------------------------------------------------------------------*/
+/* end scan                                                                   */
+/*----------------------------------------------------------------------------*/
+eEC RapidsSE_EndScan(SEitf* pSEitf)
+{
+  if (gpGrid->m_bTraceapi)
+    vTrace(">RapidsSE_EndScan: %p\n"_Str, pSEitf);
+  
+  if (pSEitf == nullptr) {
+    if (gpGrid->m_bTraceapi)
+      vTrace("<RapidsSE_EndScan: %p\n"_Str, pSEitf);
+    return EC_INVALID_INTERFACE;
+  }
+  
+  if (!gpBufferPool->bValidAddress(pSEitf)) {
+    if (gpGrid->m_bTraceapi)
+      vTrace("<RapidsSE_EndScan: %p\n"_Str, pSEitf);
+    return EC_INVALID_INTERFACE;
+  }
+  
+  // clear the last error
+  pSEitf->vClearLastError();
+  
+  i8 iAddress = StrLib::iToI8( pSEitf->m_sResponse.s());
+  
+  SelCursor* pSelCursor = reinterpret_cast<SelCursor*>(iAddress);
+  ASSERT(CN_SELCURSOR == pSelCursor->eClass());
+  delete pSelCursor;
+  
+  // return the table
+  eEC eResult = eExecuteRequest(pSEitf, "rettbl"_Str);
+  if (EC_NONE != eResult) {
+    
+    vTrace("RapidsSE_EndScan: rettbl FAILED!!!\n"_Str);
+    
+    if (gpGrid->m_bTraceapi)
+      vTrace("<RapidsSE_EndScan: %p\n"_Str, pSEitf);
+    
+    return eResult;
+  }
+  
+  // get response
+  eResult = eGetResponse(pSEitf);
+  if (EC_NONE != eResult) {
+    if (gpGrid->m_bTraceapi)
+      vTrace("<RapidsSE_EndScan: %p\n"_Str, pSEitf);
+    return eResult;
+  }
+  
+  ASSERT(pSEitf->pCurrentTable() == nullptr);
+  
+  if (gpGrid->m_bTraceapi)
+    vTrace("<RapidsSE_EndScan: %p\n"_Str, pSEitf);
+  
+  return EC_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
 /* Execute a request                                                          */
 /*----------------------------------------------------------------------------*/
 bool RapidsSE_ExecuteRequest(SEitf* pSEitf, Str* aWords[], i8 iWords, Str** ppResponse)

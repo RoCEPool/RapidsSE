@@ -8,7 +8,6 @@
 #include "StorageEngine.h"
 
 extern BufferPool*  gpBufferPool;
-extern Arguments    gxArguments;
 extern Grid* gpGrid;
 
 /*----------------------------------------------------------------------------*/
@@ -116,13 +115,9 @@ Str* Table::pAnalyze(bool bDetailed)
                        gpGrid->iThisNode(),
                        m_sTableName.s());
 
-  for (i8 iSlot = 0; iSlot < gxArguments.m_nSlots; iSlot++) {
+  for (i8 iSlot = 0; iSlot < gpGrid->m_nSlots; iSlot++) {
     
     i8 iPartition = Partition::iSlotToPartition(iSlot);
-    
-    //i8 iNode = Partition::iPartitionToNode(iPartition);
-    //if (iNode != gxArguments.m_iNode)
-    //  continue;
     
     RowStrand *pStrand = pPartition(iSlot)->pData()->pHeadStrand();
     i8 nRows = 0;
@@ -178,7 +173,7 @@ void Table::vAppendBuffer(i8 iPartition, RowBuffer* pRowBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
-  ASSERT(iPartition < gxArguments.m_nSlots);
+  ASSERT(iPartition < gpGrid->m_nSlots);
   
   // mark buffer as permanent
   pRowBuffer->vDurability(RD_PERMANENT);
@@ -206,7 +201,7 @@ i8 Table::iRowPartition(Str* pRow)
   i8 iHash = XXH32(pRow,iLength,0);
   
   // modulo to get partition number
-  i8 iPartition = iHash % (gxArguments.m_nSlots * gpGrid->iNodes());
+  i8 iPartition = iHash % (gpGrid->m_nSlots * gpGrid->iNodes());
   
   //vTrace("Partition: %lld\n"_Str,m_iPartition);
   return iPartition;
@@ -221,7 +216,7 @@ i8 Table::nRowBuffers(void)
   
   i8 iBuffers = 0;
 
-  for (i8 iPartition = 0; iPartition < gxArguments.m_nSlots; iPartition++) {
+  for (i8 iPartition = 0; iPartition < gpGrid->m_nSlots; iPartition++) {
     RowStrand *pStrand = pPartition(iPartition)->pData()->pHeadStrand();
     while (pStrand) {
       iBuffers += pStrand->nRowBuffers();
