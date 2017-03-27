@@ -112,7 +112,7 @@ int main(int argc, const char* argv[])
   // or attach to an existing one
   RapidsSE::vPoolOpen();
   
-  vSkipListTest();
+  //vSkipListTest();
   
   // execute the command line
   RapidsSE::vExecute();

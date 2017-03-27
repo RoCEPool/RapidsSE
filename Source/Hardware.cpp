@@ -29,7 +29,7 @@ i8 Hardware::iClockFrequency(void)
   const i8 C_BUFSIZ=512;
   char buf[C_BUFSIZ];
   double dFreq;
-  i8 iFreq;
+  i8 iFreq = 0;
   
   // open the /Proc/cpuinfo file
   FILE* fp = fopen("/proc/cpuinfo", "r");
