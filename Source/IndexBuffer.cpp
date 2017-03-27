@@ -289,7 +289,7 @@ void IndexBuffer::vNewHead(void)
   ASSERT( ! m_xWsp.nUsed() );
   
   // how many bytes are required
-  i8 nBytes = Levels::nBytesRequired(C_FLAT_LEVELS);                //! not correct
+  i8 nBytes = Entry::nBytesRequired(0,C_FLAT_LEVELS);
   
   // allot the head
   Entry* aHead = aNewEntry(nBytes,C_FLAT_LEVELS,nullptr);

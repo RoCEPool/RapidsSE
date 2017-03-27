@@ -11,9 +11,24 @@
 /*----------------------------------------------------------------------------*/
 /* get total bytes required for entry                                         */
 /*----------------------------------------------------------------------------*/
-i8 Entry::iBytesRequired(i8 iDataBytes)
+i8 Entry::nBytesRequired(i8 nDataBytes)
 {
-  i8 iBytes = sizeof(Entry) + sizeof(Footer) + iDataBytes;
+  i8 iBytes = sizeof(Entry)
+                + nDataBytes
+                + sizeof(Footer);
+  
+  return iBytes;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get total bytes required for entry                                         */
+/*----------------------------------------------------------------------------*/
+i8 Entry::nBytesRequired(i8 nKeyBytes, i8 nLevels)
+{
+  i8 iBytes = sizeof(Entry)
+                + nKeyBytes
+                + Levels::nBytesRequired(nLevels)
+                + sizeof(Footer);
   
   return iBytes;
 }

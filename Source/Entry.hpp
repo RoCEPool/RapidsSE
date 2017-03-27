@@ -24,7 +24,8 @@ namespace DBobjects
     WspVbl m_xWsp;    // workspace
   
   public:
-    static i8 iBytesRequired(i8 iDataBytes);
+    static i8 nBytesRequired(i8 iDataBytes);
+    static i8 nBytesRequired(i8 nKeyBytes, i8 nLevels);
   
     void* operator new(size_t);
     void* operator new(size_t, Entry*);
