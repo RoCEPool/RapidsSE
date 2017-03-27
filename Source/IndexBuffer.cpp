@@ -56,9 +56,8 @@ IndexBuffer::IndexBuffer(void)
   m_pPrevBuffer = nullptr;
   m_pNextBuffer = nullptr;
   
-  Levels* aHead = aNewHead();
-  for (i8 iLevel=0; iLevel < C_FLAT_LEVELS; iLevel++)
-    aHead->m_iRight[iLevel] = C_NIL;
+  // new the head
+  vNewHead();
   
   m_xWsp.vZero();
   
@@ -286,7 +285,7 @@ Entry* IndexBuffer::aNewEntry(i8 nBytes, i8 nLevels, Entry* aAfterEntry)
 /*----------------------------------------------------------------------------*/
 /* allot head (during constructor)                                            */
 /*----------------------------------------------------------------------------*/
-Levels* IndexBuffer::aNewHead(void)
+void IndexBuffer::vNewHead(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
 
@@ -294,12 +293,14 @@ Levels* IndexBuffer::aNewHead(void)
   ASSERT( !m_xWsp.nUsed());
   
   // how many bytes are required
-  i8 nBytes = Levels::nBytesRequired(C_FLAT_LEVELS - 1);
+  i8 nBytes = Levels::nBytesRequired(C_FLAT_LEVELS);
   
   // allot the head
   Levels* aHead = _aLevels(m_xWsp.aAllot(nBytes));
-  
-  return aHead;
+
+  // initialize the head
+  for (i8 iLevel = 0; iLevel < C_FLAT_LEVELS; iLevel++)
+    aHead->m_iRight[iLevel] = C_NIL;
 }
 
 /*----------------------------------------------------------------------------*/

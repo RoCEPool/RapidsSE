@@ -50,7 +50,7 @@ namespace DBobjects
     void    vMoveLeft(void* aDst, i8 nBytes);
     void    vMoveRight(void* aSrc, i8 nBytes);
     Entry*  aNewEntry(i8 nBytes, i8 nLevels, Entry* aAfterEntry);
-    Levels* aNewHead(void);
+    void    vNewHead(void);
     Entry*  aNextEntry(Entry* aEntry);
     Entry*  aPosition(Key* aKey, bool& bEqualTo, Entry** aReviseVec);
     Entry*  aRightEntry(Entry* aEntry, i8 iLevel);
