@@ -14,65 +14,95 @@ extern Grid*       gpGrid;
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_AddColumn(SEitf* pSEitf, Str* pColumnName, Str* pColumnType)
 {
-  if (gpGrid->m_bTraceapi)
-    vTrace("RapidsSE_AddColumn: %p %s %s\n"_Str, pSEitf, pColumnName, pColumnType);
-  
-  eEC eResult;
-  
-  // pSEitf cannot be null
-  if (pSEitf == nullptr) {
-    return EC_INVALID_INTERFACE;
-  }
-  
-  // pSEitf should be a pool address
-  if (!gpBufferPool->bValidAddress(pSEitf)) {
-    return EC_INVALID_INTERFACE;
-  }
-  
-  // pSEitf should be an SEitf class
-  if (pSEitf->eClass() != CN_SEITF) {
-    return EC_INVALID_INTERFACE;
-  }
-  
-  // clear the last error
-  pSEitf->vClearLastError();
-  
-  if (!pColumnName) {
-    pSEitf->vSetLastError(EC_INVALID_PARAMETER);
-    return EC_INVALID_PARAMETER;
-  }
-  
-  if (!pColumnType) {
-    pSEitf->vSetLastError(EC_INVALID_PARAMETER);
-    return EC_INVALID_PARAMETER;
-  }
+  try {
+    if (gpGrid->m_bTraceapi)
+      vTrace("<RapidsSE_AddColumn: %p %s %s\n"_Str, pSEitf, pColumnName, pColumnType);
+    
+    eEC eResult;
+    
+    // pSEitf cannot be null
+    if (pSEitf == nullptr) {
+      if (gpGrid->m_bTraceapi)
+        vTrace(">RapidsSE_AddColumn: %p %s\n"_Str, pSEitf, aEC[EC_INVALID_INTERFACE]);
+      return EC_INVALID_INTERFACE;
+    }
+    
+    // pSEitf should be a pool address
+    if (!gpBufferPool->bValidAddress(pSEitf)) {
+      if (gpGrid->m_bTraceapi)
+        vTrace(">RapidsSE_AddColumn: %p %s\n"_Str, pSEitf, aEC[EC_INVALID_INTERFACE]);
+      return EC_INVALID_INTERFACE;
+    }
+    
+    // pSEitf should be an SEitf class
+    if (pSEitf->eClass() != CN_SEITF) {
+      if (gpGrid->m_bTraceapi)
+        vTrace(">RapidsSE_AddColumn: %p %s\n"_Str, pSEitf, aEC[EC_INVALID_INTERFACE]);
+      return EC_INVALID_INTERFACE;
+    }
+    
+    // clear the last error
+    pSEitf->vClearLastError();
+    
+    if (!pColumnName) {
+      pSEitf->vSetLastError(EC_INVALID_PARAMETER);
+      if (gpGrid->m_bTraceapi)
+        vTrace(">RapidsSE_AddColumn: %p %s\n"_Str, pSEitf, aEC[EC_INVALID_PARAMETER]);
+      return EC_INVALID_PARAMETER;
+    }
+    
+    if (!pColumnType) {
+      pSEitf->vSetLastError(EC_INVALID_PARAMETER);
+      if (gpGrid->m_bTraceapi)
+        vTrace(">RapidsSE_AddColumn: %p %s\n"_Str, pSEitf, aEC[EC_INVALID_PARAMETER]);
+      return EC_INVALID_PARAMETER;
+    }
 
-  Table* pTable = pSEitf->pCurrentTable();
-  
-  if (!pTable) {
-    pSEitf->vSetLastError(EC_NO_SUCH_TABLE);
-    return EC_NO_SUCH_TABLE;
-  }
-  
-  if (gpGrid->m_bTraceapi)
-    vTrace("Table: %s\n"_Str, pTable->aTableName());
+    Table* pTable = pSEitf->pCurrentTable();
+    
+    if (!pTable) {
+      pSEitf->vSetLastError(EC_NO_SUCH_TABLE);
+      if (gpGrid->m_bTraceapi)
+        vTrace(">RapidsSE_AddColumn: %p %s\n"_Str, pSEitf, aEC[EC_NO_SUCH_TABLE]);
+      return EC_NO_SUCH_TABLE;
+    }
 
-  // add a column
-  eResult = eExecuteRequest(pSEitf, "add"_Str,
-                            (Str*)pTable->aTableName(),
-                            (Str*)pColumnName,
-                            (Str*)pColumnType);
-  if (EC_NONE != eResult) {
-    return eResult;
+    // add a column
+    eResult = eExecuteRequest(pSEitf, "add"_Str,
+                              (Str*)pTable->aTableName(),
+                              (Str*)pColumnName,
+                              (Str*)pColumnType);
+    if (EC_NONE != eResult) {
+      if (gpGrid->m_bTraceapi)
+        vTrace(">RapidsSE_AddColumn: %p %s\n"_Str, pSEitf, aEC[eResult]);
+      return eResult;
+    }
+    
+    // get response
+    eResult = eGetResponse(pSEitf);
+    if (EC_NONE != eResult) {
+      if (gpGrid->m_bTraceapi)
+        vTrace(">RapidsSE_AddColumn: %p %s\n"_Str, pSEitf, aEC[eResult]);
+      return eResult;
+    }
+    
+    if (gpGrid->m_bTraceapi)
+      vTrace(">RapidsSE_AddColumn: %p\n"_Str, pSEitf);
+    
+    return EC_NONE;
+  }
+  catch (Error* pError) {
+    if (gpGrid->m_bTraceapi)
+      vTrace(">RapidsSE_AddColumn: %p %s\n"_Str, pSEitf, pError->aErrorMsg());
+    RapidsSE::vHandler(pError);
+    return pError->eErrorCode();
+  }
+  catch (...) {
+    if (gpGrid->m_bTraceapi)
+      vTrace(">RapidsSE_AddColumn: %p\n"_Str, pSEitf);
+    return EC_SE_UNKNOWN_ERROR;
   }
   
-  // get response
-  eResult = eGetResponse(pSEitf);
-  if (EC_NONE != eResult) {
-    return eResult;
-  }
-  
-  return EC_NONE;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -202,6 +232,18 @@ eEC RapidsSE_BeginInsert(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable
     return eResult;
   }
   
+  // change directory to tables
+  eResult = eExecuteRequest(pSEitf, "cf"_Str, (Str*)pTable);
+  if (EC_NONE != eResult) {
+    return eResult;
+  }
+  
+  // get response
+  eResult = eGetResponse(pSEitf);
+  if (EC_NONE != eResult) {
+    return eResult;
+  }
+
   // get pTable
   eResult = eExecuteRequest(pSEitf, "gettbl"_Str, (Str*)pTable);
   if (EC_NONE != eResult) {
@@ -536,6 +578,18 @@ eEC RapidsSE_DropTable(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable)
     return eResult;
   }
   
+  // change directory to the table
+  eResult = eExecuteRequest(pSEitf, "cf"_Str, (Str*)pTable);
+  if (EC_NONE != eResult) {
+    return eResult;
+  }
+  
+  // get response
+  eResult = eGetResponse(pSEitf);
+  if (EC_NONE != eResult) {
+    return eResult;
+  }
+
   // drop table
   eResult = eExecuteRequest(pSEitf, "rmtbl"_Str, (Str*)pTable);
   if (EC_NONE != eResult) {
@@ -649,56 +703,77 @@ eEC RapidsSE_EndInsert(SEitf* pSEitf)
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_EndScan(SEitf* pSEitf)
 {
-  if (gpGrid->m_bTraceapi)
-    vTrace(">RapidsSE_EndScan: %p\n"_Str, pSEitf);
-  
-  if (pSEitf == nullptr) {
-    if (gpGrid->m_bTraceapi)
-      vTrace("<RapidsSE_EndScan: %p\n"_Str, pSEitf);
-    return EC_INVALID_INTERFACE;
-  }
-  
-  if (!gpBufferPool->bValidAddress(pSEitf)) {
-    if (gpGrid->m_bTraceapi)
-      vTrace("<RapidsSE_EndScan: %p\n"_Str, pSEitf);
-    return EC_INVALID_INTERFACE;
-  }
-  
-  // clear the last error
-  pSEitf->vClearLastError();
-  
-  i8 iAddress = StrLib::iToI8( pSEitf->m_sResponse.s());
-  
-  SelCursor* pSelCursor = reinterpret_cast<SelCursor*>(iAddress);
-  ASSERT(CN_SELCURSOR == pSelCursor->eClass());
-  delete pSelCursor;
-  
-  // return the table
-  eEC eResult = eExecuteRequest(pSEitf, "rettbl"_Str);
-  if (EC_NONE != eResult) {
-    
-    vTrace("RapidsSE_EndScan: rettbl FAILED!!!\n"_Str);
+  try {
     
     if (gpGrid->m_bTraceapi)
       vTrace("<RapidsSE_EndScan: %p\n"_Str, pSEitf);
     
-    return eResult;
-  }
-  
-  // get response
-  eResult = eGetResponse(pSEitf);
-  if (EC_NONE != eResult) {
+    if (pSEitf == nullptr) {
+      if (gpGrid->m_bTraceapi)
+        vTrace(">RapidsSE_EndScan: %p %s\n"_Str, pSEitf, aEC[EC_INVALID_INTERFACE]);
+      return EC_INVALID_INTERFACE;
+    }
+    
+    if (!gpBufferPool->bValidAddress(pSEitf)) {
+      if (gpGrid->m_bTraceapi)
+        vTrace(">RapidsSE_EndScan: %p %s\n"_Str, pSEitf, aEC[EC_INVALID_INTERFACE]);
+      return EC_INVALID_INTERFACE;
+    }
+    
+    // clear the last error
+    pSEitf->vClearLastError();
+    
+    if (pSEitf->pCurrentTable() == nullptr) {
+      if (gpGrid->m_bTraceapi)
+        vTrace(">RapidsSE_EndScan: %p\n"_Str, pSEitf);
+      return EC_NONE;
+    }
+    
+    i8 iAddress = StrLib::iToI8( pSEitf->m_sResponse.s());
+    
+    SelCursor* pSelCursor = reinterpret_cast<SelCursor*>(iAddress);
+    ASSERT(CN_SELCURSOR == pSelCursor->eClass());
+    delete pSelCursor;
+    
+    // return the table
+    eEC eResult = eExecuteRequest(pSEitf, "rettbl"_Str);
+    if (EC_NONE != eResult) {
+      
+      vTrace(">RapidsSE_EndScan: rettbl FAILED!!!\n"_Str);
+      
+      if (gpGrid->m_bTraceapi)
+        vTrace(">RapidsSE_EndScan: %p %s\n"_Str, pSEitf, aEC[eResult]);
+      
+      return eResult;
+    }
+    
+    // get response
+    eResult = eGetResponse(pSEitf);
+    if (EC_NONE != eResult) {
+      if (gpGrid->m_bTraceapi)
+        vTrace(">RapidsSE_EndScan: %p %s\n"_Str, pSEitf, aEC[eResult]);
+      return eResult;
+    }
+    
+    ASSERT(pSEitf->pCurrentTable() == nullptr);
+    
     if (gpGrid->m_bTraceapi)
-      vTrace("<RapidsSE_EndScan: %p\n"_Str, pSEitf);
-    return eResult;
+      vTrace(">RapidsSE_EndScan: %p\n"_Str, pSEitf);
+    
+    return EC_NONE;
   }
-  
-  ASSERT(pSEitf->pCurrentTable() == nullptr);
-  
-  if (gpGrid->m_bTraceapi)
-    vTrace("<RapidsSE_EndScan: %p\n"_Str, pSEitf);
-  
-  return EC_NONE;
+  catch (Error* pError) {
+    if (gpGrid->m_bTraceapi)
+      vTrace(">RapidsSE_EndScan: %p %s\n"_Str, pSEitf, pError->aErrorMsg());
+    RapidsSE::vHandler(pError);
+    return pError->eErrorCode();
+  }
+  catch (...) {
+    vTrace("hello\n"_Str);
+    if (gpGrid->m_bTraceapi)
+      vTrace(">RapidsSE_EndScan: %p\n"_Str, pSEitf);
+    return EC_SE_UNKNOWN_ERROR;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1524,156 +1599,253 @@ eEC RapidsSE_PoolOpen(Str* pInstanceName, void** ppInstance)
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_ScanTable(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable)
 {
-  if (gpGrid->m_bTraceapi)
-    vTrace("pRapidsSE_ScanTable: %p %s %s %s %lld\n"_Str,
-         pSEitf, pCatalog, pSchema, pTable, pSEitf->iPartition());
-  
-  eEC eResult;
-  
-  // pSEitf cannot be null
-  if (pSEitf == nullptr) {
-    return EC_INVALID_INTERFACE;
-  }
-  
-  // pSEitf should be a pool address
-  if (!gpBufferPool->bValidAddress(pSEitf)) {
-    return EC_INVALID_INTERFACE;
-  }
-  
-  // pSEitf should be an SEitf class
-  if (pSEitf->eClass() != CN_SEITF) {
-    return EC_INVALID_INTERFACE;
-  }
-  
-  // clear the last error
-  pSEitf->vClearLastError();
-  
-  if (!pCatalog) {
-    pSEitf->vSetLastError(EC_INVALID_PARAMETER);
-    return EC_INVALID_PARAMETER;
-  }
-  
-  if (!pSchema) {
-    pSEitf->vSetLastError(EC_INVALID_PARAMETER);
-    return EC_INVALID_PARAMETER;
-  }
-  
-  if (!pTable) {
-    pSEitf->vSetLastError(EC_INVALID_PARAMETER);
-    return EC_INVALID_PARAMETER;
-  }
-  
-  // change directory to ~
-  eResult = eExecuteRequest(pSEitf, "cf"_Str, "~"_Str);
-  if (EC_NONE != eResult) {
-    return eResult;
-  }
+  try {
+    if (gpGrid->m_bTraceapi)
+      vTrace("<RapidsSE_ScanTable: %p %s %s %s %lld\n"_Str,
+           pSEitf, pCatalog, pSchema, pTable, pSEitf->iPartition());
+    
+    eEC eResult;
+    
+    // pSEitf cannot be null
+    if (pSEitf == nullptr) {
+      if (gpGrid->m_bTraceapi)
+        vTrace(">RapidsSE_ScanTable: %p %lld %s\n"_Str, pSEitf,
+               pSEitf->iPartition(), aEC[EC_INVALID_INTERFACE]);
+      return EC_INVALID_INTERFACE;
+    }
+    
+    // pSEitf should be a pool address
+    if (!gpBufferPool->bValidAddress(pSEitf)) {
+      if (gpGrid->m_bTraceapi)
+        vTrace(">RapidsSE_ScanTable: %p %lld %s\n"_Str, pSEitf,
+               pSEitf->iPartition(), aEC[EC_INVALID_INTERFACE]);
+      return EC_INVALID_INTERFACE;
+    }
+    
+    // pSEitf should be an SEitf class
+    if (pSEitf->eClass() != CN_SEITF) {
+      if (gpGrid->m_bTraceapi)
+        vTrace(">RapidsSE_ScanTable: %p %lld %s\n"_Str, pSEitf,
+               pSEitf->iPartition(), aEC[EC_INVALID_INTERFACE]);
+      return EC_INVALID_INTERFACE;
+    }
+    
+    // clear the last error
+    pSEitf->vClearLastError();
+    
+    if (!pCatalog) {
+      pSEitf->vSetLastError(EC_INVALID_PARAMETER);
+      if (gpGrid->m_bTraceapi)
+        vTrace(">RapidsSE_ScanTable: %p %lld %s\n"_Str, pSEitf,
+               pSEitf->iPartition(), aEC[EC_INVALID_PARAMETER]);
+      return EC_INVALID_PARAMETER;
+    }
+    
+    if (!pSchema) {
+      pSEitf->vSetLastError(EC_INVALID_PARAMETER);
+      if (gpGrid->m_bTraceapi)
+        vTrace(">RapidsSE_ScanTable: %p %lld %s\n"_Str, pSEitf,
+               pSEitf->iPartition(), aEC[EC_INVALID_PARAMETER]);
+      return EC_INVALID_PARAMETER;
+    }
+    
+    if (!pTable) {
+      pSEitf->vSetLastError(EC_INVALID_PARAMETER);
+      if (gpGrid->m_bTraceapi)
+        vTrace(">RapidsSE_ScanTable: %p %lld %s\n"_Str, pSEitf,
+               pSEitf->iPartition(), aEC[EC_INVALID_PARAMETER]);
+      return EC_INVALID_PARAMETER;
+    }
+    
+    // change directory to ~
+    eResult = eExecuteRequest(pSEitf, "cf"_Str, "~"_Str);
+    if (EC_NONE != eResult) {
+      if (gpGrid->m_bTraceapi)
+        vTrace(">RapidsSE_ScanTable: %p %lld %s\n"_Str, pSEitf,
+               pSEitf->iPartition(), aEC[eResult]);
+      return eResult;
+    }
 
-  // get response
-  eResult = eGetResponse(pSEitf);
-  if (EC_NONE != eResult) {
-    return eResult;
-  }
+    // get response
+    eResult = eGetResponse(pSEitf);
+    if (EC_NONE != eResult) {
+      if (gpGrid->m_bTraceapi)
+        vTrace(">RapidsSE_ScanTable: %p %lld %s\n"_Str, pSEitf,
+               pSEitf->iPartition(), aEC[eResult]);
+      return eResult;
+    }
 
-  // change directory to boray
-  eResult = eExecuteRequest(pSEitf, "cf"_Str, "boray"_Str);
-  if (EC_NONE != eResult) {
-    return eResult;
-  }
-  
-  // get response
-  eResult = eGetResponse(pSEitf);
-  if (EC_NONE != eResult) {
-    return eResult;
-  }
-  
-  // change directory to catalogs
-  eResult = eExecuteRequest(pSEitf, "cf"_Str, "catalogs"_Str);
-  if (EC_NONE != eResult) {
-    return eResult;
-  }
-  
-  // get response
-  eResult = eGetResponse(pSEitf);
-  if (EC_NONE != eResult) {
-    return eResult;
-  }
-  
-  // change directory to pCatalog
-  eResult = eExecuteRequest(pSEitf, "cf"_Str, (Str*)pCatalog);
-  if (EC_NONE != eResult) {
-    return eResult;
-  }
-  
-  // get response
-  eResult = eGetResponse(pSEitf);
-  if (EC_NONE != eResult) {
-    return eResult;
-  }
-  
-  // change directory to schemas
-  eResult = eExecuteRequest(pSEitf, "cf"_Str, "schemas"_Str);
-  if (EC_NONE != eResult) {
-    return eResult;
-  }
-  
-  // get response
-  eResult = eGetResponse(pSEitf);
-  if (EC_NONE != eResult) {
-    return eResult;
-  }
-  
-  // change directory to pSchema
-  eResult = eExecuteRequest(pSEitf, "cf"_Str, (Str*)pSchema);
-  if (EC_NONE != eResult) {
-    return eResult;
-  }
-  
-  // get response
-  eResult = eGetResponse(pSEitf);
-  if (EC_NONE != eResult) {
-    return eResult;
-  }
-  
-  // change directory to tables
-  eResult = eExecuteRequest(pSEitf, "cf"_Str, "tables"_Str);
-  if (EC_NONE != eResult) {
-    return eResult;
-  }
-  
-  // get response
-  eResult = eGetResponse(pSEitf);
-  if (EC_NONE != eResult) {
-    return eResult;
-  }
+    // change directory to boray
+    eResult = eExecuteRequest(pSEitf, "cf"_Str, "boray"_Str);
+    if (EC_NONE != eResult) {
+      if (gpGrid->m_bTraceapi)
+        vTrace(">RapidsSE_ScanTable: %p %lld %s\n"_Str, pSEitf,
+               pSEitf->iPartition(), aEC[eResult]);
+      return eResult;
+    }
+    
+    // get response
+    eResult = eGetResponse(pSEitf);
+    if (EC_NONE != eResult) {
+      if (gpGrid->m_bTraceapi)
+        vTrace(">RapidsSE_ScanTable: %p %lld %s\n"_Str, pSEitf,
+               pSEitf->iPartition(), aEC[eResult]);
+      return eResult;
+    }
+    
+    // change directory to catalogs
+    eResult = eExecuteRequest(pSEitf, "cf"_Str, "catalogs"_Str);
+    if (EC_NONE != eResult) {
+      if (gpGrid->m_bTraceapi)
+        vTrace(">RapidsSE_ScanTable: %p %lld %s\n"_Str, pSEitf,
+               pSEitf->iPartition(), aEC[eResult]);
+      return eResult;
+    }
+    
+    // get response
+    eResult = eGetResponse(pSEitf);
+    if (EC_NONE != eResult) {
+      if (gpGrid->m_bTraceapi)
+        vTrace(">RapidsSE_ScanTable: %p %lld %s\n"_Str, pSEitf,
+               pSEitf->iPartition(), aEC[eResult]);
+      return eResult;
+    }
+    
+    // change directory to pCatalog
+    eResult = eExecuteRequest(pSEitf, "cf"_Str, (Str*)pCatalog);
+    if (EC_NONE != eResult) {
+      if (gpGrid->m_bTraceapi)
+        vTrace(">RapidsSE_ScanTable: %p %lld %s\n"_Str, pSEitf,
+               pSEitf->iPartition(), aEC[eResult]);
+      return eResult;
+    }
+    
+    // get response
+    eResult = eGetResponse(pSEitf);
+    if (EC_NONE != eResult) {
+      if (gpGrid->m_bTraceapi)
+        vTrace(">RapidsSE_ScanTable: %p %lld %s\n"_Str, pSEitf,
+               pSEitf->iPartition(), aEC[eResult]);
+      return eResult;
+    }
+    
+    // change directory to schemas
+    eResult = eExecuteRequest(pSEitf, "cf"_Str, "schemas"_Str);
+    if (EC_NONE != eResult) {
+      if (gpGrid->m_bTraceapi)
+        vTrace(">RapidsSE_ScanTable: %p %lld %s\n"_Str, pSEitf,
+               pSEitf->iPartition(), aEC[eResult]);
+      return eResult;
+    }
+    
+    // get response
+    eResult = eGetResponse(pSEitf);
+    if (EC_NONE != eResult) {
+      if (gpGrid->m_bTraceapi)
+        vTrace(">RapidsSE_ScanTable: %p %lld %s\n"_Str, pSEitf,
+               pSEitf->iPartition(), aEC[eResult]);
+      return eResult;
+    }
+    
+    // change directory to pSchema
+    eResult = eExecuteRequest(pSEitf, "cf"_Str, (Str*)pSchema);
+    if (EC_NONE != eResult) {
+      if (gpGrid->m_bTraceapi)
+        vTrace(">RapidsSE_ScanTable: %p %lld %s\n"_Str, pSEitf,
+               pSEitf->iPartition(), aEC[eResult]);
+      return eResult;
+    }
+    
+    // get response
+    eResult = eGetResponse(pSEitf);
+    if (EC_NONE != eResult) {
+      if (gpGrid->m_bTraceapi)
+        vTrace(">RapidsSE_ScanTable: %p %lld %s\n"_Str, pSEitf,
+               pSEitf->iPartition(), aEC[eResult]);
+      return eResult;
+    }
+    
+    // change directory to tables
+    eResult = eExecuteRequest(pSEitf, "cf"_Str, "tables"_Str);
+    if (EC_NONE != eResult) {
+      if (gpGrid->m_bTraceapi)
+        vTrace(">RapidsSE_ScanTable: %p %lld %s\n"_Str, pSEitf,
+               pSEitf->iPartition(), aEC[eResult]);
+      return eResult;
+    }
+    
+    // get response
+    eResult = eGetResponse(pSEitf);
+    if (EC_NONE != eResult) {
+      if (gpGrid->m_bTraceapi)
+        vTrace(">RapidsSE_ScanTable: %p %lld %s\n"_Str, pSEitf,
+               pSEitf->iPartition(), aEC[eResult]);
+      return eResult;
+    }
 
-  // select * from pTable
-  eResult = eExecuteRequest(pSEitf, "sel"_Str, (Str*)pTable);
-  if (EC_NONE != eResult) {
-    return eResult;
+    // change directory to the table
+    eResult = eExecuteRequest(pSEitf, "cf"_Str, (Str*)pTable);
+    if (EC_NONE != eResult) {
+      if (gpGrid->m_bTraceapi)
+        vTrace(">RapidsSE_ScanTable: %p %lld %s\n"_Str, pSEitf,
+               pSEitf->iPartition(), aEC[eResult]);
+      return eResult;
+    }
+    
+    // get response
+    eResult = eGetResponse(pSEitf);
+    if (EC_NONE != eResult) {
+      if (gpGrid->m_bTraceapi)
+        vTrace(">RapidsSE_ScanTable: %p %lld %s\n"_Str, pSEitf,
+               pSEitf->iPartition(), aEC[eResult]);
+      return eResult;
+    }
+    
+    // select * from pTable
+    eResult = eExecuteRequest(pSEitf, "sel"_Str, (Str*)pTable);
+    if (EC_NONE != eResult) {
+      if (gpGrid->m_bTraceapi)
+        vTrace(">RapidsSE_ScanTable: %p %lld %s\n"_Str, pSEitf,
+               pSEitf->iPartition(), aEC[eResult]);
+      return eResult;
+    }
+    
+    // get response
+    eResult = eGetResponse(pSEitf);
+    if (EC_NONE != eResult) {
+      if (gpGrid->m_bTraceapi)
+        vTrace(">RapidsSE_ScanTable: %p %lld %s\n"_Str, pSEitf,
+               pSEitf->iPartition(), aEC[eResult]);
+      return eResult;
+    }
+
+    ASSERT(pSEitf->pCurrentTable() != nullptr);
+    
+    i8 iAddress = pSEitf->m_sResponse.iToI8();
+    
+    SelCursor* pSelCursor = reinterpret_cast<SelCursor*>(iAddress);
+    ASSERT(CN_SELCURSOR == pSelCursor->eClass());
+
+    //vTrace("pSEitf: %p pSelCursor: %p Slot: %lld\n"_Str, pSEitf, pSelCursor,
+    //       Partition::iPartitionToSlot(pSEitf->iPartition()));
+    
+    pSelCursor->vBegin(Partition::iPartitionToSlot(pSEitf->iPartition()));
+    
+    pSelCursor->vFirst();
+
+    return EC_NONE;
   }
-  
-  // get response
-  eResult = eGetResponse(pSEitf);
-  if (EC_NONE != eResult) {
-    return eResult;
+  catch (Error* pError) {
+    if (gpGrid->m_bTraceapi)
+      vTrace(">RapidsSE_AddColumn: %p %s\n"_Str, pSEitf, pError->aErrorMsg());
+    RapidsSE::vHandler(pError);
+    return pError->eErrorCode();
   }
-
-  ASSERT(pSEitf->pCurrentTable() != nullptr);
-  
-  i8 iAddress = pSEitf->m_sResponse.iToI8();
-  
-  SelCursor* pSelCursor = reinterpret_cast<SelCursor*>(iAddress);
-  ASSERT(CN_SELCURSOR == pSelCursor->eClass());
-
-  //vTrace("pSEitf: %p pSelCursor: %p Slot: %lld\n"_Str, pSEitf, pSelCursor,
-  //       Partition::iPartitionToSlot(pSEitf->iPartition()));
-  
-  pSelCursor->vBegin(Partition::iPartitionToSlot(pSEitf->iPartition()));
-  
-  pSelCursor->vFirst();
-
-  return EC_NONE;
+  catch (...) {
+    if (gpGrid->m_bTraceapi)
+      vTrace(">RapidsSE_AddColumn: %p %s\n"_Str, pSEitf, aEC[EC_SE_UNKNOWN_ERROR]);
+    return EC_SE_UNKNOWN_ERROR;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1681,15 +1853,32 @@ eEC RapidsSE_ScanTable(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable)
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_SEitfDelete(void* pAttachMap, SEitf* pSEitf)
 {
-  if (gpGrid->m_bTraceapi)
-    vTrace("RapidsSE_SEitfDelete: %p\n"_Str, pSEitf);
-  
-  // clear the last error
-  pSEitf->vClearLastError();
-  
-  RapidsSE::vSEitfDelete(pSEitf);
-  
-  return EC_NONE;
+  try {
+    if (gpGrid->m_bTraceapi)
+      vTrace("<RapidsSE_SEitfDelete: %p\n"_Str, pSEitf);
+    
+    // clear the last error
+    pSEitf->vClearLastError();
+    
+    RapidsSE::vSEitfDelete(pSEitf);
+    
+    if (gpGrid->m_bTraceapi)
+      vTrace(">RapidsSE_SEitfDelete: %p\n"_Str, pSEitf);
+
+    return EC_NONE;
+  }
+  catch (Error* pError) {
+    if (gpGrid->m_bTraceapi)
+      vTrace(">RapidsSE_SEitfDelete: %p %s\n"_Str, pSEitf, pError->aErrorMsg());
+    RapidsSE::vHandler(pError);
+    return pError->eErrorCode();
+  }
+  catch (...) {
+    if (gpGrid->m_bTraceapi)
+      vTrace(">RapidsSE_SEitfDelete: %p %s\n"_Str, pSEitf, aEC[EC_SE_UNKNOWN_ERROR]);
+    return EC_SE_UNKNOWN_ERROR;
+  }
+
 }
 
 /*----------------------------------------------------------------------------*/

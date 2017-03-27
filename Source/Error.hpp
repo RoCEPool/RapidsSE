@@ -62,6 +62,7 @@ namespace Debugging
   /* 42 */ EC_RESPONSE_PENDING,
   /* 43 */ EC_SCHEMA_EXISTS,
   /* 44 */ EC_SE_NOT_RUNNING,
+  /*   */  EC_SE_UNKNOWN_ERROR,
   /* 45 */ EC_SEND_FAILURE,
   
   /* 46 */ EC_TABLE_EXISTS,
@@ -130,6 +131,7 @@ namespace Debugging
   
   /* 43 */ "schema exists"_Str,
   /* 44 */ "SE is not running"_Str,
+  /*    */ "SE unknown error"_Str,
   /* 45 */ "send failure"_Str,
   /* 46 */ "table exists"_Str,
   /* 47 */ "table in use"_Str,
@@ -144,16 +146,16 @@ namespace Debugging
   class Error
   {
   private:
-    i8    m_iErrorCode;
+    eEC   m_eErrorCode;
     char  m_cFileName[256];
     i8    m_iLineNo;
     char  m_cErrorMsg[256];
   
   public:
-    Error(i8 iErrorCode, Str* aFileName, i8 iLineNo);
-    Error(i8 iErrorCode, Str* aErrorMsg, Str* aFileName, i8 iLineNo);
+    Error(eEC eErrorCode, Str* aFileName, i8 iLineNo);
+    Error(eEC eErrorCode, Str* aErrorMsg, Str* aFileName, i8 iLineNo);
     
-    i8   iErrorCode(void);
+    eEC  eErrorCode(void);
     Str* aErrorMsg(void);
     Str* aFileName(void);
     i8   iLineNo(void);

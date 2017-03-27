@@ -7,9 +7,9 @@
 /*----------------------------------------------------------------------------*/
 /* Constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Error::Error(i8 iErrorCode, Str* aFileName, i8 iLineNo)
+Error::Error(eEC eErrorCode, Str* aFileName, i8 iLineNo)
 {
-  m_iErrorCode = iErrorCode;
+  m_eErrorCode = eErrorCode;
   m_cErrorMsg[0] = '\0';
 
   StrLib::vCopyLen(m_cFileName, aFileName->s(), sizeof(m_cFileName));
@@ -21,15 +21,23 @@ Error::Error(i8 iErrorCode, Str* aFileName, i8 iLineNo)
 /*----------------------------------------------------------------------------*/
 /* Constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Error::Error(i8 iErrorCode, Str* aErrorMsg, Str* aFileName, i8 iLineNo)
+Error::Error(eEC eErrorCode, Str* aErrorMsg, Str* aFileName, i8 iLineNo)
 {
-  m_iErrorCode = iErrorCode;
+  m_eErrorCode = eErrorCode;
   StrLib::vCopyLen(m_cErrorMsg, aErrorMsg->s(), sizeof(m_cErrorMsg));
 
   StrLib::vCopyLen(m_cFileName, aFileName->s(), sizeof(m_cFileName));
   m_iLineNo = iLineNo;
 
   //_checkInitialisedSize_(sizeof(Error));
+}
+
+/*----------------------------------------------------------------------------*/
+/* return error code                                                          */
+/*----------------------------------------------------------------------------*/
+eEC Error::eErrorCode(void)
+{
+  return m_eErrorCode;
 }
 
 /*----------------------------------------------------------------------------*/
