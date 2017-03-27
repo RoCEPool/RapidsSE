@@ -22,6 +22,7 @@
 #include <syslog.h>
 #include <time.h>
 #include <unistd.h>
+#include <typeinfo>
 
 #include <sys/mman.h>
 #include <sys/param.h>
