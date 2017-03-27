@@ -2,7 +2,7 @@
 /* Task.cpp - task                                                            */
 /*============================================================================*/
 
-//#define MUNGED
+#define MUNGED
 
 #include "StorageEngine.h"
 #include "SePrompt.hpp"
@@ -1103,7 +1103,7 @@ Word* Task::pCompileColon(StrVal& sDefinition)
 /*----------------------------------------------------------------------------*/
 /* compile a constant definition                                              */
 /*----------------------------------------------------------------------------*/
-Word* Task::pCompileConstant(StrVal& sDefinition)
+void Task::vCompileConstant(StrVal& sDefinition)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
@@ -1133,8 +1133,6 @@ Word* Task::pCompileConstant(StrVal& sDefinition)
   m_pTokeniser->vNextToken();
   
   m_pTokeniser->vUseEnd();
-  
-  return pNewWord;
 }
 
 /*----------------------------------------------------------------------------*/

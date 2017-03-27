@@ -26,7 +26,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT 1m.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of actors.sen
   sDefinition =
@@ -76,7 +76,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT actors.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of aggregateOp.sen
   sDefinition =
@@ -102,7 +102,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT aggregateOp.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of answerTask.sen
   sDefinition =
@@ -208,7 +208,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT answerTask.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of arithmeticTests.sen
   sDefinition =
@@ -239,7 +239,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT arithmeticTests.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of catalog.sen
   sDefinition =
@@ -371,7 +371,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT catalog.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of column.sen
   sDefinition =
@@ -513,7 +513,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT column.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of common.sen
   sDefinition =
@@ -539,7 +539,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT common.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of compile.sen
   sDefinition =
@@ -604,7 +604,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT compile.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of connectorTask.sen
   sDefinition =
@@ -702,7 +702,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT connectorTask.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of coordinatorProxy.sen
   sDefinition =
@@ -756,7 +756,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT coordinatorProxy.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of coordinatorTask.sen
   sDefinition =
@@ -1031,7 +1031,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT coordinatorTask.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of copier.sen
   sDefinition =
@@ -1124,7 +1124,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT copier.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of core.sen
   sDefinition =
@@ -1696,7 +1696,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT core.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of dbobjects.sen
   sDefinition =
@@ -1728,7 +1728,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT dbobjects.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of ddlLocking.sen
   sDefinition =
@@ -1948,7 +1948,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT ddlLocking.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of deciderOp.sen
   sDefinition =
@@ -1974,7 +1974,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT deciderOp.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of dexPlanner.sen
   sDefinition =
@@ -2106,7 +2106,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT dexPlanner.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of dic.sen
   sDefinition =
@@ -2204,7 +2204,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT dic.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of dicPath.sen
   sDefinition =
@@ -2441,7 +2441,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT dicPath.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of dir.sen
   sDefinition =
@@ -2524,7 +2524,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT dir.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of distExporter.sen
   sDefinition =
@@ -2601,7 +2601,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT distExporter.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of distinctOp.sen
   sDefinition =
@@ -2627,7 +2627,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT distinctOp.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of emitOp.sen
   sDefinition =
@@ -2653,7 +2653,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT emitOp.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of exporter.sen
   sDefinition =
@@ -2745,7 +2745,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT exporter.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of extractOp.sen
   sDefinition =
@@ -2771,7 +2771,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT extractOp.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of fanOp.sen
   sDefinition =
@@ -2797,7 +2797,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT fanOp.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of fetchOp.sen
   sDefinition =
@@ -2823,7 +2823,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT fetchOp.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of file.sen
   sDefinition =
@@ -2908,7 +2908,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT file.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of fileGen.sen
   sDefinition =
@@ -2982,7 +2982,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT fileGen.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of filterOp.sen
   sDefinition =
@@ -3008,7 +3008,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT filterOp.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of flowTests.sen
   sDefinition =
@@ -3053,7 +3053,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT flowTests.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of generalThreads.sen
   sDefinition =
@@ -3133,7 +3133,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT generalThreads.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of grid.sen
   sDefinition =
@@ -3375,7 +3375,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT grid.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of gridCalls.sen
   sDefinition =
@@ -3566,7 +3566,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT gridCalls.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of gridModel.sen
   sDefinition =
@@ -3604,7 +3604,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT gridModel.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of gridPrimitives.sen
   sDefinition =
@@ -4279,7 +4279,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT gridPrimitives.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of ieTesting.sen
   sDefinition =
@@ -4323,7 +4323,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT ieTesting.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of index.sen
   sDefinition =
@@ -4623,7 +4623,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT index.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of interface.sen
   sDefinition =
@@ -4645,7 +4645,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT interface.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of ipc.sen
   sDefinition =
@@ -4696,7 +4696,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT ipc.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of jData.sen
   sDefinition =
@@ -4818,7 +4818,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT jData.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of joinOp.sen
   sDefinition =
@@ -4844,7 +4844,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT joinOp.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of limitOp.sen
   sDefinition =
@@ -4870,7 +4870,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT limitOp.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of listerTask.sen
   sDefinition =
@@ -4954,7 +4954,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT listerTask.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of loader.sen
   sDefinition =
@@ -5200,7 +5200,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT loader.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of loaderSub.sen
   sDefinition =
@@ -5422,7 +5422,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT loaderSub.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of lock.sen
   sDefinition =
@@ -5481,7 +5481,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT lock.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of logicTests.sen
   sDefinition =
@@ -5518,7 +5518,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT logicTests.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of lowerOp.sen
   sDefinition =
@@ -5544,7 +5544,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT lowerOp.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of markOp.sen
   sDefinition =
@@ -5570,7 +5570,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT markOp.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of mergeOp.sen
   sDefinition =
@@ -5596,7 +5596,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT mergeOp.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of miscTesting.sen
   sDefinition =
@@ -5858,7 +5858,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT miscTesting.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of monitorTask.sen
   sDefinition =
@@ -5949,7 +5949,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT monitorTask.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of munge.sen
   sDefinition =
@@ -6055,7 +6055,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "\n"
     "  \\\"\\\\n\\\" cppFile file.write\n"
     "\n"
-    "  \\\"  pCompileConstant(sDefinition);\\\\n\\\" cppFile file.write\n"
+    "  \\\"  vCompileConstant(sDefinition);\\\\n\\\" cppFile file.write\n"
     "\n"
     " ;\n"
     "\n"
@@ -6192,7 +6192,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT munge.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of nextOp.sen
   sDefinition =
@@ -6218,7 +6218,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT nextOp.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of node.sen
   sDefinition =
@@ -6277,7 +6277,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT node.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of nodeCursor.sen
   sDefinition =
@@ -6362,7 +6362,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT nodeCursor.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of operator.sen
   sDefinition =
@@ -6422,7 +6422,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT operator.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of operators.sen
   sDefinition =
@@ -6488,7 +6488,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT operators.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of participantProxy.sen
   sDefinition =
@@ -6569,7 +6569,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT participantProxy.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of participantTask.sen
   sDefinition =
@@ -6633,7 +6633,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT participantTask.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of plan.sen
   sDefinition =
@@ -6845,7 +6845,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT plan.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of planners.sen
   sDefinition =
@@ -6866,7 +6866,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT planners.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of planTesting.sen
   sDefinition =
@@ -6922,7 +6922,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT planTesting.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of projectOp.sen
   sDefinition =
@@ -6948,7 +6948,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT projectOp.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of queue.sen
   sDefinition =
@@ -6996,7 +6996,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT queue.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of rangeOp.sen
   sDefinition =
@@ -7022,7 +7022,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT rangeOp.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of readOp.sen
   sDefinition =
@@ -7048,7 +7048,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT readOp.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of receiverTask.sen
   sDefinition =
@@ -7104,7 +7104,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT receiverTask.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of reclaimTask.sen
   sDefinition =
@@ -7227,7 +7227,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT reclaimTask.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of recvOp.sen
   sDefinition =
@@ -7253,7 +7253,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT recvOp.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of requests.sen
   sDefinition =
@@ -7280,7 +7280,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "\\\"requests_misc.sen\\\"       include\n"
     "\\\"requests_object.sen\\\"     include\n"
     "\n"
-    "// create /tenants/boray/catalogs/rapidsse\n"
+    "// create /tenants/boray/catalogs/rapidsse/schemas/public\n"
     "createDefaultFolders\n"
     "\n"
     "/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\n"
@@ -7368,7 +7368,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT requests.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of requests_basics.sen
   sDefinition =
@@ -7426,7 +7426,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT requests_basics.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of requests_catalog.sen
   sDefinition =
@@ -7492,7 +7492,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT requests_catalog.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of requests_column.sen
   sDefinition =
@@ -7535,7 +7535,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT requests_column.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of requests_connection.sen
   sDefinition =
@@ -7581,7 +7581,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT requests_connection.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of requests_folder.sen
   sDefinition =
@@ -7859,6 +7859,18 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "        // create catalog rapidsse (and schemas sub-folder)\n"
     "        \\\"rapidsse\\\" makeCatalog drop drop drop\n"
     "\n"
+    "          // push rapidsse folder\n"
+    "          \\\"rapidsse\\\" findInCurrent execute\n"
+    "          pathPush\n"
+    "\n"
+    "          // push schemas folder\n"
+    "          \\\"schemas\\\" findInCurrent execute\n"
+    "          pathPush\n"
+    "\n"
+    "          // create schema public (and tables sub-folder)\n"
+    "          \\\"public\\\" makeSchema drop drop drop\n"
+    "\n"
+    "          pathDrop\n"
     "      pathDrop\n"
     "    pathDrop\n"
     "  pathDrop\n"
@@ -7873,7 +7885,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT requests_folder.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of requests_grid.sen
   sDefinition =
@@ -7918,7 +7930,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT requests_grid.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of requests_index.sen
   sDefinition =
@@ -8003,7 +8015,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT requests_index.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of requests_misc.sen
   sDefinition =
@@ -8067,7 +8079,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT requests_misc.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of requests_object.sen
   sDefinition =
@@ -8138,7 +8150,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT requests_object.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of requests_rowBuffer.sen
   sDefinition =
@@ -8263,7 +8275,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT requests_rowBuffer.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of requests_schema.sen
   sDefinition =
@@ -8363,7 +8375,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT requests_schema.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of requests_space.sen
   sDefinition =
@@ -8448,7 +8460,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT requests_space.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of requests_table.sen
   sDefinition =
@@ -8790,7 +8802,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT requests_table.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of requests_tenant.sen
   sDefinition =
@@ -8870,7 +8882,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT requests_tenant.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of requestTask.sen
   sDefinition =
@@ -9079,7 +9091,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT requestTask.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of responseOp.sen
   sDefinition =
@@ -9148,7 +9160,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT responseOp.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of row.sen
   sDefinition =
@@ -9167,7 +9179,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT row.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of rowBuffer.sen
   sDefinition =
@@ -9186,7 +9198,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT rowBuffer.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of scanOp.sen
   sDefinition =
@@ -9340,7 +9352,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT scanOp.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of schema.sen
   sDefinition =
@@ -9475,7 +9487,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT schema.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of seitfCursor.sen
   sDefinition =
@@ -9560,7 +9572,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT seitfCursor.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of seitfList.sen
   sDefinition =
@@ -9603,7 +9615,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT seitfList.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of selCursor.sen
   sDefinition =
@@ -9653,7 +9665,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT selCursor.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of senderTask.sen
   sDefinition =
@@ -9717,7 +9729,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT senderTask.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of sendOp.sen
   sDefinition =
@@ -9743,7 +9755,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT sendOp.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of sinkOp.sen
   sDefinition =
@@ -9804,7 +9816,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT sinkOp.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of socket.sen
   sDefinition =
@@ -9826,7 +9838,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT socket.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of socket_client.sen
   sDefinition =
@@ -9845,7 +9857,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT socket_client.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of socket_server.sen
   sDefinition =
@@ -9866,7 +9878,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT socket_server.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of sortOp.sen
   sDefinition =
@@ -9892,7 +9904,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT sortOp.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of streamLoader.sen
   sDefinition =
@@ -9964,7 +9976,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT streamLoader.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of structures.sen
   sDefinition =
@@ -9985,7 +9997,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT structures.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of symbolicArgs.sen
   sDefinition =
@@ -10016,7 +10028,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT symbolicArgs.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of systemObjects.sen
   sDefinition =
@@ -10062,7 +10074,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT systemObjects.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of table.sen
   sDefinition =
@@ -10501,7 +10513,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT table.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of task.sen
   sDefinition =
@@ -10549,7 +10561,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT task.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of taskCursor.sen
   sDefinition =
@@ -10634,7 +10646,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT taskCursor.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of taskList.sen
   sDefinition =
@@ -10678,7 +10690,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT taskList.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of tasks.sen
   sDefinition =
@@ -10703,7 +10715,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT tasks.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of taskSet.sen
   sDefinition =
@@ -10751,7 +10763,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT taskSet.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of teeOp.sen
   sDefinition =
@@ -10777,7 +10789,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT teeOp.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of tenant.sen
   sDefinition =
@@ -10909,7 +10921,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT tenant.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of testing.sen
   sDefinition =
@@ -10935,7 +10947,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT testing.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of thread.sen
   sDefinition =
@@ -10983,7 +10995,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT thread.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of threadCursor.sen
   sDefinition =
@@ -11068,7 +11080,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT threadCursor.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of threadList.sen
   sDefinition =
@@ -11099,7 +11111,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT threadList.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of threads.sen
   sDefinition =
@@ -11122,7 +11134,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT threads.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of timer.sen
   sDefinition =
@@ -11182,7 +11194,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT timer.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of trace.sen
   sDefinition =
@@ -11218,7 +11230,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT trace.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of transactions.sen
   sDefinition =
@@ -11242,7 +11254,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT transactions.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of triggerOp.sen
   sDefinition =
@@ -11326,7 +11338,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT triggerOp.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of txCollection.sen
   sDefinition =
@@ -11357,7 +11369,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT txCollection.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of txCursor.sen
   sDefinition =
@@ -11442,7 +11454,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT txCursor.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of txMap.sen
   sDefinition =
@@ -11473,7 +11485,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT txMap.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of txRef.sen
   sDefinition =
@@ -11542,7 +11554,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT txRef.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of unitTests.sen
   sDefinition =
@@ -11580,7 +11592,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT unitTests.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of upperOp.sen
   sDefinition =
@@ -11606,7 +11618,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT upperOp.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of useful.sen
   sDefinition =
@@ -11634,7 +11646,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT useful.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of user.sen
   sDefinition =
@@ -11653,7 +11665,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT user.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of utilities.sen
   sDefinition =
@@ -11680,7 +11692,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT utilities.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of var.sen
   sDefinition =
@@ -11791,7 +11803,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT var.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 
   // munge of writeOp.sen
   sDefinition =
@@ -11978,7 +11990,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
   " CONSTANT writeOp.sen"_Str
   ;
 
-  pCompileConstant(sDefinition);
+  vCompileConstant(sDefinition);
 }
 
 /*============================================================================*/

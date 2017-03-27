@@ -139,7 +139,7 @@ namespace Tasks
     void vAddRoutines(void);
     Object* pArgObject(void);
     Word* pCompileColon(StrVal& sDefinition);
-    Word* pCompileConstant(StrVal& sDefinition);
+    void  vCompileConstant(StrVal& sDefinition);
     static void vDebug(void);
     void vContentDump(void);
     void vException(StrVal& sFile, StrVal& eException);

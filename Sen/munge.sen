@@ -98,7 +98,7 @@
 
   "\n" cppFile file.write
 
-  "  pCompileConstant(sDefinition);\n" cppFile file.write
+  "  vCompileConstant(sDefinition);\n" cppFile file.write
 
 ;
 
