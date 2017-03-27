@@ -16,9 +16,10 @@ namespace DBobjects
    
    */
   
-  class Entry
+  class Entry //: public Object
   {
   private:
+    i8     m_nBytes;  // overall size of this entry
     RowId  m_xRowId;  // rowid
     u8     m_nLevels; // no of levels
     WspVbl m_xWsp;    // workspace

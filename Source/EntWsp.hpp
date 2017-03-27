@@ -8,6 +8,7 @@ namespace DBobjects
   class EntWsp : public Object
   {
   private:
+    i8               m_nBytes;
     RowId            m_xRowId;   // row id
     i8               m_nLevels;
     WspFxd<C_1KB*15> m_xWsp;     // workspace

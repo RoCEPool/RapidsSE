@@ -36,6 +36,8 @@ EntWsp::EntWsp(void)
 {
   _precondition_(_MAGIC_,CN_ENTWSP);
 
+  m_nBytes = 0;
+  
   //m_xRowId
   
   // generate logarithemic levels for this entry
@@ -149,6 +151,7 @@ i8 EntWsp::nSize(void)
   //_precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
   
   i8 nBytes = sizeof(RowId)
+               + sizeof(i8)
                + sizeof(i8)
                + sizeof(i8)
                + m_xWsp.nUsed();
