@@ -71,23 +71,6 @@ void* Entry::operator new(size_t iSize, Entry* pEntry)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Entry::Entry(i8 iDataBytes)
-{
-  //_precondition_(_MAGIC_,CN_ENTRY);
-
-  m_nLevels = 0;
-  m_xWsp.vUsed(iDataBytes);
-
-  //_setFooter_();
-  
-  _checkInitialised_(CN_ENTRY);
-  
-  //_postcondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
 Entry::Entry(i8 nDataBytes, i8 nLevels)
 {
   //_precondition_(_MAGIC_,CN_ENTRY);
@@ -98,23 +81,6 @@ Entry::Entry(i8 nDataBytes, i8 nLevels)
   //_setFooter_();
   
   _checkInitialised_(CN_ENTRY);
-  
-  //_postcondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-Entry::Entry(EntWsp& xEntWsp)
-{
-  //_precondition_(_MAGIC_,CN_ENTRY);
-  
-  m_nLevels = 0;
-  vEntry(xEntWsp);
-  
-  //_setFooter_();
-  
-  //_checkInitialised_(CN_ENTRY);
   
   //_postcondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
 }

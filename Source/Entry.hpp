@@ -32,9 +32,7 @@ namespace DBobjects
     void* operator new(size_t);
     void* operator new(size_t, Entry*);
     
-    Entry(i8 iDataBytes);
     Entry(i8 nDataBytes, i8 nLevels);
-    Entry(EntWsp& xEntWsp);
     ~Entry(void);
     
     void  vContentDump(void);
