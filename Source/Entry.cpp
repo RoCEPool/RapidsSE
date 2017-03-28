@@ -71,23 +71,6 @@ void* Entry::operator new(size_t iSize, Entry* pEntry)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Entry::Entry(i8 iDataBytes)
-{
-  //_precondition_(_MAGIC_,CN_ENTRY);
-
-  m_nLevels = 0;
-  m_xWsp.vUsed(iDataBytes);
-
-  //_setFooter_();
-  
-  _checkInitialised_(CN_ENTRY);
-  
-  //_postcondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
 Entry::Entry(i8 nDataBytes, i8 nLevels)
 {
   //_precondition_(_MAGIC_,CN_ENTRY);
@@ -98,23 +81,6 @@ Entry::Entry(i8 nDataBytes, i8 nLevels)
   //_setFooter_();
   
   _checkInitialised_(CN_ENTRY);
-  
-  //_postcondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-Entry::Entry(EntWsp& xEntWsp)
-{
-  //_precondition_(_MAGIC_,CN_ENTRY);
-  
-  m_nLevels = 0;
-  vEntry(xEntWsp);
-  
-  //_setFooter_();
-  
-  //_checkInitialised_(CN_ENTRY);
   
   //_postcondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
 }
@@ -212,18 +178,6 @@ void Entry::vEntry(EntWsp& xEntWsp)
 /*----------------------------------------------------------------------------*/
 /* get key                                                                    */
 /*----------------------------------------------------------------------------*/
-Key& Entry::xKey(void)
-{
-  //_precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
-  
-  Key* pKey = reinterpret_cast<Key*>(m_xWsp.aArea());
-
-  return reinterpret_cast<Key&>(*pKey);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get key                                                                    */
-/*----------------------------------------------------------------------------*/
 Key* Entry::aKey(void)
 {
   //_precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
@@ -231,32 +185,6 @@ Key* Entry::aKey(void)
   Key* pKey = reinterpret_cast<Key*>(m_xWsp.aArea() + (sizeof(i8)*(m_nLevels-1)));
   
   return pKey;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set key                                                                    */
-/*----------------------------------------------------------------------------*/
-void Entry::vKey(Key& xKey)
-{
-  //_precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
-  
-  Key* pKey = reinterpret_cast<Key*>(m_xWsp.aArea() + (sizeof(i8)*(m_nLevels-1)));
-
-  pKey->vKey(xKey);
-  
-  m_xWsp.vTake(pKey->nSize());
-}
-
-/*----------------------------------------------------------------------------*/
-/* set key                                                                    */
-/*----------------------------------------------------------------------------*/
-void Entry::vKey(KeyWsp& xKeyWsp)
-{
-  //_precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
-  
-  Key* pKey = reinterpret_cast<Key*>(m_xWsp.aArea());
-  
-  pKey->vKey(xKeyWsp);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -341,6 +269,18 @@ Entry* Entry::aRightEntry(i8 iLevel)
   // i8 iLevelSub = iLevel - 1;
   
   return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get entry data                                                             */
+/*----------------------------------------------------------------------------*/
+EntryData* Entry::aEntryData(void)
+{
+  //_precondition_(_MAGIC_,CN_ENTRY);
+  
+  EntryData* aEntryData = pAdd<EntryData*>(this,sizeof(Entry));
+  
+  return aEntryData;
 }
 
 /*----------------------------------------------------------------------------*/
