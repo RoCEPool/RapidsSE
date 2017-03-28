@@ -2080,31 +2080,27 @@ eEC RapidsSE_ScanTable(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable)
 /*----------------------------------------------------------------------------*/
 /* delete an seitf instance                                                   */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_SEitfDelete(void* pAttachMap, SEitf* pSEitf)
+eEC RapidsSE_SEitfDelete(void* pAttachMap, SEitf* pSEitf, i8 iTraceLevel)
 {
   try {
-    if (gpGrid->m_bTraceapi)
-      vTrace("<RapidsSE_SEitfDelete: %p\n"_Str, pSEitf);
+    vTraceEntry(iTraceLevel, "<RapidsSE_SEitfDelete: %p\n"_Str, pSEitf);
     
     // clear the last error
     pSEitf->vClearLastError();
     
     RapidsSE::vSEitfDelete(pSEitf);
     
-    if (gpGrid->m_bTraceapi)
-      vTrace(">RapidsSE_SEitfDelete: %p\n"_Str, pSEitf);
+    vTraceExit(iTraceLevel, ">RapidsSE_SEitfDelete(a): %p\n"_Str, pSEitf);
 
     return EC_NONE;
   }
   catch (Error* pError) {
-    if (gpGrid->m_bTraceapi)
-      vTrace(">RapidsSE_SEitfDelete: %p %s\n"_Str, pSEitf, pError->aErrorMsg());
+    vTrace(">RapidsSE_SEitfDelete: %p %s\n"_Str, pSEitf, pError->aErrorMsg());
     RapidsSE::vHandler(pError);
     return pError->eErrorCode();
   }
   catch (...) {
-    if (gpGrid->m_bTraceapi)
-      vTrace(">RapidsSE_SEitfDelete: %p %s\n"_Str, pSEitf, aEC[EC_SE_UNKNOWN_ERROR]);
+    vTrace(">RapidsSE_SEitfDelete: %p %s\n"_Str, pSEitf, aEC[EC_SE_UNKNOWN_ERROR]);
     return EC_SE_UNKNOWN_ERROR;
   }
 
@@ -2113,33 +2109,58 @@ eEC RapidsSE_SEitfDelete(void* pAttachMap, SEitf* pSEitf)
 /*----------------------------------------------------------------------------*/
 /* is the error an EC_INVALID_INTERFACE ?                                     */
 /*----------------------------------------------------------------------------*/
-bool RapidsSE_SEitfInvalid(int iError)
+bool RapidsSE_SEitfInvalid(int iError, i8 iTraceLevel)
 {
-  
-  if (iError == EC_INVALID_INTERFACE) {
-    if (gpGrid->m_bTraceapi)
-      vTrace("RapidsSE_SEitfInvalid\n"_Str);
-    return true;
+  try {
+    vTraceEntry(iTraceLevel, "<RapidsSE_SEitfInvalid: iError %lld\n"_Str, iError);
+    
+    if (iError == EC_INVALID_INTERFACE) {
+      vTraceExit(iTraceLevel, ">RapidsSE_SEitfInvalid(a): true\n"_Str);
+      return true;
+    }
+    else {
+      vTraceExit(iTraceLevel, ">RapidsSE_SEitfInvalid(b): false\n"_Str);
+      return false;
+    }
   }
-  else
-    return false;
+  catch (Error* pError) {
+    vTrace(">RapidsSE_SEitfInvalid\n"_Str);
+    RapidsSE::vHandler(pError);
+    return pError->eErrorCode();
+  }
+  catch (...) {
+    vTrace(">RapidsSE_SEitfInvalid\n"_Str);
+    return EC_SE_UNKNOWN_ERROR;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
 /* create a new seitf instance                                                */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_SEitfNew(void* pAttachMap, void** ppSEitf, i8 iPartition)
+eEC RapidsSE_SEitfNew(void* pAttachMap, void** ppSEitf, i8 iPartition, i8 iTraceLevel)
 {
-  if (gpGrid->m_bTraceapi)
-    vTrace("RapidsSE_SEitfNew: Partition %lld\n"_Str, iPartition);
-  
-  SEitf* pSEitf = new SEitf(iPartition);
-  pSEitf->vInit();
-  
-  // return the newly created SEitf
-  *ppSEitf = pSEitf;
-  
-  return EC_NONE;
+  try {
+    vTraceEntry(iTraceLevel, "<RapidsSE_SEitfNew: Partition %lld\n"_Str, iPartition);
+    
+    SEitf* pSEitf = new SEitf(iPartition);
+    pSEitf->vInit();
+    
+    // return the newly created SEitf
+    *ppSEitf = pSEitf;
+    
+    vTraceExit(iTraceLevel, ">RapidsSE_SEitfNew(a): %p\n"_Str, pSEitf);
+    return EC_NONE;
+    
+  }
+  catch (Error* pError) {
+    vTrace(">RapidsSE_SEitfNew: Partition %lld\n"_Str, iPartition);
+    RapidsSE::vHandler(pError);
+    return pError->eErrorCode();
+  }
+  catch (...) {
+    vTrace(">RapidsSE_SEitfNew: Partition %lld\n"_Str, iPartition);
+    return EC_SE_UNKNOWN_ERROR;
+  }
 }
 
 /*----------------------------------------------------------------------------*/

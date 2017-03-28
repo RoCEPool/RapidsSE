@@ -29,10 +29,9 @@ extern "C" eEC RapidsSE_HashRowPartition(SEitf* pSEitf, Str* pRow, void** ppPart
 extern "C" eEC RapidsSE_InsertRow(SEitf* pSEitf, Str* pRow);
 extern "C" eEC RapidsSE_PoolOpen(Str* pInstanceName, void** ppInstance, i8 iTraceLevel);
 extern "C" eEC RapidsSE_ScanTable(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable);
-extern "C" eEC RapidsSE_SEitfDelete(void* pAttachMap, SEitf* pSEitf);
-extern "C" eEC RapidsSE_SEitfNew(void* pAttachMap, void** ppSEitf, i8 iPartition);
-
-extern "C" bool RapidsSE_SEitfInvalid(int eError);
+extern "C" eEC RapidsSE_SEitfDelete(void* pAttachMap, SEitf* pSEitf, i8 iTraceLevel);
+extern "C" eEC RapidsSE_SEitfNew(void* pAttachMap, void** ppSEitf, i8 iPartition, i8 iTraceLevel);
+extern "C" bool RapidsSE_SEitfInvalid(int eError, i8 iTraceLevel);
 
 bool RapidsSE_ExecuteRequest(SEitf* pSEitf, Str* aWords[], i8 iWords, Str** ppResponse);
 
