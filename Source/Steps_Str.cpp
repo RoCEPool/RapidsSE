@@ -173,7 +173,8 @@ void Task::vStrEqual(NNP_Task nnpTask)
     THROW_INVALID_DSTACK("str.equal"_Str);
   
   i8 iEqual = StrLib::bEqualTo(_pStrVal(&xStringA)->s(),
-                               _pStrVal(&xStringB)->s());
+                               _pStrVal(&xStringB)->s(),
+                               C_NO_CASE);
   
   nnpTask->m_pDataStack->vPush(iEqual);
   
