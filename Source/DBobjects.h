@@ -29,6 +29,7 @@ using namespace DBobjects;
 #include "Levels.hpp"
 #include "RightVec.hpp"
 #include "EntWsp.hpp"
+#include "EntryData.hpp"
 #include "Entry.hpp"
 #include "IndexBuffer.hpp"
 #include "IndexBufferSeq.hpp"

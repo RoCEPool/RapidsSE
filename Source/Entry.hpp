@@ -23,6 +23,7 @@ namespace DBobjects
     RowId  m_xRowId;  // rowid
     u8     m_nLevels; // no of levels
     WspVbl m_xWsp;    // workspace
+    // ..data..
   
   public:
     static i8 nBytesRequired(i8 iDataBytes);
@@ -61,7 +62,9 @@ namespace DBobjects
   
     RightVec* aRightVec(void);
     Entry* aRightEntry(i8 iLevel);
-  
+
+    EntryData* aEntryData(void);
+
     Footer* pFooter(void);
   };
   
