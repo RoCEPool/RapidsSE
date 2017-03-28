@@ -18,6 +18,7 @@ namespace DBobjects
     ~Levels(void);
 
     u8 uRight(i8 iLevel);
+    void vRight(i8 iLevel, u8 uOffset);
   
     static i8 nBytesRequired(i8 nLevels);
   };

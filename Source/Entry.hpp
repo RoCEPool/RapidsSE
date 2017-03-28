@@ -48,7 +48,7 @@ namespace DBobjects
     void   vLevels(u8 nLevels);
     
     u8     uOffset(u8 iLevel);
-    void   vOffset(u8 iLevel, u8 nOffset);
+    void   vOffset(u8 iLevel, u8 uOffset);
 
   
     //------

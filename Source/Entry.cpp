@@ -262,11 +262,20 @@ u8 Entry::uOffset(u8 nLevel)
 /*----------------------------------------------------------------------------*/
 /* set next entry offset at level                                             */
 /*----------------------------------------------------------------------------*/
-void Entry::vOffset(u8 nLevel, u8 nOffset)
+void Entry::vOffset(u8 nLevel, u8 uOffset)
 {
   i8* nLevels = reinterpret_cast<i8*>(m_xWsp.aArea());
-  nLevels[nLevel] = nOffset;
+  nLevels[nLevel] = uOffset;
 }
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//void Entry::vOffset(u8 iLevel, u8 uOffset)
+//{
+//  
+//  EntryData* aEntryData = this->aEntryData();
+//  Levels* aLevels = aEntryData->aLevels(m_nLevels);
+//
+//  aLevels->vRight(iLevel,uOffset);
+//}
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
