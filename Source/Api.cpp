@@ -21,41 +21,22 @@ eEC RapidsSE_AddColumn(SEitf* pSEitf, Str* pColumnName, Str* pColumnType, i8 iTr
     
     eEC eResult;
     
-    // pSEitf cannot be null
-    if (pSEitf == nullptr) {
-      if (gpGrid->m_bTraceapi)
-        vTrace(">RapidsSE_AddColumn: %p %s\n"_Str, pSEitf, aEC[EC_INVALID_INTERFACE]);
-      return EC_INVALID_INTERFACE;
-    }
-    
-    // pSEitf should be a pool address
-    if (!gpBufferPool->bValidAddress(pSEitf)) {
-      if (gpGrid->m_bTraceapi)
-        vTrace(">RapidsSE_AddColumn: %p %s\n"_Str, pSEitf, aEC[EC_INVALID_INTERFACE]);
-      return EC_INVALID_INTERFACE;
-    }
-    
-    // pSEitf should be an SEitf class
-    if (pSEitf->eClass() != CN_SEITF) {
-      if (gpGrid->m_bTraceapi)
-        vTrace(">RapidsSE_AddColumn: %p %s\n"_Str, pSEitf, aEC[EC_INVALID_INTERFACE]);
-      return EC_INVALID_INTERFACE;
-    }
+    eResult = eValidateSEitf(pSEitf, ">RapidsSE_AddColumn"_Str, iTraceLevel);
+    if (eResult != EC_NONE)
+      return eResult;
     
     // clear the last error
     pSEitf->vClearLastError();
     
     if (!pColumnName) {
       pSEitf->vSetLastError(EC_INVALID_PARAMETER);
-      if (gpGrid->m_bTraceapi)
-        vTrace(">RapidsSE_AddColumn: %p %s\n"_Str, pSEitf, aEC[EC_INVALID_PARAMETER]);
+      vTraceError(iTraceLevel, ">RapidsSE_AddColumn(d): %p %s\n"_Str, pSEitf, aEC[EC_INVALID_PARAMETER]);
       return EC_INVALID_PARAMETER;
     }
     
     if (!pColumnType) {
       pSEitf->vSetLastError(EC_INVALID_PARAMETER);
-      if (gpGrid->m_bTraceapi)
-        vTrace(">RapidsSE_AddColumn: %p %s\n"_Str, pSEitf, aEC[EC_INVALID_PARAMETER]);
+      vTraceError(iTraceLevel, ">RapidsSE_AddColumn(e): %p %s\n"_Str, pSEitf, aEC[EC_INVALID_PARAMETER]);
       return EC_INVALID_PARAMETER;
     }
 
@@ -63,8 +44,7 @@ eEC RapidsSE_AddColumn(SEitf* pSEitf, Str* pColumnName, Str* pColumnType, i8 iTr
     
     if (!pTable) {
       pSEitf->vSetLastError(EC_NO_SUCH_TABLE);
-      if (gpGrid->m_bTraceapi)
-        vTrace(">RapidsSE_AddColumn: %p %s\n"_Str, pSEitf, aEC[EC_NO_SUCH_TABLE]);
+      vTraceError(iTraceLevel, ">RapidsSE_AddColumn(l): %p %s\n"_Str, pSEitf, aEC[EC_NO_SUCH_TABLE]);
       return EC_NO_SUCH_TABLE;
     }
 
@@ -74,33 +54,27 @@ eEC RapidsSE_AddColumn(SEitf* pSEitf, Str* pColumnName, Str* pColumnType, i8 iTr
                               (Str*)pColumnName,
                               (Str*)pColumnType);
     if (EC_NONE != eResult) {
-      if (gpGrid->m_bTraceapi)
-        vTrace(">RapidsSE_AddColumn: %p %s\n"_Str, pSEitf, aEC[eResult]);
+      vTraceError(iTraceLevel, ">RapidsSE_AddColumn(m): %p %s\n"_Str, pSEitf, aEC[eResult]);
       return eResult;
     }
     
     // get response
     eResult = eGetResponse(pSEitf);
     if (EC_NONE != eResult) {
-      if (gpGrid->m_bTraceapi)
-        vTrace(">RapidsSE_AddColumn: %p %s\n"_Str, pSEitf, aEC[eResult]);
+      vTraceError(iTraceLevel, ">RapidsSE_AddColumn(n): %p %s\n"_Str, pSEitf, aEC[eResult]);
       return eResult;
     }
     
-    if (gpGrid->m_bTraceapi)
-      vTrace(">RapidsSE_AddColumn: %p\n"_Str, pSEitf);
-    
+    vTraceExit(iTraceLevel, ">RapidsSE_AddColumn: %p %s\n"_Str, pSEitf);
     return EC_NONE;
   }
   catch (Error* pError) {
-    if (gpGrid->m_bTraceapi)
-      vTrace(">RapidsSE_AddColumn: %p %s\n"_Str, pSEitf, pError->aErrorMsg());
+    vTrace(">RapidsSE_AddColumn: %p %s\n"_Str, pSEitf, pError->aErrorMsg());
     RapidsSE::vHandler(pError);
     return pError->eErrorCode();
   }
   catch (...) {
-    if (gpGrid->m_bTraceapi)
-      vTrace(">RapidsSE_AddColumn: %p\n"_Str, pSEitf);
+    vTrace(">RapidsSE_AddColumn: %p\n"_Str, pSEitf);
     return EC_SE_UNKNOWN_ERROR;
   }
   

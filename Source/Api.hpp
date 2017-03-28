@@ -44,7 +44,6 @@ eEC eExecuteRequest(SEitf* pSEitf, Str* aCommand, Str* aParameter1,
 bool bExecuteRequest(SEitf* pSEitf, Str* aWords[], i8 iWords);
 eEC eGetResponse(SEitf* pSEitf);
 
-
 /*----------------------------------------------------------------------------*/
 /* trace API call entry                                                       */
 /*----------------------------------------------------------------------------*/
@@ -97,6 +96,32 @@ inline void vTraceError(i8 iTraceLevel, Str* aFormat, ...)
   vReport(C_REPORT_INFO,aFormat,xArgs);
   
   va_end(xArgs);
+}
+
+/*----------------------------------------------------------------------------*/
+/* validate the SEitf                                                         */
+/*----------------------------------------------------------------------------*/
+inline eEC eValidateSEitf(SEitf* pSEitf, Str* aApiCall, i8 iTraceLevel) {
+  
+  // pSEitf cannot be null
+  if (pSEitf == nullptr) {
+    vTraceError(iTraceLevel, "%s(va): %p %s\n"_Str, aApiCall, pSEitf, aEC[EC_INVALID_INTERFACE]);
+    return EC_INVALID_INTERFACE;
+  }
+  
+  // pSEitf should be a pool address
+  if (!gpBufferPool->bValidAddress(pSEitf)) {
+    vTraceError(iTraceLevel, "%s(vb): %p %s\n"_Str, aApiCall, pSEitf, aEC[EC_INVALID_INTERFACE]);
+    return EC_INVALID_INTERFACE;
+  }
+  
+  // pSEitf should be an SEitf class
+  if (pSEitf->eClass() != CN_SEITF) {
+    vTraceError(iTraceLevel, "%s(vc): %p %s\n"_Str, aApiCall, pSEitf, aEC[EC_INVALID_INTERFACE]);
+    return EC_INVALID_INTERFACE;
+  }
+  
+  return EC_NONE;
 }
 
 /*============================================================================*/
