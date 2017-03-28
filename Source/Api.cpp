@@ -30,13 +30,13 @@ eEC RapidsSE_AddColumn(SEitf* pSEitf, Str* pColumnName, Str* pColumnType, i8 iTr
     
     if (!pColumnName) {
       pSEitf->vSetLastError(EC_INVALID_PARAMETER);
-      vTraceError(iTraceLevel, ">RapidsSE_AddColumn(d): %p %s\n"_Str, pSEitf, aEC[EC_INVALID_PARAMETER]);
+      vTraceError(iTraceLevel, ">RapidsSE_AddColumn(s): %p %s\n"_Str, pSEitf, aEC[EC_INVALID_PARAMETER]);
       return EC_INVALID_PARAMETER;
     }
     
     if (!pColumnType) {
       pSEitf->vSetLastError(EC_INVALID_PARAMETER);
-      vTraceError(iTraceLevel, ">RapidsSE_AddColumn(e): %p %s\n"_Str, pSEitf, aEC[EC_INVALID_PARAMETER]);
+      vTraceError(iTraceLevel, ">RapidsSE_AddColumn(b): %p %s\n"_Str, pSEitf, aEC[EC_INVALID_PARAMETER]);
       return EC_INVALID_PARAMETER;
     }
 
@@ -44,7 +44,7 @@ eEC RapidsSE_AddColumn(SEitf* pSEitf, Str* pColumnName, Str* pColumnType, i8 iTr
     
     if (!pTable) {
       pSEitf->vSetLastError(EC_NO_SUCH_TABLE);
-      vTraceError(iTraceLevel, ">RapidsSE_AddColumn(l): %p %s\n"_Str, pSEitf, aEC[EC_NO_SUCH_TABLE]);
+      vTraceError(iTraceLevel, ">RapidsSE_AddColumn(c): %p %s\n"_Str, pSEitf, aEC[EC_NO_SUCH_TABLE]);
       return EC_NO_SUCH_TABLE;
     }
 
@@ -54,14 +54,14 @@ eEC RapidsSE_AddColumn(SEitf* pSEitf, Str* pColumnName, Str* pColumnType, i8 iTr
                               (Str*)pColumnName,
                               (Str*)pColumnType);
     if (EC_NONE != eResult) {
-      vTraceError(iTraceLevel, ">RapidsSE_AddColumn(m): %p %s\n"_Str, pSEitf, aEC[eResult]);
+      vTraceError(iTraceLevel, ">RapidsSE_AddColumn(d): %p %s\n"_Str, pSEitf, aEC[eResult]);
       return eResult;
     }
     
     // get response
     eResult = eGetResponse(pSEitf);
     if (EC_NONE != eResult) {
-      vTraceError(iTraceLevel, ">RapidsSE_AddColumn(n): %p %s\n"_Str, pSEitf, aEC[eResult]);
+      vTraceError(iTraceLevel, ">RapidsSE_AddColumn(e): %p %s\n"_Str, pSEitf, aEC[eResult]);
       return eResult;
     }
     
