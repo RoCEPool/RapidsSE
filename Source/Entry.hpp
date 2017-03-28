@@ -44,8 +44,6 @@ namespace DBobjects
 
     Key&   xKey(void);
     Key*   aKey(void);
-    void   vKey(Key& xKey);
-    void   vKey(KeyWsp& xKeyWsp);
   
     u8     nLevels(void);
     void   vLevels(u8 nLevels);

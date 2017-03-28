@@ -200,32 +200,6 @@ Key* Entry::aKey(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set key                                                                    */
-/*----------------------------------------------------------------------------*/
-void Entry::vKey(Key& xKey)
-{
-  //_precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
-  
-  Key* pKey = reinterpret_cast<Key*>(m_xWsp.aArea() + (sizeof(i8)*(m_nLevels-1)));
-
-  pKey->vKey(xKey);
-  
-  m_xWsp.vTake(pKey->nSize());
-}
-
-/*----------------------------------------------------------------------------*/
-/* set key                                                                    */
-/*----------------------------------------------------------------------------*/
-void Entry::vKey(KeyWsp& xKeyWsp)
-{
-  //_precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
-  
-  Key* pKey = reinterpret_cast<Key*>(m_xWsp.aArea());
-  
-  pKey->vKey(xKeyWsp);
-}
-
-/*----------------------------------------------------------------------------*/
 /* get nLevels                                                                */
 /*----------------------------------------------------------------------------*/
 u8 Entry::nLevels(void)
