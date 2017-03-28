@@ -11,26 +11,15 @@
 /*----------------------------------------------------------------------------*/
 /* get total bytes required for entry                                         */
 /*----------------------------------------------------------------------------*/
-i8 Entry::nBytesRequired(i8 nDataBytes)
+i8 Entry::nBytesRequired(i8 nLevels, i8 nKeyBytes)
 {
-  i8 iBytes = sizeof(Entry)
-                + nDataBytes
+  i8 nEntryDataBytes = EntryData::nBytesRequired(nLevels,nKeyBytes);
+  
+  i8 nBytes = sizeof(Entry)
+                + nEntryDataBytes
                 + sizeof(Footer);
   
-  return iBytes;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get total bytes required for entry                                         */
-/*----------------------------------------------------------------------------*/
-i8 Entry::nBytesRequired(i8 nKeyBytes, i8 nLevels)
-{
-  i8 iBytes = sizeof(Entry)
-                + nKeyBytes
-                + Levels::nBytesRequired(nLevels)
-                + sizeof(Footer);
-  
-  return iBytes;
+  return nBytes;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -61,11 +50,11 @@ void* Entry::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* Entry::operator new(size_t iSize, Entry* pEntry)
+void* Entry::operator new(size_t iSize, Entry* aEntry)
 {
   RASSERT(iSize);
   
-  return pEntry;
+  return aEntry;
 }
 
 /*----------------------------------------------------------------------------*/

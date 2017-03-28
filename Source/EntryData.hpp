@@ -11,6 +11,8 @@ namespace DBobjects
     // ..data..
   
   public:
+    static i8 nBytesRequired(i8 nLevels, i8 nKeyBytes);
+  
     void* operator new(size_t);
   
     EntryData(void);
