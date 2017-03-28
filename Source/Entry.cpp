@@ -132,70 +132,6 @@ void Entry::vContentDump(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get row id                                                                 */
-/*----------------------------------------------------------------------------*/
-RowId& Entry::xRowId(void)
-{
-  //_precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
-  
-  // return reference to the RowId inherited class
-  //return dynamic_cast<RowId&>(*this);
-  
-  return m_xRowId;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set row id                                                                 */
-/*----------------------------------------------------------------------------*/
-void Entry::vRowId(RowId& xRowId)
-{
-  //_precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
-  
-  Entry::xRowId() = xRowId;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set entry                                                                  */
-/*----------------------------------------------------------------------------*/
-void Entry::vEntry(EntWsp& xEntWsp)
-{
-  //_precondition_(_MAGIC_,CN_ENTRY);
-
-  i8 iLevels = xEntWsp.nLevels();
-  
-  vRowId(xEntWsp.xRowId());
-  vLevels(iLevels);
-  
-  Str* aDst = m_xWsp.aStr();
-  Str* aSrc = xEntWsp.aWspStr();
-  i8 nBytes = xEntWsp.nWspUsed();
-
-  MemLib::vCopy(aDst,aSrc,nBytes);
-  
-  m_xWsp.vUsed(nBytes);
-}
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-//void Entry::vEntry(EntWsp& xEntWsp)
-//{
-//  //_precondition_(_MAGIC_,CN_ENTRY);
-//  
-//  // set Bytes
-//  i8 nBytes = xEntWsp.nWspUsed();
-//  m_nBytes = sizeof(Entry) + nBytes;
-//  
-//  // set RowId
-//  m_xRowId  = xEntWsp.xRowId();
-//
-//  // set Levels
-//  m_nLevels = xEntWsp.nLevels();
-//  
-//  // copy entry data
-//  Str* aSrc = xEntWsp.aWspStr();
-//  EntryData* aEntryData = this->aEntryData();
-//  aEntryData->vCopyBytes(aSrc,nBytes);
-//}
-
-/*----------------------------------------------------------------------------*/
 /* get key                                                                    */
 /*----------------------------------------------------------------------------*/
 Key* Entry::aKey(void)
@@ -214,9 +150,9 @@ Key* Entry::aKey(void)
 //  //_precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
 //
 //  EntryData* pEntryData = this->aEntryData();
-//  
+//
 //  Key* aKey = pEntryData->aKey(m_nLevels);
-//  
+//
 //  return aKey;
 //}
 
@@ -228,16 +164,6 @@ u8 Entry::nLevels(void)
   //_precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
   
   return m_nLevels;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set nLevels                                                                */
-/*----------------------------------------------------------------------------*/
-void Entry::vLevels(u8 nLevels)
-{
-  //_precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
-  
-  m_nLevels = nLevels;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -255,7 +181,7 @@ u8 Entry::uOffset(u8 nLevel)
 //  Levels* aLevels = aEntryData->aLevels(m_nLevels);
 //
 //  u8 uOffset = aLevels->uOffset(iLevel);
-//  
+//
 //  return uOffset;
 //}
 
@@ -270,37 +196,12 @@ void Entry::vOffset(u8 nLevel, u8 uOffset)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //void Entry::vOffset(u8 iLevel, u8 uOffset)
 //{
-//  
+//
 //  EntryData* aEntryData = this->aEntryData();
 //  Levels* aLevels = aEntryData->aLevels(m_nLevels);
 //
 //  aLevels->vRight(iLevel,uOffset);
 //}
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get size in bytes of this entry occurence                                  */
-/*----------------------------------------------------------------------------*/
-i8 Entry::nSize(void)
-{
-  //_precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
-
-  i8 nBytes = sizeof(Entry) + m_xWsp.nUsed();
-  
-  return nBytes;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the right vector of this entry occurence                               */
-/*----------------------------------------------------------------------------*/
-RightVec* Entry::aRightVec(void)
-{
-  //_precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
-  
-  return nullptr;
-}
 
 /*----------------------------------------------------------------------------*/
 /* get a right entry of this entry occurence                                  */
@@ -324,16 +225,77 @@ Entry* Entry::aRightEntry(i8 iLevel)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get entry data                                                             */
+/* get row id                                                                 */
 /*----------------------------------------------------------------------------*/
-EntryData* Entry::aEntryData(void)
+RowId& Entry::xRowId(void)
+{
+  //_precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
+  
+  // return reference to the RowId inherited class
+  //return dynamic_cast<RowId&>(*this);
+  
+  return m_xRowId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set entry                                                                  */
+/*----------------------------------------------------------------------------*/
+void Entry::vSetEntry(EntWsp& xEntWsp)
 {
   //_precondition_(_MAGIC_,CN_ENTRY);
   
-  EntryData* aEntryData = pAdd<EntryData*>(this,sizeof(Entry));
+  i8 iLevels = xEntWsp.nLevels();
   
-  return aEntryData;
+  m_xRowId  = xEntWsp.xRowId();
+  m_nLevels = iLevels;
+  
+  Str* aDst = m_xWsp.aStr();
+  Str* aSrc = xEntWsp.aWspStr();
+  i8 nBytes = xEntWsp.nWspUsed();
+  
+  MemLib::vCopy(aDst,aSrc,nBytes);
+  
+  m_xWsp.vUsed(nBytes);
 }
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//void Entry::vSetEntry(EntWsp& xEntWsp)
+//{
+//  //_precondition_(_MAGIC_,CN_ENTRY);
+//
+//  // set Bytes
+//  i8 nBytes = xEntWsp.nWspUsed();
+//  m_nBytes = sizeof(Entry) + nBytes;
+//
+//  // set RowId
+//  m_xRowId  = xEntWsp.xRowId();
+//
+//  // set Levels
+//  m_nLevels = xEntWsp.nLevels();
+//
+//  // copy entry data
+//  Str* aSrc = xEntWsp.aWspStr();
+//  EntryData* aEntryData = this->aEntryData();
+//  aEntryData->vCopyBytes(aSrc,nBytes);
+//}
+
+/*----------------------------------------------------------------------------*/
+/* get size in bytes of this entry occurence                                  */
+/*----------------------------------------------------------------------------*/
+i8 Entry::nSize(void)
+{
+  //_precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
+
+  i8 nBytes = sizeof(Entry) + m_xWsp.nUsed();
+  
+  return nBytes;
+}
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//i8 Entry::nSize(void)
+//{
+//  //_precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
+//  
+//  return m_nBytes;
+//}
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/

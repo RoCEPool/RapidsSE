@@ -35,30 +35,15 @@ namespace DBobjects
     Entry(i8 nDataBytes, i8 nLevels);
     ~Entry(void);
     
-    void  vContentDump(void);
-
-    RowId& xRowId(void);
-    void   vRowId(RowId& xRowId);
-
-    void   vEntry(EntWsp& xEntWsp);
-
+    void   vContentDump(void);
     Key*   aKey(void);
-  
     u8     nLevels(void);
-    void   vLevels(u8 nLevels);
-    
     u8     uOffset(u8 iLevel);
     void   vOffset(u8 iLevel, u8 uOffset);
-
-  
-    //------
-  
-    i8    nSize(void);
-  
-    RightVec* aRightVec(void);
     Entry* aRightEntry(i8 iLevel);
-
-    EntryData* aEntryData(void);
+    RowId& xRowId(void);
+    void   vSetEntry(EntWsp& xEntWsp);
+    i8     nSize(void);
 
     Footer* pFooter(void);
   };

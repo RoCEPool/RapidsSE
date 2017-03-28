@@ -278,7 +278,7 @@ void IndexBufferSeq::vInsertEntry(EntWsp& xEntWsp)
   pNewEntry = reinterpret_cast<Entry*>(pDst);
   
   // copy EntWsp into Index buffer pNewEntry
-  pNewEntry->vEntry(xEntWsp);
+  pNewEntry->vSetEntry(xEntWsp);
   
   // size of EntWsp whould be the same as this NewEntry we just created
   ASSERT(nBytes == pNewEntry->nSize());
@@ -351,7 +351,7 @@ bool IndexBufferSeq::bInsertEntry(EntWsp& xEntWsp)
   pNewEntry = reinterpret_cast<Entry*>(pDst);
   
   // copy EntWsp into Index buffer pNewEntry
-  pNewEntry->vEntry(xEntWsp);
+  pNewEntry->vSetEntry(xEntWsp);
   
   // size of EntWsp whould be the same as this NewEntry we just created
   ASSERT(nBytes == pNewEntry->nSize());
