@@ -17,7 +17,7 @@ eEC RapidsSE_AddColumn(SEitf* pSEitf, Str* pColumnName, Str* pColumnType, i8 iTr
 {
   try {
     vTraceEntry(iTraceLevel,
-          "<RapidsSE_AddColumn: %p %s %s\n"_Str, pSEitf, pColumnName, pColumnType);
+      "<RapidsSE_AddColumn: %p %s %s\n"_Str, pSEitf, pColumnName, pColumnType);
     
     eEC eResult;
     
@@ -30,13 +30,15 @@ eEC RapidsSE_AddColumn(SEitf* pSEitf, Str* pColumnName, Str* pColumnType, i8 iTr
     
     if (!pColumnName) {
       pSEitf->vSetLastError(EC_INVALID_PARAMETER);
-      vTraceError(iTraceLevel, ">RapidsSE_AddColumn(s): %p %s\n"_Str, pSEitf, aEC[EC_INVALID_PARAMETER]);
+      vTraceError(iTraceLevel,
+        ">RapidsSE_AddColumn(s): %p %s(%lld)\n"_Str, pSEitf, aEC[EC_INVALID_PARAMETER], EC_INVALID_PARAMETER);
       return EC_INVALID_PARAMETER;
     }
     
     if (!pColumnType) {
       pSEitf->vSetLastError(EC_INVALID_PARAMETER);
-      vTraceError(iTraceLevel, ">RapidsSE_AddColumn(b): %p %s\n"_Str, pSEitf, aEC[EC_INVALID_PARAMETER]);
+      vTraceError(iTraceLevel,
+        ">RapidsSE_AddColumn(b): %p %s(%lld)\n"_Str, pSEitf, aEC[EC_INVALID_PARAMETER], EC_INVALID_PARAMETER);
       return EC_INVALID_PARAMETER;
     }
 
@@ -44,7 +46,8 @@ eEC RapidsSE_AddColumn(SEitf* pSEitf, Str* pColumnName, Str* pColumnType, i8 iTr
     
     if (!pTable) {
       pSEitf->vSetLastError(EC_NO_SUCH_TABLE);
-      vTraceError(iTraceLevel, ">RapidsSE_AddColumn(c): %p %s\n"_Str, pSEitf, aEC[EC_NO_SUCH_TABLE]);
+      vTraceError(iTraceLevel,
+        ">RapidsSE_AddColumn(c): %p %s(%lld)\n"_Str, pSEitf, aEC[EC_NO_SUCH_TABLE], EC_NO_SUCH_TABLE);
       return EC_NO_SUCH_TABLE;
     }
 
@@ -54,14 +57,16 @@ eEC RapidsSE_AddColumn(SEitf* pSEitf, Str* pColumnName, Str* pColumnType, i8 iTr
                               (Str*)pColumnName,
                               (Str*)pColumnType);
     if (EC_NONE != eResult) {
-      vTraceError(iTraceLevel, ">RapidsSE_AddColumn(d): %p %s\n"_Str, pSEitf, aEC[eResult]);
+      vTraceError(iTraceLevel,
+        ">RapidsSE_AddColumn(d): %p %s(%lld)\n"_Str, pSEitf, aEC[eResult], eResult);
       return eResult;
     }
     
     // get response
     eResult = eGetResponse(pSEitf);
     if (EC_NONE != eResult) {
-      vTraceError(iTraceLevel, ">RapidsSE_AddColumn(e): %p %s\n"_Str, pSEitf, aEC[eResult]);
+      vTraceError(iTraceLevel,
+        ">RapidsSE_AddColumn(e): %p %s(%lld)\n"_Str, pSEitf, aEC[eResult], eResult);
       return eResult;
     }
     
@@ -69,7 +74,8 @@ eEC RapidsSE_AddColumn(SEitf* pSEitf, Str* pColumnName, Str* pColumnType, i8 iTr
     return EC_NONE;
   }
   catch (Error* pError) {
-    vTrace(">RapidsSE_AddColumn: %p %s\n"_Str, pSEitf, pError->aErrorMsg());
+    vTrace(">RapidsSE_AddColumn: %p %s(%lld)\n"_Str, pSEitf,
+      pError->aErrorMsg(), pError->eErrorCode());
     RapidsSE::vHandler(pError);
     return pError->eErrorCode();
   }
@@ -83,163 +89,85 @@ eEC RapidsSE_AddColumn(SEitf* pSEitf, Str* pColumnName, Str* pColumnType, i8 iTr
 /*----------------------------------------------------------------------------*/
 /* begin insert                                                               */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_BeginInsert(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable)
+eEC RapidsSE_BeginInsert(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable, i8 iTraceLevel)
 {
   eEC eResult;
   
-  if (gpGrid->m_bTraceapi)
-    vTrace("RapidsSE_BeginInsert\n"_Str);
-
-  // pSEitf cannot be null
-  if (pSEitf == nullptr) {
-    return EC_INVALID_INTERFACE;
-  }
+  try {
+    vTraceEntry(iTraceLevel,
+                "<RapidsSE_BeginInsert: %p %s %s %s\n"_Str, pSEitf, pCatalog, pSchema, pTable);
+    eEC eResult;
+    
+    eResult = eValidateSEitf(pSEitf, ">RapidsSE_BeginInsert"_Str, iTraceLevel);
+    if (eResult != EC_NONE)
+      return eResult;
+    
+    // clear the last error
+    pSEitf->vClearLastError();
   
-  // pSEitf should be a pool address
-  if (!gpBufferPool->bValidAddress(pSEitf)) {
-    return EC_INVALID_INTERFACE;
-  }
-  
-  // pSEitf should be an SEitf class
-  if (pSEitf->eClass() != CN_SEITF) {
-    return EC_INVALID_INTERFACE;
-  }
-  
-  // clear the last error
-  pSEitf->vClearLastError();
-  
-  if (!pCatalog) {
-    pSEitf->vSetLastError(EC_INVALID_PARAMETER);
-    return EC_INVALID_PARAMETER;
-  }
-  
-  if (!pSchema) {
-    pSEitf->vSetLastError(EC_INVALID_PARAMETER);
-    return EC_INVALID_PARAMETER;
-  }
-  
-  if (!pTable) {
-    pSEitf->vSetLastError(EC_INVALID_PARAMETER);
-    return EC_INVALID_PARAMETER;
-  }
-  
-  // change directory to ~
-  eResult = eExecuteRequest(pSEitf, "cf"_Str, "~"_Str);
-  if (EC_NONE != eResult) {
-    return eResult;
-  }
-  
-  // get response
-  eResult = eGetResponse(pSEitf);
-  if (EC_NONE != eResult) {
-    return eResult;
-  }
-  
-  // change directory to boray
-  eResult = eExecuteRequest(pSEitf, "cf"_Str, "boray"_Str);
-  if (EC_NONE != eResult) {
-    return eResult;
-  }
-  
-  // get response
-  eResult = eGetResponse(pSEitf);
-  if (EC_NONE != eResult) {
-    return eResult;
-  }
-  
-  // change directory to catalogs
-  eResult = eExecuteRequest(pSEitf, "cf"_Str, "catalogs"_Str);
-  if (EC_NONE != eResult) {
-    return eResult;
-  }
-  
-  // get response
-  eResult = eGetResponse(pSEitf);
-  if (EC_NONE != eResult) {
-    return eResult;
-  }
-  
-  // change directory to pCatalog
-  eResult = eExecuteRequest(pSEitf, "cf"_Str, (Str*)pCatalog);
-  if (EC_NONE != eResult) {
-    return eResult;
-  }
-  
-  // get response
-  eResult = eGetResponse(pSEitf);
-  if (EC_NONE != eResult) {
-    return eResult;
-  }
-  
-  // change directory to schemas
-  eResult = eExecuteRequest(pSEitf, "cf"_Str, "schemas"_Str);
-  if (EC_NONE != eResult) {
-    return eResult;
-  }
-  
-  // get response
-  eResult = eGetResponse(pSEitf);
-  if (EC_NONE != eResult) {
-    return eResult;
-  }
-  
-  // change directory to pSchema
-  eResult = eExecuteRequest(pSEitf, "cf"_Str, (Str*)pSchema);
-  if (EC_NONE != eResult) {
-    return eResult;
-  }
-  
-  // get response
-  eResult = eGetResponse(pSEitf);
-  if (EC_NONE != eResult) {
-    return eResult;
-  }
-  
-  // change directory to tables
-  eResult = eExecuteRequest(pSEitf, "cf"_Str, "tables"_Str);
-  if (EC_NONE != eResult) {
-    return eResult;
-  }
-  
-  // get response
-  eResult = eGetResponse(pSEitf);
-  if (EC_NONE != eResult) {
-    return eResult;
-  }
-  
-  // change directory to tables
-  eResult = eExecuteRequest(pSEitf, "cf"_Str, (Str*)pTable);
-  if (EC_NONE != eResult) {
-    return eResult;
-  }
-  
-  // get response
-  eResult = eGetResponse(pSEitf);
-  if (EC_NONE != eResult) {
-    return eResult;
-  }
-
-  // get pTable
-  eResult = eExecuteRequest(pSEitf, "gettbl"_Str, (Str*)pTable);
-  if (EC_NONE != eResult) {
-    vTrace("RapidsSE_BeginInsert : gettbl FAILED!!!\n"_Str);
-    return eResult;
-  }
-  
-  // get response
-  eResult = eGetResponse(pSEitf);
-  if (EC_NONE != eResult) {
-    return eResult;
-  }
-  
-  bool bResult = pSEitf->bBeginTx();
-  
-  if (!bResult) {
-    pSEitf->vSetLastError(EC_BEGIN_TX_FAILED);
-    return EC_BEGIN_TX_FAILED;
-  }
-  
-  return EC_NONE;
+    if (!pCatalog) {
+      pSEitf->vSetLastError(EC_INVALID_PARAMETER);
+      vTraceError(iTraceLevel, ">RapidsSE_BeginInsert(a): %p %s\n"_Str, pSEitf, aEC[EC_INVALID_PARAMETER]);
+      return EC_INVALID_PARAMETER;
+    }
+    
+    if (!pSchema) {
+      pSEitf->vSetLastError(EC_INVALID_PARAMETER);
+      vTraceError(iTraceLevel, ">RapidsSE_BeginInsert(b): %p %s\n"_Str, pSEitf, aEC[EC_INVALID_PARAMETER]);
+      return EC_INVALID_PARAMETER;
+    }
+    
+    if (!pTable) {
+      pSEitf->vSetLastError(EC_INVALID_PARAMETER);
+      vTraceError(iTraceLevel,
+        ">RapidsSE_BeginInsert(c): %p %s(%lld)\n"_Str, pSEitf, aEC[EC_INVALID_PARAMETER], EC_INVALID_PARAMETER);
+      return EC_INVALID_PARAMETER;
+    }
+    
+    eResult = eChangeFolder(pSEitf, pCatalog, pSchema, pTable, ">RapidsSE_BeginInsert"_Str, iTraceLevel);
+    if (eResult != EC_NONE)
+      return eResult;
+    
+    // get pTable
+    eResult = eExecuteRequest(pSEitf, "gettbl"_Str, (Str*)pTable);
+    if (EC_NONE != eResult) {
+      vTraceError(iTraceLevel,
+        ">RapidsSE_BeginInsert(d): %p %s(%lld)\n"_Str, pSEitf, aEC[eResult], eResult);
+      return eResult;
+    }
+    
+    // get response
+    eResult = eGetResponse(pSEitf);
+    if (EC_NONE != eResult) {
+      vTraceError(iTraceLevel,
+        ">RapidsSE_BeginInsert(e): %p %s(%lld)\n"_Str, pSEitf, aEC[eResult], eResult);
+      return eResult;
+    }
+    
+    bool bResult = pSEitf->bBeginTx();
+    
+    if (!bResult) {
+      pSEitf->vSetLastError(EC_BEGIN_TX_FAILED);
+      vTraceError(iTraceLevel,
+        ">RapidsSE_BeginInsert(f): %p %s(%lld)\n"_Str, pSEitf, aEC[eResult], eResult);
+      return EC_BEGIN_TX_FAILED;
+    }
+    
+    vTraceExit(iTraceLevel,
+      ">RapidsSE_BeginInsert(g): %p %s(%lld)\n"_Str, pSEitf, aEC[eResult], eResult);
+    
+    return EC_NONE;
+    }
+    catch (Error* pError) {
+      vTrace(">RapidsSE_AddColumn: %p %s(%lld)\n"_Str, pSEitf,
+        pError->aErrorMsg(), pError->eErrorCode());
+      RapidsSE::vHandler(pError);
+      return pError->eErrorCode();
+    }
+    catch (...) {
+      vTrace(">RapidsSE_AddColumn: %p\n"_Str, pSEitf);
+      return EC_SE_UNKNOWN_ERROR;
+    }
 }
 
 /*----------------------------------------------------------------------------*/
