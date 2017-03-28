@@ -16,8 +16,10 @@ namespace DBobjects
     EntryData(void);
     ~EntryData(void);
   
+    void vCopyBytes(void* aSrc, i8 nBytes);
     Key* aKey(i8 nLevels);
     Levels* aLevels(i8 nLevels);
+  
   };
   
   EntryData* _aEntryData(void* aAddr);
