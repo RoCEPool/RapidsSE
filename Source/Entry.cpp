@@ -73,6 +73,20 @@ Entry::Entry(i8 nDataBytes, i8 nLevels)
   
   //_postcondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
 }
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//Entry::Entry(i8 nBytes, i8 nLevels)
+//{
+//  //_precondition_(_MAGIC_,CN_ENTRY);
+//  
+//  m_nBytes  = nBytes;
+//  m_nLevels = nLevels;
+//  
+//  _setFooter_();
+//  
+//  _checkInitialised_(CN_ENTRY);
+//  
+//  //_postcondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
+//}
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
