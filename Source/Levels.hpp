@@ -8,7 +8,7 @@ namespace DBobjects
   class Levels
   {
   public:
-  i8  m_iRight[1];  //
+  u8  m_uRight[1];  //
   
   public:
     void* operator new(size_t);
@@ -17,6 +17,8 @@ namespace DBobjects
     Levels(void);
     ~Levels(void);
 
+    u8 uRight(i8 iLevel);
+  
     static i8 nBytesRequired(i8 nLevels);
   };
   

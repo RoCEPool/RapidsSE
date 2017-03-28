@@ -123,7 +123,7 @@ void Entry::vContentDump(void)
   for (i8 iIndex=0; iIndex< m_nLevels - 1; iIndex++) {
     vTrace("L%lld: %lld "_Str,
            iIndex+1,
-           nOffset(iIndex));
+           uOffset(iIndex));
   }
   
   vTrace("\n"_Str);
@@ -174,6 +174,26 @@ void Entry::vEntry(EntWsp& xEntWsp)
   
   m_xWsp.vUsed(nBytes);
 }
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//void Entry::vEntry(EntWsp& xEntWsp)
+//{
+//  //_precondition_(_MAGIC_,CN_ENTRY);
+//  
+//  // set Bytes
+//  i8 nBytes = xEntWsp.nWspUsed();
+//  m_nBytes = sizeof(Entry) + nBytes;
+//  
+//  // set RowId
+//  m_xRowId  = xEntWsp.xRowId();
+//
+//  // set Levels
+//  m_nLevels = xEntWsp.nLevels();
+//  
+//  // copy entry data
+//  Str* aSrc = xEntWsp.aWspStr();
+//  EntryData* aEntryData = this->aEntryData();
+//  aEntryData->vCopyBytes(aSrc,nBytes);
+//}
 
 /*----------------------------------------------------------------------------*/
 /* get key                                                                    */
@@ -223,11 +243,21 @@ void Entry::vLevels(u8 nLevels)
 /*----------------------------------------------------------------------------*/
 /* get next entry offset at level                                             */
 /*----------------------------------------------------------------------------*/
-u8 Entry::nOffset(u8 nLevel)
+u8 Entry::uOffset(u8 nLevel)
 {
   i8* nLevels = reinterpret_cast<i8*>(m_xWsp.aArea());
   return nLevels[nLevel];
 }
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//u8 Entry::uOffset(u8 iLevel)
+//{
+//  EntryData* aEntryData = this->aEntryData();
+//  Levels* aLevels = aEntryData->aLevels(m_nLevels);
+//
+//  u8 uOffset = aLevels->uOffset(iLevel);
+//  
+//  return uOffset;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* set next entry offset at level                                             */
