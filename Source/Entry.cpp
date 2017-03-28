@@ -182,10 +182,23 @@ Key* Entry::aKey(void)
 {
   //_precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
   
-  Key* pKey = reinterpret_cast<Key*>(m_xWsp.aArea() + (sizeof(i8)*(m_nLevels-1)));
+  Key* pKey;
+  
+  pKey = reinterpret_cast<Key*>(m_xWsp.aArea() + (sizeof(i8)*(m_nLevels-1)));
   
   return pKey;
 }
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//Key* Entry::aKey(void)
+//{
+//  //_precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
+//
+//  EntryData* pEntryData = this->aEntryData();
+//  
+//  Key* aKey = pEntryData->aKey(m_nLevels);
+//  
+//  return aKey;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* get nLevels                                                                */

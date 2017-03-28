@@ -15,7 +15,9 @@ namespace DBobjects
   
     EntryData(void);
     ~EntryData(void);
-    
+  
+    Key* aKey(i8 nLevels);
+    Levels* aLevels(i8 nLevels);
   };
   
   EntryData* _aEntryData(void* aAddr);
