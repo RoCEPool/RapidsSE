@@ -42,7 +42,6 @@ namespace DBobjects
 
     void   vEntry(EntWsp& xEntWsp);
 
-    Key&   xKey(void);
     Key*   aKey(void);
   
     u8     nLevels(void);

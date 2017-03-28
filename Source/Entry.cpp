@@ -178,18 +178,6 @@ void Entry::vEntry(EntWsp& xEntWsp)
 /*----------------------------------------------------------------------------*/
 /* get key                                                                    */
 /*----------------------------------------------------------------------------*/
-Key& Entry::xKey(void)
-{
-  //_precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
-  
-  Key* pKey = reinterpret_cast<Key*>(m_xWsp.aArea());
-
-  return reinterpret_cast<Key&>(*pKey);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get key                                                                    */
-/*----------------------------------------------------------------------------*/
 Key* Entry::aKey(void)
 {
   //_precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
