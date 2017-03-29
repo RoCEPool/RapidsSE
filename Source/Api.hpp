@@ -48,6 +48,16 @@ eEC eGetResponse(SEitf* pSEitf);
 /*----------------------------------------------------------------------------*/
 /* trace API entry                                                            */
 /*----------------------------------------------------------------------------*/
+#define TRACE_ENTRY_P0() \
+  {  \
+    if ( (iTraceLevel & TL_ERROR) == TL_ERROR) \
+      vTrace("<%s: %p(%lld)\n"_Str,  \
+        aApiCall, pSEitf, pSEitf ? pSEitf->iPartition() : -1); \
+  }
+
+/*----------------------------------------------------------------------------*/
+/* trace API entry                                                            */
+/*----------------------------------------------------------------------------*/
 #define TRACE_ENTRY_P1(p1) \
   {  \
     if ( (iTraceLevel & TL_ERROR) == TL_ERROR) \
@@ -101,24 +111,31 @@ eEC eGetResponse(SEitf* pSEitf);
 /*----------------------------------------------------------------------------*/
 #define VALIDATE_PARAM(aMarker, pParameter) \
   {  \
-    if ( (iTraceLevel & TL_ERROR) == TL_ERROR) { \
-      if (!pParameter) { \
-        TRACE_ERROR(aMarker, EC_INVALID_PARAMETER); \
-        return EC_INVALID_PARAMETER; \
-       } \
+    if (!pParameter) { \
+      TRACE_ERROR(aMarker, EC_INVALID_PARAMETER); \
+      return EC_INVALID_PARAMETER; \
      } \
+  }
+
+/*----------------------------------------------------------------------------*/
+/* validate reference pointer                                                 */
+/*----------------------------------------------------------------------------*/
+#define VALIDATE_REFPOINTER(aMarker, ppRefPointer) \
+  { \
+    if (!ppRefPointer) { \
+      TRACE_ERROR(aMarker, EC_INVALID_PARAMETER); \
+      return EC_INVALID_PARAMETER; \
+    } \
   }
 
 /*----------------------------------------------------------------------------*/
 /* validate table                                                             */
 /*----------------------------------------------------------------------------*/
-#define VALIDATE_TABLE(aMarker, pTable) \
+#define VALIDATE_TABLE(aMarker) \
   {  \
-    if ( (iTraceLevel & TL_ERROR) == TL_ERROR) { \
-      if (!pTable) { \
-        TRACE_ERROR(aMarker, EC_NO_SUCH_TABLE); \
-        return EC_INVALID_PARAMETER; \
-      } \
+    if ( pSEitf->pCurrentTable() ) { \
+      TRACE_ERROR(aMarker, EC_NO_SUCH_TABLE); \
+      return EC_NO_SUCH_TABLE; \
     } \
   }
 
@@ -172,7 +189,7 @@ eEC eGetResponse(SEitf* pSEitf);
 /*----------------------------------------------------------------------------*/
 #define CF_CATALOGS(aMarker) \
   { \
-    eResult = eChangeFolderCatalogs(pSEitf, pCatalog, pSchema, pTable, aApiCall, iTraceLevel); \
+    eResult = eChangeFolderCatalogs(pSEitf, aApiCall, iTraceLevel); \
     if (EC_NONE != eResult) { \
       TRACE_ERROR(aMarker,eResult); \
       return eResult; \
@@ -184,7 +201,7 @@ eEC eGetResponse(SEitf* pSEitf);
 /*----------------------------------------------------------------------------*/
 #define CF_TABLES(aMarker) \
   { \
-    eResult = eChangeFolderTables(pSEitf, pCatalog, pSchema, pTable, aApiCall, iTraceLevel); \
+    eResult = eChangeFolderTables(pSEitf, pCatalog, pSchema, aApiCall, iTraceLevel); \
     if (EC_NONE != eResult) { \
       TRACE_ERROR(aMarker,eResult); \
       return eResult; \
