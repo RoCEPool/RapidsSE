@@ -334,7 +334,9 @@ Footer* Entry::pFooter(void)
 {
   //_precondition_(_MAGIC_,CN_ENTRY);
   
-  Footer* pFooter = pAdd<Footer*>(this,sizeof(Entry) + m_xWsp.nUsed());
+  i8 iFooterOffset = m_nBytes - sizeof(Footer);
+  
+  Footer* pFooter = pAdd<Footer*>(this,iFooterOffset);
   
   return pFooter;
 }
