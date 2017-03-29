@@ -43,7 +43,7 @@ namespace Debugging
   
   /* 27 */ EC_NOT_A_CATALOG,
   /* 28 */ EC_NOT_A_FOLDER,
-  /* 29   */ EC_NOT_AN_INDEX,
+  /* 29 */ EC_NOT_AN_INDEX,
   /* 30 */ EC_NOT_A_SCHEMA,
   /* 31 */ EC_NOT_A_TABLE,
   /* 32 */ EC_NOT_A_TENANT,

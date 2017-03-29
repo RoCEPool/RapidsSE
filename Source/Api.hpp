@@ -22,12 +22,12 @@ extern "C" eEC RapidsSE_GetColumns(SEitf* pSEitf, Str* pCatalog,  Str* pSchema,
                                    Str* pTable, void** ppColumns, i8 iTraceLevel);
 extern "C" eEC RapidsSE_GetLastError(SEitf* pSEitf, void** ppError, i8 iTraceLevel);
 extern "C" eEC RapidsSE_GetNextRow(SEitf* pSEitf, void** ppRow, i8 iTraceLevel);
-extern "C" eEC RapidsSE_GetPartitions(SEitf* pSEitf, void** ppParitions, void** ppCount);
-extern "C" eEC RapidsSE_GetSchemas(SEitf* pSEitf, Str* pCatalog, void** ppSchema);
-extern "C" eEC RapidsSE_GetEngineVersion(SEitf* pSEitf, void** ppVersion);
-extern "C" eEC RapidsSE_GetTables(SEitf* pSEitf, Str* pCatalog, Str* pSchema, void** ppTables);
-extern "C" eEC RapidsSE_HashRowPartition(SEitf* pSEitf, Str* pRow, void** ppPartition);
-extern "C" eEC RapidsSE_InsertRow(SEitf* pSEitf, Str* pRow);
+extern "C" eEC RapidsSE_GetPartitions(SEitf* pSEitf, void** ppParitions, void** ppCount, i8 iTraceLevel);
+extern "C" eEC RapidsSE_GetSchemas(SEitf* pSEitf, Str* pCatalog, void** ppSchema, i8 iTraceLevel);
+extern "C" eEC RapidsSE_GetEngineVersion(SEitf* pSEitf, void** ppVersion, i8 iTraceLevel);
+extern "C" eEC RapidsSE_GetTables(SEitf* pSEitf, Str* pCatalog, Str* pSchema, void** ppTables, i8 iTraceLevel);
+extern "C" eEC RapidsSE_HashRowPartition(SEitf* pSEitf, Str* pRow, void** ppPartition, i8 iTraceLevel);
+extern "C" eEC RapidsSE_InsertRow(SEitf* pSEitf, Str* pRow, i8 iTraceLevel);
 extern "C" eEC RapidsSE_PoolOpen(Str* pInstanceName, void** ppInstance, i8 iTraceLevel);
 extern "C" eEC RapidsSE_ScanTable(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable);
 extern "C" eEC RapidsSE_SEitfDelete(void* pAttachMap, SEitf* pSEitf, i8 iTraceLevel);
@@ -181,9 +181,9 @@ inline eEC eChangeFolderCatalogs(SEitf* pSEitf, Str* aApiCall, i8 iTraceLevel)
 }
 
 /*----------------------------------------------------------------------------*/
-/* change folder to a table                                                   */
+/* change folder to schemas                                                   */
 /*----------------------------------------------------------------------------*/
-inline eEC eChangeFolderTables(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable, Str* aApiCall, i8 iTraceLevel)
+inline eEC eChangeFolderSchemas(SEitf* pSEitf, Str* pCatalog, Str* aApiCall, i8 iTraceLevel)
 {
   eEC eResult;
   
@@ -219,6 +219,20 @@ inline eEC eChangeFolderTables(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* 
     return eResult;
   }
   
+  return EC_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
+/* change folder to a table                                                   */
+/*----------------------------------------------------------------------------*/
+inline eEC eChangeFolderTables(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* aApiCall, i8 iTraceLevel)
+{
+  eEC eResult;
+  
+  eResult = eChangeFolderSchemas(pSEitf, pCatalog, aApiCall, iTraceLevel);
+  if (eResult != EC_NONE)
+    return eResult;
+  
   // change directory to pSchema
   eResult = eExecuteRequest(pSEitf, "cf"_Str, (Str*)pSchema);
   if (EC_NONE != eResult) {
@@ -233,20 +247,6 @@ inline eEC eChangeFolderTables(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* 
     return eResult;
   }
   
-  return EC_NONE;
-}
-
-/*----------------------------------------------------------------------------*/
-/* change folder to tables                                                   */
-/*----------------------------------------------------------------------------*/
-inline eEC eChangeFolderTable(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable, Str* aApiCall, i8 iTraceLevel)
-{
-  eEC eResult;
-  
-  eResult = eChangeFolderTables(pSEitf, pCatalog, pSchema, pTable, aApiCall, iTraceLevel);
-  if (eResult != EC_NONE)
-    return eResult;
-
   // change directory to tables
   eResult = eExecuteRequest(pSEitf, "cf"_Str, "tables"_Str);
   if (EC_NONE != eResult) {
@@ -258,6 +258,21 @@ inline eEC eChangeFolderTable(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* p
   eResult = eGetResponse(pSEitf);
   if (EC_NONE != eResult) {
     vTraceError(iTraceLevel, "%s(fn): %p %s(%lld)\n"_Str, pSEitf, aApiCall, aEC[eResult], eResult);
+    return eResult;
+  }
+  
+  return EC_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
+/* change folder to tables                                                   */
+/*----------------------------------------------------------------------------*/
+inline eEC eChangeFolderTable(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable, Str* aApiCall, i8 iTraceLevel)
+{
+  eEC eResult;
+  
+  eResult = eChangeFolderTables(pSEitf, pCatalog, pSchema, aApiCall, iTraceLevel);
+  if (eResult != EC_NONE) {
     return eResult;
   }
   
