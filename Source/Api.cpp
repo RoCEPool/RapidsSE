@@ -377,7 +377,7 @@ eEC RapidsSE_EndScan(SEitf* pSEitf, i8 iTraceLevel)
   eEC eResult;
   eEC eResponse;
   
-  Str* aApiCall = "RapidsSE_AddColumn"_Str;
+  Str* aApiCall = "RapidsSE_EndScan"_Str;
   
   try {
     
@@ -421,35 +421,6 @@ eEC RapidsSE_EndScan(SEitf* pSEitf, i8 iTraceLevel)
     TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
     return EC_SE_UNKNOWN_ERROR;
   }
-}
-
-/*----------------------------------------------------------------------------*/
-/* Execute a request                                                          */
-/*----------------------------------------------------------------------------*/
-bool RapidsSE_ExecuteRequest(SEitf* pSEitf, Str* aWords[], i8 iWords, Str** ppResponse)
-{
-  bool bResult;
-  
-  // clear the last error
-  pSEitf->vClearLastError();
-  
-  // send request to se
-  bResult = bExecuteRequest(pSEitf, aWords, iWords);
-  if (!bResult) {
-    *ppResponse = nullptr;
-    return bResult;
-  }
-  
-  // get response from se
-  eEC eResult = eGetResponse(pSEitf);
-  
-  // put response into caller
-  *ppResponse = pSEitf->m_sResponse;
-  
-  if (eResult == EC_NONE)
-    return true;
-  else
-    return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -668,7 +639,7 @@ eEC RapidsSE_GetPartitions(SEitf* pSEitf, void** ppPartitions, void** ppCount, i
   eEC eResult;
   eEC eResponse;
   
-  Str* aApiCall = "RapidsSE_AddColumn"_Str;
+  Str* aApiCall = "RapidsSE_GetPartitions"_Str;
   
   try {
     // trace entry
@@ -711,7 +682,7 @@ eEC RapidsSE_GetSchemas(SEitf* pSEitf, Str* pCatalog, void** ppSchemas, i8 iTrac
   eEC eResult;
   eEC eResponse;
   
-  Str* aApiCall = "RapidsSE_AddColumn"_Str;
+  Str* aApiCall = "RapidsSE_GetSchemas"_Str;
   
   try {
     // trace entry
@@ -764,7 +735,7 @@ eEC RapidsSE_GetEngineVersion(SEitf* pSEitf, void** ppVersion, i8 iTraceLevel)
   eEC eResult;
   eEC eResponse;
   
-  Str* aApiCall = "RapidsSE_AddColumn"_Str;
+  Str* aApiCall = "RapidsSE_GetEngineVersion"_Str;
   
   try {
     // trace entry
@@ -811,7 +782,7 @@ eEC RapidsSE_GetTables(SEitf* pSEitf, Str* pCatalog, Str* pSchema, void** ppTabl
   eEC eResult;
   eEC eResponse;
   
-  Str* aApiCall = "RapidsSE_AddColumn"_Str;
+  Str* aApiCall = "RapidsSE_GetTables"_Str;
   
   try {
     // trace entry
@@ -866,7 +837,7 @@ eEC RapidsSE_HashRowPartition(SEitf* pSEitf, Str* pRow, void** ppPartition, i8 i
   eEC eResult;
   eEC eResponse;
   
-  Str* aApiCall = "RapidsSE_AddColumn"_Str;
+  Str* aApiCall = "RapidsSE_HashRowPartition"_Str;
   
   try {
     // trace entry
@@ -920,7 +891,7 @@ eEC RapidsSE_InsertRow(SEitf* pSEitf, Str* pRow, i8 iTraceLevel)
   eEC eResult;
   eEC eResponse;
   
-  Str* aApiCall = "RapidsSE_AddColumn"_Str;
+  Str* aApiCall = "RapidsSE_InsertRow"_Str;
   
   try {
     
@@ -972,7 +943,7 @@ eEC RapidsSE_InsertRow(SEitf* pSEitf, Str* pRow, i8 iTraceLevel)
 eEC RapidsSE_PoolOpen(Str* pInstanceName, void** ppInstance, i8 iTraceLevel)
 {
   
-  Str* aApiCall = "RapidsSE_AddColumn"_Str;
+  Str* aApiCall = "RapidsSE_PoolOpen"_Str;
   SEitf* pSEitf = nullptr;
   
   try {
@@ -1018,257 +989,48 @@ eEC RapidsSE_ScanTable(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable, 
   eEC eResult;
   eEC eResponse;
   
-  Str* aApiCall = "RapidsSE_AddColumn"_Str;
+  Str* aApiCall = "RapidsSE_ScanTable"_Str;
   
   try {
     // trace entry
     TRACE_ENTRY_P3(pCatalog, pSchema, pTable);
     
-    // validate the SEitf
-    VALIDATE_SEITF();
-    
-    // pSEitf should be a pool address
-    if (!gpBufferPool->bValidAddress(pSEitf)) {
-      if (gpGrid->m_bTraceapi)
-        vTrace(">RapidsSE_ScanTable(b): %p %lld %s\n"_Str, pSEitf,
-               pSEitf->iPartition(), aEC[EC_INVALID_INTERFACE]);
-      return EC_INVALID_INTERFACE;
-    }
-    
-    // pSEitf should be an SEitf class
-    if (pSEitf->eClass() != CN_SEITF) {
-      if (gpGrid->m_bTraceapi)
-        vTrace(">RapidsSE_ScanTable(c): %p %lld %s\n"_Str, pSEitf,
-               pSEitf->iPartition(), aEC[EC_INVALID_INTERFACE]);
-      return EC_INVALID_INTERFACE;
-    }
-    
     // clear the last error
     pSEitf->vClearLastError();
     
-    if (!pCatalog) {
-      pSEitf->vSetLastError(EC_INVALID_PARAMETER);
-      if (gpGrid->m_bTraceapi)
-        vTrace(">RapidsSE_ScanTable(d): %p %lld %s\n"_Str, pSEitf,
-               pSEitf->iPartition(), aEC[EC_INVALID_PARAMETER]);
-      return EC_INVALID_PARAMETER;
-    }
+    // validate the SEitf
+    VALIDATE_SEITF();
     
-    if (!pSchema) {
-      pSEitf->vSetLastError(EC_INVALID_PARAMETER);
-      if (gpGrid->m_bTraceapi)
-        vTrace(">RapidsSE_ScanTable(e): %p %lld %s\n"_Str, pSEitf,
-               pSEitf->iPartition(), aEC[EC_INVALID_PARAMETER]);
-      return EC_INVALID_PARAMETER;
-    }
+    // validate parameters
+    VALIDATE_PARAM("a"_Str, pCatalog);
+    VALIDATE_PARAM("b"_Str, pSchema);
+    VALIDATE_PARAM("c"_Str, pTable);
     
-    if (!pTable) {
-      pSEitf->vSetLastError(EC_INVALID_PARAMETER);
-      if (gpGrid->m_bTraceapi)
-        vTrace(">RapidsSE_ScanTable(f): %p %lld %s\n"_Str, pSEitf,
-               pSEitf->iPartition(), aEC[EC_INVALID_PARAMETER]);
-      return EC_INVALID_PARAMETER;
-    }
-    
-    // change directory to ~
-    eResult = eExecuteRequest(pSEitf, "cf"_Str, "~"_Str);
-    if (EC_NONE != eResult) {
-      if (gpGrid->m_bTraceapi)
-        vTrace(">RapidsSE_ScanTable(g): %p %lld %s\n"_Str, pSEitf,
-               pSEitf->iPartition(), aEC[eResult]);
-      return eResult;
-    }
-
-    // get response
-    eResult = eGetResponse(pSEitf);
-    if (EC_NONE != eResult) {
-      if (gpGrid->m_bTraceapi)
-        vTrace(">RapidsSE_ScanTable(h): %p %lld %s\n"_Str, pSEitf,
-               pSEitf->iPartition(), aEC[eResult]);
-      return eResult;
-    }
-
-    // change directory to boray
-    eResult = eExecuteRequest(pSEitf, "cf"_Str, "boray"_Str);
-    if (EC_NONE != eResult) {
-      if (gpGrid->m_bTraceapi)
-        vTrace(">RapidsSE_ScanTable(i): %p %lld %s\n"_Str, pSEitf,
-               pSEitf->iPartition(), aEC[eResult]);
-      return eResult;
-    }
-    
-    // get response
-    eResult = eGetResponse(pSEitf);
-    if (EC_NONE != eResult) {
-      if (gpGrid->m_bTraceapi)
-        vTrace(">RapidsSE_ScanTable(j): %p %lld %s\n"_Str, pSEitf,
-               pSEitf->iPartition(), aEC[eResult]);
-      return eResult;
-    }
-    
-    // change directory to catalogs
-    eResult = eExecuteRequest(pSEitf, "cf"_Str, "catalogs"_Str);
-    if (EC_NONE != eResult) {
-      if (gpGrid->m_bTraceapi)
-        vTrace(">RapidsSE_ScanTable(k): %p %lld %s\n"_Str, pSEitf,
-               pSEitf->iPartition(), aEC[eResult]);
-      return eResult;
-    }
-    
-    // get response
-    eResult = eGetResponse(pSEitf);
-    if (EC_NONE != eResult) {
-      if (gpGrid->m_bTraceapi)
-        vTrace(">RapidsSE_ScanTable(l): %p %lld %s\n"_Str, pSEitf,
-               pSEitf->iPartition(), aEC[eResult]);
-      return eResult;
-    }
-    
-    // change directory to pCatalog
-    eResult = eExecuteRequest(pSEitf, "cf"_Str, (Str*)pCatalog);
-    if (EC_NONE != eResult) {
-      if (gpGrid->m_bTraceapi)
-        vTrace(">RapidsSE_ScanTable(m): %p %lld %s\n"_Str, pSEitf,
-               pSEitf->iPartition(), aEC[eResult]);
-      return eResult;
-    }
-    
-    // get response
-    eResult = eGetResponse(pSEitf);
-    if (EC_NONE != eResult) {
-      if (gpGrid->m_bTraceapi)
-        vTrace(">RapidsSE_ScanTable(n): %p %lld %s\n"_Str, pSEitf,
-               pSEitf->iPartition(), aEC[eResult]);
-      return eResult;
-    }
-    
-    // change directory to schemas
-    eResult = eExecuteRequest(pSEitf, "cf"_Str, "schemas"_Str);
-    if (EC_NONE != eResult) {
-      if (gpGrid->m_bTraceapi)
-        vTrace(">RapidsSE_ScanTable(o): %p %lld %s\n"_Str, pSEitf,
-               pSEitf->iPartition(), aEC[eResult]);
-      return eResult;
-    }
-    
-    // get response
-    eResult = eGetResponse(pSEitf);
-    if (EC_NONE != eResult) {
-      if (gpGrid->m_bTraceapi)
-        vTrace(">RapidsSE_ScanTable(p): %p %lld %s\n"_Str, pSEitf,
-               pSEitf->iPartition(), aEC[eResult]);
-      return eResult;
-    }
-    
-    // change directory to pSchema
-    eResult = eExecuteRequest(pSEitf, "cf"_Str, (Str*)pSchema);
-    if (EC_NONE != eResult) {
-      if (gpGrid->m_bTraceapi)
-        vTrace(">RapidsSE_ScanTable(q): %p %lld %s\n"_Str, pSEitf,
-               pSEitf->iPartition(), aEC[eResult]);
-      return eResult;
-    }
-    
-    // get response
-    eResult = eGetResponse(pSEitf);
-    if (EC_NONE != eResult) {
-      if (gpGrid->m_bTraceapi)
-        vTrace(">RapidsSE_ScanTable(r): %p %lld %s\n"_Str, pSEitf,
-               pSEitf->iPartition(), aEC[eResult]);
-      return eResult;
-    }
-    
-    // change directory to tables
-    eResult = eExecuteRequest(pSEitf, "cf"_Str, "tables"_Str);
-    if (EC_NONE != eResult) {
-      if (gpGrid->m_bTraceapi)
-        vTrace(">RapidsSE_ScanTable(s): %p %lld %s\n"_Str, pSEitf,
-               pSEitf->iPartition(), aEC[eResult]);
-      return eResult;
-    }
-    
-    // get response
-    eResult = eGetResponse(pSEitf);
-    if (EC_NONE != eResult) {
-      if (gpGrid->m_bTraceapi)
-        vTrace(">RapidsSE_ScanTable(t): %p %lld %s\n"_Str, pSEitf,
-               pSEitf->iPartition(), aEC[eResult]);
-      return eResult;
-    }
-
-    // change directory to the table
-    eResult = eExecuteRequest(pSEitf, "cf"_Str, (Str*)pTable);
-    if (EC_NONE != eResult) {
-      if (gpGrid->m_bTraceapi)
-        vTrace(">RapidsSE_ScanTable(u): %p %lld %s\n"_Str, pSEitf,
-               pSEitf->iPartition(), aEC[eResult]);
-      return eResult;
-    }
-    
-    // get response
-    eResult = eGetResponse(pSEitf);
-    if (EC_NONE != eResult) {
-      if (gpGrid->m_bTraceapi)
-        vTrace(">RapidsSE_ScanTable(v): %p %lld %s\n"_Str, pSEitf,
-               pSEitf->iPartition(), aEC[eResult]);
-      return eResult;
-    }
-    
-    
-    
-    
-    // select * from pTable
-    eResult = eExecuteRequest(pSEitf, "pwf"_Str);
-    if (EC_NONE != eResult) {
-      if (gpGrid->m_bTraceapi)
-        vTrace(">RapidsSE_ScanTable(--): %p %lld %s\n"_Str, pSEitf,
-               pSEitf->iPartition(), aEC[eResult]);
-      return eResult;
-    }
-    
-    // get response
-    eResult = eGetResponse(pSEitf);
-    if (EC_NONE != eResult) {
-      if (gpGrid->m_bTraceapi)
-        vTrace(">RapidsSE_ScanTable(++): %p %lld %s(%lld)\n"_Str, pSEitf,
-               pSEitf->iPartition(), aEC[eResult], eResult);
-      return eResult;
-    }
-
-    
-    vTrace("pwf: %s\n"_Str, pSEitf->m_sResponse.aStr());
-    
+    // change directory to table
+    CF_TABLE("d"_Str);
     
     // select * from pTable
     eResult = eExecuteRequest(pSEitf, "sel"_Str, (Str*)pTable);
-    if (EC_NONE != eResult) {
-      if (gpGrid->m_bTraceapi)
-        vTrace(">RapidsSE_ScanTable(w): %p %lld %s\n"_Str, pSEitf,
-               pSEitf->iPartition(), aEC[eResult]);
-      return eResult;
-    }
-    
-    // get response
-    eResult = eGetResponse(pSEitf);
-    if (EC_NONE != eResult) {
-      if (gpGrid->m_bTraceapi)
-        vTrace(">RapidsSE_ScanTable(x): %p %lld %s(%lld)\n"_Str, pSEitf,
-               pSEitf->iPartition(), aEC[eResult], eResult);
-      return eResult;
-    }
+    CHECK_RESULT("e"_Str);
+    CHECK_RESPONSE("f"_Str);
 
-    ASSERT(pSEitf->pCurrentTable() != nullptr);
+    // validate table
+    VALIDATE_TABLE("g");
     
+    // get response (address of selcussor)
     i8 iAddress = pSEitf->m_sResponse.iToI8();
-    
     SelCursor* pSelCursor = reinterpret_cast<SelCursor*>(iAddress);
     ASSERT(CN_SELCURSOR == pSelCursor->eClass());
-
-    //vTrace("pSEitf: %p pSelCursor: %p Slot: %lld\n"_Str, pSEitf, pSelCursor,
-    //       Partition::iPartitionToSlot(pSEitf->iPartition()));
     
-    pSelCursor->vBegin(Partition::iPartitionToSlot(pSEitf->iPartition()));
+    // get slot for seitf partition on this node
+    i8 iSlot = Partition::iPartitionToSlot(pSEitf->iPartition());
     
+    // TRACE_SLOT(iSlot);
+    
+    // begin the select
+    pSelCursor->vBegin(iSlot);
+    
+    // get first row
     pSelCursor->vFirst();
 
     // trace exit
@@ -1330,7 +1092,7 @@ eEC RapidsSE_SEitfDelete(SEitf* pSEitf, i8 iTraceLevel)
 bool RapidsSE_SEitfInvalid(int iError, i8 iTraceLevel)
 {
   
-  Str* aApiCall = "RapidsSE_AddColumn"_Str;
+  Str* aApiCall = "RapidsSE_SEitfInvalid"_Str;
   SEitf* pSEitf = nullptr;
   
   try {
@@ -1368,7 +1130,7 @@ bool RapidsSE_SEitfInvalid(int iError, i8 iTraceLevel)
 eEC RapidsSE_SEitfNew(void** ppSEitf, i8 iPartition, i8 iTraceLevel)
 {
   eEC eResult;
-  Str* aApiCall = "RapidsSE_AddColumn"_Str;
+  Str* aApiCall = "RapidsSE_SEitfNew"_Str;
   SEitf* pSEitf = nullptr;
   
   try {
@@ -1407,6 +1169,35 @@ eEC RapidsSE_SEitfNew(void** ppSEitf, i8 iPartition, i8 iTraceLevel)
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* Execute a request                                                          */
+/*----------------------------------------------------------------------------*/
+bool RapidsSE_ExecuteRequest(SEitf* pSEitf, Str* aWords[], i8 iWords, Str** ppResponse)
+{
+  bool bResult;
+  
+  // clear the last error
+  pSEitf->vClearLastError();
+  
+  // send request to se
+  bResult = bExecuteRequest(pSEitf, aWords, iWords);
+  if (!bResult) {
+    *ppResponse = nullptr;
+    return bResult;
+  }
+  
+  // get response from se
+  eEC eResult = eGetResponse(pSEitf);
+  
+  // put response into caller
+  *ppResponse = pSEitf->m_sResponse;
+  
+  if (eResult == EC_NONE)
+    return true;
+  else
+    return false;
+}
 
 /*----------------------------------------------------------------------------*/
 /* execute command                                                            */
