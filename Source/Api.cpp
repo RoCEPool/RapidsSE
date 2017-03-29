@@ -22,19 +22,19 @@ eEC RapidsSE_AddColumn(SEitf* pSEitf, Str* pColumnName, Str* pColumnType, i8 iTr
   try {
     TRACE_ENTRY_P2(pColumnName, pColumnType);
     
-    // validate the SEitf
-    VALIDATE_SEITF();
-    
     // clear the last error
     pSEitf->vClearLastError();
+
+    // validate the SEitf
+    VALIDATE_SEITF("a"_Str);
     
     // validate parameters
-    VALIDATE_PARAM("a"_Str, pColumnName);
-    VALIDATE_PARAM("b"_Str, pColumnType);
+    VALIDATE_PARAM("b"_Str, pColumnName);
+    VALIDATE_PARAM("c"_Str, pColumnType);
     
     Table* pTable = pSEitf->pCurrentTable();
     
-    VALIDATE_TABLE("c"_Str);
+    VALIDATE_TABLE("d"_Str);
 
     // add a column
     eResult = eExecuteRequest(pSEitf, "add"_Str,
@@ -42,8 +42,8 @@ eEC RapidsSE_AddColumn(SEitf* pSEitf, Str* pColumnName, Str* pColumnType, i8 iTr
                               (Str*)pColumnName,
                               (Str*)pColumnType);
     
-    CHECK_RESULT("d"_Str);
-    CHECK_RESPONSE("e"_Str);
+    CHECK_RESULT("e"_Str);
+    CHECK_RESPONSE("f"_Str);
     
     TRACE_EXIT("ea"_Str);
     
@@ -75,30 +75,30 @@ eEC RapidsSE_BeginInsert(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable
     TRACE_ENTRY_P3(pCatalog, pSchema, pTable);
     
     // validate the SEitf
-    VALIDATE_SEITF();
+    VALIDATE_SEITF("a"_Str);
     
     // clear the last error
     pSEitf->vClearLastError();
   
     // validate parameters
-    VALIDATE_PARAM("a"_Str, pCatalog);
-    VALIDATE_PARAM("b"_Str, pSchema);
-    VALIDATE_PARAM("c"_Str, pTable);
+    VALIDATE_PARAM("b"_Str, pCatalog);
+    VALIDATE_PARAM("c"_Str, pSchema);
+    VALIDATE_PARAM("d"_Str, pTable);
     
     // change folder to table
-    CF_TABLE("d"_Str);
+    CF_TABLE("e"_Str);
     
     // get a reference to the table
     eResult = eExecuteRequest(pSEitf, "gettbl"_Str, (Str*)pTable);
-    CHECK_RESULT("d"_Str);
-    CHECK_RESPONSE("e"_Str);
+    CHECK_RESULT("f"_Str);
+    CHECK_RESPONSE("g"_Str);
     
     // begin a tnx
     bool bResult = pSEitf->bBeginTx();
     
     if (!bResult) {
       pSEitf->vSetLastError(EC_BEGIN_TX_FAILED);
-      TRACE_ERROR("f",EC_BEGIN_TX_FAILED);
+      TRACE_ERROR("h",EC_BEGIN_TX_FAILED);
       return EC_BEGIN_TX_FAILED;
     }
     
@@ -168,28 +168,28 @@ eEC RapidsSE_CreateTable(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable
     TRACE_ENTRY_P3(pCatalog, pSchema, pTable);
     
     // validate the SEitf
-    VALIDATE_SEITF();
+    VALIDATE_SEITF("a"_Str);
     
     // clear the last error
     pSEitf->vClearLastError();
     
     // validate parameters
-    VALIDATE_PARAM("a"_Str, pCatalog);
-    VALIDATE_PARAM("b"_Str, pSchema);
-    VALIDATE_PARAM("c"_Str, pTable);
+    VALIDATE_PARAM("b"_Str, pCatalog);
+    VALIDATE_PARAM("c"_Str, pSchema);
+    VALIDATE_PARAM("d"_Str, pTable);
     
     // change folder to tables
-    CF_TABLE("d"_Str);
+    CF_TABLE("e"_Str);
 
     // create a table
     eResult = eExecuteRequest(pSEitf, "mktbl"_Str, (Str*)pTable);
-    CHECK_RESULT("e"_Str);
-    CHECK_RESPONSE("f"_Str);
+    CHECK_RESULT("f"_Str);
+    CHECK_RESPONSE("g"_Str);
     
     // change directory to tables
     eResult = eExecuteRequest(pSEitf, "cf"_Str, (Str*)pTable);
-    CHECK_RESULT("g"_Str);
-    CHECK_RESPONSE("h"_Str);
+    CHECK_RESULT("h"_Str);
+    CHECK_RESPONSE("i"_Str);
     
     // get pTable
     eEC eGetResult = eExecuteRequest(pSEitf, "gettbl"_Str, (Str*)pTable);
@@ -197,15 +197,15 @@ eEC RapidsSE_CreateTable(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable
       
       // remove the table
       eResult = eExecuteRequest(pSEitf, "rmtbl"_Str, (Str*)pTable);
-      CHECK_RESULT("i"_Str);
-      CHECK_RESPONSE("j"_Str);
+      CHECK_RESULT("j"_Str);
+      CHECK_RESPONSE("k"_Str);
       
-      TRACE_ERROR("k"_Str, eGetResult);
+      TRACE_ERROR("l"_Str, eGetResult);
       return eGetResult;
     }
     
     // check response
-    CHECK_RESPONSE("l"_Str);
+    CHECK_RESPONSE("m"_Str);
     
     TRACE_EXIT("ea"_Str);
     
@@ -238,23 +238,23 @@ eEC RapidsSE_DropTable(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable, 
     TRACE_ENTRY_P3(pCatalog, pSchema, pTable);
     
     // validate the SEitf
-    VALIDATE_SEITF();
+    VALIDATE_SEITF("a"_Str);
     
     // clear the last error
     pSEitf->vClearLastError();
     
     // validate parameters
-    VALIDATE_PARAM("a"_Str, pCatalog);
-    VALIDATE_PARAM("b"_Str, pSchema);
-    VALIDATE_PARAM("c"_Str, pTable);
+    VALIDATE_PARAM("b"_Str, pCatalog);
+    VALIDATE_PARAM("c"_Str, pSchema);
+    VALIDATE_PARAM("d"_Str, pTable);
     
     // change folder to table
-    CF_TABLES("d"_Str);
+    CF_TABLES("e"_Str);
     
     // drop table
     eResult = eExecuteRequest(pSEitf, "rmtbl"_Str, (Str*)pTable);
-    CHECK_RESULT("e"_Str);
-    CHECK_RESPONSE("f"_Str);
+    CHECK_RESULT("f"_Str);
+    CHECK_RESPONSE("g"_Str);
     
     // trace exit
     TRACE_EXIT("ea"_Str);
@@ -288,16 +288,16 @@ eEC RapidsSE_EndCreate(SEitf* pSEitf, i8 iTraceLevel)
     TRACE_ENTRY_P0();
     
     // validate the SEitf
-    VALIDATE_SEITF();
+    VALIDATE_SEITF("a"_Str);
     
     // clear the last error
     pSEitf->vClearLastError();
     
     eEC eResult = eExecuteRequest(pSEitf, "rettbl"_Str);
-    CHECK_RESULT("a"_Str);
-    CHECK_RESPONSE("b"_Str);
+    CHECK_RESULT("b"_Str);
+    CHECK_RESPONSE("c"_Str);
     
-    ASSERT(pSEitf->pCurrentTable() == nullptr);
+    VALIDATE_TABLE("d"_Str);
     
     TRACE_EXIT("ea"_Str);
     
@@ -331,7 +331,7 @@ eEC RapidsSE_EndInsert(SEitf* pSEitf, i8 iTraceLevel)
     TRACE_ENTRY_P0();
     
     // validate the SEitf
-    VALIDATE_SEITF();
+    VALIDATE_SEITF("a"_Str);
     
     // clear the last error
     pSEitf->vClearLastError();
@@ -340,14 +340,14 @@ eEC RapidsSE_EndInsert(SEitf* pSEitf, i8 iTraceLevel)
     
     // if rowBuffer request was appended to requestQ, then wait for resonse
     if (bResult) {
-      CHECK_RESPONSE("a"_Str);
+      CHECK_RESPONSE("b"_Str);
     }
     
     eResult = eExecuteRequest(pSEitf, "rettbl"_Str);
-    CHECK_RESULT("b"_Str);
-    CHECK_RESPONSE("c"_Str);
+    CHECK_RESULT("c"_Str);
+    CHECK_RESPONSE("d"_Str);
     
-    ASSERT(pSEitf->pCurrentTable() == nullptr);
+    VALIDATE_TABLE("e"_Str);
     
     pSEitf->vCommitTx();
     pSEitf->vEndTx();
@@ -385,13 +385,13 @@ eEC RapidsSE_EndScan(SEitf* pSEitf, i8 iTraceLevel)
     TRACE_ENTRY_P0();
     
     // validate the SEitf
-    VALIDATE_SEITF();
+    VALIDATE_SEITF("a"_Str);
     
     // clear the last error
     pSEitf->vClearLastError();
     
     // validate table
-    VALIDATE_TABLE("a"_Str);
+    VALIDATE_TABLE("b"_Str);
     
     // get address of select cursor
     i8 iAddress = StrLib::iToI8( pSEitf->m_sResponse.s());
@@ -403,10 +403,10 @@ eEC RapidsSE_EndScan(SEitf* pSEitf, i8 iTraceLevel)
     
     // return the table
     eResult = eExecuteRequest(pSEitf, "rettbl"_Str);
-    CHECK_RESULT("a"_Str);
-    CHECK_RESPONSE("b"_Str);
+    CHECK_RESULT("c"_Str);
+    CHECK_RESPONSE("d"_Str);
     
-    ASSERT(pSEitf->pCurrentTable() == nullptr);
+    VALIDATE_TABLE("e"_Str);
     
     TRACE_EXIT("ea"_Str);
     
@@ -439,21 +439,21 @@ eEC RapidsSE_GetCatalogs(SEitf* pSEitf, void** ppCatalogs, i8 iTraceLevel)
     TRACE_ENTRY_P0();
     
     // validate the SEitf
-    VALIDATE_SEITF();
+    VALIDATE_SEITF("a"_Str);
 
     // valide reference pointer
-    VALIDATE_REFPOINTER("a"_Str, ppCatalogs);
+    VALIDATE_REFPOINTER("b"_Str, ppCatalogs);
     
     // clear the last error
     pSEitf->vClearLastError();
 
     // change folder to catalogs
-    CF_CATALOGS("a"_Str);
+    CF_CATALOGS("c"_Str);
     
     // list all catalogs
     eResult = eExecuteRequest(pSEitf, "lscat"_Str);
-    CHECK_RESULT("b"_Str);
-    CHECK_RESPONSE("c"_Str);
+    CHECK_RESULT("d"_Str);
+    CHECK_RESPONSE("e"_Str);
     
     // return list of catalogs
     *ppCatalogs = pSEitf->m_sResponse.s();
@@ -490,23 +490,23 @@ eEC RapidsSE_GetColumns(SEitf* pSEitf, Str* pCatalog, Str* pSchema,
     TRACE_ENTRY_P3(pCatalog, pSchema, pTable);
     
     // validate the SEitf
-    VALIDATE_SEITF();
+    VALIDATE_SEITF("a"_Str);
   
     // clear the last error
     pSEitf->vClearLastError();
     
     // validate parameters
-    VALIDATE_PARAM("a"_Str, pCatalog);
-    VALIDATE_PARAM("b"_Str, pSchema);
-    VALIDATE_PARAM("c"_Str, pTable);
+    VALIDATE_PARAM("b"_Str, pCatalog);
+    VALIDATE_PARAM("c"_Str, pSchema);
+    VALIDATE_PARAM("d"_Str, pTable);
     
     // change folder to table
-    CF_TABLE("d"_Str);
+    CF_TABLE("e"_Str);
   
     // list all the columns of pTable
     eResult = eExecuteRequest(pSEitf, "lscol"_Str, (Str*)pTable);
-    CHECK_RESULT("e"_Str);
-    CHECK_RESPONSE("f"_Str);
+    CHECK_RESULT("f"_Str);
+    CHECK_RESPONSE("g"_Str);
     
     // return the list of columns of pTable
     *ppColumns = pSEitf->m_sResponse.s();
@@ -541,8 +541,11 @@ eEC RapidsSE_GetLastError(SEitf* pSEitf, void** ppError, i8 iTraceLevel)
     // trace entry
     TRACE_ENTRY_P0();
     
+    // validate the SEitf
+    VALIDATE_SEITF("a"_Str);
+    
     // validate the reference pointer
-    VALIDATE_REFPOINTER("a"_Str, ppError);
+    VALIDATE_REFPOINTER("b"_Str, ppError);
     
     // get the error message
     *ppError = pSEitf->m_sErrorMsg.s();
@@ -578,13 +581,13 @@ eEC RapidsSE_GetNextRow(SEitf* pSEitf, void** ppRow, i8 iTraceLevel)
     TRACE_ENTRY_P0();
     
     // validate the SEitf
-    VALIDATE_SEITF();
+    VALIDATE_SEITF("a"_Str);
   
     // clear the last error
     pSEitf->vClearLastError();
     
     // validate the reference pointer
-    VALIDATE_REFPOINTER("a"_Str, ppRow);
+    VALIDATE_REFPOINTER("b"_Str, ppRow);
 
     i8 iAddress = pSEitf->m_sResponse.iToI8();
     
@@ -597,12 +600,10 @@ eEC RapidsSE_GetNextRow(SEitf* pSEitf, void** ppRow, i8 iTraceLevel)
       
       // return the table
       eEC eResult = eExecuteRequest(pSEitf, "rettbl"_Str);
-      CHECK_RESULT("a"_Str);
-      CHECK_RESPONSE("b"_Str);
+      CHECK_RESULT("c"_Str);
+      CHECK_RESPONSE("d"_Str);
       
       ASSERT(pSEitf->pCurrentTable() == nullptr);
-      
-      //ASSERT(0);
       
       // trace exit
       TRACE_EXIT("ea"_Str);
@@ -610,7 +611,7 @@ eEC RapidsSE_GetNextRow(SEitf* pSEitf, void** ppRow, i8 iTraceLevel)
       return EC_NONE;
     }
     
-    //vTraceRows(iTraceLevel, "pRapidsSE_GetNextRow(%lld:%p) %s\n"_Str, pSEitf->iPartition(), pSEitf, *ppRow);
+    //TRACE_ROW();
     
     // move cursor to next row
     pSelCursor->vNext();
@@ -646,14 +647,14 @@ eEC RapidsSE_GetPartitions(SEitf* pSEitf, void** ppPartitions, void** ppCount, i
     TRACE_ENTRY_P0();
     
     // validate the SEitf
-    VALIDATE_SEITF();
+    VALIDATE_SEITF("a"_Str);
     
     // clear the last error
     pSEitf->vClearLastError();
     
     // validate the reference pointers
-    VALIDATE_REFPOINTER("a"_Str, ppPartitions);
-    VALIDATE_REFPOINTER("a"_Str, ppCount);
+    VALIDATE_REFPOINTER("b"_Str, ppPartitions);
+    VALIDATE_REFPOINTER("c"_Str, ppCount);
 
     *ppCount = &gpGrid->m_nSlots;
     *ppPartitions = &gpGrid->m_iPartition;
@@ -689,24 +690,24 @@ eEC RapidsSE_GetSchemas(SEitf* pSEitf, Str* pCatalog, void** ppSchemas, i8 iTrac
     TRACE_ENTRY_P1(pCatalog);
     
     // validate the SEitf
-    VALIDATE_SEITF();
+    VALIDATE_SEITF("a"_Str);
     
     // clear the last error
     pSEitf->vClearLastError();
     
     // validate the reference pointers
-    VALIDATE_REFPOINTER("a"_Str, ppSchemas);
+    VALIDATE_REFPOINTER("b"_Str, ppSchemas);
     
     // validate parameters
-    VALIDATE_PARAM("b"_Str, pCatalog);
+    VALIDATE_PARAM("c"_Str, pCatalog);
     
     // change folder to schemas
-    CF_SCHEMAS("c"_Str);
+    CF_SCHEMAS("d"_Str);
     
     // list all schemas in pCatalog
     eResult = eExecuteRequest(pSEitf, "lssch"_Str);
-    CHECK_RESULT("d"_Str);
-    CHECK_RESPONSE("e"_Str);
+    CHECK_RESULT("e"_Str);
+    CHECK_RESPONSE("f"_Str);
     
     // return list of schemas in ppSchemas
     *ppSchemas = pSEitf->m_sResponse.s();
@@ -742,18 +743,18 @@ eEC RapidsSE_GetEngineVersion(SEitf* pSEitf, void** ppVersion, i8 iTraceLevel)
     TRACE_ENTRY_P0();
     
     // validate the SEitf
-    VALIDATE_SEITF();
+    VALIDATE_SEITF("a"_Str);
     
     // valide reference pointer
-    VALIDATE_REFPOINTER("a"_Str, ppVersion);
+    VALIDATE_REFPOINTER("b"_Str, ppVersion);
     
     // clear the last error
     pSEitf->vClearLastError();
     
     // get the SE version
     eResult = eExecuteRequest(pSEitf, "version"_Str);
-    CHECK_RESULT("e"_Str);
-    CHECK_RESPONSE("f"_Str);
+    CHECK_RESULT("c"_Str);
+    CHECK_RESPONSE("d"_Str);
     
     // return SE version
     *ppVersion = pSEitf->m_sResponse.s();
@@ -789,25 +790,25 @@ eEC RapidsSE_GetTables(SEitf* pSEitf, Str* pCatalog, Str* pSchema, void** ppTabl
     TRACE_ENTRY_P0();
     
     // validate the SEitf
-    VALIDATE_SEITF();
+    VALIDATE_SEITF("a"_Str);
     
     // validate parameters
-    VALIDATE_PARAM("a"_Str, pCatalog);
-    VALIDATE_PARAM("b"_Str, pSchema);
+    VALIDATE_PARAM("b"_Str, pCatalog);
+    VALIDATE_PARAM("c"_Str, pSchema);
     
     // valide reference pointer
-    VALIDATE_REFPOINTER("c"_Str, ppTables);
+    VALIDATE_REFPOINTER("d"_Str, ppTables);
     
     // clear the last error
     pSEitf->vClearLastError();
     
     // change folder to tables
-    CF_TABLES("d"_Str);
+    CF_TABLES("e"_Str);
     
     // list all the tables in pSchema of pCatalog
     eResult = eExecuteRequest(pSEitf, "lstbl"_Str);
-    CHECK_RESULT("e"_Str);
-    CHECK_RESPONSE("f"_Str);
+    CHECK_RESULT("f"_Str);
+    CHECK_RESPONSE("g"_Str);
     
     // return list of tables in ppSchemas
     *ppTables = pSEitf->m_sResponse.s();
@@ -846,19 +847,19 @@ eEC RapidsSE_HashRowPartition(SEitf* pSEitf, Str* pRow, void** ppPartition, i8 i
     //TRACE_ROW();
     
     // validate the SEitf
-    VALIDATE_SEITF();
+    VALIDATE_SEITF("a"_Str);
     
     // valide reference pointer
-    VALIDATE_REFPOINTER("a"_Str, ppPartition);
+    VALIDATE_REFPOINTER("b"_Str, ppPartition);
 
     // validate parameters
-    VALIDATE_PARAM("a"_Str, pRow);
+    VALIDATE_PARAM("c"_Str, pRow);
     
     // clear the last error
     pSEitf->vClearLastError();
     
     // validate table
-    VALIDATE_TABLE("a"_Str);
+    VALIDATE_TABLE("d"_Str);
     
     pSEitf->m_iRowPartition = pSEitf->pCurrentTable()->iRowPartition(pRow);
     *ppPartition = &pSEitf->m_iRowPartition;
@@ -901,22 +902,22 @@ eEC RapidsSE_InsertRow(SEitf* pSEitf, Str* pRow, i8 iTraceLevel)
     //TRACE_ROW();
     
     // validate the SEitf
-    VALIDATE_SEITF();
+    VALIDATE_SEITF("a"_Str);
 
     // validate parameter
-    VALIDATE_PARAM("a"_Str, pRow);
+    VALIDATE_PARAM("b"_Str, pRow);
     
     // clear the last error
     pSEitf->vClearLastError();
     
     // validate table
-    VALIDATE_TABLE("a"_Str);
+    VALIDATE_TABLE("c"_Str);
     
     bool bResult = pSEitf->bInsertRow(pRow);
     
     if (!bResult) {
       pSEitf->vSetLastError(pSEitf->m_eErrorCode);
-      TRACE_ERROR("b"_Str, pSEitf->m_eErrorCode);
+      TRACE_ERROR("d"_Str, pSEitf->m_eErrorCode);
       return pSEitf->m_eErrorCode;
     }
     
@@ -999,23 +1000,23 @@ eEC RapidsSE_ScanTable(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable, 
     pSEitf->vClearLastError();
     
     // validate the SEitf
-    VALIDATE_SEITF();
+    VALIDATE_SEITF("a"_Str);
     
     // validate parameters
-    VALIDATE_PARAM("a"_Str, pCatalog);
-    VALIDATE_PARAM("b"_Str, pSchema);
-    VALIDATE_PARAM("c"_Str, pTable);
+    VALIDATE_PARAM("b"_Str, pCatalog);
+    VALIDATE_PARAM("c"_Str, pSchema);
+    VALIDATE_PARAM("d"_Str, pTable);
     
     // change directory to table
-    CF_TABLE("d"_Str);
+    CF_TABLE("e"_Str);
     
     // select * from pTable
     eResult = eExecuteRequest(pSEitf, "sel"_Str, (Str*)pTable);
-    CHECK_RESULT("e"_Str);
-    CHECK_RESPONSE("f"_Str);
+    CHECK_RESULT("f"_Str);
+    CHECK_RESPONSE("g"_Str);
 
     // validate table
-    VALIDATE_TABLE("g");
+    VALIDATE_TABLE("h");
     
     // get response (address of selcussor)
     i8 iAddress = pSEitf->m_sResponse.iToI8();
@@ -1062,7 +1063,7 @@ eEC RapidsSE_SEitfDelete(SEitf* pSEitf, i8 iTraceLevel)
     TRACE_ENTRY_P0();
     
     // validate the SEitf
-    VALIDATE_SEITF();
+    VALIDATE_SEITF("a"_Str);
     
     // clear the last error
     pSEitf->vClearLastError();
@@ -1144,7 +1145,7 @@ eEC RapidsSE_SEitfNew(void** ppSEitf, i8 iPartition, i8 iTraceLevel)
     pSEitf->vInit();
     
     // validate the SEitf just created
-    VALIDATE_SEITF();
+    VALIDATE_SEITF("a"_Str);
     
     // return the newly created SEitf
     *ppSEitf = pSEitf;
