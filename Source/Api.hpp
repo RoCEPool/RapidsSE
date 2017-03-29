@@ -48,6 +48,16 @@ eEC eGetResponse(SEitf* pSEitf);
 /*----------------------------------------------------------------------------*/
 /* trace API entry                                                            */
 /*----------------------------------------------------------------------------*/
+#define TRACE_ENTRY_P1(p1) \
+  {  \
+    if ( (iTraceLevel & TL_ERROR) == TL_ERROR) \
+      vTrace("<%s: %p(%lld) %s\n"_Str,  \
+        aApiCall, pSEitf, pSEitf ? pSEitf->iPartition() : -1, p1); \
+  }
+
+/*----------------------------------------------------------------------------*/
+/* trace API entry                                                            */
+/*----------------------------------------------------------------------------*/
 #define TRACE_ENTRY_P2(p1, p2) \
 {  \
   if ( (iTraceLevel & TL_ERROR) == TL_ERROR) \

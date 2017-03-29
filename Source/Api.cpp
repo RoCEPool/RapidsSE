@@ -124,34 +124,35 @@ eEC RapidsSE_CheckLibraryVersion(Str* pVersion, i8 iTraceLevel)
 {
   eEC eResult;
   eEC eResponse;
+  SEitf* pSEitf = nullptr;
   
-  Str* aApiCall = "RapidsSE_AddColumn"_Str;
+  Str* aApiCall = "RapidsSE_CheckLibraryVersion"_Str;
   
   try {
-    vTraceEntry(iTraceLevel,
-      "<RapidsSE_CheckLibraryVersion: %s; %s\n"_Str, pVersion);
+    TRACE_ENTRY_P1(pVersion);
     
     if ( ! pVersion->bEqual((Str*)RAPIDSSE_VERSION_STRING)) {
-      vTraceError(iTraceLevel,
-        ">RapidsSE_CheckLibraryVersion: RapidsDB at version %s does not match RapidsSE library version %s"_Str,
+      
+      vTrace(">RapidsSE_CheckLibraryVersion: RapidsDB at version %s does not match RapidsSE library version %s"_Str,
           pVersion, RAPIDSSE_VERSION_STRING);
+      
+      TRACE_ERROR("a"_Str, EC_VERSION_MISMATCH);
       return EC_VERSION_MISMATCH;
     }
     
-    vTraceExit(iTraceLevel, ">RapidsSE_CheckLibraryVersion(a): %s"_Str, pVersion);
+    TRACE_EXIT("ea"_Str);
+    
     return EC_NONE;
   }
   catch (Error* pError) {
-    vTrace(">RapidsSE_CheckLibraryVersion: %s(%lld)\n"_Str,
-           pError->aErrorMsg(), pError->eErrorCode());
     RapidsSE::vHandler(pError);
+    TRACE_ERROR("!", pError->eErrorCode());
     return pError->eErrorCode();
   }
   catch (...) {
-    vTrace(">RapidsSE_CheckLibraryVersion:\n"_Str);
+    TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
     return EC_SE_UNKNOWN_ERROR;
-  }
-}
+  }}
 
 /*----------------------------------------------------------------------------*/
 /* create table                                                               */
@@ -161,127 +162,62 @@ eEC RapidsSE_CreateTable(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable
   eEC eResult;
   eEC eResponse;
   
-  Str* aApiCall = "RapidsSE_AddColumn"_Str;
+  Str* aApiCall = "RapidsSE_CreateTable"_Str;
   
   try {
-    vTraceEntry(iTraceLevel,
-      "<RapidsSE_CreateTable: %p %s %s %s\n"_Str, pSEitf, pCatalog, pSchema, pTable);
+    TRACE_ENTRY_P3(pCatalog, pSchema, pTable);
     
-    eEC eResult;
-    
-    eResult = eValidateSEitf(pSEitf, ">RapidsSE_CreateTable"_Str, iTraceLevel);
-    if (eResult != EC_NONE)
-      return eResult;
+    // validate the SEitf
+    VALIDATE_SEITF();
     
     // clear the last error
     pSEitf->vClearLastError();
     
-    if (!pCatalog) {
-      pSEitf->vSetLastError(EC_INVALID_PARAMETER);
-      vTraceError(iTraceLevel,
-        ">RapidsSE_CreateTable(a): %p %s(%lld)\n"_Str, pSEitf, aEC[EC_INVALID_PARAMETER], EC_INVALID_PARAMETER);
-      return EC_INVALID_PARAMETER;
-    }
+    // validate parameters
+    VALIDATE_PARAM("a"_Str, pCatalog);
+    VALIDATE_PARAM("b"_Str, pSchema);
+    VALIDATE_PARAM("c"_Str, pTable);
     
-    if (!pSchema) {
-      pSEitf->vSetLastError(EC_INVALID_PARAMETER);
-      vTraceError(iTraceLevel,
-        ">RapidsSE_CreateTable(b): %p %s(%lld)\n"_Str, pSEitf, aEC[EC_INVALID_PARAMETER], EC_INVALID_PARAMETER);
-      return EC_INVALID_PARAMETER;
-    }
-    
-    if (!pTable) {
-      pSEitf->vSetLastError(EC_INVALID_PARAMETER);
-      vTraceError(iTraceLevel,
-        ">RapidsSE_CreateTable(c): %p %s(%lld)\n"_Str, pSEitf, aEC[EC_INVALID_PARAMETER], EC_INVALID_PARAMETER);
-      return EC_INVALID_PARAMETER;
-    }
-    
-    eResult = eChangeFolderTables(pSEitf, pCatalog, pSchema, ">RapidsSE_CreateTable"_Str, iTraceLevel);
-    if (eResult != EC_NONE)
-      return eResult;
-    
+    // change folder to tables
+    CF_TABLE("d"_Str);
+
     // create a table
     eResult = eExecuteRequest(pSEitf, "mktbl"_Str, (Str*)pTable);
-    if (EC_NONE != eResult) {
-      vTraceError(iTraceLevel,
-        ">RapidsSE_CreateTable(d): %p %s(%lld)\n"_Str, pSEitf, aEC[eResult], eResult);
-      return eResult;
-    }
-    
-    // get response
-    eResult = eGetResponse(pSEitf);
-    if (EC_NONE != eResult) {
-      vTraceError(iTraceLevel,
-        ">RapidsSE_CreateTable(e): %p %s(%lld)\n"_Str, pSEitf, aEC[eResult], eResult);
-      return eResult;
-    }
+    CHECK_RESULT("e"_Str);
+    CHECK_RESPONSE("f"_Str);
     
     // change directory to tables
     eResult = eExecuteRequest(pSEitf, "cf"_Str, (Str*)pTable);
-    if (EC_NONE != eResult) {
-      vTraceError(iTraceLevel,
-        ">RapidsSE_CreateTable(f): %p %s(%lld)\n"_Str, pSEitf, aEC[eResult], eResult);
-      return eResult;
-    }
-    
-    // get response
-    eResult = eGetResponse(pSEitf);
-    if (EC_NONE != eResult) {
-      vTraceError(iTraceLevel,
-        ">RapidsSE_CreateTable(g): %p %s(%lld)\n"_Str, pSEitf, aEC[eResult], eResult);
-      return eResult;
-    }
+    CHECK_RESULT("g"_Str);
+    CHECK_RESPONSE("h"_Str);
     
     // get pTable
-    eResult = eExecuteRequest(pSEitf, "gettbl"_Str, (Str*)pTable);
-    if (EC_NONE != eResult) {
-      
-      vTraceError(iTraceLevel,
-        ">RapidsSE_CreateTable(h): %p %s(%lld)\n"_Str, pSEitf, aEC[eResult], eResult);
+    eEC eGetResult = eExecuteRequest(pSEitf, "gettbl"_Str, (Str*)pTable);
+    if (EC_NONE != eGetResult) {
       
       // remove the table
-      eEC eRmTblResult = eExecuteRequest(pSEitf, "rmtbl"_Str, (Str*)pTable);
-      if (EC_NONE != eRmTblResult) {
-        vTraceError(iTraceLevel,
-          ">RapidsSE_CreateTable(i): %p %s(%lld)\n"_Str, pSEitf, aEC[eRmTblResult], eRmTblResult);
-        return eResult;
-      }
+      eResult = eExecuteRequest(pSEitf, "rmtbl"_Str, (Str*)pTable);
+      CHECK_RESULT("i"_Str);
+      CHECK_RESPONSE("j"_Str);
       
-      // get response
-      eRmTblResult = eGetResponse(pSEitf);
-      if (EC_NONE != eResult) {
-        vTraceError(iTraceLevel,
-          ">RapidsSE_CreateTable(j): %p %s(%lld)\n"_Str, pSEitf, aEC[eRmTblResult], eRmTblResult);
-        return eRmTblResult;
-      }
-      
-      vTraceError(iTraceLevel,
-        ">RapidsSE_CreateTable(k): %p %s(%lld)\n"_Str, pSEitf, aEC[eResult], eResult);
-      return eResult;
+      TRACE_ERROR("k"_Str, eGetResult);
+      return eGetResult;
     }
     
-    // get response
-    eResult = eGetResponse(pSEitf);
-    if (EC_NONE != eResult) {
-      vTraceError(iTraceLevel,
-        ">RapidsSE_CreateTable(l): %p %s(%lld)\n"_Str, pSEitf, aEC[eResult], eResult);
-      return eResult;
-    }
+    // check response
+    CHECK_RESPONSE("l"_Str);
     
-    vTraceExit(iTraceLevel,
-      ">RapidsSE_CreateTable: %p %s(%lld)\n"_Str, pSEitf, aEC[eResult], eResult);
+    TRACE_EXIT("ea"_Str);
     
     return EC_NONE;
   }
   catch (Error* pError) {
-    vTrace(">RapidsSE_CreateTable: %p %s(%lld)\n"_Str, pSEitf,
-           pError->aErrorMsg(), pError->eErrorCode());
     RapidsSE::vHandler(pError);
+    TRACE_ERROR("!", pError->eErrorCode());
     return pError->eErrorCode();
   }
   catch (...) {
-    vTrace(">RapidsSE_CreateTable: %p\n"_Str, pSEitf);
+    TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
     return EC_SE_UNKNOWN_ERROR;
   }
 }
@@ -355,13 +291,12 @@ eEC RapidsSE_DropTable(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable, 
     return EC_NONE;
   }
   catch (Error* pError) {
-    vTrace(">RapidsSE_DropTable: %p %s(%lld)\n"_Str, pSEitf,
-           pError->aErrorMsg(), pError->eErrorCode());
     RapidsSE::vHandler(pError);
+    TRACE_ERROR("!", pError->eErrorCode());
     return pError->eErrorCode();
   }
   catch (...) {
-    vTrace(">RapidsSE_DropTable: %p\n"_Str, pSEitf);
+    TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
     return EC_SE_UNKNOWN_ERROR;
   }
 }
@@ -410,16 +345,14 @@ eEC RapidsSE_EndCreate(SEitf* pSEitf, i8 iTraceLevel)
     
   }
   catch (Error* pError) {
-    vTrace(">RapidsSE_EndCreate: %p %s(%lld)\n"_Str, pSEitf,
-           pError->aErrorMsg(), pError->eErrorCode());
     RapidsSE::vHandler(pError);
+    TRACE_ERROR("!", pError->eErrorCode());
     return pError->eErrorCode();
   }
   catch (...) {
-    vTrace(">RapidsSE_EndCreate: %p\n"_Str, pSEitf);
+    TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
     return EC_SE_UNKNOWN_ERROR;
   }
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -484,13 +417,12 @@ eEC RapidsSE_EndInsert(SEitf* pSEitf, i8 iTraceLevel)
     
   }
   catch (Error* pError) {
-    vTrace(">RapidsSE_EndInsert: %p %s(%lld)\n"_Str, pSEitf,
-           pError->aErrorMsg(), pError->eErrorCode());
     RapidsSE::vHandler(pError);
+    TRACE_ERROR("!", pError->eErrorCode());
     return pError->eErrorCode();
   }
   catch (...) {
-    vTrace(">RapidsSE_EndInsert: %p\n"_Str, pSEitf);
+    TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
     return EC_SE_UNKNOWN_ERROR;
   }
 
@@ -554,13 +486,12 @@ eEC RapidsSE_EndScan(SEitf* pSEitf, i8 iTraceLevel)
     return EC_NONE;
   }
   catch (Error* pError) {
-    vTrace(">RapidsSE_EndScan: %p %s(%lld)\n"_Str, pSEitf,
-           pError->aErrorMsg(), pError->eErrorCode());
     RapidsSE::vHandler(pError);
+    TRACE_ERROR("!", pError->eErrorCode());
     return pError->eErrorCode();
   }
   catch (...) {
-    vTrace(">RapidsSE_EndScan: %p\n"_Str, pSEitf);
+    TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
     return EC_SE_UNKNOWN_ERROR;
   }
 }
@@ -650,13 +581,12 @@ eEC RapidsSE_GetCatalogs(SEitf* pSEitf, void** ppCatalogs, i8 iTraceLevel)
     return eResult;
   }
   catch (Error* pError) {
-    vTrace(">RapidsSE_GetCatalogs: %p %s(%lld)\n"_Str, pSEitf,
-           pError->aErrorMsg(), pError->eErrorCode());
     RapidsSE::vHandler(pError);
+    TRACE_ERROR("!", pError->eErrorCode());
     return pError->eErrorCode();
   }
   catch (...) {
-    vTrace(">RapidsSE_GetCatalogs: %p\n"_Str, pSEitf);
+    TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
     return EC_SE_UNKNOWN_ERROR;
   }
 }
@@ -749,13 +679,12 @@ eEC RapidsSE_GetColumns(SEitf* pSEitf, Str* pCatalog, Str* pSchema,
     return eResult;
   }
   catch (Error* pError) {
-    vTrace(">RapidsSE_GetColumns: %p %s(%lld)\n"_Str, pSEitf,
-           pError->aErrorMsg(), pError->eErrorCode());
     RapidsSE::vHandler(pError);
+    TRACE_ERROR("!", pError->eErrorCode());
     return pError->eErrorCode();
   }
   catch (...) {
-    vTrace(">RapidsSE_GetColumns: %p\n"_Str, pSEitf);
+    TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
     return EC_SE_UNKNOWN_ERROR;
   }
 }
@@ -780,13 +709,12 @@ eEC RapidsSE_GetLastError(SEitf* pSEitf, void** ppError, i8 iTraceLevel)
     return EC_NONE;
   }
   catch (Error* pError) {
-    vTrace(">RapidsSE_GetLastError: %p %s(%lld)\n"_Str, pSEitf,
-           pError->aErrorMsg(), pError->eErrorCode());
     RapidsSE::vHandler(pError);
+    TRACE_ERROR("!", pError->eErrorCode());
     return pError->eErrorCode();
   }
   catch (...) {
-    vTrace(">RapidsSE_GetLastError: %p\n"_Str, pSEitf);
+    TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
     return EC_SE_UNKNOWN_ERROR;
   }
 }
@@ -850,7 +778,7 @@ eEC RapidsSE_GetNextRow(SEitf* pSEitf, void** ppRow, i8 iTraceLevel)
       
       //ASSERT(0);
       
-      vTraceExit(iTraceLevel, ">RapidsSE_GetNextRow(aa): %p %s\n"_Str, pSEitf);
+      vTraceExit(iTraceLevel, ">RapidsSE_GetNextRow(aa): %p\n"_Str, pSEitf);
       return EC_NONE;
     }
     
@@ -864,12 +792,11 @@ eEC RapidsSE_GetNextRow(SEitf* pSEitf, void** ppRow, i8 iTraceLevel)
   }
   catch (Error* pError) {
     RapidsSE::vHandler(pError);
-    vTrace(">RapidsSE_GetNextRow: %p %s(%lld)\n"_Str, pSEitf,
-           pError->aErrorMsg(), pError->eErrorCode());
+    TRACE_ERROR("!", pError->eErrorCode());
     return pError->eErrorCode();
   }
   catch (...) {
-    vTrace(">RapidsSE_GetNextRow: %p\n"_Str, pSEitf);
+    TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
     return EC_SE_UNKNOWN_ERROR;
   }
 }
@@ -912,13 +839,12 @@ eEC RapidsSE_GetPartitions(SEitf* pSEitf, void** ppPartitions, void** ppCount, i
     return EC_NONE;
   }
   catch (Error* pError) {
-    vTrace(">RapidsSE_GetPartitions: %p %s(%lld)\n"_Str, pSEitf,
-           pError->aErrorMsg(), pError->eErrorCode());
     RapidsSE::vHandler(pError);
+    TRACE_ERROR("!", pError->eErrorCode());
     return pError->eErrorCode();
   }
   catch (...) {
-    vTrace(">RapidsSE_GetPartitions: %p\n"_Str, pSEitf);
+    TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
     return EC_SE_UNKNOWN_ERROR;
   }
 }
@@ -990,13 +916,12 @@ eEC RapidsSE_GetSchemas(SEitf* pSEitf, Str* pCatalog, void** ppSchemas, i8 iTrac
     return eResult;
   }
   catch (Error* pError) {
-    vTrace(">RapidsSE_GetSchemas: %p %s(%lld)\n"_Str, pSEitf,
-           pError->aErrorMsg(), pError->eErrorCode());
     RapidsSE::vHandler(pError);
+    TRACE_ERROR("!", pError->eErrorCode());
     return pError->eErrorCode();
   }
   catch (...) {
-    vTrace(">RapidsSE_GetSchemas: %p\n"_Str, pSEitf);
+    TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
     return EC_SE_UNKNOWN_ERROR;
   }
 }
@@ -1047,13 +972,12 @@ eEC RapidsSE_GetEngineVersion(SEitf* pSEitf, void** ppVersion, i8 iTraceLevel)
     
   }
   catch (Error* pError) {
-    vTrace(">RapidsSE_GetEngineVersion: %p %s(%lld)\n"_Str, pSEitf,
-           pError->aErrorMsg(), pError->eErrorCode());
     RapidsSE::vHandler(pError);
+    TRACE_ERROR("!", pError->eErrorCode());
     return pError->eErrorCode();
   }
   catch (...) {
-    vTrace(">RapidsSE_GetEngineVersion: %p\n"_Str, pSEitf);
+    TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
     return EC_SE_UNKNOWN_ERROR;
   }
 }
@@ -1123,13 +1047,12 @@ eEC RapidsSE_GetTables(SEitf* pSEitf, Str* pCatalog, Str* pSchema, void** ppTabl
     
   }
   catch (Error* pError) {
-    vTrace(">RapidsSE_GetTables: %p %s(%lld)\n"_Str, pSEitf,
-           pError->aErrorMsg(), pError->eErrorCode());
     RapidsSE::vHandler(pError);
+    TRACE_ERROR("!", pError->eErrorCode());
     return pError->eErrorCode();
   }
   catch (...) {
-    vTrace(">RapidsSE_GetTables: %p\n"_Str, pSEitf);
+    TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
     return EC_SE_UNKNOWN_ERROR;
   }
 }
@@ -1181,13 +1104,12 @@ eEC RapidsSE_HashRowPartition(SEitf* pSEitf, Str* pRow, void** ppPartition, i8 i
     
   }
   catch (Error* pError) {
-    vTrace(">RapidsSE_HashRowPartition: %p %s(%lld)\n"_Str, pSEitf,
-           pError->aErrorMsg(), pError->eErrorCode());
     RapidsSE::vHandler(pError);
+    TRACE_ERROR("!", pError->eErrorCode());
     return pError->eErrorCode();
   }
   catch (...) {
-    vTrace(">RapidsSE_HashRowPartition: %p\n"_Str, pSEitf);
+    TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
     return EC_SE_UNKNOWN_ERROR;
   }
 }
@@ -1245,13 +1167,12 @@ eEC RapidsSE_InsertRow(SEitf* pSEitf, Str* pRow, i8 iTraceLevel)
     
   }
   catch (Error* pError) {
-    vTrace(">RapidsSE_InsertRow: %p %s(%lld)\n"_Str, pSEitf,
-           pError->aErrorMsg(), pError->eErrorCode());
     RapidsSE::vHandler(pError);
+    TRACE_ERROR("!", pError->eErrorCode());
     return pError->eErrorCode();
   }
   catch (...) {
-    vTrace(">RapidsSE_InsertRow: %p\n"_Str, pSEitf);
+    TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
     return EC_SE_UNKNOWN_ERROR;
   }
 }
@@ -1263,6 +1184,7 @@ eEC RapidsSE_PoolOpen(Str* pInstanceName, void** ppInstance, i8 iTraceLevel)
 {
   
   Str* aApiCall = "RapidsSE_AddColumn"_Str;
+  SEitf* pSEitf = nullptr;
   
   try {
     vTraceEntry(iTraceLevel,
@@ -1289,15 +1211,13 @@ eEC RapidsSE_PoolOpen(Str* pInstanceName, void** ppInstance, i8 iTraceLevel)
     
   }
   catch (Error* pError) {
-    if (gpGrid->m_bTraceapi)
-      vTrace(">RapidsSE_PoolOpen: %s %s\n"_Str, pInstanceName, pError->aErrorMsg());
-      RapidsSE::vHandler(pError);
+    RapidsSE::vHandler(pError);
+    TRACE_ERROR("!", pError->eErrorCode());
     return pError->eErrorCode();
   }
   catch (...) {
-    if (gpGrid->m_bTraceapi)
-      vTrace(">RapidsSE_PoolOpen: %s\n"_Str, pInstanceName);
-      return EC_SE_UNKNOWN_ERROR;
+    TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
+    return EC_SE_UNKNOWN_ERROR;
   }
 
 }
@@ -1305,7 +1225,7 @@ eEC RapidsSE_PoolOpen(Str* pInstanceName, void** ppInstance, i8 iTraceLevel)
 /*----------------------------------------------------------------------------*/
 /* scan table                                                                 */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_ScanTable(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable)
+eEC RapidsSE_ScanTable(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable, i8 iTraceLevel)
 {
   eEC eResult;
   eEC eResponse;
@@ -1576,14 +1496,12 @@ eEC RapidsSE_ScanTable(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable)
     return EC_NONE;
   }
   catch (Error* pError) {
-    if (gpGrid->m_bTraceapi)
-      vTrace(">RapidsSE_AddColumn(!): %p %s\n"_Str, pSEitf, pError->aErrorMsg());
     RapidsSE::vHandler(pError);
+    TRACE_ERROR("!", pError->eErrorCode());
     return pError->eErrorCode();
   }
   catch (...) {
-    if (gpGrid->m_bTraceapi)
-      vTrace(">RapidsSE_AddColumn(?): %p %s\n"_Str, pSEitf, aEC[EC_SE_UNKNOWN_ERROR]);
+    TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
     return EC_SE_UNKNOWN_ERROR;
   }
 }
@@ -1609,12 +1527,12 @@ eEC RapidsSE_SEitfDelete(void* pAttachMap, SEitf* pSEitf, i8 iTraceLevel)
     return EC_NONE;
   }
   catch (Error* pError) {
-    vTrace(">RapidsSE_SEitfDelete: %p %s\n"_Str, pSEitf, pError->aErrorMsg());
     RapidsSE::vHandler(pError);
+    TRACE_ERROR("!", pError->eErrorCode());
     return pError->eErrorCode();
   }
   catch (...) {
-    vTrace(">RapidsSE_SEitfDelete: %p %s\n"_Str, pSEitf, aEC[EC_SE_UNKNOWN_ERROR]);
+    TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
     return EC_SE_UNKNOWN_ERROR;
   }
 
@@ -1627,6 +1545,7 @@ bool RapidsSE_SEitfInvalid(int iError, i8 iTraceLevel)
 {
   
   Str* aApiCall = "RapidsSE_AddColumn"_Str;
+  SEitf* pSEitf = nullptr;
   
   try {
     vTraceEntry(iTraceLevel, "<RapidsSE_SEitfInvalid: iError %lld\n"_Str, iError);
@@ -1641,12 +1560,12 @@ bool RapidsSE_SEitfInvalid(int iError, i8 iTraceLevel)
     }
   }
   catch (Error* pError) {
-    vTrace(">RapidsSE_SEitfInvalid\n"_Str);
     RapidsSE::vHandler(pError);
+    TRACE_ERROR("!", pError->eErrorCode());
     return pError->eErrorCode();
   }
   catch (...) {
-    vTrace(">RapidsSE_SEitfInvalid\n"_Str);
+    TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
     return EC_SE_UNKNOWN_ERROR;
   }
 }
@@ -1658,6 +1577,7 @@ eEC RapidsSE_SEitfNew(void* pAttachMap, void** ppSEitf, i8 iPartition, i8 iTrace
 {
   
   Str* aApiCall = "RapidsSE_AddColumn"_Str;
+  SEitf* pSEitf = nullptr;
   
   try {
     vTraceEntry(iTraceLevel, "<RapidsSE_SEitfNew: Partition %lld\n"_Str, iPartition);
@@ -1673,12 +1593,12 @@ eEC RapidsSE_SEitfNew(void* pAttachMap, void** ppSEitf, i8 iPartition, i8 iTrace
     
   }
   catch (Error* pError) {
-    vTrace(">RapidsSE_SEitfNew: Partition %lld\n"_Str, iPartition);
     RapidsSE::vHandler(pError);
+    TRACE_ERROR("!", pError->eErrorCode());
     return pError->eErrorCode();
   }
   catch (...) {
-    vTrace(">RapidsSE_SEitfNew: Partition %lld\n"_Str, iPartition);
+    TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
     return EC_SE_UNKNOWN_ERROR;
   }
 }
