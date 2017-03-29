@@ -119,6 +119,38 @@ void Entry::vContentDump(void)
   
   //m_xRowId.pRow()->vContentDump();
 }
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//void Entry::vContentDump(void)
+//{
+//  //_precondition_(_MAGIC_,CN_ENTRY);
+//  
+//  Key* aKey = this->aKey();
+//  
+//  i8 iKey;
+//  
+//  vTrace("Entry %p: Levels: %llu "_Str,
+//         this,
+//         m_nLevels
+//         );
+//  
+//  ValLib::nCopyDatum(CN_INTVAL,&iKey,aKey);
+//  
+//  vTrace("Row %llu.%llu Key %lld"_Str,
+//         m_xRowId.uBuffer(),
+//         m_xRowId.uRow(),
+//         iKey
+//         );
+//  
+//  for (i8 iIndex=0; iIndex< m_nLevels - 1; iIndex++) {
+//    vTrace("L%lld: %lld "_Str,
+//           iIndex+1,
+//           uOffset(iIndex));
+//  }
+//  
+//  vTrace("\n"_Str);
+//  
+//  //m_xRowId.pRow()->vContentDump();
+//}
 
 /*----------------------------------------------------------------------------*/
 /* get key                                                                    */
