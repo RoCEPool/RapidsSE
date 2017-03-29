@@ -245,6 +245,8 @@ void Entry::vSetEntry(EntWsp& xEntWsp)
   MemLib::vCopy(aDst,aSrc,nBytes);
   
   m_xWsp.vUsed(nBytes);
+  
+  m_nBytes = sizeof(Entry) + m_xWsp.nUsed();
 }
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //void Entry::vSetEntry(EntWsp& xEntWsp)
@@ -273,18 +275,9 @@ void Entry::vSetEntry(EntWsp& xEntWsp)
 i8 Entry::nSize(void)
 {
   //_precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
-
-  i8 nBytes = sizeof(Entry) + m_xWsp.nUsed();
   
-  return nBytes;
+  return m_nBytes;
 }
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-//i8 Entry::nSize(void)
-//{
-//  //_precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
-//  
-//  return m_nBytes;
-//}
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
