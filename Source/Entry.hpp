@@ -35,6 +35,7 @@ namespace DBobjects
     ~Entry(void);
     
     void   vContentDump(void);
+    EntryData* aEntryData(void);
     Key*   aKey(void);
     u8     nLevels(void);
     u8     uOffset(u8 iLevel);

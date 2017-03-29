@@ -153,6 +153,18 @@ void Entry::vContentDump(void)
 //}
 
 /*----------------------------------------------------------------------------*/
+/* get entry data                                                             */
+/*----------------------------------------------------------------------------*/
+EntryData* Entry::aEntryData(void)
+{
+  //_precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
+  
+  EntryData* aEntryData = pAdd<EntryData*>(this,sizeof(Entry));
+  
+  return aEntryData;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get key                                                                    */
 /*----------------------------------------------------------------------------*/
 Key* Entry::aKey(void)
