@@ -21,12 +21,12 @@ eEC RapidsSE_AddColumn(SEitf* pSEitf, Str* pColumnName, Str* pColumnType, i8 iTr
   
   try {
     TRACE_ENTRY_P2(pColumnName, pColumnType);
-    
-    // clear the last error
-    pSEitf->vClearLastError();
 
     // validate the SEitf
     VALIDATE_SEITF("a"_Str);
+    
+    // clear the last error
+    CLEAR_LASTERROR();
     
     // validate parameters
     VALIDATE_PARAM("b"_Str, pColumnName);
@@ -78,7 +78,7 @@ eEC RapidsSE_BeginInsert(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable
     VALIDATE_SEITF("a"_Str);
     
     // clear the last error
-    pSEitf->vClearLastError();
+    CLEAR_LASTERROR();
   
     // validate parameters
     VALIDATE_PARAM("b"_Str, pCatalog);
@@ -133,7 +133,7 @@ eEC RapidsSE_CheckLibraryVersion(Str* pVersion, i8 iTraceLevel)
     
     if ( ! pVersion->bEqual((Str*)RAPIDSSE_VERSION_STRING)) {
       
-      vTrace(">RapidsSE_CheckLibraryVersion: RapidsDB at version %s does not match RapidsSE library version %s"_Str,
+      vTrace(">RapidsSE_CheckLibraryVersion: RDP (%s) does not match RapidsSE (%s)"_Str,
           pVersion, RAPIDSSE_VERSION_STRING);
       
       TRACE_ERROR("a"_Str, EC_VERSION_MISMATCH);
@@ -171,7 +171,7 @@ eEC RapidsSE_CreateTable(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable
     VALIDATE_SEITF("a"_Str);
     
     // clear the last error
-    pSEitf->vClearLastError();
+    CLEAR_LASTERROR();
     
     // validate parameters
     VALIDATE_PARAM("b"_Str, pCatalog);
@@ -241,7 +241,7 @@ eEC RapidsSE_DropTable(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable, 
     VALIDATE_SEITF("a"_Str);
     
     // clear the last error
-    pSEitf->vClearLastError();
+    CLEAR_LASTERROR();
     
     // validate parameters
     VALIDATE_PARAM("b"_Str, pCatalog);
@@ -291,7 +291,7 @@ eEC RapidsSE_EndCreate(SEitf* pSEitf, i8 iTraceLevel)
     VALIDATE_SEITF("a"_Str);
     
     // clear the last error
-    pSEitf->vClearLastError();
+    CLEAR_LASTERROR();
     
     eEC eResult = eExecuteRequest(pSEitf, "rettbl"_Str);
     CHECK_RESULT("b"_Str);
@@ -334,7 +334,7 @@ eEC RapidsSE_EndInsert(SEitf* pSEitf, i8 iTraceLevel)
     VALIDATE_SEITF("a"_Str);
     
     // clear the last error
-    pSEitf->vClearLastError();
+    CLEAR_LASTERROR();
     
     bool bResult = pSEitf->bInsertBuffer();
     
@@ -388,7 +388,7 @@ eEC RapidsSE_EndScan(SEitf* pSEitf, i8 iTraceLevel)
     VALIDATE_SEITF("a"_Str);
     
     // clear the last error
-    pSEitf->vClearLastError();
+    CLEAR_LASTERROR();
     
     // validate table
     VALIDATE_TABLE("b"_Str);
@@ -445,7 +445,7 @@ eEC RapidsSE_GetCatalogs(SEitf* pSEitf, void** ppCatalogs, i8 iTraceLevel)
     VALIDATE_REFPOINTER("b"_Str, ppCatalogs);
     
     // clear the last error
-    pSEitf->vClearLastError();
+    CLEAR_LASTERROR();
 
     // change folder to catalogs
     CF_CATALOGS("c"_Str);
@@ -493,7 +493,7 @@ eEC RapidsSE_GetColumns(SEitf* pSEitf, Str* pCatalog, Str* pSchema,
     VALIDATE_SEITF("a"_Str);
   
     // clear the last error
-    pSEitf->vClearLastError();
+    CLEAR_LASTERROR();
     
     // validate parameters
     VALIDATE_PARAM("b"_Str, pCatalog);
@@ -584,7 +584,7 @@ eEC RapidsSE_GetNextRow(SEitf* pSEitf, void** ppRow, i8 iTraceLevel)
     VALIDATE_SEITF("a"_Str);
   
     // clear the last error
-    pSEitf->vClearLastError();
+    CLEAR_LASTERROR();
     
     // validate the reference pointer
     VALIDATE_REFPOINTER("b"_Str, ppRow);
@@ -650,7 +650,7 @@ eEC RapidsSE_GetPartitions(SEitf* pSEitf, void** ppPartitions, void** ppCount, i
     VALIDATE_SEITF("a"_Str);
     
     // clear the last error
-    pSEitf->vClearLastError();
+    CLEAR_LASTERROR();
     
     // validate the reference pointers
     VALIDATE_REFPOINTER("b"_Str, ppPartitions);
@@ -693,7 +693,7 @@ eEC RapidsSE_GetSchemas(SEitf* pSEitf, Str* pCatalog, void** ppSchemas, i8 iTrac
     VALIDATE_SEITF("a"_Str);
     
     // clear the last error
-    pSEitf->vClearLastError();
+    CLEAR_LASTERROR();
     
     // validate the reference pointers
     VALIDATE_REFPOINTER("b"_Str, ppSchemas);
@@ -745,11 +745,11 @@ eEC RapidsSE_GetEngineVersion(SEitf* pSEitf, void** ppVersion, i8 iTraceLevel)
     // validate the SEitf
     VALIDATE_SEITF("a"_Str);
     
+    // clear the last error
+    CLEAR_LASTERROR();
+    
     // valide reference pointer
     VALIDATE_REFPOINTER("b"_Str, ppVersion);
-    
-    // clear the last error
-    pSEitf->vClearLastError();
     
     // get the SE version
     eResult = eExecuteRequest(pSEitf, "version"_Str);
@@ -792,15 +792,15 @@ eEC RapidsSE_GetTables(SEitf* pSEitf, Str* pCatalog, Str* pSchema, void** ppTabl
     // validate the SEitf
     VALIDATE_SEITF("a"_Str);
     
+    // clear the last error
+    CLEAR_LASTERROR();
+
     // validate parameters
     VALIDATE_PARAM("b"_Str, pCatalog);
     VALIDATE_PARAM("c"_Str, pSchema);
     
     // valide reference pointer
     VALIDATE_REFPOINTER("d"_Str, ppTables);
-    
-    // clear the last error
-    pSEitf->vClearLastError();
     
     // change folder to tables
     CF_TABLES("e"_Str);
@@ -849,14 +849,14 @@ eEC RapidsSE_HashRowPartition(SEitf* pSEitf, Str* pRow, void** ppPartition, i8 i
     // validate the SEitf
     VALIDATE_SEITF("a"_Str);
     
+    // clear the last error
+    CLEAR_LASTERROR();
+
     // valide reference pointer
     VALIDATE_REFPOINTER("b"_Str, ppPartition);
 
     // validate parameters
     VALIDATE_PARAM("c"_Str, pRow);
-    
-    // clear the last error
-    pSEitf->vClearLastError();
     
     // validate table
     VALIDATE_TABLE("d"_Str);
@@ -904,11 +904,11 @@ eEC RapidsSE_InsertRow(SEitf* pSEitf, Str* pRow, i8 iTraceLevel)
     // validate the SEitf
     VALIDATE_SEITF("a"_Str);
 
+    // clear the last error
+    CLEAR_LASTERROR();
+
     // validate parameter
     VALIDATE_PARAM("b"_Str, pRow);
-    
-    // clear the last error
-    pSEitf->vClearLastError();
     
     // validate table
     VALIDATE_TABLE("c"_Str);
@@ -996,12 +996,12 @@ eEC RapidsSE_ScanTable(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable, 
     // trace entry
     TRACE_ENTRY_P3(pCatalog, pSchema, pTable);
     
-    // clear the last error
-    pSEitf->vClearLastError();
-    
     // validate the SEitf
     VALIDATE_SEITF("a"_Str);
     
+    // clear the last error
+    CLEAR_LASTERROR();
+
     // validate parameters
     VALIDATE_PARAM("b"_Str, pCatalog);
     VALIDATE_PARAM("c"_Str, pSchema);
@@ -1066,8 +1066,9 @@ eEC RapidsSE_SEitfDelete(SEitf* pSEitf, i8 iTraceLevel)
     VALIDATE_SEITF("a"_Str);
     
     // clear the last error
-    pSEitf->vClearLastError();
+    CLEAR_LASTERROR();
     
+    // delete to SEitf
     RapidsSE::vSEitfDelete(pSEitf);
     
     // trace exit

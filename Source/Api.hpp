@@ -150,7 +150,6 @@ eEC eGetResponse(SEitf* pSEitf);
     eResult = eValidateSEitf(pSEitf, aApiCall, iTraceLevel); \
     if (eResult != EC_NONE) { \
         TRACE_ERROR(aMarker, EC_INVALID_INTERFACE); \
-        pSEitf->vSetLastError(EC_NO_SUCH_TABLE); \
         return eResult; \
      } \
   }
@@ -225,6 +224,11 @@ eEC eGetResponse(SEitf* pSEitf);
       return eResult; \
     } \
   }
+
+/*----------------------------------------------------------------------------*/
+/* clear last error                                                           */
+/*----------------------------------------------------------------------------*/
+#define CLEAR_LASTERROR()  pSEitf->vClearLastError();
 
 /*----------------------------------------------------------------------------*/
 /* trace API call entry                                                       */
