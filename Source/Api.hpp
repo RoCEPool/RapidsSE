@@ -4,9 +4,9 @@
 #pragma once
 
 // API trace levels
-#define TRACE_ENTRY 1
-#define TRACE_ERROR 2
-#define TRACE_EXIT  4
+#define TL_ENTRY 1
+#define TL_ERROR 2
+#define TL_EXIT  4
 
 // external SE API calls
 extern "C" eEC RapidsSE_AddColumn(SEitf* pSEitf, Str* pColumnName, Str* pColumnType, i8 iTraceLevel);
@@ -46,12 +46,160 @@ bool bExecuteRequest(SEitf* pSEitf, Str* aWords[], i8 iWords);
 eEC eGetResponse(SEitf* pSEitf);
 
 /*----------------------------------------------------------------------------*/
+/* trace API entry                                                            */
+/*----------------------------------------------------------------------------*/
+#define TRACE_ENTRY_P2(p1, p2) \
+{  \
+  if ( (iTraceLevel & TL_ERROR) == TL_ERROR) \
+    vTrace("<%s: %p(%lld) %s %s\n"_Str,  \
+      aApiCall, pSEitf, pSEitf ? pSEitf->iPartition() : -1, p1, p2); \
+}
+
+/*----------------------------------------------------------------------------*/
+/* trace API entry                                                            */
+/*----------------------------------------------------------------------------*/
+#define TRACE_ENTRY_P3(p1, p2, p3) \
+{  \
+  if ( (iTraceLevel & TL_ERROR) == TL_ERROR) \
+    vTrace("<%s: %p(%lld) %s %s %s\n"_Str,  \
+      aApiCall, pSEitf, pSEitf ? pSEitf->iPartition() : -1, p1, p2, p3); \
+  }
+
+
+/*----------------------------------------------------------------------------*/
+/* trace API error                                                            */
+/*----------------------------------------------------------------------------*/
+#define TRACE_ERROR(aMarker, eErrorCode) \
+  {  \
+    if ( (iTraceLevel & TL_ERROR) == TL_ERROR) \
+      vTrace(">%s(%s): %p(%lld) %s(%lld)\n"_Str,  \
+        aApiCall, aMarker, pSEitf, pSEitf ? pSEitf->iPartition() : -1, aEC[eErrorCode], (i8)eErrorCode); \
+  }
+
+/*----------------------------------------------------------------------------*/
+/* trace API exit                                                             */
+/*----------------------------------------------------------------------------*/
+#define TRACE_EXIT(aMarker) \
+  {  \
+    if ( (iTraceLevel & TL_ERROR) == TL_ERROR) \
+      vTrace(">%s(%s): %p(%lld)\n"_Str,  \
+        aApiCall, aMarker, pSEitf, pSEitf ? pSEitf->iPartition() : -1); \
+  }
+
+/*----------------------------------------------------------------------------*/
+/* validate a parameter                                                       */
+/*----------------------------------------------------------------------------*/
+#define VALIDATE_PARAM(aMarker, pParameter) \
+  {  \
+    if ( (iTraceLevel & TL_ERROR) == TL_ERROR) { \
+      if (!pParameter) { \
+        TRACE_ERROR(aMarker, EC_INVALID_PARAMETER); \
+        return EC_INVALID_PARAMETER; \
+       } \
+     } \
+  }
+
+/*----------------------------------------------------------------------------*/
+/* validate table                                                             */
+/*----------------------------------------------------------------------------*/
+#define VALIDATE_TABLE(aMarker, pTable) \
+  {  \
+    if ( (iTraceLevel & TL_ERROR) == TL_ERROR) { \
+      if (!pTable) { \
+        TRACE_ERROR(aMarker, EC_NO_SUCH_TABLE); \
+        return EC_INVALID_PARAMETER; \
+      } \
+    } \
+  }
+
+/*----------------------------------------------------------------------------*/
+/* validate SEitf                                                             */
+/*----------------------------------------------------------------------------*/
+#define VALIDATE_SEITF() \
+  { \
+    eResult = eValidateSEitf(pSEitf, aApiCall, iTraceLevel); \
+    if (eResult != EC_NONE) \
+      return EC_NONE; \
+  }
+
+/*----------------------------------------------------------------------------*/
+/* check result of a request that was sent                                    */
+/*----------------------------------------------------------------------------*/
+#define CHECK_RESULT(aMarker) \
+  { \
+    if (EC_NONE != eResult) { \
+      TRACE_ERROR(aMarker,eResult); \
+      return eResult; \
+    } \
+  }
+
+/*----------------------------------------------------------------------------*/
+/* check response of a request that was executed                              */
+/*----------------------------------------------------------------------------*/
+#define CHECK_RESPONSE(aMarker) \
+ { \
+   eResult = eGetResponse(pSEitf); \
+    if (EC_NONE != eResult) { \
+      TRACE_ERROR(aMarker,eResult); \
+      return eResult; \
+    } \
+ }
+
+/*----------------------------------------------------------------------------*/
+/* change folder to schemas                                                   */
+/*----------------------------------------------------------------------------*/
+#define CF_SCHEMAS(aMarker) \
+  { \
+    eResult = eChangeFolderSchemas(pSEitf, pCatalog, pSchema, pTable, aApiCall, iTraceLevel); \
+    if (EC_NONE != eResult) { \
+      TRACE_ERROR(aMarker,eResult); \
+      return eResult; \
+    } \
+  }
+
+/*----------------------------------------------------------------------------*/
+/* change folder to catalogs                                                  */
+/*----------------------------------------------------------------------------*/
+#define CF_CATALOGS(aMarker) \
+  { \
+    eResult = eChangeFolderCatalogs(pSEitf, pCatalog, pSchema, pTable, aApiCall, iTraceLevel); \
+    if (EC_NONE != eResult) { \
+      TRACE_ERROR(aMarker,eResult); \
+      return eResult; \
+    } \
+  }
+
+/*----------------------------------------------------------------------------*/
+/* change folder to tables                                                    */
+/*----------------------------------------------------------------------------*/
+#define CF_TABLES(aMarker) \
+  { \
+    eResult = eChangeFolderTables(pSEitf, pCatalog, pSchema, pTable, aApiCall, iTraceLevel); \
+    if (EC_NONE != eResult) { \
+      TRACE_ERROR(aMarker,eResult); \
+      return eResult; \
+    } \
+  }
+
+/*----------------------------------------------------------------------------*/
+/* change folder to a table                                                   */
+/*----------------------------------------------------------------------------*/
+#define CF_TABLE(aMarker) \
+  { \
+    eResult = eChangeFolderTable(pSEitf, pCatalog, pSchema, pTable, aApiCall, iTraceLevel); \
+    if (EC_NONE != eResult) { \
+      TRACE_ERROR(aMarker,eResult); \
+      return eResult; \
+    } \
+  }
+
+/*----------------------------------------------------------------------------*/
 /* trace API call entry                                                       */
 /*----------------------------------------------------------------------------*/
 inline void vTraceEntry(i8 iTraceLevel, Str* aFormat, ...)
 {
   // trace entry ?
-  if ( (iTraceLevel & TRACE_ENTRY) != TRACE_ENTRY)
+  if ( (iTraceLevel & TL_ENTRY) != TL_ENTRY)
     return;
   
   va_list xArgs;
@@ -69,7 +217,7 @@ inline void vTraceEntry(i8 iTraceLevel, Str* aFormat, ...)
 inline void vTraceExit(i8 iTraceLevel, Str* aFormat, ...)
 {
   // trace entry ?
-  if ( (iTraceLevel & TRACE_EXIT) != TRACE_EXIT)
+  if ( (iTraceLevel & TL_EXIT) != TL_EXIT)
     return;
   
   va_list xArgs;
@@ -82,12 +230,12 @@ inline void vTraceExit(i8 iTraceLevel, Str* aFormat, ...)
 }
 
 /*----------------------------------------------------------------------------*/
-/* trace API call exit                                                        */
+/* trace API error                                                            */
 /*----------------------------------------------------------------------------*/
 inline void vTraceError(i8 iTraceLevel, Str* aFormat, ...)
 {
   // trace entry ?
-  if ( (iTraceLevel & TRACE_ERROR) != TRACE_ERROR)
+  if ( (iTraceLevel & TL_ERROR) != TL_ERROR)
     return;
   
   va_list xArgs;
@@ -106,22 +254,19 @@ inline eEC eValidateSEitf(SEitf* pSEitf, Str* aApiCall, i8 iTraceLevel) {
   
   // pSEitf cannot be null
   if (pSEitf == nullptr) {
-    vTraceError(iTraceLevel,
-      "%s(va): %p %s(%lld)\n"_Str, aApiCall, pSEitf, aEC[EC_INVALID_INTERFACE], EC_INVALID_INTERFACE);
+    TRACE_ERROR("va", EC_INVALID_INTERFACE);
     return EC_INVALID_INTERFACE;
   }
   
   // pSEitf should be a pool address
   if (!gpBufferPool->bValidAddress(pSEitf)) {
-    vTraceError(iTraceLevel,
-      "%s(va): %p %s(%lld)\n"_Str, aApiCall, pSEitf, aEC[EC_INVALID_INTERFACE], EC_INVALID_INTERFACE);
+    TRACE_ERROR("vb", EC_INVALID_INTERFACE);
     return EC_INVALID_INTERFACE;
   }
   
   // pSEitf should be an SEitf class
   if (pSEitf->eClass() != CN_SEITF) {
-    vTraceError(iTraceLevel,
-      "%s(va): %p %s(%lld)\n"_Str, aApiCall, pSEitf, aEC[EC_INVALID_INTERFACE], EC_INVALID_INTERFACE);
+    TRACE_ERROR("vc", EC_INVALID_INTERFACE);
     return EC_INVALID_INTERFACE;
   }
   
