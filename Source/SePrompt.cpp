@@ -41,7 +41,7 @@ SePrompt::SePrompt(void)
   
   m_iPartition = 0;
 
-  eEC eResult = RapidsSE_SEitfNew(gpAttachMap, (void**)&m_pSEitf,m_iPartition, /*trace*/ 0);
+  eEC eResult = RapidsSE_SEitfNew((void**)&m_pSEitf,m_iPartition, /*trace*/ 0);
   ASSERT(EC_NONE == eResult);
   
   m_bContinue = true;
@@ -105,7 +105,7 @@ SePrompt::~SePrompt(void)
   // close history file
   //m_xHistory.vClose();
   
-  RapidsSE_SEitfDelete(gpAttachMap, m_pSEitf, /*trace*/ 0);
+  RapidsSE_SEitfDelete(m_pSEitf, /*trace*/ 0);
   
   delete m_pTokeniser;
 }

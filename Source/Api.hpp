@@ -30,8 +30,8 @@ extern "C" eEC RapidsSE_HashRowPartition(SEitf* pSEitf, Str* pRow, void** ppPart
 extern "C" eEC RapidsSE_InsertRow(SEitf* pSEitf, Str* pRow, i8 iTraceLevel);
 extern "C" eEC RapidsSE_PoolOpen(Str* pInstanceName, void** ppInstance, i8 iTraceLevel);
 extern "C" eEC RapidsSE_ScanTable(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable);
-extern "C" eEC RapidsSE_SEitfDelete(void* pAttachMap, SEitf* pSEitf, i8 iTraceLevel);
-extern "C" eEC RapidsSE_SEitfNew(void* pAttachMap, void** ppSEitf, i8 iPartition, i8 iTraceLevel);
+extern "C" eEC RapidsSE_SEitfDelete(SEitf* pSEitf, i8 iTraceLevel);
+extern "C" eEC RapidsSE_SEitfNew(void** ppSEitf, i8 iPartition, i8 iTraceLevel);
 extern "C" bool RapidsSE_SEitfInvalid(int eError, i8 iTraceLevel);
 
 bool RapidsSE_ExecuteRequest(SEitf* pSEitf, Str* aWords[], i8 iWords, Str** ppResponse);
@@ -113,6 +113,7 @@ eEC eGetResponse(SEitf* pSEitf);
   {  \
     if (!pParameter) { \
       TRACE_ERROR(aMarker, EC_INVALID_PARAMETER); \
+      pSEitf->vSetLastError(EC_INVALID_PARAMETER); \
       return EC_INVALID_PARAMETER; \
      } \
   }
@@ -124,6 +125,7 @@ eEC eGetResponse(SEitf* pSEitf);
   { \
     if (!ppRefPointer) { \
       TRACE_ERROR(aMarker, EC_INVALID_PARAMETER); \
+      pSEitf->vSetLastError(EC_INVALID_PARAMETER); \
       return EC_INVALID_PARAMETER; \
     } \
   }
@@ -135,6 +137,7 @@ eEC eGetResponse(SEitf* pSEitf);
   {  \
     if ( pSEitf->pCurrentTable() ) { \
       TRACE_ERROR(aMarker, EC_NO_SUCH_TABLE); \
+      pSEitf->vSetLastError(EC_NO_SUCH_TABLE); \
       return EC_NO_SUCH_TABLE; \
     } \
   }
@@ -145,8 +148,10 @@ eEC eGetResponse(SEitf* pSEitf);
 #define VALIDATE_SEITF() \
   { \
     eResult = eValidateSEitf(pSEitf, aApiCall, iTraceLevel); \
-    if (eResult != EC_NONE) \
-      return EC_NONE; \
+    if (eResult != EC_NONE) { \
+        pSEitf->vSetLastError(EC_NO_SUCH_TABLE); \
+        return eResult; \
+     } \
   }
 
 /*----------------------------------------------------------------------------*/
@@ -177,7 +182,7 @@ eEC eGetResponse(SEitf* pSEitf);
 /*----------------------------------------------------------------------------*/
 #define CF_SCHEMAS(aMarker) \
   { \
-    eResult = eChangeFolderSchemas(pSEitf, pCatalog, pSchema, pTable, aApiCall, iTraceLevel); \
+    eResult = eChangeFolderSchemas(pSEitf, pCatalog, aApiCall, iTraceLevel); \
     if (EC_NONE != eResult) { \
       TRACE_ERROR(aMarker,eResult); \
       return eResult; \

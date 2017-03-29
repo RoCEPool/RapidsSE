@@ -600,27 +600,20 @@ eEC RapidsSE_GetNextRow(SEitf* pSEitf, void** ppRow, i8 iTraceLevel)
   eEC eResult;
   eEC eResponse;
   
-  Str* aApiCall = "RapidsSE_AddColumn"_Str;
+  Str* aApiCall = "RapidsSE_GetNextRow"_Str;
   
   try {
-    vTraceEntry(iTraceLevel,"<RapidsSE_GetNextRow(%lld): %p\n"_Str, pSEitf->iPartition(), pSEitf);
-  
+    // trace entry
+    TRACE_ENTRY_P0();
+    
     // validate the SEitf
-    eResult = eValidateSEitf(pSEitf, ">RapidsSE_GetNextRow"_Str, iTraceLevel);
-    if (eResult != EC_NONE) {
-      return eResult;
-    }
+    VALIDATE_SEITF();
   
     // clear the last error
     pSEitf->vClearLastError();
     
-    // ppRow pointer should not be null
-    if (ppRow == nullptr) {
-      pSEitf->vSetLastError(EC_NULLPTR);
-      vTraceError(iTraceLevel,
-        ">RapidsSE_GetNextRow(a): %p %s(%lld)\n"_Str, pSEitf, aEC[EC_NULLPTR], EC_NULLPTR);
-      return EC_NULLPTR;
-    }
+    // validate the reference pointer
+    VALIDATE_REFPOINTER("a"_Str, ppRow);
 
     i8 iAddress = pSEitf->m_sResponse.iToI8();
     
@@ -633,25 +626,16 @@ eEC RapidsSE_GetNextRow(SEitf* pSEitf, void** ppRow, i8 iTraceLevel)
       
       // return the table
       eEC eResult = eExecuteRequest(pSEitf, "rettbl"_Str);
-      if (EC_NONE != eResult) {
-        vTraceError(iTraceLevel,
-            ">RapidsSE_GetNextRow(b): %p %s(%lld)\n"_Str, pSEitf, aEC[eResult], eResult);
-        return eResult;
-      }
-      
-      // get response
-      eResult = eGetResponse(pSEitf);
-      if (EC_NONE != eResult) {
-        vTraceError(iTraceLevel,
-          ">RapidsSE_GetNextRow(c): %p %s(%lld)\n"_Str, pSEitf, aEC[eResult], eResult);
-        return eResult;
-      }
+      CHECK_RESULT("a"_Str);
+      CHECK_RESPONSE("b"_Str);
       
       ASSERT(pSEitf->pCurrentTable() == nullptr);
       
       //ASSERT(0);
       
-      vTraceExit(iTraceLevel, ">RapidsSE_GetNextRow(aa): %p\n"_Str, pSEitf);
+      // trace exit
+      TRACE_EXIT("ea"_Str);
+      
       return EC_NONE;
     }
     
@@ -660,7 +644,9 @@ eEC RapidsSE_GetNextRow(SEitf* pSEitf, void** ppRow, i8 iTraceLevel)
     // move cursor to next row
     pSelCursor->vNext();
     
-    vTraceExit(iTraceLevel, ">RapidsSE_GetNextRow(bb): %p\n"_Str, pSEitf);
+    // trace exit
+    TRACE_EXIT("eb"_Str);
+    
     return EC_NONE;
   }
   catch (Error* pError) {
@@ -685,30 +671,25 @@ eEC RapidsSE_GetPartitions(SEitf* pSEitf, void** ppPartitions, void** ppCount, i
   Str* aApiCall = "RapidsSE_AddColumn"_Str;
   
   try {
-    vTraceEntry(iTraceLevel,
-      "<RapidsSE_GetPartitions(%lld): %p\n"_Str, pSEitf->iPartition(), pSEitf);
+    // trace entry
+    TRACE_ENTRY_P0();
     
     // validate the SEitf
-    eResult = eValidateSEitf(pSEitf, ">RapidsSE_GetPartitions"_Str, iTraceLevel);
-    if (eResult != EC_NONE) {
-      return eResult;
-    }
+    VALIDATE_SEITF();
     
     // clear the last error
     pSEitf->vClearLastError();
     
-    // ppPartitions pointer should not be null
-    if (ppPartitions == nullptr) {
-      pSEitf->vSetLastError(EC_NULLPTR);
-      vTraceError(iTraceLevel,
-        ">RapidsSE_GetPartitions(a): %p %s(%lld)\n"_Str, pSEitf, aEC[EC_NULLPTR], EC_NULLPTR);
-      return EC_NULLPTR;
-    }
+    // validate the reference pointers
+    VALIDATE_REFPOINTER("a"_Str, ppPartitions);
+    VALIDATE_REFPOINTER("a"_Str, ppCount);
 
     *ppCount = &gpGrid->m_nSlots;
     *ppPartitions = &gpGrid->m_iPartition;
     
-    vTraceExit(iTraceLevel, ">RapidsSE_GetPartitions: %p %s\n"_Str, pSEitf);
+    // trace exit
+    TRACE_EXIT("ea"_Str);
+    
     return EC_NONE;
   }
   catch (Error* pError) {
@@ -733,60 +714,36 @@ eEC RapidsSE_GetSchemas(SEitf* pSEitf, Str* pCatalog, void** ppSchemas, i8 iTrac
   Str* aApiCall = "RapidsSE_AddColumn"_Str;
   
   try {
-    vTraceEntry(iTraceLevel,
-      "<RapidsSE_GetSchemas(%lld): %p %s\n"_Str, pSEitf->iPartition(), pSEitf, pCatalog);
+    // trace entry
+    TRACE_ENTRY_P1(pCatalog);
     
     // validate the SEitf
-    eResult = eValidateSEitf(pSEitf, ">RapidsSE_GetSchemas"_Str, iTraceLevel);
-    if (eResult != EC_NONE) {
-      return eResult;
-    }
+    VALIDATE_SEITF();
     
     // clear the last error
     pSEitf->vClearLastError();
     
-    // ppSchemas pointer should not be null
-    if (ppSchemas == nullptr) {
-      vTraceError(iTraceLevel,
-        ">RapidsSE_GetSchemas(a): %p %s(%lld)\n"_Str, pSEitf, aEC[EC_NULLPTR], EC_NULLPTR);
-      pSEitf->vSetLastError(EC_NULLPTR);
-      return EC_NULLPTR;
-    }
+    // validate the reference pointers
+    VALIDATE_REFPOINTER("a"_Str, ppSchemas);
     
-    if (!pCatalog) {
-      vTraceError(iTraceLevel,
-        ">RapidsSE_GetSchemas(b): %p %s(%lld)\n"_Str, pSEitf, aEC[EC_INVALID_PARAMETER], EC_INVALID_PARAMETER);
-      pSEitf->vSetLastError(EC_INVALID_PARAMETER);
-      return EC_INVALID_PARAMETER;
-    }
+    // validate parameters
+    VALIDATE_PARAM("b"_Str, pCatalog);
     
     // change folder to schemas
-    eResult = eChangeFolderSchemas(pSEitf, pCatalog, ">RapidsSE_GetSchemas"_Str, iTraceLevel);
-    if (eResult != EC_NONE) {
-      return eResult;
-    }
+    CF_SCHEMAS("c"_Str);
     
     // list all schemas in pCatalog
     eResult = eExecuteRequest(pSEitf, "lssch"_Str);
-    if (EC_NONE != eResult) {
-      vTraceError(iTraceLevel,
-        ">RapidsSE_GetSchemas(c): %p %s(%lld)\n"_Str, pSEitf, aEC[eResult], eResult);
-      return eResult;
-    }
-    
-    // get response
-    eResult = eGetResponse(pSEitf);
-    if (EC_NONE != eResult) {
-      vTraceError(iTraceLevel,
-        ">RapidsSE_GetSchemas(d): %p %s(%lld)\n"_Str, pSEitf, aEC[eResult], eResult);
-      return eResult;
-    }
+    CHECK_RESULT("d"_Str);
+    CHECK_RESPONSE("e"_Str);
     
     // return list of schemas in ppSchemas
     *ppSchemas = pSEitf->m_sResponse.s();
     
-    vTraceExit(iTraceLevel, ">RapidsSE_GetSchemas: %p %s\n"_Str, pSEitf);
-    return eResult;
+    // trace exit
+    TRACE_EXIT("ea"_Str);
+    
+    return EC_NONE;
   }
   catch (Error* pError) {
     RapidsSE::vHandler(pError);
@@ -810,37 +767,28 @@ eEC RapidsSE_GetEngineVersion(SEitf* pSEitf, void** ppVersion, i8 iTraceLevel)
   Str* aApiCall = "RapidsSE_AddColumn"_Str;
   
   try {
-    vTraceEntry(iTraceLevel, "<RapidsSE_GetEngineVersion(%lld): %p\n"_Str, pSEitf->iPartition(), pSEitf);
+    // trace entry
+    TRACE_ENTRY_P0();
     
     // validate the SEitf
-    eResult = eValidateSEitf(pSEitf, ">RapidsSE_GetEngineVersion"_Str, iTraceLevel);
-    if (eResult != EC_NONE) {
-      return eResult;
-    }
+    VALIDATE_SEITF();
+    
+    // valide reference pointer
+    VALIDATE_REFPOINTER("a"_Str, ppVersion);
     
     // clear the last error
     pSEitf->vClearLastError();
     
     // get the SE version
     eResult = eExecuteRequest(pSEitf, "version"_Str);
-    if (EC_NONE != eResult) {
-      vTraceError(iTraceLevel,
-        ">RapidsSE_GetEngineVersion(a): %p %s(%lld)\n"_Str, pSEitf, aEC[eResult], eResult);
-      return eResult;
-    }
-    
-    // get response
-    eResult = eGetResponse(pSEitf);
-    if (EC_NONE != eResult) {
-      vTraceError(iTraceLevel,
-        ">RapidsSE_GetEngineVersion(b): %p %s(%lld)\n"_Str, pSEitf, aEC[eResult], eResult);
-      return eResult;
-    }
+    CHECK_RESULT("e"_Str);
+    CHECK_RESPONSE("f"_Str);
     
     // return SE version
     *ppVersion = pSEitf->m_sResponse.s();
     
-    vTraceExit(iTraceLevel, ">RapidsSE_GetEngineVersion: %p %s\n"_Str, pSEitf);
+    TRACE_EXIT("ea"_Str);
+    
     return EC_NONE;
     
   }
@@ -866,56 +814,36 @@ eEC RapidsSE_GetTables(SEitf* pSEitf, Str* pCatalog, Str* pSchema, void** ppTabl
   Str* aApiCall = "RapidsSE_AddColumn"_Str;
   
   try {
-    vTraceEntry(iTraceLevel,
-                "<RapidsSE_GetTables(%lld): %p %s %s\n"_Str, pSEitf->iPartition(), pSEitf, pCatalog, pSchema);
+    // trace entry
+    TRACE_ENTRY_P0();
     
     // validate the SEitf
-    eResult = eValidateSEitf(pSEitf, ">RapidsSE_GetTables"_Str, iTraceLevel);
-    if (eResult != EC_NONE) {
-      return eResult;
-    }
+    VALIDATE_SEITF();
+    
+    // validate parameters
+    VALIDATE_PARAM("a"_Str, pCatalog);
+    VALIDATE_PARAM("b"_Str, pSchema);
+    
+    // valide reference pointer
+    VALIDATE_REFPOINTER("c"_Str, ppTables);
     
     // clear the last error
     pSEitf->vClearLastError();
     
-    // ppTables pointer should not be null
-    if (ppTables == nullptr) {
-      pSEitf->vSetLastError(EC_NULLPTR);
-      return EC_NULLPTR;
-    }
-    
-    if (!pCatalog)
-      return EC_INVALID_PARAMETER;
-    
-    if (!pSchema)
-      return EC_INVALID_PARAMETER;
-    
     // change folder to tables
-    eResult = eChangeFolderTables(pSEitf, pCatalog, pSchema, ">RapidsSE_GetTables"_Str, iTraceLevel);
-    if (eResult != EC_NONE) {
-      return eResult;
-    }
+    CF_TABLES("d"_Str);
     
     // list all the tables in pSchema of pCatalog
     eResult = eExecuteRequest(pSEitf, "lstbl"_Str);
-    if (EC_NONE != eResult) {
-      vTraceError(iTraceLevel,
-                  ">RapidsSE_GetTables(f): %p %s(%lld)\n"_Str, pSEitf, aEC[eResult], eResult);
-      return eResult;
-    }
-    
-    // get response
-    eResult = eGetResponse(pSEitf);
-    if (EC_NONE != eResult) {
-      vTraceError(iTraceLevel,
-                  ">RapidsSE_GetTables(f): %p %s(%lld)\n"_Str, pSEitf, aEC[eResult], eResult);
-      return eResult;
-    }
+    CHECK_RESULT("e"_Str);
+    CHECK_RESPONSE("f"_Str);
     
     // return list of tables in ppSchemas
     *ppTables = pSEitf->m_sResponse.s();
     
-    vTraceExit(iTraceLevel, ">RapidsSE_GetTables: %p %s\n"_Str, pSEitf);
+    // trace exit
+    TRACE_EXIT("ea"_Str);
+
     return eResult;
     
   }
@@ -941,38 +869,34 @@ eEC RapidsSE_HashRowPartition(SEitf* pSEitf, Str* pRow, void** ppPartition, i8 i
   Str* aApiCall = "RapidsSE_AddColumn"_Str;
   
   try {
-    vTraceEntry(iTraceLevel, "<RapidsSE_HashRowPartition(%lld): %p \n"_Str, pSEitf->iPartition(), pSEitf);
+    // trace entry
+    TRACE_ENTRY_P0();
     
-    //vTraceRow(iTraceLevel, ">RapidsSE_HashRowPartition(%lld): %p %s\n", _Str, pSEitf->iPartition(), pSEitf, pRow);
+    //TRACE_ROW();
     
     // validate the SEitf
-    eResult = eValidateSEitf(pSEitf, ">RapidsSE_HashRowPartition"_Str, iTraceLevel);
-    if (eResult != EC_NONE)
-      return eResult;
-      
+    VALIDATE_SEITF();
+    
+    // valide reference pointer
+    VALIDATE_REFPOINTER("a"_Str, ppPartition);
+
+    // validate parameters
+    VALIDATE_PARAM("a"_Str, pRow);
+    
     // clear the last error
     pSEitf->vClearLastError();
     
-    if (!pRow) {
-      vTraceError(iTraceLevel,
-                  ">RapidsSE_HashRowPartition(c): %p %s(%lld)\n"_Str, pSEitf, aEC[EC_INVALID_PARAMETER], EC_INVALID_PARAMETER);
-      pSEitf->vSetLastError(EC_INVALID_PARAMETER);
-      return EC_INVALID_PARAMETER;
-    }
-    
-    if (!pSEitf->pCurrentTable()) {
-      vTraceError(iTraceLevel,
-                  ">RapidsSE_HashRowPartition(c): %p %s(%lld)\n"_Str, pSEitf, aEC[EC_NO_SUCH_TABLE], EC_NO_SUCH_TABLE);
-      pSEitf->vSetLastError(EC_NO_SUCH_TABLE);
-      return EC_NO_SUCH_TABLE;
-    }
+    // validate table
+    VALIDATE_TABLE("a"_Str);
     
     pSEitf->m_iRowPartition = pSEitf->pCurrentTable()->iRowPartition(pRow);
     *ppPartition = &pSEitf->m_iRowPartition;
     
-    //vTraceResult(iTraceLevel, ">RapidsSE_HashRowPartition(%lld): %p %lld\n", _Str, pSEitf->iPartition(), pSEitf, *ppPartition);
+    //TRACE_RESULT(*ppPartition);
     
-    vTraceExit(iTraceLevel, ">RapidsSE_HashRowPartition: %p %s\n"_Str, pSEitf);
+    // trace exit
+    TRACE_EXIT("ea"_Str);
+
     return EC_NONE;
     
   }
@@ -1000,42 +924,34 @@ eEC RapidsSE_InsertRow(SEitf* pSEitf, Str* pRow, i8 iTraceLevel)
   
   try {
     
-    vTraceEntry(iTraceLevel, "<RapidsSE_InsertRow(%lld): %p %s %s\n"_Str, pSEitf->iPartition());
-    //vTraceRow(iTraceLevel, ">RapidsSE_InsertRow(%lld): %p %s\n", _Str, pSEitf->iPartition(), pSEitf, pRow);
+    // trace entry
+    TRACE_ENTRY_P0();
+    
+    //TRACE_ROW();
     
     // validate the SEitf
-    eResult = eValidateSEitf(pSEitf, ">RapidsSE_InsertRow"_Str, iTraceLevel);
-    if (eResult != EC_NONE) {
-      return eResult;
-    }
+    VALIDATE_SEITF();
 
+    // validate parameter
+    VALIDATE_PARAM("a"_Str, pRow);
+    
     // clear the last error
     pSEitf->vClearLastError();
     
-    if (!pRow) {
-      vTraceError(iTraceLevel,
-                  ">RapidsSE_InsertRow(a): %p %s(%lld)\n"_Str, pSEitf, aEC[EC_INVALID_PARAMETER], EC_INVALID_PARAMETER);
-      pSEitf->vSetLastError(EC_INVALID_PARAMETER);
-      return EC_INVALID_PARAMETER;
-    }
-
-    if (!pSEitf->pCurrentTable()) {
-      vTraceError(iTraceLevel,
-                  ">RapidsSE_InsertRow(b): %p %s(%lld)\n"_Str, pSEitf, aEC[EC_NO_SUCH_TABLE], EC_NO_SUCH_TABLE);
-      pSEitf->vSetLastError(EC_NO_SUCH_TABLE);
-      return EC_NO_SUCH_TABLE;
-    }
+    // validate table
+    VALIDATE_TABLE("a"_Str);
     
     bool bResult = pSEitf->bInsertRow(pRow);
     
     if (!bResult) {
       pSEitf->vSetLastError(pSEitf->m_eErrorCode);
-      vTraceError(iTraceLevel,
-        ">RapidsSE_InsertRow(c): %p %s(%lld)\n"_Str, pSEitf, aEC[pSEitf->m_eErrorCode], pSEitf->m_eErrorCode);
+      TRACE_ERROR("b"_Str, pSEitf->m_eErrorCode);
       return pSEitf->m_eErrorCode;
     }
     
-    vTraceExit(iTraceLevel, ">RapidsSE_InsertRow: %p %s\n"_Str, pSEitf);
+    // trace exit
+    TRACE_EXIT("ea"_Str);
+
     return EC_NONE;
     
   }
@@ -1060,8 +976,8 @@ eEC RapidsSE_PoolOpen(Str* pInstanceName, void** ppInstance, i8 iTraceLevel)
   SEitf* pSEitf = nullptr;
   
   try {
-    vTraceEntry(iTraceLevel,
-      "<RapidsSE_PoolOpen %s %x %x\n"_Str, pInstanceName, ppInstance, *ppInstance);
+    // trace entry
+    TRACE_ENTRY_P1(pInstanceName);
     
     // open the pool
     s256 sPoolName;
@@ -1070,15 +986,14 @@ eEC RapidsSE_PoolOpen(Str* pInstanceName, void** ppInstance, i8 iTraceLevel)
     bool bResult = RapidsSE::bPoolOpen(sPoolName);
     
     if (!bResult) {
-      vTraceError(iTraceLevel,
-        ">RapidsSE_PoolOpen %x %x\n"_Str, *ppInstance, aEC[EC_INVALID_INSTANCE]);
+      TRACE_ERROR("a"_Str, EC_INVALID_INSTANCE);
       return EC_INVALID_INSTANCE;
     }
     
     *ppInstance = gpAttachMap;
     
-    vTraceExit(iTraceLevel,
-      ">RapidsSE_PoolOpen %x %x\n"_Str, *ppInstance, gpAttachMap);
+    // trace exit
+    TRACE_EXIT("ea"_Str);
     
     return EC_NONE;
     
@@ -1106,17 +1021,11 @@ eEC RapidsSE_ScanTable(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable, 
   Str* aApiCall = "RapidsSE_AddColumn"_Str;
   
   try {
-    if (gpGrid->m_bTraceapi)
-      vTrace("<RapidsSE_ScanTable: %p %s %s %s %lld\n"_Str,
-           pSEitf, pCatalog, pSchema, pTable, pSEitf->iPartition());
+    // trace entry
+    TRACE_ENTRY_P3(pCatalog, pSchema, pTable);
     
-    // pSEitf cannot be null
-    if (pSEitf == nullptr) {
-      if (gpGrid->m_bTraceapi)
-        vTrace(">RapidsSE_ScanTable(a): %p %lld %s\n"_Str, pSEitf,
-               pSEitf->iPartition(), aEC[EC_INVALID_INTERFACE]);
-      return EC_INVALID_INTERFACE;
-    }
+    // validate the SEitf
+    VALIDATE_SEITF();
     
     // pSEitf should be a pool address
     if (!gpBufferPool->bValidAddress(pSEitf)) {
@@ -1362,9 +1271,8 @@ eEC RapidsSE_ScanTable(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable, 
     
     pSelCursor->vFirst();
 
-    if (gpGrid->m_bTraceapi)
-      vTrace(">RapidsSE_ScanTable(y): %p %lld %s\n"_Str, pSEitf,
-             pSEitf->iPartition(), aEC[eResult]);
+    // trace exit
+    TRACE_EXIT("ea"_Str);
 
     return EC_NONE;
   }
@@ -1382,20 +1290,25 @@ eEC RapidsSE_ScanTable(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable, 
 /*----------------------------------------------------------------------------*/
 /* delete an seitf instance                                                   */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_SEitfDelete(void* pAttachMap, SEitf* pSEitf, i8 iTraceLevel)
+eEC RapidsSE_SEitfDelete(SEitf* pSEitf, i8 iTraceLevel)
 {
-  
-  Str* aApiCall = "RapidsSE_AddColumn"_Str;
+  eEC eResult;
+  Str* aApiCall = "RapidsSE_SEitfDelete"_Str;
   
   try {
-    vTraceEntry(iTraceLevel, "<RapidsSE_SEitfDelete: %p\n"_Str, pSEitf);
+    // trace entry
+    TRACE_ENTRY_P0();
+    
+    // validate the SEitf
+    VALIDATE_SEITF();
     
     // clear the last error
     pSEitf->vClearLastError();
     
     RapidsSE::vSEitfDelete(pSEitf);
     
-    vTraceExit(iTraceLevel, ">RapidsSE_SEitfDelete(a): %p\n"_Str, pSEitf);
+    // trace exit
+    TRACE_EXIT("ea"_Str);
 
     return EC_NONE;
   }
@@ -1421,16 +1334,22 @@ bool RapidsSE_SEitfInvalid(int iError, i8 iTraceLevel)
   SEitf* pSEitf = nullptr;
   
   try {
-    vTraceEntry(iTraceLevel, "<RapidsSE_SEitfInvalid: iError %lld\n"_Str, iError);
+    // trace entry
+    TRACE_ENTRY_P0();
     
     if (iError == EC_INVALID_INTERFACE) {
-      vTraceExit(iTraceLevel, ">RapidsSE_SEitfInvalid(a): true\n"_Str);
+      // trace exit
+      TRACE_EXIT("ea"_Str);
+
       return true;
     }
     else {
-      vTraceExit(iTraceLevel, ">RapidsSE_SEitfInvalid(b): false\n"_Str);
+      // trace exit
+      TRACE_EXIT("ea"_Str);
+
       return false;
     }
+    
   }
   catch (Error* pError) {
     RapidsSE::vHandler(pError);
@@ -1446,22 +1365,31 @@ bool RapidsSE_SEitfInvalid(int iError, i8 iTraceLevel)
 /*----------------------------------------------------------------------------*/
 /* create a new seitf instance                                                */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_SEitfNew(void* pAttachMap, void** ppSEitf, i8 iPartition, i8 iTraceLevel)
+eEC RapidsSE_SEitfNew(void** ppSEitf, i8 iPartition, i8 iTraceLevel)
 {
-  
+  eEC eResult;
   Str* aApiCall = "RapidsSE_AddColumn"_Str;
   SEitf* pSEitf = nullptr;
   
   try {
-    vTraceEntry(iTraceLevel, "<RapidsSE_SEitfNew: Partition %lld\n"_Str, iPartition);
+    // trace entry
+    TRACE_ENTRY_P0();
+    
+    // valide reference pointer
+    VALIDATE_REFPOINTER("a"_Str, ppSEitf);
     
     SEitf* pSEitf = new SEitf(iPartition);
     pSEitf->vInit();
     
+    // validate the SEitf just created
+    VALIDATE_SEITF();
+    
     // return the newly created SEitf
     *ppSEitf = pSEitf;
     
-    vTraceExit(iTraceLevel, ">RapidsSE_SEitfNew(a): %p\n"_Str, pSEitf);
+    // trace exit
+    TRACE_EXIT("ea"_Str);
+
     return EC_NONE;
     
   }
