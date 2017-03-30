@@ -13,8 +13,10 @@
 /*----------------------------------------------------------------------------*/
 i8 EntryData::nBytesRequired(i8 nLevels, i8 nKeyBytes)
 {
-  i8 nBytes = Levels::nBytesRequired(nLevels)
-              + nKeyBytes;
+  i8 nLevelsSub = nLevels - 1;
+  i8 nLevelBytes = Levels::nBytesRequired(nLevelsSub);
+  
+  i8 nBytes = nLevelBytes + nKeyBytes;
   
   return nBytes;
 }

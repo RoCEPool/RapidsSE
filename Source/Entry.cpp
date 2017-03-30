@@ -221,7 +221,9 @@ u8 Entry::uOffset(u8 iLevel)
   EntryData* aEntryData = this->aEntryData();
   Levels* aLevels = aEntryData->aLevels(m_nLevels);
 
-  u8 uOffset = aLevels->uRight(iLevel);
+  u8 uOffset = 0;
+  if (iLevel)
+    uOffset = aLevels->uRight(iLevel);
 
   return uOffset;
 }
@@ -313,7 +315,7 @@ void Entry::vSetEntry(EntWsp& xEntWsp)
 
   // set Bytes
   i8 nBytes = xEntWsp.nWspUsed();
-  m_nBytes = sizeof(Entry) + nBytes;
+  m_nBytes = sizeof(Entry) + nBytes + sizeof(Footer);
 
   // set RowId
   m_xRowId  = xEntWsp.xRowId();

@@ -303,7 +303,7 @@ bool IndexBufferSeq::bInsertEntry(EntWsp& xEntWsp)
 #ifdef OLD_ENTRY_MODEL
   i8 nBytes = xEntWsp.nSize();
 #else
-  i8 nKeyBytes = xEntWsp.nEntryDataSize();
+  i8 nKeyBytes = xEntWsp.nKeySize();
   i8 nBytes = Entry::nBytesRequired(1,nKeyBytes);
 #endif
   
