@@ -35,6 +35,7 @@ namespace StorageEngine
     static void vInitJumboHeap(void);
     static void vRunCommand(void);
     static void vRunDocol(void);
+    static void vSignalHandler(int iSignal);
     static void vStackDump(void);
     static void vStartActors(void);
     static void vSystemInit(void);

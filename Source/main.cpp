@@ -39,6 +39,8 @@ int main(int argc, const char* argv[])
   aRelDbg = "release"_Str;
 #endif
   
+  vSetSignalHandlers();
+  
   //vTest1();
   
   StorageEngine::vCheckAllAssumptions();
@@ -57,6 +59,7 @@ int main(int argc, const char* argv[])
 
   
   //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  /*
   i8 iLevels[gxArguments.m_uLevels];
   for (u8 iLevel = 0; iLevel < gxArguments.m_uLevels; iLevel++)
     iLevels[iLevel] = 0;
@@ -67,6 +70,7 @@ int main(int argc, const char* argv[])
   }
   for (u8 uLevel = 0; uLevel < gxArguments.m_uLevels; uLevel++)
     printf("%llu: %llu\n",uLevel,iLevels[uLevel]);
+   */
   //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   
   

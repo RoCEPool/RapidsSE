@@ -37,6 +37,7 @@
 #include <sys/wait.h>
 
 #include <execinfo.h>
+#include <signal.h>
 
 #ifdef __APPLE__
   #include "mach/thread_act.h"

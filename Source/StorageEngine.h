@@ -12,6 +12,7 @@ namespace StorageEngine
 {
   void vCheckAllAssumptions(void);
   void vCheckAssumptions(void);
+  void vSetSignalHandlers(void);
 }
 
 using namespace StorageEngine;

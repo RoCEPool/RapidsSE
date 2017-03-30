@@ -103,8 +103,8 @@ void RapidsSE::vExecute(void)
       vTrace("Unknown command line argument\n"_Str);
       vInfo("RapidsSE exits\n"_Str);
       exit(EXIT_FAILURE);
-
     }
+
   }
   catch (Error* pError) {
     vErrorHandler(pError);
@@ -322,6 +322,20 @@ void RapidsSE::vRunDocol(void)
   
   // the docol interpreter is now running in root task on root thread
 }
+
+/*----------------------------------------------------------------------------*/
+/* signal handler                                                             */
+/*----------------------------------------------------------------------------*/
+void RapidsSE::vSignalHandler(int iSignal)
+{
+
+  // print out all the frames to stderr
+  vTrace("Error: signal %d:\n"_Str, iSignal);
+
+  vStackDump();
+  exit(1);
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* error handler                                                              */
