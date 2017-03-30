@@ -304,12 +304,12 @@ eEC RapidsSE_EndCreate(SEitf* pSEitf, i8 iTraceLevel)
     // clear the last error
     CLEAR_LASTERROR();
     
-    // should have a table
-    VALIDATE_TABLE("d"_Str);
-
-    eEC eResult = eExecuteRequest(pSEitf, "rettbl"_Str);
-    CHECK_RESULT("b"_Str);
-    CHECK_RESPONSE("c"_Str);
+    // rettbl only if we managed to create the table
+    if (pSEitf->pCurrentTable()) {
+      eEC eResult = eExecuteRequest(pSEitf, "rettbl"_Str);
+      CHECK_RESULT("b"_Str);
+      CHECK_RESPONSE("c"_Str);
+    }
     
     // should not have a table
     VALIDATE_NOTABLE("d"_Str);
