@@ -160,16 +160,6 @@ i8 EntWsp::nSize(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get key                                                                    */
-/*----------------------------------------------------------------------------*/
-Key* EntWsp::pKey(void)
-{
-  Key* pKey = reinterpret_cast<Key*>(m_xWsp.aArea() + sizeof(i8)*(m_nLevels -1));
-  
-  return pKey;
-}
-
-/*----------------------------------------------------------------------------*/
 /* add a key                                                                  */
 /*----------------------------------------------------------------------------*/
 void EntWsp::vAddKey(KeyWsp& xKeyWsp)
@@ -212,7 +202,7 @@ i8 EntWsp::nWspUsed(void)
 /*----------------------------------------------------------------------------*/
 Key* EntWsp::aKey(void)
 {
-  Key* aKey = _aKey(m_xWsp.aArea());
+  Key* aKey = reinterpret_cast<Key*>(m_xWsp.aArea() + sizeof(i8)*(m_nLevels -1));
   
   return aKey;
 }

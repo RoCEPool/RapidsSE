@@ -192,7 +192,7 @@ IndexBufferSeq* IndexBufferSeq::pFindBuffer(EntWsp& xEntWsp)
   i8 nBytes = xEntWsp.nSize();
   
   // get the value of the EntWsp key
-  Key* pNewKey = xEntWsp.pKey();
+  Key* pNewKey = xEntWsp.aKey();
   
   IndexBufferSeq* pIndexBufferSeq = this;
   IndexBufferSeq* pLastBuffer = nullptr;
@@ -245,7 +245,7 @@ void IndexBufferSeq::vInsertEntry(EntWsp& xEntWsp)
   void* pDst = reinterpret_cast<void*>(m_xWsp.aLatter());
   
   // get the vale of the EntWsp key
-  Key* pNewKey = xEntWsp.pKey();
+  Key* pNewKey = xEntWsp.aKey();
   
   // find the position for the new entry in the index buffer
   Entry* pEntry = pFirstEntry();
@@ -319,7 +319,7 @@ bool IndexBufferSeq::bInsertEntry(EntWsp& xEntWsp)
   void* pDst = reinterpret_cast<void*>(m_xWsp.aLatter());
 
   // get the vale of the EntWsp key
-  Key* pNewKey = xEntWsp.pKey();
+  Key* pNewKey = xEntWsp.aKey();
   
   // find the position for the new entry in the index buffer
   Entry* pEntry = pFirstEntry();

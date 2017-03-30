@@ -32,7 +32,6 @@ namespace DBobjects
     void   vOffset(u8 nLevel, u8 nOffset);
     
     void vAddKey(KeyWsp& xKeyWsp);
-    Key* pKey(void);
     i8   nSize(void);
   
     char* aWspArea(void);
