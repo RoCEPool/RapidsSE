@@ -22,10 +22,7 @@ namespace DBobjects
     i8     m_nBytes;  // overall size of this entry
     RowId  m_xRowId;  // rowid
     u8     m_nLevels; // no of levels
-#ifdef OLD_ENTRY_MODEL
-    WspVbl m_xWsp;    // workspace
-#endif
-    // ..data..
+    // ..data..       // level & key
   
   public:
     static i8 nBytesRequired(i8 nLevels, i8 nKeyBytes);
