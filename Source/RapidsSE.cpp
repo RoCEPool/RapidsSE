@@ -272,6 +272,8 @@ void RapidsSE::vErrorHandler(Error* pError)
          pError->aErrorMsg(),
          pError->iLineNo(),
          wFileName);
+  
+  vStackDump();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -319,6 +321,22 @@ void RapidsSE::vRunDocol(void)
   gnpRootThread->vAppend(*gnpRootTask);
   
   // the docol interpreter is now running in root task on root thread
+}
+
+/*----------------------------------------------------------------------------*/
+/* error handler                                                              */
+/*----------------------------------------------------------------------------*/
+void RapidsSE::vStackDump(void)
+{
+  void *pArray[C_STACK_BACKTRACE];
+  int iSize;
+  
+  // get void*'s for all entries on the stack
+  iSize = backtrace(pArray, C_STACK_BACKTRACE);
+  
+  // print out all the frames to stderr
+  //fprintf(stderr, "Error: signal %d:\n", sig);
+  backtrace_symbols_fd(pArray, iSize, STDERR_FILENO);
 }
 
 /*----------------------------------------------------------------------------*/

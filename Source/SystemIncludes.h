@@ -36,6 +36,8 @@
 #include <sys/unistd.h>
 #include <sys/wait.h>
 
+#include <execinfo.h>
+
 #ifdef __APPLE__
   #include "mach/thread_act.h"
   #include <libkern/OSAtomic.h>

@@ -11,8 +11,10 @@ namespace StorageEngine
   
   class RapidsSE
   {
+  
   private:
-
+    static const i8 C_STACK_BACKTRACE = 10;
+    
     // must be last
     Footer m_xFooter;
 
@@ -33,6 +35,7 @@ namespace StorageEngine
     static void vInitJumboHeap(void);
     static void vRunCommand(void);
     static void vRunDocol(void);
+    static void vStackDump(void);
     static void vStartActors(void);
     static void vSystemInit(void);
     static void vSystemStatus(void);
