@@ -69,8 +69,9 @@ namespace Debugging
   /* 48 */ EC_TABLE_IN_USE,
   /* 49 */ EC_TENANT_EXISTS,
   
-  /* 50 */ EC_VERSION_MISMATCH,
-  /* 51 */ EC_ENUMS
+  /* 50 */ EC_VALIDATION_FAILURE,
+  /* 51 */ EC_VERSION_MISMATCH,
+  /* 52 */ EC_ENUMS
   };
   
   static Str* aEC[]
@@ -137,9 +138,10 @@ namespace Debugging
   /* 48 */ "table in use"_Str,
   /* 49 */ "tenant exists"_Str,
 
-  /* 50 */ "version mismatch"_Str,
+  /* 50 */ "validation failure"_Str,
+  /* 51 */ "version mismatch"_Str,
 
-  /* 51 */ "enums"_Str
+  /* 52 */ "enums"_Str
   
   };
   

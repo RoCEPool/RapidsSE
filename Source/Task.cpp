@@ -568,8 +568,9 @@ void Task::vAddConstants(void)
   /* 47 */ vAddConstant("EC_TABLE_EXISTS"_Str,       EC_TABLE_EXISTS);
   /* 48 */ vAddConstant("EC_TABLE_IN_USE"_Str,       EC_TABLE_IN_USE);
   /* 49 */ vAddConstant("EC_TENANT_EXISTS"_Str,      EC_TENANT_EXISTS);
-  /* 50 */ vAddConstant("EC_VERSION_MISMATCH"_Str,   EC_VERSION_MISMATCH);
-  /* 51 */ vAddConstant("EC_ENUMS"_Str,              EC_ENUMS);
+  /* 50 */ vAddConstant("EC_VALIDATION_FAILURE"_Str, EC_VALIDATION_FAILURE);
+  /* 51 */ vAddConstant("EC_VERSION_MISMATCH"_Str,   EC_VERSION_MISMATCH); 
+  /* 52 */ vAddConstant("EC_ENUMS"_Str,              EC_ENUMS);
 
   // TK_ : token types
   /*  0 */ vAddConstant("TK_NONE"_Str,    TK_NONE);

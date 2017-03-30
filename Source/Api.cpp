@@ -32,10 +32,12 @@ eEC RapidsSE_AddColumn(SEitf* pSEitf, Str* pColumnName, Str* pColumnType, i8 iTr
     VALIDATE_PARAM("b"_Str, pColumnName);
     VALIDATE_PARAM("c"_Str, pColumnType);
     
-    Table* pTable = pSEitf->pCurrentTable();
-    
+    // validate that we have a current table
     VALIDATE_TABLE("d"_Str);
 
+    // get the current table
+    Table* pTable = pSEitf->pCurrentTable();
+    
     // add a column
     eResult = eExecuteRequest(pSEitf, "add"_Str,
                               (Str*)pTable->aTableName(),
@@ -93,12 +95,15 @@ eEC RapidsSE_BeginInsert(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable
     CHECK_RESULT("f"_Str);
     CHECK_RESPONSE("g"_Str);
     
+    // validate we have a table
+    VALIDATE_TABLE("h"_Str);
+    
     // begin a tnx
     bool bResult = pSEitf->bBeginTx();
     
     if (!bResult) {
       pSEitf->vSetLastError(EC_BEGIN_TX_FAILED);
-      TRACE_ERROR("h",EC_BEGIN_TX_FAILED);
+      TRACE_ERROR("i",EC_BEGIN_TX_FAILED);
       return EC_BEGIN_TX_FAILED;
     }
     
@@ -179,7 +184,7 @@ eEC RapidsSE_CreateTable(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable
     VALIDATE_PARAM("d"_Str, pTable);
     
     // change folder to tables
-    CF_TABLE("e"_Str);
+    CF_TABLES("e"_Str);
 
     // create a table
     eResult = eExecuteRequest(pSEitf, "mktbl"_Str, (Str*)pTable);
@@ -193,6 +198,7 @@ eEC RapidsSE_CreateTable(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable
     
     // get pTable
     eEC eGetResult = eExecuteRequest(pSEitf, "gettbl"_Str, (Str*)pTable);
+    vTrace("%s\n"_Str, aEC[eGetResult]);
     if (EC_NONE != eGetResult) {
       
       // remove the table
@@ -206,6 +212,9 @@ eEC RapidsSE_CreateTable(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable
     
     // check response
     CHECK_RESPONSE("m"_Str);
+    
+    // validate current table
+    VALIDATE_TABLE("n");
     
     TRACE_EXIT("ea"_Str);
     
@@ -277,6 +286,8 @@ eEC RapidsSE_DropTable(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable, 
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_EndCreate(SEitf* pSEitf, i8 iTraceLevel)
 {
+  printf("RapidsSE_EndCreate\n");
+  
   eEC eResult;
   eEC eResponse;
   
@@ -293,11 +304,15 @@ eEC RapidsSE_EndCreate(SEitf* pSEitf, i8 iTraceLevel)
     // clear the last error
     CLEAR_LASTERROR();
     
+    // should have a table
+    VALIDATE_TABLE("d"_Str);
+
     eEC eResult = eExecuteRequest(pSEitf, "rettbl"_Str);
     CHECK_RESULT("b"_Str);
     CHECK_RESPONSE("c"_Str);
     
-    VALIDATE_TABLE("d"_Str);
+    // should not have a table
+    VALIDATE_NOTABLE("d"_Str);
     
     TRACE_EXIT("ea"_Str);
     
@@ -336,18 +351,22 @@ eEC RapidsSE_EndInsert(SEitf* pSEitf, i8 iTraceLevel)
     // clear the last error
     CLEAR_LASTERROR();
     
+    // validate we have a table
+    VALIDATE_TABLE("b"_Str);
+    
     bool bResult = pSEitf->bInsertBuffer();
     
     // if rowBuffer request was appended to requestQ, then wait for resonse
     if (bResult) {
-      CHECK_RESPONSE("b"_Str);
+      CHECK_RESPONSE("c"_Str);
     }
     
     eResult = eExecuteRequest(pSEitf, "rettbl"_Str);
-    CHECK_RESULT("c"_Str);
-    CHECK_RESPONSE("d"_Str);
+    CHECK_RESULT("d"_Str);
+    CHECK_RESPONSE("e"_Str);
     
-    VALIDATE_TABLE("e"_Str);
+    // validate if no table
+    VALIDATE_NOTABLE("f"_Str);
     
     pSEitf->vCommitTx();
     pSEitf->vEndTx();
@@ -406,7 +425,8 @@ eEC RapidsSE_EndScan(SEitf* pSEitf, i8 iTraceLevel)
     CHECK_RESULT("c"_Str);
     CHECK_RESPONSE("d"_Str);
     
-    VALIDATE_TABLE("e"_Str);
+    // validate if no table
+    VALIDATE_NOTABLE("e"_Str);
     
     TRACE_EXIT("ea"_Str);
     
@@ -596,14 +616,6 @@ eEC RapidsSE_GetNextRow(SEitf* pSEitf, void** ppRow, i8 iTraceLevel)
     
     *ppRow = pSelCursor->aRowAsStr();
     if (!*ppRow) {
-      delete pSelCursor;
-      
-      // return the table
-      eEC eResult = eExecuteRequest(pSEitf, "rettbl"_Str);
-      CHECK_RESULT("c"_Str);
-      CHECK_RESPONSE("d"_Str);
-      
-      ASSERT(pSEitf->pCurrentTable() == nullptr);
       
       // trace exit
       TRACE_EXIT("ea"_Str);
@@ -921,6 +933,9 @@ eEC RapidsSE_InsertRow(SEitf* pSEitf, Str* pRow, i8 iTraceLevel)
       return pSEitf->m_eErrorCode;
     }
     
+    // validate table
+    VALIDATE_TABLE("e"_Str);
+
     // trace exit
     TRACE_EXIT("ea"_Str);
 
@@ -1068,8 +1083,11 @@ eEC RapidsSE_SEitfDelete(SEitf* pSEitf, i8 iTraceLevel)
     // clear the last error
     CLEAR_LASTERROR();
     
-    // delete to SEitf
+    // delete the SEitf
     RapidsSE::vSEitfDelete(pSEitf);
+    
+    // set SEitf to nullptr so trace knows not to look at it
+    pSEitf = nullptr;
     
     // trace exit
     TRACE_EXIT("ea"_Str);
@@ -1109,7 +1127,7 @@ bool RapidsSE_SEitfInvalid(int iError, i8 iTraceLevel)
     }
     else {
       // trace exit
-      TRACE_EXIT("ea"_Str);
+      TRACE_EXIT("eb"_Str);
 
       return false;
     }
@@ -1146,7 +1164,7 @@ eEC RapidsSE_SEitfNew(void** ppSEitf, i8 iPartition, i8 iTraceLevel)
     pSEitf->vInit();
     
     // validate the SEitf just created
-    VALIDATE_SEITF("a"_Str);
+    VALIDATE_SEITF("b"_Str);
     
     // return the newly created SEitf
     *ppSEitf = pSEitf;

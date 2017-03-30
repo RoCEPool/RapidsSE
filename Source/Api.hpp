@@ -29,7 +29,7 @@ extern "C" eEC RapidsSE_GetTables(SEitf* pSEitf, Str* pCatalog, Str* pSchema, vo
 extern "C" eEC RapidsSE_HashRowPartition(SEitf* pSEitf, Str* pRow, void** ppPartition, i8 iTraceLevel);
 extern "C" eEC RapidsSE_InsertRow(SEitf* pSEitf, Str* pRow, i8 iTraceLevel);
 extern "C" eEC RapidsSE_PoolOpen(Str* pInstanceName, void** ppInstance, i8 iTraceLevel);
-extern "C" eEC RapidsSE_ScanTable(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable);
+extern "C" eEC RapidsSE_ScanTable(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable, i8 iTraceLevel);
 extern "C" eEC RapidsSE_SEitfDelete(SEitf* pSEitf, i8 iTraceLevel);
 extern "C" eEC RapidsSE_SEitfNew(void** ppSEitf, i8 iPartition, i8 iTraceLevel);
 extern "C" bool RapidsSE_SEitfInvalid(int eError, i8 iTraceLevel);
@@ -111,7 +111,7 @@ eEC eGetResponse(SEitf* pSEitf);
 /*----------------------------------------------------------------------------*/
 #define VALIDATE_PARAM(aMarker, pParameter) \
   {  \
-    if (!pParameter) { \
+    if ( ! pParameter ) { \
       TRACE_ERROR(aMarker, EC_INVALID_PARAMETER); \
       pSEitf->vSetLastError(EC_INVALID_PARAMETER); \
       return EC_INVALID_PARAMETER; \
@@ -123,7 +123,7 @@ eEC eGetResponse(SEitf* pSEitf);
 /*----------------------------------------------------------------------------*/
 #define VALIDATE_REFPOINTER(aMarker, ppRefPointer) \
   { \
-    if (!ppRefPointer) { \
+    if ( ! ppRefPointer) { \
       TRACE_ERROR(aMarker, EC_INVALID_PARAMETER); \
       pSEitf->vSetLastError(EC_INVALID_PARAMETER); \
       return EC_INVALID_PARAMETER; \
@@ -135,9 +135,21 @@ eEC eGetResponse(SEitf* pSEitf);
 /*----------------------------------------------------------------------------*/
 #define VALIDATE_TABLE(aMarker) \
   {  \
-    if ( pSEitf->pCurrentTable() ) { \
+    if ( ! pSEitf->pCurrentTable() ) { \
       TRACE_ERROR(aMarker, EC_NO_SUCH_TABLE); \
       pSEitf->vSetLastError(EC_NO_SUCH_TABLE); \
+      return EC_NO_SUCH_TABLE; \
+    } \
+  }
+
+/*----------------------------------------------------------------------------*/
+/* validate no table                                                          */
+/*----------------------------------------------------------------------------*/
+#define VALIDATE_NOTABLE(aMarker) \
+  {  \
+    if ( pSEitf->pCurrentTable() ) { \
+      TRACE_ERROR(aMarker, EC_VALIDATION_FAILURE); \
+      pSEitf->vSetLastError(EC_VALIDATION_FAILURE); \
       return EC_NO_SUCH_TABLE; \
     } \
   }
@@ -171,6 +183,7 @@ eEC eGetResponse(SEitf* pSEitf);
 #define CHECK_RESPONSE(aMarker) \
  { \
    eResult = eGetResponse(pSEitf); \
+vTrace("%s\n"_Str, aEC[eResult]); \
     if (EC_NONE != eResult) { \
       TRACE_ERROR(aMarker,eResult); \
       return eResult; \
