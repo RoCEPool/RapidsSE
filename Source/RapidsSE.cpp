@@ -107,7 +107,7 @@ void RapidsSE::vExecute(void)
     }
   }
   catch (Error* pError) {
-    vHandler(pError);
+    vErrorHandler(pError);
   }
 }
 
@@ -259,7 +259,7 @@ void RapidsSE::vDicCompile(NP_Task npRootTask)
 /*----------------------------------------------------------------------------*/
 /* error handler                                                              */
 /*----------------------------------------------------------------------------*/
-void RapidsSE::vHandler(Error* pError)
+void RapidsSE::vErrorHandler(Error* pError)
 {
   char wFileName[256];
   

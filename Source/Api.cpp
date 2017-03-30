@@ -52,7 +52,7 @@ eEC RapidsSE_AddColumn(SEitf* pSEitf, Str* pColumnName, Str* pColumnType, i8 iTr
     return EC_NONE;
   }
   catch (Error* pError) {
-    RapidsSE::vHandler(pError);
+    RapidsSE::vErrorHandler(pError);
     TRACE_ERROR("!", pError->eErrorCode());
     return pError->eErrorCode();
   }
@@ -112,7 +112,7 @@ eEC RapidsSE_BeginInsert(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable
     return EC_NONE;
   }
   catch (Error* pError) {
-    RapidsSE::vHandler(pError);
+    RapidsSE::vErrorHandler(pError);
     TRACE_ERROR("!", pError->eErrorCode());
     return pError->eErrorCode();
   }
@@ -150,7 +150,7 @@ eEC RapidsSE_CheckLibraryVersion(Str* pVersion, i8 iTraceLevel)
     return EC_NONE;
   }
   catch (Error* pError) {
-    RapidsSE::vHandler(pError);
+    RapidsSE::vErrorHandler(pError);
     TRACE_ERROR("!", pError->eErrorCode());
     return pError->eErrorCode();
   }
@@ -221,7 +221,7 @@ eEC RapidsSE_CreateTable(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable
     return EC_NONE;
   }
   catch (Error* pError) {
-    RapidsSE::vHandler(pError);
+    RapidsSE::vErrorHandler(pError);
     TRACE_ERROR("!", pError->eErrorCode());
     return pError->eErrorCode();
   }
@@ -271,7 +271,7 @@ eEC RapidsSE_DropTable(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable, 
     return EC_NONE;
   }
   catch (Error* pError) {
-    RapidsSE::vHandler(pError);
+    RapidsSE::vErrorHandler(pError);
     TRACE_ERROR("!", pError->eErrorCode());
     return pError->eErrorCode();
   }
@@ -320,7 +320,7 @@ eEC RapidsSE_EndCreate(SEitf* pSEitf, i8 iTraceLevel)
     
   }
   catch (Error* pError) {
-    RapidsSE::vHandler(pError);
+    RapidsSE::vErrorHandler(pError);
     TRACE_ERROR("!", pError->eErrorCode());
     return pError->eErrorCode();
   }
@@ -377,7 +377,7 @@ eEC RapidsSE_EndInsert(SEitf* pSEitf, i8 iTraceLevel)
     
   }
   catch (Error* pError) {
-    RapidsSE::vHandler(pError);
+    RapidsSE::vErrorHandler(pError);
     TRACE_ERROR("!", pError->eErrorCode());
     return pError->eErrorCode();
   }
@@ -433,7 +433,7 @@ eEC RapidsSE_EndScan(SEitf* pSEitf, i8 iTraceLevel)
     return EC_NONE;
   }
   catch (Error* pError) {
-    RapidsSE::vHandler(pError);
+    RapidsSE::vErrorHandler(pError);
     TRACE_ERROR("!", pError->eErrorCode());
     return pError->eErrorCode();
   }
@@ -483,7 +483,7 @@ eEC RapidsSE_GetCatalogs(SEitf* pSEitf, void** ppCatalogs, i8 iTraceLevel)
     return eResult;
   }
   catch (Error* pError) {
-    RapidsSE::vHandler(pError);
+    RapidsSE::vErrorHandler(pError);
     TRACE_ERROR("!", pError->eErrorCode());
     return pError->eErrorCode();
   }
@@ -537,7 +537,7 @@ eEC RapidsSE_GetColumns(SEitf* pSEitf, Str* pCatalog, Str* pSchema,
     return eResult;
   }
   catch (Error* pError) {
-    RapidsSE::vHandler(pError);
+    RapidsSE::vErrorHandler(pError);
     TRACE_ERROR("!", pError->eErrorCode());
     return pError->eErrorCode();
   }
@@ -576,7 +576,7 @@ eEC RapidsSE_GetLastError(SEitf* pSEitf, void** ppError, i8 iTraceLevel)
     return EC_NONE;
   }
   catch (Error* pError) {
-    RapidsSE::vHandler(pError);
+    RapidsSE::vErrorHandler(pError);
     TRACE_ERROR("!", pError->eErrorCode());
     return pError->eErrorCode();
   }
@@ -634,7 +634,7 @@ eEC RapidsSE_GetNextRow(SEitf* pSEitf, void** ppRow, i8 iTraceLevel)
     return EC_NONE;
   }
   catch (Error* pError) {
-    RapidsSE::vHandler(pError);
+    RapidsSE::vErrorHandler(pError);
     TRACE_ERROR("!", pError->eErrorCode());
     return pError->eErrorCode();
   }
@@ -677,7 +677,7 @@ eEC RapidsSE_GetPartitions(SEitf* pSEitf, void** ppPartitions, void** ppCount, i
     return EC_NONE;
   }
   catch (Error* pError) {
-    RapidsSE::vHandler(pError);
+    RapidsSE::vErrorHandler(pError);
     TRACE_ERROR("!", pError->eErrorCode());
     return pError->eErrorCode();
   }
@@ -730,7 +730,7 @@ eEC RapidsSE_GetSchemas(SEitf* pSEitf, Str* pCatalog, void** ppSchemas, i8 iTrac
     return EC_NONE;
   }
   catch (Error* pError) {
-    RapidsSE::vHandler(pError);
+    RapidsSE::vErrorHandler(pError);
     TRACE_ERROR("!", pError->eErrorCode());
     return pError->eErrorCode();
   }
@@ -777,7 +777,7 @@ eEC RapidsSE_GetEngineVersion(SEitf* pSEitf, void** ppVersion, i8 iTraceLevel)
     
   }
   catch (Error* pError) {
-    RapidsSE::vHandler(pError);
+    RapidsSE::vErrorHandler(pError);
     TRACE_ERROR("!", pError->eErrorCode());
     return pError->eErrorCode();
   }
@@ -832,7 +832,7 @@ eEC RapidsSE_GetTables(SEitf* pSEitf, Str* pCatalog, Str* pSchema, void** ppTabl
     
   }
   catch (Error* pError) {
-    RapidsSE::vHandler(pError);
+    RapidsSE::vErrorHandler(pError);
     TRACE_ERROR("!", pError->eErrorCode());
     return pError->eErrorCode();
   }
@@ -885,7 +885,7 @@ eEC RapidsSE_HashRowPartition(SEitf* pSEitf, Str* pRow, void** ppPartition, i8 i
     
   }
   catch (Error* pError) {
-    RapidsSE::vHandler(pError);
+    RapidsSE::vErrorHandler(pError);
     TRACE_ERROR("!", pError->eErrorCode());
     return pError->eErrorCode();
   }
@@ -943,7 +943,7 @@ eEC RapidsSE_InsertRow(SEitf* pSEitf, Str* pRow, i8 iTraceLevel)
     
   }
   catch (Error* pError) {
-    RapidsSE::vHandler(pError);
+    RapidsSE::vErrorHandler(pError);
     TRACE_ERROR("!", pError->eErrorCode());
     return pError->eErrorCode();
   }
@@ -986,7 +986,7 @@ eEC RapidsSE_PoolOpen(Str* pInstanceName, void** ppInstance, i8 iTraceLevel)
     
   }
   catch (Error* pError) {
-    RapidsSE::vHandler(pError);
+    RapidsSE::vErrorHandler(pError);
     TRACE_ERROR("!", pError->eErrorCode());
     return pError->eErrorCode();
   }
@@ -1055,7 +1055,7 @@ eEC RapidsSE_ScanTable(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable, 
     return EC_NONE;
   }
   catch (Error* pError) {
-    RapidsSE::vHandler(pError);
+    RapidsSE::vErrorHandler(pError);
     TRACE_ERROR("!", pError->eErrorCode());
     return pError->eErrorCode();
   }
@@ -1095,7 +1095,7 @@ eEC RapidsSE_SEitfDelete(SEitf* pSEitf, i8 iTraceLevel)
     return EC_NONE;
   }
   catch (Error* pError) {
-    RapidsSE::vHandler(pError);
+    RapidsSE::vErrorHandler(pError);
     TRACE_ERROR("!", pError->eErrorCode());
     return pError->eErrorCode();
   }
@@ -1134,7 +1134,7 @@ bool RapidsSE_SEitfInvalid(int iError, i8 iTraceLevel)
     
   }
   catch (Error* pError) {
-    RapidsSE::vHandler(pError);
+    RapidsSE::vErrorHandler(pError);
     TRACE_ERROR("!", pError->eErrorCode());
     return pError->eErrorCode();
   }
@@ -1176,7 +1176,7 @@ eEC RapidsSE_SEitfNew(void** ppSEitf, i8 iPartition, i8 iTraceLevel)
     
   }
   catch (Error* pError) {
-    RapidsSE::vHandler(pError);
+    RapidsSE::vErrorHandler(pError);
     TRACE_ERROR("!", pError->eErrorCode());
     return pError->eErrorCode();
   }

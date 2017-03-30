@@ -29,7 +29,7 @@ namespace StorageEngine
     static void vAttachObjects(void);
     static void vCreateObjects(void);
     static void vDicCompile(NP_Task npBootTask);
-    static void vHandler(Error* pError);
+    static void vErrorHandler(Error* pError);
     static void vInitJumboHeap(void);
     static void vRunCommand(void);
     static void vRunDocol(void);
