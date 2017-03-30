@@ -46,13 +46,12 @@ EntWsp::EntWsp(void)
   // generate logarithemic levels for this entry
   m_nLevels = Random::uLogLevel(C_FLAT_LEVELS, 2) + 1;
   
-  if (m_nLevels >= 1)
-    int i = 1;
-  
+#ifdef OLD_ENTWSP
   // allocate space for the level offsets and initialize with C_NIL
   i8 iLevelOffset = C_NIL_OFFSET;
-  for (i8 iIndex=0; iIndex < m_nLevels - 1; iIndex++)
+  for (i8 iIndex = 0; iIndex < m_nLevels - 1; iIndex++)
     m_xWsp.vAppend(&iLevelOffset,sizeof(i8));
+#endif
   
   _checkInitialisedSize_(sizeof(EntWsp));
   
@@ -145,8 +144,10 @@ u8 EntWsp::nRight(u8 iLevel)
 /*----------------------------------------------------------------------------*/
 void EntWsp::vRight(u8 iLevel, u8 uRight)
 {
+#ifdef OLD_ENTWSP
   i8* nLevels = reinterpret_cast<i8*>(m_xWsp.aArea());
   nLevels[iLevel] = uRight;
+#endif
   
   m_uRight[iLevel] = uRight;
 }
@@ -210,13 +211,17 @@ i8 EntWsp::nWspUsed(void)
 /*----------------------------------------------------------------------------*/
 Key* EntWsp::aKey(void)
 {
+#ifdef OLD_ENTWSP
   Key* aKey = reinterpret_cast<Key*>(m_xWsp.aArea() + sizeof(i8)*(m_nLevels -1));
+#else
+  Key* aKey = _aKey(&m_xKey);
+#endif
   
   return aKey;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get entry data bytes                                                       */
+/* get key size                                                               */
 /*----------------------------------------------------------------------------*/
 i8 EntWsp::nKeySize(void)
 {
@@ -228,8 +233,12 @@ i8 EntWsp::nKeySize(void)
 /*----------------------------------------------------------------------------*/
 i8 EntWsp::nEntryBytesRequired(void)
 {
+#ifdef OLD_ENTWSP
   i8 nKeyBytes = nKeySize();
   i8 nBytes = Entry::nBytesRequired(1,nKeyBytes);
+#else
+  i8 nBytes = Entry::nBytesRequired(m_nLevels,nKeyBytes);
+#endif
   
   return nBytes;
 }

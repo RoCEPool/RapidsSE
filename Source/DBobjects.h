@@ -21,6 +21,8 @@ using namespace DBobjects;
 
 //------------------------------------------------------------------------------
 
+#define OLD_ENTWSP
+
 
 #include "Row.hpp"
 #include "RowBuffer.hpp"
