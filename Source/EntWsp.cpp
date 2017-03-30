@@ -98,7 +98,7 @@ void EntWsp::vShow(void)
   for (i8 iIndex=0; iIndex < m_nLevels - 1; iIndex++)
     vTrace("L%lld: %lld "_Str,
            iIndex + 1,
-           nOffset(iIndex)
+           nRight(iIndex)
            );
   
   vTrace("\n"_Str);
@@ -131,7 +131,7 @@ u8 EntWsp::nLevels(void)
 /*----------------------------------------------------------------------------*/
 /* get next entry offset at level                                             */
 /*----------------------------------------------------------------------------*/
-u8 EntWsp::nOffset(u8 iLevel)
+u8 EntWsp::nRight(u8 iLevel)
 {
   i8* nLevels = reinterpret_cast<i8*>(m_xWsp.aArea());
   
@@ -143,12 +143,12 @@ u8 EntWsp::nOffset(u8 iLevel)
 /*----------------------------------------------------------------------------*/
 /* set next entry offset at level                                             */
 /*----------------------------------------------------------------------------*/
-void EntWsp::vOffset(u8 iLevel, u8 nOffset)
+void EntWsp::vRight(u8 iLevel, u8 uRight)
 {
   i8* nLevels = reinterpret_cast<i8*>(m_xWsp.aArea());
-  nLevels[iLevel] = nOffset;
+  nLevels[iLevel] = uRight;
   
-  m_uRight[iLevel] = nOffset;
+  m_uRight[iLevel] = uRight;
 }
 
 /*----------------------------------------------------------------------------*/

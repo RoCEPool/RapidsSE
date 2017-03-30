@@ -29,8 +29,8 @@ namespace DBobjects
   
     u8     nLevels(void);
     
-    u8     nOffset(u8 iLevel);
-    void   vOffset(u8 iLevel, u8 nOffset);
+    u8     nRight(u8 iLevel);
+    void   vRight(u8 iLevel, u8 uRight);
     
     void vAddKey(KeyWsp& xKeyWsp);
     i8   nSize(void);

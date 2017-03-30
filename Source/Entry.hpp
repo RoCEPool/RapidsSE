@@ -22,7 +22,7 @@ namespace DBobjects
     i8     m_nBytes;  // overall size of this entry
     RowId  m_xRowId;  // rowid
     u8     m_nLevels; // no of levels
-    // ..data..       // level & key
+    // ..data..       // rights & key
   
   public:
     static i8 nBytesRequired(i8 nLevels, i8 nKeyBytes);
@@ -37,8 +37,8 @@ namespace DBobjects
     EntryData* aEntryData(void);
     Key*   aKey(void);
     u8     nLevels(void);
-    u8     uOffset(u8 iLevel);
-    void   vOffset(u8 iLevel, u8 uOffset);
+    u8     uRight(u8 iLevel);
+    void   vRight(u8 iLevel, u8 uRight);
     Entry* aRightEntry(i8 iLevel);
     RowId& xRowId(void);
     void   vSetEntry(EntWsp& xEntWsp);

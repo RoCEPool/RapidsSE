@@ -113,7 +113,7 @@ void Entry::vContentDump(void)
   for (i8 iIndex=0; iIndex< m_nLevels - 1; iIndex++) {
     vTrace("L%lld: %lld "_Str,
            iIndex+1,
-           uOffset(iIndex));
+           uRight(iIndex));
   }
   
   vTrace("\n"_Str);
@@ -160,28 +160,28 @@ u8 Entry::nLevels(void)
 /*----------------------------------------------------------------------------*/
 /* get next entry offset at level                                             */
 /*----------------------------------------------------------------------------*/
-u8 Entry::uOffset(u8 iLevel)
+u8 Entry::uRight(u8 iLevel)
 {
   EntryData* aEntryData = this->aEntryData();
   Levels* aLevels = aEntryData->aLevels(m_nLevels);
 
-  u8 uOffset = 0;
+  u8 uRight = 0;
   if (iLevel)
-    uOffset = aLevels->uRight(iLevel);
+    uRight = aLevels->uRight(iLevel);
 
-  return uOffset;
+  return uRight;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set next entry offset at level                                             */
 /*----------------------------------------------------------------------------*/
-void Entry::vOffset(u8 iLevel, u8 uOffset)
+void Entry::vRight(u8 iLevel, u8 uRight)
 {
 
   EntryData* aEntryData = this->aEntryData();
   Levels* aLevels = aEntryData->aLevels(m_nLevels);
 
-  aLevels->vRight(iLevel,uOffset);
+  aLevels->vRight(iLevel,uRight);
 }
 
 /*----------------------------------------------------------------------------*/
