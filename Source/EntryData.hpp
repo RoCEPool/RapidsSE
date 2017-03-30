@@ -20,7 +20,7 @@ namespace DBobjects
   
     void vCopyBytes(void* aSrc, i8 nBytes);
     Key* aKey(i8 nLevels);
-    Levels* aLevels(i8 nLevels);
+    RightVec* aRightVec(i8 nLevels);
   
   };
   

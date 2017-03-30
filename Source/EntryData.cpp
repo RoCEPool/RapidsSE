@@ -14,7 +14,7 @@
 i8 EntryData::nBytesRequired(i8 nLevels, i8 nKeyBytes)
 {
   i8 nLevelsSub = nLevels - 1;
-  i8 nLevelBytes = Levels::nBytesRequired(nLevelsSub);
+  i8 nLevelBytes = RightVec::nBytesRequired(nLevelsSub);
   
   i8 nBytes = nLevelBytes + nKeyBytes;
   
@@ -77,16 +77,16 @@ Key* EntryData::aKey(i8 nLevels)
 /*----------------------------------------------------------------------------*/
 /* get levels                                                                 */
 /*----------------------------------------------------------------------------*/
-Levels* EntryData::aLevels(i8 nLevels)
+RightVec* EntryData::aRightVec(i8 nLevels)
 {
   //_precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
   
   if ( ! nLevels )
     return nullptr;
   
-  Levels* aLevels = _aLevels(this);
+  RightVec* aRightVec = _aRightVec(this);
   
-  return aLevels;
+  return aRightVec;
 }
 
 /*============================================================================*/

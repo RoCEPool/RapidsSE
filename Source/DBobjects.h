@@ -31,7 +31,6 @@ using namespace DBobjects;
 #include "RowId.hpp"
 #include "KeyWsp.hpp"
 #include "Key.hpp"
-#include "Levels.hpp"
 #include "RightVec.hpp"
 #include "EntryData.hpp"
 #include "EntWsp.hpp"

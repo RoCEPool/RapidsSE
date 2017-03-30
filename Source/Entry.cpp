@@ -163,11 +163,11 @@ u8 Entry::nLevels(void)
 u8 Entry::uRight(u8 iLevel)
 {
   EntryData* aEntryData = this->aEntryData();
-  Levels* aLevels = aEntryData->aLevels(m_nLevels);
+  RightVec* aRightVec = aEntryData->aRightVec(m_nLevels);
 
   u8 uRight = 0;
   if (iLevel)
-    uRight = aLevels->uRight(iLevel);
+    uRight = aRightVec->uRight(iLevel);
 
   return uRight;
 }
@@ -179,9 +179,9 @@ void Entry::vRight(u8 iLevel, u8 uRight)
 {
 
   EntryData* aEntryData = this->aEntryData();
-  Levels* aLevels = aEntryData->aLevels(m_nLevels);
+  RightVec* aRightVec = aEntryData->aRightVec(m_nLevels);
 
-  aLevels->vRight(iLevel,uRight);
+  aRightVec->vRight(iLevel,uRight);
 }
 
 /*----------------------------------------------------------------------------*/

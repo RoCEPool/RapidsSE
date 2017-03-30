@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* RightVec.hpp -- right vector of index entry                                */
+/* Levels.hpp -- array of level pointers/references/offsets                   */
 /*============================================================================*/
 #pragma once
 
@@ -8,10 +8,22 @@ namespace DBobjects
   class RightVec
   {
   public:
-    u8 m_uOffset[1]; // variable array of offsets
+  u8  m_uRight[1];  //
   
-    u8 operator [](i8 iOffset);
+  public:
+    void* operator new(size_t);
+    void* operator new(size_t, RightVec*);
+  
+    RightVec(void);
+    ~RightVec(void);
+
+    u8 uRight(i8 iLevel);
+    void vRight(i8 iLevel, u8 uOffset);
+  
+    static i8 nBytesRequired(i8 nLevels);
   };
+  
+  RightVec* _aRightVec(void* aAddr);
 }
 
 /*============================================================================*/
