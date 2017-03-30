@@ -131,19 +131,24 @@ u8 EntWsp::nLevels(void)
 /*----------------------------------------------------------------------------*/
 /* get next entry offset at level                                             */
 /*----------------------------------------------------------------------------*/
-u8 EntWsp::nOffset(u8 nLevel)
+u8 EntWsp::nOffset(u8 iLevel)
 {
   i8* nLevels = reinterpret_cast<i8*>(m_xWsp.aArea());
-  return nLevels[nLevel];
+  
+  ASSERT(m_uRight[iLevel] == nLevels[iLevel]);
+                  
+  return nLevels[iLevel];
 }
 
 /*----------------------------------------------------------------------------*/
 /* set next entry offset at level                                             */
 /*----------------------------------------------------------------------------*/
-void EntWsp::vOffset(u8 nLevel, u8 nOffset)
+void EntWsp::vOffset(u8 iLevel, u8 nOffset)
 {
   i8* nLevels = reinterpret_cast<i8*>(m_xWsp.aArea());
-  nLevels[nLevel] = nOffset;
+  nLevels[iLevel] = nOffset;
+  
+  m_uRight[iLevel] = nOffset;
 }
 
 /*----------------------------------------------------------------------------*/
