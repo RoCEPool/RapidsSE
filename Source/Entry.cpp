@@ -238,21 +238,19 @@ void Entry::vSetEntry(EntWsp& xEntWsp)
   //_precondition_(_MAGIC_,CN_ENTRY);
 
   // set Bytes
+#ifdef OLD_ENTWSP
   i8 nWspBytes = xEntWsp.nWspUsed();
   m_nBytes = sizeof(Entry) + nWspBytes + sizeof(Footer);
-
+#else
+  m_nBytes = xEntWsp.nEntryBytesRequired();
+#endif
+  
   // set RowId
   m_xRowId  = xEntWsp.xRowId();
 
   // set Levels
   m_nLevels = xEntWsp.nLevels();
 
-#ifdef OLD_ENTWSP
-  // copy entry data
-  Str* aSrc = xEntWsp.aWspStr();
-  EntryData* aEntryData = this->aEntryData();
-  aEntryData->vCopyBytes(aSrc,nWspBytes);
-#else
   // copy levels
   RightVec* aEntryRightVec = this->aRightVec();
   RightVec* aEntWspRightVec = xEntWsp.aRightVec();
@@ -262,11 +260,10 @@ void Entry::vSetEntry(EntWsp& xEntWsp)
   
   // copy key
   Key* aEntryKey = this->aKey();
-  Key* aEntWspKey = EntWsp.aKey();
+  Key* aEntWspKey = xEntWsp.aKey();
   i8 nKeyBytes = xEntWsp.nKeySize();
   
   MemLib::vCopy(aEntryKey,aEntWspKey,nKeyBytes);
-#endif
 }
 
 /*----------------------------------------------------------------------------*/
