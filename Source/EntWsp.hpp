@@ -11,6 +11,7 @@ namespace DBobjects
     i8               m_nBytes;
     RowId            m_xRowId;   // row id
     i8               m_nLevels;
+    u8               m_uRight[C_FLAT_LEVELS];
     WspFxd<C_1KB*15> m_xWsp;     // workspace
     Footer           m_xFooter;  // footer
   

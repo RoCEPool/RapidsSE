@@ -38,6 +38,9 @@ EntWsp::EntWsp(void)
 
   m_nBytes = 0;
   
+  for (i8 iLevel = 0; iLevel < C_FLAT_LEVELS; iLevel++)
+    m_uRight[iLevel] = C_NIL_OFFSET;
+  
   //m_xRowId
   
   // generate logarithemic levels for this entry
