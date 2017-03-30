@@ -62,15 +62,15 @@ namespace Debugging
   /* 42 */ EC_RESPONSE_PENDING,
   /* 43 */ EC_SCHEMA_EXISTS,
   /* 44 */ EC_SE_NOT_RUNNING,
-  /*   */  EC_SE_UNKNOWN_ERROR,
-  /* 45 */ EC_SEND_FAILURE,
+  /* 45 */ EC_SE_UNKNOWN_ERROR,
+  /* 46 */ EC_SEND_FAILURE,
   
-  /* 46 */ EC_TABLE_EXISTS,
-  /* 47 */ EC_TABLE_IN_USE,
-  /* 48 */ EC_TENANT_EXISTS,
+  /* 47 */ EC_TABLE_EXISTS,
+  /* 48 */ EC_TABLE_IN_USE,
+  /* 49 */ EC_TENANT_EXISTS,
   
-  /* 49 */ EC_VERSION_MISMATCH,
-  /* 50 */ EC_ENUMS
+  /* 50 */ EC_VERSION_MISMATCH,
+  /* 51 */ EC_ENUMS
   };
   
   static Str* aEC[]
@@ -131,15 +131,15 @@ namespace Debugging
   
   /* 43 */ "schema exists"_Str,
   /* 44 */ "SE is not running"_Str,
-  /*    */ "SE unknown error"_Str,
-  /* 45 */ "send failure"_Str,
-  /* 46 */ "table exists"_Str,
-  /* 47 */ "table in use"_Str,
-  /* 48 */ "tenant exists"_Str,
+  /* 45 */ "SE unknown error"_Str,
+  /* 46 */ "send failure"_Str,
+  /* 47 */ "table exists"_Str,
+  /* 48 */ "table in use"_Str,
+  /* 49 */ "tenant exists"_Str,
 
-  /* 49 */ "version mismatch"_Str,
-  
-  /* 50 */ "enums"_Str
+  /* 50 */ "version mismatch"_Str,
+
+  /* 51 */ "enums"_Str
   
   };
   
