@@ -3,8 +3,6 @@
 /*============================================================================*/
 #pragma once
 
-#define OLD_ENTRY_MODEL
-
 namespace DBobjects
 {
   /*

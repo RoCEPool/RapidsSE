@@ -208,19 +208,19 @@ i8 EntWsp::nWspUsed(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get entry data                                                             */
+/* get key                                                                    */
 /*----------------------------------------------------------------------------*/
-EntryData* EntWsp::aEntryData(void)
+Key* EntWsp::aKey(void)
 {
-  EntryData* aEntryData = _aEntryData(m_xWsp.aArea());
+  Key* aKey = _aKey(m_xWsp.aArea());
   
-  return aEntryData;
+  return aKey;
 }
 
 /*----------------------------------------------------------------------------*/
 /* get entry data bytes                                                       */
 /*----------------------------------------------------------------------------*/
-i8 EntWsp::nEntryDataSize(void)
+i8 EntWsp::nKeySize(void)
 {
   return m_xWsp.nUsed();
 }

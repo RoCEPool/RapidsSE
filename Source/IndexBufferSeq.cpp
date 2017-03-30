@@ -300,7 +300,12 @@ bool IndexBufferSeq::bInsertEntry(EntWsp& xEntWsp)
   Entry* pNewEntry;
   
   // get the size of the EntWsp
+#ifdef OLD_ENTRY_MODEL
   i8 nBytes = xEntWsp.nSize();
+#else
+  i8 nKeyBytes = xEntWsp.nEntryDataSize();
+  i8 nBytes = Entry::nBytesRequired(1,nKeyBytes);
+#endif
   
   // test sufficient free space
   if (m_xWsp.nFree() < (C_1MB - 5000)) {

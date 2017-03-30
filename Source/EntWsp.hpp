@@ -39,9 +39,9 @@ namespace DBobjects
     Str*  aWspStr(void);
     i8    nWspUsed(void);
   
-    EntryData* aEntryData(void);
-    i8         nEntryDataSize(void);
-  
+    Key* aKey(void);
+    i8   nKeySize(void);
+
     Footer* pFooter(void);
   };
 }

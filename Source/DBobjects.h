@@ -17,6 +17,8 @@ using namespace DBobjects;
 
 //------------------------------------------------------------------------------
 
+#define OLD_ENTRY_MODEL
+
 #include "Row.hpp"
 #include "RowBuffer.hpp"
 #include "RowStrand.hpp"
