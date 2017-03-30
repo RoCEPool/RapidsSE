@@ -255,7 +255,7 @@ void Entry::vSetEntry(EntWsp& xEntWsp)
 #else
   
   // copy levels
-  
+  RightVec* aRightVec = this->aRightVec();
   
   // copy key
   Str* aSrc = xEntWsp.aWspStr();

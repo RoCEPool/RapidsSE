@@ -44,6 +44,9 @@ namespace DBobjects
   
     Key* aKey(void);
     i8   nKeySize(void);
+
+    RightVec* aRightVec(void);
+
   
   i8   nEntryBytesRequired(void);
 
