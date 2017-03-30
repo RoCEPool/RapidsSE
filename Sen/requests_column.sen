@@ -9,8 +9,12 @@
 /*----------------------------------------------------------------------------*/
 : add_column ( "<columnTy>" "<columnNm>" "<tableNm>" -- <R> )
 
+  locals| tableNm columnNm |
+
+  columnNm tableNm
   checkAddColumn not if <NIP+ERROR> exit then
 
+  columnNm tableNm
   addColumn ( ) assert.stack_0
 
   <OK>

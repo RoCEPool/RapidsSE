@@ -198,7 +198,7 @@ eEC RapidsSE_CreateTable(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable
     
     // get pTable
     eEC eGetResult = eExecuteRequest(pSEitf, "gettbl"_Str, (Str*)pTable);
-    vTrace("%s\n"_Str, aEC[eGetResult]);
+
     if (EC_NONE != eGetResult) {
       
       // remove the table

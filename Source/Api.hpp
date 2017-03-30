@@ -183,7 +183,6 @@ eEC eGetResponse(SEitf* pSEitf);
 #define CHECK_RESPONSE(aMarker) \
  { \
    eResult = eGetResponse(pSEitf); \
-vTrace("%s\n"_Str, aEC[eResult]); \
     if (EC_NONE != eResult) { \
       TRACE_ERROR(aMarker,eResult); \
       return eResult; \

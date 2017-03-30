@@ -41,7 +41,7 @@
     :constant
 ;
 
-: checkAddColumn ( -- true | eEC false )
+: checkAddColumn ( "<columnName>" "<tableNm>" -- true | eEC false )
 
   locals| tableNm columnNm |
 
@@ -54,15 +54,12 @@
   pushColumns assert // not if false exit then
 
   // column should not already exist
-  find
+  findInCurrent
   if EC_DUPLICATE_COLUMN false popColumns popTable exit then
 
   popColumns
 
   popTableSub
-
-  columnNm
-  tableNm
 
   true
 ;
