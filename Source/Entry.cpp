@@ -253,14 +253,19 @@ void Entry::vSetEntry(EntWsp& xEntWsp)
   EntryData* aEntryData = this->aEntryData();
   aEntryData->vCopyBytes(aSrc,nWspBytes);
 #else
-  
   // copy levels
-  RightVec* aRightVec = this->aRightVec();
+  RightVec* aEntryRightVec = this->aRightVec();
+  RightVec* aEntWspRightVec = xEntWsp.aRightVec();
+  i8 nRightBytes = xEntWsp.nRightSize();
+  
+  MemLib::vCopy(aEntryRightVec,aEntWspRightVec,nRightBytes);
   
   // copy key
-  Str* aSrc = xEntWsp.aWspStr();
-  EntryData* aEntryData = this->aEntryData();
-  aEntryData->vCopyBytes(aSrc,nWspBytes);
+  Key* aEntryKey = this->aKey();
+  Key* aEntWspKey = EntWsp.aKey();
+  i8 nKeyBytes = xEntWsp.nKeySize();
+  
+  MemLib::vCopy(aEntryKey,aEntWspKey,nKeyBytes);
 #endif
 }
 
