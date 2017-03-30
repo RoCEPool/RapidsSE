@@ -41,13 +41,13 @@ EntWsp::EntWsp(void)
   //m_xRowId
   
   // generate logarithemic levels for this entry
-  m_nLevels = Random::uLogLevel(IndexBufferSeq::C_FLAT_LEVELS, 2) + 1;
+  m_nLevels = Random::uLogLevel(C_FLAT_LEVELS, 2) + 1;
   
   if (m_nLevels >= 1)
     int i = 1;
   
   // allocate space for the level offsets and initialize with C_NIL
-  i8 iLevelOffset = IndexBufferSeq::C_NIL;
+  i8 iLevelOffset = C_NIL_OFFSET;
   for (i8 iIndex=0; iIndex < m_nLevels - 1; iIndex++)
     m_xWsp.vAppend(&iLevelOffset,sizeof(i8));
   

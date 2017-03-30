@@ -11,11 +11,16 @@
 namespace DBobjects
 {
   void vCheckAssumptions(void);
+
+  static const i8 C_FLAT_LEVELS = 3;
+  static const i8 C_FLAT_FREQ = 2;
+  static const i8 C_NIL_OFFSET = 0xFFFFFFFFFFFFFFFF;
 }
 
 using namespace DBobjects;
 
 //------------------------------------------------------------------------------
+
 
 #include "Row.hpp"
 #include "RowBuffer.hpp"

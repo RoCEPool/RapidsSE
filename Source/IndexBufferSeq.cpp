@@ -57,7 +57,7 @@ IndexBufferSeq::IndexBufferSeq(void)
   m_pNextBuffer = nullptr;
   
   for (i8 iIndex=0; iIndex < C_FLAT_LEVELS; iIndex++)
-    m_nSkipHead[iIndex] = C_NIL;
+    m_nSkipHead[iIndex] = C_NIL_OFFSET;
   
   m_xWsp.vZero();
   
