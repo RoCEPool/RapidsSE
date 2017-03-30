@@ -40,6 +40,7 @@ namespace DBobjects
     u8     uRight(u8 iLevel);
     void   vRight(u8 iLevel, u8 uRight);
     Entry* aRightEntry(i8 iLevel);
+    RightVec* aRightVec(void);
     RowId& xRowId(void);
     void   vSetEntry(EntWsp& xEntWsp);
     i8     nSize(void);

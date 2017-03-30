@@ -206,6 +206,18 @@ Entry* Entry::aRightEntry(i8 iLevel)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get RightVec                                                               */
+/*----------------------------------------------------------------------------*/
+RightVec* Entry::aRightVec(void)
+{
+  //_precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
+  
+  RightVec* aRightVec = pAdd<RightVec*>(this,sizeof(Entry));
+  
+  return aRightVec;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get row id                                                                 */
 /*----------------------------------------------------------------------------*/
 RowId& Entry::xRowId(void)
@@ -226,8 +238,8 @@ void Entry::vSetEntry(EntWsp& xEntWsp)
   //_precondition_(_MAGIC_,CN_ENTRY);
 
   // set Bytes
-  i8 nBytes = xEntWsp.nWspUsed();
-  m_nBytes = sizeof(Entry) + nBytes + sizeof(Footer);
+  i8 nWspBytes = xEntWsp.nWspUsed();
+  m_nBytes = sizeof(Entry) + nWspBytes + sizeof(Footer);
 
   // set RowId
   m_xRowId  = xEntWsp.xRowId();
@@ -235,10 +247,21 @@ void Entry::vSetEntry(EntWsp& xEntWsp)
   // set Levels
   m_nLevels = xEntWsp.nLevels();
 
+#ifdef OLD_ENTWSP
   // copy entry data
   Str* aSrc = xEntWsp.aWspStr();
   EntryData* aEntryData = this->aEntryData();
-  aEntryData->vCopyBytes(aSrc,nBytes);
+  aEntryData->vCopyBytes(aSrc,nWspBytes);
+#else
+  
+  // copy levels
+  
+  
+  // copy key
+  Str* aSrc = xEntWsp.aWspStr();
+  EntryData* aEntryData = this->aEntryData();
+  aEntryData->vCopyBytes(aSrc,nWspBytes);
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
