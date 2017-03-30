@@ -562,13 +562,14 @@ void Task::vAddConstants(void)
   /* 42 */ vAddConstant("EC_RESPONSE_PENDING"_Str,   EC_RESPONSE_PENDING);
   /* 43 */ vAddConstant("EC_SCHEMA_EXISTS"_Str,      EC_SCHEMA_EXISTS);
   /* 44 */ vAddConstant("EC_SE_NOT_RUNNING"_Str,     EC_SE_NOT_RUNNING);
-  /* 45 */ vAddConstant("EC_SEND_FAILURE"_Str,       EC_SEND_FAILURE);
+  /* 45 */ vAddConstant("EC_SE_UNKNOWN_ERROR"_Str,   EC_SE_UNKNOWN_ERROR);
+  /* 46 */ vAddConstant("EC_SEND_FAILURE"_Str,       EC_SEND_FAILURE);
   
-  /* 46 */ vAddConstant("EC_TABLE_EXISTS"_Str,       EC_TABLE_EXISTS);
-  /* 47 */ vAddConstant("EC_TABLE_IN_USE"_Str,       EC_TABLE_IN_USE);
-  /* 48 */ vAddConstant("EC_TENANT_EXISTS"_Str,      EC_TENANT_EXISTS);
-  /* 49 */ vAddConstant("EC_VERSION_MISMATCH"_Str,   EC_VERSION_MISMATCH);
-  /* 50 */ vAddConstant("EC_ENUMS"_Str,              EC_ENUMS);
+  /* 47 */ vAddConstant("EC_TABLE_EXISTS"_Str,       EC_TABLE_EXISTS);
+  /* 48 */ vAddConstant("EC_TABLE_IN_USE"_Str,       EC_TABLE_IN_USE);
+  /* 49 */ vAddConstant("EC_TENANT_EXISTS"_Str,      EC_TENANT_EXISTS);
+  /* 50 */ vAddConstant("EC_VERSION_MISMATCH"_Str,   EC_VERSION_MISMATCH);
+  /* 51 */ vAddConstant("EC_ENUMS"_Str,              EC_ENUMS);
 
   // TK_ : token types
   /*  0 */ vAddConstant("TK_NONE"_Str,    TK_NONE);
