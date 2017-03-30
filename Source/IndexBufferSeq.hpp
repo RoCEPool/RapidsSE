@@ -31,7 +31,6 @@ namespace DBobjects
     void  vCopyBuffer(IndexBufferSeq* pFromBuffer);
     i8    nEntries(void);
     void  vEntryCount(void);
-    void  vInsertEntry(EntWsp& xEntWsp);
     bool  bInsertEntry(EntWsp& xEntWsp);
     IndexBufferSeq* pFindBuffer(EntWsp& xEntWsp);
     void  vShow(void);
