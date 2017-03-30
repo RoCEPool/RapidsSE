@@ -233,8 +233,7 @@ bool IndexBufferSeq::bInsertEntry(EntWsp& xEntWsp)
   Entry* pNewEntry;
   
   // get the size of the EntWsp
-  i8 nKeyBytes = xEntWsp.nKeySize();
-  i8 nBytes = Entry::nBytesRequired(1,nKeyBytes);
+  i8 nBytes = xEntWsp.nEntryBytesRequired();
   
   // test sufficient free space
   if (m_xWsp.nFree() < (C_1MB - 5000)) {

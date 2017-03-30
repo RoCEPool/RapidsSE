@@ -41,6 +41,8 @@ namespace DBobjects
   
     Key* aKey(void);
     i8   nKeySize(void);
+  
+  i8   nEntryBytesRequired(void);
 
     Footer* pFooter(void);
   };
