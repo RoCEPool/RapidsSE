@@ -965,7 +965,7 @@ void Task::vAddRoutines(void)
   sDefinition =
   ": include-string"
   "  input.push"
-//  "  dup ."
+  //"  dup ."
   "  input.text"
   "  docol"
   "  input.pop"
@@ -1112,14 +1112,14 @@ void Task::vCompileConstant(StrVal& sDefinition)
   Word*    pNewWord;
   TaskStep pStep;
   Word*    pCalledWord;
-  ValWsp   xValWsp;
+  s48K     sConstantValue;
   
   m_pTokeniser->vUseString(sDefinition);
   
   // get string
   m_pTokeniser->vNextToken();
   //vTrace("CompileConstant: %s\n"_Str,m_pTokeniser->sToken().s());
-  xValWsp = m_pTokeniser->sToken();
+  sConstantValue = (Str*)m_pTokeniser->sToken().s();
   
   // get CONSTANT
   m_pTokeniser->vNextToken();
@@ -1130,7 +1130,10 @@ void Task::vCompileConstant(StrVal& sDefinition)
   //vTrace("CompileConstant: %s\n"_Str,m_pTokeniser->sToken().s());
 
   Str* aName = (Str*)m_pTokeniser->sToken().s();
-  vAddConstant(aName,(Str*)xValWsp.aWspArea());
+
+  //vTrace("CompileConstant: %s %s\n"_Str,aName,sConstantValue.s());
+  
+  vAddConstant(aName,(Str*)sConstantValue.s());
   
   m_pTokeniser->vNextToken();
   
