@@ -57,6 +57,7 @@ namespace Pool
     FreeBuffer* pToFreeBuffer(bn nBuffer);
     FreeBuffer* pToFreeBuffer(Buffer* pBuffer);
     bool bValidAddress(const void* aAddress);
+    void vVerifyBoundaries(void);
     void vVerifyPool(void);
     
     Footer* pFooter(void);

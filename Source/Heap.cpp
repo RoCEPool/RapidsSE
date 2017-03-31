@@ -108,6 +108,8 @@ Object* Heap::pAllocate(eCN eAllocClass)
   
   Object* pObject;
   
+  gpBufferPool->vVerifyBoundaries();
+  
   switch(eHeap) {
     case HT_INVALID:
       vFatal("Heap::pAllocate: Invalid heap allocation: class %lld %lls\n"_Str,
@@ -134,6 +136,8 @@ Object* Heap::pAllocate(eCN eAllocClass)
              eHeap);
       
   }
+  
+  gpBufferPool->vVerifyBoundaries();
   
   return nullptr;
 }

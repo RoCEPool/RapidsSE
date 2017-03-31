@@ -182,6 +182,9 @@ i8 BufferPool::iBufferSize(void)
 /*----------------------------------------------------------------------------*/
 void BufferPool::vCheckAddress(const void* aAddress)
 {
+  ASSERT(m_pBase);
+  ASSERT(m_pLimit);
+  
   if (aAddress < m_pBase) {
     vTrace("aAddress(%p) < m_pBase(%p) \n"_Str, aAddress, m_pBase);
   }
@@ -464,6 +467,15 @@ bool BufferPool::bValidAddress(const void* aAddress)
     return true;
   else
     return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* assert buffer pool is valid                                                */
+/*----------------------------------------------------------------------------*/
+void BufferPool::vVerifyBoundaries(void)
+{
+  ASSERT(m_pLimit);
+  ASSERT(m_pBase);
 }
 
 /*----------------------------------------------------------------------------*/
