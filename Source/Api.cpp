@@ -134,7 +134,7 @@ eEC RapidsSE_CheckLibraryVersion(Str* pVersion, i8 iTraceLevel)
   Str* aApiCall = "RapidsSE_CheckLibraryVersion"_Str;
   
   try {
-    TRACE_ENTRY_P1(pVersion);
+    //TRACE_ENTRY_P1(pVersion);
     
     // clear the last error
     //CLEAR_LASTERROR();
@@ -970,7 +970,7 @@ eEC RapidsSE_PoolOpen(Str* pInstanceName, void** ppInstance, i8 iTraceLevel)
   
   try {
     // trace entry
-    TRACE_ENTRY_P1(pInstanceName);
+    //TRACE_ENTRY_P1(pInstanceName);
     
     // open the pool
     s256 sPoolName;
@@ -982,6 +982,8 @@ eEC RapidsSE_PoolOpen(Str* pInstanceName, void** ppInstance, i8 iTraceLevel)
       TRACE_ERROR("a"_Str, EC_INVALID_INSTANCE);
       return EC_INVALID_INSTANCE;
     }
+    
+    gpBufferPool->vVerifyBoundaries();
     
     *ppInstance = gpAttachMap;
     
