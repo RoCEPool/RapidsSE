@@ -137,7 +137,7 @@ eEC RapidsSE_CheckLibraryVersion(Str* pVersion, i8 iTraceLevel)
     TRACE_ENTRY_P1(pVersion);
     
     // clear the last error
-    CLEAR_LASTERROR();
+    //CLEAR_LASTERROR();
     
     // validate the parameter
     VALIDATE_PARAM("a"_Str, pVersion);
