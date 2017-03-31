@@ -108,6 +108,7 @@ eEC eGetResponse(SEitf* pSEitf);
     if ( (iTraceLevel & TL_ERROR) == TL_ERROR) \
       vTrace(">%s(%s): %p(%lld)\n"_Str,  \
         aApiCall, aMarker, pSEitf, pSEitf ? pSEitf->iPartition() : -1); \
+    gpBufferPool->vVerifyBoundaries(); \
   }
 
 /*----------------------------------------------------------------------------*/

@@ -151,7 +151,7 @@ eEC RapidsSE_CheckLibraryVersion(Str* pVersion, i8 iTraceLevel)
       return EC_VERSION_MISMATCH;
     }
     
-    TRACE_EXIT("ea"_Str);
+    //TRACE_EXIT("ea"_Str);
     
     return EC_NONE;
   }
