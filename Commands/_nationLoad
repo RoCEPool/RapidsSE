@@ -14,7 +14,7 @@ create schema tpchSchema;
 cf tpchSchema
 cf tables
 
-create table nation (
+create table nation2 (
 	 N_NATIONKEY       INTEGER NOT NULL,
 	 N_NAME            CHAR(25) NOT NULL,
 	 N_REGIONKEY       INTEGER NOT NULL,

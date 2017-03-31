@@ -474,6 +474,8 @@ bool BufferPool::bValidAddress(const void* aAddress)
 /*----------------------------------------------------------------------------*/
 void BufferPool::vVerifyBoundaries(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
+  
   ASSERT(m_pLimit);
   ASSERT(m_pBase);
 }
