@@ -42,7 +42,11 @@ void* SEitf::operator new(size_t iSize)
 {
   RASSERT(iSize);
   
+  vTrace("<SEitf new\n"_Str);
+  
   Object* pObject = Heap::pAllocate(CN_SEITF);
+  
+  vTrace(">SEitf new %p\n"_Str, pObject);
   
   return pObject;
 }
@@ -63,7 +67,11 @@ void SEitf::operator delete(void* pSEinterfaceAddress)
 SEitf::SEitf(i8 iPartition)
 : Object(CN_SEITF)
 {
+  vTrace("<SEitf::SEitf %p\n"_Str, this);
+  
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  vTrace("SEitf::_precondition_ %p\n"_Str, this);
   
   // pid
   m_iPid = Process::iGetPid();
@@ -89,10 +97,15 @@ SEitf::SEitf(i8 iPartition)
   
   for (i8 iPartition = 0; iPartition < C_SLOTS_PER_NODE; iPartition++)
     m_pRowBuffer[iPartition] = nullptr;
-
+  
   _checkInitialised_(CN_SEITF);
   
+  vTrace("SEitf::_checkInitialised_ %p\n"_Str, this);
+  
   _postcondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  vTrace(">SEitf::SEitf %p\n"_Str, this);
+  
 }
 
 /*----------------------------------------------------------------------------*/

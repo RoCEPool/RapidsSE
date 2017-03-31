@@ -328,14 +328,12 @@ void RapidsSE::vRunDocol(void)
 /*----------------------------------------------------------------------------*/
 void RapidsSE::vSignalHandler(int iSignal)
 {
-
   // print out all the frames to stderr
   vTrace("Error: signal %d:\n"_Str, iSignal);
 
   vStackDump();
   exit(1);
 }
-
 
 /*----------------------------------------------------------------------------*/
 /* error handler                                                              */
