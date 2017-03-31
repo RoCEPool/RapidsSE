@@ -108,7 +108,7 @@ Object* Heap::pAllocate(eCN eAllocClass)
   
   Object* pObject;
   
-  gpBufferPool->vVerifyBoundaries();
+  gpBufferPool->vVerifyBoundaries(false);
   
   switch(eHeap) {
     case HT_INVALID:
@@ -137,7 +137,7 @@ Object* Heap::pAllocate(eCN eAllocClass)
       
   }
   
-  gpBufferPool->vVerifyBoundaries();
+  gpBufferPool->vVerifyBoundaries(false);
   
   return nullptr;
 }

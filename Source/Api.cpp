@@ -983,7 +983,7 @@ eEC RapidsSE_PoolOpen(Str* pInstanceName, void** ppInstance, i8 iTraceLevel)
       return EC_INVALID_INSTANCE;
     }
     
-    gpBufferPool->vVerifyBoundaries();
+    gpBufferPool->vVerifyBoundaries(true);
     
     *ppInstance = gpAttachMap;
     

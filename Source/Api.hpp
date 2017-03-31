@@ -53,7 +53,7 @@ eEC eGetResponse(SEitf* pSEitf);
     if ( (iTraceLevel & TL_ERROR) == TL_ERROR) \
       vTrace("<%s: %p(%lld)\n"_Str,  \
         aApiCall, pSEitf, pSEitf ? pSEitf->iPartition() : -1); \
-    gpBufferPool->vVerifyBoundaries(); \
+    gpBufferPool->vVerifyBoundaries(true); \
   }
 
 /*----------------------------------------------------------------------------*/
@@ -64,7 +64,7 @@ eEC eGetResponse(SEitf* pSEitf);
     if ( (iTraceLevel & TL_ERROR) == TL_ERROR) \
       vTrace("<%s: %p(%lld) %s\n"_Str,  \
         aApiCall, pSEitf, pSEitf ? pSEitf->iPartition() : -1, p1); \
-    gpBufferPool->vVerifyBoundaries(); \
+    gpBufferPool->vVerifyBoundaries(true); \
   }
 
 /*----------------------------------------------------------------------------*/
@@ -75,7 +75,7 @@ eEC eGetResponse(SEitf* pSEitf);
   if ( (iTraceLevel & TL_ERROR) == TL_ERROR) \
     vTrace("<%s: %p(%lld) %s %s\n"_Str,  \
       aApiCall, pSEitf, pSEitf ? pSEitf->iPartition() : -1, p1, p2); \
-  gpBufferPool->vVerifyBoundaries(); \
+  gpBufferPool->vVerifyBoundaries(true); \
 }
 
 /*----------------------------------------------------------------------------*/
@@ -86,7 +86,7 @@ eEC eGetResponse(SEitf* pSEitf);
   if ( (iTraceLevel & TL_ERROR) == TL_ERROR) \
     vTrace("<%s: %p(%lld) %s %s %s\n"_Str,  \
       aApiCall, pSEitf, pSEitf ? pSEitf->iPartition() : -1, p1, p2, p3); \
-  gpBufferPool->vVerifyBoundaries(); \
+  gpBufferPool->vVerifyBoundaries(true); \
 }
 
 
@@ -108,7 +108,7 @@ eEC eGetResponse(SEitf* pSEitf);
     if ( (iTraceLevel & TL_ERROR) == TL_ERROR) \
       vTrace(">%s(%s): %p(%lld)\n"_Str,  \
         aApiCall, aMarker, pSEitf, pSEitf ? pSEitf->iPartition() : -1); \
-    gpBufferPool->vVerifyBoundaries(); \
+    gpBufferPool->vVerifyBoundaries(true); \
   }
 
 /*----------------------------------------------------------------------------*/
