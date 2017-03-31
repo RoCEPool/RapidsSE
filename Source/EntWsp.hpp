@@ -8,15 +8,18 @@ namespace DBobjects
   class EntWsp : public Object
   {
   private:
-    i8               m_nBytes;
-    RowId            m_xRowId;   // row id
-    i8               m_nLevels;
-    u8               m_uRight[C_FLAT_LEVELS];
+    i8     m_nBytes;
+    RowId  m_xRowId;   // row id
+    i8     m_nLevels;
+    union {
+      u8       m_uRight[C_FLAT_LEVELS];
+      RightVec m_xRight;
+    };
     union {
       WspFxd<C_1KB*15> m_xWsp;     // workspace
       Key              m_xKey;
     };
-    Footer           m_xFooter;  // footer
+    Footer m_xFooter;  // footer
   
   public:
     void* operator new(size_t);
