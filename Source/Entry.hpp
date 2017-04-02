@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Entry.hpp -- index entry                                                   */
+/* Entry.hpp -- index entry (skip list variant)                               */
 /*============================================================================*/
 #pragma once
 
@@ -34,13 +34,13 @@ namespace DBobjects
     Entry(i8 nBytes, i8 nLevels);
     ~Entry(void);
     
-    void   vContentDump(void);
+    void   vShow(void);
+  
     EntryData* aEntryData(void);
     Key*   aKey(void);
     u8     nLevels(void);
     u8     uRight(u8 iLevel);
     void   vRight(u8 iLevel, u8 uRight);
-    Entry* aRightEntry(i8 iLevel);
     RightVec* aRightVec(void);
     RowId& xRowId(void);
     void   vSetEntry(EntWspSeq& xEntWspSeq);

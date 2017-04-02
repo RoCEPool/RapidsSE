@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Entry.cpp -- index entry                                                   */
+/* Entry.cpp -- index entry (skip list variant)                               */
 /*============================================================================*/
 
 #include "DBobjects.h"
@@ -72,12 +72,20 @@ void* Entry::operator new(size_t iSize, Entry* aEntry)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Entry::Entry(i8 nBytes, i8 nLevels)
+Entry::Entry(i8 nBytes, i8 nLevels)                   //! should we pass EntWsp?
 {
   //_precondition_(_MAGIC_,CN_ENTRY);
   
+  // initialise bytes
   m_nBytes  = nBytes;
+  
+  // check initialisation of rowid
+  ASSERT(0 == m_xRowId.uBuffer() && 0 == m_xRowId.uRow());
+  
+  // initialise levels
   m_nLevels = nLevels;
+  
+  // entry data will be initialised by vSetEntry       //! Is this correct form?
   
   _setFooter_();
   
@@ -95,13 +103,9 @@ Entry::~Entry(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- Public ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
 /* show content                                                               */
 /*----------------------------------------------------------------------------*/
-void Entry::vContentDump(void)
+void Entry::vShow(void)
 {
   //_precondition_(_MAGIC_,CN_ENTRY);
   
@@ -132,6 +136,10 @@ void Entry::vContentDump(void)
   
   //m_xRowId.pRow()->vContentDump();
 }
+
+/*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* get entry data                                                             */
@@ -170,7 +178,7 @@ u8 Entry::nLevels(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get next entry offset at level                                             */
+/* get right offset for given level                                           */
 /*----------------------------------------------------------------------------*/
 u8 Entry::uRight(u8 iLevel)
 {
@@ -185,7 +193,7 @@ u8 Entry::uRight(u8 iLevel)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set next entry offset at level                                             */
+/* set right offset for given level                                           */
 /*----------------------------------------------------------------------------*/
 void Entry::vRight(u8 iLevel, u8 uRight)
 {
@@ -197,28 +205,7 @@ void Entry::vRight(u8 iLevel, u8 uRight)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get a right entry of this entry occurence                                  */
-/*----------------------------------------------------------------------------*/
-Entry* Entry::aRightEntry(i8 iLevel)
-{
-  //_precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
-  
-  /*
-   
-   we can't call with iLevel=0, because the caller should have used
-   IndexBuffer::aEntryNext()
-   
-   */
-  
-  ASSERT(iLevel > 0 && iLevel < IndexBuffer::C_FLAT_LEVELS);
-  
-  // i8 iLevelSub = iLevel - 1;
-  
-  return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get RightVec                                                               */
+/* get the entire RightVec for this Entry                                     */
 /*----------------------------------------------------------------------------*/
 RightVec* Entry::aRightVec(void)
 {
@@ -230,7 +217,7 @@ RightVec* Entry::aRightVec(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get row id                                                                 */
+/* get rowid                                                                  */
 /*----------------------------------------------------------------------------*/
 RowId& Entry::xRowId(void)
 {
