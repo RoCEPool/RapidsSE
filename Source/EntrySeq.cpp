@@ -250,12 +250,7 @@ void EntrySeq::vSetEntry(EntWspSeq& xEntWspSeq)
   //_precondition_(_MAGIC_,CN_ENTRY);
 
   // set Bytes
-#ifdef OLD_ENTWSP
-  i8 nWspBytes = xEntWsp.nWspUsed();
-  m_nBytes = sizeof(EntrySeq) + nWspBytes + sizeof(Footer);
-#else
   m_nBytes = xEntWspSeq.nEntryBytesRequired();
-#endif
   
   // set RowId
   m_xRowId  = xEntWspSeq.xRowId();
