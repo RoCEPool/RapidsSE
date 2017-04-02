@@ -173,7 +173,7 @@ void IndexBufferSeq::vEntryCount(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
   m_nEntries = 0;
-  for (Entry* pEntry = pFirstEntry(); pEntry; pEntry = pNextEntry(pEntry))
+  for (EntrySeq* pEntry = pFirstEntry(); pEntry; pEntry = pNextEntry(pEntry))
     m_nEntries++;
   
   _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_,CN_INDEXBUFFER);
@@ -186,7 +186,7 @@ IndexBufferSeq* IndexBufferSeq::pFindBuffer(EntWspSeq& xEntWspSeq)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
-  Entry* pNewEntry;
+  EntrySeq* pNewEntry;
   
   // get the size of the EntWsp
   i8 nBytes = xEntWspSeq.nSize();
@@ -200,7 +200,7 @@ IndexBufferSeq* IndexBufferSeq::pFindBuffer(EntWspSeq& xEntWspSeq)
   while (pIndexBufferSeq) {
     
     // find the position for the new entry in the index buffer
-    Entry* pEntry = pIndexBufferSeq->pFirstEntry();
+    EntrySeq* pEntry = pIndexBufferSeq->pFirstEntry();
     
     while (pEntry) {
       
@@ -230,7 +230,7 @@ bool IndexBufferSeq::bInsertEntry(EntWspSeq& xEntWspSeq)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
-  Entry* pNewEntry;
+  EntrySeq* pNewEntry;
   
   // get the size of the EntWsp
   i8 nBytes = xEntWspSeq.nEntryBytesRequired();
@@ -254,7 +254,7 @@ bool IndexBufferSeq::bInsertEntry(EntWspSeq& xEntWspSeq)
   Key* pNewKey = xEntWspSeq.aKey();
   
   // find the position for the new entry in the index buffer
-  Entry* pEntry = pFirstEntry();
+  EntrySeq* pEntry = pFirstEntry();
   
   while (pEntry) {
     
@@ -280,8 +280,8 @@ bool IndexBufferSeq::bInsertEntry(EntWspSeq& xEntWspSeq)
     pEntry = pNextEntry(pEntry);
   }
   
-  // map the pDst to an Entry
-  pNewEntry = reinterpret_cast<Entry*>(pDst);
+  // map the pDst to an EntrySeq
+  pNewEntry = reinterpret_cast<EntrySeq*>(pDst);
   
   // copy EntWsp into Index buffer pNewEntry
   pNewEntry->vSetEntry(xEntWspSeq);
@@ -332,7 +332,7 @@ void IndexBufferSeq::vSplitBuffer(void)
   i8 iSplitAtEntry = m_nEntries/2;
   
   // find the position for the new entry in the index buffer
-  Entry* pEntry = pFirstEntry();
+  EntrySeq* pEntry = pFirstEntry();
   
   i8 iEntries = 0;
   while (pEntry) {
@@ -383,11 +383,11 @@ void IndexBufferSeq::vSplitBuffer(void)
 /*----------------------------------------------------------------------------*/
 void IndexBufferSeq::vVerify(void)
 {
-  Entry* pEntryA = pFirstEntry();
+  EntrySeq* pEntryA = pFirstEntry();
   if ( ! pEntryA )
     return;
 
-  Entry* pEntryB = pNextEntry(pEntryA);
+  EntrySeq* pEntryB = pNextEntry(pEntryA);
   if ( ! pEntryB )
     return;
   
@@ -409,11 +409,11 @@ void IndexBufferSeq::vVerify(void)
 /*----------------------------------------------------------------------------*/
 /* first entry                                                                */
 /*----------------------------------------------------------------------------*/
-Entry* IndexBufferSeq::pFirstEntry(void)
+EntrySeq* IndexBufferSeq::pFirstEntry(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
-  Entry* pFirst = reinterpret_cast<Entry*>(m_xWsp.aArea());
+  EntrySeq* pFirst = reinterpret_cast<EntrySeq*>(m_xWsp.aArea());
   
   if ((char*)pFirst < m_xWsp.aLatter())
     return pFirst;
@@ -424,11 +424,11 @@ Entry* IndexBufferSeq::pFirstEntry(void)
 /*----------------------------------------------------------------------------*/
 /* next entry                                                                 */
 /*----------------------------------------------------------------------------*/
-Entry* IndexBufferSeq::pNextEntry(Entry* pCurr)
+EntrySeq* IndexBufferSeq::pNextEntry(EntrySeq* pCurr)
 {
   i8 iSize = pCurr->nSize();
   
-  Entry* pNext = pAdd<Entry*>(pCurr,iSize);
+  EntrySeq* pNext = pAdd<EntrySeq*>(pCurr,iSize);
   
   if ((char*)pNext < m_xWsp.aLatter())
     return pNext;

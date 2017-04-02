@@ -113,7 +113,7 @@ void Index::vDump(void)
   while (pIndexBufferSeq) {
     pIndexBufferSeq->vShow();
     
-    Entry* pEntry = pIndexBufferSeq->pFirstEntry();
+    EntrySeq* pEntry = pIndexBufferSeq->pFirstEntry();
     
     while (pEntry) {
       pEntry->vContentDump();

@@ -37,8 +37,8 @@ namespace DBobjects
     void  vSplitBuffer(void);
     void  vVerify(void);
   
-    Entry* pFirstEntry();
-    Entry* pNextEntry(Entry* pCurr);
+    EntrySeq* pFirstEntry();
+    EntrySeq* pNextEntry(EntrySeq* pCurr);
     
     IndexBufferSeq* pNextBuffer(void);
     void         vNextBuffer(IndexBufferSeq* pNextBuffer);
