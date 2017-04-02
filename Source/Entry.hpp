@@ -16,13 +16,15 @@ namespace DBobjects
    
    */
   
-  class Entry //: public Object
+  class Entry : public Object
   {
   private:
     i8     m_nBytes;  // overall size of this entry
     RowId  m_xRowId;  // rowid
     u8     m_nLevels; // no of levels
     // ..data..       // rights & key
+  
+    // ..footer..
   
   public:
     static i8 nBytesRequired(EntWsp& xEntWsp);

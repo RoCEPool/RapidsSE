@@ -73,6 +73,7 @@ void* Entry::operator new(size_t iSize, Entry* aEntry)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Entry::Entry(i8 nBytes, i8 nLevels)                   //! should we pass EntWsp?
+: Object(CN_ENTRY)
 {
   //_precondition_(_MAGIC_,CN_ENTRY);
   
@@ -142,7 +143,7 @@ void Entry::vShow(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get entry data                                                             */
+/* get EntryData                                                              */
 /*----------------------------------------------------------------------------*/
 EntryData* Entry::aEntryData(void)
 {
@@ -183,6 +184,7 @@ u8 Entry::nLevels(void)
 u8 Entry::uRight(u8 iLevel)
 {
   EntryData* aEntryData = this->aEntryData();
+  
   RightVec* aRightVec = aEntryData->aRightVec(m_nLevels);
 
   u8 uRight = 0;
@@ -197,15 +199,15 @@ u8 Entry::uRight(u8 iLevel)
 /*----------------------------------------------------------------------------*/
 void Entry::vRight(u8 iLevel, u8 uRight)
 {
-
   EntryData* aEntryData = this->aEntryData();
+  
   RightVec* aRightVec = aEntryData->aRightVec(m_nLevels);
 
   aRightVec->vRight(iLevel,uRight);
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the entire RightVec for this Entry                                     */
+/* get the RightVec for this Entry                                            */
 /*----------------------------------------------------------------------------*/
 RightVec* Entry::aRightVec(void)
 {
