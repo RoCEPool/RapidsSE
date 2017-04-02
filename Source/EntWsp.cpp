@@ -36,16 +36,19 @@ EntWsp::EntWsp(void)
 {
   _precondition_(_MAGIC_,CN_ENTWSP);
 
-  m_nBytes = 0;
-  
-  //m_xRowId
+  // check initialisation of rowid
+  ASSERT(0 == m_xRowId.uBuffer() && 0 == m_xRowId.uRow());
   
   // generate logarithmic level for this entry
   m_nLevels = Random::uLogLevel(C_FLAT_LEVELS, 2) + 1;
   ASSERT(m_nLevels >= 1 && m_nLevels <= C_FLAT_LEVELS);
 
+  // set all right offsets to nil
   for (i8 iLevel = 0; iLevel < C_FLAT_LEVELS; iLevel++)
     m_uRight[iLevel] = C_NIL_OFFSET;
+  
+  // the key wsp will have initialised by its constructor
+  // m_xKeyWsp
   
   _checkInitialisedSize_(sizeof(EntWsp));
   
@@ -72,7 +75,7 @@ void EntWsp::vAddKey(KeyWsp& xKeyWsp)
   Str* aKeySrc = xKeyWsp.aWspStr();
   i8 nKeyBytes = xKeyWsp.nWspUsed();
   
-  m_xWsp.vAppend(aKeySrc,nKeyBytes);
+  m_xKeyWsp.vAppend(aKeySrc,nKeyBytes);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -90,7 +93,7 @@ Key* EntWsp::aKey(void)
 /*----------------------------------------------------------------------------*/
 i8 EntWsp::nKeySize(void)
 {
-  return m_xWsp.nUsed();
+  return m_xKeyWsp.nUsed();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -106,11 +109,7 @@ u8 EntWsp::nLevels(void)
 /*----------------------------------------------------------------------------*/
 u8 EntWsp::nRight(u8 iLevel)
 {
-  i8* nLevels = reinterpret_cast<i8*>(m_xWsp.aArea());
-  
-  ASSERT(m_uRight[iLevel] == nLevels[iLevel]);
-  
-  return nLevels[iLevel];
+  return m_uRight[iLevel];
 }
 
 /*----------------------------------------------------------------------------*/
@@ -143,27 +142,26 @@ void EntWsp::vRowId(RowId& xRowId)
 void EntWsp::vShow(void)
 {
   i8 iKey;
-  //  i8* pKeyData = reinterpret_cast<i8*>(m_mDataArea);
-  //  memcpy(&iKey,m_mDataArea,8);
+
+  ValLib::vCopyIntDatum(&iKey,aKey());
   
-  vTrace("EntWsp %p: Levels: %llu "_Str,
+  vTrace("EntWsp %p: Row %llu.%llu Levels: %llu "_Str,
          this,
+         m_xRowId.uBuffer(),
+         m_xRowId.uRow(),
          m_nLevels
          );
   
-  ValLib::vCopyIntDatum(&iKey,m_xWsp.aArea() + sizeof(i8)*(m_nLevels-1));
-  vTrace("Row %llu.%llu key (size:%lld value:%lld) "_Str,
-         m_xRowId.uBuffer(),
-         m_xRowId.uRow(),
-         m_xWsp.nUsed() - sizeof(i8)*(m_nLevels-1),
-         iKey
-         );
-  
-  for (i8 iIndex=0; iIndex < m_nLevels - 1; iIndex++)
+  for (i8 iIndex = 0; iIndex < m_nLevels - 1; iIndex++)
     vTrace("L%lld: %lld "_Str,
            iIndex + 1,
            nRight(iIndex)
            );
+  
+  vTrace("key (size:%lld value:%lld) "_Str,
+         nKeySize(),
+         iKey
+         );
   
   vTrace("\n"_Str);
 }
