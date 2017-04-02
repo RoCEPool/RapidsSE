@@ -28,31 +28,22 @@ namespace DBobjects
     EntWsp(void);
     ~EntWsp(void);
   
-    void vShow(void);
-  
-    RowId& xRowId(void);
-    void vRowId(RowId& xRowId);
-  
+    void   vAddKey(KeyWsp& xKeyWsp);
+    i8     nEntryBytesRequired(void);
+    Key*   aKey(void);
+    i8     nKeySize(void);
     u8     nLevels(void);
-    
     u8     nRight(u8 iLevel);
     void   vRight(u8 iLevel, u8 uRight);
-    
-    void vAddKey(KeyWsp& xKeyWsp);
-    i8   nSize(void);
-  
-    char* aWspArea(void);
-    Str*  aWspStr(void);
-    i8    nWspUsed(void);
-  
-    Key* aKey(void);
-    i8   nKeySize(void);
-
+    RowId& xRowId(void);
+    void   vRowId(RowId& xRowId);
+    void   vShow(void);
+    i8     nSize(void);
+    char*  aWspArea(void);
+    Str*   aWspStr(void);
+    i8     nWspUsed(void);
     RightVec* aRightVec(void);
     i8        nRightSize(void);
-
-  
-  i8   nEntryBytesRequired(void);
 
     Footer* pFooter(void);
   };
