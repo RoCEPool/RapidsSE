@@ -9,6 +9,18 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* get bytes required for an Entry based on given EntWsp                      */
+/*----------------------------------------------------------------------------*/
+i8 Entry::nBytesRequired(EntWsp& xEntWsp)
+{
+  i8 nLevels = xEntWsp.nLevels();
+  i8 nKeyBytes = xEntWsp.nKeySize();
+  i8 nBytes = Entry::nBytesRequired(nLevels,nKeyBytes);
+  
+  return nBytes;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get total bytes required for entry                                         */
 /*----------------------------------------------------------------------------*/
 i8 Entry::nBytesRequired(i8 nLevels, i8 nKeyBytes)

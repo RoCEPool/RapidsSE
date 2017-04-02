@@ -76,17 +76,6 @@ void EntWsp::vAddKey(KeyWsp& xKeyWsp)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get bytes required for an Entry based on this EntWsp                       */
-/*----------------------------------------------------------------------------*/
-i8 EntWsp::nEntryBytesRequired(void)
-{
-  i8 nKeyBytes = nKeySize();
-  i8 nBytes = Entry::nBytesRequired(m_nLevels,nKeyBytes);
-  
-  return nBytes;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get key                                                                    */
 /*----------------------------------------------------------------------------*/
 Key* EntWsp::aKey(void)

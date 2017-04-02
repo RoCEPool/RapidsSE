@@ -25,6 +25,7 @@ namespace DBobjects
     // ..data..       // rights & key
   
   public:
+    static i8 nBytesRequired(EntWsp& xEntWsp);
     static i8 nBytesRequired(i8 nLevels, i8 nKeyBytes);
   
     void* operator new(size_t);
