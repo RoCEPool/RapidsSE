@@ -5,7 +5,7 @@
 
 namespace DBobjects
 {
-  class EntWsp : public Object
+  class EntWspSeq : public Object
   {
   private:
     i8     m_nBytes;
@@ -23,10 +23,10 @@ namespace DBobjects
   
   public:
     void* operator new(size_t);
-    void* operator new(size_t, EntWsp*);
+    void* operator new(size_t, EntWspSeq*);
     
-    EntWsp(void);
-    ~EntWsp(void);
+    EntWspSeq(void);
+    ~EntWspSeq(void);
   
     void vShow(void);
   

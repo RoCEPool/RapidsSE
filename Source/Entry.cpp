@@ -233,7 +233,7 @@ RowId& Entry::xRowId(void)
 /*----------------------------------------------------------------------------*/
 /* set entry                                                                  */
 /*----------------------------------------------------------------------------*/
-void Entry::vSetEntry(EntWsp& xEntWsp)
+void Entry::vSetEntry(EntWspSeq& xEntWspSeq)
 {
   //_precondition_(_MAGIC_,CN_ENTRY);
 
@@ -242,26 +242,26 @@ void Entry::vSetEntry(EntWsp& xEntWsp)
   i8 nWspBytes = xEntWsp.nWspUsed();
   m_nBytes = sizeof(Entry) + nWspBytes + sizeof(Footer);
 #else
-  m_nBytes = xEntWsp.nEntryBytesRequired();
+  m_nBytes = xEntWspSeq.nEntryBytesRequired();
 #endif
   
   // set RowId
-  m_xRowId  = xEntWsp.xRowId();
+  m_xRowId  = xEntWspSeq.xRowId();
 
   // set Levels
-  m_nLevels = xEntWsp.nLevels();
+  m_nLevels = xEntWspSeq.nLevels();
 
   // copy levels
   RightVec* aEntryRightVec = this->aRightVec();
-  RightVec* aEntWspRightVec = xEntWsp.aRightVec();
-  i8 nRightBytes = xEntWsp.nRightSize();
+  RightVec* aEntWspRightVec = xEntWspSeq.aRightVec();
+  i8 nRightBytes = xEntWspSeq.nRightSize();
   
   MemLib::vCopy(aEntryRightVec,aEntWspRightVec,nRightBytes);
   
   // copy key
   Key* aEntryKey = this->aKey();
-  Key* aEntWspKey = xEntWsp.aKey();
-  i8 nKeyBytes = xEntWsp.nKeySize();
+  Key* aEntWspKey = xEntWspSeq.aKey();
+  i8 nKeyBytes = xEntWspSeq.nKeySize();
   
   MemLib::vCopy(aEntryKey,aEntWspKey,nKeyBytes);
 }

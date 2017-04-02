@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* EntWsp.cpp -- Entry Workspace                                              */
+/* EntWspSeq.cpp -- Entry Workspace (sequential variant)                      */
 /*============================================================================*/
 
 #include "DBobjects.h"
@@ -11,10 +11,10 @@
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* EntWsp::operator new(size_t iSize)
+void* EntWspSeq::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  vFatal("fatal: EntWsp class cannot be new'd\n"_Str);
+  vFatal("fatal: EntWspSeq class cannot be new'd\n"_Str);
   
   RASSERT(0);
 }
@@ -22,16 +22,16 @@ void* EntWsp::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* EntWsp::operator new(size_t iSize, EntWsp* pEntWsp)
+void* EntWspSeq::operator new(size_t iSize, EntWspSeq* pEntWspSeq)
 {
   RASSERT(iSize);
-  return pEntWsp;
+  return pEntWspSeq;
 }
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-EntWsp::EntWsp(void)
+EntWspSeq::EntWspSeq(void)
 : Object(CN_ENTWSP)
 {
   _precondition_(_MAGIC_,CN_ENTWSP);
@@ -46,7 +46,7 @@ EntWsp::EntWsp(void)
   // generate logarithemic levels for this entry
   m_nLevels = Random::uLogLevel(C_FLAT_LEVELS, 2) + 1;
   
-  _checkInitialisedSize_(sizeof(EntWsp));
+  _checkInitialisedSize_(sizeof(EntWspSeq));
   
   _postcondition_(_MAGIC_,CN_ENTWSP,_FOOTER_);
 }
@@ -54,7 +54,7 @@ EntWsp::EntWsp(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-EntWsp::~EntWsp(void)
+EntWspSeq::~EntWspSeq(void)
 {
   _precondition_(_MAGIC_,CN_ENTWSP,_FOOTER_);
 }
@@ -66,7 +66,7 @@ EntWsp::~EntWsp(void)
 /*----------------------------------------------------------------------------*/
 /* show                                                                       */
 /*----------------------------------------------------------------------------*/
-void EntWsp::vShow(void)
+void EntWspSeq::vShow(void)
 {
   i8 iKey;
 //  i8* pKeyData = reinterpret_cast<i8*>(m_mDataArea);
@@ -74,7 +74,7 @@ void EntWsp::vShow(void)
   
   
   
-  vTrace("EntWsp %p: Levels: %llu "_Str,
+  vTrace("EntWspSeq %p: Levels: %llu "_Str,
          this,
          m_nLevels
          );
@@ -99,7 +99,7 @@ void EntWsp::vShow(void)
 /*----------------------------------------------------------------------------*/
 /* get row id                                                                 */
 /*----------------------------------------------------------------------------*/
-RowId& EntWsp::xRowId(void)
+RowId& EntWspSeq::xRowId(void)
 {
   return m_xRowId;
 }
@@ -107,7 +107,7 @@ RowId& EntWsp::xRowId(void)
 /*----------------------------------------------------------------------------*/
 /* set row id                                                                 */
 /*----------------------------------------------------------------------------*/
-void EntWsp::vRowId(RowId& xRowId)
+void EntWspSeq::vRowId(RowId& xRowId)
 {
   m_xRowId = xRowId;
 }
@@ -115,7 +115,7 @@ void EntWsp::vRowId(RowId& xRowId)
 /*----------------------------------------------------------------------------*/
 /* get nLevels                                                                */
 /*----------------------------------------------------------------------------*/
-u8 EntWsp::nLevels(void)
+u8 EntWspSeq::nLevels(void)
 {
   return m_nLevels;
 }
@@ -123,7 +123,7 @@ u8 EntWsp::nLevels(void)
 /*----------------------------------------------------------------------------*/
 /* get next entry offset at level                                             */
 /*----------------------------------------------------------------------------*/
-u8 EntWsp::nRight(u8 iLevel)
+u8 EntWspSeq::nRight(u8 iLevel)
 {
   i8* nLevels = reinterpret_cast<i8*>(m_xWsp.aArea());
   
@@ -135,7 +135,7 @@ u8 EntWsp::nRight(u8 iLevel)
 /*----------------------------------------------------------------------------*/
 /* set next entry offset at level                                             */
 /*----------------------------------------------------------------------------*/
-void EntWsp::vRight(u8 iLevel, u8 uRight)
+void EntWspSeq::vRight(u8 iLevel, u8 uRight)
 {
   m_uRight[iLevel] = uRight;
 }
@@ -143,7 +143,7 @@ void EntWsp::vRight(u8 iLevel, u8 uRight)
 /*----------------------------------------------------------------------------*/
 /* get size in bytes of this entry instance                                   */
 /*----------------------------------------------------------------------------*/
-i8 EntWsp::nSize(void)
+i8 EntWspSeq::nSize(void)
 {
   //_precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
   
@@ -159,7 +159,7 @@ i8 EntWsp::nSize(void)
 /*----------------------------------------------------------------------------*/
 /* add a key                                                                  */
 /*----------------------------------------------------------------------------*/
-void EntWsp::vAddKey(KeyWsp& xKeyWsp)
+void EntWspSeq::vAddKey(KeyWsp& xKeyWsp)
 {
   Str* aSrc = xKeyWsp.aWspStr();
   i8 nBytes  = xKeyWsp.nWspUsed();
@@ -170,7 +170,7 @@ void EntWsp::vAddKey(KeyWsp& xKeyWsp)
 /*----------------------------------------------------------------------------*/
 /* get wsp area                                                               */
 /*----------------------------------------------------------------------------*/
-char* EntWsp::aWspArea(void)
+char* EntWspSeq::aWspArea(void)
 {
   return m_xWsp.aArea();
 }
@@ -178,7 +178,7 @@ char* EntWsp::aWspArea(void)
 /*----------------------------------------------------------------------------*/
 /* get wsp area as Str                                                        */
 /*----------------------------------------------------------------------------*/
-Str* EntWsp::aWspStr(void)
+Str* EntWspSeq::aWspStr(void)
 {
   return m_xWsp.aStr();
 }
@@ -186,7 +186,7 @@ Str* EntWsp::aWspStr(void)
 /*----------------------------------------------------------------------------*/
 /* get wsp bytes used                                                         */
 /*----------------------------------------------------------------------------*/
-i8 EntWsp::nWspUsed(void)
+i8 EntWspSeq::nWspUsed(void)
 {
   return m_xWsp.nUsed();
 }
@@ -197,7 +197,7 @@ i8 EntWsp::nWspUsed(void)
 /*----------------------------------------------------------------------------*/
 /* get key                                                                    */
 /*----------------------------------------------------------------------------*/
-Key* EntWsp::aKey(void)
+Key* EntWspSeq::aKey(void)
 {
   Key* aKey = _aKey(&m_xKey);
   
@@ -207,7 +207,7 @@ Key* EntWsp::aKey(void)
 /*----------------------------------------------------------------------------*/
 /* get key size                                                               */
 /*----------------------------------------------------------------------------*/
-i8 EntWsp::nKeySize(void)
+i8 EntWspSeq::nKeySize(void)
 {
   return m_xWsp.nUsed();
 }
@@ -215,7 +215,7 @@ i8 EntWsp::nKeySize(void)
 /*----------------------------------------------------------------------------*/
 /* get entry bytes required                                                   */
 /*----------------------------------------------------------------------------*/
-i8 EntWsp::nEntryBytesRequired(void)
+i8 EntWspSeq::nEntryBytesRequired(void)
 {
   i8 nKeyBytes = nKeySize();
   i8 nBytes = Entry::nBytesRequired(m_nLevels,nKeyBytes);
@@ -226,7 +226,7 @@ i8 EntWsp::nEntryBytesRequired(void)
 /*----------------------------------------------------------------------------*/
 /* get RightVec                                                               */
 /*----------------------------------------------------------------------------*/
-RightVec* EntWsp::aRightVec(void)
+RightVec* EntWspSeq::aRightVec(void)
 {
   RightVec* aRightVec = _aRightVec(m_uRight);
   
@@ -236,7 +236,7 @@ RightVec* EntWsp::aRightVec(void)
 /*----------------------------------------------------------------------------*/
 /* get size of RightVec                                                       */
 /*----------------------------------------------------------------------------*/
-i8 EntWsp::nRightSize(void)
+i8 EntWspSeq::nRightSize(void)
 {
   i8 nBytes = m_nLevels * sizeof(i8);
   
@@ -246,7 +246,7 @@ i8 EntWsp::nRightSize(void)
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-_pFooter_(EntWsp)
+_pFooter_(EntWspSeq)
 
 /*============================================================================*/
 /* end                                                                        */

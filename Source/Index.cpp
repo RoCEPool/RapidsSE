@@ -156,7 +156,7 @@ void Index::vPopulate(void)
           
           while (pRow) {
             
-            EntWsp xEntWsp;
+            EntWspSeq xEntWspSeq;
             RowId xRowId;
             ValWsp xValWsp;
             KeyWsp xKeyWsp;
@@ -169,7 +169,7 @@ void Index::vPopulate(void)
             
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
             // set the rowId in the EntWsp
-            xEntWsp.vRowId(xRowId);
+            xEntWspSeq.vRowId(xRowId);
             
             // get the first field (hardcoded)                            //ALKA
             StrVal* pStrVal = (StrVal*)pRow->pData();
@@ -183,12 +183,12 @@ void Index::vPopulate(void)
             
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
             // add key to entry
-            xEntWsp.vAddKey(xKeyWsp);
+            xEntWspSeq.vAddKey(xKeyWsp);
 
-            xEntWsp.vShow();
+            xEntWspSeq.vShow();
             
             // insert row entry in index
-            m_pIndexLevels->vInsertEntry(xEntWsp);
+            m_pIndexLevels->vInsertEntry(xEntWspSeq);
             pRow = pRowBuffer->pNextRow(pRow);
             nRowNo++;
           }

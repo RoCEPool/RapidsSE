@@ -90,7 +90,7 @@ IndexBufferSeq* IndexLevels::pFirstBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* insert a row                                                               */
 /*----------------------------------------------------------------------------*/
-void IndexLevels::vInsertEntry(EntWsp& xEntWsp)
+void IndexLevels::vInsertEntry(EntWspSeq& xEntWspSeq)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXLEVELS,_FOOTER_);
   
@@ -102,10 +102,10 @@ void IndexLevels::vInsertEntry(EntWsp& xEntWsp)
   IndexBufferSeq* pIndexBufferSeq = m_pIndexBuffer[0];
   
   while ( ! bResult) {
-    pIndexBufferSeq = pIndexBufferSeq->pFindBuffer(xEntWsp);
+    pIndexBufferSeq = pIndexBufferSeq->pFindBuffer(xEntWspSeq);
  
     // insert entry into index buffer
-    bResult = pIndexBufferSeq->bInsertEntry(xEntWsp);
+    bResult = pIndexBufferSeq->bInsertEntry(xEntWspSeq);
   }
   
 }

@@ -182,17 +182,17 @@ void IndexBufferSeq::vEntryCount(void)
 /*----------------------------------------------------------------------------*/
 /* find index buffer for this entWsp                                          */
 /*----------------------------------------------------------------------------*/
-IndexBufferSeq* IndexBufferSeq::pFindBuffer(EntWsp& xEntWsp)
+IndexBufferSeq* IndexBufferSeq::pFindBuffer(EntWspSeq& xEntWspSeq)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
   Entry* pNewEntry;
   
   // get the size of the EntWsp
-  i8 nBytes = xEntWsp.nSize();
+  i8 nBytes = xEntWspSeq.nSize();
   
   // get the value of the EntWsp key
-  Key* pNewKey = xEntWsp.aKey();
+  Key* pNewKey = xEntWspSeq.aKey();
   
   IndexBufferSeq* pIndexBufferSeq = this;
   IndexBufferSeq* pLastBuffer = nullptr;
@@ -226,14 +226,14 @@ IndexBufferSeq* IndexBufferSeq::pFindBuffer(EntWsp& xEntWsp)
 /*----------------------------------------------------------------------------*/
 /* insert an entry into the index buffer                                      */
 /*----------------------------------------------------------------------------*/
-bool IndexBufferSeq::bInsertEntry(EntWsp& xEntWsp)
+bool IndexBufferSeq::bInsertEntry(EntWspSeq& xEntWspSeq)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
   Entry* pNewEntry;
   
   // get the size of the EntWsp
-  i8 nBytes = xEntWsp.nEntryBytesRequired();
+  i8 nBytes = xEntWspSeq.nEntryBytesRequired();
   
   // test sufficient free space
   if (m_xWsp.nFree() < (C_1MB - 5000)) {
@@ -251,7 +251,7 @@ bool IndexBufferSeq::bInsertEntry(EntWsp& xEntWsp)
   void* pDst = reinterpret_cast<void*>(m_xWsp.aLatter());
 
   // get the vale of the EntWsp key
-  Key* pNewKey = xEntWsp.aKey();
+  Key* pNewKey = xEntWspSeq.aKey();
   
   // find the position for the new entry in the index buffer
   Entry* pEntry = pFirstEntry();
@@ -284,7 +284,7 @@ bool IndexBufferSeq::bInsertEntry(EntWsp& xEntWsp)
   pNewEntry = reinterpret_cast<Entry*>(pDst);
   
   // copy EntWsp into Index buffer pNewEntry
-  pNewEntry->vSetEntry(xEntWsp);
+  pNewEntry->vSetEntry(xEntWspSeq);
   
   // size of EntWsp whould be the same as this NewEntry we just created
   ASSERT(nBytes == pNewEntry->nSize());

@@ -42,7 +42,7 @@ namespace DBobjects
     Entry* aRightEntry(i8 iLevel);
     RightVec* aRightVec(void);
     RowId& xRowId(void);
-    void   vSetEntry(EntWsp& xEntWsp);
+    void   vSetEntry(EntWspSeq& xEntWspSeq);
     i8     nSize(void);
 
     Footer* pFooter(void);

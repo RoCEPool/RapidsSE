@@ -172,7 +172,7 @@ void Task::vIndexEntryTest(NNP_Task nnpTask)
   
   vTrace("index::entryTest -- %s\n"_Str,sRow.s());
   
-  EntWsp xEntWsp;
+  EntWspSeq xEntWspSeq;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set rowId
@@ -181,7 +181,7 @@ void Task::vIndexEntryTest(NNP_Task nnpTask)
   
   xRowId.vBuffer(999);
   xRowId.vRow(iRowNo);
-  xEntWsp.vRowId(xRowId);
+  xEntWspSeq.vRowId(xRowId);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // add element to key
@@ -198,7 +198,7 @@ void Task::vIndexEntryTest(NNP_Task nnpTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // add key to entry
-  xEntWsp.vAddKey(xKeyWsp);
+  xEntWspSeq.vAddKey(xKeyWsp);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // show
@@ -215,10 +215,10 @@ void Task::vIndexEntryTest(NNP_Task nnpTask)
   IndexBufferSeq* pFirstBuffer = pIndexBufferSeq;
   
   while (!bResult) {
-    pIndexBufferSeq = pFirstBuffer->pFindBuffer(xEntWsp);
+    pIndexBufferSeq = pFirstBuffer->pFindBuffer(xEntWspSeq);
     
     // insert entry into index buffer
-    bResult = pIndexBufferSeq->bInsertEntry(xEntWsp);
+    bResult = pIndexBufferSeq->bInsertEntry(xEntWspSeq);
   }
   
   pIndexBufferSeq = pFirstBuffer;

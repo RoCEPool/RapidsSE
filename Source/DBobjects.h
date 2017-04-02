@@ -32,7 +32,7 @@ using namespace DBobjects;
 #include "Key.hpp"
 #include "RightVec.hpp"
 #include "EntryData.hpp"
-#include "EntWsp.hpp"
+#include "EntWspSeq.hpp"
 #include "Entry.hpp"
 #include "IndexBuffer.hpp"
 #include "IndexBufferSeq.hpp"
