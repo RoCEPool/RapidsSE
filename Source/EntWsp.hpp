@@ -38,10 +38,6 @@ namespace DBobjects
     RowId& xRowId(void);
     void   vRowId(RowId& xRowId);
     void   vShow(void);
-    i8     nSize(void);
-    char*  aWspArea(void);
-    Str*   aWspStr(void);
-    i8     nWspUsed(void);
     RightVec* aRightVec(void);
     i8        nRightSize(void);
 

@@ -38,13 +38,14 @@ EntWsp::EntWsp(void)
 
   m_nBytes = 0;
   
-  for (i8 iLevel = 0; iLevel < C_FLAT_LEVELS; iLevel++)
-    m_uRight[iLevel] = C_NIL_OFFSET;
-  
   //m_xRowId
   
-  // generate logarithemic levels for this entry
+  // generate logarithmic level for this entry
   m_nLevels = Random::uLogLevel(C_FLAT_LEVELS, 2) + 1;
+  ASSERT(m_nLevels >= 1 && m_nLevels <= C_FLAT_LEVELS);
+
+  for (i8 iLevel = 0; iLevel < C_FLAT_LEVELS; iLevel++)
+    m_uRight[iLevel] = C_NIL_OFFSET;
   
   _checkInitialisedSize_(sizeof(EntWsp));
   
@@ -68,14 +69,14 @@ EntWsp::~EntWsp(void)
 /*----------------------------------------------------------------------------*/
 void EntWsp::vAddKey(KeyWsp& xKeyWsp)
 {
-  Str* aSrc = xKeyWsp.aWspStr();
-  i8 nBytes  = xKeyWsp.nWspUsed();
+  Str* aKeySrc = xKeyWsp.aWspStr();
+  i8 nKeyBytes = xKeyWsp.nWspUsed();
   
-  m_xWsp.vAppend(aSrc,nBytes);
+  m_xWsp.vAppend(aKeySrc,nKeyBytes);
 }
 
 /*----------------------------------------------------------------------------*/
-/* get entry bytes required                                                   */
+/* get bytes required for an Entry based on this EntWsp                       */
 /*----------------------------------------------------------------------------*/
 i8 EntWsp::nEntryBytesRequired(void)
 {
@@ -104,7 +105,7 @@ i8 EntWsp::nKeySize(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get nLevels                                                                */
+/* get nLevel                                                                 */
 /*----------------------------------------------------------------------------*/
 u8 EntWsp::nLevels(void)
 {
@@ -112,7 +113,7 @@ u8 EntWsp::nLevels(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get next entry offset at level                                             */
+/* get right offset at level                                                  */
 /*----------------------------------------------------------------------------*/
 u8 EntWsp::nRight(u8 iLevel)
 {
@@ -124,7 +125,7 @@ u8 EntWsp::nRight(u8 iLevel)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set next entry offset at level                                             */
+/* set right offset at level                                                  */
 /*----------------------------------------------------------------------------*/
 void EntWsp::vRight(u8 iLevel, u8 uRight)
 {
@@ -156,8 +157,6 @@ void EntWsp::vShow(void)
   //  i8* pKeyData = reinterpret_cast<i8*>(m_mDataArea);
   //  memcpy(&iKey,m_mDataArea,8);
   
-  
-  
   vTrace("EntWsp %p: Levels: %llu "_Str,
          this,
          m_nLevels
@@ -178,46 +177,6 @@ void EntWsp::vShow(void)
            );
   
   vTrace("\n"_Str);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get size in bytes of this entry instance                                   */
-/*----------------------------------------------------------------------------*/
-i8 EntWsp::nSize(void)
-{
-  //_precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
-  
-  i8 nBytes = sizeof(RowId)
-               + sizeof(i8)
-               + sizeof(i8)
-               + sizeof(i8)
-               + m_xWsp.nUsed();
-  
-  return nBytes;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get wsp area                                                               */
-/*----------------------------------------------------------------------------*/
-char* EntWsp::aWspArea(void)
-{
-  return m_xWsp.aArea();
-}
-
-/*----------------------------------------------------------------------------*/
-/* get wsp area as Str                                                        */
-/*----------------------------------------------------------------------------*/
-Str* EntWsp::aWspStr(void)
-{
-  return m_xWsp.aStr();
-}
-
-/*----------------------------------------------------------------------------*/
-/* get wsp bytes used                                                         */
-/*----------------------------------------------------------------------------*/
-i8 EntWsp::nWspUsed(void)
-{
-  return m_xWsp.nUsed();
 }
 
 /*----------------------------------------------------------------------------*/
