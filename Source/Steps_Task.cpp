@@ -6,8 +6,6 @@
 //#include "Tasks.h"
 #include "SePrompt.hpp"
 
-extern Arguments       gxArguments;
-
 extern AttachMap*      gpAttachMap;
 extern BufferPool*     gpBufferPool;
 extern Heap*           gpMediumHeap;
