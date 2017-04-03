@@ -18,7 +18,7 @@ extern Grid*         gpGrid;
 extern TaskList*    gpTaskList;
 extern PlanList*    gpPlanList;
 extern SEitfList*   gpSEitfList;
-extern Arguments    gxArguments;
+
 extern bool         gbVerbose;
 extern bool         gbTracepoint;
 extern bool         gbProgress;
@@ -96,7 +96,7 @@ void AttachMap::vGetGlobals(void)
 /*----------------------------------------------------------------------------*/
 /* record all the needed globals                                              */
 /*----------------------------------------------------------------------------*/
-void AttachMap::vRecordGlobals(void)
+void AttachMap::vRecordGlobals(i8 iRegionSize)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ATTACHMAP,_FOOTER_);
 
@@ -109,7 +109,7 @@ void AttachMap::vRecordGlobals(void)
   m_xTime.vSet(&m_xSince);
   m_xTime.vUTC(m_sUTC);
   
-  m_iRegionSize = gxArguments.m_iRegionSize;
+  m_iRegionSize = iRegionSize;
   m_iEpoch      = 0;
   
   m_pBufferPool = gpBufferPool;

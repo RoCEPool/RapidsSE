@@ -47,7 +47,7 @@ namespace StorageEngine
     ~AttachMap(void);
     
     void vGetGlobals(void);
-    void vRecordGlobals(void);
+    void vRecordGlobals(i8 iRegionSize);
     
     static void vDump(eCN eClass, Object* pObject, Str* aTab);
     

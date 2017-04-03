@@ -384,7 +384,7 @@ void RapidsSE::vSystemInit(void)
   
   vDicCompile(gnpRootTask);
   
-  gpAttachMap->vRecordGlobals();
+  gpAttachMap->vRecordGlobals(gxArguments.m_iRegionSize);
   
   // initialize the plan number
   gzPlanId =  gpGrid->iThisNode() << 48;

@@ -9,7 +9,7 @@
 extern Heap* gpMediumHeap;
 
 #include "Arguments.hpp"
-extern Arguments gxArguments;
+
 extern bool gbTracepoint;
 
 /*----------------------------------------------------------------------------*/
