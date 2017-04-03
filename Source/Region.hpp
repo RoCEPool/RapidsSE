@@ -9,8 +9,8 @@ namespace StorageEngine
   {
   public:
     static bool bAttach(StrVal& sRegionName, bool bWecome);
-    static void vCreate(StrVal& sRegionName, i8 iRegionSize, bool bLock,
-                        bool bRestart);
+    static void vCreate(StrVal& sRegionName, i8 iRegionSize, i8 iJumboTook,
+                        bool bTouch, bool bLock, bool bRestart);
     static bool bTest(StrVal& sRegionName);
     static void vUnlink(StrVal& sRegionName);
     

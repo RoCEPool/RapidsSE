@@ -60,7 +60,7 @@ void Task::vGridAppendNodes(NNP_Task nnpTask)
 {
   ENTRY("vGridAppendNodes"_Str);
   
-  for (i8 iNode = 0; iNode < gxArguments.m_nNodes; iNode++) {
+  for (i8 iNode = 0; iNode < gpGrid->m_nNodes; iNode++) {
     Node* pNode = new Node(iNode,
                            gxArguments.m_xNodes[iNode].m_sNodeName,
                            gxArguments.m_xNodes[iNode].m_sIPAddress,

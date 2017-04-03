@@ -33,7 +33,7 @@ namespace Pool
     void* operator new(size_t, void* pRegion);
     void  operator delete(void* pRegion);
     
-    BufferPool(void);
+    BufferPool(Str* aRegionName, i8 iRegionSize, i8 iJumboTook, bool bTouch);
     ~BufferPool(void);
     
     Buffer* pAllocBuffer(void);
@@ -50,7 +50,7 @@ namespace Pool
     i8   iFreePercent(void);
     i8   iFreeSpace(void);
     bool bHasDataSpace(void);
-    void vInitialise(void);
+    void vInitialise(bool bTouch);
     Buffer* pNextJumbo(Buffer* pPrev);
     void vPoolDump(void);
     Buffer* pToBuffer(bn nBuffer);

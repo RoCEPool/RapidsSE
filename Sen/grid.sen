@@ -218,12 +218,6 @@ tp: printResult
 
 grid: grid.this
 
-//0 node.new grid.append
-
-//grid.nodes 0 do
-//  I node.new grid.appendNode
-//loop
-
 grid.appendNodes
 grid.thisNode!
 

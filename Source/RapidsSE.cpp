@@ -149,6 +149,8 @@ void RapidsSE::vPoolOpen(void)
     
     Region::vCreate(gxArguments.m_sRegionName,
                     gxArguments.m_iRegionSize,
+                    gxArguments.m_nJumboTook,
+                    gxArguments.m_bTouch,
                     gxArguments.m_bLock,
                     gxArguments.m_bRestart);
     vCreateObjects();

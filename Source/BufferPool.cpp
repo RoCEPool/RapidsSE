@@ -7,7 +7,6 @@
 #include "StorageEngine.h"
 
 extern AttachMap*  gpAttachMap;
-extern Arguments   gxArguments;
 extern BufferPool* gpBufferPool;
 extern bool        gbProgress;
 
@@ -32,20 +31,20 @@ void BufferPool::operator delete(void* pRegion)
 /*----------------------------------------------------------------------------*/
 /* constructor (new region)                                                   */
 /*----------------------------------------------------------------------------*/
-BufferPool::BufferPool(void)
+BufferPool::BufferPool(Str* aRegionName, i8 iRegionSize, i8 iJumboTook, bool bTouch)
 : Object(CN_BUFFERPOOL)
 {
   gpBufferPool = this;
   
-  m_nBuffers = DIV(gxArguments.m_iRegionSize,C_SIZE_POOL_BUFFER)
-                 - gxArguments.m_nJumboTook;
+  m_nBuffers = DIV(iRegionSize,C_SIZE_POOL_BUFFER)
+                 - iJumboTook;
   
 
   m_pBase  = reinterpret_cast<Buffer*>(this);
-  m_pLimit = pAdd<Buffer*>(m_pBase,gxArguments.m_iRegionSize);
-  m_pJumbo = pAdd<Buffer*>(m_pLimit,-(gxArguments.m_nJumboTook * C_SIZE_POOL_BUFFER));
+  m_pLimit = pAdd<Buffer*>(m_pBase,iRegionSize);
+  m_pJumbo = pAdd<Buffer*>(m_pLimit,-(iJumboTook * C_SIZE_POOL_BUFFER));
   
-  m_sShmName = gxArguments.m_sRegionName;
+  m_sShmName = aRegionName;
   m_iShmFD   = 0;
   
   m_zFreeLock.vInit("BufferPool::m_zFreeLock"_Str);
@@ -54,7 +53,7 @@ BufferPool::BufferPool(void)
   m_iFreeCount    = 0;
   m_nFreeHead     = bn::nNil();
   
-  vInitialise();
+  vInitialise(bTouch);
   
   _checkInitialised_(CN_BUFFERPOOL);
   
@@ -265,7 +264,7 @@ i8 BufferPool::iFreePercent(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
   
-  i8 iFreePercent = DIV(iFreeSpace() * 100,gxArguments.m_iRegionSize);
+  i8 iFreePercent = DIV(iFreeSpace() * 100,gpAttachMap->m_iRegionSize);
   
   return iFreePercent;
 }
@@ -299,7 +298,7 @@ bool BufferPool::bHasDataSpace(void)
 /*----------------------------------------------------------------------------*/
 /* initialise all buffers in the pool                                         */
 /*----------------------------------------------------------------------------*/
-void BufferPool::vInitialise(void)
+void BufferPool::vInitialise(bool bTouch)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
   
@@ -335,7 +334,7 @@ void BufferPool::vInitialise(void)
     pFreeBuffer->vSetMagic();
     pFreeBuffer->vClass(CN_FREEBUFFER);
     //pFreeBuffer->pFooter()->vSetFooter();
-    if (gxArguments.m_bTouch)
+    if (bTouch)
       pFreeBuffer->vZeroData();
     pFreeBuffer->vSetFooter();
     pFreeBuffer->vBufferNo(nBuffer);
@@ -349,7 +348,7 @@ void BufferPool::vInitialise(void)
   pLastBuffer->vSetMagic();
   pLastBuffer->vClass(CN_FREEBUFFER);
   //pLastBuffer->pFooter()->vSetFooter();
-  if (gxArguments.m_bTouch)
+  if (bTouch)
     pLastBuffer->vZeroData();
   pLastBuffer->vSetFooter();
   pLastBuffer->vBufferNo(nBufferLast());
@@ -392,7 +391,7 @@ void BufferPool::vPoolDump(void)
   
   vTrace("RegionSize %lld BufferSize %lld BufferCount %lld Base %p Limit %p\n"_Str
          "InUse %lld FreeCount %lld FreeHead %lld\n"_Str,
-         gxArguments.m_iRegionSize,
+         gpAttachMap->m_iRegionSize,
          C_SIZE_POOL_BUFFER,
          m_nBuffers,
          m_pBase,
