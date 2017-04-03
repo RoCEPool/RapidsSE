@@ -5,8 +5,6 @@
 #include "StorageEngine.h"
 #include "SePrompt.hpp"
 
-extern Arguments       gxArguments;
-
 extern AttachMap*      gpAttachMap;
 extern BufferPool*     gpBufferPool;
 extern Heap*           gpMediumHeap;
