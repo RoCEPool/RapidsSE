@@ -9,7 +9,7 @@ namespace StorageEngine
   {
   public:
     static bool bAttach(StrVal& sRegionName);
-    static void vCreate(StrVal& sRegionName, i8 iRegionSize);
+    static void vCreate(StrVal& sRegionName, i8 iRegionSize, bool bLock);
     static bool bTest(StrVal& sRegionName);
     static void vUnlink(StrVal& sRegionName);
     

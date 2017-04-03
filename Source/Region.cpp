@@ -91,7 +91,7 @@ bool Region::bAttach(StrVal& sRegionName)
 /*----------------------------------------------------------------------------*/
 /* create new shm region                                                      */
 /*----------------------------------------------------------------------------*/
-void Region::vCreate(StrVal& sRegionName, i8 iRegionSize)
+void Region::vCreate(StrVal& sRegionName, i8 iRegionSize, bool bLock)
 {
   int iFD;
   SysCall xSysCall;
@@ -102,14 +102,14 @@ void Region::vCreate(StrVal& sRegionName, i8 iRegionSize)
   vTrace("Creating RapidsSE instance %s; size %s (%lldB)...\n"_Str,
          sRegionName.s(),
          sSize.s(),
-         gxArguments.m_iRegionSize);
+         iRegionSize);
   
   if (gbVerbose)
     vTrace("Region::vCreate A\n"_Str);
   
   // open a new shm region
   bool bResult = Shm::bCreate(sRegionName,
-                              gxArguments.m_iRegionSize,
+                              iRegionSize,
                               iFD,
                               gxArguments.m_bRestart,
                               xSysCall);
@@ -126,7 +126,7 @@ void Region::vCreate(StrVal& sRegionName, i8 iRegionSize)
   // allocate memory for the shm region
   mpRegion = Shm::pMap(iFD,
                        C_ADDR_POOL,
-                       gxArguments.m_iRegionSize,
+                       iRegionSize,
                        true,
                        false,
                        xSysCall);
@@ -152,14 +152,14 @@ void Region::vCreate(StrVal& sRegionName, i8 iRegionSize)
     vTrace("Shm mapped at %p\n"_Str,mpRegion);
   
   // lock the shared memory in
-  if (gxArguments.m_bLock) {
+  if (bLock) {
     bResult = Shm::bLock(mpRegion,
-                         gxArguments.m_iRegionSize,
+                         iRegionSize,
                          xSysCall);
   
     if ( ! bResult )  {
       vTrace("RapidsSE::vAttach failed to lock\n"_Str);
-      bResult = Shm::bUnmap(mpRegion, gxArguments.m_iRegionSize, xSysCall);
+      bResult = Shm::bUnmap(mpRegion, iRegionSize, xSysCall);
       if ( ! bResult )  {
         vTrace("RapidsSE::vAttach failed to unmap\n"_Str);
       }
