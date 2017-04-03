@@ -42,11 +42,7 @@ void* SEitf::operator new(size_t iSize)
 {
   RASSERT(iSize);
   
-  vTrace("<SEitf new\n"_Str);
-  
   Object* pObject = Heap::pAllocate(CN_SEITF);
-  
-  vTrace(">SEitf new %p\n"_Str, pObject);
   
   return pObject;
 }
