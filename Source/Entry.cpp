@@ -72,6 +72,23 @@ void* Entry::operator new(size_t iSize, Entry* aEntry)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
+Entry::Entry(EntWsp& xEntWsp)
+: Object(CN_ENTRY)
+{
+  _precondition_(_MAGIC_,CN_ENTRY);
+  
+  vSetEntry(xEntWsp);
+  
+  _setFooter_();
+  
+  _checkInitialised_(CN_ENTRY);
+  
+  _postcondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
 Entry::Entry(i8 nBytes, i8 nLevels)                   //! should we pass EntWsp?
 : Object(CN_ENTRY)
 {
