@@ -4202,7 +4202,6 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "  \\\" --name  \\\" str.cat nodeName str.cat\n"
     "  //\\\" --partitionsPerNode \\\" str.cat grid.slots >str str.cat\n"
     "  \\\" --sleep \\\" str.cat args.sleep >str str.cat\n"
-    "  args.Traceapi if \\\" --Traceapi \\\" str.cat then\n"
     "  args.tracepoint if \\\" --tracepoint \\\" str.cat then\n"
     "  args.verbose if \\\" --verbose \\\" str.cat then\n"
     "\n"
