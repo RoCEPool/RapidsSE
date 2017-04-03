@@ -7,7 +7,7 @@
 #include "StorageEngine.h"
 
 extern BufferPool*  gpBufferPool;
-extern Arguments    gxArguments;
+extern Grid*        gpGrid;
 
 /*----------------------------------------------------------------------------*/
 /*-- Static ------------------------------------------------------------------*/
@@ -131,7 +131,7 @@ void Index::vPopulate(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
   
-  for (i8 iSlot = 0; iSlot < gxArguments.m_nSlots; iSlot++) {
+  for (i8 iSlot = 0; iSlot < gpGrid->m_nSlots; iSlot++) {
     
     //i8 iPartition = Partition::iSlotToPartition(iSlot);
     
