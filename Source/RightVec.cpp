@@ -59,13 +59,14 @@ RightVec::~RightVec(void)
 /*----------------------------------------------------------------------------*/
 /* get the offset for a given level (level is 1 or 2)                         */
 /*----------------------------------------------------------------------------*/
-u8 RightVec::uRight(i8 iLevel)
+u8 RightVec::uOffset(i8 iLevel)
 {
   ASSERT(iLevel > 0 && iLevel < C_FLAT_LEVELS);
   
-  i8 iRight = iLevel - 1;
+  i8 iRight = iLevel - 1;   // iRight of 0 is subscript for level 1
+                            // iRight of 1 is subscript for level 2
   
-  u8 uOffset = m_uRight[iRight];
+  u8 uOffset = m_uOffset[iRight];
   
   return uOffset;
 }
@@ -73,13 +74,14 @@ u8 RightVec::uRight(i8 iLevel)
 /*----------------------------------------------------------------------------*/
 /* set the offset for a given level (level is 1 or 2)                         */
 /*----------------------------------------------------------------------------*/
-void RightVec::vRight(i8 iLevel, u8 uOffset)
+void RightVec::vOffset(i8 iLevel, u8 uOffset)
 {
   ASSERT(iLevel > 0 && iLevel < C_FLAT_LEVELS);
   
-  i8 iRight = iLevel - 1;
+  i8 iRight = iLevel - 1;   // iRight of 0 is subscript for level 1
+                            // iRight of 1 is subscript for level 2
   
-  m_uRight[iRight] = uOffset;
+  m_uOffset[iRight] = uOffset;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -91,8 +93,10 @@ void RightVec::vRight(i8 iLevel, u8 uOffset)
 /*----------------------------------------------------------------------------*/
 i8 RightVec::nBytesRequired(i8 nLevels)
 {
+  ASSERT(nLevels >= 0 && nLevels < C_FLAT_LEVELS);
+  
   // an nLevels == 0 is zero bytes as we dont hold the 0 level
-  i8 nBytes = nLevels * sizeof(i8);
+  i8 nBytes = nLevels * sizeof(u8);
   
   return nBytes;
 }

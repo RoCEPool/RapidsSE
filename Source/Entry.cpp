@@ -209,7 +209,7 @@ u8 Entry::uRight(u8 iLevel)
   
   RightVec* aRightVec = aEntryData->aRightVec(m_nLevels);
 
-  u8 uRight = aRightVec->uRight(iLevel);
+  u8 uRight = aRightVec->uOffset(iLevel);
   
   return uRight;
 }
@@ -227,7 +227,7 @@ void Entry::vRight(u8 iLevel, u8 uRight)
   
   RightVec* aRightVec = aEntryData->aRightVec(m_nLevels);
 
-  aRightVec->vRight(iLevel,uRight);
+  aRightVec->vOffset(iLevel,uRight);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
 }

@@ -179,7 +179,7 @@ u8 EntrySeq::uRight(u8 iLevel)
 
   u8 uRight = 0;
   if (iLevel)
-    uRight = aRightVec->uRight(iLevel);
+    uRight = aRightVec->uOffset(iLevel);
 
   return uRight;
 }
@@ -193,7 +193,7 @@ void EntrySeq::vRight(u8 iLevel, u8 uRight)
   EntryData* aEntryData = this->aEntryData();
   RightVec* aRightVec = aEntryData->aRightVec(m_nLevels);
 
-  aRightVec->vRight(iLevel,uRight);
+  aRightVec->vOffset(iLevel,uRight);
 }
 
 /*----------------------------------------------------------------------------*/
