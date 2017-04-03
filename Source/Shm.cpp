@@ -161,6 +161,7 @@ void* Shm::pMap(int iFd, void* aAddress, i8 iBytes, bool bShared, bool bHugeTlb,
 #else
   int iFlags =   (bShared  ? MAP_SHARED : MAP_PRIVATE)
                | (aAddress ? MAP_FIXED  : 0)
+               | MAP_NORESERVE
                | (bHugeTlb ? MAP_HUGETLB | MAP_ANONYMOUS : 0);
 #endif
   
