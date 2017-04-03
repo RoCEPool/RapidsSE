@@ -352,24 +352,52 @@ void Task::vAddConstants(void)
   vAddConstant("smallbuffersize"_Str,  C_SIZE_SMALL_OBJECT);
   vAddConstant("magic"_Str,            MAGIC);
   
-  vAddConstant("args.bgtasks"_Str,     gxArguments.m_bBgTasks);
-  vAddConstant("args.config"_Str,      gxArguments.m_bConfig);
-  vAddConstant("args.munged"_Str,      gxArguments.m_bMunged);
-  
-  //vAddConstant("grid.nodes"_Str,       gxArguments.m_nNodes);
+  // Arguments
+  vAddConstant("args.bgtasks"_Str,           gxArguments.m_bBgTasks);
+  vAddConstant("args.command"_Str,           gxArguments.m_sCommand);
+  vAddConstant("args.commands"_Str,          gxArguments.m_sCommands);
+  vAddConstant("args.config"_Str,            gxArguments.m_bConfig);
+  vAddConstant("args.docol"_Str,             gxArguments.m_bDocol);
+  vAddConstant("args.folder"_Str,            gxArguments.m_sFolder);
+  vAddConstant("args.frequency"_Str,         gxArguments.m_uFrequency);
+  vAddConstant("args.help"_Str,              gxArguments.m_bHelp);
+  vAddConstant("args.hugePages"_Str,         gxArguments.m_bHugePages);
+  vAddConstant("args.jumboBuffers"_Str,      gxArguments.m_nJumboBuffers);
+  vAddConstant("args.jumboSize"_Str,         gxArguments.m_iJumboSize);
+  vAddConstant("args.jumboTook"_Str,         gxArguments.m_nJumboTook);
+  vAddConstant("args.killPrev"_Str,          gxArguments.m_bKillPrev);
+  vAddConstant("args.levels"_Str,            gxArguments.m_uLevels);
+  vAddConstant("args.lock"_Str,              gxArguments.m_bLock);
+  vAddConstant("args.munged"_Str,            gxArguments.m_bMunged);
+  vAddConstant("args.nodeName"_Str,          gxArguments.m_sNodeName);
+  vAddConstant("args.nodes"_Str,             gxArguments.m_nNodes);
   vAddConstant("args.partitionsPerNode"_Str, gxArguments.m_nSlots);
   vAddConstant("args.progress"_Str,          gxArguments.m_bProgress);
-  vAddConstant("args.regionPrefix"_Str,gxArguments.m_sRegionPrefix);
-  vAddConstant("args.regionSize"_Str,  gxArguments.m_iRegionSize - gxArguments.m_iJumboSize);
-  vAddConstant("args.sleep"_Str,       gxArguments.m_iSleep);
+  vAddConstant("args.prompt"_Str,            gxArguments.m_bPrompt);
+  vAddConstant("args.regionPrefix"_Str,      gxArguments.m_sRegionPrefix);
+  vAddConstant("args.regionName"_Str,        gxArguments.m_sRegionName);
+  vAddConstant("args.regionSize"_Str,        gxArguments.m_iRegionSize
+                                               - gxArguments.m_iJumboSize);
+  vAddConstant("args.restart"_Str,           gxArguments.m_bRestart);
+  vAddConstant("args.sen"_Str,               gxArguments.m_sSen);
+  vAddConstant("args.sleep"_Str,             gxArguments.m_iSleep);
+  vAddConstant("args.slots"_Str,             gxArguments.m_nSlots);
+  vAddConstant("args.start"_Str,             gxArguments.m_bStart);
+  vAddConstant("args.status"_Str,            gxArguments.m_bStatus);
+  vAddConstant("args.stop"_Str,              gxArguments.m_bStop);
+  vAddConstant("args.touch"_Str,             gxArguments.m_bTouch);
+  vAddConstant("args.tracepoint"_Str,        gxArguments.m_bTracepoint);
+  vAddConstant("args.tracing"_Str,           gxArguments.m_bTracing);
+  vAddConstant("args.unitTests"_Str,         gxArguments.m_bUnitTests);
+  vAddConstant("args.unlink"_Str,            gxArguments.m_bUnlink);
+  vAddConstant("args.verbose"_Str,           gxArguments.m_bVerbose);
+  vAddConstant("args.welcome"_Str,           gxArguments.m_bWelcome);
   
-  vAddConstant("args.tracepoint"_Str,  gxArguments.m_bTracepoint);
-  vAddConstant("args.verbose"_Str,     gxArguments.m_bVerbose);
-  vAddConstant("args.sen"_Str,         gxArguments.m_sSen);
-  
+  // true / flase
   vAddConstant("true"_Str,    (i8)1);
   vAddConstant("false"_Str,   (i8)0);
 
+  // useful numbers
   vAddConstant("C_1KB"_Str,   C_1KB);
   vAddConstant("C_1MB"_Str,   C_1MB);
   vAddConstant("C_1GB"_Str,   C_1GB);
