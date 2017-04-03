@@ -8,7 +8,6 @@
 
 Atomic gzShmOpenCount;
 
-extern Arguments gxArguments;
 extern bool gbVerbose;
 
 /*----------------------------------------------------------------------------*/
