@@ -27,7 +27,6 @@ Arguments::Arguments(void)
   m_nSlots      = 4;
   m_sNodeName   = "node"_Str;
   m_nNodes      = 0;
-  m_bTraceapi   = false;
   m_bTracepoint = false;
   
 #ifdef __APPLE__
@@ -370,11 +369,6 @@ bool Arguments::bParse(int argc, Str* argv[])
     }
     if (argv[iArg]->bSame("--notouch"_Str)) {
       m_bTouch = false;
-      continue;
-    }
-    
-    if (argv[iArg]->bSame("--Traceapi"_Str)) {
-      m_bTraceapi = true;
       continue;
     }
     
