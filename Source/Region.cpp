@@ -91,7 +91,7 @@ bool Region::bAttach(StrVal& sRegionName)
 /*----------------------------------------------------------------------------*/
 /* create new shm region                                                      */
 /*----------------------------------------------------------------------------*/
-void Region::vCreate(StrVal& sRegionName, i8 iRegionSize, bool bLock)
+void Region::vCreate(StrVal& sRegionName, i8 iRegionSize, bool bLock, bool bRestart)
 {
   int iFD;
   SysCall xSysCall;
@@ -111,7 +111,7 @@ void Region::vCreate(StrVal& sRegionName, i8 iRegionSize, bool bLock)
   bool bResult = Shm::bCreate(sRegionName,
                               iRegionSize,
                               iFD,
-                              gxArguments.m_bRestart,
+                              bRestart,
                               xSysCall);
 
   if (gbVerbose)
