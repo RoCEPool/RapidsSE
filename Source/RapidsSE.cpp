@@ -145,7 +145,7 @@ void RapidsSE::vPoolOpen(void)
       return;
     }
     
-    Region::vCreate(gxArguments.m_sRegionName );
+    Region::vCreate(gxArguments.m_sRegionName, gxArguments.m_iRegionSize);
     vCreateObjects();
     return;
   }

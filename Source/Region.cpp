@@ -91,13 +91,13 @@ bool Region::bAttach(StrVal& sRegionName)
 /*----------------------------------------------------------------------------*/
 /* create new shm region                                                      */
 /*----------------------------------------------------------------------------*/
-void Region::vCreate(StrVal& sRegionName)
+void Region::vCreate(StrVal& sRegionName, i8 iRegionSize)
 {
   int iFD;
   SysCall xSysCall;
   s256 sSize;
   
-  Magnitudes::vMagnitude(gxArguments.m_iRegionSize, sSize);
+  Magnitudes::vMagnitude(iRegionSize, sSize);
 
   vTrace("Creating RapidsSE instance %s; size %s (%lldB)...\n"_Str,
          sRegionName.s(),
