@@ -335,6 +335,8 @@ Entry* IndexBuffer::aRightEntry(Entry* aEntry, i8 iLevel)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
+  Entry* aRightEntry;
+  
   /*
    
   1) entries are in key order within a given buffer
@@ -351,17 +353,22 @@ Entry* IndexBuffer::aRightEntry(Entry* aEntry, i8 iLevel)
   // the caller must request a valid right entry of pEntry
   ASSERT(iLevel >= 0 && iLevel <= aEntry->nLevels());
 
-  // get right entry
-  Entry* aRightEntry;
   if (0 == iLevel) {
     // for level 0, the right entry is the next entry
     aRightEntry = aNextEntry(aEntry);
   }
   else {
-    // for levels 1 & 2 the right entry is m_xWsp + rightOffset[iLevelSub]
+    // for levels 1 & 2 the right entry is m_xWsp + rightOffset[iRight]
     i8 iRightOffset = aEntry->uRightOffset(iLevel);
-    aRightEntry = pAdd<Entry*>(&m_xWsp,iRightOffset);
+    if (C_NIL_OFFSET == iRightOffset)
+      aRightEntry = nullptr;
+    else
+      aRightEntry = pAdd<Entry*>(&m_xWsp,iRightOffset);
   }
+ 
+  ASSERT( ! aRightEntry ||
+          ( aRightEntry > aHead() &&
+            aRightEntry < _aEntry(m_xWsp.aLatter()) ) );
   
   return aRightEntry;
 }
