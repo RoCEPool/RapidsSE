@@ -101,6 +101,8 @@ i8 EntWsp::nKeySize(void)
 /*----------------------------------------------------------------------------*/
 u8 EntWsp::nLevels(void)
 {
+  ASSERT(m_nLevels >= 0 && m_nLevels < C_FLAT_LEVELS);
+  
   return m_nLevels;
 }
 
@@ -189,6 +191,9 @@ RightVec* EntWsp::aRightVec(void)
 /*----------------------------------------------------------------------------*/
 i8 EntWsp::nRightSize(void)
 {
+  ASSERT(m_nLevels >= 0 && m_nLevels < C_FLAT_LEVELS);
+  ASSERT(m_nLevels >= 0 && m_nLevels < C_FLAT_LEVELS);
+
   i8 nBytes = RightVec::nBytesRequired(m_nLevels);
   
   return nBytes;
