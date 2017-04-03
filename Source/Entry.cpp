@@ -75,7 +75,7 @@ void* Entry::operator new(size_t iSize, Entry* aEntry)
 Entry::Entry(EntWsp& xEntWsp)
 : Object(CN_ENTRY)
 {
-  _precondition_(_MAGIC_,CN_ENTRY);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY);
   
   vSetEntry(xEntWsp);
   
@@ -92,7 +92,7 @@ Entry::Entry(EntWsp& xEntWsp)
 Entry::Entry(i8 nBytes, i8 nLevels)                   //! should we pass EntWsp?
 : Object(CN_ENTRY)
 {
-  _precondition_(_MAGIC_,CN_ENTRY);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY);
   
   // initialise bytes
   m_nBytes  = nBytes;
@@ -117,7 +117,7 @@ Entry::Entry(i8 nBytes, i8 nLevels)                   //! should we pass EntWsp?
 /*----------------------------------------------------------------------------*/
 Entry::~Entry(void)
 {
-  _precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -125,7 +125,7 @@ Entry::~Entry(void)
 /*----------------------------------------------------------------------------*/
 void Entry::vShow(void)
 {
-  _precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
   
   Key* aKey = this->aKey();
   
@@ -162,7 +162,7 @@ void Entry::vShow(void)
 /*----------------------------------------------------------------------------*/
 EntryData* Entry::aEntryData(void)
 {
-  _precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
   
   EntryData* aEntryData = pAdd<EntryData*>(this,sizeof(Entry));
   
@@ -174,7 +174,7 @@ EntryData* Entry::aEntryData(void)
 /*----------------------------------------------------------------------------*/
 Key* Entry::aKey(void)
 {
-  _precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
 
   EntryData* pEntryData = this->aEntryData();
 
@@ -188,7 +188,7 @@ Key* Entry::aKey(void)
 /*----------------------------------------------------------------------------*/
 u8 Entry::nLevels(void)
 {
-  _precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
   
   return m_nLevels;
 }
@@ -198,7 +198,7 @@ u8 Entry::nLevels(void)
 /*----------------------------------------------------------------------------*/
 u8 Entry::uRight(u8 iLevel)
 {
-  _precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
   
   EntryData* aEntryData = this->aEntryData();
   
@@ -216,7 +216,7 @@ u8 Entry::uRight(u8 iLevel)
 /*----------------------------------------------------------------------------*/
 void Entry::vRight(u8 iLevel, u8 uRight)
 {
-  _precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
   
   EntryData* aEntryData = this->aEntryData();
   
@@ -230,7 +230,7 @@ void Entry::vRight(u8 iLevel, u8 uRight)
 /*----------------------------------------------------------------------------*/
 RightVec* Entry::aRightVec(void)
 {
-  _precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
   
   RightVec* aRightVec = pAdd<RightVec*>(this,sizeof(Entry));
   
@@ -242,7 +242,7 @@ RightVec* Entry::aRightVec(void)
 /*----------------------------------------------------------------------------*/
 RowId& Entry::xRowId(void)
 {
-  _precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
   
   // return reference to the RowId inherited class
   //return dynamic_cast<RowId&>(*this);
@@ -255,7 +255,7 @@ RowId& Entry::xRowId(void)
 /*----------------------------------------------------------------------------*/
 void Entry::vSetEntry(EntWsp& xEntWsp)
 {
-  _precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
 
   // set Bytes
   m_nBytes = nBytesRequired(xEntWsp);
@@ -288,7 +288,7 @@ void Entry::vSetEntry(EntWsp& xEntWsp)
 /*----------------------------------------------------------------------------*/
 i8 Entry::nSize(void)
 {
-  _precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
   
   return m_nBytes;
 }
@@ -302,7 +302,7 @@ i8 Entry::nSize(void)
 /*----------------------------------------------------------------------------*/
 Footer* Entry::pFooter(void)
 {
-  _precondition_(_MAGIC_,CN_ENTRY);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY);
   
   i8 iFooterOffset = m_nBytes - sizeof(Footer);
   
