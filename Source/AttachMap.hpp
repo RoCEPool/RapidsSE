@@ -13,6 +13,7 @@ namespace StorageEngine
     Time          m_xTime;
     s32           m_sUTC;
     
+    s256         m_sRegionName;
     i8            m_iRegionSize;
         
     i8            m_iEpoch;
@@ -47,7 +48,7 @@ namespace StorageEngine
     ~AttachMap(void);
     
     void vGetGlobals(void);
-    void vRecordGlobals(i8 iRegionSize);
+    void vRecordGlobals(Str* sRegionName, i8 iRegionSize);
     
     static void vDump(eCN eClass, Object* pObject, Str* aTab);
     

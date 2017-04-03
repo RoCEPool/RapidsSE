@@ -8,7 +8,6 @@ extern AttachMap* gpAttachMap;
 extern Heap* gpMediumHeap;
 extern Heap* gpSmallHeap;
 extern Heap* gpJumboHeap;
-extern Arguments gxArguments;
 
 extern Atomic gzDirOpenCount;
 extern Atomic gzFileOpenCount;
@@ -356,7 +355,7 @@ void BPA::vPoolDump(void)
 /*----------------------------------------------------------------------------*/
 /* report on shm region                                                       */
 /*----------------------------------------------------------------------------*/
-void BPA::vRegionSummary(void)
+void BPA::vRegionSummary()
 {
   _precondition_(_MAGIC_,CN_BPA,_FOOTER_);
   
@@ -368,9 +367,9 @@ void BPA::vRegionSummary(void)
   
   vTrace("\n"_Str);
   vTrace("  Region %s %p size %lldB epoch %lld\n"_Str,
-         gxArguments.m_sRegionName.s(),
+         gpAttachMap->m_sRegionName.s(),
          gpBufferPool,
-         gxArguments.m_iRegionSize,
+         gpAttachMap->m_iRegionSize,
          gpAttachMap->m_iEpoch);
   
   vTrace("\n"_Str);
