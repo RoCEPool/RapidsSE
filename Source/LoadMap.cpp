@@ -7,7 +7,7 @@
 #include "StorageEngine.h"
 
 extern Heap* gpJumboHeap;
-extern Arguments gxArguments;
+extern bool gbProgress;
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
@@ -165,7 +165,7 @@ void LoadMap::vChunkTest(void)
   
   while (bNextChunk(iSeek,nBytes,iChunk,nChunks)) {
     
-    if (gxArguments.m_bProgress) {
+    if (gbProgress) {
       if (0 == iChunk % 1000) {
         vInfo("chunk %lld of %lld        \r"_Str,iChunk,nChunks);
         fflush(stdout);

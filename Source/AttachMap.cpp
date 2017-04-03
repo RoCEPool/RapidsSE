@@ -21,6 +21,7 @@ extern SEitfList*   gpSEitfList;
 extern Arguments    gxArguments;
 extern bool         gbVerbose;
 extern bool         gbTracepoint;
+extern bool         gbProgress;
 
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
@@ -89,6 +90,7 @@ void AttachMap::vGetGlobals(void)
   gpSEitfList    = m_pSEitfList;
   gbVerbose      = m_bVerbose;
   gbTracepoint   = m_bTracepoint;
+  gbProgress     = m_bProgress;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -123,6 +125,7 @@ void AttachMap::vRecordGlobals(void)
   m_pPlanList     = gpPlanList;
   m_pSEitfList    = gpSEitfList;
   m_bVerbose      = gbVerbose;
+  m_bProgress     = gbProgress;
   
   m_iStop       = 0;
   m_iQuit       = 0;

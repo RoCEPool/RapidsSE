@@ -6,8 +6,8 @@
 
 #include "StorageEngine.h"
 
-extern Arguments gxArguments;
-extern Grid*     gpGrid;
+extern Grid*  gpGrid;
+extern bool   gbProgress;
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
@@ -214,7 +214,7 @@ void LoaderSub::vHashRecord(void)
   
   // hash the field using xxhash
   //m_iHash = XXH32(m_aRecord,iLength,0);
-  //m_iPartition = m_iHash % (gxArguments.m_nSlots * gpGrid->iNodes());
+  //m_iPartition = m_iHash % (gpGrid->iSlots() * gpGrid->iNodes());
   
   m_iPartition = m_pTable->iRowPartition(m_aRecord);
 }
@@ -347,7 +347,7 @@ bool LoaderSub::bReadChunk(void)
     //vTrace("Waiting for map\n"_Str);
   }
   
-  if (gxArguments.m_bProgress) {
+  if (gbProgress) {
     if (0 == iChunk % 1000) {
       vInfo("read chunk %lld of %lld        \r"_Str,iChunk,nChunks);
       fflush(stdout);

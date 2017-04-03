@@ -9,6 +9,7 @@
 extern AttachMap*  gpAttachMap;
 extern Arguments   gxArguments;
 extern BufferPool* gpBufferPool;
+extern bool        gbProgress;
 
 /*----------------------------------------------------------------------------*/
 /* new operator                                                               */
@@ -321,7 +322,7 @@ void BufferPool::vInitialise(void)
   bn nBuffer = nBufferFirst();
   while (bn::nNil() != nBuffer) {
     
-    if (gxArguments.m_bProgress) {
+    if (gbProgress) {
       iBufferMod = *nBuffer % 1000;
       if (! iBufferMod) {
         vInfo("buffer %lld of %lld             \r"_Str,*nBuffer,*nBufferLast());
@@ -354,7 +355,7 @@ void BufferPool::vInitialise(void)
   pLastBuffer->vBufferNo(nBufferLast());
   pLastBuffer->vNextFree(bn::nNil());
   
-  if (gxArguments.m_bProgress)
+  if (gbProgress)
     vInfo("\n"_Str);
   
   //vDump();

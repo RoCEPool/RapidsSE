@@ -36,6 +36,7 @@ void*               mpRegion           = nullptr;
 
 bool                gbVerbose          = false;
 bool                gbTracepoint       = false;
+bool                gbProgress         = false;
 
 Lock                gxDdlLock;
 Lock                gxDicLock;
