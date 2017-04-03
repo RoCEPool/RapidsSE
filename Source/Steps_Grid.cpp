@@ -105,7 +105,7 @@ ENTRY("vGridInit"_Str);
   Grid* pGrid = _pGrid(pPtrGrid);
   ASSERT(CN_GRID == pGrid->eClass());
   
-  new(pGrid) Grid;
+  new(pGrid) Grid(gxArguments.m_nNodes, gxArguments.m_nSlots);
   
   EXIT();
 }

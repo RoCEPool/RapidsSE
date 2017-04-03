@@ -208,7 +208,7 @@ bool BufferPool::bDetachPool(void)
   
   bool bResult = Shm::bClose(m_iShmFD,xSysCall);
   
-  bResult = Shm::bUnmap(m_pBase,gxArguments.m_iRegionSize,xSysCall);
+  bResult = Shm::bUnmap(m_pBase,gpAttachMap->m_iRegionSize,xSysCall);
   
   return bResult;
 }

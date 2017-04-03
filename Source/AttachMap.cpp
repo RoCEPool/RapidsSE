@@ -96,7 +96,7 @@ void AttachMap::vGetGlobals(void)
 /*----------------------------------------------------------------------------*/
 /* record all the needed globals                                              */
 /*----------------------------------------------------------------------------*/
-void AttachMap::vRecordGlobals(Str* aRegionName, i8 iRegionSize)
+void AttachMap::vRecordGlobals(Str* aRegionName, i8 iRegionSize, i8 iJumboSize)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ATTACHMAP,_FOOTER_);
 
@@ -111,6 +111,7 @@ void AttachMap::vRecordGlobals(Str* aRegionName, i8 iRegionSize)
   
   m_sRegionName = aRegionName;
   m_iRegionSize = iRegionSize;
+  m_iJumboSize  = iJumboSize;
   m_iEpoch      = 0;
   
   m_pBufferPool = gpBufferPool;

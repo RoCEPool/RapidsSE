@@ -6,8 +6,6 @@
 //#include "Tasks.h"
 #include "SePrompt.hpp"
 
-extern Arguments       gxArguments;
-
 extern AttachMap*      gpAttachMap;
 extern BufferPool*     gpBufferPool;
 extern Heap*           gpMediumHeap;
@@ -179,8 +177,8 @@ void Task::vInUseSpace(NNP_Task nnpTask)
 {
   ENTRY("vInUseSpace"_Str);
   
-  i8 iInUseSpace = gxArguments.m_iRegionSize
-                     - gxArguments.m_iJumboSize
+  i8 iInUseSpace = gpAttachMap->m_iRegionSize
+                     - gpAttachMap->m_iJumboSize
                      - gpBufferPool->iFreeSpace();
   
   nnpTask->m_pDataStack->vPush(iInUseSpace);
@@ -229,7 +227,7 @@ void Task::vTotalSpace(NNP_Task nnpTask)
 {
   ENTRY("vTotalSpace"_Str);
   
-  i8 iTotalSpace = gxArguments.m_iRegionSize - gxArguments.m_iJumboSize;
+  i8 iTotalSpace = gpAttachMap->m_iRegionSize - gpAttachMap->m_iJumboSize;
   
   nnpTask->m_pDataStack->vPush(iTotalSpace);
   

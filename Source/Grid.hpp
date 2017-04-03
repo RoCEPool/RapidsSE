@@ -27,7 +27,7 @@ namespace GridModel
     void* operator new(size_t, Grid* pGrid);
     void  operator delete(void*);
     
-    Grid(void);
+    Grid(i8 nNodes, i8 nSlots);
     ~Grid(void);
     
     static void vDump(eCN eClass, Object* pObject, Str* aTab);
@@ -36,7 +36,7 @@ namespace GridModel
     bool bHasStarted(void);
     Node* pFindNode(Str* pName);
     Node* pFindNode(i8 iNode);
-    void vInit(void);
+    void vInit(i8 nNodes, i8 nSlots);
     i8   iNodes(void);
     i8   iSlots(void);
     void vStartNode(i8 iStartNode);

@@ -7,7 +7,6 @@
 #include "StorageEngine.h"
 
 extern Grid* gpGrid;
-extern Arguments gxArguments;
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
@@ -44,14 +43,14 @@ void Grid::operator delete(void* pBufferAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Grid::Grid(void)
+Grid::Grid(i8 nNodes, i8 nSlots)
 : Object(CN_GRID)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
   
   gpGrid = this;
   
-  vInit();
+  vInit(nNodes, nSlots);
   
   _checkInitialised_(CN_GRID);
   
@@ -69,16 +68,16 @@ Grid::~Grid(void)
 /*----------------------------------------------------------------------------*/
 /* init                                                                       */
 /*----------------------------------------------------------------------------*/
-void Grid::vInit(void)
+void Grid::vInit(i8 nNodes, i8 nSlots)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
   
-  m_nNodes      = gxArguments.m_nNodes;
+  m_nNodes      = nNodes;
   m_iThisNode   = -1;
   m_pThisNode   = nullptr;
   m_iStartNode  = -1;
   m_bHasStarted = false;
-  m_nSlots      = gxArguments.m_nSlots;
+  m_nSlots      = nSlots;
   m_nPartitions = m_nSlots * m_nNodes;
     
   // initialize the partition array
@@ -234,7 +233,7 @@ void Grid::vThisNode(i8 iNode)
   m_pThisNode = pFindNode(iNode);
   
   // now initialize the array of partition numbers on this node
-  for (i8 iSlot = 0; iSlot < gxArguments.m_nSlots; iSlot++) {
+  for (i8 iSlot = 0; iSlot < m_nSlots; iSlot++) {
     m_iPartition[iSlot] = Partition::iSlotToPartition(iSlot);
   }
 
