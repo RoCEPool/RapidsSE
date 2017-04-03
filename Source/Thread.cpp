@@ -12,8 +12,6 @@ extern TaskList*    gpTaskList;
 
 extern NP_Task      gnpRootTask;
 
-extern Arguments    gxArguments;
-
 extern bool         gbVerbose;
 
 extern pthread_key_t  giTLS_TaskKey;
