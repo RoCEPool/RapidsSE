@@ -9,7 +9,7 @@ namespace StorageEngine
   {
   public:
     // configuration
-    void* m_pRegionAddr; // use this address for region
+    //void* m_pRegionAddr; // use this address for region
     s256  m_sRegionName; // name of shared memory region
     s256  m_sRegionPrefix; // prefix of the shared memory region name
     i8    m_iRegionSize; // size of region in bytes
