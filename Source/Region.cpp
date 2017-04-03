@@ -4,7 +4,6 @@
 
 #include "StorageEngine.h"
 
-extern Arguments  gxArguments;
 extern AttachMap* gpAttachMap;
 extern void*      mpRegion;
 
@@ -15,13 +14,13 @@ extern void* C_ADDR_POOL;
 /*----------------------------------------------------------------------------*/
 /* attach to an existing shm region                                           */
 /*----------------------------------------------------------------------------*/
-bool Region::bAttach(StrVal& sRegionName)
+bool Region::bAttach(StrVal& sRegionName, bool bWecome)
 {
   int iFD;
   SysCall xSysCall;
   bool bResult;
   
-  if (gxArguments.m_bWelcome)
+  if (bWecome)
     vTrace("Attaching to SE instance %s\n"_Str,sRegionName.s());
   
   // open existing shm region

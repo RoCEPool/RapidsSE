@@ -163,7 +163,7 @@ void RapidsSE::vPoolOpen(void)
       exit(EXIT_FAILURE);
       return;
     }
-    bResult = Region::bAttach(gxArguments.m_sRegionName);
+    bResult = Region::bAttach(gxArguments.m_sRegionName, gxArguments.m_bWelcome);
     ASSERT(bResult);
     vAttachObjects();
     return;
@@ -175,13 +175,13 @@ void RapidsSE::vPoolOpen(void)
       exit(EXIT_FAILURE);
       return;
     }
-    bResult = Region::bAttach(gxArguments.m_sRegionName);
+    bResult = Region::bAttach(gxArguments.m_sRegionName, gxArguments.m_bWelcome);
     ASSERT(bResult);
     vAttachObjects();
     return;
   }
   
-  bResult = Region::bAttach(gxArguments.m_sRegionName);
+  bResult = Region::bAttach(gxArguments.m_sRegionName, gxArguments.m_bWelcome);
   ASSERT(bResult);
   vAttachObjects();
   //vTrace("Error: RapidsSE missing arguments\n"_Str);
@@ -193,7 +193,7 @@ void RapidsSE::vPoolOpen(void)
 /*----------------------------------------------------------------------------*/
 bool RapidsSE::bPoolOpen(StrVal& sPoolName)
 {
-  bool bResult = Region::bAttach(sPoolName);
+  bool bResult = Region::bAttach(sPoolName, gxArguments.m_bWelcome);
   if (!bResult)
     return bResult;
   
@@ -434,7 +434,7 @@ void RapidsSE::vSystemStatus(void)
   if (Region::bTest(gxArguments.m_sRegionName)) {
     
     // attach to teh region
-    bool bResult = Region::bAttach(gxArguments.m_sRegionName);
+    bool bResult = Region::bAttach(gxArguments.m_sRegionName, gxArguments.m_bWelcome);
     ASSERT(bResult);
     
     // get globals
