@@ -6,7 +6,7 @@
 
 #include "StorageEngine.h"
 
-extern Arguments gxArguments;
+extern Grid* gpGrid;
 
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
@@ -39,7 +39,7 @@ Slots::Slots(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SLOTS,_FOOTER_);
   
   // initialize the partitionId's in the slots
-  for (i8 iSlot = 0; iSlot < gxArguments.m_nSlots; iSlot++) {
+  for (i8 iSlot = 0; iSlot < gpGrid->iSlots(); iSlot++) {
     
     i8 iPartition = Partition::iSlotToPartition(iSlot);
     m_xPartition[iSlot].vPartitionId(iPartition);
@@ -76,7 +76,7 @@ void Slots::vTruncate(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SLOTS,_FOOTER_);
   i8 iPartn;
-  for (iPartn = 0; iPartn < gxArguments.m_nSlots; iPartn++)
+  for (iPartn = 0; iPartn < gpGrid->iSlots(); iPartn++)
     m_xPartition[iPartn].pData()->vTruncate();
 }
 
