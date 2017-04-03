@@ -14,7 +14,9 @@
 i8 Entry::nBytesRequired(EntWsp& xEntWsp)
 {
   i8 nLevels = xEntWsp.nLevels();
+  
   i8 nKeyBytes = xEntWsp.nKeySize();
+  
   i8 nBytes = Entry::nBytesRequired(nLevels,nKeyBytes);
   
   return nBytes;
@@ -77,13 +79,13 @@ Entry::Entry(EntWsp& xEntWsp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY);
   
-  vSetEntry(xEntWsp);
-  
   _setFooter_();
+
+  vSetEntry(xEntWsp);
   
   _checkInitialised_(CN_ENTRY);
   
-  _postcondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
