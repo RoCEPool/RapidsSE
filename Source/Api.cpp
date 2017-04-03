@@ -136,9 +136,6 @@ eEC RapidsSE_CheckLibraryVersion(Str* pVersion, i8 iTraceLevel)
   try {
     //TRACE_ENTRY_P1(pVersion);
     
-    // clear the last error
-    //CLEAR_LASTERROR();
-    
     // validate the parameter
     VALIDATE_PARAM("a"_Str, pVersion);
     
@@ -1163,41 +1160,25 @@ eEC RapidsSE_SEitfNew(void** ppSEitf, i8 iPartition, i8 iTraceLevel)
   
   try {
     
-    vTrace("aa\n"_Str);
-    
-    // trace entry
+     // trace entry
     TRACE_ENTRY_P0();
-    
-    vTrace("ab\n"_Str);
     
     // valide reference pointer
     VALIDATE_REFPOINTER("a"_Str, ppSEitf);
     
-    vTrace("ac\n"_Str);
-    
     SEitf* pSEitf = new SEitf(iPartition);
     
-    vTrace("ad\n"_Str);
-    
     pSEitf->vInit();
-    
-    vTrace("ae\n"_Str);
     
     // validate the SEitf just created
     VALIDATE_SEITF("b"_Str);
     
-    vTrace("af\n"_Str);
-    
     // return the newly created SEitf
     *ppSEitf = pSEitf;
-    
-    vTrace("ag\n"_Str);
     
     // trace exit
     TRACE_EXIT("ea"_Str);
 
-    vTrace("ah\n"_Str);
-    
     return EC_NONE;
     
   }
