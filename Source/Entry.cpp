@@ -147,10 +147,10 @@ void Entry::vShow(void)
          iKey
          );
   
-  for (i8 iIndex=0; iIndex< m_nLevels - 1; iIndex++) {
+  for (i8 iRight=0; iRight< m_nLevels - 1; iRight++) {
     vTrace("L%lld: %lld "_Str,
-           iIndex+1,
-           uRight(iIndex));
+           iRight,
+           uRightOffset(iRight));
   }
   
   vTrace("\n"_Str);
@@ -199,7 +199,7 @@ u8 Entry::nLevels(void)
 /*----------------------------------------------------------------------------*/
 /* get right offset for given level                                           */
 /*----------------------------------------------------------------------------*/
-u8 Entry::uRight(u8 iLevel)
+u8 Entry::uRightOffset(u8 iLevel)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
   
@@ -217,7 +217,7 @@ u8 Entry::uRight(u8 iLevel)
 /*----------------------------------------------------------------------------*/
 /* set right offset for given level                                           */
 /*----------------------------------------------------------------------------*/
-void Entry::vRight(u8 iLevel, u8 uRight)
+void Entry::vRightOffset(u8 iLevel, u8 uRight)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
   

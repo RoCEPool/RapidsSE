@@ -31,8 +31,8 @@ namespace DBobjects
     EntryData* aEntryData(void);
     Key*   aKey(void);
     u8     nLevels(void);
-    u8     uRight(u8 iLevel);
-    void   vRight(u8 iLevel, u8 uRight);
+    u8     uRightOffset(u8 iLevel);
+    void   vRightOffset(u8 iLevel, u8 uOffset);
     RightVec* aRightVec(void);
     RowId& xRowId(void);
     void   vSetEntry(EntWsp& xEntWsp);

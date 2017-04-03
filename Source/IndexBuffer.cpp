@@ -359,7 +359,7 @@ Entry* IndexBuffer::aRightEntry(Entry* aEntry, i8 iLevel)
   }
   else {
     // for levels 1 & 2 the right entry is m_xWsp + rightOffset[iLevelSub]
-    i8 iRightOffset = aEntry->uRight(iLevel);
+    i8 iRightOffset = aEntry->uRightOffset(iLevel);
     aRightEntry = pAdd<Entry*>(&m_xWsp,iRightOffset);
   }
   
