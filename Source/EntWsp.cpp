@@ -44,8 +44,8 @@ EntWsp::EntWsp(void)
   ASSERT(m_nLevels >= 0 && m_nLevels < C_FLAT_LEVELS);
 
   // set all right offsets to nil
-  for (i8 iLevel = 0; iLevel < C_FLAT_LEVELS - 1; iLevel++)
-    m_uRight[iLevel] = C_NIL_OFFSET;
+  for (i8 iRight = 0; iRight < C_FLAT_LEVELS - 1; iRight++)
+    m_uOffset[iRight] = C_NIL_OFFSET;
   
   // the key wsp will have initialised by its constructor
   // m_xKeyWsp
@@ -107,25 +107,25 @@ u8 EntWsp::nLevels(void)
 /*----------------------------------------------------------------------------*/
 /* get right offset at level                                                  */
 /*----------------------------------------------------------------------------*/
-u8 EntWsp::nRight(u8 iLevel)
+u8 EntWsp::uRightOffset(u8 iLevel)
 {
   ASSERT(iLevel > 0 && iLevel < C_FLAT_LEVELS);
  
   i8 iRight = iLevel - 1;
   
-  return m_uRight[iRight];
+  return m_uOffset[iRight];
 }
 
 /*----------------------------------------------------------------------------*/
 /* set right offset at level                                                  */
 /*----------------------------------------------------------------------------*/
-void EntWsp::vRight(u8 iLevel, u8 uRight)
+void EntWsp::vRightOffset(u8 iLevel, u8 uRight)
 {
   ASSERT(iLevel > 0 && iLevel < C_FLAT_LEVELS);
   
   i8 iRight = iLevel - 1;
   
-  m_uRight[iRight] = uRight;
+  m_uOffset[iRight] = uRight;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -160,10 +160,10 @@ void EntWsp::vShow(void)
          m_nLevels
          );
   
-  for (i8 iIndex = 0; iIndex < m_nLevels - 1; iIndex++)
-    vTrace("L%lld: %lld "_Str,
-           iIndex + 1,
-           nRight(iIndex)
+  for (i8 iRight = 0; iRight < m_nLevels - 1; iRight++)
+    vTrace("R%lld: %lld "_Str,
+           iRight,
+           uRightOffset(iRight)
            );
   
   vTrace("key (size:%lld value:%lld) "_Str,

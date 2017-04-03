@@ -12,8 +12,8 @@ namespace DBobjects
     i8     m_nLevels;  // number of levels (0, 1 or 2)
     union {
       RightVec m_xRight; // right vector
-      u8       m_uRight[C_FLAT_LEVELS - 1]; // right offsets
-                                            // we don't hold offset for level 0
+      u8       m_uOffset[C_FLAT_LEVELS - 1]; // right offsets
+                                             // no offset for level 0
     };
     union {
       Key              m_xKey;    // key
@@ -32,8 +32,8 @@ namespace DBobjects
     Key*   aKey(void);
     i8     nKeySize(void);
     u8     nLevels(void);
-    u8     nRight(u8 iLevel);
-    void   vRight(u8 iLevel, u8 uRight);
+    u8     uRightOffset(u8 iLevel);
+    void   vRightOffset(u8 iLevel, u8 uRight);
     RowId& xRowId(void);
     void   vRowId(RowId& xRowId);
     void   vShow(void);
