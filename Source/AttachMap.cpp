@@ -20,6 +20,7 @@ extern PlanList*    gpPlanList;
 extern SEitfList*   gpSEitfList;
 extern Arguments    gxArguments;
 extern bool         gbVerbose;
+extern bool         gbTracepoint;
 
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
@@ -87,6 +88,7 @@ void AttachMap::vGetGlobals(void)
   gpPlanList     = m_pPlanList;
   gpSEitfList    = m_pSEitfList;
   gbVerbose      = m_bVerbose;
+  gbTracepoint   = m_bTracepoint;
 }
 
 /*----------------------------------------------------------------------------*/

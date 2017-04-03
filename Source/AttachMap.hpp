@@ -30,6 +30,7 @@ namespace StorageEngine
     SEitfList*    m_pSEitfList;
     
     bool          m_bVerbose;
+    bool          m_bTracepoint;
    
     i8            m_iQuit;
     i8            m_iStop;

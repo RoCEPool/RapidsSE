@@ -9,6 +9,7 @@
 extern Arguments gxArguments;
 extern Grid*     gpGrid;
 extern bool      gbVerbose;
+extern bool      gbTracepoint;
 
 void vTest1(void);
 
@@ -60,7 +61,7 @@ int main(int argc, const char* argv[])
 
   // set globals from gxArguments
   gbVerbose = gxArguments.m_bVerbose;
-  
+  gbTracepoint = gxArguments.m_bTracepoint;
   
   //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   /*

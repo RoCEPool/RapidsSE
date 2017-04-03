@@ -27,6 +27,8 @@ extern Lock            gxDdlLock;
 extern Lock            gxDicLock;
 extern SEitfList*      gpSEitfList;
 
+extern bool            gbTracepoint;
+
 // socket: /////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
@@ -329,7 +331,7 @@ void Task::vSocketRecv(NNP_Task nnpTask)
   
   pSocket = reinterpret_cast<Socket*>(pObject);
   
-  if (gxArguments.m_bTracepoint)
+  if (gbTracepoint)
     vTrace("[N%lld:%8s\\%lld %-11s] receiving on %lld\n"_Str,
            gpGrid->iThisNode(),
            nnpTask->m_sName.s(),

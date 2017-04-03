@@ -7,6 +7,7 @@
 #include "StorageEngine.h"
 
 extern Arguments gxArguments;
+extern bool gbTracepoint;
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
@@ -206,7 +207,7 @@ bool ValSet::bHasRowBuffer(void)
   while (bExtract(pCursor, eClassNo, pValWsp)) {
     
     if (CN_ROWBUFFER == eClassNo) {
-      if (gxArguments.m_bTracepoint)
+      if (gbTracepoint)
         vTrace("HAS ROW BUFFER\n"_Str);
       return true;
     }

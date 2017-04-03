@@ -26,6 +26,7 @@ extern StepBoard*      gpStepBoard;
 extern Lock            gxDdlLock;
 extern Lock            gxDicLock;
 extern SEitfList*      gpSEitfList;
+extern bool            gbTracepoint;
 
 // trace: //////////////////////////////////////////////////////////////////////
 
@@ -76,7 +77,7 @@ void Task::vTracePoint(NNP_Task nnpTask)
   if ( ! nnpTask->m_pDataStack->bPop(sPointName) )
     THROW_INVALID_DSTACK("tracePoint"_Str);
   
-  if (gxArguments.m_bTracepoint)
+  if (gbTracepoint)
     nnpTask->vTracePoint(sPointName);
   
   EXIT();
