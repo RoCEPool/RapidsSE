@@ -109,7 +109,7 @@ Entry::Entry(i8 nBytes, i8 nLevels)                   //! should we pass EntWsp?
   
   _checkInitialised_(CN_ENTRY);
   
-  _postcondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -223,6 +223,8 @@ void Entry::vRight(u8 iLevel, u8 uRight)
   RightVec* aRightVec = aEntryData->aRightVec(m_nLevels);
 
   aRightVec->vRight(iLevel,uRight);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -281,6 +283,8 @@ void Entry::vSetEntry(EntWsp& xEntWsp)
   i8 nKeyBytes = xEntWsp.nKeySize();
   
   MemLib::vCopy(aEntryKey,aEntWspKey,nKeyBytes);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
