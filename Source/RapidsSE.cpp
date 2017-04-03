@@ -34,6 +34,8 @@ StepBoard*          gpStepBoard        = nullptr;
 
 void*               mpRegion           = nullptr;
 
+bool                gbVerbose          = false;
+
 Lock                gxDdlLock;
 Lock                gxDicLock;
 
@@ -218,7 +220,7 @@ void RapidsSE::vAttachObjects(void)
   // get pointers to global objects from attach map
   gpAttachMap->vGetGlobals();
   
-  if (gxArguments.m_bVerbose)
+  if (gbVerbose)
     AttachMap::vDump(CN_ATTACHMAP, gpAttachMap, aSingleTab());
 }
 
@@ -242,14 +244,14 @@ void RapidsSE::vCreateObjects(void)
 /*----------------------------------------------------------------------------*/
 void RapidsSE::vDicCompile(NP_Task npRootTask)
 {
-  if (gxArguments.m_bVerbose)
+  if (gbVerbose)
     vTrace("[[mainThread]] DicCompile...\n"_Str);
   
   npRootTask->vInitialiseMain();
   
   npRootTask->vSeedDicCompileSen();
   
-  if (gxArguments.m_bVerbose)
+  if (gbVerbose)
     vTrace("[[mainThread]] RapidsSE::vDicCompile running [%s] %p\n"_Str,
            npRootTask->sName().s(),
            *npRootTask);
@@ -395,17 +397,17 @@ void RapidsSE::vSystemInit(void)
 /*----------------------------------------------------------------------------*/
 void RapidsSE::vStartActors(void)
 {
-  if (gxArguments.m_bVerbose)
+  if (gbVerbose)
     vTrace("Shm region initialised at: %s\n"_Str,gpAttachMap->m_sUTC.s());
 
-  if (gxArguments.m_bVerbose)
+  if (gbVerbose)
     vTrace("Starting actors\n"_Str);
 
   
   // seed root task to start the system
   gnpRootTask->vSeedWord("startActors"_Str);
   
-  if (gxArguments.m_bVerbose)
+  if (gbVerbose)
     vTrace("[[mainThread]] RapidsSE::vStartActors launching [%s] %p\n"_Str,
          gnpRootTask->sName().s(),
            *gnpRootTask);
@@ -468,7 +470,7 @@ void RapidsSE::vSystemStop(void)
 /*----------------------------------------------------------------------------*/
 void RapidsSE::vWaitFlag(void)
 {
-  if (gxArguments.m_bVerbose)
+  if (gbVerbose)
     vTrace("[[mainThread]] Waiting on stop %s\n"_Str,"..."_Str);
 
   // this primary thread waits for flag indicationg systems is to stop

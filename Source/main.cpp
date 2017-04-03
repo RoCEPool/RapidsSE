@@ -8,6 +8,7 @@
 
 extern Arguments gxArguments;
 extern Grid*     gpGrid;
+extern bool      gbVerbose;
 
 void vTest1(void);
 
@@ -57,6 +58,9 @@ int main(int argc, const char* argv[])
            Process::iGetPid()
            );
 
+  // set globals from gxArguments
+  gbVerbose = gxArguments.m_bVerbose;
+  
   
   //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   /*

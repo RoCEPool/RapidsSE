@@ -6,7 +6,6 @@
 
 #include "StorageEngine.h"
 
-extern Arguments    gxArguments;
 extern Grid*        gpGrid;
 extern AttachMap*   gpAttachMap;
 

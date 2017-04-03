@@ -8,6 +8,8 @@ extern Arguments  gxArguments;
 extern AttachMap* gpAttachMap;
 extern void*      mpRegion;
 
+extern bool      gbVerbose;
+
 extern void* C_ADDR_POOL;
 
 /*----------------------------------------------------------------------------*/
@@ -80,7 +82,7 @@ bool Region::bAttach(StrVal& sRegionName)
   // overlay buffer pool onto 1st buffer (buffer #0)
   gpBufferPool = reinterpret_cast<BufferPool*>(mpRegion);
   
-  if (gxArguments.m_bVerbose)
+  if (gbVerbose)
     vTrace("Shm mapped at %p\n"_Str,mpRegion);
   
   return true;
@@ -102,7 +104,7 @@ void Region::vCreate(StrVal& sRegionName)
          sSize.s(),
          gxArguments.m_iRegionSize);
   
-  if (gxArguments.m_bVerbose)
+  if (gbVerbose)
     vTrace("Region::vCreate A\n"_Str);
   
   // open a new shm region
@@ -112,7 +114,7 @@ void Region::vCreate(StrVal& sRegionName)
                               gxArguments.m_bRestart,
                               xSysCall);
 
-  if (gxArguments.m_bVerbose)
+  if (gbVerbose)
     vTrace("Region::vCreate B\n"_Str);
   
   if ( ! bResult ) {
@@ -129,7 +131,7 @@ void Region::vCreate(StrVal& sRegionName)
                        false,
                        xSysCall);
   
-  if (gxArguments.m_bVerbose)
+  if (gbVerbose)
     vTrace("Region::vCreate C; mpRegion=%p\n"_Str,mpRegion);
   
   if ( ! mpRegion )  {
@@ -138,15 +140,15 @@ void Region::vCreate(StrVal& sRegionName)
     ASSERT(0);
   }
   
-  if (gxArguments.m_bVerbose)
+  if (gbVerbose)
     vTrace("Region::vCreate D\n"_Str);
   
   gpBufferPool = new(mpRegion) BufferPool;
 
-  if (gxArguments.m_bVerbose)
+  if (gbVerbose)
     vTrace("Region::vCreate E\n"_Str);
   
-  if (gxArguments.m_bVerbose)
+  if (gbVerbose)
     vTrace("Shm mapped at %p\n"_Str,mpRegion);
   
   // lock the shared memory in
@@ -166,7 +168,7 @@ void Region::vCreate(StrVal& sRegionName)
     }
   }
   
-  if (gxArguments.m_bVerbose)
+  if (gbVerbose)
     vTrace("Shm pages locked in memory\n"_Str);
 }
 

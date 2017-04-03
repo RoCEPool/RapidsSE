@@ -14,6 +14,8 @@ extern NP_Task      gnpRootTask;
 
 extern Arguments    gxArguments;
 
+extern bool         gbVerbose;
+
 extern pthread_key_t  giTLS_TaskKey;
 extern pthread_key_t  giTLS_ThreadKey;
 
@@ -89,7 +91,7 @@ void* Thread::vEntry(void* pArg)
 {
   Thread* pThread = static_cast<Thread*>(pArg);
   
-  if (gxArguments.m_bVerbose)
+  if (gbVerbose)
     vTrace("[[%s]] Thread::vEntry %p\n"_Str,pThread->sName().s(),pThread);
   
   try {
@@ -115,7 +117,7 @@ void* Thread::vEntry(void* pArg)
   }
 
 
-  if (gxArguments.m_bVerbose)
+  if (gbVerbose)
     vTrace("[[%s]] Thread:;vEntry %p exiting\n"_Str,pThread->sName().s(),pThread);
   
   delete pThread;
@@ -184,7 +186,7 @@ void Thread::vLoop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
-  if (gxArguments.m_bVerbose)
+  if (gbVerbose)
     vTrace("Thread %p: %s loop\n"_Str,this,m_sName.s());
   
   m_xPosixThread.vSetOSThreadId();
@@ -225,7 +227,7 @@ void Thread::vLoop(void)
       m_npTask = m_pTaskSet->npPop();
       
       if ( ! m_npTask ) {
-        //if (bWarn && gxArguments.m_bVerbose)
+        //if (bWarn && gbVerbose)
         //  vTrace("[[%s]] Thread::vLoop no task\n"_Str,m_sName.s());
         bWarn = false;
         //m_xPosixThread.vNanoSleep(10_MB);
@@ -241,7 +243,7 @@ void Thread::vLoop(void)
       
       m_npTask->vState(TS_RUNNING);
       
-//      if (gxArguments.m_bVerbose)
+//      if (gbVerbose)
 //        vTrace("[[%s]] Thread::vLoop running [%s] %p\n"_Str,m_sName.s(),m_npTask->sName().s(),*m_npTask);
       
       // set rdtscp

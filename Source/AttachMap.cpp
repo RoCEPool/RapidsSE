@@ -19,6 +19,7 @@ extern TaskList*    gpTaskList;
 extern PlanList*    gpPlanList;
 extern SEitfList*   gpSEitfList;
 extern Arguments    gxArguments;
+extern bool         gbVerbose;
 
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
@@ -85,6 +86,7 @@ void AttachMap::vGetGlobals(void)
   gpTaskList     = m_pTaskList;
   gpPlanList     = m_pPlanList;
   gpSEitfList    = m_pSEitfList;
+  gbVerbose      = m_bVerbose;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -94,7 +96,7 @@ void AttachMap::vRecordGlobals(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ATTACHMAP,_FOOTER_);
 
-  if (gxArguments.m_bVerbose)
+  if (gbVerbose)
     vTrace("[[mainThread]] Recording globals...\n"_Str);
   
   m_iPid = Process::iGetPid();
@@ -118,6 +120,7 @@ void AttachMap::vRecordGlobals(void)
   m_pTaskList     = gpTaskList;
   m_pPlanList     = gpPlanList;
   m_pSEitfList    = gpSEitfList;
+  m_bVerbose      = gbVerbose;
   
   m_iStop       = 0;
   m_iQuit       = 0;

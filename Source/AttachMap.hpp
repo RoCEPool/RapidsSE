@@ -28,6 +28,8 @@ namespace StorageEngine
     TaskList*     m_pTaskList;
     Plans::PlanList*     m_pPlanList;
     SEitfList*    m_pSEitfList;
+    
+    bool          m_bVerbose;
    
     i8            m_iQuit;
     i8            m_iStop;

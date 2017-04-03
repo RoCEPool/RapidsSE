@@ -26,6 +26,7 @@ extern StepBoard*      gpStepBoard;
 extern Lock            gxDdlLock;
 extern Lock            gxDicLock;
 extern SEitfList*      gpSEitfList;
+extern bool            gbVerbose;
 
 // dot: ////////////////////////////////////////////////////////////////////////
 
@@ -122,7 +123,7 @@ void Task::vDotVerbose(NNP_Task nnpTask)
   if ( ! nnpTask->m_pDataStack->bPop(xValWsp) )
     THROW_INVALID_DSTACK(".verbose"_Str);
   
-  if (gxArguments.m_bVerbose) {
+  if (gbVerbose) {
     ValLib::vToString(&xValWsp,sWorkspace);
     vTrace("[%p %s] %s\n"_Str,*nnpTask,nnpTask->m_sName.s(),sWorkspace.s());
   }

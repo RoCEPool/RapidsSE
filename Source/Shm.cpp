@@ -9,6 +9,7 @@
 Atomic gzShmOpenCount;
 
 extern Arguments gxArguments;
+extern bool gbVerbose;
 
 /*----------------------------------------------------------------------------*/
 /* attach/open to an existing shared memory region                            */
@@ -63,7 +64,7 @@ bool Shm::bCreate(StrVal& sRegionName, i8 iSize, int& iFD,
   
   xSysCall.vClear();
   
-  if (gxArguments.m_bVerbose)
+  if (gbVerbose)
     vTrace("Shm::bCreate A\n"_Str);
   
   // unlink the shm region (in case created earlier; this needs work)
@@ -72,13 +73,13 @@ bool Shm::bCreate(StrVal& sRegionName, i8 iSize, int& iFD,
   
   // we ignore the error
 
-  if (gxArguments.m_bVerbose)
+  if (gbVerbose)
     vTrace("Shm::bCreate B\n"_Str);
   
   // open shared memory region and get a fd
   iFD = shm_open(sRegionName.s(), O_CREAT | O_EXCL | O_RDWR, S_IRUSR | S_IWUSR);
   
-  if (gxArguments.m_bVerbose)
+  if (gbVerbose)
     vTrace("Shm::bCreate C\n"_Str);
   
   if (iFD == -1) {
@@ -87,7 +88,7 @@ bool Shm::bCreate(StrVal& sRegionName, i8 iSize, int& iFD,
     return false;
   }
   
-  if (gxArguments.m_bVerbose)
+  if (gbVerbose)
     vTrace("Shm::bCreate D\n"_Str);
   
   ++gzShmOpenCount;
@@ -95,11 +96,11 @@ bool Shm::bCreate(StrVal& sRegionName, i8 iSize, int& iFD,
   // fill with 0's
   rCode = ftruncate(iFD, iSize);
   
-  if (gxArguments.m_bVerbose)
+  if (gbVerbose)
     vTrace("Shm::bCreate E\n"_Str);
   
   if (rCode == -1) {
-    if (gxArguments.m_bVerbose)
+    if (gbVerbose)
       vTrace("Shm::bCreate F\n"_Str);
    
     xSysCall.vError(errno);
@@ -116,7 +117,7 @@ bool Shm::bCreate(StrVal& sRegionName, i8 iSize, int& iFD,
     return false;
   }
   
-  if (gxArguments.m_bVerbose)
+  if (gbVerbose)
     vTrace("Shm::bCreate G\n"_Str);
   return true;
 }
@@ -128,7 +129,7 @@ bool Shm::bLock(void* pAddress, i8 iBytes, SysCall& SysCall)
 {
   SysCall.vClear();
   
-  if (gxArguments.m_bVerbose)
+  if (gbVerbose)
     vTrace("Shm::vLock\n"_Str);
   
   if (mlock(pAddress,iBytes) != 0) {
@@ -147,12 +148,12 @@ void* Shm::pMap(int iFd, void* aAddress, i8 iBytes, bool bShared, bool bHugeTlb,
 {
   SysCall.vClear();
   
-  if (gxArguments.m_bVerbose)
+  if (gbVerbose)
     vTrace("Shm::pMap A\n"_Str);
   
   int iProt = PROT_READ | PROT_WRITE;
 
-  if (gxArguments.m_bVerbose)
+  if (gbVerbose)
     vTrace("Shm::pMap B\n"_Str);
   
 #ifdef __APPLE__
@@ -167,7 +168,7 @@ void* Shm::pMap(int iFd, void* aAddress, i8 iBytes, bool bShared, bool bHugeTlb,
   
   size_t x;
   
-  if (gxArguments.m_bVerbose)
+  if (gbVerbose)
     vTrace("Shm::pMap C\n"_Str);
   
   void* pRegion = mmap(aAddress, // starting address
@@ -184,7 +185,7 @@ void* Shm::pMap(int iFd, void* aAddress, i8 iBytes, bool bShared, bool bHugeTlb,
     return nullptr;
   }
   
-  if (gxArguments.m_bVerbose)
+  if (gbVerbose)
     vTrace("Shm::pMap D\n"_Str);
   
   SysCall.vSuccess();
