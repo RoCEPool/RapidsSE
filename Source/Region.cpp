@@ -32,10 +32,10 @@ bool Region::bAttach(StrVal& sRegionName)
   
   // allocate a temporary extent of memory
   mpRegion = Shm::pMap(iFD,
-                       gxArguments.m_pRegionAddr,
+                       C_ADDR_POOL,
                        10_MB,
                        C_SHARED_REGION,
-                       gxArguments.m_bHugePages,
+                       false,
                        xSysCall);
   if ( ! mpRegion )  {
     vTrace("RapidsSE::vAttach failed to map\n"_Str);
@@ -66,10 +66,10 @@ bool Region::bAttach(StrVal& sRegionName)
   
   // allocate the full extent of memory required
   mpRegion = Shm::pMap(iFD,
-                      gxArguments.m_pRegionAddr,
+                       C_ADDR_POOL,
                        iRegionSize,
                        C_SHARED_REGION,
-                       gxArguments.m_bHugePages,
+                       false,
                        xSysCall);
   if ( ! mpRegion )  {
     vTrace("RapidsSE::vAttach failed to map\n"_Str);
@@ -123,10 +123,10 @@ void Region::vCreate(StrVal& sRegionName)
   
   // allocate memory for the shm region
   mpRegion = Shm::pMap(iFD,
-                       gxArguments.m_pRegionAddr,
+                       C_ADDR_POOL,
                        gxArguments.m_iRegionSize,
                        true,
-                       gxArguments.m_bHugePages,
+                       false,
                        xSysCall);
   
   if (gxArguments.m_bVerbose)
@@ -223,10 +223,10 @@ void* Region::pOpen(StrVal& sRegionName, int& iFD)
   
   // allocate a temporary extent of memory
   void* pRegion = Shm::pMap(iFD,
-                            gxArguments.m_pRegionAddr,
+                            C_ADDR_POOL,
                             10_MB,
                             C_SHARED_REGION,
-                            gxArguments.m_bHugePages,
+                            false,
                             xSysCall);
   if ( ! pRegion )  {
     vTrace("Region::pOpen failed to map\n"_Str);
