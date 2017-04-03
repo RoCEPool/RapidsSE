@@ -474,8 +474,8 @@ bool BufferPool::bValidAddress(const void* aAddress)
 /*----------------------------------------------------------------------------*/
 void BufferPool::vVerifyBoundaries(bool bTrace)
 {
-  if (bTrace)
-    vTrace("Base=%p Limit=%p\n"_Str, m_pBase, m_pLimit);
+  //if (bTrace)
+  //  vTrace("Base=%p Limit=%p\n"_Str, m_pBase, m_pLimit);
   
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
   
