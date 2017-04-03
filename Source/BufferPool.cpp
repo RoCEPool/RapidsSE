@@ -472,16 +472,20 @@ bool BufferPool::bValidAddress(const void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* assert buffer pool is valid                                                */
 /*----------------------------------------------------------------------------*/
-void BufferPool::vVerifyBoundaries(bool bTrace)
+bool BufferPool::bVerifyBoundaries(bool bTrace)
 {
-  //if (bTrace)
-  //  vTrace("Base=%p Limit=%p\n"_Str, m_pBase, m_pLimit);
+  if (bTrace)
+    vTrace("Base=%p Limit=%p\n"_Str, m_pBase, m_pLimit);
   
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
   
-
-  ASSERT(m_pLimit);
-  ASSERT(m_pBase);
+  if ( ! m_pLimit )
+    return false;
+  
+  if ( ! m_pBase )
+    return false;
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/

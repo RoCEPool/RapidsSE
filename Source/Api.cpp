@@ -134,7 +134,7 @@ eEC RapidsSE_CheckLibraryVersion(Str* pVersion, i8 iTraceLevel)
   Str* aApiCall = "RapidsSE_CheckLibraryVersion"_Str;
   
   try {
-    //TRACE_ENTRY_P1(pVersion);
+    TRACE_ENTRY_P1(pVersion);
     
     // validate the parameter
     VALIDATE_PARAM("a"_Str, pVersion);
@@ -148,7 +148,7 @@ eEC RapidsSE_CheckLibraryVersion(Str* pVersion, i8 iTraceLevel)
       return EC_VERSION_MISMATCH;
     }
     
-    //TRACE_EXIT("ea"_Str);
+    TRACE_EXIT("ea"_Str);
     
     return EC_NONE;
   }
@@ -967,7 +967,7 @@ eEC RapidsSE_PoolOpen(Str* pInstanceName, void** ppInstance, i8 iTraceLevel)
   
   try {
     // trace entry
-    //TRACE_ENTRY_P1(pInstanceName);
+    TRACE_ENTRY_P1(pInstanceName);
     
     // open the pool
     s256 sPoolName;
@@ -980,7 +980,7 @@ eEC RapidsSE_PoolOpen(Str* pInstanceName, void** ppInstance, i8 iTraceLevel)
       return EC_INVALID_INSTANCE;
     }
     
-    gpBufferPool->vVerifyBoundaries(true);
+    VALIDATE_POOL();
     
     *ppInstance = gpAttachMap;
     
@@ -1165,6 +1165,8 @@ eEC RapidsSE_SEitfNew(void** ppSEitf, i8 iPartition, i8 iTraceLevel)
     
     // valide reference pointer
     VALIDATE_REFPOINTER("a"_Str, ppSEitf);
+    
+    VALIDATE_POOL();
     
     SEitf* pSEitf = new SEitf(iPartition);
     

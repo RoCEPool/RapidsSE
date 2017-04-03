@@ -4,9 +4,10 @@
 #pragma once
 
 // API trace levels
-#define TL_ENTRY 1
-#define TL_ERROR 2
-#define TL_EXIT  4
+#define TL_ENTRY  1
+#define TL_ERROR  2
+#define TL_EXIT   4
+#define TL_POOL   8
 
 // external SE API calls
 extern "C" eEC RapidsSE_AddColumn(SEitf* pSEitf, Str* pColumnName, Str* pColumnType, i8 iTraceLevel);
@@ -50,10 +51,9 @@ eEC eGetResponse(SEitf* pSEitf);
 /*----------------------------------------------------------------------------*/
 #define TRACE_ENTRY_P0() \
   {  \
-    if ( (iTraceLevel & TL_ERROR) == TL_ERROR) \
+    if ( (iTraceLevel & TL_ENTRY) == TL_ENTRY) \
       vTrace("<%s: %p(%lld)\n"_Str,  \
         aApiCall, pSEitf, pSEitf ? pSEitf->iPartition() : -1); \
-    gpBufferPool->vVerifyBoundaries(true); \
   }
 
 /*----------------------------------------------------------------------------*/
@@ -61,10 +61,9 @@ eEC eGetResponse(SEitf* pSEitf);
 /*----------------------------------------------------------------------------*/
 #define TRACE_ENTRY_P1(p1) \
   {  \
-    if ( (iTraceLevel & TL_ERROR) == TL_ERROR) \
+    if ( (iTraceLevel & TL_ENTRY) == TL_ENTRY) \
       vTrace("<%s: %p(%lld) %s\n"_Str,  \
         aApiCall, pSEitf, pSEitf ? pSEitf->iPartition() : -1, p1); \
-    gpBufferPool->vVerifyBoundaries(true); \
   }
 
 /*----------------------------------------------------------------------------*/
@@ -72,10 +71,9 @@ eEC eGetResponse(SEitf* pSEitf);
 /*----------------------------------------------------------------------------*/
 #define TRACE_ENTRY_P2(p1, p2) \
 {  \
-  if ( (iTraceLevel & TL_ERROR) == TL_ERROR) \
+  if ( (iTraceLevel & TL_ENTRY) == TL_ENTRY) \
     vTrace("<%s: %p(%lld) %s %s\n"_Str,  \
       aApiCall, pSEitf, pSEitf ? pSEitf->iPartition() : -1, p1, p2); \
-  gpBufferPool->vVerifyBoundaries(true); \
 }
 
 /*----------------------------------------------------------------------------*/
@@ -83,10 +81,9 @@ eEC eGetResponse(SEitf* pSEitf);
 /*----------------------------------------------------------------------------*/
 #define TRACE_ENTRY_P3(p1, p2, p3) \
 {  \
-  if ( (iTraceLevel & TL_ERROR) == TL_ERROR) \
+  if ( (iTraceLevel & TL_ENTRY) == TL_ENTRY) \
     vTrace("<%s: %p(%lld) %s %s %s\n"_Str,  \
       aApiCall, pSEitf, pSEitf ? pSEitf->iPartition() : -1, p1, p2, p3); \
-  gpBufferPool->vVerifyBoundaries(true); \
 }
 
 
@@ -105,10 +102,9 @@ eEC eGetResponse(SEitf* pSEitf);
 /*----------------------------------------------------------------------------*/
 #define TRACE_EXIT(aMarker) \
   {  \
-    if ( (iTraceLevel & TL_ERROR) == TL_ERROR) \
+    if ( (iTraceLevel & TL_EXIT) == TL_EXIT) \
       vTrace(">%s(%s): %p(%lld)\n"_Str,  \
         aApiCall, aMarker, pSEitf, pSEitf ? pSEitf->iPartition() : -1); \
-    gpBufferPool->vVerifyBoundaries(true); \
   }
 
 /*----------------------------------------------------------------------------*/
@@ -246,6 +242,26 @@ eEC eGetResponse(SEitf* pSEitf);
 /* clear last error                                                           */
 /*----------------------------------------------------------------------------*/
 #define CLEAR_LASTERROR()  pSEitf->vClearLastError();
+
+/*----------------------------------------------------------------------------*/
+/* verify buffer pool boundaries                                              */
+/*----------------------------------------------------------------------------*/
+#define VALIDATE_POOL() \
+  {  \
+    bool bPoolValid; \
+    if ( (iTraceLevel & TL_POOL) == TL_POOL) { \
+      bPoolValid = gpBufferPool->bVerifyBoundaries(true); \
+    } \
+    else { \
+      bPoolValid = gpBufferPool->bVerifyBoundaries(false); \
+    } \
+    if ( ! bPoolValid )  { \
+      vTrace("Pool base and limit are not valid!!!"    \
+             "JAVA MAY HAVE RE_MAPPED MEMORY SEGMENTS!!!\n"_Str);  \
+      return EC_VALIDATION_FAILURE; \
+    } \
+  }
+
 
 /*----------------------------------------------------------------------------*/
 /* trace API call entry                                                       */

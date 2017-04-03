@@ -63,11 +63,7 @@ void SEitf::operator delete(void* pSEinterfaceAddress)
 SEitf::SEitf(i8 iPartition)
 : Object(CN_SEITF)
 {
-  vTrace("<SEitf::SEitf %p\n"_Str, this);
-  
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
-  
-  vTrace("SEitf::_precondition_ %p\n"_Str, this);
   
   // pid
   m_iPid = Process::iGetPid();
@@ -96,12 +92,7 @@ SEitf::SEitf(i8 iPartition)
   
   _checkInitialised_(CN_SEITF);
   
-  vTrace("SEitf::_checkInitialised_ %p\n"_Str, this);
-  
   _postcondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
-  
-  vTrace(">SEitf::SEitf %p\n"_Str, this);
-  
 }
 
 /*----------------------------------------------------------------------------*/
