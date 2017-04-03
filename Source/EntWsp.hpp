@@ -9,10 +9,11 @@ namespace DBobjects
   {
   private:
     RowId  m_xRowId;   // row id
-    i8     m_nLevels;  // number of levels
+    i8     m_nLevels;  // number of levels (0, 1 or 2)
     union {
       RightVec m_xRight; // right vector
-      u8       m_uRight[C_FLAT_LEVELS];
+      u8       m_uRight[C_FLAT_LEVELS - 1]; // right offsets
+                                            // we don't hold offset for level 0
     };
     union {
       Key              m_xKey;    // key

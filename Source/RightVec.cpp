@@ -57,29 +57,29 @@ RightVec::~RightVec(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get the offset for a given level                                           */
+/* get the offset for a given level (level is 1 or 2)                         */
 /*----------------------------------------------------------------------------*/
 u8 RightVec::uRight(i8 iLevel)
 {
-  ASSERT(iLevel > 0);
+  ASSERT(iLevel > 0 && iLevel < C_FLAT_LEVELS);
   
-  i8 iLevelSub = iLevel - 1;
+  i8 iRight = iLevel - 1;
   
-  u8 uOffset = m_uRight[iLevelSub];
+  u8 uOffset = m_uRight[iRight];
   
   return uOffset;
 }
 
 /*----------------------------------------------------------------------------*/
-/* set the offset for a given level                                           */
+/* set the offset for a given level (level is 1 or 2)                         */
 /*----------------------------------------------------------------------------*/
 void RightVec::vRight(i8 iLevel, u8 uOffset)
 {
-  ASSERT(iLevel > 0);
+  ASSERT(iLevel > 0 && iLevel < C_FLAT_LEVELS);
   
-  i8 iLevelSub = iLevel - 1;
+  i8 iRight = iLevel - 1;
   
-  m_uRight[iLevelSub] = uOffset;
+  m_uRight[iRight] = uOffset;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -89,9 +89,10 @@ void RightVec::vRight(i8 iLevel, u8 uOffset)
 /*----------------------------------------------------------------------------*/
 /* calculate number of bytes required to hold n levels                        */
 /*----------------------------------------------------------------------------*/
-i8 RightVec::nBytesRequired(i8 nRightVec)
+i8 RightVec::nBytesRequired(i8 nLevels)
 {
-  i8 nBytes = nRightVec * sizeof(i8);
+  // an nLevels == 0 is zero bytes as we dont hold the 0 level
+  i8 nBytes = nLevels * sizeof(i8);
   
   return nBytes;
 }

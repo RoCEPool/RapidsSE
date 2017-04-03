@@ -13,8 +13,7 @@
 /*----------------------------------------------------------------------------*/
 i8 EntryData::nBytesRequired(i8 nLevels, i8 nKeyBytes)
 {
-  i8 nLevelsSub = nLevels;
-  i8 nLevelBytes = RightVec::nBytesRequired(nLevelsSub);
+  i8 nLevelBytes = RightVec::nBytesRequired(nLevels);
   
   i8 nBytes = nLevelBytes + nKeyBytes;
   
@@ -55,8 +54,6 @@ void* EntryData::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 void EntryData::vCopyBytes(void* aSrc, i8 nBytes)
 {
-  //_precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
-
   void* aDst = this;
   
   MemLib::vCopy(aDst,aSrc,nBytes);
@@ -67,9 +64,11 @@ void EntryData::vCopyBytes(void* aSrc, i8 nBytes)
 /*----------------------------------------------------------------------------*/
 Key* EntryData::aKey(i8 nLevels)
 {
-  //_precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
+  ASSERT(nLevels >= 0 && nLevels < C_FLAT_LEVELS);
   
-  Key* aKey = pAdd<Key*>(this,(sizeof(i8)*(nLevels)));
+  i8 nLevelBytes = RightVec::nBytesRequired(nLevels);
+  
+  Key* aKey = pAdd<Key*>(this,nLevelBytes);
   
   return aKey;
 }
@@ -79,10 +78,7 @@ Key* EntryData::aKey(i8 nLevels)
 /*----------------------------------------------------------------------------*/
 RightVec* EntryData::aRightVec(i8 nLevels)
 {
-  //_precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
-  
-  if ( ! nLevels )
-    return nullptr;
+  ASSERT(nLevels >= 0 && nLevels < C_FLAT_LEVELS);
   
   RightVec* aRightVec = _aRightVec(this);
   

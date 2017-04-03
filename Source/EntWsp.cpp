@@ -40,11 +40,11 @@ EntWsp::EntWsp(void)
   ASSERT(0 == m_xRowId.uBuffer() && 0 == m_xRowId.uRow());
   
   // generate logarithmic level for this entry
-  m_nLevels = Random::uLogLevel(C_FLAT_LEVELS, 2) + 1;
-  ASSERT(m_nLevels >= 1 && m_nLevels <= C_FLAT_LEVELS);
+  m_nLevels = Random::uLogLevel(C_FLAT_LEVELS,2);
+  ASSERT(m_nLevels >= 0 && m_nLevels < C_FLAT_LEVELS);
 
   // set all right offsets to nil
-  for (i8 iLevel = 0; iLevel < C_FLAT_LEVELS; iLevel++)
+  for (i8 iLevel = 0; iLevel < C_FLAT_LEVELS - 1; iLevel++)
     m_uRight[iLevel] = C_NIL_OFFSET;
   
   // the key wsp will have initialised by its constructor
@@ -83,7 +83,7 @@ void EntWsp::vAddKey(KeyWsp& xKeyWsp)
 /*----------------------------------------------------------------------------*/
 Key* EntWsp::aKey(void)
 {
-  Key* aKey = _aKey(&m_xKey);
+  Key* aKey = &m_xKey;
   
   return aKey;
 }
@@ -109,7 +109,11 @@ u8 EntWsp::nLevels(void)
 /*----------------------------------------------------------------------------*/
 u8 EntWsp::nRight(u8 iLevel)
 {
-  return m_uRight[iLevel];
+  ASSERT(iLevel > 0 && iLevel < C_FLAT_LEVELS);
+ 
+  i8 iRight = iLevel - 1;
+  
+  return m_uRight[iRight];
 }
 
 /*----------------------------------------------------------------------------*/
@@ -117,7 +121,11 @@ u8 EntWsp::nRight(u8 iLevel)
 /*----------------------------------------------------------------------------*/
 void EntWsp::vRight(u8 iLevel, u8 uRight)
 {
-  m_uRight[iLevel] = uRight;
+  ASSERT(iLevel > 0 && iLevel < C_FLAT_LEVELS);
+  
+  i8 iRight = iLevel - 1;
+  
+  m_uRight[iRight] = uRight;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -171,7 +179,7 @@ void EntWsp::vShow(void)
 /*----------------------------------------------------------------------------*/
 RightVec* EntWsp::aRightVec(void)
 {
-  RightVec* aRightVec = _aRightVec(m_uRight);
+  RightVec* aRightVec = &m_xRight;
   
   return aRightVec;
 }
@@ -181,7 +189,7 @@ RightVec* EntWsp::aRightVec(void)
 /*----------------------------------------------------------------------------*/
 i8 EntWsp::nRightSize(void)
 {
-  i8 nBytes = m_nLevels * sizeof(i8);
+  i8 nBytes = RightVec::nBytesRequired(m_nLevels);
   
   return nBytes;
 }

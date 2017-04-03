@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get bytes required for an Entry based on given EntWsp                      */
+/* get bytes required for an Entry based on given EntWsp incl Object & Footer */
 /*----------------------------------------------------------------------------*/
 i8 Entry::nBytesRequired(EntWsp& xEntWsp)
 {
@@ -23,7 +23,7 @@ i8 Entry::nBytesRequired(EntWsp& xEntWsp)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get total bytes required for entry                                         */
+/* get total bytes required for entry incl Object & Footer                    */
 /*----------------------------------------------------------------------------*/
 i8 Entry::nBytesRequired(i8 nLevels, i8 nKeyBytes)
 {
@@ -97,13 +97,14 @@ Entry::Entry(i8 nBytes, i8 nLevels)                   //! should we pass EntWsp?
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY);
   
   // initialise bytes
-  m_nBytes  = nBytes;
+  m_nBytes = nBytes;
   
   // check initialisation of rowid
   ASSERT(0 == m_xRowId.uBuffer() && 0 == m_xRowId.uRow());
   
   // initialise levels
   m_nLevels = nLevels;
+  ASSERT(m_nLevels >= 0 && m_nLevels < C_FLAT_LEVELS);
   
   // entry data will be initialised by vSetEntry       //! Is this correct form?
   
@@ -172,7 +173,7 @@ EntryData* Entry::aEntryData(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get key                                                                    */
+/* get Key                                                                    */
 /*----------------------------------------------------------------------------*/
 Key* Entry::aKey(void)
 {
@@ -202,14 +203,14 @@ u8 Entry::uRight(u8 iLevel)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
   
+  ASSERT(iLevel > 0 && iLevel < C_FLAT_LEVELS);
+  
   EntryData* aEntryData = this->aEntryData();
   
   RightVec* aRightVec = aEntryData->aRightVec(m_nLevels);
 
-  u8 uRight = 0;
-  if (iLevel)
-    uRight = aRightVec->uRight(iLevel);
-
+  u8 uRight = aRightVec->uRight(iLevel);
+  
   return uRight;
 }
 
@@ -219,6 +220,8 @@ u8 Entry::uRight(u8 iLevel)
 void Entry::vRight(u8 iLevel, u8 uRight)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+  
+  ASSERT(iLevel > 0 && iLevel < C_FLAT_LEVELS);
   
   EntryData* aEntryData = this->aEntryData();
   
@@ -236,7 +239,9 @@ RightVec* Entry::aRightVec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
   
-  RightVec* aRightVec = pAdd<RightVec*>(this,sizeof(Entry));
+  EntryData* aEntryData = this->aEntryData();
+  
+  RightVec* aRightVec = aEntryData->aRightVec(m_nLevels);
   
   return aRightVec;
 }
@@ -248,14 +253,11 @@ RowId& Entry::xRowId(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
   
-  // return reference to the RowId inherited class
-  //return dynamic_cast<RowId&>(*this);
-  
   return m_xRowId;
 }
 
 /*----------------------------------------------------------------------------*/
-/* set entry                                                                  */
+/* set entry given entry wsp                                                  */
 /*----------------------------------------------------------------------------*/
 void Entry::vSetEntry(EntWsp& xEntWsp)
 {
@@ -272,7 +274,7 @@ void Entry::vSetEntry(EntWsp& xEntWsp)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  // copy Rights
+  // copy RightVec
   RightVec* aEntryRightVec = this->aRightVec();
   RightVec* aEntWspRightVec = xEntWsp.aRightVec();
   i8 nRightBytes = xEntWsp.nRightSize();
@@ -290,7 +292,7 @@ void Entry::vSetEntry(EntWsp& xEntWsp)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get size in bytes of this entry occurence                                  */
+/* get size in bytes of this entry occurence incl Object & Footer             */
 /*----------------------------------------------------------------------------*/
 i8 Entry::nSize(void)
 {

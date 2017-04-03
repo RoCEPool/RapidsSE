@@ -8,7 +8,9 @@ namespace DBobjects
   class RightVec
   {
   public:
-  u8  m_uRight[1];  //
+    u8  m_uRight[1];  // right[0] is right for level 1
+                      // right[1] is right for level 2
+                      // level 0 is implied to mean next entry
   
   public:
     void* operator new(size_t);

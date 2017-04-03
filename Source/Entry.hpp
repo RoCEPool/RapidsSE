@@ -5,24 +5,13 @@
 
 namespace DBobjects
 {
-  /*
-   
-   important note: 
-     iLevel is assumed to be 0..C_FLAT_LEVELS-1
-     iLevelSub is iLevel - 1 (ie 0..C_FLAT_LEVELS-2)
-   
-     we never use iLevel - 1 when we mean iLevelSub
-     we always compute iLevelSub first
-   
-   */
-  
   class Entry : public Object
   {
   private:
-    i8     m_nBytes;  // overall size of this entry
+    i8     m_nBytes;  // overall size of this entry incl Object & Footer
     RowId  m_xRowId;  // rowid
-    u8     m_nLevels; // no of levels
-    // ..data..       // rights & key
+    u8     m_nLevels; // no of levels for this entry (0, 1 or 2)
+    // ..data..       // right offsets & key
   
     // ..footer..
   
