@@ -104,7 +104,7 @@ Entry::Entry(i8 nBytes, i8 nOffsets)                   //! should we pass EntWsp
   
   // initialise offsets
   m_nOffsets = nOffsets;
-  ASSERT(m_nOffsets >= 0 && m_nOffsets < C_FLAT_OFFSETS);
+  ASSERT(m_nOffsets >= 0 && m_nOffsets <= C_FLAT_OFFSETS);        //RAY ??
   
   // entry data will be initialised by vSetEntry       //! Is this correct form?
   
@@ -221,7 +221,7 @@ void Entry::vRightOffset(u8 iOffset, u8 uRight)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
   
-  ASSERT(iOffset > 0 && iOffset < C_FLAT_OFFSETS);
+  ASSERT(iOffset >= 0 && iOffset < C_FLAT_OFFSETS);
   
   EntryData* aEntryData = this->aEntryData();
   
@@ -263,15 +263,14 @@ void Entry::vSetEntry(EntWsp& xEntWsp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
 
-  // set Bytes
-  m_nBytes = nBytesRequired(xEntWsp);
+  ASSERT(m_nBytes);
   
   // set RowId
   m_xRowId  = xEntWsp.xRowId();
 
   // set Offsets
   m_nOffsets = xEntWsp.nOffsets();
-
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // copy RightVec

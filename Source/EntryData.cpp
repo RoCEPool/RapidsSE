@@ -64,7 +64,7 @@ void EntryData::vCopyBytes(void* aSrc, i8 nBytes)
 /*----------------------------------------------------------------------------*/
 Key* EntryData::aKey(i8 nOffsets)
 {
-  ASSERT(nOffsets >= 0 && nOffsets < C_FLAT_OFFSETS);
+  ASSERT(nOffsets >= 0 && nOffsets <= C_FLAT_OFFSETS);
   
   i8 nOffsetBytes = RightVec::nBytesRequired(nOffsets);
   
@@ -78,7 +78,7 @@ Key* EntryData::aKey(i8 nOffsets)
 /*----------------------------------------------------------------------------*/
 RightVec* EntryData::aRightVec(i8 nOffsets)
 {
-  ASSERT(nOffsets >= 0 && nOffsets < C_FLAT_OFFSETS);
+  ASSERT(nOffsets >= 0 && nOffsets <= C_FLAT_OFFSETS);
   
   RightVec* aRightVec = _aRightVec(this);
   

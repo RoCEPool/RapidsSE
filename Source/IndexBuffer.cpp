@@ -104,7 +104,29 @@ bool IndexBuffer::bInsert(Key* aKey, RowId xRowId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
-  return false;
+  Entry* pReviseVec;
+  bool   bEqualTo;
+  EntWsp xEntWsp;
+  
+  // initialize the EntWsp
+  xEntWsp.vRowId(xRowId);
+  xEntWsp.vAddKey(aKey);
+  xEntWsp.vShow();
+  
+  // get the size of the EntWsp
+  i8 nBytes = Entry::nBytesRequired(xEntWsp);
+  
+  // get a positioned revise vector
+  Entry* pAfterEntry = nullptr; //aPosition(aKey, bEqualTo, &pReviseVec);
+  Entry* pNewEntry = aNewEntry(nBytes, xEntWsp.nOffsets(), pAfterEntry);
+  
+  // set the new entry from the EntWsp
+  pNewEntry->vSetEntry(xEntWsp);
+  
+  // increment the no of entries
+  m_nEntries++;
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -289,14 +311,24 @@ void IndexBuffer::vNewHead(void)
   ASSERT( ! m_xWsp.nUsed() );
   
   // how many bytes are required
-  i8 nBytes = Entry::nBytesRequired(0,C_FLAT_OFFSETS);
+  i8 nBytes = Entry::nBytesRequired(C_FLAT_OFFSETS,0);
   
   // allot the head
   Entry* aHead = aNewEntry(nBytes,C_FLAT_OFFSETS,nullptr);
   
   // initialize the head
-  for (i8 iLevel = 0; iLevel < C_FLAT_OFFSETS; iLevel++)
-    aHead->vRightOffset(iLevel, C_NIL_OFFSET);
+  for (i8 iOffset = 0; iOffset < C_FLAT_OFFSETS; iOffset++)
+    aHead->vRightOffset(iOffset, C_NIL_OFFSET);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get next buffer                                                            */
+/*----------------------------------------------------------------------------*/
+IndexBuffer* IndexBuffer::pNextBuffer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
+  
+  return m_pNextBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -377,6 +409,24 @@ Entry* IndexBuffer::aRightEntry(Entry* aEntry, i8 iLevel)
 }
 
 /*----------------------------------------------------------------------------*/
+/* show                                                                       */
+/*----------------------------------------------------------------------------*/
+void IndexBuffer::vShow(void)
+{
+  vTrace("IndexBuffer %p: entries %lld prevBuffer %p nextBuffer %p \n"_Str,
+         this,
+         m_nEntries,
+         m_pPrevBuffer,
+         m_pNextBuffer);
+  
+  for (Entry* pEntry = aHead(); pEntry != nullptr; pEntry = aNextEntry(pEntry))
+    pEntry->vShow();
+  
+  vTrace("\n"_Str);
+  
+}
+
+/*----------------------------------------------------------------------------*/
 /* converts iOffset to aEntry                                                 */
 /*----------------------------------------------------------------------------*/
 Entry* IndexBuffer::aToEntry(i8 iOffset)
@@ -404,6 +454,34 @@ i8 IndexBuffer::iToOffset(Entry* aEntry)
   ASSERT(iOffset >= 0 && iOffset < m_xWsp.nSize());
   
   return iOffset;
+}
+
+/*----------------------------------------------------------------------------*/
+/* verify                                                                     */
+/*----------------------------------------------------------------------------*/
+void IndexBuffer::vVerify(void)
+{
+  Entry* pEntryA = aHead();
+  if ( ! pEntryA )
+    return;
+  
+  Entry* pEntryB = aNextEntry(pEntryA);
+  if ( ! pEntryB )
+    return;
+  
+  while (pEntryB) {
+    
+    Key* pKeyA = pEntryA->aKey();
+    Key* pKeyB = pEntryB->aKey();
+    
+    //pKeyA->vShow();
+    //pKeyB->vShow();
+    
+    ASSERT(*pEntryA->aKey() <= pEntryB->aKey());
+    
+    pEntryA = pEntryB;
+    pEntryB = aNextEntry(pEntryA);
+  }
 }
 
 /*============================================================================*/

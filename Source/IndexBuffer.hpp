@@ -36,21 +36,25 @@ namespace DBobjects
     
     static IndexBuffer* pNewIndexBuffer(void);
   
-    bool   bInsert(Key* aKey, RowId xRowId);
-    bool   bRemove(Key* aKey);
-  
-  private:
     Entry*  aHead(void);
+    bool    bInsert(Key* aKey, RowId xRowId);
+    IndexBuffer* pNextBuffer(void);
+    Entry*  aNextEntry(Entry* aEntry);
+    bool    bRemove(Key* aKey);
+    void    vShow(void);
+    void    vVerify(void);
+    
+  private:
     i8      iLevel(void);
     void    vMoveLeft(void* aDst, i8 nBytes);
     void    vMoveRight(void* aSrc, i8 nBytes);
     Entry*  aNewEntry(i8 nBytes, i8 nLevels, Entry* aAfterEntry);
     void    vNewHead(void);
-    Entry*  aNextEntry(Entry* aEntry);
     Entry*  aPosition(Key* aKey, bool& bEqualTo, Entry** aReviseVec);
     Entry*  aRightEntry(Entry* aEntry, i8 iLevel);
     Entry*  aToEntry(i8 iOffset);
     i8      iToOffset(Entry* aEntry);
+    
   };
   
   IndexBuffer* _pIndexBuffer(void* aAddr);
