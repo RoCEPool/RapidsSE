@@ -10,6 +10,7 @@ namespace DBobjects
   {
   public:
     static const i8 C_FLAT_LEVELS = 3;
+    static const i8 C_FLAT_OFFSETS = C_FLAT_LEVELS - 1;
     static const i8 C_FLAT_FREQ = 2;
     static const i8 C_NIL_OFFSET = 0xFFFFFFFFFFFFFFFF;
     

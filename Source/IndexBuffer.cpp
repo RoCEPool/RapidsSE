@@ -56,10 +56,10 @@ IndexBuffer::IndexBuffer(void)
   m_pPrevBuffer = nullptr;
   m_pNextBuffer = nullptr;
   
+  m_xWsp.vZero();
+  
   // new the head
   vNewHead();
-  
-  m_xWsp.vZero();
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
 
