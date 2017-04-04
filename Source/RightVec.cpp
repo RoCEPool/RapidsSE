@@ -57,31 +57,25 @@ RightVec::~RightVec(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get the offset for a given level (level is 1 or 2)                         */
+/* get the offset for a given offset (offset is 0 or 1)                         */
 /*----------------------------------------------------------------------------*/
-u8 RightVec::uOffset(i8 iLevel)
+u8 RightVec::uOffset(i8 iOffset)
 {
-  ASSERT(iLevel > 0 && iLevel < C_FLAT_LEVELS);
+  ASSERT(iOffset >= 0 && iOffset < C_FLAT_OFFSETS);
   
-  i8 iRight = iLevel - 1;   // iRight of 0 is subscript for level 1
-                            // iRight of 1 is subscript for level 2
-  
-  u8 uOffset = m_uOffset[iRight];
+  u8 uOffset = m_uOffset[iOffset];
   
   return uOffset;
 }
 
 /*----------------------------------------------------------------------------*/
-/* set the offset for a given level (level is 1 or 2)                         */
+/* set the offset for a given offset (offset is 0 or 1)                         */
 /*----------------------------------------------------------------------------*/
-void RightVec::vOffset(i8 iLevel, u8 uOffset)
+void RightVec::vOffset(i8 iOffset, u8 uOffset)
 {
-  ASSERT(iLevel > 0 && iLevel < C_FLAT_LEVELS);
+  ASSERT(iOffset >= 0 && iOffset < C_FLAT_OFFSETS);
   
-  i8 iRight = iLevel - 1;   // iRight of 0 is subscript for level 1
-                            // iRight of 1 is subscript for level 2
-  
-  m_uOffset[iRight] = uOffset;
+  m_uOffset[iOffset] = uOffset;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -89,14 +83,13 @@ void RightVec::vOffset(i8 iLevel, u8 uOffset)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* calculate number of bytes required to hold n levels                        */
+/* calculate number of bytes required to hold n offsets                       */
 /*----------------------------------------------------------------------------*/
-i8 RightVec::nBytesRequired(i8 nLevels)
+i8 RightVec::nBytesRequired(i8 nOffsets)
 {
-  ASSERT(nLevels >= 0 && nLevels < C_FLAT_LEVELS);
+  ASSERT(nOffsets >= 0 && nOffsets < C_FLAT_OFFSETS);
   
-  // an nLevels == 0 is zero bytes as we dont hold the 0 level
-  i8 nBytes = nLevels * sizeof(u8);
+  i8 nBytes = nOffsets * sizeof(u8);
   
   return nBytes;
 }

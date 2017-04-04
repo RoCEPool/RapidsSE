@@ -152,6 +152,7 @@ void Task::vIndexTruncate(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* index::entryTest -- initial test of index entry                            */
 /*----------------------------------------------------------------------------*/
+/*
 void Task::vIndexEntryTest(NNP_Task nnpTask)
 {
   ENTRY("vIndexEntryTest"_Str);
@@ -229,6 +230,75 @@ void Task::vIndexEntryTest(NNP_Task nnpTask)
   
   EXIT();
 }
+*/
+/*----------------------------------------------------------------------------*/
+/* index::entryTest -- initial test of index entry                            */
+/*----------------------------------------------------------------------------*/
+void Task::vIndexEntryTest(NNP_Task nnpTask)
+{
+  ENTRY("vIndexEntryTest"_Str);
+  
+  Object* pPtrIb = nullptr;
+  
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrIb) )
+    THROW_INVALID_DSTACK("index::entryTest"_Str);
+  
+  IndexBuffer* pIndexBuffer = _pIndexBuffer(pPtrIb);
+  ASSERT(CN_INDEXBUFFER == pIndexBuffer->eClass());
+  
+  s48K sRow;
+  if ( ! nnpTask->m_pDataStack->bPop(sRow) )
+    THROW_INVALID_DSTACK("index::entryTest"_Str);
+  
+  vTrace("index::entryTest -- %s\n"_Str,sRow.s());
+  
+  EntWsp xEntWsp;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set rowId
+  RowId xRowId;
+  i8 iRowNo = sRow.iToI8();
+  
+  xRowId.vBuffer(999);
+  xRowId.vRow(iRowNo);
+  xEntWsp.vRowId(xRowId);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // add element to key
+  KeyWsp xKeyWsp;
+  ValWsp xValWsp;
+  
+  
+  //i8 iKey0 = sRow.iToI8();
+  i8 iKey0 = Random::iRandom(0,1000);
+  
+  xValWsp = iKey0;
+  
+  xKeyWsp.vAddElement(xValWsp);
+
+  Key xKey(xKeyWsp);
+  
+  // insert entry into index buffer
+  pIndexBuffer->bInsert(&xKey, xRowId);
+  
+  // verify index buffer
+  pIndexBuffer->vVerify();
+  
+  IndexBuffer* pFirstBuffer = pIndexBuffer;
+
+   /*
+  bool bResult = false;
+  
+  while (!bResult) {
+    pIndexBuffer = pFirstBuffer->pFindBuffer(xEntWsp);
+    
+    // insert entry into index buffer
+    bResult = pIndexBuffer->bInsert(xEntWsp);
+  }
+  */
+  
+  EXIT();
+}
 
 /*----------------------------------------------------------------------------*/
 /* index::ibDump -- dump the index buffer                                     */
@@ -241,21 +311,21 @@ void Task::vIndexIbDump(NNP_Task nnpTask)
   if ( ! nnpTask->m_pDataStack->bPop(pPtrIB) )
     THROW_INVALID_DSTACK("index::ibDump"_Str);
   
-  IndexBufferSeq* pIndexBufferSeq = _pIndexBufferSeq(pPtrIB);
-  ASSERT(CN_INDEXBUFFER == pIndexBufferSeq->eClass());
+  IndexBuffer* pIndexBuffer = _pIndexBuffer(pPtrIB);
+  ASSERT(CN_INDEXBUFFER == pIndexBuffer->eClass());
   
   vTrace("\n"_Str);
   
-  while (pIndexBufferSeq) {
-    pIndexBufferSeq->vShow();
+  while (pIndexBuffer) {
+    pIndexBuffer->vShow();
     
-    EntrySeq* pEntry = pIndexBufferSeq->pFirstEntry();
+    Entry* pEntry = pIndexBuffer->aHead();
     
     while (pEntry) {
-      pEntry->vContentDump();
-      pEntry = pIndexBufferSeq->pNextEntry(pEntry);
+      pEntry->vShow();
+      pEntry = pIndexBuffer->aNextEntry(pEntry);
     }
-    pIndexBufferSeq = pIndexBufferSeq->pNextBuffer();
+    pIndexBuffer = pIndexBuffer->pNextBuffer();
   }
   
   EXIT();

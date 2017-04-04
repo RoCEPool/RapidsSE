@@ -108,14 +108,14 @@ bool IndexBuffer::bInsert(Key* aKey, RowId xRowId)
   bool   bEqualTo;
   EntWsp xEntWsp;
   
+  // initialize the EntWsp
   xEntWsp.vRowId(xRowId);
-  
+  xEntWsp.vAddKey(aKey);
   xEntWsp.vShow();
   
-  xEntWsp.vAddKey(aKey);
-  
   // get the size of the EntWsp
-  i8 nBytes = xEntWsp.nRightSize() + xEntWsp.nKeySize();
+  i8 nBytes = xEntWsp.nRightSize() + xEntWsp.nKeySize()
+              + sizeof(Object) + sizeof(Footer);
   
   // test sufficient free space
   //ASSERT(...));
@@ -411,7 +411,7 @@ Entry* IndexBuffer::aRightEntry(Entry* aEntry, i8 iLevel)
 /*----------------------------------------------------------------------------*/
 void IndexBuffer::vShow(void)
 {
-  vTrace("IndexBuffer %p: entries %lld prevBuffer %p nextBuffer %p "_Str,
+  vTrace("IndexBuffer %p: entries %lld prevBuffer %p nextBuffer %p \n"_Str,
          this,
          m_nEntries,
          m_pPrevBuffer,
