@@ -8,7 +8,16 @@ namespace Datums
   class Ivl
   {
   private:
+ 
+  struct {
     
+    u8 m_uSec   : 54 ; // 0..1.8E16
+    u8 m_uMsec  : 10 ; // 0..1023
+    //           ---
+    //            64
+    //           ===
+  };
+  
   public:
     void* operator new(size_t);
   

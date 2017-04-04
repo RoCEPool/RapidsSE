@@ -8,7 +8,18 @@ namespace Datums
   class Tme
   {
   private:
+
+  struct {
     
+    u8 m_uMin   :  6 ; // 0..63
+    u8 m_uSec   :  6 ; // 0..63
+    u8 m_uMsec  : 10 ; // 0..1023
+    u8 m_uSpare : 42 ; //
+    //           ---
+    //            64
+    //           ===
+  };
+  
   public:
     void* operator new(size_t);
   

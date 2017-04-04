@@ -8,7 +8,18 @@ namespace Datums
   class Dte
   {
   private:
+  
+  struct {
     
+    u8 m_uYear  : 12 ; // 0..4095
+    u8 m_uMonth :  4 ; // 0..15
+    u8 m_uDay   :  5 ; // 0..31
+    u8 m_uSpare : 43 ; //
+    //           ---
+    //            64
+    //           ===
+  };
+  
   public:
     void* operator new(size_t);
   
