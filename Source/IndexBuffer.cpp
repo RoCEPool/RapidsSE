@@ -104,7 +104,27 @@ bool IndexBuffer::bInsert(Key* aKey, RowId xRowId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
-  return false;
+  Entry* pReviseVec;
+  bool   bEqualTo;
+  EntWsp xEntWsp;
+  
+  xEntWsp.vRowId(xRowId);
+  
+  xEntWsp.vShow();
+  
+  xEntWsp.vAddKey(aKey);
+  
+  // get the size of the EntWsp
+  i8 nBytes = xEntWsp.nRightSize() + xEntWsp.nKeySize();
+  
+  // test sufficient free space
+  //ASSERT(...));
+  
+  // get a positioned revise vector
+  Entry* pAfterEntry = nullptr; //aPosition(aKey, bEqualTo, &pReviseVec);
+  Entry* pNewEntry = aNewEntry(nBytes, xEntWsp.nOffsets(), pAfterEntry);
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -300,6 +320,16 @@ void IndexBuffer::vNewHead(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get next buffer                                                            */
+/*----------------------------------------------------------------------------*/
+IndexBuffer* IndexBuffer::pNextBuffer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
+  
+  return m_pNextBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get next entry (eq to right L0) after given entry (null if no next)        */
 /*----------------------------------------------------------------------------*/
 Entry* IndexBuffer::aNextEntry(Entry* aEntry)
@@ -377,6 +407,24 @@ Entry* IndexBuffer::aRightEntry(Entry* aEntry, i8 iLevel)
 }
 
 /*----------------------------------------------------------------------------*/
+/* show                                                                       */
+/*----------------------------------------------------------------------------*/
+void IndexBuffer::vShow(void)
+{
+  vTrace("IndexBuffer %p: entries %lld prevBuffer %p nextBuffer %p "_Str,
+         this,
+         m_nEntries,
+         m_pPrevBuffer,
+         m_pNextBuffer);
+  
+  for (Entry* pEntry = aHead(); pEntry != nullptr; pEntry = aNextEntry(pEntry))
+    pEntry->vShow();
+  
+  vTrace("\n"_Str);
+  
+}
+
+/*----------------------------------------------------------------------------*/
 /* converts iOffset to aEntry                                                 */
 /*----------------------------------------------------------------------------*/
 Entry* IndexBuffer::aToEntry(i8 iOffset)
@@ -404,6 +452,34 @@ i8 IndexBuffer::iToOffset(Entry* aEntry)
   ASSERT(iOffset >= 0 && iOffset < m_xWsp.nSize());
   
   return iOffset;
+}
+
+/*----------------------------------------------------------------------------*/
+/* verify                                                                     */
+/*----------------------------------------------------------------------------*/
+void IndexBuffer::vVerify(void)
+{
+  Entry* pEntryA = aHead();
+  if ( ! pEntryA )
+    return;
+  
+  Entry* pEntryB = aNextEntry(pEntryA);
+  if ( ! pEntryB )
+    return;
+  
+  while (pEntryB) {
+    
+    Key* pKeyA = pEntryA->aKey();
+    Key* pKeyB = pEntryB->aKey();
+    
+    //pKeyA->vShow();
+    //pKeyB->vShow();
+    
+    ASSERT(*pEntryA->aKey() <= pEntryB->aKey());
+    
+    pEntryA = pEntryB;
+    pEntryB = aNextEntry(pEntryA);
+  }
 }
 
 /*============================================================================*/
