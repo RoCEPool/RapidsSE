@@ -282,7 +282,7 @@ void Task::vIndexEntryTest(NNP_Task nnpTask)
   pIndexBuffer->bInsert(&xKey, xRowId);
   
   // verify index buffer
-  pIndexBuffer->vVerify();
+  //pIndexBuffer->vVerify();
   
   IndexBuffer* pFirstBuffer = pIndexBuffer;
 
@@ -331,10 +331,10 @@ void Task::vIndexIbNew(NNP_Task nnpTask)
 {
   ENTRY("vIndexIbNew"_Str);
   
-  IndexBufferSeq* pIndexBufferSeq = new IndexBufferSeq;
-  ASSERT(CN_INDEXBUFFER == pIndexBufferSeq->eClass());
+  IndexBuffer* pIndexBuffer = new IndexBuffer;
+  ASSERT(CN_INDEXBUFFER == pIndexBuffer->eClass());
   
-  nnpTask->m_pDataStack->vPush(pIndexBufferSeq);
+  nnpTask->m_pDataStack->vPush(pIndexBuffer);
   
   EXIT();
 }

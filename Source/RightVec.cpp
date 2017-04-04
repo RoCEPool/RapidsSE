@@ -57,7 +57,7 @@ RightVec::~RightVec(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get the offset for a given offset (offset is 0 or 1)                         */
+/* get the offset for a given offset (offset is 0 or 1)                       */
 /*----------------------------------------------------------------------------*/
 u8 RightVec::uOffset(i8 iOffset)
 {
@@ -69,7 +69,7 @@ u8 RightVec::uOffset(i8 iOffset)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set the offset for a given offset (offset is 0 or 1)                         */
+/* set the offset for a given offset (offset is 0 or 1)                       */
 /*----------------------------------------------------------------------------*/
 void RightVec::vOffset(i8 iOffset, u8 uOffset)
 {
@@ -87,7 +87,7 @@ void RightVec::vOffset(i8 iOffset, u8 uOffset)
 /*----------------------------------------------------------------------------*/
 i8 RightVec::nBytesRequired(i8 nOffsets)
 {
-  ASSERT(nOffsets >= 0 && nOffsets < C_FLAT_OFFSETS);
+  ASSERT(nOffsets >= 0 && nOffsets <= C_FLAT_OFFSETS);
   
   i8 nBytes = nOffsets * sizeof(u8);
   
