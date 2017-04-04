@@ -311,14 +311,14 @@ void IndexBuffer::vNewHead(void)
   ASSERT( ! m_xWsp.nUsed() );
   
   // how many bytes are required
-  i8 nBytes = Entry::nBytesRequired(0,C_FLAT_OFFSETS);
+  i8 nBytes = Entry::nBytesRequired(C_FLAT_OFFSETS,0);
   
   // allot the head
   Entry* aHead = aNewEntry(nBytes,C_FLAT_OFFSETS,nullptr);
   
   // initialize the head
-  for (i8 iLevel = 0; iLevel < C_FLAT_OFFSETS; iLevel++)
-    aHead->vRightOffset(iLevel, C_NIL_OFFSET);
+  for (i8 iOffset = 0; iOffset < C_FLAT_OFFSETS; iOffset++)
+    aHead->vRightOffset(iOffset, C_NIL_OFFSET);
 }
 
 /*----------------------------------------------------------------------------*/

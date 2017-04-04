@@ -317,7 +317,7 @@ void Task::vIndexIbDump(NNP_Task nnpTask)
   vTrace("\nIndex Dump \n"_Str);
   
   while (pIndexBuffer) {
-    pIndexBuffer->vShow();
+    //pIndexBuffer->vShow();
     pIndexBuffer = pIndexBuffer->pNextBuffer();
   }
   
