@@ -13,7 +13,7 @@
 /*----------------------------------------------------------------------------*/
 i8 EntrySeq::nBytesRequired(EntWsp& xEntWsp)
 {
-  i8 nLevels = xEntWsp.nLevels();
+  i8 nLevels = xEntWsp.nOffsets();
   i8 nKeyBytes = xEntWsp.nKeySize();
   i8 nBytes = EntrySeq::nBytesRequired(nLevels,nKeyBytes);
   

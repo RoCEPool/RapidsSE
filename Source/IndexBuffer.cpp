@@ -248,7 +248,7 @@ void IndexBuffer::vMoveRight(void* aSrc, i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* allot new entry after given entry (return null if insufficient space)      */
 /*----------------------------------------------------------------------------*/
-Entry* IndexBuffer::aNewEntry(i8 nBytes, i8 nLevels, Entry* aAfterEntry)
+Entry* IndexBuffer::aNewEntry(i8 nBytes, i8 nOffsets, Entry* aAfterEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
@@ -273,7 +273,7 @@ Entry* IndexBuffer::aNewEntry(i8 nBytes, i8 nLevels, Entry* aAfterEntry)
   }
   
   // run the constructor of the new entry
-  new (aNewEntry) Entry(nBytes,nLevels);
+  new (aNewEntry) Entry(nBytes,nOffsets);
   
   return aNewEntry;
 }
@@ -289,15 +289,14 @@ void IndexBuffer::vNewHead(void)
   ASSERT( ! m_xWsp.nUsed() );
   
   // how many bytes are required
-  i8 nBytes = Entry::nBytesRequired(0,C_FLAT_LEVELS);
+  i8 nBytes = Entry::nBytesRequired(0,C_FLAT_OFFSETS);
   
   // allot the head
-  Entry* aHead = aNewEntry(nBytes,C_FLAT_LEVELS,nullptr);
+  Entry* aHead = aNewEntry(nBytes,C_FLAT_OFFSETS,nullptr);
   
   // initialize the head
-  for (i8 iLevel = 0; iLevel < C_FLAT_LEVELS; iLevel++)
-    ;
-  //aHead->m_iRight[iLevel] = C_NIL_OFFSET;
+  for (i8 iLevel = 0; iLevel < C_FLAT_OFFSETS; iLevel++)
+    aHead->vRightOffset(iLevel, C_NIL_OFFSET);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -351,15 +350,19 @@ Entry* IndexBuffer::aRightEntry(Entry* aEntry, i8 iLevel)
   */
   
   // the caller must request a valid right entry of pEntry
-  ASSERT(iLevel >= 0 && iLevel <= aEntry->nLevels());
+  ASSERT(iLevel >= 0 && iLevel < C_FLAT_LEVELS);
 
   if (0 == iLevel) {
     // for level 0, the right entry is the next entry
     aRightEntry = aNextEntry(aEntry);
   }
   else {
+    
+    i8 iOffset = iLevel - 1;
+    ASSERT(iOffset >= 0 && iOffset < aEntry->nOffsets());
+    
     // for levels 1 & 2 the right entry is m_xWsp + rightOffset[iRight]
-    i8 iRightOffset = aEntry->uRightOffset(iLevel);
+    i8 iRightOffset = aEntry->uRightOffset(iOffset);
     if (C_NIL_OFFSET == iRightOffset)
       aRightEntry = nullptr;
     else

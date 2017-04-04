@@ -8,11 +8,11 @@ namespace DBobjects
   class EntWsp : public Object
   {
   private:
-    RowId  m_xRowId;   // row id
-    i8     m_nLevels;  // number of levels (0, 1 or 2)
+    RowId  m_xRowId;    // row id
+    i8     m_nOffsets;  // number of offsets (0 or 1)
     union {
       RightVec m_xRight; // right vector
-      u8       m_uOffset[C_FLAT_LEVELS - 1]; // right offsets
+      u8       m_uOffset[C_FLAT_OFFSETS];    // right offsets
                                              // no offset for level 0
     };
     union {
@@ -32,9 +32,9 @@ namespace DBobjects
     void   vAddKey(Key* pKey);
     Key*   aKey(void);
     i8     nKeySize(void);
-    u8     nLevels(void);
-    u8     uRightOffset(u8 iLevel);
-    void   vRightOffset(u8 iLevel, u8 uRight);
+    u8     nOffsets(void);
+    u8     uRightOffset(u8 iOffset);
+    void   vRightOffset(u8 iOffset, u8 uRight);
     RowId& xRowId(void);
     void   vRowId(RowId& xRowId);
     void   vShow(void);
