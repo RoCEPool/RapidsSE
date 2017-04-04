@@ -76,7 +76,9 @@ namespace StorageEngine
     void vPrint(void);
     
     void vPrintHelp(void);
-    
+  
+    void vScribble(void);
+  
     Footer* pFooter(void);
   };
 }

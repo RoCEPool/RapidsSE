@@ -538,6 +538,20 @@ void Arguments::vPrintHelp(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* scribble over arguments                                                    */
+/*----------------------------------------------------------------------------*/
+void Arguments::vScribble(void)
+{
+  _precondition_(_MAGIC_,CN_ARGUMENTS,_FOOTER_);
+  
+  byte* aDst = pAdd<byte*>(this,sizeof(Object));
+  
+  i8 nBytes = sizeof(Arguments) - sizeof(Object) - sizeof(Footer);
+  
+  MemLib::vSet(aDst,0xFF,nBytes);
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
