@@ -314,17 +314,10 @@ void Task::vIndexIbDump(NNP_Task nnpTask)
   IndexBuffer* pIndexBuffer = _pIndexBuffer(pPtrIB);
   ASSERT(CN_INDEXBUFFER == pIndexBuffer->eClass());
   
-  vTrace("\n"_Str);
+  vTrace("\nIndex Dump \n"_Str);
   
   while (pIndexBuffer) {
     pIndexBuffer->vShow();
-    
-    Entry* pEntry = pIndexBuffer->aHead();
-    
-    while (pEntry) {
-      pEntry->vShow();
-      pEntry = pIndexBuffer->aNextEntry(pEntry);
-    }
     pIndexBuffer = pIndexBuffer->pNextBuffer();
   }
   

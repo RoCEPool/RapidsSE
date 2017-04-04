@@ -263,15 +263,14 @@ void Entry::vSetEntry(EntWsp& xEntWsp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
 
-  // set Bytes
-  m_nBytes = nBytesRequired(xEntWsp);
+  ASSERT(m_nBytes);
   
   // set RowId
   m_xRowId  = xEntWsp.xRowId();
 
   // set Offsets
   m_nOffsets = xEntWsp.nOffsets();
-
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // copy RightVec

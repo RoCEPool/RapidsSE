@@ -114,15 +114,17 @@ bool IndexBuffer::bInsert(Key* aKey, RowId xRowId)
   xEntWsp.vShow();
   
   // get the size of the EntWsp
-  i8 nBytes = xEntWsp.nRightSize() + xEntWsp.nKeySize()
-              + sizeof(Object) + sizeof(Footer);
-  
-  // test sufficient free space
-  //ASSERT(...));
+  i8 nBytes = Entry::nBytesRequired(xEntWsp);
   
   // get a positioned revise vector
   Entry* pAfterEntry = nullptr; //aPosition(aKey, bEqualTo, &pReviseVec);
   Entry* pNewEntry = aNewEntry(nBytes, xEntWsp.nOffsets(), pAfterEntry);
+  
+  // set the new entry from the EntWsp
+  pNewEntry->vSetEntry(xEntWsp);
+  
+  // increment the no of entries
+  m_nEntries++;
   
   return true;
 }
