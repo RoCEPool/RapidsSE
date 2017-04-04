@@ -29,6 +29,7 @@ namespace DBobjects
     ~EntWsp(void);
   
     void   vAddKey(KeyWsp& xKeyWsp);
+    void   vAddKey(Key* pKey);
     Key*   aKey(void);
     i8     nKeySize(void);
     u8     nLevels(void);

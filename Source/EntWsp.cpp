@@ -47,8 +47,8 @@ EntWsp::EntWsp(void)
   for (i8 iRight = 0; iRight < C_FLAT_LEVELS - 1; iRight++)
     m_uOffset[iRight] = C_NIL_OFFSET;
   
-  // the key wsp will have initialised by its constructor
   // m_xKeyWsp
+  m_xKeyWsp.vInit();
   
   _checkInitialisedSize_(sizeof(EntWsp));
   
@@ -74,6 +74,17 @@ void EntWsp::vAddKey(KeyWsp& xKeyWsp)
 {
   Str* aKeySrc = xKeyWsp.aWspStr();
   i8 nKeyBytes = xKeyWsp.nWspUsed();
+  
+  m_xKeyWsp.vAppend(aKeySrc,nKeyBytes);
+}
+
+/*----------------------------------------------------------------------------*/
+/* add a key                                                                  */
+/*----------------------------------------------------------------------------*/
+void EntWsp::vAddKey(Key* pKey)
+{
+  Str* aKeySrc = pKey->aWspStr();
+  i8 nKeyBytes = pKey->nSize();
   
   m_xKeyWsp.vAppend(aKeySrc,nKeyBytes);
 }
