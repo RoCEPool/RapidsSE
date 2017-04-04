@@ -44,7 +44,7 @@ EntWspSeq::EntWspSeq(void)
   //m_xRowId
   
   // generate logarithemic levels for this entry
-  m_nLevels = Random::uLogLevel(C_FLAT_LEVELS, 2) + 1;
+  m_nLevels = Random::uLogLevel(C_FLAT_LEVELS, C_FLAT_FREQ) + 1;
   
   _checkInitialisedSize_(sizeof(EntWspSeq));
   

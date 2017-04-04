@@ -27,6 +27,7 @@ namespace Magic
     void  vFill(char cByte);
     i8    nFree(void);
     void  vGive(i8 nBytes);
+    void  vInit(void);
     char* aLatter(void);
     i8    nLength(void);
     i8    nSize(void);
@@ -45,6 +46,15 @@ using namespace Magic;
 /*----------------------------------------------------------------------------*/
 template<int LENGTH>
 WspFxd<LENGTH>::WspFxd(void)
+{
+  m_nAreaUsed = 0;
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+template<int LENGTH>
+void WspFxd<LENGTH>::vInit(void)
 {
   m_nAreaUsed = 0;
 }

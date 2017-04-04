@@ -11,7 +11,7 @@ namespace DBobjects
     // ..data..
   
   public:
-    static i8 nBytesRequired(i8 nLevels, i8 nKeyBytes);
+    static i8 nBytesRequired(i8 nOffsets, i8 nKeyBytes);
   
     void* operator new(size_t);
   
@@ -19,8 +19,8 @@ namespace DBobjects
     ~EntryData(void);
   
     void vCopyBytes(void* aSrc, i8 nBytes);
-    Key* aKey(i8 nLevels);
-    RightVec* aRightVec(i8 nLevels);
+    Key* aKey(i8 nOffsets);
+    RightVec* aRightVec(i8 nOffsets);
   
   };
   

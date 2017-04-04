@@ -11,11 +11,11 @@
 /*----------------------------------------------------------------------------*/
 /* get total bytes required for entry                                         */
 /*----------------------------------------------------------------------------*/
-i8 EntryData::nBytesRequired(i8 nLevels, i8 nKeyBytes)
+i8 EntryData::nBytesRequired(i8 nOffsets, i8 nKeyBytes)
 {
-  i8 nLevelBytes = RightVec::nBytesRequired(nLevels);
+  i8 nOffsetBytes = RightVec::nBytesRequired(nOffsets);
   
-  i8 nBytes = nLevelBytes + nKeyBytes;
+  i8 nBytes = nOffsetBytes + nKeyBytes;
   
   return nBytes;
 }
@@ -62,23 +62,23 @@ void EntryData::vCopyBytes(void* aSrc, i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* get key                                                                    */
 /*----------------------------------------------------------------------------*/
-Key* EntryData::aKey(i8 nLevels)
+Key* EntryData::aKey(i8 nOffsets)
 {
-  ASSERT(nLevels >= 0 && nLevels < C_FLAT_LEVELS);
+  ASSERT(nOffsets >= 0 && nOffsets < C_FLAT_OFFSETS);
   
-  i8 nLevelBytes = RightVec::nBytesRequired(nLevels);
+  i8 nOffsetBytes = RightVec::nBytesRequired(nOffsets);
   
-  Key* aKey = pAdd<Key*>(this,nLevelBytes);
+  Key* aKey = pAdd<Key*>(this,nOffsetBytes);
   
   return aKey;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get levels                                                                 */
+/* get offsets                                                                */
 /*----------------------------------------------------------------------------*/
-RightVec* EntryData::aRightVec(i8 nLevels)
+RightVec* EntryData::aRightVec(i8 nOffsets)
 {
-  ASSERT(nLevels >= 0 && nLevels < C_FLAT_LEVELS);
+  ASSERT(nOffsets >= 0 && nOffsets < C_FLAT_OFFSETS);
   
   RightVec* aRightVec = _aRightVec(this);
   

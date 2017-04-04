@@ -13,11 +13,11 @@
 /*----------------------------------------------------------------------------*/
 i8 Entry::nBytesRequired(EntWsp& xEntWsp)
 {
-  i8 nLevels = xEntWsp.nLevels();
+  i8 nOffsets = xEntWsp.nOffsets();
   
   i8 nKeyBytes = xEntWsp.nKeySize();
   
-  i8 nBytes = Entry::nBytesRequired(nLevels,nKeyBytes);
+  i8 nBytes = Entry::nBytesRequired(nOffsets,nKeyBytes);
   
   return nBytes;
 }
@@ -25,9 +25,9 @@ i8 Entry::nBytesRequired(EntWsp& xEntWsp)
 /*----------------------------------------------------------------------------*/
 /* get total bytes required for entry incl Object & Footer                    */
 /*----------------------------------------------------------------------------*/
-i8 Entry::nBytesRequired(i8 nLevels, i8 nKeyBytes)
+i8 Entry::nBytesRequired(i8 nOffsets, i8 nKeyBytes)
 {
-  i8 nEntryDataBytes = EntryData::nBytesRequired(nLevels,nKeyBytes);
+  i8 nEntryDataBytes = EntryData::nBytesRequired(nOffsets,nKeyBytes);
   
   i8 nBytes = sizeof(Entry)
                 + nEntryDataBytes
@@ -91,7 +91,7 @@ Entry::Entry(EntWsp& xEntWsp)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Entry::Entry(i8 nBytes, i8 nLevels)                   //! should we pass EntWsp?
+Entry::Entry(i8 nBytes, i8 nOffsets)                   //! should we pass EntWsp?
 : Object(CN_ENTRY)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY);
@@ -102,9 +102,9 @@ Entry::Entry(i8 nBytes, i8 nLevels)                   //! should we pass EntWsp?
   // check initialisation of rowid
   ASSERT(0 == m_xRowId.uBuffer() && 0 == m_xRowId.uRow());
   
-  // initialise levels
-  m_nLevels = nLevels;
-  ASSERT(m_nLevels >= 0 && m_nLevels < C_FLAT_LEVELS);
+  // initialise offsets
+  m_nOffsets = nOffsets;
+  ASSERT(m_nOffsets >= 0 && m_nOffsets < C_FLAT_OFFSETS);
   
   // entry data will be initialised by vSetEntry       //! Is this correct form?
   
@@ -134,9 +134,9 @@ void Entry::vShow(void)
   
   i8 iKey;
   
-  vTrace("Entry %p: Levels: %llu "_Str,
+  vTrace("Entry %p: Offsets: %llu "_Str,
          this,
-         m_nLevels
+         m_nOffsets
          );
   
   ValLib::nCopyDatum(CN_INTVAL,&iKey,aKey);
@@ -147,7 +147,7 @@ void Entry::vShow(void)
          iKey
          );
   
-  for (i8 iRight=0; iRight< m_nLevels - 1; iRight++) {
+  for (i8 iRight=0; iRight< m_nOffsets; iRight++) {
     vTrace("L%lld: %lld "_Str,
            iRight,
            uRightOffset(iRight));
@@ -181,35 +181,35 @@ Key* Entry::aKey(void)
 
   EntryData* pEntryData = this->aEntryData();
 
-  Key* aKey = pEntryData->aKey(m_nLevels);
+  Key* aKey = pEntryData->aKey(m_nOffsets);
 
   return aKey;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get nLevels                                                                */
+/* get nOffsets                                                                */
 /*----------------------------------------------------------------------------*/
-u8 Entry::nLevels(void)
+u8 Entry::nOffsets(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
   
-  return m_nLevels;
+  return m_nOffsets;
 }
 
 /*----------------------------------------------------------------------------*/
 /* get right offset for given level                                           */
 /*----------------------------------------------------------------------------*/
-u8 Entry::uRightOffset(u8 iLevel)
+u8 Entry::uRightOffset(u8 iOffset)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
   
-  ASSERT(iLevel > 0 && iLevel < C_FLAT_LEVELS);
+  ASSERT(iOffset >= 0 && iOffset < C_FLAT_OFFSETS);
   
   EntryData* aEntryData = this->aEntryData();
   
-  RightVec* aRightVec = aEntryData->aRightVec(m_nLevels);
+  RightVec* aRightVec = aEntryData->aRightVec(m_nOffsets);
 
-  u8 uRight = aRightVec->uOffset(iLevel);
+  u8 uRight = aRightVec->uOffset(iOffset);
   
   return uRight;
 }
@@ -217,17 +217,17 @@ u8 Entry::uRightOffset(u8 iLevel)
 /*----------------------------------------------------------------------------*/
 /* set right offset for given level                                           */
 /*----------------------------------------------------------------------------*/
-void Entry::vRightOffset(u8 iLevel, u8 uRight)
+void Entry::vRightOffset(u8 iOffset, u8 uRight)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
   
-  ASSERT(iLevel > 0 && iLevel < C_FLAT_LEVELS);
+  ASSERT(iOffset > 0 && iOffset < C_FLAT_OFFSETS);
   
   EntryData* aEntryData = this->aEntryData();
   
-  RightVec* aRightVec = aEntryData->aRightVec(m_nLevels);
+  RightVec* aRightVec = aEntryData->aRightVec(m_nOffsets);
 
-  aRightVec->vOffset(iLevel,uRight);
+  aRightVec->vOffset(iOffset,uRight);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
 }
@@ -241,7 +241,7 @@ RightVec* Entry::aRightVec(void)
   
   EntryData* aEntryData = this->aEntryData();
   
-  RightVec* aRightVec = aEntryData->aRightVec(m_nLevels);
+  RightVec* aRightVec = aEntryData->aRightVec(m_nOffsets);
   
   return aRightVec;
 }
@@ -269,8 +269,8 @@ void Entry::vSetEntry(EntWsp& xEntWsp)
   // set RowId
   m_xRowId  = xEntWsp.xRowId();
 
-  // set Levels
-  m_nLevels = xEntWsp.nLevels();
+  // set Offsets
+  m_nOffsets = xEntWsp.nOffsets();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
