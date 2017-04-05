@@ -73,6 +73,10 @@ void KeyWsp::vShow(eDM eDatum, ...)
 {
   _precondition_(_MAGIC_,CN_KEYWSP,_FOOTER_);
   
+  va_list xVarArgs;
+  
+  va_start(xVarArgs,eDatum);
+  
   vTrace("KeyWsp %p: bytesUsed %lld "_Str,
          this,
          nWspUsed()
@@ -80,9 +84,21 @@ void KeyWsp::vShow(eDM eDatum, ...)
   
   i8 nBytesTaken;
   s48K sSprintBuffer;
-  Datums::vSprint(sSprintBuffer.aStr(), (Str*)m_xWsp.aLatter(), eDatum, nBytesTaken);
   
-  vTrace("%s\n"_Str,sSprintBuffer.s());
+  // first element
+  Datums::vSprint(sSprintBuffer.aStr(), (Str*)m_xWsp.aLatter(), eDatum, nBytesTaken);
+  vTrace("%s|"_Str,sSprintBuffer.s());
+  
+  // subsequent elements
+  while (eDM eDatum = (eDM)va_arg(xVarArgs,int)) {
+    
+    Datums::vSprint(sSprintBuffer.aStr(), (Str*)m_xWsp.aLatter(), eDatum, nBytesTaken);
+    vTrace("%s|"_Str,sSprintBuffer.s());
+  }
+
+  va_end(xVarArgs);
+
+  vTrace("\n"_Str);
 }
 
 /*----------------------------------------------------------------------------*/
