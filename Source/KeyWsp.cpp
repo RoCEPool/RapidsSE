@@ -81,6 +81,8 @@ void KeyWsp::vShow(eDM eDatum, ...)
   i8 nBytesTaken;
   s48K sSprintBuffer;
   Datums::vSprint(sSprintBuffer.aStr(), (Str*)m_xWsp.aLatter(), eDatum, nBytesTaken);
+  
+  vTrace("%s\n"_Str,sSprintBuffer.s());
 }
 
 /*----------------------------------------------------------------------------*/

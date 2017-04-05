@@ -37,7 +37,7 @@ Int::~Int(void)
 /*----------------------------------------------------------------------------*/
 /* extract int datum                                                          */
 /*----------------------------------------------------------------------------*/
-bool Int::bExtractInt(Str* aDst, Str* aSrc, i8& nBytesTaken)
+bool Int::bExtract(Str* aDst, Str* aSrc, i8& nBytesTaken)
 {
   char* aExt = (char*)aSrc;
   
@@ -55,11 +55,11 @@ bool Int::bExtractInt(Str* aDst, Str* aSrc, i8& nBytesTaken)
 /*----------------------------------------------------------------------------*/
 /* sprint int datum                                                           */
 /*----------------------------------------------------------------------------*/
-void Int::vSprint(Str* aDst, Str* aSrc, i8& nBytes)
+void Int::vSprint(Str* aDst, Str* aSrc, i8& nBytesTaken)
 {
-  StrLib::vSprint(aDst,"%lld"_Str,aSrc);
+  StrLib::vSprint(aDst,"%lld%c"_Str,*(i8*)aSrc,0);
   
-  nBytes = sizeof(i8);
+  nBytesTaken = sizeof(i8);
 }
 
 /*============================================================================*/

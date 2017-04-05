@@ -246,6 +246,8 @@ void Task::vIndexColumnTest(NNP_Task nnpTask)
   bool b;
   
   b = xKeyWsp.bExtractElement(sRow,0,DM_INT);
+  xKeyWsp.vShow(DM_INT);
+  
   b = xKeyWsp.bExtractElement(sRow,1,DM_INT);
   b = xKeyWsp.bExtractElement(sRow,2,DM_INT);
   b = xKeyWsp.bExtractElement(sRow,3,DM_INT);
