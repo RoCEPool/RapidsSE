@@ -129,7 +129,12 @@ bool KeyWsp::bExtractElement(s48K& sRow, i8 iElement, eDM eDatum)
          aDM[eDatum],
          sRow.s());
   
-  return false;
+  i8 nBytesTaken;
+  bool b = Datums::bExtractDatum((Str*)m_xWsp.aLatter(),
+                                 sRow.aStr(),eDatum,nBytesTaken);
+  
+  m_xWsp.vTake(nBytesTaken);
+  return b;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -38,7 +38,7 @@ namespace Datums
   };
   
   void vCheckAssumptions(void);
-  bool bExtractDatum(Str* aDst, Str* aSrc, eDM eDatum);
+  bool bExtractDatum(Str* aDst, Str* aSrc, eDM eDatum, i8& nBytesTaken);
   
   
 }

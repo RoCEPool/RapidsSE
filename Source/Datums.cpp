@@ -14,7 +14,7 @@ void Datums::vCheckAssumptions(void)
 /*----------------------------------------------------------------------------*/
 /* extract datum                                                              */
 /*----------------------------------------------------------------------------*/
-bool Datums::bExtractDatum(Str* aDst, Str* aSrc, eDM eDatum)
+bool Datums::bExtractDatum(Str* aDst, Str* aSrc, eDM eDatum, i8& nBytesTaken)
 {
   bool b = false;
   
@@ -23,7 +23,7 @@ bool Datums::bExtractDatum(Str* aDst, Str* aSrc, eDM eDatum)
     case DM_BOL: break;
     case DM_DTE: break;
     case DM_FLT: break;
-    case DM_INT: break;
+    case DM_INT: b = Int::bExtractInt(aDst,aSrc,nBytesTaken); break;
     case DM_IVL: break;
     case DM_TME: break;
     case DM_TSP: break;
