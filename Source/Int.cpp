@@ -39,7 +39,15 @@ Int::~Int(void)
 /*----------------------------------------------------------------------------*/
 bool Int::bExtractInt(Str* aDst, Str* aSrc, i8& nBytesTaken)
 {
-  bool b = false;
+  char* aExt = (char*)aSrc;
+  
+  i8 iInt;
+  bool b = StrLib::bExtractI8(&aExt,&iInt);
+  if (b) {
+    MemLib::vCopy(aDst,&iInt,sizeof(i8));
+  
+    nBytesTaken = sizeof(i8);
+  }
   
   return b;
 }
