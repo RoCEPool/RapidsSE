@@ -10,6 +10,7 @@
 namespace Datums
 {
   void vCheckAssumptions(void);
+
   
   enum eDM // Datum Type
   {

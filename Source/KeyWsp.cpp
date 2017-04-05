@@ -118,6 +118,21 @@ i8 KeyWsp::nWspUsed(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* extract element from row                                                   */
+/*----------------------------------------------------------------------------*/
+bool KeyWsp::bExtractElement(s48K& sRow, i8 iElement, eDM eDatum)
+{
+  _precondition_(_MAGIC_,CN_KEYWSP,_FOOTER_);
+  
+  vTrace("Extracting element %lld %s from %s\n"_Str,
+         iElement,
+         aDM[eDatum],
+         sRow.s());
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 _pFooter_(KeyWsp)

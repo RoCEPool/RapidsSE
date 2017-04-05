@@ -239,6 +239,22 @@ void Task::vIndexColumnTest(NNP_Task nnpTask)
 {
   ENTRY("vIndexColumnTest"_Str);
   
+  s48K sRow = "0|1|2|3|4|5|6|7|8|9"_Str;
+  
+  KeyWsp xKeyWsp;
+  
+  bool b;
+  
+  b = xKeyWsp.bExtractElement(sRow,0,DM_INT);
+  b = xKeyWsp.bExtractElement(sRow,1,DM_INT);
+  b = xKeyWsp.bExtractElement(sRow,2,DM_INT);
+  b = xKeyWsp.bExtractElement(sRow,3,DM_INT);
+  b = xKeyWsp.bExtractElement(sRow,4,DM_INT);
+  b = xKeyWsp.bExtractElement(sRow,5,DM_INT);
+  b = xKeyWsp.bExtractElement(sRow,6,DM_INT);
+  b = xKeyWsp.bExtractElement(sRow,7,DM_INT);
+  b = xKeyWsp.bExtractElement(sRow,8,DM_INT);
+  b = xKeyWsp.bExtractElement(sRow,9,DM_INT);
   
   EXIT();
 }

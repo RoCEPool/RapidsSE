@@ -26,6 +26,8 @@ namespace DBobjects
     Str*  aWspStr(void);
     i8    nWspUsed(void);
 
+    bool  bExtractElement(s48K& sRow, i8 iElement, eDM eDatum);
+
     Footer* pFooter(void);
   };
 }
