@@ -39,6 +39,7 @@ void Task::vAddPrimitives_Index(void)
   vAddPrimitive("index.truncate"_Str,    &vIndexTruncate,   false);
 
   // these should go !!!
+  vAddPrimitive("index::columnTest"_Str, &vIndexColumnTest, false);
   vAddPrimitive("index::entryTest"_Str,  &vIndexEntryTest,  false);
   vAddPrimitive("index::ibNew"_Str,      &vIndexIbNew,      false);
   vAddPrimitive("index::ibDump"_Str,     &vIndexIbDump,     false);
@@ -231,6 +232,16 @@ void Task::vIndexEntryTest(NNP_Task nnpTask)
   EXIT();
 }
 */
+/*----------------------------------------------------------------------------*/
+/* index::columnTest -- initial test of index columns                         */
+/*----------------------------------------------------------------------------*/
+void Task::vIndexColumnTest(NNP_Task nnpTask)
+{
+  ENTRY("vIndexColumnTest"_Str);
+  
+  
+  EXIT();
+}
 /*----------------------------------------------------------------------------*/
 /* index::entryTest -- initial test of index entry                            */
 /*----------------------------------------------------------------------------*/
