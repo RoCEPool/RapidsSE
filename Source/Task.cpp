@@ -542,6 +542,16 @@ void Task::vAddConstants(void)
   /*  8 */ vAddConstant("DE_REG"_Str,  DT_REG);
   /* 10 */ vAddConstant("DE_LNK"_Str,  DT_LNK);
   /* 12 */ vAddConstant("DE_SOCK"_Str, DT_SOCK);
+
+  // DM_ : datum type
+  /*  1 */ vAddConstant("DM_BCD"_Str, DM_BCD);
+  /*  2 */ vAddConstant("DM_BOL"_Str, DM_BOL);
+  /*  3 */ vAddConstant("DM_DTE"_Str, DM_DTE);
+  /*  4 */ vAddConstant("DM_FLT"_Str, DM_FLT);
+  /*  5 */ vAddConstant("DM_INT"_Str, DM_INT);
+  /*  6 */ vAddConstant("DM_IVL"_Str, DM_IVL);
+  /*  7 */ vAddConstant("DM_TME"_Str, DM_TME);
+  /*  8 */ vAddConstant("DM_TSP"_Str, DM_TSP);
   
   // EC_ : error codes
   /*  0 */ vAddConstant("EC_NONE"_Str,               EC_NONE);
