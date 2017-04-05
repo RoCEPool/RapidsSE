@@ -9,9 +9,6 @@
 
 namespace Datums
 {
-  void vCheckAssumptions(void);
-
-  
   enum eDM // Datum Type
   {
   /* 0 */ DM_NONE=0,
@@ -39,6 +36,10 @@ namespace Datums
   /* 8 */ "TSP"_Str,
   /* 9 */ "ENUMS"_Str,
   };
+  
+  void vCheckAssumptions(void);
+  bool bExtractDatum(Str* aDst, Str* aSrc, eDM eDatum);
+  
   
 }
 
