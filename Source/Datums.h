@@ -39,8 +39,7 @@ namespace Datums
   
   void vCheckAssumptions(void);
   bool bExtractDatum(Str* aDst, Str* aSrc, eDM eDatum, i8& nBytesTaken);
-  
-  
+  void vSprint(Str* aDst, Str* aSrc, eDM eDatum, i8& nBytesTaken);
 }
 
 using namespace Datums;
