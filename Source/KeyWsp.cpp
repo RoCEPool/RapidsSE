@@ -67,6 +67,19 @@ void KeyWsp::vShow(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* decode show of keywsp contents                                             */
+/*----------------------------------------------------------------------------*/
+void KeyWsp::vShow(eDM eDatum, ...)
+{
+  _precondition_(_MAGIC_,CN_KEYWSP,_FOOTER_);
+  
+  vTrace("KeyWsp %p: bytesUsed %lld "_Str,
+         this,
+         nWspUsed()
+         );
+}
+
+/*----------------------------------------------------------------------------*/
 /* add element to key                                                         */
 /*----------------------------------------------------------------------------*/
 void KeyWsp::vAddElement(Values::ValWsp &xValWsp)

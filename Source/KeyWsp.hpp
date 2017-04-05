@@ -19,6 +19,7 @@ namespace DBobjects
     ~KeyWsp(void);
   
     void vShow(void);
+    void vShow(eDM eDatum, ...);
 
     void vAddElement(ValWsp& xValWsp);
   
