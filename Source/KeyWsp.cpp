@@ -86,14 +86,21 @@ void KeyWsp::vShow(eDM eDatum, ...)
   s48K sSprintBuffer;
   
   // first element
-  Datums::vSprint(sSprintBuffer.aStr(), (Str*)m_xWsp.aLatter(), eDatum, nBytesTaken);
+  Datums::vSprint(sSprintBuffer.aStr(), (Str*)m_xWsp.aArea(), eDatum, nBytesTaken);
   vTrace("%s|"_Str,sSprintBuffer.s());
   
   // subsequent elements
+  i8 iOffset = nBytesTaken;
   while (eDM eDatum = (eDM)va_arg(xVarArgs,int)) {
     
-    Datums::vSprint(sSprintBuffer.aStr(), (Str*)m_xWsp.aLatter(), eDatum, nBytesTaken);
+    Datums::vSprint(sSprintBuffer.aStr(),
+                    (Str*)m_xWsp.aArea() + iOffset,
+                    eDatum,
+                    nBytesTaken);
+    
     vTrace("%s|"_Str,sSprintBuffer.s());
+    
+    iOffset += nBytesTaken;
   }
 
   va_end(xVarArgs);
@@ -164,11 +171,23 @@ bool KeyWsp::bExtractElement(s48K& sRow, i8 iElement, eDM eDatum)
          aDM[eDatum],
          sRow.s());
   
+  Str* aElem = sRow.aStr();
+  i8 iFound = 0;
+  
+  while (iFound != iElement) {
+    if ('|' == *aElem->s())
+      iFound++;
+    aElem++;
+  }
+  
   i8 nBytesTaken;
   bool b = Datums::bExtractDatum((Str*)m_xWsp.aLatter(),
-                                 sRow.aStr(),eDatum,nBytesTaken);
+                                 aElem,eDatum,nBytesTaken);
   
   m_xWsp.vTake(nBytesTaken);
+
+  MemLib::vHexDump(m_xWsp.aArea(),m_xWsp.nUsed());
+  
   return b;
 }
 

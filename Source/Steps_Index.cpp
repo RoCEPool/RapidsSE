@@ -255,25 +255,25 @@ void Task::vIndexColumnTest(NNP_Task nnpTask)
   xKeyWsp.vShow(DM_INT,DM_INT,DM_INT,DM_NONE);
   
   b = xKeyWsp.bExtractElement(sRow,3,DM_INT);
-  xKeyWsp.vShow(DM_INT,DM_INT,DM_INT,DM_INT,DM_INT,DM_NONE);
+  xKeyWsp.vShow(DM_INT,DM_INT,DM_INT,DM_INT,DM_NONE);
   
   b = xKeyWsp.bExtractElement(sRow,4,DM_INT);
-  xKeyWsp.vShow(DM_INT,DM_INT,DM_INT,DM_INT,DM_INT,DM_INT,DM_NONE);
+  xKeyWsp.vShow(DM_INT,DM_INT,DM_INT,DM_INT,DM_INT,DM_NONE);
   
   b = xKeyWsp.bExtractElement(sRow,5,DM_INT);
-  xKeyWsp.vShow(DM_INT,DM_INT,DM_INT,DM_INT,DM_INT,DM_INT,DM_INT,DM_NONE);
+  xKeyWsp.vShow(DM_INT,DM_INT,DM_INT,DM_INT,DM_INT,DM_INT,DM_NONE);
   
   b = xKeyWsp.bExtractElement(sRow,6,DM_INT);
-  xKeyWsp.vShow(DM_INT,DM_INT,DM_INT,DM_INT,DM_INT,DM_INT,DM_INT,DM_INT,DM_NONE);
+  xKeyWsp.vShow(DM_INT,DM_INT,DM_INT,DM_INT,DM_INT,DM_INT,DM_INT,DM_NONE);
   
   b = xKeyWsp.bExtractElement(sRow,7,DM_INT);
-  xKeyWsp.vShow(DM_INT,DM_INT,DM_INT,DM_INT,DM_INT,DM_INT,DM_INT,DM_INT,DM_INT,DM_NONE);
+  xKeyWsp.vShow(DM_INT,DM_INT,DM_INT,DM_INT,DM_INT,DM_INT,DM_INT,DM_INT,DM_NONE);
   
   b = xKeyWsp.bExtractElement(sRow,8,DM_INT);
-  xKeyWsp.vShow(DM_INT,DM_INT,DM_INT,DM_INT,DM_INT,DM_INT,DM_INT,DM_INT,DM_INT,DM_INT,DM_NONE);
+  xKeyWsp.vShow(DM_INT,DM_INT,DM_INT,DM_INT,DM_INT,DM_INT,DM_INT,DM_INT,DM_INT,DM_NONE);
   
   b = xKeyWsp.bExtractElement(sRow,9,DM_INT);
-  xKeyWsp.vShow(DM_INT,DM_INT,DM_INT,DM_INT,DM_INT,DM_INT,DM_INT,DM_INT,DM_INT,DM_INT,DM_INT,DM_NONE);
+  xKeyWsp.vShow(DM_INT,DM_INT,DM_INT,DM_INT,DM_INT,DM_INT,DM_INT,DM_INT,DM_INT,DM_INT,DM_NONE);
   
   
   EXIT();
