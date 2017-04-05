@@ -126,22 +126,35 @@ bool IndexBuffer::bInsert(Key* aKey, RowId xRowId)
   Entry* pAfterEntry = aPosition(aKey, bEqualTo, pReviseVec);
   Entry* pNewEntry = aNewEntry(nBytes, xEntWsp.nOffsets(), pAfterEntry);
   
+  vTrace("\n\n---------INDEX BUFFER AFTER MOVING --------------\n"_Str);
+  vShow();
+  vTrace("-----------------------\n\n"_Str);
+  
   // set the new entry from the EntWsp
   pNewEntry->vSetEntry(xEntWsp);
   
-  // get the offset of the entry
+  // get no of offsets of the entry
   i8 nEntryOffsets = pNewEntry->nOffsets();
   i8 iNewOffset = iToOffset(pNewEntry);
   
   i8 iOffset = nEntryOffsets;
+
+  // Note: ReviseVector works on levels
+  // and entry works on offsets
   
-  // put new entry into the index buffer according to the revise vector for iEntryOffset
+  // revise the offsets from the reviseVector
   while (--iOffset >= 0) {
     
-    i8 iRightOffset = pReviseVec[iOffset+1]->uRightOffset(iOffset);
-    pNewEntry->vRightOffset(iOffset, iRightOffset);
-    pReviseVec[iOffset+1]->vRightOffset(iOffset, iNewOffset);
+    // calculate level into reviseVector for this offset
+    i8 iLevel = iOffset + 1;
     
+    i8 iRightOffset = pReviseVec[iLevel]->uRightOffset(iOffset);
+    
+    // set the offset at iOffset in newEntry
+    pNewEntry->vRightOffset(iOffset, iRightOffset);
+    
+    // set the newEntry offset in reviseVector at level
+    pReviseVec[iLevel]->vRightOffset(iOffset, iNewOffset);
   }
 
   pNewEntry->vShow();
@@ -427,7 +440,7 @@ Entry* IndexBuffer::aPosition(Key* aKey, bool& bEqualTo, Entry** aReviseVec)
 
     // first record current node as a revision point
     if (aReviseVec)
-        aReviseVec[iCurrentLevel] = pCurrentEntry;
+      aReviseVec[iCurrentLevel] = pCurrentEntry;
    
    // now go down one level
     goDownLevel(iCurrentLevel);
@@ -499,8 +512,10 @@ void IndexBuffer::vShow(void)
          m_pPrevBuffer,
          m_pNextBuffer);
   
-  for (Entry* pEntry = aHead(); pEntry != nullptr; pEntry = aNextEntry(pEntry))
+  for (Entry* pEntry = aHead(); pEntry != nullptr; pEntry = aNextEntry(pEntry)) {
+    vTrace("%8lld: "_Str, nSub(pEntry, m_xWsp.aArea()));
     pEntry->vShow();
+  }
   
   vTrace("\n"_Str);
   

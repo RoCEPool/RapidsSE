@@ -146,14 +146,14 @@ void Entry::vShow(void)
          m_nOffsets
          );
   
-  vTrace("Row %llu.%llu Key %lld "_Str,
+  vTrace("Row %3llu.%3llu Key %4lld "_Str,
          m_xRowId.uBuffer(),
          m_xRowId.uRow(),
          iKey
          );
   
   for (i8 iRight=0; iRight< m_nOffsets; iRight++) {
-    vTrace("L%lld: %lld "_Str,
+    vTrace("Offset(%lld): %lld "_Str,
            iRight,
            uRightOffset(iRight));
   }
