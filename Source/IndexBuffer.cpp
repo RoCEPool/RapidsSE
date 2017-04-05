@@ -61,6 +61,8 @@ IndexBuffer::IndexBuffer(void)
   // new the head
   vNewHead();
   
+  m_nEntries++;
+  
   _postcondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
 
   _checkInitialised_(CN_INDEXBUFFER);
@@ -104,9 +106,13 @@ bool IndexBuffer::bInsert(Key* aKey, RowId xRowId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
-  Entry* pReviseVec;
+  Entry* pReviseVec[C_FLAT_LEVELS];
   bool   bEqualTo;
   EntWsp xEntWsp;
+  
+  vTrace("\n\n---------INDEX BUFFER--------------\n"_Str);
+  vShow();
+  vTrace("-----------------------\n\n"_Str);
   
   // initialize the EntWsp
   xEntWsp.vRowId(xRowId);
@@ -117,11 +123,28 @@ bool IndexBuffer::bInsert(Key* aKey, RowId xRowId)
   i8 nBytes = Entry::nBytesRequired(xEntWsp);
   
   // get a positioned revise vector
-  Entry* pAfterEntry = nullptr; //aPosition(aKey, bEqualTo, &pReviseVec);
+  Entry* pAfterEntry = aPosition(aKey, bEqualTo, pReviseVec);
   Entry* pNewEntry = aNewEntry(nBytes, xEntWsp.nOffsets(), pAfterEntry);
   
   // set the new entry from the EntWsp
   pNewEntry->vSetEntry(xEntWsp);
+  
+  // get the offset of the entry
+  i8 nEntryOffsets = pNewEntry->nOffsets();
+  i8 iNewOffset = iToOffset(pNewEntry);
+  
+  i8 iOffset = nEntryOffsets;
+  
+  // put new entry into the index buffer according to the revise vector for iEntryOffset
+  while (--iOffset >= 0) {
+    
+    i8 iRightOffset = pReviseVec[iOffset+1]->uRightOffset(iOffset);
+    pNewEntry->vRightOffset(iOffset, iRightOffset);
+    pReviseVec[iOffset+1]->vRightOffset(iOffset, iNewOffset);
+    
+  }
+
+  pNewEntry->vShow();
   
   // increment the no of entries
   m_nEntries++;
@@ -255,16 +278,19 @@ void IndexBuffer::vMoveRight(void* aSrc, i8 nBytes)
   ASSERT(m_xWsp.nFree() >= nBytes);
   
   // allot space for entry E in wsp
-  m_xWsp.vTake(nBytes);
+  //m_xWsp.vTake(nBytes);
   
   // compute the destination address
   void* aDst = pAdd<void*>(aSrc,nBytes);
   
+  // bytes to copy
+  i8 nBytesToCopy = nSub(m_xWsp.aLatter(), aSrc) - nBytes;
+  
   // move F..Z right
-  MemLib::vMove(aDst,aSrc,nBytes);
+  MemLib::vMove(aDst,aSrc,nBytesToCopy);
   
   // for the moment we'll zero the bytes of entry E
-  MemLib::vZero(aDst,nBytes);
+  MemLib::vZero(aSrc,nBytes);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -280,7 +306,8 @@ Entry* IndexBuffer::aNewEntry(i8 nBytes, i8 nOffsets, Entry* aAfterEntry)
   
   // allot space for the new entry
   m_xWsp.vTake(nBytes);
-
+  Entry* aLatter = _aEntry(m_xWsp.aLatter());
+  
   Entry* aNewEntry;
   if (aAfterEntry) {
   // compute address of new entry
@@ -311,11 +338,12 @@ void IndexBuffer::vNewHead(void)
   ASSERT( ! m_xWsp.nUsed() );
   
   // how many bytes are required
-  i8 nBytes = Entry::nBytesRequired(C_FLAT_OFFSETS,0);
+  i8 nBytes = Entry::nBytesRequired(C_FLAT_OFFSETS, 0);
   
   // allot the head
-  Entry* aHead = aNewEntry(nBytes,C_FLAT_OFFSETS,nullptr);
   
+  Entry* aHead = aNewEntry(nBytes,C_FLAT_OFFSETS,nullptr);
+
   // initialize the head
   for (i8 iOffset = 0; iOffset < C_FLAT_OFFSETS; iOffset++)
     aHead->vRightOffset(iOffset, C_NIL_OFFSET);
@@ -343,12 +371,14 @@ Entry* IndexBuffer::aNextEntry(Entry* aEntry)
   Entry* aNext = pAdd<Entry*>(aEntry,nBytes);
   
   // check for valid entry
-  if (aNext < _aEntry(m_xWsp.aLatter()))
+  Entry* aLatter = _aEntry(m_xWsp.aLatter());
+  if (aNext < aLatter)
     return aNext;
   else
     return nullptr;
 }
 
+#define goDownLevel(iLevel) iLevel--;
 /*----------------------------------------------------------------------------*/
 /* positition to entry (optional set revise vector)                           */
 /*----------------------------------------------------------------------------*/
@@ -356,8 +386,58 @@ Entry* IndexBuffer::aPosition(Key* aKey, bool& bEqualTo, Entry** aReviseVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
-  return nullptr;
+  aKey->vShow();
+  
+  // start from head at known highest level
+  Entry* pCurrentEntry = aHead();
+  i8 iCurrentLevel = C_FLAT_LEVELS - 1;
+  
+  do {
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // inner loop: go right a number of nodes until we find
+    //   ObjectInsert < ObjectNext at current level
+    while (Entry* pNextEntry = aRightEntry(pCurrentEntry, iCurrentLevel)) {
+      
+        // compare the inserting object with next object
+        bool bGreaterEqual = bI8Compare(aKey, pNextEntry->aKey(), bEqualTo);
+  
+      vTrace("nextKey:  "_Str);
+      pNextEntry->vShow();
+      
+        if (bGreaterEqual) {
+            // pObjectInsert is >= pObjectNext
+            //vTrace("  %lld after %lld (level %lld)\n"_Str,
+            //       (i8)pObjectInsert,(i8)pNextEntry->uRight(),iCurrentLevel);
+    
+           // go right one node
+            pCurrentEntry = aRightEntry(pCurrentEntry, iCurrentLevel);
+          }
+       else {
+            // pObjectInsert is < pObjectNext or pObjectNext is null
+            //vTrace("  %lld before %lld (level %lld)\n"_Str,
+            //       (i8)pObjectInsert,(i8)pNextEntry->uRight(),iCurrentLevel);
+    
+            break;
+          }
+      }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // outer loop: now having gone right as far as we go down one single level
+
+    // first record current node as a revision point
+    if (aReviseVec)
+        aReviseVec[iCurrentLevel] = pCurrentEntry;
+   
+   // now go down one level
+    goDownLevel(iCurrentLevel);
+    
+    // and repeat till we have a complete revision vector
+  } while (iCurrentLevel >= 0);
+  
+  return pCurrentEntry;
 }
+
 
 /*----------------------------------------------------------------------------*/
 /* get right entry at given level (returns null if no right)                  */
@@ -461,7 +541,7 @@ i8 IndexBuffer::iToOffset(Entry* aEntry)
 /*----------------------------------------------------------------------------*/
 void IndexBuffer::vVerify(void)
 {
-  Entry* pEntryA = aHead();
+  Entry* pEntryA = aNextEntry(aHead());
   if ( ! pEntryA )
     return;
   
@@ -474,14 +554,37 @@ void IndexBuffer::vVerify(void)
     Key* pKeyA = pEntryA->aKey();
     Key* pKeyB = pEntryB->aKey();
     
-    //pKeyA->vShow();
-    //pKeyB->vShow();
+    pKeyA->vShow();
+    pKeyB->vShow();
     
     ASSERT(*pEntryA->aKey() <= pEntryB->aKey());
     
     pEntryA = pEntryB;
     pEntryB = aNextEntry(pEntryA);
   }
+}
+
+/*----------------------------------------------------------------------------*/
+bool DBobjects::bI8Compare(void* pKeyInsert, void* pKeyScan, bool& bMatch)
+{
+  i8 iInsertKey;
+  i8 iScanKey;
+  
+  ValLib::vCopyIntDatum(&iInsertKey,pKeyInsert);
+  ValLib::vCopyIntDatum(&iScanKey,pKeyScan);
+  
+  if ( ! pKeyScan )
+    return false;
+  
+  if (iInsertKey == iScanKey)
+    bMatch = true;
+  else
+    bMatch = false;
+  
+  if (iInsertKey > iScanKey)
+    return true;
+  else
+    return false;
 }
 
 /*============================================================================*/

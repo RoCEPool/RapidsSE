@@ -104,7 +104,7 @@ Entry::Entry(i8 nBytes, i8 nOffsets)                   //! should we pass EntWsp
   
   // initialise offsets
   m_nOffsets = nOffsets;
-  ASSERT(m_nOffsets >= 0 && m_nOffsets <= C_FLAT_OFFSETS);        //RAY ??
+  ASSERT(m_nOffsets >= 0 && m_nOffsets <= C_FLAT_OFFSETS);        
   
   // entry data will be initialised by vSetEntry       //! Is this correct form?
   
@@ -131,17 +131,22 @@ void Entry::vShow(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
   
   Key* aKey = this->aKey();
-  
   i8 iKey;
+  
+  if (m_xRowId.uBuffer() == 0) {
+    ASSERT(m_xRowId.uRow() == 0);
+    iKey = -1;
+  }
+  else {
+    ValLib::nCopyDatum(CN_INTVAL,&iKey,aKey);
+  }
   
   vTrace("Entry %p: Offsets: %llu "_Str,
          this,
          m_nOffsets
          );
   
-  ValLib::nCopyDatum(CN_INTVAL,&iKey,aKey);
-  
-  vTrace("Row %llu.%llu Key %lld"_Str,
+  vTrace("Row %llu.%llu Key %lld "_Str,
          m_xRowId.uBuffer(),
          m_xRowId.uRow(),
          iKey
@@ -204,6 +209,9 @@ u8 Entry::uRightOffset(u8 iOffset)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
   
   ASSERT(iOffset >= 0 && iOffset < C_FLAT_OFFSETS);
+  
+  if (iOffset >= m_nOffsets)
+    return C_NIL_OFFSET;
   
   EntryData* aEntryData = this->aEntryData();
   

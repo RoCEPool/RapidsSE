@@ -239,6 +239,7 @@ void Task::vIndexEntryTest(NNP_Task nnpTask)
   ENTRY("vIndexEntryTest"_Str);
   
   Object* pPtrIb = nullptr;
+  //static i8 i = 1;
   
   if ( ! nnpTask->m_pDataStack->bPop(pPtrIb) )
     THROW_INVALID_DSTACK("index::entryTest"_Str);
@@ -317,7 +318,7 @@ void Task::vIndexIbDump(NNP_Task nnpTask)
   vTrace("\nIndex Dump \n"_Str);
   
   while (pIndexBuffer) {
-    //pIndexBuffer->vShow();
+    pIndexBuffer->vShow();
     pIndexBuffer = pIndexBuffer->pNextBuffer();
   }
   

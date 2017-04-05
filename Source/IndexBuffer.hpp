@@ -57,6 +57,7 @@ namespace DBobjects
     
   };
   
+  bool bI8Compare(void* pKeyInsert, void* pKeyScan, bool& bMatch);
   IndexBuffer* _pIndexBuffer(void* aAddr);
 }
 
