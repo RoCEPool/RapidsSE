@@ -23,9 +23,9 @@ namespace DBobjects
     i8    m_iColumnNo;
     s32   m_sColumnName;
     eCT   m_eColumnType;
+    eDM   m_eDatumType;
     bool  m_bIsNullable;
-    i8    m_nColumnMgr;
-    
+  
     // must be last
     Footer m_xFooter;
     
@@ -36,6 +36,21 @@ namespace DBobjects
     
     Column(void);
     ~Column(void);
+  
+    i8   iColumnNo(void);
+    void vColumnNo(i8 iColumnNo);
+  
+    s32& sColumnName(void);
+    void vColumnName(s32& sColumnName);
+  
+    eCT  eColumnType(void);
+    void vColumnType(eCT eColumnType);
+  
+    eDM  eDatumType(void);
+    void vDatumType(eDM eDatumType);
+  
+    bool bIsNullable(void);
+    void vIsNullable(bool bIsNullable);
   
     Footer* pFooter(void);
   };
