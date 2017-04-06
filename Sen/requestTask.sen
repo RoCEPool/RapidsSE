@@ -42,8 +42,6 @@ thread:  requestThread
   dicStackSEitf dicPath.depth 0 ?do
     dicStackTask dicPath.push
   loop
-
-  //dicStackTask dicPath.dump
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -156,6 +154,8 @@ tp: !req_exit
   >valset
 
   savePath
+
+  dicPath.clear
 
   //"rspque" find execute queue.append
   task.this task.seitf@ seitf.responseQueue queue.append
