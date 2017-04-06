@@ -11,11 +11,13 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-ColumnVec* DBobjects::_aColumnVec(void* aAddr)
+ColumnVec* DBobjects::_pColumnVec(void* aAddr)
 {
-  ColumnVec* aColumnVec = reinterpret_cast<ColumnVec*>(aAddr);
+  ColumnVec* pColumnVec = reinterpret_cast<ColumnVec*>(aAddr);
   
-  return aColumnVec;
+  RASSERT( !pColumnVec || CN_COLUMNVEC == pColumnVec->eClass() );
+  
+  return pColumnVec;
 }
 
 /*----------------------------------------------------------------------------*/

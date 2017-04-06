@@ -31,7 +31,7 @@ namespace DBobjects
     Footer* pFooter(void);
   };
   
-  ColumnVec* _aColumnVec(void* aAddr);
+  ColumnVec* _pColumnVec(void* aAddr);
 }
 
 /*============================================================================*/

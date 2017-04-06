@@ -17,7 +17,7 @@ namespace DBobjects
     /* 1 */ "XYZ"_Str
   };
 
-  class Column
+  class Column : public Object
   {
     private:
     i8    m_iColumnNo;
@@ -29,8 +29,18 @@ namespace DBobjects
     // must be last
     Footer m_xFooter;
     
+    public:
+    
+    void* operator new(size_t);
+    void  operator delete(void*);
+    
+    Column(void);
+    ~Column(void);
+  
     Footer* pFooter(void);
   };
+  
+  Column* _pColumn(void* aAddr);
 }
 
 /*============================================================================*/
