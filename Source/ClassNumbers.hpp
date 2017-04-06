@@ -39,6 +39,9 @@ namespace Base
     /* 15 */ CN_BUFFERPOOL,
     /* 16 */ CN_BPA,
   
+    /*    */ CN_COLUMN,
+    /*    */ CN_COLUMNVEC,
+  
     /* 17 */ CN_DATA,
     /* 18 */ CN_DIC,
     /* 19 */ CN_DICPATH,
@@ -173,6 +176,9 @@ namespace Base
     
     /* 15 */ "BUFFERPOOL"_Str,
     /* 16 */ "BPA"_Str,
+  
+    /*    */ "COLUMN"_Str,
+    /*    */ "COLUMNVEC"_Str,
     
     /* 17 */ "DATA"_Str,
     /* 18 */ "DIC"_Str,

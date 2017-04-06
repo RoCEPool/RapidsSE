@@ -47,6 +47,8 @@ using namespace DBobjects;
 #include "Ring.hpp"
 
 #include "Index.hpp"
+#include "Column.hpp"
+#include "ColumnVec.hpp"
 #include "Table.hpp"
 
 #include "RbCursor.hpp"
