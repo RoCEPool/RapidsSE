@@ -48,6 +48,11 @@ ColumnVec::ColumnVec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMNVEC,_FOOTER_);
   
+  m_nColumns = 0;
+  
+  for (i8 iColumn = 0; iColumn < C_COLUMN_VEC; iColumn++)
+    m_pColumn[iColumn] = nullptr;
+  
   _checkInitialised_(CN_COLUMNVEC);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_COLUMNVEC,_FOOTER_);
@@ -59,6 +64,57 @@ ColumnVec::ColumnVec(void)
 ColumnVec::~ColumnVec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMNVEC,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* add a column                                                               */
+/*----------------------------------------------------------------------------*/
+void ColumnVec::vAddColumn(Column* pColumn)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMNVEC,_FOOTER_);
+  
+  // check we have a free slot
+  ASSERT(m_nColumns >= 0 && m_nColumns < C_COLUMN_VEC - 1);
+  
+  // get column number
+  i8 iColumn = m_nColumns++;
+  ASSERT(m_nColumns > 0 && m_nColumns < C_COLUMN_VEC);
+  
+  // there shouldnt already be a column
+  ASSERT( ! m_pColumn[iColumn] );
+  
+  // set column
+  m_pColumn[iColumn] = pColumn;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of actual columns                                               */
+/*----------------------------------------------------------------------------*/
+i8 ColumnVec::nColumns(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMNVEC,_FOOTER_);
+
+  ASSERT(m_nColumns >= 0 && m_nColumns < C_COLUMN_VEC);
+  
+  return m_nColumns;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get a specific column                                                      */
+/*----------------------------------------------------------------------------*/
+Column* ColumnVec::pColumn(i8 iColumn)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMNVEC,_FOOTER_);
+ 
+  ASSERT(iColumn >= 0 && iColumn < m_nColumns);
+  
+  Column* pColumn = m_pColumn[iColumn];
+  
+  return pColumn;
 }
 
 /*----------------------------------------------------------------------------*/
