@@ -107,6 +107,8 @@ bool Tokeniser::bPop(void)
   Parser* pToBeDelete = m_pParser;
   m_pParser = m_pParser->pNext();
   
+  ASSERT(m_pParser);
+  
   delete pToBeDelete;
   
   return true;
