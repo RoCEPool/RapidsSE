@@ -7,7 +7,7 @@ namespace System
 {
   static const i8 C_THREAD_BOOST = 8;
   
-  class PosixThread
+  class PosixThread : public Object
   {
   public:
     i8               m_iOpSysThreadId; // thread id as known by os
@@ -50,6 +50,8 @@ namespace System
     static bool bTlsCreate(pthread_key_t* pTlsKey);
     static void* pTlsGet(pthread_key_t iTlsKey);
   };
+  
+  PosixThread* _pPosixThread(void* aAddr);
 }
 
 /*============================================================================*/

@@ -83,6 +83,7 @@ namespace Base
     /* 45 */ CN_PARTITION,
     /* 46 */ CN_PLAN,
     /* 47 */ CN_PLANLIST,
+    /*    */ CN_POSIXTHREAD,
     /* 48 */ CN_PROXY,
     /* 49 */ CN_PROXYSET,
     
@@ -221,6 +222,7 @@ namespace Base
     /* 45 */ "PARTITION"_Str,
     /* 46 */ "PLAN"_Str,
     /* 47 */ "PLANLIST"_Str,
+    /*    */ "POSIXTHREAD"_Str,
     /* 48 */ "PROXY"_Str,
     /* 49 */ "PROXYSET"_Str,
     

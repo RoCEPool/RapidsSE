@@ -7,9 +7,22 @@
 Atomic gzThreadOpenCount;
 
 /*----------------------------------------------------------------------------*/
+/* safe cast                                                                  */
+/*----------------------------------------------------------------------------*/
+PosixThread* System::_pPosixThread(void* aAddr)
+{
+  PosixThread* pPosixThread = reinterpret_cast<PosixThread*>(aAddr);
+  
+  RASSERT( !pPosixThread || CN_POSIXTHREAD == pPosixThread->eClass() );
+  
+  return pPosixThread;
+}
+
+/*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 PosixThread::PosixThread()
+: Object(CN_POSIXTHREAD)
 {
   MemLib::vZero(this,sizeof(PosixThread));
   

@@ -86,6 +86,7 @@ pDUMPFUN *gpDump[]
   /* 45 */ &Partition::vDump,       // CN_PARTITION
   /* 46 */ &Plan::vDump,            // CN_PLAN
   /* 47 */ &PlanList::vDump,        // CN_PLANLIST
+  /*    */ &Dump::vUndefined,       // CN_POSIXTHREAD
   /* 48 */ &Dump::vUndefined,       // CN_PROXY
   /* 49 */ &Dump::vUndefined,       // CN_PROXYSET
   
@@ -224,6 +225,7 @@ i8 giClassSize[]
   /* 45 */ sizeof(Partition),          // CN_PARTITION
   /* 46 */ sizeof(Plan),               // CN_PLAN
   /* 47 */ sizeof(PlanList),           // CN_PLANLIST
+  /*    */ sizeof(PosixThread),        // CN_POSIXTHREAD
   /* 48 */ sizeof(Proxy),              // CN_PROXY
   /* 49 */ sizeof(ProxySet),           // CN_PROXYSET
   
@@ -362,6 +364,7 @@ eHT geWhichHeap[]
   /* 48 */ HT_INVALID, // CN_PARTITION
   /* 49 */ HT_MEDIUM,  // CN_PLAN
   /* 50 */ HT_SMALL,   // CN_PLANLIST
+  /*    */ HT_SMALL,   // CN_POSIXTHREAD
   /* 51 */ HT_INVALID, // CN_PROXY
   /* 52 */ HT_INVALID, // CN_PROXYSET
 
