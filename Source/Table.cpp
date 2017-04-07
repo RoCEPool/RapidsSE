@@ -69,6 +69,8 @@ Table::Table(void)
   
   m_zRefCount.vCheckInit();
   
+  m_pColumnVec = new ColumnVec;
+  
   _checkInitialised_(CN_TABLE);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
@@ -93,6 +95,8 @@ Table::Table(Str* pTableName)
 Table::~Table(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  
+  delete m_pColumnVec;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -100,7 +104,7 @@ Table::~Table(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/*analyze table                                                               */
+/* analyze table                                                              */
 /*----------------------------------------------------------------------------*/
 Str* Table::pAnalyze(bool bDetailed)
 {
@@ -182,6 +186,16 @@ void Table::vAppendBuffer(i8 iPartition, RowBuffer* pRowBuffer)
  
   pPartition->pData()->vAppendBuffer(pRowBuffer);
   
+}
+
+/*----------------------------------------------------------------------------*/
+/* get ColumnVec                                                              */
+/*----------------------------------------------------------------------------*/
+ColumnVec* Table::pColumnVec(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  
+  return m_pColumnVec;
 }
 
 /*----------------------------------------------------------------------------*/

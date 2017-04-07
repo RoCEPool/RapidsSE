@@ -55,6 +55,8 @@ ColumnVec::ColumnVec(void)
   for (i8 iColumn = 0; iColumn < C_COLUMN_VEC; iColumn++)
     m_pColumn[iColumn] = nullptr;
   
+  _setFooter_();
+  
   _checkInitialised_(CN_COLUMNVEC);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_COLUMNVEC,_FOOTER_);
@@ -128,7 +130,7 @@ Column* ColumnVec::pColumn(i8 iColumn)
 /*----------------------------------------------------------------------------*/
 Footer* ColumnVec::pFooter(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DATA);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMNVEC);
   
   return &m_xFooter;
 }

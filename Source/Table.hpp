@@ -20,15 +20,15 @@ namespace DBobjects
   class Table : public Object
   {
   private:
-    s32 m_sTableName;
-    eTT m_eTableType;
-    
-    Dic   m_xSubDic;
-  //Ring  m_xRing;
-    Slots m_xSlots;
-    
-    Atomic m_zRefCount;    // reference count
-    
+    s32    m_sTableName; // table name
+    eTT    m_eTableType; // table type
+    Dic    m_xSubDic;    // sub dictionary for this table
+  //Ring   m_xRing;
+    Slots  m_xSlots;     // slots
+    Atomic m_zRefCount;  // reference count
+
+    ColumnVec* m_pColumnVec; // colummn vector
+  
     // must be last
     Footer m_xFooter;
     
@@ -45,6 +45,7 @@ namespace DBobjects
     
     Str* pAnalyze(bool bDetailed);
     void vAppendBuffer(i8 iPartition, RowBuffer* pRowBuffer);
+    ColumnVec* pColumnVec(void);
     i8   iRowPartition(Str* pRow);
     Dic* pSubDic(void);
     void vInsertRow(i8 iPartition, TxRef* pTxRef, Str* pRecord, i8 iLength);
