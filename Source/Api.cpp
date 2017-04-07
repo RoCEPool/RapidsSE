@@ -289,8 +289,6 @@ eEC RapidsSE_DropTable(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable, 
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_EndCreate(SEitf* pSEitf, i8 iTraceLevel)
 {
-  printf("RapidsSE_EndCreate\n");
-  
   eEC eResult;
   eEC eResponse;
   
