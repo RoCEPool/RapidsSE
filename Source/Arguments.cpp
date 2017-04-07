@@ -66,6 +66,8 @@ Arguments::Arguments(void)
   m_iSleep      = 1;
   m_bMunged     = false;
   m_bKillPrev   = false;
+  m_bDontFree   = false;
+  m_bFreeRB     = false;
   
   _checkInitialised_(CN_ARGUMENTS);
   
@@ -417,7 +419,17 @@ bool Arguments::bParse(int argc, Str* argv[])
       m_bKillPrev = true;
       continue;
     }
-        
+
+    if (argv[iArg]->bSame("--dontFree"_Str)) {
+      m_bDontFree = true;
+      continue;
+    }
+    
+    if (argv[iArg]->bSame("--freeRB"_Str)) {
+      m_bFreeRB = true;
+      continue;
+    }
+    
     vTrace("Unrecognized command argument: %s\n"_Str,argv[iArg]);
     return false;
   }

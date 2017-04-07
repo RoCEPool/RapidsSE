@@ -31,7 +31,8 @@ void BufferPool::operator delete(void* pRegion)
 /*----------------------------------------------------------------------------*/
 /* constructor (new region)                                                   */
 /*----------------------------------------------------------------------------*/
-BufferPool::BufferPool(Str* aRegionName, i8 iRegionSize, i8 iJumboTook, bool bTouch)
+BufferPool::BufferPool(Str* aRegionName, i8 iRegionSize, i8 iJumboTook,
+                       bool bTouch, bool bDontFree, bool bFreeRB)
 : Object(CN_BUFFERPOOL)
 {
   gpBufferPool = this;
@@ -43,6 +44,8 @@ BufferPool::BufferPool(Str* aRegionName, i8 iRegionSize, i8 iJumboTook, bool bTo
   m_pBase  = reinterpret_cast<Buffer*>(this);
   m_pLimit = pAdd<Buffer*>(m_pBase,iRegionSize);
   m_pJumbo = pAdd<Buffer*>(m_pLimit,-(iJumboTook * C_SIZE_POOL_BUFFER));
+  m_bDontFree = bDontFree;
+  m_bFreeRB = bFreeRB;
   
   m_sShmName = aRegionName;
   m_iShmFD   = 0;
@@ -213,6 +216,16 @@ bool BufferPool::bDetachPool(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* dont actually free object?                                                 */
+/*----------------------------------------------------------------------------*/
+bool BufferPool::bDontFree(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
+  
+  return m_bDontFree;
+}
+
+/*----------------------------------------------------------------------------*/
 /* free buffer back into free chain                                           */
 /*----------------------------------------------------------------------------*/
 void BufferPool::vFree(Buffer* pBuffer)
@@ -267,6 +280,16 @@ i8 BufferPool::iFreePercent(void)
   i8 iFreePercent = DIV(iFreeSpace() * 100,gpAttachMap->m_iRegionSize);
   
   return iFreePercent;
+}
+
+/*----------------------------------------------------------------------------*/
+/* free RowBuffers back to heap?                                              */
+/*----------------------------------------------------------------------------*/
+bool BufferPool::bFreeRB(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
+  
+  return m_bFreeRB;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -12,10 +12,12 @@ namespace Pool
     friend class BPA;
     
   private:
-    i8      m_nBuffers; // number of buffers in pool
-    Buffer* m_pBase;    // starting address of pool (large section)
-    Buffer* m_pJumbo;   // starting address of jumbo section
-    Buffer* m_pLimit;   // address after pool
+    i8      m_nBuffers;  // number of buffers in pool
+    Buffer* m_pBase;     // starting address of pool (large section)
+    Buffer* m_pJumbo;    // starting address of jumbo section
+    Buffer* m_pLimit;    // address after pool
+    bool    m_bDontFree; // dont actually free objects back to heap
+    bool    m_bFreeRB;   // but actually free RowBuffers back to heap
 
     s256 m_sShmName;    // shared memory region name
     int  m_iShmFD;      // shared memory file descriptor
@@ -33,7 +35,8 @@ namespace Pool
     void* operator new(size_t, void* pRegion);
     void  operator delete(void* pRegion);
     
-    BufferPool(Str* aRegionName, i8 iRegionSize, i8 iJumboTook, bool bTouch);
+    BufferPool(Str* aRegionName, i8 iRegionSize, i8 iJumboTook,
+               bool bTouch, bool bDontFree, bool bFreeRB);
     ~BufferPool(void);
     
     Buffer* pAllocBuffer(void);
@@ -45,9 +48,11 @@ namespace Pool
     i8   iBufferSize(void);
     void vCheckAddress(const void* aAddress);
     bool bDetachPool(void);
+    bool bDontFree(void);
     void vFree(Buffer* pBuffer);
     i8   iFreeCount(void);
     i8   iFreePercent(void);
+    bool bFreeRB(void);
     i8   iFreeSpace(void);
     bool bHasDataSpace(void);
     void vInitialise(bool bTouch);

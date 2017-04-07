@@ -50,7 +50,9 @@ namespace StorageEngine
     i8   m_iSleep;      // sleep period for yield (temporary)
     bool  m_bMunged;    // load munged words
     bool  m_bKillPrev;  // kill previous se's (temporary)
-    
+    bool  m_bDontFree;  // dont actually free objects back to heap
+    bool  m_bFreeRB;    // but free RowBuffers back to heap
+  
     // working
     i8   m_nJumboBuffers; // number of jumbo buffers
     i8   m_nJumboTook;    // number of pool buffers taken by jumbo buffers

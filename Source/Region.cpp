@@ -91,7 +91,8 @@ bool Region::bAttach(StrVal& sRegionName, bool bWecome)
 /* create new shm region                                                      */
 /*----------------------------------------------------------------------------*/
 void Region::vCreate(StrVal& sRegionName, i8 iRegionSize, i8 iJumboTook,
-                     bool bTouch, bool bLock, bool bRestart)
+                     bool bTouch, bool bLock, bool bRestart,
+                     bool bDontFree, bool bFreeRB)
 {
   int iFD;
   SysCall xSysCall;
@@ -144,7 +145,7 @@ void Region::vCreate(StrVal& sRegionName, i8 iRegionSize, i8 iJumboTook,
     vTrace("Region::vCreate D\n"_Str);
   
   gpBufferPool = new(mpRegion) BufferPool(sRegionName, iRegionSize,
-                                          iJumboTook, bTouch);
+                                          iJumboTook, bTouch, bDontFree, bFreeRB);
 
   if (gbVerbose)
     vTrace("Region::vCreate E\n"_Str);

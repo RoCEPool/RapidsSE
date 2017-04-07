@@ -152,7 +152,9 @@ void RapidsSE::vPoolOpen(void)
                     gxArguments.m_nJumboTook,
                     gxArguments.m_bTouch,
                     gxArguments.m_bLock,
-                    gxArguments.m_bRestart);
+                    gxArguments.m_bRestart,
+                    gxArguments.m_bDontFree,
+                    gxArguments.m_bFreeRB);
     vCreateObjects();
     return;
   }
