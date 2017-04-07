@@ -163,7 +163,7 @@ void RapidsSE::vPoolOpen(void)
   
   if (gxArguments.m_bStop) {
     if (! Region::bTest(gxArguments.m_sRegionName)) {
-      vTrace("Error: RapidsSE instance was not started\n"_Str,gxArguments.m_sRegionName.s());
+      vTrace("Error: RapidsSE instance %s was not started\n"_Str,gxArguments.m_sRegionName.s());
       exit(EXIT_FAILURE);
       return;
     }
@@ -175,12 +175,17 @@ void RapidsSE::vPoolOpen(void)
   
   if (gxArguments.m_bPrompt) {
     if (! Region::bTest(gxArguments.m_sRegionName)) {
-      vTrace("Error: RapidsSE instance was not started\n"_Str,gxArguments.m_sRegionName.s());
+      vTrace("Error: RapidsSE instance %s was not started\n"_Str,gxArguments.m_sRegionName.s());
       exit(EXIT_FAILURE);
       return;
     }
     bResult = Region::bAttach(gxArguments.m_sRegionName, gxArguments.m_bWelcome);
-    ASSERT(bResult);
+    if ( ! bResult ) {
+      vTrace("Error: Unable to attach to RapidsSE instance %s\n"_Str,gxArguments.m_sRegionName.s());
+      exit(EXIT_FAILURE);
+      return;
+
+    }
     vAttachObjects();
     return;
   }
