@@ -11246,7 +11246,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/*----------------------------------------------------------------------------*/\n"
     ": open_trace\n"
     "  \\\"/tmp/se_trace.txt\\\" trace_file file.path!\n"
-    "  open_append trace_file file.open\n"
+    "  open_read_write_create trace_file file.open\n"
     "  if \\\"trace file opened\\\" .verbose else \\\"trace file not opened\\\" . then\n"
     " ;\n"
     "\n"
