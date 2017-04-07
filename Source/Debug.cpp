@@ -12,15 +12,11 @@ void Debugging::vAssertTrap(void)
   // put a breakpoint here to trap asserts
   sleep(0);
   
-  void *pArray[10];
-  int iSize;
+  // dump the call stack
+  vStackDump();
   
-  // get void*'s for all entries on the stack
-  iSize = backtrace(pArray, 10);
-  
-  // print out all the frames to stderr
-  //fprintf(stderr, "Error: signal %d:\n", sig);
-  backtrace_symbols_fd(pArray, iSize, STDERR_FILENO);
+  // generate a core
+  abort();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -30,6 +26,22 @@ void Debugging::vDebugTrap(void)
 {
   // put a breakpoint here to trap specific debug points
   sleep(0);
+}
+
+/*----------------------------------------------------------------------------*/
+/* error handler                                                              */
+/*----------------------------------------------------------------------------*/
+void Debugging::vStackDump(void)
+{
+  void *pArray[C_STACK_BACKTRACE];
+  int iSize;
+  
+  // get void*'s for all entries on the stack
+  iSize = backtrace(pArray, C_STACK_BACKTRACE);
+  
+  // print out all the frames to stderr
+  //fprintf(stderr, "Error: signal %d:\n", sig);
+  backtrace_symbols_fd(pArray, iSize, STDERR_FILENO);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -5,8 +5,11 @@
 
 namespace Debugging
 {
+  static const i8 C_STACK_BACKTRACE = 10;
+
   void vAssertTrap(void);
   void vDebugTrap(void);
+  void vStackDump(void);
   void vThrowTrap(void);
   
   #ifdef MAGIC_CHECK
