@@ -595,6 +595,8 @@ tp: addingPassOnToCP
   " --sleep " str.cat args.sleep >str str.cat
   args.tracepoint if " --tracepoint " str.cat then
   args.verbose if " --verbose " str.cat then
+  args.dontFree if " --dontFree " str.cat then
+  args.freeRB if " --freeRB " str.cat then
 
   " &" str.cat
 ;
