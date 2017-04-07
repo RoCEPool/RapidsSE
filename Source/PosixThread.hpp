@@ -16,6 +16,9 @@ namespace System
     pthread_mutex_t  m_xMutex;         // mutex variable
     pthread_cond_t   m_xCond;          // condition variable
     
+    // must be last
+    Footer m_xFooter;
+  
     PosixThread(void);
     ~PosixThread(void);
     
@@ -49,6 +52,8 @@ namespace System
     static void vSleepSec(i8 nSeconds);
     static bool bTlsCreate(pthread_key_t* pTlsKey);
     static void* pTlsGet(pthread_key_t iTlsKey);
+  
+    Footer* pFooter(void);
   };
   
   PosixThread* _pPosixThread(void* aAddr);

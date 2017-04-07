@@ -7,6 +7,10 @@
 Atomic gzThreadOpenCount;
 
 /*----------------------------------------------------------------------------*/
+/*-- LifeCycle ---------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
 PosixThread* System::_pPosixThread(void* aAddr)
@@ -24,16 +28,19 @@ PosixThread* System::_pPosixThread(void* aAddr)
 PosixThread::PosixThread()
 : Object(CN_POSIXTHREAD)
 {
-  MemLib::vZero(this,sizeof(PosixThread));
+  _precondition_(_ADDRESS_,_MAGIC_,CN_POSIXTHREAD,_FOOTER_);
   
   m_iOpSysThreadId = 0;
   m_iPosixThreadId = 0;
   m_bLocked        = false;
 
   pthread_mutex_init(&m_xMutex,NULL);
+
   pthread_cond_init(&m_xCond,NULL);
   
-  _checkInitialisedSize_(sizeof(PosixThread));
+  _checkInitialised_(CN_POSIXTHREAD);
+
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_POSIXTHREAD,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -46,10 +53,15 @@ PosixThread::~PosixThread(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
 /* bind os thread to a cpu                                                    */
 /*----------------------------------------------------------------------------*/
 bool PosixThread::bBindThread(i8 iCpu)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_POSIXTHREAD,_FOOTER_);
   
   i8 iCpuCount = Hardware::iCpuCount();
   
@@ -97,6 +109,8 @@ bool PosixThread::bBindThread(i8 iCpu)
 /*----------------------------------------------------------------------------*/
 void PosixThread::vSetOSThreadId(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_POSIXTHREAD,_FOOTER_);
+  
 #ifdef __APPLE__
   i8 iOpSysThreadId = syscall(SYS_thread_selfid);
 #else
@@ -114,6 +128,8 @@ void PosixThread::vSetOSThreadId(void)
 /*----------------------------------------------------------------------------*/
 bool PosixThread::bSpawnThread(void* pFun(void*), void* pArg)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_POSIXTHREAD,_FOOTER_);
+  
   // we shouldnt have a thread yet
   ASSERT( ! m_iPosixThreadId );
   
@@ -141,6 +157,8 @@ bool PosixThread::bSpawnThread(void* pFun(void*), void* pArg)
 /*----------------------------------------------------------------------------*/
 void PosixThread::vSignalThread(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_POSIXTHREAD,_FOOTER_);
+  
   vMutexLock();
   vCondSignal();
   vMutexUnlock();
@@ -151,6 +169,8 @@ void PosixThread::vSignalThread(void)
 /*----------------------------------------------------------------------------*/
 i8 PosixThread::iThreadCpu(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_POSIXTHREAD,_FOOTER_);
+  
 #ifdef __APPLE__
   
   vWarn("Get thread Cpu affinity not implemented!\n"_Str);
@@ -189,6 +209,8 @@ i8 PosixThread::iThreadCpu(void)
 /*----------------------------------------------------------------------------*/
 void PosixThread::vThreadExit(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_POSIXTHREAD,_FOOTER_);
+  
   --gzThreadOpenCount;
 }
         
@@ -197,6 +219,8 @@ void PosixThread::vThreadExit(void)
 /*----------------------------------------------------------------------------*/
 i8 PosixThread::iThreadPriority(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_POSIXTHREAD,_FOOTER_);
+  
 #ifdef __APPLE__
   
   int iPolicy;
@@ -219,6 +243,8 @@ i8 PosixThread::iThreadPriority(void)
 /*----------------------------------------------------------------------------*/
 void PosixThread::vThreadBoost(i8 nPoints)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_POSIXTHREAD,_FOOTER_);
+  
 #ifdef __APPLE__
   
   int iPolicy;
@@ -243,6 +269,8 @@ void PosixThread::vThreadBoost(i8 nPoints)
 /*----------------------------------------------------------------------------*/
 void PosixThread::vThreadPriority(i8 iPriority)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_POSIXTHREAD,_FOOTER_);
+  
 #ifdef __APPLE__
   int iPolicy;
   struct sched_param xSched;
@@ -270,6 +298,8 @@ void PosixThread::vThreadPriority(i8 iPriority)
 /*----------------------------------------------------------------------------*/
 void PosixThread::vCondBroadcast(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_POSIXTHREAD,_FOOTER_);
+  
   i8 rCode = pthread_cond_broadcast(&m_xCond);
   
   if (0 == rCode)
@@ -283,6 +313,8 @@ void PosixThread::vCondBroadcast(void)
 /*----------------------------------------------------------------------------*/
 void PosixThread::vCondSignal(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_POSIXTHREAD,_FOOTER_);
+  
   i8 rCode = pthread_cond_signal(&m_xCond);
   
   if (0 == rCode)
@@ -296,6 +328,8 @@ void PosixThread::vCondSignal(void)
 /*----------------------------------------------------------------------------*/
 void PosixThread::vCondWait(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_POSIXTHREAD,_FOOTER_);
+  
   //
   // Calling thread must have the mutex.  Mutex will be unlocked and the
   // thread will block atomically, waiting on the cond varable.
@@ -319,6 +353,8 @@ void PosixThread::vCondWait(void)
 /*----------------------------------------------------------------------------*/
 void PosixThread::vCondTimedWait(i8 iMicroSeconds)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_POSIXTHREAD,_FOOTER_);
+  
   Since xSince;
   
   xSince.vSet();
@@ -344,6 +380,8 @@ void PosixThread::vCondTimedWait(i8 iMicroSeconds)
 /*----------------------------------------------------------------------------*/
 void PosixThread::vMutexLock(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_POSIXTHREAD,_FOOTER_);
+  
   i8 rCode = pthread_mutex_lock(&m_xMutex);
   
   if (0 == rCode) {
@@ -359,6 +397,8 @@ void PosixThread::vMutexLock(void)
 /*----------------------------------------------------------------------------*/
 bool PosixThread::bMutexLock(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_POSIXTHREAD,_FOOTER_);
+  
   i8 rCode = pthread_mutex_trylock(&m_xMutex);
   
   if (0 == rCode) {
@@ -379,6 +419,8 @@ bool PosixThread::bMutexLock(void)
 /*----------------------------------------------------------------------------*/
 void PosixThread::vMutexUnlock(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_POSIXTHREAD,_FOOTER_);
+  
   i8 rCode = pthread_mutex_unlock(&m_xMutex);
   
   if (0 == rCode) {
@@ -390,16 +432,6 @@ void PosixThread::vMutexUnlock(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get value from tls slot                                                    */
-/*----------------------------------------------------------------------------*/
-void* PosixThread::pTlsGet(pthread_key_t iTlsKey)
-{
-  void* pVal = pthread_getspecific(iTlsKey);
-  
-  return pVal;
-}
-
-/*----------------------------------------------------------------------------*/
 /* set value in tls slot                                                      */
 /*----------------------------------------------------------------------------*/
 void PosixThread::vTlsSet(pthread_key_t iTlsKey, void* pArg)
@@ -407,9 +439,9 @@ void PosixThread::vTlsSet(pthread_key_t iTlsKey, void* pArg)
   pthread_setspecific(iTlsKey,pArg);
 }
 
-//----------------------------------------------------------------------------//
-//----------------------------------------------------------------------------//
-//----------------------------------------------------------------------------//
+/*----------------------------------------------------------------------------*/
+/*-- Static ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* sleep for given number of microseconds                                     */
@@ -502,6 +534,30 @@ bool PosixThread::bTlsCreate(pthread_key_t* pTlsKey)
     return true;
   
   return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get value from tls slot                                                    */
+/*----------------------------------------------------------------------------*/
+void* PosixThread::pTlsGet(pthread_key_t iTlsKey)
+{
+  void* pVal = pthread_getspecific(iTlsKey);
+  
+  return pVal;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Footer ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get location of footer                                                     */
+/*----------------------------------------------------------------------------*/
+Footer* PosixThread::pFooter(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_POSIXTHREAD);
+  
+  return &m_xFooter;
 }
 
 /*============================================================================*/
