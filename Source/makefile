@@ -10,7 +10,7 @@ DIR_GUARD=@mkdir -p $(@D)
 CURRENT=${PWD}
 TARGET_PATH = $(CURRENT)/../Linux/bin
 TARGET_EXE = $(TARGET_PATH)/se 
-TARGET_LIBRARY = $(TARGET_PATH)/libRapidsSEv0.2.1.so
+TARGET_LIBRARY = $(TARGET_PATH)/libRapidsSEv0.2.2.so
 
 #Source Files
 SOURCES = $(wildcard *.cpp)
@@ -34,7 +34,7 @@ INCLUDES = -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2
 #Libraries
 THIRDPARTY_LIBS = -llz4 -lbz2
 LIBS = -lrt -lpthread
-RAPIDS_LIBS = -lRapidsSEv0.2.1
+RAPIDS_LIBS = -lRapidsSEv0.2.2
 
 all : $(TARGET_EXE) $(TARGET_LIBRARY)
 
