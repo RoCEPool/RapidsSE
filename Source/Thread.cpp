@@ -63,6 +63,7 @@ Thread::Thread(void)
   
   m_iThreadNo = ++zThreadNo;
   m_sName     = "<no thread name>"_Str;
+  m_pPosixThread = new PosixThread;
   m_pTaskSet  = nullptr;
   m_npTask    = nullptr;
 
@@ -80,6 +81,8 @@ Thread::Thread(void)
 Thread::~Thread(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
+  
+  delete m_pPosixThread;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -152,7 +155,7 @@ void Thread::vBind(i8 iCpu)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
-  bool bResult = m_xPosixThread.bBindThread(iCpu);
+  bool bResult = m_pPosixThread->bBindThread(iCpu);
   ASSERT(bResult);
 }
 
@@ -163,7 +166,7 @@ i8 Thread::iCpu(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
-  return m_xPosixThread.iThreadCpu();
+  return m_pPosixThread->iThreadCpu();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -173,8 +176,8 @@ void Thread::vContentDump(void) const
 {
   vTrace("Thread %p: OpSysThreadId %lld PosixThreadId %llx\n"_Str,
          this,
-         m_xPosixThread.m_iOpSysThreadId,
-         m_xPosixThread.m_iPosixThreadId);
+         m_pPosixThread->m_iOpSysThreadId,
+         m_pPosixThread->m_iPosixThreadId);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -187,28 +190,28 @@ void Thread::vLoop(void)
   if (gbVerbose)
     vTrace("Thread %p: %s loop\n"_Str,this,m_sName.s());
   
-  m_xPosixThread.vSetOSThreadId();
+  m_pPosixThread->vSetOSThreadId();
   
 //  vTrace("Thread %p: priority %lld\n"_Str,
 //         this,
-//         m_xPosixThread.iThreadPriority()
+//         m_pPosixThread->iThreadPriority()
 //         );
   
-  //m_xPosixThread.vThreadBoost(C_THREAD_BOOST);                //! RANDOM ERROR
+  //m_pPosixThread->vThreadBoost(C_THREAD_BOOST);                //! RANDOM ERROR
   
 //  vTrace("Thread %p: priority %lld\n"_Str,
 //         this,
-//         m_xPosixThread.iThreadPriority()
+//         m_pPosixThread->iThreadPriority()
 //         );
   
   bool bWarn = true;
 
-  m_xPosixThread.vTlsSet(giTLS_ThreadKey,this);
-  ASSERT(m_xPosixThread.pTlsGet(giTLS_ThreadKey));
+  m_pPosixThread->vTlsSet(giTLS_ThreadKey,this);
+  ASSERT(m_pPosixThread->pTlsGet(giTLS_ThreadKey));
   
   if (m_npTask != nullptr) {
-    m_xPosixThread.vTlsSet(giTLS_TaskKey,*m_npTask);
-    ASSERT(m_xPosixThread.pTlsGet(giTLS_TaskKey));
+    m_pPosixThread->vTlsSet(giTLS_TaskKey,*m_npTask);
+    ASSERT(m_pPosixThread->pTlsGet(giTLS_TaskKey));
     
     m_npTask->vState(TS_RUNNING);
     
@@ -228,16 +231,16 @@ void Thread::vLoop(void)
         //if (bWarn && gbVerbose)
         //  vTrace("[[%s]] Thread::vLoop no task\n"_Str,m_sName.s());
         bWarn = false;
-        //m_xPosixThread.vNanoSleep(10_MB);
-        //m_xPosixThread.vSecSleep(1);
+        //m_pPosixThread->vNanoSleep(10_MB);
+        //m_pPosixThread->vSecSleep(1);
         PosixThread::vSleepMilli(1);
         continue;
       }
       
       bWarn = true;
       
-      m_xPosixThread.vTlsSet(giTLS_TaskKey,*m_npTask);
-      ASSERT(m_xPosixThread.pTlsGet(giTLS_TaskKey));
+      m_pPosixThread->vTlsSet(giTLS_TaskKey,*m_npTask);
+      ASSERT(m_pPosixThread->pTlsGet(giTLS_TaskKey));
       
       m_npTask->vState(TS_RUNNING);
       
@@ -295,7 +298,7 @@ void Thread::vSpawn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
-  bool bResult = m_xPosixThread.bSpawnThread(Thread::vEntry,this);
+  bool bResult = m_pPosixThread->bSpawnThread(Thread::vEntry,this);
   ASSERT(bResult);
 }
 

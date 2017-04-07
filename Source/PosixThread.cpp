@@ -4,7 +4,11 @@
 
 #include "System.h"
 
+#include "StorageEngine.h"
+
 Atomic gzThreadOpenCount;
+
+extern Heap* gpSmallHeap;
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -23,6 +27,28 @@ PosixThread* System::_pPosixThread(void* aAddr)
 }
 
 /*----------------------------------------------------------------------------*/
+/* new operator                                                               */
+/*----------------------------------------------------------------------------*/
+void* PosixThread::operator new(size_t iSize)
+{
+  RASSERT(iSize);
+  
+  void* pPosixThread = Heap::pAllocate(CN_POSIXTHREAD);
+  
+  return pPosixThread;
+}
+
+/*----------------------------------------------------------------------------*/
+/* delete operator                                                            */
+/*----------------------------------------------------------------------------*/
+void PosixThread::operator delete(void* pPosixThreadAddress)
+{
+  Object* pObject = reinterpret_cast<Object*>(pPosixThreadAddress);
+  
+  Heap::vFree(pObject);
+}
+
+/*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 PosixThread::PosixThread()
@@ -34,8 +60,10 @@ PosixThread::PosixThread()
   m_iPosixThreadId = 0;
   m_bLocked        = false;
 
+  MemLib::vZero(&m_xMutex,sizeof(m_xMutex));
   pthread_mutex_init(&m_xMutex,NULL);
 
+  MemLib::vZero(&m_xCond,sizeof(m_xCond));
   pthread_cond_init(&m_xCond,NULL);
   
   _checkInitialised_(CN_POSIXTHREAD);

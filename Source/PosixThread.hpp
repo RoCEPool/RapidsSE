@@ -19,6 +19,9 @@ namespace System
     // must be last
     Footer m_xFooter;
   
+    void* operator new(size_t);
+    void operator delete(void* pPosixThreadAddress);
+
     PosixThread(void);
     ~PosixThread(void);
     

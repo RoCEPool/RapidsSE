@@ -11,13 +11,13 @@ namespace Threads
   private:
 
   public:
-    i8          m_iThreadNo;    // our thread no
-    s32         m_sName;        // thread name
-    PosixThread m_xPosixThread; // its posix structure
-    TaskSet*    m_pTaskSet;     // task set this thread serves
-    NP_Task     m_npTask;       // task current being executed
-                                //   note that while task is being exected
-                                //   its not in task set
+    i8           m_iThreadNo;    // our thread no
+    s32          m_sName;        // thread name
+    PosixThread* m_pPosixThread; // its posix structure
+    TaskSet*     m_pTaskSet;     // task set this thread serves
+    NP_Task      m_npTask;       // task current being executed
+                                 //   note that while task is being exected
+                                 //   its not in task set
     
     // must be last
     Footer m_xFooter;

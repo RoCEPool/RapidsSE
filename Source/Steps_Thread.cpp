@@ -120,7 +120,7 @@ void Task::vThreadCondSignal(NNP_Task nnpTask)
   Thread* pThread = _pThread(pThreadObject);
   ASSERT(CN_THREAD == pThread->eClass());
   
-  pThread->m_xPosixThread.vCondSignal();
+  pThread->m_pPosixThread->vCondSignal();
   
   EXIT();
 }
@@ -139,7 +139,7 @@ void Task::vThreadCondWait(NNP_Task nnpTask)
   Thread* pThread = _pThread(pThreadObject);
   ASSERT(CN_THREAD == pThread->eClass());
   
-  pThread->m_xPosixThread.vCondWait();
+  pThread->m_pPosixThread->vCondWait();
   
   EXIT();
 }
@@ -202,7 +202,7 @@ ENTRY("vThreadId"_Str);
   
   Thread* pThread = static_cast<Thread*>(pObject);
   
-  nnpTask->m_pDataStack->vPush(pThread->m_xPosixThread.m_iOpSysThreadId);
+  nnpTask->m_pDataStack->vPush(pThread->m_pPosixThread->m_iOpSysThreadId);
   
   EXIT();
 }
@@ -249,7 +249,7 @@ ENTRY("vThreadMutexLock"_Str);
   Thread* pThread = _pThread(pThreadObject);
   ASSERT(CN_THREAD == pThread->eClass());
   
-  pThread->m_xPosixThread.vMutexLock();
+  pThread->m_pPosixThread->vMutexLock();
 
   EXIT();
 }
@@ -268,7 +268,7 @@ ENTRY("vThreadMutexUnlock"_Str);
   Thread* pThread = _pThread(pThreadObject);
   ASSERT(CN_THREAD == pThread->eClass());
   
-  pThread->m_xPosixThread.vMutexUnlock();
+  pThread->m_pPosixThread->vMutexUnlock();
   
   EXIT();
 }
@@ -394,7 +394,7 @@ ENTRY("vThreadSleep_s"_Str);
   
   Thread* pThread = Thread::pThread();
   
-  pThread->m_xPosixThread.vSleepSec(nSeconds);
+  pThread->m_pPosixThread->vSleepSec(nSeconds);
   
   EXIT();
 }
@@ -413,7 +413,7 @@ ENTRY("vThreadSleep_ms"_Str);
   
   Thread* pThread = Thread::pThread();
   
-  pThread->m_xPosixThread.vSleepMilli(nMilliseconds);
+  pThread->m_pPosixThread->vSleepMilli(nMilliseconds);
   
   EXIT();
 }
@@ -432,7 +432,7 @@ ENTRY("vThreadSleep_us"_Str);
   
   Thread* pThread = Thread::pThread();
   
-  pThread->m_xPosixThread.vSleepMicro(nMicroseconds);
+  pThread->m_pPosixThread->vSleepMicro(nMicroseconds);
   
   EXIT();
 }
@@ -451,7 +451,7 @@ ENTRY("vThreadSleep_ns"_Str);
   
   Thread* pThread = Thread::pThread();
   
-  pThread->m_xPosixThread.vSleepNano(nNanoseconds);
+  pThread->m_pPosixThread->vSleepNano(nNanoseconds);
   
   EXIT();
 }
