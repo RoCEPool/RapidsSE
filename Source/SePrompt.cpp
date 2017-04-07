@@ -1266,7 +1266,7 @@ bool SePrompt::bCreateTable(void)
     
     // add columns to the table
     i8 j = 0;
-    m_aToken[j++]->vCopy("add"_Str);
+    m_aToken[j++]->vCopy("addcol"_Str);
     m_aToken[j++]->vCopy(m_aToken2[2]);
     m_aToken[j++]->vCopy(m_aToken2[iCurrentToken++]);
     

@@ -39,7 +39,7 @@ eEC RapidsSE_AddColumn(SEitf* pSEitf, Str* pColumnName, Str* pColumnType, i8 iTr
     Table* pTable = pSEitf->pCurrentTable();
     
     // add a column
-    eResult = eExecuteRequest(pSEitf, "add"_Str,
+    eResult = eExecuteRequest(pSEitf, "addcol"_Str,
                               (Str*)pTable->aTableName(),
                               (Str*)pColumnName,
                               (Str*)pColumnType);

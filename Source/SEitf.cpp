@@ -337,7 +337,7 @@ bool SEitf::bDecode(Str* aWords[], i8 iWords)
     return false;
   
   if (aWords[0]->bSame("antbl"_Str)) return bAnalyzeTable(aWords, iWords);
-  if (aWords[0]->bSame("add"_Str)) return bAddColumn(aWords, iWords);
+  if (aWords[0]->bSame("addcol"_Str)) return bAddColumn(aWords, iWords);
   if (aWords[0]->bSame("cf"_Str)) return bPushDic(aWords);
   if (aWords[0]->bSame("con"_Str)) return bConnect(aWords);
   if (aWords[0]->bSame("connectCluster"_Str)) return bConnectCluster(aWords);
