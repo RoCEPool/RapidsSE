@@ -368,10 +368,14 @@ void PosixThread::vCondWait(void)
   
   ASSERT(m_bLocked);
   
+  m_bLocked = false;
+  
   i8 rCode = pthread_cond_wait(&m_xCond,&m_xMutex);
   
-  if (0 == rCode)
+  if (0 == rCode) {
+    m_bLocked = true;
     return;
+  }
   
   vWarn("pthread_cond_wait() error; rCode=%lld\n"_Str,rCode);
 }
@@ -410,9 +414,12 @@ void PosixThread::vMutexLock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_POSIXTHREAD,_FOOTER_);
   
+  // this is a blocking call
   i8 rCode = pthread_mutex_lock(&m_xMutex);
+  //vTrace("MutexLock %p\n"_Str,this);
   
   if (0 == rCode) {
+    ASSERT( ! m_bLocked );
     m_bLocked = true;
     return;
   }
@@ -449,10 +456,15 @@ void PosixThread::vMutexUnlock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_POSIXTHREAD,_FOOTER_);
   
+  //vTrace("MutexUnlock %p\n"_Str,this);
+  
+  ASSERT( m_bLocked );
+  m_bLocked = false;
+  
   i8 rCode = pthread_mutex_unlock(&m_xMutex);
   
   if (0 == rCode) {
-    m_bLocked = false;
+    //m_bLocked = false;
     return;
   }
   
