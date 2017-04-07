@@ -11,6 +11,10 @@ extern BufferPool*  gpBufferPool;
 extern Grid* gpGrid;
 
 /*----------------------------------------------------------------------------*/
+/*-- LifeCycle ---------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
 Table* DBobjects::_pTable(void* aAddr)
@@ -64,7 +68,7 @@ Table::Table(void)
   m_eTableType = TT_NORMAL;
   
   //m_xDictionary
-  //m_xRing
+
   //m_xSlots
   
   m_zRefCount.vCheckInit();
@@ -97,6 +101,21 @@ Table::~Table(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
   delete m_pColumnVec;
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump table                                                                 */
+/*----------------------------------------------------------------------------*/
+void Table::vDump(eCN eClass, Object* pObject, Str* aTab)
+{
+  ASSERT(eClass == CN_TABLE);
+  ASSERT(pObject->eClass() == CN_TABLE);
+  
+  Table* pTable = reinterpret_cast<Table*>(pObject);
+  
+  vTrace("name %s type %s\n"_Str,
+         pTable->m_sTableName.s(),
+         aTT[pTable->m_eTableType]->s());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -185,7 +204,6 @@ void Table::vAppendBuffer(i8 iPartition, RowBuffer* pRowBuffer)
   Partition* pPartition = this->pPartition(iPartition);
  
   pPartition->pData()->vAppendBuffer(pRowBuffer);
-  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -199,60 +217,7 @@ ColumnVec* Table::pColumnVec(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* hash the first field of row return partition                               */
-/*----------------------------------------------------------------------------*/
-i8 Table::iRowPartition(Str* pRow)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-  
-  // calculate length of first field
-  i8 iLength = 0;
-  char* pChar = (char*)pRow;
-  while ('|' != *pChar++)
-    iLength++;
-  
-  // hash the field using xxhash
-  i8 iHash = XXH32(pRow,iLength,0);
-  
-  // modulo to get partition number
-  i8 iPartition = iHash % (gpGrid->m_nSlots * gpGrid->iNodes());
-  
-  //vTrace("Partition: %lld\n"_Str,m_iPartition);
-  return iPartition;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get number of row buffers in this table                                    */
-/*----------------------------------------------------------------------------*/
-i8 Table::nRowBuffers(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-  
-  i8 iBuffers = 0;
-
-  for (i8 iPartition = 0; iPartition < gpGrid->m_nSlots; iPartition++) {
-    RowStrand *pStrand = pPartition(iPartition)->pData()->pHeadStrand();
-    while (pStrand) {
-      iBuffers += pStrand->nRowBuffers();
-      pStrand = pStrand->pNextStrand();
-    }
-  }
-  
-  return iBuffers;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get table sub dictionary                                                   */
-/*----------------------------------------------------------------------------*/
-Dic* Table::pSubDic(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-  
-  return &m_xSubDic;
-}
-
-/*----------------------------------------------------------------------------*/
-/* vDump                                                                      */
+/* content dump                                                               */
 /*----------------------------------------------------------------------------*/
 void Table::vContentDump(void)
 {
@@ -262,27 +227,12 @@ void Table::vContentDump(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dump table                                                                 */
-/*----------------------------------------------------------------------------*/
-void Table::vDump(eCN eClass, Object* pObject, Str* aTab)
-{
-  ASSERT(eClass == CN_TABLE);
-  ASSERT(pObject->eClass() == CN_TABLE);
-  
-  Table* pTable = reinterpret_cast<Table*>(pObject);
-  
-  vTrace("name %s type %s\n"_Str,
-         pTable->m_sTableName.s(),
-         aTT[pTable->m_eTableType]->s());
-}
-
-/*----------------------------------------------------------------------------*/
 /* insert a row in the table                                                  */
 /*----------------------------------------------------------------------------*/
 void Table::vInsertRow(i8 iPartition, TxRef* pTxRef, Str* pRecord, i8 iLength)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-
+  
   Partition* pPartn = pPartition(iPartition);
   
   bool bInserted = pPartn->pData()->bInsertRow(pTxRef,pRecord,iLength);
@@ -291,32 +241,12 @@ void Table::vInsertRow(i8 iPartition, TxRef* pTxRef, Str* pRecord, i8 iLength)
 }
 
 /*----------------------------------------------------------------------------*/
-/* release all rows/buffers                                                   */
-/*----------------------------------------------------------------------------*/
-void Table::vTruncate(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-
-  m_xSlots.vTruncate();
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the table name                                                         */
-/*----------------------------------------------------------------------------*/
-Str* Table::aTableName(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-  
-  return m_sTableName;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get a partition                                                            */
 /*----------------------------------------------------------------------------*/
 Partition* Table::pPartition(i8 iSlot)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-
+  
   Partition* pPart = m_xSlots.pPartition(iSlot);
   
   return pPart;
@@ -352,6 +282,79 @@ bool Table::bRefOut(void)
   u8 iRef = *m_zRefCount;
   
   return iRef ? true : false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of row buffers in this table                                    */
+/*----------------------------------------------------------------------------*/
+i8 Table::nRowBuffers(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  
+  i8 iBuffers = 0;
+  
+  for (i8 iPartition = 0; iPartition < gpGrid->m_nSlots; iPartition++) {
+    RowStrand *pStrand = pPartition(iPartition)->pData()->pHeadStrand();
+    while (pStrand) {
+      iBuffers += pStrand->nRowBuffers();
+      pStrand = pStrand->pNextStrand();
+    }
+  }
+  
+  return iBuffers;
+}
+
+/*----------------------------------------------------------------------------*/
+/* hash the first field of row return partition                               */
+/*----------------------------------------------------------------------------*/
+i8 Table::iRowPartition(Str* pRow)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  
+  // calculate length of first field
+  i8 iLength = 0;
+  char* pChar = (char*)pRow;
+  while ('|' != *pChar++)
+    iLength++;
+  
+  // hash the field using xxhash
+  i8 iHash = XXH32(pRow,iLength,0);
+  
+  // modulo to get partition number
+  i8 iPartition = iHash % (gpGrid->m_nSlots * gpGrid->iNodes());
+  
+  //vTrace("Partition: %lld\n"_Str,m_iPartition);
+  return iPartition;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get table sub dictionary                                                   */
+/*----------------------------------------------------------------------------*/
+Dic* Table::pSubDic(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  
+  return &m_xSubDic;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the table name                                                         */
+/*----------------------------------------------------------------------------*/
+Str* Table::aTableName(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  
+  return m_sTableName;
+}
+
+/*----------------------------------------------------------------------------*/
+/* release all rows/buffers                                                   */
+/*----------------------------------------------------------------------------*/
+void Table::vTruncate(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  
+  m_xSlots.vTruncate();
 }
 
 /*----------------------------------------------------------------------------*/

@@ -23,7 +23,6 @@ namespace DBobjects
     s32    m_sTableName; // table name
     eTT    m_eTableType; // table type
     Dic    m_xSubDic;    // sub dictionary for this table
-  //Ring   m_xRing;
     Slots  m_xSlots;     // slots
     Atomic m_zRefCount;  // reference count
 
@@ -46,25 +45,18 @@ namespace DBobjects
     Str* pAnalyze(bool bDetailed);
     void vAppendBuffer(i8 iPartition, RowBuffer* pRowBuffer);
     ColumnVec* pColumnVec(void);
+    void vContentDump(void);
+    void vInsertRow(i8 iPartition, TxRef* pTxRef, Str* pRecord, i8 iLength);
+    Partition* pPartition(i8 iSlot);
+    void vRefDec(void);
+    void vRefInc(void);
+    bool bRefOut(void);
+    i8   nRowBuffers(void);
     i8   iRowPartition(Str* pRow);
     Dic* pSubDic(void);
-    void vInsertRow(i8 iPartition, TxRef* pTxRef, Str* pRecord, i8 iLength);
-    i8   nRowBuffers(void);
+    Str* aTableName(void);
     void vTruncate(void);
         
-    Str*  aTableName(void);
-    void  vTableName(StrVal& sName);
-    void  vContentDump(void);
-    
-    void  vRefDec(void);
-    void  vRefInc(void);
-    bool  bRefOut(void);
-    
-    
-    //--------------------------------------------------------------------------
-    
-    Partition* pPartition(i8 iSlot);
-    
     Footer* pFooter(void);
   };
   
