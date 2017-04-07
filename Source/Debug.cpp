@@ -16,7 +16,7 @@ void Debugging::vAssertTrap(void)
   vStackDump();
   
   // generate a core
-  abort();
+  //abort();
 }
 
 /*----------------------------------------------------------------------------*/
