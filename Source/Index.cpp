@@ -82,6 +82,8 @@ Index::Index(void)
   m_sIndexName = pWord->sName();;
   m_eIndexType = IT_SKIP_LIST;
   m_pTable = nullptr;
+  m_pIdxColVec = new IdxColVec;
+  
   m_pIndexLevels = new IndexLevels();
   
   _checkInitialised_(CN_INDEX);
@@ -95,6 +97,8 @@ Index::Index(void)
 Index::~Index(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
+  
+  delete m_pIdxColVec;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -223,6 +227,16 @@ void Index::vTruncate(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
   
   m_pIndexLevels->vTruncate();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get index column vector                                                    */
+/*----------------------------------------------------------------------------*/
+IdxColVec* Index::pIdxColVec(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
+  
+  return m_pIdxColVec;
 }
 
 /*----------------------------------------------------------------------------*/

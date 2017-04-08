@@ -46,13 +46,13 @@ using namespace DBobjects;
 
 #include "Ring.hpp"
 
-#include "Index.hpp"
 #include "Column.hpp"
 
 typedef Vec<CN_COLUMNVEC,Column,CN_COLUMN,1024> ColumnVec;
 typedef Vec<CN_IDXCOLVEC,Column,CN_COLUMN,1024> IdxColVec;
 
 #include "Table.hpp"
+#include "Index.hpp"
 
 #include "RbCursor.hpp"
 #include "SelCursor.hpp"
