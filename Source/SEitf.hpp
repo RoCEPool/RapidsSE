@@ -93,17 +93,18 @@ namespace Interface
     bool bCreateIndex(Str* aWords[], i8 iWords);
     bool bDropIndex(Str* aWords[], i8 iWords);
     bool bDumpIndex(Str* aWords[], i8 iWords);
+    bool bEndCreateIndex(Str* aWords[], i8 iWords);
     bool bListIndices(Str* aWords[], i8 iWords);
     
     bool bCreateTable(Str* aWords[], i8 iWords);
-    
+    bool bEndCreateTable(Str* aWords[], i8 iWords);
+  
     bool bListTables(Str* aWords[], i8 iWords);
     bool bDocol(Str* aWords[]);
     bool bDropTable(Str* aWords[], i8 iWords);
     bool bDumpTable(Str* aWords[], i8 iWords);
    
     bool bAddColumn(Str* aWords[], i8 iWords);
-    bool bEndCreateTable(Str* aWords[], i8 iWords);
     bool bListColumns(Str* aWords[], i8 iWords);
     
     bool bAnalyzeTable(Str* aWords[], i8 iWords);

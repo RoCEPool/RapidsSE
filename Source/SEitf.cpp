@@ -347,6 +347,7 @@ bool SEitf::bDecode(Str* aWords[], i8 iWords)
   if (aWords[0]->bSame("dis"_Str)) return bDisconnect(aWords);
   if (aWords[0]->bSame("docol"_Str)) return bDocol(aWords);
   if (aWords[0]->bSame("dump"_Str)) return bDumpTable(aWords, iWords);
+  if (aWords[0]->bSame("endmkidx"_Str)) return bEndCreateIndex(aWords, iWords);
   if (aWords[0]->bSame("endmktbl"_Str)) return bEndCreateTable(aWords, iWords);
   if (aWords[0]->bSame("ex"_Str)) return bExportTable(aWords, iWords);
   if (aWords[0]->bSame("getFreeSpace"_Str)) return bGetFreeSpace(aWords);
@@ -905,6 +906,29 @@ bool SEitf::bAddColumn(Str* aWords[16], i8 iWords)
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" add_column"_Str);
+  
+  return bAppendRequest(sRequest);
+}
+
+/*----------------------------------------------------------------------------*/
+/* end of create index sequence                                               */
+/*----------------------------------------------------------------------------*/
+bool SEitf::bEndCreateIndex(Str* aWords[16], i8 iWords)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  s256 sRequest;
+  
+  if (iWords != 2) {
+    vSetLastError(EC_INVALID_PARAMETERS);
+    return false;
+  }
+  
+  sRequest.vCopy("\""_Str);
+  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat("\""_Str);
+  
+  sRequest.vConcat(" end_create_index"_Str);
   
   return bAppendRequest(sRequest);
 }

@@ -1064,6 +1064,15 @@ bool SePrompt::bCreateIndex(void)
   
   if (!bExecuteRequest())
     return false;
+
+  // end of make index
+  m_aToken[0]->vCopy("endmkidx"_Str);
+  m_aToken[1]->vCopy(m_aToken2[2]);
+  m_aToken[2]->vCopy(""_Str);
+  
+  if (!bExecuteRequest()) {
+    vTrace("SePrompt::bCreateTable : endmkidx FAILED!!!\n"_Str);
+  }
   
   return true;
 }
@@ -1426,7 +1435,7 @@ bool SePrompt::bCreateTable(void)
     }
   }
   
-  // end of add columns
+  // end of make table
   m_aToken[0]->vCopy("endmktbl"_Str);
   m_aToken[1]->vCopy(m_aToken2[2]);
   m_aToken[2]->vCopy(""_Str);
