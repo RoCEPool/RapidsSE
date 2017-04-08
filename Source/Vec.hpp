@@ -5,12 +5,12 @@
 
 namespace Structures
 {  
-  template <class OBJECT, eCN CLASSNO, i8 ITEMS>
+  template <eCN VEC_CN, class ITEM, eCN ITEM_CN, i8 MAX_ITEMS>
   class Vec : public Object
   {
   private:
-    i8      m_nItems;       // number of actual items
-    Object* m_pItem[ITEMS]; // vector of items
+    i8      m_nItems;           // number of actual items
+    Object* m_pItem[MAX_ITEMS]; // vector of items
   
     // must be last
     Footer m_xFooter;
@@ -30,8 +30,8 @@ namespace Structures
     Footer* pFooter(void);
   };
   
-  template <class OBJECT, eCN CLASSNO, i8 ITEMS>
-  Vec<OBJECT, CLASSNO, ITEMS>* _pVec(void* aAddr);
+  template <eCN VEC_CN, class ITEM, eCN ITEM_CN, i8 MAX_ITEMS>
+  Vec<VEC_CN, ITEM, ITEM_CN, MAX_ITEMS>* _pVec(void* aAddr);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -45,13 +45,13 @@ using namespace Structures;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-template <class OBJECT, eCN CLASSNO, i8 ITEMS>
-Vec<OBJECT, CLASSNO, ITEMS>* Structures::_pVec(void* aAddr)
+template <eCN VEC_CN, class ITEM, eCN ITEM_CN, i8 MAX_ITEMS>
+Vec<VEC_CN, ITEM, ITEM_CN, MAX_ITEMS>* Structures::_pVec(void* aAddr)
 {
-  Vec<OBJECT, CLASSNO, ITEMS>* pVec =
-    reinterpret_cast<Vec<OBJECT, CLASSNO, ITEMS>*>(aAddr);
+  Vec<VEC_CN, ITEM, ITEM_CN, MAX_ITEMS>* pVec =
+    reinterpret_cast<Vec<VEC_CN, ITEM, ITEM_CN, MAX_ITEMS>*>(aAddr);
   
-  RASSERT( !pVec || CLASSNO == pVec->eClass() );
+  RASSERT( !pVec || ITEM_CN == pVec->eClass() );
   
   return pVec;
 }
@@ -59,12 +59,12 @@ Vec<OBJECT, CLASSNO, ITEMS>* Structures::_pVec(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-template <class OBJECT, eCN CLASSNO, i8 ITEMS>
-void* Vec<OBJECT, CLASSNO, ITEMS>::operator new(size_t iSize)
+template <eCN VEC_CN, class ITEM, eCN ITEM_CN, i8 MAX_ITEMS>
+void* Vec<VEC_CN, ITEM, ITEM_CN, MAX_ITEMS>::operator new(size_t iSize)
 {
   RASSERT(iSize);
   
-  void* pObject = Heap::pAllocate(CLASSNO);
+  void* pObject = Heap::pAllocate(VEC_CN);
   
   return pObject;
 }
@@ -72,12 +72,12 @@ void* Vec<OBJECT, CLASSNO, ITEMS>::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 /* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
-template <class OBJECT, eCN CLASSNO, i8 ITEMS>
-void Vec<OBJECT, CLASSNO, ITEMS>::operator delete(void* pVecAddress)
+template <eCN VEC_CN, class ITEM, eCN ITEM_CN, i8 MAX_ITEMS>
+void Vec<VEC_CN, ITEM, ITEM_CN, MAX_ITEMS>::operator delete(void* pVecAddress)
 {
-  Vec<OBJECT, CLASSNO, ITEMS>* pVec =
-  //reinterpret_cast<Vec<OBJECT, CLASSNO, ITEMS>*>(pVecAddress);
-    _pVec<OBJECT, CLASSNO, ITEMS>(pVecAddress);
+  Vec<VEC_CN, ITEM, ITEM_CN, MAX_ITEMS>* pVec =
+  //reinterpret_cast<Vec<VEC_CN, ITEM, ITEM_CN, MAX_ITEMS>*>(pVecAddress);
+    _pVec<VEC_CN, ITEM, ITEM_CN, MAX_ITEMS>(pVecAddress);
   
   Heap::vFree(pVec);
 }
@@ -85,31 +85,31 @@ void Vec<OBJECT, CLASSNO, ITEMS>::operator delete(void* pVecAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-template <class OBJECT, eCN CLASSNO, i8 ITEMS>
-Vec<OBJECT, CLASSNO, ITEMS>::Vec(void)
-: Object(CLASSNO)
+template <eCN VEC_CN, class ITEM, eCN ITEM_CN, i8 MAX_ITEMS>
+Vec<VEC_CN, ITEM, ITEM_CN, MAX_ITEMS>::Vec(void)
+: Object(VEC_CN)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,VEC_CN,_FOOTER_);
   
   m_nItems = 0;
   
-  for (i8 iItem = 0; iItem < ITEMS; iItem++)
+  for (i8 iItem = 0; iItem < MAX_ITEMS; iItem++)
     m_pItem[iItem] = nullptr;
   
   _setFooter_();
   
-  _checkInitialised_(CLASSNO);
+  _checkInitialised_(ITEM_CN);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,VEC_CN,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-template <class OBJECT, eCN CLASSNO, i8 ITEMS>
-Vec<OBJECT, CLASSNO, ITEMS>::~Vec(void)
+template <eCN VEC_CN, class ITEM, eCN ITEM_CN, i8 MAX_ITEMS>
+Vec<VEC_CN, ITEM, ITEM_CN, MAX_ITEMS>::~Vec(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,VEC_CN,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -119,17 +119,17 @@ Vec<OBJECT, CLASSNO, ITEMS>::~Vec(void)
 /*----------------------------------------------------------------------------*/
 /* add an item                                                                */
 /*----------------------------------------------------------------------------*/
-template <class OBJECT, eCN CLASSNO, i8 ITEMS>
-void Vec<OBJECT, CLASSNO, ITEMS>::vAdd(Object* pItem)
+template <eCN VEC_CN, class ITEM, eCN ITEM_CN, i8 MAX_ITEMS>
+void Vec<VEC_CN, ITEM, ITEM_CN, MAX_ITEMS>::vAdd(Object* pItem)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,VEC_CN,_FOOTER_);
   
   // check we have a free slot
-  ASSERT(m_nItems >= 0 && m_nItems < ITEMS - 1);
+  ASSERT(m_nItems >= 0 && m_nItems < MAX_ITEMS - 1);
   
   // get item number
   i8 iItem = m_nItems++;
-  ASSERT(m_nItems > 0 && m_nItems < ITEMS);
+  ASSERT(m_nItems > 0 && m_nItems < MAX_ITEMS);
   
   // there shouldnt already be a item
   ASSERT( ! m_pItem[iItem] );
@@ -141,12 +141,12 @@ void Vec<OBJECT, CLASSNO, ITEMS>::vAdd(Object* pItem)
 /*----------------------------------------------------------------------------*/
 /* get number of actual items                                                 */
 /*----------------------------------------------------------------------------*/
-template <class OBJECT, eCN CLASSNO, i8 ITEMS>
-i8 Vec<OBJECT, CLASSNO, ITEMS>::nItems(void)
+template <eCN VEC_CN, class ITEM, eCN ITEM_CN, i8 MAX_ITEMS>
+i8 Vec<VEC_CN, ITEM, ITEM_CN, MAX_ITEMS>::nItems(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,VEC_CN,_FOOTER_);
   
-  ASSERT(m_nItems >= 0 && m_nItems < ITEMS);
+  ASSERT(m_nItems >= 0 && m_nItems < MAX_ITEMS);
   
   return m_nItems;
 }
@@ -154,10 +154,10 @@ i8 Vec<OBJECT, CLASSNO, ITEMS>::nItems(void)
 /*----------------------------------------------------------------------------*/
 /* get a specific item                                                        */
 /*----------------------------------------------------------------------------*/
-template <class OBJECT, eCN CLASSNO, i8 ITEMS>
-Object* Vec<OBJECT, CLASSNO, ITEMS>::pGet(i8 iItem)
+template <eCN VEC_CN, class ITEM, eCN ITEM_CN, i8 MAX_ITEMS>
+Object* Vec<VEC_CN, ITEM, ITEM_CN, MAX_ITEMS>::pGet(i8 iItem)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,VEC_CN,_FOOTER_);
   
   ASSERT(iItem >= 0 && iItem < m_nItems);
   
@@ -173,10 +173,10 @@ Object* Vec<OBJECT, CLASSNO, ITEMS>::pGet(i8 iItem)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-template <class OBJECT, eCN CLASSNO, i8 ITEMS>
-Footer* Vec<OBJECT, CLASSNO, ITEMS>::pFooter(void)
+template <eCN VEC_CN, class ITEM, eCN ITEM_CN, i8 MAX_ITEMS>
+Footer* Vec<VEC_CN, ITEM, ITEM_CN, MAX_ITEMS>::pFooter(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CLASSNO);
+  _precondition_(_ADDRESS_,_MAGIC_,VEC_CN);
   
   return &m_xFooter;
 }
