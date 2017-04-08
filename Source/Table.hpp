@@ -26,7 +26,7 @@ namespace DBobjects
     Slots  m_xSlots;     // slots
     Atomic m_zRefCount;  // reference count
 
-    Vec<Column,CN_COLUMN,1024>* m_pColumnVec; // colummn vector
+    ColumnVec* m_pColumnVec; // colummn vector
   
     // must be last
     Footer m_xFooter;
@@ -44,7 +44,7 @@ namespace DBobjects
     
     Str* pAnalyze(bool bDetailed);
     void vAppendBuffer(i8 iPartition, RowBuffer* pRowBuffer);
-    Vec<Column,CN_COLUMN,1024>* pColumnVec(void);
+    ColumnVec* pColumnVec(void);
     void vContentDump(void);
     void vInsertRow(i8 iPartition, TxRef* pTxRef, Str* pRecord, i8 iLength);
     Partition* pPartition(i8 iSlot);

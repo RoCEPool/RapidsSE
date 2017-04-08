@@ -48,6 +48,9 @@ using namespace DBobjects;
 
 #include "Index.hpp"
 #include "Column.hpp"
+
+typedef Vec<Column,CN_COLUMN,1024> ColumnVec;
+
 #include "Table.hpp"
 
 #include "RbCursor.hpp"

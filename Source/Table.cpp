@@ -73,7 +73,7 @@ Table::Table(void)
   
   m_zRefCount.vCheckInit();
   
-  m_pColumnVec = new Vec<Column,CN_COLUMN,1024>;
+  m_pColumnVec = new ColumnVec;
   
   _checkInitialised_(CN_TABLE);
   
@@ -209,7 +209,7 @@ void Table::vAppendBuffer(i8 iPartition, RowBuffer* pRowBuffer)
 /*----------------------------------------------------------------------------*/
 /* get ColumnVec                                                              */
 /*----------------------------------------------------------------------------*/
-Vec<Column,CN_COLUMN,1024>* Table::pColumnVec(void)
+ColumnVec* Table::pColumnVec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
