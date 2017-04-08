@@ -48,7 +48,6 @@ using namespace DBobjects;
 
 #include "Index.hpp"
 #include "Column.hpp"
-#include "ColumnVec.hpp"
 #include "Table.hpp"
 
 #include "RbCursor.hpp"

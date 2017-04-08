@@ -182,7 +182,7 @@ i8 giClassSize[]
   /* 16 */ sizeof(BPA),                // CN_BPA
 
   /*    */ sizeof(Column),             // CN_COLUMN
-  /*    */ sizeof(ColumnVec),          // CN_COLUMNVEC
+  /*    */ 0,                          // CN_COLUMNVEC
   
   /* 17 */ sizeof(Data),               // CN_DATA
   /* 18 */ sizeof(Dic),                // CN_DIC
