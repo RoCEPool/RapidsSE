@@ -52,6 +52,7 @@ namespace Base
     /* 22 */ CN_FILE,
     /* 23 */ CN_FREEBUFFER,
     /* 24 */ CN_FREECHUNK,
+    /*    */ CN_FREEDNOT,
     
     /* 25 */ CN_GRAPH,
     /* 26 */ CN_GRAPHCURSOR,
@@ -190,6 +191,7 @@ namespace Base
     /* 22 */ "FILE"_Str,
     /* 23 */ "FREEBUFFER"_Str,
     /* 24 */ "FREECHUNK"_Str,
+    /*    */ "FREEDNOT"_Str,
     
     /* 25 */ "GRAPH"_Str,
     /* 26 */ "GRAPHCURSOR"_Str,

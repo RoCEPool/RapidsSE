@@ -158,11 +158,15 @@ void Heap::vFree(Object* pObject)
   
   if (gpBufferPool->bDontFree()) {
     
-    if (CN_ROWBUFFER != eAllocClass)
+    if (CN_ROWBUFFER != eAllocClass) {
+      pObject->vClass(CN_FREEDNOT);
       return;
+    }
     
-    if ( ! gpBufferPool->bFreeRB() )
+    if ( ! gpBufferPool->bFreeRB() ) {
+      pObject->vClass(CN_FREEDNOT);
       return;
+    }
   }
   
   // should not be freeing objects that are part of a word body

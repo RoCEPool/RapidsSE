@@ -54,6 +54,7 @@ pDUMPFUN *gpDump[]
   /* 22 */ &Dump::vInvalid,         // CN_FILE
   /* 23 */ &Dump::vDummy,           // CN_FREEBUFFER
   /* 24 */ &Dump::vDummy,           // CN_FREECHUNK
+  /*    */ &Dump::vDummy,           // CN_FREEDNOT
   
   /* 25 */ &Graph::vDump,           // CN_GRAPH
   /* 26 */ &GraphCursor::vDump,     // CN_GRAPH
@@ -193,6 +194,7 @@ i8 giClassSize[]
   /* 22 */ sizeof(File),               // CN_FILE
   /* 23 */ sizeof(Buffer),             // CN_FREEBUFFER
   /* 24 */ sizeof(FreeChunk),          // CN_FREECHUNK
+  /*    */ 0,                          // CN_FREEDNOT
   
   /* 25 */ sizeof(Graph),              // CN_GRAPH
   /* 26 */ sizeof(GraphCursor),        // CN_GRAPHCURSOR
@@ -332,6 +334,7 @@ eHT geWhichHeap[]
   /* 22 */ HT_SMALL,   // CN_FILE
   /* 23 */ HT_INVALID, // CN_FREEBUFFER
   /* 24 */ HT_INVALID, // CN_FREECHUNK
+  /*    */ HT_INVALID, // CN_FREEDNOT
   
   /* 25 */ HT_SMALL,   // CN_GRAPH
   /* 26 */ HT_SMALL,   // CN_GRAPHCURSOR
