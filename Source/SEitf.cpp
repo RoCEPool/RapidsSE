@@ -347,7 +347,7 @@ bool SEitf::bDecode(Str* aWords[], i8 iWords)
   if (aWords[0]->bSame("dis"_Str)) return bDisconnect(aWords);
   if (aWords[0]->bSame("docol"_Str)) return bDocol(aWords);
   if (aWords[0]->bSame("dump"_Str)) return bDumpTable(aWords, iWords);
-  if (aWords[0]->bSame("endaddcols"_Str)) return bEndAddColumns(aWords, iWords);
+  if (aWords[0]->bSame("endmktbl"_Str)) return bEndCreateTable(aWords, iWords);
   if (aWords[0]->bSame("ex"_Str)) return bExportTable(aWords, iWords);
   if (aWords[0]->bSame("getFreeSpace"_Str)) return bGetFreeSpace(aWords);
   if (aWords[0]->bSame("getInUseSpace"_Str)) return bGetInUseSpace(aWords);
@@ -910,9 +910,9 @@ bool SEitf::bAddColumn(Str* aWords[16], i8 iWords)
 }
 
 /*----------------------------------------------------------------------------*/
-/* end of add column sequence                                                 */
+/* end of create table sequence                                               */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bEndAddColumns(Str* aWords[16], i8 iWords)
+bool SEitf::bEndCreateTable(Str* aWords[16], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -927,7 +927,7 @@ bool SEitf::bEndAddColumns(Str* aWords[16], i8 iWords)
   sRequest.vConcat(aWords[1]);
   sRequest.vConcat("\""_Str);
   
-  sRequest.vConcat(" end_add_columns"_Str);
+  sRequest.vConcat(" end_create_table"_Str);
   
   return bAppendRequest(sRequest);
 }

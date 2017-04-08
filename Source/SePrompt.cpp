@@ -1427,12 +1427,12 @@ bool SePrompt::bCreateTable(void)
   }
   
   // end of add columns
-  m_aToken[0]->vCopy("endaddcols"_Str);
+  m_aToken[0]->vCopy("endmktbl"_Str);
   m_aToken[1]->vCopy(m_aToken2[2]);
   m_aToken[2]->vCopy(""_Str);
   
   if (!bExecuteRequest()) {
-    vTrace("SePrompt::bCreateTable : endaddcols FAILED!!!\n"_Str);
+    vTrace("SePrompt::bCreateTable : endmktbl FAILED!!!\n"_Str);
   }
   
   // derefernce and return the table first
