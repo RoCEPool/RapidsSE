@@ -56,7 +56,7 @@ Column::Column(void)
   m_iColumnLength = 0;
   m_iColumnPrecision = 0;
   m_eDatumType  = DM_NONE;
-  m_bIsNullable = false;
+  m_bIsNullable = true;
   
   _checkInitialised_(CN_COLUMN);
   
@@ -77,7 +77,7 @@ Column::Column(Str* aName, Str* aDefinition)
   m_iColumnLength = 0;
   m_iColumnPrecision = 0;
   m_eDatumType  = DM_NONE;
-  m_bIsNullable = false;
+  m_bIsNullable = true;
   
   vSet(aDefinition);
   
@@ -301,6 +301,27 @@ void Column::vSet(Str* aDefinition)
     m_eColumnType = CT_INTEGER;
     m_eDatumType = DM_INT;
   }
+  
+  StrLib::vSkipWhite(&aCursor);
+  
+  if ('(' == *aCursor) {
+    aCursor++;
+    StrLib::vSkipWhite(&aCursor);
+    b = StrLib::bExtractI8(&aCursor,&m_iColumnLength);
+    
+    StrLib::vSkipWhite(&aCursor);
+    if (',' == *aCursor) {
+      aCursor++;
+      StrLib::vSkipWhite(&aCursor);
+      b = StrLib::bExtractI8(&aCursor,&m_iColumnPrecision);
+    }
+    StrLib::vSkipWhite(&aCursor);
+    aCursor++;
+    StrLib::vSkipWhite(&aCursor);
+  }
+  
+  if (StrLib::bSame(aCursor,"not null"))
+    m_bIsNullable = false;
 }
 
 /*----------------------------------------------------------------------------*/
