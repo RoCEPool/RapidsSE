@@ -227,6 +227,16 @@ void Table::vContentDump(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* create column vector                                                       */
+/*----------------------------------------------------------------------------*/
+void Table::vCreateColumnVec(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  
+  vTrace("vCreateColumnVec: table %s\n"_Str,aTableName());
+}
+
+/*----------------------------------------------------------------------------*/
 /* insert a row in the table                                                  */
 /*----------------------------------------------------------------------------*/
 void Table::vInsertRow(i8 iPartition, TxRef* pTxRef, Str* pRecord, i8 iLength)

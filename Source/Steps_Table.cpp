@@ -145,7 +145,7 @@ void Task::vTableCreateColumnVec(NNP_Task nnpTask)
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
   
-  vTrace("table.createColumnVec for table %s\n"_Str,pTable->aTableName());
+  pTable->vCreateColumnVec();
   
   EXIT();
 }
