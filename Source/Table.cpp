@@ -229,16 +229,16 @@ void Table::vContentDump(void)
 /*----------------------------------------------------------------------------*/
 /* create column vector                                                       */
 /*----------------------------------------------------------------------------*/
-void Table::vCreateColumnVec(s32& sWordNm, s48K& sWordVal)
+void Table::vCreateColumnVec(s32& sColumnNm, s48K& sColumnDefn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
   vTrace("vCreateColumnVec: table %s column %s %s\n"_Str,
          aTableName(),
-         sWordNm.aStr(),
-         sWordVal.aStr());
+         sColumnNm.aStr(),
+         sColumnDefn.aStr());
   
-  Column* pColumn = new Column(sWordNm.aStr(),sWordVal.aStr());
+  Column* pColumn = new Column(sColumnNm.aStr(),sColumnDefn.aStr());
   
   m_pColumnVec->vAdd(pColumn);
 }
