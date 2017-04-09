@@ -426,22 +426,6 @@ tp: removeTable
   true <SUCCESS_RESULT>
 ;
 
-/*----------------------------------------------------------------------------*/
-/* create the column vector of the table                                      */
-/*----------------------------------------------------------------------------*/
-: columnVecTable allParticipants 1 checkResult ( "<tableNm>" -- true n# true )
-
-  assert.stack_1
-
-  "columnVecTable" . dup .
-
-  find execute stk table.createColumnVec
-
-  assert.stack_0
-
-  true <SUCCESS_RESULT>
-;
-
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

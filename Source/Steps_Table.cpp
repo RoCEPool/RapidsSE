@@ -145,7 +145,13 @@ void Task::vTableCreateColumnVec(NNP_Task nnpTask)
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
   
-  pTable->vCreateColumnVec();
+  Object* pPtrDic;
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrDic) )
+    THROW_INVALID_DSTACK("table.createColumnVec"_Str);
+  
+  Dic* pDic = _pDic(pPtrDic);
+  
+  pTable->vCreateColumnVec(pDic);
   
   EXIT();
 }

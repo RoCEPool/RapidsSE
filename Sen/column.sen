@@ -124,6 +124,53 @@
   true <SUCCESS_RESULT>
 ;
 
+/*----------------------------------------------------------------------------*/
+/* create the column vector of the table                                      */
+/*----------------------------------------------------------------------------*/
+: columnVecTable allParticipants 1 checkResult ( "<tableNm>" -- true n# true )
+
+  0 locals| tablePtr tableNm |
+
+  "columnVecTable" . tableNm .
+
+  tableNm find execute to tablePtr
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // double check we can see the table
+  //tableNm find execute stk drop
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // push the table sub dic and then the columns sub dic
+  tableNm pushTableSub  assert
+  pushColumns assert
+
+  // double check the path
+  //task.this task.dicStack dicPath.dump
+
+  0 pathPick dic.lastWord dup
+  iterate                        // iterate word cursor
+    object@ word.name .          // print the name of the word
+    object@ execute .
+    object@ word.prev object!    // advance cursor backwards thru words
+  next
+
+  0 task.this task.dicStack dicPath.pick ( ^columnsDic )
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create the column vector
+  tablePtr ( ^columnsDic ^table ) stk table.createColumnVec
+
+  assert.stack_0
+
+  popColumns
+
+  popTableSub
+
+  true <SUCCESS_RESULT>
+;
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
