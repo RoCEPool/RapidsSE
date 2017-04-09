@@ -131,8 +131,9 @@
 
   0 locals| tablePtr tableNm |
 
-  "columnVecTable" . tableNm .
+  //"columnVecTable" . tableNm .
 
+  // get table ptr
   tableNm find execute to tablePtr
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -149,18 +150,18 @@
   // double check the path
   //task.this task.dicStack dicPath.dump
 
+  // iterate contents of columns dictionary 
   0 pathPick dic.lastWord dup
   iterate                        // iterate word cursor
-    object@ word.name .          // print the name of the word
-    object@ execute .
+    object@ execute              ( value )
+    object@ word.name            ( value wordNm )
+    tablePtr                     ( value wordNm ^table )
+    //stk
+    table.createColumnVec
     object@ word.prev object!    // advance cursor backwards thru words
   next
 
-  0 task.this task.dicStack dicPath.pick ( ^columnsDic )
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // create the column vector
-  tablePtr ( ^columnsDic ^table ) stk table.createColumnVec
 
   assert.stack_0
 

@@ -229,17 +229,14 @@ void Table::vContentDump(void)
 /*----------------------------------------------------------------------------*/
 /* create column vector                                                       */
 /*----------------------------------------------------------------------------*/
-void Table::vCreateColumnVec(Dic* pDic)
+void Table::vCreateColumnVec(s48K& sWordNm, s48K& sWordVal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
-  vTrace("vCreateColumnVec: table %s\n"_Str,aTableName());
-  
-  for (Word* pWord = pDic->pLastWord(); pWord; pWord = pWord->pPrevWord()) {
-    vTrace("vCreateColumnVec: word %s %s\n"_Str,
-           pWord->sName().aStr(),
-           aWT[pWord->eWordType()]);
-  }
+  vTrace("vCreateColumnVec: table %s column %s %s\n"_Str,
+         aTableName(),
+         sWordNm.aStr(),
+         sWordVal.aStr());
 }
 
 /*----------------------------------------------------------------------------*/
