@@ -154,8 +154,18 @@ ddlLock.grabRead
 /*----------------------------------------------------------------------------*/
 : end_create_table ( "<tableNm>" -- <R> )
 
+tp: end_create_table
+
+ddlLock.grabWrite
+
+  dup
+  checkInTable not if <NIP+ERROR> exit then
+  checkIsTable not if <NIP+ERROR> exit then
+
   "end_create_table" .
   .
+
+  assert.stack_0
 
   <OK>
 ;
