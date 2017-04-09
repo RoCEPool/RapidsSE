@@ -27,6 +27,8 @@ namespace DBobjects
     s32          m_sIndexName;
     eIT          m_eIndexType;
     Table*       m_pTable;
+    IdxColVec*   m_pIdxColVec;
+  
     IndexLevels* m_pIndexLevels;
   
     // must be last
@@ -47,7 +49,9 @@ namespace DBobjects
     void vPopulate(void);
     void vTable(Table* pTable);
     void vTruncate(void);
-    
+  
+    IdxColVec* pIdxColVec(void);
+  
     Footer* pFooter(void);
   };
   

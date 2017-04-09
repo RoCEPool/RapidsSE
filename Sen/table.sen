@@ -435,7 +435,7 @@ tp: removeTable
 
   "columnVecTable" . dup .
 
-  find execute drop
+  find execute stk table.createColumnVec
 
   assert.stack_0
 

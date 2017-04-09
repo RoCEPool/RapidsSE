@@ -32,17 +32,18 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Table(void)
 {
-  vAddPrimitive("table.analyze"_Str,      &vTableAnalyze,      false);
-  vAddPrimitive("table.append"_Str,       &vTableAppend,       false);
-  vAddPrimitive("table.appendBuffer"_Str, &vTableAppendBuffer, false);
-  vAddPrimitive("table.drop"_Str,         &vTableDrop,         false);
-  vAddPrimitive("table.init"_Str,         &vTableInit,         false);
-  vAddPrimitive("table.insert"_Str,       &vTableInsert,       false);
-  vAddPrimitive("table.name"_Str,         &vTableName,         false);
-  vAddPrimitive("table.ref"_Str,          &vTableRef,          false);
-  vAddPrimitive("table.space"_Str,        &vTableSpace,        false);
-  vAddPrimitive("table.subDic"_Str,       &vTableSubDic,       false);
-  vAddPrimitive("table.truncate"_Str,     &vTableTruncate,     false);
+  vAddPrimitive("table.analyze"_Str,         &vTableAnalyze,         false);
+  vAddPrimitive("table.append"_Str,          &vTableAppend,          false);
+  vAddPrimitive("table.appendBuffer"_Str,    &vTableAppendBuffer,    false);
+  vAddPrimitive("table.createColumnVec"_Str, &vTableCreateColumnVec, false);
+  vAddPrimitive("table.drop"_Str,            &vTableDrop,            false);
+  vAddPrimitive("table.init"_Str,            &vTableInit,            false);
+  vAddPrimitive("table.insert"_Str,          &vTableInsert,          false);
+  vAddPrimitive("table.name"_Str,            &vTableName,            false);
+  vAddPrimitive("table.ref"_Str,             &vTableRef,             false);
+  vAddPrimitive("table.space"_Str,           &vTableSpace,           false);
+  vAddPrimitive("table.subDic"_Str,          &vTableSubDic,          false);
+  vAddPrimitive("table.truncate"_Str,        &vTableTruncate,        false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -127,6 +128,24 @@ void Task::vTableAppendBuffer(NNP_Task nnpTask)
   i8 iSlot = Partition::iPartitionToSlot(iPartition);
   
   pTable->vAppendBuffer(iSlot,pRowBuffer);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* table.createColumnVec -- create column vector from sub dictionary          */
+/*----------------------------------------------------------------------------*/
+void Task::vTableCreateColumnVec(NNP_Task nnpTask)
+{
+  ENTRY("vTableCreateColumnVec"_Str);
+  
+  Object* pPtrTable;
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrTable) )
+    THROW_INVALID_DSTACK("table.createColumnVec"_Str);
+  Table* pTable = _pTable(pPtrTable);
+  ASSERT(CN_TABLE == pTable->eClass());
+  
+  vTrace("table.createColumnVec for table %s\n"_Str,pTable->aTableName());
   
   EXIT();
 }
