@@ -240,7 +240,13 @@ void Table::vCreateColumnVec(s32& sColumnNm, s48K& sColumnDefn)
   
   Column* pColumn = new Column(sColumnNm.aStr(),sColumnDefn.aStr());
   
-  m_pColumnVec->vAdd(pColumn);
+  m_pColumnVec->vInsert(pColumn);
+  
+  // renumber
+  for (i8 iColumn = 0; iColumn < m_pColumnVec->nItems(); iColumn++) {
+    Column* pColumn = m_pColumnVec->pGet(iColumn);
+    pColumn->vColumnNo(iColumn);
+  }
 }
 
 /*----------------------------------------------------------------------------*/

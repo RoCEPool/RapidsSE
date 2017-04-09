@@ -24,6 +24,7 @@ namespace Structures
     ~Vec(void);
   
     void  vAdd(ITEM* pObject);
+    void  vInsert(ITEM* pObject);
     i8    nItems(void);
     ITEM* pGet(i8 iItem);
   
@@ -136,6 +137,38 @@ void Vec<VEC_CN, ITEM, ITEM_CN, MAX_ITEMS>::vAdd(ITEM* pItem)
   
   // set item
   m_pItem[iItem] = pItem;
+}
+
+/*----------------------------------------------------------------------------*/
+/* insert an item as first                                                    */
+/*----------------------------------------------------------------------------*/
+template <eCN VEC_CN, class ITEM, eCN ITEM_CN, i8 MAX_ITEMS>
+void Vec<VEC_CN, ITEM, ITEM_CN, MAX_ITEMS>::vInsert(ITEM* pItem)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,VEC_CN,_FOOTER_);
+  
+  // check we have a free slot
+  ASSERT(m_nItems >= 0 && m_nItems < MAX_ITEMS - 1);
+  
+  // get item number
+  i8 iItem = m_nItems++;
+  ASSERT(m_nItems > 0 && m_nItems < MAX_ITEMS);
+  
+  // there shouldnt already be a item
+  ASSERT( ! m_pItem[iItem] );
+  
+  // if there are items in the array then move array up
+  if (iItem) {
+    char* aSrc = reinterpret_cast<char*>(&m_pItem[0]);
+    char* aDst = reinterpret_cast<char*>(&m_pItem[1]);
+    char* aLst = pAdd<char*>(&m_pItem[iItem],sizeof(ITEM*));
+    i8 nBytes = nSub(aLst,aDst);
+    
+    MemLib::vMove(aDst,aSrc,nBytes);
+  }
+  
+  // set item
+  m_pItem[0] = pItem;
 }
 
 /*----------------------------------------------------------------------------*/

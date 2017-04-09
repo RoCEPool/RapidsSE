@@ -173,9 +173,9 @@ void MemLib::vSet(void* pDst, char iByte, i8 iTimes)
 /*----------------------------------------------------------------------------*/
 /* move from src to dst                                                       */
 /*----------------------------------------------------------------------------*/
-void MemLib::vMove(void* pDst, const void* pSrc, i8 iBytes)
+void MemLib::vMove(void* pDst, const void* pSrc, i8 nBytes)
 {
-  memmove(pDst,pSrc,iBytes);
+  memmove(pDst,pSrc,nBytes);
 }
 
 /*----------------------------------------------------------------------------*/
