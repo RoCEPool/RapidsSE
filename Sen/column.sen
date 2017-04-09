@@ -163,6 +163,8 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  tablePtr table.showColumnVec
+
   assert.stack_0
 
   popColumns

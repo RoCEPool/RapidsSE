@@ -41,6 +41,7 @@ void Task::vAddPrimitives_Table(void)
   vAddPrimitive("table.insert"_Str,          &vTableInsert,          false);
   vAddPrimitive("table.name"_Str,            &vTableName,            false);
   vAddPrimitive("table.ref"_Str,             &vTableRef,             false);
+  vAddPrimitive("table.showColumnVec"_Str,   &vTableShowColumnVec,   false);
   vAddPrimitive("table.space"_Str,           &vTableSpace,           false);
   vAddPrimitive("table.subDic"_Str,          &vTableSubDic,          false);
   vAddPrimitive("table.truncate"_Str,        &vTableTruncate,        false);
@@ -291,6 +292,24 @@ void Task::vTableRef(NNP_Task nnpTask)
   bool bRef = pTable->bRefOut();
   
   nnpTask->m_pDataStack->vPush(bRef);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* table.showColumnVec -- show column vector                                  */
+/*----------------------------------------------------------------------------*/
+void Task::vTableShowColumnVec(NNP_Task nnpTask)
+{
+  ENTRY("vTableShowColumnVec"_Str);
+  
+  Object* pPtrTable;
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrTable) )
+    THROW_INVALID_DSTACK("table.createColumnVec"_Str);
+  Table* pTable = _pTable(pPtrTable);
+  ASSERT(CN_TABLE == pTable->eClass());
+  
+  pTable->vShowColumnVec();
   
   EXIT();
 }

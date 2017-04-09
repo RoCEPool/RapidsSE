@@ -54,6 +54,7 @@ namespace DBobjects
     bool bRefOut(void);
     i8   nRowBuffers(void);
     i8   iRowPartition(Str* pRow);
+    void vShowColumnVec(void);
     Dic* pSubDic(void);
     Str* aTableName(void);
     void vTruncate(void);

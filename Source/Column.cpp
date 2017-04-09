@@ -204,6 +204,21 @@ void Column::vSet(Str* aDefinition)
 }
 
 /*----------------------------------------------------------------------------*/
+/* show column contents                                                       */
+/*----------------------------------------------------------------------------*/
+void Column::vShow(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+  
+  vTrace("Column %02lld %s %s type %s datum %s %s\n"_Str,
+         m_iColumnNo,
+         m_sColumnName.aStr(),
+         aCT[m_eColumnType],
+         aDM[m_eDatumType],
+         m_bIsNullable ? "nullable"_Str : "not null"_Str);
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 

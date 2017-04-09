@@ -54,6 +54,7 @@ namespace DBobjects
     void vIsNullable(bool bIsNullable);
   
     void vSet(Str* aDefinition);
+    void vShow(void);
   
     Footer* pFooter(void);
   };

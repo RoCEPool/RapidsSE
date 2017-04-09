@@ -233,10 +233,10 @@ void Table::vCreateColumnVec(s32& sColumnNm, s48K& sColumnDefn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
-  vTrace("vCreateColumnVec: table %s column %s %s\n"_Str,
-         aTableName(),
-         sColumnNm.aStr(),
-         sColumnDefn.aStr());
+//  vTrace("vCreateColumnVec: table %s column %s %s\n"_Str,
+//         aTableName(),
+//         sColumnNm.aStr(),
+//         sColumnDefn.aStr());
   
   Column* pColumn = new Column(sColumnNm.aStr(),sColumnDefn.aStr());
   
@@ -342,6 +342,19 @@ i8 Table::iRowPartition(Str* pRow)
   
   //vTrace("Partition: %lld\n"_Str,m_iPartition);
   return iPartition;
+}
+
+/*----------------------------------------------------------------------------*/
+/* show column vector                                                         */
+/*----------------------------------------------------------------------------*/
+void Table::vShowColumnVec(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+
+  for (i8 iColumn = 0; iColumn < m_pColumnVec->nItems(); iColumn++) {
+    Column* pColumn = m_pColumnVec->pGet(iColumn);
+    pColumn->vShow();
+  }
 }
 
 /*----------------------------------------------------------------------------*/

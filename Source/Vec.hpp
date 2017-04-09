@@ -9,8 +9,8 @@ namespace Structures
   class Vec : public Object
   {
   private:
-    i8      m_nItems;           // number of actual items
-    Object* m_pItem[MAX_ITEMS]; // vector of items
+    i8     m_nItems;           // number of actual items
+    ITEM*  m_pItem[MAX_ITEMS]; // vector of items
   
     // must be last
     Footer m_xFooter;
@@ -23,9 +23,9 @@ namespace Structures
     Vec(void);
     ~Vec(void);
   
-    void    vAdd(Object* pObject);
-    i8      nItems(void);
-    Object* pGet(i8 iItem);
+    void  vAdd(ITEM* pObject);
+    i8    nItems(void);
+    ITEM* pGet(i8 iItem);
   
     Footer* pFooter(void);
   };
@@ -120,7 +120,7 @@ Vec<VEC_CN, ITEM, ITEM_CN, MAX_ITEMS>::~Vec(void)
 /* add an item                                                                */
 /*----------------------------------------------------------------------------*/
 template <eCN VEC_CN, class ITEM, eCN ITEM_CN, i8 MAX_ITEMS>
-void Vec<VEC_CN, ITEM, ITEM_CN, MAX_ITEMS>::vAdd(Object* pItem)
+void Vec<VEC_CN, ITEM, ITEM_CN, MAX_ITEMS>::vAdd(ITEM* pItem)
 {
   _precondition_(_ADDRESS_,_MAGIC_,VEC_CN,_FOOTER_);
   
@@ -155,13 +155,13 @@ i8 Vec<VEC_CN, ITEM, ITEM_CN, MAX_ITEMS>::nItems(void)
 /* get a specific item                                                        */
 /*----------------------------------------------------------------------------*/
 template <eCN VEC_CN, class ITEM, eCN ITEM_CN, i8 MAX_ITEMS>
-Object* Vec<VEC_CN, ITEM, ITEM_CN, MAX_ITEMS>::pGet(i8 iItem)
+ITEM* Vec<VEC_CN, ITEM, ITEM_CN, MAX_ITEMS>::pGet(i8 iItem)
 {
   _precondition_(_ADDRESS_,_MAGIC_,VEC_CN,_FOOTER_);
   
   ASSERT(iItem >= 0 && iItem < m_nItems);
   
-  Object* pItem = m_pItem[iItem];
+  ITEM* pItem = m_pItem[iItem];
   
   return pItem;
 }
