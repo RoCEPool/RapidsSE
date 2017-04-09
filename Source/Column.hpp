@@ -23,6 +23,8 @@ namespace DBobjects
     i8    m_iColumnNo;
     s32   m_sColumnName;
     eCT   m_eColumnType;
+    i8    m_iColumnLength;
+    i8    m_iColumnPrecision;
     eDM   m_eDatumType;
     bool  m_bIsNullable;
   
@@ -37,6 +39,12 @@ namespace DBobjects
     Column(void);
     Column(Str* aName, Str* aDefinition);
     ~Column(void);
+  
+    i8   iColumnLength(void);
+    void vColumnLength(i8 iColumnLength);
+  
+    i8   iColumnPrecision(void);
+    void vColumnPrecision(i8 iColumnPrecision);
   
     i8   iColumnNo(void);
     void vColumnNo(i8 iColumnNo);

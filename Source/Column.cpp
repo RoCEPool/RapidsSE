@@ -53,6 +53,8 @@ Column::Column(void)
   m_iColumnNo   = 0;
   m_sColumnName = "<notSet>"_Str;
   m_eColumnType = CT_NONE;
+  m_iColumnLength = 0;
+  m_iColumnPrecision = 0;
   m_eDatumType  = DM_NONE;
   m_bIsNullable = false;
   
@@ -72,6 +74,8 @@ Column::Column(Str* aName, Str* aDefinition)
   m_iColumnNo   = 0;
   m_sColumnName = aName;
   m_eColumnType = CT_NONE;
+  m_iColumnLength = 0;
+  m_iColumnPrecision = 0;
   m_eDatumType  = DM_NONE;
   m_bIsNullable = false;
   
@@ -112,6 +116,46 @@ void Column::vColumnNo(i8 iColumnNo)
   _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
   
   m_iColumnNo = iColumnNo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get column length                                                          */
+/*----------------------------------------------------------------------------*/
+i8 Column::iColumnLength(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+  
+  return m_iColumnLength;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set column length                                                          */
+/*----------------------------------------------------------------------------*/
+void Column::vColumnLength(i8 iColumnLength)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+  
+  m_iColumnLength = iColumnLength;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get column precision                                                       */
+/*----------------------------------------------------------------------------*/
+i8 Column::iColumnPrecision(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+  
+  return m_iColumnPrecision;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set column precision                                                       */
+/*----------------------------------------------------------------------------*/
+void Column::vColumnPrecision(i8 iColumnPrecision)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+  
+  m_iColumnPrecision = iColumnPrecision;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -210,10 +254,12 @@ void Column::vShow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
   
-  vTrace("Column %02lld %s type %s datum %s %s\n"_Str,
+  vTrace("Column %02lld %s type %s length %lld precision %lld datum %s %s\n"_Str,
          m_iColumnNo,
          m_sColumnName.aStr(),
          aCT[m_eColumnType],
+         m_iColumnLength,
+         m_iColumnPrecision,
          aDM[m_eDatumType],
          m_bIsNullable ? "nullable"_Str : "not null"_Str);
 }
