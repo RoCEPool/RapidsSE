@@ -145,12 +145,11 @@ void Task::vTableCreateColumnVec(NNP_Task nnpTask)
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
   
-  s48K sWordVal;
-  s48K sWordNm;
-  
+  s32 sWordNm;  
   if ( ! nnpTask->m_pDataStack->bPop(sWordNm) )
     THROW_INVALID_DSTACK("table.createColumnVec"_Str);
 
+  s48K sWordVal;
   if ( ! nnpTask->m_pDataStack->bPop(sWordVal) )
     THROW_INVALID_DSTACK("table.createColumnVec"_Str);
   

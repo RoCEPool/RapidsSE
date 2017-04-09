@@ -229,7 +229,7 @@ void Table::vContentDump(void)
 /*----------------------------------------------------------------------------*/
 /* create column vector                                                       */
 /*----------------------------------------------------------------------------*/
-void Table::vCreateColumnVec(s48K& sWordNm, s48K& sWordVal)
+void Table::vCreateColumnVec(s32& sWordNm, s48K& sWordVal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
@@ -237,6 +237,10 @@ void Table::vCreateColumnVec(s48K& sWordNm, s48K& sWordVal)
          aTableName(),
          sWordNm.aStr(),
          sWordVal.aStr());
+  
+  Column* pColumn = new Column(sWordNm.aStr(),sWordVal.aStr());
+  
+  m_pColumnVec->vAdd(pColumn);
 }
 
 /*----------------------------------------------------------------------------*/

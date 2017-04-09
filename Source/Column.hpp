@@ -35,6 +35,7 @@ namespace DBobjects
     void  operator delete(void*);
     
     Column(void);
+    Column(Str* aName, Str* aDefinition);
     ~Column(void);
   
     i8   iColumnNo(void);
@@ -51,6 +52,8 @@ namespace DBobjects
   
     bool bIsNullable(void);
     void vIsNullable(bool bIsNullable);
+  
+    void vSet(Str* aDefinition);
   
     Footer* pFooter(void);
   };

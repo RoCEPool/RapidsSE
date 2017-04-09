@@ -46,7 +46,7 @@ namespace DBobjects
     void vAppendBuffer(i8 iPartition, RowBuffer* pRowBuffer);
     ColumnVec* pColumnVec(void);
     void vContentDump(void);
-    void vCreateColumnVec(s48K& sName, s48K& sValue);
+    void vCreateColumnVec(s32& sName, s48K& sValue);
     void vInsertRow(i8 iPartition, TxRef* pTxRef, Str* pRecord, i8 iLength);
     Partition* pPartition(i8 iSlot);
     void vRefDec(void);

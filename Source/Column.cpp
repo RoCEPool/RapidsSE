@@ -62,6 +62,27 @@ Column::Column(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Column::Column(Str* aName, Str* aDefinition)
+: Object(CN_COLUMN)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+  
+  m_iColumnNo   = 0;
+  m_sColumnName = aName;
+  m_eColumnType = CT_NONE;
+  m_eDatumType  = DM_NONE;
+  m_bIsNullable = false;
+  
+  vSet(aDefinition);
+  
+  _checkInitialised_(CN_COLUMN);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 Column::~Column(void)
@@ -174,6 +195,15 @@ void Column::vIsNullable(bool bIsNullable)
 }
 
 /*----------------------------------------------------------------------------*/
+/* parse definition and set                                                   */
+/*----------------------------------------------------------------------------*/
+void Column::vSet(Str* aDefinition)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+  
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -182,7 +212,7 @@ void Column::vIsNullable(bool bIsNullable)
 /*----------------------------------------------------------------------------*/
 Footer* Column::pFooter(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DATA);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN);
   
   return &m_xFooter;
 }
