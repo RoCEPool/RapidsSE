@@ -7,14 +7,36 @@ namespace DBobjects
 {  
   enum eCT // Column Type
   {
-    /* 0 */ CT_NONE=0,
-    /* 1 */ CT_XYZ
+    /*  0 */ CT_NONE=0,
+    /*  1 */ CT_BOOLEAN,
+    /*  2 */ CT_CHAR,
+    /*  3 */ CT_DATE,
+    /*  4 */ CT_DECIMAL,
+    /*  5 */ CT_FLOAT,
+    /*  6 */ CT_INTEGER,
+    /*  7 */ CT_INTERVAL,
+    /*  8 */ CT_TIME,
+    /*  9 */ CT_TIMESTAMP,
+    /* 10 */ CT_VARBINARY,
+    /* 11 */ CT_VARCHAR,
+    /* 12 */ CT_ENUMS
   };
 
   static Str* aCT[]
   {
-    /* 0 */ "NONE"_Str,
-    /* 1 */ "XYZ"_Str
+    /*  0 */ "NONE"_Str,
+    /*  1 */ "BOOLEAN"_Str,
+    /*  2 */ "CHAR"_Str,
+    /*  3 */ "DATE"_Str,
+    /*  4 */ "DECIMAL"_Str,
+    /*  5 */ "FLOAT"_Str,
+    /*  6 */ "INTEGER"_Str,
+    /*  7 */ "INTERVAL"_Str,
+    /*  8 */ "TIME"_Str,
+    /*  9 */ "TIMESTAMP"_Str,
+    /* 10 */ "VARBINARY"_Str,
+    /* 11 */ "VARCHAR"_Str,
+    /* 12 */ "ENUMS"_Str
   };
 
   class Column : public Object

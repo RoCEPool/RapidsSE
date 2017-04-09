@@ -245,6 +245,62 @@ void Column::vSet(Str* aDefinition)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
   
+  bool b;
+  char aBuffer[128];
+  
+  char* aCursor = (char*)aDefinition;
+  b = StrLib::bExtractWord(&aCursor,aBuffer);
+  
+  vTrace("Type: %s\n"_Str,aBuffer);
+  
+  if (StrLib::bSame(aBuffer,"boolean")) {
+    m_eColumnType = CT_BOOLEAN;
+    m_eDatumType = DM_BOL;
+  }
+  else if (StrLib::bSame(aBuffer,"char")) {
+    m_eColumnType = CT_CHAR;
+    m_eDatumType = DM_CHR;
+  }
+  else if (StrLib::bSame(aBuffer,"date")) {
+    m_eColumnType = CT_DATE;
+    m_eDatumType = DM_DTE;
+  }
+  else if (StrLib::bSame(aBuffer,"decimal")) {
+    m_eColumnType = CT_DECIMAL;
+    m_eDatumType = DM_BCD;
+  }
+  else if (StrLib::bSame(aBuffer,"float")) {
+    m_eColumnType = CT_FLOAT;
+    m_eDatumType = DM_FLT;
+  }
+  else if (StrLib::bSame(aBuffer,"integer")) {
+    m_eColumnType = CT_INTEGER;
+    m_eDatumType = DM_INT;
+  }
+  else if (StrLib::bSame(aBuffer,"interval")) {
+    m_eColumnType = CT_INTERVAL;
+    m_eDatumType = DM_IVL;
+  }
+  else if (StrLib::bSame(aBuffer,"time")) {
+    m_eColumnType = CT_TIME;
+    m_eDatumType = DM_TME;
+  }
+  else if (StrLib::bSame(aBuffer,"timestamp")) {
+    m_eColumnType = CT_TIMESTAMP;
+    m_eDatumType = DM_TSP;
+  }
+  else if (StrLib::bSame(aBuffer,"varbinary")) {
+    m_eColumnType = CT_VARBINARY;
+    m_eDatumType = DM_VBN;
+  }
+  else if (StrLib::bSame(aBuffer,"varchar")) {
+    m_eColumnType = CT_VARCHAR;
+    m_eDatumType = DM_VCH;
+  }
+  else {
+    m_eColumnType = CT_INTEGER;
+    m_eDatumType = DM_INT;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
