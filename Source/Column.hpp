@@ -86,6 +86,8 @@ namespace DBobjects
     void vSet(Str* aDefinition);
     void vShow(void);
   
+    bool bValidateField(Str** aaSubRow);
+  
     Footer* pFooter(void);
   };
   

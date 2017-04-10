@@ -58,7 +58,8 @@ namespace DBobjects
     Dic* pSubDic(void);
     Str* aTableName(void);
     void vTruncate(void);
-        
+    bool bValidateRow(Str* pRow);
+  
     Footer* pFooter(void);
   };
   

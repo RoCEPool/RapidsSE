@@ -394,6 +394,33 @@ void Table::vTruncate(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* validate a row of table                                                    */
+/*----------------------------------------------------------------------------*/
+bool Table::bValidateRow(Str* aRow)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  
+  i8 iColumn = 0;
+  
+  char* aCursor = (char*)aRow;
+  if ('|' == *aCursor)
+    aCursor++;
+  
+  while (iColumn < m_pColumnVec->nItems() && *aCursor) {
+    Column* pColumn = m_pColumnVec->pGet(iColumn);
+    bool b = pColumn->bValidateField((Str**)&aCursor);
+    
+    if (!b)
+      return false;
+    
+    if ('|' == *aCursor)
+      aCursor++;
+  }
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
