@@ -11,7 +11,7 @@ bool DtmLib::bExtractTsp(char** aaSrc, Tsp* aTime)
 {
   // refer: http://en.wikipedia.org/wiki/ISO_8601
 
-  i8 iField;
+  u8 uField;
   
   aTime->vInitZero();
   
@@ -22,26 +22,26 @@ bool DtmLib::bExtractTsp(char** aaSrc, Tsp* aTime)
   // date portion
   
   // extract year
-  if ( ! StrLib::bExtractI8(aaSrc,&iField) )
+  if ( ! StrLib::bExtractU8(aaSrc,&uField) )
     return false;
-  aTime->m_uYear = (u8)iField;
+  aTime->m_uYear = uField;
   
   // skip - separator
   if ('-' != *(*aaSrc)++)
     return false;
   
   // extract month
-  if ( ! StrLib::bExtractI8(aaSrc,&iField) )
+  if ( ! StrLib::bExtractU8(aaSrc,&uField) )
     return false;
-  aTime->m_uMonth = (u8)iField;
+  aTime->m_uMonth = uField;
   
   // skip - separator
   if ('-' != *(*aaSrc)++) return false;
   
   // extract day
-  if ( ! StrLib::bExtractI8(aaSrc,&iField) )
+  if ( ! StrLib::bExtractU8(aaSrc,&uField) )
     return false;
-  aTime->m_uDay = (u8)iField;
+  aTime->m_uDay = uField;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - -
   // time portion
@@ -52,33 +52,33 @@ bool DtmLib::bExtractTsp(char** aaSrc, Tsp* aTime)
   (*aaSrc)++;
   
   // extract hour
-  if ( ! StrLib::bExtractI8(aaSrc,&iField) )
+  if ( ! StrLib::bExtractU8(aaSrc,&uField) )
     return true;
-  aTime->m_uHour = (u8)iField;
+  aTime->m_uHour = uField;
   
   // skip : separator
   if (':' != *(*aaSrc)++)
     return true;
   
   // extract minute
-  if ( ! StrLib::bExtractI8(aaSrc,&iField) )
+  if ( ! StrLib::bExtractU8(aaSrc,&uField) )
     return true;
-  aTime->m_uMinute = (u8)iField;
+  aTime->m_uMinute = uField;
   
   // skip : separator
   if (':' != *(*aaSrc)++)
     return true;
   
   // extract second
-  if ( ! StrLib::bExtractI8(aaSrc,&iField) )
+  if ( ! StrLib::bExtractU8(aaSrc,&uField) )
     return true;
-  aTime->m_uSecond = (u8)iField;
+  aTime->m_uSecond = uField;
   
   // extract fraction (assuming milliseconds)
   if ('.' == **aaSrc) {
     (*aaSrc)++;
-    if ( StrLib::bExtractI8(aaSrc,&iField) )
-      aTime->m_uMilli  = (u8)iField;
+    if ( StrLib::bExtractU8(aaSrc,&uField) )
+      aTime->m_uMilli = uField;
    }
   
   // skip Z separator
