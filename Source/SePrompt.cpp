@@ -501,7 +501,7 @@ bool SePrompt::bProcessCommand(bool bPostProcess)
     return true;
   
   // - post process requests
-  if (m_aToken[0]->bEqual("sel"_Str)) {
+  if (m_aToken[0]->bEqual("sel"_Str) || m_aToken[0]->bEqual("rgesel"_Str)) {
     vIterateRows();
     return bReturnTable();
   }
@@ -801,6 +801,7 @@ void SePrompt::vHelp(void)
   vTrace("rmsch  -- drop schema\n"_Str);
   vTrace("rmtbl  -- drop table\n"_Str);
   vTrace("rmten  -- drop tenant\n"_Str);
+  vTrace("rgesel -- select * from table where <range>\n"_Str);
   vTrace("sel    -- select * from table\n"_Str);
   vTrace("space  -- pool space\n"_Str);
   vTrace("status -- grid status\n"_Str);
