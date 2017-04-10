@@ -501,7 +501,7 @@ bool StrLib::bExtractArg(char** ps, char* pArg)
 /*----------------------------------------------------------------------------*/
 /* bExtractI8: extract an integer from substr                                 */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bExtractI8(char** ps, i8* pInw)
+bool StrLib::bExtractI8(char** ps, i8* aI8)
 {
   char *s = *ps;
   
@@ -524,7 +524,7 @@ bool StrLib::bExtractI8(char** ps, i8* pInw)
     v = (v * 10) + c - '0';
   }
   
-  *pInw = v;
+  *aI8 = v;
   
   *ps = s;
   
@@ -606,67 +606,6 @@ bool StrLib::bExtractPort(char** ps, u2* pPort)
 }
 
 /*----------------------------------------------------------------------------*/
-/* bExtractUTC: extract a utc time from substr       yyyy-mm-ddThh:mi:ss.fffZ */
-/*----------------------------------------------------------------------------*/
-//bool StrLib::bExtractUTC(char** ps, Time* pTime)
-//{
-//  // refer: http://en.wikipedia.org/wiki/ISO_8601
-//  
-//  if ( ! *ps )
-//    return false;
-//  
-//  pTime->m_iYear   = 0; pTime->m_iMonth  = 0; pTime->m_iDay    = 0;
-//  pTime->m_iHour   = 0; pTime->m_iMinute = 0; pTime->m_iSecond = 0;
-//  pTime->m_iMicro  = 0;
-//  
-//  i8 v;
-//  
-//  if ( ! bExtractInw(ps,&v) ) return false;
-//  pTime->m_iYear = (unsigned int)v - 1900;
-//
-//  if ('-' != *(*ps)++) return false;
-//  
-//  if ( ! bExtractInw(ps,&v) ) return false;
-//  pTime->m_iMonth = (unsigned int)v;
-//  
-//  if ('-' != *(*ps)++) return false;
-//  
-//  if ( ! bExtractInw(ps,&v) ) return false;
-//  pTime->m_iDay = (unsigned int)v;
-//  
-//  // - - -
-//  
-//  if ('T' != **ps && ' ' != **ps) return true;
-//  
-//  (*ps)++;
-//  
-//  if ( ! bExtractInw(ps,&v) ) return true;
-//  pTime->m_iHour = (unsigned int)v;
-//
-//  if (':' != *(*ps)++) return true;
-//  
-//  if ( ! bExtractInw(ps,&v) ) return true;
-//  pTime->m_iMinute = (unsigned int)v;
-//
-//  if (':' != *(*ps)++) return true;
-//  
-//  if ( ! bExtractInw(ps,&v) ) return true;
-//  pTime->m_iSecond = (unsigned int)v;
-//
-//  if ('.' == **ps)
-//  {
-//    (*ps)++;
-//    if ( bExtractInw(ps,&v) )
-//      pTime->m_iMicro  = (unsigned int)(v*1000);
-//  }
-//  
-//  if ('Z' == **ps)
-//    (*ps)++;
-//  
-//  return true;
-//}
-
-/*----------------------------------------------------------------------------*/
 /* bExtractString: extract a quoted string from substr                        */
 /*----------------------------------------------------------------------------*/
 bool StrLib::bExtractString(char** ps, char* pString)
@@ -692,6 +631,39 @@ bool StrLib::bExtractString(char** ps, char* pString)
   *a = '\0';
   
   return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* bExtractU8: extract an unsigned integer from substr                        */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bExtractU8(char** ps, u8* aU8)
+{
+  char *s = *ps;
+  
+  if ( ! *s )
+    return false;
+  
+  bool bOnce = false;
+  if (*s && isdigit(*s))
+    bOnce = true;
+  
+  u8 v = 0;
+  for ( ; *s; s++)
+    {
+    char c = *s;
+    
+    //    if ( ! isdigit(c) )
+    if ( c < '0' || c > '9' )
+      break;
+    
+    v = (v * 10) + c - '0';
+    }
+  
+  *aU8 = v;
+  
+  *ps = s;
+  
+  return bOnce;
 }
 
 /*----------------------------------------------------------------------------*/

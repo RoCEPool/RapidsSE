@@ -52,6 +52,7 @@ namespace Base
     static bool  bExtractPath(char** ps, char* pPath);
     static bool  bExtractPort(char** ps, u2* pPort);
     static bool  bExtractString(char** ps, char* pString);
+    static bool  bExtractU8(char** ps, u8* u);
     static bool  bExtractWord(char** ps, char* pWord);
     static bool  bExtractWordString(char** ps, char* pWord);
     
