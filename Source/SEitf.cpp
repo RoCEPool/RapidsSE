@@ -376,6 +376,7 @@ bool SEitf::bDecode(Str* aWords[], i8 iWords)
   if (aWords[0]->bSame("pwf"_Str)) return bGetDicPath(aWords);
   if (aWords[0]->bSame("rettbl"_Str)) return bRetTable(aWords, iWords);
   if (aWords[0]->bSame("rf"_Str)) return bRemoveFolder(aWords, iWords);
+  if (aWords[0]->bSame("rgesel"_Str)) return bRangeSelectTable(aWords, iWords);
   if (aWords[0]->bSame("rmcat"_Str)) return bDropCatalog(aWords, iWords);
   if (aWords[0]->bSame("rmdic"_Str)) return bRemoveFolder(aWords, iWords);
   if (aWords[0]->bSame("rmidx"_Str)) return bDropIndex(aWords, iWords);
@@ -1179,6 +1180,29 @@ bool SEitf::bSelectTable(Str* aWords[], i8 iWords)
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" select_table"_Str);
+  
+  return bAppendRequest(sRequest);
+}
+
+/*----------------------------------------------------------------------------*/
+/* range select rows from a table                                             */
+/*----------------------------------------------------------------------------*/
+bool SEitf::bRangeSelectTable(Str* aWords[], i8 iWords)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  s256 sRequest;
+  
+  if (iWords != 2) {
+    vSetLastError(EC_INVALID_PARAMETERS);
+    return false;
+  }
+  
+  sRequest.vCopy("\""_Str);
+  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat("\""_Str);
+  
+  sRequest.vConcat(" range_select_table"_Str);
   
   return bAppendRequest(sRequest);
 }
