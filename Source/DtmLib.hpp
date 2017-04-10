@@ -13,6 +13,8 @@ namespace Datums
   
   static bool bExtractTsp(char** aaSrc, Tsp* aTsp);
   
+  static bool bValidTsp(char** aaSrc);
+  
   };
 }
 

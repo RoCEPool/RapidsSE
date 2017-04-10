@@ -4,9 +4,9 @@
 
 #include "Datums.h"
 
-/*---------------------------------------------------------------------------*/
-/* extract a timestamp from substr                  yyyy-mo-ddThh:mi:ss.fffZ */
-/*---------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/* extract a timestamp from substr                   yyyy-mo-ddThh:mi:ss.fffZ */
+/*----------------------------------------------------------------------------*/
 bool DtmLib::bExtractTsp(char** aaSrc, Tsp* aTime)
 {
   // refer: http://en.wikipedia.org/wiki/ISO_8601
@@ -86,6 +86,18 @@ bool DtmLib::bExtractTsp(char** aaSrc, Tsp* aTime)
     (*aaSrc)++;
   
   return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* valid timestamp in substr?                                                 */
+/*----------------------------------------------------------------------------*/
+bool DtmLib::bValidTsp(char** aaSrc)
+{
+  Tsp xTsp;
+  
+  bool bValid = bExtractTsp(aaSrc,&xTsp);
+  
+  return bValid;
 }
 
 /*============================================================================*/
