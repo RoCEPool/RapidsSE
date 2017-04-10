@@ -141,8 +141,9 @@ void Entry::vShow(void)
     ValLib::nCopyDatum(CN_INTVAL,&iKey,aKey);
   }
   
-  vTrace("Entry %p: Offsets: %llu "_Str,
+  vTrace("Entry %p: Size: %llu Offsets: %llu "_Str,
          this,
+         nSize(),
          m_nOffsets
          );
   
@@ -234,7 +235,7 @@ void Entry::vRightOffset(u8 iOffset, u8 uRight)
   EntryData* aEntryData = this->aEntryData();
   
   RightVec* aRightVec = aEntryData->aRightVec(m_nOffsets);
-
+  
   aRightVec->vOffset(iOffset,uRight);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);

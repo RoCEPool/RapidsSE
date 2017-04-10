@@ -117,6 +117,8 @@ bool IndexBuffer::bInsert(Key* aKey, RowId xRowId)
   // initialize the EntWsp
   xEntWsp.vRowId(xRowId);
   xEntWsp.vAddKey(aKey);
+  
+  vTrace("Inserting entry:\n"_Str);
   xEntWsp.vShow();
   
   // get the size of the EntWsp
@@ -126,38 +128,42 @@ bool IndexBuffer::bInsert(Key* aKey, RowId xRowId)
   Entry* pAfterEntry = aPosition(aKey, bEqualTo, pReviseVec);
   Entry* pNewEntry = aNewEntry(nBytes, xEntWsp.nOffsets(), pAfterEntry);
   
+  // set the new entry from the EntWsp
+  pNewEntry->vSetEntry(xEntWsp);
+  
   vTrace("\n\n---------INDEX BUFFER AFTER MOVING --------------\n"_Str);
   vShow();
   vTrace("-----------------------\n\n"_Str);
   
-  // set the new entry from the EntWsp
-  pNewEntry->vSetEntry(xEntWsp);
+  // fix the revise vector after the move
+  vFixRevise(pReviseVec, pNewEntry);
   
-  // get no of offsets of the entry
+  // get no of offsets of the new entry
   i8 nEntryOffsets = pNewEntry->nOffsets();
-  i8 iNewOffset = iToOffset(pNewEntry);
-  
-  i8 iOffset = nEntryOffsets;
 
-  // Note: ReviseVector works on levels
-  // and entry works on offsets
+  // get the offset of the new entry
+  i8 iNewEntryOffset = iToOffset(pNewEntry);
   
-  // revise the offsets from the reviseVector
-  while (--iOffset >= 0) {
+  i8 iOffsets = nEntryOffsets;
+  
+  // Revise the offsets of the enteries using the ReviseVector
+  while (--iOffsets >= 0) {
     
     // calculate level into reviseVector for this offset
-    i8 iLevel = iOffset + 1;
+    i8 iLevel = iOffsets + 1;
     
-    i8 iRightOffset = pReviseVec[iLevel]->uRightOffset(iOffset);
+    // get the right offet from the revise vector
+    i8 iRightOffset = pReviseVec[iLevel]->uRightOffset(iOffsets);
     
-    // set the offset at iOffset in newEntry
-    pNewEntry->vRightOffset(iOffset, iRightOffset);
+    // set the right offet in the new entry
+    pNewEntry->vRightOffset(iOffsets, iRightOffset);
     
-    // set the newEntry offset in reviseVector at level
-    pReviseVec[iLevel]->vRightOffset(iOffset, iNewOffset);
+    // get the end offset of the revise vector entry at level
+    i8 iRevEndOffset = iToEndOffset( pReviseVec[iLevel]);
+    
+    // set the right offset for the entry in the revise vector entry
+    pReviseVec[iLevel]->vRightOffset(iOffsets,  iNewEntryOffset - iRevEndOffset);
   }
-
-  pNewEntry->vShow();
   
   // increment the no of entries
   m_nEntries++;
@@ -178,6 +184,78 @@ bool IndexBuffer::bRemove(Key* aKey)
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* dump the revise vector                                                     */
+/*----------------------------------------------------------------------------*/
+void IndexBuffer::vDumpRevise(Entry** ppReviseVec)
+{
+  for (i8 iIndex = 0; iIndex < C_FLAT_OFFSETS; iIndex++) {
+    i8 iLevel = iIndex + 1;
+    i8 iReviseOffset = ppReviseVec[iLevel]->uRightOffset(iIndex);
+    vTrace("%p pReviseVec[%lld]->uRightOffset(%lld) = %lld\n"_Str,
+           ppReviseVec[iLevel], iLevel, iIndex, iReviseOffset);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* fix the revise vector                                                      */
+/*----------------------------------------------------------------------------*/
+void IndexBuffer::vFixRevise(Entry** ppReviseVec, Entry* pNewEntry)
+{
+  
+  vTrace("REVISE VECTOR BEFORE\n"_Str);
+  vDumpRevise(ppReviseVec);
+  vTrace("\n"_Str);
+
+  // get no of offsets of the new entry
+  i8 nEntryOffsets = pNewEntry->nOffsets();
+  
+  // get entry size
+  i8 nNewEntrySize = pNewEntry->nSize();
+  
+  // get the offset of the new entry
+  i8 iNewEntryOffset = iToOffset(pNewEntry);
+
+  for (i8 iOffset = 0; iOffset < C_FLAT_OFFSETS; iOffset++) {
+    
+    // get the level
+    i8 iLevel = iOffset + 1;
+    
+    // get the reviseVector's rightOffset at this level
+    i8 iReviseRightOffset = ppReviseVec[iLevel]->uRightOffset(iOffset);
+    
+    // if C_NIL_OFFSET, nothing to revise
+    if (iReviseRightOffset == C_NIL_OFFSET )
+      continue;
+    
+    i8 iReviseEntryOffset = iToOffset(ppReviseVec[iLevel]);
+    i8 iReviseEntrySize = ppReviseVec[iLevel]->nSize();
+
+    // is newEntry added between the the reviseEntry and reviseOffset ?
+    if (iNewEntryOffset <= iReviseEntryOffset + iReviseEntrySize + iReviseRightOffset) {
+      
+      // no of offsets of reviseVector entry is >= no of new entry offsets
+      if (iOffset >= nEntryOffsets) {
+        // adjust the reviseVector offset with the newEntrySize
+        ppReviseVec[iLevel]->vRightOffset(iOffset,iReviseRightOffset + nNewEntrySize);
+      }
+      else {
+        // no of offsets of reviseVector entry is >= no of new entry offsets
+        i8 nSize = iNewEntryOffset - (iReviseEntrySize + iReviseEntryOffset);
+        
+        // adjust the reviseVector to point to the newEntry
+        ppReviseVec[iLevel]->vRightOffset(iOffset,iReviseRightOffset - nSize);
+      }
+    }
+
+  }
+  
+  vTrace("REVISE VECTOR AFTER\n"_Str);
+  vDumpRevise(ppReviseVec);
+  vTrace("\n"_Str);
+  
+}
 
 /*----------------------------------------------------------------------------*/
 /* get head entry of skip list in this index buffer                           */
@@ -399,8 +477,6 @@ Entry* IndexBuffer::aPosition(Key* aKey, bool& bEqualTo, Entry** aReviseVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
-  aKey->vShow();
-  
   // start from head at known highest level
   Entry* pCurrentEntry = aHead();
   i8 iCurrentLevel = C_FLAT_LEVELS - 1;
@@ -414,9 +490,6 @@ Entry* IndexBuffer::aPosition(Key* aKey, bool& bEqualTo, Entry** aReviseVec)
       
         // compare the inserting object with next object
         bool bGreaterEqual = bI8Compare(aKey, pNextEntry->aKey(), bEqualTo);
-  
-      vTrace("nextKey:  "_Str);
-      pNextEntry->vShow();
       
         if (bGreaterEqual) {
             // pObjectInsert is >= pObjectNext
@@ -487,11 +560,12 @@ Entry* IndexBuffer::aRightEntry(Entry* aEntry, i8 iLevel)
     ASSERT(iOffset >= 0 && iOffset < aEntry->nOffsets());
     
     // for levels 1 & 2 the right entry is m_xWsp + rightOffset[iRight]
+    i8 iBytes = aEntry->nSize();
     i8 iRightOffset = aEntry->uRightOffset(iOffset);
     if (C_NIL_OFFSET == iRightOffset)
       aRightEntry = nullptr;
     else
-      aRightEntry = pAdd<Entry*>(&m_xWsp,iRightOffset);
+      aRightEntry = pAdd<Entry*>(aEntry,iRightOffset+iBytes);
   }
  
   ASSERT( ! aRightEntry ||
@@ -552,6 +626,20 @@ i8 IndexBuffer::iToOffset(Entry* aEntry)
 }
 
 /*----------------------------------------------------------------------------*/
+/* converts aEntry to iOffset at end of entry                                 */
+/*----------------------------------------------------------------------------*/
+i8 IndexBuffer::iToEndOffset(Entry* aEntry)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
+  
+  i8 iOffset = nSub(aEntry,m_xWsp.aArea());
+  
+  ASSERT(iOffset >= 0 && iOffset < m_xWsp.nSize());
+  
+  return iOffset + aEntry->nSize();
+}
+
+/*----------------------------------------------------------------------------*/
 /* verify                                                                     */
 /*----------------------------------------------------------------------------*/
 void IndexBuffer::vVerify(void)
@@ -601,6 +689,7 @@ bool DBobjects::bI8Compare(void* pKeyInsert, void* pKeyScan, bool& bMatch)
   else
     return false;
 }
+
 
 /*============================================================================*/
 /* end                                                                        */

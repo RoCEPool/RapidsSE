@@ -316,8 +316,6 @@ void Task::vIndexEntryTest(NNP_Task nnpTask)
   KeyWsp xKeyWsp;
   ValWsp xValWsp;
   
-  
-  //i8 iKey0 = sRow.iToI8();
   i8 iKey0 = Random::iRandom(0,1000);
   
   xValWsp = iKey0;
@@ -332,9 +330,10 @@ void Task::vIndexEntryTest(NNP_Task nnpTask)
   // verify index buffer
   //pIndexBuffer->vVerify();
   
+  /*
   IndexBuffer* pFirstBuffer = pIndexBuffer;
 
-   /*
+
   bool bResult = false;
   
   while (!bResult) {

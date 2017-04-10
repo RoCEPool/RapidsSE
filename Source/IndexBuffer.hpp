@@ -12,7 +12,7 @@ namespace DBobjects
     i8           m_nEntries;    // number of entries in this buffer
     IndexBuffer* m_pPrevBuffer; // prev buffer
     IndexBuffer* m_pNextBuffer; // next buffer
-  
+    
     
     // need to add skip list head
     // head would be array of [FLAT_LEVELS - 1]
@@ -45,6 +45,8 @@ namespace DBobjects
     void    vVerify(void);
     
   private:
+    void    vDumpRevise(Entry** ppReviseVec);
+    void    vFixRevise(Entry** ppReviseVec, Entry* pNewEntry);
     i8      iLevel(void);
     void    vMoveLeft(void* aDst, i8 nBytes);
     void    vMoveRight(void* aSrc, i8 nBytes);
@@ -53,6 +55,7 @@ namespace DBobjects
     Entry*  aPosition(Key* aKey, bool& bEqualTo, Entry** aReviseVec);
     Entry*  aRightEntry(Entry* aEntry, i8 iLevel);
     Entry*  aToEntry(i8 iOffset);
+    i8      iToEndOffset(Entry* aEntry);
     i8      iToOffset(Entry* aEntry);
     
   };

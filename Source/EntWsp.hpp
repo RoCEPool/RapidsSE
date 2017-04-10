@@ -9,7 +9,7 @@ namespace DBobjects
   {
   private:
     RowId  m_xRowId;    // row id
-    i8     m_nOffsets;  // number of offsets (0 or 1)
+    i8     m_nOffsets;  // number of offsets (0, 1 or 2)
     union {
       RightVec m_xRight; // right vector
       u8       m_uOffset[C_FLAT_OFFSETS];    // right offsets
