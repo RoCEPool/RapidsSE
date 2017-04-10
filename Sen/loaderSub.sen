@@ -156,23 +156,29 @@ tp: theIndirectResult
     // process record
     while
 
-      // hash the record to get partition
-      loaderSub.hashRecord
+      loaderSub.validateRow if
 
-      // attempt to insert record as row into working buffer for partition
-      loaderSub.insertRow?
+        // hash the record to get partition
+        loaderSub.hashRecord
 
-      // was buffer full?
-      not if
+        // attempt to insert record as row into working buffer for partition
+        loaderSub.insertRow?
 
-tp: bufferFull
+        // was buffer full?
+        not if
 
-        // append row buffer to table/partition/strand
-        ~loadAppendBuffer
+  tp: bufferFull
 
-        // insert row into new working buffer
-        loaderSub.insertRow? assert
-      then
+          // append row buffer to table/partition/strand
+          ~loadAppendBuffer
+
+          // insert row into new working buffer
+          loaderSub.insertRow? assert
+
+        then // if buffer full
+
+      then // if row valid
+
   repeat // for all records in chunked file
 
   locals| totalPartitions |
