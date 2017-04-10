@@ -7,6 +7,7 @@ namespace Datums
 {
   class Int
   {
+  friend class DtmLib;
   private:
     
   public:
@@ -14,6 +15,8 @@ namespace Datums
   
     Int(void);
     ~Int(void);
+  
+    void vInitZero(void);
   
     static bool bExtract(Str* aDst, Str* aSrc, i8& nBytesTaken);
     static void vSprint(Str* aDst, Str* aSrc, i8& nBytesTaken);

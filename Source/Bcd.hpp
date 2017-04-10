@@ -7,6 +7,7 @@ namespace Datums
 {
   class Bcd
   {
+  friend class DtmLib;
   private:
     
   public:
@@ -14,6 +15,8 @@ namespace Datums
   
     Bcd(void);
     ~Bcd(void);
+  
+    void vInitZero(void);
   };
 }
 

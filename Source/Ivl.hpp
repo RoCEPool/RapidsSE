@@ -7,6 +7,7 @@ namespace Datums
 {
   class Ivl
   {
+  friend class DtmLib;
   private:
  
   struct {
@@ -23,6 +24,8 @@ namespace Datums
   
     Ivl(void);
     ~Ivl(void);
+  
+    void vInitZero(void);
   };
 }
 

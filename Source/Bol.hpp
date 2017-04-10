@@ -7,6 +7,7 @@ namespace Datums
 {
   class Bol
   {
+  friend class DtmLib;
   private:
     
   public:
@@ -14,6 +15,8 @@ namespace Datums
   
     Bol(void);
     ~Bol(void);
+  
+    void vInitZero(void);
   };
 }
 

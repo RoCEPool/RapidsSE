@@ -7,6 +7,7 @@ namespace Datums
 {
   class Flt
   {
+  friend class DtmLib;
   private:
     
   public:
@@ -14,6 +15,8 @@ namespace Datums
   
     Flt(void);
     ~Flt(void);
+  
+    void vInitZero(void);
   };
 }
 

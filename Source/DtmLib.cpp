@@ -5,6 +5,22 @@
 #include "Datums.h"
 
 /*----------------------------------------------------------------------------*/
+/* extract a decimal from substr                                              */
+/*----------------------------------------------------------------------------*/
+bool DtmLib::bExtractBcd(char** aaSrc, Bcd* aDecimal)
+{
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* extract a boolean from substr                                              */
+/*----------------------------------------------------------------------------*/
+bool DtmLib::bExtractBol(char** aaSrc, Bol* aBoolean)
+{
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* extract a date from substr                                     yyyy-mo-ddZ */
 /*----------------------------------------------------------------------------*/
 bool DtmLib::bExtractDte(char** aaSrc, Dte* aDate)
@@ -46,6 +62,30 @@ bool DtmLib::bExtractDte(char** aaSrc, Dte* aDate)
     (*aaSrc)++;
   
   return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* extract a float from substr                                                */
+/*----------------------------------------------------------------------------*/
+bool DtmLib::bExtractFlt(char** aaSrc, Flt* aFloat)
+{
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* extract an integer from substr                                             */
+/*----------------------------------------------------------------------------*/
+bool DtmLib::bExtractInt(char** aaSrc, Int* aInteger)
+{
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* extract an interval from substr                                            */
+/*----------------------------------------------------------------------------*/
+bool DtmLib::bExtractIvl(char** aaSrc, Ivl* aInterval)
+{
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -182,6 +222,30 @@ bool DtmLib::bExtractTsp(char** aaSrc, Tsp* aTimestamp)
 }
 
 /*----------------------------------------------------------------------------*/
+/* valid decimal in substr?                                                   */
+/*----------------------------------------------------------------------------*/
+bool DtmLib::bValidBcd(char** aaSrc)
+{
+  Bcd xBcd;
+  
+  bool bValid = bExtractBcd(aaSrc,&xBcd);
+  
+  return bValid;
+}
+
+/*----------------------------------------------------------------------------*/
+/* valid boolean in substr?                                                   */
+/*----------------------------------------------------------------------------*/
+bool DtmLib::bValidBol(char** aaSrc)
+{
+  Bol xBol;
+  
+  bool bValid = bExtractBol(aaSrc,&xBol);
+  
+  return bValid;
+}
+
+/*----------------------------------------------------------------------------*/
 /* valid date in substr?                                                      */
 /*----------------------------------------------------------------------------*/
 bool DtmLib::bValidDte(char** aaSrc)
@@ -189,6 +253,42 @@ bool DtmLib::bValidDte(char** aaSrc)
   Dte xDte;
   
   bool bValid = bExtractDte(aaSrc,&xDte);
+  
+  return bValid;
+}
+
+/*----------------------------------------------------------------------------*/
+/* valid float in substr?                                                     */
+/*----------------------------------------------------------------------------*/
+bool DtmLib::bValidFlt(char** aaSrc)
+{
+  Flt xFlt;
+  
+  bool bValid = bExtractFlt(aaSrc,&xFlt);
+  
+  return bValid;
+}
+
+/*----------------------------------------------------------------------------*/
+/* valid integer in substr?                                                   */
+/*----------------------------------------------------------------------------*/
+bool DtmLib::bValidInt(char** aaSrc)
+{
+  Int xInt;
+  
+  bool bValid = bExtractInt(aaSrc,&xInt);
+  
+  return bValid;
+}
+
+/*----------------------------------------------------------------------------*/
+/* valid interval in substr?                                                  */
+/*----------------------------------------------------------------------------*/
+bool DtmLib::bValidIvl(char** aaSrc)
+{
+  Ivl xIvl;
+  
+  bool bValid = bExtractIvl(aaSrc,&xIvl);
   
   return bValid;
 }
