@@ -10,7 +10,8 @@ namespace Datums
   private:
   
   public:
-    static void* pAddBytes(void* aAddress, i8 iBytes);
+  
+  static bool bExtractTsp(char** aaSrc, Tsp* aTsp);
   
   };
 }
