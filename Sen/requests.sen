@@ -61,6 +61,7 @@ add     add_column
 lscol   list_columns
 ld      load_table
 tblInUse  table_inuse
+tableSizes size_tables
 sel     select_table
 dump    dump_table
 cp      copy_table

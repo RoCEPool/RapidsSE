@@ -122,6 +122,7 @@ namespace Interface
     bool bNodeStatus(Str* aWords[], i8 iWords);
     bool bPoolSpace(Str* aWords[], i8 iWords);
     bool bSizeTable(Str* aWords[], i8 iWords);
+    bool bSizeTables(Str* aWords[], i8 iWords);
     bool bTruncateTable(Str* aWords[], i8 iWords);
     
     bool bInsertRow(Str* pRow);

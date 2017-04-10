@@ -387,6 +387,7 @@ bool SEitf::bDecode(Str* aWords[], i8 iWords)
   if (aWords[0]->bSame("space"_Str)) return bPoolSpace(aWords, iWords);
   if (aWords[0]->bSame("status"_Str)) return bNodeStatus(aWords, iWords);
   if (aWords[0]->bSame("sz"_Str)) return bSizeTable(aWords, iWords);
+  if (aWords[0]->bSame("tableSizes"_Str)) return bSizeTables(aWords, iWords);
   if (aWords[0]->bSame("tr"_Str)) return bTruncateTable(aWords, iWords);
   if (aWords[0]->bSame("usesch"_Str)) return bUseSchema(aWords, iWords);
   if (aWords[0]->bSame("__x"_Str)) return bX(aWords);
@@ -1329,6 +1330,25 @@ bool SEitf::bSizeTable(Str* aWords[], i8 iWords)
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" size_table"_Str);
+  
+  return bAppendRequest(sRequest);
+}
+
+/*----------------------------------------------------------------------------*/
+/* size of table                                                              */
+/*----------------------------------------------------------------------------*/
+bool SEitf::bSizeTables(Str* aWords[], i8 iWords)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  s256 sRequest;
+  
+  if (iWords != 1) {
+    vSetLastError(EC_INVALID_PARAMETERS);
+    return false;
+  }
+  
+  sRequest.vConcat(" size_tables"_Str);
   
   return bAppendRequest(sRequest);
 }

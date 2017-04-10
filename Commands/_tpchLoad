@@ -11,10 +11,9 @@ _partsuppLoad
 _regionLoad
 _supplierLoad
 
-cf ..
 pwf
 lf
-
+tableSizes
 docol bpa
 
 /*============================================================================*/

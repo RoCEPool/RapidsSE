@@ -430,7 +430,9 @@ ddlLock.grabWrite
 
   // push table dictionary
   dup pushTable assert
+pathDump
 
+stk
   // check it is a table
   checkIsTable  not if <NIP+ERROR> exit then
 
@@ -440,6 +442,49 @@ ddlLock.grabWrite
 
   // pop table dictionary
   popTable
+
+  <SUCCESS>
+;
+
+/*----------------------------------------------------------------------------*/
+/* get size of tables in the tables folder                                    */
+/*----------------------------------------------------------------------------*/
+: size_tables (  )
+
+  ddlLock.grabWrite
+
+  // should be in the tables folder
+  checkInTables       not if <NIP+ERROR> exit then
+
+  ""
+  0 pathPick dic.lastWord dup iterate
+
+    dup str.length if "\n" str.cat then
+
+    object@ word.name 12 str.pad str.cat
+
+    "(" str.cat
+
+    "table " str.cat
+
+    // push table dictionary
+    object@ word.name pushTable assert
+
+    // check it is a table
+    object@ word.name
+    checkIsTable  not if <NIP+ERROR> exit then
+
+    find execute
+    table.space bytes.magnitude str.cat
+
+    ")" str.cat
+
+    // pop table dictionary
+    popTable
+
+    object@ word.prev object!
+
+  next
 
   <SUCCESS>
 ;
