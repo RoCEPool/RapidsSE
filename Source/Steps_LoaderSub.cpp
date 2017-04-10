@@ -32,23 +32,24 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_LoaderSub(void)
 {
-  vAddPrimitive("loaderSub.appendBuffer"_Str,&vLoaderSubAppendBuffer,false);
-  vAddPrimitive("loaderSub.begin"_Str,       &vLoaderSubBegin,       false);
-  vAddPrimitive("loaderSub.delete"_Str,      &vLoaderSubDelete,      false);
-  vAddPrimitive("loaderSub.end"_Str,         &vLoaderSubEnd,         false);
-  vAddPrimitive("loaderSub.fetchRecord"_Str, &vLoaderSubFetchRecord, false);
+  vAddPrimitive("loaderSub.appendBuffer"_Str, &vLoaderSubAppendBuffer,  false);
+  vAddPrimitive("loaderSub.begin"_Str,        &vLoaderSubBegin,         false);
+  vAddPrimitive("loaderSub.delete"_Str,       &vLoaderSubDelete,        false);
+  vAddPrimitive("loaderSub.end"_Str,          &vLoaderSubEnd,           false);
+  vAddPrimitive("loaderSub.fetchRecord"_Str,  &vLoaderSubFetchRecord,   false);
   vAddPrimitive("loaderSub.hashPartition"_Str,&vLoaderSubHashPartition, false);
-  vAddPrimitive("loaderSub.hashRecord"_Str,  &vLoaderSubHashRecord,  false);
-  vAddPrimitive("loaderSub.init"_Str,        &vLoaderSubInit,        false);
-  vAddPrimitive("loaderSub.insertRow"_Str,   &vLoaderSubInsertRow,   false);
-  vAddPrimitive("loaderSub.insertRow?"_Str,  &vLoaderSubInsertRow2,  false);
-  vAddPrimitive("loaderSub.loader!"_Str,     &vLoaderSubLoaderStore, false);
-  vAddPrimitive("loaderSub.new"_Str,         &vLoaderSubNew,         false);
-  vAddPrimitive("loaderSub.partition"_Str,   &vLoaderSubPartition,   false);
-  vAddPrimitive("loaderSub.partition!"_Str,  &vLoaderSubPartitionStore, false);
-  vAddPrimitive("loaderSub.rowBuffer"_Str,   &vLoaderSubRowBuffer,   false);
-  vAddPrimitive("loaderSub.rowBuffer!"_Str,  &vLoaderSubRowBufferStore, false);
-  vAddPrimitive("loaderSub.table"_Str,       &vLoaderSubTable,       false);
+  vAddPrimitive("loaderSub.hashRecord"_Str,   &vLoaderSubHashRecord,    false);
+  vAddPrimitive("loaderSub.init"_Str,         &vLoaderSubInit,          false);
+  vAddPrimitive("loaderSub.insertRow"_Str,    &vLoaderSubInsertRow,     false);
+  vAddPrimitive("loaderSub.insertRow?"_Str,   &vLoaderSubInsertRow2,    false);
+  vAddPrimitive("loaderSub.loader!"_Str,      &vLoaderSubLoaderStore,   false);
+  vAddPrimitive("loaderSub.new"_Str,          &vLoaderSubNew,           false);
+  vAddPrimitive("loaderSub.partition"_Str,    &vLoaderSubPartition,     false);
+  vAddPrimitive("loaderSub.partition!"_Str,   &vLoaderSubPartitionStore,false);
+  vAddPrimitive("loaderSub.rowBuffer"_Str,    &vLoaderSubRowBuffer,     false);
+  vAddPrimitive("loaderSub.rowBuffer!"_Str,   &vLoaderSubRowBufferStore,false);
+  vAddPrimitive("loaderSub.table"_Str,        &vLoaderSubTable,         false);
+  vAddPrimitive("loaderSub.validateRow"_Str,  &vLoaderSubValidateRow,   false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -372,6 +373,26 @@ void Task::vLoaderSubTable(NNP_Task nnpTask)
   Table* pTable = pLoaderSub->pTable();
   
   nnpTask->m_pDataStack->vPush(pTable);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* loaderSub.validateRow -- get table being loaded                            */
+/*----------------------------------------------------------------------------*/
+void Task::vLoaderSubValidateRow(NNP_Task nnpTask)
+{
+  ENTRY("vLoaderSubValidateRow"_Str);
+  
+  Object* pObject = _pPtrVal(nnpTask->m_pRegFrame->pValReg(0))->pPtr();
+  
+  LoaderSub* pLoaderSub = _pLoaderSub(pObject);
+  ASSERT(CN_LOADERSUB == pLoaderSub->eClass());
+  
+  bool bValid = pLoaderSub->bValidateRow();
+  ASSERT(bValid);
+  
+  nnpTask->m_pDataStack->vPush(bValid);
   
   EXIT();
 }

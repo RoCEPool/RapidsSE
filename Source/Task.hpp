@@ -578,6 +578,7 @@ namespace Tasks
     static void vLoaderSubRowBuffer(NNP_Task nnpTask);
     static void vLoaderSubRowBufferStore(NNP_Task nnpTask);
     static void vLoaderSubTable(NNP_Task nnpTask);
+    static void vLoaderSubValidateRow(NNP_Task nnpTask);
  
     // locals
     static void vLocalFetch(NNP_Task nnpTask);

@@ -407,7 +407,9 @@ bool Table::bValidateRow(Str* aRow)
     aCursor++;
   
   while (iColumn < m_pColumnVec->nItems() && *aCursor) {
+    
     Column* pColumn = m_pColumnVec->pGet(iColumn);
+    
     bool b = pColumn->bValidateField((Str**)&aCursor);
     
     if (!b)
