@@ -7,17 +7,19 @@ namespace Datums
 {
   class Tme
   {
+  friend class DtmLib;
   private:
 
   struct {
     
-    u8 m_uMin   :  6 ; // 0..63
-    u8 m_uSec   :  6 ; // 0..63
-    u8 m_uMsec  : 10 ; // 0..1023
-    u8 m_uSpare : 42 ; //
-    //           ---
-    //            64
-    //           ===
+    u8 m_uHour   :  5 ; // 0..31
+    u8 m_uMinute :  6 ; // 0..63
+    u8 m_uSecond :  6 ; // 0..63
+    u8 m_uMilli  : 10 ; // 0..1023
+    u8 m_uSpare  : 37 ; //
+    //            ---
+    //             64
+    //            ===
   };
   
   public:
@@ -25,6 +27,8 @@ namespace Datums
   
     Tme(void);
     ~Tme(void);
+ 
+    void vInitZero(void);
   };
 }
 

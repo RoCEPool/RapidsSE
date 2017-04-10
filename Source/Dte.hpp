@@ -7,6 +7,7 @@ namespace Datums
 {
   class Dte
   {
+  friend class DtmLib;
   private:
   
   struct {
@@ -25,6 +26,8 @@ namespace Datums
   
     Dte(void);
     ~Dte(void);
+  
+    void vInitZero(void);
   };
 }
 
