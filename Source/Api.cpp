@@ -522,7 +522,7 @@ eEC RapidsSE_GetColumns(SEitf* pSEitf, Str* pCatalog, Str* pSchema,
     VALIDATE_PARAM("d"_Str, pTable);
     
     // change folder to table
-    CF_TABLE("e"_Str);
+    CF_TABLES("e"_Str);
   
     // list all the columns of pTable
     eResult = eExecuteRequest(pSEitf, "lscol"_Str, (Str*)pTable);
@@ -1026,7 +1026,7 @@ eEC RapidsSE_ScanTable(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable, 
     VALIDATE_PARAM("d"_Str, pTable);
     
     // change directory to table
-    CF_TABLE("e"_Str);
+    CF_TABLES("e"_Str);
     
     // select * from pTable
     eResult = eExecuteRequest(pSEitf, "sel"_Str, (Str*)pTable);

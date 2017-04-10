@@ -13,13 +13,24 @@ tp: dropTable
 
 ddlLock.grabWrite
 
-  dup
-  checkInTable      not if <NIP+ERROR> exit then
+  // should be in the tables folder
+  checkInTables       not if <NIP+ERROR> exit then
+
+  // there should be a table folder
+  dup checkIsTableFolder not if <NIP+ERROR> exit then
+
+  // push table dictionary
+  dup pushTable assert
+
+  // check it is a table
   checkIsTable       not if <NIP+ERROR> exit then
 
   tp ( "<tableNm>" )
 
   analyzeTable ( )
+
+  // pop table dictionary
+  popTable
 
   tp: analyzedTable
 
@@ -35,13 +46,24 @@ ddlLock.grabWrite
 
   ddlLock.grabWrite
 
-  dup
-  checkInTable       not if <NIP+ERROR> exit then
+  // should be in the tables folder
+  checkInTables       not if <NIP+ERROR> exit then
+
+  // there should be a table folder
+  dup checkIsTableFolder not if <NIP+ERROR> exit then
+
+  // push table dictionary
+  dup pushTable assert
+
+  // check it is a table
   checkIsTable       not if <NIP+ERROR> exit then
 
   tp ( "<tableNm>" )
 
   danalyzeTable ( )
+
+  // pop table dictionary
+  popTable
 
   tp: danalyzedTable
 
@@ -69,15 +91,28 @@ ddlLock.grabRead
 ddlLock.grabRead
 
   checkEnoughBuffers not if <NIP+ERROR> exit then
-  dup
-  checkInTable      not if <NIP+ERROR> exit then
+
+  // should be in the tables folder
+  checkInTables       not if <NIP+ERROR> exit then
+
+  // there should be a table folder
+  dup checkIsTableFolder not if <NIP+ERROR> exit then
+
+  // push table dictionary
+  dup pushTable assert
+
+  // check it is a table
   checkIsTable       not if <NIP+ERROR> exit then
+
 
   //bp.freespace .
 
   tableCopier
 
   //bp.freespace .
+
+  // pop table dictionary
+  popTable
 
   <OK>
 ;
@@ -104,11 +139,22 @@ ddlLock.grabWrite
 
 ddlLock.grabRead
 
-  dup
-  checkInTable  not if <NIP+ERROR> exit then
+  // should be in the tables folder
+  checkInTables       not if <NIP+ERROR> exit then
+
+  // there should be a table folder
+  dup checkIsTableFolder not if <NIP+ERROR> exit then
+
+  // push table dictionary
+  dup pushTable assert
+
+  // check it is a table
   checkIsTable  not if <NIP+ERROR> exit then
 
   distTableExporter not if <NIP+ERROR> exit then
+
+  // pop table dictionary
+  popTable
 
   <OK>
 ;
@@ -140,11 +186,22 @@ ddlLock.grabWrite
 
 ddlLock.grabRead
 
-  dup
-  checkInTable not if <NIP+ERROR> exit then
-  checkIsTable  not if <NIP+ERROR> exit then
+  // should be in the tables folder
+  checkInTables       not if <NIP+ERROR> exit then
+
+  // there should be a table folder
+  dup checkIsTableFolder not if <NIP+ERROR> exit then
+
+  // push table dictionary
+  dup pushTable assert
+
+  // check it is a table
+  checkIsTable       not if <NIP+ERROR> exit then
 
   dumpTable
+
+  // pop table dictionary
+  popTable
 
   <OK>
 ;
@@ -179,11 +236,22 @@ ddlLock.grabWrite
 
 ddlLock.grabRead
 
-  dup
-  checkInTable not if <NIP+ERROR> exit then
-  checkIsTable  not if <NIP+ERROR> exit then
+  // should be in the tables folder
+  checkInTables       not if <NIP+ERROR> exit then
 
-  tableExporter not if <NIP+ERROR> exit then
+  // there should be a table folder
+  dup checkIsTableFolder not if <NIP+ERROR> exit then
+
+  // push table dictionary
+  dup pushTable assert
+
+  // check it is a table
+  checkIsTable       not if <NIP+ERROR> exit then
+
+  tableExporter not if popTable <NIP+ERROR> exit then
+
+  // pop table dictionary
+  popTable
 
   <OK>
 ;
@@ -219,8 +287,16 @@ ddlLock.grabRead
 
 ddlLock.grabRead
 
-  dup
-  checkInTable  not if <NIP+ERROR> exit then
+  // should be in the tables folder
+  checkInTables       not if <NIP+ERROR> exit then
+
+  // there should be a table folder
+  dup checkIsTableFolder not if <NIP+ERROR> exit then
+
+  // push table dictionary
+  dup pushTable assert
+
+  // check it is a table
   checkIsTable  not if <NIP+ERROR> exit then
 
   //bp.freespace .
@@ -232,28 +308,13 @@ snap0:
 
   //bp.freespace .
 
+  // pop table dictionary
+  popTable
+
 snap1:
   printClassCounts
   <OK>
 ;
-
-/*
-: load_table ( "<fileNm>" "<tableNm>" -- <R> )
-
-  ddlLock.grabRead
-
-  checkInTables not if <NIP+ERROR> exit then
-  checkIsTable  not if <NIP+ERROR> exit then
-
-  //bp.freespace .
-
-  tableLoader   not if <NIP+ERROR> exit then
-
-  //bp.freespace .
-
-  <OK>
-;
-*/
 
 /*----------------------------------------------------------------------------*/
 /* load a table from a stream                                                 */
@@ -262,8 +323,16 @@ snap1:
 
   ddlLock.grabRead
 
-  dup
-  checkInTable  not if <NIP+ERROR> exit then
+  // should be in the tables folder
+  checkInTables       not if <NIP+ERROR> exit then
+
+  // there should be a table folder
+  dup checkIsTableFolder not if <NIP+ERROR> exit then
+
+  // push table dictionary
+  dup pushTable assert
+
+  // check it is a table
   checkIsTable  not if <NIP+ERROR> exit then
 
   //bp.freespace .
@@ -271,6 +340,9 @@ snap1:
   tableLoaderStream2 not if <NIP+ERROR> exit then
 
   //bp.freespace .
+
+  // pop table dictionary
+  popTable
 
   <OK>
 ;
@@ -292,9 +364,24 @@ snap1:
 
 ddlLock.grabRead
 
+  // should be in the tables folder
+  checkInTables       not if <NIP+ERROR> exit then
+
+  // there should be a table folder
+  dup checkIsTableFolder not if <NIP+ERROR> exit then
+
+  // push table dictionary
+  dup pushTable assert
+
+  // check it is a table
+  checkIsTable  not if <NIP+ERROR> exit then
+
   getTableRef not if <NIP+ERROR> exit then
 
   selectTable
+
+  // pop table dictionary
+  popTable
 
   <SUCCESS>
 ;
@@ -306,9 +393,24 @@ ddlLock.grabRead
 
   ddlLock.grabRead
 
+  // should be in the tables folder
+  checkInTables       not if <NIP+ERROR> exit then
+
+  // there should be a table folder
+  dup checkIsTableFolder not if <NIP+ERROR> exit then
+
+  // push table dictionary
+  dup pushTable assert
+
+  // check it is a table
+  checkIsTable  not if <NIP+ERROR> exit then
+
   getTableRef not if <NIP+ERROR> exit then
 
   selectTable
+
+  // pop table dictionary
+  popTable
 
   <SUCCESS>
 ;
@@ -320,11 +422,24 @@ ddlLock.grabRead
 
 ddlLock.grabWrite
 
-  dup
-  checkInTable  not if <NIP+ERROR> exit then
+  // should be in the tables folder
+  checkInTables       not if <NIP+ERROR> exit then
+
+  // there should be a table folder
+  dup checkIsTableFolder not if <NIP+ERROR> exit then
+
+  // push table dictionary
+  dup pushTable assert
+
+  // check it is a table
+  checkIsTable  not if <NIP+ERROR> exit then
+
   checkIsTable  not if <NIP+ERROR> exit then
 
   sizeTable ( "<size>" )
+
+  // pop table dictionary
+  popTable
 
   <SUCCESS>
 ;
@@ -336,11 +451,22 @@ ddlLock.grabWrite
 
 ddlLock.grabRead
 
-  dup
-  checkInTable  not if <NIP+ERROR> exit then
+  // should be in the tables folder
+  checkInTables       not if <NIP+ERROR> exit then
+
+  // there should be a table folder
+  dup checkIsTableFolder not if <NIP+ERROR> exit then
+
+  // push table dictionary
+  dup pushTable assert
+
+  // check it is a table
   checkIsTable  not if <NIP+ERROR> exit then
 
   truncateTable
+
+  // pop table dictionary
+  popTable
 
   <OK>
 ;
@@ -350,8 +476,16 @@ ddlLock.grabRead
 /*----------------------------------------------------------------------------*/
 : table_inuse ( "<tableNm>" -- <R> )
 
-  dup
-  checkInTable  not if <NIP+ERROR> exit then
+  // should be in the tables folder
+  checkInTables       not if <NIP+ERROR> exit then
+
+  // there should be a table folder
+  dup checkIsTableFolder not if <NIP+ERROR> exit then
+
+  // push table dictionary
+  dup pushTable assert
+
+  // check it is a table
   checkIsTable  not if <NIP+ERROR> exit then
 
   tableInUse
@@ -360,6 +494,9 @@ ddlLock.grabRead
   else
     "table not in use" .
   then
+
+  // pop table dictionary
+  popTable
 
    <OK>
 ;

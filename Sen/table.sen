@@ -156,6 +156,15 @@ int: queryCount
 ;
 
 /*----------------------------------------------------------------------------*/
+/* check there is a table folder                                              */
+/*----------------------------------------------------------------------------*/
+: checkIsTableFolder  ( "<tableName>" -- )
+  findInCurrent not if EC_NO_SUCH_TABLE false exit then
+  true
+;
+
+
+/*----------------------------------------------------------------------------*/
 : pushTable ( "<tableName>" -- )
 
   find execute pathPush
@@ -167,6 +176,7 @@ int: queryCount
 : popTable
   pathDrop
 ;
+
 
 /*----------------------------------------------------------------------------*/
 : pushTableSub ( "<tableName>" -- )

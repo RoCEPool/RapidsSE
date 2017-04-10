@@ -1449,6 +1449,15 @@ bool SePrompt::bCreateTable(void)
   bool bResult = bReturnTable();
   ASSERT(bResult);
 
+  // change folder to back to tables
+  m_aToken[0]->vCopy("cf"_Str);
+  m_aToken[1]->vCopy(".."_Str);
+  
+  if (!bExecuteRequest()) {
+    vTrace("SePrompt::bCreateTable : cf .. FAILED!!!\n"_Str);
+    return false;
+  }
+  
   //vTrace("Table created: %s\n"_Str, m_aToken2[2]);
   return true;
 }
