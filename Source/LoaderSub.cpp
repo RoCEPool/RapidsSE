@@ -398,11 +398,11 @@ Table* LoaderSub::pTable(void)
 /*----------------------------------------------------------------------------*/
 /* validate row                                                               */
 /*----------------------------------------------------------------------------*/
-bool LoaderSub::bValidateRow(void)
+bool LoaderSub::bValidateRow(i8& iColumn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
 
-  bool bValid = m_pTable->bValidateRow(m_aRecord);
+  bool bValid = m_pTable->bValidateRow(m_aRecord,iColumn);
   
   return bValid;
 }

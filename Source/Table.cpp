@@ -396,17 +396,17 @@ void Table::vTruncate(void)
 /*----------------------------------------------------------------------------*/
 /* validate a row of table                                                    */
 /*----------------------------------------------------------------------------*/
-bool Table::bValidateRow(Str* aRow)
+bool Table::bValidateRow(Str* aRow, i8& iColumn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-  
-  i8 iColumn = 0;
   
   char* aCursor = (char*)aRow;
   if ('|' == *aCursor)
     aCursor++;
   
-  while (iColumn < m_pColumnVec->nItems() && *aCursor) {
+  for (iColumn = 0;
+       iColumn < m_pColumnVec->nItems() && *aCursor;
+       iColumn++) {
     
     Column* pColumn = m_pColumnVec->pGet(iColumn);
     

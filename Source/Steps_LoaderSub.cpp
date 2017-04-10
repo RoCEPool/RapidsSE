@@ -389,9 +389,13 @@ void Task::vLoaderSubValidateRow(NNP_Task nnpTask)
   LoaderSub* pLoaderSub = _pLoaderSub(pObject);
   ASSERT(CN_LOADERSUB == pLoaderSub->eClass());
   
-  bool bValid = true;
-  //bool bValid = pLoaderSub->bValidateRow();
-  //ASSERT(bValid);
+  i8 iColumn;
+  bool bValid = pLoaderSub->bValidateRow(iColumn);
+  ASSERT(bValid);
+  
+//  vTrace("vLoaderSubValidateRow: %s %lld\n"_Str,
+//         bValid ? "Valid"_Str : "NotValid"_Str,
+//         iColumn);
   
   nnpTask->m_pDataStack->vPush(bValid);
   

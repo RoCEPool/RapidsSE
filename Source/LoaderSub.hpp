@@ -51,7 +51,7 @@ namespace DBobjects
     RowBuffer* pRowBuffer(void);
     void vRowBuffer(RowBuffer* pRowBuffer);
     Table* pTable(void);
-    bool bValidateRow(void);
+    bool bValidateRow(i8& iColumn);
   
     Footer* pFooter(void);
   };
