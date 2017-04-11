@@ -43,7 +43,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* create a table using name on the stack (leaves index on stack)             */
+/* create an index using name on the stack (leaves index on stack)             */
 /*----------------------------------------------------------------------------*/
 : :index
 
@@ -197,47 +197,53 @@
 /*----------------------------------------------------------------------------*/
 /* make an index (run by participant)                                         */
 /*----------------------------------------------------------------------------*/
-: makeIndex allParticipants 3 checkResult ( "<columnNm>" "<tableNm>" "<indexNm>"  -- true n# true )
+: makeIndex allParticipants 2 checkResult ( "<tableNm>" "<indexNm>"  -- true n# true )
 
 tp: makingIndex
 
+  locals| indexNm tableNm |
+
   args.tracepoint if
-  dup "MAKING INDEX " swap str.cat " on NODE " str.cat grid.thisNode@ >str str.cat .
+  "MAKING INDEX " indexNm str.cat " on NODE " str.cat grid.thisNode@ >str str.cat .
   then
+
+  tableNm ( "<tableNm>" )
+  find execute pathPush
+
+  tableNm indexNm ( "<tableNm>" "<indexNm>" )
 
   "indexes"
   find execute pathPush
 
   // create the index
-  dup :index ( "<columnNm>" "<tableNm>" "<indexNm>" ^index )
+  :index ( "<tableNm>" ^index )
 
   // drop the index word
-  drop ( "<columnNm>" "<tableNm>" "<indexNm>" )
+  drop ( "<tableNm>" "<indexNm>" )
+
+  indexNm ( "<tableNm>" "<indexNm>" )
 
   // find the index
-  find execute ( "<columnNm>" ^table ^index )
+  find execute ( ^table ^index )
 
   // save the index
-  locals| index | ( "<columnNm>" ^table )
+  locals| index | ( ^table )
 
   // push the index
-  index ( "<columnNm>" "<tableNm>" ^index )
-  swap ( "<columnNm>" ^index "<tableNm>" )
+  index ("<tableNm>" ^index )
+  swap ( ^index "<tableNm>" )
 
   // find the table
-  find execute ( "<columnNm>" ^index ^table )
+  find execute ( ^index ^table )
 
-  swap ( "<columnNm>" ^table ^index )
+  swap ( ^table ^index )
 
   // set the table in the index
-  index.table! ( "<columnNm>" )
+  index.table! (  )
 
   // now populate the index
   index ( ^index )
-  index.populate
-
-  // drop the columnNm (not being used)
-  drop
+  //index.populate
 
   true <SUCCESS_RESULT>
 ;

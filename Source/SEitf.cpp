@@ -686,14 +686,10 @@ bool SEitf::bCreateIndex(Str* aWords[], i8 iWords)
   
   s256 sRequest;
   
-  if (iWords != 4) {
+  if (iWords != 3) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
-  
-  sRequest.vCopy("\""_Str);
-  sRequest.vConcat(aWords[3]);
-  sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" \""_Str);
   sRequest.vConcat(aWords[2]);

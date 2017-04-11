@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* create an index on a table                                                 */
 /*----------------------------------------------------------------------------*/
-: create_index ( "<indexNm>" "<tableNm>" "<columnNm>"-- <R> )
+: create_index ( "<indexNm>" "<tableNm>" -- <R> )
 
 tp: create_index
   ddlLock.grabWrite
