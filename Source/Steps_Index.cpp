@@ -35,6 +35,7 @@ void Task::vAddPrimitives_Index(void)
   vAddPrimitive("index.dump"_Str,        &vIndexDump,       false);
   vAddPrimitive("index.init"_Str,        &vIndexInit,       false);
   vAddPrimitive("index.populate"_Str,    &vIndexPopulate,   false);
+  vAddPrimitive("index.subDic"_Str,      &vIndexSubDic,          false);
   vAddPrimitive("index.table!"_Str,      &vIndexTableStore, false);
   vAddPrimitive("index.truncate"_Str,    &vIndexTruncate,   false);
 
@@ -99,6 +100,27 @@ void Task::vIndexPopulate(NNP_Task nnpTask)
   ASSERT(CN_INDEX == pIndex->eClass());
   
   pIndex->vPopulate();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* index.subDic -- get table sub dictionary                                   */
+/*----------------------------------------------------------------------------*/
+void Task::vIndexSubDic(NNP_Task nnpTask)
+{
+  ENTRY("vIndexSubDic"_Str);
+  
+  Object* pPtrIndex;
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrIndex) )
+    THROW_INVALID_DSTACK("index.subDic"_Str);
+  
+  Index* pIndex = _pIndex(pPtrIndex);
+  ASSERT(CN_INDEX == pIndex->eClass());
+  
+  Dic* pDic = pIndex->pSubDic();
+  
+  nnpTask->m_pDataStack->vPush(pDic);
   
   EXIT();
 }
