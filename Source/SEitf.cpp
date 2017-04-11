@@ -338,6 +338,7 @@ bool SEitf::bDecode(Str* aWords[], i8 iWords)
   
   if (aWords[0]->bSame("antbl"_Str)) return bAnalyzeTable(aWords, iWords);
   if (aWords[0]->bSame("addcol"_Str)) return bAddColumn(aWords, iWords);
+  if (aWords[0]->bSame("addidxcol"_Str)) return bAddIdxColumn(aWords, iWords);
   if (aWords[0]->bSame("cf"_Str)) return bPushDic(aWords);
   if (aWords[0]->bSame("con"_Str)) return bConnect(aWords);
   if (aWords[0]->bSame("connectCluster"_Str)) return bConnectCluster(aWords);
@@ -904,6 +905,33 @@ bool SEitf::bAddColumn(Str* aWords[16], i8 iWords)
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" add_column"_Str);
+  
+  return bAppendRequest(sRequest);
+}
+
+/*----------------------------------------------------------------------------*/
+/* add an index column                                                        */
+/*----------------------------------------------------------------------------*/
+bool SEitf::bAddIdxColumn(Str* aWords[16], i8 iWords)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  s256 sRequest;
+  
+  if (iWords != 3) {
+    vSetLastError(EC_INVALID_PARAMETERS);
+    return false;
+  }
+  
+  sRequest.vConcat(" \""_Str);
+  sRequest.vConcat(aWords[2]);
+  sRequest.vConcat("\""_Str);
+  
+  sRequest.vConcat(" \""_Str);
+  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat("\""_Str);
+  
+  sRequest.vConcat(" add_idxcolumn"_Str);
   
   return bAppendRequest(sRequest);
 }

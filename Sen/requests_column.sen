@@ -21,6 +21,23 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* add an index column                                                        */
+/*----------------------------------------------------------------------------*/
+: add_idxcolumn ( "<columnNm>" "<indexNm>" -- <R> )
+
+  locals| indexNm columnNm |
+
+  columnNm indexNm
+  checkAddIndexColumn not if <NIP+ERROR> exit then
+
+  columnNm indexNm
+  addIndexColumn ( ) assert.stack_0
+
+  <OK>
+;
+
+
+/*----------------------------------------------------------------------------*/
 /* get list of columns                                                        */
 /*----------------------------------------------------------------------------*/
 : list_columns ( "<tableNm>" -- <R> )
@@ -45,6 +62,32 @@
   <SUCCESS>
 ;
 
+/*----------------------------------------------------------------------------*/
+/* get list of index columns                                                  */
+/*----------------------------------------------------------------------------*/
+/*
+: list_indexcolumns ( "<tableNm>" -- <R> )
+
+  // should be in the tables folder
+  checkInTables       not if <NIP+ERROR> exit then
+
+  // there should be a table folder
+  dup checkIsTableFolder not if <NIP+ERROR> exit then
+
+  // push table dictionary
+  dup pushTable assert
+
+  // check it is a table
+  checkIsTable  not if <NIP+ERROR> exit then
+
+  listColumns
+
+  // pop table dictionary
+  popTable
+
+  <SUCCESS>
+;
+*/
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

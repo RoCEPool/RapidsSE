@@ -1,0 +1,184 @@
+/*============================================================================*/
+/* indexColumn.sen -- index column related words                              */
+/*============================================================================*/
+
+"indexColumn.sen" .verbose
+
+: indexColumn: ;
+
+: makeIndexColumns ( "<indexNm>" -- )
+
+  find execute ( dic )
+  index.subDic pathPush "columns" :dic drop pathDrop
+;
+
+: withinIndexColumns
+    0 pathPick dic.name "columns" str.equal
+;
+
+: checkInIndexColumns
+    withinIndexColumns if true exit then
+    EC_NOT_IN_COLUMNS false
+;
+
+: pushIndexColumns ( -- )
+
+    "columns" checkIsWord
+
+    not if EC_NO_COLUMNS_DIC false exit then
+
+    execute pathPush
+
+    true
+;
+
+: popIndexColumns
+    pathDrop
+;
+
+: :indexColumn ( "<columnType>" "<columnName>" )
+    :constant
+;
+
+: checkAddIndexColumn ( "<columnName>" "<indexNm>" -- true | eEC false )
+
+  locals| indexNm columnNm |
+
+  checkInIndexes not if false exit then
+
+  indexNm
+  pushIndexSub   assert // not if false exit then
+
+  columnNm
+  pushIndexColumns assert // not if false exit then
+
+  // column should not already exist
+  findInCurrent
+  if EC_DUPLICATE_COLUMN false popIndexColumns popTable exit then
+
+  popIndexColumns
+
+  popIndexSub
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* list columns of an index                                                   */
+/*----------------------------------------------------------------------------*/
+/*
+: listIndexColumns ( -- )
+
+  pushIndexSub  assert
+  pushIndexColumns   assert
+
+  ""                             // initial ls string
+  0 pathPick dic.lastWord            // get last word of current dic
+  dup                            // setup iteration of words
+  iterate                        //
+
+    object@ word.name            // column name
+
+    " " str.cat
+    object@ execute str.cat       // column type
+
+    swap
+
+    dup str.length
+    if " , " str.prepend then     //
+
+    str.cat                       // append column to ls
+
+    object@ word.prev object!     // step backwards thru words
+
+  next                            //
+
+  //"\n" str.cat
+
+  popIndexColumns
+  popIndexSub
+;
+*/
+////////////////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* add an index column (run by all participants)                              */
+/*----------------------------------------------------------------------------*/
+: addIndexColumn allParticipants 2 checkResult ( "<columnNm>" "<indexNm>" -- <result> )
+
+  locals| indexNm columnNm |
+
+  args.tracepoint if
+    "ADDING COLUMN " indexNm str.cat " on NODE " str.cat grid.thisNode@ >str str.cat .
+  then
+
+  tp: addingIndexColumn
+  indexNm
+  pushIndexSub   assert // not if false exit then
+
+  pushIndexColumns assert // not if false exit then
+
+  columnNm
+  :indexColumn
+
+  popIndexColumns
+
+  popIndexSub
+
+  true <SUCCESS_RESULT>
+;
+
+/*----------------------------------------------------------------------------*/
+/* create the column vector of the table                                      */
+/*----------------------------------------------------------------------------*/
+/*
+: columnVecIndex allParticipants 1 checkResult ( "<indexPtr>" -- true n# true )
+
+  0 locals| indexPtr indexNm |
+
+  "columnVecIndex" . indexNm .
+
+  // get table ptr
+  indexNm find execute to indexPtr
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // double check we can see the table
+  //indexPtr find execute stk drop
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // push the index sub dic and then the columns sub dic
+  indexPtr pushIndexSub  assert
+  pushIndexColumns assert
+
+  // double check the path
+  //task.this task.dicStack dicPath.dump
+
+  // iterate contents of columns dictionary 
+  0 pathPick dic.lastWord dup
+  iterate                        // iterate word cursor
+    object@ execute              ( value )
+    object@ word.name            ( value wordNm )
+    tablePtr                     ( value wordNm ^table )
+    //stk
+    index.createColumnVec
+    object@ word.prev object!    // advance cursor backwards thru words
+  next
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  //tablePtr table.showColumnVec
+
+  assert.stack_0
+
+  popIndexColumns
+
+  popIndexSub
+
+  true <SUCCESS_RESULT>
+;
+*/
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

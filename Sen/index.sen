@@ -135,6 +135,21 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+: pushIndexSub ( "<indexNm>" -- )
+
+  checkIsIndex not if EC_NO_SUCH_INDEX false exit then
+
+  find execute index.subDic pathPush
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+: popIndexSub
+  pathDrop
+;
+
+/*----------------------------------------------------------------------------*/
 /*
 : getIndexRef ( "<indexNm>" -- <R> )
 

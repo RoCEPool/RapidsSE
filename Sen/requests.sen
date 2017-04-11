@@ -58,6 +58,7 @@ gettbl  get_table
 mktbl   create_table
 lstbl   list_tables
 add     add_column
+addidx  add_idxcolumn
 lscol   list_columns
 ld      load_table
 tblInUse  table_inuse
