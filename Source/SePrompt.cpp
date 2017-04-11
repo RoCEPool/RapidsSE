@@ -1064,7 +1064,7 @@ bool SePrompt::bCreateIndex(void)
   
   if (!bExecuteRequest())
     return false;
-
+/*
   // get reference to pTable
   m_aToken[0]->vCopy("gettbl"_Str);
   m_aToken[1]->vCopy(m_aToken2[2]);
@@ -1082,7 +1082,44 @@ bool SePrompt::bCreateIndex(void)
     
     return false;
   }
+*/
   
+  // change folder to table
+  m_aToken[0]->vCopy("cf"_Str);
+  m_aToken[1]->vCopy(m_aToken2[4]);
+  
+  if (!bExecuteRequest()) {
+    vTrace("SePrompt::bCreateIndex : cf FAILED!!!\n"_Str);
+    
+    // create the table
+    m_aToken[0]->vCopy("rmidx"_Str);
+    m_aToken[1]->vCopy(m_aToken2[2]);
+    
+    if (!bExecuteRequest()) {
+      return false;
+    }
+    
+    return false;
+  }
+  
+  // change folder to indexes
+  m_aToken[0]->vCopy("cf"_Str);
+  m_aToken[1]->vCopy("indexes"_Str);
+  
+  if (!bExecuteRequest()) {
+    vTrace("SePrompt::bCreateIndex : cf FAILED!!!\n"_Str);
+    
+    // create the table
+    m_aToken[0]->vCopy("rmidx"_Str);
+    m_aToken[1]->vCopy(m_aToken2[2]);
+    
+    if (!bExecuteRequest()) {
+      return false;
+    }
+    
+    return false;
+  }
+
   // now collect the column names and their types
   i8 iCurrentToken = 6;
   while(iCurrentToken < iNumTokens - 2) {
@@ -1106,7 +1143,7 @@ bool SePrompt::bCreateIndex(void)
       eEC eError = m_pSEitf->eGetLastError();
       
       // drop the table that was created
-      bDropReturnTable(m_aToken2[2]);
+      bIndexReturnTable(m_aToken2[2]);
       
       // return error returned by addColumn
       m_pSEitf->vSetLastError(eError);
@@ -1122,7 +1159,48 @@ bool SePrompt::bCreateIndex(void)
   if (!bExecuteRequest()) {
     vTrace("SePrompt::bCreateIndex : endmkidx FAILED!!!\n"_Str);
   }
+ /*
+  // derefernce and return the table first
+  bool bResult = bReturnTable();
+  ASSERT(bResult);
+  */
   
+  // change folder to tables
+  m_aToken[0]->vCopy("cf"_Str);
+  m_aToken[1]->vCopy(".."_Str);
+  
+  if (!bExecuteRequest()) {
+    vTrace("SePrompt::bCreateIndex : cf FAILED!!!\n"_Str);
+    
+    // create the table
+    m_aToken[0]->vCopy("rmidx"_Str);
+    m_aToken[1]->vCopy(m_aToken2[2]);
+    
+    if (!bExecuteRequest()) {
+      return false;
+    }
+    
+    return false;
+  }
+  
+  // change folder to tables
+  m_aToken[0]->vCopy("cf"_Str);
+  m_aToken[1]->vCopy(".."_Str);
+  
+  if (!bExecuteRequest()) {
+    vTrace("SePrompt::bCreateIndex : cf FAILED!!!\n"_Str);
+    
+    // create the table
+    m_aToken[0]->vCopy("rmidx"_Str);
+    m_aToken[1]->vCopy(m_aToken2[2]);
+    
+    if (!bExecuteRequest()) {
+      return false;
+    }
+    
+    return false;
+  }
+
   return true;
 }
 
@@ -1761,8 +1839,8 @@ bool SePrompt::bIndexReturnTable(Str* aTableName)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   // derefernce and return the table first
-  bool bResult = bReturnTable();
-  ASSERT(bResult);
+  //bool bResult = bReturnTable();
+  //ASSERT(bResult);
   
   // change folder to table
   m_aToken[0]->vCopy("cf"_Str);

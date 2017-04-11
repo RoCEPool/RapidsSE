@@ -60,6 +60,7 @@ lstbl   list_tables
 add     add_column
 addidx  add_idxcolumn
 lscol   list_columns
+lsidxcol list_indexcolumns
 ld      load_table
 tblInUse  table_inuse
 tableSizes size_tables

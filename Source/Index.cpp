@@ -214,9 +214,19 @@ void Index::vPopulate(void)
 /*----------------------------------------------------------------------------*/
 Dic* Index::pSubDic(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
   
   return &m_xSubDic;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the table                                                              */
+/*----------------------------------------------------------------------------*/
+Table* Index::pTable(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
+  
+  return m_pTable;
 }
 
 /*----------------------------------------------------------------------------*/

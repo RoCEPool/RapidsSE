@@ -236,6 +236,9 @@ tp: makingIndex
   // drop the index word
   drop ( "<tableNm>" "<indexNm>" )
 
+  // make index columns
+  indexNm "makeIndexColumns" find execute
+
   indexNm ( "<tableNm>" "<indexNm>" )
 
   // find the index

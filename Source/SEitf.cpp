@@ -338,7 +338,7 @@ bool SEitf::bDecode(Str* aWords[], i8 iWords)
   
   if (aWords[0]->bSame("antbl"_Str)) return bAnalyzeTable(aWords, iWords);
   if (aWords[0]->bSame("addcol"_Str)) return bAddColumn(aWords, iWords);
-  if (aWords[0]->bSame("addidxcol"_Str)) return bAddIdxColumn(aWords, iWords);
+  if (aWords[0]->bSame("addidxcol"_Str)) return bAddIndexColumn(aWords, iWords);
   if (aWords[0]->bSame("cf"_Str)) return bPushDic(aWords);
   if (aWords[0]->bSame("con"_Str)) return bConnect(aWords);
   if (aWords[0]->bSame("connectCluster"_Str)) return bConnectCluster(aWords);
@@ -364,6 +364,7 @@ bool SEitf::bDecode(Str* aWords[], i8 iWords)
   if (aWords[0]->bSame("lscat"_Str)) return bListCatalogs(aWords, iWords);
   if (aWords[0]->bSame("lscol"_Str)) return bListColumns(aWords, iWords);
   if (aWords[0]->bSame("lsidx"_Str)) return bListIndices(aWords, iWords);
+  if (aWords[0]->bSame("lsidxcol"_Str)) return bListIndexColumns(aWords, iWords);
   if (aWords[0]->bSame("lssch"_Str)) return bListSchemas(aWords, iWords);
   if (aWords[0]->bSame("lstbl"_Str)) return bListTables(aWords, iWords);
   if (aWords[0]->bSame("lsten"_Str)) return bListTenants(aWords, iWords);
@@ -912,7 +913,7 @@ bool SEitf::bAddColumn(Str* aWords[16], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* add an index column                                                        */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bAddIdxColumn(Str* aWords[16], i8 iWords)
+bool SEitf::bAddIndexColumn(Str* aWords[16], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1001,6 +1002,29 @@ bool SEitf::bListColumns(Str* aWords[], i8 iWords)
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" list_columns"_Str);
+  
+  return bAppendRequest(sRequest);
+}
+
+/*----------------------------------------------------------------------------*/
+/* list index columns                                                         */
+/*----------------------------------------------------------------------------*/
+bool SEitf::bListIndexColumns(Str* aWords[], i8 iWords)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  s256 sRequest;
+  
+  if (iWords != 2) {
+    vSetLastError(EC_INVALID_PARAMETERS);
+    return false;
+  }
+  
+  sRequest.vCopy("\""_Str);
+  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat("\""_Str);
+  
+  sRequest.vConcat(" list_indexcolumns"_Str);
   
   return bAppendRequest(sRequest);
 }

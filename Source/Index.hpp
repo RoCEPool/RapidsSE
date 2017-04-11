@@ -50,6 +50,7 @@ namespace DBobjects
     void vPopulate(void);
     Dic* pSubDic(void);
     void vTable(Table* pTable);
+    Table* pTable(void);
     void vTruncate(void);
   
     IdxColVec* pIdxColVec(void);

@@ -20,9 +20,9 @@ create table j10 (
   j10_name  VARCHAR(32) NOT NULL
 );
 
-print "loading j10.tbl..."
 create index idx on j10 (j10_key);
-ld j10 "../JTEST/j10.csv"
+//print "loading j10.tbl..."
+//ld j10 "../JTEST/j10.csv"
 
 
 /*============================================================================*/

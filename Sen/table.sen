@@ -384,7 +384,6 @@ tp: makingTable
 
   drop ( "<tableNm>" )
 
-
   // forward reference :-(
   "makeColumns" find execute
 

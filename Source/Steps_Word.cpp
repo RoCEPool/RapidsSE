@@ -180,6 +180,8 @@ void Task::vComma(NNP_Task nnpTask)
   if ( ! nnpTask->m_pDataStack->bPop(xValWsp) )
     THROW_INVALID_DSTACK("comma"_Str);
   
+  vTrace("%s\n"_Str,xValWsp.aWspArea());
+  
   pCurrentWord->vEncode("pushValue"_Str,&xValWsp);
   pCurrentWord->vEncode("exit"_Str);
   

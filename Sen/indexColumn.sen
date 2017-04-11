@@ -36,7 +36,7 @@
     pathDrop
 ;
 
-: :indexColumn ( "<columnType>" "<columnName>" )
+: :indexColumn ( "<columnName>" )
     :constant
 ;
 
@@ -66,14 +66,13 @@
 /*----------------------------------------------------------------------------*/
 /* list columns of an index                                                   */
 /*----------------------------------------------------------------------------*/
-/*
 : listIndexColumns ( -- )
 
   pushIndexSub  assert
-  pushIndexColumns   assert
+  pushIndexColumns  assert
 
   ""                             // initial ls string
-  0 pathPick dic.lastWord            // get last word of current dic
+  0 pathPick dic.lastWord        // get last word of current dic
   dup                            // setup iteration of words
   iterate                        //
 
@@ -98,7 +97,7 @@
   popIndexColumns
   popIndexSub
 ;
-*/
+
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
@@ -106,19 +105,26 @@
 /*----------------------------------------------------------------------------*/
 : addIndexColumn allParticipants 2 checkResult ( "<columnNm>" "<indexNm>" -- <result> )
 
-  locals| indexNm columnNm |
+  0 locals| indexPtr indexNm columnNm |
 
   args.tracepoint if
     "ADDING COLUMN " indexNm str.cat " on NODE " str.cat grid.thisNode@ >str str.cat .
   then
 
+  //indexNm find execute to indexPtr
+
   tp: addingIndexColumn
+
   indexNm
-  pushIndexSub   assert // not if false exit then
+  pushIndexSub   assert   // not if false exit then
 
   pushIndexColumns assert // not if false exit then
 
-  columnNm
+  // get the table from the index
+  //indexPtr index.table@ ( tablePtr )
+
+  "integer"   ( "<columnType>" )                                   // HARD-CODED
+  columnNm    ( "<columnType>" "<columnNm>" )
   :indexColumn
 
   popIndexColumns

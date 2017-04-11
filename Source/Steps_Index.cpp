@@ -35,7 +35,8 @@ void Task::vAddPrimitives_Index(void)
   vAddPrimitive("index.dump"_Str,        &vIndexDump,       false);
   vAddPrimitive("index.init"_Str,        &vIndexInit,       false);
   vAddPrimitive("index.populate"_Str,    &vIndexPopulate,   false);
-  vAddPrimitive("index.subDic"_Str,      &vIndexSubDic,          false);
+  vAddPrimitive("index.subDic"_Str,      &vIndexSubDic,     false);
+  vAddPrimitive("index.table@"_Str,      &vIndexTableFetch, false);
   vAddPrimitive("index.table!"_Str,      &vIndexTableStore, false);
   vAddPrimitive("index.truncate"_Str,    &vIndexTruncate,   false);
 
@@ -121,6 +122,29 @@ void Task::vIndexSubDic(NNP_Task nnpTask)
   Dic* pDic = pIndex->pSubDic();
   
   nnpTask->m_pDataStack->vPush(pDic);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* index.table@ -- fetch table in index                                       */
+/*----------------------------------------------------------------------------*/
+void Task::vIndexTableFetch(NNP_Task nnpTask)
+{
+  ENTRY("vIndexTableFetch"_Str);
+  
+  Object* pPtrIndex = nullptr;
+  
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrIndex) )
+    THROW_INVALID_DSTACK("index.table@"_Str);
+  
+  Index* pIndex = _pIndex(pPtrIndex);
+  ASSERT(CN_INDEX == pIndex->eClass());
+  
+  Table* pTable = pIndex->pTable();
+  ASSERT(CN_TABLE == pTable->eClass());
+  
+  nnpTask->m_pDataStack->vPush(pTable);
   
   EXIT();
 }
