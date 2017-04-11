@@ -106,7 +106,30 @@ Index::~Index(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* set the table                                                              */
+/* create column vector                                                       */
+/*----------------------------------------------------------------------------*/
+void Index::vCreateColumnVec(s32& sColumnNm, s48K& sColumnDefn)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  
+    vTrace("vCreateColumnVec: index %s column %s %s\n"_Str,
+           m_sIndexName.s(),
+           sColumnNm.aStr(),
+           sColumnDefn.aStr());
+  
+  Column* pColumn = new Column(sColumnNm.aStr(),sColumnDefn.aStr());
+  
+  m_pIdxColVec->vInsert(pColumn);
+  
+  // renumber
+  for (i8 iColumn = 0; iColumn < m_pIdxColVec->nItems(); iColumn++) {
+    Column* pColumn = m_pIdxColVec->pGet(iColumn);
+    pColumn->vColumnNo(iColumn);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump the index                                                             */
 /*----------------------------------------------------------------------------*/
 void Index::vDump(void)
 {
@@ -207,6 +230,19 @@ void Index::vPopulate(void)
     
   }
 
+}
+
+/*----------------------------------------------------------------------------*/
+/* show column vector                                                         */
+/*----------------------------------------------------------------------------*/
+void Index::vShowColumnVec(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  
+  for (i8 iColumn = 0; iColumn < m_pIdxColVec->nItems(); iColumn++) {
+    Column* pColumn = m_pIdxColVec->pGet(iColumn);
+    pColumn->vShow();
+  }
 }
 
 /*----------------------------------------------------------------------------*/

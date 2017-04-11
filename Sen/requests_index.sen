@@ -61,8 +61,18 @@ tp: create_index
 /*----------------------------------------------------------------------------*/
 : end_create_index ( "<indexNm>" -- <R> )
 
+tp: end_create_index
+
+  //ddlLock.grabWrite
+  //dup
+  //checkInIndexes not if <NIP+ERROR> exit then
+
   "end_create_index" .
+  //dup .
   .
+  //columnVecIndex
+
+  //assert.stack_0
 
   <OK>
 ;

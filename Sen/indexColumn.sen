@@ -137,14 +137,13 @@
 /*----------------------------------------------------------------------------*/
 /* create the column vector of the table                                      */
 /*----------------------------------------------------------------------------*/
-/*
-: columnVecIndex allParticipants 1 checkResult ( "<indexPtr>" -- true n# true )
+: columnVecIndex allParticipants 1 checkResult ( "<indexNm>" -- true n# true )
 
   0 locals| indexPtr indexNm |
 
   "columnVecIndex" . indexNm .
 
-  // get table ptr
+  // get index ptr
   indexNm find execute to indexPtr
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -166,7 +165,7 @@
   iterate                        // iterate word cursor
     object@ execute              ( value )
     object@ word.name            ( value wordNm )
-    tablePtr                     ( value wordNm ^table )
+    indexPtr                     ( value wordNm ^table )
     //stk
     index.createColumnVec
     object@ word.prev object!    // advance cursor backwards thru words
@@ -174,7 +173,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  //tablePtr table.showColumnVec
+  indexPtr index.showColumnVec
 
   assert.stack_0
 
@@ -184,7 +183,7 @@
 
   true <SUCCESS_RESULT>
 ;
-*/
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

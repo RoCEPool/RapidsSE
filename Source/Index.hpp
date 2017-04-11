@@ -45,9 +45,11 @@ namespace DBobjects
     Index(void);
     ~Index(void);
   
+    void vCreateColumnVec(s32& sName, s48K& sDefinition);
     void vDump(void);
     IndexBufferSeq* pFirstBuffer(void);
     void vPopulate(void);
+    void vShowColumnVec(void);
     Dic* pSubDic(void);
     void vTable(Table* pTable);
     Table* pTable(void);

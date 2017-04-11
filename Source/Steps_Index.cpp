@@ -32,19 +32,47 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Index(void)
 {
-  vAddPrimitive("index.dump"_Str,        &vIndexDump,       false);
-  vAddPrimitive("index.init"_Str,        &vIndexInit,       false);
-  vAddPrimitive("index.populate"_Str,    &vIndexPopulate,   false);
-  vAddPrimitive("index.subDic"_Str,      &vIndexSubDic,     false);
-  vAddPrimitive("index.table@"_Str,      &vIndexTableFetch, false);
-  vAddPrimitive("index.table!"_Str,      &vIndexTableStore, false);
-  vAddPrimitive("index.truncate"_Str,    &vIndexTruncate,   false);
+  vAddPrimitive("index.createColumnVec"_Str, &vIndexCreateColumnVec, false);
+  vAddPrimitive("index.dump"_Str,            &vIndexDump,            false);
+  vAddPrimitive("index.init"_Str,            &vIndexInit,            false);
+  vAddPrimitive("index.populate"_Str,        &vIndexPopulate,        false);
+  vAddPrimitive("index.showColumnVec"_Str,   &vIndexShowColumnVec,   false);
+  vAddPrimitive("index.subDic"_Str,          &vIndexSubDic,          false);
+  vAddPrimitive("index.table@"_Str,          &vIndexTableFetch,      false);
+  vAddPrimitive("index.table!"_Str,          &vIndexTableStore,      false);
+  vAddPrimitive("index.truncate"_Str,        &vIndexTruncate,        false);
 
   // these should go !!!
   vAddPrimitive("index::columnTest"_Str, &vIndexColumnTest, false);
   vAddPrimitive("index::entryTest"_Str,  &vIndexEntryTest,  false);
   vAddPrimitive("index::ibNew"_Str,      &vIndexIbNew,      false);
   vAddPrimitive("index::ibDump"_Str,     &vIndexIbDump,     false);
+}
+
+/*----------------------------------------------------------------------------*/
+/* index.createColumnVec -- create column vector from sub dictionary          */
+/*----------------------------------------------------------------------------*/
+void Task::vIndexCreateColumnVec(NNP_Task nnpTask)
+{
+  ENTRY("vIndexCreateColumnVec"_Str);
+  
+  Object* pPtrIndex;
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrIndex) )
+    THROW_INVALID_DSTACK("index.createColumnVec"_Str);
+  Index* pIndex = _pIndex(pPtrIndex);
+  ASSERT(CN_INDEX == pIndex->eClass());
+  
+  s32 sColumnNm;
+  if ( ! nnpTask->m_pDataStack->bPop(sColumnNm) )
+    THROW_INVALID_DSTACK("index.createColumnVec"_Str);
+  
+  s48K sColumnDef;
+  if ( ! nnpTask->m_pDataStack->bPop(sColumnDef) )
+    THROW_INVALID_DSTACK("index.createColumnVec"_Str);
+  
+  pIndex->vCreateColumnVec(sColumnNm,sColumnDef);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -101,6 +129,24 @@ void Task::vIndexPopulate(NNP_Task nnpTask)
   ASSERT(CN_INDEX == pIndex->eClass());
   
   pIndex->vPopulate();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* index.showColumnVec -- show column vector                                  */
+/*----------------------------------------------------------------------------*/
+void Task::vIndexShowColumnVec(NNP_Task nnpTask)
+{
+  ENTRY("vIndexShowColumnVec"_Str);
+  
+  Object* pPtrIndex;
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrIndex) )
+    THROW_INVALID_DSTACK("index.showColumnVec"_Str);
+  Index* pIndex = _pIndex(pPtrIndex);
+  ASSERT(CN_INDEX == pIndex->eClass());
+  
+  pIndex->vShowColumnVec();
   
   EXIT();
 }

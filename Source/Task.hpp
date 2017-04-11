@@ -509,10 +509,12 @@ namespace Tasks
     static void vGridToPartition(NNP_Task nnpTask);
     static void vGridToSlot(NNP_Task nnpTask);
   
-    // index    
+    // index
+    static void vIndexCreateColumnVec(NNP_Task nnpTask);
     static void vIndexDump(NNP_Task nnpTask);
     static void vIndexInit(NNP_Task nnpTask);
     static void vIndexPopulate(NNP_Task nnpTask);
+    static void vIndexShowColumnVec(NNP_Task nnpTask);
     static void vIndexSubDic(NNP_Task nnpTask);
     static void vIndexTableFetch(NNP_Task nnpTask);
     static void vIndexTableStore(NNP_Task nnpTask);
