@@ -144,17 +144,17 @@
   "columnVecIndex" . indexNm .
 
   // get index ptr
-  indexNm find execute to indexPtr
+  indexNm findInCurrent execute to indexPtr
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  // double check we can see the table
+  // double check we can see the index
   //indexPtr find execute stk drop
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // push the index sub dic and then the columns sub dic
-  indexPtr pushIndexSub  assert
+  indexNm pushIndexSub  assert
+
   pushIndexColumns assert
 
   // double check the path

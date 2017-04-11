@@ -110,7 +110,7 @@ Index::~Index(void)
 /*----------------------------------------------------------------------------*/
 void Index::vCreateColumnVec(s32& sColumnNm, s48K& sColumnDefn)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
   
     vTrace("vCreateColumnVec: index %s column %s %s\n"_Str,
            m_sIndexName.s(),
@@ -237,7 +237,7 @@ void Index::vPopulate(void)
 /*----------------------------------------------------------------------------*/
 void Index::vShowColumnVec(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
   
   for (i8 iColumn = 0; iColumn < m_pIdxColVec->nItems(); iColumn++) {
     Column* pColumn = m_pIdxColVec->pGet(iColumn);
