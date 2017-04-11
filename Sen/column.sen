@@ -163,7 +163,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  tablePtr table.showColumnVec
+  //tablePtr table.showColumnVec
 
   assert.stack_0
 

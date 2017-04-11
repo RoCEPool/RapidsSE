@@ -219,7 +219,7 @@ ddlLock.grabWrite
   checkInTable not if <NIP+ERROR> exit then
   checkIsTable not if <NIP+ERROR> exit then
 
-  "end_create_table" .
+  //"end_create_table" .
   dup .
 
   columnVecTable

@@ -251,7 +251,7 @@ void Column::vSet(Str* aDefinition)
   char* aCursor = (char*)aDefinition;
   b = StrLib::bExtractWord(&aCursor,aBuffer);
   
-  vTrace("Type: %s\n"_Str,aBuffer);
+  //vTrace("Type: %s\n"_Str,aBuffer);
   
   if (StrLib::bSame(aBuffer,"boolean")) {
     m_eColumnType = CT_BOOLEAN;
