@@ -1072,7 +1072,7 @@ bool SePrompt::bCreateIndex(void)
   m_aToken[2]->vCopy(""_Str);
   
   if (!bExecuteRequest()) {
-    vTrace("SePrompt::bCreateTable : endmkidx FAILED!!!\n"_Str);
+    vTrace("SePrompt::bCreateIndex : endmkidx FAILED!!!\n"_Str);
   }
   
   return true;

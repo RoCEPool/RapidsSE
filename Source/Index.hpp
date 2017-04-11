@@ -27,6 +27,7 @@ namespace DBobjects
     s32          m_sIndexName;
     eIT          m_eIndexType;
     Table*       m_pTable;
+    Dic          m_xSubDic;    // sub dictionary for this index
     IdxColVec*   m_pIdxColVec;
   
     IndexLevels* m_pIndexLevels;
@@ -47,6 +48,7 @@ namespace DBobjects
     void vDump(void);
     IndexBufferSeq* pFirstBuffer(void);
     void vPopulate(void);
+    Dic* pSubDic(void);
     void vTable(Table* pTable);
     void vTruncate(void);
   

@@ -124,12 +124,13 @@
 
   checkIsIndex not if EC_NO_SUCH_INDEX false exit then
 
-  find execute table.subDic pathPush
+  find execute pathPush
 
   true
 ;
 
-: popTable
+/*----------------------------------------------------------------------------*/
+: popIndex
     pathDrop
 ;
 
