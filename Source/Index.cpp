@@ -117,15 +117,18 @@ void Index::vCreateColumnVec(s32& sColumnNm, s48K& sColumnDefn)
            sColumnNm.aStr(),
            sColumnDefn.aStr());
   
-  Column* pColumn = new Column(sColumnNm.aStr(),sColumnDefn.aStr());
+  Column* pColumn = nullptr;
   
-  m_pIdxColVec->vInsert(pColumn);
+  // find the column from the table columnVector
+  i8 iColumns = m_pTable->pColumnVec()->nItems();
   
-  // renumber
-  for (i8 iColumn = 0; iColumn < m_pIdxColVec->nItems(); iColumn++) {
-    Column* pColumn = m_pIdxColVec->pGet(iColumn);
-    pColumn->vColumnNo(iColumn);
+  for (i8 iCol = 0; iCol < iColumns; iCol++) {
+    pColumn = m_pTable->pColumnVec()->pGet(iCol);
+    if (pColumn->sColumnName().bSame(sColumnNm))
+      break;
   }
+  ASSERT(pColumn);
+  m_pIdxColVec->vInsert(pColumn);
 }
 
 /*----------------------------------------------------------------------------*/

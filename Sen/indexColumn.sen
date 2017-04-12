@@ -66,36 +66,25 @@
 /*----------------------------------------------------------------------------*/
 /* list columns of an index                                                   */
 /*----------------------------------------------------------------------------*/
-: listIndexColumns ( -- )
+: listIndexColumns ( "<indexNm>" -- list )
 
-  pushIndexSub  assert
-  pushIndexColumns  assert
+  find execute ( ^indexPtr )
+
+  0 locals| indexCols indexPtr |
+  indexPtr index.columnCount to indexCols
 
   ""                             // initial ls string
-  0 pathPick dic.lastWord        // get last word of current dic
-  dup                            // setup iteration of words
-  iterate                        //
+  indexCols 0 do
+    I indexPtr index.columnType
+    I indexPtr index.columnName
+    "%v %v " str.format
+    I 1 + indexCols < if
+      "aa" .
+      swap ", " str.cat
+    then
+    str.cat
+  loop
 
-    object@ word.name            // column name
-
-    " " str.cat
-    object@ execute str.cat       // column type
-
-    swap
-
-    dup str.length
-    if " , " str.prepend then     //
-
-    str.cat                       // append column to ls
-
-    object@ word.prev object!     // step backwards thru words
-
-  next                            //
-
-  //"\n" str.cat
-
-  popIndexColumns
-  popIndexSub
 ;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -123,8 +112,7 @@
   // get the table from the index
   //indexPtr index.table@ ( tablePtr )
 
-  "integer"   ( "<columnType>" )                                   // HARD-CODED
-  columnNm    ( "<columnType>" "<columnNm>" )
+  columnNm columnNm    ( "<columnNm>" "<columnNm>" )
   :indexColumn
 
   popIndexColumns

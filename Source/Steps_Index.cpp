@@ -32,6 +32,9 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Index(void)
 {
+  vAddPrimitive("index.columnCount"_Str,     &vIndexColumnCount,     false);
+  vAddPrimitive("index.columnName"_Str,      &vIndexColumnName,      false);
+  vAddPrimitive("index.columnType"_Str,      &vIndexColumnType,      false);
   vAddPrimitive("index.createColumnVec"_Str, &vIndexCreateColumnVec, false);
   vAddPrimitive("index.dump"_Str,            &vIndexDump,            false);
   vAddPrimitive("index.init"_Str,            &vIndexInit,            false);
@@ -47,6 +50,75 @@ void Task::vAddPrimitives_Index(void)
   vAddPrimitive("index::entryTest"_Str,  &vIndexEntryTest,  false);
   vAddPrimitive("index::ibNew"_Str,      &vIndexIbNew,      false);
   vAddPrimitive("index::ibDump"_Str,     &vIndexIbDump,     false);
+}
+
+/*----------------------------------------------------------------------------*/
+/* index.columnCount -- get column count                                      */
+/*----------------------------------------------------------------------------*/
+void Task::vIndexColumnCount(NNP_Task nnpTask)
+{
+  ENTRY("vIndexColumnCount"_Str);
+  
+  Object* pPtrIndex;
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrIndex) )
+    THROW_INVALID_DSTACK("index.columnCount"_Str);
+  Index* pIndex = _pIndex(pPtrIndex);
+  ASSERT(CN_INDEX == pIndex->eClass());
+  
+  nnpTask->m_pDataStack->vPush(pIndex->pIdxColVec()->nItems());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* index.columnName -- get column name                                        */
+/*----------------------------------------------------------------------------*/
+void Task::vIndexColumnName(NNP_Task nnpTask)
+{
+  ENTRY("vIndexColumnName"_Str);
+  
+  Object* pPtrIndex;
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrIndex) )
+    THROW_INVALID_DSTACK("index.columnName"_Str);
+  Index* pIndex = _pIndex(pPtrIndex);
+  ASSERT(CN_INDEX == pIndex->eClass());
+  
+  i8 iIndex;
+  if ( ! nnpTask->m_pDataStack->bPop(iIndex) )
+    THROW_INVALID_DSTACK("index.columnName"_Str);
+  
+  ASSERT(iIndex < pIndex->pIdxColVec()->nItems());
+  Column* pColumn = pIndex->pIdxColVec()->pGet(iIndex);
+  
+  nnpTask->m_pDataStack->vPush(pColumn->sColumnName());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* index.columnType -- get column type                                        */
+/*----------------------------------------------------------------------------*/
+void Task::vIndexColumnType(NNP_Task nnpTask)
+{
+  ENTRY("vIndexColumnType"_Str);
+  
+  Object* pPtrIndex;
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrIndex) )
+    THROW_INVALID_DSTACK("index.columnType"_Str);
+  Index* pIndex = _pIndex(pPtrIndex);
+  ASSERT(CN_INDEX == pIndex->eClass());
+  
+  i8 iIndex;
+  if ( ! nnpTask->m_pDataStack->bPop(iIndex) )
+    THROW_INVALID_DSTACK("index.columnType"_Str);
+  
+  ASSERT(iIndex < pIndex->pIdxColVec()->nItems());
+  Column* pColumn = pIndex->pIdxColVec()->pGet(iIndex);
+  s32 sColumnType = DBobjects::aCT[pColumn->eColumnType()];
+  
+  nnpTask->m_pDataStack->vPush(sColumnType);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/

@@ -28,7 +28,7 @@ ld j10 "../JTEST/j10.csv"
 create index idx2 on j10 (j10_key);
 
 
-//create index idx3 on j10 (j10_key, j10_name);
+create index idx3 on j10 (j10_key, j10_name);
 
 
 
