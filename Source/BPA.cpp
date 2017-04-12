@@ -286,6 +286,8 @@ void BPA::vObjectSnapshot(i8* pCountObjects)
 {
   _precondition_(_MAGIC_,CN_BPA,_FOOTER_);
   
+  i8 iCountObjects[CN_ENUMS];
+  
   for (i8 index = 0; index < CN_ENUMS; index++)
     pCountObjects[index] = 0;
   
@@ -298,6 +300,26 @@ void BPA::vObjectSnapshot(i8* pCountObjects)
     
     Buffer* pBuffer = gpBufferPool->pToBuffer(nBuffer);
     pCountObjects[pBuffer->eClass()]++;
+  }
+  
+  gpSmallHeap->vAnalyse(iCountObjects);
+  for (i8 index = 0; index < CN_ENUMS; index++) {
+    eCN eClass = (eCN)index;
+    
+    if (iCountObjects[eClass] == 0)
+      continue;
+    
+    pCountObjects[eClass] += iCountObjects[eClass];
+  }
+  
+  gpMediumHeap->vAnalyse(iCountObjects);
+  for (i8 index = 0; index < CN_ENUMS; index++) {
+    eCN eClass = (eCN)index;
+    
+    if (iCountObjects[eClass] == 0)
+      continue;
+    
+    pCountObjects[eClass] += iCountObjects[eClass];
   }
   
   _postcondition_(_MAGIC_,CN_BPA,_FOOTER_);
