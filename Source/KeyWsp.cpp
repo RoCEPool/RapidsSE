@@ -135,7 +135,8 @@ void KeyWsp::vAddElement(Values::ValWsp &xValWsp)
 void KeyWsp::vReset(void)
 {
   _precondition_(_MAGIC_,CN_KEYWSP,_FOOTER_);
-  
+ 
+  m_xWsp.vUsed(0);
 }
 
 /*----------------------------------------------------------------------------*/

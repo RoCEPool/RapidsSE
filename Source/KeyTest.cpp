@@ -21,14 +21,22 @@ void KeyTest::vTest(void)
   
     xValWsp = i;
     
-//    xKeyWsp.vReset();
-//    xKeyWsp.vAddElement(xValWsp);
-//    
-//    pKeyVal = new KeyVal(xKeyWsp);
-//    
-//    pKeyVec->vAdd(pKeyVal);
+    xKeyWsp.vReset();
+    xKeyWsp.vAddElement(xValWsp);
+    
+    pKeyVal = new KeyVal(xKeyWsp);
+    
+    pKeyVec->vAdd(pKeyVal);
   }
   
+  i8 v;
+  for (i8 i = 0; i < 10; i++) {
+    pKeyVal = pKeyVec->pGet(i);
+    
+    v = StrLib::iToI8(pKeyVal->m_xKey.aWspArea());
+    
+    vTrace("%lld: %lld\n"_Str,i,v);
+  }
   
   delete pKeyVec;
   
