@@ -67,11 +67,11 @@ pDUMPFUN *gpDump[]
   /* 31 */ &Dump::vDummy,           // CN_INDEXBUFFER
   /*    */ &Dump::vDummy,           // CN_IDXCOLVEC
   /*    */ &Dump::vDummy,           // CN_IDXVEC
-  /* 32 */ //&IndexDefn::vDump,       // CN_INDEXDEFN
   /* 33 */ &Dump::vDummy,           // CN_INDEXLEVELS
 
   /* 34 */ &Dump::vDummy,           // CN_JUMBOHEAP
 
+  /*    */ &Dump::vInvalid,         // CN_KEYVEC
   /* 35 */ &Dump::vInvalid,         // CN_KEYWSP
   
   /* 36 */ &LoadChunk::vDump,       // CN_LOADCHUNK
@@ -209,11 +209,11 @@ i8 giClassSize[]
   /* 31 */ 0,                          // CN_INDEXBUFFER
   /*    */ 0,                          // CN_IDXCOLVEC
   /*    */ 0,                          // CN_IDXVEC
-  /* 32 */ //sizeof(IndexDefn),          // CN_INDEXDEFN
   /* 33 */ 0,                          // CN_INDEXLEVELS
   
   /* 34 */ sizeof(Heap), // correct    // CN_JUMBOHEAP
   
+  /*    */ 0,                          // CN_KEYVEC
   /* 35 */ sizeof(KeyWsp),             // CN_KEYWSP
   
   /* 36 */ sizeof(LoadChunk),          // CN_LOADCHUNK
@@ -351,11 +351,11 @@ eHT geWhichHeap[]
   /* 33 */ HT_LARGE,   // CN_INDEXBUFFER
   /*    */ HT_MEDIUM,  // CN_IDXCOLVEC
   /*    */ HT_SMALL,   // CN_IDXVEC
-  /* 34 */ //HT_INVALID, // CN_INDEXDEFN
   /* 35 */ HT_MEDIUM, // CN_INDEXLEVELS
 
   /* 36 */ HT_INVALID, // CN_JUMBOHEAP
   
+  /*    */ HT_INVALID, // CN_KEYVEC
   /* 38 */ HT_INVALID, // CN_KEYWSP
 
   /* 39 */ HT_LARGE,   // CN_LOADCHUNK

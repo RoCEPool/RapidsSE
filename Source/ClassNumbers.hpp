@@ -65,11 +65,11 @@ namespace Base
     /* 31 */ CN_INDEXBUFFER,
     /*    */ CN_IDXCOLVEC,
     /*    */ CN_IDXVEC,
-
-    /* 32 */ //CN_INDEXDEFN,
     /* 33 */ CN_INDEXLEVELS,
   
     /* 34 */ CN_JUMBOHEAP,
+  
+    /*    */ CN_KEYVEC,
     /* 35 */ CN_KEYWSP,
   
     /* 36 */ CN_LOADCHUNK,
@@ -207,12 +207,12 @@ namespace Base
     /* 31 */ "INDEXBUFFER"_Str,
     /*    */ "IDXCOLVEC"_Str,
     /*    */ "IDXVEC"_Str,
-    /* 32 */ //"INDEXDEFN"_Str,
     /* 33 */ "INDEXLEVELS"_Str,
 
     /* 34 */ "JUMBOHEAP"_Str,
     
-    /* 35 */ "KEYVAL"_Str,
+    /*    */ "KEYVEC"_Str,
+    /* 35 */ "KEYWSP"_Str,
   
     /* 36 */ "LOADCHUNK"_Str,
     /* 37 */ "LOADER"_Str,
