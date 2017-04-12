@@ -23,6 +23,8 @@ namespace DBobjects
 
     void vAddElement(ValWsp& xValWsp);
   
+    void  vReset(void);
+  
     char* aWspArea(void);
     Str*  aWspStr(void);
     i8    nWspUsed(void);

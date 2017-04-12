@@ -10,8 +10,25 @@
 void KeyTest::vTest(void)
 {
   vTrace("\n\nKeyTest:*************************************************\n"_Str);
+
+  KeyWsp xKeyWsp;
+  ValWsp xValWsp;
+  KeyVal* pKeyVal;
   
   KeyVec* pKeyVec = new KeyVec;
+  
+  for (i8 i = 0; i < 10; i++) {
+  
+    xValWsp = i;
+    
+//    xKeyWsp.vReset();
+//    xKeyWsp.vAddElement(xValWsp);
+//    
+//    pKeyVal = new KeyVal(xKeyWsp);
+//    
+//    pKeyVec->vAdd(pKeyVal);
+  }
+  
   
   delete pKeyVec;
   
