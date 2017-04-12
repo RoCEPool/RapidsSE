@@ -216,7 +216,7 @@
 
 tp: makingIndex
 
-  locals| indexNm tableNm |
+  0 0 locals| indexPtr tablePtr indexNm tableNm |
 
   args.tracepoint if
   "MAKING INDEX " indexNm str.cat " on NODE " str.cat grid.thisNode@ >str str.cat .
@@ -225,42 +225,41 @@ tp: makingIndex
   tableNm ( "<tableNm>" )
   find execute pathPush
 
-  tableNm indexNm ( "<tableNm>" "<indexNm>" )
+  indexNm ( "<indexNm>" )
 
   "indexes"
   find execute pathPush
 
   // create the index
-  :index ( "<tableNm>" ^index )
+  :index ( ^index )
 
   // drop the index word
-  drop ( "<tableNm>" "<indexNm>" )
+  drop (  )
 
   // make index columns
   indexNm "makeIndexColumns" find execute
 
-  indexNm ( "<tableNm>" "<indexNm>" )
+  indexNm ( "<indexNm>" )
 
   // find the index
-  find execute ( ^table ^index )
-
-  // save the index
-  locals| index | ( ^table )
-
-  // push the index
-  index ("<tableNm>" ^index )
-  swap ( ^index "<tableNm>" )
+  find execute ( ^index )
+  to indexPtr
 
   // find the table
-  find execute ( ^index ^table )
+  tableNm find execute
+  to tablePtr
 
-  swap ( ^table ^index )
+  // push the table and index
+  tablePtr indexPtr ( ^index ^table )
 
   // set the table in the index
   index.table! (  )
 
+  // add the index in the table
+  //index table table.addIndex
+
   // now populate the index
-  index ( ^index )
+  indexPtr ( ^index )
   index.populate
 
   true <SUCCESS_RESULT>
