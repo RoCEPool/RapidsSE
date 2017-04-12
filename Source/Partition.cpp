@@ -93,9 +93,7 @@ Partition::Partition(void)
   
   m_iPartitionId = -1;
   m_pData        = new Data;
-  
-  for (i8 iIndex = 0; iIndex < C_INDEXES_PER_TABLE; iIndex++)
-    m_pIndex[iIndex] = nullptr;
+  m_pIdxVec      = new IdxVec;
   
   _checkInitialised_(CN_PARTITION);
   
@@ -114,6 +112,26 @@ Partition::~Partition(void)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* insert a row into this strand                                              */
+/*----------------------------------------------------------------------------*/
+bool Partition::bInsertRow(RowBuffer* pRowBuffer, TxRef* pTxRef, Str* pRecord, i8 iLength)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DATA,_FOOTER_);
+  
+  // insert the row in the buffer
+  bool bResult = pRowBuffer->bInsertRow( pTxRef, pRecord, iLength);
+  
+  // buffer is full, return
+  if (! bResult )
+    return false;
+  
+  // now insert an entry for the row in the indices of this table
+  
+  
+  return true;
+}
 
 /*----------------------------------------------------------------------------*/
 /* get this partitions partitionId                                            */
@@ -144,7 +162,7 @@ Data* Partition::pData(void)
 /*----------------------------------------------------------------------------*/
 Index* Partition::pIndex(i8 iIndex)
 {
-  return m_pIndex[iIndex];
+  return m_pIdxVec->pGet(iIndex);
 }
 
 /*----------------------------------------------------------------------------*/

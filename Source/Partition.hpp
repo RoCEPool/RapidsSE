@@ -9,13 +9,15 @@ namespace DBobjects
   
   // allow for maximum 8 indexes per table
   static const i8 C_INDEXES_PER_TABLE = 8;
+
+  typedef Vec<CN_IDXVEC,Index,CN_INDEX,C_INDEXES_PER_TABLE> IdxVec;
   
   class Partition : public Object
   {
   private:
     i8         m_iPartitionId;   // partition number
     Data*      m_pData;
-    Index*     m_pIndex[C_INDEXES_PER_TABLE];
+    IdxVec*    m_pIdxVec;
   
     // must be last
     Footer m_xFooter;
@@ -32,6 +34,7 @@ namespace DBobjects
     Partition(void);
     ~Partition(void);
   
+    bool  bInsertRow(RowBuffer* pRowBuffer, TxRef* pTxRef,Str* pRecord,i8 iLength);
     i8    iPartitionId(void);
     void  vPartitionId(i8 iPartitionId);
   

@@ -222,7 +222,7 @@ ENTRY("vTableInit"_Str);
 void Task::vTableInsert(NNP_Task nnpTask)
 {
 ENTRY("vTableInsert"_Str);
-  
+ 
   Object* pPtrTable;
   Object* pPtrTxRef;
   ValWsp xRow;
@@ -244,10 +244,15 @@ ENTRY("vTableInsert"_Str);
   TxRef* pTxRef = _pTxRef(pPtrTxRef);
   ASSERT(CN_TXREF == pTxRef->eClass());
   
+  // invoked by copy...
+  ASSERT(0);
+  
+  /*
   pTable->vInsertRow(iPartition,
                      pTxRef,
                      _pStrVal(&xRow)->aStr(),
                      _pStrVal(&xRow)->nAreaSize());
+   */
   
   EXIT();
 }

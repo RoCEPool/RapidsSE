@@ -252,15 +252,15 @@ void Table::vCreateColumnVec(s32& sColumnNm, s48K& sColumnDefn)
 /*----------------------------------------------------------------------------*/
 /* insert a row in the table                                                  */
 /*----------------------------------------------------------------------------*/
-void Table::vInsertRow(i8 iPartition, TxRef* pTxRef, Str* pRecord, i8 iLength)
+bool Table::bInsertRow(RowBuffer* pRowBuffer, i8 iPartition, TxRef* pTxRef, Str* pRecord, i8 iLength)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
   Partition* pPartn = pPartition(iPartition);
   
-  bool bInserted = pPartn->pData()->bInsertRow(pTxRef,pRecord,iLength);
+  bool bInserted = pPartn->bInsertRow(pRowBuffer, pTxRef,pRecord,iLength);
   
-  ASSERT(bInserted);
+  return bInserted;
 }
 
 /*----------------------------------------------------------------------------*/

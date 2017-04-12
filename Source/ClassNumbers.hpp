@@ -64,6 +64,7 @@ namespace Base
     /* 30 */ CN_INDEX,
     /* 31 */ CN_INDEXBUFFER,
     /*    */ CN_IDXCOLVEC,
+    /*    */ CN_IDXVEC,
 
     /* 32 */ //CN_INDEXDEFN,
     /* 33 */ CN_INDEXLEVELS,
@@ -205,6 +206,7 @@ namespace Base
     /* 30 */ "INDEX"_Str,
     /* 31 */ "INDEXBUFFER"_Str,
     /*    */ "IDXCOLVEC"_Str,
+    /*    */ "IDXVEC"_Str,
     /* 32 */ //"INDEXDEFN"_Str,
     /* 33 */ "INDEXLEVELS"_Str,
 

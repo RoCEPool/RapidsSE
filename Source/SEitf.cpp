@@ -1440,22 +1440,21 @@ bool SEitf::bInsertRow(Str* aRow)
       return false;
     }
   }
-  
+
   // get working buffer
   RowBuffer* pRowBuffer = m_pRowBuffer[m_iPartition];
-  
-  //vTrace("Buffer: %s Partition:%d\n"_Str,pRowBuffer, m_iPartition);
+    //vTrace("Buffer: %s Partition:%d\n"_Str,pRowBuffer, m_iPartition);
   
   // insert row into working buffer
-  if (pRowBuffer->bInsertRow(m_pTxRef,aRow,aRow->nSize()))
-    return true;
-    
-  // buffer full, append working buffer into table
-  //m_pCurrentTable->vAppendBuffer(m_iPartition,pRowBuffer);
+  //if (pRowBuffer->bInsertRow(m_pTxRef,aRow,aRow->nSize()))
+  //  return true;
+  
+ if (m_pCurrentTable->bInsertRow(pRowBuffer, m_iPartition, m_pTxRef, aRow, aRow->nSize()))
+   return true;
   
   //vTrace("Buffer full... Inserting buffer\n"_Str);
   bool bResult = bInsertBuffer(pRowBuffer, m_iPartition);
-  
+
   if (!bResult)
     return bResult;
   

@@ -5,7 +5,10 @@
 "copier.sen" .verbose
 
 : copy ( ^fromTable ^toTable )
-
+  drop drop
+  "copy not supported" .
+  false
+/*
   swap
   >r >r
   // r0 ^toTable
@@ -63,6 +66,7 @@
   "__sel_cursor" find word.forget
 
   true
+ */
 ;
 
 : tableCopier
@@ -75,7 +79,8 @@
 
   // swap        ( ^toTable ^fromTable )
 
-    copy if "copied!" . else . then
+  copy if "copied!" . then
+
 ;
 
 /*============================================================================*/

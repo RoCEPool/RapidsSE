@@ -54,6 +54,7 @@ typedef Vec<CN_IDXCOLVEC,Column,CN_COLUMN,1024> IdxColVec;
 #include "Table.hpp"
 #include "Index.hpp"
 
+
 #include "RbCursor.hpp"
 #include "SelCursor.hpp"
 #include "RowCursor.hpp"
