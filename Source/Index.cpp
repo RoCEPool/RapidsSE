@@ -135,20 +135,22 @@ void Index::vDump(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
 
-  IndexBufferSeq* pIndexBufferSeq = m_pIndexLevels->pFirstBuffer();
-
-  while (pIndexBufferSeq) {
-    pIndexBufferSeq->vShow();
+  IndexBuffer* pIndexBuffer = m_pIndexLevels->pFirstBuffer();
+/*
+  while (pIndexBuffer) {
+    pIndexBuffer->vShow();
     
-    EntrySeq* pEntry = pIndexBufferSeq->pFirstEntry();
+    EntrySeq* pEntry = pIndexBuffer->pFirstEntry();
     
     while (pEntry) {
       pEntry->vContentDump();
       
-      pEntry = pIndexBufferSeq->pNextEntry(pEntry);
+      pEntry = pIndexBuffer->pNextEntry(pEntry);
     }
-    pIndexBufferSeq = pIndexBufferSeq->pNextBuffer();
+    pIndexBuffer = pIndexBuffer->pNextBuffer();
   }
+ */
+  pIndexBuffer->vShow();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -183,7 +185,7 @@ void Index::vPopulate(void)
           
           while (pRow) {
             
-            EntWspSeq xEntWspSeq;
+            EntWsp xEntWsp;
             RowId xRowId;
             ValWsp xValWsp;
             KeyWsp xKeyWsp;
@@ -196,7 +198,7 @@ void Index::vPopulate(void)
             
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
             // set the rowId in the EntWsp
-            xEntWspSeq.vRowId(xRowId);
+            xEntWsp.vRowId(xRowId);
             
             // get the first field (hardcoded)                            //ALKA
             StrVal* pStrVal = (StrVal*)pRow->pData();
@@ -207,15 +209,16 @@ void Index::vPopulate(void)
             // add the key to the KeyWsp
             xValWsp = iKey;
             xKeyWsp.vAddElement(xValWsp);
+            Key xKey(xKeyWsp);
             
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
             // add key to entry
-            xEntWspSeq.vAddKey(xKeyWsp);
+            xEntWsp.vAddKey(xKeyWsp);
 
-            xEntWspSeq.vShow();
+            xEntWsp.vShow();
             
             // insert row entry in index
-            m_pIndexLevels->vInsertEntry(xEntWspSeq);
+            m_pIndexLevels->vInsertEntry(&xKey, xRowId);
             pRow = pRowBuffer->pNextRow(pRow);
             nRowNo++;
           }

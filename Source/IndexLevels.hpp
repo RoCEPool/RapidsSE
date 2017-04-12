@@ -12,7 +12,7 @@ namespace DBobjects
   {
   private:
     Lock         m_zLock;          // lock covers all levels
-    IndexBufferSeq* m_pIndexBuffer[C_LEVELS_PER_INDEX];
+    IndexBuffer* m_pIndexBuffer[C_LEVELS_PER_INDEX];
   
     // must be last
     Footer m_xFooter;
@@ -26,9 +26,9 @@ namespace DBobjects
     IndexLevels(void);
     ~IndexLevels(void);
     
-    IndexBufferSeq* pFirstBuffer(void);
+    IndexBuffer* pFirstBuffer(void);
     
-    void vInsertEntry(EntWspSeq& xEntWspSeq);
+    void vInsertEntry(Key* aKey, RowId xRowId);
     void vTruncate(void);
     
     Footer* pFooter(void);

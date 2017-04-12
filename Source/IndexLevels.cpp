@@ -80,7 +80,7 @@ IndexLevels::~IndexLevels(void)
 /*----------------------------------------------------------------------------*/
 /* insert a row                                                               */
 /*----------------------------------------------------------------------------*/
-IndexBufferSeq* IndexLevels::pFirstBuffer(void)
+IndexBuffer* IndexLevels::pFirstBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXLEVELS,_FOOTER_);
   
@@ -90,23 +90,23 @@ IndexBufferSeq* IndexLevels::pFirstBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* insert a row                                                               */
 /*----------------------------------------------------------------------------*/
-void IndexLevels::vInsertEntry(EntWspSeq& xEntWspSeq)
+void IndexLevels::vInsertEntry(Key* aKey, RowId xRowId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXLEVELS,_FOOTER_);
   
   
   if (!m_pIndexBuffer[0])
-    m_pIndexBuffer[0] = new IndexBufferSeq;
+    m_pIndexBuffer[0] = new IndexBuffer;
 
   bool bResult = false;
-  IndexBufferSeq* pIndexBufferSeq = m_pIndexBuffer[0];
+  IndexBuffer* pIndexBuffer = m_pIndexBuffer[0];
   
-  while ( ! bResult) {
-    pIndexBufferSeq = pIndexBufferSeq->pFindBuffer(xEntWspSeq);
+  //while ( ! bResult) {
+    //pIndexBuffer = pIndexBuffer->pFindBuffer(xEntWsp);
  
     // insert entry into index buffer
-    bResult = pIndexBufferSeq->bInsertEntry(xEntWspSeq);
-  }
+    bResult = pIndexBuffer->bInsert(aKey, xRowId);
+  //}
   
 }
 
@@ -119,13 +119,13 @@ void IndexLevels::vTruncate(void)
   
   m_zLock.vGrabWrite();
   
-  IndexBufferSeq* pIndexBufferSeq = m_pIndexBuffer[0];
-  IndexBufferSeq* pNextIndexBufferSeq;
+  IndexBuffer* pIndexBuffer = m_pIndexBuffer[0];
+  IndexBuffer* pNextIndexBuffer;
   
-  while(pIndexBufferSeq) {
-    pNextIndexBufferSeq = pIndexBufferSeq->pNextBuffer();
-    delete pIndexBufferSeq;
-    pIndexBufferSeq = pNextIndexBufferSeq;
+  while(pIndexBuffer) {
+    pNextIndexBuffer = pIndexBuffer->pNextBuffer();
+    delete pIndexBuffer;
+    pIndexBuffer = pNextIndexBuffer;
   }
   
   m_zLock.vDropWrite();

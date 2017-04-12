@@ -261,7 +261,7 @@ tp: makingIndex
 
   // now populate the index
   index ( ^index )
-  //index.populate
+  index.populate
 
   true <SUCCESS_RESULT>
 ;

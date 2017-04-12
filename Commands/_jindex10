@@ -21,9 +21,15 @@ create table j10 (
 );
 
 create index idx1 on j10 (j10_key);
-create index idx2 on j10 (j10_key, j10_name);
-//print "loading j10.tbl..."
-//ld j10 "../JTEST/j10.csv"
+
+print "loading j10.tbl..."
+ld j10 "../JTEST/j10.csv"
+
+create index idx2 on j10 (j10_key);
+
+
+//create index idx3 on j10 (j10_key, j10_name);
+
 
 
 /*============================================================================*/
