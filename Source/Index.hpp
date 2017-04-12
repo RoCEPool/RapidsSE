@@ -48,6 +48,7 @@ namespace DBobjects
     void vCreateColumnVec(s32& sName, s48K& sDefinition);
     void vDump(void);
     IndexBufferSeq* pFirstBuffer(void);
+    void vInsertEntry(Row* pRow, i8 nRowNo, bn nBufferNo);
     void vPopulate(void);
     void vShowColumnVec(void);
     Dic* pSubDic(void);

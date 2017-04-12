@@ -131,15 +131,22 @@ bool Partition::bInsertRow(RowBuffer* pRowBuffer, TxRef* pTxRef, Str* pRecord, i
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
   
+  Row* pRow;
+  
   // insert the row in the buffer
-  bool bResult = pRowBuffer->bInsertRow( pTxRef, pRecord, iLength);
+  bool bResult = pRowBuffer->bInsertRow( pTxRef, pRecord, iLength, &pRow);
   
   // buffer is full, return
   if (! bResult )
     return false;
   
   // now insert an entry for the row in the indices of this table
+  i8 nIndexes = m_pIdxVec->nItems();
   
+  for (i8 iIndex=0; iIndex < nIndexes; iIndex++) {
+    Index* pIndex = m_pIdxVec->pGet(iIndex);
+    pIndex->vInsertEntry(pRow, pRowBuffer->nRows(), pRowBuffer->nBufferNo());
+  }
   
   return true;
 }

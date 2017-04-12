@@ -267,9 +267,11 @@ i8 RowBuffer::nFreeBytes(void)
 /*----------------------------------------------------------------------------*/
 /* insert row into this buffer                                                */
 /*----------------------------------------------------------------------------*/
-bool RowBuffer::bInsertRow(TxRef* pTxRef, Str* pRecord, i8 iLength)
+bool RowBuffer::bInsertRow(TxRef* pTxRef, Str* pRecord, i8 iLength, Row** ppRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
+  
+  *ppRow = nullptr;
   
   i8 nBytes = StrVal::nAreaRequired(iLength);
   
@@ -288,6 +290,8 @@ bool RowBuffer::bInsertRow(TxRef* pTxRef, Str* pRecord, i8 iLength)
   pStr->vAssign(pRecord,iLength);
   
   _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_,CN_ROWBUFFER);
+  
+  *ppRow = pRow;
   
   return true;
 }

@@ -157,6 +157,50 @@ void Index::vDump(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* insert an entry for the row into the index                                 */
+/*----------------------------------------------------------------------------*/
+void Index::vInsertEntry(Row* pRow, i8 nRowNo, bn nBufferNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
+  
+  EntWsp xEntWsp;
+  RowId xRowId;
+  ValWsp xValWsp;
+  KeyWsp xKeyWsp;
+  i8 iKey;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // form the rowId
+  xRowId.vBuffer(*nBufferNo);
+  xRowId.vRow(nRowNo);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set the rowId in the EntWsp
+  xEntWsp.vRowId(xRowId);
+  
+  // get the first field (hardcoded)                            //ALKA
+  StrVal* pStrVal = (StrVal*)pRow->pData();
+  
+  // extract the key from the first field
+  iKey = pStrVal->iToI8();
+  
+  // add the key to the KeyWsp
+  xValWsp = iKey;
+  xKeyWsp.vAddElement(xValWsp);
+  Key xKey(xKeyWsp);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // add key to entry
+  xEntWsp.vAddKey(xKeyWsp);
+  
+  xEntWsp.vShow();
+  
+  // insert row entry in index
+  m_pIndexLevels->vInsertEntry(&xKey, xRowId);
+  
+}
+
+/*----------------------------------------------------------------------------*/
 /* populate the index                                                         */
 /*----------------------------------------------------------------------------*/
 void Index::vPopulate(void)
@@ -187,41 +231,7 @@ void Index::vPopulate(void)
           i8 nRowNo = 0;
           
           while (pRow) {
-            
-            EntWsp xEntWsp;
-            RowId xRowId;
-            ValWsp xValWsp;
-            KeyWsp xKeyWsp;
-            i8 iKey;
-            
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-            // form the rowId
-            xRowId.vBuffer(*nBufferNo);
-            xRowId.vRow(nRowNo);
-            
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-            // set the rowId in the EntWsp
-            xEntWsp.vRowId(xRowId);
-            
-            // get the first field (hardcoded)                            //ALKA
-            StrVal* pStrVal = (StrVal*)pRow->pData();
-            
-            // extract the key from the first field
-            iKey = pStrVal->iToI8();
-            
-            // add the key to the KeyWsp
-            xValWsp = iKey;
-            xKeyWsp.vAddElement(xValWsp);
-            Key xKey(xKeyWsp);
-            
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-            // add key to entry
-            xEntWsp.vAddKey(xKeyWsp);
-
-            xEntWsp.vShow();
-            
-            // insert row entry in index
-            m_pIndexLevels->vInsertEntry(&xKey, xRowId);
+            vInsertEntry(pRow, nRowNo, nBufferNo);
             pRow = pRowBuffer->pNextRow(pRow);
             nRowNo++;
           }

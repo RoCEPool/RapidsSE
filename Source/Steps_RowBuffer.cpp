@@ -46,6 +46,8 @@ void Task::vRowBufferAppend(NNP_Task nnpTask)
 ENTRY("vRowBufferAppend"_Str);
   
   Object* pPtrRowBuffer;
+  Row* pRow;
+  
   if ( ! nnpTask->m_pDataStack->bPop(pPtrRowBuffer) )
     THROW_INVALID_DSTACK("rowbuffer.append"_Str);
   RowBuffer* pRowBuffer = _pRowBuffer(pPtrRowBuffer);
@@ -63,7 +65,7 @@ ENTRY("vRowBufferAppend"_Str);
 
   i8 iLength = sRecord.iLength();
   
-  bool b = pRowBuffer->bInsertRow(pTxRef,sRecord,iLength);
+  bool b = pRowBuffer->bInsertRow(pTxRef,sRecord,iLength,&pRow);
   
   if (b) {
     nnpTask->m_pDataStack->vPush((i8)1);
@@ -82,6 +84,8 @@ ENTRY("vRowBufferAppend"_Str);
 void Task::vRowBufferAppendRecord(NNP_Task nnpTask)
 {
   ENTRY("vRowBufferAppendRecord"_Str);
+  
+  Row* pRow;
   
   Object* pPtrRowBuffer;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrRowBuffer) )
@@ -105,7 +109,7 @@ void Task::vRowBufferAppendRecord(NNP_Task nnpTask)
   
   i8 iLength = pFile->iRecordLength();
   
-  bool b = pRowBuffer->bInsertRow(pTxRef,aRecord,iLength);
+  bool b = pRowBuffer->bInsertRow(pTxRef,aRecord,iLength,&pRow);
   
   if (b) {
     nnpTask->m_pDataStack->vPush((i8)1);

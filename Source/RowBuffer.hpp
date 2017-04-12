@@ -55,7 +55,7 @@ namespace DBobjects
     void       vDurability(eRD eDurability);
     Row*       pFirstRow(void);
     i8         nFreeBytes(void);
-    bool       bInsertRow(TxRef* pTxRef, Str* pRecord, i8 iLength);
+    bool       bInsertRow(TxRef* pTxRef, Str* pRecord, i8 iLength, Row** ppRow);
     RowBuffer* pNextBuffer(void);
     void       vNextBuffer(RowBuffer* pNextBuffer);
     Row*       pNextRow(Row* pCurrRow);

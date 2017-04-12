@@ -1476,7 +1476,9 @@ bool SEitf::bInsertRow(Str* aRow)
   pRowBuffer = m_pRowBuffer[m_iPartition];
   
   // insert row into new working buffer
-  bool bInserted = pRowBuffer->bInsertRow(m_pTxRef,aRow,aRow->nSize());
+  //bool bInserted = pRowBuffer->bInsertRow(m_pTxRef,aRow,aRow->nSize());
+  
+  bool bInserted = m_pCurrentTable->bInsertRow(pRowBuffer, m_iPartition, m_pTxRef, aRow, aRow->nSize());
   
   return bInserted;
   
