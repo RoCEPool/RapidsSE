@@ -123,6 +123,20 @@ void Table::vDump(eCN eClass, Object* pObject, Str* aTab)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* dump table                                                                 */
+/*----------------------------------------------------------------------------*/
+void Table::vAddIndex(Index* pIndex)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  
+  for (i8 iPartition = 0; iPartition < gpGrid->m_nSlots; iPartition++) {
+    Partition* pPartition = this->pPartition(iPartition);
+    pPartition->vAddIndex(pIndex);
+  }
+  
+}
+
+/*----------------------------------------------------------------------------*/
 /* analyze table                                                              */
 /*----------------------------------------------------------------------------*/
 Str* Table::pAnalyze(bool bDetailed)

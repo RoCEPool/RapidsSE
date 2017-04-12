@@ -256,7 +256,7 @@ tp: makingIndex
   index.table! (  )
 
   // add the index in the table
-  //index table table.addIndex
+  indexPtr tablePtr table.addIndex
 
   // now populate the index
   indexPtr ( ^index )

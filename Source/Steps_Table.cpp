@@ -32,6 +32,7 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Table(void)
 {
+  vAddPrimitive("table.addIndex"_Str,        &vTableAddIndex,        false);
   vAddPrimitive("table.analyze"_Str,         &vTableAnalyze,         false);
   vAddPrimitive("table.append"_Str,          &vTableAppend,          false);
   vAddPrimitive("table.appendBuffer"_Str,    &vTableAppendBuffer,    false);
@@ -45,6 +46,33 @@ void Task::vAddPrimitives_Table(void)
   vAddPrimitive("table.space"_Str,           &vTableSpace,           false);
   vAddPrimitive("table.subDic"_Str,          &vTableSubDic,          false);
   vAddPrimitive("table.truncate"_Str,        &vTableTruncate,        false);
+}
+
+/*----------------------------------------------------------------------------*/
+/* table.addIndex -- add index to the table                                   */
+/*----------------------------------------------------------------------------*/
+void Task::vTableAddIndex(NNP_Task nnpTask)
+{
+  ENTRY("vTableAddIndex"_Str);
+  
+  Object* pPtrTable;
+  Object* pPtrIndex;
+  
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrTable) )
+    THROW_INVALID_DSTACK("table.addIndex"_Str);
+  
+  Table* pTable = _pTable(pPtrTable);
+  ASSERT(CN_TABLE == pTable->eClass());
+  
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrIndex) )
+    THROW_INVALID_DSTACK("table.addIndex"_Str);
+  
+  Index* pIndex = _pIndex(pPtrIndex);
+  ASSERT(CN_INDEX == pIndex->eClass());
+  
+  pTable->vAddIndex(pIndex);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/

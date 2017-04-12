@@ -34,6 +34,7 @@ namespace DBobjects
     Partition(void);
     ~Partition(void);
   
+    void  vAddIndex(Index* pIndex);
     bool  bInsertRow(RowBuffer* pRowBuffer, TxRef* pTxRef,Str* pRecord,i8 iLength);
     i8    iPartitionId(void);
     void  vPartitionId(i8 iPartitionId);

@@ -116,9 +116,20 @@ Partition::~Partition(void)
 /*----------------------------------------------------------------------------*/
 /* insert a row into this strand                                              */
 /*----------------------------------------------------------------------------*/
+void Partition::vAddIndex(Index* pIndex)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
+  
+  ASSERT(m_pIdxVec->nItems() < C_INDEXES_PER_TABLE);
+  m_pIdxVec->vAdd(pIndex);
+}
+
+/*----------------------------------------------------------------------------*/
+/* insert a row into this strand                                              */
+/*----------------------------------------------------------------------------*/
 bool Partition::bInsertRow(RowBuffer* pRowBuffer, TxRef* pTxRef, Str* pRecord, i8 iLength)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DATA,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
   
   // insert the row in the buffer
   bool bResult = pRowBuffer->bInsertRow( pTxRef, pRecord, iLength);
