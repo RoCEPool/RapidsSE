@@ -52,7 +52,7 @@ using namespace DBobjects;
 
 typedef Vec<CN_COLUMNVEC,Column,CN_COLUMN,1024> ColumnVec;
 typedef Vec<CN_IDXCOLVEC,Column,CN_COLUMN,1024> IdxColVec;
-//typedef Vec<CN_KEYVEC,Column,CN_COLUMN,1024> KeyVec;
+typedef Vec<CN_KEYVEC,KeyVal,CN_KEYVAL,1024> KeyVec;
 
 #include "Table.hpp"
 #include "Index.hpp"

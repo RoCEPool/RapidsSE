@@ -1,15 +1,17 @@
 /*============================================================================*/
-/* KeyLib.hpp -- key library / test                                           */
+/* KeyTest.hpp -- key library / test                                          */
 /*============================================================================*/
 #pragma once
 
 namespace DBobjects
 {
-  class KeyLib
+  class KeyTest
   {
   private:
   
   public:
+  
+  static void vTest(void);
   };
   
 }

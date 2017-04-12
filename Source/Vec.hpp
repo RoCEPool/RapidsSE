@@ -52,7 +52,7 @@ Vec<VEC_CN, ITEM, ITEM_CN, MAX_ITEMS>* Structures::_pVec(void* aAddr)
   Vec<VEC_CN, ITEM, ITEM_CN, MAX_ITEMS>* pVec =
     reinterpret_cast<Vec<VEC_CN, ITEM, ITEM_CN, MAX_ITEMS>*>(aAddr);
   
-  RASSERT( !pVec || ITEM_CN == pVec->eClass() );
+  RASSERT( !pVec || VEC_CN == pVec->eClass() );
   
   return pVec;
 }

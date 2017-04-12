@@ -134,6 +134,8 @@ int main(int argc, const char* argv[])
     pRunTests->vRunTests();
   }
   
+  KeyTest::vTest();
+  
   // optionally execute se> prompt
   if (gxArguments.m_bPrompt) {
     
