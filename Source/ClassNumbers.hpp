@@ -69,6 +69,7 @@ namespace Base
   
     /* 34 */ CN_JUMBOHEAP,
   
+    /*    */ CN_KEYVAL,
     /*    */ CN_KEYVEC,
     /* 35 */ CN_KEYWSP,
   
@@ -211,6 +212,7 @@ namespace Base
 
     /* 34 */ "JUMBOHEAP"_Str,
     
+    /*    */ "KEYVAL"_Str,
     /*    */ "KEYVEC"_Str,
     /* 35 */ "KEYWSP"_Str,
   

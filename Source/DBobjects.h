@@ -31,6 +31,8 @@ using namespace DBobjects;
 #include "RowId.hpp"
 #include "KeyWsp.hpp"
 #include "Key.hpp"
+#include "KeyVal.hpp"
+#include "KeyTest.hpp"
 #include "RightVec.hpp"
 #include "EntryData.hpp"
 #include "EntWsp.hpp"
@@ -50,6 +52,7 @@ using namespace DBobjects;
 
 typedef Vec<CN_COLUMNVEC,Column,CN_COLUMN,1024> ColumnVec;
 typedef Vec<CN_IDXCOLVEC,Column,CN_COLUMN,1024> IdxColVec;
+//typedef Vec<CN_KEYVEC,Column,CN_COLUMN,1024> KeyVec;
 
 #include "Table.hpp"
 #include "Index.hpp"

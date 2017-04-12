@@ -71,7 +71,8 @@ pDUMPFUN *gpDump[]
 
   /* 34 */ &Dump::vDummy,           // CN_JUMBOHEAP
 
-  /*    */ &Dump::vInvalid,         // CN_KEYVEC
+  /*    */ &Dump::vDummy,           // CN_KEYVAL
+  /*    */ &Dump::vDummy,           // CN_KEYVEC
   /* 35 */ &Dump::vInvalid,         // CN_KEYWSP
   
   /* 36 */ &LoadChunk::vDump,       // CN_LOADCHUNK
@@ -213,6 +214,7 @@ i8 giClassSize[]
   
   /* 34 */ sizeof(Heap), // correct    // CN_JUMBOHEAP
   
+  /*    */ sizeof(KeyVal),             // CN_KEYVAL
   /*    */ 0,                          // CN_KEYVEC
   /* 35 */ sizeof(KeyWsp),             // CN_KEYWSP
   
@@ -351,11 +353,12 @@ eHT geWhichHeap[]
   /* 33 */ HT_LARGE,   // CN_INDEXBUFFER
   /*    */ HT_MEDIUM,  // CN_IDXCOLVEC
   /*    */ HT_SMALL,   // CN_IDXVEC
-  /* 35 */ HT_MEDIUM, // CN_INDEXLEVELS
+  /* 35 */ HT_MEDIUM,  // CN_INDEXLEVELS
 
   /* 36 */ HT_INVALID, // CN_JUMBOHEAP
   
-  /*    */ HT_INVALID, // CN_KEYVEC
+  /*    */ HT_SMALL,   // CN_KEYVAL
+  /*    */ HT_MEDIUM,  // CN_KEYVEC
   /* 38 */ HT_INVALID, // CN_KEYWSP
 
   /* 39 */ HT_LARGE,   // CN_LOADCHUNK
