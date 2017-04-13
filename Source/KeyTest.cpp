@@ -35,6 +35,7 @@ void KeyTest::vTest(void)
   
   i8 v;
   for (i8 i = 0; i < 10; i++) {
+    
     pKeyVal = pKeyVec->pGet(i);
     
     v = *(i8*)pKeyVal->m_xKey.aWspArea();
