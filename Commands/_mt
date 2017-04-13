@@ -31,7 +31,7 @@ lstbl
 lf
 lscol j10
 
-//ld j10 "../JTEST/j10.csv"
+ld j10 "../JTEST/j10.csv"
 
 drop table j10;
 
