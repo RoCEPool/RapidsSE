@@ -112,9 +112,9 @@ void Key::vKey(KeyWsp& xKeyWsp)
 /*----------------------------------------------------------------------------*/
 /* get next element from key                                                  */
 /*----------------------------------------------------------------------------*/
-char* Key::aNext(char** aaCursor, Column* pColumn)
+char* Key::aElement(Column* pColumn, i8& nBytes, char** aaCursor)
 {
-  char* aElement = *aaCursor;
+  char* aElement = pColumn->aValue(nBytes,aaCursor);
   
   return aElement;
 }

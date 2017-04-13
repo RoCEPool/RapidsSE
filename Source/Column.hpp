@@ -89,6 +89,8 @@ namespace DBobjects
   
     bool bValidateField(Str** aaSubRow);
   
+    char* aValue(i8& nBytes, char** aaCursor);
+  
     Footer* pFooter(void);
   };
   

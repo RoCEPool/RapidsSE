@@ -26,7 +26,7 @@ namespace DBobjects
     void  vKey(Key& xKey);
     void  vKey(KeyWsp& xKeyWsp);
   
-    char* aNext(char** aaCursor, Column* pColumn);
+    char* aElement(Column* pColumn, i8& nBytes, char** aaCursor);
   
     char* aWspArea(void);
     Str*  aWspStr(void);

@@ -34,11 +34,16 @@ void KeyTest::vTest(void)
   }
   
   i8 v;
+  i8 nBytes;
+  char* aCursor;
+  
   for (i8 i = 0; i < 10; i++) {
     
     pKeyVal = pKeyVec->pGet(i);
     
-    v = *(i8*)pKeyVal->m_xKey.aWspArea();
+//    v = *(i8*)pKeyVal->m_xKey.aWspArea();
+    aCursor = pKeyVal->m_xKey.aWspArea();
+    v = *(i8*)pKeyVal->aElement(pCol,nBytes,&aCursor);
     
     vTrace("%lld: %lld\n"_Str,i,v);
   }
