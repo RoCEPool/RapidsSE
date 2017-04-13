@@ -2,6 +2,8 @@
 /* _mt -- memory tests (to ensure no resource leaks)                          */
 /*============================================================================*/
 
+docol epochTake
+
 cf ~
 create tenant t;
 lsten
@@ -20,8 +22,6 @@ cf s
 cf tables
 pwf
 
-docol epochTake
-
 create table j10 (
   j10_key   INTEGER NOT NULL,
   j10_name  VARCHAR(32) NOT NULL
@@ -30,9 +30,28 @@ lstbl
 
 lf
 lscol j10
-drop table j10;
 
 //ld j10 "../JTEST/j10.csv"
+
+drop table j10;
+
+cf ..
+rf tables
+
+cf ..
+drop schema s;
+
+cf ..
+rf schemas
+
+cf ..
+drop catalog c;
+
+cf ..
+rf catalogs
+
+cf ..
+drop tenant t;
 
 docol epochDump
 
