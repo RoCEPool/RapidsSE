@@ -98,6 +98,10 @@ Index::~Index(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
   
+  // Since the column is picked from the ColVec of table
+  // we need to just remove it from the IdxColVec before deleting it
+  m_pIdxColVec->vClear();
+  
   delete m_pIdxColVec;
 }
 
@@ -112,7 +116,7 @@ void Index::vCreateColumnVec(s32& sColumnNm, s48K& sColumnDefn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
   
-    vTrace("vCreateColumnVec: index %s column %s %s\n"_Str,
+  vTrace("vCreateColumnVec: index %s column %s %s\n"_Str,
            m_sIndexName.s(),
            sColumnNm.aStr(),
            sColumnDefn.aStr());

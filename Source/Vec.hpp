@@ -24,6 +24,7 @@ namespace Structures
     ~Vec(void);
   
     void  vAdd(ITEM* pObject);
+    void  vClear(void);
     void  vInsert(ITEM* pObject);
     i8    nItems(void);
     ITEM* pGet(i8 iItem);
@@ -112,7 +113,7 @@ Vec<VEC_CN, ITEM, ITEM_CN, MAX_ITEMS>::~Vec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,VEC_CN,_FOOTER_);
   
-  for (i8 iItem = 0; iItem < MAX_ITEMS; iItem++)
+  for (i8 iItem = 0; iItem < m_nItems; iItem++)
     delete m_pItem[iItem];
 }
 
@@ -140,6 +141,17 @@ void Vec<VEC_CN, ITEM, ITEM_CN, MAX_ITEMS>::vAdd(ITEM* pItem)
   
   // set item
   m_pItem[iItem] = pItem;
+}
+
+/*----------------------------------------------------------------------------*/
+/* clear all items                                                            */
+/*----------------------------------------------------------------------------*/
+template <eCN VEC_CN, class ITEM, eCN ITEM_CN, i8 MAX_ITEMS>
+void Vec<VEC_CN, ITEM, ITEM_CN, MAX_ITEMS>::vClear(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,VEC_CN,_FOOTER_);
+  
+  m_nItems = 0;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -32,6 +32,7 @@ lf
 lscol j10
 
 ld j10 "../JTEST/j10.csv"
+create index idx1 on j10 (j10_key);
 
 drop table j10;
 

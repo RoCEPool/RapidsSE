@@ -36,12 +36,13 @@ namespace DBobjects
   
     void  vAddIndex(Index* pIndex);
     
-    bool   bInsertRow(RowBuffer* pRowBuffer, TxRef* pTxRef,Str* pRecord,i8 iLength);
-    i8     iPartitionId(void);
-    void   vPartitionId(i8 iPartitionId);
-    Data*  pData(void);
-    Index* pIndex(i8 iIndex);
-    void   vTidyUp(void);
+    bool    bInsertRow(RowBuffer* pRowBuffer, TxRef* pTxRef,Str* pRecord,i8 iLength);
+    i8      iPartitionId(void);
+    void    vPartitionId(i8 iPartitionId);
+    Data*   pData(void);
+    Index*  pIndex(i8 iIndex);
+    IdxVec* pIdxVec(void);
+    void    vTidyUp(void);
     
   private:
     Footer* pFooter(void);

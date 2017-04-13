@@ -185,11 +185,23 @@ Index* Partition::pIndex(i8 iIndex)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get index vector                                                           */
+/*----------------------------------------------------------------------------*/
+IdxVec* Partition::pIdxVec(void)
+{
+  return m_pIdxVec;
+}
+
+/*----------------------------------------------------------------------------*/
 /* tidy up                                                                    */
 /*----------------------------------------------------------------------------*/
 void Partition::vTidyUp(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
+  
+  // clear the indexes from the IdxVec
+  // (indexes are shared across all partitions)
+  m_pIdxVec->vClear();
   
   // delete the index vector
   delete m_pIdxVec;
