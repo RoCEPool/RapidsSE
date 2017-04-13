@@ -68,6 +68,34 @@ char* KeyVal::aElement(Column* pColumn, i8& nBytes, char** aaCursor)
   return aElement;
 }
 
+/*----------------------------------------------------------------------------*/
+/* compare element from another key                                           */
+/*----------------------------------------------------------------------------*/
+bool KeyVal::bLessThan(KeyVal* pKeyValThat, ColumnVec* pColVec)
+{
+  bool bLessThan = false;
+  
+  char* aCursorThis = m_xKey.aWspArea();
+  char* aCursorThat = pKeyValThat->m_xKey.aWspArea();
+  
+  for (i8 iColumn = 0; iColumn < pColVec->nItems(); iColumn++) {
+    
+    Column* pColumn = pColVec->pGet(iColumn);
+    
+    i8 nBytesThis;
+    i8 nBytesThat;
+    
+    char* aElementThis = aElement(pColumn,nBytesThis,&aCursorThis);
+    char* aElementThat = aElement(pColumn,nBytesThat,&aCursorThat);
+    
+    bLessThan = pColumn->bLessThan(aElementThis,nBytesThis,aElementThat,nBytesThat);
+    if (!bLessThan)
+      break;
+  }
+  
+  return bLessThan;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

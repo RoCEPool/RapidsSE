@@ -4,6 +4,8 @@
 
 #include "Datums.h"
 
+#include "StorageEngine.h"
+
 /*----------------------------------------------------------------------------*/
 /* extract a decimal from substr                                              */
 /*----------------------------------------------------------------------------*/
@@ -315,6 +317,33 @@ bool DtmLib::bValidTsp(char** aaSrc)
   bool bValid = bExtractTsp(aaSrc,&xTsp);
   
   return bValid;
+}
+
+/*----------------------------------------------------------------------------*/
+/* valid timestamp in substr?                                                 */
+/*----------------------------------------------------------------------------*/
+bool DtmLib::bLessThan(eDM eDatum, char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
+{
+  bool bLessThan = false;
+  
+  switch (eDatum) {
+    case DM_BCD: bLessThan = false; break;
+    case DM_BOL: bLessThan = false; break;
+    case DM_CHR: bLessThan = false; break;
+    case DM_DTE: bLessThan = false; break;
+    case DM_FLT: bLessThan = false; break;
+    case DM_INT: bLessThan = Int::bLessThan(aArgA,nBytesA,aArgB,nBytesB); break;
+    case DM_IVL: bLessThan = false; break;
+    case DM_TME: bLessThan = false; break;
+    case DM_TSP: bLessThan = false; break;
+    case DM_VBN: bLessThan = false; break;
+    case DM_VCH: bLessThan = false; break;
+
+    default:
+      THROW("Invalid eDatum %lld"_Str,eDatum);
+
+  }
+  return bLessThan;
 }
 
 /*============================================================================*/

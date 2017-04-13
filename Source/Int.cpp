@@ -69,6 +69,26 @@ void Int::vSprint(Str* aDst, Str* aSrc, i8& nBytesTaken)
   nBytesTaken = sizeof(i8);
 }
 
+/*----------------------------------------------------------------------------*/
+/* valid timestamp in substr?                                                 */
+/*----------------------------------------------------------------------------*/
+bool Int::bLessThan(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
+{
+  bool bLessThan;
+
+  ASSERT(sizeof(i8) == nBytesA);
+  ASSERT(sizeof(i8) == nBytesB);
+  
+  i8 iA = *(i8*)aArgA;
+  i8 iB = *(i8*)aArgB;
+  
+  if (iA < iB)
+    bLessThan = true;
+  else
+    bLessThan = false;
+  
+  return bLessThan;
+}
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

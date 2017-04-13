@@ -23,6 +23,7 @@ using namespace DBobjects;
 //------------------------------------------------------------------------------
 
 #include "Column.hpp"
+typedef Vec<CN_COLUMNVEC,Column,CN_COLUMN,1024> ColumnVec;
 
 #include "Row.hpp"
 #include "RowBuffer.hpp"
@@ -51,7 +52,6 @@ using namespace DBobjects;
 #include "Ring.hpp"
 
 
-typedef Vec<CN_COLUMNVEC,Column,CN_COLUMN,1024> ColumnVec;
 typedef Vec<CN_IDXCOLVEC,Column,CN_COLUMN,1024> IdxColVec;
 typedef Vec<CN_KEYVEC,KeyVal,CN_KEYVAL,1024> KeyVec;
 

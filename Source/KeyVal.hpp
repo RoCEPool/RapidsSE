@@ -20,6 +20,8 @@ namespace DBobjects
     ~KeyVal(void);
   
     char* aElement(Column* pColumn, i8& nBytes, char** aaCursor);
+ 
+    bool bLessThan(KeyVal* pKeyVal, ColumnVec* pColVec);
   
   };
   

@@ -395,6 +395,18 @@ char* Column::aValue(i8& nBytes, char** aaCursor)
 }
 
 /*----------------------------------------------------------------------------*/
+/* less than                                                                  */
+/*----------------------------------------------------------------------------*/
+bool Column::bLessThan(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+  
+  bool bLessThan = DtmLib::bLessThan(m_eDatumType,aArgA,nBytesA,aArgB,nBytesB);
+  
+  return bLessThan;
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 

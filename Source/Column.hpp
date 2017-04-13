@@ -91,6 +91,8 @@ namespace DBobjects
   
     char* aValue(i8& nBytes, char** aaCursor);
   
+    bool bLessThan(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB);
+  
     Footer* pFooter(void);
   };
   

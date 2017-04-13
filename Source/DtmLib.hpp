@@ -28,6 +28,9 @@ namespace Datums
   static bool bValidIvl(char** aaSrc);
   static bool bValidTme(char** aaSrc);
   static bool bValidTsp(char** aaSrc);
+  
+  static bool bLessThan(eDM eDatum, char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB);
+  
   };
 }
 

@@ -41,11 +41,19 @@ void KeyTest::vTest(void)
     
     pKeyVal = pKeyVec->pGet(i);
     
-//    v = *(i8*)pKeyVal->m_xKey.aWspArea();
     aCursor = pKeyVal->m_xKey.aWspArea();
     v = *(i8*)pKeyVal->aElement(pCol,nBytes,&aCursor);
     
     vTrace("%lld: %lld\n"_Str,i,v);
+  }
+
+  KeyVal* pKeyValA = pKeyVec->pGet(0);
+  for (i8 i = 1; i < 10; i++) {
+    
+    KeyVal* pKeyValB = pKeyVec->pGet(i);
+    ASSERT(pKeyValA->bLessThan(pKeyValB,pColVec));
+    
+    pKeyValA = pKeyValB;
   }
   
   delete pKeyVec;
