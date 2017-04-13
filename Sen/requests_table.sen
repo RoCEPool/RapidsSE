@@ -430,9 +430,7 @@ ddlLock.grabWrite
 
   // push table dictionary
   dup pushTable assert
-pathDump
 
-stk
   // check it is a table
   checkIsTable  not if <NIP+ERROR> exit then
 

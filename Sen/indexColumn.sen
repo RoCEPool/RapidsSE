@@ -160,7 +160,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  indexPtr index.showColumnVec
+  //indexPtr index.showColumnVec
 
   assert.stack_0
 

@@ -29,6 +29,10 @@ tp: create_index
 
   ddlLock.grabWrite
 
+  // move to indexes folder
+  "indexes" find execute dup not if drop EC_NOT_IN_TABLE false exit then
+  pathPush
+
   checkRemoveIndex not if <NIP+ERROR> exit then
 
   tp ( "<indexNm>" )
@@ -36,6 +40,8 @@ tp: create_index
   removeIndex ( ) assert.stack_0
 
   tp: droppedIndex
+
+  pathDrop
 
   <OK>
 ;

@@ -41,6 +41,7 @@ namespace DBobjects
     void  operator delete(void*);
     
     static void vDump(eCN eClass, Object* pObject, Str* aTab);
+    static void vFinalize(eCN eClass, Object* pObject);
     
     Index(void);
     ~Index(void);
@@ -54,6 +55,7 @@ namespace DBobjects
     Dic* pSubDic(void);
     void vTable(Table* pTable);
     Table* pTable(void);
+    void vTidyUp(void);
     void vTruncate(void);
   
     IdxColVec* pIdxColVec(void);

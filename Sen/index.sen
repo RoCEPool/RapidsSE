@@ -82,32 +82,28 @@
 /*----------------------------------------------------------------------------*/
 : checkIsIndex ( "<indexNm>" -- "<indexNm>" true | errorCode false )
 
-  dup ( "<indexNm>" "<indexNm>" )
+  0 locals| indexPtr indexNm |
 
-  find ( "<indexNm>" ^w:index )
+  indexNm find ( indexPtr )
+  to indexPtr
 
-  dup ( "<indexNm>" ^w:index ^w:index )
-  not ( "<indexNm>" ^w:index bool )
+  indexPtr
+  not ( indexPtr bool )
   if
-    drop ( "<indexNm>" )
-    drop ( )
     EC_NO_SUCH_INDEX false ( errorCode false )
   exit
   then
 
-  dup ( "<indexNm>" ^w:index ^w:index )
-
-  word.kind@ ( "<indexNm>" ^w:index ^word )
-  ' index ( "<indexNm>" ^w:index ^word ^word )
-  eql ( "<indexNm>" ^w:index bool )
+  indexPtr ( indexPtr )
+  word.kind@ ( ^word )
+  ' index ( ^word ^word )
+  eql ( bool )
   if
-    drop ( "<indexNm>" )
-    true ( "<indexNm>" true )
+    indexNm
+    true ( <indexNm> true )
     exit
   then
-
-  drop ( "<indexNm>" )
-  drop ( )
+tp: 5
   EC_NOT_AN_INDEX false ( errorCode false )
 ;
 
@@ -150,41 +146,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/*
-: getIndexRef ( "<indexNm>" -- <R> )
-
-  checkInIndex not if false exit then
-
-  checkIsIndex not if EC_NO_SUCH_INDEX false exit then
-
-  find execute ( index )
-
-  task.this task.seitf@ seitf.indexRef
-
-    true
-;
-
-?*----------------------------------------------------------------------------*?
-: returnIndexRef ( )
-
-  task.this task.seitf@ seitf.indexRef
-
-  true
-;
-*/
-
-/*----------------------------------------------------------------------------*/
-/* any outstanding index references                                           */
-/*----------------------------------------------------------------------------*/
-: IndexInUse ( "<indexNm>" -- <R> )
-
-  find execute
-
-  //index.ref
-  if true else false then
-;
-
-/*----------------------------------------------------------------------------*/
 /* check if word is a makeable table                                          */
 /*----------------------------------------------------------------------------*/
 : checkMakeIndex ( "<indexNm>" -- "<indexNm>" true | "<indexNm>" errorCode false )
@@ -200,10 +161,15 @@
 /*----------------------------------------------------------------------------*/
 : checkRemoveIndex ( "<indexNm>" -- "<indexNm>" true | "<indexNm>" errorCode false )
 
-  checkInIndexes not if false exit then ( "<indexNm>" )
-  checkIsIndex not if false exit then ( "<indexNm>" )
-  //dup indexInUse if EC_INDEX_IN_USE false exit then ( "<indexNm>" )
+  locals| indexNm |
 
+  checkInIndexes not if false exit then
+
+  indexNm checkIsIndex not if false exit then
+  indexNm find execute ( ^indexPtr )
+  index.table@
+
+  indexNm
   true ( "<indexNm>" true )
 ;
 
@@ -227,8 +193,7 @@ tp: makingIndex
 
   indexNm ( "<indexNm>" )
 
-  "indexes"
-  find execute pathPush
+  "indexes" find execute pathPush
 
   // create the index
   :index ( ^index )
@@ -297,16 +262,21 @@ tp: loadIndexes
 : removeIndex allParticipants 1 checkResult ( "<indexNm>" -- true n# true )
 
   tp: removeIndex
-  locals| indexNm |
+  0 locals| indexPtr indexNm |
 
   indexNm find execute ( ^index )
+  to indexPtr
 
-  dup ( ^index ^index )
+  indexPtr index.truncate
+
+  // forget all column names in the columns dictionary of table sub-dictionary
+  indexPtr index.subDic
+  pathPush
+  "columns" find execute forgetAll
+  pathDrop
 
   // forget the columns dictionary in the table sub-dictionary
-  index.subDic forgetAll
-
-  index.truncate
+  indexPtr index.subDic forgetAll
 
   indexNm :forget
 

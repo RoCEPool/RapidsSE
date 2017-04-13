@@ -37,6 +37,20 @@ void Index::vDump(eCN eClass, Object* pObject, Str* aTab)
 }
 
 /*----------------------------------------------------------------------------*/
+/* finalize                                                                   */
+/*----------------------------------------------------------------------------*/
+void Index::vFinalize(eCN eClass, Object* pObject)
+{
+  ASSERT(eClass == CN_INDEX);
+  ASSERT(pObject->eClass() == CN_INDEX);
+  
+  Index* pIndex = reinterpret_cast<Index*>(pObject);
+  ASSERT(pIndex->bWordBody());
+  
+  pIndex->vTidyUp();
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -98,11 +112,7 @@ Index::~Index(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
   
-  // Since the column is picked from the ColVec of table
-  // we need to just remove it from the IdxColVec before deleting it
-  m_pIdxColVec->vClear();
-  
-  delete m_pIdxColVec;
+  vTidyUp();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -293,6 +303,21 @@ void Index::vTable(Table* pTable)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
   
   m_pTable = pTable;
+}
+
+/*----------------------------------------------------------------------------*/
+/* tidyup                                                                     */
+/*----------------------------------------------------------------------------*/
+void Index::vTidyUp(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
+  
+  // Since the column is picked from the ColVec of table
+  // we need to just remove it from the IdxColVec before deleting it
+  m_pIdxColVec->vClear();
+  
+  delete m_pIdxColVec;
+  delete m_pIndexLevels;
 }
 
 /*----------------------------------------------------------------------------*/

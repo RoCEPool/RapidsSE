@@ -420,7 +420,6 @@ tp: removeTable
     "columns" find execute forgetAll
   pathDrop
 
-
   // forget the columns dictionary in the table sub-dictionary
   table.subDic forgetAll
 
