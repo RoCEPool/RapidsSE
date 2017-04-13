@@ -104,6 +104,8 @@ void Key::vKey(KeyWsp& xKeyWsp)
   Str* aSrc = xKeyWsp.aWspStr();
   i8 nBytes  = xKeyWsp.nWspUsed();
   
+  i8 iVal = *(i8*)aSrc;
+  
   MemLib::vCopy(aDst,aSrc,nBytes);
 }
 

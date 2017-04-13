@@ -14,7 +14,7 @@ namespace DBobjects
   public:
     void* operator new(size_t);
     void* operator new(size_t, Key*);
-    
+  
     Key(KeyWsp& xKeyWsp);
     ~Key(void);
   

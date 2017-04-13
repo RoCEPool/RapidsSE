@@ -33,6 +33,16 @@ void* KeyVal::operator new(size_t iSize)
 }
 
 /*----------------------------------------------------------------------------*/
+/* operator delete                                                            */
+/*----------------------------------------------------------------------------*/
+void KeyVal::operator delete(void* pKeyValAddress)
+{
+  KeyVal* pKeyVal = reinterpret_cast<KeyVal*>(pKeyValAddress);
+  
+  Heap::vFree(pKeyVal);
+}
+
+/*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 KeyVal::KeyVal(KeyWsp& xKeyWsp)

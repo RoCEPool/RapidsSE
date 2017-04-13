@@ -113,8 +113,10 @@ Vec<VEC_CN, ITEM, ITEM_CN, MAX_ITEMS>::~Vec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,VEC_CN,_FOOTER_);
   
-  for (i8 iItem = 0; iItem < m_nItems; iItem++)
-    delete m_pItem[iItem];
+  for (i8 iItem = 0; iItem < m_nItems; iItem++) {
+    ITEM* pItem = m_pItem[iItem];
+    delete pItem;
+  }
 }
 
 /*----------------------------------------------------------------------------*/

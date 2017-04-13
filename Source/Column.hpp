@@ -59,6 +59,7 @@ namespace DBobjects
     void  operator delete(void*);
     
     Column(void);
+    Column(Str* aName);
     Column(Str* aName, Str* aDefinition);
     ~Column(void);
   

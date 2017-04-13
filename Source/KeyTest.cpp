@@ -15,6 +15,10 @@ void KeyTest::vTest(void)
   ValWsp xValWsp;
   KeyVal* pKeyVal;
   
+  Column* pCol = new Column("Col0"_Str);
+  ColumnVec* pColVec = new ColumnVec;
+  pColVec->vAdd(pCol);
+  
   KeyVec* pKeyVec = new KeyVec;
   
   for (i8 i = 0; i < 10; i++) {
@@ -33,7 +37,7 @@ void KeyTest::vTest(void)
   for (i8 i = 0; i < 10; i++) {
     pKeyVal = pKeyVec->pGet(i);
     
-    v = StrLib::iToI8(pKeyVal->m_xKey.aWspArea());
+    v = *(i8*)pKeyVal->m_xKey.aWspArea();
     
     vTrace("%lld: %lld\n"_Str,i,v);
   }

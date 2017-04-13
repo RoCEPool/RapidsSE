@@ -12,6 +12,7 @@ namespace DBobjects
   
   public:
     void* operator new(size_t);
+    void  operator delete(void*);
   
 //    KeyVal(void);
 //    KeyVal(i8 iInt);

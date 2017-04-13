@@ -37,9 +37,9 @@ void* Column::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 void Column::operator delete(void* pDataAddress)
 {
-  Data* pData = reinterpret_cast<Data*>(pDataAddress);
+  Column* pColumn = reinterpret_cast<Column*>(pDataAddress);
   
-  Heap::vFree(pData);
+  Heap::vFree(pColumn);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -56,6 +56,27 @@ Column::Column(void)
   m_iColumnLength = 0;
   m_iColumnPrecision = 0;
   m_eDatumType  = DM_NONE;
+  m_bIsNullable = true;
+  
+  _checkInitialised_(CN_COLUMN);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Column::Column(Str* aName)
+: Object(CN_COLUMN)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+  
+  m_iColumnNo   = 0;
+  m_sColumnName = aName;
+  m_eColumnType = CT_INTEGER;
+  m_iColumnLength = 0;
+  m_iColumnPrecision = 0;
+  m_eDatumType  = DM_INT;
   m_bIsNullable = true;
   
   _checkInitialised_(CN_COLUMN);
