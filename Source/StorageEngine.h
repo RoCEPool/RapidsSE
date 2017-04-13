@@ -23,11 +23,16 @@ using namespace StorageEngine;
 #include "AttachMap.hpp"
 #include "Region.hpp"
 #include "SizesDumps.hpp"
+#include "Finalizers.hpp"
 
 #include "RapidsSE.hpp"
 
 typedef void (pDUMPFUN)(eCN eClass, Object* pObject, Str*);
 extern pDUMPFUN *gpDump[];
+
+typedef void (pFINALIZE(eCN eClass, Object* pObject));
+extern pFINALIZE *gpFinalize[];
+
 extern i8 giClassSize[];
 
 /*============================================================================*/

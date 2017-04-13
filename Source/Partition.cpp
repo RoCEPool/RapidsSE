@@ -107,6 +107,7 @@ Partition::~Partition(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
   
+  vTidyUp();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -181,6 +182,20 @@ Data* Partition::pData(void)
 Index* Partition::pIndex(i8 iIndex)
 {
   return m_pIdxVec->pGet(iIndex);
+}
+
+/*----------------------------------------------------------------------------*/
+/* tidy up                                                                    */
+/*----------------------------------------------------------------------------*/
+void Partition::vTidyUp(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
+  
+  // delete the index vector
+  delete m_pIdxVec;
+  
+  // delete the data
+  delete m_pData;
 }
 
 /*----------------------------------------------------------------------------*/

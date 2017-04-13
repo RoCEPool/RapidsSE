@@ -52,6 +52,8 @@ Data::Data(void)
 Data::~Data(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DATA,_FOOTER_);
+  
+  ASSERT( ! m_iRowStrands );
 }
 
 /*----------------------------------------------------------------------------*/

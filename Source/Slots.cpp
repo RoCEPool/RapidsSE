@@ -55,6 +55,7 @@ Slots::Slots(void)
 Slots::~Slots(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SLOTS,_FOOTER_);
+  vTidyUp();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -67,6 +68,19 @@ Partition* Slots::pPartition(i8 iSlot)
   //vTrace("Partition %lld\n"_Str,iPartition);
   
   return &m_xPartition[iSlot];
+}
+
+/*----------------------------------------------------------------------------*/
+/* tidyup                                                                     */
+/*----------------------------------------------------------------------------*/
+void Slots::vTidyUp(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SLOTS,_FOOTER_);
+  
+  // run the finalize for the partitions
+  for (i8 iSlot = 0; iSlot < C_SLOTS_PER_NODE; iSlot++) {
+    m_xPartition[iSlot].vTidyUp();
+  }
 }
 
 /*----------------------------------------------------------------------------*/

@@ -43,6 +43,7 @@ void StorageEngine::vCheckAssumptions(void)
   i8 iEntriesPCN = 0;
   i8 iEntriesGPDUMP = 0;
   i8 iEntriesGCLASSSIZE = 0;
+  i8 iEntriesGPFINALIZE = 0;
   
   bool bFoundEnum = false;
   
@@ -99,6 +100,24 @@ void StorageEngine::vCheckAssumptions(void)
            iEntriesGCLASSSIZE, iEntriesECN);
   }
   
+  bFoundEnum = false;
+  // find number of entries in gpDump
+  for (i8 i = 0; i <= CN_ENUMS; i++) {
+    if (gpFinalize[i] == &Finalize::vEnums) {
+      bFoundEnum = true;
+      break;
+    }
+    iEntriesGPFINALIZE++;
+  }
+  
+  if (!bFoundEnum)
+    vFatal("Entry for CN_ENUM not found in gpDump\n"_Str);
+  
+  if (iEntriesECN != iEntriesGPDUMP) {
+    vFatal("\n!!!ALERT!!! No of entries in gpDump (%lld) do not match the no in eCN (%lld)\n\n"_Str,
+           iEntriesECN, iEntriesGPDUMP);
+  }
+
   
   // check sizes are less than pool block size
   for (i8 iClass = 0; iClass <= CN_ENUMS; iClass++) {

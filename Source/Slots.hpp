@@ -25,6 +25,7 @@ namespace DBobjects
     
     Partition* pPartition(i8 iSlot);
     
+    void vTidyUp(void);
     void vTruncate(void);
     
     Footer* pFooter(void);

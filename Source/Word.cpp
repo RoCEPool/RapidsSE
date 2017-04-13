@@ -93,6 +93,14 @@ Word::Word(Str* sName)
 Word::~Word(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+  
+  // invoke the finalize function for embedded objects
+  if (m_eWordType == WT_OBJECT) {
+    Object* pPtrBody = reinterpret_cast<Object*>(aBodyArea());
+    eCN eClass = pPtrBody->eClass();
+    pFINALIZE* pFinalizeFun = gpFinalize[eClass];
+    (pFinalizeFun)(eClass, pPtrBody);
+  }
 }
 
 /*----------------------------------------------------------------------------*/

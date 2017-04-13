@@ -148,6 +148,20 @@ void Dic::vDump(eCN eClass, Object* pObject, Str* aTab)
 }
 
 /*----------------------------------------------------------------------------*/
+/* finalize                                                                   */
+/*----------------------------------------------------------------------------*/
+void Dic::vFinalize(eCN eClass, Object* pObject)
+{
+  ASSERT(eClass == CN_DIC);
+  ASSERT(pObject->eClass() == CN_DIC);
+  
+  Dic* pDic = reinterpret_cast<Dic*>(pObject);
+  ASSERT(pDic->bWordBody());
+  
+  //vTrace("%s %s finalize\n"_Str, aCN[eClass], pDic->m_sName.s());
+}
+
+/*----------------------------------------------------------------------------*/
 /* find a word given name                                                     */
 /*----------------------------------------------------------------------------*/
 Word* Dic::pFindWord(Str* aName)

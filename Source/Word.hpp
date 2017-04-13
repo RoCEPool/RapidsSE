@@ -107,14 +107,14 @@ namespace Dictionaries
     i8    nBodyUsed(void);
   
     Dic*  pDic(void);
+    void  vDistributed(eDT eDistributed);
+    eDT   eDistributed(void);
     i8    iEpoch(void);
     void  vEntryCell(Cell* pCell);
     Cell* pEntryCell(void);
     void  vEntryStep(TaskStep pStep);
     TaskStep pEntryStep(void);
     TaskStep* ppEntryStep(void);
-    void  vDistributed(eDT eDistributed);
-    eDT   eDistributed(void);
     void  vEncode(Str* aWord);
     void  vEncode(Str* aWord, Cell* pCell);
     void  vEncode(Str* aWord, Word* pWord);

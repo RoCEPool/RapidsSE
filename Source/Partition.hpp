@@ -35,13 +35,14 @@ namespace DBobjects
     ~Partition(void);
   
     void  vAddIndex(Index* pIndex);
-    bool  bInsertRow(RowBuffer* pRowBuffer, TxRef* pTxRef,Str* pRecord,i8 iLength);
-    i8    iPartitionId(void);
-    void  vPartitionId(i8 iPartitionId);
-  
+    
+    bool   bInsertRow(RowBuffer* pRowBuffer, TxRef* pTxRef,Str* pRecord,i8 iLength);
+    i8     iPartitionId(void);
+    void   vPartitionId(i8 iPartitionId);
     Data*  pData(void);
     Index* pIndex(i8 iIndex);
-  
+    void   vTidyUp(void);
+    
   private:
     Footer* pFooter(void);
   };

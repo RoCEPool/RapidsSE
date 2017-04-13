@@ -31,7 +31,8 @@ namespace Dictionaries
     ~Dic(void);
     
     static void vDump(eCN eClass, Object* pObject, Str* aTab);
-
+    static void vFinalize(eCN eClass, Object* pObject);
+    
     void  vAddWord(Word* pWord);
     Word* pDicKind(void);
     void  vDicKind(Word* pDicKind);

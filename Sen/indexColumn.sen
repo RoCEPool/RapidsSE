@@ -79,7 +79,6 @@
     I indexPtr index.columnName
     "%v %v " str.format
     I 1 + indexCols < if
-      "aa" .
       swap ", " str.cat
     then
     str.cat

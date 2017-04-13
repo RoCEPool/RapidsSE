@@ -7,7 +7,7 @@
 
 // Object's : Class::vDump
 // Object's with no vDump defined : Dump::vUndefined
-// Header : Dump::vInvalid
+// Header   : Dump::vInvalid
 // Objects we don't want to dump (eg Word) : Dump::vDummy
 
 pDUMPFUN *gpDump[]
@@ -454,7 +454,7 @@ void Dump::vDummy(eCN eClass, Object* pObject, Str* aTab)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dummy dump                                                                 */
+/* dump enums                                                                 */
 /*----------------------------------------------------------------------------*/
 void Dump::vEnums(eCN eClass, Object* pObject, Str* aTab)
 {
@@ -465,7 +465,7 @@ void Dump::vEnums(eCN eClass, Object* pObject, Str* aTab)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dump this attachmap                                                        */
+/* inavlid dump                                                               */
 /*----------------------------------------------------------------------------*/
 void Dump::vInvalid(eCN eClass, Object* pObject, Str* aTab)
 {

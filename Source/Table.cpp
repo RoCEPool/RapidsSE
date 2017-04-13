@@ -100,7 +100,7 @@ Table::~Table(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
-  delete m_pColumnVec;
+  vTidyUp();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -116,6 +116,20 @@ void Table::vDump(eCN eClass, Object* pObject, Str* aTab)
   vTrace("name %s type %s\n"_Str,
          pTable->m_sTableName.s(),
          aTT[pTable->m_eTableType]->s());
+}
+
+/*----------------------------------------------------------------------------*/
+/* finalize                                                                   */
+/*----------------------------------------------------------------------------*/
+void Table::vFinalize(eCN eClass, Object* pObject)
+{
+  ASSERT(eClass == CN_TABLE);
+  ASSERT(pObject->eClass() == CN_TABLE);
+  
+  Table* pTable = reinterpret_cast<Table*>(pObject);
+  ASSERT(pTable->bWordBody());
+  
+  pTable->vTidyUp();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -395,6 +409,18 @@ Str* Table::aTableName(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
   return m_sTableName;
+}
+
+/*----------------------------------------------------------------------------*/
+/* tidyup                                                                     */
+/*----------------------------------------------------------------------------*/
+void Table::vTidyUp(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  
+  delete m_pColumnVec;
+  
+  m_xSlots.vTidyUp();
 }
 
 /*----------------------------------------------------------------------------*/

@@ -41,6 +41,7 @@ namespace DBobjects
     ~Table(void);
     
     static void vDump(eCN eClass, Object* pObject, Str* aTab);
+    static void vFinalize(eCN eClass, Object* pObject);
     
     void vAddIndex(Index* pIndex);
     Str* pAnalyze(bool bDetailed);
@@ -58,6 +59,7 @@ namespace DBobjects
     void vShowColumnVec(void);
     Dic* pSubDic(void);
     Str* aTableName(void);
+    void vTidyUp(void);
     void vTruncate(void);
     bool bValidateRow(Str* pRow, i8& iColumn);
   
