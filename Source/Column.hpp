@@ -92,6 +92,11 @@ namespace DBobjects
     char* aValue(i8& nBytes, char** aaCursor);
   
     bool bLessThan(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB);
+    bool bLessEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB);
+    bool bEqualTo(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB);
+    bool bNotEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB);
+    bool bGreaterEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB);
+    bool bGreaterThan(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB);
   
     Footer* pFooter(void);
   };

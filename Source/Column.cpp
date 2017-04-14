@@ -407,6 +407,66 @@ bool Column::bLessThan(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
 }
 
 /*----------------------------------------------------------------------------*/
+/* less equal                                                                 */
+/*----------------------------------------------------------------------------*/
+bool Column::bLessEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+  
+  bool bLessEqual = DtmLib::bLessEqual(m_eDatumType,aArgA,nBytesA,aArgB,nBytesB);
+  
+  return bLessEqual;
+}
+
+/*----------------------------------------------------------------------------*/
+/* equal to                                                                   */
+/*----------------------------------------------------------------------------*/
+bool Column::bEqualTo(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+  
+  bool bEqualTo = DtmLib::bEqualTo(m_eDatumType,aArgA,nBytesA,aArgB,nBytesB);
+  
+  return bEqualTo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* not equal to                                                               */
+/*----------------------------------------------------------------------------*/
+bool Column::bNotEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+  
+  bool bNotEqual = DtmLib::bNotEqual(m_eDatumType,aArgA,nBytesA,aArgB,nBytesB);
+  
+  return bNotEqual;
+}
+
+/*----------------------------------------------------------------------------*/
+/* greater equal                                                              */
+/*----------------------------------------------------------------------------*/
+bool Column::bGreaterEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+  
+  bool bGreaterEqual = DtmLib::bGreaterEqual(m_eDatumType,aArgA,nBytesA,aArgB,nBytesB);
+  
+  return bGreaterEqual;
+}
+
+/*----------------------------------------------------------------------------*/
+/* greater than                                                               */
+/*----------------------------------------------------------------------------*/
+bool Column::bGreaterThan(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+  
+  bool bGreaterThan = DtmLib::bGreaterThan(m_eDatumType,aArgA,nBytesA,aArgB,nBytesB);
+  
+  return bGreaterThan;
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 

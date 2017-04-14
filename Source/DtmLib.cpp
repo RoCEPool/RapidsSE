@@ -320,7 +320,7 @@ bool DtmLib::bValidTsp(char** aaSrc)
 }
 
 /*----------------------------------------------------------------------------*/
-/* valid timestamp in substr?                                                 */
+/* is argA < argB?                                                            */
 /*----------------------------------------------------------------------------*/
 bool DtmLib::bLessThan(eDM eDatum, char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
 {
@@ -340,10 +340,147 @@ bool DtmLib::bLessThan(eDM eDatum, char* aArgA, i8 nBytesA, char* aArgB, i8 nByt
     case DM_VCH: bLessThan = false; break;
 
     default:
-      THROW("Invalid eDatum %lld"_Str,eDatum);
-
+      THROW("DtmLib::bLessThan: Invalid eDatum %lld"_Str,eDatum);
   }
+  
   return bLessThan;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is argA <= argB?                                                           */
+/*----------------------------------------------------------------------------*/
+bool DtmLib::bLessEqual(eDM eDatum, char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
+{
+  bool bLessEqual = false;
+  
+  switch (eDatum) {
+    case DM_BCD: bLessEqual = false; break;
+    case DM_BOL: bLessEqual = false; break;
+    case DM_CHR: bLessEqual = false; break;
+    case DM_DTE: bLessEqual = false; break;
+    case DM_FLT: bLessEqual = false; break;
+    case DM_INT: bLessEqual = Int::bLessEqual(aArgA,nBytesA,aArgB,nBytesB); break;
+    case DM_IVL: bLessEqual = false; break;
+    case DM_TME: bLessEqual = false; break;
+    case DM_TSP: bLessEqual = false; break;
+    case DM_VBN: bLessEqual = false; break;
+    case DM_VCH: bLessEqual = false; break;
+      
+    default:
+      THROW("DtmLib::bLessEqual: Invalid eDatum %lld"_Str,eDatum);
+  }
+  
+  return bLessEqual;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is argA == argB?                                                           */
+/*----------------------------------------------------------------------------*/
+bool DtmLib::bEqualTo(eDM eDatum, char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
+{
+  bool bEqualTo = false;
+  
+  switch (eDatum) {
+    case DM_BCD: bEqualTo = false; break;
+    case DM_BOL: bEqualTo = false; break;
+    case DM_CHR: bEqualTo = false; break;
+    case DM_DTE: bEqualTo = false; break;
+    case DM_FLT: bEqualTo = false; break;
+    case DM_INT: bEqualTo = Int::bEqualTo(aArgA,nBytesA,aArgB,nBytesB); break;
+    case DM_IVL: bEqualTo = false; break;
+    case DM_TME: bEqualTo = false; break;
+    case DM_TSP: bEqualTo = false; break;
+    case DM_VBN: bEqualTo = false; break;
+    case DM_VCH: bEqualTo = false; break;
+      
+    default:
+      THROW("DtmLib::bEqualTo: Invalid eDatum %lld"_Str,eDatum);
+  }
+  
+  return bEqualTo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is argA != argB?                                                           */
+/*----------------------------------------------------------------------------*/
+bool DtmLib::bNotEqual(eDM eDatum, char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
+{
+  bool bNotEqual = false;
+  
+  switch (eDatum) {
+    case DM_BCD: bNotEqual = false; break;
+    case DM_BOL: bNotEqual = false; break;
+    case DM_CHR: bNotEqual = false; break;
+    case DM_DTE: bNotEqual = false; break;
+    case DM_FLT: bNotEqual = false; break;
+    case DM_INT: bNotEqual = Int::bNotEqual(aArgA,nBytesA,aArgB,nBytesB); break;
+    case DM_IVL: bNotEqual = false; break;
+    case DM_TME: bNotEqual = false; break;
+    case DM_TSP: bNotEqual = false; break;
+    case DM_VBN: bNotEqual = false; break;
+    case DM_VCH: bNotEqual = false; break;
+      
+    default:
+      THROW("DtmLib::bNotEqual: Invalid eDatum %lld"_Str,eDatum);
+  }
+  
+  return bNotEqual;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is argA >= argB?                                                           */
+/*----------------------------------------------------------------------------*/
+bool DtmLib::bGreaterEqual(eDM eDatum, char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
+{
+  bool bGreaterEqual = false;
+  
+  switch (eDatum) {
+    case DM_BCD: bGreaterEqual = false; break;
+    case DM_BOL: bGreaterEqual = false; break;
+    case DM_CHR: bGreaterEqual = false; break;
+    case DM_DTE: bGreaterEqual = false; break;
+    case DM_FLT: bGreaterEqual = false; break;
+    case DM_INT: bGreaterEqual = Int::bGreaterEqual(aArgA,nBytesA,aArgB,nBytesB);
+                 break;
+    case DM_IVL: bGreaterEqual = false; break;
+    case DM_TME: bGreaterEqual = false; break;
+    case DM_TSP: bGreaterEqual = false; break;
+    case DM_VBN: bGreaterEqual = false; break;
+    case DM_VCH: bGreaterEqual = false; break;
+      
+    default:
+      THROW("DtmLib::bGreaterEqual: Invalid eDatum %lld"_Str,eDatum);
+  }
+  
+  return bGreaterEqual;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is argA > argB?                                                            */
+/*----------------------------------------------------------------------------*/
+bool DtmLib::bGreaterThan(eDM eDatum, char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
+{
+  bool bGreaterThan = false;
+  
+  switch (eDatum) {
+    case DM_BCD: bGreaterThan = false; break;
+    case DM_BOL: bGreaterThan = false; break;
+    case DM_CHR: bGreaterThan = false; break;
+    case DM_DTE: bGreaterThan = false; break;
+    case DM_FLT: bGreaterThan = false; break;
+    case DM_INT: bGreaterThan = Int::bGreaterThan(aArgA,nBytesA,aArgB,nBytesB);
+                 break;
+    case DM_IVL: bGreaterThan = false; break;
+    case DM_TME: bGreaterThan = false; break;
+    case DM_TSP: bGreaterThan = false; break;
+    case DM_VBN: bGreaterThan = false; break;
+    case DM_VCH: bGreaterThan = false; break;
+      
+    default:
+      THROW("DtmLib::bGreaterThan: Invalid eDatum %lld"_Str,eDatum);
+  }
+  
+  return bGreaterThan;
 }
 
 /*============================================================================*/
