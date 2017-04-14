@@ -99,6 +99,7 @@ pFINALIZE *gpFinalize[]
   /* 52 */ &Finalize::vUndefined,         // CN_RBCURSOR
   /* 53 */ &Finalize::vUndefined,         // CN_REGFRAME
   /* 54 */ &Finalize::vUndefined,         // CN_RING
+  /*    */ &Finalize::vUndefined,         // CN_ROARRAY
   /* 55 */ &Finalize::vUndefined,         // CN_ROW
   /* 56 */ &Finalize::vUndefined,         // CN_ROWBUFFER
   /* 57 */ &Finalize::vUndefined,         // CN_ROWCURSOR

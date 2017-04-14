@@ -1,12 +1,12 @@
 /*============================================================================*/
-/* Vec.hpp - Vector template                                                  */
+/* Vectortor.hpp - Vectortor template                                               */
 /*============================================================================*/
 #pragma once
 
 namespace Structures
 {  
   template <eCN VEC_CN, class ITEM, eCN ITEM_CN, i8 MAX_ITEMS>
-  class Vec : public Object
+  class Vector : public Object
   {
   private:
     i8     m_nItems;           // number of actual items
@@ -20,8 +20,8 @@ namespace Structures
     void* operator new(size_t);
     void  operator delete(void*);
 
-    Vec(void);
-    ~Vec(void);
+    Vector(void);
+    ~Vector(void);
   
     void  vAdd(ITEM* pObject);
     void  vClear(void);
@@ -33,7 +33,7 @@ namespace Structures
   };
   
   template <eCN VEC_CN, class ITEM, eCN ITEM_CN, i8 MAX_ITEMS>
-  Vec<VEC_CN, ITEM, ITEM_CN, MAX_ITEMS>* _pVec(void* aAddr);
+  Vector<VEC_CN, ITEM, ITEM_CN, MAX_ITEMS>* _pVector(void* aAddr);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -48,21 +48,21 @@ using namespace Structures;
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
 template <eCN VEC_CN, class ITEM, eCN ITEM_CN, i8 MAX_ITEMS>
-Vec<VEC_CN, ITEM, ITEM_CN, MAX_ITEMS>* Structures::_pVec(void* aAddr)
+Vector<VEC_CN, ITEM, ITEM_CN, MAX_ITEMS>* Structures::_pVector(void* aAddr)
 {
-  Vec<VEC_CN, ITEM, ITEM_CN, MAX_ITEMS>* pVec =
-    reinterpret_cast<Vec<VEC_CN, ITEM, ITEM_CN, MAX_ITEMS>*>(aAddr);
+  Vector<VEC_CN, ITEM, ITEM_CN, MAX_ITEMS>* pVector =
+    reinterpret_cast<Vector<VEC_CN, ITEM, ITEM_CN, MAX_ITEMS>*>(aAddr);
   
-  RASSERT( !pVec || VEC_CN == pVec->eClass() );
+  RASSERT( !pVector || VEC_CN == pVector->eClass() );
   
-  return pVec;
+  return pVector;
 }
 
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
 template <eCN VEC_CN, class ITEM, eCN ITEM_CN, i8 MAX_ITEMS>
-void* Vec<VEC_CN, ITEM, ITEM_CN, MAX_ITEMS>::operator new(size_t iSize)
+void* Vector<VEC_CN, ITEM, ITEM_CN, MAX_ITEMS>::operator new(size_t iSize)
 {
   RASSERT(iSize);
   
@@ -75,20 +75,20 @@ void* Vec<VEC_CN, ITEM, ITEM_CN, MAX_ITEMS>::operator new(size_t iSize)
 /* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
 template <eCN VEC_CN, class ITEM, eCN ITEM_CN, i8 MAX_ITEMS>
-void Vec<VEC_CN, ITEM, ITEM_CN, MAX_ITEMS>::operator delete(void* pVecAddress)
+void Vector<VEC_CN, ITEM, ITEM_CN, MAX_ITEMS>::operator delete(void* pVectorAddress)
 {
-  Vec<VEC_CN, ITEM, ITEM_CN, MAX_ITEMS>* pVec =
-  //reinterpret_cast<Vec<VEC_CN, ITEM, ITEM_CN, MAX_ITEMS>*>(pVecAddress);
-    _pVec<VEC_CN, ITEM, ITEM_CN, MAX_ITEMS>(pVecAddress);
+  Vector<VEC_CN, ITEM, ITEM_CN, MAX_ITEMS>* pVector =
+  //reinterpret_cast<Vector<VEC_CN, ITEM, ITEM_CN, MAX_ITEMS>*>(pVectorAddress);
+    _pVector<VEC_CN, ITEM, ITEM_CN, MAX_ITEMS>(pVectorAddress);
   
-  Heap::vFree(pVec);
+  Heap::vFree(pVector);
 }
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 template <eCN VEC_CN, class ITEM, eCN ITEM_CN, i8 MAX_ITEMS>
-Vec<VEC_CN, ITEM, ITEM_CN, MAX_ITEMS>::Vec(void)
+Vector<VEC_CN, ITEM, ITEM_CN, MAX_ITEMS>::Vector(void)
 : Object(VEC_CN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,VEC_CN,_FOOTER_);
@@ -109,7 +109,7 @@ Vec<VEC_CN, ITEM, ITEM_CN, MAX_ITEMS>::Vec(void)
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 template <eCN VEC_CN, class ITEM, eCN ITEM_CN, i8 MAX_ITEMS>
-Vec<VEC_CN, ITEM, ITEM_CN, MAX_ITEMS>::~Vec(void)
+Vector<VEC_CN, ITEM, ITEM_CN, MAX_ITEMS>::~Vector(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,VEC_CN,_FOOTER_);
   
@@ -127,7 +127,7 @@ Vec<VEC_CN, ITEM, ITEM_CN, MAX_ITEMS>::~Vec(void)
 /* add an item                                                                */
 /*----------------------------------------------------------------------------*/
 template <eCN VEC_CN, class ITEM, eCN ITEM_CN, i8 MAX_ITEMS>
-void Vec<VEC_CN, ITEM, ITEM_CN, MAX_ITEMS>::vAdd(ITEM* pItem)
+void Vector<VEC_CN, ITEM, ITEM_CN, MAX_ITEMS>::vAdd(ITEM* pItem)
 {
   _precondition_(_ADDRESS_,_MAGIC_,VEC_CN,_FOOTER_);
   
@@ -149,7 +149,7 @@ void Vec<VEC_CN, ITEM, ITEM_CN, MAX_ITEMS>::vAdd(ITEM* pItem)
 /* clear all items                                                            */
 /*----------------------------------------------------------------------------*/
 template <eCN VEC_CN, class ITEM, eCN ITEM_CN, i8 MAX_ITEMS>
-void Vec<VEC_CN, ITEM, ITEM_CN, MAX_ITEMS>::vClear(void)
+void Vector<VEC_CN, ITEM, ITEM_CN, MAX_ITEMS>::vClear(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,VEC_CN,_FOOTER_);
   
@@ -160,7 +160,7 @@ void Vec<VEC_CN, ITEM, ITEM_CN, MAX_ITEMS>::vClear(void)
 /* insert an item as first                                                    */
 /*----------------------------------------------------------------------------*/
 template <eCN VEC_CN, class ITEM, eCN ITEM_CN, i8 MAX_ITEMS>
-void Vec<VEC_CN, ITEM, ITEM_CN, MAX_ITEMS>::vInsert(ITEM* pItem)
+void Vector<VEC_CN, ITEM, ITEM_CN, MAX_ITEMS>::vInsert(ITEM* pItem)
 {
   _precondition_(_ADDRESS_,_MAGIC_,VEC_CN,_FOOTER_);
   
@@ -192,7 +192,7 @@ void Vec<VEC_CN, ITEM, ITEM_CN, MAX_ITEMS>::vInsert(ITEM* pItem)
 /* get number of actual items                                                 */
 /*----------------------------------------------------------------------------*/
 template <eCN VEC_CN, class ITEM, eCN ITEM_CN, i8 MAX_ITEMS>
-i8 Vec<VEC_CN, ITEM, ITEM_CN, MAX_ITEMS>::nItems(void)
+i8 Vector<VEC_CN, ITEM, ITEM_CN, MAX_ITEMS>::nItems(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,VEC_CN,_FOOTER_);
   
@@ -205,7 +205,7 @@ i8 Vec<VEC_CN, ITEM, ITEM_CN, MAX_ITEMS>::nItems(void)
 /* get a specific item                                                        */
 /*----------------------------------------------------------------------------*/
 template <eCN VEC_CN, class ITEM, eCN ITEM_CN, i8 MAX_ITEMS>
-ITEM* Vec<VEC_CN, ITEM, ITEM_CN, MAX_ITEMS>::pGet(i8 iItem)
+ITEM* Vector<VEC_CN, ITEM, ITEM_CN, MAX_ITEMS>::pGet(i8 iItem)
 {
   _precondition_(_ADDRESS_,_MAGIC_,VEC_CN,_FOOTER_);
   
@@ -224,7 +224,7 @@ ITEM* Vec<VEC_CN, ITEM, ITEM_CN, MAX_ITEMS>::pGet(i8 iItem)
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
 template <eCN VEC_CN, class ITEM, eCN ITEM_CN, i8 MAX_ITEMS>
-Footer* Vec<VEC_CN, ITEM, ITEM_CN, MAX_ITEMS>::pFooter(void)
+Footer* Vector<VEC_CN, ITEM, ITEM_CN, MAX_ITEMS>::pFooter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,VEC_CN);
   

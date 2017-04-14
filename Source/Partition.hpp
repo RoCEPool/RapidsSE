@@ -10,7 +10,7 @@ namespace DBobjects
   // allow for maximum 8 indexes per table
   static const i8 C_INDEXES_PER_TABLE = 8;
 
-  typedef Vec<CN_IDXVEC,Index,CN_INDEX,C_INDEXES_PER_TABLE> IdxVec;
+  typedef Vector<CN_IDXVEC,Index,CN_INDEX,C_INDEXES_PER_TABLE> IdxVec;
   
   class Partition : public Object
   {
