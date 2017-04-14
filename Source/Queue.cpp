@@ -177,6 +177,16 @@ void Queue::vInitialize(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* rename the lock                                                            */
+/*----------------------------------------------------------------------------*/
+void Queue::vLockName(Str* aName)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUE,_FOOTER_);
+  
+  m_zLock.vInit(aName);
+}
+
+/*----------------------------------------------------------------------------*/
 /* pop value from this queue (there may not be any)                           */
 /*----------------------------------------------------------------------------*/
 bool Queue::bPop(ValWsp* pValWsp)
@@ -270,6 +280,8 @@ void Queue::vDiscard(void)
 void Queue::vExpand(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUE,_FOOTER_);
+  
+  vTrace("Queue::vExpand\n"_Str);
   
   QueueBuffer* pNewQueueBuffer = new QueueBuffer;
   

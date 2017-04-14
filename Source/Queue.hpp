@@ -33,6 +33,7 @@ namespace Structures
     void  vContentDump(Str* aTab);
     void  vFinalize(void);
     void  vInitialize(void);
+    void  vLockName(Str* aName);
     bool  bPop(ValWsp* pValWsp);
     bool  bPop(ValSet* pValSet);
     

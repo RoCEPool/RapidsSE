@@ -99,6 +99,10 @@ ENTRY("vQueueInit"_Str);
   
   new(pQueue) Queue;
   
+  Word* pQueueWord = Word::pToWord(pQueue);
+    
+  pQueue->vLockName(pQueueWord->sName().aStr());
+  
   EXIT();
 }
 
