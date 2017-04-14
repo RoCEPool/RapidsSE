@@ -19,6 +19,8 @@ void KeyTest::vTest(void)
   ColumnVec* pColVec = new ColumnVec;
   pColVec->vAdd(pCol);
   
+  RelOpAry* pOpAry = new RelOpAry;
+  
   KeyVec* pKeyVec = new KeyVec;
   
   for (i8 i = 0; i < 10; i++) {
@@ -59,6 +61,8 @@ void KeyTest::vTest(void)
   }
   
   delete pKeyVec;
+  delete pColVec;
+  delete pOpAry;
   
   vTrace("\n\nEnd KeyTest**********************************************\n"_Str);
 }

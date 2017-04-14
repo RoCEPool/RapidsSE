@@ -24,6 +24,7 @@ using namespace DBobjects;
 
 #include "Column.hpp"
 typedef Vector<CN_COLUMNVEC,Column,CN_COLUMN,1024> ColumnVec;
+typedef Array<CN_ROARRAY,eRO,1024> RelOpAry;
 
 #include "Row.hpp"
 #include "RowBuffer.hpp"

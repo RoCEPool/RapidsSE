@@ -96,7 +96,7 @@ Array<ARRAY_CN, ITEM, MAX_ITEMS>::Array(void)
   m_nItems = 0;
   
   for (i8 iItem = 0; iItem < MAX_ITEMS; iItem++)
-    m_xItem[iItem] = nullptr;
+    m_xItem[iItem] = (ITEM)0;
   
   _setFooter_();
   
