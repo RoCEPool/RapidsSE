@@ -27,6 +27,8 @@ namespace DBobjects
     SelCursor(void);
     ~SelCursor(void);
     
+    static void vFinalize(eCN eClass, Object* pObject);
+    
     void    vBegin(i8 iPartition);
     void    vEnd(void);
     void    vFirst(void);

@@ -79,6 +79,18 @@ SelCursor::~SelCursor(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* finalize                                                                   */
+/*----------------------------------------------------------------------------*/
+void SelCursor::vFinalize(eCN eClass, Object* pObject)
+{
+  ASSERT(eClass == CN_SELCURSOR);
+  ASSERT(pObject->eClass() == CN_SELCURSOR);
+  
+  SelCursor* pSelCursor = reinterpret_cast<SelCursor*>(pObject);
+  ASSERT(pSelCursor->bWordBody());
+}
+
+/*----------------------------------------------------------------------------*/
 /* begin iteration                                                            */
 /*----------------------------------------------------------------------------*/
 void SelCursor::vBegin(i8 iPartition)
