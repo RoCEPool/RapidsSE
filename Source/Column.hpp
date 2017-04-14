@@ -98,6 +98,8 @@ namespace DBobjects
     bool bGreaterEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB);
     bool bGreaterThan(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB);
   
+    i8 iCmp(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB);
+  
     Footer* pFooter(void);
   };
   

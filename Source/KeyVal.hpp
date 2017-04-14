@@ -28,6 +28,8 @@ namespace DBobjects
     bool bGreaterEqual(KeyVal* pKeyVal, ColumnVec* pColVec);
     bool bGreaterThan(KeyVal* pKeyVal, ColumnVec* pColVec);
   
+    i8 iCmp(KeyVal* pKeyVal, ColumnVec* pColVec);
+  
   };
   
   KeyVal* _aKeyVal(void* aAddr);

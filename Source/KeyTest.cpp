@@ -53,6 +53,8 @@ void KeyTest::vTest(void)
     KeyVal* pKeyValB = pKeyVec->pGet(i);
     ASSERT(pKeyValA->bLessThan(pKeyValB,pColVec));
     
+    ASSERT(pKeyValA->iCmp(pKeyValB,pColVec) < 0);
+    
     pKeyValA = pKeyValB;
   }
   

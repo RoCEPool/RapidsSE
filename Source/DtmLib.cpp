@@ -483,6 +483,34 @@ bool DtmLib::bGreaterThan(eDM eDatum, char* aArgA, i8 nBytesA, char* aArgB, i8 n
   return bGreaterThan;
 }
 
+/*----------------------------------------------------------------------------*/
+/* cmp argA with argB (-ve: argA < argB, 0: argA == argB, +ve: argA > argB)   */
+/*----------------------------------------------------------------------------*/
+i8 DtmLib::iCmp(eDM eDatum, char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
+{
+  i8 iCmp = 0;
+  
+  switch (eDatum) {
+    case DM_BCD: iCmp = 0; break;
+    case DM_BOL: iCmp = 0; break;
+    case DM_CHR: iCmp = 0; break;
+    case DM_DTE: iCmp = 0; break;
+    case DM_FLT: iCmp = 0; break;
+    case DM_INT: iCmp = Int::iCmp(aArgA,nBytesA,aArgB,nBytesB);
+                 break;
+    case DM_IVL: iCmp = 0; break;
+    case DM_TME: iCmp = 0; break;
+    case DM_TSP: iCmp = 0; break;
+    case DM_VBN: iCmp = 0; break;
+    case DM_VCH: iCmp = 0; break;
+      
+    default:
+      THROW("DtmLib::iCmp: Invalid eDatum %lld"_Str,eDatum);
+  }
+  
+  return iCmp;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
