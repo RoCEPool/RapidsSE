@@ -35,6 +35,7 @@ using namespace Structures;
 
 #include "Stack.hpp"
 
+#include "Array.hpp"
 #include "Vec.hpp"
 
 #include "GraphNode.hpp"

@@ -100,7 +100,7 @@ Vec<VEC_CN, ITEM, ITEM_CN, MAX_ITEMS>::Vec(void)
   
   _setFooter_();
   
-  _checkInitialised_(ITEM_CN);
+  _checkInitialised_(VEC_CN);
   
   _postcondition_(_ADDRESS_,_MAGIC_,VEC_CN,_FOOTER_);
 }
