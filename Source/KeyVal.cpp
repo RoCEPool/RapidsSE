@@ -270,6 +270,40 @@ i8 KeyVal::iCmp(KeyVal* pKeyValThat, ColumnVec* pColVec)
   
   return iCmp;
 }
+
+/*----------------------------------------------------------------------------*/
+/* does this keyval match the given arguments                                 */
+/*----------------------------------------------------------------------------*/
+bool KeyVal::bMatches(KeyVal* pKeyValThat, ColumnVec* pColVec, RelOpAry* pRelOpAry)
+{
+  char* aCursorThis = m_xKey.aWspArea();
+  char* aCursorThat = pKeyValThat->m_xKey.aWspArea();
+  
+  bool bCmp = false;
+  
+  for (i8 iColumn = 0; iColumn < pColVec->nItems(); iColumn++) {
+    
+    Column* pColumn = pColVec->pGet(iColumn);
+    
+    i8 nBytesThis;
+    i8 nBytesThat;
+    
+    char* aElementThis = aElement(pColumn,nBytesThis,&aCursorThis);
+    char* aElementThat = aElement(pColumn,nBytesThat,&aCursorThat);
+    
+    eRO eRelOp = pRelOpAry->xGet(iColumn);
+    
+    bCmp = pColumn->bCmp(eRelOp,
+                         aElementThis,nBytesThis,
+                         aElementThat,nBytesThat);
+    
+    if (bCmp)
+      break;
+  }
+  
+  return bCmp;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

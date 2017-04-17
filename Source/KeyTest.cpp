@@ -19,7 +19,7 @@ void KeyTest::vTest(void)
   ColumnVec* pColVec = new ColumnVec;
   pColVec->vAdd(pCol);
   
-  RelOpAry* pOpAry = new RelOpAry;
+  RelOpAry* pOpAryFind = new RelOpAry;
   
   KeyVec* pKeyVec = new KeyVec;
   
@@ -60,9 +60,31 @@ void KeyTest::vTest(void)
     pKeyValA = pKeyValB;
   }
   
+  xValWsp = 3;
+  xKeyWsp.vReset();
+  xKeyWsp.vAddElement(xValWsp);
+  KeyVal* pKeyValFind = new KeyVal(xKeyWsp);
+  
+  pOpAryFind->vClear();
+  pOpAryFind->vAdd(RO_GREATER_EQUAL);
+  
+  for (i8 i = 0; i < 10; i++) {
+    pKeyVal = pKeyVec->pGet(i);
+    
+    if (pKeyVal->bMatches(pKeyValFind,pColVec,pOpAryFind))
+      break;
+  }
+  
+  if (pKeyVal) {
+    aCursor = pKeyVal->m_xKey.aWspArea();
+    v = *(i8*)pKeyVal->aElement(pCol,nBytes,&aCursor);
+    
+    vTrace("%p: %lld\n"_Str,pKeyVal,v);
+  }
+  
   delete pKeyVec;
   delete pColVec;
-  delete pOpAry;
+  delete pOpAryFind;
   
   vTrace("\n\nEnd KeyTest**********************************************\n"_Str);
 }
