@@ -89,10 +89,12 @@
 
   indexPtr
   not ( indexPtr bool )
+
   if
     EC_NO_SUCH_INDEX false ( errorCode false )
   exit
   then
+
 
   indexPtr ( indexPtr )
   word.kind@ ( ^word )
@@ -101,9 +103,10 @@
   if
     indexNm
     true ( <indexNm> true )
+
     exit
   then
-tp: 5
+
   EC_NOT_AN_INDEX false ( errorCode false )
 ;
 
@@ -171,6 +174,17 @@ tp: 5
 
   indexNm
   true ( "<indexNm>" true )
+;
+
+/*----------------------------------------------------------------------------*/
+: pushIndexes ( -- )
+  "indexes" find execute pathPush
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+: popIndexes
+  pathDrop
 ;
 
 ////////////////////////////////////////////////////////////////////////////////

@@ -1015,7 +1015,7 @@ bool SEitf::bListIndexColumns(Str* aWords[], i8 iWords)
   
   s256 sRequest;
   
-  if (iWords != 2) {
+  if (iWords != 3) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
@@ -1024,6 +1024,10 @@ bool SEitf::bListIndexColumns(Str* aWords[], i8 iWords)
   sRequest.vConcat(aWords[1]);
   sRequest.vConcat("\""_Str);
   
+  sRequest.vConcat("\""_Str);
+  sRequest.vConcat(aWords[2]);
+  sRequest.vConcat("\""_Str);
+
   sRequest.vConcat(" list_indexcolumns"_Str);
   
   return bAppendRequest(sRequest);

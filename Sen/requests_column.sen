@@ -64,17 +64,36 @@
 /*----------------------------------------------------------------------------*/
 /* get list of index columns                                                  */
 /*----------------------------------------------------------------------------*/
-: list_indexcolumns ( "<indexNm>" -- <R> )
+: list_indexcolumns ( "<tableNm" "<indexNm>" -- <R> )
 
-  // should be in the indexes folder
-  checkInIndexes       not if <NIP+ERROR> exit then
+  locals| indexNm tableNm |
+
+  // should be in the tables folder
+  checkInTables       not if <NIP+ERROR> exit then
+
+  // there should be a table folder
+  tableNm checkIsTableFolder not if <NIP+ERROR> exit then
+
+  // push table dictionary
+  tableNm pushTable assert
+
+  // push indexes folder
+  pushIndexes assert
 
   // check it is an index
-  checkIsIndex  not if <NIP+ERROR> exit then
+  indexNm checkIsIndex  not if popIndexes popTable <NIP+ERROR> exit then
 
   listIndexColumns
 
+  // pop indexes folder
+  popIndexes
+
+  // pop table dictionary
+  popTable
+
   <SUCCESS>
+
+tp: 8
 ;
 
 /*============================================================================*/
