@@ -49,15 +49,34 @@ tp: create_index
 /*----------------------------------------------------------------------------*/
 /* dump index                                                                 */
 /*----------------------------------------------------------------------------*/
-: dump_index ( "<indexNm>" -- <R> )
+: dump_index ( "<tableNm" "<indexNm>" -- <R> )
+
+  locals| indexNm tableNm |
 
   ddlLock.grabRead
 
-  checkInIndexes not if <NIP+ERROR> exit then
-  checkIsIndex  not if <NIP+ERROR> exit then
+  // should be in the tables folder
+  checkInTables       not if <NIP+ERROR> exit then
+
+  // there should be a table folder
+  tableNm checkIsTableFolder not if <NIP+ERROR> exit then
+
+  // push table dictionary
+  tableNm pushTable assert
+
+  // push indexes folder
+  pushIndexes assert
+
+  indexNm checkIsIndex  not if popIndexes popTable <NIP+ERROR> exit then
 
   find execute
   index.dump
+
+  // pop indexes folder
+  popIndexes
+
+  // pop table dictionary
+  popTable
 
   <OK>
 ;
