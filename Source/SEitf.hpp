@@ -109,7 +109,9 @@ namespace Interface
     bool bListColumns(Str* aWords[], i8 iWords);
     bool bListIndexColumns(Str* aWords[], i8 iWords);
     
+    bool bAnalyzeIndex(Str* aWords[], i8 iWords);
     bool bAnalyzeTable(Str* aWords[], i8 iWords);
+
     bool bCopyTable(Str* aWords[], i8 iWords);
     bool bExportTable(Str* aWords[], i8 iWords);
     bool bDanalyzeTable(Str* aWords[], i8 iWords);

@@ -120,6 +120,26 @@ Index::~Index(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* analyze table                                                              */
+/*----------------------------------------------------------------------------*/
+Str* Index::pAnalyze(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
+  
+  i8 nRowsTotal = 0;
+  i8 nBuffersTotal = 0;
+  i8 nStrandsTotal = 0;
+  s48K sAnalysis;
+  
+  sAnalysis.vCatSprint("N%lld: Analysis of Index %s of table %s\n"_Str,
+                       gpGrid->iThisNode(),
+                       m_sIndexName.s(),
+                       m_pTable->aTableName());
+  
+  return sAnalysis;
+}
+
+/*----------------------------------------------------------------------------*/
 /* create column vector                                                       */
 /*----------------------------------------------------------------------------*/
 void Index::vCreateColumnVec(s32& sColumnNm, s48K& sColumnDefn)

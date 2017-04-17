@@ -32,6 +32,7 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Index(void)
 {
+  vAddPrimitive("index.analyze"_Str,         &vIndexAnalyze,         false);
   vAddPrimitive("index.columnCount"_Str,     &vIndexColumnCount,     false);
   vAddPrimitive("index.columnName"_Str,      &vIndexColumnName,      false);
   vAddPrimitive("index.columnType"_Str,      &vIndexColumnType,      false);
@@ -50,6 +51,27 @@ void Task::vAddPrimitives_Index(void)
   vAddPrimitive("index::entryTest"_Str,  &vIndexEntryTest,  false);
   vAddPrimitive("index::ibNew"_Str,      &vIndexIbNew,      false);
   vAddPrimitive("index::ibDump"_Str,     &vIndexIbDump,     false);
+}
+
+/*----------------------------------------------------------------------------*/
+/* index.analyze -- analyze index                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vIndexAnalyze(NNP_Task nnpTask)
+{
+  ENTRY("vIndexAnalyze"_Str);
+  
+  Object* pPtrIndex;
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrIndex) )
+    THROW_INVALID_DSTACK("index.analyze"_Str);
+  
+  Index* pIndex = _pIndex(pPtrIndex);
+  ASSERT(CN_INDEX == pIndex->eClass());
+  
+  s48K sAnalysis;
+  sAnalysis = (Str*)pIndex->pAnalyze();
+  nnpTask->m_pDataStack->vPush(sAnalysis);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/

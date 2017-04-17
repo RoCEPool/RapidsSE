@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : analyze_table ( "<tableNm>" -- <R> )
 
-tp: dropTable
+tp: analyzeTable
 
 ddlLock.grabWrite
 
@@ -42,7 +42,7 @@ ddlLock.grabWrite
 /*----------------------------------------------------------------------------*/
 : danalyze_table ( "<tableNm>" -- <R> )
 
-  tp: dropTable
+  tp: analyzeTable
 
   ddlLock.grabWrite
 

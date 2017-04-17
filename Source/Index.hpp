@@ -46,6 +46,7 @@ namespace DBobjects
     Index(void);
     ~Index(void);
   
+    Str* pAnalyze(void);
     void vCreateColumnVec(s32& sName, s48K& sDefinition);
     void vDump(void);
     IndexBufferSeq* pFirstBuffer(void);

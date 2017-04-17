@@ -336,8 +336,9 @@ bool SEitf::bDecode(Str* aWords[], i8 iWords)
   if (0 == aWords[0]->iLength())
     return false;
   
-  if (aWords[0]->bSame("antbl"_Str)) return bAnalyzeTable(aWords, iWords);
   if (aWords[0]->bSame("addcol"_Str)) return bAddColumn(aWords, iWords);
+  if (aWords[0]->bSame("antbl"_Str)) return bAnalyzeTable(aWords, iWords);
+  if (aWords[0]->bSame("anidx"_Str)) return bAnalyzeIndex(aWords, iWords);
   if (aWords[0]->bSame("addidxcol"_Str)) return bAddIndexColumn(aWords, iWords);
   if (aWords[0]->bSame("cf"_Str)) return bPushDic(aWords);
   if (aWords[0]->bSame("con"_Str)) return bConnect(aWords);
@@ -845,13 +846,17 @@ bool SEitf::bDropIndex(Str* aWords[], i8 iWords)
   
   s256 sRequest;
   
-  if (iWords != 2) {
+  if (iWords != 3) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
   sRequest.vCopy("\""_Str);
   sRequest.vConcat(aWords[1]);
+  sRequest.vConcat("\""_Str);
+  
+  sRequest.vConcat("\""_Str);
+  sRequest.vConcat(aWords[2]);
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" drop_index"_Str);
@@ -1033,6 +1038,33 @@ bool SEitf::bListIndexColumns(Str* aWords[], i8 iWords)
   sRequest.vConcat("\""_Str);
 
   sRequest.vConcat(" list_indexcolumns"_Str);
+  
+  return bAppendRequest(sRequest);
+}
+
+/*----------------------------------------------------------------------------*/
+/* analyze an index                                                           */
+/*----------------------------------------------------------------------------*/
+bool SEitf::bAnalyzeIndex(Str* aWords[], i8 iWords)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  s256 sRequest;
+  
+  if (iWords != 3) {
+    vSetLastError(EC_INVALID_PARAMETERS);
+    return false;
+  }
+  
+  sRequest.vCopy("\""_Str);
+  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat("\""_Str);
+  
+  sRequest.vConcat("\""_Str);
+  sRequest.vConcat(aWords[2]);
+  sRequest.vConcat("\""_Str);
+
+  sRequest.vConcat(" analyze_Index"_Str);
   
   return bAppendRequest(sRequest);
 }

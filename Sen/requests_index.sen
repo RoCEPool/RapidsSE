@@ -5,6 +5,43 @@
 "requests.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* analyse an index of a table                                                */
+/*----------------------------------------------------------------------------*/
+: analyze_index ( "<tableNm>" "<indexNm>"-- <R> )
+
+  tp: analyzeIndex
+
+  locals| indexNm tableNm |
+  ddlLock.grabWrite
+
+  // should be in the tables folder
+  checkInTables       not if <NIP+ERROR> exit then
+
+  // there should be a table folder
+  tableNm checkIsTableFolder not if <NIP+ERROR> exit then
+
+  // push table dictionary
+  tableNm pushTable assert
+
+  // push indexes folder
+  pushIndexes assert
+
+  indexNm checkIsIndex  not if popIndexes popTable <NIP+ERROR> exit then
+
+  analyzeIndex ( )
+
+  // pop indexes folder
+  popIndexes
+
+  // pop table dictionary
+  popTable
+
+  tp: analyzedIndex
+
+  <SUCCESS>
+;
+
+/*----------------------------------------------------------------------------*/
 /* create an index on a table                                                 */
 /*----------------------------------------------------------------------------*/
 : create_index ( "<indexNm>" "<tableNm>" -- <R> )
@@ -23,25 +60,34 @@ tp: create_index
 /*----------------------------------------------------------------------------*/
 /* drop an index                                                              */
 /*----------------------------------------------------------------------------*/
-: drop_index ( "<indexNm>" -- <R> )
+: drop_index ( "<tableNm>" "<indexNm>" -- <R> )
 
   tp: dropIndex
 
+  locals| indexNm tableNm |
   ddlLock.grabWrite
 
-  // move to indexes folder
-  "indexes" find execute dup not if drop EC_NOT_IN_TABLE false exit then
-  pathPush
-
-  checkRemoveIndex not if <NIP+ERROR> exit then
+  tableNm indexNm checkRemoveIndex not if <NIP+ERROR> exit then
 
   tp ( "<indexNm>" )
 
+  // push table dictionary
+  tableNm pushTable assert ( "<indexNm>" )
+
+  // push indexes folder
+  pushIndexes assert ( "<indexNm>" )
+
+  checkIsIndex  not if popIndexes popTable <NIP+ERROR> exit then
+
   removeIndex ( ) assert.stack_0
 
-  tp: droppedIndex
+  // pop indexes folder
+  popIndexes
 
-  pathDrop
+  // pop table dictionary
+  popTable
+
+  tp: droppedIndex
 
   <OK>
 ;

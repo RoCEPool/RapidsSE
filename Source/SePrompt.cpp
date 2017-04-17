@@ -1718,14 +1718,20 @@ bool SePrompt::bDropIndex(void)
   
   iNumTokens = iToken;
   
-  // there should be 4 tokens
-  if (iNumTokens != 4) {
+  // there should be 6 tokens
+  if (iNumTokens != 6) {
+    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+    return false;
+  }
+  
+  // 4th token should be '.'
+  if (!m_aToken2[3] ->bEqual("."_Str)) {
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
   }
   
   // last token should be ';'
-  if (!m_aToken2[3] ->bEqual(";"_Str)) {
+  if (!m_aToken2[5] ->bEqual(";"_Str)) {
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
   }
@@ -1733,6 +1739,7 @@ bool SePrompt::bDropIndex(void)
   // drop a table
   m_aToken[0]->vCopy("rmidx"_Str);
   m_aToken[1]->vCopy(m_aToken2[2]);
+  m_aToken[2]->vCopy(m_aToken2[4]);
   if (!bExecuteRequest())
     return false;
   

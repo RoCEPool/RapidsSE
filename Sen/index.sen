@@ -119,21 +119,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-: pushIndex ( "<indexNm>" -- )
-
-  checkIsIndex not if EC_NO_SUCH_INDEX false exit then
-
-  find execute pathPush
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
-: popIndex
-    pathDrop
-;
-
-/*----------------------------------------------------------------------------*/
 : pushIndexSub ( "<indexNm>" -- )
 
   checkIsIndex not if EC_NO_SUCH_INDEX false exit then
@@ -162,18 +147,18 @@
 /*----------------------------------------------------------------------------*/
 /* check if word is a removable index folder                                  */
 /*----------------------------------------------------------------------------*/
-: checkRemoveIndex ( "<indexNm>" -- "<indexNm>" true | "<indexNm>" errorCode false )
+: checkRemoveIndex ( "<tableNm>" "<indexNm>" -- "<indexNm>" true | "<indexNm>" errorCode false )
 
-  locals| indexNm |
+  locals| indexNm tableNm |
 
-  checkInIndexes not if false exit then
+  // should be in the tables folder
+  checkInTables       not if false exit then
 
-  indexNm checkIsIndex not if false exit then
-  indexNm find execute ( ^indexPtr )
-  index.table@
+  // there should be a table folder
+  tableNm checkIsTableFolder not if false exit then
 
-  indexNm
-  true ( "<indexNm>" true )
+  indexNm true ( "<indexNm>" true )
+
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -188,6 +173,20 @@
 ;
 
 ////////////////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* analyze an index of a table                                                */
+/*----------------------------------------------------------------------------*/
+: analyzeIndex allParticipants 1 returnResult ( "<indexNm>" -- true n# true )
+
+  tp: analyzeIndex
+
+  find execute
+
+  index.analyze
+
+  <SUCCESS_RESULT>
+;
 
 /*----------------------------------------------------------------------------*/
 /* make an index (run by participant)                                         */

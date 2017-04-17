@@ -119,7 +119,6 @@ lstbl   list_tables
 add     add_column
 addidx  add_idxcolumn
 lscol   list_columns
-lsidxcol list_indexcolumns
 ld      load_table
 tblInUse  table_inuse
 tableSizes size_tables
@@ -134,9 +133,11 @@ rettbl  return_table
 rmtbl   drop_table
 
 Index Requests:
+anidx   analyze_index
 mkidx   create_index
 lsidx   list_indexes
 idump   dump_index
+lsidxcol list_indexcolumns
 rmidx   drop_index
 
 Dictionary Requests:

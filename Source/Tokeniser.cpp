@@ -526,6 +526,9 @@ eTK Tokeniser::eParseNormalOther(char* wToken)
     else {
       // push back the unconsumed char
       vUngetStrippedChar();
+      
+      // set last single character as .
+      m_cParsedChar = '.';
     }
   }
   

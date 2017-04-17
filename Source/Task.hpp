@@ -510,6 +510,7 @@ namespace Tasks
     static void vGridToSlot(NNP_Task nnpTask);
   
     // index
+    static void vIndexAnalyze(NNP_Task nnpTask);
     static void vIndexColumnCount(NNP_Task nnpTask);
     static void vIndexColumnName(NNP_Task nnpTask);
     static void vIndexColumnType(NNP_Task nnpTask);
