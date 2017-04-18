@@ -133,6 +133,7 @@ rettbl  return_table
 rmtbl   drop_table
 
 Index Requests:
+
 anidx   analyze_index
 mkidx   create_index
 lsidx   list_indexes

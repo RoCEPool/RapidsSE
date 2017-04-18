@@ -111,6 +111,7 @@ namespace Interface
     
     bool bAnalyzeIndex(Str* aWords[], i8 iWords);
     bool bAnalyzeTable(Str* aWords[], i8 iWords);
+    bool bTruncateIndex(Str* aWords[], i8 iWords);
 
     bool bCopyTable(Str* aWords[], i8 iWords);
     bool bExportTable(Str* aWords[], i8 iWords);

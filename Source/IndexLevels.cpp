@@ -128,6 +128,8 @@ void IndexLevels::vTruncate(void)
     pIndexBuffer = pNextIndexBuffer;
   }
   
+  m_pIndexBuffer[0] = nullptr;
+  
   m_zLock.vDropWrite();
 }
 
