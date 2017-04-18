@@ -30,9 +30,8 @@ namespace DBobjects
     IndexData(Index* pIndex);
     ~IndexData(void);
   
-    Str* pAnalyze(void);
-    void vDump(void);
-    IndexBuffer* pFirstBuffer(void);
+    Str*   pAnalyze(void);
+    void   vDump(void);
     Index* pIndex(void);
     void   vInsertEntry(Row* pRow, i8 nRowNo, bn nBufferNo);
     void   vPopulate(void);

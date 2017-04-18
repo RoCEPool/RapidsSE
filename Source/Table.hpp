@@ -62,6 +62,7 @@ namespace DBobjects
     Str* aTableName(void);
     void vTidyUp(void);
     void vTruncate(void);
+    void vTruncateIndex(i8 iIndexNo);
     bool bValidateRow(Str* pRow, i8& iColumn);
   
     Footer* pFooter(void);

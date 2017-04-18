@@ -139,6 +139,7 @@ lsidx   list_indexes
 idump   dump_index
 lsidxcol list_indexcolumns
 rmidx   drop_index
+tridx   truncate_index
 
 Dictionary Requests:
 

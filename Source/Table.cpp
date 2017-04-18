@@ -315,7 +315,7 @@ Partition* Table::pPartition(i8 iSlot)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get a partition                                                            */
+/* populate the index                                                         */
 /*----------------------------------------------------------------------------*/
 void Table::vPopulateIndex(i8 iIndexNo)
 {
@@ -452,6 +452,16 @@ void Table::vTruncate(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
   m_xSlots.vTruncate();
+}
+
+/*----------------------------------------------------------------------------*/
+/* truncate the index                                                         */
+/*----------------------------------------------------------------------------*/
+void Table::vTruncateIndex(i8 iIndexNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  
+  m_xSlots.vTruncateIndex(iIndexNo);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -234,12 +234,7 @@ void Task::vIndexPopulate(NNP_Task nnpTask)
   Table* pTable = pIndex->pTable();
   
   pTable->vPopulateIndex(iIndexNo);
- /*
-  for (i8 iPartition = 0; iPartition < gpGrid->m_nSlots; iPartition++) {
-    Partition* pPartition = pTable->pPartition(iPartition);
-    pPartition->vPopulateIndex(iIndexNo);
-  }
- */
+ 
   EXIT();
 }
 
@@ -343,12 +338,6 @@ void Task::vIndexTruncate(NNP_Task nnpTask)
   
   if ( ! nnpTask->m_pDataStack->bPop(pPtrIndex) )
     THROW_INVALID_DSTACK("index.truncate"_Str);
-  /*
-  Index* pIndex = _pIndex(pPtrIndex);
-  ASSERT(CN_INDEX == pIndex->eClass());
-  
-  pIndex->vTruncate();
-  */
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
@@ -356,14 +345,8 @@ void Task::vIndexTruncate(NNP_Task nnpTask)
   i8 iIndexNo = pIndex->iIndexNo();
   Table* pTable = pIndex->pTable();
   
-  //pTable->vTruncateIndex(iIndexNo);
+  pTable->vTruncateIndex(iIndexNo);
   
-  /*
-  for (i8 iPartition = 0; iPartition < gpGrid->m_nSlots; iPartition++) {
-    Partition* pPartition = pTable->pPartition(iPartition);
-    pPartition->vTruncateIndex(iIndexNo);
-  }
-  */
   EXIT();
 }
 
