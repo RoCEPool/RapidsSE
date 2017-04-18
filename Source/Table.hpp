@@ -51,6 +51,7 @@ namespace DBobjects
     void vCreateColumnVec(s32& sName, s48K& sDefinition);
     bool bInsertRow(RowBuffer* pRowBuffer, i8 iPartition, TxRef* pTxRef, Str* pRecord, i8 iLength);
     Partition* pPartition(i8 iSlot);
+    void vPopulateIndex(i8 iIndexNo);
     void vRefDec(void);
     void vRefInc(void);
     bool bRefOut(void);

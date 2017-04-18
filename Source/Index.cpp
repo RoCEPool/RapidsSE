@@ -92,13 +92,13 @@ Index::Index(void)
   
   Word* pWord = Word::pToWord(this);
   
-  m_iIndexNo = 0;
+  m_iIndexNo = -1;
   m_sIndexName = pWord->sName();;
   m_eIndexType = IT_SKIP_LIST;
   m_pTable = nullptr;
   m_pIdxColVec = new IdxColVec;
   
-  m_pIndexLevels = new IndexLevels();
+  // m_xSubDic
   
   _checkInitialised_(CN_INDEX);
   
@@ -118,26 +118,6 @@ Index::~Index(void)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* analyze table                                                              */
-/*----------------------------------------------------------------------------*/
-Str* Index::pAnalyze(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
-  
-  i8 nRowsTotal = 0;
-  i8 nBuffersTotal = 0;
-  i8 nStrandsTotal = 0;
-  s48K sAnalysis;
-  
-  sAnalysis.vCatSprint("N%lld: Analysis of Index %s of table %s\n"_Str,
-                       gpGrid->iThisNode(),
-                       m_sIndexName.s(),
-                       m_pTable->aTableName());
-  
-  return sAnalysis;
-}
 
 /*----------------------------------------------------------------------------*/
 /* create column vector                                                       */
@@ -171,9 +151,9 @@ void Index::vCreateColumnVec(s32& sColumnNm, s48K& sColumnDefn)
 void Index::vDump(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
-
-  IndexBuffer* pIndexBuffer = m_pIndexLevels->pFirstBuffer();
 /*
+  IndexBuffer* pIndexBuffer = m_pIndexLevels->pFirstBuffer();
+
   while (pIndexBuffer) {
     pIndexBuffer->vShow();
     
@@ -186,100 +166,39 @@ void Index::vDump(void)
     }
     pIndexBuffer = pIndexBuffer->pNextBuffer();
   }
- */
+ 
   pIndexBuffer->vShow();
+ */
 }
 
 /*----------------------------------------------------------------------------*/
-/* insert an entry for the row into the index                                 */
+/* get the index name                                                         */
 /*----------------------------------------------------------------------------*/
-void Index::vInsertEntry(Row* pRow, i8 nRowNo, bn nBufferNo)
+Str* Index::aIndexName(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
-  EntWsp xEntWsp;
-  RowId xRowId;
-  ValWsp xValWsp;
-  KeyWsp xKeyWsp;
-  i8 iKey;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // form the rowId
-  xRowId.vBuffer(*nBufferNo);
-  xRowId.vRow(nRowNo);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set the rowId in the EntWsp
-  xEntWsp.vRowId(xRowId);
-  
-  // get the first field (hardcoded)                            //ALKA
-  StrVal* pStrVal = (StrVal*)pRow->pData();
-  
-  // extract the key from the first field
-  iKey = pStrVal->iToI8();
-  
-  // add the key to the KeyWsp
-  xValWsp = iKey;
-  xKeyWsp.vAddElement(xValWsp);
-  Key xKey(xKeyWsp);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // add key to entry
-  xEntWsp.vAddKey(xKeyWsp);
-  
-  xEntWsp.vShow();
-  
-  // insert row entry in index
-  m_pIndexLevels->vInsertEntry(&xKey, xRowId);
-  
+  return m_sIndexName;
 }
 
 /*----------------------------------------------------------------------------*/
-/* populate the index                                                         */
+/* set the indexNo                                                            */
 /*----------------------------------------------------------------------------*/
-void Index::vPopulate(void)
+void Index::vIndexNo(i8 iIndexNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
   
-  for (i8 iSlot = 0; iSlot < gpGrid->m_nSlots; iSlot++) {
-    
-    //i8 iPartition = Partition::iSlotToPartition(iSlot);
-    
-    RowStrand *pStrand = m_pTable->pPartition(iSlot)->pData()->pHeadStrand();
-    
-    i8 nBuffers = 0;
-    i8 nStrands = 0;
-    while (pStrand) {
-      nStrands++;
-      
-        RowBuffer* pRowBuffer = pStrand->pFirstBuffer();
-        i8 nRowsInBuffer = 0;
-        i8 nRowBuffer = 0;
-      
-        while (pRowBuffer) {
-          nRowBuffer++;
-          nRowsInBuffer = pRowBuffer->nRows();
-         
-          Row* pRow = pRowBuffer->pFirstRow();
-          bn nBufferNo = pRowBuffer->nBufferNo();
-          i8 nRowNo = 0;
-          
-          while (pRow) {
-            vInsertEntry(pRow, nRowNo, nBufferNo);
-            pRow = pRowBuffer->pNextRow(pRow);
-            nRowNo++;
-          }
-          
-          // move to the next rowBuffer
-          pRowBuffer = pRowBuffer->pNextBuffer();
-        }
-      
-      nBuffers += pStrand->nRowBuffers();
-      pStrand = pStrand->pNextStrand();
-    }
-    
-  }
+  m_iIndexNo = iIndexNo;
+}
 
+/*----------------------------------------------------------------------------*/
+/* get the indexNo                                                            */
+/*----------------------------------------------------------------------------*/
+i8 Index::iIndexNo(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
+  
+  return m_iIndexNo;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -337,17 +256,6 @@ void Index::vTidyUp(void)
   m_pIdxColVec->vClear();
   
   delete m_pIdxColVec;
-  delete m_pIndexLevels;
-}
-
-/*----------------------------------------------------------------------------*/
-/* truncate the index                                                         */
-/*----------------------------------------------------------------------------*/
-void Index::vTruncate(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
-  
-  m_pIndexLevels->vTruncate();
 }
 
 /*----------------------------------------------------------------------------*/

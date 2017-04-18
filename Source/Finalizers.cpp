@@ -64,6 +64,7 @@ pFINALIZE *gpFinalize[]
   
   /* 30 */ &Index::vFinalize,             // CN_INDEX
   /* 31 */ &Finalize::vUndefined,         // CN_INDEXBUFFER
+  /*    */ &Finalize::vUndefined,         // CN_INDEXDATA
   /*    */ &Finalize::vUndefined,         // CN_IDXCOLVEC
   /*    */ &Finalize::vUndefined,         // CN_IDXVEC
   /* 33 */ &Finalize::vUndefined,         // CN_INDEXLEVELS

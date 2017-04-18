@@ -71,6 +71,18 @@ Partition* Slots::pPartition(i8 iSlot)
 }
 
 /*----------------------------------------------------------------------------*/
+/* populate index of all partitions                                           */
+/*----------------------------------------------------------------------------*/
+void Slots::vPopulateIndex(i8 iIndexNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SLOTS,_FOOTER_);
+  
+  i8 iPartn;
+  for (iPartn = 0; iPartn < gpGrid->iSlots(); iPartn++)
+    m_xPartition[iPartn].vPopulateIndex(iIndexNo);
+}
+
+/*----------------------------------------------------------------------------*/
 /* tidyup                                                                     */
 /*----------------------------------------------------------------------------*/
 void Slots::vTidyUp(void)
@@ -96,6 +108,18 @@ void Slots::vTruncate(void)
   i8 iPartn;
   for (iPartn = 0; iPartn < gpGrid->iSlots(); iPartn++)
     m_xPartition[iPartn].pData()->vTruncate();
+}
+
+/*----------------------------------------------------------------------------*/
+/* tuncate all partitions                                                     */
+/*----------------------------------------------------------------------------*/
+void Slots::vTruncateIndex(i8 iIndexNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SLOTS,_FOOTER_);
+  
+  i8 iPartn;
+  for (iPartn = 0; iPartn < gpGrid->iSlots(); iPartn++)
+    m_xPartition[iPartn].pIndexData(iIndexNo)->vTruncate();
 }
 
 /*----------------------------------------------------------------------------*/

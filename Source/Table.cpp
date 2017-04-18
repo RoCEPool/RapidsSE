@@ -67,7 +67,7 @@ Table::Table(void)
   m_sTableName = pWord->sName();
   m_eTableType = TT_NORMAL;
   
-  //m_xDictionary
+  //m_xSubDic
 
   //m_xSlots
   
@@ -143,11 +143,22 @@ void Table::vAddIndex(Index* pIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
+  // create an IndexData for the index in each partition
+  i8 iIndexNo = -1;
   for (i8 iPartition = 0; iPartition < gpGrid->m_nSlots; iPartition++) {
     Partition* pPartition = this->pPartition(iPartition);
-    pPartition->vAddIndex(pIndex);
+    iIndexNo = pPartition->iAddIndex(new IndexData(pIndex));
   }
   
+  // set the indexNo in the index
+  pIndex->vIndexNo(iIndexNo);
+
+  // assert that all partitions have the indexData at the same indexNo position
+  for (i8 iPartition = 0; iPartition < gpGrid->m_nSlots; iPartition++) {
+    Partition* pPartition = this->pPartition(iPartition);
+    IndexData* pIndexData = pPartition->pIndexData(iIndexNo);
+    ASSERT(pIndexData->pIndex() == pIndex);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -301,6 +312,16 @@ Partition* Table::pPartition(i8 iSlot)
   Partition* pPart = m_xSlots.pPartition(iSlot);
   
   return pPart;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get a partition                                                            */
+/*----------------------------------------------------------------------------*/
+void Table::vPopulateIndex(i8 iIndexNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  
+  m_xSlots.vPopulateIndex(iIndexNo);
 }
 
 /*----------------------------------------------------------------------------*/

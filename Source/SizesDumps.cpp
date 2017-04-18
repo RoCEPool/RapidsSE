@@ -65,6 +65,7 @@ pDUMPFUN *gpDump[]
   
   /* 30 */ &Dump::vDummy,           // CN_INDEX
   /* 31 */ &Dump::vDummy,           // CN_INDEXBUFFER
+  /*    */ &Dump::vDummy,           // CN_INDEXDATA
   /*    */ &Dump::vDummy,           // CN_IDXCOLVEC
   /*    */ &Dump::vDummy,           // CN_IDXVEC
   /* 33 */ &Dump::vDummy,           // CN_INDEXLEVELS
@@ -209,6 +210,7 @@ i8 giClassSize[]
   
   /* 30 */ 0,                          // CN_INDEX
   /* 31 */ 0,                          // CN_INDEXBUFFER
+  /* 31 */ 0,                          // CN_INDEXDATA
   /*    */ 0,                          // CN_IDXCOLVEC
   /*    */ 0,                          // CN_IDXVEC
   /* 33 */ 0,                          // CN_INDEXLEVELS
@@ -353,6 +355,7 @@ eHT geWhichHeap[]
   
   /* 32 */ HT_INVALID, // CN_INDEX
   /* 33 */ HT_LARGE,   // CN_INDEXBUFFER
+  /* 33 */ HT_SMALL,   // CN_INDEXDATA
   /*    */ HT_MEDIUM,  // CN_IDXCOLVEC
   /*    */ HT_SMALL,   // CN_IDXVEC
   /* 35 */ HT_MEDIUM,  // CN_INDEXLEVELS

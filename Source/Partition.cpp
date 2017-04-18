@@ -117,12 +117,13 @@ Partition::~Partition(void)
 /*----------------------------------------------------------------------------*/
 /* insert a row into this strand                                              */
 /*----------------------------------------------------------------------------*/
-void Partition::vAddIndex(Index* pIndex)
+i8 Partition::iAddIndex(IndexData* pIndexData)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
   
   ASSERT(m_pIdxVec->nItems() < C_INDEXES_PER_TABLE);
-  m_pIdxVec->vAdd(pIndex);
+  m_pIdxVec->vAdd(pIndexData);
+  return m_pIdxVec->nItems() - 1;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -145,8 +146,8 @@ bool Partition::bInsertRow(RowBuffer* pRowBuffer, TxRef* pTxRef, Str* pRecord, i
   i8 nIndexes = m_pIdxVec->nItems();
   
   for (i8 iIndex=0; iIndex < nIndexes; iIndex++) {
-    Index* pIndex = m_pIdxVec->pGet(iIndex);
-    pIndex->vInsertEntry(pRow, pRowBuffer->nRows(), pRowBuffer->nBufferNo());
+    IndexData* pIndexData = m_pIdxVec->pGet(iIndex);
+    pIndexData->vInsertEntry(pRow, pRowBuffer->nRows(), pRowBuffer->nBufferNo());
   }
   
   return true;
@@ -169,6 +170,48 @@ void Partition::vPartitionId(i8 iPartitionId)
 }
 
 /*----------------------------------------------------------------------------*/
+/* insert a row into this strand                                              */
+/*----------------------------------------------------------------------------*/
+void Partition::vPopulateIndex(i8 iIndexNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
+  
+  IndexData* pIndexData = m_pIdxVec->pGet(iIndexNo);
+  RowStrand *pStrand = m_pData->pHeadStrand();
+    
+  i8 nBuffers = 0;
+  i8 nStrands = 0;
+  while (pStrand) {
+    nStrands++;
+    
+    RowBuffer* pRowBuffer = pStrand->pFirstBuffer();
+    i8 nRowsInBuffer = 0;
+    i8 nRowBuffer = 0;
+    
+    while (pRowBuffer) {
+      nRowBuffer++;
+      nRowsInBuffer = pRowBuffer->nRows();
+      
+      Row* pRow = pRowBuffer->pFirstRow();
+      bn nBufferNo = pRowBuffer->nBufferNo();
+      i8 nRowNo = 0;
+      
+      while (pRow) {
+        pIndexData->vInsertEntry(pRow, nRowNo, nBufferNo);
+        pRow = pRowBuffer->pNextRow(pRow);
+        nRowNo++;
+      }
+      
+      // move to the next rowBuffer
+      pRowBuffer = pRowBuffer->pNextBuffer();
+    }
+    
+    nBuffers += pStrand->nRowBuffers();
+    pStrand = pStrand->pNextStrand();
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* get data                                                                   */
 /*----------------------------------------------------------------------------*/
 Data* Partition::pData(void)
@@ -179,7 +222,7 @@ Data* Partition::pData(void)
 /*----------------------------------------------------------------------------*/
 /* get index                                                                  */
 /*----------------------------------------------------------------------------*/
-Index* Partition::pIndex(i8 iIndex)
+IndexData* Partition::pIndexData(i8 iIndex)
 {
   return m_pIdxVec->pGet(iIndex);
 }

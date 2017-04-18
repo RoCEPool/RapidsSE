@@ -1,0 +1,235 @@
+
+/*============================================================================*/
+/* IndexData.cpp - index data portion of table partition                      */
+/*============================================================================*/
+
+#include "DBobjects.h"
+#include "StorageEngine.h"
+
+extern BufferPool*  gpBufferPool;
+extern Grid*        gpGrid;
+
+/*----------------------------------------------------------------------------*/
+/*-- Static ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* safe cast                                                                  */
+/*----------------------------------------------------------------------------*/
+IndexData* DBobjects::_pIndexData(void* pAddr)
+{
+  IndexData* pIndexData = reinterpret_cast<IndexData*>(pAddr);
+  
+  RASSERT( !pIndexData || CN_INDEXDATA == pIndexData->eClass() );
+  
+  return pIndexData;
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump data                                                                  */
+/*----------------------------------------------------------------------------*/
+void IndexData::vDump(eCN eClass, Object* pObject, Str* aTab)
+{
+  ASSERT(eClass == CN_INDEXDATA);
+  ASSERT(pObject->eClass() == CN_INDEXDATA);
+  
+  Data* pData = reinterpret_cast<Data*>(pObject);
+}
+
+/*----------------------------------------------------------------------------*/
+/* finalize                                                                   */
+/*----------------------------------------------------------------------------*/
+void IndexData::vFinalize(eCN eClass, Object* pObject)
+{
+  ASSERT(eClass == CN_INDEXDATA);
+  ASSERT(pObject->eClass() == CN_INDEXDATA);
+  
+  IndexData* pIndexData = reinterpret_cast<IndexData*>(pObject);
+  ASSERT(pIndexData->bWordBody());
+  
+  pIndexData->vTidyUp();
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- LifeCycle ---------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* operator new                                                               */
+/*----------------------------------------------------------------------------*/
+void* IndexData::operator new(size_t iSize)
+{
+  RASSERT(iSize);
+  
+  void* pObject = Heap::pAllocate(CN_INDEXDATA);
+  
+  return pObject;
+}
+
+/*----------------------------------------------------------------------------*/
+/* operator delete                                                            */
+/*----------------------------------------------------------------------------*/
+void IndexData::operator delete(void* pDataAddress)
+{
+  RASSERT(pDataAddress);
+  IndexData* pIndexData = reinterpret_cast<IndexData*>(pDataAddress);
+  
+  Heap::vFree(pIndexData);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+IndexData::IndexData(Index* pIndex)
+: Object(CN_INDEXDATA)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
+  
+  m_pIndex = pIndex;
+  m_pIndexLevels = new IndexLevels();
+  
+  _checkInitialised_(CN_INDEXDATA);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* destructor                                                                 */
+/*----------------------------------------------------------------------------*/
+IndexData::~IndexData(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
+  
+  vTidyUp();
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* analyze table                                                              */
+/*----------------------------------------------------------------------------*/
+Str* IndexData::pAnalyze(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
+  
+  i8 nRowsTotal = 0;
+  i8 nBuffersTotal = 0;
+  i8 nStrandsTotal = 0;
+  s48K sAnalysis;
+  
+  sAnalysis.vCatSprint("N%lld: Analysis of Index %s of table %s\n"_Str,
+                       gpGrid->iThisNode(),
+                       m_pIndex->aIndexName()->s(),
+                       m_pIndex->pTable()->aTableName());
+  
+  return sAnalysis;
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump the index                                                             */
+/*----------------------------------------------------------------------------*/
+void IndexData::vDump(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
+
+  IndexBuffer* pIndexBuffer = m_pIndexLevels->pFirstBuffer();
+
+  while (pIndexBuffer) {
+    pIndexBuffer->vShow();
+    pIndexBuffer = pIndexBuffer->pNextBuffer();
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the index                                                             */
+/*----------------------------------------------------------------------------*/
+Index* IndexData::pIndex(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
+  
+  return m_pIndex;
+}
+
+/*----------------------------------------------------------------------------*/
+/* insert an entry for the row into the index                                 */
+/*----------------------------------------------------------------------------*/
+void IndexData::vInsertEntry(Row* pRow, i8 nRowNo, bn nBufferNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
+  
+  EntWsp xEntWsp;
+  RowId xRowId;
+  ValWsp xValWsp;
+  KeyWsp xKeyWsp;
+  i8 iKey;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // form the rowId
+  xRowId.vBuffer(*nBufferNo);
+  xRowId.vRow(nRowNo);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set the rowId in the EntWsp
+  xEntWsp.vRowId(xRowId);
+  
+  // get the first field (hardcoded)                            //ALKA
+  StrVal* pStrVal = (StrVal*)pRow->pData();
+  
+  // extract the key from the first field
+  iKey = pStrVal->iToI8();
+  
+  // add the key to the KeyWsp
+  xValWsp = iKey;
+  xKeyWsp.vAddElement(xValWsp);
+  Key xKey(xKeyWsp);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // add key to entry
+  xEntWsp.vAddKey(xKeyWsp);
+  
+  xEntWsp.vShow();
+  
+  // insert row entry in index
+  m_pIndexLevels->vInsertEntry(&xKey, xRowId);
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* tidyup                                                                     */
+/*----------------------------------------------------------------------------*/
+void IndexData::vTidyUp(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
+  
+  delete m_pIndexLevels;
+}
+
+/*----------------------------------------------------------------------------*/
+/* truncate the index                                                         */
+/*----------------------------------------------------------------------------*/
+void IndexData::vTruncate(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
+  
+  m_pIndexLevels->vTruncate();
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Footer ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get location of footer                                                     */
+/*----------------------------------------------------------------------------*/
+Footer* IndexData::pFooter(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA);
+  
+  return &m_xFooter;
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

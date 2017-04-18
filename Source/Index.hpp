@@ -30,8 +30,6 @@ namespace DBobjects
     Dic          m_xSubDic;    // sub dictionary for this index
     IdxColVec*   m_pIdxColVec;
   
-    IndexLevels* m_pIndexLevels;
-  
     // must be last
     Footer m_xFooter;
     
@@ -49,16 +47,15 @@ namespace DBobjects
     Str* pAnalyze(void);
     void vCreateColumnVec(s32& sName, s48K& sDefinition);
     void vDump(void);
-    IndexBufferSeq* pFirstBuffer(void);
-    void vInsertEntry(Row* pRow, i8 nRowNo, bn nBufferNo);
-    void vPopulate(void);
+    Str* aIndexName(void);
+    void vIndexNo(i8 iIndexNo);
+    i8   iIndexNo(void);
     void vShowColumnVec(void);
     Dic* pSubDic(void);
     void vTable(Table* pTable);
     Table* pTable(void);
     void vTidyUp(void);
-    void vTruncate(void);
-  
+    
     IdxColVec* pIdxColVec(void);
   
     Footer* pFooter(void);

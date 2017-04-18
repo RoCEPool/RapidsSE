@@ -32,6 +32,7 @@ typedef Array<CN_ROARRAY,eRO,1024> RelOpAry;
 
 #include "Data.hpp"
 
+
 #include "RowId.hpp"
 #include "KeyWsp.hpp"
 #include "Key.hpp"
@@ -46,6 +47,7 @@ typedef Array<CN_ROARRAY,eRO,1024> RelOpAry;
 #include "IndexBuffer.hpp"
 #include "IndexBufferSeq.hpp"
 #include "IndexLevels.hpp"
+#include "IndexData.hpp"
 
 #include "Partition.hpp"
 #include "Slots.hpp"
