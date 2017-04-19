@@ -397,7 +397,7 @@ tp: makingTable
 
 tp: removeTable
 
-  0 locals| indexNm tableNm |
+  locals| tableNm |
 
   tableNm pushTable assert
   tableNm find execute ( ^table )
@@ -405,35 +405,26 @@ tp: removeTable
   // drop all rows
   dup table.truncate ( ^table )
 
-  // drop all indexes
+
   "indexes" find execute pathPush
 
+  // iterate thru all indexes and tidyUp
   0 pathPick dic.lastWord dup
     iterate                        // setup iteration of words
     object@ word.name
-    to indexNm
 
-    indexNm find execute ( ^indexPtr )
-    dup index.truncate
-
-    // forget all column names in the columns dictionary of index sub-dictionary
-    dup index.subDic
-    pathPush
-    "columns" find execute forgetAll
-    pathDrop
-
-    index.subDic forgetAll
+    // forward reference :-(
+    "indexTidyUp" find execute
 
     object@ word.prev object!     // step backwards thru words
-    //indexNm :forget
-
   next
 
   pathDrop
 
-  // forget the indexes dictionary
+  // forget the indexes in the indexes dictionary
   "indexes" find execute forgetAll
 
+  // forget the indexes dictionary itself
   "indexes" :forget
 
   // forget all column names in the columns dictionary of table sub-dictionary

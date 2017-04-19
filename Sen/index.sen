@@ -172,6 +172,24 @@
   pathDrop
 ;
 
+/*----------------------------------------------------------------------------*/
+: indexTidyUp ( "<indexNm>" -- )
+
+   find execute ( ^indexPtr )
+
+   // truncate the index
+   dup index.truncate
+   
+   // forget all column names
+   dup index.subDic
+   pathPush
+   "columns" find execute forgetAll
+   pathDrop
+
+  // forget the sub dictionary
+   index.subDic forgetAll
+;
+
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
@@ -275,21 +293,11 @@ tp: loadIndexes
 : removeIndex allParticipants 1 checkResult ( "<indexNm>" -- true n# true )
 
   tp: removeIndex
-  0 locals| indexPtr indexNm |
+  locals| indexNm |
 
-  indexNm find execute ( ^index )
-  to indexPtr
-
-  indexPtr index.truncate
-
-  // forget all column names in the columns dictionary of index sub-dictionary
-  indexPtr index.subDic
-  pathPush
-  "columns" find execute forgetAll
-  pathDrop
-
-  // forget the columns dictionary in the index sub-dictionary
-  indexPtr index.subDic forgetAll
+  indexNm
+  // forward reference :-(
+  "indexTidyUp" find execute
 
   indexNm :forget
 
