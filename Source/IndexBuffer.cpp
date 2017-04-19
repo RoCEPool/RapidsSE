@@ -258,6 +258,16 @@ void IndexBuffer::vFixRevise(Entry** ppReviseVec, Entry* pNewEntry)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get number of enteries in the buffer                                       */
+/*----------------------------------------------------------------------------*/
+i8 IndexBuffer::nEntries(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
+  
+  return m_nEntries;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get head entry of skip list in this index buffer                           */
 /*----------------------------------------------------------------------------*/
 Entry* IndexBuffer::aHead(void)

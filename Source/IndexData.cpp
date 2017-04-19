@@ -153,6 +153,16 @@ Index* IndexData::pIndex(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get the index levels                                                       */
+/*----------------------------------------------------------------------------*/
+IndexLevels* IndexData::pIndexLevels(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
+  
+  return m_pIndexLevels;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the index buffers used                                                 */
 /*----------------------------------------------------------------------------*/
 i8 IndexData::nIndexBuffers(void)

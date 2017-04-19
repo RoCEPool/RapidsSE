@@ -69,7 +69,7 @@ void Task::vIndexAnalyze(NNP_Task nnpTask)
   ASSERT(CN_INDEX == pIndex->eClass());
   
   s48K sAnalysis;
-  //sAnalysis = (Str*)pIndex->pAnalyze();
+  sAnalysis = (Str*)pIndex->pTable()->pAnalyzeIndex(pIndex);
   nnpTask->m_pDataStack->vPush(sAnalysis);
   
   EXIT();

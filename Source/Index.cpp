@@ -176,7 +176,7 @@ void Index::vDump(void)
 /*----------------------------------------------------------------------------*/
 Str* Index::aIndexName(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
   
   return m_sIndexName;
 }

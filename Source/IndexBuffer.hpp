@@ -36,6 +36,7 @@ namespace DBobjects
     
     static IndexBuffer* pNewIndexBuffer(void);
   
+    i8      nEntries(void);
     Entry*  aHead(void);
     bool    bInsert(Key* aKey, RowId xRowId);
     IndexBuffer* pNextBuffer(void);
