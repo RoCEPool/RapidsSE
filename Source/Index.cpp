@@ -126,10 +126,10 @@ void Index::vCreateColumnVec(s32& sColumnNm, s48K& sColumnDefn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
   
-  vTrace("vCreateColumnVec: index %s column %s %s\n"_Str,
-           m_sIndexName.s(),
-           sColumnNm.aStr(),
-           sColumnDefn.aStr());
+  //vTrace("vCreateColumnVec: index %s column %s %s\n"_Str,
+  //        m_sIndexName.s(),
+  //         sColumnNm.aStr(),
+  //         sColumnDefn.aStr());
   
   Column* pColumn = nullptr;
   

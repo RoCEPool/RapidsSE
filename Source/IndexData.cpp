@@ -153,6 +153,25 @@ Index* IndexData::pIndex(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get the index buffers used                                                 */
+/*----------------------------------------------------------------------------*/
+i8 IndexData::nIndexBuffers(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
+  
+  i8 nBuffers = 0;
+  
+  IndexBuffer* pIndexBuffer = m_pIndexLevels->pFirstBuffer();
+  
+  while (pIndexBuffer) {
+    nBuffers++;
+    pIndexBuffer = pIndexBuffer->pNextBuffer();
+  }
+  
+  return nBuffers;
+}
+
+/*----------------------------------------------------------------------------*/
 /* insert an entry for the row into the index                                 */
 /*----------------------------------------------------------------------------*/
 void IndexData::vInsertEntry(Row* pRow, i8 nRowNo, bn nBufferNo)
@@ -189,7 +208,7 @@ void IndexData::vInsertEntry(Row* pRow, i8 nRowNo, bn nBufferNo)
   // add key to entry
   xEntWsp.vAddKey(xKeyWsp);
   
-  xEntWsp.vShow();
+  //xEntWsp.vShow();
   
   // insert row entry in index
   m_pIndexLevels->vInsertEntry(&xKey, xRowId);

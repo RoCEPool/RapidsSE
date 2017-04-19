@@ -405,7 +405,6 @@ tp: removeTable
   // drop all rows
   dup table.truncate ( ^table )
 
-
   "indexes" find execute pathPush
 
   // iterate thru all indexes and tidyUp

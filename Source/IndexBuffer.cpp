@@ -110,16 +110,16 @@ bool IndexBuffer::bInsert(Key* aKey, RowId xRowId)
   bool   bEqualTo;
   EntWsp xEntWsp;
   
-  vTrace("\n\n---------INDEX BUFFER--------------\n"_Str);
-  vShow();
-  vTrace("-----------------------\n\n"_Str);
+  //vTrace("\n\n---------INDEX BUFFER--------------\n"_Str);
+  //vShow();
+  //vTrace("-----------------------\n\n"_Str);
   
   // initialize the EntWsp
   xEntWsp.vRowId(xRowId);
   xEntWsp.vAddKey(aKey);
   
-  vTrace("Inserting entry:\n"_Str);
-  xEntWsp.vShow();
+  //vTrace("Inserting entry:\n"_Str);
+  //xEntWsp.vShow();
   
   // get the size of the EntWsp
   i8 nBytes = Entry::nBytesRequired(xEntWsp);
@@ -131,9 +131,9 @@ bool IndexBuffer::bInsert(Key* aKey, RowId xRowId)
   // set the new entry from the EntWsp
   pNewEntry->vSetEntry(xEntWsp);
   
-  vTrace("\n\n---------INDEX BUFFER AFTER MOVING --------------\n"_Str);
-  vShow();
-  vTrace("-----------------------\n\n"_Str);
+  //vTrace("\n\n---------INDEX BUFFER AFTER MOVING --------------\n"_Str);
+  //vShow();
+  //vTrace("-----------------------\n\n"_Str);
   
   // fix the revise vector after the move
   vFixRevise(pReviseVec, pNewEntry);
@@ -204,9 +204,9 @@ void IndexBuffer::vDumpRevise(Entry** ppReviseVec)
 void IndexBuffer::vFixRevise(Entry** ppReviseVec, Entry* pNewEntry)
 {
   
-  vTrace("REVISE VECTOR BEFORE\n"_Str);
-  vDumpRevise(ppReviseVec);
-  vTrace("\n"_Str);
+  //vTrace("REVISE VECTOR BEFORE\n"_Str);
+  //vDumpRevise(ppReviseVec);
+  //vTrace("\n"_Str);
 
   // get no of offsets of the new entry
   i8 nEntryOffsets = pNewEntry->nOffsets();
@@ -251,9 +251,9 @@ void IndexBuffer::vFixRevise(Entry** ppReviseVec, Entry* pNewEntry)
 
   }
   
-  vTrace("REVISE VECTOR AFTER\n"_Str);
-  vDumpRevise(ppReviseVec);
-  vTrace("\n"_Str);
+  //vTrace("REVISE VECTOR AFTER\n"_Str);
+  //vDumpRevise(ppReviseVec);
+  //vTrace("\n"_Str);
   
 }
 

@@ -428,17 +428,15 @@ ddlLock.grabWrite
   // there should be a table folder
   dup checkIsTableFolder not if <NIP+ERROR> exit then
 
-  // push table dictionary
+  // push table folder
   dup pushTable assert
 
   // check it is a table
   checkIsTable  not if <NIP+ERROR> exit then
 
-  checkIsTable  not if <NIP+ERROR> exit then
-
   sizeTable ( "<size>" )
 
-  // pop table dictionary
+  // pop table folder
   popTable
 
   <SUCCESS>

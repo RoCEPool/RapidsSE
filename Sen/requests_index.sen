@@ -139,7 +139,7 @@ tp: end_create_index
   dup
   checkInIndexes not if <NIP+ERROR> exit then
 
-  "end_create_index" .
+  //"end_create_index" .
 
   columnVecIndex
 
@@ -163,6 +163,40 @@ ddlLock.grabRead
 ;
 
 /*----------------------------------------------------------------------------*/
+/* get size of index                                                          */
+/*----------------------------------------------------------------------------*/
+: size_index ( "<tableNm>" "<indexNm>" -- <R> )
+
+  locals| indexNm tableNm |
+
+ddlLock.grabWrite
+
+  // should be in the tables folder
+  checkInTables       not if <NIP+ERROR> exit then
+
+  // there should be a table folder
+  tableNm checkIsTableFolder not if <NIP+ERROR> exit then
+
+  // push table folder
+  tableNm pushTable assert
+
+  // push indexes folder
+  pushIndexes assert
+
+  indexNm checkIsIndex  not if popIndexes popTable <NIP+ERROR> exit then
+
+  sizeIndex ( "<size>" )
+
+  // pop table folder
+  popIndexes
+
+  // pop table folder
+  popTable
+
+  <SUCCESS>
+;
+
+/*----------------------------------------------------------------------------*/
 /* truncate index                                                             */
 /*----------------------------------------------------------------------------*/
 : truncate_index ( "<tableNm" "<indexNm>" -- <R> )
@@ -177,7 +211,7 @@ ddlLock.grabRead
   // there should be a table folder
   tableNm checkIsTableFolder not if <NIP+ERROR> exit then
 
-  // push table dictionary
+  // push table folder
   tableNm pushTable assert
 
   // push indexes folder
@@ -191,7 +225,7 @@ ddlLock.grabRead
   // pop indexes folder
   popIndexes
 
-  // pop table dictionary
+  // pop table folder
   popTable
 
 <OK>

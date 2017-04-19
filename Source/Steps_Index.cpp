@@ -41,6 +41,7 @@ void Task::vAddPrimitives_Index(void)
   vAddPrimitive("index.init"_Str,            &vIndexInit,            false);
   vAddPrimitive("index.populate"_Str,        &vIndexPopulate,        false);
   vAddPrimitive("index.showColumnVec"_Str,   &vIndexShowColumnVec,   false);
+  vAddPrimitive("index.space"_Str,           &vIndexSpace,           false);
   vAddPrimitive("index.subDic"_Str,          &vIndexSubDic,          false);
   vAddPrimitive("index.table@"_Str,          &vIndexTableFetch,      false);
   vAddPrimitive("index.table!"_Str,          &vIndexTableStore,      false);
@@ -252,6 +253,27 @@ void Task::vIndexShowColumnVec(NNP_Task nnpTask)
   ASSERT(CN_INDEX == pIndex->eClass());
   
   pIndex->vShowColumnVec();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* index.space -- push space used by index                                    */
+/*----------------------------------------------------------------------------*/
+void Task::vIndexSpace(NNP_Task nnpTask)
+{
+  ENTRY("vIndexSpace"_Str);
+  
+  Object* pPtrIndex;
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrIndex) )
+    THROW_INVALID_DSTACK("index.space"_Str);
+  
+  Index* pIndex = _pIndex(pPtrIndex);
+  ASSERT(CN_INDEX == pIndex->eClass());
+  
+  i8 iBuffers = pIndex->pTable()->nIndexBuffers(pIndex->iIndexNo());
+  i8 iSpace = iBuffers * C_SIZE_POOL_BUFFER;
+  nnpTask->m_pDataStack->vPush(iSpace);
   
   EXIT();
 }

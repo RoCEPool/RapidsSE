@@ -57,6 +57,7 @@ namespace DBobjects
     void vRefInc(void);
     bool bRefOut(void);
     i8   nRowBuffers(void);
+    i8   nIndexBuffers(i8 iIndexNo);
     i8   iRowPartition(Str* pRow);
     void vShowColumnVec(void);
     Dic* pSubDic(void);

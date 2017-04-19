@@ -370,6 +370,24 @@ i8 Table::nRowBuffers(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get number of index buffers in this table                                  */
+/*----------------------------------------------------------------------------*/
+i8 Table::nIndexBuffers(i8 iIndexNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  
+  i8 iBuffers = 0;
+  
+  for (i8 iPartition = 0; iPartition < gpGrid->m_nSlots; iPartition++) {
+    IndexData* pIndexData = pPartition(iPartition)->pIndexData(iIndexNo);
+
+    iBuffers += pIndexData->nIndexBuffers();
+  }
+  
+  return iBuffers;
+}
+
+/*----------------------------------------------------------------------------*/
 /* hash the first field of row return partition                               */
 /*----------------------------------------------------------------------------*/
 i8 Table::iRowPartition(Str* pRow)
