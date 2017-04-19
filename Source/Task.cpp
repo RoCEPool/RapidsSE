@@ -566,6 +566,7 @@ void Task::vAddConstants(void)
   /*  7 */ vAddConstant("EC_FOLDER_NOT_EMPTY"_Str,   EC_FOLDER_NOT_EMPTY);
   /*  8 */ vAddConstant("EC_INDEX_EXISTS"_Str,       EC_INDEX_EXISTS);
   /*  9 */ vAddConstant("EC_INVALID_CLASS"_Str,      EC_INVALID_CLASS);
+  /*  9 */ vAddConstant("EC_INVALID_COLUMN"_Str,     EC_INVALID_COLUMN);
   /* 10 */ vAddConstant("EC_INVALID_COMMAND"_Str,    EC_INVALID_COMMAND);
   /* 11 */ vAddConstant("EC_INVALID_FILE"_Str,       EC_INVALID_FILE);
   /* 12 */ vAddConstant("EC_INVALID_INTERFACE"_Str,  EC_INVALID_INTERFACE);

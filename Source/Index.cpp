@@ -136,12 +136,16 @@ void Index::vCreateColumnVec(s32& sColumnNm, s48K& sColumnDefn)
   // find the column from the table columnVector
   i8 iColumns = m_pTable->pColumnVec()->nItems();
   
+  bool bFound = false;
   for (i8 iCol = 0; iCol < iColumns; iCol++) {
     pColumn = m_pTable->pColumnVec()->pGet(iCol);
-    if (pColumn->sColumnName().bSame(sColumnNm))
+    if (pColumn->sColumnName().bSame(sColumnNm)) {
+      bFound = true;
       break;
+    }
   }
-  ASSERT(pColumn);
+  ASSERT(bFound);
+  
   m_pIdxColVec->vInsert(pColumn);
 }
 

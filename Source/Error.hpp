@@ -20,6 +20,7 @@ namespace Debugging
   /*  8 */ EC_INDEX_EXISTS,
     
   /*  9 */ EC_INVALID_CLASS,
+  /*    */ EC_INVALID_COLUMN,
   /* 10 */ EC_INVALID_COMMAND,
   /* 11 */ EC_INVALID_FILE,
   /* 12 */ EC_INVALID_INTERFACE,
@@ -89,6 +90,7 @@ namespace Debugging
   /*  8 */ "index exists"_Str,
     
   /*  9 */ "invalid class"_Str,
+  /*    */ "invalid column"_Str,
   /* 10 */ "invalid command"_Str,
   /* 11 */ "invalid file"_Str,
   /* 12 */ "invalid interface"_Str,
