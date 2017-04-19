@@ -436,7 +436,6 @@ tp: removeTable
   // forget the columns dictionary in the table sub-dictionary
   table.subDic forgetAll
 
-  pathDump
   tableNm :forget
 
   popTable
