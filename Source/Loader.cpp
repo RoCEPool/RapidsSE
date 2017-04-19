@@ -76,7 +76,7 @@ Loader::~Loader(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
   
-  vFinalize();
+  vTidyUp();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -93,18 +93,22 @@ void Loader::vDump(eCN eClass, Object* pObject, Str* aTab)
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- Public ------------------------------------------------------------------*/
+/* get loap map                                                               */
 /*----------------------------------------------------------------------------*/
+void Loader::vFinalize(eCN eClass, Object* pObject)
+{
+  ASSERT(eClass == CN_LOADER);
+  ASSERT(pObject->eClass() == CN_LOADER);
+  
+  Loader* pLoader = reinterpret_cast<Loader*>(pObject);
+  ASSERT(pLoader->bWordBody());
+  
+  pLoader->vTidyUp();
+}
 
 /*----------------------------------------------------------------------------*/
-/* ffinalize the loader                                                       */
+/*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-void Loader::vFinalize(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
-  
-  delete m_pLoadMap;
-}
 
 /*----------------------------------------------------------------------------*/
 /* find next chunk in file being loaded                                       */
@@ -168,6 +172,17 @@ void Loader::vTable(Table* pTable)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
 
   m_pTable = pTable;
+}
+
+/*----------------------------------------------------------------------------*/
+/* tidyup                                                                     */
+/*----------------------------------------------------------------------------*/
+void Loader::vTidyUp(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
+  
+  delete m_pLoadMap;
+
 }
 
 /*----------------------------------------------------------------------------*/

@@ -25,14 +25,15 @@ namespace DBobjects
     ~Loader(void);
     
     static void vDump(eCN eClass, Object* pObject, Str* aTab);
-    
-    void     vFinalize(void);
+    static void vFinalize(eCN eClass, Object* pObject);
+
     bool     bFindChunk(void);
     LoadMap* pLoadMap(void);
     StrVal&       sPath(void);
     void     vPath(StrVal& sPath);
     Table*   pTable(void);
     void     vTable(Table* pTable);
+    void     vTidyUp(void);
     TxRef*   pTxRef(void);
     void     vTxRef(TxRef* pTxRef);
     

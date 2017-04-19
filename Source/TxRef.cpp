@@ -135,6 +135,18 @@ bool TxRef::bEndTx(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* finalize                                                                   */
+/*----------------------------------------------------------------------------*/
+void TxRef::vFinalize(eCN eClass, Object* pObject)
+{
+  ASSERT(eClass == CN_TXREF);
+  ASSERT(pObject->eClass() == CN_TXREF);
+
+  TxRef* pTxRef = reinterpret_cast<TxRef*>(pObject);
+  ASSERT(pTxRef->bWordBody());
+}
+
+/*----------------------------------------------------------------------------*/
 /* rollback a tx                                                              */
 /*----------------------------------------------------------------------------*/
 bool TxRef::bRollbackTx(void)

@@ -76,7 +76,7 @@ pFINALIZE *gpFinalize[]
   /* 35 */ &Finalize::vUndefined,         // CN_KEYWSP
   
   /* 36 */ &Finalize::vUndefined,         // CN_LOADCHUNK
-  /* 37 */ &Finalize::vUndefined,         // CN_LOADER
+  /* 37 */ &Loader::vFinalize,            // CN_LOADER
   /* 38 */ &Finalize::vUndefined,         // CN_LOADERSUB
   /* 39 */ &Finalize::vUndefined,         // CN_LOADMAP
   /* 40 */ &Finalize::vUndefined,         // CN_LOCK
@@ -143,7 +143,7 @@ pFINALIZE *gpFinalize[]
   /* 92 */ &Finalize::vUndefined,         // CN_TXCOLLECTION
   /* 93 */ &Finalize::vUndefined,         // CN_TXCURSOR
   /* 94 */ &Finalize::vUndefined,         // CN_TXMAP
-  /* 95 */ &Finalize::vUndefined,         // CN_TXREF
+  /* 95 */ &TxRef::vFinalize,             // CN_TXREF
   
   /* 96 */ &Finalize::vUndefined,         // CN_WORD
   
