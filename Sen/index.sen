@@ -282,13 +282,13 @@ tp: loadIndexes
 
   indexPtr index.truncate
 
-  // forget all column names in the columns dictionary of table sub-dictionary
+  // forget all column names in the columns dictionary of index sub-dictionary
   indexPtr index.subDic
   pathPush
   "columns" find execute forgetAll
   pathDrop
 
-  // forget the columns dictionary in the table sub-dictionary
+  // forget the columns dictionary in the index sub-dictionary
   indexPtr index.subDic forgetAll
 
   indexNm :forget

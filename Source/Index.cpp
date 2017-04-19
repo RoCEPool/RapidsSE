@@ -251,6 +251,9 @@ void Index::vTidyUp(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
   
+  // tidyup the index from the table partitions
+  m_pTable->vTidyUpIndex(m_iIndexNo);
+  
   // Since the column is picked from the ColVec of table
   // we need to just remove it from the IdxColVec before deleting it
   m_pIdxColVec->vClear();

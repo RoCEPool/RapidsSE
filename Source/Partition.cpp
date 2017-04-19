@@ -117,13 +117,12 @@ Partition::~Partition(void)
 /*----------------------------------------------------------------------------*/
 /* insert a row into this strand                                              */
 /*----------------------------------------------------------------------------*/
-i8 Partition::iAddIndex(IndexData* pIndexData)
+void Partition::vAddIndex(IndexData* pIndexData)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
   
   ASSERT(m_pIdxVec->nItems() < C_INDEXES_PER_TABLE);
   m_pIdxVec->vAdd(pIndexData);
-  return m_pIdxVec->nItems() - 1;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -176,7 +175,7 @@ void Partition::vPopulateIndex(i8 iIndexNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
   
-  IndexData* pIndexData = m_pIdxVec->pGet(iIndexNo);
+  IndexData* pIndexData = this->pIndexData(iIndexNo);
   RowStrand *pStrand = m_pData->pHeadStrand();
     
   i8 nBuffers = 0;
@@ -220,11 +219,20 @@ Data* Partition::pData(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get index                                                                  */
+/* get indexData                                                              */
 /*----------------------------------------------------------------------------*/
-IndexData* Partition::pIndexData(i8 iIndex)
+IndexData* Partition::pIndexData(i8 iIndexNo)
 {
-  return m_pIdxVec->pGet(iIndex);
+  IndexData* pIndexData = nullptr;
+  i8 nIndexes = m_pIdxVec->nItems();
+  
+  for (i8 iIndex=0; iIndex < nIndexes; iIndex++) {
+    pIndexData = m_pIdxVec->pGet(iIndex);
+    if (pIndexData->pIndex()->iIndexNo() == iIndexNo)
+      break;
+  }
+  
+  return pIndexData;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -242,15 +250,25 @@ void Partition::vTidyUp(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
   
-  // clear the indexes from the IdxVec
-  // (indexes are shared across all partitions)
-  m_pIdxVec->vClear();
-  
   // delete the index vector
   delete m_pIdxVec;
   
   // delete the data
   delete m_pData;
+}
+
+/*----------------------------------------------------------------------------*/
+/* tidy up                                                                    */
+/*----------------------------------------------------------------------------*/
+void Partition::vTidyUpIndex(i8 iIndexNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
+  
+  IndexData* pIndexData = this->pIndexData(iIndexNo);
+  
+  // remove the index from teh IdxVec
+  m_pIdxVec->vRemove(pIndexData);
+  delete pIndexData;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -71,6 +71,7 @@ Table::Table(void)
 
   //m_xSlots
   
+  m_zIndexNo.vCheckInit();
   m_zRefCount.vCheckInit();
   
   m_pColumnVec = new ColumnVec;
@@ -143,21 +144,13 @@ void Table::vAddIndex(Index* pIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
-  // create an IndexData for the index in each partition
-  i8 iIndexNo = -1;
-  for (i8 iPartition = 0; iPartition < gpGrid->m_nSlots; iPartition++) {
-    Partition* pPartition = this->pPartition(iPartition);
-    iIndexNo = pPartition->iAddIndex(new IndexData(pIndex));
-  }
+  // set the index no in teh index
+  pIndex->vIndexNo(++m_zIndexNo);
   
-  // set the indexNo in the index
-  pIndex->vIndexNo(iIndexNo);
-
-  // assert that all partitions have the indexData at the same indexNo position
+  // create an IndexData for the index in each partition
   for (i8 iPartition = 0; iPartition < gpGrid->m_nSlots; iPartition++) {
     Partition* pPartition = this->pPartition(iPartition);
-    IndexData* pIndexData = pPartition->pIndexData(iIndexNo);
-    ASSERT(pIndexData->pIndex() == pIndex);
+    pPartition->vAddIndex(new IndexData(pIndex));
   }
 }
 
@@ -442,6 +435,16 @@ void Table::vTidyUp(void)
   delete m_pColumnVec;
   
   m_xSlots.vTidyUp();
+}
+
+/*----------------------------------------------------------------------------*/
+/* tidyup                                                                     */
+/*----------------------------------------------------------------------------*/
+void Table::vTidyUpIndex(i8 iIndexNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  
+  m_xSlots.vTidyUpIndex(iIndexNo);
 }
 
 /*----------------------------------------------------------------------------*/

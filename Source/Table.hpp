@@ -24,6 +24,7 @@ namespace DBobjects
     eTT    m_eTableType; // table type
     Dic    m_xSubDic;    // sub dictionary for this table
     Slots  m_xSlots;     // slots
+    Atomic m_zIndexNo;
     Atomic m_zRefCount;  // reference count
 
     ColumnVec* m_pColumnVec; // colummn vector
@@ -61,6 +62,7 @@ namespace DBobjects
     Dic* pSubDic(void);
     Str* aTableName(void);
     void vTidyUp(void);
+    void vTidyUpIndex(i8 iIndexNo);
     void vTruncate(void);
     void vTruncateIndex(i8 iIndexNo);
     bool bValidateRow(Str* pRow, i8& iColumn);

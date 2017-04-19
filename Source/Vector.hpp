@@ -28,6 +28,7 @@ namespace Structures
     void  vInsert(ITEM* pObject);
     i8    nItems(void);
     ITEM* pGet(i8 iItem);
+    void  vRemove(ITEM* pObject);
   
     Footer* pFooter(void);
   };
@@ -214,6 +215,44 @@ ITEM* Vector<VEC_CN, ITEM, ITEM_CN, MAX_ITEMS>::pGet(i8 iItem)
   ITEM* pItem = m_pItem[iItem];
   
   return pItem;
+}
+
+/*----------------------------------------------------------------------------*/
+/* remove an item                                                             */
+/*----------------------------------------------------------------------------*/
+template <eCN VEC_CN, class ITEM, eCN ITEM_CN, i8 MAX_ITEMS>
+void Vector<VEC_CN, ITEM, ITEM_CN, MAX_ITEMS>::vRemove(ITEM* pItem)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,VEC_CN,_FOOTER_);
+  
+  // check we have items
+  ASSERT(m_nItems >= 0);
+  
+  // find the item
+  i8 iItem;
+  
+  for (iItem=0; iItem < m_nItems; iItem++) {
+    if (m_pItem[iItem] == pItem)
+      break;
+  }
+
+  // item should be there
+  ASSERT(m_pItem[iItem] );
+  
+  // reduce no of items
+  m_nItems--;
+  
+  // last item removed, nothing to do
+  if (iItem == m_nItems)
+    return;
+  
+  // move array up
+  char* aSrc = reinterpret_cast<char*>(&m_pItem[iItem+1]);
+  char* aDst = reinterpret_cast<char*>(&m_pItem[iItem]);
+  char* aLst = pAdd<char*>(&m_pItem[m_nItems-1],sizeof(ITEM*));
+  i8 nBytes = nSub(aLst,aDst);
+  
+  MemLib::vMove(aDst,aSrc,nBytes);
 }
 
 /*----------------------------------------------------------------------------*/

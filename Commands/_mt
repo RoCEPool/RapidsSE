@@ -49,10 +49,8 @@ tableSizes
 
 tr j10
 
-cf j10
-drop index idx;
+drop index j10.idx;
 
-cf ..
 drop table j10;
 
 create table j10 (
@@ -64,10 +62,19 @@ create index idx on j10 (j10_key);
 
 ld j10 "../JTEST/j10.csv"
 
-cf j10
-drop index idx;
+drop index j10.idx;
 
-cf ..
+drop table j10;
+
+create table j10 (
+j10_key   INTEGER NOT NULL,
+j10_name  VARCHAR(32) NOT NULL
+);
+
+create index idx on j10 (j10_key);
+
+ld j10 "../JTEST/j10.csv"
+
 drop table j10;
 
 cf ..
