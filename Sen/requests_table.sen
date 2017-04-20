@@ -362,26 +362,36 @@ snap1:
 /*----------------------------------------------------------------------------*/
 : select_table ( "<tableNm>" -- <R> )
 
+  assert.stack_1
+
 ddlLock.grabRead
 
   // should be in the tables folder
-  checkInTables       not if <NIP+ERROR> exit then
+  // i.e. task.dicStack should be ../tables
+  checkInTables not if <NIP+ERROR> exit then ( "<tableNm>" )
 
-  // there should be a table folder
-  dup checkIsTableFolder not if <NIP+ERROR> exit then
+  // check "<tableNm>" is a table folder
+  dup checkIsTableFolder not if <NIP+ERROR> exit then ( "<tableNm>" )
 
-  // push table dictionary
-  dup pushTable assert
+  // push named table folder onto path
+  // i.e. task.dicStack should be ../tables/<tableNm>
+  dup pushTable assert  ( "<tableNm>" )
 
-  // check it is a table
-  checkIsTable  not if <NIP+ERROR> exit then
+  // check "<tablenm"> is a table
+  checkIsTable not if <NIP+ERROR> exit then ( "<tableNm>" )
 
-  getTableRef not if <NIP+ERROR> exit then
+  // get and inc table reference and put into task.seitf.currentTable
+  getTableRef not if <NIP+ERROR> exit then ( "<tableNm>" )
 
-  selectTable
+  // get a select cursor
+  selectTable ( ^selCursor )
 
   // pop table dictionary
-  popTable
+  // i.e. task.dicStack should be ../tables
+  popTable ( ^selCursor )
+  withinTables assert
+
+  assert.stack_1
 
   <SUCCESS>
 ;
@@ -390,6 +400,8 @@ ddlLock.grabRead
 /* get row cursor for table                                                   */
 /*----------------------------------------------------------------------------*/
 : range_select_table ( "<upper>" "<lower>" "<tableNm>" -- <R> )
+
+  assert.stack_1
 
   ddlLock.grabRead
 

@@ -86,7 +86,7 @@ int: queryCount
 ;
 
 /*----------------------------------------------------------------------------*/
-/* check in tables                                                            */
+/* check top of task dictionary stack is ../tables                            */
 /*----------------------------------------------------------------------------*/
 : checkInTables
 
@@ -165,6 +165,8 @@ int: queryCount
 
 
 /*----------------------------------------------------------------------------*/
+/* find the table folder and push it onto task dictionary                     */
+/*----------------------------------------------------------------------------*/
 : pushTable ( "<tableName>" -- )
 
   find execute pathPush
@@ -194,6 +196,8 @@ int: queryCount
 ;
 
 /*----------------------------------------------------------------------------*/
+/* */
+/*----------------------------------------------------------------------------*/
 : getTableRef ( "<tableNm>" -- <R> )
 
   dup checkInTable not if false exit then
@@ -204,7 +208,7 @@ int: queryCount
 
   task.this task.seitf@ seitf.tableRef
 
-    true
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -341,7 +345,7 @@ int: queryCount
 /*----------------------------------------------------------------------------*/
 /* get select cursor for table ( called by select_table request)              */
 /*----------------------------------------------------------------------------*/
-: selectTable ( -- <selCursor> ) ( Task.seitf.table )
+: selectTable ( -- ^selCursor ) ( Task.seitf.table )
 
   //
   // at this point this task will have a seitf
