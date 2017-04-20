@@ -389,12 +389,12 @@ ddlLock.grabRead
 /*----------------------------------------------------------------------------*/
 /* get row cursor for table                                                   */
 /*----------------------------------------------------------------------------*/
-: range_select_table ( "<tableNm>" -- <R> )
+: range_select_table ( "<upper>" "<lower>" "<tableNm>" -- <R> )
 
   ddlLock.grabRead
 
   // should be in the tables folder
-  checkInTables       not if <NIP+ERROR> exit then
+  checkInTables not if <NIP+ERROR> exit then
 
   // there should be a table folder
   dup checkIsTableFolder not if <NIP+ERROR> exit then
@@ -407,7 +407,7 @@ ddlLock.grabRead
 
   getTableRef not if <NIP+ERROR> exit then
 
-  selectTable
+  rangeSelectTable
 
   // pop table dictionary
   popTable

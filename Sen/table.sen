@@ -307,17 +307,63 @@ int: queryCount
 ;
 
 /*----------------------------------------------------------------------------*/
-/* get select cursor for table                                                */
+/* get range select cursor for table ( called by range_select_table request)  */
 /*----------------------------------------------------------------------------*/
-: selecttable ( "<tableNm>" -- <selCursor> )
+: rangeSelectTable ( "<upper>" "<lower>" -- <selCursor> )
 
+  //
+  // execution context:
+  //   this task will have a seitf
+  //   and the seitf will have a table
+  //
+
+  assert.stack_2
+
+  // for the moment just discard lower and upper
+  stk drop drop
+
+  // increment query count
   queryCount ++
 
-  task.this task.seitf@ seitf.table@
+  // push task.seitf.table
+  task.this task.seitf@ seitf.table@ ( ^table )
 
-  selCursor.new dup -rot selCursor.table!
+  // create a selCursor
+  selCursor.new ( ^table ^selCursor )
 
-  >str
+  // store table into selCursor
+  dup -rot selCursor.table! ( ^selCursor )
+
+  // convert address of selCursor into string
+  >str ( "<^selCursor>")
+;
+
+/*----------------------------------------------------------------------------*/
+/* get select cursor for table ( called by select_table request)              */
+/*----------------------------------------------------------------------------*/
+: selectTable ( -- <selCursor> ) ( Task.seitf.table )
+
+  //
+  // at this point this task will have a seitf
+  // and the seitf will have a table
+  //
+
+  assert.stack_0
+
+  // increment query count
+  queryCount ++
+
+  // push task.seitf.table
+  task.this task.seitf@ seitf.table@ ( ^table )
+
+  // create a selCursor
+  selCursor.new ( ^table ^selCursor )
+
+  // store table into selCursor
+  dup -rot selCursor.table! ( ^selCursor )
+
+  // convert address of selCursor into string
+  >str ( "<^selCursor>")
 ;
 
 /*----------------------------------------------------------------------------*/
