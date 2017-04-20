@@ -33,7 +33,6 @@ extern SEitfList*      gpSEitfList;
 void Task::vAddPrimitives_Loader(void)
 {
   vAddPrimitive("loader.delete"_Str,      &vLoaderDelete,      false);
-  vAddPrimitive("loader.finalize"_Str,    &vLoaderFinalize,    false);
   vAddPrimitive("loader.findChunk"_Str,   &vLoaderFindChunk,   false);
   vAddPrimitive("loader.init"_Str,        &vLoaderInit,        false);
   vAddPrimitive("loader.new"_Str,         &vLoaderNew,         false);
@@ -58,25 +57,6 @@ void Task::vLoaderDelete(NNP_Task nnpTask)
   ASSERT(CN_LOADER == pLoader->eClass());
   
   delete pLoader;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* loader.finalize -- finalize a table loader                                 */
-/*----------------------------------------------------------------------------*/
-void Task::vLoaderFinalize(NNP_Task nnpTask)
-{
-  ENTRY("loader.finalize"_Str);
-  
-  Object* pPtrLoader;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrLoader) )
-    THROW_INVALID_DSTACK("loader.finalize"_Str);
-  
-  Loader* pLoader = _pLoader(pPtrLoader);
-  ASSERT(CN_LOADER == pLoader->eClass());
-  
-  pLoader->vFinalize();
   
   EXIT();
 }

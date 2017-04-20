@@ -128,7 +128,7 @@
 
   0 locals| indexPtr indexNm |
 
-  "columnVecIndex" . indexNm .
+  //"columnVecIndex" . indexNm .
 
   // get index ptr
   indexNm findInCurrent execute to indexPtr

@@ -389,6 +389,7 @@ bool SEitf::bDecode(Str* aWords[], i8 iWords)
   if (aWords[0]->bSame("sel"_Str)) return bSelectTable(aWords, iWords);
   if (aWords[0]->bSame("space"_Str)) return bPoolSpace(aWords, iWords);
   if (aWords[0]->bSame("status"_Str)) return bNodeStatus(aWords, iWords);
+  if (aWords[0]->bSame("szidx"_Str)) return bSizeIndex(aWords, iWords);
   if (aWords[0]->bSame("sz"_Str)) return bSizeTable(aWords, iWords);
   if (aWords[0]->bSame("tableSizes"_Str)) return bSizeTables(aWords, iWords);
   if (aWords[0]->bSame("tr"_Str)) return bTruncateTable(aWords, iWords);
@@ -1396,6 +1397,33 @@ bool SEitf::bNodeStatus(Str* aWords[], i8 iWords)
   }
   
   sRequest.vConcat(" status"_Str);
+  
+  return bAppendRequest(sRequest);
+}
+
+/*----------------------------------------------------------------------------*/
+/* size of index                                                              */
+/*----------------------------------------------------------------------------*/
+bool SEitf::bSizeIndex(Str* aWords[], i8 iWords)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  s256 sRequest;
+  
+  if (iWords != 3) {
+    vSetLastError(EC_INVALID_PARAMETERS);
+    return false;
+  }
+  
+  sRequest.vCopy("\""_Str);
+  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat("\""_Str);
+  
+  sRequest.vConcat("\""_Str);
+  sRequest.vConcat(aWords[2]);
+  sRequest.vConcat("\""_Str);
+  
+  sRequest.vConcat(" size_index"_Str);
   
   return bAppendRequest(sRequest);
 }

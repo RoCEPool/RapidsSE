@@ -58,9 +58,9 @@ gettbl  get_table
 mktbl   create_table
 lstbl   list_tables
 add     add_column
-addidx  add_idxcolumn
+
 lscol   list_columns
-lsidxcol list_indexcolumns
+
 ld      load_table
 tblInUse  table_inuse
 tableSizes size_tables
@@ -75,10 +75,15 @@ rettbl  return_table
 rmtbl   drop_table
 
 Index Requests:
+addidx  add_idxcolumn
+anidx  analyze_index
 mkidx   create_index
 lsidx   list_indexes
+lsidxcol list_indexcolumns
 idump   dump_index
 rmidx   drop_index
+szidx  size_index
+tridx  truncate_index
  
 Dictionary Requests:
 

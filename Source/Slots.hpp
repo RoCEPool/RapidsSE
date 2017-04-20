@@ -27,6 +27,7 @@ namespace DBobjects
     
     void vPopulateIndex(i8 iIndexNo);
     void vTidyUp(void);
+    void vTidyUpIndex(i8 iIndexNo);
     void vTruncate(void);
     void vTruncateIndex(i8 iIndexNo);
     

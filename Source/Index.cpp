@@ -126,22 +126,26 @@ void Index::vCreateColumnVec(s32& sColumnNm, s48K& sColumnDefn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
   
-  vTrace("vCreateColumnVec: index %s column %s %s\n"_Str,
-           m_sIndexName.s(),
-           sColumnNm.aStr(),
-           sColumnDefn.aStr());
+  //vTrace("vCreateColumnVec: index %s column %s %s\n"_Str,
+  //        m_sIndexName.s(),
+  //         sColumnNm.aStr(),
+  //         sColumnDefn.aStr());
   
   Column* pColumn = nullptr;
   
   // find the column from the table columnVector
   i8 iColumns = m_pTable->pColumnVec()->nItems();
   
+  bool bFound = false;
   for (i8 iCol = 0; iCol < iColumns; iCol++) {
     pColumn = m_pTable->pColumnVec()->pGet(iCol);
-    if (pColumn->sColumnName().bSame(sColumnNm))
+    if (pColumn->sColumnName().bSame(sColumnNm)) {
+      bFound = true;
       break;
+    }
   }
-  ASSERT(pColumn);
+  ASSERT(bFound);
+  
   m_pIdxColVec->vInsert(pColumn);
 }
 
@@ -176,7 +180,7 @@ void Index::vDump(void)
 /*----------------------------------------------------------------------------*/
 Str* Index::aIndexName(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
   
   return m_sIndexName;
 }
@@ -250,6 +254,9 @@ void Index::vTable(Table* pTable)
 void Index::vTidyUp(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
+  
+  // tidyup the index from the table partitions
+  m_pTable->vTidyUpIndex(m_iIndexNo);
   
   // Since the column is picked from the ColVec of table
   // we need to just remove it from the IdxColVec before deleting it

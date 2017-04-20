@@ -18,6 +18,8 @@ namespace Transactions
     void* operator new(size_t, TxRef* pTxRef);
     void  operator delete(void*);
     
+    static void vFinalize(eCN eClass, Object* pObject);
+
     TxRef(void);
     ~TxRef(void);
     

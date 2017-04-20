@@ -71,6 +71,7 @@ Table::Table(void)
 
   //m_xSlots
   
+  m_zIndexNo.vCheckInit();
   m_zRefCount.vCheckInit();
   
   m_pColumnVec = new ColumnVec;
@@ -143,21 +144,13 @@ void Table::vAddIndex(Index* pIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
-  // create an IndexData for the index in each partition
-  i8 iIndexNo = -1;
-  for (i8 iPartition = 0; iPartition < gpGrid->m_nSlots; iPartition++) {
-    Partition* pPartition = this->pPartition(iPartition);
-    iIndexNo = pPartition->iAddIndex(new IndexData(pIndex));
-  }
+  // set the index no in teh index
+  pIndex->vIndexNo(++m_zIndexNo);
   
-  // set the indexNo in the index
-  pIndex->vIndexNo(iIndexNo);
-
-  // assert that all partitions have the indexData at the same indexNo position
+  // create an IndexData for the index in each partition
   for (i8 iPartition = 0; iPartition < gpGrid->m_nSlots; iPartition++) {
     Partition* pPartition = this->pPartition(iPartition);
-    IndexData* pIndexData = pPartition->pIndexData(iIndexNo);
-    ASSERT(pIndexData->pIndex() == pIndex);
+    pPartition->vAddIndex(new IndexData(pIndex));
   }
 }
 
@@ -225,6 +218,57 @@ Str* Table::pAnalyze(bool bDetailed)
     nBuffersTotal,
     nRowsTotal);
   
+  return sAnalysis;
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump table                                                                 */
+/*----------------------------------------------------------------------------*/
+Str* Table::pAnalyzeIndex(Index* pIndex)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  
+  i8 nEntriesTotal = 0;
+  i8 nBuffersTotal = 0;
+  i8 nEntries = 0;
+  s48K sAnalysis;
+  
+  sAnalysis.vCatSprint("N%lld: Analysis of Index %s of table %s \n"_Str,
+                       gpGrid->iThisNode(),
+                       pIndex->aIndexName()->s(),
+                       m_sTableName.s());
+  
+  for (i8 iSlot = 0; iSlot < gpGrid->m_nSlots; iSlot++) {
+    
+    i8 iPartition = Partition::iSlotToPartition(iSlot);
+    
+    
+    IndexLevels* pIndexLevels = pPartition(iSlot)->pIndexData(pIndex->iIndexNo())->pIndexLevels();
+    IndexBuffer *pIndexBuffer = pIndexLevels->pFirstBuffer();
+    
+    sAnalysis.vCatSprint("  partition %lld: \n"_Str, iPartition);
+  
+    i8 iBufferNo = 1;
+    while (pIndexBuffer) {
+      nEntries = pIndexBuffer->nEntries() - 1; // not to show head entry
+      sAnalysis.vCatSprint(
+                           "     buffer %5lld : %lld entries\n"_Str,
+                           iBufferNo++,
+                           nEntries);
+      
+      nEntriesTotal += nEntries;
+      nBuffersTotal++;
+      
+      pIndexBuffer = pIndexBuffer->pNextBuffer();
+    }
+    
+  }
+  sAnalysis.vCatSprint(
+                       "     total: %5lld buffers; %lld entries\n"_Str,
+                       nBuffersTotal,
+                       nEntriesTotal);
   return sAnalysis;
 }
 
@@ -377,6 +421,24 @@ i8 Table::nRowBuffers(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get number of index buffers in this table                                  */
+/*----------------------------------------------------------------------------*/
+i8 Table::nIndexBuffers(i8 iIndexNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  
+  i8 iBuffers = 0;
+  
+  for (i8 iPartition = 0; iPartition < gpGrid->m_nSlots; iPartition++) {
+    IndexData* pIndexData = pPartition(iPartition)->pIndexData(iIndexNo);
+
+    iBuffers += pIndexData->nIndexBuffers();
+  }
+  
+  return iBuffers;
+}
+
+/*----------------------------------------------------------------------------*/
 /* hash the first field of row return partition                               */
 /*----------------------------------------------------------------------------*/
 i8 Table::iRowPartition(Str* pRow)
@@ -442,6 +504,16 @@ void Table::vTidyUp(void)
   delete m_pColumnVec;
   
   m_xSlots.vTidyUp();
+}
+
+/*----------------------------------------------------------------------------*/
+/* tidyup                                                                     */
+/*----------------------------------------------------------------------------*/
+void Table::vTidyUpIndex(i8 iIndexNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  
+  m_xSlots.vTidyUpIndex(iIndexNo);
 }
 
 /*----------------------------------------------------------------------------*/

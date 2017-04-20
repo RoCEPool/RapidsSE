@@ -100,6 +100,19 @@ void Slots::vTidyUp(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* tidyup a particular index                                                  */
+/*----------------------------------------------------------------------------*/
+void Slots::vTidyUpIndex(i8 iIndexNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SLOTS,_FOOTER_);
+  
+  // run the finalize for the partitions
+  for (i8 iSlot = 0; iSlot < gpGrid->iSlots(); iSlot++) {
+    m_xPartition[iSlot].vTidyUpIndex(iIndexNo);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* tuncate all partitions                                                     */
 /*----------------------------------------------------------------------------*/
 void Slots::vTruncate(void)

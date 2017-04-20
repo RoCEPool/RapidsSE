@@ -519,6 +519,7 @@ namespace Tasks
     static void vIndexInit(NNP_Task nnpTask);
     static void vIndexPopulate(NNP_Task nnpTask);
     static void vIndexShowColumnVec(NNP_Task nnpTask);
+    static void vIndexSpace(NNP_Task nnpTask);
     static void vIndexSubDic(NNP_Task nnpTask);
     static void vIndexTableFetch(NNP_Task nnpTask);
     static void vIndexTableStore(NNP_Task nnpTask);
@@ -559,7 +560,6 @@ namespace Tasks
     
     // loader
     static void vLoaderDelete(NNP_Task nnpTask);
-    static void vLoaderFinalize(NNP_Task nnpTask);
     static void vLoaderFindChunk(NNP_Task nnpTask);
     static void vLoaderInit(NNP_Task nnpTask);
     static void vLoaderNew(NNP_Task nnpTask);
