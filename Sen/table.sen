@@ -196,7 +196,7 @@ int: queryCount
 ;
 
 /*----------------------------------------------------------------------------*/
-/* */
+/* get and inc table reference and put into task.seitf.currentTable           */
 /*----------------------------------------------------------------------------*/
 : getTableRef ( "<tableNm>" -- <R> )
 
@@ -211,6 +211,8 @@ int: queryCount
   true
 ;
 
+/*----------------------------------------------------------------------------*/
+/* dec and return table reference and clear task.seitf.currentTable           */
 /*----------------------------------------------------------------------------*/
 : returnTableRef ( )
 
