@@ -154,6 +154,10 @@ void Vector<VEC_CN, ITEM, ITEM_CN, MAX_ITEMS>::vClear(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,VEC_CN,_FOOTER_);
   
+  for (i8 iItem = 0; iItem < m_nItems; iItem++) {
+    m_pItem[iItem] = nullptr;
+  }
+  
   m_nItems = 0;
 }
 
