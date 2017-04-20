@@ -96,7 +96,7 @@ ddlLock.grabWrite
 
   checkRemoveFolder not if <NIP+ERROR> exit then
 
-  removeFolder ( ) assert.stack_0
+  removeFolder ( ) assert::stack_0
 
 tp: droppedDic
 
@@ -250,7 +250,7 @@ tp: lf
 /*----------------------------------------------------------------------------*/
 : createDefaultFolders localCalls ( )
 
-  assert.stack_0
+  assert::stack_0
 
   // push tenants folder
   "tenants" find execute
@@ -286,7 +286,7 @@ tp: lf
     pathDrop
   pathDrop
 
-  assert.stack_0
+  assert::stack_0
 ;
 
 /*============================================================================*/

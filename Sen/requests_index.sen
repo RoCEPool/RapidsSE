@@ -52,7 +52,7 @@ tp: create_index
   checkEnoughBuffers not if <NIP+ERROR> exit then
   checkMakeIndex     not if <NIP+ERROR> exit then
 
-  makeIndex ( ) assert.stack_0
+  makeIndex ( ) assert::stack_0
 
   <OK>
 ;
@@ -79,7 +79,7 @@ tp: create_index
 
   checkIsIndex  not if popIndexes popTable <NIP+ERROR> exit then
 
-  removeIndex ( ) assert.stack_0
+  removeIndex ( ) assert::stack_0
 
   // pop indexes folder
   popIndexes
@@ -143,7 +143,7 @@ tp: end_create_index
 
   columnVecIndex
 
-  assert.stack_0
+  assert::stack_0
 
   <OK>
 ;

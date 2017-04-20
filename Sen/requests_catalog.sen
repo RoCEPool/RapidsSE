@@ -14,7 +14,7 @@ ddlLock.grabWrite
   checkEnoughBuffers not if <NIP+ERROR> exit then
   checkMakeCatalog   not if <NIP+ERROR> exit then
 
-  makeCatalog ( ) assert.stack_0
+  makeCatalog ( ) assert::stack_0
 
   <OK>
 ;
@@ -30,7 +30,7 @@ ddlLock.grabWrite
 
   checkRemoveCatalog not if <NIP+ERROR> exit then
 
-  removeCatalog ( ) assert.stack_0
+  removeCatalog ( ) assert::stack_0
 
 tp: removedCatalog
 

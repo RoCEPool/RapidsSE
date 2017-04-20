@@ -8,25 +8,25 @@
 
   "  flow control tests" .put .\n
 
-  assert.stack_0
+  assert::stack_0
   0
-  assert.stack_1
+  assert::stack_1
   begin
-    assert.stack_1
+    assert::stack_1
     1
-    assert.stack_2
+    assert::stack_2
     +
-    assert.stack_1
+    assert::stack_1
     dup
-    assert.stack_2
+    assert::stack_2
     10
-    assert.stack_3
+    assert::stack_3
     ==
-    assert.stack_2
+    assert::stack_2
   until
-  assert.stack_1
+  assert::stack_1
   drop
-  assert.stack_0
+  assert::stack_0
 
 ;
 

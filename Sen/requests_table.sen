@@ -127,7 +127,7 @@ ddlLock.grabWrite
   checkEnoughBuffers not if <NIP+ERROR> exit then
   checkMakeTable     not if <NIP+ERROR> exit then
 
-  makeTable ( ) assert.stack_0
+  makeTable ( ) assert::stack_0
 
   <OK>
 ;
@@ -172,7 +172,7 @@ ddlLock.grabWrite
 
   tp ( "<tableNm>" )
 
-  removeTable ( ) assert.stack_0
+  removeTable ( ) assert::stack_0
 
   tp: droppedTable
 
@@ -224,7 +224,7 @@ ddlLock.grabWrite
 
   columnVecTable
 
-  assert.stack_0
+  assert::stack_0
 
   <OK>
 ;
@@ -352,12 +352,12 @@ snap1:
 /*----------------------------------------------------------------------------*/
 : return_table ( -- <R> )
 
-  assert.stack_0
+  assert::stack_0
 
   // dec and return table reference and clear task.seitf.currentTable
   returnTableRef not if <NIP+ERROR> exit then
 
-  assert.stack_0
+  assert::stack_0
 
   <OK>
 ;
@@ -367,8 +367,8 @@ snap1:
 /*----------------------------------------------------------------------------*/
 : select_table ( "<tableNm>" -- <R> )
 
-  assert.stack_1
-  CN_STRVAL assert.class_0
+  assert::stack_1
+  CN_STRVAL assert::class_0
 
 ddlLock.grabRead
 
@@ -397,8 +397,8 @@ ddlLock.grabRead
   popTable ( ^selCursor )
   withinTables assert
 
-  assert.stack_1
-  CN_STRVAL assert.class
+  assert::stack_1
+  CN_STRVAL assert::class
 
   <SUCCESS>
 ;
@@ -408,10 +408,10 @@ ddlLock.grabRead
 /*----------------------------------------------------------------------------*/
 : range_select_table ( "<upper>" "<lower>" "<tableNm>" -- <R> )
 
-  assert.stack_3
-  CN_STRVAL assert.class_0
-  CN_STRVAL assert.class_1
-  CN_STRVAL assert.class_2
+  assert::stack_3
+  CN_STRVAL assert::class_0
+  CN_STRVAL assert::class_1
+  CN_STRVAL assert::class_2
 
 ddlLock.grabRead
 
@@ -440,8 +440,8 @@ ddlLock.grabRead
   popTable ( "<^selCursor>" )
   withinTables assert
 
-  assert.stack_1
-  CN_STRVAL assert.class
+  assert::stack_1
+  CN_STRVAL assert::class
 
   <SUCCESS>
 ;

@@ -14,7 +14,7 @@ ddlLock.grabWrite
   checkEnoughBuffers not if <NIP+ERROR> exit then
   checkMakeSchema    not if <NIP+ERROR> exit then
 
-  makeSchema ( ) assert.stack_0
+  makeSchema ( ) assert::stack_0
 
   <OK>
 ;
@@ -30,7 +30,7 @@ ddlLock.grabWrite
 
   checkRemoveSchema not if <NIP+ERROR> exit then
 
-  removeSchema ( ) assert.stack_0
+  removeSchema ( ) assert::stack_0
 
 tp: droppedSchema
 

@@ -162,7 +162,7 @@
 
   //indexPtr index.showColumnVec
 
-  assert.stack_0
+  assert::stack_0
 
   popIndexColumns
 

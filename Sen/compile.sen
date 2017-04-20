@@ -26,7 +26,7 @@
 
 "munge.sen" include
 "testing.sen" include
-assert.stack_0
+assert::stack_0
 
 //
 // step 2: runs some basic tests
@@ -34,7 +34,7 @@ assert.stack_0
 
 //ut
 
-assert.stack_0
+assert::stack_0
 
 //
 // step 3: spawn the root thread
@@ -46,7 +46,7 @@ rootThread thread.spawn
 ( leave root thread on stack )
 rootThread
 
-assert.stack_1
+assert::stack_1
 
 : __compiled__ ;
 

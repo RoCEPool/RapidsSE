@@ -323,7 +323,7 @@ int: queryCount
   //   and the seitf will have a table
   //
 
-  assert.stack_2
+  assert::stack_2
 
   // for the moment just discard lower and upper
   stk drop drop
@@ -341,7 +341,7 @@ int: queryCount
   dup -rot selCursor.table! ( ^selCursor )
 
   // convert address of selCursor into string
-  CN_SELCURSOR assert.class
+  CN_SELCURSOR assert::class
   >str ( "<^selCursor>")
 ;
 
@@ -355,7 +355,7 @@ int: queryCount
   // and the seitf will have a table
   //
 
-  assert.stack_0
+  assert::stack_0
 
   // increment query count
   queryCount ++
@@ -370,7 +370,7 @@ int: queryCount
   dup -rot selCursor.table! ( ^selCursor )
 
   // convert address of selCursor into string
-  CN_SELCURSOR assert.class
+  CN_SELCURSOR assert::class
   >str ( "<^selCursor>")
 ;
 

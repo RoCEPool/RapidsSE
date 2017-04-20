@@ -15,7 +15,7 @@
   checkAddColumn not if <NIP+ERROR> exit then
 
   columnNm tableNm
-  addColumn ( ) assert.stack_0
+  addColumn ( ) assert::stack_0
 
   <OK>
 ;
@@ -31,7 +31,7 @@
   checkAddIndexColumn not if <NIP+ERROR> exit then
 
   columnNm indexNm
-  addIndexColumn ( ) assert.stack_0
+  addIndexColumn ( ) assert::stack_0
 
   <OK>
 ;
