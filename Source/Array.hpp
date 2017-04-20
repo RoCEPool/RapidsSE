@@ -153,6 +153,10 @@ void Array<ARRAY_CN, ITEM, MAX_ITEMS>::vClear(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,ARRAY_CN,_FOOTER_);
   
+  for (i8 iItem = 0; iItem < m_nItems; iItem++) {
+    m_xItem[iItem] = (ITEM)0;;
+  }
+    
   m_nItems = 0;
 }
 

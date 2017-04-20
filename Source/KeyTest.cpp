@@ -87,9 +87,35 @@ void KeyTest::vTest(void)
     aCursor = pKeyVal->m_xKey.aWspArea();
     v = *(i8*)pKeyVal->aElement(pCol,nBytes,&aCursor);
     
-    vTrace("%p: %lld\n"_Str,pKeyVal,v);
+    vTrace("%p ( %lld >= 3)\n"_Str,pKeyVal,v);
   }
   
+  // scan the key vector for key value: >= 3
+  xValWsp = 7;
+  xKeyWsp.vReset();
+  xKeyWsp.vAddElement(xValWsp);
+  
+  pOpAryFind->vClear();
+  pOpAryFind->vAdd(RO_LESS_THAN);
+  
+  pKeyVal = nullptr;
+  for (i8 i = 0; i < 10; i++) {
+    
+    pKeyVal = pKeyVec->pGet(i);
+    
+    if (pKeyVal->bMatches(pKeyValFind,pColVec,pOpAryFind))
+      break;
+    
+    pKeyVal = nullptr;
+  }
+  
+  if (pKeyVal) {
+    aCursor = pKeyVal->m_xKey.aWspArea();
+    v = *(i8*)pKeyVal->aElement(pCol,nBytes,&aCursor);
+    
+    vTrace("%p ( %lld < 7 )\n"_Str,pKeyVal,v);
+  }
+
   delete pKeyVec;
   delete pColVec;
   delete pOpAryFind;
