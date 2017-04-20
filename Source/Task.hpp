@@ -267,6 +267,14 @@ namespace Tasks
 
     // assert
     static void vAssert(NNP_Task nnpTask);
+
+    static void vAssertClass(NNP_Task nnpTask);
+    static void vAssertClass_0(NNP_Task nnpTask);
+    static void vAssertClass_1(NNP_Task nnpTask);
+    static void vAssertClass_2(NNP_Task nnpTask);
+    static void vAssertClass_3(NNP_Task nnpTask);
+    static void vAssertClass_4(NNP_Task nnpTask);
+
     static void vAssertStack_0(NNP_Task nnpTask);
     static void vAssertStack_0more(NNP_Task nnpTask);
     static void vAssertStack_1(NNP_Task nnpTask);

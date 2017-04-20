@@ -341,13 +341,14 @@ int: queryCount
   dup -rot selCursor.table! ( ^selCursor )
 
   // convert address of selCursor into string
+  CN_SELCURSOR assert.class
   >str ( "<^selCursor>")
 ;
 
 /*----------------------------------------------------------------------------*/
 /* get select cursor for table ( called by select_table request)              */
 /*----------------------------------------------------------------------------*/
-: selectTable ( -- ^selCursor ) ( Task.seitf.table )
+: selectTable ( -- "<^selCursor>" ) ( Task.seitf.table )
 
   //
   // at this point this task will have a seitf
@@ -369,6 +370,7 @@ int: queryCount
   dup -rot selCursor.table! ( ^selCursor )
 
   // convert address of selCursor into string
+  CN_SELCURSOR assert.class
   >str ( "<^selCursor>")
 ;
 

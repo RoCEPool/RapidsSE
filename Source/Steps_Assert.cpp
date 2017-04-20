@@ -34,6 +34,12 @@ void Task::vAddPrimitives_Assert(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   vAddPrimitive("assert"_Str,          &vAssert,            false);
+  vAddPrimitive("assert.class"_Str,    &vAssertClass,       false);
+  vAddPrimitive("assert.class_0"_Str,  &vAssertClass_0,     false);
+  vAddPrimitive("assert.class_1"_Str,  &vAssertClass_1,     false);
+  vAddPrimitive("assert.class_2"_Str,  &vAssertClass_2,     false);
+  vAddPrimitive("assert.class_3"_Str,  &vAssertClass_3,     false);
+  vAddPrimitive("assert.class_4"_Str,  &vAssertClass_4,     false);
   vAddPrimitive("assert.stack_0"_Str,  &vAssertStack_0,     false);
   vAddPrimitive("assert.stack_0+"_Str, &vAssertStack_0more, false);
   vAddPrimitive("assert.stack_1"_Str,  &vAssertStack_1,     false);
@@ -59,6 +65,168 @@ void Task::vAssert(NNP_Task nnpTask)
   
   if ( ! iTrue )
     THROW("assert"_Str);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* assert.class -- assert class of value on stack                             */
+/*----------------------------------------------------------------------------*/
+void Task::vAssertClass(NNP_Task nnpTask)
+{
+  ENTRY("vAssertClass"_Str);
+  
+  i8 iAssertClassNo;
+  if ( ! nnpTask->m_pDataStack->bPopParamInt(iAssertClassNo) )
+    THROW_INVALID_DSTACK("assert.class"_Str);
+  
+  Value* pValue = nnpTask->m_pDataStack->pPeek();
+  
+  eCN eAssertClassNo = (eCN)iAssertClassNo;
+  eCN eClassNo = pValue->eClass();
+  
+  if (CN_PTRVAL == eClassNo && eAssertClassNo != CN_PTRVAL) {
+    PtrVal* pPtrVal = _pPtrVal(pValue);
+    eClassNo = pPtrVal->pPtr()->eClass();
+  }
+  
+  if ( eClassNo != eAssertClassNo )
+    THROW("assert.class"_Str);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* assert.class_0 -- assert class of value[0] on stack                        */
+/*----------------------------------------------------------------------------*/
+void Task::vAssertClass_0(NNP_Task nnpTask)
+{
+  ENTRY("vAssertClass_0"_Str);
+  
+  i8 iAssertClassNo;
+  if ( ! nnpTask->m_pDataStack->bPopParamInt(iAssertClassNo) )
+    THROW_INVALID_DSTACK("assert.class_0"_Str);
+  
+  Value* pValue = nnpTask->m_pDataStack->pPeek(0);
+  
+  eCN eAssertClassNo = (eCN)iAssertClassNo;
+  eCN eClassNo = pValue->eClass();
+  
+  if (CN_PTRVAL == eClassNo && eAssertClassNo != CN_PTRVAL) {
+    PtrVal* pPtrVal = _pPtrVal(pValue);
+    eClassNo = pPtrVal->pPtr()->eClass();
+  }
+  
+  if ( eClassNo != eAssertClassNo )
+    THROW("assert.class_0"_Str);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* assert.class_1 -- assert class of value[1] on stack                        */
+/*----------------------------------------------------------------------------*/
+void Task::vAssertClass_1(NNP_Task nnpTask)
+{
+  ENTRY("vAssertClass_1"_Str);
+  
+  i8 iAssertClassNo;
+  if ( ! nnpTask->m_pDataStack->bPopParamInt(iAssertClassNo) )
+    THROW_INVALID_DSTACK("assert.class_1"_Str);
+  
+  Value* pValue = nnpTask->m_pDataStack->pPeek(1);
+  
+  eCN eAssertClassNo = (eCN)iAssertClassNo;
+  eCN eClassNo = pValue->eClass();
+  
+  if (CN_PTRVAL == eClassNo && eAssertClassNo != CN_PTRVAL) {
+    PtrVal* pPtrVal = _pPtrVal(pValue);
+    eClassNo = pPtrVal->pPtr()->eClass();
+  }
+  
+  if ( eClassNo != eAssertClassNo )
+    THROW("assert.class_1"_Str);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* assert.class_2 -- assert class of value[2] on stack                        */
+/*----------------------------------------------------------------------------*/
+void Task::vAssertClass_2(NNP_Task nnpTask)
+{
+  ENTRY("vAssertClass_2"_Str);
+  
+  i8 iAssertClassNo;
+  if ( ! nnpTask->m_pDataStack->bPopParamInt(iAssertClassNo) )
+    THROW_INVALID_DSTACK("assert.class_2"_Str);
+  
+  Value* pValue = nnpTask->m_pDataStack->pPeek(2);
+  
+  eCN eAssertClassNo = (eCN)iAssertClassNo;
+  eCN eClassNo = pValue->eClass();
+  
+  if (CN_PTRVAL == eClassNo && eAssertClassNo != CN_PTRVAL) {
+    PtrVal* pPtrVal = _pPtrVal(pValue);
+    eClassNo = pPtrVal->pPtr()->eClass();
+  }
+  
+  if ( eClassNo != eAssertClassNo )
+    THROW("assert.class_2"_Str);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* assert.class_3 -- assert class of value[3] on stack                        */
+/*----------------------------------------------------------------------------*/
+void Task::vAssertClass_3(NNP_Task nnpTask)
+{
+  ENTRY("vAssertClass_3"_Str);
+  
+  i8 iAssertClassNo;
+  if ( ! nnpTask->m_pDataStack->bPopParamInt(iAssertClassNo) )
+    THROW_INVALID_DSTACK("assert.class_3"_Str);
+  
+  Value* pValue = nnpTask->m_pDataStack->pPeek(3);
+  
+  eCN eAssertClassNo = (eCN)iAssertClassNo;
+  eCN eClassNo = pValue->eClass();
+  
+  if (CN_PTRVAL == eClassNo && eAssertClassNo != CN_PTRVAL) {
+    PtrVal* pPtrVal = _pPtrVal(pValue);
+    eClassNo = pPtrVal->pPtr()->eClass();
+  }
+  
+  if ( eClassNo != eAssertClassNo )
+    THROW("assert.class_3"_Str);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* assert.class_4 -- assert class of value[4] on stack                        */
+/*----------------------------------------------------------------------------*/
+void Task::vAssertClass_4(NNP_Task nnpTask)
+{
+  ENTRY("vAssertClass_4"_Str);
+  
+  i8 iAssertClassNo;
+  if ( ! nnpTask->m_pDataStack->bPopParamInt(iAssertClassNo) )
+    THROW_INVALID_DSTACK("assert.class_4"_Str);
+  
+  Value* pValue = nnpTask->m_pDataStack->pPeek(4);
+  
+  eCN eAssertClassNo = (eCN)iAssertClassNo;
+  eCN eClassNo = pValue->eClass();
+  
+  if (CN_PTRVAL == eClassNo && eAssertClassNo != CN_PTRVAL) {
+    PtrVal* pPtrVal = _pPtrVal(pValue);
+    eClassNo = pPtrVal->pPtr()->eClass();
+  }
+  
+  if ( eClassNo != eAssertClassNo )
+    THROW("assert.class_4"_Str);
   
   EXIT();
 }

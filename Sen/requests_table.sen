@@ -363,11 +363,12 @@ snap1:
 ;
 
 /*----------------------------------------------------------------------------*/
-/* get row cursor for table                                                   */
+/* get sel cursor for sel of table                                            */
 /*----------------------------------------------------------------------------*/
 : select_table ( "<tableNm>" -- <R> )
 
   assert.stack_1
+  CN_STRVAL assert.class_0
 
 ddlLock.grabRead
 
@@ -397,16 +398,20 @@ ddlLock.grabRead
   withinTables assert
 
   assert.stack_1
+  CN_STRVAL assert.class
 
   <SUCCESS>
 ;
 
 /*----------------------------------------------------------------------------*/
-/* get row cursor for table                                                   */
+/* get sel cursor for rgesel of table                                         */
 /*----------------------------------------------------------------------------*/
 : range_select_table ( "<upper>" "<lower>" "<tableNm>" -- <R> )
 
   assert.stack_3
+  CN_STRVAL assert.class_0
+  CN_STRVAL assert.class_1
+  CN_STRVAL assert.class_2
 
 ddlLock.grabRead
 
@@ -428,14 +433,15 @@ ddlLock.grabRead
   getTableRef not if <NIP+ERROR> exit then ( "<tableNm>" )
 
   // get a select cursor
-  rangeSelectTable ( ^selCursor )
+  rangeSelectTable ( "<^selCursor>" )
 
   // pop table dictionary
   // i.e. task.dicStack should be ../tables
-  popTable ( ^selCursor )
+  popTable ( "<^selCursor>" )
   withinTables assert
 
   assert.stack_1
+  CN_STRVAL assert.class
 
   <SUCCESS>
 ;
