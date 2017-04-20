@@ -23,6 +23,7 @@ void KeyTest::vTest(void)
   
   KeyVec* pKeyVec = new KeyVec;
   
+  // create a vector of key values (ascending order 0,1,2, ... 9)
   for (i8 i = 0; i < 10; i++) {
   
     xValWsp = i;
@@ -39,6 +40,7 @@ void KeyTest::vTest(void)
   i8 nBytes;
   char* aCursor;
   
+  // dump the key vector
   for (i8 i = 0; i < 10; i++) {
     
     pKeyVal = pKeyVec->pGet(i);
@@ -49,6 +51,7 @@ void KeyTest::vTest(void)
     vTrace("%lld: %lld\n"_Str,i,v);
   }
 
+  // asserts that keyval(n) < keyval(n+1)
   KeyVal* pKeyValA = pKeyVec->pGet(0);
   for (i8 i = 1; i < 10; i++) {
     
@@ -60,6 +63,7 @@ void KeyTest::vTest(void)
     pKeyValA = pKeyValB;
   }
   
+  // scan the key vector for key value: >= 3
   xValWsp = 3;
   xKeyWsp.vReset();
   xKeyWsp.vAddElement(xValWsp);
@@ -68,11 +72,15 @@ void KeyTest::vTest(void)
   pOpAryFind->vClear();
   pOpAryFind->vAdd(RO_GREATER_EQUAL);
   
+  pKeyVal = nullptr;
   for (i8 i = 0; i < 10; i++) {
+
     pKeyVal = pKeyVec->pGet(i);
     
     if (pKeyVal->bMatches(pKeyValFind,pColVec,pOpAryFind))
       break;
+    
+    pKeyVal = nullptr;
   }
   
   if (pKeyVal) {

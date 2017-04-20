@@ -10,7 +10,7 @@ namespace Structures
   {
   private:
     i8    m_nItems;           // number of actual items
-    ITEM  m_xItem[MAX_ITEMS]; // array of items
+    ITEM  m_xItem[MAX_ITEMS]; // array of items (not proper objects)
   
     // must be last
     Footer m_xFooter;
