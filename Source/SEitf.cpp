@@ -356,7 +356,7 @@ bool SEitf::bDecode(Str* aWords[], i8 iWords)
   if (aWords[0]->bSame("getInUseSpace"_Str)) return bGetInUseSpace(aWords);
   if (aWords[0]->bSame("gettbl"_Str)) return bGetTable(aWords, iWords);
   if (aWords[0]->bSame("getTotalSpace"_Str)) return bGetTotalSpace(aWords);
-  if (aWords[0]->bSame("idump"_Str)) return bDumpIndex(aWords, iWords);
+  if (aWords[0]->bSame("dumpidx"_Str)) return bDumpIndex(aWords, iWords);
   if (aWords[0]->bSame("TblInUse"_Str)) return bInUseTable(aWords, iWords);
   if (aWords[0]->bSame("ld"_Str)) return bLoadTable(aWords, iWords);
   if (aWords[0]->bSame("lds"_Str)) return bLoadTableStream(aWords, iWords);

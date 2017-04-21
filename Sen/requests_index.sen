@@ -12,6 +12,7 @@
   tp: analyzeIndex
 
   locals| indexNm tableNm |
+
   ddlLock::grabWrite
 
   // should be in the tables folder
