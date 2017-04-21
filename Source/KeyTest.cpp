@@ -15,8 +15,10 @@ void KeyTest::vTest(void)
   ValWsp xValWsp;
   KeyVal* pKeyVal;
   
-  vTrace("\n\n-----------INTEGER-----------\n"_Str);
-  
+  /*-----------------------------------------------------------------------*/
+  vTrace("\n\n--------------- Single Element Key : INTEGER ---------------\n"_Str);
+  /*-----------------------------------------------------------------------*/
+
   // create the column
   Column* pCol = new Column("Col0"_Str);
   pCol->vColumnType(CT_INTEGER);
@@ -39,7 +41,6 @@ void KeyTest::vTest(void)
     //xKeyWsp.vShow();
     
     pKeyVal = new KeyVal(xKeyWsp);
-    pKeyVal->vShow(CT_INTEGER);
     
     pKeyVec->vAdd(pKeyVal);
   }
@@ -50,13 +51,8 @@ void KeyTest::vTest(void)
   
   // dump the key vector
   for (i8 i = 0; i < 10; i++) {
-    
     pKeyVal = pKeyVec->pGet(i);
-    
-    aCursor = pKeyVal->m_xKey.aWspArea();
-    v = *(i8*)pKeyVal->aElement(pCol,nBytes,&aCursor);
-    
-    vTrace("%lld: %lld\n"_Str,i,v);
+    pKeyVal->vShow(pColVec);
   }
 
   // asserts that keyval(n) < keyval(n+1)
@@ -76,6 +72,7 @@ void KeyTest::vTest(void)
   xKeyWsp.vReset();
   xKeyWsp.vAddElement(xValWsp);
   KeyVal* pKeyValFind = new KeyVal(xKeyWsp);
+  vTrace("Find Key value >= 3\n"_Str);
   
   pOpAryFind->vClear();
   pOpAryFind->vAdd(RO_GREATER_EQUAL);
@@ -95,13 +92,14 @@ void KeyTest::vTest(void)
     aCursor = pKeyVal->m_xKey.aWspArea();
     v = *(i8*)pKeyVal->aElement(pCol,nBytes,&aCursor);
     
-    vTrace("%p ( %lld >= 3)\n"_Str,pKeyVal,v);
+    vTrace("( %lld >= 3)\n"_Str,v);
   }
   
   // scan the key vector for key value: >= 3
   xValWsp = 7;
   xKeyWsp.vReset();
   xKeyWsp.vAddElement(xValWsp);
+  vTrace("Find Key value < 7\n"_Str);
   
   pOpAryFind->vClear();
   pOpAryFind->vAdd(RO_LESS_THAN);
@@ -121,15 +119,17 @@ void KeyTest::vTest(void)
     aCursor = pKeyVal->m_xKey.aWspArea();
     v = *(i8*)pKeyVal->aElement(pCol,nBytes,&aCursor);
     
-    vTrace("%p ( %lld < 7 )\n"_Str,pKeyVal,v);
+    vTrace("( %lld < 7 )\n"_Str,v);
   }
 
   delete pKeyVec;
   delete pColVec;
   delete pOpAryFind;
   
-  vTrace("\n\n-----------STRING-----------\n"_Str);
-  
+  /*-----------------------------------------------------------------------*/
+  vTrace("\n\n--------------- Single Element Key : VARCHAR ---------------\n"_Str);
+  /*-----------------------------------------------------------------------*/
+
   // create the string column
   pCol = new Column("Col0"_Str);
   pCol->vColumnType(CT_VARCHAR);
@@ -163,16 +163,19 @@ void KeyTest::vTest(void)
     //xKeyWsp.vShow();
     
     pKeyVal = new KeyVal(xKeyWsp);
-    pKeyVal->vShow(CT_VARCHAR);
-    
     pKeyVec->vAdd(pKeyVal);
-
   }
   
+  // dump the key vector
+  for (i8 i = 0; i < 10; i++) {
+    pKeyVal = pKeyVec->pGet(i);
+    pKeyVal->vShow(pColVec);
+  }
+
   // generate a random key value to find
   sKey = Random::sRandomString(7);
   Str* ptr = sKey.aStr();
-  vTrace("Find Key value: %s\n"_Str, ptr);
+  vTrace("Find Key value < %s\n"_Str, ptr);
   
   xValWsp = ptr;
   pStrVal = _pStrVal(&xValWsp);
@@ -203,13 +206,13 @@ void KeyTest::vTest(void)
     vTrace("( %s < %s)\n"_Str,p,pKeyValFind->m_xKey.aWspArea());
   }
   else {
-    vTrace("Found nothing < %s)\n"_Str,pKeyValFind->m_xKey.aWspArea());
+    vTrace("Found nothing < %s\n"_Str,pKeyValFind->m_xKey.aWspArea());
   }
   
   // generate a random key value to find
   sKey = Random::sRandomString(7);
   ptr = sKey.aStr();
-  vTrace("Find Key value: %s\n"_Str, ptr);
+  vTrace("Find Key value >= %s\n"_Str, ptr);
   
   xValWsp = ptr;
   pStrVal = _pStrVal(&xValWsp);
@@ -247,6 +250,58 @@ void KeyTest::vTest(void)
   delete pColVec;
   delete pOpAryFind;
   
+  /*-----------------------------------------------------------------------*/
+  vTrace("\n\n----------- Two Element Key : INTEGER , INTEGER -------------\n"_Str);
+  /*-----------------------------------------------------------------------*/
+  
+  // create the column
+  Column* pCol0 = new Column("Col0"_Str);
+  pCol0->vColumnType(CT_INTEGER);
+  
+  Column* pCol1 = new Column("Col1"_Str);
+  pCol1->vColumnType(CT_INTEGER);
+  
+  // create the column vector
+  pColVec = new ColumnVec;
+  pColVec->vAdd(pCol0);
+  pColVec->vAdd(pCol1);
+
+  pOpAryFind = new RelOpAry;
+  
+  pKeyVec = new KeyVec;
+  
+  // create a vector of key values
+  // (ascending order col0: 0,1,2, ... 9)
+  //                  col1: 10, 20, 30
+  for (i8 i = 0; i < 10; i++) {
+    
+    for (i8 j = 10; j <= 30; j += 10) {
+      xValWsp = i;
+      xKeyWsp.vReset();
+      xKeyWsp.vAddElement(xValWsp);
+      //xKeyWsp.vShow();
+      
+      xValWsp = j;
+      xKeyWsp.vAddElement(xValWsp);
+      //xKeyWsp.vShow();
+      pKeyVal = new KeyVal(xKeyWsp);
+      pKeyVec->vAdd(pKeyVal);
+    }    
+    
+  }
+  
+  // dump the key vector
+  for (i8 i = 0; i < 10; i++) {
+    
+    pKeyVal = pKeyVec->pGet(i);
+    pKeyVal->vShow(pColVec);
+    
+    //vTrace("%lld: %lld %lld\n"_Str,i,v, v2);
+  }
+  
+  delete pKeyVec;
+  delete pColVec;
+  delete pOpAryFind;
 
   vTrace("\n\nEnd KeyTest**********************************************\n"_Str);
 }

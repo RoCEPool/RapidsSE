@@ -12,6 +12,7 @@
   tp: analyzeIndex
 
   locals| indexNm tableNm |
+
   ddlLock::grabWrite
 
   // should be in the tables folder
@@ -26,7 +27,9 @@
   // push indexes folder
   pushIndexes assert
 
-  indexNm checkIsIndex  not if popIndexes popTable <NIP+ERROR> exit then
+  indexNm checkIsIndex not if
+     popIndexes popTable assertInTables <NIP+ERROR> exit
+  then
 
   analyzeIndex ( )
 
@@ -35,6 +38,9 @@
 
   // pop table dictionary
   popTable
+
+  // assert we are still in tables folder
+  assertInTables
 
   tp: analyzedIndex
 

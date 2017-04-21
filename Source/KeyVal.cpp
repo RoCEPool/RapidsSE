@@ -307,9 +307,57 @@ bool KeyVal::bMatches(KeyVal* pKeyValThat, ColumnVec* pColVec, RelOpAry* pRelOpA
 /*----------------------------------------------------------------------------*/
 /* show                                                                       */
 /*----------------------------------------------------------------------------*/
-void KeyVal::vShow(eCT eColumnType)
+void KeyVal::vShow(ColumnVec* pColVec)
 {
-  m_xKey.vShow(eColumnType);
+  //m_xKey.vShow(eColumnType);
+  
+  char* aCursor = m_xKey.aWspArea();
+  s32 sKeyString;
+  
+  vTrace("Key %p: size %lld "_Str, this, m_xKey.nSize());
+  
+  sKeyString = "( "_Str;
+  
+  for (i8 iColumn = 0; iColumn < pColVec->nItems(); iColumn++) {
+    
+    Column* pColumn = pColVec->pGet(iColumn);
+    eCT eColumnType = pColumn->eColumnType();
+    
+    i8 nBytes;
+    
+    char* aElement = this->aElement(pColumn,nBytes,&aCursor);
+    
+    i8 iKey;
+    Str* pKey;
+    
+    switch (eColumnType) {
+      case CT_INTEGER:
+        iKey = *(i8*)aElement;
+        vTrace("Element %lld:(size %lld value:%lld) "_Str,
+               iColumn,
+               nBytes,
+               iKey
+               );
+        StrLib::vSprintCat((char*)(sKeyString.aStr()), "%lld ", iKey);
+        break;
+        
+      case CT_VARCHAR:
+        pKey = (Str*)aElement;
+        vTrace("Element %lld:(size %lld value:%s) "_Str,
+               iColumn,
+               nBytes,
+               pKey
+               );
+        StrLib::vSprintCat((char*)sKeyString.aStr(), "%s ", pKey);
+        break;
+        
+      default:
+        ASSERT(0);
+    }
+
+  }
+  vTrace("%s)\n"_Str, sKeyString.aStr());
+  
 }
 
 /*============================================================================*/

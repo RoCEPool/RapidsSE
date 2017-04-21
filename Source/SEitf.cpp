@@ -341,12 +341,10 @@ bool SEitf::bDecode(Str* aWords[], i8 iWords)
   if (aWords[0]->bSame("anidx"_Str)) return bAnalyzeIndex(aWords, iWords);
   if (aWords[0]->bSame("addidxcol"_Str)) return bAddIndexColumn(aWords, iWords);
   if (aWords[0]->bSame("cf"_Str)) return bPushDic(aWords);
-  if (aWords[0]->bSame("con"_Str)) return bConnect(aWords);
   if (aWords[0]->bSame("connectCluster"_Str)) return bConnectCluster(aWords);
   if (aWords[0]->bSame("cp"_Str)) return bCopyTable(aWords, iWords);
   if (aWords[0]->bSame("dantbl"_Str)) return bDanalyzeTable(aWords, iWords);
   if (aWords[0]->bSame("dex"_Str)) return bDistExportTable(aWords, iWords);
-  if (aWords[0]->bSame("dis"_Str)) return bDisconnect(aWords);
   if (aWords[0]->bSame("docol"_Str)) return bDocol(aWords);
   if (aWords[0]->bSame("dump"_Str)) return bDumpTable(aWords, iWords);
   if (aWords[0]->bSame("endmkidx"_Str)) return bEndCreateIndex(aWords, iWords);
@@ -356,7 +354,7 @@ bool SEitf::bDecode(Str* aWords[], i8 iWords)
   if (aWords[0]->bSame("getInUseSpace"_Str)) return bGetInUseSpace(aWords);
   if (aWords[0]->bSame("gettbl"_Str)) return bGetTable(aWords, iWords);
   if (aWords[0]->bSame("getTotalSpace"_Str)) return bGetTotalSpace(aWords);
-  if (aWords[0]->bSame("idump"_Str)) return bDumpIndex(aWords, iWords);
+  if (aWords[0]->bSame("dumpidx"_Str)) return bDumpIndex(aWords, iWords);
   if (aWords[0]->bSame("TblInUse"_Str)) return bInUseTable(aWords, iWords);
   if (aWords[0]->bSame("ld"_Str)) return bLoadTable(aWords, iWords);
   if (aWords[0]->bSame("lds"_Str)) return bLoadTableStream(aWords, iWords);

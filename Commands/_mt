@@ -144,7 +144,7 @@ Index Requests:
 anidx   analyze_index
 mkidx   create_index
 lsidx   list_indexes
-idump   dump_index
+dumpidx dump_index
 lsidxcol list_indexcolumns
 rmidx   drop_index
 tridx   truncate_index
