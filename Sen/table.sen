@@ -78,7 +78,7 @@ int: queryCount
 ;
 
 /*----------------------------------------------------------------------------*/
-/* test if this task dic path ends in ../tables                               */
+/* test if this task dic path ends in tables                                  */
 /*----------------------------------------------------------------------------*/
 : withinTables ( -- t|f )
 
@@ -86,7 +86,15 @@ int: queryCount
 ;
 
 /*----------------------------------------------------------------------------*/
-/* check top of task dictionary stack is ../tables                            */
+/* assert top of task dictionary stack is tables                              */
+/*----------------------------------------------------------------------------*/
+: assertInTables ( -- t|f )
+
+  withinTables assert
+;
+
+/*----------------------------------------------------------------------------*/
+/* check top of task dictionary stack is tables                               */
 /*----------------------------------------------------------------------------*/
 : checkInTables ( -- t|f )
 
