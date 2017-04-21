@@ -32,7 +32,9 @@ namespace DBobjects
   
     bool bMatches(KeyVal* pKeyVal, ColumnVec* pColVec, RelOpAry* pOpAry);
     void vShow(ColumnVec* pColVec);
-    
+  
+    Key& xKey(void);
+  
   };
   
   KeyVal* _aKeyVal(void* aAddr);

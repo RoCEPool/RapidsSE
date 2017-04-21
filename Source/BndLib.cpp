@@ -6,10 +6,10 @@
 #include "StorageEngine.h"
 
 /*----------------------------------------------------------------------------*/
-/* is this key after that key                                                 */
+/* is this key before that key                                                */
 /*----------------------------------------------------------------------------*/
-bool BndLib::bIsAfter(Key& xKeyThis, Key& xKeyThat,
-                      RelOpAry& xOpAry, ColumnVec& xColVec)
+bool BndLib::bIsBefore(Key& xKeyThis, Key& xKeyThat,
+                       RelOpAry& xOpAry, ColumnVec& xColVec)
 {
   i8 nCols = xColVec.nItems();
   

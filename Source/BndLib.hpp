@@ -10,8 +10,8 @@ namespace DBobjects
   private:
 
   public:
-    static bool bIsAfter(Key& xKeyThis, Key& xKeyTest,
-                         RelOpAry& xOpAry, ColumnVec& xColVec);
+    static bool bIsBefore(Key& xKeyThis, Key& xKeyTest,
+                          RelOpAry& xOpAry, ColumnVec& xColVec);
   };
 }
 

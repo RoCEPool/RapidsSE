@@ -134,6 +134,7 @@ int main(int argc, const char* argv[])
     pRunTests->vRunTests();
   }
   
+  KeyTest::vTestA();
   KeyTest::vTest();
   
   // optionally execute se> prompt

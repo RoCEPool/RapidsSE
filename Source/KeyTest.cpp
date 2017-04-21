@@ -306,6 +306,67 @@ void KeyTest::vTest(void)
   vTrace("\n\nEnd KeyTest**********************************************\n"_Str);
 }
 
+/*----------------------------------------------------------------------------*/
+/* key testing                                                                */
+/*----------------------------------------------------------------------------*/
+void KeyTest::vTestA(void)
+{
+  vTrace("\n\nKeyTest A:+++++++++++++++++++++++++++++++++++++++++++++++\n"_Str);
+  
+  bool b;
+  
+  // create the column vector
+  ColumnVec* pColVec = new ColumnVec;
+  
+  Column* pCol = new Column("Col0"_Str);
+  pCol->vColumnType(CT_INTEGER);
+  pColVec->vAdd(pCol);
+  pCol = new Column("Col1"_Str);
+  pCol->vColumnType(CT_INTEGER);
+  pColVec->vAdd(pCol);
+  
+  // create the op array
+  RelOpAry* pOpAry = new RelOpAry;
+  pOpAry->vAdd(RO_LESS_EQUAL);
+  pOpAry->vAdd(RO_LESS_THAN);
+  
+  KeyWsp xKeyWsp;
+  ValWsp xValWsp;
+  
+  xKeyWsp.vReset();
+  xValWsp = (i8)1;
+  xKeyWsp.vAddElement(xValWsp);
+  xValWsp = (i8)10;
+  xKeyWsp.vAddElement(xValWsp);
+  KeyVal* pKeyValThis = new KeyVal(xKeyWsp);
+  
+  xKeyWsp.vReset();
+  xValWsp = (i8)1;
+  xKeyWsp.vAddElement(xValWsp);
+  xValWsp = (i8)20;
+  xKeyWsp.vAddElement(xValWsp);
+  KeyVal* pKeyValThat = new KeyVal(xKeyWsp);
+  
+  // [ ColA <= 1 , ColB < 10 ] should be before (2,20)
+  b = BndLib::bIsBefore(pKeyValThis->xKey(),
+                        pKeyValThat->xKey(),
+                        *pOpAry,
+                        *pColVec);
+  assert(b);
+  
+  // [ ColA <= 2 , ColB < 20 ] should not be before (1,10)
+  b = BndLib::bIsBefore(pKeyValThat->xKey(),
+                        pKeyValThis->xKey(),
+                        *pOpAry,
+                        *pColVec);
+  assert(!b);
+  
+  delete pKeyValThis;
+  delete pKeyValThat;
+  
+  vTrace("\n\nEnd KeyTest A++++++++++++++++++++++++++++++++++++++++++++\n"_Str);
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

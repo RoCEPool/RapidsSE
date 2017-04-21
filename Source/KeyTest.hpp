@@ -12,6 +12,7 @@ namespace DBobjects
   public:
   
   static void vTest(void);
+  static void vTestA(void);
   };
   
 }
