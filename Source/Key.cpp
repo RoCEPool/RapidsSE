@@ -122,15 +122,34 @@ char* Key::aElement(Column* pColumn, i8& nBytes, char** aaCursor)
 /*----------------------------------------------------------------------------*/
 /* show the contents of this key                                              */
 /*----------------------------------------------------------------------------*/
-void Key::vShow(void)
+void Key::vShow(eCT eColumnType)
 {
-  i8 iKey = *(i8*)aWspStr();
+  i8 iKey;
+  Str* pKey;
   
-  vTrace("Key %p: (size %lld value:%lld)\n"_Str,
-         this,
-         nSize(),
-         iKey
-         );
+  switch (eColumnType) {
+    case CT_INTEGER:
+      iKey = *(i8*)aWspStr();
+      vTrace("Key %p: (size %lld value:%lld)\n"_Str,
+             this,
+             nSize(),
+             iKey
+             );
+      break;
+      
+    case CT_VARCHAR:
+      pKey = aWspStr();
+      vTrace("Key %p: (size %lld value:%s)\n"_Str,
+             this,
+             nSize(),
+             pKey
+             );
+      break;
+      
+    default:
+      ASSERT(0);
+  }
+  
 }
 
 /*----------------------------------------------------------------------------*/

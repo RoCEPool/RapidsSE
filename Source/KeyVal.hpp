@@ -31,7 +31,8 @@ namespace DBobjects
     i8 iCmp(KeyVal* pKeyVal, ColumnVec* pColVec);
   
     bool bMatches(KeyVal* pKeyVal, ColumnVec* pColVec, RelOpAry* pOpAry);
-  
+    void vShow(eCT eColumnType);
+    
   };
   
   KeyVal* _aKeyVal(void* aAddr);

@@ -116,13 +116,21 @@ void KeyWsp::vAddElement(Values::ValWsp &xValWsp)
   _precondition_(_MAGIC_,CN_KEYWSP,_FOOTER_);
   
   // for the moment we only allow one element per key
-  ASSERT( ! nWspUsed() );
+  //ASSERT( ! nWspUsed() );
   
   eCN eClass = xValWsp.eClass();
   char* pDst = m_xWsp.aLatter();
-  char* pSrc = xValWsp.aWspArea();
   
-  i8 iSrc = *(i8*)pSrc;
+  char* pSrc;
+  if (eClass == CN_STRVAL) {
+    pSrc = (char*)(_pStrVal(&xValWsp)->aStr());
+  }
+  else {
+    ASSERT(eClass == CN_INTVAL);
+    pSrc = xValWsp.aWspArea();
+  
+    i8 iSrc = *(i8*)pSrc;
+  }
 
   i8 nBytesTaken = ValLib::nCopyDatum(eClass,pDst,pSrc);
   

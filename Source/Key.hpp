@@ -21,7 +21,7 @@ namespace DBobjects
     bool operator <(Key* pKeyArg);
     bool operator <=(Key* pKeyArg);
     
-    void  vShow(void);
+    void  vShow(eCT eColumnType);
   
     void  vKey(Key& xKey);
     void  vKey(KeyWsp& xKeyWsp);

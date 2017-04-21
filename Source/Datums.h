@@ -60,6 +60,7 @@ using namespace Datums;
 #include "Ivl.hpp"
 #include "Tme.hpp"
 #include "Tsp.hpp"
+#include "Vch.hpp"
 
 #include "DtmLib.hpp"
 

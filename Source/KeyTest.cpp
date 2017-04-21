@@ -15,7 +15,13 @@ void KeyTest::vTest(void)
   ValWsp xValWsp;
   KeyVal* pKeyVal;
   
+  vTrace("\n\n-----------INTEGER-----------\n"_Str);
+  
+  // create the column
   Column* pCol = new Column("Col0"_Str);
+  pCol->vColumnType(CT_INTEGER);
+  
+  // create the column vector
   ColumnVec* pColVec = new ColumnVec;
   pColVec->vAdd(pCol);
   
@@ -30,8 +36,10 @@ void KeyTest::vTest(void)
     
     xKeyWsp.vReset();
     xKeyWsp.vAddElement(xValWsp);
+    //xKeyWsp.vShow();
     
     pKeyVal = new KeyVal(xKeyWsp);
+    pKeyVal->vShow(CT_INTEGER);
     
     pKeyVec->vAdd(pKeyVal);
   }
@@ -120,6 +128,126 @@ void KeyTest::vTest(void)
   delete pColVec;
   delete pOpAryFind;
   
+  vTrace("\n\n-----------STRING-----------\n"_Str);
+  
+  // create the string column
+  pCol = new Column("Col0"_Str);
+  pCol->vColumnType(CT_VARCHAR);
+  pCol->vDatumType(DM_VCH);
+  
+  // create the column vector
+  pColVec = new ColumnVec;
+  pColVec->vAdd(pCol);
+  
+  // create the operator array
+  pOpAryFind = new RelOpAry;
+  
+  // create the key vector
+  pKeyVec = new KeyVec;
+  
+  s48K sKey;
+  
+  StrVal* pStrVal;
+  
+  // generate random keyVal's and add to keyVec
+  for (i8 i = 0; i < 10; i++) {
+    sKey = Random::sRandomString(7);
+    
+    Str* ptr = sKey.aStr();
+    
+    xValWsp = ptr;
+    pStrVal = _pStrVal(&xValWsp);
+    
+    xKeyWsp.vReset();
+    xKeyWsp.vAddElement(xValWsp);
+    //xKeyWsp.vShow();
+    
+    pKeyVal = new KeyVal(xKeyWsp);
+    pKeyVal->vShow(CT_VARCHAR);
+    
+    pKeyVec->vAdd(pKeyVal);
+
+  }
+  
+  // generate a random key value to find
+  sKey = Random::sRandomString(7);
+  Str* ptr = sKey.aStr();
+  vTrace("Find Key value: %s\n"_Str, ptr);
+  
+  xValWsp = ptr;
+  pStrVal = _pStrVal(&xValWsp);
+  
+  xKeyWsp.vReset();
+  xKeyWsp.vAddElement(xValWsp);
+  pKeyValFind = new KeyVal(xKeyWsp);
+  
+  // scan the key vector for key value: >= pKeyValFind
+  pOpAryFind->vClear();
+  pOpAryFind->vAdd(RO_LESS_THAN);
+  
+  pKeyVal = nullptr;
+  for (i8 i = 0; i < 10; i++) {
+    
+    pKeyVal = pKeyVec->pGet(i);
+    
+    if (pKeyVal->bMatches(pKeyValFind,pColVec,pOpAryFind))
+      break;
+    
+    pKeyVal = nullptr;
+  }
+  
+  if (pKeyVal) {
+    aCursor = pKeyVal->m_xKey.aWspArea();
+    char* p = pKeyVal->aElement(pCol,nBytes,&aCursor);
+    
+    vTrace("( %s < %s)\n"_Str,p,pKeyValFind->m_xKey.aWspArea());
+  }
+  else {
+    vTrace("Found nothing < %s)\n"_Str,pKeyValFind->m_xKey.aWspArea());
+  }
+  
+  // generate a random key value to find
+  sKey = Random::sRandomString(7);
+  ptr = sKey.aStr();
+  vTrace("Find Key value: %s\n"_Str, ptr);
+  
+  xValWsp = ptr;
+  pStrVal = _pStrVal(&xValWsp);
+  
+  xKeyWsp.vReset();
+  xKeyWsp.vAddElement(xValWsp);
+  pKeyValFind = new KeyVal(xKeyWsp);
+  
+  // scan the key vector for key value: < pKeyValFind
+  pOpAryFind->vClear();
+  pOpAryFind->vAdd(RO_GREATER_EQUAL);
+  
+  pKeyVal = nullptr;
+  for (i8 i = 0; i < 10; i++) {
+    
+    pKeyVal = pKeyVec->pGet(i);
+    
+    if (pKeyVal->bMatches(pKeyValFind,pColVec,pOpAryFind))
+      break;
+    
+    pKeyVal = nullptr;
+  }
+  
+  if (pKeyVal) {
+    aCursor = pKeyVal->m_xKey.aWspArea();
+    char* p = pKeyVal->aElement(pCol,nBytes,&aCursor);
+    
+    vTrace("( %s >= %s)\n"_Str,p,pKeyValFind->m_xKey.aWspArea());
+  }
+  else {
+    vTrace("Found nothing >= %s)\n"_Str,pKeyValFind->m_xKey.aWspArea());
+  }
+
+  delete pKeyVec;
+  delete pColVec;
+  delete pOpAryFind;
+  
+
   vTrace("\n\nEnd KeyTest**********************************************\n"_Str);
 }
 

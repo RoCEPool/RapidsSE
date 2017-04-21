@@ -101,9 +101,11 @@ void ValLib::vCopyIntDatum(void* pDst, void* pSrc)
 /*----------------------------------------------------------------------------*/
 i8 ValLib::nCopyStrDatum(void* pDst, void* pSrc)
 {
-  StrLib::vCopy((char*)pDst,(char*)pSrc);                //! could return length
+  StrLib::vCopyLen((char*)pDst,(char*)pSrc, 8);                //! could return length
   
-  return StrLib::iLength((char*)pSrc);
+  vTrace("%s %s \n"_Str, (char*)pSrc, (char*)pDst);
+  //return StrLib::iLength((char*)pSrc);
+  return 8;
 }
 
 /*----------------------------------------------------------------------------*/

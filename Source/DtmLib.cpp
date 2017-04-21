@@ -337,8 +337,8 @@ bool DtmLib::bLessThan(eDM eDatum, char* aArgA, i8 nBytesA, char* aArgB, i8 nByt
     case DM_TME: bLessThan = false; break;
     case DM_TSP: bLessThan = false; break;
     case DM_VBN: bLessThan = false; break;
-    case DM_VCH: bLessThan = false; break;
-
+    case DM_VCH: bLessThan = Vch::bLessThan(aArgA,nBytesA,aArgB,nBytesB); break;
+      
     default:
       THROW("DtmLib::bLessThan: Invalid eDatum %lld"_Str,eDatum);
   }
@@ -364,7 +364,7 @@ bool DtmLib::bLessEqual(eDM eDatum, char* aArgA, i8 nBytesA, char* aArgB, i8 nBy
     case DM_TME: bLessEqual = false; break;
     case DM_TSP: bLessEqual = false; break;
     case DM_VBN: bLessEqual = false; break;
-    case DM_VCH: bLessEqual = false; break;
+    case DM_VCH: bLessEqual = Vch::bLessEqual(aArgA,nBytesA,aArgB,nBytesB); break;
       
     default:
       THROW("DtmLib::bLessEqual: Invalid eDatum %lld"_Str,eDatum);
@@ -391,7 +391,8 @@ bool DtmLib::bEqualTo(eDM eDatum, char* aArgA, i8 nBytesA, char* aArgB, i8 nByte
     case DM_TME: bEqualTo = false; break;
     case DM_TSP: bEqualTo = false; break;
     case DM_VBN: bEqualTo = false; break;
-    case DM_VCH: bEqualTo = false; break;
+    case DM_VCH: bEqualTo = Vch::bEqualTo(aArgA,nBytesA,aArgB,nBytesB); break;
+
       
     default:
       THROW("DtmLib::bEqualTo: Invalid eDatum %lld"_Str,eDatum);
@@ -418,7 +419,7 @@ bool DtmLib::bNotEqual(eDM eDatum, char* aArgA, i8 nBytesA, char* aArgB, i8 nByt
     case DM_TME: bNotEqual = false; break;
     case DM_TSP: bNotEqual = false; break;
     case DM_VBN: bNotEqual = false; break;
-    case DM_VCH: bNotEqual = false; break;
+    case DM_VCH: bNotEqual = Vch::bNotEqual(aArgA,nBytesA,aArgB,nBytesB); break;
       
     default:
       THROW("DtmLib::bNotEqual: Invalid eDatum %lld"_Str,eDatum);
@@ -446,7 +447,8 @@ bool DtmLib::bGreaterEqual(eDM eDatum, char* aArgA, i8 nBytesA, char* aArgB, i8 
     case DM_TME: bGreaterEqual = false; break;
     case DM_TSP: bGreaterEqual = false; break;
     case DM_VBN: bGreaterEqual = false; break;
-    case DM_VCH: bGreaterEqual = false; break;
+    case DM_VCH: bGreaterEqual = Vch::bGreaterEqual(aArgA,nBytesA,aArgB,nBytesB);
+      break;
       
     default:
       THROW("DtmLib::bGreaterEqual: Invalid eDatum %lld"_Str,eDatum);
@@ -474,7 +476,7 @@ bool DtmLib::bGreaterThan(eDM eDatum, char* aArgA, i8 nBytesA, char* aArgB, i8 n
     case DM_TME: bGreaterThan = false; break;
     case DM_TSP: bGreaterThan = false; break;
     case DM_VBN: bGreaterThan = false; break;
-    case DM_VCH: bGreaterThan = false; break;
+    case DM_VCH: bGreaterThan = Vch::bGreaterThan(aArgA,nBytesA,aArgB,nBytesB);
       
     default:
       THROW("DtmLib::bGreaterThan: Invalid eDatum %lld"_Str,eDatum);
@@ -496,13 +498,12 @@ i8 DtmLib::iCmp(eDM eDatum, char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
     case DM_CHR: iCmp = 0; break;
     case DM_DTE: iCmp = 0; break;
     case DM_FLT: iCmp = 0; break;
-    case DM_INT: iCmp = Int::iCmp(aArgA,nBytesA,aArgB,nBytesB);
-                 break;
+    case DM_INT: iCmp = Int::iCmp(aArgA,nBytesA,aArgB,nBytesB); break;
     case DM_IVL: iCmp = 0; break;
     case DM_TME: iCmp = 0; break;
     case DM_TSP: iCmp = 0; break;
     case DM_VBN: iCmp = 0; break;
-    case DM_VCH: iCmp = 0; break;
+    case DM_VCH: iCmp = Vch::iCmp(aArgA,nBytesA,aArgB,nBytesB); break;
       
     default:
       THROW("DtmLib::iCmp: Invalid eDatum %lld"_Str,eDatum);

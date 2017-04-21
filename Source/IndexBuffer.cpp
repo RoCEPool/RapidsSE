@@ -667,8 +667,8 @@ void IndexBuffer::vVerify(void)
     Key* pKeyA = pEntryA->aKey();
     Key* pKeyB = pEntryB->aKey();
     
-    pKeyA->vShow();
-    pKeyB->vShow();
+    pKeyA->vShow(CT_INTEGER);
+    pKeyB->vShow(CT_INTEGER);
     
     ASSERT(*pEntryA->aKey() <= pEntryB->aKey());
     
