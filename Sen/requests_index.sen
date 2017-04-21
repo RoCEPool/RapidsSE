@@ -12,7 +12,7 @@
   tp: analyzeIndex
 
   locals| indexNm tableNm |
-  ddlLock.grabWrite
+  ddlLock::grabWrite
 
   // should be in the tables folder
   checkInTables       not if <NIP+ERROR> exit then
@@ -47,7 +47,7 @@
 : create_index ( "<indexNm>" "<tableNm>" -- <R> )
 
 tp: create_index
-  ddlLock.grabWrite
+  ddlLock::grabWrite
 
   checkEnoughBuffers not if <NIP+ERROR> exit then
   checkMakeIndex     not if <NIP+ERROR> exit then
@@ -65,7 +65,7 @@ tp: create_index
   tp: dropIndex
 
   locals| indexNm tableNm |
-  ddlLock.grabWrite
+  ddlLock::grabWrite
 
   tableNm indexNm checkRemoveIndex not if <NIP+ERROR> exit then
 
@@ -99,7 +99,7 @@ tp: create_index
 
   locals| indexNm tableNm |
 
-  ddlLock.grabRead
+  ddlLock::grabRead
 
   // should be in the tables folder
   checkInTables       not if <NIP+ERROR> exit then
@@ -134,7 +134,7 @@ tp: create_index
 
 tp: end_create_index
 
-  ddlLock.grabWrite
+  ddlLock::grabWrite
 
   dup
   checkInIndexes not if <NIP+ERROR> exit then
@@ -153,7 +153,7 @@ tp: end_create_index
 /*----------------------------------------------------------------------------*/
 : list_indexes ( "<tableNm>" -- <R> )
 
-ddlLock.grabRead
+ddlLock::grabRead
 
   checkInTables not if <NIP+ERROR> exit then
 
@@ -169,7 +169,7 @@ ddlLock.grabRead
 
   locals| indexNm tableNm |
 
-ddlLock.grabWrite
+ddlLock::grabWrite
 
   // should be in the tables folder
   checkInTables       not if <NIP+ERROR> exit then
@@ -203,7 +203,7 @@ ddlLock.grabWrite
 
   locals| indexNm tableNm |
 
-  ddlLock.grabRead
+  ddlLock::grabRead
 
   // should be in the tables folder
   checkInTables       not if <NIP+ERROR> exit then

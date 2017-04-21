@@ -13,7 +13,7 @@ tp: createTenant
 
 snap0:
 
-ddlLock.grabWrite
+ddlLock::grabWrite
 
   checkEnoughBuffers not if <NIP+ERROR> exit then              //! NEEDS TO BE ~
   checkMakeTenant    not if <NIP+ERROR> exit then
@@ -38,7 +38,7 @@ tp: createdTenant
 tp: dropTenant
 snap0:
 
-ddlLock.grabWrite
+ddlLock::grabWrite
 
   checkRemoveTenant not if <NIP+ERROR> exit then
 
@@ -56,7 +56,7 @@ snap1:
 /*----------------------------------------------------------------------------*/
 : list_tenants ( -- <R> )
 
-ddlLock.grabRead
+ddlLock::grabRead
 
   checkInTenants not if <NIP+ERROR> exit then
 

@@ -11,7 +11,7 @@
 
 tp: analyzeTable
 
-ddlLock.grabWrite
+ddlLock::grabWrite
 
   // should be in the tables folder
   checkInTables       not if <NIP+ERROR> exit then
@@ -44,7 +44,7 @@ ddlLock.grabWrite
 
   tp: analyzeTable
 
-  ddlLock.grabWrite
+  ddlLock::grabWrite
 
   // should be in the tables folder
   checkInTables       not if <NIP+ERROR> exit then
@@ -76,7 +76,7 @@ ddlLock.grabWrite
 /*----------------------------------------------------------------------------*/
 : append_table ( "table", "buffer", "partition" -- <R> )
 
-ddlLock.grabRead
+ddlLock::grabRead
 
   table.append
 
@@ -88,7 +88,7 @@ ddlLock.grabRead
 /*----------------------------------------------------------------------------*/
 : copy_table ( "<to-tableNm>" "<from-tableNm>" -- <R> )
 
-ddlLock.grabRead
+ddlLock::grabRead
 
   checkEnoughBuffers not if <NIP+ERROR> exit then
 
@@ -122,7 +122,7 @@ ddlLock.grabRead
 /*----------------------------------------------------------------------------*/
 : create_table ( "<tableNm>" -- <R> )
 
-ddlLock.grabWrite
+ddlLock::grabWrite
 
   checkEnoughBuffers not if <NIP+ERROR> exit then
   checkMakeTable     not if <NIP+ERROR> exit then
@@ -137,7 +137,7 @@ ddlLock.grabWrite
 /*----------------------------------------------------------------------------*/
 : dist_export_table ( "<fileNm>" "<tableNm>" -- <R> )
 
-ddlLock.grabRead
+ddlLock::grabRead
 
   // should be in the tables folder
   checkInTables       not if <NIP+ERROR> exit then
@@ -166,7 +166,7 @@ ddlLock.grabRead
 
 tp: dropTable
 
-ddlLock.grabWrite
+ddlLock::grabWrite
 
   checkRemoveTable not if <NIP+ERROR> exit then
 
@@ -184,7 +184,7 @@ ddlLock.grabWrite
 /*----------------------------------------------------------------------------*/
 : dump_table ( "<tableNm>" -- <R> )
 
-ddlLock.grabRead
+ddlLock::grabRead
 
   // should be in the tables folder
   checkInTables       not if <NIP+ERROR> exit then
@@ -213,7 +213,7 @@ ddlLock.grabRead
 
 tp: end_create_table
 
-ddlLock.grabWrite
+ddlLock::grabWrite
 
   dup
   checkInTable not if <NIP+ERROR> exit then
@@ -234,7 +234,7 @@ ddlLock.grabWrite
 /*----------------------------------------------------------------------------*/
 : export_table ( "<fileNm>" "<tableNm>" -- <R> )
 
-ddlLock.grabRead
+ddlLock::grabRead
 
   // should be in the tables folder
   checkInTables       not if <NIP+ERROR> exit then
@@ -271,7 +271,7 @@ ddlLock.grabRead
 /*----------------------------------------------------------------------------*/
 : list_tables ( -- <R> )
 
-ddlLock.grabRead
+ddlLock::grabRead
 
   checkInTables not if <NIP+ERROR> exit then
 
@@ -285,7 +285,7 @@ ddlLock.grabRead
 /*----------------------------------------------------------------------------*/
 : load_table ( "<fileNm>" "<tableNm>" -- <R> )
 
-ddlLock.grabRead
+ddlLock::grabRead
 
   // should be in the tables folder
   checkInTables       not if <NIP+ERROR> exit then
@@ -321,7 +321,7 @@ snap1:
 /*----------------------------------------------------------------------------*/
 : load_table_stream ( "<fileNm>" "<tableNm>" -- <R> )
 
-  ddlLock.grabRead
+  ddlLock::grabRead
 
   // should be in the tables folder
   checkInTables       not if <NIP+ERROR> exit then
@@ -357,6 +357,9 @@ snap1:
   // dec and return table reference and clear task.seitf.currentTable
   returnTableRef not if <NIP+ERROR> exit then
 
+  // assert no seitf.table
+  task::this task.seitf@ seitf.table@ not assert
+
   assert::stack_0
 
   <OK>
@@ -370,7 +373,7 @@ snap1:
   assert::stack_1
   CN_STRVAL assert::class_0
 
-ddlLock.grabRead
+ddlLock::grabRead
 
   //
   // task will have an seitf and a dicStack path, but seitf has no table
@@ -421,7 +424,7 @@ ddlLock.grabRead
   CN_STRVAL assert::class_1
   CN_STRVAL assert::class_2
 
-ddlLock.grabRead
+ddlLock::grabRead
 
   //
   // task will have an seitf and a dicStack path, but seitf has no table
@@ -467,7 +470,7 @@ ddlLock.grabRead
 /*----------------------------------------------------------------------------*/
 : size_table ( "<tableNm>" -- <R> )
 
-ddlLock.grabWrite
+ddlLock::grabWrite
 
   // should be in the tables folder
   checkInTables       not if <NIP+ERROR> exit then
@@ -494,7 +497,7 @@ ddlLock.grabWrite
 /*----------------------------------------------------------------------------*/
 : size_tables (  )
 
-  ddlLock.grabWrite
+  ddlLock::grabWrite
 
   // should be in the tables folder
   checkInTables       not if <NIP+ERROR> exit then
@@ -537,7 +540,7 @@ ddlLock.grabWrite
 /*----------------------------------------------------------------------------*/
 : truncate_table ( "<tableNm>" -- <R> )
 
-ddlLock.grabRead
+ddlLock::grabRead
 
   // should be in the tables folder
   checkInTables       not if <NIP+ERROR> exit then

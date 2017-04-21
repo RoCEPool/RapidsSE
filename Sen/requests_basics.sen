@@ -8,13 +8,13 @@
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-//: <ERROR> dup error.msg swap 2 ddlLock.testDrop ;
+//: <ERROR> dup error.msg swap 2 ddlLock::testDrop ;
 
-: <NIP+ERROR> nipAll dup error.msg swap 2 ddlLock.testDrop ;
+: <NIP+ERROR> nipAll dup error.msg swap 2 ddlLock::testDrop ;
 
-: <SUCCESS> 0 2 ddlLock.testDrop ;
+: <SUCCESS> 0 2 ddlLock::testDrop ;
 
-: <OK> "<ok>" 0 2 ddlLock.testDrop ;
+: <OK> "<ok>" 0 2 ddlLock::testDrop ;
 
 /*----------------------------------------------------------------------------*/
 /* print class counts (helper for snapshot)                                   */

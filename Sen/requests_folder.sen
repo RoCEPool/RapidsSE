@@ -92,7 +92,7 @@ tp: removeFolder
 
 tp: dropDic
 
-ddlLock.grabWrite
+ddlLock::grabWrite
 
   checkRemoveFolder not if <NIP+ERROR> exit then
 

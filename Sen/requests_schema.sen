@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : create_schema ( "<schemaNm>" -- <R> )
 
-ddlLock.grabWrite
+ddlLock::grabWrite
 
   checkEnoughBuffers not if <NIP+ERROR> exit then
   checkMakeSchema    not if <NIP+ERROR> exit then
@@ -26,7 +26,7 @@ ddlLock.grabWrite
 
 tp: dropSchema
 
-ddlLock.grabWrite
+ddlLock::grabWrite
 
   checkRemoveSchema not if <NIP+ERROR> exit then
 
@@ -42,7 +42,7 @@ tp: droppedSchema
 /*----------------------------------------------------------------------------*/
 : list_schemas ( -- <R> )
 
-ddlLock.grabRead
+ddlLock::grabRead
 
   checkInSchemas not if <NIP+ERROR> exit then
 

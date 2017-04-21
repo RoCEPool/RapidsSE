@@ -54,7 +54,7 @@ tp: connectorStart
       // start sender
       //"starting sender" .
 
-ddlLock.grabWrite
+ddlLock::grabWrite
 
      // set up the seed
       1 "snd.loop" ( socket 1 "snd.loop" )
@@ -69,7 +69,7 @@ ddlLock.grabWrite
       // spawn the actors os thread
       actor.spawn
 
-ddlLock.dropWrite
+ddlLock::dropWrite
 
     then
 

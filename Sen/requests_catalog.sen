@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : create_catalog ( "<catalogNm>" -- <R> )
 
-ddlLock.grabWrite
+ddlLock::grabWrite
 
   checkEnoughBuffers not if <NIP+ERROR> exit then
   checkMakeCatalog   not if <NIP+ERROR> exit then
@@ -26,7 +26,7 @@ ddlLock.grabWrite
 
 tp: dropCatalog
 
-ddlLock.grabWrite
+ddlLock::grabWrite
 
   checkRemoveCatalog not if <NIP+ERROR> exit then
 
@@ -42,7 +42,7 @@ tp: removedCatalog
 /*----------------------------------------------------------------------------*/
 : list_catalogs ( -- <R> )
 
-ddlLock.grabRead
+ddlLock::grabRead
 
   checkInCatalogs not if <NIP+ERROR> exit then
 
