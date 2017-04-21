@@ -34,7 +34,7 @@
   //swap dexPlanner to dexPlan
 
   // set this task as the executing task in the plan
-  task.this dexPlan plan.executingTask!
+  task::this dexPlan plan.executingTask!
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // distribute (and compile) the plan

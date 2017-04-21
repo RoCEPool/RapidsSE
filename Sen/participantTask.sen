@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : p.loop
 
-  "p.loop" task.this task.comment!
+  "p.loop" task::this task.comment!
 
   // push a register frame
   reg.push

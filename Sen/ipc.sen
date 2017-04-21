@@ -6,19 +6,19 @@
 
 : isRunning   ( task -- ) task.state@ TS_RUNNING == ;
 
-: getState    ( -- ) task.this task.state@ ;
-: setState    ( -- ) task.this task.state! ;
+: getState    ( -- ) task::this task.state@ ;
+: setState    ( -- ) task::this task.state! ;
 
-: setAcks     ( -- ) task.this task.acks! ;
+: setAcks     ( -- ) task::this task.acks! ;
 : ackWait     ( -- ) TS_WAITING_ACK setState ;
 : isAckWaiting ( task -- ) task.state@ task.acks! ;
 : ack         ( task -- ) task.ack ;
 
 : appendQueue ( task -- ) task.jobQueue@ queue.append ;
-: popQueue    ( -- ) task.this task.jobQueue@ queue.pop ;
+: popQueue    ( -- ) task::this task.jobQueue@ queue.pop ;
 
 : grabMutex    ( task -- ) task.thread thread.mutexLock ;
-: waitSignal   ( -- ) task.this task.thread thread.condWait ;
+: waitSignal   ( -- ) task::this task.thread thread.condWait ;
 : dropMutex    ( task -- ) task.thread thread.mutexUnlock ;
 : isSignalWaiting ( task -- ) task.state@ TS_WAITING_SIGNAL == ;
 : signal       ( task -- ) task.thread thread.condSignal ;

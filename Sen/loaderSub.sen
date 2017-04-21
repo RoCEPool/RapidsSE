@@ -46,7 +46,7 @@ tp: loadAppendBuffer$
   //   find named table to get pointer to table
   //   then append row buffer to partition of table
 
-  1 task.this task.thread thread.name@ str.left "p" str.equal assert
+  1 task::this task.thread thread.name@ str.left "p" str.equal assert
 
   args.tracepoint if
     dup "APPENDING ROWBUFFER " swap str.cat " on NODE " str.cat grid.thisNode@ >str str.cat .
@@ -81,7 +81,7 @@ tp: ~loadAppendBuffer
   //   we need to have the coordinator send the loadAppendBuffer$ indirect call
   //   to the participant via a sendParticipant call
 
-  13 task.this task.thread thread.name@ str.left "generalThread" str.equal assert
+  13 task::this task.thread thread.name@ str.left "generalThread" str.equal assert
   task.parent@ task.name@ "req.task" str.equal assert
 
   //
@@ -128,8 +128,8 @@ tp: theIndirectResult
   // first set the taskset in this task
   // needed when being resumed by coordinator
 
-  task.this task.thread thread.taskset@
-  task.this task.taskset!
+  task::this task.thread thread.taskset@
+  task::this task.taskset!
 
   // expand dic stack valset and set
   valset> drop dicPath.set

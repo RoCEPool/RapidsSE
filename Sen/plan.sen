@@ -129,19 +129,19 @@ tp: >>jobQueue_otherNode
 /*----------------------------------------------------------------------------*/
 : compilePlan ( plan -- )
 
-  dup task.this task.plan!
+  dup task::this task.plan!
 
   dup ( plan plan )
 
-  plan.dic task.this task.dicStack dicPath.push ( plan )
+  plan.dic task::this task.dicStack dicPath.push ( plan )
   //pathDump
 
   //plan.lambda@ .
   plan.lambda@ >:
 
-  task.this task.dicStack dicPath.drop
+  task::this task.dicStack dicPath.drop
 
-  0 task.this task.plan!
+  0 task::this task.plan!
 ;
 
 /*----------------------------------------------------------------------------*/

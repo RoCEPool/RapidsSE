@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : cp.loop ( actorNo forwardTask -- )
 
-  "cp.loop" task.this task.comment!
+  "cp.loop" task::this task.comment!
 
 tp: coordinator
 

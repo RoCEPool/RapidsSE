@@ -60,7 +60,7 @@ void Task::vAddPrimitives_Task(void)
   vAddPrimitive("task.state!"_Str,    &vTaskStateStore,    false);
   vAddPrimitive("task.taskset@"_Str,  &vTaskTaskSetFetch,  false);
   vAddPrimitive("task.taskset!"_Str,  &vTaskTaskSetStore,  false);
-  vAddPrimitive("task.this"_Str,      &vTaskThis,          false);
+  vAddPrimitive("task::this"_Str,      &vTaskThis,          false);
   vAddPrimitive("task.thread"_Str,    &vTaskThread,        false);
   vAddPrimitive("task.wait"_Str,      &vTaskWait,          false);
   vAddPrimitive("task.yield"_Str,     &vTaskYield,         false);
@@ -698,7 +698,7 @@ void Task::vTaskTaskSetStore(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task.this -- push this task                                                */
+/* task::this -- push this task                                                */
 /*----------------------------------------------------------------------------*/
 void Task::vTaskThis(NNP_Task nnpTask)
 {

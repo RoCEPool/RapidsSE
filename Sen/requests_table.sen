@@ -377,7 +377,7 @@ ddlLock.grabRead
   //
 
   // assert no seitf.table
-  task.this task.seitf@ seitf.table@ not assert
+  task::this task.seitf@ seitf.table@ not assert
 
   // path should end in a tables folder
   // i.e. task.dicStack should be ../tables
@@ -395,7 +395,7 @@ ddlLock.grabRead
 
   // get and inc table reference and put into task.seitf.currentTable
   getTableRef not if <NIP+ERROR> exit then ( "<tableNm>" )
-  task.this task.seitf@ seitf.table@ assert
+  task::this task.seitf@ seitf.table@ assert
 
   // get a select cursor
   selectTable ( "^selCursor" )
@@ -428,7 +428,7 @@ ddlLock.grabRead
   //
 
   // assert no seitf.table
-  task.this task.seitf@ seitf.table@ not assert
+  task::this task.seitf@ seitf.table@ not assert
 
   // path should end in a tables folder
   // i.e. task.dicStack should be ../tables
@@ -446,7 +446,7 @@ ddlLock.grabRead
 
   // get and inc table reference and put into task.seitf.currentTable
   getTableRef not if <NIP+ERROR> exit then ( "<tableNm>" )
-  task.this task.seitf@ seitf.table@ assert
+  task::this task.seitf@ seitf.table@ assert
 
   // get a select cursor
   rangeSelectTable ( "<^selCursor>" )

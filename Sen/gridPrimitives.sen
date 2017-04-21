@@ -185,7 +185,7 @@ tp: haveResultSet
   tp: jobQueue>
 
   // grab mutex of this task
-  task.this grabMutex
+  task::this grabMutex
 
   // attempt to pop from this task's job queue
   popQueue ( value true | false )
@@ -197,7 +197,7 @@ tp: haveResultSet
   then
 
   // grab mutex of this task
-  task.this dropMutex
+  task::this dropMutex
 
   tp: haveValset
 ;
@@ -389,7 +389,7 @@ tp: addingSendPs
 /*----------------------------------------------------------------------------*/
 : addSetCaller ( valset -- valset )
 
-  task.this "setCaller"
+  task::this "setCaller"
 
 tp: addingSetCaller
 

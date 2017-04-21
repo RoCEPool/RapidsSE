@@ -43,9 +43,9 @@ seitfCursor: seitfCrs
       object@ seitf.dump
     then
 
-    object@ task.this task.seitf!
+    object@ task::this task.seitf!
       object@ seitf.pid
-      0 task.this task.seitf!
+      0 task::this task.seitf!
 
     reclaimTaskPrint if
       dup .put " " .put dup process.testpid .put .\n
@@ -75,7 +75,7 @@ seitfCursor: seitfCrs
 /*----------------------------------------------------------------------------*/
 : rec.loop
 
-  "reclaimTask" task.this task.name!
+  "reclaimTask" task::this task.name!
 
   "" reclaimString !
 

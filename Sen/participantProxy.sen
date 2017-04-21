@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : pp.loop ( actorNo forwardTask -- )
 
-  "pp.loop" task.this task.comment!
+  "pp.loop" task::this task.comment!
 
 tp: participantProxy
 
@@ -23,7 +23,7 @@ tp: participantProxy
   // r0 has actorNo (nodeNo)
   // r1 has forwardTask
 
-  task.this actorNo ppTasks !
+  task::this actorNo ppTasks !
 
   begin
 

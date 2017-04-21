@@ -25,9 +25,9 @@ common/ write nStreams    /
   then
 
   // get file name
-  thePlan plan.dic task.this task.dicStack dicPath.push
+  thePlan plan.dic task::this task.dicStack dicPath.push
   $$fileNm //dup .
-  task.this task.dicStack dicPath.drop
+  task::this task.dicStack dicPath.drop
 
   // create a file pointer
   file.new toCommon filePointer

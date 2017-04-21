@@ -253,7 +253,7 @@ true ' CASE word.immediate!
 : pathDepth ( -- )
 
   // push the dic stack of this task
-  task.this task.dicStack
+  task::this task.dicStack
 
   // get depth
   dicPath.depth

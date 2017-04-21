@@ -63,7 +63,7 @@ timer: loadTimer
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  task.this grabMutex
+  task::this grabMutex
 
   N_GENERAL_THREADS setAcks
 
@@ -73,7 +73,7 @@ timer: loadTimer
 
     pathGet >>
 
-    1 "loadSub" task.this task.new
+    1 "loadSub" task::this task.new
 
     dup I >loadSubNm swap task.name!
 
@@ -86,7 +86,7 @@ timer: loadTimer
 
   ackWait
 
-  task.this dropMutex
+  task::this dropMutex
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

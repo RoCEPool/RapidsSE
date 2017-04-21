@@ -1893,7 +1893,7 @@ bool SEitf::bAppendRequest(StrVal& sRequest)
   }
   
   sWorkspace = (i8)this;
-  sWorkspace.vConcat(" >seitf task.this task.seitf! "_Str);
+  sWorkspace.vConcat(" >seitf task::this task.seitf! "_Str);
   xVal = sWorkspace;
   //vTrace("%s\n"_Str,xVal.s());
   xValSet.vAppend(aCursor,xVal);

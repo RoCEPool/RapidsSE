@@ -10,7 +10,7 @@
 : pathDrop ( -- )
 
   // push the dic stack of this task
-  task.this task.dicStack
+  task::this task.dicStack
 
   // drop the top dictionary
   dicPath.drop
@@ -22,7 +22,7 @@
 : pathDump ( dic -- )
 
   // push the dic stack of this task
-  task.this task.dicStack
+  task::this task.dicStack
 
   // dump the dic stack
   dicPath.dump
@@ -34,7 +34,7 @@
 : pathPick ( i -- dic )
 
   // push the dic stack of this task
-  task.this task.dicStack
+  task::this task.dicStack
 
   // pick the dictionary from dic stack
   dicPath.pick
@@ -46,7 +46,7 @@
 : pathPush ( dic -- )
 
   // push the dic stack of this task
-  task.this task.dicStack
+  task::this task.dicStack
 
   // push the dictionary onto dic stack
   dicPath.push
@@ -215,7 +215,7 @@
 : pathDropAll ( -- )
 
   // push the dic stack of this task
-  task.this task.dicStack
+  task::this task.dicStack
 
   // drop the top dictionary
   dicPath.dropAll

@@ -56,7 +56,7 @@ taskCursor: taskCrs
 /*----------------------------------------------------------------------------*/
 : lis.loop
 
-  "listerTask" task.this task.name!
+  "listerTask" task::this task.name!
 
   listerTaskPrint if "lister Task running..." . then
 

@@ -22,11 +22,11 @@ thread:  requestThread
 : getPath
 
   // local for task::this.seitf.dicStack
-  task.this task.seitf@ seitf.dicStack
+  task::this task.seitf@ seitf.dicStack
   locals| dicStackSEitf |
 
   // local for task::this.dicStack
-  task.this task.dicStack
+  task::this task.dicStack
   locals| dicStackTask |
 
   // copy the path from seitf dic stack onto data stack
@@ -50,11 +50,11 @@ thread:  requestThread
 : savePath
 
   // local for task::this.seitf.dicStack
-  task.this task.seitf@ seitf.dicStack
+  task::this task.seitf@ seitf.dicStack
   locals| dicStackSEitf |
 
   // local for task::this.dicStack
-  task.this task.dicStack
+  task::this task.dicStack
   locals| dicStackTask |
 
   // copy the path from task dic stack onto data stack
@@ -98,7 +98,7 @@ tp: waitNextValset
   begin
 
     // attempt to pop value off the tasks job queue
-    task.this task.jobQueue@ queue.pop ( value true | false )
+    task::this task.jobQueue@ queue.pop ( value true | false )
 
     // try again of no value
     not while
@@ -131,16 +131,16 @@ tp: valset
   drop
 
   // assert the task does not have an seitf
-  task.this task.seitf@ not assert
+  task::this task.seitf@ not assert
 
   // execute the response return address (set SEitf in request task)
   >:
 
   // assert the task now has an seitf
-  task.this task.seitf@ assert
+  task::this task.seitf@ assert
 
   // assert no dictionary path
-  task.this task.dicStack dicPath.depth not assert
+  task::this task.dicStack dicPath.depth not assert
 
   // copy dictionary path from seitf to this request task
   getPath
@@ -169,10 +169,10 @@ tp: !req_exit
   dicPath.clear
 
   //"rspque" find execute queue.append
-  task.this task.seitf@ seitf.responseQueue queue.append
+  task::this task.seitf@ seitf.responseQueue queue.append
 
   // forget the seitf
-  0 task.this task.seitf!
+  0 task::this task.seitf!
 //traceoff
 ;
 
@@ -181,15 +181,15 @@ tp: !req_exit
 /*----------------------------------------------------------------------------*/
 : req.loop
 
-  requestTaskSet task.this task.taskset!
+  requestTaskSet task::this task.taskset!
 
   "renaming to Request Task" .verbose
 
-  "req.task" task.this task.name!
+  "req.task" task::this task.name!
 
-  "req.loop" task.this task.comment!
+  "req.loop" task::this task.comment!
 
-  requestQueue  task.this task.jobQueue!
+  requestQueue  task::this task.jobQueue!
 
   requestTaskPrint if "Request Server running..." . then
 

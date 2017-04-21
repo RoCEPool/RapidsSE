@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : socket> ( -- valset )
 
-  task.this task.socket@
+  task::this task.socket@
 
   tp: receiving
 
@@ -25,9 +25,9 @@ tp: received
 
 tp: snd.loop
 
-  task.this task.socket!
+  task::this task.socket!
 
-  "rcv.loop" task.this task.comment!
+  "rcv.loop" task::this task.comment!
 
   receiverTaskPrint if "Receiver running on node" grid.thisNode@ >str str.cat . then
 

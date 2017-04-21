@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : >socket ( valset -- )
 
-  task.this task.socket@
+  task::this task.socket@
 
   tp: sending
 
@@ -29,9 +29,9 @@
 
 tp: snd.loop
 
-  task.this task.socket!
+  task::this task.socket!
 
-  "snd.loop" task.this task.comment!
+  "snd.loop" task::this task.comment!
 
   senderTaskPrint if "Sender running on node" grid.thisNode@ >str str.cat . then
 

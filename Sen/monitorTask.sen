@@ -33,7 +33,7 @@ thread:  monitorThread
 /*----------------------------------------------------------------------------*/
 : mon.loop
 
-  "monitorTask" task.this task.name!
+  "monitorTask" task::this task.name!
 
   "" monitorString !
 
