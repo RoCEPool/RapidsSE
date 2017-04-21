@@ -103,8 +103,6 @@ i8 ValLib::nCopyStrDatum(void* pDst, void* pSrc)
 {
   StrLib::vCopyLen((char*)pDst,(char*)pSrc, 8);                //! could return length
   
-  vTrace("%s %s \n"_Str, (char*)pSrc, (char*)pDst);
-  //return StrLib::iLength((char*)pSrc);
   return 8;
 }
 

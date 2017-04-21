@@ -8,9 +8,9 @@ namespace DBobjects
   class Key
   {
   private:
+  i8  m_nSize;
   Wsp m_xWsp;
-  //i8 m_iInt;
-  
+    
   public:
     void* operator new(size_t);
     void* operator new(size_t, Key*);

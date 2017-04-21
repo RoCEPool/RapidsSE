@@ -44,6 +44,7 @@ void* Key::operator new(size_t iSize, Key* pKey)
 Key::Key(KeyWsp& xKeyWsp)
 {
   vKey(xKeyWsp);
+  m_nSize = xKeyWsp.nWspUsed();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -173,9 +174,7 @@ Str* Key::aWspStr(void)
 /*----------------------------------------------------------------------------*/
 i8 Key::nSize(void)
 {
-  i8 nBytes = sizeof(i8);
-  
-  return nBytes;
+  return m_nSize;
 }
 
 /*============================================================================*/
