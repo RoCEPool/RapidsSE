@@ -768,11 +768,9 @@ void SePrompt::vHelp(void)
   vTrace("bye    -- quit se prompt\n"_Str);
   vTrace("cd     -- change directory\n"_Str);
   vTrace("cf     -- change folder\n"_Str);
-  //vTrace("con    -- connect\n"_Str);
   vTrace("connectCluster    -- connect the cluster\n"_Str);
   vTrace("cp     -- copy table\n"_Str);
   vTrace("create -- create table\n"_Str);
-  //vTrace("dis    -- disconnect\n"_Str);
   vTrace("do     -- do shorthand\n"_Str);
   vTrace("drop   -- dropTable\n"_Str);
   vTrace("dump   -- dump table\n"_Str);
