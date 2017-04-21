@@ -78,9 +78,9 @@ int: queryCount
 ;
 
 /*----------------------------------------------------------------------------*/
-/* check within tables                                                        */
+/* test if this task dic path ends in ../tables                               */
 /*----------------------------------------------------------------------------*/
-: withinTables
+: withinTables ( -- t|f )
 
   0 pathPick dic.name "tables" str.equal
 ;
@@ -88,7 +88,7 @@ int: queryCount
 /*----------------------------------------------------------------------------*/
 /* check top of task dictionary stack is ../tables                            */
 /*----------------------------------------------------------------------------*/
-: checkInTables
+: checkInTables ( -- t|f )
 
   withinTables if true exit then
 
@@ -96,17 +96,23 @@ int: queryCount
 ;
 
 /*----------------------------------------------------------------------------*/
-/* check within a table                                                       */
+/* test if this task dic path is same name as argument                        */
 /*----------------------------------------------------------------------------*/
-: withinTable
+: withinTable ( "<tableNm>" -- t|f )
+
+  assert::stack_1+
+  CN_STRVAL assert::class_0
+
+  // assert dictionary path
+  task::this task.dicStack dicPath.depth assert
 
   0 pathPick dic.name str.equal
 ;
 
 /*----------------------------------------------------------------------------*/
-/* check in table                                                             */
+/* check top of task dictionary stack is given table name                     */
 /*----------------------------------------------------------------------------*/
-: checkInTable
+: checkInTable ( "<tableNm>" -- t|f )
 
   withinTable if true exit then
 
@@ -114,7 +120,7 @@ int: queryCount
 ;
 
 /*----------------------------------------------------------------------------*/
-/* check word is a table                                                      */
+/* check given name is a table                                                */
 /*----------------------------------------------------------------------------*/
 : checkIsTable ( "<tableNm>" -- "<tableNm>" true | errorCode false )
 
@@ -150,7 +156,7 @@ int: queryCount
 /*----------------------------------------------------------------------------*/
 /* check word is not a table                                                  */
 /*----------------------------------------------------------------------------*/
-: checkIsNotTable ( word )
+: checkIsNotTable ( "<wordNm" -- t|f )
   dup findInCurrent not if true exit then
   EC_TABLE_EXISTS false
 ;
