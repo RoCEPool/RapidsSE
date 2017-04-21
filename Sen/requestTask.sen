@@ -127,11 +127,22 @@ tp: valset
   1 stack.class CN_STRVAL != if "incorrect request value 1" . process.quit then
   2 stack.class CN_STRVAL != if "incorrect request value 2" . process.quit then
 
-  drop // the count
+  // drop the count from stack
+  drop
+
+  // assert the task does not have an seitf
   task.this task.seitf@ not assert
-  >:   // execute the response return address (set SEitf in request task)
+
+  // execute the response return address (set SEitf in request task)
+  >:
+
+  // assert the task now has an seitf
   task.this task.seitf@ assert
 
+  // assert no dictionary path
+  task.this task.dicStack dicPath.depth not assert
+
+  // copy dictionary path from seitf to this request task
   getPath
 
   >:   // decode/push the request

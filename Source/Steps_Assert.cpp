@@ -70,7 +70,7 @@ void Task::vAssert(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* assert::class -- assert class of value on stack                             */
+/* assert::class -- assert class of value on stack                            */
 /*----------------------------------------------------------------------------*/
 void Task::vAssertClass(NNP_Task nnpTask)
 {
@@ -97,7 +97,7 @@ void Task::vAssertClass(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* assert::class_0 -- assert class of value[0] on stack                        */
+/* assert::class_0 -- assert class of value[0] on stack                       */
 /*----------------------------------------------------------------------------*/
 void Task::vAssertClass_0(NNP_Task nnpTask)
 {
@@ -124,7 +124,7 @@ void Task::vAssertClass_0(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* assert::class_1 -- assert class of value[1] on stack                        */
+/* assert::class_1 -- assert class of value[1] on stack                       */
 /*----------------------------------------------------------------------------*/
 void Task::vAssertClass_1(NNP_Task nnpTask)
 {
@@ -151,7 +151,7 @@ void Task::vAssertClass_1(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* assert::class_2 -- assert class of value[2] on stack                        */
+/* assert::class_2 -- assert class of value[2] on stack                       */
 /*----------------------------------------------------------------------------*/
 void Task::vAssertClass_2(NNP_Task nnpTask)
 {
@@ -178,7 +178,7 @@ void Task::vAssertClass_2(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* assert::class_3 -- assert class of value[3] on stack                        */
+/* assert::class_3 -- assert class of value[3] on stack                       */
 /*----------------------------------------------------------------------------*/
 void Task::vAssertClass_3(NNP_Task nnpTask)
 {
@@ -205,7 +205,7 @@ void Task::vAssertClass_3(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* assert::class_4 -- assert class of value[4] on stack                        */
+/* assert::class_4 -- assert class of value[4] on stack                       */
 /*----------------------------------------------------------------------------*/
 void Task::vAssertClass_4(NNP_Task nnpTask)
 {
@@ -232,7 +232,7 @@ void Task::vAssertClass_4(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* assert::stack_0 -- asssert 0 values on stack                                */
+/* assert::stack_0 -- asssert 0 values on stack                               */
 /*----------------------------------------------------------------------------*/
 void Task::vAssertStack_0(NNP_Task nnpTask)
 {
@@ -247,7 +247,7 @@ ENTRY("vAssertStack_0"_Str);
 }
 
 /*----------------------------------------------------------------------------*/
-/* assert::stack_0+ -- asssert 0 or more values on stack                       */
+/* assert::stack_0+ -- asssert 0 or more values on stack                      */
 /*----------------------------------------------------------------------------*/
 void Task::vAssertStack_0more(NNP_Task nnpTask)
 {
@@ -262,7 +262,7 @@ ENTRY("vAssertStack_0more"_Str);
 }
 
 /*----------------------------------------------------------------------------*/
-/* assert::stack_1 -- asssert 1 values on stack                                */
+/* assert::stack_1 -- asssert 1 values on stack                               */
 /*----------------------------------------------------------------------------*/
 void Task::vAssertStack_1(NNP_Task nnpTask)
 {
@@ -277,7 +277,7 @@ ENTRY("vAssertStack_1"_Str);
 }
 
 /*----------------------------------------------------------------------------*/
-/* assert::stack_1+ -- asssert 0 or more values on stack                       */
+/* assert::stack_1+ -- asssert 0 or more values on stack                      */
 /*----------------------------------------------------------------------------*/
 void Task::vAssertStack_1more(NNP_Task nnpTask)
 {
@@ -292,7 +292,7 @@ ENTRY("vAssertStack_1more"_Str);
 }
 
 /*----------------------------------------------------------------------------*/
-/* assert::stack_2 -- asssert 2 values on stack                                */
+/* assert::stack_2 -- asssert 2 values on stack                               */
 /*----------------------------------------------------------------------------*/
 void Task::vAssertStack_2(NNP_Task nnpTask)
 {
@@ -307,7 +307,7 @@ ENTRY("vAssertStack_2"_Str);
 }
 
 /*----------------------------------------------------------------------------*/
-/* assert::stack_2+ -- asssert 2 or more values on stack                       */
+/* assert::stack_2+ -- asssert 2 or more values on stack                      */
 /*----------------------------------------------------------------------------*/
 void Task::vAssertStack_2more(NNP_Task nnpTask)
 {
@@ -322,7 +322,7 @@ ENTRY("vAssertStack_2more"_Str);
 }
 
 /*----------------------------------------------------------------------------*/
-/* assert::stack_3 -- asssert 3 values on stack                                */
+/* assert::stack_3 -- asssert 3 values on stack                               */
 /*----------------------------------------------------------------------------*/
 void Task::vAssertStack_3(NNP_Task nnpTask)
 {
@@ -337,7 +337,7 @@ ENTRY("vAssertStack_3"_Str);
 }
 
 /*----------------------------------------------------------------------------*/
-/* assert::stack_3+ -- asssert 3 or more values on stack                       */
+/* assert::stack_3+ -- asssert 3 or more values on stack                      */
 /*----------------------------------------------------------------------------*/
 void Task::vAssertStack_3more(NNP_Task nnpTask)
 {
@@ -352,7 +352,7 @@ ENTRY("vAssertStack_3more"_Str);
 }
 
 /*----------------------------------------------------------------------------*/
-/* assert::stack_4 -- asssert 4 values on stack                                */
+/* assert::stack_4 -- asssert 4 values on stack                               */
 /*----------------------------------------------------------------------------*/
 void Task::vAssertStack_4(NNP_Task nnpTask)
 {
@@ -367,7 +367,7 @@ ENTRY("vAssertStack_4"_Str);
 }
 
 /*----------------------------------------------------------------------------*/
-/* assert::stack_4+ -- asssert 4 or more values on stack                       */
+/* assert::stack_4+ -- asssert 4 or more values on stack                      */
 /*----------------------------------------------------------------------------*/
 void Task::vAssertStack_4more(NNP_Task nnpTask)
 {
