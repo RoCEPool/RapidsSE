@@ -63,7 +63,6 @@ dump    dump_table
 ex      export_table
 gettbl  get_table
 ld      load_table
-lscol   list_columns
 lstbl   list_tables
 mktbl   create_table
 rettbl  return_table
@@ -77,15 +76,21 @@ tr      truncate_table
 -----------------
 Index Requests:
 -----------------
-addidx   add_idxcolumn
 anidx    analyze_index
+dumpidx  dump_index
 mkidx    create_index
 lsidx    list_indexes
-lsidxcol list_indexcolumns
-dumpidx  dump_index
 rmidx    drop_index
 szidx    size_index
 tridx    truncate_index
+ 
+-----------------
+Column Requests:
+-----------------
+add     add_column
+addidx   add_idxcolumn
+lscol   list_columns
+lsidxcol list_indexcolumns
  
 ---------------------
 Dictionary Requests:
@@ -97,9 +102,9 @@ pwf     pwf
 lf      lf
 rf      remove_folder
  
-----------------
+-----------------
 Misc Requests:
-----------------
+-----------------
 seitf   seitf_count
 mon     get_monitor
 object  object

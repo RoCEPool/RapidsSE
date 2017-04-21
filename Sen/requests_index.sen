@@ -19,7 +19,7 @@
   checkInTables       not if <NIP+ERROR> exit then
 
   // there should be a table folder
-  tableNm checkIsTableFolder not if <NIP+ERROR> exit then
+  tableNm checkIsTableFolder not if <NIP+ERROR> assertInTables exit then
 
   // push table dictionary
   tableNm pushTable assert
@@ -52,13 +52,16 @@
 /*----------------------------------------------------------------------------*/
 : create_index ( "<indexNm>" "<tableNm>" -- <R> )
 
+  locals| tableNm indexNm |
+
 tp: create_index
+
   ddlLock::grabWrite
 
   checkEnoughBuffers not if <NIP+ERROR> exit then
-  checkMakeIndex     not if <NIP+ERROR> exit then
+  indexNm tableNm checkMakeIndex  not if <NIP+ERROR> exit then
 
-  makeIndex ( ) assert::stack_0
+  tableNm indexNm makeIndex ( ) assert::stack_0
 
   <OK>
 ;

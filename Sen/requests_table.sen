@@ -23,7 +23,7 @@ ddlLock::grabWrite
   dup pushTable assert
 
   // check it is a table
-  checkIsTable       not if <NIP+ERROR> exit then
+  checkIsTable not if <NIP+ERROR> popTable assertInTables exit then     //REVIEW
 
   tp ( "<tableNm>" )
 
@@ -31,6 +31,9 @@ ddlLock::grabWrite
 
   // pop table dictionary
   popTable
+
+  // assert we are still in tables folder
+  assertInTables
 
   tp: analyzedTable
 
@@ -56,7 +59,7 @@ ddlLock::grabWrite
   dup pushTable assert
 
   // check it is a table
-  checkIsTable       not if <NIP+ERROR> exit then
+  checkIsTable       not if <NIP+ERROR> popTable assertInTables exit then
 
   tp ( "<tableNm>" )
 
@@ -65,11 +68,13 @@ ddlLock::grabWrite
   // pop table dictionary
   popTable
 
+  // assert we are still in tables folder
+  assertInTables
+
   tp: danalyzedTable
 
   <SUCCESS>
 ;
-
 
 /*----------------------------------------------------------------------------*/
 /* append row buffer into table                                               */
@@ -102,8 +107,7 @@ ddlLock::grabRead
   dup pushTable assert
 
   // check it is a table
-  checkIsTable       not if <NIP+ERROR> exit then
-
+  checkIsTable       not if <NIP+ERROR> popTable assertInTables exit then
 
   //bp.freespace .
 
@@ -113,6 +117,9 @@ ddlLock::grabRead
 
   // pop table dictionary
   popTable
+
+  // assert we are still in tables folder
+  assertInTables
 
   <OK>
 ;

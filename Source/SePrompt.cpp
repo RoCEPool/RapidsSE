@@ -1057,8 +1057,8 @@ bool SePrompt::bCreateIndex(void)
   
   // create the index
   m_aToken[0]->vCopy("mkidx"_Str);
-  m_aToken[1]->vCopy(m_aToken2[2]);
-  m_aToken[2]->vCopy(m_aToken2[4]);
+  m_aToken[1]->vCopy(m_aToken2[4]);
+  m_aToken[2]->vCopy(m_aToken2[2]);
   
   if (!bExecuteRequest())
     return false;

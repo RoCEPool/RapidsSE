@@ -113,8 +113,9 @@
 /*----------------------------------------------------------------------------*/
 /* check word is not an index                                                 */
 /*----------------------------------------------------------------------------*/
-: checkIsNotIndex ( word )
-  dup findInCurrent not if true exit then
+: checkIsNotIndex ( "<word>" )
+
+  findInCurrent not if true exit then
   EC_INDEX_EXISTS false
 ;
 
@@ -134,12 +135,36 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* check if word is a makeable table                                          */
-/*----------------------------------------------------------------------------*/
-: checkMakeIndex ( "<indexNm>" -- "<indexNm>" true | "<indexNm>" errorCode false )
+: pushIndexes ( -- )
+  "indexes" find execute pathPush
+  true
+;
 
-  //checkInIndexes  not if false exit then
-  checkIsNotIndex not if false exit then
+/*----------------------------------------------------------------------------*/
+: popIndexes
+  pathDrop
+;
+
+/*----------------------------------------------------------------------------*/
+/* check if word is a makeable index                                          */
+/*----------------------------------------------------------------------------*/
+: checkMakeIndex ( "<indexNm>" "<tableNm>" --  true | errorCode false )
+
+  locals| tableNm indexNm |
+
+  checkInTables not if false exit then
+
+  tableNm checkIsTableFolder not if false exit then
+
+  tableNm pushTable
+  pushIndexes
+
+  indexNm checkIsNotIndex not if false exit then
+
+  popIndexes
+  popTable
+
+  assertInTables
 
   true
 ;
@@ -159,17 +184,6 @@
 
   indexNm true ( "<indexNm>" true )
 
-;
-
-/*----------------------------------------------------------------------------*/
-: pushIndexes ( -- )
-  "indexes" find execute pathPush
-  true
-;
-
-/*----------------------------------------------------------------------------*/
-: popIndexes
-  pathDrop
 ;
 
 /*----------------------------------------------------------------------------*/
