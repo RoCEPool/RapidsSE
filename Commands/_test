@@ -29,6 +29,8 @@ j10_name  VARCHAR(32) NOT NULL
 
 create index idx on j10 (j10_key);
 
+drop index j10.idx;
+
 drop table j10;
 
 docol epochDump

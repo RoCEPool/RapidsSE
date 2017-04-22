@@ -5,7 +5,7 @@
 "index.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* index is use as a kind of word to identify indexes                          */
+/* index is used as a kind of word to identify indexes                        */
 /*----------------------------------------------------------------------------*/
 : index ;
 
@@ -63,24 +63,21 @@
 /* check within indexes folder                                                */
 /*----------------------------------------------------------------------------*/
 : withinIndexes
-
   0 pathPick dic.name "indexes" str.equal
 ;
 
 /*----------------------------------------------------------------------------*/
-/* check in indexes                                                           */
+/* check in indexes folder                                                    */
 /*----------------------------------------------------------------------------*/
 : checkInIndexes
-
   withinIndexes if true exit then
-
   EC_NOT_IN_INDEXES false
 ;
 
 /*----------------------------------------------------------------------------*/
 /* check word is an index                                                     */
 /*----------------------------------------------------------------------------*/
-: checkIsIndex ( "<indexNm>" -- "<indexNm>" true | errorCode false )
+: checkIsIndex ( "<indexNm>" -- true | errorCode false )
 
   0 locals| indexPtr indexNm |
 
@@ -95,15 +92,12 @@
   exit
   then
 
-
   indexPtr ( indexPtr )
   word.kind@ ( ^word )
   ' index ( ^word ^word )
   eql ( bool )
   if
-    indexNm
-    true ( <indexNm> true )
-
+    true ( true )
     exit
   then
 
@@ -111,7 +105,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* check word is not an index                                                 */
+/* check in indexes folder                                                    */
 /*----------------------------------------------------------------------------*/
 : checkIsNotIndex ( "<word>" )
 
@@ -120,26 +114,31 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* find the index sub folder and push it onto task dictionary                 */
+/*----------------------------------------------------------------------------*/
 : pushIndexSub ( "<indexNm>" -- )
-
-  checkIsIndex not if EC_NO_SUCH_INDEX false exit then
-
+  dup checkIsIndex not if EC_NO_SUCH_INDEX false exit then
   find execute index.subDic pathPush
-
   true
 ;
 
+/*----------------------------------------------------------------------------*/
+/* pop the index sub folder                                                   */
 /*----------------------------------------------------------------------------*/
 : popIndexSub
   pathDrop
 ;
 
 /*----------------------------------------------------------------------------*/
+/* find the indexes folder and push it onto task dictionary                   */
+/*----------------------------------------------------------------------------*/
 : pushIndexes ( -- )
   "indexes" find execute pathPush
   true
 ;
 
+/*----------------------------------------------------------------------------*/
+/* pop the indexes folder                                                     */
 /*----------------------------------------------------------------------------*/
 : popIndexes
   pathDrop
@@ -172,9 +171,9 @@
 /*----------------------------------------------------------------------------*/
 /* check if word is a removable index folder                                  */
 /*----------------------------------------------------------------------------*/
-: checkRemoveIndex ( "<tableNm>" "<indexNm>" -- "<indexNm>" true | "<indexNm>" errorCode false )
+: checkRemoveIndex ( "<indexNm>" "<tableNm>" -- true | errorCode false )
 
-  locals| indexNm tableNm |
+  locals| tableNm indexNm |
 
   // should be in the tables folder
   checkInTables       not if false exit then
@@ -182,10 +181,11 @@
   // there should be a table folder
   tableNm checkIsTableFolder not if false exit then
 
-  indexNm true ( "<indexNm>" true )
-
+  true ( "<indexNm>" true )
 ;
 
+/*----------------------------------------------------------------------------*/
+/* tidy up of the index                                                       */
 /*----------------------------------------------------------------------------*/
 : indexTidyUp ( "<indexNm>" -- )
 

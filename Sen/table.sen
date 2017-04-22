@@ -7,7 +7,7 @@
 int: queryCount
 
 /*----------------------------------------------------------------------------*/
-/* table is use as a kind of word to identify tables                          */
+/* table is used as a kind of word to identify tables                         */
 /*----------------------------------------------------------------------------*/
 : table ;
 
@@ -182,28 +182,28 @@ int: queryCount
 /* find the table folder and push it onto task dictionary                     */
 /*----------------------------------------------------------------------------*/
 : pushTable ( "<tableName>" -- )
-
   find execute pathPush
-
   true
 ;
 
+/*----------------------------------------------------------------------------*/
+/* pop the table folder                                                       */
 /*----------------------------------------------------------------------------*/
 : popTable
   pathDrop
 ;
 
-
+/*----------------------------------------------------------------------------*/
+/* find the table sub folder and push it onto task dictionary                 */
 /*----------------------------------------------------------------------------*/
 : pushTableSub ( "<tableName>" -- )
-
   checkIsTable not if EC_NO_SUCH_TABLE false exit then
-
   find execute table.subDic pathPush
-
   true
 ;
 
+/*----------------------------------------------------------------------------*/
+/* pop the table sub folder                                                   */
 /*----------------------------------------------------------------------------*/
 : popTableSub
     pathDrop
@@ -415,7 +415,7 @@ tp: analyzeTable
 ;
 
 /*----------------------------------------------------------------------------*/
-/* analyze a table                                                            */
+/* analyze a table (detail analysis)                                          */
 /*----------------------------------------------------------------------------*/
 : danalyzeTable allParticipants 1 returnResult ( "<tableNm>" -- true n# true )
 

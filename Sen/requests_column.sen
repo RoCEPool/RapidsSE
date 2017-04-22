@@ -81,9 +81,12 @@
   pushIndexes assert
 
   // check it is an index
-  indexNm checkIsIndex  not if popIndexes popTable <NIP+ERROR> exit then
+  indexNm checkIsIndex
+  not if
+    popIndexes popTable assertInTables <NIP+ERROR> exit
+  then
 
-  listIndexColumns
+  indexNm listIndexColumns
 
   // pop indexes folder
   popIndexes
@@ -91,9 +94,10 @@
   // pop table dictionary
   popTable
 
-  <SUCCESS>
+  // assert we are still in tables folder
+  assertInTables
 
-tp: 8
+  <SUCCESS>
 ;
 
 /*============================================================================*/

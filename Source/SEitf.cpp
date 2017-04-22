@@ -716,13 +716,19 @@ bool SEitf::bListIndices(Str* aWords[], i8 iWords)
   
   s256 sRequest;
   
-  if (iWords != 1) {
+  if (iWords != 2) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
+  sRequest.vCopy("\""_Str);
+  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat("\""_Str);
+
   ASSERT(aWords[0]->bEqual("lsidx"_Str));
-  sRequest = "list_indexes"_Str;
+  
+  sRequest.vConcat(" list_indexes"_Str);
+  
   return bAppendRequest(sRequest);
 }
 
@@ -783,11 +789,11 @@ bool SEitf::bDumpIndex(Str* aWords[], i8 iWords)
   }
   
   sRequest.vCopy("\""_Str);
-  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat(aWords[2]);
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat("\""_Str);
-  sRequest.vConcat(aWords[2]);
+  sRequest.vConcat(aWords[1]);
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" dump_index"_Str);
@@ -852,11 +858,11 @@ bool SEitf::bDropIndex(Str* aWords[], i8 iWords)
   }
   
   sRequest.vCopy("\""_Str);
-  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat(aWords[2]);
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat("\""_Str);
-  sRequest.vConcat(aWords[2]);
+  sRequest.vConcat(aWords[1]);
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" drop_index"_Str);
@@ -1057,11 +1063,11 @@ bool SEitf::bAnalyzeIndex(Str* aWords[], i8 iWords)
   }
   
   sRequest.vCopy("\""_Str);
-  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat(aWords[2]);
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat("\""_Str);
-  sRequest.vConcat(aWords[2]);
+  sRequest.vConcat(aWords[1]);
   sRequest.vConcat("\""_Str);
 
   sRequest.vConcat(" analyze_Index"_Str);
@@ -1422,11 +1428,11 @@ bool SEitf::bSizeIndex(Str* aWords[], i8 iWords)
   }
   
   sRequest.vCopy("\""_Str);
-  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat(aWords[2]);
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat("\""_Str);
-  sRequest.vConcat(aWords[2]);
+  sRequest.vConcat(aWords[1]);
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" size_index"_Str);
@@ -1491,11 +1497,11 @@ bool SEitf::bTruncateIndex(Str* aWords[], i8 iWords)
   }
   
   sRequest.vCopy("\""_Str);
-  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat(aWords[2]);
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat("\""_Str);
-  sRequest.vConcat(aWords[2]);
+  sRequest.vConcat(aWords[1]);
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" truncate_index"_Str);

@@ -4,6 +4,9 @@
 
 "indexColumn.sen" .verbose
 
+/*----------------------------------------------------------------------------*/
+/* indexColumn is used as a kind of word to identify index columns            */
+/*----------------------------------------------------------------------------*/
 : indexColumn: ;
 
 : makeIndexColumns ( "<indexNm>" -- )
@@ -12,34 +15,49 @@
   index.subDic pathPush "columns" :dic drop pathDrop
 ;
 
+/*----------------------------------------------------------------------------*/
+/* check within index columns folder                                          */
+/*----------------------------------------------------------------------------*/
 : withinIndexColumns
     0 pathPick dic.name "columns" str.equal
 ;
 
+/*----------------------------------------------------------------------------*/
+/* check in indexes columns folder                                            */
+/*----------------------------------------------------------------------------*/
 : checkInIndexColumns
     withinIndexColumns if true exit then
     EC_NOT_IN_COLUMNS false
 ;
 
+/*----------------------------------------------------------------------------*/
+/* find the index column folder and push it onto task dictionary              */
+/*----------------------------------------------------------------------------*/
 : pushIndexColumns ( -- )
 
     "columns" checkIsWord
-
     not if EC_NO_COLUMNS_DIC false exit then
-
     execute pathPush
-
     true
 ;
 
+/*----------------------------------------------------------------------------*/
+/* pop the index column folder                                                */
+/*----------------------------------------------------------------------------*/
 : popIndexColumns
     pathDrop
 ;
 
+/*----------------------------------------------------------------------------*/
+/* create index column as a constant                                          */
+/*----------------------------------------------------------------------------*/
 : :indexColumn ( "<columnName>" )
     :constant
 ;
 
+/*----------------------------------------------------------------------------*/
+/* check and add an index column                                              */
+/*----------------------------------------------------------------------------*/
 : checkAddIndexColumn ( "<columnName>" "<indexNm>" -- true | eEC false )
 
   locals| indexNm columnNm |
