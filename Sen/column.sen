@@ -4,43 +4,63 @@
 
 "column.sen" .verbose
 
+/*----------------------------------------------------------------------------*/
+/* column is used as a kind of word to identify index columns                 */
+/*----------------------------------------------------------------------------*/
+
 : column: ;
 
+/*----------------------------------------------------------------------------*/
+/* make the tables columns sub folder                                         */
+/*----------------------------------------------------------------------------*/
 : makeColumns ( "<tableNm>" -- )
 
   find execute ( dic )
   table.subDic pathPush "columns" :dic drop pathDrop
 ;
 
+/*----------------------------------------------------------------------------*/
+/* check within table columns folder                                          */
+/*----------------------------------------------------------------------------*/
 : withinColumns
     0 pathPick dic.name "columns" str.equal
 ;
 
+/*----------------------------------------------------------------------------*/
+/* find the table column folder and push it onto task dictionary              */
+/*----------------------------------------------------------------------------*/
 : checkInColumns
     withinColumns if true exit then
     EC_NOT_IN_COLUMNS false
 ;
 
+/*----------------------------------------------------------------------------*/
+/* find the table column folder and push it onto task dictionary              */
+/*----------------------------------------------------------------------------*/
 : pushColumns ( -- )
-
     "columns" checkIsWord
-
     not if EC_NO_COLUMNS_DIC false exit then
-
     execute pathPush
-
     true
 ;
 
+/*----------------------------------------------------------------------------*/
+/* pop the table column folder                                                */
+/*----------------------------------------------------------------------------*/
 : popColumns
     pathDrop
 ;
 
+/*----------------------------------------------------------------------------*/
+/* create table column as a constant                                          */
+/*----------------------------------------------------------------------------*/
 : :column ( "<columnType>" "<columnName>" )
-
     :constant
 ;
 
+/*----------------------------------------------------------------------------*/
+/* check and add a table column                                               */
+/*----------------------------------------------------------------------------*/
 : checkAddColumn ( "<columnName>" "<tableNm>" -- true | eEC false )
 
   locals| tableNm columnNm |
