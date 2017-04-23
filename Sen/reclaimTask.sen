@@ -23,7 +23,7 @@ seitfCursor: seitfCrs
 /*----------------------------------------------------------------------------*/
 : reclaimStart
 
-  0 "rec.loop" nullPtr task.new reclaimTaskSet taskSet.Append
+  0 "rec.loop" nullPtr task::new reclaimTaskSet taskSet.Append
 
   reclaimTaskSet  reclaimThread thread.taskset!
   "reclaimThread" reclaimThread thread.name!

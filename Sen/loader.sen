@@ -73,7 +73,7 @@ timer: loadTimer
 
     pathGet >>
 
-    1 "loadSub" task::this task.new
+    1 "loadSub" task::this task::new
 
     dup I >loadSubNm swap task.name!
 

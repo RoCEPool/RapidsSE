@@ -13,7 +13,7 @@
   "" // no seed
   0 >ptr // no parent
 
-  task.new
+  task::new
 
   >str
 

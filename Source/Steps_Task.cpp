@@ -46,7 +46,7 @@ void Task::vAddPrimitives_Task(void)
   vAddPrimitive("task.jobQueue!"_Str, &vTaskJobQueueStore, false);
   vAddPrimitive("task.name@"_Str,     &vTaskNameFetch,     false);
   vAddPrimitive("task.name!"_Str,     &vTaskNameStore,     false);
-  vAddPrimitive("task.new"_Str,       &vTaskNew,           false);
+  vAddPrimitive("task::new"_Str,      &vTaskNew,           false);
   vAddPrimitive("task.parent@"_Str,   &vTaskParentFetch,   false);
   vAddPrimitive("task.parent!"_Str,   &vTaskParentStore,   false);
   vAddPrimitive("task.plan@"_Str,     &vTaskPlanFetch,     false);
@@ -346,32 +346,32 @@ ENTRY("vTaskNameStore"_Str);
 }
 
 /*----------------------------------------------------------------------------*/
-/* task.new -- create and seed a new task                                     */
+/* task::new -- create and seed a new task                                     */
 /*----------------------------------------------------------------------------*/
 void Task::vTaskNew(NNP_Task nnpTask)
 {
 ENTRY("vTaskNew"_Str);
   //                                   pParent   sSeed     nTaskArgs
   if ( ! nnpTask->m_pDataStack->bGuard(CN_PTRVAL,CN_STRVAL,CN_INTVAL) )
-    THROW_INVALID_DSTACK("task.new"_Str);
+    THROW_INVALID_DSTACK("task::new"_Str);
   
   Object* pParent;
   if ( ! nnpTask->m_pDataStack->bPop(pParent) )
-    THROW_INVALID_DSTACK("task.new"_Str);
+    THROW_INVALID_DSTACK("task::new"_Str);
   Task* pParentTask = _pTask(pParent);
   ASSERT( ! pParentTask || CN_TASK == pParentTask->eClass());
   
   s32 sSeed;
   if ( ! nnpTask->m_pDataStack->bPop(sSeed) )
-    THROW_INVALID_DSTACK("task.new"_Str);
+    THROW_INVALID_DSTACK("task::new"_Str);
   
   i8 nTaskArgs;
   if ( ! nnpTask->m_pDataStack->bPop(nTaskArgs) )
-    THROW_INVALID_DSTACK("task.new"_Str);
+    THROW_INVALID_DSTACK("task::new"_Str);
   //ASSERT(! nTaskArgs);
 
   if ( ! nnpTask->m_pDataStack->bGuard(nTaskArgs) )
-    THROW_INVALID_DSTACK("task.new"_Str);
+    THROW_INVALID_DSTACK("task::new"_Str);
   
   // create new task (will be automatically appended to task list)
   NNP_Task nnpNewTask = new Task;

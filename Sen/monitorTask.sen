@@ -21,7 +21,7 @@ thread:  monitorThread
 /*----------------------------------------------------------------------------*/
 : monitorStart
 
-  0 "mon.loop" nullPtr task.new monitorTaskSet taskSet.Append
+  0 "mon.loop" nullPtr task::new monitorTaskSet taskSet.Append
 
   monitorTaskSet  monitorThread thread.taskset!
   "monitorThread" monitorThread thread.name!

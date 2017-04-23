@@ -19,7 +19,7 @@ taskCursor: taskCrs
 /*----------------------------------------------------------------------------*/
 : listerStart
 
-  0 "lis.loop" nullPtr task.new listerTaskSet taskSet.Append
+  0 "lis.loop" nullPtr task::new listerTaskSet taskSet.Append
 
   listerTaskSet  listerThread thread.taskset!
   "listerThread" listerThread thread.name!
