@@ -131,6 +131,9 @@ namespace Interface
     bool bSizeTables(Str* aWords[], i8 iWords);
     bool bTruncateTable(Str* aWords[], i8 iWords);
     
+    bool bGetTask(Str* aWords[], i8 iWords);
+    bool bRetTask(Str* aWords[], i8 iWords);
+  
     bool bInsertRow(Str* pRow);
     bool bInsertBuffer(void);
     bool bInsertBuffer(RowBuffer* pRowBuffer, i8 iPartition);

@@ -353,6 +353,7 @@ bool SEitf::bDecode(Str* aWords[], i8 iWords)
   if (aWords[0]->bSame("getFreeSpace"_Str)) return bGetFreeSpace(aWords);
   if (aWords[0]->bSame("getInUseSpace"_Str)) return bGetInUseSpace(aWords);
   if (aWords[0]->bSame("gettbl"_Str)) return bGetTable(aWords, iWords);
+  if (aWords[0]->bSame("gettsk"_Str)) return bGetTask(aWords, iWords);
   if (aWords[0]->bSame("getTotalSpace"_Str)) return bGetTotalSpace(aWords);
   if (aWords[0]->bSame("dumpidx"_Str)) return bDumpIndex(aWords, iWords);
   if (aWords[0]->bSame("TblInUse"_Str)) return bInUseTable(aWords, iWords);
@@ -376,6 +377,7 @@ bool SEitf::bDecode(Str* aWords[], i8 iWords)
   if (aWords[0]->bSame("pRB"_Str)) return bPrintRowBuffer(aWords);
   if (aWords[0]->bSame("pwf"_Str)) return bGetDicPath(aWords);
   if (aWords[0]->bSame("rettbl"_Str)) return bRetTable(aWords, iWords);
+  if (aWords[0]->bSame("rettsk"_Str)) return bRetTask(aWords, iWords);
   if (aWords[0]->bSame("rf"_Str)) return bRemoveFolder(aWords, iWords);
   if (aWords[0]->bSame("rgesel"_Str)) return bRangeSelectTable(aWords, iWords);
   if (aWords[0]->bSame("rmcat"_Str)) return bDropCatalog(aWords, iWords);
@@ -1868,6 +1870,44 @@ bool SEitf::bX(Str* aWords[])
   
   return bAppendRequest(sRequest);
 }
+
+
+/*----------------------------------------------------------------------------*/
+/* return task                                                                */
+/*----------------------------------------------------------------------------*/
+bool SEitf::bRetTask(Str* aWords[], i8 iWords)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  s256 sRequest;
+  
+  ASSERT(aWords[0]->bEqual("rettsk"_Str));
+  
+  sRequest.vCopy("\""_Str);
+  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat("\""_Str);
+  
+  sRequest.vConcat(" return_task"_Str);
+  
+  return bAppendRequest(sRequest);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get task                                                                   */
+/*----------------------------------------------------------------------------*/
+bool SEitf::bGetTask(Str* aWords[], i8 iWords)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  s256 sRequest;
+  
+  ASSERT(aWords[0]->bEqual("gettsk"_Str));
+  
+  sRequest.vCopy("get_task"_Str);
+  
+  return bAppendRequest(sRequest);
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
