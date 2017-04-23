@@ -37,6 +37,7 @@ void Task::vAddPrimitives_To(void)
   vAddPrimitive(">digitName"_Str,  &vToDigitName,  false);
   vAddPrimitive(">int"_Str,        &vToInt,        false);
   vAddPrimitive(">object"_Str,     &vToObject,     false);
+  vAddPrimitive(">ptr"_Str,        &vToPtr,        false);
   vAddPrimitive(">seitf"_Str,      &vToSEitf,      false);
   vAddPrimitive(">str"_Str,        &vToStr,        false);
   vAddPrimitive(">task"_Str,       &vToTask,       false);
@@ -113,6 +114,24 @@ void Task::vToObject(NNP_Task nnpTask)
     THROW_INVALID_RSTACK(">Object"_Str);
   
   nnpTask->m_pDataStack->vPush(pObject);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* >ptr -- convert int to ptr                                                 */
+/*----------------------------------------------------------------------------*/
+void Task::vToPtr(NNP_Task nnpTask)
+{
+  ENTRY("vToPtr"_Str);
+  
+  i8 iPtr;
+  if ( ! nnpTask->m_pDataStack->bPop(iPtr) )
+    THROW_INVALID_DSTACK(">str"_Str);
+  
+  Object* pPtr = (Object*)iPtr;
+  
+  nnpTask->m_pDataStack->vPush(pPtr);
   
   EXIT();
 }

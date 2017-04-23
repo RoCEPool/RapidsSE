@@ -1002,6 +1002,7 @@ namespace Tasks
     static void vToBody(NNP_Task nnpTask);
     static void vToInt(NNP_Task nnpTask);
     static void vToObject(NNP_Task nnpTask);
+    static void vToPtr(NNP_Task nnpTask);
     static void vToSEitf(NNP_Task nnpTask);
     static void vToStr(NNP_Task nnpTask);
     static void vToTask(NNP_Task nnpTask);
