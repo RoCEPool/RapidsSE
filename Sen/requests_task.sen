@@ -27,9 +27,10 @@
 
   stk
   >int >ptr
+  CN_TASK assert::class
   stk
 
-  drop
+  task.delete
 
   <OK>
 ;

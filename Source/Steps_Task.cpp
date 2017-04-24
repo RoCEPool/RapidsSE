@@ -39,6 +39,7 @@ void Task::vAddPrimitives_Task(void)
   vAddPrimitive("task.acks!"_Str,     &vTaskAcksStore,     false);
   vAddPrimitive("task.comment@"_Str,  &vTaskCommentFetch,  false);
   vAddPrimitive("task.comment!"_Str,  &vTaskCommentStore,  false);
+  vAddPrimitive("task.delete"_Str,    &vTaskDelete,        false);
   vAddPrimitive("task.dicStack"_Str,  &vTaskDicStack,      false);
   vAddPrimitive("task.dump"_Str,      &vTaskDump,          false);
   vAddPrimitive("task.init"_Str,      &vTaskInit,          false);
@@ -194,6 +195,25 @@ void Task::vTaskCommentStore(NNP_Task nnpTask)
     THROW_INVALID_DSTACK("task.comment!"_Str);
   
   pGivenTask->m_sComment = sComment;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* task.delete -- delete task on stack                                        */
+/*----------------------------------------------------------------------------*/
+void Task::vTaskDelete(NNP_Task nnpTask)
+{
+  ENTRY("vTaskDelete"_Str);
+  
+  Object* pPtrTask;
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrTask) )
+    THROW_INVALID_DSTACK("task.init"_Str);
+  
+  Task* pThatTask = _pTask(pPtrTask);
+  ASSERT(CN_TASK == pThatTask->eClass());
+  
+  delete pThatTask;
   
   EXIT();
 }
