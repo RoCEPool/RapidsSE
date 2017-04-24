@@ -152,9 +152,16 @@ namespace Tasks
     StrVal&   sName(void);
     void vName(StrVal& sName);
     void vNextInSet(NP_Task npNext);
+    bool bPopInt(i8& iInt);
+    bool bPopObject(Object*& pObject);
+    bool bPopStr(s48K& sStr);
     NP_Task npPrevInSet(void);
     void vPrevInSet(NP_Task npPrev);
     void vPrimitive(Str *aPrimitive);
+    void vPushInt(i8 iInt);
+    void vPushObject(Object* pObject);
+    void vPushStr(Str* aStr);
+    void vPushStr(s48K& sStr);
     void vReset(void);
     void vRetry(void);
     Threads::Thread* pRootThread(void);
