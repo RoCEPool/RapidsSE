@@ -556,7 +556,14 @@ void KeyTest::vTestB(void)
   nnpExternalTask->vSeedWord(sSeed);
   
   Thread::vRunTask(nnpExternalTask);
+
+  sSeed = "printArg"_Str;
+  s48K sArg = "boo!"_Str;
+  nnpExternalTask->vSeedWord(sSeed);
+  nnpExternalTask->vPushStr(sArg);
   
+  Thread::vRunTask(nnpExternalTask);
+
   delete *nnpExternalTask;
 
   vTrace("\n\nEnd KeyTest B%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n"_Str);
