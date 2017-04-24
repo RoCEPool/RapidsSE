@@ -45,16 +45,16 @@ namespace System
     bool  bMutexLock(void);
     void  vMutexLock(void);
     void  vMutexUnlock(void);
-    void  vTlsSet(pthread_key_t iTlsKey, void* pArg);
-    
+  
     //---------------------------------------------------------------------------
     
-    static void vSleepMicro(i8 nMicroSeconds);
-    static void vSleepMilli(i8 nMilliSeconds);
-    static void vSleepNano(i8 nNanoSeconds);
-    static void vSleepSec(i8 nSeconds);
-    static bool bTlsCreate(pthread_key_t* pTlsKey);
+    static void  vSleepMicro(i8 nMicroSeconds);
+    static void  vSleepMilli(i8 nMilliSeconds);
+    static void  vSleepNano(i8 nNanoSeconds);
+    static void  vSleepSec(i8 nSeconds);
+    static bool  bTlsCreate(pthread_key_t* pTlsKey);
     static void* pTlsGet(pthread_key_t iTlsKey);
+    static void  vTlsSet(pthread_key_t iTlsKey, void* pArg);
   
     Footer* pFooter(void);
   };

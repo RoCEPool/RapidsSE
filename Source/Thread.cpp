@@ -204,8 +204,8 @@ void Thread::vLoop(void)
 //         m_pPosixThread->iThreadPriority()
 //         );
   
-  m_pPosixThread->vTlsSet(giTLS_ThreadKey,this);
-  ASSERT(m_pPosixThread->pTlsGet(giTLS_ThreadKey));
+  PosixThread::vTlsSet(giTLS_ThreadKey,this);
+  ASSERT(PosixThread::pTlsGet(giTLS_ThreadKey));
   
   while (true) {
 
@@ -221,8 +221,8 @@ void Thread::vLoop(void)
       continue;
     }
     
-    m_pPosixThread->vTlsSet(giTLS_TaskKey,*m_npTask);
-    ASSERT(m_pPosixThread->pTlsGet(giTLS_TaskKey));
+    PosixThread::vTlsSet(giTLS_TaskKey,*m_npTask);
+    ASSERT(PosixThread::pTlsGet(giTLS_TaskKey));
     m_npTask->vState(TS_RUNNING);
     m_npTask->vThread(this);
     m_npTask->vLoop();
@@ -272,8 +272,8 @@ void Thread::vRunTask(NNP_Task nnpTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
-  m_pPosixThread->vTlsSet(giTLS_TaskKey,*m_npTask);
-  ASSERT(m_pPosixThread->pTlsGet(giTLS_TaskKey));
+  PosixThread::vTlsSet(giTLS_TaskKey,*m_npTask);
+  ASSERT(PosixThread::pTlsGet(giTLS_TaskKey));
   m_npTask->vState(TS_RUNNING);
   m_npTask->vThread(this);
   m_npTask->vLoop();    
