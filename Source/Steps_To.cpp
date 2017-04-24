@@ -88,14 +88,11 @@ void Task::vToInt(NNP_Task nnpTask)
 {
   ENTRY("vToInt"_Str);
   
-  ValWsp xStr;
-  if ( ! nnpTask->m_pDataStack->bPop(xStr) )
+  s32 sInt;
+  if ( ! nnpTask->m_pDataStack->bPop(sInt) )
     THROW_INVALID_DSTACK(">int"_Str);
   
-  s256 sBuff;
-  ValLib::vToString(&xStr,sBuff);
-  
-  i8 i = sBuff.iToI8();
+  i8 i = sInt.iToI8();
   
   nnpTask->m_pDataStack->vPush(i);
   
