@@ -204,68 +204,42 @@ void Thread::vLoop(void)
 //         m_pPosixThread->iThreadPriority()
 //         );
   
-  bool bWarn = true;
-
   m_pPosixThread->vTlsSet(giTLS_ThreadKey,this);
   ASSERT(m_pPosixThread->pTlsGet(giTLS_ThreadKey));
   
-  if (m_npTask != nullptr) {
+  while (true) {
+
+    if ( ! m_pTaskSet ) {
+      PosixThread::vSleepNano(10_KB);
+      continue;
+    }
+    
+    m_npTask = m_pTaskSet->npPop();
+    
+    if ( ! m_npTask ) {
+      PosixThread::vSleepMilli(1);
+      continue;
+    }
+    
     m_pPosixThread->vTlsSet(giTLS_TaskKey,*m_npTask);
     ASSERT(m_pPosixThread->pTlsGet(giTLS_TaskKey));
-    
     m_npTask->vState(TS_RUNNING);
-    
+    m_npTask->vThread(this);
     m_npTask->vLoop();
-  }
-  else {
-    while (true) {
-
-      if ( ! m_pTaskSet ) {
-        PosixThread::vSleepNano(10_KB);
-        continue;
-      }
-      
-      m_npTask = m_pTaskSet->npPop();
-      
-      if ( ! m_npTask ) {
-        //if (bWarn && gbVerbose)
-        //  vTrace("[[%s]] Thread::vLoop no task\n"_Str,m_sName.s());
-        bWarn = false;
-        //m_pPosixThread->vNanoSleep(10_MB);
-        //m_pPosixThread->vSecSleep(1);
-        PosixThread::vSleepMilli(1);
-        continue;
-      }
-      
-      bWarn = true;
-      
-      m_pPosixThread->vTlsSet(giTLS_TaskKey,*m_npTask);
-      ASSERT(m_pPosixThread->pTlsGet(giTLS_TaskKey));
-      
-      m_npTask->vState(TS_RUNNING);
-      
-//      if (gbVerbose)
-//        vTrace("[[%s]] Thread::vLoop running [%s] %p\n"_Str,m_sName.s(),m_npTask->sName().s(),*m_npTask);
-      
-      // set rdtscp
-      m_npTask->vThread(this);
-      m_npTask->vLoop();
-      
-      if (TS_WAITING_ACK != m_npTask->eState())
-        m_npTask->vThread(nullptr);
-      // clear rdtscp
-      
-      if (TS_YIELDED == m_npTask->eState()) {
-        NNP_Task nnpTask = *m_npTask;
-        vAppend(nnpTask);
+    
+    if (TS_WAITING_ACK != m_npTask->eState())
+      m_npTask->vThread(nullptr);
+    
+    if (TS_YIELDED == m_npTask->eState()) {
+      NNP_Task nnpTask = *m_npTask;
+      vAppend(nnpTask);
+      m_npTask = nullptr;
+    }
+    else if (TS_EXITED == m_npTask->eState()) {
+      NNP_Task nnpTask = *m_npTask;
+      if ( (*gnpRootTask != *m_npTask)  && (!nnpTask->bWordBody()) ) {
+        delete *m_npTask;
         m_npTask = nullptr;
-      }
-      else if (TS_EXITED == m_npTask->eState()) {
-        NNP_Task nnpTask = *m_npTask;
-        if ( (*gnpRootTask != *m_npTask)  && (!nnpTask->bWordBody()) ) {
-          delete *m_npTask;
-          m_npTask = nullptr;
-        }
       }
     }
   }
@@ -289,6 +263,20 @@ void Thread::vName(StrVal& sName)
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
   m_sName = sName;
+}
+
+/*----------------------------------------------------------------------------*/
+/* run given task                                                             */
+/*----------------------------------------------------------------------------*/
+void Thread::vRunTask(NNP_Task nnpTask)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
+  
+  m_pPosixThread->vTlsSet(giTLS_TaskKey,*m_npTask);
+  ASSERT(m_pPosixThread->pTlsGet(giTLS_TaskKey));
+  m_npTask->vState(TS_RUNNING);
+  m_npTask->vThread(this);
+  m_npTask->vLoop();    
 }
 
 /*----------------------------------------------------------------------------*/

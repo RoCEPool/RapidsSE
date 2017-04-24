@@ -39,6 +39,7 @@ namespace Threads
     void vLoop(void);
     StrVal&   sName(void);
     void vName(StrVal& sName);
+    void vRunTask(NNP_Task nnpTask);
     void vSpawn(void);
     i8   iThreadNo(void);
     
