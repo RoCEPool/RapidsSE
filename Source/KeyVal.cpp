@@ -297,7 +297,7 @@ bool KeyVal::bMatches(KeyVal* pKeyValThat, ColumnVec* pColVec, RelOpAry* pRelOpA
                          aElementThis,nBytesThis,
                          aElementThat,nBytesThat);
     
-    if (bCmp)
+    if ( ! bCmp)
       break;
   }
   

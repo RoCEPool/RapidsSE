@@ -300,9 +300,183 @@ void KeyTest::vTest(void)
     //vTrace("%lld: %lld %lld\n"_Str,i,v, v2);
   }
   
+  // scan the key vector for key value: >= 2,10
+  xValWsp = 2;
+  xKeyWsp.vReset();
+  xKeyWsp.vAddElement(xValWsp);
+  xValWsp = 10;
+  xKeyWsp.vAddElement(xValWsp);
+  pKeyValFind = new KeyVal(xKeyWsp);
+  
+  vTrace("Find Key value >= 2,10\n"_Str);
+  
+  pOpAryFind->vClear();
+  pOpAryFind->vAdd(RO_GREATER_EQUAL);
+  pOpAryFind->vAdd(RO_GREATER_EQUAL);
+  
+  pKeyVal = nullptr;
+  for (i8 i = 0; i < 10; i++) {
+    
+    pKeyVal = pKeyVec->pGet(i);
+    
+    if (pKeyVal->bMatches(pKeyValFind,pColVec,pOpAryFind))
+    break;
+    
+    pKeyVal = nullptr;
+  }
+  
+  if (pKeyVal) {
+    //aCursor = pKeyVal->m_xKey.aWspArea();
+    //v = *(i8*)pKeyVal->aElement(pCol,nBytes,&aCursor);
+    pKeyVal->vShow(pColVec);
+    vTrace("( >= 2,10)\n"_Str);
+  }
+  
+  // scan the key vector for key value: >= 2,10
+  xValWsp = 2;
+  xKeyWsp.vReset();
+  xKeyWsp.vAddElement(xValWsp);
+  xValWsp = 30;
+  xKeyWsp.vAddElement(xValWsp);
+  pKeyValFind = new KeyVal(xKeyWsp);
+  
+  vTrace("Find Key value elem1 >= 2, elem2 < 30\n"_Str);
+  
+  pOpAryFind->vClear();
+  pOpAryFind->vAdd(RO_GREATER_EQUAL);
+  pOpAryFind->vAdd(RO_LESS_THAN);
+  
+  pKeyVal = nullptr;
+  for (i8 i = 0; i < 10; i++) {
+    
+    pKeyVal = pKeyVec->pGet(i);
+    
+    if (pKeyVal->bMatches(pKeyValFind,pColVec,pOpAryFind))
+    break;
+    
+    pKeyVal = nullptr;
+  }
+  
+  if (pKeyVal) {
+    //aCursor = pKeyVal->m_xKey.aWspArea();
+    //v = *(i8*)pKeyVal->aElement(pCol,nBytes,&aCursor);
+    pKeyVal->vShow(pColVec);
+    vTrace("( elem1 >= 2, elem2 < 30)\n"_Str);
+  }
+
   delete pKeyVec;
   delete pColVec;
   delete pOpAryFind;
+
+  /*-----------------------------------------------------------------------*/
+  vTrace("\n\n----------- Two Element Key : INTEGER , VARCHAR -------------\n"_Str);
+  /*-----------------------------------------------------------------------*/
+  
+  // create the column
+  pCol0 = new Column("Col0"_Str);
+  pCol0->vColumnType(CT_INTEGER);
+  
+  pCol1 = new Column("Col1"_Str);
+  pCol1->vColumnType(CT_VARCHAR);
+  
+  // create the column vector
+  pColVec = new ColumnVec;
+  pColVec->vAdd(pCol0);
+  pColVec->vAdd(pCol1);
+  
+  pOpAryFind = new RelOpAry;
+  
+  pKeyVec = new KeyVec;
+  
+  // create a vector of key values
+  // (ascending order col0: 0,1,2, ... 9)
+  //                  col1: 10, 20, 30
+  for (i8 i = 0; i < 10; i++) {
+    
+    for (i8 j = 10; j <= 30; j += 10) {
+      xValWsp = i;
+      xKeyWsp.vReset();
+      xKeyWsp.vAddElement(xValWsp);
+      //xKeyWsp.vShow();
+      
+      sKey = Random::sRandomString(7);
+      Str* ptr = sKey.aStr();
+      xValWsp = ptr;
+      pStrVal = _pStrVal(&xValWsp);
+      xKeyWsp.vAddElement(xValWsp);
+      //xKeyWsp.vShow();
+      
+      pKeyVal = new KeyVal(xKeyWsp);
+      
+      pKeyVec->vAdd(pKeyVal);
+    }
+    
+  }
+  
+  // dump the key vector
+  for (i8 i = 0; i < 10; i++) {
+    pKeyVal = pKeyVec->pGet(i);
+    pKeyVal->vShow(pColVec);
+  }
+
+  // scan the key vector for key value: >= 2,10
+  xValWsp = 2;
+  xKeyWsp.vReset();
+  xKeyWsp.vAddElement(xValWsp);
+  sKey = Random::sRandomString(7);
+  ptr = sKey.aStr();
+  xValWsp = ptr;
+  pStrVal = _pStrVal(&xValWsp);
+  xKeyWsp.vAddElement(xValWsp);
+  
+  vTrace("Find Key value >= 2,%s\n"_Str, pStrVal->aStr());
+  
+  pOpAryFind->vClear();
+  pOpAryFind->vAdd(RO_GREATER_EQUAL);
+  pOpAryFind->vAdd(RO_GREATER_EQUAL);
+  
+  pKeyVal = nullptr;
+  for (i8 i = 0; i < 10; i++) {
+    
+    pKeyVal = pKeyVec->pGet(i);
+    
+    if (pKeyVal->bMatches(pKeyValFind,pColVec,pOpAryFind))
+    break;
+    
+    pKeyVal = nullptr;
+  }
+  
+  if (pKeyVal) {
+    //aCursor = pKeyVal->m_xKey.aWspArea();
+    //v = *(i8*)pKeyVal->aElement(pCol,nBytes,&aCursor);
+    pKeyVal->vShow(pColVec);
+    vTrace("( >= 2,%s)\n"_Str, pStrVal->aStr());
+  }
+  
+  
+  vTrace("Find Key value <= 2,%s\n"_Str, pStrVal->aStr());
+  
+  pOpAryFind->vClear();
+  pOpAryFind->vAdd(RO_LESS_EQUAL);
+  pOpAryFind->vAdd(RO_LESS_EQUAL);
+  
+  pKeyVal = nullptr;
+  for (i8 i = 0; i < 10; i++) {
+    
+    pKeyVal = pKeyVec->pGet(i);
+    
+    if (pKeyVal->bMatches(pKeyValFind,pColVec,pOpAryFind))
+    break;
+    
+    pKeyVal = nullptr;
+  }
+  
+  if (pKeyVal) {
+    //aCursor = pKeyVal->m_xKey.aWspArea();
+    //v = *(i8*)pKeyVal->aElement(pCol,nBytes,&aCursor);
+    pKeyVal->vShow(pColVec);
+    vTrace("( <= 2,%s)\n"_Str, pStrVal->aStr());
+  }
 
   vTrace("\n\nEnd KeyTest**********************************************\n"_Str);
 }
