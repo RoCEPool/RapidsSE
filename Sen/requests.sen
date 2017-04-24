@@ -65,8 +65,10 @@ ex      export_table
 gettbl  get_table
 ld      load_table
 lstbl   list_tables
+lwrsel lower_select
 mktbl   create_table
 rettbl  return_table
+rgesel range_select_table
 rmtbl   drop_table
 sel     select_table
 sz      size_table

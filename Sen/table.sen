@@ -327,6 +327,60 @@ int: queryCount
 ;
 
 /*----------------------------------------------------------------------------*/
+/* get lower select cursor for table ( called by range_select_table request)  */
+/*----------------------------------------------------------------------------*/
+: lowerSelectTable ( "<lower>" --  )
+
+  //
+  // execution context:
+  //   this task will have a seitf
+  //   and the seitf will have a table
+  //
+
+  assert::stack_1
+
+  0 0 locals| selCursor selectTask |
+
+  // for the moment just discard lower and upper
+  stk drop
+
+  // increment query count
+  queryCount ++
+
+  // push task.seitf.table
+  task::this task.seitf@ seitf.table@ ( ^table )
+
+  // create a selCursor
+  selCursor.new ( ^table ^selCursor )
+  to selCursor
+
+  // store table into selCursor
+  selCursor selCursor -rot selCursor.table! ( ^selCursor )
+
+  // create a task to execute the lower bound select
+  //task::this task.seitf! ( ^selCursor ^seitf )
+  //2 "lowerSelect" nullPtr task.new
+
+  1 "helloWorld" nullPtr task::new to selectTask
+  selectTask task::this task.taskset@
+  taskSet.Append
+
+  // convert address of selCursor into string
+  selCursor CN_SELCURSOR assert::class
+  >str ( "<^selCursor>")
+;
+
+/*----------------------------------------------------------------------------*/
+/* get lower select cursor for table ( called by range_select_table request)  */
+/*----------------------------------------------------------------------------*/
+: lowerSelect ( "<lower>" -- <selCursor> )
+
+  // to do
+
+;
+
+
+/*----------------------------------------------------------------------------*/
 /* get range select cursor for table ( called by range_select_table request)  */
 /*----------------------------------------------------------------------------*/
 : rangeSelectTable ( "<upper>" "<lower>" -- <selCursor> )
