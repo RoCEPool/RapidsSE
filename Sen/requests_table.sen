@@ -513,17 +513,14 @@ ddlLock::grabRead
   task::this task.seitf@ seitf.table@ assert
 
   // get a select cursor
-  lowerSelectTable ( "<^selCursor>" )
+  lowerSelectTable
 
   // pop named table folder off path
   // i.e. task.dicStack will now be back to ../tables
-  popTable ( "<^selCursor>" )
-  withinTables assert ( ^selCursor )
+  popTable
+  withinTables assert
 
-  assert::stack_1
-  CN_STRVAL assert::class
-
-  <SUCCESS>
+  <OK>
 ;
 
 /*----------------------------------------------------------------------------*/

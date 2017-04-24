@@ -501,9 +501,12 @@ bool SePrompt::bProcessCommand(bool bPostProcess)
     return true;
   
   // - post process requests
-  if (m_aToken[0]->bEqual("sel"_Str) || m_aToken[0]->bEqual("rgesel"_Str) ||
-      m_aToken[0]->bEqual("lwrsel"_Str)) {
+  if (m_aToken[0]->bEqual("sel"_Str) || m_aToken[0]->bEqual("rgesel"_Str)) {
     vIterateRows();
+    return bReturnTable();
+  }
+  
+  if (m_aToken[0]->bEqual("lwrsel"_Str)) {
     return bReturnTable();
   }
   

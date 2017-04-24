@@ -1282,7 +1282,6 @@ bool SEitf::bLowerSelectTable(Str* aWords[], i8 iWords)
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" lower_select_table"_Str);
-  vTrace ("%s"_Str, sRequest.aStr());
   
   return bAppendRequest(sRequest);
 }

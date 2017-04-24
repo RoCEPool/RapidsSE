@@ -339,10 +339,10 @@ int: queryCount
 
   assert::stack_1
 
-  0 0 locals| selCursor selectTask |
+  0 0 locals| selCursor selectTask lower |
 
   // for the moment just discard lower and upper
-  stk drop
+  //stk drop
 
   // increment query count
   queryCount ++
@@ -355,28 +355,62 @@ int: queryCount
   to selCursor
 
   // store table into selCursor
-  selCursor selCursor -rot selCursor.table! ( ^selCursor )
+  selCursor selCursor.table!
+
+  1 setAcks
 
   // create a task to execute the lower bound select
-  //task::this task.seitf! ( ^selCursor ^seitf )
-  //2 "lowerSelect" nullPtr task.new
+  selCursor lower 2 "lowerSelect" task::this task::new to selectTask
 
-  1 "helloWorld" nullPtr task::new to selectTask
-  selectTask task::this task.taskset@
+  selectTask task::this task.taskSet@
   taskSet.Append
 
+  ackWait
+
+  // delete the selcirsor
+  //selCursor selCursor.delete
+
+  //1 "helloWorld" nullPtr task::new to selectTask
+  //selectTask task::this task.taskset@
+  //taskSet.Append
+
   // convert address of selCursor into string
-  selCursor CN_SELCURSOR assert::class
-  >str ( "<^selCursor>")
+  //selCursor CN_SELCURSOR assert::class
+  //>str ( "<^selCursor>")
+
+  "ALL DONE" .
 ;
 
 /*----------------------------------------------------------------------------*/
-/* get lower select cursor for table ( called by range_select_table request)  */
+/* position lower select cursor for table ( called by lowerSelectTable request)*/
 /*----------------------------------------------------------------------------*/
-: lowerSelect ( "<lower>" -- <selCursor> )
+: lowerSelect ( ^selCursor "<lower>" -- <selCursor> )
 
-  // to do
+  0 locals| row lower selCursor |
 
+  grid.slots 0
+  do
+    I selCursor selCursor.begin
+    selCursor selCursor.first
+
+    begin
+    while
+      selCursor selCursor.get
+
+      to row
+      row 1 swap str.clip str.tailint assert
+      lower str.tailint assert >= if row .
+      then
+
+      selCursor selCursor.next
+    repeat
+
+  loop
+
+  selCursor selCursor.end
+
+  // signal the parent task
+  task::this task.parent@ task.ack
 ;
 
 
