@@ -171,10 +171,12 @@ Word* Dic::pFindWord(Str* aName)
   m_xLock.vGrabRead();
   
   for (Word* pWord = m_pLastWord; pWord; pWord = pWord->pPrevWord()) {
-    if (aName->bSame("helloWorld"_Str))
-      vTrace(" --- %s - %s ---\n"_Str,aName,pWord->sName().aStr());
     if (pWord->sName().bSame(aName)) {
       m_xLock.vDropRead();
+
+      if (aName->bSame("whereAmI"_Str))
+        vTrace(": %s is in dictionary %s ---\n"_Str,aName,m_sName.aStr());
+
       return pWord;
     }
   }
