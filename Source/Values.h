@@ -21,6 +21,7 @@ using namespace Values;
 
 #include "Value.hpp"
 #include "ValWsp.hpp"
+#include "ValWsp2.hpp"
 #include "ValReg.hpp"
 
 #include "BcdVal.hpp"
