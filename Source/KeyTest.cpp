@@ -3,6 +3,7 @@
 /*============================================================================*/
 
 #include "DBobjects.h"
+#include "StorageEngine.h"
 
 /*----------------------------------------------------------------------------*/
 /* key testing                                                                */
@@ -373,7 +374,16 @@ void KeyTest::vTestA(void)
 void KeyTest::vTestB(void)
 {
   vTrace("\n\nKeyTest B:%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n"_Str);
-  vTrace("\n\nEnd KeyTest B++++++++++++++++++++++++++++++++++++++++++++\n"_Str);
+  
+  s32 sSeed = ""_Str;
+  
+  NNP_Task nnpNewTask = new Task;
+  
+  nnpNewTask->vSeedWord(sSeed);
+  
+  delete *nnpNewTask;
+
+  vTrace("\n\nEnd KeyTest B%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n"_Str);
 }
 
 /*============================================================================*/
