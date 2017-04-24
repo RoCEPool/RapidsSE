@@ -375,7 +375,7 @@ void KeyTest::vTestB(void)
 {
   vTrace("\n\nKeyTest B:%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n"_Str);
   
-  s32 sSeed = ""_Str;
+  s32 sSeed = "helloWorld"_Str;
   
   NNP_Task nnpNewTask = new Task;
   
