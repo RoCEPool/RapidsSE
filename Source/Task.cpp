@@ -1524,7 +1524,7 @@ void Task::vSeedDicCompileSen(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* seed task to run given lamda                                               */
+/* seed task to run given lambda                                              */
 /*----------------------------------------------------------------------------*/
 void Task::vSeedWord(Str* aLambda)
 {
@@ -1786,7 +1786,7 @@ void Task::vLoop(void)
   
   while (TS_RUNNING == m_eState || TS_WAITING_SIGNAL == m_eState) {
     
-    assert(0 == m_iTaskNo || m_pThread);
+    //assert(0 == m_iTaskNo || m_pThread);
     
     TaskStep pTaskStep = *IP.m_pCell->m_ppEntryStep;
     

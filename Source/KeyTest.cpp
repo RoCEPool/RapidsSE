@@ -551,11 +551,13 @@ void KeyTest::vTestB(void)
   
   s32 sSeed = "helloWorld"_Str;
   
-  NNP_Task nnpNewTask = new Task;
+  NNP_Task nnpExternalTask = new Task;
   
-  nnpNewTask->vSeedWord(sSeed);
+  nnpExternalTask->vSeedWord(sSeed);
   
-  delete *nnpNewTask;
+  Thread::vRunTask(nnpExternalTask);
+  
+  delete *nnpExternalTask;
 
   vTrace("\n\nEnd KeyTest B%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n"_Str);
 }
