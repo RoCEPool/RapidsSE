@@ -357,17 +357,39 @@ int: queryCount
   // store table into selCursor
   selCursor selCursor.table!
 
-  1 setAcks
+  grid.slots 0
+  do
 
-  // create a task to execute the lower bound select
-  selCursor lower 2 "lowerSelect" task::this task::new to selectTask
+   I selCursor selCursor.begin
+   selCursor selCursor.first
 
-  selectTask task::this task.taskSet@
-  taskSet.Append
+   begin
+     while
+       // create a task to execute the lower bound select
+       selCursor lower 2 "lowerSelect" task::this task::new to selectTask
+       task::this task.seitf@ selectTask task.seitf!
 
-  ackWait
+       I selectTask task.seitf@ seitf.partition!
 
-  // delete the selcirsor
+       1 setAcks
+
+       selectTask task::this task.taskSet@
+       taskSet.Append
+
+       ackWait
+
+       selCursor selCursor.hasRow if
+         selCursor selCursor.get .
+         selCursor selCursor.next
+       else
+         0
+       then
+
+    repeat
+
+  loop
+
+  // delete the selcursor
   //selCursor selCursor.delete
 
   //1 "helloWorld" nullPtr task::new to selectTask
@@ -384,6 +406,34 @@ int: queryCount
 /*----------------------------------------------------------------------------*/
 /* position lower select cursor for table ( called by lowerSelectTable request)*/
 /*----------------------------------------------------------------------------*/
+ : lowerSelect ( ^selCursor "<lower>" -- <selCursor> )
+ 
+   0 locals| row lower selCursor |
+
+   selCursor selCursor.hasRow
+   begin
+     while
+        selCursor selCursor.get
+       
+       to row
+       row 1 swap str.clip str.tailint assert
+       lower str.tailint assert >= if
+         0
+       else
+         selCursor selCursor.next
+       then
+
+   repeat
+
+   // signal the parent task
+   //"acking" .
+   task::this task.parent@ task.ack
+;
+
+/*----------------------------------------------------------------------------*/
+/* position lower select cursor for table ( called by lowerSelectTable request)*/
+/*----------------------------------------------------------------------------*/
+/*
 : lowerSelect ( ^selCursor "<lower>" -- <selCursor> )
 
   0 locals| row lower selCursor |
@@ -412,7 +462,7 @@ int: queryCount
   // signal the parent task
   task::this task.parent@ task.ack
 ;
-
+*/
 
 /*----------------------------------------------------------------------------*/
 /* get range select cursor for table ( called by range_select_table request)  */

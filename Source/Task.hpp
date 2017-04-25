@@ -810,6 +810,8 @@ namespace Tasks
     static void vSEitfDicStack(NNP_Task nnpTask);
     static void vSEitfDump(NNP_Task nnpTask);
     static void vSEitfIndexRef(NNP_Task nnpTask);
+    static void vSEitfPartitionFetch(NNP_Task nnpTask);
+    static void vSEitfPartitionStore(NNP_Task nnpTask);
     static void vSEitfPid(NNP_Task nnpTask);
     static void vSEitfReqFetch(NNP_Task nnpTask);
     static void vSEitfReqStore(NNP_Task nnpTask);
@@ -840,6 +842,7 @@ namespace Tasks
     static void vSelCursorEnd(NNP_Task nnpTask);
     static void vSelCursorFirst(NNP_Task nnpTask);
     static void vSelCursorGet(NNP_Task nnpTask);
+    static void vSelCursorHasRow(NNP_Task nnpTask);
     static void vSelCursorInit(NNP_Task nnpTask);
     static void vSelCursorNew(NNP_Task nnpTask);
     static void vSelCursorNext(NNP_Task nnpTask);

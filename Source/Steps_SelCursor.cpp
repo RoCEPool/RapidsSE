@@ -37,6 +37,7 @@ void Task::vAddPrimitives_SelCursor(void)
   vAddPrimitive("selCursor.end"_Str,       &vSelCursorEnd,        false);
   vAddPrimitive("selCursor.first"_Str,     &vSelCursorFirst,      false);
   vAddPrimitive("selCursor.get"_Str,       &vSelCursorGet,        false);
+  vAddPrimitive("selCursor.hasRow"_Str,    &vSelCursorHasRow,     false);
   vAddPrimitive("selCursor.init"_Str,      &vSelCursorInit,       false);
   vAddPrimitive("selCursor.new"_Str,       &vSelCursorNew,        false);
   vAddPrimitive("selCursor.next"_Str,      &vSelCursorNext,       false);
@@ -147,9 +148,31 @@ ENTRY("vSelCursorGet"_Str);
   ASSERT(CN_SELCURSOR == pSelCursor->eClass());
   
   s48K xRow;
+  
   xRow = (Str*)pSelCursor->aRowAsStr();
   
   nnpTask->m_pDataStack->vPush(xRow);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* selCursor.hasRow -- is there a current row                                 */
+/*----------------------------------------------------------------------------*/
+void Task::vSelCursorHasRow(NNP_Task nnpTask)
+{
+  ENTRY("vSelCursorGet"_Str);
+  
+  Object* pPtrSelCursor;
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrSelCursor) )
+    THROW_INVALID_DSTACK("selCursor.get"_Str);
+  
+  SelCursor* pSelCursor = _pSelCursor(pPtrSelCursor);
+  ASSERT(CN_SELCURSOR == pSelCursor->eClass());
+  
+  i8 bRow = pSelCursor->pRow() ? 1 : 0;
+  
+  nnpTask->m_pDataStack->vPush(bRow);
   
   EXIT();
 }

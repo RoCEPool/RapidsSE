@@ -37,6 +37,8 @@ void Task::vAddPrimitives_SEitf(void)
   vAddPrimitive("seitf.dicStack"_Str,      &vSEitfDicStack,      false);
   vAddPrimitive("seitf.dump"_Str,          &vSEitfDump,          false);
   vAddPrimitive("seitf.indexRef"_Str,      &vSEitfIndexRef,      false);
+  vAddPrimitive("seitf.partition@"_Str,    &vSEitfPartitionFetch, false);
+  vAddPrimitive("seitf.partition!"_Str,    &vSEitfPartitionStore, false);
   vAddPrimitive("seitf.pid"_Str,           &vSEitfPid,           false);
   vAddPrimitive("seitf.req@"_Str,          &vSEitfReqFetch,      false);
   vAddPrimitive("seitf.req!"_Str,          &vSEitfReqStore,      false);
@@ -145,6 +147,48 @@ void Task::vSEitfIndexRef(NNP_Task nnpTask)
   //pIndex->vRefInc();
   
   //pSEitf->vCurrentIndex(pIndex);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* seitf.partition@ -- fetch partition of SE interface                        */
+/*----------------------------------------------------------------------------*/
+void Task::vSEitfPartitionFetch(NNP_Task nnpTask)
+{
+  ENTRY("vSEitfPartitionFetch"_Str);
+  
+  Object* pPtrSEitf;
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitf) )
+    THROW_INVALID_DSTACK("seitf.partition@"_Str);
+  
+  SEitf* pSEitf = _pSEitf(pPtrSEitf);
+  ASSERT(CN_SEITF == pSEitf->eClass());
+  
+  nnpTask->m_pDataStack->vPush(pSEitf->m_iPartition);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* seitf.partition! -- store partition of SE interface                        */
+/*----------------------------------------------------------------------------*/
+void Task::vSEitfPartitionStore(NNP_Task nnpTask)
+{
+  ENTRY("vSEitfPartitionStore"_Str);
+  
+  Object* pPtrSEitf;
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitf) )
+    THROW_INVALID_DSTACK("seitf.partition!"_Str);
+  
+  SEitf* pSEitf = _pSEitf(pPtrSEitf);
+  ASSERT(CN_SEITF == pSEitf->eClass());
+  
+  i8 iPartition;
+  if ( ! nnpTask->m_pDataStack->bPop(iPartition) )
+    THROW_INVALID_DSTACK("seitf.partition!"_Str);
+  
+  pSEitf->m_iPartition = iPartition;
   
   EXIT();
 }
