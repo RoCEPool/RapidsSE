@@ -192,12 +192,13 @@ ValWsp::ValWsp(void)
 /*----------------------------------------------------------------------------*/
 void ValWsp::operator =(i8 iInt)
 {
-  vClass(CN_INTVAL);
-  _precondition_(_MAGIC_,CN_INTVAL);
+  IntVal* pNestedIntVal = (IntVal*)pNestedValue();
   
-  *_pIntVal(this) = iInt;
+  // set nested class
+  pNestedIntVal->vClass(CN_INTVAL);
   
-  ASSERT(CN_INTVAL == _pIntVal(this)->eClass());
+  // assign int into the nested intval
+  *pNestedIntVal = iInt;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -205,12 +206,13 @@ void ValWsp::operator =(i8 iInt)
 /*----------------------------------------------------------------------------*/
 void ValWsp::operator =(Object* pPtr)
 {
-  vClass(CN_PTRVAL);
-  _precondition_(_MAGIC_,CN_PTRVAL);
+  PtrVal* pNestedPtrVal = (PtrVal*)pNestedValue();
   
-  *_pPtrVal(this) = pPtr;
+  // set nested class
+  pNestedPtrVal->vClass(CN_PTRVAL);
   
-  ASSERT(CN_PTRVAL == _pPtrVal(this)->eClass());
+  // assign ptr into the nested ptrval
+  *pNestedPtrVal = pPtr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -218,12 +220,12 @@ void ValWsp::operator =(Object* pPtr)
 /*----------------------------------------------------------------------------*/
 void ValWsp::operator =(Str* pStr)
 {
-  vClass(CN_STRVAL);
-  _precondition_(_MAGIC_,CN_STRVAL);
+  StrVal* pNestedStrVal = (StrVal*)pNestedValue();
   
-  _pStrVal(this)->vAssign(pStr);
+  // set nested class
+  pNestedStrVal->vClass(CN_STRVAL);
   
-  ASSERT(CN_STRVAL == _pStrVal(this)->eClass());
+  pNestedStrVal->vAssign(pStr);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -267,11 +269,47 @@ i8 ValWsp::iNestedAsInt(void)
 {
   _precondition_(_MAGIC_);
   
-  IntVal* pIntVal = reinterpret_cast<IntVal*>(this);
+  IntVal* pNestedIntVal = reinterpret_cast<IntVal*>(pNestedValue());
   
-  i8 i = pIntVal->iInt();
+  i8 i = pNestedIntVal->iInt();
   
   return i;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get value in the wsp area                                                  */
+/*----------------------------------------------------------------------------*/
+IntVal* ValWsp::pNestedIntVal(void)
+{
+  _precondition_(_MAGIC_);
+  
+  IntVal* pNestedIntVal = reinterpret_cast<IntVal*>(pNestedValue());
+  
+  return pNestedIntVal;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get value in the wsp area                                                  */
+/*----------------------------------------------------------------------------*/
+PtrVal* ValWsp::pNestedPtrVal(void)
+{
+  _precondition_(_MAGIC_);
+  
+  PtrVal* pNestedPtrVal = reinterpret_cast<PtrVal*>(pNestedValue());
+  
+  return pNestedPtrVal;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get value in the wsp area                                                  */
+/*----------------------------------------------------------------------------*/
+StrVal* ValWsp::pNestedStrVal(void)
+{
+  _precondition_(_MAGIC_);
+  
+  StrVal* pNestedStrVal = reinterpret_cast<StrVal*>(pNestedValue());
+  
+  return pNestedStrVal;
 }
 
 /*----------------------------------------------------------------------------*/

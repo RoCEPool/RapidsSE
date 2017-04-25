@@ -89,7 +89,10 @@ namespace Values
     Value* pNestedValue(void);
     
     i8     iNestedAsInt(void);
-    
+    IntVal* pNestedIntVal(void);
+    PtrVal* pNestedPtrVal(void);
+    StrVal* pNestedStrVal(void);
+  
     Footer* pFooter(void);
   };
   
