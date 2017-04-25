@@ -104,7 +104,7 @@ bool ValSet::bExtract(Str*& pCursor, ValWsp*& pVal)
   // test for a rowbuffer pointer
   if (CN_PTRVAL == pVal->eClass()) {
     
-    if ((i8)C_ROWBUFFER_MARKER == pVal->iNestedAsIs()) {
+    if ((i8)C_ROWBUFFER_MARKER == pVal->iNestedAsInt()) {
       *pVal = m_pRowBuffer;
     }
   }
@@ -143,7 +143,7 @@ bool ValSet::bExtract(Str*& pCursor, eCN& eClassNo, ValWsp*& pVal)
   // test for a rowbuffer pointer
   if (CN_PTRVAL == pVal->eClass()) {
     
-    if ((i8)C_ROWBUFFER_MARKER == pVal->iNestedAsIs()) {
+    if ((i8)C_ROWBUFFER_MARKER == pVal->iNestedAsInt()) {
       eClassNo = CN_ROWBUFFER;
       return true;
     }

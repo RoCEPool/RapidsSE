@@ -56,8 +56,8 @@ void Task::vAddressEqual(NNP_Task nnpTask)
   if ( ! nnpTask->m_pDataStack->bPop(xAddressA,xAddressB) )
     THROW_INVALID_DSTACK("eql"_Str);
   
-  i8 iA = xAddressA.iNestedAsIs();
-  i8 iB = xAddressB.iNestedAsIs();
+  i8 iA = xAddressA.iNestedAsInt();
+  i8 iB = xAddressB.iNestedAsInt();
   
   i8 r = iA == iB;
   

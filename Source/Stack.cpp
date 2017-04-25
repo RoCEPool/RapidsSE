@@ -649,7 +649,7 @@ bool Stack::bPopParamInt(i8& iArg1)
   ValWsp xWspVal1;
   vPopVal(&xWspVal1);
   
-  iArg1 = xWspVal1.iNestedAsIs();
+  iArg1 = xWspVal1.iNestedAsInt();
   
   return true;
 }

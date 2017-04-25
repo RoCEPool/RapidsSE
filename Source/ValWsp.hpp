@@ -35,11 +35,12 @@ namespace Values
     void operator =(i8 iInt);
     void operator =(Object* pObject);
     void operator =(Str* aStr);
-    
-    i8    iNestedAsIs(void);
     void vAssignBinary(Object* pObject);
-  
-    char* aWspArea(void);
+
+    char*  aWspArea(void);
+    Value* pNestedValue(void);
+
+    i8     iNestedAsInt(void);
   
     Footer* pFooter(void);
   };
