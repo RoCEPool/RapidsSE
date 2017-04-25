@@ -215,7 +215,7 @@ void Task::vStrFirstCsv(NNP_Task nnpTask)
   
   char* z = _pStrVal(&xStr)->s();
   
-  if (! StrLib::bExtractItem(&z,sFirstValue.s()))
+  if (! StrLib::bExtractItem(&z,sFirstValue.s(), '|'))
     sFirstValue = ""_Str;
   
   nnpTask->m_pDataStack->vPush(sFirstValue);

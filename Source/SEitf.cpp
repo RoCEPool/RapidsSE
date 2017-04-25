@@ -369,6 +369,7 @@ bool SEitf::bDecode(Str* aWords[], i8 iWords)
   if (aWords[0]->bSame("lstbl"_Str)) return bListTables(aWords, iWords);
   if (aWords[0]->bSame("lsten"_Str)) return bListTenants(aWords, iWords);
   if (aWords[0]->bSame("lwrsel"_Str)) return bLowerSelectTable(aWords, iWords);
+  if (aWords[0]->bSame("lwrselidx"_Str)) return bLowerSelectTableIndex(aWords, iWords);
   if (aWords[0]->bSame("mkcat"_Str)) return bCreateCatalog(aWords, iWords);
   if (aWords[0]->bSame("mkidx"_Str)) return bCreateIndex(aWords, iWords);
   if (aWords[0]->bSame("mksch"_Str)) return bCreateSchema(aWords, iWords);
@@ -1282,6 +1283,37 @@ bool SEitf::bLowerSelectTable(Str* aWords[], i8 iWords)
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" lower_select_table"_Str);
+  
+  return bAppendRequest(sRequest);
+}
+
+/*----------------------------------------------------------------------------*/
+/* lower select rows from a table given an index                              */
+/*----------------------------------------------------------------------------*/
+bool SEitf::bLowerSelectTableIndex(Str* aWords[], i8 iWords)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  s256 sRequest;
+  
+  if (iWords != 4) {
+    vSetLastError(EC_INVALID_PARAMETERS);
+    return false;
+  }
+  
+  sRequest.vConcat(" \""_Str);
+  sRequest.vConcat(aWords[3]);
+  sRequest.vConcat("\""_Str);
+
+  sRequest.vConcat(" \""_Str);
+  sRequest.vConcat(aWords[2]);
+  sRequest.vConcat("\""_Str);
+  
+  sRequest.vConcat(" \""_Str);
+  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat("\""_Str);
+  
+  sRequest.vConcat(" lower_select_table_index"_Str);
   
   return bAppendRequest(sRequest);
 }

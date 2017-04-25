@@ -121,6 +121,7 @@ namespace Interface
     bool bLoadTable(Str* aWords[], i8 iWords);
     bool bLoadTableStream(Str* aWords[], i8 iWords);
     bool bLowerSelectTable(Str* aWords[], i8 iWords);
+    bool bLowerSelectTableIndex(Str* aWords[], i8 iWords);
     bool bSelectTable(Str* aWords[], i8 iWords);
     bool bRangeSelectTable(Str* aWords[], i8 iWords);
     bool bGetTable(Str* aWords[], i8 iWords);

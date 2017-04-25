@@ -558,6 +558,32 @@ bool StrLib::bExtractItem(char** ps, char* pItem)
 }
 
 /*----------------------------------------------------------------------------*/
+/* bExtractItem: extract an item from substr                                  */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bExtractItem(char** ps, char* pItem, char cDelimiter)
+{
+  if ( ! *ps )
+    return false;
+  
+  char *a = pItem;
+  bool bOnce = false;
+  
+  for ( ; **ps; (*ps)++)
+  {
+    if (' ' == **ps || cDelimiter == **ps)
+      break;
+    
+    bOnce = true;
+    
+    *a++ = **ps;
+  }
+  
+  *a = '\0';
+  
+  return bOnce;
+}
+
+/*----------------------------------------------------------------------------*/
 /* bExtractPath: extract a path from substr                                   */
 /*----------------------------------------------------------------------------*/
 bool StrLib::bExtractPath(char** ps, char* pPath)

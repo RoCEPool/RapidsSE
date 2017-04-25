@@ -506,7 +506,7 @@ bool SePrompt::bProcessCommand(bool bPostProcess)
     return bReturnTable();
   }
   
-  if (m_aToken[0]->bEqual("lwrsel"_Str)) {
+  if (m_aToken[0]->bEqual("lwrsel"_Str) || m_aToken[0]->bEqual("lwrselidx"_Str)) {
     return bReturnTable();
   }
   
