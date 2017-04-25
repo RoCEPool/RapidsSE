@@ -50,7 +50,9 @@ void ValWsp::operator =(i8 iInt)
   vClass(CN_INTVAL);
   _precondition_(_MAGIC_,CN_INTVAL);
   
-  *_pIntVal(this) = iInt;  
+  *_pIntVal(this) = iInt;
+  
+  ASSERT(CN_INTVAL == _pIntVal(this)->eClass());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -62,6 +64,8 @@ void ValWsp::operator =(Object* pPtr)
   _precondition_(_MAGIC_,CN_PTRVAL);
   
   *_pPtrVal(this) = pPtr;
+  
+  ASSERT(CN_PTRVAL == _pPtrVal(this)->eClass());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -73,6 +77,8 @@ void ValWsp::operator =(Str* pStr)
   _precondition_(_MAGIC_,CN_STRVAL);
 
   _pStrVal(this)->vAssign(pStr);
+  
+  ASSERT(CN_STRVAL == _pStrVal(this)->eClass());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -84,6 +90,8 @@ void ValWsp::vAssignBinary(Object* pObject)
   _precondition_(_MAGIC_,CN_BINVAL);
   
   *_pBinVal(this) = pObject;
+  
+  ASSERT(CN_BINVAL == _pBinVal(this)->eClass());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -92,6 +100,16 @@ void ValWsp::vAssignBinary(Object* pObject)
 char* ValWsp::aWspArea(void)
 {
   return m_xWsp.aArea();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get value in the wsp area                                                  */
+/*----------------------------------------------------------------------------*/
+Value* ValWsp::pNestedValue(void)
+{
+  _precondition_(_MAGIC_);
+  
+  return (Value*)m_xWsp.aArea();
 }
 
 /*----------------------------------------------------------------------------*/
