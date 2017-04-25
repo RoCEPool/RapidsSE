@@ -5,20 +5,6 @@
 
 namespace Values
 {
-  // the nested value inspector
-  class ValSee
-  {
-    Value    m_xValue;      // the Value header
-    union {
-      struct {
-        i8   m_nSize;       // size of str
-        char m_cChr[256];   // str contents
-      } m_xStr;             // value contents as xStr
-      i8     m_iInt;        // value contents as iInt
-      Value* m_pPtr;        // value contents as pPtr
-    };
-  };
-  
   // the value workspace
   class ValWsp2 : public Object
   {
