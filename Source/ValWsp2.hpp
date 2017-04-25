@@ -5,11 +5,29 @@
 
 namespace Values
 {
-  class ValWsp2 : public Value
+  // the nested value inspector
+  class ValSee
+  {
+    Value    m_xValue;      // the Value header
+    union {
+      struct {
+        i8   m_nSize;
+        char m_cChr[256];
+      } m_xStr;             // value contents as xStr
+      i8     m_iInt;        // value contents as iInt
+      Value* m_pPtr;        // value contents as pPtr
+    };
+  };
+  
+  // the value workspace
+  class ValWsp2 : public Object
   {
   private:
-    WspFxd<C_64K> m_xWsp;
-    Footer        m_xFooter;
+    union {
+      WspFxd<C_64K> m_xWsp;         // workspace
+      ValSee        m_xNestedValue; // inspector
+    };
+    Footer          m_xFooter;
   
   public:
     void* operator new(size_t);
@@ -18,11 +36,14 @@ namespace Values
     void operator =(i8 iInt);
     void operator =(Object* pObject);
     void operator =(Str* aStr);
-    
-    i8    iAsInt(void);
-    void vAssignBinary(Object* pObject);
   
-    char* aWspArea(void);
+    char*  aWspArea(void);
+    Value* pNestedValue(void);
+  
+    i8      iNestedAsInt(void);
+    IntVal* pNestedIntVal(void);
+    PtrVal* pNestedPtrVal(void);
+    StrVal* pNestedStrVal(void);
   
     Footer* pFooter(void);
   };
