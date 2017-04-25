@@ -185,7 +185,7 @@ void Task::vDstackDupNonZero(NNP_Task nnpTask)
   if ( ! nnpTask->m_pDataStack->bPop(xValA) )
     THROW_INVALID_DSTACK("?dup"_Str);
   
-  if (xValA.iAsInt()) {
+  if (xValA.iNestedAsIs()) {
     nnpTask->m_pDataStack->vPush(xValA);
     nnpTask->m_pDataStack->vPush(xValA);
   }

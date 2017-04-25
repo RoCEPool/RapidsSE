@@ -89,7 +89,7 @@ void ValWsp::vAssignBinary(Object* pObject)
 /*----------------------------------------------------------------------------*/
 /* get integer (ignoring type)                                                */
 /*----------------------------------------------------------------------------*/
-i8 ValWsp::iAsInt(void)
+i8 ValWsp::iNestedAsIs(void)
 {
   _precondition_(_MAGIC_);
   
