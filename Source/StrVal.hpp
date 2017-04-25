@@ -5,6 +5,15 @@
 
 namespace Values
 {
+  // the strval inspector
+  class StrSee
+  {
+    Value  m_xValue;      // the Value header
+    i8     m_nSize;       // size of str
+    char   m_cChr[256];   // str contents
+  };
+
+  // the strval class
   class StrVal : public Value
   {
   protected:
