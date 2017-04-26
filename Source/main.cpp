@@ -126,7 +126,8 @@ int main(int argc, const char* argv[])
   RapidsSE::vPoolOpen();
   
   //vSkipListTest();
-  
+  if (xDir.bGetCurrent(sCurrent))
+    vInfo("\nCURRENT WORKING DIRECTORY: %s\n\n"_Str,sCurrent.aStr());
   // execute the command line
   RapidsSE::vExecute();
   
@@ -149,8 +150,9 @@ int main(int argc, const char* argv[])
 //      // change working directory to commands dir
 //      bool bResult = xDir.bSetCurrent(gxArguments.m_sCommands);
 //      // ignore error
-//      if (xDir.bGetCurrent(sCurrent))
-//        vInfo("dir: %s\n",sCurrent.);
+    
+ //     if (xDir.bGetCurrent(sCurrent))
+ //       vInfo("dir: %s\n"_Str,sCurrent.aStr());
 //    }
     SePrompt* pSePrompt = new SePrompt();
     pSePrompt->vLoop();
