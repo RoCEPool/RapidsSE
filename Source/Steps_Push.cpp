@@ -45,7 +45,7 @@ void Task::vPushI(NNP_Task nnpTask)
 {
   ENTRY("vPushI"_Str);
   
-  Value* pI = nnpTask->m_pReturnStack->pPeek();
+  Value* pI = nnpTask->m_pReturnStack->pPeekValue();
   
   nnpTask->m_pDataStack->vPushValue(pI);
   
@@ -59,7 +59,7 @@ void Task::vPushJ(NNP_Task nnpTask)
 {
   ENTRY("vPushJ"_Str);
   
-  Value* pI = nnpTask->m_pReturnStack->pPeek(3);
+  Value* pI = nnpTask->m_pReturnStack->pPeekValue(3);
   
   nnpTask->m_pDataStack->vPushValue(pI);
   

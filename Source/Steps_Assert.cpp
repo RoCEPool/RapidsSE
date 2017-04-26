@@ -80,7 +80,7 @@ void Task::vAssertClass(NNP_Task nnpTask)
   if ( ! nnpTask->m_pDataStack->bPopParamInt(iAssertClassNo) )
     THROW_INVALID_DSTACK("assert::class"_Str);
   
-  Value* pValue = nnpTask->m_pDataStack->pPeek();
+  Value* pValue = nnpTask->m_pDataStack->pPeekValue();
   
   eCN eAssertClassNo = (eCN)iAssertClassNo;
   eCN eClassNo = pValue->eClass();
@@ -107,7 +107,7 @@ void Task::vAssertClass_0(NNP_Task nnpTask)
   if ( ! nnpTask->m_pDataStack->bPopParamInt(iAssertClassNo) )
     THROW_INVALID_DSTACK("assert::class_0"_Str);
   
-  Value* pValue = nnpTask->m_pDataStack->pPeek(0);
+  Value* pValue = nnpTask->m_pDataStack->pPeekValue(0);
   
   eCN eAssertClassNo = (eCN)iAssertClassNo;
   eCN eClassNo = pValue->eClass();
@@ -134,7 +134,7 @@ void Task::vAssertClass_1(NNP_Task nnpTask)
   if ( ! nnpTask->m_pDataStack->bPopParamInt(iAssertClassNo) )
     THROW_INVALID_DSTACK("assert::class_1"_Str);
   
-  Value* pValue = nnpTask->m_pDataStack->pPeek(1);
+  Value* pValue = nnpTask->m_pDataStack->pPeekValue(1);
   
   eCN eAssertClassNo = (eCN)iAssertClassNo;
   eCN eClassNo = pValue->eClass();
@@ -161,7 +161,7 @@ void Task::vAssertClass_2(NNP_Task nnpTask)
   if ( ! nnpTask->m_pDataStack->bPopParamInt(iAssertClassNo) )
     THROW_INVALID_DSTACK("assert::class_2"_Str);
   
-  Value* pValue = nnpTask->m_pDataStack->pPeek(2);
+  Value* pValue = nnpTask->m_pDataStack->pPeekValue(2);
   
   eCN eAssertClassNo = (eCN)iAssertClassNo;
   eCN eClassNo = pValue->eClass();
@@ -188,7 +188,7 @@ void Task::vAssertClass_3(NNP_Task nnpTask)
   if ( ! nnpTask->m_pDataStack->bPopParamInt(iAssertClassNo) )
     THROW_INVALID_DSTACK("assert::class_3"_Str);
   
-  Value* pValue = nnpTask->m_pDataStack->pPeek(3);
+  Value* pValue = nnpTask->m_pDataStack->pPeekValue(3);
   
   eCN eAssertClassNo = (eCN)iAssertClassNo;
   eCN eClassNo = pValue->eClass();
@@ -215,7 +215,7 @@ void Task::vAssertClass_4(NNP_Task nnpTask)
   if ( ! nnpTask->m_pDataStack->bPopParamInt(iAssertClassNo) )
     THROW_INVALID_DSTACK("assert::class_4"_Str);
   
-  Value* pValue = nnpTask->m_pDataStack->pPeek(4);
+  Value* pValue = nnpTask->m_pDataStack->pPeekValue(4);
   
   eCN eAssertClassNo = (eCN)iAssertClassNo;
   eCN eClassNo = pValue->eClass();

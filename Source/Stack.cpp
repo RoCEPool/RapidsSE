@@ -117,7 +117,7 @@ bool Stack::bGuard(eCN eClass0)
   if (iValues() < 1)
     return false;
   
-  Value* pValue0 = pPeek(0);
+  Value* pValue0 = pPeekValue(0);
   if (eClass0 != pValue0->eClass())
     return false;
   
@@ -134,11 +134,11 @@ bool Stack::bGuard(eCN eClass0, eCN eClass1)
   if (iValues() < 2)
     return false;
   
-  Value* pValue0 = pPeek(0);
+  Value* pValue0 = pPeekValue(0);
   if (eClass0 != pValue0->eClass())
     return false;
   
-  Value* pValue1 = pPeek(1);
+  Value* pValue1 = pPeekValue(1);
   if (eClass1 != pValue1->eClass())
     return false;
   
@@ -155,15 +155,15 @@ bool Stack::bGuard(eCN eClass0, eCN eClass1, eCN eClass2)
   if (iValues() < 3)
     return false;
   
-  Value* pValue0 = pPeek(0);
+  Value* pValue0 = pPeekValue(0);
   if (eClass0 != pValue0->eClass())
     return false;
   
-  Value* pValue1 = pPeek(1);
+  Value* pValue1 = pPeekValue(1);
   if (eClass1 != pValue1->eClass())
     return false;
   
-  Value* pValue2 = pPeek(2);
+  Value* pValue2 = pPeekValue(2);
   if (eClass2 != pValue2->eClass())
     return false;
   
@@ -430,7 +430,7 @@ bool Stack::bPop(Object*& pObject1, Object*& pObject2)
 /*----------------------------------------------------------------------------*/
 /* pop Object* from data stack                                                */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPop(Object*& pObject, Value& xValue)
+bool Stack::bPop(Object*& pObject, ValWsp& xValWsp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -442,7 +442,7 @@ bool Stack::bPop(Object*& pObject, Value& xValue)
   
   pObject = xPtrVal1.pPtr();
   
-  return bPop(xValue);
+  return bPop(xValWsp);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -588,7 +588,7 @@ bool Stack::bPop(Value* pArg1)
 /*----------------------------------------------------------------------------*/
 /* pop value from data stack                                                  */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPop(Value& xArg1)
+bool Stack::bPop(ValWsp& xArg1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -603,7 +603,7 @@ bool Stack::bPop(Value& xArg1)
 /*----------------------------------------------------------------------------*/
 /* pop value, value from data stack                                           */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPop(Value& pValue1, Value& pValue2)
+bool Stack::bPop(ValWsp& pValue1, ValWsp& pValue2)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -620,7 +620,7 @@ bool Stack::bPop(Value& pValue1, Value& pValue2)
 /*----------------------------------------------------------------------------*/
 /* pop value, value, value from data stack                                    */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPop(Value& pValue1, Value& pValue2, Value& pValue3)
+bool Stack::bPop(ValWsp& pValue1, ValWsp& pValue2, ValWsp& pValue3)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -632,6 +632,21 @@ bool Stack::bPop(Value& pValue1, Value& pValue2, Value& pValue3)
   vPopVal(&pValue2);
   
   vPopVal(&pValue3);
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop value from data stack                                                  */
+/*----------------------------------------------------------------------------*/
+bool Stack::bPop(ValSet& xArg1)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  if ( ! bGuard(1) )
+    return false;
+  
+  vPopVal(&xArg1);
   
   return true;
 }
@@ -911,7 +926,7 @@ void Stack::vContentDump(Str* aPrefix, Str* aTitle)
 /*----------------------------------------------------------------------------*/
 /* peek at value on top of stack                                              */
 /*----------------------------------------------------------------------------*/
-Value* Stack::pPeek(void)
+Value* Stack::pPeekValue(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -921,7 +936,7 @@ Value* Stack::pPeek(void)
 /*----------------------------------------------------------------------------*/
 /* peek at given value on stack                                               */
 /*----------------------------------------------------------------------------*/
-Value* Stack::pPeek(i8 iNthValue)
+Value* Stack::pPeekValue(i8 iNthValue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -936,7 +951,7 @@ void Stack::vPeekValWsp(i8 iNthValue, ValWsp& xValWsp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  Value* pPeekedValue = pPeek(iNthValue);
+  Value* pPeekedValue = pPeekValue(iNthValue);
 
   i8 iSize = ValLib::iSize(pPeekedValue);
   
@@ -969,7 +984,7 @@ void Stack::vPokeValWsp(i8 iNthValue, ValWsp& xValWsp)
 
   i8 iSize = ValLib::iSize(&xValWsp);
   
-  Value* pPokeAddress = pPeek(iNthValue);
+  Value* pPokeAddress = pPeekValue(iNthValue);
   
   MemLib::vCopy(pPokeAddress,&xValWsp,iSize);
 }

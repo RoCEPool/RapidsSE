@@ -57,11 +57,12 @@ namespace Structures
     bool bPop(Object*& pObject);
     bool bPop(Object*& pObject, i8& iArg);
     bool bPop(Object*& pObject1, Object*& pObject2);
-    bool bPop(Object*& pObject, Value& xValue);
+    bool bPop(Object*& pObject, ValWsp& xValWsp);
     bool bPop(Value* pArg1);
-    bool bPop(Value& xArg1);
-    bool bPop(Value& xArg1, Value& xArg2);
-    bool bPop(Value& xArg1, Value& xArg2, Value& xArg3);
+    bool bPop(ValWsp& xArg1);
+    bool bPop(ValWsp& xArg1, ValWsp& xArg2);
+    bool bPop(ValWsp& xArg1, ValWsp& xArg2, ValWsp& xArg3);
+    bool bPop(ValSet& xArg1);
     bool bPop(s32&  sArg1);
     bool bPop(s256& sArg1);
     bool bPop(s48K& sArg1);
@@ -70,7 +71,8 @@ namespace Structures
     bool bPop(s48K& sArg1, s48K& sArg2);
     bool bPopBinary(Object*& pObject);
     bool bPopParamInt(i8& iArg1);
-    
+    i8   iPop(void);
+  
     void vPushBinary(Object* pObject);
     void vPushCell(Dictionaries::Cell* pCell);
     void vPushInt(i8 iInt);
@@ -83,14 +85,12 @@ namespace Structures
     void vPushValSet(ValSet& xValSet);
     void vPushValWsp(ValWsp& xValWsp);
   
-    i8   iPop(void);
-   
     //-------------------------------------------------------------------------
     
     void   vDiscard(void);
     void   vContentDump(Str* aPrefix, Str* aTitle);
-    Value* pPeek(void);
-    Value* pPeek(i8 iNthValue);
+    Value* pPeekValue(void);
+    Value* pPeekValue(i8 iNthValue);
     void   vPeekValWsp(i8 iNthValue, ValWsp& xValWsp);
     bool   bPeekZero(void);
     void   vPokeValWsp(i8 iNthValue, ValWsp& xValWsp);

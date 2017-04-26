@@ -1587,7 +1587,7 @@ void Task::vStackContents(Stack* pStack, StrVal& sStackContents)
     
     sStackContents.vCatSprint(" "_Str);
     
-    ValWsp* pValWsp = static_cast<ValWsp*>(pStack->pPeek(iValue));
+    ValWsp* pValWsp = static_cast<ValWsp*>(pStack->pPeekValue(iValue));
     
     eCN eClass = pValWsp->eClass();
     

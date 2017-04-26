@@ -558,7 +558,7 @@ void Task::vSprint(s48K& sFormat, s48K& sString)
     // should be %v or %V
     ASSERT('v' == *pf || 'V' == *pf);
     
-    Value* pValue0 = m_pDataStack->pPeek(0);
+    Value* pValue0 = m_pDataStack->pPeekValue(0);
     
     // test for StrVal
     if (CN_STRVAL == pValue0->eClass()) {
