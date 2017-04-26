@@ -81,8 +81,7 @@ namespace Structures
 #ifndef OLD_VALWSP
     void vPush(ValWsp& xValWsp);
 #endif
-    void vPush(Value* pValue);
-    void vPush(Value& xValue);
+    void vPushVal(Value& xValue);
     void vPush(Dictionaries::Cell* pCell);
     
     i8   iPop(void);

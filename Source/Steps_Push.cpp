@@ -76,7 +76,7 @@ void Task::vPushNullPtr(NNP_Task nnpTask)
   PtrVal xPtrVal;
   xPtrVal = (Object*)nullptr;
   
-  nnpTask->m_pDataStack->vPush(xPtrVal);
+  nnpTask->m_pDataStack->vPushVal(xPtrVal);
   
   EXIT();
 }

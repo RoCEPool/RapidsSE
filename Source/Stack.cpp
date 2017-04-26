@@ -702,7 +702,7 @@ void Stack::vPushBinary(Object* pObject)
   ValWsp xBinVal;
   xBinVal.vAssignBinary(pObject);
 
-  vPush(xBinVal);
+  vPushVal(xBinVal);
   
 }
 
@@ -717,7 +717,7 @@ void Stack::vPush(Object* pObject)
   
   xPtrObject = pObject;
   
-  vPush(xPtrObject);
+  vPushVal(xPtrObject);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -731,7 +731,7 @@ void Stack::vPush(Cell* pCell)
   
   xIpVal = pCell;
   
-  vPush(xIpVal);
+  vPushVal(xIpVal);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -771,7 +771,7 @@ void Stack::vPush(s32& sArg1)
   ValWsp xStrVal1;
   xStrVal1 = sArg1;
   
-  vPush(xStrVal1);
+  vPushVal(xStrVal1);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -784,7 +784,7 @@ void Stack::vPush(s256& sArg1)
   ValWsp xStrVal1;
   xStrVal1 = sArg1;
   
-  vPush(xStrVal1);
+  vPushVal(xStrVal1);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -797,29 +797,17 @@ void Stack::vPush(s48K& sArg1)
   ValWsp xStrVal1;
   xStrVal1 = sArg1;
   
-  vPush(xStrVal1);
+  vPushVal(xStrVal1);
 }
 
 /*----------------------------------------------------------------------------*/
 /* push value onto data stack                                                 */
 /*----------------------------------------------------------------------------*/
-void Stack::vPush(Value& xVal1)
+void Stack::vPushVal(Value& xVal1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   vPushVal(&xVal1);
-}
-
-/*----------------------------------------------------------------------------*/
-/* push value onto data stack                                                 */
-/*----------------------------------------------------------------------------*/
-void Stack::vPush(Value* pValue)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  vPushVal(pValue);
-
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
 }
 
 #ifndef OLD_VALWSP
