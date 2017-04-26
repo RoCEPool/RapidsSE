@@ -217,7 +217,7 @@ ENTRY("vDicName"_Str);
   ValWsp sName;
   sName = pDic->sName();
   
-  nnpTask->m_pDataStack->vPushValue(sName);
+  nnpTask->m_pDataStack->vPushValWsp(sName);
   
   EXIT();
 }

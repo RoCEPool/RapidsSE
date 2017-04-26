@@ -314,7 +314,7 @@ void Task::vStrPad(NNP_Task nnpTask)
   // adjust area size
   _pStrVal(&xStringA)->vAreaSize();
   
-  nnpTask->m_pDataStack->vPushValue(xStringA);
+  nnpTask->m_pDataStack->vPushValWsp(xStringA);
   
   EXIT();
 }

@@ -111,7 +111,7 @@ void Task::vDirGetCurrent(NNP_Task nnpTask)
   
   if (xDir.bGetCurrent(xDirPath)) {
     xStrVal = xDirPath;
-    nnpTask->m_pDataStack->vPushValue(xStrVal);
+    nnpTask->m_pDataStack->vPushValWsp(xStrVal);
   }
   else {
     THROW("Unable to get current directory"_Str);

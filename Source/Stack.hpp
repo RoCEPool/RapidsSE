@@ -78,10 +78,11 @@ namespace Structures
     void vPushS256(s256& s256);
     void vPushS48K(s48K& s48K);
 #ifndef OLD_VALWSP
-    void vPush(ValWsp& xValWsp);
+    void vPushValWsp(ValWsp& xValWsp);
 #endif
     void vPushValP(Value* pValue);
-    void vPushValue(Value& xValue);
+    void vPushValWsp(ValWsp& xValWsp);
+    void vPushValRef(Value& xValue);
     void vPushValSet(Value& xValue);
     void vPushCell(Dictionaries::Cell* pCell);
     

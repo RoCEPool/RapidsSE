@@ -64,7 +64,7 @@ void Task::vInputAccept(NNP_Task nnpTask)
   
   _pStrVal(&xWsp)->vAreaSize();
   
-  nnpTask->m_pDataStack->vPushValue(xWsp);
+  nnpTask->m_pDataStack->vPushValWsp(xWsp);
   
   EXIT();
 }

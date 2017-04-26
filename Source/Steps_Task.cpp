@@ -403,7 +403,7 @@ ENTRY("vTaskNew"_Str);
   ValWsp xValWsp;
   for (i8 iTaskArg = nTaskArgs - 1; iTaskArg >= 0; iTaskArg--) {
     nnpTask->m_pDataStack->vPeek(iTaskArg,&xValWsp);
-    nnpNewTask->m_pDataStack->vPushValue(xValWsp);
+    nnpNewTask->m_pDataStack->vPushValWsp(xValWsp);
   }
   
   // discard original task arguments
@@ -528,7 +528,7 @@ ENTRY("vTaskSeed"_Str);
   ValWsp xValWsp;
   for (i8 iTaskArg = nTaskArgs - 1; iTaskArg >= 0; iTaskArg--) {
     nnpTask->m_pDataStack->vPeek(iTaskArg,&xValWsp);
-    pThatTask->m_pDataStack->vPushValue(xValWsp);
+    pThatTask->m_pDataStack->vPushValWsp(xValWsp);
   }
   
   // discard original task arguments

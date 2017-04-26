@@ -125,7 +125,7 @@ ENTRY("vQueuePop"_Str);
   ASSERT(pQueue);
   
   if (pQueue->bPop(&xValWsp)) {
-    nnpTask->m_pDataStack->vPushValue(xValWsp);
+    nnpTask->m_pDataStack->vPushValWsp(xValWsp);
     nnpTask->m_pDataStack->vPushInt((i8)1);
   }
   else

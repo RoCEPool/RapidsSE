@@ -387,7 +387,7 @@ void Task::vSocketRecv(NNP_Task nnpTask)
     ASSERT(bSet);
   }
   
-  nnpTask->m_pDataStack->vPushValue(xValSet);
+  nnpTask->m_pDataStack->vPushValSet(xValSet);
   
   EXIT();
 }

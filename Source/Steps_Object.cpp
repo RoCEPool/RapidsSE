@@ -112,7 +112,7 @@ void Task::vObjectFetch(NNP_Task nnpTask)
   
   nnpTask->m_pReturnStack->vPeek(iPick,&xObjectWsp);
   
-  nnpTask->m_pDataStack->vPushValue(xObjectWsp);
+  nnpTask->m_pDataStack->vPushValWsp(xObjectWsp);
   
   EXIT();
 }
