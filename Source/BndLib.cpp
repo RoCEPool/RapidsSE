@@ -9,7 +9,7 @@
 /* is this key before that key                                                */
 /*----------------------------------------------------------------------------*/
 bool BndLib::bIsBefore(Key& xKeyThis, Key& xKeyThat,
-                       RelOpAry& xOpAry, ColumnVec& xColVec)
+                       RelOpAry& xOpAry, IdxColVec& xColVec)
 {
   i8 nCols = xColVec.nItems();
   
@@ -43,7 +43,7 @@ bool BndLib::bIsBefore(Key& xKeyThis, Key& xKeyThat,
 /* does given key pass key filter                                             */
 /*----------------------------------------------------------------------------*/
 bool BndLib::bPassesFilter(Key& xKeyThis, Key& xKeyThat,
-                           RelOpAry& xOpAry, ColumnVec& xColVec)
+                           RelOpAry& xOpAry, IdxColVec& xColVec)
 {
   i8 nCols = xColVec.nItems();
   

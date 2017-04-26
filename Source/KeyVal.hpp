@@ -21,17 +21,17 @@ namespace DBobjects
   
     char* aElement(Column* pColumn, i8& nBytes, char** aaCursor);
  
-    bool bLessThan(KeyVal* pKeyVal, ColumnVec* pColVec);
-    bool bLessEqual(KeyVal* pKeyVal, ColumnVec* pColVec);
-    bool bEqualTo(KeyVal* pKeyVal, ColumnVec* pColVec);
-    bool bNotEqual(KeyVal* pKeyVal, ColumnVec* pColVec);
-    bool bGreaterEqual(KeyVal* pKeyVal, ColumnVec* pColVec);
-    bool bGreaterThan(KeyVal* pKeyVal, ColumnVec* pColVec);
+    bool bLessThan(KeyVal* pKeyVal, IdxColVec* pColVec);
+    bool bLessEqual(KeyVal* pKeyVal, IdxColVec* pColVec);
+    bool bEqualTo(KeyVal* pKeyVal, IdxColVec* pColVec);
+    bool bNotEqual(KeyVal* pKeyVal, IdxColVec* pColVec);
+    bool bGreaterEqual(KeyVal* pKeyVal, IdxColVec* pColVec);
+    bool bGreaterThan(KeyVal* pKeyVal, IdxColVec* pColVec);
   
-    i8 iCmp(KeyVal* pKeyVal, ColumnVec* pColVec);
+    i8 iCmp(KeyVal* pKeyVal, IdxColVec* pColVec);
   
-    bool bMatches(KeyVal* pKeyVal, ColumnVec* pColVec, RelOpAry* pOpAry);
-    void vShow(ColumnVec* pColVec);
+    bool bMatches(KeyVal* pKeyVal, IdxColVec* pColVec, RelOpAry* pOpAry);
+    void vShow(IdxColVec* pColVec);
   
     Key& xKey(void);
   

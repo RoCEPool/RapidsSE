@@ -210,7 +210,7 @@ void IndexData::vInsertEntry(Row* pRow, i8 nRowNo, bn nBufferNo)
   Key xKey(xKeyWsp);
   
   // insert row entry in index
-  m_pIndexLevels->vInsertEntry(xKeyWsp, xRowId);
+  m_pIndexLevels->vInsertEntry(xKeyWsp, xRowId, m_pIndex->pIdxColVec());
   
 }
 

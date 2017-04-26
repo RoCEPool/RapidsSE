@@ -544,8 +544,13 @@ void Task::vIndexEntryTest(NNP_Task nnpTask)
   
   xKeyWsp.vAddElement(xValWsp);
   
+  Column* pCol = new Column("Col0"_Str);
+  pCol->vColumnType(CT_INTEGER);
+  IdxColVec* pColVec = new IdxColVec;
+  pColVec->vAdd(pCol);
+  
   // insert entry into index buffer
-  pIndexBuffer->bInsert(xKeyWsp, xRowId);
+  pIndexBuffer->bInsert(xKeyWsp, xRowId, pColVec);
   
   // verify index buffer
   //pIndexBuffer->vVerify();

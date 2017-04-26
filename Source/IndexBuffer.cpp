@@ -102,7 +102,7 @@ IndexBuffer* IndexBuffer::pNewIndexBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* insert new entry                                                           */
 /*----------------------------------------------------------------------------*/
-bool IndexBuffer::bInsert(KeyWsp& xKeyWsp, RowId xRowId)
+bool IndexBuffer::bInsert(KeyWsp& xKeyWsp, RowId xRowId, IdxColVec* pColVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
@@ -127,7 +127,7 @@ bool IndexBuffer::bInsert(KeyWsp& xKeyWsp, RowId xRowId)
   Key xKey(xKeyWsp);
   
   // get a positioned revise vector
-  Entry* pAfterEntry = aPosition(xKey, bEqualTo, pReviseVec);
+  Entry* pAfterEntry = aPosition(xKey, pColVec, bEqualTo, pReviseVec);
   Entry* pNewEntry = aNewEntry(nBytes, xEntWsp.nOffsets(), pAfterEntry);
   
   // set the new entry from the EntWsp
@@ -485,13 +485,15 @@ Entry* IndexBuffer::aNextEntry(Entry* aEntry)
 /*----------------------------------------------------------------------------*/
 /* positition to entry (optional set revise vector)                           */
 /*----------------------------------------------------------------------------*/
-Entry* IndexBuffer::aPosition(Key& xKey, bool& bEqualTo, Entry** aReviseVec)
+Entry* IndexBuffer::aPosition(Key& xKey, IdxColVec* pColVec, bool& bEqualTo, Entry** aReviseVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
   // start from head at known highest level
   Entry* pCurrentEntry = aHead();
   i8 iCurrentLevel = C_FLAT_LEVELS - 1;
+  RelOpAry* pOpAryFind = new RelOpAry;
+  pOpAryFind->vAdd(RO_GREATER_EQUAL);
   
   do {
 
@@ -501,7 +503,8 @@ Entry* IndexBuffer::aPosition(Key& xKey, bool& bEqualTo, Entry** aReviseVec)
     while (Entry* pNextEntry = aRightEntry(pCurrentEntry, iCurrentLevel)) {
       
         // compare the inserting object with next object
-        bool bGreaterEqual = bI8Compare(&xKey, pNextEntry->aKey(), bEqualTo);
+        //bool bGreaterEqual = bI8Compare(&xKey, pNextEntry->aKey(), bEqualTo);
+        bool bGreaterEqual = xKey.bMatches(pNextEntry->aKey(), pColVec, pOpAryFind);
       
         if (bGreaterEqual) {
             // pObjectInsert is >= pObjectNext
@@ -532,6 +535,8 @@ Entry* IndexBuffer::aPosition(Key& xKey, bool& bEqualTo, Entry** aReviseVec)
     
     // and repeat till we have a complete revision vector
   } while (iCurrentLevel >= 0);
+  
+  delete pOpAryFind;
   
   return pCurrentEntry;
 }

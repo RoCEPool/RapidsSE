@@ -32,6 +32,7 @@ typedef Array<CN_ROARRAY,eRO,1024> RelOpAry;
 
 #include "Data.hpp"
 
+typedef Vector<CN_IDXCOLVEC,Column,CN_COLUMN,1024> IdxColVec;
 
 #include "RowId.hpp"
 #include "KeyWsp.hpp"
@@ -55,7 +56,6 @@ typedef Array<CN_ROARRAY,eRO,1024> RelOpAry;
 #include "Ring.hpp"
 
 
-typedef Vector<CN_IDXCOLVEC,Column,CN_COLUMN,1024> IdxColVec;
 typedef Vector<CN_KEYVEC,KeyVal,CN_KEYVAL,1024> KeyVec;
 
 #include "Table.hpp"

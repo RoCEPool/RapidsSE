@@ -71,293 +71,72 @@ char* KeyVal::aElement(Column* pColumn, i8& nBytes, char** aaCursor)
 /*----------------------------------------------------------------------------*/
 /* if this key less than given key?                                           */
 /*----------------------------------------------------------------------------*/
-bool KeyVal::bLessThan(KeyVal* pKeyValThat, ColumnVec* pColVec)
+bool KeyVal::bLessThan(KeyVal* pKeyValThat, IdxColVec* pColVec)
 {
-  bool bLessThan = false;
-  
-  char* aCursorThis = m_xKey.aWspArea();
-  char* aCursorThat = pKeyValThat->m_xKey.aWspArea();
-  
-  for (i8 iColumn = 0; iColumn < pColVec->nItems(); iColumn++) {
-    
-    Column* pColumn = pColVec->pGet(iColumn);
-    
-    i8 nBytesThis;
-    i8 nBytesThat;
-    
-    char* aElementThis = aElement(pColumn,nBytesThis,&aCursorThis);
-    char* aElementThat = aElement(pColumn,nBytesThat,&aCursorThat);
-    
-    bLessThan = pColumn->bLessThan(aElementThis,nBytesThis,
-                                   aElementThat,nBytesThat);
-    if (!bLessThan)
-      break;
-  }
-  
-  return bLessThan;
+  return m_xKey.bLessThan(&pKeyValThat->m_xKey, pColVec);
 }
 
 /*----------------------------------------------------------------------------*/
 /* if this key less than or equal to given key?                               */
 /*----------------------------------------------------------------------------*/
-bool KeyVal::bLessEqual(KeyVal* pKeyValThat, ColumnVec* pColVec)
+bool KeyVal::bLessEqual(KeyVal* pKeyValThat, IdxColVec* pColVec)
 {
-  bool bLessEqual = false;
-  
-  char* aCursorThis = m_xKey.aWspArea();
-  char* aCursorThat = pKeyValThat->m_xKey.aWspArea();
-  
-  for (i8 iColumn = 0; iColumn < pColVec->nItems(); iColumn++) {
-    
-    Column* pColumn = pColVec->pGet(iColumn);
-    
-    i8 nBytesThis;
-    i8 nBytesThat;
-    
-    char* aElementThis = aElement(pColumn,nBytesThis,&aCursorThis);
-    char* aElementThat = aElement(pColumn,nBytesThat,&aCursorThat);
-    
-    bLessEqual = pColumn->bLessEqual(aElementThis,nBytesThis,
-                                     aElementThat,nBytesThat);
-    if (!bLessEqual)
-      break;
-  }
-  
-  return bLessEqual;
+  return m_xKey.bLessEqual(&pKeyValThat->m_xKey, pColVec);
 }
 
 /*----------------------------------------------------------------------------*/
 /* if this key equal to given key?                                            */
 /*----------------------------------------------------------------------------*/
-bool KeyVal::bEqualTo(KeyVal* pKeyValThat, ColumnVec* pColVec)
+bool KeyVal::bEqualTo(KeyVal* pKeyValThat, IdxColVec* pColVec)
 {
-  bool bEqualTo = false;
-  
-  char* aCursorThis = m_xKey.aWspArea();
-  char* aCursorThat = pKeyValThat->m_xKey.aWspArea();
-  
-  for (i8 iColumn = 0; iColumn < pColVec->nItems(); iColumn++) {
-    
-    Column* pColumn = pColVec->pGet(iColumn);
-    
-    i8 nBytesThis;
-    i8 nBytesThat;
-    
-    char* aElementThis = aElement(pColumn,nBytesThis,&aCursorThis);
-    char* aElementThat = aElement(pColumn,nBytesThat,&aCursorThat);
-    
-    bEqualTo = pColumn->bEqualTo(aElementThis,nBytesThis,
-                                 aElementThat,nBytesThat);
-    if (!bEqualTo)
-      break;
-  }
-  
-  return bEqualTo;
+  return m_xKey.bEqualTo(&pKeyValThat->m_xKey, pColVec);
 }
 
 /*----------------------------------------------------------------------------*/
 /* if this key not equal to given key?                                        */
 /*----------------------------------------------------------------------------*/
-bool KeyVal::bNotEqual(KeyVal* pKeyValThat, ColumnVec* pColVec)
+bool KeyVal::bNotEqual(KeyVal* pKeyValThat, IdxColVec* pColVec)
 {
-  bool bNotEqual = false;
-  
-  char* aCursorThis = m_xKey.aWspArea();
-  char* aCursorThat = pKeyValThat->m_xKey.aWspArea();
-  
-  for (i8 iColumn = 0; iColumn < pColVec->nItems(); iColumn++) {
-    
-    Column* pColumn = pColVec->pGet(iColumn);
-    
-    i8 nBytesThis;
-    i8 nBytesThat;
-    
-    char* aElementThis = aElement(pColumn,nBytesThis,&aCursorThis);
-    char* aElementThat = aElement(pColumn,nBytesThat,&aCursorThat);
-    
-    bNotEqual = pColumn->bNotEqual(aElementThis,nBytesThis,
-                                   aElementThat,nBytesThat);
-    if (!bNotEqual)
-      break;
-  }
-  
-  return bNotEqual;
+  return m_xKey.bNotEqual(&pKeyValThat->m_xKey, pColVec);
 }
 
 /*----------------------------------------------------------------------------*/
 /* if this key greater than or equal to given key?                            */
 /*----------------------------------------------------------------------------*/
-bool KeyVal::bGreaterEqual(KeyVal* pKeyValThat, ColumnVec* pColVec)
+bool KeyVal::bGreaterEqual(KeyVal* pKeyValThat, IdxColVec* pColVec)
 {
-  bool bGreaterEqual = false;
-  
-  char* aCursorThis = m_xKey.aWspArea();
-  char* aCursorThat = pKeyValThat->m_xKey.aWspArea();
-  
-  for (i8 iColumn = 0; iColumn < pColVec->nItems(); iColumn++) {
-    
-    Column* pColumn = pColVec->pGet(iColumn);
-    
-    i8 nBytesThis;
-    i8 nBytesThat;
-    
-    char* aElementThis = aElement(pColumn,nBytesThis,&aCursorThis);
-    char* aElementThat = aElement(pColumn,nBytesThat,&aCursorThat);
-    
-    bGreaterEqual = pColumn->bGreaterEqual(aElementThis,nBytesThis,
-                                           aElementThat,nBytesThat);
-    if (!bGreaterEqual)
-      break;
-  }
-  
-  return bGreaterEqual;
+  return m_xKey.bGreaterEqual(&pKeyValThat->m_xKey, pColVec);
 }
 
 /*----------------------------------------------------------------------------*/
 /* if this key greater than given key?                                        */
 /*----------------------------------------------------------------------------*/
-bool KeyVal::bGreaterThan(KeyVal* pKeyValThat, ColumnVec* pColVec)
+bool KeyVal::bGreaterThan(KeyVal* pKeyValThat, IdxColVec* pColVec)
 {
-  bool bGreaterThan = false;
-  
-  char* aCursorThis = m_xKey.aWspArea();
-  char* aCursorThat = pKeyValThat->m_xKey.aWspArea();
-  
-  for (i8 iColumn = 0; iColumn < pColVec->nItems(); iColumn++) {
-    
-    Column* pColumn = pColVec->pGet(iColumn);
-    
-    i8 nBytesThis;
-    i8 nBytesThat;
-    
-    char* aElementThis = aElement(pColumn,nBytesThis,&aCursorThis);
-    char* aElementThat = aElement(pColumn,nBytesThat,&aCursorThat);
-    
-    bGreaterThan = pColumn->bGreaterThan(aElementThis,nBytesThis,
-                                         aElementThat,nBytesThat);
-    if (!bGreaterThan)
-      break;
-  }
-  
-  return bGreaterThan;
-}
+  return m_xKey.bGreaterThan(&pKeyValThat->m_xKey, pColVec);}
 
 /*----------------------------------------------------------------------------*/
 /* if this key greater than given key?                                        */
 /*----------------------------------------------------------------------------*/
-i8 KeyVal::iCmp(KeyVal* pKeyValThat, ColumnVec* pColVec)
+i8 KeyVal::iCmp(KeyVal* pKeyValThat, IdxColVec* pColVec)
 {
-  i8 iCmp = 0;
-  
-  char* aCursorThis = m_xKey.aWspArea();
-  char* aCursorThat = pKeyValThat->m_xKey.aWspArea();
-  
-  for (i8 iColumn = 0; iColumn < pColVec->nItems(); iColumn++) {
-    
-    Column* pColumn = pColVec->pGet(iColumn);
-    
-    i8 nBytesThis;
-    i8 nBytesThat;
-    
-    char* aElementThis = aElement(pColumn,nBytesThis,&aCursorThis);
-    char* aElementThat = aElement(pColumn,nBytesThat,&aCursorThat);
-    
-    iCmp = pColumn->iCmp(aElementThis,nBytesThis,
-                         aElementThat,nBytesThat);
-    if (iCmp)
-      break;
-  }
-  
-  return iCmp;
+  return m_xKey.iCmp(&pKeyValThat->m_xKey, pColVec);
 }
 
 /*----------------------------------------------------------------------------*/
 /* does this keyval match the given arguments                                 */
 /*----------------------------------------------------------------------------*/
-bool KeyVal::bMatches(KeyVal* pKeyValThat, ColumnVec* pColVec, RelOpAry* pRelOpAry)
+bool KeyVal::bMatches(KeyVal* pKeyValThat, IdxColVec* pColVec, RelOpAry* pRelOpAry)
 {
-  char* aCursorThis = m_xKey.aWspArea();
-  char* aCursorThat = pKeyValThat->m_xKey.aWspArea();
-  
-  bool bCmp = false;
-  
-  for (i8 iColumn = 0; iColumn < pColVec->nItems(); iColumn++) {
-    
-    Column* pColumn = pColVec->pGet(iColumn);
-    
-    i8 nBytesThis;
-    i8 nBytesThat;
-    
-    char* aElementThis = aElement(pColumn,nBytesThis,&aCursorThis);
-    char* aElementThat = aElement(pColumn,nBytesThat,&aCursorThat);
-    
-    eRO eRelOp = pRelOpAry->xGet(iColumn);
-    
-    bCmp = pColumn->bCmp(eRelOp,
-                         aElementThis,nBytesThis,
-                         aElementThat,nBytesThat);
-    
-    if ( ! bCmp)
-      break;
-  }
-  
-  return bCmp;
+  return m_xKey.bMatches(&pKeyValThat->m_xKey, pColVec, pRelOpAry);
 }
 
 /*----------------------------------------------------------------------------*/
 /* show                                                                       */
 /*----------------------------------------------------------------------------*/
-void KeyVal::vShow(ColumnVec* pColVec)
+void KeyVal::vShow(IdxColVec* pColVec)
 {
-  //m_xKey.vShow(eColumnType);
-  
-  char* aCursor = m_xKey.aWspArea();
-  s32 sKeyString;
-  
-  vTrace("Key %p"_Str, this);
-  
-  sKeyString = "( "_Str;
-  
-  for (i8 iColumn = 0; iColumn < pColVec->nItems(); iColumn++) {
-    
-    Column* pColumn = pColVec->pGet(iColumn);
-    eCT eColumnType = pColumn->eColumnType();
-    
-    i8 nBytes;
-    
-    char* aElement = this->aElement(pColumn,nBytes,&aCursor);
-    
-    i8 iKey;
-    Str* pKey;
-    
-    switch (eColumnType) {
-      case CT_INTEGER:
-        iKey = *(i8*)aElement;
-        vTrace("Element %lld:(size %lld value:%lld) "_Str,
-               iColumn,
-               nBytes,
-               iKey
-               );
-        StrLib::vSprintCat((char*)(sKeyString.aStr()), "%lld ", iKey);
-        break;
-        
-      case CT_VARCHAR:
-        pKey = (Str*)aElement;
-        vTrace("Element %lld:(size %lld value:%s) "_Str,
-               iColumn,
-               nBytes,
-               pKey
-               );
-        StrLib::vSprintCat((char*)sKeyString.aStr(), "%s ", pKey);
-        break;
-        
-      default:
-        ASSERT(0);
-    }
-
-  }
-  vTrace("%s)\n"_Str, sKeyString.aStr());
-  
+  m_xKey.vShow(pColVec);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -25,7 +25,7 @@ void KeyTest::vTest(void)
   pCol->vColumnType(CT_INTEGER);
   
   // create the column vector
-  ColumnVec* pColVec = new ColumnVec;
+  IdxColVec* pColVec = new IdxColVec;
   pColVec->vAdd(pCol);
   
   RelOpAry* pOpAryFind = new RelOpAry;
@@ -137,7 +137,7 @@ void KeyTest::vTest(void)
   pCol->vDatumType(DM_VCH);
   
   // create the column vector
-  pColVec = new ColumnVec;
+  pColVec = new IdxColVec;
   pColVec->vAdd(pCol);
   
   // create the operator array
@@ -263,7 +263,7 @@ void KeyTest::vTest(void)
   pCol1->vColumnType(CT_INTEGER);
   
   // create the column vector
-  pColVec = new ColumnVec;
+  pColVec = new IdxColVec;
   pColVec->vAdd(pCol0);
   pColVec->vAdd(pCol1);
 
@@ -381,7 +381,7 @@ void KeyTest::vTest(void)
   pCol1->vDatumType(DM_VCH);
   
   // create the column vector
-  pColVec = new ColumnVec;
+  pColVec = new IdxColVec;
   pColVec->vAdd(pCol0);
   pColVec->vAdd(pCol1);
   
@@ -494,7 +494,7 @@ void KeyTest::vTestA(void)
   bool b;
   
   // create the column vector
-  ColumnVec* pColVec = new ColumnVec;
+  IdxColVec* pColVec = new IdxColVec;
   
   Column* pCol = new Column("Col0"_Str);
   pCol->vColumnType(CT_INTEGER);

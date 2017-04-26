@@ -11,10 +11,10 @@ namespace DBobjects
 
   public:
     static bool bIsBefore(Key& xKeyThis, Key& xKeyTest,
-                          RelOpAry& xOpAry, ColumnVec& xColVec);
+                          RelOpAry& xOpAry, IdxColVec& xColVec);
 
     static bool bPassesFilter(Key& xKeyThis, Key& xKeyTest,
-                              RelOpAry& xOpAry, ColumnVec& xColVec);
+                              RelOpAry& xOpAry, IdxColVec& xColVec);
   };
 }
 
