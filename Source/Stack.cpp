@@ -928,6 +928,7 @@ Value* Stack::pPeek(i8 iNthValue)
   return pGetValue(iNthValue);
 }
 
+#ifdef OLD_VALWSP
 /*----------------------------------------------------------------------------*/
 /* peek at given value on stack                                               */
 /*----------------------------------------------------------------------------*/
@@ -944,11 +945,12 @@ void Stack::vPeekValWsp(i8 iNthValue, ValWsp& xValWsp)
   MemLib::vCopy(&xValWsp,pPeekedValue,iSize);
 }
 
-#ifndef OLD_VALWSP
+#else //////////////////////////////////////////////////////////////////////////
+
 /*----------------------------------------------------------------------------*/
 /* peek at given value on stack                                               */
 /*----------------------------------------------------------------------------*/
-void Stack::vPeek(i8 iNthValue, ValWsp& xValWsp)
+void Stack::vPeekValWsp(i8 iNthValue, ValWsp& xValWsp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
