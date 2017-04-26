@@ -402,7 +402,7 @@ ENTRY("vTaskNew"_Str);
   // copy task arguments to new task (preserving stack order)
   ValWsp xValWsp;
   for (i8 iTaskArg = nTaskArgs - 1; iTaskArg >= 0; iTaskArg--) {
-    nnpTask->m_pDataStack->vPeekValue(iTaskArg,xValWsp);
+    nnpTask->m_pDataStack->vPeekValWsp(iTaskArg,xValWsp);
     nnpNewTask->m_pDataStack->vPushValWsp(xValWsp);
   }
   
@@ -527,7 +527,7 @@ ENTRY("vTaskSeed"_Str);
   // copy task arguments to new task (preserving stack order)
   ValWsp xValWsp;
   for (i8 iTaskArg = nTaskArgs - 1; iTaskArg >= 0; iTaskArg--) {
-    nnpTask->m_pDataStack->vPeekValue(iTaskArg,xValWsp);
+    nnpTask->m_pDataStack->vPeekValWsp(iTaskArg,xValWsp);
     pThatTask->m_pDataStack->vPushValWsp(xValWsp);
   }
   
