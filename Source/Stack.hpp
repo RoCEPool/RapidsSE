@@ -81,9 +81,9 @@ namespace Structures
     void vPushValWsp(ValWsp& xValWsp);
 #endif
     void vPushValP(Value* pValue);
-    void vPushValWsp(ValWsp& xValWsp);
     void vPushValRef(Value& xValue);
-    void vPushValSet(Value& xValue);
+    void vPushValWsp(ValWsp& xValWsp);
+    void vPushValSet(ValSet& xValSet);
     void vPushCell(Dictionaries::Cell* pCell);
     
     i8   iPop(void);

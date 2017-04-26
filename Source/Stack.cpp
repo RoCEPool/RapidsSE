@@ -735,20 +735,6 @@ void Stack::vPushCell(Cell* pCell)
 }
 
 /*----------------------------------------------------------------------------*/
-/* push Header* onto data stack                                               */
-/*----------------------------------------------------------------------------*/
-/*
-void Stack::vPush(Header* pHeader1)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  PtrVal xPtrHeader;
-  xPtrHeader = pHeader1;
-  
-  vPush(&xPtrHeader);
-}
-*/
-/*----------------------------------------------------------------------------*/
 /* push i8 onto data stack                                                    */
 /*----------------------------------------------------------------------------*/
 void Stack::vPushInt(i8 iArg1)
@@ -823,11 +809,11 @@ void Stack::vPushValRef(Value& xVal1)
 /*----------------------------------------------------------------------------*/
 /* push value onto data stack                                                 */
 /*----------------------------------------------------------------------------*/
-void Stack::vPushValSet(Value& xVal1)
+void Stack::vPushValSet(ValSet& xValSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  vPushVal(&xVal1);
+  vPushVal(&xValSet);
 }
 
 /*----------------------------------------------------------------------------*/
