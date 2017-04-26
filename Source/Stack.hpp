@@ -72,12 +72,11 @@ namespace Structures
     bool bPopParamInt(i8& iArg1);
     
     void vPushBinary(Object* pObject);
-    //void vPush(Header* pHeader);
     void vPushInt(i8 iInt);
     void vPushObject(Object* pObject);
-    void vPush(s32& s32);
-    void vPush(s256& s256);
-    void vPush(s48K& s48K);
+    void vPushS32(s32& s32);
+    void vPushS256(s256& s256);
+    void vPushS48K(s48K& s48K);
 #ifndef OLD_VALWSP
     void vPush(ValWsp& xValWsp);
 #endif

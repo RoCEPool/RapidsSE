@@ -169,7 +169,7 @@ void Task::vToStr(NNP_Task nnpTask)
   s48K sString;
   ValLib::vToString(&xVal,sString);
   
-  nnpTask->m_pDataStack->vPush(sString);
+  nnpTask->m_pDataStack->vPushS48K(sString);
   
   EXIT();
 }

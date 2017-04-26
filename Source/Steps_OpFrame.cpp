@@ -74,7 +74,7 @@ void Task::vOpFrameName(NNP_Task nnpTask)
   s32 sName;
   sName = pOpFrame->sName();
   
-  nnpTask->m_pDataStack->vPush(sName);
+  nnpTask->m_pDataStack->vPushS32(sName);
   
   EXIT();
 }

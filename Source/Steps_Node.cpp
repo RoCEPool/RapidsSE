@@ -80,7 +80,7 @@ void Task::vNodeIP(NNP_Task nnpTask)
   
   s256 sIP;
   sIP = pNode->aNodeIP();
-  nnpTask->m_pDataStack->vPush(sIP);
+  nnpTask->m_pDataStack->vPushS256(sIP);
   
   EXIT();
 }
@@ -125,7 +125,7 @@ void Task::vNodeName(NNP_Task nnpTask)
   
   s256 sName;
   sName = pNode->aNodeName();
-  nnpTask->m_pDataStack->vPush(sName);
+  nnpTask->m_pDataStack->vPushS256(sName);
   
   EXIT();
 }
@@ -186,7 +186,7 @@ void Task::vNodeStatus(NNP_Task nnpTask)
     s.vSprint("RapidsSE instance %s not running"_Str,
               gxArguments.m_sRegionName.s());
   
-  nnpTask->m_pDataStack->vPush(s);
+  nnpTask->m_pDataStack->vPushS256(s);
   
   EXIT();
 }

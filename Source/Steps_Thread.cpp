@@ -292,7 +292,7 @@ ENTRY("vThreadNameFetch"_Str);
   s32 sName;
   sName = pThread->sName();
   
-  nnpTask->m_pDataStack->vPush(sName);
+  nnpTask->m_pDataStack->vPushS32(sName);
   
   EXIT();
 }

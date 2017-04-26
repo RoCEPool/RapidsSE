@@ -173,7 +173,7 @@ void Task::vTaskCommentFetch(NNP_Task nnpTask)
     THROW_INVALID_DSTACK("task.comment@"_Str);
   Task* pGivenTask = _pTask(pPtrTask);
   
-  nnpTask->m_pDataStack->vPush(pGivenTask->m_sComment);
+  nnpTask->m_pDataStack->vPushS32(pGivenTask->m_sComment);
   
   EXIT();
 }
@@ -339,7 +339,7 @@ ENTRY("vTaskNameFetch"_Str);
     THROW_INVALID_DSTACK("task.name@"_Str);
   Task* pThatTask = _pTask(pTaskObject);
   
-  nnpTask->m_pDataStack->vPush(pThatTask->m_sName);
+  nnpTask->m_pDataStack->vPushS32(pThatTask->m_sName);
   
   EXIT();
 }

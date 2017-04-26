@@ -198,7 +198,7 @@ void Task::vInputToken(NNP_Task nnpTask)
 {
 ENTRY("vInputToken"_Str);
   
-  nnpTask->m_pDataStack->vPush(nnpTask->m_pTokeniser->sToken());
+  nnpTask->m_pDataStack->vPushS48K(nnpTask->m_pTokeniser->sToken());
   
   EXIT();
 }
@@ -226,7 +226,7 @@ void Task::vTokenColon(NNP_Task nnpTask)
   
   nnpTask->m_pTokeniser->vNextToken();
   
-  nnpTask->m_pDataStack->vPush(nnpTask->m_pTokeniser->sToken());
+  nnpTask->m_pDataStack->vPushS48K(nnpTask->m_pTokeniser->sToken());
   
   EXIT();
 }

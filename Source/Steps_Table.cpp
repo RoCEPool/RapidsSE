@@ -96,7 +96,7 @@ void Task::vTableAnalyze(NNP_Task nnpTask)
   
   s48K sAnalysis;
   sAnalysis = (Str*)pTable->pAnalyze(iDetailed == 1 ? true : false);
-  nnpTask->m_pDataStack->vPush(sAnalysis);
+  nnpTask->m_pDataStack->vPushS48K(sAnalysis);
   
   EXIT();
 }
@@ -303,7 +303,7 @@ void Task::vTableName(NNP_Task nnpTask)
   
   sName = (Str*)pTable->aTableName();
   
-  nnpTask->m_pDataStack->vPush(sName);
+  nnpTask->m_pDataStack->vPushS32(sName);
 
   EXIT();
 }

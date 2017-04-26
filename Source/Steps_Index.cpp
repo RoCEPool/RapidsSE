@@ -70,7 +70,7 @@ void Task::vIndexAnalyze(NNP_Task nnpTask)
   
   s48K sAnalysis;
   sAnalysis = (Str*)pIndex->pTable()->pAnalyzeIndex(pIndex);
-  nnpTask->m_pDataStack->vPush(sAnalysis);
+  nnpTask->m_pDataStack->vPushS48K(sAnalysis);
   
   EXIT();
 }
@@ -113,7 +113,7 @@ void Task::vIndexColumnName(NNP_Task nnpTask)
   ASSERT(iIndex < pIndex->pIdxColVec()->nItems());
   Column* pColumn = pIndex->pIdxColVec()->pGet(iIndex);
   
-  nnpTask->m_pDataStack->vPush(pColumn->sColumnName());
+  nnpTask->m_pDataStack->vPushS32(pColumn->sColumnName());
   
   EXIT();
 }
@@ -139,7 +139,7 @@ void Task::vIndexColumnType(NNP_Task nnpTask)
   Column* pColumn = pIndex->pIdxColVec()->pGet(iIndex);
   s32 sColumnType = DBobjects::aCT[pColumn->eColumnType()];
   
-  nnpTask->m_pDataStack->vPush(sColumnType);
+  nnpTask->m_pDataStack->vPushS32(sColumnType);
   
   EXIT();
 }

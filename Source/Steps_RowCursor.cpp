@@ -207,7 +207,7 @@ void Task::vRowCursorRow(NNP_Task nnpTask)
   s48K xRow;
   xRow = (Str*)pRowCursor->aRowAsStr();
   
-  nnpTask->m_pDataStack->vPush(xRow);
+  nnpTask->m_pDataStack->vPushS48K(xRow);
   
   EXIT();
 }

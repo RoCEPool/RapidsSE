@@ -116,7 +116,7 @@ void Task::vStrCat(NNP_Task nnpTask)
   
   sStrR.vConcat(sStrB);
   
-  nnpTask->m_pDataStack->vPush(sStrR);
+  nnpTask->m_pDataStack->vPushS48K(sStrR);
   
   EXIT();
 }
@@ -151,7 +151,7 @@ void Task::vStrClip(NNP_Task nnpTask)
   
   StrLib::vCopyLen(sSubStr.s(),pStart,llabs(iLength));
   
-  nnpTask->m_pDataStack->vPush(sSubStr);
+  nnpTask->m_pDataStack->vPushS48K(sSubStr);
   
   EXIT();
 }
@@ -195,7 +195,7 @@ void Task::vStrEscape(NNP_Task nnpTask)
   
   StrLib::vEscape(xArg.s(),xEscaped.s());
   
-  nnpTask->m_pDataStack->vPush(xEscaped);
+  nnpTask->m_pDataStack->vPushS48K(xEscaped);
   
   EXIT();
 }
@@ -218,7 +218,7 @@ void Task::vStrFirstCsv(NNP_Task nnpTask)
   if (! StrLib::bExtractItem(&z,sFirstValue.s(), '|'))
     sFirstValue = ""_Str;
   
-  nnpTask->m_pDataStack->vPush(sFirstValue);
+  nnpTask->m_pDataStack->vPushS256(sFirstValue);
   
   EXIT();
 }
@@ -238,7 +238,7 @@ void Task::vStrFormat(NNP_Task nnpTask)
   
   nnpTask->vSprint(sFormat,sString);
   
-  nnpTask->m_pDataStack->vPush(sString);
+  nnpTask->m_pDataStack->vPushS48K(sString);
   
   EXIT();
 }
@@ -268,7 +268,7 @@ void Task::vStrLeft(NNP_Task nnpTask)
   
   StrLib::vCopyLen(sSubStr.s(),pStart,iLength);
   
-  nnpTask->m_pDataStack->vPush(sSubStr);
+  nnpTask->m_pDataStack->vPushS48K(sSubStr);
   
   EXIT();
 }
@@ -360,7 +360,7 @@ void Task::vStrPrepend(NNP_Task nnpTask)
   
   xStrR.vConcat(xStrA);
   
-  nnpTask->m_pDataStack->vPush(xStrR);
+  nnpTask->m_pDataStack->vPushS48K(xStrR);
   
   EXIT();
 }
@@ -380,7 +380,7 @@ void Task::vStrRandom(NNP_Task nnpTask)
   
   sRnd = Random::sRandomString(iLength).aStr();
   
-  nnpTask->m_pDataStack->vPush(sRnd);
+  nnpTask->m_pDataStack->vPushS48K(sRnd);
   
   EXIT();
 }
@@ -409,7 +409,7 @@ void Task::vStrReplace(NNP_Task nnpTask)
   
   StrLib::bReplace(sReplaced.s(),sString.s(),sThis.s(),sThat.s());
   
-  nnpTask->m_pDataStack->vPush(sReplaced);
+  nnpTask->m_pDataStack->vPushS48K(sReplaced);
   
   EXIT();
 }
@@ -442,7 +442,7 @@ void Task::vStrRight(NNP_Task nnpTask)
   
   StrLib::vCopyLen(sSubStr.s(),pStart,iLength);
   
-  nnpTask->m_pDataStack->vPush(sSubStr);
+  nnpTask->m_pDataStack->vPushS48K(sSubStr);
   
   EXIT();
 }
@@ -480,7 +480,7 @@ void Task::vStrSub(NNP_Task nnpTask)
   
   StrLib::vCopyLen(sSubStr.s(),pStart,iLength);
   
-  nnpTask->m_pDataStack->vPush(sSubStr);
+  nnpTask->m_pDataStack->vPushS48K(sSubStr);
   
   EXIT();
 }

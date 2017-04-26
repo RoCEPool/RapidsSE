@@ -151,7 +151,7 @@ ENTRY("vSelCursorGet"_Str);
   
   xRow = (Str*)pSelCursor->aRowAsStr();
   
-  nnpTask->m_pDataStack->vPush(xRow);
+  nnpTask->m_pDataStack->vPushS48K(xRow);
   
   EXIT();
 }

@@ -161,7 +161,7 @@ ENTRY("vFilePathGet"_Str);
 
   s256 sPath = pFile->sPath();
   
-  nnpTask->m_pDataStack->vPush(sPath);
+  nnpTask->m_pDataStack->vPushS256(sPath);
   
   EXIT();
 }
@@ -208,7 +208,7 @@ ENTRY("vFileRead"_Str);
   s48K sLine;
 
   if (pFile->bReadLine(sLine)) {
-    nnpTask->m_pDataStack->vPush(sLine);
+    nnpTask->m_pDataStack->vPushS48K(sLine);
     nnpTask->m_pDataStack->vPushInt((i8)1);
   }
   else {

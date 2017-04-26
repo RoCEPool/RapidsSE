@@ -53,7 +53,7 @@ void Task::vErrorMsg(NNP_Task nnpTask)
   s256 sErrorMsg;
   sErrorMsg = aEC[iErrorCode];
   
-  nnpTask->m_pDataStack->vPush(sErrorMsg);
+  nnpTask->m_pDataStack->vPushS256(sErrorMsg);
   
   EXIT();
 }

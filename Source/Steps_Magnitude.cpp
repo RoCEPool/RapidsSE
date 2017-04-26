@@ -66,7 +66,7 @@ void Task::vToDigitName(NNP_Task nnpTask)
     default:sName = "invalid"_Str; break;
   }
   
-  nnpTask->m_pDataStack->vPush(sName);
+  nnpTask->m_pDataStack->vPushS32(sName);
   
   EXIT();
 }
@@ -85,7 +85,7 @@ void Task::vBytesMagnitude(NNP_Task nnpTask)
   s256 sMag;
   Magnitudes::vMagnitude(iBytes, sMag);
   
-  nnpTask->m_pDataStack->vPush(sMag);
+  nnpTask->m_pDataStack->vPushS256(sMag);
   
   EXIT();
 }
@@ -110,7 +110,7 @@ void Task::vNumberMagnitude(NNP_Task nnpTask)
   
   Magnitudes::vMagnitude(iNumber, iScale, s);
   
-  nnpTask->m_pDataStack->vPush(s);
+  nnpTask->m_pDataStack->vPushS256(s);
   
   EXIT();
 }

@@ -211,7 +211,7 @@ void Task::vPlanLambdaFetch(NNP_Task nnpTask)
   Plan* pPlan = _pPlan(pPtrPlan);
   s48K sLambda = pPlan->sLambda();
   
-  nnpTask->m_pDataStack->vPush(sLambda);
+  nnpTask->m_pDataStack->vPushS48K(sLambda);
   
   EXIT();
 }
@@ -253,7 +253,7 @@ void Task::vPlanNameFetch(NNP_Task nnpTask)
   
   s32 sName = pPlan->sName();
   
-  nnpTask->m_pDataStack->vPush(sName);
+  nnpTask->m_pDataStack->vPushS32(sName);
   
   EXIT();
 }

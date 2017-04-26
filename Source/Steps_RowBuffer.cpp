@@ -71,7 +71,7 @@ ENTRY("vRowBufferAppend"_Str);
     nnpTask->m_pDataStack->vPushInt((i8)1);
   }
   else {
-    nnpTask->m_pDataStack->vPush(sRecord);
+    nnpTask->m_pDataStack->vPushS48K(sRecord);
     nnpTask->m_pDataStack->vPushInt((i8)0);
   }
     

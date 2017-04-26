@@ -218,7 +218,7 @@ ENTRY("vDirEntryName"_Str);
   
   sEntryName = pDir->sEntryName();
   
-  nnpTask->m_pDataStack->vPush(sEntryName);
+  nnpTask->m_pDataStack->vPushS256(sEntryName);
   
   EXIT();
 }
@@ -365,7 +365,7 @@ ENTRY("vDirPathGet"_Str);
   
   sPath = pDir->sPath();
   
-  nnpTask->m_pDataStack->vPush(sPath);
+  nnpTask->m_pDataStack->vPushS256(sPath);
 
   
   EXIT();

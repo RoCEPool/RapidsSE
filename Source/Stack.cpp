@@ -764,7 +764,7 @@ void Stack::vPushInt(i8 iArg1)
 /*----------------------------------------------------------------------------*/
 /* push s32 onto data stack                                                   */
 /*----------------------------------------------------------------------------*/
-void Stack::vPush(s32& sArg1)
+void Stack::vPushS32(s32& sArg1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -777,7 +777,7 @@ void Stack::vPush(s32& sArg1)
 /*----------------------------------------------------------------------------*/
 /* push s256 onto data stack                                                  */
 /*----------------------------------------------------------------------------*/
-void Stack::vPush(s256& sArg1)
+void Stack::vPushS256(s256& sArg1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -790,7 +790,7 @@ void Stack::vPush(s256& sArg1)
 /*----------------------------------------------------------------------------*/
 /* push s48K onto data stack                                                  */
 /*----------------------------------------------------------------------------*/
-void Stack::vPush(s48K& sArg1)
+void Stack::vPushS48K(s48K& sArg1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   

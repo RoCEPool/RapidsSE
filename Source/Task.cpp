@@ -1431,7 +1431,7 @@ void Task::vPushStr(Str* aStr)
   
   s48K sStr = aStr;
   
-  m_pDataStack->vPush(sStr);
+  m_pDataStack->vPushS48K(sStr);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1441,7 +1441,7 @@ void Task::vPushStr(s48K& sStr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  m_pDataStack->vPush(sStr);
+  m_pDataStack->vPushS48K(sStr);
 }
 
 /*----------------------------------------------------------------------------*/

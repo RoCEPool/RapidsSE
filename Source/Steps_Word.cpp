@@ -523,7 +523,7 @@ void Task::vLocate(NNP_Task nnpTask)
   if (pLocatedWord) {
     s32 sName;
     sName = pLocatedWord->sName();
-    nnpTask->m_pDataStack->vPush(sName);
+    nnpTask->m_pDataStack->vPushS32(sName);
   }
   else {
     i8 iZero = 0;
@@ -1065,7 +1065,7 @@ ENTRY("vWordName"_Str);
   
   s32 sWordName(pWord->sName());
   
-  nnpTask->m_pDataStack->vPush(sWordName);
+  nnpTask->m_pDataStack->vPushS32(sWordName);
   
   EXIT();
 }
