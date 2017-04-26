@@ -83,7 +83,7 @@ namespace Structures
 #endif
     void vPush(Value* pValue);
     void vPushValue(Value& xValue);
-    void vPush(Dictionaries::Cell* pCell);
+    void vPushCell(Dictionaries::Cell* pCell);
     
     i8   iPop(void);
    

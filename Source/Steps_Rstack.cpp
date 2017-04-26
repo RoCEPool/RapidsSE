@@ -120,7 +120,7 @@ void Task::vRstackCsRoll(NNP_Task nnpTask)
     nnpTask->m_pDataStack->vPush(&xValMid);
   }
 
-  nnpTask->m_pDataStack->vPush(pCellZ);
+  nnpTask->m_pDataStack->vPushCell(pCellZ);
   
   
   EXIT();

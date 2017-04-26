@@ -723,7 +723,7 @@ void Stack::vPushObject(Object* pObject)
 /*----------------------------------------------------------------------------*/
 /* push Cell* onto data stack                                                 */
 /*----------------------------------------------------------------------------*/
-void Stack::vPush(Cell* pCell)
+void Stack::vPushCell(Cell* pCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   

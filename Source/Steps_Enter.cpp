@@ -43,7 +43,7 @@ void Task::vEnterObject(NNP_Task nnpTask)
 {
   ENTRY("vEnterObject"_Str);
   
-  nnpTask->m_pReturnStack->vPush(nnpTask->IP.m_pCell);
+  nnpTask->m_pReturnStack->vPushCell(nnpTask->IP.m_pCell);
   nnpTask->IP.m_pCell = *(Cell**)nnpTask->m_pEntryCell;
   
   //  Word* pWord = pAdd<Word*>(nnpTask->m_pEntryCell,-(sizeof(Word)-sizeof(Cell*)));
@@ -71,7 +71,7 @@ void Task::vEnterRoutine(NNP_Task nnpTask)
 {
   ENTRY("vEnterRoutine"_Str);
   
-  nnpTask->m_pReturnStack->vPush(nnpTask->IP.m_pCell);
+  nnpTask->m_pReturnStack->vPushCell(nnpTask->IP.m_pCell);
   nnpTask->IP.m_pCell = *(Cell**)nnpTask->m_pEntryCell;
  
    if ( (nnpTask->m_iTracing & C_TRACE_ROUTINES) )

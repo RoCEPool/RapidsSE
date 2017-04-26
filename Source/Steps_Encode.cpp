@@ -81,7 +81,7 @@ void Task::vEncodeAhead(NNP_Task nnpTask)
   Cell* pUnknownOrigin = (Cell*)pCurrentWord->pAppend((Cell*)nullptr);
   
   // cstack: push unknown forward address
-  nnpTask->m_pDataStack->vPush(pUnknownOrigin);
+  nnpTask->m_pDataStack->vPushCell(pUnknownOrigin);
   
   EXIT();
 }
@@ -159,7 +159,7 @@ void Task::vEncodeContinue(NNP_Task nnpTask)
   pCurrentWord->vEncode("jumpTrue"_Str,pKnownBackward);
   
   // cstack: push known backward address
-  nnpTask->m_pDataStack->vPush(pKnownBackward);
+  nnpTask->m_pDataStack->vPushCell(pKnownBackward);
   
   EXIT();
 }
@@ -176,7 +176,7 @@ void Task::vEncodeHere(NNP_Task nnpTask)
   Cell* pLastCell = pCurrentWord->pLastCell();
   
   // cstack: push address of last cell
-  nnpTask->m_pDataStack->vPush(pLastCell);
+  nnpTask->m_pDataStack->vPushCell(pLastCell);
   
   EXIT();
 }
@@ -195,7 +195,7 @@ void Task::vEncodeIf(NNP_Task nnpTask)
   Cell* pUnknownOrigin = (Cell*)pCurrentWord->pAppend((Cell*)nullptr);
   
   // cstack: push unknown forward address
-  nnpTask->m_pDataStack->vPush(pUnknownOrigin);
+  nnpTask->m_pDataStack->vPushCell(pUnknownOrigin);
   
   EXIT();
 }

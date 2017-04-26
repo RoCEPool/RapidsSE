@@ -74,14 +74,14 @@ void Task::vFlowExecute(NNP_Task nnpTask)
     (pTaskStep)(nnpTask);
   }
   else if (WT_OBJECT == pWord->eWordType()) {
-    nnpTask->m_pReturnStack->vPush(nnpTask->IP.m_pCell);
+    nnpTask->m_pReturnStack->vPushCell(nnpTask->IP.m_pCell);
     nnpTask->IP.m_pCell = pWord->pEntryCell();
     
     Object* pObject = (Object*)pWord->pFirstCell();
     nnpTask->m_pDataStack->vPushObject(pObject);
   }
   else if (WT_ROUTINE == pWord->eWordType()){
-    nnpTask->m_pReturnStack->vPush(nnpTask->IP.m_pCell);
+    nnpTask->m_pReturnStack->vPushCell(nnpTask->IP.m_pCell);
     nnpTask->IP.m_pCell = pWord->pEntryCell();
   }
   else {
