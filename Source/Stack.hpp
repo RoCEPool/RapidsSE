@@ -78,13 +78,10 @@ namespace Structures
     void vPushS32(s32& s32);
     void vPushS256(s256& s256);
     void vPushS48K(s48K& s48K);
-#ifndef OLD_VALWSP
-    void vPushValWsp(ValWsp& xValWsp);
-#endif
     void vPushValue(Value* pValue);
     void vPushValue(Value& xValue);
-    void vPushValWsp(ValWsp& xValWsp);
     void vPushValSet(ValSet& xValSet);
+    void vPushValWsp(ValWsp& xValWsp);
   
     i8   iPop(void);
    
