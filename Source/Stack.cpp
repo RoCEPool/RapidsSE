@@ -654,7 +654,7 @@ bool Stack::bPop(ValSet& xArg1)
 /*----------------------------------------------------------------------------*/
 /* pop value from data stack  as integer                                      */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPopParamInt(i8& iArg1)
+bool Stack::bPopAsInt(i8& iArg1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   

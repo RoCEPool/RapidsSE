@@ -70,7 +70,7 @@ void Task::vRstackCsPick(NNP_Task nnpTask)
   
   // pop which value
   i8 nThValue;
-  if ( ! nnpTask->m_pDataStack->bPopParamInt(nThValue) )
+  if ( ! nnpTask->m_pDataStack->bPopAsInt(nThValue) )
     THROW_INVALID_DSTACK("cs-pick"_Str);
   
   // pop one return address
@@ -203,7 +203,7 @@ void Task::vRstackPick(NNP_Task nnpTask)
   ENTRY("vRstackPick"_Str);
   
   i8 iPick;
-  if ( ! nnpTask->m_pDataStack->bPopParamInt(iPick) )
+  if ( ! nnpTask->m_pDataStack->bPopAsInt(iPick) )
     THROW_INVALID_DSTACK("rpick"_Str);
   
   // could do this directly on stack

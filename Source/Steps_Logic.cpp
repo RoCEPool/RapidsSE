@@ -45,11 +45,11 @@ void Task::vLogicAnd(NNP_Task nnpTask)
   ENTRY("vLogicAnd"_Str);
   
   i8 iArgB;
-  if ( ! nnpTask->m_pDataStack->bPopParamInt(iArgB) )
+  if ( ! nnpTask->m_pDataStack->bPopAsInt(iArgB) )
     THROW_INVALID_DSTACK("and"_Str);
   
   i8 iArgA;
-  if ( ! nnpTask->m_pDataStack->bPopParamInt(iArgA) )
+  if ( ! nnpTask->m_pDataStack->bPopAsInt(iArgA) )
     THROW_INVALID_DSTACK("and"_Str);
   
   i8 iArgR = (iArgA && iArgB) ? 1 : 0;
@@ -67,7 +67,7 @@ void Task::vLogicNot(NNP_Task nnpTask)
   ENTRY("vLogicNot"_Str);
   
   i8 iValA;
-  if ( ! nnpTask->m_pDataStack->bPopParamInt(iValA) )
+  if ( ! nnpTask->m_pDataStack->bPopAsInt(iValA) )
     THROW_INVALID_DSTACK("not"_Str);
   
   i8 iNotA = iValA ? 0 : 1;
@@ -85,11 +85,11 @@ void Task::vLogicOr(NNP_Task nnpTask)
   ENTRY("vLogicOr"_Str);
   
   i8 iArgB;
-  if ( ! nnpTask->m_pDataStack->bPopParamInt(iArgB) )
+  if ( ! nnpTask->m_pDataStack->bPopAsInt(iArgB) )
     THROW_INVALID_DSTACK("or"_Str);
   
   i8 iArgA;
-  if ( ! nnpTask->m_pDataStack->bPopParamInt(iArgA) )
+  if ( ! nnpTask->m_pDataStack->bPopAsInt(iArgA) )
     THROW_INVALID_DSTACK("or"_Str);
   
   i8 iArgR = (iArgA || iArgB) ? 1 : 0;

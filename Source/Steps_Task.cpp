@@ -151,7 +151,7 @@ void Task::vTaskAcksStore(NNP_Task nnpTask)
   Task* pGivenTask = _pTask(pPtrTask);
   
   i8 iInt;
-  if ( ! nnpTask->m_pDataStack->bPopParamInt(iInt) )
+  if ( ! nnpTask->m_pDataStack->bPopAsInt(iInt) )
     THROW_INVALID_DSTACK("task.acks!"_Str);
   
   ASSERT(0 == *pGivenTask->m_zAcks);

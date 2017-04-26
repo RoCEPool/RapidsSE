@@ -60,7 +60,7 @@ void Task::vAssert(NNP_Task nnpTask)
   ENTRY("vAssert"_Str);
   
   i8 iTrue;
-  if ( ! nnpTask->m_pDataStack->bPopParamInt(iTrue) )
+  if ( ! nnpTask->m_pDataStack->bPopAsInt(iTrue) )
     THROW_INVALID_DSTACK("assert"_Str);
   
   if ( ! iTrue )
@@ -77,7 +77,7 @@ void Task::vAssertClass(NNP_Task nnpTask)
   ENTRY("vAssertClass"_Str);
   
   i8 iAssertClassNo;
-  if ( ! nnpTask->m_pDataStack->bPopParamInt(iAssertClassNo) )
+  if ( ! nnpTask->m_pDataStack->bPopAsInt(iAssertClassNo) )
     THROW_INVALID_DSTACK("assert::class"_Str);
   
   Value* pValue = nnpTask->m_pDataStack->pPeekValue();
@@ -104,7 +104,7 @@ void Task::vAssertClass_0(NNP_Task nnpTask)
   ENTRY("vAssertClass_0"_Str);
   
   i8 iAssertClassNo;
-  if ( ! nnpTask->m_pDataStack->bPopParamInt(iAssertClassNo) )
+  if ( ! nnpTask->m_pDataStack->bPopAsInt(iAssertClassNo) )
     THROW_INVALID_DSTACK("assert::class_0"_Str);
   
   Value* pValue = nnpTask->m_pDataStack->pPeekValue(0);
@@ -131,7 +131,7 @@ void Task::vAssertClass_1(NNP_Task nnpTask)
   ENTRY("vAssertClass_1"_Str);
   
   i8 iAssertClassNo;
-  if ( ! nnpTask->m_pDataStack->bPopParamInt(iAssertClassNo) )
+  if ( ! nnpTask->m_pDataStack->bPopAsInt(iAssertClassNo) )
     THROW_INVALID_DSTACK("assert::class_1"_Str);
   
   Value* pValue = nnpTask->m_pDataStack->pPeekValue(1);
@@ -158,7 +158,7 @@ void Task::vAssertClass_2(NNP_Task nnpTask)
   ENTRY("vAssertClass_2"_Str);
   
   i8 iAssertClassNo;
-  if ( ! nnpTask->m_pDataStack->bPopParamInt(iAssertClassNo) )
+  if ( ! nnpTask->m_pDataStack->bPopAsInt(iAssertClassNo) )
     THROW_INVALID_DSTACK("assert::class_2"_Str);
   
   Value* pValue = nnpTask->m_pDataStack->pPeekValue(2);
@@ -185,7 +185,7 @@ void Task::vAssertClass_3(NNP_Task nnpTask)
   ENTRY("vAssertClass_3"_Str);
   
   i8 iAssertClassNo;
-  if ( ! nnpTask->m_pDataStack->bPopParamInt(iAssertClassNo) )
+  if ( ! nnpTask->m_pDataStack->bPopAsInt(iAssertClassNo) )
     THROW_INVALID_DSTACK("assert::class_3"_Str);
   
   Value* pValue = nnpTask->m_pDataStack->pPeekValue(3);
@@ -212,7 +212,7 @@ void Task::vAssertClass_4(NNP_Task nnpTask)
   ENTRY("vAssertClass_4"_Str);
   
   i8 iAssertClassNo;
-  if ( ! nnpTask->m_pDataStack->bPopParamInt(iAssertClassNo) )
+  if ( ! nnpTask->m_pDataStack->bPopAsInt(iAssertClassNo) )
     THROW_INVALID_DSTACK("assert::class_4"_Str);
   
   Value* pValue = nnpTask->m_pDataStack->pPeekValue(4);

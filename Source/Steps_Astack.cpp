@@ -175,7 +175,7 @@ void Task::vAstackPick(NNP_Task nnpTask)
   ENTRY("vAstackPick"_Str);
   
   i8 iPick;
-  if ( ! nnpTask->m_pDataStack->bPopParamInt(iPick) )
+  if ( ! nnpTask->m_pDataStack->bPopAsInt(iPick) )
     THROW_INVALID_DSTACK("apick"_Str);
   
   // could do this directly on stack

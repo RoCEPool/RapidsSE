@@ -135,7 +135,7 @@ void Task::vFlowJumpFalse(NNP_Task nnpTask)
   ENTRY("vJumpFalse"_Str);
   
   i8 iVal;
-  if ( ! nnpTask->m_pDataStack->bPopParamInt(iVal) )
+  if ( ! nnpTask->m_pDataStack->bPopAsInt(iVal) )
     THROW_INVALID_DSTACK("jumpFalse"_Str);
   
   // n.b. the IP points to the jump arg
@@ -158,7 +158,7 @@ void Task::vFlowJumpTrue(NNP_Task nnpTask)
   ENTRY("vJumpTrue"_Str);
   
   i8 iVal;
-  if ( ! nnpTask->m_pDataStack->bPopParamInt(iVal) )
+  if ( ! nnpTask->m_pDataStack->bPopAsInt(iVal) )
     THROW_INVALID_DSTACK("jumpTrue"_Str);
   
   // n.b. the IP points to the jump arg

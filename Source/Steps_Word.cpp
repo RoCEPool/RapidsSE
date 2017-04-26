@@ -512,7 +512,7 @@ void Task::vLocate(NNP_Task nnpTask)
   ENTRY("vLocate"_Str);
   
   i8 iAddrAsInt;
-  if ( ! nnpTask->m_pDataStack->bPopParamInt(iAddrAsInt) )
+  if ( ! nnpTask->m_pDataStack->bPopAsInt(iAddrAsInt) )
     THROW_INVALID_DSTACK("locate"_Str);
   
   void* pCellVoid = (void*)iAddrAsInt;
