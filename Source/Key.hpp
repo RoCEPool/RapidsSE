@@ -8,7 +8,7 @@ namespace DBobjects
   class Key
   {
   private:
-  i8  m_nSize;
+  //i8  m_nSize;
   Wsp m_xWsp;
     
   public:
@@ -21,7 +21,7 @@ namespace DBobjects
     bool operator <(Key* pKeyArg);
     bool operator <=(Key* pKeyArg);
     
-    void  vShow(eCT eColumnType);
+    void  vShow(Column* pColumn);
   
     void  vKey(Key& xKey);
     void  vKey(KeyWsp& xKeyWsp);
@@ -30,8 +30,6 @@ namespace DBobjects
   
     char* aWspArea(void);
     Str*  aWspStr(void);
-    
-    i8    nSize(void);
   };
   
   Key* _aKey(void* aAddr);

@@ -378,6 +378,7 @@ void KeyTest::vTest(void)
   
   pCol1 = new Column("Col1"_Str);
   pCol1->vColumnType(CT_VARCHAR);
+  pCol1->vDatumType(DM_VCH);
   
   // create the column vector
   pColVec = new ColumnVec;
@@ -428,6 +429,8 @@ void KeyTest::vTest(void)
   xValWsp = ptr;
   pStrVal = _pStrVal(&xValWsp);
   xKeyWsp.vAddElement(xValWsp);
+  
+  pKeyValFind = new KeyVal(xKeyWsp);
   
   vTrace("Find Key value >= 2,%s\n"_Str, pStrVal->aStr());
   

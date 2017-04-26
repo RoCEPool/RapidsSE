@@ -386,10 +386,23 @@ char* Column::aValue(i8& nBytes, char** aaCursor)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
 
+  Str* aElem;
   char* aValue = *aaCursor;
   switch (m_eColumnType) {
+      
     case CT_INTEGER: nBytes = sizeof(i8); break;
-    case CT_VARCHAR: nBytes = 8; break;
+      
+    case CT_VARCHAR:
+      aElem = (Str*)aValue;
+      nBytes = 0;
+      
+      while (*aElem->s() != '\0') {
+        nBytes++;
+        aElem++;
+      }
+      nBytes++;
+      break;
+      
     default:
       ASSERT(0);
   }

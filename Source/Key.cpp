@@ -44,7 +44,6 @@ void* Key::operator new(size_t iSize, Key* pKey)
 Key::Key(KeyWsp& xKeyWsp)
 {
   vKey(xKeyWsp);
-  m_nSize = xKeyWsp.nWspUsed();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -85,18 +84,6 @@ bool Key::operator <=(Key* pKeyArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set key                                                                    */
-/*----------------------------------------------------------------------------*/
-void Key::vKey(Key& xKey)
-{
-  Str* aSrc = reinterpret_cast<Str*>(&xKey);
-  Str* aDst = aWspStr();
-  i8 nBytes  = xKey.nSize();
-  
-  MemLib::vCopy(aDst,&xKey,nBytes);
-}
-
-/*----------------------------------------------------------------------------*/
 /* set key from given key workspace                                           */
 /*----------------------------------------------------------------------------*/
 void Key::vKey(KeyWsp& xKeyWsp)
@@ -123,27 +110,29 @@ char* Key::aElement(Column* pColumn, i8& nBytes, char** aaCursor)
 /*----------------------------------------------------------------------------*/
 /* show the contents of this key                                              */
 /*----------------------------------------------------------------------------*/
-void Key::vShow(eCT eColumnType)
+void Key::vShow(Column* pColumn)
 {
+  char* aValue;
+  i8 nBytes;
   i8 iKey;
-  Str* pKey;
   
-  switch (eColumnType) {
+  aElement(pColumn, nBytes, &aValue);
+  
+  switch (pColumn->eColumnType()) {
     case CT_INTEGER:
-      iKey = *(i8*)aWspStr();
+      iKey = *(i8*)aValue;
       vTrace("Key %p: (size %lld value:%lld)\n"_Str,
              this,
-             nSize(),
+             nBytes,
              iKey
              );
       break;
       
     case CT_VARCHAR:
-      pKey = aWspStr();
       vTrace("Key %p: (size %lld value:%s)\n"_Str,
              this,
-             nSize(),
-             pKey
+             nBytes,
+             aValue
              );
       break;
       
@@ -167,14 +156,6 @@ char* Key::aWspArea(void)
 Str* Key::aWspStr(void)
 {
   return m_xWsp.aStr();
-}
-
-/*----------------------------------------------------------------------------*/
-/* get size in bytes of this key                                              */
-/*----------------------------------------------------------------------------*/
-i8 Key::nSize(void)
-{
-  return m_nSize;
 }
 
 /*============================================================================*/

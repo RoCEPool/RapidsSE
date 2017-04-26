@@ -102,7 +102,7 @@ IndexBuffer* IndexBuffer::pNewIndexBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* insert new entry                                                           */
 /*----------------------------------------------------------------------------*/
-bool IndexBuffer::bInsert(Key* aKey, RowId xRowId)
+bool IndexBuffer::bInsert(KeyWsp& xKeyWsp, RowId xRowId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
@@ -116,7 +116,7 @@ bool IndexBuffer::bInsert(Key* aKey, RowId xRowId)
   
   // initialize the EntWsp
   xEntWsp.vRowId(xRowId);
-  xEntWsp.vAddKey(aKey);
+  xEntWsp.vAddKey(xKeyWsp);
   
   //vTrace("Inserting entry:\n"_Str);
   //xEntWsp.vShow();
@@ -124,8 +124,10 @@ bool IndexBuffer::bInsert(Key* aKey, RowId xRowId)
   // get the size of the EntWsp
   i8 nBytes = Entry::nBytesRequired(xEntWsp);
   
+  Key xKey(xKeyWsp);
+  
   // get a positioned revise vector
-  Entry* pAfterEntry = aPosition(aKey, bEqualTo, pReviseVec);
+  Entry* pAfterEntry = aPosition(xKey, bEqualTo, pReviseVec);
   Entry* pNewEntry = aNewEntry(nBytes, xEntWsp.nOffsets(), pAfterEntry);
   
   // set the new entry from the EntWsp
@@ -483,7 +485,7 @@ Entry* IndexBuffer::aNextEntry(Entry* aEntry)
 /*----------------------------------------------------------------------------*/
 /* positition to entry (optional set revise vector)                           */
 /*----------------------------------------------------------------------------*/
-Entry* IndexBuffer::aPosition(Key* aKey, bool& bEqualTo, Entry** aReviseVec)
+Entry* IndexBuffer::aPosition(Key& xKey, bool& bEqualTo, Entry** aReviseVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
@@ -499,7 +501,7 @@ Entry* IndexBuffer::aPosition(Key* aKey, bool& bEqualTo, Entry** aReviseVec)
     while (Entry* pNextEntry = aRightEntry(pCurrentEntry, iCurrentLevel)) {
       
         // compare the inserting object with next object
-        bool bGreaterEqual = bI8Compare(aKey, pNextEntry->aKey(), bEqualTo);
+        bool bGreaterEqual = bI8Compare(&xKey, pNextEntry->aKey(), bEqualTo);
       
         if (bGreaterEqual) {
             // pObjectInsert is >= pObjectNext
@@ -667,8 +669,8 @@ void IndexBuffer::vVerify(void)
     Key* pKeyA = pEntryA->aKey();
     Key* pKeyB = pEntryB->aKey();
     
-    pKeyA->vShow(CT_INTEGER);
-    pKeyB->vShow(CT_INTEGER);
+    //pKeyA->vShow(CT_INTEGER);
+    //pKeyB->vShow(CT_INTEGER);
     
     ASSERT(*pEntryA->aKey() <= pEntryB->aKey());
     

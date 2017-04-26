@@ -188,7 +188,6 @@ void IndexData::vInsertEntry(Row* pRow, i8 nRowNo, bn nBufferNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
   
-  EntWsp xEntWsp;
   RowId xRowId;
   ValWsp xValWsp;
   KeyWsp xKeyWsp;
@@ -198,10 +197,6 @@ void IndexData::vInsertEntry(Row* pRow, i8 nRowNo, bn nBufferNo)
   // form the rowId
   xRowId.vBuffer(*nBufferNo);
   xRowId.vRow(nRowNo);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set the rowId in the EntWsp
-  xEntWsp.vRowId(xRowId);
   
   // get the first field (hardcoded)                            //ALKA
   StrVal* pStrVal = (StrVal*)pRow->pData();
@@ -214,14 +209,8 @@ void IndexData::vInsertEntry(Row* pRow, i8 nRowNo, bn nBufferNo)
   xKeyWsp.vAddElement(xValWsp);
   Key xKey(xKeyWsp);
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // add key to entry
-  xEntWsp.vAddKey(xKeyWsp);
-  
-  //xEntWsp.vShow();
-  
   // insert row entry in index
-  m_pIndexLevels->vInsertEntry(&xKey, xRowId);
+  m_pIndexLevels->vInsertEntry(xKeyWsp, xRowId);
   
 }
 

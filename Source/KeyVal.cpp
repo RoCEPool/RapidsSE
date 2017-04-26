@@ -314,7 +314,7 @@ void KeyVal::vShow(ColumnVec* pColVec)
   char* aCursor = m_xKey.aWspArea();
   s32 sKeyString;
   
-  vTrace("Key %p: size %lld "_Str, this, m_xKey.nSize());
+  vTrace("Key %p"_Str, this);
   
   sKeyString = "( "_Str;
   

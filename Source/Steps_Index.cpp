@@ -543,11 +543,9 @@ void Task::vIndexEntryTest(NNP_Task nnpTask)
   xValWsp = iKey0;
   
   xKeyWsp.vAddElement(xValWsp);
-
-  Key xKey(xKeyWsp);
   
   // insert entry into index buffer
-  pIndexBuffer->bInsert(&xKey, xRowId);
+  pIndexBuffer->bInsert(xKeyWsp, xRowId);
   
   // verify index buffer
   //pIndexBuffer->vVerify();
