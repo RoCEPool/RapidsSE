@@ -937,6 +937,20 @@ void Stack::vPeek(i8 iNthValue, Value* pValue)
   MemLib::vCopy(pValue,pPeekedValue,iSize);
 }
 
+#ifndef OLD_VALWSP
+/*----------------------------------------------------------------------------*/
+/* peek at given value on stack                                               */
+/*----------------------------------------------------------------------------*/
+void Stack::vPeek(i8 iNthValue, ValWsp* pValWsp)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  Value* pNestedValue = pValWsp->pNestedValue();
+
+  vPeek(iNthValue,pNestedValue);
+}
+#endif
+
 /*----------------------------------------------------------------------------*/
 /* poke at given value on stack                                               */
 /*----------------------------------------------------------------------------*/
