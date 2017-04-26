@@ -176,7 +176,7 @@ void* ValWsp::operator new(size_t iSize)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 ValWsp::ValWsp(void)
-: Value(CN_VALWSP)
+: Object(CN_VALWSP)
 {
   _precondition_(_MAGIC_,CN_VALWSP);                    //! need to add _FOOTER_
   

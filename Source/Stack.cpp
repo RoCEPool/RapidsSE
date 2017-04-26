@@ -822,6 +822,19 @@ void Stack::vPush(Value* pValue)
   _postcondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
 }
 
+#ifndef OLD_VALWSP
+/*----------------------------------------------------------------------------*/
+/* push value onto data stack                                                 */
+/*----------------------------------------------------------------------------*/
+void Stack::vPush(ValWsp& xValWsp)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  vPushVal(xValWsp.pNestedValue());
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+}
+#endif
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/

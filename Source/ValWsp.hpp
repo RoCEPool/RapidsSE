@@ -67,7 +67,7 @@ namespace Values
     };
   };
   
-  class ValWsp : public Value
+  class ValWsp : public Object
   {
   private:
     union {
