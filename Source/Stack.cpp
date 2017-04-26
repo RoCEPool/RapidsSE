@@ -963,15 +963,15 @@ void Stack::vPeekValWsp(i8 iNthValue, ValWsp& xValWsp)
 /*----------------------------------------------------------------------------*/
 /* poke at given value on stack                                               */
 /*----------------------------------------------------------------------------*/
-void Stack::vPoke(i8 iNthValue, Value* pValue)
+void Stack::vPokeValWsp(i8 iNthValue, ValWsp& xValWsp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
 
-  i8 iSize = ValLib::iSize(pValue);
+  i8 iSize = ValLib::iSize(&xValWsp);
   
   Value* pPokeAddress = pPeek(iNthValue);
   
-  MemLib::vCopy(pPokeAddress,pValue,iSize);
+  MemLib::vCopy(pPokeAddress,&xValWsp,iSize);
 }
 
 /*----------------------------------------------------------------------------*/

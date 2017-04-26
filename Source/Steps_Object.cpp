@@ -147,7 +147,7 @@ void Task::vObjectStore(NNP_Task nnpTask)
   if ( ! nnpTask->m_pDataStack->bPop(xObjectWsp) )
     THROW_INVALID_DSTACK("object!"_Str);
   
-  nnpTask->m_pReturnStack->vPoke(iPeek,&xObjectWsp);
+  nnpTask->m_pReturnStack->vPokeValWsp(iPeek,xObjectWsp);
   
   EXIT();
 }

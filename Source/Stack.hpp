@@ -92,9 +92,8 @@ namespace Structures
     Value* pPeek(void);
     Value* pPeek(i8 iNthValue);
     void   vPeekValWsp(i8 iNthValue, ValWsp& xValWsp);
-  
-    void   vPoke(i8 iNthValue, Value* pValue);
     bool   bPeekZero(void);
+    void   vPokeValWsp(i8 iNthValue, ValWsp& xValWsp);
     void   vRetry(void);
     void   vRetryPoint(void);
     void   vReset(void);
