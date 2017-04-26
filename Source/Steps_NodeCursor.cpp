@@ -116,7 +116,7 @@ ENTRY("vNodeCursorFirst"_Str);
   
   Object* pObject = pNodeCursor->pObject();
   
-  nnpTask->m_pDataStack->vPush(pObject);
+  nnpTask->m_pDataStack->vPushObject(pObject);
   
   EXIT();
 }
@@ -137,7 +137,7 @@ ENTRY("vNodeCursorGet"_Str);
   
   Object* pObject = pNodeCursor->pObject();
   
-  nnpTask->m_pDataStack->vPush(pObject);
+  nnpTask->m_pDataStack->vPushObject(pObject);
   
   EXIT();
 }
@@ -171,7 +171,7 @@ ENTRY("vNodeCursorNew"_Str);
   NodeCursor* pNodeCursor = new NodeCursor(gpGrid);
   ASSERT(CN_NODECURSOR == pNodeCursor->eClass());
   
-  nnpTask->m_pDataStack->vPush(pNodeCursor);
+  nnpTask->m_pDataStack->vPushObject(pNodeCursor);
   
   EXIT();
 }
@@ -194,7 +194,7 @@ ENTRY("vNodeCursorNext"_Str);
   
   Object* pObject = pNodeCursor->pObject();
   
-  nnpTask->m_pDataStack->vPush(pObject);
+  nnpTask->m_pDataStack->vPushObject(pObject);
   
   EXIT();
 }

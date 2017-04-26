@@ -85,7 +85,7 @@ void Task::vGridFindNode(NNP_Task nnpTask)
   
   Node* pNode = gpGrid->pFindNode(sPtrNodeName);
   
-  nnpTask->m_pDataStack->vPush(pNode);
+  nnpTask->m_pDataStack->vPushObject(pNode);
   
   EXIT();
 }
@@ -122,7 +122,7 @@ void Task::vGridNode(NNP_Task nnpTask)
   if ( ! nnpTask->m_pDataStack->bPop(iNode) )
     THROW_INVALID_DSTACK("grid.node"_Str);
   
-  nnpTask->m_pDataStack->vPush(gpGrid->pFindNode(iNode));
+  nnpTask->m_pDataStack->vPushObject(gpGrid->pFindNode(iNode));
   
   EXIT();
 }

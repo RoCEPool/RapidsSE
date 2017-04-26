@@ -65,7 +65,7 @@ void Task::vCastPtr(NNP_Task nnpTask)
   if ( ! nnpTask->m_pDataStack->bPop(iInt) )
     THROW_INVALID_DSTACK("(ptr)"_Str);
   
-  nnpTask->m_pDataStack->vPush((Object*)iInt);
+  nnpTask->m_pDataStack->vPushObject((Object*)iInt);
   
   EXIT();
 }

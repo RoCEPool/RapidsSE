@@ -104,7 +104,7 @@ void Task::vAddressFetch(NNP_Task nnpTask)
       THROW("Invalid eClass %lld"_Str,eClass);
   }
   
-  nnpTask->m_pDataStack->vPush(xValFetched);
+  nnpTask->m_pDataStack->vPushValue(xValFetched);
   
   EXIT();
 }

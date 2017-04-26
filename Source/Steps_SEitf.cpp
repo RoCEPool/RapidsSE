@@ -98,7 +98,7 @@ void Task::vSEitfDicStack(NNP_Task nnpTask)
   SEitf* pSEitf = _pSEitf(pPtrSEitf);
   ASSERT(CN_SEITF == pSEitf->eClass());
   
-  nnpTask->m_pDataStack->vPush(pSEitf->pPathStack());
+  nnpTask->m_pDataStack->vPushObject(pSEitf->pPathStack());
   
   EXIT();
 }
@@ -228,7 +228,7 @@ ENTRY("vSEitfReqFetch"_Str);
   
   Object* pPtrQueue = pSEitf->pRequestQueue();
   
-  nnpTask->m_pDataStack->vPush(pPtrQueue);
+  nnpTask->m_pDataStack->vPushObject(pPtrQueue);
   
   EXIT();
 }
@@ -276,7 +276,7 @@ ENTRY("vSEitfRspFetch"_Str);
   
   Object* pPtrQueue = pSEitf->pResponseQueue();
   
-  nnpTask->m_pDataStack->vPush(pPtrQueue);
+  nnpTask->m_pDataStack->vPushObject(pPtrQueue);
   
   EXIT();
 }
@@ -322,7 +322,7 @@ void Task::vSEitfResponseQueue(NNP_Task nnpTask)
   SEitf* pSEitf = _pSEitf(pPtrSEitf);
   ASSERT(CN_SEITF == pSEitf->eClass());
   
-  nnpTask->m_pDataStack->vPush(pSEitf->pResponseQueue());
+  nnpTask->m_pDataStack->vPushObject(pSEitf->pResponseQueue());
   
   EXIT();
 }
@@ -341,7 +341,7 @@ void Task::vSEitfTableFetch(NNP_Task nnpTask)
   SEitf* pSEitf = _pSEitf(pPtrSEitf);
   ASSERT(CN_SEITF == pSEitf->eClass());
   
-  nnpTask->m_pDataStack->vPush(pSEitf->pCurrentTable());
+  nnpTask->m_pDataStack->vPushObject(pSEitf->pCurrentTable());
   
   EXIT();
 }

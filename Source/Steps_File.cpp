@@ -114,7 +114,7 @@ ENTRY("vFileNew"_Str);
   Object* pPtrFile;
   pPtrFile = (Object*)pFile;
   
-  nnpTask->m_pDataStack->vPush(pPtrFile);
+  nnpTask->m_pDataStack->vPushObject(pPtrFile);
   
   EXIT();
 }

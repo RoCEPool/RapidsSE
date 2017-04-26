@@ -70,7 +70,7 @@ void Task::vSocketAccept(NNP_Task nnpTask)
   Task* pTask = (Task*)0x208f500c8;
   
   // return the new socket
-  nnpTask->m_pDataStack->vPush(new Socket(iSocketId));
+  nnpTask->m_pDataStack->vPushObject(new Socket(iSocketId));
   
   EXIT();
 }
@@ -161,7 +161,7 @@ void Task::vSocketConnect(NNP_Task nnpTask)
   
   // return the socket object
   Object* pPtrSocket = pSocket;
-  nnpTask->m_pDataStack->vPush(pPtrSocket);
+  nnpTask->m_pDataStack->vPushObject(pPtrSocket);
   
   EXIT();
 }
@@ -188,7 +188,7 @@ void Task::vSocketListen(NNP_Task nnpTask)
   
   // return new socket
   Object* pPtrSocket = pSocket;
-  nnpTask->m_pDataStack->vPush(pPtrSocket);
+  nnpTask->m_pDataStack->vPushObject(pPtrSocket);
   
   EXIT();
 }
@@ -211,7 +211,7 @@ void Task::vSocketOpen(NNP_Task nnpTask)
   
   // return pSocket
   Object* pPtrSocket = pSocket;
-  nnpTask->m_pDataStack->vPush(pPtrSocket);
+  nnpTask->m_pDataStack->vPushObject(pPtrSocket);
   
   EXIT();
 }
@@ -387,7 +387,7 @@ void Task::vSocketRecv(NNP_Task nnpTask)
     ASSERT(bSet);
   }
   
-  nnpTask->m_pDataStack->vPush(xValSet);
+  nnpTask->m_pDataStack->vPushValue(xValSet);
   
   EXIT();
 }

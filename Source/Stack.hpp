@@ -74,7 +74,7 @@ namespace Structures
     void vPushBinary(Object* pObject);
     //void vPush(Header* pHeader);
     void vPush(i8 iInt);
-    void vPush(Object* pObject);
+    void vPushObject(Object* pObject);
     void vPush(s32& s32);
     void vPush(s256& s256);
     void vPush(s48K& s48K);
@@ -82,7 +82,7 @@ namespace Structures
     void vPush(ValWsp& xValWsp);
 #endif
     void vPush(Value* pValue);
-    void vPush(Value& xValue);
+    void vPushValue(Value& xValue);
     void vPush(Dictionaries::Cell* pCell);
     
     i8   iPop(void);

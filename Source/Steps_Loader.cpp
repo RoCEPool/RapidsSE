@@ -111,7 +111,7 @@ void Task::vLoaderNew(NNP_Task nnpTask)
   Loader* pLoader = new Loader;
   ASSERT(CN_LOADER == pLoader->eClass());
   
-  nnpTask->m_pDataStack->vPush(pLoader);
+  nnpTask->m_pDataStack->vPushObject(pLoader);
   
   EXIT();
 }
@@ -135,7 +135,7 @@ void Task::vLoaderNewSub(NNP_Task nnpTask)
   
   pLoaderSub->vLoader(pLoader);
   
-  nnpTask->m_pDataStack->vPush(pLoaderSub);
+  nnpTask->m_pDataStack->vPushObject(pLoaderSub);
   
   EXIT();
 }

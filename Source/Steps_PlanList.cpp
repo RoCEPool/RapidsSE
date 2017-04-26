@@ -73,7 +73,7 @@ void Task::vPlanListFindPlan(NNP_Task nnpTask)
   Plan* pPlan = gpPlanList->pFind((u8)iPlanId);
   
   if (pPlan) {
-    nnpTask->m_pDataStack->vPush(pPlan);
+    nnpTask->m_pDataStack->vPushObject(pPlan);
     nnpTask->m_pDataStack->vPush((i8)1);
   }
   else {

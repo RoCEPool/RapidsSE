@@ -78,7 +78,7 @@ void Task::vFlowExecute(NNP_Task nnpTask)
     nnpTask->IP.m_pCell = pWord->pEntryCell();
     
     Object* pObject = (Object*)pWord->pFirstCell();
-    nnpTask->m_pDataStack->vPush(pObject);
+    nnpTask->m_pDataStack->vPushObject(pObject);
   }
   else if (WT_ROUTINE == pWord->eWordType()){
     nnpTask->m_pReturnStack->vPush(nnpTask->IP.m_pCell);

@@ -345,7 +345,7 @@ ENTRY("vThreadSfetch"_Str);
 
   Object* pTaskSetEmb = static_cast<Object*>(pTaskSet);;
 
-  nnpTask->m_pDataStack->vPush(pTaskSetEmb);
+  nnpTask->m_pDataStack->vPushObject(pTaskSetEmb);
   
   EXIT();
 }

@@ -117,7 +117,7 @@ ENTRY("vThreadCursorFirst"_Str);
   
   Object* pThread = pThreadCursor->pObject();
   
-  nnpTask->m_pDataStack->vPush(pThread);
+  nnpTask->m_pDataStack->vPushObject(pThread);
   
   EXIT();
 }
@@ -138,7 +138,7 @@ ENTRY("vThreadCursorGet"_Str);
   
   Object* pObject = pThreadCursor->pObject();
   
-  nnpTask->m_pDataStack->vPush(pObject);
+  nnpTask->m_pDataStack->vPushObject(pObject);
   
   EXIT();
 }
@@ -172,7 +172,7 @@ ENTRY("vThreadCursorNew"_Str);
   ThreadCursor* pThreadCursor = new ThreadCursor(gpThreadList);
   ASSERT(CN_THREADCURSOR == pThreadCursor->eClass());
   
-  nnpTask->m_pDataStack->vPush(pThreadCursor);
+  nnpTask->m_pDataStack->vPushObject(pThreadCursor);
   
   EXIT();
 }
@@ -195,7 +195,7 @@ ENTRY("vThreadCursorNext"_Str);
   
   Object* pThread = pThreadCursor->pObject();
   
-  nnpTask->m_pDataStack->vPush(pThread);
+  nnpTask->m_pDataStack->vPushObject(pThread);
   
   EXIT();
 }

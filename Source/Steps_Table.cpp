@@ -363,7 +363,7 @@ void Task::vTableSubDic(NNP_Task nnpTask)
   
   Dic* pDic = pTable->pSubDic();
   
-  nnpTask->m_pDataStack->vPush(pDic);
+  nnpTask->m_pDataStack->vPushObject(pDic);
   
   EXIT();
 }

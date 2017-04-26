@@ -61,7 +61,7 @@ ENTRY("vSEitfCursorBegin"_Str);
   
   Object* pObject = pSEitfCursor->pObject();
   
-  nnpTask->m_pDataStack->vPush(pObject);
+  nnpTask->m_pDataStack->vPushObject(pObject);
   
   EXIT();
 }
@@ -125,7 +125,7 @@ ENTRY("vSEitfCursorFirst"_Str);
   
   Object* pObject = pSEitfCursor->pObject();
   
-  nnpTask->m_pDataStack->vPush(pObject);
+  nnpTask->m_pDataStack->vPushObject(pObject);
   
   EXIT();
 }
@@ -146,7 +146,7 @@ ENTRY("vSEitfCursorGet"_Str);
   
   Object* pObject = pSEitfCursor->pObject();
   
-  nnpTask->m_pDataStack->vPush(pObject);
+  nnpTask->m_pDataStack->vPushObject(pObject);
   
   EXIT();
 }
@@ -197,7 +197,7 @@ ENTRY("vSEitfCursorNew"_Str);
   
   Object* pPtrSEitfCursor = pSEitfCursor;
   
-  nnpTask->m_pDataStack->vPush(pPtrSEitfCursor);
+  nnpTask->m_pDataStack->vPushObject(pPtrSEitfCursor);
   
   EXIT();
 }
@@ -220,7 +220,7 @@ ENTRY("vSEitfCursorNext"_Str);
   
   Object* pObject = pSEitfCursor->pObject();
   
-  nnpTask->m_pDataStack->vPush(pObject);
+  nnpTask->m_pDataStack->vPushObject(pObject);
   
   EXIT();
 }

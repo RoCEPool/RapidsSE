@@ -118,7 +118,7 @@ void Task::vDicPathPick(NNP_Task nnpTask)
   
   Object* pPtrDic = pDicPath->pPick(iDic);
 
-  nnpTask->m_pDataStack->vPush(pPtrDic);
+  nnpTask->m_pDataStack->vPushObject(pPtrDic);
   
   EXIT();
 }

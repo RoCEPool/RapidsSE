@@ -206,7 +206,7 @@ ENTRY("vSelCursorNew"_Str);
   SelCursor* pSelCursor = new SelCursor;
   ASSERT(CN_SELCURSOR == pSelCursor->eClass());
   
-  nnpTask->m_pDataStack->vPush(pSelCursor);
+  nnpTask->m_pDataStack->vPushObject(pSelCursor);
   
   EXIT();
 }
@@ -251,7 +251,7 @@ void Task::vSelCursorRowBuffer(NNP_Task nnpTask)
   RowBuffer* pRowBuffer;
   pRowBuffer = pSelCursor->pRowBuffer();
   
-  nnpTask->m_pDataStack->vPush(pRowBuffer);
+  nnpTask->m_pDataStack->vPushObject(pRowBuffer);
   
   EXIT();
 }
@@ -272,7 +272,7 @@ ENTRY("vSelCursorTableFetch"_Str);
   
   Object* pPtrTable = pSelCursor->pTable();
   
-  nnpTask->m_pDataStack->vPush(pPtrTable);
+  nnpTask->m_pDataStack->vPushObject(pPtrTable);
   
   EXIT();
 }

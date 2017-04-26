@@ -1419,7 +1419,7 @@ void Task::vPushObject(Object* pObject)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  m_pDataStack->vPush(pObject);
+  m_pDataStack->vPushObject(pObject);
 }
 
 /*----------------------------------------------------------------------------*/

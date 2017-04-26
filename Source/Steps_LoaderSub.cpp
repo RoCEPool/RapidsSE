@@ -270,7 +270,7 @@ void Task::vLoaderSubNew(NNP_Task nnpTask)
   LoaderSub* pLoaderSub = new LoaderSub;
   ASSERT(CN_LOADERSUB == pLoaderSub->eClass());
   
-  nnpTask->m_pDataStack->vPush(pLoaderSub);
+  nnpTask->m_pDataStack->vPushObject(pLoaderSub);
   
   EXIT();
 }
@@ -329,7 +329,7 @@ void Task::vLoaderSubRowBuffer(NNP_Task nnpTask)
   
   RowBuffer* pRowBuffer = pLoaderSub->pRowBuffer();
   
-  nnpTask->m_pDataStack->vPush(pRowBuffer);
+  nnpTask->m_pDataStack->vPushObject(pRowBuffer);
   
   EXIT();
 }
@@ -372,7 +372,7 @@ void Task::vLoaderSubTable(NNP_Task nnpTask)
   
   Table* pTable = pLoaderSub->pTable();
   
-  nnpTask->m_pDataStack->vPush(pTable);
+  nnpTask->m_pDataStack->vPushObject(pTable);
   
   EXIT();
 }

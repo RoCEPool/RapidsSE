@@ -52,7 +52,7 @@ void Task::vOpFrameDic(NNP_Task nnpTask)
   
   Dic* pOpDic = pOpFrame->pOpDic();
   
-  nnpTask->m_pDataStack->vPush(pOpDic);
+  nnpTask->m_pDataStack->vPushObject(pOpDic);
   
   EXIT();
 }

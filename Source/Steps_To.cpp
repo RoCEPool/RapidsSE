@@ -76,7 +76,7 @@ void Task::vToBody(NNP_Task nnpTask)
   
   Object* pPtrBody = reinterpret_cast<Object*>(pBody);
   
-  nnpTask->m_pDataStack->vPush(pPtrBody);
+  nnpTask->m_pDataStack->vPushObject(pPtrBody);
   
   EXIT();
 }
@@ -110,7 +110,7 @@ void Task::vToObject(NNP_Task nnpTask)
   if ( ! nnpTask->m_pDataStack->bPopBinary(pObject) )
     THROW_INVALID_RSTACK(">Object"_Str);
   
-  nnpTask->m_pDataStack->vPush(pObject);
+  nnpTask->m_pDataStack->vPushObject(pObject);
   
   EXIT();
 }
@@ -128,7 +128,7 @@ void Task::vToPtr(NNP_Task nnpTask)
   
   Object* pPtr = (Object*)iPtr;
   
-  nnpTask->m_pDataStack->vPush(pPtr);
+  nnpTask->m_pDataStack->vPushObject(pPtr);
   
   EXIT();
 }
@@ -150,7 +150,7 @@ void Task::vToSEitf(NNP_Task nnpTask)
   
   Object* pPtrSEitf = pSEitf;
   
-  nnpTask->m_pDataStack->vPush(pPtrSEitf);
+  nnpTask->m_pDataStack->vPushObject(pPtrSEitf);
   
   EXIT();
 }
@@ -187,7 +187,7 @@ void Task::vToTask(NNP_Task nnpTask)
   
   Object* pPtrTask = _pTask(iVal);
   
-  nnpTask->m_pDataStack->vPush(pPtrTask);
+  nnpTask->m_pDataStack->vPushObject(pPtrTask);
   
   EXIT();
 }

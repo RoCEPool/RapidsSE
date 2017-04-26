@@ -148,7 +148,7 @@ ENTRY("vRbCursorGet"_Str);
   
   RowBuffer* pRowBuffer = pRbCursor->pRowBuffer();
   
-  nnpTask->m_pDataStack->vPush(pRowBuffer);
+  nnpTask->m_pDataStack->vPushObject(pRowBuffer);
   
   EXIT();
 }
@@ -182,7 +182,7 @@ ENTRY("vRbCursorNew"_Str);
   RbCursor* pRbCursor = new RbCursor;
   ASSERT(CN_RBCURSOR == pRbCursor->eClass());
   
-  nnpTask->m_pDataStack->vPush(pRbCursor);
+  nnpTask->m_pDataStack->vPushObject(pRbCursor);
   
   EXIT();
 }
@@ -227,7 +227,7 @@ void Task::vRbCursorRowBuffer(NNP_Task nnpTask)
   RowBuffer* pRowBuffer;
   pRowBuffer = pRbCursor->pRowBuffer();
   
-  nnpTask->m_pDataStack->vPush(pRowBuffer);
+  nnpTask->m_pDataStack->vPushObject(pRowBuffer);
   
   EXIT();
 }
@@ -248,7 +248,7 @@ ENTRY("vRbCursorTableFetch"_Str);
   
   Object* pPtrTable = pRbCursor->pTable();
   
-  nnpTask->m_pDataStack->vPush(pPtrTable);
+  nnpTask->m_pDataStack->vPushObject(pPtrTable);
   
   EXIT();
 }

@@ -154,7 +154,7 @@ void Task::vRowBufferNew(NNP_Task nnpTask)
   RowBuffer* pRowBuffer = new RowBuffer;
   ASSERT(CN_ROWBUFFER == pRowBuffer->eClass());
   
-  nnpTask->m_pDataStack->vPush(pRowBuffer);
+  nnpTask->m_pDataStack->vPushObject(pRowBuffer);
   
   EXIT();
 }

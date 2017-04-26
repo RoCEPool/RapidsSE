@@ -45,7 +45,7 @@ void Task::vTaskList(NNP_Task nnpTask)
 {
 ENTRY("vTaskList"_Str);
   
-  nnpTask->m_pDataStack->vPush(gpTaskList);
+  nnpTask->m_pDataStack->vPushObject(gpTaskList);
   
   EXIT();
 }

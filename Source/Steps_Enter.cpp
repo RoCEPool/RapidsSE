@@ -59,7 +59,7 @@ void Task::vEnterObject(NNP_Task nnpTask)
   ASSERT(WT_OBJECT == pWord->eWordType());
   
   Object* pObject = (Object*)pWord->pFirstCell();
-  nnpTask->m_pDataStack->vPush(pObject);
+  nnpTask->m_pDataStack->vPushObject(pObject);
   
   EXIT();
 }

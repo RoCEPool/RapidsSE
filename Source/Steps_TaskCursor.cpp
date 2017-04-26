@@ -120,7 +120,7 @@ ENTRY("vTaskCursorFirst"_Str);
   
   Object* pPtrTask = pTaskCursor->pObject();
   
-  nnpTask->m_pDataStack->vPush(pPtrTask);
+  nnpTask->m_pDataStack->vPushObject(pPtrTask);
   
   EXIT();
 }
@@ -143,7 +143,7 @@ ENTRY("vTaskCursorGet"_Str);
   
   Object* pPtrTask = pTaskCursor->pObject();
   
-  nnpTask->m_pDataStack->vPush(pPtrTask);
+  nnpTask->m_pDataStack->vPushObject(pPtrTask);
   
   EXIT();
 }
@@ -195,7 +195,7 @@ ENTRY("vTaskCursorNext"_Str);
   
   Object* pPtrTask = pTaskCursor->pObject();
   
-  nnpTask->m_pDataStack->vPush(pPtrTask);
+  nnpTask->m_pDataStack->vPushObject(pPtrTask);
   
   EXIT();
 }

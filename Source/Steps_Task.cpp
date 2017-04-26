@@ -234,7 +234,7 @@ void Task::vTaskDicStack(NNP_Task nnpTask)
   
   Object* pPtrDicStack = &pThatTask->m_xPathStack;
   
-  nnpTask->m_pDataStack->vPush(pPtrDicStack);
+  nnpTask->m_pDataStack->vPushObject(pPtrDicStack);
   
   EXIT();
 }
@@ -298,7 +298,7 @@ void Task::vTaskJobQueueFetch(NNP_Task nnpTask)
   
   Object* pQueueEmb = static_cast<Object*>(pQueue);
   
-  nnpTask->m_pDataStack->vPush(pQueueEmb);
+  nnpTask->m_pDataStack->vPushObject(pQueueEmb);
   
   EXIT();
 }
@@ -403,7 +403,7 @@ ENTRY("vTaskNew"_Str);
   ValWsp xValWsp;
   for (i8 iTaskArg = nTaskArgs - 1; iTaskArg >= 0; iTaskArg--) {
     nnpTask->m_pDataStack->vPeek(iTaskArg,&xValWsp);
-    nnpNewTask->m_pDataStack->vPush(xValWsp);
+    nnpNewTask->m_pDataStack->vPushValue(xValWsp);
   }
   
   // discard original task arguments
@@ -415,7 +415,7 @@ ENTRY("vTaskNew"_Str);
   Task* pNewTask = *nnpNewTask;
   
   Object* pTask = pNewTask;
-  nnpTask->m_pDataStack->vPush(pTask);
+  nnpTask->m_pDataStack->vPushObject(pTask);
   
   EXIT();
 }
@@ -427,7 +427,7 @@ void Task::vTaskParentFetch(NNP_Task nnpTask)
 {
   ENTRY("vTaskParentFetch"_Str);
   
-  nnpTask->m_pDataStack->vPush(nnpTask->m_pParentTask);
+  nnpTask->m_pDataStack->vPushObject(nnpTask->m_pParentTask);
   
   EXIT();
 }
@@ -466,7 +466,7 @@ void Task::vTaskPlanFetch(NNP_Task nnpTask)
   
   Object* pPtrPlan= pPlan;
   
-  nnpTask->m_pDataStack->vPush(pPtrPlan);
+  nnpTask->m_pDataStack->vPushObject(pPtrPlan);
   
   EXIT();
 }
@@ -528,7 +528,7 @@ ENTRY("vTaskSeed"_Str);
   ValWsp xValWsp;
   for (i8 iTaskArg = nTaskArgs - 1; iTaskArg >= 0; iTaskArg--) {
     nnpTask->m_pDataStack->vPeek(iTaskArg,&xValWsp);
-    pThatTask->m_pDataStack->vPush(xValWsp);
+    pThatTask->m_pDataStack->vPushValue(xValWsp);
   }
   
   // discard original task arguments
@@ -556,7 +556,7 @@ void Task::vTaskSeitfFetch(NNP_Task nnpTask)
   
   Object* pPtrSEitf= pSEitf;
   
-  nnpTask->m_pDataStack->vPush(pPtrSEitf);
+  nnpTask->m_pDataStack->vPushObject(pPtrSEitf);
   
   EXIT();
 }
@@ -602,7 +602,7 @@ void Task::vTaskSocketFetch(NNP_Task nnpTask)
   
   Object* pSocketEmb = static_cast<Object*>(pSocket);
   
-  nnpTask->m_pDataStack->vPush(pSocketEmb);
+  nnpTask->m_pDataStack->vPushObject(pSocketEmb);
   
   EXIT();
 }
@@ -688,7 +688,7 @@ void Task::vTaskTaskSetFetch(NNP_Task nnpTask)
   
   Object* pTaskSetEmb = static_cast<Object*>(pTaskSet);
   
-  nnpTask->m_pDataStack->vPush(pTaskSetEmb);
+  nnpTask->m_pDataStack->vPushObject(pTaskSetEmb);
   
   EXIT();
 }
@@ -726,7 +726,7 @@ ENTRY("vTaskThis"_Str);
   
   Object* pTask = *nnpTask;
   
-  nnpTask->m_pDataStack->vPush(pTask);
+  nnpTask->m_pDataStack->vPushObject(pTask);
   
   EXIT();
 }
@@ -744,7 +744,7 @@ void Task::vTaskThread(NNP_Task nnpTask)
   Task* pThatTask = _pTask(pTaskObject);
 
   Thread* pThread = pThatTask->m_pThread;
-  nnpTask->m_pDataStack->vPush(pThread);
+  nnpTask->m_pDataStack->vPushObject(pThread);
   
   EXIT();
 }

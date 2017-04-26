@@ -332,7 +332,7 @@ ENTRY("vFind"_Str);
   
   Word* pWord = nnpTask->m_xPathStack.pFindWord(sName);
   
-  nnpTask->m_pDataStack->vPush(pWord);
+  nnpTask->m_pDataStack->vPushObject(pWord);
   
   EXIT();
 }
@@ -354,7 +354,7 @@ void Task::vFindInCurrent(NNP_Task nnpTask)
   
   Word* pWord = nnpTask->m_xPathStack.pFindInCurrent(sName);
   
-  nnpTask->m_pDataStack->vPush(pWord);
+  nnpTask->m_pDataStack->vPushObject(pWord);
   
   EXIT();
 }
@@ -880,7 +880,7 @@ void Task::vTick(NNP_Task nnpTask)
     pCurrentWord->vEncode("pushValue"_Str,pWord);
   }
   else {
-    nnpTask->m_pDataStack->vPush(pWord);
+    nnpTask->m_pDataStack->vPushObject(pWord);
   }
   
   EXIT();
@@ -1025,7 +1025,7 @@ ENTRY("vWordKindGet"_Str);
   
   Word* pWordKind = pWord->pKind();
   
-  nnpTask->m_pDataStack->vPush(pWordKind);
+  nnpTask->m_pDataStack->vPushObject(pWordKind);
   
   EXIT();
 }
@@ -1084,7 +1084,7 @@ void Task::vWordPrev(NNP_Task nnpTask)
   
   Word* pPrevWord = pWord->pPrevWord();
   
-  nnpTask->m_pDataStack->vPush(pPrevWord);
+  nnpTask->m_pDataStack->vPushObject(pPrevWord);
   
   EXIT();
 }
@@ -1098,7 +1098,7 @@ ENTRY("vWordThis"_Str);
   
   Word* pWord = nnpTask->m_pCurrentWord;
   
-  nnpTask->m_pDataStack->vPush(pWord);
+  nnpTask->m_pDataStack->vPushObject(pWord);
   
   EXIT();
 }

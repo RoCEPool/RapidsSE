@@ -168,7 +168,7 @@ ENTRY("vTimerNew"_Str);
   
   Object* pPtrTimer = pTimer;
   
-  nnpTask->m_pDataStack->vPush(pPtrTimer);
+  nnpTask->m_pDataStack->vPushObject(pPtrTimer);
   
   EXIT();
 }

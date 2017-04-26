@@ -294,7 +294,7 @@ void Task::vIndexSubDic(NNP_Task nnpTask)
   
   Dic* pDic = pIndex->pSubDic();
   
-  nnpTask->m_pDataStack->vPush(pDic);
+  nnpTask->m_pDataStack->vPushObject(pDic);
   
   EXIT();
 }
@@ -317,7 +317,7 @@ void Task::vIndexTableFetch(NNP_Task nnpTask)
   Table* pTable = pIndex->pTable();
   ASSERT(CN_TABLE == pTable->eClass());
   
-  nnpTask->m_pDataStack->vPush(pTable);
+  nnpTask->m_pDataStack->vPushObject(pTable);
   
   EXIT();
 }
@@ -603,7 +603,7 @@ void Task::vIndexIbNew(NNP_Task nnpTask)
   IndexBuffer* pIndexBuffer = new IndexBuffer;
   ASSERT(CN_INDEXBUFFER == pIndexBuffer->eClass());
   
-  nnpTask->m_pDataStack->vPush(pIndexBuffer);
+  nnpTask->m_pDataStack->vPushObject(pIndexBuffer);
   
   EXIT();
 }

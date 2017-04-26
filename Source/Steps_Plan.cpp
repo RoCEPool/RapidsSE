@@ -85,7 +85,7 @@ void Task::vPlanDic(NNP_Task nnpTask)
   
   Dic* pPlanDic = pPlan->pDic();
   
-  nnpTask->m_pDataStack->vPush(pPlanDic);
+  nnpTask->m_pDataStack->vPushObject(pPlanDic);
   
   EXIT();
 }
@@ -106,7 +106,7 @@ void Task::vPlanExecutingTaskFetch(NNP_Task nnpTask)
   
   Task* pTask = pPlan->pExecutingTask();
   
-  nnpTask->m_pDataStack->vPush(pTask);
+  nnpTask->m_pDataStack->vPushObject(pTask);
   
   EXIT();
 }
@@ -291,7 +291,7 @@ void Task::vPlanNew(NNP_Task nnpTask)
   
   Plan* pPlan = new Plan;
   
-  nnpTask->m_pDataStack->vPush(pPlan);
+  nnpTask->m_pDataStack->vPushObject(pPlan);
   
   EXIT();
 }
@@ -329,7 +329,7 @@ void Task::vPlanOpFrameAdd(NNP_Task nnpTask)
   pRegFrame->vOpDic(pOpDic);
   
   // push regFrame onto dstack
-  nnpTask->m_pDataStack->vPush(pRegFrame);
+  nnpTask->m_pDataStack->vPushObject(pRegFrame);
   
   EXIT();
 }
@@ -358,7 +358,7 @@ void Task::vPlanOpFrameFind(NNP_Task nnpTask)
   
   RegFrame* pRegFrame = pPlan->pRegFrameFind(sName);
   
-  nnpTask->m_pDataStack->vPush(pRegFrame);
+  nnpTask->m_pDataStack->vPushObject(pRegFrame);
   
   EXIT();
 }
@@ -377,7 +377,7 @@ void Task::vPlanOpFrameTop(NNP_Task nnpTask)
     
   RegFrame* pRegFrame = pPlan->pRegFrameTop();
   
-  nnpTask->m_pDataStack->vPush(pRegFrame);
+  nnpTask->m_pDataStack->vPushObject(pRegFrame);
   
   EXIT();
 }

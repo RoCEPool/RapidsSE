@@ -103,7 +103,7 @@ ENTRY("vNodeNew"_Str);
                          gxArguments.m_xNodes[iNodeNo].m_iPortNo);
   ASSERT(CN_NODE == pNode->eClass());
 
-  nnpTask->m_pDataStack->vPush(pNode);
+  nnpTask->m_pDataStack->vPushObject(pNode);
   
   EXIT();
 }

@@ -321,7 +321,7 @@ ENTRY("vDirNew"_Str);
   Object* pPtrDir;
   pPtrDir = (Object*)pDir;
   
-  nnpTask->m_pDataStack->vPush(pPtrDir);
+  nnpTask->m_pDataStack->vPushObject(pPtrDir);
   
   EXIT();
 }

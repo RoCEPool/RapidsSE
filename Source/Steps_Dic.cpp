@@ -141,7 +141,7 @@ void Task::vDicKindGet(NNP_Task nnpTask)
   Object* pPtrKind;
   pPtrKind = pDic->pDicKind();
   
-  nnpTask->m_pDataStack->vPush(pPtrKind);
+  nnpTask->m_pDataStack->vPushObject(pPtrKind);
   
   EXIT();
 }
@@ -184,7 +184,7 @@ ENTRY("vDicLastWord"_Str);
   
   Word* pLastWord = pDic->pLastWord();
   
-  nnpTask->m_pDataStack->vPush(pLastWord);
+  nnpTask->m_pDataStack->vPushObject(pLastWord);
   
   EXIT();
 }
@@ -196,7 +196,7 @@ void Task::vDicMain(NNP_Task nnpTask)
 {
 ENTRY("vDicMain"_Str);
   
-  nnpTask->m_pDataStack->vPush(gpMainDic);
+  nnpTask->m_pDataStack->vPushObject(gpMainDic);
   
   EXIT();
 }
@@ -217,7 +217,7 @@ ENTRY("vDicName"_Str);
   ValWsp sName;
   sName = pDic->sName();
   
-  nnpTask->m_pDataStack->vPush(sName);
+  nnpTask->m_pDataStack->vPushValue(sName);
   
   EXIT();
 }
