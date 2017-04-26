@@ -47,7 +47,7 @@ void Task::vCursorFetch(NNP_Task nnpTask)
   
   ValWsp xCursorWsp;
   
-  nnpTask->m_pReturnStack->vPeekValue(iPick,&xCursorWsp);
+  nnpTask->m_pReturnStack->vPeekValue(iPick,xCursorWsp);
   
   nnpTask->m_pDataStack->vPushValWsp(xCursorWsp);
   

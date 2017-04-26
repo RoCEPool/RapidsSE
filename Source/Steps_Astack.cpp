@@ -73,7 +73,7 @@ void Task::vAstackClass(NNP_Task nnpTask)
   
   ValWsp xValWsp;
   
-  nnpTask->m_pAuxStack->vPeekValue(nTh,&xValWsp);
+  nnpTask->m_pAuxStack->vPeekValue(nTh,xValWsp);
   
   eCN eClass = xValWsp.eClass();
   
@@ -142,7 +142,7 @@ void Task::vAstackFetch(NNP_Task nnpTask)
   
   ValWsp xValWsp;
   
-  nnpTask->m_pAuxStack->vPeekValue(0,&xValWsp);
+  nnpTask->m_pAuxStack->vPeekValue(0,xValWsp);
   
   nnpTask->m_pDataStack->vPushValWsp(xValWsp);
   
@@ -182,7 +182,7 @@ void Task::vAstackPick(NNP_Task nnpTask)
   
   ValWsp xValWsp;
   
-  nnpTask->m_pAuxStack->vPeekValue(iPick,&xValWsp);
+  nnpTask->m_pAuxStack->vPeekValue(iPick,xValWsp);
   
   nnpTask->m_pDataStack->vPushValWsp(xValWsp);
   
@@ -381,7 +381,7 @@ void Task::vAstack0(NNP_Task nnpTask)
   
   ValWsp xValWsp;
   
-  nnpTask->m_pAuxStack->vPeekValue(0,&xValWsp);
+  nnpTask->m_pAuxStack->vPeekValue(0,xValWsp);
   
   nnpTask->m_pDataStack->vPushValWsp(xValWsp);
   
@@ -399,7 +399,7 @@ void Task::vAstack1(NNP_Task nnpTask)
   
   ValWsp xValWsp;
   
-  nnpTask->m_pAuxStack->vPeekValue(1,&xValWsp);
+  nnpTask->m_pAuxStack->vPeekValue(1,xValWsp);
   
   nnpTask->m_pDataStack->vPushValWsp(xValWsp);
   
@@ -417,7 +417,7 @@ void Task::vAstack2(NNP_Task nnpTask)
   
   ValWsp xValWsp;
   
-  nnpTask->m_pAuxStack->vPeekValue(2,&xValWsp);
+  nnpTask->m_pAuxStack->vPeekValue(2,xValWsp);
   
   nnpTask->m_pDataStack->vPushValWsp(xValWsp);
   
@@ -435,7 +435,7 @@ void Task::vAstack3(NNP_Task nnpTask)
   
   ValWsp xValWsp;
   
-  nnpTask->m_pAuxStack->vPeekValue(3,&xValWsp);
+  nnpTask->m_pAuxStack->vPeekValue(3,xValWsp);
   
   nnpTask->m_pDataStack->vPushValWsp(xValWsp);
   
@@ -453,7 +453,7 @@ void Task::vAstack4(NNP_Task nnpTask)
   
   ValWsp xValWsp;
   
-  nnpTask->m_pAuxStack->vPeekValue(4,&xValWsp);
+  nnpTask->m_pAuxStack->vPeekValue(4,xValWsp);
   
   nnpTask->m_pDataStack->vPushValWsp(xValWsp);
   
@@ -471,7 +471,7 @@ void Task::vAstack5(NNP_Task nnpTask)
   
   ValWsp xValWsp;
   
-  nnpTask->m_pAuxStack->vPeekValue(5,&xValWsp);
+  nnpTask->m_pAuxStack->vPeekValue(5,xValWsp);
   
   nnpTask->m_pDataStack->vPushValWsp(xValWsp);
   
@@ -489,7 +489,7 @@ void Task::vAstack6(NNP_Task nnpTask)
   
   ValWsp xValWsp;
   
-  nnpTask->m_pAuxStack->vPeekValue(6,&xValWsp);
+  nnpTask->m_pAuxStack->vPeekValue(6,xValWsp);
   
   nnpTask->m_pDataStack->vPushValWsp(xValWsp);
   
@@ -507,7 +507,7 @@ void Task::vAstack7(NNP_Task nnpTask)
   
   ValWsp xValWsp;
   
-  nnpTask->m_pAuxStack->vPeekValue(7,&xValWsp);
+  nnpTask->m_pAuxStack->vPeekValue(7,xValWsp);
   
   nnpTask->m_pDataStack->vPushValWsp(xValWsp);
   
@@ -525,7 +525,7 @@ void Task::vAstack8(NNP_Task nnpTask)
   
   ValWsp xValWsp;
   
-  nnpTask->m_pAuxStack->vPeekValue(8,&xValWsp);
+  nnpTask->m_pAuxStack->vPeekValue(8,xValWsp);
   
   nnpTask->m_pDataStack->vPushValWsp(xValWsp);
   
@@ -543,7 +543,7 @@ void Task::vAstack9(NNP_Task nnpTask)
   
   ValWsp xValWsp;
   
-  nnpTask->m_pAuxStack->vPeekValue(9,&xValWsp);
+  nnpTask->m_pAuxStack->vPeekValue(9,xValWsp);
   
   nnpTask->m_pDataStack->vPushValWsp(xValWsp);
   

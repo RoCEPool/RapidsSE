@@ -880,7 +880,7 @@ void Stack::vContentDump(Str* aPrefix, Str* aTitle)
   i8 nValues = iValues();
   for (i8 iVal = 0; iVal < nValues; iVal++) {
     
-    vPeekValue(iVal,&xValWsp);
+    vPeekValue(iVal,xValWsp);
     
     ValLib::vToString(&xValWsp,sWorkspace);
     Str* aClass = xValWsp.aClass();
@@ -931,7 +931,7 @@ Value* Stack::pPeek(i8 iNthValue)
 /*----------------------------------------------------------------------------*/
 /* peek at given value on stack                                               */
 /*----------------------------------------------------------------------------*/
-void Stack::vPeekValue(i8 iNthValue, Value* pValue)
+void Stack::vPeekValue(i8 iNthValue, Value& xValue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -941,7 +941,7 @@ void Stack::vPeekValue(i8 iNthValue, Value* pValue)
   
   //vTrace("Peek: %lld %p %lld\n"_Str,iNthValue,pPeekedValue,iSize);
   
-  MemLib::vCopy(pValue,pPeekedValue,iSize);
+  MemLib::vCopy(&xValue,pPeekedValue,iSize);
 }
 
 #ifndef OLD_VALWSP

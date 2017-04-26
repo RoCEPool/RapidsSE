@@ -93,7 +93,7 @@ void Task::vDstackClass(NNP_Task nnpTask)
   
   ValWsp xValWsp;
   
-  nnpTask->m_pDataStack->vPeek(nTh,&xValWsp);
+  nnpTask->m_pDataStack->vPeekValue(nTh,xValWsp);
   
   eCN eClass = xValWsp.eClass();
   
@@ -263,7 +263,7 @@ void Task::vDstackOver(NNP_Task nnpTask)
   
   ValWsp xValWsp;
   
-  nnpTask->m_pDataStack->vPeek(1,&xValWsp);
+  nnpTask->m_pDataStack->vPeekValue(1,xValWsp);
   
   nnpTask->m_pDataStack->vPushValWsp(xValWsp);
   
@@ -285,7 +285,7 @@ void Task::vDstackPick(NNP_Task nnpTask)
   
   ValWsp xValWsp;
   
-  nnpTask->m_pDataStack->vPeek(iPick,&xValWsp);
+  nnpTask->m_pDataStack->vPeekValue(iPick,xValWsp);
   
   nnpTask->m_pDataStack->vPushValWsp(xValWsp);
   
