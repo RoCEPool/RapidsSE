@@ -195,25 +195,6 @@ bool Stack::bPop(Dictionaries::Cell*& pCell)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop Header* from data stack                                                */
-/*----------------------------------------------------------------------------*/
-/*
-bool Stack::bPop(Header*& pHeader)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  if ( ! bGuard(CN_PTRVAL) )
-    return false;
-  
-  PtrVal xPtrVal1;
-  vPopVal(&xPtrVal1);
-  
-  pHeader = xPtrVal1.pHeader();
-  
-  return true;
-}
-*/
-/*----------------------------------------------------------------------------*/
 /* pop eCN from data stack                                                    */
 /*----------------------------------------------------------------------------*/
 bool Stack::bPop(eCN& iArg1)
@@ -298,7 +279,7 @@ bool Stack::bPop(i8& iArg1, Object*& pArg2)
 /*----------------------------------------------------------------------------*/
 /* pop i8,val from data stack                                                 */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPop(i8& iArg1, Value& xArg2)
+bool Stack::bPop(i8& iArg1, ValWsp& xArg2)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   

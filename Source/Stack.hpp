@@ -47,11 +47,10 @@ namespace Structures
     
     bool bPop(Dictionaries::Cell*& pCell);
     bool bPop(eCN& eArg1);
-    //bool bPop(Header*& pHeader);
     bool bPop(i8& iArg1);
     bool bPop(i8& iArg1, i8& iArg2);
     bool bPop(i8& iArg1, Object*& pObject);
-    bool bPop(i8& iArg1, Value& xArg1);
+    bool bPop(i8& iArg1, ValWsp& xArg1);
     bool bPop(i8& iArg1, s48K& sArg2);
     bool bPop(i8& iArg1, i8& iArg2, Value& xArg3);
     bool bPop(Object*& pObject);
