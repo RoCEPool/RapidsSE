@@ -717,7 +717,7 @@ void Stack::vPushObject(Object* pObject)
   
   xPtrObject = pObject;
   
-  vPushValRef(xPtrObject);
+  vPushValue(xPtrObject);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -731,7 +731,7 @@ void Stack::vPushCell(Cell* pCell)
   
   xIpVal = pCell;
   
-  vPushValRef(xIpVal);
+  vPushValue(xIpVal);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -744,7 +744,7 @@ void Stack::vPushInt(i8 iArg1)
   IntVal xIntVal1;
   xIntVal1 = iArg1;
   
-  vPushValRef(xIntVal1);
+  vPushValue(xIntVal1);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -799,7 +799,7 @@ void Stack::vPushValWsp(ValWsp& xValWsp)
 /*----------------------------------------------------------------------------*/
 /* push value onto data stack                                                 */
 /*----------------------------------------------------------------------------*/
-void Stack::vPushValRef(Value& xVal1)
+void Stack::vPushValue(Value& xVal1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -819,7 +819,7 @@ void Stack::vPushValSet(ValSet& xValSet)
 /*----------------------------------------------------------------------------*/
 /* push value onto data stack                                                 */
 /*----------------------------------------------------------------------------*/
-void Stack::vPushValP(Value* pValue)
+void Stack::vPushValue(Value* pValue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   

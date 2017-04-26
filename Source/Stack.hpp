@@ -72,6 +72,7 @@ namespace Structures
     bool bPopParamInt(i8& iArg1);
     
     void vPushBinary(Object* pObject);
+    void vPushCell(Dictionaries::Cell* pCell);
     void vPushInt(i8 iInt);
     void vPushObject(Object* pObject);
     void vPushS32(s32& s32);
@@ -80,12 +81,11 @@ namespace Structures
 #ifndef OLD_VALWSP
     void vPushValWsp(ValWsp& xValWsp);
 #endif
-    void vPushValP(Value* pValue);
-    void vPushValRef(Value& xValue);
+    void vPushValue(Value* pValue);
+    void vPushValue(Value& xValue);
     void vPushValWsp(ValWsp& xValWsp);
     void vPushValSet(ValSet& xValSet);
-    void vPushCell(Dictionaries::Cell* pCell);
-    
+  
     i8   iPop(void);
    
     //-------------------------------------------------------------------------

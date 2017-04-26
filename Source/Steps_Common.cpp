@@ -57,7 +57,7 @@ void Task::vCommonFetch(NNP_Task nnpTask)
   
   ValReg* pValReg = nnpTask->m_pOpFrame->pValReg(iCommon);
   
-  nnpTask->m_pDataStack->vPushValP(pValReg);
+  nnpTask->m_pDataStack->vPushValue(pValReg);
   
   EXIT();
 }
