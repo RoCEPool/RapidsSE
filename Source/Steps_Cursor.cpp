@@ -49,7 +49,7 @@ void Task::vCursorFetch(NNP_Task nnpTask)
   
   nnpTask->m_pReturnStack->vPeek(iPick,&xCursorWsp);
   
-  nnpTask->m_pDataStack->vPushVal(xCursorWsp);
+  nnpTask->m_pDataStack->vPush(xCursorWsp);
   
   EXIT();
 }
