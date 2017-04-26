@@ -91,7 +91,7 @@ namespace Structures
     void   vContentDump(Str* aPrefix, Str* aTitle);
     Value* pPeek(void);
     Value* pPeek(i8 iNthValue);
-    void   vPeek(i8 iNthValue, Value* pValue);
+    void   vPeekValue(i8 iNthValue, Value* pValue);
 #ifndef OLD_VALWSP
     void   vPeek(i8 iNthValue, ValWsp& xValWsp);
 #endif
