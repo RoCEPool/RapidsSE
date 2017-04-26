@@ -215,6 +215,31 @@ void IndexData::vInsertEntry(Row* pRow, i8 nRowNo, bn nBufferNo)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get next entry                                                             */
+/*----------------------------------------------------------------------------*/
+Entry* IndexData::pNextEntry(Entry* pEntry)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
+  
+  return m_pIndexLevels->pNextEntry(pEntry);
+}
+
+/*----------------------------------------------------------------------------*/
+/* position the indexData at lower bound given key                            */
+/*----------------------------------------------------------------------------*/
+Entry* IndexData::aPosition(ValWsp& xValWsp)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
+  
+  KeyWsp xKeyWsp;
+  
+  xKeyWsp.vAddElement(xValWsp);
+  Key xKey(xKeyWsp);
+  
+  return m_pIndexLevels->aPosition(xKey, m_pIndex->pIdxColVec());
+}
+
+/*----------------------------------------------------------------------------*/
 /* tidyup                                                                     */
 /*----------------------------------------------------------------------------*/
 void IndexData::vTidyUp(void)

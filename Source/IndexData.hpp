@@ -36,7 +36,9 @@ namespace DBobjects
     IndexLevels* pIndexLevels(void);
     i8     nIndexBuffers(void);
     void   vInsertEntry(Row* pRow, i8 nRowNo, bn nBufferNo);
+    Entry* pNextEntry(Entry* pEntry);
     void   vPopulate(void);
+    Entry* aPosition(ValWsp& xValWsp);
     void   vTidyUp(void);
     void   vTruncate(void);
   

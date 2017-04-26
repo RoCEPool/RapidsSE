@@ -111,6 +111,33 @@ void IndexLevels::vInsertEntry(KeyWsp& xKeyWsp, RowId xRowId, IdxColVec* pColVec
 }
 
 /*----------------------------------------------------------------------------*/
+/* insert a row                                                               */
+/*----------------------------------------------------------------------------*/
+Entry* IndexLevels::pNextEntry(Entry* pEntry)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXLEVELS,_FOOTER_);
+  
+  IndexBuffer* pIndexBuffer = m_pIndexBuffer[0];
+  
+  return pIndexBuffer->aNextEntry(pEntry);
+}
+
+/*----------------------------------------------------------------------------*/
+/* position index at given key                                                */
+/*----------------------------------------------------------------------------*/
+Entry* IndexLevels::aPosition(Key& xKey, IdxColVec* pColumnVec)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXLEVELS,_FOOTER_);
+  
+  
+  ASSERT ( m_pIndexBuffer[0] );
+  
+  IndexBuffer* pIndexBuffer = m_pIndexBuffer[0];
+  
+  return pIndexBuffer->aPosition(xKey, pColumnVec);
+}
+
+/*----------------------------------------------------------------------------*/
 /* truncate all levels                                                        */
 /*----------------------------------------------------------------------------*/
 void IndexLevels::vTruncate(void)

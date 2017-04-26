@@ -38,8 +38,11 @@ void Task::vAddPrimitives_Index(void)
   vAddPrimitive("index.columnType"_Str,      &vIndexColumnType,      false);
   vAddPrimitive("index.createColumnVec"_Str, &vIndexCreateColumnVec, false);
   vAddPrimitive("index.dump"_Str,            &vIndexDump,            false);
+  vAddPrimitive("index.getNextEntry"_Str,    &vIndexGetNextEntry,    false);
   vAddPrimitive("index.init"_Str,            &vIndexInit,            false);
   vAddPrimitive("index.populate"_Str,        &vIndexPopulate,        false);
+  vAddPrimitive("index.position"_Str,        &vIndexPosition,        false);
+  vAddPrimitive("index.row"_Str,             &vIndexRow,             false);
   vAddPrimitive("index.showColumnVec"_Str,   &vIndexShowColumnVec,   false);
   vAddPrimitive("index.space"_Str,           &vIndexSpace,           false);
   vAddPrimitive("index.subDic"_Str,          &vIndexSubDic,          false);
@@ -195,6 +198,100 @@ void Task::vIndexDump(NNP_Task nnpTask)
   }
   
   EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* index.getNextEntry -- get next entry                                       */
+/*----------------------------------------------------------------------------*/
+void Task::vIndexGetNextEntry(NNP_Task nnpTask)
+{
+  ENTRY("vIndexGetNextEntry"_Str);
+  
+  Object* pPtrIndex = nullptr;
+  Object* pPtrEntry = nullptr;
+  
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrIndex) )
+    THROW_INVALID_DSTACK("index.getNextEntry"_Str);
+  
+  Index* pIndex = _pIndex(pPtrIndex);
+  ASSERT(CN_INDEX == pIndex->eClass());
+  
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrEntry) )
+    THROW_INVALID_DSTACK("index.getNextEntry"_Str);
+  
+  Entry* pEntry = _aEntry(pPtrEntry);
+  ASSERT(CN_ENTRY == pEntry->eClass());
+  
+  i8 iIndexNo = pIndex->iIndexNo();
+  Table* pTable = pIndex->pTable();
+  
+  Partition* pPartition = pTable->pPartition(nnpTask->m_pSEitf->iPartition());
+  IndexData* pIndexData = pPartition->pIndexData(iIndexNo);
+  
+  Entry *pNextEntry = pIndexData->pNextEntry(pEntry);
+  
+  nnpTask->m_pDataStack->vPushObject(pNextEntry);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* index.position -- position the index                                       */
+/*----------------------------------------------------------------------------*/
+void Task::vIndexPosition(NNP_Task nnpTask)
+{
+  ENTRY("vIndexPopulate"_Str);
+  Object* pPtrIndex = nullptr;
+  Object* pPtrTable = nullptr;
+  ValWsp xValWsp;
+  
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrIndex) )
+    THROW_INVALID_DSTACK("index.position!"_Str);
+  
+  Index* pIndex = _pIndex(pPtrIndex);
+  ASSERT(CN_INDEX == pIndex->eClass());
+  
+  if ( ! nnpTask->m_pDataStack->bPop(xValWsp) )
+    THROW_INVALID_DSTACK("index.position!"_Str);
+  
+  i8 iIndexNo = pIndex->iIndexNo();
+  Table* pTable = pIndex->pTable();
+  
+  Partition* pPartition = pTable->pPartition(nnpTask->m_pSEitf->iPartition());
+  IndexData* pIndexData = pPartition->pIndexData(iIndexNo);
+  
+  Entry *pEntry = pIndexData->aPosition(xValWsp);
+  
+  nnpTask->m_pDataStack->vPushObject(pEntry);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* index.row -- return row from entry of index                                */
+/*----------------------------------------------------------------------------*/
+void Task::vIndexRow(NNP_Task nnpTask)
+{
+  ENTRY("vIndexRow"_Str);
+  
+  Object* pPtrIndex = nullptr;
+  Object* pPtrEntry = nullptr;
+  
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrIndex) )
+    THROW_INVALID_DSTACK("index.row"_Str);
+  
+  Index* pIndex = _pIndex(pPtrIndex);
+  ASSERT(CN_INDEX == pIndex->eClass());
+  
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrEntry) )
+    THROW_INVALID_DSTACK("index.row"_Str);
+  
+  Entry* pEntry = _aEntry(pPtrEntry);
+  ASSERT(CN_ENTRY == pEntry->eClass());
+  
+  RowId xRowId = pEntry->xRowId();
+  
+  nnpTask->m_pDataStack->vPushObject(xRowId.pRow());
 }
 
 /*----------------------------------------------------------------------------*/
