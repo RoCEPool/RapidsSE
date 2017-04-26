@@ -136,10 +136,12 @@ int main(int argc, const char* argv[])
     RunTests* pRunTests = new RunTests();
     pRunTests->vRunTests();
   }
-  
-  KeyTest::vTestB();
-  KeyTest::vTestA();
-  KeyTest::vTest();
+
+  if (gxArguments.m_bStart) {
+    KeyTest::vTestB();
+    KeyTest::vTestA();
+    KeyTest::vTest();
+  }
   
   // optionally execute se> prompt
   if (gxArguments.m_bPrompt) {

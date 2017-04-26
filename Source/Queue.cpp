@@ -281,7 +281,7 @@ void Queue::vExpand(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUE,_FOOTER_);
   
-  vTrace("Queue::vExpand\n"_Str);
+  //vTrace("Queue::vExpand\n"_Str);
   
   QueueBuffer* pNewQueueBuffer = new QueueBuffer;
   
