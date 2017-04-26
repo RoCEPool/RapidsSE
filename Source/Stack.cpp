@@ -751,7 +751,7 @@ void Stack::vPush(Header* pHeader1)
 /*----------------------------------------------------------------------------*/
 /* push i8 onto data stack                                                    */
 /*----------------------------------------------------------------------------*/
-void Stack::vPush(i8 iArg1)
+void Stack::vPushInt(i8 iArg1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   

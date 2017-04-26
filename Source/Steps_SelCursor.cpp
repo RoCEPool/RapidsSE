@@ -128,7 +128,7 @@ ENTRY("vSelCursorFirst"_Str);
   
   i8 bRow = pSelCursor->aRowAsStr() ? 1 : 0;
   
-  nnpTask->m_pDataStack->vPush(bRow);
+  nnpTask->m_pDataStack->vPushInt(bRow);
   
   EXIT();
 }
@@ -172,7 +172,7 @@ void Task::vSelCursorHasRow(NNP_Task nnpTask)
   
   i8 bRow = pSelCursor->pRow() ? 1 : 0;
   
-  nnpTask->m_pDataStack->vPush(bRow);
+  nnpTask->m_pDataStack->vPushInt(bRow);
   
   EXIT();
 }
@@ -229,7 +229,7 @@ ENTRY("vSelCursorNext"_Str);
   
   i8 bRow = pSelCursor->aRowAsStr() ? 1 : 0;
   
-  nnpTask->m_pDataStack->vPush(bRow);
+  nnpTask->m_pDataStack->vPushInt(bRow);
   
   EXIT();
 }

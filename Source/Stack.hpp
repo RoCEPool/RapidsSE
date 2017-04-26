@@ -73,7 +73,7 @@ namespace Structures
     
     void vPushBinary(Object* pObject);
     //void vPush(Header* pHeader);
-    void vPush(i8 iInt);
+    void vPushInt(i8 iInt);
     void vPushObject(Object* pObject);
     void vPush(s32& s32);
     void vPush(s256& s256);

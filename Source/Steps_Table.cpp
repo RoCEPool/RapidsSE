@@ -324,7 +324,7 @@ void Task::vTableRef(NNP_Task nnpTask)
   
   bool bRef = pTable->bRefOut();
   
-  nnpTask->m_pDataStack->vPush(bRef);
+  nnpTask->m_pDataStack->vPushInt(bRef);
   
   EXIT();
 }
@@ -385,7 +385,7 @@ ENTRY("vTableSpace"_Str);
   i8 nBuffers = pTable->nRowBuffers();
   i8 iSpace   = nBuffers * C_SIZE_POOL_BUFFER;
   
-  nnpTask->m_pDataStack->vPush(iSpace);
+  nnpTask->m_pDataStack->vPushInt(iSpace);
   
   EXIT();
 }

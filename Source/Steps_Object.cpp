@@ -54,7 +54,7 @@ void Task::vObjectClassFetch(NNP_Task nnpTask)
   eCN eClassNo;
   eClassNo = pObject->eClass();
   
-  nnpTask->m_pDataStack->vPush(eClassNo);
+  nnpTask->m_pDataStack->vPushInt(eClassNo);
   
   EXIT();
 }

@@ -54,7 +54,7 @@ void Task::vLogicAnd(NNP_Task nnpTask)
   
   i8 iArgR = (iArgA && iArgB) ? 1 : 0;
   
-  nnpTask->m_pDataStack->vPush(iArgR);
+  nnpTask->m_pDataStack->vPushInt(iArgR);
   
   EXIT();
 }
@@ -72,7 +72,7 @@ void Task::vLogicNot(NNP_Task nnpTask)
   
   i8 iNotA = iValA ? 0 : 1;
   
-  nnpTask->m_pDataStack->vPush(iNotA);
+  nnpTask->m_pDataStack->vPushInt(iNotA);
   
   EXIT();
 }
@@ -94,7 +94,7 @@ void Task::vLogicOr(NNP_Task nnpTask)
   
   i8 iArgR = (iArgA || iArgB) ? 1 : 0;
   
-  nnpTask->m_pDataStack->vPush(iArgR);
+  nnpTask->m_pDataStack->vPushInt(iArgR);
   
   EXIT();
 }

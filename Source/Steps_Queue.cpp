@@ -126,10 +126,10 @@ ENTRY("vQueuePop"_Str);
   
   if (pQueue->bPop(&xValWsp)) {
     nnpTask->m_pDataStack->vPush(&xValWsp);
-    nnpTask->m_pDataStack->vPush((i8)1);
+    nnpTask->m_pDataStack->vPushInt((i8)1);
   }
   else
-    nnpTask->m_pDataStack->vPush((i8)0);
+    nnpTask->m_pDataStack->vPushInt((i8)0);
   
   
   EXIT();

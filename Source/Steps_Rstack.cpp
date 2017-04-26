@@ -135,7 +135,7 @@ void Task::vRstackDepth(NNP_Task nnpTask)
   
   i8 iDepth = nnpTask->m_pReturnStack->iValues();
   
-  nnpTask->m_pDataStack->vPush(iDepth);
+  nnpTask->m_pDataStack->vPushInt(iDepth);
   
   EXIT();
 }

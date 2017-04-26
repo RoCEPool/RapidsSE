@@ -160,7 +160,7 @@ ENTRY("vThreadCpu"_Str);
   
   Thread* pThread = static_cast<Thread*>(pObject);
   
-  nnpTask->m_pDataStack->vPush(pThread->iCpu());
+  nnpTask->m_pDataStack->vPushInt(pThread->iCpu());
   
   EXIT();
 }
@@ -202,7 +202,7 @@ ENTRY("vThreadId"_Str);
   
   Thread* pThread = static_cast<Thread*>(pObject);
   
-  nnpTask->m_pDataStack->vPush(pThread->m_pPosixThread->m_iOpSysThreadId);
+  nnpTask->m_pDataStack->vPushInt(pThread->m_pPosixThread->m_iOpSysThreadId);
   
   EXIT();
 }

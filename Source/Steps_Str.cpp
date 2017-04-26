@@ -174,7 +174,7 @@ void Task::vStrEqual(NNP_Task nnpTask)
                                _pStrVal(&xStringB)->s(),
                                C_NO_CASE);
   
-  nnpTask->m_pDataStack->vPush(iEqual);
+  nnpTask->m_pDataStack->vPushInt(iEqual);
   
   EXIT();
 }
@@ -289,7 +289,7 @@ void Task::vStrLength(NNP_Task nnpTask)
   
   iLength = sString.iLength();
   
-  nnpTask->m_pDataStack->vPush(iLength);
+  nnpTask->m_pDataStack->vPushInt(iLength);
   
   EXIT();
 }
@@ -502,7 +502,7 @@ void Task::vStrTailInt(NNP_Task nnpTask)
   
   // return false if not a digit
   if ( ! StrLib::bIsDigit(*aLast) ) {
-    nnpTask->m_pDataStack->vPush((i8)0);
+    nnpTask->m_pDataStack->vPushInt((i8)0);
     return;
   }
   
@@ -518,8 +518,8 @@ void Task::vStrTailInt(NNP_Task nnpTask)
     iInt = (iInt * 10) + (*aDigit++ - '0');
   
   // return ( int true )
-  nnpTask->m_pDataStack->vPush(iInt);
-  nnpTask->m_pDataStack->vPush((i8)1);
+  nnpTask->m_pDataStack->vPushInt(iInt);
+  nnpTask->m_pDataStack->vPushInt((i8)1);
   
   EXIT();
 }

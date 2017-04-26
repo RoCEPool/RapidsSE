@@ -133,7 +133,7 @@ void Task::vTaskAcksFetch(NNP_Task nnpTask)
     THROW_INVALID_DSTACK("task.acks@"_Str);
   Task* pGivenTask = _pTask(pPtrTask);
   
-  nnpTask->m_pDataStack->vPush(*pGivenTask->m_zAcks);
+  nnpTask->m_pDataStack->vPushInt(*pGivenTask->m_zAcks);
   
   EXIT();
 }
@@ -645,7 +645,7 @@ ENTRY("vTaskStateFetch"_Str);
   
   eTS eState = pThatTask->m_eState;
   
-  nnpTask->m_pDataStack->vPush((i8)eState);
+  nnpTask->m_pDataStack->vPushInt((i8)eState);
   
   EXIT();
 }

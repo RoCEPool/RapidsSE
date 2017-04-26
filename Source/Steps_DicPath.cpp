@@ -55,7 +55,7 @@ void Task::vDicPathDepth(NNP_Task nnpTask)
   
   i8 iDepth = pDicPath->iCount();
   
-  nnpTask->m_pDataStack->vPush(iDepth);
+  nnpTask->m_pDataStack->vPushInt(iDepth);
   
   EXIT();
 }

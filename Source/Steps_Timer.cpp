@@ -104,7 +104,7 @@ ENTRY("vTimerMicrosecs"_Str);
   
   i8 iMicroseconds = pTimer->iMicroseconds();
   
-  nnpTask->m_pDataStack->vPush(iMicroseconds);
+  nnpTask->m_pDataStack->vPushInt(iMicroseconds);
   
   EXIT();
 }
@@ -125,7 +125,7 @@ ENTRY("vTimerMillisecs"_Str);
   
   i8 iMilliseconds = pTimer->iMilliseconds();
   
-  nnpTask->m_pDataStack->vPush(iMilliseconds);
+  nnpTask->m_pDataStack->vPushInt(iMilliseconds);
   
   EXIT();
 }
@@ -146,7 +146,7 @@ ENTRY("vTimerNanosecs"_Str);
   
   i8 iNanoseconds = pTimer->iNanoseconds();
   
-  nnpTask->m_pDataStack->vPush(iNanoseconds);
+  nnpTask->m_pDataStack->vPushInt(iNanoseconds);
   
   EXIT();
 }
@@ -208,7 +208,7 @@ ENTRY("vTimerSecs"_Str);
   
   i8 iSeconds = pTimer->iSeconds();
   
-  nnpTask->m_pDataStack->vPush(iSeconds);
+  nnpTask->m_pDataStack->vPushInt(iSeconds);
   
   EXIT();
 }
@@ -248,7 +248,7 @@ ENTRY("vTimerTicks"_Str);
   
   i8 iTicks = pTimer->iTicks();
   
-  nnpTask->m_pDataStack->vPush(iTicks);
+  nnpTask->m_pDataStack->vPushInt(iTicks);
   
   EXIT();
 }

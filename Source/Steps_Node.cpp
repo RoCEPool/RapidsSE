@@ -145,7 +145,7 @@ ENTRY("vNodeNo"_Str);
   Node* pNode = _pNode(pPtrNode);
   ASSERT(CN_NODE == pNode->eClass());
   
-  nnpTask->m_pDataStack->vPush(pNode->iNodeNo());
+  nnpTask->m_pDataStack->vPushInt(pNode->iNodeNo());
   
   EXIT();
 }
@@ -165,7 +165,7 @@ void Task::vNodePort(NNP_Task nnpTask)
   Node* pNode = _pNode(pPtrNode);
   ASSERT(CN_NODE == pNode->eClass());
   
-  nnpTask->m_pDataStack->vPush(pNode->iNodePortNo());
+  nnpTask->m_pDataStack->vPushInt(pNode->iNodePortNo());
   
   EXIT();
 }

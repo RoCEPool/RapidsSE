@@ -61,7 +61,7 @@ void Task::vAddressEqual(NNP_Task nnpTask)
   
   i8 r = iA == iB;
   
-  nnpTask->m_pDataStack->vPush(r);
+  nnpTask->m_pDataStack->vPushInt(r);
   
   EXIT();
 }

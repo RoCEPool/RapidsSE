@@ -244,7 +244,7 @@ void Task::vSocketSend(NNP_Task nnpTask)
   
   if ( ! bResult ) {
     //THROW("Unable to sendTo socket: Errno %d!", xSysCall.iError());
-    nnpTask->m_pDataStack->vPush((i8)0);
+    nnpTask->m_pDataStack->vPushInt((i8)0);
     
     //goto exit;
     EXIT();
@@ -256,7 +256,7 @@ void Task::vSocketSend(NNP_Task nnpTask)
   
   if ( ! bResult ) {
     //THROW("Unable to sendTo socket: Errno %d!", xSysCall.iError());
-    nnpTask->m_pDataStack->vPush((i8)0);
+    nnpTask->m_pDataStack->vPushInt((i8)0);
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -277,7 +277,7 @@ void Task::vSocketSend(NNP_Task nnpTask)
         delete pRowBuffer;
       
       //THROW("Unable to sendTo socket: Errno %d!", xSysCall.iError());
-      nnpTask->m_pDataStack->vPush((i8)0);
+      nnpTask->m_pDataStack->vPushInt((i8)0);
       
       //goto exit;
       EXIT();
@@ -297,14 +297,14 @@ void Task::vSocketSend(NNP_Task nnpTask)
     if ( ! bResult ) {
       
       //THROW("Unable to sendTo socket: Errno %d!", xSysCall.iError());
-      nnpTask->m_pDataStack->vPush((i8)0);
+      nnpTask->m_pDataStack->vPushInt((i8)0);
       
       //goto exit;
       EXIT();
     }
   }
   
-  nnpTask->m_pDataStack->vPush((i8)1);
+  nnpTask->m_pDataStack->vPushInt((i8)1);
   
 exit:
   EXIT();

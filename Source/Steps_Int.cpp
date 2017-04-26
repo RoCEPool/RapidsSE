@@ -93,7 +93,7 @@ void Task::vIntDivide(NNP_Task nnpTask)
   
   r = DIV(i,j);
   
-  nnpTask->m_pDataStack->vPush(r);
+  nnpTask->m_pDataStack->vPushInt(r);
   
   EXIT();
 }
@@ -112,7 +112,7 @@ void Task::vIntEqual(NNP_Task nnpTask)
   
   r = i == j;
   
-  nnpTask->m_pDataStack->vPush(r);
+  nnpTask->m_pDataStack->vPushInt(r);
   
   EXIT();
 }
@@ -131,7 +131,7 @@ void Task::vIntGreater(NNP_Task nnpTask)
   
   r = i > j;
   
-  nnpTask->m_pDataStack->vPush(r);
+  nnpTask->m_pDataStack->vPushInt(r);
   
   EXIT();
 }
@@ -150,7 +150,7 @@ void Task::vIntGreaterEqual(NNP_Task nnpTask)
   
   r = i >= j;
   
-  nnpTask->m_pDataStack->vPush(r);
+  nnpTask->m_pDataStack->vPushInt(r);
   
   EXIT();
 }
@@ -170,7 +170,7 @@ void Task::vIntHash(NNP_Task nnpTask)
   
   i8 iHash = XXH32(sString.s(),iLength,0);
   
-  nnpTask->m_pDataStack->vPush(iHash);
+  nnpTask->m_pDataStack->vPushInt(iHash);
   
   EXIT();
 }
@@ -189,7 +189,7 @@ void Task::vIntLess(NNP_Task nnpTask)
   
   r = i < j;
   
-  nnpTask->m_pDataStack->vPush(r);
+  nnpTask->m_pDataStack->vPushInt(r);
   
   EXIT();
 }
@@ -208,7 +208,7 @@ void Task::vIntLessEqual(NNP_Task nnpTask)
   
   r = i <= j;
   
-  nnpTask->m_pDataStack->vPush(r);
+  nnpTask->m_pDataStack->vPushInt(r);
   
   EXIT();
 }
@@ -227,7 +227,7 @@ void Task::vIntModulo(NNP_Task nnpTask)
   
   r = MOD(i,j);
   
-  nnpTask->m_pDataStack->vPush(r);
+  nnpTask->m_pDataStack->vPushInt(r);
   
   EXIT();
 }
@@ -246,7 +246,7 @@ void Task::vIntMultiply(NNP_Task nnpTask)
   
   r = i * j;
   
-  nnpTask->m_pDataStack->vPush(r);
+  nnpTask->m_pDataStack->vPushInt(r);
   
   EXIT();
 }
@@ -265,7 +265,7 @@ void Task::vIntNeg(NNP_Task nnpTask)
   
   r = -1 * i;
   
-  nnpTask->m_pDataStack->vPush(r);
+  nnpTask->m_pDataStack->vPushInt(r);
   
   EXIT();
 }
@@ -284,7 +284,7 @@ void Task::vIntNotEqual(NNP_Task nnpTask)
   
   r = i != j;
   
-  nnpTask->m_pDataStack->vPush(r);
+  nnpTask->m_pDataStack->vPushInt(r);
   
   EXIT();
 }
@@ -303,7 +303,7 @@ void Task::vIntSubtract(NNP_Task nnpTask)
   
   r = i - j;
   
-  nnpTask->m_pDataStack->vPush(r);
+  nnpTask->m_pDataStack->vPushInt(r);
   
   EXIT();
 }

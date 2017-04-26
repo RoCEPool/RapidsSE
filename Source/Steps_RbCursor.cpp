@@ -127,7 +127,7 @@ ENTRY("vRbCursorFirst"_Str);
   
   i8 bRowBuffer = pRbCursor->pRowBuffer() ? 1 : 0;
   
-  nnpTask->m_pDataStack->vPush(bRowBuffer);
+  nnpTask->m_pDataStack->vPushInt(bRowBuffer);
   
   EXIT();
 }
@@ -205,7 +205,7 @@ ENTRY("vRbCursorNext"_Str);
   
   i8 bRowBuffer = pRbCursor->pRowBuffer() ? 1 : 0;
   
-  nnpTask->m_pDataStack->vPush(bRowBuffer);
+  nnpTask->m_pDataStack->vPushInt(bRowBuffer);
   
   EXIT();
 }

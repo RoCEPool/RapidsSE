@@ -74,10 +74,10 @@ void Task::vPlanListFindPlan(NNP_Task nnpTask)
   
   if (pPlan) {
     nnpTask->m_pDataStack->vPushObject(pPlan);
-    nnpTask->m_pDataStack->vPush((i8)1);
+    nnpTask->m_pDataStack->vPushInt((i8)1);
   }
   else {
-    nnpTask->m_pDataStack->vPush((i8)0);
+    nnpTask->m_pDataStack->vPushInt((i8)0);
   }
   
   EXIT();

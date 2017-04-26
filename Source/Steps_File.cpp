@@ -140,7 +140,7 @@ ENTRY("vFileOpen"_Str);
   
   bool bOpened = pFile->bOpen(sMode);
   
-  nnpTask->m_pDataStack->vPush(bOpened);
+  nnpTask->m_pDataStack->vPushInt(bOpened);
   
   EXIT();
 }
@@ -209,10 +209,10 @@ ENTRY("vFileRead"_Str);
 
   if (pFile->bReadLine(sLine)) {
     nnpTask->m_pDataStack->vPush(sLine);
-    nnpTask->m_pDataStack->vPush((i8)1);
+    nnpTask->m_pDataStack->vPushInt((i8)1);
   }
   else {
-    nnpTask->m_pDataStack->vPush((i8)0);
+    nnpTask->m_pDataStack->vPushInt((i8)0);
   }
   
   EXIT();
@@ -234,10 +234,10 @@ void Task::vFileReadRecord(NNP_Task nnpTask)
   ASSERT(pFile);
   
   if (pFile->bReadRecord()) {
-    nnpTask->m_pDataStack->vPush((i8)1);
+    nnpTask->m_pDataStack->vPushInt((i8)1);
   }
   else {
-    nnpTask->m_pDataStack->vPush((i8)0);
+    nnpTask->m_pDataStack->vPushInt((i8)0);
   }
   
   EXIT();

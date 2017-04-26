@@ -136,7 +136,7 @@ void Task::vCell(NNP_Task nnpTask)
   
   i8 nBytes = sizeof(void*);
   
-  nnpTask->m_pDataStack->vPush(nBytes);
+  nnpTask->m_pDataStack->vPushInt(nBytes);
   
   EXIT();
 }
@@ -527,7 +527,7 @@ void Task::vLocate(NNP_Task nnpTask)
   }
   else {
     i8 iZero = 0;
-    nnpTask->m_pDataStack->vPush(iZero);
+    nnpTask->m_pDataStack->vPushInt(iZero);
   }
   
   EXIT();
@@ -944,7 +944,7 @@ void Task::vWordImmediateGet(NNP_Task nnpTask)
   
   i8 iImmediate = pWord->bImmediate();
   
-  nnpTask->m_pDataStack->vPush(iImmediate);
+  nnpTask->m_pDataStack->vPushInt(iImmediate);
   
   EXIT();
 }
@@ -987,7 +987,7 @@ void Task::vWordIsImmediate(NNP_Task nnpTask)
   
   i8 iIsImmediate = pWord->bImmediate() ? 1 : 0;
   
-  nnpTask->m_pDataStack->vPush(iIsImmediate);
+  nnpTask->m_pDataStack->vPushInt(iIsImmediate);
   
   EXIT();
 }
@@ -1006,7 +1006,7 @@ void Task::vWordIsPrimitive(NNP_Task nnpTask)
   
   i8 iIsPrimitive = WT_PRIMITIVE == pWord->eWordType() ? 1 : 0;
   
-  nnpTask->m_pDataStack->vPush(iIsPrimitive);
+  nnpTask->m_pDataStack->vPushInt(iIsPrimitive);
   
   EXIT();
 }
@@ -1117,7 +1117,7 @@ void Task::vWordTypeGet(NNP_Task nnpTask)
   
   eWT eWordType = pWord->eWordType();
   
-  nnpTask->m_pDataStack->vPush(eWordType);
+  nnpTask->m_pDataStack->vPushInt(eWordType);
   
   EXIT();
 }

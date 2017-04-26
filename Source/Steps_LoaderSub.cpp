@@ -136,7 +136,7 @@ void Task::vLoaderSubFetchRecord(NNP_Task nnpTask)
   
   bool bFetched = pLoaderSub->bFetchRecord();
   
-  nnpTask->m_pDataStack->vPush(bFetched);
+  nnpTask->m_pDataStack->vPushInt(bFetched);
   
   EXIT();
 }
@@ -157,7 +157,7 @@ void Task::vLoaderSubHashPartition(NNP_Task nnpTask)
 
   i8 iNode = Partition::iPartitionToNode(iPartition);
   
-  nnpTask->m_pDataStack->vPush(iNode);
+  nnpTask->m_pDataStack->vPushInt(iNode);
   
   EXIT();
 }
@@ -212,7 +212,7 @@ void Task::vLoaderSubInsertRow(NNP_Task nnpTask)
   
   bool bInserted = pLoaderSub->bInsertRow();
   
-  nnpTask->m_pDataStack->vPush(bInserted);
+  nnpTask->m_pDataStack->vPushInt(bInserted);
   
   EXIT();
 }
@@ -231,7 +231,7 @@ void Task::vLoaderSubInsertRow2(NNP_Task nnpTask)
   
   bool bInserted = pLoaderSub->bInsertRow2();
   
-  nnpTask->m_pDataStack->vPush(bInserted);
+  nnpTask->m_pDataStack->vPushInt(bInserted);
   
   EXIT();
 }
@@ -289,7 +289,7 @@ void Task::vLoaderSubPartition(NNP_Task nnpTask)
   
   i8 iPartition = pLoaderSub->iPartition();
   
-  nnpTask->m_pDataStack->vPush(iPartition);
+  nnpTask->m_pDataStack->vPushInt(iPartition);
   
   EXIT();
 }
@@ -397,7 +397,7 @@ void Task::vLoaderSubValidateRow(NNP_Task nnpTask)
 //         bValid ? "Valid"_Str : "NotValid"_Str,
 //         iColumn);
   
-  nnpTask->m_pDataStack->vPush(bValid);
+  nnpTask->m_pDataStack->vPushInt(bValid);
   
   EXIT();
 }

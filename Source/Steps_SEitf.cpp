@@ -59,7 +59,7 @@ void Task::vSEitfCount(NNP_Task nnpTask)
   
   Object* pPtrSEitf;
   
-  nnpTask->m_pDataStack->vPush(gpSEitfList->iCount());
+  nnpTask->m_pDataStack->vPushInt(gpSEitfList->iCount());
   
   EXIT();
 }
@@ -165,7 +165,7 @@ void Task::vSEitfPartitionFetch(NNP_Task nnpTask)
   SEitf* pSEitf = _pSEitf(pPtrSEitf);
   ASSERT(CN_SEITF == pSEitf->eClass());
   
-  nnpTask->m_pDataStack->vPush(pSEitf->m_iPartition);
+  nnpTask->m_pDataStack->vPushInt(pSEitf->m_iPartition);
   
   EXIT();
 }
@@ -207,7 +207,7 @@ void Task::vSEitfPid(NNP_Task nnpTask)
   SEitf* pSEitf = _pSEitf(pPtrSEitf);
   ASSERT(CN_SEITF == pSEitf->eClass());
   
-  nnpTask->m_pDataStack->vPush(pSEitf->m_iPid);
+  nnpTask->m_pDataStack->vPushInt(pSEitf->m_iPid);
   
   EXIT();
 }

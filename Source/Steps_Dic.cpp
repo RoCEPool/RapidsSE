@@ -61,7 +61,7 @@ ENTRY("vDicFrozenGet"_Str);
   
   bool bFrozen = pDic->bFrozen();
   
-  nnpTask->m_pDataStack->vPush(bFrozen);
+  nnpTask->m_pDataStack->vPushInt(bFrozen);
   
   EXIT();
 }
@@ -119,7 +119,7 @@ void Task::vDicIsCompiled(NNP_Task nnpTask)
   
   i8 bIsCompiled = pWord ? true : false;
   
-  nnpTask->m_pDataStack->vPush(bIsCompiled);
+  nnpTask->m_pDataStack->vPushInt(bIsCompiled);
   
   EXIT();
 }
@@ -238,7 +238,7 @@ void Task::vDicRef(NNP_Task nnpTask)
 
   bool bRef = pDic->bRefOut();
   
-  nnpTask->m_pDataStack->vPush(bRef);
+  nnpTask->m_pDataStack->vPushInt(bRef);
   
   EXIT();
 }
@@ -259,7 +259,7 @@ void Task::vDicWordCount(NNP_Task nnpTask)
   
   i8 nWords = pDic->nWords();
   
-  nnpTask->m_pDataStack->vPush(nWords);
+  nnpTask->m_pDataStack->vPushInt(nWords);
   
   EXIT();
 }

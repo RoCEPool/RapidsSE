@@ -77,7 +77,7 @@ void Task::vAstackClass(NNP_Task nnpTask)
   
   eCN eClass = xValWsp.eClass();
   
-  nnpTask->m_pAuxStack->vPush(eClass);
+  nnpTask->m_pAuxStack->vPushInt(eClass);
   
   EXIT();
 }
@@ -91,7 +91,7 @@ void Task::vAstackDepth(NNP_Task nnpTask)
   
   i8 iDepth = nnpTask->m_pAuxStack->iValues();
   
-  nnpTask->m_pDataStack->vPush(iDepth);
+  nnpTask->m_pDataStack->vPushInt(iDepth);
   
   EXIT();
 }
@@ -310,7 +310,7 @@ void Task::vAstackToValues(NNP_Task nnpTask)
   for (i8 iVal = nVal - 1; iVal >= 0; iVal--)
   nnpTask->m_pAuxStack->vPush(pValWsp[iVal]);
   
-  nnpTask->m_pAuxStack->vPush(nVal);
+  nnpTask->m_pAuxStack->vPushInt(nVal);
   
   EXIT();
 }

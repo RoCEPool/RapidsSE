@@ -94,7 +94,7 @@ void Task::vToInt(NNP_Task nnpTask)
   
   i8 i = sInt.iToI8();
   
-  nnpTask->m_pDataStack->vPush(i);
+  nnpTask->m_pDataStack->vPushInt(i);
   
   EXIT();
 }

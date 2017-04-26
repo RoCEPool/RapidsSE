@@ -73,7 +73,7 @@ void Task::vDstackTransfer(NNP_Task nnpTask)
   THROW_INVALID_DSTACK(">DStack"_Str);
   
   pThatTask->m_xLock.vGrabWrite();
-  pThatTask->m_pDataStack->vPush(iVal);
+  pThatTask->m_pDataStack->vPushInt(iVal);
   pThatTask->m_xLock.vDropWrite();
   
   EXIT();
@@ -97,7 +97,7 @@ void Task::vDstackClass(NNP_Task nnpTask)
   
   eCN eClass = xValWsp.eClass();
   
-  nnpTask->m_pDataStack->vPush(eClass);
+  nnpTask->m_pDataStack->vPushInt(eClass);
   
   EXIT();
 }
@@ -111,7 +111,7 @@ void Task::vDstackDepth(NNP_Task nnpTask)
   
   i8 iDepth = nnpTask->m_pDataStack->iValues();
   
-  nnpTask->m_pDataStack->vPush(iDepth);
+  nnpTask->m_pDataStack->vPushInt(iDepth);
   
   EXIT();
 }
@@ -190,7 +190,7 @@ void Task::vDstackDupNonZero(NNP_Task nnpTask)
     nnpTask->m_pDataStack->vPushValue(xValA);
   }
   else
-    nnpTask->m_pDataStack->vPush((i8)0);
+    nnpTask->m_pDataStack->vPushInt((i8)0);
   
   EXIT();
 }
@@ -540,7 +540,7 @@ void Task::vDstackToValues(NNP_Task nnpTask)
   for (i8 iVal = nVal - 1; iVal >= 0; iVal--)
     nnpTask->m_pDataStack->vPush(pValWsp[iVal]);
   
-  nnpTask->m_pDataStack->vPush(nVal);
+  nnpTask->m_pDataStack->vPushInt(nVal);
   
   EXIT();
 }

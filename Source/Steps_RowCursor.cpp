@@ -128,7 +128,7 @@ ENTRY("vRowCursorFirst"_Str);
   
   i8 bRow = pRowCursor->aRowAsStr() ? 1 : 0;
   
-  nnpTask->m_pDataStack->vPush(bRow);
+  nnpTask->m_pDataStack->vPushInt(bRow);
   
   EXIT();
 }
@@ -185,7 +185,7 @@ ENTRY("vRowCursorNext"_Str);
   
   i8 bRow = pRowCursor->aRowAsStr() ? 1 : 0;
   
-  nnpTask->m_pDataStack->vPush(bRow);
+  nnpTask->m_pDataStack->vPushInt(bRow);
   
   EXIT();
 }

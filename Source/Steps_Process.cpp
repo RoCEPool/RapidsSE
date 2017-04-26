@@ -46,7 +46,7 @@ ENTRY("vProcessGetPid"_Str);
   
   i8 iPid = Process::iGetPid();
   
-  nnpTask->m_pDataStack->vPush(iPid);
+  nnpTask->m_pDataStack->vPushInt(iPid);
   
   EXIT();
 }
@@ -76,7 +76,7 @@ ENTRY("vProcessTestPid"_Str);
   
   i8 iExists = Process::bTestPid(iPid);
   
-  nnpTask->m_pDataStack->vPush(iExists);
+  nnpTask->m_pDataStack->vPushInt(iExists);
   
   EXIT();
 }

@@ -1409,7 +1409,7 @@ void Task::vPushInt(i8 iInt)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  m_pDataStack->vPush(iInt);
+  m_pDataStack->vPushInt(iInt);
 }
 
 /*----------------------------------------------------------------------------*/

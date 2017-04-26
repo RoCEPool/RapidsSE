@@ -68,11 +68,11 @@ ENTRY("vRowBufferAppend"_Str);
   bool b = pRowBuffer->bInsertRow(pTxRef,sRecord,iLength,&pRow);
   
   if (b) {
-    nnpTask->m_pDataStack->vPush((i8)1);
+    nnpTask->m_pDataStack->vPushInt((i8)1);
   }
   else {
     nnpTask->m_pDataStack->vPush(sRecord);
-    nnpTask->m_pDataStack->vPush((i8)0);
+    nnpTask->m_pDataStack->vPushInt((i8)0);
   }
     
   EXIT();
@@ -112,10 +112,10 @@ void Task::vRowBufferAppendRecord(NNP_Task nnpTask)
   bool b = pRowBuffer->bInsertRow(pTxRef,aRecord,iLength,&pRow);
   
   if (b) {
-    nnpTask->m_pDataStack->vPush((i8)1);
+    nnpTask->m_pDataStack->vPushInt((i8)1);
   }
   else {
-    nnpTask->m_pDataStack->vPush((i8)0);
+    nnpTask->m_pDataStack->vPushInt((i8)0);
   }
   
   EXIT();

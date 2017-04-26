@@ -88,7 +88,7 @@ void Task::vIndexColumnCount(NNP_Task nnpTask)
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
   
-  nnpTask->m_pDataStack->vPush(pIndex->pIdxColVec()->nItems());
+  nnpTask->m_pDataStack->vPushInt(pIndex->pIdxColVec()->nItems());
   
   EXIT();
 }
@@ -273,7 +273,7 @@ void Task::vIndexSpace(NNP_Task nnpTask)
   
   i8 iBuffers = pIndex->pTable()->nIndexBuffers(pIndex->iIndexNo());
   i8 iSpace = iBuffers * C_SIZE_POOL_BUFFER;
-  nnpTask->m_pDataStack->vPush(iSpace);
+  nnpTask->m_pDataStack->vPushInt(iSpace);
   
   EXIT();
 }

@@ -134,7 +134,7 @@ void Task::vGridNodes(NNP_Task nnpTask)
 {
   ENTRY("vGridNode"_Str);
 
-  nnpTask->m_pDataStack->vPush(gpGrid->m_nNodes);
+  nnpTask->m_pDataStack->vPushInt(gpGrid->m_nNodes);
   
   EXIT();
 }
@@ -146,7 +146,7 @@ void Task::vGridPartitions(NNP_Task nnpTask)
 {
   ENTRY("vGridNode"_Str);
   
-  nnpTask->m_pDataStack->vPush(gpGrid->m_nPartitions);
+  nnpTask->m_pDataStack->vPushInt(gpGrid->m_nPartitions);
   
   EXIT();
 }
@@ -158,7 +158,7 @@ void Task::vGridSlots(NNP_Task nnpTask)
 {
   ENTRY("vGridNode"_Str);
   
-  nnpTask->m_pDataStack->vPush(gpGrid->m_nSlots);
+  nnpTask->m_pDataStack->vPushInt(gpGrid->m_nSlots);
   
   EXIT();
 }
@@ -197,7 +197,7 @@ void Task::vGridThisNodeFetch(NNP_Task nnpTask)
   
   i8 iNodeNo = gpGrid->iThisNode();
   
-  nnpTask->m_pDataStack->vPush(iNodeNo);
+  nnpTask->m_pDataStack->vPushInt(iNodeNo);
   
   EXIT();
 }
@@ -241,7 +241,7 @@ void Task::vGridStartNodeFetch(NNP_Task nnpTask)
 {
   ENTRY("vGridGetStarted"_Str);
   
-  nnpTask->m_pDataStack->vPush(gpGrid->iStartNode());
+  nnpTask->m_pDataStack->vPushInt(gpGrid->iStartNode());
   
   EXIT();
 }
@@ -270,7 +270,7 @@ void Task::vGridStartedFetch(NNP_Task nnpTask)
 {
   ENTRY("vGridGetStarted"_Str);
   
-  nnpTask->m_pDataStack->vPush(gpGrid->bHasStarted());
+  nnpTask->m_pDataStack->vPushInt(gpGrid->bHasStarted());
   
   EXIT();
 }
@@ -291,7 +291,7 @@ void Task::vGridToNode(NNP_Task nnpTask)
   
   i8 iNodeNo = Partition::iPartitionToNode(iParitionId);
   
-  nnpTask->m_pDataStack->vPush(iNodeNo);
+  nnpTask->m_pDataStack->vPushInt(iNodeNo);
   
   EXIT();
 }
@@ -309,7 +309,7 @@ void Task::vGridToPartition(NNP_Task nnpTask)
   
   i8 iPartitionId = Partition::iSlotToPartition(iSlot);
   
-  nnpTask->m_pDataStack->vPush(iPartitionId);              //! DISCUSS WITH ALKA
+  nnpTask->m_pDataStack->vPushInt(iPartitionId);              //! DISCUSS WITH ALKA
   
   EXIT();
 }
@@ -327,7 +327,7 @@ void Task::vGridToSlot(NNP_Task nnpTask)
   
   i8 iSlot = Partition::iPartitionToSlot(iPartitionId);
   
-  nnpTask->m_pDataStack->vPush(iSlot);                     //! DISCUSS WITH ALKA
+  nnpTask->m_pDataStack->vPushInt(iSlot);                     //! DISCUSS WITH ALKA
   
   EXIT();
 }

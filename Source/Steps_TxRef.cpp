@@ -75,7 +75,7 @@ ENTRY("vTxRefBegin"_Str);
   
   bool bBegun = pTxRef->bBeginTx();
   
-  nnpTask->m_pDataStack->vPush(bBegun);
+  nnpTask->m_pDataStack->vPushInt(bBegun);
   
   EXIT();
 }
@@ -97,7 +97,7 @@ ENTRY("vTxRefEnd"_Str);
   
   bool bEnded = pTxRef->bEndTx();
   
-  nnpTask->m_pDataStack->vPush(bEnded);
+  nnpTask->m_pDataStack->vPushInt(bEnded);
   
   EXIT();
 }
@@ -119,7 +119,7 @@ ENTRY("vTxRefCommit"_Str);
   
   bool bCommitted = pTxRef->bCommitTx();
   
-  nnpTask->m_pDataStack->vPush(bCommitted);
+  nnpTask->m_pDataStack->vPushInt(bCommitted);
   
   EXIT();
 }
@@ -141,7 +141,7 @@ ENTRY("vTxRefRollback"_Str);
   
   bool bRolledBack = pTxRef->bRollbackTx();
   
-  nnpTask->m_pDataStack->vPush(bRolledBack);
+  nnpTask->m_pDataStack->vPushInt(bRolledBack);
   
   EXIT();
 }

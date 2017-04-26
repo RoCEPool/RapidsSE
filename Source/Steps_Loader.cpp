@@ -77,7 +77,7 @@ void Task::vLoaderFindChunk(NNP_Task nnpTask)
   
   bool bFoundChunk = pLoader->bFindChunk();
   
-  nnpTask->m_pDataStack->vPush(bFoundChunk);
+  nnpTask->m_pDataStack->vPushInt(bFoundChunk);
  
   EXIT();
 }

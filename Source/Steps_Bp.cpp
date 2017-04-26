@@ -137,7 +137,7 @@ void Task::vFreeBuffers(NNP_Task nnpTask)
   
   i8 iFreeBuffers = gpBufferPool->iFreeCount();
   
-  nnpTask->m_pDataStack->vPush(iFreeBuffers);
+  nnpTask->m_pDataStack->vPushInt(iFreeBuffers);
   
   EXIT();
 }
@@ -151,7 +151,7 @@ void Task::vFreePercent(NNP_Task nnpTask)
   
   i8 iFreePercent = gpBufferPool->iFreePercent();
   
-  nnpTask->m_pDataStack->vPush(iFreePercent);
+  nnpTask->m_pDataStack->vPushInt(iFreePercent);
   
   EXIT();
 }
@@ -165,7 +165,7 @@ void Task::vFreeSpace(NNP_Task nnpTask)
   
   i8 iFreeSpace = gpBufferPool->iFreeSpace();
   
-  nnpTask->m_pDataStack->vPush(iFreeSpace);
+  nnpTask->m_pDataStack->vPushInt(iFreeSpace);
   
   EXIT();
 }
@@ -181,7 +181,7 @@ void Task::vInUseSpace(NNP_Task nnpTask)
                      - gpAttachMap->m_iJumboSize
                      - gpBufferPool->iFreeSpace();
   
-  nnpTask->m_pDataStack->vPush(iInUseSpace);
+  nnpTask->m_pDataStack->vPushInt(iInUseSpace);
   
   EXIT();
 }
@@ -213,9 +213,9 @@ void Task::vSnapshot(NNP_Task nnpTask)
   gpJumboHeap->vAnalyse(iCountObjects);
 
   for (i8 index = 0; index < CN_ENUMS; index++)
-    nnpTask->m_pDataStack->vPush(iCountObjects[index]);
+    nnpTask->m_pDataStack->vPushInt(iCountObjects[index]);
   
-  nnpTask->m_pDataStack->vPush(CN_ENUMS);
+  nnpTask->m_pDataStack->vPushInt(CN_ENUMS);
   
   EXIT();
 }
@@ -229,7 +229,7 @@ void Task::vTotalSpace(NNP_Task nnpTask)
   
   i8 iTotalSpace = gpAttachMap->m_iRegionSize - gpAttachMap->m_iJumboSize;
   
-  nnpTask->m_pDataStack->vPush(iTotalSpace);
+  nnpTask->m_pDataStack->vPushInt(iTotalSpace);
   
   EXIT();
 }

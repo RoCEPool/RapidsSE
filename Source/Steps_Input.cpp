@@ -90,7 +90,7 @@ ENTRY("vInputDepth"_Str);
   
   i8 iDepth = nnpTask->m_pTokeniser->iDepth();
   
-  nnpTask->m_pDataStack->vPush(iDepth);
+  nnpTask->m_pDataStack->vPushInt(iDepth);
   
   EXIT();
 }
@@ -212,7 +212,7 @@ ENTRY("vInputType"_Str);
   
   eTK eTokenType = nnpTask->m_pTokeniser->eToken();
   
-  nnpTask->m_pDataStack->vPush(eTokenType);
+  nnpTask->m_pDataStack->vPushInt(eTokenType);
   
   EXIT();
 }
