@@ -39,8 +39,11 @@ namespace DBobjects
     i8      nEntries(void);
     Entry*  aHead(void);
     bool    bInsert(KeyWsp& xKeyWsp, RowId xRowId, IdxColVec* pColVec);
+    
     IndexBuffer* pNextBuffer(void);
+    
     Entry*  aNextEntry(Entry* aEntry);
+    Entry*  aPosition(Key& xKey, IdxColVec* pColVec);
     bool    bRemove(Key* aKey);
     void    vShow(void);
     void    vVerify(void);

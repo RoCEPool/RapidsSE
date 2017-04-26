@@ -481,6 +481,20 @@ Entry* IndexBuffer::aNextEntry(Entry* aEntry)
     return nullptr;
 }
 
+/*----------------------------------------------------------------------------*/
+/* position at entry with lower bound at key                                  */
+/*----------------------------------------------------------------------------*/
+Entry* IndexBuffer::aPosition(Key& xKey, IdxColVec* pColumnVec)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
+  
+  Entry* pEntry;
+  bool   bEqualTo;
+  
+  pEntry = aPosition(xKey, pColumnVec, bEqualTo, nullptr);
+  return pEntry;
+}
+
 #define goDownLevel(iLevel) iLevel--;
 /*----------------------------------------------------------------------------*/
 /* positition to entry (optional set revise vector)                           */
@@ -492,6 +506,8 @@ Entry* IndexBuffer::aPosition(Key& xKey, IdxColVec* pColVec, bool& bEqualTo, Ent
   // start from head at known highest level
   Entry* pCurrentEntry = aHead();
   i8 iCurrentLevel = C_FLAT_LEVELS - 1;
+  
+  // create a realtional operator array
   RelOpAry* pOpAryFind = new RelOpAry;
   pOpAryFind->vAdd(RO_GREATER_EQUAL);
   
@@ -503,7 +519,6 @@ Entry* IndexBuffer::aPosition(Key& xKey, IdxColVec* pColVec, bool& bEqualTo, Ent
     while (Entry* pNextEntry = aRightEntry(pCurrentEntry, iCurrentLevel)) {
       
         // compare the inserting object with next object
-        //bool bGreaterEqual = bI8Compare(&xKey, pNextEntry->aKey(), bEqualTo);
         bool bGreaterEqual = xKey.bMatches(pNextEntry->aKey(), pColVec, pOpAryFind);
       
         if (bGreaterEqual) {
