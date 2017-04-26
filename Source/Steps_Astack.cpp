@@ -162,7 +162,7 @@ void Task::vAstackNip(NNP_Task nnpTask)
   if ( ! nnpTask->m_pAuxStack->bPop(xValA,xValB) )
   THROW_INVALID_ASTACK("anip"_Str);
   
-  nnpTask->m_pAuxStack->vPush(&xValA);
+  nnpTask->m_pAuxStack->vPushValue(xValA);
   
   EXIT();
 }
@@ -219,7 +219,7 @@ void Task::vAstackReverse(NNP_Task nnpTask)
   }
   
   for (i8 i = 0; i < nValues; i++) {
-    nnpTask->m_pAuxStack->vPush(apValWsp[i]);
+    nnpTask->m_pAuxStack->vPushValP(apValWsp[i]);
   }
 }
 
@@ -248,8 +248,8 @@ void Task::vAstackSwap(NNP_Task nnpTask)
   if ( ! nnpTask->m_pAuxStack->bPop(xValA,xValB) )
   THROW_INVALID_ASTACK("aswap"_Str);
   
-  nnpTask->m_pAuxStack->vPush(&xValA);
-  nnpTask->m_pAuxStack->vPush(&xValB);
+  nnpTask->m_pAuxStack->vPushValue(xValA);
+  nnpTask->m_pAuxStack->vPushValue(xValB);
   
   EXIT();
 }
@@ -308,7 +308,7 @@ void Task::vAstackToValues(NNP_Task nnpTask)
     nVal++;
   
   for (i8 iVal = nVal - 1; iVal >= 0; iVal--)
-  nnpTask->m_pAuxStack->vPush(pValWsp[iVal]);
+  nnpTask->m_pAuxStack->vPushValP(pValWsp[iVal]);
   
   nnpTask->m_pAuxStack->vPushInt(nVal);
   

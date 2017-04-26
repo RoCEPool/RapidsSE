@@ -47,7 +47,7 @@ void Task::vPushI(NNP_Task nnpTask)
   
   Value* pI = nnpTask->m_pReturnStack->pPeek();
   
-  nnpTask->m_pDataStack->vPush(pI);
+  nnpTask->m_pDataStack->vPushValP(pI);
   
   EXIT();
 }
@@ -61,7 +61,7 @@ void Task::vPushJ(NNP_Task nnpTask)
   
   Value* pI = nnpTask->m_pReturnStack->pPeek(3);
   
-  nnpTask->m_pDataStack->vPush(pI);
+  nnpTask->m_pDataStack->vPushValP(pI);
   
   EXIT();
 }
@@ -94,7 +94,7 @@ void Task::vPushValue(NNP_Task nnpTask)
   
   Value* pValue = nnpTask->IP.m_pValue;
   
-  nnpTask->m_pDataStack->vPush(pValue);
+  nnpTask->m_pDataStack->vPushValP(pValue);
   
   nnpTask->vAdjustNext(ValLib::iSize(pValue));
   

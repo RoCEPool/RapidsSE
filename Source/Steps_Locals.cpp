@@ -56,7 +56,7 @@ void Task::vLocalFetch(NNP_Task nnpTask)
   
   ValReg* pValReg = nnpTask->m_pLocalsFrame->pValReg(iLocal);
   
-  nnpTask->m_pDataStack->vPush(pValReg);
+  nnpTask->m_pDataStack->vPushValP(pValReg);
   
   EXIT();
 }

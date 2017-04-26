@@ -758,7 +758,7 @@ void Stack::vPushInt(i8 iArg1)
   IntVal xIntVal1;
   xIntVal1 = iArg1;
   
-  vPush(&xIntVal1);
+  vPushValue(xIntVal1);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -813,7 +813,7 @@ void Stack::vPushValue(Value& xVal1)
 /*----------------------------------------------------------------------------*/
 /* push value onto data stack                                                 */
 /*----------------------------------------------------------------------------*/
-void Stack::vPush(Value* pValue)
+void Stack::vPushValP(Value* pValue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   

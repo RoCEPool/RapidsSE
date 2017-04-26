@@ -119,7 +119,7 @@ ENTRY("vRegReg0"_Str);
   
   ValReg* pValReg = nnpTask->m_pRegFrame->pValReg(0);
   
-  nnpTask->m_pDataStack->vPush(pValReg);
+  nnpTask->m_pDataStack->vPushValP(pValReg);
   
   EXIT();
 }
@@ -136,7 +136,7 @@ void Task::vRegReg1(NNP_Task nnpTask)
   
   ValReg* pValReg = nnpTask->m_pRegFrame->pValReg(1);
   
-  nnpTask->m_pDataStack->vPush(pValReg);
+  nnpTask->m_pDataStack->vPushValP(pValReg);
   
   EXIT();
 }
@@ -153,7 +153,7 @@ void Task::vRegReg2(NNP_Task nnpTask)
   
   ValReg* pValReg = nnpTask->m_pRegFrame->pValReg(2);
   
-  nnpTask->m_pDataStack->vPush(pValReg);
+  nnpTask->m_pDataStack->vPushValP(pValReg);
   
   EXIT();
 }
@@ -170,7 +170,7 @@ void Task::vRegReg3(NNP_Task nnpTask)
   
   ValReg* pValReg = nnpTask->m_pRegFrame->pValReg(3);
   
-  nnpTask->m_pDataStack->vPush(pValReg);
+  nnpTask->m_pDataStack->vPushValP(pValReg);
   
   EXIT();
 }
@@ -187,7 +187,7 @@ void Task::vRegReg4(NNP_Task nnpTask)
   
   ValReg* pValReg = nnpTask->m_pRegFrame->pValReg(4);
   
-  nnpTask->m_pDataStack->vPush(pValReg);
+  nnpTask->m_pDataStack->vPushValP(pValReg);
   
   EXIT();
 }
@@ -204,7 +204,7 @@ void Task::vRegReg5(NNP_Task nnpTask)
   
   ValReg* pValReg = nnpTask->m_pRegFrame->pValReg(5);
   
-  nnpTask->m_pDataStack->vPush(pValReg);
+  nnpTask->m_pDataStack->vPushValP(pValReg);
   
   EXIT();
 }
@@ -221,7 +221,7 @@ void Task::vRegReg6(NNP_Task nnpTask)
   
   ValReg* pValReg = nnpTask->m_pRegFrame->pValReg(6);
   
-  nnpTask->m_pDataStack->vPush(pValReg);
+  nnpTask->m_pDataStack->vPushValP(pValReg);
   
   EXIT();
 }
@@ -238,7 +238,7 @@ void Task::vRegReg7(NNP_Task nnpTask)
   
   ValReg* pValReg = nnpTask->m_pRegFrame->pValReg(7);
   
-  nnpTask->m_pDataStack->vPush(pValReg);
+  nnpTask->m_pDataStack->vPushValP(pValReg);
   
   EXIT();
 }
@@ -255,7 +255,7 @@ void Task::vRegReg8(NNP_Task nnpTask)
   
   ValReg* pValReg = nnpTask->m_pRegFrame->pValReg(8);
   
-  nnpTask->m_pDataStack->vPush(pValReg);
+  nnpTask->m_pDataStack->vPushValP(pValReg);
   
   EXIT();
 }
@@ -272,7 +272,7 @@ void Task::vRegReg9(NNP_Task nnpTask)
   
   ValReg* pValReg = nnpTask->m_pRegFrame->pValReg(9);
   
-  nnpTask->m_pDataStack->vPush(pValReg);
+  nnpTask->m_pDataStack->vPushValP(pValReg);
   
   EXIT();
 }
@@ -289,7 +289,7 @@ void Task::vRegRegA(NNP_Task nnpTask)
   
   ValReg* pValReg = nnpTask->m_pRegFrame->pValReg(10);
   
-  nnpTask->m_pDataStack->vPush(pValReg);
+  nnpTask->m_pDataStack->vPushValP(pValReg);
   
   EXIT();
 }
@@ -306,7 +306,7 @@ void Task::vRegRegB(NNP_Task nnpTask)
   
   ValReg* pValReg = nnpTask->m_pRegFrame->pValReg(11);
   
-  nnpTask->m_pDataStack->vPush(pValReg);
+  nnpTask->m_pDataStack->vPushValP(pValReg);
   
   EXIT();
 }
@@ -323,7 +323,7 @@ void Task::vRegRegC(NNP_Task nnpTask)
   
   ValReg* pValReg = nnpTask->m_pRegFrame->pValReg(12);
   
-  nnpTask->m_pDataStack->vPush(pValReg);
+  nnpTask->m_pDataStack->vPushValP(pValReg);
   
   EXIT();
 }
@@ -340,7 +340,7 @@ void Task::vRegRegD(NNP_Task nnpTask)
   
   ValReg* pValReg = nnpTask->m_pRegFrame->pValReg(13);
   
-  nnpTask->m_pDataStack->vPush(pValReg);
+  nnpTask->m_pDataStack->vPushValP(pValReg);
   
   EXIT();
 }
@@ -357,7 +357,7 @@ void Task::vRegRegE(NNP_Task nnpTask)
   
   ValReg* pValReg = nnpTask->m_pRegFrame->pValReg(14);
   
-  nnpTask->m_pDataStack->vPush(pValReg);
+  nnpTask->m_pDataStack->vPushValP(pValReg);
   
   EXIT();
 }
@@ -374,7 +374,7 @@ void Task::vRegRegF(NNP_Task nnpTask)
   
   ValReg* pValReg = nnpTask->m_pRegFrame->pValReg(15);
   
-  nnpTask->m_pDataStack->vPush(pValReg);
+  nnpTask->m_pDataStack->vPushValP(pValReg);
   
   EXIT();
 }
@@ -395,7 +395,7 @@ void Task::vRegRegNth(NNP_Task nnpTask)
   
   ValReg* pValReg = nnpTask->m_pRegFrame->pValReg(iReg);
   
-  nnpTask->m_pDataStack->vPush(pValReg);
+  nnpTask->m_pDataStack->vPushValP(pValReg);
   
   EXIT();
 }

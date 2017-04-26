@@ -106,7 +106,7 @@ void Task::vRstackCsRoll(NNP_Task nnpTask)
     if ( ! nnpTask->m_pDataStack->bPop(xValMid) )
       THROW_INVALID_DSTACK("cs-roll"_Str);
     
-    nnpTask->m_pReturnStack->vPush(&xValMid);
+    nnpTask->m_pReturnStack->vPushValue(xValMid);
   }
   
   Cell* pCellZ;
@@ -117,7 +117,7 @@ void Task::vRstackCsRoll(NNP_Task nnpTask)
     if ( ! nnpTask->m_pReturnStack->bPop(xValMid) )
       THROW_INVALID_RSTACK("cs-roll"_Str);
     
-    nnpTask->m_pDataStack->vPush(&xValMid);
+    nnpTask->m_pDataStack->vPushValue(xValMid);
   }
 
   nnpTask->m_pDataStack->vPushCell(pCellZ);
@@ -247,7 +247,7 @@ void Task::vRstackReverse(NNP_Task nnpTask)
   }
   
   for (i8 i = 0; i < nValues; i++) {
-    nnpTask->m_pReturnStack->vPush(apValWsp[i]);
+    nnpTask->m_pReturnStack->vPushValP(apValWsp[i]);
   }
 }
 
@@ -272,16 +272,16 @@ void Task::vRstackRoll(NNP_Task nnpTask)
     if ( ! nnpTask->m_pReturnStack->bPop(xValX) )
       THROW_INVALID_RSTACK("rroll"_Str);
     
-    nnpTask->m_pDataStack->vPush(&xValX);
+    nnpTask->m_pDataStack->vPushValue(xValX);
   }
   
-  nnpTask->m_pReturnStack->vPush(&xValA);
+  nnpTask->m_pReturnStack->vPushValue(xValA);
   
   for (i8 iCount = 0; iCount < nValues; iCount++) {
     if ( ! nnpTask->m_pDataStack->bPop(xValX) )
       THROW_INVALID_DSTACK("rroll"_Str);
     
-    nnpTask->m_pReturnStack->vPush(&xValX);
+    nnpTask->m_pReturnStack->vPushValue(xValX);
   }
   
   EXIT();
@@ -305,7 +305,7 @@ void Task::vRstackRollInv(NNP_Task nnpTask)
     if ( ! nnpTask->m_pReturnStack->bPop(xValX) )
       THROW_INVALID_RSTACK("-rroll"_Str);
     
-    nnpTask->m_pDataStack->vPush(&xValX);
+    nnpTask->m_pDataStack->vPushValue(xValX);
   }
   
   if ( ! nnpTask->m_pReturnStack->bPop(xValZ) )
@@ -316,10 +316,10 @@ void Task::vRstackRollInv(NNP_Task nnpTask)
     if ( ! nnpTask->m_pDataStack->bPop(xValX) )
       THROW_INVALID_DSTACK("-rroll"_Str);
     
-    nnpTask->m_pReturnStack->vPush(&xValX);
+    nnpTask->m_pReturnStack->vPushValue(xValX);
   }
   
-  nnpTask->m_pReturnStack->vPush(&xValZ);
+  nnpTask->m_pReturnStack->vPushValue(xValZ);
   
   EXIT();
 }
@@ -351,8 +351,8 @@ void Task::vRstackSwap(NNP_Task nnpTask)
   if ( ! nnpTask->m_pReturnStack->bPop(xValA,xValB) )
     THROW_INVALID_DSTACK("swap"_Str);
   
-  nnpTask->m_pReturnStack->vPush(&xValA);
-  nnpTask->m_pReturnStack->vPush(&xValB);
+  nnpTask->m_pReturnStack->vPushValue(xValA);
+  nnpTask->m_pReturnStack->vPushValue(xValB);
   
   EXIT();
 }

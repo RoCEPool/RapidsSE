@@ -247,7 +247,7 @@ void Task::vDstackNip(NNP_Task nnpTask)
   if ( ! nnpTask->m_pDataStack->bPop(xValA,xValB) )
     THROW_INVALID_DSTACK("nip"_Str);
   
-  nnpTask->m_pDataStack->vPush(&xValA);
+  nnpTask->m_pDataStack->vPushValue(xValA);
   
   EXIT();
 }
@@ -322,7 +322,7 @@ void Task::vDstackReverse(NNP_Task nnpTask)
   }
 
   for (i8 i = 0; i < nValues; i++) {
-    nnpTask->m_pDataStack->vPush(apValWsp[i]);
+    nnpTask->m_pDataStack->vPushValP(apValWsp[i]);
   }
 }
 
@@ -347,16 +347,16 @@ void Task::vDstackRoll(NNP_Task nnpTask)
     if ( ! nnpTask->m_pDataStack->bPop(xValX) )
       THROW_INVALID_DSTACK("roll"_Str);
     
-    nnpTask->m_pReturnStack->vPush(&xValX);
+    nnpTask->m_pReturnStack->vPushValue(xValX);
   }
   
-  nnpTask->m_pDataStack->vPush(&xValA);
+  nnpTask->m_pDataStack->vPushValue(xValA);
   
   for (i8 iCount = 0; iCount < nValues; iCount++) {
     if ( ! nnpTask->m_pReturnStack->bPop(xValX) )
       THROW_INVALID_DSTACK("roll"_Str);
     
-    nnpTask->m_pDataStack->vPush(&xValX);
+    nnpTask->m_pDataStack->vPushValue(xValX);
   }
   
   EXIT();
@@ -380,7 +380,7 @@ void Task::vDstackRollInv(NNP_Task nnpTask)
     if ( ! nnpTask->m_pDataStack->bPop(xValX) )
       THROW_INVALID_DSTACK("-roll"_Str);
     
-    nnpTask->m_pReturnStack->vPush(&xValX);
+    nnpTask->m_pReturnStack->vPushValue(xValX);
   }
   
   if ( ! nnpTask->m_pDataStack->bPop(xValZ) )
@@ -391,10 +391,10 @@ void Task::vDstackRollInv(NNP_Task nnpTask)
     if ( ! nnpTask->m_pReturnStack->bPop(xValX) )
       THROW_INVALID_DSTACK("-roll"_Str);
     
-    nnpTask->m_pDataStack->vPush(&xValX);
+    nnpTask->m_pDataStack->vPushValue(xValX);
   }
   
-  nnpTask->m_pDataStack->vPush(&xValZ);
+  nnpTask->m_pDataStack->vPushValue(xValZ);
   
   EXIT();
 }
@@ -413,9 +413,9 @@ void Task::vDstackRot(NNP_Task nnpTask)
   if ( ! nnpTask->m_pDataStack->bPop(xValA,xValB,xValC) )
     THROW_INVALID_DSTACK("rot"_Str);
   
-  nnpTask->m_pDataStack->vPush(&xValB);
-  nnpTask->m_pDataStack->vPush(&xValA);
-  nnpTask->m_pDataStack->vPush(&xValC);
+  nnpTask->m_pDataStack->vPushValue(xValB);
+  nnpTask->m_pDataStack->vPushValue(xValA);
+  nnpTask->m_pDataStack->vPushValue(xValC);
   
   EXIT();
 }
@@ -434,9 +434,9 @@ void Task::vDstackRotInv(NNP_Task nnpTask)
   if ( ! nnpTask->m_pDataStack->bPop(xValA,xValB,xValC) )
     THROW_INVALID_DSTACK("-rot"_Str);
   
-  nnpTask->m_pDataStack->vPush(&xValA);
-  nnpTask->m_pDataStack->vPush(&xValC);
-  nnpTask->m_pDataStack->vPush(&xValB);
+  nnpTask->m_pDataStack->vPushValue(xValA);
+  nnpTask->m_pDataStack->vPushValue(xValC);
+  nnpTask->m_pDataStack->vPushValue(xValB);
   
   EXIT();
 }
@@ -466,8 +466,8 @@ void Task::vDstackSwap(NNP_Task nnpTask)
   if ( ! nnpTask->m_pDataStack->bPop(xValA,xValB) )
     THROW_INVALID_DSTACK("swap"_Str);
   
-  nnpTask->m_pDataStack->vPush(&xValA);
-  nnpTask->m_pDataStack->vPush(&xValB);
+  nnpTask->m_pDataStack->vPushValue(xValA);
+  nnpTask->m_pDataStack->vPushValue(xValB);
   
   EXIT();
 }
@@ -538,7 +538,7 @@ void Task::vDstackToValues(NNP_Task nnpTask)
     nVal++;
   
   for (i8 iVal = nVal - 1; iVal >= 0; iVal--)
-    nnpTask->m_pDataStack->vPush(pValWsp[iVal]);
+    nnpTask->m_pDataStack->vPushValP(pValWsp[iVal]);
   
   nnpTask->m_pDataStack->vPushInt(nVal);
   
@@ -558,9 +558,9 @@ void Task::vDstackTuck(NNP_Task nnpTask)
   if ( ! nnpTask->m_pDataStack->bPop(xValA,xValB) )
     THROW_INVALID_DSTACK("tuck"_Str);
   
-  nnpTask->m_pDataStack->vPush(&xValA);
-  nnpTask->m_pDataStack->vPush(&xValB);
-  nnpTask->m_pDataStack->vPush(&xValA);
+  nnpTask->m_pDataStack->vPushValue(xValA);
+  nnpTask->m_pDataStack->vPushValue(xValB);
+  nnpTask->m_pDataStack->vPushValue(xValA);
   
   EXIT();
 }
