@@ -941,11 +941,11 @@ void Stack::vPeek(i8 iNthValue, Value* pValue)
 /*----------------------------------------------------------------------------*/
 /* peek at given value on stack                                               */
 /*----------------------------------------------------------------------------*/
-void Stack::vPeek(i8 iNthValue, ValWsp* pValWsp)
+void Stack::vPeek(i8 iNthValue, ValWsp& xValWsp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  Value* pNestedValue = pValWsp->pNestedValue();
+  Value* pNestedValue = xValWsp.pNestedValue();
 
   vPeek(iNthValue,pNestedValue);
 }
