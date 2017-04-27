@@ -57,7 +57,8 @@ namespace Structures
     bool bPop(Object*& pObject, i8& iArg);
     bool bPop(Object*& pObject1, Object*& pObject2);
     bool bPop(Object*& pObject, ValWsp& xValWsp);
-    bool bPop(Value* pArg1);
+    bool bPop(ValReg* pArg1);
+    bool bPop(ValWsp* pArg1);
     bool bPop(ValWsp& xArg1);
     bool bPop(ValWsp& xArg1, ValWsp& xArg2);
     bool bPop(ValWsp& xArg1, ValWsp& xArg2, ValWsp& xArg3);

@@ -554,7 +554,22 @@ bool Stack::bPop(s48K& sArg1, s48K& sArg2)
 /*----------------------------------------------------------------------------*/
 /* pop value from data stack                                                  */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPop(Value* pArg1)
+bool Stack::bPop(ValReg* pArg1)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  if ( ! bGuard(1) )
+    return false;
+  
+  vPopVal(pArg1);
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop value from data stack                                                  */
+/*----------------------------------------------------------------------------*/
+bool Stack::bPop(ValWsp* pArg1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
