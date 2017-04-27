@@ -247,7 +247,7 @@ void Task::vRstackReverse(NNP_Task nnpTask)
   }
   
   for (i8 i = 0; i < nValues; i++) {
-    nnpTask->m_pReturnStack->vPushValue(apValWsp[i]);
+    nnpTask->m_pReturnStack->vPushValWsp(apValWsp[i]);
   }
 }
 

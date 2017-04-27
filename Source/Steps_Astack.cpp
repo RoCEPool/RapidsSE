@@ -219,7 +219,7 @@ void Task::vAstackReverse(NNP_Task nnpTask)
   }
   
   for (i8 i = 0; i < nValues; i++) {
-    nnpTask->m_pAuxStack->vPushValue(apValWsp[i]);
+    nnpTask->m_pAuxStack->vPushValWsp(apValWsp[i]);
   }
 }
 
@@ -308,7 +308,7 @@ void Task::vAstackToValues(NNP_Task nnpTask)
     nVal++;
   
   for (i8 iVal = nVal - 1; iVal >= 0; iVal--)
-  nnpTask->m_pAuxStack->vPushValue(pValWsp[iVal]);
+  nnpTask->m_pAuxStack->vPushValWsp(pValWsp[iVal]);
   
   nnpTask->m_pAuxStack->vPushInt(nVal);
   
