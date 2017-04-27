@@ -822,6 +822,30 @@ void Stack::vPushValue(Value* pValue)
 /*----------------------------------------------------------------------------*/
 /* push value onto data stack                                                 */
 /*----------------------------------------------------------------------------*/
+void Stack::vPushValue(ValReg* pValue)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  vPushVal(pValue);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* push value onto data stack                                                 */
+/*----------------------------------------------------------------------------*/
+void Stack::vPushValWsp(ValWsp* pValue)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  vPushVal(pValue);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* push value onto data stack                                                 */
+/*----------------------------------------------------------------------------*/
 void Stack::vPushValSet(ValSet& xValSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);

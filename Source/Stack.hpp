@@ -81,6 +81,8 @@ namespace Structures
     void vPushS256(s256& s256);
     void vPushS48K(s48K& s48K);
     void vPushValue(Value* pValue);
+    void vPushValue(ValReg* pValue);
+    void vPushValWsp(ValWsp* pValue);
     void vPushValue(Value& xValue);
     void vPushValSet(ValSet& xValSet);
     void vPushValWsp(ValWsp& xValWsp);
