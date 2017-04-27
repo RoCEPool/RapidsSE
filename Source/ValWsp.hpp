@@ -42,6 +42,7 @@ namespace Values
 
     char*  aWspArea(void);
     Value* pNestedValue(void);
+    Value* pNestedValueSelf(void);
 
     i8     iNestedAsInt(void);
   
@@ -87,7 +88,8 @@ namespace Values
     
     char*  aWspArea(void);
     Value* pNestedValue(void);
-    
+    Value* pNestedValueSelf(void);
+  
     i8     iNestedAsInt(void);
     IntVal* pNestedIntVal(void);
     PtrVal* pNestedPtrVal(void);

@@ -478,7 +478,7 @@ void Word::vEncode(Str* aWord, ValWsp* pValWsp)
   
   vEncode(aWord);
   
-  vAppend(pValWsp);
+  vAppend(pValWsp->pNestedValueSelf());
 }
 
 /*----------------------------------------------------------------------------*/

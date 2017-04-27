@@ -291,7 +291,7 @@ bool Stack::bPop(i8& iArg1, ValWsp& xArg2)
   
   iArg1 = xIntVal1.iInt();
   
-  vPopVal(&xArg2);
+  vPopVal(xArg2.pNestedValueSelf());
   
   return true;
 }
@@ -312,7 +312,7 @@ bool Stack::bPop(i8& iArg1, s48K& sArg2)
   iArg1 = xIntVal1.iInt();
   
   ValWsp xValWsp2;
-  vPopVal(&xValWsp2);
+  vPopVal(xValWsp2.pNestedValueSelf());
   
   sArg2 = _pStrVal(&xValWsp2);
   
@@ -437,7 +437,7 @@ bool Stack::bPop(s32& sArg1)
     return false;
   
   ValWsp xValWsp1;
-  vPopVal(&xValWsp1);
+  vPopVal(xValWsp1.pNestedValueSelf());
   
   sArg1 = _pStrVal(&xValWsp1);
   
@@ -455,7 +455,7 @@ bool Stack::bPop(s256& sArg1)
     return false;
   
   ValWsp xValWsp1;
-  vPopVal(&xValWsp1);
+  vPopVal(xValWsp1.pNestedValueSelf());
   
   sArg1 = _pStrVal(&xValWsp1);
   
@@ -473,7 +473,7 @@ bool Stack::bPop(s48K& sArg1)
     return false;
   
   ValWsp xValWsp1;
-  vPopVal(&xValWsp1);
+  vPopVal(xValWsp1.pNestedValueSelf());
   
   sArg1 = _pStrVal(&xValWsp1);
   
@@ -491,7 +491,7 @@ bool Stack::bPop(s48K& sArg1, i8& iArg2)
     return false;
   
   ValWsp xValWsp1;
-  vPopVal(&xValWsp1);
+  vPopVal(xValWsp1.pNestedValueSelf());
   
   sArg1 = _pStrVal(&xValWsp1);
   
@@ -514,7 +514,7 @@ bool Stack::bPop(s48K& sArg1, i8& iArg2, i8& iArg3)
     return false;
   
   ValWsp xValWsp1;
-  vPopVal(&xValWsp1);
+  vPopVal(xValWsp1.pNestedValueSelf());
   sArg1 = _pStrVal(&xValWsp1);
   
   IntVal xIntVal2;
@@ -539,12 +539,12 @@ bool Stack::bPop(s48K& sArg1, s48K& sArg2)
     return false;
   
   ValWsp xValWsp1;
-  vPopVal(&xValWsp1);
+  vPopVal(xValWsp1.pNestedValueSelf());
   
   sArg1 = _pStrVal(&xValWsp1);
   
   ValWsp xValWsp2;
-  vPopVal(&xValWsp2);
+  vPopVal(xValWsp2.pNestedValueSelf());
   
   sArg2 = _pStrVal(&xValWsp2);
   
@@ -576,7 +576,7 @@ bool Stack::bPop(ValWsp* pArg1)
   if ( ! bGuard(1) )
     return false;
   
-  vPopVal(pArg1);
+  vPopVal(pArg1->pNestedValueSelf());
   
   return true;
 }
@@ -591,7 +591,7 @@ bool Stack::bPop(ValWsp& xArg1)
   if ( ! bGuard(1) )
     return false;
   
-  vPopVal(&xArg1);
+  vPopVal(xArg1.pNestedValueSelf());
   
   return true;
 }
@@ -606,9 +606,9 @@ bool Stack::bPop(ValWsp& pValue1, ValWsp& pValue2)
   if ( ! bGuard(2) )
     return false;
   
-  vPopVal(&pValue1);
+  vPopVal(pValue1.pNestedValueSelf());
   
-  vPopVal(&pValue2);
+  vPopVal(pValue2.pNestedValueSelf());
   
   return true;
 }
@@ -623,11 +623,11 @@ bool Stack::bPop(ValWsp& pValue1, ValWsp& pValue2, ValWsp& pValue3)
   if ( ! bGuard(3) )
     return false;
   
-  vPopVal(&pValue1);
+  vPopVal(pValue1.pNestedValueSelf());
   
-  vPopVal(&pValue2);
+  vPopVal(pValue2.pNestedValueSelf());
   
-  vPopVal(&pValue3);
+  vPopVal(pValue3.pNestedValueSelf());
   
   return true;
 }
@@ -658,7 +658,7 @@ bool Stack::bPopAsInt(i8& iArg1)
     return false;
   
   ValWsp xWspVal1;
-  vPopVal(&xWspVal1);
+  vPopVal(xWspVal1.pNestedValueSelf());
   
   iArg1 = xWspVal1.iNestedAsInt();
   
@@ -692,7 +692,7 @@ bool Stack::bPopBinary(Object*& pObject)
     return false;
 
   ValWsp xBinVal;
-  vPopVal(&xBinVal);
+  vPopVal(xBinVal.pNestedValueSelf());
   
   pObject = _pBinVal(&xBinVal)->pNewObject();
   
@@ -838,7 +838,7 @@ void Stack::vPushValWsp(ValWsp* pValue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  vPushVal(pValue);
+  vPushVal(pValue->pNestedValueSelf());
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
 }
@@ -989,9 +989,9 @@ void Stack::vPeekValWsp(i8 iNthValue, ValWsp& xValWsp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  Value* pNestedValue = xValWsp.pNestedValue();
+  //Value* pNestedValue = xValWsp.pNestedValue();
 
-  vPeek(iNthValue,pNestedValue);
+  vPeekValWsp(iNthValue,xValWsp);
 }
 #endif
 
