@@ -114,6 +114,10 @@ bool IndexBuffer::bInsert(KeyWsp& xKeyWsp, RowId xRowId, IdxColVec* pColVec)
   //vShow();
   //vTrace("-----------------------\n\n"_Str);
   
+  // create a realtional operator array
+  RelOpAry* pOpAryFind = new RelOpAry;
+  pOpAryFind->vAdd(RO_GREATER_EQUAL);
+  
   // initialize the EntWsp
   xEntWsp.vRowId(xRowId);
   xEntWsp.vAddKey(xKeyWsp);
@@ -127,7 +131,7 @@ bool IndexBuffer::bInsert(KeyWsp& xKeyWsp, RowId xRowId, IdxColVec* pColVec)
   Key xKey(xKeyWsp);
   
   // get a positioned revise vector
-  Entry* pAfterEntry = aPosition(xKey, pColVec, bEqualTo, pReviseVec);
+  Entry* pAfterEntry = aPosition(xKey, pOpAryFind, pColVec, bEqualTo, pReviseVec);
   Entry* pNewEntry = aNewEntry(nBytes, xEntWsp.nOffsets(), pAfterEntry);
   
   // set the new entry from the EntWsp
@@ -169,6 +173,8 @@ bool IndexBuffer::bInsert(KeyWsp& xKeyWsp, RowId xRowId, IdxColVec* pColVec)
   
   // increment the no of entries
   m_nEntries++;
+  
+  delete pOpAryFind;
   
   return true;
 }
@@ -481,25 +487,78 @@ Entry* IndexBuffer::aNextEntry(Entry* aEntry)
     return nullptr;
 }
 
+#define goDownLevel(iLevel) iLevel--;
 /*----------------------------------------------------------------------------*/
 /* position at entry with lower bound at key                                  */
 /*----------------------------------------------------------------------------*/
-Entry* IndexBuffer::aPosition(Key& xKey, IdxColVec* pColumnVec)
+Entry* IndexBuffer::aPosition(Key& xKey, IdxColVec* pColVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
   Entry* pEntry;
   bool   bEqualTo;
   
-  pEntry = aPosition(xKey, pColumnVec, bEqualTo, nullptr);
-  return pEntry;
+  // create a realtional operator array
+  RelOpAry* pOpAryFind = new RelOpAry;
+  pOpAryFind->vAdd(RO_GREATER_EQUAL);
+  
+  // start from head at known highest level
+  Entry* pCurrentEntry = aHead();
+  i8 iCurrentLevel = C_FLAT_LEVELS - 1;
+  
+  // create a realtional operator array
+  //RelOpAry* pOpAryFind = new RelOpAry;
+  //pOpAryFind->vAdd(RO_GREATER_EQUAL);
+  
+  do {
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // inner loop: go right a number of nodes until we find
+    //   ObjectInsert < ObjectNext at current level
+    while (Entry* pNextEntry = aRightEntry(pCurrentEntry, iCurrentLevel)) {
+      
+      // compare the inserting object with next object
+      bool bGreaterEqual = pNextEntry->aKey()->bMatches(&xKey, pColVec, pOpAryFind);
+      
+      if (bGreaterEqual) {
+        // pObjectInsert is >= pObjectNext
+        //vTrace("  %lld after %lld (level %lld)\n"_Str,
+        //       (i8)pObjectInsert,(i8)pNextEntry->uRight(),iCurrentLevel);
+        
+        return pNextEntry;
+      }
+      else {
+        // pObjectInsert is < pObjectNext or pObjectNext is null
+        //vTrace("  %lld before %lld (level %lld)\n"_Str,
+        //       (i8)pObjectInsert,(i8)pNextEntry->uRight(),iCurrentLevel);
+        
+        // go right one node
+        pCurrentEntry = aRightEntry(pCurrentEntry, iCurrentLevel);
+      }
+    }
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // outer loop: now having gone right as far as we go down one single level
+    
+    // now go down one level
+    goDownLevel(iCurrentLevel);
+    
+    // and repeat till we have a complete revision vector
+  } while (iCurrentLevel >= 0);
+  
+  //delete pOpAryFind;
+
+  delete pOpAryFind;
+
+  return nullptr;
+  
 }
 
-#define goDownLevel(iLevel) iLevel--;
+
 /*----------------------------------------------------------------------------*/
 /* positition to entry (optional set revise vector)                           */
 /*----------------------------------------------------------------------------*/
-Entry* IndexBuffer::aPosition(Key& xKey, IdxColVec* pColVec, bool& bEqualTo, Entry** aReviseVec)
+Entry* IndexBuffer::aPosition(Key& xKey, RelOpAry* pOpAryFind, IdxColVec* pColVec, bool& bEqualTo, Entry** aReviseVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
@@ -508,8 +567,8 @@ Entry* IndexBuffer::aPosition(Key& xKey, IdxColVec* pColVec, bool& bEqualTo, Ent
   i8 iCurrentLevel = C_FLAT_LEVELS - 1;
   
   // create a realtional operator array
-  RelOpAry* pOpAryFind = new RelOpAry;
-  pOpAryFind->vAdd(RO_GREATER_EQUAL);
+  //RelOpAry* pOpAryFind = new RelOpAry;
+  //pOpAryFind->vAdd(RO_GREATER_EQUAL);
   
   do {
 
@@ -551,7 +610,7 @@ Entry* IndexBuffer::aPosition(Key& xKey, IdxColVec* pColVec, bool& bEqualTo, Ent
     // and repeat till we have a complete revision vector
   } while (iCurrentLevel >= 0);
   
-  delete pOpAryFind;
+  //delete pOpAryFind;
   
   return pCurrentEntry;
 }

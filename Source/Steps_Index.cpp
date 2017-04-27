@@ -291,7 +291,12 @@ void Task::vIndexRow(NNP_Task nnpTask)
   
   RowId xRowId = pEntry->xRowId();
   
-  nnpTask->m_pDataStack->vPushObject(xRowId.pRow());
+  Row* pRow = xRowId.pRow();
+  StrVal* pStrVal = reinterpret_cast<StrVal*>(pRow->pData());
+  //vTrace("Row: %s\n"_Str, pStrVal->aStr());
+  s256 sRow = pStrVal->aStr();
+  
+  nnpTask->m_pDataStack->vPushS256(sRow);
 }
 
 /*----------------------------------------------------------------------------*/

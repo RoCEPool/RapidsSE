@@ -79,14 +79,14 @@ tr      truncate_table
 -----------------
 Index Requests:
 -----------------
-anidx    analyze_index
-dumpidx  dump_index
-mkidx    create_index
-lsidx    list_indexes
+anidx     analyze_index
+dumpidx   dump_index
+mkidx     create_index
+lsidx     list_indexes
 lwrselidx lower_select_index
-rmidx    drop_index
-szidx    size_index
-tridx    truncate_index
+rmidx     drop_index
+szidx     size_index
+tridx     truncate_index
  
 -----------------
 Column Requests:

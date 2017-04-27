@@ -1314,7 +1314,7 @@ bool SEitf::bLowerSelectTableIndex(Str* aWords[], i8 iWords)
   sRequest.vConcat(aWords[1]);
   sRequest.vConcat("\""_Str);
   
-  sRequest.vConcat(" lower_select_table_index"_Str);
+  sRequest.vConcat(" lower_select_index"_Str);
   
   return bAppendRequest(sRequest);
 }
