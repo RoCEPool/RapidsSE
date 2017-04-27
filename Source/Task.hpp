@@ -812,6 +812,8 @@ namespace Tasks
     static void vSEitfDelete(NNP_Task nnpTask);
     static void vSEitfDicStack(NNP_Task nnpTask);
     static void vSEitfDump(NNP_Task nnpTask);
+    static void vSEitfEntryFetch(NNP_Task nnpTask);
+    static void vSEitfEntryStore(NNP_Task nnpTask);
     static void vSEitfIndexRef(NNP_Task nnpTask);
     static void vSEitfPartitionFetch(NNP_Task nnpTask);
     static void vSEitfPartitionStore(NNP_Task nnpTask);

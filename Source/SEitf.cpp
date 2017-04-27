@@ -78,6 +78,7 @@ SEitf::SEitf(i8 iPartition)
   m_sErrorMsg       = aEC[m_eErrorCode];
   m_sResponse       = ""_Str;
   m_aRowPtr         = nullptr;
+  m_pEntry          = nullptr;
   m_pCurrentTable   = nullptr;
   m_pTxRef          = nullptr;
   m_iCurrentRequestId = 0;

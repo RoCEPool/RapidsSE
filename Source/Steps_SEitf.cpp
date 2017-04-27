@@ -36,6 +36,8 @@ void Task::vAddPrimitives_SEitf(void)
   vAddPrimitive("seitf.delete"_Str,        &vSEitfDelete,        false);
   vAddPrimitive("seitf.dicStack"_Str,      &vSEitfDicStack,      false);
   vAddPrimitive("seitf.dump"_Str,          &vSEitfDump,          false);
+  vAddPrimitive("seitf.entry@"_Str,        &vSEitfEntryFetch,    false);
+  vAddPrimitive("seitf.entry!"_Str,        &vSEitfEntryStore,    false);
   vAddPrimitive("seitf.indexRef"_Str,      &vSEitfIndexRef,      false);
   vAddPrimitive("seitf.partition@"_Str,    &vSEitfPartitionFetch, false);
   vAddPrimitive("seitf.partition!"_Str,    &vSEitfPartitionStore, false);
@@ -118,6 +120,51 @@ ENTRY("vSEitfDump"_Str);
   ASSERT(CN_SEITF == pSEitf->eClass());
   
   pSEitf->vContentDump();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* seitf.entry@ -- fetch entry from SE interface                              */
+/*----------------------------------------------------------------------------*/
+void Task::vSEitfEntryFetch(NNP_Task nnpTask)
+{
+  ENTRY("vSEitfEntryFetch"_Str);
+  
+  Object* pPtrSEitf;
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitf) )
+    THROW_INVALID_DSTACK("seitf.entry@"_Str);
+  
+  SEitf* pSEitf = _pSEitf(pPtrSEitf);
+  ASSERT(CN_SEITF == pSEitf->eClass());
+  
+  nnpTask->m_pDataStack->vPushObject(pSEitf->m_pEntry);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* seitf.entry! -- store entry in SE interface                                */
+/*----------------------------------------------------------------------------*/
+void Task::vSEitfEntryStore(NNP_Task nnpTask)
+{
+  ENTRY("vSEitfEntryStore"_Str);
+  
+  Object* pPtrSEitf;
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitf) )
+    THROW_INVALID_DSTACK("seitf.entry!"_Str);
+  
+  SEitf* pSEitf = _pSEitf(pPtrSEitf);
+  ASSERT(CN_SEITF == pSEitf->eClass());
+  
+  Object* pPtrEntry;
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrEntry) )
+    THROW_INVALID_DSTACK("seitf.entry!"_Str);
+  
+  Entry* pEntry = _aEntry(pPtrEntry);
+  ASSERT(nullptr == pEntry || CN_ENTRY == pEntry->eClass());
+  
+  pSEitf->m_pEntry = pEntry;
   
   EXIT();
 }

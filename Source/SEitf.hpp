@@ -28,6 +28,7 @@ namespace Interface
     
     Table* m_pCurrentTable;
     Str*   m_aRowPtr;
+    Entry* m_pEntry;
     TxRef* m_pTxRef;
     
     i8     m_iCurrentRequestId;
