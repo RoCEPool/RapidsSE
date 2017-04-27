@@ -276,7 +276,7 @@ Value* ValWsp::pNestedValueSelf(void)
 {
   _precondition_(_MAGIC_);
   
-  return (Value*)this;
+  return (Value*)m_xWsp.aArea();
 }
 
 /*----------------------------------------------------------------------------*/
