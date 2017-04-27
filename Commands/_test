@@ -8,8 +8,12 @@
 
 _jindex10
 dumpidx j10 idx1
+
 print "\nSelecting rows with key j10_key >= 4 using index idx1 ...\n"
 lwrselidx j10 idx1 4
+
+print "\nSelecting rows with key j10_key >= 7 using index idx1 ...\n"
+lwrselidx j10 idx1 7
 
 /*============================================================================*/
 /* end                                                                        */

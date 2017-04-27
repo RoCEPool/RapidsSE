@@ -32,6 +32,9 @@ namespace DBobjects
     
     Footer* pFooter(void);
   };
+  
+  Row* _aRow(void* aAddr);
+
 }
 
 /*============================================================================*/

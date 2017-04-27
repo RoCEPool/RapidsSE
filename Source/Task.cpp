@@ -795,6 +795,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitives_Dstack();
   vAddPrimitives_Encode();
   vAddPrimitives_Enter();
+  vAddPrimitives_Entry();
   vAddPrimitives_Env();
   vAddPrimitives_Error();
   vAddPrimitives_Exit();
@@ -821,6 +822,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitives_Push();
   vAddPrimitives_Queue();
   vAddPrimitives_RbCursor();
+  vAddPrimitives_Row();
   vAddPrimitives_RowBuffer();
   vAddPrimitives_RowCursor();
   vAddPrimitives_Reg();

@@ -201,6 +201,7 @@ namespace Tasks
     void vAddPrimitives_Dot(void);
     void vAddPrimitives_Dstack(void);
     void vAddPrimitives_Encode(void);
+    void vAddPrimitives_Entry(void);
     void vAddPrimitives_Enter(void);
     void vAddPrimitives_Env(void);
     void vAddPrimitives_Error(void);
@@ -229,6 +230,7 @@ namespace Tasks
     void vAddPrimitives_Queue(void);
     void vAddPrimitives_RbCursor(void);
     void vAddPrimitives_Reg(void);
+    void vAddPrimitives_Row(void);
     void vAddPrimitives_RowBuffer(void);
     void vAddPrimitives_RowCursor(void);
     void vAddPrimitives_Rstack(void);
@@ -471,6 +473,9 @@ namespace Tasks
     static void vEnterObject(NNP_Task nnpTask);
     static void vEnterRoutine(NNP_Task nnpTask);
     
+    // entry
+    static void vEntryRow(NNP_Task nnpTask);
+
     // env
     static void vEnvGet(NNP_Task nnpTask);
     
@@ -759,6 +764,9 @@ namespace Tasks
     static void vRegToRegE(NNP_Task nnpTask);
     static void vRegToRegF(NNP_Task nnpTask);
     static void vRegToRegNth(NNP_Task nnpTask);
+    
+    // row
+    static void vRowString(NNP_Task nnpTask);
     
     // rowBuffer
     static void vRowBufferAppend(NNP_Task nnpTask);

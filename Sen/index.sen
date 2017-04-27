@@ -332,7 +332,6 @@ tp: loadIndexes
     I "Partition: %v" str.format .
 
     1
-
     begin
 
       while
@@ -362,7 +361,7 @@ tp: loadIndexes
 
         // check if entry is null ?
         entry if
-          entry indexPtr index.row .
+          entry entry.row row.string .
           1
         else
           // null entry means done with this partition
