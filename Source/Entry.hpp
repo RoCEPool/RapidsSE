@@ -30,6 +30,7 @@ namespace DBobjects
   
     EntryData* aEntryData(void);
     Key*   aKey(void);
+    bool   bMatches(Key& xKey, IdxColVec* pColVec, RelOpAry *pRelOpAry);
     u8     nOffsets(void);
     u8     uRightOffset(u8 iLevel);
     void   vRightOffset(u8 iLevel, u8 uOffset);

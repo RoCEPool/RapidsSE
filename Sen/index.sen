@@ -302,7 +302,7 @@ tp: loadIndexes
 ;
 
 /*----------------------------------------------------------------------------*/
-/* get lower select cursor for table ( called by lower_select_index request)  */
+/* lower select for index ( called by lower_select_index request)             */
 /*----------------------------------------------------------------------------*/
 : lowerSelectIndex ( "<lower>" "<index>" --  )
 
@@ -406,6 +406,125 @@ tp: loadIndexes
   // set the entry in the seitf
   seitf seitf.entry!
 
+  // signal the parent task
+  task::this task.parent@ task.ack
+;
+
+/*----------------------------------------------------------------------------*/
+/* range select cursor for index ( called by range_select_index request)      */
+/*----------------------------------------------------------------------------*/
+: rangeSelectIndex ( "<upper>" "<lower>" "<index>" --  )
+
+tp: lowerSelectIndex
+  //
+  // execution context:
+  //   this task will have a seitf
+  //   and the seitf will have a table
+  //
+  assert::stack_3
+"tp:1" .
+  0 0 0 locals| entry selectTask indexPtr indexNm lower upper |
+
+  // increment query count
+  queryCount ++
+
+  // push indexes
+  pushIndexes assert
+
+  // find the index
+  indexNm find execute ( index^ )
+  to indexPtr
+
+  // for each slot
+  grid.slots 0
+  do
+    I "Partition: %v" str.format .
+
+    1
+    begin
+
+      while
+
+      // create a selectTask to execute the lower bound select on the index for the partition
+      indexPtr lower upper str.tailint assert 3 "rangeSelectIdx" task::this task::new
+      to selectTask
+
+      //put seitf from this task to the selectTask
+      task::this task.seitf@ selectTask task.seitf!
+
+      // put the partition in seitf
+      I selectTask task.seitf@ seitf.partition!
+
+      // set acks
+      1 setAcks
+
+      // append the selectTask to this tasks taskSet
+      selectTask task::this task.taskSet@
+      taskSet.Append
+
+      // now wait for the selectTask to return an entry
+      ackWait
+
+      // get the entry from the seitf
+      task::this task.seitf@ seitf.entry@ to entry
+
+      // check if entry is null ?
+      entry if
+      entry entry.row row.string .
+      1
+      else
+      // null entry means done with this partition
+      0
+      then
+
+    repeat
+
+  loop
+
+  // pop indexes
+  popIndexes
+
+  "ALL DONE" .
+
+;
+
+/*----------------------------------------------------------------------------*/
+/* range select for index ( called by rangeSelectTable request)               */
+/*----------------------------------------------------------------------------*/
+: rangeSelectIdx ( ^indexPtr "<lower>" "<upper>"-- <entry> )
+
+  0 0 0 locals| seitf entry row upper lower indexPtr |
+
+  "tp: rangeSelectIdx" .
+
+  lower .
+  upper .
+
+  // get the seitf from this task
+  task::this task.seitf@ to seitf
+
+  // get the last entry from the seitf
+  seitf seitf.entry@ to entry
+
+  entry not if
+    // no previous entry ?
+    // position the index at the lowerBound
+    lower indexPtr index.position ( entry )
+  else
+    // get next entry from the current entry
+    entry indexPtr index.getNextEntry
+  then
+
+  // check against upper bound
+/*
+  upper entry.upper
+  not if
+    task.seitf! seitf
+
+    // set the entry in the seitf
+    0 seitf seitf.entry@
+  then
+*/
   // signal the parent task
   task::this task.parent@ task.ack
 ;
