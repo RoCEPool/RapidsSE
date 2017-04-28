@@ -251,6 +251,57 @@ ddlLock::grabRead
 ;
 
 /*----------------------------------------------------------------------------*/
+/* get sel cursor for range of table given an index                           */
+/*----------------------------------------------------------------------------*/
+: range_select_index ( "<upper>" "<lower>" "<indexNm>" "<tableNm>" -- <R> )
+
+"tp:11" .
+  assert::stack_4
+  CN_STRVAL assert::class_0
+  CN_STRVAL assert::class_1
+  CN_STRVAL assert::class_2
+  CN_STRVAL assert::class_3
+
+  ddlLock::grabRead
+
+  //
+  // task will have an seitf and a dicStack path, but seitf has no table
+  //
+
+  // assert no seitf.table
+  //task::this task.seitf@ seitf.table@ not assert
+
+  // path should end in a tables folder
+  // i.e. task.dicStack should be ../tables
+  checkInTables not if <NIP+ERROR> exit then ( "<tableNm>" )
+
+  // check "<tableNm>" is a table folder within ../tables
+  dup checkIsTableFolder not if <NIP+ERROR> exit then ( "<tableNm>" )
+
+  // push named table folder onto path
+  // i.e. task.dicStack will be ../tables/<tableNm>
+
+  dup pushTable assert  ( "<tableNm>" )
+
+  // check "<tablenm"> is a table in ../tables/<tableNm>
+  checkIsTable not if <NIP+ERROR> exit then ( "<tableNm>" )
+
+  // get and inc table reference and put into task.seitf.currentTable
+  getTableRef not if <NIP+ERROR> exit then ( "<tableNm>" )
+  task::this task.seitf@ seitf.table@ assert
+
+  // execute a range select on idx
+  rangeSelectIndex
+
+  // pop named table folder off path
+  // i.e. task.dicStack will now be back to ../tables
+  popTable
+  withinTables assert
+
+  <OK>
+;
+
+/*----------------------------------------------------------------------------*/
 /* get size of index                                                          */
 /*----------------------------------------------------------------------------*/
 : size_index ( "<indexNm>" "<tableNm>" -- <R> )

@@ -111,6 +111,8 @@ namespace Interface
     bool bListIndexColumns(Str* aWords[], i8 iWords);
     
     bool bAnalyzeIndex(Str* aWords[], i8 iWords);
+    bool bLowerSelectIndex(Str* aWords[], i8 iWords);
+    bool bRangeSelectIndex(Str* aWords[], i8 iWords);
     bool bSizeIndex(Str* aWords[], i8 iWords);
     bool bTruncateIndex(Str* aWords[], i8 iWords);
 
@@ -122,7 +124,6 @@ namespace Interface
     bool bLoadTable(Str* aWords[], i8 iWords);
     bool bLoadTableStream(Str* aWords[], i8 iWords);
     bool bLowerSelectTable(Str* aWords[], i8 iWords);
-    bool bLowerSelectTableIndex(Str* aWords[], i8 iWords);
     bool bSelectTable(Str* aWords[], i8 iWords);
     bool bRangeSelectTable(Str* aWords[], i8 iWords);
     bool bGetTable(Str* aWords[], i8 iWords);

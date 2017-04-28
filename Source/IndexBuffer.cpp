@@ -491,7 +491,7 @@ Entry* IndexBuffer::aNextEntry(Entry* aEntry)
 /*----------------------------------------------------------------------------*/
 /* position at entry with lower bound at key                                  */
 /*----------------------------------------------------------------------------*/
-Entry* IndexBuffer::aPosition(Key& xKey, RelOpAry* pOpAryFind, IdxColVec* pColVec)
+Entry* IndexBuffer::aPosition(Key& xKey, RelOpAry* pRelOpAry, IdxColVec* pColVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
@@ -510,9 +510,9 @@ Entry* IndexBuffer::aPosition(Key& xKey, RelOpAry* pOpAryFind, IdxColVec* pColVe
     while (Entry* pNextEntry = aRightEntry(pCurrentEntry, iCurrentLevel)) {
       
       // compare the inserting object with next object
-      bool bGreaterEqual = pNextEntry->aKey()->bMatches(&xKey, pColVec, pOpAryFind);
+      bool bMatches = pNextEntry->aKey()->bMatches(&xKey, pColVec, pRelOpAry);
       
-      if (bGreaterEqual) {
+      if (bMatches) {
         // pObjectInsert is >= pObjectNext
         //vTrace("  %lld after %lld (level %lld)\n"_Str,
         //       (i8)pObjectInsert,(i8)pNextEntry->uRight(),iCurrentLevel);

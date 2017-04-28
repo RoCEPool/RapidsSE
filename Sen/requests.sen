@@ -85,6 +85,7 @@ mkidx     create_index
 lsidx     list_indexes
 lwrselidx lower_select_index
 rmidx     drop_index
+rgeselidx range_select_index
 szidx     size_index
 tridx     truncate_index
  

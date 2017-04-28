@@ -247,13 +247,13 @@ void Task::vIndexPosition(NNP_Task nnpTask)
   ValWsp xValWspUpper;
   
   if ( ! nnpTask->m_pDataStack->bPop(pPtrIndex) )
-    THROW_INVALID_DSTACK("index.position!"_Str);
+    THROW_INVALID_DSTACK("index.position"_Str);
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
   
   if ( ! nnpTask->m_pDataStack->bPop(xValWspLower) )
-    THROW_INVALID_DSTACK("index.position!"_Str);
+    THROW_INVALID_DSTACK("index.position"_Str);
   
   i8 iIndexNo = pIndex->iIndexNo();
   Table* pTable = pIndex->pTable();
