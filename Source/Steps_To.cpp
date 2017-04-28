@@ -167,7 +167,7 @@ void Task::vToStr(NNP_Task nnpTask)
     THROW_INVALID_DSTACK(">str"_Str);
   
   s48K sString;
-  ValLib::vToString(&xVal,sString);
+  ValLib::vToString(xVal.pNestedValueSelf(),sString);
   
   nnpTask->m_pDataStack->vPushS48K(sString);
   

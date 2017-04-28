@@ -90,7 +90,7 @@ void Task::vDotPut(NNP_Task nnpTask)
   if ( ! nnpTask->m_pDataStack->bPop(xValWsp) )
     THROW_INVALID_DSTACK(".put"_Str);
   
-  ValLib::vToString(&xValWsp,sWorkspace);
+  ValLib::vToString(xValWsp.pNestedValueSelf(),sWorkspace);
   vTrace("%s"_Str,sWorkspace.s());
   
   EXIT();

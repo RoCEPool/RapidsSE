@@ -439,7 +439,7 @@ bool Stack::bPop(s32& sArg1)
   ValWsp xValWsp1;
   vPopVal(xValWsp1.pNestedValueSelf());
   
-  sArg1 = _pStrVal(&xValWsp1);
+  sArg1 = _pStrVal(xValWsp1.pNestedValueSelf());
   
   return true;
 }
@@ -457,7 +457,7 @@ bool Stack::bPop(s256& sArg1)
   ValWsp xValWsp1;
   vPopVal(xValWsp1.pNestedValueSelf());
   
-  sArg1 = _pStrVal(&xValWsp1);
+  sArg1 = _pStrVal(xValWsp1.pNestedValueSelf());
   
   return true;
 }
@@ -541,12 +541,12 @@ bool Stack::bPop(s48K& sArg1, s48K& sArg2)
   ValWsp xValWsp1;
   vPopVal(xValWsp1.pNestedValueSelf());
   
-  sArg1 = _pStrVal(&xValWsp1);
+  sArg1 = _pStrVal(xValWsp1.pNestedValueSelf());
   
   ValWsp xValWsp2;
   vPopVal(xValWsp2.pNestedValueSelf());
   
-  sArg2 = _pStrVal(&xValWsp2);
+  sArg2 = _pStrVal(xValWsp2.pNestedValueSelf());
   
   return true;
 }
@@ -989,9 +989,13 @@ void Stack::vPeekValWsp(i8 iNthValue, ValWsp& xValWsp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  //Value* pNestedValue = xValWsp.pNestedValue();
-
-  vPeekValWsp(iNthValue,xValWsp);
+  Value* pPeekedValue = pPeekValue(iNthValue);
+  
+  i8 iSize = ValLib::iSize(pPeekedValue);
+  
+  //vTrace("Peek: %lld %p %lld\n"_Str,iNthValue,pPeekedValue,iSize);
+  
+  MemLib::vCopy(xValWsp.pNestedValueSelf(),pPeekedValue,iSize);
 }
 #endif
 
@@ -1002,11 +1006,11 @@ void Stack::vPokeValWsp(i8 iNthValue, ValWsp& xValWsp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
 
-  i8 iSize = ValLib::iSize(&xValWsp);
+  i8 iSize = ValLib::iSize(xValWsp.pNestedValueSelf());
   
   Value* pPokeAddress = pPeekValue(iNthValue);
   
-  MemLib::vCopy(pPokeAddress,&xValWsp,iSize);
+  MemLib::vCopy(pPokeAddress,xValWsp.pNestedValueSelf(),iSize);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1149,6 +1153,8 @@ void Stack::vPushVal(Value* pValue)
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   //m_xHazard.vAssertFooter();
   _hazard_();
+  
+  ASSERT(CN_VALWSP != pValue->eClass());
   
   i8 iSize = ValLib::iSize(pValue);
   
