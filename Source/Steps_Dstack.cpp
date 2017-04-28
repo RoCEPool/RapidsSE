@@ -534,7 +534,7 @@ void Task::vDstackToValues(NNP_Task nnpTask)
   ValWsp* pValWsp[128];
   
   Str* pCursor = nullptr;
-  while (xValSet.bExtract(pCursor,pValWsp[nVal]))
+  while (xValSet.bExtractValWsp(pCursor,pValWsp[nVal]))
     nVal++;
   
   for (i8 iVal = nVal - 1; iVal >= 0; iVal--)

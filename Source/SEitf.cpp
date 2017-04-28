@@ -2097,15 +2097,15 @@ bool SEitf::bPopResponse(eEC& eResult, StrVal& sResponse)
   
   ValWsp* pValWsp;
   
-  b = xValSet.bExtract(aCursor,pValWsp);
+  b = xValSet.bExtractValWsp(aCursor,pValWsp);
   ASSERT(b);
   eResult = (eEC)_pIntVal(pValWsp)->iInt();
   
-  b = xValSet.bExtract(aCursor,pValWsp);
+  b = xValSet.bExtractValWsp(aCursor,pValWsp);
   ASSERT(b);
   *_pStrVal(&sResponse) = _pStrVal(pValWsp);
   
-  b = xValSet.bExtract(aCursor,pValWsp);
+  b = xValSet.bExtractValWsp(aCursor,pValWsp);
   ASSERT(! b);
   
 //  vTrace("sResponse: >>>\n%s\n<<<\n\n"_Str,sResponse.s());

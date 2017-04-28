@@ -27,11 +27,11 @@ namespace Values
 
     void vAppend(Str*& pCursor, Value* pValue);
 #ifdef OLD_VALSET
-    bool bExtract(Str*& pCursor, ValWsp*& pVal);
-    bool bExtract(Str*& pCursor, eCN& eClassNo, ValWsp*& pVal);
+    bool bExtractValWsp(Str*& pCursor, ValWsp*& pVal);
+    bool bExtractValWsp(Str*& pCursor, eCN& eClassNo, ValWsp*& pVal);
 #else
-    bool bExtract(Str*& pCursor, ValWsp*& pVal);
-    bool bExtract(Str*& pCursor, eCN& eClassNo, ValWsp*& pVal);
+    bool bExtractValWsp(Str*& pCursor, ValWsp*& pVal);
+    bool bExtractValWsp(Str*& pCursor, eCN& eClassNo, ValWsp*& pVal);
 #endif
     DBobjects::RowBuffer* pRowBuffer(void);
     void vRowBuffer(DBobjects::RowBuffer* pRowBuffer);

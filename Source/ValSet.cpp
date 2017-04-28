@@ -94,7 +94,7 @@ void ValSet::vAppend(Str*& pCursor, Value* pValue)
 /* extract next value from valset                                             */
 /*----------------------------------------------------------------------------*/
 #ifdef OLD_VALSET
-bool ValSet::bExtract(Str*& pCursor, ValWsp*& pValWsp)
+bool ValSet::bExtractValWsp(Str*& pCursor, ValWsp*& pValWsp)
 {
   if ( ! pCursor )
     pCursor = aFirstByte();
@@ -174,7 +174,7 @@ bool ValSet::bExtract(Str*& pCursor, ValWsp*& pValWsp)
 /* extract next value from valset                                             */
 /*----------------------------------------------------------------------------*/
 #ifdef OLD_VALSET
-bool ValSet::bExtract(Str*& pCursor, eCN& eClassNo, ValWsp*& pValWsp)
+bool ValSet::bExtractValWsp(Str*& pCursor, eCN& eClassNo, ValWsp*& pValWsp)
 {
   if ( ! pCursor )
     pCursor = aFirstByte();
@@ -254,7 +254,7 @@ DBobjects::RowBuffer* ValSet::pGetRowBuffer(void)
   ValWsp* pValWsp;
   DBobjects::RowBuffer* pRowBuffer;
   
-  while (bExtract(pCursor, eClassNo, pValWsp)) {
+  while (bExtractValWsp(pCursor, eClassNo, pValWsp)) {
     
     if (CN_ROWBUFFER == eClassNo) {
       pRowBuffer = m_pRowBuffer;
@@ -286,7 +286,7 @@ bool ValSet::bHasRowBuffer(void)
   ValWsp* pValWsp;
   bool bHasRowBuffer;
   
-  while (bExtract(pCursor, eClassNo, pValWsp)) {
+  while (bExtractValWsp(pCursor, eClassNo, pValWsp)) {
     
     if (CN_ROWBUFFER == eClassNo) {
       if (gbTracepoint)
@@ -323,7 +323,7 @@ bool ValSet::bSetRowBuffer(DBobjects::RowBuffer* pRowBuffer)
   ValWsp* pValWsp;
   bool bSet;
   
-  while (bExtract(pCursor, eClassNo, pValWsp)) {
+  while (bExtractValWsp(pCursor, eClassNo, pValWsp)) {
     
     if (CN_ROWBUFFER == eClassNo) {
       PtrVal* pPtrVal = (PtrVal*)pValWsp;
