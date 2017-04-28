@@ -131,7 +131,7 @@ bool ValSet::bExtractValWsp(Str*& pCursor, ValWsp*& pValWsp)
 }
 
 #else // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-bool ValSet::bExtract(Str*& pCursor, ValWsp*& pValWsp)
+bool ValSet::bExtractWsp(Str*& pCursor, ValWsp*& pValWsp)
 {
   Value* pValue = pValWsp->pNestedValueSelf();
   
@@ -205,7 +205,7 @@ bool ValSet::bExtractValWsp(Str*& pCursor, eCN& eClassNo, ValWsp*& pValWsp)
 
 #else // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-bool ValSet::bExtract(Str*& pCursor, eCN& eClassNo, ValWsp*& pValWsp)
+bool ValSet::bExtractValWsp(Str*& pCursor, eCN& eClassNo, ValWsp*& pValWsp)
 {
   Value* pValue = pValWsp->pNestedValueSelf();
   
@@ -247,6 +247,7 @@ DBobjects::RowBuffer* ValSet::pRowBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* recursively check for and get row buffer                                   */
 /*----------------------------------------------------------------------------*/
+#ifdef OLD_VALSET
 DBobjects::RowBuffer* ValSet::pGetRowBuffer(void)
 {
   eCN eClassNo;
@@ -275,10 +276,41 @@ DBobjects::RowBuffer* ValSet::pGetRowBuffer(void)
   return nullptr;
   
 }
+#else // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+DBobjects::RowBuffer* ValSet::pGetRowBuffer(void)
+{
+  eCN eClassNo;
+  Str* pCursor = nullptr;
+  ValWsp* pValWsp;
+  DBobjects::RowBuffer* pRowBuffer;
+  
+  while (bExtractValWsp(pCursor, eClassNo, pValWsp)) {
+    
+    if (CN_ROWBUFFER == eClassNo) {
+      pRowBuffer = m_pRowBuffer;
+      return pRowBuffer;
+    }
+    
+    if (CN_VALSET == eClassNo) {
+      ValSet* pValSet = (ValSet*)pValWsp;
+      
+      // check if this valset has a rowbuffer
+      pRowBuffer = pValSet->pGetRowBuffer();
+      
+      if (pRowBuffer)
+        return pRowBuffer;
+    }
+  }
+  
+  return nullptr;
+  
+}
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* recursively check for and get row buffer                                   */
 /*----------------------------------------------------------------------------*/
+#ifdef OLD_VALSET
 bool ValSet::bHasRowBuffer(void)
 {
   Str* pCursor = nullptr;
@@ -304,6 +336,33 @@ bool ValSet::bHasRowBuffer(void)
   return false;
 
 }
+#else // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+bool ValSet::bHasRowBuffer(void)
+{
+  Str* pCursor = nullptr;
+  eCN eClassNo;
+  ValWsp* pValWsp;
+  bool bHasRowBuffer;
+  
+  while (bExtractValWsp(pCursor, eClassNo, pValWsp)) {
+    
+    if (CN_ROWBUFFER == eClassNo) {
+      if (gbTracepoint)
+        vTrace("HAS ROW BUFFER\n"_Str);
+      return true;
+    }
+    
+    if (CN_VALSET == eClassNo) {
+      ValSet* pValSet = (ValSet*)pValWsp;
+      bHasRowBuffer = pValSet->bHasRowBuffer();
+      if (bHasRowBuffer)
+        return bHasRowBuffer;
+    }
+  }
+  return false;
+  
+}
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* set row buffer                                                             */
@@ -316,6 +375,7 @@ void ValSet::vRowBuffer(DBobjects::RowBuffer* pRowBuffer)
 /*----------------------------------------------------------------------------*/
 /* set row buffer                                                             */
 /*----------------------------------------------------------------------------*/
+#ifdef OLD_VALSET
 bool ValSet::bSetRowBuffer(DBobjects::RowBuffer* pRowBuffer)
 {
   eCN eClassNo;
@@ -343,6 +403,35 @@ bool ValSet::bSetRowBuffer(DBobjects::RowBuffer* pRowBuffer)
   return false;
   
 }
+#else // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+bool ValSet::bSetRowBuffer(DBobjects::RowBuffer* pRowBuffer)
+{
+  eCN eClassNo;
+  Str* pCursor = nullptr;
+  ValWsp* pValWsp;
+  bool bSet;
+  
+  while (bExtractValWsp(pCursor, eClassNo, pValWsp)) {
+    
+    if (CN_ROWBUFFER == eClassNo) {
+      PtrVal* pPtrVal = (PtrVal*)pValWsp;
+      //vTrace("SETTING ROW BUFFER\n"_Str);
+      m_pRowBuffer = pRowBuffer;
+      m_iRowBufferBytes = pRowBuffer->nUsedBytes();
+      return true;
+    }
+    
+    if (CN_VALSET == eClassNo) {
+      ValSet* pValSet = (ValSet*)pValWsp;
+      bSet = pValSet->bSetRowBuffer(pRowBuffer);
+      if (bSet)
+        return true;
+    }
+  }
+  return false;
+  
+}
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* get size in bytes of the entire valset                                     */
