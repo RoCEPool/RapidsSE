@@ -2126,17 +2126,17 @@ bool SEitf::bPopResponse(eEC& eResult, StrVal& sResponse)
   if (! m_pResponseQueue->bPop(&xValSet))
     return false;
   
-  ValWsp* pValWsp;
+  Value* pValue;
   
-  b = xValSet.bExtractValWsp(aCursor,pValWsp);
+  b = xValSet.bExtractValue(aCursor,pValue);
   ASSERT(b);
-  eResult = (eEC)_pIntVal(pValWsp)->iInt();
+  eResult = (eEC)_pIntVal(pValue)->iInt();
   
-  b = xValSet.bExtractValWsp(aCursor,pValWsp);
+  b = xValSet.bExtractValue(aCursor,pValue);
   ASSERT(b);
-  *_pStrVal(&sResponse) = _pStrVal(pValWsp);
+  *_pStrVal(&sResponse) = _pStrVal(pValue);
   
-  b = xValSet.bExtractValWsp(aCursor,pValWsp);
+  b = xValSet.bExtractValue(aCursor,pValue);
   ASSERT(! b);
   
   //  vTrace("sResponse: >>>\n%s\n<<<\n\n"_Str,sResponse.s());

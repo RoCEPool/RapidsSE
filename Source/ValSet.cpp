@@ -131,10 +131,8 @@ bool ValSet::bExtractValWsp(Str*& pCursor, ValWsp*& pValWsp)
 }
 
 #else // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-bool ValSet::bExtractWsp(Str*& pCursor, ValWsp*& pValWsp)
+bool ValSet::bExtractValue(Str*& pCursor, Value*& pValue)
 {
-  Value* pValue = pValWsp->pNestedValueSelf();
-  
   if ( ! pCursor )
     pCursor = aFirstByte();
   
@@ -143,27 +141,27 @@ bool ValSet::bExtractWsp(Str*& pCursor, ValWsp*& pValWsp)
   if (iOffset >= m_iBytes)
     return false;
   
-  pValWsp = pToValWsp(pCursor);
+  pValue = (Value*)pCursor;
   
-  i8 iSize = ValLib::iSize(pValWsp->pNestedValueSelf());
+  i8 iSize = ValLib::iSize(pValue);
   
   pCursor += iSize;
   
   // test for a rowbuffer pointer
-  if (CN_PTRVAL == pValWsp->eClass()) {
+  if (CN_PTRVAL == pValue->eClass()) {
     
-    if ((i8)C_ROWBUFFER_MARKER == pValWsp->iNestedAsInt()) {
-      *pValWsp = m_pRowBuffer;
+    if ((i8)C_ROWBUFFER_MARKER == (i8)_pPtrVal(pValue)->pPtr()) {
+      *_pPtrVal(pValue) = m_pRowBuffer;
     }
   }
   
   // test for binary value
-  if (CN_BINVAL == pValWsp->eClass()) {
-    Object* pObjectVal = _pBinVal(pValWsp)->pNewObject();
+  if (CN_BINVAL == pValue->eClass()) {
+    Object* pObjectVal = _pBinVal(pValue)->pNewObject();
     ASSERT(pObjectVal->eClass() == CN_PLAN);
     Plan* pPlan = reinterpret_cast<Plan*>(pObjectVal);
     pPlan->vNullifyPointers();
-    *pValWsp = pObjectVal;
+    *_pPtrVal(pValue) = pObjectVal;
   }
   
   return true;
@@ -205,10 +203,8 @@ bool ValSet::bExtractValWsp(Str*& pCursor, eCN& eClassNo, ValWsp*& pValWsp)
 
 #else // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-bool ValSet::bExtractValWsp(Str*& pCursor, eCN& eClassNo, ValWsp*& pValWsp)
+bool ValSet::bExtractValue(Str*& pCursor, eCN& eClassNo, Value*& pValue)
 {
-  Value* pValue = pValWsp->pNestedValueSelf();
-  
   if ( ! pCursor )
     pCursor = aFirstByte();
   
@@ -217,22 +213,22 @@ bool ValSet::bExtractValWsp(Str*& pCursor, eCN& eClassNo, ValWsp*& pValWsp)
   if (iOffset >= m_iBytes)
     return false;
   
-  pValWsp = pToValWsp(pCursor);
+  pValue = (Value*)pCursor;
   
-  i8 iSize = ValLib::iSize(pValWsp);
+  i8 iSize = ValLib::iSize(pValue);
   
   pCursor += iSize;
   
   // test for a rowbuffer pointer
-  if (CN_PTRVAL == pValWsp->eClass()) {
+  if (CN_PTRVAL == pValue->eClass()) {
     
-    if ((i8)C_ROWBUFFER_MARKER == pValWsp->iNestedAsInt()) {
+    if ((i8)C_ROWBUFFER_MARKER == (i8)_pPtrVal(pValue)->pPtr()) {
       eClassNo = CN_ROWBUFFER;
       return true;
     }
   }
   
-  eClassNo = pValWsp->eClass();
+  eClassNo = pValue->eClass();
   return true;
 }
 #endif
@@ -281,10 +277,10 @@ DBobjects::RowBuffer* ValSet::pGetRowBuffer(void)
 {
   eCN eClassNo;
   Str* pCursor = nullptr;
-  ValWsp* pValWsp;
+  Value* pValue;
   DBobjects::RowBuffer* pRowBuffer;
   
-  while (bExtractValWsp(pCursor, eClassNo, pValWsp)) {
+  while (bExtractValue(pCursor, eClassNo, pValue)) {
     
     if (CN_ROWBUFFER == eClassNo) {
       pRowBuffer = m_pRowBuffer;
@@ -292,7 +288,7 @@ DBobjects::RowBuffer* ValSet::pGetRowBuffer(void)
     }
     
     if (CN_VALSET == eClassNo) {
-      ValSet* pValSet = (ValSet*)pValWsp;
+      ValSet* pValSet = (ValSet*)pValue;
       
       // check if this valset has a rowbuffer
       pRowBuffer = pValSet->pGetRowBuffer();
@@ -341,10 +337,10 @@ bool ValSet::bHasRowBuffer(void)
 {
   Str* pCursor = nullptr;
   eCN eClassNo;
-  ValWsp* pValWsp;
+  Value* pValue;
   bool bHasRowBuffer;
   
-  while (bExtractValWsp(pCursor, eClassNo, pValWsp)) {
+  while (bExtractValue(pCursor, eClassNo, pValue)) {
     
     if (CN_ROWBUFFER == eClassNo) {
       if (gbTracepoint)
@@ -353,7 +349,7 @@ bool ValSet::bHasRowBuffer(void)
     }
     
     if (CN_VALSET == eClassNo) {
-      ValSet* pValSet = (ValSet*)pValWsp;
+      ValSet* pValSet = (ValSet*)pValue;
       bHasRowBuffer = pValSet->bHasRowBuffer();
       if (bHasRowBuffer)
         return bHasRowBuffer;
@@ -408,13 +404,13 @@ bool ValSet::bSetRowBuffer(DBobjects::RowBuffer* pRowBuffer)
 {
   eCN eClassNo;
   Str* pCursor = nullptr;
-  ValWsp* pValWsp;
+  Value* pValue;
   bool bSet;
   
-  while (bExtractValWsp(pCursor, eClassNo, pValWsp)) {
+  while (bExtractValue(pCursor, eClassNo, pValue)) {
     
     if (CN_ROWBUFFER == eClassNo) {
-      PtrVal* pPtrVal = (PtrVal*)pValWsp;
+      PtrVal* pPtrVal = (PtrVal*)pValue;
       //vTrace("SETTING ROW BUFFER\n"_Str);
       m_pRowBuffer = pRowBuffer;
       m_iRowBufferBytes = pRowBuffer->nUsedBytes();
@@ -422,7 +418,7 @@ bool ValSet::bSetRowBuffer(DBobjects::RowBuffer* pRowBuffer)
     }
     
     if (CN_VALSET == eClassNo) {
-      ValSet* pValSet = (ValSet*)pValWsp;
+      ValSet* pValSet = (ValSet*)pValue;
       bSet = pValSet->bSetRowBuffer(pRowBuffer);
       if (bSet)
         return true;

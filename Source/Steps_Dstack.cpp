@@ -556,14 +556,14 @@ void Task::vDstackToValues(NNP_Task nnpTask)
     THROW_INVALID_DSTACK(">values"_Str);
   
   i8 nVal = 0;
-  ValWsp* pValWsp[128];
+  Value* pValue[128];
   
   Str* pCursor = nullptr;
-  while (xValSet.bExtractValWsp(pCursor,pValWsp[nVal]))
+  while (xValSet.bExtractValue(pCursor,pValue[nVal]))
     nVal++;
   
   for (i8 iVal = nVal - 1; iVal >= 0; iVal--)
-    nnpTask->m_pDataStack->vPushValue(pValWsp[iVal]->pNestedValueSelf());
+    nnpTask->m_pDataStack->vPushValue(pValue[iVal]);
   
   nnpTask->m_pDataStack->vPushInt(nVal);
   
