@@ -7,6 +7,8 @@ namespace DBobjects {
   class RowBuffer;
 }
 
+#define OLD_VALSET
+
 namespace Values
 {
   class ValSet : public Value
@@ -22,15 +24,16 @@ namespace Values
   public:
     void* operator new(size_t);
     ValSet(void);
-    
+
+#ifdef OLD_VALSET
+    void vAppend(Str*& pCursor, Value* pValue);
+    bool bExtract(Str*& pCursor, ValWsp*& pVal);
+    bool bExtract(Str*& pCursor, eCN& eClassNo, ValWsp*& pVal);
+#else
     void vAppend(Str*& pCursor, ValWsp& xVal);
     bool bExtract(Str*& pCursor, ValWsp*& pVal);
     bool bExtract(Str*& pCursor, eCN& eClassNo, ValWsp*& pVal);
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//    void vAppend(Str*& pCursor, ValWsp& xVal);
-//    bool bExtract(Str*& pCursor, ValWsp*& pVal);
-//    bool bExtract(Str*& pCursor, eCN& eClassNo, ValWsp*& pVal);
-  
+#endif
     DBobjects::RowBuffer* pRowBuffer(void);
     void vRowBuffer(DBobjects::RowBuffer* pRowBuffer);
     

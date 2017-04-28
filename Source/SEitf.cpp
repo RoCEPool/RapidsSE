@@ -2037,11 +2037,11 @@ bool SEitf::bAppendRequest(StrVal& sRequest)
   sWorkspace.vConcat(" >seitf task::this task.seitf! "_Str);
   xVal = sWorkspace;
   //vTrace("%s\n"_Str,xVal.s());
-  xValSet.vAppend(aCursor,xVal);
+  xValSet.vAppend(aCursor,xVal.pNestedValueSelf());
   
   xVal = sRequest;
   //vTrace("%s\n"_Str,xVal.s());
-  xValSet.vAppend(aCursor,xVal);
+  xValSet.vAppend(aCursor,xVal.pNestedValueSelf());
   
   // if the current request id matches the next request id, it means
   // we have not read a response of the previous request
