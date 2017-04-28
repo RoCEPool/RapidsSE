@@ -57,7 +57,8 @@ namespace Structures
     bool bPop(Object*& pObject, i8& iArg);
     bool bPop(Object*& pObject1, Object*& pObject2);
     bool bPop(Object*& pObject, ValWsp& xValWsp);
-    bool bPop(Value* pArg1);
+    bool bPop(ValReg* pArg1);
+    bool bPop(ValWsp* pArg1);
     bool bPop(ValWsp& xArg1);
     bool bPop(ValWsp& xArg1, ValWsp& xArg2);
     bool bPop(ValWsp& xArg1, ValWsp& xArg2, ValWsp& xArg3);
@@ -80,6 +81,8 @@ namespace Structures
     void vPushS256(s256& s256);
     void vPushS48K(s48K& s48K);
     void vPushValue(Value* pValue);
+    void vPushValue(ValReg* pValue);
+    void vPushValWsp(ValWsp* pValue);
     void vPushValue(Value& xValue);
     void vPushValSet(ValSet& xValSet);
     void vPushValWsp(ValWsp& xValWsp);

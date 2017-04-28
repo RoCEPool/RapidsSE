@@ -157,7 +157,7 @@ void KeyTest::vTest(void)
     Str* ptr = sKey.aStr();
     
     xValWsp = ptr;
-    pStrVal = _pStrVal(&xValWsp);
+    pStrVal = _pStrVal(xValWsp.pNestedValueSelf());
     
     xKeyWsp.vReset();
     xKeyWsp.vAddElement(xValWsp);
@@ -179,7 +179,7 @@ void KeyTest::vTest(void)
   vTrace("Find Key value < %s\n"_Str, ptr);
   
   xValWsp = ptr;
-  pStrVal = _pStrVal(&xValWsp);
+  pStrVal = _pStrVal(xValWsp.pNestedValueSelf());
   
   xKeyWsp.vReset();
   xKeyWsp.vAddElement(xValWsp);
@@ -216,7 +216,7 @@ void KeyTest::vTest(void)
   vTrace("Find Key value >= %s\n"_Str, ptr);
   
   xValWsp = ptr;
-  pStrVal = _pStrVal(&xValWsp);
+  pStrVal = _pStrVal(xValWsp.pNestedValueSelf());
   
   xKeyWsp.vReset();
   xKeyWsp.vAddElement(xValWsp);
@@ -403,7 +403,7 @@ void KeyTest::vTest(void)
       sKey = Random::sRandomString(7);
       Str* ptr = sKey.aStr();
       xValWsp = ptr;
-      pStrVal = _pStrVal(&xValWsp);
+      pStrVal = _pStrVal(xValWsp.pNestedValueSelf());
       xKeyWsp.vAddElement(xValWsp);
       //xKeyWsp.vShow();
       
@@ -427,7 +427,7 @@ void KeyTest::vTest(void)
   sKey = Random::sRandomString(7);
   ptr = sKey.aStr();
   xValWsp = ptr;
-  pStrVal = _pStrVal(&xValWsp);
+  pStrVal = _pStrVal(xValWsp.pNestedValueSelf());
   xKeyWsp.vAddElement(xValWsp);
   
   pKeyValFind = new KeyVal(xKeyWsp);

@@ -130,20 +130,20 @@ void Task::vAddressStore(NNP_Task nnpTask)
   
   switch (eClass) {
     case CN_INTVAL:
-      *_pIntVal(pValue) = _pIntVal(&xValStored)->iInt();
+      *_pIntVal(pValue) = _pIntVal(xValStored.pNestedValueSelf())->iInt();
       break;
       
     case CN_STRVAR:
     case CN_STRVAL:
-      _pStrVal(pValue)->vAssign( _pStrVal(&xValStored)->aStr() );
+      _pStrVal(pValue)->vAssign( _pStrVal(xValStored.pNestedValueSelf())->aStr() );
       break;
       
     case CN_PTRVAL:
-      *_pPtrVal(pValue) = _pPtrVal(&xValStored)->pPtr();
+      *_pPtrVal(pValue) = _pPtrVal(xValStored.pNestedValueSelf())->pPtr();
       break;
       
     case CN_IPVAL:
-      *_pIpVal(pValue) = _pIpVal(&xValStored)->pIpPtr();
+      *_pIpVal(pValue) = _pIpVal(xValStored.pNestedValueSelf())->pIpPtr();
       break;
   
     default:

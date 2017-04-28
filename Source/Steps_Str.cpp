@@ -343,7 +343,7 @@ void Task::vStrPrepend(NNP_Task nnpTask)
     xStrA = xString;
   }
   else {
-    xStrA = _pStrVal(&xValA);                          //! need to simplify this
+    xStrA = _pStrVal(xValA.pNestedValueSelf());                          //! need to simplify this
   }
   
   // If received INTEGER convert to STRING
@@ -353,7 +353,7 @@ void Task::vStrPrepend(NNP_Task nnpTask)
     xStrB = xString;
   }
   else {
-    xStrB = _pStrVal(&xValB);
+    xStrB = _pStrVal(xValB.pNestedValueSelf());
   }
   
   xStrR = xStrB;

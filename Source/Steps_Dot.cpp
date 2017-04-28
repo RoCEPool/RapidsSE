@@ -52,7 +52,7 @@ void Task::vDot(NNP_Task nnpTask)
   if ( ! nnpTask->m_pDataStack->bPop(xValWsp) )
     THROW_INVALID_DSTACK("."_Str);
   
-  ValLib::vToString(&xValWsp,sWorkspace);
+  ValLib::vToString(xValWsp.pNestedValueSelf(),sWorkspace);
   /*
   vTrace("[N%lld:%8s\\%lld %-11s] %s\n"_Str,
          
@@ -90,7 +90,7 @@ void Task::vDotPut(NNP_Task nnpTask)
   if ( ! nnpTask->m_pDataStack->bPop(xValWsp) )
     THROW_INVALID_DSTACK(".put"_Str);
   
-  ValLib::vToString(&xValWsp,sWorkspace);
+  ValLib::vToString(xValWsp.pNestedValueSelf(),sWorkspace);
   vTrace("%s"_Str,sWorkspace.s());
   
   EXIT();
@@ -122,7 +122,7 @@ void Task::vDotVerbose(NNP_Task nnpTask)
     THROW_INVALID_DSTACK(".verbose"_Str);
   
   if (gbVerbose) {
-    ValLib::vToString(&xValWsp,sWorkspace);
+    ValLib::vToString(xValWsp.pNestedValueSelf(),sWorkspace);
     vTrace("[%p %s] %s\n"_Str,*nnpTask,nnpTask->m_sName.s(),sWorkspace.s());
   }
   

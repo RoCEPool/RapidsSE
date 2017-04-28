@@ -118,16 +118,16 @@ void KeyWsp::vAddElement(Values::ValWsp &xValWsp)
   // for the moment we only allow one element per key
   //ASSERT( ! nWspUsed() );
   
-  eCN eClass = xValWsp.eClass();
+  eCN eClass = xValWsp.pNestedValueSelf()->eClass();
   char* pDst = m_xWsp.aLatter();
   
   char* pSrc;
   if (eClass == CN_STRVAL) {
-    pSrc = (char*)(_pStrVal(&xValWsp)->aStr());
+    pSrc = (char*)(_pStrVal(xValWsp.pNestedValueSelf())->aStr());
   }
   else {
     ASSERT(eClass == CN_INTVAL);
-    pSrc = xValWsp.aWspArea();
+    pSrc = (char*)(_pIntVal(xValWsp.pNestedValueSelf())->aInt());
   
     i8 iSrc = *(i8*)pSrc;
   }

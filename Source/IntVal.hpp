@@ -18,6 +18,7 @@ namespace Values
     void operator =(i8 iVal);
     
     i8 nSize(void) const;
+    i8* aInt(void);
     i8 iInt(void) const;
     
     void vToString(Str* aWorkspace);

@@ -1589,25 +1589,25 @@ void Task::vStackContents(Stack* pStack, StrVal& sStackContents)
     
     sStackContents.vCatSprint(" "_Str);
     
-    ValWsp* pValWsp = static_cast<ValWsp*>(pStack->pPeekValue(iValue));
+    Value* pValue = pStack->pPeekValue(iValue);
     
-    eCN eClass = pValWsp->eClass();
+    eCN eClass = pValue->eClass();
     
     if (CN_BINVAL == eClass) {
-      Object* pObject = _pBinVal(pValWsp)->pNewObject();
+      Object* pObject = _pBinVal(pValue)->pNewObject();
       sStackContents.vCatSprint("(BINVAL)^%s=%p"_Str,
                                 aCN[pObject->eClass()],
                                 pObject);
     }
     else if (CN_INTVAL == eClass) {
-      sStackContents.vCatSprint("%lld"_Str,_pIntVal(pValWsp)->iInt());
+      sStackContents.vCatSprint("%lld"_Str,_pIntVal(pValue)->iInt());
     }
     else if (CN_PTRVAL == eClass) {
-      if (_pPtrVal(pValWsp)->pPtr()) {
+      if (_pPtrVal(pValue)->pPtr()) {
         
-        Object* pPtr = _pPtrVal(pValWsp)->pPtr();
+        Object* pPtr = _pPtrVal(pValue)->pPtr();
         
-        eCN ePtrClass = _pPtrVal(pValWsp)->pPtr()->eClass();
+        eCN ePtrClass = _pPtrVal(pValue)->pPtr()->eClass();
         
         if (CN_WORD == ePtrClass)
           sStackContents.vCatSprint("^%s=%p:%s"_Str,
@@ -1640,25 +1640,25 @@ void Task::vStackContents(Stack* pStack, StrVal& sStackContents)
       }
       else
         sStackContents.vCatSprint("^%s=%p"_Str,
-                                  pValWsp->aClass(),
-                                  _pPtrVal(pValWsp)->pPtr());
+                                  pValue->aClass(),
+                                  _pPtrVal(pValue)->pPtr());
     }
     else if (CN_IPVAL == eClass) {                                      
       sStackContents.vCatSprint("%p"_Str,
-                                _pIpVal(pValWsp)->pIpPtr());
+                                _pIpVal(pValue)->pIpPtr());
     }
     else if (CN_STRVAL == eClass) {
       sStackContents.vCatSprint("\"%lls\""_Str,
-                                _pStrVal(pValWsp)->s());
+                                _pStrVal(pValue)->s());
     }
     else if (CN_VALSET == eClass) {
       sStackContents.vCatSprint("<%s>=%p"_Str,
-                                pValWsp->aClass(),
-                                pValWsp);
+                                pValue->aClass(),
+                                pValue);
     }
     else {
       sStackContents.vCatSprint("<unknown:class=%lld>"_Str,
-                                pValWsp->eClass());
+                                pValue->eClass());
     }
   }
   

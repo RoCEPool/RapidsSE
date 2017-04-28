@@ -119,6 +119,7 @@ namespace Dictionaries
     void  vEncode(Str* aWord, Cell* pCell);
     void  vEncode(Str* aWord, Word* pWord);
     void  vEncode(Str* aWord, Value* pValue);
+    void  vEncode(Str* aWord, ValWsp* pValWsp);
     void  vEncode(TaskStep* ppEntryStep);
     void  vFinalRoutine(Str* pRoutine);
     char* pFinalRoutine(void);
