@@ -49,6 +49,7 @@ void Task::vAddPrimitives_Index(void)
   vAddPrimitive("index.table@"_Str,          &vIndexTableFetch,      false);
   vAddPrimitive("index.table!"_Str,          &vIndexTableStore,      false);
   vAddPrimitive("index.truncate"_Str,        &vIndexTruncate,        false);
+  vAddPrimitive("index.upper"_Str,           &vIndexUpper,           false);
 
   // these should go !!!
   vAddPrimitive("index::columnTest"_Str, &vIndexColumnTest, false);
@@ -243,8 +244,7 @@ void Task::vIndexPosition(NNP_Task nnpTask)
   ENTRY("vIndexPopulate"_Str);
   Object* pPtrIndex = nullptr;
   Object* pPtrTable = nullptr;
-  ValWsp xValWspLower;
-  ValWsp xValWspUpper;
+  ValWsp xValWsp;
   
   if ( ! nnpTask->m_pDataStack->bPop(pPtrIndex) )
     THROW_INVALID_DSTACK("index.position"_Str);
@@ -252,7 +252,7 @@ void Task::vIndexPosition(NNP_Task nnpTask)
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
   
-  if ( ! nnpTask->m_pDataStack->bPop(xValWspLower) )
+  if ( ! nnpTask->m_pDataStack->bPop(xValWsp) )
     THROW_INVALID_DSTACK("index.position"_Str);
   
   i8 iIndexNo = pIndex->iIndexNo();
@@ -264,8 +264,8 @@ void Task::vIndexPosition(NNP_Task nnpTask)
   // create a relational operator array
   RelOpAry* pOpAryLower = new RelOpAry;
   pOpAryLower->vAdd(RO_GREATER_EQUAL);
-
-  Entry *pEntry = pIndexData->aPosition(xValWspLower, pOpAryLower);
+  
+  Entry *pEntry = pIndexData->aPosition(xValWsp, pOpAryLower);
   
   delete pOpAryLower;
   
@@ -477,6 +477,58 @@ void Task::vIndexTruncate(NNP_Task nnpTask)
   Table* pTable = pIndex->pTable();
   
   pTable->vTruncateIndex(iIndexNo);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* index.upper -- check if entry is within upper bound for the index          */
+/*----------------------------------------------------------------------------*/
+void Task::vIndexUpper(NNP_Task nnpTask)
+{
+  ENTRY("vIndexUpper"_Str);
+  
+  Object* pPtrIndex = nullptr;
+  Object* pPtrEntry = nullptr;
+  Object* pPtrTable = nullptr;
+
+  ValWsp xValWsp;
+  
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrIndex) )
+    THROW_INVALID_DSTACK("index.upper"_Str);
+  
+  Index* pIndex = _pIndex(pPtrIndex);
+  ASSERT(CN_INDEX == pIndex->eClass());
+  
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrEntry) )
+    THROW_INVALID_DSTACK("index.upper"_Str);
+  
+  Entry* pEntry = _aEntry(pPtrEntry);
+  ASSERT(CN_ENTRY == pEntry->eClass());
+  
+  if ( ! nnpTask->m_pDataStack->bPop(xValWsp) )
+    THROW_INVALID_DSTACK("index.upper"_Str);
+  
+  i8 iIndexNo = pIndex->iIndexNo();
+  Table* pTable = pIndex->pTable();
+  
+  Partition* pPartition = pTable->pPartition(nnpTask->m_pSEitf->iPartition());
+  IndexData* pIndexData = pPartition->pIndexData(iIndexNo);
+  
+  // create a relational operator array
+  RelOpAry* pOpAryLower = new RelOpAry;
+  pOpAryLower->vAdd(RO_LESS_EQUAL);
+  
+  KeyWsp xKeyWsp;
+  
+  xKeyWsp.vAddElement(xValWsp);
+  Key xKey(xKeyWsp);
+  
+  bool bMatches = pEntry->bMatches(&xKey, pIndex->pIdxColVec(), pOpAryLower);
+  
+  delete pOpAryLower;
+  
+  nnpTask->m_pDataStack->vPushInt(bMatches ? 1 : 0);
   
   EXIT();
 }

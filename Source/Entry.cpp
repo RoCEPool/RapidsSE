@@ -193,6 +193,16 @@ Key* Entry::aKey(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* does this keyval match the given arguments                                 */
+/*----------------------------------------------------------------------------*/
+bool Entry::bMatches(Key* pKeyThat, IdxColVec* pColVec, RelOpAry* pRelOpAry)
+{
+  bool bMatches = aKey()->bMatches(pKeyThat, pColVec, pRelOpAry);
+  
+  return bMatches;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get nOffsets                                                                */
 /*----------------------------------------------------------------------------*/
 u8 Entry::nOffsets(void)
