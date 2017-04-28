@@ -43,7 +43,7 @@ namespace DBobjects
     IndexBuffer* pNextBuffer(void);
     
     Entry*  aNextEntry(Entry* aEntry);
-    Entry*  aPosition(Key& xKey, IdxColVec* pColVec);
+    Entry*  aPosition(Key& xKey, RelOpAry* pOpAryFind, IdxColVec* pColVec);
     bool    bRemove(Key* aKey);
     void    vShow(void);
     void    vVerify(void);
@@ -56,7 +56,7 @@ namespace DBobjects
     void    vMoveRight(void* aSrc, i8 nBytes);
     Entry*  aNewEntry(i8 nBytes, i8 nLevels, Entry* aAfterEntry);
     void    vNewHead(void);
-    Entry*  aPosition(Key& xKey, RelOpAry* pOpAryFind, IdxColVec* pColVec, bool& bEqualTo, Entry** aReviseVec);
+    Entry*  aPosition(Key& xKey, IdxColVec* pColVec, bool& bEqualTo, Entry** aReviseVec);
     Entry*  aRightEntry(Entry* aEntry, i8 iLevel);
     Entry*  aToEntry(i8 iOffset);
     i8      iToEndOffset(Entry* aEntry);

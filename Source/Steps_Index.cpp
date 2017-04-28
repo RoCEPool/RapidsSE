@@ -243,7 +243,8 @@ void Task::vIndexPosition(NNP_Task nnpTask)
   ENTRY("vIndexPopulate"_Str);
   Object* pPtrIndex = nullptr;
   Object* pPtrTable = nullptr;
-  ValWsp xValWsp;
+  ValWsp xValWspLower;
+  ValWsp xValWspUpper;
   
   if ( ! nnpTask->m_pDataStack->bPop(pPtrIndex) )
     THROW_INVALID_DSTACK("index.position!"_Str);
@@ -251,7 +252,7 @@ void Task::vIndexPosition(NNP_Task nnpTask)
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
   
-  if ( ! nnpTask->m_pDataStack->bPop(xValWsp) )
+  if ( ! nnpTask->m_pDataStack->bPop(xValWspLower) )
     THROW_INVALID_DSTACK("index.position!"_Str);
   
   i8 iIndexNo = pIndex->iIndexNo();
@@ -260,7 +261,13 @@ void Task::vIndexPosition(NNP_Task nnpTask)
   Partition* pPartition = pTable->pPartition(nnpTask->m_pSEitf->iPartition());
   IndexData* pIndexData = pPartition->pIndexData(iIndexNo);
   
-  Entry *pEntry = pIndexData->aPosition(xValWsp);
+  // create a relational operator array
+  RelOpAry* pOpAryLower = new RelOpAry;
+  pOpAryLower->vAdd(RO_GREATER_EQUAL);
+
+  Entry *pEntry = pIndexData->aPosition(xValWspLower, pOpAryLower);
+  
+  delete pOpAryLower;
   
   nnpTask->m_pDataStack->vPushObject(pEntry);
   

@@ -125,7 +125,7 @@ Entry* IndexLevels::pNextEntry(Entry* pEntry)
 /*----------------------------------------------------------------------------*/
 /* position index at given key                                                */
 /*----------------------------------------------------------------------------*/
-Entry* IndexLevels::aPosition(Key& xKey, IdxColVec* pColumnVec)
+Entry* IndexLevels::aPosition(Key& xKey, RelOpAry* pOpAryLower, IdxColVec* pColumnVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXLEVELS,_FOOTER_);
   
@@ -134,7 +134,7 @@ Entry* IndexLevels::aPosition(Key& xKey, IdxColVec* pColumnVec)
   
   IndexBuffer* pIndexBuffer = m_pIndexBuffer[0];
   
-  return pIndexBuffer->aPosition(xKey, pColumnVec);
+  return pIndexBuffer->aPosition(xKey, pOpAryLower, pColumnVec);
 }
 
 /*----------------------------------------------------------------------------*/

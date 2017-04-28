@@ -227,7 +227,7 @@ Entry* IndexData::pNextEntry(Entry* pEntry)
 /*----------------------------------------------------------------------------*/
 /* position the indexData at lower bound given key                            */
 /*----------------------------------------------------------------------------*/
-Entry* IndexData::aPosition(ValWsp& xValWsp)
+Entry* IndexData::aPosition(ValWsp& xValWsp, RelOpAry* pOpAryLower)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
   
@@ -236,7 +236,7 @@ Entry* IndexData::aPosition(ValWsp& xValWsp)
   xKeyWsp.vAddElement(xValWsp);
   Key xKey(xKeyWsp);
   
-  return m_pIndexLevels->aPosition(xKey, m_pIndex->pIdxColVec());
+  return m_pIndexLevels->aPosition(xKey, pOpAryLower, m_pIndex->pIdxColVec());
 }
 
 /*----------------------------------------------------------------------------*/

@@ -30,7 +30,7 @@ namespace DBobjects
     
     void   vInsertEntry(KeyWsp& xKeyWsp, RowId xRowId, IdxColVec* pColVec);
     Entry* pNextEntry(Entry* pEntry);
-    Entry* aPosition(Key& xpKey, IdxColVec* pColumnVec);
+    Entry* aPosition(Key& xpKey, RelOpAry* pOpAryLower, IdxColVec* pColumnVec);
     void   vTruncate(void);
     
     Footer* pFooter(void);

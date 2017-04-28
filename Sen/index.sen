@@ -317,7 +317,7 @@ tp: loadIndexes
   0 0 0 locals| entry selectTask indexPtr indexNm lower |
 
   // increment query count
-  //queryCount ++
+  queryCount ++
 
   // push indexes
   pushIndexes assert
