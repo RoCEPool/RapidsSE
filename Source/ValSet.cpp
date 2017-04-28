@@ -75,6 +75,7 @@ void ValSet::vAppend(Str*& pCursor, Value* pValue)
       PtrVal xPtrVal;
       xPtrVal = (Object*)C_ROWBUFFER_MARKER;
       MemLib::vCopy(pCursor,&xPtrVal,iSize);
+      vTrace("APPEND C_ROWBUFFER_MARKER\n"_Str);
     }
     else {
       MemLib::vCopy(pCursor,pValue,iSize);
@@ -149,8 +150,10 @@ bool ValSet::bExtractValue(Str*& pCursor, Value*& pValue)
   
   // test for a rowbuffer pointer
   if (CN_PTRVAL == pValue->eClass()) {
+    vTrace("EXTRACT CN_PTRVAL\n"_Str);
     
-    if ((i8)C_ROWBUFFER_MARKER == (i8)_pPtrVal(pValue)->pPtr()) {
+    if (C_ROWBUFFER_MARKER == _pPtrVal(pValue)->pPtr()) {
+      vTrace("EXTRACT C_ROWBUFFER_MARKER\n"_Str);
       *_pPtrVal(pValue) = m_pRowBuffer;
     }
   }
@@ -222,7 +225,7 @@ bool ValSet::bExtractValue(Str*& pCursor, eCN& eClassNo, Value*& pValue)
   // test for a rowbuffer pointer
   if (CN_PTRVAL == pValue->eClass()) {
     
-    if ((i8)C_ROWBUFFER_MARKER == (i8)_pPtrVal(pValue)->pPtr()) {
+    if (C_ROWBUFFER_MARKER == _pPtrVal(pValue)->pPtr()) {
       eClassNo = CN_ROWBUFFER;
       return true;
     }
