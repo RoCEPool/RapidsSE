@@ -422,7 +422,7 @@ tp: lowerSelectIndex
   //   and the seitf will have a table
   //
   assert::stack_3
-"tp:1" .
+
   0 0 0 locals| entry selectTask indexPtr indexNm lower upper |
 
   // increment query count
@@ -446,7 +446,7 @@ tp: lowerSelectIndex
       while
 
       // create a selectTask to execute the lower bound select on the index for the partition
-      indexPtr lower upper str.tailint assert 3 "rangeSelectIdx" task::this task::new
+      indexPtr lower str.tailint assert upper str.tailint assert 3 "rangeSelectIdx" task::this task::new
       to selectTask
 
       //put seitf from this task to the selectTask
@@ -495,10 +495,7 @@ tp: lowerSelectIndex
 
   0 0 0 locals| seitf entry row upper lower indexPtr |
 
-  "tp: rangeSelectIdx" .
-
-  lower .
-  upper .
+  //"tp: rangeSelectIdx" .
 
   // get the seitf from this task
   task::this task.seitf@ to seitf
@@ -510,21 +507,24 @@ tp: lowerSelectIndex
     // no previous entry ?
     // position the index at the lowerBound
     lower indexPtr index.position ( entry )
+    to entry
   else
     // get next entry from the current entry
-    entry indexPtr index.getNextEntry
+    entry indexPtr index.getNextEntry to entry
   then
 
-  // check against upper bound
-/*
-  upper entry.upper
-  not if
-    task.seitf! seitf
+  entry seitf seitf.entry!
 
-    // set the entry in the seitf
-    0 seitf seitf.entry@
+  entry
+  if
+    // check against upper bound
+    upper entry indexPtr index.upper
+    not if
+      // set the entry in the seitf
+      0 seitf seitf.entry!
+    then
   then
-*/
+
   // signal the parent task
   task::this task.parent@ task.ack
 ;
