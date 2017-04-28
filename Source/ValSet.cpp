@@ -72,10 +72,16 @@ void ValSet::vAppend(Str*& pCursor, ValWsp& xVal)
       m_iRowBufferBytes = m_pRowBuffer->nUsedBytes();
       
       xVal = (Object*)C_ROWBUFFER_MARKER;
+      MemLib::vCopy(pCursor,&xVal,iSize);
     }
+    else {
+      MemLib::vCopy(pCursor,&xVal,iSize);
+    }
+    
   }
-  
-  MemLib::vCopy(pCursor,&xVal,iSize);
+  else {
+    MemLib::vCopy(pCursor,&xVal,iSize);
+  }
   
   m_iBytes += iSize;
   pCursor  += iSize;
