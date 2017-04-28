@@ -52,7 +52,7 @@ void Task::vDot(NNP_Task nnpTask)
   if ( ! nnpTask->m_pDataStack->bPop(xValWsp) )
     THROW_INVALID_DSTACK("."_Str);
   
-  ValLib::vToString(&xValWsp,sWorkspace);
+  ValLib::vToString(xValWsp.pNestedValueSelf(),sWorkspace);
   /*
   vTrace("[N%lld:%8s\\%lld %-11s] %s\n"_Str,
          

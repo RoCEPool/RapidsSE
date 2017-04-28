@@ -153,7 +153,7 @@ bool QueueBuffer::bPop(ValWsp* pValWsp, bool& bDiscardable)
   
   i8 nBytes = ValLib::iSize(m_pTopValue);
 
-  MemLib::vCopy(pValWsp,m_pTopValue,nBytes);
+  MemLib::vCopy(pValWsp->pNestedValueSelf(),m_pTopValue,nBytes);
   
   //m_pTopValue = pNextValue(m_pTopValue);
   m_pTopValue = pAdd<Value*>(m_pTopValue,nBytes);

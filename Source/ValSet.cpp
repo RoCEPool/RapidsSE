@@ -54,7 +54,7 @@ ValSet::ValSet(void)
 /*----------------------------------------------------------------------------*/
 void ValSet::vAppend(Str*& pCursor, ValWsp& xVal)
 {
-  i8 iSize = ValLib::iSize(&xVal);
+  i8 iSize = ValLib::iSize(xVal.pNestedValueSelf());
   
   ASSERT(m_iBytes + iSize < C_VALSET_DATAAREA);
   
@@ -97,7 +97,7 @@ bool ValSet::bExtract(Str*& pCursor, ValWsp*& pVal)
 
   pVal = pToValWsp(pCursor);
   
-  i8 iSize = ValLib::iSize(pVal);
+  i8 iSize = ValLib::iSize(pVal->pNestedValueSelf());
   
   pCursor += iSize;
   
