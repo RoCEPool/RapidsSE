@@ -278,7 +278,7 @@ void Task::vAstackToValSet(NNP_Task nnpTask)
     if ( ! nnpTask->m_pAuxStack->bPop(xVal) )
     THROW_INVALID_ASTACK(">avalset"_Str);
     
-    xValSet.vAppend(pCursor,xVal);
+    xValSet.vAppend(pCursor,xVal.pNestedValueSelf());
   }
   
   //  vTrace("ValSet %lld bytes\n"_Str,xValSet.nSize());

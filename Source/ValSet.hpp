@@ -26,7 +26,7 @@ namespace Values
     ValSet(void);
 
 #ifdef OLD_VALSET
-    void vAppend(Str*& pCursor, ValWsp& xVal);
+    void vAppend(Str*& pCursor, Value* pValue);
     bool bExtract(Str*& pCursor, ValWsp*& pVal);
     bool bExtract(Str*& pCursor, eCN& eClassNo, ValWsp*& pVal);
 #else

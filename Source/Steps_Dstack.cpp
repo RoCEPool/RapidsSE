@@ -508,7 +508,7 @@ void Task::vDstackToValSet(NNP_Task nnpTask)
       }
     }
     
-    xValSet.vAppend(pCursor,xVal);
+    xValSet.vAppend(pCursor,xVal.pNestedValueSelf());
   }
   
   //  vTrace("ValSet %lld bytes\n"_Str,xValSet.nSize());
