@@ -521,6 +521,7 @@ void Task::vDstackToValSet(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* >values -- expand valset to values on dstack                               */
 /*----------------------------------------------------------------------------*/
+#ifdef OLD_VALSET
 void Task::vDstackToValues(NNP_Task nnpTask)
 {
   ENTRY("vDstackToValues"_Str);
@@ -544,6 +545,31 @@ void Task::vDstackToValues(NNP_Task nnpTask)
   
   EXIT();
 }
+#else // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+void Task::vDstackToValues(NNP_Task nnpTask)
+{
+  ENTRY("vDstackToValues"_Str);
+  
+  ValSet xValSet;
+  
+  if ( ! nnpTask->m_pDataStack->bPop(xValSet) )
+    THROW_INVALID_DSTACK(">values"_Str);
+  
+  i8 nVal = 0;
+  ValWsp* pValWsp[128];
+  
+  Str* pCursor = nullptr;
+  while (xValSet.bExtractValWsp(pCursor,pValWsp[nVal]))
+    nVal++;
+  
+  for (i8 iVal = nVal - 1; iVal >= 0; iVal--)
+    nnpTask->m_pDataStack->vPushValue(pValWsp[iVal]->pNestedValueSelf());
+  
+  nnpTask->m_pDataStack->vPushInt(nVal);
+  
+  EXIT();
+}
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* tuck -- copy the first stack value below second ( B A -- A B A )           */

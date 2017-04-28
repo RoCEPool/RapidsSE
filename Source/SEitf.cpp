@@ -2084,6 +2084,7 @@ eEC SEitf::eGetResponse(void)
 /*----------------------------------------------------------------------------*/
 /* pop response from response queue                                           */
 /*----------------------------------------------------------------------------*/
+#ifdef OLD_VALSET
 bool SEitf::bPopResponse(eEC& eResult, StrVal& sResponse)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
@@ -2113,6 +2114,37 @@ bool SEitf::bPopResponse(eEC& eResult, StrVal& sResponse)
   
   return true;
 }
+#else // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+bool SEitf::bPopResponse(eEC& eResult, StrVal& sResponse)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  bool b;
+  ValSet xValSet;
+  Str* aCursor = nullptr;
+  
+  if (! m_pResponseQueue->bPop(&xValSet))
+    return false;
+  
+  ValWsp* pValWsp;
+  
+  b = xValSet.bExtractValWsp(aCursor,pValWsp);
+  ASSERT(b);
+  eResult = (eEC)_pIntVal(pValWsp)->iInt();
+  
+  b = xValSet.bExtractValWsp(aCursor,pValWsp);
+  ASSERT(b);
+  *_pStrVal(&sResponse) = _pStrVal(pValWsp);
+  
+  b = xValSet.bExtractValWsp(aCursor,pValWsp);
+  ASSERT(! b);
+  
+  //  vTrace("sResponse: >>>\n%s\n<<<\n\n"_Str,sResponse.s());
+  //  vTrace("\n---\n\n"_Str,sResponse.s());
+  
+  return true;
+}
+#endif
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
