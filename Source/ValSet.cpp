@@ -52,6 +52,7 @@ ValSet::ValSet(void)
 /*----------------------------------------------------------------------------*/
 /* append value to valset                                                     */
 /*----------------------------------------------------------------------------*/
+#ifdef OLD_VALSET
 void ValSet::vAppend(Str*& pCursor, ValWsp& xValWsp)
 {
   i8 iSize = ValLib::iSize(xValWsp.pNestedValueSelf());
@@ -87,48 +88,52 @@ void ValSet::vAppend(Str*& pCursor, ValWsp& xValWsp)
   pCursor  += iSize;
   
 }
-//// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//void ValSet::vAppend(Str*& pCursor, ValWsp& xValWsp)
-//{
-//  Value* pValue = xValWsp.pNestedValueSelf();
-//  
-//  i8 iSize = ValLib::iSize(pValue);
-//  
-//  ASSERT(m_iBytes + iSize < C_VALSET_DATAAREA);
-//  
-//  if ( ! pCursor )
-//    pCursor = aFirstByte();
-//  
-//  // test for a rowbuffer pointer
-//  if (CN_PTRVAL == pValue->eClass()) {
-//    
-//    PtrVal* pPtrVal = (PtrVal*)pValue;
-//    
-//    if (pPtrVal->pPtr() &&
-//        CN_ROWBUFFER == ((Object*)pPtrVal->pPtr())->eClass()) {
-//      m_pRowBuffer = (RowBuffer*)pPtrVal->pPtr();
-//      m_iRowBufferBytes = m_pRowBuffer->nUsedBytes();
-//      
-//      xValWsp = (Object*)C_ROWBUFFER_MARKER;
-//      MemLib::vCopy(pCursor,pValue,iSize);
-//    }
-//    else {
-//      MemLib::vCopy(pCursor,pValue,iSize);
-//    }
-//    
-//  }
-//  else {
-//    MemLib::vCopy(pCursor,pValue,iSize);
-//  }
-//  
-//  m_iBytes += iSize;
-//  pCursor  += iSize;
-//  
-//}
+
+#else // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+void ValSet::vAppend(Str*& pCursor, ValWsp& xValWsp)
+{
+  Value* pValue = xValWsp.pNestedValueSelf();
+  
+  i8 iSize = ValLib::iSize(pValue);
+  
+  ASSERT(m_iBytes + iSize < C_VALSET_DATAAREA);
+  
+  if ( ! pCursor )
+    pCursor = aFirstByte();
+  
+  // test for a rowbuffer pointer
+  if (CN_PTRVAL == pValue->eClass()) {
+    
+    PtrVal* pPtrVal = (PtrVal*)pValue;
+    
+    if (pPtrVal->pPtr() &&
+        CN_ROWBUFFER == ((Object*)pPtrVal->pPtr())->eClass()) {
+      m_pRowBuffer = (RowBuffer*)pPtrVal->pPtr();
+      m_iRowBufferBytes = m_pRowBuffer->nUsedBytes();
+      
+      xValWsp = (Object*)C_ROWBUFFER_MARKER;
+      MemLib::vCopy(pCursor,pValue,iSize);
+    }
+    else {
+      MemLib::vCopy(pCursor,pValue,iSize);
+    }
+    
+  }
+  else {
+    MemLib::vCopy(pCursor,pValue,iSize);
+  }
+  
+  m_iBytes += iSize;
+  pCursor  += iSize;
+  
+}
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* extract next value from valset                                             */
 /*----------------------------------------------------------------------------*/
+#ifdef OLD_VALSET
 bool ValSet::bExtract(Str*& pCursor, ValWsp*& pValWsp)
 {
   if ( ! pCursor )
@@ -164,46 +169,49 @@ bool ValSet::bExtract(Str*& pCursor, ValWsp*& pValWsp)
   
   return true;
 }
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//bool ValSet::bExtract(Str*& pCursor, ValWsp*& pValWsp)
-//{
-//  if ( ! pCursor )
-//    pCursor = aFirstByte();
-//  
-//  i8 iOffset = pCursor - aFirstByte();
-//  
-//  if (iOffset >= m_iBytes)
-//    return false;
-//  
-//  pValWsp = pToValWsp(pCursor);
-//  
-//  i8 iSize = ValLib::iSize(pValWsp->pNestedValueSelf());
-//  
-//  pCursor += iSize;
-//  
-//  // test for a rowbuffer pointer
-//  if (CN_PTRVAL == pValWsp->eClass()) {
-//    
-//    if ((i8)C_ROWBUFFER_MARKER == pValWsp->iNestedAsInt()) {
-//      *pValWsp = m_pRowBuffer;
-//    }
-//  }
-//  
-//  // test for binary value
-//  if (CN_BINVAL == pValWsp->eClass()) {
-//    Object* pObjectVal = _pBinVal(pValWsp)->pNewObject();
-//    ASSERT(pObjectVal->eClass() == CN_PLAN);
-//    Plan* pPlan = reinterpret_cast<Plan*>(pObjectVal);
-//    pPlan->vNullifyPointers();
-//    *pValWsp = pObjectVal;
-//  }
-//  
-//  return true;
-//}
+
+#else // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+bool ValSet::bExtract(Str*& pCursor, ValWsp*& pValWsp)
+{
+  if ( ! pCursor )
+    pCursor = aFirstByte();
+  
+  i8 iOffset = pCursor - aFirstByte();
+  
+  if (iOffset >= m_iBytes)
+    return false;
+  
+  pValWsp = pToValWsp(pCursor);
+  
+  i8 iSize = ValLib::iSize(pValWsp->pNestedValueSelf());
+  
+  pCursor += iSize;
+  
+  // test for a rowbuffer pointer
+  if (CN_PTRVAL == pValWsp->eClass()) {
+    
+    if ((i8)C_ROWBUFFER_MARKER == pValWsp->iNestedAsInt()) {
+      *pValWsp = m_pRowBuffer;
+    }
+  }
+  
+  // test for binary value
+  if (CN_BINVAL == pValWsp->eClass()) {
+    Object* pObjectVal = _pBinVal(pValWsp)->pNewObject();
+    ASSERT(pObjectVal->eClass() == CN_PLAN);
+    Plan* pPlan = reinterpret_cast<Plan*>(pObjectVal);
+    pPlan->vNullifyPointers();
+    *pValWsp = pObjectVal;
+  }
+  
+  return true;
+}
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* extract next value from valset                                             */
 /*----------------------------------------------------------------------------*/
+#ifdef OLD_VALSET
 bool ValSet::bExtract(Str*& pCursor, eCN& eClassNo, ValWsp*& pVal)
 {
   if ( ! pCursor )
@@ -232,36 +240,38 @@ bool ValSet::bExtract(Str*& pCursor, eCN& eClassNo, ValWsp*& pVal)
   eClassNo = pVal->eClass();
   return true;
 }
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//bool ValSet::bExtract(Str*& pCursor, eCN& eClassNo, ValWsp*& pVal)
-//{
-//  if ( ! pCursor )
-//    pCursor = aFirstByte();
-//  
-//  i8 iOffset = pCursor - aFirstByte();
-//  
-//  if (iOffset >= m_iBytes)
-//    return false;
-//  
-//  pVal = pToValWsp(pCursor);
-//  
-//  i8 iSize = ValLib::iSize(pVal);
-//  
-//  pCursor += iSize;
-//  
-//  // test for a rowbuffer pointer
-//  if (CN_PTRVAL == pVal->eClass()) {
-//    
-//    if ((i8)C_ROWBUFFER_MARKER == pVal->iNestedAsInt()) {
-//      eClassNo = CN_ROWBUFFER;
-//      return true;
-//    }
-//  }
-//  
-//  eClassNo = pVal->eClass();
-//  return true;
-//}
 
+#else // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+bool ValSet::bExtract(Str*& pCursor, eCN& eClassNo, ValWsp*& pVal)
+{
+  if ( ! pCursor )
+    pCursor = aFirstByte();
+  
+  i8 iOffset = pCursor - aFirstByte();
+  
+  if (iOffset >= m_iBytes)
+    return false;
+  
+  pVal = pToValWsp(pCursor);
+  
+  i8 iSize = ValLib::iSize(pVal);
+  
+  pCursor += iSize;
+  
+  // test for a rowbuffer pointer
+  if (CN_PTRVAL == pVal->eClass()) {
+    
+    if ((i8)C_ROWBUFFER_MARKER == pVal->iNestedAsInt()) {
+      eClassNo = CN_ROWBUFFER;
+      return true;
+    }
+  }
+  
+  eClassNo = pVal->eClass();
+  return true;
+}
+#endif
 /*----------------------------------------------------------------------------*/
 /* get row buffer                                                             */
 /*----------------------------------------------------------------------------*/
