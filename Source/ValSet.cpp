@@ -53,9 +53,9 @@ ValSet::ValSet(void)
 /* append value to valset                                                     */
 /*----------------------------------------------------------------------------*/
 #ifdef OLD_VALSET
-void ValSet::vAppend(Str*& pCursor, ValWsp& xValWsp)
+void ValSet::vAppend(Str*& pCursor, Value* pValue)
 {
-  i8 iSize = ValLib::iSize(xValWsp.pNestedValueSelf());
+  i8 iSize = ValLib::iSize(pValue);
   
   ASSERT(m_iBytes + iSize < C_VALSET_DATAAREA);
   
@@ -63,25 +63,27 @@ void ValSet::vAppend(Str*& pCursor, ValWsp& xValWsp)
     pCursor = aFirstByte();
   
   // test for a rowbuffer pointer
-  if (CN_PTRVAL == xValWsp.eClass()) {
+  if (CN_PTRVAL == pValue->eClass()) {
     
-    PtrVal* pPtrVal = (PtrVal*)&xValWsp;
+    PtrVal* pPtrVal = _pPtrVal(pValue);
     
     if (pPtrVal->pPtr() &&
         CN_ROWBUFFER == ((Object*)pPtrVal->pPtr())->eClass()) {
       m_pRowBuffer = (RowBuffer*)pPtrVal->pPtr();
       m_iRowBufferBytes = m_pRowBuffer->nUsedBytes();
       
-      xValWsp = (Object*)C_ROWBUFFER_MARKER;
-      MemLib::vCopy(pCursor,&xValWsp,iSize);
+      //xValWsp = (Object*)C_ROWBUFFER_MARKER;
+      PtrVal xPtrVal;
+      xPtrVal = (Object*)C_ROWBUFFER_MARKER;
+      MemLib::vCopy(pCursor,&xPtrVal,iSize);
     }
     else {
-      MemLib::vCopy(pCursor,&xValWsp,iSize);
+      MemLib::vCopy(pCursor,pValue,iSize);
     }
     
   }
   else {
-    MemLib::vCopy(pCursor,&xValWsp,iSize);
+    MemLib::vCopy(pCursor,pValue,iSize);
   }
   
   m_iBytes += iSize;
@@ -112,7 +114,9 @@ void ValSet::vAppend(Str*& pCursor, ValWsp& xValWsp)
       m_pRowBuffer = (RowBuffer*)pPtrVal->pPtr();
       m_iRowBufferBytes = m_pRowBuffer->nUsedBytes();
       
-      xValWsp = (Object*)C_ROWBUFFER_MARKER;
+      //xValWsp = (Object*)C_ROWBUFFER_MARKER;
+      PtrVal xPtrVal;
+      xPtrVal = (Object*)C_ROWBUFFER_MARKER;
       MemLib::vCopy(pCursor,pValue,iSize);
     }
     else {
@@ -173,6 +177,8 @@ bool ValSet::bExtract(Str*& pCursor, ValWsp*& pValWsp)
 #else // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 bool ValSet::bExtract(Str*& pCursor, ValWsp*& pValWsp)
 {
+  Value* pValue = pValWsp->pNestedValueSelf();
+  
   if ( ! pCursor )
     pCursor = aFirstByte();
   
@@ -212,7 +218,7 @@ bool ValSet::bExtract(Str*& pCursor, ValWsp*& pValWsp)
 /* extract next value from valset                                             */
 /*----------------------------------------------------------------------------*/
 #ifdef OLD_VALSET
-bool ValSet::bExtract(Str*& pCursor, eCN& eClassNo, ValWsp*& pVal)
+bool ValSet::bExtract(Str*& pCursor, eCN& eClassNo, ValWsp*& pValWsp)
 {
   if ( ! pCursor )
     pCursor = aFirstByte();
@@ -222,29 +228,31 @@ bool ValSet::bExtract(Str*& pCursor, eCN& eClassNo, ValWsp*& pVal)
   if (iOffset >= m_iBytes)
     return false;
   
-  pVal = pToValWsp(pCursor);
+  pValWsp = pToValWsp(pCursor);
   
-  i8 iSize = ValLib::iSize(pVal);
+  i8 iSize = ValLib::iSize(pValWsp);
   
   pCursor += iSize;
   
   // test for a rowbuffer pointer
-  if (CN_PTRVAL == pVal->eClass()) {
+  if (CN_PTRVAL == pValWsp->eClass()) {
     
-    if ((i8)C_ROWBUFFER_MARKER == pVal->iNestedAsInt()) {
+    if ((i8)C_ROWBUFFER_MARKER == pValWsp->iNestedAsInt()) {
       eClassNo = CN_ROWBUFFER;
       return true;
     }
   }
   
-  eClassNo = pVal->eClass();
+  eClassNo = pValWsp->eClass();
   return true;
 }
 
 #else // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-bool ValSet::bExtract(Str*& pCursor, eCN& eClassNo, ValWsp*& pVal)
+bool ValSet::bExtract(Str*& pCursor, eCN& eClassNo, ValWsp*& pValWsp)
 {
+  Value* pValue = pValWsp->pNestedValueSelf();
+  
   if ( ! pCursor )
     pCursor = aFirstByte();
   
@@ -253,22 +261,22 @@ bool ValSet::bExtract(Str*& pCursor, eCN& eClassNo, ValWsp*& pVal)
   if (iOffset >= m_iBytes)
     return false;
   
-  pVal = pToValWsp(pCursor);
+  pValWsp = pToValWsp(pCursor);
   
-  i8 iSize = ValLib::iSize(pVal);
+  i8 iSize = ValLib::iSize(pValWsp);
   
   pCursor += iSize;
   
   // test for a rowbuffer pointer
-  if (CN_PTRVAL == pVal->eClass()) {
+  if (CN_PTRVAL == pValWsp->eClass()) {
     
-    if ((i8)C_ROWBUFFER_MARKER == pVal->iNestedAsInt()) {
+    if ((i8)C_ROWBUFFER_MARKER == pValWsp->iNestedAsInt()) {
       eClassNo = CN_ROWBUFFER;
       return true;
     }
   }
   
-  eClassNo = pVal->eClass();
+  eClassNo = pValWsp->eClass();
   return true;
 }
 #endif
