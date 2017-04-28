@@ -25,12 +25,11 @@ namespace Values
     void* operator new(size_t);
     ValSet(void);
 
-#ifdef OLD_VALSET
     void vAppend(Str*& pCursor, Value* pValue);
+#ifdef OLD_VALSET
     bool bExtract(Str*& pCursor, ValWsp*& pVal);
     bool bExtract(Str*& pCursor, eCN& eClassNo, ValWsp*& pVal);
 #else
-    void vAppend(Str*& pCursor, ValWsp& xVal);
     bool bExtract(Str*& pCursor, ValWsp*& pVal);
     bool bExtract(Str*& pCursor, eCN& eClassNo, ValWsp*& pVal);
 #endif

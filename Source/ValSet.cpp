@@ -52,7 +52,6 @@ ValSet::ValSet(void)
 /*----------------------------------------------------------------------------*/
 /* append value to valset                                                     */
 /*----------------------------------------------------------------------------*/
-#ifdef OLD_VALSET
 void ValSet::vAppend(Str*& pCursor, Value* pValue)
 {
   i8 iSize = ValLib::iSize(pValue);
@@ -90,49 +89,6 @@ void ValSet::vAppend(Str*& pCursor, Value* pValue)
   pCursor  += iSize;
   
 }
-
-#else // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-void ValSet::vAppend(Str*& pCursor, ValWsp& xValWsp)
-{
-  Value* pValue = xValWsp.pNestedValueSelf();
-  
-  i8 iSize = ValLib::iSize(pValue);
-  
-  ASSERT(m_iBytes + iSize < C_VALSET_DATAAREA);
-  
-  if ( ! pCursor )
-    pCursor = aFirstByte();
-  
-  // test for a rowbuffer pointer
-  if (CN_PTRVAL == pValue->eClass()) {
-    
-    PtrVal* pPtrVal = (PtrVal*)pValue;
-    
-    if (pPtrVal->pPtr() &&
-        CN_ROWBUFFER == ((Object*)pPtrVal->pPtr())->eClass()) {
-      m_pRowBuffer = (RowBuffer*)pPtrVal->pPtr();
-      m_iRowBufferBytes = m_pRowBuffer->nUsedBytes();
-      
-      //xValWsp = (Object*)C_ROWBUFFER_MARKER;
-      PtrVal xPtrVal;
-      xPtrVal = (Object*)C_ROWBUFFER_MARKER;
-      MemLib::vCopy(pCursor,pValue,iSize);
-    }
-    else {
-      MemLib::vCopy(pCursor,pValue,iSize);
-    }
-    
-  }
-  else {
-    MemLib::vCopy(pCursor,pValue,iSize);
-  }
-  
-  m_iBytes += iSize;
-  pCursor  += iSize;
-  
-}
-#endif
 
 /*----------------------------------------------------------------------------*/
 /* extract next value from valset                                             */
