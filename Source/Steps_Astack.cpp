@@ -291,6 +291,7 @@ void Task::vAstackToValSet(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* >avalues -- expand valset to values on aux stack                           */
 /*----------------------------------------------------------------------------*/
+#ifdef OLD_VALSET
 void Task::vAstackToValues(NNP_Task nnpTask)
 {
   ENTRY("vDstackToValues"_Str);
@@ -304,7 +305,7 @@ void Task::vAstackToValues(NNP_Task nnpTask)
   ValWsp* pValWsp[128];
   
   Str* pCursor = nullptr;
-  while (xValSet.bExtract(pCursor,pValWsp[nVal]))
+  while (xValSet.bExtractValWsp(pCursor,pValWsp[nVal]))
     nVal++;
   
   for (i8 iVal = nVal - 1; iVal >= 0; iVal--)
@@ -314,6 +315,31 @@ void Task::vAstackToValues(NNP_Task nnpTask)
   
   EXIT();
 }
+#else // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+void Task::vAstackToValues(NNP_Task nnpTask)
+{
+  ENTRY("vDstackToValues"_Str);
+  
+  ValSet xValSet;
+  
+  if ( ! nnpTask->m_pAuxStack->bPop(xValSet) )
+    THROW_INVALID_ASTACK(">avalues"_Str);
+  
+  i8 nVal = 0;
+  Value* pValue[128];
+  
+  Str* pCursor = nullptr;
+  while (xValSet.bExtractValue(pCursor,pValue[nVal]))
+    nVal++;
+  
+  for (i8 iVal = nVal - 1; iVal >= 0; iVal--)
+    nnpTask->m_pAuxStack->vPushValue(pValue[iVal]);
+  
+  nnpTask->m_pAuxStack->vPushInt(nVal);
+  
+  EXIT();
+}
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* >a -- move value from dstack to astack                                     */
