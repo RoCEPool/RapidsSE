@@ -170,8 +170,8 @@ void Task::vStrEqual(NNP_Task nnpTask)
   if ( ! nnpTask->m_pDataStack->bPop(xStringB,xStringA) )
     THROW_INVALID_DSTACK("str.equal"_Str);
   
-  i8 iEqual = StrLib::bEqualTo(_pStrVal(&xStringA)->s(),
-                               _pStrVal(&xStringB)->s(),
+  i8 iEqual = StrLib::bEqualTo(_pStrVal(xStringA.pNestedValueSelf())->s(),
+                               _pStrVal(xStringB.pNestedValueSelf())->s(),
                                C_NO_CASE);
   
   nnpTask->m_pDataStack->vPushInt(iEqual);
@@ -309,10 +309,10 @@ void Task::vStrPad(NNP_Task nnpTask)
   if ( ! nnpTask->m_pDataStack->bPop(iLength,xStringA) )
     THROW_INVALID_DSTACK("str.pad"_Str);
   
-  StrLib::vPad(_pStrVal(&xStringA)->s(),iLength,' ');
+  StrLib::vPad(_pStrVal(xStringA.pNestedValueSelf())->s(),iLength,' ');
   
   // adjust area size
-  _pStrVal(&xStringA)->vAreaSize();
+  _pStrVal(xStringA.pNestedValueSelf())->vAreaSize();
   
   nnpTask->m_pDataStack->vPushValWsp(xStringA);
   

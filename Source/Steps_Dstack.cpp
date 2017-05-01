@@ -95,7 +95,7 @@ void Task::vDstackClass(NNP_Task nnpTask)
   
   nnpTask->m_pDataStack->vPeekValWsp(nTh,xValWsp);
   
-  eCN eClass = xValWsp.eClass();
+  eCN eClass = xValWsp.pNestedValue()->eClass();
   
   nnpTask->m_pDataStack->vPushInt(eClass);
   
@@ -607,8 +607,12 @@ void Task::vDstackToValues(NNP_Task nnpTask)
   while (xValSet.bExtractValue(pCursor,pValue[nVal]))
     nVal++;
   
-  for (i8 iVal = nVal - 1; iVal >= 0; iVal--)
+  for (i8 iVal = nVal - 1; iVal >= 0; iVal--) {
+//    vTrace("Task::vDstackToValues: %lld %s\n"_Str,
+//           pValue[iVal]->eClass(),
+//           aCN[pValue[iVal]->eClass()]);
     nnpTask->m_pDataStack->vPushValue(pValue[iVal]);
+  }
   
   nnpTask->m_pDataStack->vPushInt(nVal);
   

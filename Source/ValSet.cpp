@@ -143,6 +143,7 @@ bool ValSet::bExtractValue(Str*& pCursor, Value*& pValue)
     return false;
   
   pValue = (Value*)pCursor;
+  //vTrace("ValSet::bExtractValue: %lld %s\n"_Str,pValue->eClass(),aCN[pValue->eClass()]);
   
   i8 iSize = ValLib::iSize(pValue);
   
