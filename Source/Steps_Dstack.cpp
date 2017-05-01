@@ -475,40 +475,41 @@ void Task::vDstackSwap(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* >valset -- collapse values on dstack to a valset                           */
 /*----------------------------------------------------------------------------*/
+#ifdef OLD_VALWSP
 void Task::vDstackToValSet(NNP_Task nnpTask)
 {
   ENTRY("vDstackToValSet"_Str);
   
-  i8 nVal;
+  i8 nValues;
   
-  if ( ! nnpTask->m_pDataStack->bPop(nVal) )
+  if ( ! nnpTask->m_pDataStack->bPop(nValues) )
     THROW_INVALID_DSTACK(">valset"_Str);
   
-  if ( ! nnpTask->m_pDataStack->bGuard(nVal) )
+  if ( ! nnpTask->m_pDataStack->bGuard(nValues) )
     THROW_INVALID_DSTACK(">valset"_Str);
   
   Str* pCursor = nullptr;
   ValSet xValSet;
   
-  ValWsp xVal;
-  for (i8 iVal = 0; iVal < nVal; iVal++) {
+  ValWsp xValWsp;
+  for (i8 iValue = 0; iValue < nValues; iValue++) {
     
-    if ( ! nnpTask->m_pDataStack->bPop(xVal) )
+    if ( ! nnpTask->m_pDataStack->bPop(xValWsp) )
       THROW_INVALID_DSTACK(">valset"_Str);
     
-    if (xVal.eClass() == CN_PTRVAL) {
-      PtrVal* pPtrVal = _pPtrVal(&xVal);
+    if (xValWsp.eClass() == CN_PTRVAL) {
+      PtrVal* pPtrVal = _pPtrVal(&xValWsp);
       Object* pObject = pPtrVal->pPtr();
       eCN eObjectClass   = pObject->eClass();
       
       if (eObjectClass == CN_PLAN) {
         ValWsp xBinVal;
         xBinVal.vAssignBinary(pObject);
-        xVal = xBinVal;
+        xValWsp = xBinVal;
       }
     }
     
-    xValSet.vAppend(pCursor,xVal.pNestedValueSelf());
+    xValSet.vAppend(pCursor,xValWsp.pNestedValueSelf());
   }
   
   //  vTrace("ValSet %lld bytes\n"_Str,xValSet.nSize());
@@ -517,6 +518,50 @@ void Task::vDstackToValSet(NNP_Task nnpTask)
   
   EXIT();
 }
+#else // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+void Task::vDstackToValSet(NNP_Task nnpTask)
+{
+  ENTRY("vDstackToValSet"_Str);
+  
+  i8 nValues;
+  
+  if ( ! nnpTask->m_pDataStack->bPop(nValues) )
+    THROW_INVALID_DSTACK(">valset"_Str);
+  
+  if ( ! nnpTask->m_pDataStack->bGuard(nValues) )
+    THROW_INVALID_DSTACK(">valset"_Str);
+  
+  Str* pCursor = nullptr;
+  ValSet xValSet;
+  
+  ValWsp xValWsp;
+  for (i8 iValue = 0; iValue < nValues; iValue++) {
+    
+    if ( ! nnpTask->m_pDataStack->bPop(xValWsp) )
+      THROW_INVALID_DSTACK(">valset"_Str);
+    
+    if (xValWsp.pNestedValue()->eClass() == CN_PTRVAL) {
+      PtrVal* pPtrVal = _pPtrVal(xValWsp.pNestedValue());
+      Object* pObject = pPtrVal->pPtr();
+      eCN eObjectClass = pObject->eClass();
+      
+      if (eObjectClass == CN_PLAN) {
+        ValWsp xBinVal;
+        xBinVal.vAssignBinary(pObject);
+        xValWsp = xBinVal;
+      }
+    }
+    
+    xValSet.vAppend(pCursor,xValWsp.pNestedValueSelf());
+  }
+  
+  //  vTrace("ValSet %lld bytes\n"_Str,xValSet.nSize());
+  
+  nnpTask->m_pDataStack->vPushValSet(xValSet);
+  
+  EXIT();
+}
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* >values -- expand valset to values on dstack                               */
