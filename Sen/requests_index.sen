@@ -61,6 +61,10 @@ tp: create_index
   checkEnoughBuffers not if <NIP+ERROR> exit then
   indexNm tableNm checkMakeIndex  not if <NIP+ERROR> exit then
 
+  tableNm pushTable assert
+    tableNm get_table
+  popTable
+
   tableNm indexNm makeIndex ( ) assert::stack_0
 
   <OK>
@@ -76,9 +80,6 @@ tp: create_index
   locals|  tableNm indexNm |
   ddlLock::grabWrite
 
-  indexNm .
-  tableNm .
-
   indexNm tableNm checkRemoveIndex not if <NIP+ERROR> exit then
 
   tp ( "<indexNm>" )
@@ -89,8 +90,10 @@ tp: create_index
   // push indexes folder
   pushIndexes assert ( "<indexNm>" )
 
+  // check it is an index we are dropping
   indexNm checkIsIndex  not if popIndexes popTable assertInTables <NIP+ERROR> exit then
 
+  // remove the index
   indexNm removeIndex ( ) assert::stack_0
 
   // pop indexes folder
@@ -150,7 +153,9 @@ tp: dumpedIndex
 /*----------------------------------------------------------------------------*/
 /* end of create index sequence                                               */
 /*----------------------------------------------------------------------------*/
-: end_create_index ( "<indexNm>" -- <R> )
+: end_create_index ( "<indexNm>" "<tableNm>" -- <R> )
+
+  locals| tableNm indexNm |
 
 tp: end_create_index
 
@@ -160,7 +165,20 @@ tp: end_create_index
 
   //"end_create_index" .
 
-  columnVecIndex
+  // create the column vector of the index
+  indexNm columnVecIndex
+
+  // pop indexes folder temporarily
+  popIndexes
+
+  // return teh table reference
+  returnTableRef not if <NIP+ERROR> exit then
+  task::this task.seitf@ seitf.table@ not assert
+
+  // push back teh indexes folder
+  pushIndexes assert
+
+  assertInIndexes
 
   assert::stack_0
 

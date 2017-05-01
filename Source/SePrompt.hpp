@@ -94,7 +94,7 @@ private:
   bool bDropSchema(void);
   bool bDropTable(void);
   bool bDropReturnTable(Str* aTableName);
-  bool bIndexReturnTable(Str* aTableName);
+  bool bIndexReturnTable(Str* aTableName, Str* aIndexName);
   bool bDropTenant(void);
   
   bool bEndInsert(void);

@@ -246,6 +246,8 @@ void Vector<VEC_CN, ITEM, ITEM_CN, MAX_ITEMS>::vRemove(ITEM* pItem)
   // reduce no of items
   m_nItems--;
   
+  m_pItem[iItem] = nullptr;
+  
   // last item removed, nothing to do
   if (iItem == m_nItems)
     return;

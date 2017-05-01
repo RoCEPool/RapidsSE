@@ -23,11 +23,11 @@
 /*----------------------------------------------------------------------------*/
 /* add an index column                                                        */
 /*----------------------------------------------------------------------------*/
-: add_idxcolumn ( "<columnNm>" "<indexNm>" -- <R> )
+: add_idxcolumn ( "<columnNm>" "<indexNm>" "<tableNm>" -- <R> )
 
-  locals| indexNm columnNm |
+  locals| tableNm indexNm columnNm  |
 
-  columnNm indexNm
+  columnNm indexNm tableNm
   checkAddIndexColumn not if <NIP+ERROR> exit then
 
   columnNm indexNm

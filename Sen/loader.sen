@@ -118,8 +118,6 @@ timer: loadTimer
   OPEN_READ r0 file.open
   if r0 file.close rdrop swap else rdrop drop drop EC_INVALID_FILE false exit then
 
-stk
-
   reg.push
 
   file.new >reg0         // reg0 - file
@@ -163,8 +161,6 @@ stk
   reg.pop
 
   true
-
-stk
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -179,8 +175,6 @@ stk
   dup r0 file.path!
   OPEN_READ r0 file.open
   if r0 file.close rdrop swap else rdrop drop drop EC_INVALID_FILE false exit then
-
-  stk
 
   reg.push
 
@@ -225,8 +219,6 @@ stk
   reg.pop
 
   true
-
-  stk
 ;
 
 /*============================================================================*/

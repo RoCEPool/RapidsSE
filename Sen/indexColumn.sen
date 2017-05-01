@@ -61,25 +61,57 @@
 /*----------------------------------------------------------------------------*/
 /* check and add an index column                                              */
 /*----------------------------------------------------------------------------*/
-: checkAddIndexColumn ( "<columnName>" "<indexNm>" -- true | eEC false )
+: checkAddIndexColumn ( "<columnName>" "<indexNm>" "<tableNm>" -- true | eEC false )
 
-  locals| indexNm columnNm |
+  locals| tableNm indexNm columnNm |
 
+  // check we are in the indexes folder
   checkInIndexes not if false exit then
 
-  indexNm
-  pushIndexSub   assert // not if false exit then
+  // move out of the indexes folder temporarily
+  popIndexes
 
-  columnNm
+  // push the table sub folder
+  tableNm pushTableSub assert
+
+  // push the table columns folder
+  pushColumns
+
+  // look for the index column in teh table columns
+  columnNm findInCurrent
+
+  // column should exist in table
+  not if EC_INVALID_COLUMN false popColumns popTableSub pushIndexes assert exit then
+
+  // pop the columns folder
+  popColumns
+
+  // pop the tables sub folder
+  popTableSub
+
+  // push back teh indexes folder
+  pushIndexes assert
+
+  // push the index sub folder
+  indexNm
+  pushIndexSub assert   // not if false exit then
+
+  // push the index columns folder
   pushIndexColumns assert // not if false exit then
 
-  // column should not already exist
-  findInCurrent
-  if EC_DUPLICATE_COLUMN false popIndexColumns popTable exit then
+  // look for the column in the indexes columns
+  columnNm findInCurrent
 
+  // column should not already exist
+  if EC_DUPLICATE_COLUMN false popIndexColumns popIndexSub exit then
+
+  //pop the index columns folder
   popIndexColumns
 
+  // pop the index sub folder
   popIndexSub
+
+  assertInIndexes
 
   true
 ;
@@ -120,30 +152,29 @@
     "ADDING COLUMN " indexNm str.cat " on NODE " str.cat grid.thisNode@ >str str.cat .
   then
 
-  //indexNm find execute to indexPtr
-
   tp: addingIndexColumn
 
+  // push the index sub folder
   indexNm
-  pushIndexSub   assert   // not if false exit then
+  pushIndexSub assert
 
-  pushIndexColumns assert // not if false exit then
-
-  // get the table from the index
-  //indexPtr index.table@ ( tablePtr )
+  // push index columns folder
+  pushIndexColumns assert
 
   columnNm columnNm    ( "<columnNm>" "<columnNm>" )
   :indexColumn
 
+  // pop index columns folder
   popIndexColumns
 
+  // pop the index sub folder
   popIndexSub
 
   true <SUCCESS_RESULT>
 ;
 
 /*----------------------------------------------------------------------------*/
-/* create the column vector of the table                                      */
+/* create the column vector of the index                                      */
 /*----------------------------------------------------------------------------*/
 : columnVecIndex allParticipants 1 checkResult ( "<indexNm>" -- true n# true )
 
@@ -161,7 +192,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // push the index sub dic and then the columns sub dic
-  indexNm pushIndexSub  assert
+  indexNm pushIndexSub assert
 
   pushIndexColumns assert
 
@@ -174,7 +205,6 @@
     object@ execute              ( value )
     object@ word.name            ( value wordNm )
     indexPtr                     ( value wordNm ^table )
-    //stk
     index.createColumnVec
     object@ word.prev object!    // advance cursor backwards thru words
   next

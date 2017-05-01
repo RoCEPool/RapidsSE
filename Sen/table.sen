@@ -308,16 +308,14 @@ int: queryCount
   r0 selCursor.table!
   grid.slots 0
   do
-    stk
     // r2 ^selCursor
     I r2 selCursor.begin
     r2 selCursor.first
 
-    stk
     begin
 
       while
-      stk
+
       r2 selCursor.get
       .
       r2 selCursor.next
@@ -327,7 +325,6 @@ int: queryCount
       r2 selCursor.end
   loop
 
-  stk
   rdrop
 
   "__row_cursor" find word.forget
@@ -513,7 +510,7 @@ int: queryCount
   assert::stack_2
 
   // for the moment just discard lower and upper
-  stk drop drop
+  drop drop
 
   // increment query count
   queryCount ++

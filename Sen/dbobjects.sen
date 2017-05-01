@@ -7,8 +7,8 @@
 "selCursor.sen" include
 "table.sen" include
 "index.sen" include
-"indexColumn.sen" include
 "column.sen" include
+"indexColumn.sen" include
 "schema.sen" include
 "catalog.sen" include
 "tenant.sen" include

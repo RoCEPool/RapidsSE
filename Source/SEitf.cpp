@@ -940,10 +940,14 @@ bool SEitf::bAddIndexColumn(Str* aWords[16], i8 iWords)
   
   s256 sRequest;
   
-  if (iWords != 3) {
+  if (iWords != 4) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
+  
+  sRequest.vCopy(" \""_Str);
+  sRequest.vConcat(aWords[3]);
+  sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" \""_Str);
   sRequest.vConcat(aWords[2]);
@@ -967,17 +971,21 @@ bool SEitf::bEndCreateIndex(Str* aWords[16], i8 iWords)
   
   s256 sRequest;
   
-  if (iWords != 2) {
+  if (iWords != 3) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
   sRequest.vCopy("\""_Str);
+  sRequest.vConcat(aWords[2]);
+  sRequest.vConcat("\""_Str);
+  
+  sRequest.vConcat("\""_Str);
   sRequest.vConcat(aWords[1]);
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" end_create_index"_Str);
-  
+        
   return bAppendRequest(sRequest);
 }
 

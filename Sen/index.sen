@@ -75,6 +75,13 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* assert top of task dictionary stack is indexes                              */
+/*----------------------------------------------------------------------------*/
+: assertInIndexes ( -- t|f )
+  withinIndexes assert
+;
+
+/*----------------------------------------------------------------------------*/
 /* check word is an index                                                     */
 /*----------------------------------------------------------------------------*/
 : checkIsIndex ( "<indexNm>" -- true | errorCode false )
@@ -155,10 +162,10 @@
 
   tableNm checkIsTableFolder not if false exit then
 
-  tableNm pushTable
-  pushIndexes
+  tableNm pushTable assert
+  pushIndexes assert
 
-  indexNm checkIsNotIndex not if false exit then
+  indexNm checkIsNotIndex not if popIndexes popTable assertInTables false exit then
 
   popIndexes
   popTable

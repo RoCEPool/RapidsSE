@@ -176,7 +176,6 @@
     object@ execute              ( value )
     object@ word.name            ( value wordNm )
     tablePtr                     ( value wordNm ^table )
-    //stk
     table.createColumnVec
     object@ word.prev object!    // advance cursor backwards thru words
   next

@@ -8,9 +8,10 @@
 "requests_connection.sen" include
 "requests_tenant.sen"     include
 "requests_catalog.sen"    include
-"requests_index.sen"      include
 "requests_schema.sen"     include
 "requests_table.sen"      include
+"requests_index.sen"      include
+
 "requests_column.sen"     include
 "requests_folder.sen"     include
 "requests_space.sen"      include
@@ -92,10 +93,10 @@ tridx     truncate_index
 -----------------
 Column Requests:
 -----------------
-add     add_column
-addidx   add_idxcolumn
-lscol   list_columns
-lsidxcol list_indexcolumns
+add         add_column
+addidxcol   add_idxcolumn
+lscol       list_columns
+lsidxcol    list_indexcolumns
  
 ---------------------
 Dictionary Requests:
