@@ -36,6 +36,7 @@ namespace DBobjects
     
   private:
     void vSplitBuffer(IndexBuffer* pIndexBuffer, IdxColVec* pColVec);
+    void vInsertEntryL1(IndexBuffer* pIndexBuffer, IdxColVec* pColVec);
     
     Footer* pFooter(void);
   };
