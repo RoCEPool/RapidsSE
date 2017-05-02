@@ -133,35 +133,31 @@ void IndexLevels::vInsertEntry(KeyWsp& xKeyWsp, RowId xRowId, IdxColVec* pColVec
 /*----------------------------------------------------------------------------*/
 void IndexLevels::vInsertEntryL1(IndexBuffer* pIndexBuffer, IdxColVec* pColVec)
 {
+  RowId  xNewRowId;
+  
   // create an L1 buffer if it does not exist
   if ( ! m_pIndexBuffer[1] )
     m_pIndexBuffer[1] = new IndexBuffer;
 
-  RowId xNewRowId;
-  Entry* pHead;
-  Key* aKey;
-  bool bResult;
-  
+  // form the Id
   bn nFirstBuffer = pIndexBuffer->nBufferNo();
   xNewRowId.vBuffer(*nFirstBuffer);
   xNewRowId.vRow(C_L1_ID);
 
   // get the first entry from the first buffer
-  pHead = pIndexBuffer->aHead();
+  Entry* pHead = pIndexBuffer->aHead();
   Entry* pFirstEntry = pIndexBuffer->aNextEntry(pHead);
 
-  pFirstEntry->vShow();
+  // get the key from teh first entry
+  Key* aKey = pFirstEntry->aKey();
 
-  // get the first entry key
-  aKey = pFirstEntry->aKey();
-  aKey->vShow(pColVec);
-
+  // form a keyWsp from the key
   KeyWsp xFirstKeyWsp;
   xFirstKeyWsp.vAddKey(aKey, pColVec);
-  bResult = m_pIndexBuffer[1]->bInsert(xFirstKeyWsp, xNewRowId, pColVec);
+  
+  // insert the keywsp in teh IndexBuffer at L1
+  bool bResult = m_pIndexBuffer[1]->bInsert(xFirstKeyWsp, xNewRowId, pColVec);
   ASSERT(bResult);
-
-  m_pIndexBuffer[1]->vShow();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -205,10 +201,10 @@ void IndexLevels::vSplitBuffer(IndexBuffer* pIndexBuffer, IdxColVec* pColVec)
   IndexBuffer* pIndexBufferNew = pIndexBuffer->pSplitBuffer(pColVec);
 
   // old buffer
-  vTrace("Old buffer after split\n"_Str);
+  vTrace("L0 IndexBuffer after split\n"_Str);
   pIndexBuffer->vShow();
 
-  vTrace("New buffer\n"_Str);
+  vTrace("L0 New IndexBuffer after split\n"_Str);
   pIndexBufferNew->vShow();
   
   ASSERT( ! m_pIndexBuffer[1] );
@@ -218,7 +214,10 @@ void IndexLevels::vSplitBuffer(IndexBuffer* pIndexBuffer, IdxColVec* pColVec)
   ASSERT(m_pIndexBuffer[1]);
 
   // insert the second entry in L1 from the new IndexBuffer
-  vInsertEntryL1(pIndexBufferNew, pColVec);  
+  vInsertEntryL1(pIndexBufferNew, pColVec);
+  
+  vTrace("L1 IndexBuffer:\n"_Str);
+  m_pIndexBuffer[1]->vShow();
 }
 
 /*----------------------------------------------------------------------------*/
