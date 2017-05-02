@@ -40,7 +40,7 @@ namespace DBobjects
     i8      nEntries(void);
     bool    bHasSpace(i8 nBytes);
     Entry*  aHead(void);
-    bool    bInsert(KeyWsp& xKeyWsp, RowId xRowId, IdxColVec* pColVec);
+    bool    bInsert(KeyWsp& xKeyWsp, Id xId, IdxColVec* pColVec);
     
     IndexBuffer* pNextBuffer(void);
     

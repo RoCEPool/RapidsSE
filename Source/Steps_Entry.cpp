@@ -50,9 +50,9 @@ void Task::vEntryRow(NNP_Task nnpTask)
   Entry* pEntry = _aEntry(pPtrEntry);
   ASSERT(CN_ENTRY == pEntry->eClass());
   
-  RowId xRowId = pEntry->xRowId();
+  Id xId = pEntry->xId();
   
-  Row* pRow = xRowId.pRow();
+  Row* pRow = xId.pRow();
   
   nnpTask->m_pDataStack->vPushObject(pRow);
 }

@@ -117,8 +117,8 @@ void EntrySeq::vContentDump(void)
   ValLib::nCopyDatum(CN_INTVAL,&iKey,aKey);
   
   vTrace("Row %llu.%llu Key %lld"_Str,
-         m_xRowId.uBuffer(),
-         m_xRowId.uRow(),
+         m_xId.uBuffer(),
+         m_xId.uRow(),
          iKey
          );
   
@@ -221,14 +221,14 @@ RightVec* EntrySeq::aRightVec(void)
 /*----------------------------------------------------------------------------*/
 /* get row id                                                                 */
 /*----------------------------------------------------------------------------*/
-RowId& EntrySeq::xRowId(void)
+Id& EntrySeq::xId(void)
 {
   //_precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
   
   // return reference to the RowId inherited class
   //return dynamic_cast<RowId&>(*this);
   
-  return m_xRowId;
+  return m_xId;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -242,7 +242,7 @@ void EntrySeq::vSetEntry(EntWspSeq& xEntWspSeq)
   m_nBytes = xEntWspSeq.nEntryBytesRequired();
   
   // set RowId
-  m_xRowId  = xEntWspSeq.xRowId();
+  m_xId  = xEntWspSeq.xId();
 
   // set Levels
   m_nLevels = xEntWspSeq.nLevels();

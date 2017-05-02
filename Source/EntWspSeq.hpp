@@ -9,7 +9,7 @@ namespace DBobjects
   {
   private:
     i8     m_nBytes;
-    RowId  m_xRowId;   // row id
+    Id     m_xId;   // row id
     i8     m_nLevels;
     union {
       u8       m_uRight[C_FLAT_LEVELS];
@@ -30,10 +30,10 @@ namespace DBobjects
   
     void vShow(void);
   
-    RowId& xRowId(void);
-    void vRowId(RowId& xRowId);
+    Id&  xId(void);
+    void vId(Id& xRowId);
   
-    u8     nLevels(void);
+    u8    nLevels(void);
     
     u8     nRight(u8 iLevel);
     void   vRight(u8 iLevel, u8 uRight);

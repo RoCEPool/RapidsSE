@@ -296,9 +296,9 @@ void Task::vIndexRow(NNP_Task nnpTask)
   Entry* pEntry = _aEntry(pPtrEntry);
   ASSERT(CN_ENTRY == pEntry->eClass());
   
-  RowId xRowId = pEntry->xRowId();
+  Id xId = pEntry->xId();
   
-  Row* pRow = xRowId.pRow();
+  Row* pRow = xId.pRow();
   StrVal* pStrVal = reinterpret_cast<StrVal*>(pRow->pData());
   //vTrace("Row: %s\n"_Str, pStrVal->aStr());
   s256 sRow = pStrVal->aStr();
@@ -687,12 +687,12 @@ void Task::vIndexEntryTest(NNP_Task nnpTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set rowId
-  RowId xRowId;
+  Id xId;
   i8 iRowNo = sRow.iToI8();
   
-  xRowId.vBuffer(999);
-  xRowId.vRow(iRowNo);
-  xEntWsp.vRowId(xRowId);
+  xId.vBuffer(999);
+  xId.vRow(iRowNo);
+  xEntWsp.vId(xId);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // add element to key
@@ -711,7 +711,7 @@ void Task::vIndexEntryTest(NNP_Task nnpTask)
   pColVec->vAdd(pCol);
   
   // insert entry into index buffer
-  pIndexBuffer->bInsert(xKeyWsp, xRowId, pColVec);
+  pIndexBuffer->bInsert(xKeyWsp, xId, pColVec);
   
   // verify index buffer
   //pIndexBuffer->vVerify();

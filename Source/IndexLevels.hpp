@@ -29,7 +29,7 @@ namespace DBobjects
     
     IndexBuffer* pFirstBuffer(void);
     
-    void   vInsertEntry(KeyWsp& xKeyWsp, RowId xRowId, IdxColVec* pColVec);
+    void   vInsertEntry(KeyWsp& xKeyWsp, Id xId, IdxColVec* pColVec);
     Entry* pNextEntry(Entry* pEntry);
     Entry* aPosition(Key& xpKey, RelOpAry* pOpAryLower, IdxColVec* pColumnVec);
     void   vTruncate(void);

@@ -90,14 +90,14 @@ IndexBuffer* IndexLevels::pFirstBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* insert a row                                                               */
 /*----------------------------------------------------------------------------*/
-void IndexLevels::vInsertEntry(KeyWsp& xKeyWsp, RowId xRowId, IdxColVec* pColVec)
+void IndexLevels::vInsertEntry(KeyWsp& xKeyWsp, Id xId, IdxColVec* pColVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXLEVELS,_FOOTER_);
   
   EntWsp xEntWsp;
   
   // initialize the EntWsp
-  xEntWsp.vRowId(xRowId);
+  xEntWsp.vId(xId);
   xEntWsp.vAddKey(xKeyWsp);
   
   // get the size of the EntWsp
@@ -124,7 +124,7 @@ void IndexLevels::vInsertEntry(KeyWsp& xKeyWsp, RowId xRowId, IdxColVec* pColVec
   }
   
   // insert entry into index buffer
-  bResult = pIndexBuffer->bInsert(xKeyWsp, xRowId, pColVec);
+  bResult = pIndexBuffer->bInsert(xKeyWsp, xId, pColVec);
   ASSERT(bResult);
 }
 
@@ -133,7 +133,7 @@ void IndexLevels::vInsertEntry(KeyWsp& xKeyWsp, RowId xRowId, IdxColVec* pColVec
 /*----------------------------------------------------------------------------*/
 void IndexLevels::vInsertEntryL1(IndexBuffer* pIndexBuffer, IdxColVec* pColVec)
 {
-  RowId  xNewRowId;
+  Id  xNewId;
   
   // create an L1 buffer if it does not exist
   if ( ! m_pIndexBuffer[1] )
@@ -141,8 +141,8 @@ void IndexLevels::vInsertEntryL1(IndexBuffer* pIndexBuffer, IdxColVec* pColVec)
 
   // form the Id
   bn nFirstBuffer = pIndexBuffer->nBufferNo();
-  xNewRowId.vBuffer(*nFirstBuffer);
-  xNewRowId.vRow(C_L1_ID);
+  xNewId.vBuffer(*nFirstBuffer);
+  xNewId.vRow(C_L1_ID);
 
   // get the first entry from the first buffer
   Entry* pHead = pIndexBuffer->aHead();
@@ -156,7 +156,7 @@ void IndexLevels::vInsertEntryL1(IndexBuffer* pIndexBuffer, IdxColVec* pColVec)
   xFirstKeyWsp.vAddKey(aKey, pColVec);
   
   // insert the keywsp in teh IndexBuffer at L1
-  bool bResult = m_pIndexBuffer[1]->bInsert(xFirstKeyWsp, xNewRowId, pColVec);
+  bool bResult = m_pIndexBuffer[1]->bInsert(xFirstKeyWsp, xNewId, pColVec);
   ASSERT(bResult);
 }
 

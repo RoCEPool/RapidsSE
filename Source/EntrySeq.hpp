@@ -9,7 +9,7 @@ namespace DBobjects
   {
   private:
     i8     m_nBytes;  // overall size of this entry
-    RowId  m_xRowId;  // rowid
+    Id     m_xId;     // id
     u8     m_nLevels; // no of levels
     // ..data..       // rights & key
   
@@ -31,7 +31,7 @@ namespace DBobjects
     void   vRight(u8 iLevel, u8 uRight);
     EntrySeq* aRightEntry(i8 iLevel);
     RightVec* aRightVec(void);
-    RowId& xRowId(void);
+    Id&    xId(void);
     void   vSetEntry(EntWspSeq& xEntWspSeq);
     i8     nSize(void);
 

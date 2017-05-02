@@ -8,7 +8,7 @@ namespace DBobjects
   class EntWsp : public Object
   {
   private:
-    RowId  m_xRowId;    // row id
+    Id     m_xId;       // id
     i8     m_nOffsets;  // number of offsets (0, 1 or 2)
     union {
       RightVec m_xRight; // right vector
@@ -35,8 +35,8 @@ namespace DBobjects
     u8     nOffsets(void);
     u8     uRightOffset(u8 iOffset);
     void   vRightOffset(u8 iOffset, u8 uRight);
-    RowId& xRowId(void);
-    void   vRowId(RowId& xRowId);
+    Id&    xId(void);
+    void   vId(Id& xId);
     void   vShow(void);
     RightVec* aRightVec(void);
     i8        nRightSize(void);

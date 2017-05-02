@@ -100,7 +100,7 @@ Entry::Entry(i8 nBytes, i8 nOffsets)                   //! should we pass EntWsp
   m_nBytes = nBytes;
   
   // check initialisation of rowid
-  ASSERT(0 == m_xRowId.uBuffer() && 0 == m_xRowId.uRow());
+  ASSERT(0 == m_xId.uBuffer() && 0 == m_xId.uRow());
   
   // initialise offsets
   m_nOffsets = nOffsets;
@@ -133,8 +133,8 @@ void Entry::vShow(i8 iOffset)
   Key* aKey = this->aKey();
   i8 iKey;
   
-  if (m_xRowId.uBuffer() == 0) {
-    ASSERT(m_xRowId.uRow() == 0);
+  if (m_xId.uBuffer() == 0) {
+    ASSERT(m_xId.uRow() == 0);
     iKey = -1;
   }
   else {
@@ -147,9 +147,9 @@ void Entry::vShow(i8 iOffset)
          m_nOffsets
          );
   
-  vTrace("Row %3llu.%3llu Key %4lld "_Str,
-         m_xRowId.uBuffer(),
-         m_xRowId.uRow(),
+  vTrace("Id %3llu.%3llu Key %4lld "_Str,
+         m_xId.uBuffer(),
+         m_xId.uRow(),
          iKey
          );
   
@@ -270,11 +270,11 @@ RightVec* Entry::aRightVec(void)
 /*----------------------------------------------------------------------------*/
 /* get rowid                                                                  */
 /*----------------------------------------------------------------------------*/
-RowId& Entry::xRowId(void)
+Id& Entry::xId(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
   
-  return m_xRowId;
+  return m_xId;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -287,7 +287,7 @@ void Entry::vSetEntry(EntWsp& xEntWsp)
   ASSERT(m_nBytes);
   
   // set RowId
-  m_xRowId  = xEntWsp.xRowId();
+  m_xId  = xEntWsp.xId();
 
   // set Offsets
   m_nOffsets = xEntWsp.nOffsets();

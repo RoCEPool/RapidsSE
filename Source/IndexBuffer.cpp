@@ -103,7 +103,7 @@ IndexBuffer* IndexBuffer::pNewIndexBuffer(i8 nLevel)
 /*----------------------------------------------------------------------------*/
 /* insert new entry                                                           */
 /*----------------------------------------------------------------------------*/
-bool IndexBuffer::bInsert(KeyWsp& xKeyWsp, RowId xRowId, IdxColVec* pColVec)
+bool IndexBuffer::bInsert(KeyWsp& xKeyWsp, Id xId, IdxColVec* pColVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
@@ -122,7 +122,7 @@ bool IndexBuffer::bInsert(KeyWsp& xKeyWsp, RowId xRowId, IdxColVec* pColVec)
   //xKeyWsp.vShow();
   
   // initialize the EntWsp
-  xEntWsp.vRowId(xRowId);
+  xEntWsp.vId(xId);
   xEntWsp.vAddKey(xKeyWsp);
   
   //vTrace("Inserting entry:\n"_Str);
@@ -766,8 +766,8 @@ IndexBuffer* IndexBuffer::pSplitBuffer(IdxColVec* pColVec)
     
     Key xKey(xKeyWsp);
     //xKey.vShow(pColVec);
-    RowId xRowId = pEntry->xRowId();
-    pNewBuffer->bInsert(xKeyWsp, xRowId, pColVec);
+    Id xId = pEntry->xId();
+    pNewBuffer->bInsert(xKeyWsp, xId, pColVec);
     pEntry = aNextEntry(pEntry);
   }
   

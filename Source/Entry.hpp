@@ -9,7 +9,7 @@ namespace DBobjects
   {
   private:
     i8     m_nBytes;   // overall size of this entry incl Object & Footer
-    RowId  m_xRowId;   // rowid
+    Id     m_xId;      // id
     u8     m_nOffsets; // no of offsets for this entry (0 or 1)
     // ..data..        // right offsets & key
   
@@ -35,7 +35,7 @@ namespace DBobjects
     u8     uRightOffset(u8 iLevel);
     void   vRightOffset(u8 iLevel, u8 uOffset);
     RightVec* aRightVec(void);
-    RowId& xRowId(void);
+    Id&    xId(void);
     void   vSetEntry(EntWsp& xEntWsp);
     i8     nSize(void);
 

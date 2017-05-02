@@ -37,7 +37,7 @@ EntWsp::EntWsp(void)
   _precondition_(_MAGIC_,CN_ENTWSP);
 
   // check initialisation of rowid
-  ASSERT(0 == m_xRowId.uBuffer() && 0 == m_xRowId.uRow());
+  ASSERT(0 == m_xId.uBuffer() && 0 == m_xId.uRow());
   
   // generate logarithmic level for this entry
   m_nOffsets = Random::uLogLevel(C_FLAT_OFFSETS+1, C_FLAT_FREQ);
@@ -129,17 +129,17 @@ void EntWsp::vRightOffset(u8 iOffset, u8 uRight)
 /*----------------------------------------------------------------------------*/
 /* get row id                                                                 */
 /*----------------------------------------------------------------------------*/
-RowId& EntWsp::xRowId(void)
+Id& EntWsp::xId(void)
 {
-  return m_xRowId;
+  return m_xId;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set row id                                                                 */
 /*----------------------------------------------------------------------------*/
-void EntWsp::vRowId(RowId& xRowId)
+void EntWsp::vId(Id& xId)
 {
-  m_xRowId = xRowId;
+  m_xId = xId;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -151,10 +151,10 @@ void EntWsp::vShow(void)
 
   ValLib::vCopyIntDatum(&iKey,aKey());
   
-  vTrace("EntWsp %p: Row %llu.%llu Offsets: %llu "_Str,
+  vTrace("EntWsp %p: Id %llu.%llu Offsets: %llu "_Str,
          this,
-         m_xRowId.uBuffer(),
-         m_xRowId.uRow(),
+         m_xId.uBuffer(),
+         m_xId.uRow(),
          m_nOffsets
          );
   

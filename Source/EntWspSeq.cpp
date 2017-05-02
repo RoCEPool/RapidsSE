@@ -81,8 +81,8 @@ void EntWspSeq::vShow(void)
   
   ValLib::vCopyIntDatum(&iKey,m_xWsp.aArea() + sizeof(i8)*(m_nLevels-1));
   vTrace("Row %llu.%llu key (size:%lld value:%lld) "_Str,
-         m_xRowId.uBuffer(),
-         m_xRowId.uRow(),
+         m_xId.uBuffer(),
+         m_xId.uRow(),
          m_xWsp.nUsed() - sizeof(i8)*(m_nLevels-1),
          iKey
          );
@@ -99,17 +99,17 @@ void EntWspSeq::vShow(void)
 /*----------------------------------------------------------------------------*/
 /* get row id                                                                 */
 /*----------------------------------------------------------------------------*/
-RowId& EntWspSeq::xRowId(void)
+Id& EntWspSeq::xId(void)
 {
-  return m_xRowId;
+  return m_xId;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set row id                                                                 */
 /*----------------------------------------------------------------------------*/
-void EntWspSeq::vRowId(RowId& xRowId)
+void EntWspSeq::vId(Id& xId)
 {
-  m_xRowId = xRowId;
+  m_xId = xId;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -147,7 +147,7 @@ i8 EntWspSeq::nSize(void)
 {
   //_precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
   
-  i8 nBytes = sizeof(RowId)
+  i8 nBytes = sizeof(Id)
                + sizeof(i8)
                + sizeof(i8)
                + sizeof(i8)
