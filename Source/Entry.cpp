@@ -126,7 +126,7 @@ Entry::~Entry(void)
 /*----------------------------------------------------------------------------*/
 /* show content                                                               */
 /*----------------------------------------------------------------------------*/
-void Entry::vShow(void)
+void Entry::vShow(i8 iOffset)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
   
@@ -156,7 +156,9 @@ void Entry::vShow(void)
   for (i8 iRight=0; iRight< m_nOffsets; iRight++) {
     vTrace("Offset(%lld): %lld "_Str,
            iRight,
-           uRightOffset(iRight));
+           uRightOffset(iRight) == C_NIL_OFFSET ?
+              C_NIL_OFFSET :
+              uRightOffset(iRight) + iOffset + nSize());
   }
   
   vTrace("\n"_Str);

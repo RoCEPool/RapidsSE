@@ -26,7 +26,7 @@ namespace DBobjects
     Entry(i8 nBytes, i8 nOffsets);
     ~Entry(void);
     
-    void   vShow(void);
+    void   vShow(i8 iOffset);
   
     EntryData* aEntryData(void);
     Key*   aKey(void);
