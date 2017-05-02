@@ -205,7 +205,7 @@ bool Entry::bMatches(Key* pKeyThat, IdxColVec* pColVec, RelOpAry* pRelOpAry)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get nOffsets                                                                */
+/* get nOffsets                                                               */
 /*----------------------------------------------------------------------------*/
 u8 Entry::nOffsets(void)
 {

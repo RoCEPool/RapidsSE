@@ -38,7 +38,7 @@ namespace DBobjects
     void   vInsertEntry(Row* pRow, i8 nRowNo, bn nBufferNo);
     Entry* pNextEntry(Entry* pEntry);
     void   vPopulate(void);
-    Entry* aPosition(ValWsp& xValWsp, RelOpAry* pOpAryLower);
+    Entry* aPosition(KeyWsp& xKeyWsp, RelOpAry* pOpAryLower);
     void   vTidyUp(void);
     void   vTruncate(void);
   

@@ -131,8 +131,8 @@ bool IndexBuffer::bInsert(KeyWsp& xKeyWsp, Id xId, IdxColVec* pColVec)
   xEntWsp.vId(xId);
   xEntWsp.vAddKey(xKeyWsp);
   
-  //vTrace("Inserting entry:\n"_Str);
-  //xEntWsp.vShow();
+  vTrace("Inserting entry:\n"_Str);
+  xEntWsp.vShow();
   
   // get the size of the EntWsp
   i8 nBytes = Entry::nBytesRequired(xEntWsp);
@@ -182,6 +182,9 @@ bool IndexBuffer::bInsert(KeyWsp& xKeyWsp, Id xId, IdxColVec* pColVec)
   
   // increment the no of entries
   m_nEntries++;
+  
+  // fix higher level
+  vFixHigherLevel(pAfterEntry, pNewEntry, pColVec);
   
   delete pOpAryFind;
   
@@ -275,6 +278,54 @@ void IndexBuffer::vFixRevise(Entry** ppReviseVec, Entry* pNewEntry)
 }
 
 /*----------------------------------------------------------------------------*/
+/* fix the higher level                                                        */
+/*----------------------------------------------------------------------------*/
+void IndexBuffer::vFixHigherLevel(Entry* pOldEntry, Entry* pNewEntry, IdxColVec* pColVec)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
+  /*
+  if ( ! m_pHigherLevel )
+    return;
+  
+  // get the first entry right of head at offset 0
+  Entry* pFirstEntry = aRightEntry(aHead(), 0);
+  
+  // is the entry we just added the first entry ?
+  if (pNewEntry == pFirstEntry) {
+    // we need to update the higher level buffer entry key
+    
+    // create a relational operator array
+    RelOpAry* pOpAryFind = new RelOpAry;
+    pOpAryFind->vAdd(RO_EQUAL);
+    
+    KeyWsp xOldKeyWsp;
+    xOldKeyWsp.vAddKey(pOldEntry->aKey(), pColVec);
+    
+    Key xKey(xOldKeyWsp);
+    // find the oldEntry in the higher level buffer
+    Entry* pFoundEntry = aPosition(xKey, pOpAryFind, pColVec);
+    
+    // assert that we found one
+    RASSERT(pFoundEntry);
+    
+    // assert the key of the higher level entry and the old entry match
+    ASSERT(pFoundEntry->aKey()->bMatches(pOldEntry->aKey(), pColVec, pOpAryFind));
+    
+    // get the new entry key
+    KeyWsp xNewKeyWsp;
+    xNewKeyWsp.vAddKey(pNewEntry->aKey(), pColVec);
+
+    EntWsp xEntWsp;
+    xEntWsp.vId(pFoundEntry->xId());
+    xEntWsp.vAddKey(xNewKeyWsp);
+    
+    // now replace the key in the higher llevel buffer
+    pFoundEntry->vSetEntry(xEntWsp);
+  }
+   */
+}
+
+/*----------------------------------------------------------------------------*/
 /* get number of enteries in the buffer                                       */
 /*----------------------------------------------------------------------------*/
 i8 IndexBuffer::nEntries(void)
@@ -295,7 +346,7 @@ bool IndexBuffer::bHasSpace(i8 nBytes)
   
   //if (m_xWsp.nWspFree() < nBytes) {
   //if (m_xWsp.nFree() < 1046500)
-  if (m_nEntries >= 20)
+  if (m_nEntries >= 18)
     return false;
   else
     return true;
@@ -743,8 +794,9 @@ IndexBuffer* IndexBuffer::pSplitBuffer(IndexBuffer* pHigherLevel, IdxColVec* pCo
     // get the right offset from the revise vector
     i8 iRightOffset = pReviseVec[iLevel]->uRightOffset(iOffsets);
     i8 iEntryOffset = iToOffset(pReviseVec[iLevel]);
+    i8 iEntrySize   = pReviseVec[iLevel]->nSize();
     
-    if (iRightOffset + iEntryOffset > iLastEntryOffset)
+    if (iRightOffset + iEntryOffset + iEntrySize >= iLastEntryOffset)
       pReviseVec[iLevel]->vRightOffset(iOffsets, C_NIL_OFFSET);
   }
   

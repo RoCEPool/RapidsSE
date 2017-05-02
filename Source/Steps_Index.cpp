@@ -265,7 +265,9 @@ void Task::vIndexPosition(NNP_Task nnpTask)
   RelOpAry* pOpAryLower = new RelOpAry;
   pOpAryLower->vAdd(RO_GREATER_EQUAL);
   
-  Entry *pEntry = pIndexData->aPosition(xValWsp, pOpAryLower);
+  KeyWsp xKeyWsp;
+  xKeyWsp.vAddElement(xValWsp);
+  Entry *pEntry = pIndexData->aPosition(xKeyWsp, pOpAryLower);
   
   delete pOpAryLower;
   

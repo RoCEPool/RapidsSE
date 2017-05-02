@@ -54,6 +54,7 @@ namespace DBobjects
   private:
     void    vDumpRevise(Entry** ppReviseVec);
     void    vFixRevise(Entry** ppReviseVec, Entry* pNewEntry);
+    void    vFixHigherLevel(Entry* pOldEntry, Entry* pNewEntry, IdxColVec* pColVec);
     i8      iLevel(void);
     void    vMoveLeft(void* aDst, i8 nBytes);
     void    vMoveRight(void* aSrc, i8 nBytes);

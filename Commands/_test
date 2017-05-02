@@ -9,14 +9,14 @@
 //_jindex10
 //dumpidx j10 idx1
 
-create table j100 (
-j100_key   INTEGER NOT NULL,
-j100_name  VARCHAR(32) NOT NULL
+create table jidx (
+jidx_key   INTEGER NOT NULL,
+jidx_name  VARCHAR(32) NOT NULL
 );
 
-create index idx on j100 (j100_key);
+create index idx on jidx (jidx_key);
 
-ld j100 "../JTEST/j100.csv"
+ld jidx "../JTEST/jidx.csv"
 
 
 /*============================================================================*/
