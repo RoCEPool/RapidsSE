@@ -9,27 +9,16 @@
 //_jindex10
 //dumpidx j10 idx1
 
-//print "\nSelecting rows with key j10_key >= 4 using index idx1 ...\n"
-//lwrselidx j10 idx1 4
-
-//print "\nSelecting rows with key j10_key >= 7 using index idx1 ...\n"
-//lwrselidx j10 idx1 7
-
-//print "\nSelecting rows with key j10_key >= 4 and j10_key <= 8 using index idx1 ...\n"
-//rgeselidx j10 idx1 4 8
-
-//print "\nSelecting rows with key j10_key >= 2 and j10_key <= 7 using index idx1 ...\n"
-//rgeselidx j10 idx1 2 7
-
-create table j10 (
-j10_key   INTEGER NOT NULL,
-j10_name  VARCHAR(32) NOT NULL
+create table j100 (
+j100_key   INTEGER NOT NULL,
+j100_name  VARCHAR(32) NOT NULL
 );
 
-create index idx1 on j10 (j10_key);
-create index idx2 on j10 (j);
-create index idx3 on j10 (j10_name);
-create index idx3 on j10 (j10_name);
+create index idx on j100 (j100_key);
+
+ld j100 "../JTEST/j100.csv"
+
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

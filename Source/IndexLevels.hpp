@@ -7,6 +7,7 @@ namespace DBobjects
 {
   // allow for maximum 16 levels per index
   static const i8 C_LEVELS_PER_INDEX = 16;
+  static const i8 C_L1_ID            = 0xFFFF;
   
   class IndexLevels : public Object
   {

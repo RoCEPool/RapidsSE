@@ -94,19 +94,108 @@ void IndexLevels::vInsertEntry(KeyWsp& xKeyWsp, RowId xRowId, IdxColVec* pColVec
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXLEVELS,_FOOTER_);
   
+  EntWsp xEntWsp;
+  
+  // initialize the EntWsp
+  xEntWsp.vRowId(xRowId);
+  xEntWsp.vAddKey(xKeyWsp);
+  
+  // get the size of the EntWsp
+  i8 nBytes = Entry::nBytesRequired(xEntWsp);
   
   if (!m_pIndexBuffer[0])
     m_pIndexBuffer[0] = new IndexBuffer;
 
   bool bResult = false;
-  IndexBuffer* pIndexBuffer = m_pIndexBuffer[0];
   
-  //while ( ! bResult) {
-    //pIndexBuffer = pIndexBuffer->pFindBuffer(xEntWsp);
+  // start with level 0
+  IndexBuffer* pIndexBuffer = m_pIndexBuffer[0];
  
-    // insert entry into index buffer
-    bResult = pIndexBuffer->bInsert(xKeyWsp, xRowId, pColVec);
-  //}
+  
+  // assuming IndexBuffer[0] is the buffer to insert into
+  
+  // check if IndexBuffer to insert into has space
+  if ( ! pIndexBuffer->bHasSpace(nBytes) ) {
+    
+    vTrace("Old buffer before split\n"_Str);
+    pIndexBuffer->vShow();
+
+    // split the index buffer
+    IndexBuffer* pIndexBufferNew = pIndexBuffer->pSplitBuffer(pColVec);
+    
+    // old buffer
+    vTrace("Old buffer after split\n"_Str);
+    pIndexBuffer->vShow();
+    
+    vTrace("New buffer\n"_Str);
+    pIndexBufferNew->vShow();
+    
+    // create an L1 buffer
+    ASSERT( ! m_pIndexBuffer[1] );
+    m_pIndexBuffer[1] = new IndexBuffer;
+    
+    RowId xNewRowId;
+    Entry* pHead;
+    Key* aKey;
+    
+    
+    // insert first entry in L1
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // form the rowId
+    bn nFirstBuffer = pIndexBuffer->nBufferNo();
+    xNewRowId.vBuffer(*nFirstBuffer);
+    xNewRowId.vRow(C_L1_ID);
+    
+    // get the first entry from the first buffer
+    pHead = pIndexBuffer->aHead();
+    Entry* pFirstEntry = pIndexBuffer->aNextEntry(pHead);
+    
+    pFirstEntry->vShow();
+    
+    // get the first entry key
+    aKey = pFirstEntry->aKey();
+    aKey->vShow(pColVec);
+    
+    KeyWsp xFirstKeyWsp;
+    xFirstKeyWsp.vAddKey(aKey, pColVec);
+    bResult = m_pIndexBuffer[1]->bInsert(xFirstKeyWsp, xNewRowId, pColVec);
+    ASSERT(bResult);
+    
+
+    
+    // insert second entry in L1
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // form the rowId
+    bn nSecondBuffer = pIndexBufferNew->nBufferNo();
+    xNewRowId.vBuffer(*nSecondBuffer);
+    xNewRowId.vRow(C_L1_ID);
+    
+    // get the first entry from the new buffer
+    pHead = pIndexBufferNew->aHead();
+    Entry* pSecondEntry = pIndexBufferNew->aNextEntry(pHead);
+    
+    pSecondEntry->vShow();
+    
+    // get the first entry key
+    aKey = pSecondEntry->aKey();
+    aKey->vShow(pColVec);
+    
+    KeyWsp xSecondKeyWsp;
+    xSecondKeyWsp.vAddKey(aKey, pColVec);
+    bResult = m_pIndexBuffer[1]->bInsert(xSecondKeyWsp, xNewRowId, pColVec);
+    ASSERT(bResult);
+
+    
+    
+    m_pIndexBuffer[1]->vShow();
+    
+    // find buffer into which to insert
+    
+  }
+  
+  // insert entry into index buffer
+  bResult = pIndexBuffer->bInsert(xKeyWsp, xRowId, pColVec);
+  ASSERT(bResult);
   
 }
 

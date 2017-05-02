@@ -207,8 +207,7 @@ void IndexData::vInsertEntry(Row* pRow, i8 nRowNo, bn nBufferNo)
   // add the key to the KeyWsp
   xValWsp = iKey;
   xKeyWsp.vAddElement(xValWsp);
-  Key xKey(xKeyWsp);
-  
+    
   // insert row entry in index
   m_pIndexLevels->vInsertEntry(xKeyWsp, xRowId, m_pIndex->pIdxColVec());
   

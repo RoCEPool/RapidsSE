@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Index.hpp - index portion of table partition                               */
+/* IndexData.hpp - index portion of table partition                           */
 /*============================================================================*/
 #pragma once
 

@@ -5,6 +5,8 @@
 
 namespace DBobjects
 {
+  class Key;
+  
   class KeyWsp : public Object
   {
   private:
@@ -22,6 +24,7 @@ namespace DBobjects
     void vShow(eDM eDatum, ...);
 
     void vAddElement(ValWsp& xValWsp);
+    void vAddKey(Key* pKey, IdxColVec* pColVec);
   
     void  vReset(void);
   
