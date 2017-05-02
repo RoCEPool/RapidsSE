@@ -34,6 +34,9 @@ namespace DBobjects
     Entry* aPosition(Key& xpKey, RelOpAry* pOpAryLower, IdxColVec* pColumnVec);
     void   vTruncate(void);
     
+  private:
+    void vSplitBuffer(IndexBuffer* pIndexBuffer, IdxColVec* pColVec);
+    
     Footer* pFooter(void);
   };
 }
