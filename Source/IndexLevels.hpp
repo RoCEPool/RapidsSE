@@ -7,7 +7,7 @@ namespace DBobjects
 {
   // allow for maximum 16 levels per index
   static const i8 C_LEVELS_PER_INDEX = 16;
-  static const i8 C_L1_ID            = 0xFFFF;
+  static const i8 C_HIGHER_ID        = 0xFFFF;
   
   class IndexLevels : public Object
   {
@@ -37,7 +37,7 @@ namespace DBobjects
     
   private:
     void vSplitBuffer(IndexBuffer* pIndexBuffer, IdxColVec* pColVec);
-    void vInsertEntryL1(IndexBuffer* pIndexBuffer, IdxColVec* pColVec);
+    void vInsertEntryRoot(IndexBuffer* pIndexBuffer, IdxColVec* pColVec);
     
     Footer* pFooter(void);
   };

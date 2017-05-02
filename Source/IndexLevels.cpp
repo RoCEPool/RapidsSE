@@ -156,16 +156,16 @@ void IndexLevels::vInsertEntry(KeyWsp& xKeyWsp, Id xId, IdxColVec* pColVec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* insert an entry into an L1 buffer                                          */
+/* insert an entry into the root buffer                                       */
 /*----------------------------------------------------------------------------*/
-void IndexLevels::vInsertEntryL1(IndexBuffer* pIndexBuffer, IdxColVec* pColVec)
+void IndexLevels::vInsertEntryRoot(IndexBuffer* pIndexBuffer, IdxColVec* pColVec)
 {
   Id  xNewId;
 
   // form the Id
   bn nFirstBuffer = pIndexBuffer->nBufferNo();
   xNewId.vBuffer(*nFirstBuffer);
-  xNewId.vRow(C_L1_ID);
+  xNewId.vRow(C_HIGHER_ID);
 
   // get the first entry from the first buffer
   Entry* pHead = pIndexBuffer->aHead();
@@ -178,8 +178,8 @@ void IndexLevels::vInsertEntryL1(IndexBuffer* pIndexBuffer, IdxColVec* pColVec)
   KeyWsp xFirstKeyWsp;
   xFirstKeyWsp.vAddKey(aKey, pColVec);
   
-  // insert the keywsp in teh IndexBuffer at L1
-  bool bResult = m_pIndexBuffer[1]->bInsert(xFirstKeyWsp, xNewId, pColVec);
+  // insert the keywsp in the IndexBuffer at L1
+  bool bResult = m_pRoot->bInsert(xFirstKeyWsp, xNewId, pColVec);
   ASSERT(bResult);
 }
 
@@ -224,31 +224,35 @@ void IndexLevels::vSplitBuffer(IndexBuffer* pIndexBuffer, IdxColVec* pColVec)
   // split the index buffer
   IndexBuffer* pIndexBufferNew = pIndexBuffer->pSplitBuffer(pColVec);
   
-  // create an L1 buffer if it does not exist
-  if ( ! m_pIndexBuffer[1] ) {
-    m_pIndexBuffer[1] = new IndexBuffer(1);
+  // create a next level buffer if it does not exist
+  IndexBuffer* pHigherLevel = pIndexBuffer->pHigherLevel();
+  
+  i8 nHigherLevel = pIndexBuffer->nBufferLevel() + 1;
+  
+  if ( ! pHigherLevel ) {
+    m_pIndexBuffer[nHigherLevel] = new IndexBuffer(nHigherLevel);
     
-    // root now points to the L1 buffer
-    m_pRoot = m_pIndexBuffer[1];
+    // root now points to the new LN buffer
+    m_pRoot = m_pIndexBuffer[nHigherLevel];
     
     ASSERT( ! pIndexBuffer->pHigherLevel());
-    pIndexBuffer->vHigherLevel(m_pIndexBuffer[1]);
-    ASSERT(pIndexBuffer->nBufferLevel() + 1 == m_pIndexBuffer[1]->nBufferLevel());
+    pIndexBuffer->vHigherLevel(m_pRoot);
+    ASSERT(pIndexBuffer->nBufferLevel() + 1 == m_pRoot->nBufferLevel());
     
-    // insert first entry in L1 from IndexBuffer
-    vInsertEntryL1(pIndexBuffer, pColVec);
-    ASSERT(m_pIndexBuffer[1]);
+    // insert first entry in new root from IndexBuffer
+    vInsertEntryRoot(pIndexBuffer, pColVec);
+    ASSERT(m_pIndexBuffer[nHigherLevel]);
   }
   else {
-    ASSERT(m_pIndexBuffer[1]);
-    ASSERT(m_pRoot == m_pIndexBuffer[1]);
+    ASSERT(m_pIndexBuffer[nHigherLevel]);
+    ASSERT(m_pRoot == m_pIndexBuffer[nHigherLevel]);
   }
 
-  pIndexBufferNew->vHigherLevel(m_pIndexBuffer[1]);
-  ASSERT(pIndexBuffer->nBufferLevel() + 1 == m_pIndexBuffer[1]->nBufferLevel());
+  pIndexBufferNew->vHigherLevel(m_pIndexBuffer[nHigherLevel]);
+  ASSERT(pIndexBuffer->nBufferLevel() + 1 == m_pIndexBuffer[nHigherLevel]->nBufferLevel());
     
-  // insert the second entry in L1 from the new IndexBuffer
-  vInsertEntryL1(pIndexBufferNew, pColVec);
+  // insert the second entry in root buffer from the new IndexBuffer
+  vInsertEntryRoot(pIndexBufferNew, pColVec);
   
   // old buffer
   vTrace("IndexBuffers after split\n"_Str);
@@ -256,7 +260,7 @@ void IndexLevels::vSplitBuffer(IndexBuffer* pIndexBuffer, IdxColVec* pColVec)
   
   pIndexBufferNew->vShow();
   
-  m_pIndexBuffer[1]->vShow();
+  m_pRoot->vShow();
   vTrace("-------------------------------------------------------------\n"_Str);
 }
 
