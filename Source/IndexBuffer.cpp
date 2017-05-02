@@ -47,15 +47,20 @@ void IndexBuffer::operator delete(void* pIndexBufferAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-IndexBuffer::IndexBuffer(i8 nLevel)
+IndexBuffer::IndexBuffer(i8 nLevel, IndexBuffer* pHigherLevel)
 : Buffer(CN_INDEXBUFFER)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
 
-  m_nLevel      = nLevel;
-  m_nEntries    = 0;
-  m_pPrevBuffer = nullptr;
-  m_pNextBuffer = nullptr;
+  // if there is a higher level buffer then it should be at level nLevel+1
+  if (pHigherLevel) {
+    ASSERT(nLevel + 1 == pHigherLevel->m_nLevel);
+  }
+  m_nLevel       = nLevel;
+  m_nEntries     = 0;
+  m_pPrevBuffer  = nullptr;
+  m_pNextBuffer  = nullptr;
+  m_pHigherLevel = pHigherLevel;
   
   m_xWsp.vZero();
   
@@ -84,13 +89,14 @@ IndexBuffer::~IndexBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* index buffer factory                                                       */
 /*----------------------------------------------------------------------------*/
-IndexBuffer* IndexBuffer::pNewIndexBuffer(i8 nLevel)
+IndexBuffer* IndexBuffer::pNewIndexBuffer(i8 nLevel, IndexBuffer* pHigherLevel)
 {
+  
   // should we be testing low buffers for index?
   if (gpBufferPool->iFreeCount() <= C_BUFFER_THRESHOLD)
     return nullptr;
   
-  IndexBuffer* pIndexBuffer = new IndexBuffer(nLevel);
+  IndexBuffer* pIndexBuffer = new IndexBuffer(nLevel, pHigherLevel);
   
   return pIndexBuffer;
 }
@@ -678,9 +684,17 @@ Entry* IndexBuffer::aRightEntry(Entry* aEntry, i8 iLevel)
 /*----------------------------------------------------------------------------*/
 void IndexBuffer::vShow(void)
 {
-  vTrace("IndexBuffer %p: level L%lld entries %lld prevBuffer %p nextBuffer %p \n"_Str,
+  s32 sHigherLevel;
+  if (m_pHigherLevel)
+    StrLib::wToString(m_pHigherLevel->m_nLevel, sHigherLevel.s());
+  else
+    sHigherLevel = "..."_Str;
+  
+  vTrace("IndexBuffer %p: level L%lld HigerLevel %p (L%s) entries %lld prevBuffer %p nextBuffer %p \n"_Str,
          this,
          m_nLevel,
+         m_pHigherLevel,
+         sHigherLevel.aStr(),
          m_nEntries,
          m_pPrevBuffer,
          m_pNextBuffer);
@@ -696,7 +710,7 @@ void IndexBuffer::vShow(void)
 /*----------------------------------------------------------------------------*/
 /* split the buffer                                                           */
 /*----------------------------------------------------------------------------*/
-IndexBuffer* IndexBuffer::pSplitBuffer(IdxColVec* pColVec)
+IndexBuffer* IndexBuffer::pSplitBuffer(IndexBuffer* pHigherLevel, IdxColVec* pColVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
@@ -716,7 +730,6 @@ IndexBuffer* IndexBuffer::pSplitBuffer(IdxColVec* pColVec)
   
   Entry* pAfterEntry = aPosition(*pLastEntry->aKey(), pColVec, bEqualTo, pReviseVec);
   ASSERT(pAfterEntry == pLastEntry);
-  
   
   i8 iLastEntryOffset = iToOffset(pLastEntry);
   i8 iOffsets = C_FLAT_LEVELS - 1;
@@ -744,6 +757,8 @@ IndexBuffer* IndexBuffer::pSplitBuffer(IdxColVec* pColVec)
     pLastEntry->vRightOffset(iOffsets, C_NIL_OFFSET);
   }
   
+  // set the higer buffer in this buffer that we just split
+  m_pHigherLevel = pHigherLevel;
   
   // get the split entry from the lastEntry
   Entry* pSplitEntry = aNextEntry(pLastEntry);
@@ -755,7 +770,7 @@ IndexBuffer* IndexBuffer::pSplitBuffer(IdxColVec* pColVec)
   i8 nSize = nSub(m_xWsp.aLatter(), pSplitAt);
   
   // allocate a new buffer at the same index level
-  IndexBuffer* pNewBuffer = new IndexBuffer(m_nLevel);
+  IndexBuffer* pNewBuffer = new IndexBuffer(m_nLevel, pHigherLevel);
   
   // copy entries from this buffer to new buffer
   Entry* pEntry = pSplitEntry;

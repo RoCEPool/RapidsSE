@@ -9,11 +9,11 @@ namespace DBobjects
   class IndexBuffer : public Buffer
   {
   private:
-    i8           m_nLevel;      // index buffer level
-    i8           m_nEntries;    // number of entries in this buffer
-    IndexBuffer* m_pPrevBuffer; // prev buffer
-    IndexBuffer* m_pNextBuffer; // next buffer
-    
+    i8           m_nLevel;       // index buffer level
+    i8           m_nEntries;     // number of entries in this buffer
+    IndexBuffer* m_pPrevBuffer;  // prev buffer
+    IndexBuffer* m_pNextBuffer;  // next buffer
+    IndexBuffer* m_pHigherLevel; // higher level buffer that points to this buffer
     
     // need to add skip list head
     // head would be array of [FLAT_LEVELS - 1]
@@ -32,10 +32,10 @@ namespace DBobjects
     void* operator new(size_t);
     void  operator delete(void*);
     
-    IndexBuffer(i8 nLevel);
+    IndexBuffer(i8 nLevel, IndexBuffer* pHigerLevel);
     ~IndexBuffer(void);
     
-    static IndexBuffer* pNewIndexBuffer(i8 nLevel);
+    static IndexBuffer* pNewIndexBuffer(i8 nLevel, IndexBuffer* pHigerLevel);
   
     i8      nEntries(void);
     bool    bHasSpace(i8 nBytes);
@@ -48,7 +48,7 @@ namespace DBobjects
     Entry*       aPosition(Key& xKey, RelOpAry* pOpAryFind, IdxColVec* pColVec);
     bool         bRemove(Key* aKey);
     void         vShow(void);
-    IndexBuffer* pSplitBuffer(IdxColVec* pColVec);
+    IndexBuffer* pSplitBuffer(IndexBuffer* pHigherLevel, IdxColVec* pColVec);
     void         vVerify(void);
     
   private:
