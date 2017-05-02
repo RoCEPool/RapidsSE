@@ -118,12 +118,14 @@ bool IndexBuffer::bInsert(KeyWsp& xKeyWsp, RowId xRowId, IdxColVec* pColVec)
   RelOpAry* pOpAryFind = new RelOpAry;
   pOpAryFind->vAdd(RO_GREATER_EQUAL);
   
+  xKeyWsp.vShow();
+  
   // initialize the EntWsp
   xEntWsp.vRowId(xRowId);
   xEntWsp.vAddKey(xKeyWsp);
   
-  //vTrace("Inserting entry:\n"_Str);
-  //xEntWsp.vShow();
+  vTrace("Inserting entry:\n"_Str);
+  xEntWsp.vShow();
   
   // get the size of the EntWsp
   i8 nBytes = Entry::nBytesRequired(xEntWsp);
@@ -158,7 +160,7 @@ bool IndexBuffer::bInsert(KeyWsp& xKeyWsp, RowId xRowId, IdxColVec* pColVec)
     // calculate level into reviseVector for this offset
     i8 iLevel = iOffsets + 1;
     
-    // get the right offet from the revise vector
+    // get the right offset from the revise vector
     i8 iRightOffset = pReviseVec[iLevel]->uRightOffset(iOffsets);
     
     // set the right offet in the new entry
@@ -273,6 +275,23 @@ i8 IndexBuffer::nEntries(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
   return m_nEntries;
+}
+
+/*----------------------------------------------------------------------------*/
+/* does the buffer have space for nBytes ?                                    */
+/*----------------------------------------------------------------------------*/
+bool IndexBuffer::bHasSpace(i8 nBytes)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
+  
+  i8 iFree = m_xWsp.nFree();
+  
+  //if (m_xWsp.nWspFree() < nBytes) {
+  //if (m_xWsp.nFree() < 1046500)
+  //if (m_nEntries >= 20)
+  //  return false;
+  //else
+    return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -671,6 +690,110 @@ void IndexBuffer::vShow(void)
   
   vTrace("\n"_Str);
   
+}
+
+/*----------------------------------------------------------------------------*/
+/* split the buffer                                                           */
+/*----------------------------------------------------------------------------*/
+IndexBuffer* IndexBuffer::pSplitBuffer(IdxColVec* pColVec)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
+  
+  // split the buffer into two
+  i8 iSplitAtEntry = m_nEntries/2;
+  
+  // find the position for the split
+  Entry* pLastEntry = aHead();
+  
+  i8 iEntries = 0;
+  while (pLastEntry) {
+    
+    iEntries++;
+    
+    if (iEntries == iSplitAtEntry)
+      break;
+    
+    // get next entry
+    pLastEntry = aNextEntry(pLastEntry);
+  }
+  
+  // the last entry in the uffer after which the split will happen
+  pLastEntry->vShow();
+  
+  Entry* pReviseVec[C_FLAT_LEVELS];
+  bool   bEqualTo;
+  // create a realtional operator array
+  RelOpAry* pOpAryFind = new RelOpAry;
+  pOpAryFind->vAdd(RO_GREATER_EQUAL);
+  
+  Entry* pAfterEntry = aPosition(*pLastEntry->aKey(), pColVec, bEqualTo, pReviseVec);
+  ASSERT(pAfterEntry == pLastEntry);
+  
+  
+  i8 iLastEntryOffset = iToOffset(pLastEntry);
+  i8 iOffsets = C_FLAT_LEVELS - 1;
+  
+  // Revise the offsets of the enteries using the ReviseVector
+  while (--iOffsets >= 0) {
+    
+    // calculate level into reviseVector for this offset
+    i8 iLevel = iOffsets + 1;
+    
+    // get the right offset from the revise vector
+    i8 iRightOffset = pReviseVec[iLevel]->uRightOffset(iOffsets);
+    i8 iEntryOffset = iToOffset(pReviseVec[iLevel]);
+    
+    if (iRightOffset + iEntryOffset > iLastEntryOffset)
+      pReviseVec[iLevel]->vRightOffset(iOffsets, C_NIL_OFFSET);
+  }
+  
+  // get no of offsets of the last entry
+  i8 nEntryOffsets = pLastEntry->nOffsets();
+  iOffsets = nEntryOffsets;
+  
+  while (--iOffsets >= 0) {
+    // set the right offet in the last entry to C_NIL_OFFSET
+    pLastEntry->vRightOffset(iOffsets, C_NIL_OFFSET);
+  }
+  
+  
+  // get the split entry from the lastEntry
+  Entry* pSplitEntry = aNextEntry(pLastEntry);
+  
+  // get the address of the entry to split at
+  char* pSplitAt = reinterpret_cast<char*>(pSplitEntry);
+  
+  // calculate bytes to copy to new buffer
+  i8 nSize = nSub(m_xWsp.aLatter(), pSplitAt);
+  
+  // allocate a new buffer
+  IndexBuffer* pNewBuffer = new IndexBuffer;
+  
+  // copy entries from this buffer to new buffer
+  Entry* pEntry = pSplitEntry;
+  while (pEntry) {
+    KeyWsp xKeyWsp;
+    xKeyWsp.vAddKey(pEntry->aKey(), pColVec);
+    xKeyWsp.vShow();
+    Key xKey(xKeyWsp);
+    xKey.vShow(pColVec);
+    RowId xRowId = pEntry->xRowId();
+    pNewBuffer->bInsert(xKeyWsp, xRowId, pColVec);
+    pEntry = aNextEntry(pEntry);
+  }
+  
+  // give back nSize bytes to wsp in original buffer
+  m_xWsp.vGive(nSize);
+  
+  m_nEntries -= iSplitAtEntry;
+  
+  // now link the two buffers
+  pNewBuffer->m_pNextBuffer = pNextBuffer();
+  pNewBuffer->m_pPrevBuffer = this;
+  
+  m_pNextBuffer = pNewBuffer;
+  
+  return pNewBuffer;
 }
 
 /*----------------------------------------------------------------------------*/

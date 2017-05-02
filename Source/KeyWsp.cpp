@@ -37,6 +37,7 @@ KeyWsp::KeyWsp(void)
   _precondition_(_MAGIC_,CN_KEYWSP);
   
   _checkInitialisedSize_(sizeof(KeyWsp));
+  m_xWsp.vFill(0);
   
   _postcondition_(_MAGIC_,CN_KEYWSP,_FOOTER_);
 }
@@ -54,16 +55,53 @@ KeyWsp::~KeyWsp(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+void KeyWsp::vAddKey(Key* pKey, IdxColVec* pColVec)
+{
+  _precondition_(_MAGIC_,CN_KEYWSP);
+  
+  char* aCursor = pKey->aWspArea();
+  i8 nBytes;
+  for (i8 iColumn = 0; iColumn < pColVec->nItems(); iColumn++) {
+    Column* pColumn = pColVec->pGet(iColumn);
+    
+    char* aElement = pKey->aElement(pColumn, nBytes,&aCursor);
+    
+    char* pDst = m_xWsp.aLatter();
+    char* pSrc = aElement;
+    
+    switch(pColumn->eColumnType()) {
+      case CT_INTEGER: ValLib::vCopyIntDatum((char*)pDst,(char*)pSrc); break;
+      case CT_VARCHAR: ValLib::vCopyStrDatum((char*)pDst,(char*)pSrc); break;
+      default:
+        ASSERT(0);
+    }
+    
+    
+    m_xWsp.vTake(nBytes);
+    
+  }
+  
+  _checkInitialisedSize_(sizeof(KeyWsp));
+  
+  _postcondition_(_MAGIC_,CN_KEYWSP,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
 /* show                                                                       */
 /*----------------------------------------------------------------------------*/
 void KeyWsp::vShow(void)
 {
   _precondition_(_MAGIC_,CN_KEYWSP,_FOOTER_);
   
-  vTrace("KeyWsp %p: bytesUsed %lld\n"_Str,
+  i8 iKey = *((i8*)m_xWsp.aArea());
+  vTrace("KeyWsp %p: bytesUsed %lld value %lld\n"_Str,
          this,
-         nWspUsed()
-         );
+         nWspUsed(),
+         iKey);
+  
+  
 }
 
 /*----------------------------------------------------------------------------*/
