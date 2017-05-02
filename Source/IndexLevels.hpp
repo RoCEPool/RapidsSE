@@ -13,6 +13,7 @@ namespace DBobjects
   {
   private:
     Lock         m_zLock;          // lock covers all levels
+    IndexBuffer* m_pRoot;
     IndexBuffer* m_pIndexBuffer[C_LEVELS_PER_INDEX];
   
     // must be last
@@ -27,11 +28,11 @@ namespace DBobjects
     IndexLevels(void);
     ~IndexLevels(void);
     
+    void   vDump(void);
     IndexBuffer* pFirstBuffer(void);
-    
     void   vInsertEntry(KeyWsp& xKeyWsp, Id xId, IdxColVec* pColVec);
     Entry* pNextEntry(Entry* pEntry);
-    Entry* aPosition(Key& xpKey, RelOpAry* pOpAryLower, IdxColVec* pColumnVec);
+    Entry* aPosition(Key& xKey, RelOpAry* pOpAryLower, IdxColVec* pColVec);
     void   vTruncate(void);
     
   private:

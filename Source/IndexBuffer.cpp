@@ -47,20 +47,16 @@ void IndexBuffer::operator delete(void* pIndexBufferAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-IndexBuffer::IndexBuffer(i8 nLevel, IndexBuffer* pHigherLevel)
+IndexBuffer::IndexBuffer(i8 nBufferLevel)
 : Buffer(CN_INDEXBUFFER)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
 
-  // if there is a higher level buffer then it should be at level nLevel+1
-  if (pHigherLevel) {
-    ASSERT(nLevel + 1 == pHigherLevel->m_nLevel);
-  }
-  m_nLevel       = nLevel;
+  m_nBufferLevel = nBufferLevel;
   m_nEntries     = 0;
   m_pPrevBuffer  = nullptr;
   m_pNextBuffer  = nullptr;
-  m_pHigherLevel = pHigherLevel;
+  m_pHigherLevel = nullptr;
   
   m_xWsp.vZero();
   
@@ -89,14 +85,14 @@ IndexBuffer::~IndexBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* index buffer factory                                                       */
 /*----------------------------------------------------------------------------*/
-IndexBuffer* IndexBuffer::pNewIndexBuffer(i8 nLevel, IndexBuffer* pHigherLevel)
+IndexBuffer* IndexBuffer::pNewIndexBuffer(i8 nLevel)
 {
   
   // should we be testing low buffers for index?
   if (gpBufferPool->iFreeCount() <= C_BUFFER_THRESHOLD)
     return nullptr;
   
-  IndexBuffer* pIndexBuffer = new IndexBuffer(nLevel, pHigherLevel);
+  IndexBuffer* pIndexBuffer = new IndexBuffer(nLevel);
   
   return pIndexBuffer;
 }
@@ -131,8 +127,8 @@ bool IndexBuffer::bInsert(KeyWsp& xKeyWsp, Id xId, IdxColVec* pColVec)
   xEntWsp.vId(xId);
   xEntWsp.vAddKey(xKeyWsp);
   
-  vTrace("Inserting entry:\n"_Str);
-  xEntWsp.vShow();
+  //vTrace("Inserting entry:\n"_Str);
+  //xEntWsp.vShow();
   
   // get the size of the EntWsp
   i8 nBytes = Entry::nBytesRequired(xEntWsp);
@@ -216,6 +212,37 @@ void IndexBuffer::vDumpRevise(Entry** ppReviseVec)
     vTrace("%p pReviseVec[%lld]->uRightOffset(%lld) = %lld\n"_Str,
            ppReviseVec[iLevel], iLevel, iIndex, iReviseOffset);
   }
+}
+
+#define goDownLevel(iLevel) iLevel--;
+/*----------------------------------------------------------------------------*/
+/* Find buffer for given key                                                  */
+/*----------------------------------------------------------------------------*/
+IndexBuffer* IndexBuffer::aFindBuffer(Key& xKey, RelOpAry* pRelOpAry, IdxColVec* pColVec)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
+  
+  
+  // if buffer is a L0 buffer return this buffer
+  if (m_nBufferLevel == 0)
+    return this;
+  
+  ASSERT(m_nBufferLevel == 1);
+  
+  xKey.vShow(pColVec);
+  bool bEqualTo;
+  
+  Entry* pEntry = aPosition(xKey, pColVec, bEqualTo, nullptr);
+  ASSERT(pEntry);
+  
+  // get the buffer from the entry
+  Id xId = pEntry->xId();
+  bn nBufferNo = xId.uBuffer();
+  IndexBuffer* pIndexBuffer = (IndexBuffer*)gpBufferPool->pToBuffer(nBufferNo);
+  ASSERT(pIndexBuffer);
+  ASSERT(pIndexBuffer->eClass() == CN_INDEXBUFFER);
+  
+  return pIndexBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -346,7 +373,7 @@ bool IndexBuffer::bHasSpace(i8 nBytes)
   
   //if (m_xWsp.nWspFree() < nBytes) {
   //if (m_xWsp.nFree() < 1046500)
-  if (m_nEntries >= 18)
+  if (m_nEntries >= 16)
     return false;
   else
     return true;
@@ -366,6 +393,79 @@ Entry* IndexBuffer::aHead(void)
   Entry* pHead = _aEntry(m_xWsp.aArea());
   
   return pHead;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the higher level index buffer                                          */
+/*----------------------------------------------------------------------------*/
+IndexBuffer* IndexBuffer::pHigherLevel(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
+  
+  return m_pHigherLevel;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the higher level index buffer                                          */
+/*----------------------------------------------------------------------------*/
+void IndexBuffer::vHigherLevel(IndexBuffer* pHigherLevel)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
+  
+  ASSERT( ! m_pHigherLevel);
+  
+  m_pHigherLevel = pHigherLevel;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the buffer level                                                       */
+/*----------------------------------------------------------------------------*/
+i8 IndexBuffer::nBufferLevel(void)
+{
+  return m_nBufferLevel;
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump                                                                       */
+/*----------------------------------------------------------------------------*/
+void IndexBuffer::vDump(void)
+{
+  s32 sHigherLevel;
+  if (m_pHigherLevel)
+    StrLib::wToString(m_pHigherLevel->m_nBufferLevel, sHigherLevel.s());
+  else
+    sHigherLevel = "..."_Str;
+  
+  vTrace("IndexBuffer %p: level L%lld HigerLevel %p (L%s) entries %lld prevBuffer %p nextBuffer %p \n"_Str,
+         this,
+         m_nBufferLevel,
+         m_pHigherLevel,
+         sHigherLevel.aStr(),
+         m_nEntries,
+         m_pPrevBuffer,
+         m_pNextBuffer);
+  
+  for (Entry* pEntry = aHead(); pEntry != nullptr; pEntry = aNextEntry(pEntry)) {
+    vTrace("%8lld: "_Str, nSub(pEntry, m_xWsp.aArea()));
+    pEntry->vShow(iToOffset(pEntry));
+  }
+  
+  vTrace("\n"_Str);
+  
+  if (m_nBufferLevel != 0) {
+    
+    // recursively dump the lower level buffers
+    for (Entry* pEntry = aNextEntry(aHead()); pEntry != nullptr; pEntry = aNextEntry(pEntry)) {
+      // get the buffer from the entry
+      Id xId = pEntry->xId();
+      bn nBufferNo = xId.uBuffer();
+      IndexBuffer* pIndexBuffer = (IndexBuffer*)gpBufferPool->pToBuffer(nBufferNo);
+      ASSERT(pIndexBuffer);
+      ASSERT(pIndexBuffer->eClass() == CN_INDEXBUFFER);
+      pIndexBuffer->vShow();
+    }
+  }
+  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -737,13 +837,13 @@ void IndexBuffer::vShow(void)
 {
   s32 sHigherLevel;
   if (m_pHigherLevel)
-    StrLib::wToString(m_pHigherLevel->m_nLevel, sHigherLevel.s());
+    StrLib::wToString(m_pHigherLevel->m_nBufferLevel, sHigherLevel.s());
   else
     sHigherLevel = "..."_Str;
   
   vTrace("IndexBuffer %p: level L%lld HigerLevel %p (L%s) entries %lld prevBuffer %p nextBuffer %p \n"_Str,
          this,
-         m_nLevel,
+         m_nBufferLevel,
          m_pHigherLevel,
          sHigherLevel.aStr(),
          m_nEntries,
@@ -756,12 +856,13 @@ void IndexBuffer::vShow(void)
   }
   
   vTrace("\n"_Str);
+  
 }
 
 /*----------------------------------------------------------------------------*/
 /* split the buffer                                                           */
 /*----------------------------------------------------------------------------*/
-IndexBuffer* IndexBuffer::pSplitBuffer(IndexBuffer* pHigherLevel, IdxColVec* pColVec)
+IndexBuffer* IndexBuffer::pSplitBuffer(IdxColVec* pColVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
@@ -809,9 +910,6 @@ IndexBuffer* IndexBuffer::pSplitBuffer(IndexBuffer* pHigherLevel, IdxColVec* pCo
     pLastEntry->vRightOffset(iOffsets, C_NIL_OFFSET);
   }
   
-  // set the higer buffer in this buffer that we just split
-  m_pHigherLevel = pHigherLevel;
-  
   // get the split entry from the lastEntry
   Entry* pSplitEntry = aNextEntry(pLastEntry);
   
@@ -822,7 +920,7 @@ IndexBuffer* IndexBuffer::pSplitBuffer(IndexBuffer* pHigherLevel, IdxColVec* pCo
   i8 nSize = nSub(m_xWsp.aLatter(), pSplitAt);
   
   // allocate a new buffer at the same index level
-  IndexBuffer* pNewBuffer = new IndexBuffer(m_nLevel, pHigherLevel);
+  IndexBuffer* pNewBuffer = new IndexBuffer(0);
   
   // copy entries from this buffer to new buffer
   Entry* pEntry = pSplitEntry;

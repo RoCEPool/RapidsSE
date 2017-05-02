@@ -9,7 +9,7 @@ namespace DBobjects
   class IndexBuffer : public Buffer
   {
   private:
-    i8           m_nLevel;       // index buffer level
+    i8           m_nBufferLevel; // index buffer level
     i8           m_nEntries;     // number of entries in this buffer
     IndexBuffer* m_pPrevBuffer;  // prev buffer
     IndexBuffer* m_pNextBuffer;  // next buffer
@@ -32,15 +32,21 @@ namespace DBobjects
     void* operator new(size_t);
     void  operator delete(void*);
     
-    IndexBuffer(i8 nLevel, IndexBuffer* pHigerLevel);
+    IndexBuffer(i8 nLevel);
     ~IndexBuffer(void);
     
-    static IndexBuffer* pNewIndexBuffer(i8 nLevel, IndexBuffer* pHigerLevel);
+    static IndexBuffer* pNewIndexBuffer(i8 nLevel);
   
-    i8      nEntries(void);
-    bool    bHasSpace(i8 nBytes);
-    Entry*  aHead(void);
-    bool    bInsert(KeyWsp& xKeyWsp, Id xId, IdxColVec* pColVec);
+    void         vDump(void);
+    i8           nEntries(void);
+    IndexBuffer* aFindBuffer(Key& xKey, RelOpAry* pOpAryLower, IdxColVec* pColVec);
+    bool         bHasSpace(i8 nBytes);
+    Entry*       aHead(void);
+    void         vHigherLevel(IndexBuffer* pHigherLevel);
+    IndexBuffer* pHigherLevel(void);
+
+    bool         bInsert(KeyWsp& xKeyWsp, Id xId, IdxColVec* pColVec);
+    i8           nBufferLevel(void);
     
     IndexBuffer* pNextBuffer(void);
     
@@ -48,7 +54,7 @@ namespace DBobjects
     Entry*       aPosition(Key& xKey, RelOpAry* pOpAryFind, IdxColVec* pColVec);
     bool         bRemove(Key* aKey);
     void         vShow(void);
-    IndexBuffer* pSplitBuffer(IndexBuffer* pHigherLevel, IdxColVec* pColVec);
+    IndexBuffer* pSplitBuffer(IdxColVec* pColVec);
     void         vVerify(void);
     
   private:

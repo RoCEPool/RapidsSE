@@ -134,12 +134,16 @@ void IndexData::vDump(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
 
+  /*
   IndexBuffer* pIndexBuffer = m_pIndexLevels->pFirstBuffer();
 
   while (pIndexBuffer) {
     pIndexBuffer->vShow();
     pIndexBuffer = pIndexBuffer->pNextBuffer();
   }
+  */
+  m_pIndexLevels->vDump();
+  
 }
 
 /*----------------------------------------------------------------------------*/
