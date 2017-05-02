@@ -9,6 +9,7 @@ namespace DBobjects
   class IndexBuffer : public Buffer
   {
   private:
+    i8           m_nLevel;      // index buffer level
     i8           m_nEntries;    // number of entries in this buffer
     IndexBuffer* m_pPrevBuffer; // prev buffer
     IndexBuffer* m_pNextBuffer; // next buffer
@@ -31,10 +32,10 @@ namespace DBobjects
     void* operator new(size_t);
     void  operator delete(void*);
     
-    IndexBuffer(void);
+    IndexBuffer(i8 nLevel);
     ~IndexBuffer(void);
     
-    static IndexBuffer* pNewIndexBuffer(void);
+    static IndexBuffer* pNewIndexBuffer(i8 nLevel);
   
     i8      nEntries(void);
     bool    bHasSpace(i8 nBytes);
@@ -60,6 +61,7 @@ namespace DBobjects
     void    vNewHead(void);
     Entry*  aPosition(Key& xKey, IdxColVec* pColVec, bool& bEqualTo, Entry** aReviseVec);
     Entry*  aRightEntry(Entry* aEntry, i8 iLevel);
+    Entry*  pSplitEntry(i8 iSplitAtEntry);
     Entry*  aToEntry(i8 iOffset);
     i8      iToEndOffset(Entry* aEntry);
     i8      iToOffset(Entry* aEntry);

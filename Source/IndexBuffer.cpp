@@ -47,11 +47,12 @@ void IndexBuffer::operator delete(void* pIndexBufferAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-IndexBuffer::IndexBuffer(void)
+IndexBuffer::IndexBuffer(i8 nLevel)
 : Buffer(CN_INDEXBUFFER)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
 
+  m_nLevel      = nLevel;
   m_nEntries    = 0;
   m_pPrevBuffer = nullptr;
   m_pNextBuffer = nullptr;
@@ -83,13 +84,13 @@ IndexBuffer::~IndexBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* index buffer factory                                                       */
 /*----------------------------------------------------------------------------*/
-IndexBuffer* IndexBuffer::pNewIndexBuffer(void)
+IndexBuffer* IndexBuffer::pNewIndexBuffer(i8 nLevel)
 {
   // should we be testing low buffers for index?
   if (gpBufferPool->iFreeCount() <= C_BUFFER_THRESHOLD)
     return nullptr;
   
-  IndexBuffer* pIndexBuffer = new IndexBuffer;
+  IndexBuffer* pIndexBuffer = new IndexBuffer(nLevel);
   
   return pIndexBuffer;
 }
@@ -118,14 +119,14 @@ bool IndexBuffer::bInsert(KeyWsp& xKeyWsp, RowId xRowId, IdxColVec* pColVec)
   RelOpAry* pOpAryFind = new RelOpAry;
   pOpAryFind->vAdd(RO_GREATER_EQUAL);
   
-  xKeyWsp.vShow();
+  //xKeyWsp.vShow();
   
   // initialize the EntWsp
   xEntWsp.vRowId(xRowId);
   xEntWsp.vAddKey(xKeyWsp);
   
-  vTrace("Inserting entry:\n"_Str);
-  xEntWsp.vShow();
+  //vTrace("Inserting entry:\n"_Str);
+  //xEntWsp.vShow();
   
   // get the size of the EntWsp
   i8 nBytes = Entry::nBytesRequired(xEntWsp);
@@ -288,9 +289,9 @@ bool IndexBuffer::bHasSpace(i8 nBytes)
   
   //if (m_xWsp.nWspFree() < nBytes) {
   //if (m_xWsp.nFree() < 1046500)
-  //if (m_nEntries >= 20)
-  //  return false;
-  //else
+  if (m_nEntries >= 20)
+    return false;
+  else
     return true;
 }
 
@@ -677,8 +678,9 @@ Entry* IndexBuffer::aRightEntry(Entry* aEntry, i8 iLevel)
 /*----------------------------------------------------------------------------*/
 void IndexBuffer::vShow(void)
 {
-  vTrace("IndexBuffer %p: entries %lld prevBuffer %p nextBuffer %p \n"_Str,
+  vTrace("IndexBuffer %p: level L%lld entries %lld prevBuffer %p nextBuffer %p \n"_Str,
          this,
+         m_nLevel,
          m_nEntries,
          m_pPrevBuffer,
          m_pNextBuffer);
@@ -689,7 +691,6 @@ void IndexBuffer::vShow(void)
   }
   
   vTrace("\n"_Str);
-  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -701,24 +702,11 @@ IndexBuffer* IndexBuffer::pSplitBuffer(IdxColVec* pColVec)
   
   // split the buffer into two
   i8 iSplitAtEntry = m_nEntries/2;
+
+  Entry* pLastEntry = pSplitEntry(iSplitAtEntry);
   
-  // find the position for the split
-  Entry* pLastEntry = aHead();
-  
-  i8 iEntries = 0;
-  while (pLastEntry) {
-    
-    iEntries++;
-    
-    if (iEntries == iSplitAtEntry)
-      break;
-    
-    // get next entry
-    pLastEntry = aNextEntry(pLastEntry);
-  }
-  
-  // the last entry in the uffer after which the split will happen
-  pLastEntry->vShow();
+  // the last entry in the buffer after which the split will happen
+  //pLastEntry->vShow();
   
   Entry* pReviseVec[C_FLAT_LEVELS];
   bool   bEqualTo;
@@ -766,17 +754,18 @@ IndexBuffer* IndexBuffer::pSplitBuffer(IdxColVec* pColVec)
   // calculate bytes to copy to new buffer
   i8 nSize = nSub(m_xWsp.aLatter(), pSplitAt);
   
-  // allocate a new buffer
-  IndexBuffer* pNewBuffer = new IndexBuffer;
+  // allocate a new buffer at the same index level
+  IndexBuffer* pNewBuffer = new IndexBuffer(m_nLevel);
   
   // copy entries from this buffer to new buffer
   Entry* pEntry = pSplitEntry;
   while (pEntry) {
     KeyWsp xKeyWsp;
     xKeyWsp.vAddKey(pEntry->aKey(), pColVec);
-    xKeyWsp.vShow();
+    //xKeyWsp.vShow();
+    
     Key xKey(xKeyWsp);
-    xKey.vShow(pColVec);
+    //xKey.vShow(pColVec);
     RowId xRowId = pEntry->xRowId();
     pNewBuffer->bInsert(xKeyWsp, xRowId, pColVec);
     pEntry = aNextEntry(pEntry);
@@ -794,6 +783,32 @@ IndexBuffer* IndexBuffer::pSplitBuffer(IdxColVec* pColVec)
   m_pNextBuffer = pNewBuffer;
   
   return pNewBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* find the split entry                                                       */
+/*----------------------------------------------------------------------------*/
+Entry* IndexBuffer::pSplitEntry(i8 iSplitAtEntry)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
+  
+  // start with the head
+  Entry* pSplitEntry = aHead();
+
+  i8 iEntries = 0;
+  while (pSplitEntry) {
+    
+    iEntries++;
+    
+    // found split point
+    if (iEntries == iSplitAtEntry)
+      break;
+    
+    // get next entry
+    pSplitEntry = this->aNextEntry(pSplitEntry);
+  }
+  
+  return pSplitEntry;
 }
 
 /*----------------------------------------------------------------------------*/
