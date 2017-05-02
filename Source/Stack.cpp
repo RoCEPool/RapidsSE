@@ -475,7 +475,7 @@ bool Stack::bPop(s48K& sArg1)
   ValWsp xValWsp1;
   vPopVal(xValWsp1.pNestedValueSelf());
   
-  sArg1 = _pStrVal(&xValWsp1);
+  sArg1 = _pStrVal(xValWsp1.pNestedValueSelf());
   
   return true;
 }
@@ -493,7 +493,7 @@ bool Stack::bPop(s48K& sArg1, i8& iArg2)
   ValWsp xValWsp1;
   vPopVal(xValWsp1.pNestedValueSelf());
   
-  sArg1 = _pStrVal(&xValWsp1);
+  sArg1 = _pStrVal(xValWsp1.pNestedValueSelf());
   
   IntVal xIntVal2;
   vPopVal(&xIntVal2);

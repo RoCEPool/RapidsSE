@@ -19,7 +19,8 @@ namespace Values
     
     i8      nSize(void) const;
     Object* pPtr(void) const;
-    
+    i8      iAsInt(void);
+  
     void vToString(Str* aWorkspace);
   };
   
