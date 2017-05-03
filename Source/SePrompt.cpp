@@ -272,7 +272,8 @@ void SePrompt::vGetCommand(void)
     vGetCommandInput();
 #ifdef SEMICOLON
     vCollectStatement();
-    vStripSemicolon();
+    if ( ! m_aToken[0]->bEqual(""_Str) )
+      vStripSemicolon();
 #endif
   }
 }
