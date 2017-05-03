@@ -1097,11 +1097,19 @@ bool SePrompt::bCreateIndex(void)
     return false;
   }
   
+#ifndef SEMICOLON
   // last-1 token should be ')'
   if (!m_aToken2[iNumTokens-2]->bEqual(")"_Str)) {
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
   }
+#else
+  // last-1 token should be ')'
+  if (!m_aToken2[iNumTokens-1]->bEqual(")"_Str)) {
+    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+    return false;
+  }
+#endif
   
 #ifndef SEMICOLON
   // last token should be ';'
@@ -1427,7 +1435,7 @@ bool SePrompt::bCreateTable(void)
   }
   
   // last-1 token should be ')'
-  if (!m_aToken2[iNumTokens-2]->bEqual(")"_Str)) {
+  if (!m_aToken2[iNumTokens-1]->bEqual(")"_Str)) {
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
   }
@@ -1731,6 +1739,8 @@ void SePrompt::vStripSemicolon(void)
     return;
   
   *m_aToken[iToken]->s() = '\0';
+  
+  m_pTokeniser->vDumpTokens("Stripped"_Str,m_aToken,C_TOKENS);
 }
 
 /*----------------------------------------------------------------------------*/

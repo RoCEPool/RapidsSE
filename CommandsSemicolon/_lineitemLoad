@@ -2,19 +2,19 @@
 /*  _lineitemLoad - create and load TPC-H Lineitem table for SF1              */
 /*============================================================================*/
 
-ping
+ping ;
 
-cf~
-cf tenants
-cf boray
-cf catalogs
-cf rapidsse
-cf schemas
+cf ~ ;
+cf tenants ;
+cf boray ;
+cf catalogs ;
+cf rapidsse ;
+cf schemas ;
 
 create schema tpchSchema;
 
-cf tpchSchema
-cf tables
+cf tpchSchema ;
+cf tables ;
 
 create table lineitem (
 	 L_ORDERKEY      INTEGER NOT NULL,
@@ -35,11 +35,11 @@ create table lineitem (
 	 L_COMMENT       VARCHAR(44) NOT NULL
 );
 
-print "loading lineitem.tbl..."
-ld lineitem "/tpch/lineitem.tbl"
+print "loading lineitem.tbl..." ;
+ld lineitem "/tpch/lineitem.tbl" ;
 
-pwf
-lf
+pwf ;
+lf ;
 
 /*============================================================================*/
 /* end                                                                        */

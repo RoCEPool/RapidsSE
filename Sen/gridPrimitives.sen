@@ -586,7 +586,7 @@ tp: addingPassOnToCP
   " --start " str.cat
   " --size " str.cat args.regionSize >str str.cat
   //" --commands /Users/alkayamarti/rapidsSE/rapidsse/Commands" str.cat
-  " --commands /Users/ray/Desktop/rapidsse/Commands" str.cat
+  " --commands /Users/ray/Desktop/rapidsse/CommandsSemicolon" str.cat
   clusterString str.cat
   " --regionPrefix " str.cat args.regionPrefix str.cat
   " --partitionsPerNode " str.cat args.partitionsPerNode >str str.cat
