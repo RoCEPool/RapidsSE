@@ -268,8 +268,13 @@ void SePrompt::vGetCommand(void)
   
   if (gxArguments.m_bCommand)
     vGetCommandArgument();
-  else
+  else {
     vGetCommandInput();
+#ifdef SEMICOLON
+    vCollectStatement();
+    vStripSemicolon();
+#endif
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1619,6 +1624,21 @@ void SePrompt::vCollectStatement(void)
   m_pTokeniser->vPrompt(m_sPrompt);
   
   //m_pTokeniser->vDumpTokens("Command : "_Str,m_aToken,C_TOKENS);
+}
+
+/*----------------------------------------------------------------------------*/
+/* strip off ';'                                                              */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vStripSemicolon(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  i8 iToken = m_pTokeniser->iFindToken(";"_Str,m_aToken,C_TOKENS);
+  
+  if (-1 == iToken)
+    return;
+  
+  *m_aToken[iToken]->s() = '\0';
 }
 
 /*----------------------------------------------------------------------------*/
