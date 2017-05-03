@@ -35,8 +35,6 @@ namespace DBobjects
     IndexBuffer(i8 nLevel);
     ~IndexBuffer(void);
     
-    static IndexBuffer* pNewIndexBuffer(i8 nLevel);
-  
     void         vDump(void);
     i8           nEntries(void);
     IndexBuffer* aFindBuffer(Key& xKey, RelOpAry* pOpAryLower, IdxColVec* pColVec);

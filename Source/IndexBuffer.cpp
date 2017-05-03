@@ -83,22 +83,6 @@ IndexBuffer::~IndexBuffer(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* index buffer factory                                                       */
-/*----------------------------------------------------------------------------*/
-IndexBuffer* IndexBuffer::pNewIndexBuffer(i8 nLevel)
-{
-  
-  // should we be testing low buffers for index?
-  if (gpBufferPool->iFreeCount() <= C_BUFFER_THRESHOLD)
-    return nullptr;
-  
-  IndexBuffer* pIndexBuffer = new IndexBuffer(nLevel);
-  
-  return pIndexBuffer;
-}
-
-
-/*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -440,31 +424,10 @@ i8 IndexBuffer::nBufferLevel(void)
 /*----------------------------------------------------------------------------*/
 void IndexBuffer::vDump(void)
 {
-  /*
-  s32 sHigherLevel;
-  if (m_pHigherLevel)
-    StrLib::wToString(m_pHigherLevel->m_nBufferLevel, sHigherLevel.s());
-  else
-    sHigherLevel = "..."_Str;
   
-  vTrace("IndexBuffer %p (Id %lld) : level L%lld HigerLevel %p (L%s) entries %lld prevBuffer %p nextBuffer %p \n"_Str,
-         this,
-         *nBufferNo(),
-         m_nBufferLevel,
-         m_pHigherLevel,
-         sHigherLevel.aStr(),
-         m_nEntries,
-         m_pPrevBuffer,
-         m_pNextBuffer);
-  
-  for (Entry* pEntry = aHead(); pEntry != nullptr; pEntry = aNextEntry(pEntry)) {
-    vTrace("%8lld: "_Str, nSub(pEntry, m_xWsp.aArea()));
-    pEntry->vShow(iToOffset(pEntry));
-  }
-  
-  vTrace("\n"_Str);
-  */
+  // show the buffer
   vShow();
+  
   if (m_nBufferLevel != 0) {
     
     // recursively dump the lower level buffers

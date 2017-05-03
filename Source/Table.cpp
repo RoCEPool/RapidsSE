@@ -252,9 +252,11 @@ Str* Table::pAnalyzeIndex(Index* pIndex)
   
     i8 iBufferNo = 1;
     while (pIndexBuffer) {
+      i8 iBufferLevel = pIndexBuffer->nBufferLevel();
       nEntries = pIndexBuffer->nEntries() - 1; // not to show head entry
       sAnalysis.vCatSprint(
-                           "     buffer %5lld : %lld entries\n"_Str,
+                           "     buffer (L%lld) %5lld : %lld entries\n"_Str,
+                           iBufferLevel,
                            iBufferNo++,
                            nEntries);
       
