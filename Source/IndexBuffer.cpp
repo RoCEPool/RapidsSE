@@ -198,7 +198,6 @@ void IndexBuffer::vDumpRevise(Entry** ppReviseVec)
   }
 }
 
-#define goDownLevel(iLevel) iLevel--;
 /*----------------------------------------------------------------------------*/
 /* Find buffer for given key                                                  */
 /*----------------------------------------------------------------------------*/
@@ -301,49 +300,41 @@ void IndexBuffer::vFixHigherLevel(Entry* pNewEntry, IdxColVec* pColVec)
   if ( ! m_pHigherLevel )
     return;
   
-  // get the first entry right of head at offset 0
-  Entry* pFirstEntry = aRightEntry(aHead(), 0);
+  // get the last entry of the buffer
+  Entry* pLastEntry = aLastEntry();
   
-  // is the entry we just added the first entry ?
-  if (pNewEntry == pFirstEntry) {
+  // is the entry we just added the last entry ?
+  if (pNewEntry == pLastEntry) {
     
     // we need to update the higher level buffer entry key
-    
-    Entry* pOldFirstEntry = aNextEntry(pNewEntry);
-    
-    // create a relational operator array
-    RelOpAry* pOpAryFind = new RelOpAry;
-    pOpAryFind->vAdd(RO_EQUAL);
-    
-    KeyWsp xOldKeyWsp;
-    xOldKeyWsp.vAddKey(pOldFirstEntry->aKey(), pColVec);
-    
-    pOldFirstEntry->aKey()->vShow(pColVec);
-    
-    Key xKey(xOldKeyWsp);
-    xKey.vShow(pColVec);
-    
-    // find the oldEntry in the higher level buffer
-    Entry* pFoundEntry = m_pHigherLevel->aPosition(xKey, pOpAryFind, pColVec);
+    Entry* pOldEntry = m_pHigherLevel->aLastEntry();
     
     // assert that we found one
-    RASSERT(pFoundEntry);
-    
-    // assert the key of the higher level entry and the old entry match
-    ASSERT(pFoundEntry->aKey()->bMatches(pOldFirstEntry->aKey(), pColVec, pOpAryFind));
+    RASSERT(pOldEntry);
+    pOldEntry->aKey()->vShow(pColVec);
     
     // get the new entry key
     KeyWsp xNewKeyWsp;
     xNewKeyWsp.vAddKey(pNewEntry->aKey(), pColVec);
 
-    EntWsp xEntWsp;
-    xEntWsp.vId(pFoundEntry->xId());
+    pNewEntry->aKey()->vShow(pColVec);
+    
+    // ALKA: HACK
+    // need to remove old entry and insert a new entry
+    // size of keys may vary !!!!
+    EntWsp xEntWsp(pOldEntry->nOffsets());
+    for (i8 iIndex=0; iIndex < pOldEntry->nOffsets(); iIndex++) {
+      xEntWsp.vRightOffset(iIndex, pOldEntry->uRightOffset(iIndex));
+    }
+    xEntWsp.vId(pOldEntry->xId());
     xEntWsp.vAddKey(xNewKeyWsp);
     
-    // now replace the key in the higher llevel buffer
-    pFoundEntry->vSetEntry(xEntWsp);
+    // now replace the key in the higher level buffer
+    pOldEntry->vSetEntry(xEntWsp);
   }
   
+  m_pHigherLevel->vDump();
+  i8 i = 1;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -640,7 +631,38 @@ Entry* IndexBuffer::aNextEntry(Entry* aEntry)
     return nullptr;
 }
 
-#define goDownLevel(iLevel) iLevel--;
+/*----------------------------------------------------------------------------*/
+/* get the last entry in the buffer                                           */
+/*----------------------------------------------------------------------------*/
+Entry* IndexBuffer::aLastEntry(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
+  
+  Entry* pEntry;
+  bool   bEqualTo;
+  
+  // start from head at known highest level
+  Entry* pCurrentEntry = aHead();
+  i8 iCurrentLevel = C_FLAT_LEVELS - 1;
+  
+  do {
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // inner loop: go right a number of nodes until we reach the end
+    while (Entry* pNextEntry = aRightEntry(pCurrentEntry, iCurrentLevel)) {
+        // go right one node
+        pCurrentEntry = aRightEntry(pCurrentEntry, iCurrentLevel);
+      }
+    
+    // now go down one level
+    goDownLevel(iCurrentLevel);
+    
+    // and repeat till we have a complete revision vector
+  } while (iCurrentLevel >= 0);
+  
+  return pCurrentEntry;
+}
+
 /*----------------------------------------------------------------------------*/
 /* position at entry with lower bound at key                                  */
 /*----------------------------------------------------------------------------*/
@@ -693,7 +715,6 @@ Entry* IndexBuffer::aPosition(Key& xKey, RelOpAry* pRelOpAry, IdxColVec* pColVec
 
   return nullptr;
 }
-
 
 /*----------------------------------------------------------------------------*/
 /* positition to entry (optional set revise vector)                           */
@@ -915,6 +936,9 @@ IndexBuffer* IndexBuffer::pSplitBuffer(IdxColVec* pColVec)
   
   // give back nSize bytes to wsp in original buffer
   m_xWsp.vGive(nSize);
+  
+  // fix old buffer in higher
+  vFixHigherLevel(pLastEntry, pColVec);
   
   m_nEntries -= iSplitAtEntry;
   

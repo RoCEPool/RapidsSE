@@ -5,6 +5,7 @@
 
 namespace DBobjects
 {
+  #define goDownLevel(iLevel) iLevel--;
   
   class IndexBuffer : public Buffer
   {
@@ -43,6 +44,7 @@ namespace DBobjects
     void         vHigherLevel(IndexBuffer* pHigherLevel);
     IndexBuffer* pHigherLevel(void);
     bool         bInsert(KeyWsp& xKeyWsp, Id xId, IdxColVec* pColVec);
+    Entry*       aLastEntry(void);
     IndexBuffer* pNextBuffer(void);
     Entry*       aNextEntry(Entry* aEntry);
     Entry*       aPosition(Key& xKey, RelOpAry* pOpAryFind, IdxColVec* pColVec);
@@ -56,6 +58,7 @@ namespace DBobjects
     void         vFixHigherLevel(Entry* pNewEntry, IdxColVec* pColVec);
     void         vFixRevise(Entry** ppReviseVec, Entry* pNewEntry);
     Entry*       pGetSplitEntry(i8 iSplitAtEntry);
+    
        i8        iLevel(void);
     void         vMoveLeft(void* aDst, i8 nBytes);
     void         vMoveRight(void* aSrc, i8 nBytes);

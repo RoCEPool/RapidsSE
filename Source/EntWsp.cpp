@@ -56,6 +56,33 @@ EntWsp::EntWsp(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* constructor                                          // ALKA: this shld go */
+/*----------------------------------------------------------------------------*/
+EntWsp::EntWsp(i8 nOffsets)
+: Object(CN_ENTWSP)
+{
+  _precondition_(_MAGIC_,CN_ENTWSP);
+  
+  // check initialisation of rowid
+  ASSERT(0 == m_xId.uBuffer() && 0 == m_xId.uRow());
+  
+  // generate logarithmic level for this entry
+  m_nOffsets = nOffsets;
+  ASSERT(m_nOffsets >= 0 && m_nOffsets <= C_FLAT_OFFSETS);
+  
+  // set all right offsets to nil
+  for (i8 iRight = 0; iRight < C_FLAT_OFFSETS - 1; iRight++)
+    m_uOffset[iRight] = C_NIL_OFFSET;
+  
+  // m_xKeyWsp
+  m_xKeyWsp.vInit();
+  
+  _checkInitialisedSize_(sizeof(EntWsp));
+  
+  _postcondition_(_MAGIC_,CN_ENTWSP,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 EntWsp::~EntWsp(void)
