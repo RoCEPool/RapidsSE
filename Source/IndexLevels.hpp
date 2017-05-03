@@ -33,6 +33,7 @@ namespace DBobjects
     void   vInsertEntry(KeyWsp& xKeyWsp, Id xId, IdxColVec* pColVec);
     Entry* pNextEntry(Entry* pEntry);
     Entry* aPosition(Key& xKey, RelOpAry* pOpAryLower, IdxColVec* pColVec);
+    Entry* aPositionL0(Key& xKey, RelOpAry* pOpAryLower, IdxColVec* pColVec);
     void   vTruncate(void);
     
   private:

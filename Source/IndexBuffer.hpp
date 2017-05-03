@@ -11,8 +11,8 @@ namespace DBobjects
   private:
     i8           m_nBufferLevel; // index buffer level
     i8           m_nEntries;     // number of entries in this buffer
-    IndexBuffer* m_pPrevBuffer;  // prev buffer
-    IndexBuffer* m_pNextBuffer;  // next buffer
+    IndexBuffer* m_pPrevBuffer;  // prev index buffer at this level
+    IndexBuffer* m_pNextBuffer;  // next index buffer at this level
     IndexBuffer* m_pHigherLevel; // higher level buffer that points to this buffer
     
     // need to add skip list head
@@ -24,7 +24,6 @@ namespace DBobjects
     // insert is memmove to right
     // remove is memmove to left
     //
-    // need to have verify & show fn's
   
     WspFxd<C_SIZE_LARGE_OBJECT - C_1KB> m_xWsp;
     
@@ -35,6 +34,7 @@ namespace DBobjects
     IndexBuffer(i8 nLevel);
     ~IndexBuffer(void);
     
+    i8           nBufferLevel(void);
     void         vDump(void);
     i8           nEntries(void);
     IndexBuffer* aFindBuffer(Key& xKey, RelOpAry* pOpAryLower, IdxColVec* pColVec);
@@ -42,12 +42,8 @@ namespace DBobjects
     Entry*       aHead(void);
     void         vHigherLevel(IndexBuffer* pHigherLevel);
     IndexBuffer* pHigherLevel(void);
-
     bool         bInsert(KeyWsp& xKeyWsp, Id xId, IdxColVec* pColVec);
-    i8           nBufferLevel(void);
-    
     IndexBuffer* pNextBuffer(void);
-    
     Entry*       aNextEntry(Entry* aEntry);
     Entry*       aPosition(Key& xKey, RelOpAry* pOpAryFind, IdxColVec* pColVec);
     bool         bRemove(Key* aKey);
@@ -56,20 +52,20 @@ namespace DBobjects
     void         vVerify(void);
     
   private:
-    void    vDumpRevise(Entry** ppReviseVec);
-    void    vFixRevise(Entry** ppReviseVec, Entry* pNewEntry);
-    void    vFixHigherLevel(Entry* pNewEntry, IdxColVec* pColVec);
-    i8      iLevel(void);
-    void    vMoveLeft(void* aDst, i8 nBytes);
-    void    vMoveRight(void* aSrc, i8 nBytes);
-    Entry*  aNewEntry(i8 nBytes, i8 nLevels, Entry* aAfterEntry);
-    void    vNewHead(void);
-    Entry*  aPosition(Key& xKey, IdxColVec* pColVec, bool& bEqualTo, Entry** aReviseVec);
-    Entry*  aRightEntry(Entry* aEntry, i8 iLevel);
-    Entry*  pSplitEntry(i8 iSplitAtEntry);
-    Entry*  aToEntry(i8 iOffset);
-    i8      iToEndOffset(Entry* aEntry);
-    i8      iToOffset(Entry* aEntry);
+    void         vDumpRevise(Entry** ppReviseVec);
+    void         vFixHigherLevel(Entry* pNewEntry, IdxColVec* pColVec);
+    void         vFixRevise(Entry** ppReviseVec, Entry* pNewEntry);
+    Entry*       pGetSplitEntry(i8 iSplitAtEntry);
+       i8        iLevel(void);
+    void         vMoveLeft(void* aDst, i8 nBytes);
+    void         vMoveRight(void* aSrc, i8 nBytes);
+    Entry*       aNewEntry(i8 nBytes, i8 nLevels, Entry* aAfterEntry);
+    void         vNewHead(void);
+    Entry*       aPosition(Key& xKey, IdxColVec* pColVec, bool& bEqualTo, Entry** aReviseVec);
+    Entry*       aRightEntry(Entry* aEntry, i8 iLevel);    
+    Entry*       aToEntry(i8 iOffset);
+    i8           iToEndOffset(Entry* aEntry);
+    i8           iToOffset(Entry* aEntry);
     
   };
   

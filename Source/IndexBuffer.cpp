@@ -846,7 +846,7 @@ IndexBuffer* IndexBuffer::pSplitBuffer(IdxColVec* pColVec)
   // split the buffer into two
   i8 iSplitAtEntry = m_nEntries/2;
 
-  Entry* pLastEntry = pSplitEntry(iSplitAtEntry);
+  Entry* pLastEntry = pGetSplitEntry(iSplitAtEntry);
   
   // the last entry in the buffer after which the split will happen
   //pLastEntry->vShow();
@@ -928,9 +928,9 @@ IndexBuffer* IndexBuffer::pSplitBuffer(IdxColVec* pColVec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* find the split entry                                                       */
+/* get the split entry                                                        */
 /*----------------------------------------------------------------------------*/
-Entry* IndexBuffer::pSplitEntry(i8 iSplitAtEntry)
+Entry* IndexBuffer::pGetSplitEntry(i8 iSplitAtEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   

@@ -29,6 +29,7 @@ namespace DBobjects
     void   vShow(i8 iOffset);
   
     EntryData* aEntryData(void);
+    bn     nBufferNo(void);
     Key*   aKey(void);
     bool   bMatches(Key* pKey, IdxColVec* pColVec, RelOpAry *pRelOpAry);
     u8     nOffsets(void);

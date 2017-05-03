@@ -236,7 +236,7 @@ Entry* IndexData::aPosition(KeyWsp& xKeyWsp, RelOpAry* pOpAryLower)
   
   Key xKey(xKeyWsp);
   
-  return m_pIndexLevels->aPosition(xKey, pOpAryLower, m_pIndex->pIdxColVec());
+  return m_pIndexLevels->aPositionL0(xKey, pOpAryLower, m_pIndex->pIdxColVec());
 }
 
 /*----------------------------------------------------------------------------*/

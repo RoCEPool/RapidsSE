@@ -171,7 +171,7 @@ void IndexLevels::vInsertEntryRoot(IndexBuffer* pIndexBuffer, IdxColVec* pColVec
   Entry* pHead = pIndexBuffer->aHead();
   Entry* pFirstEntry = pIndexBuffer->aNextEntry(pHead);
 
-  // get the key from teh first entry
+  // get the key from the first entry
   Key* aKey = pFirstEntry->aKey();
 
   // form a keyWsp from the key
@@ -202,12 +202,47 @@ Entry* IndexLevels::aPosition(Key& xKey, RelOpAry* pOpAryLower, IdxColVec* pColu
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXLEVELS,_FOOTER_);
   
+  ASSERT ( m_pRoot );
   
-  ASSERT ( m_pIndexBuffer[0] );
+  IndexBuffer* pIndexBuffer = m_pRoot;
+  Entry* pEntry = pIndexBuffer->aPosition(xKey, pOpAryLower, pColumnVec);
   
-  IndexBuffer* pIndexBuffer = m_pIndexBuffer[0];
+  return pEntry;
+}
+
+/*----------------------------------------------------------------------------*/
+/* position index at given key at an entry in level 0                         */
+/*----------------------------------------------------------------------------*/
+Entry* IndexLevels::aPositionL0(Key& xKey, RelOpAry* pOpAryLower, IdxColVec* pColumnVec)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXLEVELS,_FOOTER_);  
   
-  return pIndexBuffer->aPosition(xKey, pOpAryLower, pColumnVec);
+  ASSERT ( m_pRoot );
+  
+  IndexBuffer* pIndexBuffer = m_pRoot;
+  i8 iBufferLevel;
+  Entry* pEntry;
+  
+  while (true) {
+    iBufferLevel = pIndexBuffer->nBufferLevel();
+    
+    pEntry = pIndexBuffer->aPosition(xKey, pOpAryLower, pColumnVec);
+    
+    if (iBufferLevel == 0)
+      break;
+    
+    if ( ! pEntry ) {
+      break;
+    }
+    
+    bn nBufferNo = pEntry->nBufferNo();
+    pIndexBuffer = (IndexBuffer*)gpBufferPool->pToBuffer(nBufferNo);
+    
+    ASSERT(pIndexBuffer);
+    ASSERT(pIndexBuffer->eClass() == CN_INDEXBUFFER);
+  }
+  
+  return pEntry;
 }
 
 /*----------------------------------------------------------------------------*/
