@@ -1,0 +1,202 @@
+/*============================================================================*/
+/* _mt -- memory tests (to ensure no resource leaks)                          */
+/*============================================================================*/
+
+docol epochTake
+
+cf ~
+create tenant t;
+lsten
+
+cf t;
+cf catalogs;
+create catalog c;
+lscat
+
+cf c;
+cf schemas;
+create schema s;
+lssch
+
+cf s
+cf tables
+pwf
+
+"Start Test One" .
+
+create table j10 (
+  j10_key   INTEGER NOT NULL,
+  j10_name  VARCHAR(32) NOT NULL
+);
+lstbl
+
+lf
+lscol j10
+
+ld j10 "../JTEST/j10.csv"
+
+create index idx on j10 (j10_key);
+
+sel j10
+
+dump j10
+
+antbl j10
+
+dantbl j10
+
+sz j10
+
+tableSizes
+
+tr j10
+
+drop index j10.idx;
+
+drop table j10;
+
+create table j10 (
+j10_key   INTEGER NOT NULL,
+j10_name  VARCHAR(32) NOT NULL
+);
+
+create index idx on j10 (j10_key);
+
+ld j10 "../JTEST/j10.csv"
+
+lsidx j10
+
+drop index j10.idx;
+
+drop table j10;
+
+create table j10 (
+j10_key   INTEGER NOT NULL,
+j10_name  VARCHAR(32) NOT NULL
+);
+
+create index idx on j10 (j10_key);
+
+lsidxcol j10 idx
+
+ld j10 "../JTEST/j10.csv"
+
+anidx j10 idx
+
+print "\nSelecting rows with key j10_key >= 4 using index idx1 ...\n"
+lwrselidx j10 idx1 4
+
+print "\nSelecting rows with key j10_key >= 7 using index idx1 ...\n"
+lwrselidx j10 idx1 7
+
+print "\nSelecting rows with key j10_key >= 4 and j10_key <= 8 using index idx1 ...\n"
+rgeselidx j10 idx1 4 8
+
+print "\nSelecting rows with key j10_key >= 2 and j10_key <= 7 using index idx1 ...\n"
+rgeselidx j10 idx1 2 7
+
+tridx j10 idx
+
+drop table j10;
+
+
+create table j10 (
+  j10_key   INTEGER NOT NULL,
+  j10_name  VARCHAR(32) NOT NULL
+);
+
+create index idx1 on j10 (j10_key);
+create index idx2 on j10 (j);
+create index idx3 on j10 (j10_name);
+create index idx3 on j10 (j10_name);
+
+drop table j10;
+
+
+
+cf ..
+rf tables
+
+cf ..
+drop schema s;
+
+cf ..
+rf schemas
+
+cf ..
+drop catalog c;
+
+cf ..
+rf catalogs
+
+cf ..
+drop tenant t;
+
+docol epochDump
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+List of command that need to be tested:
+mkten   create_tenant
+lsten   list_tenants
+rmten   drop_tenant
+
+Catalog Requests:
+
+mkcat   create_catalog
+lscat   list_catalogs
+rmcat   drop_catalog
+
+Schema Requests:
+
+mksch   create_schema
+lssch   list_schemas
+rmsch   drop_schema
+usesch  use_schema
+
+Table Requests:
+
+antbl   analyze_table
+dantbl  danalyze_table
+gettbl  get_table
+mktbl   create_table
+lstbl   list_tables
+add     add_column
+addidx  add_idxcolumn
+lscol   list_columns
+ld      load_table
+tblInUse  table_inuse
+tableSizes size_tables
+sel     select_table
+dump    dump_table
+cp      copy_table
+dex     dist_export_table
+ex      export_table
+sz      size_table
+tr      truncate_table
+rettbl  return_table
+rmtbl   drop_table
+
+Index Requests:
+
+anidx   analyze_index
+mkidx   create_index
+lsidx   list_indexes
+dumpidx dump_index
+lsidxcol list_indexcolumns
+rmidx   drop_index
+tridx   truncate_index
+
+Dictionary Requests:
+
+cf      cf ..
+cf ~
+cf
+pwf     pwf
+lf      lf
+rf      remove_folder
+
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
