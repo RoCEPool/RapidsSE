@@ -2,21 +2,21 @@
 /* _j1000 -- jtest creation and load etc                                      */
 /*============================================================================*/
 
-ping
+ping ;
 
-cf tenants
-mkten boray
+cf tenants ;
+mkten boray ;
 
-cf boray
-cf catalogs
-mkcat borayCatalog
+cf boray ;
+cf catalogs ;
+mkcat borayCatalog ;
 
-cf borayCatalog
-cf schemas
-mksch boraySchema
+cf borayCatalog ;
+cf schemas ;
+mksch boraySchema ;
 
-cf boraySchema
-cf tables
+cf boraySchema ;
+cf tables ;
 
 create table j1000 (
   j1000_key   INTEGER NOT NULL,
@@ -25,13 +25,13 @@ create table j1000 (
   j1000_j10   INTEGER NOT NULL
 );
 
-print "loading j1000.tbl..."
-ld j1000 "../JTEST/j1000.csv"
+print "loading j1000.tbl..." ;
+ld j1000 "../JTEST/j1000.csv" ;
 
-pwf
-lf
+pwf ;
+lf ;
 
-sel j1000
+sel j1000 ;
 
 /*============================================================================*/
 /* end                                                                        */

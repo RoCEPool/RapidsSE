@@ -2,21 +2,21 @@
 /* _tpchSF10-- tpc h creation and load etc                                   */
 /*============================================================================*/
 
-ping
+ping ;
 
-cf tenants
-mkten boray
+cf tenants ;
+mkten boray ;
 
-cf boray
-cf catalogs
-mkcat borayCatalog
+cf boray ;
+cf catalogs ;
+mkcat borayCatalog ;
 
-cf borayCatalog
-cf schemas
-mksch boraySchema
+cf borayCatalog ;
+cf schemas ;
+mksch boraySchema ;
 
-cf boraySchema
-cf tables
+cf boraySchema ;
+cf tables ;
 
 create table customer (
 	C_CUSTKEY       INTEGER NOT NULL,
@@ -103,48 +103,48 @@ create table supplier (
 	 S_COMMENT       VARCHAR(101) NOT NULL
 );
 
-//print "loading customer.tbl..."
-//ld customer "/tpchSF10/customer.tbl"
+//print "loading customer.tbl..." ;
+//ld customer "/tpchSF10/customer.tbl" ;
 
-print "loading lineitem.tbl..."
-ld lineitem "/tpchSF10/lineitem.tbl"
+print "loading lineitem.tbl..." ;
+ld lineitem "/tpchSF10/lineitem.tbl" ;
 
-//print "loading nation.tbl..."
-//ld nation   "/tpchSF10/nation.tbl"
+//print "loading nation.tbl..." ;
+//ld nation   "/tpchSF10/nation.tbl" ;
 
-//print "loading orders.tbl..."
-//ld orders   "/tpchSF10/orders.tbl"
+//print "loading orders.tbl..." ;
+//ld orders   "/tpchSF10/orders.tbl" ;
 
-//print "loading part.tbl..."
-//ld part     "/tpchSF10/part.tbl"
+//print "loading part.tbl..." ;
+//ld part     "/tpchSF10/part.tbl" ;
 
-//print "loading partsupp.tbl..."
-//ld partsupp "/tpchSF10/partsupp.tbl"
+//print "loading partsupp.tbl..." ;
+//ld partsupp "/tpchSF10/partsupp.tbl" ;
 
-//print "loading region.tbl..."
-//ld region   "/tpchSF10/region.tbl"
+//print "loading region.tbl..." ;
+//ld region   "/tpchSF10/region.tbl" ;
 
-//print "loading supplier.tbl..."
-//ld supplier "/tpchSF10/supplier.tbl"
+//print "loading supplier.tbl..." ;
+//ld supplier "/tpchSF10/supplier.tbl" ;
 
-//ex customer "/tmp/customer.txt"
-//ex lineitem "/tmp/lineitem.txt"
-//ex nation   "/tmp/nation.txt"
-//ex orders   "/tmp/orders.txt"
-//ex part     "/tmp/part.txt"
-//ex partsupp "/tmp/partsupp.txt"
-//ex region   "/tmp/region.txt"
-//ex supplier "/tmp/supplier.txt"
+//ex customer "/tmp/customer.txt" ;
+//ex lineitem "/tmp/lineitem.txt" ;
+//ex nation   "/tmp/nation.txt" ;
+//ex orders   "/tmp/orders.txt" ;
+//ex part     "/tmp/part.txt" ;
+//ex partsupp "/tmp/partsupp.txt" ;
+//ex region   "/tmp/region.txt" ;
+//ex supplier "/tmp/supplier.txt" ;
 
-//cp nation nation_copy
-//ex nation_copy "/tmp/nation_copy.txt"
+//cp nation nation_copy ;
+//ex nation_copy "/tmp/nation_copy.txt" ;
 
-pwf
-lf
+pwf ;
+lf ;
 
-//tr t
-//sz t
-//rmtbl t
+//tr t ;
+//sz t ;
+//rmtbl t ;
 
 /*============================================================================*/
 /* end                                                                        */

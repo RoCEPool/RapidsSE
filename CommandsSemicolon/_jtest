@@ -2,25 +2,25 @@
 /* _jtest -- jtest creation and load etc                                      */
 /*============================================================================*/
 
-ping
+ping ;
 
-expect "/tenants/boray/catalogs/rapidsse/schemas/" pwf
+expect "/tenants/boray/catalogs/rapidsse/schemas/" pwf ;
 
-expect "<ok>" cf tenants
+expect "<ok>" cf tenants ;
 
-expect "/tenants/" pwf
-//mkten boray
+expect "/tenants/" pwf ;
+//mkten boray ;
 
-cf boray
-cf catalogs
-mkcat borayCatalog
+cf boray ;
+cf catalogs ;
+mkcat borayCatalog ;
 
-cf borayCatalog
-cf schemas
-mksch boraySchema
+cf borayCatalog ;
+cf schemas ;
+mksch boraySchema ;
 
-cf boraySchema
-cf tables
+cf boraySchema ;
+cf tables ;
 
 create table j1000 (
 j1000_key   INTEGER NOT NULL,
@@ -29,7 +29,7 @@ j1000_j100  INTEGER NOT NULL,
 j1000_j10   INTEGER NOT NULL
 );
 
-cf ..
+cf .. ;
 
 create table j100 (
 j100_key   INTEGER NOT NULL,
@@ -37,36 +37,36 @@ j100_name  VARCHAR(32) NOT NULL,
 j100_j10   INTEGER NOT NULL
 );
 
-cf ..
+cf .. ;
 
 create table j10 (
 j10_key   INTEGER NOT NULL,
 j10_name  VARCHAR(32) NOT NULL
 );
 
-cf ..
-cf j1000
-print "loading j1000.tbl..."
-ld j1000 "../JTEST/j1000.csv"
+cf .. ;
+cf j1000 ;
+print "loading j1000.tbl..." ;
+ld j1000 "../JTEST/j1000.csv" ;
 
-cf ..
-cf j100
-print "loading j100.tbl..."
-ld j100 "../JTEST/j100.csv"
+cf .. ;
+cf j100 ;
+print "loading j100.tbl..." ;
+ld j100 "../JTEST/j100.csv" ;
 
-cf ..
-cf j10
-print "loading j10.tbl..."
-ld j10 "../JTEST/j10.csv"
+cf .. ;
+cf j10 ;
+print "loading j10.tbl..." ;
+ld j10 "../JTEST/j10.csv" ;
 
-pwf
-lf
+pwf ;
+lf ;
 
-sel j10
+sel j10 ;
 
-//cp j10 k10
+//cp j10 k10 ;
 
-//ex k10 "/tmp/k10.txt"
+//ex k10 "/tmp/k10.txt" ;
 
 /*============================================================================*/
 /* end                                                                        */

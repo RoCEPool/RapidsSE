@@ -2,19 +2,19 @@
 /* _tpch -- tpc h creation and load etc                                       */
 /*============================================================================*/
 
-cf tenants
+cf tenants ;
 create tenant boray;
 
-cf boray
-cf catalogs
+cf boray ;
+cf catalogs ;
 create catalog borayCatalog;
 
-cf borayCatalog
-cf schemas
+cf borayCatalog ;
+cf schemas ;
 create schema boraySchema;
 
-cf boraySchema
-cf tables
+cf boraySchema ;
+cf tables ;
 
 // create tables
 create table customer (
@@ -102,8 +102,8 @@ create table supplier (
 	 S_COMMENT       VARCHAR(101) NOT NULL
 );
 
-pwf
-lf
+pwf ;
+lf ;
 
 /*============================================================================*/
 /* end                                                                        */

@@ -2,34 +2,34 @@
 /* _j10 -- jtest creation and load etc                                        */
 /*============================================================================*/
 
-ping
+ping ;
 
-cf tenants
-mkten boray
+cf tenants ;
+mkten boray ;
 
-cf boray
-cf catalogs
-mkcat borayCatalog
+cf boray ;
+cf catalogs ;
+mkcat borayCatalog ;
 
-cf borayCatalog
-cf schemas
-mksch boraySchema
+cf borayCatalog ;
+cf schemas ;
+mksch boraySchema ;
 
-cf boraySchema
-cf tables
+cf boraySchema ;
+cf tables ;
 
 create table j10 (
   j10_key   INTEGER NOT NULL,
   j10_name  VARCHAR(32) NOT NULL
 );
 
-print "loading j10.tbl..."
-ld j10 "../JTEST/j10.csv"
+print "loading j10.tbl..." ;
+ld j10 "../JTEST/j10.csv" ;
 
-pwf
-lf
+pwf ;
+lf ;
 
-sel j10
+sel j10 ;
 
 /*============================================================================*/
 /* end                                                                        */

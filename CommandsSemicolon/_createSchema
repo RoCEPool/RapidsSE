@@ -2,38 +2,38 @@
 /* _createSchema -- create schema of tables                                   */
 /*============================================================================*/
 
-cf ~
+cf ~;
 create tenant t;
-lf
+lf ;
 
 cf t;
-lf
+lf ;
 cf catalogs;
-lf
+lf ;
 
 create catalog c;
-lf
+lf ;
 
 cf c;
-lf
+lf ;
 cf schemas;
-lf
+lf ;
 
 create schema s;
-lf
+lf ;
 
-cf s
-lf
-cf tables
-lf
+cf s ;
+lf ;
+cf tables ;
+lf ;
 
 create table j10 (
   j10_key   INTEGER NOT NULL,
   j10_name  VARCHAR(32) NOT NULL
 );
 
-lf
-lscol j10
+lf ;
+lscol j10 ;
 
 /*============================================================================*/
 /* end                                                                        */
