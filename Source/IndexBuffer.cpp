@@ -229,7 +229,7 @@ IndexBuffer* IndexBuffer::aFindBuffer(Key& xKey, RelOpAry* pRelOpAry, IdxColVec*
   
   ASSERT(m_nBufferLevel == 1);
   
-  xKey.vShow(pColVec);
+  //xKey.vShow(pColVec);
   bool bEqualTo;
   
   Entry* pEntry = aPosition(xKey, pColVec, bEqualTo, nullptr);
@@ -440,14 +440,16 @@ i8 IndexBuffer::nBufferLevel(void)
 /*----------------------------------------------------------------------------*/
 void IndexBuffer::vDump(void)
 {
+  /*
   s32 sHigherLevel;
   if (m_pHigherLevel)
     StrLib::wToString(m_pHigherLevel->m_nBufferLevel, sHigherLevel.s());
   else
     sHigherLevel = "..."_Str;
   
-  vTrace("IndexBuffer %p: level L%lld HigerLevel %p (L%s) entries %lld prevBuffer %p nextBuffer %p \n"_Str,
+  vTrace("IndexBuffer %p (Id %lld) : level L%lld HigerLevel %p (L%s) entries %lld prevBuffer %p nextBuffer %p \n"_Str,
          this,
+         *nBufferNo(),
          m_nBufferLevel,
          m_pHigherLevel,
          sHigherLevel.aStr(),
@@ -461,7 +463,8 @@ void IndexBuffer::vDump(void)
   }
   
   vTrace("\n"_Str);
-  
+  */
+  vShow();
   if (m_nBufferLevel != 0) {
     
     // recursively dump the lower level buffers
@@ -851,8 +854,9 @@ void IndexBuffer::vShow(void)
   else
     sHigherLevel = "..."_Str;
   
-  vTrace("IndexBuffer %p: level L%lld HigerLevel %p (L%s) entries %lld prevBuffer %p nextBuffer %p \n"_Str,
+  vTrace("IndexBuffer %p (buffer %lld): level L%lld HigerLevel %p (L%s) entries %lld prevBuffer %p nextBuffer %p \n"_Str,
          this,
+         *nBufferNo(),
          m_nBufferLevel,
          m_pHigherLevel,
          sHigherLevel.aStr(),

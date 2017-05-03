@@ -351,7 +351,7 @@ void Key::vShow(IdxColVec* pColVec)
   char* aCursor = aWspArea();
   s32 sKeyString;
   
-  vTrace("Key %p"_Str, this);
+  vTrace("Key %p "_Str, this);
   
   sKeyString = "( "_Str;
   
