@@ -102,7 +102,7 @@ IndexBuffer* IndexLevels::pFirstBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXLEVELS,_FOOTER_);
   
-  return m_pIndexBuffer[0];
+  return m_pRoot;
 }
 
 /*----------------------------------------------------------------------------*/
