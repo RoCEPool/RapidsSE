@@ -2,31 +2,31 @@
 /* _jindex -- index entry testing                                             */
 /*============================================================================*/
 
-cf ~
-cf boray
-cf catalogs
-mkcat borayCatalog
+cf ~ ;
+cf boray ;
+cf catalogs ;
+mkcat borayCatalog ;
 
-cf borayCatalog
-cf schemas
-mksch boraySchema
+cf borayCatalog ;
+cf schemas ;
+mksch boraySchema ;
 
-cf boraySchema
-cf tables
+cf boraySchema ;
+cf tables ;
 
-pwf
+pwf ;
 create table j1 (
   j1_key   INTEGER NOT NULL,
   j1_name  VARCHAR(32) NOT NULL
 );
 
-print "loading j1.tbl..."
+print "loading j1.tbl..." ;
 create index idx on j1 (j1_key);
-ld j1 "../JTEST/j1.csv"
+ld j1 "../JTEST/j1.csv" ;
 
-cf indexes
-pwf
-idump idx
+cf indexes ;
+pwf ;
+idump idx ;
 
 /*============================================================================*/
 /* end                                                                        */

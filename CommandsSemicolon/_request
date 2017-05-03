@@ -6,9 +6,9 @@
 /* initial                                                                    */
 /*----------------------------------------------------------------------------*/
 
-ping
+ping ;
 
-expect "/tenants/boray/catalogs/rapidsse/schemas/" pwf
+expect "/tenants/boray/catalogs/rapidsse/schemas/" pwf ;
 
 /*----------------------------------------------------------------------------*/
 /* tenant                                                                     */
@@ -16,79 +16,79 @@ expect "/tenants/boray/catalogs/rapidsse/schemas/" pwf
 
 //expect "not in tenants" create tenant test;
 
-expect "<ok>" cf tenants
+expect "<ok>" cf tenants ;
 
-expect "/tenants/" pwf
+expect "/tenants/" pwf ;
 
-expect "boray       (tenant)" lf
+expect "boray       (tenant)" lf ;
 
 expect "<ok>" create tenant test;
 
-expect "test        (tenant)\nboray       (tenant)" lf
+expect "test        (tenant)\nboray       (tenant)" lf ;
 
 expect "<ok>" drop tenant test;
 
-expect "boray       (tenant)" lf
+expect "boray       (tenant)" lf ;
 
 expect "<ok>" create tenant jones;
 
-expect "jones       (tenant)\nboray       (tenant)" lf
+expect "jones       (tenant)\nboray       (tenant)" lf ;
 
 /*----------------------------------------------------------------------------*/
 /* catalog                                                                    */
 /*----------------------------------------------------------------------------*/
 
-expect "<ok>" cf jones
+expect "<ok>" cf jones ;
 
-expect "catalogs    (folder)" lf
+expect "catalogs    (folder)" lf ;
 
 expect "not in catalogs" create catalog test;
 
-expect "<ok>" cf catalogs
+expect "<ok>" cf catalogs ;
 
-expect "/tenants/jones/catalogs/" pwf
+expect "/tenants/jones/catalogs/" pwf ;
 
 expect "<ok>" create catalog test;
 
-expect "test        (catalog)" lf
+expect "test        (catalog)" lf ;
 
 expect "<ok>" drop catalog test;
 
-expect "" lf
+expect "" lf ;
 
 expect "not a folder" drop catalog test;
 
 expect "<ok>" create catalog sears;
 
-expect "sears       (catalog)" lf
+expect "sears       (catalog)" lf ;
 
 /*----------------------------------------------------------------------------*/
 /* schema                                                                     */
 /*----------------------------------------------------------------------------*/
 
-expect "<ok>" cf sears
+expect "<ok>" cf sears ;
 
-expect "schemas     (folder)" lf
+expect "schemas     (folder)" lf ;
 
 expect "not in schemas" create schema jtest;
 
-expect "<ok>" cf schemas
+expect "<ok>" cf schemas ;
 
-expect "/tenants/jones/catalogs/sears/schemas/" pwf
+expect "/tenants/jones/catalogs/sears/schemas/" pwf ;
 
 expect "<ok>" create schema test;
 
-expect "test        (schema)" lf
+expect "test        (schema)" lf ;
 
 expect "<ok>" drop schema test;
 
-expect "" lf
+expect "" lf ;
 
 expect "not a folder" drop schema test;
 
 expect "<ok>" create schema jtest;
 
-expect "jtest       (schema)" lf
+expect "jtest       (schema)" lf ;
 
 /*----------------------------------------------------------------------------*/
 /* tables                                                                     */
@@ -96,21 +96,21 @@ expect "jtest       (schema)" lf
 
 expect "not in tables" create table test ( j10_key   INTEGER NOT NULL ) ;
 
-expect "<ok>" cf jtest
+expect "<ok>" cf jtest ;
 
-expect "tables      (folder)" lf
+expect "tables      (folder)" lf ;
 
-expect "<ok>" cf tables
+expect "<ok>" cf tables ;
 
-expect "" lf
+expect "" lf ;
 
 expect "<ok>" create table test ( j10_key   INTEGER NOT NULL ) ;
 
-expect "test        (table 0B)" lf
+expect "test        (table 0B)" lf ;
 
 expect "<ok>" drop table test ;
 
-expect "" lf
+expect "" lf ;
 
 expect "<ok>" create table j1000 (
   j1000_key   INTEGER NOT NULL,
@@ -130,23 +130,23 @@ expect "<ok>" create table j10 (
   j10_name  VARCHAR(32) NOT NULL
 );
 
-print "loading j1000.tbl..."
-expect "<ok>" ld j1000 "../JTEST/j1000.csv"
+print "loading j1000.tbl..." ;
+expect "<ok>" ld j1000 "../JTEST/j1000.csv" ;
 
-print "loading j100.tbl..."
-expect "<ok>" ld j100 "../JTEST/j100.csv"
+print "loading j100.tbl..." ;
+expect "<ok>" ld j100 "../JTEST/j100.csv" ;
 
-print "loading j10.tbl..."
-expect "<ok>" ld j10 "../JTEST/j10.csv"
+print "loading j10.tbl..." ;
+expect "<ok>" ld j10 "../JTEST/j10.csv" ;
 
-pwf
-lf
+pwf ;
+lf ;
 
-sel j10
+sel j10 ;
 
-//cp j10 k10
+//cp j10 k10 ;
 
-//ex k10 "/tmp/k10.txt"
+//ex k10 "/tmp/k10.txt" ;
 
 /*============================================================================*/
 /* end                                                                        */

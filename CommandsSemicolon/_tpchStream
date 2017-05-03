@@ -2,13 +2,13 @@
 /* _tpch -- tpc h creation and load etc                                       */
 /*============================================================================*/
 
-cf tenants
-cf boray
-cf catalogs
-cf rapidsse
-cf schemas
+cf tenants ;
+cf boray ;
+cf catalogs ;
+cf rapidsse ;
+cf schemas ;
 create schema tables;
-cf tables
+cf tables ;
 
 // create tables
 create table customer (
@@ -96,12 +96,12 @@ create table supplier (
 	 S_COMMENT       VARCHAR(101) NOT NULL
 );
 
-pwf
-lf
+pwf ;
+lf ;
 
-//lds lineitem "/tpch/lineitem.tbl"
-lds lineitem "/tpchSF10/lineitem.pipe"
-//lds nation "/tpch/nation.tbl"
+//lds lineitem "/tpch/lineitem.tbl" ;
+lds lineitem "/tpchSF10/lineitem.pipe" ;
+//lds nation "/tpch/nation.tbl" ;
 
 /*============================================================================*/
 /* end                                                                        */

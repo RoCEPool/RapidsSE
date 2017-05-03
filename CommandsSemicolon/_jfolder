@@ -2,16 +2,16 @@
 /* _jfolder -- cd to j folder                                                 */
 /*============================================================================*/
 
-ping
+ping ;
 
-cf tenants
-cf boray
-cf catalogs
-cf borayCatalog
-cf schemas
-cf boraySchema
-cf tables
-lf
+cf tenants ;
+cf boray ;
+cf catalogs ;
+cf borayCatalog ;
+cf schemas ;
+cf boraySchema ;
+cf tables ;
+lf ;
 
 /*============================================================================*/
 /* end                                                                        */

@@ -3,11 +3,11 @@
 /*============================================================================*/
 
 //_j100
-//print "\nSelecting rows with first column >= 4 ...\n"
-//lwrsel j100 4
+//print "\nSelecting rows with first column >= 4 ...\n" ;
+//lwrsel j100 4 ;
 
 //_jindex10
-//dumpidx j10 idx1
+//dumpidx j10 idx1 ;
 
 create table jidx (
 jidx_key   INTEGER NOT NULL,
@@ -16,7 +16,7 @@ jidx_name  VARCHAR(32) NOT NULL
 
 create index idx on jidx (jidx_key);
 
-ld jidx "../JTEST/jidx.csv"
+ld jidx "../JTEST/jidx.csv" ;
 
 
 /*============================================================================*/
