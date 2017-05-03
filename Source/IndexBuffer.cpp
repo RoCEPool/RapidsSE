@@ -180,7 +180,7 @@ bool IndexBuffer::bInsert(KeyWsp& xKeyWsp, Id xId, IdxColVec* pColVec)
   m_nEntries++;
   
   // fix higher level
-  vFixHigherLevel(pAfterEntry, pNewEntry, pColVec);
+  vFixHigherLevel(pNewEntry, pColVec);
   
   delete pOpAryFind;
   
@@ -234,6 +234,9 @@ IndexBuffer* IndexBuffer::aFindBuffer(Key& xKey, RelOpAry* pRelOpAry, IdxColVec*
   
   Entry* pEntry = aPosition(xKey, pColVec, bEqualTo, nullptr);
   ASSERT(pEntry);
+  
+  if (pEntry == aHead())
+    pEntry = aNextEntry(aHead());
   
   // get the buffer from the entry
   Id xId = pEntry->xId();
@@ -307,10 +310,10 @@ void IndexBuffer::vFixRevise(Entry** ppReviseVec, Entry* pNewEntry)
 /*----------------------------------------------------------------------------*/
 /* fix the higher level                                                        */
 /*----------------------------------------------------------------------------*/
-void IndexBuffer::vFixHigherLevel(Entry* pOldEntry, Entry* pNewEntry, IdxColVec* pColVec)
+void IndexBuffer::vFixHigherLevel(Entry* pNewEntry, IdxColVec* pColVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
-  /*
+  
   if ( ! m_pHigherLevel )
     return;
   
@@ -319,24 +322,31 @@ void IndexBuffer::vFixHigherLevel(Entry* pOldEntry, Entry* pNewEntry, IdxColVec*
   
   // is the entry we just added the first entry ?
   if (pNewEntry == pFirstEntry) {
+    
     // we need to update the higher level buffer entry key
+    
+    Entry* pOldFirstEntry = aNextEntry(pNewEntry);
     
     // create a relational operator array
     RelOpAry* pOpAryFind = new RelOpAry;
     pOpAryFind->vAdd(RO_EQUAL);
     
     KeyWsp xOldKeyWsp;
-    xOldKeyWsp.vAddKey(pOldEntry->aKey(), pColVec);
+    xOldKeyWsp.vAddKey(pOldFirstEntry->aKey(), pColVec);
+    
+    pOldFirstEntry->aKey()->vShow(pColVec);
     
     Key xKey(xOldKeyWsp);
+    xKey.vShow(pColVec);
+    
     // find the oldEntry in the higher level buffer
-    Entry* pFoundEntry = aPosition(xKey, pOpAryFind, pColVec);
+    Entry* pFoundEntry = m_pHigherLevel->aPosition(xKey, pOpAryFind, pColVec);
     
     // assert that we found one
     RASSERT(pFoundEntry);
     
     // assert the key of the higher level entry and the old entry match
-    ASSERT(pFoundEntry->aKey()->bMatches(pOldEntry->aKey(), pColVec, pOpAryFind));
+    ASSERT(pFoundEntry->aKey()->bMatches(pOldFirstEntry->aKey(), pColVec, pOpAryFind));
     
     // get the new entry key
     KeyWsp xNewKeyWsp;
@@ -349,7 +359,7 @@ void IndexBuffer::vFixHigherLevel(Entry* pOldEntry, Entry* pNewEntry, IdxColVec*
     // now replace the key in the higher llevel buffer
     pFoundEntry->vSetEntry(xEntWsp);
   }
-   */
+  
 }
 
 /*----------------------------------------------------------------------------*/
