@@ -313,15 +313,23 @@ void IndexBuffer::vFixHigherLevel(Entry* pNewEntry, IdxColVec* pColVec)
     RASSERT(pOldEntry);
     pOldEntry->aKey()->vShow(pColVec);
     
+    // get the old entry key
+    KeyWsp xOldKeyWsp;
+    xOldKeyWsp.vAddKey(pNewEntry->aKey(), pColVec);
+    
     // get the new entry key
     KeyWsp xNewKeyWsp;
     xNewKeyWsp.vAddKey(pNewEntry->aKey(), pColVec);
-
-    pNewEntry->aKey()->vShow(pColVec);
     
     // ALKA: HACK
     // need to remove old entry and insert a new entry
     // size of keys may vary !!!!
+
+    // lets assert for now that the sizes are the same
+    ASSERT(xNewKeyWsp.nWspUsed() == xOldKeyWsp.nWspUsed());
+    
+    //pNewEntry->aKey()->vShow(pColVec);
+    
     EntWsp xEntWsp(pOldEntry->nOffsets());
     for (i8 iIndex=0; iIndex < pOldEntry->nOffsets(); iIndex++) {
       xEntWsp.vRightOffset(iIndex, pOldEntry->uRightOffset(iIndex));
@@ -329,12 +337,11 @@ void IndexBuffer::vFixHigherLevel(Entry* pNewEntry, IdxColVec* pColVec)
     xEntWsp.vId(pOldEntry->xId());
     xEntWsp.vAddKey(xNewKeyWsp);
     
+    
+    
     // now replace the key in the higher level buffer
     pOldEntry->vSetEntry(xEntWsp);
   }
-  
-  m_pHigherLevel->vDump();
-  i8 i = 1;
 }
 
 /*----------------------------------------------------------------------------*/
