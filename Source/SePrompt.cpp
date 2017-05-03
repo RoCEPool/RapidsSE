@@ -271,11 +271,20 @@ void SePrompt::vGetCommand(void)
   else {
     vGetCommandInput();
 #ifdef SEMICOLON
-    if ( ! m_aToken[0]->bEqual(""_Str) ) {
-      vCollectStatement();
-      if ( ! m_aToken[0]->bEqual(""_Str) )
-        vStripSemicolon();
-    }
+    
+    // if empty line just return
+    if ( m_aToken[0]->bEqual(""_Str) )
+      return;
+
+    // if its a command file just return
+    if (bTestFile(m_aToken[0]))
+      return;
+    
+    // collect till ;
+    vCollectStatement();
+    
+    // stip off ;
+    vStripSemicolon();
 #endif
   }
 }
