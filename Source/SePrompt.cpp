@@ -268,8 +268,25 @@ void SePrompt::vGetCommand(void)
   
   if (gxArguments.m_bCommand)
     vGetCommandArgument();
-  else
+  else {
     vGetCommandInput();
+#ifdef SEMICOLON
+    
+    // if empty line just return
+    if ( m_aToken[0]->bEqual(""_Str) )
+      return;
+
+    // if its a command file just return
+    if (bTestFile(m_aToken[0]))
+      return;
+    
+    // collect till ;
+    vCollectStatement();
+    
+    // stip off ;
+    vStripSemicolon();
+#endif
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -832,7 +849,9 @@ bool SePrompt::bBeginInsert(void)
   ASSERT(m_aToken[0]->bEqual("begin"_Str));
   ASSERT(m_aToken[1]->bEqual("insert"_Str));
   
+#ifndef SEMICOLON
   vCollectStatement();
+#endif
   
   for (iToken = 0; iToken < C_TOKENS; iToken++) {
     if (! *m_aToken[iToken]->s())
@@ -842,6 +861,8 @@ bool SePrompt::bBeginInsert(void)
   }
   
   iNumTokens = iToken;
+  
+#ifndef SEMICOLON
   // there should be 4 tokens
   if (iNumTokens != 4) {
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
@@ -853,6 +874,13 @@ bool SePrompt::bBeginInsert(void)
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
   }
+#else // - - - - - - - - - - - - - - - - - - - - -
+  // there should be 3 tokens
+  if (iNumTokens != 3) {
+    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+    return false;
+  }
+#endif
   
   // get table pointer
   m_aToken[0]->vCopy("gettbl"_Str);
@@ -966,8 +994,10 @@ bool SePrompt::bCreateCatalog(void)
   
   ASSERT(m_aToken[0]->bEqual("create"_Str));
   ASSERT(m_aToken[1]->bEqual("catalog"_Str));
-  vCollectStatement();
   
+#ifndef SEMICOLON
+  vCollectStatement();
+#endif
   i8 iToken;
   
   // copy tokens from m_aToken to m_aToken2
@@ -980,6 +1010,8 @@ bool SePrompt::bCreateCatalog(void)
   }
   
   i8 iNumTokens = iToken;
+  
+#ifndef SEMICOLON
   // there should be 4 tokens
   if (iNumTokens != 4) {
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
@@ -991,6 +1023,13 @@ bool SePrompt::bCreateCatalog(void)
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
   }
+#else // - - - - - - - - - - - - - - - - - - - - -
+  // there should be 3 tokens
+  if (iNumTokens != 3) {
+    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+    return false;
+  }
+#endif
   
   // create a catalog
   m_aToken[0]->vCopy("mkcat"_Str);
@@ -1012,7 +1051,10 @@ bool SePrompt::bCreateIndex(void)
   
   ASSERT(m_aToken[0]->bEqual("create"_Str));
   ASSERT(m_aToken[1]->bEqual("index"_Str));
+  
+#ifndef SEMICOLON
   vCollectStatement();
+#endif
   
   i8 iToken;
   
@@ -1029,11 +1071,19 @@ bool SePrompt::bCreateIndex(void)
   i8 iNumTokens = iToken;
   
   // some validations
-  /// there should be a minumum of 8 tokens
+#ifndef SEMICOLON
+  // there should be a minumum of 8 tokens
   if (iNumTokens < 8) {
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
   }
+#else // - - - - - - - - - - - - - - - - - - - - -
+  // there should be a minumum of 7 tokens
+  if (iNumTokens < 7) {
+    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+    return false;
+  }
+#endif
   
   // token[3] should be 'on'
   if (!m_aToken2[3]->bEqual("on"_Str)) {
@@ -1047,18 +1097,28 @@ bool SePrompt::bCreateIndex(void)
     return false;
   }
   
+#ifndef SEMICOLON
   // last-1 token should be ')'
   if (!m_aToken2[iNumTokens-2]->bEqual(")"_Str)) {
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
   }
+#else
+  // last-1 token should be ')'
+  if (!m_aToken2[iNumTokens-1]->bEqual(")"_Str)) {
+    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+    return false;
+  }
+#endif
   
+#ifndef SEMICOLON
   // last token should be ';'
   if (!m_aToken2[iNumTokens-1]->bEqual(";"_Str)) {
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
   }
-
+#endif
+  
   // create the index
   m_aToken[0]->vCopy("mkidx"_Str);
   m_aToken[1]->vCopy(m_aToken2[4]);
@@ -1202,7 +1262,10 @@ bool SePrompt::bCreateSchema(void)
 
   ASSERT(m_aToken[0]->bEqual("create"_Str));
   ASSERT(m_aToken[1]->bEqual("schema"_Str));
+  
+#ifndef SEMICOLON
   vCollectStatement();
+#endif
   
   i8 iToken;
   
@@ -1217,6 +1280,7 @@ bool SePrompt::bCreateSchema(void)
   
   i8 iNumTokens = iToken;
   
+#ifndef SEMICOLON
   // there should be 4 tokens
   if (iNumTokens != 4) {
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
@@ -1228,7 +1292,14 @@ bool SePrompt::bCreateSchema(void)
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
   }
-  
+#else // - - - - - - - - - - - - - - - - - - - - -
+  // there should be 3 tokens
+  if (iNumTokens != 3) {
+    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+    return false;
+  }
+#endif
+
   // create a schema
   m_aToken[0]->vCopy("mksch"_Str);
   m_aToken[1]->vCopy(m_aToken2[2]);
@@ -1249,7 +1320,10 @@ bool SePrompt::bCreateTenant(void)
   
   ASSERT(m_aToken[0]->bEqual("create"_Str));
   ASSERT(m_aToken[1]->bEqual("tenant"_Str));
+  
+#ifndef SEMICOLON
   vCollectStatement();
+#endif
   
   i8 iToken;
   
@@ -1264,6 +1338,7 @@ bool SePrompt::bCreateTenant(void)
   
   i8 iNumTokens = iToken;
   
+#ifndef SEMICOLON
   // there should be 4 tokens
   if (iNumTokens != 4) {
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
@@ -1275,6 +1350,13 @@ bool SePrompt::bCreateTenant(void)
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
   }
+#else // - - - - - - - - - - - - - - - - - - - - -
+      // there should be 3 tokens
+  if (iNumTokens != 3) {
+    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+    return false;
+  }
+#endif
   
   // create a tenant
   m_aToken[0]->vCopy("mkten"_Str);
@@ -1296,7 +1378,10 @@ bool SePrompt::bCreateTable(void)
   
   ASSERT(m_aToken[0]->bSame("create"_Str));
   ASSERT(m_aToken[1]->bSame("table"_Str));
+  
+#ifndef SEMICOLON
   vCollectStatement();
+#endif
   
   i8 iToken;
   
@@ -1312,7 +1397,8 @@ bool SePrompt::bCreateTable(void)
   i8 iNumTokens = iToken;
   
   // some validations
-  /// there should be a minumum of 8 tokens
+#ifndef SEMICOLON
+  // there should be a minumum of 8 tokens
   if (iNumTokens < 8) {
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
@@ -1335,7 +1421,26 @@ bool SePrompt::bCreateTable(void)
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
   }
-      
+#else // - - - - - - - - - - - - - - - - - - - - -
+      // there should be a minumum of 7 tokens
+  if (iNumTokens < 7) {
+    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+    return false;
+  }
+  
+  // token[3] should be '('
+  if (!m_aToken2[3]->bEqual("("_Str)) {
+    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+    return false;
+  }
+  
+  // last-1 token should be ')'
+  if (!m_aToken2[iNumTokens-1]->bEqual(")"_Str)) {
+    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+    return false;
+  }
+#endif
+
   // create the table
   m_aToken[0]->vCopy("mktbl"_Str);
   m_aToken[1]->vCopy(m_aToken2[2]);
@@ -1622,6 +1727,23 @@ void SePrompt::vCollectStatement(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* strip off ';'                                                              */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vStripSemicolon(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  i8 iToken = m_pTokeniser->iFindToken(";"_Str,m_aToken,C_TOKENS);
+  
+  if (-1 == iToken)
+    return;
+  
+  *m_aToken[iToken]->s() = '\0';
+  
+  m_pTokeniser->vDumpTokens("Stripped"_Str,m_aToken,C_TOKENS);
+}
+
+/*----------------------------------------------------------------------------*/
 /* connect the cluster                                                        */
 /*----------------------------------------------------------------------------*/
 bool SePrompt::bConnectCluster(void)
@@ -1650,7 +1772,9 @@ bool SePrompt::bDropCatalog(void)
   ASSERT(m_aToken[0]->bEqual("drop"_Str));
   ASSERT(m_aToken[1]->bEqual("catalog"_Str));
   
+#ifndef SEMICOLON
   vCollectStatement();
+#endif
   
   for (iToken = 0; iToken < C_TOKENS; iToken++) {
     if (! *m_aToken[iToken]->s())
@@ -1661,6 +1785,7 @@ bool SePrompt::bDropCatalog(void)
   
   iNumTokens = iToken;
   
+#ifndef SEMICOLON
   // there should be 4 tokens
   if (iNumTokens != 4) {
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
@@ -1672,6 +1797,13 @@ bool SePrompt::bDropCatalog(void)
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
   }
+#else // - - - - - - - - - - - - - - - - - - - - -
+      // there should be 3 tokens
+  if (iNumTokens != 3) {
+    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+    return false;
+  }
+#endif
   
   // drop a catalog
   m_aToken[0]->vCopy("rmcat"_Str);
@@ -1696,7 +1828,9 @@ bool SePrompt::bDropIndex(void)
   ASSERT(m_aToken[0]->bEqual("drop"_Str));
   ASSERT(m_aToken[1]->bEqual("index"_Str));
   
+#ifndef SEMICOLON
   vCollectStatement();
+#endif
   
   for (iToken = 0; iToken < C_TOKENS; iToken++) {
     if (! *m_aToken[iToken]->s())
@@ -1707,6 +1841,7 @@ bool SePrompt::bDropIndex(void)
   
   iNumTokens = iToken;
   
+#ifndef SEMICOLON
   // there should be 6 tokens
   if (iNumTokens != 6) {
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
@@ -1724,6 +1859,19 @@ bool SePrompt::bDropIndex(void)
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
   }
+#else // - - - - - - - - - - - - - - - - - - - - -
+  // there should be 5 tokens
+  if (iNumTokens != 5) {
+    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+    return false;
+  }
+  
+  // 4th token should be '.'
+  if (!m_aToken2[3] ->bEqual("."_Str)) {
+    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+    return false;
+  }
+#endif
   
   // drop a table
   m_aToken[0]->vCopy("rmidx"_Str);
@@ -1749,7 +1897,9 @@ bool SePrompt::bDropSchema(void)
   ASSERT(m_aToken[0]->bEqual("drop"_Str));
   ASSERT(m_aToken[1]->bEqual("schema"_Str));
   
+#ifndef SEMICOLON
   vCollectStatement();
+#endif
   
   for (iToken = 0; iToken < C_TOKENS; iToken++) {
     if (! *m_aToken[iToken]->s())
@@ -1759,6 +1909,8 @@ bool SePrompt::bDropSchema(void)
   }
   
   iNumTokens = iToken;
+  
+#ifndef SEMICOLON
   // there should be 4 tokens
   if (iNumTokens != 4) {
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
@@ -1770,6 +1922,13 @@ bool SePrompt::bDropSchema(void)
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
   }
+#else // - - - - - - - - - - - - - - - - - - - - -
+      // there should be 3 tokens
+  if (iNumTokens != 3) {
+    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+    return false;
+  }
+#endif
   
   // drop a schema
   m_aToken[0]->vCopy("rmsch"_Str);
@@ -1794,7 +1953,9 @@ bool SePrompt::bDropTable(void)
   ASSERT(m_aToken[0]->bEqual("drop"_Str));
   ASSERT(m_aToken[1]->bEqual("table"_Str));
   
+#ifndef SEMICOLON
   vCollectStatement();
+#endif
   
   for (iToken = 0; iToken < C_TOKENS; iToken++) {
     if (! *m_aToken[iToken]->s())
@@ -1805,6 +1966,7 @@ bool SePrompt::bDropTable(void)
   
   iNumTokens = iToken;
   
+#ifndef SEMICOLON
   // there should be 4 tokens
   if (iNumTokens != 4) {
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
@@ -1816,6 +1978,13 @@ bool SePrompt::bDropTable(void)
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
   }
+#else // - - - - - - - - - - - - - - - - - - - - -
+      // there should be 3 tokens
+  if (iNumTokens != 3) {
+    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+    return false;
+  }
+#endif
   
   // drop a table
   m_aToken[0]->vCopy("rmtbl"_Str);
@@ -1908,7 +2077,9 @@ bool SePrompt::bDropTenant(void)
   ASSERT(m_aToken[0]->bEqual("drop"_Str));
   ASSERT(m_aToken[1]->bEqual("tenant"_Str));
   
+#ifndef SEMICOLON
   vCollectStatement();
+#endif
   
   for (iToken = 0; iToken < C_TOKENS; iToken++) {
     if (! *m_aToken[iToken]->s())
@@ -1919,6 +2090,7 @@ bool SePrompt::bDropTenant(void)
   
   iNumTokens = iToken;
   
+#ifndef SEMICOLON
   // there should be 4 tokens
   if (iNumTokens != 4) {
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
@@ -1930,6 +2102,13 @@ bool SePrompt::bDropTenant(void)
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
   }
+#else // - - - - - - - - - - - - - - - - - - - - -
+      // there should be 3 tokens
+  if (iNumTokens != 3) {
+    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+    return false;
+  }
+#endif
   
   // drop a tenant
   m_aToken[0]->vCopy("rmten"_Str);
@@ -1956,7 +2135,9 @@ bool SePrompt::bEndInsert(void)
   ASSERT(m_aToken[0]->bEqual("end"_Str));
   ASSERT(m_aToken[1]->bEqual("insert"_Str));
   
+#ifndef SEMICOLON
   vCollectStatement();
+#endif
   
   for (iToken = 0; iToken < C_TOKENS; iToken++) {
     if (! *m_aToken[iToken]->s())
@@ -1966,6 +2147,7 @@ bool SePrompt::bEndInsert(void)
   }
   
   iNumTokens = iToken;
+#ifndef SEMICOLON
   // there should be 3 tokens
   if (iNumTokens != 3) {
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
@@ -1977,6 +2159,13 @@ bool SePrompt::bEndInsert(void)
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
   }
+#else // - - - - - - - - - - - - - - - - - - - - -
+      // there should be 2 tokens
+  if (iNumTokens != 2) {
+    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+    return false;
+  }
+#endif
   
   // clear the last error
   m_pSEitf->vClearLastError();
@@ -2032,7 +2221,9 @@ bool SePrompt::bInsertRow(void)
   ASSERT(m_aToken[0]->bEqual("insert"_Str));
   ASSERT(m_aToken[1]->bEqual("row"_Str));
   
+#ifndef SEMICOLON
   vCollectStatement();
+#endif
   
   for (iToken = 0; iToken < C_TOKENS; iToken++) {
     if (! *m_aToken[iToken]->s())
@@ -2042,7 +2233,8 @@ bool SePrompt::bInsertRow(void)
   }
   
   iNumTokens = iToken;
-  // there should be 3 tokens
+#ifndef SEMICOLON
+  // there should be 4 tokens
   if (iNumTokens != 4) {
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
@@ -2053,6 +2245,13 @@ bool SePrompt::bInsertRow(void)
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
   }
+#else // - - - - - - - - - - - - - - - - - - - - -
+      // there should be 3 tokens
+  if (iNumTokens != 3) {
+    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+    return false;
+  }
+#endif
   
   // clear the last error
   m_pSEitf->vClearLastError();
@@ -2203,7 +2402,9 @@ bool SePrompt::bUseSchema(void)
   ASSERT(m_aToken[0]->bEqual("use"_Str));
   ASSERT(m_aToken[1]->bEqual("schema"_Str));
   
+#ifndef SEMICOLON
   vCollectStatement();
+#endif
   
   for (iToken = 0; iToken < C_TOKENS; iToken++) {
     if (! *m_aToken[iToken]->s())
@@ -2213,6 +2414,7 @@ bool SePrompt::bUseSchema(void)
   }
   
   iNumTokens = iToken;
+#ifndef SEMICOLON
   // there should be 4 tokens
   if (iNumTokens != 4) {
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
@@ -2224,6 +2426,13 @@ bool SePrompt::bUseSchema(void)
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
   }
+#else // - - - - - - - - - - - - - - - - - - - - -
+      // there should be 3 tokens
+  if (iNumTokens != 3) {
+    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+    return false;
+  }
+#endif
   
   // drop a schema
   m_aToken[0]->vCopy("usesch"_Str);

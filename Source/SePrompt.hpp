@@ -85,6 +85,7 @@ private:
   bool bCreateTenant(void);
   
   void vCollectStatement(void);
+  void vStripSemicolon(void);
   bool bDocol(void);
   
   bool bConnectCluster(void);

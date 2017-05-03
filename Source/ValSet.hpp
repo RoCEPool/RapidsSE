@@ -7,7 +7,7 @@ namespace DBobjects {
   class RowBuffer;
 }
 
-#define OLD_VALSET
+//#define OLD_VALSET
 
 namespace Values
 {

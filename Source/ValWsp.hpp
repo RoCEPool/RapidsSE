@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-#define OLD_VALWSP
+//#define OLD_VALWSP
 
 #ifdef OLD_VALWSP
 namespace Values
