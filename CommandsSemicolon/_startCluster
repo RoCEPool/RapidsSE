@@ -2,9 +2,9 @@
 /* _startCluster -- start cluster                                             */
 /*============================================================================*/
 
-docol spawnNodes
-docol setStartNode
-docol connectorStart
+docol spawnNodes ;
+docol setStartNode ;
+docol connectorStart ;
 
 //sleep 5
 
