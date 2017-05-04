@@ -321,7 +321,7 @@ tp: loadIndexes
   //
   assert::stack_2
 
-  0 0 0 locals| entry selectTask indexPtr indexNm lower |
+  0 0 0 0 locals| indexBuffer entry selectTask indexPtr indexNm lower |
 
   // increment query count
   queryCount ++
@@ -333,10 +333,22 @@ tp: loadIndexes
   indexNm find execute ( index^ )
   to indexPtr
 
+  lower str.tailint assert to lower
+
   // for each slot
   grid.slots 0
   do
     I "Partition: %v" str.format .
+
+    // put the partition in this tasks seitf
+    I task::this task.seitf@ seitf.partition!
+
+    // get the indexBuffer at the lowerBound
+    lower indexPtr index.buffer ( indexBuffer )
+    to indexBuffer
+
+    // set the indexBuffer in the seitf
+    indexBuffer task::this task.seitf@ seitf.indexBuffer!
 
     1
     begin
@@ -344,14 +356,11 @@ tp: loadIndexes
       while
 
         // create a selectTask to execute the lower bound select on the index for the partition
-        indexPtr lower str.tailint assert 2 "lowerSelectIdx" task::this task::new
+        indexPtr lower 2 "lowerSelectIdx" task::this task::new
         to selectTask
 
         //put seitf from this task to the selectTask
         task::this task.seitf@ selectTask task.seitf!
-
-        // put the partition in seitf
-        I selectTask task.seitf@ seitf.partition!
 
         // set acks
         1 setAcks
@@ -390,28 +399,51 @@ tp: loadIndexes
 /*----------------------------------------------------------------------------*/
 : lowerSelectIdx ( ^indexPtr "<lower>" -- <entry> )
 
-  0 0 0 locals| seitf entry row lower indexPtr |
+  0 0 0 0 locals| indexBuffer seitf entry row lower indexPtr |
 
   tp: lowerSelectIdx
 
   // get the seitf from this task
   task::this task.seitf@ to seitf
 
+  // get the last indexBuffer from the seitf
+  seitf seitf.indexBuffer@ to indexBuffer
+
   // get the last entry from the seitf
   seitf seitf.entry@ to entry
 
-  entry not if
-    // no previous entry ?
-    // position the index at the lowerBound
-    lower indexPtr index.position ( entry )
+  indexBuffer not if
+    0 to entry
   else
-    // get next entry from the current entry
-    entry indexPtr index.getNextEntry
+
+    entry not if
+      // position in the index buffer
+      lower indexBuffer indexPtr index.position
+      to entry
+
+      // we may not find an entry , so need to move to next buffer
+    else
+      entry indexBuffer index.getNextEntry to entry
+    then
+
+    entry not if
+      // get next entry from the current entry of indexBuffer
+      indexBuffer index.getNextBuffer to indexBuffer
+
+      indexBuffer not if
+        0 to entry
+      else
+        entry indexBuffer index.getNextEntry to entry
+      then
+    then
 
   then
 
   // set the entry in the seitf
-  seitf seitf.entry!
+  entry seitf seitf.entry!
+
+  // set the indexBuffer in the seitf
+  indexBuffer seitf seitf.indexBuffer!
 
   // signal the parent task
   task::this task.parent@ task.ack
@@ -477,11 +509,11 @@ tp: lowerSelectIndex
 
       // check if entry is null ?
       entry if
-      entry entry.row row.string .
-      1
+        entry entry.row row.string .
+        1
       else
-      // null entry means done with this partition
-      0
+        // null entry means done with this partition
+        0
       then
 
     repeat

@@ -531,11 +531,13 @@ namespace Tasks
   
     // index
     static void vIndexAnalyze(NNP_Task nnpTask);
+    static void vIndexBuffer(NNP_Task nnpTask);
     static void vIndexColumnCount(NNP_Task nnpTask);
     static void vIndexColumnName(NNP_Task nnpTask);
     static void vIndexColumnType(NNP_Task nnpTask);
     static void vIndexCreateColumnVec(NNP_Task nnpTask);
     static void vIndexDump(NNP_Task nnpTask);
+    static void vIndexGetNextBuffer(NNP_Task nnpTask);
     static void vIndexGetNextEntry(NNP_Task nnpTask); 
     static void vIndexInit(NNP_Task nnpTask);
     static void vIndexPopulate(NNP_Task nnpTask);
@@ -824,6 +826,8 @@ namespace Tasks
     static void vSEitfDump(NNP_Task nnpTask);
     static void vSEitfEntryFetch(NNP_Task nnpTask);
     static void vSEitfEntryStore(NNP_Task nnpTask);
+    static void vSEitfIndexBufferFetch(NNP_Task nnpTask);
+    static void vSEitfIndexBufferStore(NNP_Task nnpTask);
     static void vSEitfIndexRef(NNP_Task nnpTask);
     static void vSEitfPartitionFetch(NNP_Task nnpTask);
     static void vSEitfPartitionStore(NNP_Task nnpTask);

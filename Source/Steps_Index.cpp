@@ -33,12 +33,14 @@ extern SEitfList*      gpSEitfList;
 void Task::vAddPrimitives_Index(void)
 {
   vAddPrimitive("index.analyze"_Str,         &vIndexAnalyze,         false);
+  vAddPrimitive("index.buffer"_Str,          &vIndexBuffer,          false);
   vAddPrimitive("index.columnCount"_Str,     &vIndexColumnCount,     false);
   vAddPrimitive("index.columnName"_Str,      &vIndexColumnName,      false);
   vAddPrimitive("index.columnType"_Str,      &vIndexColumnType,      false);
   vAddPrimitive("index.createColumnVec"_Str, &vIndexCreateColumnVec, false);
   vAddPrimitive("index.dump"_Str,            &vIndexDump,            false);
   vAddPrimitive("index.getNextEntry"_Str,    &vIndexGetNextEntry,    false);
+  vAddPrimitive("index.getNextBuffer"_Str,   &vIndexGetNextBuffer,   false);
   vAddPrimitive("index.init"_Str,            &vIndexInit,            false);
   vAddPrimitive("index.populate"_Str,        &vIndexPopulate,        false);
   vAddPrimitive("index.position"_Str,        &vIndexPosition,        false);
@@ -75,6 +77,49 @@ void Task::vIndexAnalyze(NNP_Task nnpTask)
   s48K sAnalysis;
   sAnalysis = (Str*)pIndex->pTable()->pAnalyzeIndex(pIndex);
   nnpTask->m_pDataStack->vPushS48K(sAnalysis);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* index.buffer -- position at an index buffer                                */
+/*----------------------------------------------------------------------------*/
+void Task::vIndexBuffer(NNP_Task nnpTask)
+{
+  ENTRY("vIndexBuffer"_Str);
+  Object* pPtrIndex = nullptr;
+  Object* pPtrTable = nullptr;
+  ValWsp xValWsp;
+  
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrIndex) )
+    THROW_INVALID_DSTACK("index.buffer"_Str);
+  
+  Index* pIndex = _pIndex(pPtrIndex);
+  ASSERT(CN_INDEX == pIndex->eClass());
+  
+  if ( ! nnpTask->m_pDataStack->bPop(xValWsp) )
+    THROW_INVALID_DSTACK("index.buffer"_Str);
+  
+  i8 iIndexNo = pIndex->iIndexNo();
+  Table* pTable = pIndex->pTable();
+  
+  Partition* pPartition = pTable->pPartition(nnpTask->m_pSEitf->iPartition());
+  IndexData* pIndexData = pPartition->pIndexData(iIndexNo);
+  
+  // create a relational operator array
+  RelOpAry* pOpAryGreater = new RelOpAry;
+  pOpAryGreater->vAdd(RO_GREATER_EQUAL);
+  
+  KeyWsp xKeyWsp;
+  xKeyWsp.vAddElement(xValWsp);
+  IndexBuffer* pIndexBuffer = pIndexData->aPositionL0(xKeyWsp, pOpAryGreater);
+  
+  delete pOpAryGreater;
+  
+  bn nBuffer = pIndexBuffer->nBufferNo();
+  vTrace("L0 Buffer: %lld\n"_Str, *nBuffer);
+  
+  nnpTask->m_pDataStack->vPushObject(pIndexBuffer);
   
   EXIT();
 }
@@ -202,34 +247,60 @@ void Task::vIndexDump(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* index.getNextEntry -- get next entry                                       */
+/* index.getNextBuffer -- get next entry from index buffer                     */
+/*----------------------------------------------------------------------------*/
+void Task::vIndexGetNextBuffer(NNP_Task nnpTask)
+{
+  ENTRY("vIndexGetNextBuffer"_Str);
+  
+  Object* pPtrEntry = nullptr;
+  Object* pPtrIndexBuffer;
+  
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrIndexBuffer) )
+    THROW_INVALID_DSTACK("index.getNextBuffer"_Str);
+  
+  IndexBuffer* pIndexBuffer = _pIndexBuffer(pPtrIndexBuffer);
+  ASSERT(nullptr == pIndexBuffer || CN_INDEXBUFFER == pIndexBuffer->eClass());
+  
+  if (pIndexBuffer->pNextBuffer()) {
+    bn nBuffer = pIndexBuffer->pNextBuffer()->nBufferNo();
+    vTrace("Buffer: %lld\n"_Str, *nBuffer);
+  }
+  
+  nnpTask->m_pDataStack->vPushObject(pIndexBuffer->pNextBuffer());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* index.getNextEntry -- get next entry from index buffer                     */
 /*----------------------------------------------------------------------------*/
 void Task::vIndexGetNextEntry(NNP_Task nnpTask)
 {
   ENTRY("vIndexGetNextEntry"_Str);
   
-  Object* pPtrIndex = nullptr;
   Object* pPtrEntry = nullptr;
+  Object* pPtrIndexBuffer;
   
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrIndex) )
-    THROW_INVALID_DSTACK("index.getNextEntry"_Str);
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrIndexBuffer) )
+    THROW_INVALID_DSTACK("seitf.indexBuffer!"_Str);
   
-  Index* pIndex = _pIndex(pPtrIndex);
-  ASSERT(CN_INDEX == pIndex->eClass());
+  IndexBuffer* pIndexBuffer = _pIndexBuffer(pPtrIndexBuffer);
+  ASSERT(nullptr == pIndexBuffer || CN_INDEXBUFFER == pIndexBuffer->eClass());
   
   if ( ! nnpTask->m_pDataStack->bPop(pPtrEntry) )
     THROW_INVALID_DSTACK("index.getNextEntry"_Str);
   
   Entry* pEntry = _aEntry(pPtrEntry);
-  ASSERT(CN_ENTRY == pEntry->eClass());
   
-  i8 iIndexNo = pIndex->iIndexNo();
-  Table* pTable = pIndex->pTable();
+  Entry *pNextEntry;
   
-  Partition* pPartition = pTable->pPartition(nnpTask->m_pSEitf->iPartition());
-  IndexData* pIndexData = pPartition->pIndexData(iIndexNo);
-  
-  Entry *pNextEntry = pIndexData->pNextEntry(pEntry);
+  if ( pPtrEntry ) {
+    ASSERT(CN_ENTRY == pEntry->eClass());
+    pNextEntry = pIndexBuffer->aNextEntry(pEntry);
+  } else {
+    pNextEntry = pIndexBuffer->aNextEntry(pIndexBuffer->aHead());
+  }
   
   nnpTask->m_pDataStack->vPushObject(pNextEntry);
   
@@ -237,13 +308,13 @@ void Task::vIndexGetNextEntry(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* index.position -- position the index                                       */
+/* index.position -- position at key in an index buffer                       */
 /*----------------------------------------------------------------------------*/
 void Task::vIndexPosition(NNP_Task nnpTask)
 {
-  ENTRY("vIndexPopulate"_Str);
+  ENTRY("vIndexPosition"_Str);
   Object* pPtrIndex = nullptr;
-  Object* pPtrTable = nullptr;
+  Object* pPtrIndexBuffer = nullptr;
   ValWsp xValWsp;
   
   if ( ! nnpTask->m_pDataStack->bPop(pPtrIndex) )
@@ -251,6 +322,12 @@ void Task::vIndexPosition(NNP_Task nnpTask)
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
+  
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrIndexBuffer) )
+    THROW_INVALID_DSTACK("index.position"_Str);
+  
+  IndexBuffer* pIndexBuffer = _pIndexBuffer(pPtrIndexBuffer);
+  ASSERT(CN_INDEXBUFFER == pIndexBuffer->eClass());
   
   if ( ! nnpTask->m_pDataStack->bPop(xValWsp) )
     THROW_INVALID_DSTACK("index.position"_Str);
@@ -262,16 +339,32 @@ void Task::vIndexPosition(NNP_Task nnpTask)
   IndexData* pIndexData = pPartition->pIndexData(iIndexNo);
   
   // create a relational operator array
-  RelOpAry* pOpAryLower = new RelOpAry;
-  pOpAryLower->vAdd(RO_GREATER_EQUAL);
+  RelOpAry* pOpAryGreater = new RelOpAry;
+  pOpAryGreater->vAdd(RO_GREATER_EQUAL);
   
   KeyWsp xKeyWsp;
   xKeyWsp.vAddElement(xValWsp);
-  Entry *pEntry = pIndexData->aPosition(xKeyWsp, pOpAryLower);
   
-  delete pOpAryLower;
+  Key xKey(xKeyWsp);
   
+  bool bMatches = true;
+  Entry* pEntry = pIndexBuffer->aPosition(xKey, pOpAryGreater, pIndex->pIdxColVec());
+  
+  bMatches = pEntry->aKey()->bMatches(&xKey, pIndex->pIdxColVec(), pOpAryGreater);
+  if ( ! bMatches) {
+    pEntry = pIndexBuffer->aNextEntry(pEntry);
+  }
+  /*
+  if (pEntry) {
+    pEntry->aKey()->vShow(pIndex->pIdxColVec());
+  }
+  else {
+    vTrace("nullptr\n"_Str);
+  }
+  */
   nnpTask->m_pDataStack->vPushObject(pEntry);
+  
+  delete pOpAryGreater;
   
   EXIT();
 }

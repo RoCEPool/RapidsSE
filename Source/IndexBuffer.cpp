@@ -223,8 +223,7 @@ IndexBuffer* IndexBuffer::aFindBuffer(Key& xKey, RelOpAry* pRelOpAry, IdxColVec*
     pEntry = aNextEntry(aHead());
   
   // get the buffer from the entry
-  Id xId = pEntry->xId();
-  bn nBufferNo = xId.uBuffer();
+  bn nBufferNo = pEntry->nBufferNo();
   IndexBuffer* pIndexBuffer = (IndexBuffer*)gpBufferPool->pToBuffer(nBufferNo);
   ASSERT(pIndexBuffer);
   ASSERT(pIndexBuffer->eClass() == CN_INDEXBUFFER);
@@ -297,6 +296,8 @@ void IndexBuffer::vFixRevise(Entry** ppReviseVec, Entry* pNewEntry)
 void IndexBuffer::vFixHigherLevel(Entry* pNewEntry, IdxColVec* pColVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
+  
+  bool bMatches;
   
   if ( ! m_pHigherLevel )
     return;
@@ -433,8 +434,7 @@ void IndexBuffer::vDump(void)
     // recursively dump the lower level buffers
     for (Entry* pEntry = aNextEntry(aHead()); pEntry != nullptr; pEntry = aNextEntry(pEntry)) {
       // get the buffer from the entry
-      Id xId = pEntry->xId();
-      bn nBufferNo = xId.uBuffer();
+      bn nBufferNo = pEntry->nBufferNo();
       IndexBuffer* pIndexBuffer = (IndexBuffer*)gpBufferPool->pToBuffer(nBufferNo);
       ASSERT(pIndexBuffer);
       ASSERT(pIndexBuffer->eClass() == CN_INDEXBUFFER);
@@ -641,6 +641,7 @@ Entry* IndexBuffer::aNextEntry(Entry* aEntry)
 }
 
 #define goDownLevel(iLevel) iLevel--;
+
 /*----------------------------------------------------------------------------*/
 /* position at entry with lower bound at key                                  */
 /*----------------------------------------------------------------------------*/
@@ -662,23 +663,25 @@ Entry* IndexBuffer::aPosition(Key& xKey, RelOpAry* pRelOpAry, IdxColVec* pColVec
     //   ObjectInsert < ObjectNext at current level
     while (Entry* pNextEntry = aRightEntry(pCurrentEntry, iCurrentLevel)) {
       
+      //pNextEntry->aKey()->vShow(pColVec);
+      //xKey.vShow(pColVec);
+      
       // compare the inserting object with next object
-      bool bMatches = pNextEntry->aKey()->bMatches(&xKey, pColVec, pRelOpAry);
+      bool bMatches = xKey.bMatches(pNextEntry->aKey(), pColVec, pRelOpAry);
       
       if (bMatches) {
         // pObjectInsert is >= pObjectNext
         //vTrace("  %lld after %lld (level %lld)\n"_Str,
         //       (i8)pObjectInsert,(i8)pNextEntry->uRight(),iCurrentLevel);
         
-        return pNextEntry;
+        // go right one node
+        pCurrentEntry = aRightEntry(pCurrentEntry, iCurrentLevel);
       }
       else {
         // pObjectInsert is < pObjectNext or pObjectNext is null
         //vTrace("  %lld before %lld (level %lld)\n"_Str,
         //       (i8)pObjectInsert,(i8)pNextEntry->uRight(),iCurrentLevel);
-        
-        // go right one node
-        pCurrentEntry = aRightEntry(pCurrentEntry, iCurrentLevel);
+        break;
       }
     }
     
@@ -690,8 +693,14 @@ Entry* IndexBuffer::aPosition(Key& xKey, RelOpAry* pRelOpAry, IdxColVec* pColVec
     
     // and repeat till we have a complete revision vector
   } while (iCurrentLevel >= 0);
-
-  return nullptr;
+  
+  //if (pCurrentEntry)
+  //  pCurrentEntry->aKey()->vShow(pColVec);
+  
+  if (pCurrentEntry == aHead())
+    pCurrentEntry = aNextEntry(pCurrentEntry);
+  
+  return pCurrentEntry;
 }
 
 
@@ -915,6 +924,7 @@ IndexBuffer* IndexBuffer::pSplitBuffer(IdxColVec* pColVec)
   
   // give back nSize bytes to wsp in original buffer
   m_xWsp.vGive(nSize);
+  ASSERT(m_xWsp.aLatter() == pAdd<void*>((void*)pLastEntry,pLastEntry->nSize()));
   
   m_nEntries -= iSplitAtEntry;
   

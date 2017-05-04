@@ -26,8 +26,10 @@ namespace Interface
     eEC    m_eErrorCode;       //
     s256   m_sErrorMsg;
     
-    Table* m_pCurrentTable;
-    Str*   m_aRowPtr;
+    Table*       m_pCurrentTable;
+    Str*         m_aRowPtr;
+    IndexBuffer* m_pIndexBuffer;
+    
     Entry* m_pEntry;
     TxRef* m_pTxRef;
     

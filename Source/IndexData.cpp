@@ -228,15 +228,15 @@ Entry* IndexData::pNextEntry(Entry* pEntry)
 }
 
 /*----------------------------------------------------------------------------*/
-/* position the indexData at lower bound given key                            */
+/* position the indexData at an L0 index buffer                               */
 /*----------------------------------------------------------------------------*/
-Entry* IndexData::aPosition(KeyWsp& xKeyWsp, RelOpAry* pOpAryLower)
+IndexBuffer* IndexData::aPositionL0(KeyWsp& xKeyWsp, RelOpAry* pOpAryGreater)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
   
   Key xKey(xKeyWsp);
   
-  return m_pIndexLevels->aPositionL0(xKey, pOpAryLower, m_pIndex->pIdxColVec());
+  return m_pIndexLevels->aPositionL0(xKey, pOpAryGreater, m_pIndex->pIdxColVec());
 }
 
 /*----------------------------------------------------------------------------*/

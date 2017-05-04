@@ -32,24 +32,26 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_SEitf(void)
 {
-  vAddPrimitive("seitf.count"_Str,         &vSEitfCount,         false);
-  vAddPrimitive("seitf.delete"_Str,        &vSEitfDelete,        false);
-  vAddPrimitive("seitf.dicStack"_Str,      &vSEitfDicStack,      false);
-  vAddPrimitive("seitf.dump"_Str,          &vSEitfDump,          false);
-  vAddPrimitive("seitf.entry@"_Str,        &vSEitfEntryFetch,    false);
-  vAddPrimitive("seitf.entry!"_Str,        &vSEitfEntryStore,    false);
-  vAddPrimitive("seitf.indexRef"_Str,      &vSEitfIndexRef,      false);
-  vAddPrimitive("seitf.partition@"_Str,    &vSEitfPartitionFetch, false);
-  vAddPrimitive("seitf.partition!"_Str,    &vSEitfPartitionStore, false);
-  vAddPrimitive("seitf.pid"_Str,           &vSEitfPid,           false);
-  vAddPrimitive("seitf.req@"_Str,          &vSEitfReqFetch,      false);
-  vAddPrimitive("seitf.req!"_Str,          &vSEitfReqStore,      false);
-  vAddPrimitive("seitf.rsp@"_Str,          &vSEitfRspFetch,      false);
-  vAddPrimitive("seitf.rsp!"_Str,          &vSEitfRspStore,      false);
-  vAddPrimitive("seitf.responseQueue"_Str, &vSEitfResponseQueue, false);
-  vAddPrimitive("seitf.table@"_Str,        &vSEitfTableFetch,    false);
-  vAddPrimitive("seitf.tableRef"_Str,      &vSEitfTableRef,      false);
-  vAddPrimitive("seitf.tableDeref"_Str,    &vSEitfTableDeref,    false);
+  vAddPrimitive("seitf.count"_Str,            &vSEitfCount,            false);
+  vAddPrimitive("seitf.delete"_Str,           &vSEitfDelete,           false);
+  vAddPrimitive("seitf.dicStack"_Str,         &vSEitfDicStack,         false);
+  vAddPrimitive("seitf.dump"_Str,             &vSEitfDump,             false);
+  vAddPrimitive("seitf.entry@"_Str,           &vSEitfEntryFetch,       false);
+  vAddPrimitive("seitf.entry!"_Str,           &vSEitfEntryStore,       false);
+  vAddPrimitive("seitf.indexBuffer@"_Str,     &vSEitfIndexBufferFetch, false);
+  vAddPrimitive("seitf.indexBuffer!"_Str,     &vSEitfIndexBufferStore, false);
+  vAddPrimitive("seitf.indexRef"_Str,         &vSEitfIndexRef,         false);
+  vAddPrimitive("seitf.partition@"_Str,       &vSEitfPartitionFetch,   false);
+  vAddPrimitive("seitf.partition!"_Str,       &vSEitfPartitionStore,   false);
+  vAddPrimitive("seitf.pid"_Str,              &vSEitfPid,              false);
+  vAddPrimitive("seitf.req@"_Str,             &vSEitfReqFetch,         false);
+  vAddPrimitive("seitf.req!"_Str,             &vSEitfReqStore,         false);
+  vAddPrimitive("seitf.rsp@"_Str,             &vSEitfRspFetch,         false);
+  vAddPrimitive("seitf.rsp!"_Str,             &vSEitfRspStore,         false);
+  vAddPrimitive("seitf.responseQueue"_Str,    &vSEitfResponseQueue,    false);
+  vAddPrimitive("seitf.table@"_Str,           &vSEitfTableFetch,       false);
+  vAddPrimitive("seitf.tableRef"_Str,         &vSEitfTableRef,         false);
+  vAddPrimitive("seitf.tableDeref"_Str,       &vSEitfTableDeref,       false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -165,6 +167,51 @@ void Task::vSEitfEntryStore(NNP_Task nnpTask)
   ASSERT(nullptr == pEntry || CN_ENTRY == pEntry->eClass());
   
   pSEitf->m_pEntry = pEntry;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* seitf.indexBuffer@ -- fetch index buffer from SE interface                 */
+/*----------------------------------------------------------------------------*/
+void Task::vSEitfIndexBufferFetch(NNP_Task nnpTask)
+{
+  ENTRY("vSEitfIndexBufferFetch"_Str);
+  
+  Object* pPtrSEitf;
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitf) )
+    THROW_INVALID_DSTACK("seitf.indexBuffer@"_Str);
+  
+  SEitf* pSEitf = _pSEitf(pPtrSEitf);
+  ASSERT(CN_SEITF == pSEitf->eClass());
+  
+  nnpTask->m_pDataStack->vPushObject(pSEitf->m_pIndexBuffer);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* seitf.indexBuffer! -- store index buffer in SE interface                   */
+/*----------------------------------------------------------------------------*/
+void Task::vSEitfIndexBufferStore(NNP_Task nnpTask)
+{
+  ENTRY("vSEitfIndexBufferStore"_Str);
+  
+  Object* pPtrSEitf;
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitf) )
+    THROW_INVALID_DSTACK("seitf.indexBuffer!"_Str);
+  
+  SEitf* pSEitf = _pSEitf(pPtrSEitf);
+  ASSERT(CN_SEITF == pSEitf->eClass());
+  
+  Object* pPtrIndexBuffer;
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrIndexBuffer) )
+    THROW_INVALID_DSTACK("seitf.indexBuffer!"_Str);
+  
+  IndexBuffer* pIndexBuffer = _pIndexBuffer(pPtrIndexBuffer);
+  ASSERT(nullptr == pIndexBuffer || CN_INDEXBUFFER == pIndexBuffer->eClass());
+  
+  pSEitf->m_pIndexBuffer = pIndexBuffer;
   
   EXIT();
 }

@@ -211,9 +211,9 @@ Entry* IndexLevels::aPosition(Key& xKey, RelOpAry* pOpAryLower, IdxColVec* pColu
 }
 
 /*----------------------------------------------------------------------------*/
-/* position index at given key at an entry in level 0                         */
+/* position at an index buffer in level 0                                     */
 /*----------------------------------------------------------------------------*/
-Entry* IndexLevels::aPositionL0(Key& xKey, RelOpAry* pOpAryLower, IdxColVec* pColumnVec)
+IndexBuffer* IndexLevels::aPositionL0(Key& xKey, RelOpAry* pOpAryGreater, IdxColVec* pColVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXLEVELS,_FOOTER_);  
   
@@ -226,14 +226,11 @@ Entry* IndexLevels::aPositionL0(Key& xKey, RelOpAry* pOpAryLower, IdxColVec* pCo
   while (true) {
     iBufferLevel = pIndexBuffer->nBufferLevel();
     
-    pEntry = pIndexBuffer->aPosition(xKey, pOpAryLower, pColumnVec);
-    
     if (iBufferLevel == 0)
       break;
     
-    if ( ! pEntry ) {
-      break;
-    }
+    pEntry = pIndexBuffer->aPosition(xKey, pOpAryGreater, pColVec);
+    ASSERT( pEntry );
     
     bn nBufferNo = pEntry->nBufferNo();
     pIndexBuffer = (IndexBuffer*)gpBufferPool->pToBuffer(nBufferNo);
@@ -242,7 +239,7 @@ Entry* IndexLevels::aPositionL0(Key& xKey, RelOpAry* pOpAryLower, IdxColVec* pCo
     ASSERT(pIndexBuffer->eClass() == CN_INDEXBUFFER);
   }
   
-  return pEntry;
+  return pIndexBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
