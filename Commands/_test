@@ -11,15 +11,16 @@
 
 create table jidx (
 jidx_key   INTEGER NOT NULL,
-jidx_name  VARCHAR(32) NOT NULL
+jidx_name  VARCHAR(32) NOT NULL,
+jidx_x    INTEGER NOT NULL
 );
 
 create index idx on jidx (jidx_key);
 
-ld jidx "../JTEST/jidx.csv"
+ld jidx "../JTEST/jidx2.csv"
 
-anidx jidx idx
-dumpidx jidx idx
+//anidx jidx idx
+//dumpidx jidx idx
 
 print "\nSelecting rows with key >= 1 ...\n"
 lwrselidx jidx idx 1
@@ -27,11 +28,20 @@ lwrselidx jidx idx 1
 print "\nSelecting rows with key >= 28 ...\n"
 lwrselidx jidx idx 28
 
+print "\nSelecting rows with key >= 40 ...\n"
+lwrselidx jidx idx 40
+
+print "\nSelecting rows with key >= 45 ...\n"
+lwrselidx jidx idx 45
+
 print "\nSelecting rows with key >= 67 ...\n"
 lwrselidx jidx idx 67
 
 print "\nSelecting rows with key >= 99 ...\n"
 lwrselidx jidx idx 99
+
+print "\nSelecting rows with key >= 72 ...\n"
+lwrselidx jidx idx 72
 
 /*============================================================================*/
 /* end                                                                        */

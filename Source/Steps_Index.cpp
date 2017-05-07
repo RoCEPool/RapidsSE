@@ -112,12 +112,12 @@ void Task::vIndexBuffer(NNP_Task nnpTask)
   
   KeyWsp xKeyWsp;
   xKeyWsp.vAddElement(xValWsp);
-  IndexBuffer* pIndexBuffer = pIndexData->aPositionL0(xKeyWsp, pOpAryGreater);
+  IndexBuffer* pIndexBuffer = pIndexData->aPositionLevel(xKeyWsp, pOpAryGreater, 0);
   
   delete pOpAryGreater;
   
   bn nBuffer = pIndexBuffer->nBufferNo();
-  vTrace("L0 Buffer: %lld\n"_Str, *nBuffer);
+  //vTrace("L0 Buffer: %lld\n"_Str, *nBuffer);
   
   nnpTask->m_pDataStack->vPushObject(pIndexBuffer);
   
@@ -264,7 +264,6 @@ void Task::vIndexGetNextBuffer(NNP_Task nnpTask)
   
   if (pIndexBuffer->pNextBuffer()) {
     bn nBuffer = pIndexBuffer->pNextBuffer()->nBufferNo();
-    vTrace("Buffer: %lld\n"_Str, *nBuffer);
   }
   
   nnpTask->m_pDataStack->vPushObject(pIndexBuffer->pNextBuffer());

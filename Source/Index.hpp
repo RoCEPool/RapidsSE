@@ -44,17 +44,17 @@ namespace DBobjects
     Index(void);
     ~Index(void);
   
-    Str* pAnalyze(void);
-    void vCreateColumnVec(s32& sName, s48K& sDefinition);
-    void vDump(void);
-    Str* aIndexName(void);
-    void vIndexNo(i8 iIndexNo);
-    i8   iIndexNo(void);
-    void vShowColumnVec(void);
-    Dic* pSubDic(void);
-    void vTable(Table* pTable);
+    Str*   pAnalyze(void);
+    void   vCreateColumnVec(s32& sName, s48K& sDefinition);
+    void   vDump(void);
+    Str*   aIndexName(void);
+    void   vIndexNo(i8 iIndexNo);
+    i8     iIndexNo(void);
+    void   vShowColumnVec(void);
+    Dic*   pSubDic(void);
+    void   vTable(Table* pTable);
     Table* pTable(void);
-    void vTidyUp(void);
+    void   vTidyUp(void);
     
     IdxColVec* pIdxColVec(void);
   

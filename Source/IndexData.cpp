@@ -134,16 +134,7 @@ void IndexData::vDump(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
 
-  /*
-  IndexBuffer* pIndexBuffer = m_pIndexLevels->pFirstBuffer();
-
-  while (pIndexBuffer) {
-    pIndexBuffer->vShow();
-    pIndexBuffer = pIndexBuffer->pNextBuffer();
-  }
-  */
   m_pIndexLevels->vDump();
-  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -214,7 +205,6 @@ void IndexData::vInsertEntry(Row* pRow, i8 nRowNo, bn nBufferNo)
     
   // insert row entry in index
   m_pIndexLevels->vInsertEntry(xKeyWsp, xId, m_pIndex->pIdxColVec());
-  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -228,15 +218,13 @@ Entry* IndexData::pNextEntry(Entry* pEntry)
 }
 
 /*----------------------------------------------------------------------------*/
-/* position the indexData at an L0 index buffer                               */
+/* position the indexData at aparticular level of index buffer                */
 /*----------------------------------------------------------------------------*/
-IndexBuffer* IndexData::aPositionL0(KeyWsp& xKeyWsp, RelOpAry* pOpAryGreater)
+IndexBuffer* IndexData::aPositionLevel(KeyWsp& xKeyWsp, RelOpAry* pOpAryGreater, i8 iLevel)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
   
-  Key xKey(xKeyWsp);
-  
-  return m_pIndexLevels->aPositionL0(xKey, pOpAryGreater, m_pIndex->pIdxColVec());
+  return m_pIndexLevels->aPositionLevel(xKeyWsp, pOpAryGreater, m_pIndex->pIdxColVec(), iLevel);
 }
 
 /*----------------------------------------------------------------------------*/

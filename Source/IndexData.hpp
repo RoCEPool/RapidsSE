@@ -30,19 +30,18 @@ namespace DBobjects
     IndexData(Index* pIndex);
     ~IndexData(void);
   
-    Str*   pAnalyze(void);
-    void   vDump(void);
-    Index* pIndex(void);
+    Str*         pAnalyze(void);
+    void         vDump(void);
+    Index*       pIndex(void);
     IndexLevels* pIndexLevels(void);
-    i8     nIndexBuffers(void);
-    void   vInsertEntry(Row* pRow, i8 nRowNo, bn nBufferNo);
-    Entry* pNextEntry(Entry* pEntry);
-    void   vPopulate(void);
-    IndexBuffer* aPositionL0(KeyWsp& xKeyWsp, RelOpAry* pOpAryGreater);
-    void   vTidyUp(void);
-    void   vTruncate(void);
+    i8           nIndexBuffers(void);
+    void         vInsertEntry(Row* pRow, i8 nRowNo, bn nBufferNo);
+    Entry*       pNextEntry(Entry* pEntry);
+    IndexBuffer* aPositionLevel(KeyWsp& xKeyWsp, RelOpAry* pOpAryGreater, i8 iLevel);
+    void         vTidyUp(void);
+    void         vTruncate(void);
   
-    Footer* pFooter(void);
+    Footer*      pFooter(void);
   };
   
   IndexData* _pIndexData(void* pAddr);

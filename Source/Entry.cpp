@@ -193,6 +193,20 @@ bn Entry::nBufferNo(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get indexbuffer of this entry                                              */
+/*----------------------------------------------------------------------------*/
+IndexBuffer* Entry::pIndexBuffer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+  
+  bn nBufferNo = m_xId.uBuffer();
+  IndexBuffer* pIndexBuffer =
+    reinterpret_cast<IndexBuffer*>(gpBufferPool->pToBuffer(nBufferNo));
+  
+  return pIndexBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get Key                                                                    */
 /*----------------------------------------------------------------------------*/
 Key* Entry::aKey(void)
@@ -315,6 +329,26 @@ void Entry::vSetEntry(EntWsp& xEntWsp)
   
   // copy Key
   Key* aEntryKey = this->aKey();
+  Key* aEntWspKey = xEntWsp.aKey();
+  i8 nKeyBytes = xEntWsp.nKeySize();
+  
+  MemLib::vCopy(aEntryKey,aEntWspKey,nKeyBytes);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* set key given entry wsp                                                    */
+/*----------------------------------------------------------------------------*/
+void Entry::vSetKey(EntWsp& xEntWsp)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+  
+  ASSERT(m_nBytes);
+  
+  // copy Key
+  Key* aEntryKey = this->aKey();
+  
   Key* aEntWspKey = xEntWsp.aKey();
   i8 nKeyBytes = xEntWsp.nKeySize();
   

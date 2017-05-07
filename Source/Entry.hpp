@@ -5,6 +5,8 @@
 
 namespace DBobjects
 {
+  class IndexBuffer;
+  
   class Entry : public Object
   {
   private:
@@ -29,7 +31,8 @@ namespace DBobjects
     void   vShow(i8 iOffset);
   
     EntryData* aEntryData(void);
-    bn     nBufferNo(void);
+    
+    IndexBuffer* pIndexBuffer(void);
     Key*   aKey(void);
     bool   bMatches(Key* pKey, IdxColVec* pColVec, RelOpAry *pRelOpAry);
     u8     nOffsets(void);
@@ -38,9 +41,13 @@ namespace DBobjects
     RightVec* aRightVec(void);
     Id&    xId(void);
     void   vSetEntry(EntWsp& xEntWsp);
+    void   vSetKey(EntWsp& xEntWsp);
     i8     nSize(void);
 
     Footer* pFooter(void);
+    
+  private:
+    bn     nBufferNo(void);
   };
   
   Entry* _aEntry(void* aAddr);

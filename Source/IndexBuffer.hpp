@@ -8,6 +8,9 @@ namespace DBobjects
   
   class IndexBuffer : public Buffer
   {
+    
+  #define goDownLevel(iLevel) iLevel--;
+    
   private:
     i8           m_nBufferLevel; // index buffer level
     i8           m_nEntries;     // number of entries in this buffer
@@ -37,7 +40,6 @@ namespace DBobjects
     i8           nBufferLevel(void);
     void         vDump(void);
     i8           nEntries(void);
-    IndexBuffer* aFindBuffer(Key& xKey, RelOpAry* pOpAryLower, IdxColVec* pColVec);
     bool         bHasSpace(i8 nBytes);
     Entry*       aHead(void);
     void         vHigherLevel(IndexBuffer* pHigherLevel);
@@ -61,7 +63,7 @@ namespace DBobjects
     void         vMoveRight(void* aSrc, i8 nBytes);
     Entry*       aNewEntry(i8 nBytes, i8 nLevels, Entry* aAfterEntry);
     void         vNewHead(void);
-    Entry*       aPosition(Key& xKey, IdxColVec* pColVec, bool& bEqualTo, Entry** aReviseVec);
+    Entry*       aPosition(Key& xKey, RelOpAry* pOpAryPosition, IdxColVec* pColVec, bool& bEqualTo, Entry** aReviseVec);
     Entry*       aRightEntry(Entry* aEntry, i8 iLevel);    
     Entry*       aToEntry(i8 iOffset);
     i8           iToEndOffset(Entry* aEntry);
@@ -69,7 +71,6 @@ namespace DBobjects
     
   };
   
-  bool bI8Compare(void* pKeyInsert, void* pKeyScan, bool& bMatch);
   IndexBuffer* _pIndexBuffer(void* aAddr);
 }
 

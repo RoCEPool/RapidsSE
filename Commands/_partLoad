@@ -28,11 +28,17 @@ create table part (
 	 P_COMMENT           VARCHAR(23) NOT NULL
 );
 
+create index idx on part (P_PARTKEY);
+
 print "loading part.tbl..."
 ld part     "/tpch/part.tbl"
 
 pwf
 lf
+
+print "\nSelecting rows from part where P_PARTKEY >= 199600 ...\n"
+lwrselidx supplier part 199600
+
 
 space
 

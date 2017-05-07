@@ -1,0 +1,45 @@
+/*============================================================================*/
+/* _supplierLoad - create and load TPC-H Supllier table for SF1               */
+/*============================================================================*/
+
+cf~
+cf tenants
+cf boray
+cf catalogs
+cf rapidsse
+cf schemas
+
+create schema tpchSchema;
+
+cf tpchSchema
+cf tables
+
+create table supplier (
+	 S_SUPPKEY       INTEGER NOT NULL,
+	 S_NAME          CHAR(25) NOT NULL,
+	 S_ADDRESS       VARCHAR(40) NOT NULL,
+	 S_NATIONKEY     INTEGER NOT NULL,
+	 S_PHONE         CHAR(15) NOT NULL,
+	 S_ACCTBAL       DECIMAL(15,2) NOT NULL,
+	 S_COMMENT       VARCHAR(101) NOT NULL
+);
+
+create index idx on supplier (S_SUPPKEY);
+
+print "loading supplier.tbl..."
+ld supplier "/tpch/supplier.tbl"
+
+pwf
+lf
+
+print "\nSelecting rows from supplier where S_SUPPKEY >= 9972 ...\n"
+lwrselidx supplier idx 9972
+
+print "\nSelecting rows from supplier where S_SUPPKEY >= 9985 ...\n"
+lwrselidx supplier idx 9985
+
+print "\nSelecting rows from supplier where S_SUPPKEY >= 9995 ...\n"
+lwrselidx supplier idx 9995
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
