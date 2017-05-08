@@ -10,7 +10,7 @@ namespace Datums
   friend class DtmLib;
   
   private:
-    d8 m_dFLoat;
+    d8 m_dFlt;
   
   public:
     void* operator new(size_t);

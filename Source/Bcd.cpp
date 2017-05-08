@@ -98,7 +98,7 @@ void Bcd::vInitZero(void)
 /*----------------------------------------------------------------------------*/
 /* is bol argA < aArgB?                                                       */
 /*----------------------------------------------------------------------------*/
-bool Bol::bLessThan(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
+bool Bcd::bLessThan(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
 {
   return false;                                                  //! to be coded
 }
@@ -106,7 +106,7 @@ bool Bol::bLessThan(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
 /*----------------------------------------------------------------------------*/
 /* is bol argA <= aArgB?                                                      */
 /*----------------------------------------------------------------------------*/
-bool Bol::bLessEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
+bool Bcd::bLessEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
 {
   return false;                                                  //! to be coded
 }
@@ -114,7 +114,7 @@ bool Bol::bLessEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
 /*----------------------------------------------------------------------------*/
 /* is bol argA == aArgB?                                                      */
 /*----------------------------------------------------------------------------*/
-bool Bol::bEqualTo(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
+bool Bcd::bEqualTo(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
 {
   return false;                                                  //! to be coded
 }
@@ -122,7 +122,7 @@ bool Bol::bEqualTo(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
 /*----------------------------------------------------------------------------*/
 /* is bol argA != aArgB?                                                      */
 /*----------------------------------------------------------------------------*/
-bool Bol::bNotEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
+bool Bcd::bNotEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
 {
   return false;                                                  //! to be coded
 }
@@ -130,7 +130,7 @@ bool Bol::bNotEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
 /*----------------------------------------------------------------------------*/
 /* is bol argA >= aArgB?                                                      */
 /*----------------------------------------------------------------------------*/
-bool Bol::bGreaterEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
+bool Bcd::bGreaterEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
 {
   return false;                                                  //! to be coded
 }
@@ -138,7 +138,7 @@ bool Bol::bGreaterEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
 /*----------------------------------------------------------------------------*/
 /* is bol argA > aArgB?                                                       */
 /*----------------------------------------------------------------------------*/
-bool Bol::bGreaterThan(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
+bool Bcd::bGreaterThan(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
 {
   return false;                                                  //! to be coded
 }
@@ -146,7 +146,7 @@ bool Bol::bGreaterThan(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
 /*----------------------------------------------------------------------------*/
 /* cmp argA with argB (-ve: argA < argB, 0: argA == argB, +ve: argA > argB)   */
 /*----------------------------------------------------------------------------*/
-i8 Bol::iCmp(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
+i8 Bcd::iCmp(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
 {
   return 0;                                                      //! to be coded
 }

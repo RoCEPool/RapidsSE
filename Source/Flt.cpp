@@ -36,11 +36,77 @@ Flt::~Flt(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this float less than given float?                                       */
+/*----------------------------------------------------------------------------*/
+bool Flt::operator < (Flt& xFlt)
+{
+  if (m_dFlt < xFlt.m_dFlt)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this float less than or equal to given float?                           */
+/*----------------------------------------------------------------------------*/
+bool Flt::operator <= (Flt& xFlt)
+{
+  if (m_dFlt <= xFlt.m_dFlt)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this float equal to given float?                                        */
+/*----------------------------------------------------------------------------*/
+bool Flt::operator == (Flt& xFlt)
+{
+  if (m_dFlt == xFlt.m_dFlt)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this float not equal to given float?                                    */
+/*----------------------------------------------------------------------------*/
+bool Flt::operator != (Flt& xFlt)
+{
+  if (m_dFlt != xFlt.m_dFlt)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this float greater than or equal to given float?                        */
+/*----------------------------------------------------------------------------*/
+bool Flt::operator >= (Flt& xFlt)
+{
+  if (m_dFlt >= xFlt.m_dFlt)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this float greater than given float?                                    */
+/*----------------------------------------------------------------------------*/
+bool Flt::operator > (Flt& xFlt)
+{
+  if (m_dFlt > xFlt.m_dFlt)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* initialse to all zero                                                      */
 /*----------------------------------------------------------------------------*/
 void Flt::vInitZero(void)
 {
-  m_dFLoat = 0.0;
+  m_dFlt = 0.0;
 }
 
 /*============================================================================*/

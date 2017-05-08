@@ -36,7 +36,7 @@ Bol::~Bol(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this interval less than given interval?                                 */
+/* is this boolean less than given boolean?                                   */
 /*----------------------------------------------------------------------------*/
 bool Bol::operator < (Bol& xBol)
 {
@@ -47,7 +47,7 @@ bool Bol::operator < (Bol& xBol)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this interval less than or equal to given interval?                     */
+/* is this boolean less than or equal to given boolean?                       */
 /*----------------------------------------------------------------------------*/
 bool Bol::operator <= (Bol& xBol)
 {
@@ -58,7 +58,7 @@ bool Bol::operator <= (Bol& xBol)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this interval equal to given interval?                                  */
+/* is this boolean equal to given boolean?                                    */
 /*----------------------------------------------------------------------------*/
 bool Bol::operator == (Bol& xBol)
 {
@@ -69,7 +69,7 @@ bool Bol::operator == (Bol& xBol)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this interval not equal to given interval?                              */
+/* is this boolean not equal to given boolean?                                */
 /*----------------------------------------------------------------------------*/
 bool Bol::operator != (Bol& xBol)
 {
@@ -80,7 +80,7 @@ bool Bol::operator != (Bol& xBol)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this interval greater than or equal to given interval?                  */
+/* is this boolean greater than or equal to given boolean?                    */
 /*----------------------------------------------------------------------------*/
 bool Bol::operator >= (Bol& xBol)
 {
@@ -91,7 +91,7 @@ bool Bol::operator >= (Bol& xBol)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this interval greater than given interval?                              */
+/* is this boolean greater than given boolean?                                */
 /*----------------------------------------------------------------------------*/
 bool Bol::operator > (Bol& xBol)
 {
