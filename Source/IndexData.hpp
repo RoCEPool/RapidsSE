@@ -46,7 +46,7 @@ namespace DBobjects
     Footer*      pFooter(void);
     
   private:
-    IndexBuffer* pInsertEntry(IndexBuffer* pRoot,KeyWsp& xKeyWsp, Id xId, IdxColVec* pColVec, i8 iLevel);
+    void         vInsertEntry(IndexBuffer* pRoot,KeyWsp& xKeyWsp, Id xId, IdxColVec* pColVec, i8 iLevel);
     IndexBuffer* pInsertEntry(IndexBuffer* pRoot, IndexBuffer* pIndexBuffer, IdxColVec* pColVec);
     IndexBuffer* aPositionLevel(KeyWsp& xKeyWsp, IdxColVec* pColVec, i8 iLevel);
     IndexBuffer* aPositionL(IndexBuffer* pRoot, KeyWsp& xKeyWsp, RelOpAry* pOpAryGreater, IdxColVec* pColVec, i8 iLevel);

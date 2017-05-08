@@ -5,6 +5,8 @@
 
 namespace DBobjects
 {
+  class KeyWsp;
+  
   class Row : public Object
   {
   private:
@@ -23,6 +25,7 @@ namespace DBobjects
     char* pData(void);
     i8    iDataBytes(void);
     void  vDataBytes(i8 iDataBytes);
+    void  vGetKey(KeyWsp& xKeyWsp, IdxColVec* pColVec);
     i8    nSize(void);
     i8    iTxId(void);
     void  vTxId(i8 iTxId);

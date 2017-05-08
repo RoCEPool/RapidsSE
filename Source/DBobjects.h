@@ -23,16 +23,16 @@ using namespace DBobjects;
 //------------------------------------------------------------------------------
 
 #include "Column.hpp"
+
 typedef Vector<CN_COLUMNVEC,Column,CN_COLUMN,1024> ColumnVec;
 typedef Array<CN_ROARRAY,eRO,1024> RelOpAry;
+typedef Vector<CN_IDXCOLVEC,Column,CN_COLUMN,1024> IdxColVec;
 
 #include "Row.hpp"
 #include "RowBuffer.hpp"
 #include "RowStrand.hpp"
 
 #include "Data.hpp"
-
-typedef Vector<CN_IDXCOLVEC,Column,CN_COLUMN,1024> IdxColVec;
 
 #include "Id.hpp"
 #include "KeyWsp.hpp"

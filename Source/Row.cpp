@@ -112,6 +112,27 @@ void Row::vContentDump(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get a key as a keywsp wsp from this row for the given index columns        */
+/*----------------------------------------------------------------------------*/
+void Row::vGetKey(KeyWsp& xKeyWsp, IdxColVec* pColVec)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
+  
+  ValWsp xValWsp;
+  i8 iKey;
+  
+  // get the first field (hardcoded)
+  StrVal* pStrVal = (StrVal*)pData();
+  
+  // extract the key from the first field
+  iKey = pStrVal->iToI8();
+  
+  // add the key to the KeyWsp
+  xValWsp = iKey;
+  xKeyWsp.vAddElement(xValWsp);
+}
+
+/*----------------------------------------------------------------------------*/
 /* get size in bytes of this row                                              */
 /*----------------------------------------------------------------------------*/
 i8 Row::nSize(void)

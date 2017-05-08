@@ -177,30 +177,19 @@ void IndexData::vInsertEntry(Row* pRow, i8 nRowNo, bn nBufferNo)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
   
   Id xId;
-  ValWsp xValWsp;
   KeyWsp xKeyWsp;
-  i8 iKey;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // form the rowId
   xId.vBuffer(*nBufferNo);
   xId.vRow(nRowNo);
   
-  // get the first field (hardcoded)                            //ALKA
-  StrVal* pStrVal = (StrVal*)pRow->pData();
-  
-  // extract the key from the first field
-  iKey = pStrVal->iToI8();
-  
-  // add the key to the KeyWsp
-  xValWsp = iKey;
-  xKeyWsp.vAddElement(xValWsp);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the key from the row
+  pRow->vGetKey(xKeyWsp, m_pIndex->pIdxColVec());
     
   // insert row entry in index
-  IndexBuffer* pRoot = pInsertEntry(m_pRoot, xKeyWsp, xId, m_pIndex->pIdxColVec(), 0);
-
-  if (m_pRoot->nBufferLevel() < pRoot->nBufferLevel())
-    m_pRoot = pRoot;
+  vInsertEntry(m_pRoot, xKeyWsp, xId, m_pIndex->pIdxColVec(), 0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -264,19 +253,16 @@ void IndexData::vTruncate(void)
 /*----------------------------------------------------------------------------*/
 /* insert an entry for a row in the index buffer                              */
 /*----------------------------------------------------------------------------*/
-IndexBuffer* IndexData::pInsertEntry(IndexBuffer* pHigher, KeyWsp& xKeyWsp, Id xId, IdxColVec* pColVec, i8 iLevel)
+void IndexData::vInsertEntry(IndexBuffer* pHigher, KeyWsp& xKeyWsp, Id xId, IdxColVec* pColVec, i8 iLevel)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
   
   EntWsp xEntWsp;
   bool   bResult = false;
-  IndexBuffer* pRoot = pHigher;
   
   // initialize the EntWsp
   xEntWsp.vId(xId);
   xEntWsp.vAddKey(xKeyWsp);
-  
-  IndexBuffer* pOldRoot = m_pRoot;
   
   // get the size of the EntWsp
   i8 nBytes = Entry::nBytesRequired(xEntWsp);
@@ -307,8 +293,6 @@ IndexBuffer* IndexData::pInsertEntry(IndexBuffer* pHigher, KeyWsp& xKeyWsp, Id x
   //ASSERT(pIndexBuffer->nBufferLevel() == 0);
   bResult = pIndexBuffer->bInsert(xKeyWsp, xId, pColVec);
   ASSERT(bResult);
-  
-  return pRoot;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -319,8 +303,6 @@ IndexBuffer* IndexData::pInsertEntry(IndexBuffer* pRoot, IndexBuffer* pIndexBuff
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
 
   Id  xNewId;
-  
-  IndexBuffer* pNewRoot = pRoot;
   
   ASSERT(pRoot->nBufferLevel() == pIndexBuffer->nBufferLevel() + 1);
   // form the Id
@@ -339,7 +321,7 @@ IndexBuffer* IndexData::pInsertEntry(IndexBuffer* pRoot, IndexBuffer* pIndexBuff
   KeyWsp xFirstKeyWsp;
   xFirstKeyWsp.vAddKey(aKey, pColVec);
   
-  pRoot = pInsertEntry(pRoot, xFirstKeyWsp, xNewId, pColVec, pRoot->nBufferLevel());
+  vInsertEntry(pRoot, xFirstKeyWsp, xNewId, pColVec, pRoot->nBufferLevel());
   
   return pRoot;
 }
