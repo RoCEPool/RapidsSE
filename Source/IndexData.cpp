@@ -199,7 +199,7 @@ IndexBuffer* IndexData::aPosition(KeyWsp& xKeyWsp, RelOpAry* pOpAryGreater, i8 i
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
   
-  return aPositionL(m_pRoot, xKeyWsp, pOpAryGreater, m_pIndex->pIdxColVec(), iLevel);
+  return aPositionLevel(m_pRoot, xKeyWsp, pOpAryGreater, m_pIndex->pIdxColVec(), iLevel);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -274,7 +274,7 @@ void IndexData::vInsertEntry(IndexBuffer* pHigher, KeyWsp& xKeyWsp, Id xId, IdxC
   RelOpAry* pOpAryFind = new RelOpAry;
   pOpAryFind->vAdd(RO_GREATER_EQUAL);
   
-  pIndexBuffer = aPositionL(pHigher, xKeyWsp, pOpAryFind, pColVec, iLevel);
+  pIndexBuffer = aPositionLevel(pHigher, xKeyWsp, pOpAryFind, pColVec, iLevel);
   
   // check if IndexBuffer to insert into has space
   if ( ! pIndexBuffer->bHasSpace(nBytes) ) {
@@ -283,7 +283,7 @@ void IndexData::vInsertEntry(IndexBuffer* pHigher, KeyWsp& xKeyWsp, Id xId, IdxC
     pIndexBuffer = pSplitBuffer(pIndexBuffer, pColVec);
     
     // find position again
-    pIndexBuffer = aPositionL(pIndexBuffer->pHigherLevel(), xKeyWsp, pOpAryFind, pColVec, iLevel);
+    pIndexBuffer = aPositionLevel(pIndexBuffer->pHigherLevel(), xKeyWsp, pOpAryFind, pColVec, iLevel);
   }
   
   // assert we have a buffer
@@ -324,28 +324,9 @@ void IndexData::vInsertFirstEntry(IndexBuffer* pToBuffer, IndexBuffer* pFromBuff
 }
 
 /*----------------------------------------------------------------------------*/
-/* position at an index buffer at given level                                 */
-/*----------------------------------------------------------------------------*/
-IndexBuffer* IndexData::aPositionLevel(KeyWsp& xKeyWsp, IdxColVec* pColVec, i8 iLevel)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
-  
-  ASSERT ( m_pRoot );
-  
-  // create a relational operator array
-  RelOpAry* pOpAryGreater = new RelOpAry;
-  pOpAryGreater->vAdd(RO_GREATER_EQUAL);
-  
-  IndexBuffer* pIndexBuffer =  aPositionL(m_pRoot, xKeyWsp, pOpAryGreater, pColVec, iLevel);
-  
-  delete pOpAryGreater;
-  return pIndexBuffer;
-}
-
-/*----------------------------------------------------------------------------*/
 /* position at an index buffer in level 0                                     */
 /*----------------------------------------------------------------------------*/
-IndexBuffer* IndexData::aPositionL(IndexBuffer* pRoot, KeyWsp& xKeyWsp, RelOpAry* pOpAryGreater, IdxColVec* pColVec, i8 iLevel)
+IndexBuffer* IndexData::aPositionLevel(IndexBuffer* pRoot, KeyWsp& xKeyWsp, RelOpAry* pOpAryGreater, IdxColVec* pColVec, i8 iLevel)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
   
@@ -391,8 +372,15 @@ void IndexData::vFixHigherBuffer(IndexBuffer* pIndexBuffer, IdxColVec* pColVec, 
   // form a keyWsp from the key
   xKeyWsp.vAddKey(pFirstEntry->aKey(), pColVec);
 
-  pRoot = aPositionLevel(xKeyWsp, pColVec, iLevel);
+  // create a relational operator array
+  RelOpAry* pOpAryGreater = new RelOpAry;
+  pOpAryGreater->vAdd(RO_GREATER_EQUAL);
+  
+  pRoot =  aPositionLevel(m_pRoot, xKeyWsp, pOpAryGreater, pColVec, iLevel);
+
   pIndexBuffer->vHigherLevel(pRoot);
+  delete pOpAryGreater;
+
 }
 
 /*----------------------------------------------------------------------------*/
