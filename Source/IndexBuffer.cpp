@@ -331,6 +331,39 @@ Entry* IndexBuffer::aPosition(Key& xKey, RelOpAry* pRelOpAry, IdxColVec* pColVec
 }
 
 /*----------------------------------------------------------------------------*/
+/* position at an index buffer at level iLevel starting from this buffer      */
+/*----------------------------------------------------------------------------*/
+IndexBuffer* IndexBuffer::aPositionLevel(KeyWsp& xKeyWsp, RelOpAry* pOpAryGreater, IdxColVec* pColVec, i8 iLevel)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
+  
+  IndexBuffer* pIndexBuffer = this;
+  
+  i8 iBufferLevel;
+  Entry* pEntry;
+  
+  Key xKey(xKeyWsp);
+  
+  while (true) {
+    iBufferLevel = pIndexBuffer->nBufferLevel();
+    
+    if (iBufferLevel == iLevel)
+      break;
+    
+    // get the entry
+    pEntry = pIndexBuffer->aPosition(xKey, pOpAryGreater, pColVec);
+    ASSERT( pEntry );
+    
+    // get the index buffer of the entry
+    pIndexBuffer = pEntry->pIndexBuffer();
+    ASSERT(pIndexBuffer);
+    ASSERT(pIndexBuffer->eClass() == CN_INDEXBUFFER);
+  }
+  
+  return pIndexBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
 /* remove existing entry                                                      */
 /*----------------------------------------------------------------------------*/
 bool IndexBuffer::bRemove(Key* aKey)

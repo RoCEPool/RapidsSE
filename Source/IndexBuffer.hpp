@@ -47,6 +47,7 @@ namespace DBobjects
     bool         bInsert(KeyWsp& xKeyWsp, Id xId, IdxColVec* pColVec);
     IndexBuffer* pNextBuffer(void);
     Entry*       aNextEntry(Entry* aEntry);
+    IndexBuffer* aPositionLevel(KeyWsp& xKeyWsp, RelOpAry* pOpAryGreater, IdxColVec* pColVec, i8 iLevel);
     Entry*       aPosition(Key& xKey, RelOpAry* pOpAryFind, IdxColVec* pColVec);
     bool         bRemove(Key* aKey);
     void         vShow(void);
