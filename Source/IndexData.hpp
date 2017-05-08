@@ -47,7 +47,7 @@ namespace DBobjects
     
   private:
     void         vInsertEntry(IndexBuffer* pRoot,KeyWsp& xKeyWsp, Id xId, IdxColVec* pColVec, i8 iLevel);
-    IndexBuffer* pInsertEntry(IndexBuffer* pRoot, IndexBuffer* pIndexBuffer, IdxColVec* pColVec);
+    void         vInsertFirstEntry(IndexBuffer* pToBuffer, IndexBuffer* pFromBuffer, IdxColVec* pColVec);
     IndexBuffer* aPositionLevel(KeyWsp& xKeyWsp, IdxColVec* pColVec, i8 iLevel);
     IndexBuffer* aPositionL(IndexBuffer* pRoot, KeyWsp& xKeyWsp, RelOpAry* pOpAryGreater, IdxColVec* pColVec, i8 iLevel);
     IndexBuffer* pSplitBuffer(IndexBuffer* pIndexBuffer, IdxColVec* pColVec);

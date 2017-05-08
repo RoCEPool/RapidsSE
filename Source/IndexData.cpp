@@ -188,7 +188,7 @@ void IndexData::vInsertEntry(Row* pRow, i8 nRowNo, bn nBufferNo)
   // get the key from the row
   pRow->vGetKey(xKeyWsp, m_pIndex->pIdxColVec());
     
-  // insert row entry in index
+  // insert row entry in index at level 0
   vInsertEntry(m_pRoot, xKeyWsp, xId, m_pIndex->pIdxColVec(), 0);
 }
 
@@ -296,23 +296,23 @@ void IndexData::vInsertEntry(IndexBuffer* pHigher, KeyWsp& xKeyWsp, Id xId, IdxC
 }
 
 /*----------------------------------------------------------------------------*/
-/* insert an entry into the root buffer                                       */
+/* add first entry of fromBuffer into the toBuffer                            */
 /*----------------------------------------------------------------------------*/
-IndexBuffer* IndexData::pInsertEntry(IndexBuffer* pRoot, IndexBuffer* pIndexBuffer, IdxColVec* pColVec)
+void IndexData::vInsertFirstEntry(IndexBuffer* pToBuffer, IndexBuffer* pFromBuffer, IdxColVec* pColVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
 
   Id  xNewId;
   
-  ASSERT(pRoot->nBufferLevel() == pIndexBuffer->nBufferLevel() + 1);
+  ASSERT(pToBuffer->nBufferLevel() == pFromBuffer->nBufferLevel() + 1);
   // form the Id
-  bn nFirstBuffer = pIndexBuffer->nBufferNo();
+  bn nFirstBuffer = pFromBuffer->nBufferNo();
   xNewId.vBuffer(*nFirstBuffer);
   xNewId.vRow(C_HIGHER_LEVEL_ID);
   
   // get the first entry from the first buffer
-  Entry* pHead = pIndexBuffer->aHead();
-  Entry* pFirstEntry = pIndexBuffer->aNextEntry(pHead);
+  Entry* pHead = pFromBuffer->aHead();
+  Entry* pFirstEntry = pFromBuffer->aNextEntry(pHead);
   
   // get the key from the first entry
   Key* aKey = pFirstEntry->aKey();
@@ -321,9 +321,7 @@ IndexBuffer* IndexData::pInsertEntry(IndexBuffer* pRoot, IndexBuffer* pIndexBuff
   KeyWsp xFirstKeyWsp;
   xFirstKeyWsp.vAddKey(aKey, pColVec);
   
-  vInsertEntry(pRoot, xFirstKeyWsp, xNewId, pColVec, pRoot->nBufferLevel());
-  
-  return pRoot;
+  vInsertEntry(pToBuffer, xFirstKeyWsp, xNewId, pColVec, pToBuffer->nBufferLevel());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -403,7 +401,7 @@ IndexBuffer* IndexData::pSplitBuffer(IndexBuffer* pIndexBuffer, IdxColVec* pColV
     pRoot = new IndexBuffer(nHigherLevel);
     
     // insert first entry in new root from buffer we split
-    pRoot = pInsertEntry(pRoot, pIndexBuffer, pColVec);
+    vInsertFirstEntry(pRoot, pIndexBuffer, pColVec);
     
     // root now points to the new higher level
     m_pRoot = pRoot;
@@ -413,7 +411,7 @@ IndexBuffer* IndexData::pSplitBuffer(IndexBuffer* pIndexBuffer, IdxColVec* pColV
   }
   
   // insert the second entry in root buffer from the new IndexBuffer
-  pRoot = pInsertEntry(pRoot, pIndexBufferNew, pColVec);
+  vInsertFirstEntry(pRoot, pIndexBufferNew, pColVec);
   
   
   //---------------------------------------------------------
