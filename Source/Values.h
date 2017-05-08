@@ -44,7 +44,6 @@ typedef StrVar<32>    s32;
 typedef StrVar<256>   s256;
 typedef StrVar<C_48K> s48K;  // note this is 48K not 48KB
 typedef StrVar<C_1M>  s1M;   // note this is 1M not 1MB
-#include "ValWsp2.hpp"
 
 /*============================================================================*/
 /* end                                                                        */
