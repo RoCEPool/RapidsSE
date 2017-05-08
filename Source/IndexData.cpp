@@ -290,7 +290,6 @@ void IndexData::vInsertEntry(IndexBuffer* pHigher, KeyWsp& xKeyWsp, Id xId, IdxC
   ASSERT(pIndexBuffer);
   
   // insert entry into index buffer
-  //ASSERT(pIndexBuffer->nBufferLevel() == 0);
   bResult = pIndexBuffer->bInsert(xKeyWsp, xId, pColVec);
   ASSERT(bResult);
 }
@@ -377,6 +376,26 @@ IndexBuffer* IndexData::aPositionL(IndexBuffer* pRoot, KeyWsp& xKeyWsp, RelOpAry
 }
 
 /*----------------------------------------------------------------------------*/
+/* fix the higher level buffer in the given index buffer                      */
+/*----------------------------------------------------------------------------*/
+void IndexData::vFixHigherBuffer(IndexBuffer* pIndexBuffer, IdxColVec* pColVec, i8 iLevel)
+{
+   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
+  
+  KeyWsp xKeyWsp;
+  IndexBuffer* pRoot;
+  
+  // get first entry keywsp from first buffer
+  Entry* pFirstEntry = pIndexBuffer->aNextEntry(pIndexBuffer->aHead());
+
+  // form a keyWsp from the key
+  xKeyWsp.vAddKey(pFirstEntry->aKey(), pColVec);
+
+  pRoot = aPositionLevel(xKeyWsp, pColVec, iLevel);
+  pIndexBuffer->vHigherLevel(pRoot);
+}
+
+/*----------------------------------------------------------------------------*/
 /* split a buffer                                                             */
 /*----------------------------------------------------------------------------*/
 IndexBuffer* IndexData::pSplitBuffer(IndexBuffer* pIndexBuffer, IdxColVec* pColVec)
@@ -410,36 +429,17 @@ IndexBuffer* IndexData::pSplitBuffer(IndexBuffer* pIndexBuffer, IdxColVec* pColV
     pRoot = pHigherLevel;
   }
   
-  // insert the second entry in root buffer from the new IndexBuffer
+  //---------------------------------------------------------
+  // insert the first entry in root buffer from the new IndexBuffer
   vInsertFirstEntry(pRoot, pIndexBufferNew, pColVec);
-  
   
   //---------------------------------------------------------
   // fix the first index buffer's higher level buffer
-  KeyWsp xKeyWsp1;
-  
-  // get first entry keywsp from first buffer
-  Entry* pFirstEntry = pIndexBuffer->aNextEntry(pIndexBuffer->aHead());
-  
-  // form a keyWsp from the key
-  xKeyWsp1.vAddKey(pFirstEntry->aKey(), pColVec);
-  
-  pNewRoot = aPositionLevel(xKeyWsp1, pColVec, pRoot->nBufferLevel());
-  pIndexBuffer->vHigherLevel(pNewRoot);
+  vFixHigherBuffer(pIndexBuffer, pColVec, pRoot->nBufferLevel());
   
   //---------------------------------------------------------
   // fix the second index buffer's higher level buffer
-  KeyWsp xKeyWsp2;
-  
-  // get first entry keywsp from first buffer
-  pFirstEntry = pIndexBufferNew->aNextEntry(pIndexBufferNew->aHead());
-  
-  // form a keyWsp from the key
-  xKeyWsp2.vAddKey(pFirstEntry->aKey(), pColVec);
-  
-  pNewRoot = aPositionLevel(xKeyWsp2, pColVec, pRoot->nBufferLevel());
-  pIndexBufferNew->vHigherLevel(pNewRoot);
-  
+  vFixHigherBuffer(pIndexBufferNew, pColVec, pRoot->nBufferLevel());
   
   return pIndexBuffer;
 }

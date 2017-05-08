@@ -46,6 +46,7 @@ namespace DBobjects
     Footer*      pFooter(void);
     
   private:
+    void         vFixHigherBuffer(IndexBuffer* pIndexBuffer, IdxColVec* pColVec, i8 iLevel);
     void         vInsertEntry(IndexBuffer* pRoot,KeyWsp& xKeyWsp, Id xId, IdxColVec* pColVec, i8 iLevel);
     void         vInsertFirstEntry(IndexBuffer* pToBuffer, IndexBuffer* pFromBuffer, IdxColVec* pColVec);
     IndexBuffer* aPositionLevel(KeyWsp& xKeyWsp, IdxColVec* pColVec, i8 iLevel);
