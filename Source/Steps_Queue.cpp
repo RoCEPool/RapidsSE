@@ -55,11 +55,7 @@ ENTRY("vQueueAppend"_Str);
   ASSERT(pQueue);
   ASSERT(CN_QUEUE == pObject->eClass());
   
-#ifdef OLD_VALWSP
-  pQueue->bAppend(&xValWsp);
-#else
   pQueue->bAppend(xValWsp.pNestedValue());
-#endif
   
   EXIT();
 }

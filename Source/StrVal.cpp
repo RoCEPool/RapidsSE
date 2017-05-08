@@ -15,18 +15,10 @@ StrVal* Values::_pStrVal(void* aAddr)
 {
   StrVal* psRefactor = reinterpret_cast<StrVal*>(aAddr);
   
-#ifdef OLD_VALWSP
-  RASSERT( ! psRefactor
-          || CN_VALWSP == psRefactor->eClass()
-          || CN_STRVAL == psRefactor->eClass()
-          || CN_STRVAR == psRefactor->eClass()
-          );
-#else
   RASSERT( ! psRefactor
           || CN_STRVAL == psRefactor->eClass()
           || CN_STRVAR == psRefactor->eClass()
           );  
-#endif
   
   return psRefactor;
 }
