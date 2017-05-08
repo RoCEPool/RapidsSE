@@ -36,6 +36,72 @@ Int::~Int(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this integer less than given integer?                                   */
+/*----------------------------------------------------------------------------*/
+bool Int::operator < (Int& xInt)
+{
+  if (m_iInt < xInt.m_iInt)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this integer less than or equal to given integer?                       */
+/*----------------------------------------------------------------------------*/
+bool Int::operator <= (Int& xInt)
+{
+  if (m_iInt <= xInt.m_iInt)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this integer equal to given integer?                                    */
+/*----------------------------------------------------------------------------*/
+bool Int::operator == (Int& xInt)
+{
+  if (m_iInt == xInt.m_iInt)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this integer not equal to given integer?                                */
+/*----------------------------------------------------------------------------*/
+bool Int::operator != (Int& xInt)
+{
+  if (m_iInt != xInt.m_iInt)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this integer greater than or equal to given integer?                    */
+/*----------------------------------------------------------------------------*/
+bool Int::operator >= (Int& xInt)
+{
+  if (m_iInt >= xInt.m_iInt)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this integer greater than given integer?                                */
+/*----------------------------------------------------------------------------*/
+bool Int::operator > (Int& xInt)
+{
+  if (m_iInt > xInt.m_iInt)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* initialse to all zero                                                      */
 /*----------------------------------------------------------------------------*/
 void Int::vInitZero(void)
