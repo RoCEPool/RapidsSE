@@ -570,7 +570,8 @@ bool StrLib::bExtractItem(char** ps, char* pItem, char cDelimiter)
   
   for ( ; **ps; (*ps)++)
   {
-    if (' ' == **ps || cDelimiter == **ps)
+    //if (' ' == **ps || cDelimiter == **ps)
+    if (cDelimiter == **ps)
       break;
     
     bOnce = true;

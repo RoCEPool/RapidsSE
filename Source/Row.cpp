@@ -117,19 +117,54 @@ void Row::vContentDump(void)
 void Row::vGetKey(KeyWsp& xKeyWsp, IdxColVec* pColVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
+ 
+  char* pRowData = pData();
   
+  i8 nCols = pColVec->nItems();
+  i8 iCol = -1;
   ValWsp xValWsp;
-  i8 iKey;
-  
-  // get the first field (hardcoded)
+  s256 s;
+
+  // get the row data
   StrVal* pStrVal = (StrVal*)pData();
   
-  // extract the key from the first field
-  iKey = pStrVal->iToI8();
-  
-  // add the key to the KeyWsp
-  xValWsp = iKey;
-  xKeyWsp.vAddElement(xValWsp);
+  for (i8 iColumn = 0; iColumn < nCols; iColumn++) {
+    
+    // get the column from the index column vector
+    Column* pColumn = pColVec->pGet(iColumn);
+    
+    // get the column number of the column
+    i8 iColumnNo = pColumn->iColumnNo();
+    
+    char* pDst = s.s();
+    char* aCursor = reinterpret_cast<char*>(pStrVal->aStr());
+    
+    // get the column value from the row for the iColumnNo
+    do {
+      bool bFindPipe = StrLib::bExtractItem(&aCursor, pDst, '|');
+      ASSERT(bFindPipe);
+      iCol++;
+      aCursor++;
+    } while (iColumnNo != iCol);
+
+    switch(pColumn->eColumnType()) {
+        
+      case CT_INTEGER:
+        xValWsp = StrLib::iToI8(pDst);
+        break;
+        
+      case CT_VARCHAR:
+        xValWsp = s;
+        break;
+        
+      default:
+        ASSERT(0);
+    }
+    
+    // add the column value to the key
+    xKeyWsp.vAddElement(xValWsp);
+  }
+
 }
 
 /*----------------------------------------------------------------------------*/

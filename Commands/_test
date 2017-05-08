@@ -12,36 +12,41 @@
 create table jidx (
 jidx_key   INTEGER NOT NULL,
 jidx_name  VARCHAR(32) NOT NULL,
-jidx_x    INTEGER NOT NULL
+jidx_100   INTEGER NOT NULL,
+jidx_10    INTEGER NOT NULL
 );
 
-create index idx on jidx (jidx_key);
+create index idx1 on jidx (jidx_key);
+create index idx2 on jidx (jidx_100);
 
-ld jidx "../JTEST/jidx2.csv"
+ld jidx "../JTEST/jidx.csv"
 
 //anidx jidx idx
 //dumpidx jidx idx
 
-print "\nSelecting rows with key >= 1 ...\n"
-lwrselidx jidx idx 1
+print "\nSelecting rows with key >= 1 using idx1 ...\n"
+lwrselidx jidx idx1 1
 
-print "\nSelecting rows with key >= 28 ...\n"
-lwrselidx jidx idx 28
+print "\nSelecting rows with key >= 28 using idx1 ...\n"
+lwrselidx jidx idx1 28
 
-print "\nSelecting rows with key >= 40 ...\n"
-lwrselidx jidx idx 40
+print "\nSelecting rows with key >= 40 using idx1 ...\n"
+lwrselidx jidx idx1 40
 
-print "\nSelecting rows with key >= 45 ...\n"
-lwrselidx jidx idx 45
+print "\nSelecting rows with key >= 45 using idx1 ...\n"
+lwrselidx jidx idx1 45
 
-print "\nSelecting rows with key >= 67 ...\n"
-lwrselidx jidx idx 67
+print "\nSelecting rows with key >= 67 using idx1 ...\n"
+lwrselidx jidx idx1 67
 
-print "\nSelecting rows with key >= 99 ...\n"
-lwrselidx jidx idx 99
+print "\nSelecting rows with key >= 99 using idx1 ...\n"
+lwrselidx jidx idx1 99
 
-print "\nSelecting rows with key >= 72 ...\n"
-lwrselidx jidx idx 72
+print "\nSelecting rows with key >= 72 using idx1 ...\n"
+lwrselidx jidx idx1 72
+
+print "\nSelecting rows with key >= 180 using idx2 ...\n"
+lwrselidx jidx idx2 180
 
 /*============================================================================*/
 /* end                                                                        */
