@@ -272,7 +272,19 @@ void vTest2(void)
 {
   vTrace("-------------------------vTest2--------------------------\n"_Str);
 
+  Ivl xIvl1;
+  Ivl xIvl2;
+  
+  xIvl1.vSet(0,0);
+  xIvl2.vSet(1,0);
+  assert(xIvl1 < xIvl2);
+  assert( ! (xIvl2 < xIvl1) );
 
+  xIvl1.vSet(1,0);
+  xIvl2.vSet(1,1);
+  assert(xIvl1 < xIvl2);
+  assert( ! (xIvl2 < xIvl1) );
+  
   
   vTrace("-----------------------End vTest2------------------------\n"_Str);
 }

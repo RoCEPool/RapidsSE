@@ -17,7 +17,7 @@ namespace Datums
     //           ---
     //            64
     //           ===
-  };
+  } x;
   
   public:
     void* operator new(size_t);
@@ -25,7 +25,11 @@ namespace Datums
     Ivl(void);
     ~Ivl(void);
   
+    bool operator < (Ivl& xIvl);
+  
     void vInitZero(void);
+  
+  void vSet(u8 uSec, u8 uMsec);
   };
 }
 
