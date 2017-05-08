@@ -36,11 +36,66 @@ Ivl::~Ivl(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* initialse to all zero                                                      */
+/* is this interval less than given interval?                                 */
 /*----------------------------------------------------------------------------*/
 bool Ivl::operator < (Ivl& xIvl)
 {
   if (*(i8*)&x < *(i8*)&xIvl.x)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this interval less than or equal to given interval?                     */
+/*----------------------------------------------------------------------------*/
+bool Ivl::operator <= (Ivl& xIvl)
+{
+  if (*(i8*)&x <= *(i8*)&xIvl.x)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this interval equal to given interval?                                  */
+/*----------------------------------------------------------------------------*/
+bool Ivl::operator == (Ivl& xIvl)
+{
+  if (*(i8*)&x == *(i8*)&xIvl.x)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this interval not equal to given interval?                              */
+/*----------------------------------------------------------------------------*/
+bool Ivl::operator != (Ivl& xIvl)
+{
+  if (*(i8*)&x != *(i8*)&xIvl.x)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this interval greater than or equal to given interval?                  */
+/*----------------------------------------------------------------------------*/
+bool Ivl::operator >= (Ivl& xIvl)
+{
+  if (*(i8*)&x >= *(i8*)&xIvl.x)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this interval greater than given interval?                              */
+/*----------------------------------------------------------------------------*/
+bool Ivl::operator > (Ivl& xIvl)
+{
+  if (*(i8*)&x > *(i8*)&xIvl.x)
     return true;
   else
     return false;
