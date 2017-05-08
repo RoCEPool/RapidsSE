@@ -252,7 +252,7 @@ bool Ivl::bGreaterThan(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
 /*----------------------------------------------------------------------------*/
 /* cmp argA with argB (-ve: argA < argB, 0: argA == argB, +ve: argA > argB)   */
 /*----------------------------------------------------------------------------*/
-i8 Dte::iCmp(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
+i8 Ivl::iCmp(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
 {
   ASSERT(sizeof(i8) == nBytesA);
   ASSERT(sizeof(i8) == nBytesB);
