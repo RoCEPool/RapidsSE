@@ -36,6 +36,72 @@ Tsp::~Tsp(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this timestamp less than given timestamp?                               */
+/*----------------------------------------------------------------------------*/
+bool Tsp::operator < (Tsp& xTsp)
+{
+  if (*(i8*)&x < *(i8*)&xTsp.x)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this timestamp less than or equal to given timestamp?                   */
+/*----------------------------------------------------------------------------*/
+bool Tsp::operator <= (Tsp& xTsp)
+{
+  if (*(i8*)&x <= *(i8*)&xTsp.x)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this timestamp equal to given timestamp?                                */
+/*----------------------------------------------------------------------------*/
+bool Tsp::operator == (Tsp& xTsp)
+{
+  if (*(i8*)&x == *(i8*)&xTsp.x)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this timestamp not equal to given timestamp?                            */
+/*----------------------------------------------------------------------------*/
+bool Tsp::operator != (Tsp& xTsp)
+{
+  if (*(i8*)&x != *(i8*)&xTsp.x)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this timestamp greater than or equal to given timestamp?                */
+/*----------------------------------------------------------------------------*/
+bool Tsp::operator >= (Tsp& xTsp)
+{
+  if (*(i8*)&x >= *(i8*)&xTsp.x)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this timestamp greater than given timestamp?                            */
+/*----------------------------------------------------------------------------*/
+bool Tsp::operator > (Tsp& xTsp)
+{
+  if (*(i8*)&x > *(i8*)&xTsp.x)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* initialse to all zero                                                      */
 /*----------------------------------------------------------------------------*/
 void Tsp::vInitZero(void)
