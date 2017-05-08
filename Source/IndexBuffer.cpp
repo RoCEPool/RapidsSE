@@ -413,6 +413,7 @@ IndexBuffer* IndexBuffer::pSplitBuffer(IdxColVec* pColVec)
   // split the buffer into two
   i8 iSplitAtEntry = m_nEntries/2;
   
+  // get the split entry
   Entry* pLastEntry = pGetSplitEntry(iSplitAtEntry);
   
   // the last entry in the buffer after which the split will happen
@@ -421,10 +422,11 @@ IndexBuffer* IndexBuffer::pSplitBuffer(IdxColVec* pColVec)
   Entry* pReviseVec[C_FLAT_LEVELS];
   bool   bEqualTo;
   
-  // create a realtional operator array
+  // create a relational operator array
   RelOpAry* pOpAryFind = new RelOpAry;
   pOpAryFind->vAdd(RO_GREATER_EQUAL);
   
+  // find the position of the last entry in the buffer
   Entry* pAfterEntry = aPosition(*pLastEntry->aKey(), pOpAryFind, pColVec, bEqualTo, pReviseVec);
   ASSERT(pAfterEntry == pLastEntry);
   
@@ -467,19 +469,8 @@ IndexBuffer* IndexBuffer::pSplitBuffer(IdxColVec* pColVec)
   // allocate a new buffer at the same index level
   IndexBuffer* pNewBuffer = new IndexBuffer(m_nBufferLevel);
   
-  // copy entries from this buffer to new buffer
-  Entry* pEntry = pSplitEntry;
-  while (pEntry) {
-    
-    KeyWsp xKeyWsp;
-    
-    xKeyWsp.vAddKey(pEntry->aKey(), pColVec);
-    Key xKey(xKeyWsp);
-    
-    pNewBuffer->bInsert(xKeyWsp, pEntry->xId(), pColVec);
-    
-    pEntry = aNextEntry(pEntry);
-  }
+  // copy entries starting at the splitEntry from this buffer to the new buffer
+  pNewBuffer->vCopyEntries(this, pSplitEntry, pColVec);
   
   // give back nSize bytes to wsp in original buffer
   m_xWsp.vGive(nSize);
@@ -534,6 +525,26 @@ void IndexBuffer::vVerify(void)
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* copy entries from buffer from fromEntry                                                                     */
+/*----------------------------------------------------------------------------*/
+void IndexBuffer::vCopyEntries(IndexBuffer* pFromBuffer, Entry* pFromEntry, IdxColVec* pColVec)
+{
+  
+  Entry* pEntry = pFromEntry;
+  while (pEntry) {
+    
+    KeyWsp xKeyWsp;
+    
+    xKeyWsp.vAddKey(pEntry->aKey(), pColVec);
+    Key xKey(xKeyWsp);
+    
+    bInsert(xKeyWsp, pEntry->xId(), pColVec);
+    
+    pEntry = pFromBuffer->aNextEntry(pEntry);
+  }
+}
 
 /*----------------------------------------------------------------------------*/
 /* dump the revise vector                                                     */
@@ -868,7 +879,8 @@ void IndexBuffer::vNewHead(void)
 /*----------------------------------------------------------------------------*/
 /* positition to entry (optional set revise vector)                           */
 /*----------------------------------------------------------------------------*/
-Entry* IndexBuffer::aPosition(Key& xKey, RelOpAry* pOpAryPosition, IdxColVec* pColVec, bool& bEqualTo, Entry** aReviseVec)
+Entry* IndexBuffer::aPosition(Key& xKey, RelOpAry* pOpAryPosition, IdxColVec* pColVec,
+                              bool& bEqualTo, Entry** aReviseVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   

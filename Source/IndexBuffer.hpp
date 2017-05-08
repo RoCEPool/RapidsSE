@@ -55,6 +55,7 @@ namespace DBobjects
     void         vVerify(void);
     
   private:
+    void         vCopyEntries(IndexBuffer* pFromBuffer, Entry* pFromEntry, IdxColVec* pColVec);
     void         vDumpRevise(Entry** ppReviseVec);
     void         vFixHigherLevel(Entry* pNewEntry, IdxColVec* pColVec);
     void         vFixRevise(Entry** ppReviseVec, Entry* pNewEntry);
