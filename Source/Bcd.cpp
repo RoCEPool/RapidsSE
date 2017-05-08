@@ -38,7 +38,7 @@ Bcd::~Bcd(void)
 /*----------------------------------------------------------------------------*/
 /* is this decimal less than given decimal?                                   */
 /*----------------------------------------------------------------------------*/
-bool Bcd::operator < (Bcd& xIvl)
+bool Bcd::operator < (Bcd& xBcd)
 {
   return false;                                                  //! to be coded
 }
@@ -46,7 +46,7 @@ bool Bcd::operator < (Bcd& xIvl)
 /*----------------------------------------------------------------------------*/
 /* is this decimal less than or equal to given decimal?                       */
 /*----------------------------------------------------------------------------*/
-bool Bcd::operator <= (Bcd& xIvl)
+bool Bcd::operator <= (Bcd& xBcd)
 {
   return false;                                                  //! to be coded
 }
@@ -54,7 +54,7 @@ bool Bcd::operator <= (Bcd& xIvl)
 /*----------------------------------------------------------------------------*/
 /* is this decimal equal to given decimal?                                    */
 /*----------------------------------------------------------------------------*/
-bool Bcd::operator == (Bcd& xIvl)
+bool Bcd::operator == (Bcd& xBcd)
 {
   return false;                                                  //! to be coded
 }
@@ -62,7 +62,7 @@ bool Bcd::operator == (Bcd& xIvl)
 /*----------------------------------------------------------------------------*/
 /* is this decimal not equal to given decimal?                                */
 /*----------------------------------------------------------------------------*/
-bool Bcd::operator != (Bcd& xIvl)
+bool Bcd::operator != (Bcd& xBcd)
 {
   return false;                                                  //! to be coded
 }
@@ -70,7 +70,7 @@ bool Bcd::operator != (Bcd& xIvl)
 /*----------------------------------------------------------------------------*/
 /* is this decimal greater than or equal to given decimal?                    */
 /*----------------------------------------------------------------------------*/
-bool Bcd::operator >= (Bcd& xIvl)
+bool Bcd::operator >= (Bcd& xBcd)
 {
   return false;                                                  //! to be coded
 }
@@ -78,7 +78,7 @@ bool Bcd::operator >= (Bcd& xIvl)
 /*----------------------------------------------------------------------------*/
 /* is this decimal greater than given decimal?                                */
 /*----------------------------------------------------------------------------*/
-bool Bcd::operator > (Bcd& xIvl)
+bool Bcd::operator > (Bcd& xBcd)
 {
   return false;                                                  //! to be coded
 }
