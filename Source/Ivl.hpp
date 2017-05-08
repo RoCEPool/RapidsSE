@@ -8,16 +8,15 @@ namespace Datums
   class Ivl
   {
   friend class DtmLib;
+  
   private:
- 
-  struct {
-    
-    u8 m_uSec   : 54 ; // 0..1.8E16
-    u8 m_uMsec  : 10 ; // 0..1023
-    //           ---
-    //            64
-    //           ===
-  } x;
+    struct {
+      u8 m_uSec   : 54 ; // 0..1.8E16
+      u8 m_uMilli : 10 ; // 0..1023
+      //           ---
+      //            64
+      //           ===
+    } x;
   
   public:
     void* operator new(size_t);
@@ -25,11 +24,28 @@ namespace Datums
     Ivl(void);
     ~Ivl(void);
   
-    bool operator < (Ivl& xIvl);
-  
+    bool operator <  (Ivl& xIvl);
+    bool operator <= (Ivl& xIvl);
+    bool operator == (Ivl& xIvl);
+    bool operator != (Ivl& xIvl);
+    bool operator >= (Ivl& xIvl);
+    bool operator >  (Ivl& xIvl);
+
     void vInitZero(void);
   
-  void vSet(u8 uSec, u8 uMsec);
+    void vSet(u8 uSec, u8 uMilli);
+  
+    static bool bExtract(Str* aDst, Str* aSrc, i8& nBytesTaken);
+    static void vSprint(Str* aDst, Str* aSrc, i8& nBytesTaken);
+    
+    static bool bLessThan(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB);
+    static bool bLessEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB);
+    static bool bEqualTo(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB);
+    static bool bNotEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB);
+    static bool bGreaterEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB);
+    static bool bGreaterThan(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB);
+    
+    static i8 iCmp(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB);
   };
 }
 

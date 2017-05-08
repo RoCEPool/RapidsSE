@@ -8,13 +8,22 @@ namespace Datums
   class Int
   {
   friend class DtmLib;
+  
   private:
-    
+    i8 m_iInt;
+  
   public:
     void* operator new(size_t);
   
     Int(void);
     ~Int(void);
+  
+    bool operator <  (Int& xInt);
+    bool operator <= (Int& xInt);
+    bool operator == (Int& xInt);
+    bool operator != (Int& xInt);
+    bool operator >= (Int& xInt);
+    bool operator >  (Int& xInt);
   
     void vInitZero(void);
   

@@ -16,6 +16,13 @@ namespace Datums
     Vch(void);
     ~Vch(void);
   
+    bool operator <  (Vch& xVch);
+    bool operator <= (Vch& xVch);
+    bool operator == (Vch& xVch);
+    bool operator != (Vch& xVch);
+    bool operator >= (Vch& xVch);
+    bool operator >  (Vch& xVch);
+    
     void vInitZero(void);
   
     static bool bExtract(Str* aDst, Str* aSrc, i8& nBytesTaken);

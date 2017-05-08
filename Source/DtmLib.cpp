@@ -40,7 +40,7 @@ bool DtmLib::bExtractDte(char** aaSrc, Dte* aDate)
   // extract year
   if ( ! StrLib::bExtractU8(aaSrc,&uField) )
     return false;
-  aDate->m_uYear = uField;
+  aDate->x.m_uYear = uField;
   
   // skip - separator
   if ('-' != *(*aaSrc)++)
@@ -49,7 +49,7 @@ bool DtmLib::bExtractDte(char** aaSrc, Dte* aDate)
   // extract month
   if ( ! StrLib::bExtractU8(aaSrc,&uField) )
     return false;
-  aDate->m_uMonth = uField;
+  aDate->x.m_uMonth = uField;
   
   // skip - separator
   if ('-' != *(*aaSrc)++) return false;
@@ -57,7 +57,7 @@ bool DtmLib::bExtractDte(char** aaSrc, Dte* aDate)
   // extract day
   if ( ! StrLib::bExtractU8(aaSrc,&uField) )
     return false;
-  aDate->m_uDay = uField;
+  aDate->x.m_uDay = uField;
   
   // skip Z separator
   if ('Z' == **aaSrc)
@@ -105,7 +105,7 @@ bool DtmLib::bExtractTme(char** aaSrc, Tme* aTime)
   // extract hour
   if ( ! StrLib::bExtractU8(aaSrc,&uField) )
     return true;
-  aTime->m_uHour = uField;
+  aTime->x.m_uHour = uField;
   
   // skip : separator
   if (':' != *(*aaSrc)++)
@@ -114,7 +114,7 @@ bool DtmLib::bExtractTme(char** aaSrc, Tme* aTime)
   // extract minute
   if ( ! StrLib::bExtractU8(aaSrc,&uField) )
     return true;
-  aTime->m_uMinute = uField;
+  aTime->x.m_uMinute = uField;
   
   // skip : separator
   if (':' != *(*aaSrc)++)
@@ -123,13 +123,13 @@ bool DtmLib::bExtractTme(char** aaSrc, Tme* aTime)
   // extract second
   if ( ! StrLib::bExtractU8(aaSrc,&uField) )
     return true;
-  aTime->m_uSecond = uField;
+  aTime->x.m_uSecond = uField;
   
   // extract fraction (assuming milliseconds)
   if ('.' == **aaSrc) {
     (*aaSrc)++;
     if ( StrLib::bExtractU8(aaSrc,&uField) )
-      aTime->m_uMilli = uField;
+      aTime->x.m_uMilli = uField;
   }
   
   // skip Z separator
@@ -159,7 +159,7 @@ bool DtmLib::bExtractTsp(char** aaSrc, Tsp* aTimestamp)
   // extract year
   if ( ! StrLib::bExtractU8(aaSrc,&uField) )
     return false;
-  aTimestamp->m_uYear = uField;
+  aTimestamp->x.m_uYear = uField;
   
   // skip - separator
   if ('-' != *(*aaSrc)++)
@@ -168,7 +168,7 @@ bool DtmLib::bExtractTsp(char** aaSrc, Tsp* aTimestamp)
   // extract month
   if ( ! StrLib::bExtractU8(aaSrc,&uField) )
     return false;
-  aTimestamp->m_uMonth = uField;
+  aTimestamp->x.m_uMonth = uField;
   
   // skip - separator
   if ('-' != *(*aaSrc)++) return false;
@@ -176,7 +176,7 @@ bool DtmLib::bExtractTsp(char** aaSrc, Tsp* aTimestamp)
   // extract day
   if ( ! StrLib::bExtractU8(aaSrc,&uField) )
     return false;
-  aTimestamp->m_uDay = uField;
+  aTimestamp->x.m_uDay = uField;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - -
   // time portion
@@ -189,7 +189,7 @@ bool DtmLib::bExtractTsp(char** aaSrc, Tsp* aTimestamp)
   // extract hour
   if ( ! StrLib::bExtractU8(aaSrc,&uField) )
     return true;
-  aTimestamp->m_uHour = uField;
+  aTimestamp->x.m_uHour = uField;
   
   // skip : separator
   if (':' != *(*aaSrc)++)
@@ -198,7 +198,7 @@ bool DtmLib::bExtractTsp(char** aaSrc, Tsp* aTimestamp)
   // extract minute
   if ( ! StrLib::bExtractU8(aaSrc,&uField) )
     return true;
-  aTimestamp->m_uMinute = uField;
+  aTimestamp->x.m_uMinute = uField;
   
   // skip : separator
   if (':' != *(*aaSrc)++)
@@ -207,13 +207,13 @@ bool DtmLib::bExtractTsp(char** aaSrc, Tsp* aTimestamp)
   // extract second
   if ( ! StrLib::bExtractU8(aaSrc,&uField) )
     return true;
-  aTimestamp->m_uSecond = uField;
+  aTimestamp->x.m_uSecond = uField;
   
   // extract fraction (assuming milliseconds)
   if ('.' == **aaSrc) {
     (*aaSrc)++;
     if ( StrLib::bExtractU8(aaSrc,&uField) )
-      aTimestamp->m_uMilli = uField;
+      aTimestamp->x.m_uMilli = uField;
    }
   
   // skip Z separator
