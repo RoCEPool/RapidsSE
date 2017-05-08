@@ -229,7 +229,7 @@ Str* Table::pAnalyzeIndex(Index* pIndex)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-  
+ 
   i8 nEntriesTotal = 0;
   i8 nBuffersTotal = 0;
   i8 nEntries = 0;
@@ -244,9 +244,7 @@ Str* Table::pAnalyzeIndex(Index* pIndex)
     
     i8 iPartition = Partition::iSlotToPartition(iSlot);
     
-    
-    IndexLevels* pIndexLevels = pPartition(iSlot)->pIndexData(pIndex->iIndexNo())->pIndexLevels();
-    IndexBuffer *pIndexBuffer = pIndexLevels->pFirstBuffer();
+    IndexBuffer *pIndexBuffer = pPartition(iSlot)->pIndexData(pIndex->iIndexNo())->pRoot();
     
     sAnalysis.vCatSprint("  partition %lld: \n"_Str, iPartition);
   

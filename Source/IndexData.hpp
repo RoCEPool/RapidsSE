@@ -6,6 +6,8 @@
 namespace DBobjects
 {
 
+  static const i8 C_HIGHER_LEVEL_ID = 0xFFFF;
+  
   class Table;
   class Partition;
   class Index;
@@ -13,8 +15,9 @@ namespace DBobjects
   class IndexData : public Object
   {
   private:
+    Lock         m_zLock;
     Index*       m_pIndex;
-    IndexLevels* m_pIndexLevels;
+    IndexBuffer* m_pRoot;
   
     // must be last
     Footer m_xFooter;
@@ -33,15 +36,21 @@ namespace DBobjects
     Str*         pAnalyze(void);
     void         vDump(void);
     Index*       pIndex(void);
-    IndexLevels* pIndexLevels(void);
     i8           nIndexBuffers(void);
     void         vInsertEntry(Row* pRow, i8 nRowNo, bn nBufferNo);
-    Entry*       pNextEntry(Entry* pEntry);
-    IndexBuffer* aPositionLevel(KeyWsp& xKeyWsp, RelOpAry* pOpAryGreater, i8 iLevel);
+    IndexBuffer* aPosition(KeyWsp& xKeyWsp, RelOpAry* pOpAryGreater, i8 iLevel);
+    IndexBuffer* pRoot(void);
     void         vTidyUp(void);
     void         vTruncate(void);
   
     Footer*      pFooter(void);
+    
+  private:
+    IndexBuffer* pInsertEntry(IndexBuffer* pRoot,KeyWsp& xKeyWsp, Id xId, IdxColVec* pColVec, i8 iLevel);
+    IndexBuffer* pInsertEntry(IndexBuffer* pRoot, IndexBuffer* pIndexBuffer, IdxColVec* pColVec);
+    IndexBuffer* aPositionLevel(KeyWsp& xKeyWsp, IdxColVec* pColVec, i8 iLevel);
+    IndexBuffer* aPositionL(IndexBuffer* pRoot, KeyWsp& xKeyWsp, RelOpAry* pOpAryGreater, IdxColVec* pColVec, i8 iLevel);
+    IndexBuffer* pSplitBuffer(IndexBuffer* pIndexBuffer, IdxColVec* pColVec);
   };
   
   IndexData* _pIndexData(void* pAddr);

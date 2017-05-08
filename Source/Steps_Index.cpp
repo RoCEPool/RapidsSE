@@ -112,7 +112,7 @@ void Task::vIndexBuffer(NNP_Task nnpTask)
   
   KeyWsp xKeyWsp;
   xKeyWsp.vAddElement(xValWsp);
-  IndexBuffer* pIndexBuffer = pIndexData->aPositionLevel(xKeyWsp, pOpAryGreater, 0);
+  IndexBuffer* pIndexBuffer = pIndexData->aPosition(xKeyWsp, pOpAryGreater, 0);
   
   delete pOpAryGreater;
   

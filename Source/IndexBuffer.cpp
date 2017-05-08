@@ -472,7 +472,6 @@ void IndexBuffer::vVerify(void)
   //-------------------------------------------------------------------
   // need to rework....
   //-------------------------------------------------------------------
-  ASSERT(0);
   
   Entry* pEntryA = aNextEntry(aHead());
   if ( ! pEntryA )
