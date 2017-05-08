@@ -324,40 +324,6 @@ void IndexData::vInsertFirstEntry(IndexBuffer* pToBuffer, IndexBuffer* pFromBuff
 }
 
 /*----------------------------------------------------------------------------*/
-/* position at an index buffer in level 0                                     */
-/*----------------------------------------------------------------------------*/
-/*
-IndexBuffer* IndexData::aPositionLevel(IndexBuffer* pRoot, KeyWsp& xKeyWsp, RelOpAry* pOpAryGreater, IdxColVec* pColVec, i8 iLevel)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
-  
-  
-  IndexBuffer* pIndexBuffer = pRoot;
-  i8 iBufferLevel;
-  Entry* pEntry;
-  
-  Key xKey(xKeyWsp);
-  
-  while (true) {
-    iBufferLevel = pIndexBuffer->nBufferLevel();
-    
-    if (iBufferLevel == iLevel)
-      break;
-    
-    // get the entry
-    pEntry = pIndexBuffer->aPosition(xKey, pOpAryGreater, pColVec);
-    ASSERT( pEntry );
-    
-    // get the index buffer of the entry
-    pIndexBuffer = pEntry->pIndexBuffer();
-    ASSERT(pIndexBuffer);
-    ASSERT(pIndexBuffer->eClass() == CN_INDEXBUFFER);
-  }
-  
-  return pIndexBuffer;
-}
-*/
-/*----------------------------------------------------------------------------*/
 /* fix the higher level buffer in the given index buffer                      */
 /*----------------------------------------------------------------------------*/
 void IndexData::vFixHigherBuffer(IndexBuffer* pIndexBuffer, IdxColVec* pColVec, i8 iLevel)
@@ -381,7 +347,6 @@ void IndexData::vFixHigherBuffer(IndexBuffer* pIndexBuffer, IdxColVec* pColVec, 
 
   pIndexBuffer->vHigherLevel(pRoot);
   delete pOpAryGreater;
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -393,6 +358,7 @@ IndexBuffer* IndexData::pSplitBuffer(IndexBuffer* pIndexBuffer, IdxColVec* pColV
   
   IndexBuffer* pRoot;
   IndexBuffer* pNewRoot;
+  
   KeyWsp xFirstKeyWsp1;
   KeyWsp xFirstKeyWsp2;
   
@@ -432,7 +398,6 @@ IndexBuffer* IndexData::pSplitBuffer(IndexBuffer* pIndexBuffer, IdxColVec* pColV
   
   return pIndexBuffer;
 }
-
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/

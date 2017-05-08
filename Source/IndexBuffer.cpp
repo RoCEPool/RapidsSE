@@ -470,12 +470,14 @@ IndexBuffer* IndexBuffer::pSplitBuffer(IdxColVec* pColVec)
   // copy entries from this buffer to new buffer
   Entry* pEntry = pSplitEntry;
   while (pEntry) {
-    KeyWsp xKeyWsp;
-    xKeyWsp.vAddKey(pEntry->aKey(), pColVec);
     
+    KeyWsp xKeyWsp;
+    
+    xKeyWsp.vAddKey(pEntry->aKey(), pColVec);
     Key xKey(xKeyWsp);
-    Id xId = pEntry->xId();
-    pNewBuffer->bInsert(xKeyWsp, xId, pColVec);
+    
+    pNewBuffer->bInsert(xKeyWsp, pEntry->xId(), pColVec);
+    
     pEntry = aNextEntry(pEntry);
   }
   
