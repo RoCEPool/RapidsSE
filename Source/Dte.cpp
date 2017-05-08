@@ -36,7 +36,7 @@ Dte::~Dte(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this interval less than given interval?                                 */
+/* is this date less than given date?                                         */
 /*----------------------------------------------------------------------------*/
 bool Dte::operator < (Dte& xDte)
 {
@@ -47,7 +47,7 @@ bool Dte::operator < (Dte& xDte)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this interval less than or equal to given interval?                     */
+/* is this date less than or equal to given date?                             */
 /*----------------------------------------------------------------------------*/
 bool Dte::operator <= (Dte& xDte)
 {
@@ -58,7 +58,7 @@ bool Dte::operator <= (Dte& xDte)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this interval equal to given interval?                                  */
+/* is this date equal to given date?                                          */
 /*----------------------------------------------------------------------------*/
 bool Dte::operator == (Dte& xDte)
 {
@@ -69,7 +69,7 @@ bool Dte::operator == (Dte& xDte)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this interval not equal to given interval?                              */
+/* is this date not equal to given date?                                      */
 /*----------------------------------------------------------------------------*/
 bool Dte::operator != (Dte& xDte)
 {
@@ -80,7 +80,7 @@ bool Dte::operator != (Dte& xDte)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this interval greater than or equal to given interval?                  */
+/* is this date greater than or equal to given date?                          */
 /*----------------------------------------------------------------------------*/
 bool Dte::operator >= (Dte& xDte)
 {
@@ -91,7 +91,7 @@ bool Dte::operator >= (Dte& xDte)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this interval greater than given interval?                              */
+/* is this date greater than given date?                                      */
 /*----------------------------------------------------------------------------*/
 bool Dte::operator > (Dte& xDte)
 {
