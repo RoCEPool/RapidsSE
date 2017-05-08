@@ -36,6 +36,72 @@ Dte::~Dte(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this interval less than given interval?                                 */
+/*----------------------------------------------------------------------------*/
+bool Dte::operator < (Dte& xDte)
+{
+  if (*(i8*)&x < *(i8*)&xDte.x)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this interval less than or equal to given interval?                     */
+/*----------------------------------------------------------------------------*/
+bool Dte::operator <= (Dte& xDte)
+{
+  if (*(i8*)&x <= *(i8*)&xDte.x)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this interval equal to given interval?                                  */
+/*----------------------------------------------------------------------------*/
+bool Dte::operator == (Dte& xDte)
+{
+  if (*(i8*)&x == *(i8*)&xDte.x)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this interval not equal to given interval?                              */
+/*----------------------------------------------------------------------------*/
+bool Dte::operator != (Dte& xDte)
+{
+  if (*(i8*)&x != *(i8*)&xDte.x)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this interval greater than or equal to given interval?                  */
+/*----------------------------------------------------------------------------*/
+bool Dte::operator >= (Dte& xDte)
+{
+  if (*(i8*)&x >= *(i8*)&xDte.x)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this interval greater than given interval?                              */
+/*----------------------------------------------------------------------------*/
+bool Dte::operator > (Dte& xDte)
+{
+  if (*(i8*)&x > *(i8*)&xDte.x)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* initialse to all zero                                                      */
 /*----------------------------------------------------------------------------*/
 void Dte::vInitZero(void)
