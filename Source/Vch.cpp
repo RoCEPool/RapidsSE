@@ -39,48 +39,90 @@ Vch::~Vch(void)
 /* is this varchar less than given varchar?                                   */
 /*----------------------------------------------------------------------------*/
 bool Vch::operator < (Vch& xVch)
-{
-  return false;                                                  //! to be coded
+{                                                             //! to be reviewed
+  bool bLessThan;
+  
+  if (StrLib::iCompare((char*)this,(char*)&xVch) < 0)
+    bLessThan = true;
+  else
+    bLessThan = false;
+  
+  return bLessThan;
 }
 
 /*----------------------------------------------------------------------------*/
 /* is this varchar less than or equal to given varchar?                       */
 /*----------------------------------------------------------------------------*/
 bool Vch::operator <= (Vch& xVch)
-{
-  return false;                                                  //! to be coded
+{                                                             //! to be reviewed
+  bool bLessEqual;
+  
+  if (StrLib::iCompare((char*)this,(char*)&xVch) <= 0)
+    bLessEqual = true;
+  else
+    bLessEqual = false;
+  
+  return bLessEqual;
 }
 
 /*----------------------------------------------------------------------------*/
 /* is this varchar equal to given varchar?                                    */
 /*----------------------------------------------------------------------------*/
 bool Vch::operator == (Vch& xVch)
-{
-  return false;                                                  //! to be coded
+{                                                             //! to be reviewed
+  bool bEqualTo;
+  
+  if (StrLib::iCompare((char*)this,(char*)&xVch) == 0)
+    bEqualTo = true;
+  else
+    bEqualTo = false;
+  
+  return bEqualTo;
 }
 
 /*----------------------------------------------------------------------------*/
 /* is this varchar not equal to given varchar?                                */
 /*----------------------------------------------------------------------------*/
 bool Vch::operator != (Vch& xVch)
-{
-  return false;                                                  //! to be coded
+{                                                             //! to be reviewed
+  bool bNotEqual;
+  
+  if (StrLib::iCompare((char*)this,(char*)&xVch) != 0)
+    bNotEqual = true;
+  else
+    bNotEqual = false;
+  
+  return bNotEqual;
 }
 
 /*----------------------------------------------------------------------------*/
 /* is this varchar greater than or equal to given varchar?                    */
 /*----------------------------------------------------------------------------*/
 bool Vch::operator >= (Vch& xVch)
-{
-  return false;                                                  //! to be coded
+{                                                             //! to be reviewed
+  bool bGreaterEqual;
+  
+  if (StrLib::iCompare((char*)this,(char*)&xVch) >= 0)
+    bGreaterEqual = true;
+  else
+    bGreaterEqual = false;
+  
+  return bGreaterEqual;
 }
 
 /*----------------------------------------------------------------------------*/
 /* is this varchar greater than given varchar?                                */
 /*----------------------------------------------------------------------------*/
 bool Vch::operator > (Vch& xVch)
-{
-  return false;                                                  //! to be coded
+{                                                             //! to be reviewed
+  bool bGreaterThan;
+  
+  if (StrLib::iCompare((char*)this,(char*)&xVch) > 0)
+    bGreaterThan = true;
+  else
+    bGreaterThan = false;
+  
+  return bGreaterThan;
 }
 
 /*----------------------------------------------------------------------------*/
