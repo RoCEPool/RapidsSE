@@ -475,50 +475,6 @@ void Task::vDstackSwap(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* >valset -- collapse values on dstack to a valset                           */
 /*----------------------------------------------------------------------------*/
-#ifdef OLD_VALWSP
-void Task::vDstackToValSet(NNP_Task nnpTask)
-{
-  ENTRY("vDstackToValSet"_Str);
-  
-  i8 nValues;
-  
-  if ( ! nnpTask->m_pDataStack->bPop(nValues) )
-    THROW_INVALID_DSTACK(">valset"_Str);
-  
-  if ( ! nnpTask->m_pDataStack->bGuard(nValues) )
-    THROW_INVALID_DSTACK(">valset"_Str);
-  
-  Str* pCursor = nullptr;
-  ValSet xValSet;
-  
-  ValWsp xValWsp;
-  for (i8 iValue = 0; iValue < nValues; iValue++) {
-    
-    if ( ! nnpTask->m_pDataStack->bPop(xValWsp) )
-      THROW_INVALID_DSTACK(">valset"_Str);
-    
-    if (xValWsp.eClass() == CN_PTRVAL) {
-      PtrVal* pPtrVal = _pPtrVal(&xValWsp);
-      Object* pObject = pPtrVal->pPtr();
-      eCN eObjectClass   = pObject->eClass();
-      
-      if (eObjectClass == CN_PLAN) {
-        ValWsp xBinVal;
-        xBinVal.vAssignBinary(pObject);
-        xValWsp = xBinVal;
-      }
-    }
-    
-    xValSet.vAppend(pCursor,xValWsp.pNestedValueSelf());
-  }
-  
-  //  vTrace("ValSet %lld bytes\n"_Str,xValSet.nSize());
-  
-  nnpTask->m_pDataStack->vPushValSet(xValSet);
-  
-  EXIT();
-}
-#else // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 void Task::vDstackToValSet(NNP_Task nnpTask)
 {
   ENTRY("vDstackToValSet"_Str);
@@ -561,36 +517,10 @@ void Task::vDstackToValSet(NNP_Task nnpTask)
   
   EXIT();
 }
-#endif
 
 /*----------------------------------------------------------------------------*/
 /* >values -- expand valset to values on dstack                               */
 /*----------------------------------------------------------------------------*/
-#ifdef OLD_VALSET
-void Task::vDstackToValues(NNP_Task nnpTask)
-{
-  ENTRY("vDstackToValues"_Str);
-  
-  ValSet xValSet;
-  
-  if ( ! nnpTask->m_pDataStack->bPop(xValSet) )
-    THROW_INVALID_DSTACK(">values"_Str);
-  
-  i8 nVal = 0;
-  ValWsp* pValWsp[128];
-  
-  Str* pCursor = nullptr;
-  while (xValSet.bExtractValWsp(pCursor,pValWsp[nVal]))
-    nVal++;
-  
-  for (i8 iVal = nVal - 1; iVal >= 0; iVal--)
-    nnpTask->m_pDataStack->vPushValue(pValWsp[iVal]->pNestedValueSelf());
-  
-  nnpTask->m_pDataStack->vPushInt(nVal);
-  
-  EXIT();
-}
-#else // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 void Task::vDstackToValues(NNP_Task nnpTask)
 {
   ENTRY("vDstackToValues"_Str);
@@ -618,7 +548,6 @@ void Task::vDstackToValues(NNP_Task nnpTask)
   
   EXIT();
 }
-#endif
 
 /*----------------------------------------------------------------------------*/
 /* tuck -- copy the first stack value below second ( B A -- A B A )           */

@@ -853,17 +853,6 @@ void Stack::vPushValSet(ValSet& xValSet)
   vPushVal(&xValSet);
 }
 
-#ifdef OLD_VALWSP
-/*----------------------------------------------------------------------------*/
-/* push value onto data stack                                                 */
-/*----------------------------------------------------------------------------*/
-void Stack::vPushValWsp(ValWsp& xValWsp)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  vPushVal(&xValWsp);
-}
-#else
 /*----------------------------------------------------------------------------*/
 /* push value onto data stack                                                 */
 /*----------------------------------------------------------------------------*/
@@ -875,8 +864,6 @@ void Stack::vPushValWsp(ValWsp& xValWsp)
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
 }
-#endif
-
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -963,25 +950,6 @@ Value* Stack::pPeekValue(i8 iNthValue)
   return pGetValue(iNthValue);
 }
 
-#ifdef OLD_VALWSP
-/*----------------------------------------------------------------------------*/
-/* peek at given value on stack                                               */
-/*----------------------------------------------------------------------------*/
-void Stack::vPeekValWsp(i8 iNthValue, ValWsp& xValWsp)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  Value* pPeekedValue = pPeekValue(iNthValue);
-
-  i8 iSize = ValLib::iSize(pPeekedValue);
-  
-  //vTrace("Peek: %lld %p %lld\n"_Str,iNthValue,pPeekedValue,iSize);
-  
-  MemLib::vCopy(&xValWsp,pPeekedValue,iSize);
-}
-
-#else //////////////////////////////////////////////////////////////////////////
-
 /*----------------------------------------------------------------------------*/
 /* peek at given value on stack                                               */
 /*----------------------------------------------------------------------------*/
@@ -997,7 +965,6 @@ void Stack::vPeekValWsp(i8 iNthValue, ValWsp& xValWsp)
   
   MemLib::vCopy(xValWsp.pNestedValueSelf(),pPeekedValue,iSize);
 }
-#endif
 
 /*----------------------------------------------------------------------------*/
 /* poke at given value on stack                                               */

@@ -46,7 +46,7 @@ int main(int argc, const char* argv[])
   vSetSignalHandlers();
   
   //vTest1();
-  vTest2();
+  //vTest2();
   
   StorageEngine::vCheckAllAssumptions();
   
@@ -272,17 +272,6 @@ void vTest2(void)
 {
   vTrace("-------------------------vTest2--------------------------\n"_Str);
 
-  ValWsp2 xValWsp2;
-  
-  xValWsp2 = "abc"_Str;
-  vTrace("Str: %s\n"_Str,xValWsp2.pNestedStrVal()->aStr());
-  
-  
-  xValWsp2 = 1;
-  vTrace("Int: %lld\n"_Str,xValWsp2.pNestedIntVal()->iInt());
-  
-  xValWsp2 = (Object*)nullptr;
-  vTrace("Ptr: %p\n"_Str,xValWsp2.pNestedPtrVal()->pPtr());
 
   
   vTrace("-----------------------End vTest2------------------------\n"_Str);

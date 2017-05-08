@@ -38,40 +38,6 @@ void Task::vAddPrimitives_Vector(void)
 /*----------------------------------------------------------------------------*/
 /* vector.difference -- get the difference of two vectors                     */
 /*----------------------------------------------------------------------------*/
-#ifdef OLD_VALSET
-void Task::vVectorDifference(NNP_Task nnpTask)
-{
-  ENTRY("vVectorDifference"_Str);
-  
-  ValSet xValSet1;
-  ValSet xValSet2;
-  
-  if ( ! nnpTask->m_pDataStack->bPop(xValSet2) )
-    THROW_INVALID_DSTACK("vector.difference"_Str);
-  
-  if ( ! nnpTask->m_pDataStack->bPop(xValSet1) )
-    THROW_INVALID_DSTACK("vector.difference"_Str);
-  
-  ValWsp* pValWsp1;
-  ValWsp* pValWsp2;
-  
-  Str* pCursor1 = nullptr;
-  Str* pCursor2 = nullptr;
-  i8 nVals = 0;
-  while (xValSet2.bExtractValWsp(pCursor2,pValWsp2)) {
-    
-    bool bResult = xValSet1.bExtractValWsp(pCursor1,pValWsp1);
-    ASSERT(bResult);
-    i8 iDiff = _pIntVal(pValWsp1)->iInt() - _pIntVal(pValWsp2)->iInt();
-    nnpTask->m_pDataStack->vPushInt(iDiff);
-    nVals++;
-  }
-
-  nnpTask->m_pDataStack->vPushInt(nVals);
-  
-  EXIT();
-}
-#else // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 void Task::vVectorDifference(NNP_Task nnpTask)
 {
   ENTRY("vVectorDifference"_Str);
@@ -104,7 +70,6 @@ void Task::vVectorDifference(NNP_Task nnpTask)
   
   EXIT();
 }
-#endif
 
 /*============================================================================*/
 /* end                                                                        */
