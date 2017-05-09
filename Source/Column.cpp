@@ -388,9 +388,44 @@ char* Column::aValue(i8& nBytes, char** aaCursor)
 
   Str* aElem;
   char* aValue = *aaCursor;
+  
   switch (m_eColumnType) {
       
-    case CT_INTEGER: nBytes = sizeof(i8); break;
+    case CT_BOOLEAN:
+      nBytes = sizeof(i8);
+      break;
+      
+    case CT_DATE:
+      nBytes = sizeof(i8);
+      break;
+      
+    case CT_DECIMAL:
+      ASSERT(0);
+      break;
+      
+    case CT_FLOAT:
+      nBytes = sizeof(d8);
+      break;
+      
+    case CT_INTEGER:
+      nBytes = sizeof(i8);
+      break;
+      
+    case CT_INTERVAL:
+      nBytes = sizeof(i8);
+      break;
+      
+    case CT_TIME:
+      nBytes = sizeof(i8);
+      break;
+      
+    case CT_TIMESTAMP:
+      nBytes = sizeof(i8);
+      break;
+      
+    case CT_VARBINARY:
+      ASSERT(0);
+      break;
       
     case CT_VARCHAR:
       aElem = (Str*)aValue;
