@@ -499,44 +499,73 @@ i8 Column::iCmp(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
 /*----------------------------------------------------------------------------*/
 /* cmp                                                                        */
 /*----------------------------------------------------------------------------*/
+//bool Column::bCmp(eRO eRelnOp, char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+//  
+//  switch (m_eColumnType) {
+//    case CT_BOOLEAN:   ASSERT(0);
+//      
+//    case CT_CHAR:      ASSERT(0);
+//      
+//    case CT_DATE:      ASSERT(0);
+//      
+//    case CT_DECIMAL:   ASSERT(0);
+//      
+//    case CT_FLOAT:     ASSERT(0);
+//      
+//    case CT_INTEGER:
+//      switch(eRelnOp) {
+//        case RO_LESS_THAN:    return bLessThan    (aArgA, nBytesA, aArgB, nBytesB);
+//        case RO_LESS_EQUAL:   return bLessEqual   (aArgA, nBytesA, aArgB, nBytesB);
+//        case RO_EQUAL:        return bEqualTo     (aArgA, nBytesA, aArgB, nBytesB);
+//        case RO_NOT_EQUAL:    return bNotEqual    (aArgA, nBytesA, aArgB, nBytesB);
+//        case RO_GREATER_EQUAL:return bGreaterEqual(aArgA, nBytesA, aArgB, nBytesB);
+//        case RO_GREATER:      return bGreaterThan (aArgA, nBytesA, aArgB, nBytesB);
+//        default: ASSERT(0);
+//      }
+//      
+//    case CT_INTERVAL:  ASSERT(0);
+//      
+//    case CT_TIME:      ASSERT(0);
+//      
+//    case CT_TIMESTAMP: ASSERT(0);
+//      
+//    case CT_VARBINARY: ASSERT(0);
+//      
+//    case CT_VARCHAR:
+//      switch(eRelnOp) {
+//        case RO_LESS_THAN:    return bLessThan    (aArgA, nBytesA, aArgB, nBytesB);
+//        case RO_LESS_EQUAL:   return bLessEqual   (aArgA, nBytesA, aArgB, nBytesB);
+//        case RO_EQUAL:        return bEqualTo     (aArgA, nBytesA, aArgB, nBytesB);
+//        case RO_NOT_EQUAL:    return bNotEqual    (aArgA, nBytesA, aArgB, nBytesB);
+//        case RO_GREATER_EQUAL:return bGreaterEqual(aArgA, nBytesA, aArgB, nBytesB);
+//        case RO_GREATER:      return bGreaterThan (aArgA, nBytesA, aArgB, nBytesB);
+//        default: ASSERT(0);
+//      }
+//      
+//    default:
+//      ASSERT(0);
+//  }
+//  return true;
+//}
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 bool Column::bCmp(eRO eRelnOp, char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
   
-  switch (m_eColumnType) {
-    case CT_BOOLEAN:   ASSERT(0);
-    case CT_CHAR:      ASSERT(0);
-    case CT_DATE:      ASSERT(0);
-    case CT_DECIMAL:   ASSERT(0);
-    case CT_FLOAT:     ASSERT(0);
-    case CT_INTEGER:
-      switch(eRelnOp) {
-        case RO_LESS_THAN:    return bLessThan    (aArgA, nBytesA, aArgB, nBytesB);
-        case RO_LESS_EQUAL:   return bLessEqual   (aArgA, nBytesA, aArgB, nBytesB);
-        case RO_EQUAL:        return bEqualTo     (aArgA, nBytesA, aArgB, nBytesB);
-        case RO_NOT_EQUAL:    return bNotEqual    (aArgA, nBytesA, aArgB, nBytesB);
-        case RO_GREATER_EQUAL:return bGreaterEqual(aArgA, nBytesA, aArgB, nBytesB);
-        case RO_GREATER:      return bGreaterThan (aArgA, nBytesA, aArgB, nBytesB);
-        default: ASSERT(0);
-      }
-    case CT_INTERVAL:  ASSERT(0);
-    case CT_TIME:      ASSERT(0);
-    case CT_TIMESTAMP: ASSERT(0);
-    case CT_VARBINARY: ASSERT(0);
-    case CT_VARCHAR:
-      switch(eRelnOp) {
-        case RO_LESS_THAN:    return bLessThan    (aArgA, nBytesA, aArgB, nBytesB);
-        case RO_LESS_EQUAL:   return bLessEqual   (aArgA, nBytesA, aArgB, nBytesB);
-        case RO_EQUAL:        return bEqualTo     (aArgA, nBytesA, aArgB, nBytesB);
-        case RO_NOT_EQUAL:    return bNotEqual    (aArgA, nBytesA, aArgB, nBytesB);
-        case RO_GREATER_EQUAL:return bGreaterEqual(aArgA, nBytesA, aArgB, nBytesB);
-        case RO_GREATER:      return bGreaterThan (aArgA, nBytesA, aArgB, nBytesB);
-        default: ASSERT(0);
-      }
-    default:           ASSERT(0);
-
+  switch(eRelnOp) {
+    case RO_LESS_THAN:    return bLessThan    (aArgA, nBytesA, aArgB, nBytesB);
+    case RO_LESS_EQUAL:   return bLessEqual   (aArgA, nBytesA, aArgB, nBytesB);
+    case RO_EQUAL:        return bEqualTo     (aArgA, nBytesA, aArgB, nBytesB);
+    case RO_NOT_EQUAL:    return bNotEqual    (aArgA, nBytesA, aArgB, nBytesB);
+    case RO_GREATER_EQUAL:return bGreaterEqual(aArgA, nBytesA, aArgB, nBytesB);
+    case RO_GREATER:      return bGreaterThan (aArgA, nBytesA, aArgB, nBytesB);
+    default: ASSERT(0);
   }
-  return true;
+  
+  ASSERT(0);
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
