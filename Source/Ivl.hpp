@@ -11,8 +11,8 @@ namespace Datums
   
   private:
     struct {
-      u8 m_uSec   : 54 ; // 0..1.8E16
-      u8 m_uMilli : 10 ; // 0..1023
+      u8 m_uSecond : 54 ; // 0..1.8E16
+      u8 m_uMilli  : 10 ; // 0..1023
       //           ---
       //            64
       //           ===
@@ -34,7 +34,7 @@ namespace Datums
     void vInitZero(void);
     i8   iAsI8(void);
   
-    void vSet(u8 uSec, u8 uMilli);
+    void vSet(u8 uSecond, u8 uMilli);
   
     static bool bExtract(Str* aDst, Str* aSrc, i8& nBytesTaken);
     static void vSprint(Str* aDst, Str* aSrc, i8& nBytesTaken);

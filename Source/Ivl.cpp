@@ -106,7 +106,7 @@ bool Ivl::operator > (Ivl& xIvl)
 /*----------------------------------------------------------------------------*/
 void Ivl::vInitZero(void)
 {
-  x.m_uSec   = 0;
+  x.m_uSecond   = 0;
   x.m_uMilli = 0;
 }
 
@@ -123,10 +123,10 @@ i8 Ivl::iAsI8(void)
 /*----------------------------------------------------------------------------*/
 /* set members                                                                */
 /*----------------------------------------------------------------------------*/
-void Ivl::vSet(u8 uSec, u8 uMilli)
+void Ivl::vSet(u8 uSecond, u8 uMilli)
 {
-  x.m_uSec   = uSec;
-  x.m_uMilli = uMilli;
+  x.m_uSecond = uSecond;
+  x.m_uMilli  = uMilli;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -87,7 +87,30 @@ bool DtmLib::bExtractInt(char** aaSrc, Int* aInteger)
 /*----------------------------------------------------------------------------*/
 bool DtmLib::bExtractIvl(char** aaSrc, Ivl* aInterval)
 {
-  return false;
+  u8 uField;
+  
+  aInterval->vInitZero();
+  
+  if ( ! *aaSrc )
+    return false;
+  
+  // extract second
+  if ( ! StrLib::bExtractU8(aaSrc,&uField) )
+    return true;
+  aInterval->x.m_uSecond = uField;
+  
+  // skip . separator
+  if ('.' != *(*aaSrc)++)
+    return true;
+  
+  // extract fraction (assuming milliseconds)
+  if ('.' == **aaSrc) {
+    (*aaSrc)++;
+    if ( StrLib::bExtractU8(aaSrc,&uField) )
+      aInterval->x.m_uMilli = uField;
+  }
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
