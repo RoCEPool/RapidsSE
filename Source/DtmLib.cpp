@@ -120,8 +120,25 @@ bool DtmLib::bExtractFlt(char** aaSrc, Flt* aFloat)
 /*----------------------------------------------------------------------------*/
 bool DtmLib::bExtractInt(char** aaSrc, Int* aInteger)
 {
-  return false;
-}
+  i8 iResult = 0;
+  char xBuffer[256];
+  char* aChar = xBuffer;
+  
+  // collect the csv
+  while ('|' != **aaSrc && ',' != **aaSrc)
+    *aChar = *(*aaSrc)++;
+  *aChar = '\0';
+  
+  // find first char
+  for (aChar = xBuffer; *aChar && ' ' == *aChar; aChar++)
+    ;
+  
+  // convert
+  iResult = atol(aChar);
+  
+  aInteger->m_iInt = iResult;
+  
+  return true;}
 
 /*----------------------------------------------------------------------------*/
 /* extract an interval from substr                                            */
