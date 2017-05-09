@@ -19,7 +19,28 @@ bool DtmLib::bExtractBcd(char** aaSrc, Bcd* aDecimal)
 /*----------------------------------------------------------------------------*/
 bool DtmLib::bExtractBol(char** aaSrc, Bol* aBoolean)
 {
-  return false;
+  bool bResult = false;
+  char xBuffer[256];
+  char* aChar = xBuffer;
+  
+  // collect the csv
+  while ('|' != **aaSrc && ',' != **aaSrc)
+    *aChar = *(*aaSrc)++;
+  *aChar = '\0';
+
+  // find first char
+  for (aChar = xBuffer; *aChar && ' ' == *aChar; aChar++)
+    ;
+  
+  // test for true
+  if ('t' == *aChar ||
+      'T' == *aChar ||
+      'y' == *aChar ||
+      'Y' == *aChar ||
+      '1' == *aChar)
+    bResult = true;
+
+  return bResult;
 }
 
 /*----------------------------------------------------------------------------*/
