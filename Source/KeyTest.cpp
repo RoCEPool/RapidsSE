@@ -38,7 +38,7 @@ void KeyTest::vTest(void)
     xValWsp = i;
     
     xKeyWsp.vReset();
-    xKeyWsp.vAddElement(xValWsp);
+    xKeyWsp.vAddElement(xValWsp, pCol);
     //xKeyWsp.vShow();
     
     pKeyVal = new KeyVal(xKeyWsp);
@@ -71,7 +71,7 @@ void KeyTest::vTest(void)
   // scan the key vector for key value: >= 3
   xValWsp = (i8)3;
   xKeyWsp.vReset();
-  xKeyWsp.vAddElement(xValWsp);
+  xKeyWsp.vAddElement(xValWsp, pCol);
   KeyVal* pKeyValFind = new KeyVal(xKeyWsp);
   vTrace("Find Key value >= 3\n"_Str);
   
@@ -99,7 +99,7 @@ void KeyTest::vTest(void)
   // scan the key vector for key value: >= 3
   xValWsp = (i8)7;
   xKeyWsp.vReset();
-  xKeyWsp.vAddElement(xValWsp);
+  xKeyWsp.vAddElement(xValWsp, pCol);
   vTrace("Find Key value < 7\n"_Str);
   
   pOpAryFind->vClear();
@@ -160,7 +160,7 @@ void KeyTest::vTest(void)
     pStrVal = _pStrVal(xValWsp.pNestedValueSelf());
     
     xKeyWsp.vReset();
-    xKeyWsp.vAddElement(xValWsp);
+    xKeyWsp.vAddElement(xValWsp, pCol);
     //xKeyWsp.vShow();
     
     pKeyVal = new KeyVal(xKeyWsp);
@@ -182,7 +182,7 @@ void KeyTest::vTest(void)
   pStrVal = _pStrVal(xValWsp.pNestedValueSelf());
   
   xKeyWsp.vReset();
-  xKeyWsp.vAddElement(xValWsp);
+  xKeyWsp.vAddElement(xValWsp, pCol);
   pKeyValFind = new KeyVal(xKeyWsp);
   
   // scan the key vector for key value: >= pKeyValFind
@@ -219,7 +219,7 @@ void KeyTest::vTest(void)
   pStrVal = _pStrVal(xValWsp.pNestedValueSelf());
   
   xKeyWsp.vReset();
-  xKeyWsp.vAddElement(xValWsp);
+  xKeyWsp.vAddElement(xValWsp, pCol);
   pKeyValFind = new KeyVal(xKeyWsp);
   
   // scan the key vector for key value: < pKeyValFind
@@ -279,11 +279,11 @@ void KeyTest::vTest(void)
     for (i8 j = 10; j <= 30; j += 10) {
       xValWsp = i;
       xKeyWsp.vReset();
-      xKeyWsp.vAddElement(xValWsp);
+      xKeyWsp.vAddElement(xValWsp, pCol0);
       //xKeyWsp.vShow();
       
       xValWsp = j;
-      xKeyWsp.vAddElement(xValWsp);
+      xKeyWsp.vAddElement(xValWsp, pCol1);
       //xKeyWsp.vShow();
       pKeyVal = new KeyVal(xKeyWsp);
       pKeyVec->vAdd(pKeyVal);
@@ -303,9 +303,9 @@ void KeyTest::vTest(void)
   // scan the key vector for key value: >= 2,10
   xValWsp = (i8)2;
   xKeyWsp.vReset();
-  xKeyWsp.vAddElement(xValWsp);
+  xKeyWsp.vAddElement(xValWsp, pCol0);
   xValWsp = (i8)10;
-  xKeyWsp.vAddElement(xValWsp);
+  xKeyWsp.vAddElement(xValWsp, pCol1);
   pKeyValFind = new KeyVal(xKeyWsp);
   
   vTrace("Find Key value >= 2,10\n"_Str);
@@ -335,9 +335,9 @@ void KeyTest::vTest(void)
   // scan the key vector for key value: >= 2,10
   xValWsp = (i8)2;
   xKeyWsp.vReset();
-  xKeyWsp.vAddElement(xValWsp);
+  xKeyWsp.vAddElement(xValWsp, pCol0);
   xValWsp = (i8)30;
-  xKeyWsp.vAddElement(xValWsp);
+  xKeyWsp.vAddElement(xValWsp, pCol1);
   pKeyValFind = new KeyVal(xKeyWsp);
   
   vTrace("Find Key value elem1 >= 2, elem2 < 30\n"_Str);
@@ -397,14 +397,14 @@ void KeyTest::vTest(void)
     for (i8 j = 10; j <= 30; j += 10) {
       xValWsp = i;
       xKeyWsp.vReset();
-      xKeyWsp.vAddElement(xValWsp);
+      xKeyWsp.vAddElement(xValWsp, pCol0);
       //xKeyWsp.vShow();
       
       sKey = Random::sRandomString(7);
       Str* ptr = sKey.aStr();
       xValWsp = ptr;
       pStrVal = _pStrVal(xValWsp.pNestedValueSelf());
-      xKeyWsp.vAddElement(xValWsp);
+      xKeyWsp.vAddElement(xValWsp, pCol1);
       //xKeyWsp.vShow();
       
       pKeyVal = new KeyVal(xKeyWsp);
@@ -423,12 +423,12 @@ void KeyTest::vTest(void)
   // scan the key vector for key value: >= 2,10
   xValWsp = (i8)2;
   xKeyWsp.vReset();
-  xKeyWsp.vAddElement(xValWsp);
+  xKeyWsp.vAddElement(xValWsp, pCol0);
   sKey = Random::sRandomString(7);
   ptr = sKey.aStr();
   xValWsp = ptr;
   pStrVal = _pStrVal(xValWsp.pNestedValueSelf());
-  xKeyWsp.vAddElement(xValWsp);
+  xKeyWsp.vAddElement(xValWsp, pCol1);
   
   pKeyValFind = new KeyVal(xKeyWsp);
   
@@ -513,16 +513,16 @@ void KeyTest::vTestA(void)
   
   xKeyWsp.vReset();
   xValWsp = (i8)1;
-  xKeyWsp.vAddElement(xValWsp);
+  xKeyWsp.vAddElement(xValWsp, pColVec->pGet(0));
   xValWsp = (i8)10;
-  xKeyWsp.vAddElement(xValWsp);
+  xKeyWsp.vAddElement(xValWsp, pColVec->pGet(1));
   KeyVal* pKeyValThis = new KeyVal(xKeyWsp);
   
   xKeyWsp.vReset();
   xValWsp = (i8)1;
-  xKeyWsp.vAddElement(xValWsp);
+  xKeyWsp.vAddElement(xValWsp, pColVec->pGet(0));
   xValWsp = (i8)20;
-  xKeyWsp.vAddElement(xValWsp);
+  xKeyWsp.vAddElement(xValWsp, pColVec->pGet(1));
   KeyVal* pKeyValThat = new KeyVal(xKeyWsp);
   
   // [ ColA <= 1 , ColB < 10 ] should be before (2,20)

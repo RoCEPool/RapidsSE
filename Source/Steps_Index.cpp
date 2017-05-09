@@ -111,8 +111,19 @@ void Task::vIndexBuffer(NNP_Task nnpTask)
   pOpAryGreater->vAdd(RO_GREATER_EQUAL);
   
   KeyWsp xKeyWsp;
-  xKeyWsp.vAddElement(xValWsp);
+  
+  // assuming non-complex key
+  ASSERT(1 == pIndex->pIdxColVec()->nItems());
+  
+  StrVal* pStrVal = _pStrVal(xValWsp.pNestedValueSelf());
+  
+  xKeyWsp.vAddElement(pStrVal, pIndex->pIdxColVec()->pGet(0));
   IndexBuffer* pIndexBuffer = pIndexData->aPosition(xKeyWsp, pOpAryGreater, 0);
+  
+  //xKeyWsp.vShow();
+  
+  //Key xKey(xKeyWsp);
+  //xKey.vShow(pIndex->pIdxColVec());
   
   delete pOpAryGreater;
   
@@ -342,9 +353,16 @@ void Task::vIndexPosition(NNP_Task nnpTask)
   pOpAryGreater->vAdd(RO_GREATER_EQUAL);
   
   KeyWsp xKeyWsp;
-  xKeyWsp.vAddElement(xValWsp);
+  
+  // assuming non-complex key
+  ASSERT(1 == pIndex->pIdxColVec()->nItems());
+  
+  StrVal* pStrVal = _pStrVal(xValWsp.pNestedValueSelf());
+  
+  xKeyWsp.vAddElement(pStrVal, pIndex->pIdxColVec()->pGet(0));
   
   Key xKey(xKeyWsp);
+  //xKey.vShow(pIndex->pIdxColVec());
   
   bool bMatches = true;
   Entry* pEntry = pIndexBuffer->aPosition(xKey, pOpAryGreater);
@@ -615,7 +633,10 @@ void Task::vIndexUpper(NNP_Task nnpTask)
   
   KeyWsp xKeyWsp;
   
-  xKeyWsp.vAddElement(xValWsp);
+  // assuming non-complex key
+  ASSERT(1 == pIndex->pIdxColVec()->nItems());
+  
+  xKeyWsp.vAddElement(xValWsp, pIndex->pIdxColVec()->pGet(0));
   Key xKey(xKeyWsp);
   
   bool bMatches = pEntry->bMatches(&xKey, pIndex->pIdxColVec(), pOpAryLower);
@@ -797,7 +818,7 @@ void Task::vIndexEntryTest(NNP_Task nnpTask)
   
   xValWsp = iKey0;
   
-  xKeyWsp.vAddElement(xValWsp);
+  //xKeyWsp.vAddElement(xValWsp);
   
   Column* pCol = new Column("Col0"_Str);
   pCol->vColumnType(CT_INTEGER);

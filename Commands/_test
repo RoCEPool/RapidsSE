@@ -25,6 +25,9 @@ ld jidx "../JTEST/jidx.csv"
 //anidx jidx idx
 //dumpidx jidx idx
 
+print "\nSelecting rows with key >= 3 using idx1 ...\n"
+lwrselidx jidx idx1 3
+
 print "\nSelecting rows with key >= 1 using idx1 ...\n"
 lwrselidx jidx idx1 1
 

@@ -397,7 +397,7 @@ void IndexBuffer::vShow(void)
   
   for (Entry* pEntry = aHead(); pEntry != nullptr; pEntry = aNextEntry(pEntry)) {
     vTrace("%8lld: "_Str, nSub(pEntry, m_xWsp.aArea()));
-    pEntry->vShow(iToOffset(pEntry));
+    pEntry->vShow(iToOffset(pEntry), m_pIndex->pIdxColVec());
   }
   
   vTrace("\n"_Str);

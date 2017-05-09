@@ -333,8 +333,6 @@ tp: loadIndexes
   indexNm find execute ( index^ )
   to indexPtr
 
-  lower str.tailint assert to lower
-
   // for each slot
   grid.slots 0
   do

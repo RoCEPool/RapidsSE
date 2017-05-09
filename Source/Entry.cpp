@@ -126,7 +126,7 @@ Entry::~Entry(void)
 /*----------------------------------------------------------------------------*/
 /* show content                                                               */
 /*----------------------------------------------------------------------------*/
-void Entry::vShow(i8 iOffset)
+void Entry::vShow(i8 iOffset, IdxColVec* pColVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
   
@@ -147,14 +147,14 @@ void Entry::vShow(i8 iOffset)
          m_nOffsets
          );
   
-  vTrace("Id %3llu.%3llu Key %4lld "_Str,
+  vTrace("Id %3llu.%3llu Key "_Str,
          m_xId.uBuffer(),
-         m_xId.uRow(),
-         iKey
+         m_xId.uRow()
          );
+  aKey->vShow(pColVec);
   
   for (i8 iRight=0; iRight< m_nOffsets; iRight++) {
-    vTrace("Offset(%lld): %lld "_Str,
+    vTrace(" Offset(%lld): %lld "_Str,
            iRight,
            uRightOffset(iRight) == C_NIL_OFFSET ?
               C_NIL_OFFSET :

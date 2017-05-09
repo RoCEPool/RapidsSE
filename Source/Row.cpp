@@ -227,7 +227,7 @@ void Row::vGetKey(KeyWsp& xKeyWsp, IdxColVec* pColVec)
     }
     
     // add the column value to the key
-    xKeyWsp.vAddElement(xValWsp);
+    xKeyWsp.vAddElement(xValWsp, pColumn);
   }
 
 }

@@ -149,30 +149,59 @@ void KeyWsp::vShow(eDM eDatum, ...)
 /*----------------------------------------------------------------------------*/
 /* add element to key                                                         */
 /*----------------------------------------------------------------------------*/
-void KeyWsp::vAddElement(Values::ValWsp &xValWsp)
+void KeyWsp::vAddElement(Values::StrVal* pStrVal, Column* pCol)
 {
   _precondition_(_MAGIC_,CN_KEYWSP,_FOOTER_);
   
-  // for the moment we only allow one element per key
-  //ASSERT( ! nWspUsed() );
+  i8 nBytes;
   
-  eCN eClass = xValWsp.pNestedValueSelf()->eClass();
   char* pDst = m_xWsp.aLatter();
+  char* pSrc = (char*)pStrVal->aStr();
+  i8 iValue;
   
-  char* pSrc;
-  if (eClass == CN_STRVAL) {
-    pSrc = (char*)(_pStrVal(xValWsp.pNestedValueSelf())->aStr());
+  switch(pCol->eColumnType()) {
+    case CT_INTEGER:
+      iValue = StrLib::iToI8(pSrc);
+      nBytes = ValLib::nCopyIntDatum(pDst,(void*)&iValue);
+      break;
+    case CT_VARCHAR:
+      nBytes = ValLib::nCopyStrDatum(pDst,pSrc);
+      break;
+    default:
+      ASSERT(0);
   }
-  else {
-    ASSERT(eClass == CN_INTVAL);
-    pSrc = (char*)(_pIntVal(xValWsp.pNestedValueSelf())->aInt());
   
-    i8 iSrc = *(i8*)pSrc;
-  }
+  m_xWsp.vTake(nBytes);
+  
+}
 
-  i8 nBytesTaken = ValLib::nCopyDatum(eClass,pDst,pSrc);
+/*----------------------------------------------------------------------------*/
+/* add element to key                                                         */
+/*----------------------------------------------------------------------------*/
+void KeyWsp::vAddElement(ValWsp& xValWsp, Column* pCol)
+{
+  _precondition_(_MAGIC_,CN_KEYWSP,_FOOTER_);
   
-  m_xWsp.vTake(nBytesTaken);
+  i8 nBytes;
+    
+  char* pDst = m_xWsp.aLatter();
+  char* pSrc;
+  
+  switch(pCol->eColumnType()) {
+    case CT_INTEGER:
+      pSrc = (char*)(_pIntVal(xValWsp.pNestedValueSelf())->aInt());
+      nBytes = ValLib::nCopyIntDatum((char*)pDst,(char*)pSrc);
+      break;
+    case CT_VARCHAR:
+      pSrc = (char*)(_pStrVal(xValWsp.pNestedValueSelf())->aStr());
+      nBytes = ValLib::nCopyStrDatum((char*)pDst,(char*)pSrc);
+      break;
+    default:
+      ASSERT(0);
+  }
+  
+  m_xWsp.vTake(nBytes);
+  
 }
 
 /*----------------------------------------------------------------------------*/
