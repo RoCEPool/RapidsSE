@@ -69,7 +69,7 @@ void KeyTest::vTest(void)
   }
   
   // scan the key vector for key value: >= 3
-  xValWsp = 3;
+  xValWsp = (i8)3;
   xKeyWsp.vReset();
   xKeyWsp.vAddElement(xValWsp);
   KeyVal* pKeyValFind = new KeyVal(xKeyWsp);
@@ -97,7 +97,7 @@ void KeyTest::vTest(void)
   }
   
   // scan the key vector for key value: >= 3
-  xValWsp = 7;
+  xValWsp = (i8)7;
   xKeyWsp.vReset();
   xKeyWsp.vAddElement(xValWsp);
   vTrace("Find Key value < 7\n"_Str);
@@ -301,10 +301,10 @@ void KeyTest::vTest(void)
   }
   
   // scan the key vector for key value: >= 2,10
-  xValWsp = 2;
+  xValWsp = (i8)2;
   xKeyWsp.vReset();
   xKeyWsp.vAddElement(xValWsp);
-  xValWsp = 10;
+  xValWsp = (i8)10;
   xKeyWsp.vAddElement(xValWsp);
   pKeyValFind = new KeyVal(xKeyWsp);
   
@@ -333,10 +333,10 @@ void KeyTest::vTest(void)
   }
   
   // scan the key vector for key value: >= 2,10
-  xValWsp = 2;
+  xValWsp = (i8)2;
   xKeyWsp.vReset();
   xKeyWsp.vAddElement(xValWsp);
-  xValWsp = 30;
+  xValWsp = (i8)30;
   xKeyWsp.vAddElement(xValWsp);
   pKeyValFind = new KeyVal(xKeyWsp);
   
@@ -421,7 +421,7 @@ void KeyTest::vTest(void)
   }
 
   // scan the key vector for key value: >= 2,10
-  xValWsp = 2;
+  xValWsp = (i8)2;
   xKeyWsp.vReset();
   xKeyWsp.vAddElement(xValWsp);
   sKey = Random::sRandomString(7);

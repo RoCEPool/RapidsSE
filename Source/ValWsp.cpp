@@ -43,7 +43,21 @@ ValWsp::ValWsp(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* assign/copy a pointer into workspace                                       */
+/* assign/copy a float into workspace                                         */
+/*----------------------------------------------------------------------------*/
+void ValWsp::operator =(d8 dFlt)
+{
+  FltVal* pNestedFltVal = (FltVal*)pNestedValue();
+  
+  // set nested class
+  pNestedFltVal->vClass(CN_FLTVAL);
+  
+  // assign flt into the nested fltval
+  *pNestedFltVal = dFlt;
+}
+
+/*----------------------------------------------------------------------------*/
+/* assign/copy an integer into workspace                                      */
 /*----------------------------------------------------------------------------*/
 void ValWsp::operator =(i8 iInt)
 {
