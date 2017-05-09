@@ -46,11 +46,10 @@ namespace DBobjects
     Footer*      pFooter(void);
     
   private:
-    void         vFixHigherBuffer(IndexBuffer* pIndexBuffer, IdxColVec* pColVec, i8 iLevel);
-    void         vInsertEntry(IndexBuffer* pRoot,KeyWsp& xKeyWsp, Id xId, IdxColVec* pColVec, i8 iLevel);
-    void         vInsertFirstEntry(IndexBuffer* pToBuffer, IndexBuffer* pFromBuffer, IdxColVec* pColVec);
-    //IndexBuffer* aPositionLevel(IndexBuffer* pRoot, KeyWsp& xKeyWsp, RelOpAry* pOpAryGreater, IdxColVec* pColVec, i8 iLevel);
-    IndexBuffer* pSplitBuffer(IndexBuffer* pIndexBuffer, IdxColVec* pColVec);
+    void         vFixHigherBuffer(IndexBuffer* pIndexBuffer, i8 iLevel);
+    void         vInsertEntry(IndexBuffer* pRoot,KeyWsp& xKeyWsp, Id xId, i8 iLevel);
+    void         vInsertFirstEntry(IndexBuffer* pToBuffer, IndexBuffer* pFromBuffer);
+    IndexBuffer* pSplitBuffer(IndexBuffer* pIndexBuffer);
   };
   
   IndexData* _pIndexData(void* pAddr);

@@ -205,7 +205,7 @@ void IndexBuffer::vHigherLevel(IndexBuffer* pHigherLevel)
 /*----------------------------------------------------------------------------*/
 /* insert new entry                                                           */
 /*----------------------------------------------------------------------------*/
-bool IndexBuffer::bInsert(KeyWsp& xKeyWsp, Id xId, IdxColVec* pColVec)
+bool IndexBuffer::bInsert(KeyWsp& xKeyWsp, Id xId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
@@ -230,7 +230,7 @@ bool IndexBuffer::bInsert(KeyWsp& xKeyWsp, Id xId, IdxColVec* pColVec)
   pOpAryPosition->vAdd(RO_GREATER_EQUAL);
   
   // position the key in the buffer
-  Entry* pAfterEntry = aPosition(xKey, pOpAryPosition, pColVec, bEqualTo, pReviseVec);
+  Entry* pAfterEntry = aPosition(xKey, pOpAryPosition, bEqualTo, pReviseVec);
   Entry* pNewEntry = aNewEntry(nBytes, xEntWsp.nOffsets(), pAfterEntry);
   
   // set the new entry from the EntWsp
@@ -275,7 +275,7 @@ bool IndexBuffer::bInsert(KeyWsp& xKeyWsp, Id xId, IdxColVec* pColVec)
   
   // fix higher level buffers
   // this is needed in case we inserted a new first key in the buffer
-  vFixHigherLevel(pNewEntry, pColVec);
+  vFixHigherLevel(pNewEntry);
   
   delete pOpAryPosition;
   
@@ -316,14 +316,14 @@ Entry* IndexBuffer::aNextEntry(Entry* aEntry)
 /*----------------------------------------------------------------------------*/
 /* position at entry with lower bound at key                                  */
 /*----------------------------------------------------------------------------*/
-Entry* IndexBuffer::aPosition(Key& xKey, RelOpAry* pRelOpAry, IdxColVec* pColVec)
+Entry* IndexBuffer::aPosition(Key& xKey, RelOpAry* pRelOpAry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
   bool   bEqualTo;
   Entry* pEntry;
   
-  pEntry = aPosition(xKey, pRelOpAry, pColVec, bEqualTo, nullptr);
+  pEntry = aPosition(xKey, pRelOpAry, bEqualTo, nullptr);
   
   if (pEntry == aHead())
     pEntry = aNextEntry(pEntry);
@@ -334,7 +334,7 @@ Entry* IndexBuffer::aPosition(Key& xKey, RelOpAry* pRelOpAry, IdxColVec* pColVec
 /*----------------------------------------------------------------------------*/
 /* position at an index buffer at level iLevel starting from this buffer      */
 /*----------------------------------------------------------------------------*/
-IndexBuffer* IndexBuffer::aPositionLevel(KeyWsp& xKeyWsp, RelOpAry* pOpAryGreater, IdxColVec* pColVec, i8 iLevel)
+IndexBuffer* IndexBuffer::aPositionLevel(KeyWsp& xKeyWsp, RelOpAry* pOpAryGreater, i8 iLevel)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
@@ -352,7 +352,7 @@ IndexBuffer* IndexBuffer::aPositionLevel(KeyWsp& xKeyWsp, RelOpAry* pOpAryGreate
       break;
     
     // get the entry
-    pEntry = pIndexBuffer->aPosition(xKey, pOpAryGreater, pColVec);
+    pEntry = pIndexBuffer->aPosition(xKey, pOpAryGreater);
     ASSERT( pEntry );
     
     // get the index buffer of the entry
@@ -407,7 +407,7 @@ void IndexBuffer::vShow(void)
 /*----------------------------------------------------------------------------*/
 /* split the buffer                                                           */
 /*----------------------------------------------------------------------------*/
-IndexBuffer* IndexBuffer::pSplitBuffer(IdxColVec* pColVec)
+IndexBuffer* IndexBuffer::pSplitBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
@@ -428,7 +428,7 @@ IndexBuffer* IndexBuffer::pSplitBuffer(IdxColVec* pColVec)
   pOpAryFind->vAdd(RO_GREATER_EQUAL);
   
   // find the position of the last entry in the buffer
-  Entry* pAfterEntry = aPosition(*pLastEntry->aKey(), pOpAryFind, pColVec, bEqualTo, pReviseVec);
+  Entry* pAfterEntry = aPosition(*pLastEntry->aKey(), pOpAryFind, bEqualTo, pReviseVec);
   ASSERT(pAfterEntry == pLastEntry);
   
   i8 iLastEntryOffset = iToOffset(pLastEntry);
@@ -471,7 +471,7 @@ IndexBuffer* IndexBuffer::pSplitBuffer(IdxColVec* pColVec)
   IndexBuffer* pNewBuffer = new IndexBuffer(m_pIndex, m_nBufferLevel);
   
   // copy entries starting at the splitEntry from this buffer to the new buffer
-  pNewBuffer->vCopyEntries(this, pSplitEntry, pColVec);
+  pNewBuffer->vCopyEntries(this, pSplitEntry);
   
   // give back nSize bytes to wsp in original buffer
   m_xWsp.vGive(nSize);
@@ -530,7 +530,7 @@ void IndexBuffer::vVerify(void)
 /*----------------------------------------------------------------------------*/
 /* copy entries from buffer from fromEntry                                                                     */
 /*----------------------------------------------------------------------------*/
-void IndexBuffer::vCopyEntries(IndexBuffer* pFromBuffer, Entry* pFromEntry, IdxColVec* pColVec)
+void IndexBuffer::vCopyEntries(IndexBuffer* pFromBuffer, Entry* pFromEntry)
 {
   
   Entry* pEntry = pFromEntry;
@@ -538,10 +538,10 @@ void IndexBuffer::vCopyEntries(IndexBuffer* pFromBuffer, Entry* pFromEntry, IdxC
     
     KeyWsp xKeyWsp;
     
-    xKeyWsp.vAddKey(pEntry->aKey(), pColVec);
+    xKeyWsp.vAddKey(pEntry->aKey(), m_pIndex->pIdxColVec());
     Key xKey(xKeyWsp);
     
-    bInsert(xKeyWsp, pEntry->xId(), pColVec);
+    bInsert(xKeyWsp, pEntry->xId());
     
     pEntry = pFromBuffer->aNextEntry(pEntry);
   }
@@ -563,7 +563,7 @@ void IndexBuffer::vDumpRevise(Entry** ppReviseVec)
 /*----------------------------------------------------------------------------*/
 /* fix the higher level                                                        */
 /*----------------------------------------------------------------------------*/
-void IndexBuffer::vFixHigherLevel(Entry* pNewEntry, IdxColVec* pColVec)
+void IndexBuffer::vFixHigherLevel(Entry* pNewEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
@@ -591,26 +591,26 @@ void IndexBuffer::vFixHigherLevel(Entry* pNewEntry, IdxColVec* pColVec)
   pOpAryFind->vAdd(RO_EQUAL);
   
   KeyWsp xOldKeyWsp;
-  xOldKeyWsp.vAddKey(pOldFirstEntry->aKey(), pColVec);
+  xOldKeyWsp.vAddKey(pOldFirstEntry->aKey(), m_pIndex->pIdxColVec());
   
-  //pOldFirstEntry->aKey()->vShow(pColVec);
+  //pOldFirstEntry->aKey()->vShow(m_pIndex->pIdxColVec());
   
   Key xKey(xOldKeyWsp);
   //xKey.vShow(pColVec);
   
   // find the oldEntry in the higher level buffer
-  Entry* pFoundEntry = m_pHigherLevel->aPosition(xKey, pOpAryFind, pColVec);
+  Entry* pFoundEntry = m_pHigherLevel->aPosition(xKey, pOpAryFind);
   
   // assert that we found one
   ASSERT(pFoundEntry);
-  //pFoundEntry->aKey()->vShow(pColVec);
+  //pFoundEntry->aKey()->vShow(m_pIndex->pIdxColVec());
   
   // assert the key of the higher level entry and the old entry match
-  ASSERT(pFoundEntry->aKey()->bMatches(pOldFirstEntry->aKey(), pColVec, pOpAryFind));
+  ASSERT(pFoundEntry->aKey()->bMatches(pOldFirstEntry->aKey(), m_pIndex->pIdxColVec(), pOpAryFind));
   
   // get the new entry key
   KeyWsp xNewKeyWsp;
-  xNewKeyWsp.vAddKey(pNewEntry->aKey(), pColVec);
+  xNewKeyWsp.vAddKey(pNewEntry->aKey(), m_pIndex->pIdxColVec());
   
   EntWsp xEntWsp;
   xEntWsp.vAddKey(xNewKeyWsp);
@@ -880,8 +880,7 @@ void IndexBuffer::vNewHead(void)
 /*----------------------------------------------------------------------------*/
 /* positition to entry (optional set revise vector)                           */
 /*----------------------------------------------------------------------------*/
-Entry* IndexBuffer::aPosition(Key& xKey, RelOpAry* pOpAryPosition, IdxColVec* pColVec,
-                              bool& bEqualTo, Entry** aReviseVec)
+Entry* IndexBuffer::aPosition(Key& xKey, RelOpAry* pOpAryPosition, bool& bEqualTo, Entry** aReviseVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
@@ -897,7 +896,7 @@ Entry* IndexBuffer::aPosition(Key& xKey, RelOpAry* pOpAryPosition, IdxColVec* pC
     while (Entry* pNextEntry = aRightEntry(pCurrentEntry, iCurrentLevel)) {
       
         // compare the inserting object with next object
-        bool bGreaterEqual = xKey.bMatches(pNextEntry->aKey(), pColVec, pOpAryPosition);
+        bool bGreaterEqual = xKey.bMatches(pNextEntry->aKey(), m_pIndex->pIdxColVec(), pOpAryPosition);
       
         if (bGreaterEqual) {
             // pObjectInsert is >= pObjectNext

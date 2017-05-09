@@ -189,7 +189,7 @@ void IndexData::vInsertEntry(Row* pRow, i8 nRowNo, bn nBufferNo)
   pRow->vGetKey(xKeyWsp, m_pIndex->pIdxColVec());
     
   // insert row entry in index at level 0
-  vInsertEntry(m_pRoot, xKeyWsp, xId, m_pIndex->pIdxColVec(), 0);
+  vInsertEntry(m_pRoot, xKeyWsp, xId, 0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -199,7 +199,7 @@ IndexBuffer* IndexData::aPosition(KeyWsp& xKeyWsp, RelOpAry* pOpAryGreater, i8 i
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
   
-  return m_pRoot->aPositionLevel(xKeyWsp, pOpAryGreater, m_pIndex->pIdxColVec(), iLevel);
+  return m_pRoot->aPositionLevel(xKeyWsp, pOpAryGreater, iLevel);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -253,7 +253,7 @@ void IndexData::vTruncate(void)
 /*----------------------------------------------------------------------------*/
 /* insert an entry for a row in the index buffer                              */
 /*----------------------------------------------------------------------------*/
-void IndexData::vInsertEntry(IndexBuffer* pHigher, KeyWsp& xKeyWsp, Id xId, IdxColVec* pColVec, i8 iLevel)
+void IndexData::vInsertEntry(IndexBuffer* pHigher, KeyWsp& xKeyWsp, Id xId, i8 iLevel)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
   
@@ -274,30 +274,30 @@ void IndexData::vInsertEntry(IndexBuffer* pHigher, KeyWsp& xKeyWsp, Id xId, IdxC
   RelOpAry* pOpAryFind = new RelOpAry;
   pOpAryFind->vAdd(RO_GREATER_EQUAL);
   
-  pIndexBuffer = pHigher->aPositionLevel(xKeyWsp, pOpAryFind, pColVec, iLevel);
+  pIndexBuffer = pHigher->aPositionLevel(xKeyWsp, pOpAryFind, iLevel);
   
   // check if IndexBuffer to insert into has space
   if ( ! pIndexBuffer->bHasSpace(nBytes) ) {
     
     // split the index buffer
-    pIndexBuffer = pSplitBuffer(pIndexBuffer, pColVec);
+    pIndexBuffer = pSplitBuffer(pIndexBuffer);
     
     // find position again
-    pIndexBuffer = pIndexBuffer->pHigherLevel()->aPositionLevel(xKeyWsp, pOpAryFind, pColVec, iLevel);
+    pIndexBuffer = pIndexBuffer->pHigherLevel()->aPositionLevel(xKeyWsp, pOpAryFind, iLevel);
   }
   
   // assert we have a buffer
   ASSERT(pIndexBuffer);
   
   // insert entry into index buffer
-  bResult = pIndexBuffer->bInsert(xKeyWsp, xId, pColVec);
+  bResult = pIndexBuffer->bInsert(xKeyWsp, xId);
   ASSERT(bResult);
 }
 
 /*----------------------------------------------------------------------------*/
 /* add first entry of fromBuffer into the toBuffer                            */
 /*----------------------------------------------------------------------------*/
-void IndexData::vInsertFirstEntry(IndexBuffer* pToBuffer, IndexBuffer* pFromBuffer, IdxColVec* pColVec)
+void IndexData::vInsertFirstEntry(IndexBuffer* pToBuffer, IndexBuffer* pFromBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
 
@@ -318,15 +318,15 @@ void IndexData::vInsertFirstEntry(IndexBuffer* pToBuffer, IndexBuffer* pFromBuff
   
   // form a keyWsp from the key
   KeyWsp xFirstKeyWsp;
-  xFirstKeyWsp.vAddKey(aKey, pColVec);
+  xFirstKeyWsp.vAddKey(aKey, m_pIndex->pIdxColVec());
   
-  vInsertEntry(pToBuffer, xFirstKeyWsp, xNewId, pColVec, pToBuffer->nBufferLevel());
+  vInsertEntry(pToBuffer, xFirstKeyWsp, xNewId, pToBuffer->nBufferLevel());
 }
 
 /*----------------------------------------------------------------------------*/
 /* fix the higher level buffer in the given index buffer                      */
 /*----------------------------------------------------------------------------*/
-void IndexData::vFixHigherBuffer(IndexBuffer* pIndexBuffer, IdxColVec* pColVec, i8 iLevel)
+void IndexData::vFixHigherBuffer(IndexBuffer* pIndexBuffer, i8 iLevel)
 {
    _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
   
@@ -337,13 +337,13 @@ void IndexData::vFixHigherBuffer(IndexBuffer* pIndexBuffer, IdxColVec* pColVec, 
   Entry* pFirstEntry = pIndexBuffer->aNextEntry(pIndexBuffer->aHead());
 
   // form a keyWsp from the key
-  xKeyWsp.vAddKey(pFirstEntry->aKey(), pColVec);
+  xKeyWsp.vAddKey(pFirstEntry->aKey(), m_pIndex->pIdxColVec());
 
   // create a relational operator array
   RelOpAry* pOpAryGreater = new RelOpAry;
   pOpAryGreater->vAdd(RO_GREATER_EQUAL);
   
-  pRoot =  m_pRoot->aPositionLevel(xKeyWsp, pOpAryGreater, pColVec, iLevel);
+  pRoot =  m_pRoot->aPositionLevel(xKeyWsp, pOpAryGreater, iLevel);
 
   pIndexBuffer->vHigherLevel(pRoot);
   delete pOpAryGreater;
@@ -352,7 +352,7 @@ void IndexData::vFixHigherBuffer(IndexBuffer* pIndexBuffer, IdxColVec* pColVec, 
 /*----------------------------------------------------------------------------*/
 /* split a buffer                                                             */
 /*----------------------------------------------------------------------------*/
-IndexBuffer* IndexData::pSplitBuffer(IndexBuffer* pIndexBuffer, IdxColVec* pColVec)
+IndexBuffer* IndexData::pSplitBuffer(IndexBuffer* pIndexBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
   
@@ -363,7 +363,7 @@ IndexBuffer* IndexData::pSplitBuffer(IndexBuffer* pIndexBuffer, IdxColVec* pColV
   KeyWsp xFirstKeyWsp2;
   
   // split the index buffer
-  IndexBuffer* pIndexBufferNew = pIndexBuffer->pSplitBuffer(pColVec);
+  IndexBuffer* pIndexBufferNew = pIndexBuffer->pSplitBuffer();
   
   // get the next level buffer
   IndexBuffer* pHigherLevel = pIndexBuffer->pHigherLevel();
@@ -375,7 +375,7 @@ IndexBuffer* IndexData::pSplitBuffer(IndexBuffer* pIndexBuffer, IdxColVec* pColV
     pRoot = new IndexBuffer(m_pIndex, nHigherLevel);
     
     // insert first entry in new root from buffer we split
-    vInsertFirstEntry(pRoot, pIndexBuffer, pColVec);
+    vInsertFirstEntry(pRoot, pIndexBuffer);
     
     // root now points to the new higher level
     m_pRoot = pRoot;
@@ -386,15 +386,15 @@ IndexBuffer* IndexData::pSplitBuffer(IndexBuffer* pIndexBuffer, IdxColVec* pColV
   
   //---------------------------------------------------------
   // insert the first entry in root buffer from the new IndexBuffer
-  vInsertFirstEntry(pRoot, pIndexBufferNew, pColVec);
+  vInsertFirstEntry(pRoot, pIndexBufferNew);
   
   //---------------------------------------------------------
   // fix the first index buffer's higher level buffer
-  vFixHigherBuffer(pIndexBuffer, pColVec, pRoot->nBufferLevel());
+  vFixHigherBuffer(pIndexBuffer, pRoot->nBufferLevel());
   
   //---------------------------------------------------------
   // fix the second index buffer's higher level buffer
-  vFixHigherBuffer(pIndexBufferNew, pColVec, pRoot->nBufferLevel());
+  vFixHigherBuffer(pIndexBufferNew, pRoot->nBufferLevel());
   
   return pIndexBuffer;
 }

@@ -347,7 +347,7 @@ void Task::vIndexPosition(NNP_Task nnpTask)
   Key xKey(xKeyWsp);
   
   bool bMatches = true;
-  Entry* pEntry = pIndexBuffer->aPosition(xKey, pOpAryGreater, pIndex->pIdxColVec());
+  Entry* pEntry = pIndexBuffer->aPosition(xKey, pOpAryGreater);
   
   bMatches = pEntry->aKey()->bMatches(&xKey, pIndex->pIdxColVec(), pOpAryGreater);
   if ( ! bMatches) {
@@ -805,7 +805,7 @@ void Task::vIndexEntryTest(NNP_Task nnpTask)
   pColVec->vAdd(pCol);
   
   // insert entry into index buffer
-  pIndexBuffer->bInsert(xKeyWsp, xId, pColVec);
+  pIndexBuffer->bInsert(xKeyWsp, xId);
   
   // verify index buffer
   //pIndexBuffer->vVerify();
