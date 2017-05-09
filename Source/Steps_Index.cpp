@@ -858,10 +858,11 @@ void Task::vIndexIbNew(NNP_Task nnpTask)
 {
   ENTRY("vIndexIbNew"_Str);
   
-  IndexBuffer* pIndexBuffer = new IndexBuffer(0);
-  ASSERT(CN_INDEXBUFFER == pIndexBuffer->eClass());
+  ASSERT(0);
+  //IndexBuffer* pIndexBuffer = new IndexBuffer(0);
+  //ASSERT(CN_INDEXBUFFER == pIndexBuffer->eClass());
   
-  nnpTask->m_pDataStack->vPushObject(pIndexBuffer);
+  //nnpTask->m_pDataStack->vPushObject(pIndexBuffer);
   
   EXIT();
 }

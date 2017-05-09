@@ -6,12 +6,15 @@
 namespace DBobjects
 {
   
+  class Index;
+  
   class IndexBuffer : public Buffer
   {
     
   #define goDownLevel(iLevel) iLevel--;
     
   private:
+    Index*       m_pIndex;       // index this buffer belongs to
     i8           m_nBufferLevel; // index buffer level
     i8           m_nEntries;     // number of entries in this buffer
     IndexBuffer* m_pPrevBuffer;  // prev index buffer at this level
@@ -34,7 +37,7 @@ namespace DBobjects
     void* operator new(size_t);
     void  operator delete(void*);
     
-    IndexBuffer(i8 nLevel);
+    IndexBuffer(Index* pIndex, i8 nLevel);
     ~IndexBuffer(void);
     
     i8           nBufferLevel(void);

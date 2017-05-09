@@ -18,6 +18,7 @@ jidx_10    INTEGER NOT NULL
 
 create index idx1 on jidx (jidx_key);
 create index idx2 on jidx (jidx_100);
+//create index idx3 on jidx (jidx_name);
 
 ld jidx "../JTEST/jidx.csv"
 

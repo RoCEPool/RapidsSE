@@ -48,11 +48,12 @@ void IndexBuffer::operator delete(void* pIndexBufferAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-IndexBuffer::IndexBuffer(i8 nBufferLevel)
+IndexBuffer::IndexBuffer(Index* pIndex, i8 nBufferLevel)
 : Buffer(CN_INDEXBUFFER)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
 
+  m_pIndex       = pIndex;
   m_nBufferLevel = nBufferLevel;
   m_nEntries     = 0;
   m_pPrevBuffer  = nullptr;
@@ -467,7 +468,7 @@ IndexBuffer* IndexBuffer::pSplitBuffer(IdxColVec* pColVec)
   i8 nSize = nSub(m_xWsp.aLatter(), pSplitAt);
   
   // allocate a new buffer at the same index level
-  IndexBuffer* pNewBuffer = new IndexBuffer(m_nBufferLevel);
+  IndexBuffer* pNewBuffer = new IndexBuffer(m_pIndex, m_nBufferLevel);
   
   // copy entries starting at the splitEntry from this buffer to the new buffer
   pNewBuffer->vCopyEntries(this, pSplitEntry, pColVec);

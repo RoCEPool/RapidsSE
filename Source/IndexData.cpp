@@ -89,7 +89,7 @@ IndexData::IndexData(Index* pIndex)
   m_pIndex = pIndex;
   
   // start with a root buffer at L0
-  m_pRoot = new IndexBuffer(0);
+  m_pRoot = new IndexBuffer(pIndex, 0);
   
   _checkInitialised_(CN_INDEXDATA);
   
@@ -372,7 +372,7 @@ IndexBuffer* IndexData::pSplitBuffer(IndexBuffer* pIndexBuffer, IdxColVec* pColV
   if ( ! pHigherLevel ) {
     
     i8 nHigherLevel = pIndexBuffer->nBufferLevel() + 1;
-    pRoot = new IndexBuffer(nHigherLevel);
+    pRoot = new IndexBuffer(m_pIndex, nHigherLevel);
     
     // insert first entry in new root from buffer we split
     vInsertFirstEntry(pRoot, pIndexBuffer, pColVec);
