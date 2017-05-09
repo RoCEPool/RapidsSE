@@ -40,6 +40,8 @@ bool DtmLib::bExtractBol(char** aaSrc, Bol* aBoolean)
       '1' == *aChar)
     bResult = true;
 
+  aBoolean->m_iBol = bResult;
+  
   return bResult;
 }
 
@@ -92,7 +94,25 @@ bool DtmLib::bExtractDte(char** aaSrc, Dte* aDate)
 /*----------------------------------------------------------------------------*/
 bool DtmLib::bExtractFlt(char** aaSrc, Flt* aFloat)
 {
-  return false;
+  d8 dResult = 0.0;
+  char xBuffer[256];
+  char* aChar = xBuffer;
+  
+  // collect the csv
+  while ('|' != **aaSrc && ',' != **aaSrc)
+    *aChar = *(*aaSrc)++;
+  *aChar = '\0';
+  
+  // find first char
+  for (aChar = xBuffer; *aChar && ' ' == *aChar; aChar++)
+    ;
+  
+  // convert
+  dResult = atof(aChar);
+  
+  aFloat->m_dFlt = dResult;
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
