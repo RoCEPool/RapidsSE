@@ -26,6 +26,7 @@ namespace Datums
     bool operator >  (Flt& xFlt);
   
     void vInitZero(void);
+    d8   dAsD8(void);
   
     static bool bExtract(Str* aDst, Str* aSrc, i8& nBytesTaken);
     static void vSprint(Str* aDst, Str* aSrc, i8& nBytesTaken);

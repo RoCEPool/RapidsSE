@@ -32,6 +32,7 @@ namespace Datums
     bool operator >  (Ivl& xIvl);
 
     void vInitZero(void);
+    i8   iAsI8(void);
   
     void vSet(u8 uSec, u8 uMilli);
   

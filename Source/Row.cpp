@@ -149,13 +149,63 @@ void Row::vGetKey(KeyWsp& xKeyWsp, IdxColVec* pColVec)
 
     switch(pColumn->eColumnType()) {
         
-      case CT_INTEGER:
+      case CT_BOOLEAN: {
+        ASSERT(0);
+        break;
+      }
+        
+      case CT_CHAR: {
+        ASSERT(0);
+        break;
+      }
+        
+      case CT_DATE: {
+        Dte xDte;
+        bool b = DtmLib::bExtractDte(&pDst,&xDte);
+        ASSERT(b);
+        xValWsp = xDte.iAsI8();
+        break;
+      }
+        
+      case CT_DECIMAL: {
+        ASSERT(0);
+        break;
+      }
+        
+      case CT_FLOAT: {
+        ASSERT(0);
+        break;
+      }
+        
+      case CT_INTEGER: {
         xValWsp = StrLib::iToI8(pDst);
         break;
+      }
         
-      case CT_VARCHAR:
+      case CT_INTERVAL: {
+        ASSERT(0);
+        break;
+      }
+        
+      case CT_TIME: {
+        ASSERT(0);
+        break;
+      }
+        
+      case CT_TIMESTAMP: {
+        ASSERT(0);
+        break;
+      }
+        
+      case CT_VARBINARY: {
+        ASSERT(0);
+        break;
+      }
+        
+      case CT_VARCHAR: {
         xValWsp = s;
         break;
+      }
         
       default:
         ASSERT(0);
