@@ -150,7 +150,10 @@ void Row::vGetKey(KeyWsp& xKeyWsp, IdxColVec* pColVec)
     switch(pColumn->eColumnType()) {
         
       case CT_BOOLEAN: {
-        ASSERT(0);
+        Bol xBol;
+        bool b = DtmLib::bExtractBol(&pDst,&xBol);
+        ASSERT(b);
+        xValWsp = xBol.iAsI8();
         break;
       }
         
@@ -173,7 +176,10 @@ void Row::vGetKey(KeyWsp& xKeyWsp, IdxColVec* pColVec)
       }
         
       case CT_FLOAT: {
-        ASSERT(0);
+        Flt xFlt;
+        bool b = DtmLib::bExtractFlt(&pDst,&xFlt);
+        ASSERT(b);
+        xValWsp = xFlt.dAsD8();
         break;
       }
         
@@ -183,17 +189,26 @@ void Row::vGetKey(KeyWsp& xKeyWsp, IdxColVec* pColVec)
       }
         
       case CT_INTERVAL: {
-        ASSERT(0);
+        Ivl xIvl;
+        bool b = DtmLib::bExtractIvl(&pDst,&xIvl);
+        ASSERT(b);
+        xValWsp = xIvl.iAsI8();
         break;
       }
         
       case CT_TIME: {
-        ASSERT(0);
+        Tme xTme;
+        bool b = DtmLib::bExtractTme(&pDst,&xTme);
+        ASSERT(b);
+        xValWsp = xTme.iAsI8();
         break;
       }
         
       case CT_TIMESTAMP: {
-        ASSERT(0);
+        Tsp xTsp;
+        bool b = DtmLib::bExtractTsp(&pDst,&xTsp);
+        ASSERT(b);
+        xValWsp = xTsp.iAsI8();
         break;
       }
         
