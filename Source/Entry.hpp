@@ -40,8 +40,9 @@ namespace DBobjects
     void   vRightOffset(u8 iLevel, u8 uOffset);
     RightVec* aRightVec(void);
     Id&    xId(void);
+    void   vId(Id xId);
+    void   vKey(EntWsp& xEntWsp);
     void   vSetEntry(EntWsp& xEntWsp);
-    void   vSetKey(EntWsp& xEntWsp);
     i8     nSize(void);
 
     Footer* pFooter(void);

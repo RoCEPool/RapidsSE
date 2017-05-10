@@ -32,6 +32,7 @@ namespace DBobjects
     char* aWspArea(void);
     Str*  aWspStr(void);
     i8    nWspUsed(void);
+    Key*  aKey(void);
 
     bool  bExtractElement(s48K& sRow, i8 iElement, eDM eDatum);
 

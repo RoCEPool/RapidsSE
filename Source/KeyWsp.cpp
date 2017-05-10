@@ -214,6 +214,16 @@ void KeyWsp::vAddElement(ValWsp& xValWsp, Column* pCol)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get wsp area as key                                                        */
+/*----------------------------------------------------------------------------*/
+Key* KeyWsp::aKey(void)
+{
+  _precondition_(_MAGIC_,CN_KEYWSP,_FOOTER_);
+  
+  return reinterpret_cast<Key*>(m_xWsp.aArea());
+}
+
+/*----------------------------------------------------------------------------*/
 /* reset the key wsp                                                          */
 /*----------------------------------------------------------------------------*/
 void KeyWsp::vReset(void)

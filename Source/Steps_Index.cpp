@@ -122,9 +122,6 @@ void Task::vIndexBuffer(NNP_Task nnpTask)
   
   //xKeyWsp.vShow();
   
-  //Key xKey(xKeyWsp);
-  //xKey.vShow(pIndex->pIdxColVec());
-  
   delete pOpAryGreater;
   
   bn nBuffer = pIndexBuffer->nBufferNo();
@@ -312,6 +309,13 @@ void Task::vIndexGetNextEntry(NNP_Task nnpTask)
     pNextEntry = pIndexBuffer->aNextEntry(pIndexBuffer->aHead());
   }
   
+  // assert that key of the next entry is >= entry              //ALKA:TEMPORARY
+  if (pEntry && pNextEntry) {
+    Key* aEntryKey = pEntry->aKey();
+    Key* aNextEntryKey = pNextEntry->aKey();
+    ASSERT(aEntryKey->bLessEqual(aNextEntryKey,pIndexBuffer->pIndex()->pIdxColVec()));
+  }
+  
   nnpTask->m_pDataStack->vPushObject(pNextEntry);
   
   EXIT();
@@ -361,24 +365,14 @@ void Task::vIndexPosition(NNP_Task nnpTask)
   
   xKeyWsp.vAddElement(pStrVal, pIndex->pIdxColVec()->pGet(0));
   
-  Key xKey(xKeyWsp);
-  //xKey.vShow(pIndex->pIdxColVec());
-  
   bool bMatches = true;
-  Entry* pEntry = pIndexBuffer->aPosition(xKey, pOpAryGreater);
+  Entry* pEntry = pIndexBuffer->aPosition(xKeyWsp, pOpAryGreater);
   
-  bMatches = pEntry->aKey()->bMatches(&xKey, pIndex->pIdxColVec(), pOpAryGreater);
+  bMatches = pEntry->aKey()->bMatches(xKeyWsp.aKey(), pIndex->pIdxColVec(), pOpAryGreater);
   if ( ! bMatches) {
     pEntry = pIndexBuffer->aNextEntry(pEntry);
   }
-  /*
-  if (pEntry) {
-    pEntry->aKey()->vShow(pIndex->pIdxColVec());
-  }
-  else {
-    vTrace("nullptr\n"_Str);
-  }
-  */
+  
   nnpTask->m_pDataStack->vPushObject(pEntry);
   
   delete pOpAryGreater;
@@ -637,9 +631,8 @@ void Task::vIndexUpper(NNP_Task nnpTask)
   ASSERT(1 == pIndex->pIdxColVec()->nItems());
   
   xKeyWsp.vAddElement(xValWsp, pIndex->pIdxColVec()->pGet(0));
-  Key xKey(xKeyWsp);
   
-  bool bMatches = pEntry->bMatches(&xKey, pIndex->pIdxColVec(), pOpAryLower);
+  bool bMatches = pEntry->bMatches(xKeyWsp.aKey(), pIndex->pIdxColVec(), pOpAryLower);
   
   delete pOpAryLower;
   

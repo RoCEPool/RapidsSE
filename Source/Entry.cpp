@@ -147,7 +147,7 @@ void Entry::vShow(i8 iOffset, IdxColVec* pColVec)
          m_nOffsets
          );
   
-  vTrace("Id %3llu.%3llu Key "_Str,
+  vTrace("Id %3llu.%3llu "_Str,
          m_xId.uBuffer(),
          m_xId.uRow()
          );
@@ -304,6 +304,36 @@ Id& Entry::xId(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get rowid                                                                  */
+/*----------------------------------------------------------------------------*/
+void Entry::vId(Id xId)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+  
+  m_xId = xId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set key given entry wsp                                                    */
+/*----------------------------------------------------------------------------*/
+void Entry::vKey(EntWsp& xEntWsp)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+  
+  ASSERT(m_nBytes);
+  
+  // copy Key
+  Key* aEntryKey = this->aKey();
+  
+  Key* aEntWspKey = xEntWsp.aKey();
+  i8 nKeyBytes = xEntWsp.nKeySize();
+  
+  MemLib::vCopy(aEntryKey,aEntWspKey,nKeyBytes);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
 /* set entry given entry wsp                                                  */
 /*----------------------------------------------------------------------------*/
 void Entry::vSetEntry(EntWsp& xEntWsp)
@@ -329,26 +359,6 @@ void Entry::vSetEntry(EntWsp& xEntWsp)
   
   // copy Key
   Key* aEntryKey = this->aKey();
-  Key* aEntWspKey = xEntWsp.aKey();
-  i8 nKeyBytes = xEntWsp.nKeySize();
-  
-  MemLib::vCopy(aEntryKey,aEntWspKey,nKeyBytes);
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* set key given entry wsp                                                    */
-/*----------------------------------------------------------------------------*/
-void Entry::vSetKey(EntWsp& xEntWsp)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
-  
-  ASSERT(m_nBytes);
-  
-  // copy Key
-  Key* aEntryKey = this->aKey();
-  
   Key* aEntWspKey = xEntWsp.aKey();
   i8 nKeyBytes = xEntWsp.nKeySize();
   

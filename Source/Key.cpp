@@ -92,8 +92,6 @@ void Key::vKey(KeyWsp& xKeyWsp)
   Str* aSrc = xKeyWsp.aWspStr();
   i8 nBytes  = xKeyWsp.nWspUsed();
   
-  i8 iVal = *(i8*)aSrc;
-  
   MemLib::vCopy(aDst,aSrc,nBytes);
 }
 
@@ -349,7 +347,7 @@ bool Key::bMatches(Key* pKeyThat, IdxColVec* pColVec, RelOpAry* pRelOpAry)
 void Key::vShow(IdxColVec* pColVec)
 {
   char* aCursor = aWspArea();
-  s32 sKeyString;
+  s256 sKeyString;
   
   //vTrace("Key %p "_Str, this);
   
@@ -371,7 +369,7 @@ void Key::vShow(IdxColVec* pColVec)
         
       case CT_INTEGER:
         iKey = *(i8*)aElement;
-        vTrace("Element %lld:(size %lld value:%lld) "_Str,
+        vTrace("E%lld:(size %lld value:%lld) "_Str,
                iColumn,
                nBytes,
                iKey
@@ -394,7 +392,7 @@ void Key::vShow(IdxColVec* pColVec)
         
       case CT_VARCHAR:
         pKey = (Str*)aElement;
-        vTrace("Element %lld:(size %lld value:%s) "_Str,
+        vTrace("E%lld:(size %lld value:%s) "_Str,
                iColumn,
                nBytes,
                pKey
@@ -407,8 +405,8 @@ void Key::vShow(IdxColVec* pColVec)
     }
     
   }
-  vTrace("%s)"_Str, sKeyString.aStr());
-  
+
+  //vTrace("%s)\n"_Str, sKeyString.aStr());
 }
 
 /*----------------------------------------------------------------------------*/

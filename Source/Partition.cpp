@@ -197,11 +197,11 @@ void Partition::vPopulateIndex(i8 iIndexNo)
       
       while (pRow) {
         pIndexData->vInsertEntry(pRow, nRowNo, nBufferNo);
-        if (nRowBuffer == 2) {
+        //if (nRowBuffer == 2) {
           //vTrace("************************\n"_Str);
           //pIndexData->vDump();
           //vTrace("************************\n"_Str);
-        }
+        //}
         pRow = pRowBuffer->pNextRow(pRow);
         nRowNo++;
       }

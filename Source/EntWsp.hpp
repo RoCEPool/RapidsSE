@@ -26,6 +26,7 @@ namespace DBobjects
     void* operator new(size_t, EntWsp*);
     
     EntWsp(void);
+    EntWsp(i8 nOffsets);
     ~EntWsp(void);
   
     void   vAddKey(KeyWsp& xKeyWsp);
