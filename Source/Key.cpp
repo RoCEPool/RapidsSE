@@ -351,7 +351,7 @@ void Key::vShow(IdxColVec* pColVec)
   char* aCursor = aWspArea();
   s32 sKeyString;
   
-  vTrace("Key %p "_Str, this);
+  //vTrace("Key %p "_Str, this);
   
   sKeyString = "( "_Str;
   
@@ -368,6 +368,7 @@ void Key::vShow(IdxColVec* pColVec)
     Str* pKey;
     
     switch (eColumnType) {
+        
       case CT_INTEGER:
         iKey = *(i8*)aElement;
         vTrace("Element %lld:(size %lld value:%lld) "_Str,
@@ -377,6 +378,19 @@ void Key::vShow(IdxColVec* pColVec)
                );
         StrLib::vSprintCat((char*)(sKeyString.aStr()), "%lld ", iKey);
         break;
+        
+      case CT_INTERVAL: {
+        Ivl xIvl;
+        xIvl = *(Ivl*)aElement;
+        vTrace("Element %lld:(size %lld value:%lld.%03lld) "_Str,
+               iColumn,
+               nBytes,
+               xIvl.iSecond(),
+               xIvl.iMilli()
+               );
+        StrLib::vSprintCat((char*)(sKeyString.aStr()), "%lld ", iKey);
+        break;
+      }
         
       case CT_VARCHAR:
         pKey = (Str*)aElement;
@@ -393,7 +407,7 @@ void Key::vShow(IdxColVec* pColVec)
     }
     
   }
-  vTrace("%s)\n"_Str, sKeyString.aStr());
+  vTrace("%s)"_Str, sKeyString.aStr());
   
 }
 

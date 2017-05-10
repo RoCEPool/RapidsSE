@@ -192,7 +192,7 @@ void Row::vGetKey(KeyWsp& xKeyWsp, IdxColVec* pColVec)
         Ivl xIvl;
         bool b = DtmLib::bExtractIvl(&pDst,&xIvl);
         ASSERT(b);
-        xValWsp = xIvl.iAsI8();
+        xValWsp = xIvl;
         break;
       }
         

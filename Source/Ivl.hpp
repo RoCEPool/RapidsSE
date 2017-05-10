@@ -34,6 +34,9 @@ namespace Datums
     void vInitZero(void);
     i8   iAsI8(void);
   
+    i8   iSecond(void);
+    i8   iMilli(void);
+  
     void vSet(u8 uSecond, u8 uMilli);
   
     static bool bExtract(Str* aDst, Str* aSrc, i8& nBytesTaken);

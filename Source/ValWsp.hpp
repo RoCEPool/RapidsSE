@@ -34,6 +34,7 @@ namespace Values
     
     void operator =(d8 dFlt);
     void operator =(i8 iInt);
+    void operator =(Ivl xIvl);
     void operator =(Object* pObject);
     void operator =(Str* aStr);
     void vAssignBinary(Object* pObject);

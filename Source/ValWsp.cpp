@@ -71,6 +71,20 @@ void ValWsp::operator =(i8 iInt)
 }
 
 /*----------------------------------------------------------------------------*/
+/* assign/copy an interval into workspace                                     */
+/*----------------------------------------------------------------------------*/
+void ValWsp::operator =(Ivl iIvl)
+{
+  IvlVal* pNestedIvlVal = (IvlVal*)pNestedValue();
+  
+  // set nested class
+  pNestedIvlVal->vClass(CN_IVLVAL);
+  
+  // assign int into the nested intval
+  *pNestedIvlVal = iIvl;
+}
+
+/*----------------------------------------------------------------------------*/
 /* assign/copy a pointer into workspace                                       */
 /*----------------------------------------------------------------------------*/
 void ValWsp::operator =(Object* pPtr)

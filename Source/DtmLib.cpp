@@ -157,9 +157,9 @@ bool DtmLib::bExtractIvl(char** aaSrc, Ivl* aInterval)
     return true;
   aInterval->x.m_uSecond = uField;
   
-  // skip . separator
-  if ('.' != *(*aaSrc)++)
-    return true;
+//  // skip . separator
+//  if ('.' != *(*aaSrc)++)
+//    return true;
   
   // extract fraction (assuming milliseconds)
   if ('.' == **aaSrc) {
