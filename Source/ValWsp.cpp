@@ -112,6 +112,20 @@ void ValWsp::operator =(Str* pStr)
 }
 
 /*----------------------------------------------------------------------------*/
+/* assign/copy an timestamp into workspace                                    */
+/*----------------------------------------------------------------------------*/
+void ValWsp::operator =(Tsp xTsp)
+{
+  TspVal* pNestedTspVal = (TspVal*)pNestedValue();
+  
+  // set nested class
+  pNestedTspVal->vClass(CN_TSPVAL);
+  
+  // assign int into the nested intval
+  *pNestedTspVal = xTsp;
+}
+
+/*----------------------------------------------------------------------------*/
 /* assign/copy a string into workspace                                        */
 /*----------------------------------------------------------------------------*/
 void ValWsp::vAssignBinary(Object* pObject)

@@ -37,6 +37,7 @@ namespace Values
     void operator =(Ivl xIvl);
     void operator =(Object* pObject);
     void operator =(Str* aStr);
+    void operator =(Tsp xTsp);
     void vAssignBinary(Object* pObject);
     
     char*  aWspArea(void);

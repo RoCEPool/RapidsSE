@@ -72,10 +72,11 @@ void KeyWsp::vAddKey(Key* pKey, IdxColVec* pColVec)
     char* pSrc = aElement;
     
     switch(pColumn->eColumnType()) {
-      case CT_FLOAT:    ValLib::vCopyFltDatum((char*)pDst,(char*)pSrc); break;
-      case CT_INTEGER:  ValLib::vCopyIntDatum((char*)pDst,(char*)pSrc); break;
-      case CT_INTERVAL: ValLib::vCopyIvlDatum((char*)pDst,(char*)pSrc); break;
-      case CT_VARCHAR:  ValLib::vCopyStrDatum((char*)pDst,(char*)pSrc); break;
+      case CT_FLOAT:     ValLib::vCopyFltDatum((char*)pDst,(char*)pSrc); break;
+      case CT_INTEGER:   ValLib::vCopyIntDatum((char*)pDst,(char*)pSrc); break;
+      case CT_INTERVAL:  ValLib::vCopyIvlDatum((char*)pDst,(char*)pSrc); break;
+      case CT_TIMESTAMP: ValLib::vCopyTspDatum((char*)pDst,(char*)pSrc); break;
+      case CT_VARCHAR:   ValLib::vCopyStrDatum((char*)pDst,(char*)pSrc); break;
       default:
         ASSERT(0);
     }
@@ -206,6 +207,11 @@ void KeyWsp::vAddElement(ValWsp& xValWsp, Column* pCol)
       nBytes = ValLib::nCopyIvlDatum((char*)pDst,(char*)pSrc);
       break;
     
+    case CT_TIMESTAMP:
+      pSrc = (char*)(_pTspVal(xValWsp.pNestedValueSelf())->aInt());
+      nBytes = ValLib::nCopyTspDatum((char*)pDst,(char*)pSrc);
+      break;
+      
     case CT_VARCHAR:
       pSrc = (char*)(_pStrVal(xValWsp.pNestedValueSelf())->aStr());
       nBytes = ValLib::nCopyStrDatum((char*)pDst,(char*)pSrc);

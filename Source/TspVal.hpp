@@ -16,8 +16,10 @@ namespace Values
     TspVal(void);
     
     void operator =(i8 iVal);
-    
+    void operator =(Tsp xTsp);
+  
     i8 nSize(void) const;
+    i8* aInt(void);
     i8 iTsp(void) const;
     
     void vToString(Str* aWorkspace);

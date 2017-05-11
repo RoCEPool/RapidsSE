@@ -208,7 +208,7 @@ void Row::vGetKey(KeyWsp& xKeyWsp, IdxColVec* pColVec)
         Tsp xTsp;
         bool b = DtmLib::bExtractTsp(&pDst,&xTsp);
         ASSERT(b);
-        xValWsp = xTsp.iAsI8();
+        xValWsp = xTsp;
         break;
       }
         

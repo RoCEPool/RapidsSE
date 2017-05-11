@@ -402,6 +402,24 @@ void Key::vShow(IdxColVec* pColVec)
         break;
       }
         
+      case CT_TIMESTAMP: {
+        Tsp xTsp;
+        xTsp = *(Tsp*)aElement;
+        vTrace("Element %lld:(size %lld value:%04lld-%02lld-%02lld %02lld:%02lld:%02lld.%lld) "_Str,
+               iColumn,
+               nBytes,
+               xTsp.iYear(),
+               xTsp.iMonth(),
+               xTsp.iDay(),
+               xTsp.iHour(),
+               xTsp.iMinute(),
+               xTsp.iSecond(),
+               xTsp.iMilli()
+               );
+        StrLib::vSprintCat((char*)(sKeyString.aStr()), "%lld ", iKey);
+        break;
+      }
+        
       case CT_VARCHAR:
         pKey = (Str*)aElement;
         vTrace("E%lld:(size %lld value:%s) "_Str,
