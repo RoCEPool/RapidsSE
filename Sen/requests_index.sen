@@ -4,6 +4,8 @@
 
 "requests.sen" .verbose
 
+  timer: idxSelectTimer
+
 /*----------------------------------------------------------------------------*/
 /* analyse an index of a table                                                */
 /*----------------------------------------------------------------------------*/
@@ -232,6 +234,8 @@ ddlLock::grabRead
 
   locals| tableNm indexNm lower |
 
+  idxSelectTimer timer.start
+
   ddlLock::grabRead
 
   //
@@ -278,6 +282,10 @@ ddlLock::grabRead
   // i.e. task.dicStack will now be back to ../tables
   popTable
   withinTables assert
+
+  idxSelectTimer timer.update
+  "select time " .put
+  idxSelectTimer timer.millisecs .put "ms" .put .\n
 
   <OK>
 ;
