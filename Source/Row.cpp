@@ -114,13 +114,13 @@ void Row::vContentDump(void)
 /*----------------------------------------------------------------------------*/
 /* get a key as a keywsp wsp from this row for the given index columns        */
 /*----------------------------------------------------------------------------*/
-void Row::vGetKey(KeyWsp& xKeyWsp, IdxColVec* pColVec)
+void Row::vGetKey(KeyWsp& xKeyWsp, IdxColVec* pIdxColVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
  
   char* pRowData = pData();
   
-  i8 nCols = pColVec->nItems();
+  i8 nCols = pIdxColVec->nItems();
   i8 iCol = -1;
   ValWsp xValWsp;
   s256 s;
@@ -131,7 +131,7 @@ void Row::vGetKey(KeyWsp& xKeyWsp, IdxColVec* pColVec)
   for (i8 iColumn = 0; iColumn < nCols; iColumn++) {
     
     // get the column from the index column vector
-    Column* pColumn = pColVec->pGet(iColumn);
+    Column* pColumn = pIdxColVec->pGet(iColumn);
     
     // get the column number of the column
     i8 iColumnNo = pColumn->iColumnNo();
