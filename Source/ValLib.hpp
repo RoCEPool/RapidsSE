@@ -17,6 +17,9 @@ namespace Values
     static i8   nCopyDatum(eCN eClass, void* pDst, void* pSrc);
     static void vCopyDatum(eCN eClass, void* pDst, void* pSrc);
   
+    static i8   nCopyDteDatum(void* pDst, void* pSrc);
+    static void vCopyDteDatum(void* pDst, void* pSrc);
+  
     static i8   nCopyFltDatum(void* pDst, void* pSrc);
     static void vCopyFltDatum(void* pDst, void* pSrc);
   
@@ -28,6 +31,9 @@ namespace Values
   
     static i8   nCopyStrDatum(void* pDst, void* pSrc);
     static void vCopyStrDatum(void* pDst, void* pSrc);
+  
+    static i8   nCopyTmeDatum(void* pDst, void* pSrc);
+    static void vCopyTmeDatum(void* pDst, void* pSrc);
   
     static i8   nCopyTspDatum(void* pDst, void* pSrc);
     static void vCopyTspDatum(void* pDst, void* pSrc);

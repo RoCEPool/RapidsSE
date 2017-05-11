@@ -11,11 +11,11 @@ namespace Datums
   
   private:
     struct {
-      u8 m_uHour   :  5 ; // 0..31
-      u8 m_uMinute :  6 ; // 0..63
-      u8 m_uSecond :  6 ; // 0..63
+      u8 m_uSpare  : 30 ; //
       u8 m_uMilli  : 10 ; // 0..1023
-      u8 m_uSpare  : 37 ; //
+      u8 m_uSecond :  8 ; // 0..63
+      u8 m_uMinute :  8 ; // 0..63
+      u8 m_uHour   :  8 ; // 0..31
       //            ---
       //             64
       //            ===
@@ -37,6 +37,10 @@ namespace Datums
     void vInitZero(void);
     i8   iAsI8(void);
   
+    i8   iHour(void);
+    i8   iMinute(void);
+    i8   iSecond(void);
+    i8   iMilli(void);
     static bool bExtract(Str* aDst, Str* aSrc, i8& nBytesTaken);
     static void vSprint(Str* aDst, Str* aSrc, i8& nBytesTaken);
     

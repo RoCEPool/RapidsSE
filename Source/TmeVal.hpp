@@ -16,8 +16,10 @@ namespace Values
     TmeVal(void);
     
     void operator =(i8 iVal);
-    
+    void operator =(Tme xTme);
+  
     i8 nSize(void) const;
+    i8* aInt(void);
     i8 iTme(void) const;
     
     void vToString(Str* aWorkspace);

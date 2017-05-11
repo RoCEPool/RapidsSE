@@ -367,6 +367,20 @@ void Key::vShow(IdxColVec* pColVec)
     
     switch (eColumnType) {
         
+      case CT_DATE: {
+        Dte xDte;
+        xDte = *(Dte*)aElement;
+        vTrace("Element %lld:(size %lld value:%04lld-%02lld-%02lld) "_Str,
+               iColumn,
+               nBytes,
+               xDte.iYear(),
+               xDte.iMonth(),
+               xDte.iDay()
+               );
+        StrLib::vSprintCat((char*)(sKeyString.aStr()), "%lld ", iKey);
+        break;
+      }
+        
       case CT_FLOAT: {
         Flt xFlt;
         xFlt = *(Flt*)aElement;
@@ -397,6 +411,21 @@ void Key::vShow(IdxColVec* pColVec)
                nBytes,
                xIvl.iSecond(),
                xIvl.iMilli()
+               );
+        StrLib::vSprintCat((char*)(sKeyString.aStr()), "%lld ", iKey);
+        break;
+      }
+        
+      case CT_TIME: {
+        Tme xTme;
+        xTme = *(Tme*)aElement;
+        vTrace("Element %lld:(size %lld value:%02lld:%02lld:%02lld.%lld) "_Str,
+               iColumn,
+               nBytes,
+               xTme.iHour(),
+               xTme.iMinute(),
+               xTme.iSecond(),
+               xTme.iMilli()
                );
         StrLib::vSprintCat((char*)(sKeyString.aStr()), "%lld ", iKey);
         break;
