@@ -11,7 +11,7 @@ create table jidx (
   jidx_flt   FLOAT       NOT NULL
 );
 
-create index idx_ivl on jidx (jidx_flt);
+create index idx_flt on jidx (jidx_flt);
 //create index idx_ivl on jidx (jidx_ivl);
 //create index idx1 on jidx (jidx_key);
 //create index idx2 on jidx (jidx_100);
@@ -20,7 +20,7 @@ create index idx_ivl on jidx (jidx_flt);
 ld jidx "../JTEST/jidxFlt.csv"
 
 //anidx jidx idx
-dumpidx jidx idx_ivl
+dumpidx jidx idx_flt
 
 /*
 print "\nSelecting rows with key >= 3 using idx1 ...\n"
