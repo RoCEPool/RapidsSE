@@ -141,6 +141,31 @@ void IndexData::vDump(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get the first L0 buffer                                                    */
+/*----------------------------------------------------------------------------*/
+IndexBuffer* IndexData::pFirstBuffer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
+  
+  IndexBuffer* pIndexBuffer = m_pRoot;
+  
+  if (pIndexBuffer->nBufferLevel() == 0)
+    return pIndexBuffer;
+  
+  while (pIndexBuffer) {
+    
+    Entry* pFirstEntry = pIndexBuffer->aNextEntry(pIndexBuffer->aHead());
+    pIndexBuffer = pFirstEntry->pIndexBuffer();
+    
+    if (pIndexBuffer->nBufferLevel() == 0) {
+      return pIndexBuffer;
+    }
+  }
+  
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the index                                                              */
 /*----------------------------------------------------------------------------*/
 Index* IndexData::pIndex(void)

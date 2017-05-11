@@ -35,6 +35,7 @@ namespace DBobjects
   
     Str*         pAnalyze(void);
     void         vDump(void);
+    IndexBuffer* pFirstBuffer();
     Index*       pIndex(void);
     i8           nIndexBuffers(void);
     void         vInsertEntry(Row* pRow, i8 nRowNo, bn nBufferNo);

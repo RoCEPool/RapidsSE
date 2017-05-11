@@ -89,6 +89,7 @@ rmidx     drop_index
 rgeselidx range_select_index
 szidx     size_index
 tridx     truncate_index
+uprselidx upper_select_index
  
 -----------------
 Column Requests:

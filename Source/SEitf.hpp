@@ -117,6 +117,7 @@ namespace Interface
     bool bRangeSelectIndex(Str* aWords[], i8 iWords);
     bool bSizeIndex(Str* aWords[], i8 iWords);
     bool bTruncateIndex(Str* aWords[], i8 iWords);
+    bool bUpperSelectIndex(Str* aWords[], i8 iWords);
 
     bool bAnalyzeTable(Str* aWords[], i8 iWords);
     bool bCopyTable(Str* aWords[], i8 iWords);

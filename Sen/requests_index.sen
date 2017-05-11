@@ -223,7 +223,7 @@ ddlLock::grabRead
 ;
 
 /*----------------------------------------------------------------------------*/
-/* get sel cursor for lower of table given an index                           */
+/* lower bound select of table given an index                                 */
 /*----------------------------------------------------------------------------*/
 : lower_select_index ( "<lower>" "<indexNm>" "<tableNm>" -- <R> )
 
@@ -275,7 +275,7 @@ ddlLock::grabRead
   getTableRef not if <NIP+ERROR> exit then
   task::this task.seitf@ seitf.table@ assert
 
-  // get a select cursor
+  // execute a lower bound select using index
   lower indexNm lowerSelectIndex ( lower index )
 
   // dec and return table reference and clear task.seitf.currentTable
@@ -297,7 +297,7 @@ ddlLock::grabRead
 ;
 
 /*----------------------------------------------------------------------------*/
-/* get sel cursor for range of table given an index                           */
+/* range select of table given an index                                       */
 /*----------------------------------------------------------------------------*/
 : range_select_index ( "<upper>" "<lower>" "<indexNm>" "<tableNm>" -- <R> )
 
@@ -455,6 +455,80 @@ ddlLock::grabWrite
 
   // assert we are still in tables folder
   assertInTables
+
+  <OK>
+;
+
+/*----------------------------------------------------------------------------*/
+/* upper bound select of table given an index                                 */
+/*----------------------------------------------------------------------------*/
+: upper_select_index ( "<upper>" "<indexNm>" "<tableNm>" -- <R> )
+
+  assert::stack_3
+  CN_STRVAL assert::class_0
+  CN_STRVAL assert::class_1
+  CN_STRVAL assert::class_2
+
+  locals| tableNm indexNm upper |
+
+  idxSelectTimer timer.start
+
+  ddlLock::grabRead
+
+  //
+  // task will have an seitf and a dicStack path, but seitf has no table
+  //
+
+  // assert no seitf.table
+  task::this task.seitf@ seitf.table@ not assert
+
+  // path should end in a tables folder
+  // i.e. task.dicStack should be ../tables
+  checkInTables not if <NIP+ERROR> exit then
+
+  // check "<tableNm>" is a table folder within ../tables
+  tableNm checkIsTableFolder not if <NIP+ERROR> exit then
+
+  // push named table folder onto path
+  // i.e. task.dicStack will be ../tables/<tableNm>
+  tableNm pushTable assert
+
+  // check "<tablenm"> is a table in ../tables/<tableNm>
+  tableNm checkIsTable not if <NIP+ERROR> exit then
+
+  // push indexes folder
+  pushIndexes assert
+
+  // check indexNm is an index
+  indexNm checkIsIndex
+  not if
+    popIndexes popTable assertInTables <NIP+ERROR> exit
+  then
+
+  // pop indexes folder
+  popIndexes
+
+  // get and inc table reference and put into task.seitf.currentTable
+  getTableRef not if <NIP+ERROR> exit then
+  task::this task.seitf@ seitf.table@ assert
+
+  // execute a lower bound select using index
+  upper indexNm upperSelectIndex ( upper index )
+
+  // dec and return table reference and clear task.seitf.currentTable
+  returnTableRef not if <NIP+ERROR> exit then
+
+  // assert no seitf.table
+  task::this task.seitf@ seitf.table@ not assert
+
+  // pop named table folder off path
+  // i.e. task.dicStack will now be back to ../tables
+  popTable
+  withinTables assert
+
+  idxSelectTimer timer.update
+  "select time " .put
+  idxSelectTimer timer.millisecs .put "ms" .put .\n
 
   <OK>
 ;

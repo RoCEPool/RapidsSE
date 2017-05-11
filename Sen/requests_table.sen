@@ -479,7 +479,7 @@ ddlLock::grabRead
 ;
 
 /*----------------------------------------------------------------------------*/
-/* get sel cursor for lower of table                                          */
+/* select from table using index given lower bound                            */
 /*----------------------------------------------------------------------------*/
 : lower_select_table ( "<lower>" "<tableNm>" -- <R> )
 
@@ -516,7 +516,7 @@ ddlLock::grabRead
   getTableRef not if <NIP+ERROR> exit then ( "<tableNm>" )
   task::this task.seitf@ seitf.table@ assert
 
-  // get a select cursor
+  // select with lower bound
   lowerSelectTable
 
   // pop named table folder off path

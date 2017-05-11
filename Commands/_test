@@ -55,6 +55,10 @@ lwrselidx jidx idx2 180
 print "\nSelecting rows with key >= 3 and key <= 7 using idx1 ...\n"
 rgeselidx jidx idx1 3 7
 
+print "\nSelecting rows with key <= 7 using idx1 ...\n"
+uprselidx jidx idx1 7
+
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

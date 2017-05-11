@@ -309,7 +309,7 @@ tp: loadIndexes
 ;
 
 /*----------------------------------------------------------------------------*/
-/* position lower select cursor for table ( called by lowerSelectTable request)*/
+/* position lower select cursor for table (called by lowerSelectIndex request)*/
 /*----------------------------------------------------------------------------*/
 : lowerSelectIdx ( ^indexPtr ^indexBuffer ^entry "<lower>" -- <entry> )
 
@@ -425,23 +425,23 @@ tp: loadIndexes
     0 to entry
   else
 
-  entry not if
-    // position in the index buffer
-    lower indexBuffer indexPtr index.position
-    to entry
-
-  // we may not find an entry , so need to move to next buffer
-  else
-    entry indexBuffer index.getNextEntry to entry
-  then
+    entry not if
+      // position in the index buffer
+      lower indexBuffer indexPtr index.position
+      to entry
+    else
+      entry indexBuffer index.getNextEntry to entry
+    then
 
     entry not if
-      // get next entry from the current entry of indexBuffer
+
+      // we may not find an entry , so need to move to next buffer
       indexBuffer index.getNextBuffer to indexBuffer
 
       indexBuffer not if
         0 to entry
       else
+        // get next entry from the current indexBuffer
         entry indexBuffer index.getNextEntry to entry
       then
     then
@@ -547,6 +547,118 @@ tp: loadIndexes
 
   index.space >str
 ;
+
+/*----------------------------------------------------------------------------*/
+/* position for upper select for table (called by upperSelectIndex request)   */
+/*----------------------------------------------------------------------------*/
+: upperSelectIdx ( ^indexPtr ^indexBuffer ^entry -- <entry> )
+
+  0 locals| row entry indexBuffer indexPtr |
+
+  tp: upperSelectIdx
+
+  indexBuffer not if
+    0 to entry
+  else
+
+    entry not if
+     // position in the index buffer
+     indexBuffer index.firstEntry
+     to entry
+   else
+      // get next entry from the current indexBuffer
+      entry indexBuffer index.getNextEntry to entry
+    then
+
+    entry not if
+      // we may not find an entry , so need to move to next buffer
+      indexBuffer index.getNextBuffer to indexBuffer
+
+      indexBuffer not if
+        0 to entry
+      else
+        entry indexBuffer index.getNextEntry to entry
+      then
+    then
+
+  then
+
+  // return indexBuffer and entry
+  indexBuffer entry
+
+;
+
+/*----------------------------------------------------------------------------*/
+/* upper select for index ( called by lower_select_index request)             */
+/*----------------------------------------------------------------------------*/
+: upperSelectIndex ( "<upper>" "<index>" --  )
+
+//traceOn
+  tp: upperSelectIndex
+  //
+  // execution context:
+  //   this task will have a seitf
+  //   and the seitf will have a table
+  //
+  assert::stack_2
+
+  0 0 0 locals| indexBuffer entry indexPtr indexNm upper |
+
+  // increment query count
+  queryCount ++
+
+  // push indexes
+  pushIndexes assert
+
+  // find the index
+  indexNm find execute ( index^ )
+  to indexPtr
+
+  // for each slot
+  grid.slots 0
+  do
+    I "Partition: %v" str.format .
+
+    // get the first indexBuffer
+    indexPtr index.positionFirst ( indexBuffer )
+    to indexBuffer
+
+    1
+    begin
+
+      while
+
+      indexPtr indexBuffer entry
+      upperSelectIdx  ( indexPtr indexBuffer entry upper )
+      to entry
+      to indexBuffer
+
+      // check if entry is null ?
+      entry if
+        // check against upper bound
+        upper entry indexPtr index.upper
+        if
+          entry entry.row row.string .
+          1
+        else
+          0
+        then
+      else
+       0
+      then
+
+
+    repeat
+
+  loop
+
+  // pop indexes
+  popIndexes
+
+  "ALL DONE" .
+//traceOff
+;
+
 
 /*============================================================================*/
 /* end                                                                        */

@@ -399,6 +399,7 @@ bool SEitf::bDecode(Str* aWords[], i8 iWords)
   if (aWords[0]->bSame("tableSizes"_Str)) return bSizeTables(aWords, iWords);
   if (aWords[0]->bSame("tr"_Str)) return bTruncateTable(aWords, iWords);
   if (aWords[0]->bSame("tridx"_Str)) return bTruncateIndex(aWords, iWords);
+  if (aWords[0]->bSame("uprselidx"_Str)) return bUpperSelectIndex(aWords, iWords);
   if (aWords[0]->bSame("usesch"_Str)) return bUseSchema(aWords, iWords);
   if (aWords[0]->bSame("__x"_Str)) return bX(aWords);
   if (aWords[0]->bSame("ping"_Str)) return bPing(aWords);
@@ -1613,6 +1614,37 @@ bool SEitf::bTruncateIndex(Str* aWords[], i8 iWords)
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" truncate_index"_Str);
+  
+  return bAppendRequest(sRequest);
+}
+
+/*----------------------------------------------------------------------------*/
+/* upper select rows from a table on a given index                            */
+/*----------------------------------------------------------------------------*/
+bool SEitf::bUpperSelectIndex(Str* aWords[], i8 iWords)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  s256 sRequest;
+  
+  if (iWords != 4) {
+    vSetLastError(EC_INVALID_PARAMETERS);
+    return false;
+  }
+  
+  sRequest.vConcat(" \""_Str);
+  sRequest.vConcat(aWords[3]);
+  sRequest.vConcat("\""_Str);
+  
+  sRequest.vConcat(" \""_Str);
+  sRequest.vConcat(aWords[2]);
+  sRequest.vConcat("\""_Str);
+  
+  sRequest.vConcat(" \""_Str);
+  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat("\""_Str);
+  
+  sRequest.vConcat(" upper_select_index"_Str);
   
   return bAppendRequest(sRequest);
 }
