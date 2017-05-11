@@ -438,6 +438,9 @@ IndexBuffer* IndexBuffer::pSplitBuffer(void)
   xKeyWsp.vAddKey(pLastEntry->aKey(), m_pIndex->pIdxColVec());
   
   Entry* pAfterEntry = aPosition(xKeyWsp, pOpAryFind, bEqualTo, pReviseVec);
+  
+  // Note this ASSERT fails if we have dulplicates in the table     //ALKA: TODO
+  // Need to fix when we cater for non-unique indexes
   ASSERT(pAfterEntry == pLastEntry);
   
   i8 iLastEntryOffset = iToOffset(pLastEntry);
