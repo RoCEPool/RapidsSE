@@ -25,8 +25,8 @@ bool DtmLib::bExtractBol(char** aaSrc, Bol* aBoolean)
   
   // collect the csv
   while ('|' != **aaSrc && ',' != **aaSrc)
-    *aChar = *(*aaSrc)++;
-  *aChar = '\0';
+    *aChar++ = *(*aaSrc)++;
+  *aChar++ = '\0';
 
   // find first char
   for (aChar = xBuffer; *aChar && ' ' == *aChar; aChar++)
@@ -99,9 +99,9 @@ bool DtmLib::bExtractFlt(char** aaSrc, Flt* aFloat)
   char* aChar = xBuffer;
   
   // collect the csv
-  while ('|' != **aaSrc && ',' != **aaSrc)
-    *aChar = *(*aaSrc)++;
-  *aChar = '\0';
+  while (**aaSrc && '|' != **aaSrc && ',' != **aaSrc)
+    *aChar++ = *(*aaSrc)++;
+  *aChar++ = '\0';
   
   // find first char
   for (aChar = xBuffer; *aChar && ' ' == *aChar; aChar++)
@@ -126,8 +126,8 @@ bool DtmLib::bExtractInt(char** aaSrc, Int* aInteger)
   
   // collect the csv
   while ('|' != **aaSrc && ',' != **aaSrc)
-    *aChar = *(*aaSrc)++;
-  *aChar = '\0';
+    *aChar++ = *(*aaSrc)++;
+  *aChar++ = '\0';
   
   // find first char
   for (aChar = xBuffer; *aChar && ' ' == *aChar; aChar++)

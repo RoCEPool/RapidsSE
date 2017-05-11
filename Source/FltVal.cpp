@@ -33,7 +33,7 @@ void* FltVal::operator new(size_t iSize)
 FltVal::FltVal(void)
 : Value(CN_FLTVAL)
 {
-  m_iFlt = 0;
+  m_dFlt = 0.0;
   
   _checkInitialised_(CN_FLTVAL);
 }
@@ -41,19 +41,27 @@ FltVal::FltVal(void)
 /*----------------------------------------------------------------------------*/
 /* assign a value                                                             */
 /*----------------------------------------------------------------------------*/
-void FltVal::operator =(i8 iFlt)
+void FltVal::operator =(d8 dFlt)
 {
   //vTrace("FltVal: diff %lld\n"_Str,nSub(&m_iFlt,this));
   
-  m_iFlt = iFlt;
+  m_dFlt = dFlt;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get iFlt                                                                   */
+/* get dFlt                                                                   */
 /*----------------------------------------------------------------------------*/
-i8 FltVal::iFlt(void) const
+d8 FltVal::dFlt(void) const
 {
-  return m_iFlt;
+  return m_dFlt;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get aFlt                                                                   */
+/*----------------------------------------------------------------------------*/
+d8* FltVal::aFlt(void)
+{
+  return &m_dFlt;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -69,7 +77,7 @@ i8 FltVal::nSize(void) const
 /*----------------------------------------------------------------------------*/
 void FltVal::vToString(Str* aWorkspace)
 {
-  *aWorkspace = m_iFlt;
+  *aWorkspace = m_dFlt;
 }
 
 /*============================================================================*/

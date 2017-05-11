@@ -72,6 +72,7 @@ void KeyWsp::vAddKey(Key* pKey, IdxColVec* pColVec)
     char* pSrc = aElement;
     
     switch(pColumn->eColumnType()) {
+      case CT_FLOAT:    ValLib::vCopyFltDatum((char*)pDst,(char*)pSrc); break;
       case CT_INTEGER:  ValLib::vCopyIntDatum((char*)pDst,(char*)pSrc); break;
       case CT_INTERVAL: ValLib::vCopyIvlDatum((char*)pDst,(char*)pSrc); break;
       case CT_VARCHAR:  ValLib::vCopyStrDatum((char*)pDst,(char*)pSrc); break;
@@ -190,6 +191,11 @@ void KeyWsp::vAddElement(ValWsp& xValWsp, Column* pCol)
   
   switch(pCol->eColumnType()) {
 
+    case CT_FLOAT:
+      pSrc = (char*)(_pFltVal(xValWsp.pNestedValueSelf())->aFlt());
+      nBytes = ValLib::nCopyFltDatum((char*)pDst,(char*)pSrc);
+      break;
+      
     case CT_INTEGER:
       pSrc = (char*)(_pIntVal(xValWsp.pNestedValueSelf())->aInt());
       nBytes = ValLib::nCopyIntDatum((char*)pDst,(char*)pSrc);

@@ -367,6 +367,18 @@ void Key::vShow(IdxColVec* pColVec)
     
     switch (eColumnType) {
         
+      case CT_FLOAT: {
+        Flt xFlt;
+        xFlt = *(Flt*)aElement;
+        vTrace("Element %lld:(size %lld value:%llf) "_Str,
+               iColumn,
+               nBytes,
+               xFlt.dAsD8()
+               );
+        StrLib::vSprintCat((char*)(sKeyString.aStr()), "%lld ", iKey);
+        break;
+      }
+        
       case CT_INTEGER:
         iKey = *(i8*)aElement;
         vTrace("E%lld:(size %lld value:%lld) "_Str,

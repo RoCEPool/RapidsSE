@@ -8,18 +8,19 @@ namespace Values
   class FltVal : public Value
   {
   private:
-    i8 m_iFlt;
+    d8 m_dFlt;
     
   public:
     void* operator new(size_t);
     
     FltVal(void);
     
-    void operator =(i8 iVal);
+    void operator =(d8 dVal);
     
     i8 nSize(void) const;
-    i8 iFlt(void) const;
-    
+    d8 dFlt(void) const;
+    d8* aFlt(void);
+  
     void vToString(Str* aWorkspace);
   };
   
