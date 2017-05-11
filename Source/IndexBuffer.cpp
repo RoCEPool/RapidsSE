@@ -652,6 +652,8 @@ void IndexBuffer::vFixHigherLevel(Entry* pNewEntry)
   // assert the key of the higher level entry and the old entry match
   ASSERT(pFoundEntry->aKey()->bMatches(pOldFirstEntry->aKey(), m_pIndex->pIdxColVec(), pOpAryFind));
   
+  delete pOpAryFind;
+  
   // create akeyWsp with the newEntry key
   KeyWsp xNewKeyWsp;
   xNewKeyWsp.vAddKey(pNewEntry->aKey(), m_pIndex->pIdxColVec());

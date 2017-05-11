@@ -667,8 +667,8 @@ void Task::vIndexUpper(NNP_Task nnpTask)
   IndexData* pIndexData = pPartition->pIndexData(iIndexNo);
   
   // create a relational operator array
-  RelOpAry* pOpAryLower = new RelOpAry;
-  pOpAryLower->vAdd(RO_LESS_EQUAL);
+  RelOpAry* pOpAryUpper = new RelOpAry;
+  pOpAryUpper->vAdd(RO_LESS_EQUAL);
   
   KeyWsp xKeyWsp;
   
@@ -679,9 +679,9 @@ void Task::vIndexUpper(NNP_Task nnpTask)
   
   xKeyWsp.vAddElement(pStrVal, pIndex->pIdxColVec()->pGet(0));
   
-  bool bMatches = pEntry->bMatches(xKeyWsp.aKey(), pIndex->pIdxColVec(), pOpAryLower);
+  bool bMatches = pEntry->bMatches(xKeyWsp.aKey(), pIndex->pIdxColVec(), pOpAryUpper);
   
-  delete pOpAryLower;
+  delete pOpAryUpper;
   
   nnpTask->m_pDataStack->vPushInt(bMatches ? 1 : 0);
   

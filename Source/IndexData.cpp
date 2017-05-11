@@ -311,6 +311,8 @@ void IndexData::vInsertEntry(IndexBuffer* pHigher, KeyWsp& xKeyWsp, Id xId, i8 i
     pIndexBuffer = pIndexBuffer->pHigherLevel()->aPositionLevel(xKeyWsp, pOpAryFind, iLevel);
   }
   
+  delete pOpAryFind;
+  
   // assert we have a buffer
   ASSERT(pIndexBuffer);
   
