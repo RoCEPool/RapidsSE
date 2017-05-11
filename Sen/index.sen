@@ -324,23 +324,23 @@ tp: loadIndexes
     entry not if
       // position in the index buffer
       lower indexBuffer indexPtr index.position
-    to entry
+      to entry
 
     // we may not find an entry , so need to move to next buffer
-  else
-    entry indexBuffer index.getNextEntry to entry
-  then
-
-  entry not if
-    // get next entry from the current entry of indexBuffer
-    indexBuffer index.getNextBuffer to indexBuffer
-
-    indexBuffer not if
-      0 to entry
     else
       entry indexBuffer index.getNextEntry to entry
     then
-  then
+
+    entry not if
+      // get next entry from the current entry of indexBuffer
+      indexBuffer index.getNextBuffer to indexBuffer
+
+      indexBuffer not if
+        0 to entry
+      else
+        entry indexBuffer index.getNextEntry to entry
+      then
+    then
 
   then
 
@@ -362,7 +362,7 @@ tp: loadIndexes
   //
   assert::stack_2
 
-  0 0 0 0 locals| indexBuffer entry selectTask indexPtr indexNm lower |
+  0 0 0 locals| indexBuffer entry indexPtr indexNm lower |
 
   // increment query count
   queryCount ++
@@ -389,7 +389,7 @@ tp: loadIndexes
       while
 
         indexPtr indexBuffer entry lower
-        lowerSelectIdx  ( indexBuffer entry )
+        lowerSelectIdx  ( indexPtr indexBuffer entry lower )
         to entry
         to indexBuffer
 
@@ -413,11 +413,52 @@ tp: loadIndexes
 ;
 
 /*----------------------------------------------------------------------------*/
+/* range select for index ( called by rangeSelectTable request)               */
+/*----------------------------------------------------------------------------*/
+: rangeSelectIdx ( ^indexPtr ^indexBuffer ^entry "<lower>" "<upper>"-- <entry> )
+
+  0 locals| row upper lower entry indexBuffer indexPtr |
+
+  tp: rangeSelectIdx
+
+  indexBuffer not if
+    0 to entry
+  else
+
+  entry not if
+    // position in the index buffer
+    lower indexBuffer indexPtr index.position
+    to entry
+
+  // we may not find an entry , so need to move to next buffer
+  else
+    entry indexBuffer index.getNextEntry to entry
+  then
+
+    entry not if
+      // get next entry from the current entry of indexBuffer
+      indexBuffer index.getNextBuffer to indexBuffer
+
+      indexBuffer not if
+        0 to entry
+      else
+        entry indexBuffer index.getNextEntry to entry
+      then
+    then
+
+  then
+
+  // return indexBuffer and entry
+  indexBuffer entry
+
+;
+
+/*----------------------------------------------------------------------------*/
 /* range select cursor for index ( called by range_select_index request)      */
 /*----------------------------------------------------------------------------*/
 : rangeSelectIndex ( "<upper>" "<lower>" "<index>" --  )
 
-tp: lowerSelectIndex
+"tp: rangeSelectIndex" .
   //
   // execution context:
   //   this task will have a seitf
@@ -425,7 +466,7 @@ tp: lowerSelectIndex
   //
   assert::stack_3
 
-  0 0 0 locals| entry selectTask indexPtr indexNm lower upper |
+  0 0 0 locals| indexBuffer entry indexPtr indexNm lower upper |
 
   // increment query count
   queryCount ++
@@ -442,40 +483,31 @@ tp: lowerSelectIndex
   do
     I "Partition: %v" str.format .
 
+    // get the indexBuffer at the lowerBound
+    lower indexPtr index.buffer ( indexBuffer )
+    to indexBuffer
+
     1
     begin
 
       while
 
-      // create a selectTask to execute the lower bound select on the index for the partition
-      indexPtr lower str.tailint assert upper str.tailint assert 3 "rangeSelectIdx" task::this task::new
-      to selectTask
-
-      //put seitf from this task to the selectTask
-      task::this task.seitf@ selectTask task.seitf!
-
-      // put the partition in seitf
-      I selectTask task.seitf@ seitf.partition!
-
-      // set acks
-      1 setAcks
-
-      // append the selectTask to this tasks taskSet
-      selectTask task::this task.taskSet@
-      taskSet.Append
-
-      // now wait for the selectTask to return an entry
-      ackWait
-
-      // get the entry from the seitf
-      task::this task.seitf@ seitf.entry@ to entry
+      indexPtr indexBuffer entry lower upper
+      rangeSelectIdx  ( indexPtr indexBuffer entry lower upper )
+      to entry
+      to indexBuffer
 
       // check if entry is null ?
       entry if
-        entry entry.row row.string .
-        1
+        // check against upper bound
+        upper entry indexPtr index.upper
+        if
+          entry entry.row row.string .
+          1
+        else
+          0
+        then
       else
-        // null entry means done with this partition
         0
       then
 
@@ -487,48 +519,6 @@ tp: lowerSelectIndex
   popIndexes
 
   "ALL DONE" .
-
-;
-
-/*----------------------------------------------------------------------------*/
-/* range select for index ( called by rangeSelectTable request)               */
-/*----------------------------------------------------------------------------*/
-: rangeSelectIdx ( ^indexPtr "<lower>" "<upper>"-- <entry> )
-
-  0 0 0 locals| seitf entry row upper lower indexPtr |
-
-  //"tp: rangeSelectIdx" .
-
-  // get the seitf from this task
-  task::this task.seitf@ to seitf
-
-  // get the last entry from the seitf
-  seitf seitf.entry@ to entry
-
-  entry not if
-    // no previous entry ?
-    // position the index at the lowerBound
-    lower indexPtr index.position ( entry )
-    to entry
-  else
-    // get next entry from the current entry
-    entry indexPtr index.getNextEntry to entry
-  then
-
-  entry seitf seitf.entry!
-
-  entry
-  if
-    // check against upper bound
-    upper entry indexPtr index.upper
-    not if
-      // set the entry in the seitf
-      0 seitf seitf.entry!
-    then
-  then
-
-  // signal the parent task
-  task::this task.parent@ task.ack
 ;
 
 /*----------------------------------------------------------------------------*/

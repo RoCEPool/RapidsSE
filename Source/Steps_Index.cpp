@@ -630,7 +630,9 @@ void Task::vIndexUpper(NNP_Task nnpTask)
   // assuming non-complex key
   ASSERT(1 == pIndex->pIdxColVec()->nItems());
   
-  xKeyWsp.vAddElement(xValWsp, pIndex->pIdxColVec()->pGet(0));
+  StrVal* pStrVal = _pStrVal(xValWsp.pNestedValueSelf());
+  
+  xKeyWsp.vAddElement(pStrVal, pIndex->pIdxColVec()->pGet(0));
   
   bool bMatches = pEntry->bMatches(xKeyWsp.aKey(), pIndex->pIdxColVec(), pOpAryLower);
   
