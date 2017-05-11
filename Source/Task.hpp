@@ -553,12 +553,6 @@ namespace Tasks
     static void vIndexTruncate(NNP_Task nnpTask);
     static void vIndexUpper(NNP_Task nnpTask);
 
-    // need to go
-    static void vIndexColumnTest(NNP_Task nnpTask);
-    static void vIndexEntryTest(NNP_Task nnpTask);
-    static void vIndexIbDump(NNP_Task nnpTask);
-    static void vIndexIbNew(NNP_Task nnpTask);
-    
     // input
     static void vInputAccept(NNP_Task nnpTask);
     static void vInputClose(NNP_Task nnpTask);

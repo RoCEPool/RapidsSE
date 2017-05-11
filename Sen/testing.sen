@@ -9,7 +9,6 @@
 "unitTests.sen" include
 "1m.sen" include
 "planTesting.sen" include
-"ieTesting.sen" include
 
 /*============================================================================*/
 /* end                                                                        */
