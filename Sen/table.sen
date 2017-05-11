@@ -343,7 +343,7 @@ int: queryCount
 
   assert::stack_1
 
-  0 0 locals| selCursor selectTask lower |
+  0 0 locals| row selCursor lower |
 
   // for the moment just discard lower and upper
   //stk drop
@@ -369,25 +369,15 @@ int: queryCount
 
    begin
      while
-       // create a task to execute the lower bound select
-       selCursor lower 2 "lowerSelect" task::this task::new to selectTask
-       task::this task.seitf@ selectTask task.seitf!
+       selCursor selCursor.get
 
-       I selectTask task.seitf@ seitf.partition!
-
-       1 setAcks
-
-       selectTask task::this task.taskSet@
-       taskSet.Append
-
-       ackWait
-
-       selCursor selCursor.hasRow if
-         selCursor selCursor.get .
-         selCursor selCursor.next
-       else
-         0
+       to row
+       row str.firstCsv str.tailint assert
+       lower str.tailint assert >= if
+          row .
        then
+
+       selCursor selCursor.next
 
     repeat
 
@@ -405,33 +395,6 @@ int: queryCount
   //>str ( "<^selCursor>")
 
   "ALL DONE" .
-;
-
-/*----------------------------------------------------------------------------*/
-/* position lower select cursor for table ( called by lowerSelectTable request)*/
-/*----------------------------------------------------------------------------*/
- : lowerSelect ( ^selCursor "<lower>" -- <selCursor> )
- 
-   0 locals| row lower selCursor |
-
-   selCursor selCursor.hasRow
-   begin
-     while
-        selCursor selCursor.get
-       
-       to row
-       row 1 swap str.clip str.tailint assert
-       lower str.tailint assert >= if
-         0
-       else
-         selCursor selCursor.next
-       then
-
-   repeat
-
-   // signal the parent task
-   //"acking" .
-   task::this task.parent@ task.ack
 ;
 
 /*----------------------------------------------------------------------------*/

@@ -309,6 +309,47 @@ tp: loadIndexes
 ;
 
 /*----------------------------------------------------------------------------*/
+/* position lower select cursor for table ( called by lowerSelectTable request)*/
+/*----------------------------------------------------------------------------*/
+: lowerSelectIdx ( ^indexPtr ^indexBuffer ^entry "<lower>" -- <entry> )
+
+  0 locals| row lower entry indexBuffer indexPtr |
+
+  tp: lowerSelectIdx
+
+  indexBuffer not if
+    0 to entry
+  else
+
+    entry not if
+      // position in the index buffer
+      lower indexBuffer indexPtr index.position
+    to entry
+
+    // we may not find an entry , so need to move to next buffer
+  else
+    entry indexBuffer index.getNextEntry to entry
+  then
+
+  entry not if
+    // get next entry from the current entry of indexBuffer
+    indexBuffer index.getNextBuffer to indexBuffer
+
+    indexBuffer not if
+      0 to entry
+    else
+      entry indexBuffer index.getNextEntry to entry
+    then
+  then
+
+  then
+
+  // return indexBuffer and entry
+  indexBuffer entry
+
+;
+
+/*----------------------------------------------------------------------------*/
 /* lower select for index ( called by lower_select_index request)             */
 /*----------------------------------------------------------------------------*/
 : lowerSelectIndex ( "<lower>" "<index>" --  )
@@ -338,40 +379,19 @@ tp: loadIndexes
   do
     I "Partition: %v" str.format .
 
-    // put the partition in this tasks seitf
-    I task::this task.seitf@ seitf.partition!
-
     // get the indexBuffer at the lowerBound
     lower indexPtr index.buffer ( indexBuffer )
     to indexBuffer
-
-    // set the indexBuffer in the seitf
-    indexBuffer task::this task.seitf@ seitf.indexBuffer!
 
     1
     begin
 
       while
 
-        // create a selectTask to execute the lower bound select on the index for the partition
-        indexPtr lower 2 "lowerSelectIdx" task::this task::new
-        to selectTask
-
-        //put seitf from this task to the selectTask
-        task::this task.seitf@ selectTask task.seitf!
-
-        // set acks
-        1 setAcks
-
-        // append the selectTask to this tasks taskSet
-        selectTask task::this task.taskSet@
-        taskSet.Append
-
-        // now wait for the selectTask to return an entry
-        ackWait
-
-        // get the entry from the seitf
-        task::this task.seitf@ seitf.entry@ to entry
+        indexPtr indexBuffer entry lower
+        lowerSelectIdx  ( indexBuffer entry )
+        to entry
+        to indexBuffer
 
         // check if entry is null ?
         entry if
@@ -390,61 +410,6 @@ tp: loadIndexes
   popIndexes
 
   "ALL DONE" .
-;
-
-/*----------------------------------------------------------------------------*/
-/* position lower select cursor for table ( called by lowerSelectTable request)*/
-/*----------------------------------------------------------------------------*/
-: lowerSelectIdx ( ^indexPtr "<lower>" -- <entry> )
-
-  0 0 0 0 locals| indexBuffer seitf entry row lower indexPtr |
-
-  tp: lowerSelectIdx
-
-  // get the seitf from this task
-  task::this task.seitf@ to seitf
-
-  // get the last indexBuffer from the seitf
-  seitf seitf.indexBuffer@ to indexBuffer
-
-  // get the last entry from the seitf
-  seitf seitf.entry@ to entry
-
-  indexBuffer not if
-    0 to entry
-  else
-
-    entry not if
-      // position in the index buffer
-      lower indexBuffer indexPtr index.position
-      to entry
-
-      // we may not find an entry , so need to move to next buffer
-    else
-      entry indexBuffer index.getNextEntry to entry
-    then
-
-    entry not if
-      // get next entry from the current entry of indexBuffer
-      indexBuffer index.getNextBuffer to indexBuffer
-
-      indexBuffer not if
-        0 to entry
-      else
-        entry indexBuffer index.getNextEntry to entry
-      then
-    then
-
-  then
-
-  // set the entry in the seitf
-  entry seitf seitf.entry!
-
-  // set the indexBuffer in the seitf
-  indexBuffer seitf seitf.indexBuffer!
-
-  // signal the parent task
-  task::this task.parent@ task.ack
 ;
 
 /*----------------------------------------------------------------------------*/

@@ -207,18 +207,18 @@ void Task::vStrFirstCsv(NNP_Task nnpTask)
 {
   ENTRY("vStrFirstCsv"_Str);
   
-  ValWsp xStr;
-  if ( ! nnpTask->m_pDataStack->bPop(xStr) )
+  s48K sStr;
+  if ( ! nnpTask->m_pDataStack->bPop(sStr) )
     THROW_INVALID_DSTACK("str.firstCsv"_Str);
   
-  s256 sFirstValue;
+  s48K sFirstValue;
   
-  char* z = _pStrVal(&xStr)->s();
+  char* aValue = sStr.s();
   
-  if (! StrLib::bExtractItem(&z,sFirstValue.s(), '|'))
+  if (! StrLib::bExtractItem(&aValue,sFirstValue.s(), '|'))
     sFirstValue = ""_Str;
   
-  nnpTask->m_pDataStack->vPushS256(sFirstValue);
+  nnpTask->m_pDataStack->vPushS48K(sFirstValue);
   
   EXIT();
 }
