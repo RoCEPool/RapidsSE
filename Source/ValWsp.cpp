@@ -126,6 +126,20 @@ void ValWsp::operator =(Str* pStr)
 }
 
 /*----------------------------------------------------------------------------*/
+/* assign/copy an time into workspace                                         */
+/*----------------------------------------------------------------------------*/
+void ValWsp::operator =(Tme xTme)
+{
+  TmeVal* pNestedTmeVal = (TmeVal*)pNestedValue();
+  
+  // set nested class
+  pNestedTmeVal->vClass(CN_TMEVAL);
+  
+  // assign tme into the nested intval
+  *pNestedTmeVal = xTme;
+}
+
+/*----------------------------------------------------------------------------*/
 /* assign/copy an timestamp into workspace                                    */
 /*----------------------------------------------------------------------------*/
 void ValWsp::operator =(Tsp xTsp)
@@ -135,7 +149,7 @@ void ValWsp::operator =(Tsp xTsp)
   // set nested class
   pNestedTspVal->vClass(CN_TSPVAL);
   
-  // assign int into the nested intval
+  // assign tsp into the nested intval
   *pNestedTspVal = xTsp;
 }
 

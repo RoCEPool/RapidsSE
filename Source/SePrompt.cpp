@@ -1587,6 +1587,7 @@ bool SePrompt::bCreateTable(void)
       }
     }
     else if (m_aToken2[iCurrentToken]->bSame("date"_Str) ||
+             m_aToken2[iCurrentToken]->bSame("time"_Str) ||
              m_aToken2[iCurrentToken]->bSame("timestamp"_Str) ||
              m_aToken2[iCurrentToken]->bSame("interval"_Str) ||
              m_aToken2[iCurrentToken]->bSame("boolean"_Str)) {

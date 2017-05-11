@@ -416,6 +416,21 @@ void Key::vShow(IdxColVec* pColVec)
         break;
       }
         
+      case CT_TIME: {
+        Tme xTme;
+        xTme = *(Tme*)aElement;
+        vTrace("Element %lld:(size %lld value:%02lld:%02lld:%02lld.%lld) "_Str,
+               iColumn,
+               nBytes,
+               xTme.iHour(),
+               xTme.iMinute(),
+               xTme.iSecond(),
+               xTme.iMilli()
+               );
+        StrLib::vSprintCat((char*)(sKeyString.aStr()), "%lld ", iKey);
+        break;
+      }
+        
       case CT_TIMESTAMP: {
         Tsp xTsp;
         xTsp = *(Tsp*)aElement;

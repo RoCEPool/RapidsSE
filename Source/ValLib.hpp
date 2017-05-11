@@ -32,6 +32,9 @@ namespace Values
     static i8   nCopyStrDatum(void* pDst, void* pSrc);
     static void vCopyStrDatum(void* pDst, void* pSrc);
   
+    static i8   nCopyTmeDatum(void* pDst, void* pSrc);
+    static void vCopyTmeDatum(void* pDst, void* pSrc);
+  
     static i8   nCopyTspDatum(void* pDst, void* pSrc);
     static void vCopyTspDatum(void* pDst, void* pSrc);
   
