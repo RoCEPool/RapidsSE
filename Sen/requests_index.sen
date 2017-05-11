@@ -4,7 +4,7 @@
 
 "requests.sen" .verbose
 
-  timer: idxSelectTimer
+timer: idxSelectTimer
 
 /*----------------------------------------------------------------------------*/
 /* analyse an index of a table                                                */
