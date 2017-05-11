@@ -4,6 +4,8 @@
 
 "requests.sen" .verbose
 
+timer: selectTimer
+
 /*----------------------------------------------------------------------------*/
 /* analyse a table                                                            */
 /*----------------------------------------------------------------------------*/
@@ -485,6 +487,8 @@ ddlLock::grabRead
   CN_STRVAL assert::class_0
   CN_STRVAL assert::class_1
 
+  selectTimer timer.start
+
   ddlLock::grabRead
 
   //
@@ -519,6 +523,10 @@ ddlLock::grabRead
   // i.e. task.dicStack will now be back to ../tables
   popTable
   withinTables assert
+
+  selectTimer timer.update
+  "select time " .put
+  selectTimer timer.millisecs .put "ms" .put .\n
 
   <OK>
 ;
