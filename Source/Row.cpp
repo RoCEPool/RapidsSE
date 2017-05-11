@@ -121,7 +121,6 @@ void Row::vGetKey(KeyWsp& xKeyWsp, IdxColVec* pIdxColVec)
   char* pRowData = pData();
   
   i8 nCols = pIdxColVec->nItems();
-  i8 iCol = -1;
   ValWsp xValWsp;
   s256 s;
 
@@ -140,6 +139,7 @@ void Row::vGetKey(KeyWsp& xKeyWsp, IdxColVec* pIdxColVec)
     char* aCursor = reinterpret_cast<char*>(pStrVal->aStr());
     
     // get the column value from the row for the iColumnNo
+    i8 iCol = -1;
     do {
       bool bFindPipe = StrLib::bExtractItem(&aCursor, pDst, '|');
       ASSERT(bFindPipe);

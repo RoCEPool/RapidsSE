@@ -7,11 +7,12 @@ create table jidx (
   jidx_key   INTEGER NOT NULL,
   jidx_name  VARCHAR(32) NOT NULL,
   jidx_100   INTEGER NOT NULL,
-  jidx_10    INTEGER NOT NULL
+  jidx_10    INTEGER NOT NULL,
+  jidx_mod   INTEGER NOT NULL
 );
 
-create index idx1 on jidx (jidx_key);
-create index idx2 on jidx (jidx_100);
+create index idx1 on jidx (jidx_mod,jidx_10);
+//create index idx2 on jidx (jidx_100);
 //create index idx3 on jidx (jidx_name);
 
 ld jidx "../JTEST/jidx2.csv"
@@ -19,6 +20,7 @@ ld jidx "../JTEST/jidx2.csv"
 //anidx jidx idx
 dumpidx jidx idx1
 
+/*
 print "\nSelecting rows with key >= 3 using idx1 ...\n"
 lwrselidx jidx idx1 3
 
@@ -51,7 +53,7 @@ rgeselidx jidx idx1 3 7
 
 print "\nSelecting rows with key <= 7 using idx1 ...\n"
 uprselidx jidx idx1 7
-
+*/
 
 /*============================================================================*/
 /* end                                                                        */
