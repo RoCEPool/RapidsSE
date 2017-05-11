@@ -32,6 +32,7 @@ namespace Values
     void* operator new(size_t);
     ValWsp(void);
     
+    void operator =(Dte xDte);
     void operator =(d8 dFlt);
     void operator =(i8 iInt);
     void operator =(Ivl xIvl);

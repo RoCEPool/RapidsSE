@@ -43,6 +43,20 @@ ValWsp::ValWsp(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* assign/copy a date into workspace                                          */
+/*----------------------------------------------------------------------------*/
+void ValWsp::operator =(Dte xDte)
+{
+  DteVal* pNestedDteVal = (DteVal*)pNestedValue();
+  
+  // set nested class
+  pNestedDteVal->vClass(CN_DTEVAL);
+  
+  // assign int into the nested intval
+  *pNestedDteVal = xDte;
+}
+
+/*----------------------------------------------------------------------------*/
 /* assign/copy a float into workspace                                         */
 /*----------------------------------------------------------------------------*/
 void ValWsp::operator =(d8 dFlt)

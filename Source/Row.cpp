@@ -166,7 +166,7 @@ void Row::vGetKey(KeyWsp& xKeyWsp, IdxColVec* pColVec)
         Dte xDte;
         bool b = DtmLib::bExtractDte(&pDst,&xDte);
         ASSERT(b);
-        xValWsp = xDte.iAsI8();
+        xValWsp = xDte;
         break;
       }
         

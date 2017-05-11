@@ -36,6 +36,10 @@ namespace Datums
     void vInitZero(void);
     i8   iAsI8(void);
   
+    i8   iYear(void);
+    i8   iMonth(void);
+    i8   iDay(void);
+  
     static bool bExtract(Str* aDst, Str* aSrc, i8& nBytesTaken);
     static void vSprint(Str* aDst, Str* aSrc, i8& nBytesTaken);
     
