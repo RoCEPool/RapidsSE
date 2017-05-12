@@ -43,7 +43,8 @@ namespace DBobjects
     IndexBuffer* pRoot(void);
     void         vTidyUp(void);
     void         vTruncate(void);
-  
+    bool         bVerify(void);
+    
     Footer*      pFooter(void);
     
   private:

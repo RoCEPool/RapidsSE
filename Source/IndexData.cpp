@@ -215,6 +215,12 @@ void IndexData::vInsertEntry(Row* pRow, i8 nRowNo, bn nBufferNo)
     
   // insert row entry in index at level 0
   vInsertEntry(m_pRoot, xKeyWsp, xId, 0);
+  
+  if ( ! bVerify() ) {
+    vTrace("Inserting row that caused verify to fail:\n"_Str);
+    pRow->vContentDump();
+    vDump();
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -269,6 +275,67 @@ void IndexData::vTruncate(void)
   
   m_zLock.vDropWrite();
 
+}
+
+/*----------------------------------------------------------------------------*/
+/* verify                                                                     */
+/*----------------------------------------------------------------------------*/
+bool IndexData::bVerify(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
+
+  // start with the root buffer
+  IndexBuffer* pIndexBuffer = m_pRoot;
+  
+  // create a realtional operator array
+  RelOpAry* pOpAry = new RelOpAry;
+  i8 nItems = m_pIndex->pIdxColVec()->nItems();
+  for (i8 i=0; i < nItems; i++)
+    pOpAry->vAdd(RO_EQUAL);
+  
+  while (pIndexBuffer) {
+    
+    // first just run verify on its entries
+    bool bVerify = pIndexBuffer->bVerify();
+    if ( ! bVerify )
+      return false;
+    
+    if (pIndexBuffer->nBufferLevel() == 0) {
+      pIndexBuffer = pIndexBuffer->pNextBuffer();
+      continue;
+    }
+    
+    // higher level buffer get first entry
+    Entry* pEntryLN = pIndexBuffer->aNextEntry(pIndexBuffer->aHead());
+    
+    while (pEntryLN) {
+      
+      // get buffer first entry points to
+      IndexBuffer* pIndexBufferN_1 = pEntryLN->pIndexBuffer();
+      
+      // get the key of the first entry points to
+      Key* pKeyLN = pEntryLN->aKey();
+      
+      // get the first entry from the lower buffer
+      Entry* pEntryLN_1 = pIndexBufferN_1->aNextEntry(pIndexBufferN_1->aHead());
+      
+      // get the key of the first entry points to
+      Key* pKeyLN_1 = pEntryLN_1->aKey();
+
+      bool bMatches = pKeyLN->bMatches(pEntryLN_1->aKey(), m_pIndex->pIdxColVec(), pOpAry);
+      if ( ! bMatches )
+        return false;
+      
+      pEntryLN = pIndexBuffer->aNextEntry(pEntryLN);
+    }
+  
+    pIndexBuffer = pIndexBuffer->pNextBuffer();
+    
+  }
+  
+  delete pOpAry;
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/

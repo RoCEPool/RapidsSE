@@ -56,7 +56,7 @@ namespace DBobjects
     bool         bRemove(Key* aKey);
     void         vShow(void);
     IndexBuffer* pSplitBuffer(void);
-    void         vVerify(void);
+    bool         bVerify(void);
     
   private:
     void         vCopyEntries(IndexBuffer* pFromBuffer, Entry* pFromEntry);

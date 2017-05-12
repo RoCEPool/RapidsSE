@@ -289,9 +289,6 @@ bool IndexBuffer::bInsert(KeyWsp& xKeyWsp, Id xId)
   
   delete pOpAryPosition;
   
-  // verify that the index buffer has keys in the correct order
-  vVerify();
-  
   return true;
 }
 
@@ -512,16 +509,17 @@ IndexBuffer* IndexBuffer::pSplitBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* verify                                                                     */
 /*----------------------------------------------------------------------------*/
-void IndexBuffer::vVerify(void)
+bool IndexBuffer::bVerify(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
   Entry* pEntryA = aNextEntry(aHead());
   if ( ! pEntryA )
-    return;
+    return true;
   
   Entry* pEntryB = aNextEntry(pEntryA);
   if ( ! pEntryB )
-    return;
+    return true;
   
   // create a realtional operator array
   RelOpAry* pOpAry = new RelOpAry;
@@ -535,13 +533,16 @@ void IndexBuffer::vVerify(void)
     Key* pKeyB = pEntryB->aKey();
     
     bool bGreaterEqual = pEntryB->bMatches(pEntryA->aKey(), m_pIndex->pIdxColVec(), pOpAry);
-    ASSERT(bGreaterEqual);
+    if ( ! bGreaterEqual )
+      return false;
     
     pEntryA = pEntryB;
     pEntryB = aNextEntry(pEntryA);
   }
   
   delete pOpAry;
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -553,6 +554,7 @@ void IndexBuffer::vVerify(void)
 /*----------------------------------------------------------------------------*/
 void IndexBuffer::vCopyEntries(IndexBuffer* pFromBuffer, Entry* pFromEntry)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
   Entry* pEntry = pFromEntry;
   i8 nLevel = pFromBuffer->nBufferLevel();
@@ -578,6 +580,8 @@ void IndexBuffer::vCopyEntries(IndexBuffer* pFromBuffer, Entry* pFromEntry)
 /*----------------------------------------------------------------------------*/
 void IndexBuffer::vDumpRevise(Entry** ppReviseVec)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
+  
   for (i8 iIndex = 0; iIndex < C_FLAT_OFFSETS; iIndex++) {
     i8 iLevel = iIndex + 1;
     i8 iReviseOffset = ppReviseVec[iLevel]->uRightOffset(iIndex);
@@ -781,6 +785,7 @@ void IndexBuffer::vFixHigherLevel(Entry* pNewEntry)
 /*----------------------------------------------------------------------------*/
 void IndexBuffer::vFixRevise(Entry** ppReviseVec, Entry* pNewEntry)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
   //vTrace("REVISE VECTOR BEFORE FIXING\n"_Str);
   //vDumpRevise(ppReviseVec);
