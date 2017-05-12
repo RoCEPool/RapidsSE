@@ -48,6 +48,7 @@ namespace StorageEngine
     bool m_bVerbose;    // print extra stuff
     bool m_bWelcome;    // print banner
     i8   m_iSleep;      // sleep period for yield (temporary)
+    bool  m_bMetadata;  // print metadata information
     bool  m_bMunged;    // load munged words
     bool  m_bKillPrev;  // kill previous se's (temporary)
     bool  m_bDontFree;  // dont actually free objects back to heap

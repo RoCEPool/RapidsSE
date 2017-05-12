@@ -370,6 +370,7 @@ void Task::vAddConstants(void)
   vAddConstant("args.killPrev"_Str,          gxArguments.m_bKillPrev);
   vAddConstant("args.levels"_Str,            gxArguments.m_uLevels);
   vAddConstant("args.lock"_Str,              gxArguments.m_bLock);
+  vAddConstant("args.metadata"_Str,          gxArguments.m_bMetadata);
   vAddConstant("args.munged"_Str,            gxArguments.m_bMunged);
   vAddConstant("args.nodeName"_Str,          gxArguments.m_sNodeName);
   vAddConstant("args.nodes"_Str,             gxArguments.m_nNodes);

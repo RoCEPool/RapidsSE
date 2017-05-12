@@ -68,6 +68,7 @@ Arguments::Arguments(void)
   m_bVerbose    = false;
   m_bWelcome    = true;
   m_iSleep      = 1;
+  m_bMetadata   = false;
   m_bMunged     = false;
   m_bKillPrev   = false;
   m_bDontFree   = false;
@@ -414,6 +415,11 @@ bool Arguments::bParse(int argc, Str* argv[])
       continue;
     }
     
+    if (argv[iArg]->bSame("--metadata"_Str)) {
+      m_bMetadata = true;
+      continue;
+    }
+    
     if (argv[iArg]->bSame("--munged"_Str)) {
       m_bMunged = true;
       continue;
@@ -523,7 +529,7 @@ void Arguments::vPrint(void)
   vTrace("  --sen %s\n"_Str,m_sSen.s());
 //#endif
   if (m_bMunged) vTrace("  --munged\n"_Str);
-  
+  if (m_bMetadata) vTrace("  --metadata\n"_Str);
 
 }
 
