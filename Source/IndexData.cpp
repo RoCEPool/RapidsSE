@@ -297,7 +297,9 @@ void IndexData::vInsertEntry(IndexBuffer* pHigher, KeyWsp& xKeyWsp, Id xId, i8 i
   
   // create a relational operator array
   RelOpAry* pOpAryFind = new RelOpAry;
-  pOpAryFind->vAdd(RO_GREATER_EQUAL);
+  i8 nItems = m_pIndex->pIdxColVec()->nItems();
+  for (i8 i=0; i < nItems; i++)
+    pOpAryFind->vAdd(RO_GREATER_EQUAL);
   
   pIndexBuffer = pHigher->aPositionLevel(xKeyWsp, pOpAryFind, iLevel);
   
@@ -368,7 +370,9 @@ void IndexData::vFixHigherBuffer(IndexBuffer* pIndexBuffer, i8 iLevel)
 
   // create a relational operator array
   RelOpAry* pOpAryGreater = new RelOpAry;
-  pOpAryGreater->vAdd(RO_GREATER_EQUAL);
+  i8 nItems = m_pIndex->pIdxColVec()->nItems();
+  for (i8 i=0; i < nItems; i++)
+    pOpAryGreater->vAdd(RO_GREATER_EQUAL);
   
   pRoot =  m_pRoot->aPositionLevel(xKeyWsp, pOpAryGreater, iLevel);
 

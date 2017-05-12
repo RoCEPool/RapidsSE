@@ -235,7 +235,9 @@ bool IndexBuffer::bInsert(KeyWsp& xKeyWsp, Id xId)
   
   // create a realtional operator array
   RelOpAry* pOpAryPosition = new RelOpAry;
-  pOpAryPosition->vAdd(RO_GREATER_EQUAL);
+  i8 nItems = m_pIndex->pIdxColVec()->nItems();
+  for (i8 i=0; i < nItems; i++)
+    pOpAryPosition->vAdd(RO_GREATER_EQUAL);
   
   // position the key in the buffer
   Entry* pAfterEntry = aPosition(xKeyWsp, pOpAryPosition, bEqualTo, pReviseVec);
@@ -434,7 +436,9 @@ IndexBuffer* IndexBuffer::pSplitBuffer(void)
   
   // create a relational operator array
   RelOpAry* pOpAryFind = new RelOpAry;
-  pOpAryFind->vAdd(RO_GREATER_EQUAL);
+  i8 nItems = m_pIndex->pIdxColVec()->nItems();
+  for (i8 i=0; i < nItems; i++)
+    pOpAryFind->vAdd(RO_GREATER_EQUAL);
   
   // find the position of the last entry in the buffer
   KeyWsp xKeyWsp;
@@ -519,16 +523,16 @@ void IndexBuffer::vVerify(void)
   if ( ! pEntryB )
     return;
   
+  // create a realtional operator array
+  RelOpAry* pOpAry = new RelOpAry;
+  i8 nItems = m_pIndex->pIdxColVec()->nItems();
+  for (i8 i=0; i < nItems; i++)
+    pOpAry->vAdd(RO_GREATER_EQUAL);
+  
   while (pEntryB) {
     
     Key* pKeyA = pEntryA->aKey();
     Key* pKeyB = pEntryB->aKey();
-    
-    // create a realtional operator array
-    RelOpAry* pOpAry = new RelOpAry;
-    i8 nItems = m_pIndex->pIdxColVec()->nItems();
-    for (i8 i=0; i < nItems; i++)
-      pOpAry->vAdd(RO_GREATER_EQUAL);
     
     bool bGreaterEqual = pEntryB->bMatches(pEntryA->aKey(), m_pIndex->pIdxColVec(), pOpAry);
     ASSERT(bGreaterEqual);
@@ -536,6 +540,8 @@ void IndexBuffer::vVerify(void)
     pEntryA = pEntryB;
     pEntryB = aNextEntry(pEntryA);
   }
+  
+  delete pOpAry;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -641,8 +647,10 @@ void IndexBuffer::vFixHigherLevel(Entry* pNewEntry)
   
   // create a relational operator array
   RelOpAry* pOpAryFind = new RelOpAry;
-  pOpAryFind->vAdd(RO_EQUAL);
-  
+  i8 nItems = m_pIndex->pIdxColVec()->nItems();
+  for (i8 i=0; i < nItems; i++)
+    pOpAryFind->vAdd(RO_EQUAL);
+
   KeyWsp xOldKeyWsp;
   xOldKeyWsp.vAddKey(pOldFirstEntry->aKey(), m_pIndex->pIdxColVec());
   

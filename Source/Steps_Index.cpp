@@ -104,8 +104,10 @@ void Task::vIndexBuffer(NNP_Task nnpTask)
   
   // create a relational operator array
   RelOpAry* pOpAryGreater = new RelOpAry;
-  pOpAryGreater->vAdd(RO_GREATER_EQUAL);
-  
+  i8 nItems = pIndex->pIdxColVec()->nItems();
+  for (i8 i=0; i < nItems; i++)
+    pOpAryGreater->vAdd(RO_GREATER_EQUAL);
+
   KeyWsp xKeyWsp;
   
   // assuming non-complex key
@@ -371,8 +373,10 @@ void Task::vIndexPosition(NNP_Task nnpTask)
   
   // create a relational operator array
   RelOpAry* pOpAryGreater = new RelOpAry;
-  pOpAryGreater->vAdd(RO_GREATER_EQUAL);
-  
+  i8 nItems = pIndex->pIdxColVec()->nItems();
+  for (i8 i=0; i < nItems; i++)
+    pOpAryGreater->vAdd(RO_GREATER_EQUAL);
+
   KeyWsp xKeyWsp;
   
   // assuming non-complex key
@@ -668,8 +672,10 @@ void Task::vIndexUpper(NNP_Task nnpTask)
   
   // create a relational operator array
   RelOpAry* pOpAryUpper = new RelOpAry;
-  pOpAryUpper->vAdd(RO_LESS_EQUAL);
-  
+  i8 nItems = pIndex->pIdxColVec()->nItems();
+  for (i8 i=0; i < nItems; i++)
+    pOpAryUpper->vAdd(RO_LESS_EQUAL);
+
   KeyWsp xKeyWsp;
   
   // assuming non-complex key
