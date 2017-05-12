@@ -23,7 +23,7 @@ create index idx3 on jidxVch (jidx_name);
 ld jidxVch "../JTEST/jidx.csv"
 
 //anidx jidxVch idx
-//dumpidx jidxVch idx
+dumpidx jidxVch idx
 
 print "\nSelecting rows with key >= 1 using idx1 ...\n"
 lwrselidx jidxVch idx1 1
