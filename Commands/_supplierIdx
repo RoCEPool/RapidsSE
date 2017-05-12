@@ -71,8 +71,11 @@ lwrselidx supplier idx3 "xo"
 print "\nSelecting rows from supplier (idx3) where S_ADDRESS >= 'a' ...\n"
 lwrselidx supplier idx3 "a"
 
-print "\nSelecting rows from supplier (idx3) where S_ADDRESS >= 'm' & <= 'p'...\n"
+print "\nSelecting rows from supplier (idx3) where S_ADDRESS >= 'm' & <= 'q'...\n"
 rgeselidx supplier idx3 "m" "q"
+
+print "\nSelecting rows from supplier (idx3) where S_ADDRESS <= 'p'...\n"
+uprselidx supplier idx3 "p"
 
 /*============================================================================*/
 /* end                                                                        */

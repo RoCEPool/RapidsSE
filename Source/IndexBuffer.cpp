@@ -287,6 +287,9 @@ bool IndexBuffer::bInsert(KeyWsp& xKeyWsp, Id xId)
   
   delete pOpAryPosition;
   
+  // verify that the index buffer has keys in the correct order
+  vVerify();
+  
   return true;
 }
 
@@ -508,10 +511,6 @@ IndexBuffer* IndexBuffer::pSplitBuffer(void)
 void IndexBuffer::vVerify(void)
 {
   
-  //-------------------------------------------------------------------
-  // need to rework....
-  //-------------------------------------------------------------------
-  
   Entry* pEntryA = aNextEntry(aHead());
   if ( ! pEntryA )
     return;
@@ -525,10 +524,14 @@ void IndexBuffer::vVerify(void)
     Key* pKeyA = pEntryA->aKey();
     Key* pKeyB = pEntryB->aKey();
     
-    //pKeyA->vShow(CT_INTEGER);
-    //pKeyB->vShow(CT_INTEGER);
+    // create a realtional operator array
+    RelOpAry* pOpAry = new RelOpAry;
+    i8 nItems = m_pIndex->pIdxColVec()->nItems();
+    for (i8 i=0; i < nItems; i++)
+      pOpAry->vAdd(RO_GREATER_EQUAL);
     
-    ASSERT(*pEntryA->aKey() <= pEntryB->aKey());
+    bool bGreaterEqual = pEntryB->bMatches(pEntryA->aKey(), m_pIndex->pIdxColVec(), pOpAry);
+    ASSERT(bGreaterEqual);
     
     pEntryA = pEntryB;
     pEntryB = aNextEntry(pEntryA);
