@@ -38,7 +38,8 @@ namespace DBobjects
     i8 iCmp(Key* pKey, IdxColVec* pColVec);
     
     bool bMatches(Key* pKey, IdxColVec* pColVec, RelOpAry* pOpAry);
-    
+    bool bAfter(Key* pKey, IdxColVec* pColVec);
+  
     char* aWspArea(void);
     Str*  aWspStr(void);
   };

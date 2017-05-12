@@ -342,6 +342,42 @@ bool Key::bMatches(Key* pKeyThat, IdxColVec* pIdxColVec, RelOpAry* pRelOpAry)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this key after given key                                                */
+/*----------------------------------------------------------------------------*/
+bool Key::bAfter(Key* pKeyThat, IdxColVec* pIdxColVec)
+{
+  char* aCursorThis = aWspArea();
+  char* aCursorThat = pKeyThat->aWspArea();
+  
+  i8 iCmp = 0;
+  
+  for (i8 iColumn = 0; iColumn < pIdxColVec->nItems(); iColumn++) {
+    
+    Column* pColumn = pIdxColVec->pGet(iColumn);
+    
+    i8 nBytesThis;
+    i8 nBytesThat;
+    
+    char* aElementThis = aElement(pColumn,nBytesThis,&aCursorThis);
+    char* aElementThat = aElement(pColumn,nBytesThat,&aCursorThat);
+    
+    iCmp = pColumn->iCmp(aElementThis,nBytesThis,
+                         aElementThat,nBytesThat);
+    
+    if ( iCmp < 0)
+      return false;
+    else
+    if (iCmp > 0)
+      return true;
+  }
+  
+  if (iCmp == 0)
+    return false;
+  else
+    return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* show the contents of this key                                              */
 /*----------------------------------------------------------------------------*/
 void Key::vShow(IdxColVec* pIdxColVec)
