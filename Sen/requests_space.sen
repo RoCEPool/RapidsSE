@@ -78,7 +78,6 @@ tp: gettingSpace
 : space ( -- <R> )
 
   args.metadata if
-    grid.nodes
     "(nodeName STRING, poolSize STRING, inUse STRING, free STRING, freePct STRING)"
     metaData
   then

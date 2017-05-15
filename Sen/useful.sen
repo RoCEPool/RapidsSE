@@ -32,12 +32,11 @@
 /*----------------------------------------------------------------------------*/
 /* metaData                                                                   */
 /*----------------------------------------------------------------------------*/
-: metaData ( rows "<metaDataString>" -- )
-  0 locals| seitf meta rows |
+: metaData ( "<metaDataString>" -- )
+  0 locals| seitf meta |
 
   task::this task.seitf@ to seitf
 
-  rows seitf seitf.rowsProcessed
   meta seitf seitf.metaData
 ;
 

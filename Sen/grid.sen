@@ -96,7 +96,10 @@ tp: printResult
 
   tp: returnResult
 
-  0 locals| results |
+  0 0 locals| results seitf |
+
+  // get this tasks seitf
+  task::this task.seitf@ to seitf
 
   // was the final result true ?
   true == if ( s n# t | ec n# f .... nn )
@@ -129,23 +132,25 @@ tp: printResult
         then
 
     loop
+    results seitf seitf.rowsProcessed
     true
   else
 
     // lets see which node failed
     0 do  ( s n# t | ec n# f .... )
 
-    false == if ( s n# t | ec n# )
-      //swap error.msg swap
-      //grid.node node.name
-      //"error: %v %v" str.format
-      drop false
-    else
-      drop drop
+      false == if ( s n# t | ec n# )
+        //swap error.msg swap
+        //grid.node node.name
+        //"error: %v %v" str.format
+        drop false
+      else
+        drop drop
+      then
 
-    then
-
-  loop
+    loop
+    // returning only 1 error
+    1 seitf seitf.rowsProcessed
 
   then
 
