@@ -114,10 +114,9 @@ tp: droppedDic
     "(name VARCHAR, type VARCHAR)" metaData
     ""
     0 pathPick dic.lastWord dup iterate
-     //dup str.length if "\n" str.cat then
-     1 count + to count
-     "row: ('" str.cat
-
+    //dup str.length if "\n" str.cat then
+    1 count + to count
+    "row: ('" str.cat
 
     object@ word.name str.cat
 

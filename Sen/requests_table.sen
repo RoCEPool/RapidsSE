@@ -567,21 +567,24 @@ ddlLock::grabWrite
 /*----------------------------------------------------------------------------*/
 : size_tables (  )
 
+  0 locals| count |
+
   ddlLock::grabWrite
 
   // should be in the tables folder
   checkInTables       not if <NIP+ERROR> exit then
 
-  ""
-  0 pathPick dic.lastWord dup iterate
+  args.metadata if
+    "(tableName VARCHAR, size VARCHAR)" metaData
 
-    dup str.length if "\n" str.cat then
+    ""
+    0 pathPick dic.lastWord dup iterate
+    1 count + to count
+    "row: ('" str.cat
 
-    object@ word.name 12 str.pad str.cat
+    object@ word.name str.cat
 
-    "(" str.cat
-
-    "table " str.cat
+    "', '" str.cat
 
     // push table dictionary
     object@ word.name pushTable assert
@@ -592,15 +595,48 @@ ddlLock::grabWrite
 
     find execute
     table.space bytes.magnitude str.cat
-
-    ")" str.cat
+    "')" str.cat
 
     // pop table dictionary
     popTable
 
+    "\n" str.cat
+
     object@ word.prev object!
 
-  next
+    next
+    count task::this task.seitf@ seitf.rowsProcessed
+  else
+    ""
+    0 pathPick dic.lastWord dup iterate
+
+      dup str.length if "\n" str.cat then
+
+      object@ word.name 12 str.pad str.cat
+
+      "(" str.cat
+
+      "table " str.cat
+
+      // push table dictionary
+      object@ word.name pushTable assert
+
+      // check it is a table
+      object@ word.name
+      checkIsTable  not if <NIP+ERROR> exit then
+
+      find execute
+      table.space bytes.magnitude str.cat
+
+      ")" str.cat
+
+      // pop table dictionary
+      popTable
+
+      object@ word.prev object!
+
+    next
+  then
 
   <SUCCESS>
 ;
