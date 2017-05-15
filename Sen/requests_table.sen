@@ -412,6 +412,11 @@ ddlLock::grabRead
   getTableRef not if <NIP+ERROR> exit then ( "<tableNm>" )
   task::this task.seitf@ seitf.table@ assert
 
+  // set the metadata string
+  args.metadata if
+    "(partition VARCHAR, data VARCHAR)" metaData
+  then
+
   // get a select cursor
   selectTable ( "^selCursor" )
 

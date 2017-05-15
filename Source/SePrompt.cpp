@@ -712,16 +712,35 @@ void SePrompt::vIterateRows(void)
   
   i8 iRowCount = 0;
   
-  for (i8 iPartition = 0; iPartition < gxArguments.m_nSlots; iPartition++) {
-    vTrace("Partition %lld: \n"_Str, Partition::iSlotToPartition(iPartition));
-    pSelCursor->vBegin(iPartition);
-    pSelCursor->vFirst();
-    Str* pStr = pSelCursor->aRowAsStr();
-    while (pStr) {
-      iRowCount++;
-      vTrace("Row: %s\n"_Str,pStr);
-      pSelCursor->vNext();
-      pStr = pSelCursor->aRowAsStr();
+  if (gbMetadata) {
+    vTrace("metadata: %s\n"_Str, m_pSEitf->m_sMetadata.aStr());
+    for (i8 iPartition = 0; iPartition < gxArguments.m_nSlots; iPartition++) {
+      //vTrace("Partition %lld: \n"_Str, Partition::iSlotToPartition(iPartition));
+      i8 iPart = Partition::iSlotToPartition(iPartition);
+      pSelCursor->vBegin(iPartition);
+      pSelCursor->vFirst();
+      Str* pStr = pSelCursor->aRowAsStr();
+      while (pStr) {
+        iRowCount++;
+        vTrace("row: (%lld, '%s')\n"_Str, iPart, pStr);
+        pSelCursor->vNext();
+        pStr = pSelCursor->aRowAsStr();
+      }
+    }
+    m_pSEitf->m_iRowsProcessed = iRowCount;
+  }
+  else {
+    for (i8 iPartition = 0; iPartition < gxArguments.m_nSlots; iPartition++) {
+      vTrace("Partition %lld: \n"_Str, Partition::iSlotToPartition(iPartition));
+      pSelCursor->vBegin(iPartition);
+      pSelCursor->vFirst();
+      Str* pStr = pSelCursor->aRowAsStr();
+      while (pStr) {
+        iRowCount++;
+        vTrace("row: (%s)\n"_Str,pStr);
+        pSelCursor->vNext();
+        pStr = pSelCursor->aRowAsStr();
+      }
     }
   }
   
