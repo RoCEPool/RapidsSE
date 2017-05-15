@@ -145,7 +145,7 @@ void SePrompt::vLoop(void)
     if (0 == m_aToken[0]->iLength())
       continue;
     
-    bool b = bProcessCommand();
+    bool bProcessResult = bProcessCommand();
     
     if (m_bExpect) {
       if ( ! m_sExpect.bSame(m_sResponse) ) {
@@ -165,7 +165,8 @@ void SePrompt::vLoop(void)
       continue;
     }
     
-    if (b) {
+    /*
+    if (bProcessResult) {
       if ( ! m_bExpect ) {
         if ( !m_sResponse.bEqual("<ok>"_Str) ) {
           if (gbMetadata) {
@@ -194,6 +195,25 @@ void SePrompt::vLoop(void)
         if ( ! m_bExpect )
          vTrace("error: %s\n"_Str,m_pSEitf->pGetLastError());
     }
+    */
+    
+    if (bProcessResult) {
+      if (gbMetadata) {
+        vMetaFormat();
+      }
+      else {
+        if ( ! m_bExpect ) {
+          if ( !m_sResponse.bEqual("<ok>"_Str) ) {
+              vTrace("%s\n"_Str,m_sResponse.s());
+          }
+        }
+      }
+    }
+    else {
+      if (m_pSEitf->eGetLastError() != EC_NONE)
+        if ( ! m_bExpect )
+          vTrace("error: %s\n"_Str,m_pSEitf->pGetLastError());
+    }
   }
   
   // close history file
@@ -201,8 +221,7 @@ void SePrompt::vLoop(void)
   
   // SHOULD REMOVE HISTORY FILE?
 }
-
-
+  
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -357,6 +376,33 @@ void SePrompt::vGetCommandInput(void)
     break;
   }
   
+}
+
+/*----------------------------------------------------------------------------*/
+/* print output in metadata format                                            */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vMetaFormat(void)
+{
+  
+  if ( ! m_bExpect ) {
+    if ( !m_sResponse.bEqual("<ok>"_Str) ) {
+      vTrace("metadata: %s\n"_Str, m_pSEitf->m_sMetadata.aStr());
+      vTrace("%s"_Str,m_sResponse.s());
+      vTrace("success: %lld rows affected\n"_Str, m_pSEitf->m_iRowsProcessed);
+    }
+    else {
+      vTrace("success: %lld rows affected\n"_Str, m_pSEitf->m_iRowsProcessed);
+    }
+  }
+  else {
+    if (m_pSEitf->eGetLastError() != EC_NONE)
+      if ( ! m_bExpect )
+        vTrace("error: %s\n"_Str,m_pSEitf->pGetLastError());
+  }
+
+  // reset counters
+  m_pSEitf->m_iRowsProcessed = 0;
+  m_pSEitf->m_sMetadata      = ""_Str;
 }
 
 /*----------------------------------------------------------------------------*/

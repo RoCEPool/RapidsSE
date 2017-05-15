@@ -172,6 +172,7 @@ tp: droppedDic
       object@ word.prev object!
 
     next
+    ")" str.cat
   then
 
   <SUCCESS>
