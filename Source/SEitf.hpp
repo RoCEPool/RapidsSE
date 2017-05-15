@@ -33,6 +33,8 @@ namespace Interface
     Entry* m_pEntry;
     TxRef* m_pTxRef;
     
+    s256   m_sMetadata;
+    i8     m_iRowsProcessed;
     i8     m_iCurrentRequestId;
     i8     m_iNextRequestId;
     i8     m_iRowPartition;

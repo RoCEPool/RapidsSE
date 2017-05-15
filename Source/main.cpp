@@ -11,6 +11,7 @@ extern Grid*     gpGrid;
 extern bool      gbVerbose;
 extern bool      gbTracepoint;
 extern bool      gbProgress;
+extern bool      gbMetadata;
 
 void vTest1(void);
 void vTest2(void);
@@ -66,6 +67,7 @@ int main(int argc, const char* argv[])
   gbVerbose    = gxArguments.m_bVerbose;
   gbTracepoint = gxArguments.m_bTracepoint;
   gbProgress   = gxArguments.m_bProgress;
+  gbMetadata   = gxArguments.m_bMetadata;
   
   //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   /*

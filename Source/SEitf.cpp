@@ -82,6 +82,8 @@ SEitf::SEitf(i8 iPartition)
   m_pEntry          = nullptr;
   m_pCurrentTable   = nullptr;
   m_pTxRef          = nullptr;
+  m_sMetadata       = ""_Str;
+  m_iRowsProcessed    = 0;
   m_iCurrentRequestId = 0;
   m_iNextRequestId    = -1;
   m_iRowPartition     = -1;

@@ -9,6 +9,7 @@ extern Heap*        gpMediumHeap;
 extern Arguments    gxArguments;
 extern AttachMap*   gpAttachMap;
 extern Grid*        gpGrid;
+extern bool         gbMetadata;
 
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
@@ -167,13 +168,21 @@ void SePrompt::vLoop(void)
     if (b) {
       if ( ! m_bExpect )
         if ( !m_sResponse.bEqual("<ok>"_Str) ) {
-          vTrace("%s\n"_Str,m_sResponse.s());
+          if (gbMetadata) {
+            vTrace("metadata: %s\n"_Str, m_pSEitf->m_sMetadata.aStr());
+            vTrace("%s\n"_Str,m_sResponse.s());
+            vTrace("success: %lld rows affected\n"_Str, m_pSEitf->m_iRowsProcessed);
+            m_pSEitf->m_iRowsProcessed = 0;
+          }
+          else {
+            vTrace("%s\n"_Str,m_sResponse.s());
+          }
       }
     }
     else {
       if (m_pSEitf->eGetLastError() != EC_NONE)
         if ( ! m_bExpect )
-         vTrace("Error: %s\n"_Str,m_pSEitf->pGetLastError());
+         vTrace("error: %s\n"_Str,m_pSEitf->pGetLastError());
     }
   }
   

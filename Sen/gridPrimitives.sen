@@ -597,6 +597,7 @@ tp: addingPassOnToCP
   args.verbose if " --verbose " str.cat then
   args.dontFree if " --dontFree " str.cat then
   args.freeRB if " --freeRB " str.cat then
+  args.metadata if " --metadata " str.cat then
 
   " &" str.cat
 ;

@@ -90,16 +90,21 @@ tp: printResult
 ;
 
 /*----------------------------------------------------------------------------*/
-/* print grid result                                                          */
+/* return grid result                                                         */
 /*----------------------------------------------------------------------------*/
 : returnResult ( s n# t | ec n# f .... nn t/f )
 
-  tp: printResult
+  tp: returnResult
+
+  0 locals| results |
 
   // was the final result true ?
   true == if ( s n# t | ec n# f .... nn )
 
+    to results
+    
     // concatenate the results resturned
+    results
     0 do  ( s n# t | s n# f .... )
 
       I 0 == if
@@ -110,27 +115,32 @@ tp: printResult
 
       assert // should be true
 
-      grid.node node.name  ( " " s nodeName )
+        args.metadata if
+          drop "row: "( " " s "row:"  )
+          "%v %v" str.format
+        else
+          grid.node node.name  ( " " s nodeName )
+          "%v: %v" str.format
+        then
+        str.cat
 
-     "%v: %v\n" str.format
+        I results 1 - < if
+          "\n" str.cat
+        then
 
-      str.cat
-
-  loop
-
+    loop
+    true
   else
 
     // lets see which node failed
     0 do  ( s n# t | ec n# f .... )
 
     false == if ( s n# t | ec n# )
-
-      swap error.msg swap
-      grid.node node.name
-      "%v ERROR: %v" str.format
-
+      //swap error.msg swap
+      //grid.node node.name
+      //"error: %v %v" str.format
+      drop false
     else
-
       drop drop
 
     then
