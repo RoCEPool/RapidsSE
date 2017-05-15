@@ -270,12 +270,24 @@ tp: lf
 
 : pwf
 
-  "/"
-  pathDepth 0 do
-  pathDepth 1 - I -
-  pathPick dic.name str.cat
-  "/" str.cat
-  loop
+  args.metadata if
+    "(path VARCHAR)" metaData
+    "('/"
+    pathDepth 0 do
+    pathDepth 1 - I -
+    pathPick dic.name str.cat
+    "/" str.cat
+    loop
+    "')\n" str.cat
+    1 task::this task.seitf@ seitf.rowsProcessed
+  else
+    "/"
+    pathDepth 0 do
+    pathDepth 1 - I -
+    pathPick dic.name str.cat
+    "/" str.cat
+    loop
+  then
 
   <SUCCESS>
 ;

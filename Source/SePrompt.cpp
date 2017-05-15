@@ -172,7 +172,10 @@ void SePrompt::vLoop(void)
             vTrace("metadata: %s\n"_Str, m_pSEitf->m_sMetadata.aStr());
             vTrace("%s"_Str,m_sResponse.s());
             vTrace("success: %lld rows affected\n"_Str, m_pSEitf->m_iRowsProcessed);
+            
+            // reset counters
             m_pSEitf->m_iRowsProcessed = 0;
+            m_pSEitf->m_sMetadata      = ""_Str;
           }
           else {
             vTrace("%s\n"_Str,m_sResponse.s());
