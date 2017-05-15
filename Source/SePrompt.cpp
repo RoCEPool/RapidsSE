@@ -166,7 +166,7 @@ void SePrompt::vLoop(void)
     }
     
     if (b) {
-      if ( ! m_bExpect )
+      if ( ! m_bExpect ) {
         if ( !m_sResponse.bEqual("<ok>"_Str) ) {
           if (gbMetadata) {
             vTrace("metadata: %s\n"_Str, m_pSEitf->m_sMetadata.aStr());
@@ -177,6 +177,13 @@ void SePrompt::vLoop(void)
           else {
             vTrace("%s\n"_Str,m_sResponse.s());
           }
+        }
+        else {
+          if (gbMetadata) {
+            vTrace("success: %lld rows affected\n"_Str, m_pSEitf->m_iRowsProcessed);
+            m_pSEitf->m_iRowsProcessed = 0;
+          }
+        }
       }
     }
     else {

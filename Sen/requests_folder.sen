@@ -108,36 +108,73 @@ tp: droppedDic
 /*----------------------------------------------------------------------------*/
 : lf
 
-  ""
-  0 pathPick dic.lastWord dup iterate
+  0 locals| count |
 
-    dup str.length if "\n" str.cat then
+  args.metadata if
+    "(name VARCHAR, type VARCHAR)" metaData
+    ""
+    0 pathPick dic.lastWord dup iterate
+     //dup str.length if "\n" str.cat then
+     1 count + to count
+     "row: ('" str.cat
 
-    object@ word.name 12 str.pad str.cat
 
-    "(" str.cat
+    object@ word.name str.cat
+
+    "', " str.cat
 
     object@ isTable if
-      "table " str.cat
-      object@ execute table.space bytes.magnitude str.cat
+      "'table'" str.cat
+      //object@ execute table.space bytes.magnitude str.cat
     then
 
     object@ isIndex if
-      "index" str.cat
+      "'index'" str.cat
       //object@ execute table.space bytes.magnitude str.cat
     then
 
     object@ isFolder if
+      "'" str.cat
       object@ execute dic.kind@ word.name str.cat
+      "'" str.cat
     then
 
-    ")" str.cat
+    ")\n" str.cat
 
     object@ word.prev object!
 
-  next
+    next
+    count task::this task.seitf@ seitf.rowsProcessed
+  else
+    ""
+    0 pathPick dic.lastWord dup iterate
 
-   <SUCCESS>
+      dup str.length if "\n" str.cat then
+
+      object@ word.name 12 str.pad str.cat
+
+      "(" str.cat
+
+      object@ isTable if
+        "table " str.cat
+        //object@ execute table.space bytes.magnitude str.cat
+      then
+
+      object@ isIndex if
+        "index" str.cat
+        //object@ execute table.space bytes.magnitude str.cat
+      then
+
+      object@ isFolder if
+        object@ execute dic.kind@ word.name str.cat
+      then
+
+      object@ word.prev object!
+
+    next
+  then
+
+  <SUCCESS>
 ;
 
 /*----------------------------------------------------------------------------*/

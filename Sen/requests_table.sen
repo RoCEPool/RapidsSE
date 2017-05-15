@@ -233,7 +233,6 @@ ddlLock::grabWrite
   checkIsTable not if <NIP+ERROR> exit then
 
   //"end_create_table" .
-  dup .
 
   columnVecTable
 
