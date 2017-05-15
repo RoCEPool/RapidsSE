@@ -53,6 +53,10 @@
   // check it is a table
   checkIsTable  not if <NIP+ERROR> exit then
 
+  args.metadata if
+    "(columnDefinition VARCHAR)" metaData
+  then
+
   listColumns
 
   // pop table dictionary
