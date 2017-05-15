@@ -556,6 +556,13 @@ ddlLock::grabWrite
 
   sizeTable ( "<size>" )
 
+  args.metadata if
+    "(size INTEGER)" metaData
+    "row: (" swap str.cat
+    ")\n" str.cat
+    1 task::this task.seitf@ seitf.rowsProcessed
+  then
+
   // pop table folder
   popTable
 
