@@ -311,6 +311,12 @@ void ValLib::vToString(Object* pObject, Str* aString)
       pValSet->vToString(aString);
       break;
     }
+    
+    case CN_VALWSP: {
+      ValWsp* pValWsp = _pValWsp(pObject);
+      pValWsp->vToString(aString);
+      break;
+    }
       
     default:
       THROW("Invalid eClass %lld"_Str,eClass);

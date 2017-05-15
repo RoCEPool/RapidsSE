@@ -170,7 +170,7 @@ void SePrompt::vLoop(void)
         if ( !m_sResponse.bEqual("<ok>"_Str) ) {
           if (gbMetadata) {
             vTrace("metadata: %s\n"_Str, m_pSEitf->m_sMetadata.aStr());
-            vTrace("%s\n"_Str,m_sResponse.s());
+            vTrace("%s"_Str,m_sResponse.s());
             vTrace("success: %lld rows affected\n"_Str, m_pSEitf->m_iRowsProcessed);
             m_pSEitf->m_iRowsProcessed = 0;
           }

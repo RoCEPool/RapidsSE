@@ -120,17 +120,12 @@ tp: printResult
 
         args.metadata if
           drop "row: "( " " s "row:"  )
-          "%v %v" str.format
+          "%v %v\n" str.format
         else
           grid.node node.name  ( " " s nodeName )
           "%v: %v" str.format
         then
         str.cat
-
-        I results 1 - < if
-          "\n" str.cat
-        then
-
     loop
     results seitf seitf.rowsProcessed
     true
