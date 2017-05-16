@@ -29,7 +29,15 @@ ddlLock::grabWrite
 
   tp ( "<tableNm>" )
 
+  args.metadata if
+    "(nodeName VARCHAR, paritionNumber INTEGER, strands INTEGER, buffers INTEGER, rowCount INTEGER)"
+      metaData
+  then
+
   analyzeTable ( )
+
+  // set no of rows processed equal to total no of partitions
+  grid.partitions task::this task.seitf@ seitf.rowsProcessed
 
   // pop table dictionary
   popTable
@@ -47,7 +55,7 @@ ddlLock::grabWrite
 /*----------------------------------------------------------------------------*/
 : danalyze_table ( "<tableNm>" -- <R> )
 
-  tp: analyzeTable
+  tp: danalyze_table
 
   ddlLock::grabWrite
 

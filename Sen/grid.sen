@@ -106,7 +106,7 @@ tp: printResult
 
     to results
     
-    // concatenate the results resturned
+    // concatenate the results returned
     results
     0 do  ( s n# t | s n# f .... )
 
@@ -119,8 +119,8 @@ tp: printResult
       assert // should be true
 
         args.metadata if
-          drop "row: "( " " s "row:"  )
-          "%v %v\n" str.format
+          drop
+          "\n" str.cat
         else
           grid.node node.name  ( " " s nodeName )
           "%v: %v" str.format
@@ -144,11 +144,12 @@ tp: printResult
       then
 
     loop
-    // returning only 1 error
-    1 seitf seitf.rowsProcessed
+    // returning error
+    0 seitf seitf.rowsProcessed
 
   then
 ;
+
 
 /*----------------------------------------------------------------------------*/
 /* print grid result                                                          */

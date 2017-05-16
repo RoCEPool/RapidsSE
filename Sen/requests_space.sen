@@ -52,15 +52,15 @@ tp: gettingSpace
   then
 
   args.metadata if
-    "("
+    "row: ('"
     grid.thisNodeName@ str.cat
-    ", " str.cat
+    "', '" str.cat
     2 bp.totalSpace number.magnitude str.cat
-    ", " str.cat
+    "', '" str.cat
     2 bp.inUseSpace number.magnitude str.cat
-    ", " str.cat
+    "', '" str.cat
     2 bp.freespace number.magnitude str.cat
-    ")" str.cat
+    "')" str.cat
 
   else
     "Pool - Size(" 2 bp.totalSpace number.magnitude str.cat ")" str.cat

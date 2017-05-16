@@ -8,7 +8,9 @@
 #include "StorageEngine.h"
 
 extern BufferPool*  gpBufferPool;
+extern bool  gbMetadata;
 extern Grid* gpGrid;
+
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -166,9 +168,10 @@ Str* Table::pAnalyze(bool bDetailed)
   i8 nStrandsTotal = 0;
   s48K sAnalysis;
   
-  sAnalysis.vCatSprint("N%lld: Analysis of Table %s\n"_Str,
-                       gpGrid->iThisNode(),
-                       m_sTableName.s());
+  if ( ! gbMetadata || bDetailed)
+    sAnalysis.vCatSprint("N%lld: Analysis of Table %s\n"_Str,
+                         gpGrid->iThisNode(),
+                         m_sTableName.s());
 
   for (i8 iSlot = 0; iSlot < gpGrid->m_nSlots; iSlot++) {
     
@@ -201,22 +204,39 @@ Str* Table::pAnalyze(bool bDetailed)
       pStrand = pStrand->pNextStrand();
     }
     
-    sAnalysis.vCatSprint(
-      "  partition %lld: %3lld strands; %5lld buffers; %lld rows\n"_Str,
-      iPartition,
-      nStrands,
-      nBuffers,
-      nRows);
+    if (gbMetadata) {
+      sAnalysis.vCatSprint(
+         "row: ('%s', %lld, %lld, %lld, %lld)"_Str,
+         gpGrid->pThisNode()->aNodeName(),
+         iPartition,
+         nStrands,
+         nBuffers,
+         nRows);
+      if (iSlot < gpGrid->m_nSlots - 1) {
+        sAnalysis.vCatSprint("\n"_Str);
+      }
+    }
+    else {
+      sAnalysis.vCatSprint(
+        "  partition %lld: %3lld strands; %5lld buffers; %lld rows\n"_Str,
+        iPartition,
+        nStrands,
+        nBuffers,
+        nRows);
+    }
     
     nRowsTotal += nRows;
     nBuffersTotal += nBuffers;
     nStrandsTotal += nStrands;
   }
-  sAnalysis.vCatSprint(
-    "        total: %3lld strands; %5lld buffers; %lld rows\n"_Str,
-    nStrandsTotal,
-    nBuffersTotal,
-    nRowsTotal);
+  
+  if ( ! gbMetadata || bDetailed) {
+    sAnalysis.vCatSprint(
+      "        total: %3lld strands; %5lld buffers; %lld rows\n"_Str,
+      nStrandsTotal,
+      nBuffersTotal,
+      nRowsTotal);
+  }
   
   return sAnalysis;
 }
