@@ -513,32 +513,43 @@ bool IndexBuffer::bVerify(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
-  Entry* pEntryA = aNextEntry(aHead());
-  if ( ! pEntryA )
-    return true;
-  
-  Entry* pEntryB = aNextEntry(pEntryA);
-  if ( ! pEntryB )
-    return true;
-  
   // create a realtional operator array
   RelOpAry* pOpAry = new RelOpAry;
   i8 nItems = m_pIndex->pIdxColVec()->nItems();
   for (i8 i=0; i < nItems; i++)
-    pOpAry->vAdd(RO_GREATER_EQUAL);
+  pOpAry->vAdd(RO_GREATER_EQUAL);
   
-  while (pEntryB) {
+  // verify the entries at each level
+  i8 nLevel = C_FLAT_LEVELS - 1;
+  
+  do {
     
-    Key* pKeyA = pEntryA->aKey();
-    Key* pKeyB = pEntryB->aKey();
+    Entry* pEntryA = aHead();
+    if ( ! pEntryA )
+      return true;
     
-    bool bGreaterEqual = pEntryB->bMatches(pEntryA->aKey(), m_pIndex->pIdxColVec(), pOpAry);
-    if ( ! bGreaterEqual )
-      return false;
+    if (pEntryA->nOffsets() < nLevel)
+      return true;
     
-    pEntryA = pEntryB;
-    pEntryB = aNextEntry(pEntryA);
-  }
+    Entry* pEntryB = aRightEntry(pEntryA, nLevel);
+    if ( ! pEntryB )
+      return true;
+  
+    while (pEntryB) {
+      
+      Key* pKeyA = pEntryA->aKey();
+      Key* pKeyB = pEntryB->aKey();
+      
+      if (pEntryA != aHead()) {
+        bool bGreaterEqual = pEntryB->bMatches(pEntryA->aKey(), m_pIndex->pIdxColVec(), pOpAry);
+        if ( ! bGreaterEqual )
+          return false;
+      }
+      
+      pEntryA = pEntryB;
+      pEntryB = aNextEntry(pEntryA);
+    }
+  } while (--nLevel >= 0 );
   
   delete pOpAry;
   
@@ -724,7 +735,7 @@ void IndexBuffer::vReplace(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp)
 
   // create a newEntry at the same location as the foundEntry
   Entry* aNewEntry = _aEntry(pFoundEntry);
-  i8 nDifference = iOldKeySize - iNewKeySize;
+  i8 nDifference;
 
   if (iOldKeySize > iNewKeySize) {
     /*
@@ -736,6 +747,8 @@ void IndexBuffer::vReplace(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp)
      
      We will moveLeft in the buffer reclaiming n bytes
      */
+    
+    nDifference = iOldKeySize - iNewKeySize;
     
     // calculate the pDst address
     void* pDst = pAdd<void*>(pFoundEntry, iNewKeySize);
@@ -757,7 +770,8 @@ void IndexBuffer::vReplace(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp)
      */
 
     ASSERT(iOldKeySize < iNewKeySize);
-    i8 nDifference = iNewKeySize - iOldKeySize;
+    nDifference = iNewKeySize - iOldKeySize;
+    ASSERT(nDifference);
     
     // calculate the pDst address
     void* pDst = pAdd<void*>(pFoundEntry, iSize);
@@ -781,16 +795,18 @@ void IndexBuffer::vReplace(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp)
 
   // fix the right offsets in the head
   Entry* pHead = aHead();
-
+  
   for (i8 i = 0; i < pHead->nOffsets(); i++) {
     
     // here we adjust the iRightOffset if offset is after oldEntry
     i8 iOldEntrySize = pFoundEntry->nSize();
     i8 iRightOffset = pHead->uRightOffset(i);
+    nDifference = iOldKeySize - iNewKeySize;
     
     if ( iRightOffset != C_NIL_OFFSET) {
-      if (iRightOffset > iOldEntrySize)
+      if (iRightOffset - nDifference >= iOldEntrySize) {
         pHead->vRightOffset(i,pHead->uRightOffset(i) - nDifference);
+      }
     }
   }
   
@@ -1074,6 +1090,9 @@ Entry* IndexBuffer::aPosition(KeyWsp& xKeyWsp, RelOpAry* pOpAryPosition, bool& b
     // inner loop: go right a number of nodes until we find
     //   ObjectInsert < ObjectNext at current level
     while (Entry* pNextEntry = aRightEntry(pCurrentEntry, iCurrentLevel)) {
+      
+        //aKey->vShow(m_pIndex->pIdxColVec());
+        //pNextEntry->aKey()->vShow(m_pIndex->pIdxColVec());
       
         // compare the inserting object with next object
         bool bGreaterEqual = aKey->bMatches(pNextEntry->aKey(), m_pIndex->pIdxColVec(), pOpAryPosition);
