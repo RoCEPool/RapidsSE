@@ -27,7 +27,7 @@ tp: gettingStatus
 
   get_status ( str )
 
-  <SUCCESS>
+  not if <NIP+ERROR> else <SUCCESS> then
 ;
 
 /*============================================================================*/

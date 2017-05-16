@@ -39,7 +39,7 @@ ddlLock::grabWrite
 
   tp: analyzedTable
 
-  <SUCCESS>
+  not if <NIP+ERROR> else <SUCCESS> then
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -75,7 +75,7 @@ ddlLock::grabWrite
 
   tp: danalyzedTable
 
-  <SUCCESS>
+  not if <NIP+ERROR> else <SUCCESS> then
 ;
 
 /*----------------------------------------------------------------------------*/

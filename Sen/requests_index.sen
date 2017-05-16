@@ -46,7 +46,7 @@ timer: idxSelectTimer
 
   tp: analyzedIndex
 
-  <SUCCESS>
+  not if <NIP+ERROR> else <SUCCESS> then
 ;
 
 /*----------------------------------------------------------------------------*/
