@@ -255,7 +255,8 @@ Str* Table::pAnalyzeIndex(Index* pIndex)
   i8 nEntries = 0;
   s48K sAnalysis;
   
-  sAnalysis.vCatSprint("N%lld: Analysis of Index %s of table %s \n"_Str,
+  if ( ! gbMetadata )
+    sAnalysis.vCatSprint("N%lld: Analysis of Index %s of table %s \n"_Str,
                        gpGrid->iThisNode(),
                        pIndex->aIndexName()->s(),
                        m_sTableName.s());
@@ -266,17 +267,32 @@ Str* Table::pAnalyzeIndex(Index* pIndex)
     
     IndexBuffer *pIndexBuffer = pPartition(iSlot)->pIndexData(pIndex->iIndexNo())->pRoot();
     
-    sAnalysis.vCatSprint("  partition %lld: \n"_Str, iPartition);
+    if ( ! gbMetadata )
+      sAnalysis.vCatSprint("  partition %lld: \n"_Str, iPartition);
   
     i8 iBufferNo = 1;
     while (pIndexBuffer) {
       i8 iBufferLevel = pIndexBuffer->nBufferLevel();
       nEntries = pIndexBuffer->nEntries() - 1; // not to show head entry
-      sAnalysis.vCatSprint(
-                           "     buffer (L%lld) %5lld : %lld entries\n"_Str,
-                           iBufferLevel,
+      
+      if (gbMetadata) {
+        sAnalysis.vCatSprint("row: ('%s', %lld, %lld, %lld, %lld)"_Str,
+                             gpGrid->pThisNode()->aNodeName(),
+                             iPartition,
+                             iBufferNo++,
+                             iBufferLevel,
+                             nEntries);
+        if (iSlot < gpGrid->m_nSlots - 1) {
+          sAnalysis.vCatSprint("\n"_Str);
+        }
+
+      }
+      else {
+        sAnalysis.vCatSprint("     buffer (L%lld) %5lld : %lld entries\n"_Str,                           
                            iBufferNo++,
+                           iBufferLevel,
                            nEntries);
+      }
       
       nEntriesTotal += nEntries;
       nBuffersTotal++;
@@ -285,7 +301,9 @@ Str* Table::pAnalyzeIndex(Index* pIndex)
     }
     
   }
-  sAnalysis.vCatSprint(
+  
+  if ( ! gbMetadata )
+    sAnalysis.vCatSprint(
                        "     total: %5lld buffers; %lld entries\n"_Str,
                        nBuffersTotal,
                        nEntriesTotal);

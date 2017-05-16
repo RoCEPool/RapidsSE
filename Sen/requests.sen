@@ -108,6 +108,12 @@ cf
 pwf     pwf
 lf      lf
 rf      remove_folder
+
+---------------------
+System Requests:
+---------------------
+space   space
+status  status
  
 -----------------
 Misc Requests:

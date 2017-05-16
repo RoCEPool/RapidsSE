@@ -33,7 +33,15 @@ timer: idxSelectTimer
      popIndexes popTable assertInTables <NIP+ERROR> exit
   then
 
+  args.metadata if
+    "(nodeName VARCHAR, paritionNumber INTEGER, bufferNo INTEGER, bufferLevel INTEGER, entries INTEGER)"
+      metaData
+  then
+
   indexNm analyzeIndex ( )
+
+  // set no of rows processed equal to total no of partitions
+  grid.partitions task::this task.seitf@ seitf.rowsProcessed
 
   // pop indexes folder
   popIndexes

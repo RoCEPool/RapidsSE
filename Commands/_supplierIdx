@@ -24,9 +24,9 @@ create table supplier (
 	 S_COMMENT       VARCHAR(101) NOT NULL
 );
 
-//create index idx1 on supplier (S_SUPPKEY);
+create index idx1 on supplier (S_SUPPKEY);
 //create index idx2 on supplier (S_NAME);
-create index idx3 on supplier (S_ADDRESS);
+//create index idx3 on supplier (S_ADDRESS);
 //create index idx4 on supplier (S_COMMENT);
 
 print "loading supplier.tbl..."
