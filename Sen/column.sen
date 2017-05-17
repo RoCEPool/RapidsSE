@@ -89,29 +89,59 @@
 /*----------------------------------------------------------------------------*/
 : listColumns ( -- )
 
+  0 locals| count |
+
   pushTableSub  assert
   pushColumns   assert
 
-  ""                             // initial ls string
-  0 pathPick dic.lastWord            // get last word of current dic
-  dup                            // setup iteration of words
-  iterate                        //
+  args.metadata if
+    ""                             // initial ls string
+    0 pathPick dic.lastWord        // get last word of current dic
+    dup                            // setup iteration of words
+    iterate                        //
 
-    object@ word.name            // column name
+      1 count + to count
 
-    " " str.cat
-    object@ execute str.cat       // column type
+      object@ word.name            // column name
 
-    swap
+      "row: ('" swap str.cat
+      " " str.cat
+      object@ execute str.cat       // column type
 
-    dup str.length
-    if " , " str.prepend then     //
+      swap
 
-    str.cat                       // append column to ls
+      "')\n" str.prepend            //
 
-    object@ word.prev object!     // step backwards thru words
+      str.cat                       // append column to ls
 
-  next                            //
+      object@ word.prev object!     // step backwards thru words
+
+    next                            //
+    count task::this task.seitf@ seitf.rowsProcessed
+
+  else
+    ""                               // initial ls string
+    0 pathPick dic.lastWord          // get last word of current dic
+      dup                            // setup iteration of words
+      iterate                        //
+
+      object@ word.name            // column name
+
+      " " str.cat
+      object@ execute str.cat       // column type
+
+      swap
+
+      dup str.length
+      if " , " str.prepend then     //
+
+      str.cat                       // append column to ls
+
+      object@ word.prev object!     // step backwards thru words
+
+    next                            //
+
+  then
 
   //"\n" str.cat
 

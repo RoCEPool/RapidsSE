@@ -41,11 +41,14 @@ void Task::vAddPrimitives_SEitf(void)
   vAddPrimitive("seitf.indexBuffer@"_Str,     &vSEitfIndexBufferFetch, false);
   vAddPrimitive("seitf.indexBuffer!"_Str,     &vSEitfIndexBufferStore, false);
   vAddPrimitive("seitf.indexRef"_Str,         &vSEitfIndexRef,         false);
+  vAddPrimitive("seitf.metadata@"_Str,        &vSEitfMetadataFetch,    false);
+  vAddPrimitive("seitf.metadata!"_Str,        &vSEitfMetadataStore,    false);
   vAddPrimitive("seitf.partition@"_Str,       &vSEitfPartitionFetch,   false);
   vAddPrimitive("seitf.partition!"_Str,       &vSEitfPartitionStore,   false);
   vAddPrimitive("seitf.pid"_Str,              &vSEitfPid,              false);
   vAddPrimitive("seitf.req@"_Str,             &vSEitfReqFetch,         false);
   vAddPrimitive("seitf.req!"_Str,             &vSEitfReqStore,         false);
+  vAddPrimitive("seitf.rowsProcessed"_Str,    &vSEitfRowsProcessed,    false);
   vAddPrimitive("seitf.rsp@"_Str,             &vSEitfRspFetch,         false);
   vAddPrimitive("seitf.rsp!"_Str,             &vSEitfRspStore,         false);
   vAddPrimitive("seitf.responseQueue"_Str,    &vSEitfResponseQueue,    false);
@@ -246,6 +249,51 @@ void Task::vSEitfIndexRef(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* seitf.metadata@ -- fetch metadata in SE interface                          */
+/*----------------------------------------------------------------------------*/
+void Task::vSEitfMetadataFetch(NNP_Task nnpTask)
+{
+  ENTRY("vSEitfMetadataFetch"_Str);
+  
+  Object* pPtrSEitf;
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitf) )
+    THROW_INVALID_DSTACK("seitf.metadata@"_Str);
+  
+  SEitf* pSEitf = _pSEitf(pPtrSEitf);
+  ASSERT(CN_SEITF == pSEitf->eClass());
+  
+  s256 sMetadata;
+  
+  sMetadata = pSEitf->m_sMetadata;
+  nnpTask->m_pDataStack->vPushS256(sMetadata);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* seitf.metadata! -- store metadata in SE interface                          */
+/*----------------------------------------------------------------------------*/
+void Task::vSEitfMetadataStore(NNP_Task nnpTask)
+{
+  ENTRY("vSEitfMetadataStore"_Str);
+  
+  Object* pPtrSEitf;
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitf) )
+    THROW_INVALID_DSTACK("seitf.metadata!"_Str);
+  
+  SEitf* pSEitf = _pSEitf(pPtrSEitf);
+  ASSERT(CN_SEITF == pSEitf->eClass());
+  
+  s256 sMetadata;
+  if ( ! nnpTask->m_pDataStack->bPop(sMetadata) )
+    THROW_INVALID_DSTACK("seitf.metadata@"_Str);
+  
+  pSEitf->m_sMetadata = sMetadata;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* seitf.partition@ -- fetch partition of SE interface                        */
 /*----------------------------------------------------------------------------*/
 void Task::vSEitfPartitionFetch(NNP_Task nnpTask)
@@ -350,6 +398,29 @@ ENTRY("vSEitfReqStore"_Str);
   ASSERT(CN_QUEUE == pQueue->eClass());
   
   pSEitf->vRequestQueue(pQueue);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* seitf.rowsProcessed -- store rows processed in SE interface                */
+/*----------------------------------------------------------------------------*/
+void Task::vSEitfRowsProcessed(NNP_Task nnpTask)
+{
+  ENTRY("vSEitfRowsProcessed"_Str);
+  
+  Object* pPtrSEitf;
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitf) )
+    THROW_INVALID_DSTACK("seitf.rowsProcessed"_Str);
+  
+  SEitf* pSEitf = _pSEitf(pPtrSEitf);
+  ASSERT(CN_SEITF == pSEitf->eClass());
+  
+  i8 iRowsProcessed;
+  if ( ! nnpTask->m_pDataStack->bPop(iRowsProcessed) )
+    THROW_INVALID_DSTACK("seitf.rowsProcessed"_Str);
+  
+  pSEitf->m_iRowsProcessed = iRowsProcessed;
   
   EXIT();
 }

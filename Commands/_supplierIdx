@@ -24,9 +24,9 @@ create table supplier (
 	 S_COMMENT       VARCHAR(101) NOT NULL
 );
 
-create index idx1 on supplier (S_SUPPKEY);
-create index idx2 on supplier (S_NAME);
-//create index idx3 on supplier (S_ADDRESS);
+//create index idx1 on supplier (S_SUPPKEY);
+//create index idx2 on supplier (S_NAME);
+create index idx3 on supplier (S_ADDRESS);
 //create index idx4 on supplier (S_COMMENT);
 
 print "loading supplier.tbl..."
@@ -35,8 +35,8 @@ ld supplier "/tpch/supplier.tbl"
 pwf
 lf
 
-print "\nSelecting rows from supplier (idx1) where S_SUPPKEY >= 9972 ...\n"
-lwrselidx supplier idx1 9972
+//print "\nSelecting rows from supplier (idx1) where S_SUPPKEY >= 9972 ...\n"
+//lwrselidx supplier idx1 9972
 
 //print "\nSelecting rows from supplier (idx1) where S_SUPPKEY >= 9972 & <= 9982...\n"
 //rgeselidx supplier idx1 9972 9982
@@ -53,8 +53,8 @@ lwrselidx supplier idx1 9972
 //print "\nSelecting rows from supplier (idx1) where S_SUPPKEY >= 9995 & <= 1995 ...\n"
 //rgeselidx supplier idx1 9995 1995
 
-print "\nSelecting rows from supplier (idx2) where S_NAME >= 'Supplier#000009900' ...\n"
-lwrselidx supplier idx2 "Supplier#000009900"
+//print "\nSelecting rows from supplier (idx2) where S_NAME >= 'Supplier#000009900' ...\n"
+//lwrselidx supplier idx2 "Supplier#000009900"
 
 //print "\nSelecting rows from supplier (idx2) where S_NAME >= 'Supplier#000009900' & <= Supplier#000009990 ...\n"
 //rgeselidx supplier idx2 "Supplier#000009900" "Supplier#000009990"
@@ -62,22 +62,23 @@ lwrselidx supplier idx2 "Supplier#000009900"
 //print "\nSelecting rows from supplier (idx2) where S_NAME >= 'Supplier#000009900' & <= 'Supplier#000001900'...\n"
 //rgeselidx supplier idx2 "Supplier#000009900" "Supplier#000001900"
 
-/*
-print "\nSelecting rows from supplier (idx3) where S_ADDRESS >= 'm' ...\n"
-lwrselidx supplier idx3 "m"
+//dumpidx supplier idx3
 
-print "\nSelecting rows from supplier (idx3) where S_ADDRESS >= 'xo' ...\n"
-lwrselidx supplier idx3 "xo"
+//print "\nSelecting rows from supplier (idx3) where S_ADDRESS >= 'm' ...\n"
+//lwrselidx supplier idx3 "m"
 
-print "\nSelecting rows from supplier (idx3) where S_ADDRESS >= 'a' ...\n"
-lwrselidx supplier idx3 "a"
+//print "\nSelecting rows from supplier (idx3) where S_ADDRESS >= 'xo' ...\n"
+//lwrselidx supplier idx3 "xo"
 
-print "\nSelecting rows from supplier (idx3) where S_ADDRESS >= 'm' & <= 'q'...\n"
-rgeselidx supplier idx3 "m" "q"
+//print "\nSelecting rows from supplier (idx3) where S_ADDRESS >= 'a' ...\n"
+//lwrselidx supplier idx3 "a"
+
+//print "\nSelecting rows from supplier (idx3) where S_ADDRESS >= 'm' & <= 'q'...\n"
+//rgeselidx supplier idx3 "m" "q"
 
 print "\nSelecting rows from supplier (idx3) where S_ADDRESS <= 'p'...\n"
 uprselidx supplier idx3 "p"
-*/
+
 
 /*============================================================================*/
 /* end                                                                        */

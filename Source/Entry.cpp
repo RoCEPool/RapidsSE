@@ -153,7 +153,7 @@ void Entry::vShow(i8 iOffset, IdxColVec* pColVec)
          );
   aKey->vShow(pColVec);
   
-  for (i8 iRight=0; iRight< m_nOffsets; iRight++) {
+  for (u8 iRight=0; iRight< m_nOffsets; iRight++) {
     vTrace(" Offset(%lld): %lld "_Str,
            iRight,
            uRightOffset(iRight) == C_NIL_OFFSET ?

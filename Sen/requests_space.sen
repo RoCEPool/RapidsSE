@@ -51,11 +51,23 @@ tp: gettingSpace
     "GETTING SPACE on NODE "grid.thisNodeName@ str.cat .
   then
 
-  "Pool - Size(" 2 bp.totalSpace number.magnitude str.cat ")" str.cat
-  " InUse(" 2 bp.inUseSpace number.magnitude str.cat ")" str.cat
-  " Free(" 2 bp.freespace number.magnitude str.cat ")" str.cat
+  args.metadata if
+    "row: ('"
+    grid.thisNodeName@ str.cat
+    "', '" str.cat
+    2 bp.totalSpace number.magnitude str.cat
+    "', '" str.cat
+    2 bp.inUseSpace number.magnitude str.cat
+    "', '" str.cat
+    2 bp.freespace number.magnitude str.cat
+    "')" str.cat
 
-  str.cat str.cat
+  else
+    "Pool - Size(" 2 bp.totalSpace number.magnitude str.cat ")" str.cat
+    " InUse(" 2 bp.inUseSpace number.magnitude str.cat ")" str.cat
+    " Free(" 2 bp.freespace number.magnitude str.cat ")" str.cat
+    str.cat str.cat
+  then
 
   <SUCCESS_RESULT>
 ;
@@ -65,9 +77,14 @@ tp: gettingSpace
 /*----------------------------------------------------------------------------*/
 : space ( -- <R> )
 
+  args.metadata if
+    "(nodeName VARCHAR, poolSize STRING, inUse VARCHAR, free VARCHAR, freePct VARCHAR)"
+    metadata!
+  then
+
   get_space ( str )
 
-  <SUCCESS>
+  not if <NIP+ERROR> else <SUCCESS> then
 ;
 
 /*============================================================================*/

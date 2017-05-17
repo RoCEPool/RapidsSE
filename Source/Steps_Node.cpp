@@ -26,6 +26,7 @@ extern StepBoard*      gpStepBoard;
 extern Lock            gxDdlLock;
 extern Lock            gxDicLock;
 extern SEitfList*      gpSEitfList;
+extern bool            gbMetadata;
 
 // node: ///////////////////////////////////////////////////////////////////////
 
@@ -179,12 +180,24 @@ void Task::vNodeStatus(NNP_Task nnpTask)
 
   s256 s;
   
-  if (Region::bTest(gxArguments.m_sRegionName))
-    s.vSprint("RapidsSE instance %s running"_Str,
+  if (gbMetadata) {
+    if (Region::bTest(gxArguments.m_sRegionName))
+      s.vSprint("row: ('%s', '%s', 'running')"_Str,
+              gpGrid->pThisNode()->aNodeName(),
               gxArguments.m_sRegionName.s());
-  else
-    s.vSprint("RapidsSE instance %s not running"_Str,
+    else
+      s.vSprint("row: ('%s', '%s', 'not running')"_Str,
+              gpGrid->pThisNode()->aNodeName(),
               gxArguments.m_sRegionName.s());
+  }
+  else {
+    if (Region::bTest(gxArguments.m_sRegionName))
+      s.vSprint("RapidsSE instance %s running"_Str,
+                gxArguments.m_sRegionName.s());
+    else
+      s.vSprint("RapidsSE instance %s not running"_Str,
+                gxArguments.m_sRegionName.s());
+  }
   
   nnpTask->m_pDataStack->vPushS256(s);
   

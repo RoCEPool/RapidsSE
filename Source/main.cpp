@@ -11,6 +11,7 @@ extern Grid*     gpGrid;
 extern bool      gbVerbose;
 extern bool      gbTracepoint;
 extern bool      gbProgress;
+extern bool      gbMetadata;
 
 void vTest1(void);
 void vTest2(void);
@@ -23,7 +24,7 @@ void vKillPrev(void);
 /*----------------------------------------------------------------------------*/
 int main(int argc, const char* argv[])
 {
-  
+  /*
   vInfo(
          "sizeof(eCN) %lu; sizeof(bool) %lu; \n"_Str
          "sizeof(Object) %lu; sizeof(StrVal) %lu; \n"_Str
@@ -35,7 +36,7 @@ int main(int argc, const char* argv[])
          sizeof(s32),sizeof(s256),
          sizeof(Value),sizeof(IntVal),sizeof(ValWsp)
   );
-  
+  */
   Str* aRelDbg;
 #ifdef _DEBUG
   aRelDbg = "debug"_Str;
@@ -66,6 +67,7 @@ int main(int argc, const char* argv[])
   gbVerbose    = gxArguments.m_bVerbose;
   gbTracepoint = gxArguments.m_bTracepoint;
   gbProgress   = gxArguments.m_bProgress;
+  gbMetadata   = gxArguments.m_bMetadata;
   
   //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   /*

@@ -59,7 +59,8 @@ private:
   void vGetCommandArgument(void);
   void vGetCommandInput(void);
   
-  bool bProcessCommand(bool bPostProcess = true);
+  void vMetaFormat(void);
+  bool bProcessCommand(bool bPostProcess = true);  
   
   void vSetEcho(void);
   void vClearEcho(void);

@@ -9,6 +9,7 @@ extern Heap*        gpMediumHeap;
 extern Arguments    gxArguments;
 extern AttachMap*   gpAttachMap;
 extern Grid*        gpGrid;
+extern bool         gbMetadata;
 
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
@@ -46,16 +47,18 @@ SePrompt::SePrompt(void)
   
   m_bContinue = true;
   
-  m_sPrompt.vSprint("[N%lld %lld] se %s%c> "_Str,
-                    gpGrid->iThisNode(),
-                    Process::iGetPid(),
-                    RAPIDSSE_VERSION_STRING,
-#ifdef _DEBUG
-                    'd'
-#else
-                    'r'
-#endif
-                    );
+  if (gxArguments.m_bPromptDisplay) {
+    m_sPrompt.vSprint("[N%lld %lld] se %s%c> "_Str,
+                      gpGrid->iThisNode(),
+                      Process::iGetPid(),
+                      RAPIDSSE_VERSION_STRING,
+      #ifdef _DEBUG
+                      'd'
+      #else
+                      'r'
+      #endif
+                      );
+  }
   
   m_bEcho   = false;
   
@@ -144,7 +147,7 @@ void SePrompt::vLoop(void)
     if (0 == m_aToken[0]->iLength())
       continue;
     
-    bool b = bProcessCommand();
+    bool bProcessResult = bProcessCommand();
     
     if (m_bExpect) {
       if ( ! m_sExpect.bSame(m_sResponse) ) {
@@ -164,16 +167,54 @@ void SePrompt::vLoop(void)
       continue;
     }
     
-    if (b) {
-      if ( ! m_bExpect )
+    /*
+    if (bProcessResult) {
+      if ( ! m_bExpect ) {
         if ( !m_sResponse.bEqual("<ok>"_Str) ) {
-          vTrace("%s\n"_Str,m_sResponse.s());
+          if (gbMetadata) {
+            vTrace("metadata: %s\n"_Str, m_pSEitf->m_sMetadata.aStr());
+            vTrace("%s"_Str,m_sResponse.s());
+            vTrace("success: %lld rows affected\n"_Str, m_pSEitf->m_iRowsProcessed);
+            
+            // reset counters
+            m_pSEitf->m_iRowsProcessed = 0;
+            m_pSEitf->m_sMetadata      = ""_Str;
+          }
+          else {
+            vTrace("%s\n"_Str,m_sResponse.s());
+          }
+        }
+        else {
+          if (gbMetadata) {
+            vTrace("success: %lld rows affected\n"_Str, m_pSEitf->m_iRowsProcessed);
+            m_pSEitf->m_iRowsProcessed = 0;
+          }
+        }
       }
     }
     else {
       if (m_pSEitf->eGetLastError() != EC_NONE)
         if ( ! m_bExpect )
-         vTrace("Error: %s\n"_Str,m_pSEitf->pGetLastError());
+         vTrace("error: %s\n"_Str,m_pSEitf->pGetLastError());
+    }
+    */
+    
+    if (bProcessResult) {
+      if (gbMetadata) {
+        vMetaFormat();
+      }
+      else {
+        if ( ! m_bExpect ) {
+          if ( !m_sResponse.bEqual("<ok>"_Str) ) {
+              vTrace("%s\n"_Str,m_sResponse.s());
+          }
+        }
+      }
+    }
+    else {
+      if (m_pSEitf->eGetLastError() != EC_NONE)
+        if ( ! m_bExpect )
+          vTrace("error: %s\n"_Str,m_pSEitf->pGetLastError());
     }
   }
   
@@ -182,8 +223,7 @@ void SePrompt::vLoop(void)
   
   // SHOULD REMOVE HISTORY FILE?
 }
-
-
+  
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -338,6 +378,33 @@ void SePrompt::vGetCommandInput(void)
     break;
   }
   
+}
+
+/*----------------------------------------------------------------------------*/
+/* print output in metadata format                                            */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vMetaFormat(void)
+{
+  
+  if ( ! m_bExpect ) {
+    if ( !m_sResponse.bEqual("<ok>"_Str) ) {
+      vTrace("metadata: %s\n"_Str, m_pSEitf->m_sMetadata.aStr());
+      vTrace("%s"_Str,m_sResponse.s());
+      vTrace("success: %lld rows affected\n"_Str, m_pSEitf->m_iRowsProcessed);
+    }
+    else {
+      vTrace("success: %lld rows affected\n"_Str, m_pSEitf->m_iRowsProcessed);
+    }
+  }
+  else {
+    if (m_pSEitf->eGetLastError() != EC_NONE)
+      if ( ! m_bExpect )
+        vTrace("error: %s\n"_Str,m_pSEitf->pGetLastError());
+  }
+
+  // reset counters
+  m_pSEitf->m_iRowsProcessed = 0;
+  m_pSEitf->m_sMetadata      = ""_Str;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -647,16 +714,35 @@ void SePrompt::vIterateRows(void)
   
   i8 iRowCount = 0;
   
-  for (i8 iPartition = 0; iPartition < gxArguments.m_nSlots; iPartition++) {
-    vTrace("Partition %lld: \n"_Str, Partition::iSlotToPartition(iPartition));
-    pSelCursor->vBegin(iPartition);
-    pSelCursor->vFirst();
-    Str* pStr = pSelCursor->aRowAsStr();
-    while (pStr) {
-      iRowCount++;
-      vTrace("Row: %s\n"_Str,pStr);
-      pSelCursor->vNext();
-      pStr = pSelCursor->aRowAsStr();
+  if (gbMetadata) {
+    vTrace("metadata: %s\n"_Str, m_pSEitf->m_sMetadata.aStr());
+    for (i8 iPartition = 0; iPartition < gxArguments.m_nSlots; iPartition++) {
+      //vTrace("Partition %lld: \n"_Str, Partition::iSlotToPartition(iPartition));
+      i8 iPart = Partition::iSlotToPartition(iPartition);
+      pSelCursor->vBegin(iPartition);
+      pSelCursor->vFirst();
+      Str* pStr = pSelCursor->aRowAsStr();
+      while (pStr) {
+        iRowCount++;
+        vTrace("row: (%lld, '%s')\n"_Str, iPart, pStr);
+        pSelCursor->vNext();
+        pStr = pSelCursor->aRowAsStr();
+      }
+    }
+    m_pSEitf->m_iRowsProcessed = iRowCount;
+  }
+  else {
+    for (i8 iPartition = 0; iPartition < gxArguments.m_nSlots; iPartition++) {
+      vTrace("Partition %lld: \n"_Str, Partition::iSlotToPartition(iPartition));
+      pSelCursor->vBegin(iPartition);
+      pSelCursor->vFirst();
+      Str* pStr = pSelCursor->aRowAsStr();
+      while (pStr) {
+        iRowCount++;
+        vTrace("row: (%s)\n"_Str,pStr);
+        pSelCursor->vNext();
+        pStr = pSelCursor->aRowAsStr();
+      }
     }
   }
   

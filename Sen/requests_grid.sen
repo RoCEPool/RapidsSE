@@ -25,9 +25,13 @@ tp: gettingStatus
 /*----------------------------------------------------------------------------*/
 : status ( -- <R> )
 
+  args.metadata if
+    "(nodeName VARCHAR, instanceName VARCHAR, status VARCHAR)"  metadata!
+  then
+
   get_status ( str )
 
-  <SUCCESS>
+  not if <NIP+ERROR> else <SUCCESS> then
 ;
 
 /*============================================================================*/

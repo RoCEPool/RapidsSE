@@ -113,16 +113,32 @@
 /*----------------------------------------------------------------------------*/
 : listContents
 
-  ""                             // initial contents string
-  // "(" str.cat                     //
-  0 pathPick dic.lastWord dup
-  iterate                        // setup iteration of words
-    object@ word.name str.cat     // add name of the word to contents string
+  0 locals| count |
+
+  args.metadata if
+    "(name VARCHAR)" metadata!
+    ""                              // initial contents string
+    0 pathPick dic.lastWord dup
+    iterate                         // setup iteration of words
+    1 count + to count
+    "row: ('" str.cat
+    object@ word.name str.cat       // add name of the word to contents string
     // add word kind to ls string
-    " " str.cat                   //
-    object@ word.prev object!     // step backwards thru words
-  next                           //
-  //    ")" str.cat                     //
+    "')\n" str.cat                     //
+    object@ word.prev object!       // step backwards thru words
+    next                            //
+    count task::this task.seitf@ seitf.rowsProcessed
+  else
+    ""                              // initial contents string
+    0 pathPick dic.lastWord dup
+    iterate                         // setup iteration of words
+      object@ word.name str.cat     // add name of the word to contents string
+      // add word kind to ls string
+      " " str.cat                   //
+      object@ word.prev object!     // step backwards thru words
+    next                            //
+  then
+
 ;
 
 /*----------------------------------------------------------------------------*/

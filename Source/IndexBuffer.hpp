@@ -70,7 +70,8 @@ namespace DBobjects
     Entry*       aNewEntry(i8 nBytes, i8 nLevels, Entry* aAfterEntry);
     void         vNewHead(void);
     Entry*       aPosition(KeyWsp& xKeyWsp, RelOpAry* pOpAryPosition, bool& bEqualTo, Entry** aReviseVec);
-    Entry*       aRightEntry(Entry* aEntry, i8 iLevel);    
+    void         vReplace(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp);
+    Entry*       aRightEntry(Entry* aEntry, i8 iLevel);
     Entry*       aToEntry(i8 iOffset);
     i8           iToEndOffset(Entry* aEntry);
     i8           iToOffset(Entry* aEntry);

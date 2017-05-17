@@ -9,7 +9,7 @@ DIR_GUARD=@mkdir -p $(@D)
 #Target Files
 CURRENT=${PWD}
 TARGET_PATH = $(CURRENT)/../Linux/bin
-TARGET_EXE = $(TARGET_PATH)/se 
+TARGET_EXE = $(TARGET_PATH)/rapidsse
 TARGET_LIBRARY = $(TARGET_PATH)/libRapidsSEv0.2.2.so
 
 #Source Files

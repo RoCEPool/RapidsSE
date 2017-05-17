@@ -125,7 +125,7 @@ u8 EntWspSeq::nLevels(void)
 /*----------------------------------------------------------------------------*/
 u8 EntWspSeq::nRight(u8 iLevel)
 {
-  i8* nLevels = reinterpret_cast<i8*>(m_xWsp.aArea());
+  u8* nLevels = reinterpret_cast<u8*>(m_xWsp.aArea());
   
   ASSERT(m_uRight[iLevel] == nLevels[iLevel]);
                   

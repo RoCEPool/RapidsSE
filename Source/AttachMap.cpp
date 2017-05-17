@@ -22,6 +22,7 @@ extern SEitfList*   gpSEitfList;
 extern bool         gbVerbose;
 extern bool         gbTracepoint;
 extern bool         gbProgress;
+extern bool         gbMetadata;
 
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
@@ -91,6 +92,7 @@ void AttachMap::vGetGlobals(void)
   gbVerbose      = m_bVerbose;
   gbTracepoint   = m_bTracepoint;
   gbProgress     = m_bProgress;
+  gbMetadata     = m_bMetadata;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -128,6 +130,7 @@ void AttachMap::vRecordGlobals(Str* aRegionName, i8 iRegionSize, i8 iJumboSize)
   m_pSEitfList    = gpSEitfList;
   m_bVerbose      = gbVerbose;
   m_bProgress     = gbProgress;
+  m_bMetadata     = gbMetadata;
   
   m_iStop       = 0;
   m_iQuit       = 0;

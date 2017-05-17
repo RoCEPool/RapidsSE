@@ -50,7 +50,8 @@ namespace Values
     IntVal* pNestedIntVal(void);
     PtrVal* pNestedPtrVal(void);
     StrVal* pNestedStrVal(void);
-  
+    void    vToString(Str* aWorkspace);
+    
     Footer* pFooter(void);
   };
   

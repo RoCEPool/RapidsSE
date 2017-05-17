@@ -56,22 +56,24 @@ Arguments::Arguments(void)
   m_uLevels     = 6;
   m_uFrequency  = 2;
 
-  m_bBgTasks    = true;
-  m_bConfig     = true;
-  m_sFolder     = ""_Str;
-  m_bHugePages  = false;
-  m_bProgress   = false;
-  m_bRestart    = true;
-  m_bTouch      = false;
-  m_bTracing    = false;
-  m_bUnitTests  = false;
-  m_bVerbose    = false;
-  m_bWelcome    = true;
-  m_iSleep      = 1;
-  m_bMunged     = false;
-  m_bKillPrev   = false;
-  m_bDontFree   = false;
-  m_bFreeRB     = false;
+  m_bBgTasks       = true;
+  m_bConfig        = true;
+  m_sFolder        = ""_Str;
+  m_bHugePages     = false;
+  m_bProgress      = false;
+  m_bPromptDisplay = true;
+  m_bRestart       = true;
+  m_bTouch         = false;
+  m_bTracing       = false;
+  m_bUnitTests     = false;
+  m_bVerbose       = false;
+  m_bWelcome       = true;
+  m_iSleep         = 1;
+  m_bMetadata      = false;
+  m_bMunged        = false;
+  m_bKillPrev      = false;
+  m_bDontFree      = false;
+  m_bFreeRB        = false;
   
   _checkInitialised_(CN_ARGUMENTS);
   
@@ -324,6 +326,12 @@ bool Arguments::bParse(int argc, Str* argv[])
     
     // options -----------------------------------------------------------------
     
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (argv[iArg]->bSame("--noPromptDisplay"_Str)) {
+      m_bPromptDisplay = false;
+      continue;
+    }
+
     if (argv[iArg]->bSame("--bgtasks"_Str)) {
       m_bBgTasks = true;
       continue;
@@ -411,6 +419,11 @@ bool Arguments::bParse(int argc, Str* argv[])
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (argv[iArg]->bSame("--sleep"_Str)) {
       m_iSleep = argv[++iArg]->iToI8();
+      continue;
+    }
+    
+    if (argv[iArg]->bSame("--metadata"_Str)) {
+      m_bMetadata = true;
       continue;
     }
     
@@ -523,7 +536,8 @@ void Arguments::vPrint(void)
   vTrace("  --sen %s\n"_Str,m_sSen.s());
 //#endif
   if (m_bMunged) vTrace("  --munged\n"_Str);
-  
+  if (m_bMetadata) vTrace("  --metadata\n"_Str);
+  if ( ! m_bPromptDisplay) vTrace("  --noPromptDisplay\n"_Str);
 
 }
 

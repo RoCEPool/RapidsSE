@@ -825,11 +825,14 @@ namespace Tasks
     static void vSEitfIndexBufferFetch(NNP_Task nnpTask);
     static void vSEitfIndexBufferStore(NNP_Task nnpTask);
     static void vSEitfIndexRef(NNP_Task nnpTask);
+    static void vSEitfMetadataFetch(NNP_Task nnpTask);
+    static void vSEitfMetadataStore(NNP_Task nnpTask);
     static void vSEitfPartitionFetch(NNP_Task nnpTask);
     static void vSEitfPartitionStore(NNP_Task nnpTask);
     static void vSEitfPid(NNP_Task nnpTask);
     static void vSEitfReqFetch(NNP_Task nnpTask);
     static void vSEitfReqStore(NNP_Task nnpTask);
+    static void vSEitfRowsProcessed(NNP_Task nnpTask);
     static void vSEitfRspFetch(NNP_Task nnpTask);
     static void vSEitfRspStore(NNP_Task nnpTask);
     static void vSEitfResponseQueue(NNP_Task nnpTask);

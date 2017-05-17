@@ -34,6 +34,7 @@ namespace StorageEngine
     bool          m_bVerbose;
     bool          m_bTracepoint;
     bool          m_bProgress;
+    bool          m_bMetadata;
    
     i8            m_iQuit;
     i8            m_iStop;

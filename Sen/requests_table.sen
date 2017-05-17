@@ -29,7 +29,15 @@ ddlLock::grabWrite
 
   tp ( "<tableNm>" )
 
+  args.metadata if
+    "(nodeName VARCHAR, partition INTEGER, strands INTEGER, buffers INTEGER, rowCount INTEGER)"
+      metadata!
+  then
+
   analyzeTable ( )
+
+  // set no of rows processed equal to total no of partitions
+  grid.partitions task::this task.seitf@ seitf.rowsProcessed
 
   // pop table dictionary
   popTable
@@ -39,7 +47,7 @@ ddlLock::grabWrite
 
   tp: analyzedTable
 
-  <SUCCESS>
+  not if <NIP+ERROR> else <SUCCESS> then
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -47,7 +55,7 @@ ddlLock::grabWrite
 /*----------------------------------------------------------------------------*/
 : danalyze_table ( "<tableNm>" -- <R> )
 
-  tp: analyzeTable
+  tp: danalyze_table
 
   ddlLock::grabWrite
 
@@ -75,7 +83,7 @@ ddlLock::grabWrite
 
   tp: danalyzedTable
 
-  <SUCCESS>
+  not if <NIP+ERROR> else <SUCCESS> then
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -233,7 +241,6 @@ ddlLock::grabWrite
   checkIsTable not if <NIP+ERROR> exit then
 
   //"end_create_table" .
-  dup .
 
   columnVecTable
 
@@ -413,6 +420,11 @@ ddlLock::grabRead
   getTableRef not if <NIP+ERROR> exit then ( "<tableNm>" )
   task::this task.seitf@ seitf.table@ assert
 
+  // set the metadata string
+  args.metadata if
+    "(partition INTEGER, data VARCHAR)" metadata!
+  then
+
   // get a select cursor
   selectTable ( "^selCursor" )
 
@@ -552,6 +564,13 @@ ddlLock::grabWrite
 
   sizeTable ( "<size>" )
 
+  args.metadata if
+    "(size INTEGER)" metadata!
+    "row: (" swap str.cat
+    ")\n" str.cat
+    1 task::this task.seitf@ seitf.rowsProcessed
+  then
+
   // pop table folder
   popTable
 
@@ -563,21 +582,24 @@ ddlLock::grabWrite
 /*----------------------------------------------------------------------------*/
 : size_tables (  )
 
+  0 locals| count |
+
   ddlLock::grabWrite
 
   // should be in the tables folder
   checkInTables       not if <NIP+ERROR> exit then
 
-  ""
-  0 pathPick dic.lastWord dup iterate
+  args.metadata if
+    "(tableName VARCHAR, size VARCHAR)" metadata!
 
-    dup str.length if "\n" str.cat then
+    ""
+    0 pathPick dic.lastWord dup iterate
+    1 count + to count
+    "row: ('" str.cat
 
-    object@ word.name 12 str.pad str.cat
+    object@ word.name str.cat
 
-    "(" str.cat
-
-    "table " str.cat
+    "', '" str.cat
 
     // push table dictionary
     object@ word.name pushTable assert
@@ -588,15 +610,48 @@ ddlLock::grabWrite
 
     find execute
     table.space bytes.magnitude str.cat
-
-    ")" str.cat
+    "')" str.cat
 
     // pop table dictionary
     popTable
 
+    "\n" str.cat
+
     object@ word.prev object!
 
-  next
+    next
+    count task::this task.seitf@ seitf.rowsProcessed
+  else
+    ""
+    0 pathPick dic.lastWord dup iterate
+
+      dup str.length if "\n" str.cat then
+
+      object@ word.name 12 str.pad str.cat
+
+      "(" str.cat
+
+      "table " str.cat
+
+      // push table dictionary
+      object@ word.name pushTable assert
+
+      // check it is a table
+      object@ word.name
+      checkIsTable  not if <NIP+ERROR> exit then
+
+      find execute
+      table.space bytes.magnitude str.cat
+
+      ")" str.cat
+
+      // pop table dictionary
+      popTable
+
+      object@ word.prev object!
+
+    next
+  then
 
   <SUCCESS>
 ;

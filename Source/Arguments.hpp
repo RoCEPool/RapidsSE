@@ -41,6 +41,7 @@ namespace StorageEngine
     s256 m_sFolder;     // working folder
     bool m_bHugePages;  // to use huge pages
     bool m_bProgress;   // print initialisation progress
+    bool m_bPromptDisplay; // display the prompt
     bool m_bRestart;    // restart if system already started
     bool m_bTouch;      // touch all shm pages during region create 
     bool m_bTracing;    // tracing
@@ -48,6 +49,7 @@ namespace StorageEngine
     bool m_bVerbose;    // print extra stuff
     bool m_bWelcome;    // print banner
     i8   m_iSleep;      // sleep period for yield (temporary)
+    bool  m_bMetadata;  // print metadata information
     bool  m_bMunged;    // load munged words
     bool  m_bKillPrev;  // kill previous se's (temporary)
     bool  m_bDontFree;  // dont actually free objects back to heap

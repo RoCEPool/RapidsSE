@@ -362,7 +362,7 @@ tp: loadIndexes
   //
   assert::stack_2
 
-  0 0 0 locals| indexBuffer entry indexPtr indexNm lower |
+  0 0 0 0 locals| rowCount indexBuffer entry indexPtr indexNm lower |
 
   // increment query count
   queryCount ++
@@ -374,10 +374,19 @@ tp: loadIndexes
   indexNm find execute ( index^ )
   to indexPtr
 
+  args.metadata if
+    metadata@ "metadata: %v\n" str.format .put
+  then
+
   // for each slot
   grid.slots 0
   do
-    I "Partition: %v" str.format .
+    args.metadata not if
+      I grid::toPartition "Partition: %v" str.format .
+    then
+
+    // put the partition in this tasks seitf
+    I task::this task.seitf@ seitf.partition!
 
     // get the indexBuffer at the lowerBound
     lower indexPtr index.buffer ( indexBuffer )
@@ -395,7 +404,14 @@ tp: loadIndexes
 
         // check if entry is null ?
         entry if
-          entry entry.row row.string .
+          args.metadata if
+            entry entry.row row.string
+            I grid::toPartition
+            "row: (%v '%v')\n" str.format .put
+          else
+            entry entry.row row.string .
+          then
+          1 rowCount + to rowCount
           1
         else
           // null entry means done with this partition
@@ -409,7 +425,11 @@ tp: loadIndexes
   // pop indexes
   popIndexes
 
-  "ALL DONE" .
+  args.metadata if
+    rowCount task::this task.seitf@ seitf.rowsProcessed
+  else
+    "rows selected"  rowCount "%v %v" str.format .
+  then
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -458,7 +478,8 @@ tp: loadIndexes
 /*----------------------------------------------------------------------------*/
 : rangeSelectIndex ( "<upper>" "<lower>" "<index>" --  )
 
-"tp: rangeSelectIndex" .
+  tp: rangeSelectIndex
+
   //
   // execution context:
   //   this task will have a seitf
@@ -466,7 +487,7 @@ tp: loadIndexes
   //
   assert::stack_3
 
-  0 0 0 locals| indexBuffer entry indexPtr indexNm lower upper |
+  0 0 0 0 locals| rowCount indexBuffer entry indexPtr indexNm lower upper |
 
   // increment query count
   queryCount ++
@@ -478,10 +499,20 @@ tp: loadIndexes
   indexNm find execute ( index^ )
   to indexPtr
 
+  args.metadata if
+    metadata@ "metadata: %v\n" str.format .put
+  then
+
   // for each slot
   grid.slots 0
   do
-    I "Partition: %v" str.format .
+
+    args.metadata not if
+      I grid::toPartition "Partition: %v" str.format .
+    then
+
+    // put the partition in this tasks seitf
+    I task::this task.seitf@ seitf.partition!
 
     // get the indexBuffer at the lowerBound
     lower indexPtr index.buffer ( indexBuffer )
@@ -502,9 +533,17 @@ tp: loadIndexes
         // check against upper bound
         upper entry indexPtr index.upper
         if
-          entry entry.row row.string .
+          args.metadata if
+            entry entry.row row.string
+            I grid::toPartition
+            "row: (%v '%v')\n" str.format .put
+          else
+            entry entry.row row.string .
+          then
+          1 rowCount + to rowCount
           1
         else
+          0 to entry
           0
         then
       else
@@ -518,7 +557,11 @@ tp: loadIndexes
   // pop indexes
   popIndexes
 
-  "ALL DONE" .
+  args.metadata if
+    rowCount task::this task.seitf@ seitf.rowsProcessed
+  else
+    "rows selected"  rowCount "%v %v" str.format .
+  then
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -593,7 +636,6 @@ tp: loadIndexes
 /*----------------------------------------------------------------------------*/
 : upperSelectIndex ( "<upper>" "<index>" --  )
 
-//traceOn
   tp: upperSelectIndex
   //
   // execution context:
@@ -602,7 +644,7 @@ tp: loadIndexes
   //
   assert::stack_2
 
-  0 0 0 locals| indexBuffer entry indexPtr indexNm upper |
+  0 0 0 0 locals| rowCount indexBuffer entry indexPtr indexNm upper |
 
   // increment query count
   queryCount ++
@@ -614,10 +656,20 @@ tp: loadIndexes
   indexNm find execute ( index^ )
   to indexPtr
 
+  args.metadata if
+    metadata@ "metadata: %v\n" str.format .put
+  then
+
   // for each slot
   grid.slots 0
   do
-    I "Partition: %v" str.format .
+
+    args.metadata not if
+      I grid::toPartition "Partition: %v" str.format .
+    then
+
+    // put the partition in this tasks seitf
+    I task::this task.seitf@ seitf.partition!
 
     // get the first indexBuffer
     indexPtr index.positionFirst ( indexBuffer )
@@ -638,15 +690,24 @@ tp: loadIndexes
         // check against upper bound
         upper entry indexPtr index.upper
         if
-          entry entry.row row.string .
+
+          args.metadata if
+            entry entry.row row.string
+            I grid::toPartition
+            "row: (%v '%v')\n" str.format .put
+          else
+            entry entry.row row.string .
+          then
+
+          1 rowCount + to rowCount
           1
         else
+          0 to entry
           0
         then
       else
        0
       then
-
 
     repeat
 
@@ -655,8 +716,11 @@ tp: loadIndexes
   // pop indexes
   popIndexes
 
-  "ALL DONE" .
-//traceOff
+  args.metadata if
+    rowCount task::this task.seitf@ seitf.rowsProcessed
+  else
+    "rows selected"  rowCount "%v %v" str.format .
+  then
 ;
 
 
