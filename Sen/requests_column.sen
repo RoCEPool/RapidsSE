@@ -54,7 +54,7 @@
   checkIsTable  not if <NIP+ERROR> exit then
 
   args.metadata if
-    "(columnDefinition VARCHAR)" metaData
+    "(columnDefinition VARCHAR)" metadata!
   then
 
   listColumns
@@ -91,7 +91,7 @@
   then
 
   args.metadata if
-    "(columnName VARCHAR, columnType VARCHAR)" metaData
+    "(columnName VARCHAR, columnType VARCHAR)" metadata!
   then
 
   indexNm listIndexColumns

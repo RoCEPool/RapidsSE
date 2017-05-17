@@ -79,7 +79,7 @@ tp: gettingSpace
 
   args.metadata if
     "(nodeName VARCHAR, poolSize STRING, inUse VARCHAR, free VARCHAR, freePct VARCHAR)"
-    metaData
+    metadata!
   then
 
   get_space ( str )

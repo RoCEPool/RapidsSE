@@ -41,7 +41,8 @@ void Task::vAddPrimitives_SEitf(void)
   vAddPrimitive("seitf.indexBuffer@"_Str,     &vSEitfIndexBufferFetch, false);
   vAddPrimitive("seitf.indexBuffer!"_Str,     &vSEitfIndexBufferStore, false);
   vAddPrimitive("seitf.indexRef"_Str,         &vSEitfIndexRef,         false);
-  vAddPrimitive("seitf.metaData"_Str,         &vSEitfMetaData,         false);
+  vAddPrimitive("seitf.metadata@"_Str,        &vSEitfMetadataFetch,    false);
+  vAddPrimitive("seitf.metadata!"_Str,        &vSEitfMetadataStore,    false);
   vAddPrimitive("seitf.partition@"_Str,       &vSEitfPartitionFetch,   false);
   vAddPrimitive("seitf.partition!"_Str,       &vSEitfPartitionStore,   false);
   vAddPrimitive("seitf.pid"_Str,              &vSEitfPid,              false);
@@ -248,22 +249,44 @@ void Task::vSEitfIndexRef(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* seitf.metaData -- store metadata in SE interface                           */
+/* seitf.metadata@ -- fetch metadata in SE interface                          */
 /*----------------------------------------------------------------------------*/
-void Task::vSEitfMetaData(NNP_Task nnpTask)
+void Task::vSEitfMetadataFetch(NNP_Task nnpTask)
 {
-  ENTRY("seitf.metaData"_Str);
+  ENTRY("vSEitfMetadataFetch"_Str);
   
   Object* pPtrSEitf;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitf) )
-    THROW_INVALID_DSTACK("seitf.metaData"_Str);
+    THROW_INVALID_DSTACK("seitf.metadata@"_Str);
+  
+  SEitf* pSEitf = _pSEitf(pPtrSEitf);
+  ASSERT(CN_SEITF == pSEitf->eClass());
+  
+  s256 sMetadata;
+  
+  sMetadata = pSEitf->m_sMetadata;
+  nnpTask->m_pDataStack->vPushS256(sMetadata);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* seitf.metadata! -- store metadata in SE interface                          */
+/*----------------------------------------------------------------------------*/
+void Task::vSEitfMetadataStore(NNP_Task nnpTask)
+{
+  ENTRY("vSEitfMetadataStore"_Str);
+  
+  Object* pPtrSEitf;
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitf) )
+    THROW_INVALID_DSTACK("seitf.metadata!"_Str);
   
   SEitf* pSEitf = _pSEitf(pPtrSEitf);
   ASSERT(CN_SEITF == pSEitf->eClass());
   
   s256 sMetadata;
   if ( ! nnpTask->m_pDataStack->bPop(sMetadata) )
-    THROW_INVALID_DSTACK("seitf.metaData"_Str);
+    THROW_INVALID_DSTACK("seitf.metadata@"_Str);
   
   pSEitf->m_sMetadata = sMetadata;
   

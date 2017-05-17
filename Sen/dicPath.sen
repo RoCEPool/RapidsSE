@@ -116,7 +116,7 @@
   0 locals| count |
 
   args.metadata if
-    "(name VARCHAR)" metaData
+    "(name VARCHAR)" metadata!
     ""                              // initial contents string
     0 pathPick dic.lastWord dup
     iterate                         // setup iteration of words

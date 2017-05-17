@@ -374,10 +374,16 @@ tp: loadIndexes
   indexNm find execute ( index^ )
   to indexPtr
 
+  args.metadata if
+    metadata@ "metadata: %v\n" str.format .put
+  then
+
   // for each slot
   grid.slots 0
   do
-    I "Partition: %v" str.format .
+    args.metadata not if
+      I "Partition: %v" str.format .
+    then
 
     // put the partition in this tasks seitf
     I task::this task.seitf@ seitf.partition!
@@ -398,7 +404,11 @@ tp: loadIndexes
 
         // check if entry is null ?
         entry if
-          entry entry.row row.string .
+          args.metadata if
+            entry entry.row row.string I "row: (%v '%v')\n" str.format .put
+          else
+            entry entry.row row.string .
+          then
           1 rowCount + to rowCount
           1
         else
@@ -413,7 +423,11 @@ tp: loadIndexes
   // pop indexes
   popIndexes
 
-  "rows selected"  rowCount "%v %v" str.format .
+  args.metadata if
+    rowCount task::this task.seitf@ seitf.rowsProcessed
+  else
+    "rows selected"  rowCount "%v %v" str.format .
+  then
 ;
 
 /*----------------------------------------------------------------------------*/

@@ -31,7 +31,7 @@ ddlLock::grabWrite
 
   args.metadata if
     "(nodeName VARCHAR, partition INTEGER, strands INTEGER, buffers INTEGER, rowCount INTEGER)"
-      metaData
+      metadata!
   then
 
   analyzeTable ( )
@@ -422,7 +422,7 @@ ddlLock::grabRead
 
   // set the metadata string
   args.metadata if
-    "(partition INTEGER, data VARCHAR)" metaData
+    "(partition INTEGER, data VARCHAR)" metadata!
   then
 
   // get a select cursor
@@ -565,7 +565,7 @@ ddlLock::grabWrite
   sizeTable ( "<size>" )
 
   args.metadata if
-    "(size INTEGER)" metaData
+    "(size INTEGER)" metadata!
     "row: (" swap str.cat
     ")\n" str.cat
     1 task::this task.seitf@ seitf.rowsProcessed
@@ -590,7 +590,7 @@ ddlLock::grabWrite
   checkInTables       not if <NIP+ERROR> exit then
 
   args.metadata if
-    "(tableName VARCHAR, size VARCHAR)" metaData
+    "(tableName VARCHAR, size VARCHAR)" metadata!
 
     ""
     0 pathPick dic.lastWord dup iterate

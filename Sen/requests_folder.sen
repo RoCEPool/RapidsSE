@@ -111,7 +111,7 @@ tp: droppedDic
   0 locals| count |
 
   args.metadata if
-    "(name VARCHAR, type VARCHAR)" metaData
+    "(name VARCHAR, type VARCHAR)" metadata!
     ""
     0 pathPick dic.lastWord dup iterate
     //dup str.length if "\n" str.cat then
@@ -271,7 +271,7 @@ tp: lf
 : pwf
 
   args.metadata if
-    "(path VARCHAR)" metaData
+    "(path VARCHAR)" metadata!
     "('/"
     pathDepth 0 do
     pathDepth 1 - I -

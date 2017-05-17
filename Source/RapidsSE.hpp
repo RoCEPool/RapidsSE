@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-#define RAPIDSSE_VERSION_STRING "0.2.2"
+#define RAPIDSSE_VERSION_STRING "0.3.1"
 
 namespace StorageEngine
 {
