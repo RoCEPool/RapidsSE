@@ -528,7 +528,7 @@ bool IndexBuffer::bVerify(void)
     if ( ! pEntryA )
       return true;
     
-    if (pEntryA->nOffsets() < nLevel)
+    if (pEntryA->nOffsets() < (u8)nLevel)
       return true;
     
     Entry* pEntryB = aRightEntry(pEntryA, nLevel);
@@ -796,7 +796,7 @@ void IndexBuffer::vReplace(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp)
   // fix the right offsets in the head
   Entry* pHead = aHead();
   
-  for (i8 i = 0; i < pHead->nOffsets(); i++) {
+  for (u8 i = 0; i < pHead->nOffsets(); i++) {
     
     // here we adjust the iRightOffset if offset is after oldEntry
     i8 iOldEntrySize = pFoundEntry->nSize();
@@ -1162,7 +1162,7 @@ Entry* IndexBuffer::aRightEntry(Entry* aEntry, i8 iLevel)
   }
   else {
     
-    i8 iOffset = iLevel - 1;
+    u8 iOffset = iLevel - 1;
     ASSERT(iOffset >= 0 && iOffset < aEntry->nOffsets());
     
     // for levels 1 & 2 the right entry is m_xWsp + rightOffset[iRight]

@@ -122,7 +122,7 @@ void EntrySeq::vContentDump(void)
          iKey
          );
   
-  for (i8 iIndex=0; iIndex< m_nLevels - 1; iIndex++) {
+  for (u8 iIndex=0; iIndex< m_nLevels - 1; iIndex++) {
     vTrace("L%lld: %lld "_Str,
            iIndex+1,
            uRight(iIndex));
