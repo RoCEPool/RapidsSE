@@ -15,7 +15,7 @@ namespace DBobjects
   static const i8 C_FLAT_LEVELS  = 3;                        // number of levels
   static const i8 C_FLAT_OFFSETS = C_FLAT_LEVELS - 1;        // number of offsets
   static const i8 C_FLAT_FREQ    = 2;
-  static const i8 C_NIL_OFFSET   = 0xFFFFFFFFFFFFFFFF;
+  static const u8 C_NIL_OFFSET   = 0xFFFFFFFFFFFFFFFF;
 }
 
 using namespace DBobjects;
