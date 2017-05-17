@@ -30,7 +30,7 @@ ddlLock::grabWrite
   tp ( "<tableNm>" )
 
   args.metadata if
-    "(nodeName VARCHAR, paritionNumber INTEGER, strands INTEGER, buffers INTEGER, rowCount INTEGER)"
+    "(nodeName VARCHAR, partition INTEGER, strands INTEGER, buffers INTEGER, rowCount INTEGER)"
       metaData
   then
 
@@ -422,7 +422,7 @@ ddlLock::grabRead
 
   // set the metadata string
   args.metadata if
-    "(partition VARCHAR, data VARCHAR)" metaData
+    "(partition INTEGER, data VARCHAR)" metaData
   then
 
   // get a select cursor

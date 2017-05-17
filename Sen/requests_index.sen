@@ -34,7 +34,7 @@ timer: idxSelectTimer
   then
 
   args.metadata if
-    "(nodeName VARCHAR, paritionNumber INTEGER, bufferNo INTEGER, bufferLevel INTEGER, entries INTEGER)"
+    "(nodeName VARCHAR, partition INTEGER, bufferNo INTEGER, bufferLevel INTEGER, entries INTEGER)"
       metaData
   then
 
