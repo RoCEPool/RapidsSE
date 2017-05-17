@@ -382,7 +382,7 @@ tp: loadIndexes
   grid.slots 0
   do
     args.metadata not if
-      I "Partition: %v" str.format .
+      I grid::toPartition "Partition: %v" str.format .
     then
 
     // put the partition in this tasks seitf
@@ -405,7 +405,9 @@ tp: loadIndexes
         // check if entry is null ?
         entry if
           args.metadata if
-            entry entry.row row.string I "row: (%v '%v')\n" str.format .put
+            entry entry.row row.string
+            I grid::toPartition
+            "row: (%v '%v')\n" str.format .put
           else
             entry entry.row row.string .
           then
@@ -476,7 +478,8 @@ tp: loadIndexes
 /*----------------------------------------------------------------------------*/
 : rangeSelectIndex ( "<upper>" "<lower>" "<index>" --  )
 
-"tp: rangeSelectIndex" .
+  tp: rangeSelectIndex
+
   //
   // execution context:
   //   this task will have a seitf
@@ -505,7 +508,7 @@ tp: loadIndexes
   do
 
     args.metadata not if
-      I "Partition: %v" str.format .
+      I grid::toPartition "Partition: %v" str.format .
     then
 
     // put the partition in this tasks seitf
@@ -531,7 +534,9 @@ tp: loadIndexes
         upper entry indexPtr index.upper
         if
           args.metadata if
-            entry entry.row row.string I "row: (%v '%v')\n" str.format .put
+            entry entry.row row.string
+            I grid::toPartition
+            "row: (%v '%v')\n" str.format .put
           else
             entry entry.row row.string .
           then
@@ -660,7 +665,7 @@ tp: loadIndexes
   do
 
     args.metadata not if
-      I "Partition: %v" str.format .
+      I grid::toPartition "Partition: %v" str.format .
     then
 
     // put the partition in this tasks seitf
@@ -687,7 +692,9 @@ tp: loadIndexes
         if
 
           args.metadata if
-            entry entry.row row.string I "row: (%v '%v')\n" str.format .put
+            entry entry.row row.string
+            I grid::toPartition
+            "row: (%v '%v')\n" str.format .put
           else
             entry entry.row row.string .
           then
