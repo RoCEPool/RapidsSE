@@ -799,12 +799,12 @@ void IndexBuffer::vReplace(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp)
   for (u8 i = 0; i < pHead->nOffsets(); i++) {
     
     // here we adjust the iRightOffset if offset is after oldEntry
-    u8 uOldEntrySize = pFoundEntry->nSize();
-    u8 uRightOffset = pHead->uRightOffset(i);
+    i8 iOldEntrySize = pFoundEntry->nSize();
+    i8 iRightOffset = pHead->uRightOffset(i);
     nDifference = iOldKeySize - iNewKeySize;
     
-    if ( uRightOffset != C_NIL_OFFSET) {
-      if (uRightOffset - nDifference >= uOldEntrySize) {
+    if ( iRightOffset != C_NIL_OFFSET) {
+      if (iRightOffset - nDifference >= iOldEntrySize) {
         pHead->vRightOffset(i,pHead->uRightOffset(i) - nDifference);
       }
     }
@@ -839,29 +839,29 @@ void IndexBuffer::vFixRevise(Entry** ppReviseVec, Entry* pNewEntry)
     i8 iLevel = iOffset + 1;
     
     // get the reviseVector's rightOffset at this level
-    u8 uReviseRightOffset = ppReviseVec[iLevel]->uRightOffset(iOffset);
+    i8 iReviseRightOffset = ppReviseVec[iLevel]->uRightOffset(iOffset);
     
     // if C_NIL_OFFSET, nothing to revise
-    if (uReviseRightOffset == C_NIL_OFFSET )
+    if (iReviseRightOffset == C_NIL_OFFSET )
       continue;
     
     i8 iReviseEntryOffset = iToOffset(ppReviseVec[iLevel]);
     i8 iReviseEntrySize = ppReviseVec[iLevel]->nSize();
 
     // is newEntry added between the the reviseEntry and reviseOffset ?
-    if (iNewEntryOffset <= iReviseEntryOffset + iReviseEntrySize + uReviseRightOffset) {
+    if (iNewEntryOffset <= iReviseEntryOffset + iReviseEntrySize + iReviseRightOffset) {
       
       // no of offsets of reviseVector entry is >= no of new entry offsets
       if (iOffset >= nEntryOffsets) {
         // adjust the reviseVector offset with the newEntrySize
-        ppReviseVec[iLevel]->vRightOffset(iOffset,uReviseRightOffset + nNewEntrySize);
+        ppReviseVec[iLevel]->vRightOffset(iOffset,iReviseRightOffset + nNewEntrySize);
       }
       else {
         // no of offsets of reviseVector entry is >= no of new entry offsets
         i8 nSize = iNewEntryOffset - (iReviseEntrySize + iReviseEntryOffset);
         
         // adjust the reviseVector to point to the newEntry
-        ppReviseVec[iLevel]->vRightOffset(iOffset,uReviseRightOffset - nSize);
+        ppReviseVec[iLevel]->vRightOffset(iOffset,iReviseRightOffset - nSize);
       }
     }
 
@@ -1167,11 +1167,11 @@ Entry* IndexBuffer::aRightEntry(Entry* aEntry, i8 iLevel)
     
     // for levels 1 & 2 the right entry is m_xWsp + rightOffset[iRight]
     i8 iBytes = aEntry->nSize();
-    u8 uRightOffset = aEntry->uRightOffset(iOffset);
-    if (C_NIL_OFFSET == uRightOffset)
+    i8 iRightOffset = aEntry->uRightOffset(iOffset);
+    if (C_NIL_OFFSET == iRightOffset)
       aRightEntry = nullptr;
     else
-      aRightEntry = pAdd<Entry*>(aEntry,uRightOffset+iBytes);
+      aRightEntry = pAdd<Entry*>(aEntry,iRightOffset+iBytes);
   }
  
   ASSERT( ! aRightEntry ||
