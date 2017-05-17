@@ -487,9 +487,6 @@ tp: loadIndexes
   do
     I "Partition: %v" str.format .
 
-"ENTRY" .
-entry .
-
     // put the partition in this tasks seitf
     I task::this task.seitf@ seitf.partition!
 
@@ -656,12 +653,12 @@ entry .
           1 rowCount + to rowCount
           1
         else
+          0 to entry
           0
         then
       else
        0
       then
-
 
     repeat
 
