@@ -12,7 +12,7 @@
   // r0 ^file
 
   r0 file.path! OPEN_WRITE r0 file.open
-  if "file open!" . else "file not opened!" . rdrop drop EC_INVALID_FILE false exit then
+  not if rdrop drop EC_INVALID_FILE false exit then
 
   "__sel_cursor" find dup if else
     drop "__sel_cursor" :selCursor
@@ -70,7 +70,7 @@ traceoff
 
   export
   if
-    "exported!" . true
+    true
   else
     false
   then

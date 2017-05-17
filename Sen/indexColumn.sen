@@ -126,16 +126,25 @@
   0 locals| indexCols indexPtr |
   indexPtr index.columnCount to indexCols
 
-  ""                             // initial ls string
-  indexCols 0 do
-    I indexPtr index.columnType
-    I indexPtr index.columnName
-    "%v %v " str.format
-    I 1 + indexCols < if
-      swap ", " str.cat
-    then
-    str.cat
-  loop
+  args.metadata if
+    indexCols 0 do
+      I indexPtr index.columnType
+      I indexPtr index.columnName
+      "row: ('%v', %v)\n" str.format
+    loop
+    indexCols task::this task.seitf@ seitf.rowsProcessed
+  else
+    ""                             // initial ls string
+    indexCols 0 do
+      I indexPtr index.columnType
+      I indexPtr index.columnName
+      "%v %v " str.format
+      I 1 + indexCols < if
+        swap ", " str.cat
+      then
+      str.cat
+    loop
+  then
 
 ;
 

@@ -90,6 +90,10 @@
     popIndexes popTable assertInTables <NIP+ERROR> exit
   then
 
+  args.metadata if
+    "(columnName VARCHAR, columnType VARCHAR)" metaData
+  then
+
   indexNm listIndexColumns
 
   // pop indexes folder
