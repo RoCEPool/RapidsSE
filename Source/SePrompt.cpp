@@ -47,16 +47,18 @@ SePrompt::SePrompt(void)
   
   m_bContinue = true;
   
-  m_sPrompt.vSprint("[N%lld %lld] se %s%c> "_Str,
-                    gpGrid->iThisNode(),
-                    Process::iGetPid(),
-                    RAPIDSSE_VERSION_STRING,
-#ifdef _DEBUG
-                    'd'
-#else
-                    'r'
-#endif
-                    );
+  if (gxArguments.m_bPromptDisplay) {
+    m_sPrompt.vSprint("[N%lld %lld] se %s%c> "_Str,
+                      gpGrid->iThisNode(),
+                      Process::iGetPid(),
+                      RAPIDSSE_VERSION_STRING,
+      #ifdef _DEBUG
+                      'd'
+      #else
+                      'r'
+      #endif
+                      );
+  }
   
   m_bEcho   = false;
   

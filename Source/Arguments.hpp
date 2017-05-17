@@ -41,6 +41,7 @@ namespace StorageEngine
     s256 m_sFolder;     // working folder
     bool m_bHugePages;  // to use huge pages
     bool m_bProgress;   // print initialisation progress
+    bool m_bPromptDisplay; // display the prompt
     bool m_bRestart;    // restart if system already started
     bool m_bTouch;      // touch all shm pages during region create 
     bool m_bTracing;    // tracing
