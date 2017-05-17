@@ -385,13 +385,10 @@ ENTRY("vDirPathSet"_Str);
   
   Dir* pDir = _pDir(pPtrDir);
   
-  ValWsp xWspPath;
-
-  if ( ! nnpTask->m_pDataStack->bPop(xWspPath) )
-    THROW_INVALID_DSTACK("dir.path!"_Str);
-  
   s256 sPath;
-  sPath = _pStrVal(&xWspPath);
+
+  if ( ! nnpTask->m_pDataStack->bPop(sPath) )
+    THROW_INVALID_DSTACK("dir.path!"_Str);
   
   pDir->vPath(sPath);
   
