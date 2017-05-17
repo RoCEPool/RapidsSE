@@ -62,7 +62,7 @@ lf
 //print "\nSelecting rows from supplier (idx2) where S_NAME >= 'Supplier#000009900' & <= 'Supplier#000001900'...\n"
 //rgeselidx supplier idx2 "Supplier#000009900" "Supplier#000001900"
 
-dumpidx supplier idx3
+//dumpidx supplier idx3
 
 //print "\nSelecting rows from supplier (idx3) where S_ADDRESS >= 'm' ...\n"
 //lwrselidx supplier idx3 "m"
@@ -73,10 +73,8 @@ dumpidx supplier idx3
 //print "\nSelecting rows from supplier (idx3) where S_ADDRESS >= 'a' ...\n"
 //lwrselidx supplier idx3 "a"
 
-print "\nSelecting rows from supplier (idx3) where S_ADDRESS >= 'm' & <= 'q'...\n"
-rgeselidx supplier idx3 "m" "q"
-
-
+//print "\nSelecting rows from supplier (idx3) where S_ADDRESS >= 'm' & <= 'q'...\n"
+//rgeselidx supplier idx3 "m" "q"
 
 print "\nSelecting rows from supplier (idx3) where S_ADDRESS <= 'p'...\n"
 uprselidx supplier idx3 "p"

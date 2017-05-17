@@ -362,7 +362,7 @@ tp: loadIndexes
   //
   assert::stack_2
 
-  0 0 0 locals| indexBuffer entry indexPtr indexNm lower |
+  0 0 0 0 locals| rowCount indexBuffer entry indexPtr indexNm lower |
 
   // increment query count
   queryCount ++
@@ -399,6 +399,7 @@ tp: loadIndexes
         // check if entry is null ?
         entry if
           entry entry.row row.string .
+          1 rowCount + to rowCount
           1
         else
           // null entry means done with this partition
@@ -412,7 +413,7 @@ tp: loadIndexes
   // pop indexes
   popIndexes
 
-  "ALL DONE" .
+  "rows selected"  rowCount "%v %v" str.format .
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -469,7 +470,7 @@ tp: loadIndexes
   //
   assert::stack_3
 
-  0 0 0 locals| indexBuffer entry indexPtr indexNm lower upper |
+  0 0 0 0 locals| rowCount indexBuffer entry indexPtr indexNm lower upper |
 
   // increment query count
   queryCount ++
@@ -512,6 +513,7 @@ entry .
         upper entry indexPtr index.upper
         if
           entry entry.row row.string .
+          1 rowCount + to rowCount
           1
         else
           0 to entry
@@ -528,7 +530,7 @@ entry .
   // pop indexes
   popIndexes
 
-  "ALL DONE" .
+  "rows selected"  rowCount "%v %v" str.format .
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -603,7 +605,6 @@ entry .
 /*----------------------------------------------------------------------------*/
 : upperSelectIndex ( "<upper>" "<index>" --  )
 
-//traceOn
   tp: upperSelectIndex
   //
   // execution context:
@@ -612,7 +613,7 @@ entry .
   //
   assert::stack_2
 
-  0 0 0 locals| indexBuffer entry indexPtr indexNm upper |
+  0 0 0 0 locals| rowCount indexBuffer entry indexPtr indexNm upper |
 
   // increment query count
   queryCount ++
@@ -652,6 +653,7 @@ entry .
         upper entry indexPtr index.upper
         if
           entry entry.row row.string .
+          1 rowCount + to rowCount
           1
         else
           0
@@ -668,8 +670,7 @@ entry .
   // pop indexes
   popIndexes
 
-  "ALL DONE" .
-//traceOff
+  "rows selected"  rowCount "%v %v" str.format .
 ;
 
 
