@@ -363,6 +363,11 @@ tp: range_select_index
   // pop indexes folder
   popIndexes
 
+  // set the metadata string
+  args.metadata if
+    "(partition INTEGER, data VARCHAR)" metadata!
+  then
+
   // get and inc table reference and put into task.seitf.currentTable
   getTableRef not if <NIP+ERROR> exit then
   task::this task.seitf@ seitf.table@ assert
@@ -381,9 +386,11 @@ tp: range_select_index
   popTable
   withinTables assert
 
-  idxSelectTimer timer.update
-  "select time " .put
-  idxSelectTimer timer.millisecs .put "ms" .put .\n
+  args.metadata not if
+    idxSelectTimer timer.update
+    "select time " .put
+    idxSelectTimer timer.millisecs .put "ms" .put .\n
+  then
 
   <OK>
 ;
@@ -523,6 +530,11 @@ ddlLock::grabWrite
   // pop indexes folder
   popIndexes
 
+  // set the metadata string
+  args.metadata if
+    "(partition INTEGER, data VARCHAR)" metadata!
+  then
+
   // get and inc table reference and put into task.seitf.currentTable
   getTableRef not if <NIP+ERROR> exit then
   task::this task.seitf@ seitf.table@ assert
@@ -541,9 +553,11 @@ ddlLock::grabWrite
   popTable
   withinTables assert
 
-  idxSelectTimer timer.update
-  "select time " .put
-  idxSelectTimer timer.millisecs .put "ms" .put .\n
+  args.metadata not if
+    idxSelectTimer timer.update
+    "select time " .put
+    idxSelectTimer timer.millisecs .put "ms" .put .\n
+  then
 
   <OK>
 ;
