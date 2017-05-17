@@ -24,7 +24,7 @@ void vKillPrev(void);
 /*----------------------------------------------------------------------------*/
 int main(int argc, const char* argv[])
 {
-  
+  /*
   vInfo(
          "sizeof(eCN) %lu; sizeof(bool) %lu; \n"_Str
          "sizeof(Object) %lu; sizeof(StrVal) %lu; \n"_Str
@@ -36,7 +36,7 @@ int main(int argc, const char* argv[])
          sizeof(s32),sizeof(s256),
          sizeof(Value),sizeof(IntVal),sizeof(ValWsp)
   );
-  
+  */
   Str* aRelDbg;
 #ifdef _DEBUG
   aRelDbg = "debug"_Str;
