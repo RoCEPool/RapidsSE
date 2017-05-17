@@ -379,6 +379,9 @@ tp: loadIndexes
   do
     I "Partition: %v" str.format .
 
+    // put the partition in this tasks seitf
+    I task::this task.seitf@ seitf.partition!
+
     // get the indexBuffer at the lowerBound
     lower indexPtr index.buffer ( indexBuffer )
     to indexBuffer
@@ -483,6 +486,12 @@ tp: loadIndexes
   do
     I "Partition: %v" str.format .
 
+"ENTRY" .
+entry .
+
+    // put the partition in this tasks seitf
+    I task::this task.seitf@ seitf.partition!
+
     // get the indexBuffer at the lowerBound
     lower indexPtr index.buffer ( indexBuffer )
     to indexBuffer
@@ -505,6 +514,7 @@ tp: loadIndexes
           entry entry.row row.string .
           1
         else
+          0 to entry
           0
         then
       else
@@ -618,6 +628,9 @@ tp: loadIndexes
   grid.slots 0
   do
     I "Partition: %v" str.format .
+
+    // put the partition in this tasks seitf
+    I task::this task.seitf@ seitf.partition!
 
     // get the first indexBuffer
     indexPtr index.positionFirst ( indexBuffer )

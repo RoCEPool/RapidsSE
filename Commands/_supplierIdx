@@ -53,8 +53,8 @@ lf
 //print "\nSelecting rows from supplier (idx1) where S_SUPPKEY >= 9995 & <= 1995 ...\n"
 //rgeselidx supplier idx1 9995 1995
 
-print "\nSelecting rows from supplier (idx2) where S_NAME >= 'Supplier#000009900' ...\n"
-lwrselidx supplier idx2 "Supplier#000009900"
+//print "\nSelecting rows from supplier (idx2) where S_NAME >= 'Supplier#000009900' ...\n"
+//lwrselidx supplier idx2 "Supplier#000009900"
 
 //print "\nSelecting rows from supplier (idx2) where S_NAME >= 'Supplier#000009900' & <= Supplier#000009990 ...\n"
 //rgeselidx supplier idx2 "Supplier#000009900" "Supplier#000009990"
