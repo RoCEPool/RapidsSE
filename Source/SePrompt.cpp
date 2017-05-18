@@ -864,53 +864,41 @@ void SePrompt::vHelp(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  vTrace("se temporary commands:\n"_Str);
-  vTrace("add    -- add column to table\n"_Str);
-  vTrace("gettbl -- get address of table\n"_Str);
-  vTrace("bye    -- quit se prompt\n"_Str);
-  vTrace("cd     -- change directory\n"_Str);
-  vTrace("cf     -- change folder\n"_Str);
-  vTrace("connectCluster    -- connect the cluster\n"_Str);
-  vTrace("cp     -- copy table\n"_Str);
-  vTrace("create -- create table\n"_Str);
-  vTrace("do     -- do shorthand\n"_Str);
-  vTrace("drop   -- dropTable\n"_Str);
-  vTrace("dump   -- dump table\n"_Str);
-  vTrace("ex     -- export table t\n"_Str);
-  vTrace("ld     -- load table t\n"_Str);
-  vTrace("lf     -- list folder contents\n"_Str);
-  vTrace("ls     -- list directory contents\n"_Str);
-  vTrace("lscat  -- list catalogs contents\n"_Str);
-  vTrace("lscol  -- list columns\n"_Str);
-  vTrace("lsidx  -- list indices\n"_Str);
-  vTrace("lssch  -- list schemas contents\n"_Str);
-  vTrace("lstbl  -- list tables contents\n"_Str);
-  vTrace("lsten  -- list tenants contents\n"_Str);
-  vTrace("mkcat  -- create catalog\n"_Str);
-  vTrace("mkidx  -- create index\n"_Str);
-  vTrace("mksch  -- create schema\n"_Str);
-  vTrace("mktbl  -- create table\n"_Str);
-  vTrace("mkten  -- create tenant\n"_Str);
-  vTrace("print  -- print string\n"_Str);
-  vTrace("pwf    -- print working folder\n"_Str);
-  vTrace("pwd    -- print working directory\n"_Str);
-  vTrace("rettbl -- return usage of table\n"_Str);
-  vTrace("rmcat  -- drop catalog\n"_Str);
-  vTrace("rmdic  -- drop dictionary\n"_Str);
-  vTrace("rmidx  -- drop index\n"_Str);
-  vTrace("rmsch  -- drop schema\n"_Str);
-  vTrace("rmtbl  -- drop table\n"_Str);
-  vTrace("rmten  -- drop tenant\n"_Str);
-  vTrace("rgesel -- select * from table where <range>\n"_Str);
-  vTrace("sel    -- select * from table\n"_Str);
-  vTrace("space  -- pool space\n"_Str);
-  vTrace("status -- grid status\n"_Str);
-  vTrace("sz     -- size of table\n"_Str);
-  vTrace("tpch   -- tpch shorthand\n"_Str);
-  vTrace("tr     -- truncate table\n"_Str);
-  vTrace("usesch -- use schema\n"_Str);
-  vTrace("?      -- print this help\n"_Str);
-  vTrace("help   -- print this help\n"_Str);
+  vTrace("se commands:\n"_Str);
+  vTrace("antbl      -- analyze table\n"_Str);
+  vTrace("bye        -- quit se prompt\n"_Str);
+  vTrace("cd         -- change directory\n"_Str);
+  vTrace("cf         -- change folder\n"_Str);
+  vTrace("create     -- create tenant|catalog|schema|table|index\n"_Str);
+  vTrace("dex        -- distributed export table t\n"_Str);
+  vTrace("drop       -- drop tenant|catalog|schema|table|index\n"_Str);
+  vTrace("ex         -- export table t\n"_Str);
+  vTrace("ld         -- load table t\n"_Str);
+  vTrace("lf         -- list folder contents\n"_Str);
+  vTrace("ls         -- list directory contents\n"_Str);
+  vTrace("lscat      -- list catalogs contents\n"_Str);
+  vTrace("lscol      -- list columns\n"_Str);
+  vTrace("lsidx      -- list indices\n"_Str);
+  vTrace("lsidxcol   -- list columns of indiex\n"_Str);
+  vTrace("lssch      -- list schemas contents\n"_Str);
+  vTrace("lstbl      -- list tables contents\n"_Str);
+  vTrace("lsten      -- list tenants contents\n"_Str);
+  vTrace("lwrselidx  -- lower bound select\n"_Str);
+  vTrace("print      -- print string\n"_Str);
+  vTrace("pwf        -- print working folder\n"_Str);
+  vTrace("pwd        -- print working directory\n"_Str);
+  vTrace("rgeselidx  -- range select\n"_Str);
+  vTrace("sel        -- select * from table\n"_Str);
+  vTrace("space      -- pool space\n"_Str);
+  vTrace("status     -- grid status\n"_Str);
+  vTrace("sz         -- size of table\n"_Str);
+  vTrace("tableSizes -- size of all tables\n"_Str);
+  vTrace("tr         -- truncate table\n"_Str);
+  vTrace("tridx      -- truncate table\n"_Str);
+  vTrace("uprselidx  -- upper bound select\n"_Str);
+  vTrace("usesch     -- use schema\n"_Str);
+  vTrace("?          -- print this help\n"_Str);
+  vTrace("help       -- print this help\n"_Str);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2216,11 +2204,18 @@ bool SePrompt::bPrintWorkingDir(void)
   ASSERT(m_aToken[0]->bEqual("pwd"_Str));
   
   if (xDir.bGetCurrent(sDir)) {
-    vTrace("%s"_Str, sDir.s());
+    if (gbMetadata) {
+      m_pSEitf->m_iRowsProcessed = 1;
+      m_pSEitf->m_sMetadata = "(directory VARCHAR)"_Str;
+      StrLib::vSprint(m_sResponse, "row: ('%s')\n"_Str, sDir.s());
+    }
+    else {
+      StrLib::vSprint(m_sResponse, "%s"_Str, sDir.s());
+    }
   }
   
   // clear the respnse
-  m_sResponse = ""_Str;
+  //m_sResponse = ""_Str;
   
   return true;
 }
