@@ -867,7 +867,6 @@ void SePrompt::vHelp(void)
   vTrace("se commands:\n"_Str);
   vTrace("antbl      -- analyze table\n"_Str);
   vTrace("bye        -- quit se prompt\n"_Str);
-  vTrace("cd         -- change directory\n"_Str);
   vTrace("cf         -- change folder\n"_Str);
   vTrace("create     -- create tenant|catalog|schema|table|index\n"_Str);
   vTrace("dex        -- distributed export table t\n"_Str);
@@ -886,7 +885,6 @@ void SePrompt::vHelp(void)
   vTrace("lwrselidx  -- lower bound select\n"_Str);
   vTrace("print      -- print string\n"_Str);
   vTrace("pwf        -- print working folder\n"_Str);
-  vTrace("pwd        -- print working directory\n"_Str);
   vTrace("rgeselidx  -- range select\n"_Str);
   vTrace("sel        -- select * from table\n"_Str);
   vTrace("space      -- pool space\n"_Str);
@@ -2204,18 +2202,11 @@ bool SePrompt::bPrintWorkingDir(void)
   ASSERT(m_aToken[0]->bEqual("pwd"_Str));
   
   if (xDir.bGetCurrent(sDir)) {
-    if (gbMetadata) {
-      m_pSEitf->m_iRowsProcessed = 1;
-      m_pSEitf->m_sMetadata = "(directory VARCHAR)"_Str;
-      StrLib::vSprint(m_sResponse, "row: ('%s')\n"_Str, sDir.s());
-    }
-    else {
-      StrLib::vSprint(m_sResponse, "%s"_Str, sDir.s());
-    }
+    vTrace("%s"_Str, sDir.s());
   }
   
   // clear the respnse
-  //m_sResponse = ""_Str;
+  m_sResponse = ""_Str;
   
   return true;
 }
