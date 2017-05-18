@@ -43,7 +43,6 @@ void Task::vAddPrimitives_Index(void)
   vAddPrimitive("index.populate"_Str,        &vIndexPopulate,        false);
   vAddPrimitive("index.position"_Str,        &vIndexPosition,        false);
   vAddPrimitive("index.positionFirst"_Str,   &vIndexPositionFirst,   false);
-  vAddPrimitive("index.row"_Str,             &vIndexRow,             false);
   vAddPrimitive("index.showColumnVec"_Str,   &vIndexShowColumnVec,   false);
   vAddPrimitive("index.space"_Str,           &vIndexSpace,           false);
   vAddPrimitive("index.subDic"_Str,          &vIndexSubDic,          false);
@@ -336,38 +335,6 @@ void Task::vIndexPositionFirst(NNP_Task nnpTask)
   nnpTask->m_pDataStack->vPushObject(pIndexData->pFirstBuffer());
   
   EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* index.row -- return row from entry of index                                */
-/*----------------------------------------------------------------------------*/
-void Task::vIndexRow(NNP_Task nnpTask)
-{
-  ENTRY("vIndexRow"_Str);
-  
-  Object* pPtrIndex = nullptr;
-  Object* pPtrEntry = nullptr;
-  
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrIndex) )
-    THROW_INVALID_DSTACK("index.row"_Str);
-  
-  Index* pIndex = _pIndex(pPtrIndex);
-  ASSERT(CN_INDEX == pIndex->eClass());
-  
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrEntry) )
-    THROW_INVALID_DSTACK("index.row"_Str);
-  
-  Entry* pEntry = _aEntry(pPtrEntry);
-  ASSERT(CN_ENTRY == pEntry->eClass());
-  
-  Id xId = pEntry->xId();
-  
-  Row* pRow = xId.pRow();
-  StrVal* pStrVal = reinterpret_cast<StrVal*>(pRow->pData());
-  //vTrace("Row: %s\n"_Str, pStrVal->aStr());
-  s256 sRow = pStrVal->aStr();
-  
-  nnpTask->m_pDataStack->vPushS256(sRow);
 }
 
 /*----------------------------------------------------------------------------*/

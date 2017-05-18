@@ -542,7 +542,6 @@ namespace Tasks
     static void vIndexPopulate(NNP_Task nnpTask);
     static void vIndexPosition(NNP_Task nnpTask);
     static void vIndexPositionFirst(NNP_Task nnpTask);
-    static void vIndexRow(NNP_Task nnpTask);
     static void vIndexShowColumnVec(NNP_Task nnpTask);
     static void vIndexSpace(NNP_Task nnpTask);
     static void vIndexSubDic(NNP_Task nnpTask);
