@@ -139,11 +139,13 @@ int main(int argc, const char* argv[])
     pRunTests->vRunTests();
   }
 
+  /*
   if (gxArguments.m_bStart) {
     KeyTest::vTestB();
     KeyTest::vTestA();
     KeyTest::vTest();
   }
+  */
   
   // optionally execute se> prompt
   if (gxArguments.m_bPrompt) {

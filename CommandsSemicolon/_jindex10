@@ -14,9 +14,9 @@ mksch boraySchema ;
 cf boraySchema ;
 cf tables ;
 
-pwf ;
+pwf;
 create table j10 (
-  j10_key   INTEGER NOT NULL,
+  j10_key   VARCHAR(32) NOT NULL,
   j10_name  VARCHAR(32) NOT NULL
 );
 
@@ -25,10 +25,7 @@ create index idx1 on j10 (j10_key);
 print "loading j10.tbl..." ;
 ld j10 "../JTEST/j10.csv" ;
 
-create index idx2 on j10 (j10_key);
-
-
-create index idx3 on j10 (j10_key, j10_name);
+//create index idx2 on j10 (j10_key);
 
 sel j10 ;
 

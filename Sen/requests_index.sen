@@ -178,14 +178,18 @@ tp: end_create_index
   // create the column vector of the index
   indexNm columnVecIndex
 
+  // now populate the index
+  indexNm find execute ( ^index )
+  index.populate
+
   // pop indexes folder temporarily
   popIndexes
 
-  // return teh table reference
+  // return the table reference
   returnTableRef not if <NIP+ERROR> exit then
   task::this task.seitf@ seitf.table@ not assert
 
-  // push back teh indexes folder
+  // push back the indexes folder
   pushIndexes assert
 
   assertInIndexes
@@ -241,6 +245,8 @@ ddlLock::grabRead
   CN_STRVAL assert::class_2
 
   locals| tableNm indexNm lower |
+
+lower .
 
   idxSelectTimer timer.start
 

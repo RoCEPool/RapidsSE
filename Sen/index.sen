@@ -275,10 +275,6 @@ tp: makingIndex
   // add the index in the table
   indexPtr tablePtr table.addIndex
 
-  // now populate the index
-  indexPtr ( ^index )
-  index.populate
-
   true <SUCCESS_RESULT>
 ;
 
