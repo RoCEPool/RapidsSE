@@ -114,6 +114,8 @@ private:
   
   bool bSleep(void);
   
+  bool bTokenCheck(i8 nTokens);
+  
   Footer* pFooter(void);
 };
 

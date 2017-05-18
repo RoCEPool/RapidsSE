@@ -413,6 +413,7 @@ bool SePrompt::bProcessCommand(bool bPostProcess)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // - test for echo prefix
   if (m_aToken[0]->bEqual("echo"_Str))
     vSetEcho();
@@ -425,38 +426,12 @@ bool SePrompt::bProcessCommand(bool bPostProcess)
   else
     vClearExpect();
  
-  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // - test for builtin comands
   
   if (m_aToken[0]->bEqual("?"_Str) ||
       m_aToken[0]->bEqual("help"_Str)) {
     vHelp();
-    return true;
-  }
-  
-  if (m_aToken[0]->bEqual("bye"_Str)) {
-    m_bContinue = false;
-    return true;
-  }
-  
-  if (m_aToken[0]->bEqual("sleep"_Str)) {
-    return bSleep();
-  }
-  
-  if (m_aToken[0]->bEqual("cd"_Str)) {
-    return bChangeWorkingDir();
-  }
-  
-  if (m_aToken[0]->bEqual("cf"_Str)) {
-    return bExecuteRequest();
-  }
-  
-  if (m_aToken[0]->bEqual("docol"_Str)) {
-    return bDocol();
-  }
-  
-  if (m_aToken[0]->bEqual("history"_Str)) {
-    m_xHistory.vPrint();
     return true;
   }
   
@@ -469,11 +444,35 @@ bool SePrompt::bProcessCommand(bool bPostProcess)
     if (! m_xHistory.bRecall(m_aToken,C_TOKENS))
       return true;
   }
+
+  //                                                                           a
+  if (m_aToken[0]->bEqual("antbl"_Str)) {
+    return bAnalyzeTable();
+  }
   
+  //                                                                           b
   if (m_aToken[0]->bEqual("begin"_Str)) {
     if (m_aToken[1]->bEqual("insert"_Str)) {
       return bBeginInsert();
     }
+  }
+  
+  if (m_aToken[0]->bEqual("bye"_Str)) {
+    m_bContinue = false;
+    return true;
+  }
+  
+  //                                                                           c
+  if (m_aToken[0]->bEqual("cd"_Str)) {
+    return bChangeWorkingDir();
+  }
+  
+  if (m_aToken[0]->bEqual("cf"_Str)) {
+    return bExecuteRequest();
+  }
+  
+  if (m_aToken[0]->bEqual("connectCluster"_Str)) {
+    return bConnectCluster();
   }
   
   if (m_aToken[0]->bEqual("create"_Str)) {
@@ -495,8 +494,13 @@ bool SePrompt::bProcessCommand(bool bPostProcess)
     }
   }
   
-  if (m_aToken[0]->bEqual("connectCluster"_Str)) {
-    return bConnectCluster();
+  //                                                                           d
+  if (m_aToken[0]->bEqual("dantbl"_Str)) {
+    return bDanalyzeTable();
+  }
+  
+  if (m_aToken[0]->bEqual("docol"_Str)) {
+    return bDocol();
   }
   
   if (m_aToken[0]->bEqual("drop"_Str)) {
@@ -517,58 +521,88 @@ bool SePrompt::bProcessCommand(bool bPostProcess)
     }
   }
   
+  //                                                                           e
   if (m_aToken[0]->bEqual("end"_Str)) {
     if (m_aToken[1]->bEqual("insert"_Str)) {
       return bEndInsert();
     }
   }
   
-  if (m_aToken[0]->bEqual("antbl"_Str)) {
-    return bAnalyzeTable();
-  }
-  
-  if (m_aToken[0]->bEqual("dantbl"_Str)) {
-    return bDanalyzeTable();
-  }
-  
-  if (m_aToken[0]->bEqual("pwd"_Str)) {
-    return bPrintWorkingDir();
-  }
-  
-  if (m_aToken[0]->bEqual("ls"_Str)) {
-    return bListDir();
-  }
-  
+  //                                                                           f
   if (m_aToken[0]->bEqual("first"_Str)) {
     return bGetFirstRow();
   }
   
+  //                                                                           g
+  //                                                                           h
+  if (m_aToken[0]->bEqual("history"_Str)) {
+    m_xHistory.vPrint();
+    return true;
+  }
+  
+  //                                                                           i
   if (m_aToken[0]->bEqual("insert"_Str)) {
     if (m_aToken[1]->bEqual("row"_Str)) {
       return bInsertRow();
     }
   }
   
+  //                                                                           j
+  //                                                                           k
+  //                                                                           l
+  if (m_aToken[0]->bEqual("ls"_Str)) {
+    return bListDir();
+  }
+  
+  //                                                                           m
+  //                                                                           n
   if (m_aToken[0]->bEqual("next"_Str)) {
     return bGetNextRow();
   }
-
+  
+  //                                                                           o
   if (m_aToken[0]->bEqual("object"_Str)) {
     return bObject();
+  }
+  
+  //                                                                           p
+  if (m_aToken[0]->bEqual("pwd"_Str)) {
+    if ( ! bTokenCheck(1) )
+      return false;
+    return bPrintWorkingDir();
+  }
+  
+  //                                                                           q
+  //                                                                           r
+  //                                                                           s
+  if (m_aToken[0]->bEqual("sleep"_Str)) {
+    return bSleep();
   }
   
   if (m_aToken[0]->bEqual("space"_Str)) {
     return bPoolSpace();
   }
 
+  //                                                                           t
+  //                                                                           u
   if (m_aToken[0]->bEqual("use"_Str)) {
     if (m_aToken[1]->bEqual("schema"_Str)) {
       return bUseSchema();
     }
   }
   
+  //                                                                           v
+  //                                                                           w
+  //                                                                           x
+  //                                                                           y
+  //                                                                           z
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - append to history
   m_xHistory.vAppend(m_aToken);
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - test for command file
   if (bTestFile(m_aToken[0])) {
     vPushFile(m_aToken[0]);
     m_pTokeniser->vLineMode(true);
@@ -576,19 +610,22 @@ bool SePrompt::bProcessCommand(bool bPostProcess)
     return true;
   }
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // - execute seitf request
   if (! bExecuteRequest())
     return false;
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - post process requests
   if (!bPostProcess)
     return true;
   
-  // - post process requests
   if (m_aToken[0]->bEqual("sel"_Str) || m_aToken[0]->bEqual("rgesel"_Str)) {
     vIterateRows();
     return bReturnTable();
   }
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // - the following never return
   
   if (m_aToken[0]->bEqual("mon"_Str)) {
@@ -2250,6 +2287,21 @@ bool SePrompt::bUseSchema(void)
   return true;
 }
 
+/*----------------------------------------------------------------------------*/
+/* check for a specific number of tokens                                      */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bTokenCheck(i8 nTokens)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+
+  if ( ! m_aToken[nTokens]->bEqual(""_Str) ) {
+    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+    return false;
+  }
+  
+  return true;
+}
+  
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/

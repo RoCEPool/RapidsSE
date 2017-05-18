@@ -17,7 +17,7 @@ namespace Interface
     i8     m_iSlots;           // number of partition slots in each node
     i8     m_iPartition;       // which partition this seitf connects to
     
-    DicPath m_xPathStack;     // path stack
+    DicPath m_xPathStack;      // path stack
     
     Queue* m_pRequestQueue;    // request queue
     Queue* m_pResponseQueue;   // response queue
