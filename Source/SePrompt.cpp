@@ -467,13 +467,13 @@ bool SePrompt::bProcessCommand(bool bPostProcess)
     return bChangeWorkingDir();
   }
   
-  if (m_aToken[0]->bEqual("cf"_Str)) {
-    return bExecuteRequest();
-  }
+//  if (m_aToken[0]->bEqual("cf"_Str)) {
+//    return bExecuteRequest();
+//  }
   
-  if (m_aToken[0]->bEqual("connectCluster"_Str)) {
-    return bConnectCluster();
-  }
+//  if (m_aToken[0]->bEqual("connectCluster"_Str)) {
+//    return bConnectCluster();
+//  }
   
   if (m_aToken[0]->bEqual("create"_Str)) {
     
@@ -561,9 +561,9 @@ bool SePrompt::bProcessCommand(bool bPostProcess)
   }
   
   //                                                                           o
-  if (m_aToken[0]->bEqual("object"_Str)) {
-    return bObject();
-  }
+//  if (m_aToken[0]->bEqual("object"_Str)) {
+//    return bObject();
+//  }
   
   //                                                                           p
   if (m_aToken[0]->bEqual("pwd"_Str)) {
@@ -579,9 +579,9 @@ bool SePrompt::bProcessCommand(bool bPostProcess)
     return bSleep();
   }
   
-  if (m_aToken[0]->bEqual("space"_Str)) {
-    return bPoolSpace();
-  }
+//  if (m_aToken[0]->bEqual("space"_Str)) {
+//    return bPoolSpace();
+//  }
 
   //                                                                           t
   //                                                                           u
