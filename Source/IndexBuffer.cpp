@@ -426,7 +426,7 @@ IndexBuffer* IndexBuffer::pSplitBuffer(void)
   Entry* pLastEntry = pGetSplitEntry(iSplitAtEntry);
   
   // the last entry in the buffer after which the split will happen
-  //pLastEntry->vShow();
+  pLastEntry->vShow(0,m_pIndex->pIdxColVec());
   
   Entry* pReviseVec[C_FLAT_LEVELS];
   bool   bEqualTo;
@@ -445,12 +445,8 @@ IndexBuffer* IndexBuffer::pSplitBuffer(void)
   
   // Note this ASSERT fails if we have dulplicates in the table     //ALKA: TODO
   // Need to fix when we cater for non-unique indexes
-  if (pAfterEntry != pLastEntry) {
-    pAfterEntry->vShow(pAfterEntry->nOffsets(), m_pIndex->pIdxColVec());
-    pLastEntry->vShow(pLastEntry->nOffsets(), m_pIndex->pIdxColVec());
-    vDump();
-    ASSERT(0);
-  }
+  pAfterEntry->vShow(0,m_pIndex->pIdxColVec());
+  ASSERT(pAfterEntry == pLastEntry);
   
   i8 iLastEntryOffset = iToOffset(pLastEntry);
   i8 iOffsets = C_FLAT_LEVELS - 1;
@@ -518,14 +514,11 @@ bool IndexBuffer::bVerify(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
-  bool bResult = true;
-  
   // create a realtional operator array
   RelOpAry* pOpAry = new RelOpAry;
   i8 nItems = m_pIndex->pIdxColVec()->nItems();
-  
   for (i8 i=0; i < nItems; i++)
-    pOpAry->vAdd(RO_GREATER_EQUAL);
+  pOpAry->vAdd(RO_GREATER_EQUAL);
   
   // verify the entries at each level
   i8 nLevel = C_FLAT_LEVELS - 1;
@@ -533,21 +526,15 @@ bool IndexBuffer::bVerify(void)
   do {
     
     Entry* pEntryA = aHead();
-    if ( ! pEntryA ) {
-      bResult = true;
-      goto leave;
-    }
+    if ( ! pEntryA )
+      return true;
     
-    if (pEntryA->nOffsets() < (u8)nLevel) {
-      bResult = true;
-      goto leave;
-    }
-
+    if (pEntryA->nOffsets() < (u8)nLevel)
+      return true;
+    
     Entry* pEntryB = aRightEntry(pEntryA, nLevel);
-    if ( ! pEntryB ) {
-      bResult = true;
-      goto leave;
-    }
+    if ( ! pEntryB )
+      return true;
   
     while (pEntryB) {
       
@@ -556,20 +543,18 @@ bool IndexBuffer::bVerify(void)
       
       if (pEntryA != aHead()) {
         bool bGreaterEqual = pEntryB->bMatches(pEntryA->aKey(), m_pIndex->pIdxColVec(), pOpAry);
-        if ( ! bGreaterEqual ) {
-          bResult = false;
-          goto leave;
-        }
+        if ( ! bGreaterEqual )
+          return false;
       }
       
       pEntryA = pEntryB;
       pEntryB = aNextEntry(pEntryA);
     }
   } while (--nLevel >= 0 );
-
-leave:
+  
   delete pOpAry;
-  return bResult;
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -701,7 +686,6 @@ void IndexBuffer::vReplace(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp)
   // create a relational operator array
   RelOpAry* pOpAryFind = new RelOpAry;
   i8 nItems = m_pIndex->pIdxColVec()->nItems();
-  
   for (i8 i=0; i < nItems; i++)
     pOpAryFind->vAdd(RO_EQUAL);
   
@@ -747,7 +731,6 @@ void IndexBuffer::vReplace(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp)
     
     // just replace the key in the buffer
     pFoundEntry->vKey(xEntWsp);
-    delete pOpAryFind;
     return;
   }
 
@@ -1093,6 +1076,8 @@ void IndexBuffer::vNewHead(void)
 /*----------------------------------------------------------------------------*/
 /* positition to entry (optional set revise vector)                           */
 /*----------------------------------------------------------------------------*/
+#ifdef KEY_AFTER
+
 Entry* IndexBuffer::aPosition(KeyWsp& xKeyWsp, RelOpAry* pOpAryPosition, bool& bEqualTo, Entry** aReviseVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
@@ -1109,28 +1094,30 @@ Entry* IndexBuffer::aPosition(KeyWsp& xKeyWsp, RelOpAry* pOpAryPosition, bool& b
     //   ObjectInsert < ObjectNext at current level
     while (Entry* pNextEntry = aRightEntry(pCurrentEntry, iCurrentLevel)) {
       
-        //aKey->vShow(m_pIndex->pIdxColVec());
-        //pNextEntry->aKey()->vShow(m_pIndex->pIdxColVec());
-      
-        // compare the inserting object with next object
-        bool bGreaterEqual = aKey->bMatches(pNextEntry->aKey(), m_pIndex->pIdxColVec(), pOpAryPosition);
-      
-        if (bGreaterEqual) {
-            // pObjectInsert is >= pObjectNext
-            //vTrace("  %lld after %lld (level %lld)\n"_Str,
-            //       (i8)pObjectInsert,(i8)pNextEntry->uRight(),iCurrentLevel);
+      //aKey->vShow(m_pIndex->pIdxColVec());
+      //pNextEntry->aKey()->vShow(m_pIndex->pIdxColVec());
     
-           // go right one node
-            pCurrentEntry = aRightEntry(pCurrentEntry, iCurrentLevel);
-          }
-       else {
-            // pObjectInsert is < pObjectNext or pObjectNext is null
-            //vTrace("  %lld before %lld (level %lld)\n"_Str,
-            //       (i8)pObjectInsert,(i8)pNextEntry->uRight(),iCurrentLevel);
+      // compare the inserting object with next object
+      bool bAfter = aKey->bAfter(pNextEntry->aKey(), m_pIndex->pIdxColVec());
+
+      //vTrace(" %s\n"_Str,bAfter ? "after" : "before");
     
-            break;
-          }
+      if (! bAfter) {
+        // pObjectInsert is < pObjectNext or pObjectNext is null
+        
+        //vTrace("  %lld before %lld (level %lld)\n"_Str,
+        //       (i8)pObjectInsert,(i8)pNextEntry->uRight(),iCurrentLevel);
+        
+        break;
       }
+      // pObjectInsert is >= pObjectNext
+      
+      //vTrace("  %lld after %lld (level %lld)\n"_Str,
+      //       (i8)pObjectInsert,(i8)pNextEntry->uRight(),iCurrentLevel);
+
+      // go right one node
+      pCurrentEntry = aRightEntry(pCurrentEntry, iCurrentLevel);
+    }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // outer loop: now having gone right as far as we go down one single level
@@ -1148,6 +1135,63 @@ Entry* IndexBuffer::aPosition(KeyWsp& xKeyWsp, RelOpAry* pOpAryPosition, bool& b
   return pCurrentEntry;
 }
 
+#else //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Entry* IndexBuffer::aPosition(KeyWsp& xKeyWsp, RelOpAry* pOpAryPosition, bool& bEqualTo, Entry** aReviseVec)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
+  
+  // start from head at known highest level
+  Entry* pCurrentEntry = aHead();
+  i8 iCurrentLevel = C_FLAT_LEVELS - 1;
+  Key* aKey = xKeyWsp.aKey();
+  
+  do {
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // inner loop: go right a number of nodes until we find
+    //   ObjectInsert < ObjectNext at current level
+    while (Entry* pNextEntry = aRightEntry(pCurrentEntry, iCurrentLevel)) {
+      
+      //aKey->vShow(m_pIndex->pIdxColVec());
+      //pNextEntry->aKey()->vShow(m_pIndex->pIdxColVec());
+      
+      // compare the inserting object with next object
+      bool bGreaterEqual = aKey->bMatches(pNextEntry->aKey(), m_pIndex->pIdxColVec(), pOpAryPosition);
+      
+      if (bGreaterEqual) {
+        // pObjectInsert is >= pObjectNext
+        //vTrace("  %lld after %lld (level %lld)\n"_Str,
+        //       (i8)pObjectInsert,(i8)pNextEntry->uRight(),iCurrentLevel);
+        
+        // go right one node
+        pCurrentEntry = aRightEntry(pCurrentEntry, iCurrentLevel);
+      }
+      else {
+        // pObjectInsert is < pObjectNext or pObjectNext is null
+        //vTrace("  %lld before %lld (level %lld)\n"_Str,
+        //       (i8)pObjectInsert,(i8)pNextEntry->uRight(),iCurrentLevel);
+        
+        break;
+      }
+    }
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // outer loop: now having gone right as far as we go down one single level
+    
+    // first record current node as a revision point
+    if (aReviseVec)
+      aReviseVec[iCurrentLevel] = pCurrentEntry;
+    
+    // now go down one level
+    goDownLevel(iCurrentLevel);
+    
+    // and repeat till we have a complete revision vector
+  } while (iCurrentLevel >= 0);
+  
+  return pCurrentEntry;
+}
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* get right entry at given level (returns null if no right)                  */

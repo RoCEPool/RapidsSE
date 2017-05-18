@@ -364,7 +364,7 @@ bool Key::bAfter(Key* pKeyThat, IdxColVec* pIdxColVec)
     iCmp = pColumn->iCmp(aElementThis,nBytesThis,
                          aElementThat,nBytesThat);
     
-    if ( iCmp < 0)
+    if (iCmp < 0)
       return false;
     else
     if (iCmp > 0)
@@ -372,9 +372,11 @@ bool Key::bAfter(Key* pKeyThat, IdxColVec* pIdxColVec)
   }
   
   if (iCmp == 0)
-    return false;
-  else
     return true;
+  else {
+    ASSERT(0);
+    return false;
+  }
 }
 
 /*----------------------------------------------------------------------------*/

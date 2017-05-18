@@ -111,7 +111,7 @@ void Task::vIndexBuffer(NNP_Task nnpTask)
   KeyWsp xKeyWsp;
   
   // assuming non-complex key
-  ASSERT(1 == pIndex->pIdxColVec()->nItems());
+  //ASSERT(1 == pIndex->pIdxColVec()->nItems());
   
   StrVal* pStrVal = _pStrVal(xValWsp.pNestedValueSelf());
   
@@ -329,11 +329,11 @@ void Task::vIndexGetNextEntry(NNP_Task nnpTask)
   }
   
   // assert that key of the next entry is >= entry              //ALKA:TEMPORARY
-  if (pEntry && pNextEntry) {
-    Key* aEntryKey = pEntry->aKey();
-    Key* aNextEntryKey = pNextEntry->aKey();
-    ASSERT(aEntryKey->bLessEqual(aNextEntryKey,pIndexBuffer->pIndex()->pIdxColVec()));
-  }
+//  if (pEntry && pNextEntry) {
+//    Key* aEntryKey = pEntry->aKey();
+//    Key* aNextEntryKey = pNextEntry->aKey();
+//    ASSERT(aEntryKey->bLessEqual(aNextEntryKey,pIndexBuffer->pIndex()->pIdxColVec()));
+//  }
   
   nnpTask->m_pDataStack->vPushObject(pNextEntry);
   
@@ -380,7 +380,7 @@ void Task::vIndexPosition(NNP_Task nnpTask)
   KeyWsp xKeyWsp;
   
   // assuming non-complex key
-  ASSERT(1 == pIndex->pIdxColVec()->nItems());
+  //ASSERT(1 == pIndex->pIdxColVec()->nItems());
   
   StrVal* pStrVal = _pStrVal(xValWsp.pNestedValueSelf());
   
@@ -679,7 +679,7 @@ void Task::vIndexUpper(NNP_Task nnpTask)
   KeyWsp xKeyWsp;
   
   // assuming non-complex key
-  ASSERT(1 == pIndex->pIdxColVec()->nItems());
+  //ASSERT(1 == pIndex->pIdxColVec()->nItems());
   
   StrVal* pStrVal = _pStrVal(xValWsp.pNestedValueSelf());
   
