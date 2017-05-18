@@ -2,17 +2,17 @@
 /* _nationLoad - create and load TPC-H Nation table for SF1                   */
 /*============================================================================*/
 
-cf~
-cf tenants
-cf boray
-cf catalogs
-cf rapidsse
-cf schemas
+cf ~ ;
+cf tenants ;
+cf boray ;
+cf catalogs ;
+cf rapidsse ;
+cf schemas ;
 
 create schema tpchSchema;
 
-cf tpchSchema
-cf tables
+cf tpchSchema ;
+cf tables ;
 
 create table nation (
 	 N_NATIONKEY       INTEGER NOT NULL,
@@ -21,11 +21,11 @@ create table nation (
 	 N_COMMENT         VARCHAR(152)
 );
 
-print "loading nation.tbl..."
-ld nation   "/tpch/nation.tbl"
+print "loading nation.tbl..." ;
+ld nation   "/tpch/nation.tbl" ;
 
-pwf
-lf
+pwf ;
+lf ;
 
 /*============================================================================*/
 /* end                                                                        */

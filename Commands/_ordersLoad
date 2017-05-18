@@ -1,19 +1,18 @@
-_testVch
 /*============================================================================*/
 /* _ordersLoad - create and load TPC-H Orders table for SF1                   */
 /*============================================================================*/
 
-cf~
-cf tenants
-cf boray
-cf catalogs
-cf rapidsse
-cf schemas
+cf ~ ;
+cf tenants ;
+cf boray ;
+cf catalogs ;
+cf rapidsse ;
+cf schemas ;
 
 create schema tpchSchema;
 
-cf tpchSchema
-cf tables
+cf tpchSchema ;
+cf tables ;
 
 create table orders (
 	 O_ORDERKEY        INTEGER NOT NULL,
@@ -27,11 +26,11 @@ create table orders (
 	 O_COMMENT         VARCHAR(79) NOT NULL
 );
 
-print "loading orders.tbl..."
-ld orders   "/tpch/orders.tbl"
+print "loading orders.tbl..." ;
+ld orders   "/tpch/orders.tbl" ;
 
-pwf
-lf
+pwf ;
+lf ;
 
 /*============================================================================*/
 /* end                                                                        */

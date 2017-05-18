@@ -2,15 +2,15 @@
 /* _selLI -- select from lineitem table                                       */
 /*============================================================================*/
 
-cf tenants
-cf boray
-cf catalogs
-cf borayCatalog
-cf schemas
-cf boraySchema
-cf tables
+cf tenants ;
+cf boray ;
+cf catalogs ;
+cf borayCatalog ;
+cf schemas ;
+cf boraySchema ;
+cf tables ;
 
-sel lineitem
+sel lineitem ;
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

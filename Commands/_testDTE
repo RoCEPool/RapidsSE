@@ -20,38 +20,38 @@ create index idx_dte on jidxDte (jidx_dte);
 //create index idx2 on jidxDte (jidx_100);
 //create index idx3 on jidxDte (jidx_name);
 
-ld jidxDte "../JTEST/jidxDte.csv"
+ld jidxDte "../JTEST/jidxDte.csv" ;
 
-//anidx jidxDte idx_dte
-dumpidx jidxDte idx_dte
+//anidx jidxDte idx_dte ;
+dumpidx jidxDte idx_dte ;
 
 /*
-print "\nSelecting rows with key >= 3 using idx1 ...\n"
-lwrselidx jidx idx1 3
+print "\nSelecting rows with key >= 3 using idx1 ...\n" ;
+lwrselidx jidx idx1 3 ;
 
-print "\nSelecting rows with key >= 1 using idx1 ...\n"
-lwrselidx jidx idx1 1
+print "\nSelecting rows with key >= 1 using idx1 ...\n" ;
+lwrselidx jidx idx1 1 ;
 
-print "\nSelecting rows with key >= 28 using idx1 ...\n"
-lwrselidx jidx idx1 28
+print "\nSelecting rows with key >= 28 using idx1 ...\n" ;
+lwrselidx jidx idx1 28 ;
 
-print "\nSelecting rows with key >= 40 using idx1 ...\n"
-lwrselidx jidx idx1 40
+print "\nSelecting rows with key >= 40 using idx1 ...\n" ;
+lwrselidx jidx idx1 40 ;
 
-print "\nSelecting rows with key >= 45 using idx1 ...\n"
-lwrselidx jidx idx1 45
+print "\nSelecting rows with key >= 45 using idx1 ...\n" ;
+lwrselidx jidx idx1 45 ;
 
-print "\nSelecting rows with key >= 67 using idx1 ...\n"
-lwrselidx jidx idx1 67
+print "\nSelecting rows with key >= 67 using idx1 ...\n" ;
+lwrselidx jidx idx1 67 ;
 
-print "\nSelecting rows with key >= 99 using idx1 ...\n"
-lwrselidx jidx idx1 99
+print "\nSelecting rows with key >= 99 using idx1 ...\n" ;
+lwrselidx jidx idx1 99 ;
 
-print "\nSelecting rows with key >= 72 using idx1 ...\n"
-lwrselidx jidx idx1 72
+print "\nSelecting rows with key >= 72 using idx1 ...\n" ;
+lwrselidx jidx idx1 72 ;
 
-print "\nSelecting rows with key >= 180 using idx2 ...\n"
-lwrselidx jidx idx2 180
+print "\nSelecting rows with key >= 180 using idx2 ...\n" ;
+lwrselidx jidx idx2 180 ;
 */
 
 /*============================================================================*/

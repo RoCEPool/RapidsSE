@@ -1,4 +1,4 @@
-print "Creating 1000 tables"
+print "Creating 1000 tables" ;
 create schema detest;
 use schema detest;
 create table x0 (c1 integer);
@@ -1001,4 +1001,4 @@ create table x996 (c1 integer);
 create table x997 (c1 integer);
 create table x998 (c1 integer);
 create table x999 (c1 integer);
-print "Created 1000 tables"
+print "Created 1000 tables" ;

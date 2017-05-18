@@ -2,17 +2,17 @@
 /* _partsuppLoad -- create and load TPC-H PartSupp table for SF1              */
 /*============================================================================*/
 
-cf~
-cf tenants
-cf boray
-cf catalogs
-cf rapidsse
-cf schemas
+cf ~ ;
+cf tenants ;
+cf boray ;
+cf catalogs ;
+cf rapidsse ;
+cf schemas ;
 
 create schema tpchSchema;
 
-cf tpchSchema
-cf tables
+cf tpchSchema ;
+cf tables ;
 
 create table partsupp (
 	PS_PARTKEY      INTEGER NOT NULL,
@@ -22,11 +22,11 @@ create table partsupp (
 	PS_COMMENT      VARCHAR(199) NOT NULL
 );
 
-print "loading partsupp.tbl..."
-ld partsupp "/tpch/partsupp.tbl"
+print "loading partsupp.tbl..." ;
+ld partsupp "/tpch/partsupp.tbl" ;
 
-pwf
-lf
+pwf ;
+lf ;
 
 /*============================================================================*/
 /* end                                                                        */

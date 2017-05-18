@@ -4,11 +4,11 @@
 
 _startCluster
 
-sleep 5
+sleep 5 ;
 
 _partLoad
 
-docol dexPlanTest
+docol dexPlanTest ;
 
 /*============================================================================*/
 /* end                                                                        */

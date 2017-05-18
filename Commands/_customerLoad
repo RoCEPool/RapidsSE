@@ -2,17 +2,17 @@
 /* _customerLoad - create and load TPC-H Customer table for SF1               */
 /*============================================================================*/
 
-cf~
-cf tenants
-cf boray
-cf catalogs
-cf rapidsse
-cf schemas
+cf ~ ;
+cf tenants ;
+cf boray ;
+cf catalogs ;
+cf rapidsse ;
+cf schemas ;
 
 create schema tpchSchema;
 
-cf tpchSchema
-cf tables
+cf tpchSchema ;
+cf tables ;
 
 create table customer (
 	C_CUSTKEY       INTEGER NOT NULL,
@@ -25,11 +25,11 @@ create table customer (
 	C_COMMENT       VARCHAR(117) NOT NULL
 );
 
-print "loading customer.tbl..."
-ld customer "/tpch/customer.tbl"
+print "loading customer.tbl..." ;
+ld customer "/tpch/customer.tbl" ;
 
-pwf
-lf
+pwf ;
+lf ;
 
 /*============================================================================*/
 /* end                                                                        */

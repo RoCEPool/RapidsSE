@@ -2,17 +2,17 @@
 /* _regionLoad - create and load TPC-H Region table for SF1                   */
 /*============================================================================*/
 
-cf~
-cf tenants
-cf boray
-cf catalogs
-cf rapidsse
-cf schemas
+cf ~ ;
+cf tenants ;
+cf boray ;
+cf catalogs ;
+cf rapidsse ;
+cf schemas ;
 
 create schema tpchSchema;
 
-cf tpchSchema
-cf tables
+cf tpchSchema ;
+cf tables ;
 
 create table region (
 	 R_REGIONKEY       INTEGER NOT NULL,
@@ -20,11 +20,11 @@ create table region (
 	 R_COMMENT         VARCHAR(152)
 );
 
-print "loading region.tbl..."
-ld region   "/tpch/region.tbl"
+print "loading region.tbl..." ;
+ld region   "/tpch/region.tbl" ;
 
-pwf
-lf
+pwf ;
+lf ;
 
 /*============================================================================*/
 /* end                                                                        */

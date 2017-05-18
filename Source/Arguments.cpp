@@ -30,11 +30,7 @@ Arguments::Arguments(void)
   m_bTracepoint = false;
   
 #ifdef __APPLE__
-#ifdef SEMICOLON
-  m_sCommands   = "../../../../CommandsSemicolon"_Str;
-#else
   m_sCommands   = "../../../../Commands"_Str;
-#endif
   m_sSen        = "../Sen/"_Str;
 #else
   m_sCommands   = "../../Commands"_Str;

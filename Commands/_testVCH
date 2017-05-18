@@ -20,25 +20,25 @@ create index idx1 on jidxVch (jidx_key);
 create index idx2 on jidxVch (jidx_100);
 create index idx3 on jidxVch (jidx_name);
 
-ld jidxVch "../JTEST/jidx.csv"
+ld jidxVch "../JTEST/jidx.csv" ;
 
-//anidx jidxVch idx
-dumpidx jidxVch idx
+//anidx jidxVch idx ;
+dumpidx jidxVch idx ;
 
-print "\nSelecting rows with key >= 1 using idx1 ...\n"
-lwrselidx jidxVch idx1 1
+print "\nSelecting rows with key >= 1 using idx1 ...\n" ;
+lwrselidx jidxVch idx1 1 ;
 
-print "\nSelecting rows with key >= 28 using idx1 ...\n"
-lwrselidx jidxVch idx1 28
+print "\nSelecting rows with key >= 28 using idx1 ...\n" ;
+lwrselidx jidxVch idx1 28 ;
 
-print "\nSelecting rows with key >= 102 using idx2 ...\n"
-lwrselidx jidxVch idx2 "102"
+print "\nSelecting rows with key >= 102 using idx2 ...\n" ;
+lwrselidx jidxVch idx2 "102" ;
 
-print "\nSelecting rows with key >= 152 using idx2 ...\n"
-lwrselidx jidxVch idx2 "152"
+print "\nSelecting rows with key >= 152 using idx2 ...\n" ;
+lwrselidx jidxVch idx2 "152" ;
 
-print "\nSelecting rows with key >= 'nine two' using idx3 ...\n"
-lwrselidx jidxVch idx3 "nine two"
+print "\nSelecting rows with key >= 'nine two' using idx3 ...\n" ;
+lwrselidx jidxVch idx3 "nine two" ;
 
 /*============================================================================*/
 /* end                                                                        */

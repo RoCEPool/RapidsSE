@@ -2,54 +2,54 @@
 /* _mt -- memory tests (to ensure no resource leaks)                          */
 /*============================================================================*/
 
-docol epochTake
+docol epochTake ;
 
-cf ~
+cf ~ ;
 create tenant t;
-lsten
+lsten ;
 
 cf t;
 cf catalogs;
 create catalog c;
-lscat
+lscat ;
 
 cf c;
 cf schemas;
 create schema s;
-lssch
+lssch ;
 
-cf s
-cf tables
-pwf
+cf s ;
+cf tables ;
+pwf ;
 
-"Start Test One" .
+print "Start Test One"  ;
 
 create table j10 (
   j10_key   INTEGER NOT NULL,
   j10_name  VARCHAR(32) NOT NULL
 );
-lstbl
+lstbl ;
 
-lf
-lscol j10
+lf ;
+lscol j10 ;
 
-ld j10 "../JTEST/j10.csv"
+ld j10 "../JTEST/j10.csv";
 
 create index idx on j10 (j10_key);
 
-sel j10
+sel j10 ;
 
-dump j10
+dump j10 ;
 
-antbl j10
+antbl j10 ;
 
-dantbl j10
+dantbl j10 ;
 
-sz j10
+sz j10 ;
 
-tableSizes
+tableSizes ;
 
-tr j10
+tr j10 ;
 
 drop index j10.idx;
 
@@ -62,13 +62,15 @@ j10_name  VARCHAR(32) NOT NULL
 
 create index idx1 on j10 (j10_key);
 
-ld j10 "../JTEST/j10.csv"
+ld j10 "../JTEST/j10.csv";
 
-lsidx j10
+lsidx j10 ;
 
 drop index j10.idx;
 
 drop table j10;
+
+print "Start Test Two"  ;
 
 create table j10 (
 j10_key   INTEGER NOT NULL,
@@ -77,28 +79,29 @@ j10_name  VARCHAR(32) NOT NULL
 
 create index idx on j10 (j10_key);
 
-lsidxcol j10 idx
+lsidxcol j10 idx ;
 
-ld j10 "../JTEST/j10.csv"
+ld j10 "../JTEST/j10.csv" ;
 
-anidx j10 idx
+anidx j10 idx ;
 
-print "\nSelecting rows with key j10_key >= 4 using index idx1 ...\n"
-lwrselidx j10 idx1 4
+print "\nSelecting rows with key j10_key >= 4 using index idx1 ...\n" ;
+lwrselidx j10 idx1 4 ;
 
-print "\nSelecting rows with key j10_key >= 7 using index idx1 ...\n"
-lwrselidx j10 idx1 7
+print "\nSelecting rows with key j10_key >= 7 using index idx1 ...\n" ;
+lwrselidx j10 idx1 7 ;
 
-print "\nSelecting rows with key j10_key >= 4 and j10_key <= 8 using index idx1 ...\n"
-rgeselidx j10 idx1 4 8
+print "\nSelecting rows with key j10_key >= 4 and j10_key <= 8 using index idx1 ...\n" ;
+rgeselidx j10 idx1 4 8 ;
 
-print "\nSelecting rows with key j10_key >= 2 and j10_key <= 7 using index idx1 ...\n"
-rgeselidx j10 idx1 2 7
+print "\nSelecting rows with key j10_key >= 2 and j10_key <= 7 using index idx1 ...\n" ;
+rgeselidx j10 idx1 2 7 ;
 
 tridx j10 idx
 
 drop table j10;
 
+print "Start Test Three"  ;
 
 create table j10 (
   j10_key   INTEGER NOT NULL,
@@ -114,25 +117,25 @@ drop table j10;
 
 
 
-cf ..
-rf tables
+cf .. ;
+rf tables ;
 
-cf ..
+cf .. ;
 drop schema s;
 
-cf ..
-rf schemas
+cf .. ;
+rf schemas ;
 
-cf ..
+cf .. ;
 drop catalog c;
 
-cf ..
-rf catalogs
+cf .. ;
+rf catalogs ;
 
-cf ..
+cf .. ;
 drop tenant t;
 
-docol epochDump
+docol epochDump ;
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 List of command that need to be tested:

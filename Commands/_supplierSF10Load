@@ -2,17 +2,17 @@
 /* _supplierLoad - create and load TPC-H Supllier table for SF1               */
 /*============================================================================*/
 
-cf~
-cf tenants
-cf boray
-cf catalogs
-cf rapidsse
-cf schemas
+cf ~ ;
+cf tenants ;
+cf boray ;
+cf catalogs ;
+cf rapidsse ;
+cf schemas ;
 
 create schema tpchSchema;
 
-cf tpchSchema
-cf tables
+cf tpchSchema ;
+cf tables ;
 
 create table supplier (
 	 S_SUPPKEY       INTEGER NOT NULL,
@@ -24,11 +24,11 @@ create table supplier (
 	 S_COMMENT       VARCHAR(101) NOT NULL
 );
 
-print "loading supplier.tbl..."
-ld supplier "/tpchSF10/supplier.tbl"
+print "loading supplier.tbl..." ;
+ld supplier "/tpchSF10/supplier.tbl" ;
 
-pwf
-lf
+pwf ;
+lf ;
 
 /*============================================================================*/
 /* end                                                                        */
