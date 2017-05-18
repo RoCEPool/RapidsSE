@@ -698,10 +698,10 @@ void IndexBuffer::vReplace(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp)
   ASSERT(pFoundEntry->aKey()->bMatches(xOldKeyWsp.aKey(), m_pIndex->pIdxColVec(), pOpAryFind));
 
   // get the size of the old key
-  i8 iOldKeySize = xOldKeyWsp.nWspUsed();
+  u8 uOldKeySize = xOldKeyWsp.nWspUsed();
 
   // get the size of the new key
-  i8 iNewKeySize = xNewKeyWsp.nWspUsed();
+  u8 uNewKeySize = xNewKeyWsp.nWspUsed();
 
   i8 nOffsets = pFoundEntry->nOffsets();
   Id xId = pFoundEntry->xId();
@@ -716,7 +716,7 @@ void IndexBuffer::vReplace(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp)
 
   i8 iSize = pFoundEntry->nSize();
 
-  if (iOldKeySize == iNewKeySize) {
+  if (uOldKeySize == uNewKeySize) {
     
     /*
      The old and new key are the same size, just change the key in the entry
@@ -737,7 +737,7 @@ void IndexBuffer::vReplace(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp)
   Entry* aNewEntry = _aEntry(pFoundEntry);
   i8 nDifference;
 
-  if (iOldKeySize > iNewKeySize) {
+  if (uOldKeySize > uNewKeySize) {
     /*
      The new key is shorter than the old key
      
@@ -748,10 +748,10 @@ void IndexBuffer::vReplace(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp)
      We will moveLeft in the buffer reclaiming n bytes
      */
     
-    nDifference = iOldKeySize - iNewKeySize;
+    nDifference = uOldKeySize - uNewKeySize;
     
     // calculate the pDst address
-    void* pDst = pAdd<void*>(pFoundEntry, iNewKeySize);
+    void* pDst = pAdd<void*>(pFoundEntry, uNewKeySize);
     
     // move left nDifference bytes
     vMoveLeft(pDst, nDifference);
@@ -769,8 +769,8 @@ void IndexBuffer::vReplace(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp)
      We will moveRight in the buffer making space for n bytes
      */
 
-    ASSERT(iOldKeySize < iNewKeySize);
-    nDifference = iNewKeySize - iOldKeySize;
+    ASSERT(uOldKeySize < uNewKeySize);
+    nDifference = uNewKeySize - uOldKeySize;
     ASSERT(nDifference);
     
     // calculate the pDst address
@@ -788,7 +788,7 @@ void IndexBuffer::vReplace(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp)
     m_xWsp.vTake(nDifference);
   }
 
-  i8 nBytes =  iSize - (iOldKeySize - iNewKeySize);
+  i8 nBytes =  iSize - (uOldKeySize - uNewKeySize);
   new (aNewEntry) Entry(nBytes, nOffsets);
   aNewEntry->vSetEntry(xEntWsp);
   ASSERT(aNewEntry->nSize() == nBytes);
@@ -799,13 +799,13 @@ void IndexBuffer::vReplace(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp)
   for (u8 i = 0; i < pHead->nOffsets(); i++) {
     
     // here we adjust the iRightOffset if offset is after oldEntry
-    i8 iOldEntrySize = pFoundEntry->nSize();
-    i8 iRightOffset = pHead->uRightOffset(i);
-    nDifference = iOldKeySize - iNewKeySize;
+    u8 uOldEntrySize = pFoundEntry->nSize();
+    u8 uRightOffset = pHead->uRightOffset(i);
+    nDifference = uOldKeySize - uNewKeySize;
     
-    if ( iRightOffset != C_NIL_OFFSET) {
-      if (iRightOffset - nDifference >= iOldEntrySize) {
-        pHead->vRightOffset(i,pHead->uRightOffset(i) - nDifference);
+    if ( uRightOffset != C_NIL_OFFSET) {
+      if ((i8)uRightOffset - nDifference >= (i8)uOldEntrySize) {
+        pHead->vRightOffset(i,(i8)(pHead->uRightOffset(i)) - nDifference);
       }
     }
   }
@@ -825,43 +825,43 @@ void IndexBuffer::vFixRevise(Entry** ppReviseVec, Entry* pNewEntry)
   //vTrace("\n"_Str);
 
   // get no of offsets of the new entry
-  i8 nEntryOffsets = pNewEntry->nOffsets();
+  u8 nEntryOffsets = pNewEntry->nOffsets();
   
   // get entry size
   i8 nNewEntrySize = pNewEntry->nSize();
   
   // get the offset of the new entry
-  i8 iNewEntryOffset = iToOffset(pNewEntry);
+  u8 uNewEntryOffset = iToOffset(pNewEntry);
 
-  for (i8 iOffset = 0; iOffset < C_FLAT_OFFSETS; iOffset++) {
+  for (u8 uOffset = 0; uOffset < C_FLAT_OFFSETS; uOffset++) {
     
     // get the level
-    i8 iLevel = iOffset + 1;
+    u8 uLevel = uOffset + 1;
     
     // get the reviseVector's rightOffset at this level
-    i8 iReviseRightOffset = ppReviseVec[iLevel]->uRightOffset(iOffset);
+    u8 uReviseRightOffset = ppReviseVec[uLevel]->uRightOffset(uOffset);
     
     // if C_NIL_OFFSET, nothing to revise
-    if (iReviseRightOffset == C_NIL_OFFSET )
+    if (uReviseRightOffset == C_NIL_OFFSET )
       continue;
     
-    i8 iReviseEntryOffset = iToOffset(ppReviseVec[iLevel]);
-    i8 iReviseEntrySize = ppReviseVec[iLevel]->nSize();
+    u8 uReviseEntryOffset = iToOffset(ppReviseVec[uLevel]);
+    u8 uReviseEntrySize = ppReviseVec[uLevel]->nSize();
 
     // is newEntry added between the the reviseEntry and reviseOffset ?
-    if (iNewEntryOffset <= iReviseEntryOffset + iReviseEntrySize + iReviseRightOffset) {
+    if (uNewEntryOffset <= uReviseEntryOffset + uReviseEntrySize + uReviseRightOffset) {
       
       // no of offsets of reviseVector entry is >= no of new entry offsets
-      if (iOffset >= nEntryOffsets) {
+      if (uOffset >= nEntryOffsets) {
         // adjust the reviseVector offset with the newEntrySize
-        ppReviseVec[iLevel]->vRightOffset(iOffset,iReviseRightOffset + nNewEntrySize);
+        ppReviseVec[uLevel]->vRightOffset(uOffset,uReviseRightOffset + nNewEntrySize);
       }
       else {
         // no of offsets of reviseVector entry is >= no of new entry offsets
-        i8 nSize = iNewEntryOffset - (iReviseEntrySize + iReviseEntryOffset);
+        i8 nSize = uNewEntryOffset - (uReviseEntrySize + uReviseEntryOffset);
         
         // adjust the reviseVector to point to the newEntry
-        ppReviseVec[iLevel]->vRightOffset(iOffset,iReviseRightOffset - nSize);
+        ppReviseVec[uLevel]->vRightOffset(uOffset,uReviseRightOffset - nSize);
       }
     }
 
@@ -1134,7 +1134,7 @@ Entry* IndexBuffer::aPosition(KeyWsp& xKeyWsp, RelOpAry* pOpAryPosition, bool& b
 /*----------------------------------------------------------------------------*/
 /* get right entry at given level (returns null if no right)                  */
 /*----------------------------------------------------------------------------*/
-Entry* IndexBuffer::aRightEntry(Entry* aEntry, i8 iLevel)
+Entry* IndexBuffer::aRightEntry(Entry* aEntry, u8 uLevel)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
@@ -1154,24 +1154,24 @@ Entry* IndexBuffer::aRightEntry(Entry* aEntry, i8 iLevel)
   */
   
   // the caller must request a valid right entry of pEntry
-  ASSERT(iLevel >= 0 && iLevel < C_FLAT_LEVELS);
+  ASSERT(uLevel >= 0 && uLevel < C_FLAT_LEVELS);
 
-  if (0 == iLevel) {
+  if (0 == uLevel) {
     // for level 0, the right entry is the next entry
     aRightEntry = aNextEntry(aEntry);
   }
   else {
     
-    u8 iOffset = iLevel - 1;
-    ASSERT(iOffset >= 0 && iOffset < aEntry->nOffsets());
+    u8 uOffset = uLevel - 1;
+    ASSERT(uOffset >= 0 && uOffset < aEntry->nOffsets());
     
     // for levels 1 & 2 the right entry is m_xWsp + rightOffset[iRight]
-    i8 iBytes = aEntry->nSize();
-    i8 iRightOffset = aEntry->uRightOffset(iOffset);
-    if (C_NIL_OFFSET == iRightOffset)
+    u8 iBytes = aEntry->nSize();
+    u8 uRightOffset = aEntry->uRightOffset(uOffset);
+    if (C_NIL_OFFSET == uRightOffset)
       aRightEntry = nullptr;
     else
-      aRightEntry = pAdd<Entry*>(aEntry,iRightOffset+iBytes);
+      aRightEntry = pAdd<Entry*>(aEntry,uRightOffset+iBytes);
   }
  
   ASSERT( ! aRightEntry ||

@@ -2,58 +2,21 @@
 /* _test2 -- test index with 2 columns                                        */
 /*============================================================================*/
 
+docol epochTake
 
-create table jidx (
-  jidx_key   INTEGER NOT NULL,
-  jidx_name  VARCHAR(32) NOT NULL,
-  jidx_100   INTEGER NOT NULL,
-  jidx_10    INTEGER NOT NULL,
-  jidx_mod   INTEGER NOT NULL
+create table j10 (
+j10_key   INTEGER NOT NULL,
+j10_name  VARCHAR(32) NOT NULL
 );
+lstbl
 
-create index idx1 on jidx (jidx_mod,jidx_10);
-//create index idx2 on jidx (jidx_100);
-//create index idx3 on jidx (jidx_name);
+lf
+lscol j10
 
-ld jidx "../JTEST/jidx2.csv"
+ld j10 "../JTEST/j10.csv"
 
-//anidx jidx idx
-dumpidx jidx idx1
+create index idx on j10 (j10_key);
 
-/*
-print "\nSelecting rows with key >= 3 using idx1 ...\n"
-lwrselidx jidx idx1 3
-
-print "\nSelecting rows with key >= 1 using idx1 ...\n"
-lwrselidx jidx idx1 1
-
-print "\nSelecting rows with key >= 28 using idx1 ...\n"
-lwrselidx jidx idx1 28
-
-print "\nSelecting rows with key >= 40 using idx1 ...\n"
-lwrselidx jidx idx1 40
-
-print "\nSelecting rows with key >= 45 using idx1 ...\n"
-lwrselidx jidx idx1 45
-
-print "\nSelecting rows with key >= 67 using idx1 ...\n"
-lwrselidx jidx idx1 67
-
-print "\nSelecting rows with key >= 99 using idx1 ...\n"
-lwrselidx jidx idx1 99
-
-print "\nSelecting rows with key >= 72 using idx1 ...\n"
-lwrselidx jidx idx1 72
-
-print "\nSelecting rows with key >= 180 using idx2 ...\n"
-lwrselidx jidx idx2 180
-
-print "\nSelecting rows with key >= 3 and key <= 7 using idx1 ...\n"
-rgeselidx jidx idx1 3 7
-
-print "\nSelecting rows with key <= 7 using idx1 ...\n"
-uprselidx jidx idx1 7
-*/
 
 /*============================================================================*/
 /* end                                                                        */
