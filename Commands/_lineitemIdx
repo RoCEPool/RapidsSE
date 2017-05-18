@@ -35,7 +35,7 @@ create table lineitem (
 	 L_COMMENT       VARCHAR(44) NOT NULL
 );
 
-create index idx1 on lineitem (L_SUPPKEY);
+create index idx1 on lineitem (L_ORDERKEY, L_COMMENT);
 
 print "loading lineitem.tbl..."
 ld lineitem "/tpch/lineitem.tbl"
