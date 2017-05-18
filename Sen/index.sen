@@ -324,17 +324,17 @@ tp: loadIndexes
 
     // we may not find an entry , so need to move to next buffer
     else
-      entry indexBuffer index.getNextEntry to entry
+      entry indexBuffer indexBuffer.nextEntry to entry
     then
 
     entry not if
       // get next entry from the current entry of indexBuffer
-      indexBuffer index.getNextBuffer to indexBuffer
+      indexBuffer indexBuffer.nextBuffer to indexBuffer
 
       indexBuffer not if
         0 to entry
       else
-        entry indexBuffer index.getNextEntry to entry
+        entry indexBuffer indexBuffer.nextEntry to entry
       then
     then
 
@@ -446,19 +446,19 @@ tp: loadIndexes
       lower indexBuffer indexPtr index.position
       to entry
     else
-      entry indexBuffer index.getNextEntry to entry
+      entry indexBuffer indexBuffer.nextEntry to entry
     then
 
     entry not if
 
       // we may not find an entry , so need to move to next buffer
-      indexBuffer index.getNextBuffer to indexBuffer
+      indexBuffer indexBuffer.nextBuffer to indexBuffer
 
       indexBuffer not if
         0 to entry
       else
         // get next entry from the current indexBuffer
-        entry indexBuffer index.getNextEntry to entry
+        entry indexBuffer indexBuffer.nextEntry to entry
       then
     then
 
@@ -602,21 +602,21 @@ tp: loadIndexes
 
     entry not if
      // position in the index buffer
-     indexBuffer index.firstEntry
+     indexBuffer indexBuffer.firstEntry
      to entry
    else
       // get next entry from the current indexBuffer
-      entry indexBuffer index.getNextEntry to entry
+      entry indexBuffer indexBuffer.nextEntry to entry
     then
 
     entry not if
       // we may not find an entry , so need to move to next buffer
-      indexBuffer index.getNextBuffer to indexBuffer
+      indexBuffer indexBuffer.nextBuffer to indexBuffer
 
       indexBuffer not if
         0 to entry
       else
-        entry indexBuffer index.getNextEntry to entry
+        entry indexBuffer indexBuffer.nextEntry to entry
       then
     then
 

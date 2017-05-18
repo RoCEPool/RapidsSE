@@ -39,9 +39,6 @@ void Task::vAddPrimitives_Index(void)
   vAddPrimitive("index.columnType"_Str,      &vIndexColumnType,      false);
   vAddPrimitive("index.createColumnVec"_Str, &vIndexCreateColumnVec, false);
   vAddPrimitive("index.dump"_Str,            &vIndexDump,            false);
-  vAddPrimitive("index.firstEntry"_Str,      &vIndexFirstEntry,      false);
-  vAddPrimitive("index.getNextEntry"_Str,    &vIndexGetNextEntry,    false);
-  vAddPrimitive("index.getNextBuffer"_Str,   &vIndexGetNextBuffer,   false);
   vAddPrimitive("index.init"_Str,            &vIndexInit,            false);
   vAddPrimitive("index.populate"_Str,        &vIndexPopulate,        false);
   vAddPrimitive("index.position"_Str,        &vIndexPosition,        false);
@@ -253,94 +250,6 @@ void Task::vIndexDump(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* index.getNextBuffer -- get next entry from index buffer                     */
-/*----------------------------------------------------------------------------*/
-void Task::vIndexGetNextBuffer(NNP_Task nnpTask)
-{
-  ENTRY("vIndexGetNextBuffer"_Str);
-  
-  Object* pPtrEntry = nullptr;
-  Object* pPtrIndexBuffer;
-  
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrIndexBuffer) )
-    THROW_INVALID_DSTACK("index.getNextBuffer"_Str);
-  
-  IndexBuffer* pIndexBuffer = _pIndexBuffer(pPtrIndexBuffer);
-  ASSERT(nullptr == pIndexBuffer || CN_INDEXBUFFER == pIndexBuffer->eClass());
-  
-  if (pIndexBuffer->pNextBuffer()) {
-    bn nBuffer = pIndexBuffer->pNextBuffer()->nBufferNo();
-  }
-  
-  nnpTask->m_pDataStack->vPushObject(pIndexBuffer->pNextBuffer());
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* index.firstEntry -- get first entry from index buffer                      */
-/*----------------------------------------------------------------------------*/
-void Task::vIndexFirstEntry(NNP_Task nnpTask)
-{
-  ENTRY("vIndexFirstEntry"_Str);
-  
-  Object* pPtrEntry = nullptr;
-  Object* pPtrIndexBuffer;
-  
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrIndexBuffer) )
-    THROW_INVALID_DSTACK("index.firstEntry!"_Str);
-  
-  IndexBuffer* pIndexBuffer = _pIndexBuffer(pPtrIndexBuffer);
-  ASSERT(nullptr == pIndexBuffer || CN_INDEXBUFFER == pIndexBuffer->eClass());
-  
-  nnpTask->m_pDataStack->vPushObject(pIndexBuffer->aNextEntry(pIndexBuffer->aHead()));
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* index.getNextEntry -- get next entry from index buffer                     */
-/*----------------------------------------------------------------------------*/
-void Task::vIndexGetNextEntry(NNP_Task nnpTask)
-{
-  ENTRY("vIndexGetNextEntry"_Str);
-  
-  Object* pPtrEntry = nullptr;
-  Object* pPtrIndexBuffer;
-  
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrIndexBuffer) )
-    THROW_INVALID_DSTACK("index.getNextEntry"_Str);
-  
-  IndexBuffer* pIndexBuffer = _pIndexBuffer(pPtrIndexBuffer);
-  ASSERT(nullptr == pIndexBuffer || CN_INDEXBUFFER == pIndexBuffer->eClass());
-  
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrEntry) )
-    THROW_INVALID_DSTACK("index.getNextEntry"_Str);
-  
-  Entry* pEntry = _aEntry(pPtrEntry);
-  
-  Entry *pNextEntry;
-  
-  if ( pPtrEntry ) {
-    ASSERT(CN_ENTRY == pEntry->eClass());
-    pNextEntry = pIndexBuffer->aNextEntry(pEntry);
-  } else {
-    pNextEntry = pIndexBuffer->aNextEntry(pIndexBuffer->aHead());
-  }
-  
-  // assert that key of the next entry is >= entry              //ALKA:TEMPORARY
-//  if (pEntry && pNextEntry) {
-//    Key* aEntryKey = pEntry->aKey();
-//    Key* aNextEntryKey = pNextEntry->aKey();
-//    ASSERT(aEntryKey->bLessEqual(aNextEntryKey,pIndexBuffer->pIndex()->pIdxColVec()));
-//  }
-  
-  nnpTask->m_pDataStack->vPushObject(pNextEntry);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* index.position -- position at key in an index buffer                       */
 /*----------------------------------------------------------------------------*/
 void Task::vIndexPosition(NNP_Task nnpTask)
@@ -462,7 +371,7 @@ void Task::vIndexRow(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* index::init -- initialize the index                                        */
+/* index.init -- initialize the index                                         */
 /*----------------------------------------------------------------------------*/
 void Task::vIndexInit(NNP_Task nnpTask)
 {
@@ -470,7 +379,7 @@ void Task::vIndexInit(NNP_Task nnpTask)
   Object* pPtrIndex = nullptr;
   
   if ( ! nnpTask->m_pDataStack->bPop(pPtrIndex) )
-    THROW_INVALID_DSTACK("index::vIndexInit"_Str);
+    THROW_INVALID_DSTACK("index.init"_Str);
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());

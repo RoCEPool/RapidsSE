@@ -210,6 +210,7 @@ namespace Tasks
     void vAddPrimitives_Flow(void);
     void vAddPrimitives_Grid(void);
     void vAddPrimitives_Index(void);
+    void vAddPrimitives_IndexBuffer(void);
     void vAddPrimitives_Input(void);
     void vAddPrimitives_Int(void);
     void vAddPrimitives_Loader(void);
@@ -537,9 +538,6 @@ namespace Tasks
     static void vIndexColumnType(NNP_Task nnpTask);
     static void vIndexCreateColumnVec(NNP_Task nnpTask);
     static void vIndexDump(NNP_Task nnpTask);
-    static void vIndexFirstEntry(NNP_Task nnpTask);
-    static void vIndexGetNextBuffer(NNP_Task nnpTask);
-    static void vIndexGetNextEntry(NNP_Task nnpTask); 
     static void vIndexInit(NNP_Task nnpTask);
     static void vIndexPopulate(NNP_Task nnpTask);
     static void vIndexPosition(NNP_Task nnpTask);
@@ -552,6 +550,11 @@ namespace Tasks
     static void vIndexTableStore(NNP_Task nnpTask);
     static void vIndexTruncate(NNP_Task nnpTask);
     static void vIndexUpper(NNP_Task nnpTask);
+
+    // index buffer
+    static void vIndexBufferFirstEntry(NNP_Task nnpTask);
+    static void vIndexBufferNextBuffer(NNP_Task nnpTask);
+    static void vIndexBufferNextEntry(NNP_Task nnpTask);
 
     // input
     static void vInputAccept(NNP_Task nnpTask);
