@@ -11,18 +11,18 @@ lsten ;
 cf t;
 cf catalogs;
 create catalog c;
-lscat;
+lscat ;
 
 cf c;
 cf schemas;
 create schema s;
 lssch ;
 
-cf s;
-cf tables;
-pwf;
+cf s ;
+cf tables ;
+pwf ;
 
-print "Start Test One" ;
+print "Start Test One"  ;
 
 create table j10 (
   j10_key   INTEGER NOT NULL,
@@ -33,7 +33,7 @@ lstbl ;
 lf ;
 lscol j10 ;
 
-ld j10 "../JTEST/j10.csv" ;
+ld j10 "../JTEST/j10.csv";
 
 create index idx on j10 (j10_key);
 
@@ -60,15 +60,17 @@ j10_key   INTEGER NOT NULL,
 j10_name  VARCHAR(32) NOT NULL
 );
 
-create index idx on j10 (j10_key);
+create index idx1 on j10 (j10_key);
 
-ld j10 "../JTEST/j10.csv"
+ld j10 "../JTEST/j10.csv";
 
 lsidx j10 ;
 
 drop index j10.idx;
 
 drop table j10;
+
+print "Start Test Two"  ;
 
 create table j10 (
 j10_key   INTEGER NOT NULL,
@@ -95,10 +97,11 @@ rgeselidx j10 idx1 4 8 ;
 print "\nSelecting rows with key j10_key >= 2 and j10_key <= 7 using index idx1 ...\n" ;
 rgeselidx j10 idx1 2 7 ;
 
-tridx j10 idx ;
+tridx j10 idx
 
 drop table j10;
 
+print "Start Test Three"  ;
 
 create table j10 (
   j10_key   INTEGER NOT NULL,
@@ -126,7 +129,7 @@ rf schemas ;
 cf .. ;
 drop catalog c;
 
-cf ..;
+cf .. ;
 rf catalogs ;
 
 cf .. ;

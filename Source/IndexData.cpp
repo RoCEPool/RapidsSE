@@ -298,8 +298,10 @@ bool IndexData::bVerify(void)
     
     // first just run verify on its entries
     bool bVerify = pIndexBuffer->bVerify();
-    if ( ! bVerify )
+    if ( ! bVerify ) {
+      delete pOpAry;
       return false;
+    }
     
     if (pIndexBuffer->nBufferLevel() == 0) {
       pIndexBuffer = pIndexBuffer->pNextBuffer();
@@ -324,8 +326,10 @@ bool IndexData::bVerify(void)
       Key* pKeyLN_1 = pEntryLN_1->aKey();
 
       bool bMatches = pKeyLN->bMatches(pEntryLN_1->aKey(), m_pIndex->pIdxColVec(), pOpAry);
-      if ( ! bMatches )
+      if ( ! bMatches ) {
+        delete pOpAry;
         return false;
+      }
       
       pEntryLN = pIndexBuffer->aNextEntry(pEntryLN);
     }

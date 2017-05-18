@@ -1246,6 +1246,7 @@ bool SePrompt::bCreateIndex(void)
   }
 
   // now collect the column names and their types
+#ifndef SEMICOLON
   i8 iCurrentToken = 6;
   while(iCurrentToken < iNumTokens - 2) {
     
@@ -1254,7 +1255,17 @@ bool SePrompt::bCreateIndex(void)
       m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
       return false;
     }
+#else
+  i8 iCurrentToken = 6;
+  while(iCurrentToken < iNumTokens - 1) {
     
+    if (iCurrentToken != 6 && !m_aToken2[iCurrentToken++]->bEqual(","_Str)) {
+      bIndexReturnTable(m_aToken2[4], m_aToken2[2]);
+      m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+      return false;
+    }
+
+#endif
     // add columns to the table
     i8 j = 0;
     m_aToken[j++]->vCopy("addidxcol"_Str);
@@ -1823,7 +1834,7 @@ void SePrompt::vStripSemicolon(void)
   
   *m_aToken[iToken]->s() = '\0';
   
-  m_pTokeniser->vDumpTokens("Stripped"_Str,m_aToken,C_TOKENS);
+  //m_pTokeniser->vDumpTokens("Stripped"_Str,m_aToken,C_TOKENS);
 }
 
 /*----------------------------------------------------------------------------*/

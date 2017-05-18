@@ -445,7 +445,12 @@ IndexBuffer* IndexBuffer::pSplitBuffer(void)
   
   // Note this ASSERT fails if we have dulplicates in the table     //ALKA: TODO
   // Need to fix when we cater for non-unique indexes
-  ASSERT(pAfterEntry == pLastEntry);
+  if (pAfterEntry != pLastEntry) {
+    pAfterEntry->vShow(pAfterEntry->nOffsets(), m_pIndex->pIdxColVec());
+    pLastEntry->vShow(pLastEntry->nOffsets(), m_pIndex->pIdxColVec());
+    vDump();
+    ASSERT(0);
+  }
   
   i8 iLastEntryOffset = iToOffset(pLastEntry);
   i8 iOffsets = C_FLAT_LEVELS - 1;
@@ -513,11 +518,14 @@ bool IndexBuffer::bVerify(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
+  bool bResult = true;
+  
   // create a realtional operator array
   RelOpAry* pOpAry = new RelOpAry;
   i8 nItems = m_pIndex->pIdxColVec()->nItems();
+  
   for (i8 i=0; i < nItems; i++)
-  pOpAry->vAdd(RO_GREATER_EQUAL);
+    pOpAry->vAdd(RO_GREATER_EQUAL);
   
   // verify the entries at each level
   i8 nLevel = C_FLAT_LEVELS - 1;
@@ -525,15 +533,21 @@ bool IndexBuffer::bVerify(void)
   do {
     
     Entry* pEntryA = aHead();
-    if ( ! pEntryA )
-      return true;
+    if ( ! pEntryA ) {
+      bResult = true;
+      goto leave;
+    }
     
-    if (pEntryA->nOffsets() < (u8)nLevel)
-      return true;
-    
+    if (pEntryA->nOffsets() < (u8)nLevel) {
+      bResult = true;
+      goto leave;
+    }
+
     Entry* pEntryB = aRightEntry(pEntryA, nLevel);
-    if ( ! pEntryB )
-      return true;
+    if ( ! pEntryB ) {
+      bResult = true;
+      goto leave;
+    }
   
     while (pEntryB) {
       
@@ -542,18 +556,20 @@ bool IndexBuffer::bVerify(void)
       
       if (pEntryA != aHead()) {
         bool bGreaterEqual = pEntryB->bMatches(pEntryA->aKey(), m_pIndex->pIdxColVec(), pOpAry);
-        if ( ! bGreaterEqual )
-          return false;
+        if ( ! bGreaterEqual ) {
+          bResult = false;
+          goto leave;
+        }
       }
       
       pEntryA = pEntryB;
       pEntryB = aNextEntry(pEntryA);
     }
   } while (--nLevel >= 0 );
-  
+
+leave:
   delete pOpAry;
-  
-  return true;
+  return bResult;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -685,6 +701,7 @@ void IndexBuffer::vReplace(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp)
   // create a relational operator array
   RelOpAry* pOpAryFind = new RelOpAry;
   i8 nItems = m_pIndex->pIdxColVec()->nItems();
+  
   for (i8 i=0; i < nItems; i++)
     pOpAryFind->vAdd(RO_EQUAL);
   
@@ -730,6 +747,7 @@ void IndexBuffer::vReplace(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp)
     
     // just replace the key in the buffer
     pFoundEntry->vKey(xEntWsp);
+    delete pOpAryFind;
     return;
   }
 
