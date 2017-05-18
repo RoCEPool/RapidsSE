@@ -514,12 +514,6 @@ bool IndexBuffer::bVerify(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
-  // create a realtional operator array
-  RelOpAry* pOpAry = new RelOpAry;
-  i8 nItems = m_pIndex->pIdxColVec()->nItems();
-  for (i8 i=0; i < nItems; i++)
-  pOpAry->vAdd(RO_GREATER_EQUAL);
-  
   // verify the entries at each level
   i8 nLevel = C_FLAT_LEVELS - 1;
   
@@ -542,8 +536,8 @@ bool IndexBuffer::bVerify(void)
       Key* pKeyB = pEntryB->aKey();
       
       if (pEntryA != aHead()) {
-        bool bGreaterEqual = pEntryB->bMatches(pEntryA->aKey(), m_pIndex->pIdxColVec(), pOpAry);
-        if ( ! bGreaterEqual )
+        bool bAfter = pEntryB->aKey()->bAfter(pEntryA->aKey(), m_pIndex->pIdxColVec());
+        if ( ! bAfter )
           return false;
       }
       
@@ -551,8 +545,6 @@ bool IndexBuffer::bVerify(void)
       pEntryB = aNextEntry(pEntryA);
     }
   } while (--nLevel >= 0 );
-  
-  delete pOpAry;
   
   return true;
 }
