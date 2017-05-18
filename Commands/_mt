@@ -60,7 +60,7 @@ j10_key   INTEGER NOT NULL,
 j10_name  VARCHAR(32) NOT NULL
 );
 
-create index idx1 on j10 (j10_key);
+create index idx on j10 (j10_key);
 
 ld j10 "../JTEST/j10.csv";
 
@@ -85,19 +85,19 @@ ld j10 "../JTEST/j10.csv" ;
 
 anidx j10 idx ;
 
-print "\nSelecting rows with key j10_key >= 4 using index idx1 ...\n" ;
-lwrselidx j10 idx1 4 ;
+print "\nSelecting rows with key j10_key >= 4 using index idx ...\n" ;
+lwrselidx j10 idx 4 ;
 
-print "\nSelecting rows with key j10_key >= 7 using index idx1 ...\n" ;
-lwrselidx j10 idx1 7 ;
+print "\nSelecting rows with key j10_key >= 7 using index idx ...\n" ;
+lwrselidx j10 idx 7 ;
 
-print "\nSelecting rows with key j10_key >= 4 and j10_key <= 8 using index idx1 ...\n" ;
-rgeselidx j10 idx1 4 8 ;
+print "\nSelecting rows with key j10_key >= 4 and j10_key <= 8 using index idx ...\n" ;
+rgeselidx j10 idx 4 8 ;
 
-print "\nSelecting rows with key j10_key >= 2 and j10_key <= 7 using index idx1 ...\n" ;
-rgeselidx j10 idx1 2 7 ;
+print "\nSelecting rows with key j10_key >= 2 and j10_key <= 7 using index idx ...\n" ;
+rgeselidx j10 idx 2 7 ;
 
-tridx j10 idx
+tridx j10 idx;
 
 drop table j10;
 
@@ -109,12 +109,11 @@ create table j10 (
 );
 
 create index idx1 on j10 (j10_key);
-create index idx2 on j10 (j);
+create index idx2 on j10 (j);                            // error: no such colum
 create index idx3 on j10 (j10_name);
-create index idx3 on j10 (j10_name);
+create index idx3 on j10 (j10_name);                     //error: index exists
 
 drop table j10;
-
 
 
 cf .. ;
