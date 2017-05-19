@@ -123,6 +123,8 @@ private:
   void vCollectStatement(void);
   void vStripSemicolon(void);
   bool bTokenCheck(i8 nTokens);
+  bool bCmdIs(Str* aArg);
+  bool bOneIs(Str* aArg);
   
   Footer* pFooter(void);
 };

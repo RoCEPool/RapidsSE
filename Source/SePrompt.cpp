@@ -12,6 +12,10 @@ extern Grid*        gpGrid;
 extern bool         gbMetadata;
 
 /*----------------------------------------------------------------------------*/
+/*-- LifeCycle ---------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
 void* SePrompt::operator new(size_t iSize)
@@ -130,6 +134,10 @@ void SePrompt::vDump(eCN eClass, Object* pObject, Str* aTab)
 }
 
 /*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
 /* prompt for commands and process them                                       */
 /*----------------------------------------------------------------------------*/
 void SePrompt::vLoop(void)
@@ -225,10 +233,6 @@ void SePrompt::vLoop(void)
 }
   
 /*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
 /* execute request from given string                                          */
 /*----------------------------------------------------------------------------*/
 bool SePrompt::bExecuteString(StrVal& sRequest, eEC& eErrorCode)
@@ -298,6 +302,10 @@ bool SePrompt::bExecuteString(StrVal& sRequest, eEC& eErrorCode, Str** ppRowPtr)
   
   return bResult;
 }
+
+/*----------------------------------------------------------------------------*/
+/*-- Private -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* get command                                                                */
@@ -419,184 +427,65 @@ bool SePrompt::bProcessCommand(bool bPostProcess)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for echo prefix
-  if (m_aToken[0]->bEqual("echo"_Str))
+  if (bCmdIs("echo"_Str))
     vSetEcho();
   else
     vClearEcho();
   
   // test for expect prefix
-  if (m_aToken[0]->bEqual("expect"_Str))
+  if (bCmdIs("expect"_Str))
     vSetExpect();
   else
     vClearExpect();
  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // test for builtin comands
+  // test for builtin commands
   
-  if (m_aToken[0]->bEqual("?"_Str) ||
-      m_aToken[0]->bEqual("help"_Str)) {
-    return bHelp();
+  if (bCmdIs("?"_Str))          return bHelp();
+  if (bCmdIs("help"_Str))       return bHelp();
+  if (bCmdIs("!!"_Str))         return bRecallCommand();
+  if ('!' == *m_aToken[0]->s()) return bRecallCommand();
+  if (bCmdIs("antbl"_Str))      return bAnalyzeTable();
+  if (bCmdIs("begin"_Str)) {
+    if (bOneIs("insert"_Str))   return bBeginInsert();
   }
-  
-  if (m_aToken[0]->bEqual("!!"_Str)) {
-    return bRecallCommand();
+  if (bCmdIs("bye"_Str))        return bBye();
+  if (bCmdIs("cd"_Str))         return bChangeWorkingDir();
+//if (bCmdIs("cf"_Str))         return bExecuteRequest();
+//if (bCmdIs("connectCluster"_Str)) return bConnectCluster();
+  if (bCmdIs("create"_Str)) {
+    if (bOneIs("tenant"_Str))   return bCreateTenant();
+    if (bOneIs("catalog"_Str))  return bCreateCatalog();
+    if (bOneIs("schema"_Str))   return bCreateSchema();
+    if (bOneIs("table"_Str))    return bCreateTable();
+    if (bOneIs("index"_Str))    return bCreateIndex();
   }
-  
-  if ('!' == *m_aToken[0]->s()) {
-    return bRecallCommand();
+  if (bCmdIs("dantbl"_Str))     return bDanalyzeTable();
+  if (bCmdIs("docol"_Str))      return bDocol();
+  if (bCmdIs("drop"_Str)) {
+    if (bOneIs("tenant"_Str))   return bDropTenant();
+    if (bOneIs("catalog"_Str))  return bDropCatalog();
+    if (bOneIs("index"_Str))    return bDropIndex();
+    if (bOneIs("schema"_Str))   return bDropSchema();
+    if (bOneIs("table"_Str))    return bDropTable();
   }
-
-  //                                                                           a
-  if (m_aToken[0]->bEqual("antbl"_Str)) {
-    return bAnalyzeTable();
+  if (bCmdIs("end"_Str)) {
+    if (bOneIs("insert"_Str))   return bEndInsert();
   }
-  
-  //                                                                           b
-  if (m_aToken[0]->bEqual("begin"_Str)) {
-    if (m_aToken[1]->bEqual("insert"_Str)) {
-      return bBeginInsert();
-    }
+  if (bCmdIs("first"_Str))      return bGetFirstRow();
+  if (bCmdIs("history"_Str))    return bHistory();
+  if (bCmdIs("insert"_Str)) {
+    if (bOneIs("row"_Str))      return bInsertRow();
   }
-  
-  if (m_aToken[0]->bEqual("bye"_Str)) {
-    return bBye();
+  if (bCmdIs("ls"_Str))         return bListDir();
+  if (bCmdIs("next"_Str))       return bGetNextRow();
+//if (bCmdIs("object"_Str))     return bObject();
+  if (bCmdIs("pwd"_Str))        return bPrintWorkingDir();
+  if (bCmdIs("sleep"_Str))      return bSleep();
+//if (bCmdIs("space"_Str))      return bPoolSpace();
+  if (bCmdIs("use"_Str)) {
+    if (bOneIs("schema"_Str))   return bUseSchema();
   }
-  
-  //                                                                           c
-  if (m_aToken[0]->bEqual("cd"_Str)) {
-    return bChangeWorkingDir();
-  }
-  
-//  if (m_aToken[0]->bEqual("cf"_Str)) {
-//    return bExecuteRequest();
-//  }
-  
-//  if (m_aToken[0]->bEqual("connectCluster"_Str)) {
-//    return bConnectCluster();
-//  }
-  
-  if (m_aToken[0]->bEqual("create"_Str)) {
-    
-    if (m_aToken[1]->bEqual("tenant"_Str)) {
-      return bCreateTenant();
-    }
-    if (m_aToken[1]->bEqual("catalog"_Str)) {
-      return bCreateCatalog();
-    }
-    if (m_aToken[1]->bEqual("schema"_Str)) {
-      return bCreateSchema();
-    }
-    if (m_aToken[1]->bEqual("table"_Str)) {
-      return bCreateTable();
-    }
-    if (m_aToken[1]->bEqual("index"_Str)) {
-      return bCreateIndex();
-    }
-  }
-  
-  //                                                                           d
-  if (m_aToken[0]->bEqual("dantbl"_Str)) {
-    return bDanalyzeTable();
-  }
-  
-  if (m_aToken[0]->bEqual("docol"_Str)) {
-    return bDocol();
-  }
-  
-  if (m_aToken[0]->bEqual("drop"_Str)) {
-    
-    if (m_aToken[1]->bEqual("tenant"_Str)) {
-      return bDropTenant();
-    }
-    if (m_aToken[1]->bEqual("catalog"_Str)) {
-      return bDropCatalog();
-    }
-    if (m_aToken[1]->bEqual("index"_Str)) {
-      return bDropIndex();
-    }
-    if (m_aToken[1]->bEqual("schema"_Str)) {
-      return bDropSchema();
-    }
-    if (m_aToken[1]->bEqual("table"_Str)) {
-      return bDropTable();
-    }
-  }
-  
-  //                                                                           e
-  if (m_aToken[0]->bEqual("end"_Str)) {
-    
-    if (m_aToken[1]->bEqual("insert"_Str)) {
-      return bEndInsert();
-    }
-  }
-  
-  //                                                                           f
-  if (m_aToken[0]->bEqual("first"_Str)) {
-    return bGetFirstRow();
-  }
-  
-  //                                                                           g
-  //                                                                           h
-  if (m_aToken[0]->bEqual("history"_Str)) {
-    return bHistory();
-  }
-  
-  //                                                                           i
-  if (m_aToken[0]->bEqual("insert"_Str)) {
-    
-    if (m_aToken[1]->bEqual("row"_Str)) {
-      return bInsertRow();
-    }
-  }
-  
-  //                                                                           j
-  //                                                                           k
-  //                                                                           l
-  if (m_aToken[0]->bEqual("ls"_Str)) {
-    return bListDir();
-  }
-  
-  //                                                                           m
-  //                                                                           n
-  if (m_aToken[0]->bEqual("next"_Str)) {
-    return bGetNextRow();
-  }
-  
-  //                                                                           o
-//  if (m_aToken[0]->bEqual("object"_Str)) {
-//    return bObject();
-//  }
-  
-  //                                                                           p
-  if (m_aToken[0]->bEqual("pwd"_Str)) {
-    return bPrintWorkingDir();
-  }
-  
-  //                                                                           q
-  //                                                                           r
-  //                                                                           s
-  if (m_aToken[0]->bEqual("sleep"_Str)) {
-    return bSleep();
-  }
-  
-//  if (m_aToken[0]->bEqual("space"_Str)) {
-//    return bPoolSpace();
-//  }
-
-  //                                                                           t
-  //                                                                           u
-  if (m_aToken[0]->bEqual("use"_Str)) {
-    
-    if (m_aToken[1]->bEqual("schema"_Str)) {
-      return bUseSchema();
-    }
-  }
-  
-  //                                                                           v
-  //                                                                           w
-  //                                                                           x
-  //                                                                           y
-  //                                                                           z
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append to history
@@ -604,9 +493,8 @@ bool SePrompt::bProcessCommand(bool bPostProcess)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for command file
-  if (bTestFile(m_aToken[0])) {
+  if (bTestFile(m_aToken[0]))
     return bRunFile();
-  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // execute seitf request
@@ -635,14 +523,12 @@ bool SePrompt::bProcessCommand(bool bPostProcess)
   }
   
   if (m_aToken[0]->bEqual("x"_Str)) {
-    while (true) {
+    while (true)
       bExecuteRequest();
-    }
   }
   
   return true;
 }
-
 
 /*----------------------------------------------------------------------------*/
 /* set echo result                                                            */
@@ -2366,6 +2252,32 @@ bool SePrompt::bTokenCheck(i8 nTokens)
   return true;
 }
   
+/*----------------------------------------------------------------------------*/
+/* check if command token 0 is given argument                                 */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bCmdIs(Str* aArg)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  if (m_aToken[0]->bEqual(aArg))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* check if command token 1 is given argument                                 */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bOneIs(Str* aArg)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  if (m_aToken[1]->bEqual(aArg))
+    return true;
+  else
+    return false;
+}
+
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
