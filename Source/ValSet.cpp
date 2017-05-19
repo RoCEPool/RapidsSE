@@ -127,6 +127,7 @@ bool ValSet::bExtractValue(Str*& pCursor, Value*& pValue)
     ASSERT(pObjectVal->eClass() == CN_PLAN);
     Plan* pPlan = reinterpret_cast<Plan*>(pObjectVal);
     pPlan->vNullifyPointers();
+    pValue->vClass(CN_PTRVAL);
     *_pPtrVal(pValue) = pObjectVal;
   }
   

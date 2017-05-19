@@ -158,12 +158,16 @@ void ValWsp::operator =(Tsp xTsp)
 /*----------------------------------------------------------------------------*/
 void ValWsp::vAssignBinary(Object* pObject)
 {
-  vClass(CN_BINVAL);
-  _precondition_(_MAGIC_,CN_BINVAL);
+  _precondition_(_MAGIC_,CN_VALWSP);
   
-  *_pBinVal(this) = pObject;
+  eCN eClassNo = pObject->eClass();
   
-  ASSERT(CN_BINVAL == _pBinVal(this)->eClass());
+  BinVal* pNestedBinVal = (BinVal*)pNestedValue();
+  
+  // set nested class
+  pNestedBinVal->vClass(CN_BINVAL);
+  
+  *pNestedBinVal = pObject;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -196,6 +200,18 @@ Value* ValWsp::pNestedValueSelf(void)
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get value in the wsp area                                                  */
+/*----------------------------------------------------------------------------*/
+BinVal* ValWsp::pNestedBinVal(void)
+{
+  _precondition_(_MAGIC_);
+  
+  BinVal* pNestedBinVal = reinterpret_cast<BinVal*>(pNestedValue());
+  
+  return pNestedBinVal;
+}
 
 /*----------------------------------------------------------------------------*/
 /* get integer (ignoring type)                                                */
