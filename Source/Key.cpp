@@ -415,8 +415,8 @@ bool Key::bBefore(Key* pKeyThat, IdxColVec* pIdxColVec)
   // all elements are the same
   ASSERT(0 == iCmp);
   
-  // return false (not before)
-  return false;
+  // return true (is before)
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
