@@ -369,18 +369,18 @@ bool Key::bBefore(Key* pKeyThat, IdxColVec* pIdxColVec)
    * a multi-part key is before some other key if:
    *
    *   i) the first element is less than the first element of the other key
-   *        i.e. thisElement[0] < thatElement[0]
+   *        i.e. thisElement[0] <= thatElement[0]
    *
    *  ii) the leading elements are equal to the corresponding elements of the
    *      the other key and a next element is less than the corresponding 
    *      element of the other key
    *
    *        e.g. thisElement[0] == thatElement[0] &&
-   *             thisElement[1] <  thatElement[1]
+   *             thisElement[1] <= thatElement[1]
    *
    *        e.g. thisElement[0] == thatElement[0] &&
    *             thisElement[1] == thatElement[1] &&
-   *             thisElement[2] <  thatElement[2]
+   *             thisElement[2] <= thatElement[2]
    *
    *      the above example hold even if there are more elements
    */
@@ -473,18 +473,18 @@ bool Key::bAfter(Key* pKeyThat, IdxColVec* pIdxColVec)
    * a multi-part key is after some other key if:
    *
    *   i) the first element is greater than the first element of the other key
-   *        i.e. thisElement[0] > thatElement[0]
+   *        i.e. thisElement[0] >= thatElement[0]
    *
    *  ii) the leading elements are equal to the corresponding elements of the
    *      the other key and a next element is greater than the corresponding
    *      element of the other key
    *
    *        e.g. thisElement[0] == thatElement[0] &&
-   *             thisElement[1] >  thatElement[1]
+   *             thisElement[1] >= thatElement[1]
    *
    *        e.g. thisElement[0] == thatElement[0] &&
    *             thisElement[1] == thatElement[1] &&
-   *             thisElement[2] >  thatElement[2]
+   *             thisElement[2] >= thatElement[2]
    *
    *      the above example hold even if there are more elements
    */
