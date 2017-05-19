@@ -64,19 +64,13 @@ void Task::vEntryMatches(NNP_Task nnpTask)
   
   KeyWsp xKeyWsp;
   
-  // create a relational operator array
-  RelOpAry* pOpAryGreater = new RelOpAry;
-  i8 nItems = pIndex->pIdxColVec()->nItems();
-  for (i8 i=0; i < nItems; i++)
-    pOpAryGreater->vAdd(RO_EQUAL);
-  
   StrVal* pStrVal = _pStrVal(xValWsp.pNestedValueSelf());
   
   xKeyWsp.vAddElement(pStrVal, pIndex->pIdxColVec()->pGet(0));
   
   //pEntry->vShow(0, pIndex->pIdxColVec());
-  bool bMatches = true;
-  bMatches = pEntry->aKey()->bMatches(xKeyWsp.aKey(), pIndex->pIdxColVec(), pOpAryGreater);
+  bool bMatches;
+  bMatches = pEntry->aKey()->bCompare(PN_SAME, xKeyWsp.aKey(), pIndex->pIdxColVec());
 
   nnpTask->m_pDataStack->vPushInt(bMatches ? 1 : 0);
 }
