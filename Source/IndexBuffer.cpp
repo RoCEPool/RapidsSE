@@ -1045,8 +1045,6 @@ void IndexBuffer::vNewHead(void)
 /*----------------------------------------------------------------------------*/
 /* positition to entry (optional set revise vector)                           */
 /*----------------------------------------------------------------------------*/
-#ifdef KEY_AFTER
-
 Entry* IndexBuffer::aPosition(KeyWsp& xKeyWsp, ePN ePosition, bool& bEqualTo, Entry** aReviseVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
@@ -1103,64 +1101,6 @@ Entry* IndexBuffer::aPosition(KeyWsp& xKeyWsp, ePN ePosition, bool& bEqualTo, En
   
   return pCurrentEntry;
 }
-
-#else //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Entry* IndexBuffer::aPosition(KeyWsp& xKeyWsp, RelOpAry* pOpAryPosition, bool& bEqualTo, Entry** aReviseVec)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
-  
-  // start from head at known highest level
-  Entry* pCurrentEntry = aHead();
-  i8 iCurrentLevel = C_FLAT_LEVELS - 1;
-  Key* aKey = xKeyWsp.aKey();
-  
-  do {
-    
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // inner loop: go right a number of nodes until we find
-    //   ObjectInsert < ObjectNext at current level
-    while (Entry* pNextEntry = aRightEntry(pCurrentEntry, iCurrentLevel)) {
-      
-      //aKey->vShow(m_pIndex->pIdxColVec());
-      //pNextEntry->aKey()->vShow(m_pIndex->pIdxColVec());
-      
-      // compare the inserting object with next object
-      bool bGreaterEqual = aKey->bMatches(pNextEntry->aKey(), m_pIndex->pIdxColVec(), pOpAryPosition);
-      
-      if (bGreaterEqual) {
-        // pObjectInsert is >= pObjectNext
-        //vTrace("  %lld after %lld (level %lld)\n"_Str,
-        //       (i8)pObjectInsert,(i8)pNextEntry->uRight(),iCurrentLevel);
-        
-        // go right one node
-        pCurrentEntry = aRightEntry(pCurrentEntry, iCurrentLevel);
-      }
-      else {
-        // pObjectInsert is < pObjectNext or pObjectNext is null
-        //vTrace("  %lld before %lld (level %lld)\n"_Str,
-        //       (i8)pObjectInsert,(i8)pNextEntry->uRight(),iCurrentLevel);
-        
-        break;
-      }
-    }
-    
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // outer loop: now having gone right as far as we go down one single level
-    
-    // first record current node as a revision point
-    if (aReviseVec)
-      aReviseVec[iCurrentLevel] = pCurrentEntry;
-    
-    // now go down one level
-    goDownLevel(iCurrentLevel);
-    
-    // and repeat till we have a complete revision vector
-  } while (iCurrentLevel >= 0);
-  
-  return pCurrentEntry;
-}
-#endif
 
 /*----------------------------------------------------------------------------*/
 /* get right entry at given level (returns null if no right)                  */

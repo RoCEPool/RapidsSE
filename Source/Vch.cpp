@@ -278,7 +278,6 @@ bool Vch::bGreaterThan(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
 /*----------------------------------------------------------------------------*/
 /* cmp argA with argB (-ve: argA < argB, 0: argA == argB, +ve: argA > argB)   */
 /*----------------------------------------------------------------------------*/
-#ifdef KEY_AFTER
 i8 Vch::iCmp(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
 {
   ASSERT(StrLib::iSize(aArgA) == nBytesA);
@@ -288,22 +287,6 @@ i8 Vch::iCmp(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
   
   return iCmp;
 }
-
-#else //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-i8 Vch::iCmp(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
-{
-  ASSERT(StrLib::iSize(aArgA) == nBytesA);
-  ASSERT(StrLib::iSize(aArgB) == nBytesB);
-  
-  i8 iA = *(i8*)aArgA;
-  i8 iB = *(i8*)aArgB;
-  
-  i8 iCmp = iA - iB;
-  
-  return iCmp;
-}
-#endif
 
 /*============================================================================*/
 /* end                                                                        */
