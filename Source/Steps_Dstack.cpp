@@ -501,11 +501,8 @@ void Task::vDstackToValSet(NNP_Task nnpTask)
       Object* pObject = pPtrVal->pPtr();
       eCN eObjectClass = pObject->eClass();
       
-      if (eObjectClass == CN_PLAN) {
-        ValWsp xBinVal;
-        xBinVal.vAssignBinary(pObject);
-        xValWsp = xBinVal;
-      }
+      if (eObjectClass == CN_PLAN)
+        xValWsp.vAssignBinary(pObject);
     }
     
     xValSet.vAppend(pCursor,xValWsp.pNestedValueSelf());

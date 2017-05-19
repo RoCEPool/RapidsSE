@@ -46,7 +46,8 @@ namespace Values
     Value* pNestedValue(void);
     Value* pNestedValueSelf(void);
   
-    i8     iNestedAsInt(void);
+    BinVal* pNestedBinVal(void);
+    i8      iNestedAsInt(void);
     IntVal* pNestedIntVal(void);
     PtrVal* pNestedPtrVal(void);
     StrVal* pNestedStrVal(void);

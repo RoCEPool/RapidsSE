@@ -342,10 +342,30 @@ bool Key::bMatches(Key* pKeyThat, IdxColVec* pIdxColVec, RelOpAry* pRelOpAry)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this key after given key                                                */
+/* is this key before given key                                               */
 /*----------------------------------------------------------------------------*/
-bool Key::bAfter(Key* pKeyThat, IdxColVec* pIdxColVec)
+bool Key::bBefore(Key* pKeyThat, IdxColVec* pIdxColVec)
 {
+  /*
+   * a multi-part key is before some other key if:
+   *
+   *   i) the first element is less than the first element of the other key
+   *        i.e. thisElement[0] < thatElement[0]
+   *
+   *  ii) the leading elements are equal to the corresponding elements of the
+   *      the other key and a next element is less than the corresponding 
+   *      element of the other key
+   *
+   *        e.g. thisElement[0] == thatElement[0] &&
+   *             thisElement[1] <  thatElement[1]
+   *
+   *        e.g. thisElement[0] == thatElement[0] &&
+   *             thisElement[1] == thatElement[1] &&
+   *             thisElement[2] <  thatElement[2]
+   *
+   *      the above example hold even if there are more elements
+   */
+  
   char* aCursorThis = aWspArea();
   char* aCursorThat = pKeyThat->aWspArea();
   
@@ -364,19 +384,126 @@ bool Key::bAfter(Key* pKeyThat, IdxColVec* pIdxColVec)
     iCmp = pColumn->iCmp(aElementThis,nBytesThis,
                          aElementThat,nBytesThat);
     
+    // return true (is before) if this element is less than that element
     if (iCmp < 0)
-      return false;
-    else
-    if (iCmp > 0)
       return true;
+    
+    // return false (not before) if this element is greater than that element
+    if (iCmp > 0)
+      return false;
   }
   
-  if (iCmp == 0)
-    return true;
-  else {
-    ASSERT(0);
-    return false;
+  // all elements are the same
+  ASSERT(0 == iCmp);
+  
+  // return false (not before)
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this key same as given key                                              */
+/*----------------------------------------------------------------------------*/
+bool Key::bSame(Key* pKeyThat, IdxColVec* pIdxColVec)
+{
+  /*
+   * a multi-part key is same as some other key if:
+   *
+   *  i) each element is equal to the corresponding element of the
+   *      the other key
+   *        e.g. thisElement[0] == thatElement[0] &&
+   *             thisElement[1] == thatElement[1] &&
+   *             thisElement[2] == thatElement[2]
+   */
+  
+  char* aCursorThis = aWspArea();
+  char* aCursorThat = pKeyThat->aWspArea();
+  
+  i8 iCmp = 0;
+  
+  for (i8 iColumn = 0; iColumn < pIdxColVec->nItems(); iColumn++) {
+    
+    Column* pColumn = pIdxColVec->pGet(iColumn);
+    
+    i8 nBytesThis;
+    i8 nBytesThat;
+    
+    char* aElementThis = aElement(pColumn,nBytesThis,&aCursorThis);
+    char* aElementThat = aElement(pColumn,nBytesThat,&aCursorThat);
+    
+    iCmp = pColumn->iCmp(aElementThis,nBytesThis,
+                         aElementThat,nBytesThat);
+    
+    // return false (not same) if this element is not equal to that element
+    if (iCmp)
+      return false;
   }
+  
+  // all elements are the same
+  ASSERT(0 == iCmp);
+  
+  // return true (is same)
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this key after given key                                                */
+/*----------------------------------------------------------------------------*/
+bool Key::bAfter(Key* pKeyThat, IdxColVec* pIdxColVec)
+{
+  /*
+   * a multi-part key is after some other key if:
+   *
+   *   i) the first element is greater than the first element of the other key
+   *        i.e. thisElement[0] > thatElement[0]
+   *
+   *  ii) the leading elements are equal to the corresponding elements of the
+   *      the other key and a next element is greater than the corresponding
+   *      element of the other key
+   *
+   *        e.g. thisElement[0] == thatElement[0] &&
+   *             thisElement[1] >  thatElement[1]
+   *
+   *        e.g. thisElement[0] == thatElement[0] &&
+   *             thisElement[1] == thatElement[1] &&
+   *             thisElement[2] >  thatElement[2]
+   *
+   *      the above example hold even if there are more elements
+   */
+  
+  char* aCursorThis = aWspArea();
+  char* aCursorThat = pKeyThat->aWspArea();
+  
+  i8 iCmp = 0;
+  
+  for (i8 iColumn = 0; iColumn < pIdxColVec->nItems(); iColumn++) {
+    
+    Column* pColumn = pIdxColVec->pGet(iColumn);
+    
+    i8 nBytesThis;
+    i8 nBytesThat;
+    
+    char* aElementThis = aElement(pColumn,nBytesThis,&aCursorThis);
+    char* aElementThat = aElement(pColumn,nBytesThat,&aCursorThat);
+    
+    iCmp = pColumn->iCmp(aElementThis,nBytesThis,
+                         aElementThat,nBytesThat);
+
+    // return true (is after) if this element is greater than that element
+    if (iCmp > 0)
+      return true;
+    
+    // return false (not after) if this element is less than that element
+    if (iCmp < 0)
+      return false;
+    
+    // so far the elements are equal
+  }
+  
+  // all elements are the same
+  ASSERT(0 == iCmp);
+  
+  // return true (is after)
+  return true; // had to do this for the assert in indexBuffer::pSplitBuffer()
 }
 
 /*----------------------------------------------------------------------------*/
