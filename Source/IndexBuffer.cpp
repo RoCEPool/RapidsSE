@@ -663,7 +663,7 @@ void IndexBuffer::vReplace(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp)
   ASSERT(pFoundEntry);
 
   // assert the key of the higher level entry and the old entry match
-  ASSERT(pFoundEntry->aKey()->bCompare(PN_SAME, xOldKeyWsp.aKey(), m_pIndex->pIdxColVec()));
+  ASSERT(pFoundEntry->aKey()->bJuxtaCompare(PN_SAME, xOldKeyWsp.aKey(), m_pIndex->pIdxColVec()));
 
   // get the size of the old key
   u8 uOldKeySize = xOldKeyWsp.nWspUsed();
@@ -1062,7 +1062,7 @@ Entry* IndexBuffer::aPosition(KeyWsp& xKeyWsp, ePN ePosition, Entry** aaReviseVe
       //pNextEntry->aKey()->vShow(m_pIndex->pIdxColVec());
     
       // compare the inserting object with next object
-      bool bAfter = aKey->bCompare(ePosition, pNextEntry->aKey(), m_pIndex->pIdxColVec());
+      bool bAfter = aKey->bJuxtaCompare(ePosition, pNextEntry->aKey(), m_pIndex->pIdxColVec());
 
       //vTrace(" %s\n"_Str,bAfter ? "after" : "before");
     

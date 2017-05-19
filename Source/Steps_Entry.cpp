@@ -69,7 +69,7 @@ void Task::vEntryMatches(NNP_Task nnpTask)
   xKeyWsp.vAddElement(pStrVal, pIndex->pIdxColVec()->pGet(0));
   
   //pEntry->vShow(0, pIndex->pIdxColVec());
-  bool bSame = pEntry->aKey()->bCompare(PN_SAME, xKeyWsp.aKey(), pIndex->pIdxColVec());
+  bool bSame = pEntry->aKey()->bJuxtaCompare(PN_SAME, xKeyWsp.aKey(), pIndex->pIdxColVec());
 
   nnpTask->m_pDataStack->vPushInt(bSame ? 1 : 0);
 }

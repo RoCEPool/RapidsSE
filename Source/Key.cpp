@@ -342,22 +342,22 @@ bool Key::bMatches(Key* pKeyThat, IdxColVec* pIdxColVec, RelOpAry* pRelOpAry)
 }
 
 /*----------------------------------------------------------------------------*/
-/* compare this key with given key                                            */
+/* juxta-compare this key with given key                                      */
 /*----------------------------------------------------------------------------*/
-bool Key::bCompare(ePN ePosition, Key* pKeyThat, IdxColVec* pIdxColVec)
+bool Key::bJuxtaCompare(ePN ePosition, Key* pKeyThat, IdxColVec* pIdxColVec)
 {
-  bool bCompare = false;
+  bool bJuxtaCompare = false;
   
   switch (ePosition) {
-    case PN_BEFORE: bCompare = bBefore(pKeyThat,pIdxColVec); break;
-    case PN_SAME:   bCompare = bSame(pKeyThat,pIdxColVec);   break;
-    case PN_AFTER:  bCompare = bAfter(pKeyThat,pIdxColVec);  break;
+    case PN_BEFORE: bJuxtaCompare = bBefore(pKeyThat,pIdxColVec); break;
+    case PN_SAME:   bJuxtaCompare = bSame(pKeyThat,pIdxColVec);   break;
+    case PN_AFTER:  bJuxtaCompare = bAfter(pKeyThat,pIdxColVec);  break;
       
     default:
       ASSERT(0);
   }
   
-  return bCompare;
+  return bJuxtaCompare;
 }
 
 /*----------------------------------------------------------------------------*/
