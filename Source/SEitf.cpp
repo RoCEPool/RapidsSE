@@ -347,6 +347,7 @@ bool SEitf::bDecode(Str* aWords[], i8 iWords)
   if (aWords[0]->bSame("cf"_Str)) return bPushDic(aWords);
   if (aWords[0]->bSame("connectCluster"_Str)) return bConnectCluster(aWords);
   if (aWords[0]->bSame("cp"_Str)) return bCopyTable(aWords, iWords);
+  if (aWords[0]->bSame("danidx"_Str)) return bDanalyzeIndex(aWords, iWords);
   if (aWords[0]->bSame("dantbl"_Str)) return bDanalyzeTable(aWords, iWords);
   if (aWords[0]->bSame("dex"_Str)) return bDistExportTable(aWords, iWords);
   if (aWords[0]->bSame("docol"_Str)) return bDocol(aWords);
@@ -1118,7 +1119,34 @@ bool SEitf::bAnalyzeTable(Str* aWords[], i8 iWords)
 }
 
 /*----------------------------------------------------------------------------*/
-/* analyze a table                                                            */
+/* detailed analysis of an index                                              */
+/*----------------------------------------------------------------------------*/
+bool SEitf::bDanalyzeIndex(Str* aWords[], i8 iWords)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  s256 sRequest;
+  
+  if (iWords != 3) {
+    vSetLastError(EC_INVALID_PARAMETERS);
+    return false;
+  }
+  
+  sRequest.vCopy("\""_Str);
+  sRequest.vConcat(aWords[2]);
+  sRequest.vConcat("\""_Str);
+  
+  sRequest.vConcat("\""_Str);
+  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat("\""_Str);
+  
+  sRequest.vConcat(" danalyze_index"_Str);
+  
+  return bAppendRequest(sRequest);
+}
+
+/*----------------------------------------------------------------------------*/
+/* detailed analysis of a table                                               */
 /*----------------------------------------------------------------------------*/
 bool SEitf::bDanalyzeTable(Str* aWords[], i8 iWords)
 {

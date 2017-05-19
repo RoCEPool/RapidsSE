@@ -1,19 +1,19 @@
 /*============================================================================*/
-/* requests_table.sen -- the set of table related requests                    */
+/* requests_index.sen -- the set of index related requests                    */
 /*============================================================================*/
 
-"requests.sen" .verbose
+"requests_index.sen" .verbose
 
 timer: idxSelectTimer
 
 /*----------------------------------------------------------------------------*/
 /* analyse an index of a table                                                */
 /*----------------------------------------------------------------------------*/
-: analyze_index ( "<indexNm>" "<tableNm>" -- <R> )
+: analyzeIdx ( "<indexNm>" "<tableNm>" detailed -- <R> )
 
-  tp: analyzeIndex
+  tp: analyzeIdx
 
-  locals| tableNm indexNm |
+  locals| detailed tableNm indexNm |
 
   ddlLock::grabWrite
 
@@ -38,7 +38,7 @@ timer: idxSelectTimer
       metadata!
   then
 
-  indexNm analyzeIndex ( )
+  detailed indexNm analyzeIndex ( )
 
   // set no of rows processed equal to total no of partitions
   grid.partitions task::this task.seitf@ seitf.rowsProcessed
@@ -55,6 +55,20 @@ timer: idxSelectTimer
   tp: analyzedIndex
 
   not if <NIP+ERROR> else <SUCCESS> then
+;
+
+/*----------------------------------------------------------------------------*/
+/* analyse an index of a table                                                */
+/*----------------------------------------------------------------------------*/
+: analyze_index ( "<indexNm>" "<tableNm>" -- <R> )
+   0 analyzeIdx
+;
+
+/*----------------------------------------------------------------------------*/
+/* analyse an index of a table                                                */
+/*----------------------------------------------------------------------------*/
+: danalyze_index ( "<indexNm>" "<tableNm>" -- <R> )
+  1 analyzeIdx
 ;
 
 /*----------------------------------------------------------------------------*/

@@ -204,7 +204,16 @@ Str* Table::pAnalyze(bool bDetailed)
       pStrand = pStrand->pNextStrand();
     }
     
-    if (gbMetadata) {
+    if (! gbMetadata || bDetailed) {
+      sAnalysis.vCatSprint(
+         "  partition %lld: %3lld strands; %5lld buffers; %lld rows\n"_Str,
+         iPartition,
+         nStrands,
+         nBuffers,
+         nRows);
+
+    }
+    else {
       sAnalysis.vCatSprint(
          "row: ('%s', %lld, %lld, %lld, %lld)"_Str,
          gpGrid->pThisNode()->aNodeName(),
@@ -215,14 +224,7 @@ Str* Table::pAnalyze(bool bDetailed)
       if (iSlot < gpGrid->m_nSlots - 1) {
         sAnalysis.vCatSprint("\n"_Str);
       }
-    }
-    else {
-      sAnalysis.vCatSprint(
-        "  partition %lld: %3lld strands; %5lld buffers; %lld rows\n"_Str,
-        iPartition,
-        nStrands,
-        nBuffers,
-        nRows);
+
     }
     
     nRowsTotal += nRows;
@@ -244,7 +246,7 @@ Str* Table::pAnalyze(bool bDetailed)
 /*----------------------------------------------------------------------------*/
 /* dump table                                                                 */
 /*----------------------------------------------------------------------------*/
-Str* Table::pAnalyzeIndex(Index* pIndex)
+Str* Table::pAnalyzeIndex(Index* pIndex, bool bDetailed)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
@@ -275,6 +277,19 @@ Str* Table::pAnalyzeIndex(Index* pIndex)
       i8 iBufferLevel = pIndexBuffer->nBufferLevel();
       nEntries = pIndexBuffer->nEntries() - 1; // not to show head entry
       
+      if (bDetailed) {
+        sAnalysis.vCatSprint("row: ('%s', %lld, %lld, %lld, %lld)"_Str,
+                             gpGrid->pThisNode()->aNodeName(),
+                             iPartition,
+                             iBufferNo++,
+                             iBufferLevel,
+                             nEntries);
+        if (iSlot < gpGrid->m_nSlots - 1) {
+          sAnalysis.vCatSprint("\n"_Str);
+        }
+        
+      }
+
       if (gbMetadata) {
         sAnalysis.vCatSprint("row: ('%s', %lld, %lld, %lld, %lld)"_Str,
                              gpGrid->pThisNode()->aNodeName(),

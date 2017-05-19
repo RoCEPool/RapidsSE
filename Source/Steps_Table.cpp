@@ -85,14 +85,14 @@ void Task::vTableAnalyze(NNP_Task nnpTask)
   Object* pPtrTable;
   i8 iDetailed;
   
-  if ( ! nnpTask->m_pDataStack->bPop(iDetailed) )
-    THROW_INVALID_DSTACK("table.analyze"_Str);
-  
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTable) )
     THROW_INVALID_DSTACK("table.analyze"_Str);
   
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
+  
+  if ( ! nnpTask->m_pDataStack->bPop(iDetailed) )
+    THROW_INVALID_DSTACK("table.analyze"_Str);
   
   s48K sAnalysis;
   sAnalysis = (Str*)pTable->pAnalyze(iDetailed == 1 ? true : false);

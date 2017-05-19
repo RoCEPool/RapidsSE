@@ -216,12 +216,11 @@
 /*----------------------------------------------------------------------------*/
 /* analyze an index of a table                                                */
 /*----------------------------------------------------------------------------*/
-: analyzeIndex allParticipants 1 returnResult ( "<indexNm>" -- true n# true )
+: analyzeIndex allParticipants 2 returnResult ( detailed "<indexNm>" -- true n# true )
 
   tp: analyzeIndex
 
   find execute
-
   index.analyze
 
   <SUCCESS_RESULT>

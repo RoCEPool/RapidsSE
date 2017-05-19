@@ -60,14 +60,19 @@ void Task::vIndexAnalyze(NNP_Task nnpTask)
   ENTRY("vIndexAnalyze"_Str);
   
   Object* pPtrIndex;
+  i8 iDetailed;
+  
   if ( ! nnpTask->m_pDataStack->bPop(pPtrIndex) )
     THROW_INVALID_DSTACK("index.analyze"_Str);
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
   
+  if ( ! nnpTask->m_pDataStack->bPop(iDetailed) )
+    THROW_INVALID_DSTACK("index.analyze"_Str);
+  
   s48K sAnalysis;
-  sAnalysis = (Str*)pIndex->pTable()->pAnalyzeIndex(pIndex);
+  sAnalysis = (Str*)pIndex->pTable()->pAnalyzeIndex(pIndex, iDetailed == 1 ? true : false);
   nnpTask->m_pDataStack->vPushS48K(sAnalysis);
   
   EXIT();
