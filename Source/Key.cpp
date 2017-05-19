@@ -344,14 +344,14 @@ bool Key::bMatches(Key* pKeyThat, IdxColVec* pIdxColVec, RelOpAry* pRelOpAry)
 /*----------------------------------------------------------------------------*/
 /* juxta-compare this key with given key                                      */
 /*----------------------------------------------------------------------------*/
-bool Key::bJuxtaCompare(ePN ePosition, Key* pKeyThat, IdxColVec* pIdxColVec)
+bool Key::bJuxtaCompare(eJC ePosition, Key* pKeyThat, IdxColVec* pIdxColVec)
 {
   bool bJuxtaCompare = false;
   
   switch (ePosition) {
-    case PN_BEFORE: bJuxtaCompare = bBefore(pKeyThat,pIdxColVec); break;
-    case PN_SAME:   bJuxtaCompare = bSame(pKeyThat,pIdxColVec);   break;
-    case PN_AFTER:  bJuxtaCompare = bAfter(pKeyThat,pIdxColVec);  break;
+    case JC_BEFORE: bJuxtaCompare = bBefore(pKeyThat,pIdxColVec); break;
+    case JC_SAME:   bJuxtaCompare = bSame(pKeyThat,pIdxColVec);   break;
+    case JC_AFTER:  bJuxtaCompare = bAfter(pKeyThat,pIdxColVec);  break;
       
     default:
       ASSERT(0);

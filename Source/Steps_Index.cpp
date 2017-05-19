@@ -111,7 +111,7 @@ void Task::vIndexBuffer(NNP_Task nnpTask)
   StrVal* pStrVal = _pStrVal(xValWsp.pNestedValueSelf());
   
   xKeyWsp.vAddElement(pStrVal, pIndex->pIdxColVec()->pGet(0));
-  IndexBuffer* pIndexBuffer = pIndexData->aPosition(xKeyWsp, PN_AFTER, 0);
+  IndexBuffer* pIndexBuffer = pIndexData->aPosition(xKeyWsp, JC_AFTER, 0);
   
   //xKeyWsp.vShow();
   
@@ -285,12 +285,12 @@ void Task::vIndexPosition(NNP_Task nnpTask)
   
   xKeyWsp.vAddElement(pStrVal, pIndex->pIdxColVec()->pGet(0));
 
-  Entry* pEntry = pIndexBuffer->aPosition(xKeyWsp, PN_AFTER);
+  Entry* pEntry = pIndexBuffer->aPosition(xKeyWsp, JC_AFTER);
   
   //pEntry->aKey()->vShow(pIndex->pIdxColVec());
   //xKeyWsp.aKey()->vShow(pIndex->pIdxColVec());
   
-  bool bAfter = pEntry->aKey()->bJuxtaCompare(PN_AFTER, xKeyWsp.aKey(), pIndex->pIdxColVec());
+  bool bAfter = pEntry->aKey()->bJuxtaCompare(JC_AFTER, xKeyWsp.aKey(), pIndex->pIdxColVec());
   if ( ! bAfter) {
     pEntry = pIndexBuffer->aNextEntry(pEntry);
   }
@@ -546,7 +546,7 @@ void Task::vIndexUpper(NNP_Task nnpTask)
   
   xKeyWsp.vAddElement(pStrVal, pIndex->pIdxColVec()->pGet(0));
   
-  bool bBefore = pEntry->aKey()->bJuxtaCompare(PN_BEFORE, xKeyWsp.aKey(), pIndex->pIdxColVec());
+  bool bBefore = pEntry->aKey()->bJuxtaCompare(JC_BEFORE, xKeyWsp.aKey(), pIndex->pIdxColVec());
   
   nnpTask->m_pDataStack->vPushInt(bBefore ? 1 : 0);
   

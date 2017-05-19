@@ -7,16 +7,16 @@ namespace DBobjects
 {
   //-----------------------------------------------------------------------------
   
-  enum ePN // Position
+  enum eJC // JuxtaPosition
   {
-    /*  0 */ PN_NONE=0,
-    /*  1 */ PN_BEFORE,
-    /*  2 */ PN_SAME,
-    /*  3 */ PN_AFTER,
-    /*  4 */ PN_ENUMS
+    /*  0 */ JC_NONE=0,
+    /*  1 */ JC_BEFORE,
+    /*  2 */ JC_SAME,
+    /*  3 */ JC_AFTER,
+    /*  4 */ JC_ENUMS
   };
   
-  static Str* aPN[]
+  static Str* aJC[]
   {
     /*  0 */ "NONE"_Str,
     /*  1 */ "BEFORE"_Str,
@@ -59,7 +59,7 @@ namespace DBobjects
     
     bool bMatches(Key* pKey, IdxColVec* pColVec, RelOpAry* pOpAry);
 
-    bool bJuxtaCompare(ePN ePosition, Key* pKey, IdxColVec* pColVec);
+    bool bJuxtaCompare(eJC ePosition, Key* pKey, IdxColVec* pColVec);
     bool bBefore(Key* pKey, IdxColVec* pColVec);
     bool bSame(Key* pKey, IdxColVec* pColVec);
     bool bAfter(Key* pKey, IdxColVec* pColVec);

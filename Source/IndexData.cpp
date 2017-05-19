@@ -227,7 +227,7 @@ void IndexData::vInsertEntry(Row* pRow, i8 nRowNo, bn nBufferNo)
 /*----------------------------------------------------------------------------*/
 /* position the indexData at aparticular level of index buffer                */
 /*----------------------------------------------------------------------------*/
-IndexBuffer* IndexData::aPosition(KeyWsp& xKeyWsp, ePN ePosition, i8 iLevel)
+IndexBuffer* IndexData::aPosition(KeyWsp& xKeyWsp, eJC ePosition, i8 iLevel)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
   
@@ -318,7 +318,7 @@ bool IndexData::bVerify(void)
       // get the key of the first entry points to
       Key* pKeyLN_1 = pEntryLN_1->aKey();
 
-      bool bSame = pKeyLN->bJuxtaCompare(PN_SAME, pEntryLN_1->aKey(), m_pIndex->pIdxColVec());
+      bool bSame = pKeyLN->bJuxtaCompare(JC_SAME, pEntryLN_1->aKey(), m_pIndex->pIdxColVec());
       if ( ! bSame ) {
         return false;
       }
@@ -358,7 +358,7 @@ void IndexData::vInsertEntry(IndexBuffer* pHigher, KeyWsp& xKeyWsp, Id xId, i8 i
   // find buffer to insert into, starting with root
   IndexBuffer* pIndexBuffer = nullptr;
   
-  pIndexBuffer = pHigher->aPositionLevel(xKeyWsp, PN_AFTER, iLevel);
+  pIndexBuffer = pHigher->aPositionLevel(xKeyWsp, JC_AFTER, iLevel);
   
   // check if IndexBuffer to insert into has space
   if ( ! pIndexBuffer->bHasSpace(nBytes) ) {
@@ -367,7 +367,7 @@ void IndexData::vInsertEntry(IndexBuffer* pHigher, KeyWsp& xKeyWsp, Id xId, i8 i
     pIndexBuffer = pSplitBuffer(pIndexBuffer);
     
     // find position again
-    pIndexBuffer = pIndexBuffer->pHigherLevel()->aPositionLevel(xKeyWsp, PN_AFTER, iLevel);
+    pIndexBuffer = pIndexBuffer->pHigherLevel()->aPositionLevel(xKeyWsp, JC_AFTER, iLevel);
   }
   
   // assert we have a buffer
@@ -423,7 +423,7 @@ void IndexData::vFixHigherBuffer(IndexBuffer* pIndexBuffer, i8 iLevel)
   // form a keyWsp from the key
   xKeyWsp.vAddKey(pFirstEntry->aKey(), m_pIndex->pIdxColVec());
   
-  pRoot = m_pRoot->aPositionLevel(xKeyWsp, PN_AFTER, iLevel);
+  pRoot = m_pRoot->aPositionLevel(xKeyWsp, JC_AFTER, iLevel);
 
   pIndexBuffer->vHigherLevel(pRoot);
 }

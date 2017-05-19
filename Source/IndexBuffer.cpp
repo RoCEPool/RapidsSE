@@ -233,7 +233,7 @@ bool IndexBuffer::bInsert(KeyWsp& xKeyWsp, Id xId)
   i8 nBytes = Entry::nBytesRequired(xEntWsp);
   
   // position the key in the buffer
-  Entry* pAfterEntry = aPosition(xKeyWsp, PN_AFTER, pReviseVec);
+  Entry* pAfterEntry = aPosition(xKeyWsp, JC_AFTER, pReviseVec);
   Entry* pNewEntry = aNewEntry(nBytes, xEntWsp.nOffsets(), pAfterEntry);
   
   // set the new entry from the EntWsp
@@ -317,7 +317,7 @@ Entry* IndexBuffer::aNextEntry(Entry* aEntry)
 /*----------------------------------------------------------------------------*/
 /* position at entry with lower bound at key                                  */
 /*----------------------------------------------------------------------------*/
-Entry* IndexBuffer::aPosition(KeyWsp& xKeyWsp, ePN ePosition)
+Entry* IndexBuffer::aPosition(KeyWsp& xKeyWsp, eJC ePosition)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
@@ -334,7 +334,7 @@ Entry* IndexBuffer::aPosition(KeyWsp& xKeyWsp, ePN ePosition)
 /*----------------------------------------------------------------------------*/
 /* position at an index buffer at level iLevel starting from this buffer      */
 /*--------------------ƒ--------------------------------------------------------*/
-IndexBuffer* IndexBuffer::aPositionLevel(KeyWsp& xKeyWsp, ePN ePosition, i8 iLevel)
+IndexBuffer* IndexBuffer::aPositionLevel(KeyWsp& xKeyWsp, eJC ePosition, i8 iLevel)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
@@ -424,7 +424,7 @@ IndexBuffer* IndexBuffer::pSplitBuffer(void)
   KeyWsp xKeyWsp;
   xKeyWsp.vAddKey(pLastEntry->aKey(), m_pIndex->pIdxColVec());
   
-  Entry* pAfterEntry = aPosition(xKeyWsp, PN_AFTER, pReviseVec);
+  Entry* pAfterEntry = aPosition(xKeyWsp, JC_AFTER, pReviseVec);
   
   // Note this ASSERT fails if we have dulplicates in the table     //ALKA: TODO
   // Need to fix when we cater for non-unique indexes
@@ -657,13 +657,13 @@ void IndexBuffer::vReplace(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
 
   // find the oldEntry in the higher level buffer
-  Entry* pFoundEntry = aPosition(xOldKeyWsp, PN_SAME);
+  Entry* pFoundEntry = aPosition(xOldKeyWsp, JC_SAME);
 
   // assert that we found one
   ASSERT(pFoundEntry);
 
   // assert the key of the higher level entry and the old entry match
-  ASSERT(pFoundEntry->aKey()->bJuxtaCompare(PN_SAME, xOldKeyWsp.aKey(), m_pIndex->pIdxColVec()));
+  ASSERT(pFoundEntry->aKey()->bJuxtaCompare(JC_SAME, xOldKeyWsp.aKey(), m_pIndex->pIdxColVec()));
 
   // get the size of the old key
   u8 uOldKeySize = xOldKeyWsp.nWspUsed();
@@ -1042,7 +1042,7 @@ void IndexBuffer::vNewHead(void)
 /*----------------------------------------------------------------------------*/
 /* positition to entry (optional set revise vector)                           */
 /*----------------------------------------------------------------------------*/
-Entry* IndexBuffer::aPosition(KeyWsp& xKeyWsp, ePN ePosition, Entry** aaReviseVec)
+Entry* IndexBuffer::aPosition(KeyWsp& xKeyWsp, eJC ePosition, Entry** aaReviseVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
