@@ -318,8 +318,8 @@ bool IndexData::bVerify(void)
       // get the key of the first entry points to
       Key* pKeyLN_1 = pEntryLN_1->aKey();
 
-      bool bMatches = pKeyLN->bCompare(PN_SAME, pEntryLN_1->aKey(), m_pIndex->pIdxColVec());
-      if ( ! bMatches ) {
+      bool bSame = pKeyLN->bCompare(PN_SAME, pEntryLN_1->aKey(), m_pIndex->pIdxColVec());
+      if ( ! bSame ) {
         return false;
       }
       

@@ -279,15 +279,14 @@ void Task::vIndexPosition(NNP_Task nnpTask)
   StrVal* pStrVal = _pStrVal(xValWsp.pNestedValueSelf());
   
   xKeyWsp.vAddElement(pStrVal, pIndex->pIdxColVec()->pGet(0));
-  
-  bool bMatches = true;
+
   Entry* pEntry = pIndexBuffer->aPosition(xKeyWsp, PN_AFTER);
   
   //pEntry->aKey()->vShow(pIndex->pIdxColVec());
   //xKeyWsp.aKey()->vShow(pIndex->pIdxColVec());
   
-  bMatches = pEntry->aKey()->bCompare(PN_AFTER, xKeyWsp.aKey(), pIndex->pIdxColVec());
-  if ( ! bMatches) {
+  bool bAfter = pEntry->aKey()->bCompare(PN_AFTER, xKeyWsp.aKey(), pIndex->pIdxColVec());
+  if ( ! bAfter) {
     pEntry = pIndexBuffer->aNextEntry(pEntry);
   }
   
@@ -542,9 +541,9 @@ void Task::vIndexUpper(NNP_Task nnpTask)
   
   xKeyWsp.vAddElement(pStrVal, pIndex->pIdxColVec()->pGet(0));
   
-  bool bMatches = pEntry->bMatches(PN_BEFORE, xKeyWsp.aKey(), pIndex->pIdxColVec());
+  bool bBefore = pEntry->aKey()->bCompare(PN_BEFORE, xKeyWsp.aKey(), pIndex->pIdxColVec());
   
-  nnpTask->m_pDataStack->vPushInt(bMatches ? 1 : 0);
+  nnpTask->m_pDataStack->vPushInt(bBefore ? 1 : 0);
   
   EXIT();
 }
