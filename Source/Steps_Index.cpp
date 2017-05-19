@@ -297,6 +297,9 @@ void Task::vIndexPosition(NNP_Task nnpTask)
   bool bMatches = true;
   Entry* pEntry = pIndexBuffer->aPosition(xKeyWsp, pOpAryGreater);
   
+  //pEntry->aKey()->vShow(pIndex->pIdxColVec());
+  //xKeyWsp.aKey()->vShow(pIndex->pIdxColVec());
+  
   bMatches = pEntry->aKey()->bMatches(xKeyWsp.aKey(), pIndex->pIdxColVec(), pOpAryGreater);
   if ( ! bMatches) {
     pEntry = pIndexBuffer->aNextEntry(pEntry);
