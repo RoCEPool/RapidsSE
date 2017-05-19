@@ -659,12 +659,6 @@ void IndexBuffer::vReplace(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
 
-  // create a relational operator array
-  RelOpAry* pOpAryFind = new RelOpAry;
-  i8 nItems = m_pIndex->pIdxColVec()->nItems();
-  for (i8 i=0; i < nItems; i++)
-    pOpAryFind->vAdd(RO_EQUAL);
-  
   // find the oldEntry in the higher level buffer
   Entry* pFoundEntry = aPosition(xOldKeyWsp, PN_SAME);
 
@@ -672,7 +666,7 @@ void IndexBuffer::vReplace(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp)
   ASSERT(pFoundEntry);
 
   // assert the key of the higher level entry and the old entry match
-  ASSERT(pFoundEntry->aKey()->bMatches(xOldKeyWsp.aKey(), m_pIndex->pIdxColVec(), pOpAryFind));
+  ASSERT(pFoundEntry->aKey()->bCompare(PN_SAME, xOldKeyWsp.aKey(), m_pIndex->pIdxColVec()));
 
   // get the size of the old key
   u8 uOldKeySize = xOldKeyWsp.nWspUsed();
@@ -787,7 +781,6 @@ void IndexBuffer::vReplace(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp)
     }
   }
   
-  delete pOpAryFind;
 }
 
 /*----------------------------------------------------------------------------*/
