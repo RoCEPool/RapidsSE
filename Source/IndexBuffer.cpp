@@ -220,7 +220,6 @@ bool IndexBuffer::bInsert(KeyWsp& xKeyWsp, Id xId)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
   Entry* pReviseVec[C_FLAT_LEVELS];
-  bool   bEqualTo;
   EntWsp xEntWsp;
   
   //vTrace("Inserting key:\n"_Str);
@@ -234,7 +233,7 @@ bool IndexBuffer::bInsert(KeyWsp& xKeyWsp, Id xId)
   i8 nBytes = Entry::nBytesRequired(xEntWsp);
   
   // position the key in the buffer
-  Entry* pAfterEntry = aPosition(xKeyWsp, PN_AFTER, bEqualTo, pReviseVec);
+  Entry* pAfterEntry = aPosition(xKeyWsp, PN_AFTER, pReviseVec);
   Entry* pNewEntry = aNewEntry(nBytes, xEntWsp.nOffsets(), pAfterEntry);
   
   // set the new entry from the EntWsp
@@ -322,10 +321,9 @@ Entry* IndexBuffer::aPosition(KeyWsp& xKeyWsp, ePN ePosition)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
-  bool   bEqualTo;
   Entry* pEntry;
   
-  pEntry = aPosition(xKeyWsp, ePosition, bEqualTo, nullptr);
+  pEntry = aPosition(xKeyWsp, ePosition, nullptr);
   
   if (pEntry == aHead())
     pEntry = aNextEntry(pEntry);
@@ -421,13 +419,12 @@ IndexBuffer* IndexBuffer::pSplitBuffer(void)
   //pLastEntry->vShow(0,m_pIndex->pIdxColVec());
   
   Entry* pReviseVec[C_FLAT_LEVELS];
-  bool   bEqualTo;
   
   // find the position of the last entry in the buffer
   KeyWsp xKeyWsp;
   xKeyWsp.vAddKey(pLastEntry->aKey(), m_pIndex->pIdxColVec());
   
-  Entry* pAfterEntry = aPosition(xKeyWsp, PN_AFTER, bEqualTo, pReviseVec);
+  Entry* pAfterEntry = aPosition(xKeyWsp, PN_AFTER, pReviseVec);
   
   // Note this ASSERT fails if we have dulplicates in the table     //ALKA: TODO
   // Need to fix when we cater for non-unique indexes
@@ -1045,7 +1042,7 @@ void IndexBuffer::vNewHead(void)
 /*----------------------------------------------------------------------------*/
 /* positition to entry (optional set revise vector)                           */
 /*----------------------------------------------------------------------------*/
-Entry* IndexBuffer::aPosition(KeyWsp& xKeyWsp, ePN ePosition, bool& bEqualTo, Entry** aReviseVec)
+Entry* IndexBuffer::aPosition(KeyWsp& xKeyWsp, ePN ePosition, Entry** aaReviseVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
@@ -1090,8 +1087,8 @@ Entry* IndexBuffer::aPosition(KeyWsp& xKeyWsp, ePN ePosition, bool& bEqualTo, En
     // outer loop: now having gone right as far as we go down one single level
 
     // first record current node as a revision point
-    if (aReviseVec)
-      aReviseVec[iCurrentLevel] = pCurrentEntry;
+    if (aaReviseVec)
+      aaReviseVec[iCurrentLevel] = pCurrentEntry;
    
    // now go down one level
     goDownLevel(iCurrentLevel);
