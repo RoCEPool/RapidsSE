@@ -221,16 +221,6 @@ Key* Entry::aKey(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* does this keyval match the given arguments                                 */
-/*----------------------------------------------------------------------------*/
-bool Entry::bMatches(ePN ePosition, Key* pKeyThat, IdxColVec* pColVec)
-{
-  bool bMatches = aKey()->bCompare(ePosition, pKeyThat, pColVec);
-  
-  return bMatches;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get nOffsets                                                               */
 /*----------------------------------------------------------------------------*/
 u8 Entry::nOffsets(void)
