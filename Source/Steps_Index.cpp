@@ -270,12 +270,6 @@ void Task::vIndexPosition(NNP_Task nnpTask)
   
   Partition* pPartition = pTable->pPartition(nnpTask->m_pSEitf->iPartition());
   IndexData* pIndexData = pPartition->pIndexData(iIndexNo);
-  
-  // create a relational operator array
-  RelOpAry* pOpAryGreater = new RelOpAry;
-  i8 nItems = pIndex->pIdxColVec()->nItems();
-  for (i8 i=0; i < nItems; i++)
-    pOpAryGreater->vAdd(RO_GREATER_EQUAL);
 
   KeyWsp xKeyWsp;
   
@@ -292,14 +286,12 @@ void Task::vIndexPosition(NNP_Task nnpTask)
   //pEntry->aKey()->vShow(pIndex->pIdxColVec());
   //xKeyWsp.aKey()->vShow(pIndex->pIdxColVec());
   
-  bMatches = pEntry->aKey()->bMatches(xKeyWsp.aKey(), pIndex->pIdxColVec(), pOpAryGreater);
+  bMatches = pEntry->aKey()->bCompare(PN_AFTER, xKeyWsp.aKey(), pIndex->pIdxColVec());
   if ( ! bMatches) {
     pEntry = pIndexBuffer->aNextEntry(pEntry);
   }
   
   nnpTask->m_pDataStack->vPushObject(pEntry);
-  
-  delete pOpAryGreater;
   
   EXIT();
 }

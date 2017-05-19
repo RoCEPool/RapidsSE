@@ -35,15 +35,6 @@ ld supplier "/tpch/supplier.tbl" ;
 pwf ;
 lf ;
 
-print "\nSelecting rows from supplier (idx1) where S_SUPPKEY == 9785...\n" ;
-keyselidx supplier idx1 "9785" ;
-
-print "\nSelecting rows from supplier (idx2) where S_NAME == 'Supplier#000001900'...\n" ;
-keyselidx supplier idx2 "Supplier#000001900" ;
-
-print "\nSelecting rows from supplier (idx3) where S_ADDRESS == 'mX37oAzqsBPhN1LWdzV p'...\n" ;
-keyselidx supplier idx3 "mX37oAzqsBPhN1LWdzV p" ;
-
 print "\nSelecting rows from supplier (idx1) where S_SUPPKEY >= 9972 ...\n" ;
 lwrselidx supplier idx1 9972 ;
 
@@ -93,6 +84,9 @@ keyselidx supplier idx2 "Supplier#000001900" ;
 
 print "\nSelecting rows from supplier (idx1) where S_SUPPKEY == 9785...\n" ;
 keyselidx supplier idx1 "9785" ;
+
+print "\nSelecting rows from supplier (idx3) where S_ADDRESS == 'mX37oAzqsBPhN1LWdzV p'...\n" ;
+keyselidx supplier idx3 "mX37oAzqsBPhN1LWdzV p" ;
 
 /*============================================================================*/
 /* end                                                                        */
