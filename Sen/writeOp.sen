@@ -59,7 +59,9 @@ common/ write nStreams    /
   //": writeCloseFile " .put
   //nStreams .put
   //" streams still open" .put .\n
-  "." .put
+  args.metadata not if
+    "." .put
+  then
 
   nStreams
   if
@@ -74,7 +76,9 @@ common/ write nStreams    /
 
   //": writeCloseFile closed file" .
 
-  .\n
+  args.metadata not if
+    .\n
+  then
 
   true
 ;
