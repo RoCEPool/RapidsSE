@@ -423,7 +423,7 @@ void IndexData::vFixHigherBuffer(IndexBuffer* pIndexBuffer, i8 iLevel)
   // form a keyWsp from the key
   xKeyWsp.vAddKey(pFirstEntry->aKey(), m_pIndex->pIdxColVec());
   
-  pRoot =  m_pRoot->aPositionLevel(xKeyWsp, PN_AFTER, iLevel);
+  pRoot = m_pRoot->aPositionLevel(xKeyWsp, PN_AFTER, iLevel);
 
   pIndexBuffer->vHigherLevel(pRoot);
 }

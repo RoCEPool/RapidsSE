@@ -509,6 +509,13 @@ ddlLock::grabWrite
 
   indexNm sizeIndex ( "<size>" )
 
+  args.metadata if
+    "(size INTEGER)" metadata!
+    "row: (" swap str.cat
+    ")\n" str.cat
+    1 task::this task.seitf@ seitf.rowsProcessed
+  then
+
   // pop table folder
   popIndexes
 

@@ -867,6 +867,7 @@ bool SePrompt::bHelp(void)
   vTrace("space      -- pool space\n"_Str);
   vTrace("status     -- grid status\n"_Str);
   vTrace("sz         -- size of table\n"_Str);
+  vTrace("szidx      -- size of an index\n"_Str);
   vTrace("tableSizes -- size of all tables\n"_Str);
   vTrace("tr         -- truncate table\n"_Str);
   vTrace("tridx      -- truncate table\n"_Str);
