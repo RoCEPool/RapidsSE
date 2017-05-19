@@ -288,18 +288,11 @@ bool IndexData::bVerify(void)
   // start with the root buffer
   IndexBuffer* pIndexBuffer = m_pRoot;
   
-  // create a realtional operator array
-  RelOpAry* pOpAry = new RelOpAry;
-  i8 nItems = m_pIndex->pIdxColVec()->nItems();
-  for (i8 i=0; i < nItems; i++)
-    pOpAry->vAdd(RO_EQUAL);
-  
   while (pIndexBuffer) {
     
     // first just run verify on its entries
     bool bVerify = pIndexBuffer->bVerify();
     if ( ! bVerify ) {
-      delete pOpAry;
       return false;
     }
     
@@ -325,9 +318,8 @@ bool IndexData::bVerify(void)
       // get the key of the first entry points to
       Key* pKeyLN_1 = pEntryLN_1->aKey();
 
-      bool bMatches = pKeyLN->bMatches(pEntryLN_1->aKey(), m_pIndex->pIdxColVec(), pOpAry);
+      bool bMatches = pKeyLN->bCompare(PN_SAME, pEntryLN_1->aKey(), m_pIndex->pIdxColVec());
       if ( ! bMatches ) {
-        delete pOpAry;
         return false;
       }
       
@@ -338,7 +330,6 @@ bool IndexData::bVerify(void)
     
   }
   
-  delete pOpAry;
   
   return true;
 }
