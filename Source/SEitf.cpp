@@ -365,6 +365,7 @@ bool SEitf::bDecode(Str* aWords[], i8 iWords)
   if (aWords[0]->bSame("lds"_Str)) return bLoadTableStream(aWords, iWords);
   if (aWords[0]->bSame("lf"_Str)) return bGetDicContents(aWords);
   if (aWords[0]->bSame("lfG"_Str)) return bGetDicContentsG(aWords);
+  if (aWords[0]->bSame("keyselidx"_Str)) return bKeySelectIndex(aWords, iWords);
   if (aWords[0]->bSame("lscat"_Str)) return bListCatalogs(aWords, iWords);
   if (aWords[0]->bSame("lscol"_Str)) return bListColumns(aWords, iWords);
   if (aWords[0]->bSame("lsidx"_Str)) return bListIndices(aWords, iWords);
@@ -1454,6 +1455,37 @@ bool SEitf::bNodeStatus(Str* aWords[], i8 iWords)
   }
   
   sRequest.vConcat(" status"_Str);
+  
+  return bAppendRequest(sRequest);
+}
+
+/*----------------------------------------------------------------------------*/
+/* exact key select from a table given an index                               */
+/*----------------------------------------------------------------------------*/
+bool SEitf::bKeySelectIndex(Str* aWords[], i8 iWords)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  s256 sRequest;
+  
+  if (iWords != 4) {
+    vSetLastError(EC_INVALID_PARAMETERS);
+    return false;
+  }
+  
+  sRequest.vConcat(" \""_Str);
+  sRequest.vConcat(aWords[3]);
+  sRequest.vConcat("\""_Str);
+  
+  sRequest.vConcat(" \""_Str);
+  sRequest.vConcat(aWords[2]);
+  sRequest.vConcat("\""_Str);
+  
+  sRequest.vConcat(" \""_Str);
+  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat("\""_Str);
+  
+  sRequest.vConcat(" key_select_index"_Str);
   
   return bAppendRequest(sRequest);
 }

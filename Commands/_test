@@ -33,6 +33,9 @@ ld jidx "../JTEST/jidx.csv" ;
 //anidx jidx idx ;
 dumpidx jidx idx1 ;
 
+print "\nSelecting rows with key == 7 using idx1 ...\n" ;
+keyselidx jidx idx1 7 ;
+/*
 print "\nSelecting rows with key >= 3 using idx1 ...\n" ;
 lwrselidx jidx idx1 3 ;
 
@@ -65,7 +68,7 @@ rgeselidx jidx idx1 3 7 ;
 
 print "\nSelecting rows with key <= 7 using idx1 ...\n" ;
 uprselidx jidx idx1 7 ;
-
+*/
 
 /*============================================================================*/
 /* end                                                                        */

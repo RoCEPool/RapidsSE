@@ -475,6 +475,7 @@ namespace Tasks
     static void vEnterRoutine(NNP_Task nnpTask);
     
     // entry
+    static void vEntryMatches(NNP_Task nnpTask);
     static void vEntryRow(NNP_Task nnpTask);
 
     // env

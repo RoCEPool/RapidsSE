@@ -32,7 +32,53 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Entry(void)
 {
-  vAddPrimitive("entry.row"_Str,   &vEntryRow,   false);
+  vAddPrimitive("entry.matches"_Str, &vEntryMatches, false);
+  vAddPrimitive("entry.row"_Str,     &vEntryRow,     false);
+}
+
+/*----------------------------------------------------------------------------*/
+/* entry.matches -- return true if entry matches key                          */
+/*----------------------------------------------------------------------------*/
+void Task::vEntryMatches(NNP_Task nnpTask)
+{
+  ENTRY("vEntryMatches"_Str);
+  
+  Object* pPtrEntry = nullptr;
+  Object* pPtrIndex = nullptr;
+  ValWsp xValWsp;
+  
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrEntry) )
+    THROW_INVALID_DSTACK("entry.matches"_Str);
+  
+  Entry* pEntry = _aEntry(pPtrEntry);
+  ASSERT(CN_ENTRY == pEntry->eClass());
+  
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrIndex) )
+    THROW_INVALID_DSTACK("entry.matches"_Str);
+  
+  Index* pIndex = _pIndex(pPtrIndex);
+  ASSERT(CN_INDEX == pIndex->eClass());
+  
+  if ( ! nnpTask->m_pDataStack->bPop(xValWsp) )
+    THROW_INVALID_DSTACK("entry.matches"_Str);
+  
+  KeyWsp xKeyWsp;
+  
+  // create a relational operator array
+  RelOpAry* pOpAryGreater = new RelOpAry;
+  i8 nItems = pIndex->pIdxColVec()->nItems();
+  for (i8 i=0; i < nItems; i++)
+    pOpAryGreater->vAdd(RO_EQUAL);
+  
+  StrVal* pStrVal = _pStrVal(xValWsp.pNestedValueSelf());
+  
+  xKeyWsp.vAddElement(pStrVal, pIndex->pIdxColVec()->pGet(0));
+  
+  //pEntry->vShow(0, pIndex->pIdxColVec());
+  bool bMatches = true;
+  bMatches = pEntry->aKey()->bMatches(xKeyWsp.aKey(), pIndex->pIdxColVec(), pOpAryGreater);
+
+  nnpTask->m_pDataStack->vPushInt(bMatches ? 1 : 0);
 }
 
 /*----------------------------------------------------------------------------*/

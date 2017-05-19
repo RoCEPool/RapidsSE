@@ -109,9 +109,9 @@ create table j10 (
 );
 
 create index idx1 on j10 (j10_key);
-create index idx2 on j10 (j);                            // error: no such colum
+create index idx2 on j10 (j);                             //error: no such colum
 create index idx3 on j10 (j10_name);
-create index idx3 on j10 (j10_name);                     //error: index exists
+create index idx3 on j10 (j10_name);                      //error: index exists
 
 drop table j10;
 

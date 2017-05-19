@@ -848,6 +848,7 @@ bool SePrompt::bHelp(void)
   vTrace("dex        -- distributed export table t\n"_Str);
   vTrace("drop       -- drop tenant|catalog|schema|table|index\n"_Str);
   vTrace("ex         -- export table t\n"_Str);
+  vTrace("keyselidx  -- exact key select\n"_Str);
   vTrace("ld         -- load table t\n"_Str);
   vTrace("lf         -- list folder contents\n"_Str);
   vTrace("ls         -- list directory contents\n"_Str);

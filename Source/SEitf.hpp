@@ -115,6 +115,7 @@ namespace Interface
     bool bListIndexColumns(Str* aWords[], i8 iWords);
     
     bool bAnalyzeIndex(Str* aWords[], i8 iWords);
+    bool bKeySelectIndex(Str* aWords[], i8 iWords);
     bool bLowerSelectIndex(Str* aWords[], i8 iWords);
     bool bRangeSelectIndex(Str* aWords[], i8 iWords);
     bool bSizeIndex(Str* aWords[], i8 iWords);
