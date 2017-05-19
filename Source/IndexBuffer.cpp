@@ -517,7 +517,7 @@ bool IndexBuffer::bVerify(void)
       Key* pKeyB = pEntryB->aKey();
       
       if (pEntryA != aHead()) {
-        bool bAfter = pEntryB->aKey()->bAfter(pEntryA->aKey(), m_pIndex->pIdxColVec());
+        bool bAfter = pEntryB->aKey()->bJuxtaAfter(pEntryA->aKey(), m_pIndex->pIdxColVec());
         if ( ! bAfter )
           return false;
       }

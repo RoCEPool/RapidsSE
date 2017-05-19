@@ -349,9 +349,9 @@ bool Key::bJuxtaCompare(eJC ePosition, Key* pKeyThat, IdxColVec* pIdxColVec)
   bool bJuxtaCompare = false;
   
   switch (ePosition) {
-    case JC_BEFORE: bJuxtaCompare = bBefore(pKeyThat,pIdxColVec); break;
-    case JC_SAME:   bJuxtaCompare = bSame(pKeyThat,pIdxColVec);   break;
-    case JC_AFTER:  bJuxtaCompare = bAfter(pKeyThat,pIdxColVec);  break;
+    case JC_BEFORE: bJuxtaCompare = bJuxtaBefore(pKeyThat,pIdxColVec); break;
+    case JC_SAME:   bJuxtaCompare = bJuxtaSame(pKeyThat,pIdxColVec);   break;
+    case JC_AFTER:  bJuxtaCompare = bJuxtaAfter(pKeyThat,pIdxColVec);  break;
       
     default:
       ASSERT(0);
@@ -363,7 +363,7 @@ bool Key::bJuxtaCompare(eJC ePosition, Key* pKeyThat, IdxColVec* pIdxColVec)
 /*----------------------------------------------------------------------------*/
 /* is this key before given key                                               */
 /*----------------------------------------------------------------------------*/
-bool Key::bBefore(Key* pKeyThat, IdxColVec* pIdxColVec)
+bool Key::bJuxtaBefore(Key* pKeyThat, IdxColVec* pIdxColVec)
 {
   /*
    * a multi-part key is before some other key if:
@@ -422,7 +422,7 @@ bool Key::bBefore(Key* pKeyThat, IdxColVec* pIdxColVec)
 /*----------------------------------------------------------------------------*/
 /* is this key same as given key                                              */
 /*----------------------------------------------------------------------------*/
-bool Key::bSame(Key* pKeyThat, IdxColVec* pIdxColVec)
+bool Key::bJuxtaSame(Key* pKeyThat, IdxColVec* pIdxColVec)
 {
   /*
    * a multi-part key is same as some other key if:
@@ -467,7 +467,7 @@ bool Key::bSame(Key* pKeyThat, IdxColVec* pIdxColVec)
 /*----------------------------------------------------------------------------*/
 /* is this key after given key                                                */
 /*----------------------------------------------------------------------------*/
-bool Key::bAfter(Key* pKeyThat, IdxColVec* pIdxColVec)
+bool Key::bJuxtaAfter(Key* pKeyThat, IdxColVec* pIdxColVec)
 {
   /*
    * a multi-part key is after some other key if:
