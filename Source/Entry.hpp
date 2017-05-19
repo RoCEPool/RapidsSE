@@ -34,7 +34,7 @@ namespace DBobjects
     
     IndexBuffer* pIndexBuffer(void);
     Key*   aKey(void);
-    bool   bMatches(Key* pKey, IdxColVec* pColVec, RelOpAry *pRelOpAry);
+    bool   bMatches(ePN ePosition, Key* pKey, IdxColVec* pColVec);
     u8     nOffsets(void);
     u8     uRightOffset(u8 iLevel);
     void   vRightOffset(u8 iLevel, u8 uOffset);

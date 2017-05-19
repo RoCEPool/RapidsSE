@@ -223,9 +223,9 @@ Key* Entry::aKey(void)
 /*----------------------------------------------------------------------------*/
 /* does this keyval match the given arguments                                 */
 /*----------------------------------------------------------------------------*/
-bool Entry::bMatches(Key* pKeyThat, IdxColVec* pColVec, RelOpAry* pRelOpAry)
+bool Entry::bMatches(ePN ePosition, Key* pKeyThat, IdxColVec* pColVec)
 {
-  bool bMatches = aKey()->bMatches(pKeyThat, pColVec, pRelOpAry);
+  bool bMatches = aKey()->bCompare(ePosition, pKeyThat, pColVec);
   
   return bMatches;
 }
