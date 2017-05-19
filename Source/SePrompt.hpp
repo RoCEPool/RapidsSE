@@ -60,19 +60,25 @@ private:
   void vGetCommandInput(void);
   
   void vMetaFormat(void);
-  bool bProcessCommand(bool bPostProcess = true);  
+  
+  //----------------------------------------------------------------------------
+  bool bProcessCommand(bool bPostProcess = true);
   
   void vSetEcho(void);
   void vClearEcho(void);
   void vSetExpect(void);
   void vClearExpect(void);
-  void vClipTokens(i8 nTokens);
+  
+  bool bBye(void);
+  bool bHistory(void);
+  bool bRunFile(void);
+  bool bRecallCommand(void);
   
   bool bExecuteRequest(void);
   bool bGetFirstRow(void);
   bool bGetNextRow(void);
   void vIterateRows(void);
-  void vHelp(void);
+  bool bHelp(void);
   bool bTestFile(Str* aPath);
   void vPushFile(Str* aPath);
   
@@ -85,8 +91,6 @@ private:
   bool bCreateTable(void);
   bool bCreateTenant(void);
   
-  void vCollectStatement(void);
-  void vStripSemicolon(void);
   bool bDocol(void);
   
   bool bConnectCluster(void);
@@ -114,6 +118,10 @@ private:
   
   bool bSleep(void);
   
+  //----------------------------------------------------------------------------
+  void vClipTokens(i8 nTokens);
+  void vCollectStatement(void);
+  void vStripSemicolon(void);
   bool bTokenCheck(i8 nTokens);
   
   Footer* pFooter(void);
