@@ -342,6 +342,25 @@ bool Key::bMatches(Key* pKeyThat, IdxColVec* pIdxColVec, RelOpAry* pRelOpAry)
 }
 
 /*----------------------------------------------------------------------------*/
+/* compare this key with given key                                            */
+/*----------------------------------------------------------------------------*/
+bool Key::bCompare(ePN ePosition, Key* pKeyThat, IdxColVec* pIdxColVec)
+{
+  bool bCompare = false;
+  
+  switch (ePosition) {
+    case PN_BEFORE: bCompare = bBefore(pKeyThat,pIdxColVec); break;
+    case PN_SAME:   bCompare = bSame(pKeyThat,pIdxColVec);   break;
+    case PN_AFTER:  bCompare = bAfter(pKeyThat,pIdxColVec);  break;
+      
+    default:
+      ASSERT(0);
+  }
+  
+  return bCompare;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this key before given key                                               */
 /*----------------------------------------------------------------------------*/
 bool Key::bBefore(Key* pKeyThat, IdxColVec* pIdxColVec)

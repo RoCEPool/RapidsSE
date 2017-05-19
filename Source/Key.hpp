@@ -59,6 +59,7 @@ namespace DBobjects
     
     bool bMatches(Key* pKey, IdxColVec* pColVec, RelOpAry* pOpAry);
 
+    bool bCompare(ePN ePosition, Key* pKey, IdxColVec* pColVec);
     bool bBefore(Key* pKey, IdxColVec* pColVec);
     bool bSame(Key* pKey, IdxColVec* pColVec);
     bool bAfter(Key* pKey, IdxColVec* pColVec);
