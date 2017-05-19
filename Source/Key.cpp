@@ -433,7 +433,7 @@ bool Key::bSame(Key* pKeyThat, IdxColVec* pIdxColVec)
     iCmp = pColumn->iCmp(aElementThis,nBytesThis,
                          aElementThat,nBytesThat);
     
-     return false (not same) if this element is not equal to that element
+    // return false (not same) if this element is not equal to that element
     if (iCmp)
       return false;
   }
