@@ -227,11 +227,11 @@ void IndexData::vInsertEntry(Row* pRow, i8 nRowNo, bn nBufferNo)
 /*----------------------------------------------------------------------------*/
 /* position the indexData at aparticular level of index buffer                */
 /*----------------------------------------------------------------------------*/
-IndexBuffer* IndexData::aPosition(KeyWsp& xKeyWsp, RelOpAry* pOpAryGreater, i8 iLevel)
+IndexBuffer* IndexData::aPosition(KeyWsp& xKeyWsp, ePN ePosition, i8 iLevel)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
   
-  return m_pRoot->aPositionLevel(xKeyWsp, pOpAryGreater, iLevel);
+  return m_pRoot->aPositionLevel(xKeyWsp, ePosition, iLevel);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -367,13 +367,7 @@ void IndexData::vInsertEntry(IndexBuffer* pHigher, KeyWsp& xKeyWsp, Id xId, i8 i
   // find buffer to insert into, starting with root
   IndexBuffer* pIndexBuffer = nullptr;
   
-  // create a relational operator array
-  RelOpAry* pOpAryFind = new RelOpAry;
-  i8 nItems = m_pIndex->pIdxColVec()->nItems();
-  for (i8 i=0; i < nItems; i++)
-    pOpAryFind->vAdd(RO_GREATER_EQUAL);
-  
-  pIndexBuffer = pHigher->aPositionLevel(xKeyWsp, pOpAryFind, iLevel);
+  pIndexBuffer = pHigher->aPositionLevel(xKeyWsp, PN_AFTER, iLevel);
   
   // check if IndexBuffer to insert into has space
   if ( ! pIndexBuffer->bHasSpace(nBytes) ) {
@@ -382,10 +376,8 @@ void IndexData::vInsertEntry(IndexBuffer* pHigher, KeyWsp& xKeyWsp, Id xId, i8 i
     pIndexBuffer = pSplitBuffer(pIndexBuffer);
     
     // find position again
-    pIndexBuffer = pIndexBuffer->pHigherLevel()->aPositionLevel(xKeyWsp, pOpAryFind, iLevel);
+    pIndexBuffer = pIndexBuffer->pHigherLevel()->aPositionLevel(xKeyWsp, PN_AFTER, iLevel);
   }
-  
-  delete pOpAryFind;
   
   // assert we have a buffer
   ASSERT(pIndexBuffer);
@@ -439,17 +431,10 @@ void IndexData::vFixHigherBuffer(IndexBuffer* pIndexBuffer, i8 iLevel)
 
   // form a keyWsp from the key
   xKeyWsp.vAddKey(pFirstEntry->aKey(), m_pIndex->pIdxColVec());
-
-  // create a relational operator array
-  RelOpAry* pOpAryGreater = new RelOpAry;
-  i8 nItems = m_pIndex->pIdxColVec()->nItems();
-  for (i8 i=0; i < nItems; i++)
-    pOpAryGreater->vAdd(RO_GREATER_EQUAL);
   
-  pRoot =  m_pRoot->aPositionLevel(xKeyWsp, pOpAryGreater, iLevel);
+  pRoot =  m_pRoot->aPositionLevel(xKeyWsp, PN_AFTER, iLevel);
 
   pIndexBuffer->vHigherLevel(pRoot);
-  delete pOpAryGreater;
 }
 
 /*----------------------------------------------------------------------------*/

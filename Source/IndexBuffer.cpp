@@ -233,14 +233,8 @@ bool IndexBuffer::bInsert(KeyWsp& xKeyWsp, Id xId)
   // get the size of the EntWsp
   i8 nBytes = Entry::nBytesRequired(xEntWsp);
   
-  // create a realtional operator array
-  RelOpAry* pOpAryPosition = new RelOpAry;
-  i8 nItems = m_pIndex->pIdxColVec()->nItems();
-  for (i8 i=0; i < nItems; i++)
-    pOpAryPosition->vAdd(RO_GREATER_EQUAL);
-  
   // position the key in the buffer
-  Entry* pAfterEntry = aPosition(xKeyWsp, pOpAryPosition, bEqualTo, pReviseVec);
+  Entry* pAfterEntry = aPosition(xKeyWsp, PN_AFTER, bEqualTo, pReviseVec);
   Entry* pNewEntry = aNewEntry(nBytes, xEntWsp.nOffsets(), pAfterEntry);
   
   // set the new entry from the EntWsp
@@ -287,8 +281,6 @@ bool IndexBuffer::bInsert(KeyWsp& xKeyWsp, Id xId)
   // this is needed in case we inserted a new first key in the buffer
   vFixHigherLevel(pNewEntry);
   
-  delete pOpAryPosition;
-  
   return true;
 }
 
@@ -326,14 +318,14 @@ Entry* IndexBuffer::aNextEntry(Entry* aEntry)
 /*----------------------------------------------------------------------------*/
 /* position at entry with lower bound at key                                  */
 /*----------------------------------------------------------------------------*/
-Entry* IndexBuffer::aPosition(KeyWsp& xKeyWsp, RelOpAry* pRelOpAry)
+Entry* IndexBuffer::aPosition(KeyWsp& xKeyWsp, ePN ePosition)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
   bool   bEqualTo;
   Entry* pEntry;
   
-  pEntry = aPosition(xKeyWsp, pRelOpAry, bEqualTo, nullptr);
+  pEntry = aPosition(xKeyWsp, ePosition, bEqualTo, nullptr);
   
   if (pEntry == aHead())
     pEntry = aNextEntry(pEntry);
@@ -344,7 +336,7 @@ Entry* IndexBuffer::aPosition(KeyWsp& xKeyWsp, RelOpAry* pRelOpAry)
 /*----------------------------------------------------------------------------*/
 /* position at an index buffer at level iLevel starting from this buffer      */
 /*--------------------ƒ--------------------------------------------------------*/
-IndexBuffer* IndexBuffer::aPositionLevel(KeyWsp& xKeyWsp, RelOpAry* pOpAryGreater, i8 iLevel)
+IndexBuffer* IndexBuffer::aPositionLevel(KeyWsp& xKeyWsp, ePN ePosition, i8 iLevel)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
@@ -360,7 +352,7 @@ IndexBuffer* IndexBuffer::aPositionLevel(KeyWsp& xKeyWsp, RelOpAry* pOpAryGreate
       break;
     
     // get the entry
-    pEntry = pIndexBuffer->aPosition(xKeyWsp, pOpAryGreater);
+    pEntry = pIndexBuffer->aPosition(xKeyWsp, ePosition);
     ASSERT( pEntry );
     
     // get the index buffer of the entry
@@ -426,26 +418,20 @@ IndexBuffer* IndexBuffer::pSplitBuffer(void)
   Entry* pLastEntry = pGetSplitEntry(iSplitAtEntry);
   
   // the last entry in the buffer after which the split will happen
-  pLastEntry->vShow(0,m_pIndex->pIdxColVec());
+  //pLastEntry->vShow(0,m_pIndex->pIdxColVec());
   
   Entry* pReviseVec[C_FLAT_LEVELS];
   bool   bEqualTo;
-  
-  // create a relational operator array
-  RelOpAry* pOpAryFind = new RelOpAry;
-  i8 nItems = m_pIndex->pIdxColVec()->nItems();
-  for (i8 i=0; i < nItems; i++)
-    pOpAryFind->vAdd(RO_GREATER_EQUAL);
   
   // find the position of the last entry in the buffer
   KeyWsp xKeyWsp;
   xKeyWsp.vAddKey(pLastEntry->aKey(), m_pIndex->pIdxColVec());
   
-  Entry* pAfterEntry = aPosition(xKeyWsp, pOpAryFind, bEqualTo, pReviseVec);
+  Entry* pAfterEntry = aPosition(xKeyWsp, PN_AFTER, bEqualTo, pReviseVec);
   
   // Note this ASSERT fails if we have dulplicates in the table     //ALKA: TODO
   // Need to fix when we cater for non-unique indexes
-  pAfterEntry->vShow(0,m_pIndex->pIdxColVec());
+  //pAfterEntry->vShow(0,m_pIndex->pIdxColVec());
   ASSERT(pAfterEntry == pLastEntry);
   
   i8 iLastEntryOffset = iToOffset(pLastEntry);
@@ -501,8 +487,6 @@ IndexBuffer* IndexBuffer::pSplitBuffer(void)
   pNewBuffer->m_pPrevBuffer = this;
   
   m_pNextBuffer = pNewBuffer;
-  
-  delete pOpAryFind;
   
   return pNewBuffer;
 }
@@ -682,7 +666,7 @@ void IndexBuffer::vReplace(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp)
     pOpAryFind->vAdd(RO_EQUAL);
   
   // find the oldEntry in the higher level buffer
-  Entry* pFoundEntry = aPosition(xOldKeyWsp, pOpAryFind);
+  Entry* pFoundEntry = aPosition(xOldKeyWsp, PN_SAME);
 
   // assert that we found one
   ASSERT(pFoundEntry);
@@ -1070,7 +1054,7 @@ void IndexBuffer::vNewHead(void)
 /*----------------------------------------------------------------------------*/
 #ifdef KEY_AFTER
 
-Entry* IndexBuffer::aPosition(KeyWsp& xKeyWsp, RelOpAry* pOpAryPosition, bool& bEqualTo, Entry** aReviseVec)
+Entry* IndexBuffer::aPosition(KeyWsp& xKeyWsp, ePN ePosition, bool& bEqualTo, Entry** aReviseVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
@@ -1090,7 +1074,7 @@ Entry* IndexBuffer::aPosition(KeyWsp& xKeyWsp, RelOpAry* pOpAryPosition, bool& b
       //pNextEntry->aKey()->vShow(m_pIndex->pIdxColVec());
     
       // compare the inserting object with next object
-      bool bAfter = aKey->bAfter(pNextEntry->aKey(), m_pIndex->pIdxColVec());
+      bool bAfter = aKey->bCompare(ePosition, pNextEntry->aKey(), m_pIndex->pIdxColVec());
 
       //vTrace(" %s\n"_Str,bAfter ? "after" : "before");
     

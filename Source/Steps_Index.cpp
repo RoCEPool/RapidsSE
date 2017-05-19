@@ -98,12 +98,6 @@ void Task::vIndexBuffer(NNP_Task nnpTask)
   Partition* pPartition = pTable->pPartition(nnpTask->m_pSEitf->iPartition());
   IndexData* pIndexData = pPartition->pIndexData(iIndexNo);
   
-  // create a relational operator array
-  RelOpAry* pOpAryGreater = new RelOpAry;
-  i8 nItems = pIndex->pIdxColVec()->nItems();
-  for (i8 i=0; i < nItems; i++)
-    pOpAryGreater->vAdd(RO_GREATER_EQUAL);
-
   KeyWsp xKeyWsp;
   
   // assuming non-complex key
@@ -112,11 +106,9 @@ void Task::vIndexBuffer(NNP_Task nnpTask)
   StrVal* pStrVal = _pStrVal(xValWsp.pNestedValueSelf());
   
   xKeyWsp.vAddElement(pStrVal, pIndex->pIdxColVec()->pGet(0));
-  IndexBuffer* pIndexBuffer = pIndexData->aPosition(xKeyWsp, pOpAryGreater, 0);
+  IndexBuffer* pIndexBuffer = pIndexData->aPosition(xKeyWsp, PN_AFTER, 0);
   
   //xKeyWsp.vShow();
-  
-  delete pOpAryGreater;
   
   bn nBuffer = pIndexBuffer->nBufferNo();
   //vTrace("L0 Buffer: %lld\n"_Str, *nBuffer);
@@ -295,7 +287,7 @@ void Task::vIndexPosition(NNP_Task nnpTask)
   xKeyWsp.vAddElement(pStrVal, pIndex->pIdxColVec()->pGet(0));
   
   bool bMatches = true;
-  Entry* pEntry = pIndexBuffer->aPosition(xKeyWsp, pOpAryGreater);
+  Entry* pEntry = pIndexBuffer->aPosition(xKeyWsp, PN_AFTER);
   
   //pEntry->aKey()->vShow(pIndex->pIdxColVec());
   //xKeyWsp.aKey()->vShow(pIndex->pIdxColVec());
