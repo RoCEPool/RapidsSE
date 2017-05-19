@@ -5,6 +5,26 @@
 
 namespace DBobjects
 {
+  //-----------------------------------------------------------------------------
+  
+  enum ePN // Position
+  {
+    /*  0 */ PN_NONE=0,
+    /*  1 */ PN_BEFORE,
+    /*  2 */ PN_SAME,
+    /*  3 */ PN_AFTER,
+    /*  4 */ PN_ENUMS
+  };
+  
+  static Str* aPN[]
+  {
+    /*  0 */ "NONE"_Str,
+    /*  1 */ "BEFORE"_Str,
+    /*  2 */ "SAME"_Str,
+    /*  3 */ "AFTER"_Str,
+    /*  4 */ "ENUMS"_Str,
+  };
+  
   class Key
   {
   private:
