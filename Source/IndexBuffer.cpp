@@ -1049,51 +1049,48 @@ Entry* IndexBuffer::aPosition(KeyWsp& xKeyWsp, eJC eJuxaCompare, Entry** aaRevis
   // start from head at known highest level
   Entry* aCurrentEntry = aHead();
   i8 iCurrentLevel = C_FLAT_LEVELS - 1;
-  Key* aKey = xKeyWsp.aKey();
+  
+  Key* aGivenKey = xKeyWsp.aKey();
+  IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
 
+  bool bJuxtaCmp;
+  
   do {
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // inner loop: go right a number of nodes until we find
-    //   ObjectInsert < ObjectNext at current level
+    // inner loop: go right a number of entries until we find
+    //   givenKey before/same/after nextEntry.key at current level
     while (Entry* aNextEntry = aRightEntry(aCurrentEntry, iCurrentLevel)) {
       
+      Key* aNextKey = aNextEntry->aKey();
+
       //aKey->vShow(m_pIndex->pIdxColVec());
-      //pNextEntry->aKey()->vShow(m_pIndex->pIdxColVec());
+      //aNextKey->vShow(m_pIndex->pIdxColVec());
     
-      // compare the inserting object with next object
-      bool bAfter = aKey->bJuxtaCompare(eJuxaCompare, aNextEntry->aKey(), m_pIndex->pIdxColVec());
+      // juxta-compare the givenKey with next key
+      bJuxtaCmp = aGivenKey->bJuxtaCompare(eJuxaCompare, aNextKey, pIdxColVec);
 
       //vTrace(" %s\n"_Str,bAfter ? "after" : "before");
     
-      if (! bAfter) {
-        // pObjectInsert is < pObjectNext or pObjectNext is null
-        
-        //vTrace("  %lld before %lld (level %lld)\n"_Str,
-        //       (i8)pObjectInsert,(i8)pNextEntry->uRight(),iCurrentLevel);
-        
-        break;
-      }
-      // pObjectInsert is >= pObjectNext
-      
-      //vTrace("  %lld after %lld (level %lld)\n"_Str,
-      //       (i8)pObjectInsert,(i8)pNextEntry->uRight(),iCurrentLevel);
+      // givenKey not before/same/after nextEntry.key
+      if (! bJuxtaCmp) break;
 
-      // go right one node
+      // givenKey is before/same/after nextEntry.key
+      // go right one entry
       aCurrentEntry = aRightEntry(aCurrentEntry, iCurrentLevel);
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // outer loop: now having gone right as far as we go down one single level
+    // outer loop: now having gone right as far as we can go down one level
 
-    // first record current node as a revision point
+    // first record current entry as a revision point
     if (aaReviseVec)
       aaReviseVec[iCurrentLevel] = aCurrentEntry;
    
    // now go down one level
     goDownLevel(iCurrentLevel);
     
-    // and repeat till we have a complete revision vector
+    // and repeat till we have gone down thru all levels
   } while (iCurrentLevel >= 0);
   
   return aCurrentEntry;
