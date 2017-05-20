@@ -344,11 +344,11 @@ bool Key::bMatches(Key* pKeyThat, IdxColVec* pIdxColVec, RelOpAry* pRelOpAry)
 /*----------------------------------------------------------------------------*/
 /* juxta-compare this key with given key                                      */
 /*----------------------------------------------------------------------------*/
-bool Key::bJuxtaCompare(eJC ePosition, Key* pKeyThat, IdxColVec* pIdxColVec)
+bool Key::bJuxtaCompare(eJC eJuxaCompare, Key* pKeyThat, IdxColVec* pIdxColVec)
 {
   bool bJuxtaCompare = false;
   
-  switch (ePosition) {
+  switch (eJuxaCompare) {
     case JC_BEFORE: bJuxtaCompare = bJuxtaBefore(pKeyThat,pIdxColVec); break;
     case JC_SAME:   bJuxtaCompare = bJuxtaSame(pKeyThat,pIdxColVec);   break;
     case JC_AFTER:  bJuxtaCompare = bJuxtaAfter(pKeyThat,pIdxColVec);  break;
@@ -361,28 +361,34 @@ bool Key::bJuxtaCompare(eJC ePosition, Key* pKeyThat, IdxColVec* pIdxColVec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this key before given key                                               */
+/* is this key juxta-before given key?                                        */
 /*----------------------------------------------------------------------------*/
 bool Key::bJuxtaBefore(Key* pKeyThat, IdxColVec* pIdxColVec)
 {
   /*
-   * a multi-part key is before some other key if:
+   * a multi-part key is said to be juxta-before some other key if:
    *
-   *   i) the first element is less than the first element of the other key
-   *        i.e. thisElement[0] <= thatElement[0]
+   *  i) each element is equal to the corresponding element of the
+   *      the other key
+   *
+   *        e.g. (1) thisElement[0] == thatElement[0] &&
+   *                 thisElement[1] == thatElement[1] &&
+   *                 thisElement[2] == thatElement[2]
    *
    *  ii) the leading elements are equal to the corresponding elements of the
-   *      the other key and a next element is less than the corresponding 
+   *      the other key and a next element is less than the corresponding
    *      element of the other key
    *
-   *        e.g. thisElement[0] == thatElement[0] &&
-   *             thisElement[1] <= thatElement[1]
+   *        e.g. (2) thisElement[0] <  thatElement[0]
    *
-   *        e.g. thisElement[0] == thatElement[0] &&
-   *             thisElement[1] == thatElement[1] &&
-   *             thisElement[2] <= thatElement[2]
+   *        e.g. (3) thisElement[0] == thatElement[0] &&
+   *                 thisElement[1] <  thatElement[1]
    *
-   *      the above example hold even if there are more elements
+   *        e.g. (4) thisElement[0] == thatElement[0] &&
+   *                 thisElement[1] == thatElement[1] &&
+   *                 thisElement[2] <  thatElement[2]
+   *
+   *      the above three examples hold even if there are more elements
    */
   
   char* aCursorThis = aWspArea();
@@ -404,34 +410,37 @@ bool Key::bJuxtaBefore(Key* pKeyThat, IdxColVec* pIdxColVec)
                          aElementThat,nBytesThat);
     
     // return true (is before) if this element is less than that element
+    // examples (2), (3), (4)
     if (iCmp < 0)
       return true;
     
     // return false (not before) if this element is greater than that element
     if (iCmp > 0)
       return false;
+    
+    // so far the elements are equal
   }
   
   // all elements are the same
   ASSERT(0 == iCmp);
   
   // return true (is before)
+  // example (1)
   return true;
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this key same as given key                                              */
+/* is this key juxta-same as given key?                                       */
 /*----------------------------------------------------------------------------*/
 bool Key::bJuxtaSame(Key* pKeyThat, IdxColVec* pIdxColVec)
 {
   /*
-   * a multi-part key is same as some other key if:
+   * a multi-part key is juxta-same as some other key if:
    *
-   *  i) each element is equal to the corresponding element of the
-   *      the other key
-   *        e.g. thisElement[0] == thatElement[0] &&
-   *             thisElement[1] == thatElement[1] &&
-   *             thisElement[2] == thatElement[2]
+   *  each element is equal to the corresponding element of the the other key
+   *    e.g. thisElement[0] == thatElement[0] &&
+   *         thisElement[1] == thatElement[1] &&
+   *         thisElement[2] == thatElement[2]
    */
   
   char* aCursorThis = aWspArea();
@@ -455,6 +464,8 @@ bool Key::bJuxtaSame(Key* pKeyThat, IdxColVec* pIdxColVec)
     // return false (not same) if this element is not equal to that element
     if (iCmp)
       return false;
+    
+    // so far the elements are equal
   }
   
   // all elements are the same
@@ -465,28 +476,34 @@ bool Key::bJuxtaSame(Key* pKeyThat, IdxColVec* pIdxColVec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this key after given key                                                */
+/* is this key juxta-after given key?                                         */
 /*----------------------------------------------------------------------------*/
 bool Key::bJuxtaAfter(Key* pKeyThat, IdxColVec* pIdxColVec)
 {
   /*
-   * a multi-part key is after some other key if:
+   * a multi-part key is said to be juxta-after some other key if:
    *
-   *   i) the first element is greater than the first element of the other key
-   *        i.e. thisElement[0] >= thatElement[0]
+   *  i) each element is equal to the corresponding element of the
+   *      the other key
+   *
+   *        e.g. (1) thisElement[0] == thatElement[0] &&
+   *                 thisElement[1] == thatElement[1] &&
+   *                 thisElement[2] == thatElement[2]
    *
    *  ii) the leading elements are equal to the corresponding elements of the
    *      the other key and a next element is greater than the corresponding
    *      element of the other key
    *
-   *        e.g. thisElement[0] == thatElement[0] &&
-   *             thisElement[1] >= thatElement[1]
+   *        e.g. (2) thisElement[0] >  thatElement[0]
    *
-   *        e.g. thisElement[0] == thatElement[0] &&
-   *             thisElement[1] == thatElement[1] &&
-   *             thisElement[2] >= thatElement[2]
+   *        e.g. (3) thisElement[0] == thatElement[0] &&
+   *                 thisElement[1] >  thatElement[1]
    *
-   *      the above example hold even if there are more elements
+   *        e.g. (4) thisElement[0] == thatElement[0] &&
+   *                 thisElement[1] == thatElement[1] &&
+   *                 thisElement[2] >  thatElement[2]
+   *
+   *      the above three examples hold even if there are more elements
    */
   
   char* aCursorThis = aWspArea();
@@ -508,6 +525,7 @@ bool Key::bJuxtaAfter(Key* pKeyThat, IdxColVec* pIdxColVec)
                          aElementThat,nBytesThat);
 
     // return true (is after) if this element is greater than that element
+    // examples (2), (3), (4)
     if (iCmp > 0)
       return true;
     
@@ -522,7 +540,8 @@ bool Key::bJuxtaAfter(Key* pKeyThat, IdxColVec* pIdxColVec)
   ASSERT(0 == iCmp);
   
   // return true (is after)
-  return true; // had to do this for the assert in indexBuffer::pSplitBuffer()
+  // example (1)
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
