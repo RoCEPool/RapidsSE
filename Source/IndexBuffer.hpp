@@ -11,8 +11,6 @@ namespace DBobjects
   class IndexBuffer : public Buffer
   {
     
-  #define goDownLevel(iLevel) iLevel--;
-    
   private:
     Index*       m_pIndex;       // index this buffer belongs to
     i8           m_nBufferLevel; // index buffer level
@@ -51,8 +49,8 @@ namespace DBobjects
     bool         bInsert(KeyWsp& xKeyWsp, Id xId);
     IndexBuffer* pNextBuffer(void);
     Entry*       aNextEntry(Entry* aEntry);
-    IndexBuffer* aPositionLevel(KeyWsp& xKeyWsp, eJC eJuxaCompare, i8 iLevel);
-    Entry*       aPosition(KeyWsp& xKeyWsp, eJC eJuxaCompare);
+    IndexBuffer* aPositionLevel(KeyWsp& xKeyWsp, eJC eJuxtaCompare, i8 iLevel);
+    Entry*       aPosition(KeyWsp& xKeyWsp, eJC eJuxtaCompare);
     bool         bRemove(Key* aKey);
     void         vShow(void);
     IndexBuffer* pSplitBuffer(void);
@@ -69,7 +67,7 @@ namespace DBobjects
     void         vMoveRight(void* aSrc, i8 nBytes);
     Entry*       aNewEntry(i8 nBytes, i8 nLevels, Entry* aAfterEntry);
     void         vNewHead(void);
-    Entry*       aPosition(Key* aGivenKey, eJC eJuxaCompare, Entry** aaReviseVec);
+    Entry*       aPosition(Key* aGivenKey, eJC eJuxtaCompare, Entry** aaReviseVec);
     void         vReplace(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp);
     Entry*       aRightEntry(Entry* aEntry, u8 uLevel);
     Entry*       aToEntry(i8 iOffset);
