@@ -27,7 +27,9 @@ namespace DBobjects
     
     u8    uBuffer(void);
     void  vBuffer(u8 uBuffer);
-    
+  
+    void  vForm(u8 uBuffer, u8 uRow);
+  
     u8    uRow(void);
     void  vRow(u8 uRow);
 

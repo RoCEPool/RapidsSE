@@ -112,7 +112,7 @@ void Row::vContentDump(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* extract a key for given index columns into keywsp wsp from this row        */
+/* extract a key into keywsp from this row using given index columns          */
 /*----------------------------------------------------------------------------*/
 void Row::vExtractKey(KeyWsp& xKeyWsp, IdxColVec* pIdxColVec)
 {

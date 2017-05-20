@@ -204,11 +204,8 @@ void IndexData::vInsertEntry(Row* pRow, i8 nRowNo, bn nBufferNo)
   Id xId;
   KeyWsp xKeyWsp;
   
-  // form the rowId
-  xId.vBuffer(*nBufferNo);
-  xId.vRow(nRowNo);
+  xId.vForm(*nBufferNo,nRowNo);
   
-  // extract the key from the row
   pRow->vExtractKey(xKeyWsp, m_pIndex->pIdxColVec());
     
   // insert key entry into index at level 0
