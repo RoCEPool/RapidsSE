@@ -195,7 +195,7 @@ i8 IndexData::nIndexBuffers(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* insert an entry for the row into the index                                 */
+/* insert an entry for given row into this index                              */
 /*----------------------------------------------------------------------------*/
 void IndexData::vInsertEntry(Row* pRow, i8 nRowNo, bn nBufferNo)
 {
@@ -204,16 +204,14 @@ void IndexData::vInsertEntry(Row* pRow, i8 nRowNo, bn nBufferNo)
   Id xId;
   KeyWsp xKeyWsp;
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // form the rowId
   xId.vBuffer(*nBufferNo);
   xId.vRow(nRowNo);
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get the key from the row
-  pRow->vGetKey(xKeyWsp, m_pIndex->pIdxColVec());
+  // extract the key from the row
+  pRow->vExtractKey(xKeyWsp, m_pIndex->pIdxColVec());
     
-  // insert row entry in index at level 0
+  // insert key entry into index at level 0
   vInsertEntry(m_pRoot, xKeyWsp, xId, 0);
   
   if ( ! bVerify() ) {

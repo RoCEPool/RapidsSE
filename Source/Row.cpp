@@ -112,9 +112,9 @@ void Row::vContentDump(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get a key as a keywsp wsp from this row for the given index columns        */
+/* extract a key for given index columns into keywsp wsp from this row        */
 /*----------------------------------------------------------------------------*/
-void Row::vGetKey(KeyWsp& xKeyWsp, IdxColVec* pIdxColVec)
+void Row::vExtractKey(KeyWsp& xKeyWsp, IdxColVec* pIdxColVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
  
