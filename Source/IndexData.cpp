@@ -339,8 +339,7 @@ void IndexData::vInsertEntry(IndexBuffer* pHigher, KeyWsp& xKeyWsp, Id xId, i8 i
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
   
   // initialize the EntWsp
-  EntWsp xEntWsp;
-  xEntWsp.vForm(xId,xKeyWsp);
+  EntWsp xEntWsp(xId,xKeyWsp);
   
   // find buffer to insert into, starting with root
   IndexBuffer* pIndexBuffer = pHigher->pPositionLevel(xKeyWsp, JC_AFTER, iLevel);

@@ -27,6 +27,7 @@ namespace DBobjects
     
     EntWsp(void);
     EntWsp(i8 nOffsets);
+    EntWsp(Id& xId, KeyWsp& xKeyWsp);
     ~EntWsp(void);
   
     void   vAddKey(KeyWsp& xKeyWsp);
