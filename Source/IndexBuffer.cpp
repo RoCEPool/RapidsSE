@@ -1087,8 +1087,8 @@ Entry* IndexBuffer::aPosition(Key* aGivenKey, eJC eJuxaCompare, Entry** aaRevise
         break;
 
       // given key is same/after next key, go right one entry at this level
-      aScanEntry = aRightEntry(aScanEntry, iScanLevel);
-      ASSERT(aScanEntry == aNextEntry);                 //! to discuss with Alka
+      aScanEntry = aNextEntry;                          //! to discuss with Alka
+      //aScanEntry = aRightEntry(aScanEntry, iScanLevel);
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
