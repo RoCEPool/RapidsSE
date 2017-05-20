@@ -34,7 +34,7 @@ INCLUDES = -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2
 #Libraries
 THIRDPARTY_LIBS = -llz4 -lbz2
 LIBS = -lrt -lpthread
-RAPIDS_LIBS = -lRapidsSEv0.2.2
+RAPIDS_LIBS = -lRapidsSEv0.3.1
 
 all : $(TARGET_EXE) $(TARGET_LIBRARY)
 
