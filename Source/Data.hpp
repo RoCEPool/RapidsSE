@@ -9,7 +9,7 @@ namespace DBobjects
   {
   private:
     Lock       m_zLock;          // lock covers all buffers
-    i8         m_iRowStrands;    // number of row strands
+    i8         m_nRowStrands;    // number of row strands
     RowStrand* m_pHeadStrand;    // first strand in list
     RowStrand* m_pTailStrand;    // last strand in list
   
@@ -30,7 +30,9 @@ namespace DBobjects
     
     RowStrand* pHeadStrand(void);
     RowStrand* pTailStrand(void);
-    
+  
+    i8 nRowStrands(void);
+  
     void vTruncate(void);  
   
   private:

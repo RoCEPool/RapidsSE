@@ -37,7 +37,7 @@ Data::Data(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DATA,_FOOTER_);
   
   m_zLock.vInit("Data::m_zLock"_Str);
-  m_iRowStrands = 0;
+  m_nRowStrands = 0;
   m_pHeadStrand = nullptr;
   m_pTailStrand = nullptr;
     
@@ -53,7 +53,7 @@ Data::~Data(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DATA,_FOOTER_);
   
-  ASSERT( ! m_iRowStrands );
+  ASSERT( ! m_nRowStrands );
 }
 
 /*----------------------------------------------------------------------------*/
@@ -157,6 +157,15 @@ RowStrand* Data::pTailStrand(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get number of row strands                                                  */
+/*----------------------------------------------------------------------------*/
+i8 Data::nRowStrands(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DATA,_FOOTER_);
+  return m_nRowStrands;
+}
+
+/*----------------------------------------------------------------------------*/
 /* release all strands                                                        */
 /*----------------------------------------------------------------------------*/
 void Data::vTruncate(void)
@@ -175,7 +184,7 @@ void Data::vTruncate(void)
     pRowStrand = pNextRowStrand;
   }
   
-  m_iRowStrands = 0;
+  m_nRowStrands = 0;
   m_pHeadStrand = nullptr;
   m_pTailStrand = nullptr;
   
@@ -196,16 +205,16 @@ bool Data::bExtendPartition(void)
   RowStrand* pNewStrand = new RowStrand;
   
   if (! m_pHeadStrand) {
-    ASSERT(! m_iRowStrands);
+    ASSERT(! m_nRowStrands);
     ASSERT(! m_pTailStrand);
     
     m_pHeadStrand = pNewStrand;
     m_pTailStrand = pNewStrand;
     
-    m_iRowStrands = 1;
+    m_nRowStrands = 1;
   }
   else {
-    ASSERT(m_iRowStrands);
+    ASSERT(m_nRowStrands);
     ASSERT(m_pTailStrand);
     
     m_pTailStrand->vNextStrand(pNewStrand);
@@ -213,7 +222,7 @@ bool Data::bExtendPartition(void)
     
     m_pTailStrand = pNewStrand;
     
-    m_iRowStrands++;
+    m_nRowStrands++;
   }
   
   return true;

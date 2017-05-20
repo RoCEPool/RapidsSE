@@ -169,50 +169,61 @@ void Partition::vPartitionId(i8 iPartitionId)
 }
 
 /*----------------------------------------------------------------------------*/
-/* insert a row into this strand                                              */
+/* insert entries into given index for all rows in this partition             */
 /*----------------------------------------------------------------------------*/
 void Partition::vPopulateIndex(i8 iIndexNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
   
   IndexData* pIndexData = this->pIndexData(iIndexNo);
-  RowStrand *pStrand = m_pData->pHeadStrand();
-    
-  i8 nBuffers = 0;
+  
   i8 nStrands = 0;
-  while (pStrand) {
-    nStrands++;
+  i8 nBuffers = 0;
+  
+  for (RowStrand* pStrand = m_pData->pHeadStrand();
+       pStrand;
+       pStrand = pStrand->pNextStrand()) {
     
-    RowBuffer* pRowBuffer = pStrand->pFirstBuffer();
+    nStrands++;
+    nBuffers += pStrand->nRowBuffers();
+    
     i8 nRowsInBuffer = 0;
     i8 nRowBuffer = 0;
     
-    while (pRowBuffer) {
+    for (RowBuffer* pRowBuffer = pStrand->pFirstBuffer();
+         pRowBuffer;
+         pRowBuffer = pRowBuffer->pNextBuffer()) {
+      
       nRowBuffer++;
       nRowsInBuffer = pRowBuffer->nRows();
       
-      Row* pRow = pRowBuffer->pFirstRow();
       bn nBufferNo = pRowBuffer->nBufferNo();
-      i8 nRowNo = 0;
       
-      while (pRow) {
-        pIndexData->vInsertEntry(pRow, nRowNo, nBufferNo);
+      i8 iRowNo = -1;
+      for (Row* pRow = pRowBuffer->pFirstRow();
+           pRow;
+           pRow = pRowBuffer->pNextRow(pRow)) {
+        
+        iRowNo++;
+        pIndexData->vInsertEntry(pRow, iRowNo, nBufferNo);
+        
         //if (nRowBuffer == 2) {
-          //vTrace("************************\n"_Str);
-          //pIndexData->vDump();
-          //vTrace("************************\n"_Str);
+        //  vTrace("************************\n"_Str);
+        //  pIndexData->vDump();
+        //  vTrace("************************\n"_Str);
         //}
-        pRow = pRowBuffer->pNextRow(pRow);
-        nRowNo++;
-      }
+
+      } // row
       
-      // move to the next rowBuffer
-      pRowBuffer = pRowBuffer->pNextBuffer();
-    }
+      ASSERT(iRowNo + 1 == nRowsInBuffer);
+      
+    } // rowBuffer
     
-    nBuffers += pStrand->nRowBuffers();
-    pStrand = pStrand->pNextStrand();
-  }
+    ASSERT(nRowBuffer = pStrand->nRowBuffers());
+    
+  } // strand
+  
+  ASSERT(nStrands == m_pData->nRowStrands());
 }
 
 /*----------------------------------------------------------------------------*/

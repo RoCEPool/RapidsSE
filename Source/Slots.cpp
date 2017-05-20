@@ -77,8 +77,7 @@ void Slots::vPopulateIndex(i8 iIndexNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SLOTS,_FOOTER_);
   
-  i8 iPartn;
-  for (iPartn = 0; iPartn < gpGrid->iSlots(); iPartn++)
+  for (i8 iPartn = 0; iPartn < gpGrid->iSlots(); iPartn++)
     m_xPartition[iPartn].vPopulateIndex(iIndexNo);
 }
 
