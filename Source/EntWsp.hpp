@@ -30,7 +30,7 @@ namespace DBobjects
     ~EntWsp(void);
   
     void   vAddKey(KeyWsp& xKeyWsp);
-    void   vAddKey(Key* pKey);
+    void   vForm(Id& xId, KeyWsp& xKeyWsp);
     Key*   aKey(void);
     i8     nKeySize(void);
     u8     nOffsets(void);

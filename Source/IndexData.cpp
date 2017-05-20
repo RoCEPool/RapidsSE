@@ -338,23 +338,16 @@ void IndexData::vInsertEntry(IndexBuffer* pHigher, KeyWsp& xKeyWsp, Id xId, i8 i
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
   
-  EntWsp xEntWsp;
-  bool   bResult = false;
-  
   // initialize the EntWsp
-  xEntWsp.vId(xId);
-  xEntWsp.vAddKey(xKeyWsp);
-  
-  // get the size of the EntWsp
-  i8 nBytes = Entry::nBytesRequired(xEntWsp);
+  EntWsp xEntWsp;
+  xEntWsp.vForm(xId,xKeyWsp);
   
   // find buffer to insert into, starting with root
-  IndexBuffer* pIndexBuffer = nullptr;
-  
-  pIndexBuffer = pHigher->pPositionLevel(xKeyWsp, JC_AFTER, iLevel);
+  IndexBuffer* pIndexBuffer = pHigher->pPositionLevel(xKeyWsp, JC_AFTER, iLevel);
   
   // check if IndexBuffer to insert into has space
-  if ( ! pIndexBuffer->bHasSpace(nBytes) ) {
+  i8 nEntryBytes = Entry::nBytesRequired(xEntWsp);
+  if ( ! pIndexBuffer->bHasSpace(nEntryBytes) ) {
     
     // split the index buffer
     pIndexBuffer = pSplitBuffer(pIndexBuffer);
@@ -367,7 +360,7 @@ void IndexData::vInsertEntry(IndexBuffer* pHigher, KeyWsp& xKeyWsp, Id xId, i8 i
   ASSERT(pIndexBuffer);
   
   // insert entry into index buffer
-  bResult = pIndexBuffer->bInsert(xKeyWsp, xId);
+  bool bResult = pIndexBuffer->bInsert(xKeyWsp, xId);
   ASSERT(bResult);
 }
 
