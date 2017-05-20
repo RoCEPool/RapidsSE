@@ -201,8 +201,7 @@ void IndexData::vInsertEntry(Row* pRow, i8 nRowNo, bn nBufferNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
   
-  Id xId;
-  xId.vForm(*nBufferNo,nRowNo);
+  Id xId(*nBufferNo,nRowNo);
   
   KeyWsp xKeyWsp;
   pRow->vExtractKey(xKeyWsp, m_pIndex->pIdxColVec());

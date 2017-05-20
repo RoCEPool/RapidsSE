@@ -19,6 +19,7 @@ namespace DBobjects
     
     Id(void);
     Id(Id& xId);
+    Id(u8 uBuffer, u8 uRow);
     ~Id(void);
     
     void operator =(Id& xId); // assignment
