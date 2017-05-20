@@ -317,13 +317,13 @@ Entry* IndexBuffer::aNextEntry(Entry* aEntry)
 /*----------------------------------------------------------------------------*/
 /* position at entry with lower bound at key                                  */
 /*----------------------------------------------------------------------------*/
-Entry* IndexBuffer::aPosition(KeyWsp& xKeyWsp, eJC ePosition)
+Entry* IndexBuffer::aPosition(KeyWsp& xKeyWsp, eJC eJuxaCompare)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
   Entry* pEntry;
   
-  pEntry = aPosition(xKeyWsp, ePosition, nullptr);
+  pEntry = aPosition(xKeyWsp, eJuxaCompare, nullptr);
   
   if (pEntry == aHead())
     pEntry = aNextEntry(pEntry);
@@ -334,7 +334,7 @@ Entry* IndexBuffer::aPosition(KeyWsp& xKeyWsp, eJC ePosition)
 /*----------------------------------------------------------------------------*/
 /* position at an index buffer at level iLevel starting from this buffer      */
 /*--------------------ƒ--------------------------------------------------------*/
-IndexBuffer* IndexBuffer::aPositionLevel(KeyWsp& xKeyWsp, eJC ePosition, i8 iLevel)
+IndexBuffer* IndexBuffer::aPositionLevel(KeyWsp& xKeyWsp, eJC eJuxaCompare, i8 iLevel)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
@@ -350,7 +350,7 @@ IndexBuffer* IndexBuffer::aPositionLevel(KeyWsp& xKeyWsp, eJC ePosition, i8 iLev
       break;
     
     // get the entry
-    pEntry = pIndexBuffer->aPosition(xKeyWsp, ePosition);
+    pEntry = pIndexBuffer->aPosition(xKeyWsp, eJuxaCompare);
     ASSERT( pEntry );
     
     // get the index buffer of the entry
@@ -1042,7 +1042,7 @@ void IndexBuffer::vNewHead(void)
 /*----------------------------------------------------------------------------*/
 /* positition to entry (optional set revise vector)                           */
 /*----------------------------------------------------------------------------*/
-Entry* IndexBuffer::aPosition(KeyWsp& xKeyWsp, eJC ePosition, Entry** aaReviseVec)
+Entry* IndexBuffer::aPosition(KeyWsp& xKeyWsp, eJC eJuxaCompare, Entry** aaReviseVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
@@ -1062,7 +1062,7 @@ Entry* IndexBuffer::aPosition(KeyWsp& xKeyWsp, eJC ePosition, Entry** aaReviseVe
       //pNextEntry->aKey()->vShow(m_pIndex->pIdxColVec());
     
       // compare the inserting object with next object
-      bool bAfter = aKey->bJuxtaCompare(ePosition, pNextEntry->aKey(), m_pIndex->pIdxColVec());
+      bool bAfter = aKey->bJuxtaCompare(eJuxaCompare, pNextEntry->aKey(), m_pIndex->pIdxColVec());
 
       //vTrace(" %s\n"_Str,bAfter ? "after" : "before");
     
