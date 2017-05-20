@@ -195,20 +195,18 @@ i8 IndexData::nIndexBuffers(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* insert an entry for given row into this index                              */
+/* insert an entry for given row into this index at level 0                   */
 /*----------------------------------------------------------------------------*/
 void IndexData::vInsertEntry(Row* pRow, i8 nRowNo, bn nBufferNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
   
   Id xId;
-  KeyWsp xKeyWsp;
-  
   xId.vForm(*nBufferNo,nRowNo);
   
+  KeyWsp xKeyWsp;
   pRow->vExtractKey(xKeyWsp, m_pIndex->pIdxColVec());
     
-  // insert key entry into index at level 0
   vInsertEntry(m_pRoot, xKeyWsp, xId, 0);
   
   if ( ! bVerify() ) {
@@ -334,7 +332,7 @@ bool IndexData::bVerify(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* insert an entry for a row in the index buffer                              */
+/* insert an entry for {key,id} into an index buffer at given level           */
 /*----------------------------------------------------------------------------*/
 void IndexData::vInsertEntry(IndexBuffer* pHigher, KeyWsp& xKeyWsp, Id xId, i8 iLevel)
 {
