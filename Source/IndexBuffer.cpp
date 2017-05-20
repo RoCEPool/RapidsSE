@@ -334,7 +334,7 @@ Entry* IndexBuffer::aPosition(KeyWsp& xKeyWsp, eJC eJuxtaCompare)
 /*----------------------------------------------------------------------------*/
 /* position at an index buffer at level iLevel starting from this buffer      */
 /*--------------------ƒ--------------------------------------------------------*/
-IndexBuffer* IndexBuffer::aPositionLevel(KeyWsp& xKeyWsp, eJC eJuxtaCompare, i8 iLevel)
+IndexBuffer* IndexBuffer::pPositionLevel(KeyWsp& xKeyWsp, eJC eJuxtaCompare, i8 iLevel)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   

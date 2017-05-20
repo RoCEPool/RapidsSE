@@ -49,7 +49,7 @@ namespace DBobjects
     bool         bInsert(KeyWsp& xKeyWsp, Id xId);
     IndexBuffer* pNextBuffer(void);
     Entry*       aNextEntry(Entry* aEntry);
-    IndexBuffer* aPositionLevel(KeyWsp& xKeyWsp, eJC eJuxtaCompare, i8 iLevel);
+    IndexBuffer* pPositionLevel(KeyWsp& xKeyWsp, eJC eJuxtaCompare, i8 iLevel);
     Entry*       aPosition(KeyWsp& xKeyWsp, eJC eJuxtaCompare);
     bool         bRemove(Key* aKey);
     void         vShow(void);
