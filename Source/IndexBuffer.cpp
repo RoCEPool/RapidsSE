@@ -1040,17 +1040,17 @@ void IndexBuffer::vNewHead(void)
 
 
 /*----------------------------------------------------------------------------*/
-/* positition to entry based on eJuxtaCompare (optionally set revise vector)  */
+/* scan thru skip list and positition to entry (optionally set revise vector) */
 /*----------------------------------------------------------------------------*/
 Entry* IndexBuffer::aPosition(KeyWsp& xGivenKeyWsp, eJC eJuxaCompare, Entry** aaReviseVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
   /*
-   * JC_BEFORE: never called
-   * JC_SAME:   return the entry which is the same as given key
-   * JC_AFTER:  return the entry which the given key would be inserted after
-   *
+   * positioning is based on eJustaCompare
+   *   JC_BEFORE: never called
+   *   JC_SAME:   scan for entry which is the same as given key
+   *   JC_AFTER:  scan for entry which the given key would be inserted after
    */
 
   ASSERT(JC_SAME == eJuxaCompare || JC_AFTER == eJuxaCompare);
@@ -1058,9 +1058,9 @@ Entry* IndexBuffer::aPosition(KeyWsp& xGivenKeyWsp, eJC eJuxaCompare, Entry** aa
   bool bJuxtaCmp;
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   
-  // start searching from head entry and topmost level
-  Entry* aCurrentEntry = aHead();
-  i8 iCurrentLevel = C_FLAT_LEVELS - 1;
+  // start scanning from head entry and topmost level
+  Entry* aScanEntry = aHead();
+  i8 iScanLevel = C_FLAT_LEVELS - 1;
   
   // get the given key
   Key* aGivenKey = xGivenKeyWsp.aKey();
@@ -1068,19 +1068,19 @@ Entry* IndexBuffer::aPosition(KeyWsp& xGivenKeyWsp, eJC eJuxaCompare, Entry** aa
   do {
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // inner loop: go right a number of entries until we find
-    //             givenKey same/after nextEntry.key at current level
+    // inner loop: go right a number of entries until we scan for key that
+    //             is same/after given key at current scan level
     
-    while (Entry* aNextEntry = aRightEntry(aCurrentEntry, iCurrentLevel)) {
+    while (Entry* aNextEntry = aRightEntry(aScanEntry, iScanLevel)) {
       
-      // get the next key
+      // get next key after scan key
       Key* aNextKey = aNextEntry->aKey();
 
       // trace:
       //aGivenKey->vShow(m_pIndex->pIdxColVec());
       //aNextKey->vShow(m_pIndex->pIdxColVec());
     
-      // juxta-compare the given key with next key at this level
+      // juxta-compare given key with next key at this level
       bJuxtaCmp = aGivenKey->bJuxtaCompare(eJuxaCompare, aNextKey, pIdxColVec);
 
       //vTrace(" %s\n"_Str,bAfter ? "after" : "before");
@@ -1090,26 +1090,26 @@ Entry* IndexBuffer::aPosition(KeyWsp& xGivenKeyWsp, eJC eJuxaCompare, Entry** aa
         break;
 
       // given key is same/after next key, go right one entry at this level
-      aCurrentEntry = aRightEntry(aCurrentEntry, iCurrentLevel);
-      ASSERT(aCurrentEntry == aNextEntry);              //! to discuss with Alka
+      aScanEntry = aRightEntry(aScanEntry, iScanLevel);
+      ASSERT(aScanEntry == aNextEntry);                 //! to discuss with Alka
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // outer loop: having gone right as far as we can, go down one level
 
-    // first record current entry as a revision point
+    // first record scan entry as an insert-after revision point
     if (aaReviseVec)
-      aaReviseVec[iCurrentLevel] = aCurrentEntry;
+      aaReviseVec[iScanLevel] = aScanEntry;
    
     // now go down one level
-    goDownLevel(iCurrentLevel);
+    goDownLevel(iScanLevel);
     
-    // and repeat till we have gone down thru all levels
-  } while (iCurrentLevel >= 0);
+    // and repeat till we have scanned down thru all levels
+  } while (iScanLevel >= 0);
   
   // JC_SAME : return the entry which is same as given key
   // JC_AFTER: return the entry which the given key would be inserted after
-  return aCurrentEntry;
+  return aScanEntry;
 }
 
 /*----------------------------------------------------------------------------*/
