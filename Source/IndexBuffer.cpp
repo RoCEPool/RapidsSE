@@ -233,7 +233,7 @@ bool IndexBuffer::bInsert(KeyWsp& xKeyWsp, Id xId)
   i8 nBytes = Entry::nBytesRequired(xEntWsp);
   
   // position the key in the buffer
-  Entry* aAfterEntry = aPosition(xKeyWsp, JC_AFTER, aReviseVec);
+  Entry* aAfterEntry = aPosition(xKeyWsp.aKey(),JC_AFTER, aReviseVec);
   Entry* aNewEntry = this->aNewEntry(nBytes, xEntWsp.nOffsets(), aAfterEntry);
   
   // set the new entry from the EntWsp
@@ -323,7 +323,7 @@ Entry* IndexBuffer::aPosition(KeyWsp& xKeyWsp, eJC eJuxaCompare)
   
   Entry* aEntry;
   
-  aEntry = aPosition(xKeyWsp, eJuxaCompare, nullptr);
+  aEntry = aPosition(xKeyWsp.aKey(), eJuxaCompare, nullptr);
   
   if (aEntry == aHead())
     aEntry = aNextEntry(aEntry);
@@ -424,7 +424,7 @@ IndexBuffer* IndexBuffer::pSplitBuffer(void)
   KeyWsp xKeyWsp;
   xKeyWsp.vAddKey(aLastEntry->aKey(), m_pIndex->pIdxColVec());
   
-  Entry* aAfterEntry = aPosition(xKeyWsp, JC_AFTER, aReviseVec);
+  Entry* aAfterEntry = aPosition(xKeyWsp.aKey(), JC_AFTER, aReviseVec);
   
   // Note this ASSERT fails if we have dulplicates in the table     //ALKA: TODO
   // Need to fix when we cater for non-unique indexes
@@ -1042,7 +1042,7 @@ void IndexBuffer::vNewHead(void)
 /*----------------------------------------------------------------------------*/
 /* scan thru skip list and positition to entry (optionally set revise vector) */
 /*----------------------------------------------------------------------------*/
-Entry* IndexBuffer::aPosition(KeyWsp& xGivenKeyWsp, eJC eJuxaCompare, Entry** aaReviseVec)
+Entry* IndexBuffer::aPosition(Key* aGivenKey, eJC eJuxaCompare, Entry** aaReviseVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
@@ -1061,9 +1061,6 @@ Entry* IndexBuffer::aPosition(KeyWsp& xGivenKeyWsp, eJC eJuxaCompare, Entry** aa
   // start scanning from head entry and topmost level
   Entry* aScanEntry = aHead();
   i8 iScanLevel = C_FLAT_LEVELS - 1;
-  
-  // get the given key
-  Key* aGivenKey = xGivenKeyWsp.aKey();
   
   do {
 
