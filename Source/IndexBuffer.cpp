@@ -1040,59 +1040,75 @@ void IndexBuffer::vNewHead(void)
 
 
 /*----------------------------------------------------------------------------*/
-/* positition to entry (optional set revise vector)                           */
+/* positition to entry based on eJuxtaCompare (optionally set revise vector)  */
 /*----------------------------------------------------------------------------*/
-Entry* IndexBuffer::aPosition(KeyWsp& xKeyWsp, eJC eJuxaCompare, Entry** aaReviseVec)
+Entry* IndexBuffer::aPosition(KeyWsp& xGivenKeyWsp, eJC eJuxaCompare, Entry** aaReviseVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
-  // start from head at known highest level
+  /*
+   * JC_BEFORE: never called
+   * JC_SAME:   return the entry which is the same as given key
+   * JC_AFTER:  return the entry which the given key would be inserted after
+   *
+   */
+
+  ASSERT(JC_SAME == eJuxaCompare || JC_AFTER == eJuxaCompare);
+
+  bool bJuxtaCmp;
+  IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
+  
+  // start searching from head entry and topmost level
   Entry* aCurrentEntry = aHead();
   i8 iCurrentLevel = C_FLAT_LEVELS - 1;
   
-  Key* aGivenKey = xKeyWsp.aKey();
-  IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
-
-  bool bJuxtaCmp;
+  // get the given key
+  Key* aGivenKey = xGivenKeyWsp.aKey();
   
   do {
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // inner loop: go right a number of entries until we find
-    //   givenKey before/same/after nextEntry.key at current level
+    //             givenKey same/after nextEntry.key at current level
+    
     while (Entry* aNextEntry = aRightEntry(aCurrentEntry, iCurrentLevel)) {
       
+      // get the next key
       Key* aNextKey = aNextEntry->aKey();
 
-      //aKey->vShow(m_pIndex->pIdxColVec());
+      // trace:
+      //aGivenKey->vShow(m_pIndex->pIdxColVec());
       //aNextKey->vShow(m_pIndex->pIdxColVec());
     
-      // juxta-compare the givenKey with next key
+      // juxta-compare the given key with next key at this level
       bJuxtaCmp = aGivenKey->bJuxtaCompare(eJuxaCompare, aNextKey, pIdxColVec);
 
       //vTrace(" %s\n"_Str,bAfter ? "after" : "before");
     
-      // givenKey not before/same/after nextEntry.key
-      if (! bJuxtaCmp) break;
+      // given key not same/after next key at this level
+      if (! bJuxtaCmp)
+        break;
 
-      // givenKey is before/same/after nextEntry.key
-      // go right one entry
+      // given key is same/after next key, go right one entry at this level
       aCurrentEntry = aRightEntry(aCurrentEntry, iCurrentLevel);
+      ASSERT(aCurrentEntry == aNextEntry);              //! to discuss with Alka
     }
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // outer loop: now having gone right as far as we can go down one level
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // outer loop: having gone right as far as we can, go down one level
 
     // first record current entry as a revision point
     if (aaReviseVec)
       aaReviseVec[iCurrentLevel] = aCurrentEntry;
    
-   // now go down one level
+    // now go down one level
     goDownLevel(iCurrentLevel);
     
     // and repeat till we have gone down thru all levels
   } while (iCurrentLevel >= 0);
   
+  // JC_SAME : return the entry which is same as given key
+  // JC_AFTER: return the entry which the given key would be inserted after
   return aCurrentEntry;
 }
 
