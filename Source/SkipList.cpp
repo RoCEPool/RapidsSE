@@ -131,10 +131,10 @@ bool SkipList::bDeleteAll(void)
   //
   //  while (true)
   //  {
-  //    Entry* pEntry = (Entry*)pPop(&bWasRemoved,2);
+  //    Entry* aEntry = (Entry*)pPop(&bWasRemoved,2);
   //
   //
-  //    if (!pEntry)
+  //    if (!aEntry)
   //      break;
   //
   //    if ( ! bWasRemoved )
@@ -142,9 +142,9 @@ bool SkipList::bDeleteAll(void)
   //
   //    //m_pKey->m_pDelObjFun(pObject);
   //    if (m_pKey->m_fDeleteObject)
-  //      m_pKey->m_fDeleteObject(pEntry);
+  //      m_pKey->m_fDeleteObject(aEntry);
   //    else
-  //      tDelete(&pEntry);
+  //      tDelete(&aEntry);
   //  }
   
   return true;

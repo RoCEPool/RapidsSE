@@ -109,10 +109,10 @@ void IndexBuffer::vDump(void)
   // recursively dump the lower level buffers
   if (m_nBufferLevel != 0) {
     
-    for (Entry* pEntry = aNextEntry(aHead()); pEntry != nullptr; pEntry = aNextEntry(pEntry)) {
+    for (Entry* aEntry = aNextEntry(aHead()); aEntry != nullptr; aEntry = aNextEntry(aEntry)) {
       
       // get the index buffer from the entry
-      IndexBuffer* pIndexBuffer = pEntry->pIndexBuffer();;
+      IndexBuffer* pIndexBuffer = aEntry->pIndexBuffer();;
       
       ASSERT(pIndexBuffer);
       ASSERT(pIndexBuffer->eClass() == CN_INDEXBUFFER);
@@ -175,9 +175,9 @@ Entry* IndexBuffer::aHead(void)
   ASSERT(m_xWsp.nUsed());
   
   // the head entry is the first entry in wsp
-  Entry* pHead = _aEntry(m_xWsp.aArea());
+  Entry* aHead = _aEntry(m_xWsp.aArea());
   
-  return pHead;
+  return aHead;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -219,7 +219,7 @@ bool IndexBuffer::bInsert(KeyWsp& xKeyWsp, Id xId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
-  Entry* pReviseVec[C_FLAT_LEVELS];
+  Entry* aReviseVec[C_FLAT_LEVELS];
   EntWsp xEntWsp;
   
   //vTrace("Inserting key:\n"_Str);
@@ -233,24 +233,24 @@ bool IndexBuffer::bInsert(KeyWsp& xKeyWsp, Id xId)
   i8 nBytes = Entry::nBytesRequired(xEntWsp);
   
   // position the key in the buffer
-  Entry* pAfterEntry = aPosition(xKeyWsp, JC_AFTER, pReviseVec);
-  Entry* pNewEntry = aNewEntry(nBytes, xEntWsp.nOffsets(), pAfterEntry);
+  Entry* aAfterEntry = aPosition(xKeyWsp, JC_AFTER, aReviseVec);
+  Entry* aNewEntry = this->aNewEntry(nBytes, xEntWsp.nOffsets(), aAfterEntry);
   
   // set the new entry from the EntWsp
-  pNewEntry->vSetEntry(xEntWsp);
+  aNewEntry->vSetEntry(xEntWsp);
   
   //vTrace("\n\n---------INDEX BUFFER AFTER MOVING --------------\n"_Str);
   //vShow();
   //vTrace("-----------------------\n\n"_Str);
   
   // fix the revise vector after the move
-  vFixRevise(pReviseVec, pNewEntry);
+  vFixRevise(aReviseVec, aNewEntry);
   
   // get no of offsets of the new entry
-  i8 nEntryOffsets = pNewEntry->nOffsets();
+  i8 nEntryOffsets = aNewEntry->nOffsets();
 
   // get the offset of the new entry
-  i8 iNewEntryOffset = iToOffset(pNewEntry);
+  i8 iNewEntryOffset = iToOffset(aNewEntry);
   
   i8 iOffsets = nEntryOffsets;
   
@@ -261,16 +261,16 @@ bool IndexBuffer::bInsert(KeyWsp& xKeyWsp, Id xId)
     i8 iLevel = iOffsets + 1;
     
     // get the right offset from the revise vector
-    i8 iRightOffset = pReviseVec[iLevel]->uRightOffset(iOffsets);
+    i8 iRightOffset = aReviseVec[iLevel]->uRightOffset(iOffsets);
     
     // set the right offet in the new entry
-    pNewEntry->vRightOffset(iOffsets, iRightOffset);
+    aNewEntry->vRightOffset(iOffsets, iRightOffset);
     
     // get the end offset of the revise vector entry at level
-    i8 iRevEndOffset = iToEndOffset( pReviseVec[iLevel]);
+    i8 iRevEndOffset = iToEndOffset( aReviseVec[iLevel]);
     
     // set the right offset for the entry in the revise vector entry
-    pReviseVec[iLevel]->vRightOffset(iOffsets,  iNewEntryOffset - iRevEndOffset);
+    aReviseVec[iLevel]->vRightOffset(iOffsets,  iNewEntryOffset - iRevEndOffset);
   }
   
   // increment the no of entries
@@ -278,7 +278,7 @@ bool IndexBuffer::bInsert(KeyWsp& xKeyWsp, Id xId)
   
   // fix higher level buffers
   // this is needed in case we inserted a new first key in the buffer
-  vFixHigherLevel(pNewEntry);
+  vFixHigherLevel(aNewEntry);
   
   return true;
 }
@@ -321,14 +321,14 @@ Entry* IndexBuffer::aPosition(KeyWsp& xKeyWsp, eJC eJuxaCompare)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
-  Entry* pEntry;
+  Entry* aEntry;
   
-  pEntry = aPosition(xKeyWsp, eJuxaCompare, nullptr);
+  aEntry = aPosition(xKeyWsp, eJuxaCompare, nullptr);
   
-  if (pEntry == aHead())
-    pEntry = aNextEntry(pEntry);
+  if (aEntry == aHead())
+    aEntry = aNextEntry(aEntry);
   
-  return pEntry;
+  return aEntry;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -341,7 +341,7 @@ IndexBuffer* IndexBuffer::aPositionLevel(KeyWsp& xKeyWsp, eJC eJuxaCompare, i8 i
   IndexBuffer* pIndexBuffer = this;
   
   i8 iBufferLevel;
-  Entry* pEntry;
+  Entry* aEntry;
   
   while (true) {
     iBufferLevel = pIndexBuffer->nBufferLevel();
@@ -350,11 +350,11 @@ IndexBuffer* IndexBuffer::aPositionLevel(KeyWsp& xKeyWsp, eJC eJuxaCompare, i8 i
       break;
     
     // get the entry
-    pEntry = pIndexBuffer->aPosition(xKeyWsp, eJuxaCompare);
-    ASSERT( pEntry );
+    aEntry = pIndexBuffer->aPosition(xKeyWsp, eJuxaCompare);
+    ASSERT( aEntry );
     
     // get the index buffer of the entry
-    pIndexBuffer = pEntry->pIndexBuffer();
+    pIndexBuffer = aEntry->pIndexBuffer();
     ASSERT(pIndexBuffer);
     ASSERT(pIndexBuffer->eClass() == CN_INDEXBUFFER);
   }
@@ -393,9 +393,9 @@ void IndexBuffer::vShow(void)
          m_pPrevBuffer,
          m_pNextBuffer);
   
-  for (Entry* pEntry = aHead(); pEntry != nullptr; pEntry = aNextEntry(pEntry)) {
-    vTrace("%8lld: "_Str, nSub(pEntry, m_xWsp.aArea()));
-    pEntry->vShow(iToOffset(pEntry), m_pIndex->pIdxColVec());
+  for (Entry* aEntry = aHead(); aEntry != nullptr; aEntry = aNextEntry(aEntry)) {
+    vTrace("%8lld: "_Str, nSub(aEntry, m_xWsp.aArea()));
+    aEntry->vShow(iToOffset(aEntry), m_pIndex->pIdxColVec());
   }
   
   vTrace("\n"_Str);
@@ -413,25 +413,25 @@ IndexBuffer* IndexBuffer::pSplitBuffer(void)
   i8 iSplitAtEntry = m_nEntries/2;
   
   // get the split entry
-  Entry* pLastEntry = pGetSplitEntry(iSplitAtEntry);
+  Entry* aLastEntry = pGetSplitEntry(iSplitAtEntry);
   
   // the last entry in the buffer after which the split will happen
   //pLastEntry->vShow(0,m_pIndex->pIdxColVec());
   
-  Entry* pReviseVec[C_FLAT_LEVELS];
+  Entry* aReviseVec[C_FLAT_LEVELS];
   
   // find the position of the last entry in the buffer
   KeyWsp xKeyWsp;
-  xKeyWsp.vAddKey(pLastEntry->aKey(), m_pIndex->pIdxColVec());
+  xKeyWsp.vAddKey(aLastEntry->aKey(), m_pIndex->pIdxColVec());
   
-  Entry* pAfterEntry = aPosition(xKeyWsp, JC_AFTER, pReviseVec);
+  Entry* aAfterEntry = aPosition(xKeyWsp, JC_AFTER, aReviseVec);
   
   // Note this ASSERT fails if we have dulplicates in the table     //ALKA: TODO
   // Need to fix when we cater for non-unique indexes
   //pAfterEntry->vShow(0,m_pIndex->pIdxColVec());
-  ASSERT(pAfterEntry == pLastEntry);
+  ASSERT(aAfterEntry == aLastEntry);
   
-  i8 iLastEntryOffset = iToOffset(pLastEntry);
+  i8 iLastEntryOffset = iToOffset(aLastEntry);
   i8 iOffsets = C_FLAT_LEVELS - 1;
   
   // Revise the offsets of the enteries using the ReviseVector
@@ -441,28 +441,28 @@ IndexBuffer* IndexBuffer::pSplitBuffer(void)
     i8 iLevel = iOffsets + 1;
     
     // get the right offset from the revise vector
-    i8 iRightOffset = pReviseVec[iLevel]->uRightOffset(iOffsets);
-    i8 iEntryOffset = iToOffset(pReviseVec[iLevel]);
-    i8 iEntrySize   = pReviseVec[iLevel]->nSize();
+    i8 iRightOffset = aReviseVec[iLevel]->uRightOffset(iOffsets);
+    i8 iEntryOffset = iToOffset(aReviseVec[iLevel]);
+    i8 iEntrySize   = aReviseVec[iLevel]->nSize();
     
     if (iRightOffset + iEntryOffset + iEntrySize >= iLastEntryOffset)
-      pReviseVec[iLevel]->vRightOffset(iOffsets, C_NIL_OFFSET);
+      aReviseVec[iLevel]->vRightOffset(iOffsets, C_NIL_OFFSET);
   }
   
   // get no of offsets of the last entry
-  i8 nEntryOffsets = pLastEntry->nOffsets();
+  i8 nEntryOffsets = aLastEntry->nOffsets();
   iOffsets = nEntryOffsets;
   
   while (--iOffsets >= 0) {
     // set the right offet in the last entry to C_NIL_OFFSET
-    pLastEntry->vRightOffset(iOffsets, C_NIL_OFFSET);
+    aLastEntry->vRightOffset(iOffsets, C_NIL_OFFSET);
   }
   
   // get the split entry from the lastEntry
-  Entry* pSplitEntry = aNextEntry(pLastEntry);
+  Entry* aSplitEntry = aNextEntry(aLastEntry);
   
   // get the address of the entry to split at
-  char* pSplitAt = reinterpret_cast<char*>(pSplitEntry);
+  char* pSplitAt = reinterpret_cast<char*>(aSplitEntry);
   
   // calculate bytes to copy to new buffer
   i8 nSize = nSub(m_xWsp.aLatter(), pSplitAt);
@@ -471,11 +471,11 @@ IndexBuffer* IndexBuffer::pSplitBuffer(void)
   IndexBuffer* pNewBuffer = new IndexBuffer(m_pIndex, m_nBufferLevel);
   
   // copy entries starting at the splitEntry from this buffer to the new buffer
-  pNewBuffer->vCopyEntries(this, pSplitEntry);
+  pNewBuffer->vCopyEntries(this, aSplitEntry);
   
   // give back nSize bytes to wsp in original buffer
   m_xWsp.vGive(nSize);
-  ASSERT(m_xWsp.aLatter() == pAdd<void*>((void*)pLastEntry,pLastEntry->nSize()));
+  ASSERT(m_xWsp.aLatter() == pAdd<void*>((void*)aLastEntry,aLastEntry->nSize()));
   
   m_nEntries -= iSplitAtEntry;
   
@@ -500,30 +500,30 @@ bool IndexBuffer::bVerify(void)
   
   do {
     
-    Entry* pEntryA = aHead();
-    if ( ! pEntryA )
+    Entry* aEntryA = aHead();
+    if ( ! aEntryA )
       return true;
     
-    if (pEntryA->nOffsets() < (u8)nLevel)
+    if (aEntryA->nOffsets() < (u8)nLevel)
       return true;
     
-    Entry* pEntryB = aRightEntry(pEntryA, nLevel);
-    if ( ! pEntryB )
+    Entry* aEntryB = aRightEntry(aEntryA, nLevel);
+    if ( ! aEntryB )
       return true;
   
-    while (pEntryB) {
+    while (aEntryB) {
       
-      Key* pKeyA = pEntryA->aKey();
-      Key* pKeyB = pEntryB->aKey();
+      Key* pKeyA = aEntryA->aKey();
+      Key* pKeyB = aEntryB->aKey();
       
-      if (pEntryA != aHead()) {
-        bool bAfter = pEntryB->aKey()->bJuxtaAfter(pEntryA->aKey(), m_pIndex->pIdxColVec());
+      if (aEntryA != aHead()) {
+        bool bAfter = aEntryB->aKey()->bJuxtaAfter(aEntryA->aKey(), m_pIndex->pIdxColVec());
         if ( ! bAfter )
           return false;
       }
       
-      pEntryA = pEntryB;
-      pEntryB = aNextEntry(pEntryA);
+      aEntryA = aEntryB;
+      aEntryB = aNextEntry(aEntryA);
     }
   } while (--nLevel >= 0 );
   
@@ -537,25 +537,25 @@ bool IndexBuffer::bVerify(void)
 /*----------------------------------------------------------------------------*/
 /* copy entries from buffer from fromEntry                                                                     */
 /*----------------------------------------------------------------------------*/
-void IndexBuffer::vCopyEntries(IndexBuffer* pFromBuffer, Entry* pFromEntry)
+void IndexBuffer::vCopyEntries(IndexBuffer* pFromBuffer, Entry* aFromEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
-  Entry* pEntry = pFromEntry;
+  Entry* aEntry = aFromEntry;
   i8 nLevel = pFromBuffer->nBufferLevel();
-  while (pEntry) {
+  while (aEntry) {
     
     KeyWsp xKeyWsp;
     
-    xKeyWsp.vAddKey(pEntry->aKey(), m_pIndex->pIdxColVec());
+    xKeyWsp.vAddKey(aEntry->aKey(), m_pIndex->pIdxColVec());
     
-    bInsert(xKeyWsp, pEntry->xId());
+    bInsert(xKeyWsp, aEntry->xId());
     
     if (nLevel > 0) {
-      IndexBuffer* pIndexBuffer = pEntry->pIndexBuffer();
+      IndexBuffer* pIndexBuffer = aEntry->pIndexBuffer();
       pIndexBuffer->m_pHigherLevel = this;
     }
-    pEntry = pFromBuffer->aNextEntry(pEntry);
+    aEntry = pFromBuffer->aNextEntry(aEntry);
     
   }
 }
@@ -578,7 +578,7 @@ void IndexBuffer::vDumpRevise(Entry** ppReviseVec)
 /*----------------------------------------------------------------------------*/
 /* fix the higher level                                                       */
 /*----------------------------------------------------------------------------*/
-void IndexBuffer::vFixHigherLevel(Entry* pNewEntry)
+void IndexBuffer::vFixHigherLevel(Entry* aNewEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
@@ -595,10 +595,10 @@ void IndexBuffer::vFixHigherLevel(Entry* pNewEntry)
     return;
   
   // get the first entry right of head at offset 0
-  Entry* pFirstEntry = aRightEntry(aHead(), 0);
+  Entry* aFirstEntry = aRightEntry(aHead(), 0);
   
   // if the entry we just added is not the first entry , nothing to fix
-  if (pNewEntry != pFirstEntry)
+  if (aNewEntry != aFirstEntry)
     return;
   
   /*
@@ -631,14 +631,14 @@ void IndexBuffer::vFixHigherLevel(Entry* pNewEntry)
   */
   
   // we need to update the higher level buffer entry key
-  Entry* pOldFirstEntry = aNextEntry(pNewEntry);
+  Entry* aOldFirstEntry = aNextEntry(aNewEntry);
 
   KeyWsp xOldKeyWsp;
-  xOldKeyWsp.vAddKey(pOldFirstEntry->aKey(), m_pIndex->pIdxColVec());
+  xOldKeyWsp.vAddKey(aOldFirstEntry->aKey(), m_pIndex->pIdxColVec());
   
   // create akeyWsp with the newEntry key
   KeyWsp xNewKeyWsp;
-  xNewKeyWsp.vAddKey(pNewEntry->aKey(), m_pIndex->pIdxColVec());
+  xNewKeyWsp.vAddKey(aNewEntry->aKey(), m_pIndex->pIdxColVec());
   
   IndexBuffer* pHigherLevel = m_pHigherLevel;
   
@@ -657,13 +657,13 @@ void IndexBuffer::vReplace(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
 
   // find the oldEntry in the higher level buffer
-  Entry* pFoundEntry = aPosition(xOldKeyWsp, JC_SAME);
+  Entry* aFoundEntry = aPosition(xOldKeyWsp, JC_SAME);
 
   // assert that we found one
-  ASSERT(pFoundEntry);
+  ASSERT(aFoundEntry);
 
   // assert the key of the higher level entry and the old entry match
-  ASSERT(pFoundEntry->aKey()->bJuxtaCompare(JC_SAME, xOldKeyWsp.aKey(), m_pIndex->pIdxColVec()));
+  ASSERT(aFoundEntry->aKey()->bJuxtaCompare(JC_SAME, xOldKeyWsp.aKey(), m_pIndex->pIdxColVec()));
 
   // get the size of the old key
   u8 uOldKeySize = xOldKeyWsp.nWspUsed();
@@ -671,18 +671,18 @@ void IndexBuffer::vReplace(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp)
   // get the size of the new key
   u8 uNewKeySize = xNewKeyWsp.nWspUsed();
 
-  i8 nOffsets = pFoundEntry->nOffsets();
-  Id xId = pFoundEntry->xId();
+  i8 nOffsets = aFoundEntry->nOffsets();
+  Id xId = aFoundEntry->xId();
 
   // create an entry wsp from the pFoundEntry and the new key
   EntWsp xEntWsp(nOffsets);
   xEntWsp.vAddKey(xNewKeyWsp);
   xEntWsp.vId(xId);
   for (i8 i=0; i<nOffsets; i++) {
-    xEntWsp.vRightOffset(i, pFoundEntry->uRightOffset(i));
+    xEntWsp.vRightOffset(i, aFoundEntry->uRightOffset(i));
   }
 
-  i8 iSize = pFoundEntry->nSize();
+  i8 iSize = aFoundEntry->nSize();
 
   if (uOldKeySize == uNewKeySize) {
     
@@ -697,12 +697,12 @@ void IndexBuffer::vReplace(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp)
      */
     
     // just replace the key in the buffer
-    pFoundEntry->vKey(xEntWsp);
+    aFoundEntry->vKey(xEntWsp);
     return;
   }
 
   // create a newEntry at the same location as the foundEntry
-  Entry* aNewEntry = _aEntry(pFoundEntry);
+  Entry* aNewEntry = _aEntry(aFoundEntry);
   i8 nDifference;
 
   if (uOldKeySize > uNewKeySize) {
@@ -719,7 +719,7 @@ void IndexBuffer::vReplace(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp)
     nDifference = uOldKeySize - uNewKeySize;
     
     // calculate the pDst address
-    void* pDst = pAdd<void*>(pFoundEntry, uNewKeySize);
+    void* pDst = pAdd<void*>(aFoundEntry, uNewKeySize);
     
     // move left nDifference bytes
     vMoveLeft(pDst, nDifference);
@@ -742,7 +742,7 @@ void IndexBuffer::vReplace(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp)
     ASSERT(nDifference);
     
     // calculate the pDst address
-    void* pDst = pAdd<void*>(pFoundEntry, iSize);
+    void* pDst = pAdd<void*>(aFoundEntry, iSize);
     
     // need to ensure we have space in the buffer
     if (m_xWsp.nFree() < nDifference) {
@@ -762,18 +762,18 @@ void IndexBuffer::vReplace(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp)
   ASSERT(aNewEntry->nSize() == nBytes);
 
   // fix the right offsets in the head
-  Entry* pHead = aHead();
+  Entry* aHeadEntry = aHead();
   
-  for (u8 i = 0; i < pHead->nOffsets(); i++) {
+  for (u8 i = 0; i < aHeadEntry->nOffsets(); i++) {
     
     // here we adjust the iRightOffset if offset is after oldEntry
-    u8 uOldEntrySize = pFoundEntry->nSize();
-    u8 uRightOffset = pHead->uRightOffset(i);
+    u8 uOldEntrySize = aFoundEntry->nSize();
+    u8 uRightOffset = aHeadEntry->uRightOffset(i);
     nDifference = uOldKeySize - uNewKeySize;
     
     if ( uRightOffset != C_NIL_OFFSET) {
       if ((i8)uRightOffset - nDifference >= (i8)uOldEntrySize) {
-        pHead->vRightOffset(i,(i8)(pHead->uRightOffset(i)) - nDifference);
+        aHeadEntry->vRightOffset(i,(i8)(aHeadEntry->uRightOffset(i)) - nDifference);
       }
     }
   }
@@ -783,7 +783,7 @@ void IndexBuffer::vReplace(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp)
 /*----------------------------------------------------------------------------*/
 /* fix the revise vector                                                      */
 /*----------------------------------------------------------------------------*/
-void IndexBuffer::vFixRevise(Entry** ppReviseVec, Entry* pNewEntry)
+void IndexBuffer::vFixRevise(Entry** ppReviseVec, Entry* aNewEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
@@ -792,13 +792,13 @@ void IndexBuffer::vFixRevise(Entry** ppReviseVec, Entry* pNewEntry)
   //vTrace("\n"_Str);
 
   // get no of offsets of the new entry
-  u8 nEntryOffsets = pNewEntry->nOffsets();
+  u8 nEntryOffsets = aNewEntry->nOffsets();
   
   // get entry size
-  i8 nNewEntrySize = pNewEntry->nSize();
+  i8 nNewEntrySize = aNewEntry->nSize();
   
   // get the offset of the new entry
-  u8 uNewEntryOffset = iToOffset(pNewEntry);
+  u8 uNewEntryOffset = iToOffset(aNewEntry);
 
   for (u8 uOffset = 0; uOffset < C_FLAT_OFFSETS; uOffset++) {
     
@@ -847,10 +847,10 @@ Entry* IndexBuffer::pGetSplitEntry(i8 iSplitAtEntry)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
   // start with the head
-  Entry* pSplitEntry = aHead();
+  Entry* aSplitEntry = aHead();
   
   i8 iEntries = 0;
-  while (pSplitEntry) {
+  while (aSplitEntry) {
     
     iEntries++;
     
@@ -859,10 +859,10 @@ Entry* IndexBuffer::pGetSplitEntry(i8 iSplitAtEntry)
       break;
     
     // get next entry
-    pSplitEntry = this->aNextEntry(pSplitEntry);
+    aSplitEntry = this->aNextEntry(aSplitEntry);
   }
   
-  return pSplitEntry;
+  return aSplitEntry;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1047,7 +1047,7 @@ Entry* IndexBuffer::aPosition(KeyWsp& xKeyWsp, eJC eJuxaCompare, Entry** aaRevis
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
   // start from head at known highest level
-  Entry* pCurrentEntry = aHead();
+  Entry* aCurrentEntry = aHead();
   i8 iCurrentLevel = C_FLAT_LEVELS - 1;
   Key* aKey = xKeyWsp.aKey();
 
@@ -1056,13 +1056,13 @@ Entry* IndexBuffer::aPosition(KeyWsp& xKeyWsp, eJC eJuxaCompare, Entry** aaRevis
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // inner loop: go right a number of nodes until we find
     //   ObjectInsert < ObjectNext at current level
-    while (Entry* pNextEntry = aRightEntry(pCurrentEntry, iCurrentLevel)) {
+    while (Entry* aNextEntry = aRightEntry(aCurrentEntry, iCurrentLevel)) {
       
       //aKey->vShow(m_pIndex->pIdxColVec());
       //pNextEntry->aKey()->vShow(m_pIndex->pIdxColVec());
     
       // compare the inserting object with next object
-      bool bAfter = aKey->bJuxtaCompare(eJuxaCompare, pNextEntry->aKey(), m_pIndex->pIdxColVec());
+      bool bAfter = aKey->bJuxtaCompare(eJuxaCompare, aNextEntry->aKey(), m_pIndex->pIdxColVec());
 
       //vTrace(" %s\n"_Str,bAfter ? "after" : "before");
     
@@ -1080,7 +1080,7 @@ Entry* IndexBuffer::aPosition(KeyWsp& xKeyWsp, eJC eJuxaCompare, Entry** aaRevis
       //       (i8)pObjectInsert,(i8)pNextEntry->uRight(),iCurrentLevel);
 
       // go right one node
-      pCurrentEntry = aRightEntry(pCurrentEntry, iCurrentLevel);
+      aCurrentEntry = aRightEntry(aCurrentEntry, iCurrentLevel);
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1088,7 +1088,7 @@ Entry* IndexBuffer::aPosition(KeyWsp& xKeyWsp, eJC eJuxaCompare, Entry** aaRevis
 
     // first record current node as a revision point
     if (aaReviseVec)
-      aaReviseVec[iCurrentLevel] = pCurrentEntry;
+      aaReviseVec[iCurrentLevel] = aCurrentEntry;
    
    // now go down one level
     goDownLevel(iCurrentLevel);
@@ -1096,7 +1096,7 @@ Entry* IndexBuffer::aPosition(KeyWsp& xKeyWsp, eJC eJuxaCompare, Entry** aaRevis
     // and repeat till we have a complete revision vector
   } while (iCurrentLevel >= 0);
   
-  return pCurrentEntry;
+  return aCurrentEntry;
 }
 
 /*----------------------------------------------------------------------------*/

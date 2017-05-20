@@ -59,10 +59,10 @@ namespace DBobjects
     bool         bVerify(void);
     
   private:
-    void         vCopyEntries(IndexBuffer* pFromBuffer, Entry* pFromEntry);
+    void         vCopyEntries(IndexBuffer* pFromBuffer, Entry* aFromEntry);
     void         vDumpRevise(Entry** ppReviseVec);
-    void         vFixHigherLevel(Entry* pNewEntry);
-    void         vFixRevise(Entry** ppReviseVec, Entry* pNewEntry);
+    void         vFixHigherLevel(Entry* aNewEntry);
+    void         vFixRevise(Entry** ppReviseVec, Entry* aNewEntry);
     Entry*       pGetSplitEntry(i8 iSplitAtEntry);
        i8        iLevel(void);
     void         vMoveLeft(void* aDst, i8 nBytes);

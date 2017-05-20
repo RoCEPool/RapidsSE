@@ -154,8 +154,8 @@ IndexBuffer* IndexData::pFirstBuffer(void)
   
   while (pIndexBuffer) {
     
-    Entry* pFirstEntry = pIndexBuffer->aNextEntry(pIndexBuffer->aHead());
-    pIndexBuffer = pFirstEntry->pIndexBuffer();
+    Entry* aFirstEntry = pIndexBuffer->aNextEntry(pIndexBuffer->aHead());
+    pIndexBuffer = aFirstEntry->pIndexBuffer();
     
     if (pIndexBuffer->nBufferLevel() == 0) {
       return pIndexBuffer;
@@ -302,28 +302,28 @@ bool IndexData::bVerify(void)
     }
     
     // higher level buffer get first entry
-    Entry* pEntryLN = pIndexBuffer->aNextEntry(pIndexBuffer->aHead());
+    Entry* aEntryLN = pIndexBuffer->aNextEntry(pIndexBuffer->aHead());
     
-    while (pEntryLN) {
+    while (aEntryLN) {
       
       // get buffer first entry points to
-      IndexBuffer* pIndexBufferN_1 = pEntryLN->pIndexBuffer();
+      IndexBuffer* pIndexBufferN_1 = aEntryLN->pIndexBuffer();
       
       // get the key of the first entry points to
-      Key* pKeyLN = pEntryLN->aKey();
+      Key* pKeyLN = aEntryLN->aKey();
       
       // get the first entry from the lower buffer
-      Entry* pEntryLN_1 = pIndexBufferN_1->aNextEntry(pIndexBufferN_1->aHead());
+      Entry* aEntryLN_1 = pIndexBufferN_1->aNextEntry(pIndexBufferN_1->aHead());
       
       // get the key of the first entry points to
-      Key* pKeyLN_1 = pEntryLN_1->aKey();
+      Key* pKeyLN_1 = aEntryLN_1->aKey();
 
-      bool bSame = pKeyLN->bJuxtaCompare(JC_SAME, pEntryLN_1->aKey(), m_pIndex->pIdxColVec());
+      bool bSame = pKeyLN->bJuxtaCompare(JC_SAME, aEntryLN_1->aKey(), m_pIndex->pIdxColVec());
       if ( ! bSame ) {
         return false;
       }
       
-      pEntryLN = pIndexBuffer->aNextEntry(pEntryLN);
+      aEntryLN = pIndexBuffer->aNextEntry(aEntryLN);
     }
   
     pIndexBuffer = pIndexBuffer->pNextBuffer();
@@ -394,11 +394,11 @@ void IndexData::vInsertFirstEntry(IndexBuffer* pToBuffer, IndexBuffer* pFromBuff
   xNewId.vRow(C_HIGHER_LEVEL_ID);
   
   // get the first entry from the first buffer
-  Entry* pHead = pFromBuffer->aHead();
-  Entry* pFirstEntry = pFromBuffer->aNextEntry(pHead);
+  Entry* aHeadEntry = pFromBuffer->aHead();
+  Entry* aFirstEntry = pFromBuffer->aNextEntry(aHeadEntry);
   
   // get the key from the first entry
-  Key* aKey = pFirstEntry->aKey();
+  Key* aKey = aFirstEntry->aKey();
   
   // form a keyWsp from the key
   KeyWsp xFirstKeyWsp;
@@ -418,10 +418,10 @@ void IndexData::vFixHigherBuffer(IndexBuffer* pIndexBuffer, i8 iLevel)
   IndexBuffer* pRoot;
   
   // get first entry keywsp from first buffer
-  Entry* pFirstEntry = pIndexBuffer->aNextEntry(pIndexBuffer->aHead());
+  Entry* aFirstEntry = pIndexBuffer->aNextEntry(pIndexBuffer->aHead());
 
   // form a keyWsp from the key
-  xKeyWsp.vAddKey(pFirstEntry->aKey(), m_pIndex->pIdxColVec());
+  xKeyWsp.vAddKey(aFirstEntry->aKey(), m_pIndex->pIdxColVec());
   
   pRoot = m_pRoot->aPositionLevel(xKeyWsp, JC_AFTER, iLevel);
 

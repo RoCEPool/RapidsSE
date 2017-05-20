@@ -285,17 +285,17 @@ void Task::vIndexPosition(NNP_Task nnpTask)
   
   xKeyWsp.vAddElement(pStrVal, pIndex->pIdxColVec()->pGet(0));
 
-  Entry* pEntry = pIndexBuffer->aPosition(xKeyWsp, JC_AFTER);
+  Entry* aEntry = pIndexBuffer->aPosition(xKeyWsp, JC_AFTER);
   
   //pEntry->aKey()->vShow(pIndex->pIdxColVec());
   //xKeyWsp.aKey()->vShow(pIndex->pIdxColVec());
   
-  bool bAfter = pEntry->aKey()->bJuxtaCompare(JC_AFTER, xKeyWsp.aKey(), pIndex->pIdxColVec());
+  bool bAfter = aEntry->aKey()->bJuxtaCompare(JC_AFTER, xKeyWsp.aKey(), pIndex->pIdxColVec());
   if ( ! bAfter) {
-    pEntry = pIndexBuffer->aNextEntry(pEntry);
+    aEntry = pIndexBuffer->aNextEntry(aEntry);
   }
   
-  nnpTask->m_pDataStack->vPushObject(pEntry);
+  nnpTask->m_pDataStack->vPushObject(aEntry);
   
   EXIT();
 }
@@ -525,8 +525,8 @@ void Task::vIndexUpper(NNP_Task nnpTask)
   if ( ! nnpTask->m_pDataStack->bPop(pPtrEntry) )
     THROW_INVALID_DSTACK("index.upper"_Str);
   
-  Entry* pEntry = _aEntry(pPtrEntry);
-  ASSERT(CN_ENTRY == pEntry->eClass());
+  Entry* aEntry = _aEntry(pPtrEntry);
+  ASSERT(CN_ENTRY == aEntry->eClass());
   
   if ( ! nnpTask->m_pDataStack->bPop(xValWsp) )
     THROW_INVALID_DSTACK("index.upper"_Str);
@@ -546,7 +546,7 @@ void Task::vIndexUpper(NNP_Task nnpTask)
   
   xKeyWsp.vAddElement(pStrVal, pIndex->pIdxColVec()->pGet(0));
   
-  bool bBefore = pEntry->aKey()->bJuxtaCompare(JC_BEFORE, xKeyWsp.aKey(), pIndex->pIdxColVec());
+  bool bBefore = aEntry->aKey()->bJuxtaCompare(JC_BEFORE, xKeyWsp.aKey(), pIndex->pIdxColVec());
   
   nnpTask->m_pDataStack->vPushInt(bBefore ? 1 : 0);
   

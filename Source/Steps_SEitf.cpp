@@ -166,10 +166,10 @@ void Task::vSEitfEntryStore(NNP_Task nnpTask)
   if ( ! nnpTask->m_pDataStack->bPop(pPtrEntry) )
     THROW_INVALID_DSTACK("seitf.entry!"_Str);
   
-  Entry* pEntry = _aEntry(pPtrEntry);
-  ASSERT(nullptr == pEntry || CN_ENTRY == pEntry->eClass());
+  Entry* aEntry = _aEntry(pPtrEntry);
+  ASSERT(nullptr == aEntry || CN_ENTRY == aEntry->eClass());
   
-  pSEitf->m_pEntry = pEntry;
+  pSEitf->m_pEntry = aEntry;
   
   EXIT();
 }
