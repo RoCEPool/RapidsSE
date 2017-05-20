@@ -1055,7 +1055,7 @@ Entry* IndexBuffer::aPosition(Key* aGivenKey, eJC eJuxtaCompare, Entry** aaRevis
 
   ASSERT(JC_SAME == eJuxtaCompare || JC_AFTER == eJuxtaCompare);
 
-  bool bJuxtaCmp;
+  bool bIsJuxta;
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   
   // start scanning from head entry and topmost level
@@ -1065,8 +1065,8 @@ Entry* IndexBuffer::aPosition(Key* aGivenKey, eJC eJuxtaCompare, Entry** aaRevis
   do {
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // inner loop: go right a number of entries until we scan for key that
-    //             is same/after given key at current scan level
+    // inner loop: scan right a number of entries at current scan level
+    //             until we find a key that is same/after given key
     
     while (Entry* aNextEntry = aRightEntry(aScanEntry, iScanLevel)) {
       
@@ -1078,12 +1078,12 @@ Entry* IndexBuffer::aPosition(Key* aGivenKey, eJC eJuxtaCompare, Entry** aaRevis
       //aNextKey->vShow(m_pIndex->pIdxColVec());
     
       // juxta-compare given key with next key at this level
-      bJuxtaCmp = aGivenKey->bJuxtaCompare(eJuxtaCompare, aNextKey, pIdxColVec);
+      bIsJuxta = aGivenKey->bJuxtaCompare(eJuxtaCompare, aNextKey, pIdxColVec);
 
       //vTrace(" %s\n"_Str,bAfter ? "after" : "before");
     
-      // given key not same/after next key at this level
-      if (! bJuxtaCmp)
+      // if given key is not same/after next key then break to outer loop
+      if (! bIsJuxta)
         break;
 
       // given key is same/after next key, go right one entry at this level
@@ -1093,8 +1093,9 @@ Entry* IndexBuffer::aPosition(Key* aGivenKey, eJC eJuxtaCompare, Entry** aaRevis
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // outer loop: having gone right as far as we can, go down one level
+    //             note that aNextEntry may be null at this point
 
-    // first record scan entry as an insert-after revision point
+    // opt record scan entry as an insert-after revision point at this level
     if (aaReviseVec)
       aaReviseVec[iScanLevel] = aScanEntry;
    
