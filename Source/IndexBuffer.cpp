@@ -774,7 +774,7 @@ void IndexBuffer::vReplace(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp)
 /*----------------------------------------------------------------------------*/
 /* fix the revise vector                                                      */
 /*----------------------------------------------------------------------------*/
-void IndexBuffer::vFixRevise(Entry** ppReviseVec, Entry* aNewEntry)
+void IndexBuffer::vFixRevise(Entry** aaReviseVec, Entry* aNewEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
@@ -796,15 +796,18 @@ void IndexBuffer::vFixRevise(Entry** ppReviseVec, Entry* aNewEntry)
     // get the level
     u8 uLevel = uOffset + 1;
     
-    // get the reviseVector's rightOffset at this level
-    u8 uReviseRightOffset = ppReviseVec[uLevel]->uRightOffset(uOffset);
+    // get entry being revised
+    Entry* aReviseEntry = aaReviseVec[uLevel];
+    
+    // get the revise entry's right offset at this level
+    u8 uReviseRightOffset = aReviseEntry->uRightOffset(uOffset);
     
     // if C_NIL_OFFSET, nothing to revise
-    if (uReviseRightOffset == C_NIL_OFFSET )
+    if (uReviseRightOffset == C_NIL_OFFSET)
       continue;
     
-    u8 uReviseEntryOffset = iToOffsetAbs(ppReviseVec[uLevel]);
-    u8 uReviseEntrySize = ppReviseVec[uLevel]->nSize();
+    u8 uReviseEntryOffset = iToOffsetAbs(aReviseEntry);
+    u8 uReviseEntrySize = aReviseEntry->nSize();
 
     // is newEntry added between the the reviseEntry and reviseOffset ?
     if (uNewEntryOffset <= uReviseEntryOffset + uReviseEntrySize + uReviseRightOffset) {
@@ -812,14 +815,14 @@ void IndexBuffer::vFixRevise(Entry** ppReviseVec, Entry* aNewEntry)
       // no of offsets of reviseVector entry is >= no of new entry offsets
       if (uOffset >= nEntryOffsets) {
         // adjust the reviseVector offset with the newEntrySize
-        ppReviseVec[uLevel]->vRightOffset(uOffset,uReviseRightOffset + nNewEntrySize);
+        aReviseEntry->vRightOffset(uOffset,uReviseRightOffset + nNewEntrySize);
       }
       else {
         // no of offsets of reviseVector entry is >= no of new entry offsets
         i8 nSize = uNewEntryOffset - (uReviseEntrySize + uReviseEntryOffset);
         
         // adjust the reviseVector to point to the newEntry
-        ppReviseVec[uLevel]->vRightOffset(uOffset,uReviseRightOffset - nSize);
+        aReviseEntry->vRightOffset(uOffset,uReviseRightOffset - nSize);
       }
     }
 
