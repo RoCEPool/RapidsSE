@@ -783,42 +783,42 @@ void IndexBuffer::vFixRevise(Entry** aaReviseVec, Entry* aNewEntry)
   //vTrace("\n"_Str);
 
   // get no of offsets, entry size and offset for the new entry
-  u8 nEntryOffsets = aNewEntry->nOffsets();
+  u8 nNewEntryOffsets = aNewEntry->nOffsets();
   i8 nNewEntryBytes = aNewEntry->nSize();
   u8 uNewEntryOffsetAbs = iToOffsetAbs(aNewEntry);
 
   // iterate thru each possible offset
   for (u8 uOffsetNo = 0; uOffsetNo < C_FLAT_OFFSETS; uOffsetNo++) {
     
-    // get entry being revised
+    // get prior entry being revised
     u8 uLevelNo = uOffsetNo + 1;
-    Entry* aReviseEntry = aaReviseVec[uLevelNo];
+    Entry* aPriorEntry = aaReviseVec[uLevelNo];
     
-    // get revise entry's right offset and check there is an offset to revise
-    u8 uReviseRightOffset = aReviseEntry->uRightOffset(uOffsetNo);
-    if (C_NIL_OFFSET == uReviseRightOffset)
+    // get prior entry's right offset and check there is an offset to fix
+    u8 uPriorRightOffset = aPriorEntry->uRightOffset(uOffsetNo);
+    if (C_NIL_OFFSET == uPriorRightOffset)
       continue;
     
-    u8 uReviseEntryOffsetAbs = iToOffsetAbs(aReviseEntry);
-    u8 uReviseEntryBytes = aReviseEntry->nSize();
+    u8 uPriorEntryOffsetAbs = iToOffsetAbs(aPriorEntry);
+    u8 uPriorEntryBytes = aPriorEntry->nSize();
 
     // check if newEntry is between the reviseEntry and postEntry
-    u8 uPostOffsetAbs = uReviseEntryOffsetAbs + uReviseEntryBytes + uReviseRightOffset;
+    u8 uPostOffsetAbs = uPriorEntryOffsetAbs + uPriorEntryBytes + uPriorRightOffset;
     if (uNewEntryOffsetAbs > uPostOffsetAbs)
       continue;
     
     // no of offsets of reviseVector entry is >= no of new entry offsets
-    if (uOffsetNo >= nEntryOffsets) {
+    if (uOffsetNo >= nNewEntryOffsets) {
       // adjust the reviseVector offset with the newEntrySize
-      u8 uReviseRightOffsetAdj = uReviseRightOffset + nNewEntryBytes;
-      aReviseEntry->vRightOffset(uOffsetNo,uReviseRightOffsetAdj);
+      u8 uPriorRightOffsetAdj = uPriorRightOffset + nNewEntryBytes;
+      aPriorEntry->vRightOffset(uOffsetNo,uPriorRightOffsetAdj);
     }
     else {
-      // no of offsets of reviseVector entry is >= no of new entry offsets
-      i8 nSize = uNewEntryOffsetAbs - (uReviseEntryBytes + uReviseEntryOffsetAbs);
+      // no of offsets in prior entry is >= no of new entry offsets
+      i8 nSize = uNewEntryOffsetAbs - (uPriorEntryBytes + uPriorEntryOffsetAbs);
       
-      // adjust the reviseVector to point to the newEntry
-      aReviseEntry->vRightOffset(uOffsetNo,uReviseRightOffset - nSize);
+      // adjust the prior entry to point to the new entry
+      aPriorEntry->vRightOffset(uOffsetNo,uPriorRightOffset - nSize);
     }
   
   } // for

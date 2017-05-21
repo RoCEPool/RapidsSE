@@ -5,7 +5,6 @@
 
 namespace DBobjects
 {
-  
   class Index;
   
   class IndexBuffer : public Buffer
