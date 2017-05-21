@@ -215,6 +215,9 @@ Index* IndexBuffer::pIndex(void)
 /*----------------------------------------------------------------------------*/
 /* insert new entry into this index buffer                                    */
 /*----------------------------------------------------------------------------*/
+
+#ifndef FIX_PRIOR
+
 bool IndexBuffer::bInsert(KeyWsp& xKeyWsp, Id xId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
@@ -273,6 +276,10 @@ bool IndexBuffer::bInsert(KeyWsp& xKeyWsp, Id xId)
   
   return true;
 }
+
+#else //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* get next buffer                                                            */
@@ -774,6 +781,8 @@ void IndexBuffer::vReplace(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp)
 /*----------------------------------------------------------------------------*/
 /* fix the revise vector                                                      */
 /*----------------------------------------------------------------------------*/
+#ifndef FIX_PRIOR
+
 void IndexBuffer::vFixRevise(Entry** aaReviseVec, Entry* aNewEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
@@ -827,6 +836,10 @@ void IndexBuffer::vFixRevise(Entry** aaReviseVec, Entry* aNewEntry)
   //vDumpRevise(ppReviseVec);
   //vTrace("\n"_Str);
 }
+
+#else //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* get the split entry                                                        */
