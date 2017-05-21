@@ -419,9 +419,8 @@ IndexBuffer* IndexBuffer::pSplitBuffer(void)
   Entry* aReviseVec[C_FLAT_LEVELS];
   
   // find the position of the last entry in the buffer
-  KeyWsp xKeyWsp(aLastEntry->aKey(), m_pIndex->pIdxColVec());
-  
-  Entry* aAfterEntry = aPosition(xKeyWsp.aKey(), JC_AFTER, aReviseVec);
+  Key* aLastKey = aLastEntry->aKey();
+  Entry* aAfterEntry = aPosition(aLastKey, JC_AFTER, aReviseVec);
   
   // Note this ASSERT fails if we have dulplicates in the table     //ALKA: TODO
   // Need to fix when we cater for non-unique indexes
@@ -459,10 +458,10 @@ IndexBuffer* IndexBuffer::pSplitBuffer(void)
   Entry* aSplitEntry = aNextEntry(aLastEntry);
   
   // get the address of the entry to split at
-  char* pSplitAt = reinterpret_cast<char*>(aSplitEntry);
+  char* aSplitAddr = reinterpret_cast<char*>(aSplitEntry);
   
   // calculate bytes to copy to new buffer
-  i8 nSize = nSub(m_xWsp.aLatter(), pSplitAt);
+  i8 nBytesToCopy = nSub(m_xWsp.aLatter(), aSplitAddr);
   
   // allocate a new buffer at the same index level
   IndexBuffer* pNewBuffer = new IndexBuffer(m_pIndex, m_nBufferLevel);
@@ -470,8 +469,8 @@ IndexBuffer* IndexBuffer::pSplitBuffer(void)
   // copy entries starting at the splitEntry from this buffer to the new buffer
   pNewBuffer->vCopyEntries(this, aSplitEntry);
   
-  // give back nSize bytes to wsp in original buffer
-  m_xWsp.vGive(nSize);
+  // give back copied bytes to wsp in original buffer
+  m_xWsp.vGive(nBytesToCopy);
   ASSERT(m_xWsp.aLatter() == pAdd<void*>((void*)aLastEntry,aLastEntry->nSize()));
   
   m_nEntries -= iSplitAtEntry;
