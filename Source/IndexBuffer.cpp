@@ -407,16 +407,12 @@ IndexBuffer* IndexBuffer::pSplitBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
-  // split the buffer into two
-  i8 iSplitAtEntry = m_nEntries/2;
-  
-  // get the split entry
-  Entry* aLastEntry = aGetEntry(iSplitAtEntry);
-  
-  // the last entry in the buffer after which the split will happen
-  //pLastEntry->vShow(0,m_pIndex->pIdxColVec());
-  
   Entry* aReviseVec[C_FLAT_LEVELS];
+  
+  // split the buffer into two, get the last entry to remain in original buffer
+  i8 iSplitAtEntry = m_nEntries/2;
+  Entry* aLastEntry = aGetEntry(iSplitAtEntry);
+  //pLastEntry->vShow(0,m_pIndex->pIdxColVec());
   
   // find the position of the last entry in the buffer
   Key* aLastKey = aLastEntry->aKey();
@@ -427,32 +423,25 @@ IndexBuffer* IndexBuffer::pSplitBuffer(void)
   //pAfterEntry->vShow(0,m_pIndex->pIdxColVec());
   ASSERT(aAfterEntry == aLastEntry);
   
+  // revise the offsets of the enteries using the ReviseVector
   i8 iLastEntryOffset = iToOffsetAbs(aLastEntry);
-  i8 iOffsets = C_FLAT_LEVELS - 1;
-  
-  // Revise the offsets of the enteries using the ReviseVector
-  while (--iOffsets >= 0) {
+  for (i8 iOffset = C_FLAT_LEVELS - 2; iOffset >= 0; iOffset--) {
     
     // calculate level into reviseVector for this offset
-    i8 iLevel = iOffsets + 1;
+    i8 iLevel = iOffset + 1;
     
     // get the right offset from the revise vector
-    i8 iRightOffset = aReviseVec[iLevel]->uRightOffset(iOffsets);
+    i8 iRightOffset = aReviseVec[iLevel]->uRightOffset(iOffset);
     i8 iEntryOffset = iToOffsetAbs(aReviseVec[iLevel]);
     i8 iEntrySize   = aReviseVec[iLevel]->nSize();
     
     if (iRightOffset + iEntryOffset + iEntrySize >= iLastEntryOffset)
-      aReviseVec[iLevel]->vRightOffset(iOffsets, C_NIL_OFFSET);
+      aReviseVec[iLevel]->vRightOffset(iOffset, C_NIL_OFFSET);
   }
   
-  // get no of offsets of the last entry
-  i8 nEntryOffsets = aLastEntry->nOffsets();
-  iOffsets = nEntryOffsets;
-  
-  while (--iOffsets >= 0) {
-    // set the right offet in the last entry to C_NIL_OFFSET
-    aLastEntry->vRightOffset(iOffsets, C_NIL_OFFSET);
-  }
+  // set the right offet in the last entry to C_NIL_OFFSET
+  for (i8 iOffset = aLastEntry->nOffsets() - 1; iOffset >= 0; iOffset--)
+    aLastEntry->vRightOffset(iOffset, C_NIL_OFFSET);
   
   // get the split entry from the lastEntry
   Entry* aSplitEntry = aNextEntry(aLastEntry);
