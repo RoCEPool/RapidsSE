@@ -453,14 +453,12 @@ IndexBuffer* IndexBuffer::pSplitBuffer(void)
   IndexBuffer* pNewBuffer = new IndexBuffer(m_pIndex, m_nBufferLevel);
   
   // copy entries starting at the splitEntry from this buffer to the new buffer
-  pNewBuffer->vCopyEntries(this, aSplitEntry);
+  m_nEntries -= pNewBuffer->iCopyEntries(this, aSplitEntry);
   
   // give copied bytes back to wsp of original buffer
   i8 nBytesToGive = nSub(m_xWsp.aLatter(), aSplitEntry);
   m_xWsp.vGive(nBytesToGive);
   ASSERT(m_xWsp.aLatter() == pAdd<void*>((void*)aLastEntry,aLastEntry->nSize()));
-  
-  m_nEntries -= iSplitAtEntry;
   
   // now link the two buffers
   pNewBuffer->m_pNextBuffer = pNextBuffer();
@@ -579,19 +577,20 @@ void IndexBuffer::vAllotHead(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* copy entries from buffer from fromEntry                                    */
+/* copy entries from given buffer starting at given entry                     */
 /*----------------------------------------------------------------------------*/
-void IndexBuffer::vCopyEntries(IndexBuffer* pFromBuffer, Entry* aFromEntry)
+i8 IndexBuffer::iCopyEntries(IndexBuffer* pFromBuffer, Entry* aFromEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
-  Entry* aEntry = aFromEntry;
   i8 nLevel = pFromBuffer->nBufferLevel();
-  while (aEntry) {
+  
+  i8 nCopied = 0;
+  for (Entry* aEntry = aFromEntry;
+       aEntry;
+       aEntry = pFromBuffer->aNextEntry(aEntry)) {
     
-    KeyWsp xKeyWsp;
-    
-    xKeyWsp.vAddKey(aEntry->aKey(), m_pIndex->pIdxColVec());
+    KeyWsp xKeyWsp(aEntry->aKey(), m_pIndex->pIdxColVec());
     
     bInsert(xKeyWsp, aEntry->xId());
     
@@ -599,9 +598,11 @@ void IndexBuffer::vCopyEntries(IndexBuffer* pFromBuffer, Entry* aFromEntry)
       IndexBuffer* pIndexBuffer = aEntry->pIndexBuffer();
       pIndexBuffer->m_pHigherLevel = this;
     }
-    aEntry = pFromBuffer->aNextEntry(aEntry);
     
+    nCopied++;
   }
+  
+  return nCopied;
 }
 
 /*----------------------------------------------------------------------------*/
