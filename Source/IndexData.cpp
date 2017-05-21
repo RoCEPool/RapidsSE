@@ -340,7 +340,8 @@ void IndexData::vInsertEntry(IndexBuffer* pHigher, KeyWsp& xKeyWsp, Id xId, i8 i
   // initialize the entry wsp
   EntWsp xEntWsp(xId,xKeyWsp);
   
-  // find index buffer to insert into, starting with given higher
+  // find index buffer which contains the entry after which the new entry will
+  // be inserted into, starting with given higher
   IndexBuffer* pIndexBuffer = pHigher->pPositionLevel(xKeyWsp, JC_AFTER, iLevel);
   
   // check if found index buffer has enough space

@@ -63,7 +63,7 @@ IndexBuffer::IndexBuffer(Index* pIndex, i8 nBufferLevel)
   m_xWsp.vZero();
   
   // new the head
-  vNewHead();
+  vAllotHead();
   m_nEntries++;
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
@@ -213,35 +213,36 @@ Index* IndexBuffer::pIndex(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* insert new entry                                                           */
+/* insert new entry into this index buffer                                    */
 /*----------------------------------------------------------------------------*/
 bool IndexBuffer::bInsert(KeyWsp& xKeyWsp, Id xId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
-  Entry* aReviseVec[C_FLAT_LEVELS];
-  EntWsp xEntWsp;
-  
   //vTrace("Inserting key:\n"_Str);
   //xKeyWsp.vShow();
   
-  // initialize the EntWsp
-  xEntWsp.vId(xId);
-  xEntWsp.vAddKey(xKeyWsp);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // insert a new entry into the skip list
   
-  // get the size of the EntWsp
-  i8 nBytes = Entry::nBytesRequired(xEntWsp);
+  // find the entry after which the new entry will be inserted
+  Entry* aReviseVec[C_FLAT_LEVELS];
+  Entry* aAfterEntry = aPosition(xKeyWsp.aKey(), JC_AFTER, aReviseVec);
   
-  // position the key in the buffer
-  Entry* aAfterEntry = aPosition(xKeyWsp.aKey(),JC_AFTER, aReviseVec);
-  Entry* aNewEntry = this->aNewEntry(nBytes, xEntWsp.nOffsets(), aAfterEntry);
+  // create the new entry following the `after entry`
+  EntWsp xEntWsp(xId,xKeyWsp);
+  i8 nEntryBytes = Entry::nBytesRequired(xEntWsp);
+  Entry* aNewEntry = aAllotEntry(nEntryBytes, xEntWsp.nOffsets(), aAfterEntry);
   
-  // set the new entry from the EntWsp
+  // set the new entry from the entry wsp
   aNewEntry->vSetEntry(xEntWsp);
   
   //vTrace("\n\n---------INDEX BUFFER AFTER MOVING --------------\n"_Str);
   //vShow();
   //vTrace("-----------------------\n\n"_Str);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // revise the offsets
   
   // fix the revise vector after the move
   vFixRevise(aReviseVec, aNewEntry);
@@ -252,32 +253,35 @@ bool IndexBuffer::bInsert(KeyWsp& xKeyWsp, Id xId)
   // get the offset of the new entry
   i8 iNewEntryOffset = iToOffset(aNewEntry);
   
-  i8 iOffsets = nEntryOffsets;
-  
-  // Revise the offsets of the enteries using the ReviseVector
-  while (--iOffsets >= 0) {
+  // revise the offsets of the enteries using the revise vector
+  for (i8 iOffsetNo = nEntryOffsets - 1; iOffsetNo >= 0; iOffsetNo--) {
     
-    // calculate level into reviseVector for this offset
-    i8 iLevel = iOffsets + 1;
+    // calculate level into revise vector for this offset
+    i8 iLevelNo = iOffsetNo + 1;
     
     // get the right offset from the revise vector
-    i8 iRightOffset = aReviseVec[iLevel]->uRightOffset(iOffsets);
+    i8 iRightOffset = aReviseVec[iLevelNo]->uRightOffset(iOffsetNo);
     
     // set the right offet in the new entry
-    aNewEntry->vRightOffset(iOffsets, iRightOffset);
+    aNewEntry->vRightOffset(iOffsetNo, iRightOffset);
     
     // get the end offset of the revise vector entry at level
-    i8 iRevEndOffset = iToEndOffset( aReviseVec[iLevel]);
+    i8 iRevEndOffset = iToEndOffset( aReviseVec[iLevelNo]);
+    
+    // calculate revised offset
+    i8 iRevisedOffset = iNewEntryOffset - iRevEndOffset;
     
     // set the right offset for the entry in the revise vector entry
-    aReviseVec[iLevel]->vRightOffset(iOffsets,  iNewEntryOffset - iRevEndOffset);
+    aReviseVec[iLevelNo]->vRightOffset(iOffsetNo, iRevisedOffset);
   }
   
   // increment the no of entries
   m_nEntries++;
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // fix higher level buffers
   // this is needed in case we inserted a new first key in the buffer
+  
   vFixHigherLevel(aNewEntry);
   
   return true;
@@ -984,7 +988,7 @@ void IndexBuffer::vMoveRight(void* aSrc, i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* allot new entry after given entry (return null if insufficient space)      */
 /*----------------------------------------------------------------------------*/
-Entry* IndexBuffer::aNewEntry(i8 nBytes, i8 nOffsets, Entry* aAfterEntry)
+Entry* IndexBuffer::aAllotEntry(i8 nBytes, i8 nOffsets, Entry* aAfterEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
@@ -1019,7 +1023,7 @@ Entry* IndexBuffer::aNewEntry(i8 nBytes, i8 nOffsets, Entry* aAfterEntry)
 /*----------------------------------------------------------------------------*/
 /* allot head entry (during constructor)                                      */
 /*----------------------------------------------------------------------------*/
-void IndexBuffer::vNewHead(void)
+void IndexBuffer::vAllotHead(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
 
@@ -1031,7 +1035,7 @@ void IndexBuffer::vNewHead(void)
   
   // allot the head
   
-  Entry* aHead = aNewEntry(nBytes,C_FLAT_OFFSETS,nullptr);
+  Entry* aHead = aAllotEntry(nBytes,C_FLAT_OFFSETS,nullptr);
 
   // initialize the head
   for (i8 iOffset = 0; iOffset < C_FLAT_OFFSETS; iOffset++)
