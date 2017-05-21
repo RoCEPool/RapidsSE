@@ -246,7 +246,7 @@ bool IndexBuffer::bInsert(KeyWsp& xKeyWsp, Id xId)
   vFixRevise(aReviseVec, aNewEntry);
   
   // get the absolute offset of the new entry
-  i8 iNewEntryOffsetAbs = iToOffset(aNewEntry);
+  i8 iNewEntryOffsetAbs = iToOffsetAbs(aNewEntry);
   
   // step thru each offset to be revised
   for (i8 iOffsetNo = aNewEntry->nOffsets() - 1; iOffsetNo >= 0; iOffsetNo--) {
@@ -264,9 +264,6 @@ bool IndexBuffer::bInsert(KeyWsp& xKeyWsp, Id xId)
     i8 iNewEntryOffset = iNewEntryOffsetAbs - iPriorOffsetAbs;
     aPriorEntry->vRightOffset(iOffsetNo, iNewEntryOffset);
   }
-  
-  // increment the no of entries
-  m_nEntries++;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // fix higher level buffers
@@ -389,7 +386,7 @@ void IndexBuffer::vShow(void)
   
   for (Entry* aEntry = aHead(); aEntry != nullptr; aEntry = aNextEntry(aEntry)) {
     vTrace("%8lld: "_Str, nSub(aEntry, m_xWsp.aArea()));
-    aEntry->vShow(iToOffset(aEntry), m_pIndex->pIdxColVec());
+    aEntry->vShow(iToOffsetAbs(aEntry), m_pIndex->pIdxColVec());
   }
   
   vTrace("\n"_Str);
@@ -425,7 +422,7 @@ IndexBuffer* IndexBuffer::pSplitBuffer(void)
   //pAfterEntry->vShow(0,m_pIndex->pIdxColVec());
   ASSERT(aAfterEntry == aLastEntry);
   
-  i8 iLastEntryOffset = iToOffset(aLastEntry);
+  i8 iLastEntryOffset = iToOffsetAbs(aLastEntry);
   i8 iOffsets = C_FLAT_LEVELS - 1;
   
   // Revise the offsets of the enteries using the ReviseVector
@@ -436,7 +433,7 @@ IndexBuffer* IndexBuffer::pSplitBuffer(void)
     
     // get the right offset from the revise vector
     i8 iRightOffset = aReviseVec[iLevel]->uRightOffset(iOffsets);
-    i8 iEntryOffset = iToOffset(aReviseVec[iLevel]);
+    i8 iEntryOffset = iToOffsetAbs(aReviseVec[iLevel]);
     i8 iEntrySize   = aReviseVec[iLevel]->nSize();
     
     if (iRightOffset + iEntryOffset + iEntrySize >= iLastEntryOffset)
@@ -792,7 +789,7 @@ void IndexBuffer::vFixRevise(Entry** ppReviseVec, Entry* aNewEntry)
   i8 nNewEntrySize = aNewEntry->nSize();
   
   // get the offset of the new entry
-  u8 uNewEntryOffset = iToOffset(aNewEntry);
+  u8 uNewEntryOffset = iToOffsetAbs(aNewEntry);
 
   for (u8 uOffset = 0; uOffset < C_FLAT_OFFSETS; uOffset++) {
     
@@ -806,7 +803,7 @@ void IndexBuffer::vFixRevise(Entry** ppReviseVec, Entry* aNewEntry)
     if (uReviseRightOffset == C_NIL_OFFSET )
       continue;
     
-    u8 uReviseEntryOffset = iToOffset(ppReviseVec[uLevel]);
+    u8 uReviseEntryOffset = iToOffsetAbs(ppReviseVec[uLevel]);
     u8 uReviseEntrySize = ppReviseVec[uLevel]->nSize();
 
     // is newEntry added between the the reviseEntry and reviseOffset ?
@@ -1007,6 +1004,9 @@ Entry* IndexBuffer::aAllotEntry(i8 nBytes, i8 nOffsets, Entry* aAfterEntry)
   // run the constructor of the new entry
   new (aNewEntry) Entry(nBytes,nOffsets);
   
+  // increment the no of entries
+  m_nEntries++;
+  
   return aNewEntry;
 }
 
@@ -1019,6 +1019,7 @@ void IndexBuffer::vAllotHead(void)
 
   // must be the first item in wsp
   ASSERT( ! m_xWsp.nUsed() );
+  ASSERT( ! m_nEntries );
   
   // how many bytes are required
   i8 nBytes = Entry::nBytesRequired(C_FLAT_OFFSETS, 0);
@@ -1185,9 +1186,9 @@ i8 IndexBuffer::iToEndOffset(Entry* aEntry)
 }
 
 /*----------------------------------------------------------------------------*/
-/* converts aEntry to iOffset                                                 */
+/* calculates the absolute offset of aEntry in the workspace                  */
 /*----------------------------------------------------------------------------*/
-i8 IndexBuffer::iToOffset(Entry* aEntry)
+i8 IndexBuffer::iToOffsetAbs(Entry* aEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
