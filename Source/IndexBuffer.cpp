@@ -446,11 +446,8 @@ IndexBuffer* IndexBuffer::pSplitBuffer(void)
   // get the split entry from the lastEntry
   Entry* aSplitEntry = aNextEntry(aLastEntry);
   
-  // get the address of the entry to split at
-  char* aSplitAddr = reinterpret_cast<char*>(aSplitEntry);
-  
   // calculate bytes to copy to new buffer
-  i8 nBytesToCopy = nSub(m_xWsp.aLatter(), aSplitAddr);
+  i8 nBytesToCopy = nSub(m_xWsp.aLatter(), aSplitEntry);
   
   // allocate a new buffer at the same index level
   IndexBuffer* pNewBuffer = new IndexBuffer(m_pIndex, m_nBufferLevel);
