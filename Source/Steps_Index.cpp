@@ -111,7 +111,7 @@ void Task::vIndexBuffer(NNP_Task nnpTask)
   StrVal* pStrVal = _pStrVal(xValWsp.pNestedValueSelf());
   
   xKeyWsp.vAddElement(pStrVal, pIndex->pIdxColVec()->pGet(0));
-  IndexBuffer* pIndexBuffer = pIndexData->aPosition(xKeyWsp, JC_AFTER, 0);
+  IndexBuffer* pIndexBuffer = pIndexData->aPositionLevel(xKeyWsp, JC_AFTER, 0);
   
   //xKeyWsp.vShow();
   
