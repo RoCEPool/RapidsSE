@@ -56,16 +56,16 @@ namespace DBobjects
     bool         bVerify(void);
     
   private:
+    Entry*       aAllotEntry(i8 nBytes, i8 nLevels, Entry* aAfterEntry);
+    void         vAllotHead(void);
     void         vCopyEntries(IndexBuffer* pFromBuffer, Entry* aFromEntry);
     void         vDumpRevise(Entry** ppReviseVec);
     void         vFixHigherLevel(Entry* aNewEntry);
     void         vFixRevise(Entry** ppReviseVec, Entry* aNewEntry);
-    Entry*       pGetSplitEntry(i8 iSplitAtEntry);
-       i8        iLevel(void);
+    Entry*       aGetEntry(i8 iEntryNo);
+    i8           iLevel(void);
     void         vMoveLeft(void* aDst, i8 nBytes);
     void         vMoveRight(void* aSrc, i8 nBytes);
-    Entry*       aAllotEntry(i8 nBytes, i8 nLevels, Entry* aAfterEntry);
-    void         vAllotHead(void);
     Entry*       aPosition(Key* aGivenKey, eJC eJuxtaCompare, Entry** aaReviseVec);
     void         vReplace(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp);
     Entry*       aRightEntry(Entry* aEntry, u8 uLevel);

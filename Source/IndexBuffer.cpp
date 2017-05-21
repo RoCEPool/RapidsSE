@@ -331,7 +331,7 @@ Entry* IndexBuffer::aPosition(KeyWsp& xKeyWsp, eJC eJuxtaCompare)
 
 /*----------------------------------------------------------------------------*/
 /* position at an index buffer at level iLevel starting from this buffer      */
-/*--------------------ƒ--------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 IndexBuffer* IndexBuffer::pPositionLevel(KeyWsp& xKeyWsp, eJC eJuxtaCompare, i8 iLevel)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
@@ -411,7 +411,7 @@ IndexBuffer* IndexBuffer::pSplitBuffer(void)
   i8 iSplitAtEntry = m_nEntries/2;
   
   // get the split entry
-  Entry* aLastEntry = pGetSplitEntry(iSplitAtEntry);
+  Entry* aLastEntry = aGetEntry(iSplitAtEntry);
   
   // the last entry in the buffer after which the split will happen
   //pLastEntry->vShow(0,m_pIndex->pIdxColVec());
@@ -531,7 +531,68 @@ bool IndexBuffer::bVerify(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* copy entries from buffer from fromEntry                                                                     */
+/* allot new entry after given entry (return null if insufficient space)      */
+/*----------------------------------------------------------------------------*/
+Entry* IndexBuffer::aAllotEntry(i8 nBytes, i8 nOffsets, Entry* aAfterEntry)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
+  
+  // There should be  enough space for the new entry
+  if (m_xWsp.nFree() < nBytes)
+    return nullptr;
+  
+  // allot space for the new entry
+  m_xWsp.vTake(nBytes);
+  Entry* aLatter = _aEntry(m_xWsp.aLatter());
+  
+  Entry* aNewEntry;
+  
+  if (aAfterEntry) {
+    // compute address of new entry
+    i8 nAfterBytes = aAfterEntry->nSize();
+    aNewEntry = pAdd<Entry*>(aAfterEntry,nAfterBytes);
+    
+    // move subset of entries to right to make room for new entry
+    vMoveRight(aNewEntry,nBytes);
+  }
+  else {
+    aNewEntry = _aEntry(m_xWsp.aArea());
+  }
+  
+  // run the constructor of the new entry
+  new (aNewEntry) Entry(nBytes,nOffsets);
+  
+  // increment the no of entries
+  m_nEntries++;
+  
+  return aNewEntry;
+}
+
+/*----------------------------------------------------------------------------*/
+/* allot head entry (during constructor)                                      */
+/*----------------------------------------------------------------------------*/
+void IndexBuffer::vAllotHead(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
+  
+  // must be the first item in wsp
+  ASSERT( ! m_xWsp.nUsed() );
+  ASSERT( ! m_nEntries );
+  
+  // how many bytes are required
+  i8 nBytes = Entry::nBytesRequired(C_FLAT_OFFSETS, 0);
+  
+  // allot the head
+  
+  Entry* aHead = aAllotEntry(nBytes,C_FLAT_OFFSETS,nullptr);
+  
+  // initialize the head
+  for (i8 iOffset = 0; iOffset < C_FLAT_OFFSETS; iOffset++)
+    aHead->vRightOffset(iOffset, C_NIL_OFFSET);
+}
+
+/*----------------------------------------------------------------------------*/
+/* copy entries from buffer from fromEntry                                    */
 /*----------------------------------------------------------------------------*/
 void IndexBuffer::vCopyEntries(IndexBuffer* pFromBuffer, Entry* aFromEntry)
 {
@@ -840,9 +901,9 @@ void IndexBuffer::vFixRevise(Entry** aaReviseVec, Entry* aNewEntry)
 #endif
 
 /*----------------------------------------------------------------------------*/
-/* get the split entry                                                        */
+/* get an entry by number                                                     */
 /*----------------------------------------------------------------------------*/
-Entry* IndexBuffer::pGetSplitEntry(i8 iSplitAtEntry)
+Entry* IndexBuffer::aGetEntry(i8 iEntryNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
@@ -855,7 +916,7 @@ Entry* IndexBuffer::pGetSplitEntry(i8 iSplitAtEntry)
     iEntries++;
     
     // found split point
-    if (iEntries == iSplitAtEntry)
+    if (iEntries == iEntryNo)
       break;
     
     // get next entry
@@ -979,67 +1040,6 @@ void IndexBuffer::vMoveRight(void* aSrc, i8 nBytes)
   
   // for the moment we'll zero the bytes of entry E
   MemLib::vZero(aSrc,nBytes);
-}
-
-/*----------------------------------------------------------------------------*/
-/* allot new entry after given entry (return null if insufficient space)      */
-/*----------------------------------------------------------------------------*/
-Entry* IndexBuffer::aAllotEntry(i8 nBytes, i8 nOffsets, Entry* aAfterEntry)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
-  
-  // There should be  enough space for the new entry
-  if (m_xWsp.nFree() < nBytes)
-    return nullptr;
-  
-  // allot space for the new entry
-  m_xWsp.vTake(nBytes);
-  Entry* aLatter = _aEntry(m_xWsp.aLatter());
-  
-  Entry* aNewEntry;
-  
-  if (aAfterEntry) {
-  // compute address of new entry
-    i8 nAfterBytes = aAfterEntry->nSize();
-    aNewEntry = pAdd<Entry*>(aAfterEntry,nAfterBytes);
-
-    // move subset of entries to right to make room for new entry
-    vMoveRight(aNewEntry,nBytes);
-  }
-  else {
-    aNewEntry = _aEntry(m_xWsp.aArea());
-  }
-  
-  // run the constructor of the new entry
-  new (aNewEntry) Entry(nBytes,nOffsets);
-  
-  // increment the no of entries
-  m_nEntries++;
-  
-  return aNewEntry;
-}
-
-/*----------------------------------------------------------------------------*/
-/* allot head entry (during constructor)                                      */
-/*----------------------------------------------------------------------------*/
-void IndexBuffer::vAllotHead(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
-
-  // must be the first item in wsp
-  ASSERT( ! m_xWsp.nUsed() );
-  ASSERT( ! m_nEntries );
-  
-  // how many bytes are required
-  i8 nBytes = Entry::nBytesRequired(C_FLAT_OFFSETS, 0);
-  
-  // allot the head
-  
-  Entry* aHead = aAllotEntry(nBytes,C_FLAT_OFFSETS,nullptr);
-
-  // initialize the head
-  for (i8 iOffset = 0; iOffset < C_FLAT_OFFSETS; iOffset++)
-    aHead->vRightOffset(iOffset, C_NIL_OFFSET);
 }
 
 
