@@ -229,12 +229,10 @@ bool IndexBuffer::bInsert(KeyWsp& xKeyWsp, Id xId)
   Entry* aReviseVec[C_FLAT_LEVELS];
   Entry* aAfterEntry = aPosition(xKeyWsp.aKey(), JC_AFTER, aReviseVec);
   
-  // create the new entry following the `after entry`
+  // create a new entry following the `after entry` and set it
   EntWsp xEntWsp(xId,xKeyWsp);
   i8 nEntryBytes = Entry::nBytesRequired(xEntWsp);
   Entry* aNewEntry = aAllotEntry(nEntryBytes, xEntWsp.nOffsets(), aAfterEntry);
-  
-  // set the new entry from the entry wsp
   aNewEntry->vSetEntry(xEntWsp);
   
   //vTrace("\n\n---------INDEX BUFFER AFTER MOVING --------------\n"_Str);
@@ -242,37 +240,29 @@ bool IndexBuffer::bInsert(KeyWsp& xKeyWsp, Id xId)
   //vTrace("-----------------------\n\n"_Str);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // revise the offsets
+  // revise the offsets of the prior entries from the revise vector
   
   // fix the revise vector after the move
   vFixRevise(aReviseVec, aNewEntry);
   
-  // get no of offsets of the new entry
-  i8 nEntryOffsets = aNewEntry->nOffsets();
-
-  // get the offset of the new entry
-  i8 iNewEntryOffset = iToOffset(aNewEntry);
+  // get the absolute offset of the new entry
+  i8 iNewEntryOffsetAbs = iToOffset(aNewEntry);
   
-  // revise the offsets of the enteries using the revise vector
-  for (i8 iOffsetNo = nEntryOffsets - 1; iOffsetNo >= 0; iOffsetNo--) {
+  // step thru each offset to be revised
+  for (i8 iOffsetNo = aNewEntry->nOffsets() - 1; iOffsetNo >= 0; iOffsetNo--) {
     
-    // calculate level into revise vector for this offset
+    // get prior entry being revised
     i8 iLevelNo = iOffsetNo + 1;
+    Entry* aPriorEntry = aReviseVec[iLevelNo];
     
-    // get the right offset from the revise vector
-    i8 iRightOffset = aReviseVec[iLevelNo]->uRightOffset(iOffsetNo);
-    
-    // set the right offet in the new entry
+    // copy the right offset from the prior entry into the new entry
+    i8 iRightOffset = aPriorEntry->uRightOffset(iOffsetNo);
     aNewEntry->vRightOffset(iOffsetNo, iRightOffset);
     
-    // get the end offset of the revise vector entry at level
-    i8 iRevEndOffset = iToEndOffset( aReviseVec[iLevelNo]);
-    
-    // calculate revised offset
-    i8 iRevisedOffset = iNewEntryOffset - iRevEndOffset;
-    
-    // set the right offset for the entry in the revise vector entry
-    aReviseVec[iLevelNo]->vRightOffset(iOffsetNo, iRevisedOffset);
+    // set the right offset in the prior entry to offset of new entry
+    i8 iPriorOffsetAbs = iToEndOffset(aPriorEntry);
+    i8 iNewEntryOffset = iNewEntryOffsetAbs - iPriorOffsetAbs;
+    aPriorEntry->vRightOffset(iOffsetNo, iNewEntryOffset);
   }
   
   // increment the no of entries
