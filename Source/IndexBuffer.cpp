@@ -419,8 +419,7 @@ IndexBuffer* IndexBuffer::pSplitBuffer(void)
   Entry* aReviseVec[C_FLAT_LEVELS];
   
   // find the position of the last entry in the buffer
-  KeyWsp xKeyWsp;
-  xKeyWsp.vAddKey(aLastEntry->aKey(), m_pIndex->pIdxColVec());
+  KeyWsp xKeyWsp(aLastEntry->aKey(), m_pIndex->pIdxColVec());
   
   Entry* aAfterEntry = aPosition(xKeyWsp.aKey(), JC_AFTER, aReviseVec);
   

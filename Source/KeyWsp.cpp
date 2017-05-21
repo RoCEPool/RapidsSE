@@ -43,6 +43,17 @@ KeyWsp::KeyWsp(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+KeyWsp::KeyWsp(Key* aKey, IdxColVec* pColVec)
+: KeyWsp()
+{
+  _precondition_(_MAGIC_,CN_KEYWSP);
+  
+  vAddKey(aKey, pColVec);
+}
+
+/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 KeyWsp::~KeyWsp(void)
@@ -57,16 +68,16 @@ KeyWsp::~KeyWsp(void)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-void KeyWsp::vAddKey(Key* pKey, IdxColVec* pColVec)
+void KeyWsp::vAddKey(Key* aKey, IdxColVec* pColVec)
 {
   _precondition_(_MAGIC_,CN_KEYWSP);
   
-  char* aCursor = pKey->aWspArea();
+  char* aCursor = aKey->aWspArea();
   i8 nBytes;
   for (i8 iColumn = 0; iColumn < pColVec->nItems(); iColumn++) {
     Column* pColumn = pColVec->pGet(iColumn);
     
-    char* aElement = pKey->aElement(pColumn, nBytes,&aCursor);
+    char* aElement = aKey->aElement(pColumn, nBytes,&aCursor);
     
     char* pDst = m_xWsp.aLatter();
     char* pSrc = aElement;

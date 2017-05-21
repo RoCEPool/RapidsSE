@@ -18,6 +18,7 @@ namespace DBobjects
     void* operator new(size_t, KeyWsp*);
     
     KeyWsp(void);
+    KeyWsp(Key* aKey, IdxColVec* pColVec);
     ~KeyWsp(void);
   
     void vShow(void);
@@ -25,7 +26,7 @@ namespace DBobjects
 
     void vAddElement(ValWsp& xValWsp, Column* pCol);
     void vAddElement(StrVal* pValStr, Column* pCol);
-    void vAddKey(Key* pKey, IdxColVec* pColVec);
+    void vAddKey(Key* aKey, IdxColVec* pColVec);
   
     void  vReset(void);
   
