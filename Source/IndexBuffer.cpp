@@ -401,7 +401,7 @@ void IndexBuffer::vShow(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* split the buffer                                                           */
+/* split this buffer into two: this original buffer plus a new buffer         */
 /*----------------------------------------------------------------------------*/
 IndexBuffer* IndexBuffer::pSplitBuffer(void)
 {
@@ -409,10 +409,14 @@ IndexBuffer* IndexBuffer::pSplitBuffer(void)
   
   Entry* aReviseVec[C_FLAT_LEVELS];
   
-  // split the buffer into two, get the last entry to remain in original buffer
+  // get last entry to remain in this buffer and
+  // split entry (and those that follw) which will be moved into new buffer
   i8 iSplitAtEntry = m_nEntries/2;
-  Entry* aLastEntry = aGetEntry(iSplitAtEntry);
+  Entry* aLastEntry  = aGetEntry(iSplitAtEntry);
+  Entry* aSplitEntry = aNextEntry(aLastEntry);
   //pLastEntry->vShow(0,m_pIndex->pIdxColVec());
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // find the position of the last entry in the buffer
   Key* aLastKey = aLastEntry->aKey();
@@ -443,11 +447,7 @@ IndexBuffer* IndexBuffer::pSplitBuffer(void)
   for (i8 iOffset = aLastEntry->nOffsets() - 1; iOffset >= 0; iOffset--)
     aLastEntry->vRightOffset(iOffset, C_NIL_OFFSET);
   
-  // get the split entry from the lastEntry
-  Entry* aSplitEntry = aNextEntry(aLastEntry);
-  
-  // calculate bytes to copy to new buffer
-  i8 nBytesToCopy = nSub(m_xWsp.aLatter(), aSplitEntry);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // allocate a new buffer at the same index level
   IndexBuffer* pNewBuffer = new IndexBuffer(m_pIndex, m_nBufferLevel);
@@ -455,8 +455,9 @@ IndexBuffer* IndexBuffer::pSplitBuffer(void)
   // copy entries starting at the splitEntry from this buffer to the new buffer
   pNewBuffer->vCopyEntries(this, aSplitEntry);
   
-  // give back copied bytes to wsp in original buffer
-  m_xWsp.vGive(nBytesToCopy);
+  // give copied bytes back to wsp of original buffer
+  i8 nBytesToGive = nSub(m_xWsp.aLatter(), aSplitEntry);
+  m_xWsp.vGive(nBytesToGive);
   ASSERT(m_xWsp.aLatter() == pAdd<void*>((void*)aLastEntry,aLastEntry->nSize()));
   
   m_nEntries -= iSplitAtEntry;
