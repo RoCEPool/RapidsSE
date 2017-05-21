@@ -225,11 +225,11 @@ bool IndexBuffer::bInsert(KeyWsp& xKeyWsp, Id xId)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // insert a new entry into the skip list
   
-  // find the entry after which the new entry will be inserted
+  // find the entry after which the new entry.key will be inserted
   Entry* aReviseVec[C_FLAT_LEVELS];
   Entry* aAfterEntry = aPosition(xKeyWsp.aKey(), JC_AFTER, aReviseVec);
   
-  // create a new entry following the `after entry` and set it
+  // create a new entry after the prior entry and set it
   EntWsp xEntWsp(xId,xKeyWsp);
   i8 nEntryBytes = Entry::nBytesRequired(xEntWsp);
   Entry* aNewEntry = aAllotEntry(nEntryBytes, xEntWsp.nOffsets(), aAfterEntry);
