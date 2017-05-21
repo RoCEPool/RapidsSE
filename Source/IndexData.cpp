@@ -337,17 +337,17 @@ void IndexData::vInsertEntry(IndexBuffer* pHigher, KeyWsp& xKeyWsp, Id xId, i8 i
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
   
-  // initialize the EntWsp
+  // initialize the entry wsp
   EntWsp xEntWsp(xId,xKeyWsp);
   
-  // find buffer to insert into, starting with root
+  // find index buffer to insert into, starting with given higher
   IndexBuffer* pIndexBuffer = pHigher->pPositionLevel(xKeyWsp, JC_AFTER, iLevel);
   
-  // check if IndexBuffer to insert into has space
+  // check if found index buffer has enough space
   i8 nEntryBytes = Entry::nBytesRequired(xEntWsp);
   if ( ! pIndexBuffer->bHasSpace(nEntryBytes) ) {
     
-    // split the index buffer
+    // not enough space, so split the index buffer
     pIndexBuffer = pSplitBuffer(pIndexBuffer);
     
     // find position again
