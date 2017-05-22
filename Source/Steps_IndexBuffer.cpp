@@ -78,7 +78,7 @@ void Task::vIndexBufferFirstEntry(NNP_Task nnpTask)
   IndexBuffer* pIndexBuffer = _pIndexBuffer(pPtrIndexBuffer);
   ASSERT(nullptr == pIndexBuffer || CN_INDEXBUFFER == pIndexBuffer->eClass());
   
-  nnpTask->m_pDataStack->vPushObject(pIndexBuffer->pNextEntry(pIndexBuffer->aHead()));
+  nnpTask->m_pDataStack->vPushObject(pIndexBuffer->pNextEntry(pIndexBuffer->pHead()));
   
   EXIT();
 }
@@ -110,7 +110,7 @@ void Task::vIndexBufferNextEntry(NNP_Task nnpTask)
     ASSERT(CN_ENTRY == pEntry->eClass());
     pNextEntry = pIndexBuffer->pNextEntry(pEntry);
   } else {
-    pNextEntry = pIndexBuffer->pNextEntry(pIndexBuffer->aHead());
+    pNextEntry = pIndexBuffer->pNextEntry(pIndexBuffer->pHead());
   }
   
   nnpTask->m_pDataStack->vPushObject(pNextEntry);

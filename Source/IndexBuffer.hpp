@@ -41,7 +41,7 @@ namespace DBobjects
     void         vDump(void);
     i8           nEntries(void);
     bool         bHasSpace(i8 nBytes);
-    Entry*       aHead(void);
+    Entry*       pHead(void);
     void         vHigherLevel(IndexBuffer* pHigherLevel);
     IndexBuffer* pHigherLevel(void);
     Index*       pIndex(void);
