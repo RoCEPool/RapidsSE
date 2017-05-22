@@ -495,6 +495,51 @@ tp: range_select_index
 ;
 
 /*----------------------------------------------------------------------------*/
+/* set unique property of an index                                            */
+/*----------------------------------------------------------------------------*/
+: index_setUnique ( "<indexNm>" "<tableNm>" true/false -- <R> )
+
+  assert::stack_3+
+
+  locals| bIsUnique sTableNm sIndexNm |
+
+  tp: index_setUnique
+
+  ddlLock::grabWrite
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // path should end in a tables folder
+  // i.e. task.dicStack should be ../tables
+  checkInTables not if <NIP+ERROR> exit then
+
+  // check "<tableNm>" is a table folder within ../tables
+  sTableNm checkIsTableFolder not if <NIP+ERROR> exit then
+
+  // push named table folder onto path
+  // i.e. task.dicStack will be ../tables/<tableNm>
+  sTableNm pushTable assert
+
+  // check "<tablenm"> is a table in ../tables/<tableNm>
+  sTableNm checkIsTable not if <NIP+ERROR> exit then
+
+  // push indexes folder
+  pushIndexes assert
+
+  // check indexNm is an index
+  sIndexNm checkIsIndex
+  not if
+    popIndexes popTable assertInTables <NIP+ERROR> exit
+  then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  sIndexNm bIsUnique setIndexIsUnique ( ) assert::stack_0
+
+  <OK>
+;
+
+/*----------------------------------------------------------------------------*/
 /* get size of index                                                          */
 /*----------------------------------------------------------------------------*/
 : size_index ( "<indexNm>" "<tableNm>" -- <R> )

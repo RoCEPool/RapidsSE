@@ -713,6 +713,25 @@ tp: loadIndexes
 ;
 
 /*----------------------------------------------------------------------------*/
+/* set isUnique property of index                                             */
+/*----------------------------------------------------------------------------*/
+: setIndexIsUnique allParticipants 2 checkResult ( "<indexNm>" true/false -- )
+
+  assert::stack_2
+
+  locals| bIsUnique sIndexNm |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  bIsUnique ( bIsUnique )
+
+    sIndexNm find execute ( bIsUnique index^ )
+
+  index.isUnique! ( )
+
+  assert::stack_0
+;
+
+/*----------------------------------------------------------------------------*/
 /* get size of index                                                          */
 /*----------------------------------------------------------------------------*/
 : sizeIndex ( "<indexNm>" -- "<size>" )
