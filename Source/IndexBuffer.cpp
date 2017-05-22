@@ -181,7 +181,7 @@ Entry* IndexBuffer::aHead(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set the higher level index buffer                                          */
+/* get the higher level index buffer                                          */
 /*----------------------------------------------------------------------------*/
 IndexBuffer* IndexBuffer::pHigherLevel(void)
 {
@@ -382,8 +382,6 @@ Entry* IndexBuffer::aNextEntry(Entry* aEntry)
   else
     return nullptr;
 }
-
-#define goDownLevel(iLevel) iLevel--;
 
 /*----------------------------------------------------------------------------*/
 /* position at entry with lower bound at key                                  */
