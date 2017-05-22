@@ -102,7 +102,8 @@ namespace Interface
     bool bDumpIndex(Str* aWords[], i8 iWords);
     bool bEndCreateIndex(Str* aWords[], i8 iWords);
     bool bListIndices(Str* aWords[], i8 iWords);
-    
+    bool bIndexSetUnique(Str* aWords[], i8 iWords);
+  
     bool bCreateTable(Str* aWords[], i8 iWords);
     bool bEndCreateTable(Str* aWords[], i8 iWords);
   

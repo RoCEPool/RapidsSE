@@ -88,6 +88,7 @@ lsidx     list_indexes
 lwrselidx lower_select_index
 rmidx     drop_index
 rgeselidx range_select_index
+setidxunique index_setUnique
 szidx     size_index
 tridx     truncate_index
 uprselidx upper_select_index

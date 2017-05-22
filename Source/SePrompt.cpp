@@ -1079,10 +1079,8 @@ bool SePrompt::bCreateIndex(bool bUnique)
             (! bUnique && m_aToken[1]->bEqual("index"_Str))
          );
   
-  i8 iToken;
-  
   // copy tokens from m_aToken to m_aToken2
-  // while doing that also validate the create statament
+  i8 iToken;
   for (iToken = 0; iToken < C_TOKENS; iToken++) {
     if (! *m_aToken[iToken]->s())
       break;
@@ -1093,8 +1091,9 @@ bool SePrompt::bCreateIndex(bool bUnique)
   i8 iValue;
   i8 iNumTokens = iToken;
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // some validations
-  // - - - - - - - - - - - - - - - - - - - - -
+  
   // there should be a minumum of 7 tokens
   if (iNumTokens < 7 + iIfUnique) {
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
@@ -1119,7 +1118,9 @@ bool SePrompt::bCreateIndex(bool bUnique)
     return false;
   }
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create the index
+  
   m_aToken[0]->vCopy("mkidx"_Str);
   m_aToken[1]->vCopy(m_aToken2[4 + iIfUnique]);
   m_aToken[2]->vCopy(m_aToken2[2 + iIfUnique]);
@@ -1163,6 +1164,9 @@ bool SePrompt::bCreateIndex(bool bUnique)
     return false;
   }
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create the index columns
+  
   // now collect the column names and their types
   i8 iCurrentToken = 6 + iIfUnique;
   while(iCurrentToken < iNumTokens - 1) {
@@ -1195,7 +1199,35 @@ bool SePrompt::bCreateIndex(bool bUnique)
     }
   }
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // uniqueness
+  
+  if (bUnique) {
+    
+    m_aToken[0]->vCopy("setidxunique"_Str);
+    m_aToken[1]->vCopy(m_aToken2[4 + iIfUnique]);
+    m_aToken[2]->vCopy(m_aToken2[2 + iIfUnique]);
+    m_aToken[3]->vCopy("true"_Str);
+    m_aToken[4]->vCopy(""_Str);
+    
+    if (!bExecuteRequest()) {
+      vTrace("SePrompt::bCreateIndex : setidxunique FAILED!!!\n"_Str);
+      // save error returned by addColumn
+      eEC eError = m_pSEitf->eGetLastError();
+      
+      // drop the table that was created
+      bIndexReturnTable(m_aToken2[4 + iIfUnique], m_aToken2[2 + iIfUnique]);
+      
+      // return error returned by addColumn
+      m_pSEitf->vSetLastError(eError);
+      return false;
+    }
+    
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // end of make index
+  
   m_aToken[0]->vCopy("endmkidx"_Str);
   m_aToken[1]->vCopy(m_aToken2[4 + iIfUnique]);
   m_aToken[2]->vCopy(m_aToken2[2 + iIfUnique]);
@@ -1213,6 +1245,9 @@ bool SePrompt::bCreateIndex(bool bUnique)
     m_pSEitf->vSetLastError(eError);
     return false;
   }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // restore path
   
   // change folder to tables
   m_aToken[0]->vCopy("cf"_Str);

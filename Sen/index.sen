@@ -719,7 +719,7 @@ tp: loadIndexes
 
   assert::stack_2
 
-  locals| bIsUnique sIndexNm |
+  locals| sIndexNm bIsUnique |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   bIsUnique ( bIsUnique )
@@ -729,6 +729,8 @@ tp: loadIndexes
   index.isUnique! ( )
 
   assert::stack_0
+
+  true <SUCCESS_RESULT>
 ;
 
 /*----------------------------------------------------------------------------*/

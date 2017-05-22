@@ -399,6 +399,7 @@ bool SEitf::bDecode(Str* aWords[], i8 iWords)
   if (aWords[0]->bSame("rmten"_Str)) return bDropTenant(aWords, iWords);
   if (aWords[0]->bSame("rgeselidx"_Str)) return bRangeSelectIndex(aWords, iWords);
   if (aWords[0]->bSame("sel"_Str)) return bSelectTable(aWords, iWords);
+  if (aWords[0]->bSame("setidxunique"_Str)) return bIndexSetUnique(aWords, iWords);
   if (aWords[0]->bSame("space"_Str)) return bPoolSpace(aWords, iWords);
   if (aWords[0]->bSame("status"_Str)) return bNodeStatus(aWords, iWords);
   if (aWords[0]->bSame("szidx"_Str)) return bSizeIndex(aWords, iWords);
@@ -743,6 +744,39 @@ bool SEitf::bListIndices(Str* aWords[], i8 iWords)
   ASSERT(aWords[0]->bEqual("lsidx"_Str));
   
   sRequest.vConcat(" list_indexes"_Str);
+  
+  return bAppendRequest(sRequest);
+}
+
+/*----------------------------------------------------------------------------*/
+/* set index uniqueness                                                       */
+/*----------------------------------------------------------------------------*/
+bool SEitf::bIndexSetUnique(Str* aWords[], i8 iWords)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  s256 sRequest;
+  
+  if (iWords != 4) {
+    vSetLastError(EC_INVALID_PARAMETERS);
+    return false;
+  }
+  
+  //sRequest.vCopy("\""_Str);
+  sRequest.vCopy(aWords[3]);
+  //sRequest.vConcat("\""_Str);
+  
+  sRequest.vConcat("\""_Str);
+  sRequest.vConcat(aWords[2]);
+  sRequest.vConcat("\""_Str);
+  
+  sRequest.vConcat("\""_Str);
+  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat("\""_Str);
+  
+  ASSERT(aWords[0]->bEqual("setidxunique"_Str));
+  
+  sRequest.vConcat(" index_setUnique"_Str);
   
   return bAppendRequest(sRequest);
 }
