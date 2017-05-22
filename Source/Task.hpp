@@ -540,6 +540,8 @@ namespace Tasks
     static void vIndexCreateColumnVec(NNP_Task nnpTask);
     static void vIndexDump(NNP_Task nnpTask);
     static void vIndexInit(NNP_Task nnpTask);
+    static void vIndexIsUniqueFetch(NNP_Task nnpTask);
+    static void vIndexIsUniqueStore(NNP_Task nnpTask);
     static void vIndexPopulate(NNP_Task nnpTask);
     static void vIndexPosition(NNP_Task nnpTask);
     static void vIndexPositionFirst(NNP_Task nnpTask);

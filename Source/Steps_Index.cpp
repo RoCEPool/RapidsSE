@@ -40,6 +40,8 @@ void Task::vAddPrimitives_Index(void)
   vAddPrimitive("index.createColumnVec"_Str, &vIndexCreateColumnVec, false);
   vAddPrimitive("index.dump"_Str,            &vIndexDump,            false);
   vAddPrimitive("index.init"_Str,            &vIndexInit,            false);
+  vAddPrimitive("index.isUnique@"_Str,       &vIndexIsUniqueFetch,   false);
+  vAddPrimitive("index.isUnique!"_Str,       &vIndexIsUniqueStore,   false);
   vAddPrimitive("index.populate"_Str,        &vIndexPopulate,        false);
   vAddPrimitive("index.position"_Str,        &vIndexPosition,        false);
   vAddPrimitive("index.positionFirst"_Str,   &vIndexPositionFirst,   false);
@@ -340,6 +342,52 @@ void Task::vIndexInit(NNP_Task nnpTask)
   ASSERT(CN_INDEX == pIndex->eClass());
   
   new(pIndex) Index;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* index.isUnique@ -- fetch isUnique from index                               */
+/*----------------------------------------------------------------------------*/
+void Task::vIndexIsUniqueFetch(NNP_Task nnpTask)
+{
+  ENTRY("vIndexIsUniqueFetch"_Str);
+  
+  Object* pPtrIndex = nullptr;
+  
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrIndex) )
+    THROW_INVALID_DSTACK("index.isUnique@"_Str);
+  
+  Index* pIndex = _pIndex(pPtrIndex);
+  ASSERT(CN_INDEX == pIndex->eClass());
+  
+  bool bIsUnique = pIndex->bIsUnique();
+  
+  nnpTask->m_pDataStack->vPushInt(bIsUnique);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* index.isUnque! -- store isUnique into index                                */
+/*----------------------------------------------------------------------------*/
+void Task::vIndexIsUniqueStore(NNP_Task nnpTask)
+{
+  ENTRY("vIndexIsUniqueStore"_Str);
+  
+  Object* pPtrIndex = nullptr;
+  
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrIndex) )
+    THROW_INVALID_DSTACK("index.isUnique!"_Str);
+  
+  Index* pIndex = _pIndex(pPtrIndex);
+  ASSERT(CN_INDEX == pIndex->eClass());
+  
+  i8 iIsUnique;
+  if ( ! nnpTask->m_pDataStack->bPop(iIsUnique) )
+    THROW_INVALID_DSTACK("index.isUnique!"_Str);
+  
+  pIndex->vIsUnique(iIsUnique ? true : false);
   
   EXIT();
 }
