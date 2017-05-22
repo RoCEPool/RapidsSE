@@ -24,7 +24,7 @@
 
 //#define STEP_BOARD
 
-//#define FIX_PRIOR
+#define FIX_PRIOR
 
 #define DIV(a,b) (b ? (a / b) : 0)    // checked divide
 #define MAX(a,b) (((a)>(b))?(a):(b))  // which is smaller

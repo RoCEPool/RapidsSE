@@ -246,7 +246,7 @@ bool IndexBuffer::bInsert(KeyWsp& xKeyWsp, Id xId)
   // revise the offsets of the prior entries from the prior vector
   
   // fix the prior vector after the move
-  vFixRevise(aPriorVec, aNewEntry);
+  vFixPriorOffset(aPriorVec, aNewEntry);
   
   // get the absolute offset of the new entry
   i8 iNewEntryOffsetAbs = iToOffsetAbs(aNewEntry);
@@ -278,6 +278,79 @@ bool IndexBuffer::bInsert(KeyWsp& xKeyWsp, Id xId)
 }
 
 #else //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/*----------------------------------------------------------------------------*/
+/* insert new entry into this index buffer                                    */
+/*----------------------------------------------------------------------------*/
+bool IndexBuffer::bInsert(KeyWsp& xKeyWsp, Id xId)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
+  
+  //vTrace("Inserting key:\n"_Str);
+  //xKeyWsp.vShow();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // insert a new entry into the skip list
+  
+  // find the entry after which the new entry.key will be inserted
+  Entry* aPriorVec[C_FLAT_LEVELS];
+  Entry* aAfterEntry = aPosition(xKeyWsp.aKey(), JC_AFTER, aPriorVec);
+  
+  // create a new entry after the prior entry and set it
+  EntWsp xEntWsp(xId,xKeyWsp);
+  i8 nEntryBytes = Entry::nBytesRequired(xEntWsp);
+  Entry* aNewEntry = aAllotEntry(nEntryBytes, xEntWsp.nOffsets(), aAfterEntry);
+  aNewEntry->vSetEntry(xEntWsp);
+  
+  //vTrace("\n\n---------INDEX BUFFER AFTER MOVING --------------\n"_Str);
+  //vShow();
+  //vTrace("-----------------------\n\n"_Str);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // revise the offsets of the prior entries from the prior vector
+  
+  // fix the prior vector after the move
+  vFixPriorOffset(aPriorVec, aNewEntry);
+  
+  // get the absolute offset of the new entry
+  i8 iNewEntryOffsetAbs = iToOffsetAbs(aNewEntry);
+  
+  // step thru each offset to be revised
+  for (i8 iOffsetNo = aNewEntry->nOffsets() - 1; iOffsetNo >= 0; iOffsetNo--) {
+    
+    // get prior entry being revised
+    i8 iLevelNo = iOffsetNo + 1;
+    Entry* aPriorEntry = aPriorVec[iLevelNo];
+    
+    i8 iPriorsRightOffsetAbs = iToRightOffsetAbs(aPriorEntry,iOffsetNo);
+    
+    // is the prior's right offset after new entry : [PURPLE] (grey)-> [GREEN]
+    if (iPriorsRightOffsetAbs > iNewEntryOffsetAbs) {
+      
+      // get post entry : [GREEN]
+      Entry* aPostEntry = aRightEntry(aPriorEntry,iLevelNo);
+      
+      // calculate new's right offset : [RED ARROW]
+      i8 iNewRightOffset = uOffsetBetween(aNewEntry,aPostEntry);
+      
+      // set right offset on new : [RED.hasoffset]
+      aNewEntry->vRightOffset(iOffsetNo,iNewRightOffset);
+
+      // calculate prior's revised offset : [PURPLE ARROW]
+      i8 iPriorRightOffset = uOffsetBetween(aPriorEntry,aNewEntry);
+      
+      aPriorEntry->vRightOffset(iOffsetNo,iPriorRightOffset);
+    }
+    
+  } // for
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // fix higher level buffers
+  // this is needed in case we inserted a new first key in the buffer
+  
+  vFixHigherLevel(aNewEntry);
+  
+  return true;
+}
 
 #endif
 
@@ -822,7 +895,7 @@ void IndexBuffer::vReplace(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp)
 /*----------------------------------------------------------------------------*/
 #ifndef FIX_PRIOR
 
-void IndexBuffer::vFixRevise(Entry* aPriorVec[], Entry* aNewEntry)
+void IndexBuffer::vFixPriorOffset(Entry* aPriorVec[], Entry* aNewEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
@@ -877,6 +950,44 @@ void IndexBuffer::vFixRevise(Entry* aPriorVec[], Entry* aNewEntry)
 }
 
 #else //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/*----------------------------------------------------------------------------*/
+/* fix the prior vector                                                       */
+/*----------------------------------------------------------------------------*/
+void IndexBuffer::vFixPriorOffset(Entry* aPriorVec[], Entry* aNewEntry)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
+  
+  //vTrace("PRIOR VECTOR BEFORE FIXING\n"_Str);
+  //vDumpRevise(aPriorVec);
+  //vTrace("\n"_Str);
+  
+  // get entry size
+  i8 nNewEntryBytes = aNewEntry->nSize();
+  
+  // iterate thru each possible offset
+  for (u8 uOffsetNo = 0; uOffsetNo < C_FLAT_OFFSETS; uOffsetNo++) {
+    
+    // get prior entry being fixed
+    u8 uLevelNo = uOffsetNo + 1;
+    Entry* aPriorEntry = aPriorVec[uLevelNo];
+    
+    // compute and set corrected offset
+    u8 uPriorsRightOffset = aPriorEntry->uRightOffset(uOffsetNo);
+    
+    // ignore cases where no right offset
+    if (C_NIL_OFFSET == uPriorsRightOffset)
+      continue;
+    
+    // correct the right offset by adding in the size of the new entry
+    i8 iCorrectedRightOffset = uPriorsRightOffset + nNewEntryBytes;
+    aPriorEntry->vRightOffset(uOffsetNo,iCorrectedRightOffset);
+    
+  } // for
+  
+  //vTrace("PRIOR VECTOR AFTER FIXING\n"_Str);
+  //vDumpRevise(aPriorVec);
+  //vTrace("\n"_Str);
+}
 
 #endif
 
@@ -1201,6 +1312,29 @@ i8 IndexBuffer::iToRightOffsetAbs(Entry* aEntry, i8 iOffsetNo)
   i8 iRightOffsetAbs = iEntryOffsetAbs + iRightOffset + iEntrySize;
   
   return iRightOffsetAbs;
+}
+
+/*----------------------------------------------------------------------------*/
+/* calculate the relative offset between two entries                          */
+/*----------------------------------------------------------------------------*/
+u8 IndexBuffer::uOffsetBetween(Entry* aEntryA, Entry* aEntryB)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
+  
+  u8 uOffset = 0;
+  
+  u8 uEntryOffsetA = iToOffsetAbs(aEntryA);
+  u8 uEntryEndOffsetA = iToEndOffsetAbs(aEntryA);
+  
+  u8 uEntryOffsetB = iToOffsetAbs(aEntryB);
+  u8 uEntryEndOffsetB = iToEndOffsetAbs(aEntryB);
+  
+  if (uEntryOffsetA < uEntryOffsetB)
+    uOffset = uEntryOffsetB - uEntryEndOffsetA;
+  else
+    uOffset = uEntryOffsetA - uEntryEndOffsetB;
+  
+  return uOffset;
 }
 
 /*============================================================================*/

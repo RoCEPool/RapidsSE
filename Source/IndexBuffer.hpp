@@ -61,7 +61,7 @@ namespace DBobjects
     i8           iCopyEntries(IndexBuffer* pFromBuffer, Entry* aFromEntry);
     void         vDumpRevise(Entry* aPriorVec[]);
     void         vFixHigherLevel(Entry* aNewEntry);
-    void         vFixRevise(Entry* aPriorVec[], Entry* aNewEntry);
+    void         vFixPriorOffset(Entry* aPriorVec[], Entry* aNewEntry);
     Entry*       aGetEntry(i8 iEntryNo);
     i8           iLevel(void);
     void         vMoveLeft(void* aDst, i8 nBytes);
@@ -73,6 +73,7 @@ namespace DBobjects
     i8           iToEndOffsetAbs(Entry* aEntry);
     i8           iToOffsetAbs(Entry* aEntry);
     i8           iToRightOffsetAbs(Entry* aEntry, i8 iOffsetNo);
+    u8           uOffsetBetween(Entry* aEntryA, Entry* aEntryB);
   
   };
   
