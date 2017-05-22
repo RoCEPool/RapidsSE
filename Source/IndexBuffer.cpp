@@ -327,7 +327,7 @@ bool IndexBuffer::bInsert(KeyWsp& xKeyWsp, Id xId)
     if (iPriorsRightOffsetAbs > iNewEntryOffsetAbs) {
       
       // get post entry : [GREEN]
-      Entry* aPostEntry = aRightEntry(aPriorEntry,iLevelNo);
+      Entry* aPostEntry = pRightEntry(aPriorEntry,iLevelNo);
       
       // calculate new's right offset : [RED ARROW]
       i8 iNewRightOffset = uOffsetBetween(aNewEntry,aPostEntry);
@@ -551,7 +551,7 @@ bool IndexBuffer::bVerify(void)
     if (aEntryA->nOffsets() < (u8)nLevel)
       return true;
     
-    Entry* aEntryB = aRightEntry(aEntryA, nLevel);
+    Entry* aEntryB = pRightEntry(aEntryA, nLevel);
     if ( ! aEntryB )
       return true;
   
@@ -703,7 +703,7 @@ void IndexBuffer::vFixHigherLevel(Entry* aNewEntry)
     return;
   
   // get the first entry right of head at offset 0
-  Entry* aFirstEntry = aRightEntry(aHead(), 0);
+  Entry* aFirstEntry = pRightEntry(aHead(), 0);
   
   // if the entry we just added is not the first entry , nothing to fix
   if (aNewEntry != aFirstEntry)
@@ -1161,7 +1161,7 @@ Entry* IndexBuffer::aPosition(Key* aGivenKey, eJC eJuxtaCompare, Entry* aPriorVe
     // inner loop: scan right a number of entries at current scan level
     //             until we find a key that is same/after given key
     
-    while (Entry* pNextEntry = aRightEntry(aScanEntry, iScanLevel)) {
+    while (Entry* pNextEntry = pRightEntry(aScanEntry, iScanLevel)) {
       
       // get next key after scan key
       Key* aNextKey = pNextEntry->aKey();
@@ -1205,11 +1205,11 @@ Entry* IndexBuffer::aPosition(Key* aGivenKey, eJC eJuxtaCompare, Entry* aPriorVe
 /*----------------------------------------------------------------------------*/
 /* get right entry at given level (returns null if no right)                  */
 /*----------------------------------------------------------------------------*/
-Entry* IndexBuffer::aRightEntry(Entry* pEntry, u8 uLevel)
+Entry* IndexBuffer::pRightEntry(Entry* pEntry, u8 uLevel)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
-  Entry* aRightEntry;
+  Entry* pRightEntry;
   
   /*
    
@@ -1229,7 +1229,7 @@ Entry* IndexBuffer::aRightEntry(Entry* pEntry, u8 uLevel)
 
   if (0 == uLevel) {
     // for level 0, the right entry is the next entry
-    aRightEntry = pNextEntry(pEntry);
+    pRightEntry = pNextEntry(pEntry);
   }
   else {
     
@@ -1240,16 +1240,16 @@ Entry* IndexBuffer::aRightEntry(Entry* pEntry, u8 uLevel)
     u8 iBytes = pEntry->nSize();
     u8 uRightOffset = pEntry->uRightOffset(uOffset);
     if (C_NIL_OFFSET == uRightOffset)
-      aRightEntry = nullptr;
+      pRightEntry = nullptr;
     else
-      aRightEntry = pAdd<Entry*>(pEntry,uRightOffset+iBytes);
+      pRightEntry = pAdd<Entry*>(pEntry,uRightOffset+iBytes);
   }
  
-  ASSERT( ! aRightEntry ||
-          ( aRightEntry > aHead() &&
-            aRightEntry < _pEntry(m_xWsp.aLatter()) ) );
+  ASSERT( ! pRightEntry ||
+          ( pRightEntry > aHead() &&
+            pRightEntry < _pEntry(m_xWsp.aLatter()) ) );
   
-  return aRightEntry;
+  return pRightEntry;
 }
 
 /*----------------------------------------------------------------------------*/

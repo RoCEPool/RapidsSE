@@ -68,7 +68,7 @@ namespace DBobjects
     void         vMoveRight(void* aSrc, i8 nBytes);
     Entry*       aPosition(Key* aGivenKey, eJC eJuxtaCompare, Entry* aPriorVec[]);
     void         vReplace(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp);
-    Entry*       aRightEntry(Entry* pEntry, u8 uLevel);
+    Entry*       pRightEntry(Entry* pEntry, u8 uLevel);
     Entry*       aToEntry(i8 iOffsetAbs);
     i8           iToEndOffsetAbs(Entry* pEntry);
     i8           iToOffsetAbs(Entry* pEntry);
