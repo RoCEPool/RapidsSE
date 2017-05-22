@@ -154,7 +154,7 @@ IndexBuffer* IndexData::pFirstBuffer(void)
   
   while (pIndexBuffer) {
     
-    Entry* aFirstEntry = pIndexBuffer->aNextEntry(pIndexBuffer->aHead());
+    Entry* aFirstEntry = pIndexBuffer->pNextEntry(pIndexBuffer->aHead());
     pIndexBuffer = aFirstEntry->pIndexBuffer();
     
     if (pIndexBuffer->nBufferLevel() == 0) {
@@ -294,7 +294,7 @@ bool IndexData::bVerify(void)
     }
     
     // higher level buffer get first entry
-    Entry* aEntryLN = pIndexBuffer->aNextEntry(pIndexBuffer->aHead());
+    Entry* aEntryLN = pIndexBuffer->pNextEntry(pIndexBuffer->aHead());
     
     while (aEntryLN) {
       
@@ -305,7 +305,7 @@ bool IndexData::bVerify(void)
       Key* pKeyLN = aEntryLN->aKey();
       
       // get the first entry from the lower buffer
-      Entry* aEntryLN_1 = pIndexBufferN_1->aNextEntry(pIndexBufferN_1->aHead());
+      Entry* aEntryLN_1 = pIndexBufferN_1->pNextEntry(pIndexBufferN_1->aHead());
       
       // get the key of the first entry points to
       Key* pKeyLN_1 = aEntryLN_1->aKey();
@@ -315,7 +315,7 @@ bool IndexData::bVerify(void)
         return false;
       }
       
-      aEntryLN = pIndexBuffer->aNextEntry(aEntryLN);
+      aEntryLN = pIndexBuffer->pNextEntry(aEntryLN);
     }
   
     pIndexBuffer = pIndexBuffer->pNextBuffer();
@@ -380,7 +380,7 @@ void IndexData::vInsertFirstEntry(IndexBuffer* pToBuffer, IndexBuffer* pFromBuff
   
   // get the first entry from the first buffer
   Entry* aHeadEntry = pFromBuffer->aHead();
-  Entry* aFirstEntry = pFromBuffer->aNextEntry(aHeadEntry);
+  Entry* aFirstEntry = pFromBuffer->pNextEntry(aHeadEntry);
   
   // get the key from the first entry
   Key* aKey = aFirstEntry->aKey();
@@ -403,7 +403,7 @@ void IndexData::vFixHigherBuffer(IndexBuffer* pIndexBuffer, i8 iLevel)
   IndexBuffer* pRoot;
   
   // get first entry keywsp from first buffer
-  Entry* aFirstEntry = pIndexBuffer->aNextEntry(pIndexBuffer->aHead());
+  Entry* aFirstEntry = pIndexBuffer->pNextEntry(pIndexBuffer->aHead());
 
   // form a keyWsp from the key
   xKeyWsp.vAddKey(aFirstEntry->aKey(), m_pIndex->pIdxColVec());

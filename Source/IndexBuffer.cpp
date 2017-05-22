@@ -109,7 +109,7 @@ void IndexBuffer::vDump(void)
   // recursively dump the lower level buffers
   if (m_nBufferLevel != 0) {
     
-    for (Entry* pEntry = aNextEntry(aHead()); pEntry != nullptr; pEntry = aNextEntry(pEntry)) {
+    for (Entry* pEntry = pNextEntry(aHead()); pEntry != nullptr; pEntry = pNextEntry(pEntry)) {
       
       // get the index buffer from the entry
       IndexBuffer* pIndexBuffer = pEntry->pIndexBuffer();;
@@ -367,7 +367,7 @@ IndexBuffer* IndexBuffer::pNextBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* get next entry (eq to right L0) after given entry (null if no next)        */
 /*----------------------------------------------------------------------------*/
-Entry* IndexBuffer::aNextEntry(Entry* pEntry)
+Entry* IndexBuffer::pNextEntry(Entry* pEntry)
 {
   // get the size of given entry
   i8 nBytes = pEntry->nSize();
@@ -395,7 +395,7 @@ Entry* IndexBuffer::aPosition(KeyWsp& xKeyWsp, eJC eJuxtaCompare)
   pEntry = aPosition(xKeyWsp.aKey(), eJuxtaCompare, nullptr);
   
   if (pEntry == aHead())
-    pEntry = aNextEntry(pEntry);
+    pEntry = pNextEntry(pEntry);
   
   return pEntry;
 }
@@ -462,7 +462,7 @@ void IndexBuffer::vShow(void)
          m_pPrevBuffer,
          m_pNextBuffer);
   
-  for (Entry* pEntry = aHead(); pEntry != nullptr; pEntry = aNextEntry(pEntry)) {
+  for (Entry* pEntry = aHead(); pEntry != nullptr; pEntry = pNextEntry(pEntry)) {
     vTrace("%8lld: "_Str, nSub(pEntry, m_xWsp.aArea()));
     pEntry->vShow(iToOffsetAbs(pEntry), m_pIndex->pIdxColVec());
   }
@@ -484,7 +484,7 @@ IndexBuffer* IndexBuffer::pSplitBuffer(void)
   // move entry (and those that follow) which will be moved into new buffer
   i8 iSplitAtEntry   = m_nEntries/2;
   Entry* aSplitEntry = aGetEntry(iSplitAtEntry);
-  Entry* aMoveEntry  = aNextEntry(aSplitEntry);
+  Entry* aMoveEntry  = pNextEntry(aSplitEntry);
   //aSplitEntry->vShow(0,m_pIndex->pIdxColVec());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -567,7 +567,7 @@ bool IndexBuffer::bVerify(void)
       }
       
       aEntryA = aEntryB;
-      aEntryB = aNextEntry(aEntryA);
+      aEntryB = pNextEntry(aEntryA);
     }
   } while (--nLevel >= 0 );
   
@@ -651,7 +651,7 @@ i8 IndexBuffer::iCopyEntries(IndexBuffer* pFromBuffer, Entry* aFromEntry)
   i8 nCopied = 0;
   for (Entry* pEntry = aFromEntry;
        pEntry;
-       pEntry = pFromBuffer->aNextEntry(pEntry)) {
+       pEntry = pFromBuffer->pNextEntry(pEntry)) {
     
     KeyWsp xKeyWsp(pEntry->aKey(), m_pIndex->pIdxColVec());
     
@@ -739,7 +739,7 @@ void IndexBuffer::vFixHigherLevel(Entry* aNewEntry)
   */
   
   // we need to update the higher level buffer entry key
-  Entry* aOldFirstEntry = aNextEntry(aNewEntry);
+  Entry* aOldFirstEntry = pNextEntry(aNewEntry);
 
   KeyWsp xOldKeyWsp;
   xOldKeyWsp.vAddKey(aOldFirstEntry->aKey(), m_pIndex->pIdxColVec());
@@ -1009,7 +1009,7 @@ Entry* IndexBuffer::aGetEntry(i8 iEntryNo)
       break;
     
     // get next entry
-    aSplitEntry = this->aNextEntry(aSplitEntry);
+    aSplitEntry = this->pNextEntry(aSplitEntry);
   }
   
   return aSplitEntry;
@@ -1161,10 +1161,10 @@ Entry* IndexBuffer::aPosition(Key* aGivenKey, eJC eJuxtaCompare, Entry* aPriorVe
     // inner loop: scan right a number of entries at current scan level
     //             until we find a key that is same/after given key
     
-    while (Entry* aNextEntry = aRightEntry(aScanEntry, iScanLevel)) {
+    while (Entry* pNextEntry = aRightEntry(aScanEntry, iScanLevel)) {
       
       // get next key after scan key
-      Key* aNextKey = aNextEntry->aKey();
+      Key* aNextKey = pNextEntry->aKey();
 
       // trace:
       //aGivenKey->vShow(m_pIndex->pIdxColVec());
@@ -1180,7 +1180,7 @@ Entry* IndexBuffer::aPosition(Key* aGivenKey, eJC eJuxtaCompare, Entry* aPriorVe
         break;
 
       // given key is same/after next key, go right one entry at this level
-      aScanEntry = aNextEntry;
+      aScanEntry = pNextEntry;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1229,7 +1229,7 @@ Entry* IndexBuffer::aRightEntry(Entry* pEntry, u8 uLevel)
 
   if (0 == uLevel) {
     // for level 0, the right entry is the next entry
-    aRightEntry = aNextEntry(pEntry);
+    aRightEntry = pNextEntry(pEntry);
   }
   else {
     

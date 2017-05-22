@@ -292,7 +292,7 @@ void Task::vIndexPosition(NNP_Task nnpTask)
   
   bool bAfter = pEntry->aKey()->bJuxtaCompare(JC_AFTER, xKeyWsp.aKey(), pIndex->pIdxColVec());
   if ( ! bAfter) {
-    pEntry = pIndexBuffer->aNextEntry(pEntry);
+    pEntry = pIndexBuffer->pNextEntry(pEntry);
   }
   
   nnpTask->m_pDataStack->vPushObject(pEntry);
