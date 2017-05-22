@@ -640,7 +640,7 @@ void IndexBuffer::vAllotHead(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* copy entries from given buffer starting at given entry                     */
+/* copy entries from given index buffer starting at given entry               */
 /*----------------------------------------------------------------------------*/
 i8 IndexBuffer::iCopyEntries(IndexBuffer* pFromBuffer, Entry* aFromEntry)
 {
@@ -671,7 +671,7 @@ i8 IndexBuffer::iCopyEntries(IndexBuffer* pFromBuffer, Entry* aFromEntry)
 /*----------------------------------------------------------------------------*/
 /* dump the prior vector                                                      */
 /*----------------------------------------------------------------------------*/
-void IndexBuffer::vDumpRevise(Entry* aPriorVec[])
+void IndexBuffer::vDumpPrior(Entry* aPriorVec[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
@@ -898,7 +898,7 @@ void IndexBuffer::vFixPriorOffset(Entry* aPriorVec[], Entry* aNewEntry)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
   //vTrace("PRIOR VECTOR BEFORE FIXING\n"_Str);
-  //vDumpRevise(aPriorVec);
+  //vDumpPrior(aPriorVec);
   //vTrace("\n"_Str);
 
   // get no of offsets, entry size and offset for the new entry
@@ -943,20 +943,20 @@ void IndexBuffer::vFixPriorOffset(Entry* aPriorVec[], Entry* aNewEntry)
   } // for
   
   //vTrace("PRIOR VECTOR AFTER FIXING\n"_Str);
-  //vDumpRevise(aPriorVec);
+  //vDumpPrior(aPriorVec);
   //vTrace("\n"_Str);
 }
 
 #else //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /*----------------------------------------------------------------------------*/
-/* fix the prior vector                                                       */
+/* fix offsets of the entries in the prior vector to account for new entry    */
 /*----------------------------------------------------------------------------*/
 void IndexBuffer::vFixPriorOffset(Entry* aPriorVec[], Entry* aNewEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
   //vTrace("PRIOR VECTOR BEFORE FIXING\n"_Str);
-  //vDumpRevise(aPriorVec);
+  //vDumpPrior(aPriorVec);
   //vTrace("\n"_Str);
   
   // get entry size
@@ -983,7 +983,7 @@ void IndexBuffer::vFixPriorOffset(Entry* aPriorVec[], Entry* aNewEntry)
   } // for
   
   //vTrace("PRIOR VECTOR AFTER FIXING\n"_Str);
-  //vDumpRevise(aPriorVec);
+  //vDumpPrior(aPriorVec);
   //vTrace("\n"_Str);
 }
 
@@ -1253,7 +1253,7 @@ Entry* IndexBuffer::aRightEntry(Entry* aEntry, u8 uLevel)
 }
 
 /*----------------------------------------------------------------------------*/
-/* converts iOffset to aEntry                                                 */
+/* converts an absolute offset to entry address                               */
 /*----------------------------------------------------------------------------*/
 Entry* IndexBuffer::aToEntry(i8 iOffsetAbs)
 {
@@ -1269,7 +1269,7 @@ Entry* IndexBuffer::aToEntry(i8 iOffsetAbs)
 }
 
 /*----------------------------------------------------------------------------*/
-/* converts given entry to absolute offset at end of entry                    */
+/* converts given entry to absolute offset to end of entry                    */
 /*----------------------------------------------------------------------------*/
 i8 IndexBuffer::iToEndOffsetAbs(Entry* aEntry)
 {
@@ -1283,7 +1283,7 @@ i8 IndexBuffer::iToEndOffsetAbs(Entry* aEntry)
 }
 
 /*----------------------------------------------------------------------------*/
-/* calculate the absolute offset in the workspace for given entry             */
+/* calculate the absolute offset within workspace for given entry             */
 /*----------------------------------------------------------------------------*/
 i8 IndexBuffer::iToOffsetAbs(Entry* aEntry)
 {

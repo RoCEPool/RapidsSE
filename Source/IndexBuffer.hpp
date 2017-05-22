@@ -59,7 +59,7 @@ namespace DBobjects
     Entry*       aAllotEntry(i8 nBytes, i8 nLevels, Entry* aAfterEntry);
     void         vAllotHead(void);
     i8           iCopyEntries(IndexBuffer* pFromBuffer, Entry* aFromEntry);
-    void         vDumpRevise(Entry* aPriorVec[]);
+    void         vDumpPrior(Entry* aPriorVec[]);
     void         vFixHigherLevel(Entry* aNewEntry);
     void         vFixPriorOffset(Entry* aPriorVec[], Entry* aNewEntry);
     Entry*       aGetEntry(i8 iEntryNo);
