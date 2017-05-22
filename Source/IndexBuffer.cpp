@@ -407,52 +407,39 @@ IndexBuffer* IndexBuffer::pSplitBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
-  Entry* aReviseVec[C_FLAT_LEVELS];
+  Entry* aPriorVec[C_FLAT_LEVELS];
   
-  // get last entry to remain in this buffer and
-  // split entry (and those that follw) which will be moved into new buffer
-  i8 iSplitAtEntry = m_nEntries/2;
-  Entry* aLastEntry  = aGetEntry(iSplitAtEntry);
-  Entry* aSplitEntry = aNextEntry(aLastEntry);
-  //pLastEntry->vShow(0,m_pIndex->pIdxColVec());
+  // get split entry to remain in this buffer and
+  // move entry (and those that follow) which will be moved into new buffer
+  i8 iSplitAtEntry   = m_nEntries/2;
+  Entry* aSplitEntry = aGetEntry(iSplitAtEntry);
+  Entry* aMoveEntry  = aNextEntry(aSplitEntry);
+  //aSplitEntry->vShow(0,m_pIndex->pIdxColVec());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set offsets to entries after last entry in this buffer to nil
+  // set offsets to entries after the split entry in this buffer to nil
   
   // get vector of prior entries which have offsets to the split entry
-  Entry* aCrossCheck = aPosition(aLastEntry->aKey(), JC_AFTER, aReviseVec);
+  Entry* aCrossCheck = aPosition(aSplitEntry->aKey(), JC_AFTER, aPriorVec);
   
   // Note this ASSERT fails if we have dulplicates in the table     //ALKA: TODO
   // Need to fix when we cater for non-unique indexes
   //aCrossCheck->vShow(0,m_pIndex->pIdxColVec());
-  ASSERT(aCrossCheck == aLastEntry);
+  ASSERT(aCrossCheck == aSplitEntry);
   
   // set any prior offset to nil if its an offset to an entry in split half
-  i8 iLastEntryOffsetAbs = iToOffsetAbs(aLastEntry);
+  i8 iLastEntryOffsetAbs = iToOffsetAbs(aSplitEntry);
   for (i8 iOffset = C_FLAT_LEVELS - 2; iOffset >= 0; iOffset--) {
     
     // calculate level into revise vector for this offset and get entry
     i8 iLevel = iOffset + 1;
-    Entry* aEntry = aReviseVec[iLevel];
-    
-    // get the right offset from the revise vector
-    i8 iRightOffset = aEntry->uRightOffset(iOffset);
-    i8 iEntryOffsetAbs = iToOffsetAbs(aEntry);
-    i8 iEntrySize = aEntry->nSize();
-    
-    i8 iRightOffsetAbs = iToRightOffsetAbs(aEntry,iOffset);
-    ASSERT(iEntryOffsetAbs + iEntrySize + iRightOffset == iRightOffsetAbs);
-    
-    if (iRightOffset + iEntryOffsetAbs + iEntrySize >= iLastEntryOffsetAbs)
-      aEntry->vRightOffset(iOffset, C_NIL_OFFSET);
-    else {
-      ASSERT(C_NIL_OFFSET == (u8)iRightOffset);
-    }
+    Entry* aEntry = aPriorVec[iLevel];
+    aEntry->vRightOffset(iOffset, C_NIL_OFFSET);
   }
   
-  // set all right offsets in the last entry to C_NIL_OFFSET
-  for (i8 iOffset = aLastEntry->nOffsets() - 1; iOffset >= 0; iOffset--)
-    aLastEntry->vRightOffset(iOffset, C_NIL_OFFSET);
+  // set all right offsets in the split entry to C_NIL_OFFSET
+  for (i8 iOffset = aSplitEntry->nOffsets() - 1; iOffset >= 0; iOffset--)
+    aSplitEntry->vRightOffset(iOffset, C_NIL_OFFSET);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create new buffer and move the entries into it
@@ -464,12 +451,12 @@ IndexBuffer* IndexBuffer::pSplitBuffer(void)
   m_pNextBuffer = pNewBuffer;
   
   // copy entries from this buffer starting at splitEntry to the new buffer
-  m_nEntries -= pNewBuffer->iCopyEntries(this, aSplitEntry);
+  m_nEntries -= pNewBuffer->iCopyEntries(this, aMoveEntry);
   
   // give copied bytes back to wsp of this original buffer
-  i8 nBytesToGive = nSub(m_xWsp.aLatter(), aSplitEntry);
+  i8 nBytesToGive = nSub(m_xWsp.aLatter(), aMoveEntry);
   m_xWsp.vGive(nBytesToGive);
-  ASSERT(m_xWsp.aLatter() == pAdd<void*>((void*)aLastEntry,aLastEntry->nSize()));
+  ASSERT(m_xWsp.aLatter() == pAdd<void*>((void*)aSplitEntry,aSplitEntry->nSize()));
   
   return pNewBuffer;
 }
