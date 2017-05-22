@@ -12,7 +12,7 @@ namespace DBobjects
   private:
     i8     m_nBytes;   // overall size of this entry incl Object & Footer
     Id     m_xId;      // id
-    u8     m_nOffsets; // no of offsets for this entry (0 or 1)
+    u8     m_uOffsets; // no of offsets for this entry (0 or 1)
     // ..data..        // right offsets & key
   
     // ..footer..
@@ -25,7 +25,7 @@ namespace DBobjects
     void* operator new(size_t, Entry*);
     
     Entry(EntWsp& xEntWsp);
-    Entry(i8 nBytes, i8 nOffsets);
+    Entry(i8 nBytes, u8 uOffsets);
     ~Entry(void);
     
     void   vShow(i8 iOffset, IdxColVec* pColVec);
