@@ -483,7 +483,7 @@ IndexBuffer* IndexBuffer::pSplitBuffer(void)
   // get split entry to remain in this buffer and
   // move entry (and those that follow) which will be moved into new buffer
   i8 iSplitAtEntry   = m_nEntries/2;
-  Entry* pSplitEntry = aGetEntry(iSplitAtEntry);
+  Entry* pSplitEntry = pGetEntry(iSplitAtEntry);
   Entry* aMoveEntry  = pNextEntry(pSplitEntry);
   //aSplitEntry->vShow(0,m_pIndex->pIdxColVec());
 
@@ -544,30 +544,30 @@ bool IndexBuffer::bVerify(void)
   
   do {
     
-    Entry* aEntryA = pHead();
-    if ( ! aEntryA )
+    Entry* pEntryA = pHead();
+    if ( ! pEntryA )
       return true;
     
-    if (aEntryA->nOffsets() < (u8)nLevel)
+    if (pEntryA->nOffsets() < (u8)nLevel)
       return true;
     
-    Entry* aEntryB = pRightEntry(aEntryA, nLevel);
-    if ( ! aEntryB )
+    Entry* pEntryB = pRightEntry(pEntryA, nLevel);
+    if ( ! pEntryB )
       return true;
   
-    while (aEntryB) {
+    while (pEntryB) {
       
-      Key* pKeyA = aEntryA->aKey();
-      Key* pKeyB = aEntryB->aKey();
+      Key* pKeyA = pEntryA->aKey();
+      Key* pKeyB = pEntryB->aKey();
       
-      if (aEntryA != pHead()) {
-        bool bAfter = aEntryB->aKey()->bJuxtaAfter(aEntryA->aKey(), m_pIndex->pIdxColVec());
+      if (pEntryA != pHead()) {
+        bool bAfter = pEntryB->aKey()->bJuxtaAfter(pEntryA->aKey(), m_pIndex->pIdxColVec());
         if ( ! bAfter )
           return false;
       }
       
-      aEntryA = aEntryB;
-      aEntryB = pNextEntry(aEntryA);
+      pEntryA = pEntryB;
+      pEntryB = pNextEntry(pEntryA);
     }
   } while (--nLevel >= 0 );
   
@@ -870,18 +870,18 @@ void IndexBuffer::vReplace(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp)
   ASSERT(pNewEntry->nSize() == nBytes);
 
   // fix the right offsets in the head
-  Entry* aHeadEntry = pHead();
+  Entry* pHeadEntry = pHead();
   
-  for (u8 i = 0; i < aHeadEntry->nOffsets(); i++) {
+  for (u8 i = 0; i < pHeadEntry->nOffsets(); i++) {
     
     // here we adjust the iRightOffset if offset is after oldEntry
     u8 uOldEntrySize = aFoundEntry->nSize();
-    u8 uRightOffset = aHeadEntry->uRightOffset(i);
+    u8 uRightOffset = pHeadEntry->uRightOffset(i);
     nDifference = uOldKeySize - uNewKeySize;
     
     if ( uRightOffset != C_NIL_OFFSET) {
       if ((i8)uRightOffset - nDifference >= (i8)uOldEntrySize) {
-        aHeadEntry->vRightOffset(i,(i8)(aHeadEntry->uRightOffset(i)) - nDifference);
+        pHeadEntry->vRightOffset(i,(i8)(pHeadEntry->uRightOffset(i)) - nDifference);
       }
     }
   }
@@ -992,15 +992,15 @@ void IndexBuffer::vFixPriorOffset(Entry* aPriorVec[], Entry* aNewEntry)
 /*----------------------------------------------------------------------------*/
 /* get an entry by number                                                     */
 /*----------------------------------------------------------------------------*/
-Entry* IndexBuffer::aGetEntry(i8 iEntryNo)
+Entry* IndexBuffer::pGetEntry(i8 iEntryNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
   // start with the head
-  Entry* aSplitEntry = pHead();
+  Entry* pSplitEntry = pHead();
   
   i8 iEntries = 0;
-  while (aSplitEntry) {
+  while (pSplitEntry) {
     
     iEntries++;
     
@@ -1009,10 +1009,10 @@ Entry* IndexBuffer::aGetEntry(i8 iEntryNo)
       break;
     
     // get next entry
-    aSplitEntry = this->pNextEntry(aSplitEntry);
+    pSplitEntry = this->pNextEntry(pSplitEntry);
   }
   
-  return aSplitEntry;
+  return pSplitEntry;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1152,7 +1152,7 @@ Entry* IndexBuffer::pPosition(Key* aGivenKey, eJC eJuxtaCompare, Entry* aPriorVe
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   
   // start scanning from head entry and topmost level
-  Entry* aScanEntry = pHead();
+  Entry* pScanEntry = pHead();
   i8 iScanLevel = C_FLAT_LEVELS - 1;
   
   do {
@@ -1161,7 +1161,7 @@ Entry* IndexBuffer::pPosition(Key* aGivenKey, eJC eJuxtaCompare, Entry* aPriorVe
     // inner loop: scan right a number of entries at current scan level
     //             until we find a key that is same/after given key
     
-    while (Entry* pNextEntry = pRightEntry(aScanEntry, iScanLevel)) {
+    while (Entry* pNextEntry = pRightEntry(pScanEntry, iScanLevel)) {
       
       // get next key after scan key
       Key* aNextKey = pNextEntry->aKey();
@@ -1180,7 +1180,7 @@ Entry* IndexBuffer::pPosition(Key* aGivenKey, eJC eJuxtaCompare, Entry* aPriorVe
         break;
 
       // given key is same/after next key, go right one entry at this level
-      aScanEntry = pNextEntry;
+      pScanEntry = pNextEntry;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1189,7 +1189,7 @@ Entry* IndexBuffer::pPosition(Key* aGivenKey, eJC eJuxtaCompare, Entry* aPriorVe
 
     // opt record scan entry as an insert-after revision point at this level
     if (aPriorVec)
-      aPriorVec[iScanLevel] = aScanEntry;
+      aPriorVec[iScanLevel] = pScanEntry;
    
     // now go down one level
     iScanLevel--;
@@ -1199,7 +1199,7 @@ Entry* IndexBuffer::pPosition(Key* aGivenKey, eJC eJuxtaCompare, Entry* aPriorVe
   
   // JC_SAME : return the entry which is same as given key
   // JC_AFTER: return the entry which the given key would be inserted after
-  return aScanEntry;
+  return pScanEntry;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -62,17 +62,17 @@ namespace DBobjects
     void         vDumpPrior(Entry* aPriorVec[]);
     void         vFixHigherLevel(Entry* aNewEntry);
     void         vFixPriorOffset(Entry* aPriorVec[], Entry* aNewEntry);
-    Entry*       aGetEntry(i8 iEntryNo);
+    Entry*       pGetEntry(i8 iEntryNo);
     i8           iLevel(void);
     void         vMoveLeft(void* aDst, i8 nBytes);
     void         vMoveRight(void* aSrc, i8 nBytes);
+    u8           uOffsetBetween(Entry* pEntryA, Entry* pEntryB);
     Entry*       pPosition(Key* aGivenKey, eJC eJuxtaCompare, Entry* aPriorVec[]);
     void         vReplace(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp);
     Entry*       pRightEntry(Entry* pEntry, u8 uLevel);
     i8           iToEndOffsetAbs(Entry* pEntry);
     i8           iToOffsetAbs(Entry* pEntry);
     i8           iToRightOffsetAbs(Entry* pEntry, i8 iOffsetNo);
-    u8           uOffsetBetween(Entry* pEntryA, Entry* pEntryB);
   
   };
   

@@ -154,8 +154,8 @@ IndexBuffer* IndexData::pFirstBuffer(void)
   
   while (pIndexBuffer) {
     
-    Entry* aFirstEntry = pIndexBuffer->pNextEntry(pIndexBuffer->pHead());
-    pIndexBuffer = aFirstEntry->pIndexBuffer();
+    Entry* pFirstEntry = pIndexBuffer->pNextEntry(pIndexBuffer->pHead());
+    pIndexBuffer = pFirstEntry->pIndexBuffer();
     
     if (pIndexBuffer->nBufferLevel() == 0) {
       return pIndexBuffer;
@@ -379,11 +379,11 @@ void IndexData::vInsertFirstEntry(IndexBuffer* pToBuffer, IndexBuffer* pFromBuff
   xNewId.vRow(C_HIGHER_LEVEL_ID);
   
   // get the first entry from the first buffer
-  Entry* aHeadEntry = pFromBuffer->pHead();
-  Entry* aFirstEntry = pFromBuffer->pNextEntry(aHeadEntry);
+  Entry* pHeadEntry = pFromBuffer->pHead();
+  Entry* pFirstEntry = pFromBuffer->pNextEntry(pHeadEntry);
   
   // get the key from the first entry
-  Key* aKey = aFirstEntry->aKey();
+  Key* aKey = pFirstEntry->aKey();
   
   // form a keyWsp from the key
   KeyWsp xFirstKeyWsp;
