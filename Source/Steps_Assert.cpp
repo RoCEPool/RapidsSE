@@ -345,7 +345,7 @@ ENTRY("vAssertStack_3more"_Str);
   
   i8 iStackValues = nnpTask->m_pDataStack->iValues();
   
-  if ( ! (0 <= iStackValues) )
+  if ( ! (3 <= iStackValues) )
     THROW("assert::stack3+"_Str);
   
   EXIT();
@@ -375,7 +375,7 @@ ENTRY("vAssertStack_4more"_Str);
   
   i8 iStackValues = nnpTask->m_pDataStack->iValues();
   
-  if ( ! (0 <= iStackValues) )
+  if ( ! (4 <= iStackValues) )
     THROW("assert::stack4+"_Str);
   
   EXIT();
