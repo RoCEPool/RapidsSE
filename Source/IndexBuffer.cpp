@@ -1253,22 +1253,6 @@ Entry* IndexBuffer::pRightEntry(Entry* pEntry, u8 uLevel)
 }
 
 /*----------------------------------------------------------------------------*/
-/* converts an absolute offset to entry address                               */
-/*----------------------------------------------------------------------------*/
-Entry* IndexBuffer::aToEntry(i8 iOffsetAbs)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
-  
-  // check the offset is within bounds
-  ASSERT(iOffsetAbs >= 0 && iOffsetAbs < m_xWsp.nUsed());
-  
-  // calculate address of entry
-  Entry* pEntry = pAdd<Entry*>(m_xWsp.aArea(),iOffsetAbs);
-  
-  return pEntry;
-}
-
-/*----------------------------------------------------------------------------*/
 /* converts given entry to absolute offset to end of entry                    */
 /*----------------------------------------------------------------------------*/
 i8 IndexBuffer::iToEndOffsetAbs(Entry* pEntry)
