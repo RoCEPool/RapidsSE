@@ -56,7 +56,7 @@ namespace DBobjects
     bool         bVerify(void);
     
   private:
-    Entry*       aAllotEntry(i8 nBytes, i8 nLevels, Entry* aAfterEntry);
+    Entry*       pAllotEntry(i8 nBytes, i8 nLevels, Entry* aAfterEntry);
     void         vAllotHead(void);
     i8           iCopyEntries(IndexBuffer* pFromBuffer, Entry* aFromEntry);
     void         vDumpPrior(Entry* aPriorVec[]);

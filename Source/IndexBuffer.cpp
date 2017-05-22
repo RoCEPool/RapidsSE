@@ -235,7 +235,7 @@ bool IndexBuffer::bInsert(KeyWsp& xKeyWsp, Id xId)
   // create a new entry after the prior entry and set it
   EntWsp xEntWsp(xId,xKeyWsp);
   i8 nEntryBytes = Entry::nBytesRequired(xEntWsp);
-  Entry* aNewEntry = aAllotEntry(nEntryBytes, xEntWsp.nOffsets(), aAfterEntry);
+  Entry* aNewEntry = pAllotEntry(nEntryBytes, xEntWsp.nOffsets(), aAfterEntry);
   aNewEntry->vSetEntry(xEntWsp);
   
   //vTrace("\n\n---------INDEX BUFFER AFTER MOVING --------------\n"_Str);
@@ -298,8 +298,8 @@ bool IndexBuffer::bInsert(KeyWsp& xKeyWsp, Id xId)
   // create a new entry after the prior entry and set it
   EntWsp xEntWsp(xId,xKeyWsp);
   i8 nEntryBytes = Entry::nBytesRequired(xEntWsp);
-  Entry* aNewEntry = aAllotEntry(nEntryBytes, xEntWsp.nOffsets(), pAfterEntry);
-  aNewEntry->vSetEntry(xEntWsp);
+  Entry* pNewEntry = pAllotEntry(nEntryBytes, xEntWsp.nOffsets(), pAfterEntry);
+  pNewEntry->vSetEntry(xEntWsp);
   
   //vTrace("\n\n---------INDEX BUFFER AFTER MOVING --------------\n"_Str);
   //vShow();
@@ -309,13 +309,13 @@ bool IndexBuffer::bInsert(KeyWsp& xKeyWsp, Id xId)
   // revise the offsets of the prior entries from the prior vector
   
   // fix the prior vector after the move
-  vFixPriorOffset(aPriorVec, aNewEntry);
+  vFixPriorOffset(aPriorVec, pNewEntry);
   
   // get the absolute offset of the new entry
-  i8 iNewEntryOffsetAbs = iToOffsetAbs(aNewEntry);
+  i8 iNewEntryOffsetAbs = iToOffsetAbs(pNewEntry);
   
   // step thru each offset to be revised
-  for (i8 iOffsetNo = aNewEntry->nOffsets() - 1; iOffsetNo >= 0; iOffsetNo--) {
+  for (i8 iOffsetNo = pNewEntry->nOffsets() - 1; iOffsetNo >= 0; iOffsetNo--) {
     
     // get prior entry being revised
     i8 iLevelNo = iOffsetNo + 1;
@@ -330,13 +330,13 @@ bool IndexBuffer::bInsert(KeyWsp& xKeyWsp, Id xId)
       Entry* aPostEntry = pRightEntry(aPriorEntry,iLevelNo);
       
       // calculate new's right offset : [RED ARROW]
-      i8 iNewRightOffset = uOffsetBetween(aNewEntry,aPostEntry);
+      i8 iNewRightOffset = uOffsetBetween(pNewEntry,aPostEntry);
       
       // set right offset on new : [RED.hasoffset]
-      aNewEntry->vRightOffset(iOffsetNo,iNewRightOffset);
+      pNewEntry->vRightOffset(iOffsetNo,iNewRightOffset);
 
       // calculate prior's revised offset : [PURPLE ARROW]
-      i8 iPriorRightOffset = uOffsetBetween(aPriorEntry,aNewEntry);
+      i8 iPriorRightOffset = uOffsetBetween(aPriorEntry,pNewEntry);
       
       aPriorEntry->vRightOffset(iOffsetNo,iPriorRightOffset);
     }
@@ -347,7 +347,7 @@ bool IndexBuffer::bInsert(KeyWsp& xKeyWsp, Id xId)
   // fix higher level buffers
   // this is needed in case we inserted a new first key in the buffer
   
-  vFixHigherLevel(aNewEntry);
+  vFixHigherLevel(pNewEntry);
   
   return true;
 }
@@ -581,7 +581,7 @@ bool IndexBuffer::bVerify(void)
 /*----------------------------------------------------------------------------*/
 /* allot new entry after given entry (return null if insufficient space)      */
 /*----------------------------------------------------------------------------*/
-Entry* IndexBuffer::aAllotEntry(i8 nBytes, i8 nOffsets, Entry* aAfterEntry)
+Entry* IndexBuffer::pAllotEntry(i8 nBytes, i8 nOffsets, Entry* aAfterEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
@@ -632,7 +632,7 @@ void IndexBuffer::vAllotHead(void)
   
   // allot the head
   
-  Entry* pHead = aAllotEntry(nBytes,C_FLAT_OFFSETS,nullptr);
+  Entry* pHead = pAllotEntry(nBytes,C_FLAT_OFFSETS,nullptr);
   
   // initialize the head
   for (i8 iOffset = 0; iOffset < C_FLAT_OFFSETS; iOffset++)
