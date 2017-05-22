@@ -229,8 +229,8 @@ bool IndexBuffer::bInsert(KeyWsp& xKeyWsp, Id xId)
   // insert a new entry into the skip list
   
   // find the entry after which the new entry.key will be inserted
-  Entry* aReviseVec[C_FLAT_LEVELS];
-  Entry* aAfterEntry = aPosition(xKeyWsp.aKey(), JC_AFTER, aReviseVec);
+  Entry* aPriorVec[C_FLAT_LEVELS];
+  Entry* aAfterEntry = aPosition(xKeyWsp.aKey(), JC_AFTER, aPriorVec);
   
   // create a new entry after the prior entry and set it
   EntWsp xEntWsp(xId,xKeyWsp);
@@ -246,7 +246,7 @@ bool IndexBuffer::bInsert(KeyWsp& xKeyWsp, Id xId)
   // revise the offsets of the prior entries from the revise vector
   
   // fix the revise vector after the move
-  vFixRevise(aReviseVec, aNewEntry);
+  vFixRevise(aPriorVec, aNewEntry);
   
   // get the absolute offset of the new entry
   i8 iNewEntryOffsetAbs = iToOffsetAbs(aNewEntry);
@@ -256,7 +256,7 @@ bool IndexBuffer::bInsert(KeyWsp& xKeyWsp, Id xId)
     
     // get prior entry being revised
     i8 iLevelNo = iOffsetNo + 1;
-    Entry* aPriorEntry = aReviseVec[iLevelNo];
+    Entry* aPriorEntry = aPriorVec[iLevelNo];
     
     // copy the right offset from the prior entry into the new entry
     i8 iRightOffset = aPriorEntry->uRightOffset(iOffsetNo);
@@ -822,7 +822,7 @@ void IndexBuffer::vReplace(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp)
 /*----------------------------------------------------------------------------*/
 #ifndef FIX_PRIOR
 
-void IndexBuffer::vFixRevise(Entry** aaReviseVec, Entry* aNewEntry)
+void IndexBuffer::vFixRevise(Entry** aaPriorVec, Entry* aNewEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
@@ -840,7 +840,7 @@ void IndexBuffer::vFixRevise(Entry** aaReviseVec, Entry* aNewEntry)
     
     // get prior entry being revised
     u8 uLevelNo = uOffsetNo + 1;
-    Entry* aPriorEntry = aaReviseVec[uLevelNo];
+    Entry* aPriorEntry = aaPriorVec[uLevelNo];
     
     // get prior entry's right offset and check there is an offset to fix
     u8 uPriorRightOffset = aPriorEntry->uRightOffset(uOffsetNo);
@@ -1026,7 +1026,7 @@ void IndexBuffer::vMoveRight(void* aSrc, i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* scan thru skip list and positition to entry (optionally set revise vector) */
 /*----------------------------------------------------------------------------*/
-Entry* IndexBuffer::aPosition(Key* aGivenKey, eJC eJuxtaCompare, Entry** aaReviseVec)
+Entry* IndexBuffer::aPosition(Key* aGivenKey, eJC eJuxtaCompare, Entry** aaPriorVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
@@ -1080,8 +1080,8 @@ Entry* IndexBuffer::aPosition(Key* aGivenKey, eJC eJuxtaCompare, Entry** aaRevis
     //             note that aNextEntry may be null at this point
 
     // opt record scan entry as an insert-after revision point at this level
-    if (aaReviseVec)
-      aaReviseVec[iScanLevel] = aScanEntry;
+    if (aaPriorVec)
+      aaPriorVec[iScanLevel] = aScanEntry;
    
     // now go down one level
     iScanLevel--;
