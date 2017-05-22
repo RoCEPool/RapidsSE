@@ -227,10 +227,10 @@ bool SkipList::bInsert(void* pObjectInsert)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
 
   bool bEqualTo;
-  SkipNode* pReviseVec[C_SKIPLIST_LEVELS];
+  SkipNode* aPriorVec[C_SKIPLIST_LEVELS];
   
-  // get a positioned revise vector
-  SkipNode* pNode = pPosition(pObjectInsert,bEqualTo,pReviseVec);
+  // get a positioned prior vector
+  SkipNode* pNode = pPosition(pObjectInsert,bEqualTo,aPriorVec);
   ASSERT(pNode); // logic check
   
   // do not insert duplicates into a list of unique keys
@@ -241,16 +241,16 @@ bool SkipList::bInsert(void* pObjectInsert)
   i8 iNodeLevel = iRandomLevel();
   if (iNodeLevel > m_iHeight) {
     iNodeLevel = ++m_iHeight;
-    pReviseVec[iNodeLevel] = m_pHead;
+    aPriorVec[iNodeLevel] = m_pHead;
 	}
   
   // create new node with inserted object
   SkipNode* pNodeInsert = new(iNodeLevel) SkipNode(pObjectInsert);
  
-  // put new node into the list according the revise vector for random level
+  // put new node into the list according the prior vector for random level
   do {
-    pNodeInsert->m_pRight[iNodeLevel] = pReviseVec[iNodeLevel]->m_pRight[iNodeLevel];
-    pReviseVec[iNodeLevel]->m_pRight[iNodeLevel] = pNodeInsert;
+    pNodeInsert->m_pRight[iNodeLevel] = aPriorVec[iNodeLevel]->m_pRight[iNodeLevel];
+    aPriorVec[iNodeLevel]->m_pRight[iNodeLevel] = pNodeInsert;
 	} while (--iNodeLevel >= 0);
   
   // one more object in the list
@@ -278,10 +278,10 @@ bool SkipList::bRemove(void* pObjectRemove)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
 
   bool bEqualTo;
-  SkipNode* pReviseVec[C_SKIPLIST_LEVELS];
-  SkipNode* pRevise;
+  SkipNode* aPriorVec[C_SKIPLIST_LEVELS];
+  SkipNode* aPrior;
   
-  SkipNode* pNodePrev = pPosition(pObjectRemove,bEqualTo,pReviseVec);
+  SkipNode* pNodePrev = pPosition(pObjectRemove,bEqualTo,aPriorVec);
   ASSERT(pNodePrev); // logic check
   
   if ( ! bEqualTo ) {
@@ -296,9 +296,9 @@ bool SkipList::bRemove(void* pObjectRemove)
   // cut out the node being removed
   for (i8 iLevel = 0;
        iLevel <= m_iHeight &&
-         (pRevise = pReviseVec[iLevel])->m_pRight[iLevel] == pNodeRemove;
+         (aPrior = aPriorVec[iLevel])->m_pRight[iLevel] == pNodeRemove;
        iLevel++)
-    pRevise->m_pRight[iLevel] = pNodeRemove->m_pRight[iLevel];
+    aPrior->m_pRight[iLevel] = pNodeRemove->m_pRight[iLevel];
   
   // correct the height if we have removed the last tallest node
   while ( ! m_pHead->m_pRight[m_iHeight] && m_iHeight > 0 )
@@ -346,7 +346,7 @@ SkipNode* SkipList::pNext(SkipNode* pPrev, i8 iLevel)
 
 #define goRightNode(iLevel,pScan) pScan = pScan->m_pRight[iLevel];
 #define goDownLevel(iLevel) iLevel--;
-SkipNode* SkipList::pPosition(void* pObjectInsert, bool& bEqualTo, SkipNode** pReviseVec)
+SkipNode* SkipList::pPosition(void* pObjectInsert, bool& bEqualTo, SkipNode** aPriorVec)
 {
   vTrace("Adding %lld\n"_Str,(i8)pObjectInsert);
   
@@ -386,8 +386,8 @@ SkipNode* SkipList::pPosition(void* pObjectInsert, bool& bEqualTo, SkipNode** pR
     // outer loop: now having gone right as far as we go down one single level
     
     // first record current node as a revision point
-    if (pReviseVec)
-      pReviseVec[iCurrentLevel] = pCurrentNode;
+    if (aPriorVec)
+      aPriorVec[iCurrentLevel] = pCurrentNode;
     
     // now go down one level
     goDownLevel(iCurrentLevel);

@@ -243,9 +243,9 @@ bool IndexBuffer::bInsert(KeyWsp& xKeyWsp, Id xId)
   //vTrace("-----------------------\n\n"_Str);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // revise the offsets of the prior entries from the revise vector
+  // revise the offsets of the prior entries from the prior vector
   
-  // fix the revise vector after the move
+  // fix the prior vector after the move
   vFixRevise(aPriorVec, aNewEntry);
   
   // get the absolute offset of the new entry
@@ -431,7 +431,7 @@ IndexBuffer* IndexBuffer::pSplitBuffer(void)
   i8 iLastEntryOffsetAbs = iToOffsetAbs(aSplitEntry);
   for (i8 iOffset = C_FLAT_LEVELS - 2; iOffset >= 0; iOffset--) {
     
-    // calculate level into revise vector for this offset and get entry
+    // calculate level into prior vector for this offset and get entry
     i8 iLevel = iOffset + 1;
     Entry* aEntry = aPriorVec[iLevel];
     aEntry->vRightOffset(iOffset, C_NIL_OFFSET);
@@ -598,17 +598,17 @@ i8 IndexBuffer::iCopyEntries(IndexBuffer* pFromBuffer, Entry* aFromEntry)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dump the revise vector                                                     */
+/* dump the prior vector                                                      */
 /*----------------------------------------------------------------------------*/
-void IndexBuffer::vDumpRevise(Entry** ppReviseVec)
+void IndexBuffer::vDumpRevise(Entry* aPriorVec[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
   for (i8 iIndex = 0; iIndex < C_FLAT_OFFSETS; iIndex++) {
     i8 iLevel = iIndex + 1;
-    i8 iReviseOffset = ppReviseVec[iLevel]->uRightOffset(iIndex);
-    vTrace("%p pReviseVec[%lld]->uRightOffset(%lld) = %lld\n"_Str,
-           ppReviseVec[iLevel], iLevel, iIndex, iReviseOffset);
+    i8 iReviseOffset = aPriorVec[iLevel]->uRightOffset(iIndex);
+    vTrace("%p aPriorVec[%lld]->uRightOffset(%lld) = %lld\n"_Str,
+           aPriorVec[iLevel], iLevel, iIndex, iReviseOffset);
   }
 }
 
@@ -818,16 +818,16 @@ void IndexBuffer::vReplace(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp)
 }
 
 /*----------------------------------------------------------------------------*/
-/* fix the revise vector                                                      */
+/* fix the prior vector                                                       */
 /*----------------------------------------------------------------------------*/
 #ifndef FIX_PRIOR
 
-void IndexBuffer::vFixRevise(Entry** aaPriorVec, Entry* aNewEntry)
+void IndexBuffer::vFixRevise(Entry* aPriorVec[], Entry* aNewEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
-  //vTrace("REVISE VECTOR BEFORE FIXING\n"_Str);
-  //vDumpRevise(ppReviseVec);
+  //vTrace("PRIOR VECTOR BEFORE FIXING\n"_Str);
+  //vDumpRevise(aPriorVec);
   //vTrace("\n"_Str);
 
   // get no of offsets, entry size and offset for the new entry
@@ -840,7 +840,7 @@ void IndexBuffer::vFixRevise(Entry** aaPriorVec, Entry* aNewEntry)
     
     // get prior entry being revised
     u8 uLevelNo = uOffsetNo + 1;
-    Entry* aPriorEntry = aaPriorVec[uLevelNo];
+    Entry* aPriorEntry = aPriorVec[uLevelNo];
     
     // get prior entry's right offset and check there is an offset to fix
     u8 uPriorRightOffset = aPriorEntry->uRightOffset(uOffsetNo);
@@ -850,14 +850,14 @@ void IndexBuffer::vFixRevise(Entry** aaPriorVec, Entry* aNewEntry)
     u8 uPriorEntryOffsetAbs = iToOffsetAbs(aPriorEntry);
     u8 uPriorEntryBytes = aPriorEntry->nSize();
 
-    // check if newEntry is between the reviseEntry and postEntry
+    // check if newEntry is between the priorEntry and postEntry
     u8 uPostOffsetAbs = uPriorEntryOffsetAbs + uPriorEntryBytes + uPriorRightOffset;
     if (uNewEntryOffsetAbs > uPostOffsetAbs)
       continue;
     
-    // no of offsets of reviseVector entry is >= no of new entry offsets
+    // no of offsets of priorVector entry is >= no of new entry offsets
     if (uOffsetNo >= nNewEntryOffsets) {
-      // adjust the reviseVector offset with the newEntrySize
+      // adjust the priorVector offset with the newEntrySize
       u8 uPriorRightOffsetAdj = uPriorRightOffset + nNewEntryBytes;
       aPriorEntry->vRightOffset(uOffsetNo,uPriorRightOffsetAdj);
     }
@@ -871,8 +871,8 @@ void IndexBuffer::vFixRevise(Entry** aaPriorVec, Entry* aNewEntry)
   
   } // for
   
-  //vTrace("REVISE VECTOR AFTER FIXING\n"_Str);
-  //vDumpRevise(ppReviseVec);
+  //vTrace("PRIOR VECTOR AFTER FIXING\n"_Str);
+  //vDumpRevise(aPriorVec);
   //vTrace("\n"_Str);
 }
 
@@ -1024,9 +1024,9 @@ void IndexBuffer::vMoveRight(void* aSrc, i8 nBytes)
 
 
 /*----------------------------------------------------------------------------*/
-/* scan thru skip list and positition to entry (optionally set revise vector) */
+/* scan thru skip list and positition to entry (optionally set prior vector)  */
 /*----------------------------------------------------------------------------*/
-Entry* IndexBuffer::aPosition(Key* aGivenKey, eJC eJuxtaCompare, Entry** aaPriorVec)
+Entry* IndexBuffer::aPosition(Key* aGivenKey, eJC eJuxtaCompare, Entry* aPriorVec[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
@@ -1071,8 +1071,7 @@ Entry* IndexBuffer::aPosition(Key* aGivenKey, eJC eJuxtaCompare, Entry** aaPrior
         break;
 
       // given key is same/after next key, go right one entry at this level
-      aScanEntry = aNextEntry;                          //! to discuss with Alka
-      //aScanEntry = aRightEntry(aScanEntry, iScanLevel);
+      aScanEntry = aNextEntry;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1080,8 +1079,8 @@ Entry* IndexBuffer::aPosition(Key* aGivenKey, eJC eJuxtaCompare, Entry** aaPrior
     //             note that aNextEntry may be null at this point
 
     // opt record scan entry as an insert-after revision point at this level
-    if (aaPriorVec)
-      aaPriorVec[iScanLevel] = aScanEntry;
+    if (aPriorVec)
+      aPriorVec[iScanLevel] = aScanEntry;
    
     // now go down one level
     iScanLevel--;

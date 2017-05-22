@@ -59,14 +59,14 @@ namespace DBobjects
     Entry*       aAllotEntry(i8 nBytes, i8 nLevels, Entry* aAfterEntry);
     void         vAllotHead(void);
     i8           iCopyEntries(IndexBuffer* pFromBuffer, Entry* aFromEntry);
-    void         vDumpRevise(Entry** ppReviseVec);
+    void         vDumpRevise(Entry* aPriorVec[]);
     void         vFixHigherLevel(Entry* aNewEntry);
-    void         vFixRevise(Entry** ppReviseVec, Entry* aNewEntry);
+    void         vFixRevise(Entry* aPriorVec[], Entry* aNewEntry);
     Entry*       aGetEntry(i8 iEntryNo);
     i8           iLevel(void);
     void         vMoveLeft(void* aDst, i8 nBytes);
     void         vMoveRight(void* aSrc, i8 nBytes);
-    Entry*       aPosition(Key* aGivenKey, eJC eJuxtaCompare, Entry** aaPriorVec);
+    Entry*       aPosition(Key* aGivenKey, eJC eJuxtaCompare, Entry* aPriorVec[]);
     void         vReplace(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp);
     Entry*       aRightEntry(Entry* aEntry, u8 uLevel);
     Entry*       aToEntry(i8 iOffsetAbs);
