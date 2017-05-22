@@ -246,9 +246,9 @@ u8 Entry::uRightOffset(u8 iOffset)
   
   RightVec* aRightVec = aEntryData->aRightVec(m_nOffsets);
 
-  u8 uRight = aRightVec->uOffset(iOffset);
+  on uRight = aRightVec->nOffset(iOffset);
   
-  return uRight;
+  return *uRight;
 }
 
 /*----------------------------------------------------------------------------*/

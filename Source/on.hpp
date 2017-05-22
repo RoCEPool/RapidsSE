@@ -23,6 +23,7 @@ namespace DBobjects
     bool operator !=(on n);
     bool operator >=(on n);
     bool operator <=(on n);
+    bool operator <(on n);
     u8 operator *(void);
     on operator +(u8 u);
     on operator -(u8 u);

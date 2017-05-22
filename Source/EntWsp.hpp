@@ -12,7 +12,7 @@ namespace DBobjects
     i8     m_nOffsets;  // number of offsets (0, 1 or 2)
     union {
       RightVec m_xRight; // right vector
-      u8       m_uOffset[C_FLAT_OFFSETS];    // right offsets
+      on       m_nOffset[C_FLAT_OFFSETS];    // right offsets
                                              // no offset for level 0
     };
     union {
@@ -35,8 +35,8 @@ namespace DBobjects
     Key*   aKey(void);
     i8     nKeySize(void);
     u8     nOffsets(void);
-    u8     uRightOffset(u8 iOffset);
-    void   vRightOffset(u8 iOffset, u8 uRight);
+    on     nRightOffset(u8 uOffset);
+    void   vRightOffset(u8 uOffset, on nRight);
     Id&    xId(void);
     void   vId(Id& xId);
     void   vShow(void);

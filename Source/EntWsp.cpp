@@ -44,8 +44,8 @@ EntWsp::EntWsp(void)
   ASSERT(m_nOffsets >= 0 && m_nOffsets <= C_FLAT_OFFSETS);
   
   // set all right offsets to nil
-  for (i8 iRight = 0; iRight < C_FLAT_OFFSETS - 1; iRight++)
-    m_uOffset[iRight] = C_NIL_OFFSET;
+  for (u8 uRight = 0; uRight < C_FLAT_OFFSETS - 1; uRight++)
+    m_nOffset[uRight] = C_NIL_OFFSET;
   
   // m_xKeyWsp
   m_xKeyWsp.vInit();
@@ -72,7 +72,7 @@ EntWsp::EntWsp(i8 nOffsets)
   
   // set all right offsets to nil
   for (i8 iRight = 0; iRight < C_FLAT_OFFSETS - 1; iRight++)
-    m_uOffset[iRight] = C_NIL_OFFSET;
+    m_nOffset[iRight] = C_NIL_OFFSET;
   
   // m_xKeyWsp
   m_xKeyWsp.vInit();
@@ -156,21 +156,21 @@ u8 EntWsp::nOffsets(void)
 /*----------------------------------------------------------------------------*/
 /* get right offset at level                                                  */
 /*----------------------------------------------------------------------------*/
-u8 EntWsp::uRightOffset(u8 iOffset)
+on EntWsp::nRightOffset(u8 uOffset)
 {
-  ASSERT(iOffset >= 0 && iOffset <= C_FLAT_OFFSETS);
+  ASSERT(uOffset >= 0 && uOffset <= C_FLAT_OFFSETS);
   
-  return m_uOffset[iOffset];
+  return m_nOffset[uOffset];
 }
 
 /*----------------------------------------------------------------------------*/
 /* set right offset at level                                                  */
 /*----------------------------------------------------------------------------*/
-void EntWsp::vRightOffset(u8 iOffset, u8 uRight)
+void EntWsp::vRightOffset(u8 uOffset, on nRight)
 {
-  ASSERT(iOffset >= 0 && iOffset <= C_FLAT_OFFSETS);
+  ASSERT(uOffset >= 0 && uOffset <= C_FLAT_OFFSETS);
   
-  m_uOffset[iOffset] = uRight;
+  m_nOffset[uOffset] = nRight;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -208,7 +208,7 @@ void EntWsp::vShow(void)
   for (i8 iRight = 0; iRight < m_nOffsets - 1; iRight++)
     vTrace("R%lld: %lld "_Str,
            iRight,
-           uRightOffset(iRight)
+           *nRightOffset(iRight)
            );
   
   vTrace("key (size:%lld value:%lld) "_Str,
