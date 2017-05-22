@@ -525,8 +525,8 @@ void Task::vIndexUpper(NNP_Task nnpTask)
   if ( ! nnpTask->m_pDataStack->bPop(pPtrEntry) )
     THROW_INVALID_DSTACK("index.upper"_Str);
   
-  Entry* aEntry = _aEntry(pPtrEntry);
-  ASSERT(CN_ENTRY == aEntry->eClass());
+  Entry* pEntry = _pEntry(pPtrEntry);
+  ASSERT(CN_ENTRY == pEntry->eClass());
   
   if ( ! nnpTask->m_pDataStack->bPop(xValWsp) )
     THROW_INVALID_DSTACK("index.upper"_Str);
@@ -546,7 +546,7 @@ void Task::vIndexUpper(NNP_Task nnpTask)
   
   xKeyWsp.vAddElement(pStrVal, pIndex->pIdxColVec()->pGet(0));
   
-  bool bBefore = aEntry->aKey()->bJuxtaCompare(JC_BEFORE, xKeyWsp.aKey(), pIndex->pIdxColVec());
+  bool bBefore = pEntry->aKey()->bJuxtaCompare(JC_BEFORE, xKeyWsp.aKey(), pIndex->pIdxColVec());
   
   nnpTask->m_pDataStack->vPushInt(bBefore ? 1 : 0);
   

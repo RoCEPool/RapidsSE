@@ -43,11 +43,11 @@ i8 Entry::nBytesRequired(i8 nOffsets, i8 nKeyBytes)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Entry* DBobjects::_aEntry(void* aAddr)
+Entry* DBobjects::_pEntry(void* aAddr)
 {
-  Entry* aEntry = reinterpret_cast<Entry*>(aAddr);
+  Entry* pEntry = reinterpret_cast<Entry*>(aAddr);
   
-  return aEntry;
+  return pEntry;
 }
 
 /*----------------------------------------------------------------------------*/

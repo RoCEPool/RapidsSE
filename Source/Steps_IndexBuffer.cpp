@@ -102,13 +102,13 @@ void Task::vIndexBufferNextEntry(NNP_Task nnpTask)
   if ( ! nnpTask->m_pDataStack->bPop(pPtrEntry) )
     THROW_INVALID_DSTACK("indexBuffer.nextEntry"_Str);
   
-  Entry* aEntry = _aEntry(pPtrEntry);
+  Entry* pEntry = _pEntry(pPtrEntry);
   
   Entry *pNextEntry;
   
   if ( pPtrEntry ) {
-    ASSERT(CN_ENTRY == aEntry->eClass());
-    pNextEntry = pIndexBuffer->aNextEntry(aEntry);
+    ASSERT(CN_ENTRY == pEntry->eClass());
+    pNextEntry = pIndexBuffer->aNextEntry(pEntry);
   } else {
     pNextEntry = pIndexBuffer->aNextEntry(pIndexBuffer->aHead());
   }

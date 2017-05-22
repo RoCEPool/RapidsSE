@@ -50,8 +50,8 @@ void Task::vEntryMatches(NNP_Task nnpTask)
   if ( ! nnpTask->m_pDataStack->bPop(pPtrEntry) )
     THROW_INVALID_DSTACK("entry.matches"_Str);
   
-  Entry* aEntry = _aEntry(pPtrEntry);
-  ASSERT(CN_ENTRY == aEntry->eClass());
+  Entry* pEntry = _pEntry(pPtrEntry);
+  ASSERT(CN_ENTRY == pEntry->eClass());
   
   if ( ! nnpTask->m_pDataStack->bPop(pPtrIndex) )
     THROW_INVALID_DSTACK("entry.matches"_Str);
@@ -69,7 +69,7 @@ void Task::vEntryMatches(NNP_Task nnpTask)
   xKeyWsp.vAddElement(pStrVal, pIndex->pIdxColVec()->pGet(0));
   
   //pEntry->vShow(0, pIndex->pIdxColVec());
-  bool bSame = aEntry->aKey()->bJuxtaCompare(JC_SAME, xKeyWsp.aKey(), pIndex->pIdxColVec());
+  bool bSame = pEntry->aKey()->bJuxtaCompare(JC_SAME, xKeyWsp.aKey(), pIndex->pIdxColVec());
 
   nnpTask->m_pDataStack->vPushInt(bSame ? 1 : 0);
 }
@@ -86,10 +86,10 @@ void Task::vEntryRow(NNP_Task nnpTask)
   if ( ! nnpTask->m_pDataStack->bPop(pPtrEntry) )
     THROW_INVALID_DSTACK("index.row"_Str);
   
-  Entry* aEntry = _aEntry(pPtrEntry);
-  ASSERT(CN_ENTRY == aEntry->eClass());
+  Entry* pEntry = _pEntry(pPtrEntry);
+  ASSERT(CN_ENTRY == pEntry->eClass());
   
-  Id xId = aEntry->xId();
+  Id xId = pEntry->xId();
   
   Row* pRow = xId.pRow();
   

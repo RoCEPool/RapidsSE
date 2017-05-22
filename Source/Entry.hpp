@@ -50,7 +50,7 @@ namespace DBobjects
     bn     nBufferNo(void);
   };
   
-  Entry* _aEntry(void* aAddr);
+  Entry* _pEntry(void* aAddr);
 
 }
 

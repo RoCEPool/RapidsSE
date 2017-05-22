@@ -175,9 +175,9 @@ Entry* IndexBuffer::aHead(void)
   ASSERT(m_xWsp.nUsed());
   
   // the head entry is the first entry in wsp
-  Entry* aHead = _aEntry(m_xWsp.aArea());
+  Entry* pHead = _pEntry(m_xWsp.aArea());
   
-  return aHead;
+  return pHead;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -367,18 +367,18 @@ IndexBuffer* IndexBuffer::pNextBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* get next entry (eq to right L0) after given entry (null if no next)        */
 /*----------------------------------------------------------------------------*/
-Entry* IndexBuffer::aNextEntry(Entry* aEntry)
+Entry* IndexBuffer::aNextEntry(Entry* pEntry)
 {
   // get the size of given entry
-  i8 nBytes = aEntry->nSize();
+  i8 nBytes = pEntry->nSize();
   
   // compute the address of possible next entry
-  Entry* aNext = pAdd<Entry*>(aEntry,nBytes);
+  Entry* pNext = pAdd<Entry*>(pEntry,nBytes);
   
   // check for valid entry
-  Entry* aLatter = _aEntry(m_xWsp.aLatter());
-  if (aNext < aLatter)
-    return aNext;
+  Entry* pLatter = _pEntry(m_xWsp.aLatter());
+  if (pNext < pLatter)
+    return pNext;
   else
     return nullptr;
 }
@@ -591,29 +591,29 @@ Entry* IndexBuffer::aAllotEntry(i8 nBytes, i8 nOffsets, Entry* aAfterEntry)
   
   // allot space for the new entry
   m_xWsp.vTake(nBytes);
-  Entry* aLatter = _aEntry(m_xWsp.aLatter());
+  Entry* pLatter = _pEntry(m_xWsp.aLatter());
   
-  Entry* aNewEntry;
+  Entry* pNewEntry;
   
   if (aAfterEntry) {
     // compute address of new entry
     i8 nAfterBytes = aAfterEntry->nSize();
-    aNewEntry = pAdd<Entry*>(aAfterEntry,nAfterBytes);
+    pNewEntry = pAdd<Entry*>(aAfterEntry,nAfterBytes);
     
     // move subset of entries to right to make room for new entry
-    vMoveRight(aNewEntry,nBytes);
+    vMoveRight(pNewEntry,nBytes);
   }
   else {
-    aNewEntry = _aEntry(m_xWsp.aArea());
+    pNewEntry = _pEntry(m_xWsp.aArea());
   }
   
   // run the constructor of the new entry
-  new (aNewEntry) Entry(nBytes,nOffsets);
+  new (pNewEntry) Entry(nBytes,nOffsets);
   
   // increment the no of entries
   m_nEntries++;
   
-  return aNewEntry;
+  return pNewEntry;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -810,7 +810,7 @@ void IndexBuffer::vReplace(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp)
   }
 
   // create a newEntry at the same location as the foundEntry
-  Entry* aNewEntry = _aEntry(aFoundEntry);
+  Entry* pNewEntry = _pEntry(aFoundEntry);
   i8 nDifference;
 
   if (uOldKeySize > uNewKeySize) {
@@ -865,9 +865,9 @@ void IndexBuffer::vReplace(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp)
   }
 
   i8 nBytes =  iSize - (uOldKeySize - uNewKeySize);
-  new (aNewEntry) Entry(nBytes, nOffsets);
-  aNewEntry->vSetEntry(xEntWsp);
-  ASSERT(aNewEntry->nSize() == nBytes);
+  new (pNewEntry) Entry(nBytes, nOffsets);
+  pNewEntry->vSetEntry(xEntWsp);
+  ASSERT(pNewEntry->nSize() == nBytes);
 
   // fix the right offsets in the head
   Entry* aHeadEntry = aHead();
@@ -1247,7 +1247,7 @@ Entry* IndexBuffer::aRightEntry(Entry* aEntry, u8 uLevel)
  
   ASSERT( ! aRightEntry ||
           ( aRightEntry > aHead() &&
-            aRightEntry < _aEntry(m_xWsp.aLatter()) ) );
+            aRightEntry < _pEntry(m_xWsp.aLatter()) ) );
   
   return aRightEntry;
 }

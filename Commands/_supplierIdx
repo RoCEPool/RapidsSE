@@ -62,7 +62,7 @@ rgeselidx supplier idx2 "Supplier#000009900" "Supplier#000009990" ;
 print "\nSelecting rows from supplier (idx2) where S_NAME >= 'Supplier#000009900' & <= 'Supplier#000001900'...\n" ;
 rgeselidx supplier idx2 "Supplier#000009900" "Supplier#000001900" ;
 
-dumpidx supplier idx3 ;
+//dumpidx supplier idx3 ;
 
 print "\nSelecting rows from supplier (idx3) where S_ADDRESS >= 'm' ...\n" ;
 lwrselidx supplier idx3 "m" ;
