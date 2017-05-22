@@ -417,7 +417,7 @@ IndexBuffer* IndexBuffer::pSplitBuffer(void)
   //pLastEntry->vShow(0,m_pIndex->pIdxColVec());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set any offset in this which points to entries after the last entry to nil
+  // set offsets to entries after last entry in this buffer to nil
   
   // get vector of entries which have offsets to the split entry
   Key* aLastKey = aLastEntry->aKey();
@@ -440,6 +440,9 @@ IndexBuffer* IndexBuffer::pSplitBuffer(void)
     i8 iRightOffset = aEntry->uRightOffset(iOffset);
     i8 iEntryOffset = iToOffsetAbs(aEntry);
     i8 iEntrySize   = aEntry->nSize();
+    
+    i8 iRightOffsetAbs = iToRightOffsetAbs(aEntry,iOffset);
+    ASSERT(iRightOffset + iEntryOffset + iEntrySize == iRightOffsetAbs);
     
     if (iRightOffset + iEntryOffset + iEntrySize >= iLastEntryOffsetAbs)
       aEntry->vRightOffset(iOffset, C_NIL_OFFSET);
@@ -1186,7 +1189,7 @@ i8 IndexBuffer::iToEndOffset(Entry* aEntry)
 }
 
 /*----------------------------------------------------------------------------*/
-/* calculates the absolute offset of aEntry in the workspace                  */
+/* calculate the absolute offset in the workspace for given entry             */
 /*----------------------------------------------------------------------------*/
 i8 IndexBuffer::iToOffsetAbs(Entry* aEntry)
 {
@@ -1197,6 +1200,22 @@ i8 IndexBuffer::iToOffsetAbs(Entry* aEntry)
   ASSERT(iOffset >= 0 && iOffset < m_xWsp.nSize());
   
   return iOffset;
+}
+
+/*----------------------------------------------------------------------------*/
+/* calculate the absolute right offset for a given entry and offset no        */
+/*----------------------------------------------------------------------------*/
+i8 IndexBuffer::iToRightOffsetAbs(Entry* aEntry, i8 iOffsetNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
+  
+  i8 iEntryOffset = iToOffsetAbs(aEntry);
+  i8 iRightOffset = aEntry->uRightOffset(iOffsetNo);
+  i8 iEntrySize   = aEntry->nSize();
+  
+  i8 iRightOffsetAbs = iRightOffset + iEntryOffset + iEntrySize;
+  
+  return iRightOffsetAbs;
 }
 
 /*============================================================================*/

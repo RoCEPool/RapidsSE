@@ -72,7 +72,8 @@ namespace DBobjects
     Entry*       aToEntry(i8 iOffset);
     i8           iToEndOffset(Entry* aEntry);
     i8           iToOffsetAbs(Entry* aEntry);
-    
+    i8           iToRightOffsetAbs(Entry* aEntry, i8 iOffsetNo);
+  
   };
   
   IndexBuffer* _pIndexBuffer(void* aAddr);
