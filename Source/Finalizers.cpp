@@ -49,6 +49,7 @@ pFINALIZE *gpFinalize[]
   /* 20 */ &Finalize::vUndefined,         // CN_DIR
   
   /* 21 */ &Finalize::vUndefined,         // CN_ENTRY
+  /*    */ &Finalize::vUndefined,         // CN_ENTRYVEC
   
   /* 22 */ &Finalize::vUndefined,         // CN_FILE
   /* 23 */ &Finalize::vUndefined,         // CN_FREEBUFFER

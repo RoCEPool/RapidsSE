@@ -48,6 +48,7 @@ namespace Base
     /* 20 */ CN_DIR,
   
     /* 21 */ CN_ENTRY,
+    /*    */ CN_ENTRYVEC,
     
     /* 22 */ CN_FILE,
     /* 23 */ CN_FREEBUFFER,
@@ -194,6 +195,7 @@ namespace Base
     /* 20 */ "DIR"_Str,
     
     /* 21 */ "ENTRY"_Str,
+    /*    */ "ENTRYVEC"_Str,
     /* 22 */ "FILE"_Str,
     /* 23 */ "FREEBUFFER"_Str,
     /* 24 */ "FREECHUNK"_Str,
