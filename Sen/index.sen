@@ -376,15 +376,15 @@ tp: makingIndex
 
           // check if exact key match
           key indexPtr entry entry.matches if
-
-            args.metadata if
-              entry entry.row row.string
-              I grid::toPartition
-              "row: (%v '%v')\n" str.format .put
-            else
-              entry entry.row row.string .
+            display@ if
+              args.metadata if
+                entry entry.row row.string
+                I grid::toPartition
+                "row: (%v '%v')\n" str.format .put
+              else
+                entry entry.row row.string .
+              then
             then
-
             1 rowCount + to rowCount
             1
         else
@@ -531,12 +531,14 @@ tp: loadIndexes
 
         // check if entry is null ?
         entry if
-          args.metadata if
-            entry entry.row row.string
-            I grid::toPartition
-            "row: (%v '%v')\n" str.format .put
-          else
-            entry entry.row row.string .
+          display@ if
+            args.metadata if
+              entry entry.row row.string
+              I grid::toPartition
+              "row: (%v '%v')\n" str.format .put
+            else
+              entry entry.row row.string .
+            then
           then
           1 rowCount + to rowCount
           1
@@ -660,12 +662,14 @@ tp: loadIndexes
         // check against upper bound
         upper entry indexPtr index.upper
         if
-          args.metadata if
-            entry entry.row row.string
-            I grid::toPartition
-            "row: (%v '%v')\n" str.format .put
-          else
-            entry entry.row row.string .
+          display@ if
+            args.metadata if
+              entry entry.row row.string
+              I grid::toPartition
+              "row: (%v '%v')\n" str.format .put
+            else
+              entry entry.row row.string .
+            then
           then
           1 rowCount + to rowCount
           1
@@ -818,14 +822,15 @@ tp: loadIndexes
         upper entry indexPtr index.upper
         if
 
-          args.metadata if
-            entry entry.row row.string
-            I grid::toPartition
-            "row: (%v '%v')\n" str.format .put
-          else
-            entry entry.row row.string .
+          display@ if
+            args.metadata if
+              entry entry.row row.string
+              I grid::toPartition
+              "row: (%v '%v')\n" str.format .put
+            else
+              entry entry.row row.string .
+            then
           then
-
           1 rowCount + to rowCount
           1
         else

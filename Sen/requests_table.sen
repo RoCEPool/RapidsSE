@@ -566,8 +566,10 @@ ddlLock::grabWrite
 
   args.metadata if
     "(size INTEGER)" metadata!
-    "row: (" swap str.cat
-    ")\n" str.cat
+    display@ if
+      "row: (" swap str.cat
+      ")\n" str.cat
+    then
     1 task::this task.seitf@ seitf.rowsProcessed
   then
 

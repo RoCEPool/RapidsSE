@@ -699,7 +699,8 @@ void SePrompt::vIterateRows(void)
       Str* pStr = pSelCursor->aRowAsStr();
       while (pStr) {
         iRowCount++;
-        vTrace("row: (%lld, '%s')\n"_Str, iPart, pStr);
+        if (m_pSEitf->m_bDisplay)
+          vTrace("row: (%lld, '%s')\n"_Str, iPart, pStr);
         pSelCursor->vNext();
         pStr = pSelCursor->aRowAsStr();
       }
@@ -714,7 +715,8 @@ void SePrompt::vIterateRows(void)
       Str* pStr = pSelCursor->aRowAsStr();
       while (pStr) {
         iRowCount++;
-        vTrace("row: (%s)\n"_Str,pStr);
+        if (m_pSEitf->m_bDisplay)
+          vTrace("row: (%s)\n"_Str,pStr);
         pSelCursor->vNext();
         pStr = pSelCursor->aRowAsStr();
       }

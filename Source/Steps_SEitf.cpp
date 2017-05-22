@@ -35,6 +35,8 @@ void Task::vAddPrimitives_SEitf(void)
   vAddPrimitive("seitf.count"_Str,            &vSEitfCount,            false);
   vAddPrimitive("seitf.delete"_Str,           &vSEitfDelete,           false);
   vAddPrimitive("seitf.dicStack"_Str,         &vSEitfDicStack,         false);
+  vAddPrimitive("seitf.display@"_Str,         &vSEitfDisplayFetch,     false);
+  vAddPrimitive("seitf.display!"_Str,         &vSEitfDisplayStore,     false);
   vAddPrimitive("seitf.dump"_Str,             &vSEitfDump,             false);
   vAddPrimitive("seitf.entry@"_Str,           &vSEitfEntryFetch,       false);
   vAddPrimitive("seitf.entry!"_Str,           &vSEitfEntryStore,       false);
@@ -106,6 +108,48 @@ void Task::vSEitfDicStack(NNP_Task nnpTask)
   ASSERT(CN_SEITF == pSEitf->eClass());
   
   nnpTask->m_pDataStack->vPushObject(pSEitf->pPathStack());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* seitf.display@ -- get display from the SE interface                        */
+/*----------------------------------------------------------------------------*/
+void Task::vSEitfDisplayFetch(NNP_Task nnpTask)
+{
+  ENTRY("vSEitfDisplayFetch"_Str);
+  
+  Object* pPtrSEitf;
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitf) )
+    THROW_INVALID_DSTACK("seitf.display@"_Str);
+  
+  SEitf* pSEitf = _pSEitf(pPtrSEitf);
+  ASSERT(CN_SEITF == pSEitf->eClass());
+  
+  nnpTask->m_pDataStack->vPushInt(pSEitf->m_bDisplay ? 1 : 0);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* seitf.display! -- set display in the SE interface                          */
+/*----------------------------------------------------------------------------*/
+void Task::vSEitfDisplayStore(NNP_Task nnpTask)
+{
+  ENTRY("vSEitfDisplayStore"_Str);
+  
+  Object* pPtrSEitf;
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitf) )
+    THROW_INVALID_DSTACK("seitf.display!"_Str);
+  
+  SEitf* pSEitf = _pSEitf(pPtrSEitf);
+  ASSERT(CN_SEITF == pSEitf->eClass());
+  
+  i8 iDisplay;
+  if ( ! nnpTask->m_pDataStack->bPop(iDisplay) )
+    THROW_INVALID_DSTACK("seitf.displayOff"_Str);
+  
+  pSEitf->m_bDisplay = iDisplay == 1 ? true : false;
   
   EXIT();
 }

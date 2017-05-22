@@ -124,6 +124,7 @@ mon     get_monitor
 object  object
 ping    ping
 x       x
+display display
 
 -----------------
 Grid Request:

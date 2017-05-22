@@ -33,6 +33,8 @@ namespace Interface
     Entry* m_pEntry;
     TxRef* m_pTxRef;
     
+    bool   m_bDisplay;
+    
     s256   m_sMetadata;
     i8     m_iRowsProcessed;
     i8     m_iCurrentRequestId;
@@ -105,7 +107,9 @@ namespace Interface
     bool bEndCreateTable(Str* aWords[], i8 iWords);
   
     bool bListTables(Str* aWords[], i8 iWords);
-    bool bDocol(Str* aWords[]);
+    bool bDisplayOff(Str* aWords[], i8 iWords);
+    bool bDisplayOn(Str* aWords[], i8 iWords);
+    bool bDocol(Str* aWords[], i8 iWords);
     bool bDropTable(Str* aWords[], i8 iWords);
     bool bDumpTable(Str* aWords[], i8 iWords);
    

@@ -83,6 +83,7 @@ SEitf::SEitf(i8 iPartition)
   m_pCurrentTable   = nullptr;
   m_pTxRef          = nullptr;
   m_sMetadata       = ""_Str;
+  m_bDisplay        = true;
   m_iRowsProcessed    = 0;
   m_iCurrentRequestId = 0;
   m_iNextRequestId    = -1;
@@ -350,7 +351,9 @@ bool SEitf::bDecode(Str* aWords[], i8 iWords)
   if (aWords[0]->bSame("danidx"_Str)) return bDanalyzeIndex(aWords, iWords);
   if (aWords[0]->bSame("dantbl"_Str)) return bDanalyzeTable(aWords, iWords);
   if (aWords[0]->bSame("dex"_Str)) return bDistExportTable(aWords, iWords);
-  if (aWords[0]->bSame("docol"_Str)) return bDocol(aWords);
+  if (aWords[0]->bSame("docol"_Str)) return bDocol(aWords, iWords);
+  if (aWords[0]->bSame("displayOff"_Str)) return bDisplayOff(aWords, iWords);
+  if (aWords[0]->bSame("displayOn"_Str)) return bDisplayOn(aWords, iWords);
   if (aWords[0]->bSame("dump"_Str)) return bDumpTable(aWords, iWords);
   if (aWords[0]->bSame("endmkidx"_Str)) return bEndCreateIndex(aWords, iWords);
   if (aWords[0]->bSame("endmktbl"_Str)) return bEndCreateTable(aWords, iWords);
@@ -839,11 +842,16 @@ bool SEitf::bDumpTable(Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* docol                                                                      */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDocol(Str* aWords[])
+bool SEitf::bDocol(Str* aWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
+  
+  if (iWords != 2) {
+    vSetLastError(EC_INVALID_PARAMETERS);
+    return false;
+  }
   
   sRequest.vCopy("\""_Str);
   sRequest.vConcat(aWords[1]);
@@ -851,6 +859,46 @@ bool SEitf::bDocol(Str* aWords[])
   
   //
   sRequest.vConcat(" docol_command"_Str);
+  
+  return bAppendRequest(sRequest);
+}
+
+/*----------------------------------------------------------------------------*/
+/* display off selected rows                                                  */
+/*----------------------------------------------------------------------------*/
+bool SEitf::bDisplayOff(Str* aWords[], i8 iWords)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  s256 sRequest;
+  
+  if (iWords != 1) {
+    vSetLastError(EC_INVALID_PARAMETERS);
+    return false;
+  }
+  
+  //
+  sRequest.vConcat(" displayOff"_Str);
+  
+  return bAppendRequest(sRequest);
+}
+
+/*----------------------------------------------------------------------------*/
+/* display selected rows                                                      */
+/*----------------------------------------------------------------------------*/
+bool SEitf::bDisplayOn(Str* aWords[], i8 iWords)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  s256 sRequest;
+  
+  if (iWords != 1) {
+    vSetLastError(EC_INVALID_PARAMETERS);
+    return false;
+  }
+  
+  //
+  sRequest.vConcat(" displayOn"_Str);
   
   return bAppendRequest(sRequest);
 }
