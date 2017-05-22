@@ -69,8 +69,8 @@ namespace DBobjects
     Entry*       aPosition(Key* aGivenKey, eJC eJuxtaCompare, Entry** aaReviseVec);
     void         vReplace(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp);
     Entry*       aRightEntry(Entry* aEntry, u8 uLevel);
-    Entry*       aToEntry(i8 iOffset);
-    i8           iToEndOffset(Entry* aEntry);
+    Entry*       aToEntry(i8 iOffsetAbs);
+    i8           iToEndOffsetAbs(Entry* aEntry);
     i8           iToOffsetAbs(Entry* aEntry);
     i8           iToRightOffsetAbs(Entry* aEntry, i8 iOffsetNo);
   

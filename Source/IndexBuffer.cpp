@@ -263,7 +263,7 @@ bool IndexBuffer::bInsert(KeyWsp& xKeyWsp, Id xId)
     aNewEntry->vRightOffset(iOffsetNo, iRightOffset);
     
     // set the right offset in the prior entry to offset of new entry
-    i8 iPriorOffsetAbs = iToEndOffset(aPriorEntry);
+    i8 iPriorOffsetAbs = iToEndOffsetAbs(aPriorEntry);
     i8 iNewEntryOffset = iNewEntryOffsetAbs - iPriorOffsetAbs;
     aPriorEntry->vRightOffset(iOffsetNo, iNewEntryOffset);
   }
@@ -419,16 +419,15 @@ IndexBuffer* IndexBuffer::pSplitBuffer(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set offsets to entries after last entry in this buffer to nil
   
-  // get vector of entries which have offsets to the split entry
-  Key* aLastKey = aLastEntry->aKey();
-  Entry* aCrossCheck = aPosition(aLastKey, JC_AFTER, aReviseVec);
+  // get vector of prior entries which have offsets to the split entry
+  Entry* aCrossCheck = aPosition(aLastEntry->aKey(), JC_AFTER, aReviseVec);
   
   // Note this ASSERT fails if we have dulplicates in the table     //ALKA: TODO
   // Need to fix when we cater for non-unique indexes
-  //pAfterEntry->vShow(0,m_pIndex->pIdxColVec());
+  //aCrossCheck->vShow(0,m_pIndex->pIdxColVec());
   ASSERT(aCrossCheck == aLastEntry);
   
-  // revise the offsets of the entries using the revise vector
+  // set any prior offset to nil if its an offset to an entry in split half
   i8 iLastEntryOffsetAbs = iToOffsetAbs(aLastEntry);
   for (i8 iOffset = C_FLAT_LEVELS - 2; iOffset >= 0; iOffset--) {
     
@@ -438,36 +437,36 @@ IndexBuffer* IndexBuffer::pSplitBuffer(void)
     
     // get the right offset from the revise vector
     i8 iRightOffset = aEntry->uRightOffset(iOffset);
-    i8 iEntryOffset = iToOffsetAbs(aEntry);
-    i8 iEntrySize   = aEntry->nSize();
+    i8 iEntryOffsetAbs = iToOffsetAbs(aEntry);
+    i8 iEntrySize = aEntry->nSize();
     
     i8 iRightOffsetAbs = iToRightOffsetAbs(aEntry,iOffset);
-    ASSERT(iRightOffset + iEntryOffset + iEntrySize == iRightOffsetAbs);
+    ASSERT(iEntryOffsetAbs + iEntrySize + iRightOffset == iRightOffsetAbs);
     
-    if (iRightOffset + iEntryOffset + iEntrySize >= iLastEntryOffsetAbs)
+    if (iRightOffset + iEntryOffsetAbs + iEntrySize >= iLastEntryOffsetAbs)
       aEntry->vRightOffset(iOffset, C_NIL_OFFSET);
     else {
       ASSERT(C_NIL_OFFSET == (u8)iRightOffset);
     }
   }
   
-  // set the right offet in the last entry to C_NIL_OFFSET
+  // set all right offsets in the last entry to C_NIL_OFFSET
   for (i8 iOffset = aLastEntry->nOffsets() - 1; iOffset >= 0; iOffset--)
     aLastEntry->vRightOffset(iOffset, C_NIL_OFFSET);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // create new buffer and move the entries into into
+  // create new buffer and move the entries into it
   
-  // create new buffer at the same index level, and link the two buffers
+  // create new buffer at the same index level and link the two buffers
   IndexBuffer* pNewBuffer = new IndexBuffer(m_pIndex, m_nBufferLevel);
   pNewBuffer->m_pNextBuffer = pNextBuffer();
   pNewBuffer->m_pPrevBuffer = this;
   m_pNextBuffer = pNewBuffer;
   
-  // copy entries from this buffer starting at the splitEntry to the new buffer
+  // copy entries from this buffer starting at splitEntry to the new buffer
   m_nEntries -= pNewBuffer->iCopyEntries(this, aSplitEntry);
   
-  // give copied bytes back to wsp of original buffer
+  // give copied bytes back to wsp of this original buffer
   i8 nBytesToGive = nSub(m_xWsp.aLatter(), aSplitEntry);
   m_xWsp.vGive(nBytesToGive);
   ASSERT(m_xWsp.aLatter() == pAdd<void*>((void*)aLastEntry,aLastEntry->nSize()));
@@ -1161,23 +1160,23 @@ Entry* IndexBuffer::aRightEntry(Entry* aEntry, u8 uLevel)
 /*----------------------------------------------------------------------------*/
 /* converts iOffset to aEntry                                                 */
 /*----------------------------------------------------------------------------*/
-Entry* IndexBuffer::aToEntry(i8 iOffset)
+Entry* IndexBuffer::aToEntry(i8 iOffsetAbs)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
   // check the offset is within bounds
-  ASSERT(iOffset >= 0 && iOffset < m_xWsp.nUsed());
+  ASSERT(iOffsetAbs >= 0 && iOffsetAbs < m_xWsp.nUsed());
   
   // calculate address of entry
-  Entry* aEntry = pAdd<Entry*>(m_xWsp.aArea(),iOffset);
+  Entry* aEntry = pAdd<Entry*>(m_xWsp.aArea(),iOffsetAbs);
   
   return aEntry;
 }
 
 /*----------------------------------------------------------------------------*/
-/* converts aEntry to iOffset at end of entry                                 */
+/* converts given entry to absolute offset at end of entry                    */
 /*----------------------------------------------------------------------------*/
-i8 IndexBuffer::iToEndOffset(Entry* aEntry)
+i8 IndexBuffer::iToEndOffsetAbs(Entry* aEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
@@ -1209,11 +1208,11 @@ i8 IndexBuffer::iToRightOffsetAbs(Entry* aEntry, i8 iOffsetNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
-  i8 iEntryOffset = iToOffsetAbs(aEntry);
+  i8 iEntryOffsetAbs = iToOffsetAbs(aEntry);
   i8 iRightOffset = aEntry->uRightOffset(iOffsetNo);
-  i8 iEntrySize   = aEntry->nSize();
+  i8 iEntrySize = aEntry->nSize();
   
-  i8 iRightOffsetAbs = iRightOffset + iEntryOffset + iEntrySize;
+  i8 iRightOffsetAbs = iEntryOffsetAbs + iRightOffset + iEntrySize;
   
   return iRightOffsetAbs;
 }
