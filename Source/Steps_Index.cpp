@@ -285,17 +285,17 @@ void Task::vIndexPosition(NNP_Task nnpTask)
   
   xKeyWsp.vAddElement(pStrVal, pIndex->pIdxColVec()->pGet(0));
 
-  Entry* aEntry = pIndexBuffer->aPosition(xKeyWsp, JC_AFTER);
+  Entry* pEntry = pIndexBuffer->aPosition(xKeyWsp, JC_AFTER);
   
   //pEntry->aKey()->vShow(pIndex->pIdxColVec());
   //xKeyWsp.aKey()->vShow(pIndex->pIdxColVec());
   
-  bool bAfter = aEntry->aKey()->bJuxtaCompare(JC_AFTER, xKeyWsp.aKey(), pIndex->pIdxColVec());
+  bool bAfter = pEntry->aKey()->bJuxtaCompare(JC_AFTER, xKeyWsp.aKey(), pIndex->pIdxColVec());
   if ( ! bAfter) {
-    aEntry = pIndexBuffer->aNextEntry(aEntry);
+    pEntry = pIndexBuffer->aNextEntry(pEntry);
   }
   
-  nnpTask->m_pDataStack->vPushObject(aEntry);
+  nnpTask->m_pDataStack->vPushObject(pEntry);
   
   EXIT();
 }

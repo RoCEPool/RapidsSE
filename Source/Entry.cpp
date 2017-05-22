@@ -64,11 +64,11 @@ void* Entry::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* Entry::operator new(size_t iSize, Entry* aEntry)
+void* Entry::operator new(size_t iSize, Entry* pEntry)
 {
   RASSERT(iSize);
   
-  return aEntry;
+  return pEntry;
 }
 
 /*----------------------------------------------------------------------------*/

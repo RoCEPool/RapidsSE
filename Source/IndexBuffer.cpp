@@ -109,10 +109,10 @@ void IndexBuffer::vDump(void)
   // recursively dump the lower level buffers
   if (m_nBufferLevel != 0) {
     
-    for (Entry* aEntry = aNextEntry(aHead()); aEntry != nullptr; aEntry = aNextEntry(aEntry)) {
+    for (Entry* pEntry = aNextEntry(aHead()); pEntry != nullptr; pEntry = aNextEntry(pEntry)) {
       
       // get the index buffer from the entry
-      IndexBuffer* pIndexBuffer = aEntry->pIndexBuffer();;
+      IndexBuffer* pIndexBuffer = pEntry->pIndexBuffer();;
       
       ASSERT(pIndexBuffer);
       ASSERT(pIndexBuffer->eClass() == CN_INDEXBUFFER);
@@ -390,14 +390,14 @@ Entry* IndexBuffer::aPosition(KeyWsp& xKeyWsp, eJC eJuxtaCompare)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
-  Entry* aEntry;
+  Entry* pEntry;
   
-  aEntry = aPosition(xKeyWsp.aKey(), eJuxtaCompare, nullptr);
+  pEntry = aPosition(xKeyWsp.aKey(), eJuxtaCompare, nullptr);
   
-  if (aEntry == aHead())
-    aEntry = aNextEntry(aEntry);
+  if (pEntry == aHead())
+    pEntry = aNextEntry(pEntry);
   
-  return aEntry;
+  return pEntry;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -410,7 +410,7 @@ IndexBuffer* IndexBuffer::pPositionLevel(KeyWsp& xKeyWsp, eJC eJuxtaCompare, i8 
   IndexBuffer* pIndexBuffer = this;
   
   i8 iBufferLevel;
-  Entry* aEntry;
+  Entry* pEntry;
   
   while (true) {
     iBufferLevel = pIndexBuffer->nBufferLevel();
@@ -419,11 +419,11 @@ IndexBuffer* IndexBuffer::pPositionLevel(KeyWsp& xKeyWsp, eJC eJuxtaCompare, i8 
       break;
     
     // get the entry
-    aEntry = pIndexBuffer->aPosition(xKeyWsp, eJuxtaCompare);
-    ASSERT( aEntry );
+    pEntry = pIndexBuffer->aPosition(xKeyWsp, eJuxtaCompare);
+    ASSERT( pEntry );
     
     // get the index buffer of the entry
-    pIndexBuffer = aEntry->pIndexBuffer();
+    pIndexBuffer = pEntry->pIndexBuffer();
     ASSERT(pIndexBuffer);
     ASSERT(pIndexBuffer->eClass() == CN_INDEXBUFFER);
   }
@@ -462,9 +462,9 @@ void IndexBuffer::vShow(void)
          m_pPrevBuffer,
          m_pNextBuffer);
   
-  for (Entry* aEntry = aHead(); aEntry != nullptr; aEntry = aNextEntry(aEntry)) {
-    vTrace("%8lld: "_Str, nSub(aEntry, m_xWsp.aArea()));
-    aEntry->vShow(iToOffsetAbs(aEntry), m_pIndex->pIdxColVec());
+  for (Entry* pEntry = aHead(); pEntry != nullptr; pEntry = aNextEntry(pEntry)) {
+    vTrace("%8lld: "_Str, nSub(pEntry, m_xWsp.aArea()));
+    pEntry->vShow(iToOffsetAbs(pEntry), m_pIndex->pIdxColVec());
   }
   
   vTrace("\n"_Str);
@@ -504,8 +504,8 @@ IndexBuffer* IndexBuffer::pSplitBuffer(void)
     
     // calculate level into prior vector for this offset and get entry
     i8 iLevel = iOffset + 1;
-    Entry* aEntry = aPriorVec[iLevel];
-    aEntry->vRightOffset(iOffset, C_NIL_OFFSET);
+    Entry* pEntry = aPriorVec[iLevel];
+    pEntry->vRightOffset(iOffset, C_NIL_OFFSET);
   }
   
   // set all right offsets in the split entry to C_NIL_OFFSET
@@ -649,16 +649,16 @@ i8 IndexBuffer::iCopyEntries(IndexBuffer* pFromBuffer, Entry* aFromEntry)
   i8 nLevel = pFromBuffer->nBufferLevel();
   
   i8 nCopied = 0;
-  for (Entry* aEntry = aFromEntry;
-       aEntry;
-       aEntry = pFromBuffer->aNextEntry(aEntry)) {
+  for (Entry* pEntry = aFromEntry;
+       pEntry;
+       pEntry = pFromBuffer->aNextEntry(pEntry)) {
     
-    KeyWsp xKeyWsp(aEntry->aKey(), m_pIndex->pIdxColVec());
+    KeyWsp xKeyWsp(pEntry->aKey(), m_pIndex->pIdxColVec());
     
-    bInsert(xKeyWsp, aEntry->xId());
+    bInsert(xKeyWsp, pEntry->xId());
     
     if (nLevel > 0) {
-      IndexBuffer* pIndexBuffer = aEntry->pIndexBuffer();
+      IndexBuffer* pIndexBuffer = pEntry->pIndexBuffer();
       pIndexBuffer->m_pHigherLevel = this;
     }
     
@@ -1205,7 +1205,7 @@ Entry* IndexBuffer::aPosition(Key* aGivenKey, eJC eJuxtaCompare, Entry* aPriorVe
 /*----------------------------------------------------------------------------*/
 /* get right entry at given level (returns null if no right)                  */
 /*----------------------------------------------------------------------------*/
-Entry* IndexBuffer::aRightEntry(Entry* aEntry, u8 uLevel)
+Entry* IndexBuffer::aRightEntry(Entry* pEntry, u8 uLevel)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
@@ -1229,20 +1229,20 @@ Entry* IndexBuffer::aRightEntry(Entry* aEntry, u8 uLevel)
 
   if (0 == uLevel) {
     // for level 0, the right entry is the next entry
-    aRightEntry = aNextEntry(aEntry);
+    aRightEntry = aNextEntry(pEntry);
   }
   else {
     
     u8 uOffset = uLevel - 1;
-    ASSERT(uOffset >= 0 && uOffset < aEntry->nOffsets());
+    ASSERT(uOffset >= 0 && uOffset < pEntry->nOffsets());
     
     // for levels 1 & 2 the right entry is m_xWsp + rightOffset[iRight]
-    u8 iBytes = aEntry->nSize();
-    u8 uRightOffset = aEntry->uRightOffset(uOffset);
+    u8 iBytes = pEntry->nSize();
+    u8 uRightOffset = pEntry->uRightOffset(uOffset);
     if (C_NIL_OFFSET == uRightOffset)
       aRightEntry = nullptr;
     else
-      aRightEntry = pAdd<Entry*>(aEntry,uRightOffset+iBytes);
+      aRightEntry = pAdd<Entry*>(pEntry,uRightOffset+iBytes);
   }
  
   ASSERT( ! aRightEntry ||
@@ -1263,33 +1263,33 @@ Entry* IndexBuffer::aToEntry(i8 iOffsetAbs)
   ASSERT(iOffsetAbs >= 0 && iOffsetAbs < m_xWsp.nUsed());
   
   // calculate address of entry
-  Entry* aEntry = pAdd<Entry*>(m_xWsp.aArea(),iOffsetAbs);
+  Entry* pEntry = pAdd<Entry*>(m_xWsp.aArea(),iOffsetAbs);
   
-  return aEntry;
+  return pEntry;
 }
 
 /*----------------------------------------------------------------------------*/
 /* converts given entry to absolute offset to end of entry                    */
 /*----------------------------------------------------------------------------*/
-i8 IndexBuffer::iToEndOffsetAbs(Entry* aEntry)
+i8 IndexBuffer::iToEndOffsetAbs(Entry* pEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
-  i8 iOffset = nSub(aEntry,m_xWsp.aArea());
+  i8 iOffset = nSub(pEntry,m_xWsp.aArea());
   
   ASSERT(iOffset >= 0 && iOffset < m_xWsp.nSize());
   
-  return iOffset + aEntry->nSize();
+  return iOffset + pEntry->nSize();
 }
 
 /*----------------------------------------------------------------------------*/
 /* calculate the absolute offset within workspace for given entry             */
 /*----------------------------------------------------------------------------*/
-i8 IndexBuffer::iToOffsetAbs(Entry* aEntry)
+i8 IndexBuffer::iToOffsetAbs(Entry* pEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
-  i8 iOffset = nSub(aEntry,m_xWsp.aArea());
+  i8 iOffset = nSub(pEntry,m_xWsp.aArea());
   
   ASSERT(iOffset >= 0 && iOffset < m_xWsp.nSize());
   
@@ -1299,13 +1299,13 @@ i8 IndexBuffer::iToOffsetAbs(Entry* aEntry)
 /*----------------------------------------------------------------------------*/
 /* calculate the absolute right offset for a given entry and offset no        */
 /*----------------------------------------------------------------------------*/
-i8 IndexBuffer::iToRightOffsetAbs(Entry* aEntry, i8 iOffsetNo)
+i8 IndexBuffer::iToRightOffsetAbs(Entry* pEntry, i8 iOffsetNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
-  i8 iEntryOffsetAbs = iToOffsetAbs(aEntry);
-  i8 iRightOffset = aEntry->uRightOffset(iOffsetNo);
-  i8 iEntrySize = aEntry->nSize();
+  i8 iEntryOffsetAbs = iToOffsetAbs(pEntry);
+  i8 iRightOffset = pEntry->uRightOffset(iOffsetNo);
+  i8 iEntrySize = pEntry->nSize();
   
   i8 iRightOffsetAbs = iEntryOffsetAbs + iRightOffset + iEntrySize;
   
@@ -1315,17 +1315,17 @@ i8 IndexBuffer::iToRightOffsetAbs(Entry* aEntry, i8 iOffsetNo)
 /*----------------------------------------------------------------------------*/
 /* calculate the relative offset between two entries                          */
 /*----------------------------------------------------------------------------*/
-u8 IndexBuffer::uOffsetBetween(Entry* aEntryA, Entry* aEntryB)
+u8 IndexBuffer::uOffsetBetween(Entry* pEntryA, Entry* pEntryB)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
   u8 uOffset = 0;
   
-  u8 uEntryOffsetA = iToOffsetAbs(aEntryA);
-  u8 uEntryEndOffsetA = iToEndOffsetAbs(aEntryA);
+  u8 uEntryOffsetA = iToOffsetAbs(pEntryA);
+  u8 uEntryEndOffsetA = iToEndOffsetAbs(pEntryA);
   
-  u8 uEntryOffsetB = iToOffsetAbs(aEntryB);
-  u8 uEntryEndOffsetB = iToEndOffsetAbs(aEntryB);
+  u8 uEntryOffsetB = iToOffsetAbs(pEntryB);
+  u8 uEntryEndOffsetB = iToEndOffsetAbs(pEntryB);
   
   if (uEntryOffsetA < uEntryOffsetB)
     uOffset = uEntryOffsetB - uEntryEndOffsetA;

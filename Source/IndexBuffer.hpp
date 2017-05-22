@@ -47,7 +47,7 @@ namespace DBobjects
     Index*       pIndex(void);
     bool         bInsert(KeyWsp& xKeyWsp, Id xId);
     IndexBuffer* pNextBuffer(void);
-    Entry*       aNextEntry(Entry* aEntry);
+    Entry*       aNextEntry(Entry* pEntry);
     IndexBuffer* pPositionLevel(KeyWsp& xKeyWsp, eJC eJuxtaCompare, i8 iLevel);
     Entry*       aPosition(KeyWsp& xKeyWsp, eJC eJuxtaCompare);
     bool         bRemove(Key* aKey);
@@ -68,12 +68,12 @@ namespace DBobjects
     void         vMoveRight(void* aSrc, i8 nBytes);
     Entry*       aPosition(Key* aGivenKey, eJC eJuxtaCompare, Entry* aPriorVec[]);
     void         vReplace(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp);
-    Entry*       aRightEntry(Entry* aEntry, u8 uLevel);
+    Entry*       aRightEntry(Entry* pEntry, u8 uLevel);
     Entry*       aToEntry(i8 iOffsetAbs);
-    i8           iToEndOffsetAbs(Entry* aEntry);
-    i8           iToOffsetAbs(Entry* aEntry);
-    i8           iToRightOffsetAbs(Entry* aEntry, i8 iOffsetNo);
-    u8           uOffsetBetween(Entry* aEntryA, Entry* aEntryB);
+    i8           iToEndOffsetAbs(Entry* pEntry);
+    i8           iToOffsetAbs(Entry* pEntry);
+    i8           iToRightOffsetAbs(Entry* pEntry, i8 iOffsetNo);
+    u8           uOffsetBetween(Entry* pEntryA, Entry* pEntryB);
   
   };
   

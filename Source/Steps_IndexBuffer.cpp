@@ -113,13 +113,6 @@ void Task::vIndexBufferNextEntry(NNP_Task nnpTask)
     pNextEntry = pIndexBuffer->aNextEntry(pIndexBuffer->aHead());
   }
   
-  // assert that key of the next entry is >= entry              //ALKA:TEMPORARY
-//  if (pEntry && pNextEntry) {
-//    Key* aEntryKey = pEntry->aKey();
-//    Key* aNextEntryKey = pNextEntry->aKey();
-//    ASSERT(aEntryKey->bLessEqual(aNextEntryKey,pIndexBuffer->pIndex()->pIdxColVec()));
-//  }
-  
   nnpTask->m_pDataStack->vPushObject(pNextEntry);
   
   EXIT();
