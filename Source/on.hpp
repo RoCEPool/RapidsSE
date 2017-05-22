@@ -7,6 +7,7 @@ namespace DBobjects
 {
   class on
   {
+    
   private:
     u8 m_uOffsetNo;
 
@@ -16,7 +17,7 @@ namespace DBobjects
     ~on(void);
     
     static on nNil(void);
-    u8        nToLevelNo(void);
+    ln        nToLevelNo(void);
     
     bool operator ==(on n);
     bool operator !=(on n);

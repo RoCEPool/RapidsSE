@@ -39,6 +39,7 @@ typedef Vector<CN_IDXCOLVEC,Column,CN_COLUMN,1024> IdxColVec;
 #include "Key.hpp"
 #include "KeyVal.hpp"
 #include "KeyTest.hpp"
+#include "ln.hpp"
 #include "on.hpp"
 #include "RightVec.hpp"
 #include "EntryData.hpp"
