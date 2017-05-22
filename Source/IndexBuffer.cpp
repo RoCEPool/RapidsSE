@@ -417,30 +417,35 @@ IndexBuffer* IndexBuffer::pSplitBuffer(void)
   //pLastEntry->vShow(0,m_pIndex->pIdxColVec());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set any offset in this which points to entries after the last entry to nil
   
-  // find the position of the last entry in the buffer
+  // get vector of entries which have offsets to the split entry
   Key* aLastKey = aLastEntry->aKey();
-  Entry* aAfterEntry = aPosition(aLastKey, JC_AFTER, aReviseVec);
+  Entry* aCrossCheck = aPosition(aLastKey, JC_AFTER, aReviseVec);
   
   // Note this ASSERT fails if we have dulplicates in the table     //ALKA: TODO
   // Need to fix when we cater for non-unique indexes
   //pAfterEntry->vShow(0,m_pIndex->pIdxColVec());
-  ASSERT(aAfterEntry == aLastEntry);
+  ASSERT(aCrossCheck == aLastEntry);
   
-  // revise the offsets of the enteries using the ReviseVector
-  i8 iLastEntryOffset = iToOffsetAbs(aLastEntry);
+  // revise the offsets of the entries using the revise vector
+  i8 iLastEntryOffsetAbs = iToOffsetAbs(aLastEntry);
   for (i8 iOffset = C_FLAT_LEVELS - 2; iOffset >= 0; iOffset--) {
     
-    // calculate level into reviseVector for this offset
+    // calculate level into revise vector for this offset and get entry
     i8 iLevel = iOffset + 1;
+    Entry* aEntry = aReviseVec[iLevel];
     
     // get the right offset from the revise vector
-    i8 iRightOffset = aReviseVec[iLevel]->uRightOffset(iOffset);
-    i8 iEntryOffset = iToOffsetAbs(aReviseVec[iLevel]);
-    i8 iEntrySize   = aReviseVec[iLevel]->nSize();
+    i8 iRightOffset = aEntry->uRightOffset(iOffset);
+    i8 iEntryOffset = iToOffsetAbs(aEntry);
+    i8 iEntrySize   = aEntry->nSize();
     
-    if (iRightOffset + iEntryOffset + iEntrySize >= iLastEntryOffset)
-      aReviseVec[iLevel]->vRightOffset(iOffset, C_NIL_OFFSET);
+    if (iRightOffset + iEntryOffset + iEntrySize >= iLastEntryOffsetAbs)
+      aEntry->vRightOffset(iOffset, C_NIL_OFFSET);
+    else {
+      ASSERT(C_NIL_OFFSET == (u8)iRightOffset);
+    }
   }
   
   // set the right offet in the last entry to C_NIL_OFFSET
@@ -448,23 +453,21 @@ IndexBuffer* IndexBuffer::pSplitBuffer(void)
     aLastEntry->vRightOffset(iOffset, C_NIL_OFFSET);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create new buffer and move the entries into into
   
-  // allocate a new buffer at the same index level
+  // create new buffer at the same index level, and link the two buffers
   IndexBuffer* pNewBuffer = new IndexBuffer(m_pIndex, m_nBufferLevel);
+  pNewBuffer->m_pNextBuffer = pNextBuffer();
+  pNewBuffer->m_pPrevBuffer = this;
+  m_pNextBuffer = pNewBuffer;
   
-  // copy entries starting at the splitEntry from this buffer to the new buffer
+  // copy entries from this buffer starting at the splitEntry to the new buffer
   m_nEntries -= pNewBuffer->iCopyEntries(this, aSplitEntry);
   
   // give copied bytes back to wsp of original buffer
   i8 nBytesToGive = nSub(m_xWsp.aLatter(), aSplitEntry);
   m_xWsp.vGive(nBytesToGive);
   ASSERT(m_xWsp.aLatter() == pAdd<void*>((void*)aLastEntry,aLastEntry->nSize()));
-  
-  // now link the two buffers
-  pNewBuffer->m_pNextBuffer = pNextBuffer();
-  pNewBuffer->m_pPrevBuffer = this;
-  
-  m_pNextBuffer = pNewBuffer;
   
   return pNewBuffer;
 }
