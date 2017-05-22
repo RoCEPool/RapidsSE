@@ -230,7 +230,7 @@ bool IndexBuffer::bInsert(KeyWsp& xKeyWsp, Id xId)
   
   // find the entry after which the new entry.key will be inserted
   Entry* aPriorVec[C_FLAT_LEVELS];
-  Entry* aAfterEntry = aPosition(xKeyWsp.aKey(), JC_AFTER, aPriorVec);
+  Entry* aAfterEntry = pPosition(xKeyWsp.aKey(), JC_AFTER, aPriorVec);
   
   // create a new entry after the prior entry and set it
   EntWsp xEntWsp(xId,xKeyWsp);
@@ -293,7 +293,7 @@ bool IndexBuffer::bInsert(KeyWsp& xKeyWsp, Id xId)
   
   // find the entry after which the new entry.key will be inserted
   Entry* aPriorVec[C_FLAT_LEVELS];
-  Entry* aAfterEntry = aPosition(xKeyWsp.aKey(), JC_AFTER, aPriorVec);
+  Entry* aAfterEntry = pPosition(xKeyWsp.aKey(), JC_AFTER, aPriorVec);
   
   // create a new entry after the prior entry and set it
   EntWsp xEntWsp(xId,xKeyWsp);
@@ -386,13 +386,13 @@ Entry* IndexBuffer::pNextEntry(Entry* pEntry)
 /*----------------------------------------------------------------------------*/
 /* position at entry with lower bound at key                                  */
 /*----------------------------------------------------------------------------*/
-Entry* IndexBuffer::aPosition(KeyWsp& xKeyWsp, eJC eJuxtaCompare)
+Entry* IndexBuffer::pPosition(KeyWsp& xKeyWsp, eJC eJuxtaCompare)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
   Entry* pEntry;
   
-  pEntry = aPosition(xKeyWsp.aKey(), eJuxtaCompare, nullptr);
+  pEntry = pPosition(xKeyWsp.aKey(), eJuxtaCompare, nullptr);
   
   if (pEntry == pHead())
     pEntry = pNextEntry(pEntry);
@@ -419,8 +419,8 @@ IndexBuffer* IndexBuffer::pPositionLevel(KeyWsp& xKeyWsp, eJC eJuxtaCompare, i8 
       break;
     
     // get the entry
-    pEntry = pIndexBuffer->aPosition(xKeyWsp, eJuxtaCompare);
-    ASSERT( pEntry );
+    pEntry = pIndexBuffer->pPosition(xKeyWsp, eJuxtaCompare);
+    ASSERT(pEntry);
     
     // get the index buffer of the entry
     pIndexBuffer = pEntry->pIndexBuffer();
@@ -491,7 +491,7 @@ IndexBuffer* IndexBuffer::pSplitBuffer(void)
   // set offsets to entries after the split entry in this buffer to nil
   
   // get vector of prior entries which have offsets to the split entry
-  Entry* aCrossCheck = aPosition(aSplitEntry->aKey(), JC_AFTER, aPriorVec);
+  Entry* aCrossCheck = pPosition(aSplitEntry->aKey(), JC_AFTER, aPriorVec);
   
   // Note this ASSERT fails if we have dulplicates in the table     //ALKA: TODO
   // Need to fix when we cater for non-unique indexes
@@ -765,7 +765,7 @@ void IndexBuffer::vReplace(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
 
   // find the oldEntry in the higher level buffer
-  Entry* aFoundEntry = aPosition(xOldKeyWsp, JC_SAME);
+  Entry* aFoundEntry = pPosition(xOldKeyWsp, JC_SAME);
 
   // assert that we found one
   ASSERT(aFoundEntry);
@@ -1135,7 +1135,7 @@ void IndexBuffer::vMoveRight(void* aSrc, i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* scan thru skip list and positition to entry (optionally set prior vector)  */
 /*----------------------------------------------------------------------------*/
-Entry* IndexBuffer::aPosition(Key* aGivenKey, eJC eJuxtaCompare, Entry* aPriorVec[])
+Entry* IndexBuffer::pPosition(Key* aGivenKey, eJC eJuxtaCompare, Entry* aPriorVec[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   

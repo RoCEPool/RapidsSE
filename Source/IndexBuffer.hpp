@@ -49,7 +49,7 @@ namespace DBobjects
     IndexBuffer* pNextBuffer(void);
     Entry*       pNextEntry(Entry* pEntry);
     IndexBuffer* pPositionLevel(KeyWsp& xKeyWsp, eJC eJuxtaCompare, i8 iLevel);
-    Entry*       aPosition(KeyWsp& xKeyWsp, eJC eJuxtaCompare);
+    Entry*       pPosition(KeyWsp& xKeyWsp, eJC eJuxtaCompare);
     bool         bRemove(Key* aKey);
     void         vShow(void);
     IndexBuffer* pSplitBuffer(void);
@@ -66,7 +66,7 @@ namespace DBobjects
     i8           iLevel(void);
     void         vMoveLeft(void* aDst, i8 nBytes);
     void         vMoveRight(void* aSrc, i8 nBytes);
-    Entry*       aPosition(Key* aGivenKey, eJC eJuxtaCompare, Entry* aPriorVec[]);
+    Entry*       pPosition(Key* aGivenKey, eJC eJuxtaCompare, Entry* aPriorVec[]);
     void         vReplace(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp);
     Entry*       pRightEntry(Entry* pEntry, u8 uLevel);
     i8           iToEndOffsetAbs(Entry* pEntry);

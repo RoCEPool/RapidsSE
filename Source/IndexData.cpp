@@ -217,9 +217,9 @@ void IndexData::vInsertEntry(Row* pRow, i8 nRowNo, bn nBufferNo)
 }
 
 /*----------------------------------------------------------------------------*/
-/* position the indexData at aparticular level of index buffer                */
+/* position the indexData at a particular level of index buffer               */
 /*----------------------------------------------------------------------------*/
-IndexBuffer* IndexData::aPositionLevel(KeyWsp& xKeyWsp, eJC eJuxtaCompare, i8 iLevel)
+IndexBuffer* IndexData::pPositionLevel(KeyWsp& xKeyWsp, eJC eJuxtaCompare, i8 iLevel)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
   

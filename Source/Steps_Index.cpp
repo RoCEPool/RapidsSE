@@ -105,13 +105,10 @@ void Task::vIndexBuffer(NNP_Task nnpTask)
   
   KeyWsp xKeyWsp;
   
-  // assuming non-complex key
-  //ASSERT(1 == pIndex->pIdxColVec()->nItems());
-  
   StrVal* pStrVal = _pStrVal(xValWsp.pNestedValueSelf());
   
   xKeyWsp.vAddElement(pStrVal, pIndex->pIdxColVec()->pGet(0));
-  IndexBuffer* pIndexBuffer = pIndexData->aPositionLevel(xKeyWsp, JC_AFTER, 0);
+  IndexBuffer* pIndexBuffer = pIndexData->pPositionLevel(xKeyWsp, JC_AFTER, 0);
   
   //xKeyWsp.vShow();
   
@@ -285,7 +282,7 @@ void Task::vIndexPosition(NNP_Task nnpTask)
   
   xKeyWsp.vAddElement(pStrVal, pIndex->pIdxColVec()->pGet(0));
 
-  Entry* pEntry = pIndexBuffer->aPosition(xKeyWsp, JC_AFTER);
+  Entry* pEntry = pIndexBuffer->pPosition(xKeyWsp, JC_AFTER);
   
   //pEntry->aKey()->vShow(pIndex->pIdxColVec());
   //xKeyWsp.aKey()->vShow(pIndex->pIdxColVec());
