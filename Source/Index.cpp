@@ -92,10 +92,11 @@ Index::Index(void)
   
   Word* pWord = Word::pToWord(this);
   
-  m_iIndexNo = -1;
+  m_iIndexNo   = -1;
   m_sIndexName = pWord->sName();;
   m_eIndexType = IT_SKIP_LIST;
-  m_pTable = nullptr;
+  m_bIsUnqiue  = false;
+  m_pTable     = nullptr;
   m_pIdxColVec = new IdxColVec;
   
   // m_xSubDic
@@ -263,6 +264,26 @@ void Index::vTidyUp(void)
   m_pIdxColVec->vClear();
   
   delete m_pIdxColVec;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this index unique?                                                      */
+/*----------------------------------------------------------------------------*/
+bool Index::bIsUnique(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
+  
+  return m_bIsUnqiue;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set index unique                                                           */
+/*----------------------------------------------------------------------------*/
+void Index::vIsUnique(bool bUnique)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
+  
+  m_bIsUnqiue = bUnique;
 }
 
 /*----------------------------------------------------------------------------*/
