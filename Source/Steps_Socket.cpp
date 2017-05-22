@@ -306,7 +306,6 @@ void Task::vSocketSend(NNP_Task nnpTask)
   
   nnpTask->m_pDataStack->vPushInt((i8)1);
   
-exit:
   EXIT();
 }
 

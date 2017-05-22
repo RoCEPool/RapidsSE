@@ -966,7 +966,7 @@ void IndexBuffer::vFixPriorOffset(Entry* aPriorVec[], Entry* aNewEntry)
   for (u8 uOffsetNo = 0; uOffsetNo < C_FLAT_OFFSETS; uOffsetNo++) {
     
     // get prior entry being fixed
-    u8 uLevelNo = uOffsetNo + 1;
+    auto uLevelNo = uOffsetNo + 1;
     Entry* aPriorEntry = aPriorVec[uLevelNo];
     
     // compute and set corrected offset
