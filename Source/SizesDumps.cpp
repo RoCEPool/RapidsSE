@@ -127,6 +127,7 @@ pDUMPFUN *gpDump[]
   /* 75 */ &Stack::vDump,           // CN_STACK
   /* 76 */ &Dump::vInvalid,         // CN_STEPACCUM
   /* 77 */ &StepArray::vDump,       // CN_STEPARRAY
+  /*    */ &Dump::vInvalid,         // CN_STRVEC
   /* 78 */ &Dump::vInvalid,         // CN_SYSCALL
 
   /* 79 */ &Table::vDump,           // CN_TABLE
@@ -273,6 +274,7 @@ i8 giClassSize[]
   /* 75 */ sizeof(Stack),              // CN_STACK
   /* 76 */ sizeof(StepAccum),          // CN_STEPACCUM
   /* 77 */ sizeof(StepArray),          // CN_STEPARRAY
+  /*    */ 0,                          // CN_STRVEC
   /* 78 */ sizeof(SysCall),            // CN_SYSCALL
   
   /* 79 */ sizeof(Table),              // CN_TABLE
@@ -419,6 +421,7 @@ eHT geWhichHeap[]
   /* 78 */ HT_LARGE,   // CN_STACK
   /* 79 */ HT_INVALID, // CN_STEPACCUM
   /* 80 */ HT_LARGE,   // CN_STEPARRAY
+  /*    */ HT_INVALID, // CN_STRVEC
   /* 81 */ HT_INVALID, // CN_SYSCALL
   
   /* 82 */ HT_INVALID, // CN_TABLE

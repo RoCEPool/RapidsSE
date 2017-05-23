@@ -56,7 +56,6 @@ typedef Vector<CN_ENTRYVEC,Entry,CN_ENTRY,C_FLAT_LEVELS,u8> EntryVec;
 
 #include "Ring.hpp"
 
-
 typedef Vector<CN_KEYVEC,KeyVal,CN_KEYVAL,1024,u8> KeyVec;
 
 #include "Table.hpp"
