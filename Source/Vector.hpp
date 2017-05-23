@@ -22,7 +22,9 @@ namespace Structures
 
     Vector(void);
     ~Vector(void);
-  
+
+    ITEM* operator [](i8 iItem);
+
     void  vAdd(ITEM* pObject);
     void  vClear(void);
     void  vInsert(ITEM* pObject);
@@ -123,6 +125,18 @@ Vector<VEC_CN, ITEM, ITEM_CN, MAX_ITEMS>::~Vector(void)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* [] operator                                                                */
+/*----------------------------------------------------------------------------*/
+template <eCN VEC_CN, class ITEM, eCN ITEM_CN, i8 MAX_ITEMS>
+ITEM* Vector<VEC_CN, ITEM, ITEM_CN, MAX_ITEMS>::operator [](i8 iItem)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYVEC,_FOOTER_);
+  
+  return m_pItem[iItem];
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* add an item                                                                */
