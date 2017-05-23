@@ -69,7 +69,7 @@ namespace DBobjects
     u8           uOffsetBetween(Entry* pEntryA, Entry* pEntryB);
     Entry*       pPosition(Key* aGivenKey, eJC eJuxtaCompare, Entry* aPriorVec[]);
     void         vReplace(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp);
-    Entry*       pRightEntry(Entry* pEntry, u8 uLevel);
+    Entry*       pRightEntry(Entry* pEntry, ln nLevelNo);
     i8           iToEndOffsetAbs(Entry* pEntry);
     i8           iToOffsetAbs(Entry* pEntry);
     i8           iToRightOffsetAbs(Entry* pEntry, on nOffsetNo);

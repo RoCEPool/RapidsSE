@@ -252,11 +252,12 @@ bool IndexBuffer::bInsert(KeyWsp& xKeyWsp, Id xId)
   i8 iNewEntryOffsetAbs = iToOffsetAbs(aNewEntry);
   
   // step thru each offset to be revised
-  for (i8 iOffsetNo = aNewEntry->nOffsets() - 1; iOffsetNo >= 0; iOffsetNo--) {
+  on nOffsetNo;
+  for (nOffsetNo = aNewEntry->nOffsets() - 1; nOffsetNo >= 0; nOffsetNo--) {
     
     // get prior entry being revised
-    i8 iLevelNo = iOffsetNo + 1;
-    Entry* aPriorEntry = aPriorVec[iLevelNo];
+    on nLevelNo = nOffsetNo.nToLevelNo();
+    Entry* aPriorEntry = aPriorVec[*nLevelNo];
     
     // copy the right offset from the prior entry into the new entry
     i8 iRightOffset = aPriorEntry->uRightOffset(iOffsetNo);
@@ -319,8 +320,8 @@ bool IndexBuffer::bInsert(KeyWsp& xKeyWsp, Id xId)
   for (nOffsetNo = pNewEntry->nOffsets() - 1; nOffsetNo >= 0; nOffsetNo--) {
     
     // get prior entry being revised
-    i8 iLevelNo = *nOffsetNo + 1;
-    Entry* aPriorEntry = aPriorVec[iLevelNo];
+    ln nLevelNo = nOffsetNo.nToLevelNo();
+    Entry* aPriorEntry = aPriorVec[*nLevelNo];
     
     i8 iPriorsRightOffsetAbs = iToRightOffsetAbs(aPriorEntry,nOffsetNo);
     
@@ -328,7 +329,7 @@ bool IndexBuffer::bInsert(KeyWsp& xKeyWsp, Id xId)
     if (iPriorsRightOffsetAbs > iNewEntryOffsetAbs) {
       
       // get post entry : [GREEN]
-      Entry* aPostEntry = pRightEntry(aPriorEntry,iLevelNo);
+      Entry* aPostEntry = pRightEntry(aPriorEntry,nLevelNo);
       
       // calculate new's right offset : [RED ARROW]
       i8 iNewRightOffset = uOffsetBetween(pNewEntry,aPostEntry);
@@ -544,7 +545,8 @@ bool IndexBuffer::bVerify(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
   // verify the entries at each level
-  i8 nLevel = C_FLAT_LEVELS - 1;
+  ln nLevelNo;
+  nLevelNo = C_FLAT_LEVELS - 1;
   
   do {
     
@@ -552,10 +554,10 @@ bool IndexBuffer::bVerify(void)
     if ( ! pEntryA )
       return true;
     
-    if (pEntryA->nOffsets() < (u8)nLevel)
+    if (nLevelNo > (i8)(pEntryA->nOffsets()))
       return true;
     
-    Entry* pEntryB = pRightEntry(pEntryA, nLevel);
+    Entry* pEntryB = pRightEntry(pEntryA, nLevelNo);
     if ( ! pEntryB )
       return true;
   
@@ -573,7 +575,8 @@ bool IndexBuffer::bVerify(void)
       pEntryA = pEntryB;
       pEntryB = pNextEntry(pEntryA);
     }
-  } while (--nLevel >= 0 );
+    nLevelNo--;
+  } while (nLevelNo >= 0 );
   
   return true;
 }
@@ -709,8 +712,8 @@ void IndexBuffer::vFixHigherLevel(Entry* aNewEntry)
   if ( ! m_pHigherLevel )
     return;
   
-  // get the first entry right of head at offset 0
-  Entry* aFirstEntry = pRightEntry(pHead(), 0);
+  // get the first entry right of head at level 0
+  Entry* aFirstEntry = pRightEntry(pHead(), ln::nZeroLevel());
   
   // if the entry we just added is not the first entry , nothing to fix
   if (aNewEntry != aFirstEntry)
@@ -1167,7 +1170,8 @@ Entry* IndexBuffer::pPosition(Key* aGivenKey, eJC eJuxtaCompare, Entry* aPriorVe
   
   // start scanning from head entry and topmost level
   Entry* pScanEntry = pHead();
-  i8 iScanLevel = C_FLAT_LEVELS - 1;
+  ln nScanLevel;
+  nScanLevel = C_FLAT_LEVELS - 1;
   
   do {
 
@@ -1175,7 +1179,7 @@ Entry* IndexBuffer::pPosition(Key* aGivenKey, eJC eJuxtaCompare, Entry* aPriorVe
     // inner loop: scan right a number of entries at current scan level
     //             until we find a key that is same/after given key
     
-    while (Entry* pNextEntry = pRightEntry(pScanEntry, iScanLevel)) {
+    while (Entry* pNextEntry = pRightEntry(pScanEntry, nScanLevel)) {
       
       // get next key after scan key
       Key* aNextKey = pNextEntry->aKey();
@@ -1203,13 +1207,13 @@ Entry* IndexBuffer::pPosition(Key* aGivenKey, eJC eJuxtaCompare, Entry* aPriorVe
 
     // opt record scan entry as an insert-after revision point at this level
     if (aPriorVec)
-      aPriorVec[iScanLevel] = pScanEntry;
+      aPriorVec[*nScanLevel] = pScanEntry;
    
     // now go down one level
-    iScanLevel--;
+    nScanLevel--;
     
     // and repeat till we have scanned down thru all levels
-  } while (iScanLevel >= 0);
+  } while (*nScanLevel >= 0);
   
   // JC_SAME : return the entry which is same as given key
   // JC_AFTER: return the entry which the given key would be inserted after
@@ -1219,7 +1223,7 @@ Entry* IndexBuffer::pPosition(Key* aGivenKey, eJC eJuxtaCompare, Entry* aPriorVe
 /*----------------------------------------------------------------------------*/
 /* get right entry at given level (returns null if no right)                  */
 /*----------------------------------------------------------------------------*/
-Entry* IndexBuffer::pRightEntry(Entry* pEntry, u8 uLevel)
+Entry* IndexBuffer::pRightEntry(Entry* pEntry, ln nLevelNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
@@ -1239,16 +1243,16 @@ Entry* IndexBuffer::pRightEntry(Entry* pEntry, u8 uLevel)
   */
   
   // the caller must request a valid right entry of pEntry
-  ASSERT(uLevel >= 0 && uLevel < C_FLAT_LEVELS);
+  ASSERT(nLevelNo >= 0 && nLevelNo < C_FLAT_LEVELS);
 
-  if (0 == uLevel) {
+  if (nLevelNo == 0) {
     // for level 0, the right entry is the next entry
     pRightEntry = pNextEntry(pEntry);
   }
   else {
     
     on nOffsetNo;
-    nOffsetNo = uLevel - 1;
+    nOffsetNo = nLevelNo.nToOffsetNo();
     ASSERT(nOffsetNo >= 0 && nOffsetNo < pEntry->nOffsets());
     
     // for levels 1 & 2 the right entry is m_xWsp + rightOffset[iRight]

@@ -5,28 +5,34 @@
 
 namespace DBobjects
 {
+  class on;
+  
   class ln
   {
     
   private:
-    u8 m_uLevelNo;
+    i8 m_uLevelNo;
 
   public:
     ln(void);
-    ln(u8 uLevelNo);
     ~ln(void);
     
-    static ln nNil(void);
-    //on        nToOffsetNo(void);
+    static ln nZeroLevel(void);
+    on nToOffsetNo(void);
     
-    bool operator ==(ln n);
-    bool operator !=(ln n);
-    bool operator >=(ln n);
-    bool operator <=(ln n);
-    u8 operator *(void);
-    ln operator +(u8 u);
-    ln operator -(u8 u);
+    void operator =(i8 u);
+    bool operator ==(i8 i);
+    bool operator !=(i8 i);
+    bool operator >=(i8 i);
+    bool operator >(i8 i);
+    bool operator <=(i8 i);
+    bool operator < (i8 i);
+    
+    i8 operator *(void);
+    ln operator +(i8 i);
+    ln operator -(i8 i);
     ln operator ++(int);
+    ln operator --(int);
   };
   
   ln operator "" _ln(unsigned long long u);
