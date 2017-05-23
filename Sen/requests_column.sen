@@ -7,14 +7,14 @@
 /*----------------------------------------------------------------------------*/
 /* add a column                                                               */
 /*----------------------------------------------------------------------------*/
-: add_column ( "<columnTy>" "<columnNm>" "<tableNm>" -- <R> )
+: add_column ( "<columnTy>" "<sColumnNm>" "<sTableNm>" -- <R> )
 
-  locals| tableNm columnNm |
+  locals| sTableNm sColumnNm |
 
-  columnNm tableNm
+  sColumnNm sTableNm
   checkAddColumn not if <NIP+ERROR> exit then
 
-  columnNm tableNm
+  sColumnNm sTableNm
   addColumn ( ) assert::stack_0
 
   <OK>
@@ -23,14 +23,14 @@
 /*----------------------------------------------------------------------------*/
 /* add an index column                                                        */
 /*----------------------------------------------------------------------------*/
-: add_idxcolumn ( "<columnNm>" "<indexNm>" "<tableNm>" -- <R> )
+: add_idxcolumn ( "<sColumnNm>" "<sIndexNm>" "<sTableNm>" -- <R> )
 
-  locals| tableNm indexNm columnNm  |
+  locals| sTableNm sIndexNm sColumnNm  |
 
-  columnNm indexNm tableNm
+  sColumnNm sIndexNm sTableNm
   checkAddIndexColumn not if <NIP+ERROR> exit then
 
-  columnNm indexNm
+  sColumnNm sIndexNm
   addIndexColumn ( ) assert::stack_0
 
   <OK>
@@ -39,10 +39,10 @@
 /*----------------------------------------------------------------------------*/
 /* get list of columns                                                        */
 /*----------------------------------------------------------------------------*/
-: list_columns ( "<tableNm>" -- <R> )
+: list_columns ( "<sTableNm>" -- <R> )
 
   // should be in the tables folder
-  checkInTables       not if <NIP+ERROR> exit then
+  checkInTables not if <NIP+ERROR> exit then
 
   // there should be a table folder
   dup checkIsTableFolder not if <NIP+ERROR> exit then
@@ -68,24 +68,24 @@
 /*----------------------------------------------------------------------------*/
 /* get list of index columns                                                  */
 /*----------------------------------------------------------------------------*/
-: list_indexcolumns ( "<tableNm" "<indexNm>" -- <R> )
+: list_indexcolumns ( "<sTableNm" "<sIndexNm>" -- <R> )
 
-  locals| indexNm tableNm |
+  locals| sIndexNm sTableNm |
 
   // should be in the tables folder
   checkInTables       not if <NIP+ERROR> exit then
 
   // there should be a table folder
-  tableNm checkIsTableFolder not if <NIP+ERROR> exit then
+  sTableNm checkIsTableFolder not if <NIP+ERROR> exit then
 
   // push table dictionary
-  tableNm pushTable assert
+  sTableNm pushTable assert
 
   // push indexes folder
   pushIndexes assert
 
   // check it is an index
-  indexNm checkIsIndex
+  sIndexNm checkIsIndex
   not if
     popIndexes popTable assertInTables <NIP+ERROR> exit
   then
@@ -94,7 +94,7 @@
     "(columnName VARCHAR, columnType VARCHAR)" metadata!
   then
 
-  indexNm listIndexColumns
+  sIndexNm listIndexColumns
 
   // pop indexes folder
   popIndexes
