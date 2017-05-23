@@ -109,7 +109,8 @@ void IndexBuffer::vDump(void)
   // recursively dump the lower level buffers
   if (m_nBufferLevel != 0) {
     
-    for (Entry* pEntry = pNextEntry(pHead()); pEntry != nullptr; pEntry = pNextEntry(pEntry)) {
+    for (Entry* pEntry = pNextEntry(pHead()); pEntry != nullptr;
+         pEntry = pNextEntry(pEntry)) {
       
       // get the index buffer from the entry
       IndexBuffer* pIndexBuffer = pEntry->pIndexBuffer();;
@@ -471,7 +472,8 @@ void IndexBuffer::vShow(void)
   else
     sHigherLevel = "..."_Str;
   
-  vTrace("IndexBuffer %p (buffer %lld): level L%lld HigerLevel %p (L%s) entries %lld prevBuffer %p nextBuffer %p \n"_Str,
+  vTrace("IndexBuffer %p (buffer %lld): level L%lld HigerLevel %p (L%s) "
+         "entries %lld prevBuffer %p nextBuffer %p \n"_Str,
          this,
          *nBufferNo(),
          m_nBufferLevel,
@@ -735,25 +737,73 @@ void IndexBuffer::vAllotHead(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* copy entries from given index buffer starting at given entry               */
+/* copy entries from fromBuffer starting at fromEntry to this buffer          */
 /*----------------------------------------------------------------------------*/
 i8 IndexBuffer::iCopyEntries(IndexBuffer* pFromBuffer, Entry* aFromEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
-  i8 nLevel = pFromBuffer->nBufferLevel();
+  i8 nBufferLevel = pFromBuffer->nBufferLevel();
   
   i8 nCopied = 0;
   for (Entry* pEntry = aFromEntry;
        pEntry;
        pEntry = pFromBuffer->pNextEntry(pEntry)) {
     
+    // form keywsp from the entry
     KeyWsp xKeyWsp(pEntry->aKey(), m_pIndex->pIdxColVec());
     
+    // insert entry into this buffer
     bInsert(xKeyWsp, pEntry->xId());
     
-    if (nLevel > 0) {
+    // if this buffer is a higher level buffer,
+    // set this buffer as the higher level buffer
+    // for the buffer the entry is pointing to
+    if (nBufferLevel > 0) {
+      
+      /*----------------------------------------------------------------------//
+       
+      We are splitting a LN buffer BN at entry kl
+       
+       BN
+      --------------------
+      |ka kj ..kl kp...   |  Level LN buffer
+      --------------------
+      ^
+      |
+      BM
+      -------------
+      |ka kb   ...|  Level LN-1 buffer
+      -------------
+
+       At this point if LN is not L0 we have a buffer BM pointing to BN.
+
+       We are copying entries kl, kp ... from buffer BN to BN+1.
+       
+       BN             BN+1
+      -------------    -------------
+      |ka kj   ... |-->| kl kp...   |  Level LN buffer
+      -------------    -------------
+      ^                ^
+      |                |
+      |                |
+      |                |
+      BM              BM+1
+      -------------   -------------
+      |ka kb   ...|-->| kj kk  ...|   Level LN-1 buffer
+      -------------   -------------
+       
+       Now we need to make buffer BM+1 have its higher level buffer point to BN
+       
+      //----------------------------------------------------------------------*/
+
+      // get the lower level buffer the entry is pointing to
       IndexBuffer* pIndexBuffer = pEntry->pIndexBuffer();
+      
+      // this index buffer should be at a level lower than nBufferLevel
+      ASSERT(pIndexBuffer->nBufferLevel() < nBufferLevel);
+      
+      // this lower level buffers higher level is this buffer
       pIndexBuffer->m_pHigherLevel = this;
     }
     

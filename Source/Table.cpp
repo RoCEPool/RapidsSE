@@ -146,7 +146,7 @@ void Table::vAddIndex(Index* pIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
-  // set the index no in teh index
+  // set the index no in the index
   pIndex->vIndexNo(++m_zIndexNo);
   
   // create an IndexData for the index in each partition

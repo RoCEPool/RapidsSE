@@ -431,7 +431,7 @@ void RapidsSE::vSystemStatus(void)
 {
   if (Region::bTest(gxArguments.m_sRegionName)) {
     
-    // attach to teh region
+    // attach to the region
     bool bResult = Region::bAttach(gxArguments.m_sRegionName, gxArguments.m_bWelcome);
     ASSERT(bResult);
     

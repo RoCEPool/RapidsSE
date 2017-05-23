@@ -285,7 +285,7 @@ void Partition::vTidyUpIndex(i8 iIndexNo)
   
   IndexData* pIndexData = this->pIndexData(iIndexNo);
   
-  // remove the index from teh IdxVec
+  // remove the index from the IdxVec
   m_pIdxVec->vRemove(pIndexData);
   delete pIndexData;
 }

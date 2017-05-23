@@ -9,7 +9,7 @@ namespace GridModel
                public List_t<Node>
   {
   public:
-    i8     m_nNodes;     // number of nodes in teh grid
+    i8     m_nNodes;     // number of nodes in the grid
     i8     m_iThisNode;  // this node number
     Node*  m_pThisNode;  // this node pointer
     i8     m_iStartNode; // node that started the cluster

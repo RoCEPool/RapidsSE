@@ -183,7 +183,7 @@ tp: theIndirectResult
 
   locals| totalPartitions |
 
-  // calculate total partitions in teh cluster
+  // calculate total partitions in the cluster
   grid.slots grid.nodes *
   to totalPartitions
 

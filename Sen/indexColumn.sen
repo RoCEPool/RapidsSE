@@ -77,7 +77,7 @@
   // push the table columns folder
   pushColumns
 
-  // look for the index column in teh table columns
+  // look for the index column in the table columns
   columnNm findInCurrent
 
   // column should exist in table
@@ -89,7 +89,7 @@
   // pop the tables sub folder
   popTableSub
 
-  // push back teh indexes folder
+  // push back the indexes folder
   pushIndexes assert
 
   // push the index sub folder
