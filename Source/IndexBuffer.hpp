@@ -40,6 +40,7 @@ namespace DBobjects
     i8           nBufferLevel(void);
     void         vDump(void);
     i8           nEntries(void);
+    Entry*       pFirstEntry(void);
     bool         bHasSpace(i8 nBytes);
     Entry*       pHead(void);
     void         vHigherLevel(IndexBuffer* pHigherLevel);

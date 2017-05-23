@@ -134,6 +134,23 @@ i8 IndexBuffer::nEntries(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get first entry (after the head) of skip list in this index buffer         */
+/*----------------------------------------------------------------------------*/
+Entry* IndexBuffer::pFirstEntry(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
+  
+  // the head entry will have been alloted during constructor
+  ASSERT(m_xWsp.nUsed());
+  
+  // first get the head
+  Entry* pHead = _pEntry(m_xWsp.aArea());
+  
+  // return the next entry
+  return pNextEntry(pHead);
+}
+
+/*----------------------------------------------------------------------------*/
 /* does the buffer have space for nBytes ?                                    */
 /*----------------------------------------------------------------------------*/
 bool IndexBuffer::bHasSpace(i8 nBytes)
@@ -544,38 +561,108 @@ bool IndexBuffer::bVerify(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
-  // verify the entries at each level
+  /*--------------------------------------------------------------------------//
+   
+   Entries in an index buffer
+   
+    EntryA                                                         EntryH
+    -------                                                        -------
+   |       | ---------------------------------------------------->|       |
+L2 |       |                                                      |       |
+    -------                    EntryD                              -------
+    -------                    -------                             -------
+   |       |                  |       |                           |       |
+L1 |       |----------------->|       |-------------------------->|       |
+    -------  EntryB    EntryC  -------   EntryE   EntryF  EntryG   -------
+    -------  -------  -------  -------  -------  -------  -------  -------
+   |       ||       ||       ||       ||       ||       ||       ||       |
+L0 |  KeyA || KeyB  || KeyC  ||  KeyD || KeyE  || KeyF  || KeyG  || KeyH  |
+    -------  -------  -------  -------  -------  -------  -------  -------
+   
+   
+   We start at L2
+   EntryOne is EntryA
+   EntryTwo is EntryH
+   
+   keyH is after keyA
+   
+   We reach the end of Level2
+   
+   Move to L1
+   EntryOne is EntryA
+   EntryTwo is EntryD
+   keyD is after jeyA
+   
+   EntryOne becomes EntryD
+   EntryTwo is EntryH
+   KeyH is after keyD
+   
+   We reach the end of Level1
+   
+   Move to L0
+   EntryOne is EntryA
+   EntryTwo is EntryB
+   KeyB is after KeyA
+   ....
+   
+   //--------------------------------------------------------------------------*/
+
+  
   ln nLevelNo;
+  
+  // start at the highest level in the index buffer's skip list (L2)
   nLevelNo = C_FLAT_LEVELS - 1;
   
   do {
     
-    Entry* pEntryA = pHead();
-    if ( ! pEntryA )
+    // get the head entry of the buffer
+    Entry* pEntryOne = pHead();
+    if ( ! pEntryOne )
       return true;
     
-    if (nLevelNo > (i8)(pEntryA->nOffsets()))
-      return true;
+    // If we are scanning at a level greater than the level of the entry
+    // just move down one level
+    if (nLevelNo > (i8)(pEntryOne->nOffsets())) {
+      nLevelNo--;
+      continue;
+    }
     
-    Entry* pEntryB = pRightEntry(pEntryA, nLevelNo);
-    if ( ! pEntryB )
-      return true;
+    // we have a right entry at this level entryA
+    // get the right entry
+    Entry* pEntryTwo = pRightEntry(pEntryOne, nLevelNo);
+    
+    // if no right entry at this level, move down one level
+    if ( ! pEntryTwo ) {
+      nLevelNo--;
+      continue;
+    }
   
-    while (pEntryB) {
+    // iterate through the entries at this level
+    while (pEntryTwo) {
       
-      Key* pKeyA = pEntryA->aKey();
-      Key* pKeyB = pEntryB->aKey();
+      // get keys of the two entries
+      Key* pKeyA = pEntryOne->aKey();
+      Key* pKeyB = pEntryTwo->aKey();
       
-      if (pEntryA != pHead()) {
-        bool bAfter = pEntryB->aKey()->bJuxtaAfter(pEntryA->aKey(), m_pIndex->pIdxColVec());
+      // if entryA is not the head, compare the keys
+      if (pEntryOne != pHead()) {
+        
+        // KeyB should should be after keyA
+        bool bAfter = pKeyB->bJuxtaAfter(pKeyA, m_pIndex->pIdxColVec());
+        
+        // if keyB is not after keyA , we have a problem
         if ( ! bAfter )
           return false;
       }
       
-      pEntryA = pEntryB;
-      pEntryB = pNextEntry(pEntryA);
+      // get next entry
+      pEntryOne = pEntryTwo;
+      pEntryTwo = pNextEntry(pEntryOne);
     }
+    
+    // move down one level and start with the head again
     nLevelNo--;
+    
   } while (nLevelNo >= 0 );
   
   return true;
