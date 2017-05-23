@@ -24,9 +24,9 @@ using namespace DBobjects;
 
 #include "Column.hpp"
 
-typedef Vector<CN_COLUMNVEC,Column,CN_COLUMN,1024> ColumnVec;
+typedef Vector<CN_COLUMNVEC,Column,CN_COLUMN,1024,i8> ColumnVec;
 typedef Array<CN_ROARRAY,eRO,1024> RelOpAry;
-typedef Vector<CN_IDXCOLVEC,Column,CN_COLUMN,1024> IdxColVec;
+typedef Vector<CN_IDXCOLVEC,Column,CN_COLUMN,1024,i8> IdxColVec;
 
 #include "Row.hpp"
 #include "RowBuffer.hpp"
@@ -46,7 +46,7 @@ typedef Vector<CN_IDXCOLVEC,Column,CN_COLUMN,1024> IdxColVec;
 #include "EntWsp.hpp"
 #include "Entry.hpp"
 
-typedef Vector<CN_ENTRYVEC,Entry,CN_ENTRY,C_FLAT_LEVELS> EntryVec;
+typedef Vector<CN_ENTRYVEC,Entry,CN_ENTRY,C_FLAT_LEVELS,u8> EntryVec;
 
 #include "IndexBuffer.hpp"
 #include "IndexData.hpp"
@@ -57,7 +57,7 @@ typedef Vector<CN_ENTRYVEC,Entry,CN_ENTRY,C_FLAT_LEVELS> EntryVec;
 #include "Ring.hpp"
 
 
-typedef Vector<CN_KEYVEC,KeyVal,CN_KEYVAL,1024> KeyVec;
+typedef Vector<CN_KEYVEC,KeyVal,CN_KEYVAL,1024,i8> KeyVec;
 
 #include "Table.hpp"
 #include "Index.hpp"
