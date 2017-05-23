@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Vector.hpp - Vector template                                               */
+/* Vector.hpp - vector template                                               */
 /*============================================================================*/
 #pragma once
 
@@ -9,7 +9,7 @@ namespace Structures
   class Vector : public Object
   {
   private:
-    u8     m_nItems;           // number of actual items
+    u8     m_nItems;           // number of items currently in the vector
     ITEM*  m_pItem[MAX_ITEMS]; // vector of items (proper objects)
   
     // must be last
@@ -27,6 +27,7 @@ namespace Structures
 
     void  vAdd(ITEM* pObject);
     void  vClear(void);
+    bool  bContains(ITEM* pObject);
     void  vInsert(ITEM* pObject);
     i8    nItems(void);
     ITEM* pGet(SUB nItemNo);
@@ -138,7 +139,6 @@ ITEM* Vector<VEC_CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>::operator [](SUB nItemNo)
   return m_pItem[nItemNo];
 }
 
-
 /*----------------------------------------------------------------------------*/
 /* add an item                                                                */
 /*----------------------------------------------------------------------------*/
@@ -177,6 +177,23 @@ void Vector<VEC_CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>::vClear(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* test if the vector contains the given item                                 */
+/*----------------------------------------------------------------------------*/
+template <eCN VEC_CN, class ITEM, eCN ITEM_CN, i8 MAX_ITEMS, class SUB>
+bool Vector<VEC_CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>::bContains(ITEM* pItem)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,VEC_CN,_FOOTER_);
+  
+  SUB nItemNo;
+  
+  for (nItemNo = 0; nItemNo < m_nItems; nItemNo++)
+    if (m_pItem[nItemNo] == pItem)
+      return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* insert an item as first                                                    */
 /*----------------------------------------------------------------------------*/
 template <eCN VEC_CN, class ITEM, eCN ITEM_CN, i8 MAX_ITEMS, class SUB>
@@ -204,7 +221,7 @@ void Vector<VEC_CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>::vInsert(ITEM* pItem)
     MemLib::vMove(aDst,aSrc,nBytes);
   }
   
-  // set item
+  // set first item
   m_pItem[0] = pItem;
 }
 
@@ -237,7 +254,7 @@ ITEM* Vector<VEC_CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>::pGet(SUB nItemNo)
 }
 
 /*----------------------------------------------------------------------------*/
-/* remove an item                                                             */
+/* remove the given item                                                      */
 /*----------------------------------------------------------------------------*/
 template <eCN VEC_CN, class ITEM, eCN ITEM_CN, i8 MAX_ITEMS, class SUB>
 void Vector<VEC_CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>::vRemove(ITEM* pItem)
