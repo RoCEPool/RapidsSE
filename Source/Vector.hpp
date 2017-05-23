@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Vectortor.hpp - Vectortor template                                               */
+/* Vector.hpp - Vector template                                               */
 /*============================================================================*/
 #pragma once
 
@@ -23,13 +23,13 @@ namespace Structures
     Vector(void);
     ~Vector(void);
 
-    ITEM* operator [](SUB iItem);
+    ITEM* operator [](SUB nItemNo);
 
     void  vAdd(ITEM* pObject);
     void  vClear(void);
     void  vInsert(ITEM* pObject);
     i8    nItems(void);
-    ITEM* pGet(SUB iItem);
+    ITEM* pGet(SUB nItemNo);
     void  vRemove(ITEM* pObject);
   
     Footer* pFooter(void);
@@ -81,7 +81,6 @@ template <eCN VEC_CN, class ITEM, eCN ITEM_CN, i8 MAX_ITEMS, class SUB>
 void Vector<VEC_CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>::operator delete(void* pVectorAddress)
 {
   Vector<VEC_CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>* pVector =
-  //reinterpret_cast<Vector<VEC_CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>*>(pVectorAddress);
     _pVector<VEC_CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>(pVectorAddress);
   
   Heap::vFree(pVector);
@@ -98,8 +97,8 @@ Vector<VEC_CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>::Vector(void)
   
   m_nItems = 0;
   
-  for (SUB iItem = 0; iItem < MAX_ITEMS; iItem++)
-    m_pItem[iItem] = nullptr;
+  for (SUB nItemNo = 0; nItemNo < MAX_ITEMS; nItemNo++)
+    m_pItem[nItemNo] = nullptr;
   
   _setFooter_();
   
@@ -116,8 +115,8 @@ Vector<VEC_CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>::~Vector(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,VEC_CN,_FOOTER_);
   
-  for (SUB iItem = 0; iItem < m_nItems; iItem++) {
-    ITEM* pItem = m_pItem[iItem];
+  for (SUB nItemNo = 0; nItemNo < m_nItems; nItemNo++) {
+    ITEM* pItem = m_pItem[nItemNo];
     delete pItem;
   }
 }
@@ -130,13 +129,13 @@ Vector<VEC_CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>::~Vector(void)
 /* [] operator                                                                */
 /*----------------------------------------------------------------------------*/
 template <eCN VEC_CN, class ITEM, eCN ITEM_CN, i8 MAX_ITEMS, class SUB>
-ITEM* Vector<VEC_CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>::operator [](SUB iItem)
+ITEM* Vector<VEC_CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>::operator [](SUB nItemNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYVEC,_FOOTER_);
   
-  ASSERT(iItem >= 0 and iItem < MAX_ITEMS);
+  ASSERT(nItemNo >= 0 and nItemNo < MAX_ITEMS);
   
-  return m_pItem[iItem];
+  return m_pItem[nItemNo];
 }
 
 
@@ -152,15 +151,15 @@ void Vector<VEC_CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>::vAdd(ITEM* pItem)
   ASSERT(m_nItems >= 0 && m_nItems < MAX_ITEMS - 1);
   
   // get item number
-  SUB iItem = m_nItems++;
+  SUB nItemNo = m_nItems++;
   
   ASSERT(m_nItems > 0 && m_nItems < MAX_ITEMS);
   
   // there shouldnt already be a item
-  ASSERT( ! m_pItem[iItem] );
+  ASSERT( ! m_pItem[nItemNo] );
   
   // set item
-  m_pItem[iItem] = pItem;
+  m_pItem[nItemNo] = pItem;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -171,8 +170,8 @@ void Vector<VEC_CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>::vClear(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,VEC_CN,_FOOTER_);
   
-  for (SUB iItem = 0; iItem < m_nItems; iItem++)
-    m_pItem[iItem] = nullptr;
+  for (SUB nItemNo = 0; nItemNo < m_nItems; nItemNo++)
+    m_pItem[nItemNo] = nullptr;
   
   m_nItems = 0;
 }
@@ -189,17 +188,17 @@ void Vector<VEC_CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>::vInsert(ITEM* pItem)
   ASSERT(m_nItems >= 0 && m_nItems < MAX_ITEMS - 1);
   
   // get item number
-  SUB iItem = m_nItems++;
+  SUB nItemNo = m_nItems++;
   ASSERT(m_nItems > 0 && m_nItems < MAX_ITEMS);
   
   // there shouldnt already be a item
-  ASSERT( ! m_pItem[iItem] );
+  ASSERT( ! m_pItem[nItemNo] );
   
   // if there are items in the array then move array up
-  if (iItem) {
+  if (nItemNo) {
     char* aSrc = reinterpret_cast<char*>(&m_pItem[0]);
     char* aDst = reinterpret_cast<char*>(&m_pItem[1]);
-    char* aLst = pAdd<char*>(&m_pItem[iItem],sizeof(ITEM*));
+    char* aLst = pAdd<char*>(&m_pItem[nItemNo],sizeof(ITEM*));
     i8 nBytes = nSub(aLst,aDst);
     
     MemLib::vMove(aDst,aSrc,nBytes);
@@ -226,13 +225,13 @@ i8 Vector<VEC_CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>::nItems(void)
 /* get a specific item                                                        */
 /*----------------------------------------------------------------------------*/
 template <eCN VEC_CN, class ITEM, eCN ITEM_CN, i8 MAX_ITEMS, class SUB>
-ITEM* Vector<VEC_CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>::pGet(SUB iItem)
+ITEM* Vector<VEC_CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>::pGet(SUB nItemNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,VEC_CN,_FOOTER_);
   
-  ASSERT(iItem >= 0 && iItem < m_nItems);
+  ASSERT(nItemNo >= 0 && nItemNo < m_nItems);
   
-  ITEM* pItem = m_pItem[iItem];
+  ITEM* pItem = m_pItem[nItemNo];
   
   return pItem;
 }
@@ -249,28 +248,28 @@ void Vector<VEC_CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>::vRemove(ITEM* pItem)
   ASSERT(m_nItems >= 0);
   
   // find the item
-  SUB iItem;
+  SUB nItemNo;
   
-  for (iItem = 0; iItem < m_nItems; iItem++) {
-    if (m_pItem[iItem] == pItem)
+  for (nItemNo = 0; nItemNo < m_nItems; nItemNo++) {
+    if (m_pItem[nItemNo] == pItem)
       break;
   }
 
   // item should be there
-  ASSERT(m_pItem[iItem] );
+  ASSERT(m_pItem[nItemNo] );
   
   // reduce no of items
   m_nItems--;
   
-  m_pItem[iItem] = nullptr;
+  m_pItem[nItemNo] = nullptr;
   
   // last item removed, nothing to do
-  if (iItem == m_nItems)
+  if (nItemNo == m_nItems)
     return;
   
   // move array up
-  char* aSrc = reinterpret_cast<char*>(&m_pItem[iItem+1]);
-  char* aDst = reinterpret_cast<char*>(&m_pItem[iItem]);
+  char* aSrc = reinterpret_cast<char*>(&m_pItem[nItemNo+1]);
+  char* aDst = reinterpret_cast<char*>(&m_pItem[nItemNo]);
   char* aLst = pAdd<char*>(&m_pItem[m_nItems-1],sizeof(ITEM*));
   i8 nBytes = nSub(aLst,aDst);
   
