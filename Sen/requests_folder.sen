@@ -108,14 +108,14 @@ tp: droppedDic
 /*----------------------------------------------------------------------------*/
 : lf
 
-  0 locals| count |
+  0 locals| iCount |
 
   args.metadata if
     "(name VARCHAR, type VARCHAR)" metadata!
     ""
     0 pathPick dic.lastWord dup iterate
     //dup str.length if "\n" str.cat then
-    1 count + to count
+    1 iCount + to iCount
     "row: ('" str.cat
 
     object@ word.name str.cat
@@ -143,7 +143,7 @@ tp: droppedDic
     object@ word.prev object!
 
     next
-    count task::this task.seitf@ seitf.rowsProcessed
+    iCount task::this task.seitf@ seitf.rowsProcessed
   else
     ""
     0 pathPick dic.lastWord dup iterate
