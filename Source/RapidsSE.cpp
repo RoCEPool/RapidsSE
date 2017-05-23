@@ -73,7 +73,7 @@ void RapidsSE::vExecute(void)
         vRunDocol();
         vWaitFlag();
       }
-      else if (gxArguments.m_bPrompt) {
+      else if (gxArguments.m_bPrompt || gxArguments.m_bScript) {
         ASSERT(gpBufferPool);
         return;
       }
@@ -90,7 +90,11 @@ void RapidsSE::vExecute(void)
       vRunDocol();
       vWaitFlag();
     }
-    else if (gxArguments.m_bPrompt) {
+    else if (gxArguments.m_bPrompt || gxArguments.m_bScript) {
+      ASSERT(gpBufferPool);
+      return;
+    }
+    else if (gxArguments.m_bScript) {
       ASSERT(gpBufferPool);
       return;
     }
@@ -176,7 +180,7 @@ void RapidsSE::vPoolOpen(void)
     return;
   }
   
-  if (gxArguments.m_bPrompt) {
+  if (gxArguments.m_bPrompt || gxArguments.m_bScript) {
     if (! Region::bTest(gxArguments.m_sRegionName)) {
       vTrace("Error: RapidsSE instance %s was not started\n"_Str,gxArguments.m_sRegionName.s());
       exit(EXIT_FAILURE);

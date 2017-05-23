@@ -44,6 +44,7 @@ Arguments::Arguments(void)
   m_bDocol      = false;
   m_bHelp       = false;
   m_bPrompt     = false;
+  m_bScript     = false;
   m_bStart      = false;
   m_bStatus     = false;
   m_bStop       = false;
@@ -57,7 +58,6 @@ Arguments::Arguments(void)
   m_sFolder        = ""_Str;
   m_bHugePages     = false;
   m_bProgress      = false;
-  m_bPromptDisplay = true;
   m_bRestart       = true;
   m_bTouch         = false;
   m_bTracing       = false;
@@ -230,7 +230,10 @@ bool Arguments::bParse(int argc, Str* argv[])
         vTrace("Incorrect argument: --status with %s\n"_Str,argv[iArg]);
         return false;
       }
-
+      if (m_bScript) {
+        vTrace("Incorrect argument: --script with %s\n"_Str,argv[iArg]);
+        return false;
+      }
       m_bPrompt = true;
       continue;
     }
@@ -323,8 +326,21 @@ bool Arguments::bParse(int argc, Str* argv[])
     // options -----------------------------------------------------------------
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (argv[iArg]->bSame("--noPromptDisplay"_Str)) {
-      m_bPromptDisplay = false;
+    if (argv[iArg]->bSame("--script"_Str)) {
+      if (m_bStop) {
+        vTrace("Incorrect argument: --stop with %s\n"_Str,argv[iArg]);
+        return false;
+      }
+      if (m_bStatus) {
+        vTrace("Incorrect argument: --status with %s\n"_Str,argv[iArg]);
+        return false;
+      }
+      if (m_bPrompt) {
+        vTrace("Incorrect argument: --script with %s\n"_Str,argv[iArg]);
+        return false;
+      }
+      m_bScript = true;
+      m_bWelcome = false;
       continue;
     }
 
@@ -510,6 +526,7 @@ void Arguments::vPrint(void)
   if (m_bDocol)    vTrace("  --docol\n"_Str);
   if (m_bHelp)     vTrace("  --help\n"_Str);
   if (m_bPrompt)   vTrace("  --seprompt\n"_Str);
+  if (m_bScript)   vTrace("  --script\n"_Str);
   if (m_bStart)    vTrace("  --start\n"_Str);
   if (m_bStatus)   vTrace("  --status\n"_Str);
   if (m_bStop)     vTrace("  --stop\n"_Str);
@@ -533,8 +550,6 @@ void Arguments::vPrint(void)
 //#endif
   if (m_bMunged) vTrace("  --munged\n"_Str);
   if (m_bMetadata) vTrace("  --metadata\n"_Str);
-  if ( ! m_bPromptDisplay) vTrace("  --noPromptDisplay\n"_Str);
-
 }
 
 /*----------------------------------------------------------------------------*/

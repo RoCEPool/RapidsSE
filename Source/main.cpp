@@ -104,7 +104,8 @@ int main(int argc, const char* argv[])
 //  vTrace("duration %lldns\n"_Str,xTimer.iNanoseconds());
   
 //  if (gxArguments.m_bVerbose)
-    gxArguments.vPrint();
+    if ( gxArguments.m_bWelcome)
+      gxArguments.vPrint();
 
   // write the regionName into a se.region file
   // used by shell script to start se prompt
@@ -128,7 +129,7 @@ int main(int argc, const char* argv[])
   RapidsSE::vPoolOpen();
   
   //vSkipListTest();
-  if (xDir.bGetCurrent(sCurrent))
+  if (xDir.bGetCurrent(sCurrent) && gxArguments.m_bWelcome)
     vInfo("\nCURRENT WORKING DIRECTORY: %s\n\n"_Str,sCurrent.aStr());
   // execute the command line
   RapidsSE::vExecute();
@@ -160,7 +161,13 @@ int main(int argc, const char* argv[])
  //     if (xDir.bGetCurrent(sCurrent))
  //       vInfo("dir: %s\n"_Str,sCurrent.aStr());
 //    }
-    SePrompt* pSePrompt = new SePrompt();
+    SePrompt* pSePrompt = new SePrompt(true);
+    pSePrompt->vLoop();
+    delete pSePrompt;
+  }
+
+  if (gxArguments.m_bScript) {
+    SePrompt* pSePrompt = new SePrompt(false);
     pSePrompt->vLoop();
     delete pSePrompt;
   }

@@ -44,7 +44,7 @@ public:
   void* operator new(size_t);
   void  operator delete(void*);
 
-  SePrompt(void);
+  SePrompt(bool bDisplayPrompt);
   ~SePrompt(void);
   
   static void vDump(eCN eClass, Object* pObject, Str* aTab);
