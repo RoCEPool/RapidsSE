@@ -59,23 +59,23 @@ RightVec::~RightVec(void)
 /*----------------------------------------------------------------------------*/
 /* get the offset for a given offset (offset is 0 or 1)                       */
 /*----------------------------------------------------------------------------*/
-on RightVec::nOffset(u8 uOffset)
+u8 RightVec::uOffset(on nOffsetNo)
 {
-  ASSERT(uOffset >= 0 && uOffset < C_FLAT_OFFSETS);
+  ASSERT(nOffsetNo >= 0 && nOffsetNo < C_FLAT_OFFSETS);
   
-  on nOffset = m_nOffset[uOffset];
+  u8 uOffset = m_nOffset[*nOffsetNo];
   
-  return nOffset;
+  return uOffset;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set the offset for a given offset (offset is 0 or 1)                       */
 /*----------------------------------------------------------------------------*/
-void RightVec::vOffset(u8 uOffset, on nOffset)
+void RightVec::vOffset(on nOffsetNo, u8 uOffset)
 {
-  ASSERT(uOffset >= 0 && uOffset < C_FLAT_OFFSETS);
+  ASSERT(nOffsetNo >= 0 && nOffsetNo < C_FLAT_OFFSETS);
   
-  m_nOffset[uOffset] = nOffset;
+  m_nOffset[*nOffsetNo] = uOffset;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -72,7 +72,7 @@ namespace DBobjects
     Entry*       pRightEntry(Entry* pEntry, u8 uLevel);
     i8           iToEndOffsetAbs(Entry* pEntry);
     i8           iToOffsetAbs(Entry* pEntry);
-    i8           iToRightOffsetAbs(Entry* pEntry, i8 iOffsetNo);
+    i8           iToRightOffsetAbs(Entry* pEntry, on nOffsetNo);
   
   };
   

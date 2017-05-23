@@ -35,8 +35,8 @@ namespace DBobjects
     IndexBuffer* pIndexBuffer(void);
     Key*   aKey(void);
     u8     nOffsets(void);
-    u8     uRightOffset(u8 iLevel);
-    void   vRightOffset(u8 iLevel, u8 uOffset);
+    u8     uRightOffset(on nOffsetNo);
+    void   vRightOffset(on nOffsetNo, u8 uRightOffset);
     RightVec* aRightVec(void);
     Id&    xId(void);
     void   vId(Id xId);

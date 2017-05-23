@@ -315,13 +315,14 @@ bool IndexBuffer::bInsert(KeyWsp& xKeyWsp, Id xId)
   i8 iNewEntryOffsetAbs = iToOffsetAbs(pNewEntry);
   
   // step thru each offset to be revised
-  for (i8 iOffsetNo = pNewEntry->nOffsets() - 1; iOffsetNo >= 0; iOffsetNo--) {
+  on nOffsetNo;
+  for (nOffsetNo = pNewEntry->nOffsets() - 1; nOffsetNo >= 0; nOffsetNo--) {
     
     // get prior entry being revised
-    i8 iLevelNo = iOffsetNo + 1;
+    i8 iLevelNo = *nOffsetNo + 1;
     Entry* aPriorEntry = aPriorVec[iLevelNo];
     
-    i8 iPriorsRightOffsetAbs = iToRightOffsetAbs(aPriorEntry,iOffsetNo);
+    i8 iPriorsRightOffsetAbs = iToRightOffsetAbs(aPriorEntry,nOffsetNo);
     
     // is the prior's right offset after new entry : [PURPLE] (grey)-> [GREEN]
     if (iPriorsRightOffsetAbs > iNewEntryOffsetAbs) {
@@ -333,12 +334,12 @@ bool IndexBuffer::bInsert(KeyWsp& xKeyWsp, Id xId)
       i8 iNewRightOffset = uOffsetBetween(pNewEntry,aPostEntry);
       
       // set right offset on new : [RED.hasoffset]
-      pNewEntry->vRightOffset(iOffsetNo,iNewRightOffset);
+      pNewEntry->vRightOffset(nOffsetNo,iNewRightOffset);
 
       // calculate prior's revised offset : [PURPLE ARROW]
       i8 iPriorRightOffset = uOffsetBetween(aPriorEntry,pNewEntry);
       
-      aPriorEntry->vRightOffset(iOffsetNo,iPriorRightOffset);
+      aPriorEntry->vRightOffset(nOffsetNo,iPriorRightOffset);
     }
     
   } // for
@@ -500,17 +501,20 @@ IndexBuffer* IndexBuffer::pSplitBuffer(void)
   
   // set any prior offset to nil if its an offset to an entry in split half
   i8 iLastEntryOffsetAbs = iToOffsetAbs(pSplitEntry);
-  for (i8 iOffset = C_FLAT_LEVELS - 2; iOffset >= 0; iOffset--) {
+  
+  on nOffsetNo;
+  
+  for (nOffsetNo = C_FLAT_OFFSETS - 2; nOffsetNo >= 0; nOffsetNo--) {
     
     // calculate level into prior vector for this offset and get entry
-    i8 iLevel = iOffset + 1;
+    i8 iLevel = *nOffsetNo + 1;
     Entry* pEntry = aPriorVec[iLevel];
-    pEntry->vRightOffset(iOffset, C_NIL_OFFSET);
+    pEntry->vRightOffset(nOffsetNo, C_NIL_OFFSET);
   }
   
   // set all right offsets in the split entry to C_NIL_OFFSET
-  for (i8 iOffset = pSplitEntry->nOffsets() - 1; iOffset >= 0; iOffset--)
-    pSplitEntry->vRightOffset(iOffset, C_NIL_OFFSET);
+  for (nOffsetNo = pSplitEntry->nOffsets() - 1; nOffsetNo >= 0; nOffsetNo--)
+    pSplitEntry->vRightOffset(nOffsetNo, C_NIL_OFFSET);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create new buffer and move the entries into it
@@ -635,8 +639,9 @@ void IndexBuffer::vAllotHead(void)
   Entry* pHead = pAllotEntry(nBytes,C_FLAT_OFFSETS,nullptr);
   
   // initialize the head
-  for (i8 iOffset = 0; iOffset < C_FLAT_OFFSETS; iOffset++)
-    pHead->vRightOffset(iOffset, C_NIL_OFFSET);
+  on nOffsetNo;
+  for (nOffsetNo = 0; nOffsetNo < C_FLAT_OFFSETS; nOffsetNo++)
+    pHead->vRightOffset(nOffsetNo, C_NIL_OFFSET);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -675,11 +680,13 @@ void IndexBuffer::vDumpPrior(Entry* aPriorVec[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
-  for (i8 iIndex = 0; iIndex < C_FLAT_OFFSETS; iIndex++) {
-    i8 iLevel = iIndex + 1;
-    i8 iReviseOffset = aPriorVec[iLevel]->uRightOffset(iIndex);
+  on nOffsetNo;
+ 
+  for (nOffsetNo = 0; nOffsetNo < C_FLAT_OFFSETS; nOffsetNo++) {
+    i8 iLevel = *nOffsetNo + 1;
+    i8 iReviseOffset = aPriorVec[iLevel]->uRightOffset(nOffsetNo);
     vTrace("%p aPriorVec[%lld]->uRightOffset(%lld) = %lld\n"_Str,
-           aPriorVec[iLevel], iLevel, iIndex, iReviseOffset);
+           aPriorVec[iLevel], iLevel, *nOffsetNo, iReviseOffset);
   }
 }
 
@@ -786,8 +793,10 @@ void IndexBuffer::vReplace(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp)
   EntWsp xEntWsp(nOffsets);
   xEntWsp.vAddKey(xNewKeyWsp);
   xEntWsp.vId(xId);
-  for (i8 i=0; i<nOffsets; i++) {
-    xEntWsp.vRightOffset(i, aFoundEntry->uRightOffset(i));
+  
+  on nOffsetNo;
+  for (nOffsetNo=0; nOffsetNo < nOffsets; nOffsetNo++) {
+    xEntWsp.vRightOffset(nOffsetNo, aFoundEntry->uRightOffset(nOffsetNo));
   }
 
   i8 iSize = aFoundEntry->nSize();
@@ -872,16 +881,16 @@ void IndexBuffer::vReplace(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp)
   // fix the right offsets in the head
   Entry* pHeadEntry = pHead();
   
-  for (u8 i = 0; i < pHeadEntry->nOffsets(); i++) {
+  for (nOffsetNo = 0; nOffsetNo < pHeadEntry->nOffsets(); nOffsetNo++) {
     
     // here we adjust the iRightOffset if offset is after oldEntry
     u8 uOldEntrySize = aFoundEntry->nSize();
-    u8 uRightOffset = pHeadEntry->uRightOffset(i);
+    u8 uRightOffset = pHeadEntry->uRightOffset(nOffsetNo);
     nDifference = uOldKeySize - uNewKeySize;
     
     if ( uRightOffset != C_NIL_OFFSET) {
       if ((i8)uRightOffset - nDifference >= (i8)uOldEntrySize) {
-        pHeadEntry->vRightOffset(i,(i8)(pHeadEntry->uRightOffset(i)) - nDifference);
+        pHeadEntry->vRightOffset(nOffsetNo,(i8)(pHeadEntry->uRightOffset(nOffsetNo)) - nDifference);
       }
     }
   }
@@ -963,14 +972,19 @@ void IndexBuffer::vFixPriorOffset(Entry* aPriorVec[], Entry* aNewEntry)
   i8 nNewEntryBytes = aNewEntry->nSize();
   
   // iterate thru each possible offset
-  for (u8 uOffsetNo = 0; uOffsetNo < C_FLAT_OFFSETS; uOffsetNo++) {
+  on nOffsetNo;
+  
+  for (nOffsetNo = 0; nOffsetNo < C_FLAT_OFFSETS; nOffsetNo++) {
+    
+    //on nOffsetNo;
+    //nOffsetNo= uOffsetNo;
     
     // get prior entry being fixed
-    auto uLevelNo = uOffsetNo + 1;
+    auto uLevelNo = *nOffsetNo + 1;
     Entry* aPriorEntry = aPriorVec[uLevelNo];
     
     // compute and set corrected offset
-    u8 uPriorsRightOffset = aPriorEntry->uRightOffset(uOffsetNo);
+    u8 uPriorsRightOffset = aPriorEntry->uRightOffset(nOffsetNo);
     
     // ignore cases where no right offset
     if (C_NIL_OFFSET == uPriorsRightOffset)
@@ -978,7 +992,7 @@ void IndexBuffer::vFixPriorOffset(Entry* aPriorVec[], Entry* aNewEntry)
     
     // correct the right offset by adding in the size of the new entry
     i8 iCorrectedRightOffset = uPriorsRightOffset + nNewEntryBytes;
-    aPriorEntry->vRightOffset(uOffsetNo,iCorrectedRightOffset);
+    aPriorEntry->vRightOffset(nOffsetNo,iCorrectedRightOffset);
     
   } // for
   
@@ -1233,12 +1247,13 @@ Entry* IndexBuffer::pRightEntry(Entry* pEntry, u8 uLevel)
   }
   else {
     
-    u8 uOffset = uLevel - 1;
-    ASSERT(uOffset >= 0 && uOffset < pEntry->nOffsets());
+    on nOffsetNo;
+    nOffsetNo = uLevel - 1;
+    ASSERT(nOffsetNo >= 0 && nOffsetNo < pEntry->nOffsets());
     
     // for levels 1 & 2 the right entry is m_xWsp + rightOffset[iRight]
     u8 iBytes = pEntry->nSize();
-    u8 uRightOffset = pEntry->uRightOffset(uOffset);
+    u8 uRightOffset = pEntry->uRightOffset(nOffsetNo);
     if (C_NIL_OFFSET == uRightOffset)
       pRightEntry = nullptr;
     else
@@ -1283,12 +1298,12 @@ i8 IndexBuffer::iToOffsetAbs(Entry* pEntry)
 /*----------------------------------------------------------------------------*/
 /* calculate the absolute right offset for a given entry and offset no        */
 /*----------------------------------------------------------------------------*/
-i8 IndexBuffer::iToRightOffsetAbs(Entry* pEntry, i8 iOffsetNo)
+i8 IndexBuffer::iToRightOffsetAbs(Entry* pEntry, on nOffsetNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
   i8 iEntryOffsetAbs = iToOffsetAbs(pEntry);
-  i8 iRightOffset = pEntry->uRightOffset(iOffsetNo);
+  i8 iRightOffset = pEntry->uRightOffset(nOffsetNo);
   i8 iEntrySize = pEntry->nSize();
   
   i8 iRightOffsetAbs = iEntryOffsetAbs + iRightOffset + iEntrySize;

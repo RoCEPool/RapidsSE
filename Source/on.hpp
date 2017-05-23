@@ -1,5 +1,5 @@
 /*============================================================================*/
-/*  nn.hpp - offset number                                                    */
+/*  on.hpp - offset number                                                    */
 /*============================================================================*/
 #pragma once
 
@@ -9,25 +9,28 @@ namespace DBobjects
   {
     
   private:
-    u8 m_uOffsetNo;
+    i8 m_uOffsetNo;
 
   public:
     on(void);
-    on(u8 uOffsetNo);
+    //on(u8 uOffsetNo, float fValue);
     ~on(void);
     
-    static on nNil(void);
+    static on nZero(void);
+    
     ln        nToLevelNo(void);
     
-    bool operator ==(on n);
-    bool operator !=(on n);
-    bool operator >=(on n);
-    bool operator <=(on n);
-    bool operator <(on n);
+    void  operator =(i8 u);
+    bool operator ==(i8 u);
+    bool operator !=(i8 u);
+    bool operator >=(i8 u);
+    bool operator <=(i8 u);
+    bool operator <(i8 n);
     u8 operator *(void);
-    on operator +(u8 u);
-    on operator -(u8 u);
+    on operator +(i8 u);
+    on operator -(i8 u);
     on operator ++(int);
+    on operator --(int);
   };
   
   on operator "" _on(unsigned long long u);

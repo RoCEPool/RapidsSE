@@ -153,12 +153,14 @@ void Entry::vShow(i8 iOffset, IdxColVec* pColVec)
          );
   aKey->vShow(pColVec);
   
-  for (u8 iRight=0; iRight< m_uOffsets; iRight++) {
+  on nRight;
+  for (nRight=0; nRight< m_uOffsets; nRight++) {
+    
     vTrace(" Offset(%lld): %lld "_Str,
-           iRight,
-           uRightOffset(iRight) == C_NIL_OFFSET ?
+           *nRight,
+           uRightOffset(nRight) == C_NIL_OFFSET ?
               C_NIL_OFFSET :
-              uRightOffset(iRight) + iOffset + nSize());
+              uRightOffset(nRight) + iOffset + nSize());
   }
   
   vTrace("\n"_Str);
@@ -233,38 +235,38 @@ u8 Entry::nOffsets(void)
 /*----------------------------------------------------------------------------*/
 /* get right offset for given level                                           */
 /*----------------------------------------------------------------------------*/
-u8 Entry::uRightOffset(u8 iOffset)
+u8 Entry::uRightOffset(on nOffsetNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
   
-  ASSERT(iOffset >= 0 && iOffset < C_FLAT_OFFSETS);
+  ASSERT(nOffsetNo >= 0 && nOffsetNo < C_FLAT_OFFSETS);
   
-  if (iOffset >= m_uOffsets)
+  if (nOffsetNo >= m_uOffsets)
     return C_NIL_OFFSET;
   
   EntryData* aEntryData = this->aEntryData();
   
   RightVec* aRightVec = aEntryData->aRightVec(m_uOffsets);
 
-  on uRight = aRightVec->nOffset(iOffset);
+  u8 uRight = aRightVec->uOffset(nOffsetNo);
   
-  return *uRight;
+  return uRight;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set right offset for given level                                           */
 /*----------------------------------------------------------------------------*/
-void Entry::vRightOffset(u8 iOffset, u8 uRight)
+void Entry::vRightOffset(on nOffsetNo, u8 uRightOffset)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
   
-  ASSERT(iOffset >= 0 && iOffset < C_FLAT_OFFSETS);
+  ASSERT(nOffsetNo >= 0 && nOffsetNo < C_FLAT_OFFSETS);
   
   EntryData* aEntryData = this->aEntryData();
   
   RightVec* aRightVec = aEntryData->aRightVec(m_uOffsets);
   
-  aRightVec->vOffset(iOffset,uRight);
+  aRightVec->vOffset(nOffsetNo,uRightOffset);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
 }

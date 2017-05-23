@@ -8,9 +8,9 @@ namespace DBobjects
   class RightVec
   {
   public:
-    on  m_nOffset[1];  // offset[0] is right for level 1
-                      // offset[1] is right for level 2
-                      // level 0 is implied to mean next entry
+    u8  m_nOffset[1];  // offset[0] is right for level 1
+                       // offset[1] is right for level 2
+                       // level 0 is implied to mean next entry
   
   public:
     void* operator new(size_t);
@@ -19,8 +19,8 @@ namespace DBobjects
     RightVec(void);
     ~RightVec(void);
 
-    on nOffset(u8 uOffset);
-    void vOffset(u8 uOffset, on nOffset);
+    u8 uOffset(on nOffsetNo);
+    void vOffset(on nOffsetNo, u8 uOffset);
   
     static i8 nBytesRequired(i8 nLevels);
   };

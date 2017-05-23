@@ -40,12 +40,13 @@ EntWsp::EntWsp(void)
   ASSERT(0 == m_xId.uBuffer() && 0 == m_xId.uRow());
   
   // generate logarithmic level for this entry
-  m_nOffsets = Random::uLogLevel(C_FLAT_OFFSETS+1, C_FLAT_FREQ);
-  ASSERT(m_nOffsets >= 0 && m_nOffsets <= C_FLAT_OFFSETS);
+  m_uOffsets = Random::uLogLevel(C_FLAT_OFFSETS+1, C_FLAT_FREQ);
+  ASSERT(m_uOffsets >= 0 && m_uOffsets <= C_FLAT_OFFSETS);
   
   // set all right offsets to nil
-  for (u8 uRight = 0; uRight < C_FLAT_OFFSETS - 1; uRight++)
-    m_nOffset[uRight] = C_NIL_OFFSET;
+  on nOffsetNo;
+  for (nOffsetNo = 0; nOffsetNo < C_FLAT_OFFSETS - 1; nOffsetNo++)
+    m_uOffset[*nOffsetNo] = C_NIL_OFFSET;
   
   // m_xKeyWsp
   m_xKeyWsp.vInit();
@@ -67,12 +68,13 @@ EntWsp::EntWsp(i8 nOffsets)
   ASSERT(0 == m_xId.uBuffer() && 0 == m_xId.uRow());
   
   // set no of offsets
-  m_nOffsets = nOffsets;
-  ASSERT(m_nOffsets >= 0 && m_nOffsets <= C_FLAT_OFFSETS);
+  m_uOffsets = nOffsets;
+  ASSERT(m_uOffsets >= 0 && m_uOffsets <= C_FLAT_OFFSETS);
   
   // set all right offsets to nil
-  for (i8 iRight = 0; iRight < C_FLAT_OFFSETS - 1; iRight++)
-    m_nOffset[iRight] = C_NIL_OFFSET;
+  on nOffsetNo;
+  for (nOffsetNo = 0; nOffsetNo < C_FLAT_OFFSETS - 1; nOffsetNo++)
+    m_uOffset[*nOffsetNo] = C_NIL_OFFSET;
   
   // m_xKeyWsp
   m_xKeyWsp.vInit();
@@ -148,29 +150,29 @@ i8 EntWsp::nKeySize(void)
 /*----------------------------------------------------------------------------*/
 u8 EntWsp::nOffsets(void)
 {
-  ASSERT(m_nOffsets >= 0 && m_nOffsets <= C_FLAT_OFFSETS);
+  ASSERT(m_uOffsets >= 0 && m_uOffsets <= C_FLAT_OFFSETS);
   
-  return m_nOffsets;
+  return m_uOffsets;
 }
 
 /*----------------------------------------------------------------------------*/
 /* get right offset at level                                                  */
 /*----------------------------------------------------------------------------*/
-on EntWsp::nRightOffset(u8 uOffset)
+u8 EntWsp::uRightOffset(on nOffsetNo)
 {
-  ASSERT(uOffset >= 0 && uOffset <= C_FLAT_OFFSETS);
+  ASSERT(nOffsetNo >= 0 && nOffsetNo <= C_FLAT_OFFSETS);
   
-  return m_nOffset[uOffset];
+  return m_uOffset[*nOffsetNo];
 }
 
 /*----------------------------------------------------------------------------*/
 /* set right offset at level                                                  */
 /*----------------------------------------------------------------------------*/
-void EntWsp::vRightOffset(u8 uOffset, on nRight)
+void EntWsp::vRightOffset(on nOffsetNo, u8 uRightOffset)
 {
-  ASSERT(uOffset >= 0 && uOffset <= C_FLAT_OFFSETS);
+  ASSERT(nOffsetNo >= 0 && nOffsetNo <= C_FLAT_OFFSETS);
   
-  m_nOffset[uOffset] = nRight;
+  m_uOffset[*nOffsetNo] = uRightOffset;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -202,13 +204,14 @@ void EntWsp::vShow(void)
          this,
          m_xId.uBuffer(),
          m_xId.uRow(),
-         m_nOffsets
+         m_uOffsets
          );
   
-  for (i8 iRight = 0; iRight < m_nOffsets - 1; iRight++)
+  on nOffsetNo;
+  for (nOffsetNo = 0; nOffsetNo < m_uOffsets - 1; nOffsetNo++)
     vTrace("R%lld: %lld "_Str,
-           iRight,
-           *nRightOffset(iRight)
+           *nOffsetNo,
+           uRightOffset(nOffsetNo)
            );
   
   vTrace("key (size:%lld value:%lld) "_Str,
@@ -234,9 +237,9 @@ RightVec* EntWsp::aRightVec(void)
 /*----------------------------------------------------------------------------*/
 i8 EntWsp::nRightSize(void)
 {
-  ASSERT(m_nOffsets >= 0 && m_nOffsets <= C_FLAT_OFFSETS);
+  ASSERT(m_uOffsets >= 0 && m_uOffsets <= C_FLAT_OFFSETS);
  
-  i8 nBytes = RightVec::nBytesRequired(m_nOffsets);
+  i8 nBytes = RightVec::nBytesRequired(m_uOffsets);
   
   return nBytes;
 }
