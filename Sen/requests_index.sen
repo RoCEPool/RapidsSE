@@ -38,7 +38,7 @@ timer: idxSelectTimer
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
+  // analyse the index
   args.metadata if
     "(nodeName VARCHAR, partition INTEGER, bufferNo INTEGER, bufferLevel INTEGER, entries INTEGER)"
       metadata!
@@ -91,12 +91,13 @@ timer: idxSelectTimer
   sIndexNm sTableNm checkMakeIndex  not if <NIP+ERROR> exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create index
 
   sTableNm pushTable assert                                // ../tables/sTableNm
-    sTableNm get_table
-  popTable
+  sTableNm get_table
+  popTable                                                          // ../tables
 
-  sTableNm sIndexNm makeIndex assertInTables                        // ../tables
+  sTableNm sIndexNm makeIndex assertInTables
 
   assert::stack_0
 
@@ -110,7 +111,7 @@ timer: idxSelectTimer
                                                                     // ../tables
   tp: dropIndex
 
-  locals|  sTableNm sIndexNm |
+  locals| sTableNm sIndexNm |
 
   ddlLock::grabWrite
 
@@ -133,14 +134,13 @@ timer: idxSelectTimer
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
   // remove the index
+
   sIndexNm removeIndex ( ) assert::stack_0
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // restore path
 
-  // pop indexes folder
   popIndexes popTable assertInTables                                // ../tables
 
   tp: droppedIndex
@@ -177,9 +177,9 @@ timer: idxSelectTimer
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // dump index
 
   sIndexNm find execute
-
   index.dump
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -207,16 +207,15 @@ timer: idxSelectTimer
   // checks
   checkInIndexes not if <NIP+ERROR> exit then
 
-  //"end_create_index" .
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create column vector and populate index
 
   // create the column vector of the index
   sIndexNm columnVecIndex
 
   // now populate the index
   sIndexNm find execute ( ^index )
-  index.populate
+  index.populate                                    // ../tables/tableNm/indexes
 
   // pop indexes folder temporarily
   popIndexes                                                // ../tables/tableNm
@@ -263,13 +262,13 @@ timer: idxSelectTimer
   pushIndexes assert                               // ../tables/sTableNm/indexes
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // list indexes
 
   listContents
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // restore path
 
-  // pop indexes folder
   popIndexes popTable assertInTables                                // ../tables
 
   <SUCCESS>
@@ -328,6 +327,7 @@ timer: idxSelectTimer
   popIndexes                                               // ../tables/sTableNm
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // exact key select
 
   // set the metadata string
   args.metadata if
@@ -416,6 +416,7 @@ timer: idxSelectTimer
   popIndexes                                               // ../tables/sTableNm
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // lower bound select
 
   // set the metadata string
   args.metadata if
@@ -487,13 +488,13 @@ timer: idxSelectTimer
 
   // push named table folder onto path
   // i.e. task.dicStack will be ../tables/<sTableNm>
-  sTableNm pushTable assert
+  sTableNm pushTable assert                                // ../tables/sTableNm
 
   // check "<sTableNm"> is a table in ../tables/<sTableNm>
   sTableNm checkIsTable not if <NIP+ERROR> exit then
 
   // push indexes folder
-  pushIndexes assert
+  pushIndexes assert                               // ../tables/sTableNm/indexes
 
   // check sIndexNm is an index
   sIndexNm checkIsIndex
@@ -502,7 +503,10 @@ timer: idxSelectTimer
   then
 
   // pop indexes folder
-  popIndexes
+  popIndexes                                               // ../tables/sTableNm
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // range select
 
   // set the metadata string
   args.metadata if
@@ -525,10 +529,7 @@ timer: idxSelectTimer
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // restore path
 
-  // pop named table folder off path
-  // i.e. task.dicStack will now be back to ../tables
-  popTable
-  withinTables assert
+  popTable assertInTables                                           // ../tables
 
   args.metadata not if
     idxSelectTimer timer.update
@@ -543,7 +544,7 @@ timer: idxSelectTimer
 /* set unique property of an index                                            */
 /*----------------------------------------------------------------------------*/
 : index_setUnique ( true/false "<sIndexNm>" "<sTableNm>" -- <R> )
-
+                                                   // ../tables/sTableNm/indexes
   assert::stack_3
 
   locals| sTableNm sIndexNm bIsUnique |
@@ -558,6 +559,7 @@ timer: idxSelectTimer
   checkInIndexes not if <NIP+ERROR> exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // uniqueness
 
   bIsUnique sIndexNm traceoff setIndexIsUnique ( ) assert::stack_0
 
@@ -568,7 +570,7 @@ timer: idxSelectTimer
 /* get size of index                                                          */
 /*----------------------------------------------------------------------------*/
 : size_index ( "<sIndexNm>" "<sTableNm>" -- <R> )
-
+                                                                    // ../tables
   locals| sTableNm sIndexNm |
 
   ddlLock::grabWrite
@@ -577,16 +579,16 @@ timer: idxSelectTimer
   // checks
 
   // should be in the tables folder
-  checkInTables       not if <NIP+ERROR> exit then
+  checkInTables not if <NIP+ERROR> exit then
 
   // there should be a table folder
   sTableNm checkIsTableFolder not if <NIP+ERROR> exit then
 
   // push table folder
-  sTableNm pushTable assert
+  sTableNm pushTable assert                                // ../tables/sTableNm
 
   // push indexes folder
-  pushIndexes assert
+  pushIndexes assert                               // ../tables/sTableNm/indexes
 
   // check there is an index of the name
   sIndexNm checkIsIndex
@@ -594,7 +596,8 @@ timer: idxSelectTimer
     popIndexes popTable assertInTables <NIP+ERROR> exit
   then
 
-  sIndexNm sizeIndex ( "<size>" )
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get index size
 
   args.metadata if
     "(size INTEGER)" metadata!
@@ -603,17 +606,12 @@ timer: idxSelectTimer
     1 task::this task.seitf@ seitf.rowsProcessed
   then
 
+  sIndexNm sizeIndex ( "<size>" )
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // restore path
 
-  // pop table folder
-  popIndexes
-
-  // pop table folder
-  popTable
-
-  // assert we are still in tables folder
-  assertInTables
+  popIndexes popTable assertInTables                                // ../tables
 
   <SUCCESS>
 ;
@@ -622,7 +620,7 @@ timer: idxSelectTimer
 /* truncate index                                                             */
 /*----------------------------------------------------------------------------*/
 : truncate_index ( "<sIndexNm>" "<sTableNm>" -- <R> )
-
+                                                                    // ../tables
   locals| sTableNm sIndexNm |
 
   ddlLock::grabRead
@@ -631,22 +629,25 @@ timer: idxSelectTimer
   // checks
 
   // should be in the tables folder
-  checkInTables       not if <NIP+ERROR> exit then
+  checkInTables not if <NIP+ERROR> exit then
 
   // there should be a table folder
   sTableNm checkIsTableFolder not if <NIP+ERROR> exit then
 
   // push table folder
-  sTableNm pushTable assert
+  sTableNm pushTable assert                                // ../tables/sTableNm
 
   // push indexes folder
-  pushIndexes assert
+  pushIndexes assert                               // ../tables/sTableNm/indexes
 
   // check there is an index of the name
   sIndexNm checkIsIndex
   not if
     popIndexes popTable assertInTables <NIP+ERROR> exit
   then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // truncate index
 
   // find the index
   sIndexNm find execute
@@ -657,14 +658,7 @@ timer: idxSelectTimer
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // restore path
 
-  // pop indexes folder
-  popIndexes
-
-  // pop table folder
-  popTable
-
-  // assert we are still in tables folder
-  assertInTables
+  popIndexes popTable assertInTables                                // ../tables
 
   <OK>
 ;
@@ -673,7 +667,7 @@ timer: idxSelectTimer
 /* upper bound select of table given an index                                 */
 /*----------------------------------------------------------------------------*/
 : upper_select_index ( "<sUpper>" "<sIndexNm>" "<sTableNm>" -- <R> )
-
+                                                                    // ../tables
   assert::stack_3
   CN_STRVAL assert::class_0
   CN_STRVAL assert::class_1
@@ -704,13 +698,13 @@ timer: idxSelectTimer
 
   // push named table folder onto path
   // i.e. task.dicStack will be ../tables/<sTableNm>
-  sTableNm pushTable assert
+  sTableNm pushTable assert                                // ../tables/sTableNm
 
   // check "<sTableNm"> is a table in ../tables/<sTableNm>
   sTableNm checkIsTable not if <NIP+ERROR> exit then
 
   // push indexes folder
-  pushIndexes assert
+  pushIndexes assert                               // ../tables/sTableNm/indexes
 
   // check sIndexNm is an index
   sIndexNm checkIsIndex
@@ -719,7 +713,10 @@ timer: idxSelectTimer
   then
 
   // pop indexes folder
-  popIndexes
+  popIndexes                                               // ../tables/sTableNm
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // upper select
 
   // set the metadata string
   args.metadata if
@@ -742,10 +739,7 @@ timer: idxSelectTimer
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // restore path
 
-  // pop named table folder off path
-  // i.e. task.dicStack will now be back to ../tables
-  popTable
-  withinTables assert
+  popTable assertInTables                                           // ../tables
 
   args.metadata not if
     idxSelectTimer timer.update
