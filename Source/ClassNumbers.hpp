@@ -125,7 +125,6 @@ namespace Base
     /* 75 */ CN_STACK,
     /* 76 */ CN_STEPACCUM,
     /* 77 */ CN_STEPARRAY,
-    /*    */ CN_STRVEC,
     /* 78 */ CN_SYSCALL,
   
     /* 79 */ CN_TABLE,
@@ -272,7 +271,6 @@ namespace Base
     /* 75 */ "STACK"_Str,
     /* 76 */ "STEPACCUM"_Str,
     /* 77 */ "STEPARRAY"_Str,
-    /*    */ "STRVEC"_Str,
     /* 78 */ "SYSCALL"_Str,
   
     /* 79 */ "TABLE"_Str,
