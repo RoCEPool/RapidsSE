@@ -237,7 +237,7 @@ on DBobjects::operator "" _on(unsigned long long u)
 /*----------------------------------------------------------------------------*/
 /* is this on within valid range?                                             */
 /*----------------------------------------------------------------------------*/
-bool on::bWithinRange(void)
+bool on::bInRange(void)
 {
   if (m_iOffsetNo >= 0 && m_iOffsetNo < C_FLAT_OFFSETS)
     return true;

@@ -42,7 +42,7 @@ namespace DBobjects
     on operator ++(int);
     on operator --(int);
   
-    bool bWithinRange(void);
+    bool bInRange(void);
   };
   
   on operator "" _on(unsigned long long u);
