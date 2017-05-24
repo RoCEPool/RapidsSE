@@ -11,7 +11,7 @@ namespace DBobjects
   {
     
   private:
-    i8 m_uLevelNo;
+    i8 m_iLevelNo;
 
   public:
     ln(void);
@@ -20,13 +20,21 @@ namespace DBobjects
     static ln nZeroLevel(void);
     on nToOffsetNo(void);
     
-    void operator =(i8 u);
+    void operator =(i8 i);
     bool operator ==(i8 i);
     bool operator !=(i8 i);
     bool operator >=(i8 i);
     bool operator >(i8 i);
     bool operator <=(i8 i);
     bool operator < (i8 i);
+    
+    void operator =(ln nLn);
+    bool operator ==(ln nLn);
+    bool operator !=(ln nLn);
+    bool operator >=(ln nLn);
+    bool operator > (ln nLn);
+    bool operator <=(ln nLn);
+    bool operator < (ln nLn);
     
     i8 operator *(void);
     ln operator +(i8 i);
