@@ -75,6 +75,9 @@ namespace DBobjects
     i8           iToOffsetAbs(Entry* pEntry);
     i8           iToRightOffsetAbs(Entry* pEntry, on nOffsetNo);
   
+    void         vReplaceEqualKey(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp);
+    void         vReplaceLargerKey(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp);
+    void         vReplaceSmallereKey(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp);
   };
   
   IndexBuffer* _pIndexBuffer(void* aAddr);
