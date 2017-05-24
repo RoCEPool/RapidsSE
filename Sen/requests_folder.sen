@@ -19,52 +19,56 @@ tp: removeFolder
 /////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* change folder                                                              */
+/* change folder to given folder name                                         */
 /*----------------------------------------------------------------------------*/
-: cf
+: cf ( "<sFolderNm>" -- R )
+
+  locals| sFolderNm |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // test for a ".." which will go up one folder
 
   // pop up one folder, but not into tenants
-  dup ".." str.equal if
-    drop
+  sFolderNm ".." str.equal if
     0 pathPick dic.name "tenants" str.equal not if pathDrop then
-
     //"After cf .." . PATHDUMP
-
     <OK>
     exit
   then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // test for a "~" will pop folder path till it reaches /tenants
 
   // pop up to tenants
-  dup "~" str.equal if
-    drop
+  sFolderNm "~" str.equal if
     begin 0 pathPick dic.name "tenants" str.equal not while pathDrop repeat
-
     //"After cf ~" . PATHDUMP
-
     <OK>
     exit
   then
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // test for a "tenants" will clear folder path and set to /tenants
+
   // clear dic path and push tenants
-  dup "tenants" str.equal if
+  sFolderNm "tenants" str.equal if
     //begin 0 pathPick dic.name "<main>" str.equal not while pathDrop repeat
     pathDropAll
-    checkIsWord not if <NIP+ERROR> exit then
+    sFolderNm checkIsWord not if <NIP+ERROR> exit then
     execute pathPush
-
     //"After cf tenants" . PATHDUMP
-
    <OK>
     exit
   then
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // otherwise we expect a name of a sub -folder to which we push path to
+
   // push sub-folder
-  findInCurrent
+  sFolderNm findInCurrent
   checkIsDic not if <NIP+ERROR> exit then
   execute pathPush
-
   //"After cf <dicNm>" . PATHDUMP
-
   <OK>
 ;
 
