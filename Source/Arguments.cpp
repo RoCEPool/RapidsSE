@@ -177,7 +177,7 @@ bool Arguments::bParse(int argc, Str* argv[])
       iNode++;
       
       if (m_nNodes > C_MAX_NODES) {
-        vTrace("Maximum number of nodes allowed in the cluster is %lld\n"_Str,C_MAX_NODES);
+        vError("Maximum number of nodes allowed in the cluster is %lld\n"_Str,C_MAX_NODES);
         return false;
       }
       continue;
@@ -187,7 +187,7 @@ bool Arguments::bParse(int argc, Str* argv[])
     if (argv[iArg]->bSame("--partitionsPerNode"_Str)) {
       m_nSlots = argv[++iArg]->iToI8();
       if (m_nSlots > C_SLOTS_PER_NODE) {
-        vTrace("Maximum number of partitions allowed per node is %lld\n"_Str,
+        vError("Maximum number of partitions allowed per node is %lld\n"_Str,
           C_SLOTS_PER_NODE);
         return false;
       }
@@ -223,15 +223,15 @@ bool Arguments::bParse(int argc, Str* argv[])
     if (argv[iArg]->bSame("--prompt"_Str)) {
 
       if (m_bStop) {
-        vTrace("Incorrect argument: --stop with %s\n"_Str,argv[iArg]);
+        vError("Incorrect argument: --stop with %s\n"_Str,argv[iArg]);
         return false;
       }
       if (m_bStatus) {
-        vTrace("Incorrect argument: --status with %s\n"_Str,argv[iArg]);
+        vError("Incorrect argument: --status with %s\n"_Str,argv[iArg]);
         return false;
       }
       if (m_bScript) {
-        vTrace("Incorrect argument: --script with %s\n"_Str,argv[iArg]);
+        vError("Incorrect argument: --script with %s\n"_Str,argv[iArg]);
         return false;
       }
       m_bPrompt = true;
@@ -242,16 +242,16 @@ bool Arguments::bParse(int argc, Str* argv[])
     if (argv[iArg]->bSame("--size"_Str)) {
       bool bResult = Magnitudes::bBytes((Str*)argv[++iArg], m_iRegionSize);
       if (!bResult) {
-        vTrace("Invalid size argument: --size %s\n"_Str,argv[iArg]);
+        vError("Invalid size argument: --size %s\n"_Str,argv[iArg]);
         return false;
       }
       
       i8 iTotalMemory = MemLib::iGetTotalMemory();
       if (m_iRegionSize > DIV(C_MEMORY_PERCENT * iTotalMemory, 100)) {
-        vTrace("Invalid size argument: --size %s\n"_Str,argv[iArg]);
+        vError("Invalid size argument: --size %s\n"_Str,argv[iArg]);
         s32 sMag;
         Magnitudes::vMagnitude(iTotalMemory,sMag);
-        vTrace("Cannot set size > %lld%% of memory on this node (node has only %s of memory)\n"_Str,
+        vError("Cannot set size > %lld%% of memory on this node (node has only %s of memory)\n"_Str,
                C_MEMORY_PERCENT,
                sMag.s());
         return false;
@@ -266,11 +266,11 @@ bool Arguments::bParse(int argc, Str* argv[])
     if (argv[iArg]->bSame("--start"_Str)) {
 
       if (m_bStop) {
-        vTrace("Incorrect argument: --stop with %s\n"_Str,argv[iArg]);
+        vError("Incorrect argument: --stop with %s\n"_Str,argv[iArg]);
         return false;
       }
       if (m_bStatus) {
-        vTrace("Incorrect argument: --status with %s\n"_Str,argv[iArg]);
+        vError("Incorrect argument: --status with %s\n"_Str,argv[iArg]);
         return false;
       }
 
@@ -281,15 +281,15 @@ bool Arguments::bParse(int argc, Str* argv[])
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (argv[iArg]->bSame("--status"_Str)) {
       if (m_bStop) {
-        vTrace("Incorrect argument: --stop with %s\n"_Str,argv[iArg]);
+        vError("Incorrect argument: --stop with %s\n"_Str,argv[iArg]);
         return false;
       }
       if (m_bStart) {
-        vTrace("Incorrect argument: --start with %s\n"_Str,argv[iArg]);
+        vError("Incorrect argument: --start with %s\n"_Str,argv[iArg]);
         return false;
       }
       if (m_bPrompt) {
-        vTrace("Incorrect argument: --prompt with %s\n"_Str,argv[iArg]);
+        vError("Incorrect argument: --prompt with %s\n"_Str,argv[iArg]);
         return false;
       }
 
@@ -301,15 +301,15 @@ bool Arguments::bParse(int argc, Str* argv[])
     if (argv[iArg]->bSame("--stop"_Str)) {
 
       if (m_bStart) {
-        vTrace("Incorrect argument: --start with %s\n"_Str,argv[iArg]);
+        vError("Incorrect argument: --start with %s\n"_Str,argv[iArg]);
         return false;
       }
       if (m_bStatus) {
-        vTrace("Incorrect argument: --status with %s\n"_Str,argv[iArg]);
+        vError("Incorrect argument: --status with %s\n"_Str,argv[iArg]);
         return false;
       }
       if (m_bPrompt) {
-        vTrace("Incorrect argument: --prompt with %s\n"_Str,argv[iArg]);
+        vError("Incorrect argument: --prompt with %s\n"_Str,argv[iArg]);
         return false;
       }
 
@@ -328,15 +328,15 @@ bool Arguments::bParse(int argc, Str* argv[])
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (argv[iArg]->bSame("--script"_Str)) {
       if (m_bStop) {
-        vTrace("Incorrect argument: --stop with %s\n"_Str,argv[iArg]);
+        vError("Incorrect argument: --stop with %s\n"_Str,argv[iArg]);
         return false;
       }
       if (m_bStatus) {
-        vTrace("Incorrect argument: --status with %s\n"_Str,argv[iArg]);
+        vError("Incorrect argument: --status with %s\n"_Str,argv[iArg]);
         return false;
       }
       if (m_bPrompt) {
-        vTrace("Incorrect argument: --script with %s\n"_Str,argv[iArg]);
+        vError("Incorrect argument: --script with %s\n"_Str,argv[iArg]);
         return false;
       }
       m_bScript = true;
@@ -459,7 +459,7 @@ bool Arguments::bParse(int argc, Str* argv[])
       continue;
     }
     
-    vTrace("Unrecognized command argument: %s\n"_Str,argv[iArg]);
+    vError("Unrecognized command argument: %s\n"_Str,argv[iArg]);
     return false;
   }
   
@@ -473,7 +473,7 @@ bool Arguments::bParse(int argc, Str* argv[])
     
     // there should be at aleast 2 nodes ina cluster
     if (m_nNodes < 2) {
-      vTrace("Minimum two nodes should be there in a cluster\n"_Str);
+      vError("Minimum two nodes should be there in a cluster\n"_Str);
       return false;
     }
     
@@ -487,7 +487,7 @@ bool Arguments::bParse(int argc, Str* argv[])
     }
     
     if ( ! bFound ) {
-      vTrace("Add argument --name with name of this node from the --node definitions\n"_Str);
+      vError("Add argument --name with name of this node from the --node definitions\n"_Str);
       return false;
     }
     
@@ -505,7 +505,7 @@ bool Arguments::bParse(int argc, Str* argv[])
   }
   else {
     if (m_bStart && m_nNodes > 1) {
-      vTrace("--region not allowed with --start in a cluster\n"_Str);
+      vError("--region not allowed with --start in a cluster\n"_Str);
       return false;
     }
   }

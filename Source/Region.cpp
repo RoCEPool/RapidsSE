@@ -160,10 +160,10 @@ void Region::vCreate(StrVal& sRegionName, i8 iRegionSize, i8 iJumboTook,
                          xSysCall);
   
     if ( ! bResult )  {
-      vTrace("RapidsSE::vAttach failed to lock\n"_Str);
+      vFatal("RapidsSE::vAttach failed to lock\n"_Str);
       bResult = Shm::bUnmap(mpRegion, iRegionSize, xSysCall);
       if ( ! bResult )  {
-        vTrace("RapidsSE::vAttach failed to unmap\n"_Str);
+        vFatal("RapidsSE::vAttach failed to unmap\n"_Str);
       }
       Shm::bClose(iFD,xSysCall);
       exit(EXIT_FAILURE);

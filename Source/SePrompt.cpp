@@ -222,7 +222,7 @@ void SePrompt::vLoop(void)
     else {
       if (m_pSEitf->eGetLastError() != EC_NONE)
         if ( ! m_bExpect )
-          vTrace("error: %s\n"_Str,m_pSEitf->pGetLastError());
+          vError("error: %s\n"_Str,m_pSEitf->pGetLastError());
     }
   }
   
@@ -406,7 +406,7 @@ void SePrompt::vMetaFormat(void)
   else {
     if (m_pSEitf->eGetLastError() != EC_NONE)
       if ( ! m_bExpect )
-        vTrace("error: %s\n"_Str,m_pSEitf->pGetLastError());
+        vError("error: %s\n"_Str,m_pSEitf->pGetLastError());
   }
 
   // reset counters
@@ -1928,7 +1928,7 @@ bool SePrompt::bIndexReturnTable(Str* aTableName, Str* aIndexName)
   m_aToken[3]->vCopy(""_Str);
   
   if (!bExecuteRequest()) {
-    //vTrace("Error: (%s) Drop Table %s\n"_Str, m_sResponse.s(), pTableName);
+    //vFatal("Error: (%s) Drop Table %s\n"_Str, m_sResponse.s(), pTableName);
     return false;
   }
   return true;
@@ -1957,7 +1957,7 @@ bool SePrompt::bDropReturnTable(Str* aTableName)
   m_aToken[2]->vCopy(""_Str);
   
   if (!bExecuteRequest()) {
-    //vTrace("Error: (%s) Drop Table %s\n"_Str, m_sResponse.s(), pTableName);
+    //vFatal("Error: (%s) Drop Table %s\n"_Str, m_sResponse.s(), pTableName);
     return false;
   }
   return true;

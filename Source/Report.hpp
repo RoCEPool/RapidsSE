@@ -23,7 +23,8 @@ namespace Debugging
   void  vFatal(Str* aFormat,...);
   
   void  vDumpAscii(Str* aText, i8 nBytes);
-
+  
+  void  vPrint(i8 iLevel, Str* aFormat, va_list xArgs);
   void  vReport(i8 iLevel, Str* aFormat, va_list xArgs);
 }
 

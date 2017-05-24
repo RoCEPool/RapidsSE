@@ -109,8 +109,8 @@ void RapidsSE::vExecute(void)
       Region::vUnlink(gxArguments.m_sRegionName);
     }
     else {
-      vTrace("Unknown command line argument\n"_Str);
-      vInfo("RapidsSE exits\n"_Str);
+      vError("Unknown command line argument\n"_Str);
+      vFatal("RapidsSE exits\n"_Str);
       exit(EXIT_FAILURE);
     }
 
@@ -147,7 +147,7 @@ void RapidsSE::vPoolOpen(void)
 #endif
     
     if (! gxArguments.m_bRestart && Region::bTest(gxArguments.m_sRegionName)) {
-      vTrace("Error: RapidsSE instance %s already started\n"_Str,gxArguments.m_sRegionName.s());
+      vFatal("Error: RapidsSE instance %s already started\n"_Str,gxArguments.m_sRegionName.s());
       exit(EXIT_FAILURE);
       return;
     }
@@ -170,7 +170,7 @@ void RapidsSE::vPoolOpen(void)
   
   if (gxArguments.m_bStop) {
     if (! Region::bTest(gxArguments.m_sRegionName)) {
-      vTrace("Error: RapidsSE instance %s was not started\n"_Str,gxArguments.m_sRegionName.s());
+      vFatal("Error: RapidsSE instance %s was not started\n"_Str,gxArguments.m_sRegionName.s());
       exit(EXIT_FAILURE);
       return;
     }
@@ -182,13 +182,13 @@ void RapidsSE::vPoolOpen(void)
   
   if (gxArguments.m_bPrompt || gxArguments.m_bScript) {
     if (! Region::bTest(gxArguments.m_sRegionName)) {
-      vTrace("Error: RapidsSE instance %s was not started\n"_Str,gxArguments.m_sRegionName.s());
+      vFatal("Error: RapidsSE instance %s was not started\n"_Str,gxArguments.m_sRegionName.s());
       exit(EXIT_FAILURE);
       return;
     }
     bResult = Region::bAttach(gxArguments.m_sRegionName, gxArguments.m_bWelcome);
     if ( ! bResult ) {
-      vTrace("Error: Unable to attach to RapidsSE instance %s\n"_Str,gxArguments.m_sRegionName.s());
+      vFatal("Error: Unable to attach to RapidsSE instance %s\n"_Str,gxArguments.m_sRegionName.s());
       exit(EXIT_FAILURE);
       return;
 
@@ -200,7 +200,7 @@ void RapidsSE::vPoolOpen(void)
   bResult = Region::bAttach(gxArguments.m_sRegionName, gxArguments.m_bWelcome);
   ASSERT(bResult);
   vAttachObjects();
-  //vTrace("Error: RapidsSE missing arguments\n"_Str);
+  //vFatal("Error: RapidsSE missing arguments\n"_Str);
   //exit(EXIT_FAILURE);
 }
 
@@ -350,7 +350,7 @@ void RapidsSE::vRunDocol(void)
 void RapidsSE::vSignalHandler(int iSignal)
 {
   // print out all the frames to stderr
-  vTrace("Error: signal %d:\n"_Str, iSignal);
+  vFatal("Error: signal %d:\n"_Str, iSignal);
 
   Debugging::vStackDump();
   exit(1);
