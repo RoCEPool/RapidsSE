@@ -540,8 +540,9 @@ int: queryCount
 
 tp: analyzeTable
 
-  0 // not detailed
   find execute
+  0 // not detailed
+  swap
   table.analyze
 
   <SUCCESS_RESULT>
@@ -554,8 +555,9 @@ tp: analyzeTable
 
   tp: danalyzeTable
 
-  1 // detailed
   find execute
+  1 // detailed
+  swap
   table.analyze
 
   <SUCCESS_RESULT>
