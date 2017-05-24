@@ -2213,7 +2213,7 @@ bool SEitf::bAppendRequest(StrVal& sRequest)
   i8 iPid = gpAttachMap->m_iPid;
   if (!Process::bTestPid(iPid)) {
     // SE is not running anymore!
-    vTrace("Cannot find pid %lld\n"_Str, gpAttachMap->m_iPid);
+    vError("Cannot find pid %lld\n"_Str, gpAttachMap->m_iPid);
     vSetLastError(EC_SE_NOT_RUNNING);
     return false;
   }
@@ -2231,7 +2231,7 @@ bool SEitf::bAppendRequest(StrVal& sRequest)
   // if the current request id matches the next request id, it means
   // we have not read a response of the previous request
   if (m_iCurrentRequestId == m_iNextRequestId) {
-    vTrace("Response for previous request not retrieved. Out-Of-Sync request-response.\n"_Str);
+    vError("Response for previous request not retrieved. Out-Of-Sync request-response.\n"_Str);
     vSetLastError(EC_RESPONSE_PENDING);
     return false;
   }

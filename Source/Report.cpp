@@ -33,11 +33,32 @@ void Debugging::vInfo(Str* aFormat, ...)
   
   va_start(xArgs,aFormat);
   
-  vReport(C_REPORT_INFO,aFormat,xArgs);
+  vPrint(C_REPORT_INFO,aFormat,xArgs);
   
   va_end(xArgs);
 }
 
+/*---------------------------------------------------------------------------*/
+/* vPrint:write to stdout                                                    */
+/*---------------------------------------------------------------------------*/
+void Debugging::vPrint(i8 iLevel, Str* aFormat, va_list xArgs)
+{
+  i8 iLen = 0;
+  char* s = gaReportBuffer;
+  *s = '\0';
+  
+  assert(iLevel != 0);
+  vsnprintf(s,sizeof(gaReportBuffer)-iLen-3,aFormat->s(),xArgs);
+  
+  // print to file
+  fprintf(stdout,"%s",gaReportBuffer);
+  fflush(stdout);
+  
+  if (gpTraceFile) {
+    gpTraceFile->vPrint("%s"_Str,gaReportBuffer);
+    gpTraceFile->vFlush();
+  }
+}
 /*---------------------------------------------------------------------------*/
 /* report a trace message                                                    */
 /*---------------------------------------------------------------------------*/
@@ -47,7 +68,7 @@ void Debugging::vTrace(Str* aFormat, ...)
   
   va_start(xArgs,aFormat);
   
-  vReport(C_REPORT_TRACE,aFormat,xArgs);
+  vPrint(C_REPORT_TRACE,aFormat,xArgs);
   
   va_end(xArgs);
 }

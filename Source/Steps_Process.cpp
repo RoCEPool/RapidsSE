@@ -58,6 +58,8 @@ void Task::vProcessQuit(NNP_Task nnpTask)
 {
   ENTRY("vProcessQuit"_Str);
   
+  vFatal("Process quitting\n"_Str);
+  
   exit(EXIT_FAILURE);
   
   EXIT();
