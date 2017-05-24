@@ -94,7 +94,7 @@ void Plan::vInit(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLAN,_FOOTER_);
   
-  m_uPlanId = ++gzPlanId;
+  m_iPlanId = ++gzPlanId;
   
   //m_sName
   //m_xDic
@@ -126,8 +126,8 @@ void Plan::vDump(eCN eClass, Object* pObject, Str* aTab)
   Plan* pPlan = reinterpret_cast<Plan*>(pObject);
   
   vTrace("planId %lld.%lld name %s\n"_Str,
-         pPlan->m_uPlanId >> 48,
-         pPlan->m_uPlanId & 0x00FFFFFFFFFFFFFF,
+         pPlan->m_iPlanId >> 48,
+         pPlan->m_iPlanId & 0x00FFFFFFFFFFFFFF,
          pPlan->m_sName.s());
 }
 
@@ -168,11 +168,11 @@ void Plan::vExecutingTask(Tasks::Task* pExecutingTask)
 /*----------------------------------------------------------------------------*/
 /* get plan id                                                                */
 /*----------------------------------------------------------------------------*/
-u8 Plan::uPlanId(void)
+i8 Plan::iPlanId(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLAN,_FOOTER_);
 
-  return m_uPlanId;
+  return m_iPlanId;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -297,8 +297,8 @@ void Plan::vShow(void)
 
   vTrace("  plan %p id %lld.%lld %s\n"_Str,
          this,
-         m_uPlanId >> 48,
-         m_uPlanId & 0x00FFFFFFFFFFFFFF,
+         m_iPlanId >> 48,
+         m_iPlanId & 0x00FFFFFFFFFFFFFF,
          m_sName.s());
 }
 

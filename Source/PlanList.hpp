@@ -25,7 +25,7 @@ namespace Plans
     
     void vContentDump(void);
     
-    Plan* pFind(u8 uPlanId);
+    Plan* pFind(i8 iPlanId);
     void  vShow(void);
     
     Footer* pFooter(void);

@@ -100,7 +100,7 @@ void PlanList::vDump(eCN eClass, Object* pObject, Str* aTab)
 /*----------------------------------------------------------------------------*/
 /* find plan based on id                                                      */
 /*----------------------------------------------------------------------------*/
-Plan* PlanList::pFind(u8 uPlanId)
+Plan* PlanList::pFind(i8 iPlanId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANLIST,_FOOTER_);
   
@@ -109,7 +109,7 @@ Plan* PlanList::pFind(u8 uPlanId)
   m_zLock.vGrabRead();
   
   for (pPlan = m_pHead; pPlan; pPlan = pPlan->pNextNode())
-    if (pPlan->uPlanId() == uPlanId)
+    if (pPlan->iPlanId() == iPlanId)
       break;
 
   m_zLock.vDropRead();

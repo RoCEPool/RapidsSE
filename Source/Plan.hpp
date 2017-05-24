@@ -9,7 +9,7 @@ namespace Plans
                public ListNode_t<Plan>
   {
   private:
-    u8     m_uPlanId;  // plan identifier       //# its an id because its unique
+    i8     m_iPlanId;  // plan identifier       //# its an id because its unique
     s32    m_sName;    // plan name
     
     Dic    m_xDic;     // private dictionary of this plan       //# may not need
@@ -34,7 +34,7 @@ namespace Plans
     
     void vAppendToLambda(s48K& sText);
     
-    u8   uPlanId(void);
+    i8   iPlanId(void);
     
     Tasks::Task* pExecutingTask(void);
     void vExecutingTask(Tasks::Task* pTask);

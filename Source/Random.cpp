@@ -105,7 +105,7 @@ s48K Random::sRandomString(i8 iLength) {
 /*----------------------------------------------------------------------------*/
 /* choose a random logarithemic level (up to n levels, at given frequency)    */
 /*----------------------------------------------------------------------------*/
-u8 Random::uLogLevel(u8 nLevels, u8 uFrequency)
+i8 Random::iLogLevel(i8 nLevels, i8 iFrequency)
 {
   //
   // This function generates a number between 0 and nLevels - 1.
@@ -128,35 +128,35 @@ u8 Random::uLogLevel(u8 nLevels, u8 uFrequency)
   // less likely (logarithemically) that all bits are zero.
   //
   
-  u8 uBitMask = C_ALL_BITS_ON >> (C_BITS_PER_WORD - uFrequency);
+  u8 uBitMask = C_ALL_BITS_ON >> (C_BITS_PER_WORD - iFrequency);
   
   u8 uBitSubset = 0;
   u8 nSubsetsLeft = 0;
   u8 uRandomPattern = 0;
   
   // step thru bit subsets until we find a subset with some bits set
-  u8 nAllZeroSubsets;
+  i8 nAllZeroSubsets;
   for (nAllZeroSubsets = -1; ! uBitSubset; nAllZeroSubsets++) {
     
     // if all bits used from the random bit pattern, generate a new pattern
     if (0 == nSubsetsLeft) {
       uRandomPattern = Random::uRandom();
-      nSubsetsLeft = nLevels / uFrequency;
+      nSubsetsLeft = nLevels / iFrequency;
     }
 
     // take the next lower subset of bits
     uBitSubset = uRandomPattern & uBitMask;
-    uRandomPattern >>= uFrequency;
+    uRandomPattern >>= iFrequency;
     nSubsetsLeft--;
   }
   
   // compute the level based on the number of times we observed subsets
   // whose bits were all zero
-  u8 uLevel = (nAllZeroSubsets >= nLevels)
+  i8 iLevel = (nAllZeroSubsets >= nLevels)
                 ? nLevels - 1
                 : nAllZeroSubsets;
   
-  return uLevel;
+  return iLevel;
 }
 
 /*============================================================================*/

@@ -1177,7 +1177,7 @@ i8 IndexBuffer::iLevel(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
-  i8 iRndLevel = Random::uLogLevel(C_FLAT_LEVELS,C_FLAT_FREQ);
+  i8 iRndLevel = Random::iLogLevel(C_FLAT_LEVELS,C_FLAT_FREQ);
   ASSERT(iRndLevel >= 0 && iRndLevel < C_FLAT_LEVELS);
   
   return 0;

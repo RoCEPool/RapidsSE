@@ -166,9 +166,9 @@ void Task::vPlanIdFetch(NNP_Task nnpTask)
   
   Plan* pPlan = _pPlan(pPtrPlan);
   
-  u8 uId = pPlan->uPlanId();
+  i8 iId = pPlan->iPlanId();
   
-  nnpTask->m_pDataStack->vPushInt(uId);
+  nnpTask->m_pDataStack->vPushInt(iId);
   
   EXIT();
 }

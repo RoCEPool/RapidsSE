@@ -71,15 +71,15 @@ int main(int argc, const char* argv[])
   
   //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   /*
-  i8 iLevels[gxArguments.m_uLevels];
-  for (u8 iLevel = 0; iLevel < gxArguments.m_uLevels; iLevel++)
+  i8 iLevels[gxArguments.m_iLevels];
+  for (i8 iLevel = 0; iLevel < gxArguments.m_iLevels; iLevel++)
     iLevels[iLevel] = 0;
   
-  for (u8 i = 0; i < 5; i++) {
-    u8 iLevel = Random::uLogLevel(gxArguments.m_uLevels, gxArguments.m_uFrequency);
+  for (i8 i = 0; i < 5; i++) {
+    u8 iLevel = Random::iLogLevel(gxArguments.m_iLevels, gxArguments.m_iFrequency);
     iLevels[iLevel]++;
   }
-  for (u8 uLevel = 0; uLevel < gxArguments.m_uLevels; uLevel++)
+  for (i8 uLevel = 0; uLevel < gxArguments.m_uLevels; uLevel++)
     printf("%llu: %llu\n",uLevel,iLevels[uLevel]);
    */
   //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

@@ -100,7 +100,7 @@ Entry::Entry(i8 nBytes, i8 iOffsets)                   //! should we pass EntWsp
   m_nBytes = nBytes;
   
   // check initialisation of rowid
-  ASSERT(0 == m_xId.uBuffer() && 0 == m_xId.uRow());
+  ASSERT(0 == m_xId.iBuffer() && 0 == m_xId.iRow());
   
   // initialise offsets
   m_iOffsets = iOffsets;
@@ -133,8 +133,8 @@ void Entry::vShow(i8 iOffset, IdxColVec* pColVec)
   Key* aKey = this->aKey();
   i8 iKey;
   
-  if (m_xId.uBuffer() == 0) {
-    ASSERT(m_xId.uRow() == 0);
+  if (m_xId.iBuffer() == 0) {
+    ASSERT(m_xId.iRow() == 0);
     iKey = -1;
   }
   else {
@@ -147,9 +147,9 @@ void Entry::vShow(i8 iOffset, IdxColVec* pColVec)
          m_iOffsets
          );
   
-  vTrace("Id %3llu.%3llu "_Str,
-         m_xId.uBuffer(),
-         m_xId.uRow()
+  vTrace("Id %3lli.%3lli "_Str,
+         m_xId.iBuffer(),
+         m_xId.iRow()
          );
   aKey->vShow(pColVec);
   
@@ -189,7 +189,7 @@ bn Entry::nBufferNo(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
   
-  bn nBufferNo = m_xId.uBuffer();
+  bn nBufferNo = m_xId.iBuffer();
   
   return nBufferNo;
 }
@@ -201,7 +201,7 @@ IndexBuffer* Entry::pIndexBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
   
-  bn nBufferNo = m_xId.uBuffer();
+  bn nBufferNo = m_xId.iBuffer();
   IndexBuffer* pIndexBuffer =
     reinterpret_cast<IndexBuffer*>(gpBufferPool->pToBuffer(nBufferNo));
   
@@ -248,9 +248,9 @@ i8 Entry::iRightOffset(on nOffsetNo)
   
   RightVec* aRightVec = aEntryData->aRightVec(m_iOffsets);
 
-  u8 uRight = aRightVec->uOffset(nOffsetNo);
+  i8 iRight = aRightVec->iOffset(nOffsetNo);
   
-  return uRight;
+  return iRight;
 }
 
 /*----------------------------------------------------------------------------*/

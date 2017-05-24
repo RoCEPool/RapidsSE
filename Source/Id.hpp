@@ -26,13 +26,13 @@ namespace DBobjects
   
     void  vContentDump(void);
     
-    u8    uBuffer(void);
-    void  vBuffer(u8 uBuffer);
+    i8    iBuffer(void);
+    void  vBuffer(i8 iBuffer);
   
-    void  vForm(u8 uBuffer, u8 uRow);
+    void  vForm(i8 iBuffer, i8 iRow);
   
-    u8    uRow(void);
-    void  vRow(u8 uRow);
+    i8    iRow(void);
+    void  vRow(i8 iRow);
 
     void  vId(Id& xId);
     

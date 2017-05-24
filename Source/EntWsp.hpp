@@ -9,10 +9,10 @@ namespace DBobjects
   {
   private:
     Id     m_xId;       // id
-    i8     m_uOffsets;  // number of offsets (0, 1 or 2)
+    i8     m_iOffsets;  // number of offsets (0, 1 or 2)
     union {
       RightVec m_xRight; // right vector
-      u8       m_uOffset[C_FLAT_OFFSETS];    // right offsets
+      i8       m_iOffset[C_FLAT_OFFSETS];    // right offsets
                                              // no offset for level 0
     };
     union {
