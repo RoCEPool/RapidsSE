@@ -272,7 +272,7 @@ tp: lf
 
   args.metadata if
     "(path VARCHAR)" metadata!
-    "('/"
+    "row: ('/"
     pathDepth 0 do
     pathDepth 1 - I -
     pathPick dic.name str.cat
