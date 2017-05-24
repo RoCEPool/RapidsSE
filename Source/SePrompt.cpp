@@ -224,6 +224,9 @@ void SePrompt::vLoop(void)
         if ( ! m_bExpect )
           vTrace("error: %s\n"_Str,m_pSEitf->pGetLastError());
     }
+    
+    // clear the response
+    m_sResponse = ""_Str;
   }
   
   // close history file
