@@ -87,6 +87,38 @@ EntWsp::EntWsp(i8 nOffsets)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
+EntWsp::EntWsp(Entry* pEntry)
+: Object(CN_ENTWSP)
+{
+  _precondition_(_MAGIC_,CN_ENTWSP);
+  
+  // check initialisation of rowid
+  ASSERT(0 == m_xId.iBuffer() && 0 == m_xId.iRow());
+  
+  // set no of offsets
+  m_iOffsets = pEntry->nOffsets();
+  
+  // set the idx
+  vId(pEntry->xId());
+  
+  ASSERT(m_iOffsets >= 0 && m_iOffsets <= C_FLAT_OFFSETS);
+  
+  // set all right offsets to nil
+  for (on nOffsetNo; nOffsetNo < m_iOffsets; nOffsetNo++) {
+    vRightOffset(nOffsetNo, pEntry->iRightOffset(nOffsetNo));
+  }
+  
+  // m_xKeyWsp
+  m_xKeyWsp.vInit();
+  
+  _checkInitialisedSize_(sizeof(EntWsp));
+  
+  _postcondition_(_MAGIC_,CN_ENTWSP,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
 EntWsp::EntWsp(Id& xId, KeyWsp& xKeyWsp)
 : EntWsp()
 {

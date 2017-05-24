@@ -899,23 +899,11 @@ void IndexBuffer::vReplaceEqualKey(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp)
   // assert the key of the higher level entry and the old entry match
   ASSERT(pOldEntry->aKey()->bJuxtaCompare(JC_SAME, xOldKeyWsp.aKey(), m_pIndex->pIdxColVec()));
   
-  i8 nOffsets = pOldEntry->nOffsets();
-  Id xId = pOldEntry->xId();
-  
-  // create an entry wsp from the pFoundEntry and the new key
-  EntWsp xEntWsp(nOffsets);
+  EntWsp xEntWsp(pOldEntry);
   xEntWsp.vAddKey(xNewKeyWsp);
-  xEntWsp.vId(xId);
   
-  for (on nOffsetNo; nOffsetNo < nOffsets; nOffsetNo++) {
-    xEntWsp.vRightOffset(nOffsetNo, pOldEntry->iRightOffset(nOffsetNo));
-  }
-  
-  i8 iSize = pOldEntry->nSize();
-
   // just replace the key in the buffer
   pOldEntry->vKey(xEntWsp);
-
 }
 
 /*----------------------------------------------------------------------------*/

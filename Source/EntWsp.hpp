@@ -5,8 +5,12 @@
 
 namespace DBobjects
 {
+  
+  class Entry;
+  
   class EntWsp : public Object
   {
+  
   private:
     Id     m_xId;       // id
     i8     m_iOffsets;  // number of offsets (0, 1 or 2)
@@ -27,6 +31,7 @@ namespace DBobjects
     
     EntWsp(void);
     EntWsp(i8 nOffsets);
+    EntWsp(Entry* pEntry);
     EntWsp(Id& xId, KeyWsp& xKeyWsp);
     ~EntWsp(void);
   
