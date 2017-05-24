@@ -41,6 +41,8 @@ namespace DBobjects
     on operator -(i8 i);
     on operator ++(int);
     on operator --(int);
+  
+    bool bWithinRange(void);
   };
   
   on operator "" _on(unsigned long long u);
