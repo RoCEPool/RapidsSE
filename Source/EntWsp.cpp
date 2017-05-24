@@ -148,7 +148,7 @@ i8 EntWsp::nKeySize(void)
 /*----------------------------------------------------------------------------*/
 /* get nLevel                                                                 */
 /*----------------------------------------------------------------------------*/
-u8 EntWsp::nOffsets(void)
+i8 EntWsp::nOffsets(void)
 {
   ASSERT(m_iOffsets >= 0 && m_iOffsets <= C_FLAT_OFFSETS);
   
@@ -158,7 +158,7 @@ u8 EntWsp::nOffsets(void)
 /*----------------------------------------------------------------------------*/
 /* get right offset at level                                                  */
 /*----------------------------------------------------------------------------*/
-u8 EntWsp::uRightOffset(on nOffsetNo)
+i8 EntWsp::iRightOffset(on nOffsetNo)
 {
   ASSERT(nOffsetNo >= 0_on && nOffsetNo <= C_FLAT_OFFSETS);
   
@@ -211,7 +211,7 @@ void EntWsp::vShow(void)
   for (nOffsetNo = 0_on; nOffsetNo < m_iOffsets - 1; nOffsetNo++)
     vTrace("R%lld: %lld "_Str,
            *nOffsetNo,
-           uRightOffset(nOffsetNo)
+           iRightOffset(nOffsetNo)
            );
   
   vTrace("key (size:%lld value:%lld) "_Str,

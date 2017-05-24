@@ -32,6 +32,7 @@ namespace DBobjects
   
     EntryData* aEntryData(void);
     
+    on     nHighestOffset(void);
     IndexBuffer* pIndexBuffer(void);
     Key*   aKey(void);
     i8     nOffsets(void);

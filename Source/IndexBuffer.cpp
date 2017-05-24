@@ -234,69 +234,6 @@ Index* IndexBuffer::pIndex(void)
 /* insert new entry into this index buffer                                    */
 /*----------------------------------------------------------------------------*/
 
-#ifndef FIX_PRIOR
-
-bool IndexBuffer::bInsert(KeyWsp& xKeyWsp, Id xId)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
-  
-  //vTrace("Inserting key:\n"_Str);
-  //xKeyWsp.vShow();
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // insert a new entry into the skip list
-  
-  // find the entry after which the new entry.key will be inserted
-  Entry* aPriorVec[C_FLAT_LEVELS];
-  Entry* aAfterEntry = pPosition(xKeyWsp.aKey(), JC_AFTER, aPriorVec);
-  
-  // create a new entry after the prior entry and set it
-  EntWsp xEntWsp(xId,xKeyWsp);
-  i8 nEntryBytes = Entry::nBytesRequired(xEntWsp);
-  Entry* aNewEntry = pAllotEntry(nEntryBytes, xEntWsp.nOffsets(), aAfterEntry);
-  aNewEntry->vSetEntry(xEntWsp);
-  
-  //vTrace("\n\n---------INDEX BUFFER AFTER MOVING --------------\n"_Str);
-  //vShow();
-  //vTrace("-----------------------\n\n"_Str);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // revise the offsets of the prior entries from the prior vector
-  
-  // fix the prior vector after the move
-  vFixPriorOffset(aPriorVec, aNewEntry);
-  
-  // get the absolute offset of the new entry
-  i8 iNewEntryOffsetAbs = iToOffsetAbs(aNewEntry);
-  
-  // step thru each offset to be revised
-  on nOffsetNo;
-  for (nOffsetNo = aNewEntry->nOffsets() - 1; nOffsetNo >= 0; nOffsetNo--) {
-    
-    // get prior entry being revised
-    on nLevelNo = nOffsetNo.nToLevelNo();
-    Entry* aPriorEntry = aPriorVec[*nLevelNo];
-    
-    // copy the right offset from the prior entry into the new entry
-    i8 iRightOffset = aPriorEntry->uRightOffset(iOffsetNo);
-    aNewEntry->vRightOffset(iOffsetNo, iRightOffset);
-    
-    // set the right offset in the prior entry to offset of new entry
-    i8 iPriorOffsetAbs = iToEndOffsetAbs(aPriorEntry);
-    i8 iNewEntryOffset = iNewEntryOffsetAbs - iPriorOffsetAbs;
-    aPriorEntry->vRightOffset(iOffsetNo, iNewEntryOffset);
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // fix higher level buffers
-  // this is needed in case we inserted a new first key in the buffer
-  
-  vFixHigherLevel(aNewEntry);
-  
-  return true;
-}
-
-#else //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /*----------------------------------------------------------------------------*/
 /* insert new entry into this index buffer                                    */
 /*----------------------------------------------------------------------------*/
@@ -311,9 +248,8 @@ bool IndexBuffer::bInsert(KeyWsp& xKeyWsp, Id xId)
   // insert a new entry into the skip list
   
   // find the entry after which the new entry.key will be inserted
-  EntryVec xEntryVec;
-  Entry* aPriorVec[C_FLAT_LEVELS];
-  Entry* pAfterEntry = pPosition(xKeyWsp.aKey(), JC_AFTER, aPriorVec);
+  EntryVec xPriorVec;
+  Entry* pAfterEntry = pPosition(xKeyWsp.aKey(), JC_AFTER, &xPriorVec);
   
   // create a new entry after the prior entry and set it
   EntWsp xEntWsp(xId,xKeyWsp);
@@ -329,18 +265,17 @@ bool IndexBuffer::bInsert(KeyWsp& xKeyWsp, Id xId)
   // revise the offsets of the prior entries from the prior vector
   
   // fix the prior vector after the move
-  vFixPriorOffset(aPriorVec, pNewEntry);
+  vFixPriorOffset(&xPriorVec, pNewEntry);
   
   // get the absolute offset of the new entry
   i8 iNewEntryOffsetAbs = iToOffsetAbs(pNewEntry);
   
   // step thru each offset to be revised
-  on nOffsetNo;
-  for (nOffsetNo = pNewEntry->nOffsets() - 1; nOffsetNo >= 0_on; nOffsetNo--) {
+  for (on nOffsetNo = pNewEntry->nHighestOffset(); nOffsetNo >= 0_on; nOffsetNo--) {
     
     // get prior entry being revised
     ln nLevelNo = nOffsetNo.nToLevelNo();
-    Entry* aPriorEntry = aPriorVec[*nLevelNo];
+    Entry* aPriorEntry = xPriorVec[nLevelNo];
     
     i8 iPriorsRightOffsetAbs = iToRightOffsetAbs(aPriorEntry,nOffsetNo);
     
@@ -372,8 +307,6 @@ bool IndexBuffer::bInsert(KeyWsp& xKeyWsp, Id xId)
   
   return true;
 }
-
-#endif
 
 /*----------------------------------------------------------------------------*/
 /* get next buffer                                                            */
@@ -500,7 +433,7 @@ IndexBuffer* IndexBuffer::pSplitBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
-  Entry* aPriorVec[C_FLAT_LEVELS];
+  EntryVec xPriorVec;
   
   // get split entry to remain in this buffer and
   // move entry (and those that follow) which will be moved into new buffer
@@ -513,7 +446,7 @@ IndexBuffer* IndexBuffer::pSplitBuffer(void)
   // set offsets to entries after the split entry in this buffer to nil
   
   // get vector of prior entries which have offsets to the split entry
-  Entry* pCrossCheck = pPosition(pSplitEntry->aKey(), JC_AFTER, aPriorVec);
+  Entry* pCrossCheck = pPosition(pSplitEntry->aKey(), JC_AFTER, &xPriorVec);
   
   // Note this ASSERT fails if we have dulplicates in the table     //ALKA: TODO
   // Need to fix when we cater for non-unique indexes
@@ -523,18 +456,16 @@ IndexBuffer* IndexBuffer::pSplitBuffer(void)
   // set any prior offset to nil if its an offset to an entry in split half
   i8 iLastEntryOffsetAbs = iToOffsetAbs(pSplitEntry);
   
-  on nOffsetNo;
-  
-  for (nOffsetNo = C_FLAT_OFFSETS - 2; nOffsetNo >= 0_on; nOffsetNo--) {
+  for (on nOffsetNo(C_FLAT_OFFSETS - 2); nOffsetNo >= 0_on; nOffsetNo--) {
     
     // calculate level into prior vector for this offset and get entry
-    i8 iLevel = *nOffsetNo + 1;
-    Entry* pEntry = aPriorVec[iLevel];
+    ln nLevel = nOffsetNo.nToLevelNo();
+    Entry* pEntry = xPriorVec[nLevel];
     pEntry->vRightOffset(nOffsetNo, C_NIL_OFFSET);
   }
   
   // set all right offsets in the split entry to C_NIL_OFFSET
-  for (nOffsetNo = pSplitEntry->nOffsets() - 1; nOffsetNo >= 0_on; nOffsetNo--)
+  for (on nOffsetNo = pSplitEntry->nHighestOffset(); nOffsetNo >= 0_on; nOffsetNo--)
     pSplitEntry->vRightOffset(nOffsetNo, C_NIL_OFFSET);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -732,8 +663,7 @@ void IndexBuffer::vAllotHead(void)
   Entry* pHead = pAllotEntry(nBytes,C_FLAT_OFFSETS,nullptr);
   
   // initialize the head
-  on nOffsetNo;
-  for (nOffsetNo = 0_on; *nOffsetNo < C_FLAT_OFFSETS; nOffsetNo++)
+  for (on nOffsetNo; nOffsetNo < C_FLAT_OFFSETS; nOffsetNo++)
     pHead->vRightOffset(nOffsetNo, C_NIL_OFFSET);
 }
 
@@ -817,17 +747,15 @@ i8 IndexBuffer::iCopyEntries(IndexBuffer* pFromBuffer, Entry* aFromEntry)
 /*----------------------------------------------------------------------------*/
 /* dump the prior vector                                                      */
 /*----------------------------------------------------------------------------*/
-void IndexBuffer::vDumpPrior(Entry* aPriorVec[])
+void IndexBuffer::vDumpPrior(Entry* xPriorVec[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
-  on nOffsetNo;
- 
-  for (nOffsetNo = 0_on; nOffsetNo < C_FLAT_OFFSETS; nOffsetNo++) {
+  for (on nOffsetNo; nOffsetNo < C_FLAT_OFFSETS; nOffsetNo++) {
     i8 iLevel = *nOffsetNo + 1;
-    i8 iReviseOffset = aPriorVec[iLevel]->iRightOffset(nOffsetNo);
-    vTrace("%p aPriorVec[%lld]->uRightOffset(%lld) = %lld\n"_Str,
-           aPriorVec[iLevel], iLevel, *nOffsetNo, iReviseOffset);
+    i8 iReviseOffset = xPriorVec[iLevel]->iRightOffset(nOffsetNo);
+    vTrace("%p xPriorVec[%lld]->uRightOffset(%lld) = %lld\n"_Str,
+           xPriorVec[iLevel], iLevel, *nOffsetNo, iReviseOffset);
   }
 }
 
@@ -935,8 +863,7 @@ void IndexBuffer::vReplace(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp)
   xEntWsp.vAddKey(xNewKeyWsp);
   xEntWsp.vId(xId);
   
-  on nOffsetNo;
-  for (nOffsetNo = 0_on; nOffsetNo < nOffsets; nOffsetNo++) {
+  for (on nOffsetNo; nOffsetNo < nOffsets; nOffsetNo++) {
     xEntWsp.vRightOffset(nOffsetNo, aFoundEntry->iRightOffset(nOffsetNo));
   }
 
@@ -1022,7 +949,7 @@ void IndexBuffer::vReplace(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp)
   // fix the right offsets in the head
   Entry* pHeadEntry = pHead();
   
-  for (nOffsetNo = 0_on; nOffsetNo < pHeadEntry->nOffsets(); nOffsetNo++) {
+  for (on nOffsetNo; nOffsetNo < pHeadEntry->nOffsets(); nOffsetNo++) {
     
     // here we adjust the iRightOffset if offset is after oldEntry
     u8 uOldEntrySize = aFoundEntry->nSize();
@@ -1039,90 +966,28 @@ void IndexBuffer::vReplace(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp)
 }
 
 /*----------------------------------------------------------------------------*/
-/* fix the prior vector                                                       */
-/*----------------------------------------------------------------------------*/
-#ifndef FIX_PRIOR
-
-void IndexBuffer::vFixPriorOffset(Entry* aPriorVec[], Entry* aNewEntry)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
-  
-  //vTrace("PRIOR VECTOR BEFORE FIXING\n"_Str);
-  //vDumpPrior(aPriorVec);
-  //vTrace("\n"_Str);
-
-  // get no of offsets, entry size and offset for the new entry
-  u8 nNewEntryOffsets = aNewEntry->nOffsets();
-  i8 nNewEntryBytes = aNewEntry->nSize();
-  u8 uNewEntryOffsetAbs = iToOffsetAbs(aNewEntry);
-
-  // iterate thru each possible offset
-  for (u8 uOffsetNo = 0; uOffsetNo < C_FLAT_OFFSETS; uOffsetNo++) {
-    
-    // get prior entry being revised
-    u8 uLevelNo = uOffsetNo + 1;
-    Entry* aPriorEntry = aPriorVec[uLevelNo];
-    
-    // get prior entry's right offset and check there is an offset to fix
-    u8 uPriorRightOffset = aPriorEntry->uRightOffset(uOffsetNo);
-    if (C_NIL_OFFSET == uPriorRightOffset)
-      continue;
-    
-    u8 uPriorEntryOffsetAbs = iToOffsetAbs(aPriorEntry);
-    u8 uPriorEntryBytes = aPriorEntry->nSize();
-
-    // check if newEntry is between the priorEntry and postEntry
-    u8 uPostOffsetAbs = uPriorEntryOffsetAbs + uPriorEntryBytes + uPriorRightOffset;
-    if (uNewEntryOffsetAbs > uPostOffsetAbs)
-      continue;
-    
-    // no of offsets of priorVector entry is >= no of new entry offsets
-    if (uOffsetNo >= nNewEntryOffsets) {
-      // adjust the priorVector offset with the newEntrySize
-      u8 uPriorRightOffsetAdj = uPriorRightOffset + nNewEntryBytes;
-      aPriorEntry->vRightOffset(uOffsetNo,uPriorRightOffsetAdj);
-    }
-    else {
-      // no of offsets in prior entry is >= no of new entry offsets
-      i8 nSize = uNewEntryOffsetAbs - (uPriorEntryBytes + uPriorEntryOffsetAbs);
-      
-      // adjust the prior entry to point to the new entry
-      aPriorEntry->vRightOffset(uOffsetNo,uPriorRightOffset - nSize);
-    }
-  
-  } // for
-  
-  //vTrace("PRIOR VECTOR AFTER FIXING\n"_Str);
-  //vDumpPrior(aPriorVec);
-  //vTrace("\n"_Str);
-}
-
-#else //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/*----------------------------------------------------------------------------*/
 /* fix offsets of the entries in the prior vector to account for new entry    */
 /*----------------------------------------------------------------------------*/
-void IndexBuffer::vFixPriorOffset(Entry* aPriorVec[], Entry* aNewEntry)
+void IndexBuffer::vFixPriorOffset(EntryVec* pPriorVec, Entry* aNewEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
   //vTrace("PRIOR VECTOR BEFORE FIXING\n"_Str);
-  //vDumpPrior(aPriorVec);
+  //vDumpPrior(xPriorVec);
   //vTrace("\n"_Str);
   
   // get entry size
   i8 nNewEntryBytes = aNewEntry->nSize();
   
   // iterate thru each possible offset
-  on nOffsetNo;
-  
-  for (nOffsetNo = 0_on; nOffsetNo < C_FLAT_OFFSETS; nOffsetNo++) {
+  for (on nOffsetNo; nOffsetNo < C_FLAT_OFFSETS; nOffsetNo++) {
     
     //on nOffsetNo;
     //nOffsetNo= uOffsetNo;
     
     // get prior entry being fixed
-    auto uLevelNo = *nOffsetNo + 1;
-    Entry* aPriorEntry = aPriorVec[uLevelNo];
+    ln nLevelNo = nOffsetNo.nToLevelNo();
+    Entry* aPriorEntry = (*pPriorVec)[nLevelNo];
     
     // compute and set corrected offset
     i8 iPriorsRightOffset = aPriorEntry->iRightOffset(nOffsetNo);
@@ -1138,11 +1003,9 @@ void IndexBuffer::vFixPriorOffset(Entry* aPriorVec[], Entry* aNewEntry)
   } // for
   
   //vTrace("PRIOR VECTOR AFTER FIXING\n"_Str);
-  //vDumpPrior(aPriorVec);
+  //vDumpPrior(xPriorVec);
   //vTrace("\n"_Str);
 }
-
-#endif
 
 /*----------------------------------------------------------------------------*/
 /* get an entry by number                                                     */
@@ -1290,7 +1153,7 @@ void IndexBuffer::vMoveRight(void* aSrc, i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* scan thru skip list and positition to entry (optionally set prior vector)  */
 /*----------------------------------------------------------------------------*/
-Entry* IndexBuffer::pPosition(Key* aGivenKey, eJC eJuxtaCompare, Entry* aPriorVec[])
+Entry* IndexBuffer::pPosition(Key* aGivenKey, eJC eJuxtaCompare, EntryVec* pPriorVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
@@ -1344,8 +1207,8 @@ Entry* IndexBuffer::pPosition(Key* aGivenKey, eJC eJuxtaCompare, Entry* aPriorVe
     //             note that aNextEntry may be null at this point
 
     // opt record scan entry as an insert-after revision point at this level
-    if (aPriorVec)
-      aPriorVec[*nScanLevel] = pScanEntry;
+    if (pPriorVec)
+      (*pPriorVec)[nScanLevel] = pScanEntry;
    
     // now go down one level
     nScanLevel--;
@@ -1389,8 +1252,7 @@ Entry* IndexBuffer::pRightEntry(Entry* pEntry, ln nLevelNo)
   }
   else {
     
-    on nOffsetNo;
-    nOffsetNo = nLevelNo.nToOffsetNo();
+    on nOffsetNo = nLevelNo.nToOffsetNo();
     ASSERT(nOffsetNo >= 0_on && *nOffsetNo < pEntry->nOffsets());
     
     // for levels 1 & 2 the right entry is m_xWsp + rightOffset[iRight]

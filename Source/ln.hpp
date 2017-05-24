@@ -15,9 +15,10 @@ namespace DBobjects
 
   public:
     ln(void);
+    explicit ln(i8 i);
     ~ln(void);
     
-    operator i8();
+  operator i8(); // auto conversion to i8
   
     static ln nZeroLevel(void);
     on nToOffsetNo(void);

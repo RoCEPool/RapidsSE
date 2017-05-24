@@ -195,6 +195,18 @@ bn Entry::nBufferNo(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get highest offset                                                         */
+/*----------------------------------------------------------------------------*/
+on Entry::nHighestOffset(void)
+{
+  ASSERT(m_iOffsets >= 0 && m_iOffsets <= C_FLAT_OFFSETS);
+  
+  on nHighest(m_iOffsets - 1);
+  
+  return nHighest;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get indexbuffer of this entry                                              */
 /*----------------------------------------------------------------------------*/
 IndexBuffer* Entry::pIndexBuffer(void)

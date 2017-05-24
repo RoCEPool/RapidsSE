@@ -23,7 +23,7 @@ namespace Structures
     Vector(void);
     ~Vector(void);
 
-    ITEM* operator [](SUB nItemNo);
+    ITEM*& operator [](SUB nItemNo);
 
     void  vAdd(ITEM* pObject);
     void  vClear(void);
@@ -132,11 +132,11 @@ Vector<VEC_CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>::~Vector(void)
 /* [] operator                                                                */
 /*----------------------------------------------------------------------------*/
 template <eCN VEC_CN, class ITEM, eCN ITEM_CN, i8 MAX_ITEMS, class SUB>
-ITEM* Vector<VEC_CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>::operator [](SUB nItemNo)
+ITEM*& Vector<VEC_CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>::operator [](SUB nItemNo)
 {
   _precondition_(_MAGIC_,CN_ENTRYVEC,_FOOTER_);
   
-  ASSERT(nItemNo >= 0 and nItemNo < MAX_ITEMS);
+  ASSERT(*nItemNo >= 0 and nItemNo < MAX_ITEMS);
   
   return m_pItem[nItemNo];
 }

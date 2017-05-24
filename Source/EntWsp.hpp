@@ -34,8 +34,8 @@ namespace DBobjects
     void   vForm(Id& xId, KeyWsp& xKeyWsp);
     Key*   aKey(void);
     i8     nKeySize(void);
-    u8     nOffsets(void);
-    u8     uRightOffset(on nOffsetNo);
+    i8     nOffsets(void);
+    i8     iRightOffset(on nOffsetNo);
     void   vRightOffset(on nOffsetNo, u8 uRightOffset);
     Id&    xId(void);
     void   vId(Id& xId);

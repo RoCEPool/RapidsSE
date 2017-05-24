@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 on::on(void)
 {
-  // DO NOT INITIALISE -- ray
+  m_iOffsetNo = 0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -17,6 +17,8 @@ on::on(void)
 /*----------------------------------------------------------------------------*/
 on::on(i8 i)
 {
+  ASSERT( (C_NIL_OFFSET == i) || (i >= 0 && i < C_FLAT_OFFSETS) );
+  
   m_iOffsetNo = i;
 }
 
@@ -28,7 +30,7 @@ on::~on(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert offset no to i8                                                    */
+/* auto conversion to i8                                                      */
 /*----------------------------------------------------------------------------*/
 on::operator i8(void)
 {
@@ -54,10 +56,10 @@ ln on::nToLevelNo(void)
 /*----------------------------------------------------------------------------*/
 /* assign                                                                     */
 /*----------------------------------------------------------------------------*/
-void on::operator =(i8 i)
-{
-  m_iOffsetNo = i;
-}
+//void on::operator =(i8 i)
+//{
+//  m_iOffsetNo = i;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* == operator                                                                */
@@ -187,8 +189,7 @@ on on::operator +(i8 i)
 {
   u8 uValue = m_iOffsetNo + i;
   
-  on nValue;
-  nValue = uValue;
+  on nValue(uValue);
   
   return nValue;
 }
@@ -200,8 +201,7 @@ on on::operator -(i8 i)
 {
   u8 uValue = m_iOffsetNo - i;
   
-  on nValue;
-  nValue = uValue;
+  on nValue(uValue);
   
   return nValue;
 }
@@ -229,8 +229,7 @@ on on::operator --(int)
 /*----------------------------------------------------------------------------*/
 on DBobjects::operator "" _on(unsigned long long u)
 {
-  on nValue;
-  nValue = u;
+  on nValue(u);
   
   return nValue;
 }
