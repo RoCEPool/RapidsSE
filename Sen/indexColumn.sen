@@ -130,7 +130,7 @@
     indexCols 0 do
       I indexPtr index.columnType
       I indexPtr index.columnName
-      "row: ('%v', %v)\n" str.format
+      "row: ('%v', '%v')\n" str.format
     loop
     indexCols task::this task.seitf@ seitf.rowsProcessed
   else
