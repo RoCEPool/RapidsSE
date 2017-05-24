@@ -94,18 +94,19 @@ template <eCN VEC_CN, class ITEM, eCN ITEM_CN, i8 MAX_ITEMS, class SUB>
 Vector<VEC_CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>::Vector(void)
 : Object(VEC_CN)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,VEC_CN,_FOOTER_);
+  _precondition_(_MAGIC_,VEC_CN,_FOOTER_);
   
   m_nItems = 0;
   
-  for (SUB nItemNo = 0; nItemNo < MAX_ITEMS; nItemNo++)
-    m_pItem[nItemNo] = nullptr;
+  SUB nItemNo;
+  for (nItemNo = (i8)0; nItemNo < MAX_ITEMS; nItemNo++)
+    m_pItem[(u8)nItemNo] = nullptr;
   
   _setFooter_();
   
   _checkInitialised_(VEC_CN);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,VEC_CN,_FOOTER_);
+  _postcondition_(_MAGIC_,VEC_CN,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -114,9 +115,10 @@ Vector<VEC_CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>::Vector(void)
 template <eCN VEC_CN, class ITEM, eCN ITEM_CN, i8 MAX_ITEMS, class SUB>
 Vector<VEC_CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>::~Vector(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,VEC_CN,_FOOTER_);
+  _precondition_(_MAGIC_,VEC_CN,_FOOTER_);
   
-  for (SUB nItemNo = 0; nItemNo < m_nItems; nItemNo++) {
+  SUB nItemNo;
+  for (nItemNo = (i8)0; (u8)nItemNo < m_nItems; nItemNo++) {
     ITEM* pItem = m_pItem[nItemNo];
     delete pItem;
   }
@@ -132,7 +134,7 @@ Vector<VEC_CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>::~Vector(void)
 template <eCN VEC_CN, class ITEM, eCN ITEM_CN, i8 MAX_ITEMS, class SUB>
 ITEM* Vector<VEC_CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>::operator [](SUB nItemNo)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYVEC,_FOOTER_);
+  _precondition_(_MAGIC_,CN_ENTRYVEC,_FOOTER_);
   
   ASSERT(nItemNo >= 0 and nItemNo < MAX_ITEMS);
   
@@ -145,7 +147,7 @@ ITEM* Vector<VEC_CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>::operator [](SUB nItemNo)
 template <eCN VEC_CN, class ITEM, eCN ITEM_CN, i8 MAX_ITEMS, class SUB>
 void Vector<VEC_CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>::vAdd(ITEM* pItem)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,VEC_CN,_FOOTER_);
+  _precondition_(_MAGIC_,VEC_CN,_FOOTER_);
   
   // check we have a free slot
   ASSERT(m_nItems >= 0 && m_nItems < MAX_ITEMS - 1);
@@ -168,7 +170,7 @@ void Vector<VEC_CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>::vAdd(ITEM* pItem)
 template <eCN VEC_CN, class ITEM, eCN ITEM_CN, i8 MAX_ITEMS, class SUB>
 void Vector<VEC_CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>::vClear(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,VEC_CN,_FOOTER_);
+  _precondition_(_MAGIC_,VEC_CN,_FOOTER_);
   
   for (SUB nItemNo = 0; nItemNo < m_nItems; nItemNo++)
     m_pItem[nItemNo] = nullptr;
@@ -182,7 +184,7 @@ void Vector<VEC_CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>::vClear(void)
 template <eCN VEC_CN, class ITEM, eCN ITEM_CN, i8 MAX_ITEMS, class SUB>
 bool Vector<VEC_CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>::bContains(ITEM* pItem)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,VEC_CN,_FOOTER_);
+  _precondition_(_MAGIC_,VEC_CN,_FOOTER_);
   
   SUB nItemNo;
   
@@ -199,7 +201,7 @@ bool Vector<VEC_CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>::bContains(ITEM* pItem)
 template <eCN VEC_CN, class ITEM, eCN ITEM_CN, i8 MAX_ITEMS, class SUB>
 void Vector<VEC_CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>::vInsert(ITEM* pItem)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,VEC_CN,_FOOTER_);
+  _precondition_(_MAGIC_,VEC_CN,_FOOTER_);
   
   // check we have a free slot
   ASSERT(m_nItems >= 0 && m_nItems < MAX_ITEMS - 1);
@@ -231,7 +233,7 @@ void Vector<VEC_CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>::vInsert(ITEM* pItem)
 template <eCN VEC_CN, class ITEM, eCN ITEM_CN, i8 MAX_ITEMS, class SUB>
 i8 Vector<VEC_CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>::nItems(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,VEC_CN,_FOOTER_);
+  _precondition_(_MAGIC_,VEC_CN,_FOOTER_);
   
   ASSERT(m_nItems >= 0 && m_nItems < MAX_ITEMS);
   
@@ -244,7 +246,7 @@ i8 Vector<VEC_CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>::nItems(void)
 template <eCN VEC_CN, class ITEM, eCN ITEM_CN, i8 MAX_ITEMS, class SUB>
 ITEM* Vector<VEC_CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>::pGet(SUB nItemNo)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,VEC_CN,_FOOTER_);
+  _precondition_(_MAGIC_,VEC_CN,_FOOTER_);
   
   ASSERT(nItemNo >= 0 && nItemNo < m_nItems);
   
@@ -259,7 +261,7 @@ ITEM* Vector<VEC_CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>::pGet(SUB nItemNo)
 template <eCN VEC_CN, class ITEM, eCN ITEM_CN, i8 MAX_ITEMS, class SUB>
 void Vector<VEC_CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>::vRemove(ITEM* pItem)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,VEC_CN,_FOOTER_);
+  _precondition_(_MAGIC_,VEC_CN,_FOOTER_);
   
   // check we have items
   ASSERT(m_nItems >= 0);
@@ -303,7 +305,7 @@ void Vector<VEC_CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>::vRemove(ITEM* pItem)
 template <eCN VEC_CN, class ITEM, eCN ITEM_CN, i8 MAX_ITEMS, class SUB>
 Footer* Vector<VEC_CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>::pFooter(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,VEC_CN);
+  _precondition_(_MAGIC_,VEC_CN);
   
   return &m_xFooter;
 }

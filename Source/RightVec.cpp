@@ -61,7 +61,7 @@ RightVec::~RightVec(void)
 /*----------------------------------------------------------------------------*/
 u8 RightVec::uOffset(on nOffsetNo)
 {
-  ASSERT(nOffsetNo >= 0 && nOffsetNo < C_FLAT_OFFSETS);
+  ASSERT(nOffsetNo >= 0_on && nOffsetNo < C_FLAT_OFFSETS);
   
   u8 uOffset = m_nOffset[*nOffsetNo];
   
@@ -73,7 +73,7 @@ u8 RightVec::uOffset(on nOffsetNo)
 /*----------------------------------------------------------------------------*/
 void RightVec::vOffset(on nOffsetNo, u8 uOffset)
 {
-  ASSERT(nOffsetNo >= 0 && nOffsetNo < C_FLAT_OFFSETS);
+  ASSERT(nOffsetNo >= 0_on && nOffsetNo < C_FLAT_OFFSETS);
   
   m_nOffset[*nOffsetNo] = uOffset;
 }

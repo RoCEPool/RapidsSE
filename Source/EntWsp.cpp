@@ -45,7 +45,7 @@ EntWsp::EntWsp(void)
   
   // set all right offsets to nil
   on nOffsetNo;
-  for (nOffsetNo = 0; nOffsetNo < C_FLAT_OFFSETS - 1; nOffsetNo++)
+  for (nOffsetNo = 0_on; nOffsetNo < C_FLAT_OFFSETS - 1; nOffsetNo++)
     m_uOffset[*nOffsetNo] = C_NIL_OFFSET;
   
   // m_xKeyWsp
@@ -73,7 +73,7 @@ EntWsp::EntWsp(i8 nOffsets)
   
   // set all right offsets to nil
   on nOffsetNo;
-  for (nOffsetNo = 0; nOffsetNo < C_FLAT_OFFSETS - 1; nOffsetNo++)
+  for (nOffsetNo = 0_on; nOffsetNo < C_FLAT_OFFSETS - 1; nOffsetNo++)
     m_uOffset[*nOffsetNo] = C_NIL_OFFSET;
   
   // m_xKeyWsp
@@ -160,7 +160,7 @@ u8 EntWsp::nOffsets(void)
 /*----------------------------------------------------------------------------*/
 u8 EntWsp::uRightOffset(on nOffsetNo)
 {
-  ASSERT(nOffsetNo >= 0 && nOffsetNo <= C_FLAT_OFFSETS);
+  ASSERT(nOffsetNo >= 0_on && nOffsetNo <= C_FLAT_OFFSETS);
   
   return m_uOffset[*nOffsetNo];
 }
@@ -170,7 +170,7 @@ u8 EntWsp::uRightOffset(on nOffsetNo)
 /*----------------------------------------------------------------------------*/
 void EntWsp::vRightOffset(on nOffsetNo, u8 uRightOffset)
 {
-  ASSERT(nOffsetNo >= 0 && nOffsetNo <= C_FLAT_OFFSETS);
+  ASSERT(nOffsetNo >= 0_on && nOffsetNo <= C_FLAT_OFFSETS);
   
   m_uOffset[*nOffsetNo] = uRightOffset;
 }
@@ -208,7 +208,7 @@ void EntWsp::vShow(void)
          );
   
   on nOffsetNo;
-  for (nOffsetNo = 0; nOffsetNo < m_uOffsets - 1; nOffsetNo++)
+  for (nOffsetNo = 0_on; nOffsetNo < m_uOffsets - 1; nOffsetNo++)
     vTrace("R%lld: %lld "_Str,
            *nOffsetNo,
            uRightOffset(nOffsetNo)

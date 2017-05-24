@@ -15,7 +15,7 @@ namespace DBobjects
   static const i8 C_FLAT_LEVELS  = 3;                        // number of levels
   static const i8 C_FLAT_OFFSETS = C_FLAT_LEVELS - 1;        // number of offsets
   static const i8 C_FLAT_FREQ    = 2;
-  static const u8 C_NIL_OFFSET   = 0xFFFFFFFFFFFFFFFF;
+  static const i8 C_NIL_OFFSET   = 0xFFFFFFFFFFFFFFFF;
 }
 
 using namespace DBobjects;
@@ -46,7 +46,7 @@ typedef Vector<CN_IDXCOLVEC,Column,CN_COLUMN,1024,u8> IdxColVec;
 #include "EntWsp.hpp"
 #include "Entry.hpp"
 
-typedef Vector<CN_ENTRYVEC,Entry,CN_ENTRY,C_FLAT_LEVELS,u8> EntryVec;
+typedef Vector<CN_ENTRYVEC,Entry,CN_ENTRY,C_FLAT_LEVELS,on> EntryVec;
 
 #include "IndexBuffer.hpp"
 #include "IndexData.hpp"
