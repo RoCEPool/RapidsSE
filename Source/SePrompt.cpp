@@ -222,7 +222,7 @@ void SePrompt::vLoop(void)
     else {
       if (m_pSEitf->eGetLastError() != EC_NONE)
         if ( ! m_bExpect )
-          vError("error: %s\n"_Str,m_pSEitf->pGetLastError());
+          vTrace("error: %s\n"_Str,m_pSEitf->pGetLastError());
     }
   }
   
@@ -406,7 +406,7 @@ void SePrompt::vMetaFormat(void)
   else {
     if (m_pSEitf->eGetLastError() != EC_NONE)
       if ( ! m_bExpect )
-        vError("error: %s\n"_Str,m_pSEitf->pGetLastError());
+        vTrace("error: %s\n"_Str,m_pSEitf->pGetLastError());
   }
 
   // reset counters
