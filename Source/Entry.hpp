@@ -12,7 +12,7 @@ namespace DBobjects
   private:
     i8     m_nBytes;   // overall size of this entry incl Object & Footer
     Id     m_xId;      // id
-    i8     m_iOffsets; // no of offsets for this entry (0 or 1)
+    i8     m_iOffsets; // no of offsets for this entry (0,1 or 2)
     // ..data..        // right offsets & key
   
     // ..footer..

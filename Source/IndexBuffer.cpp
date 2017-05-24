@@ -266,7 +266,7 @@ bool IndexBuffer::bInsert(KeyWsp& xKeyWsp, Id xId)
   
   // fix the prior vector after the move
   vFixPriorOffset(&xPriorVec, pNewEntry);
-  
+ 
   // get the absolute offset of the new entry
   i8 iNewEntryOffsetAbs = iToOffsetAbs(pNewEntry);
   
@@ -276,7 +276,7 @@ bool IndexBuffer::bInsert(KeyWsp& xKeyWsp, Id xId)
     // get prior entry being revised
     ln nLevelNo = nOffsetNo.nToLevelNo();
     Entry* aPriorEntry = xPriorVec[nLevelNo];
-    
+
     i8 iPriorsRightOffsetAbs = iToRightOffsetAbs(aPriorEntry,nOffsetNo);
     
     // is the prior's right offset after new entry : [PURPLE] (grey)-> [GREEN]
@@ -296,13 +296,26 @@ bool IndexBuffer::bInsert(KeyWsp& xKeyWsp, Id xId)
       
       aPriorEntry->vRightOffset(nOffsetNo,iPriorRightOffset);
     }
+    else {
+      
+      // this is the case where the prior entry now needs to point to the new
+      // prioer was at C_NIL_OFFSET and now needs to point to the newEntry
+      ASSERT(aPriorEntry->iRightOffset(nOffsetNo) == C_NIL_OFFSET);
+      ASSERT(pNewEntry->iRightOffset(nOffsetNo) == C_NIL_OFFSET);
+      
+      // calculate new right offset
+      i8 iNewRightOffset = uOffsetBetween(pNewEntry,aPriorEntry);
+      
+      // set the right offset in the prior entry to offset of new entry
+      aPriorEntry->vRightOffset(nOffsetNo, iNewRightOffset);
+    }
     
   } // for
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // fix higher level buffers
   // this is needed in case we inserted a new first key in the buffer
-  
+  //vShow();
   vFixHigherLevel(pNewEntry);
   
   return true;
@@ -456,7 +469,7 @@ IndexBuffer* IndexBuffer::pSplitBuffer(void)
   // set any prior offset to nil if its an offset to an entry in split half
   i8 iLastEntryOffsetAbs = iToOffsetAbs(pSplitEntry);
   
-  for (on nOffsetNo(C_FLAT_OFFSETS - 2); nOffsetNo >= 0_on; nOffsetNo--) {
+  for (on nOffsetNo = 0_on; nOffsetNo < C_FLAT_OFFSETS; nOffsetNo++) {
     
     // calculate level into prior vector for this offset and get entry
     ln nLevel = nOffsetNo.nToLevelNo();
@@ -1309,6 +1322,9 @@ i8 IndexBuffer::iToRightOffsetAbs(Entry* pEntry, on nOffsetNo)
   i8 iEntryOffsetAbs = iToOffsetAbs(pEntry);
   i8 iRightOffset = pEntry->iRightOffset(nOffsetNo);
   i8 iEntrySize = pEntry->nSize();
+  
+  if (iRightOffset == C_NIL_OFFSET)
+    iRightOffset = 0;
   
   i8 iRightOffsetAbs = iEntryOffsetAbs + iRightOffset + iEntrySize;
   

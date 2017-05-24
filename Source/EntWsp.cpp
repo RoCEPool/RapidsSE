@@ -45,7 +45,7 @@ EntWsp::EntWsp(void)
   
   // set all right offsets to nil
   on nOffsetNo;
-  for (nOffsetNo = 0_on; nOffsetNo < C_FLAT_OFFSETS - 1; nOffsetNo++)
+  for (nOffsetNo = 0_on; nOffsetNo < C_FLAT_OFFSETS; nOffsetNo++)
     m_iOffset[*nOffsetNo] = C_NIL_OFFSET;
   
   // m_xKeyWsp
@@ -73,7 +73,7 @@ EntWsp::EntWsp(i8 nOffsets)
   
   // set all right offsets to nil
   on nOffsetNo;
-  for (nOffsetNo = 0_on; nOffsetNo < C_FLAT_OFFSETS - 1; nOffsetNo++)
+  for (nOffsetNo = 0_on; nOffsetNo < C_FLAT_OFFSETS; nOffsetNo++)
     m_iOffset[*nOffsetNo] = C_NIL_OFFSET;
   
   // m_xKeyWsp
