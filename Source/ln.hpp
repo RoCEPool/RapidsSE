@@ -1,5 +1,5 @@
 /*============================================================================*/
-/*  ln.hpp - level number                                                     */
+/* ln.hpp - level number                                                      */
 /*============================================================================*/
 #pragma once
 
@@ -17,6 +17,8 @@ namespace DBobjects
     ln(void);
     ~ln(void);
     
+    operator i8();
+  
     static ln nZeroLevel(void);
     on nToOffsetNo(void);
     

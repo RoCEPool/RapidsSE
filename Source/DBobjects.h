@@ -46,7 +46,7 @@ typedef Vector<CN_IDXCOLVEC,Column,CN_COLUMN,1024,u8> IdxColVec;
 #include "EntWsp.hpp"
 #include "Entry.hpp"
 
-typedef Vector<CN_ENTRYVEC,Entry,CN_ENTRY,C_FLAT_LEVELS,on> EntryVec;
+typedef Vector<CN_ENTRYVEC,Entry,CN_ENTRY,C_FLAT_LEVELS,ln> EntryVec;
 
 #include "IndexBuffer.hpp"
 #include "IndexData.hpp"

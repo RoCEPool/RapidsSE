@@ -18,7 +18,6 @@ namespace DBobjects
     
     ln        nToLevelNo(void);
   
-  //operator i8();
     operator i8();
   
     void operator =(i8 i);

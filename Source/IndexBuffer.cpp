@@ -666,7 +666,7 @@ L0 |  KeyA || KeyB  || KeyC  ||  KeyD || KeyE  || KeyF  || KeyG  || KeyH  |
     // move down one level and start with the head again
     nLevelNo--;
     
-  } while (nLevelNo >= 0 );
+  } while (nLevelNo >= 0_ln );
   
   return true;
 }
@@ -1381,9 +1381,9 @@ Entry* IndexBuffer::pRightEntry(Entry* pEntry, ln nLevelNo)
   */
   
   // the caller must request a valid right entry of pEntry
-  ASSERT(nLevelNo >= 0 && nLevelNo < C_FLAT_LEVELS);
+  ASSERT(nLevelNo >= 0_ln && *nLevelNo < C_FLAT_LEVELS);
 
-  if (nLevelNo == 0) {
+  if (nLevelNo == 0_ln) {
     // for level 0, the right entry is the next entry
     pRightEntry = pNextEntry(pEntry);
   }

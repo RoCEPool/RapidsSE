@@ -100,7 +100,7 @@ Vector<VEC_CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>::Vector(void)
   
   SUB nItemNo;
   for (nItemNo = (i8)0; nItemNo < MAX_ITEMS; nItemNo++)
-    m_pItem[(u8)nItemNo] = nullptr;
+    m_pItem[(i8)nItemNo] = nullptr;
   
   _setFooter_();
   
@@ -118,7 +118,7 @@ Vector<VEC_CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>::~Vector(void)
   _precondition_(_MAGIC_,VEC_CN,_FOOTER_);
   
   SUB nItemNo;
-  for (nItemNo = (i8)0; (u8)nItemNo < m_nItems; nItemNo++) {
+  for (nItemNo = (i8)0; (i8)nItemNo < (i8)m_nItems; nItemNo++) {
     ITEM* pItem = m_pItem[nItemNo];
     delete pItem;
   }
