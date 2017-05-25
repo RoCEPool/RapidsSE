@@ -35,9 +35,8 @@ ld supplier "/tpch/supplier.tbl" ;
 pwf ;
 lf ;
 
-visidx supplier idx1;
+//visidx supplier idx1;
 
-/*
 print "\nSelecting rows from supplier (idx1) where S_SUPPKEY >= 9972 ...\n" ;
 lwrselidx supplier idx1 9972 ;
 
@@ -90,8 +89,6 @@ keyselidx supplier idx1 "9785" ;
 
 print "\nSelecting rows from supplier (idx3) where S_ADDRESS == 'mX37oAzqsBPhN1LWdzV p'...\n" ;
 keyselidx supplier idx3 "mX37oAzqsBPhN1LWdzV p" ;
-
-*/
 
 /*============================================================================*/
 /* end                                                                        */
