@@ -61,6 +61,32 @@
   task::this task.seitf@ seitf.display@
 ;
 
+/*----------------------------------------------------------------------------*/
+/* conver into into a string of digit names                                   */
+/*----------------------------------------------------------------------------*/
+: >digitWords ( i -- s )
+
+  >str locals| sDecodeMe |
+
+  "" "" 0 locals| iDigit sDigitName sDecodedTo |
+
+  // loop for 0 to length of sDecodeMe - 1
+  sDecodeMe str.length 0
+  do
+    // concat " " to end of decoded string
+    I if sDecodedTo " " str.cat to sDecodedTo then
+
+    // clip out digit I, convert it to a str
+    1 I sDecodeMe str.sub >int >digitName to sDigitName
+
+    // append digit name to the decoded string
+    sDecodedTo sDigitName str.cat to sDecodedTo
+  loop
+
+  // return decode string
+  sDecodedTo
+;
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

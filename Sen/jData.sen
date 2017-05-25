@@ -4,33 +4,9 @@
 
 "jData.sen" .verbose
 
-: >DigitWords
-
-  >str ""            ( "TBD"  "<dw>"        )
-
-  0 >r
-  begin                ( "TBD"  "<dw>"        )
-    swap               ( "<dw>" "TBD"         )
-    dup                ( "<dw>" "TBD" "TBD"   )
-    str.length         ( "<dw>" "TBD" l       )
-    while              ( "<dw>" "TBD"         )
-      dup              ( "<dw>" "TBD"  "TBD"  )
-      0 1 -rot str.sub ( "<dw>" "TBD"  "<d>"  )
-      swap             ( "<dw>" "<d>"  "TBD"  )
-      1 neg 1 -rot str.sub ( "<dw>" "<d>"  "BD"   )
-      -rot            ( "BD"   "<dw>" "<d>"  )
-      >int            ( "BD"   "<dw>" d      )
-      >digitName      ( "BD"   "<dw>" "name" )
-
-      r> dup 1+ >r
-      if swap " " str.cat swap then
-
-      str.cat         ( "BD"   "<dw>"        )
-  repeat
-  drop                ( "<dw>"               )
-  rdrop
-;
-
+/*----------------------------------------------------------------------------*/
+/* generate ../jtest/j1000.csv                                                */
+/*----------------------------------------------------------------------------*/
 : jData1000
 
   file.new >r
@@ -56,6 +32,9 @@
   rdrop
 ;
 
+/*----------------------------------------------------------------------------*/
+/* generate ../jtest/j100.csv                                                 */
+/*----------------------------------------------------------------------------*/
 : jData100
 
   file.new >r
@@ -79,6 +58,9 @@
   rdrop
 ;
 
+/*----------------------------------------------------------------------------*/
+/* generate ../jtest/j10.csv                                                  */
+/*----------------------------------------------------------------------------*/
 : jData10
 
   file.new >r
@@ -100,11 +82,39 @@
   rdrop
 ;
 
+/*----------------------------------------------------------------------------*/
+/* generate ../jtest/j10.csv                                                  */
+/*----------------------------------------------------------------------------*/
+: jDataDupe
+
+  file.new locals| pFile |
+
+  "../JTEST/jDupe27.csv" pFile file.path!
+
+  OPEN_WRITE pFile file.open not if "file not opened" . exit then
+
+  27 0
+  do
+    I >str          pFile file.write
+    "|"             pFile file.write
+    I >DigitWords   pFile file.write
+    "|0"            pFile file.write
+    "\n"            pFile file.write
+  loop
+
+  pFile file.close
+;
+
+/*----------------------------------------------------------------------------*/
+/* generate jdata                                                             */
+/*----------------------------------------------------------------------------*/
 : jData
 
   jData1000
   jData100
   jData10
+
+  jDataDupe
 ;
 
 /*============================================================================*/
