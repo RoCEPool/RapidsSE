@@ -415,6 +415,7 @@ bool SEitf::bDecode(TokenSet& xTokenSet)
   if (xTokenSet[0]->bSame("print"_Str)) return ! bPrint(xTokenSet);
   if (xTokenSet[0]->bSame("seitf"_Str)) return bSeitfCount(xTokenSet);
   if (xTokenSet[0]->bSame("version"_Str)) return bGetVersion(xTokenSet);
+  if (xTokenSet[0]->bSame("visidx"_Str)) return bVisualizeIndex(xTokenSet);
   
   vSetLastError(EC_INVALID_COMMAND);
   return false;
@@ -1816,6 +1817,33 @@ bool SEitf::bTruncateTable(TokenSet& xTokenSet)
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" truncate_table"_Str);
+  
+  return bAppendRequest(sRequest);
+}
+
+/*----------------------------------------------------------------------------*/
+/* visualize an index                                                         */
+/*----------------------------------------------------------------------------*/
+bool SEitf::bVisualizeIndex(TokenSet& xTokenSet)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  s256 sRequest;
+  
+  if (xTokenSet.nTokens() != 3) {
+    vSetLastError(EC_INVALID_PARAMETERS);
+    return false;
+  }
+  
+  sRequest.vCopy("\""_Str);
+  sRequest.vConcat(xTokenSet[2]);
+  sRequest.vConcat("\""_Str);
+  
+  sRequest.vConcat("\""_Str);
+  sRequest.vConcat(xTokenSet[1]);
+  sRequest.vConcat("\""_Str);
+  
+  sRequest.vConcat(" visualize_index"_Str);
   
   return bAppendRequest(sRequest);
 }

@@ -552,6 +552,7 @@ namespace Tasks
     static void vIndexTableStore(NNP_Task nnpTask);
     static void vIndexTruncate(NNP_Task nnpTask);
     static void vIndexUpper(NNP_Task nnpTask);
+    static void vIndexVisualize(NNP_Task nnpTask);
 
     // index buffer
     static void vIndexBufferFirstEntry(NNP_Task nnpTask);

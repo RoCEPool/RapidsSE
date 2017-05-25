@@ -52,6 +52,7 @@ void Task::vAddPrimitives_Index(void)
   vAddPrimitive("index.table!"_Str,          &vIndexTableStore,      false);
   vAddPrimitive("index.truncate"_Str,        &vIndexTruncate,        false);
   vAddPrimitive("index.upper"_Str,           &vIndexUpper,           false);
+  vAddPrimitive("index.visualize"_Str,       &vIndexVisualize,       false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -594,6 +595,33 @@ void Task::vIndexUpper(NNP_Task nnpTask)
   bool bBefore = pEntry->aKey()->bJuxtaCompare(JC_BEFORE, xKeyWsp.aKey(), pIndex->pIdxColVec());
   
   nnpTask->m_pDataStack->vPushInt(bBefore ? 1 : 0);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* index.visualize -- visualize the index                                     */
+/*----------------------------------------------------------------------------*/
+void Task::vIndexVisualize(NNP_Task nnpTask)
+{
+  ENTRY("vIndexVisualize"_Str);
+  
+  Object* pPtrIndex;
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrIndex) )
+    THROW_INVALID_DSTACK("index.visualize"_Str);
+  
+  Index* pIndex = _pIndex(pPtrIndex);
+  ASSERT(CN_INDEX == pIndex->eClass());
+  
+  i8 iIndexNo = pIndex->iIndexNo();
+  Table* pTable = pIndex->pTable();
+  
+  for (i8 iPartition = 0; iPartition < gpGrid->m_nSlots; iPartition++) {
+    Partition* pPartition = pTable->pPartition(iPartition);
+    IndexData* pIndexData = pPartition->pIndexData(iIndexNo);
+    //vTrace("Partition %lld\n"_Str, iPartition);
+    //pIndexData->vDump();
+  }
   
   EXIT();
 }
