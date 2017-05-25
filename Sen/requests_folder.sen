@@ -142,7 +142,9 @@ tp: droppedDic
       "'" str.cat
     then
 
-    ")\n" str.cat
+    iCount if
+      ")\n" str.cat
+    then
 
     object@ word.prev object!
 
@@ -175,7 +177,9 @@ tp: droppedDic
       object@ word.prev object!
 
     next
-    ")" str.cat
+    iCount if
+      ")" str.cat
+    then
   then
 
   <SUCCESS>

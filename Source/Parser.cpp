@@ -11,6 +11,7 @@ extern Heap* gpMediumHeap;
 #include "Arguments.hpp"
 
 extern bool gbTracepoint;
+extern Arguments gxArguments;
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
@@ -834,8 +835,10 @@ void Parser::vReadLineStdin(void)
   if (gbTracepoint)
     PosixThread::vSleepMilli(300);
   
-  vInfo("%s"_Str,m_sPrompt.s());
-  fflush(stdin);
+  if ( ! gxArguments.m_bScript ) {
+    vInfo("%s"_Str,m_sPrompt.s());
+    fflush(stdin);
+  }
   
   for (;;) {
     

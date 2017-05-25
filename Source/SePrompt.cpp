@@ -39,7 +39,7 @@ void SePrompt::operator delete(void* pSePromptAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-SePrompt::SePrompt(bool bDisplayPrompt)
+SePrompt::SePrompt(void)
 : Buffer(CN_SEPROMPT)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
@@ -51,18 +51,16 @@ SePrompt::SePrompt(bool bDisplayPrompt)
   
   m_bContinue = true;
   
-  if (bDisplayPrompt) {
-    m_sPrompt.vSprint("[N%lld %lld] se %s%c> "_Str,
-                      gpGrid->iThisNode(),
-                      Process::iGetPid(),
-                      RAPIDSSE_VERSION_STRING,
-      #ifdef _DEBUG
-                      'd'
-      #else
-                      'r'
-      #endif
-                      );
-  }
+  m_sPrompt.vSprint("[N%lld %lld] se %s%c> "_Str,
+                    gpGrid->iThisNode(),
+                    Process::iGetPid(),
+                    RAPIDSSE_VERSION_STRING,
+    #ifdef _DEBUG
+                    'd'
+    #else
+                    'r'
+    #endif
+                    );
   
   m_bEcho   = false;
   

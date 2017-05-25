@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 Tests::Tests(void) {
   
-  m_pSePrompt    = new SePrompt(true);
+  m_pSePrompt    = new SePrompt();
   m_iTestsTotal  = 0;
   m_iTestsPassed = 0;
   m_iTestsFailed = 0;

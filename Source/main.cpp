@@ -149,7 +149,7 @@ int main(int argc, const char* argv[])
   */
   
   // optionally execute se> prompt
-  if (gxArguments.m_bPrompt) {
+  if (gxArguments.m_bPrompt || gxArguments.m_bScript) {
     
     // if only prompt then cwd to Commands
     // (with --start sen changes cwd)
@@ -161,13 +161,7 @@ int main(int argc, const char* argv[])
  //     if (xDir.bGetCurrent(sCurrent))
  //       vInfo("dir: %s\n"_Str,sCurrent.aStr());
 //    }
-    SePrompt* pSePrompt = new SePrompt(true);
-    pSePrompt->vLoop();
-    delete pSePrompt;
-  }
-
-  if (gxArguments.m_bScript) {
-    SePrompt* pSePrompt = new SePrompt(false);
+    SePrompt* pSePrompt = new SePrompt();
     pSePrompt->vLoop();
     delete pSePrompt;
   }
