@@ -652,17 +652,15 @@ bool SePrompt::bExecuteRequest(void)
   
   Timer xTimer;
   Str* aResponse = nullptr;
-  i8 iTokens;
   
   xTimer.vStart();
 
   m_xTokenSet.vSetTokens();
   
-  iTokens = m_xTokenSet.nTokens();
                                                      //! make this part of verbose??
   //m_pTokeniser->vDumpTokens("Command : "_Str,m_xTokenSet,C_TOKENS);
   
-  bool bResult = RapidsSE_ExecuteRequest(m_pSEitf,m_xTokenSet,iTokens,&aResponse);
+  bool bResult = RapidsSE_ExecuteRequest(m_pSEitf,m_xTokenSet,&aResponse);
   
   if (bResult)
     m_sResponse = aResponse ? (Str*)aResponse : ""_Str;

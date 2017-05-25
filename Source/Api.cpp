@@ -1200,7 +1200,7 @@ eEC RapidsSE_SEitfNew(void** ppSEitf, i8 iPartition, i8 iTraceLevel)
 /*----------------------------------------------------------------------------*/
 /* Execute a request                                                          */
 /*----------------------------------------------------------------------------*/
-bool RapidsSE_ExecuteRequest(SEitf* pSEitf, TokenSet& xTokenSet, i8 nTokens, Str** ppResponse)
+bool RapidsSE_ExecuteRequest(SEitf* pSEitf, TokenSet& xTokenSet, Str** ppResponse)
 {
   bool bResult;
   
