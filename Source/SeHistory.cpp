@@ -34,7 +34,7 @@ SeHistory::~SeHistory(void)
 /*----------------------------------------------------------------------------*/
 /* append command to history file                                             */
 /*----------------------------------------------------------------------------*/
-void SeHistory::vAppend(Str* aToken[])
+void SeHistory::vAppend(TokenAry* pTokenAry, Str* aToken[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEHISTORY,_FOOTER_);
   
@@ -103,7 +103,7 @@ void SeHistory::vPrint(void)
 /*----------------------------------------------------------------------------*/
 /* recall command from history file                                           */
 /*----------------------------------------------------------------------------*/
-bool SeHistory::bRecall(Str* aToken[], i8 nTokens)
+bool SeHistory::bRecall(TokenAry* pTokenAry, Str* aToken[], i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEHISTORY,_FOOTER_);
   
@@ -124,7 +124,7 @@ bool SeHistory::bRecall(Str* aToken[], i8 nTokens)
   
   vTrace("Recall: %lld\n"_Str,iCommand);
   
-  bool bRecalled = bGet(iCommand,aToken,nTokens);
+  bool bRecalled = bGet(iCommand,pTokenAry,aToken,nTokens);
   
   return bRecalled;
 }
@@ -136,7 +136,7 @@ bool SeHistory::bRecall(Str* aToken[], i8 nTokens)
 /*----------------------------------------------------------------------------*/
 /* get command from history file                                              */
 /*----------------------------------------------------------------------------*/
-bool SeHistory::bGet(i8 iCommand, Str* aToken[], i8 nTokens)
+bool SeHistory::bGet(i8 iCommand, TokenAry* pTokenAry, Str* aToken[], i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEHISTORY,_FOOTER_);
   
@@ -153,7 +153,7 @@ bool SeHistory::bGet(i8 iCommand, Str* aToken[], i8 nTokens)
       
       m_pTokeniser->vUseString(sCommand);
       
-      m_pTokeniser->vResetTokens(aToken,nTokens);
+      m_pTokeniser->vResetTokens(pTokenAry,aToken,nTokens);
       
       i8 i = 0;
       while (TK_NONE != m_pTokeniser->eNextToken(aToken[i]->s())) {

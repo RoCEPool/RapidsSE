@@ -35,7 +35,7 @@ extern "C" eEC RapidsSE_SEitfDelete(SEitf* pSEitf, i8 iTraceLevel);
 extern "C" eEC RapidsSE_SEitfNew(void** ppSEitf, i8 iPartition, i8 iTraceLevel);
 extern "C" bool RapidsSE_SEitfInvalid(int eError, i8 iTraceLevel);
 
-bool RapidsSE_ExecuteRequest(SEitf* pSEitf, Str* aWords[], i8 iWords, Str** ppResponse);
+bool RapidsSE_ExecuteRequest(SEitf* pSEitf,TokenAry* pTokenAry, Str* aWords[], i8 iWords, Str** ppResponse);
 
 // private calls
 eEC eExecuteRequest(SEitf* pSEitf, Str* aCommand);
@@ -43,7 +43,7 @@ eEC eExecuteRequest(SEitf* pSEitf, Str* aCommand, Str* aParameter);
 eEC eExecuteRequest(SEitf* pSEitf, Str* aCommand, Str* aParameter1,
                     Str* aParameter2, Str* aParameter3);
 
-bool bExecuteRequest(SEitf* pSEitf, Str* aWords[], i8 iWords);
+bool bExecuteRequest(SEitf* pSEitf, TokenAry* pTokenAry, Str* aWords[], i8 iWords);
 eEC eGetResponse(SEitf* pSEitf);
 
 /*----------------------------------------------------------------------------*/
