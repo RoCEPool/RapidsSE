@@ -103,6 +103,7 @@ namespace Interface
     bool bEndCreateIndex(TokenSet& xTokenSet);
     bool bListIndices(TokenSet& xTokenSet);
     bool bIndexSetUnique(TokenSet& xTokenSet);
+    bool bVisualizeIndex(TokenSet& xTokenSet);
   
     bool bCreateTable(TokenSet& xTokenSet);
     bool bEndCreateTable(TokenSet& xTokenSet);

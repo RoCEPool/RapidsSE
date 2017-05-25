@@ -187,6 +187,7 @@ dumpidx dump_index
 lsidxcol list_indexcolumns
 rmidx   drop_index
 tridx   truncate_index
+visidx  visualize_index
 
 Dictionary Requests:
 
