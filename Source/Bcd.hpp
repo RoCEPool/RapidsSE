@@ -6,11 +6,9 @@
 namespace Datums
 {
   class Bcd
-  {
-  friend class DtmLib;
-  
-  private:
-    // to be decided
+  {  
+  protected:
+    i8 m_iBcd;
   
   public:
     void* operator new(size_t);

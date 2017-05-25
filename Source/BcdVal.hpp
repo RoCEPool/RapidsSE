@@ -5,10 +5,10 @@
 
 namespace Values
 {
-  class BcdVal : public Value
+  class BcdVal : public Value,
+                 public Bcd
   {
   private:
-    i8 m_iBcd;
     
   public:
     void* operator new(size_t);
