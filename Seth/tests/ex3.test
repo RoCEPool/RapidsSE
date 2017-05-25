@@ -1,0 +1,77 @@
+-- Ensure that the table 'foo' doesn't exist to start with.
+--drop table foo;
+--mute
+
+
+CREATE 2 THREADS {
+  -- Child threads start here.
+
+  LOOP 3 {
+
+    -- Wait for table to be created by main thread
+    SYNCHRONIZE;
+  
+    lf;
+    rows: 
+      ('foo', 'folder')
+
+    -- Wait for index to be created
+    SYNCHRONIZE;
+
+    lsidx foo;
+    rows:
+      ('fooIdx')
+
+    lsidxcol foo fooIdx;
+    rows:
+      ('col0', 'INTEGER')
+
+    -- Done querying index
+    SYNCHRONIZE;
+
+    -- Wait for table to be dropped
+    SYNCHRONIZE;
+
+    lf;
+    rows: 0
+
+    -- done verifying that the table has been dropped
+    SYNCHRONIZE;
+  }
+  -- Child threads exit here.
+}
+
+-- The main thread runs this loop
+LOOP 3 {
+  create table foo (col0 integer, col1 varchar);
+  success
+
+  -- Unblocks child threads to see existence of table foo.
+  SYNCHRONIZE;
+
+  create index fooIdx on foo (col0);
+  success
+
+  -- Unblocks child threads to see existence of index.
+  SYNCHRONIZE;
+
+  -- Wait for threads to finish querying this index.
+  SYNCHRONIZE;
+
+  drop index foo.fooIdx;
+  success
+
+  drop table foo;
+  success
+
+  -- Unblock child threads to see that the table has been dropped.
+  SYNCHRONIZE;
+
+  -- Wait until child threads are done.
+  SYNCHRONIZE;
+}
+
+CLEANUP {
+  drop table foo;
+  mute
+}

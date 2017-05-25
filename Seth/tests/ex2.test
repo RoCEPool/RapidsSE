@@ -1,0 +1,31 @@
+
+LOOP FOR 5 SECONDS {
+  create table foo (col0 integer, col1 varchar);
+  success
+
+  lstbl;
+  rows:
+    ('foo')
+
+  create index fooIdx on foo (col0);
+  success
+
+  lsidx foo;
+  rows:
+    ('fooIdx')
+
+  lsidxcol foo fooIdx;
+  rows:
+    ('col0', 'INTEGER')
+
+  drop index foo.fooIdx;
+  success
+
+  drop table foo;
+  success
+}
+
+CLEANUP {
+  drop table foo;
+  mute
+}
