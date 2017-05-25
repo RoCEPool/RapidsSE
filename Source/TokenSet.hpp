@@ -30,7 +30,8 @@ namespace Parsing
     void vIncTokens(void);
     void vReset(void);
     void vSetTokens(void);
-  
+    void vStripSemicolon(void);
+
     Footer* pFooter(void);
   };
 }

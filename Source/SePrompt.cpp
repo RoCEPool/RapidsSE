@@ -328,7 +328,7 @@ void SePrompt::vGetCommand(void)
     vCollectStatement();
     
     // stip off ;
-    vStripSemicolon();
+    m_xTokenSet.vStripSemicolon();
 
   }
 }
@@ -1695,23 +1695,6 @@ void SePrompt::vCollectStatement(void)
   m_pTokeniser->vPrompt(m_sPrompt);
   
   //m_pTokeniser->vDumpTokens("Command : "_Str,m_xTokenSet,C_TOKENS);
-}
-
-/*----------------------------------------------------------------------------*/
-/* strip off ';'                                                              */
-/*----------------------------------------------------------------------------*/
-void SePrompt::vStripSemicolon(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  i8 iToken = m_pTokeniser->iFindToken(";"_Str,m_xTokenSet,C_TOKENS);
-  
-  if (-1 == iToken)
-    return;
-  
-  *m_xTokenSet[iToken]->s() = '\0';
-  
-  //m_pTokeniser->vDumpTokens("Stripped"_Str,m_xTokenSet,C_TOKENS);
 }
 
 /*----------------------------------------------------------------------------*/
