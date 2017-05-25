@@ -26,13 +26,10 @@ private:
   s48K       m_sResponse;  // response from seitf
   SeHistory m_xHistory;   // command history
   
-  TokenAry   m_xTokenAry;
-  TokenAry   m_xTokenAry2;
+  TokenSet   m_xTokenSet;
+  TokenSet   m_xTokenSet2;
   
   Tokeniser* m_pTokeniser; // input stream tokeniser
-
-  WspFxd<C_TOKEN_AREA> m_xTokenArea;
-  WspFxd<C_TOKEN_AREA> m_xTokenArea2;
   
   // must be last
   Footer m_xFooter;

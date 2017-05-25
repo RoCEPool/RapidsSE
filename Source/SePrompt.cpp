@@ -72,13 +72,6 @@ SePrompt::SePrompt(bool bDisplayPrompt)
   m_sResponse  = ""_Str;
   //m_xHistory
   
-  // initialise the token set
-  for (i8 iToken = 0; iToken < C_TOKENS; iToken++) {
-    m_xTokenAry[iToken] = (Str*)&m_xTokenArea.aArea()[C_TOKEN_SPACE * iToken];
-    
-    m_xTokenAry2[iToken] = (Str*)&m_xTokenArea2.aArea()[C_TOKEN_SPACE * iToken];
-  }
-  
   //m_wWorkarea
   
   //----
@@ -153,7 +146,7 @@ void SePrompt::vLoop(void)
     
     vGetCommand();
     
-    if (0 == m_xTokenAry[0]->iLength())
+    if (0 == m_xTokenSet[0]->iLength())
       continue;
     
     bool bProcessResult = bProcessCommand();
@@ -168,9 +161,9 @@ void SePrompt::vLoop(void)
     if (m_bEcho) {
       vTrace("cmd: "_Str);
       for (i8 iToken = 0; iToken < C_TOKENS; iToken++) {
-        if (m_xTokenAry[iToken]->bEqual(""_Str))
+        if (m_xTokenSet[iToken]->bEqual(""_Str))
           break;
-        vTrace("%s "_Str,m_xTokenAry[iToken]);
+        vTrace("%s "_Str,m_xTokenSet[iToken]);
       }
       vTrace(": got: %s\n"_Str,m_sResponse.s());
       continue;
@@ -245,9 +238,9 @@ bool SePrompt::bExecuteString(StrVal& sRequest, eEC& eErrorCode)
   
   m_pTokeniser->vUseString(sRequest);
   i8 iToken = 0;
-  while (TK_NONE != m_pTokeniser->eNextToken(m_xTokenAry[iToken]->s())) {
+  while (TK_NONE != m_pTokeniser->eNextToken(m_xTokenSet[iToken]->s())) {
     
-    //vTrace("vGetCommand : [%lld] %s\n"_Str,iToken,m_xTokenAry[iToken]);
+    //vTrace("vGetCommand : [%lld] %s\n"_Str,iToken,m_xTokenSet[iToken]);
     
     iToken++;
     ASSERT(iToken < C_TOKENS);
@@ -268,9 +261,9 @@ bool SePrompt::bExecuteString(StrVal& sRequest, eEC& eErrorCode, StrVal& sRespon
   
   m_pTokeniser->vUseString(sRequest);
   i8 iToken = 0;
-  while (TK_NONE != m_pTokeniser->eNextToken(m_xTokenAry[iToken]->s())) {
+  while (TK_NONE != m_pTokeniser->eNextToken(m_xTokenSet[iToken]->s())) {
     
-    //vTrace("vGetCommand : [%lld] %s\n"_Str,iToken,m_xTokenAry[iToken]);
+    //vTrace("vGetCommand : [%lld] %s\n"_Str,iToken,m_xTokenSet[iToken]);
     
     iToken++;
     ASSERT(iToken < C_TOKENS);
@@ -292,9 +285,9 @@ bool SePrompt::bExecuteString(StrVal& sRequest, eEC& eErrorCode, Str** ppRowPtr)
   
   m_pTokeniser->vUseString(sRequest);
   i8 iToken = 0;
-  while (TK_NONE != m_pTokeniser->eNextToken(m_xTokenAry[iToken]->s())) {
+  while (TK_NONE != m_pTokeniser->eNextToken(m_xTokenSet[iToken]->s())) {
     
-    //vTrace("vGetCommand : [%lld] %s\n"_Str,iToken,m_xTokenAry[iToken]);
+    //vTrace("vGetCommand : [%lld] %s\n"_Str,iToken,m_xTokenSet[iToken]);
     
     iToken++;
     ASSERT(iToken < C_TOKENS);
@@ -324,11 +317,11 @@ void SePrompt::vGetCommand(void)
     vGetCommandInput();
     
     // if empty line just return
-    if ( m_xTokenAry[0]->bEqual(""_Str) )
+    if ( m_xTokenSet[0]->bEqual(""_Str) )
       return;
 
     // if its a command file just return
-    if (bTestFile(m_xTokenAry[0]))
+    if (bTestFile(m_xTokenSet[0]))
       return;
     
     // collect till ;
@@ -348,9 +341,9 @@ void SePrompt::vGetCommandArgument(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   i8 iToken = 0;
-  while (TK_NONE != m_pTokeniser->eNextToken(m_xTokenAry[iToken]->s())) {
+  while (TK_NONE != m_pTokeniser->eNextToken(m_xTokenSet[iToken]->s())) {
     
-    //vTrace("vGetCommand : [%lld] %s\n"_Str,iToken,m_xTokenAry[iToken]);
+    //vTrace("vGetCommand : [%lld] %s\n"_Str,iToken,m_xTokenSet[iToken]);
     
     iToken++;
     ASSERT(iToken < C_TOKENS);
@@ -368,12 +361,13 @@ void SePrompt::vGetCommandInput(void)
   
   while (true) {
     
-    m_pTokeniser->vResetTokens(m_xTokenAry,C_TOKENS);
+    m_xTokenSet.vReset();
+    m_xTokenSet2.vReset();
     
     i8 iToken = 0;
-    while (TK_NONE != m_pTokeniser->eNextToken(m_xTokenAry[iToken]->s())) {
+    while (TK_NONE != m_pTokeniser->eNextToken(m_xTokenSet[iToken]->s())) {
       
-      //vTrace("vGetCommand : [%lld] %s\n"_Str,iToken,m_xTokenAry[iToken]);
+      //vTrace("vGetCommand : [%lld] %s\n"_Str,iToken,m_xTokenSet[iToken]);
       
       iToken++;
       ASSERT(iToken < C_TOKENS);
@@ -448,7 +442,7 @@ bool SePrompt::bProcessCommand(bool bPostProcess)
   if (bCmdIs("?"_Str))          return bHelp();
   if (bCmdIs("help"_Str))       return bHelp();
   if (bCmdIs("!!"_Str))         return bRecallCommand();
-  if ('!' == *m_xTokenAry[0]->s()) return bRecallCommand();
+  if ('!' == *m_xTokenSet[0]->s()) return bRecallCommand();
   if (bCmdIs("antbl"_Str))      return bAnalyzeTable();
   if (bCmdIs("begin"_Str)) {
     if (bOneIs("insert"_Str))   return bBeginInsert();
@@ -494,11 +488,11 @@ bool SePrompt::bProcessCommand(bool bPostProcess)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append to history
-  m_xHistory.vAppend(m_xTokenAry);
+  m_xHistory.vAppend(m_xTokenSet);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for command file
-  if (bTestFile(m_xTokenAry[0]))
+  if (bTestFile(m_xTokenSet[0]))
     return bRunFile();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -511,7 +505,7 @@ bool SePrompt::bProcessCommand(bool bPostProcess)
   if (! bPostProcess)
     return true;
   
-  if (m_xTokenAry[0]->bEqual("sel"_Str) || m_xTokenAry[0]->bEqual("rgesel"_Str)) {
+  if (m_xTokenSet[0]->bEqual("sel"_Str) || m_xTokenSet[0]->bEqual("rgesel"_Str)) {
     vIterateRows();
     return bReturnTable();
   }
@@ -519,7 +513,7 @@ bool SePrompt::bProcessCommand(bool bPostProcess)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // the following never return
   
-  if (m_xTokenAry[0]->bEqual("mon"_Str)) {
+  if (m_xTokenSet[0]->bEqual("mon"_Str)) {
     while (true) {
       PosixThread::vSleepSec(10);
       if (!bExecuteRequest())
@@ -527,7 +521,7 @@ bool SePrompt::bProcessCommand(bool bPostProcess)
     }
   }
   
-  if (m_xTokenAry[0]->bEqual("x"_Str)) {
+  if (m_xTokenSet[0]->bEqual("x"_Str)) {
     while (true)
       bExecuteRequest();
   }
@@ -558,7 +552,7 @@ void SePrompt::vClearEcho(void)
 /*----------------------------------------------------------------------------*/
 void SePrompt::vSetExpect(void)
 {
-  m_sExpect = m_xTokenAry[1];
+  m_sExpect = m_xTokenSet[1];
   
   m_bExpect = true;
   
@@ -609,7 +603,7 @@ bool SePrompt::bRunFile(void)
   if ( ! bTokenCheck(1) )
     return false;
   
-  vPushFile(m_xTokenAry[0]);
+  vPushFile(m_xTokenSet[0]);
   m_pTokeniser->vLineMode(true);
   m_sResponse = "<ok>"_Str;
   
@@ -624,7 +618,7 @@ bool SePrompt::bRecallCommand(void)
   if ( ! bTokenCheck(1) )
     return false;
   
-  if (! m_xHistory.bRecall(m_xTokenAry,C_TOKENS))
+  if (! m_xHistory.bRecall(m_xTokenSet,C_TOKENS))
     return true;
   
   return false;
@@ -639,9 +633,9 @@ void SePrompt::vClipTokens(i8 nTokens)
   
   for (i8 iFromToken = nTokens; iFromToken < C_TOKENS; iFromToken++) {
     
-    m_xTokenAry[iToToken++]->vCopy(m_xTokenAry[iFromToken]);
+    m_xTokenSet[iToToken++]->vCopy(m_xTokenSet[iFromToken]);
     
-    if (m_xTokenAry[iFromToken]->bEqual(""_Str))
+    if (m_xTokenSet[iFromToken]->bEqual(""_Str))
       break;
   }
   
@@ -662,13 +656,13 @@ bool SePrompt::bExecuteRequest(void)
   
   // get count of words in pWords
   for (iTokens = 0; iTokens < C_TOKENS; iTokens++)
-    if (m_xTokenAry[iTokens]->bEqual(""_Str))
+    if (m_xTokenSet[iTokens]->bEqual(""_Str))
       break;
 
                                                  //! make this part of verbose??
-  //m_pTokeniser->vDumpTokens("Command : "_Str,m_xTokenAry,C_TOKENS);
+  //m_pTokeniser->vDumpTokens("Command : "_Str,m_xTokenSet,C_TOKENS);
   
-  bool bResult = RapidsSE_ExecuteRequest(m_pSEitf,m_xTokenAry,iTokens,&aResponse);
+  bool bResult = RapidsSE_ExecuteRequest(m_pSEitf,m_xTokenSet,iTokens,&aResponse);
   
   if (bResult)
     m_sResponse = aResponse ? (Str*)aResponse : ""_Str;
@@ -739,8 +733,8 @@ bool SePrompt::bReturnTable(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  m_xTokenAry[0]->vCopy("rettbl"_Str);
-  m_xTokenAry[1]->vCopy(""_Str);
+  m_xTokenSet[0]->vCopy("rettbl"_Str);
+  m_xTokenSet[1]->vCopy(""_Str);
   
   if (!bExecuteRequest()) {
     vTrace("bReturnTable: (%s) Return Table FAILED!!! : %s\n"_Str, m_sResponse.s());
@@ -900,14 +894,14 @@ bool SePrompt::bBeginInsert(void)
   i8 iToken;
   i8 iNumTokens;
   
-  ASSERT(m_xTokenAry[0]->bEqual("begin"_Str));
-  ASSERT(m_xTokenAry[1]->bEqual("insert"_Str));
+  ASSERT(m_xTokenSet[0]->bEqual("begin"_Str));
+  ASSERT(m_xTokenSet[1]->bEqual("insert"_Str));
   
   for (iToken = 0; iToken < C_TOKENS; iToken++) {
-    if (! *m_xTokenAry[iToken]->s())
+    if (! *m_xTokenSet[iToken]->s())
       break;
-    m_xTokenAry2[iToken]->vCopy(m_xTokenAry[iToken]);
-    m_xTokenAry[iToken]->vCopy(""_Str);
+    m_xTokenSet2[iToken]->vCopy(m_xTokenSet[iToken]);
+    m_xTokenSet[iToken]->vCopy(""_Str);
   }
   
   iNumTokens = iToken;
@@ -920,8 +914,8 @@ bool SePrompt::bBeginInsert(void)
   }
   
   // get table pointer
-  m_xTokenAry[0]->vCopy("gettbl"_Str);
-  m_xTokenAry[1]->vCopy(m_xTokenAry2[2]);
+  m_xTokenSet[0]->vCopy("gettbl"_Str);
+  m_xTokenSet[1]->vCopy(m_xTokenSet2[2]);
   if (!bExecuteRequest()) {
     vTrace("SePrompt::bBeginInsert : gettbl FAILED!!!\n"_Str);
     return false;
@@ -944,12 +938,12 @@ bool SePrompt::bSleep(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  ASSERT(m_xTokenAry[0]->bEqual("sleep"_Str));
+  ASSERT(m_xTokenSet[0]->bEqual("sleep"_Str));
   
   if ( ! bTokenCheck(2) )
     return false;
   
-  i8 nSeconds = m_xTokenAry[1]->iToI8();
+  i8 nSeconds = m_xTokenSet[1]->iToI8();
 
   PosixThread::vSleepSec(nSeconds);
   
@@ -966,15 +960,15 @@ bool SePrompt::bChangeWorkingDir(void)
   s256 sDir;
   Dir xDir;
   
-  ASSERT(m_xTokenAry[0]->bEqual("cd"_Str));
+  ASSERT(m_xTokenSet[0]->bEqual("cd"_Str));
   
-  sDir = m_xTokenAry[1];
+  sDir = m_xTokenSet[1];
   
   i8 iToken;
   for (iToken = 2; iToken < C_TOKENS; iToken++) {
-    if (! *m_xTokenAry[iToken]->s())
+    if (! *m_xTokenSet[iToken]->s())
       break;
-    sDir.vConcat(m_xTokenAry[iToken]);
+    sDir.vConcat(m_xTokenSet[iToken]);
   }
 
   if ( ! xDir.bChangeCurrent(sDir) ) {
@@ -994,7 +988,7 @@ bool SePrompt::bAnalyzeTable(void)
   s256 sDir;
   Dir xDir;
   
-  ASSERT(m_xTokenAry[0]->bEqual("antbl"_Str));
+  ASSERT(m_xTokenSet[0]->bEqual("antbl"_Str));
   
   return bExecuteRequest();
 }
@@ -1009,7 +1003,7 @@ bool SePrompt::bDanalyzeTable(void)
   s256 sDir;
   Dir xDir;
   
-  ASSERT(m_xTokenAry[0]->bEqual("dantbl"_Str));
+  ASSERT(m_xTokenSet[0]->bEqual("dantbl"_Str));
   
   return bExecuteRequest();
 }
@@ -1021,7 +1015,7 @@ bool SePrompt::bDocol(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  ASSERT(m_xTokenAry[0]->bEqual("docol"_Str));
+  ASSERT(m_xTokenSet[0]->bEqual("docol"_Str));
   return bExecuteRequest();
 }
 
@@ -1032,18 +1026,18 @@ bool SePrompt::bCreateCatalog(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  ASSERT(m_xTokenAry[0]->bEqual("create"_Str));
-  ASSERT(m_xTokenAry[1]->bEqual("catalog"_Str));
+  ASSERT(m_xTokenSet[0]->bEqual("create"_Str));
+  ASSERT(m_xTokenSet[1]->bEqual("catalog"_Str));
   
   i8 iToken;
   
-  // copy tokens from m_xTokenAry to m_xTokenAry2
+  // copy tokens from m_xTokenSet to m_xTokenSet2
   // while doing that also validate the create statament
   for (iToken = 0; iToken < C_TOKENS; iToken++) {
-    if (! *m_xTokenAry[iToken]->s())
+    if (! *m_xTokenSet[iToken]->s())
       break;
-    m_xTokenAry2[iToken]->vCopy(m_xTokenAry[iToken]);
-    m_xTokenAry[iToken]->vCopy(""_Str);
+    m_xTokenSet2[iToken]->vCopy(m_xTokenSet[iToken]);
+    m_xTokenSet[iToken]->vCopy(""_Str);
   }
   
   i8 iNumTokens = iToken;
@@ -1056,13 +1050,13 @@ bool SePrompt::bCreateCatalog(void)
   }
   
   // create a catalog
-  m_xTokenAry[0]->vCopy("mkcat"_Str);
-  m_xTokenAry[1]->vCopy(m_xTokenAry2[2]);
+  m_xTokenSet[0]->vCopy("mkcat"_Str);
+  m_xTokenSet[1]->vCopy(m_xTokenSet2[2]);
   
   if (!bExecuteRequest())
     return false;
   
-  //vTrace("Catalog created: %s\n"_Str, m_xTokenAry2[2]);
+  //vTrace("Catalog created: %s\n"_Str, m_xTokenSet2[2]);
   return true;
 }
 
@@ -1075,21 +1069,21 @@ bool SePrompt::bCreateIndex(bool bUnique)
   
   i8 iIfUnique = bUnique ? 1 : 0;
   
-  ASSERT(m_xTokenAry[0]->bEqual("create"_Str));
+  ASSERT(m_xTokenSet[0]->bEqual("create"_Str));
   ASSERT(   (  bUnique &&
-               m_xTokenAry[1]->bEqual("unique"_Str) &&
-               m_xTokenAry[2]->bEqual("index"_Str) )
+               m_xTokenSet[1]->bEqual("unique"_Str) &&
+               m_xTokenSet[2]->bEqual("index"_Str) )
           ||
-            (! bUnique && m_xTokenAry[1]->bEqual("index"_Str))
+            (! bUnique && m_xTokenSet[1]->bEqual("index"_Str))
          );
   
-  // copy tokens from m_xTokenAry to m_xTokenAry2
+  // copy tokens from m_xTokenSet to m_xTokenSet2
   i8 iToken;
   for (iToken = 0; iToken < C_TOKENS; iToken++) {
-    if (! *m_xTokenAry[iToken]->s())
+    if (! *m_xTokenSet[iToken]->s())
       break;
-    m_xTokenAry2[iToken]->vCopy(m_xTokenAry[iToken]);
-    m_xTokenAry[iToken]->vCopy(""_Str);
+    m_xTokenSet2[iToken]->vCopy(m_xTokenSet[iToken]);
+    m_xTokenSet[iToken]->vCopy(""_Str);
   }
   
   i8 iValue;
@@ -1105,19 +1099,19 @@ bool SePrompt::bCreateIndex(bool bUnique)
   }
   
   // token[3] should be 'on'
-  if (!m_xTokenAry2[3 + iIfUnique]->bEqual("on"_Str)) {
+  if (!m_xTokenSet2[3 + iIfUnique]->bEqual("on"_Str)) {
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
   }
   
   // token[5] should be '('
-  if (!m_xTokenAry2[5 + iIfUnique]->bEqual("("_Str)) {
+  if (!m_xTokenSet2[5 + iIfUnique]->bEqual("("_Str)) {
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
   }
   
   // last-1 token should be ')'
-  if (!m_xTokenAry2[iNumTokens - 1]->bEqual(")"_Str)) {
+  if (!m_xTokenSet2[iNumTokens - 1]->bEqual(")"_Str)) {
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
   }
@@ -1125,23 +1119,23 @@ bool SePrompt::bCreateIndex(bool bUnique)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create the index
   
-  m_xTokenAry[0]->vCopy("mkidx"_Str);
-  m_xTokenAry[1]->vCopy(m_xTokenAry2[4 + iIfUnique]);
-  m_xTokenAry[2]->vCopy(m_xTokenAry2[2 + iIfUnique]);
+  m_xTokenSet[0]->vCopy("mkidx"_Str);
+  m_xTokenSet[1]->vCopy(m_xTokenSet2[4 + iIfUnique]);
+  m_xTokenSet[2]->vCopy(m_xTokenSet2[2 + iIfUnique]);
   
   if (!bExecuteRequest())
     return false;
   
   // change folder to table
-  m_xTokenAry[0]->vCopy("cf"_Str);
-  m_xTokenAry[1]->vCopy(m_xTokenAry2[4 + iIfUnique]);
+  m_xTokenSet[0]->vCopy("cf"_Str);
+  m_xTokenSet[1]->vCopy(m_xTokenSet2[4 + iIfUnique]);
   
   if (!bExecuteRequest()) {
     vTrace("SePrompt::bCreateIndex : cf FAILED!!!\n"_Str);
     
     // create the table
-    m_xTokenAry[0]->vCopy("rmidx"_Str);
-    m_xTokenAry[1]->vCopy(m_xTokenAry2[2 + iIfUnique]);
+    m_xTokenSet[0]->vCopy("rmidx"_Str);
+    m_xTokenSet[1]->vCopy(m_xTokenSet2[2 + iIfUnique]);
     
     if (!bExecuteRequest()) {
       return false;
@@ -1151,15 +1145,15 @@ bool SePrompt::bCreateIndex(bool bUnique)
   }
   
   // change folder to indexes
-  m_xTokenAry[0]->vCopy("cf"_Str);
-  m_xTokenAry[1]->vCopy("indexes"_Str);
+  m_xTokenSet[0]->vCopy("cf"_Str);
+  m_xTokenSet[1]->vCopy("indexes"_Str);
   
   if (!bExecuteRequest()) {
     vTrace("SePrompt::bCreateIndex : cf FAILED!!!\n"_Str);
     
     // create the table
-    m_xTokenAry[0]->vCopy("rmidx"_Str);
-    m_xTokenAry[1]->vCopy(m_xTokenAry2[2 + iIfUnique]);
+    m_xTokenSet[0]->vCopy("rmidx"_Str);
+    m_xTokenSet[1]->vCopy(m_xTokenSet2[2 + iIfUnique]);
     
     if (!bExecuteRequest()) {
       return false;
@@ -1175,18 +1169,18 @@ bool SePrompt::bCreateIndex(bool bUnique)
   i8 iCurrentToken = 6 + iIfUnique;
   while(iCurrentToken < iNumTokens - 1) {
     
-    if (iCurrentToken != 6 + iIfUnique && !m_xTokenAry2[iCurrentToken++]->bEqual(","_Str)) {
-      bIndexReturnTable(m_xTokenAry2[4 + iIfUnique], m_xTokenAry2[2 + iIfUnique]);
+    if (iCurrentToken != 6 + iIfUnique && !m_xTokenSet2[iCurrentToken++]->bEqual(","_Str)) {
+      bIndexReturnTable(m_xTokenSet2[4 + iIfUnique], m_xTokenSet2[2 + iIfUnique]);
       m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
       return false;
     }
 
     // add columns to the table
     i8 j = 0;
-    m_xTokenAry[j++]->vCopy("addidxcol"_Str);
-    m_xTokenAry[j++]->vCopy(m_xTokenAry2[4 + iIfUnique]);
-    m_xTokenAry[j++]->vCopy(m_xTokenAry2[2 + iIfUnique]);
-    m_xTokenAry[j++]->vCopy(m_xTokenAry2[iCurrentToken++]);
+    m_xTokenSet[j++]->vCopy("addidxcol"_Str);
+    m_xTokenSet[j++]->vCopy(m_xTokenSet2[4 + iIfUnique]);
+    m_xTokenSet[j++]->vCopy(m_xTokenSet2[2 + iIfUnique]);
+    m_xTokenSet[j++]->vCopy(m_xTokenSet2[iCurrentToken++]);
   
     // add the column
     if (!bExecuteRequest()) {
@@ -1195,7 +1189,7 @@ bool SePrompt::bCreateIndex(bool bUnique)
       eEC eError = m_pSEitf->eGetLastError();
       
       // drop the table that was created
-      bIndexReturnTable(m_xTokenAry2[4 + iIfUnique], m_xTokenAry2[2 + iIfUnique]);
+      bIndexReturnTable(m_xTokenSet2[4 + iIfUnique], m_xTokenSet2[2 + iIfUnique]);
       
       // return error returned by addColumn
       m_pSEitf->vSetLastError(eError);
@@ -1208,11 +1202,11 @@ bool SePrompt::bCreateIndex(bool bUnique)
   
   if (bUnique) {
     
-    m_xTokenAry[0]->vCopy("setidxunique"_Str);
-    m_xTokenAry[1]->vCopy(m_xTokenAry2[4 + iIfUnique]);
-    m_xTokenAry[2]->vCopy(m_xTokenAry2[2 + iIfUnique]);
-    m_xTokenAry[3]->vCopy("true"_Str);
-    m_xTokenAry[4]->vCopy(""_Str);
+    m_xTokenSet[0]->vCopy("setidxunique"_Str);
+    m_xTokenSet[1]->vCopy(m_xTokenSet2[4 + iIfUnique]);
+    m_xTokenSet[2]->vCopy(m_xTokenSet2[2 + iIfUnique]);
+    m_xTokenSet[3]->vCopy("true"_Str);
+    m_xTokenSet[4]->vCopy(""_Str);
     
     if (!bExecuteRequest()) {
       vTrace("SePrompt::bCreateIndex : setidxunique FAILED!!!\n"_Str);
@@ -1220,7 +1214,7 @@ bool SePrompt::bCreateIndex(bool bUnique)
       eEC eError = m_pSEitf->eGetLastError();
       
       // drop the table that was created
-      bIndexReturnTable(m_xTokenAry2[4 + iIfUnique], m_xTokenAry2[2 + iIfUnique]);
+      bIndexReturnTable(m_xTokenSet2[4 + iIfUnique], m_xTokenSet2[2 + iIfUnique]);
       
       // return error returned by addColumn
       m_pSEitf->vSetLastError(eError);
@@ -1232,10 +1226,10 @@ bool SePrompt::bCreateIndex(bool bUnique)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // end of make index
   
-  m_xTokenAry[0]->vCopy("endmkidx"_Str);
-  m_xTokenAry[1]->vCopy(m_xTokenAry2[4 + iIfUnique]);
-  m_xTokenAry[2]->vCopy(m_xTokenAry2[2 + iIfUnique]);
-  m_xTokenAry[3]->vCopy(""_Str);
+  m_xTokenSet[0]->vCopy("endmkidx"_Str);
+  m_xTokenSet[1]->vCopy(m_xTokenSet2[4 + iIfUnique]);
+  m_xTokenSet[2]->vCopy(m_xTokenSet2[2 + iIfUnique]);
+  m_xTokenSet[3]->vCopy(""_Str);
   
   if (!bExecuteRequest()) {
     vTrace("SePrompt::bCreateIndex : endmkidx FAILED!!!\n"_Str);
@@ -1243,7 +1237,7 @@ bool SePrompt::bCreateIndex(bool bUnique)
     eEC eError = m_pSEitf->eGetLastError();
     
     // drop the table that was created
-    bIndexReturnTable(m_xTokenAry2[4 + iIfUnique], m_xTokenAry2[2 + iIfUnique]);
+    bIndexReturnTable(m_xTokenSet2[4 + iIfUnique], m_xTokenSet2[2 + iIfUnique]);
     
     // return error returned by addColumn
     m_pSEitf->vSetLastError(eError);
@@ -1254,15 +1248,15 @@ bool SePrompt::bCreateIndex(bool bUnique)
   // restore path
   
   // change folder to tables
-  m_xTokenAry[0]->vCopy("cf"_Str);
-  m_xTokenAry[1]->vCopy(".."_Str);
+  m_xTokenSet[0]->vCopy("cf"_Str);
+  m_xTokenSet[1]->vCopy(".."_Str);
   
   if (!bExecuteRequest()) {
     vTrace("SePrompt::bCreateIndex : cf FAILED!!!\n"_Str);
     
     // create the table
-    m_xTokenAry[0]->vCopy("rmidx"_Str);
-    m_xTokenAry[1]->vCopy(m_xTokenAry2[2 + iIfUnique]);
+    m_xTokenSet[0]->vCopy("rmidx"_Str);
+    m_xTokenSet[1]->vCopy(m_xTokenSet2[2 + iIfUnique]);
     
     if (!bExecuteRequest()) {
       return false;
@@ -1272,15 +1266,15 @@ bool SePrompt::bCreateIndex(bool bUnique)
   }
   
   // change folder to tables
-  m_xTokenAry[0]->vCopy("cf"_Str);
-  m_xTokenAry[1]->vCopy(".."_Str);
+  m_xTokenSet[0]->vCopy("cf"_Str);
+  m_xTokenSet[1]->vCopy(".."_Str);
   
   if (!bExecuteRequest()) {
     vTrace("SePrompt::bCreateIndex : cf FAILED!!!\n"_Str);
     
     // create the table
-    m_xTokenAry[0]->vCopy("rmidx"_Str);
-    m_xTokenAry[1]->vCopy(m_xTokenAry2[2 + iIfUnique]);
+    m_xTokenSet[0]->vCopy("rmidx"_Str);
+    m_xTokenSet[1]->vCopy(m_xTokenSet2[2 + iIfUnique]);
     
     if (!bExecuteRequest()) {
       return false;
@@ -1299,18 +1293,18 @@ bool SePrompt::bCreateSchema(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
 
-  ASSERT(m_xTokenAry[0]->bEqual("create"_Str));
-  ASSERT(m_xTokenAry[1]->bEqual("schema"_Str));
+  ASSERT(m_xTokenSet[0]->bEqual("create"_Str));
+  ASSERT(m_xTokenSet[1]->bEqual("schema"_Str));
   
   i8 iToken;
   
-  // copy tokens from m_xTokenAry to m_xTokenAry2
+  // copy tokens from m_xTokenSet to m_xTokenSet2
   // while doing that also validate the create statament
   for (iToken = 0; iToken < C_TOKENS; iToken++) {
-    if (! *m_xTokenAry[iToken]->s())
+    if (! *m_xTokenSet[iToken]->s())
       break;
-    m_xTokenAry2[iToken]->vCopy(m_xTokenAry[iToken]);
-    m_xTokenAry[iToken]->vCopy(""_Str);
+    m_xTokenSet2[iToken]->vCopy(m_xTokenSet[iToken]);
+    m_xTokenSet[iToken]->vCopy(""_Str);
   }
   
   i8 iNumTokens = iToken;
@@ -1323,13 +1317,13 @@ bool SePrompt::bCreateSchema(void)
   }
 
   // create a schema
-  m_xTokenAry[0]->vCopy("mksch"_Str);
-  m_xTokenAry[1]->vCopy(m_xTokenAry2[2]);
+  m_xTokenSet[0]->vCopy("mksch"_Str);
+  m_xTokenSet[1]->vCopy(m_xTokenSet2[2]);
   
   if (!bExecuteRequest())
     return false;
   
-  //vTrace("Schema created: %s\n"_Str, m_xTokenAry2[2]);
+  //vTrace("Schema created: %s\n"_Str, m_xTokenSet2[2]);
   return true;
 }
 
@@ -1340,18 +1334,18 @@ bool SePrompt::bCreateTenant(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  ASSERT(m_xTokenAry[0]->bEqual("create"_Str));
-  ASSERT(m_xTokenAry[1]->bEqual("tenant"_Str));
+  ASSERT(m_xTokenSet[0]->bEqual("create"_Str));
+  ASSERT(m_xTokenSet[1]->bEqual("tenant"_Str));
   
   i8 iToken;
   
-  // copy tokens from m_xTokenAry to m_xTokenAry2
+  // copy tokens from m_xTokenSet to m_xTokenSet2
   // while doing that also validate the create statament
   for (iToken = 0; iToken < C_TOKENS; iToken++) {
-    if (! *m_xTokenAry[iToken]->s())
+    if (! *m_xTokenSet[iToken]->s())
       break;
-    m_xTokenAry2[iToken]->vCopy(m_xTokenAry[iToken]);
-    m_xTokenAry[iToken]->vCopy(""_Str);
+    m_xTokenSet2[iToken]->vCopy(m_xTokenSet[iToken]);
+    m_xTokenSet[iToken]->vCopy(""_Str);
   }
   
   i8 iNumTokens = iToken;
@@ -1364,13 +1358,13 @@ bool SePrompt::bCreateTenant(void)
   }
   
   // create a tenant
-  m_xTokenAry[0]->vCopy("mkten"_Str);
-  m_xTokenAry[1]->vCopy(m_xTokenAry2[2]);
+  m_xTokenSet[0]->vCopy("mkten"_Str);
+  m_xTokenSet[1]->vCopy(m_xTokenSet2[2]);
   
   if (!bExecuteRequest())
     return false;
   
-  //vTrace("Tenant created: %s\n"_Str, m_xTokenAry2[2]);
+  //vTrace("Tenant created: %s\n"_Str, m_xTokenSet2[2]);
   return true;
 }
 
@@ -1381,18 +1375,18 @@ bool SePrompt::bCreateTable(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  ASSERT(m_xTokenAry[0]->bSame("create"_Str));
-  ASSERT(m_xTokenAry[1]->bSame("table"_Str));
+  ASSERT(m_xTokenSet[0]->bSame("create"_Str));
+  ASSERT(m_xTokenSet[1]->bSame("table"_Str));
   
   i8 iToken;
   
-  // copy tokens from m_xTokenAry to m_xTokenAry2
+  // copy tokens from m_xTokenSet to m_xTokenSet2
   // while doing that also validate the create statament
   for (iToken = 0; iToken < C_TOKENS; iToken++) {
-    if (! *m_xTokenAry[iToken]->s())
+    if (! *m_xTokenSet[iToken]->s())
       break;
-    m_xTokenAry2[iToken]->vCopy(m_xTokenAry[iToken]);
-    m_xTokenAry[iToken]->vCopy(""_Str);
+    m_xTokenSet2[iToken]->vCopy(m_xTokenSet[iToken]);
+    m_xTokenSet[iToken]->vCopy(""_Str);
   }
   
   i8 iNumTokens = iToken;
@@ -1406,34 +1400,34 @@ bool SePrompt::bCreateTable(void)
   }
   
   // token[3] should be '('
-  if (!m_xTokenAry2[3]->bEqual("("_Str)) {
+  if (!m_xTokenSet2[3]->bEqual("("_Str)) {
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
   }
   
   // last-1 token should be ')'
-  if (!m_xTokenAry2[iNumTokens-1]->bEqual(")"_Str)) {
+  if (!m_xTokenSet2[iNumTokens-1]->bEqual(")"_Str)) {
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
   }
 
   // create the table
-  m_xTokenAry[0]->vCopy("mktbl"_Str);
-  m_xTokenAry[1]->vCopy(m_xTokenAry2[2]);
+  m_xTokenSet[0]->vCopy("mktbl"_Str);
+  m_xTokenSet[1]->vCopy(m_xTokenSet2[2]);
   
   if (!bExecuteRequest())
     return false;
   
   // change folder to table
-  m_xTokenAry[0]->vCopy("cf"_Str);
-  m_xTokenAry[1]->vCopy(m_xTokenAry2[2]);
+  m_xTokenSet[0]->vCopy("cf"_Str);
+  m_xTokenSet[1]->vCopy(m_xTokenSet2[2]);
   
   if (!bExecuteRequest()) {
     vTrace("SePrompt::bCreateTable : cf FAILED!!!\n"_Str);
     
     // create the table
-    m_xTokenAry[0]->vCopy("rmtbl"_Str);
-    m_xTokenAry[1]->vCopy(m_xTokenAry2[2]);
+    m_xTokenSet[0]->vCopy("rmtbl"_Str);
+    m_xTokenSet[1]->vCopy(m_xTokenSet2[2]);
     
     if (!bExecuteRequest()) {
       return false;
@@ -1443,15 +1437,15 @@ bool SePrompt::bCreateTable(void)
   }
   
   // get reference to pTable
-  m_xTokenAry[0]->vCopy("gettbl"_Str);
-  m_xTokenAry[1]->vCopy(m_xTokenAry2[2]);
+  m_xTokenSet[0]->vCopy("gettbl"_Str);
+  m_xTokenSet[1]->vCopy(m_xTokenSet2[2]);
   
   if (!bExecuteRequest()) {
     vTrace("SePrompt::bCreateTable : gettbl FAILED!!!\n"_Str);
     
     // remove the table
-    m_xTokenAry[0]->vCopy("rmtbl"_Str);
-    m_xTokenAry[1]->vCopy(m_xTokenAry2[2]);
+    m_xTokenSet[0]->vCopy("rmtbl"_Str);
+    m_xTokenSet[1]->vCopy(m_xTokenSet2[2]);
     
     if (!bExecuteRequest()) {      
       return false;
@@ -1464,159 +1458,159 @@ bool SePrompt::bCreateTable(void)
   i8 iCurrentToken = 4;
   while(iCurrentToken < iNumTokens - 2) {
     
-    if (iCurrentToken != 4 && !m_xTokenAry2[iCurrentToken++]->bEqual(","_Str)) {
-      bDropReturnTable(m_xTokenAry2[2]);
+    if (iCurrentToken != 4 && !m_xTokenSet2[iCurrentToken++]->bEqual(","_Str)) {
+      bDropReturnTable(m_xTokenSet2[2]);
       m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
       return false;
     }
     
     // add columns to the table
     i8 j = 0;
-    m_xTokenAry[j++]->vCopy("addcol"_Str);
-    m_xTokenAry[j++]->vCopy(m_xTokenAry2[2]);
-    m_xTokenAry[j++]->vCopy(m_xTokenAry2[iCurrentToken++]);
+    m_xTokenSet[j++]->vCopy("addcol"_Str);
+    m_xTokenSet[j++]->vCopy(m_xTokenSet2[2]);
+    m_xTokenSet[j++]->vCopy(m_xTokenSet2[iCurrentToken++]);
     
-    if (m_xTokenAry2[iCurrentToken]->bSame("integer"_Str) ||
-        m_xTokenAry2[iCurrentToken]->bSame("varchar"_Str) ||
-        m_xTokenAry2[iCurrentToken]->bSame("varbinary"_Str) ||
-        m_xTokenAry2[iCurrentToken]->bSame("char"_Str) ||
-        m_xTokenAry2[iCurrentToken]->bSame("float"_Str)) {
+    if (m_xTokenSet2[iCurrentToken]->bSame("integer"_Str) ||
+        m_xTokenSet2[iCurrentToken]->bSame("varchar"_Str) ||
+        m_xTokenSet2[iCurrentToken]->bSame("varbinary"_Str) ||
+        m_xTokenSet2[iCurrentToken]->bSame("char"_Str) ||
+        m_xTokenSet2[iCurrentToken]->bSame("float"_Str)) {
       
       // copy varchar/char
-      m_xTokenAry[j]->vCopy(m_xTokenAry2[iCurrentToken++]);
+      m_xTokenSet[j]->vCopy(m_xTokenSet2[iCurrentToken++]);
       
-      if (m_xTokenAry2[iCurrentToken]->bEqual("("_Str)) {
+      if (m_xTokenSet2[iCurrentToken]->bEqual("("_Str)) {
         
         // str.cat '('
-        m_xTokenAry[j]->vConcat(m_xTokenAry2[iCurrentToken++]);
+        m_xTokenSet[j]->vConcat(m_xTokenSet2[iCurrentToken++]);
         
         // str.cat the size
-        m_xTokenAry[j]->vConcat(m_xTokenAry2[iCurrentToken]);
+        m_xTokenSet[j]->vConcat(m_xTokenSet2[iCurrentToken]);
         
         // check if it was numeric
-        if ( ! m_xTokenAry2[iCurrentToken++]->bIsNumeric() ) {
+        if ( ! m_xTokenSet2[iCurrentToken++]->bIsNumeric() ) {
           // drop the table
-          bDropReturnTable(m_xTokenAry2[2]);
+          bDropReturnTable(m_xTokenSet2[2]);
           m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
           return false;
         }
         
-        if (!m_xTokenAry2[iCurrentToken]->bEqual(")"_Str)) {
+        if (!m_xTokenSet2[iCurrentToken]->bEqual(")"_Str)) {
           // drop the table
-          bDropReturnTable(m_xTokenAry2[2]);
+          bDropReturnTable(m_xTokenSet2[2]);
           m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
           return false;
         }
         
         // str.cat ')'
-        m_xTokenAry[j]->vConcat(m_xTokenAry2[iCurrentToken++]);
+        m_xTokenSet[j]->vConcat(m_xTokenSet2[iCurrentToken++]);
         
       }
     }
-    else if (m_xTokenAry2[iCurrentToken]->bSame("decimal"_Str)) {
+    else if (m_xTokenSet2[iCurrentToken]->bSame("decimal"_Str)) {
       
       // copy varchar/char
-      m_xTokenAry[j]->vCopy(m_xTokenAry2[iCurrentToken++]);
+      m_xTokenSet[j]->vCopy(m_xTokenSet2[iCurrentToken++]);
       
-      if (m_xTokenAry2[iCurrentToken]->bEqual("("_Str)) {
+      if (m_xTokenSet2[iCurrentToken]->bEqual("("_Str)) {
         
         // str.cat '('
-        m_xTokenAry[j]->vConcat(m_xTokenAry2[iCurrentToken++]);
+        m_xTokenSet[j]->vConcat(m_xTokenSet2[iCurrentToken++]);
         
         // str.cat the size
-        m_xTokenAry[j]->vConcat(m_xTokenAry2[iCurrentToken]);
+        m_xTokenSet[j]->vConcat(m_xTokenSet2[iCurrentToken]);
         
         // check if it was numeric
-        if ( ! m_xTokenAry2[iCurrentToken++]->bIsNumeric() ) {
-          bDropReturnTable(m_xTokenAry2[2]);
+        if ( ! m_xTokenSet2[iCurrentToken++]->bIsNumeric() ) {
+          bDropReturnTable(m_xTokenSet2[2]);
           m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
           return false;
         }
         
-        if (!m_xTokenAry2[iCurrentToken]->bEqual(","_Str)) {
-          bDropReturnTable(m_xTokenAry2[2]);
+        if (!m_xTokenSet2[iCurrentToken]->bEqual(","_Str)) {
+          bDropReturnTable(m_xTokenSet2[2]);
           m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
           return false;
         }
         
         // str.cat ','
-        m_xTokenAry[j]->vConcat(m_xTokenAry2[iCurrentToken++]);
+        m_xTokenSet[j]->vConcat(m_xTokenSet2[iCurrentToken++]);
         
         // str.cat the size
-        m_xTokenAry[j]->vConcat(m_xTokenAry2[iCurrentToken]);
+        m_xTokenSet[j]->vConcat(m_xTokenSet2[iCurrentToken]);
         
         // check if it was numeric
-        if ( ! m_xTokenAry2[iCurrentToken++]->bIsNumeric() ) {
-          bDropReturnTable(m_xTokenAry2[2]);
+        if ( ! m_xTokenSet2[iCurrentToken++]->bIsNumeric() ) {
+          bDropReturnTable(m_xTokenSet2[2]);
           m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
           return false;
         }
         
-        if (!m_xTokenAry2[iCurrentToken]->bEqual(")"_Str)) {
-          bDropReturnTable(m_xTokenAry2[2]);
+        if (!m_xTokenSet2[iCurrentToken]->bEqual(")"_Str)) {
+          bDropReturnTable(m_xTokenSet2[2]);
           m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
           return false;
         }
         
         // str.cat ')'
-        m_xTokenAry[j]->vConcat(m_xTokenAry2[iCurrentToken++]);
+        m_xTokenSet[j]->vConcat(m_xTokenSet2[iCurrentToken++]);
       }
     }
-    else if (m_xTokenAry2[iCurrentToken]->bSame("date"_Str) ||
-             m_xTokenAry2[iCurrentToken]->bSame("time"_Str) ||
-             m_xTokenAry2[iCurrentToken]->bSame("timestamp"_Str) ||
-             m_xTokenAry2[iCurrentToken]->bSame("interval"_Str) ||
-             m_xTokenAry2[iCurrentToken]->bSame("boolean"_Str)) {
-      m_xTokenAry[j]->vCopy(m_xTokenAry2[iCurrentToken++]);
+    else if (m_xTokenSet2[iCurrentToken]->bSame("date"_Str) ||
+             m_xTokenSet2[iCurrentToken]->bSame("time"_Str) ||
+             m_xTokenSet2[iCurrentToken]->bSame("timestamp"_Str) ||
+             m_xTokenSet2[iCurrentToken]->bSame("interval"_Str) ||
+             m_xTokenSet2[iCurrentToken]->bSame("boolean"_Str)) {
+      m_xTokenSet[j]->vCopy(m_xTokenSet2[iCurrentToken++]);
     }
     else {
       // drop the table that was created
-      bDropReturnTable(m_xTokenAry2[2]);
+      bDropReturnTable(m_xTokenSet2[2]);
       m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
       return false;
     }
     
     // check for NOT NULL
-    if (m_xTokenAry2[iCurrentToken]->bSame("not"_Str)) {
+    if (m_xTokenSet2[iCurrentToken]->bSame("not"_Str)) {
       
-      m_xTokenAry[j]->vConcat(" "_Str);
-      m_xTokenAry[j]->vConcat(m_xTokenAry2[iCurrentToken++]);
+      m_xTokenSet[j]->vConcat(" "_Str);
+      m_xTokenSet[j]->vConcat(m_xTokenSet2[iCurrentToken++]);
       
-      if (!m_xTokenAry2[iCurrentToken]->bSame("null"_Str)) {
-        bDropReturnTable(m_xTokenAry2[2]);
+      if (!m_xTokenSet2[iCurrentToken]->bSame("null"_Str)) {
+        bDropReturnTable(m_xTokenSet2[2]);
         m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
         return false;
       }
-      m_xTokenAry[j]->vConcat(" "_Str);
-      m_xTokenAry[j]->vConcat(m_xTokenAry2[iCurrentToken++]);
+      m_xTokenSet[j]->vConcat(" "_Str);
+      m_xTokenSet[j]->vConcat(m_xTokenSet2[iCurrentToken++]);
     }
     
     // check for PRIMARY KEY
-    if (m_xTokenAry2[iCurrentToken]->bSame("primary"_Str)) {
+    if (m_xTokenSet2[iCurrentToken]->bSame("primary"_Str)) {
       
-      m_xTokenAry[j]->vConcat(" "_Str);
-      m_xTokenAry[j]->vConcat(m_xTokenAry2[iCurrentToken++]);
+      m_xTokenSet[j]->vConcat(" "_Str);
+      m_xTokenSet[j]->vConcat(m_xTokenSet2[iCurrentToken++]);
       
-      if (!m_xTokenAry2[iCurrentToken]->bSame("key"_Str)) {
-        bDropReturnTable(m_xTokenAry2[2]);
+      if (!m_xTokenSet2[iCurrentToken]->bSame("key"_Str)) {
+        bDropReturnTable(m_xTokenSet2[2]);
         m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
         return false;
       }
-      m_xTokenAry[j]->vConcat(" "_Str);
-      m_xTokenAry[j]->vConcat(m_xTokenAry2[iCurrentToken++]);
+      m_xTokenSet[j]->vConcat(" "_Str);
+      m_xTokenSet[j]->vConcat(m_xTokenSet2[iCurrentToken++]);
     }
 
     // check for UNIQUE
-    if (m_xTokenAry2[iCurrentToken]->bSame("unique"_Str)) {
+    if (m_xTokenSet2[iCurrentToken]->bSame("unique"_Str)) {
       
-      m_xTokenAry[j]->vConcat(" "_Str);
-      m_xTokenAry[j]->vConcat(m_xTokenAry2[iCurrentToken++]);
+      m_xTokenSet[j]->vConcat(" "_Str);
+      m_xTokenSet[j]->vConcat(m_xTokenSet2[iCurrentToken++]);
     }
 
     
     // now we should see a column type
     // validate it
-    m_xTokenAry[j]->vToLower();
+    m_xTokenSet[j]->vToLower();
     
     // add the column
     if (!bExecuteRequest()) {
@@ -1625,7 +1619,7 @@ bool SePrompt::bCreateTable(void)
       eEC eError = m_pSEitf->eGetLastError();
       
       // drop the table that was created
-      bDropReturnTable(m_xTokenAry2[2]);
+      bDropReturnTable(m_xTokenSet2[2]);
       
       // return error returned by addColumn
       m_pSEitf->vSetLastError(eError);
@@ -1634,9 +1628,9 @@ bool SePrompt::bCreateTable(void)
   }
   
   // end of make table
-  m_xTokenAry[0]->vCopy("endmktbl"_Str);
-  m_xTokenAry[1]->vCopy(m_xTokenAry2[2]);
-  m_xTokenAry[2]->vCopy(""_Str);
+  m_xTokenSet[0]->vCopy("endmktbl"_Str);
+  m_xTokenSet[1]->vCopy(m_xTokenSet2[2]);
+  m_xTokenSet[2]->vCopy(""_Str);
   
   if (!bExecuteRequest()) {
     vTrace("SePrompt::bCreateTable : endmktbl FAILED!!!\n"_Str);
@@ -1647,15 +1641,15 @@ bool SePrompt::bCreateTable(void)
   ASSERT(bResult);
 
   // change folder to back to tables
-  m_xTokenAry[0]->vCopy("cf"_Str);
-  m_xTokenAry[1]->vCopy(".."_Str);
+  m_xTokenSet[0]->vCopy("cf"_Str);
+  m_xTokenSet[1]->vCopy(".."_Str);
   
   if (!bExecuteRequest()) {
     vTrace("SePrompt::bCreateTable : cf .. FAILED!!!\n"_Str);
     return false;
   }
   
-  //vTrace("Table created: %s\n"_Str, m_xTokenAry2[2]);
+  //vTrace("Table created: %s\n"_Str, m_xTokenSet2[2]);
   return true;
 }
 
@@ -1667,17 +1661,17 @@ void SePrompt::vCollectStatement(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   // we should have a first token (e.g. create or drop)
-  ASSERT(! m_xTokenAry[0]->bEqual(""_Str));
+  ASSERT(! m_xTokenSet[0]->bEqual(""_Str));
 
   // have we already seen the ';'
-  i8 iToken = m_pTokeniser->iFindToken(";"_Str,m_xTokenAry,C_TOKENS);
+  i8 iToken = m_pTokeniser->iFindToken(";"_Str,m_xTokenSet,C_TOKENS);
   
   if (iToken >= 0) {
-    //m_pTokeniser->vDumpTokens("\nCommand : "_Str,m_xTokenAry,C_TOKENS);
+    //m_pTokeniser->vDumpTokens("\nCommand : "_Str,m_xTokenSet,C_TOKENS);
     return;
   }
   
-  iToken = m_pTokeniser->iCountTokens(m_xTokenAry,C_TOKENS);
+  iToken = m_pTokeniser->iCountTokens(m_xTokenSet,C_TOKENS);
   
   // switch to terminal mode
   m_pTokeniser->vLineMode(false);
@@ -1688,11 +1682,11 @@ void SePrompt::vCollectStatement(void)
   // get tokens delimited by ';'
   for ( ; iToken < C_TOKENS; iToken++) {
     
-    eTK eToken = m_pTokeniser->eNextToken(m_xTokenAry[iToken]->s());
+    eTK eToken = m_pTokeniser->eNextToken(m_xTokenSet[iToken]->s());
     ASSERT(TK_NONE != eToken);
     
     // look for terminal
-    if (m_xTokenAry[iToken]->bEqual(";"_Str))
+    if (m_xTokenSet[iToken]->bEqual(";"_Str))
       break;
   }
   
@@ -1700,7 +1694,7 @@ void SePrompt::vCollectStatement(void)
   m_pTokeniser->vLineMode(true);
   m_pTokeniser->vPrompt(m_sPrompt);
   
-  //m_pTokeniser->vDumpTokens("Command : "_Str,m_xTokenAry,C_TOKENS);
+  //m_pTokeniser->vDumpTokens("Command : "_Str,m_xTokenSet,C_TOKENS);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1710,14 +1704,14 @@ void SePrompt::vStripSemicolon(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  i8 iToken = m_pTokeniser->iFindToken(";"_Str,m_xTokenAry,C_TOKENS);
+  i8 iToken = m_pTokeniser->iFindToken(";"_Str,m_xTokenSet,C_TOKENS);
   
   if (-1 == iToken)
     return;
   
-  *m_xTokenAry[iToken]->s() = '\0';
+  *m_xTokenSet[iToken]->s() = '\0';
   
-  //m_pTokeniser->vDumpTokens("Stripped"_Str,m_xTokenAry,C_TOKENS);
+  //m_pTokeniser->vDumpTokens("Stripped"_Str,m_xTokenSet,C_TOKENS);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1727,7 +1721,7 @@ bool SePrompt::bConnectCluster(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  ASSERT(m_xTokenAry[0]->bEqual("connectCluster"_Str));
+  ASSERT(m_xTokenSet[0]->bEqual("connectCluster"_Str));
   
   if (!bExecuteRequest()) {
     return false;
@@ -1746,14 +1740,14 @@ bool SePrompt::bDropCatalog(void)
   i8 iToken;
   i8 iNumTokens;
   
-  ASSERT(m_xTokenAry[0]->bEqual("drop"_Str));
-  ASSERT(m_xTokenAry[1]->bEqual("catalog"_Str));
+  ASSERT(m_xTokenSet[0]->bEqual("drop"_Str));
+  ASSERT(m_xTokenSet[1]->bEqual("catalog"_Str));
   
   for (iToken = 0; iToken < C_TOKENS; iToken++) {
-    if (! *m_xTokenAry[iToken]->s())
+    if (! *m_xTokenSet[iToken]->s())
       break;
-    m_xTokenAry2[iToken]->vCopy(m_xTokenAry[iToken]);
-    m_xTokenAry[iToken]->vCopy(""_Str);
+    m_xTokenSet2[iToken]->vCopy(m_xTokenSet[iToken]);
+    m_xTokenSet[iToken]->vCopy(""_Str);
   }
   
   iNumTokens = iToken;
@@ -1766,12 +1760,12 @@ bool SePrompt::bDropCatalog(void)
   }
   
   // drop a catalog
-  m_xTokenAry[0]->vCopy("rmcat"_Str);
-  m_xTokenAry[1]->vCopy(m_xTokenAry2[2]);
+  m_xTokenSet[0]->vCopy("rmcat"_Str);
+  m_xTokenSet[1]->vCopy(m_xTokenSet2[2]);
   if (!bExecuteRequest())
     return false;
   
-  //vTrace("Catalog dropped: %s\n"_Str, m_xTokenAry2[2]);
+  //vTrace("Catalog dropped: %s\n"_Str, m_xTokenSet2[2]);
   return true;
 }
 
@@ -1785,14 +1779,14 @@ bool SePrompt::bDropIndex(void)
   i8 iToken;
   i8 iNumTokens;
   
-  ASSERT(m_xTokenAry[0]->bEqual("drop"_Str));
-  ASSERT(m_xTokenAry[1]->bEqual("index"_Str));
+  ASSERT(m_xTokenSet[0]->bEqual("drop"_Str));
+  ASSERT(m_xTokenSet[1]->bEqual("index"_Str));
   
   for (iToken = 0; iToken < C_TOKENS; iToken++) {
-    if (! *m_xTokenAry[iToken]->s())
+    if (! *m_xTokenSet[iToken]->s())
       break;
-    m_xTokenAry2[iToken]->vCopy(m_xTokenAry[iToken]);
-    m_xTokenAry[iToken]->vCopy(""_Str);
+    m_xTokenSet2[iToken]->vCopy(m_xTokenSet[iToken]);
+    m_xTokenSet[iToken]->vCopy(""_Str);
   }
   
   iNumTokens = iToken;
@@ -1805,19 +1799,19 @@ bool SePrompt::bDropIndex(void)
   }
   
   // 4th token should be '.'
-  if (!m_xTokenAry2[3] ->bEqual("."_Str)) {
+  if (!m_xTokenSet2[3] ->bEqual("."_Str)) {
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
   }
   
   // drop a table
-  m_xTokenAry[0]->vCopy("rmidx"_Str);
-  m_xTokenAry[1]->vCopy(m_xTokenAry2[2]);
-  m_xTokenAry[2]->vCopy(m_xTokenAry2[4]);
+  m_xTokenSet[0]->vCopy("rmidx"_Str);
+  m_xTokenSet[1]->vCopy(m_xTokenSet2[2]);
+  m_xTokenSet[2]->vCopy(m_xTokenSet2[4]);
   if (!bExecuteRequest())
     return false;
   
-  //vTrace("Table dropped: %s\n"_Str, m_xTokenAry2[2]);
+  //vTrace("Table dropped: %s\n"_Str, m_xTokenSet2[2]);
   return true;
 }
 
@@ -1831,14 +1825,14 @@ bool SePrompt::bDropSchema(void)
   i8 iToken;
   i8 iNumTokens;
   
-  ASSERT(m_xTokenAry[0]->bEqual("drop"_Str));
-  ASSERT(m_xTokenAry[1]->bEqual("schema"_Str));
+  ASSERT(m_xTokenSet[0]->bEqual("drop"_Str));
+  ASSERT(m_xTokenSet[1]->bEqual("schema"_Str));
   
   for (iToken = 0; iToken < C_TOKENS; iToken++) {
-    if (! *m_xTokenAry[iToken]->s())
+    if (! *m_xTokenSet[iToken]->s())
       break;
-    m_xTokenAry2[iToken]->vCopy(m_xTokenAry[iToken]);
-    m_xTokenAry[iToken]->vCopy(""_Str);
+    m_xTokenSet2[iToken]->vCopy(m_xTokenSet[iToken]);
+    m_xTokenSet[iToken]->vCopy(""_Str);
   }
   
   iNumTokens = iToken;
@@ -1851,12 +1845,12 @@ bool SePrompt::bDropSchema(void)
   }
   
   // drop a schema
-  m_xTokenAry[0]->vCopy("rmsch"_Str);
-  m_xTokenAry[1]->vCopy(m_xTokenAry2[2]);
+  m_xTokenSet[0]->vCopy("rmsch"_Str);
+  m_xTokenSet[1]->vCopy(m_xTokenSet2[2]);
   if (!bExecuteRequest())
     return false;
   
-  //vTrace("Schema dropped: %s\n"_Str, m_xTokenAry2[2]);
+  //vTrace("Schema dropped: %s\n"_Str, m_xTokenSet2[2]);
   return true;
 }
 
@@ -1870,14 +1864,14 @@ bool SePrompt::bDropTable(void)
   i8 iToken;
   i8 iNumTokens;
   
-  ASSERT(m_xTokenAry[0]->bEqual("drop"_Str));
-  ASSERT(m_xTokenAry[1]->bEqual("table"_Str));
+  ASSERT(m_xTokenSet[0]->bEqual("drop"_Str));
+  ASSERT(m_xTokenSet[1]->bEqual("table"_Str));
   
   for (iToken = 0; iToken < C_TOKENS; iToken++) {
-    if (! *m_xTokenAry[iToken]->s())
+    if (! *m_xTokenSet[iToken]->s())
       break;
-    m_xTokenAry2[iToken]->vCopy(m_xTokenAry[iToken]);
-    m_xTokenAry[iToken]->vCopy(""_Str);
+    m_xTokenSet2[iToken]->vCopy(m_xTokenSet[iToken]);
+    m_xTokenSet[iToken]->vCopy(""_Str);
   }
   
   iNumTokens = iToken;
@@ -1890,12 +1884,12 @@ bool SePrompt::bDropTable(void)
   }
   
   // drop a table
-  m_xTokenAry[0]->vCopy("rmtbl"_Str);
-  m_xTokenAry[1]->vCopy(m_xTokenAry2[2]);
+  m_xTokenSet[0]->vCopy("rmtbl"_Str);
+  m_xTokenSet[1]->vCopy(m_xTokenSet2[2]);
   if (!bExecuteRequest())
     return false;
   
-  //vTrace("Table dropped: %s\n"_Str, m_xTokenAry2[2]);
+  //vTrace("Table dropped: %s\n"_Str, m_xTokenSet2[2]);
   return true;
 }
 
@@ -1911,25 +1905,25 @@ bool SePrompt::bIndexReturnTable(Str* aTableName, Str* aIndexName)
   ASSERT(bResult);
   
   // change folder to table
-  m_xTokenAry[0]->vCopy("cf"_Str);
-  m_xTokenAry[1]->vCopy(".."_Str);
+  m_xTokenSet[0]->vCopy("cf"_Str);
+  m_xTokenSet[1]->vCopy(".."_Str);
   
   if (!bExecuteRequest()) {
     return false;
   }
   
   // change folder to table
-  m_xTokenAry[0]->vCopy("cf"_Str);
-  m_xTokenAry[1]->vCopy(".."_Str);
+  m_xTokenSet[0]->vCopy("cf"_Str);
+  m_xTokenSet[1]->vCopy(".."_Str);
   
   if (!bExecuteRequest()) {
     return false;
   }
   
-  m_xTokenAry[0]->vCopy("rmidx"_Str);
-  m_xTokenAry[1]->vCopy(aTableName);
-  m_xTokenAry[2]->vCopy(aIndexName);
-  m_xTokenAry[3]->vCopy(""_Str);
+  m_xTokenSet[0]->vCopy("rmidx"_Str);
+  m_xTokenSet[1]->vCopy(aTableName);
+  m_xTokenSet[2]->vCopy(aIndexName);
+  m_xTokenSet[3]->vCopy(""_Str);
   
   if (!bExecuteRequest()) {
     //vFatal("Error: (%s) Drop Table %s\n"_Str, m_sResponse.s(), pTableName);
@@ -1950,15 +1944,15 @@ bool SePrompt::bDropReturnTable(Str* aTableName)
   ASSERT(bResult);
   
   // change folder to table
-  m_xTokenAry[0]->vCopy("cf"_Str);
-  m_xTokenAry[1]->vCopy(".."_Str);
+  m_xTokenSet[0]->vCopy("cf"_Str);
+  m_xTokenSet[1]->vCopy(".."_Str);
   
   if (!bExecuteRequest()) {
     return false;
   }
-  m_xTokenAry[0]->vCopy("rmtbl"_Str);
-  m_xTokenAry[1]->vCopy(aTableName);
-  m_xTokenAry[2]->vCopy(""_Str);
+  m_xTokenSet[0]->vCopy("rmtbl"_Str);
+  m_xTokenSet[1]->vCopy(aTableName);
+  m_xTokenSet[2]->vCopy(""_Str);
   
   if (!bExecuteRequest()) {
     //vFatal("Error: (%s) Drop Table %s\n"_Str, m_sResponse.s(), pTableName);
@@ -1977,14 +1971,14 @@ bool SePrompt::bDropTenant(void)
   i8 iToken;
   i8 iNumTokens;
   
-  ASSERT(m_xTokenAry[0]->bEqual("drop"_Str));
-  ASSERT(m_xTokenAry[1]->bEqual("tenant"_Str));
+  ASSERT(m_xTokenSet[0]->bEqual("drop"_Str));
+  ASSERT(m_xTokenSet[1]->bEqual("tenant"_Str));
   
   for (iToken = 0; iToken < C_TOKENS; iToken++) {
-    if (! *m_xTokenAry[iToken]->s())
+    if (! *m_xTokenSet[iToken]->s())
       break;
-    m_xTokenAry2[iToken]->vCopy(m_xTokenAry[iToken]);
-    m_xTokenAry[iToken]->vCopy(""_Str);
+    m_xTokenSet2[iToken]->vCopy(m_xTokenSet[iToken]);
+    m_xTokenSet[iToken]->vCopy(""_Str);
   }
   
   iNumTokens = iToken;
@@ -1997,13 +1991,13 @@ bool SePrompt::bDropTenant(void)
   }
   
   // drop a tenant
-  m_xTokenAry[0]->vCopy("rmten"_Str);
-  m_xTokenAry[1]->vCopy(m_xTokenAry2[2]);
+  m_xTokenSet[0]->vCopy("rmten"_Str);
+  m_xTokenSet[1]->vCopy(m_xTokenSet2[2]);
   if (!bExecuteRequest()) {
     return false;
   }
   
-  //vTrace("Tenant dropped: %s\n"_Str, m_xTokenAry2[2]);
+  //vTrace("Tenant dropped: %s\n"_Str, m_xTokenSet2[2]);
   
   return true;
 }
@@ -2018,14 +2012,14 @@ bool SePrompt::bEndInsert(void)
   i8 iToken;
   i8 iNumTokens;
   
-  ASSERT(m_xTokenAry[0]->bEqual("end"_Str));
-  ASSERT(m_xTokenAry[1]->bEqual("insert"_Str));
+  ASSERT(m_xTokenSet[0]->bEqual("end"_Str));
+  ASSERT(m_xTokenSet[1]->bEqual("insert"_Str));
   
   for (iToken = 0; iToken < C_TOKENS; iToken++) {
-    if (! *m_xTokenAry[iToken]->s())
+    if (! *m_xTokenSet[iToken]->s())
       break;
-    m_xTokenAry2[iToken]->vCopy(m_xTokenAry[iToken]);
-    m_xTokenAry[iToken]->vCopy(""_Str);
+    m_xTokenSet2[iToken]->vCopy(m_xTokenSet[iToken]);
+    m_xTokenSet[iToken]->vCopy(""_Str);
   }
   
   iNumTokens = iToken;
@@ -2088,14 +2082,14 @@ bool SePrompt::bInsertRow(void)
   i8 iToken;
   i8 iNumTokens;
   
-  ASSERT(m_xTokenAry[0]->bEqual("insert"_Str));
-  ASSERT(m_xTokenAry[1]->bEqual("row"_Str));
+  ASSERT(m_xTokenSet[0]->bEqual("insert"_Str));
+  ASSERT(m_xTokenSet[1]->bEqual("row"_Str));
   
   for (iToken = 0; iToken < C_TOKENS; iToken++) {
-    if (! *m_xTokenAry[iToken]->s())
+    if (! *m_xTokenSet[iToken]->s())
       break;
-    m_xTokenAry2[iToken]->vCopy(m_xTokenAry[iToken]);
-    m_xTokenAry[iToken]->vCopy(""_Str);
+    m_xTokenSet2[iToken]->vCopy(m_xTokenSet[iToken]);
+    m_xTokenSet[iToken]->vCopy(""_Str);
   }
   
   iNumTokens = iToken;
@@ -2120,7 +2114,7 @@ bool SePrompt::bInsertRow(void)
     return EC_NO_SUCH_TABLE;
   }
   
-  Str* pRow = m_xTokenAry2[2];
+  Str* pRow = m_xTokenSet2[2];
   bool bResult = m_pSEitf->bInsertRow(pRow);
   
   if (!bResult) {
@@ -2143,7 +2137,7 @@ bool SePrompt::bListDir(void)
   s256 sDirEntry;
   i8 iEntryType;
   
-  ASSERT(m_xTokenAry[0]->bEqual("ls"_Str));
+  ASSERT(m_xTokenSet[0]->bEqual("ls"_Str));
   
   if ( ! bTokenCheck(1) )
     return false;
@@ -2183,7 +2177,7 @@ bool SePrompt::bObject(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  ASSERT(m_xTokenAry[0]->bEqual("object"_Str));
+  ASSERT(m_xTokenSet[0]->bEqual("object"_Str));
   
   if (!bExecuteRequest()) {
     return false;
@@ -2199,7 +2193,7 @@ bool SePrompt::bPoolSpace(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  ASSERT(m_xTokenAry[0]->bEqual("space"_Str));
+  ASSERT(m_xTokenSet[0]->bEqual("space"_Str));
     
   if (!bExecuteRequest()) {
     return false;
@@ -2215,7 +2209,7 @@ bool SePrompt::bNodeStatus(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  ASSERT(m_xTokenAry[0]->bEqual("status"_Str));
+  ASSERT(m_xTokenSet[0]->bEqual("status"_Str));
   
   if (!bExecuteRequest()) {
     return false;
@@ -2234,7 +2228,7 @@ bool SePrompt::bPrintWorkingDir(void)
   Dir xDir;
   s256 sDir;
   
-  ASSERT(m_xTokenAry[0]->bEqual("pwd"_Str));
+  ASSERT(m_xTokenSet[0]->bEqual("pwd"_Str));
   
   if ( ! bTokenCheck(1) )
     return false;
@@ -2259,14 +2253,14 @@ bool SePrompt::bUseSchema(void)
   i8 iToken;
   i8 iNumTokens;
   
-  ASSERT(m_xTokenAry[0]->bEqual("use"_Str));
-  ASSERT(m_xTokenAry[1]->bEqual("schema"_Str));
+  ASSERT(m_xTokenSet[0]->bEqual("use"_Str));
+  ASSERT(m_xTokenSet[1]->bEqual("schema"_Str));
   
   for (iToken = 0; iToken < C_TOKENS; iToken++) {
-    if (! *m_xTokenAry[iToken]->s())
+    if (! *m_xTokenSet[iToken]->s())
       break;
-    m_xTokenAry2[iToken]->vCopy(m_xTokenAry[iToken]);
-    m_xTokenAry[iToken]->vCopy(""_Str);
+    m_xTokenSet2[iToken]->vCopy(m_xTokenSet[iToken]);
+    m_xTokenSet[iToken]->vCopy(""_Str);
   }
   
   iNumTokens = iToken;
@@ -2279,12 +2273,12 @@ bool SePrompt::bUseSchema(void)
   }
   
   // drop a schema
-  m_xTokenAry[0]->vCopy("usesch"_Str);
-  m_xTokenAry[1]->vCopy(m_xTokenAry2[2]);
+  m_xTokenSet[0]->vCopy("usesch"_Str);
+  m_xTokenSet[1]->vCopy(m_xTokenSet2[2]);
   if (!bExecuteRequest())
     return false;
   
-  //vTrace("Schema changed: %s\n"_Str, m_xTokenAry2[2]);
+  //vTrace("Schema changed: %s\n"_Str, m_xTokenSet2[2]);
   return true;
 }
 
@@ -2295,7 +2289,7 @@ bool SePrompt::bTokenCheck(i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
 
-  if ( ! m_xTokenAry[nTokens]->bEqual(""_Str) ) {
+  if ( ! m_xTokenSet[nTokens]->bEqual(""_Str) ) {
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
   }
@@ -2310,7 +2304,7 @@ bool SePrompt::bCmdIs(Str* aArg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  if (m_xTokenAry[0]->bEqual(aArg))
+  if (m_xTokenSet[0]->bEqual(aArg))
     return true;
   else
     return false;
@@ -2323,7 +2317,7 @@ bool SePrompt::bOneIs(Str* aArg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  if (m_xTokenAry[1]->bEqual(aArg))
+  if (m_xTokenSet[1]->bEqual(aArg))
     return true;
   else
     return false;
