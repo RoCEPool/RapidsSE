@@ -5,10 +5,10 @@
 
 namespace Values
 {
-  class TspVal : public Value
+  class TspVal : public Value,
+                 public Tsp
   {
   private:
-    i8 m_iTsp;
     
   public:
     void* operator new(size_t);
@@ -18,9 +18,9 @@ namespace Values
     void operator =(i8 iVal);
     void operator =(Tsp xTsp);
   
-    i8 nSize(void) const;
+    i8 nSize(void);
     i8* aInt(void);
-    i8 iTsp(void) const;
+    i8 iTsp(void);
     
     void vToString(Str* aWorkspace);
   };
