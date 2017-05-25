@@ -2,8 +2,7 @@
 /* _test2 -- test index with 2 columns                                        */
 /*============================================================================*/
 
-
-create table jidx2 (
+create table jTest2 (
   jidx_key   INTEGER NOT NULL,
   jidx_name  VARCHAR(32) NOT NULL,
   jidx_100   INTEGER NOT NULL,
@@ -11,52 +10,52 @@ create table jidx2 (
   jidx_mod   INTEGER NOT NULL
 );
 
-create index idx1 on jidx2 (jidx_mod,jidx_10);
+create index idx1 on jTest2 (jidx_mod,jidx_10);
 //create index idx2 on jidx2 (jidx_100);
 //create index idx3 on jidx2 (jidx_name);
 
-ld jidx2 "../JTEST/jidx2.csv" ;
+ld jTest2 "../JTEST/jidx2.csv" ;
 
-//anidx jidx2 idx ;
-dumpidx jidx2 idx1 ;
+//anidx jTest2 idx ;
+dumpidx jTest2 idx1 ;
 
-lwrselidx jidx2 idx1 0 ;
-rgeselidx jidx2 idx1 3 7 ;
-uprselidx jidx2 idx1 7 ;
+lwrselidx jTest2 idx1 0 ;
+rgeselidx jTest2 idx1 3 7 ;
+uprselidx jTest2 idx1 7 ;
 
 /*
 print "\nSelecting rows with key >= 3 using idx1 ...\n" ;
-lwrselidx jidx2 idx1 3 ;
+lwrselidx jTest2 idx1 3 ;
 
 print "\nSelecting rows with key >= 1 using idx1 ...\n" ;
-lwrselidx jidx2 idx1 1 ;
+lwrselidx jTest2 idx1 1 ;
 
 print "\nSelecting rows with key >= 28 using idx1 ...\n" ;
-lwrselidx jidx2 idx1 28 ;
+lwrselidx jTest2 idx1 28 ;
 
 print "\nSelecting rows with key >= 40 using idx1 ...\n" ;
-lwrselidx jidx2 idx1 40 ;
+lwrselidx jTest2 idx1 40 ;
 
 print "\nSelecting rows with key >= 45 using idx1 ...\n" ;
-lwrselidx jidx2 idx1 45 ;
+lwrselidx jTest2 idx1 45 ;
 
 print "\nSelecting rows with key >= 67 using idx1 ...\n" ;
-lwrselidx jidx2 idx1 67 ;
+lwrselidx jTest2 idx1 67 ;
 
 print "\nSelecting rows with key >= 99 using idx1 ...\n" ;
-lwrselidx jidx2 idx1 99 ;
+lwrselidx jTest2 idx1 99 ;
 
 print "\nSelecting rows with key >= 72 using idx1 ...\n" ;
-lwrselidx jidx2 idx1 72 ;
+lwrselidx jTest2 idx1 72 ;
 
 print "\nSelecting rows with key >= 180 using idx2 ...\n" ;
-lwrselidx jidx2 idx2 180 ;
+lwrselidx jTest2 idx2 180 ;
 
 print "\nSelecting rows with key >= 3 and key <= 7 using idx1 ...\n" ;
-rgeselidx jidx2 idx1 3 7 ;
+rgeselidx jTest2 idx1 3 7 ;
 
 print "\nSelecting rows with key <= 7 using idx1 ...\n" ;
-uprselidx jidx2 idx1 7 ;
+uprselidx jTest2 idx1 7 ;
 */
 
 /*============================================================================*/
