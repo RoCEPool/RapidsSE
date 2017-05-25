@@ -44,6 +44,7 @@ namespace DBobjects
     void         vTidyUp(void);
     void         vTruncate(void);
     bool         bVerify(void);
+    void         vVisualize(void);
     
     Footer*      pFooter(void);
     

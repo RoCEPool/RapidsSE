@@ -137,6 +137,7 @@ void IndexData::vDump(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
 
+  // start with the root
   m_pRoot->vDump();
 }
 
@@ -498,6 +499,16 @@ IndexBuffer* IndexData::pSplitBuffer(IndexBuffer* pIndexBuffer)
   vFixHigherBuffer(pIndexBufferNew, pRoot->nBufferLevel());
   
   return pIndexBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* visualize the index                                                        */
+/*----------------------------------------------------------------------------*/
+void IndexData::vVisualize(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
+  
+  
 }
 
 /*----------------------------------------------------------------------------*/

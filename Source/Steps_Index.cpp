@@ -619,8 +619,8 @@ void Task::vIndexVisualize(NNP_Task nnpTask)
   for (i8 iPartition = 0; iPartition < gpGrid->m_nSlots; iPartition++) {
     Partition* pPartition = pTable->pPartition(iPartition);
     IndexData* pIndexData = pPartition->pIndexData(iIndexNo);
-    //vTrace("Partition %lld\n"_Str, iPartition);
-    //pIndexData->vDump();
+    vTrace("Partition %lld\n"_Str, iPartition);
+    pIndexData->vVisualize();
   }
   
   EXIT();
