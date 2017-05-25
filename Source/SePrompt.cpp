@@ -393,7 +393,8 @@ void SePrompt::vMetaFormat(void)
   
   if ( ! m_bExpect ) {
     if ( !m_sResponse.bEqual("<ok>"_Str) ) {
-      vTrace("metadata: %s\n"_Str, m_pSEitf->m_sMetadata.aStr());
+      if ( ! m_pSEitf->m_sMetadata.bEqual( ""_Str))
+        vTrace("metadata: %s\n"_Str, m_pSEitf->m_sMetadata.aStr());
       vTrace("%s"_Str,m_sResponse.s());
       vTrace("success: %lld rows affected\n"_Str, m_pSEitf->m_iRowsProcessed);
     }
