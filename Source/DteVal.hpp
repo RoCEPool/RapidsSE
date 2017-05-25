@@ -5,10 +5,10 @@
 
 namespace Values
 {
-  class DteVal : public Value
+  class DteVal : public Value,
+                 public Dte
   {
   private:
-    i8 m_iDte;
     
   public:
     void* operator new(size_t);
