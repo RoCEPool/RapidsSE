@@ -9,7 +9,7 @@ namespace Datums
   {
   friend class DtmLib;
   
-  private:
+  protected:
     i8 m_iInt;
   
   public:

@@ -5,10 +5,10 @@
 
 namespace Values
 {
-  class IntVal : public Value
+  class IntVal : public Value,
+                 public Int
   {
   private:
-    i8 m_iInt;
     
   public:
     void* operator new(size_t);
