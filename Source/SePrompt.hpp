@@ -32,6 +32,10 @@ private:
   
   Str*       m_aToken[C_TOKENS];
   Str*       m_aToken2[C_TOKENS];
+  
+  TokenAry   m_xTokenAry;
+  TokenAry   m_xTokenAry2;
+  
   Tokeniser* m_pTokeniser; // input stream tokeniser
 
   WspFxd<C_TOKEN_AREA> m_xTokenArea;

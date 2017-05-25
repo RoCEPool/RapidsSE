@@ -17,6 +17,8 @@ using namespace Interface;
 
 //-----------------------------------------------------------------------------
 
+typedef Array<CN_TOKENARY,Str*,1024> TokenAry;
+
 #include "SEitf.hpp"
 #include "SEitfList.hpp"
 #include "SEitfCursor.hpp"

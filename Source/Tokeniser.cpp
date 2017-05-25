@@ -214,14 +214,14 @@ void Tokeniser::vUseEnd(void)
 /*----------------------------------------------------------------------------*/
 /* parse next token into given buffer                                         */
 /*----------------------------------------------------------------------------*/
-eTK Tokeniser::eNextToken(char* wToken)
+eTK Tokeniser::eNextToken(char* aToken)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
   if (m_bNormal)
-    m_eToken = eNextNormal(wToken);
+    m_eToken = eNextNormal(aToken);
   else
-    m_eToken = eNextSpecial(wToken);
+    m_eToken = eNextSpecial(aToken);
   
   return m_eToken;
 }

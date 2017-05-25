@@ -23,6 +23,8 @@ namespace Structures
     Array(void);
     ~Array(void);
   
+    ITEM& operator [](i8 iItemNo);
+  
     void  vAdd(ITEM pObject);
     void  vClear(void);
     void  vInsert(ITEM pObject);
@@ -122,6 +124,19 @@ Array<ARRAY_CN, ITEM, MAX_ITEMS>::~Array(void)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* [] operator                                                                */
+/*----------------------------------------------------------------------------*/
+template <eCN ARRAY_CN, class ITEM, i8 MAX_ITEMS>
+ITEM& Array<ARRAY_CN, ITEM, MAX_ITEMS>::operator [](i8 iItemNo)
+{
+  _precondition_(_MAGIC_,ARRAY_CN,_FOOTER_);
+  
+  ASSERT(iItemNo >= 0 and iItemNo < MAX_ITEMS);
+  
+  return m_xItem[iItemNo];
+}
 
 /*----------------------------------------------------------------------------*/
 /* add an item                                                                */
