@@ -33,7 +33,6 @@ void* IvlVal::operator new(size_t iSize)
 IvlVal::IvlVal(void)
 : Value(CN_INTVAL)
 {
-  m_iIvl = 0;
   
   _checkInitialised_(CN_IVLVAL);
 }
@@ -45,7 +44,7 @@ void IvlVal::operator =(i8 iIvl)
 {
   //vTrace("IvlVal: diff %lld\n"_Str,nSub(&m_iIvl,this));
   
-  m_iIvl = iIvl;
+  *aInt() = iIvl;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -55,21 +54,21 @@ void IvlVal::operator =(Ivl xIvl)
 {
   //vTrace("IvlVal: diff %lld\n"_Str,nSub(&m_iIvl,this));
   
-  m_iIvl = xIvl.iAsI8();
+  *aInt() = xIvl.iAsI8();
 }
 
 /*----------------------------------------------------------------------------*/
 /* get iIvl                                                                   */
 /*----------------------------------------------------------------------------*/
-i8 IvlVal::iIvl(void) const
+i8 IvlVal::iIvl(void)
 {
-  return m_iIvl;
+  return *aInt();
 }
 
 /*----------------------------------------------------------------------------*/
 /* get size in bytes                                                          */
 /*----------------------------------------------------------------------------*/
-i8 IvlVal::nSize(void) const
+i8 IvlVal::nSize(void)
 {
   return sizeof(IvlVal);
 }
@@ -79,16 +78,16 @@ i8 IvlVal::nSize(void) const
 /*----------------------------------------------------------------------------*/
 i8* IvlVal::aInt(void)
 {
-  return &m_iIvl;
+  return (i8*)&x;
 }
 
 /*----------------------------------------------------------------------------*/
 /* convert to string                                                          */
 /*----------------------------------------------------------------------------*/
-void IvlVal::vToString(Str* aWorkspace)
-{
-  *aWorkspace = m_iIvl;
-}
+//void IvlVal::vToString(Str* aWorkspace)
+//{
+//  *aWorkspace = m_iIvl;
+//}
 
 /*============================================================================*/
 /* end                                                                        */
