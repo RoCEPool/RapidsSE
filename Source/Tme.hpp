@@ -9,7 +9,7 @@ namespace Datums
   {
   friend class DtmLib;
   
-  private:
+  protected:
     struct {
       u8 m_uSpare  : 30 ; //
       u8 m_uMilli  : 10 ; // 0..1023
