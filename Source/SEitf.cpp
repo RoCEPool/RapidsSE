@@ -334,87 +334,87 @@ void SEitf::vEndTx()
 /*----------------------------------------------------------------------------*/
 /* decode request                                                             */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDecode(Str* aWords[], i8 iWords)
+bool SEitf::bDecode(TokenAry* pTokenAry, Str* aWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   if (0 == aWords[0]->iLength())
     return false;
   
-  if (aWords[0]->bSame("addcol"_Str)) return bAddColumn(aWords, iWords);
-  if (aWords[0]->bSame("antbl"_Str)) return bAnalyzeTable(aWords, iWords);
-  if (aWords[0]->bSame("anidx"_Str)) return bAnalyzeIndex(aWords, iWords);
-  if (aWords[0]->bSame("addidxcol"_Str)) return bAddIndexColumn(aWords, iWords);
-  if (aWords[0]->bSame("cf"_Str)) return bPushDic(aWords);
-  if (aWords[0]->bSame("connectCluster"_Str)) return bConnectCluster(aWords);
-  if (aWords[0]->bSame("cp"_Str)) return bCopyTable(aWords, iWords);
-  if (aWords[0]->bSame("danidx"_Str)) return bDanalyzeIndex(aWords, iWords);
-  if (aWords[0]->bSame("dantbl"_Str)) return bDanalyzeTable(aWords, iWords);
-  if (aWords[0]->bSame("dex"_Str)) return bDistExportTable(aWords, iWords);
-  if (aWords[0]->bSame("docol"_Str)) return bDocol(aWords, iWords);
-  if (aWords[0]->bSame("displayOff"_Str)) return bDisplayOff(aWords, iWords);
-  if (aWords[0]->bSame("displayOn"_Str)) return bDisplayOn(aWords, iWords);
-  if (aWords[0]->bSame("dump"_Str)) return bDumpTable(aWords, iWords);
-  if (aWords[0]->bSame("endmkidx"_Str)) return bEndCreateIndex(aWords, iWords);
-  if (aWords[0]->bSame("endmktbl"_Str)) return bEndCreateTable(aWords, iWords);
-  if (aWords[0]->bSame("ex"_Str)) return bExportTable(aWords, iWords);
-  if (aWords[0]->bSame("getFreeSpace"_Str)) return bGetFreeSpace(aWords);
-  if (aWords[0]->bSame("getInUseSpace"_Str)) return bGetInUseSpace(aWords);
-  if (aWords[0]->bSame("gettbl"_Str)) return bGetTable(aWords, iWords);
-  if (aWords[0]->bSame("gettsk"_Str)) return bGetTask(aWords, iWords);
-  if (aWords[0]->bSame("getTotalSpace"_Str)) return bGetTotalSpace(aWords);
-  if (aWords[0]->bSame("dumpidx"_Str)) return bDumpIndex(aWords, iWords);
-  if (aWords[0]->bSame("TblInUse"_Str)) return bInUseTable(aWords, iWords);
-  if (aWords[0]->bSame("ld"_Str)) return bLoadTable(aWords, iWords);
-  if (aWords[0]->bSame("lds"_Str)) return bLoadTableStream(aWords, iWords);
-  if (aWords[0]->bSame("lf"_Str)) return bGetDicContents(aWords);
-  if (aWords[0]->bSame("lfG"_Str)) return bGetDicContentsG(aWords);
-  if (aWords[0]->bSame("keyselidx"_Str)) return bKeySelectIndex(aWords, iWords);
-  if (aWords[0]->bSame("lscat"_Str)) return bListCatalogs(aWords, iWords);
-  if (aWords[0]->bSame("lscol"_Str)) return bListColumns(aWords, iWords);
-  if (aWords[0]->bSame("lsidx"_Str)) return bListIndices(aWords, iWords);
-  if (aWords[0]->bSame("lsidxcol"_Str)) return bListIndexColumns(aWords, iWords);
-  if (aWords[0]->bSame("lssch"_Str)) return bListSchemas(aWords, iWords);
-  if (aWords[0]->bSame("lstbl"_Str)) return bListTables(aWords, iWords);
-  if (aWords[0]->bSame("lsten"_Str)) return bListTenants(aWords, iWords);
-  if (aWords[0]->bSame("lwrsel"_Str)) return bLowerSelectTable(aWords, iWords);
-  if (aWords[0]->bSame("lwrselidx"_Str)) return bLowerSelectIndex(aWords, iWords);
-  if (aWords[0]->bSame("mkcat"_Str)) return bCreateCatalog(aWords, iWords);
-  if (aWords[0]->bSame("mkidx"_Str)) return bCreateIndex(aWords, iWords);
-  if (aWords[0]->bSame("mksch"_Str)) return bCreateSchema(aWords, iWords);
-  if (aWords[0]->bSame("mktbl"_Str)) return bCreateTable(aWords, iWords);
-  if (aWords[0]->bSame("mkten"_Str)) return bCreateTenant(aWords, iWords);
-  if (aWords[0]->bSame("object"_Str)) return bObject(aWords);
-  if (aWords[0]->bSame("pRB"_Str)) return bPrintRowBuffer(aWords);
-  if (aWords[0]->bSame("pwf"_Str)) return bGetDicPath(aWords);
-  if (aWords[0]->bSame("rettbl"_Str)) return bRetTable(aWords, iWords);
-  if (aWords[0]->bSame("rettsk"_Str)) return bRetTask(aWords, iWords);
-  if (aWords[0]->bSame("rf"_Str)) return bRemoveFolder(aWords, iWords);
-  if (aWords[0]->bSame("rgesel"_Str)) return bRangeSelectTable(aWords, iWords);
-  if (aWords[0]->bSame("rmcat"_Str)) return bDropCatalog(aWords, iWords);
-  if (aWords[0]->bSame("rmdic"_Str)) return bRemoveFolder(aWords, iWords);
-  if (aWords[0]->bSame("rmidx"_Str)) return bDropIndex(aWords, iWords);
-  if (aWords[0]->bSame("rmsch"_Str)) return bDropSchema(aWords, iWords);
-  if (aWords[0]->bSame("rmtbl"_Str)) return bDropTable(aWords, iWords);
-  if (aWords[0]->bSame("rmten"_Str)) return bDropTenant(aWords, iWords);
-  if (aWords[0]->bSame("rgeselidx"_Str)) return bRangeSelectIndex(aWords, iWords);
-  if (aWords[0]->bSame("sel"_Str)) return bSelectTable(aWords, iWords);
-  if (aWords[0]->bSame("setidxunique"_Str)) return bIndexSetUnique(aWords, iWords);
-  if (aWords[0]->bSame("space"_Str)) return bPoolSpace(aWords, iWords);
-  if (aWords[0]->bSame("status"_Str)) return bNodeStatus(aWords, iWords);
-  if (aWords[0]->bSame("szidx"_Str)) return bSizeIndex(aWords, iWords);
-  if (aWords[0]->bSame("sz"_Str)) return bSizeTable(aWords, iWords);
-  if (aWords[0]->bSame("tableSizes"_Str)) return bSizeTables(aWords, iWords);
-  if (aWords[0]->bSame("tr"_Str)) return bTruncateTable(aWords, iWords);
-  if (aWords[0]->bSame("tridx"_Str)) return bTruncateIndex(aWords, iWords);
-  if (aWords[0]->bSame("uprselidx"_Str)) return bUpperSelectIndex(aWords, iWords);
-  if (aWords[0]->bSame("usesch"_Str)) return bUseSchema(aWords, iWords);
-  if (aWords[0]->bSame("__x"_Str)) return bX(aWords);
-  if (aWords[0]->bSame("ping"_Str)) return bPing(aWords);
-  if (aWords[0]->bSame("mon"_Str)) return bGetMonitor(aWords);
-  if (aWords[0]->bSame("print"_Str)) return ! bPrint(aWords);
-  if (aWords[0]->bSame("seitf"_Str)) return bSeitfCount(aWords);
-  if (aWords[0]->bSame("version"_Str)) return bGetVersion(aWords);
+  if (aWords[0]->bSame("addcol"_Str)) return bAddColumn(pTokenAry, aWords, iWords);
+  if (aWords[0]->bSame("antbl"_Str)) return bAnalyzeTable(pTokenAry, aWords, iWords);
+  if (aWords[0]->bSame("anidx"_Str)) return bAnalyzeIndex(pTokenAry, aWords, iWords);
+  if (aWords[0]->bSame("addidxcol"_Str)) return bAddIndexColumn(pTokenAry, aWords, iWords);
+  if (aWords[0]->bSame("cf"_Str)) return bPushDic(pTokenAry, aWords);
+  if (aWords[0]->bSame("connectCluster"_Str)) return bConnectCluster(pTokenAry, aWords);
+  if (aWords[0]->bSame("cp"_Str)) return bCopyTable(pTokenAry, aWords, iWords);
+  if (aWords[0]->bSame("danidx"_Str)) return bDanalyzeIndex(pTokenAry, aWords, iWords);
+  if (aWords[0]->bSame("dantbl"_Str)) return bDanalyzeTable(pTokenAry, aWords, iWords);
+  if (aWords[0]->bSame("dex"_Str)) return bDistExportTable(pTokenAry, aWords, iWords);
+  if (aWords[0]->bSame("docol"_Str)) return bDocol(pTokenAry, aWords, iWords);
+  if (aWords[0]->bSame("displayOff"_Str)) return bDisplayOff(pTokenAry, aWords, iWords);
+  if (aWords[0]->bSame("displayOn"_Str)) return bDisplayOn(pTokenAry, aWords, iWords);
+  if (aWords[0]->bSame("dump"_Str)) return bDumpTable(pTokenAry, aWords, iWords);
+  if (aWords[0]->bSame("endmkidx"_Str)) return bEndCreateIndex(pTokenAry, aWords, iWords);
+  if (aWords[0]->bSame("endmktbl"_Str)) return bEndCreateTable(pTokenAry, aWords, iWords);
+  if (aWords[0]->bSame("ex"_Str)) return bExportTable(pTokenAry, aWords, iWords);
+  if (aWords[0]->bSame("getFreeSpace"_Str)) return bGetFreeSpace(pTokenAry, aWords);
+  if (aWords[0]->bSame("getInUseSpace"_Str)) return bGetInUseSpace(pTokenAry, aWords);
+  if (aWords[0]->bSame("gettbl"_Str)) return bGetTable(pTokenAry, aWords, iWords);
+  if (aWords[0]->bSame("gettsk"_Str)) return bGetTask(pTokenAry, aWords, iWords);
+  if (aWords[0]->bSame("getTotalSpace"_Str)) return bGetTotalSpace(pTokenAry, aWords);
+  if (aWords[0]->bSame("dumpidx"_Str)) return bDumpIndex(pTokenAry, aWords, iWords);
+  if (aWords[0]->bSame("TblInUse"_Str)) return bInUseTable(pTokenAry, aWords, iWords);
+  if (aWords[0]->bSame("ld"_Str)) return bLoadTable(pTokenAry, aWords, iWords);
+  if (aWords[0]->bSame("lds"_Str)) return bLoadTableStream(pTokenAry, aWords, iWords);
+  if (aWords[0]->bSame("lf"_Str)) return bGetDicContents(pTokenAry, aWords);
+  if (aWords[0]->bSame("lfG"_Str)) return bGetDicContentsG(pTokenAry, aWords);
+  if (aWords[0]->bSame("keyselidx"_Str)) return bKeySelectIndex(pTokenAry, aWords, iWords);
+  if (aWords[0]->bSame("lscat"_Str)) return bListCatalogs(pTokenAry, aWords, iWords);
+  if (aWords[0]->bSame("lscol"_Str)) return bListColumns(pTokenAry, aWords, iWords);
+  if (aWords[0]->bSame("lsidx"_Str)) return bListIndices(pTokenAry, aWords, iWords);
+  if (aWords[0]->bSame("lsidxcol"_Str)) return bListIndexColumns(pTokenAry, aWords, iWords);
+  if (aWords[0]->bSame("lssch"_Str)) return bListSchemas(pTokenAry, aWords, iWords);
+  if (aWords[0]->bSame("lstbl"_Str)) return bListTables(pTokenAry, aWords, iWords);
+  if (aWords[0]->bSame("lsten"_Str)) return bListTenants(pTokenAry, aWords, iWords);
+  if (aWords[0]->bSame("lwrsel"_Str)) return bLowerSelectTable(pTokenAry, aWords, iWords);
+  if (aWords[0]->bSame("lwrselidx"_Str)) return bLowerSelectIndex(pTokenAry, aWords, iWords);
+  if (aWords[0]->bSame("mkcat"_Str)) return bCreateCatalog(pTokenAry, aWords, iWords);
+  if (aWords[0]->bSame("mkidx"_Str)) return bCreateIndex(pTokenAry, aWords, iWords);
+  if (aWords[0]->bSame("mksch"_Str)) return bCreateSchema(pTokenAry, aWords, iWords);
+  if (aWords[0]->bSame("mktbl"_Str)) return bCreateTable(pTokenAry, aWords, iWords);
+  if (aWords[0]->bSame("mkten"_Str)) return bCreateTenant(pTokenAry, aWords, iWords);
+  if (aWords[0]->bSame("object"_Str)) return bObject(pTokenAry, aWords);
+  if (aWords[0]->bSame("pRB"_Str)) return bPrintRowBuffer(pTokenAry, aWords);
+  if (aWords[0]->bSame("pwf"_Str)) return bGetDicPath(pTokenAry, aWords);
+  if (aWords[0]->bSame("rettbl"_Str)) return bRetTable(pTokenAry, aWords, iWords);
+  if (aWords[0]->bSame("rettsk"_Str)) return bRetTask(pTokenAry, aWords, iWords);
+  if (aWords[0]->bSame("rf"_Str)) return bRemoveFolder(pTokenAry, aWords, iWords);
+  if (aWords[0]->bSame("rgesel"_Str)) return bRangeSelectTable(pTokenAry, aWords, iWords);
+  if (aWords[0]->bSame("rmcat"_Str)) return bDropCatalog(pTokenAry, aWords, iWords);
+  if (aWords[0]->bSame("rmdic"_Str)) return bRemoveFolder(pTokenAry, aWords, iWords);
+  if (aWords[0]->bSame("rmidx"_Str)) return bDropIndex(pTokenAry, aWords, iWords);
+  if (aWords[0]->bSame("rmsch"_Str)) return bDropSchema(pTokenAry, aWords, iWords);
+  if (aWords[0]->bSame("rmtbl"_Str)) return bDropTable(pTokenAry, aWords, iWords);
+  if (aWords[0]->bSame("rmten"_Str)) return bDropTenant(pTokenAry, aWords, iWords);
+  if (aWords[0]->bSame("rgeselidx"_Str)) return bRangeSelectIndex(pTokenAry, aWords, iWords);
+  if (aWords[0]->bSame("sel"_Str)) return bSelectTable(pTokenAry, aWords, iWords);
+  if (aWords[0]->bSame("setidxunique"_Str)) return bIndexSetUnique(pTokenAry, aWords, iWords);
+  if (aWords[0]->bSame("space"_Str)) return bPoolSpace(pTokenAry, aWords, iWords);
+  if (aWords[0]->bSame("status"_Str)) return bNodeStatus(pTokenAry, aWords, iWords);
+  if (aWords[0]->bSame("szidx"_Str)) return bSizeIndex(pTokenAry, aWords, iWords);
+  if (aWords[0]->bSame("sz"_Str)) return bSizeTable(pTokenAry, aWords, iWords);
+  if (aWords[0]->bSame("tableSizes"_Str)) return bSizeTables(pTokenAry, aWords, iWords);
+  if (aWords[0]->bSame("tr"_Str)) return bTruncateTable(pTokenAry, aWords, iWords);
+  if (aWords[0]->bSame("tridx"_Str)) return bTruncateIndex(pTokenAry, aWords, iWords);
+  if (aWords[0]->bSame("uprselidx"_Str)) return bUpperSelectIndex(pTokenAry, aWords, iWords);
+  if (aWords[0]->bSame("usesch"_Str)) return bUseSchema(pTokenAry, aWords, iWords);
+  if (aWords[0]->bSame("__x"_Str)) return bX(pTokenAry, aWords);
+  if (aWords[0]->bSame("ping"_Str)) return bPing(pTokenAry, aWords);
+  if (aWords[0]->bSame("mon"_Str)) return bGetMonitor(pTokenAry, aWords);
+  if (aWords[0]->bSame("print"_Str)) return ! bPrint(pTokenAry, aWords);
+  if (aWords[0]->bSame("seitf"_Str)) return bSeitfCount(pTokenAry, aWords);
+  if (aWords[0]->bSame("version"_Str)) return bGetVersion(pTokenAry, aWords);
   
   vSetLastError(EC_INVALID_COMMAND);
   return false;
@@ -423,7 +423,7 @@ bool SEitf::bDecode(Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* connect to se                                                              */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bConnect(Str* aWords[])
+bool SEitf::bConnect(TokenAry* pTokenAry, Str* aWords[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -437,7 +437,7 @@ bool SEitf::bConnect(Str* aWords[])
 /*----------------------------------------------------------------------------*/
 /* connect the se cluster nodes                                               */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bConnectCluster(Str* aWords[])
+bool SEitf::bConnectCluster(TokenAry* pTokenAry, Str* aWords[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -451,7 +451,7 @@ bool SEitf::bConnectCluster(Str* aWords[])
 /*----------------------------------------------------------------------------*/
 /* disconnect from se                                                         */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDisconnect(Str* aWords[])
+bool SEitf::bDisconnect(TokenAry* pTokenAry, Str* aWords[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -465,7 +465,7 @@ bool SEitf::bDisconnect(Str* aWords[])
 /*----------------------------------------------------------------------------*/
 /* remove a folder                                                            */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bRemoveFolder(Str* aWords[], i8 iWords)
+bool SEitf::bRemoveFolder(TokenAry* pTokenAry, Str* aWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -483,7 +483,7 @@ bool SEitf::bRemoveFolder(Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* create a tenant                                                            */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bCreateTenant(Str* aWords[], i8 iWords)
+bool SEitf::bCreateTenant(TokenAry* pTokenAry, Str* aWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -506,7 +506,7 @@ bool SEitf::bCreateTenant(Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* list tenants                                                               */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bListTenants(Str* aWords[], i8 iWords)
+bool SEitf::bListTenants(TokenAry* pTokenAry, Str* aWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -525,7 +525,7 @@ bool SEitf::bListTenants(Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* drop a tenant                                                              */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDropTenant(Str* aWords[], i8 iWords)
+bool SEitf::bDropTenant(TokenAry* pTokenAry, Str* aWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -548,7 +548,7 @@ bool SEitf::bDropTenant(Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* create a catalog                                                           */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bCreateCatalog(Str* aWords[], i8 iWords)
+bool SEitf::bCreateCatalog(TokenAry* pTokenAry, Str* aWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -571,7 +571,7 @@ bool SEitf::bCreateCatalog(Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* list catalogs                                                              */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bListCatalogs(Str* aWords[], i8 iWords)
+bool SEitf::bListCatalogs(TokenAry* pTokenAry, Str* aWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -590,7 +590,7 @@ bool SEitf::bListCatalogs(Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* drop a catalog                                                             */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDropCatalog(Str* aWords[], i8 iWords)
+bool SEitf::bDropCatalog(TokenAry* pTokenAry, Str* aWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -613,7 +613,7 @@ bool SEitf::bDropCatalog(Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* create a schema                                                            */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bCreateSchema(Str* aWords[], i8 iWords)
+bool SEitf::bCreateSchema(TokenAry* pTokenAry, Str* aWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -634,7 +634,7 @@ bool SEitf::bCreateSchema(Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* list schemas                                                               */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bListSchemas(Str* aWords[], i8 iWords)
+bool SEitf::bListSchemas(TokenAry* pTokenAry, Str* aWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -653,7 +653,7 @@ bool SEitf::bListSchemas(Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* drop a schema                                                              */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDropSchema(Str* aWords[], i8 iWords)
+bool SEitf::bDropSchema(TokenAry* pTokenAry, Str* aWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -676,7 +676,7 @@ bool SEitf::bDropSchema(Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* use a schema                                                               */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bUseSchema(Str* aWords[], i8 iWords)
+bool SEitf::bUseSchema(TokenAry* pTokenAry, Str* aWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -699,7 +699,7 @@ bool SEitf::bUseSchema(Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* create an index                                                            */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bCreateIndex(Str* aWords[], i8 iWords)
+bool SEitf::bCreateIndex(TokenAry* pTokenAry, Str* aWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -726,7 +726,7 @@ bool SEitf::bCreateIndex(Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* list indices                                                               */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bListIndices(Str* aWords[], i8 iWords)
+bool SEitf::bListIndices(TokenAry* pTokenAry, Str* aWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -751,7 +751,7 @@ bool SEitf::bListIndices(Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* set index uniqueness                                                       */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bIndexSetUnique(Str* aWords[], i8 iWords)
+bool SEitf::bIndexSetUnique(TokenAry* pTokenAry, Str* aWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -784,7 +784,7 @@ bool SEitf::bIndexSetUnique(Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* create a table                                                             */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bCreateTable(Str* aWords[], i8 iWords)
+bool SEitf::bCreateTable(TokenAry* pTokenAry, Str* aWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -807,7 +807,7 @@ bool SEitf::bCreateTable(Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* list tables                                                                */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bListTables(Str* aWords[], i8 iWords)
+bool SEitf::bListTables(TokenAry* pTokenAry, Str* aWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -826,7 +826,7 @@ bool SEitf::bListTables(Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* dump an index                                                              */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDumpIndex(Str* aWords[], i8 iWords)
+bool SEitf::bDumpIndex(TokenAry* pTokenAry, Str* aWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -853,7 +853,7 @@ bool SEitf::bDumpIndex(Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* dump a table                                                               */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDumpTable(Str* aWords[], i8 iWords)
+bool SEitf::bDumpTable(TokenAry* pTokenAry, Str* aWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -876,7 +876,7 @@ bool SEitf::bDumpTable(Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* docol                                                                      */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDocol(Str* aWords[], i8 iWords)
+bool SEitf::bDocol(TokenAry* pTokenAry, Str* aWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -900,7 +900,7 @@ bool SEitf::bDocol(Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* display off selected rows                                                  */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDisplayOff(Str* aWords[], i8 iWords)
+bool SEitf::bDisplayOff(TokenAry* pTokenAry, Str* aWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -920,7 +920,7 @@ bool SEitf::bDisplayOff(Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* display selected rows                                                      */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDisplayOn(Str* aWords[], i8 iWords)
+bool SEitf::bDisplayOn(TokenAry* pTokenAry, Str* aWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -940,7 +940,7 @@ bool SEitf::bDisplayOn(Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* drop an index                                                              */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDropIndex(Str* aWords[], i8 iWords)
+bool SEitf::bDropIndex(TokenAry* pTokenAry, Str* aWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -968,7 +968,7 @@ bool SEitf::bDropIndex(Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* drop a table                                                               */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDropTable(Str* aWords[], i8 iWords)
+bool SEitf::bDropTable(TokenAry* pTokenAry, Str* aWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -991,7 +991,7 @@ bool SEitf::bDropTable(Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* add a column                                                               */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bAddColumn(Str* aWords[16], i8 iWords)
+bool SEitf::bAddColumn(TokenAry* pTokenAry, Str* aWords[16], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1022,7 +1022,7 @@ bool SEitf::bAddColumn(Str* aWords[16], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* add an index column                                                        */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bAddIndexColumn(Str* aWords[16], i8 iWords)
+bool SEitf::bAddIndexColumn(TokenAry* pTokenAry, Str* aWords[16], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1053,7 +1053,7 @@ bool SEitf::bAddIndexColumn(Str* aWords[16], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* end of create index sequence                                               */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bEndCreateIndex(Str* aWords[16], i8 iWords)
+bool SEitf::bEndCreateIndex(TokenAry* pTokenAry, Str* aWords[16], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1080,7 +1080,7 @@ bool SEitf::bEndCreateIndex(Str* aWords[16], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* end of create table sequence                                               */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bEndCreateTable(Str* aWords[16], i8 iWords)
+bool SEitf::bEndCreateTable(TokenAry* pTokenAry, Str* aWords[16], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1103,7 +1103,7 @@ bool SEitf::bEndCreateTable(Str* aWords[16], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* list columns                                                               */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bListColumns(Str* aWords[], i8 iWords)
+bool SEitf::bListColumns(TokenAry* pTokenAry, Str* aWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1126,7 +1126,7 @@ bool SEitf::bListColumns(Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* list index columns                                                         */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bListIndexColumns(Str* aWords[], i8 iWords)
+bool SEitf::bListIndexColumns(TokenAry* pTokenAry, Str* aWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1153,7 +1153,7 @@ bool SEitf::bListIndexColumns(Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* analyze an index                                                           */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bAnalyzeIndex(Str* aWords[], i8 iWords)
+bool SEitf::bAnalyzeIndex(TokenAry* pTokenAry, Str* aWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1180,7 +1180,7 @@ bool SEitf::bAnalyzeIndex(Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* analyze a table                                                            */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bAnalyzeTable(Str* aWords[], i8 iWords)
+bool SEitf::bAnalyzeTable(TokenAry* pTokenAry, Str* aWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1203,7 +1203,7 @@ bool SEitf::bAnalyzeTable(Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* detailed analysis of an index                                              */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDanalyzeIndex(Str* aWords[], i8 iWords)
+bool SEitf::bDanalyzeIndex(TokenAry* pTokenAry, Str* aWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1230,7 +1230,7 @@ bool SEitf::bDanalyzeIndex(Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* detailed analysis of a table                                               */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDanalyzeTable(Str* aWords[], i8 iWords)
+bool SEitf::bDanalyzeTable(TokenAry* pTokenAry, Str* aWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1253,7 +1253,7 @@ bool SEitf::bDanalyzeTable(Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* copy a table                                                               */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bCopyTable(Str* aWords[], i8 iWords)
+bool SEitf::bCopyTable(TokenAry* pTokenAry, Str* aWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1280,7 +1280,7 @@ bool SEitf::bCopyTable(Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* distributed export of a table                                              */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDistExportTable(Str* aWords[], i8 iWords)
+bool SEitf::bDistExportTable(TokenAry* pTokenAry, Str* aWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1307,7 +1307,7 @@ bool SEitf::bDistExportTable(Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* export a table                                                             */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bExportTable(Str* aWords[], i8 iWords)
+bool SEitf::bExportTable(TokenAry* pTokenAry, Str* aWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1334,7 +1334,7 @@ bool SEitf::bExportTable(Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* load a table from file                                                     */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bLoadTable(Str* aWords[], i8 iWords)
+bool SEitf::bLoadTable(TokenAry* pTokenAry, Str* aWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1361,7 +1361,7 @@ bool SEitf::bLoadTable(Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* load a table from stream                                                   */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bLoadTableStream(Str* aWords[], i8 iWords)
+bool SEitf::bLoadTableStream(TokenAry* pTokenAry, Str* aWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1388,7 +1388,7 @@ bool SEitf::bLoadTableStream(Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* lower select rows from a table                                             */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bLowerSelectTable(Str* aWords[], i8 iWords)
+bool SEitf::bLowerSelectTable(TokenAry* pTokenAry, Str* aWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1415,7 +1415,7 @@ bool SEitf::bLowerSelectTable(Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* select rows from a table                                                   */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bSelectTable(Str* aWords[], i8 iWords)
+bool SEitf::bSelectTable(TokenAry* pTokenAry, Str* aWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1438,7 +1438,7 @@ bool SEitf::bSelectTable(Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* range select rows from a table                                             */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bRangeSelectTable(Str* aWords[], i8 iWords)
+bool SEitf::bRangeSelectTable(TokenAry* pTokenAry, Str* aWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1469,7 +1469,7 @@ bool SEitf::bRangeSelectTable(Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* get address/reference of a table                                           */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bGetTable(Str* aWords[], i8 iWords)
+bool SEitf::bGetTable(TokenAry* pTokenAry, Str* aWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1492,7 +1492,7 @@ bool SEitf::bGetTable(Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* return whether table is in use or not                                      */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bInUseTable(Str* aWords[], i8 iWords)
+bool SEitf::bInUseTable(TokenAry* pTokenAry, Str* aWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1515,7 +1515,7 @@ bool SEitf::bInUseTable(Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* return address/refernce of a table                                         */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bRetTable(Str* aWords[], i8 iWords)
+bool SEitf::bRetTable(TokenAry* pTokenAry, Str* aWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1534,7 +1534,7 @@ bool SEitf::bRetTable(Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* get pool space                                                             */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bPoolSpace(Str* aWords[], i8 iWords)
+bool SEitf::bPoolSpace(TokenAry* pTokenAry, Str* aWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1553,7 +1553,7 @@ bool SEitf::bPoolSpace(Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* get node status                                                            */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bNodeStatus(Str* aWords[], i8 iWords)
+bool SEitf::bNodeStatus(TokenAry* pTokenAry, Str* aWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1572,7 +1572,7 @@ bool SEitf::bNodeStatus(Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* exact key select from a table given an index                               */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bKeySelectIndex(Str* aWords[], i8 iWords)
+bool SEitf::bKeySelectIndex(TokenAry* pTokenAry, Str* aWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1603,7 +1603,7 @@ bool SEitf::bKeySelectIndex(Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* lower select rows from a table given an index                              */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bLowerSelectIndex(Str* aWords[], i8 iWords)
+bool SEitf::bLowerSelectIndex(TokenAry* pTokenAry, Str* aWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1634,7 +1634,7 @@ bool SEitf::bLowerSelectIndex(Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* range select rows from a table given an index                              */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bRangeSelectIndex(Str* aWords[], i8 iWords)
+bool SEitf::bRangeSelectIndex(TokenAry* pTokenAry, Str* aWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1669,7 +1669,7 @@ bool SEitf::bRangeSelectIndex(Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* size of index                                                              */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bSizeIndex(Str* aWords[], i8 iWords)
+bool SEitf::bSizeIndex(TokenAry* pTokenAry, Str* aWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1696,7 +1696,7 @@ bool SEitf::bSizeIndex(Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* size of table                                                              */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bSizeTable(Str* aWords[], i8 iWords)
+bool SEitf::bSizeTable(TokenAry* pTokenAry, Str* aWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1719,7 +1719,7 @@ bool SEitf::bSizeTable(Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* size of table                                                              */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bSizeTables(Str* aWords[], i8 iWords)
+bool SEitf::bSizeTables(TokenAry* pTokenAry, Str* aWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1738,7 +1738,7 @@ bool SEitf::bSizeTables(Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* truncate an index                                                          */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bTruncateIndex(Str* aWords[], i8 iWords)
+bool SEitf::bTruncateIndex(TokenAry* pTokenAry, Str* aWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1765,7 +1765,7 @@ bool SEitf::bTruncateIndex(Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* upper select rows from a table on a given index                            */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bUpperSelectIndex(Str* aWords[], i8 iWords)
+bool SEitf::bUpperSelectIndex(TokenAry* pTokenAry, Str* aWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1796,7 +1796,7 @@ bool SEitf::bUpperSelectIndex(Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* truncate a table                                                           */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bTruncateTable(Str* aWords[], i8 iWords)
+bool SEitf::bTruncateTable(TokenAry* pTokenAry, Str* aWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1938,7 +1938,7 @@ bool SEitf::bInsertBuffer(RowBuffer* pRowBuffer, i8 iPartition)
 /*----------------------------------------------------------------------------*/
 /* push dictionary                                                            */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bPushDic(Str* aWords[])
+bool SEitf::bPushDic(TokenAry* pTokenAry, Str* aWords[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1956,7 +1956,7 @@ bool SEitf::bPushDic(Str* aWords[])
 /*----------------------------------------------------------------------------*/
 /* print                                                                      */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bPrint(Str* aWords[])
+bool SEitf::bPrint(TokenAry* pTokenAry, Str* aWords[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1968,7 +1968,7 @@ bool SEitf::bPrint(Str* aWords[])
 /*----------------------------------------------------------------------------*/
 /* get dictionary path                                                        */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bGetDicPath(Str* aWords[])
+bool SEitf::bGetDicPath(TokenAry* pTokenAry, Str* aWords[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1982,7 +1982,7 @@ bool SEitf::bGetDicPath(Str* aWords[])
 /*----------------------------------------------------------------------------*/
 /* get dictionary contents                                                    */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bGetDicContents(Str* aWords[])
+bool SEitf::bGetDicContents(TokenAry* pTokenAry, Str* aWords[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1996,7 +1996,7 @@ bool SEitf::bGetDicContents(Str* aWords[])
 /*----------------------------------------------------------------------------*/
 /* get dictionary contents                                                    */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bGetDicContentsG(Str* aWords[])
+bool SEitf::bGetDicContentsG(TokenAry* pTokenAry, Str* aWords[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -2010,7 +2010,7 @@ bool SEitf::bGetDicContentsG(Str* aWords[])
 /*----------------------------------------------------------------------------*/
 /* get monitor string                                                         */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bGetMonitor(Str* aWords[])
+bool SEitf::bGetMonitor(TokenAry* pTokenAry, Str* aWords[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -2024,7 +2024,7 @@ bool SEitf::bGetMonitor(Str* aWords[])
 /*----------------------------------------------------------------------------*/
 /* get free space                                                             */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bGetFreeSpace(Str* aWords[])
+bool SEitf::bGetFreeSpace(TokenAry* pTokenAry, Str* aWords[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -2038,7 +2038,7 @@ bool SEitf::bGetFreeSpace(Str* aWords[])
 /*----------------------------------------------------------------------------*/
 /* get inUse space                                                            */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bGetInUseSpace(Str* aWords[])
+bool SEitf::bGetInUseSpace(TokenAry* pTokenAry, Str* aWords[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -2052,7 +2052,7 @@ bool SEitf::bGetInUseSpace(Str* aWords[])
 /*----------------------------------------------------------------------------*/
 /* get total space                                                            */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bGetTotalSpace(Str* aWords[])
+bool SEitf::bGetTotalSpace(TokenAry* pTokenAry, Str* aWords[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -2066,7 +2066,7 @@ bool SEitf::bGetTotalSpace(Str* aWords[])
 /*----------------------------------------------------------------------------*/
 /* get version                                                                */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bGetVersion(Str* aWords[])
+bool SEitf::bGetVersion(TokenAry* pTokenAry, Str* aWords[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -2080,7 +2080,7 @@ bool SEitf::bGetVersion(Str* aWords[])
 /*----------------------------------------------------------------------------*/
 /* ping test                                                                  */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bPing(Str* aWords[])
+bool SEitf::bPing(TokenAry* pTokenAry, Str* aWords[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -2094,7 +2094,7 @@ bool SEitf::bPing(Str* aWords[])
 /*----------------------------------------------------------------------------*/
 /* send object                                                                */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bObject(Str* aWords[])
+bool SEitf::bObject(TokenAry* pTokenAry, Str* aWords[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -2108,7 +2108,7 @@ bool SEitf::bObject(Str* aWords[])
 /*----------------------------------------------------------------------------*/
 /* print row buffer                                                           */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bPrintRowBuffer(Str* aWords[])
+bool SEitf::bPrintRowBuffer(TokenAry* pTokenAry, Str* aWords[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -2127,7 +2127,7 @@ bool SEitf::bPrintRowBuffer(Str* aWords[])
 /*----------------------------------------------------------------------------*/
 /* get seitf count                                                            */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bSeitfCount(Str* aWords[])
+bool SEitf::bSeitfCount(TokenAry* pTokenAry, Str* aWords[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -2141,7 +2141,7 @@ bool SEitf::bSeitfCount(Str* aWords[])
 /*----------------------------------------------------------------------------*/
 /* x test                                                                     */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bX(Str* aWords[])
+bool SEitf::bX(TokenAry* pTokenAry, Str* aWords[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -2157,7 +2157,7 @@ bool SEitf::bX(Str* aWords[])
 /*----------------------------------------------------------------------------*/
 /* return task                                                                */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bRetTask(Str* aWords[], i8 iWords)
+bool SEitf::bRetTask(TokenAry* pTokenAry, Str* aWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -2177,7 +2177,7 @@ bool SEitf::bRetTask(Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* get task                                                                   */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bGetTask(Str* aWords[], i8 iWords)
+bool SEitf::bGetTask(TokenAry* pTokenAry, Str* aWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   

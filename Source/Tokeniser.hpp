@@ -66,10 +66,10 @@ namespace Parsing
     eTK  eNextToken(char* aToken);
     void vNextToken(void);
     
-    void vResetTokens(Str* aToken[], i8 nTokens);
-    i8   iFindToken(Str* pLookFor, Str* aToken[], i8 nTokens);
-    i8   iCountTokens(Str* pToken[], i8 nTokens);
-    void vDumpTokens(Str* pTitle, Str* aToken[], i8 nTokens);
+    void vResetTokens(TokenAry* pTokenAry, Str* aToken[], i8 nTokens);
+    i8   iFindToken(Str* pLookFor, TokenAry* pTokenAry, Str* aToken[], i8 nTokens);
+    i8   iCountTokens(TokenAry* pTokenAry, Str* pToken[], i8 nTokens);
+    void vDumpTokens(Str* pTitle, TokenAry* pTokenAry, Str* aToken[], i8 nTokens);
     
     bool bEOF(void);
     bool bLineMode(void);
@@ -79,19 +79,19 @@ namespace Parsing
     eTK  eToken(void);
     
   private:
-    eTK  eNextNormal(char* wToken);
-    eTK  eNextSpecial(char* wToken);
+    eTK  eNextNormal(char* aToken);
+    eTK  eNextSpecial(char* aToken);
     
-    eTK  eParseNormal(char* wToken);
-    eTK  eParseNormalInteger(char* wToken);
-    eTK  eParseNormalName(char* wToken);
-    eTK  eParseNormalOther(char* wToken);
-    eTK  eParseNormalString(char* wToken);
+    eTK  eParseNormal(char* aToken);
+    eTK  eParseNormalInteger(char* aToken);
+    eTK  eParseNormalName(char* aToken);
+    eTK  eParseNormalOther(char* aToken);
+    eTK  eParseNormalString(char* aToken);
     
-    eTK  eParseSpecial(char* wToken);
-    eTK  eParseSpecialInteger(char* wToken);
-    eTK  eParseSpecialName(char* wToken);
-    eTK  eParseSpecialString(char* wToken);
+    eTK  eParseSpecial(char* aToken);
+    eTK  eParseSpecialInteger(char* aToken);
+    eTK  eParseSpecialName(char* aToken);
+    eTK  eParseSpecialString(char* aToken);
     
     void vSkipWhitespace(void);
     bool bHaveWhitespace(void);

@@ -23,11 +23,14 @@ namespace Structures
     Array(void);
     ~Array(void);
   
+    ITEM& operator [](i8 iItemNo);
+  
     void  vAdd(ITEM pObject);
     void  vClear(void);
     void  vInsert(ITEM pObject);
     i8    nItems(void);
     ITEM  xGet(i8 iItem);
+    i8    iMaxItems(void);
   
     Footer* pFooter(void);
   };
@@ -124,6 +127,19 @@ Array<ARRAY_CN, ITEM, MAX_ITEMS>::~Array(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* [] operator                                                                */
+/*----------------------------------------------------------------------------*/
+template <eCN ARRAY_CN, class ITEM, i8 MAX_ITEMS>
+ITEM& Array<ARRAY_CN, ITEM, MAX_ITEMS>::operator [](i8 iItemNo)
+{
+  _precondition_(_MAGIC_,ARRAY_CN,_FOOTER_);
+  
+  ASSERT(iItemNo >= 0 and iItemNo < MAX_ITEMS);
+  
+  return m_xItem[iItemNo];
+}
+
+/*----------------------------------------------------------------------------*/
 /* add an item                                                                */
 /*----------------------------------------------------------------------------*/
 template <eCN ARRAY_CN, class ITEM, i8 MAX_ITEMS>
@@ -218,6 +234,17 @@ ITEM Array<ARRAY_CN, ITEM, MAX_ITEMS>::xGet(i8 iItem)
   ITEM xItem = m_xItem[iItem];
   
   return xItem;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get maximum number of items                                                */
+/*----------------------------------------------------------------------------*/
+template <eCN ARRAY_CN, class ITEM, i8 MAX_ITEMS>
+i8 Array<ARRAY_CN, ITEM, MAX_ITEMS>::iMaxItems(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,ARRAY_CN,_FOOTER_);
+  
+  return MAX_ITEMS;
 }
 
 /*----------------------------------------------------------------------------*/

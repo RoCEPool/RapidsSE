@@ -214,14 +214,14 @@ void Tokeniser::vUseEnd(void)
 /*----------------------------------------------------------------------------*/
 /* parse next token into given buffer                                         */
 /*----------------------------------------------------------------------------*/
-eTK Tokeniser::eNextToken(char* wToken)
+eTK Tokeniser::eNextToken(char* aToken)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
   if (m_bNormal)
-    m_eToken = eNextNormal(wToken);
+    m_eToken = eNextNormal(aToken);
   else
-    m_eToken = eNextSpecial(wToken);
+    m_eToken = eNextSpecial(aToken);
   
   return m_eToken;
 }
@@ -239,7 +239,7 @@ void Tokeniser::vNextToken(void)
 /*----------------------------------------------------------------------------*/
 /* reset token array                                                          */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vResetTokens(Str* aToken[], i8 nTokens)
+void Tokeniser::vResetTokens(TokenAry* pTokenAry, Str* aToken[], i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
@@ -250,7 +250,7 @@ void Tokeniser::vResetTokens(Str* aToken[], i8 nTokens)
 /*----------------------------------------------------------------------------*/
 /* find token in token array                                                  */
 /*----------------------------------------------------------------------------*/
-i8 Tokeniser::iFindToken(Str* aLookFor, Str* aToken[], i8 nTokens)
+i8 Tokeniser::iFindToken(Str* aLookFor, TokenAry* pTokenAry, Str* aToken[], i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
@@ -264,7 +264,7 @@ i8 Tokeniser::iFindToken(Str* aLookFor, Str* aToken[], i8 nTokens)
 /*----------------------------------------------------------------------------*/
 /* count tokens in token array                                                */
 /*----------------------------------------------------------------------------*/
-i8 Tokeniser::iCountTokens(Str* aToken[], i8 nTokens)
+i8 Tokeniser::iCountTokens(TokenAry* pTokenAry,Str* aToken[], i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
@@ -279,7 +279,7 @@ i8 Tokeniser::iCountTokens(Str* aToken[], i8 nTokens)
 /*----------------------------------------------------------------------------*/
 /* dump token array                                                           */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vDumpTokens(Str* pTitle, Str* aToken[], i8 nTokens)
+void Tokeniser::vDumpTokens(Str* pTitle, TokenAry* pTokenAry, Str* aToken[], i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   

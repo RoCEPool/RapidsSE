@@ -10,6 +10,8 @@
 namespace Parsing
 {
   void vCheckAssumptions(void);
+  
+  typedef Array<CN_TOKENARY,Str*,1024> TokenAry;
 }
 
 using namespace Parsing;

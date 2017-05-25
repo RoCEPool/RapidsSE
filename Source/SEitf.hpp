@@ -76,102 +76,102 @@ namespace Interface
     void vCommitTx(void);
     void vEndTx(void);
     
-    bool bDecode(Str* aWords[], i8 iWords);
+    bool bDecode(TokenAry* pTokenAry, Str* aWords[], i8 iWords);
     
-    bool bConnect(Str* aWords[]);
-    bool bConnectCluster(Str* aWords[]);
-    bool bDisconnect(Str* aWords[]);
+    bool bConnect(TokenAry* pTokenAry, Str* aWords[]);
+    bool bConnectCluster(TokenAry* pTokenAry, Str* aWords[]);
+    bool bDisconnect(TokenAry* pTokenAry, Str* aWords[]);
     
-    bool bRemoveFolder(Str* aWords[], i8 iWords);
+    bool bRemoveFolder(TokenAry* pTokenAry, Str* aWords[], i8 iWords);
 
-    bool bCreateTenant(Str* aWords[], i8 iWords);
-    bool bListTenants(Str* aWords[], i8 iWords);
-    bool bDropTenant(Str* aWords[], i8 iWords);
+    bool bCreateTenant(TokenAry* pTokenAry, Str* aWords[], i8 iWords);
+    bool bListTenants(TokenAry* pTokenAry, Str* aWords[], i8 iWords);
+    bool bDropTenant(TokenAry* pTokenAry, Str* aWords[], i8 iWords);
 
-    bool bCreateCatalog(Str* aWords[], i8 iWords);
-    bool bListCatalogs(Str* aWords[], i8 iWords);
-    bool bDropCatalog(Str* aWords[], i8 iWords);
+    bool bCreateCatalog(TokenAry* pTokenAry, Str* aWords[], i8 iWords);
+    bool bListCatalogs(TokenAry* pTokenAry, Str* aWords[], i8 iWords);
+    bool bDropCatalog(TokenAry* pTokenAry, Str* aWords[], i8 iWords);
     
-    bool bCreateSchema(Str* aWords[], i8 iWords);
-    bool bListSchemas(Str* aWords[], i8 iWords);
-    bool bDropSchema(Str* aWords[], i8 iWords);
-    bool bUseSchema(Str* aWords[], i8 iWords);
+    bool bCreateSchema(TokenAry* pTokenAry, Str* aWords[], i8 iWords);
+    bool bListSchemas(TokenAry* pTokenAry, Str* aWords[], i8 iWords);
+    bool bDropSchema(TokenAry* pTokenAry, Str* aWords[], i8 iWords);
+    bool bUseSchema(TokenAry* pTokenAry, Str* aWords[], i8 iWords);
     
-    bool bCreateIndex(Str* aWords[], i8 iWords);
-    bool bDropIndex(Str* aWords[], i8 iWords);
-    bool bDumpIndex(Str* aWords[], i8 iWords);
-    bool bEndCreateIndex(Str* aWords[], i8 iWords);
-    bool bListIndices(Str* aWords[], i8 iWords);
-    bool bIndexSetUnique(Str* aWords[], i8 iWords);
+    bool bCreateIndex(TokenAry* pTokenAry, Str* aWords[], i8 iWords);
+    bool bDropIndex(TokenAry* pTokenAry, Str* aWords[], i8 iWords);
+    bool bDumpIndex(TokenAry* pTokenAry, Str* aWords[], i8 iWords);
+    bool bEndCreateIndex(TokenAry* pTokenAry, Str* aWords[], i8 iWords);
+    bool bListIndices(TokenAry* pTokenAry, Str* aWords[], i8 iWords);
+    bool bIndexSetUnique(TokenAry* pTokenAry, Str* aWords[], i8 iWords);
   
-    bool bCreateTable(Str* aWords[], i8 iWords);
-    bool bEndCreateTable(Str* aWords[], i8 iWords);
+    bool bCreateTable(TokenAry* pTokenAry, Str* aWords[], i8 iWords);
+    bool bEndCreateTable(TokenAry* pTokenAry, Str* aWords[], i8 iWords);
   
-    bool bListTables(Str* aWords[], i8 iWords);
-    bool bDisplayOff(Str* aWords[], i8 iWords);
-    bool bDisplayOn(Str* aWords[], i8 iWords);
-    bool bDocol(Str* aWords[], i8 iWords);
-    bool bDropTable(Str* aWords[], i8 iWords);
-    bool bDumpTable(Str* aWords[], i8 iWords);
+    bool bListTables(TokenAry* pTokenAry, Str* aWords[], i8 iWords);
+    bool bDisplayOff(TokenAry* pTokenAry, Str* aWords[], i8 iWords);
+    bool bDisplayOn(TokenAry* pTokenAry, Str* aWords[], i8 iWords);
+    bool bDocol(TokenAry* pTokenAry, Str* aWords[], i8 iWords);
+    bool bDropTable(TokenAry* pTokenAry, Str* aWords[], i8 iWords);
+    bool bDumpTable(TokenAry* pTokenAry, Str* aWords[], i8 iWords);
    
-    bool bAddColumn(Str* aWords[], i8 iWords);
-    bool bAddIndexColumn(Str* aWords[], i8 iWords);
-    bool bListColumns(Str* aWords[], i8 iWords);
-    bool bListIndexColumns(Str* aWords[], i8 iWords);
+    bool bAddColumn(TokenAry* pTokenAry, Str* aWords[], i8 iWords);
+    bool bAddIndexColumn(TokenAry* pTokenAry, Str* aWords[], i8 iWords);
+    bool bListColumns(TokenAry* pTokenAry, Str* aWords[], i8 iWords);
+    bool bListIndexColumns(TokenAry* pTokenAry, Str* aWords[], i8 iWords);
     
-    bool bAnalyzeIndex(Str* aWords[], i8 iWords);
-    bool bDanalyzeIndex(Str* aWords[], i8 iWords);
-    bool bKeySelectIndex(Str* aWords[], i8 iWords);
-    bool bLowerSelectIndex(Str* aWords[], i8 iWords);
-    bool bRangeSelectIndex(Str* aWords[], i8 iWords);
-    bool bSizeIndex(Str* aWords[], i8 iWords);
-    bool bTruncateIndex(Str* aWords[], i8 iWords);
-    bool bUpperSelectIndex(Str* aWords[], i8 iWords);
+    bool bAnalyzeIndex(TokenAry* pTokenAry, Str* aWords[], i8 iWords);
+    bool bDanalyzeIndex(TokenAry* pTokenAry, Str* aWords[], i8 iWords);
+    bool bKeySelectIndex(TokenAry* pTokenAry, Str* aWords[], i8 iWords);
+    bool bLowerSelectIndex(TokenAry* pTokenAry, Str* aWords[], i8 iWords);
+    bool bRangeSelectIndex(TokenAry* pTokenAry, Str* aWords[], i8 iWords);
+    bool bSizeIndex(TokenAry* pTokenAry, Str* aWords[], i8 iWords);
+    bool bTruncateIndex(TokenAry* pTokenAry, Str* aWords[], i8 iWords);
+    bool bUpperSelectIndex(TokenAry* pTokenAry, Str* aWords[], i8 iWords);
 
-    bool bAnalyzeTable(Str* aWords[], i8 iWords);
-    bool bCopyTable(Str* aWords[], i8 iWords);
-    bool bExportTable(Str* aWords[], i8 iWords);
-    bool bDanalyzeTable(Str* aWords[], i8 iWords);
-    bool bDistExportTable(Str* aWords[], i8 iWords);
-    bool bLoadTable(Str* aWords[], i8 iWords);
-    bool bLoadTableStream(Str* aWords[], i8 iWords);
-    bool bLowerSelectTable(Str* aWords[], i8 iWords);
-    bool bSelectTable(Str* aWords[], i8 iWords);
-    bool bRangeSelectTable(Str* aWords[], i8 iWords);
-    bool bGetTable(Str* aWords[], i8 iWords);
-    bool bInUseTable(Str* aWords[], i8 iWords);
-    bool bRetTable(Str* aWords[], i8 iWords);
-    bool bNodeStatus(Str* aWords[], i8 iWords);
-    bool bPoolSpace(Str* aWords[], i8 iWords);
-    bool bSizeTable(Str* aWords[], i8 iWords);
-    bool bSizeTables(Str* aWords[], i8 iWords);
-    bool bTruncateTable(Str* aWords[], i8 iWords);
+    bool bAnalyzeTable(TokenAry* pTokenAry, Str* aWords[], i8 iWords);
+    bool bCopyTable(TokenAry* pTokenAry, Str* aWords[], i8 iWords);
+    bool bExportTable(TokenAry* pTokenAry, Str* aWords[], i8 iWords);
+    bool bDanalyzeTable(TokenAry* pTokenAry, Str* aWords[], i8 iWords);
+    bool bDistExportTable(TokenAry* pTokenAry, Str* aWords[], i8 iWords);
+    bool bLoadTable(TokenAry* pTokenAry, Str* aWords[], i8 iWords);
+    bool bLoadTableStream(TokenAry* pTokenAry, Str* aWords[], i8 iWords);
+    bool bLowerSelectTable(TokenAry* pTokenAry, Str* aWords[], i8 iWords);
+    bool bSelectTable(TokenAry* pTokenAry, Str* aWords[], i8 iWords);
+    bool bRangeSelectTable(TokenAry* pTokenAry, Str* aWords[], i8 iWords);
+    bool bGetTable(TokenAry* pTokenAry, Str* aWords[], i8 iWords);
+    bool bInUseTable(TokenAry* pTokenAry, Str* aWords[], i8 iWords);
+    bool bRetTable(TokenAry* pTokenAry, Str* aWords[], i8 iWords);
+    bool bNodeStatus(TokenAry* pTokenAry, Str* aWords[], i8 iWords);
+    bool bPoolSpace(TokenAry* pTokenAry, Str* aWords[], i8 iWords);
+    bool bSizeTable(TokenAry* pTokenAry, Str* aWords[], i8 iWords);
+    bool bSizeTables(TokenAry* pTokenAry, Str* aWords[], i8 iWords);
+    bool bTruncateTable(TokenAry* pTokenAry, Str* aWords[], i8 iWords);
     
-    bool bGetTask(Str* aWords[], i8 iWords);
-    bool bRetTask(Str* aWords[], i8 iWords);
+    bool bGetTask(TokenAry* pTokenAry, Str* aWords[], i8 iWords);
+    bool bRetTask(TokenAry* pTokenAry, Str* aWords[], i8 iWords);
   
     bool bInsertRow(Str* pRow);
     bool bInsertBuffer(void);
     bool bInsertBuffer(RowBuffer* pRowBuffer, i8 iPartition);
     
-    bool bPushDic(Str* aWords[]);
-    bool bGetDicPath(Str* aWords[]);
-    bool bGetDicContents(Str* aWords[]);
-    bool bGetDicContentsG(Str* aWords[]);
+    bool bPushDic(TokenAry* pTokenAry, Str* aWords[]);
+    bool bGetDicPath(TokenAry* pTokenAry, Str* aWords[]);
+    bool bGetDicContents(TokenAry* pTokenAry, Str* aWords[]);
+    bool bGetDicContentsG(TokenAry* pTokenAry, Str* aWords[]);
 
-    bool bGetMonitor(Str* aWords[]);
-    bool bGetFreeSpace(Str* aWords[]);
-    bool bGetInUseSpace(Str* aWords[]);
-    bool bGetTotalSpace(Str* aWords[]);
-    bool bGetVersion(Str* aWords[]);
-    bool bSeitfCount(Str* aWords[]);
+    bool bGetMonitor(TokenAry* pTokenAry, Str* aWords[]);
+    bool bGetFreeSpace(TokenAry* pTokenAry, Str* aWords[]);
+    bool bGetInUseSpace(TokenAry* pTokenAry, Str* aWords[]);
+    bool bGetTotalSpace(TokenAry* pTokenAry, Str* aWords[]);
+    bool bGetVersion(TokenAry* pTokenAry, Str* aWords[]);
+    bool bSeitfCount(TokenAry* pTokenAry, Str* aWords[]);
     
-    bool bObject(Str* aWords[]);
-    bool bPing(Str* aWords[]);
-    bool bPrintRowBuffer(Str* aWords[]);
+    bool bObject(TokenAry* pTokenAry, Str* aWords[]);
+    bool bPing(TokenAry* pTokenAry, Str* aWords[]);
+    bool bPrintRowBuffer(TokenAry* pTokenAry, Str* aWords[]);
     
-    bool bX(Str* aWords[]);
-    bool bPrint(Str* aWords[]);
+    bool bX(TokenAry* pTokenAry, Str* aWords[]);
+    bool bPrint(TokenAry* pTokenAry, Str* aWords[]);
     
     //--------------------------------------------------------------------------
     bool bAppendRequest(StrVal& sRequest);
