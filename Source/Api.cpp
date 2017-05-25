@@ -1208,7 +1208,7 @@ bool RapidsSE_ExecuteRequest(SEitf* pSEitf, TokenSet& xTokenSet, i8 nTokens, Str
   pSEitf->vClearLastError();
   
   // send request to se
-  bResult = bExecuteRequest(pSEitf, xTokenSet, nTokens);
+  bResult = bExecuteRequest(pSEitf, xTokenSet);
   if (!bResult) {
     *ppResponse = nullptr;
     return bResult;
@@ -1305,12 +1305,12 @@ eEC eExecuteRequest(SEitf* pSEitf, Str* aCommand, Str* aParameter1,
 /*----------------------------------------------------------------------------*/
 /* execute command                                                            */
 /*----------------------------------------------------------------------------*/
-bool bExecuteRequest(SEitf* pSEitf, TokenSet& xTokenSet,i8 nTokens)
+bool bExecuteRequest(SEitf* pSEitf, TokenSet& xTokenSet)
 {
   bool bResult;
   
   // execute command
-  bResult = pSEitf->bDecode(xTokenSet,nTokens);
+  bResult = pSEitf->bDecode(xTokenSet,xTokenSet.nTokens());
   
   return bResult;
 }

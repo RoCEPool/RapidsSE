@@ -43,7 +43,7 @@ eEC eExecuteRequest(SEitf* pSEitf, Str* aCommand, Str* aParameter);
 eEC eExecuteRequest(SEitf* pSEitf, Str* aCommand, Str* aParameter1,
                     Str* aParameter2, Str* aParameter3);
 
-bool bExecuteRequest(SEitf* pSEitf, TokenSet& xTokenSet, i8 nTokens);
+bool bExecuteRequest(SEitf* pSEitf, TokenSet& xTokenSet);
 eEC eGetResponse(SEitf* pSEitf);
 
 /*----------------------------------------------------------------------------*/
