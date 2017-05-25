@@ -7,35 +7,6 @@
 /*----------------------------------------------------------------------------*/
 /* get words from digit                                                       */
 /*----------------------------------------------------------------------------*/
-/*
-: >DigitWordsOld
-traceon
-  >str ""            ( "TBD"  "<dw>"        )
-
-  0 >r
-  begin                ( "TBD"  "<dw>"        )
-    swap               ( "<dw>" "TBD"         )
-    dup                ( "<dw>" "TBD" "TBD"   )
-    str.length         ( "<dw>" "TBD" l       )
-    while              ( "<dw>" "TBD"         )
-      dup              ( "<dw>" "TBD"  "TBD"  )
-      0 1 -rot str.sub ( "<dw>" "TBD"  "<d>"  )
-      swap             ( "<dw>" "<d>"  "TBD"  )
-      1 neg 1 -rot str.sub ( "<dw>" "<d>"  "BD"   )
-      -rot            ( "BD"   "<dw>" "<d>"  )
-      >int            ( "BD"   "<dw>" d      )
-      >digitName      ( "BD"   "<dw>" "name" )
-
-      r> dup 1+ >r
-      if swap " " str.cat swap then
-
-      str.cat         ( "BD"   "<dw>"        )
-  repeat
-  drop                ( "<dw>"               )
-  rdrop
-;
-*/
-
 : >DigitWords ( i )
 
   >str locals| sDecodeMe |
@@ -168,6 +139,8 @@ traceon
   jData1000
   jData100
   jData10
+
+  jDataDupe
 ;
 
 /*============================================================================*/
