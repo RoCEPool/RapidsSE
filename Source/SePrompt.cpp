@@ -620,7 +620,7 @@ bool SePrompt::bRecallCommand(void)
   if ( ! bTokenCheck(1) )
     return false;
   
-  if (! m_xHistory.bRecall(m_xTokenSet,C_TOKENS))
+  if (! m_xHistory.bRecall(m_xTokenSet))
     return true;
   
   return false;

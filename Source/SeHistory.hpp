@@ -23,12 +23,12 @@ public:
   void vClose(void);
   void vOpen(void);
   void vPrint(void);
-  bool bRecall(TokenSet& xTokenSet, i8 nTokens);
+  bool bRecall(TokenSet& xTokenSet);
   
 private:
   void vSeekStart(void);
   void vSeekEnd(void);
-  bool bGet(i8 iCommand, TokenSet& xTokenAry, i8 nTokens);
+  bool bGet(i8 iCommand, TokenSet& xTokenAry);
   bool bRead(Str* aCommand);
   
   Footer* pFooter(void);

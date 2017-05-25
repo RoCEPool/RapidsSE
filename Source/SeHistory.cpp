@@ -103,7 +103,7 @@ void SeHistory::vPrint(void)
 /*----------------------------------------------------------------------------*/
 /* recall command from history file                                           */
 /*----------------------------------------------------------------------------*/
-bool SeHistory::bRecall(TokenSet& xTokenSet, i8 nTokens)
+bool SeHistory::bRecall(TokenSet& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEHISTORY,_FOOTER_);
   
@@ -124,7 +124,7 @@ bool SeHistory::bRecall(TokenSet& xTokenSet, i8 nTokens)
   
   vTrace("Recall: %lld\n"_Str,iCommand);
   
-  bool bRecalled = bGet(iCommand,xTokenSet,nTokens);
+  bool bRecalled = bGet(iCommand,xTokenSet);
   
   return bRecalled;
 }
@@ -136,7 +136,7 @@ bool SeHistory::bRecall(TokenSet& xTokenSet, i8 nTokens)
 /*----------------------------------------------------------------------------*/
 /* get command from history file                                              */
 /*----------------------------------------------------------------------------*/
-bool SeHistory::bGet(i8 iCommand, TokenSet& xTokenSet, i8 nTokens)
+bool SeHistory::bGet(i8 iCommand, TokenSet& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEHISTORY,_FOOTER_);
   
