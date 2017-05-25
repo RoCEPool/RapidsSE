@@ -275,26 +275,48 @@ tp: lf
 /*----------------------------------------------------------------------------*/
 /* print working folder                                                       */
 /*----------------------------------------------------------------------------*/
+: pwf ( - sPath <SUCCESS> )
 
-: pwf
-
+  // test if we need to produce meta data
   args.metadata if
+    
+    // set meta data information
     "(path VARCHAR)" metadata!
+
+    // start of working string
     "row: ('/"
+
+    // iterate thru each folder in path
     pathDepth 0 do
-    pathDepth 1 - I -
-    pathPick dic.name str.cat
-    "/" str.cat
+      // compute the path subscript
+      pathDepth 1 - I -
+      // pick the path, get its name and concat name to working string
+      pathPick dic.name str.cat
+      // concat "/" to end of working string
+      "/" str.cat
     loop
+
+    // end working string
     "')\n" str.cat
+
+    // set number of rows processed
     1 task::this task.seitf@ seitf.rowsProcessed
+
   else
+
+    // start of working string
     "/"
+
+    // iterate thru each folder in path and concat to end
     pathDepth 0 do
-    pathDepth 1 - I -
-    pathPick dic.name str.cat
-    "/" str.cat
+      // compute the path subscript
+      pathDepth 1 - I -
+      // pick the path, get its name and concat name to working string
+      pathPick dic.name str.cat
+      // concat "/" to end of working string
+      "/" str.cat
     loop
+
   then
 
   <SUCCESS>
