@@ -19,16 +19,16 @@ public:
   SeHistory(void);
   ~SeHistory(void);
   
-  void vAppend(TokenAry& xTokenAry, Str* aToken[]);
+  void vAppend(TokenAry& xTokenAry);
   void vClose(void);
   void vOpen(void);
   void vPrint(void);
-  bool bRecall(TokenAry& xTokenAry, Str* aToken[], i8 nTokens);
+  bool bRecall(TokenAry& xTokenAry, i8 nTokens);
   
 private:
   void vSeekStart(void);
   void vSeekEnd(void);
-  bool bGet(i8 iCommand, TokenAry& xTokenAry, Str* aToken[], i8 nTokens);
+  bool bGet(i8 iCommand, TokenAry& xTokenAry, i8 nTokens);
   bool bRead(Str* aCommand);
   
   Footer* pFooter(void);

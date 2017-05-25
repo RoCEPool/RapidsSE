@@ -66,10 +66,10 @@ namespace Parsing
     eTK  eNextToken(char* aToken);
     void vNextToken(void);
     
-    void vResetTokens(TokenAry& xTokenAry, Str* aToken[], i8 nTokens);
-    i8   iFindToken(Str* pLookFor, TokenAry& xTokenAry, Str* aToken[], i8 nTokens);
-    i8   iCountTokens(TokenAry& xTokenAry, Str* pToken[], i8 nTokens);
-    void vDumpTokens(Str* pTitle, TokenAry& xTokenAry, Str* aToken[], i8 nTokens);
+    void vResetTokens(TokenAry& xTokenAry, i8 nTokens);
+    i8   iFindToken(Str* pLookFor, TokenAry& xTokenAry, i8 nTokens);
+    i8   iCountTokens(TokenAry& xTokenAry, i8 nTokens);
+    void vDumpTokens(Str* pTitle, TokenAry& xTokenAry, i8 nTokens);
     
     bool bEOF(void);
     bool bLineMode(void);

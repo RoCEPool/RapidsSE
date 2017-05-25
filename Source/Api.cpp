@@ -1200,7 +1200,7 @@ eEC RapidsSE_SEitfNew(void** ppSEitf, i8 iPartition, i8 iTraceLevel)
 /*----------------------------------------------------------------------------*/
 /* Execute a request                                                          */
 /*----------------------------------------------------------------------------*/
-bool RapidsSE_ExecuteRequest(SEitf* pSEitf, TokenAry& xTokenAry, Str* aWords[], i8 iWords, Str** ppResponse)
+bool RapidsSE_ExecuteRequest(SEitf* pSEitf, TokenAry& xTokenAry, i8 nTokens, Str** ppResponse)
 {
   bool bResult;
   
@@ -1208,7 +1208,7 @@ bool RapidsSE_ExecuteRequest(SEitf* pSEitf, TokenAry& xTokenAry, Str* aWords[], 
   pSEitf->vClearLastError();
   
   // send request to se
-  bResult = bExecuteRequest(pSEitf, xTokenAry, aWords, iWords);
+  bResult = bExecuteRequest(pSEitf, xTokenAry, nTokens);
   if (!bResult) {
     *ppResponse = nullptr;
     return bResult;
@@ -1242,7 +1242,7 @@ eEC eExecuteRequest(SEitf* pSEitf, Str* aCommand)
   // execute command pCommand
   aWords[0]->vCopy(aCommand);
   
-  bResult = pSEitf->bDecode(xTokenAry, (Str**)aWords, 1);
+  bResult = pSEitf->bDecode(xTokenAry,1);
   
   return pSEitf->eGetLastError();
 }
@@ -1268,7 +1268,7 @@ eEC eExecuteRequest(SEitf* pSEitf, Str* aCommand, Str* aParameter)
   aWords[0]->vCopy(aCommand);
   aWords[1]->vCopy(aParameter);
   
-  bResult = pSEitf->bDecode(xTokenAry, (Str**)aWords, 2);
+  bResult = pSEitf->bDecode(xTokenAry,2);
   
   return pSEitf->eGetLastError();
 }
@@ -1284,22 +1284,20 @@ eEC eExecuteRequest(SEitf* pSEitf, Str* aCommand, Str* aParameter1,
   
   bool bResult;
   char xArray[C_1KB * 4];
-  Str* aWords[16] = {
-    (Str*)&xArray[C_1KB * 0],
-    (Str*)&xArray[C_1KB * 1],
-    (Str*)&xArray[C_1KB * 2],
-    (Str*)&xArray[C_1KB * 3]
-  };
-  
   TokenAry xTokenAry;
   
-  // execute command
-  aWords[0]->vCopy(aCommand);
-  aWords[1]->vCopy(aParameter1);
-  aWords[2]->vCopy(aParameter2);
-  aWords[3]->vCopy(aParameter3);
+  xTokenAry[0] = (Str*)&xArray[C_1KB * 0];
+  xTokenAry[1] = (Str*)&xArray[C_1KB * 1];
+  xTokenAry[2] = (Str*)&xArray[C_1KB * 2];
+  xTokenAry[3] = (Str*)&xArray[C_1KB * 3];
   
-  bResult = pSEitf->bDecode(xTokenAry, (Str**)aWords, 4);
+  // execute command
+  xTokenAry[0]->vCopy(aCommand);
+  xTokenAry[1]->vCopy(aParameter1);
+  xTokenAry[2]->vCopy(aParameter2);
+  xTokenAry[3]->vCopy(aParameter3);
+  
+  bResult = pSEitf->bDecode(xTokenAry,4);
   
   return pSEitf->eGetLastError();
 }
@@ -1307,12 +1305,12 @@ eEC eExecuteRequest(SEitf* pSEitf, Str* aCommand, Str* aParameter1,
 /*----------------------------------------------------------------------------*/
 /* execute command                                                            */
 /*----------------------------------------------------------------------------*/
-bool bExecuteRequest(SEitf* pSEitf, TokenAry& xTokenAry, Str* aWords[], i8 iWords)
+bool bExecuteRequest(SEitf* pSEitf, TokenAry& xTokenAry,i8 nTokens)
 {
   bool bResult;
   
   // execute command
-  bResult = pSEitf->bDecode(xTokenAry, aWords, iWords);
+  bResult = pSEitf->bDecode(xTokenAry,nTokens);
   
   return bResult;
 }

@@ -30,9 +30,6 @@ private:
   s48K       m_sResponse;  // response from seitf
   SeHistory m_xHistory;   // command history
   
-  Str*       m_aToken[C_TOKENS];
-  Str*       m_aToken2[C_TOKENS];
-  
   TokenAry   m_xTokenAry;
   TokenAry   m_xTokenAry2;
   

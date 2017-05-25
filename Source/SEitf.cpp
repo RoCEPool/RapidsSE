@@ -334,87 +334,87 @@ void SEitf::vEndTx()
 /*----------------------------------------------------------------------------*/
 /* decode request                                                             */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDecode(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
+bool SEitf::bDecode(TokenAry& xTokenAry, i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
-  if (0 == aWords[0]->iLength())
+  if (0 == xTokenAry[0]->iLength())
     return false;
   
-  if (aWords[0]->bSame("addcol"_Str)) return bAddColumn(xTokenAry, aWords, iWords);
-  if (aWords[0]->bSame("antbl"_Str)) return bAnalyzeTable(xTokenAry, aWords, iWords);
-  if (aWords[0]->bSame("anidx"_Str)) return bAnalyzeIndex(xTokenAry, aWords, iWords);
-  if (aWords[0]->bSame("addidxcol"_Str)) return bAddIndexColumn(xTokenAry, aWords, iWords);
-  if (aWords[0]->bSame("cf"_Str)) return bPushDic(xTokenAry, aWords);
-  if (aWords[0]->bSame("connectCluster"_Str)) return bConnectCluster(xTokenAry, aWords);
-  if (aWords[0]->bSame("cp"_Str)) return bCopyTable(xTokenAry, aWords, iWords);
-  if (aWords[0]->bSame("danidx"_Str)) return bDanalyzeIndex(xTokenAry, aWords, iWords);
-  if (aWords[0]->bSame("dantbl"_Str)) return bDanalyzeTable(xTokenAry, aWords, iWords);
-  if (aWords[0]->bSame("dex"_Str)) return bDistExportTable(xTokenAry, aWords, iWords);
-  if (aWords[0]->bSame("docol"_Str)) return bDocol(xTokenAry, aWords, iWords);
-  if (aWords[0]->bSame("displayOff"_Str)) return bDisplayOff(xTokenAry, aWords, iWords);
-  if (aWords[0]->bSame("displayOn"_Str)) return bDisplayOn(xTokenAry, aWords, iWords);
-  if (aWords[0]->bSame("dump"_Str)) return bDumpTable(xTokenAry, aWords, iWords);
-  if (aWords[0]->bSame("endmkidx"_Str)) return bEndCreateIndex(xTokenAry, aWords, iWords);
-  if (aWords[0]->bSame("endmktbl"_Str)) return bEndCreateTable(xTokenAry, aWords, iWords);
-  if (aWords[0]->bSame("ex"_Str)) return bExportTable(xTokenAry, aWords, iWords);
-  if (aWords[0]->bSame("getFreeSpace"_Str)) return bGetFreeSpace(xTokenAry, aWords);
-  if (aWords[0]->bSame("getInUseSpace"_Str)) return bGetInUseSpace(xTokenAry, aWords);
-  if (aWords[0]->bSame("gettbl"_Str)) return bGetTable(xTokenAry, aWords, iWords);
-  if (aWords[0]->bSame("gettsk"_Str)) return bGetTask(xTokenAry, aWords, iWords);
-  if (aWords[0]->bSame("getTotalSpace"_Str)) return bGetTotalSpace(xTokenAry, aWords);
-  if (aWords[0]->bSame("dumpidx"_Str)) return bDumpIndex(xTokenAry, aWords, iWords);
-  if (aWords[0]->bSame("TblInUse"_Str)) return bInUseTable(xTokenAry, aWords, iWords);
-  if (aWords[0]->bSame("ld"_Str)) return bLoadTable(xTokenAry, aWords, iWords);
-  if (aWords[0]->bSame("lds"_Str)) return bLoadTableStream(xTokenAry, aWords, iWords);
-  if (aWords[0]->bSame("lf"_Str)) return bGetDicContents(xTokenAry, aWords);
-  if (aWords[0]->bSame("lfG"_Str)) return bGetDicContentsG(xTokenAry, aWords);
-  if (aWords[0]->bSame("keyselidx"_Str)) return bKeySelectIndex(xTokenAry, aWords, iWords);
-  if (aWords[0]->bSame("lscat"_Str)) return bListCatalogs(xTokenAry, aWords, iWords);
-  if (aWords[0]->bSame("lscol"_Str)) return bListColumns(xTokenAry, aWords, iWords);
-  if (aWords[0]->bSame("lsidx"_Str)) return bListIndices(xTokenAry, aWords, iWords);
-  if (aWords[0]->bSame("lsidxcol"_Str)) return bListIndexColumns(xTokenAry, aWords, iWords);
-  if (aWords[0]->bSame("lssch"_Str)) return bListSchemas(xTokenAry, aWords, iWords);
-  if (aWords[0]->bSame("lstbl"_Str)) return bListTables(xTokenAry, aWords, iWords);
-  if (aWords[0]->bSame("lsten"_Str)) return bListTenants(xTokenAry, aWords, iWords);
-  if (aWords[0]->bSame("lwrsel"_Str)) return bLowerSelectTable(xTokenAry, aWords, iWords);
-  if (aWords[0]->bSame("lwrselidx"_Str)) return bLowerSelectIndex(xTokenAry, aWords, iWords);
-  if (aWords[0]->bSame("mkcat"_Str)) return bCreateCatalog(xTokenAry, aWords, iWords);
-  if (aWords[0]->bSame("mkidx"_Str)) return bCreateIndex(xTokenAry, aWords, iWords);
-  if (aWords[0]->bSame("mksch"_Str)) return bCreateSchema(xTokenAry, aWords, iWords);
-  if (aWords[0]->bSame("mktbl"_Str)) return bCreateTable(xTokenAry, aWords, iWords);
-  if (aWords[0]->bSame("mkten"_Str)) return bCreateTenant(xTokenAry, aWords, iWords);
-  if (aWords[0]->bSame("object"_Str)) return bObject(xTokenAry, aWords);
-  if (aWords[0]->bSame("pRB"_Str)) return bPrintRowBuffer(xTokenAry, aWords);
-  if (aWords[0]->bSame("pwf"_Str)) return bGetDicPath(xTokenAry, aWords);
-  if (aWords[0]->bSame("rettbl"_Str)) return bRetTable(xTokenAry, aWords, iWords);
-  if (aWords[0]->bSame("rettsk"_Str)) return bRetTask(xTokenAry, aWords, iWords);
-  if (aWords[0]->bSame("rf"_Str)) return bRemoveFolder(xTokenAry, aWords, iWords);
-  if (aWords[0]->bSame("rgesel"_Str)) return bRangeSelectTable(xTokenAry, aWords, iWords);
-  if (aWords[0]->bSame("rmcat"_Str)) return bDropCatalog(xTokenAry, aWords, iWords);
-  if (aWords[0]->bSame("rmdic"_Str)) return bRemoveFolder(xTokenAry, aWords, iWords);
-  if (aWords[0]->bSame("rmidx"_Str)) return bDropIndex(xTokenAry, aWords, iWords);
-  if (aWords[0]->bSame("rmsch"_Str)) return bDropSchema(xTokenAry, aWords, iWords);
-  if (aWords[0]->bSame("rmtbl"_Str)) return bDropTable(xTokenAry, aWords, iWords);
-  if (aWords[0]->bSame("rmten"_Str)) return bDropTenant(xTokenAry, aWords, iWords);
-  if (aWords[0]->bSame("rgeselidx"_Str)) return bRangeSelectIndex(xTokenAry, aWords, iWords);
-  if (aWords[0]->bSame("sel"_Str)) return bSelectTable(xTokenAry, aWords, iWords);
-  if (aWords[0]->bSame("setidxunique"_Str)) return bIndexSetUnique(xTokenAry, aWords, iWords);
-  if (aWords[0]->bSame("space"_Str)) return bPoolSpace(xTokenAry, aWords, iWords);
-  if (aWords[0]->bSame("status"_Str)) return bNodeStatus(xTokenAry, aWords, iWords);
-  if (aWords[0]->bSame("szidx"_Str)) return bSizeIndex(xTokenAry, aWords, iWords);
-  if (aWords[0]->bSame("sz"_Str)) return bSizeTable(xTokenAry, aWords, iWords);
-  if (aWords[0]->bSame("tableSizes"_Str)) return bSizeTables(xTokenAry, aWords, iWords);
-  if (aWords[0]->bSame("tr"_Str)) return bTruncateTable(xTokenAry, aWords, iWords);
-  if (aWords[0]->bSame("tridx"_Str)) return bTruncateIndex(xTokenAry, aWords, iWords);
-  if (aWords[0]->bSame("uprselidx"_Str)) return bUpperSelectIndex(xTokenAry, aWords, iWords);
-  if (aWords[0]->bSame("usesch"_Str)) return bUseSchema(xTokenAry, aWords, iWords);
-  if (aWords[0]->bSame("__x"_Str)) return bX(xTokenAry, aWords);
-  if (aWords[0]->bSame("ping"_Str)) return bPing(xTokenAry, aWords);
-  if (aWords[0]->bSame("mon"_Str)) return bGetMonitor(xTokenAry, aWords);
-  if (aWords[0]->bSame("print"_Str)) return ! bPrint(xTokenAry, aWords);
-  if (aWords[0]->bSame("seitf"_Str)) return bSeitfCount(xTokenAry, aWords);
-  if (aWords[0]->bSame("version"_Str)) return bGetVersion(xTokenAry, aWords);
+  if (xTokenAry[0]->bSame("addcol"_Str)) return bAddColumn(xTokenAry,nTokens);
+  if (xTokenAry[0]->bSame("antbl"_Str)) return bAnalyzeTable(xTokenAry,nTokens);
+  if (xTokenAry[0]->bSame("anidx"_Str)) return bAnalyzeIndex(xTokenAry,nTokens);
+  if (xTokenAry[0]->bSame("addidxcol"_Str)) return bAddIndexColumn(xTokenAry,nTokens);
+  if (xTokenAry[0]->bSame("cf"_Str)) return bPushDic(xTokenAry);
+  if (xTokenAry[0]->bSame("connectCluster"_Str)) return bConnectCluster(xTokenAry);
+  if (xTokenAry[0]->bSame("cp"_Str)) return bCopyTable(xTokenAry,nTokens);
+  if (xTokenAry[0]->bSame("danidx"_Str)) return bDanalyzeIndex(xTokenAry,nTokens);
+  if (xTokenAry[0]->bSame("dantbl"_Str)) return bDanalyzeTable(xTokenAry,nTokens);
+  if (xTokenAry[0]->bSame("dex"_Str)) return bDistExportTable(xTokenAry,nTokens);
+  if (xTokenAry[0]->bSame("docol"_Str)) return bDocol(xTokenAry,nTokens);
+  if (xTokenAry[0]->bSame("displayOff"_Str)) return bDisplayOff(xTokenAry,nTokens);
+  if (xTokenAry[0]->bSame("displayOn"_Str)) return bDisplayOn(xTokenAry,nTokens);
+  if (xTokenAry[0]->bSame("dump"_Str)) return bDumpTable(xTokenAry,nTokens);
+  if (xTokenAry[0]->bSame("endmkidx"_Str)) return bEndCreateIndex(xTokenAry,nTokens);
+  if (xTokenAry[0]->bSame("endmktbl"_Str)) return bEndCreateTable(xTokenAry,nTokens);
+  if (xTokenAry[0]->bSame("ex"_Str)) return bExportTable(xTokenAry,nTokens);
+  if (xTokenAry[0]->bSame("getFreeSpace"_Str)) return bGetFreeSpace(xTokenAry);
+  if (xTokenAry[0]->bSame("getInUseSpace"_Str)) return bGetInUseSpace(xTokenAry);
+  if (xTokenAry[0]->bSame("gettbl"_Str)) return bGetTable(xTokenAry,nTokens);
+  if (xTokenAry[0]->bSame("gettsk"_Str)) return bGetTask(xTokenAry,nTokens);
+  if (xTokenAry[0]->bSame("getTotalSpace"_Str)) return bGetTotalSpace(xTokenAry);
+  if (xTokenAry[0]->bSame("dumpidx"_Str)) return bDumpIndex(xTokenAry,nTokens);
+  if (xTokenAry[0]->bSame("TblInUse"_Str)) return bInUseTable(xTokenAry,nTokens);
+  if (xTokenAry[0]->bSame("ld"_Str)) return bLoadTable(xTokenAry,nTokens);
+  if (xTokenAry[0]->bSame("lds"_Str)) return bLoadTableStream(xTokenAry,nTokens);
+  if (xTokenAry[0]->bSame("lf"_Str)) return bGetDicContents(xTokenAry);
+  if (xTokenAry[0]->bSame("lfG"_Str)) return bGetDicContentsG(xTokenAry);
+  if (xTokenAry[0]->bSame("keyselidx"_Str)) return bKeySelectIndex(xTokenAry,nTokens);
+  if (xTokenAry[0]->bSame("lscat"_Str)) return bListCatalogs(xTokenAry,nTokens);
+  if (xTokenAry[0]->bSame("lscol"_Str)) return bListColumns(xTokenAry,nTokens);
+  if (xTokenAry[0]->bSame("lsidx"_Str)) return bListIndices(xTokenAry,nTokens);
+  if (xTokenAry[0]->bSame("lsidxcol"_Str)) return bListIndexColumns(xTokenAry,nTokens);
+  if (xTokenAry[0]->bSame("lssch"_Str)) return bListSchemas(xTokenAry,nTokens);
+  if (xTokenAry[0]->bSame("lstbl"_Str)) return bListTables(xTokenAry,nTokens);
+  if (xTokenAry[0]->bSame("lsten"_Str)) return bListTenants(xTokenAry,nTokens);
+  if (xTokenAry[0]->bSame("lwrsel"_Str)) return bLowerSelectTable(xTokenAry,nTokens);
+  if (xTokenAry[0]->bSame("lwrselidx"_Str)) return bLowerSelectIndex(xTokenAry,nTokens);
+  if (xTokenAry[0]->bSame("mkcat"_Str)) return bCreateCatalog(xTokenAry,nTokens);
+  if (xTokenAry[0]->bSame("mkidx"_Str)) return bCreateIndex(xTokenAry,nTokens);
+  if (xTokenAry[0]->bSame("mksch"_Str)) return bCreateSchema(xTokenAry,nTokens);
+  if (xTokenAry[0]->bSame("mktbl"_Str)) return bCreateTable(xTokenAry,nTokens);
+  if (xTokenAry[0]->bSame("mkten"_Str)) return bCreateTenant(xTokenAry,nTokens);
+  if (xTokenAry[0]->bSame("object"_Str)) return bObject(xTokenAry);
+  if (xTokenAry[0]->bSame("pRB"_Str)) return bPrintRowBuffer(xTokenAry);
+  if (xTokenAry[0]->bSame("pwf"_Str)) return bGetDicPath(xTokenAry);
+  if (xTokenAry[0]->bSame("rettbl"_Str)) return bRetTable(xTokenAry,nTokens);
+  if (xTokenAry[0]->bSame("rettsk"_Str)) return bRetTask(xTokenAry,nTokens);
+  if (xTokenAry[0]->bSame("rf"_Str)) return bRemoveFolder(xTokenAry,nTokens);
+  if (xTokenAry[0]->bSame("rgesel"_Str)) return bRangeSelectTable(xTokenAry,nTokens);
+  if (xTokenAry[0]->bSame("rmcat"_Str)) return bDropCatalog(xTokenAry,nTokens);
+  if (xTokenAry[0]->bSame("rmdic"_Str)) return bRemoveFolder(xTokenAry,nTokens);
+  if (xTokenAry[0]->bSame("rmidx"_Str)) return bDropIndex(xTokenAry,nTokens);
+  if (xTokenAry[0]->bSame("rmsch"_Str)) return bDropSchema(xTokenAry,nTokens);
+  if (xTokenAry[0]->bSame("rmtbl"_Str)) return bDropTable(xTokenAry,nTokens);
+  if (xTokenAry[0]->bSame("rmten"_Str)) return bDropTenant(xTokenAry,nTokens);
+  if (xTokenAry[0]->bSame("rgeselidx"_Str)) return bRangeSelectIndex(xTokenAry,nTokens);
+  if (xTokenAry[0]->bSame("sel"_Str)) return bSelectTable(xTokenAry,nTokens);
+  if (xTokenAry[0]->bSame("setidxunique"_Str)) return bIndexSetUnique(xTokenAry,nTokens);
+  if (xTokenAry[0]->bSame("space"_Str)) return bPoolSpace(xTokenAry,nTokens);
+  if (xTokenAry[0]->bSame("status"_Str)) return bNodeStatus(xTokenAry,nTokens);
+  if (xTokenAry[0]->bSame("szidx"_Str)) return bSizeIndex(xTokenAry,nTokens);
+  if (xTokenAry[0]->bSame("sz"_Str)) return bSizeTable(xTokenAry,nTokens);
+  if (xTokenAry[0]->bSame("tableSizes"_Str)) return bSizeTables(xTokenAry,nTokens);
+  if (xTokenAry[0]->bSame("tr"_Str)) return bTruncateTable(xTokenAry,nTokens);
+  if (xTokenAry[0]->bSame("tridx"_Str)) return bTruncateIndex(xTokenAry,nTokens);
+  if (xTokenAry[0]->bSame("uprselidx"_Str)) return bUpperSelectIndex(xTokenAry,nTokens);
+  if (xTokenAry[0]->bSame("usesch"_Str)) return bUseSchema(xTokenAry,nTokens);
+  if (xTokenAry[0]->bSame("__x"_Str)) return bX(xTokenAry);
+  if (xTokenAry[0]->bSame("ping"_Str)) return bPing(xTokenAry);
+  if (xTokenAry[0]->bSame("mon"_Str)) return bGetMonitor(xTokenAry);
+  if (xTokenAry[0]->bSame("print"_Str)) return ! bPrint(xTokenAry);
+  if (xTokenAry[0]->bSame("seitf"_Str)) return bSeitfCount(xTokenAry);
+  if (xTokenAry[0]->bSame("version"_Str)) return bGetVersion(xTokenAry);
   
   vSetLastError(EC_INVALID_COMMAND);
   return false;
@@ -423,13 +423,13 @@ bool SEitf::bDecode(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* connect to se                                                              */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bConnect(TokenAry& xTokenAry, Str* aWords[])
+bool SEitf::bConnect(TokenAry& xTokenAry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  ASSERT(aWords[0]->bEqual("con"_Str));
+  ASSERT(xTokenAry[0]->bEqual("con"_Str));
   sRequest = "connect"_Str;
   return bAppendRequest(sRequest);
 }
@@ -437,13 +437,13 @@ bool SEitf::bConnect(TokenAry& xTokenAry, Str* aWords[])
 /*----------------------------------------------------------------------------*/
 /* connect the se cluster nodes                                               */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bConnectCluster(TokenAry& xTokenAry, Str* aWords[])
+bool SEitf::bConnectCluster(TokenAry& xTokenAry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  ASSERT(aWords[0]->bEqual("connectCluster"_Str));
+  ASSERT(xTokenAry[0]->bEqual("connectCluster"_Str));
   sRequest = "connectCluster"_Str;
   return bAppendRequest(sRequest);
 }
@@ -451,13 +451,13 @@ bool SEitf::bConnectCluster(TokenAry& xTokenAry, Str* aWords[])
 /*----------------------------------------------------------------------------*/
 /* disconnect from se                                                         */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDisconnect(TokenAry& xTokenAry, Str* aWords[])
+bool SEitf::bDisconnect(TokenAry& xTokenAry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  ASSERT(aWords[0]->bEqual("dic"_Str));
+  ASSERT(xTokenAry[0]->bEqual("dic"_Str));
   sRequest = "disconnect"_Str;
   return bAppendRequest(sRequest);
 }
@@ -465,14 +465,14 @@ bool SEitf::bDisconnect(TokenAry& xTokenAry, Str* aWords[])
 /*----------------------------------------------------------------------------*/
 /* remove a folder                                                            */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bRemoveFolder(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
+bool SEitf::bRemoveFolder(TokenAry& xTokenAry, i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
   sRequest.vCopy("\""_Str);
-  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat(xTokenAry[1]);
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" remove_folder"_Str);
@@ -483,19 +483,19 @@ bool SEitf::bRemoveFolder(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* create a tenant                                                            */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bCreateTenant(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
+bool SEitf::bCreateTenant(TokenAry& xTokenAry,i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (iWords != 2) {
+  if (nTokens != 2) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
 
   sRequest.vCopy("\""_Str);
-  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat(xTokenAry[1]);
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" create_tenant"_Str);
@@ -506,18 +506,18 @@ bool SEitf::bCreateTenant(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* list tenants                                                               */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bListTenants(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
+bool SEitf::bListTenants(TokenAry& xTokenAry, i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (iWords != 1) {
+  if (nTokens != 1) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
 
-  ASSERT(aWords[0]->bEqual("lsten"_Str));
+  ASSERT(xTokenAry[0]->bEqual("lsten"_Str));
   sRequest = "list_tenants"_Str;
   return bAppendRequest(sRequest);
 }
@@ -525,19 +525,19 @@ bool SEitf::bListTenants(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* drop a tenant                                                              */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDropTenant(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
+bool SEitf::bDropTenant(TokenAry& xTokenAry, i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (iWords != 2) {
+  if (nTokens != 2) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
   sRequest.vCopy("\""_Str);
-  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat(xTokenAry[1]);
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" drop_tenant"_Str);
@@ -548,19 +548,19 @@ bool SEitf::bDropTenant(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* create a catalog                                                           */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bCreateCatalog(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
+bool SEitf::bCreateCatalog(TokenAry& xTokenAry, i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (iWords != 2) {
+  if (nTokens != 2) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
   sRequest.vCopy("\""_Str);
-  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat(xTokenAry[1]);
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" create_catalog"_Str);
@@ -571,18 +571,18 @@ bool SEitf::bCreateCatalog(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* list catalogs                                                              */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bListCatalogs(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
+bool SEitf::bListCatalogs(TokenAry& xTokenAry, i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (iWords != 1) {
+  if (nTokens != 1) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
-  ASSERT(aWords[0]->bEqual("lscat"_Str));
+  ASSERT(xTokenAry[0]->bEqual("lscat"_Str));
   sRequest = "list_catalogs"_Str;
   return bAppendRequest(sRequest);
 }
@@ -590,19 +590,19 @@ bool SEitf::bListCatalogs(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* drop a catalog                                                             */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDropCatalog(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
+bool SEitf::bDropCatalog(TokenAry& xTokenAry,i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (iWords != 2) {
+  if (nTokens != 2) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
 
   sRequest.vCopy("\""_Str);
-  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat(xTokenAry[1]);
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" drop_catalog"_Str);
@@ -613,20 +613,24 @@ bool SEitf::bDropCatalog(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* create a schema                                                            */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bCreateSchema(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
+bool SEitf::bCreateSchema(TokenAry& xTokenAry, i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (iWords != 2) {
+  if (nTokens != 2) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
-  sRequest.vCopyCat("\""_Str,aWords[1]->s(),"\""_Str,
-                    " create_schema"_Str,
-                    nullptr);
+  sRequest.vCopy("\""_Str);
+  sRequest.vConcat(xTokenAry[1]);
+  sRequest.vConcat("\""_Str);
+  
+  sRequest.vConcat(" create_schema"_Str);
+  
+  return bAppendRequest(sRequest);
   
   return bAppendRequest(sRequest);
 }
@@ -634,18 +638,18 @@ bool SEitf::bCreateSchema(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* list schemas                                                               */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bListSchemas(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
+bool SEitf::bListSchemas(TokenAry& xTokenAry,i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (iWords != 1) {
+  if (nTokens != 1) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
-  ASSERT(aWords[0]->bEqual("lssch"_Str));
+  ASSERT(xTokenAry[0]->bEqual("lssch"_Str));
   sRequest = "list_schemas"_Str;
   return bAppendRequest(sRequest);
 }
@@ -653,19 +657,19 @@ bool SEitf::bListSchemas(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* drop a schema                                                              */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDropSchema(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
+bool SEitf::bDropSchema(TokenAry& xTokenAry,i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (iWords != 2) {
+  if (nTokens != 2) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
 
   sRequest.vCopy("\""_Str);
-  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat(xTokenAry[1]);
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" drop_schema"_Str);
@@ -676,19 +680,19 @@ bool SEitf::bDropSchema(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* use a schema                                                               */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bUseSchema(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
+bool SEitf::bUseSchema(TokenAry& xTokenAry,i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (iWords != 2) {
+  if (nTokens != 2) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
   sRequest.vCopy("\""_Str);
-  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat(xTokenAry[1]);
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" use_schema"_Str);
@@ -699,23 +703,23 @@ bool SEitf::bUseSchema(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* create an index                                                            */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bCreateIndex(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
+bool SEitf::bCreateIndex(TokenAry& xTokenAry,i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (iWords != 3) {
+  if (nTokens != 3) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
   sRequest.vConcat(" \""_Str);
-  sRequest.vConcat(aWords[2]);
+  sRequest.vConcat(xTokenAry[2]);
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" \""_Str);
-  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat(xTokenAry[1]);
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" create_index"_Str);
@@ -726,22 +730,22 @@ bool SEitf::bCreateIndex(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* list indices                                                               */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bListIndices(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
+bool SEitf::bListIndices(TokenAry& xTokenAry,i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (iWords != 2) {
+  if (nTokens != 2) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
   sRequest.vCopy("\""_Str);
-  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat(xTokenAry[1]);
   sRequest.vConcat("\""_Str);
 
-  ASSERT(aWords[0]->bEqual("lsidx"_Str));
+  ASSERT(xTokenAry[0]->bEqual("lsidx"_Str));
   
   sRequest.vConcat(" list_indexes"_Str);
   
@@ -751,30 +755,30 @@ bool SEitf::bListIndices(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* set index uniqueness                                                       */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bIndexSetUnique(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
+bool SEitf::bIndexSetUnique(TokenAry& xTokenAry,i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (iWords != 4) {
+  if (nTokens != 4) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
   //sRequest.vCopy("\""_Str);
-  sRequest.vCopy(aWords[3]);
+  sRequest.vCopy(xTokenAry[3]);
   //sRequest.vConcat("\""_Str);
   
   sRequest.vConcat("\""_Str);
-  sRequest.vConcat(aWords[2]);
+  sRequest.vConcat(xTokenAry[2]);
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat("\""_Str);
-  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat(xTokenAry[1]);
   sRequest.vConcat("\""_Str);
   
-  ASSERT(aWords[0]->bEqual("setidxunique"_Str));
+  ASSERT(xTokenAry[0]->bEqual("setidxunique"_Str));
   
   sRequest.vConcat(" index_setUnique"_Str);
   
@@ -784,19 +788,19 @@ bool SEitf::bIndexSetUnique(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* create a table                                                             */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bCreateTable(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
+bool SEitf::bCreateTable(TokenAry& xTokenAry,i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (iWords != 2) {
+  if (nTokens != 2) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
   sRequest.vCopy("\""_Str);
-  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat(xTokenAry[1]);
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" create_table"_Str);
@@ -807,18 +811,18 @@ bool SEitf::bCreateTable(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* list tables                                                                */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bListTables(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
+bool SEitf::bListTables(TokenAry& xTokenAry, i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (iWords != 1) {
+  if (nTokens != 1) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
-  ASSERT(aWords[0]->bEqual("lstbl"_Str));
+  ASSERT(xTokenAry[0]->bEqual("lstbl"_Str));
   sRequest = "list_tables"_Str;
   return bAppendRequest(sRequest);
 }
@@ -826,23 +830,23 @@ bool SEitf::bListTables(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* dump an index                                                              */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDumpIndex(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
+bool SEitf::bDumpIndex(TokenAry& xTokenAry, i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (iWords != 3) {
+  if (nTokens != 3) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
   sRequest.vCopy("\""_Str);
-  sRequest.vConcat(aWords[2]);
+  sRequest.vConcat(xTokenAry[2]);
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat("\""_Str);
-  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat(xTokenAry[1]);
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" dump_index"_Str);
@@ -853,19 +857,19 @@ bool SEitf::bDumpIndex(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* dump a table                                                               */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDumpTable(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
+bool SEitf::bDumpTable(TokenAry& xTokenAry, i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (iWords != 2) {
+  if (nTokens != 2) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
   sRequest.vCopy("\""_Str);
-  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat(xTokenAry[1]);
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" dump_table"_Str);
@@ -876,19 +880,19 @@ bool SEitf::bDumpTable(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* docol                                                                      */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDocol(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
+bool SEitf::bDocol(TokenAry& xTokenAry, i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (iWords != 2) {
+  if (nTokens != 2) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
   sRequest.vCopy("\""_Str);
-  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat(xTokenAry[1]);
   sRequest.vConcat("\""_Str);
   
   //
@@ -900,13 +904,13 @@ bool SEitf::bDocol(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* display off selected rows                                                  */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDisplayOff(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
+bool SEitf::bDisplayOff(TokenAry& xTokenAry, i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (iWords != 1) {
+  if (nTokens != 1) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
@@ -920,13 +924,13 @@ bool SEitf::bDisplayOff(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* display selected rows                                                      */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDisplayOn(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
+bool SEitf::bDisplayOn(TokenAry& xTokenAry, i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (iWords != 1) {
+  if (nTokens != 1) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
@@ -940,23 +944,23 @@ bool SEitf::bDisplayOn(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* drop an index                                                              */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDropIndex(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
+bool SEitf::bDropIndex(TokenAry& xTokenAry, i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (iWords != 3) {
+  if (nTokens != 3) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
   sRequest.vCopy("\""_Str);
-  sRequest.vConcat(aWords[2]);
+  sRequest.vConcat(xTokenAry[2]);
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat("\""_Str);
-  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat(xTokenAry[1]);
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" drop_index"_Str);
@@ -968,19 +972,19 @@ bool SEitf::bDropIndex(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* drop a table                                                               */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDropTable(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
+bool SEitf::bDropTable(TokenAry& xTokenAry, i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (iWords != 2) {
+  if (nTokens != 2) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
   sRequest.vCopy("\""_Str);
-  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat(xTokenAry[1]);
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" drop_table"_Str);
@@ -991,27 +995,27 @@ bool SEitf::bDropTable(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* add a column                                                               */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bAddColumn(TokenAry& xTokenAry, Str* aWords[16], i8 iWords)
+bool SEitf::bAddColumn(TokenAry& xTokenAry, i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (iWords != 4) {
+  if (nTokens != 4) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
   sRequest.vCopy("\""_Str);
-  sRequest.vConcat(aWords[3]);
+  sRequest.vConcat(xTokenAry[3]);
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" \""_Str);
-  sRequest.vConcat(aWords[2]);
+  sRequest.vConcat(xTokenAry[2]);
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" \""_Str);
-  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat(xTokenAry[1]);
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" add_column"_Str);
@@ -1022,27 +1026,27 @@ bool SEitf::bAddColumn(TokenAry& xTokenAry, Str* aWords[16], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* add an index column                                                        */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bAddIndexColumn(TokenAry& xTokenAry, Str* aWords[16], i8 iWords)
+bool SEitf::bAddIndexColumn(TokenAry& xTokenAry, i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (iWords != 4) {
+  if (nTokens != 4) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
   sRequest.vCopy(" \""_Str);
-  sRequest.vConcat(aWords[3]);
+  sRequest.vConcat(xTokenAry[3]);
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" \""_Str);
-  sRequest.vConcat(aWords[2]);
+  sRequest.vConcat(xTokenAry[2]);
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" \""_Str);
-  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat(xTokenAry[1]);
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" add_idxcolumn"_Str);
@@ -1053,23 +1057,23 @@ bool SEitf::bAddIndexColumn(TokenAry& xTokenAry, Str* aWords[16], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* end of create index sequence                                               */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bEndCreateIndex(TokenAry& xTokenAry, Str* aWords[16], i8 iWords)
+bool SEitf::bEndCreateIndex(TokenAry& xTokenAry, i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (iWords != 3) {
+  if (nTokens != 3) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
   sRequest.vCopy("\""_Str);
-  sRequest.vConcat(aWords[2]);
+  sRequest.vConcat(xTokenAry[2]);
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat("\""_Str);
-  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat(xTokenAry[1]);
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" end_create_index"_Str);
@@ -1080,19 +1084,19 @@ bool SEitf::bEndCreateIndex(TokenAry& xTokenAry, Str* aWords[16], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* end of create table sequence                                               */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bEndCreateTable(TokenAry& xTokenAry, Str* aWords[16], i8 iWords)
+bool SEitf::bEndCreateTable(TokenAry& xTokenAry, i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (iWords != 2) {
+  if (nTokens != 2) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
   sRequest.vCopy("\""_Str);
-  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat(xTokenAry[1]);
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" end_create_table"_Str);
@@ -1103,19 +1107,19 @@ bool SEitf::bEndCreateTable(TokenAry& xTokenAry, Str* aWords[16], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* list columns                                                               */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bListColumns(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
+bool SEitf::bListColumns(TokenAry& xTokenAry, i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (iWords != 2) {
+  if (nTokens != 2) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
   sRequest.vCopy("\""_Str);
-  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat(xTokenAry[1]);
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" list_columns"_Str);
@@ -1126,23 +1130,23 @@ bool SEitf::bListColumns(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* list index columns                                                         */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bListIndexColumns(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
+bool SEitf::bListIndexColumns(TokenAry& xTokenAry, i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (iWords != 3) {
+  if (nTokens != 3) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
   sRequest.vCopy("\""_Str);
-  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat(xTokenAry[1]);
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat("\""_Str);
-  sRequest.vConcat(aWords[2]);
+  sRequest.vConcat(xTokenAry[2]);
   sRequest.vConcat("\""_Str);
 
   sRequest.vConcat(" list_indexcolumns"_Str);
@@ -1153,23 +1157,23 @@ bool SEitf::bListIndexColumns(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* analyze an index                                                           */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bAnalyzeIndex(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
+bool SEitf::bAnalyzeIndex(TokenAry& xTokenAry, i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (iWords != 3) {
+  if (nTokens != 3) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
   sRequest.vCopy("\""_Str);
-  sRequest.vConcat(aWords[2]);
+  sRequest.vConcat(xTokenAry[2]);
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat("\""_Str);
-  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat(xTokenAry[1]);
   sRequest.vConcat("\""_Str);
 
   sRequest.vConcat(" analyze_Index"_Str);
@@ -1180,19 +1184,19 @@ bool SEitf::bAnalyzeIndex(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* analyze a table                                                            */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bAnalyzeTable(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
+bool SEitf::bAnalyzeTable(TokenAry& xTokenAry, i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (iWords != 2) {
+  if (nTokens != 2) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
   sRequest.vCopy("\""_Str);
-  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat(xTokenAry[1]);
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" analyze_table"_Str);
@@ -1203,23 +1207,23 @@ bool SEitf::bAnalyzeTable(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* detailed analysis of an index                                              */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDanalyzeIndex(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
+bool SEitf::bDanalyzeIndex(TokenAry& xTokenAry, i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (iWords != 3) {
+  if (nTokens != 3) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
   sRequest.vCopy("\""_Str);
-  sRequest.vConcat(aWords[2]);
+  sRequest.vConcat(xTokenAry[2]);
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat("\""_Str);
-  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat(xTokenAry[1]);
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" danalyze_index"_Str);
@@ -1230,19 +1234,19 @@ bool SEitf::bDanalyzeIndex(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* detailed analysis of a table                                               */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDanalyzeTable(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
+bool SEitf::bDanalyzeTable(TokenAry& xTokenAry, i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (iWords != 2) {
+  if (nTokens != 2) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
   sRequest.vCopy("\""_Str);
-  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat(xTokenAry[1]);
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" danalyze_table"_Str);
@@ -1253,23 +1257,23 @@ bool SEitf::bDanalyzeTable(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* copy a table                                                               */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bCopyTable(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
+bool SEitf::bCopyTable(TokenAry& xTokenAry, i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (iWords != 3) {
+  if (nTokens != 3) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
   sRequest.vCopy("\""_Str);
-  sRequest.vConcat(aWords[2]);
+  sRequest.vConcat(xTokenAry[2]);
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" \""_Str);
-  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat(xTokenAry[1]);
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" copy_table"_Str);
@@ -1280,23 +1284,23 @@ bool SEitf::bCopyTable(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* distributed export of a table                                              */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDistExportTable(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
+bool SEitf::bDistExportTable(TokenAry& xTokenAry, i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (iWords != 3) {
+  if (nTokens != 3) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
   sRequest.vCopy("\""_Str);
-  sRequest.vConcat(aWords[2]);
+  sRequest.vConcat(xTokenAry[2]);
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" \""_Str);
-  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat(xTokenAry[1]);
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" dist_export_table"_Str);
@@ -1307,23 +1311,23 @@ bool SEitf::bDistExportTable(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* export a table                                                             */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bExportTable(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
+bool SEitf::bExportTable(TokenAry& xTokenAry, i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
 
-  if (iWords != 3) {
+  if (nTokens != 3) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
   sRequest.vCopy("\""_Str);
-  sRequest.vConcat(aWords[2]);
+  sRequest.vConcat(xTokenAry[2]);
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" \""_Str);
-  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat(xTokenAry[1]);
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" export_table"_Str);
@@ -1334,23 +1338,23 @@ bool SEitf::bExportTable(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* load a table from file                                                     */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bLoadTable(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
+bool SEitf::bLoadTable(TokenAry& xTokenAry, i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (iWords != 3) {
+  if (nTokens != 3) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
   sRequest.vCopy("\""_Str);
-  sRequest.vConcat(aWords[2]);
+  sRequest.vConcat(xTokenAry[2]);
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" \""_Str);
-  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat(xTokenAry[1]);
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" load_table"_Str);
@@ -1361,23 +1365,23 @@ bool SEitf::bLoadTable(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* load a table from stream                                                   */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bLoadTableStream(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
+bool SEitf::bLoadTableStream(TokenAry& xTokenAry, i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (iWords != 3) {
+  if (nTokens != 3) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
   sRequest.vCopy("\""_Str);
-  sRequest.vConcat(aWords[2]);
+  sRequest.vConcat(xTokenAry[2]);
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" \""_Str);
-  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat(xTokenAry[1]);
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" load_table_stream"_Str);
@@ -1388,23 +1392,23 @@ bool SEitf::bLoadTableStream(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* lower select rows from a table                                             */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bLowerSelectTable(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
+bool SEitf::bLowerSelectTable(TokenAry& xTokenAry, i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (iWords != 3) {
+  if (nTokens != 3) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
   sRequest.vConcat(" \""_Str);
-  sRequest.vConcat(aWords[2]);
+  sRequest.vConcat(xTokenAry[2]);
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" \""_Str);
-  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat(xTokenAry[1]);
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" lower_select_table"_Str);
@@ -1415,19 +1419,19 @@ bool SEitf::bLowerSelectTable(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* select rows from a table                                                   */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bSelectTable(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
+bool SEitf::bSelectTable(TokenAry& xTokenAry, i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (iWords != 2) {
+  if (nTokens != 2) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
   sRequest.vCopy("\""_Str);
-  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat(xTokenAry[1]);
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" select_table"_Str);
@@ -1438,27 +1442,27 @@ bool SEitf::bSelectTable(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* range select rows from a table                                             */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bRangeSelectTable(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
+bool SEitf::bRangeSelectTable(TokenAry& xTokenAry, i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (iWords != 4) {
+  if (nTokens != 4) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
 
   sRequest.vCopy("\""_Str);
-  sRequest.vConcat(aWords[3]);
+  sRequest.vConcat(xTokenAry[3]);
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" \""_Str);
-  sRequest.vConcat(aWords[2]);
+  sRequest.vConcat(xTokenAry[2]);
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" \""_Str);
-  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat(xTokenAry[1]);
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" range_select_table"_Str);
@@ -1469,19 +1473,19 @@ bool SEitf::bRangeSelectTable(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* get address/reference of a table                                           */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bGetTable(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
+bool SEitf::bGetTable(TokenAry& xTokenAry, i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (iWords != 2) {
+  if (nTokens != 2) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
   sRequest.vCopy("\""_Str);
-  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat(xTokenAry[1]);
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" get_table"_Str);
@@ -1492,19 +1496,19 @@ bool SEitf::bGetTable(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* return whether table is in use or not                                      */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bInUseTable(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
+bool SEitf::bInUseTable(TokenAry& xTokenAry, i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (iWords != 2) {
+  if (nTokens != 2) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
   sRequest.vCopy("\""_Str);
-  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat(xTokenAry[1]);
   sRequest.vConcat("\""_Str);
 
   sRequest.vConcat(" table_inuse"_Str);
@@ -1515,13 +1519,13 @@ bool SEitf::bInUseTable(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* return address/refernce of a table                                         */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bRetTable(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
+bool SEitf::bRetTable(TokenAry& xTokenAry, i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (iWords != 1) {
+  if (nTokens != 1) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
@@ -1534,13 +1538,13 @@ bool SEitf::bRetTable(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* get pool space                                                             */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bPoolSpace(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
+bool SEitf::bPoolSpace(TokenAry& xTokenAry, i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (iWords != 1) {
+  if (nTokens != 1) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
@@ -1553,13 +1557,13 @@ bool SEitf::bPoolSpace(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* get node status                                                            */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bNodeStatus(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
+bool SEitf::bNodeStatus(TokenAry& xTokenAry, i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (iWords != 1) {
+  if (nTokens != 1) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
@@ -1572,27 +1576,27 @@ bool SEitf::bNodeStatus(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* exact key select from a table given an index                               */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bKeySelectIndex(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
+bool SEitf::bKeySelectIndex(TokenAry& xTokenAry, i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (iWords != 4) {
+  if (nTokens != 4) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
   sRequest.vConcat(" \""_Str);
-  sRequest.vConcat(aWords[3]);
+  sRequest.vConcat(xTokenAry[3]);
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" \""_Str);
-  sRequest.vConcat(aWords[2]);
+  sRequest.vConcat(xTokenAry[2]);
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" \""_Str);
-  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat(xTokenAry[1]);
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" key_select_index"_Str);
@@ -1603,27 +1607,27 @@ bool SEitf::bKeySelectIndex(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* lower select rows from a table given an index                              */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bLowerSelectIndex(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
+bool SEitf::bLowerSelectIndex(TokenAry& xTokenAry, i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (iWords != 4) {
+  if (nTokens != 4) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
   sRequest.vConcat(" \""_Str);
-  sRequest.vConcat(aWords[3]);
+  sRequest.vConcat(xTokenAry[3]);
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" \""_Str);
-  sRequest.vConcat(aWords[2]);
+  sRequest.vConcat(xTokenAry[2]);
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" \""_Str);
-  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat(xTokenAry[1]);
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" lower_select_index"_Str);
@@ -1634,31 +1638,31 @@ bool SEitf::bLowerSelectIndex(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* range select rows from a table given an index                              */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bRangeSelectIndex(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
+bool SEitf::bRangeSelectIndex(TokenAry& xTokenAry, i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (iWords != 5) {
+  if (nTokens != 5) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
   sRequest.vConcat(" \""_Str);
-  sRequest.vConcat(aWords[4]);
+  sRequest.vConcat(xTokenAry[4]);
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" \""_Str);
-  sRequest.vConcat(aWords[3]);
+  sRequest.vConcat(xTokenAry[3]);
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" \""_Str);
-  sRequest.vConcat(aWords[2]);
+  sRequest.vConcat(xTokenAry[2]);
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" \""_Str);
-  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat(xTokenAry[1]);
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" range_select_index"_Str);
@@ -1669,23 +1673,23 @@ bool SEitf::bRangeSelectIndex(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* size of index                                                              */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bSizeIndex(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
+bool SEitf::bSizeIndex(TokenAry& xTokenAry, i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (iWords != 3) {
+  if (nTokens != 3) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
   sRequest.vCopy("\""_Str);
-  sRequest.vConcat(aWords[2]);
+  sRequest.vConcat(xTokenAry[2]);
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat("\""_Str);
-  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat(xTokenAry[1]);
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" size_index"_Str);
@@ -1696,19 +1700,19 @@ bool SEitf::bSizeIndex(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* size of table                                                              */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bSizeTable(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
+bool SEitf::bSizeTable(TokenAry& xTokenAry, i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (iWords != 2) {
+  if (nTokens != 2) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
   sRequest.vCopy("\""_Str);
-  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat(xTokenAry[1]);
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" size_table"_Str);
@@ -1719,13 +1723,13 @@ bool SEitf::bSizeTable(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* size of table                                                              */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bSizeTables(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
+bool SEitf::bSizeTables(TokenAry& xTokenAry, i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (iWords != 1) {
+  if (nTokens != 1) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
@@ -1738,23 +1742,23 @@ bool SEitf::bSizeTables(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* truncate an index                                                          */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bTruncateIndex(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
+bool SEitf::bTruncateIndex(TokenAry& xTokenAry, i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (iWords != 3) {
+  if (nTokens != 3) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
   sRequest.vCopy("\""_Str);
-  sRequest.vConcat(aWords[2]);
+  sRequest.vConcat(xTokenAry[2]);
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat("\""_Str);
-  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat(xTokenAry[1]);
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" truncate_index"_Str);
@@ -1765,27 +1769,27 @@ bool SEitf::bTruncateIndex(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* upper select rows from a table on a given index                            */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bUpperSelectIndex(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
+bool SEitf::bUpperSelectIndex(TokenAry& xTokenAry, i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (iWords != 4) {
+  if (nTokens != 4) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
   sRequest.vConcat(" \""_Str);
-  sRequest.vConcat(aWords[3]);
+  sRequest.vConcat(xTokenAry[3]);
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" \""_Str);
-  sRequest.vConcat(aWords[2]);
+  sRequest.vConcat(xTokenAry[2]);
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" \""_Str);
-  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat(xTokenAry[1]);
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" upper_select_index"_Str);
@@ -1796,19 +1800,19 @@ bool SEitf::bUpperSelectIndex(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* truncate a table                                                           */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bTruncateTable(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
+bool SEitf::bTruncateTable(TokenAry& xTokenAry, i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (iWords != 2) {
+  if (nTokens != 2) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
 
   sRequest.vCopy("\""_Str);
-  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat(xTokenAry[1]);
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" truncate_table"_Str);
@@ -1938,14 +1942,14 @@ bool SEitf::bInsertBuffer(RowBuffer* pRowBuffer, i8 iPartition)
 /*----------------------------------------------------------------------------*/
 /* push dictionary                                                            */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bPushDic(TokenAry& xTokenAry, Str* aWords[])
+bool SEitf::bPushDic(TokenAry& xTokenAry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
   sRequest.vCopy("\""_Str);
-  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat(xTokenAry[1]);
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" cf"_Str);
@@ -1956,11 +1960,11 @@ bool SEitf::bPushDic(TokenAry& xTokenAry, Str* aWords[])
 /*----------------------------------------------------------------------------*/
 /* print                                                                      */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bPrint(TokenAry& xTokenAry, Str* aWords[])
+bool SEitf::bPrint(TokenAry& xTokenAry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
-  vInfo("%s\n"_Str,aWords[1]->s());
+  vInfo("%s\n"_Str,xTokenAry[1]->s());
   
   return true;
 }
@@ -1968,13 +1972,13 @@ bool SEitf::bPrint(TokenAry& xTokenAry, Str* aWords[])
 /*----------------------------------------------------------------------------*/
 /* get dictionary path                                                        */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bGetDicPath(TokenAry& xTokenAry, Str* aWords[])
+bool SEitf::bGetDicPath(TokenAry& xTokenAry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  ASSERT(aWords[0]->bEqual("pwf"_Str));
+  ASSERT(xTokenAry[0]->bEqual("pwf"_Str));
   sRequest = "pwf"_Str;
   return bAppendRequest(sRequest);
 }
@@ -1982,13 +1986,13 @@ bool SEitf::bGetDicPath(TokenAry& xTokenAry, Str* aWords[])
 /*----------------------------------------------------------------------------*/
 /* get dictionary contents                                                    */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bGetDicContents(TokenAry& xTokenAry, Str* aWords[])
+bool SEitf::bGetDicContents(TokenAry& xTokenAry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  ASSERT(aWords[0]->bEqual("lf"_Str));
+  ASSERT(xTokenAry[0]->bEqual("lf"_Str));
   sRequest = "lf"_Str;
   return bAppendRequest(sRequest);
 }
@@ -1996,13 +2000,13 @@ bool SEitf::bGetDicContents(TokenAry& xTokenAry, Str* aWords[])
 /*----------------------------------------------------------------------------*/
 /* get dictionary contents                                                    */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bGetDicContentsG(TokenAry& xTokenAry, Str* aWords[])
+bool SEitf::bGetDicContentsG(TokenAry& xTokenAry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  ASSERT(aWords[0]->bEqual("lfG"_Str));
+  ASSERT(xTokenAry[0]->bEqual("lfG"_Str));
   sRequest = "lfG"_Str;
   return bAppendRequest(sRequest);
 }
@@ -2010,13 +2014,13 @@ bool SEitf::bGetDicContentsG(TokenAry& xTokenAry, Str* aWords[])
 /*----------------------------------------------------------------------------*/
 /* get monitor string                                                         */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bGetMonitor(TokenAry& xTokenAry, Str* aWords[])
+bool SEitf::bGetMonitor(TokenAry& xTokenAry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  ASSERT(aWords[0]->bEqual("mon"_Str));
+  ASSERT(xTokenAry[0]->bEqual("mon"_Str));
   sRequest = "get_monitor"_Str;
   return bAppendRequest(sRequest);
 }
@@ -2024,13 +2028,13 @@ bool SEitf::bGetMonitor(TokenAry& xTokenAry, Str* aWords[])
 /*----------------------------------------------------------------------------*/
 /* get free space                                                             */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bGetFreeSpace(TokenAry& xTokenAry, Str* aWords[])
+bool SEitf::bGetFreeSpace(TokenAry& xTokenAry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  ASSERT(aWords[0]->bEqual("getFreeSpace"_Str));
+  ASSERT(xTokenAry[0]->bEqual("getFreeSpace"_Str));
   sRequest = "getFreeSpace"_Str;
   return bAppendRequest(sRequest);
 }
@@ -2038,13 +2042,13 @@ bool SEitf::bGetFreeSpace(TokenAry& xTokenAry, Str* aWords[])
 /*----------------------------------------------------------------------------*/
 /* get inUse space                                                            */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bGetInUseSpace(TokenAry& xTokenAry, Str* aWords[])
+bool SEitf::bGetInUseSpace(TokenAry& xTokenAry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  ASSERT(aWords[0]->bEqual("getInUseSpace"_Str));
+  ASSERT(xTokenAry[0]->bEqual("getInUseSpace"_Str));
   sRequest = "getInUseSpace"_Str;
   return bAppendRequest(sRequest);
 }
@@ -2052,13 +2056,13 @@ bool SEitf::bGetInUseSpace(TokenAry& xTokenAry, Str* aWords[])
 /*----------------------------------------------------------------------------*/
 /* get total space                                                            */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bGetTotalSpace(TokenAry& xTokenAry, Str* aWords[])
+bool SEitf::bGetTotalSpace(TokenAry& xTokenAry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  ASSERT(aWords[0]->bEqual("getTotalSpace"_Str));
+  ASSERT(xTokenAry[0]->bEqual("getTotalSpace"_Str));
   sRequest = "getTotalSpace"_Str;
   return bAppendRequest(sRequest);
 }
@@ -2066,13 +2070,13 @@ bool SEitf::bGetTotalSpace(TokenAry& xTokenAry, Str* aWords[])
 /*----------------------------------------------------------------------------*/
 /* get version                                                                */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bGetVersion(TokenAry& xTokenAry, Str* aWords[])
+bool SEitf::bGetVersion(TokenAry& xTokenAry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  ASSERT(aWords[0]->bEqual("version"_Str));
+  ASSERT(xTokenAry[0]->bEqual("version"_Str));
   sRequest = "get_version"_Str;
   return bAppendRequest(sRequest);
 }
@@ -2080,13 +2084,13 @@ bool SEitf::bGetVersion(TokenAry& xTokenAry, Str* aWords[])
 /*----------------------------------------------------------------------------*/
 /* ping test                                                                  */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bPing(TokenAry& xTokenAry, Str* aWords[])
+bool SEitf::bPing(TokenAry& xTokenAry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  ASSERT(aWords[0]->bEqual("ping"_Str));
+  ASSERT(xTokenAry[0]->bEqual("ping"_Str));
   sRequest = "ping"_Str;
   return bAppendRequest(sRequest);
 }
@@ -2094,7 +2098,7 @@ bool SEitf::bPing(TokenAry& xTokenAry, Str* aWords[])
 /*----------------------------------------------------------------------------*/
 /* send object                                                                */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bObject(TokenAry& xTokenAry, Str* aWords[])
+bool SEitf::bObject(TokenAry& xTokenAry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -2108,17 +2112,17 @@ bool SEitf::bObject(TokenAry& xTokenAry, Str* aWords[])
 /*----------------------------------------------------------------------------*/
 /* print row buffer                                                           */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bPrintRowBuffer(TokenAry& xTokenAry, Str* aWords[])
+bool SEitf::bPrintRowBuffer(TokenAry& xTokenAry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
   sRequest.vCopy("\""_Str);
-  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat(xTokenAry[1]);
   sRequest.vConcat("\""_Str);
 
-  ASSERT(aWords[0]->bEqual("pRB"_Str));
+  ASSERT(xTokenAry[0]->bEqual("pRB"_Str));
   sRequest.vConcat(" pRB"_Str);
   
   return bAppendRequest(sRequest);
@@ -2127,13 +2131,13 @@ bool SEitf::bPrintRowBuffer(TokenAry& xTokenAry, Str* aWords[])
 /*----------------------------------------------------------------------------*/
 /* get seitf count                                                            */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bSeitfCount(TokenAry& xTokenAry, Str* aWords[])
+bool SEitf::bSeitfCount(TokenAry& xTokenAry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  ASSERT(aWords[0]->bEqual("seitf"_Str));
+  ASSERT(xTokenAry[0]->bEqual("seitf"_Str));
   sRequest = "seitf_count"_Str;
   return bAppendRequest(sRequest);
 }
@@ -2141,13 +2145,13 @@ bool SEitf::bSeitfCount(TokenAry& xTokenAry, Str* aWords[])
 /*----------------------------------------------------------------------------*/
 /* x test                                                                     */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bX(TokenAry& xTokenAry, Str* aWords[])
+bool SEitf::bX(TokenAry& xTokenAry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  ASSERT(aWords[0]->bEqual("ping"_Str));
+  ASSERT(xTokenAry[0]->bEqual("ping"_Str));
   sRequest = "ping"_Str;
   
   return bAppendRequest(sRequest);
@@ -2157,16 +2161,16 @@ bool SEitf::bX(TokenAry& xTokenAry, Str* aWords[])
 /*----------------------------------------------------------------------------*/
 /* return task                                                                */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bRetTask(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
+bool SEitf::bRetTask(TokenAry& xTokenAry, i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  ASSERT(aWords[0]->bEqual("rettsk"_Str));
+  ASSERT(xTokenAry[0]->bEqual("rettsk"_Str));
   
   sRequest.vCopy("\""_Str);
-  sRequest.vConcat(aWords[1]);
+  sRequest.vConcat(xTokenAry[1]);
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" return_task"_Str);
@@ -2177,13 +2181,13 @@ bool SEitf::bRetTask(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* get task                                                                   */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bGetTask(TokenAry& xTokenAry, Str* aWords[], i8 iWords)
+bool SEitf::bGetTask(TokenAry& xTokenAry,i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  ASSERT(aWords[0]->bEqual("gettsk"_Str));
+  ASSERT(xTokenAry[0]->bEqual("gettsk"_Str));
   
   sRequest.vCopy("get_task"_Str);
   

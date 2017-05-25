@@ -139,6 +139,7 @@ pFINALIZE *gpFinalize[]
   /* 87 */ &Finalize::vUndefined,         // CN_TIME
   /* 88 */ &Finalize::vUndefined,         // CN_TIMER
   /* 89 */ &Finalize::vUndefined,         // CN_TOKENISER
+  /*    */ &Finalize::vUndefined,         // CN_TOKENARY
   /* 90 */ &Finalize::vUndefined,         // CN_TX
   /* 91 */ &Finalize::vUndefined,         // CN_TXARRAY
   /* 92 */ &Finalize::vUndefined,         // CN_TXCOLLECTION
