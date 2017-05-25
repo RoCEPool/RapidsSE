@@ -448,7 +448,7 @@ void Task::vStrRight(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* substr -- substring ( start length str == substr )                         */
+/* substr -- substring ( length start str == substr )                         */
 /*----------------------------------------------------------------------------*/
 void Task::vStrSub(NNP_Task nnpTask)
 {
@@ -467,14 +467,14 @@ void Task::vStrSub(NNP_Task nnpTask)
   
   // validate start index
   if ( iStart < 0 || iStart >= iHasLength)
-    THROW("Invalid start index for: str.sub"_Str);
+    THROW("Invalid start index of %lld for: str.sub"_Str,iStart);
   
   // handle to end of string case
   if (-1 == iLength)
     iLength = iHasLength - iStart;
   
   if ( iLength <= 0 || iStart + iLength > iHasLength)
-    THROW("Invalid length for: str.sub"_Str);
+    THROW("Invalid length of %lld for: str.sub"_Str,iLength);
   
   char* pStart = sString.s() + iStart;
   
