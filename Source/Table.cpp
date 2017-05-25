@@ -257,7 +257,7 @@ Str* Table::pAnalyzeIndex(Index* pIndex, bool bDetailed)
   i8 nEntries = 0;
   s48K sAnalysis;
   
-  if ( ! gbMetadata )
+  if ( ! gbMetadata || bDetailed )
     sAnalysis.vCatSprint("N%lld: Analysis of Index %s of table %s \n"_Str,
                        gpGrid->iThisNode(),
                        pIndex->aIndexName()->s(),
@@ -269,59 +269,53 @@ Str* Table::pAnalyzeIndex(Index* pIndex, bool bDetailed)
     
     IndexBuffer *pIndexBuffer = pPartition(iSlot)->pIndexData(pIndex->iIndexNo())->pRoot();
     
-    if ( ! gbMetadata )
+    if ( ! gbMetadata || bDetailed )
       sAnalysis.vCatSprint("  partition %lld: \n"_Str, iPartition);
   
     i8 iBufferNo = 1;
+    i8 nBuffers = 0;
+    i8 nEntries = 0;
+
     while (pIndexBuffer) {
       i8 iBufferLevel = pIndexBuffer->nBufferLevel();
       nEntries = pIndexBuffer->nEntries() - 1; // not to show head entry
       
       if (bDetailed) {
-        sAnalysis.vCatSprint("row: ('%s', %lld, %lld, %lld, %lld)"_Str,
-                             gpGrid->pThisNode()->aNodeName(),
-                             iPartition,
+        sAnalysis.vCatSprint("     buffer %5lld (L%lld) : %lld entries\n"_Str,
                              iBufferNo++,
                              iBufferLevel,
                              nEntries);
-        if (iSlot < gpGrid->m_nSlots - 1) {
-          sAnalysis.vCatSprint("\n"_Str);
-        }
-        
-      }
-
-      if (gbMetadata) {
-        sAnalysis.vCatSprint("row: ('%s', %lld, %lld, %lld, %lld)"_Str,
-                             gpGrid->pThisNode()->aNodeName(),
-                             iPartition,
-                             iBufferNo++,
-                             iBufferLevel,
-                             nEntries);
-        if (iSlot < gpGrid->m_nSlots - 1) {
-          sAnalysis.vCatSprint("\n"_Str);
-        }
-
-      }
-      else {
-        sAnalysis.vCatSprint("     buffer (L%lld) %5lld : %lld entries\n"_Str,                           
-                           iBufferNo++,
-                           iBufferLevel,
-                           nEntries);
       }
       
       nEntriesTotal += nEntries;
       nBuffersTotal++;
       
-      pIndexBuffer = pIndexBuffer->pNextBuffer();
+      IndexBuffer* pNextBuffer = pIndexBuffer->pNextBuffer();
+      
+      if (!pNextBuffer && iBufferLevel != 0) {
+        Entry* pEntry = pIndexBuffer->pFirstEntry();
+        pIndexBuffer = pEntry->pIndexBuffer();
+      }
+      else
+        pIndexBuffer = pNextBuffer;
+    }
+    
+    if (gbMetadata && ! bDetailed) {
+      sAnalysis.vCatSprint("row: ('%s', %lld, %lld, %lld)\n"_Str,
+                           gpGrid->pThisNode()->aNodeName(),
+                           iPartition,
+                           nBuffersTotal++,
+                           nEntriesTotal);
     }
     
   }
   
-  if ( ! gbMetadata )
+  if ( ! gbMetadata  || bDetailed)
     sAnalysis.vCatSprint(
-                       "     total: %5lld buffers; %lld entries\n"_Str,
-                       nBuffersTotal,
-                       nEntriesTotal);
+                         "\n     total: %5lld buffers; %lld entries\n"_Str,
+                         nBuffersTotal,
+                         nEntriesTotal);
+  
   return sAnalysis;
 }
 

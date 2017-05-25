@@ -39,9 +39,11 @@ timer: idxSelectTimer
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // analyse the index
-  args.metadata if
-    "(nodeName VARCHAR, partition INTEGER, bufferNo INTEGER, bufferLevel INTEGER, entries INTEGER)"
-      metadata!
+  bDetailed not if
+    args.metadata if
+      "(nodeName VARCHAR, partition INTEGER, bufferNo INTEGER, bufferLevel INTEGER, entries INTEGER)"
+        metadata!
+    then
   then
 
   bDetailed sIndexNm analyzeIndex ( )
