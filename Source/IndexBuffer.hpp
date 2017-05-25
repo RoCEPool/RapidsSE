@@ -57,6 +57,7 @@ namespace DBobjects
     bool         bVerify(void);
     
   private:
+    void         vAdjustHeadOffsets(i8 nAdjustAmount);
     Entry*       pAllotEntry(i8 nBytes, i8 nLevels, Entry* aAfterEntry);
     void         vAllotHead(void);
     i8           iCopyEntries(IndexBuffer* pFromBuffer, Entry* aFromEntry);

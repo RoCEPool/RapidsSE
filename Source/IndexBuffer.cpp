@@ -508,7 +508,7 @@ bool IndexBuffer::bVerify(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
-  /*--------------------------------------------------------------------------//
+  /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    
    Entries in an index buffer
    
@@ -552,7 +552,7 @@ L0 |  KeyA || KeyB  || KeyC  ||  KeyD || KeyE  || KeyF  || KeyG  || KeyH  |
    KeyB is after KeyA
    ....
    
-   //--------------------------------------------------------------------------*/
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
   
   ln nLevelNo;
@@ -618,6 +618,28 @@ L0 |  KeyA || KeyB  || KeyC  ||  KeyD || KeyE  || KeyF  || KeyG  || KeyH  |
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* adjust the head entry offsets                                              */
+/*----------------------------------------------------------------------------*/
+void IndexBuffer::vAdjustHeadOffsets(i8 nAdjustAmount)
+{
+
+  // get the head entry
+  Entry* pHeadEntry = pHead();
+
+  for (on nOffsetNo; nOffsetNo < pHeadEntry->nOffsets(); nOffsetNo++) {
+    
+    //
+    i8 iRightOffset = pHeadEntry->iRightOffset(nOffsetNo);
+    
+    // here we adjust the iRightOffset if iRightOffset is > 0
+    if (iRightOffset > 0) {
+      i8 iNewRightOffset = iRightOffset + nAdjustAmount;
+      pHeadEntry->vRightOffset(nOffsetNo,iNewRightOffset);
+    }
+  }
+}
 
 /*----------------------------------------------------------------------------*/
 /* allot new entry after given entry (return null if insufficient space)      */
@@ -798,7 +820,7 @@ void IndexBuffer::vFixHigherLevel(Entry* aNewEntry)
   if (aNewEntry != aFirstEntry)
     return;
   
-  /*
+  /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    
   -------------
   |Ka Kb ......|               L(N+1) buffer
@@ -825,7 +847,7 @@ void IndexBuffer::vFixHigherLevel(Entry* aNewEntry)
    |Kc Ka...... | | Kb.........|  LN bufer
    ------------- -------------
 
-  */
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
   
   // we need to update the higher level buffer entry key
   Entry* aOldFirstEntry = pNextEntry(aNewEntry);
@@ -880,7 +902,7 @@ void IndexBuffer::vReplaceEqualKey(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
-  /*
+  /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    The old and new key are the same size, just change the key in the entry
    
    -------------    -------------
@@ -888,7 +910,7 @@ void IndexBuffer::vReplaceEqualKey(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp)
    -------------    -------------
    
    We keep the same offsets etc. and just replace the key in the entry
-  */
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
   
   // find the oldEntry in the higher level buffer
   Entry* pOldEntry = pPosition(xOldKeyWsp, JC_SAME);
@@ -914,48 +936,7 @@ void IndexBuffer::vReplaceLargerKey(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
   
-  /*
-   The new key is shorter than the old key
-   
-   ---------------     ------------
-   |Ka(m bytes)    |   |Kc(m-nbytes)|
-   ---------------     ------------
-   
-   We will moveLeft in the buffer reclaiming n bytes
-   */
-  
-  // find the oldEntry in the higher level buffer
-  Entry* aFoundEntry = pPosition(xOldKeyWsp, JC_SAME);
-  
-  // create a newEntry at the same location as the foundEntry
-  Entry* pNewEntry = _pEntry(aFoundEntry);
-  
-  // assert that we found one
-  ASSERT(aFoundEntry);
-  
-  // assert the key of the higher level entry and the old entry match
-  ASSERT(aFoundEntry->aKey()->bJuxtaCompare(JC_SAME, xOldKeyWsp.aKey(), m_pIndex->pIdxColVec()));
-  
-  // get the size of the old key
-  u8 uOldKeySize = xOldKeyWsp.nWspUsed();
-  
-  // get the size of the new key
-  u8 uNewKeySize = xNewKeyWsp.nWspUsed();
-  
-  i8 nOffsets = aFoundEntry->nOffsets();
-  Id xId = aFoundEntry->xId();
-  
-  // create an entry wsp from the pFoundEntry and the new key
-  EntWsp xEntWsp(nOffsets);
-  xEntWsp.vAddKey(xNewKeyWsp);
-  xEntWsp.vId(xId);
-  
-  for (on nOffsetNo; nOffsetNo.bInRange(); nOffsetNo++) {
-    xEntWsp.vRightOffset(nOffsetNo, aFoundEntry->iRightOffset(nOffsetNo));
-  }
-  
-  i8 iSize = aFoundEntry->nSize();
-  /*
+  /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    The new key is longer than the old key
    
    ---------------     --------------------
@@ -963,48 +944,67 @@ void IndexBuffer::vReplaceLargerKey(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp)
    ---------------     --------------------
    
    We will moveRight in the buffer making space for n bytes
-   */
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
   
-  ASSERT(uOldKeySize < uNewKeySize);
-  i8 nDifference = uNewKeySize - uOldKeySize;
-  ASSERT(nDifference);
+  // find the oldEntry in the higher level buffer
+  Entry* pOldEntry = pPosition(xOldKeyWsp, JC_SAME);
   
-  // calculate the pDst address
-  void* pDst = pAdd<void*>(aFoundEntry, iSize);
+  // assert that we found the old key
+  ASSERT(pOldEntry);
   
-  // need to ensure we have space in the buffer
-  if (m_xWsp.nFree() < nDifference) {
+  // assert the key of the higher level entry and the old entry match
+  ASSERT(pOldEntry->aKey()->bJuxtaCompare(JC_SAME, xOldKeyWsp.aKey(), m_pIndex->pIdxColVec()));
+  
+  // create a newEntry at the same location as the pOldEntry
+  Entry* pNewEntry = _pEntry(pOldEntry);
+  
+  // get the size of the old key
+  u8 uOldKeySize = xOldKeyWsp.nWspUsed();
+  
+  // get the size of the new key
+  u8 uNewKeySize = xNewKeyWsp.nWspUsed();
+  
+  // the old key is smaller than the new key
+  i8 nSizeDifference = uNewKeySize - uOldKeySize;
+  ASSERT(nSizeDifference > 0);
+  
+
+  // ensure we have space in the buffer
+  if (m_xWsp.nFree() < nSizeDifference) {
     ASSERT(0);                                                   //ALKA: TODO
   }
   
-  ASSERT(m_xWsp.nFree() >= nDifference);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create an entwsp from the old entry, with offsets et all
+  EntWsp xEntWsp(pOldEntry);
+  xEntWsp.vAddKey(xNewKeyWsp);
   
-  // move right nDifference bytes
-  vMoveRight(pDst, nDifference);
-  m_xWsp.vTake(nDifference);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // we need to move right nSizeDifference bytes, making room for the bigger key
+  
+  // calculate the pDst address
+  i8 iOldEntrySize = pOldEntry->nSize();
+  void* pDst = pAdd<void*>(pOldEntry, iOldEntrySize);
+  
+  ASSERT(m_xWsp.nFree() >= nSizeDifference);
+  
+  // move right
+  vMoveRight(pDst, nSizeDifference);
+  m_xWsp.vTake(nSizeDifference);
 
-  i8 nBytes =  iSize - (uOldKeySize - uNewKeySize);
-  new (pNewEntry) Entry(nBytes, nOffsets);
+  // calculate size of new entry
+  i8 nBytes =  iOldEntrySize + nSizeDifference;
+  
+  // create a new entry at pNewEntry using EntWsp
+  new (pNewEntry) Entry(nBytes, xEntWsp.nOffsets());
   pNewEntry->vSetEntry(xEntWsp);
   ASSERT(pNewEntry->nSize() == nBytes);
   
-  // fix the right offsets in the head
-  Entry* pHeadEntry = pHead();
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // we have replaced the first entry in this buffer
+  // hence we need to fix the right offsets in the head
+  vAdjustHeadOffsets(nSizeDifference);
   
-  for (on nOffsetNo; nOffsetNo < pHeadEntry->nOffsets(); nOffsetNo++) {
-    
-    // here we adjust the iRightOffset if offset is after oldEntry
-    u8 uOldEntrySize = aFoundEntry->nSize();
-    i8 iRightOffset = pHeadEntry->iRightOffset(nOffsetNo);
-    nDifference = uOldKeySize - uNewKeySize;
-    
-    if ( iRightOffset != C_NIL_OFFSET) {
-      if (iRightOffset - nDifference >= (i8)uOldEntrySize) {
-        pHeadEntry->vRightOffset(nOffsetNo,(i8)(pHeadEntry->iRightOffset(nOffsetNo)) - nDifference);
-      }
-    }
-  }
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1014,17 +1014,28 @@ void IndexBuffer::vReplaceSmallereKey(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
+  /*
+   The new key is shorter than the old key
+   
+   old key             new key
+   ----------------     ------------
+   |Ka(m bytes)    |   |Kc(m-nbytes)|
+   ----------------    ------------
+   
+   We will moveLeft in the buffer reclaiming n bytes
+   */
+  
   // find the oldEntry in the higher level buffer
-  Entry* aFoundEntry = pPosition(xOldKeyWsp, JC_SAME);
+  Entry* pOldEntry = pPosition(xOldKeyWsp, JC_SAME);
   
   // assert that we found one
-  ASSERT(aFoundEntry);
+  ASSERT(pOldEntry);
   
   // assert the key of the higher level entry and the old entry match
-  ASSERT(aFoundEntry->aKey()->bJuxtaCompare(JC_SAME, xOldKeyWsp.aKey(), m_pIndex->pIdxColVec()));
+  ASSERT(pOldEntry->aKey()->bJuxtaCompare(JC_SAME, xOldKeyWsp.aKey(), m_pIndex->pIdxColVec()));
   
   // create a newEntry at the same location as the foundEntry
-  Entry* pNewEntry = _pEntry(aFoundEntry);
+  Entry* pNewEntry = _pEntry(pOldEntry);
   
   // get the size of the old key
   u8 uOldKeySize = xOldKeyWsp.nWspUsed();
@@ -1032,60 +1043,38 @@ void IndexBuffer::vReplaceSmallereKey(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp)
   // get the size of the new key
   u8 uNewKeySize = xNewKeyWsp.nWspUsed();
   
-  i8 nOffsets = aFoundEntry->nOffsets();
-  Id xId = aFoundEntry->xId();
+  i8 iSize = pOldEntry->nSize();
   
-  // create an entry wsp from the pFoundEntry and the new key
-  EntWsp xEntWsp(nOffsets);
+  // the old key is smaller than the new key
+  i8 nSizeDifference = uOldKeySize - uNewKeySize;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create an entwsp from the old entry, with offsets et all
+  EntWsp xEntWsp(pOldEntry);
   xEntWsp.vAddKey(xNewKeyWsp);
-  xEntWsp.vId(xId);
   
-  for (on nOffsetNo; nOffsetNo < nOffsets; nOffsetNo++) {
-    xEntWsp.vRightOffset(nOffsetNo, aFoundEntry->iRightOffset(nOffsetNo));
-  }
-  
-  i8 iSize = aFoundEntry->nSize();
-  /*
-   The new key is shorter than the old key
-   
-   ---------------     ------------
-   |Ka(m bytes)    |   |Kc(m-nbytes)|
-   ---------------     ------------
-   
-   We will moveLeft in the buffer reclaiming n bytes
-   */
-  
-  i8 nDifference = uOldKeySize - uNewKeySize;
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // we need to move left nSizeDifference bytes, making room for the bigger key
   
   // calculate the pDst address
-  void* pDst = pAdd<void*>(aFoundEntry, uNewKeySize);
+  void* pDst = pAdd<void*>(pOldEntry, uNewKeySize);
   
-  // move left nDifference bytes
-  vMoveLeft(pDst, nDifference);
-  m_xWsp.vGive(nDifference);
+  // move left
+  vMoveLeft(pDst, nSizeDifference);
+  m_xWsp.vGive(nSizeDifference);
   
+  // calculate size of new entry
   i8 nBytes =  iSize - (uOldKeySize - uNewKeySize);
-  new (pNewEntry) Entry(nBytes, nOffsets);
+  
+  // create a new entry at pNewEntry using EntWsp
+  new (pNewEntry) Entry(nBytes, xEntWsp.nOffsets());
   pNewEntry->vSetEntry(xEntWsp);
   ASSERT(pNewEntry->nSize() == nBytes);
   
-  // fix the right offsets in the head
-  Entry* pHeadEntry = pHead();
-  
-  for (on nOffsetNo; nOffsetNo < pHeadEntry->nOffsets(); nOffsetNo++) {
-    
-    // here we adjust the iRightOffset if offset is after oldEntry
-    u8 uOldEntrySize = aFoundEntry->nSize();
-    i8 iRightOffset = pHeadEntry->iRightOffset(nOffsetNo);
-    nDifference = uOldKeySize - uNewKeySize;
-    
-    if ( iRightOffset != C_NIL_OFFSET) {
-      if (iRightOffset - nDifference >= (i8)uOldEntrySize) {
-        pHeadEntry->vRightOffset(nOffsetNo,(i8)(pHeadEntry->iRightOffset(nOffsetNo)) - nDifference);
-      }
-    }
-  }
-
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // we have replaced the first entry in this buffer
+  // hence we need to fix the right offsets in the head
+  vAdjustHeadOffsets(uNewKeySize - uOldKeySize);
 }
 
 /*----------------------------------------------------------------------------*/
