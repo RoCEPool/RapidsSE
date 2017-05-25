@@ -1242,7 +1242,7 @@ eEC eExecuteRequest(SEitf* pSEitf, Str* aCommand)
   // execute command pCommand
   aWords[0]->vCopy(aCommand);
   
-  bResult = pSEitf->bDecode(xTokenSet,1);
+  bResult = pSEitf->bDecode(xTokenSet);
   
   return pSEitf->eGetLastError();
 }
@@ -1268,7 +1268,7 @@ eEC eExecuteRequest(SEitf* pSEitf, Str* aCommand, Str* aParameter)
   aWords[0]->vCopy(aCommand);
   aWords[1]->vCopy(aParameter);
   
-  bResult = pSEitf->bDecode(xTokenSet,2);
+  bResult = pSEitf->bDecode(xTokenSet);
   
   return pSEitf->eGetLastError();
 }
@@ -1297,7 +1297,7 @@ eEC eExecuteRequest(SEitf* pSEitf, Str* aCommand, Str* aParameter1,
   xTokenSet[2]->vCopy(aParameter2);
   xTokenSet[3]->vCopy(aParameter3);
   
-  bResult = pSEitf->bDecode(xTokenSet,4);
+  bResult = pSEitf->bDecode(xTokenSet);
   
   return pSEitf->eGetLastError();
 }
@@ -1310,7 +1310,7 @@ bool bExecuteRequest(SEitf* pSEitf, TokenSet& xTokenSet)
   bool bResult;
   
   // execute command
-  bResult = pSEitf->bDecode(xTokenSet,xTokenSet.nTokens());
+  bResult = pSEitf->bDecode(xTokenSet);
   
   return bResult;
 }

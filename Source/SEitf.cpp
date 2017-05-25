@@ -334,81 +334,81 @@ void SEitf::vEndTx()
 /*----------------------------------------------------------------------------*/
 /* decode request                                                             */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDecode(TokenSet& xTokenSet, i8 nTokens)
+bool SEitf::bDecode(TokenSet& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   if (0 == xTokenSet[0]->iLength())
     return false;
   
-  if (xTokenSet[0]->bSame("addcol"_Str)) return bAddColumn(xTokenSet,nTokens);
-  if (xTokenSet[0]->bSame("antbl"_Str)) return bAnalyzeTable(xTokenSet,nTokens);
-  if (xTokenSet[0]->bSame("anidx"_Str)) return bAnalyzeIndex(xTokenSet,nTokens);
-  if (xTokenSet[0]->bSame("addidxcol"_Str)) return bAddIndexColumn(xTokenSet,nTokens);
+  if (xTokenSet[0]->bSame("addcol"_Str)) return bAddColumn(xTokenSet);
+  if (xTokenSet[0]->bSame("antbl"_Str)) return bAnalyzeTable(xTokenSet);
+  if (xTokenSet[0]->bSame("anidx"_Str)) return bAnalyzeIndex(xTokenSet);
+  if (xTokenSet[0]->bSame("addidxcol"_Str)) return bAddIndexColumn(xTokenSet);
   if (xTokenSet[0]->bSame("cf"_Str)) return bPushDic(xTokenSet);
   if (xTokenSet[0]->bSame("connectCluster"_Str)) return bConnectCluster(xTokenSet);
-  if (xTokenSet[0]->bSame("cp"_Str)) return bCopyTable(xTokenSet,nTokens);
-  if (xTokenSet[0]->bSame("danidx"_Str)) return bDanalyzeIndex(xTokenSet,nTokens);
-  if (xTokenSet[0]->bSame("dantbl"_Str)) return bDanalyzeTable(xTokenSet,nTokens);
-  if (xTokenSet[0]->bSame("dex"_Str)) return bDistExportTable(xTokenSet,nTokens);
-  if (xTokenSet[0]->bSame("docol"_Str)) return bDocol(xTokenSet,nTokens);
-  if (xTokenSet[0]->bSame("displayOff"_Str)) return bDisplayOff(xTokenSet,nTokens);
-  if (xTokenSet[0]->bSame("displayOn"_Str)) return bDisplayOn(xTokenSet,nTokens);
-  if (xTokenSet[0]->bSame("dump"_Str)) return bDumpTable(xTokenSet,nTokens);
-  if (xTokenSet[0]->bSame("endmkidx"_Str)) return bEndCreateIndex(xTokenSet,nTokens);
-  if (xTokenSet[0]->bSame("endmktbl"_Str)) return bEndCreateTable(xTokenSet,nTokens);
-  if (xTokenSet[0]->bSame("ex"_Str)) return bExportTable(xTokenSet,nTokens);
+  if (xTokenSet[0]->bSame("cp"_Str)) return bCopyTable(xTokenSet);
+  if (xTokenSet[0]->bSame("danidx"_Str)) return bDanalyzeIndex(xTokenSet);
+  if (xTokenSet[0]->bSame("dantbl"_Str)) return bDanalyzeTable(xTokenSet);
+  if (xTokenSet[0]->bSame("dex"_Str)) return bDistExportTable(xTokenSet);
+  if (xTokenSet[0]->bSame("docol"_Str)) return bDocol(xTokenSet);
+  if (xTokenSet[0]->bSame("displayOff"_Str)) return bDisplayOff(xTokenSet);
+  if (xTokenSet[0]->bSame("displayOn"_Str)) return bDisplayOn(xTokenSet);
+  if (xTokenSet[0]->bSame("dump"_Str)) return bDumpTable(xTokenSet);
+  if (xTokenSet[0]->bSame("endmkidx"_Str)) return bEndCreateIndex(xTokenSet);
+  if (xTokenSet[0]->bSame("endmktbl"_Str)) return bEndCreateTable(xTokenSet);
+  if (xTokenSet[0]->bSame("ex"_Str)) return bExportTable(xTokenSet);
   if (xTokenSet[0]->bSame("getFreeSpace"_Str)) return bGetFreeSpace(xTokenSet);
   if (xTokenSet[0]->bSame("getInUseSpace"_Str)) return bGetInUseSpace(xTokenSet);
-  if (xTokenSet[0]->bSame("gettbl"_Str)) return bGetTable(xTokenSet,nTokens);
-  if (xTokenSet[0]->bSame("gettsk"_Str)) return bGetTask(xTokenSet,nTokens);
+  if (xTokenSet[0]->bSame("gettbl"_Str)) return bGetTable(xTokenSet);
+  if (xTokenSet[0]->bSame("gettsk"_Str)) return bGetTask(xTokenSet);
   if (xTokenSet[0]->bSame("getTotalSpace"_Str)) return bGetTotalSpace(xTokenSet);
-  if (xTokenSet[0]->bSame("dumpidx"_Str)) return bDumpIndex(xTokenSet,nTokens);
-  if (xTokenSet[0]->bSame("TblInUse"_Str)) return bInUseTable(xTokenSet,nTokens);
-  if (xTokenSet[0]->bSame("ld"_Str)) return bLoadTable(xTokenSet,nTokens);
-  if (xTokenSet[0]->bSame("lds"_Str)) return bLoadTableStream(xTokenSet,nTokens);
+  if (xTokenSet[0]->bSame("dumpidx"_Str)) return bDumpIndex(xTokenSet);
+  if (xTokenSet[0]->bSame("TblInUse"_Str)) return bInUseTable(xTokenSet);
+  if (xTokenSet[0]->bSame("ld"_Str)) return bLoadTable(xTokenSet);
+  if (xTokenSet[0]->bSame("lds"_Str)) return bLoadTableStream(xTokenSet);
   if (xTokenSet[0]->bSame("lf"_Str)) return bGetDicContents(xTokenSet);
   if (xTokenSet[0]->bSame("lfG"_Str)) return bGetDicContentsG(xTokenSet);
-  if (xTokenSet[0]->bSame("keyselidx"_Str)) return bKeySelectIndex(xTokenSet,nTokens);
-  if (xTokenSet[0]->bSame("lscat"_Str)) return bListCatalogs(xTokenSet,nTokens);
-  if (xTokenSet[0]->bSame("lscol"_Str)) return bListColumns(xTokenSet,nTokens);
-  if (xTokenSet[0]->bSame("lsidx"_Str)) return bListIndices(xTokenSet,nTokens);
-  if (xTokenSet[0]->bSame("lsidxcol"_Str)) return bListIndexColumns(xTokenSet,nTokens);
-  if (xTokenSet[0]->bSame("lssch"_Str)) return bListSchemas(xTokenSet,nTokens);
-  if (xTokenSet[0]->bSame("lstbl"_Str)) return bListTables(xTokenSet,nTokens);
-  if (xTokenSet[0]->bSame("lsten"_Str)) return bListTenants(xTokenSet,nTokens);
-  if (xTokenSet[0]->bSame("lwrsel"_Str)) return bLowerSelectTable(xTokenSet,nTokens);
-  if (xTokenSet[0]->bSame("lwrselidx"_Str)) return bLowerSelectIndex(xTokenSet,nTokens);
-  if (xTokenSet[0]->bSame("mkcat"_Str)) return bCreateCatalog(xTokenSet,nTokens);
-  if (xTokenSet[0]->bSame("mkidx"_Str)) return bCreateIndex(xTokenSet,nTokens);
-  if (xTokenSet[0]->bSame("mksch"_Str)) return bCreateSchema(xTokenSet,nTokens);
-  if (xTokenSet[0]->bSame("mktbl"_Str)) return bCreateTable(xTokenSet,nTokens);
-  if (xTokenSet[0]->bSame("mkten"_Str)) return bCreateTenant(xTokenSet,nTokens);
+  if (xTokenSet[0]->bSame("keyselidx"_Str)) return bKeySelectIndex(xTokenSet);
+  if (xTokenSet[0]->bSame("lscat"_Str)) return bListCatalogs(xTokenSet);
+  if (xTokenSet[0]->bSame("lscol"_Str)) return bListColumns(xTokenSet);
+  if (xTokenSet[0]->bSame("lsidx"_Str)) return bListIndices(xTokenSet);
+  if (xTokenSet[0]->bSame("lsidxcol"_Str)) return bListIndexColumns(xTokenSet);
+  if (xTokenSet[0]->bSame("lssch"_Str)) return bListSchemas(xTokenSet);
+  if (xTokenSet[0]->bSame("lstbl"_Str)) return bListTables(xTokenSet);
+  if (xTokenSet[0]->bSame("lsten"_Str)) return bListTenants(xTokenSet);
+  if (xTokenSet[0]->bSame("lwrsel"_Str)) return bLowerSelectTable(xTokenSet);
+  if (xTokenSet[0]->bSame("lwrselidx"_Str)) return bLowerSelectIndex(xTokenSet);
+  if (xTokenSet[0]->bSame("mkcat"_Str)) return bCreateCatalog(xTokenSet);
+  if (xTokenSet[0]->bSame("mkidx"_Str)) return bCreateIndex(xTokenSet);
+  if (xTokenSet[0]->bSame("mksch"_Str)) return bCreateSchema(xTokenSet);
+  if (xTokenSet[0]->bSame("mktbl"_Str)) return bCreateTable(xTokenSet);
+  if (xTokenSet[0]->bSame("mkten"_Str)) return bCreateTenant(xTokenSet);
   if (xTokenSet[0]->bSame("object"_Str)) return bObject(xTokenSet);
   if (xTokenSet[0]->bSame("pRB"_Str)) return bPrintRowBuffer(xTokenSet);
   if (xTokenSet[0]->bSame("pwf"_Str)) return bGetDicPath(xTokenSet);
-  if (xTokenSet[0]->bSame("rettbl"_Str)) return bRetTable(xTokenSet,nTokens);
-  if (xTokenSet[0]->bSame("rettsk"_Str)) return bRetTask(xTokenSet,nTokens);
-  if (xTokenSet[0]->bSame("rf"_Str)) return bRemoveFolder(xTokenSet,nTokens);
-  if (xTokenSet[0]->bSame("rgesel"_Str)) return bRangeSelectTable(xTokenSet,nTokens);
-  if (xTokenSet[0]->bSame("rmcat"_Str)) return bDropCatalog(xTokenSet,nTokens);
-  if (xTokenSet[0]->bSame("rmdic"_Str)) return bRemoveFolder(xTokenSet,nTokens);
-  if (xTokenSet[0]->bSame("rmidx"_Str)) return bDropIndex(xTokenSet,nTokens);
-  if (xTokenSet[0]->bSame("rmsch"_Str)) return bDropSchema(xTokenSet,nTokens);
-  if (xTokenSet[0]->bSame("rmtbl"_Str)) return bDropTable(xTokenSet,nTokens);
-  if (xTokenSet[0]->bSame("rmten"_Str)) return bDropTenant(xTokenSet,nTokens);
-  if (xTokenSet[0]->bSame("rgeselidx"_Str)) return bRangeSelectIndex(xTokenSet,nTokens);
-  if (xTokenSet[0]->bSame("sel"_Str)) return bSelectTable(xTokenSet,nTokens);
-  if (xTokenSet[0]->bSame("setidxunique"_Str)) return bIndexSetUnique(xTokenSet,nTokens);
-  if (xTokenSet[0]->bSame("space"_Str)) return bPoolSpace(xTokenSet,nTokens);
-  if (xTokenSet[0]->bSame("status"_Str)) return bNodeStatus(xTokenSet,nTokens);
-  if (xTokenSet[0]->bSame("szidx"_Str)) return bSizeIndex(xTokenSet,nTokens);
-  if (xTokenSet[0]->bSame("sz"_Str)) return bSizeTable(xTokenSet,nTokens);
-  if (xTokenSet[0]->bSame("tableSizes"_Str)) return bSizeTables(xTokenSet,nTokens);
-  if (xTokenSet[0]->bSame("tr"_Str)) return bTruncateTable(xTokenSet,nTokens);
-  if (xTokenSet[0]->bSame("tridx"_Str)) return bTruncateIndex(xTokenSet,nTokens);
-  if (xTokenSet[0]->bSame("uprselidx"_Str)) return bUpperSelectIndex(xTokenSet,nTokens);
-  if (xTokenSet[0]->bSame("usesch"_Str)) return bUseSchema(xTokenSet,nTokens);
+  if (xTokenSet[0]->bSame("rettbl"_Str)) return bRetTable(xTokenSet);
+  if (xTokenSet[0]->bSame("rettsk"_Str)) return bRetTask(xTokenSet);
+  if (xTokenSet[0]->bSame("rf"_Str)) return bRemoveFolder(xTokenSet);
+  if (xTokenSet[0]->bSame("rgesel"_Str)) return bRangeSelectTable(xTokenSet);
+  if (xTokenSet[0]->bSame("rmcat"_Str)) return bDropCatalog(xTokenSet);
+  if (xTokenSet[0]->bSame("rmdic"_Str)) return bRemoveFolder(xTokenSet);
+  if (xTokenSet[0]->bSame("rmidx"_Str)) return bDropIndex(xTokenSet);
+  if (xTokenSet[0]->bSame("rmsch"_Str)) return bDropSchema(xTokenSet);
+  if (xTokenSet[0]->bSame("rmtbl"_Str)) return bDropTable(xTokenSet);
+  if (xTokenSet[0]->bSame("rmten"_Str)) return bDropTenant(xTokenSet);
+  if (xTokenSet[0]->bSame("rgeselidx"_Str)) return bRangeSelectIndex(xTokenSet);
+  if (xTokenSet[0]->bSame("sel"_Str)) return bSelectTable(xTokenSet);
+  if (xTokenSet[0]->bSame("setidxunique"_Str)) return bIndexSetUnique(xTokenSet);
+  if (xTokenSet[0]->bSame("space"_Str)) return bPoolSpace(xTokenSet);
+  if (xTokenSet[0]->bSame("status"_Str)) return bNodeStatus(xTokenSet);
+  if (xTokenSet[0]->bSame("szidx"_Str)) return bSizeIndex(xTokenSet);
+  if (xTokenSet[0]->bSame("sz"_Str)) return bSizeTable(xTokenSet);
+  if (xTokenSet[0]->bSame("tableSizes"_Str)) return bSizeTables(xTokenSet);
+  if (xTokenSet[0]->bSame("tr"_Str)) return bTruncateTable(xTokenSet);
+  if (xTokenSet[0]->bSame("tridx"_Str)) return bTruncateIndex(xTokenSet);
+  if (xTokenSet[0]->bSame("uprselidx"_Str)) return bUpperSelectIndex(xTokenSet);
+  if (xTokenSet[0]->bSame("usesch"_Str)) return bUseSchema(xTokenSet);
   if (xTokenSet[0]->bSame("__x"_Str)) return bX(xTokenSet);
   if (xTokenSet[0]->bSame("ping"_Str)) return bPing(xTokenSet);
   if (xTokenSet[0]->bSame("mon"_Str)) return bGetMonitor(xTokenSet);
@@ -465,7 +465,7 @@ bool SEitf::bDisconnect(TokenSet& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* remove a folder                                                            */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bRemoveFolder(TokenSet& xTokenSet, i8 nTokens)
+bool SEitf::bRemoveFolder(TokenSet& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -483,13 +483,13 @@ bool SEitf::bRemoveFolder(TokenSet& xTokenSet, i8 nTokens)
 /*----------------------------------------------------------------------------*/
 /* create a tenant                                                            */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bCreateTenant(TokenSet& xTokenSet,i8 nTokens)
+bool SEitf::bCreateTenant(TokenSet& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (nTokens != 2) {
+  if (xTokenSet.nTokens() != 2) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
@@ -506,13 +506,13 @@ bool SEitf::bCreateTenant(TokenSet& xTokenSet,i8 nTokens)
 /*----------------------------------------------------------------------------*/
 /* list tenants                                                               */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bListTenants(TokenSet& xTokenSet, i8 nTokens)
+bool SEitf::bListTenants(TokenSet& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (nTokens != 1) {
+  if (xTokenSet.nTokens() != 1) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
@@ -525,13 +525,13 @@ bool SEitf::bListTenants(TokenSet& xTokenSet, i8 nTokens)
 /*----------------------------------------------------------------------------*/
 /* drop a tenant                                                              */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDropTenant(TokenSet& xTokenSet, i8 nTokens)
+bool SEitf::bDropTenant(TokenSet& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (nTokens != 2) {
+  if (xTokenSet.nTokens() != 2) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
@@ -548,13 +548,13 @@ bool SEitf::bDropTenant(TokenSet& xTokenSet, i8 nTokens)
 /*----------------------------------------------------------------------------*/
 /* create a catalog                                                           */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bCreateCatalog(TokenSet& xTokenSet, i8 nTokens)
+bool SEitf::bCreateCatalog(TokenSet& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (nTokens != 2) {
+  if (xTokenSet.nTokens() != 2) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
@@ -571,13 +571,13 @@ bool SEitf::bCreateCatalog(TokenSet& xTokenSet, i8 nTokens)
 /*----------------------------------------------------------------------------*/
 /* list catalogs                                                              */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bListCatalogs(TokenSet& xTokenSet, i8 nTokens)
+bool SEitf::bListCatalogs(TokenSet& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (nTokens != 1) {
+  if (xTokenSet.nTokens() != 1) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
@@ -590,13 +590,13 @@ bool SEitf::bListCatalogs(TokenSet& xTokenSet, i8 nTokens)
 /*----------------------------------------------------------------------------*/
 /* drop a catalog                                                             */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDropCatalog(TokenSet& xTokenSet,i8 nTokens)
+bool SEitf::bDropCatalog(TokenSet& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (nTokens != 2) {
+  if (xTokenSet.nTokens() != 2) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
@@ -613,13 +613,13 @@ bool SEitf::bDropCatalog(TokenSet& xTokenSet,i8 nTokens)
 /*----------------------------------------------------------------------------*/
 /* create a schema                                                            */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bCreateSchema(TokenSet& xTokenSet, i8 nTokens)
+bool SEitf::bCreateSchema(TokenSet& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (nTokens != 2) {
+  if (xTokenSet.nTokens() != 2) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
@@ -638,13 +638,13 @@ bool SEitf::bCreateSchema(TokenSet& xTokenSet, i8 nTokens)
 /*----------------------------------------------------------------------------*/
 /* list schemas                                                               */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bListSchemas(TokenSet& xTokenSet,i8 nTokens)
+bool SEitf::bListSchemas(TokenSet& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (nTokens != 1) {
+  if (xTokenSet.nTokens() != 1) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
@@ -657,13 +657,13 @@ bool SEitf::bListSchemas(TokenSet& xTokenSet,i8 nTokens)
 /*----------------------------------------------------------------------------*/
 /* drop a schema                                                              */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDropSchema(TokenSet& xTokenSet,i8 nTokens)
+bool SEitf::bDropSchema(TokenSet& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (nTokens != 2) {
+  if (xTokenSet.nTokens() != 2) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
@@ -680,13 +680,13 @@ bool SEitf::bDropSchema(TokenSet& xTokenSet,i8 nTokens)
 /*----------------------------------------------------------------------------*/
 /* use a schema                                                               */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bUseSchema(TokenSet& xTokenSet,i8 nTokens)
+bool SEitf::bUseSchema(TokenSet& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (nTokens != 2) {
+  if (xTokenSet.nTokens() != 2) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
@@ -703,13 +703,13 @@ bool SEitf::bUseSchema(TokenSet& xTokenSet,i8 nTokens)
 /*----------------------------------------------------------------------------*/
 /* create an index                                                            */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bCreateIndex(TokenSet& xTokenSet,i8 nTokens)
+bool SEitf::bCreateIndex(TokenSet& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (nTokens != 3) {
+  if (xTokenSet.nTokens() != 3) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
@@ -730,13 +730,13 @@ bool SEitf::bCreateIndex(TokenSet& xTokenSet,i8 nTokens)
 /*----------------------------------------------------------------------------*/
 /* list indices                                                               */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bListIndices(TokenSet& xTokenSet,i8 nTokens)
+bool SEitf::bListIndices(TokenSet& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (nTokens != 2) {
+  if (xTokenSet.nTokens() != 2) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
@@ -755,13 +755,13 @@ bool SEitf::bListIndices(TokenSet& xTokenSet,i8 nTokens)
 /*----------------------------------------------------------------------------*/
 /* set index uniqueness                                                       */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bIndexSetUnique(TokenSet& xTokenSet,i8 nTokens)
+bool SEitf::bIndexSetUnique(TokenSet& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (nTokens != 4) {
+  if (xTokenSet.nTokens() != 4) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
@@ -788,13 +788,13 @@ bool SEitf::bIndexSetUnique(TokenSet& xTokenSet,i8 nTokens)
 /*----------------------------------------------------------------------------*/
 /* create a table                                                             */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bCreateTable(TokenSet& xTokenSet,i8 nTokens)
+bool SEitf::bCreateTable(TokenSet& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (nTokens != 2) {
+  if (xTokenSet.nTokens() != 2) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
@@ -811,13 +811,13 @@ bool SEitf::bCreateTable(TokenSet& xTokenSet,i8 nTokens)
 /*----------------------------------------------------------------------------*/
 /* list tables                                                                */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bListTables(TokenSet& xTokenSet, i8 nTokens)
+bool SEitf::bListTables(TokenSet& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (nTokens != 1) {
+  if (xTokenSet.nTokens() != 1) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
@@ -830,13 +830,13 @@ bool SEitf::bListTables(TokenSet& xTokenSet, i8 nTokens)
 /*----------------------------------------------------------------------------*/
 /* dump an index                                                              */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDumpIndex(TokenSet& xTokenSet, i8 nTokens)
+bool SEitf::bDumpIndex(TokenSet& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (nTokens != 3) {
+  if (xTokenSet.nTokens() != 3) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
@@ -857,13 +857,13 @@ bool SEitf::bDumpIndex(TokenSet& xTokenSet, i8 nTokens)
 /*----------------------------------------------------------------------------*/
 /* dump a table                                                               */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDumpTable(TokenSet& xTokenSet, i8 nTokens)
+bool SEitf::bDumpTable(TokenSet& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (nTokens != 2) {
+  if (xTokenSet.nTokens() != 2) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
@@ -880,13 +880,13 @@ bool SEitf::bDumpTable(TokenSet& xTokenSet, i8 nTokens)
 /*----------------------------------------------------------------------------*/
 /* docol                                                                      */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDocol(TokenSet& xTokenSet, i8 nTokens)
+bool SEitf::bDocol(TokenSet& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (nTokens != 2) {
+  if (xTokenSet.nTokens() != 2) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
@@ -904,13 +904,13 @@ bool SEitf::bDocol(TokenSet& xTokenSet, i8 nTokens)
 /*----------------------------------------------------------------------------*/
 /* display off selected rows                                                  */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDisplayOff(TokenSet& xTokenSet, i8 nTokens)
+bool SEitf::bDisplayOff(TokenSet& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (nTokens != 1) {
+  if (xTokenSet.nTokens() != 1) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
@@ -924,13 +924,13 @@ bool SEitf::bDisplayOff(TokenSet& xTokenSet, i8 nTokens)
 /*----------------------------------------------------------------------------*/
 /* display selected rows                                                      */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDisplayOn(TokenSet& xTokenSet, i8 nTokens)
+bool SEitf::bDisplayOn(TokenSet& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (nTokens != 1) {
+  if (xTokenSet.nTokens() != 1) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
@@ -944,13 +944,13 @@ bool SEitf::bDisplayOn(TokenSet& xTokenSet, i8 nTokens)
 /*----------------------------------------------------------------------------*/
 /* drop an index                                                              */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDropIndex(TokenSet& xTokenSet, i8 nTokens)
+bool SEitf::bDropIndex(TokenSet& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (nTokens != 3) {
+  if (xTokenSet.nTokens() != 3) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
@@ -972,13 +972,13 @@ bool SEitf::bDropIndex(TokenSet& xTokenSet, i8 nTokens)
 /*----------------------------------------------------------------------------*/
 /* drop a table                                                               */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDropTable(TokenSet& xTokenSet, i8 nTokens)
+bool SEitf::bDropTable(TokenSet& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (nTokens != 2) {
+  if (xTokenSet.nTokens() != 2) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
@@ -995,13 +995,13 @@ bool SEitf::bDropTable(TokenSet& xTokenSet, i8 nTokens)
 /*----------------------------------------------------------------------------*/
 /* add a column                                                               */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bAddColumn(TokenSet& xTokenSet, i8 nTokens)
+bool SEitf::bAddColumn(TokenSet& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (nTokens != 4) {
+  if (xTokenSet.nTokens() != 4) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
@@ -1026,13 +1026,13 @@ bool SEitf::bAddColumn(TokenSet& xTokenSet, i8 nTokens)
 /*----------------------------------------------------------------------------*/
 /* add an index column                                                        */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bAddIndexColumn(TokenSet& xTokenSet, i8 nTokens)
+bool SEitf::bAddIndexColumn(TokenSet& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (nTokens != 4) {
+  if (xTokenSet.nTokens() != 4) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
@@ -1057,13 +1057,13 @@ bool SEitf::bAddIndexColumn(TokenSet& xTokenSet, i8 nTokens)
 /*----------------------------------------------------------------------------*/
 /* end of create index sequence                                               */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bEndCreateIndex(TokenSet& xTokenSet, i8 nTokens)
+bool SEitf::bEndCreateIndex(TokenSet& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (nTokens != 3) {
+  if (xTokenSet.nTokens() != 3) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
@@ -1084,13 +1084,13 @@ bool SEitf::bEndCreateIndex(TokenSet& xTokenSet, i8 nTokens)
 /*----------------------------------------------------------------------------*/
 /* end of create table sequence                                               */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bEndCreateTable(TokenSet& xTokenSet, i8 nTokens)
+bool SEitf::bEndCreateTable(TokenSet& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (nTokens != 2) {
+  if (xTokenSet.nTokens() != 2) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
@@ -1107,13 +1107,13 @@ bool SEitf::bEndCreateTable(TokenSet& xTokenSet, i8 nTokens)
 /*----------------------------------------------------------------------------*/
 /* list columns                                                               */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bListColumns(TokenSet& xTokenSet, i8 nTokens)
+bool SEitf::bListColumns(TokenSet& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (nTokens != 2) {
+  if (xTokenSet.nTokens() != 2) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
@@ -1130,13 +1130,13 @@ bool SEitf::bListColumns(TokenSet& xTokenSet, i8 nTokens)
 /*----------------------------------------------------------------------------*/
 /* list index columns                                                         */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bListIndexColumns(TokenSet& xTokenSet, i8 nTokens)
+bool SEitf::bListIndexColumns(TokenSet& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (nTokens != 3) {
+  if (xTokenSet.nTokens() != 3) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
@@ -1157,13 +1157,13 @@ bool SEitf::bListIndexColumns(TokenSet& xTokenSet, i8 nTokens)
 /*----------------------------------------------------------------------------*/
 /* analyze an index                                                           */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bAnalyzeIndex(TokenSet& xTokenSet, i8 nTokens)
+bool SEitf::bAnalyzeIndex(TokenSet& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (nTokens != 3) {
+  if (xTokenSet.nTokens() != 3) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
@@ -1184,13 +1184,13 @@ bool SEitf::bAnalyzeIndex(TokenSet& xTokenSet, i8 nTokens)
 /*----------------------------------------------------------------------------*/
 /* analyze a table                                                            */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bAnalyzeTable(TokenSet& xTokenSet, i8 nTokens)
+bool SEitf::bAnalyzeTable(TokenSet& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (nTokens != 2) {
+  if (xTokenSet.nTokens() != 2) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
@@ -1207,13 +1207,13 @@ bool SEitf::bAnalyzeTable(TokenSet& xTokenSet, i8 nTokens)
 /*----------------------------------------------------------------------------*/
 /* detailed analysis of an index                                              */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDanalyzeIndex(TokenSet& xTokenSet, i8 nTokens)
+bool SEitf::bDanalyzeIndex(TokenSet& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (nTokens != 3) {
+  if (xTokenSet.nTokens() != 3) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
@@ -1234,13 +1234,13 @@ bool SEitf::bDanalyzeIndex(TokenSet& xTokenSet, i8 nTokens)
 /*----------------------------------------------------------------------------*/
 /* detailed analysis of a table                                               */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDanalyzeTable(TokenSet& xTokenSet, i8 nTokens)
+bool SEitf::bDanalyzeTable(TokenSet& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (nTokens != 2) {
+  if (xTokenSet.nTokens() != 2) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
@@ -1257,13 +1257,13 @@ bool SEitf::bDanalyzeTable(TokenSet& xTokenSet, i8 nTokens)
 /*----------------------------------------------------------------------------*/
 /* copy a table                                                               */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bCopyTable(TokenSet& xTokenSet, i8 nTokens)
+bool SEitf::bCopyTable(TokenSet& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (nTokens != 3) {
+  if (xTokenSet.nTokens() != 3) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
@@ -1284,13 +1284,13 @@ bool SEitf::bCopyTable(TokenSet& xTokenSet, i8 nTokens)
 /*----------------------------------------------------------------------------*/
 /* distributed export of a table                                              */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDistExportTable(TokenSet& xTokenSet, i8 nTokens)
+bool SEitf::bDistExportTable(TokenSet& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (nTokens != 3) {
+  if (xTokenSet.nTokens() != 3) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
@@ -1311,13 +1311,13 @@ bool SEitf::bDistExportTable(TokenSet& xTokenSet, i8 nTokens)
 /*----------------------------------------------------------------------------*/
 /* export a table                                                             */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bExportTable(TokenSet& xTokenSet, i8 nTokens)
+bool SEitf::bExportTable(TokenSet& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
 
-  if (nTokens != 3) {
+  if (xTokenSet.nTokens() != 3) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
@@ -1338,13 +1338,13 @@ bool SEitf::bExportTable(TokenSet& xTokenSet, i8 nTokens)
 /*----------------------------------------------------------------------------*/
 /* load a table from file                                                     */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bLoadTable(TokenSet& xTokenSet, i8 nTokens)
+bool SEitf::bLoadTable(TokenSet& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (nTokens != 3) {
+  if (xTokenSet.nTokens() != 3) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
@@ -1365,13 +1365,13 @@ bool SEitf::bLoadTable(TokenSet& xTokenSet, i8 nTokens)
 /*----------------------------------------------------------------------------*/
 /* load a table from stream                                                   */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bLoadTableStream(TokenSet& xTokenSet, i8 nTokens)
+bool SEitf::bLoadTableStream(TokenSet& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (nTokens != 3) {
+  if (xTokenSet.nTokens() != 3) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
@@ -1392,13 +1392,13 @@ bool SEitf::bLoadTableStream(TokenSet& xTokenSet, i8 nTokens)
 /*----------------------------------------------------------------------------*/
 /* lower select rows from a table                                             */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bLowerSelectTable(TokenSet& xTokenSet, i8 nTokens)
+bool SEitf::bLowerSelectTable(TokenSet& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (nTokens != 3) {
+  if (xTokenSet.nTokens() != 3) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
@@ -1419,13 +1419,13 @@ bool SEitf::bLowerSelectTable(TokenSet& xTokenSet, i8 nTokens)
 /*----------------------------------------------------------------------------*/
 /* select rows from a table                                                   */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bSelectTable(TokenSet& xTokenSet, i8 nTokens)
+bool SEitf::bSelectTable(TokenSet& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (nTokens != 2) {
+  if (xTokenSet.nTokens() != 2) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
@@ -1442,13 +1442,13 @@ bool SEitf::bSelectTable(TokenSet& xTokenSet, i8 nTokens)
 /*----------------------------------------------------------------------------*/
 /* range select rows from a table                                             */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bRangeSelectTable(TokenSet& xTokenSet, i8 nTokens)
+bool SEitf::bRangeSelectTable(TokenSet& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (nTokens != 4) {
+  if (xTokenSet.nTokens() != 4) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
@@ -1473,13 +1473,13 @@ bool SEitf::bRangeSelectTable(TokenSet& xTokenSet, i8 nTokens)
 /*----------------------------------------------------------------------------*/
 /* get address/reference of a table                                           */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bGetTable(TokenSet& xTokenSet, i8 nTokens)
+bool SEitf::bGetTable(TokenSet& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (nTokens != 2) {
+  if (xTokenSet.nTokens() != 2) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
@@ -1496,13 +1496,13 @@ bool SEitf::bGetTable(TokenSet& xTokenSet, i8 nTokens)
 /*----------------------------------------------------------------------------*/
 /* return whether table is in use or not                                      */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bInUseTable(TokenSet& xTokenSet, i8 nTokens)
+bool SEitf::bInUseTable(TokenSet& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (nTokens != 2) {
+  if (xTokenSet.nTokens() != 2) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
@@ -1519,13 +1519,13 @@ bool SEitf::bInUseTable(TokenSet& xTokenSet, i8 nTokens)
 /*----------------------------------------------------------------------------*/
 /* return address/refernce of a table                                         */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bRetTable(TokenSet& xTokenSet, i8 nTokens)
+bool SEitf::bRetTable(TokenSet& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (nTokens != 1) {
+  if (xTokenSet.nTokens() != 1) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
@@ -1538,13 +1538,13 @@ bool SEitf::bRetTable(TokenSet& xTokenSet, i8 nTokens)
 /*----------------------------------------------------------------------------*/
 /* get pool space                                                             */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bPoolSpace(TokenSet& xTokenSet, i8 nTokens)
+bool SEitf::bPoolSpace(TokenSet& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (nTokens != 1) {
+  if (xTokenSet.nTokens() != 1) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
@@ -1557,13 +1557,13 @@ bool SEitf::bPoolSpace(TokenSet& xTokenSet, i8 nTokens)
 /*----------------------------------------------------------------------------*/
 /* get node status                                                            */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bNodeStatus(TokenSet& xTokenSet, i8 nTokens)
+bool SEitf::bNodeStatus(TokenSet& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (nTokens != 1) {
+  if (xTokenSet.nTokens() != 1) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
@@ -1576,13 +1576,13 @@ bool SEitf::bNodeStatus(TokenSet& xTokenSet, i8 nTokens)
 /*----------------------------------------------------------------------------*/
 /* exact key select from a table given an index                               */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bKeySelectIndex(TokenSet& xTokenSet, i8 nTokens)
+bool SEitf::bKeySelectIndex(TokenSet& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (nTokens != 4) {
+  if (xTokenSet.nTokens() != 4) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
@@ -1607,13 +1607,13 @@ bool SEitf::bKeySelectIndex(TokenSet& xTokenSet, i8 nTokens)
 /*----------------------------------------------------------------------------*/
 /* lower select rows from a table given an index                              */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bLowerSelectIndex(TokenSet& xTokenSet, i8 nTokens)
+bool SEitf::bLowerSelectIndex(TokenSet& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (nTokens != 4) {
+  if (xTokenSet.nTokens() != 4) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
@@ -1638,13 +1638,13 @@ bool SEitf::bLowerSelectIndex(TokenSet& xTokenSet, i8 nTokens)
 /*----------------------------------------------------------------------------*/
 /* range select rows from a table given an index                              */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bRangeSelectIndex(TokenSet& xTokenSet, i8 nTokens)
+bool SEitf::bRangeSelectIndex(TokenSet& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (nTokens != 5) {
+  if (xTokenSet.nTokens() != 5) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
@@ -1673,13 +1673,13 @@ bool SEitf::bRangeSelectIndex(TokenSet& xTokenSet, i8 nTokens)
 /*----------------------------------------------------------------------------*/
 /* size of index                                                              */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bSizeIndex(TokenSet& xTokenSet, i8 nTokens)
+bool SEitf::bSizeIndex(TokenSet& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (nTokens != 3) {
+  if (xTokenSet.nTokens() != 3) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
@@ -1700,13 +1700,13 @@ bool SEitf::bSizeIndex(TokenSet& xTokenSet, i8 nTokens)
 /*----------------------------------------------------------------------------*/
 /* size of table                                                              */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bSizeTable(TokenSet& xTokenSet, i8 nTokens)
+bool SEitf::bSizeTable(TokenSet& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (nTokens != 2) {
+  if (xTokenSet.nTokens() != 2) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
@@ -1723,13 +1723,13 @@ bool SEitf::bSizeTable(TokenSet& xTokenSet, i8 nTokens)
 /*----------------------------------------------------------------------------*/
 /* size of table                                                              */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bSizeTables(TokenSet& xTokenSet, i8 nTokens)
+bool SEitf::bSizeTables(TokenSet& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (nTokens != 1) {
+  if (xTokenSet.nTokens() != 1) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
@@ -1742,13 +1742,13 @@ bool SEitf::bSizeTables(TokenSet& xTokenSet, i8 nTokens)
 /*----------------------------------------------------------------------------*/
 /* truncate an index                                                          */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bTruncateIndex(TokenSet& xTokenSet, i8 nTokens)
+bool SEitf::bTruncateIndex(TokenSet& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (nTokens != 3) {
+  if (xTokenSet.nTokens() != 3) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
@@ -1769,13 +1769,13 @@ bool SEitf::bTruncateIndex(TokenSet& xTokenSet, i8 nTokens)
 /*----------------------------------------------------------------------------*/
 /* upper select rows from a table on a given index                            */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bUpperSelectIndex(TokenSet& xTokenSet, i8 nTokens)
+bool SEitf::bUpperSelectIndex(TokenSet& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (nTokens != 4) {
+  if (xTokenSet.nTokens() != 4) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
@@ -1800,13 +1800,13 @@ bool SEitf::bUpperSelectIndex(TokenSet& xTokenSet, i8 nTokens)
 /*----------------------------------------------------------------------------*/
 /* truncate a table                                                           */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bTruncateTable(TokenSet& xTokenSet, i8 nTokens)
+bool SEitf::bTruncateTable(TokenSet& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (nTokens != 2) {
+  if (xTokenSet.nTokens() != 2) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
@@ -2161,7 +2161,7 @@ bool SEitf::bX(TokenSet& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* return task                                                                */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bRetTask(TokenSet& xTokenSet, i8 nTokens)
+bool SEitf::bRetTask(TokenSet& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -2181,7 +2181,7 @@ bool SEitf::bRetTask(TokenSet& xTokenSet, i8 nTokens)
 /*----------------------------------------------------------------------------*/
 /* get task                                                                   */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bGetTask(TokenSet& xTokenSet,i8 nTokens)
+bool SEitf::bGetTask(TokenSet& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
