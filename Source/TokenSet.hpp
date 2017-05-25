@@ -29,6 +29,7 @@ namespace Parsing
     i8   nTokens(void);
     void vIncTokens(void);
     void vReset(void);
+    void vSetTokens(void);
   
     Footer* pFooter(void);
   };

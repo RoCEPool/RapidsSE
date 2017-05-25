@@ -340,13 +340,15 @@ void SePrompt::vGetCommandArgument(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  i8 iToken = 0;
-  while (TK_NONE != m_pTokeniser->eNextToken(m_xTokenSet[iToken]->s())) {
+  m_xTokenSet.vReset();
+  
+  while (TK_NONE !=
+           m_pTokeniser->eNextToken(m_xTokenSet[m_xTokenSet.nTokens()]->s())) {
     
     //vTrace("vGetCommand : [%lld] %s\n"_Str,iToken,m_xTokenSet[iToken]);
     
-    iToken++;
-    ASSERT(iToken < C_TOKENS);
+    m_xTokenSet.vIncTokens();
+    ASSERT(m_xTokenSet.nTokens() < C_TOKENS);
   }
   
   m_bContinue = false;
@@ -364,17 +366,17 @@ void SePrompt::vGetCommandInput(void)
     m_xTokenSet.vReset();
     m_xTokenSet2.vReset();
     
-    i8 iToken = 0;
-    while (TK_NONE != m_pTokeniser->eNextToken(m_xTokenSet[iToken]->s())) {
+    while (TK_NONE !=
+           m_pTokeniser->eNextToken(m_xTokenSet[m_xTokenSet.nTokens()]->s())) {
       
       //vTrace("vGetCommand : [%lld] %s\n"_Str,iToken,m_xTokenSet[iToken]);
       
-      iToken++;
-      ASSERT(iToken < C_TOKENS);
+      m_xTokenSet.vIncTokens();
+      ASSERT(m_xTokenSet.nTokens() < C_TOKENS);
     }
     
     // end of file? if so, pop and retry
-    if (! iToken && m_pTokeniser->bEOF()) {
+    if (! m_xTokenSet.nTokens() && m_pTokeniser->bEOF()) {
       bool b = m_pTokeniser->bPop();
       ASSERT(b);
       continue;
@@ -653,13 +655,11 @@ bool SePrompt::bExecuteRequest(void)
   i8 iTokens;
   
   xTimer.vStart();
-  
-  // get count of words in pWords
-  for (iTokens = 0; iTokens < C_TOKENS; iTokens++)
-    if (m_xTokenSet[iTokens]->bEqual(""_Str))
-      break;
 
-                                                 //! make this part of verbose??
+  m_xTokenSet.vSetTokens();
+  
+  iTokens = m_xTokenSet.nTokens();
+                                                     //! make this part of verbose??
   //m_pTokeniser->vDumpTokens("Command : "_Str,m_xTokenSet,C_TOKENS);
   
   bool bResult = RapidsSE_ExecuteRequest(m_pSEitf,m_xTokenSet,iTokens,&aResponse);

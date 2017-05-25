@@ -102,6 +102,23 @@ void TokenSet::vReset(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENSET,_FOOTER_);
   
   m_nTokens = 0;
+  
+  for (i8 iToken = 0; iToken < C_TOKENS; iToken++)
+    m_xTokenAry[iToken]->vCopy(""_Str);
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the number of tokens                                                   */
+/*----------------------------------------------------------------------------*/
+void TokenSet::vSetTokens(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENSET,_FOOTER_);
+  
+   // get count of words in pWords
+  for (m_nTokens = 0; m_nTokens < C_TOKENS; m_nTokens++) {
+    if (m_xTokenAry[m_nTokens]->bEqual(""_Str))
+      break;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
