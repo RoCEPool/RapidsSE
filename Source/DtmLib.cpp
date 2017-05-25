@@ -40,7 +40,7 @@ bool DtmLib::bExtractBol(char** aaSrc, Bol* aBoolean)
       '1' == *aChar)
     bResult = true;
 
-  aBoolean->m_iBol = bResult;
+  aBoolean->m_bBol = bResult;
   
   return bResult;
 }

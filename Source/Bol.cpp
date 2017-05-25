@@ -40,7 +40,7 @@ Bol::~Bol(void)
 /*----------------------------------------------------------------------------*/
 bool Bol::operator < (Bol& xBol)
 {
-  if (m_iBol < xBol.m_iBol)
+  if (m_bBol < xBol.m_bBol)
     return true;
   else
     return false;
@@ -51,7 +51,7 @@ bool Bol::operator < (Bol& xBol)
 /*----------------------------------------------------------------------------*/
 bool Bol::operator <= (Bol& xBol)
 {
-  if (m_iBol <= xBol.m_iBol)
+  if (m_bBol <= xBol.m_bBol)
     return true;
   else
     return false;
@@ -62,7 +62,7 @@ bool Bol::operator <= (Bol& xBol)
 /*----------------------------------------------------------------------------*/
 bool Bol::operator == (Bol& xBol)
 {
-  if (m_iBol == xBol.m_iBol)
+  if (m_bBol == xBol.m_bBol)
     return true;
   else
     return false;
@@ -73,7 +73,7 @@ bool Bol::operator == (Bol& xBol)
 /*----------------------------------------------------------------------------*/
 bool Bol::operator != (Bol& xBol)
 {
-  if (m_iBol != xBol.m_iBol)
+  if (m_bBol != xBol.m_bBol)
     return true;
   else
     return false;
@@ -84,7 +84,7 @@ bool Bol::operator != (Bol& xBol)
 /*----------------------------------------------------------------------------*/
 bool Bol::operator >= (Bol& xBol)
 {
-  if (m_iBol >= xBol.m_iBol)
+  if (m_bBol >= xBol.m_bBol)
     return true;
   else
     return false;
@@ -95,7 +95,7 @@ bool Bol::operator >= (Bol& xBol)
 /*----------------------------------------------------------------------------*/
 bool Bol::operator > (Bol& xBol)
 {
-  if (m_iBol > xBol.m_iBol)
+  if (m_bBol > xBol.m_bBol)
     return true;
   else
     return false;
@@ -106,7 +106,7 @@ bool Bol::operator > (Bol& xBol)
 /*----------------------------------------------------------------------------*/
 void Bol::vInitZero(void)
 {
-  m_iBol = 0;
+  m_bBol = 0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -114,7 +114,7 @@ void Bol::vInitZero(void)
 /*----------------------------------------------------------------------------*/
 i8 Bol::iAsI8(void)
 {
-  return m_iBol;
+  return m_bBol;
 }
 
 /*----------------------------------------------------------------------------*/

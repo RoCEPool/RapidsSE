@@ -33,7 +33,7 @@ void* BolVal::operator new(size_t iSize)
 BolVal::BolVal(void)
 : Value(CN_BOLVAL)
 {
-  m_iBol = 0;
+  m_bBol = 0;
   
   _checkInitialised_(CN_BOLVAL);
 }
@@ -45,7 +45,7 @@ void BolVal::operator =(i8 iBol)
 {
   //vTrace("BolVal: diff %lld\n"_Str,nSub(&m_iBol,this));
   
-  m_iBol = iBol;
+  m_bBol = iBol;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -53,7 +53,7 @@ void BolVal::operator =(i8 iBol)
 /*----------------------------------------------------------------------------*/
 i8 BolVal::iBol(void) const
 {
-  return m_iBol;
+  return m_bBol;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -69,7 +69,7 @@ i8 BolVal::nSize(void) const
 /*----------------------------------------------------------------------------*/
 void BolVal::vToString(Str* aWorkspace)
 {
-  *aWorkspace = m_iBol;
+  *aWorkspace = m_bBol;
 }
 
 /*============================================================================*/

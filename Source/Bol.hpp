@@ -9,8 +9,8 @@ namespace Datums
   {
   friend class DtmLib;
   
-  private:
-    i8 m_iBol;
+  protected:
+    i8 m_bBol;
   
   public:
     void* operator new(size_t);
