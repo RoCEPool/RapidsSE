@@ -239,18 +239,21 @@ void Tokeniser::vNextToken(void)
 /*----------------------------------------------------------------------------*/
 /* reset token array                                                          */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vResetTokens(TokenAry* pTokenAry, Str* aToken[], i8 nTokens)
+void Tokeniser::vResetTokens(TokenAry& xTokenAry, Str* aToken[], i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
   for (i8 iToken = 0; iToken < nTokens; iToken++)
     *aToken[iToken]->s() = '\0';
+  
+  for (i8 iToken = 0; iToken < xTokenAry.iMaxItems(); iToken++)
+    *xTokenAry[iToken]->s() = '\0';
 }
 
 /*----------------------------------------------------------------------------*/
 /* find token in token array                                                  */
 /*----------------------------------------------------------------------------*/
-i8 Tokeniser::iFindToken(Str* aLookFor, TokenAry* pTokenAry, Str* aToken[], i8 nTokens)
+i8 Tokeniser::iFindToken(Str* aLookFor, TokenAry& xTokenAry, Str* aToken[], i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
@@ -264,7 +267,7 @@ i8 Tokeniser::iFindToken(Str* aLookFor, TokenAry* pTokenAry, Str* aToken[], i8 n
 /*----------------------------------------------------------------------------*/
 /* count tokens in token array                                                */
 /*----------------------------------------------------------------------------*/
-i8 Tokeniser::iCountTokens(TokenAry* pTokenAry,Str* aToken[], i8 nTokens)
+i8 Tokeniser::iCountTokens(TokenAry& xTokenAry,Str* aToken[], i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
@@ -279,7 +282,7 @@ i8 Tokeniser::iCountTokens(TokenAry* pTokenAry,Str* aToken[], i8 nTokens)
 /*----------------------------------------------------------------------------*/
 /* dump token array                                                           */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vDumpTokens(Str* pTitle, TokenAry* pTokenAry, Str* aToken[], i8 nTokens)
+void Tokeniser::vDumpTokens(Str* pTitle, TokenAry& xTokenAry, Str* aToken[], i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   

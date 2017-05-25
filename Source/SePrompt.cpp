@@ -370,7 +370,7 @@ void SePrompt::vGetCommandInput(void)
   
   while (true) {
     
-    m_pTokeniser->vResetTokens(&m_xTokenAry,m_aToken,C_TOKENS);
+    m_pTokeniser->vResetTokens(m_xTokenAry,m_aToken,C_TOKENS);
     
     i8 iToken = 0;
     while (TK_NONE != m_pTokeniser->eNextToken(m_aToken[iToken]->s())) {
@@ -496,7 +496,7 @@ bool SePrompt::bProcessCommand(bool bPostProcess)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append to history
-  m_xHistory.vAppend(&m_xTokenAry, m_aToken);
+  m_xHistory.vAppend(m_xTokenAry, m_aToken);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for command file
@@ -626,7 +626,7 @@ bool SePrompt::bRecallCommand(void)
   if ( ! bTokenCheck(1) )
     return false;
   
-  if (! m_xHistory.bRecall(&m_xTokenAry,m_aToken,C_TOKENS))
+  if (! m_xHistory.bRecall(m_xTokenAry,m_aToken,C_TOKENS))
     return true;
   
   return false;
@@ -670,7 +670,7 @@ bool SePrompt::bExecuteRequest(void)
                                                  //! make this part of verbose??
   //m_pTokeniser->vDumpTokens("Command : "_Str,m_aToken,C_TOKENS);
   
-  bool bResult = RapidsSE_ExecuteRequest(m_pSEitf,&m_xTokenAry,m_aToken,iTokens,&aResponse);
+  bool bResult = RapidsSE_ExecuteRequest(m_pSEitf,m_xTokenAry,m_aToken,iTokens,&aResponse);
   
   if (bResult)
     m_sResponse = aResponse ? (Str*)aResponse : ""_Str;
@@ -1672,14 +1672,14 @@ void SePrompt::vCollectStatement(void)
   ASSERT(! m_aToken[0]->bEqual(""_Str));
 
   // have we already seen the ';'
-  i8 iToken = m_pTokeniser->iFindToken(";"_Str,&m_xTokenAry,m_aToken,C_TOKENS);
+  i8 iToken = m_pTokeniser->iFindToken(";"_Str,m_xTokenAry,m_aToken,C_TOKENS);
   
   if (iToken >= 0) {
     //m_pTokeniser->vDumpTokens("\nCommand : "_Str,m_aToken,C_TOKENS);
     return;
   }
   
-  iToken = m_pTokeniser->iCountTokens(&m_xTokenAry,m_aToken,C_TOKENS);
+  iToken = m_pTokeniser->iCountTokens(m_xTokenAry,m_aToken,C_TOKENS);
   
   // switch to terminal mode
   m_pTokeniser->vLineMode(false);
@@ -1712,7 +1712,7 @@ void SePrompt::vStripSemicolon(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  i8 iToken = m_pTokeniser->iFindToken(";"_Str,&m_xTokenAry,m_aToken,C_TOKENS);
+  i8 iToken = m_pTokeniser->iFindToken(";"_Str,m_xTokenAry,m_aToken,C_TOKENS);
   
   if (-1 == iToken)
     return;

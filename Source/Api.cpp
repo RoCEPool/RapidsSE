@@ -1200,7 +1200,7 @@ eEC RapidsSE_SEitfNew(void** ppSEitf, i8 iPartition, i8 iTraceLevel)
 /*----------------------------------------------------------------------------*/
 /* Execute a request                                                          */
 /*----------------------------------------------------------------------------*/
-bool RapidsSE_ExecuteRequest(SEitf* pSEitf, TokenAry* pTokenAry, Str* aWords[], i8 iWords, Str** ppResponse)
+bool RapidsSE_ExecuteRequest(SEitf* pSEitf, TokenAry& xTokenAry, Str* aWords[], i8 iWords, Str** ppResponse)
 {
   bool bResult;
   
@@ -1208,7 +1208,7 @@ bool RapidsSE_ExecuteRequest(SEitf* pSEitf, TokenAry* pTokenAry, Str* aWords[], 
   pSEitf->vClearLastError();
   
   // send request to se
-  bResult = bExecuteRequest(pSEitf, pTokenAry, aWords, iWords);
+  bResult = bExecuteRequest(pSEitf, xTokenAry, aWords, iWords);
   if (!bResult) {
     *ppResponse = nullptr;
     return bResult;
@@ -1242,7 +1242,7 @@ eEC eExecuteRequest(SEitf* pSEitf, Str* aCommand)
   // execute command pCommand
   aWords[0]->vCopy(aCommand);
   
-  bResult = pSEitf->bDecode(&xTokenAry, (Str**)aWords, 1);
+  bResult = pSEitf->bDecode(xTokenAry, (Str**)aWords, 1);
   
   return pSEitf->eGetLastError();
 }
@@ -1268,7 +1268,7 @@ eEC eExecuteRequest(SEitf* pSEitf, Str* aCommand, Str* aParameter)
   aWords[0]->vCopy(aCommand);
   aWords[1]->vCopy(aParameter);
   
-  bResult = pSEitf->bDecode(&xTokenAry, (Str**)aWords, 2);
+  bResult = pSEitf->bDecode(xTokenAry, (Str**)aWords, 2);
   
   return pSEitf->eGetLastError();
 }
@@ -1299,7 +1299,7 @@ eEC eExecuteRequest(SEitf* pSEitf, Str* aCommand, Str* aParameter1,
   aWords[2]->vCopy(aParameter2);
   aWords[3]->vCopy(aParameter3);
   
-  bResult = pSEitf->bDecode(&xTokenAry, (Str**)aWords, 4);
+  bResult = pSEitf->bDecode(xTokenAry, (Str**)aWords, 4);
   
   return pSEitf->eGetLastError();
 }
@@ -1307,12 +1307,12 @@ eEC eExecuteRequest(SEitf* pSEitf, Str* aCommand, Str* aParameter1,
 /*----------------------------------------------------------------------------*/
 /* execute command                                                            */
 /*----------------------------------------------------------------------------*/
-bool bExecuteRequest(SEitf* pSEitf, TokenAry* pTokenAry, Str* aWords[], i8 iWords)
+bool bExecuteRequest(SEitf* pSEitf, TokenAry& xTokenAry, Str* aWords[], i8 iWords)
 {
   bool bResult;
   
   // execute command
-  bResult = pSEitf->bDecode(pTokenAry, aWords, iWords);
+  bResult = pSEitf->bDecode(xTokenAry, aWords, iWords);
   
   return bResult;
 }
