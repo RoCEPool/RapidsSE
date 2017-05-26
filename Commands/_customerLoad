@@ -14,7 +14,7 @@ create schema tpchSchema;
 cf tpchSchema ;
 cf tables ;
 
-create table customer (
+create table customer2 (
 	C_CUSTKEY       INTEGER NOT NULL,
 	C_NAME          VARCHAR(25) NOT NULL,
 	C_ADDRESS       VARCHAR(40) NOT NULL,

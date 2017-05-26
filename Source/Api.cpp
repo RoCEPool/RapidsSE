@@ -1297,7 +1297,7 @@ eEC eExecuteRequest(SEitf* pSEitf, Str* aCommand, Str* aParameter1,
   xTokenSet.vAddToken(aParameter1);
   xTokenSet.vAddToken(aParameter2);
   xTokenSet.vAddToken(aParameter3);
-  xTokenSet[2]->vCopy(""_Str);
+  xTokenSet[4]->vCopy(""_Str);
 
   bResult = pSEitf->bDecode(xTokenSet);
   
