@@ -11,7 +11,7 @@ namespace Parsing
 {
   void vCheckAssumptions(void);
   
-  static const i8 C_TOKENS      = 1024;
+  static const i8 C_TOKENS      = 256;
   static const i8 C_TOKEN_SPACE = 256;
   static const i8 C_TOKEN_AREA  = C_TOKEN_SPACE * C_TOKENS;
   
