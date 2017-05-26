@@ -1,38 +1,67 @@
+--
+-- A simple example showing some of the different expected result types.
+--
 
+
+-- An example where we don't care what the actual response is from
+-- the command below. If an error comes back then we simply log it as
+-- a warning, but it isn't enough to cancel the test.
+pwf;
+
+
+-- Example of expecting a single row with a single column to be returned.
 pwf;
 rows: 
   ('/tenants/boray/catalogs/rapidsse/schemas/public/tables/')
 
+
+-- Example where we expect zero rows to be returned.
 lstbl;
 rows: 0
 
+
+-- Example where we expect the command to not fail, but we don't care whether
+-- it returns rows or not.
 create table j10 (
   key   INTEGER NOT NULL, 
   name  VARCHAR(32) NOT NULL
 );
 success
 
+-- Example where we expect 1 row to be returned but we don't care about the
+-- contents of that row.
 lstbl;
 rows: 1
+
 
 lstbl;
 rows:
   ('j10')
 
+
+-- Example where we not only expect the command to succeed, but it should
+-- also tell us that it affected zero rows.
+-- This expected result also implies that a result set must not be returned.
 create index keyIdx on j10 (key);
-success
+affected: 0
+
 
 lsidx j10;
 rows:
   ('keyIdx')
 
+
+-- Example of a row with multiple columns being expected.
 lsidxcol j10 keyIdx;
 rows:
   ('key', 'INTEGER')
 
+
 ld j10 "../JTEST/j10.csv";
 success
 
+
+-- Example of multiple rows with multiple columns expected to be returned.
 antbl j10;
 unordered rows:
   ('NODE1', 0, 1, 1, 2)
@@ -40,8 +69,12 @@ unordered rows:
   ('NODE1', 2, 1, 1, 4)
   ('NODE1', 3, 1, 1, 3)
 
+
+-- Example of expecting an set of rows in a particular order.
+-- Expected rows can be ordered or unordered. Unless explicitly specified,
+-- expected rows are unordered by default.
 sel j10;
-unordered rows:
+ordered rows:
   (0, '2|two|')
   (0, '3|three|')
   (1, '8|eight|')
@@ -54,12 +87,24 @@ unordered rows:
   (3, '9|nine|')
 
 
--- Example of expecting a failure
+
+-- Example of expecting a failure. 
 drop index j10.badIndex;
 failure: 'no such index'
 
 
+-- Example of expecting a failure and only matching the leading substring.
+drop index j10.badIndex;
+failure: 'no such'
+
+
+
 CLEANUP {
+  -- Commands in the cleanup section always run, and do so at the end
+  -- of a test (whether successful or not). 
+
+  -- Ensure that table j10 is dropped.
+  -- We can set the expected result to mute if we don't want to see any warnings.
   drop table j10;
   mute
 }

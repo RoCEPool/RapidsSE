@@ -1,0 +1,22 @@
+--
+-- Examples of other miscellaneous commands you can give to seth.
+--
+
+-- Logging a message
+LOG 'About to sleep for 1 second.';
+
+-- Sleeping. Time is in milliseconds.
+SLEEP 1000;
+
+LOG 'Yawn.';
+
+
+-- Including other test files.
+-- Included test files run as if they were pasted directly into this file.
+-- By default, relative paths of included files are relative to the path
+-- of the this test file (not relative to the current working directory).
+-- This means that test files can be moved around as a group without
+-- losing their relative links to each other.
+INCLUDE 'ex3.test';
+
+

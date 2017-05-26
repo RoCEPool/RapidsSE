@@ -1,75 +1,61 @@
--- Ensure that the table 'foo' doesn't exist to start with.
---drop table foo;
---mute
+--
+-- An example test showing multiple threads and synchronisation between the thread.
+--
 
 
+-- First ensure that the table 'foo' doesn't exist to start with.
+drop table foo;
+mute
+
+
+-- The main thread will then create a couple of child threads, which will
+-- execute the block of code below.
 CREATE 2 THREADS {
-  -- Child threads start here.
+  -- Child threads only execute the commands in this block.
 
-  LOOP 3 {
-
-    -- Wait for table to be created by main thread
-    SYNCHRONIZE;
+  -- Child threads wait for table and index to be created by main thread.
+  SYNCHRONIZE;
   
-    lf;
-    rows: 
-      ('foo', 'folder')
+  lstbl;
+  rows: 
+    ('foo')
 
-    -- Wait for index to be created
-    SYNCHRONIZE;
+  lsidx foo;
+  rows:
+    ('fooIdx')
 
-    lsidx foo;
-    rows:
-      ('fooIdx')
+  lsidxcol foo fooIdx;
+  rows:
+    ('col0', 'INTEGER')
 
-    lsidxcol foo fooIdx;
-    rows:
-      ('col0', 'INTEGER')
+  -- Synchronizing here tells the main thread that we are done verifying the table.
+  SYNCHRONIZE;
 
-    -- Done querying index
-    SYNCHRONIZE;
+  -- Child threads synchronize again to wait for table to be dropped
+  SYNCHRONIZE;
 
-    -- Wait for table to be dropped
-    SYNCHRONIZE;
-
-    lf;
-    rows: 0
-
-    -- done verifying that the table has been dropped
-    SYNCHRONIZE;
-  }
   -- Child threads exit here.
 }
 
--- The main thread runs this loop
-LOOP 3 {
-  create table foo (col0 integer, col1 varchar);
-  success
+-- The main thread keeps running commands from here after creating the child threads..
+create table foo (col0 integer, col1 varchar);
+success
 
-  -- Unblocks child threads to see existence of table foo.
-  SYNCHRONIZE;
+create index fooIdx on foo (col0);
+success
 
-  create index fooIdx on foo (col0);
-  success
+-- Unblocks child threads who will verify existence of the table and index.
+SYNCHRONIZE;
 
-  -- Unblocks child threads to see existence of index.
-  SYNCHRONIZE;
 
-  -- Wait for threads to finish querying this index.
-  SYNCHRONIZE;
+-- Main thread waits until child threads indicate that they are done verifying table.
+SYNCHRONIZE;
 
-  drop index foo.fooIdx;
-  success
+drop table foo;
+success
 
-  drop table foo;
-  success
-
-  -- Unblock child threads to see that the table has been dropped.
-  SYNCHRONIZE;
-
-  -- Wait until child threads are done.
-  SYNCHRONIZE;
-}
+-- Child threads are blocked waiting for the table to be dropped.
+SYNCHRONIZE;
 
 CLEANUP {
   drop table foo;
