@@ -118,6 +118,22 @@ i8 Int::iAsI8(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* return the decile of value given its maximum                               */
+/*----------------------------------------------------------------------------*/
+i8 Int::iDecile(i8 iValue, i8 iMax)
+{
+  double dPercent = (iValue * 100) / iMax;
+  double dDecile = dPercent / 10;
+  
+  i8 iDecile = round(dDecile);
+  
+  if (iDecile == 10)
+    iDecile = 9;
+  
+  return iDecile;
+}
+
+/*----------------------------------------------------------------------------*/
 /* extract int datum                                                          */
 /*----------------------------------------------------------------------------*/
 bool Int::bExtract(Str* aDst, Str* aSrc, i8& nBytesTaken)

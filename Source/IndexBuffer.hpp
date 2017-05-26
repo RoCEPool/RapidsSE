@@ -38,6 +38,7 @@ namespace DBobjects
     ~IndexBuffer(void);
     
     i8           nBufferLevel(void);
+    i8           iDecile(void);
     void         vDump(void);
     i8           nEntries(void);
     Entry*       pFirstEntry(void);

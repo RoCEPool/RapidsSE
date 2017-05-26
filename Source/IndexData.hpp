@@ -14,6 +14,7 @@ namespace DBobjects
   
   class IndexData : public Object
   {
+    
   private:
     Lock         m_zLock;
     Index*       m_pIndex;
@@ -53,6 +54,7 @@ namespace DBobjects
     void         vInsertEntry(IndexBuffer* pRoot,KeyWsp& xKeyWsp, Id xId, i8 iLevel);
     void         vInsertFirstEntry(IndexBuffer* pToBuffer, IndexBuffer* pFromBuffer);
     IndexBuffer* pSplitBuffer(IndexBuffer* pIndexBuffer);
+    void         vDumpLevel(IndexBuffer* pIndexBuffer);
   };
   
   IndexData* _pIndexData(void* pAddr);

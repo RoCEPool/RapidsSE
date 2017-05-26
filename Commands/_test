@@ -20,16 +20,21 @@ create index idx1 on jidx (jidx_key);
 lsidx jidx;
 lsidxcol jidx idx1;
 
-create index idx2 on jidx (jidx_100);
-lsidx jidx;
-lsidxcol jidx idx2;
+//create index idx2 on jidx (jidx_100);
+//lsidx jidx;
+//lsidxcol jidx idx2;
 
-create index idx3 on jidx (jidx_name);
-lsidx jidx;
-lsidxcol jidx idx3;
+//create index idx3 on jidx (jidx_name);
+//lsidx jidx;
+//lsidxcol jidx idx3;
 
-ld jidx "../JTEST/jidx.csv" ;
+ld jidx "../JTEST/jidx2.csv" ;
+dumpidx jidx idx1;
 
+visidx jidx idx1;
+
+
+/*
 //anidx jidx idx ;
 dumpidx jidx idx1 ;
 
@@ -68,11 +73,7 @@ rgeselidx jidx idx1 3 7 ;
 
 print "\nSelecting rows with key <= 7 using idx1 ...\n" ;
 uprselidx jidx idx1 7 ;
-
-dumpidx jidx idx1;
-
-visidx jidx idx1;
-
+*/
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

@@ -64,7 +64,6 @@ IndexBuffer::IndexBuffer(Index* pIndex, i8 nBufferLevel)
   
   // new the head
   vAllotHead();
-  m_nEntries++;
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
 
@@ -93,6 +92,23 @@ IndexBuffer::~IndexBuffer(void)
 i8 IndexBuffer::nBufferLevel(void)
 {
   return m_nBufferLevel;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get decile full of the buffer                                              */
+/*----------------------------------------------------------------------------*/
+i8 IndexBuffer::iDecile(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
+  
+  i8 iDecile;
+  
+  if (C_SPACE_BASED_ON_ENTRIES)
+    iDecile = Int::iDecile(m_nEntries, C_MAX_ENTRIES);
+  else
+    iDecile = Int::iDecile(m_xWsp.nUsed(), C_SIZE_POOL_BUFFER);
+  
+  return iDecile;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -160,25 +176,16 @@ bool IndexBuffer::bHasSpace(i8 nBytes)
   
   i8 iFree = m_xWsp.nFree();
  
-   
-  //if (iFree < nBytes)
-  // return false;
-   
-  
-  /* FOR TESTING SMALL TABLES
-   if (m_nBufferLevel == 0) {
-   if (m_nEntries > 10)
-   return false;
+  // free space calculation based on no of enteries
+  if (C_SPACE_BASED_ON_ENTRIES) {
+    if (m_nEntries > C_MAX_ENTRIES)
+      return false;
    }
-   else {
-   if (m_nEntries > 5)
-   return false;
-   }
-   */
-  
-  if (m_nEntries > 20)
-    return false;
-  
+  else {
+    if (iFree < nBytes)
+      return false;
+  }
+
   return true;
 }
 

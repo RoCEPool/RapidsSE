@@ -209,12 +209,12 @@ void IndexData::vInsertEntry(Row* pRow, i8 nRowNo, bn nBufferNo)
     
   vInsertEntry(m_pRoot, xKeyWsp, xId, 0);
   
-  if ( ! bVerify() ) {
-    vTrace("Inserting row that caused verify to fail:\n"_Str);
-    pRow->vContentDump();
-    vDump();
-    ASSERT(0);
-  }
+  //if ( ! bVerify() ) {
+  //  vTrace("Inserting row that caused verify to fail:\n"_Str);
+  //  pRow->vContentDump();
+  //  vDump();
+  //  ASSERT(0);
+  //}
 }
 
 /*----------------------------------------------------------------------------*/
@@ -504,12 +504,80 @@ IndexBuffer* IndexData::pSplitBuffer(IndexBuffer* pIndexBuffer)
 /*----------------------------------------------------------------------------*/
 /* visualize the index                                                        */
 /*----------------------------------------------------------------------------*/
+void IndexData::vDumpLevel(IndexBuffer* pIndexBuffer)
+{
+  
+  // get the first entry
+  Entry* pEntry = pIndexBuffer->pFirstEntry();
+  
+  while (pEntry) {
+    
+    // get the index buffer the first enetry poinst to
+    IndexBuffer* pEntryIndexBuffer = pEntry->pIndexBuffer();
+    
+    // print the decile of the buffer
+    vTrace("%lld"_Str, pEntryIndexBuffer->iDecile());
+    
+    // insert spaces for no of entries in buffer
+    if (pEntryIndexBuffer->nBufferLevel() > 0) {
+      
+      // exclude the head entry
+      i8 iEntries = pEntryIndexBuffer->nEntries() - 1;
+      
+      while (iEntries--)
+        vTrace(" "_Str);
+    }
+    
+    // move to the next entry
+    pEntry = pIndexBuffer->pNextEntry(pEntry);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* visualize the index                                                        */
+/*----------------------------------------------------------------------------*/
 void IndexData::vVisualize(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
   
+  // start with the root buffer
+  IndexBuffer* pIndexBuffer = m_pRoot;
   
+  // print the decile of the root buffer
+  vTrace("%lld\n"_Str, pIndexBuffer->iDecile());
+  
+  i8 iBufferLevel = pIndexBuffer->nBufferLevel();
+  
+  // if there is only one buffer i.e root is at level 0, we are done
+  if (iBufferLevel == 0) {
+    vTrace("\n"_Str);
+    return;
+  }
+  
+  // iterate through the buffers
+  while (pIndexBuffer) {
+    
+    // dump this buffer
+    vDumpLevel(pIndexBuffer);
+
+    // if we are at level 1, iterate thru next buffers
+    if (pIndexBuffer->nBufferLevel() == 1) {
+      pIndexBuffer = pIndexBuffer->pNextBuffer();
+    }
+    else {
+      vTrace("\n"_Str);
+      
+      // get the first entry of the buffer
+      Entry* pEntry = pIndexBuffer->pFirstEntry();
+      
+      // get the index buffer this entry points to
+      pIndexBuffer = pEntry->pIndexBuffer();
+    }
+  }
+  
+  vTrace("\n"_Str);
 }
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
