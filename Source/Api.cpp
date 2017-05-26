@@ -1240,6 +1240,7 @@ eEC eExecuteRequest(SEitf* pSEitf, Str* aCommand)
   //xTokenSet[1]->vCopy(""_Str);
   
   xTokenSet.vAddToken(aCommand);
+  xTokenSet[1]->vCopy(""_Str);
   
   bResult = pSEitf->bDecode(xTokenSet);
   
@@ -1264,6 +1265,7 @@ eEC eExecuteRequest(SEitf* pSEitf, Str* aCommand, Str* aParameter)
   
   xTokenSet.vAddToken(aCommand);
   xTokenSet.vAddToken(aParameter);
+  xTokenSet[2]->vCopy(""_Str);
   
   vTrace("%s %s\n"_Str, xTokenSet[0], xTokenSet[1]);
   
@@ -1295,6 +1297,7 @@ eEC eExecuteRequest(SEitf* pSEitf, Str* aCommand, Str* aParameter1,
   xTokenSet.vAddToken(aParameter1);
   xTokenSet.vAddToken(aParameter2);
   xTokenSet.vAddToken(aParameter3);
+  xTokenSet[2]->vCopy(""_Str);
 
   bResult = pSEitf->bDecode(xTokenSet);
   
