@@ -473,6 +473,21 @@ IndexBuffer* IndexBuffer::pSplitBuffer(void)
   //aCrossCheck->vShow(0,m_pIndex->pIdxColVec());
   ASSERT(pCrossCheck == pSplitEntry);
   
+  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
+  
+//  EntryVec xPrevVec;
+//  vPriorVec(aMoveEntry,&xPrevVec);
+//
+//  vTrace("Split %p\n"_Str,pSplitEntry);
+//  vTrace("Move  %p\n"_Str,aMoveEntry);
+//  for (on nOffsetNo; nOffsetNo.bInRange(); nOffsetNo++) {
+//    ln nLevel = nOffsetNo.nToLevelNo();
+//    vTrace("%p v %p\n"_Str,xPrevVec[nLevel],xPriorVec[nLevel]);
+//    //ASSERT(xPrevVec[nLevel] == xPriorVec[nLevel]);
+//  }
+  
+  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
+  
   // set any prior offset to nil if its an offset to an entry in split half
   i8 iLastEntryOffsetAbs = iToOffsetAbs(pSplitEntry);
   
@@ -1325,6 +1340,36 @@ Entry* IndexBuffer::pPosition(Key* aGivenKey, eJC eJuxtaCompare, EntryVec* pPrio
   // JC_SAME : return the entry which is same as given key
   // JC_AFTER: return the entry which the given key would be inserted after
   return pScanEntry;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the prior vector of given entry                                        */
+/*----------------------------------------------------------------------------*/
+void IndexBuffer::vPriorVec(Entry* pEntry, EntryVec* pPriorVec)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
+  
+  ln nLevel;
+  
+  Entry* pHeadEntry = pHead();
+  for (nLevel = 0_on; *nLevel < C_FLAT_LEVELS; nLevel++)
+    (*pPriorVec)[nLevel] = nullptr;
+  
+  for (Entry* pScan = pHead(); pScan; pScan = pNextEntry(pScan)) {
+    
+    if (pScan == pEntry)
+      return;
+    
+    //(*pPriorVec)[0_ln] = pRightEntry(pScan,0_ln);
+    for (on nOffset; *nOffset < pScan->nOffsets(); nOffset++) {
+      nLevel = nOffset.nToLevelNo();
+      if (pRightEntry(pScan,nLevel) == pEntry)
+        (*pPriorVec)[nLevel] = pScan;
+    }
+    
+  }
+  
+  ASSERT(0);
 }
 
 /*----------------------------------------------------------------------------*/

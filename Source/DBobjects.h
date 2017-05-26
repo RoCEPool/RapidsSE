@@ -18,7 +18,7 @@ namespace DBobjects
   static const i8 C_NIL_OFFSET   = 0xFFFFFFFFFFFFFFFF;
   
   static const bool C_SPACE_BASED_ON_ENTRIES = true;
-  static const i8   C_MAX_ENTRIES = 100;
+  static const i8   C_MAX_ENTRIES = 10;
 
 }
 

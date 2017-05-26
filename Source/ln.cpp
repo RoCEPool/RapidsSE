@@ -53,9 +53,9 @@ on ln::nToOffsetNo(void)
 {
   i8 iLevelNo = m_iLevelNo - 1;
   
-  on nLevelNo(iLevelNo);
+  on nOffsetNo(iLevelNo);
   
-  return nLevelNo;
+  return nOffsetNo;
 }
 
 /*----------------------------------------------------------------------------*/
