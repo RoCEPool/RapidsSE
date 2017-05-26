@@ -5,10 +5,10 @@
 
 namespace Values
 {
-  class TmeVal : public Value
+  class TmeVal : public Value,
+                 public Tme
   {
   private:
-    i8 m_iTme;
     
   public:
     void* operator new(size_t);
@@ -18,9 +18,9 @@ namespace Values
     void operator =(i8 iVal);
     void operator =(Tme xTme);
   
-    i8 nSize(void) const;
+    i8 nSize(void);
     i8* aInt(void);
-    i8 iTme(void) const;
+    i8 iTme(void);
     
     void vToString(Str* aWorkspace);
   };

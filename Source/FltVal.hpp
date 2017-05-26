@@ -5,7 +5,8 @@
 
 namespace Values
 {
-  class FltVal : public Value
+  class FltVal : public Value,
+                 public Flt
   {
   private:
     d8 m_dFlt;

@@ -5,11 +5,11 @@
 
 namespace Values
 {
-  class BolVal : public Value
+  class BolVal : public Value,
+                 public Bol
   {
   private:
-    i8 m_iBol;
-    
+  
   public:
     void* operator new(size_t);
     

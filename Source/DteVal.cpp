@@ -33,7 +33,6 @@ void* DteVal::operator new(size_t iSize)
 DteVal::DteVal(void)
 : Value(CN_DTEVAL)
 {
-  m_iDte = 0;
   
   _checkInitialised_(CN_DTEVAL);
 }
@@ -45,35 +44,35 @@ void DteVal::operator =(Dte xDte)
 {
   //vTrace("IvlVal: diff %lld\n"_Str,nSub(&m_iIvl,this));
   
-  m_iDte = xDte.iAsI8();
+  *aInt() = xDte.iAsI8();
 }
 
 /*----------------------------------------------------------------------------*/
 /* assign a value                                                             */
 /*----------------------------------------------------------------------------*/
-void DteVal::operator =(i8 iDte)
-{
-  //vTrace("DteVal: diff %lld\n"_Str,nSub(&m_iDte,this));
-  
-  m_iDte = iDte;
-}
-
+//void DteVal::operator =(i8 iDte)
+//{
+//  //vTrace("DteVal: diff %lld\n"_Str,nSub(&m_iDte,this));
+//  
+//  m_iDte = iDte;
+//}
+//
 /*----------------------------------------------------------------------------*/
 /* get aInt                                                                   */
 /*----------------------------------------------------------------------------*/
 i8* DteVal::aInt(void)
 {
-  return &m_iDte;
+  return (i8*)&x;
 }
 
 /*----------------------------------------------------------------------------*/
 /* get iDte                                                                   */
 /*----------------------------------------------------------------------------*/
-i8 DteVal::iDte(void) const
-{
-  return m_iDte;
-}
-
+//i8 DteVal::iDte(void) const
+//{
+//  return m_iDte;
+//}
+//
 /*----------------------------------------------------------------------------*/
 /* get size in bytes                                                          */
 /*----------------------------------------------------------------------------*/
@@ -85,10 +84,10 @@ i8 DteVal::nSize(void) const
 /*----------------------------------------------------------------------------*/
 /* convert to string                                                          */
 /*----------------------------------------------------------------------------*/
-void DteVal::vToString(Str* aWorkspace)
-{
-  *aWorkspace = m_iDte;
-}
+//void DteVal::vToString(Str* aWorkspace)
+//{
+//  *aWorkspace = m_iDte;
+//}
 
 /*============================================================================*/
 /* end                                                                        */

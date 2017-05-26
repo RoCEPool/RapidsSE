@@ -33,8 +33,6 @@ void* TspVal::operator new(size_t iSize)
 TspVal::TspVal(void)
 : Value(CN_INTVAL)
 {
-  m_iTsp = 0;
-  
   _checkInitialised_(CN_TSPVAL);
 }
 
@@ -45,7 +43,7 @@ void TspVal::operator =(i8 iTsp)
 {
   //vTrace("TspVal: diff %lld\n"_Str,nSub(&m_iTsp,this));
   
-  m_iTsp = iTsp;
+  *aInt() = iTsp;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -55,21 +53,21 @@ void TspVal::operator =(Tsp xTsp)
 {
   //vTrace("IvlVal: diff %lld\n"_Str,nSub(&m_iIvl,this));
   
-  m_iTsp = xTsp.iAsI8();
+  *aInt() = xTsp.iAsI8();
 }
 
 /*----------------------------------------------------------------------------*/
 /* get iTsp                                                                   */
 /*----------------------------------------------------------------------------*/
-i8 TspVal::iTsp(void) const
+i8 TspVal::iTsp(void)
 {
-  return m_iTsp;
+  return *aInt();
 }
 
 /*----------------------------------------------------------------------------*/
 /* get size in bytes                                                          */
 /*----------------------------------------------------------------------------*/
-i8 TspVal::nSize(void) const
+i8 TspVal::nSize(void)
 {
   return sizeof(TspVal);
 }
@@ -79,16 +77,16 @@ i8 TspVal::nSize(void) const
 /*----------------------------------------------------------------------------*/
 i8* TspVal::aInt(void)
 {
-  return &m_iTsp;
+  return (i8*)&x;
 }
 
 /*----------------------------------------------------------------------------*/
 /* convert to string                                                          */
 /*----------------------------------------------------------------------------*/
-void TspVal::vToString(Str* aWorkspace)
-{
-  *aWorkspace = m_iTsp;
-}
+//void TspVal::vToString(Str* aWorkspace)
+//{
+//  *aWorkspace = m_iTsp;
+//}
 
 /*============================================================================*/
 /* end                                                                        */

@@ -5,11 +5,11 @@
 
 namespace Values
 {
-  class IvlVal : public Value
+  class IvlVal : public Value,
+                 public Ivl
   {
   private:
-    i8 m_iIvl;
-    
+  
   public:
     void* operator new(size_t);
     
@@ -18,9 +18,9 @@ namespace Values
     void operator =(i8 iVal);
     void operator =(Ivl xIvl);
   
-    i8 nSize(void) const;
+    i8 nSize(void);
     i8* aInt(void);
-    i8 iIvl(void) const;
+    i8 iIvl(void);
     
     void vToString(Str* aWorkspace);
   };

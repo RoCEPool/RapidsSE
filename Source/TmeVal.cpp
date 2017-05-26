@@ -33,7 +33,6 @@ void* TmeVal::operator new(size_t iSize)
 TmeVal::TmeVal(void)
 : Value(CN_INTVAL)
 {
-  m_iTme = 0;
   
   _checkInitialised_(CN_TMEVAL);
 }
@@ -45,7 +44,7 @@ void TmeVal::operator =(i8 iTme)
 {
   //vTrace("TmeVal: diff %lld\n"_Str,nSub(&m_iTme,this));
   
-  m_iTme = iTme;
+  *aInt() = iTme;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -55,21 +54,21 @@ void TmeVal::operator =(Tme xTme)
 {
   //vTrace("IvlVal: diff %lld\n"_Str,nSub(&m_iIvl,this));
   
-  m_iTme = xTme.iAsI8();
+  *aInt() = xTme.iAsI8();
 }
 
 /*----------------------------------------------------------------------------*/
 /* get iTme                                                                   */
 /*----------------------------------------------------------------------------*/
-i8 TmeVal::iTme(void) const
+i8 TmeVal::iTme(void)
 {
-  return m_iTme;
+  return *aInt();
 }
 
 /*----------------------------------------------------------------------------*/
 /* get size in bytes                                                          */
 /*----------------------------------------------------------------------------*/
-i8 TmeVal::nSize(void) const
+i8 TmeVal::nSize(void)
 {
   return sizeof(TmeVal);
 }
@@ -79,16 +78,16 @@ i8 TmeVal::nSize(void) const
 /*----------------------------------------------------------------------------*/
 i8* TmeVal::aInt(void)
 {
-  return &m_iTme;
+  return (i8*)&x;
 }
 
 /*----------------------------------------------------------------------------*/
 /* convert to string                                                          */
 /*----------------------------------------------------------------------------*/
-void TmeVal::vToString(Str* aWorkspace)
-{
-  *aWorkspace = m_iTme;
-}
+//void TmeVal::vToString(Str* aWorkspace)
+//{
+//  *aWorkspace = m_iTme;
+//}
 
 /*============================================================================*/
 /* end                                                                        */
