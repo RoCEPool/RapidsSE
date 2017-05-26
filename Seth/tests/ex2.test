@@ -1,5 +1,23 @@
+--
+-- An example showing looping of commands.
+--
 
+
+-- First, ensure that the table foo does not exist.
+drop table foo;
+mute
+
+
+-- Loop for a period of time, executing all the commands in 
+-- the enclosing block below
 LOOP FOR 5 SECONDS {
+
+  -- We also accept HOURS, MINUTES, and MILLISECONDS.
+  -- We could have also looped for a certain iteration count by 
+  -- specifying:  LOOP <iterationCount>
+  -- or looping forever:  LOOP
+
+
   create table foo (col0 integer, col1 varchar);
   success
 
@@ -23,7 +41,9 @@ LOOP FOR 5 SECONDS {
 
   drop table foo;
   success
-}
+
+} -- end of loop
+
 
 CLEANUP {
   drop table foo;

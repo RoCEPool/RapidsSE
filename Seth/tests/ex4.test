@@ -1,0 +1,71 @@
+--
+-- Examples of creating, using and dropping connections to SE.
+-- Let's recreate ex3 in a single threaded environment with multiple connections.
+--
+
+-- Create two new connections to the SE Shell and call then "c1" and  "c2".
+CREATE CONNECTION 'c1';
+CREATE CONNECTION 'c2';
+
+-- Let's make connection c1 the default one to use for any server commands.
+USE 'c1';
+
+-- First ensure that the table 'foo' doesn't exist to start with.
+drop table foo;
+mute
+
+-- Create the table and index.
+create table foo (col0 integer, col1 varchar);
+success
+
+create index fooIdx on foo (col0);
+success
+
+
+-- Now let's switch to connection c2 and verify that the table and index exist.
+USE 'c2';
+
+lstbl;
+rows:
+  ('foo')
+
+lsidx foo;
+rows:
+  ('fooIdx')
+
+lsidxcol foo fooIdx;
+rows:
+  ('col0', 'INTEGER')
+
+
+
+-- Go back to connection c1 and drop the table
+USE 'c1';
+
+drop table foo;
+success
+
+
+-- Go to connection c2 and verify that the table has been dropped.
+USE 'c2';
+
+lstbl;
+rows: 0
+
+lsidx foo;
+failure: 'no such table'
+
+
+-- Close connections c1 and c2
+DROP CONNECTION 'c1';
+DROP CONNECTION 'c2';
+
+
+-- Any further commands will now use the default connection that was created when
+-- the test was started.
+
+
+CLEANUP {
+  drop table foo;
+  mute
+}
