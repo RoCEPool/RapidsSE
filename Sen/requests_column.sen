@@ -51,7 +51,7 @@
   dup pushTable assert
 
   // check it is a table
-  checkIsTable  not if <NIP+ERROR> exit then
+  checkIsTable  not if popTable <NIP+ERROR> exit then
 
   args.metadata if
     "(columnDefinition VARCHAR)" metadata!

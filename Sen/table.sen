@@ -270,8 +270,8 @@ int: queryCount
   // push table dictionary
   dup pushTable assert
 
-  checkIsTable not if false exit then ( "<tableNm>" )
-  dup tableInUse if EC_TABLE_IN_USE false exit then ( "<tableNm>" )
+  checkIsTable not if popTable false exit then ( "<tableNm>" )
+  dup tableInUse if popTable EC_TABLE_IN_USE false exit then ( "<tableNm>" )
 
   popTable
 

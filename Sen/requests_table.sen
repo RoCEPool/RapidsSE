@@ -323,7 +323,7 @@ ddlLock::grabRead
 
 snap0:
 
-  tableLoader   not if <NIP+ERROR> exit then
+  tableLoader   not if popTable <NIP+ERROR> exit then
   loadIndexes
 
   //bp.freespace .
