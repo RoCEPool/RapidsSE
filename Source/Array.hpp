@@ -94,7 +94,7 @@ template <eCN ARRAY_CN, class ITEM, i8 MAX_ITEMS>
 Array<ARRAY_CN, ITEM, MAX_ITEMS>::Array(void)
 : Object(ARRAY_CN)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,ARRAY_CN,_FOOTER_);
+  _precondition_(_MAGIC_,ARRAY_CN,_FOOTER_);
   
   m_nItems = 0;
   
@@ -105,7 +105,7 @@ Array<ARRAY_CN, ITEM, MAX_ITEMS>::Array(void)
   
   _checkInitialised_(ARRAY_CN);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,ARRAY_CN,_FOOTER_);
+  _postcondition_(_MAGIC_,ARRAY_CN,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -114,7 +114,7 @@ Array<ARRAY_CN, ITEM, MAX_ITEMS>::Array(void)
 template <eCN ARRAY_CN, class ITEM, i8 MAX_ITEMS>
 Array<ARRAY_CN, ITEM, MAX_ITEMS>::~Array(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,ARRAY_CN,_FOOTER_);
+  _precondition_(_MAGIC_,ARRAY_CN,_FOOTER_);
   
 //  for (i8 iItem = 0; iItem < m_nItems; iItem++) {
 //    ITEM xItem = m_xItem[iItem];
@@ -145,7 +145,7 @@ ITEM& Array<ARRAY_CN, ITEM, MAX_ITEMS>::operator [](i8 iItemNo)
 template <eCN ARRAY_CN, class ITEM, i8 MAX_ITEMS>
 void Array<ARRAY_CN, ITEM, MAX_ITEMS>::vAdd(ITEM xItem)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,ARRAY_CN,_FOOTER_);
+  _precondition_(_MAGIC_,ARRAY_CN,_FOOTER_);
   
   // check we have a free slot
   ASSERT(m_nItems >= 0 && m_nItems < MAX_ITEMS - 1);
@@ -167,7 +167,7 @@ void Array<ARRAY_CN, ITEM, MAX_ITEMS>::vAdd(ITEM xItem)
 template <eCN ARRAY_CN, class ITEM, i8 MAX_ITEMS>
 void Array<ARRAY_CN, ITEM, MAX_ITEMS>::vClear(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,ARRAY_CN,_FOOTER_);
+  _precondition_(_MAGIC_,ARRAY_CN,_FOOTER_);
   
   for (i8 iItem = 0; iItem < m_nItems; iItem++) {
     m_xItem[iItem] = (ITEM)0;
@@ -182,7 +182,7 @@ void Array<ARRAY_CN, ITEM, MAX_ITEMS>::vClear(void)
 template <eCN ARRAY_CN, class ITEM, i8 MAX_ITEMS>
 void Array<ARRAY_CN, ITEM, MAX_ITEMS>::vInsert(ITEM xItem)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,ARRAY_CN,_FOOTER_);
+  _precondition_(_MAGIC_,ARRAY_CN,_FOOTER_);
   
   // check we have a free slot
   ASSERT(m_nItems >= 0 && m_nItems < MAX_ITEMS - 1);
@@ -214,7 +214,7 @@ void Array<ARRAY_CN, ITEM, MAX_ITEMS>::vInsert(ITEM xItem)
 template <eCN ARRAY_CN, class ITEM, i8 MAX_ITEMS>
 i8 Array<ARRAY_CN, ITEM, MAX_ITEMS>::nItems(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,ARRAY_CN,_FOOTER_);
+  _precondition_(_MAGIC_,ARRAY_CN,_FOOTER_);
   
   ASSERT(m_nItems >= 0 && m_nItems < MAX_ITEMS);
   
@@ -227,7 +227,7 @@ i8 Array<ARRAY_CN, ITEM, MAX_ITEMS>::nItems(void)
 template <eCN ARRAY_CN, class ITEM, i8 MAX_ITEMS>
 ITEM Array<ARRAY_CN, ITEM, MAX_ITEMS>::xGet(i8 iItem)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,ARRAY_CN,_FOOTER_);
+  _precondition_(_MAGIC_,ARRAY_CN,_FOOTER_);
   
   ASSERT(iItem >= 0 && iItem < m_nItems);
   
@@ -242,7 +242,7 @@ ITEM Array<ARRAY_CN, ITEM, MAX_ITEMS>::xGet(i8 iItem)
 template <eCN ARRAY_CN, class ITEM, i8 MAX_ITEMS>
 i8 Array<ARRAY_CN, ITEM, MAX_ITEMS>::iMaxItems(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,ARRAY_CN,_FOOTER_);
+  _precondition_(_MAGIC_,ARRAY_CN,_FOOTER_);
   
   return MAX_ITEMS;
 }
@@ -257,7 +257,7 @@ i8 Array<ARRAY_CN, ITEM, MAX_ITEMS>::iMaxItems(void)
 template <eCN ARRAY_CN, class ITEM, i8 MAX_ITEMS>
 Footer* Array<ARRAY_CN, ITEM, MAX_ITEMS>::pFooter(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,ARRAY_CN);
+  _precondition_(_MAGIC_,ARRAY_CN);
   
   return &m_xFooter;
 }

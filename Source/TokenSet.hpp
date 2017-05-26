@@ -26,6 +26,7 @@ namespace Parsing
   
     Str*& operator [](i8 iTokenNo);
 
+    void vAddToken(Str* aToken);
     i8   nTokens(void);
     void vIncTokens(void);
     void vReset(void);

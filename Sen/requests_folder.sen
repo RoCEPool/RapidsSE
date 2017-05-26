@@ -157,7 +157,7 @@ tp: droppedDic
       dup str.length if "\n" str.cat then
 
       object@ word.name 12 str.pad str.cat
-
+      1 iCount + to iCount
       "(" str.cat
 
       object@ isTable if

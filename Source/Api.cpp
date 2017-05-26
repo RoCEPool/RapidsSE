@@ -1232,15 +1232,14 @@ bool RapidsSE_ExecuteRequest(SEitf* pSEitf, TokenSet& xTokenSet, Str** ppRespons
 eEC eExecuteRequest(SEitf* pSEitf, Str* aCommand)
 {
   bool bResult;
-  char xArray[C_1KB * 1];
-  Str* aWords[16] = {
-    (Str*)&xArray[C_1KB * 0],
-  };
   
   TokenSet xTokenSet;
   
   // execute command pCommand
-  aWords[0]->vCopy(aCommand);
+  //xTokenSet[0]->vCopy(aCommand);
+  //xTokenSet[1]->vCopy(""_Str);
+  
+  xTokenSet.vAddToken(aCommand);
   
   bResult = pSEitf->bDecode(xTokenSet);
   
@@ -1256,17 +1255,17 @@ eEC eExecuteRequest(SEitf* pSEitf, Str* aCommand, Str* aParameter)
   pSEitf->vClearLastError();
   
   bool bResult;
-  char xArray[C_1KB * 2];
-  Str* aWords[16] = {
-    (Str*)&xArray[C_1KB * 0],
-    (Str*)&xArray[C_1KB * 1]
-  };
   
   TokenSet xTokenSet;
   
-  // execute command
-  aWords[0]->vCopy(aCommand);
-  aWords[1]->vCopy(aParameter);
+//  xTokenSet[0]->vCopy(aCommand);
+//  xTokenSet[1]->vCopy(aParameter);
+//  xTokenSet[2]->vCopy(""_Str);
+  
+  xTokenSet.vAddToken(aCommand);
+  xTokenSet.vAddToken(aParameter);
+  
+  vTrace("%s %s\n"_Str, xTokenSet[0], xTokenSet[1]);
   
   bResult = pSEitf->bDecode(xTokenSet);
   
@@ -1283,20 +1282,20 @@ eEC eExecuteRequest(SEitf* pSEitf, Str* aCommand, Str* aParameter1,
   pSEitf->vClearLastError();
   
   bool bResult;
-  char xArray[C_1KB * 4];
   TokenSet xTokenSet;
   
-  xTokenSet[0] = (Str*)&xArray[C_1KB * 0];
-  xTokenSet[1] = (Str*)&xArray[C_1KB * 1];
-  xTokenSet[2] = (Str*)&xArray[C_1KB * 2];
-  xTokenSet[3] = (Str*)&xArray[C_1KB * 3];
-  
   // execute command
-  xTokenSet[0]->vCopy(aCommand);
-  xTokenSet[1]->vCopy(aParameter1);
-  xTokenSet[2]->vCopy(aParameter2);
-  xTokenSet[3]->vCopy(aParameter3);
+//  xTokenSet[0]->vCopy(aCommand);
+//  xTokenSet[1]->vCopy(aParameter1);
+//  xTokenSet[2]->vCopy(aParameter2);
+//  xTokenSet[3]->vCopy(aParameter3);
+//  xTokenSet[4]->vCopy(""_Str);
   
+  xTokenSet.vAddToken(aCommand);
+  xTokenSet.vAddToken(aParameter1);
+  xTokenSet.vAddToken(aParameter2);
+  xTokenSet.vAddToken(aParameter3);
+
   bResult = pSEitf->bDecode(xTokenSet);
   
   return pSEitf->eGetLastError();

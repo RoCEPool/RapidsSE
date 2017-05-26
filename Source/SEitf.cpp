@@ -577,7 +577,7 @@ bool SEitf::bListCatalogs(TokenSet& xTokenSet)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
-  
+    
   if (xTokenSet.nTokens() != 1) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
@@ -1937,12 +1937,6 @@ bool SEitf::bInsertBuffer(RowBuffer* pRowBuffer, i8 iPartition)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   i8 iSlot = Partition::iPartitionToSlot(iPartition);
-                              
-  char xArray[C_1KB * 2];
-  Str* aWords[16] = {
-    (Str*)&xArray[C_1KB * 0],
-    (Str*)&xArray[C_1KB * 1]
-  };
 
   s256 sRequest;
   s256 sBuffer;
