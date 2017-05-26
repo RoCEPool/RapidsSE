@@ -1,0 +1,24 @@
+/*============================================================================*/
+/* _test -- test                                                              */
+/*============================================================================*/
+
+create table jidx (
+jidx_key   INTEGER NOT NULL,
+jidx_name  VARCHAR(32) NOT NULL,
+jidx_100   INTEGER NOT NULL,
+jidx_10    INTEGER NOT NULL
+);
+
+create index idx1 on jidx (jidx_key);
+lsidx jidx;
+lsidxcol jidx idx1;
+
+
+ld jidx "../JTEST/j1000.csv" ;
+dumpidx jidx idx1;
+
+visidx jidx idx1;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
