@@ -489,14 +489,16 @@ IndexBuffer* IndexBuffer::pSplitBuffer(void)
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
   
   // set any prior offset to nil if its an offset to an entry in split half
-  i8 iLastEntryOffsetAbs = iToOffsetAbs(pSplitEntry);
+  i8 iSplitEntryOffsetAbs = iToOffsetAbs(pSplitEntry);
   
   for (on nOffsetNo; nOffsetNo.bInRange(); nOffsetNo++) {
     
     // calculate level into prior vector for this offset and get entry
     ln nLevel = nOffsetNo.nToLevelNo();
     Entry* pEntry = xPriorVec[nLevel];
-    pEntry->vRightOffset(nOffsetNo, C_NIL_OFFSET);
+    
+    if (iToRightOffsetAbs(pEntry,nOffsetNo) > iSplitEntryOffsetAbs)
+      pEntry->vRightOffset(nOffsetNo, C_NIL_OFFSET);
   }
   
   // set all right offsets in the split entry to C_NIL_OFFSET
