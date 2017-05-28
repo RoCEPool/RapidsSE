@@ -5,21 +5,73 @@
 "requests_basics.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* return an error response                                                   */
 /*----------------------------------------------------------------------------*/
+: <NIP+ERROR> ( ... errorCode -- errrorStr errorCode 2 )
+
+  // discard all but top item on stack
+  nipAll
+
+  // error code should be left on stack
+  assert::stack_1
+  CN_INTVAL assert::class
+
+  // convert error code into error string
+  dup error.msg ( errorCode errorStr )
+
+  // bring error code to top
+  swap ( errorStr errorCode )
+
+  // there are two return arguments
+  2 ( errorStr errorCode 2 )
+
+  ddlLock::testDrop
+
+;
+
 /*----------------------------------------------------------------------------*/
+/* return a success response                                                  */
+/*----------------------------------------------------------------------------*/
+: <SUCCESS> ( str -- str 0 2 )
 
-//: <ERROR> dup error.msg swap 2 ddlLock::testDrop ;
+  // a string as a return value should be on stack
+  assert::stack_1
+  CN_STRVAL assert::class
 
-: <NIP+ERROR> nipAll dup error.msg swap 2 ddlLock::testDrop ;
+  // push 0 to indicate success / no error
+  0
 
-: <SUCCESS> 0 2 ddlLock::testDrop ;
+  // there are two return arguments
+  2
 
-: <OK> "<ok>" 0 2 ddlLock::testDrop ;
+  ddlLock::testDrop
+;
+
+/*----------------------------------------------------------------------------*/
+/* return an OK response                                                      */
+/*----------------------------------------------------------------------------*/
+: <OK> ( -- "<ok>" 0 2 )
+
+  // the stack should be empty
+  assert::stack_0
+
+  // push "<ok>" as the return str
+  "<ok>"
+
+  // push 0 to indicate success / no error
+  0
+
+  // there are two return arguments
+  2
+
+  ddlLock::testDrop
+;
 
 /*----------------------------------------------------------------------------*/
 /* print class counts (helper for snapshot)                                   */
 /*----------------------------------------------------------------------------*/
 : printClassCounts
+
   0 do
     dup 0 != if
       I class.name "%v %v" str.format .
@@ -34,6 +86,7 @@
 /*----------------------------------------------------------------------------*/
 : checkEnoughBuffers
 
+  // return true if enough buffers, others return error code
   bp.freeBuffers 100 >
   if
     true exit
@@ -41,7 +94,6 @@
     EC_LOW_BUFFERS false
   then
 ;
-
 
 /*============================================================================*/
 /* end                                                                        */
