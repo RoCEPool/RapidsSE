@@ -1267,7 +1267,7 @@ void IndexBuffer::vMoveRight(void* aSrc, i8 nBytes)
   void* x = m_xWsp.aLatter();
   i8 y = nSub(m_xWsp.aLatter(), aSrc);
   // bytes to copy
-  i8 nBytesToCopy = nSub(m_xWsp.aLatter(), aSrc); // - nBytes;
+  i8 nBytesToCopy = nSub(m_xWsp.aLatter(), aSrc) - nBytes;
   
   // move F..Z right
   MemLib::vMove(aDst,aSrc,nBytesToCopy);
