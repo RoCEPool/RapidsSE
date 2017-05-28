@@ -5,6 +5,8 @@
 
 namespace Datums
 {
+  const i8 C_NULL_INT = LLONG_MIN;
+  
   class Int
   {
   friend class DtmLib;
@@ -27,6 +29,8 @@ namespace Datums
   
     void vInitZero(void);
     i8   iAsI8(void);
+    bool bIsNull(void);
+    void vSetNull(void);
  
     static i8   iDecile(i8 iValue, i8 iMax);
     static bool bExtract(Str* aDst, Str* aSrc, i8& nBytesTaken);

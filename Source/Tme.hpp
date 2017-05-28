@@ -5,6 +5,8 @@
 
 namespace Datums
 {
+  const i8 C_NULL_TME = LLONG_MIN;
+  
   class Tme
   {
   friend class DtmLib;
@@ -36,7 +38,9 @@ namespace Datums
     
     void vInitZero(void);
     i8   iAsI8(void);
-  
+    bool bIsNull(void);
+    void vSetNull(void);
+ 
     i8   iHour(void);
     i8   iMinute(void);
     i8   iSecond(void);

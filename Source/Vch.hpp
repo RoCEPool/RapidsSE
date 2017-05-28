@@ -5,6 +5,8 @@
 
 namespace Datums
 {
+  const i8 C_NULL_VCH = LLONG_MIN;
+  
   class Vch
   {
   friend class DtmLib;
@@ -24,7 +26,9 @@ namespace Datums
     bool operator >  (Vch& xVch);
     
     void vInitZero(void);
-  
+    bool bIsNull(void);
+    void vSetNull(void);
+    
     static bool bExtract(Str* aDst, Str* aSrc, i8& nBytesTaken);
     static void vSprint(Str* aDst, Str* aSrc, i8& nBytesTaken);
   

@@ -5,6 +5,8 @@
 
 namespace Datums
 {
+  const i8 C_NULL_FLT = DBL_MIN;
+  
   class Flt
   {
   friend class DtmLib;
@@ -27,6 +29,8 @@ namespace Datums
   
     void vInitZero(void);
     d8   dAsD8(void);
+    bool bIsNull(void);
+    void vSetNull(void);
   
     static bool bExtract(Str* aDst, Str* aSrc, i8& nBytesTaken);
     static void vSprint(Str* aDst, Str* aSrc, i8& nBytesTaken);

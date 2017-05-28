@@ -5,6 +5,8 @@
 
 namespace Datums
 {
+  const i8 C_NULL_BCD = LLONG_MIN;
+  
   class Bcd
   {  
   protected:
@@ -24,6 +26,8 @@ namespace Datums
     bool operator >  (Bcd& xBcd);
   
     void vInitZero(void);
+    bool bIsNull(void);
+    void vSetNull(void);
   
     static bool bExtract(Str* aDst, Str* aSrc, i8& nBytesTaken);
     static void vSprint(Str* aDst, Str* aSrc, i8& nBytesTaken);

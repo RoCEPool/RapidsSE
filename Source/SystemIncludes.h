@@ -8,7 +8,9 @@
 #include <dirent.h>
 #include <errno.h>
 #include <fcntl.h>
+#include <float.h>
 #include <iostream>
+#include <limits.h>
 #include <math.h>
 #include <memory.h>
 #include <netdb.h>

@@ -5,6 +5,8 @@
 
 namespace Datums
 {
+  const i8 C_NULL_TSP = LLONG_MIN;
+  
   class Tsp
   {
   friend class DtmLib;
@@ -39,6 +41,8 @@ namespace Datums
     
     void vInitZero(void);
     i8   iAsI8(void);
+    bool bIsNull(void);
+    void vSetNull(void);
   
     i8   iYear(void);
     i8   iMonth(void);

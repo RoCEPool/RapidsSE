@@ -5,6 +5,8 @@
 
 namespace Datums
 {
+  const i8 C_NULL_IVL = LLONG_MIN;
+  
   class Ivl
   {
   friend class DtmLib;
@@ -33,6 +35,8 @@ namespace Datums
 
     void vInitZero(void);
     i8   iAsI8(void);
+    bool bIsNull(void);
+    void vSetNull(void);
   
     i8   iSecond(void);
     i8   iMilli(void);
