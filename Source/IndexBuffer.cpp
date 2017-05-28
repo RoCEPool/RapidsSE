@@ -466,7 +466,11 @@ IndexBuffer* IndexBuffer::pSplitBuffer(void)
   // set offsets to entries after the split entry in this buffer to nil
   
   // get vector of prior entries which have offsets to the split entry
-  Entry* pCrossCheck = pPosition(pSplitEntry->aKey(), JC_AFTER, &xPriorVec);
+  // show this buffer
+  vShow();
+  
+  Key* aSplitKey= pSplitEntry->aKey();
+  Entry* pCrossCheck = pPosition(aSplitKey, JC_AFTER, &xPriorVec);
   
   // Note this ASSERT fails if we have dulplicates in the table     //ALKA: TODO
   // Need to fix when we cater for non-unique indexes
@@ -475,16 +479,16 @@ IndexBuffer* IndexBuffer::pSplitBuffer(void)
   
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
   
-//  EntryVec xPrevVec;
-//  vPriorVec(aMoveEntry,&xPrevVec);
-//
-//  vTrace("Split %p\n"_Str,pSplitEntry);
-//  vTrace("Move  %p\n"_Str,aMoveEntry);
-//  for (on nOffsetNo; nOffsetNo.bInRange(); nOffsetNo++) {
-//    ln nLevel = nOffsetNo.nToLevelNo();
-//    vTrace("%p v %p\n"_Str,xPrevVec[nLevel],xPriorVec[nLevel]);
-//    //ASSERT(xPrevVec[nLevel] == xPriorVec[nLevel]);
-//  }
+  EntryVec xPrevVec;
+  vPriorVec(aMoveEntry,&xPrevVec);
+
+  vTrace("Split %p\n"_Str,pSplitEntry);
+  vTrace("Move  %p\n"_Str,aMoveEntry);
+  for (on nOffsetNo; nOffsetNo.bInRange(); nOffsetNo++) {
+    ln nLevel = nOffsetNo.nToLevelNo();
+    vTrace("%p v %p\n"_Str,xPrevVec[nLevel],xPriorVec[nLevel]);
+    ASSERT(xPrevVec[nLevel] == xPriorVec[nLevel]);
+  }
   
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
   
@@ -1293,36 +1297,46 @@ Entry* IndexBuffer::pPosition(Key* aGivenKey, eJC eJuxtaCompare, EntryVec* pPrio
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   
   // start scanning from head entry and topmost level
-  Entry* pScanEntry = pHead();
   ln nScanLevel;
   nScanLevel = C_FLAT_LEVELS - 1;
   
+  //aGivenKey->vShow(m_pIndex->pIdxColVec());
+  //vTrace("\n"_Str);
+  //vShow();
+  
+  Entry* pScanEntry_sl = pHead();
+  Entry* pNextEntry_sl = nullptr;
+  //Entry* pMoreEntry_sl = nullptr;
+  
   do {
 
+    pNextEntry_sl = pRightEntry(pScanEntry_sl,nScanLevel);
+    
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // inner loop: scan right a number of entries at current scan level
     //             until we find a key that is same/after given key
     
-    while (Entry* pNextEntry = pRightEntry(pScanEntry, nScanLevel)) {
+    
+    while (pNextEntry_sl) {
       
       // get next key after scan key
-      Key* aNextKey = pNextEntry->aKey();
+      Key* aNextKey = pNextEntry_sl->aKey();
 
       // trace:
       //aGivenKey->vShow(m_pIndex->pIdxColVec());
       //aNextKey->vShow(m_pIndex->pIdxColVec());
     
       // juxta-compare given key with next key at this level
-      bIsJuxta = aGivenKey->bJuxtaCompare(eJuxtaCompare, aNextKey, pIdxColVec);
+      bIsJuxta = aGivenKey->bJuxtaCompare(eJuxtaCompare,aNextKey,pIdxColVec);
 
       //vTrace(" %s\n"_Str,bAfter ? "after" : "before");
     
       // if given key is not same/after next key then break to outer loop
       if (! bIsJuxta)
         break;
-
-      // given key is same/after next key, go right one entry at this level
-      pScanEntry = pNextEntry;
+      
+      pScanEntry_sl = pNextEntry_sl;
+      pNextEntry_sl = pRightEntry(pNextEntry_sl,nScanLevel);;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1331,17 +1345,18 @@ Entry* IndexBuffer::pPosition(Key* aGivenKey, eJC eJuxtaCompare, EntryVec* pPrio
 
     // opt record scan entry as an insert-after revision point at this level
     if (pPriorVec)
-      (*pPriorVec)[nScanLevel] = pScanEntry;
+      (*pPriorVec)[nScanLevel] = pScanEntry_sl;
    
     // now go down one level
     nScanLevel--;
     
+
     // and repeat till we have scanned down thru all levels
   } while (*nScanLevel >= 0);
   
   // JC_SAME : return the entry which is same as given key
   // JC_AFTER: return the entry which the given key would be inserted after
-  return pScanEntry;
+  return pScanEntry_sl;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1353,19 +1368,21 @@ void IndexBuffer::vPriorVec(Entry* pEntry, EntryVec* pPriorVec)
   
   ln nLevel;
   
+  // set all entries to null
   Entry* pHeadEntry = pHead();
   for (nLevel = 0_on; *nLevel < C_FLAT_LEVELS; nLevel++)
     (*pPriorVec)[nLevel] = nullptr;
   
+  // scan till we find the entry
   for (Entry* pScan = pHead(); pScan; pScan = pNextEntry(pScan)) {
     
     if (pScan == pEntry)
       return;
     
-    //(*pPriorVec)[0_ln] = pRightEntry(pScan,0_ln);
     for (on nOffset; *nOffset < pScan->nOffsets(); nOffset++) {
       nLevel = nOffset.nToLevelNo();
-      if (pRightEntry(pScan,nLevel) == pEntry)
+      if (C_NIL_OFFSET == pScan->iRightOffset(nOffset) ||
+          pRightEntry(pScan,nLevel) >= pEntry)
         (*pPriorVec)[nLevel] = pScan;
     }
     
