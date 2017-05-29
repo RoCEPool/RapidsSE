@@ -23,6 +23,7 @@ using namespace Base;
 #include "ByteLiterals.hpp"
 #include "ClassNumbers.hpp"
 #include "Hardware.hpp"
+#include "IntLib.hpp"
 #include "MemLib.hpp"
 #include "Str.hpp"
 #include "StrLib.hpp"

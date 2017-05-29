@@ -31,6 +31,8 @@ namespace Datums
     i8   iAsI8(void);
     bool bIsNull(void);
     void vSetNull(void);
+    void vIntToVlq(char* aVlq);
+    void vVlqToInt(char* aVlq);
  
     static i8   iDecile(i8 iValue, i8 iMax);
     static bool bExtract(Str* aDst, Str* aSrc, i8& nBytesTaken);
@@ -44,6 +46,7 @@ namespace Datums
     static bool bGreaterThan(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB);
   
     static i8 iCmp(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB);
+  
   };
 }
 
