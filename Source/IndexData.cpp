@@ -250,14 +250,7 @@ void IndexData::vTruncate(void)
   
   m_zLock.vGrabWrite();
   
-  IndexBuffer* pIndexBuffer = m_pRoot;
-  IndexBuffer* pNextIndexBuffer;
-  
-  while(pIndexBuffer) {
-    pNextIndexBuffer = pIndexBuffer->pNextBuffer();
-    delete pIndexBuffer;
-    pIndexBuffer = pNextIndexBuffer;
-  }
+  m_pRoot->vTruncate();
   
   m_pRoot = nullptr;
   

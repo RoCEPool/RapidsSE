@@ -183,7 +183,6 @@ void IndexBuffer::vAnalyzeThis(s48K& sAnalysis, bool bDetailed, i8& iBuffers, i8
   
 }
 
-
 /*----------------------------------------------------------------------------*/
 /* get number of enteries in the buffer                                       */
 /*----------------------------------------------------------------------------*/
@@ -713,6 +712,32 @@ L0 |  KeyA || KeyB  || KeyC  ||  KeyD || KeyE  || KeyF  || KeyG  || KeyH  |
   } while (nLevelNo >= 0_ln );
   
   return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* truncate                                                                    */
+/*----------------------------------------------------------------------------*/
+void IndexBuffer::vTruncate(void)
+{
+  
+  // recursively dump the lower level buffers
+  if (m_nBufferLevel != 0) {
+    
+    for (Entry* pEntry = pNextEntry(pHead()); pEntry != nullptr;
+         pEntry = pNextEntry(pEntry)) {
+      
+      // get the index buffer from the entry
+      IndexBuffer* pIndexBuffer = pEntry->pIndexBuffer();;
+      
+      ASSERT(pIndexBuffer);
+      ASSERT(pIndexBuffer->eClass() == CN_INDEXBUFFER);
+      
+      delete pIndexBuffer;
+      
+    }
+  }
+  
+  delete this;
 }
 
 /*----------------------------------------------------------------------------*/

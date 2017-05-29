@@ -2,6 +2,8 @@
 /* _indexDemo - create and load Supllier table for SF10                       */
 /*============================================================================*/
 
+docol epochTake;
+
 create table supplier (
 	 S_SUPPKEY       INTEGER NOT NULL,
 	 S_NAME          VARCHAR(25) NOT NULL,
@@ -26,7 +28,7 @@ print "Analyzing index idx1 of supplier...\n" ;
 anidx supplier idx1;
 danidx supplier idx1;
 
-/*
+
 print "\nSelecting rows from supplier (idx1) where S_SUPPKEY == 10000...\n" ;
 keyselidx supplier idx1 10000 ;
 
@@ -90,8 +92,11 @@ danidx supplier idx1;
 print "Size of index idx1 of supplier...\n" ;
 szidx supplier idx1;
 
-*/
+
 //dumpidx supplier idx1;
+drop table supplier;
+
+docol epochDump;
 
 /*============================================================================*/
 /* end                                                                        */

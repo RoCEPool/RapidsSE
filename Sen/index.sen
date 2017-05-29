@@ -351,7 +351,7 @@ tp: makingIndex
   grid.slots 0
   do
     args.metadata not if
-      I grid::toPartition "Partition: %v" str.format .
+      I grid::toPartition "Partition: %v\n" str.format .put
     then
 
     // put the partition in this tasks seitf
@@ -382,7 +382,7 @@ tp: makingIndex
                 I grid::toPartition
                 "row: (%v '%v')\n" str.format .put
               else
-                entry entry.row row.string .
+                entry entry.row row.string "\n" str.cat .put
               then
             then
             1 rowCount + to rowCount
@@ -406,7 +406,7 @@ tp: makingIndex
   args.metadata if
     rowCount task::this task.seitf@ seitf.rowsProcessed
   else
-    "rows selected"  rowCount "%v %v" str.format .
+    "rows selected"  rowCount "%v %v\n" str.format .put
   then
 ;
 
@@ -509,7 +509,7 @@ tp: loadIndexes
   grid.slots 0
   do
     args.metadata not if
-      I grid::toPartition "Partition: %v" str.format .
+      I grid::toPartition "Partition: %v\n" str.format .put
     then
 
     // put the partition in this tasks seitf
@@ -537,7 +537,7 @@ tp: loadIndexes
               I grid::toPartition
               "row: (%v '%v')\n" str.format .put
             else
-              entry entry.row row.string .
+              entry entry.row row.string "\n" str.cat .put
             then
           then
           1 rowCount + to rowCount
@@ -557,7 +557,7 @@ tp: loadIndexes
   args.metadata if
     rowCount task::this task.seitf@ seitf.rowsProcessed
   else
-    "rows selected"  rowCount "%v %v" str.format .
+    "rows selected"  rowCount "%v %v\n" str.format .put
   then
 ;
 
@@ -637,7 +637,7 @@ tp: loadIndexes
   do
 
     args.metadata not if
-      I grid::toPartition "Partition: %v" str.format .
+      I grid::toPartition "Partition: %v\n" str.format .put
     then
 
     // put the partition in this tasks seitf
@@ -668,7 +668,7 @@ tp: loadIndexes
               I grid::toPartition
               "row: (%v '%v')\n" str.format .put
             else
-              entry entry.row row.string .
+              entry entry.row row.string "\n" str.cat .put
             then
           then
           1 rowCount + to rowCount
@@ -691,7 +691,7 @@ tp: loadIndexes
   args.metadata if
     rowCount task::this task.seitf@ seitf.rowsProcessed
   else
-    "rows selected"  rowCount "%v %v" str.format .
+    "rows selected"  rowCount "%v %v\n" str.format .put
   then
 ;
 
@@ -817,7 +817,7 @@ tp: loadIndexes
   do
 
     args.metadata not if
-      I grid::toPartition "Partition: %v" str.format .
+      I grid::toPartition "Partition: %v\n" str.format .put
     then
 
     // put the partition in this tasks seitf
@@ -849,7 +849,7 @@ tp: loadIndexes
               I grid::toPartition
               "row: (%v '%v')\n" str.format .put
             else
-              entry entry.row row.string .
+              entry entry.row row.string "\n" str.cat .put
             then
           then
           1 rowCount + to rowCount
@@ -872,7 +872,7 @@ tp: loadIndexes
   args.metadata if
     rowCount task::this task.seitf@ seitf.rowsProcessed
   else
-    "rows selected"  rowCount "%v %v" str.format .
+    "rows selected"  rowCount "%v %v\n" str.format .put
   then
 ;
 
