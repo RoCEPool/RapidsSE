@@ -43,7 +43,7 @@ thread:  monitorThread
 
     monitorLock lock.grabWrite
 
-      "freespace " bp.freespace >str str.cat
+      "freespace " bp::freeSpace >str str.cat
 
       " queries " str.cat
 
@@ -55,7 +55,7 @@ thread:  monitorThread
 
     // monitorString @ .
 
-    monitorTaskPrint if _bp_analyze then
+    monitorTaskPrint if bp::analyze then
 
   10 thread.sleep_s
 

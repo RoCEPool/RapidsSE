@@ -34,7 +34,7 @@
 : snap0: immediate
 
   ' reg.push compile,
-  ' bp.snapshot compile,
+  ' bp::snapshot compile,
 
   ' >valset compile,
 
@@ -46,7 +46,7 @@
 /*----------------------------------------------------------------------------*/
 : snap1: immediate
 
-  ' bp.snapshot compile,
+  ' bp::snapshot compile,
 
   ' >valset compile,
 

@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : getFreeSpace ( -- <R> )
 
-  bp.freespace
+  bp::freeSpace
 
   >str
 
@@ -21,7 +21,7 @@
 /*----------------------------------------------------------------------------*/
 : getInUseSpace ( -- <R> )
 
-  bp.inUseSpace
+  bp::inUseSpace
 
   >str
 
@@ -33,7 +33,7 @@
 /*----------------------------------------------------------------------------*/
 : getTotalSpace ( -- <R> )
 
-  bp.totalSpace
+  bp::totalSpace
 
   >str
 
@@ -55,17 +55,17 @@ tp: gettingSpace
     "row: ('"
     grid.thisNodeName@ str.cat
     "', '" str.cat
-    2 bp.totalSpace number.magnitude str.cat
+    2 bp::totalSpace number.magnitude str.cat
     "', '" str.cat
-    2 bp.inUseSpace number.magnitude str.cat
+    2 bp::inUseSpace number.magnitude str.cat
     "', '" str.cat
-    2 bp.freespace number.magnitude str.cat
+    2 bp::freeSpace number.magnitude str.cat
     "')" str.cat
 
   else
-    "Pool - Size(" 2 bp.totalSpace number.magnitude str.cat ")" str.cat
-    " InUse(" 2 bp.inUseSpace number.magnitude str.cat ")" str.cat
-    " Free(" 2 bp.freespace number.magnitude str.cat ")" str.cat
+    "Pool - Size(" 2 bp::totalSpace number.magnitude str.cat ")" str.cat
+    " InUse(" 2 bp::inUseSpace number.magnitude str.cat ")" str.cat
+    " Free(" 2 bp::freeSpace number.magnitude str.cat ")" str.cat
     str.cat str.cat
   then
 

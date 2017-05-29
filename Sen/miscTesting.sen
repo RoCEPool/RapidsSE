@@ -161,7 +161,7 @@ traceon
 
   reg.push
 
-  bp.snapshot ( int int .... #classes )
+  bp::snapshot ( int int .... #classes )
 
   >valset
   >reg0
@@ -174,7 +174,7 @@ traceon
     "%v %v" str.format .
   loop
 
-  bp.snapshot ( int int .... #classes )
+  bp::snapshot ( int int .... #classes )
 
   >valset
   >reg1

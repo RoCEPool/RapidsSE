@@ -119,11 +119,11 @@ ddlLock::grabRead
   // check it is a table
   checkIsTable       not if <NIP+ERROR> popTable assertInTables exit then
 
-  //bp.freespace .
+  //bp::freeSpace .
 
   tableCopier
 
-  //bp.freespace .
+  //bp::freeSpace .
 
   // pop table dictionary
   popTable
@@ -319,14 +319,14 @@ ddlLock::grabRead
   // check it is a table
   checkIsTable  not if <NIP+ERROR> exit then
 
-  //bp.freespace .
+  //bp::freeSpace .
 
 snap0:
 
   tableLoader   not if popTable <NIP+ERROR> exit then
   loadIndexes
 
-  //bp.freespace .
+  //bp::freeSpace .
 
   // pop table dictionary
   popTable
@@ -355,11 +355,11 @@ snap1:
   // check it is a table
   checkIsTable  not if <NIP+ERROR> exit then
 
-  //bp.freespace .
+  //bp::freeSpace .
 
   tableLoaderStream2 not if <NIP+ERROR> exit then
 
-  //bp.freespace .
+  //bp::freeSpace .
 
   // pop table dictionary
   popTable

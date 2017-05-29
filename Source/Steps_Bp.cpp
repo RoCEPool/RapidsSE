@@ -38,14 +38,14 @@ void Task::vAddPrimitives_Bp(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  vAddPrimitive("_bp_analyze"_Str,     &vBpAnalyze,        false);
-  vAddPrimitive("_bp_dump"_Str,        &vBpDump,           false);
-  vAddPrimitive("bp.freeBuffers"_Str,  &vFreeBuffers,      false);
-  vAddPrimitive("bp.freePercent"_Str,  &vFreePercent,      false);
-  vAddPrimitive("bp.freeSpace"_Str,    &vFreeSpace,        false);
-  vAddPrimitive("bp.inUseSpace"_Str,   &vInUseSpace,       false);
-  vAddPrimitive("bp.snapshot"_Str,     &vSnapshot,         false);
-  vAddPrimitive("bp.totalSpace"_Str,   &vTotalSpace,       false);
+  vAddPrimitive("bp::analyze"_Str,     &vBpAnalyze,        false);
+  vAddPrimitive("bp::dump"_Str,        &vBpDump,           false);
+  vAddPrimitive("bp::freeBuffers"_Str, &vFreeBuffers,      false);
+  vAddPrimitive("bp::freePercent"_Str, &vFreePercent,      false);
+  vAddPrimitive("bp::freeSpace"_Str,   &vFreeSpace,        false);
+  vAddPrimitive("bp::inUseSpace"_Str,  &vInUseSpace,       false);
+  vAddPrimitive("bp::snapshot"_Str,    &vSnapshot,         false);
+  vAddPrimitive("bp::totalSpace"_Str,  &vTotalSpace,       false);
 
   vAddPrimitive("bpa"_Str,             &vBpAnalyze,        false);
   vAddPrimitive("bpd"_Str,             &vBpDump,           false);
@@ -129,7 +129,7 @@ void Task::vBpEpochTake(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* bp.freeBuffers -- push number of free buffers in buffer pool onto stack    */
+/* bp::freeBuffers -- push number of free buffers in buffer pool onto stack    */
 /*----------------------------------------------------------------------------*/
 void Task::vFreeBuffers(NNP_Task nnpTask)
 {
@@ -143,7 +143,7 @@ void Task::vFreeBuffers(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* bp.freePercent -- push free percent of buffer pool onto stack              */
+/* bp::freePercent -- push free percent of buffer pool onto stack              */
 /*----------------------------------------------------------------------------*/
 void Task::vFreePercent(NNP_Task nnpTask)
 {
@@ -157,7 +157,7 @@ void Task::vFreePercent(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* bp.freeSpace -- push free space in buffer pool onto stack                  */
+/* bp::freeSpace -- push free space in buffer pool onto stack                  */
 /*----------------------------------------------------------------------------*/
 void Task::vFreeSpace(NNP_Task nnpTask)
 {
@@ -171,7 +171,7 @@ void Task::vFreeSpace(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* bp.inUseSpace -- push in-use space in buffer pool onto stack               */
+/* bp::inUseSpace -- push in-use space in buffer pool onto stack               */
 /*----------------------------------------------------------------------------*/
 void Task::vInUseSpace(NNP_Task nnpTask)
 {
@@ -187,7 +187,7 @@ void Task::vInUseSpace(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* bp.snapshot -- push snapshot of buffer pool onto stack                     */
+/* bp::snapshot -- push snapshot of buffer pool onto stack                     */
 /*----------------------------------------------------------------------------*/
 void Task::vSnapshot(NNP_Task nnpTask)
 {
@@ -221,7 +221,7 @@ void Task::vSnapshot(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* bp.totalSpace -- push total space in buffer pool onto stack                */
+/* bp::totalSpace -- push total space in buffer pool onto stack                */
 /*----------------------------------------------------------------------------*/
 void Task::vTotalSpace(NNP_Task nnpTask)
 {

@@ -87,7 +87,7 @@
 : checkEnoughBuffers
 
   // return true if enough buffers, others return error code
-  bp.freeBuffers 100 >
+  bp::freeBuffers 100 >
   if
     true exit
   else
