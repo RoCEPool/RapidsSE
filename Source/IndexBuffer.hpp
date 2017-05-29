@@ -37,6 +37,7 @@ namespace DBobjects
     IndexBuffer(Index* pIndex, i8 nLevel);
     ~IndexBuffer(void);
     
+    void         vAnalyze(s48K& sAnalysis, bool bDetailed, i8& iBuffers, i8& iEntries);
     i8           nBufferLevel(void);
     i8           iDecile(void);
     void         vDump(void);
@@ -61,6 +62,7 @@ namespace DBobjects
     void         vAdjustOffsets(Entry* pEntry, i8 nAdjustAmount);
     Entry*       pAllotEntry(i8 nBytes, i8 nLevels, Entry* aAfterEntry);
     void         vAllotHead(void);
+    void         vAnalyzeThis(s48K& sAnalysis, bool bDetailed, i8& iBuffers, i8& iEntries);
     i8           iCopyEntries(IndexBuffer* pFromBuffer, Entry* aFromEntry);
     void         vDumpPrior(Entry* aPriorVec[]);
     void         vFixHigherLevel(Entry* aNewEntry);

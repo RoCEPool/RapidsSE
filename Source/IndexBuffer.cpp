@@ -116,9 +116,6 @@ i8 IndexBuffer::iDecile(void)
 /*----------------------------------------------------------------------------*/
 void IndexBuffer::vDump(void)
 {
-  
-  IndexBuffer* pIndexBuffer;
-  
   // show this buffer
   vShow();
   
@@ -139,6 +136,53 @@ void IndexBuffer::vDump(void)
   }
   
 }
+
+/*----------------------------------------------------------------------------*/
+/* analyze                                                                    */
+/*----------------------------------------------------------------------------*/
+void IndexBuffer::vAnalyze(s48K& sAnalysis, bool bDetailed, i8& iBuffers, i8& iEntries)
+{
+  
+  iBuffers++;
+  
+  // analyze this buffer
+  vAnalyzeThis(sAnalysis, bDetailed, iBuffers, iEntries);
+  
+  // recursively dump the lower level buffers
+  if (m_nBufferLevel != 0) {
+  
+    for (Entry* pEntry = pNextEntry(pHead()); pEntry != nullptr;
+         pEntry = pNextEntry(pEntry)) {
+      
+      // get the index buffer from the entry
+      IndexBuffer* pIndexBuffer = pEntry->pIndexBuffer();;
+      
+      ASSERT(pIndexBuffer);
+      ASSERT(pIndexBuffer->eClass() == CN_INDEXBUFFER);
+      
+      pIndexBuffer->vAnalyze(sAnalysis, bDetailed, iBuffers, iEntries);
+      
+    }
+  }
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* analyze                                                                    */
+/*----------------------------------------------------------------------------*/
+void IndexBuffer::vAnalyzeThis(s48K& sAnalysis, bool bDetailed, i8& iBuffers, i8& iEntries)
+{
+
+  iEntries += (m_nEntries - 1);
+  
+  if (bDetailed)
+    sAnalysis.vCatSprint("     buffer %5lld (L%lld) : %lld entries\n"_Str,
+                         iBuffers,
+                         m_nBufferLevel,
+                         m_nEntries - 1);
+  
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* get number of enteries in the buffer                                       */

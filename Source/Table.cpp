@@ -266,32 +266,10 @@ Str* Table::pAnalyzeIndex(Index* pIndex, bool bDetailed)
     
     IndexBuffer *pIndexBuffer = pPartition(iSlot)->pIndexData(pIndex->iIndexNo())->pRoot();
     
-    i8 iBufferNo = 1;
     i8 nBuffers = 0;
     i8 nEntries = 0;
 
-    while (pIndexBuffer) {
-      i8 iBufferLevel = pIndexBuffer->nBufferLevel();
-      nEntries = pIndexBuffer->nEntries() - 1; // not to show head entry
-      
-      if (bDetailed) {
-        sAnalysis.vCatSprint("     buffer %5lld (L%lld) : %lld entries\n"_Str,
-                             iBufferNo++,
-                             iBufferLevel,
-                             nEntries);
-      }
-      
-      nBuffers++;
-      
-      IndexBuffer* pNextBuffer = pIndexBuffer->pNextBuffer();
-      
-      if (!pNextBuffer && iBufferLevel != 0) {
-        Entry* pEntry = pIndexBuffer->pFirstEntry();
-        pIndexBuffer = pEntry->pIndexBuffer();
-      }
-      else
-        pIndexBuffer = pNextBuffer;
-    }
+    pIndexBuffer->vAnalyze(sAnalysis, bDetailed, nBuffers, nEntries);
     
     nEntriesTotal += nEntries;
     nBuffersTotal += nBuffers;
@@ -314,13 +292,106 @@ Str* Table::pAnalyzeIndex(Index* pIndex, bool bDetailed)
   
   if ( ! gbMetadata  || bDetailed)
     sAnalysis.vCatSprint(
-                         "\n       total: %3lld buffers; %5lld entries\n"_Str,
+                         "\n        total: %3lld buffers; %5lld entries\n"_Str,
                          nBuffersTotal,
                          nEntriesTotal);
   
   return sAnalysis;
 }
 
+/*----------------------------------------------------------------------------*/
+/* dump table                                                                 */
+/*----------------------------------------------------------------------------*/
+/*
+Str* Table::pAnalyzeIndex(Index* pIndex, bool bDetailed)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  
+  i8 nEntriesTotal = 0;
+  i8 nBuffersTotal = 0;
+  s48K sAnalysis;
+  
+  if ( ! gbMetadata || bDetailed )
+    sAnalysis.vCatSprint("N%lld: Analysis of Index %s of table %s \n"_Str,
+                         gpGrid->iThisNode(),
+                         pIndex->aIndexName()->s(),
+                         m_sTableName.s());
+  
+  for (i8 iSlot = 0; iSlot < gpGrid->m_nSlots; iSlot++) {
+    
+    i8 iPartition = Partition::iSlotToPartition(iSlot);
+    
+    IndexBuffer *pIndexBuffer = pPartition(iSlot)->pIndexData(pIndex->iIndexNo())->pRoot();
+    
+    i8 iBufferNo = 1;
+    i8 nBuffers = 0;
+    i8 nEntries = 0;
+    
+    while (pIndexBuffer) {
+      i8 iBufferLevel = pIndexBuffer->nBufferLevel();
+      nEntries = pIndexBuffer->nEntries() - 1; // not to show head entry
+      
+      if (bDetailed) {
+        sAnalysis.vCatSprint("     buffer %5lld (L%lld) : %lld entries\n"_Str,
+                             iBufferNo++,
+                             iBufferLevel,
+                             nEntries);
+      }
+      
+      nBuffers++;
+      
+      IndexBuffer* pNextBuffer = pIndexBuffer->pNextBuffer();
+      
+      if (iBufferLevel != 0) {
+        
+        Entry* pEntry = pIndexBuffer->pFirstEntry();
+        
+        while (pEntry) {
+          IndexBuffer* pBuffer = pEntry->pIndexBuffer();
+          nEntries += pIndexBuffer->nEntries() - 1; // not to show head entry
+          
+          if (bDetailed) {
+            sAnalysis.vCatSprint("     buffer %5lld (L%lld) : %lld entries\n"_Str,
+                                 iBufferNo++,
+                                 pBuffer->nBufferLevel(),
+                                 nEntries);
+          }
+          nBuffers++;
+          pEntry = pIndexBuffer->pNextEntry(pEntry);
+        }
+      }
+      
+      pIndexBuffer = pIndexBuffer->pNextBuffer();;
+    }
+    
+    nEntriesTotal += nEntries;
+    nBuffersTotal += nBuffers;
+    
+    if ( !gbMetadata || bDetailed ) {
+      sAnalysis.vCatSprint("  partition %lld:  %3lld buffers; %5lld entries\n"_Str,
+                           iPartition,
+                           nBuffers,
+                           nEntries);
+    } else {
+      sAnalysis.vCatSprint("row: ('%s', %lld, %lld, %lld)\n"_Str,
+                           gpGrid->pThisNode()->aNodeName(),
+                           iPartition,
+                           nBuffersTotal,
+                           nEntriesTotal);
+      
+    }
+    
+  }
+  
+  if ( ! gbMetadata  || bDetailed)
+    sAnalysis.vCatSprint(
+                         "\n       total: %3lld buffers; %5lld entries\n"_Str,
+                         nBuffersTotal,
+                         nEntriesTotal);
+  
+  return sAnalysis;
+}
+*/
 /*----------------------------------------------------------------------------*/
 /* append row buffer                                                          */
 /*----------------------------------------------------------------------------*/
