@@ -282,6 +282,34 @@ Index* IndexBuffer::pIndex(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* return no of index buffers under this buffer                               */
+/*----------------------------------------------------------------------------*/
+void IndexBuffer::vBufferCount(i8& nBuffers)
+{
+  
+  // count this buffer
+  nBuffers++;
+  
+  // recursively dump the lower level buffers
+  if (m_nBufferLevel != 0) {
+    
+    for (Entry* pEntry = pNextEntry(pHead()); pEntry != nullptr;
+         pEntry = pNextEntry(pEntry)) {
+      
+      // get the index buffer from the entry
+      IndexBuffer* pIndexBuffer = pEntry->pIndexBuffer();;
+      
+      ASSERT(pIndexBuffer);
+      ASSERT(pIndexBuffer->eClass() == CN_INDEXBUFFER);
+      
+      pIndexBuffer->vBufferCount(nBuffers);
+      
+    }
+  }
+  
+}
+
+/*----------------------------------------------------------------------------*/
 /* insert new entry into this index buffer                                    */
 /*----------------------------------------------------------------------------*/
 

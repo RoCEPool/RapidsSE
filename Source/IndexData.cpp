@@ -183,16 +183,10 @@ i8 IndexData::nIndexBuffers(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
   
-  i8 nBuffers = 0;
+  i8 nBufferCount = 0;
+  m_pRoot->vBufferCount(nBufferCount);
   
-  IndexBuffer* pIndexBuffer = m_pRoot;
-  
-  while (pIndexBuffer) {
-    nBuffers++;
-    pIndexBuffer = pIndexBuffer->pNextBuffer();
-  }
-  
-  return nBuffers;
+  return nBufferCount;
 }
 
 /*----------------------------------------------------------------------------*/

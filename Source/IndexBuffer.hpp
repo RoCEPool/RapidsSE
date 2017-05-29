@@ -39,6 +39,7 @@ namespace DBobjects
     
     void         vAnalyze(s48K& sAnalysis, bool bDetailed, i8& iBuffers, i8& iEntries);
     i8           nBufferLevel(void);
+    void         vBufferCount(i8& nBufferCount);
     i8           iDecile(void);
     void         vDump(void);
     i8           nEntries(void);
