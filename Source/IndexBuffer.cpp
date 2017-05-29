@@ -144,9 +144,13 @@ void IndexBuffer::vAnalyze(s48K& sAnalysis, bool bDetailed, i8& iBuffers, i8& iE
 {
   
   iBuffers++;
+  iEntries += (m_nEntries - 1);
   
-  // analyze this buffer
-  vAnalyzeThis(sAnalysis, bDetailed, iBuffers, iEntries);
+  if (bDetailed)
+    sAnalysis.vCatSprint("     buffer %5lld (L%lld) : %lld entries\n"_Str,
+                         iBuffers,
+                         m_nBufferLevel,
+                         m_nEntries - 1);
   
   // recursively dump the lower level buffers
   if (m_nBufferLevel != 0) {
@@ -164,22 +168,6 @@ void IndexBuffer::vAnalyze(s48K& sAnalysis, bool bDetailed, i8& iBuffers, i8& iE
       
     }
   }
-  
-}
-
-/*----------------------------------------------------------------------------*/
-/* analyze                                                                    */
-/*----------------------------------------------------------------------------*/
-void IndexBuffer::vAnalyzeThis(s48K& sAnalysis, bool bDetailed, i8& iBuffers, i8& iEntries)
-{
-
-  iEntries += (m_nEntries - 1);
-  
-  if (bDetailed)
-    sAnalysis.vCatSprint("     buffer %5lld (L%lld) : %lld entries\n"_Str,
-                         iBuffers,
-                         m_nBufferLevel,
-                         m_nEntries - 1);
   
 }
 
