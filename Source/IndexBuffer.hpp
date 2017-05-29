@@ -47,7 +47,7 @@ namespace DBobjects
     void         vHigherLevel(IndexBuffer* pHigherLevel);
     IndexBuffer* pHigherLevel(void);
     Index*       pIndex(void);
-    bool         bInsert(KeyWsp& xKeyWsp, Id xId);
+    bool         bInsert(EntWsp& xEntWsp);
     IndexBuffer* pNextBuffer(void);
     Entry*       pNextEntry(Entry* pEntry);
     IndexBuffer* pPositionLevel(KeyWsp& xKeyWsp, eJC eJuxtaCompare, i8 iLevel);
@@ -58,7 +58,7 @@ namespace DBobjects
     bool         bVerify(void);
     
   private:
-    void         vAdjustHeadOffsets(i8 nAdjustAmount);
+    void         vAdjustOffsets(Entry* pEntry, i8 nAdjustAmount);
     Entry*       pAllotEntry(i8 nBytes, i8 nLevels, Entry* aAfterEntry);
     void         vAllotHead(void);
     i8           iCopyEntries(IndexBuffer* pFromBuffer, Entry* aFromEntry);

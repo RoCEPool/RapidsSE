@@ -226,7 +226,7 @@ void Partition::vPopulateIndex(i8 iIndexNo)
   ASSERT(nStrands == m_pData->nRowStrands());
   
   //pIndexData->vDump();
-  ASSERT(pIndexData->bVerify());
+  //ASSERT(pIndexData->bVerify());
 }
 
 /*----------------------------------------------------------------------------*/

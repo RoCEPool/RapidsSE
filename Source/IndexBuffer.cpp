@@ -244,7 +244,7 @@ Index* IndexBuffer::pIndex(void)
 /*----------------------------------------------------------------------------*/
 /* insert new entry into this index buffer                                    */
 /*----------------------------------------------------------------------------*/
-bool IndexBuffer::bInsert(KeyWsp& xKeyWsp, Id xId)
+bool IndexBuffer::bInsert(EntWsp& xEntWsp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
@@ -256,10 +256,10 @@ bool IndexBuffer::bInsert(KeyWsp& xKeyWsp, Id xId)
   
   // find the entry after which the new entry.key will be inserted
   EntryVec xPriorVec;
-  Entry* pAfterEntry = pPosition(xKeyWsp.aKey(), JC_AFTER, &xPriorVec);
+  Entry* pAfterEntry = pPosition(xEntWsp.aKey(), JC_AFTER, &xPriorVec);
   
   // create a new entry after the prior entry and set it
-  EntWsp xEntWsp(xId,xKeyWsp);
+  //EntWsp xEntWsp(xId,xKeyWsp);
   i8 nEntryBytes = Entry::nBytesRequired(xEntWsp);
   Entry* pNewEntry = pAllotEntry(nEntryBytes, xEntWsp.nOffsets(), pAfterEntry);
   pNewEntry->vSetEntry(xEntWsp);
@@ -306,7 +306,7 @@ bool IndexBuffer::bInsert(KeyWsp& xKeyWsp, Id xId)
     else {
       
       // this is the case where the prior entry now needs to point to the new
-      // prioer was at C_NIL_OFFSET and now needs to point to the newEntry
+      // prior was at C_NIL_OFFSET and now needs to point to the newEntry
       ASSERT(aPriorEntry->iRightOffset(nOffsetNo) == C_NIL_OFFSET);
       ASSERT(pNewEntry->iRightOffset(nOffsetNo) == C_NIL_OFFSET);
       
@@ -467,7 +467,7 @@ IndexBuffer* IndexBuffer::pSplitBuffer(void)
   
   // get vector of prior entries which have offsets to the split entry
   // show this buffer
-  vShow();
+  //vShow();
   
   Key* aSplitKey= pSplitEntry->aKey();
   Entry* pCrossCheck = pPosition(aSplitKey, JC_AFTER, &xPriorVec);
@@ -482,13 +482,13 @@ IndexBuffer* IndexBuffer::pSplitBuffer(void)
   EntryVec xPrevVec;
   vPriorVec(aMoveEntry,&xPrevVec);
 
-  vTrace("Split %p\n"_Str,pSplitEntry);
-  vTrace("Move  %p\n"_Str,aMoveEntry);
-  for (on nOffsetNo; nOffsetNo.bInRange(); nOffsetNo++) {
-    ln nLevel = nOffsetNo.nToLevelNo();
-    vTrace("%p v %p\n"_Str,xPrevVec[nLevel],xPriorVec[nLevel]);
-    ASSERT(xPrevVec[nLevel] == xPriorVec[nLevel]);
-  }
+//  vTrace("Split %p\n"_Str,pSplitEntry);
+//  vTrace("Move  %p\n"_Str,aMoveEntry);
+//  for (on nOffsetNo; nOffsetNo.bInRange(); nOffsetNo++) {
+//    ln nLevel = nOffsetNo.nToLevelNo();
+//    vTrace("%p v %p\n"_Str,xPrevVec[nLevel],xPriorVec[nLevel]);
+//    ASSERT(xPrevVec[nLevel] == xPriorVec[nLevel]);
+//  }
   
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
   
@@ -648,25 +648,23 @@ L0 |  KeyA || KeyB  || KeyC  ||  KeyD || KeyE  || KeyF  || KeyG  || KeyH  |
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* adjust the head entry offsets                                              */
+/* adjust the head and first entry offsets                                    */
 /*----------------------------------------------------------------------------*/
-void IndexBuffer::vAdjustHeadOffsets(i8 nAdjustAmount)
+void IndexBuffer::vAdjustOffsets(Entry* pEntry, i8 nAdjustAmount)
 {
 
-  // get the head entry
-  Entry* pHeadEntry = pHead();
-
-  for (on nOffsetNo; nOffsetNo < pHeadEntry->nOffsets(); nOffsetNo++) {
+  for (on nOffsetNo; nOffsetNo < pEntry->nOffsets(); nOffsetNo++) {
     
     //
-    i8 iRightOffset = pHeadEntry->iRightOffset(nOffsetNo);
+    i8 iRightOffset = pEntry->iRightOffset(nOffsetNo);
     
     // here we adjust the iRightOffset if iRightOffset is > 0
     if (iRightOffset > 0) {
       i8 iNewRightOffset = iRightOffset + nAdjustAmount;
-      pHeadEntry->vRightOffset(nOffsetNo,iNewRightOffset);
+      pEntry->vRightOffset(nOffsetNo,iNewRightOffset);
     }
   }
+  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -747,8 +745,11 @@ i8 IndexBuffer::iCopyEntries(IndexBuffer* pFromBuffer, Entry* aFromEntry)
     // form keywsp from the entry
     KeyWsp xKeyWsp(pEntry->aKey(), m_pIndex->pIdxColVec());
     
+    // form the entwsp from the entry
+    EntWsp xEntWsp(pEntry->xId(), xKeyWsp);
+    
     // insert entry into this buffer
-    bInsert(xKeyWsp, pEntry->xId());
+    bInsert(xEntWsp);
     
     // if this buffer is a higher level buffer,
     // set this buffer as the higher level buffer
@@ -890,8 +891,12 @@ void IndexBuffer::vFixHigherLevel(Entry* aNewEntry)
   IndexBuffer* pHigherLevel = m_pHigherLevel;
   
   while (pHigherLevel) {
+    pHigherLevel->vShow();
+    xOldKeyWsp.vShow();
+    xNewKeyWsp.vShow();
     pHigherLevel->vReplace(xOldKeyWsp, xNewKeyWsp);
-    ASSERT(pHigherLevel->bVerify());
+    pHigherLevel->vShow();
+    //ASSERT(pHigherLevel->bVerify());
     pHigherLevel = pHigherLevel->m_pHigherLevel;
   }
 }
@@ -1017,9 +1022,9 @@ void IndexBuffer::vReplaceLargerKey(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp)
   ASSERT(m_xWsp.nFree() >= nSizeDifference);
   
   // move right
-  vMoveRight(pDst, nSizeDifference);
   m_xWsp.vTake(nSizeDifference);
-
+  vMoveRight(pDst, nSizeDifference);
+  
   // calculate size of new entry
   i8 nBytes =  iOldEntrySize + nSizeDifference;
   
@@ -1028,11 +1033,14 @@ void IndexBuffer::vReplaceLargerKey(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp)
   pNewEntry->vSetEntry(xEntWsp);
   ASSERT(pNewEntry->nSize() == nBytes);
   
+  //pOldEntry->vShow(pNewEntry->nOffsets(), m_pIndex->pIdxColVec());
+  //pNewEntry->vShow(pNewEntry->nOffsets(), m_pIndex->pIdxColVec());
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // we have replaced the first entry in this buffer
-  // hence we need to fix the right offsets in the head
-  vAdjustHeadOffsets(nSizeDifference);
-  
+  // hence we need to fix the right offsets in the head and the first entry
+  vAdjustOffsets(pHead(), nSizeDifference);
+  vAdjustOffsets(pNextEntry(pHead()), nSizeDifference);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1102,7 +1110,10 @@ void IndexBuffer::vReplaceSmallereKey(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // we have replaced the first entry in this buffer
   // hence we need to fix the right offsets in the head
-  vAdjustHeadOffsets(uNewKeySize - uOldKeySize);
+  nSizeDifference = uNewKeySize - uOldKeySize;
+  ASSERT( nSizeDifference < 0 );
+  vAdjustOffsets(pHead(), nSizeDifference);
+  vAdjustOffsets(pNextEntry(pHead()), nSizeDifference);
 }
 
 /*----------------------------------------------------------------------------*/

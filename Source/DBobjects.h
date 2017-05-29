@@ -17,7 +17,7 @@ namespace DBobjects
   static const i8 C_FLAT_FREQ    = 2;
   static const i8 C_NIL_OFFSET   = 0xFFFFFFFFFFFFFFFF;
   
-  static const bool C_SPACE_BASED_ON_ENTRIES = true;
+  static const bool C_SPACE_BASED_ON_ENTRIES = false;
   static const i8   C_MAX_ENTRIES = 100;
 
 }

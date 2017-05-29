@@ -397,7 +397,7 @@ void IndexData::vInsertEntry(IndexBuffer* pHigher, KeyWsp& xKeyWsp, Id xId, i8 i
   ASSERT(pIndexBuffer);
   
   // insert entry into index buffer
-  bool bResult = pIndexBuffer->bInsert(xKeyWsp, xId);
+  bool bResult = pIndexBuffer->bInsert(xEntWsp);
   ASSERT(bResult);
 }
 
