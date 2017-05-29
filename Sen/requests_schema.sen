@@ -9,12 +9,16 @@
 /*----------------------------------------------------------------------------*/
 : create_schema ( "<schemaNm>" -- <R> )
 
-ddlLock::grabWrite
+  tp: createSchema
+
+  ddlLock::grabWrite
 
   checkEnoughBuffers not if <NIP+ERROR> exit then
   checkMakeSchema    not if <NIP+ERROR> exit then
 
   makeSchema ( ) assert::stack_0
+
+  tp: createdSchema
 
   <OK>
 ;
@@ -24,15 +28,15 @@ ddlLock::grabWrite
 /*----------------------------------------------------------------------------*/
 : drop_schema ( "<schemaNm>" -- <R> )
 
-tp: dropSchema
+  tp: dropSchema
 
-ddlLock::grabWrite
+  ddlLock::grabWrite
 
   checkRemoveSchema not if <NIP+ERROR> exit then
 
   removeSchema ( ) assert::stack_0
 
-tp: droppedSchema
+  tp: droppedSchema
 
   <OK>
 ;
@@ -40,9 +44,9 @@ tp: droppedSchema
 /*----------------------------------------------------------------------------*/
 /* get list of schemas                                                        */
 /*----------------------------------------------------------------------------*/
-: list_schemas ( -- <R> )
+: list_schemas ( -- sSchemaList <R> )
 
-ddlLock::grabRead
+  ddlLock::grabRead
 
   checkInSchemas not if <NIP+ERROR> exit then
 
@@ -52,11 +56,16 @@ ddlLock::grabRead
 ;
 
 /*----------------------------------------------------------------------------*/
-/* use a schema                                                               */
+/* use given schema                                                           */
 /*----------------------------------------------------------------------------*/
 : use_schema ( "<schemaNm>" -- <R> )
 
-  begin 0 pathPick dic.name "tenants" str.equal not while pathDrop repeat
+  tp: useSchema
+
+  // pop path till we get to tenants
+  begin
+    0 pathPick dic.name "tenants" str.equal not while pathDrop
+  repeat
 
   // find the boray folder
   "boray" findInCurrent
@@ -81,6 +90,8 @@ ddlLock::grabRead
   // find the tables folder
   "tables" findInCurrent
   execute pathPush
+
+  tp: usingSchema
 
   <OK>
 ;

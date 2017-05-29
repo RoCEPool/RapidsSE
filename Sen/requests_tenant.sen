@@ -9,23 +9,21 @@
 /*----------------------------------------------------------------------------*/
 : create_tenant ( "<tenantNm>" -- <R> )
 
-tp: createTenant
+  tp: createTenant
 
-snap0:
+  snap0:
 
-ddlLock::grabWrite
+  ddlLock::grabWrite
 
-  checkEnoughBuffers not if <NIP+ERROR> exit then              //! NEEDS TO BE ~
+  checkEnoughBuffers not if <NIP+ERROR> exit then
   checkMakeTenant    not if <NIP+ERROR> exit then
 
-//traceon
   makeTenant ( ) assert::stack_0
-//traceoff
 
-snap1:
- printClassCounts
+  snap1:
+  printClassCounts
 
-tp: createdTenant
+  tp: createdTenant
 
   <OK>
 ;
@@ -35,17 +33,19 @@ tp: createdTenant
 /*----------------------------------------------------------------------------*/
 : drop_tenant ( "<tenantNm>" -- <R> )
 
-tp: dropTenant
-snap0:
+  tp: dropTenant
 
-ddlLock::grabWrite
+  snap0:
+
+  ddlLock::grabWrite
 
   checkRemoveTenant not if <NIP+ERROR> exit then
 
   removeTenant ( ) assert::stack_0
 
-tp: removedTenant
-snap1:
+  tp: droppedTenant
+
+  snap1:
   printClassCounts
 
   <OK>
@@ -56,7 +56,7 @@ snap1:
 /*----------------------------------------------------------------------------*/
 : list_tenants ( -- <R> )
 
-ddlLock::grabRead
+  ddlLock::grabRead
 
   checkInTenants not if <NIP+ERROR> exit then
 
