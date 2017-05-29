@@ -150,7 +150,7 @@ void Ivl::vSet(u8 uSecond, u8 uMilli)
 /*----------------------------------------------------------------------------*/
 bool Ivl::bIsNull(void)
 {
-  if (C_NULL_IVL == *(i8*)&x)
+  if (C_NULL_INT == *(i8*)&x)
     return true;
   else
     return false;
@@ -161,7 +161,7 @@ bool Ivl::bIsNull(void)
 /*----------------------------------------------------------------------------*/
 void Ivl::vSetNull(void)
 {
-  *(i8*)&x = C_NULL_IVL;
+  *(i8*)&x = C_NULL_INT;
 }
 
 /*----------------------------------------------------------------------------*/

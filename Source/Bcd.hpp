@@ -5,8 +5,6 @@
 
 namespace Datums
 {
-  const i8 C_NULL_BCD = LLONG_MIN;
-  
   class Bcd
   {  
   protected:

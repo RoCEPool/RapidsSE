@@ -6,6 +6,8 @@
 
 namespace Base
 {
+  const i8 C_NULL_INT = LLONG_MIN;
+  
   class IntLib
   {
   private:

@@ -5,8 +5,6 @@
 
 namespace Datums
 {
-  const i8 C_NULL_BOL = LLONG_MIN;
-  
   class Bol
   {
   friend class DtmLib;

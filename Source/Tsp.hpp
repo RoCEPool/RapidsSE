@@ -5,8 +5,6 @@
 
 namespace Datums
 {
-  const i8 C_NULL_TSP = LLONG_MIN;
-  
   class Tsp
   {
   friend class DtmLib;

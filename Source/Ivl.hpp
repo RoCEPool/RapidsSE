@@ -5,8 +5,6 @@
 
 namespace Datums
 {
-  const i8 C_NULL_IVL = LLONG_MIN;
-  
   class Ivl
   {
   friend class DtmLib;
