@@ -891,11 +891,11 @@ void IndexBuffer::vFixHigherLevel(Entry* aNewEntry)
   IndexBuffer* pHigherLevel = m_pHigherLevel;
   
   while (pHigherLevel) {
-    pHigherLevel->vShow();
-    xOldKeyWsp.vShow();
-    xNewKeyWsp.vShow();
+    //pHigherLevel->vShow();
+    //xOldKeyWsp.vShow();
+    //xNewKeyWsp.vShow();
     pHigherLevel->vReplace(xOldKeyWsp, xNewKeyWsp);
-    pHigherLevel->vShow();
+    //pHigherLevel->vShow();
     //ASSERT(pHigherLevel->bVerify());
     pHigherLevel = pHigherLevel->m_pHigherLevel;
   }

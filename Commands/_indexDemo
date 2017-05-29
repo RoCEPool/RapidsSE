@@ -22,6 +22,11 @@ print "loaded supplier.tbl..." ;
 pwf ;
 lf ;
 
+print "Analyzing index idx1 of supplier...\n" ;
+anidx supplier idx1;
+danidx supplier idx1;
+
+/*
 print "\nSelecting rows from supplier (idx1) where S_SUPPKEY == 10000...\n" ;
 keyselidx supplier idx1 10000 ;
 
@@ -85,7 +90,7 @@ danidx supplier idx1;
 print "Size of index idx1 of supplier...\n" ;
 szidx supplier idx1;
 
-
+*/
 //dumpidx supplier idx1;
 
 /*============================================================================*/
