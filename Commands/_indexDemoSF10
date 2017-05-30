@@ -16,11 +16,11 @@ create table supplier (
 /*----------------------------------------------------------------------------*/
 print "----------------------------------------------------------------------";
 print "Creating index idx1 with key S_SUPPKEY";
-create index idx1 on supplier (S_SUPPKEY);
+//create index idx1 on supplier (S_SUPPKEY);
 
 print "----------------------------------------------------------------------";
 print "Creating index idx2 with key S_NAME";
-create index idx2 on supplier (S_NAME);
+//create index idx2 on supplier (S_NAME);
 
 /*----------------------------------------------------------------------------*/
 print "----------------------------------------------------------------------";

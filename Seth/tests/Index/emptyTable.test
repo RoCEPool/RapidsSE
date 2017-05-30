@@ -1,0 +1,66 @@
+--------------------------------------------------------------------------------
+-- create index in a loop tests
+--------------------------------------------------------------------------------
+
+-- create a table
+create table createT1 (
+  key   INTEGER NOT NULL, 
+  name  VARCHAR(32) NOT NULL
+);
+success
+
+-- create an index
+create index keyIdx on createT1 (key);
+affected: 0
+
+-- check existence of index
+lsidx createT1;
+rows:
+  ('keyIdx')
+
+-- check columns of index
+lsidxcol createT1 keyIdx;
+rows:
+  ('key', 'INTEGER')
+
+-- sz of index
+szidx createT1 keyidx;
+rows:
+ (4194304)
+
+-- lwrsel
+lwrselidx createT1 idx1 10;
+rows: 0
+
+-- uprsel
+uprselidx createT1 idx1 10;
+rows: 0
+
+-- keysel
+keyselidx createT1 idx1 10;
+
+-- rgesel
+rgeselidx createT1 idx1 10 20;
+rows: 0
+
+-- drop the index keyIdx;
+drop index createT1.keyIdx;
+success
+
+-- now drop the table
+drop table createT1;
+success
+
+CLEANUP {
+  -- Commands in the cleanup section always run, and do so at the end
+  -- of a test (whether successful or not). 
+
+  -- Ensure that table  ('keyIdx') is dropped.
+  -- We can set the expected result to mute if we don't want to see any warnings.
+  drop table createT1;
+  mute
+
+  bye;
+  mute
+}
+

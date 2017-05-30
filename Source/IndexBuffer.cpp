@@ -743,8 +743,8 @@ void IndexBuffer::vAdjustOffsets(Entry* pEntry, i8 nAdjustAmount)
     //
     i8 iRightOffset = pEntry->iRightOffset(nOffsetNo);
     
-    // here we adjust the iRightOffset if iRightOffset is != C_NIL_OFFSET
-    if (iRightOffset != C_NIL_OFFSET) {
+    // here we adjust the iRightOffset if iRightOffset is > 0
+    if (iRightOffset > 0) {
       i8 iNewRightOffset = iRightOffset + nAdjustAmount;
       pEntry->vRightOffset(nOffsetNo,iNewRightOffset);
     }
@@ -979,6 +979,7 @@ void IndexBuffer::vFixHigherLevel(Entry* aNewEntry)
     //pHigherLevel->vShow();
     xOldKeyWsp.vShow();
     xNewKeyWsp.vShow();
+    pHigherLevel->vShow();
     pHigherLevel->vReplace(xOldKeyWsp, xNewKeyWsp);
     pHigherLevel->vShow();
     ASSERT(pHigherLevel->bVerify());
@@ -1198,6 +1199,7 @@ void IndexBuffer::vReplaceSmallereKey(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp)
   nSizeDifference = uNewKeySize - uOldKeySize;
   ASSERT( nSizeDifference < 0 );
   vAdjustOffsets(pHead(), nSizeDifference);
+  vShow();
   vAdjustOffsets(pNextEntry(pHead()), nSizeDifference);
 }
 
