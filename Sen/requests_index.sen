@@ -600,6 +600,7 @@ timer: idxSelectTimer
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get index size
+  sIndexNm sizeIndex ( "<size>" )
 
   args.metadata if
     "(size INTEGER)" metadata!
@@ -607,8 +608,6 @@ timer: idxSelectTimer
     ")\n" str.cat
     1 task::this task.seitf@ seitf.rowsProcessed
   then
-
-  sIndexNm sizeIndex ( "<size>" )
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // restore path

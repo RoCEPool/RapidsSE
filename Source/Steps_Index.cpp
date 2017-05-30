@@ -290,9 +290,12 @@ void Task::vIndexPosition(NNP_Task nnpTask)
   //pEntry->aKey()->vShow(pIndex->pIdxColVec());
   //xKeyWsp.aKey()->vShow(pIndex->pIdxColVec());
   
-  bool bAfter = pEntry->aKey()->bJuxtaCompare(JC_AFTER, xKeyWsp.aKey(), pIndex->pIdxColVec());
-  if ( ! bAfter) {
-    pEntry = pIndexBuffer->pNextEntry(pEntry);
+  if (pEntry) {
+    
+    bool bAfter = pEntry->aKey()->bJuxtaCompare(JC_AFTER, xKeyWsp.aKey(), pIndex->pIdxColVec());
+    if ( ! bAfter) {
+      pEntry = pIndexBuffer->pNextEntry(pEntry);
+    }
   }
   
   nnpTask->m_pDataStack->vPushObject(pEntry);

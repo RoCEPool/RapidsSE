@@ -110,5 +110,8 @@ CLEANUP {
   -- We can set the expected result to mute if we don't want to see any warnings.
   drop table createT1;
   mute
+
+  bye;
+  mute
 }
 
