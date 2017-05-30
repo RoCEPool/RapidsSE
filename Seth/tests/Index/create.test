@@ -1,0 +1,114 @@
+--
+-- create index tests
+--
+
+-- create a table
+create table createT1 (
+  key   INTEGER NOT NULL, 
+  name  VARCHAR(32) NOT NULL
+);
+success
+
+-- create an index
+create index keyIdx on createT1 (key);
+affected: 0
+
+-- check existence of index
+lsidx createT1;
+rows:
+  ('keyIdx')
+
+-- check columns of index
+lsidxcol createT1 keyIdx;
+rows:
+  ('key', 'INTEGER')
+
+-- drop the index
+drop index createT1.keyIdx;
+success
+
+-- check existence of index
+lsidx createT1;
+rows: 0
+
+-- create index where table does not exist
+create index keyIdx on noTable (key);
+failure: 'no such table'
+
+-- check existence of index
+lsidx createT1;
+rows: 0
+
+-- create index where key does not exist
+create index keyIdx on createT1 (noKey);
+failure: 'invalid column'
+
+-- check existence of index
+lsidx createT1;
+rows: 0
+
+-- create index once
+create index keyIdx on createT1 (key);
+affected: 0
+
+-- create same index again
+create index keyIdx on createT1 (key);
+failure: 'index exists'
+
+-- check existence of index
+lsidx createT1;
+rows:
+ ('keyIdx')
+
+-- create another index with same column
+create index keyIdx1 on createT1 (key);
+success
+
+-- check existence of index
+lsidx createT1;
+rows:
+ ('keyIdx')
+ ('keyIdx1')
+
+-- create index with two columns
+create index keyNameIdx1 on createT1 (key, name);
+success
+
+-- check existence of index
+lsidx createT1;
+rows: 3
+
+-- check columns of keyNameIdx1
+lsidxcol createT1 keyNameIdx1;
+rows:
+ ('key', 'INTEGER')
+ ('name', 'VARCHAR')
+
+-- create another index with two columns
+create index keyNameIdx2 on createT1 (key, name);
+success
+
+-- check existence of index
+lsidx createT1;
+rows:
+ ('keyIdx')
+ ('keyIdx1')
+ ('keyNameIdx1')
+ ('keyNameIdx2')
+
+-- check columns of keyNameIdx2
+lsidxcol createT1 keyNameIdx2;
+rows:
+ ('key', 'INTEGER')
+ ('name', 'VARCHAR')
+
+CLEANUP {
+  -- Commands in the cleanup section always run, and do so at the end
+  -- of a test (whether successful or not). 
+
+  -- Ensure that table  ('keyIdx') is dropped.
+  -- We can set the expected result to mute if we don't want to see any warnings.
+  drop table createT1;
+  mute
+}
+
