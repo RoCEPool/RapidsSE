@@ -28,7 +28,7 @@ lsidxcol jidx idx2;
 //lsidx jidx;
 //lsidxcol jidx idx3;
 
-ld jidx "../JTEST/jidx2.csv" ;
+ld jidx "../JTEST/test.csv" ;
 dumpidx jidx idx1;
 
 //anidx jidx idx ;
