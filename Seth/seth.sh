@@ -2,7 +2,7 @@
 
 # Get the relative path to this file.
 DIR=$(dirname "$0")
-CLASSPATH='.:*:${DIR}:${DIR}/*'
+CLASSPATH=".:*:${DIR}:${DIR}/*"
 
 SE_PATH="../OS X/Build/Products/Debug/SE"
 SE_ARGS="--name NODE1 --sen ../Sen --commands ../Commands"  # in addition to --metadata and --script

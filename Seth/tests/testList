@@ -1,0 +1,10 @@
+# This file is a simple list of all test that can be ran. Simply add new tests 
+# into this file by listing their path on a newline below. Files can be globbed 
+# or they can be specified outright.
+#
+# All paths (by default) are relative to the location of this file.
+#
+# This file can be invoked by running: ./seth.sh -f <path/of/this/file>
+
+examples/*.test
+Index/*.test
