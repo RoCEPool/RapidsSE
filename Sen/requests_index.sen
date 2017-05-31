@@ -755,44 +755,44 @@ timer: idxSelectTimer
 /* visualize index                                                            */
 /*----------------------------------------------------------------------------*/
 : visualize_index ( "<sIndexNm>" "<sTableNm" -- <R> )
-// ../tables
-locals| sTableNm sIndexNm |
+  // ../tables
+  locals| sTableNm sIndexNm |
 
-ddlLock::grabRead
+  ddlLock::grabRead
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// checks
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // checks
 
-// should be in the tables folder
-checkInTables not if <NIP+ERROR> exit then
+  // should be in the tables folder
+  checkInTables not if <NIP+ERROR> exit then
 
-// there should be a table folder
-sTableNm checkIsTableFolder not if <NIP+ERROR> exit then
+  // there should be a table folder
+  sTableNm checkIsTableFolder not if <NIP+ERROR> exit then
 
-// push table dictionary
-sTableNm pushTable assert                                // ../tables/sTableNm
+  // push table dictionary
+  sTableNm pushTable assert                                // ../tables/sTableNm
 
-// push indexes folder
-pushIndexes assert                               // ../tables/sTableNm/indexes
+  // push indexes folder
+  pushIndexes assert                               // ../tables/sTableNm/indexes
 
-sIndexNm checkIsIndex not if
-popIndexes popTable assertInTables <NIP+ERROR> exit
-then
+  sIndexNm checkIsIndex not if
+  popIndexes popTable assertInTables <NIP+ERROR> exit
+  then
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// visualize index
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // visualize index
 
-sIndexNm find execute
-index.visualize
+  sIndexNm find execute
+  index.visualize
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// restore path
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // restore path
 
-popIndexes popTable assertInTables                                // ../tables
+  popIndexes popTable assertInTables                                // ../tables
 
-tp: dumpedIndex
+  tp: dumpedIndex
 
-<OK>
+  <OK>
 ;
 
 

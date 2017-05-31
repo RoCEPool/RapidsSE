@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : removeFolder allParticipants 1 checkResult ( "<folderNm>" -- true n# true )
 
-tp: removeFolder
+  tp: removeFolder
 
   :forget
 
@@ -94,15 +94,15 @@ tp: removeFolder
 /*----------------------------------------------------------------------------*/
 : remove_folder ( "<folderNm>" -- <R> )
 
-tp: dropDic
+  tp: dropDic
 
-ddlLock::grabWrite
+  ddlLock::grabWrite
 
   checkRemoveFolder not if <NIP+ERROR> exit then
 
   removeFolder ( ) assert::stack_0
 
-tp: droppedDic
+  tp: droppedDic
 
   <OK>
 ;
@@ -190,7 +190,7 @@ tp: droppedDic
 /*----------------------------------------------------------------------------*/
 : ~lf ( )
 
-tp: lfOnAll
+  tp: lfOnAll
 
   // set indirect call to be lf_
   << "lf_"
@@ -201,7 +201,7 @@ tp: lfOnAll
 
   >>allParticipants> ( bool )
 
-tp: lfOnAllDone
+  tp: lfOnAllDone
 
   checkResult
 ;
@@ -221,7 +221,7 @@ tp: lfOnAllDone
 /*----------------------------------------------------------------------------*/
 : lf$ ( )
 
-tp: lf
+  tp: lf
 
   "LISTING FOLDER on NODE " grid.thisNode@ >str str.cat .
 
