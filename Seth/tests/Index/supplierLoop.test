@@ -1,0 +1,63 @@
+--------------------------------------------------------------------------------
+-- create index in a loop tests
+--------------------------------------------------------------------------------
+
+-- create a table
+create table supplier (
+S_SUPPKEY       INTEGER NOT NULL,
+S_NAME          VARCHAR(25) NOT NULL,
+S_ADDRESS       VARCHAR(40) NOT NULL,
+S_NATIONKEY     INTEGER NOT NULL,
+S_PHONE         CHAR(15) NOT NULL,
+S_ACCTBAL       DECIMAL(15,2) NOT NULL,
+S_COMMENT       VARCHAR(101) NOT NULL
+);
+success
+
+-- load the table
+ld supplier "/tpch/supplier.tbl";
+success
+
+LOOP 2  {
+
+-- create an index
+create index idx on supplier (S_SUPPKEY);
+affected: 0
+
+-- check existence of index
+lsidx supplier;
+rows:
+  ('idx')
+
+-- check columns of index
+lsidxcol supplier idx;
+rows:
+  ('S_SUPPKEY', 'VARCHAR')
+
+-- keysel
+keyselidx supplier idx 10;
+rows: 1
+
+-- drop the index keyIdx;
+drop index supplier.idx;
+success
+
+} -- end of loop
+
+-- now drop the table
+drop table supplier;
+success
+
+CLEANUP {
+  -- Commands in the cleanup section always run, and do so at the end
+  -- of a test (whether successful or not). 
+
+  -- Ensure that table  ('supplier') is dropped.
+  -- We can set the expected result to mute if we don't want to see any warnings.
+  drop table supplier;
+  mute
+
+  bye;
+  mute
+}
+
