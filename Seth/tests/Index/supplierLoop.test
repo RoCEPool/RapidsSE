@@ -32,7 +32,7 @@ rows:
 -- check columns of index
 lsidxcol supplier idx;
 rows:
-  ('S_SUPPKEY', 'VARCHAR')
+  ('S_SUPPKEY', 'INTEGER')
 
 -- keysel
 keyselidx supplier idx 10;
