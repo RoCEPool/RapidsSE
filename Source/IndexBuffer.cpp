@@ -140,7 +140,7 @@ void IndexBuffer::vDump(void)
 /*----------------------------------------------------------------------------*/
 /* analyze                                                                    */
 /*----------------------------------------------------------------------------*/
-void IndexBuffer::vAnalyze(s1M& sAnalysis, bool bDetailed, i8& iBuffers, i8& iEntries)
+void IndexBuffer::vAnalyze(s48K& sAnalysis, bool bDetailed, i8& iBuffers, i8& iEntries)
 {
   
   iBuffers++;

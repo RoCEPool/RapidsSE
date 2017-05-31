@@ -25,23 +25,23 @@ rows:
 
 -- sz of index
 szidx createT1 keyidx;
-rows:
- (4194304)
+rows: 1
 
 -- lwrsel
-lwrselidx createT1 idx1 10;
-rows: 0
+lwrselidx createT1 keyIdx 10;
+affected: 0
 
 -- uprsel
-uprselidx createT1 idx1 10;
-rows: 0
+uprselidx createT1 keyIdx 10;
+affected: 0
 
 -- keysel
-keyselidx createT1 idx1 10;
+keyselidx createT1 keyIdx 10;
+affected: 0
 
 -- rgesel
-rgeselidx createT1 idx1 10 20;
-rows: 0
+rgeselidx createT1 keyIdx 10 20;
+affected: 0
 
 -- drop the index keyIdx;
 drop index createT1.keyIdx;
