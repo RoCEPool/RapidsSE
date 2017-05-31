@@ -13,7 +13,7 @@ namespace Base
   private:
   
   public:
-    static void vIntToVlq(char* aVlq);
+    static void vIntToVlq(i8 iInt, char* aVlq);
     static i8   iVlqToInt(char* aVlq);
   };
 }

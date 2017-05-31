@@ -15,6 +15,8 @@ extern bool      gbMetadata;
 
 void vTest1(void);
 void vTest2(void);
+void vTest3(void);
+void vTest4(void);
 
 void vKillPrev(void);
 
@@ -24,6 +26,8 @@ void vKillPrev(void);
 /*----------------------------------------------------------------------------*/
 int main(int argc, const char* argv[])
 {
+  //vTest3();
+  
   /*
   vInfo(
          "sizeof(eCN) %lu; sizeof(bool) %lu; \n"_Str
@@ -292,6 +296,34 @@ void vTest2(void)
   
   
   vTrace("-----------------------End vTest2------------------------\n"_Str);
+}
+
+/*----------------------------------------------------------------------------*/
+/* test3                                                                      */
+/*----------------------------------------------------------------------------*/
+void vTest3(void)
+{
+  char xDigits[16];
+  
+  IntLib::vIntToVlq(0,xDigits);
+  i8 i = IntLib::iVlqToInt(xDigits);
+  
+  IntLib::vIntToVlq(30,xDigits);
+  i = IntLib::iVlqToInt(xDigits);
+  
+  IntLib::vIntToVlq(31,xDigits);
+  i = IntLib::iVlqToInt(xDigits);
+  
+  IntLib::vIntToVlq(32,xDigits);
+  i = IntLib::iVlqToInt(xDigits);
+  
+  IntLib::vIntToVlq(127,xDigits);
+  i = IntLib::iVlqToInt(xDigits);
+  
+  IntLib::vIntToVlq(128,xDigits);
+  i = IntLib::iVlqToInt(xDigits);
+  
+ 
 }
 
 /*============================================================================*/
