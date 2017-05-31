@@ -2,4 +2,5 @@
 
 DIR=$(dirname "$0")
 
-${DIR}/seth.sh ${DIR}/tests/*.test
+# Read the file ${DIR}/tests/testlist for the list of all tests to run.
+${DIR}/seth.sh -f ${DIR}/tests/testList
