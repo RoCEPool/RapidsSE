@@ -28,6 +28,7 @@ lsidxcol jidx idx2;
 //lsidx jidx;
 //lsidxcol jidx idx3;
 
+/*
 ld jidx "../JTEST/test.csv" ;
 dumpidx jidx idx1;
 
@@ -69,7 +70,7 @@ rgeselidx jidx idx1 3 7 ;
 
 print "\nSelecting rows with key <= 7 using idx1 ...\n" ;
 uprselidx jidx idx1 7 ;
-
+*/
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

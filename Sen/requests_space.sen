@@ -78,7 +78,7 @@ tp: gettingSpace
 : space ( -- <R> )
 
   args.metadata if
-    "(nodeName VARCHAR, poolSize STRING, inUse VARCHAR, free VARCHAR, freePct VARCHAR)"
+    "(nodeName VARCHAR, poolSize STRING, inUse VARCHAR, free VARCHAR)"
     metadata!
   then
 
