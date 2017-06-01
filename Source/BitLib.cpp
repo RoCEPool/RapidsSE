@@ -208,6 +208,48 @@ u8 BitLib::uSetOn(u8 uBitMap, i8 iBit)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set a particular bit off in given bit map                                  */
+/*----------------------------------------------------------------------------*/
+void BitLib::vSetOff(u8& uBitMap, i8 iBit)
+{
+  // get a mask with particular bit on
+  u8 uMask = uBitMask(iBit);
+  
+  // flip mask so particular bit is off in the mask, all others on
+  uMask = ~ uMask;
+  
+  // mask off given bit in given bit map
+  uBitMap &= uMask;
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* set a particular bit on in given bit map                                   */
+/*----------------------------------------------------------------------------*/
+void BitLib::vSetOn(u8& uBitMap, i8 iBit)
+{
+  u8 uMask = uBitMask(iBit);
+  
+  uBitMap |= uMask;
+}
+
+/*----------------------------------------------------------------------------*/
+/* shift bit map to the left by nBits                                         */
+/*----------------------------------------------------------------------------*/
+void BitLib::vShiftLeft(u8& uBitMap, u8 nBits)
+{
+  uBitMap <<= nBits;
+}
+
+/*----------------------------------------------------------------------------*/
+/* shift bit map to the right by nBits                                        */
+/*----------------------------------------------------------------------------*/
+void BitLib::vShiftRight(u8& uBitMap, u8 nBits)
+{
+  uBitMap >>= nBits;
+}
+
+/*----------------------------------------------------------------------------*/
 /* shuffle bit map to the left by nBits, return revised bit map               */
 /*----------------------------------------------------------------------------*/
 u8 BitLib::uShuffleLeft(u8 uBitMap, u8 nBits)

@@ -13,9 +13,8 @@ namespace Base
   private:
   
   public:
-    static i8 iIntToVlq(i8 iInt, byte* aVlq);
-    static i8 iIntToVlq2(i8 iInt, byte yVlqVec[16]);
-    static i8 iVlqToInt(byte* aVlq);
+    static i8 iIntToVlq(i8 iInt, byte yVlqVec[16]);
+    static i8 iVlqToInt(byte yVlqVec[16]);
   };
 }
 

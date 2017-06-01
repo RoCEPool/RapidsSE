@@ -26,8 +26,8 @@ void vKillPrev(void);
 /*----------------------------------------------------------------------------*/
 int main(int argc, const char* argv[])
 {
-  vTest4();
   //vTest3();
+  //vTest4();
   
   /*
   vInfo(
@@ -318,15 +318,15 @@ void vTest3(void)
   i = IntLib::iVlqToInt(xVlq);
   assert(31 == i);
   
-  nBytes = IntLib::iIntToVlq2(32,xVlq);
+  nBytes = IntLib::iIntToVlq(32,xVlq);
   i = IntLib::iVlqToInt(xVlq);
   assert(32 == i);
   
-  nBytes = IntLib::iIntToVlq2(127,xVlq);
+  nBytes = IntLib::iIntToVlq(127,xVlq);
   i = IntLib::iVlqToInt(xVlq);
   assert(127 == i);
   
-  nBytes = IntLib::iIntToVlq2(128,xVlq);
+  nBytes = IntLib::iIntToVlq(128,xVlq);
   i = IntLib::iVlqToInt(xVlq);
   assert(128 == i);
 }

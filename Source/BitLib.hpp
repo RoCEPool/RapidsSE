@@ -22,6 +22,10 @@ namespace Base
     static bool bIsOn(u8 uBitMap, i8 iBit);
     static u8   uSetOff(u8 uBitMap, i8 iBit);
     static u8   uSetOn(u8 uBitMap, i8 iBit);
+    static void vSetOff(u8& uBitMap, i8 iBit);
+    static void vSetOn(u8& uBitMap, i8 iBit);
+    static void vShiftLeft(u8& uBitMap, u8 nBits);
+    static void vShiftRight(u8& uBitMap, u8 nBits);
     static u8   uShuffleLeft(u8 uBitMap, u8 nBits);
     static u8   uShuffleRight(u8 uBitMap, u8 nBits);
   };
