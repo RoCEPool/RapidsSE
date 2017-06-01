@@ -23,6 +23,8 @@ extern bool         gbVerbose;
 extern bool         gbTracepoint;
 extern bool         gbProgress;
 extern bool         gbMetadata;
+extern bool         gbIndexSpace;
+extern i8           gnIndexEntries;
 
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
@@ -93,6 +95,9 @@ void AttachMap::vGetGlobals(void)
   gbTracepoint   = m_bTracepoint;
   gbProgress     = m_bProgress;
   gbMetadata     = m_bMetadata;
+  
+  gbIndexSpace   = m_bIndexSpace;
+  gnIndexEntries = m_nIndexEntries;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -132,6 +137,9 @@ void AttachMap::vRecordGlobals(Str* aRegionName, i8 iRegionSize, i8 iJumboSize)
   m_bProgress     = gbProgress;
   m_bMetadata     = gbMetadata;
   
+  m_bIndexSpace   = true;
+  m_nIndexEntries = -1;
+
   m_iStop       = 0;
   m_iQuit       = 0;
 }

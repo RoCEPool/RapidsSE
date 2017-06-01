@@ -39,6 +39,9 @@ bool                gbTracepoint       = false;
 bool                gbProgress         = false;
 bool                gbMetadata         = false;
 
+bool                gbIndexSpace       = false;
+i8                  gnIndexEntries     = 10;
+
 Lock                gxDdlLock;
 Lock                gxDicLock;
 

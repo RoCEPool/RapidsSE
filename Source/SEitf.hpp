@@ -82,6 +82,9 @@ namespace Interface
     bool bConnectCluster(TokenSet& xTokenSet);
     bool bDisconnect(TokenSet& xTokenSet);
     
+    bool bGet(TokenSet& xTokenSet);
+    bool bSet(TokenSet& xTokenSet);
+    
     bool bRemoveFolder(TokenSet& xTokenSet);
 
     bool bCreateTenant(TokenSet& xTokenSet);

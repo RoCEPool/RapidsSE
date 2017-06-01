@@ -184,6 +184,7 @@ namespace Tasks
     void vAddPrimitives_Args(void);
     void vAddPrimitives_Assert(void);
     void vAddPrimitives_Astack(void);
+    void vAddPrimitives_AttachMap(void);
     void vAddPrimitives_Bp(void);
     void vAddPrimitives_Cast(void);
     void vAddPrimitives_Class(void);
@@ -322,6 +323,10 @@ namespace Tasks
     static void vAstack7(NNP_Task nnpTask);
     static void vAstack8(NNP_Task nnpTask);
     static void vAstack9(NNP_Task nnpTask);
+    
+    // attachmap
+    static void vAttachMapFetch(NNP_Task nnpTask);
+    static void vAttachMapStore(NNP_Task nnpTask);
     
     // bp
     static void vBpAnalyze(NNP_Task nnpTask);

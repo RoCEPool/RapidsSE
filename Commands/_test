@@ -20,9 +20,9 @@ create index idx1 on jidx (jidx_key);
 lsidx jidx;
 lsidxcol jidx idx1;
 
-create index idx2 on jidx (jidx_100);
-lsidx jidx;
-lsidxcol jidx idx2;
+//create index idx2 on jidx (jidx_100);
+//lsidx jidx;
+//lsidxcol jidx idx2;
 
 //create index idx3 on jidx (jidx_name);
 //lsidx jidx;

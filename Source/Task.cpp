@@ -417,6 +417,12 @@ void Task::vAddConstants(void)
   vAddConstant("C_64KB"_Str,  C_64KB);
   vAddConstant("C_256KB"_Str, C_256KB);
   
+  // AM_ : attach map numbers
+  /*  0 */ vAddConstant("AM_NONE"_Str,         AM_NONE);
+  /*  1 */ vAddConstant("AM_INDEXSPACE"_Str,   AM_INDEXSPACE);
+  /*  2 */ vAddConstant("AM_INDEXENTRIES"_Str, AM_INDEXENTRIES);
+  /*  3 */ vAddConstant("AM_ENUMS"_Str,        AM_ENUMS);
+  
   // CN_ : class numbers
   /*  0 */ vAddConstant("CN_NONE"_Str,         CN_NONE);
 
@@ -778,6 +784,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitives_Args();
   vAddPrimitives_Assert();
   vAddPrimitives_Astack();
+  vAddPrimitives_AttachMap();
   vAddPrimitives_Bp();
   vAddPrimitives_Cast();
   vAddPrimitives_Class();

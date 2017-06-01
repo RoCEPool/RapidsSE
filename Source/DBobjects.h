@@ -16,10 +16,6 @@ namespace DBobjects
   static const i8 C_FLAT_OFFSETS = C_FLAT_LEVELS - 1;        // number of offsets
   static const i8 C_FLAT_FREQ    = 2;
   static const i8 C_NIL_OFFSET   = 0xFFFFFFFFFFFFFFFF;
-  
-  static const bool C_SPACE_BASED_ON_ENTRIES = false;
-  static const i8   C_MAX_ENTRIES = 20;
-
 }
 
 using namespace DBobjects;

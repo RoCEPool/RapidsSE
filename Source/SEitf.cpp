@@ -358,6 +358,7 @@ bool SEitf::bDecode(TokenSet& xTokenSet)
   if (xTokenSet[0]->bSame("endmkidx"_Str)) return bEndCreateIndex(xTokenSet);
   if (xTokenSet[0]->bSame("endmktbl"_Str)) return bEndCreateTable(xTokenSet);
   if (xTokenSet[0]->bSame("ex"_Str)) return bExportTable(xTokenSet);
+  if (xTokenSet[0]->bSame("get"_Str)) return bGet(xTokenSet);
   if (xTokenSet[0]->bSame("getFreeSpace"_Str)) return bGetFreeSpace(xTokenSet);
   if (xTokenSet[0]->bSame("getInUseSpace"_Str)) return bGetInUseSpace(xTokenSet);
   if (xTokenSet[0]->bSame("gettbl"_Str)) return bGetTable(xTokenSet);
@@ -399,6 +400,7 @@ bool SEitf::bDecode(TokenSet& xTokenSet)
   if (xTokenSet[0]->bSame("rmten"_Str)) return bDropTenant(xTokenSet);
   if (xTokenSet[0]->bSame("rgeselidx"_Str)) return bRangeSelectIndex(xTokenSet);
   if (xTokenSet[0]->bSame("sel"_Str)) return bSelectTable(xTokenSet);
+  if (xTokenSet[0]->bSame("set"_Str)) return bSet(xTokenSet);
   if (xTokenSet[0]->bSame("setidxunique"_Str)) return bIndexSetUnique(xTokenSet);
   if (xTokenSet[0]->bSame("space"_Str)) return bPoolSpace(xTokenSet);
   if (xTokenSet[0]->bSame("status"_Str)) return bNodeStatus(xTokenSet);
@@ -460,6 +462,58 @@ bool SEitf::bDisconnect(TokenSet& xTokenSet)
   
   ASSERT(xTokenSet[0]->bEqual("dic"_Str));
   sRequest = "disconnect"_Str;
+  return bAppendRequest(sRequest);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get value from attachmap                                                   */
+/*----------------------------------------------------------------------------*/
+bool SEitf::bGet(TokenSet& xTokenSet)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  s256 sRequest;
+  
+  if (xTokenSet.nTokens() != 2) {
+    vSetLastError(EC_INVALID_PARAMETERS);
+    return false;
+  }
+  
+  sRequest.vCopy("\""_Str);
+  sRequest.vConcat(xTokenSet[1]);
+  sRequest.vConcat("\""_Str);
+  
+  sRequest.vConcat(" get"_Str);
+
+  
+  return bAppendRequest(sRequest);
+}
+
+/*----------------------------------------------------------------------------*/
+/* set value in attachmap                                                     */
+/*----------------------------------------------------------------------------*/
+bool SEitf::bSet(TokenSet& xTokenSet)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  s256 sRequest;
+  
+  if (xTokenSet.nTokens() != 3) {
+    vSetLastError(EC_INVALID_PARAMETERS);
+    return false;
+  }
+  
+  sRequest.vCopy("\""_Str);
+  sRequest.vConcat(xTokenSet[1]);
+  sRequest.vConcat("\""_Str);
+  
+  sRequest.vConcat("\""_Str);
+  sRequest.vConcat(xTokenSet[2]);
+  sRequest.vConcat("\""_Str);
+
+  sRequest.vConcat(" set"_Str);
+  
+  
   return bAppendRequest(sRequest);
 }
 

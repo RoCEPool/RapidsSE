@@ -6,6 +6,9 @@
 
 #include "StorageEngine.h"
 
+extern bool gbIndexSpace;
+extern i8   gnIndexEntries;
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -103,10 +106,11 @@ i8 IndexBuffer::iDecile(void)
   
   i8 iDecile;
   
-  if (C_SPACE_BASED_ON_ENTRIES)
-    iDecile = Int::iDecile(m_nEntries, C_MAX_ENTRIES);
-  else
+  if (gbIndexSpace)
     iDecile = Int::iDecile(m_xWsp.nUsed(), C_SIZE_POOL_BUFFER);
+  else
+    iDecile = Int::iDecile(m_nEntries, gnIndexEntries);
+  
   
   return iDecile;
 }
@@ -208,12 +212,12 @@ bool IndexBuffer::bHasSpace(i8 nBytes)
   i8 iFree = m_xWsp.nFree();
  
   // free space calculation based on no of enteries
-  if (C_SPACE_BASED_ON_ENTRIES) {
-    if (m_nEntries > C_MAX_ENTRIES)
-      return false;
-   }
-  else {
+  if (gbIndexSpace) {
     if (iFree < nBytes)
+      return false;
+  }
+  else {
+    if (m_nEntries > gnIndexEntries)
       return false;
   }
 
