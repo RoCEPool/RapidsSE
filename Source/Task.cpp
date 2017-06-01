@@ -419,9 +419,10 @@ void Task::vAddConstants(void)
   
   // AM_ : attach map numbers
   /*  0 */ vAddConstant("AM_NONE"_Str,         AM_NONE);
-  /*  1 */ vAddConstant("AM_INDEXSPACE"_Str,   AM_INDEXSPACE);
-  /*  2 */ vAddConstant("AM_INDEXENTRIES"_Str, AM_INDEXENTRIES);
-  /*  3 */ vAddConstant("AM_ENUMS"_Str,        AM_ENUMS);
+  /*  1 */ vAddConstant("AM_INDEXENTRIES"_Str, AM_INDEXENTRIES);
+  /*  2 */ vAddConstant("AM_INDEXLEVELS"_Str,  AM_INDEXLEVELS);
+  /*  3 */ vAddConstant("AM_INDEXSPACE"_Str,   AM_INDEXSPACE);
+  /*  4 */ vAddConstant("AM_ENUMS"_Str,        AM_ENUMS);
   
   // CN_ : class numbers
   /*  0 */ vAddConstant("CN_NONE"_Str,         CN_NONE);

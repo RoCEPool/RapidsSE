@@ -74,7 +74,10 @@
 /*----------------------------------------------------------------------------*/
 : get ( am_member -- value )
 
-  >int attachmap::attachmap@ .
+  find
+  dup not if EC_INVALID_PARAMETER <NIP+ERROR> exit then
+  execute
+  attachmap::attachmap@ .
 
   <OK>
 ;
@@ -84,7 +87,11 @@
 /*----------------------------------------------------------------------------*/
 : set ( am_member -- )
 
-  swap >int attachmap::attachmap!
+  swap
+  find
+  dup not if EC_INVALID_PARAMETER <NIP+ERROR>  exit then
+  execute
+  attachmap::attachmap!
 
   <OK>
 ;
