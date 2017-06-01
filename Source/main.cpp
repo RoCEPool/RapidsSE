@@ -303,27 +303,31 @@ void vTest2(void)
 /*----------------------------------------------------------------------------*/
 void vTest3(void)
 {
-  char xDigits[16];
+  byte xVlq[16];
   
-  IntLib::vIntToVlq(0,xDigits);
-  i8 i = IntLib::iVlqToInt(xDigits);
+  i8 nBytes = IntLib::iIntToVlq(0,xVlq);
+  i8 i = IntLib::iVlqToInt(xVlq);
+  assert(0 == i);
   
-  IntLib::vIntToVlq(30,xDigits);
-  i = IntLib::iVlqToInt(xDigits);
+  nBytes = IntLib::iIntToVlq(30,xVlq);
+  i = IntLib::iVlqToInt(xVlq);
+  assert(30 == i);
   
-  IntLib::vIntToVlq(31,xDigits);
-  i = IntLib::iVlqToInt(xDigits);
+  nBytes = IntLib::iIntToVlq(31,xVlq);
+  i = IntLib::iVlqToInt(xVlq);
+  assert(31 == i);
   
-  IntLib::vIntToVlq(32,xDigits);
-  i = IntLib::iVlqToInt(xDigits);
+  nBytes = IntLib::iIntToVlq2(32,xVlq);
+  i = IntLib::iVlqToInt(xVlq);
+  assert(32 == i);
   
-  IntLib::vIntToVlq(127,xDigits);
-  i = IntLib::iVlqToInt(xDigits);
+  nBytes = IntLib::iIntToVlq2(127,xVlq);
+  i = IntLib::iVlqToInt(xVlq);
+  assert(127 == i);
   
-  IntLib::vIntToVlq(128,xDigits);
-  i = IntLib::iVlqToInt(xDigits);
-  
- 
+  nBytes = IntLib::iIntToVlq2(128,xVlq);
+  i = IntLib::iVlqToInt(xVlq);
+  assert(128 == i);
 }
 
 /*============================================================================*/
