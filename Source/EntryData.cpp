@@ -8,6 +8,8 @@
 /*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+extern i8 gnIndexOffsets;
+
 /*----------------------------------------------------------------------------*/
 /* get total bytes required for entry                                         */
 /*----------------------------------------------------------------------------*/
@@ -64,7 +66,7 @@ void EntryData::vCopyBytes(void* aSrc, i8 nBytes)
 /*----------------------------------------------------------------------------*/
 Key* EntryData::aKey(i8 nOffsets)
 {
-  ASSERT(nOffsets >= 0 && nOffsets <= C_FLAT_OFFSETS);
+  ASSERT(nOffsets >= 0 && nOffsets <= gnIndexOffsets);
   
   i8 nOffsetBytes = RightVec::nBytesRequired(nOffsets);
   
@@ -78,7 +80,7 @@ Key* EntryData::aKey(i8 nOffsets)
 /*----------------------------------------------------------------------------*/
 RightVec* EntryData::aRightVec(i8 nOffsets)
 {
-  ASSERT(nOffsets >= 0 && nOffsets <= C_FLAT_OFFSETS);
+  ASSERT(nOffsets >= 0 && nOffsets <= gnIndexOffsets);
   
   RightVec* aRightVec = _aRightVec(this);
   

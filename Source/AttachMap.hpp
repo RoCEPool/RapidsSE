@@ -9,17 +9,19 @@ namespace StorageEngine
   enum eAM // attach map
   {
     /* 0 */ AM_NONE=0,
-    /* 1 */ AM_INDEXSPACE,
-    /* 2 */ AM_INDEXENTRIES,
-    /* 3 */ AM_ENUMS
+    /* 1 */ AM_INDEXENTRIES,
+    /* 2 */ AM_INDEXLEVELS,
+    /* 3 */ AM_INDEXSPACE,
+    /* 4 */ AM_ENUMS
   };
   
   static Str* aAM[]
   {
     /* 0 */ "none"_Str,
-    /* 1 */ "indexspace"_Str,
-    /* 2 */ "indexentries"_Str,
-    /* 3 */ "enums"_Str
+    /* 1 */ "indexentries"_Str,
+    /* 2 */ "indexlevels"_Str,
+    /* 3 */ "indexspace"_Str,
+    /* 4 */ "enums"_Str
   };
   
   class AttachMap : public Buffer
@@ -55,6 +57,8 @@ namespace StorageEngine
    
     bool          m_bIndexSpace;    // index buffer space based on space
     i8            m_nIndexEntries;  // no of entries per buffer
+    i8            m_nIndexLevels;   // no of levels per index buffer entry
+    i8            m_nIndexOffsets;  // no of offsets per index buffer entry
     
     i8            m_iQuit;
     i8            m_iStop;

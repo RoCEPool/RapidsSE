@@ -8,7 +8,8 @@
 
 extern bool gbIndexSpace;
 extern i8   gnIndexEntries;
-
+extern i8   gnIndexLevels;
+extern i8   gnIndexOffsets;
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -649,7 +650,7 @@ L0 |  KeyA || KeyB  || KeyC  ||  KeyD || KeyE  || KeyF  || KeyG  || KeyH  |
   ln nLevelNo;
   
   // start at the highest level in the index buffer's skip list (L2)
-  nLevelNo = C_FLAT_LEVELS - 1;
+  nLevelNo = gnIndexLevels - 1;
   
   do {
     
@@ -809,11 +810,11 @@ void IndexBuffer::vAllotHead(void)
   ASSERT( ! m_nEntries );
   
   // how many bytes are required
-  i8 nBytes = Entry::nBytesRequired(C_FLAT_OFFSETS, 0);
+  i8 nBytes = Entry::nBytesRequired(gnIndexOffsets, 0);
   
   // allot the head
   
-  Entry* pHead = pAllotEntry(nBytes,C_FLAT_OFFSETS,nullptr);
+  Entry* pHead = pAllotEntry(nBytes,gnIndexOffsets,nullptr);
   
   // initialize the head
   for (on nOffsetNo; nOffsetNo.bInRange(); nOffsetNo++)
@@ -1398,7 +1399,7 @@ Entry* IndexBuffer::pPosition(Key* aGivenKey, eJC eJuxtaCompare, EntryVec* pPrio
   
   // start scanning from head entry and topmost level
   ln nScanLevel;
-  nScanLevel = C_FLAT_LEVELS - 1;
+  nScanLevel = gnIndexLevels - 1;
   
   //aGivenKey->vShow(m_pIndex->pIdxColVec());
   //vTrace("\n"_Str);
@@ -1470,7 +1471,7 @@ void IndexBuffer::vPriorVec(Entry* pEntry, EntryVec* pPriorVec)
   
   // set all entries to null
   Entry* pHeadEntry = pHead();
-  for (nLevel = 0_on; *nLevel < C_FLAT_LEVELS; nLevel++)
+  for (nLevel = 0_on; *nLevel < gnIndexLevels; nLevel++)
     (*pPriorVec)[nLevel] = nullptr;
   
   // scan till we find the entry
@@ -1514,7 +1515,7 @@ Entry* IndexBuffer::pRightEntry(Entry* pEntry, ln nLevelNo)
   */
   
   // the caller must request a valid right entry of pEntry
-  ASSERT(nLevelNo >= 0_ln && *nLevelNo < C_FLAT_LEVELS);
+  ASSERT(nLevelNo >= 0_ln && *nLevelNo < gnIndexLevels);
 
   if (nLevelNo == 0_ln) {
     // for level 0, the right entry is the next entry

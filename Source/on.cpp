@@ -4,6 +4,8 @@
 
 #include "DBobjects.h"
 
+extern i8 gnIndexOffsets;
+
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
@@ -17,7 +19,7 @@ on::on(void)
 /*----------------------------------------------------------------------------*/
 on::on(i8 i)
 {
-  ASSERT( (C_NIL_OFFSET == i) || (i >= 0 && i < C_FLAT_OFFSETS) );
+  ASSERT( (C_NIL_OFFSET == i) || (i >= 0 && i < gnIndexOffsets) );
   
   m_iOffsetNo = i;
 }
@@ -239,7 +241,7 @@ on DBobjects::operator "" _on(unsigned long long u)
 /*----------------------------------------------------------------------------*/
 bool on::bInRange(void)
 {
-  if (m_iOffsetNo >= 0 && m_iOffsetNo < C_FLAT_OFFSETS)
+  if (m_iOffsetNo >= 0 && m_iOffsetNo < gnIndexOffsets)
     return true;
   else
     return false;

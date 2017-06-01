@@ -27,6 +27,8 @@ extern SEitfList*      gpSEitfList;
 
 extern bool         gbIndexSpace;
 extern i8           gnIndexEntries;
+extern i8           gnIndexLevels;
+extern i8           gnIndexOffsets;
 
 // table: //////////////////////////////////////////////////////////////////////
 
@@ -55,14 +57,15 @@ void Task::vAttachMapFetch(NNP_Task nnpTask)
   eAttachMap = (eAM)iAttachMapEnum;
   
   switch (eAttachMap) {
-    case AM_INDEXSPACE:
-      nnpTask->m_pDataStack->vPushInt(gbIndexSpace ? 1 : 0);
-      break;
-      
     case AM_INDEXENTRIES:
       nnpTask->m_pDataStack->vPushInt(gnIndexEntries);
       break;
-      
+    case AM_INDEXLEVELS:
+      nnpTask->m_pDataStack->vPushInt(gnIndexLevels);
+      break;
+    case AM_INDEXSPACE:
+      nnpTask->m_pDataStack->vPushInt(gbIndexSpace ? 1 : 0);
+      break;
     default:
       THROW_INVALID_DSTACK("attachmap::attachmap@"_Str);
   }
@@ -88,23 +91,32 @@ void Task::vAttachMapStore(NNP_Task nnpTask)
   eAttachMap = (eAM)iAttachMapEnum;
   
   switch (eAttachMap) {
-    case AM_INDEXSPACE:
+    case AM_INDEXENTRIES:
+      if ( ! nnpTask->m_pDataStack->bPop(sValue) )
+        THROW_INVALID_DSTACK("attachmap::attachmap!"_Str);
+      gnIndexEntries = StrLib::iToI8(sValue.s());
+      break;
       
+    case AM_INDEXLEVELS:
+      i8 iIndexLevels;
+      if ( ! nnpTask->m_pDataStack->bPop(sValue) )
+        THROW_INVALID_DSTACK("attachmap::attachmap!"_Str);
+      iIndexLevels = StrLib::iToI8(sValue.s());
+      if (iIndexLevels >= C_FLAT_LEVELS_MAX)
+        THROW("IndexLevel should be < %lldattachmap::attachmap!"_Str, C_FLAT_LEVELS_MAX);
+      gnIndexLevels = iIndexLevels;
+      gnIndexOffsets = gnIndexLevels - 1;
+      break;
+  
+    case AM_INDEXSPACE:
       i8 iIndexSpace;
       if ( ! nnpTask->m_pDataStack->bPop(sValue) )
         THROW_INVALID_DSTACK("attachmap::attachmap!"_Str);
       iIndexSpace = StrLib::iToI8(sValue.s());
       gbIndexSpace = (iIndexSpace == 1 ? true : false);
       break;
-      
-    case AM_INDEXENTRIES:
-      i8 iIndexEntries;
-      if ( ! nnpTask->m_pDataStack->bPop(sValue) )
-        THROW_INVALID_DSTACK("attachmap::attachmap!"_Str);
-      gnIndexEntries = StrLib::iToI8(sValue.s());
-      break;
-      
-    default:
+    
+        default:
       THROW_INVALID_DSTACK("attachmap::attachmap!"_Str);
   }
   

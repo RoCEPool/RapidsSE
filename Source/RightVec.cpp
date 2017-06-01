@@ -8,6 +8,8 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+extern i8 gnIndexOffsets;
+
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
@@ -61,7 +63,7 @@ RightVec::~RightVec(void)
 /*----------------------------------------------------------------------------*/
 i8 RightVec::iOffset(on nOffsetNo)
 {
-  ASSERT(nOffsetNo >= 0_on && nOffsetNo < C_FLAT_OFFSETS);
+  ASSERT(nOffsetNo >= 0_on && nOffsetNo < gnIndexOffsets);
   
   u8 uOffset = m_nOffset[*nOffsetNo];
   
@@ -73,7 +75,7 @@ i8 RightVec::iOffset(on nOffsetNo)
 /*----------------------------------------------------------------------------*/
 void RightVec::vOffset(on nOffsetNo, i8 iOffset)
 {
-  ASSERT(nOffsetNo >= 0_on && nOffsetNo < C_FLAT_OFFSETS);
+  ASSERT(nOffsetNo >= 0_on && nOffsetNo < gnIndexOffsets);
   
   m_nOffset[*nOffsetNo] = iOffset;
 }
@@ -87,7 +89,7 @@ void RightVec::vOffset(on nOffsetNo, i8 iOffset)
 /*----------------------------------------------------------------------------*/
 i8 RightVec::nBytesRequired(i8 nOffsets)
 {
-  ASSERT(nOffsets >= 0 && nOffsets <= C_FLAT_OFFSETS);
+  ASSERT(nOffsets >= 0 && nOffsets <= gnIndexOffsets);
   
   i8 nBytes = nOffsets * sizeof(u8);
   

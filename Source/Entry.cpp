@@ -8,6 +8,8 @@
 /*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+extern i8 gnIndexOffsets;
+
 /*----------------------------------------------------------------------------*/
 /* get bytes required for an Entry based on given EntWsp incl Object & Footer */
 /*----------------------------------------------------------------------------*/
@@ -104,7 +106,7 @@ Entry::Entry(i8 nBytes, i8 iOffsets)                   //! should we pass EntWsp
   
   // initialise offsets
   m_iOffsets = iOffsets;
-  ASSERT(m_iOffsets >= 0 && m_iOffsets <= C_FLAT_OFFSETS);
+  ASSERT(m_iOffsets >= 0 && m_iOffsets <= gnIndexOffsets);
   
   // entry data will be initialised by vSetEntry       //! Is this correct form?
   
@@ -199,7 +201,7 @@ bn Entry::nBufferNo(void)
 /*----------------------------------------------------------------------------*/
 on Entry::nHighestOffset(void)
 {
-  ASSERT(m_iOffsets >= 0 && m_iOffsets <= C_FLAT_OFFSETS);
+  ASSERT(m_iOffsets >= 0 && m_iOffsets <= gnIndexOffsets);
   
   on nHighest(m_iOffsets - 1);
   
@@ -251,7 +253,7 @@ i8 Entry::iRightOffset(on nOffsetNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
   
-  ASSERT(nOffsetNo >= 0_on && nOffsetNo < C_FLAT_OFFSETS);
+  ASSERT(nOffsetNo >= 0_on && nOffsetNo < gnIndexOffsets);
   
   if (nOffsetNo >= m_iOffsets)
     return C_NIL_OFFSET;
@@ -272,7 +274,7 @@ void Entry::vRightOffset(on nOffsetNo, i8 iRightOffset)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
   
-  ASSERT(nOffsetNo >= 0_on && nOffsetNo < C_FLAT_OFFSETS);
+  ASSERT(nOffsetNo >= 0_on && nOffsetNo < gnIndexOffsets);
   
   EntryData* aEntryData = this->aEntryData();
   

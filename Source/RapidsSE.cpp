@@ -41,12 +41,13 @@ bool                gbMetadata         = false;
 
 bool                gbIndexSpace       = false;
 i8                  gnIndexEntries     = 10;
+i8                  gnIndexLevels      = 3;
+i8                  gnIndexOffsets     = gnIndexLevels - 1;
 
 Lock                gxDdlLock;
 Lock                gxDicLock;
 
 Atomic              gzPlanId;
-
 
 /*----------------------------------------------------------------------------*/
 /* execute arguments                                                          */

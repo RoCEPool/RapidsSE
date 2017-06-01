@@ -16,7 +16,7 @@ namespace DBobjects
     i8     m_iOffsets;  // number of offsets (0, 1 or 2)
     union {
       RightVec m_xRight; // right vector
-      i8       m_iOffset[C_FLAT_OFFSETS];    // right offsets
+      i8       m_iOffset[C_FLAT_OFFSETS_MAX]; // right offsets
                                              // no offset for level 0
     };
     union {
