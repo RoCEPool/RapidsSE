@@ -94,6 +94,7 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_POSIXTHREAD
   /* 48 */ &Finalize::vUndefined,         // CN_PROXY
   /* 49 */ &Finalize::vUndefined,         // CN_PROXYSET
+  /*    */ &Finalize::vUndefined,         // CN_PTNCOLVEC
   
   /* 50 */ &Finalize::vUndefined,         // CN_QUEUE
   /* 51 */ &Finalize::vUndefined,         // CN_QUEUEBUFFER

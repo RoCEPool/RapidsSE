@@ -93,6 +93,7 @@ namespace Base
     /*    */ CN_POSIXTHREAD,
     /* 48 */ CN_PROXY,
     /* 49 */ CN_PROXYSET,
+    /*    */ CN_PTNCOLVEC,
     
     /* 50 */ CN_QUEUE,
     /* 51 */ CN_QUEUEBUFFER,
@@ -241,6 +242,7 @@ namespace Base
     /*    */ "POSIXTHREAD"_Str,
     /* 48 */ "PROXY"_Str,
     /* 49 */ "PROXYSET"_Str,
+    /*    */ "PTNCOLVEC"_Str,
     
     /* 50 */ "QUEUE"_Str,
     /* 51 */ "QUEUEBUFFER"_Str,

@@ -32,6 +32,7 @@ using namespace DBobjects;
 typedef Vector<CN_COLUMNVEC,Column,CN_COLUMN,1024,u8> ColumnVec;
 typedef Array<CN_ROARRAY,eRO,1024> RelOpAry;
 typedef Vector<CN_IDXCOLVEC,Column,CN_COLUMN,1024,u8> IdxColVec;
+typedef Vector<CN_PTNCOLVEC,Column,CN_COLUMN,1024,u8> PtnColVec;
 
 #include "Row.hpp"
 #include "RowBuffer.hpp"
