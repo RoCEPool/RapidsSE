@@ -740,7 +740,7 @@ tp: loadIndexes
 
   find execute ( index^ )
 
-  index.space >str
+  index.space 0 swap number.magnitude >str
 ;
 
 /*----------------------------------------------------------------------------*/

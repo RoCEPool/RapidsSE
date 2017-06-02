@@ -603,9 +603,9 @@ timer: idxSelectTimer
   sIndexNm sizeIndex ( "<size>" )
 
   args.metadata if
-    "(size INTEGER)" metadata!
-    "row: (" swap str.cat
-    ")\n" str.cat
+    "(size VARCHAR)" metadata!
+    "row: ('" swap str.cat
+    "')\n" str.cat
     1 task::this task.seitf@ seitf.rowsProcessed
   then
 

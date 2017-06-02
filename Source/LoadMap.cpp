@@ -231,7 +231,7 @@ void LoadMap::vDone(bool bDone)
   
   m_bDone = bDone;
   
-  vTrace("LoadMap closed with %lld entries\n"_Str,m_iEntries);
+  //vTrace("LoadMap closed with %lld entries\n"_Str,m_iEntries);
 }
 
 /*----------------------------------------------------------------------------*/

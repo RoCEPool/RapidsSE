@@ -1,8 +1,10 @@
 /*============================================================================*/
-/* _indexDemo - create and load Supllier table for SF10                       */
+/* _indexDemoSF10 - create and load Supllier table for SF10                   */
 /*============================================================================*/
 
 /*----------------------------------------------------------------------------*/
+print "----------------------------------------------------------------------";
+print "Creating table SUPPLIER";
 create table supplier (
 	 S_SUPPKEY       INTEGER NOT NULL,
 	 S_NAME          VARCHAR(25) NOT NULL,
@@ -16,11 +18,11 @@ create table supplier (
 /*----------------------------------------------------------------------------*/
 print "----------------------------------------------------------------------";
 print "Creating index idx1 with key S_SUPPKEY";
-//create index idx1 on supplier (S_SUPPKEY);
+create index idx1 on supplier (S_SUPPKEY);
 
 print "----------------------------------------------------------------------";
 print "Creating index idx2 with key S_NAME";
-//create index idx2 on supplier (S_NAME);
+create index idx2 on supplier (S_NAME);
 
 /*----------------------------------------------------------------------------*/
 print "----------------------------------------------------------------------";
@@ -49,19 +51,18 @@ print "\nSelecting rows from supplier (idx1) where S_SUPPKEY >= 9972 & <= 9982..
 rgeselidx supplier idx1 9972 9982 ;
 
 
-displayOff;
 /*----------------------------------------------------------------------------*/
 print "----------------------------------------------------------------------";
 print "\nSelecting rows from supplier (idx2) where S_NAME == 'Supplier#000001900'..." ;
 keyselidx supplier idx2 "Supplier#000001900" ;
 
 print "----------------------------------------------------------------------";
-print "\nSelecting rows from supplier (idx2) where S_NAME >= 'Supplier#0000099000' ..." ;
-lwrselidx supplier idx2 "Supplier#0000099000" ;
+print "\nSelecting rows from supplier (idx2) where S_NAME >= 'Supplier#000099900' ..." ;
+lwrselidx supplier idx2 "Supplier#000099900" ;
 
 print "----------------------------------------------------------------------";
-print "\nSelecting rows from supplier (idx2) where S_NAME <= 'Supplier#0000054000' ..." ;
-uprselidx supplier idx2 "Supplier#0000054000" ;
+print "\nSelecting rows from supplier (idx2) where S_NAME <= 'Supplier#000000009' ..." ;
+uprselidx supplier idx2 "Supplier#000000009" ;
 
 print "----------------------------------------------------------------------";
 print "\nSelecting rows from supplier (idx2) where S_NAME >= 'Supplier#0000099000' & <= 'Supplier#0000019000'..." ;
@@ -74,11 +75,11 @@ print "\nCreating index idx3 with key S_ADDRESS ..." ;
 create index idx3 on supplier (S_ADDRESS);
 
 /*----------------------------------------------------------------------------*/
-//dumpidx supplier idx3 ;
-
 print "----------------------------------------------------------------------";
 print "\nSelecting rows from supplier (idx3) where S_ADDRESS == 'mX37oAzqsBPhN1LWdzV p'..." ;
 keyselidx supplier idx3 "mX37oAzqsBPhN1LWdzV p" ;
+
+displayOff;
 
 print "----------------------------------------------------------------------";
 print "\nSelecting rows from supplier (idx3) where S_ADDRESS >= 'm' ..." ;
