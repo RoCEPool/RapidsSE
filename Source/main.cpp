@@ -27,6 +27,7 @@ void vKillPrev(void);
 int main(int argc, const char* argv[])
 {
   //vTest3();
+  //vTest4();
   
   /*
   vInfo(
@@ -303,25 +304,84 @@ void vTest2(void)
 /*----------------------------------------------------------------------------*/
 void vTest3(void)
 {
-  char xDigits[16];
+  byte xVlq[16];
   
-  IntLib::vIntToVlq(0,xDigits);
-  i8 i = IntLib::iVlqToInt(xDigits);
+  i8 nBytes = IntLib::iIntToVlq(0,xVlq);
+  i8 i = IntLib::iVlqToInt(xVlq);
+  assert(0 == i);
   
-  IntLib::vIntToVlq(30,xDigits);
-  i = IntLib::iVlqToInt(xDigits);
+  nBytes = IntLib::iIntToVlq(30,xVlq);
+  i = IntLib::iVlqToInt(xVlq);
+  assert(30 == i);
   
-  IntLib::vIntToVlq(31,xDigits);
-  i = IntLib::iVlqToInt(xDigits);
+  nBytes = IntLib::iIntToVlq(31,xVlq);
+  i = IntLib::iVlqToInt(xVlq);
+  assert(31 == i);
   
-  IntLib::vIntToVlq(32,xDigits);
-  i = IntLib::iVlqToInt(xDigits);
+  nBytes = IntLib::iIntToVlq(32,xVlq);
+  i = IntLib::iVlqToInt(xVlq);
+  assert(32 == i);
   
-  IntLib::vIntToVlq(127,xDigits);
-  i = IntLib::iVlqToInt(xDigits);
+  nBytes = IntLib::iIntToVlq(127,xVlq);
+  i = IntLib::iVlqToInt(xVlq);
+  assert(127 == i);
   
-  IntLib::vIntToVlq(128,xDigits);
-  i = IntLib::iVlqToInt(xDigits);
+  nBytes = IntLib::iIntToVlq(128,xVlq);
+  i = IntLib::iVlqToInt(xVlq);
+  assert(128 == i);
+}
+
+/*----------------------------------------------------------------------------*/
+/* test4                                                                      */
+/*----------------------------------------------------------------------------*/
+void vTest4(void)
+{
+  char cBitAry[128];
+  
+  assert(! BitLib::bAnyOn(0));
+  assert(BitLib::bAnyOn(1));
+  
+  assert(1 == BitLib::uBitMask(0));
+  assert(2 == BitLib::uBitMask(1));
+  
+  BitLib::vDump(0,cBitAry);
+  vTrace("BitMap: %s\n"_Str,cBitAry);
+  
+  BitLib::vDump(1,cBitAry);
+  vTrace("BitMap: %s\n"_Str,cBitAry);
+  
+  u8 uBitMap = 0xFEDCBA;
+  BitLib::vDump(uBitMap,cBitAry);
+  vTrace("BitMap: %s\n"_Str,cBitAry);
+  
+  i8 iBit = -1;
+  while (BitLib::bEachBit(uBitMap,iBit))
+    vTrace("BitOn: %lld\n"_Str,iBit);
+
+  vTrace("Highest Bit: %lld\n"_Str,BitLib::iHighestBit(uBitMap));
+  
+  vTrace("Bit 6 is %s\n"_Str,BitLib::bIsOn(uBitMap,6) ? "on" : "off");
+  vTrace("Bit 23 is %s\n"_Str,BitLib::bIsOn(uBitMap,23) ? "on" : "off");
+  
+  
+  uBitMap = BitLib::uSetOn(uBitMap,6);
+  vTrace("Bit 6 is now %s\n"_Str,BitLib::bIsOn(uBitMap,6) ? "on" : "off");
+  
+  uBitMap = BitLib::uShuffleRight(uBitMap,2);
+  BitLib::vDump(uBitMap,cBitAry);
+  vTrace("BitMap: %s\n"_Str,cBitAry);
+  
+  uBitMap = BitLib::uShuffleLeft(uBitMap,8);
+  BitLib::vDump(uBitMap,cBitAry);
+  vTrace("BitMap: %s\n"_Str,cBitAry);
+  
+  uBitMap = BitLib::uShuffleRight(uBitMap,8);
+  u8 uCut = BitLib::uCutRight(uBitMap,3);
+  BitLib::vDump(uBitMap,cBitAry);
+  
+  vTrace("BitMap: %s\n"_Str,cBitAry);
+  BitLib::vDump(uCut,cBitAry);
+  vTrace("Cut: %s\n"_Str,cBitAry);
   
  
 }

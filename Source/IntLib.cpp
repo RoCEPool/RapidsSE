@@ -5,52 +5,101 @@
 #include "Base.h"
 
 /*----------------------------------------------------------------------------*/
+/*-- VLQ Support -------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*
+
+   LSN<5bits>
+ 
+ 
+ */
+
+const u1 C_VLQ_MORE_BIT = 7;
+const u1 C_VLQ_NULL_BIT = 6;
+//const u1 C_VLQ_SIGN_BIT = 5;
+
+
+/*----------------------------------------------------------------------------*/
 /* convert i8 to vlq (varying length quantity)                                */
 /*----------------------------------------------------------------------------*/
-void IntLib::vIntToVlq(i8 iInt, char* aVlq)
+i8 IntLib::iIntToVlq(i8 iInt, byte yVlqVec[16])
 {
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // explicitly handle the simple cases of 0 and null
+  if (iInt <= C_5_BITS) {
+    yVlqVec[0] = iInt;                    // its 0..31
+    return 1;
+  }
+  
+  if (C_NULL_INT == iInt) {
+    yVlqVec[0] = C_VLQ_NULL_BIT;          // set null flag
+    return 1;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // handle all other cases generally
+  
+  // number of bytes in the vlq vector
   i8 nBytes = 0;
   
-  bool bNegative = (iInt < 0) ? true : false;
+  // remainder yet to be processed
+  u8 uRemainder = (u8)iInt;
   
-  if (bNegative)
-    iInt = - iInt;
-  
-  while (iInt > 31) {
-    aVlq[nBytes++] = iInt % 128;
-    iInt = iInt / 128;
-  }
+  // get lowest 5 bits
+  u8 uLowFiveBits = BitLib::uCutRight(uRemainder,5);
+  BitLib::vSetOn(uLowFiveBits,C_VLQ_MORE_BIT);
+  yVlqVec[nBytes++] = uLowFiveBits;
 
-  iInt |= 0x8;
-  if (bNegative)
-    iInt|= 0x4;
+  // process chunks of 7 bits
+  while (uRemainder) {
+    u8 uMidSevenBits = BitLib::uCutRight(uRemainder,7);
+    if (uRemainder)
+      BitLib::vSetOn(uMidSevenBits,C_VLQ_MORE_BIT);
+    yVlqVec[nBytes++] = uMidSevenBits;
+  }
   
-  aVlq[nBytes++] = iInt;
+  return nBytes;
 }
 
 /*----------------------------------------------------------------------------*/
 /* convert vlq (varying length quantity) to i8                                */
 /*----------------------------------------------------------------------------*/
-i8 IntLib::iVlqToInt(char* aVlq)
+i8 IntLib::iVlqToInt(byte yVlqVec[])
 {
-  i8 iInt = 0;
-
-  char* aByte;
-  for (aByte = aVlq; *aByte < 0x8; aByte++) {
-    iInt *= 128;
-    iInt += *aByte;
-  }
+  bool bContinue;
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // explicity handle simple cases of 0 and null
   
-  if (*aByte >0x8) {
-    iInt = iInt * 128 + (*aByte | !0xC);
-    iInt = -iInt;
-  }
-  else if (*aByte == 0x4) {
-    iInt = C_NULL_INT;
-  }
-  else {
-    iInt = iInt * 128 + (*aByte & !0x8);
-  }
+  if (0 == yVlqVec[0])
+    return 0;
+  
+  if (C_VLQ_NULL_BIT == yVlqVec[0])
+    return C_NULL_INT;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // handle all other cases generally
+  
+  // first byte has five data bits
+  byte* aByte = yVlqVec;
+  byte yByte = *aByte++;
+  
+  // simple case of single five bit data byte
+  if (BitLib::bIsOff(yByte,C_VLQ_MORE_BIT))
+    return (i8)yByte;
+
+  // five bits followed by multiple seven bits
+  i8 iInt = BitLib::uSetOff(yByte,C_VLQ_MORE_BIT);
+  i8 iShiftBy = 5;
+  
+  do {
+    yByte = *aByte++;
+    bContinue = BitLib::bIsOn(yByte,C_VLQ_MORE_BIT);
+    u8 uAdd = BitLib::uSetOff(yByte,C_VLQ_MORE_BIT);
+    BitLib::vShiftLeft(uAdd,iShiftBy);
+    iInt += uAdd;
+    iShiftBy = 7;
+  } while (bContinue);
   
   return iInt;
 }
