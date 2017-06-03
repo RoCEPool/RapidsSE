@@ -38,6 +38,8 @@ Slots::Slots(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SLOTS,_FOOTER_);
   
+  //m_xSubDic
+  
   // initialize the partitionId's in the slots
   for (i8 iSlot = 0; iSlot < gpGrid->iSlots(); iSlot++) {
     
@@ -45,6 +47,8 @@ Slots::Slots(void)
     m_xPartition[iSlot].vPartitionId(iPartition);
     
   }
+  
+  m_pPtnColVec = new PtnColVec;
   
   _checkInitialised_(CN_SLOTS);
 }
@@ -56,6 +60,31 @@ Slots::~Slots(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SLOTS,_FOOTER_);
   vTidyUp();
+}
+
+/*----------------------------------------------------------------------------*/
+/* create column vector                                                       */
+/*----------------------------------------------------------------------------*/
+void Slots::vCreateColumnVec(Table* pTable, s32& sColumnNm, s48K& sColumnDefn)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
+  
+  Column* pColumn = nullptr;
+  
+  // find the column from the table columnVector
+  i8 iColumns = pTable->pColumnVec()->nItems();
+  
+  bool bFound = false;
+  for (i8 iCol = 0; iCol < iColumns; iCol++) {
+    pColumn = pTable->pColumnVec()->pGet(iCol);
+    if (pColumn->sColumnName().bSame(sColumnNm)) {
+      bFound = true;
+      break;
+    }
+  }
+  ASSERT(bFound);
+  
+  m_pPtnColVec->vInsert(pColumn);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -82,6 +111,39 @@ void Slots::vPopulateIndex(i8 iIndexNo)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get ptnColVec                                                              */
+/*----------------------------------------------------------------------------*/
+PtnColVec* Slots::pPtnColVec(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  
+  return m_pPtnColVec;
+}
+
+/*----------------------------------------------------------------------------*/
+/* show column vector                                                         */
+/*----------------------------------------------------------------------------*/
+void Slots::vShowColumnVec(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
+  
+  for (i8 iColumn = 0; iColumn < m_pPtnColVec->nItems(); iColumn++) {
+    Column* pColumn = m_pPtnColVec->pGet(iColumn);
+    pColumn->vShow();
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* get partitioning sub dictionary                                            */
+/*----------------------------------------------------------------------------*/
+Dic* Slots::pSubDic(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  
+  return &m_xSubDic;
+}
+
+/*----------------------------------------------------------------------------*/
 /* tidyup                                                                     */
 /*----------------------------------------------------------------------------*/
 void Slots::vTidyUp(void)
@@ -96,6 +158,10 @@ void Slots::vTidyUp(void)
   for (i8 iSlot = 0; iSlot < C_SLOTS_PER_NODE; iSlot++) {
     m_xPartition[iSlot].vTidyUp();
   }
+  
+  // Since the column is picked from the ColVec of table
+  // we need to just remove it from the PtnColVec before deleting it
+  m_pPtnColVec->vClear();
 }
 
 /*----------------------------------------------------------------------------*/

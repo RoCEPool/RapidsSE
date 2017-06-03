@@ -177,7 +177,6 @@ int: queryCount
   true
 ;
 
-
 /*----------------------------------------------------------------------------*/
 /* find the table folder and push it onto task dictionary                     */
 /*----------------------------------------------------------------------------*/
@@ -563,6 +562,7 @@ tp: analyzeTable
   <SUCCESS_RESULT>
 ;
 
+
 /*----------------------------------------------------------------------------*/
 /* make a table (run by participant)                                          */
 /*----------------------------------------------------------------------------*/
@@ -582,6 +582,8 @@ tp: makingTable
   dup
 
   "makeIndexes" find execute
+
+  //"makePartitions" find execute
 
   :table ( "<tableNm>" ^table )
 

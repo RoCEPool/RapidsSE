@@ -225,6 +225,7 @@ namespace Tasks
     void vAddPrimitives_NodeCursor(void);
     void vAddPrimitives_Object(void);
     void vAddPrimitives_OpFrame(void);
+    void vAddPrimitives_Partitions(void);
     void vAddPrimitives_Plan(void);
     void vAddPrimitives_PlanList(void);
     void vAddPrimitives_Process(void);
@@ -683,6 +684,9 @@ namespace Tasks
     static void vOpFrameDic(NNP_Task nnpTask);
     static void vOpFrameName(NNP_Task nnpTask);
   
+    // partition
+    static void vPartitionsSubDic(NNP_Task nnpTask);
+
     // plan
     static void vPlanCompile(NNP_Task nnpTask);
     static void vPlanDelete(NNP_Task nnpTask);
@@ -931,6 +935,7 @@ namespace Tasks
     static void vTableInsert(NNP_Task nnpTask);
     static void vTableList(NNP_Task nnpTask);
     static void vTableName(NNP_Task nnpTask);
+    static void vTablePartSubDic(NNP_Task nnpTask);
     static void vTableRef(NNP_Task nnpTask);
     static void vTableShowColumnVec(NNP_Task nnpTask);
     static void vTableSpace(NNP_Task nnpTask);

@@ -1,0 +1,234 @@
+/*============================================================================*/
+/* partitionColumn.sen -- partition column related words                      */
+/*============================================================================*/
+
+"partitionColumn.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* partitionColumn is used as a kind of word to identify partition columns    */
+/*----------------------------------------------------------------------------*/
+: partitionColumn: ;
+
+/*----------------------------------------------------------------------------*/
+/* make the partition columns sub folder                                      */
+/*----------------------------------------------------------------------------*/
+: makePartitionColumns ( "<tableNm>" -- )
+
+  find execute ( dic )
+  partitions::subDic pathPush "columns" :dic drop pathDrop
+;
+
+/*----------------------------------------------------------------------------*/
+/* check within partitions columns folder                                     */
+/*----------------------------------------------------------------------------*/
+: withinPartitionColumns
+    0 pathPick dic.name "columns" str.equal
+;
+
+/*----------------------------------------------------------------------------*/
+/* check in partitions columns folder                                         */
+/*----------------------------------------------------------------------------*/
+: checkInPartitionColumns
+    withinPartitionColumns if true exit then
+    EC_NOT_IN_COLUMNS false
+;
+
+/*----------------------------------------------------------------------------*/
+/* find the partitions column folder and push it onto task dictionary         */
+/*----------------------------------------------------------------------------*/
+: pushPartitionColumns ( -- )
+
+    "columns" checkIsWord
+    not if EC_NO_COLUMNS_DIC false exit then
+    execute pathPush
+    true
+;
+
+/*----------------------------------------------------------------------------*/
+/* pop the partition column folder                                            */
+/*----------------------------------------------------------------------------*/
+: popPartitionColumns
+    pathDrop
+;
+
+/*----------------------------------------------------------------------------*/
+/* create partition column as a constant                                      */
+/*----------------------------------------------------------------------------*/
+: :partitionColumn ( "<columnName>" )
+    :constant
+;
+
+/*----------------------------------------------------------------------------*/
+/* check and add a partition column                                           */
+/*----------------------------------------------------------------------------*/
+: checkAddPartitionColumn ( "<columnName>" "<tableNm>" -- true | eEC false )
+
+  locals| tableNm columnNm |
+
+  // check we are in the partitions folder
+  checkInPartitions not if false exit then
+
+  // move out of the partitions folder temporarily
+  popPartitions
+
+  // push the table sub folder
+  tableNm pushTableSub assert
+
+  // push the table columns folder
+  pushColumns
+
+  // look for the partition column in the table columns
+  columnNm findInCurrent
+
+  // column should exist in table
+  not if EC_INVALID_COLUMN false popColumns popTableSub pushPartitions assert exit then
+
+  // pop the columns folder
+  popColumns
+
+  // pop the tables sub folder
+  popTableSub
+
+  // push back the partitions folder
+  pushPartitions assert
+
+  // push the partitions columns folder
+  pushPartitionColumns assert // not if false exit then
+
+  // look for the column in the partitions columns
+  columnNm findInCurrent
+
+  // column should not already exist
+  if EC_DUPLICATE_COLUMN false popPartitionColumns popPartitionSub exit then
+
+  //pop the partition columns folder
+  popPartitionColumns
+
+  // pop the partition sub folder
+  popPartitionSub
+
+  assertInIndexes
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* list columns of an index                                                   */
+/*----------------------------------------------------------------------------*/
+: listIndexColumns ( "<indexNm>" -- list )
+
+  find execute ( ^indexPtr )
+
+  0 locals| indexCols indexPtr |
+  indexPtr index.columnCount to indexCols
+
+  ""                             // initial ls string
+  args.metadata if
+    indexCols 0 do
+      I indexPtr index.columnType
+      I indexPtr index.columnName
+      "row: ('%v', '%v')\n" str.format
+      str.cat
+    loop
+    indexCols task::this task.seitf@ seitf.rowsProcessed
+  else
+
+    indexCols 0 do
+      I indexPtr index.columnType
+      I indexPtr index.columnName
+      "%v %v " str.format
+      I 1 + indexCols < if
+        swap ", " str.cat
+      then
+      str.cat
+    loop
+  then
+
+;
+
+////////////////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* add an index column (run by all participants)                              */
+/*----------------------------------------------------------------------------*/
+: addIndexColumn allParticipants 2 checkResult ( "<columnNm>" "<indexNm>" -- <result> )
+
+  0 locals| indexPtr indexNm columnNm |
+
+  args.tracepoint if
+    "ADDING COLUMN " indexNm str.cat " on NODE " str.cat grid.thisNode@ >str str.cat .
+  then
+
+  tp: addingIndexColumn
+
+  // push the index sub folder
+  indexNm
+  pushIndexSub assert
+
+  // push index columns folder
+  pushIndexColumns assert
+
+  columnNm columnNm    ( "<columnNm>" "<columnNm>" )
+  :indexColumn
+
+  // pop index columns folder
+  popIndexColumns
+
+  // pop the index sub folder
+  popIndexSub
+
+  true <SUCCESS_RESULT>
+;
+
+/*----------------------------------------------------------------------------*/
+/* create the column vector of the index                                      */
+/*----------------------------------------------------------------------------*/
+: columnVecIndex allParticipants 1 checkResult ( "<indexNm>" -- true n# true )
+
+  0 locals| indexPtr indexNm |
+
+  //"columnVecIndex" . indexNm .
+
+  // get index ptr
+  indexNm findInCurrent execute to indexPtr
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // double check we can see the index
+  //indexPtr find execute stk drop
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // push the index sub dic and then the columns sub dic
+  indexNm pushIndexSub assert
+
+  pushIndexColumns assert
+
+  // double check the path
+  //task::this task.dicStack dicPath.dump
+
+  // iterate contents of columns dictionary 
+  0 pathPick dic.lastWord dup
+  iterate                        // iterate word cursor
+    object@ execute              ( value )
+    object@ word.name            ( value wordNm )
+    indexPtr                     ( value wordNm ^table )
+    index.createColumnVec
+    object@ word.prev object!    // advance cursor backwards thru words
+  next
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  //indexPtr index.showColumnVec
+
+  assert::stack_0
+
+  popIndexColumns
+
+  popIndexSub
+
+  true <SUCCESS_RESULT>
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

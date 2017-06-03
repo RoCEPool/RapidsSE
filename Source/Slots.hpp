@@ -11,7 +11,9 @@ namespace DBobjects
   class Slots : public Object
   {
   private:
-    Partition m_xPartition[C_SLOTS_PER_NODE];
+    Dic        m_xSubDic;        // partitionn sub dictionary
+    PtnColVec* m_pPtnColVec;     // partition colummn vector
+    Partition  m_xPartition[C_SLOTS_PER_NODE];
     
     // must be last
     Footer m_xFooter;
@@ -23,15 +25,18 @@ namespace DBobjects
     Slots(void);
     ~Slots(void);
     
+    void       vCreateColumnVec(Table* pTable, s32& sColumnNm, s48K& sColumnDefn);
     Partition* pPartition(i8 iSlot);
+    void       vPopulateIndex(i8 iIndexNo);
+    PtnColVec* pPtnColVec(void);
+    void       vShowColumnVec(void);
+    Dic*       pSubDic(void);
+    void       vTidyUp(void);
+    void       vTidyUpIndex(i8 iIndexNo);
+    void       vTruncate(void);
+    void       vTruncateIndex(i8 iIndexNo);
     
-    void vPopulateIndex(i8 iIndexNo);
-    void vTidyUp(void);
-    void vTidyUpIndex(i8 iIndexNo);
-    void vTruncate(void);
-    void vTruncateIndex(i8 iIndexNo);
-    
-    Footer* pFooter(void);
+    Footer*    pFooter(void);
   };
 }
 

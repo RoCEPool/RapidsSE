@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Steps_Table.cpp - table step group                                         */
+/* Steps_AttachMap.cpp - attach map step group                                */
 /*============================================================================*/
 
 #include "StorageEngine.h"

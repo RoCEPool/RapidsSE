@@ -20,12 +20,12 @@ namespace DBobjects
   class Table : public Object
   {
   private:
-    s32    m_sTableName; // table name
-    eTT    m_eTableType; // table type
-    Dic    m_xSubDic;    // sub dictionary for this table
-    Slots  m_xSlots;     // slots
+    s32    m_sTableName;  // table name
+    eTT    m_eTableType;  // table type
+    Dic    m_xSubDic;     // sub dictionary for this table
+    Slots  m_xSlots;      // slots
     Atomic m_zIndexNo;
-    Atomic m_zRefCount;  // reference count
+    Atomic m_zRefCount;   // reference count
 
     ColumnVec* m_pColumnVec; // colummn vector
   
@@ -62,6 +62,7 @@ namespace DBobjects
     i8   iRowPartition(Str* pRow);
     void vShowColumnVec(void);
     Dic* pSubDic(void);
+    Slots* pSlots(void);
     Str* aTableName(void);
     void vTidyUp(void);
     void vTidyUpIndex(i8 iIndexNo);

@@ -603,6 +603,7 @@ void Task::vAddConstants(void)
   /* 33 */ vAddConstant("EC_NOT_IN_CATALOGS"_Str,    EC_NOT_IN_CATALOGS);
   /* 34 */ vAddConstant("EC_NOT_IN_COLUMNS"_Str,     EC_NOT_IN_COLUMNS);
   /* 35 */ vAddConstant("EC_NOT_IN_INDEXES"_Str,     EC_NOT_IN_INDEXES);
+  /*    */ vAddConstant("EC_NOT_IN_PARTITIONS"_Str,  EC_NOT_IN_PARTITIONS);
   /* 36 */ vAddConstant("EC_NOT_IN_SCHEMAS"_Str,     EC_NOT_IN_SCHEMAS);
   /* 37 */ vAddConstant("EC_NOT_IN_TABLE"_Str,       EC_NOT_IN_TABLE);
   /* 38 */ vAddConstant("EC_NOT_IN_TABLES"_Str,      EC_NOT_IN_TABLES);
@@ -826,6 +827,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitives_NodeCursor();
   vAddPrimitives_Object();
   vAddPrimitives_OpFrame();
+  vAddPrimitives_Partitions();
   vAddPrimitives_Plan();
   vAddPrimitives_PlanList();
   vAddPrimitives_Process();
