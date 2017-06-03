@@ -106,6 +106,7 @@ private:
   bool bNodeStatus(void);
   bool bObject(void);
   bool bPoolSpace(void);
+  bool bPartitionTable(void);
   bool bPrintWorkingDir(void);
   bool bReturnTable(void);
 

@@ -35,37 +35,37 @@ lf ;
 
 /*----------------------------------------------------------------------------*/
 print "----------------------------------------------------------------------";
-print "\nSelecting rows from supplier (idx1) where S_SUPPKEY == 100000..." ;
+print "\nExact select from supplier (idx1) where S_SUPPKEY == 100000..." ;
 keyselidx supplier idx1 100000 ;
 
 print "----------------------------------------------------------------------";
-print "\nSelecting rows from supplier (idx1) where S_SUPPKEY >= 99720 ..." ;
+print "\nLower select from supplier (idx1) where S_SUPPKEY >= 99720 ..." ;
 lwrselidx supplier idx1 99720 ;
 
 print "----------------------------------------------------------------------";
-print "\nSelecting rows from supplier (idx1) where S_SUPPKEY <= 20 ..." ;
+print "\nUpper select from supplier (idx1) where S_SUPPKEY <= 20 ..." ;
 uprselidx supplier idx1 20 ;
 
 print "----------------------------------------------------------------------";
-print "\nSelecting rows from supplier (idx1) where S_SUPPKEY >= 9972 & <= 9982..." ;
+print "\nRange select from supplier (idx1) where S_SUPPKEY >= 9972 & <= 9982..." ;
 rgeselidx supplier idx1 9972 9982 ;
 
 
 /*----------------------------------------------------------------------------*/
 print "----------------------------------------------------------------------";
-print "\nSelecting rows from supplier (idx2) where S_NAME == 'Supplier#000001900'..." ;
+print "\nExact select rows from supplier (idx2) where S_NAME == 'Supplier#000001900'..." ;
 keyselidx supplier idx2 "Supplier#000001900" ;
 
 print "----------------------------------------------------------------------";
-print "\nSelecting rows from supplier (idx2) where S_NAME >= 'Supplier#000099900' ..." ;
+print "\nLower select from supplier (idx2) where S_NAME >= 'Supplier#000099900' ..." ;
 lwrselidx supplier idx2 "Supplier#000099900" ;
 
 print "----------------------------------------------------------------------";
-print "\nSelecting rows from supplier (idx2) where S_NAME <= 'Supplier#000000009' ..." ;
+print "\nUpper select from supplier (idx2) where S_NAME <= 'Supplier#000000009' ..." ;
 uprselidx supplier idx2 "Supplier#000000009" ;
 
 print "----------------------------------------------------------------------";
-print "\nSelecting rows from supplier (idx2) where S_NAME >= 'Supplier#0000099000' & <= 'Supplier#0000019000'..." ;
+print "\nRange select from supplier (idx2) where S_NAME >= 'Supplier#0000099000' & <= 'Supplier#0000019000'..." ;
 rgeselidx supplier idx2 "Supplier#0000099000" "Supplier#0000019000" ;
 
 
@@ -76,28 +76,28 @@ create index idx3 on supplier (S_ADDRESS);
 
 /*----------------------------------------------------------------------------*/
 print "----------------------------------------------------------------------";
-print "\nSelecting rows from supplier (idx3) where S_ADDRESS == 'mX37oAzqsBPhN1LWdzV p'..." ;
+print "\nExact select from supplier (idx3) where S_ADDRESS == 'mX37oAzqsBPhN1LWdzV p'..." ;
 keyselidx supplier idx3 "mX37oAzqsBPhN1LWdzV p" ;
 
 displayOff;
 
 print "----------------------------------------------------------------------";
-print "\nSelecting rows from supplier (idx3) where S_ADDRESS >= 'm' ..." ;
+print "\nLower select from supplier (idx3) where S_ADDRESS >= 'm' ..." ;
 lwrselidx supplier idx3 "m" ;
 
 print "----------------------------------------------------------------------";
-print "\nSelecting rows from supplier (idx3) where S_ADDRESS <= 'p'..." ;
+print "\nUpper select from supplier (idx3) where S_ADDRESS <= 'p'..." ;
 uprselidx supplier idx3 "p" ;
 
 print "----------------------------------------------------------------------";
-print "\nSelecting rows from supplier (idx3) where S_ADDRESS >= 'm' & <= 'q'..." ;
+print "\nRange select from supplier (idx3) where S_ADDRESS >= 'm' & <= 'q'..." ;
 rgeselidx supplier idx3 "m" "q" ;
 
 displayOn;
 
 /*----------------------------------------------------------------------------*/
 print "----------------------------------------------------------------------";
-print "Listing indices of supplier..." ;
+print "Listing indexes of supplier..." ;
 lsidx supplier;
 
 /*----------------------------------------------------------------------------*/

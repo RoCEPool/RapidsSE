@@ -91,6 +91,40 @@ IndexBuffer::~IndexBuffer(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* analyze                                                                    */
+/*----------------------------------------------------------------------------*/
+void IndexBuffer::vAnalyze(s48K& sAnalysis, bool bDetailed, i8& iBuffers, i8& iEntries)
+{
+  
+  iBuffers++;
+  iEntries += (m_nEntries - 1);
+  
+  if (bDetailed)
+    sAnalysis.vCatSprint("     buffer %5lld (L%lld) : %lld entries\n"_Str,
+                         iBuffers,
+                         m_nBufferLevel,
+                         m_nEntries - 1);
+  
+  // recursively dump the lower level buffers
+  if (m_nBufferLevel != 0) {
+    
+    for (Entry* pEntry = pNextEntry(pHead()); pEntry != nullptr;
+         pEntry = pNextEntry(pEntry)) {
+      
+      // get the index buffer from the entry
+      IndexBuffer* pIndexBuffer = pEntry->pIndexBuffer();;
+      
+      ASSERT(pIndexBuffer);
+      ASSERT(pIndexBuffer->eClass() == CN_INDEXBUFFER);
+      
+      pIndexBuffer->vAnalyze(sAnalysis, bDetailed, iBuffers, iEntries);
+      
+    }
+  }
+  
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the buffer level                                                       */
 /*----------------------------------------------------------------------------*/
 i8 IndexBuffer::nBufferLevel(void)
@@ -137,40 +171,6 @@ void IndexBuffer::vDump(void)
       ASSERT(pIndexBuffer->eClass() == CN_INDEXBUFFER);
       
       pIndexBuffer->vDump();
-    }
-  }
-  
-}
-
-/*----------------------------------------------------------------------------*/
-/* analyze                                                                    */
-/*----------------------------------------------------------------------------*/
-void IndexBuffer::vAnalyze(s48K& sAnalysis, bool bDetailed, i8& iBuffers, i8& iEntries)
-{
-  
-  iBuffers++;
-  iEntries += (m_nEntries - 1);
-  
-  if (bDetailed)
-    sAnalysis.vCatSprint("     buffer %5lld (L%lld) : %lld entries\n"_Str,
-                         iBuffers,
-                         m_nBufferLevel,
-                         m_nEntries - 1);
-  
-  // recursively dump the lower level buffers
-  if (m_nBufferLevel != 0) {
-  
-    for (Entry* pEntry = pNextEntry(pHead()); pEntry != nullptr;
-         pEntry = pNextEntry(pEntry)) {
-      
-      // get the index buffer from the entry
-      IndexBuffer* pIndexBuffer = pEntry->pIndexBuffer();;
-      
-      ASSERT(pIndexBuffer);
-      ASSERT(pIndexBuffer->eClass() == CN_INDEXBUFFER);
-      
-      pIndexBuffer->vAnalyze(sAnalysis, bDetailed, iBuffers, iEntries);
-      
     }
   }
   
@@ -298,12 +298,7 @@ void IndexBuffer::vBufferCount(i8& nBuffers)
       
     }
   }
-  
 }
-
-/*----------------------------------------------------------------------------*/
-/* insert new entry into this index buffer                                    */
-/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* insert new entry into this index buffer                                    */
@@ -756,8 +751,7 @@ void IndexBuffer::vAdjustOffsets(Entry* pEntry, i8 nAdjustAmount)
       i8 iNewRightOffset = iRightOffset + nAdjustAmount;
       pEntry->vRightOffset(nOffsetNo,iNewRightOffset);
     }
-  }
-  
+  }  
 }
 
 /*----------------------------------------------------------------------------*/

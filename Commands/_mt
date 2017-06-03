@@ -166,6 +166,7 @@ add     add_column
 addidx  add_idxcolumn
 lscol   list_columns
 ld      load_table
+parttbl partition_table
 tblInUse  table_inuse
 tableSizes size_tables
 sel     select_table

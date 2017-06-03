@@ -345,6 +345,7 @@ bool SEitf::bDecode(TokenSet& xTokenSet)
   if (xTokenSet[0]->bSame("antbl"_Str)) return bAnalyzeTable(xTokenSet);
   if (xTokenSet[0]->bSame("anidx"_Str)) return bAnalyzeIndex(xTokenSet);
   if (xTokenSet[0]->bSame("addidxcol"_Str)) return bAddIndexColumn(xTokenSet);
+  if (xTokenSet[0]->bSame("addpartcol"_Str)) return bAddPartitionColumn(xTokenSet);
   if (xTokenSet[0]->bSame("cf"_Str)) return bPushDic(xTokenSet);
   if (xTokenSet[0]->bSame("connectCluster"_Str)) return bConnectCluster(xTokenSet);
   if (xTokenSet[0]->bSame("cp"_Str)) return bCopyTable(xTokenSet);
@@ -375,6 +376,7 @@ bool SEitf::bDecode(TokenSet& xTokenSet)
   if (xTokenSet[0]->bSame("lscol"_Str)) return bListColumns(xTokenSet);
   if (xTokenSet[0]->bSame("lsidx"_Str)) return bListIndices(xTokenSet);
   if (xTokenSet[0]->bSame("lsidxcol"_Str)) return bListIndexColumns(xTokenSet);
+  if (xTokenSet[0]->bSame("lspartcol"_Str)) return bListPartitionColumns(xTokenSet);
   if (xTokenSet[0]->bSame("lssch"_Str)) return bListSchemas(xTokenSet);
   if (xTokenSet[0]->bSame("lstbl"_Str)) return bListTables(xTokenSet);
   if (xTokenSet[0]->bSame("lsten"_Str)) return bListTenants(xTokenSet);
@@ -387,6 +389,7 @@ bool SEitf::bDecode(TokenSet& xTokenSet)
   if (xTokenSet[0]->bSame("mkten"_Str)) return bCreateTenant(xTokenSet);
   if (xTokenSet[0]->bSame("object"_Str)) return bObject(xTokenSet);
   if (xTokenSet[0]->bSame("pRB"_Str)) return bPrintRowBuffer(xTokenSet);
+  if (xTokenSet[0]->bSame("parttbl"_Str)) return bPartitionTable(xTokenSet);
   if (xTokenSet[0]->bSame("pwf"_Str)) return bGetDicPath(xTokenSet);
   if (xTokenSet[0]->bSame("rettbl"_Str)) return bRetTable(xTokenSet);
   if (xTokenSet[0]->bSame("rettsk"_Str)) return bRetTask(xTokenSet);
@@ -531,6 +534,29 @@ bool SEitf::bRemoveFolder(TokenSet& xTokenSet)
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" remove_folder"_Str);
+  
+  return bAppendRequest(sRequest);
+}
+
+/*----------------------------------------------------------------------------*/
+/* parition a table                                                           */
+/*----------------------------------------------------------------------------*/
+bool SEitf::bPartitionTable(TokenSet& xTokenSet)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  s256 sRequest;
+  
+  if (xTokenSet.nTokens() != 2) {
+    vSetLastError(EC_INVALID_PARAMETERS);
+    return false;
+  }
+  
+  sRequest.vConcat(" \""_Str);
+  sRequest.vConcat(xTokenSet[1]);
+  sRequest.vConcat("\""_Str);
+  
+  sRequest.vConcat(" partition_table"_Str);
   
   return bAppendRequest(sRequest);
 }
@@ -1110,6 +1136,37 @@ bool SEitf::bAddIndexColumn(TokenSet& xTokenSet)
 }
 
 /*----------------------------------------------------------------------------*/
+/* add a partition column                                                     */
+/*----------------------------------------------------------------------------*/
+bool SEitf::bAddPartitionColumn(TokenSet& xTokenSet)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  s256 sRequest;
+  
+  if (xTokenSet.nTokens() != 4) {
+    vSetLastError(EC_INVALID_PARAMETERS);
+    return false;
+  }
+  
+  sRequest.vCopy(" \""_Str);
+  sRequest.vConcat(xTokenSet[3]);
+  sRequest.vConcat("\""_Str);
+  
+  sRequest.vConcat(" \""_Str);
+  sRequest.vConcat(xTokenSet[2]);
+  sRequest.vConcat("\""_Str);
+  
+  sRequest.vConcat(" \""_Str);
+  sRequest.vConcat(xTokenSet[1]);
+  sRequest.vConcat("\""_Str);
+  
+  sRequest.vConcat(" add_partcolumn"_Str);
+  
+  return bAppendRequest(sRequest);
+}
+
+/*----------------------------------------------------------------------------*/
 /* end of create index sequence                                               */
 /*----------------------------------------------------------------------------*/
 bool SEitf::bEndCreateIndex(TokenSet& xTokenSet)
@@ -1205,6 +1262,29 @@ bool SEitf::bListIndexColumns(TokenSet& xTokenSet)
   sRequest.vConcat("\""_Str);
 
   sRequest.vConcat(" list_indexcolumns"_Str);
+  
+  return bAppendRequest(sRequest);
+}
+
+/*----------------------------------------------------------------------------*/
+/* list partition columns                                                     */
+/*----------------------------------------------------------------------------*/
+bool SEitf::bListPartitionColumns(TokenSet& xTokenSet)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  s256 sRequest;
+  
+  if (xTokenSet.nTokens() != 3) {
+    vSetLastError(EC_INVALID_PARAMETERS);
+    return false;
+  }
+  
+  sRequest.vCopy("\""_Str);
+  sRequest.vConcat(xTokenSet[1]);
+  sRequest.vConcat("\""_Str);
+  
+  sRequest.vConcat(" list_partcolumns"_Str);
   
   return bAppendRequest(sRequest);
 }

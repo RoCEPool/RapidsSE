@@ -87,6 +87,8 @@ namespace Interface
     
     bool bRemoveFolder(TokenSet& xTokenSet);
 
+    bool bPartitionTable(TokenSet& xTokenSet);
+    
     bool bCreateTenant(TokenSet& xTokenSet);
     bool bListTenants(TokenSet& xTokenSet);
     bool bDropTenant(TokenSet& xTokenSet);
@@ -120,8 +122,10 @@ namespace Interface
    
     bool bAddColumn(TokenSet& xTokenSet);
     bool bAddIndexColumn(TokenSet& xTokenSet);
+    bool bAddPartitionColumn(TokenSet& xTokenSet);
     bool bListColumns(TokenSet& xTokenSet);
     bool bListIndexColumns(TokenSet& xTokenSet);
+    bool bListPartitionColumns(TokenSet& xTokenSet);
     
     bool bAnalyzeIndex(TokenSet& xTokenSet);
     bool bDanalyzeIndex(TokenSet& xTokenSet);

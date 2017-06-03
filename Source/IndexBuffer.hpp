@@ -76,14 +76,14 @@ namespace DBobjects
     Entry*       pPosition(Key* aGivenKey, eJC eJuxtaCompare, EntryVec* pPriorVec);
     void         vPriorVec(Entry* pEntry, EntryVec* pPriorVec);
     void         vReplace(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp);
+    void         vReplaceEqualKey(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp);
+    void         vReplaceLargerKey(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp);
+    void         vReplaceSmallereKey(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp);
     Entry*       pRightEntry(Entry* pEntry, ln nLevelNo);
     i8           iToEndOffsetAbs(Entry* pEntry);
     i8           iToOffsetAbs(Entry* pEntry);
     i8           iToRightOffsetAbs(Entry* pEntry, on nOffsetNo);
   
-    void         vReplaceEqualKey(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp);
-    void         vReplaceLargerKey(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp);
-    void         vReplaceSmallereKey(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp);
   };
   
   IndexBuffer* _pIndexBuffer(void* aAddr);
