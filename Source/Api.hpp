@@ -21,6 +21,10 @@ extern "C" eEC RapidsSE_EndScan(SEitf* pSEitf, i8 iTraceLevel);
 extern "C" eEC RapidsSE_GetCatalogs(SEitf* pSEitf, void** ppCatalog, i8 iTraceLevel);
 extern "C" eEC RapidsSE_GetColumns(SEitf* pSEitf, Str* pCatalog,  Str* pSchema,
                                    Str* pTable, void** ppColumns, i8 iTraceLevel);
+extern "C" eEC RapidsSE_GetIndexes(SEitf* pSEitf, Str* pCatalog,  Str* pSchema,
+                                   Str* pTable, void** ppIndexes, i8 iTraceLevel);
+extern "C" eEC RapidsSE_GetIndexColumns(SEitf* pSEitf, Str* pCatalog,  Str* pSchema,
+                                        Str* pTable, Str* pIndex, void** ppColumns, i8 iTraceLevel);
 extern "C" eEC RapidsSE_GetLastError(SEitf* pSEitf, void** ppError, i8 iTraceLevel);
 extern "C" eEC RapidsSE_GetNextRow(SEitf* pSEitf, void** ppRow, i8 iTraceLevel);
 extern "C" eEC RapidsSE_GetPartitions(SEitf* pSEitf, void** ppParitions, void** ppCount, i8 iTraceLevel);
@@ -40,6 +44,8 @@ bool RapidsSE_ExecuteRequest(SEitf* pSEitf,TokenSet& xTokenSet, Str** ppResponse
 // private calls
 eEC eExecuteRequest(SEitf* pSEitf, Str* aCommand);
 eEC eExecuteRequest(SEitf* pSEitf, Str* aCommand, Str* aParameter);
+eEC eExecuteRequest(SEitf* pSEitf, Str* aCommand, Str* aParameter1,
+                    Str* aParameter2);
 eEC eExecuteRequest(SEitf* pSEitf, Str* aCommand, Str* aParameter1,
                     Str* aParameter2, Str* aParameter3);
 

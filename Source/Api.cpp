@@ -549,6 +549,114 @@ eEC RapidsSE_GetColumns(SEitf* pSEitf, Str* pCatalog, Str* pSchema,
 }
 
 /*----------------------------------------------------------------------------*/
+/* get list of indexes for given table of given catalog, schema and table     */
+/*----------------------------------------------------------------------------*/
+eEC RapidsSE_GetIndexes(SEitf* pSEitf, Str* pCatalog, Str* pSchema,
+                        Str* pTable, void** ppColumns, i8 iTraceLevel)
+{
+  eEC eResult;
+  eEC eResponse;
+  
+  Str* aApiCall = "RapidsSE_GetIndexes"_Str;
+  
+  try {
+    
+    // trace entry
+    TRACE_ENTRY_P3(pCatalog, pSchema, pTable);
+    
+    // validate the SEitf
+    VALIDATE_SEITF("a"_Str);
+    
+    // clear the last error
+    CLEAR_LASTERROR();
+    
+    // validate parameters
+    VALIDATE_PARAM("b"_Str, pCatalog);
+    VALIDATE_PARAM("c"_Str, pSchema);
+    VALIDATE_PARAM("d"_Str, pTable);
+    
+    // change folder to table
+    CF_TABLES("e"_Str);
+    
+    // list all the indexes of pTable
+    eResult = eExecuteRequest(pSEitf, "lsidx"_Str, pTable);
+    CHECK_RESULT("f"_Str);
+    CHECK_RESPONSE("g"_Str);
+    
+    // return the list of columns of pTable
+    *ppColumns = pSEitf->m_sResponse.s();
+    
+    // trace exit
+    TRACE_EXIT("ea"_Str);
+    
+    return eResult;
+  }
+  catch (Error* pError) {
+    RapidsSE::vErrorHandler(pError);
+    TRACE_ERROR("!", pError->eErrorCode());
+    return pError->eErrorCode();
+  }
+  catch (...) {
+    TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
+    return EC_SE_UNKNOWN_ERROR;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* get list of columns for given table of given catalog, schema, table, index */
+/*----------------------------------------------------------------------------*/
+eEC RapidsSE_GetIndexColumns(SEitf* pSEitf, Str* pCatalog, Str* pSchema,
+                        Str* pTable, Str* pIndex, void** ppColumns, i8 iTraceLevel)
+{
+  eEC eResult;
+  eEC eResponse;
+  
+  Str* aApiCall = "RapidsSE_GetIndexes"_Str;
+  
+  try {
+    
+    // trace entry
+    TRACE_ENTRY_P3(pCatalog, pSchema, pTable);
+    
+    // validate the SEitf
+    VALIDATE_SEITF("a"_Str);
+    
+    // clear the last error
+    CLEAR_LASTERROR();
+    
+    // validate parameters
+    VALIDATE_PARAM("b"_Str, pCatalog);
+    VALIDATE_PARAM("c"_Str, pSchema);
+    VALIDATE_PARAM("d"_Str, pTable);
+    
+    // change folder to table
+    CF_TABLES("e"_Str);
+    
+    // list all the indexes of pTable
+    eResult = eExecuteRequest(pSEitf, "lsidxcol"_Str, pTable, pIndex);
+    CHECK_RESULT("f"_Str);
+    CHECK_RESPONSE("g"_Str);
+    
+    // return the list of columns of pTable
+    *ppColumns = pSEitf->m_sResponse.s();
+    
+    // trace exit
+    TRACE_EXIT("ea"_Str);
+    
+    return eResult;
+  }
+  catch (Error* pError) {
+    RapidsSE::vErrorHandler(pError);
+    TRACE_ERROR("!", pError->eErrorCode());
+    return pError->eErrorCode();
+  }
+  catch (...) {
+    TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
+    return EC_SE_UNKNOWN_ERROR;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* get last error                                                             */
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_GetLastError(SEitf* pSEitf, void** ppError, i8 iTraceLevel)
@@ -1259,15 +1367,32 @@ eEC eExecuteRequest(SEitf* pSEitf, Str* aCommand, Str* aParameter)
   
   TokenSet xTokenSet;
   
-//  xTokenSet[0]->vCopy(aCommand);
-//  xTokenSet[1]->vCopy(aParameter);
-//  xTokenSet[2]->vCopy(""_Str);
-  
   xTokenSet.vAddToken(aCommand);
   xTokenSet.vAddToken(aParameter);
   xTokenSet[2]->vCopy(""_Str);
   
-  vTrace("%s %s\n"_Str, xTokenSet[0], xTokenSet[1]);
+  bResult = pSEitf->bDecode(xTokenSet);
+  
+  return pSEitf->eGetLastError();
+}
+
+/*----------------------------------------------------------------------------*/
+/* execute command                                                            */
+/*----------------------------------------------------------------------------*/
+eEC eExecuteRequest(SEitf* pSEitf, Str* aCommand, Str* aParameter1,
+                    Str* aParameter2)
+{
+  // clear the last error
+  pSEitf->vClearLastError();
+  
+  bool bResult;
+  
+  TokenSet xTokenSet;
+  
+  xTokenSet.vAddToken(aCommand);
+  xTokenSet.vAddToken(aParameter1);
+  xTokenSet.vAddToken(aParameter2);
+  xTokenSet[3]->vCopy(""_Str);
   
   bResult = pSEitf->bDecode(xTokenSet);
   
@@ -1285,13 +1410,6 @@ eEC eExecuteRequest(SEitf* pSEitf, Str* aCommand, Str* aParameter1,
   
   bool bResult;
   TokenSet xTokenSet;
-  
-  // execute command
-//  xTokenSet[0]->vCopy(aCommand);
-//  xTokenSet[1]->vCopy(aParameter1);
-//  xTokenSet[2]->vCopy(aParameter2);
-//  xTokenSet[3]->vCopy(aParameter3);
-//  xTokenSet[4]->vCopy(""_Str);
   
   xTokenSet.vAddToken(aCommand);
   xTokenSet.vAddToken(aParameter1);
