@@ -44,10 +44,10 @@
   locals| sTableNm sColumnNm  |
 
   sColumnNm sTableNm
-  //checkAddPartColumn not if <NIP+ERROR> exit then
+  checkAddPartitionColumn not if <NIP+ERROR> exit then
 
-  sColumnNm
-  //addPartColumn ( ) assert::stack_0
+  sColumnNm sTableNm
+  addPartitionColumn ( ) assert::stack_0
 
   <OK>
 ;

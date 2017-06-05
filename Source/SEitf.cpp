@@ -1144,14 +1144,10 @@ bool SEitf::bAddPartitionColumn(TokenSet& xTokenSet)
   
   s256 sRequest;
   
-  if (xTokenSet.nTokens() != 4) {
+  if (xTokenSet.nTokens() != 3) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
-  
-  sRequest.vCopy(" \""_Str);
-  sRequest.vConcat(xTokenSet[3]);
-  sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" \""_Str);
   sRequest.vConcat(xTokenSet[2]);

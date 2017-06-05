@@ -2304,7 +2304,7 @@ bool SePrompt::bPartitionTable(void)
     m_xTokenSet[j++]->vCopy("addpartcol"_Str);
     m_xTokenSet[j++]->vCopy(m_xTokenSet2[2]);
     m_xTokenSet[j++]->vCopy(m_xTokenSet2[4]);
-    m_xTokenSet[j++]->vCopy(m_xTokenSet2[iCurrentToken++]);
+    m_xTokenSet[j++]->vCopy(""_Str);
     
     // add the column
     if (!bExecuteRequest()) {

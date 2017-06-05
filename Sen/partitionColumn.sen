@@ -14,7 +14,7 @@
 /*----------------------------------------------------------------------------*/
 : makePartitionColumns ( "<tableNm>" -- )
 
-  find execute ( dic )
+  find execute ( ^tablePtr )
   partitions::subDic pathPush "columns" :dic drop pathDrop
 ;
 
@@ -49,6 +49,13 @@
 /*----------------------------------------------------------------------------*/
 : popPartitionColumns
     pathDrop
+;
+
+/*----------------------------------------------------------------------------*/
+/* create partition column as a constant                                      */
+/*----------------------------------------------------------------------------*/
+: :partitionColumn ( "<columnName>" )
+  :constant
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -92,6 +99,9 @@
   // push back the partitions folder
   pushPartitions assert
 
+  // push the partitions sub folder
+  tableNm pushPartitionSub assert
+
   // push the partitions columns folder
   pushPartitionColumns assert // not if false exit then
 
@@ -105,45 +115,45 @@
   popPartitionColumns
 
   // pop the partition sub folder
-  popPartitions
+  popPartitionSub
 
-  assertInIndexes
+  assertInPartitions
 
   true
 ;
 
 /*----------------------------------------------------------------------------*/
-/* list columns of an index                                                   */
+/* list columns of table partitioning                                         */
 /*----------------------------------------------------------------------------*/
-: listIndexColumns ( "<indexNm>" -- list )
+: listPartitionColumns ( "<tableNm>" -- list )
+/*
+  find execute ( ^tablePtr )
 
-  find execute ( ^indexPtr )
-
-  0 locals| indexCols indexPtr |
-  indexPtr index.columnCount to indexCols
+  0 locals| partitionCols tablePtr |
+  tablePtr partition.columnCount to partitionCols
 
   ""                             // initial ls string
   args.metadata if
     indexCols 0 do
-      I indexPtr index.columnType
-      I indexPtr index.columnName
+      I tablePtr partition.columnType
+      I tablePtr partition.columnName
       "row: ('%v', '%v')\n" str.format
       str.cat
     loop
-    indexCols task::this task.seitf@ seitf.rowsProcessed
+    partitionCols task::this task.seitf@ seitf.rowsProcessed
   else
 
     indexCols 0 do
-      I indexPtr index.columnType
-      I indexPtr index.columnName
+      I tablePtr partition.columnType
+      I tablePtr partition.columnName
       "%v %v " str.format
-      I 1 + indexCols < if
+      I 1 + partitionCols < if
         swap ", " str.cat
       then
       str.cat
     loop
   then
-
+*/
 ;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -151,31 +161,30 @@
 /*----------------------------------------------------------------------------*/
 /* add an index column (run by all participants)                              */
 /*----------------------------------------------------------------------------*/
-: addIndexColumn allParticipants 2 checkResult ( "<columnNm>" "<indexNm>" -- <result> )
+: addPartitionColumn allParticipants 2 checkResult ( "<columnNm>" "<tableNm>" -- <result> )
 
-  0 locals| indexPtr indexNm columnNm |
+  locals| tableNm columnNm |
 
   args.tracepoint if
-    "ADDING COLUMN " indexNm str.cat " on NODE " str.cat grid.thisNode@ >str str.cat .
+    "ADDING PARTITION COLUMN " columnNm str.cat " on NODE " str.cat grid.thisNode@ >str str.cat .
   then
 
-  tp: addingIndexColumn
+  tp: addingPartitionColumn
 
-  // push the index sub folder
-  indexNm
-  pushIndexSub assert
+  // push the partitions sub folder
+  tableNm pushPartitionSub assert
 
-  // push index columns folder
-  pushIndexColumns assert
+  // push partition columns folder
+  pushPartitionColumns assert
 
   columnNm columnNm    ( "<columnNm>" "<columnNm>" )
-  :indexColumn
+  :partitionColumn
 
-  // pop index columns folder
-  popIndexColumns
+  // pop partition columns folder
+  popPartitionColumns
 
-  // pop the index sub folder
-  popIndexSub
+  // pop the partitions folder
+  popPartitionSub
 
   true <SUCCESS_RESULT>
 ;
