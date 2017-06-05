@@ -349,16 +349,14 @@ snap1:
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // checks
-
   sTableNm checkPartitionTable  not if <NIP+ERROR> exit then
-
+tp: partition_table1
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create partitioning
-
   sTableNm pushTable assert                                // ../tables/sTableNm
   sTableNm get_table
   popTable                                                          // ../tables
-
+tp: partition_table2
   sTableNm partitionTable assertInTables
 
   assert::stack_0

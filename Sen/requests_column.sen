@@ -37,6 +37,22 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* add a partition column                                                     */
+/*----------------------------------------------------------------------------*/
+: add_partcolumn ( "<sColumnNm>" "<sTableNm>" -- <R> )
+
+  locals| sTableNm sColumnNm  |
+
+  sColumnNm sTableNm
+  //checkAddPartColumn not if <NIP+ERROR> exit then
+
+  sColumnNm
+  //addPartColumn ( ) assert::stack_0
+
+  <OK>
+;
+
+/*----------------------------------------------------------------------------*/
 /* get list of columns                                                        */
 /*----------------------------------------------------------------------------*/
 : list_columns ( "<sTableNm>" -- <R> )

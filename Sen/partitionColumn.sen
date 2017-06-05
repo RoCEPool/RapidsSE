@@ -99,13 +99,13 @@
   columnNm findInCurrent
 
   // column should not already exist
-  if EC_DUPLICATE_COLUMN false popPartitionColumns popPartitionSub exit then
+  if EC_DUPLICATE_COLUMN false popPartitionColumns popPartitions exit then
 
   //pop the partition columns folder
   popPartitionColumns
 
   // pop the partition sub folder
-  popPartitionSub
+  popPartitions
 
   assertInIndexes
 

@@ -115,7 +115,7 @@ void Slots::vPopulateIndex(i8 iIndexNo)
 /*----------------------------------------------------------------------------*/
 PtnColVec* Slots::pPtnColVec(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SLOTS,_FOOTER_);
   
   return m_pPtnColVec;
 }
@@ -125,7 +125,7 @@ PtnColVec* Slots::pPtnColVec(void)
 /*----------------------------------------------------------------------------*/
 void Slots::vShowColumnVec(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SLOTS,_FOOTER_);
   
   for (i8 iColumn = 0; iColumn < m_pPtnColVec->nItems(); iColumn++) {
     Column* pColumn = m_pPtnColVec->pGet(iColumn);
@@ -138,7 +138,7 @@ void Slots::vShowColumnVec(void)
 /*----------------------------------------------------------------------------*/
 Dic* Slots::pSubDic(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SLOTS,_FOOTER_);
   
   return &m_xSubDic;
 }
@@ -162,6 +162,8 @@ void Slots::vTidyUp(void)
   // Since the column is picked from the ColVec of table
   // we need to just remove it from the PtnColVec before deleting it
   m_pPtnColVec->vClear();
+  
+  delete m_pPtnColVec;
 }
 
 /*----------------------------------------------------------------------------*/

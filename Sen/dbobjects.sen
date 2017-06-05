@@ -10,6 +10,7 @@
 "index.sen" include
 "column.sen" include
 "indexColumn.sen" include
+"partitionColumn.sen" include
 "schema.sen" include
 "catalog.sen" include
 "tenant.sen" include

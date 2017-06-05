@@ -29,7 +29,7 @@
 /*----------------------------------------------------------------------------*/
 /* check in partitions folder                                                 */
 /*----------------------------------------------------------------------------*/
-: checkInParitions
+: checkInPartitions
   withinPartitions if true exit then
   EC_NOT_IN_PARTITIONS false
 ;
@@ -55,21 +55,20 @@
 : checkPartitionTable ( "<tableNm>" --  true | errorCode false )
 
   locals| sTableNm |
-
+tp: checkPartitionTable
   checkInTables not if false exit then
 
   sTableNm checkIsTableFolder not if false exit then
 
   sTableNm pushTable assert
-  pushPartitions assert
+  sTableNm find execute table.space
+  if EC_TABLE_NOT_EMPTY false popTable exit then
 
-  checkIsEmpty not if popPartitions popTable assertInTables false exit then
-
-  popPartitions
+tp: checkPartitionTable4
   popTable
 
   assertInTables
-
+tp: checkPartitionTable1
   true
 ;
 
@@ -83,12 +82,9 @@
 /*----------------------------------------------------------------------------*/
 /* tidy up of the partition                                                   */
 /*----------------------------------------------------------------------------*/
-: paritionTidyUp ( "<indexNm>" -- )
+: partitionTidyUp ( "<indexNm>" -- )
 
    find execute ( ^indexPtr )
-
-   // truncate the index
-   dup index.truncate
    
    // forget all column names
    dup partitions::subDic
@@ -106,11 +102,11 @@
 /*----------------------------------------------------------------------------*/
 /* make partition (run by participant)                                        */
 /*----------------------------------------------------------------------------*/
-: partitionTable allParticipants 2 checkResult ( "<tableNm>" -- true n# true )
+: partitionTable allParticipants 1 checkResult ( "<tableNm>" -- true n# true )
 
 tp: partitioningTable
 
-  0 0 locals| indexPtr tablePtr tableNm |
+  locals| tableNm |
 
   args.tracepoint if
   "MAKING PARTITIONS on NODE " grid.thisNode@ >str str.cat .
@@ -122,7 +118,7 @@ tp: partitioningTable
   "partitions" find execute pathPush
 
   // make partition columns
-  "makePartitionColumns" find execute
+  tableNm "makePartitionColumns" find execute
 
   true <SUCCESS_RESULT>
 ;

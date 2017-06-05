@@ -68,6 +68,7 @@ namespace Debugging
   /* 46 */ EC_SEND_FAILURE,
   
   /* 47 */ EC_TABLE_EXISTS,
+  /*    */ EC_TABLE_NOT_EMPTY,
   /* 48 */ EC_TABLE_IN_USE,
   /* 49 */ EC_TENANT_EXISTS,
   
@@ -139,6 +140,7 @@ namespace Debugging
   /* 45 */ "SE unknown error"_Str,
   /* 46 */ "send failure"_Str,
   /* 47 */ "table exists"_Str,
+  /*    */ "table not empty"_Str,
   /* 48 */ "table in use"_Str,
   /* 49 */ "tenant exists"_Str,
 

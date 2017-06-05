@@ -579,11 +579,11 @@ tp: makingTable
 
   dup
   find execute pathPush
-  dup
+  dup dup
 
   "makeIndexes" find execute
 
-  //"makePartitions" find execute
+  "makePartitions" find execute
 
   :table ( "<tableNm>" ^table )
 
@@ -630,6 +630,12 @@ tp: removeTable
 
   // forget the indexes dictionary itself
   "indexes" :forget
+
+  // forget the partitions in the partitions dictionary
+  "partitions" find execute forgetAll
+
+  // forget the partitions dictionary itself
+  "partitions" :forget
 
   // forget all column names in the columns dictionary of table sub-dictionary
   dup table.subDic

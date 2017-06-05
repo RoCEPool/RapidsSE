@@ -618,6 +618,7 @@ void Task::vAddConstants(void)
   
   /* 47 */ vAddConstant("EC_TABLE_EXISTS"_Str,       EC_TABLE_EXISTS);
   /* 48 */ vAddConstant("EC_TABLE_IN_USE"_Str,       EC_TABLE_IN_USE);
+  /* 48 */ vAddConstant("EC_TABLE_NOT_EMPTY"_Str,    EC_TABLE_NOT_EMPTY);
   /* 49 */ vAddConstant("EC_TENANT_EXISTS"_Str,      EC_TENANT_EXISTS);
   /* 50 */ vAddConstant("EC_VALIDATION_FAILURE"_Str, EC_VALIDATION_FAILURE);
   /* 51 */ vAddConstant("EC_VERSION_MISMATCH"_Str,   EC_VERSION_MISMATCH); 

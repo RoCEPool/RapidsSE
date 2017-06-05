@@ -99,6 +99,7 @@ Column Requests:
 -----------------
 add         add_column
 addidxcol   add_idxcolumn
+addpartcol  add_partcolumn
 lscol       list_columns
 lsidxcol    list_indexcolumns
  

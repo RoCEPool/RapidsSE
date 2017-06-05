@@ -707,10 +707,11 @@ L0 |  KeyA || KeyB  || KeyC  ||  KeyD || KeyE  || KeyF  || KeyG  || KeyH  |
 /*----------------------------------------------------------------------------*/
 void IndexBuffer::vTruncate(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
-  // recursively dump the lower level buffers
   if (m_nBufferLevel != 0) {
     
+    // recursively delete the lower level buffers
     for (Entry* pEntry = pNextEntry(pHead()); pEntry != nullptr;
          pEntry = pNextEntry(pEntry)) {
       
@@ -719,9 +720,7 @@ void IndexBuffer::vTruncate(void)
       
       ASSERT(pIndexBuffer);
       ASSERT(pIndexBuffer->eClass() == CN_INDEXBUFFER);
-      
-      delete pIndexBuffer;
-      
+      pIndexBuffer->vTruncate();
     }
   }
   

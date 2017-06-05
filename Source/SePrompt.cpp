@@ -2270,7 +2270,7 @@ bool SePrompt::bPartitionTable(void)
   
   // change folder to partition
   m_xTokenSet[0]->vCopy("cf"_Str);
-  m_xTokenSet[1]->vCopy("partition"_Str);
+  m_xTokenSet[1]->vCopy("partitions"_Str);
   
   if (!bExecuteRequest()) {
     vTrace("SePrompt::bPartitionTable : cf FAILED!!!\n"_Str);
@@ -2290,10 +2290,10 @@ bool SePrompt::bPartitionTable(void)
   // create the partition columns
   
   // now collect the column names and their types
-  i8 iCurrentToken = 6;
+  i8 iCurrentToken = 3;
   while(iCurrentToken < iNumTokens - 1) {
     
-    if (iCurrentToken != 6 && !m_xTokenSet2[iCurrentToken++]->bEqual(","_Str)) {
+    if (iCurrentToken != 3 && !m_xTokenSet2[iCurrentToken++]->bEqual(","_Str)) {
       bIndexReturnTable(m_xTokenSet2[4], m_xTokenSet2[2]);
       m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
       return false;
@@ -2302,8 +2302,8 @@ bool SePrompt::bPartitionTable(void)
     // add columns to the table
     i8 j = 0;
     m_xTokenSet[j++]->vCopy("addpartcol"_Str);
-    m_xTokenSet[j++]->vCopy(m_xTokenSet2[4]);
     m_xTokenSet[j++]->vCopy(m_xTokenSet2[2]);
+    m_xTokenSet[j++]->vCopy(m_xTokenSet2[4]);
     m_xTokenSet[j++]->vCopy(m_xTokenSet2[iCurrentToken++]);
     
     // add the column
@@ -2313,7 +2313,7 @@ bool SePrompt::bPartitionTable(void)
       eEC eError = m_pSEitf->eGetLastError();
       
       // drop the table that was created
-      bIndexReturnTable(m_xTokenSet2[4], m_xTokenSet2[2]);
+      bIndexReturnTable(m_xTokenSet2[2], m_xTokenSet2[2]);
       
       // return error returned by addColumn
       m_pSEitf->vSetLastError(eError);
@@ -2325,9 +2325,8 @@ bool SePrompt::bPartitionTable(void)
   // end of partition
   
   m_xTokenSet[0]->vCopy("endparttbl"_Str);
-  m_xTokenSet[1]->vCopy(m_xTokenSet2[4]);
-  m_xTokenSet[2]->vCopy(m_xTokenSet2[2]);
-  m_xTokenSet[3]->vCopy(""_Str);
+  m_xTokenSet[1]->vCopy(m_xTokenSet2[2]);
+  m_xTokenSet[2]->vCopy(""_Str);
   
   if (!bExecuteRequest()) {
     vTrace("SePrompt::bPartitionTable : endparttbl FAILED!!!\n"_Str);
