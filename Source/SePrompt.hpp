@@ -124,6 +124,7 @@ private:
   Footer* pFooter(void);
   
 private:
+  bool bAddColumns(i8 iNumTokens);
   bool bMakeTable();
   
 };

@@ -1412,178 +1412,9 @@ bool SePrompt::bCreateTable(void)
   if ( ! bMakeTable() )
     return false;
   
-  // now collect the column names and their types
-  i8 iCurrentToken = 4;
-  while(iCurrentToken < iNumTokens - 2) {
-    
-    if (iCurrentToken != 4 && !m_xTokenSet2[iCurrentToken++]->bEqual(","_Str)) {
-      bDropReturnTable(m_xTokenSet2[2]);
-      m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
-      return false;
-    }
-    
-    // add columns to the table
-    i8 j = 0;
-    m_xTokenSet[j++]->vCopy("addcol"_Str);
-    m_xTokenSet[j++]->vCopy(m_xTokenSet2[2]);
-    m_xTokenSet[j++]->vCopy(m_xTokenSet2[iCurrentToken++]);
-    
-    if (m_xTokenSet2[iCurrentToken]->bSame("integer"_Str) ||
-        m_xTokenSet2[iCurrentToken]->bSame("varchar"_Str) ||
-        m_xTokenSet2[iCurrentToken]->bSame("varbinary"_Str) ||
-        m_xTokenSet2[iCurrentToken]->bSame("char"_Str) ||
-        m_xTokenSet2[iCurrentToken]->bSame("float"_Str)) {
-      
-      // copy varchar/char
-      m_xTokenSet[j]->vCopy(m_xTokenSet2[iCurrentToken++]);
-      
-      if (m_xTokenSet2[iCurrentToken]->bEqual("("_Str)) {
-        
-        // str.cat '('
-        m_xTokenSet[j]->vConcat(m_xTokenSet2[iCurrentToken++]);
-        
-        // str.cat the size
-        m_xTokenSet[j]->vConcat(m_xTokenSet2[iCurrentToken]);
-        
-        // check if it was numeric
-        if ( ! m_xTokenSet2[iCurrentToken++]->bIsNumeric() ) {
-          // drop the table
-          bDropReturnTable(m_xTokenSet2[2]);
-          m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
-          return false;
-        }
-        
-        if (!m_xTokenSet2[iCurrentToken]->bEqual(")"_Str)) {
-          // drop the table
-          bDropReturnTable(m_xTokenSet2[2]);
-          m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
-          return false;
-        }
-        
-        // str.cat ')'
-        m_xTokenSet[j]->vConcat(m_xTokenSet2[iCurrentToken++]);
-        
-      }
-    }
-    else if (m_xTokenSet2[iCurrentToken]->bSame("decimal"_Str)) {
-      
-      // copy varchar/char
-      m_xTokenSet[j]->vCopy(m_xTokenSet2[iCurrentToken++]);
-      
-      if (m_xTokenSet2[iCurrentToken]->bEqual("("_Str)) {
-        
-        // str.cat '('
-        m_xTokenSet[j]->vConcat(m_xTokenSet2[iCurrentToken++]);
-        
-        // str.cat the size
-        m_xTokenSet[j]->vConcat(m_xTokenSet2[iCurrentToken]);
-        
-        // check if it was numeric
-        if ( ! m_xTokenSet2[iCurrentToken++]->bIsNumeric() ) {
-          bDropReturnTable(m_xTokenSet2[2]);
-          m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
-          return false;
-        }
-        
-        if (!m_xTokenSet2[iCurrentToken]->bEqual(","_Str)) {
-          bDropReturnTable(m_xTokenSet2[2]);
-          m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
-          return false;
-        }
-        
-        // str.cat ','
-        m_xTokenSet[j]->vConcat(m_xTokenSet2[iCurrentToken++]);
-        
-        // str.cat the size
-        m_xTokenSet[j]->vConcat(m_xTokenSet2[iCurrentToken]);
-        
-        // check if it was numeric
-        if ( ! m_xTokenSet2[iCurrentToken++]->bIsNumeric() ) {
-          bDropReturnTable(m_xTokenSet2[2]);
-          m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
-          return false;
-        }
-        
-        if (!m_xTokenSet2[iCurrentToken]->bEqual(")"_Str)) {
-          bDropReturnTable(m_xTokenSet2[2]);
-          m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
-          return false;
-        }
-        
-        // str.cat ')'
-        m_xTokenSet[j]->vConcat(m_xTokenSet2[iCurrentToken++]);
-      }
-    }
-    else if (m_xTokenSet2[iCurrentToken]->bSame("date"_Str) ||
-             m_xTokenSet2[iCurrentToken]->bSame("time"_Str) ||
-             m_xTokenSet2[iCurrentToken]->bSame("timestamp"_Str) ||
-             m_xTokenSet2[iCurrentToken]->bSame("interval"_Str) ||
-             m_xTokenSet2[iCurrentToken]->bSame("boolean"_Str)) {
-      m_xTokenSet[j]->vCopy(m_xTokenSet2[iCurrentToken++]);
-    }
-    else {
-      // drop the table that was created
-      bDropReturnTable(m_xTokenSet2[2]);
-      m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
-      return false;
-    }
-    
-    // check for NOT NULL
-    if (m_xTokenSet2[iCurrentToken]->bSame("not"_Str)) {
-      
-      m_xTokenSet[j]->vConcat(" "_Str);
-      m_xTokenSet[j]->vConcat(m_xTokenSet2[iCurrentToken++]);
-      
-      if (!m_xTokenSet2[iCurrentToken]->bSame("null"_Str)) {
-        bDropReturnTable(m_xTokenSet2[2]);
-        m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
-        return false;
-      }
-      m_xTokenSet[j]->vConcat(" "_Str);
-      m_xTokenSet[j]->vConcat(m_xTokenSet2[iCurrentToken++]);
-    }
-    
-    // check for PRIMARY KEY
-    if (m_xTokenSet2[iCurrentToken]->bSame("primary"_Str)) {
-      
-      m_xTokenSet[j]->vConcat(" "_Str);
-      m_xTokenSet[j]->vConcat(m_xTokenSet2[iCurrentToken++]);
-      
-      if (!m_xTokenSet2[iCurrentToken]->bSame("key"_Str)) {
-        bDropReturnTable(m_xTokenSet2[2]);
-        m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
-        return false;
-      }
-      m_xTokenSet[j]->vConcat(" "_Str);
-      m_xTokenSet[j]->vConcat(m_xTokenSet2[iCurrentToken++]);
-    }
-
-    // check for UNIQUE
-    if (m_xTokenSet2[iCurrentToken]->bSame("unique"_Str)) {
-      
-      m_xTokenSet[j]->vConcat(" "_Str);
-      m_xTokenSet[j]->vConcat(m_xTokenSet2[iCurrentToken++]);
-    }
-
-    
-    // now we should see a column type
-    // validate it
-    m_xTokenSet[j]->vToLower();
-    
-    // add the column
-    if (!bExecuteRequest()) {
-      
-      // save error returned by addColumn
-      eEC eError = m_pSEitf->eGetLastError();
-      
-      // drop the table that was created
-      bDropReturnTable(m_xTokenSet2[2]);
-      
-      // return error returned by addColumn
-      m_pSEitf->vSetLastError(eError);
-      return false;
-    }
-  }
+  if ( ! bAddColumns(iNumTokens) )
+    return false;
+  
   
   // end of make table
   m_xTokenSet[0]->vCopy("endmktbl"_Str);
@@ -2465,6 +2296,194 @@ Footer* SePrompt::pFooter(void)
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* add columns to a table                                                     */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bAddColumns(i8 iNumTokens)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+
+  // now collect the column names and their types
+  i8 iCurrentToken = 4;
+  
+  while(iCurrentToken < iNumTokens - 2) {
+    
+    if (iCurrentToken != 4 && !m_xTokenSet2[iCurrentToken++]->bEqual(","_Str)) {
+      bDropReturnTable(m_xTokenSet2[2]);
+      m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+      return false;
+    }
+    
+    // add columns to the table
+    i8 j = 0;
+    m_xTokenSet[j++]->vCopy("addcol"_Str);
+    m_xTokenSet[j++]->vCopy(m_xTokenSet2[2]);
+    m_xTokenSet[j++]->vCopy(m_xTokenSet2[iCurrentToken++]);
+    
+    if (m_xTokenSet2[iCurrentToken]->bSame("integer"_Str) ||
+        m_xTokenSet2[iCurrentToken]->bSame("varchar"_Str) ||
+        m_xTokenSet2[iCurrentToken]->bSame("varbinary"_Str) ||
+        m_xTokenSet2[iCurrentToken]->bSame("char"_Str) ||
+        m_xTokenSet2[iCurrentToken]->bSame("float"_Str)) {
+      
+      // copy varchar/char
+      m_xTokenSet[j]->vCopy(m_xTokenSet2[iCurrentToken++]);
+      
+      if (m_xTokenSet2[iCurrentToken]->bEqual("("_Str)) {
+        
+        // str.cat '('
+        m_xTokenSet[j]->vConcat(m_xTokenSet2[iCurrentToken++]);
+        
+        // str.cat the size
+        m_xTokenSet[j]->vConcat(m_xTokenSet2[iCurrentToken]);
+        
+        // check if it was numeric
+        if ( ! m_xTokenSet2[iCurrentToken++]->bIsNumeric() ) {
+          // drop the table
+          bDropReturnTable(m_xTokenSet2[2]);
+          m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+          return false;
+        }
+        
+        if (!m_xTokenSet2[iCurrentToken]->bEqual(")"_Str)) {
+          // drop the table
+          bDropReturnTable(m_xTokenSet2[2]);
+          m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+          return false;
+        }
+        
+        // str.cat ')'
+        m_xTokenSet[j]->vConcat(m_xTokenSet2[iCurrentToken++]);
+        
+      }
+    }
+    else if (m_xTokenSet2[iCurrentToken]->bSame("decimal"_Str)) {
+      
+      // copy varchar/char
+      m_xTokenSet[j]->vCopy(m_xTokenSet2[iCurrentToken++]);
+      
+      if (m_xTokenSet2[iCurrentToken]->bEqual("("_Str)) {
+        
+        // str.cat '('
+        m_xTokenSet[j]->vConcat(m_xTokenSet2[iCurrentToken++]);
+        
+        // str.cat the size
+        m_xTokenSet[j]->vConcat(m_xTokenSet2[iCurrentToken]);
+        
+        // check if it was numeric
+        if ( ! m_xTokenSet2[iCurrentToken++]->bIsNumeric() ) {
+          bDropReturnTable(m_xTokenSet2[2]);
+          m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+          return false;
+        }
+        
+        if (!m_xTokenSet2[iCurrentToken]->bEqual(","_Str)) {
+          bDropReturnTable(m_xTokenSet2[2]);
+          m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+          return false;
+        }
+        
+        // str.cat ','
+        m_xTokenSet[j]->vConcat(m_xTokenSet2[iCurrentToken++]);
+        
+        // str.cat the size
+        m_xTokenSet[j]->vConcat(m_xTokenSet2[iCurrentToken]);
+        
+        // check if it was numeric
+        if ( ! m_xTokenSet2[iCurrentToken++]->bIsNumeric() ) {
+          bDropReturnTable(m_xTokenSet2[2]);
+          m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+          return false;
+        }
+        
+        if (!m_xTokenSet2[iCurrentToken]->bEqual(")"_Str)) {
+          bDropReturnTable(m_xTokenSet2[2]);
+          m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+          return false;
+        }
+        
+        // str.cat ')'
+        m_xTokenSet[j]->vConcat(m_xTokenSet2[iCurrentToken++]);
+      }
+    }
+    else if (m_xTokenSet2[iCurrentToken]->bSame("date"_Str) ||
+             m_xTokenSet2[iCurrentToken]->bSame("time"_Str) ||
+             m_xTokenSet2[iCurrentToken]->bSame("timestamp"_Str) ||
+             m_xTokenSet2[iCurrentToken]->bSame("interval"_Str) ||
+             m_xTokenSet2[iCurrentToken]->bSame("boolean"_Str)) {
+      m_xTokenSet[j]->vCopy(m_xTokenSet2[iCurrentToken++]);
+    }
+    else {
+      // drop the table that was created
+      bDropReturnTable(m_xTokenSet2[2]);
+      m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+      return false;
+    }
+    
+    // check for NOT NULL
+    if (m_xTokenSet2[iCurrentToken]->bSame("not"_Str)) {
+      
+      m_xTokenSet[j]->vConcat(" "_Str);
+      m_xTokenSet[j]->vConcat(m_xTokenSet2[iCurrentToken++]);
+      
+      if (!m_xTokenSet2[iCurrentToken]->bSame("null"_Str)) {
+        bDropReturnTable(m_xTokenSet2[2]);
+        m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+        return false;
+      }
+      m_xTokenSet[j]->vConcat(" "_Str);
+      m_xTokenSet[j]->vConcat(m_xTokenSet2[iCurrentToken++]);
+    }
+    
+    // check for PRIMARY KEY
+    if (m_xTokenSet2[iCurrentToken]->bSame("primary"_Str)) {
+      
+      m_xTokenSet[j]->vConcat(" "_Str);
+      m_xTokenSet[j]->vConcat(m_xTokenSet2[iCurrentToken++]);
+      
+      if (!m_xTokenSet2[iCurrentToken]->bSame("key"_Str)) {
+        bDropReturnTable(m_xTokenSet2[2]);
+        m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+        return false;
+      }
+      m_xTokenSet[j]->vConcat(" "_Str);
+      m_xTokenSet[j]->vConcat(m_xTokenSet2[iCurrentToken++]);
+    }
+    
+    // check for UNIQUE
+    if (m_xTokenSet2[iCurrentToken]->bSame("unique"_Str)) {
+      
+      m_xTokenSet[j]->vConcat(" "_Str);
+      m_xTokenSet[j]->vConcat(m_xTokenSet2[iCurrentToken++]);
+    }
+    
+    
+    // now we should see a column type
+    // validate it
+    m_xTokenSet[j]->vToLower();
+    
+    // add the column
+    if (!bExecuteRequest()) {
+      
+      // save error returned by addColumn
+      eEC eError = m_pSEitf->eGetLastError();
+      
+      // drop the table that was created
+      bDropReturnTable(m_xTokenSet2[2]);
+      
+      // return error returned by addColumn
+      m_pSEitf->vSetLastError(eError);
+      return false;
+    }
+  }
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* make a table                                                               */
+/*----------------------------------------------------------------------------*/
 bool SePrompt::bMakeTable()
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
@@ -2511,7 +2530,7 @@ bool SePrompt::bMakeTable()
     
     return false;
   }
-
+  
   return true;
 }
 
