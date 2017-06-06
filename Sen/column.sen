@@ -220,6 +220,34 @@
 
   popTableSub
 
+  // push the partition sub dic and then the columns sub dic
+  tableNm pushPartitionSub assert
+
+  pushPartitionColumns assert
+
+  // double check the path
+  //task::this task.dicStack dicPath.dump
+
+  // iterate contents of columns dictionary
+  0 pathPick dic.lastWord dup
+  iterate                        // iterate word cursor
+  object@ execute              ( value )
+  object@ word.name            ( value wordNm )
+  tablePtr                     ( value wordNm ^table )
+  table.partColumnVec
+  object@ word.prev object!    // advance cursor backwards thru words
+  next
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  //indexPtr index.showColumnVec
+
+  assert::stack_0
+
+  popPartitionColumns
+
+  popPartitionSub
+
   true <SUCCESS_RESULT>
 ;
 

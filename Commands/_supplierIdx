@@ -95,7 +95,7 @@ print "\nSelecting rows from supplier (idx3) where S_ADDRESS == 'mX37oAzqsBPhN1L
 keyselidx supplier idx3 "mX37oAzqsBPhN1LWdzV p" ;
 
 anidx supplier idx1;
-danidx supplier idx1 ;
+//danidx supplier idx1 ;
 
 visidx supplier idx1;
 visidx supplier idx2;

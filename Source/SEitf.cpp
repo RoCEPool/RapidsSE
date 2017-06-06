@@ -1280,7 +1280,7 @@ bool SEitf::bListPartitionColumns(TokenSet& xTokenSet)
   sRequest.vConcat(xTokenSet[1]);
   sRequest.vConcat("\""_Str);
   
-  sRequest.vConcat(" list_partcolumns"_Str);
+  sRequest.vConcat(" list_partitioncolumns"_Str);
   
   return bAppendRequest(sRequest);
 }

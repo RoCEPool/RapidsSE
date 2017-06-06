@@ -936,6 +936,7 @@ namespace Tasks
     static void vTableList(NNP_Task nnpTask);
     static void vTableName(NNP_Task nnpTask);
     static void vTablePartSubDic(NNP_Task nnpTask);
+    static void vTablePartColumnVec(NNP_Task nnpTask);
     static void vTableRef(NNP_Task nnpTask);
     static void vTableShowColumnVec(NNP_Task nnpTask);
     static void vTableSpace(NNP_Task nnpTask);

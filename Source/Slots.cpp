@@ -67,7 +67,7 @@ Slots::~Slots(void)
 /*----------------------------------------------------------------------------*/
 void Slots::vCreateColumnVec(Table* pTable, s32& sColumnNm, s48K& sColumnDefn)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SLOTS,_FOOTER_);
   
   Column* pColumn = nullptr;
   

@@ -242,6 +242,7 @@ ddlLock::grabWrite
 
   //"end_create_table" .
 
+  // create column vector of table and partition
   columnVecTable
 
   assert::stack_0

@@ -569,28 +569,28 @@ tp: analyzeTable
 : makeTable allParticipants 1 checkResult ( "<tableNm>" -- true n# true )
 
 tp: makingTable
+  locals| tableNm |
 
   args.tracepoint if
-  dup "MAKING TABLE " swap str.cat " on NODE " str.cat grid.thisNode@ >str str.cat .
+  tableNm "MAKING TABLE " swap str.cat " on NODE " str.cat grid.thisNode@ >str str.cat .
   then
 
-  dup dup
-  makeTableDic
+  tableNm makeTableDic
 
-  dup
+  tableNm
   find execute pathPush
-  dup dup
 
-  "makeIndexes" find execute
+  tableNm "makeIndexes" find execute
 
-  "makePartitions" find execute
+  tableNm "makePartitions" find execute
 
-  :table ( "<tableNm>" ^table )
+  tableNm :table ( ^table )
 
-  drop ( "<tableNm>" )
+  // make partition columns
+  tableNm "makePartitionColumns" find execute
 
   // forward reference :-(
-  "makeColumns" find execute
+  tableNm "makeColumns" find execute
 
   true <SUCCESS_RESULT>
 ;

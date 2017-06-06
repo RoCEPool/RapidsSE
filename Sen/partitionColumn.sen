@@ -14,8 +14,8 @@
 /*----------------------------------------------------------------------------*/
 : makePartitionColumns ( "<tableNm>" -- )
 
-  find execute ( ^tablePtr )
-  partitions::subDic pathPush "columns" :dic drop pathDrop
+  find execute ( dic )
+  table.partSubDic pathPush "columns" :dic drop pathDrop
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -59,13 +59,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* create partition column as a constant                                      */
-/*----------------------------------------------------------------------------*/
-: :partitionColumn ( "<columnName>" )
-    :constant
-;
-
-/*----------------------------------------------------------------------------*/
 /* check and add a partition column                                           */
 /*----------------------------------------------------------------------------*/
 : checkAddPartitionColumn ( "<columnName>" "<tableNm>" -- true | eEC false )
@@ -82,16 +75,18 @@
   tableNm pushTableSub assert
 
   // push the table columns folder
-  pushColumns
+  "pushColumns" find execute
 
   // look for the partition column in the table columns
   columnNm findInCurrent
 
   // column should exist in table
-  not if EC_INVALID_COLUMN false popColumns popTableSub pushPartitions assert exit then
+  not if EC_INVALID_COLUMN false
+   "popColumns" find execute popTableSub pushPartitions assert exit
+  then
 
   // pop the columns folder
-  popColumns
+  "popColumns" find execute
 
   // pop the tables sub folder
   popTableSub
@@ -135,7 +130,6 @@
   ""                             // initial ls string
   args.metadata if
     indexCols 0 do
-      I tablePtr partition.columnType
       I tablePtr partition.columnName
       "row: ('%v', '%v')\n" str.format
       str.cat
@@ -144,7 +138,6 @@
   else
 
     indexCols 0 do
-      I tablePtr partition.columnType
       I tablePtr partition.columnName
       "%v %v " str.format
       I 1 + partitionCols < if
@@ -190,16 +183,14 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* create the column vector of the index                                      */
+/* create the column vector of the partition                                  */
 /*----------------------------------------------------------------------------*/
-: columnVecIndex allParticipants 1 checkResult ( "<indexNm>" -- true n# true )
+: columnVecPartition allParticipants 1 checkResult ( "<tableNm>" -- true n# true )
 
-  0 locals| indexPtr indexNm |
-
-  //"columnVecIndex" . indexNm .
+  0 locals| tablePtr tableNm |
 
   // get index ptr
-  indexNm findInCurrent execute to indexPtr
+  tableNm findInCurrent execute to tablePtr
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // double check we can see the index
@@ -207,10 +198,10 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  // push the index sub dic and then the columns sub dic
-  indexNm pushIndexSub assert
+  // push the partition sub dic and then the columns sub dic
+  tablePtr pushPartitionSub assert
 
-  pushIndexColumns assert
+  pushPartitionColumns assert
 
   // double check the path
   //task::this task.dicStack dicPath.dump
@@ -220,8 +211,8 @@
   iterate                        // iterate word cursor
     object@ execute              ( value )
     object@ word.name            ( value wordNm )
-    indexPtr                     ( value wordNm ^table )
-    index.createColumnVec
+    tablePtr                     ( value wordNm ^table )
+    table.partColumnVec
     object@ word.prev object!    // advance cursor backwards thru words
   next
 
@@ -231,9 +222,9 @@
 
   assert::stack_0
 
-  popIndexColumns
+  popPartitionColumns
 
-  popIndexSub
+  popPartitionSub
 
   true <SUCCESS_RESULT>
 ;

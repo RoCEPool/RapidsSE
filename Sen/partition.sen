@@ -9,11 +9,14 @@
 /*----------------------------------------------------------------------------*/
 : makePartitions ( "<tableNm>" -- )
 
+  locals| tableNm |
+
   args.tracepoint if
-  dup "MAKING PARTITIONS FOR TABLE " swap str.cat " on NODE " str.cat grid.thisNode@ >str str.cat .
+    tableNm "MAKING PARTITIONS FOR TABLE " swap str.cat " on NODE " str.cat grid.thisNode@ >str str.cat .
   then
 
-  find execute ( dic )
+  tableNm find execute ( dic )
+  dup ( dic dic )
   "partitions" ( dic "partitions" )
   swap         ( "partitions" dic )
   :folder      ( )
@@ -53,7 +56,7 @@
 /* find the partition sub folder and push it onto task dictionary             */
 /*----------------------------------------------------------------------------*/
 : pushPartitionSub ( "<tableNm>" -- )
-  find execute partitions::subDic pathPush
+  find execute table.partSubDic pathPush
   true
 ;
 
@@ -97,18 +100,18 @@ tp: checkPartitionTable1
 /*----------------------------------------------------------------------------*/
 /* tidy up of the partition                                                   */
 /*----------------------------------------------------------------------------*/
-: partitionTidyUp ( "<indexNm>" -- )
+: partitionTidyUp ( "<tableNm>" -- )
 
-   find execute ( ^indexPtr )
+   find execute ( ^tablePtr )
    
    // forget all column names
-   dup partitions::subDic
+   dup table.partSubDic
    pathPush
    "columns" find execute forgetAll
    pathDrop
 
   // forget the sub dictionary
-  partitions::subDic forgetAll
+  table.partSubDic forgetAll
 ;
 
 ////////////////////////////////////////////////////////////////////////////////

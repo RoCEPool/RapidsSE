@@ -123,7 +123,8 @@ private:
   Footer* pFooter(void);
   
 private:
-  bool bAddColumns(i8& iToken, i8 iNumTokens);
+  bool bAddTableColumns(i8& iToken, i8 iNumTokens);
+  bool bAddPartitionColumn(Str* pTable, Str* pColumn);
   bool bDropReturnTable(Str* aTableName);
   bool bEndMakeTable(void);
   bool bMakeTable(void);
