@@ -123,11 +123,12 @@ private:
   Footer* pFooter(void);
   
 private:
-  bool bAddColumns(i8 iNumTokens);
+  bool bAddColumns(i8& iToken, i8 iNumTokens);
   bool bDropReturnTable(Str* aTableName);
   bool bEndMakeTable(void);
-  bool bRemoveTable(Str* pTableName);
   bool bMakeTable(void);
+  bool bPartitionTable(i8 iToken, i8 iNumTokens);
+  bool bRemoveTable(Str* pTableName);
   
 };
 

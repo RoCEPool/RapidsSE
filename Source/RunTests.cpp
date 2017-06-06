@@ -30,17 +30,17 @@ void RunTests::vRunTests(void) {
   
   //ClusterTests* pClusterTests
 
-  StartTests* pStartTests = new StartTests();
-  pStartTests->vRun(this);
+  //StartTests* pStartTests = new StartTests();
+  //pStartTests->vRun(this);
 
-  TenantTests* pTenantTests = new TenantTests();
-  pTenantTests->vRun(this);
+  //TenantTests* pTenantTests = new TenantTests();
+  //pTenantTests->vRun(this);
 
-  CatalogTests* pCatalogTests = new CatalogTests();
-  pCatalogTests->vRun(this);
+  //CatalogTests* pCatalogTests = new CatalogTests();
+  //pCatalogTests->vRun(this);
 
-  SchemaTests* pSchemaTests = new SchemaTests();
-  pSchemaTests->vRun(this);
+  //SchemaTests* pSchemaTests = new SchemaTests();
+  //pSchemaTests->vRun(this);
 
   TableTests* pTableTests = new TableTests();
   pTableTests->vRun(this);

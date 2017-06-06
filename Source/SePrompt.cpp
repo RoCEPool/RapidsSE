@@ -243,6 +243,9 @@ bool SePrompt::bExecuteString(StrVal& sRequest, eEC& eErrorCode)
     iToken++;
     ASSERT(iToken < C_TOKENS);
   }
+  // stip off ;
+  m_xTokenSet.vStripSemicolon();
+  
   bool bResult = bProcessCommand(false);
   
   eErrorCode = m_pSEitf->m_eErrorCode;
@@ -1381,7 +1384,7 @@ bool SePrompt::bCreateTable(void)
   // copy tokens from m_xTokenSet to m_xTokenSet2
   // while doing that also validate the create statament
   for (iToken = 0; iToken < C_TOKENS; iToken++) {
-    if (! *m_xTokenSet[iToken]->s())
+    if ( ! *m_xTokenSet[iToken]->s())
       break;
     m_xTokenSet2[iToken]->vCopy(m_xTokenSet[iToken]);
     m_xTokenSet[iToken]->vCopy(""_Str);
@@ -1398,13 +1401,13 @@ bool SePrompt::bCreateTable(void)
   }
   
   // token[3] should be '('
-  if (!m_xTokenSet2[3]->bEqual("("_Str)) {
+  if ( ! m_xTokenSet2[3]->bEqual("("_Str)) {
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
   }
   
   // last-1 token should be ')'
-  if (!m_xTokenSet2[iNumTokens-1]->bEqual(")"_Str)) {
+  if ( ! m_xTokenSet2[iNumTokens-1]->bEqual(")"_Str)) {
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
   }
@@ -1412,13 +1415,34 @@ bool SePrompt::bCreateTable(void)
   if ( ! bMakeTable() )
     return false;
   
-  if ( ! bAddColumns(iNumTokens) )
+  i8 iCurrentToken = 4;
+  if ( ! bAddColumns(iCurrentToken, iNumTokens) )
     return false;
   
   if ( ! bEndMakeTable() )
       return false;
-      
-
+  
+  // current token should be at ')'
+  if ( ! m_xTokenSet2[iCurrentToken++]->bEqual(")"_Str)) {
+    bool bRemove = bRemoveTable(m_xTokenSet2[2]);
+    ASSERT(bRemove);
+    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+    return false;
+  }
+  
+  // check if we have a partition by clause
+  if ( m_xTokenSet2[iCurrentToken++]->bEqual("partition"_Str)) {
+    
+    if ( ! bPartitionTable(iCurrentToken, iNumTokens) )
+      return false;
+    
+  }
+  else {
+    // no partition by clause
+    // we will create partitioning using the first column
+    
+  }
+  
   // change folder to back to tables
   m_xTokenSet[0]->vCopy("cf"_Str);
   m_xTokenSet[1]->vCopy(".."_Str);
@@ -1994,7 +2018,7 @@ bool SePrompt::bPartitionTable(void)
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // partition the index
+  // partition the table
   
   m_xTokenSet[0]->vCopy("parttbl"_Str);
   m_xTokenSet[1]->vCopy(m_xTokenSet2[2]);
@@ -2261,16 +2285,26 @@ Footer* SePrompt::pFooter(void)
 /*----------------------------------------------------------------------------*/
 /* add columns to a table                                                     */
 /*----------------------------------------------------------------------------*/
-bool SePrompt::bAddColumns(i8 iNumTokens)
+bool SePrompt::bAddColumns(i8& iToken, i8 iNumTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
 
-  // now collect the column names and their types
-  i8 iCurrentToken = 4;
+  bool bDrop;
   
-  while(iCurrentToken < iNumTokens - 2) {
+  // now collect the column names and their types
+  i8 iCurrentToken = iToken;
+  
+//  while(iCurrentToken < iNumTokens - 2) {
+//    
+//    if (iCurrentToken != iToken && !m_xTokenSet2[iCurrentToken++]->bEqual(","_Str)) {
+//      bDropReturnTable(m_xTokenSet2[2]);
+//      m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+//      return false;
+//    }
+  
+  while( ! m_xTokenSet2[iCurrentToken]->bEqual(")"_Str)) {
     
-    if (iCurrentToken != 4 && !m_xTokenSet2[iCurrentToken++]->bEqual(","_Str)) {
+    if (iCurrentToken != iToken && ! m_xTokenSet2[iCurrentToken++]->bEqual(","_Str)) {
       bDropReturnTable(m_xTokenSet2[2]);
       m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
       return false;
@@ -2302,14 +2336,16 @@ bool SePrompt::bAddColumns(i8 iNumTokens)
         // check if it was numeric
         if ( ! m_xTokenSet2[iCurrentToken++]->bIsNumeric() ) {
           // drop the table
-          bDropReturnTable(m_xTokenSet2[2]);
+          bDrop = bDropReturnTable(m_xTokenSet2[2]);
+          ASSERT(bDrop);
           m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
           return false;
         }
         
         if (!m_xTokenSet2[iCurrentToken]->bEqual(")"_Str)) {
           // drop the table
-          bDropReturnTable(m_xTokenSet2[2]);
+          bDrop = bDropReturnTable(m_xTokenSet2[2]);
+          ASSERT(bDrop);
           m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
           return false;
         }
@@ -2439,6 +2475,7 @@ bool SePrompt::bAddColumns(i8 iNumTokens)
     }
   }
   
+  iToken = iCurrentToken;
   return true;
 }
 
@@ -2464,8 +2501,7 @@ _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   bool bRemove = bRemoveTable(aTableName);
   ASSERT(bRemove);
   
-  if (!bExecuteRequest()) {
-    //vFatal("Error: (%s) Drop Table %s\n"_Str, m_sResponse.s(), pTableName);
+  if (!bRemove) {
     return false;
   }
   return true;
@@ -2495,25 +2531,6 @@ bool SePrompt::bEndMakeTable()
   bool bResult = bReturnTable();
   ASSERT(bResult);
   
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* remove a table                                                             */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bRemoveTable(Str* pTableName)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-
-  // create the table
-  m_xTokenSet[0]->vCopy("rmtbl"_Str);
-  m_xTokenSet[1]->vCopy(pTableName);
-  m_xTokenSet[2]->vCopy(""_Str);
-  
-  if (!bExecuteRequest()) {
-    return false;
-  }
-
   return true;
 }
 
@@ -2551,6 +2568,128 @@ bool SePrompt::bMakeTable()
     bool bRemove = bRemoveTable(m_xTokenSet2[2]);
     ASSERT(bRemove);
 
+    return false;
+  }
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* partition the table                                                        */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bPartitionTable(i8 iToken, i8 iNumTokens)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  // now collect the column names and their types
+  i8 iCurrentToken = iToken;
+  
+  // next token should be 'by'
+  if (!m_xTokenSet2[iCurrentToken]->bEqual("by"_Str)) {
+    // save error returned by addColumn
+    eEC eError = m_pSEitf->eGetLastError();
+    
+    vTrace("SePrompt::bPartitionTable : cf FAILED!!!\n"_Str);
+    bool bDrop = bDropReturnTable(m_xTokenSet2[2]);
+    ASSERT(bDrop);
+    
+    // return error returned by addColumn
+    m_pSEitf->vSetLastError(eError);
+    return false;
+
+  }
+  
+  // next token should be '('
+  if (!m_xTokenSet2[iCurrentToken]->bEqual("("_Str)) {
+    // save error returned by addColumn
+    eEC eError = m_pSEitf->eGetLastError();
+    
+    vTrace("SePrompt::bPartitionTable : cf FAILED!!!\n"_Str);
+    bool bDrop = bDropReturnTable(m_xTokenSet2[2]);
+    ASSERT(bDrop);
+    
+    // return error returned by addColumn
+    m_pSEitf->vSetLastError(eError);
+    return false;
+
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // change folder to partition
+  m_xTokenSet[0]->vCopy("cf"_Str);
+  m_xTokenSet[1]->vCopy("partitions"_Str);
+  
+  if (!bExecuteRequest()) {
+    vTrace("SePrompt::bPartitionTable : cf FAILED!!!\n"_Str);
+    // save error returned by addColumn
+    eEC eError = m_pSEitf->eGetLastError();
+    
+    vTrace("SePrompt::bPartitionTable : cf FAILED!!!\n"_Str);
+    bool bDrop = bDropReturnTable(m_xTokenSet2[2]);
+    ASSERT(bDrop);
+    
+    // return error returned by addColumn
+    m_pSEitf->vSetLastError(eError);
+    return false;
+
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create the partition columns
+  while(iCurrentToken < iNumTokens - 2) {
+    
+    if (iCurrentToken != iToken && !m_xTokenSet2[iCurrentToken++]->bEqual(","_Str)) {
+      // save error returned by addColumn
+      eEC eError = m_pSEitf->eGetLastError();
+      
+      vTrace("SePrompt::bPartitionTable : cf FAILED!!!\n"_Str);
+      bool bDrop = bDropReturnTable(m_xTokenSet2[2]);
+      ASSERT(bDrop);
+      
+      // return error returned by addColumn
+      m_pSEitf->vSetLastError(eError);
+      return false;
+    }
+    
+    // add columns to the table
+    i8 j = 0;
+    m_xTokenSet[j++]->vCopy("addpartcol"_Str);
+    m_xTokenSet[j++]->vCopy(m_xTokenSet2[2]);
+    m_xTokenSet[j++]->vCopy(m_xTokenSet2[iCurrentToken++]);
+    m_xTokenSet[j++]->vCopy(""_Str);
+    
+    // add the column
+    if (!bExecuteRequest()) {
+      
+      // save error returned by addColumn
+      eEC eError = m_pSEitf->eGetLastError();
+      
+      vTrace("SePrompt::bPartitionTable : cf FAILED!!!\n"_Str);
+      bool bDrop = bDropReturnTable(m_xTokenSet2[2]);
+      ASSERT(bDrop);
+      
+      // return error returned by addColumn
+      m_pSEitf->vSetLastError(eError);
+      return false;
+    }
+  }
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* remove a table                                                             */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bRemoveTable(Str* pTableName)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  // create the table
+  m_xTokenSet[0]->vCopy("rmtbl"_Str);
+  m_xTokenSet[1]->vCopy(pTableName);
+  m_xTokenSet[2]->vCopy(""_Str);
+  
+  if (!bExecuteRequest()) {
     return false;
   }
   
