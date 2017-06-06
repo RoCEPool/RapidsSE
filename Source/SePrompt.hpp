@@ -94,7 +94,6 @@ private:
   bool bDropIndex(void);
   bool bDropSchema(void);
   bool bDropTable(void);
-  bool bDropReturnTable(Str* aTableName);
   bool bIndexReturnTable(Str* aTableName, Str* aIndexName);
   bool bDropTenant(void);
   
@@ -125,7 +124,10 @@ private:
   
 private:
   bool bAddColumns(i8 iNumTokens);
-  bool bMakeTable();
+  bool bDropReturnTable(Str* aTableName);
+  bool bEndMakeTable(void);
+  bool bRemoveTable(Str* pTableName);
+  bool bMakeTable(void);
   
 };
 

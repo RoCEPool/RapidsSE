@@ -1415,19 +1415,9 @@ bool SePrompt::bCreateTable(void)
   if ( ! bAddColumns(iNumTokens) )
     return false;
   
-  
-  // end of make table
-  m_xTokenSet[0]->vCopy("endmktbl"_Str);
-  m_xTokenSet[1]->vCopy(m_xTokenSet2[2]);
-  m_xTokenSet[2]->vCopy(""_Str);
-  
-  if (!bExecuteRequest()) {
-    vTrace("SePrompt::bCreateTable : endmktbl FAILED!!!\n"_Str);
-  }
-  
-  // derefernce and return the table first
-  bool bResult = bReturnTable();
-  ASSERT(bResult);
+  if ( ! bEndMakeTable() )
+      return false;
+      
 
   // change folder to back to tables
   m_xTokenSet[0]->vCopy("cf"_Str);
@@ -1704,35 +1694,6 @@ bool SePrompt::bIndexReturnTable(Str* aTableName, Str* aIndexName)
   return true;
 }
   
-/*----------------------------------------------------------------------------*/
-/* drop return table                                                          */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bDropReturnTable(Str* aTableName)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  // derefernce and return the table first
-  bool bResult = bReturnTable();
-  ASSERT(bResult);
-  
-  // change folder to table
-  m_xTokenSet[0]->vCopy("cf"_Str);
-  m_xTokenSet[1]->vCopy(".."_Str);
-  
-  if (!bExecuteRequest()) {
-    return false;
-  }
-  m_xTokenSet[0]->vCopy("rmtbl"_Str);
-  m_xTokenSet[1]->vCopy(aTableName);
-  m_xTokenSet[2]->vCopy(""_Str);
-  
-  if (!bExecuteRequest()) {
-    //vFatal("Error: (%s) Drop Table %s\n"_Str, m_sResponse.s(), pTableName);
-    return false;
-  }
-  return true;
-}
-
 /*----------------------------------------------------------------------------*/
 /* drop tenant                                                                */
 /*----------------------------------------------------------------------------*/
@@ -2482,6 +2443,81 @@ bool SePrompt::bAddColumns(i8 iNumTokens)
 }
 
 /*----------------------------------------------------------------------------*/
+/* drop return table                                                          */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bDropReturnTable(Str* aTableName)
+{
+_precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+
+  // derefernce and return the table first
+  bool bResult = bReturnTable();
+  ASSERT(bResult);
+
+  // change folder to table
+  m_xTokenSet[0]->vCopy("cf"_Str);
+  m_xTokenSet[1]->vCopy(".."_Str);
+
+  if (!bExecuteRequest()) {
+    return false;
+  }
+  
+  bool bRemove = bRemoveTable(aTableName);
+  ASSERT(bRemove);
+  
+  if (!bExecuteRequest()) {
+    //vFatal("Error: (%s) Drop Table %s\n"_Str, m_sResponse.s(), pTableName);
+    return false;
+  }
+  return true;
+}
+      
+
+/*----------------------------------------------------------------------------*/
+/* end a make table                                                           */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bEndMakeTable()
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  // end of make table
+  m_xTokenSet[0]->vCopy("endmktbl"_Str);
+  m_xTokenSet[1]->vCopy(m_xTokenSet2[2]);
+  m_xTokenSet[2]->vCopy(""_Str);
+  
+  if (!bExecuteRequest()) {
+    vTrace("SePrompt::bCreateTable : endmktbl FAILED!!!\n"_Str);
+    bool bRemove = bRemoveTable(m_xTokenSet2[2]);
+    ASSERT(bRemove);
+    return false;
+  }
+  
+  // derefernce and return the table first
+  bool bResult = bReturnTable();
+  ASSERT(bResult);
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* remove a table                                                             */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bRemoveTable(Str* pTableName)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+
+  // create the table
+  m_xTokenSet[0]->vCopy("rmtbl"_Str);
+  m_xTokenSet[1]->vCopy(pTableName);
+  m_xTokenSet[2]->vCopy(""_Str);
+  
+  if (!bExecuteRequest()) {
+    return false;
+  }
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* make a table                                                               */
 /*----------------------------------------------------------------------------*/
 bool SePrompt::bMakeTable()
@@ -2501,15 +2537,8 @@ bool SePrompt::bMakeTable()
   
   if (!bExecuteRequest()) {
     vTrace("SePrompt::bCreateTable : cf FAILED!!!\n"_Str);
-    
-    // create the table
-    m_xTokenSet[0]->vCopy("rmtbl"_Str);
-    m_xTokenSet[1]->vCopy(m_xTokenSet2[2]);
-    
-    if (!bExecuteRequest()) {
-      return false;
-    }
-    
+    bool bRemove = bRemoveTable(m_xTokenSet2[2]);
+    ASSERT(bRemove);
     return false;
   }
   
@@ -2519,15 +2548,9 @@ bool SePrompt::bMakeTable()
   
   if (!bExecuteRequest()) {
     vTrace("SePrompt::bCreateTable : gettbl FAILED!!!\n"_Str);
-    
-    // remove the table
-    m_xTokenSet[0]->vCopy("rmtbl"_Str);
-    m_xTokenSet[1]->vCopy(m_xTokenSet2[2]);
-    
-    if (!bExecuteRequest()) {
-      return false;
-    }
-    
+    bool bRemove = bRemoveTable(m_xTokenSet2[2]);
+    ASSERT(bRemove);
+
     return false;
   }
   
