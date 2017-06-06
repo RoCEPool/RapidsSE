@@ -122,6 +122,10 @@ private:
   bool bOneIs(Str* aArg);
   
   Footer* pFooter(void);
+  
+private:
+  bool bMakeTable();
+  
 };
 
 /*============================================================================*/

@@ -1409,48 +1409,8 @@ bool SePrompt::bCreateTable(void)
     return false;
   }
 
-  // create the table
-  m_xTokenSet[0]->vCopy("mktbl"_Str);
-  m_xTokenSet[1]->vCopy(m_xTokenSet2[2]);
-  
-  if (!bExecuteRequest())
+  if ( ! bMakeTable() )
     return false;
-  
-  // change folder to table
-  m_xTokenSet[0]->vCopy("cf"_Str);
-  m_xTokenSet[1]->vCopy(m_xTokenSet2[2]);
-  
-  if (!bExecuteRequest()) {
-    vTrace("SePrompt::bCreateTable : cf FAILED!!!\n"_Str);
-    
-    // create the table
-    m_xTokenSet[0]->vCopy("rmtbl"_Str);
-    m_xTokenSet[1]->vCopy(m_xTokenSet2[2]);
-    
-    if (!bExecuteRequest()) {
-      return false;
-    }
-    
-    return false;
-  }
-  
-  // get reference to pTable
-  m_xTokenSet[0]->vCopy("gettbl"_Str);
-  m_xTokenSet[1]->vCopy(m_xTokenSet2[2]);
-  
-  if (!bExecuteRequest()) {
-    vTrace("SePrompt::bCreateTable : gettbl FAILED!!!\n"_Str);
-    
-    // remove the table
-    m_xTokenSet[0]->vCopy("rmtbl"_Str);
-    m_xTokenSet[1]->vCopy(m_xTokenSet2[2]);
-    
-    if (!bExecuteRequest()) {      
-      return false;
-    }
-    
-    return false;
-  }
   
   // now collect the column names and their types
   i8 iCurrentToken = 4;
@@ -2290,10 +2250,10 @@ bool SePrompt::bPartitionTable(void)
   // create the partition columns
   
   // now collect the column names and their types
-  i8 iCurrentToken = 3;
-  while(iCurrentToken < iNumTokens - 1) {
+  i8 iCurrentToken = 4;
+  while(iCurrentToken < iNumTokens) {
     
-    if (iCurrentToken != 3 && !m_xTokenSet2[iCurrentToken++]->bEqual(","_Str)) {
+    if (iCurrentToken != 4 && !m_xTokenSet2[iCurrentToken++]->bEqual(","_Str)) {
       bIndexReturnTable(m_xTokenSet2[4], m_xTokenSet2[2]);
       m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
       return false;
@@ -2303,7 +2263,7 @@ bool SePrompt::bPartitionTable(void)
     i8 j = 0;
     m_xTokenSet[j++]->vCopy("addpartcol"_Str);
     m_xTokenSet[j++]->vCopy(m_xTokenSet2[2]);
-    m_xTokenSet[j++]->vCopy(m_xTokenSet2[4]);
+    m_xTokenSet[j++]->vCopy(m_xTokenSet2[iCurrentToken++]);
     m_xTokenSet[j++]->vCopy(""_Str);
     
     // add the column
@@ -2500,6 +2460,59 @@ Footer* SePrompt::pFooter(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT);
   
   return &m_xFooter;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Private -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bMakeTable()
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  // create the table
+  m_xTokenSet[0]->vCopy("mktbl"_Str);
+  m_xTokenSet[1]->vCopy(m_xTokenSet2[2]);
+  
+  if (!bExecuteRequest())
+    return false;
+  
+  // change folder to table
+  m_xTokenSet[0]->vCopy("cf"_Str);
+  m_xTokenSet[1]->vCopy(m_xTokenSet2[2]);
+  
+  if (!bExecuteRequest()) {
+    vTrace("SePrompt::bCreateTable : cf FAILED!!!\n"_Str);
+    
+    // create the table
+    m_xTokenSet[0]->vCopy("rmtbl"_Str);
+    m_xTokenSet[1]->vCopy(m_xTokenSet2[2]);
+    
+    if (!bExecuteRequest()) {
+      return false;
+    }
+    
+    return false;
+  }
+  
+  // get reference to pTable
+  m_xTokenSet[0]->vCopy("gettbl"_Str);
+  m_xTokenSet[1]->vCopy(m_xTokenSet2[2]);
+  
+  if (!bExecuteRequest()) {
+    vTrace("SePrompt::bCreateTable : gettbl FAILED!!!\n"_Str);
+    
+    // remove the table
+    m_xTokenSet[0]->vCopy("rmtbl"_Str);
+    m_xTokenSet[1]->vCopy(m_xTokenSet2[2]);
+    
+    if (!bExecuteRequest()) {
+      return false;
+    }
+    
+    return false;
+  }
+
+  return true;
 }
 
 /*============================================================================*/

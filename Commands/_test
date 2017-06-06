@@ -24,9 +24,9 @@ lsidxcol jidx idx1;
 //lsidx jidx;
 //lsidxcol jidx idx2;
 
-//create index idx3 on jidx (jidx_name);
-//lsidx jidx;
-//lsidxcol jidx idx3;
+create index idx3 on jidx (jidx_name);
+lsidx jidx;
+lsidxcol jidx idx3;
 
 ld jidx "../JTEST/test.csv" ;
 dumpidx jidx idx1;
