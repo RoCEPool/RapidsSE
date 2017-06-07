@@ -7,7 +7,8 @@ namespace DBobjects
 {
   class BufferItem : public Object
   {
-  private:
+  protected:
+      i8  m_iBytes;  // number of data bytes (incl null teminator)
 
   public:
     BufferItem(eCN eClassNo);

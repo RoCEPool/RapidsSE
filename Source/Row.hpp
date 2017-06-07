@@ -11,9 +11,9 @@ namespace DBobjects
   {
   private:
     i8  m_iTxId;       // transaction id
-    i8  m_iDataBytes;  // number of data bytes (incl null teminator)
     // ..data..
-    
+    // ..footer..
+
   public:
     void* operator new(size_t);
     void* operator new(size_t, Row*);

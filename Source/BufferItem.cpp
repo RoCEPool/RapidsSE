@@ -30,6 +30,8 @@ BufferItem::BufferItem(eCN eClassNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
     
+  m_iBytes = 0;
+  
   _checkInitialised_(eClassNo);
   
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);

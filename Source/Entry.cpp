@@ -99,7 +99,7 @@ Entry::Entry(i8 nBytes, i8 iOffsets)                   //! should we pass EntWsp
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY);
   
   // initialise bytes
-  m_nBytes = nBytes;
+  m_iBytes = nBytes;
   
   // check initialisation of rowid
   ASSERT(0 == m_xId.iBuffer() && 0 == m_xId.iRow());
@@ -326,7 +326,7 @@ void Entry::vKey(EntWsp& xEntWsp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
   
-  ASSERT(m_nBytes);
+  ASSERT(m_iBytes);
   
   // copy Key
   Key* aEntryKey = this->aKey();
@@ -346,7 +346,7 @@ void Entry::vSetEntry(EntWsp& xEntWsp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
 
-  ASSERT(m_nBytes);
+  ASSERT(m_iBytes);
   
   // set RowId
   m_xId  = xEntWsp.xId();
@@ -380,7 +380,7 @@ i8 Entry::nSize(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
   
-  return m_nBytes;
+  return m_iBytes;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -394,7 +394,7 @@ Footer* Entry::pFooter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY);
   
-  i8 iFooterOffset = m_nBytes - sizeof(Footer);
+  i8 iFooterOffset = m_iBytes - sizeof(Footer);
   
   Footer* pFooter = pAdd<Footer*>(this,iFooterOffset);
   
