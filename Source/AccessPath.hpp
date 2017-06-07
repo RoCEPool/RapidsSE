@@ -3,6 +3,11 @@
 /*============================================================================*/
 #pragma once
 
+namespace Interface
+{
+  class SEitf;
+}
+
 namespace DBobjects
 {  
   class AccessPath : public Object
@@ -36,7 +41,7 @@ namespace DBobjects
     AccessPath(void);
     ~AccessPath(void);
   
-    void vInit(void);
+    void vInit(Interface::SEitf* pSEitf);
   
     s32& sTenantName(void);
     void vTenantName(s32& sTenantName);
