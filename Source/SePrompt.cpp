@@ -1415,6 +1415,9 @@ bool SePrompt::bCreateTable(void)
     return false;
   
   i8 iCurrentToken = 4;
+  // save current token as the first column of the table
+  Str* pFirstColumn = m_xTokenSet2[iCurrentToken];
+  
   if ( ! bAddTableColumns(iCurrentToken, iNumTokens) )
     return false;
   
@@ -1436,7 +1439,7 @@ bool SePrompt::bCreateTable(void)
   else {
     // no partition by clause
     // we will create partitioning using the first column
-
+    bPartitionTable(pFirstColumn);
   }
   
   if ( ! bEndMakeTable() )
@@ -2481,7 +2484,9 @@ bool SePrompt::bPartitionTable(i8 iToken, i8 iNumTokens)
     }
     
     // add columns to the table
-    bool bAdd = bAddPartitionColumn(m_xTokenSet2[2], m_xTokenSet2[iCurrentToken++]);    
+    bool bAdd = bAddPartitionColumn(m_xTokenSet2[2], m_xTokenSet2[iCurrentToken++]);
+    if ( ! bAdd)
+      return false;
   }
   
   // change folder back to tables
@@ -2501,6 +2506,56 @@ bool SePrompt::bPartitionTable(i8 iToken, i8 iNumTokens)
     return false;
   }
 
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* partition the table                                                        */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bPartitionTable(Str* pColumnName)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // change folder to partition
+  m_xTokenSet[0]->vCopy("cf"_Str);
+  m_xTokenSet[1]->vCopy("partitions"_Str);
+  
+  if (!bExecuteRequest()) {
+    vTrace("SePrompt::bPartitionTable : cf FAILED!!!\n"_Str);
+    // save error returned by addColumn
+    eEC eError = m_pSEitf->eGetLastError();
+    
+    bool bDrop = bDropReturnTable(m_xTokenSet2[2]);
+    ASSERT(bDrop);
+    
+    // return error returned by addColumn
+    m_pSEitf->vSetLastError(eError);
+    return false;
+  }
+  
+  // add columns to the table
+  bool bAdd = bAddPartitionColumn(m_xTokenSet2[2], pColumnName);
+  if ( ! bAdd)
+    return false;
+  
+  // change folder back to tables
+  m_xTokenSet[0]->vCopy("cf"_Str);
+  m_xTokenSet[1]->vCopy(".."_Str);
+  
+  if (!bExecuteRequest()) {
+    vTrace("SePrompt::bPartitionTable : cf FAILED!!!\n"_Str);
+    // save error returned by addColumn
+    eEC eError = m_pSEitf->eGetLastError();
+    
+    bool bDrop = bDropReturnTable(m_xTokenSet2[2]);
+    ASSERT(bDrop);
+    
+    // return error returned by addColumn
+    m_pSEitf->vSetLastError(eError);
+    return false;
+  }
+  
   return true;
 }
 

@@ -207,10 +207,10 @@ void LoaderSub::vHashRecord(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
 
   // calculate length of first field
-  i8 iLength = 0;
-  char* pChar = (char*)m_aRecord;
-  while ('|' != *pChar++)
-    iLength++;
+  //  i8 iLength = 0;
+  //  char* pChar = (char*)m_aRecord;
+  //  while ('|' != *pChar++)
+  //    iLength++;
   
   // hash the field using xxhash
   //m_iHash = XXH32(m_aRecord,iLength,0);

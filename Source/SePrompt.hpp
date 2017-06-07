@@ -129,6 +129,7 @@ private:
   bool bEndMakeTable(void);
   bool bMakeTable(void);
   bool bPartitionTable(i8 iToken, i8 iNumTokens);
+  bool bPartitionTable(Str* pColumnName);
   bool bRemoveTable(Str* pTableName);
   
 };

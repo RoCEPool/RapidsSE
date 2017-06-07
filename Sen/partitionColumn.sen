@@ -125,10 +125,10 @@
   find execute ( ^tablePtr )
 
   0 0 locals| partitionCols slotsPtr tablePtr |
-"tp:1" .
+
   tablePtr table.slots to slotsPtr
   slotsPtr slots.columnCount to partitionCols
-"tp:2" .
+
   ""                             // initial ls string
   args.metadata if
     partitionCols 0 do
@@ -138,11 +138,9 @@
     loop
     partitionCols task::this task.seitf@ seitf.rowsProcessed
   else
-"tp:3" .
-partitionCols .
+
     partitionCols 0 do
       I slotsPtr slots.columnName
-stk
       I 1 + partitionCols < if
         swap ", " str.cat
       then
