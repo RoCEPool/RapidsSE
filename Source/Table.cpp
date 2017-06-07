@@ -469,10 +469,11 @@ i8 Table::nIndexBuffers(i8 iIndexNo)
 /*----------------------------------------------------------------------------*/
 /* hash the first field of row return partition                               */
 /*----------------------------------------------------------------------------*/
+/*
 i8 Table::iRowPartition(Str* pRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-  
+
   // calculate length of first field
   i8 iLength = 0;
   char* pChar = (char*)pRow;
@@ -487,6 +488,129 @@ i8 Table::iRowPartition(Str* pRow)
   
   //vTrace("Partition: %lld\n"_Str,m_iPartition);
   return iPartition;
+}
+*/
+/*----------------------------------------------------------------------------*/
+/* hash the first field of row return partition                               */
+/*----------------------------------------------------------------------------*/
+i8 Table::iRowPartition(Str* pRow)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  
+  i8 nCols = m_xSlots.pPtnColVec()->nItems();
+  ValWsp xValWsp;
+  s256 s;
+  i8 iHash = 0;
+  
+  for (i8 iColumn = 0; iColumn < nCols; iColumn++) {
+    
+    // get the column from the index column vector
+    Column* pColumn = m_xSlots.pPtnColVec()->pGet(iColumn);
+    
+    // get the column number of the column
+    i8 iColumnNo = pColumn->iColumnNo();
+    
+    char* pDst = s.s();
+    char* aCursor = reinterpret_cast<char*>(pRow->s());
+    
+    // get the column value from the row for the iColumnNo
+    i8 iCol = -1;
+    do {
+      bool bFindPipe = StrLib::bExtractItem(&aCursor, pDst, '|');
+      ASSERT(bFindPipe);
+      iCol++;
+      aCursor++;
+    } while (iColumnNo != iCol);
+    
+    switch(pColumn->eColumnType()) {
+        
+      case CT_BOOLEAN: {
+        Bol xBol;
+        bool b = DtmLib::bExtractBol(&pDst,&xBol);
+        ASSERT(b);
+        iHash += XXH32(&xBol,sizeof(Bol),0);
+        break;
+      }
+        
+      case CT_CHAR: {
+        ASSERT(0);
+        break;
+      }
+        
+      case CT_DATE: {
+        Dte xDte;
+        bool b = DtmLib::bExtractDte(&pDst,&xDte);
+        ASSERT(b);
+        iHash += XXH32(&xDte,sizeof(Dte),0);
+        break;
+      }
+        
+      case CT_DECIMAL: {
+        ASSERT(0);
+        break;
+      }
+        
+      case CT_FLOAT: {
+        Flt xFlt;
+        bool b = DtmLib::bExtractFlt(&pDst,&xFlt);
+        ASSERT(b);
+        iHash += XXH32(&xFlt,sizeof(Flt),0);
+        break;
+      }
+        
+      case CT_INTEGER: {
+        i8 iValue = StrLib::iToI8(pDst);
+        iHash += XXH32(&iValue,sizeof(i8),0);
+        break;
+      }
+        
+      case CT_INTERVAL: {
+        Ivl xIvl;
+        bool b = DtmLib::bExtractIvl(&pDst,&xIvl);
+        ASSERT(b);
+        iHash += XXH32(&xIvl,sizeof(Ivl),0);
+        break;
+      }
+        
+      case CT_TIME: {
+        Tme xTme;
+        bool b = DtmLib::bExtractTme(&pDst,&xTme);
+        ASSERT(b);
+        iHash += XXH32(&xTme,sizeof(Tme),0);
+        break;
+      }
+        
+      case CT_TIMESTAMP: {
+        Tsp xTsp;
+        bool b = DtmLib::bExtractTsp(&pDst,&xTsp);
+        ASSERT(b);
+        iHash += XXH32(&xTsp,sizeof(Tsp),0);
+        break;
+      }
+        
+      case CT_VARBINARY: {
+        ASSERT(0);
+        break;
+      }
+        
+      case CT_VARCHAR: {
+        iHash += XXH32(pDst,StrLib::iSize(pDst),0);
+        break;
+      }
+        
+      default:
+        ASSERT(0);
+    }
+    
+  }
+  
+  // modulo to get partition number
+  i8 iPartition = iHash % (gpGrid->m_nSlots * gpGrid->iNodes());
+  
+  //vTrace("Partition: %lld\n"_Str,m_iPartition);
+  return iPartition;
+  
+
 }
 
 /*----------------------------------------------------------------------------*/
