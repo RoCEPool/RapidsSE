@@ -3,16 +3,16 @@
 /*============================================================================*/
 
 create table jDupe (
-  j_key   INTEGER NOT NULL,
-  j_name  VARCHAR(32) NOT NULL,
-  j_i     INTEGER NOT NULL
+  jDupe_key   INTEGER NOT NULL,
+  jDupe_name  VARCHAR(32) NOT NULL,
+  jDupe_i     INTEGER NOT NULL
 );
 
-create index jDupe_i on jDupe (j_i);
+create index jDupe_idx1 on jDupe (jDupe_i);
 
-ld jDupe "../JTEST/jDupe27.csv" ;
+ld jDupe "../JTEST/jDupe27.csv";
 
-dumpidx jDupe jDupe_i ;
+dumpidx jDupe jDupe_idx1;
 
 /*============================================================================*/
 /* end                                                                        */
