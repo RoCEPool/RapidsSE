@@ -31,7 +31,8 @@ namespace Base
     /* 16 */ CN_VALREG,
     /* 17 */ CN_VALSET,
     /* 18 */ CN_VALWSP,
-    
+  
+    /*    */ CN_ACCESSPATH,
     /* 12 */ CN_ARGUMENTS,
     /* 13 */ CN_ATOMIC,
     /* 14 */ CN_ATTACHMAP,
@@ -182,6 +183,7 @@ namespace Base
     /* 17 */ "VALSET"_Str,
     /* 18 */ "VALWSP"_Str,
     
+    /*    */ "ACCESSPATH"_Str,
     /* 12 */ "ARGUMENTS"_Str,
     /* 13 */ "ATOMIC"_Str,
     /* 14 */ "ATTACHMAP"_Str,

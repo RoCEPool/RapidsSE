@@ -33,6 +33,7 @@ pFINALIZE *gpFinalize[]
   /* 17 */ &Finalize::vUndefined,         // CN_VALSET
   /* 18 */ &Finalize::vUndefined,         // CN_VALWSP
   
+  /*    */ &Finalize::vUndefined,         // CN_ACCESSPATH
   /* 12 */ &Finalize::vUndefined,         // CN_ARGUMENTS
   /* 13 */ &Finalize::vUndefined,         // CN_ATOMIC
   /* 14 */ &Finalize::vUndefined,         // CN_ATTACHMAP

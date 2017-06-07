@@ -34,6 +34,7 @@ pDUMPFUN *gpDump[]
   /* 17 */ &Dump::vInvalid,         // CN_VALSET
   /* 18 */ &Dump::vInvalid,         // CN_VALWSP
   
+  /*    */ &Dump::vInvalid,         // CN_ACCESSPATH
   /* 12 */ &Dump::vInvalid,         // CN_ARGUMENTS
   /* 13 */ &Dump::vInvalid,         // CN_ATOMIC
   /* 14 */ &AttachMap::vDump,       // CN_ATTACHMAP
@@ -183,6 +184,7 @@ i8 giClassSize[]
   /* 17 */ sizeof(ValWsp), // correct  // CN_VALSET
   /* 18 */ sizeof(ValWsp),             // CN_VALWSP
   
+  /*    */ 0,                          // CN_ACCESSPATH
   /* 12 */ sizeof(Arguments),          // CN_ARGUMENTS
   /* 13 */ sizeof(Atomic),             // CN_ATOMIC
   /* 14 */ sizeof(AttachMap),          // CN_ATTACHMAP
@@ -332,6 +334,7 @@ eHT geWhichHeap[]
   /* 17 */ HT_INVALID, // CN_VALSET
   /* 18 */ HT_INVALID, // CN_VALWSP
   
+  /*    */ HT_SMALL,   // CN_ACCESSPATH
   /* 12 */ HT_INVALID, // CN_ARGUMENTS
   /* 13 */ HT_INVALID, // CN_ATOMIC
   /* 14 */ HT_LARGE,   // CN_ATTACHMAP
