@@ -41,10 +41,9 @@ void Task::vAddPrimitives_Table(void)
   vAddPrimitive("table.init"_Str,               &vTableInit,            false);
   vAddPrimitive("table.insert"_Str,             &vTableInsert,          false);
   vAddPrimitive("table.name"_Str,               &vTableName,            false);
-  vAddPrimitive("table.partColumnVec"_Str,      &vTablePartColumnVec,   false);
-  vAddPrimitive("table.partSubDic"_Str,         &vTablePartSubDic,      false);
   vAddPrimitive("table.ref"_Str,                &vTableRef,             false);
   vAddPrimitive("table.showColumnVec"_Str,      &vTableShowColumnVec,   false);
+  vAddPrimitive("table.slots"_Str,              &vTableSlots,           false);
   vAddPrimitive("table.space"_Str,              &vTableSpace,           false);
   vAddPrimitive("table.subDic"_Str,             &vTableSubDic,          false);
   vAddPrimitive("table.truncate"_Str,           &vTableTruncate,        false);
@@ -311,55 +310,6 @@ void Task::vTableName(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* table.partitionSubDic -- get partitions sub dictionary                     */
-/*----------------------------------------------------------------------------*/
-void Task::vTablePartSubDic(NNP_Task nnpTask)
-{
-  ENTRY("vTablePartSubDic"_Str);
-  
-  Object* pPtrTable;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrTable) )
-    THROW_INVALID_DSTACK("table.partitionSubDic"_Str);
-  
-  Table* pTable = _pTable(pPtrTable);
-  ASSERT(CN_TABLE == pTable->eClass());
-  
-  Dic* pDic = pTable->pSlots()->pSubDic();
-  
-  nnpTask->m_pDataStack->vPushObject(pDic);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* table.partitionColumnVec -- create partition column vector from subdic     */
-/*----------------------------------------------------------------------------*/
-void Task::vTablePartColumnVec(NNP_Task nnpTask)
-{
-  ENTRY("vTablePartColumnVec"_Str);
-  
-  Object* pPtrTable;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrTable) )
-    THROW_INVALID_DSTACK("table.partitionColumnVec"_Str);
-  Table* pTable = _pTable(pPtrTable);
-  ASSERT(CN_TABLE == pTable->eClass());
-  
-  s32 sColumnNm;
-  if ( ! nnpTask->m_pDataStack->bPop(sColumnNm) )
-    THROW_INVALID_DSTACK("table.partitionColumnVec"_Str);
-  
-  s48K sColumnDef;
-  if ( ! nnpTask->m_pDataStack->bPop(sColumnDef) )
-    THROW_INVALID_DSTACK("table.createColumnVec"_Str);
-  
-  Slots* pSlots = pTable->pSlots();
-  
-  pSlots->vCreateColumnVec(pTable, sColumnNm, sColumnDef);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* table.ref -- has table got references?                                     */
 /*----------------------------------------------------------------------------*/
 void Task::vTableRef(NNP_Task nnpTask)
@@ -415,6 +365,25 @@ void Task::vTableSubDic(NNP_Task nnpTask)
   Dic* pDic = pTable->pSubDic();
   
   nnpTask->m_pDataStack->vPushObject(pDic);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* table.slots -- push the slots of table on data stack                       */
+/*----------------------------------------------------------------------------*/
+void Task::vTableSlots(NNP_Task nnpTask)
+{
+  ENTRY("vTableSlots"_Str);
+  
+  Object* pPtrTable;
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrTable) )
+    THROW_INVALID_DSTACK("table.slots"_Str);
+  
+  Table* pTable = _pTable(pPtrTable);
+  ASSERT(CN_TABLE == pTable->eClass());
+  
+  nnpTask->m_pDataStack->vPushObject(pTable->pSlots());
   
   EXIT();
 }

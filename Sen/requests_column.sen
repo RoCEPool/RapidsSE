@@ -127,7 +127,7 @@
 /*----------------------------------------------------------------------------*/
 /* get list of partition key columns                                          */
 /*----------------------------------------------------------------------------*/
-: list_partcolumns ( "<sTableNm>" -- <R> )
+: list_partitioncolumns ( "<sTableNm>" -- <R> )
 
   // should be in the tables folder
   checkInTables not if <NIP+ERROR> exit then

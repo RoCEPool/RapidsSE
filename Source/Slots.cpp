@@ -9,6 +9,22 @@
 extern Grid* gpGrid;
 
 /*----------------------------------------------------------------------------*/
+/*-- LifeCycle ---------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* safe cast                                                                  */
+/*----------------------------------------------------------------------------*/
+Slots* DBobjects::_pSlots(void* aAddr)
+{
+  Slots* pSlots = reinterpret_cast<Slots*>(aAddr);
+  
+  RASSERT( !pSlots || CN_SLOTS == pSlots->eClass() );
+  
+  return pSlots;
+}
+
+/*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
 void* Slots::operator new(size_t iSize)
@@ -38,6 +54,8 @@ Slots::Slots(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SLOTS,_FOOTER_);
   
+  m_pTable = nullptr;
+  
   //m_xSubDic
   
   // initialize the partitionId's in the slots
@@ -65,18 +83,18 @@ Slots::~Slots(void)
 /*----------------------------------------------------------------------------*/
 /* create column vector                                                       */
 /*----------------------------------------------------------------------------*/
-void Slots::vCreateColumnVec(Table* pTable, s32& sColumnNm, s48K& sColumnDefn)
+void Slots::vCreateColumnVec(s32& sColumnNm, s48K& sColumnDefn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SLOTS,_FOOTER_);
   
   Column* pColumn = nullptr;
   
   // find the column from the table columnVector
-  i8 iColumns = pTable->pColumnVec()->nItems();
+  i8 iColumns = m_pTable->pColumnVec()->nItems();
   
   bool bFound = false;
   for (i8 iCol = 0; iCol < iColumns; iCol++) {
-    pColumn = pTable->pColumnVec()->pGet(iCol);
+    pColumn = m_pTable->pColumnVec()->pGet(iCol);
     if (pColumn->sColumnName().bSame(sColumnNm)) {
       bFound = true;
       break;
@@ -141,6 +159,16 @@ Dic* Slots::pSubDic(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SLOTS,_FOOTER_);
   
   return &m_xSubDic;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set table                                                                  */
+/*----------------------------------------------------------------------------*/
+void Slots::vTable(Table* pTable)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SLOTS,_FOOTER_);
+  
+  m_pTable = pTable;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -225,7 +225,6 @@ namespace Tasks
     void vAddPrimitives_NodeCursor(void);
     void vAddPrimitives_Object(void);
     void vAddPrimitives_OpFrame(void);
-    void vAddPrimitives_Partitions(void);
     void vAddPrimitives_Plan(void);
     void vAddPrimitives_PlanList(void);
     void vAddPrimitives_Process(void);
@@ -242,6 +241,7 @@ namespace Tasks
     void vAddPrimitives_SEitfList(void);
     void vAddPrimitives_SelCursor(void);
     void vAddPrimitives_Shell(void);
+    void vAddPrimitives_Slots(void);
     void vAddPrimitives_Socket(void);
     void vAddPrimitives_Steps(void);
     void vAddPrimitives_Str(void);
@@ -683,10 +683,7 @@ namespace Tasks
     // opFrame
     static void vOpFrameDic(NNP_Task nnpTask);
     static void vOpFrameName(NNP_Task nnpTask);
-  
-    // partition
-    static void vPartitionsSubDic(NNP_Task nnpTask);
-
+    
     // plan
     static void vPlanCompile(NNP_Task nnpTask);
     static void vPlanDelete(NNP_Task nnpTask);
@@ -888,6 +885,12 @@ namespace Tasks
     // shell
     static void vShellExecute(NNP_Task nnpTask);
     
+    // slots
+    static void vSlotsColumnCount(NNP_Task nnpTask);
+    static void vSlotsColumnName(NNP_Task nnpTask);
+    static void vSlotsCreateColumnVec(NNP_Task nnpTask);
+    static void vSlotsSubDic(NNP_Task nnpTask);
+    
     // socket
     static void vSocketAccept(NNP_Task nnpTask);
     static void vSocketClose(NNP_Task nnpTask);
@@ -935,10 +938,9 @@ namespace Tasks
     static void vTableInsert(NNP_Task nnpTask);
     static void vTableList(NNP_Task nnpTask);
     static void vTableName(NNP_Task nnpTask);
-    static void vTablePartSubDic(NNP_Task nnpTask);
-    static void vTablePartColumnVec(NNP_Task nnpTask);
     static void vTableRef(NNP_Task nnpTask);
     static void vTableShowColumnVec(NNP_Task nnpTask);
+    static void vTableSlots(NNP_Task nnpTask);
     static void vTableSpace(NNP_Task nnpTask);
     static void vTableSubDic(NNP_Task nnpTask);
     static void vTableTruncate(NNP_Task nnpTask);

@@ -56,7 +56,7 @@
 /* find the partition sub folder and push it onto task dictionary             */
 /*----------------------------------------------------------------------------*/
 : pushPartitionSub ( "<tableNm>" -- )
-  find execute table.partSubDic pathPush
+  find execute table.slots slots.subDic pathPush
   true
 ;
 
@@ -105,13 +105,13 @@ tp: checkPartitionTable1
    find execute ( ^tablePtr )
    
    // forget all column names
-   dup table.partSubDic
+   dup table.slots slots.subDic
    pathPush
    "columns" find execute forgetAll
    pathDrop
 
   // forget the sub dictionary
-  table.partSubDic forgetAll
+  table.slots slots.subDic forgetAll
 ;
 
 ////////////////////////////////////////////////////////////////////////////////

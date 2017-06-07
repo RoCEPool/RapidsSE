@@ -828,7 +828,6 @@ void Task::vAddPrimitives(void)
   vAddPrimitives_NodeCursor();
   vAddPrimitives_Object();
   vAddPrimitives_OpFrame();
-  vAddPrimitives_Partitions();
   vAddPrimitives_Plan();
   vAddPrimitives_PlanList();
   vAddPrimitives_Process();
@@ -845,6 +844,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitives_SEitfList();
   vAddPrimitives_SelCursor();
   vAddPrimitives_Shell();
+  vAddPrimitives_Slots();
   vAddPrimitives_Socket();
   vAddPrimitives_Steps();
   vAddPrimitives_Str();

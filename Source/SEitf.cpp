@@ -1247,7 +1247,7 @@ bool SEitf::bListPartitionColumns(TokenSet& xTokenSet)
   
   s256 sRequest;
   
-  if (xTokenSet.nTokens() != 3) {
+  if (xTokenSet.nTokens() != 2) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }

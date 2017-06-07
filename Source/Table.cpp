@@ -71,7 +71,7 @@ Table::Table(void)
   
   //m_xSubDic
 
-  //m_xSlots
+  m_xSlots.vTable(this);
   
   m_zIndexNo.vCheckInit();
   m_zRefCount.vCheckInit();

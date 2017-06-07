@@ -234,7 +234,7 @@
   object@ execute              ( value )
   object@ word.name            ( value wordNm )
   tablePtr                     ( value wordNm ^table )
-  table.partColumnVec
+  table.slots slots.createColumnVec
   object@ word.prev object!    // advance cursor backwards thru words
   next
 
