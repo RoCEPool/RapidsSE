@@ -84,6 +84,7 @@ typedef Vector<CN_KEYVEC,KeyVal,CN_KEYVAL,1024,u8> KeyVec;
 #include "RowWsp.hpp"
 
 #include "BndLib.hpp"
+#include "AccessPath.hpp"
 
 /*============================================================================*/
 /* end                                                                        */
