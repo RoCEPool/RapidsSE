@@ -7,7 +7,7 @@ namespace DBobjects
 {
   class IndexBuffer;
   
-  class Entry : public Object
+  class Entry : public BufferItem
   {
   private:
     i8     m_nBytes;   // overall size of this entry incl Object & Footer

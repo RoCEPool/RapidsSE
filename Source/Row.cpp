@@ -38,7 +38,7 @@ void* Row::operator new(size_t iSize, Row* pRow)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Row::Row(i8 iDataBytes)
-: Object(CN_ROW)
+: BufferItem(CN_ROW)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROW);
   

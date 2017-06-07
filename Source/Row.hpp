@@ -7,7 +7,7 @@ namespace DBobjects
 {
   class KeyWsp;
   
-  class Row : public Object
+  class Row : public BufferItem
   {
   private:
     i8  m_iTxId;       // transaction id

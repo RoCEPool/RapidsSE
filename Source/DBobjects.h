@@ -34,6 +34,7 @@ typedef Array<CN_ROARRAY,eRO,1024> RelOpAry;
 typedef Vector<CN_IDXCOLVEC,Column,CN_COLUMN,1024,u8> IdxColVec;
 typedef Vector<CN_PTNCOLVEC,Column,CN_COLUMN,1024,u8> PtnColVec;
 
+#include "BufferItem.hpp"
 #include "Row.hpp"
 #include "RowBuffer.hpp"
 #include "RowStrand.hpp"

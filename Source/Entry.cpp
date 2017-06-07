@@ -77,7 +77,7 @@ void* Entry::operator new(size_t iSize, Entry* pEntry)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Entry::Entry(EntWsp& xEntWsp)
-: Object(CN_ENTRY)
+: BufferItem(CN_ENTRY)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY);
   
@@ -94,7 +94,7 @@ Entry::Entry(EntWsp& xEntWsp)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Entry::Entry(i8 nBytes, i8 iOffsets)                   //! should we pass EntWsp?
-: Object(CN_ENTRY)
+: BufferItem(CN_ENTRY)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY);
   
