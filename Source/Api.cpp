@@ -1111,7 +1111,8 @@ eEC RapidsSE_PoolOpen(Str* pInstanceName, void** ppInstance, i8 iTraceLevel)
 /*----------------------------------------------------------------------------*/
 /* scan table                                                                 */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_ScanTable(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable, i8 iTraceLevel)
+eEC RapidsSE_ScanTable(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable,
+                       Str* pRange, i8 iTraceLevel)
 {
   eEC eResult;
   eEC eResponse;
@@ -1119,6 +1120,9 @@ eEC RapidsSE_ScanTable(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable, 
   Str* aApiCall = "RapidsSE_ScanTable"_Str;
   
   try {
+    
+    vTrace("Table: %s Range: %s\n"_Str, pTable, pRange);
+    
     // trace entry
     TRACE_ENTRY_P3(pCatalog, pSchema, pTable);
     
