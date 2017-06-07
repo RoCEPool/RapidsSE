@@ -98,11 +98,11 @@ void Key::vKey(KeyWsp& xKeyWsp)
 /*----------------------------------------------------------------------------*/
 /* get next element from key                                                  */
 /*----------------------------------------------------------------------------*/
-char* Key::aElement(Column* pColumn, i8& nBytes, char** aaCursor)
+char* Key::aEachDatum(Column* pColumn, i8& nBytes, char** aaCursor)
 {
-  char* aElement = pColumn->aValue(nBytes,aaCursor);
+  char* aEachDatum = pColumn->aValue(nBytes,aaCursor);
   
-  return aElement;
+  return aEachDatum;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -122,11 +122,11 @@ bool Key::bLessThan(Key* pKeyThat, IdxColVec* pIdxColVec)
     i8 nBytesThis;
     i8 nBytesThat;
     
-    char* aElementThis = aElement(pColumn,nBytesThis,&aCursorThis);
-    char* aElementThat = aElement(pColumn,nBytesThat,&aCursorThat);
+    char* aDatumThis = aEachDatum(pColumn,nBytesThis,&aCursorThis);
+    char* aDatumThat = aEachDatum(pColumn,nBytesThat,&aCursorThat);
     
-    bLessThan = pColumn->bLessThan(aElementThis,nBytesThis,
-                                   aElementThat,nBytesThat);
+    bLessThan = pColumn->bLessThan(aDatumThis,nBytesThis,
+                                   aDatumThat,nBytesThat);
     if (!bLessThan)
       break;
   }
@@ -151,11 +151,11 @@ bool Key::bLessEqual(Key* pKeyThat, IdxColVec* pIdxColVec)
     i8 nBytesThis;
     i8 nBytesThat;
     
-    char* aElementThis = aElement(pColumn,nBytesThis,&aCursorThis);
-    char* aElementThat = aElement(pColumn,nBytesThat,&aCursorThat);
+    char* aDatumThis = aEachDatum(pColumn,nBytesThis,&aCursorThis);
+    char* aDatumThat = aEachDatum(pColumn,nBytesThat,&aCursorThat);
     
-    bLessEqual = pColumn->bLessEqual(aElementThis,nBytesThis,
-                                     aElementThat,nBytesThat);
+    bLessEqual = pColumn->bLessEqual(aDatumThis,nBytesThis,
+                                     aDatumThat,nBytesThat);
     if (!bLessEqual)
       break;
   }
@@ -180,11 +180,11 @@ bool Key::bEqualTo(Key* pKeyThat, IdxColVec* pIdxColVec)
     i8 nBytesThis;
     i8 nBytesThat;
     
-    char* aElementThis = aElement(pColumn,nBytesThis,&aCursorThis);
-    char* aElementThat = aElement(pColumn,nBytesThat,&aCursorThat);
+    char* aDatumThis = aEachDatum(pColumn,nBytesThis,&aCursorThis);
+    char* aDatumThat = aEachDatum(pColumn,nBytesThat,&aCursorThat);
     
-    bEqualTo = pColumn->bEqualTo(aElementThis,nBytesThis,
-                                 aElementThat,nBytesThat);
+    bEqualTo = pColumn->bEqualTo(aDatumThis,nBytesThis,
+                                 aDatumThat,nBytesThat);
     if (!bEqualTo)
       break;
   }
@@ -209,11 +209,11 @@ bool Key::bNotEqual(Key* pKeyThat, IdxColVec* pIdxColVec)
     i8 nBytesThis;
     i8 nBytesThat;
     
-    char* aElementThis = aElement(pColumn,nBytesThis,&aCursorThis);
-    char* aElementThat = aElement(pColumn,nBytesThat,&aCursorThat);
+    char* aDatumThis = aEachDatum(pColumn,nBytesThis,&aCursorThis);
+    char* aDatumThat = aEachDatum(pColumn,nBytesThat,&aCursorThat);
     
-    bNotEqual = pColumn->bNotEqual(aElementThis,nBytesThis,
-                                   aElementThat,nBytesThat);
+    bNotEqual = pColumn->bNotEqual(aDatumThis,nBytesThis,
+                                   aDatumThat,nBytesThat);
     if (!bNotEqual)
       break;
   }
@@ -238,11 +238,11 @@ bool Key::bGreaterEqual(Key* pKeyThat, IdxColVec* pIdxColVec)
     i8 nBytesThis;
     i8 nBytesThat;
     
-    char* aElementThis = aElement(pColumn,nBytesThis,&aCursorThis);
-    char* aElementThat = aElement(pColumn,nBytesThat,&aCursorThat);
+    char* aDatumThis = aEachDatum(pColumn,nBytesThis,&aCursorThis);
+    char* aDatumThat = aEachDatum(pColumn,nBytesThat,&aCursorThat);
     
-    bGreaterEqual = pColumn->bGreaterEqual(aElementThis,nBytesThis,
-                                           aElementThat,nBytesThat);
+    bGreaterEqual = pColumn->bGreaterEqual(aDatumThis,nBytesThis,
+                                           aDatumThat,nBytesThat);
     if (!bGreaterEqual)
       break;
   }
@@ -267,11 +267,11 @@ bool Key::bGreaterThan(Key* pKeyThat, IdxColVec* pIdxColVec)
     i8 nBytesThis;
     i8 nBytesThat;
     
-    char* aElementThis = aElement(pColumn,nBytesThis,&aCursorThis);
-    char* aElementThat = aElement(pColumn,nBytesThat,&aCursorThat);
+    char* aDatumThis = aEachDatum(pColumn,nBytesThis,&aCursorThis);
+    char* aDatumThat = aEachDatum(pColumn,nBytesThat,&aCursorThat);
     
-    bGreaterThan = pColumn->bGreaterThan(aElementThis,nBytesThis,
-                                         aElementThat,nBytesThat);
+    bGreaterThan = pColumn->bGreaterThan(aDatumThis,nBytesThis,
+                                         aDatumThat,nBytesThat);
     if (!bGreaterThan)
       break;
   }
@@ -296,11 +296,11 @@ i8 Key::iCmp(Key* pKeyThat, IdxColVec* pIdxColVec)
     i8 nBytesThis;
     i8 nBytesThat;
     
-    char* aElementThis = aElement(pColumn,nBytesThis,&aCursorThis);
-    char* aElementThat = aElement(pColumn,nBytesThat,&aCursorThat);
+    char* aDatumThis = aEachDatum(pColumn,nBytesThis,&aCursorThis);
+    char* aDatumThat = aEachDatum(pColumn,nBytesThat,&aCursorThat);
     
-    iCmp = pColumn->iCmp(aElementThis,nBytesThis,
-                         aElementThat,nBytesThat);
+    iCmp = pColumn->iCmp(aDatumThis,nBytesThis,
+                         aDatumThat,nBytesThat);
     if (iCmp)
       break;
   }
@@ -325,14 +325,14 @@ bool Key::bMatches(Key* pKeyThat, IdxColVec* pIdxColVec, RelOpAry* pRelOpAry)
     i8 nBytesThis;
     i8 nBytesThat;
     
-    char* aElementThis = aElement(pColumn,nBytesThis,&aCursorThis);
-    char* aElementThat = aElement(pColumn,nBytesThat,&aCursorThat);
+    char* aDatumThis = aEachDatum(pColumn,nBytesThis,&aCursorThis);
+    char* aDatumThat = aEachDatum(pColumn,nBytesThat,&aCursorThat);
     
     eRO eRelOp = pRelOpAry->xGet(iColumn);
     
     bCmp = pColumn->bCmp(eRelOp,
-                         aElementThis,nBytesThis,
-                         aElementThat,nBytesThat);
+                         aDatumThis,nBytesThis,
+                         aDatumThat,nBytesThat);
     
     if ( ! bCmp )
       break;
@@ -403,11 +403,11 @@ bool Key::bJuxtaBefore(Key* pKeyThat, IdxColVec* pIdxColVec)
     i8 nBytesThis;
     i8 nBytesThat;
     
-    char* aElementThis = aElement(pColumn,nBytesThis,&aCursorThis);
-    char* aElementThat = aElement(pColumn,nBytesThat,&aCursorThat);
+    char* aDatumThis = aEachDatum(pColumn,nBytesThis,&aCursorThis);
+    char* aDatumThat = aEachDatum(pColumn,nBytesThat,&aCursorThat);
     
-    iCmp = pColumn->iCmp(aElementThis,nBytesThis,
-                         aElementThat,nBytesThat);
+    iCmp = pColumn->iCmp(aDatumThis,nBytesThis,
+                         aDatumThat,nBytesThat);
     
     // return true (is before) if this element is less than that element
     // examples (2), (3), (4)
@@ -455,11 +455,11 @@ bool Key::bJuxtaSame(Key* pKeyThat, IdxColVec* pIdxColVec)
     i8 nBytesThis;
     i8 nBytesThat;
     
-    char* aElementThis = aElement(pColumn,nBytesThis,&aCursorThis);
-    char* aElementThat = aElement(pColumn,nBytesThat,&aCursorThat);
+    char* aDatumThis = aEachDatum(pColumn,nBytesThis,&aCursorThis);
+    char* aDatumThat = aEachDatum(pColumn,nBytesThat,&aCursorThat);
     
-    iCmp = pColumn->iCmp(aElementThis,nBytesThis,
-                         aElementThat,nBytesThat);
+    iCmp = pColumn->iCmp(aDatumThis,nBytesThis,
+                         aDatumThat,nBytesThat);
     
     // return false (not same) if this element is not equal to that element
     if (iCmp)
@@ -518,11 +518,11 @@ bool Key::bJuxtaAfter(Key* pKeyThat, IdxColVec* pIdxColVec)
     i8 nBytesThis;
     i8 nBytesThat;
     
-    char* aElementThis = aElement(pColumn,nBytesThis,&aCursorThis);
-    char* aElementThat = aElement(pColumn,nBytesThat,&aCursorThat);
+    char* aDatumThis = aEachDatum(pColumn,nBytesThis,&aCursorThis);
+    char* aDatumThat = aEachDatum(pColumn,nBytesThat,&aCursorThat);
     
-    iCmp = pColumn->iCmp(aElementThis,nBytesThis,
-                         aElementThat,nBytesThat);
+    iCmp = pColumn->iCmp(aDatumThis,nBytesThis,
+                         aDatumThat,nBytesThat);
 
     // return true (is after) if this element is greater than that element
     // examples (2), (3), (4)
@@ -563,7 +563,7 @@ void Key::vShow(IdxColVec* pIdxColVec)
     
     i8 nBytes;
     
-    char* aElement = this->aElement(pColumn,nBytes,&aCursor);
+    char* aEachDatum = this->aEachDatum(pColumn,nBytes,&aCursor);
     
     i8 iKey;
     Str* pKey;
@@ -572,7 +572,7 @@ void Key::vShow(IdxColVec* pIdxColVec)
         
       case CT_DATE: {
         Dte xDte;
-        xDte = *(Dte*)aElement;
+        xDte = *(Dte*)aEachDatum;
         vTrace("Element %lld:(size %lld value:%04lld-%02lld-%02lld) "_Str,
                iColumn,
                nBytes,
@@ -586,7 +586,7 @@ void Key::vShow(IdxColVec* pIdxColVec)
         
       case CT_FLOAT: {
         Flt xFlt;
-        xFlt = *(Flt*)aElement;
+        xFlt = *(Flt*)aEachDatum;
         vTrace("Element %lld:(size %lld value:%llf) "_Str,
                iColumn,
                nBytes,
@@ -597,7 +597,7 @@ void Key::vShow(IdxColVec* pIdxColVec)
       }
         
       case CT_INTEGER:
-        iKey = *(i8*)aElement;
+        iKey = *(i8*)aEachDatum;
         vTrace("E%lld:(size %lld value:%lld) "_Str,
                iColumn,
                nBytes,
@@ -608,7 +608,7 @@ void Key::vShow(IdxColVec* pIdxColVec)
         
       case CT_INTERVAL: {
         Ivl xIvl;
-        xIvl = *(Ivl*)aElement;
+        xIvl = *(Ivl*)aEachDatum;
         vTrace("Element %lld:(size %lld value:%lld.%03lld) "_Str,
                iColumn,
                nBytes,
@@ -621,7 +621,7 @@ void Key::vShow(IdxColVec* pIdxColVec)
         
       case CT_TIME: {
         Tme xTme;
-        xTme = *(Tme*)aElement;
+        xTme = *(Tme*)aEachDatum;
         vTrace("Element %lld:(size %lld value:%02lld:%02lld:%02lld.%lld) "_Str,
                iColumn,
                nBytes,
@@ -636,7 +636,7 @@ void Key::vShow(IdxColVec* pIdxColVec)
         
       case CT_TIMESTAMP: {
         Tsp xTsp;
-        xTsp = *(Tsp*)aElement;
+        xTsp = *(Tsp*)aEachDatum;
         vTrace("Element %lld:(size %lld value:%04lld-%02lld-%02lld %02lld:%02lld:%02lld.%lld) "_Str,
                iColumn,
                nBytes,
@@ -653,7 +653,7 @@ void Key::vShow(IdxColVec* pIdxColVec)
       }
         
       case CT_VARCHAR:
-        pKey = (Str*)aElement;
+        pKey = (Str*)aEachDatum;
         vTrace("E%lld:(size %lld value:%s) "_Str,
                iColumn,
                nBytes,

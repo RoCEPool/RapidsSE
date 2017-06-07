@@ -91,7 +91,7 @@ void KeyTest::vTest(void)
   
   if (pKeyVal) {
     aCursor = pKeyVal->m_xKey.aWspArea();
-    v = *(i8*)pKeyVal->aElement(pCol,nBytes,&aCursor);
+    v = *(i8*)pKeyVal->aEachDatum(pCol,nBytes,&aCursor);
     
     vTrace("( %lld >= 3)\n"_Str,v);
   }
@@ -118,7 +118,7 @@ void KeyTest::vTest(void)
   
   if (pKeyVal) {
     aCursor = pKeyVal->m_xKey.aWspArea();
-    v = *(i8*)pKeyVal->aElement(pCol,nBytes,&aCursor);
+    v = *(i8*)pKeyVal->aEachDatum(pCol,nBytes,&aCursor);
     
     vTrace("( %lld < 7 )\n"_Str,v);
   }
@@ -202,7 +202,7 @@ void KeyTest::vTest(void)
   
   if (pKeyVal) {
     aCursor = pKeyVal->m_xKey.aWspArea();
-    char* p = pKeyVal->aElement(pCol,nBytes,&aCursor);
+    char* p = pKeyVal->aEachDatum(pCol,nBytes,&aCursor);
     
     vTrace("( %s < %s)\n"_Str,p,pKeyValFind->m_xKey.aWspArea());
   }
@@ -239,7 +239,7 @@ void KeyTest::vTest(void)
   
   if (pKeyVal) {
     aCursor = pKeyVal->m_xKey.aWspArea();
-    char* p = pKeyVal->aElement(pCol,nBytes,&aCursor);
+    char* p = pKeyVal->aEachDatum(pCol,nBytes,&aCursor);
     
     vTrace("( %s >= %s)\n"_Str,p,pKeyValFind->m_xKey.aWspArea());
   }

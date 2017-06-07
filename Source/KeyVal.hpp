@@ -19,7 +19,7 @@ namespace DBobjects
     KeyVal(KeyWsp& xKeyWsp);
     ~KeyVal(void);
   
-    char* aElement(Column* pColumn, i8& nBytes, char** aaCursor);
+    char* aEachDatum (Column* pColumn, i8& nBytes, char** aaCursor);
  
     bool bLessThan(KeyVal* pKeyVal, IdxColVec* pColVec);
     bool bLessEqual(KeyVal* pKeyVal, IdxColVec* pColVec);

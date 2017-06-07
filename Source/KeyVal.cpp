@@ -61,11 +61,11 @@ KeyVal::~KeyVal(void)
 /*----------------------------------------------------------------------------*/
 /* get next element from key                                                  */
 /*----------------------------------------------------------------------------*/
-char* KeyVal::aElement(Column* pColumn, i8& nBytes, char** aaCursor)
+char* KeyVal::aEachDatum(Column* pColumn, i8& nBytes, char** aaCursor)
 {
-  char* aElement = m_xKey.aElement(pColumn,nBytes,aaCursor);
+  char* aDatum = m_xKey.aEachDatum(pColumn,nBytes,aaCursor);
   
-  return aElement;
+  return aDatum;
 }
 
 /*----------------------------------------------------------------------------*/

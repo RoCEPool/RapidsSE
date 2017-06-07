@@ -46,7 +46,7 @@ namespace DBobjects
     void  vKey(Key& xKey);
     void  vKey(KeyWsp& xKeyWsp);
   
-    char* aElement(Column* pColumn, i8& nBytes, char** aaCursor);
+    char* aEachDatum(Column* pColumn, i8& nBytes, char** aaCursor);
   
     bool bLessThan(Key* pKey, IdxColVec* pColVec);
     bool bLessEqual(Key* pKey, IdxColVec* pColVec);

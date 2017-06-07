@@ -77,7 +77,7 @@ void KeyWsp::vAddKey(Key* aKey, IdxColVec* pColVec)
   for (i8 iColumn = 0; iColumn < pColVec->nItems(); iColumn++) {
     Column* pColumn = pColVec->pGet(iColumn);
     
-    char* aElement = aKey->aElement(pColumn, nBytes,&aCursor);
+    char* aElement = aKey->aEachDatum(pColumn, nBytes,&aCursor);
     
     char* pDst = m_xWsp.aLatter();
     char* pSrc = aElement;
