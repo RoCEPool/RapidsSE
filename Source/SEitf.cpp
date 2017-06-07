@@ -389,7 +389,6 @@ bool SEitf::bDecode(TokenSet& xTokenSet)
   if (xTokenSet[0]->bSame("mkten"_Str)) return bCreateTenant(xTokenSet);
   if (xTokenSet[0]->bSame("object"_Str)) return bObject(xTokenSet);
   if (xTokenSet[0]->bSame("pRB"_Str)) return bPrintRowBuffer(xTokenSet);
-  if (xTokenSet[0]->bSame("parttbl"_Str)) return bPartitionTable(xTokenSet);
   if (xTokenSet[0]->bSame("pwf"_Str)) return bGetDicPath(xTokenSet);
   if (xTokenSet[0]->bSame("rettbl"_Str)) return bRetTable(xTokenSet);
   if (xTokenSet[0]->bSame("rettsk"_Str)) return bRetTask(xTokenSet);
@@ -534,29 +533,6 @@ bool SEitf::bRemoveFolder(TokenSet& xTokenSet)
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" remove_folder"_Str);
-  
-  return bAppendRequest(sRequest);
-}
-
-/*----------------------------------------------------------------------------*/
-/* parition a table                                                           */
-/*----------------------------------------------------------------------------*/
-bool SEitf::bPartitionTable(TokenSet& xTokenSet)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
-  
-  s256 sRequest;
-  
-  if (xTokenSet.nTokens() != 2) {
-    vSetLastError(EC_INVALID_PARAMETERS);
-    return false;
-  }
-  
-  sRequest.vConcat(" \""_Str);
-  sRequest.vConcat(xTokenSet[1]);
-  sRequest.vConcat("\""_Str);
-  
-  sRequest.vConcat(" partition_table"_Str);
   
   return bAppendRequest(sRequest);
 }

@@ -86,8 +86,6 @@ namespace Interface
     bool bSet(TokenSet& xTokenSet);
     
     bool bRemoveFolder(TokenSet& xTokenSet);
-
-    bool bPartitionTable(TokenSet& xTokenSet);
     
     bool bCreateTenant(TokenSet& xTokenSet);
     bool bListTenants(TokenSet& xTokenSet);

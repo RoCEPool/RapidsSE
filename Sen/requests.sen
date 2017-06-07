@@ -68,7 +68,6 @@ ld      load_table
 lstbl   list_tables
 lwrsel  lower_select
 mktbl   create_table
-parttbl partition_table
 rettbl  return_table
 rgesel  range_select_table
 rmtbl   drop_table
