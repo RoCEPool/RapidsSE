@@ -86,19 +86,21 @@ AccessPath::~AccessPath(void)
 /*----------------------------------------------------------------------------*/
 /* initialise access path for simple test                                     */
 /*----------------------------------------------------------------------------*/
-void AccessPath::vInit(void)
+void AccessPath::vInit(Interface::SEitf* pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ACCESSPATH,_FOOTER_);
 
-  m_sTenantName  = "<notSet>"_Str;
-  m_sCatalogName = "<notSet>"_Str;
-  m_sSchemaName  = "<notSet>"_Str;
-  m_sTableName   = "<notSet>"_Str;
-  m_sIndexName   = "<notSet>"_Str;
+  m_sTenantName   = "Boray"_Str;
+  m_sCatalogName  = "RapidsSE"_Str;
+  m_sSchemaName   = "public"_Str;
+  m_sTableName    = "jidx"_Str;
+  m_sIndexName    = "idx1"_Str;
   
-  m_sColumnName   = "<notSet>"_Str;
-  m_eRelationalOp = RO_NONE;
-  //m_xValReg
+  m_sColumnName   = "jidx_key"_Str;
+  m_eRelationalOp = RO_EQUAL;
+  m_xValReg       = 10;
+  
+  // find ptrs to the objects...
 }
 
 /*----------------------------------------------------------------------------*/

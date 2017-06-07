@@ -180,6 +180,7 @@ namespace Tasks
     
     
     void vAddPrimitives(void);
+    void vAddPrimitives_AccessPath(void);
     void vAddPrimitives_Address(void);
     void vAddPrimitives_Args(void);
     void vAddPrimitives_Assert(void);
@@ -269,6 +270,11 @@ namespace Tasks
     /*------------------------------------------------------------------------*/
     /*------------------------------------------------------------------------*/
 
+    // access path
+    static void vAccessPathDelete(NNP_Task nnpTask);
+    static void vAccessPathNew(NNP_Task nnpTask);
+    static void vAccessPathSet(NNP_Task nnpTask);
+  
     // address
     static void vAddressEqual(NNP_Task nnpTask);
     static void vAddressFetch(NNP_Task nnpTask);

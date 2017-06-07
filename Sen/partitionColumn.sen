@@ -15,7 +15,7 @@
 : makePartitionColumns ( "<tableNm>" -- )
 
   find execute ( dic )
-  table.partSubDic pathPush "columns" :dic drop pathDrop
+  table.slots slots.subDic pathPush "columns" :dic drop pathDrop
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -121,32 +121,35 @@
 /* list columns of table partitioning                                         */
 /*----------------------------------------------------------------------------*/
 : listPartitionColumns ( "<tableNm>" -- list )
-/*
+
   find execute ( ^tablePtr )
 
-  0 locals| partitionCols tablePtr |
-  tablePtr partition.columnCount to partitionCols
-
+  0 0 locals| partitionCols slotsPtr tablePtr |
+"tp:1" .
+  tablePtr table.slots to slotsPtr
+  slotsPtr slots.columnCount to partitionCols
+"tp:2" .
   ""                             // initial ls string
   args.metadata if
-    indexCols 0 do
-      I tablePtr partition.columnName
+    partitionCols 0 do
+      I slotsPtr slots.columnName
       "row: ('%v', '%v')\n" str.format
       str.cat
     loop
     partitionCols task::this task.seitf@ seitf.rowsProcessed
   else
-
-    indexCols 0 do
-      I tablePtr partition.columnName
-      "%v %v " str.format
+"tp:3" .
+partitionCols .
+    partitionCols 0 do
+      I slotsPtr slots.columnName
+stk
       I 1 + partitionCols < if
         swap ", " str.cat
       then
       str.cat
     loop
   then
-*/
+
 ;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -212,7 +215,7 @@
     object@ execute              ( value )
     object@ word.name            ( value wordNm )
     tablePtr                     ( value wordNm ^table )
-    table.partColumnVec
+    table.slots slots.createColumnVec
     object@ word.prev object!    // advance cursor backwards thru words
   next
 
