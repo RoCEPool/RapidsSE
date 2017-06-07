@@ -123,7 +123,7 @@ pDUMPFUN *gpDump[]
   /* 69 */ &Dump::vUndefined,       // CN_SKIPCURSOR
   /* 70 */ &Dump::vUndefined,       // CN_SKIPLIST
   /* 71 */ &Dump::vUndefined,       // CN_SKIPNODE
-  /* 72 */ &Dump::vUndefined,       // CN_SLOTS
+  /* 72 */ &Slots::vDump,           // CN_SLOTS
   /* 73 */ &Heap::vDump,            // CN_SMALLHEAP
   /* 74 */ &Socket::vDump,          // CN_SOCKET
   /* 75 */ &Stack::vDump,           // CN_STACK

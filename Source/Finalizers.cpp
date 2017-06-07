@@ -122,7 +122,7 @@ pFINALIZE *gpFinalize[]
   /* 69 */ &Finalize::vUndefined,         // CN_SKIPCURSOR
   /* 70 */ &Finalize::vUndefined,         // CN_SKIPLIST
   /* 71 */ &Finalize::vUndefined,         // CN_SKIPNODE
-  /* 72 */ &Finalize::vUndefined,         // CN_SLOTS
+  /* 72 */ &Slots::vFinalize,             // CN_SLOTS
   /* 73 */ &Finalize::vUndefined,         // CN_SMALLHEAP
   /* 74 */ &Finalize::vUndefined,         // CN_SOCKET
   /* 75 */ &Finalize::vUndefined,         // CN_STACK

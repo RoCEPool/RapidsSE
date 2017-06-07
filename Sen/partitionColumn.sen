@@ -133,7 +133,7 @@
   args.metadata if
     partitionCols 0 do
       I slotsPtr slots.columnName
-      "row: ('%v', '%v')\n" str.format
+      "row: ('%v')\n" str.format
       str.cat
     loop
     partitionCols task::this task.seitf@ seitf.rowsProcessed

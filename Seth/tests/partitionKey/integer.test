@@ -1,0 +1,41 @@
+--------------------------------------------------------------------------------
+-- create partition key tests
+--------------------------------------------------------------------------------
+
+-- create a table
+create table dataTable (
+  key     INTEGER NOT NULL,
+  name    VARCHAR(32) NOT NULL,
+  value1  INTEGER,
+  value2  INTEGER
+) partition by (key);
+success
+
+-- check columns of partition key
+lspartcol dataTable;
+rows:
+  ('key')
+
+-- load data into the table
+ld dataTable "../Seth/tests/partitionKey/data.csv";
+success
+
+-- select rows from the table
+
+-- drop the table
+
+
+CLEANUP {
+  -- Commands in the cleanup section always run, and do so at the end
+  -- of a test (whether successful or not). 
+
+  -- Ensure that table  ('keyIdx') is dropped.
+  -- We can set the expected result to mute if we don't want to see any warnings.
+
+  --drop table dataTable;
+  --mute
+
+  bye;
+  mute
+}
+

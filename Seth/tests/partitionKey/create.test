@@ -1,0 +1,146 @@
+--------------------------------------------------------------------------------
+-- create partition key tests
+--------------------------------------------------------------------------------
+
+-- create a table
+create table createT1 (
+  key   INTEGER NOT NULL, 
+  name  VARCHAR(32) NOT NULL
+);
+success
+
+-- check columns of partition key
+lspartcol createT1;
+rows:
+  ('key')
+
+-- drop the table
+drop table createT1;
+success
+
+-- check existence of partition key
+lspartcol createT1;
+failure: no such table
+
+create table createT1 (
+  key   INTEGER NOT NULL,
+  name  VARCHAR(32) NOT NULL
+) partition ;
+failure: 'invalid command'
+
+-- check existence of partition key
+lspartcol createT1;
+failure: no such table
+
+create table createT1 (
+  key   INTEGER NOT NULL,
+  name  VARCHAR(32) NOT NULL
+) partition by;
+failure: 'invalid command'
+
+-- check existence of partition key
+lspartcol createT1;
+failure: no such table
+
+create table createT1 (
+  key   INTEGER NOT NULL,
+  name  VARCHAR(32) NOT NULL
+) partition by (;
+failure: 'invalid command'
+
+create table createT1 (
+  key   INTEGER NOT NULL,
+  name  VARCHAR(32) NOT NULL
+) partition by ();
+failure: 'invalid command'
+
+create table createT1 (
+  key   INTEGER NOT NULL,
+  name  VARCHAR(32) NOT NULL
+) partition by );
+failure: 'invalid command'
+
+create table createT1 (
+key   INTEGER NOT NULL,
+name  VARCHAR(32) NOT NULL
+) partition by key;
+failure: 'invalid command'
+
+create table createT1 (
+key   INTEGER NOT NULL,
+name  VARCHAR(32) NOT NULL
+) partition by (xyz);
+failure: 'invalid column'
+
+create table createT1 (
+key   INTEGER NOT NULL,
+name  VARCHAR(32) NOT NULL
+) partition by (key);
+success
+
+-- check existence of partition key
+lspartcol createT1;
+rows: ('key')
+
+-- drop the table
+drop table createT1;
+success
+
+create table createT1 (
+key   INTEGER NOT NULL,
+name  VARCHAR(32) NOT NULL
+) partition by (name);
+success
+
+-- check existence of partition key
+lspartcol createT1;
+rows: ('name')
+
+-- drop the table
+drop table createT1;
+success
+
+create table createT1 (
+key   INTEGER NOT NULL,
+name  VARCHAR(32) NOT NULL
+) partition by (key, name);
+success
+
+-- check existence of partition key
+lspartcol createT1;
+rows:
+ ('key')
+ ('name')
+
+-- drop the table
+drop table createT1;
+success
+
+create table createT1 (
+key   INTEGER NOT NULL,
+name  VARCHAR(32) NOT NULL
+) partition by (name, key);
+success
+
+-- check existence of partition key
+lspartcol createT1;
+rows:
+  ('key')
+  ('name')
+
+-- drop the table
+drop table createT1;
+success
+CLEANUP {
+  -- Commands in the cleanup section always run, and do so at the end
+  -- of a test (whether successful or not). 
+
+  -- Ensure that table  ('keyIdx') is dropped.
+  -- We can set the expected result to mute if we don't want to see any warnings.
+  drop table createT1;
+  mute
+
+  bye;
+  mute
+}
+

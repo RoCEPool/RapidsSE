@@ -23,6 +23,9 @@ namespace DBobjects
     void* operator new(size_t);
     void  operator delete(void*);
     
+    static void vDump(eCN eClass, Object* pObject, Str* aTab);
+    static void vFinalize(eCN eClass, Object* pObject);
+    
     Slots(void);
     ~Slots(void);
     

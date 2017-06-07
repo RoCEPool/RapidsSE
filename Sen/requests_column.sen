@@ -142,7 +142,7 @@
   checkIsTable  not if popTable <NIP+ERROR> exit then
 
   args.metadata if
-  "(columnDefinition VARCHAR)" metadata!
+  "(columnName VARCHAR)" metadata!
   then
 
   listPartitionColumns

@@ -2316,6 +2316,14 @@ bool SePrompt::bAddPartitionColumn(Str* pTable, Str* pColumn)
     // save error returned by addColumn
     eEC eError = m_pSEitf->eGetLastError();
     
+    // change folder to table
+    m_xTokenSet[0]->vCopy("cf"_Str);
+    m_xTokenSet[1]->vCopy(".."_Str);
+    
+    if (!bExecuteRequest()) {
+      return false;
+    }
+    
     vTrace("SePrompt::bAddPartitionColumn : addpartcol FAILED!!!\n"_Str);
     bool bDrop = bDropReturnTable(m_xTokenSet2[2]);
     ASSERT(bDrop);
@@ -2472,21 +2480,47 @@ bool SePrompt::bPartitionTable(i8 iToken, i8 iNumTokens)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create the partition columns
   iToken = iCurrentToken;
+  i8 iPartKeys = 0;
   while(iCurrentToken < iNumTokens - 1) {
     
     if ( (iCurrentToken != iToken) &&
          !m_xTokenSet2[iCurrentToken++]->bEqual(","_Str)) {
+      // change folder to table
+      m_xTokenSet[0]->vCopy("cf"_Str);
+      m_xTokenSet[1]->vCopy(".."_Str);
+      
+      if (!bExecuteRequest()) {
+        return false;
+      }
+
       bool bDrop = bDropReturnTable(m_xTokenSet2[2]);
       ASSERT(bDrop);
       
       m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
       return false;
     }
+    iPartKeys++;
     
     // add columns to the table
     bool bAdd = bAddPartitionColumn(m_xTokenSet2[2], m_xTokenSet2[iCurrentToken++]);
     if ( ! bAdd)
       return false;
+  }
+  
+  if ( ! iPartKeys ) {
+    // change folder to table
+    m_xTokenSet[0]->vCopy("cf"_Str);
+    m_xTokenSet[1]->vCopy(".."_Str);
+    
+    if (!bExecuteRequest()) {
+      return false;
+    }
+
+    bool bDrop = bDropReturnTable(m_xTokenSet2[2]);
+    ASSERT(bDrop);
+    
+    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+    return false;
   }
   
   // change folder back to tables
@@ -2498,6 +2532,14 @@ bool SePrompt::bPartitionTable(i8 iToken, i8 iNumTokens)
     // save error returned by addColumn
     eEC eError = m_pSEitf->eGetLastError();
     
+    // change folder to table
+    m_xTokenSet[0]->vCopy("cf"_Str);
+    m_xTokenSet[1]->vCopy(".."_Str);
+    
+    if (!bExecuteRequest()) {
+      return false;
+    }
+
     bool bDrop = bDropReturnTable(m_xTokenSet2[2]);
     ASSERT(bDrop);
     

@@ -607,9 +607,12 @@ tp: removeTable
   tableNm pushTable assert
   tableNm find execute ( ^table )
 
+  //----------------------------------------------------------------------------
   // drop all rows
   dup table.truncate ( ^table )
 
+  //----------------------------------------------------------------------------
+  // drop all indexes
   "indexes" find execute pathPush
 
   // iterate thru all indexes and tidyUp
@@ -631,12 +634,25 @@ tp: removeTable
   // forget the indexes dictionary itself
   "indexes" :forget
 
+  //----------------------------------------------------------------------------
+  // drop all partition keys etc
+
+  // forget all column names in the columns dictionary of partitions sub-dictionary
+  dup table.slots slots.subDic
+  pathPush
+  "columns" find execute forgetAll
+  pathDrop
+
+  dup table.slots slots.subDic forgetAll
+
   // forget the partitions in the partitions dictionary
   "partitions" find execute forgetAll
 
   // forget the partitions dictionary itself
   "partitions" :forget
 
+  //----------------------------------------------------------------------------
+  // drop all table columns etc
   // forget all column names in the columns dictionary of table sub-dictionary
   dup table.subDic
   pathPush
