@@ -10,12 +10,16 @@
 #define TL_POOL   8
 
 // external SE API calls
-extern "C" eEC RapidsSE_AddColumn(SEitf* pSEitf, Str* pColumnName, Str* pColumnType, i8 iTraceLevel);
+extern "C" eEC RapidsSE_AddIndexColumn(SEitf* pSEitf, Str* pTableName, Str* pIndexName, Str* pColumnName, i8 iTraceLevel);
+extern "C" eEC RapidsSE_AddTableColumn(SEitf* pSEitf, Str* pTableName, Str* pColumnName, Str* pColumnType,
+                                       i8 iTraceLevel);
 extern "C" eEC RapidsSE_BeginInsert(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable, i8 iTraceLevel);
 extern "C" eEC RapidsSE_CheckLibraryVersion(Str* pVersion, i8 iTraceLevel);
+extern "C" eEC RapidsSE_CreateIndex(SEitf* seitf, Str* catalog, Str* pSchema, Str* table, Str* pIndex, bool bIsUnique, i8 iTraceLevel);
 extern "C" eEC RapidsSE_CreateTable(SEitf* seitf, Str* catalog, Str* pSchema, Str* table, i8 iTraceLevel);
 extern "C" eEC RapidsSE_DropTable(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable, i8 iTraceLevel);
-extern "C" eEC RapidsSE_EndCreate(SEitf* pSEitf, i8 iTraceLevel);
+extern "C" eEC RapidsSE_EndCreateIndex(SEitf* pSEitf, Str* pTable, Str* pIndexi8, i8 iTraceLevel);
+extern "C" eEC RapidsSE_EndCreateTable(SEitf* pSEitf, Str* pTable, i8 iTraceLevel);
 extern "C" eEC RapidsSE_EndInsert(SEitf* pSEitf, i8 iTraceLevel);
 extern "C" eEC RapidsSE_EndScan(SEitf* pSEitf, i8 iTraceLevel);
 extern "C" eEC RapidsSE_GetCatalogs(SEitf* pSEitf, void** ppCatalog, i8 iTraceLevel);
@@ -92,6 +96,15 @@ eEC eGetResponse(SEitf* pSEitf);
       aApiCall, pSEitf, pSEitf ? pSEitf->iPartition() : -1, p1, p2, p3); \
 }
 
+/*----------------------------------------------------------------------------*/
+/* trace API entry                                                            */
+/*----------------------------------------------------------------------------*/
+#define TRACE_ENTRY_P4(p1, p2, p3, p4) \
+{  \
+  if ( (iTraceLevel & TL_ENTRY) == TL_ENTRY) \
+    vTrace("<%s: %p(%lld) %s %s %s %s\n"_Str,  \
+      aApiCall, pSEitf, pSEitf ? pSEitf->iPartition() : -1, p1, p2, p3, p4); \
+}
 
 /*----------------------------------------------------------------------------*/
 /* trace API error                                                            */
@@ -214,6 +227,18 @@ eEC eGetResponse(SEitf* pSEitf);
 #define CF_CATALOGS(aMarker) \
   { \
     eResult = eChangeFolderCatalogs(pSEitf, aApiCall, iTraceLevel); \
+    if (EC_NONE != eResult) { \
+      TRACE_ERROR(aMarker,eResult); \
+      return eResult; \
+    } \
+  }
+
+/*----------------------------------------------------------------------------*/
+/* change folder to indexes                                                   */
+/*----------------------------------------------------------------------------*/
+#define CF_INDEXES(aMarker) \
+  { \
+    eResult = eChangeFolderIndexes(pSEitf, pCatalog, pSchema, pTable, aApiCall, iTraceLevel); \
     if (EC_NONE != eResult) { \
       TRACE_ERROR(aMarker,eResult); \
       return eResult; \
@@ -512,6 +537,34 @@ inline eEC eChangeFolderTable(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* p
   
   return EC_NONE;
   
+}
+
+/*----------------------------------------------------------------------------*/
+/* change folder to indexes                                                   */
+/*----------------------------------------------------------------------------*/
+inline eEC eChangeFolderIndexes(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable, Str* aApiCall, i8 iTraceLevel)
+{
+  eEC eResult;
+  
+  eResult = eChangeFolderTable(pSEitf, pCatalog, pSchema, pTable, aApiCall, iTraceLevel);
+  if (eResult != EC_NONE)
+  return eResult;
+  
+  // change directory to indexes
+  eResult = eExecuteRequest(pSEitf, "cf"_Str, "indexes"_Str);
+  if (EC_NONE != eResult) {
+    vTraceError(iTraceLevel, "%s(fm): %p %s(%lld)\n"_Str, pSEitf, aApiCall, aEC[eResult], eResult);
+    return eResult;
+  }
+  
+  // get response
+  eResult = eGetResponse(pSEitf);
+  if (EC_NONE != eResult) {
+    vTraceError(iTraceLevel, "%s(fn): %p %s(%lld)\n"_Str, pSEitf, aApiCall, aEC[eResult], eResult);
+    return eResult;
+  }
+  
+  return EC_NONE;
 }
 
 /*============================================================================*/

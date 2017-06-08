@@ -10,18 +10,18 @@ extern AttachMap*  gpAttachMap;
 extern Grid*       gpGrid;
 
 /*----------------------------------------------------------------------------*/
-/* add a column to a table                                                    */
+/* add a column to an index                                                    */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_AddColumn(SEitf* pSEitf, Str* pColumnName, Str* pColumnType, i8 iTraceLevel)
+eEC RapidsSE_AddIndexColumn(SEitf* pSEitf, Str* pTableName, Str* pIndexName, Str* pColumnName, i8 iTraceLevel)
 {
   eEC eResult;
   eEC eResponse;
-
-  Str* aApiCall = "RapidsSE_AddColumn"_Str;
+  
+  Str* aApiCall = "RapidsSE_AddIndexColumn"_Str;
   
   try {
-    TRACE_ENTRY_P2(pColumnName, pColumnType);
-
+    TRACE_ENTRY_P3(pTableName, pIndexName, pColumnName);
+    
     // validate the SEitf
     VALIDATE_SEITF("a"_Str);
     
@@ -30,19 +30,19 @@ eEC RapidsSE_AddColumn(SEitf* pSEitf, Str* pColumnName, Str* pColumnType, i8 iTr
     
     // validate parameters
     VALIDATE_PARAM("b"_Str, pColumnName);
-    VALIDATE_PARAM("c"_Str, pColumnType);
     
     // validate that we have a current table
     VALIDATE_TABLE("d"_Str);
-
+    
     // get the current table
     Table* pTable = pSEitf->pCurrentTable();
+    ASSERT(pTable);
     
     // add a column
-    eResult = eExecuteRequest(pSEitf, "addcol"_Str,
-                              (Str*)pTable->aTableName(),
-                              (Str*)pColumnName,
-                              (Str*)pColumnType);
+    eResult = eExecuteRequest(pSEitf, "addidxcol"_Str,
+                              pTableName,
+                              pIndexName,
+                              pColumnName);
     
     CHECK_RESULT("e"_Str);
     CHECK_RESPONSE("f"_Str);
@@ -61,6 +61,59 @@ eEC RapidsSE_AddColumn(SEitf* pSEitf, Str* pColumnName, Str* pColumnType, i8 iTr
     return EC_SE_UNKNOWN_ERROR;
   }
   
+}
+
+/*----------------------------------------------------------------------------*/
+/* add a column to a table                                                    */
+/*----------------------------------------------------------------------------*/
+eEC RapidsSE_AddTableColumn(SEitf* pSEitf, Str* pTableName, Str* pColumnName, Str* pColumnType, i8 iTraceLevel)
+{
+  eEC eResult;
+  eEC eResponse;
+  
+  Str* aApiCall = "RapidsSE_AddTableColumn"_Str;
+  
+  try {
+    TRACE_ENTRY_P2(pColumnName, pColumnType);
+    
+    // validate the SEitf
+    VALIDATE_SEITF("a"_Str);
+    
+    // clear the last error
+    CLEAR_LASTERROR();
+    
+    // validate parameters
+    VALIDATE_PARAM("b"_Str, pColumnName);
+    VALIDATE_PARAM("c"_Str, pColumnType);
+    
+    // validate that we have a current table
+    VALIDATE_TABLE("d"_Str);
+    
+    // get the current table
+    Table* pTable = pSEitf->pCurrentTable();
+    
+    // add a column
+    eResult = eExecuteRequest(pSEitf, "addcol"_Str,
+                              pTableName,
+                              pColumnName,
+                              pColumnType);
+    
+    CHECK_RESULT("e"_Str);
+    CHECK_RESPONSE("f"_Str);
+    
+    TRACE_EXIT("ea"_Str);
+    
+    return EC_NONE;
+  }
+  catch (Error* pError) {
+    RapidsSE::vErrorHandler(pError);
+    TRACE_ERROR("!", pError->eErrorCode());
+    return pError->eErrorCode();
+  }
+  catch (...) {
+    TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
+    return EC_SE_UNKNOWN_ERROR;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -160,7 +213,90 @@ eEC RapidsSE_CheckLibraryVersion(Str* pVersion, i8 iTraceLevel)
   catch (...) {
     TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
     return EC_SE_UNKNOWN_ERROR;
-  }}
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* create index                                                               */
+/*----------------------------------------------------------------------------*/
+eEC RapidsSE_CreateIndex(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable,
+                         Str* pIndex, bool bIsUnique, i8 iTraceLevel)
+{
+  eEC eResult;
+  eEC eResponse;
+  
+  Str* aApiCall = "RapidsSE_CreateIndex"_Str;
+  
+  try {
+    TRACE_ENTRY_P4(pCatalog, pSchema, pTable, pIndex);
+    
+    // validate the SEitf
+    VALIDATE_SEITF("a"_Str);
+    
+    // clear the last error
+    CLEAR_LASTERROR();
+    
+    // validate parameters
+    VALIDATE_PARAM("b"_Str, pCatalog);
+    VALIDATE_PARAM("c"_Str, pSchema);
+    VALIDATE_PARAM("d"_Str, pTable);
+    VALIDATE_PARAM("e"_Str, pTable);
+    
+    // change folder to table
+    CF_TABLE("f"_Str);
+    
+    // get pTable
+    eEC eGetResult = eExecuteRequest(pSEitf, "gettbl"_Str, (Str*)pTable);
+    
+    if (EC_NONE != eGetResult) {
+      
+      // remove the table
+      eResult = eExecuteRequest(pSEitf, "rmidx"_Str, (Str*)pTable);
+      CHECK_RESULT("g"_Str);
+      CHECK_RESPONSE("h"_Str);
+      
+      TRACE_ERROR("i"_Str, eGetResult);
+      return eGetResult;
+    }
+    
+    // check response
+    CHECK_RESPONSE("j"_Str);
+    
+    // change folder to tables
+    CF_TABLES("k"_Str);
+    
+    // create an index
+    eResult = eExecuteRequest(pSEitf, "mkidx"_Str, pTable, pIndex);
+    CHECK_RESULT("l"_Str);
+    CHECK_RESPONSE("m"_Str);
+
+    // change folder to indexes
+    CF_INDEXES("n"_Str);
+    
+    if (bIsUnique) {
+      // set unique index
+      eResult = eExecuteRequest(pSEitf, "setidxunique"_Str, pTable, pIndex, "true"_Str);
+      CHECK_RESULT("o"_Str);
+      CHECK_RESPONSE("p"_Str);
+    }
+    
+    // validate current table
+    VALIDATE_TABLE("q");
+    
+    TRACE_EXIT("ea"_Str);
+    
+    return EC_NONE;
+  }
+  catch (Error* pError) {
+    RapidsSE::vErrorHandler(pError);
+    TRACE_ERROR("!", pError->eErrorCode());
+    return pError->eErrorCode();
+  }
+  catch (...) {
+    TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
+    return EC_SE_UNKNOWN_ERROR;
+  }
+}
 
 /*----------------------------------------------------------------------------*/
 /* create table                                                               */
@@ -285,14 +421,68 @@ eEC RapidsSE_DropTable(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable, 
 }
 
 /*----------------------------------------------------------------------------*/
-/* end create                                                                 */
+/* end create index                                                           */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_EndCreate(SEitf* pSEitf, i8 iTraceLevel)
+eEC RapidsSE_EndCreateIndex(SEitf* pSEitf, Str* pTable, Str* pIndex, i8 iTraceLevel)
 {
   eEC eResult;
   eEC eResponse;
   
-  Str* aApiCall = "RapidsSE_EndCreate"_Str;
+  Str* aApiCall = "RapidsSE_EndCreateIndex"_Str;
+  
+  try {
+    
+    // trace entry
+    TRACE_ENTRY_P0();
+    
+    // validate the SEitf
+    VALIDATE_SEITF("a"_Str);
+    
+    // clear the last error
+    CLEAR_LASTERROR();
+    
+    // endmkidx only if we managed to gettbl
+    if (pSEitf->pCurrentTable()) {
+      eEC eResult = eExecuteRequest(pSEitf, "endmkidx"_Str, pTable, pIndex);
+      CHECK_RESULT("b"_Str);
+      CHECK_RESPONSE("c"_Str);
+    }
+    
+    // rettbl only if we managed to gettbl the table
+    if (pSEitf->pCurrentTable()) {
+      eEC eResult = eExecuteRequest(pSEitf, "rettbl"_Str);
+      CHECK_RESULT("d"_Str);
+      CHECK_RESPONSE("e"_Str);
+    }
+    
+    // should not have a table
+    VALIDATE_NOTABLE("f"_Str);
+    
+    TRACE_EXIT("ea"_Str);
+    
+    return EC_NONE;
+    
+  }
+  catch (Error* pError) {
+    RapidsSE::vErrorHandler(pError);
+    TRACE_ERROR("!", pError->eErrorCode());
+    return pError->eErrorCode();
+  }
+  catch (...) {
+    TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
+    return EC_SE_UNKNOWN_ERROR;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* end create table                                                           */
+/*----------------------------------------------------------------------------*/
+eEC RapidsSE_EndCreateTable(SEitf* pSEitf, Str* pTable, i8 iTraceLevel)
+{
+  eEC eResult;
+  eEC eResponse;
+  
+  Str* aApiCall = "RapidsSE_EndCreateTable"_Str;
 
   try {
     
@@ -305,15 +495,22 @@ eEC RapidsSE_EndCreate(SEitf* pSEitf, i8 iTraceLevel)
     // clear the last error
     CLEAR_LASTERROR();
     
-    // rettbl only if we managed to create the table
+    // endmktbl only if we managed to create the table
     if (pSEitf->pCurrentTable()) {
-      eEC eResult = eExecuteRequest(pSEitf, "rettbl"_Str);
+      eEC eResult = eExecuteRequest(pSEitf, "endmktbl"_Str, pTable);
       CHECK_RESULT("b"_Str);
       CHECK_RESPONSE("c"_Str);
     }
+
+    // rettbl only if we managed to create the table
+    if (pSEitf->pCurrentTable()) {
+      eEC eResult = eExecuteRequest(pSEitf, "rettbl"_Str);
+      CHECK_RESULT("d"_Str);
+      CHECK_RESPONSE("e"_Str);
+    }
     
     // should not have a table
-    VALIDATE_NOTABLE("d"_Str);
+    VALIDATE_NOTABLE("f"_Str);
     
     TRACE_EXIT("ea"_Str);
     
