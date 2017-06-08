@@ -874,6 +874,7 @@ bool SePrompt::bHelp(void)
   vTrace("tridx      -- truncate table\n"_Str);
   vTrace("uprselidx  -- upper bound select\n"_Str);
   vTrace("usesch     -- use schema\n"_Str);
+  vTrace("version    -- print SE version\n"_Str);
   vTrace("?          -- print this help\n"_Str);
   vTrace("help       -- print this help\n"_Str);
   

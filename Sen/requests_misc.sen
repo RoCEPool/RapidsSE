@@ -34,7 +34,13 @@
 /*----------------------------------------------------------------------------*/
 : get_version ( -- <R> )
 
-  version
+  args.metadata if
+    "(version VARCHAR)" metadata!
+    "')" version "row: ('" "%v%v%v\n" str.format
+    1 task::this task.seitf@ seitf.rowsProcessed
+  else
+    version
+  then
 
   <SUCCESS>
 ;
