@@ -95,9 +95,9 @@ timer: idxSelectTimer
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create index
 
-  sTableNm pushTable assert                                // ../tables/sTableNm
-  sTableNm get_table
-  popTable                                                          // ../tables
+  //sTableNm pushTable assert                                // ../tables/sTableNm
+  //sTableNm get_table
+  //popTable                                                          // ../tables
 
   sTableNm sIndexNm makeIndex assertInTables
 

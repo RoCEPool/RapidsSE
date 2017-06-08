@@ -1117,6 +1117,30 @@ bool SePrompt::bCreateIndex(bool bUnique)
     return false;
   }
   
+  // change folder to table
+  m_xTokenSet[0]->vCopy("cf"_Str);
+  m_xTokenSet[1]->vCopy(m_xTokenSet2[4 + iIfUnique]);
+  
+  if (!bExecuteRequest())
+    return false;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get reference to pTable
+  m_xTokenSet[0]->vCopy("gettbl"_Str);
+  m_xTokenSet[1]->vCopy(m_xTokenSet2[4 + iIfUnique]);
+  
+  if (!bExecuteRequest()) {
+    vTrace("SePrompt::bCreateIndex : gettbl FAILED!!!\n"_Str);
+    return false;
+  }
+  
+  // change folder back to tables
+  m_xTokenSet[0]->vCopy("cf"_Str);
+  m_xTokenSet[1]->vCopy(".."_Str);
+
+  if (!bExecuteRequest())
+  return false;
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create the index
   

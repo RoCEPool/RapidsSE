@@ -31,11 +31,6 @@ drop table boolTable;
 success
 
 CLEANUP {
-  -- Commands in the cleanup section always run, and do so at the end
-  -- of a test (whether successful or not). 
-
-  -- Ensure that table  ('keyIdx') is dropped.
-  -- We can set the expected result to mute if we don't want to see any warnings.
   drop table boolTable;
   mute
 
