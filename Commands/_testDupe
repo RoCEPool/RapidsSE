@@ -6,7 +6,7 @@ create table jDupe (
   jDupe_key   INTEGER NOT NULL,
   jDupe_name  VARCHAR(32) NOT NULL,
   jDupe_i     INTEGER NOT NULL
-);
+) partition by (jDupe_i);
 
 create index jDupe_idx1 on jDupe (jDupe_i);
 

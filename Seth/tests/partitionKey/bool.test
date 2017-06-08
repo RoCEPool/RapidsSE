@@ -1,0 +1,45 @@
+--------------------------------------------------------------------------------
+-- create partition key tests
+--------------------------------------------------------------------------------
+-- create a table
+create table boolTable (
+  key   BOOLEAN NOT NULL,
+  value INTEGER,
+  name  VARCHAR(32) NOT NULL
+);
+success
+
+-- check columns of partition key
+lspartcol boolTable;
+rows:
+  ('key')
+
+-- load data into the table
+ld boolTable "../Seth/tests/partitionKey/bool.csv";
+success
+
+-- analyze table
+antbl boolTable;
+rows:
+ (*,*,*,*,0)
+ (*,*,*,*,5)
+ (*,*,*,*,0)
+ (*,*,*,*,5)
+
+-- drop the table
+drop table boolTable;
+success
+
+CLEANUP {
+  -- Commands in the cleanup section always run, and do so at the end
+  -- of a test (whether successful or not). 
+
+  -- Ensure that table  ('keyIdx') is dropped.
+  -- We can set the expected result to mute if we don't want to see any warnings.
+  drop table boolTable;
+  mute
+
+  bye;
+  mute
+}
+

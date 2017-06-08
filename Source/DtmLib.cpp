@@ -17,6 +17,7 @@ bool DtmLib::bExtractBcd(char** aaSrc, Bcd* aDecimal)
 /*----------------------------------------------------------------------------*/
 /* extract a boolean from substr                                              */
 /*----------------------------------------------------------------------------*/
+/*
 bool DtmLib::bExtractBol(char** aaSrc, Bol* aBoolean)
 {
   bool bResult = false;
@@ -43,6 +44,23 @@ bool DtmLib::bExtractBol(char** aaSrc, Bol* aBoolean)
   aBoolean->m_bBol = bResult;
   
   return bResult;
+}
+*/
+bool DtmLib::bExtractBol(char** aaSrc, Bol* aBoolean)
+{
+  bool bResult = false;
+    
+  // test for true
+  if ('t' == *(*aaSrc) ||
+      'T' == *(*aaSrc) ||
+      'y' == *(*aaSrc) ||
+      'Y' == *(*aaSrc) ||
+      '1' == *(*aaSrc))
+  bResult = true;
+  
+  aBoolean->m_bBol = bResult;
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
