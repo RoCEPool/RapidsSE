@@ -205,6 +205,11 @@ void KeyWsp::vAddElement(ValWsp& xValWsp, Column* pCol)
   
   switch(pCol->eColumnType()) {
 
+    case CT_BOOLEAN:
+      pSrc = (char*)(_pBolVal(xValWsp.pNestedValueSelf())->aInt());
+      nBytes = ValLib::nCopyBolDatum((char*)pDst,(char*)pSrc);
+      break;
+      
     case CT_DATE:
       pSrc = (char*)(_pDteVal(xValWsp.pNestedValueSelf())->aInt());
       nBytes = ValLib::nCopyDteDatum((char*)pDst,(char*)pSrc);

@@ -15,9 +15,11 @@ namespace Values
     
     BolVal(void);
     
+    void operator =(Bol xBol);
     void operator =(i8 iVal);
     
     i8 nSize(void) const;
+    i8* aInt(void);
     i8 iBol(void) const;
     
     void vToString(Str* aWorkspace);
