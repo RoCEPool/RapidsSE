@@ -251,16 +251,6 @@ void Row::vTxId(i8 iTxId)
 /*----------------------------------------------------------------------------*/
 /* get bytes required for row                                                 */
 /*----------------------------------------------------------------------------*/
-i8 Row::iBytesRequired(Str* aRow)
-{
-  i8 iBytes = sizeof(Row) + sizeof(Footer) + aRow->nSize();
-  
-  return iBytes;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get bytes required for row                                                 */
-/*----------------------------------------------------------------------------*/
 i8 Row::iBytesRequired(i8 iDataBytes)
 {
   i8 iBytes = sizeof(Row) + sizeof(Footer) + iDataBytes;
