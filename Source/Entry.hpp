@@ -14,9 +14,6 @@ namespace DBobjects
     // ..footer..
   
   public:
-    static i8 nBytesRequired(EntWsp& xEntWsp);
-    static i8 nBytesRequired(i8 nOffsets, i8 nKeyBytes);
-  
     void* operator new(size_t);
     void* operator new(size_t, Entry*);
     
@@ -39,7 +36,7 @@ namespace DBobjects
     void   vId(Id xId);
     void   vKey(EntWsp& xEntWsp);
     void   vSetEntry(EntWsp& xEntWsp);
-    i8     nSize(void);
+    i8     nSizeEntry(void);
 
     Footer* pFooter(void);
     

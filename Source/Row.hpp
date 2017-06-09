@@ -10,7 +10,6 @@ namespace DBobjects
   class Row : public BufferItem
   {
   private:
-  //i8  m_iTxId;       // transaction id
     // ..data..
     // ..footer..
 
@@ -28,7 +27,6 @@ namespace DBobjects
     i8    iTxId(void);
     void  vTxId(i8 iTxId);
     
-    static i8 iBytesRequired(i8 iDataBytes);
     
     Footer* pFooter(void);
   };

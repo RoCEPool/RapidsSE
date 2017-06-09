@@ -371,7 +371,7 @@ void IndexData::vInsertEntry(IndexBuffer* pHigher, KeyWsp& xKeyWsp, Id xId, i8 i
   IndexBuffer* pIndexBuffer = pHigher->pPositionLevel(xKeyWsp, JC_AFTER, iLevel);
   
   // check if found index buffer has enough space
-  i8 nEntryBytes = Entry::nBytesRequired(xEntWsp);
+  i8 nEntryBytes = BufferItem::nBytesRequiredEntry(xEntWsp);
   if ( ! pIndexBuffer->bHasSpace(nEntryBytes) ) {
     
     // not enough space, so split the index buffer

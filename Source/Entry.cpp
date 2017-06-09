@@ -11,34 +11,6 @@
 extern i8 gnIndexOffsets;
 
 /*----------------------------------------------------------------------------*/
-/* get bytes required for an Entry based on given EntWsp incl Object & Footer */
-/*----------------------------------------------------------------------------*/
-i8 Entry::nBytesRequired(EntWsp& xEntWsp)
-{
-  i8 nOffsets = xEntWsp.nOffsets();
-  
-  i8 nKeyBytes = xEntWsp.nKeySize();
-  
-  i8 nBytes = Entry::nBytesRequired(nOffsets,nKeyBytes);
-  
-  return nBytes;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get total bytes required for entry incl Object & Footer                    */
-/*----------------------------------------------------------------------------*/
-i8 Entry::nBytesRequired(i8 nOffsets, i8 nKeyBytes)
-{
-  i8 nEntryDataBytes = EntryData::nBytesRequired(nOffsets,nKeyBytes);
-  
-  i8 nBytes = sizeof(Entry)
-                + nEntryDataBytes
-                + sizeof(Footer);
-  
-  return nBytes;
-}
-
-/*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -145,7 +117,7 @@ void Entry::vShow(i8 iOffset, IdxColVec* pColVec)
   
   vTrace("Entry %p: Size: %llu Offsets: %llu "_Str,
          this,
-         nSize(),
+         nSizeEntry(),
          m_iOffsets
          );
   
@@ -162,7 +134,7 @@ void Entry::vShow(i8 iOffset, IdxColVec* pColVec)
            *nRight,
            iRightOffset(nRight) == C_NIL_OFFSET ?
               C_NIL_OFFSET :
-              iRightOffset(nRight) + iOffset + nSize());
+              iRightOffset(nRight) + iOffset + nSizeEntry());
   }
   
   vTrace("\n"_Str);
@@ -376,7 +348,7 @@ void Entry::vSetEntry(EntWsp& xEntWsp)
 /*----------------------------------------------------------------------------*/
 /* get size in bytes of this entry occurence incl Object & Footer             */
 /*----------------------------------------------------------------------------*/
-i8 Entry::nSize(void)
+i8 Entry::nSizeEntry(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
   
