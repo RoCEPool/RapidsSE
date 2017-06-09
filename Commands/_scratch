@@ -11,6 +11,8 @@ create table boolTable (
 create index idx on boolTable (key);
 ld boolTable "../Seth/tests/partitionKey/bool.csv";
 
+lwrselidx boolTable idx 1;
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
