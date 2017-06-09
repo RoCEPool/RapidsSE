@@ -10,7 +10,7 @@ namespace DBobjects
   class Row : public BufferItem
   {
   private:
-    i8  m_iTxId;       // transaction id
+  //i8  m_iTxId;       // transaction id
     // ..data..
     // ..footer..
 

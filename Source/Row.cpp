@@ -42,7 +42,7 @@ Row::Row(i8 iDataBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROW);
   
-  m_iTxId      = -1;
+  //m_iTxId      = -1;
   m_iBytes = iDataBytes;
 
   _setFooter_();
@@ -101,9 +101,9 @@ void Row::vContentDump(void)
   
   StrVal* pStr = (StrVal*)pData();
   
-  vTrace("Row %p: TxId %lld DataBytes %lld %s (%lld bytes) %s\n"_Str,
+  vTrace("Row %p: DataBytes %lld %s (%lld bytes) %s\n"_Str,
          this,
-         m_iTxId,
+         //m_iTxId,
          m_iBytes,
          pData(),
          StrLib::iSize(pData()),
@@ -251,7 +251,7 @@ i8 Row::iTxId(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
 
-  return m_iTxId;
+  return -1; //m_iTxId;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -261,7 +261,7 @@ void Row::vTxId(i8 iTxId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
 
-  m_iTxId = iTxId;
+  //m_iTxId = iTxId;
 }
 
 /*----------------------------------------------------------------------------*/
