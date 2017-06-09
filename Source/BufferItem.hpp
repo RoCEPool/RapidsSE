@@ -18,6 +18,7 @@ namespace DBobjects
   public:
     void* operator new(size_t);
     void* operator new(size_t, BufferItem*);
+    void* operator new(size_t, Entry*);
   
     BufferItem(EntWsp& xEntWsp);
     BufferItem(i8 nBytes, i8 uOffsets);
@@ -69,6 +70,8 @@ namespace DBobjects
   
   BufferItem* _pBufferItem(void* aAddr);
   Entry* _pEntry(void* aAddr);
+  Row* _aRow(void* aAddr);
+  
 }
 
 /*============================================================================*/

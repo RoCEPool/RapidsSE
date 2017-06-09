@@ -61,6 +61,16 @@ void* BufferItem::operator new(size_t iSize, BufferItem* pBufferItem)
 }
 
 /*----------------------------------------------------------------------------*/
+/* operator new                                                               */
+/*----------------------------------------------------------------------------*/
+void* BufferItem::operator new(size_t iSize, Entry* pEntry)
+{
+  RASSERT(iSize);
+  
+  return pEntry;
+}
+
+/*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 BufferItem::BufferItem(EntWsp& xEntWsp)
