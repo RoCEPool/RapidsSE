@@ -5,14 +5,10 @@
 
 namespace DBobjects
 {
-  static const i8 C_BUFFER_THRESHOLD = 100;
-  static const RowBuffer* C_ROWBUFFER_MARKER = (RowBuffer*)0xFFFFFFFFFFFFFFFF;
-  
-  
   class RowBuffer : public EntryBuffer
   {
   private:
-     
+  
   public:
     void* operator new(size_t);
     void* operator new(size_t, void* aAddress);

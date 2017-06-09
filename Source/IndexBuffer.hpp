@@ -65,6 +65,8 @@ namespace DBobjects
     i8           iToOffsetAbs(Entry* pEntry);
     i8           iToRightOffsetAbs(Entry* pEntry, on nOffsetNo);
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   };
   
   IndexBuffer* _pIndexBuffer(void* aAddr);
