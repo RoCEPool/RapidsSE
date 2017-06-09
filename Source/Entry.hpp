@@ -22,18 +22,14 @@ namespace DBobjects
     ~Entry(void);
     
     void   vShow(i8 iOffset, IdxColVec* pColVec);
-  
-     
+
     IndexBuffer* pIndexBuffer(void);
-    Key*   aKey(void);
     Id&    xId(void);
     void   vId(Id xId);
     void   vKey(EntWsp& xEntWsp);
     void   vSetEntry(EntWsp& xEntWsp);
     i8     nSizeEntry(void);
-
-  //Footer* pFooter(void);
-    
+  
   private:
     bn     nBufferNo(void);
   };

@@ -50,6 +50,49 @@ void* BufferItem::operator new(size_t iSize, BufferItem* pBufferItem)
   return pBufferItem;
 }
 
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+BufferItem::BufferItem(EntWsp& xEntWsp)
+: Object(CN_ENTRY)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY);
+  
+  _setFooter_();
+  
+  vSetEntry(xEntWsp);
+  
+  _checkInitialised_(CN_ENTRY);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+BufferItem::BufferItem(i8 nBytes, i8 iOffsets)                   //! should we pass EntWsp?
+: Object(CN_ENTRY)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY);
+  
+  // initialise bytes
+  m_nThisBytes = nBytes;
+  
+  // check initialisation of rowid
+  ASSERT(0 == m_xId.iBuffer() && 0 == m_xId.iRow());
+  
+  // initialise offsets
+  m_iOffsets = iOffsets;
+  ASSERT(m_iOffsets >= 0 && m_iOffsets <= gnIndexOffsets);
+  
+  // entry data will be initialised by vSetEntry       //! Is this correct form?
+  
+  _setFooter_();
+  
+  _checkInitialised_(CN_ENTRY);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+}
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -228,6 +271,54 @@ EntryData* BufferItem::aEntryData(void)
   EntryData* aEntryData = pAdd<EntryData*>(this,sizeof(Entry));
   
   return aEntryData;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get Key                                                                    */
+/*----------------------------------------------------------------------------*/
+Key* BufferItem::aKey(void)
+{
+  _precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
+  
+  EntryData* pEntryData = this->aEntryData();
+  
+  Key* aKey = pEntryData->aKey(m_iOffsets);
+  
+  return aKey;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set entry given entry wsp                                                  */
+/*----------------------------------------------------------------------------*/
+void BufferItem::vSetEntry(EntWsp& xEntWsp)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+  
+  ASSERT(m_nThisBytes);
+  
+  // set RowId
+  m_xId  = xEntWsp.xId();
+  
+  // set Offsets
+  m_iOffsets = xEntWsp.nOffsets();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // copy RightVec
+  RightVec* aEntryRightVec = this->aRightVec();
+  RightVec* aEntWspRightVec = xEntWsp.aRightVec();
+  i8 nRightBytes = xEntWsp.nRightSize();
+  
+  MemLib::vCopy(aEntryRightVec,aEntWspRightVec,nRightBytes);
+  
+  // copy Key
+  Key* aEntryKey = this->aKey();
+  Key* aEntWspKey = xEntWsp.aKey();
+  i8 nKeyBytes = xEntWsp.nKeySize();
+  
+  MemLib::vCopy(aEntryKey,aEntWspKey,nKeyBytes);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
 }
 
 

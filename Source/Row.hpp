@@ -15,8 +15,6 @@ namespace DBobjects
 
   public:
     
-    
-  //Footer* pFooter(void);
   };
   
   Row* _aRow(void* aAddr);

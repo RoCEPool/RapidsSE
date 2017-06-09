@@ -171,20 +171,6 @@ IndexBuffer* Entry::pIndexBuffer(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get Key                                                                    */
-/*----------------------------------------------------------------------------*/
-Key* Entry::aKey(void)
-{
-  _precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
-
-  EntryData* pEntryData = this->aEntryData();
-
-  Key* aKey = pEntryData->aKey(m_iOffsets);
-
-  return aKey;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get rowid                                                                  */
 /*----------------------------------------------------------------------------*/
 Id& Entry::xId(void)

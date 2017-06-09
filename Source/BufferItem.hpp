@@ -19,6 +19,8 @@ namespace DBobjects
     void* operator new(size_t);
     void* operator new(size_t, BufferItem*);
   
+    BufferItem(EntWsp& xEntWsp);
+    BufferItem(i8 nBytes, i8 uOffsets);
     BufferItem(eCN eClassNo);
     BufferItem(eCN eClassNo, i8 iDataBytes);
     ~BufferItem(void);
@@ -39,6 +41,8 @@ namespace DBobjects
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // entry
     EntryData* aEntryData(void);
+    Key*   aKey(void);
+    void   vSetEntry(EntWsp& xEntWsp);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // row
