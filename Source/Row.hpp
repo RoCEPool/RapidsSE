@@ -23,8 +23,6 @@ namespace DBobjects
     
     void  vContentDump(void);
     char* pData(void);
-    i8    iDataBytes(void);
-    void  vDataBytes(i8 iDataBytes);
     void  vExtractKey(KeyWsp& xKeyWsp, IdxColVec* pColVec);
     i8    nSize(void);
     i8    iTxId(void);
