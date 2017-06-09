@@ -12,7 +12,6 @@ namespace DBobjects
     
   private:
   
-    WspFxd<C_SIZE_LARGE_OBJECT - C_1KB> m_xWsp;
     
   public:
     void* operator new(size_t);

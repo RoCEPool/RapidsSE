@@ -36,6 +36,8 @@ namespace DBobjects
     Index*         m_pIndex;       // index this buffer belongs to
     i8             m_nBufferLevel; // index buffer level
   
+    WspFxd<C_SIZE_LARGE_OBJECT - C_1KB> m_xWsp;
+  
   public:
     EntryBuffer(eCN eClassNo);
   

@@ -12,8 +12,7 @@ namespace DBobjects
   class RowBuffer : public EntryBuffer
   {
   private:
-    WspFxd<C_1M> m_xWsp;        // ..data.. rows
-    
+     
   public:
     void* operator new(size_t);
     void* operator new(size_t, void* aAddress);
