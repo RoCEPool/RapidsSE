@@ -180,25 +180,25 @@
     ""                              // initial contents string
     0 pathPick dic.lastWord dup
     iterate                         // setup iteration of words
+
       // get the index ptr
       object@ word.name findInCurrent execute to indexPtr
 
-      // index a primary key ?
-      indexPtr index.isPrimaryKey@
-      if "primary" else "" then
+      object@ word.name               // add name of the word to contents string
+      str.cat
 
       // index is unique ?
       indexPtr index.isUnique@
-      if "unique" else "" then
+      if " unique" str.cat then
 
-      object@ word.name               // add name of the word to contents string
+      // index a primary key ?
+      indexPtr index.isPrimaryKey@
+      if " primary" str.cat then
 
-      "%v %v %v\n" str.format
-      str.cat
-
-
-      object@ word.prev object!       // step backwards thru words
-    next                            //
+      object@ word.prev              // step backwards thru words
+      dup if swap "," str.cat swap then
+      object!
+      next                           //
   then
 
 ;
