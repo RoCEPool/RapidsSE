@@ -40,6 +40,8 @@ void Task::vAddPrimitives_Index(void)
   vAddPrimitive("index.createColumnVec"_Str, &vIndexCreateColumnVec, false);
   vAddPrimitive("index.dump"_Str,            &vIndexDump,            false);
   vAddPrimitive("index.init"_Str,            &vIndexInit,            false);
+  vAddPrimitive("index.isPrimaryKey@"_Str,   &vIndexIsPrimaryKeyFetch,   false);
+  vAddPrimitive("index.isPrimaryKey!"_Str,   &vIndexIsPrimaryKeyStore,   false);
   vAddPrimitive("index.isUnique@"_Str,       &vIndexIsUniqueFetch,   false);
   vAddPrimitive("index.isUnique!"_Str,       &vIndexIsUniqueStore,   false);
   vAddPrimitive("index.populate"_Str,        &vIndexPopulate,        false);
@@ -346,6 +348,52 @@ void Task::vIndexInit(NNP_Task nnpTask)
   ASSERT(CN_INDEX == pIndex->eClass());
   
   new(pIndex) Index;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* index.isPrimaryKey@ -- fetch isPrimaryKey from index                       */
+/*----------------------------------------------------------------------------*/
+void Task::vIndexIsPrimaryKeyFetch(NNP_Task nnpTask)
+{
+  ENTRY("vIndexIsPrimaryKeyFetch"_Str);
+  
+  Object* pPtrIndex = nullptr;
+  
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrIndex) )
+    THROW_INVALID_DSTACK("index.isPrimaryKey@"_Str);
+  
+  Index* pIndex = _pIndex(pPtrIndex);
+  ASSERT(CN_INDEX == pIndex->eClass());
+  
+  bool bIsPrimaryKey = pIndex->bIsPrimaryKey();
+  
+  nnpTask->m_pDataStack->vPushInt(bIsPrimaryKey);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* index.isPrimaryKey! -- store isPrimaryKey into index                       */
+/*----------------------------------------------------------------------------*/
+void Task::vIndexIsPrimaryKeyStore(NNP_Task nnpTask)
+{
+  ENTRY("vIndexIsPrimaryKeyStore"_Str);
+  
+  Object* pPtrIndex = nullptr;
+  
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrIndex) )
+    THROW_INVALID_DSTACK("index.isPrimaryKey!"_Str);
+  
+  Index* pIndex = _pIndex(pPtrIndex);
+  ASSERT(CN_INDEX == pIndex->eClass());
+  
+  i8 iIsPrimaryKey;
+  if ( ! nnpTask->m_pDataStack->bPop(iIsPrimaryKey) )
+    THROW_INVALID_DSTACK("index.isPrimaryKey!"_Str);
+  
+  pIndex->vIsPrimaryKey(iIsPrimaryKey ? true : false);
   
   EXIT();
 }

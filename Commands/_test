@@ -16,7 +16,7 @@ jidx_100   INTEGER NOT NULL,
 jidx_10    INTEGER NOT NULL
 );
 
-create index idx1 on jidx (jidx_key);
+create unique index idx1 on jidx (jidx_key);
 lsidx jidx;
 lsidxcol jidx idx1;
 

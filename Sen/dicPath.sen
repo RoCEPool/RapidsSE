@@ -142,6 +142,68 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* get all words in the current dictionary as a single string (indexes)       */
+/*----------------------------------------------------------------------------*/
+: listIndexesContents ( -- )
+
+  0 locals| count indexPtr |
+
+  args.metadata if
+    "(name VARCHAR, isUnique BOOLEAN, isPrimaryKey BOOLEAN)" metadata!
+    ""                              // initial contents string
+    0 pathPick dic.lastWord dup
+    iterate                         // setup iteration of words
+      1 count + to count
+
+      // get the index ptr
+      object@ word.name findInCurrent execute to indexPtr
+
+      // index a primary key ?
+      indexPtr index.isPrimaryKey@
+      if "true" else "false" then
+
+      // index is unique ?
+      indexPtr index.isUnique@
+      if "true" else "false" then
+
+      // add word kind to ls string
+      object@ word.name
+
+      "('%v',%v,%v)\n" str.format
+      str.cat
+
+      object@ word.prev object!       // step backwards thru words
+    next
+    count task::this task.seitf@ seitf.rowsProcessed
+
+  else
+    ""                              // initial contents string
+    0 pathPick dic.lastWord dup
+    iterate                         // setup iteration of words
+      // get the index ptr
+      object@ word.name findInCurrent execute to indexPtr
+
+      // index a primary key ?
+      indexPtr index.isPrimaryKey@
+      if "primary" else "" then
+
+      // index is unique ?
+      indexPtr index.isUnique@
+      if "unique" else "" then
+
+      object@ word.name               // add name of the word to contents string
+
+      "%v %v %v\n" str.format
+      str.cat
+
+
+      object@ word.prev object!       // step backwards thru words
+    next                            //
+  then
+
+;
+
+/*----------------------------------------------------------------------------*/
 /* forget all words in given dictionary                                       */
 /*----------------------------------------------------------------------------*/
 : forgetAll ( dic -- )

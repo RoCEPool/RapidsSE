@@ -95,9 +95,10 @@ Index::Index(void)
   m_iIndexNo   = -1;
   m_sIndexName = pWord->sName();;
   m_eIndexType = IT_SKIP_LIST;
-  m_bIsUnqiue  = false;
-  m_pTable     = nullptr;
-  m_pIdxColVec = new IdxColVec;
+  m_bIsPrimaryKey = false;
+  m_bIsUnique     = false;
+  m_pTable        = nullptr;
+  m_pIdxColVec    = new IdxColVec;
   
   // m_xSubDic
   
@@ -267,13 +268,33 @@ void Index::vTidyUp(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this a primary key  index                                               */
+/*----------------------------------------------------------------------------*/
+bool Index::bIsPrimaryKey(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
+  
+  return m_bIsPrimaryKey;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set index as a primary key index                                           */
+/*----------------------------------------------------------------------------*/
+void Index::vIsPrimaryKey(bool bPrimaryKey)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
+  
+  m_bIsPrimaryKey = bPrimaryKey;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this index unique?                                                      */
 /*----------------------------------------------------------------------------*/
 bool Index::bIsUnique(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
   
-  return m_bIsUnqiue;
+  return m_bIsUnique;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -283,7 +304,7 @@ void Index::vIsUnique(bool bUnique)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
   
-  m_bIsUnqiue = bUnique;
+  m_bIsUnique = bUnique;
 }
 
 /*----------------------------------------------------------------------------*/
