@@ -35,24 +35,6 @@ void* Row::operator new(size_t iSize, Row* pRow)
 }
 
 /*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-Row::Row(i8 iDataBytes)
-: BufferItem(CN_ROW)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROW);
-  
-  //m_iTxId      = -1;
-  m_nThisBytes = iDataBytes;
-
-  _setFooter_();
-  
-  _checkInitialised_(CN_ROW);
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 Row::~Row(void)
@@ -67,9 +49,9 @@ char* Row::aRowData(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
   
-  char* pDataAddr = pAdd<char*>(this,sizeof(Row));
+  char* aRowData = pAdd<char*>(this,sizeof(Row));
   
-  return pPoolCheck<char*>(pDataAddr);
+  return pPoolCheck<char*>(aRowData);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -219,8 +201,6 @@ i8 Row::nSizeRow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
 
-  //i8 iBytes = sizeof(Row) + sizeof(Footer) + m_iBytes;
-  
   return m_nThisBytes;
 }
 

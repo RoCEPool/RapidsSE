@@ -37,6 +37,24 @@ BufferItem::BufferItem(eCN eClassNo)
 }
 
 /*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+BufferItem::BufferItem(eCN eClassNo, i8 nThisBytes)
+: Object(CN_ROW)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
+  
+  //m_iTxId      = -1;
+  m_nThisBytes = nThisBytes;
+  
+  _setFooter_();
+  
+  _checkInitialised_(eClassNo);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,eClassNo,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 BufferItem::~BufferItem(void)

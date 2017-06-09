@@ -17,6 +17,7 @@ namespace DBobjects
 
   public:
     BufferItem(eCN eClassNo);
+    BufferItem(eCN eClassNo, i8 iDataBytes);
     ~BufferItem(void);
   
     static i8 nBytesRequiredEntry(EntWsp& xEntWsp);

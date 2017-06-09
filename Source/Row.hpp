@@ -17,7 +17,6 @@ namespace DBobjects
     void* operator new(size_t);
     void* operator new(size_t, Row*);
     
-    Row(i8 iDataBytes);
     ~Row(void);
     
     void  vContentDump(void);
