@@ -331,6 +331,112 @@ void BufferItem::vSetEntry(EntWsp& xEntWsp)
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
 }
 
+/*----------------------------------------------------------------------------*/
+/* show content                                                               */
+/*----------------------------------------------------------------------------*/
+void BufferItem::vShow(i8 iOffset, IdxColVec* pColVec)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+  
+  Key* aKey = this->aKey();
+  i8 iKey;
+  
+  if (m_xId.iBuffer() == 0) {
+    ASSERT(m_xId.iRow() == 0);
+    iKey = -1;
+  }
+  else {
+    ValLib::nCopyDatum(CN_INTVAL,&iKey,aKey);
+  }
+  
+  vTrace("Entry %p: Size: %llu Offsets: %llu "_Str,
+         this,
+         nSizeEntry(),
+         m_iOffsets
+         );
+  
+  vTrace("Id %3lli.%3lli "_Str,
+         m_xId.iBuffer(),
+         m_xId.iRow()
+         );
+  aKey->vShow(pColVec);
+  
+  on nRight;
+  for (nRight = 0_on; nRight < m_iOffsets; nRight++) {
+    
+    vTrace(" Offset(%lld): %lld "_Str,
+           *nRight,
+           iRightOffset(nRight) == C_NIL_OFFSET ?
+           C_NIL_OFFSET :
+           iRightOffset(nRight) + iOffset + nSizeEntry());
+  }
+  
+  vTrace("\n"_Str);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get indexbuffer of this entry                                              */
+/*----------------------------------------------------------------------------*/
+IndexBuffer* BufferItem::pIndexBuffer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+  
+  bn nBufferNo = m_xId.iBuffer();
+  IndexBuffer* pIndexBuffer =
+  reinterpret_cast<IndexBuffer*>(gpBufferPool->pToBuffer(nBufferNo));
+  
+  return pIndexBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get rowid                                                                  */
+/*----------------------------------------------------------------------------*/
+Id& BufferItem::xId(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+  
+  return m_xId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get rowid                                                                  */
+/*----------------------------------------------------------------------------*/
+void BufferItem::vId(Id xId)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+  
+  m_xId = xId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set key given entry wsp                                                    */
+/*----------------------------------------------------------------------------*/
+void BufferItem::vKey(EntWsp& xEntWsp)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+  
+  ASSERT(m_nThisBytes);
+  
+  // copy Key
+  Key* aEntryKey = this->aKey();
+  
+  Key* aEntWspKey = xEntWsp.aKey();
+  i8 nKeyBytes = xEntWsp.nKeySize();
+  
+  MemLib::vCopy(aEntryKey,aEntWspKey,nKeyBytes);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get size in bytes of this entry occurence incl Object & Footer             */
+/*----------------------------------------------------------------------------*/
+i8 BufferItem::nSizeEntry(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+  
+  return m_nThisBytes;
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- Row ---------------------------------------------------------------------*/
@@ -516,6 +622,22 @@ void BufferItem::vTxId(i8 iTxId)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
   
   //m_iTxId = iTxId;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Private -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get bufferno from id of key                                                */
+/*----------------------------------------------------------------------------*/
+bn BufferItem::nBufferNo(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+  
+  bn nBufferNo = m_xId.iBuffer();
+  
+  return nBufferNo;
 }
 
 /*----------------------------------------------------------------------------*/

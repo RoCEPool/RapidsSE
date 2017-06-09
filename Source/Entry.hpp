@@ -20,22 +20,9 @@ namespace DBobjects
     Entry(EntWsp& xEntWsp);
     Entry(i8 nBytes, i8 uOffsets);
     ~Entry(void);
-    
-    void   vShow(i8 iOffset, IdxColVec* pColVec);
-
-    IndexBuffer* pIndexBuffer(void);
-    Id&    xId(void);
-    void   vId(Id xId);
-    void   vKey(EntWsp& xEntWsp);
-    void   vSetEntry(EntWsp& xEntWsp);
-    i8     nSizeEntry(void);
-  
-  private:
-    bn     nBufferNo(void);
+      
   };
   
-  Entry* _pEntry(void* aAddr);
-
 }
 
 /*============================================================================*/

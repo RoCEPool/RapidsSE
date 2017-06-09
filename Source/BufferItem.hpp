@@ -44,6 +44,14 @@ namespace DBobjects
     Key*   aKey(void);
     void   vSetEntry(EntWsp& xEntWsp);
 
+    void   vShow(i8 iOffset, IdxColVec* pColVec);
+    
+    IndexBuffer* pIndexBuffer(void);
+    Id&    xId(void);
+    void   vId(Id xId);
+    void   vKey(EntWsp& xEntWsp);
+    i8     nSizeEntry(void);
+  
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // row
     void  vContentDump(void);
@@ -54,6 +62,9 @@ namespace DBobjects
     void  vTxId(i8 iTxId);
   
     Footer* pFooter(void);
+  
+  private:
+    bn     nBufferNo(void);
   };
   
   BufferItem* _pBufferItem(void* aAddr);
