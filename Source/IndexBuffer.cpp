@@ -385,16 +385,6 @@ bool IndexBuffer::bInsert(EntWsp& xEntWsp)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get next buffer                                                            */
-/*----------------------------------------------------------------------------*/
-IndexBuffer* IndexBuffer::pNextBuffer(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
-  
-  return (IndexBuffer*)m_pNextBuffer;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get next entry (eq to right L0) after given entry (null if no next)        */
 /*----------------------------------------------------------------------------*/
 Entry* IndexBuffer::pNextEntry(Entry* pEntry)

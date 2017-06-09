@@ -46,7 +46,6 @@ namespace DBobjects
     IndexBuffer* pHigherLevel(void);
     Index*       pIndex(void);
     bool         bInsert(EntWsp& xEntWsp);
-    IndexBuffer* pNextBuffer(void);
     Entry*       pNextEntry(Entry* pEntry);
     IndexBuffer* pPositionLevel(KeyWsp& xKeyWsp, eJC eJuxtaCompare, i8 iLevel);
     Entry*       pPosition(KeyWsp& xKeyWsp, eJC eJuxtaCompare);

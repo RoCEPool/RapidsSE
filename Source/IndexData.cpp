@@ -303,7 +303,7 @@ bool IndexData::bVerify(void)
     // if we are at level 0 , get the next buffer at the same level
     if (pIndexBuffer->nBufferLevel() == 0) {
       // if at B1 get B2
-      pIndexBuffer = pIndexBuffer->pNextBuffer();
+      pIndexBuffer = (IndexBuffer*)pIndexBuffer->pNextBuffer();
       continue;
     }
     
@@ -345,7 +345,7 @@ bool IndexData::bVerify(void)
     }
   
     // move to the next buffer at the same level
-    pIndexBuffer = pIndexBuffer->pNextBuffer();
+    pIndexBuffer = (IndexBuffer*)pIndexBuffer->pNextBuffer();
   }
   
   
@@ -551,7 +551,7 @@ void IndexData::vVisualize(void)
 
     // if we are at level 1, iterate thru next buffers
     if (pIndexBuffer->nBufferLevel() == 1) {
-      pIndexBuffer = pIndexBuffer->pNextBuffer();
+      pIndexBuffer = (IndexBuffer*)pIndexBuffer->pNextBuffer();
     }
     else {
       vTrace("\n"_Str);
