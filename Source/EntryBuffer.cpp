@@ -6,6 +6,19 @@
 
 #include "StorageEngine.h"
 
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+EntryBuffer::EntryBuffer(eCN eClassNo)
+: Buffer(eClassNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,eClassNo,_FOOTER_);
+  
+  _checkInitialised_(eClassNo);
+
+  _postcondition_(_ADDRESS_,_MAGIC_,eClassNo,_FOOTER_);
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

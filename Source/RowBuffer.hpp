@@ -25,7 +25,7 @@ namespace DBobjects
   /* 3 */ "ENUMS"_Str,
   };
   
-  class RowBuffer : public Buffer
+  class RowBuffer : public EntryBuffer
   {
   private:
     eRD          m_eDurability; // row buffer durability

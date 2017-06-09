@@ -53,7 +53,7 @@ void IndexBuffer::operator delete(void* pIndexBufferAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 IndexBuffer::IndexBuffer(Index* pIndex, i8 nBufferLevel)
-: Buffer(CN_INDEXBUFFER)
+: EntryBuffer(CN_INDEXBUFFER)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
 

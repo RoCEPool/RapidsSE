@@ -7,7 +7,7 @@ namespace DBobjects
 {
   class Index;
   
-  class IndexBuffer : public Buffer
+  class IndexBuffer : public EntryBuffer
   {
     
   private:

@@ -53,7 +53,7 @@ void RowBuffer::operator delete(void* pRowBufferAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 RowBuffer::RowBuffer(void)
-: Buffer(CN_ROWBUFFER)
+: EntryBuffer(CN_ROWBUFFER)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
 
@@ -72,7 +72,7 @@ RowBuffer::RowBuffer(void)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 RowBuffer::RowBuffer(i8 iDataBytes)
-: Buffer(CN_ROWBUFFER)
+: EntryBuffer(CN_ROWBUFFER)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
