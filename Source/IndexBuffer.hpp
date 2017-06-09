@@ -11,18 +11,6 @@ namespace DBobjects
   {
     
   private:
-    Index*       m_pIndex;       // index this buffer belongs to
-    i8           m_nBufferLevel; // index buffer level
-    
-    // need to add skip list head
-    // head would be array of [FLAT_LEVELS - 1]
-    // array of byte offsets, not addresses
-    // will need a C_NIL say -1
-    // entries are in contigious key order
-    // so we dont keep L1, L1 is implied
-    // insert is memmove to right
-    // remove is memmove to left
-    //
   
     WspFxd<C_SIZE_LARGE_OBJECT - C_1KB> m_xWsp;
     

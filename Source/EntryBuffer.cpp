@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* EntryBuffer.cpp -- Entry Buffer \                                          */
+/* EntryBuffer.cpp -- Entry Buffer                                            */
 /*============================================================================*/
 
 #include "DBobjects.h"
@@ -20,6 +20,9 @@ EntryBuffer::EntryBuffer(eCN eClassNo)
   m_pPrevBuffer  = nullptr;
   m_pNextBuffer  = nullptr;
   m_pHigherLevel = nullptr;
+  
+  m_nBufferLevel = 0;
+  m_pIndex       = nullptr;
   
   _checkInitialised_(eClassNo);
 

@@ -5,6 +5,8 @@
 
 namespace DBobjects
 {
+  class Index;
+  
   enum eBD // Buffer Durability
   {
   /* 0 */ BD_NONE=0,
@@ -30,6 +32,9 @@ namespace DBobjects
     EntryBuffer*   m_pPrevBuffer;  // prev buffer
     EntryBuffer*   m_pNextBuffer;  // next buffer
     EntryBuffer*   m_pHigherLevel; // higher level buffer that points to this buffer
+  
+    Index*         m_pIndex;       // index this buffer belongs to
+    i8             m_nBufferLevel; // index buffer level
   
   public:
     EntryBuffer(eCN eClassNo);
