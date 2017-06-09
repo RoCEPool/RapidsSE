@@ -139,7 +139,7 @@ i8 RowStrand::nRows(void)
   for (RowBuffer* pRowBuffer = m_pFirstBuffer;
        pRowBuffer;
        pRowBuffer = pRowBuffer->pNextBuffer())
-    nRows += pRowBuffer->nRows();
+    nRows += pRowBuffer->nEntries();
   
   return nRows;
 }

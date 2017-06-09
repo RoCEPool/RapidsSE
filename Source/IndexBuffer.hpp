@@ -13,7 +13,6 @@ namespace DBobjects
   private:
     Index*       m_pIndex;       // index this buffer belongs to
     i8           m_nBufferLevel; // index buffer level
-    i8           m_nEntries;     // number of entries in this buffer
     IndexBuffer* m_pPrevBuffer;  // prev index buffer at this level
     IndexBuffer* m_pNextBuffer;  // next index buffer at this level
     IndexBuffer* m_pHigherLevel; // higher level buffer that points to this buffer
@@ -42,7 +41,6 @@ namespace DBobjects
     void         vBufferCount(i8& nBufferCount);
     i8           iDecile(void);
     void         vDump(void);
-    i8           nEntries(void);
     Entry*       pFirstEntry(void);
     bool         bHasSpace(i8 nBytes);
     Entry*       pHead(void);

@@ -15,6 +15,7 @@ EntryBuffer::EntryBuffer(eCN eClassNo)
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo,_FOOTER_);
   
   m_eDurability = BD_TEMPORARY;
+  m_nEntries    = 0;
   
   _checkInitialised_(eClassNo);
 
@@ -39,6 +40,16 @@ void EntryBuffer::vDurability(eBD eDurability)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
   m_eDurability = eDurability;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of enteries in the buffer                                       */
+/*----------------------------------------------------------------------------*/
+i8 EntryBuffer::nEntries(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  return m_nEntries;
 }
 
 /*============================================================================*/

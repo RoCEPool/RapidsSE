@@ -57,7 +57,6 @@ RowBuffer::RowBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
 
-  m_nRows       = 0;
   m_pPrevBuffer = nullptr;
   m_pNextBuffer = nullptr;
   //m_xWsp
@@ -77,7 +76,6 @@ RowBuffer::RowBuffer(i8 iDataBytes)
   
   m_xWsp.vUsed(iDataBytes);
 
-  m_nRows       = 0;
   m_pPrevBuffer = nullptr;
   m_pNextBuffer = nullptr;
   
@@ -125,7 +123,7 @@ void RowBuffer::vDump(eCN eClass, Object* pObject, Str* aTab)
   RowBuffer* pRowBuffer = reinterpret_cast<RowBuffer*>(pObject);
   
   vTrace("rows %lld used %lld free %lld prevBuffer %p nextBuffer %p\n"_Str,
-         pRowBuffer->m_nRows,
+         pRowBuffer->m_nEntries,
          pRowBuffer->m_xWsp.nUsed(),
          pRowBuffer->m_xWsp.nFree(),
          pRowBuffer->m_pPrevBuffer,
@@ -153,7 +151,7 @@ Entry* RowBuffer::pAllocRow(i8 iStrLength)
   Entry* pRow = reinterpret_cast<Entry*>(m_xWsp.aAllot(nBytesRequired));
   new(pRow) Entry(CN_ROW,nBytesRequired);
   
-  m_nRows++;
+  m_nEntries++;
   
   _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_,CN_ROWBUFFER);
   
@@ -178,8 +176,8 @@ void RowBuffer::vAppendBuffer(RowBuffer* pSrcBuffer)
   MemLib::vCopy(pDst,aSrc,nBytes);
   
   // inc the number of rows in this buffer
-  i8 nSrcRows = pSrcBuffer->nRows();
-  m_nRows += nSrcRows;
+  i8 nSrcRows = pSrcBuffer->m_nEntries;
+  m_nEntries += nSrcRows;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -201,7 +199,7 @@ void RowBuffer::vCopyBuffer(RowBuffer* pSrcBuffer)
   MemLib::vCopy(pDst,aSrc,nBytes);
   
   // set the number of rows in this buffer
-  m_nRows = pSrcBuffer->nRows();
+  m_nEntries = pSrcBuffer->nEntries();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -333,25 +331,15 @@ void RowBuffer::vPrevBuffer(RowBuffer* pPrevBuffer)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get number of rows in buffer                                               */
-/*----------------------------------------------------------------------------*/
-i8 RowBuffer::nRows(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
-  
-  return m_nRows;
-}
-
-/*----------------------------------------------------------------------------*/
 /* set row count                                                              */
 /*----------------------------------------------------------------------------*/
 void RowBuffer::vRowCount(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
-  m_nRows = 0;
+  m_nEntries = 0;
   for (Entry* pRow = pFirstRow(); pRow; pRow = pNextRow(pRow))
-    m_nRows++;
+    m_nEntries++;
   
   _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_,CN_ROWBUFFER);
 }

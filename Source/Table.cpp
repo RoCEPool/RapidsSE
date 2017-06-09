@@ -190,7 +190,7 @@ Str* Table::pAnalyze(bool bDetailed)
         i8 nRowBuffer = 0;
         while (pRowBuffer) {
           nRowBuffer++;
-          nRowsInBuffer = pRowBuffer->nRows();
+          nRowsInBuffer = pRowBuffer->nEntries();
           pRowBuffer = pRowBuffer->pNextBuffer();
           sAnalysis.vCatSprint("   strand:%lld rowBuffer%lld: %lld rows\n"_Str,
                                nStrands,

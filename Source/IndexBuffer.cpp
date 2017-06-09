@@ -177,16 +177,6 @@ void IndexBuffer::vDump(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get number of enteries in the buffer                                       */
-/*----------------------------------------------------------------------------*/
-i8 IndexBuffer::nEntries(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
-  
-  return m_nEntries;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get first entry (after the head) of skip list in this index buffer         */
 /*----------------------------------------------------------------------------*/
 Entry* IndexBuffer::pFirstEntry(void)

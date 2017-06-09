@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* RowBuffer.hpp -- Entry Buffer                                              */
+/* EntryBuffer.hpp -- Entry Buffer                                            */
 /*============================================================================*/
 #pragma once
 
@@ -23,14 +23,17 @@ namespace DBobjects
   
   class EntryBuffer : public Buffer
   {
-  private:
+  protected:
     eBD   m_eDurability; // buffer durability
+    i8    m_nEntries;    // number of entries in this buffer
   
   public:
     EntryBuffer(eCN eClassNo);
   
     eBD  eDurability(void);
     void vDurability(eBD eDurability);
+  
+    i8   nEntries(void);
   };
 }
 
