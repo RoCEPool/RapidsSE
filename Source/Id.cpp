@@ -140,7 +140,7 @@ void Id::vId(Id& xId)
 /*----------------------------------------------------------------------------*/
 Entry* Id::pRow(void)
 {
-  RowBuffer* pRowBuffer = reinterpret_cast<RowBuffer*>(gpBufferPool->pToBuffer(m_uBuffer));
+  EntryBuffer* pRowBuffer = reinterpret_cast<EntryBuffer*>(gpBufferPool->pToBuffer(m_uBuffer));
   
   Entry* pRow = pRowBuffer->pFirstRow();
   u8 uRowNo = 0;

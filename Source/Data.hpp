@@ -25,7 +25,7 @@ namespace DBobjects
     Data(void);
     ~Data(void);
   
-    void vAppendBuffer(RowBuffer* pRowBuffer);
+    void vAppendBuffer(EntryBuffer* pRowBuffer);
     bool bInsertRow(TxRef* pTxRef, Str* pRecord, i8 iLength);
     
     RowStrand* pHeadStrand(void);

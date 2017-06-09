@@ -219,7 +219,7 @@ void EntryBuffer::vDump(eCN eClass, Object* pObject, Str* aTab)
   ASSERT(eClass == CN_ROWBUFFER);
   ASSERT(pObject->eClass() == CN_ROWBUFFER);
   
-  RowBuffer* pRowBuffer = reinterpret_cast<RowBuffer*>(pObject);
+  EntryBuffer* pRowBuffer = reinterpret_cast<EntryBuffer*>(pObject);
   
   vTrace("rows %lld used %lld free %lld prevBuffer %p nextBuffer %p\n"_Str,
          pRowBuffer->m_nEntries,
@@ -260,7 +260,7 @@ Entry* EntryBuffer::pAllocRow(i8 iStrLength)
 /*----------------------------------------------------------------------------*/
 /* append rows of arg buffer into this buffer                                 */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vAppendBuffer(RowBuffer* pSrcBuffer)
+void EntryBuffer::vAppendBuffer(EntryBuffer* pSrcBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
@@ -282,7 +282,7 @@ void EntryBuffer::vAppendBuffer(RowBuffer* pSrcBuffer)
 /*----------------------------------------------------------------------------*/
 /* copy given buffer                                                          */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vCopyBuffer(RowBuffer* pSrcBuffer)
+void EntryBuffer::vCopyBuffer(EntryBuffer* pSrcBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   

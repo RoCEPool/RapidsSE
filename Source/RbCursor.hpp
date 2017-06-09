@@ -13,7 +13,7 @@ namespace DBobjects
     
     Partition* m_pPartition;
     RowStrand* m_pRowStrand;
-    RowBuffer* m_pRowBuffer;
+    EntryBuffer* m_pRowBuffer;
     
     // must be last
     Footer m_xFooter;
@@ -30,7 +30,7 @@ namespace DBobjects
     void    vEnd(void);
     void    vFirst(void);
     void    vNext(void);
-    RowBuffer* pRowBuffer(void);
+    EntryBuffer* pRowBuffer(void);
     Table*  pTable(void);
     void    vTable(Table* pTable);
     

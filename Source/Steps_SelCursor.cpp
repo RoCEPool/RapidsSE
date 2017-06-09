@@ -248,7 +248,7 @@ void Task::vSelCursorRowBuffer(NNP_Task nnpTask)
   SelCursor* pSelCursor = _pSelCursor(pPtrSelCursor);
   ASSERT(CN_SELCURSOR == pSelCursor->eClass());
   
-  RowBuffer* pRowBuffer;
+  EntryBuffer* pRowBuffer;
   pRowBuffer = pSelCursor->pRowBuffer();
   
   nnpTask->m_pDataStack->vPushObject(pRowBuffer);

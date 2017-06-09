@@ -106,7 +106,7 @@ pDUMPFUN *gpDump[]
   /* 54 */ &Dump::vUndefined,       // CN_RING
   /*    */ &Dump::vUndefined,       // CN_ROARRAY
   /* 55 */ &Dump::vUndefined,       // CN_ROW
-  /* 56 */ &RowBuffer::vDump,       // CN_ROWBUFFER
+  /* 56 */ &Dump::vUndefined,       // CN_ROWBUFFER
   /* 57 */ &Dump::vUndefined,       // CN_ROWCURSOR
   /* 58 */ &RowStrand::vDump,       // CN_ROWSTRAND
   /* 59 */ &Dump::vUndefined,       // CN_ROWWSP
@@ -255,8 +255,8 @@ i8 giClassSize[]
   /* 53 */ sizeof(RegFrame),           // CN_REGFRAME
   /* 54 */ sizeof(Ring),               // CN_RING
   /*    */ 0,                          // CN_ROARRAY
-  /* 55 */ sizeof(Entry),                // CN_ROW
-  /* 56 */ sizeof(RowBuffer),          // CN_ROWBUFFER
+  /* 55 */ sizeof(Entry),              // CN_ROW
+  /* 56 */ 0,                          // CN_ROWBUFFER
   /* 57 */ 0,                          // CN_ROWCURSOR
   /* 58 */ sizeof(RowStrand),          // CN_ROWSTRAND
   /* 59 */ sizeof(RowWsp),             // CN_ROWWSP

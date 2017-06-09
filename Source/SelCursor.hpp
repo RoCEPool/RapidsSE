@@ -13,7 +13,7 @@ namespace DBobjects
     
     Partition* m_pPartition;
     RowStrand* m_pRowStrand;
-    RowBuffer* m_pRowBuffer;
+    EntryBuffer* m_pRowBuffer;
     Entry*       m_pRow;
     
     // must be last
@@ -35,7 +35,7 @@ namespace DBobjects
     void    vNext(void);
     Entry*    pRow(void);
     Str*    aRowAsStr(void);
-    RowBuffer* pRowBuffer(void);
+    EntryBuffer* pRowBuffer(void);
     Table*  pTable(void);
     void    vTable(Table* pTable);
     

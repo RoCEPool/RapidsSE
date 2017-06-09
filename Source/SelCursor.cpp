@@ -153,7 +153,7 @@ void SelCursor::vNext(void)
   if (m_pRow)
     return;
   
-  m_pRowBuffer = (RowBuffer*)m_pRowBuffer->pNextBuffer();
+  m_pRowBuffer = (EntryBuffer*)m_pRowBuffer->pNextBuffer();
   if (m_pRowBuffer) {
     m_pRow = m_pRowBuffer->pFirstRow();
     if (m_pRow)
@@ -204,7 +204,7 @@ Str* SelCursor::aRowAsStr(void)
 /*----------------------------------------------------------------------------*/
 /* get current row buffer                                                     */
 /*----------------------------------------------------------------------------*/
-RowBuffer* SelCursor::pRowBuffer(void)
+EntryBuffer* SelCursor::pRowBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SELCURSOR,_FOOTER_);
   

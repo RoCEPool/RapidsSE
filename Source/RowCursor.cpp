@@ -165,7 +165,7 @@ Str* RowCursor::aRowAsStr(void)
 /*----------------------------------------------------------------------------*/
 /* get current row buffer                                                     */
 /*----------------------------------------------------------------------------*/
-RowBuffer* RowCursor::pRowBuffer(void)
+EntryBuffer* RowCursor::pRowBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCURSOR,_FOOTER_);
   
@@ -175,7 +175,7 @@ RowBuffer* RowCursor::pRowBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* set current row buffer                                                     */
 /*----------------------------------------------------------------------------*/
-void RowCursor::vRowBuffer(RowBuffer* pRowBuffer)
+void RowCursor::vRowBuffer(EntryBuffer* pRowBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCURSOR,_FOOTER_);
   

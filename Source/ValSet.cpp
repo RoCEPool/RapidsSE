@@ -68,7 +68,7 @@ void ValSet::vAppend(Str*& pCursor, Value* pValue)
     
     if (pPtrVal->pPtr() &&
         CN_ROWBUFFER == ((Object*)pPtrVal->pPtr())->eClass()) {
-      m_pRowBuffer = (RowBuffer*)pPtrVal->pPtr();
+      m_pRowBuffer = (EntryBuffer*)pPtrVal->pPtr();
       m_iRowBufferBytes = m_pRowBuffer->nUsedBytes();
       
       //xValWsp = (Object*)C_ROWBUFFER_MARKER;
@@ -169,7 +169,7 @@ bool ValSet::bExtractValue(Str*& pCursor, eCN& eClassNo, Value*& pValue)
 /*----------------------------------------------------------------------------*/
 /* get row buffer                                                             */
 /*----------------------------------------------------------------------------*/
-DBobjects::RowBuffer* ValSet::pRowBuffer(void)
+DBobjects::EntryBuffer* ValSet::pRowBuffer(void)
 {
   return m_pRowBuffer;
 }
@@ -177,12 +177,12 @@ DBobjects::RowBuffer* ValSet::pRowBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* recursively check for and get row buffer                                   */
 /*----------------------------------------------------------------------------*/
-DBobjects::RowBuffer* ValSet::pGetRowBuffer(void)
+DBobjects::EntryBuffer* ValSet::pGetRowBuffer(void)
 {
   eCN eClassNo;
   Str* pCursor = nullptr;
   Value* pValue;
-  DBobjects::RowBuffer* pRowBuffer;
+  DBobjects::EntryBuffer* pRowBuffer;
   
   while (bExtractValue(pCursor, eClassNo, pValue)) {
     
@@ -238,7 +238,7 @@ bool ValSet::bHasRowBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* set row buffer                                                             */
 /*----------------------------------------------------------------------------*/
-void ValSet::vRowBuffer(DBobjects::RowBuffer* pRowBuffer)
+void ValSet::vRowBuffer(DBobjects::EntryBuffer* pRowBuffer)
 {
     m_pRowBuffer = pRowBuffer;
 }
@@ -246,7 +246,7 @@ void ValSet::vRowBuffer(DBobjects::RowBuffer* pRowBuffer)
 /*----------------------------------------------------------------------------*/
 /* set row buffer                                                             */
 /*----------------------------------------------------------------------------*/
-bool ValSet::bSetRowBuffer(DBobjects::RowBuffer* pRowBuffer)
+bool ValSet::bSetRowBuffer(DBobjects::EntryBuffer* pRowBuffer)
 {
   eCN eClassNo;
   Str* pCursor = nullptr;

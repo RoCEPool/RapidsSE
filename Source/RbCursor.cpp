@@ -128,7 +128,7 @@ void RbCursor::vNext(void)
   
   ASSERT(m_pRowBuffer);
   
-  m_pRowBuffer = (RowBuffer*)m_pRowBuffer->pNextBuffer();
+  m_pRowBuffer = (EntryBuffer*)m_pRowBuffer->pNextBuffer();
   if (m_pRowBuffer)
     return;
   
@@ -142,7 +142,7 @@ void RbCursor::vNext(void)
 /*----------------------------------------------------------------------------*/
 /* get current row buffer                                                     */
 /*----------------------------------------------------------------------------*/
-RowBuffer* RbCursor::pRowBuffer(void)
+EntryBuffer* RbCursor::pRowBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RBCURSOR,_FOOTER_);
   

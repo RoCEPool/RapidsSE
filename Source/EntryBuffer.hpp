@@ -25,7 +25,7 @@ namespace DBobjects
   
   static const i8 C_BUFFER_THRESHOLD = 100;
   
-  static const RowBuffer* C_ROWBUFFER_MARKER = (RowBuffer*)0xFFFFFFFFFFFFFFFF;
+  static const EntryBuffer* C_ROWBUFFER_MARKER = (EntryBuffer*)0xFFFFFFFFFFFFFFFF;
   
   class EntryBuffer : public Buffer
   {
@@ -72,8 +72,8 @@ namespace DBobjects
     static void vDump(eCN eClass, Object* pObject, Str* aTab);
     
     Entry*       pAllocRow(i8 nDataBytes);
-    void       vAppendBuffer(RowBuffer* pSrcBuffer);
-    void       vCopyBuffer(RowBuffer* pSrcBuffer);
+    void       vAppendBuffer(EntryBuffer* pSrcBuffer);
+    void       vCopyBuffer(EntryBuffer* pSrcBuffer);
     byte*      aDataArea(void);
     Entry*       pFirstRow(void);
     i8         nFreeBytes(void);

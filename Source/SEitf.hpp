@@ -41,7 +41,7 @@ namespace Interface
     i8     m_iNextRequestId;
     i8     m_iRowPartition;
     
-    RowBuffer* m_pRowBuffer[C_SLOTS_PER_NODE]; // working row buffers
+    EntryBuffer* m_pRowBuffer[C_SLOTS_PER_NODE]; // working row buffers
     
     // must be last
     Footer m_xFooter;
@@ -158,7 +158,7 @@ namespace Interface
   
     bool bInsertRow(Str* pRow);
     bool bInsertBuffer(void);
-    bool bInsertBuffer(RowBuffer* pRowBuffer, i8 iPartition);
+    bool bInsertBuffer(EntryBuffer* pRowBuffer, i8 iPartition);
     
     bool bPushDic(TokenSet& xTokenSet);
     bool bGetDicPath(TokenSet& xTokenSet);

@@ -261,7 +261,7 @@ void Task::vSocketSend(NNP_Task nnpTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get rowBuffer if any in valset
-  RowBuffer* pRowBuffer = xValSet.pGetRowBuffer();
+  EntryBuffer* pRowBuffer = xValSet.pGetRowBuffer();
   
   if (pRowBuffer) {
     
@@ -371,7 +371,7 @@ void Task::vSocketRecv(NNP_Task nnpTask)
     //******************************************************************
     // receive rowBuffer
     //******************************************************************
-    RowBuffer* pRowBuffer = (RowBuffer*)new EntryBuffer(iBytes);
+    EntryBuffer* pRowBuffer = (EntryBuffer*)new EntryBuffer(iBytes);
     bResult = pSocket->bRecvBytes(iBytes, reinterpret_cast<void*>(pRowBuffer->aDataArea()), xSysCall);
     
     if ( ! bResult )

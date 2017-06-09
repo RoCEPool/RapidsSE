@@ -22,7 +22,7 @@ namespace DBobjects
     
     bool     m_bMoreChunks;  // continue while there are more chunks
     LoadChunk* m_pLoadChunk; // chunk loading buffer
-    RowBuffer* m_pRowBuffer[C_MAX_PARTITIONS]; // working row buffers
+    EntryBuffer* m_pRowBuffer[C_MAX_PARTITIONS]; // working row buffers
     
     // must be last
     Footer m_xFooter;
@@ -48,8 +48,8 @@ namespace DBobjects
     i8   iPartition(void);
     void vPartition(i8 iPartition);
     bool bReadChunk(void);
-    RowBuffer* pRowBuffer(void);
-    void vRowBuffer(RowBuffer* pRowBuffer);
+    EntryBuffer* pRowBuffer(void);
+    void vRowBuffer(EntryBuffer* pRowBuffer);
     Table* pTable(void);
     bool bValidateRow(i8& iColumn);
   

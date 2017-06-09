@@ -74,7 +74,7 @@ void Data::vDump(eCN eClass, Object* pObject, Str* aTab)
 /*----------------------------------------------------------------------------*/
 /* append row buffer                                                          */
 /*----------------------------------------------------------------------------*/
-void Data::vAppendBuffer(RowBuffer* pRowBuffer)
+void Data::vAppendBuffer(EntryBuffer* pRowBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DATA,_FOOTER_);
   

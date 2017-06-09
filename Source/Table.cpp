@@ -185,13 +185,13 @@ Str* Table::pAnalyze(bool bDetailed)
       nStrands++;
       
       if (bDetailed) {
-        RowBuffer* pRowBuffer = pStrand->pFirstBuffer();
+        EntryBuffer* pRowBuffer = pStrand->pFirstBuffer();
         i8 nRowsInBuffer = 0;
         i8 nRowBuffer = 0;
         while (pRowBuffer) {
           nRowBuffer++;
           nRowsInBuffer = pRowBuffer->nEntries();
-          pRowBuffer = (RowBuffer*)pRowBuffer->pNextBuffer();
+          pRowBuffer = (EntryBuffer*)pRowBuffer->pNextBuffer();
           sAnalysis.vCatSprint("   strand:%lld rowBuffer%lld: %lld rows\n"_Str,
                                nStrands,
                                nRowBuffer,
@@ -302,7 +302,7 @@ Str* Table::pAnalyzeIndex(Index* pIndex, bool bDetailed)
 /*----------------------------------------------------------------------------*/
 /* append row buffer                                                          */
 /*----------------------------------------------------------------------------*/
-void Table::vAppendBuffer(i8 iPartition, RowBuffer* pRowBuffer)
+void Table::vAppendBuffer(i8 iPartition, EntryBuffer* pRowBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
@@ -362,7 +362,7 @@ void Table::vCreateColumnVec(s32& sColumnNm, s48K& sColumnDefn)
 /*----------------------------------------------------------------------------*/
 /* insert a row in the table                                                  */
 /*----------------------------------------------------------------------------*/
-bool Table::bInsertRow(RowBuffer* pRowBuffer, i8 iPartition, TxRef* pTxRef,
+bool Table::bInsertRow(EntryBuffer* pRowBuffer, i8 iPartition, TxRef* pTxRef,
                        Str* pRecord, i8 iLength)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);

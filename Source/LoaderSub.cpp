@@ -116,7 +116,7 @@ void LoaderSub::vAppendBuffer(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
   
   // get working buffer
-  RowBuffer* pRowBuffer = m_pRowBuffer[m_iPartition];
+  EntryBuffer* pRowBuffer = m_pRowBuffer[m_iPartition];
   m_pRowBuffer[m_iPartition] = nullptr;
   
   // append working buffer into table
@@ -157,7 +157,7 @@ void LoaderSub::vEnd(void)
   for (i8 iPartition = 0; iPartition < C_MAX_PARTITIONS; iPartition++) {
     /*
     if (m_pRowBuffer[iPartition]) {
-      RowBuffer* pRowBuffer = m_pRowBuffer[iPartition];
+      EntryBuffer* pRowBuffer = m_pRowBuffer[iPartition];
       m_pRowBuffer[iPartition] = nullptr;
       m_pTable->vAppendBuffer(m_iPartition,pRowBuffer);
     }
@@ -231,15 +231,15 @@ bool LoaderSub::bInsertRow(void)
   
   // check for working buffer
   if (! m_pRowBuffer[m_iPartition]) {
-    m_pRowBuffer[m_iPartition] = (RowBuffer*)EntryBuffer::pNewEntryBuffer(CN_ROWBUFFER);
+    m_pRowBuffer[m_iPartition] = (EntryBuffer*)EntryBuffer::pNewEntryBuffer(CN_ROWBUFFER);
     if (! m_pRowBuffer[m_iPartition]) {
-      vTrace("RowBuffer allocation failed\n"_Str);
+      vTrace("EntryBuffer allocation failed\n"_Str);
       return false;
     }
   }
   
   // get working buffer
-  RowBuffer* pRowBuffer = m_pRowBuffer[m_iPartition];
+  EntryBuffer* pRowBuffer = m_pRowBuffer[m_iPartition];
 
   // insert row into working buffer
   if (pRowBuffer->bInsertRow(m_pTxRef,m_aRecord,m_iLength,&pRow))
@@ -249,9 +249,9 @@ bool LoaderSub::bInsertRow(void)
   m_pTable->vAppendBuffer(m_iPartition,pRowBuffer);
   
   // get a new working buffer
-  m_pRowBuffer[m_iPartition] = (RowBuffer*)EntryBuffer::pNewEntryBuffer(CN_ROWBUFFER);
+  m_pRowBuffer[m_iPartition] = (EntryBuffer*)EntryBuffer::pNewEntryBuffer(CN_ROWBUFFER);
   if (! m_pRowBuffer[m_iPartition]) {
-    vTrace("RowBuffer allocation failed\n"_Str);
+    vTrace("EntryBuffer allocation failed\n"_Str);
     return false;
   }
   
@@ -275,15 +275,15 @@ bool LoaderSub::bInsertRow2(void)
   
   // check for working buffer
   if (! m_pRowBuffer[m_iPartition]) {
-    m_pRowBuffer[m_iPartition] = (RowBuffer*)EntryBuffer::pNewEntryBuffer(CN_ROWBUFFER);
+    m_pRowBuffer[m_iPartition] = (EntryBuffer*)EntryBuffer::pNewEntryBuffer(CN_ROWBUFFER);
     if (! m_pRowBuffer[m_iPartition]) {
-      vTrace("RowBuffer allocation failed\n"_Str);
+      vTrace("EntryBuffer allocation failed\n"_Str);
       return false;
     }
   }
   
   // get working buffer
-  RowBuffer* pRowBuffer = m_pRowBuffer[m_iPartition];
+  EntryBuffer* pRowBuffer = m_pRowBuffer[m_iPartition];
   
   // insert row into working buffer
   bool b = pRowBuffer->bInsertRow(m_pTxRef,m_aRecord,m_iLength,&pRow);
@@ -365,11 +365,11 @@ bool LoaderSub::bReadChunk(void)
 /*----------------------------------------------------------------------------*/
 /* get rowBuffer                                                              */
 /*----------------------------------------------------------------------------*/
-RowBuffer* LoaderSub::pRowBuffer(void)
+EntryBuffer* LoaderSub::pRowBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
   
-  RowBuffer* pRowBuffer = m_pRowBuffer[m_iPartition];
+  EntryBuffer* pRowBuffer = m_pRowBuffer[m_iPartition];
 
   //m_pRowBuffer[m_iPartition] = nullptr;
   
@@ -379,7 +379,7 @@ RowBuffer* LoaderSub::pRowBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* set rowBuffer                                                              */
 /*----------------------------------------------------------------------------*/
-void LoaderSub::vRowBuffer(RowBuffer* pRowBuffer)
+void LoaderSub::vRowBuffer(EntryBuffer* pRowBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
   

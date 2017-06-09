@@ -1963,16 +1963,16 @@ bool SEitf::bInsertRow(Str* aRow)
                               
   // check for working buffer
   if (! m_pRowBuffer[m_iPartition]) {
-    m_pRowBuffer[m_iPartition] = (RowBuffer*)EntryBuffer::pNewEntryBuffer(CN_ROWBUFFER);
+    m_pRowBuffer[m_iPartition] = (EntryBuffer*)EntryBuffer::pNewEntryBuffer(CN_ROWBUFFER);
     if (! m_pRowBuffer[m_iPartition]) {
-      vTrace("RowBuffer allocation failed\n"_Str);
+      vTrace("EntryBuffer allocation failed\n"_Str);
       m_eErrorCode = EC_LOW_BUFFERS;
       return false;
     }
   }
 
   // get working buffer
-  RowBuffer* pRowBuffer = m_pRowBuffer[m_iPartition];
+  EntryBuffer* pRowBuffer = m_pRowBuffer[m_iPartition];
     //vTrace("Buffer: %s Partition:%d\n"_Str,pRowBuffer, m_iPartition);
   
   // insert row into working buffer
@@ -1996,9 +1996,9 @@ bool SEitf::bInsertRow(Str* aRow)
   }
   
   // get a new working buffer
-  m_pRowBuffer[m_iPartition] = (RowBuffer*)EntryBuffer::pNewEntryBuffer(CN_ROWBUFFER);
+  m_pRowBuffer[m_iPartition] = (EntryBuffer*)EntryBuffer::pNewEntryBuffer(CN_ROWBUFFER);
   if (! m_pRowBuffer[m_iPartition]) {
-    vTrace("RowBuffer allocation failed\n"_Str);
+    vTrace("EntryBuffer allocation failed\n"_Str);
     m_eErrorCode = EC_LOW_BUFFERS;
     return false;
   }
@@ -2038,7 +2038,7 @@ bool SEitf::bInsertBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* insert rowbuffer into current table                                        */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bInsertBuffer(RowBuffer* pRowBuffer, i8 iPartition)
+bool SEitf::bInsertBuffer(EntryBuffer* pRowBuffer, i8 iPartition)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   

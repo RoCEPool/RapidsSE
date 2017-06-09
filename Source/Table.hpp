@@ -47,11 +47,11 @@ namespace DBobjects
     void vAddIndex(Index* pIndex);
     Str* pAnalyze(bool bDetailed);
     Str* pAnalyzeIndex(Index* pIndex, bool bDetailed);
-    void vAppendBuffer(i8 iPartition, RowBuffer* pRowBuffer);
+    void vAppendBuffer(i8 iPartition, EntryBuffer* pRowBuffer);
     ColumnVec* pColumnVec(void);
     void vContentDump(void);
     void vCreateColumnVec(s32& sName, s48K& sDefinition);
-    bool bInsertRow(RowBuffer* pRowBuffer, i8 iPartition, TxRef* pTxRef, Str* pRecord, i8 iLength);
+    bool bInsertRow(EntryBuffer* pRowBuffer, i8 iPartition, TxRef* pTxRef, Str* pRecord, i8 iLength);
     Partition* pPartition(i8 iSlot);
     void vPopulateIndex(i8 iIndexNo);
     void vRefDec(void);

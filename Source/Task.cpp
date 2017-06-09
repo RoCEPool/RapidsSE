@@ -670,7 +670,7 @@ void Task::vAddConstants(void)
   /*    */ vAddConstant("SIZEOF_RBCURSOR"_Str,     sizeof(RbCursor));
   /* 35 */ vAddConstant("SIZEOF_RING"_Str,         sizeof(Ring));
   /* 36 */ vAddConstant("SIZEOF_ROW"_Str,          sizeof(Entry));
-  /* 37 */ vAddConstant("SIZEOF_ROWBUFFER"_Str,    sizeof(RowBuffer));
+  /* 37 */ vAddConstant("SIZEOF_ROWBUFFER"_Str,    sizeof(EntryBuffer));
   /* 38 */ vAddConstant("SIZEOF_ROWCURSOR"_Str,    (i8)0);
   /* 39 */ vAddConstant("SIZEOF_ROWSTRAND"_Str,    sizeof(RowStrand));
   /* 40 */ vAddConstant("SIZEOF_ROWWSP"_Str,       sizeof(RowWsp));

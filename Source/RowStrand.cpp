@@ -80,7 +80,7 @@ void RowStrand::vDump(eCN eClass, Object* pObject, Str* aTab)
 /*----------------------------------------------------------------------------*/
 /* append buffer into this strand                                             */
 /*----------------------------------------------------------------------------*/
-bool RowStrand::bAppendBuffer(RowBuffer* pRowBuffer)
+bool RowStrand::bAppendBuffer(EntryBuffer* pRowBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSTRAND,_FOOTER_);
   
@@ -136,9 +136,9 @@ i8 RowStrand::nRows(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSTRAND,_FOOTER_);
   
   i8 nRows = 0;
-  for (RowBuffer* pRowBuffer = m_pFirstBuffer;
+  for (EntryBuffer* pRowBuffer = m_pFirstBuffer;
        pRowBuffer;
-       pRowBuffer = (RowBuffer*)pRowBuffer->pNextBuffer())
+       pRowBuffer = (EntryBuffer*)pRowBuffer->pNextBuffer())
     nRows += pRowBuffer->nEntries();
   
   return nRows;
@@ -157,7 +157,7 @@ i8 RowStrand::nRowBuffers(void)
 /*----------------------------------------------------------------------------*/
 /* get first buffer                                                           */
 /*----------------------------------------------------------------------------*/
-RowBuffer* RowStrand::pFirstBuffer(void)
+EntryBuffer* RowStrand::pFirstBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSTRAND,_FOOTER_);
   
@@ -167,7 +167,7 @@ RowBuffer* RowStrand::pFirstBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* get last buffer                                                            */
 /*----------------------------------------------------------------------------*/
-RowBuffer* RowStrand::pLastBuffer(void)
+EntryBuffer* RowStrand::pLastBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSTRAND,_FOOTER_);
   
@@ -223,10 +223,10 @@ void RowStrand::vTruncate(void)
   
   m_zLock.vGrabWrite();
   
-  RowBuffer* pRowBuffer = m_pFirstBuffer;
+  EntryBuffer* pRowBuffer = m_pFirstBuffer;
   while (pRowBuffer) {
-    RowBuffer* pRowBufferTBD = pRowBuffer;
-    pRowBuffer = (RowBuffer*)pRowBuffer->pNextBuffer();
+    EntryBuffer* pRowBufferTBD = pRowBuffer;
+    pRowBuffer = (EntryBuffer*)pRowBuffer->pNextBuffer();
     
     delete pRowBufferTBD;
   }
@@ -254,9 +254,9 @@ bool RowStrand::bExtendStrand(void)
   if (m_nRowBuffers >= C_STRAND_LENGTH)
     return false;
 
-  RowBuffer* pNewBuffer = (RowBuffer*)EntryBuffer::pNewEntryBuffer(CN_ROWBUFFER);
+  EntryBuffer* pNewBuffer = (EntryBuffer*)EntryBuffer::pNewEntryBuffer(CN_ROWBUFFER);
   if (! pNewBuffer) {
-    vTrace("RowBuffer allocation failed\n"_Str);
+    vTrace("EntryBuffer allocation failed\n"_Str);
     return false;
   }
   
@@ -267,7 +267,7 @@ bool RowStrand::bExtendStrand(void)
 /*----------------------------------------------------------------------------*/
 /* extend this strand                                                         */
 /*----------------------------------------------------------------------------*/
-bool RowStrand::bExtendStrand(RowBuffer* pNewRowBuffer)
+bool RowStrand::bExtendStrand(EntryBuffer* pNewRowBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSTRAND,_FOOTER_);
   

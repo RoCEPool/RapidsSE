@@ -4,7 +4,7 @@
 #pragma once
 
 namespace DBobjects {
-  class RowBuffer;
+  class EntryBuffer;
 }
 
 namespace Values
@@ -15,7 +15,7 @@ namespace Values
     
   private:
     i8  m_iBytes; // bytes used in work space
-    DBobjects::RowBuffer* m_pRowBuffer;
+    DBobjects::EntryBuffer* m_pRowBuffer;
     i8  m_iRowBufferBytes;
     char m_wWorkspace[C_VALSET_DATAAREA];
     
@@ -26,12 +26,12 @@ namespace Values
     void vAppend(Str*& pCursor, Value* pValue);
     bool bExtractValue(Str*& pCursor, Value*& pValue);
     bool bExtractValue(Str*& pCursor, eCN& eClassNo, Value*& pValue);
-    DBobjects::RowBuffer* pRowBuffer(void);
-    void vRowBuffer(DBobjects::RowBuffer* pRowBuffer);
+    DBobjects::EntryBuffer* pRowBuffer(void);
+    void vRowBuffer(DBobjects::EntryBuffer* pRowBuffer);
     
-    DBobjects::RowBuffer* pGetRowBuffer();
+    DBobjects::EntryBuffer* pGetRowBuffer();
     bool bHasRowBuffer();
-    bool bSetRowBuffer(DBobjects::RowBuffer* pRowBuffer);
+    bool bSetRowBuffer(DBobjects::EntryBuffer* pRowBuffer);
     
     i8   nSize(void);
     
