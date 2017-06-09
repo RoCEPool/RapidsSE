@@ -7,18 +7,6 @@
 #include "StorageEngine.h"
 
 /*----------------------------------------------------------------------------*/
-/* safe cast                                                                  */
-/*----------------------------------------------------------------------------*/
-RowBuffer* DBobjects::_pRowBuffer(void* aAddr)
-{
-  RowBuffer* pRowBuffer = reinterpret_cast<RowBuffer*>(aAddr);
-  
-  RASSERT( !pRowBuffer || CN_ROWBUFFER == pRowBuffer->eClass() );
-  
-  return pRowBuffer;
-}
-
-/*----------------------------------------------------------------------------*/
 /* dump rowbuffer                                                             */
 /*----------------------------------------------------------------------------*/
 void RowBuffer::vDump(eCN eClass, Object* pObject, Str* aTab)

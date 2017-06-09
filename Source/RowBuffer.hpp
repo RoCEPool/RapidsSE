@@ -26,7 +26,6 @@ namespace DBobjects
     i8         nUsedBytes(void);
   };
   
-  RowBuffer* _pRowBuffer(void* aAddr);
 }
 
 /*============================================================================*/

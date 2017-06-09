@@ -7,6 +7,19 @@
 #include "StorageEngine.h"
 
 /*----------------------------------------------------------------------------*/
+/* safe cast                                                                  */
+/*----------------------------------------------------------------------------*/
+EntryBuffer* DBobjects::_pEntryBuffer(void* aAddr)
+{
+  EntryBuffer* pEntryBuffer = reinterpret_cast<EntryBuffer*>(aAddr);
+  
+  RASSERT( !pEntryBuffer || CN_ROWBUFFER == pEntryBuffer->eClass()
+                         || CN_INDEXBUFFER == pEntryBuffer->eClass() );
+  
+  return pEntryBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
 /* fetch a new buffer from buffer pool                                        */
 /*----------------------------------------------------------------------------*/
 void* EntryBuffer::operator new(size_t iSize)

@@ -67,6 +67,8 @@ namespace DBobjects
     EntryBuffer* pPrevBuffer(void);
     void         vPrevBuffer(EntryBuffer* pPrevBuffer);
   };
+  
+  EntryBuffer* _pEntryBuffer(void* aAddr);
 }
 
 /*============================================================================*/

@@ -252,7 +252,7 @@ void Task::vRowCursorRowBufferStore(NNP_Task nnpTask)
   if ( ! nnpTask->m_pDataStack->bPop(pPtrRowBuffer) )
     THROW_INVALID_DSTACK("rowCursor.rowBuffer!"_Str);
   
-  RowBuffer* pRowBuffer = _pRowBuffer(pPtrRowBuffer);
+  RowBuffer* pRowBuffer = (RowBuffer*)_pEntryBuffer(pPtrRowBuffer);
   ASSERT(CN_ROWBUFFER == pRowBuffer->eClass());
   
   pRowCursor->vRowBuffer(pRowBuffer);

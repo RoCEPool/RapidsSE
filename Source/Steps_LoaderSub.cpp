@@ -345,7 +345,7 @@ void Task::vLoaderSubRowBufferStore(NNP_Task nnpTask)
   if ( ! nnpTask->m_pDataStack->bPop(pPtrRowBuffer) )
     THROW_INVALID_DSTACK("loaderSub.rowBuffer!"_Str);
   
-  RowBuffer* pRowBuffer = _pRowBuffer(pPtrRowBuffer);
+  RowBuffer* pRowBuffer = (RowBuffer*)_pEntryBuffer(pPtrRowBuffer);
   ASSERT( !pRowBuffer || CN_ROWBUFFER == pRowBuffer->eClass() );
   
   Object* pObject = _pPtrVal(nnpTask->m_pRegFrame->pValReg(0))->pPtr();
