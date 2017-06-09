@@ -43,6 +43,20 @@ ValWsp::ValWsp(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* assign/copy a boolean into workspace                                       */
+/*----------------------------------------------------------------------------*/
+void ValWsp::operator =(Bol xBol)
+{
+  BolVal* pNestedBolVal = (BolVal*)pNestedValue();
+  
+  // set nested class
+  pNestedBolVal->vClass(CN_BOLVAL);
+  
+  // assign int into the nested intval
+  *pNestedBolVal = xBol;
+}
+
+/*----------------------------------------------------------------------------*/
 /* assign/copy a date into workspace                                          */
 /*----------------------------------------------------------------------------*/
 void ValWsp::operator =(Dte xDte)

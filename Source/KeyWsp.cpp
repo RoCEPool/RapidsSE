@@ -176,6 +176,10 @@ void KeyWsp::vAddElement(Values::StrVal* pStrVal, Column* pCol)
   i8 iValue;
   
   switch(pCol->eColumnType()) {
+    case CT_BOOLEAN:
+      iValue = StrLib::iToI8(pSrc);
+      nBytes = ValLib::nCopyBolDatum((char*)pDst,(char*)pSrc);
+      break;
     case CT_INTEGER:
       iValue = StrLib::iToI8(pSrc);
       nBytes = ValLib::nCopyIntDatum(pDst,(void*)&iValue);
@@ -205,6 +209,11 @@ void KeyWsp::vAddElement(ValWsp& xValWsp, Column* pCol)
   
   switch(pCol->eColumnType()) {
 
+    case CT_BOOLEAN:
+      pSrc = (char*)(_pBolVal(xValWsp.pNestedValueSelf())->aInt());
+      nBytes = ValLib::nCopyBolDatum((char*)pDst,(char*)pSrc);
+      break;
+      
     case CT_DATE:
       pSrc = (char*)(_pDteVal(xValWsp.pNestedValueSelf())->aInt());
       nBytes = ValLib::nCopyDteDatum((char*)pDst,(char*)pSrc);

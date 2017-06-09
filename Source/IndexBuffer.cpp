@@ -315,7 +315,14 @@ bool IndexBuffer::bInsert(EntWsp& xEntWsp)
   
   // find the entry after which the new entry.key will be inserted
   EntryVec xPriorVec;
-  Entry* pAfterEntry = pPosition(xEntWsp.aKey(), JC_AFTER, &xPriorVec);
+  bool bIsEqual = false;
+  Entry* pAfterEntry = pPosition(xEntWsp.aKey(), JC_AFTER, &xPriorVec, bIsEqual);
+  
+  if (m_pIndex->bIsUnique() and bIsEqual) {
+    vTrace("Warning: Duplicate key in unique index %s "_Str, m_pIndex->aIndexName());
+    xEntWsp.aKey()->vShow(m_pIndex->pIdxColVec());
+    vTrace("\n"_Str);
+  }
   
   // create a new entry after the prior entry and set it
   //EntWsp xEntWsp(xId,xKeyWsp);
@@ -424,8 +431,9 @@ Entry* IndexBuffer::pPosition(KeyWsp& xKeyWsp, eJC eJuxtaCompare)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
   Entry* pEntry;
+  bool bIsEqual = false;
   
-  pEntry = pPosition(xKeyWsp.aKey(), eJuxtaCompare, nullptr);
+  pEntry = pPosition(xKeyWsp.aKey(), eJuxtaCompare, nullptr, bIsEqual);
   
   if (pEntry == pHead())
     pEntry = pNextEntry(pEntry);
@@ -765,7 +773,8 @@ L0 |  KeyA || KeyB  || KeyC  ||  KeyD || KeyE  || KeyF  || KeyG  || KeyH  |
       if (pEntryOne != pHead()) {
         
         // KeyB should should be after keyA
-        bool bAfter = pKeyB->bJuxtaAfter(pKeyA, m_pIndex->pIdxColVec());
+        bool bIsEqual = false;
+        bool bAfter = pKeyB->bJuxtaAfter(pKeyA, m_pIndex->pIdxColVec(), bIsEqual);
         
         // if keyB is not after keyA , we have a problem
         if ( ! bAfter )
@@ -1123,7 +1132,8 @@ void IndexBuffer::vReplaceEqualKey(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp)
   ASSERT(pOldEntry);
   
   // assert the key of the higher level entry and the old entry match
-  ASSERT(pOldEntry->aKey()->bJuxtaCompare(JC_SAME, xOldKeyWsp.aKey(), m_pIndex->pIdxColVec()));
+  bool bIsEqual = false;
+  ASSERT(pOldEntry->aKey()->bJuxtaCompare(JC_SAME, xOldKeyWsp.aKey(), m_pIndex->pIdxColVec(), bIsEqual));
   
   EntWsp xEntWsp(pOldEntry);
   xEntWsp.vAddKey(xNewKeyWsp);
@@ -1157,7 +1167,8 @@ void IndexBuffer::vReplaceLargerKey(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp)
   ASSERT(pOldEntry);
   
   // assert the key of the higher level entry and the old entry match
-  ASSERT(pOldEntry->aKey()->bJuxtaCompare(JC_SAME, xOldKeyWsp.aKey(), m_pIndex->pIdxColVec()));
+  bool bIsEqual = false;
+  ASSERT(pOldEntry->aKey()->bJuxtaCompare(JC_SAME, xOldKeyWsp.aKey(), m_pIndex->pIdxColVec(), bIsEqual));
   
   // create a newEntry at the same location as the pOldEntry
   Entry* pNewEntry = _pEntry(pOldEntry);
@@ -1235,7 +1246,8 @@ void IndexBuffer::vReplaceSmallereKey(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp)
   ASSERT(pOldEntry);
   
   // assert the key of the higher level entry and the old entry match
-  ASSERT(pOldEntry->aKey()->bJuxtaCompare(JC_SAME, xOldKeyWsp.aKey(), m_pIndex->pIdxColVec()));
+  bool bIsEqual = false;
+  ASSERT(pOldEntry->aKey()->bJuxtaCompare(JC_SAME, xOldKeyWsp.aKey(), m_pIndex->pIdxColVec(), bIsEqual));
   
   // create a newEntry at the same location as the foundEntry
   Entry* pNewEntry = _pEntry(pOldEntry);
@@ -1457,7 +1469,7 @@ void IndexBuffer::vMoveRight(void* aSrc, i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* scan thru skip list and positition to entry (optionally set prior vector)  */
 /*----------------------------------------------------------------------------*/
-Entry* IndexBuffer::pPosition(Key* aGivenKey, eJC eJuxtaCompare, EntryVec* pPriorVec)
+Entry* IndexBuffer::pPosition(Key* aGivenKey, eJC eJuxtaCompare, EntryVec* pPriorVec, bool& bIsEqual)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
@@ -1504,7 +1516,7 @@ Entry* IndexBuffer::pPosition(Key* aGivenKey, eJC eJuxtaCompare, EntryVec* pPrio
       //aNextKey->vShow(m_pIndex->pIdxColVec());
     
       // juxta-compare given key with next key at this level
-      bIsJuxta = aGivenKey->bJuxtaCompare(eJuxtaCompare,aNextKey,pIdxColVec);
+      bIsJuxta = aGivenKey->bJuxtaCompare(eJuxtaCompare,aNextKey,pIdxColVec, bIsEqual);
 
       //vTrace(" %s\n"_Str,bAfter ? "after" : "before");
     

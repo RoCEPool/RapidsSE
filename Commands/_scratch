@@ -1,0 +1,34 @@
+/*============================================================================*/
+/* _test -- test                                                              */
+/*============================================================================*/
+
+
+create table jidx (
+jidx_key   INTEGER NOT NULL,
+jidx_name  VARCHAR(32) NOT NULL,
+jidx_100   INTEGER NOT NULL,
+jidx_10    INTEGER NOT NULL
+);
+
+create unique index idx1 on jidx (jidx_10);
+lsidx jidx;
+lsidxcol jidx idx1;
+
+ld jidx "../JTEST/test.csv" ;
+dumpidx jidx idx1;
+
+/*
+create table boolTable (
+key   BOOLEAN NOT NULL,
+value INTEGER,
+name  VARCHAR(32) NOT NULL
+);
+
+create  index idx on boolTable (key);
+ld boolTable "../Seth/tests/partitionKey/bool.csv";
+
+lwrselidx boolTable idx 1;
+*/
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

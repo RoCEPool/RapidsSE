@@ -291,8 +291,8 @@ void Task::vIndexPosition(NNP_Task nnpTask)
   //xKeyWsp.aKey()->vShow(pIndex->pIdxColVec());
   
   if (pEntry) {
-    
-    bool bAfter = pEntry->aKey()->bJuxtaCompare(JC_AFTER, xKeyWsp.aKey(), pIndex->pIdxColVec());
+    bool bIsEqual = false;
+    bool bAfter = pEntry->aKey()->bJuxtaCompare(JC_AFTER, xKeyWsp.aKey(), pIndex->pIdxColVec(), bIsEqual);
     if ( ! bAfter) {
       pEntry = pIndexBuffer->pNextEntry(pEntry);
     }
@@ -595,7 +595,8 @@ void Task::vIndexUpper(NNP_Task nnpTask)
   
   xKeyWsp.vAddElement(pStrVal, pIndex->pIdxColVec()->pGet(0));
   
-  bool bBefore = pEntry->aKey()->bJuxtaCompare(JC_BEFORE, xKeyWsp.aKey(), pIndex->pIdxColVec());
+  bool bIsEqual = false;
+  bool bBefore = pEntry->aKey()->bJuxtaCompare(JC_BEFORE, xKeyWsp.aKey(), pIndex->pIdxColVec(), bIsEqual);
   
   nnpTask->m_pDataStack->vPushInt(bBefore ? 1 : 0);
   

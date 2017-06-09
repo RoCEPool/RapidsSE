@@ -133,7 +133,7 @@ void Row::vExtractKey(KeyWsp& xKeyWsp, IdxColVec* pIdxColVec)
         Bol xBol;
         bool b = DtmLib::bExtractBol(&pDst,&xBol);
         ASSERT(b);
-        xValWsp = xBol.iAsI8();
+        xValWsp = xBol;
         break;
       }
         
