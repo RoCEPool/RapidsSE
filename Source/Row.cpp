@@ -63,7 +63,7 @@ Row::~Row(void)
 /*----------------------------------------------------------------------------*/
 /* get data                                                                   */
 /*----------------------------------------------------------------------------*/
-char* Row::pData(void)
+char* Row::aRowData(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
   
@@ -79,14 +79,14 @@ void Row::vContentDump(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
   
-  StrVal* pStr = (StrVal*)pData();
+  StrVal* pStr = (StrVal*)aRowData();
   
   vTrace("Row %p: DataBytes %lld %s (%lld bytes) %s\n"_Str,
          this,
          //m_iTxId,
          m_iBytes,
-         pData(),
-         StrLib::iSize(pData()),
+         aRowData(),
+         StrLib::iSize(aRowData()),
          pStr->s()
          );
 }
@@ -98,14 +98,14 @@ void Row::vExtractKey(KeyWsp& xKeyWsp, IdxColVec* pIdxColVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
  
-  char* pRowData = pData();
+  char* pRowData = aRowData();
   
   i8 nCols = pIdxColVec->nItems();
   ValWsp xValWsp;
   s256 s;
 
   // get the row data
-  StrVal* pStrVal = (StrVal*)pData();
+  StrVal* pStrVal = (StrVal*)aRowData();
   
   for (i8 iColumn = 0; iColumn < nCols; iColumn++) {
     

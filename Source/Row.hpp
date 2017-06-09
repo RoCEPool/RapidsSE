@@ -22,7 +22,7 @@ namespace DBobjects
     ~Row(void);
     
     void  vContentDump(void);
-    char* pData(void);
+    char* aRowData(void);
     void  vExtractKey(KeyWsp& xKeyWsp, IdxColVec* pColVec);
     i8    nSize(void);
     i8    iTxId(void);
