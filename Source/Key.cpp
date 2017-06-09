@@ -344,14 +344,14 @@ bool Key::bMatches(Key* pKeyThat, IdxColVec* pIdxColVec, RelOpAry* pRelOpAry)
 /*----------------------------------------------------------------------------*/
 /* juxta-compare this key with given key                                      */
 /*----------------------------------------------------------------------------*/
-bool Key::bJuxtaCompare(eJC eJuxtaCompare, Key* pKeyThat, IdxColVec* pIdxColVec)
+bool Key::bJuxtaCompare(eJC eJuxtaCompare, Key* pKeyThat, IdxColVec* pIdxColVec, bool& bIsEqual)
 {
   bool bJuxtaCompare = false;
   
   switch (eJuxtaCompare) {
-    case JC_BEFORE: bJuxtaCompare = bJuxtaBefore(pKeyThat,pIdxColVec); break;
-    case JC_SAME:   bJuxtaCompare = bJuxtaSame(pKeyThat,pIdxColVec);   break;
-    case JC_AFTER:  bJuxtaCompare = bJuxtaAfter(pKeyThat,pIdxColVec);  break;
+    case JC_BEFORE: bJuxtaCompare = bJuxtaBefore(pKeyThat,pIdxColVec, bIsEqual); break;
+    case JC_SAME:   bJuxtaCompare = bJuxtaSame(pKeyThat,pIdxColVec, bIsEqual);   break;
+    case JC_AFTER:  bJuxtaCompare = bJuxtaAfter(pKeyThat,pIdxColVec, bIsEqual);  break;
       
     default:
       ASSERT(0);
@@ -363,7 +363,7 @@ bool Key::bJuxtaCompare(eJC eJuxtaCompare, Key* pKeyThat, IdxColVec* pIdxColVec)
 /*----------------------------------------------------------------------------*/
 /* is this key juxta-before given key?                                        */
 /*----------------------------------------------------------------------------*/
-bool Key::bJuxtaBefore(Key* pKeyThat, IdxColVec* pIdxColVec)
+bool Key::bJuxtaBefore(Key* pKeyThat, IdxColVec* pIdxColVec, bool& bIsEqual)
 {
   /*
    * a multi-part key is said to be juxta-before some other key if:
@@ -423,6 +423,7 @@ bool Key::bJuxtaBefore(Key* pKeyThat, IdxColVec* pIdxColVec)
   
   // all elements are the same
   ASSERT(0 == iCmp);
+  bIsEqual = true;
   
   // return true (is before)
   // example (1)
@@ -432,7 +433,7 @@ bool Key::bJuxtaBefore(Key* pKeyThat, IdxColVec* pIdxColVec)
 /*----------------------------------------------------------------------------*/
 /* is this key juxta-same as given key?                                       */
 /*----------------------------------------------------------------------------*/
-bool Key::bJuxtaSame(Key* pKeyThat, IdxColVec* pIdxColVec)
+bool Key::bJuxtaSame(Key* pKeyThat, IdxColVec* pIdxColVec, bool& bIsEqual)
 {
   /*
    * a multi-part key is juxta-same as some other key if:
@@ -470,6 +471,7 @@ bool Key::bJuxtaSame(Key* pKeyThat, IdxColVec* pIdxColVec)
   
   // all elements are the same
   ASSERT(0 == iCmp);
+  bIsEqual = true;
   
   // return true (is same)
   return true;
@@ -478,7 +480,7 @@ bool Key::bJuxtaSame(Key* pKeyThat, IdxColVec* pIdxColVec)
 /*----------------------------------------------------------------------------*/
 /* is this key juxta-after given key?                                         */
 /*----------------------------------------------------------------------------*/
-bool Key::bJuxtaAfter(Key* pKeyThat, IdxColVec* pIdxColVec)
+bool Key::bJuxtaAfter(Key* pKeyThat, IdxColVec* pIdxColVec, bool& bIsEqual)
 {
   /*
    * a multi-part key is said to be juxta-after some other key if:
@@ -538,6 +540,7 @@ bool Key::bJuxtaAfter(Key* pKeyThat, IdxColVec* pIdxColVec)
   
   // all elements are the same
   ASSERT(0 == iCmp);
+  bIsEqual = true;
   
   // return true (is after)
   // example (1)

@@ -334,7 +334,8 @@ bool IndexData::bVerify(void)
 
       // pKeyLN should be the same as pKeyLN_1
       // ka of B1 and ka of B3 should be the same
-      bool bSame = pKeyLN->bJuxtaCompare(JC_SAME, aEntryLN_1->aKey(), m_pIndex->pIdxColVec());
+      bool bIsEqual = false;
+      bool bSame = pKeyLN->bJuxtaCompare(JC_SAME, aEntryLN_1->aKey(), m_pIndex->pIdxColVec(), bIsEqual);
       if ( ! bSame ) {
         return false;
       }
@@ -377,6 +378,7 @@ void IndexData::vInsertEntry(IndexBuffer* pHigher, KeyWsp& xKeyWsp, Id xId, i8 i
     pIndexBuffer = pSplitBuffer(pIndexBuffer);
     
     // find position again
+    bool bEqual;
     pIndexBuffer = pIndexBuffer->pHigherLevel()->pPositionLevel(xKeyWsp, JC_AFTER, iLevel);
   }
   

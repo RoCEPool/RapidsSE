@@ -59,10 +59,10 @@ namespace DBobjects
     
     bool bMatches(Key* pKey, IdxColVec* pColVec, RelOpAry* pOpAry);
 
-    bool bJuxtaCompare(eJC eJuxtaCompare, Key* pKey, IdxColVec* pColVec);
-    bool bJuxtaBefore(Key* pKey, IdxColVec* pColVec);
-    bool bJuxtaSame(Key* pKey, IdxColVec* pColVec);
-    bool bJuxtaAfter(Key* pKey, IdxColVec* pColVec);
+    bool bJuxtaCompare(eJC eJuxtaCompare, Key* pKey, IdxColVec* pColVec, bool& bIsEqual);
+    bool bJuxtaBefore(Key* pKey, IdxColVec* pColVec, bool& bIsEqual);
+    bool bJuxtaSame(Key* pKey, IdxColVec* pColVec, bool& bIsEqual);
+    bool bJuxtaAfter(Key* pKey, IdxColVec* pColVec, bool& bIsEqual);
   
     char* aWspArea(void);
     Str*  aWspStr(void);
