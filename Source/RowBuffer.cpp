@@ -152,7 +152,7 @@ Row* RowBuffer::pAllocRow(i8 iStrLength)
   }
   
   Row* pRow = reinterpret_cast<Row*>(m_xWsp.aAllot(nBytesRequired));
-  new(pRow) BufferItem(CN_ROW,nBytesRequired);
+  new(pRow) Entry(CN_ROW,nBytesRequired);
   
   m_nRows++;
   

@@ -5,16 +5,13 @@
 
 namespace DBobjects
 {
-  class KeyWsp;
-  
-  class Row : public BufferItem
+  class Row : public Entry
   {
   private:
     // ..data..
     // ..footer..
 
   public:
-    
   };
   
 }
