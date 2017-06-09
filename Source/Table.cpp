@@ -191,7 +191,7 @@ Str* Table::pAnalyze(bool bDetailed)
         while (pRowBuffer) {
           nRowBuffer++;
           nRowsInBuffer = pRowBuffer->nEntries();
-          pRowBuffer = pRowBuffer->pNextBuffer();
+          pRowBuffer = (RowBuffer*)pRowBuffer->pNextBuffer();
           sAnalysis.vCatSprint("   strand:%lld rowBuffer%lld: %lld rows\n"_Str,
                                nStrands,
                                nRowBuffer,

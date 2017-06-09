@@ -192,7 +192,7 @@ void Partition::vPopulateIndex(i8 iIndexNo)
     
     for (RowBuffer* pRowBuffer = pStrand->pFirstBuffer();
          pRowBuffer;
-         pRowBuffer = pRowBuffer->pNextBuffer()) {
+         pRowBuffer = (RowBuffer*)pRowBuffer->pNextBuffer()) {
       
       nRowBuffer++;
       nRowsInBuffer = pRowBuffer->nEntries();

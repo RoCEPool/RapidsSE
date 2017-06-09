@@ -12,8 +12,6 @@ namespace DBobjects
   class RowBuffer : public EntryBuffer
   {
   private:
-    RowBuffer*   m_pPrevBuffer; // prev buffer
-    RowBuffer*   m_pNextBuffer; // next buffer
     WspFxd<C_1M> m_xWsp;        // ..data.. rows
     
   public:
@@ -36,11 +34,7 @@ namespace DBobjects
     Entry*       pFirstRow(void);
     i8         nFreeBytes(void);
     bool       bInsertRow(TxRef* pTxRef, Str* pRecord, i8 iLength, Entry** ppRow);
-    RowBuffer* pNextBuffer(void);
-    void       vNextBuffer(RowBuffer* pNextBuffer);
     Entry*       pNextRow(Entry* pCurrRow);
-    RowBuffer* pPrevBuffer(void);
-    void       vPrevBuffer(RowBuffer* pPrevBuffer);
     void       vRowCount(void);
     i8         nUsedBytes(void);
   };

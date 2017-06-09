@@ -128,7 +128,7 @@ void RbCursor::vNext(void)
   
   ASSERT(m_pRowBuffer);
   
-  m_pRowBuffer = m_pRowBuffer->pNextBuffer();
+  m_pRowBuffer = (RowBuffer*)m_pRowBuffer->pNextBuffer();
   if (m_pRowBuffer)
     return;
   

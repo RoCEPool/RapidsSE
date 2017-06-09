@@ -274,26 +274,6 @@ bool RowBuffer::bInsertRow(TxRef* pTxRef, Str* pRecord, i8 iLength, Entry** ppRo
 }
 
 /*----------------------------------------------------------------------------*/
-/* get next buffer                                                            */
-/*----------------------------------------------------------------------------*/
-RowBuffer* RowBuffer::pNextBuffer(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
-  
-  return m_pNextBuffer;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set next buffer                                                            */
-/*----------------------------------------------------------------------------*/
-void RowBuffer::vNextBuffer(RowBuffer* pNextBuffer)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
-  
-  m_pNextBuffer = pNextBuffer;
-}
-
-/*----------------------------------------------------------------------------*/
 /* next row                                                                   */
 /*----------------------------------------------------------------------------*/
 Entry* RowBuffer::pNextRow(Entry* pCurr)
@@ -308,26 +288,6 @@ Entry* RowBuffer::pNextRow(Entry* pCurr)
     return nullptr;
   
   return pNext;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get prev buffer                                                            */
-/*----------------------------------------------------------------------------*/
-RowBuffer* RowBuffer::pPrevBuffer(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
-  
-  return m_pPrevBuffer;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set prev buffer                                                            */
-/*----------------------------------------------------------------------------*/
-void RowBuffer::vPrevBuffer(RowBuffer* pPrevBuffer)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
-  
-  m_pPrevBuffer = pPrevBuffer;
 }
 
 /*----------------------------------------------------------------------------*/

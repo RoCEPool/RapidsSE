@@ -391,7 +391,7 @@ IndexBuffer* IndexBuffer::pNextBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
-  return m_pNextBuffer;
+  return (IndexBuffer*)m_pNextBuffer;
 }
 
 /*----------------------------------------------------------------------------*/

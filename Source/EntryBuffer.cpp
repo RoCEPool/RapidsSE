@@ -52,6 +52,46 @@ i8 EntryBuffer::nEntries(void)
   return m_nEntries;
 }
 
+/*----------------------------------------------------------------------------*/
+/* get next buffer                                                            */
+/*----------------------------------------------------------------------------*/
+EntryBuffer* EntryBuffer::pNextBuffer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  return m_pNextBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set next buffer                                                            */
+/*----------------------------------------------------------------------------*/
+void EntryBuffer::vNextBuffer(EntryBuffer* pNextBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  m_pNextBuffer = pNextBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get prev buffer                                                            */
+/*----------------------------------------------------------------------------*/
+EntryBuffer* EntryBuffer::pPrevBuffer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
+  
+  return m_pPrevBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set prev buffer                                                            */
+/*----------------------------------------------------------------------------*/
+void EntryBuffer::vPrevBuffer(EntryBuffer* pPrevBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
+  
+  m_pPrevBuffer = pPrevBuffer;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

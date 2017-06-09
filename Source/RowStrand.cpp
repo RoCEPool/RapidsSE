@@ -138,7 +138,7 @@ i8 RowStrand::nRows(void)
   i8 nRows = 0;
   for (RowBuffer* pRowBuffer = m_pFirstBuffer;
        pRowBuffer;
-       pRowBuffer = pRowBuffer->pNextBuffer())
+       pRowBuffer = (RowBuffer*)pRowBuffer->pNextBuffer())
     nRows += pRowBuffer->nEntries();
   
   return nRows;
@@ -226,7 +226,7 @@ void RowStrand::vTruncate(void)
   RowBuffer* pRowBuffer = m_pFirstBuffer;
   while (pRowBuffer) {
     RowBuffer* pRowBufferTBD = pRowBuffer;
-    pRowBuffer = pRowBuffer->pNextBuffer();
+    pRowBuffer = (RowBuffer*)pRowBuffer->pNextBuffer();
     
     delete pRowBufferTBD;
   }
