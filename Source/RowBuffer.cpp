@@ -19,24 +19,6 @@ RowBuffer* DBobjects::_pRowBuffer(void* aAddr)
 }
 
 /*----------------------------------------------------------------------------*/
-/* row buffer factory                                                         */
-/*----------------------------------------------------------------------------*/
-RowBuffer* RowBuffer::pNewRowBuffer(void)
-{
-  if (gpBufferPool->iFreeCount() <= C_BUFFER_THRESHOLD)
-    return nullptr;
-  
-  RowBuffer* pRowBuffer = reinterpret_cast<RowBuffer*>(
-                            Heap::pAllocate(CN_ROWBUFFER));
-  if (! pRowBuffer)
-    return nullptr;
-  
-  new(pRowBuffer) RowBuffer;
-  
-  return pRowBuffer;
-}
-
-/*----------------------------------------------------------------------------*/
 /* dump rowbuffer                                                             */
 /*----------------------------------------------------------------------------*/
 void RowBuffer::vDump(eCN eClass, Object* pObject, Str* aTab)

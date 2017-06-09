@@ -11,7 +11,6 @@ namespace DBobjects
   
   public:
   
-    static RowBuffer* pNewRowBuffer(void);
     
     static void vDump(eCN eClass, Object* pObject, Str* aTab);
   

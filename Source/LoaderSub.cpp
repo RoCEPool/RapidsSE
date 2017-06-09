@@ -231,7 +231,7 @@ bool LoaderSub::bInsertRow(void)
   
   // check for working buffer
   if (! m_pRowBuffer[m_iPartition]) {
-    m_pRowBuffer[m_iPartition] = RowBuffer::pNewRowBuffer();
+    m_pRowBuffer[m_iPartition] = (RowBuffer*)EntryBuffer::pNewEntryBuffer(CN_ROWBUFFER);
     if (! m_pRowBuffer[m_iPartition]) {
       vTrace("RowBuffer allocation failed\n"_Str);
       return false;
@@ -249,7 +249,7 @@ bool LoaderSub::bInsertRow(void)
   m_pTable->vAppendBuffer(m_iPartition,pRowBuffer);
   
   // get a new working buffer
-  m_pRowBuffer[m_iPartition] = RowBuffer::pNewRowBuffer();
+  m_pRowBuffer[m_iPartition] = (RowBuffer*)EntryBuffer::pNewEntryBuffer(CN_ROWBUFFER);
   if (! m_pRowBuffer[m_iPartition]) {
     vTrace("RowBuffer allocation failed\n"_Str);
     return false;
@@ -275,7 +275,7 @@ bool LoaderSub::bInsertRow2(void)
   
   // check for working buffer
   if (! m_pRowBuffer[m_iPartition]) {
-    m_pRowBuffer[m_iPartition] = RowBuffer::pNewRowBuffer();
+    m_pRowBuffer[m_iPartition] = (RowBuffer*)EntryBuffer::pNewEntryBuffer(CN_ROWBUFFER);
     if (! m_pRowBuffer[m_iPartition]) {
       vTrace("RowBuffer allocation failed\n"_Str);
       return false;
