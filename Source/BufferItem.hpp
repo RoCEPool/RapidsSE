@@ -16,6 +16,9 @@ namespace DBobjects
   //i8  m_iTxId;      // transaction id
 
   public:
+    void* operator new(size_t);
+    void* operator new(size_t, BufferItem*);
+  
     BufferItem(eCN eClassNo);
     BufferItem(eCN eClassNo, i8 iDataBytes);
     ~BufferItem(void);
@@ -30,7 +33,14 @@ namespace DBobjects
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // row
-  Footer* pFooter(void);
+    void  vContentDump(void);
+    char* aRowData(void);
+    void  vExtractKey(KeyWsp& xKeyWsp, IdxColVec* pColVec);
+    i8    nSizeRow(void);
+    i8    iTxId(void);
+    void  vTxId(i8 iTxId);
+  
+    Footer* pFooter(void);
   };
   
   BufferItem* _pBufferItem(void* aAddr);

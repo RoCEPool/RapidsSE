@@ -14,17 +14,6 @@ namespace DBobjects
     // ..footer..
 
   public:
-    void* operator new(size_t);
-    void* operator new(size_t, Row*);
-    
-    ~Row(void);
-    
-    void  vContentDump(void);
-    char* aRowData(void);
-    void  vExtractKey(KeyWsp& xKeyWsp, IdxColVec* pColVec);
-    i8    nSizeRow(void);
-    i8    iTxId(void);
-    void  vTxId(i8 iTxId);
     
     
   //Footer* pFooter(void);
