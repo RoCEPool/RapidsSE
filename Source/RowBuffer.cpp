@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* RowBuffer.cpp -- Row Buffer                                                */
+/* RowBuffer.cpp -- Entry Buffer                                                */
 /*============================================================================*/
 
 #include "DBobjects.h"
@@ -140,18 +140,18 @@ void RowBuffer::vDump(eCN eClass, Object* pObject, Str* aTab)
 /*----------------------------------------------------------------------------*/
 /* allocate a row in this segmented space                                     */
 /*----------------------------------------------------------------------------*/
-Row* RowBuffer::pAllocRow(i8 iStrLength)
+Entry* RowBuffer::pAllocRow(i8 iStrLength)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
-  i8 nBytesRequired = Row::nBytesRequiredRow(iStrLength);
+  i8 nBytesRequired = Entry::nBytesRequiredRow(iStrLength);
   
   // test  sufficient freespace
   if (nFreeBytes() < nBytesRequired) {
     return nullptr;
   }
   
-  Row* pRow = reinterpret_cast<Row*>(m_xWsp.aAllot(nBytesRequired));
+  Entry* pRow = reinterpret_cast<Entry*>(m_xWsp.aAllot(nBytesRequired));
   new(pRow) Entry(CN_ROW,nBytesRequired);
   
   m_nRows++;
@@ -240,14 +240,14 @@ void RowBuffer::vDurability(eRD eDurability)
 /*----------------------------------------------------------------------------*/
 /* first row                                                                  */
 /*----------------------------------------------------------------------------*/
-Row* RowBuffer::pFirstRow(void)
+Entry* RowBuffer::pFirstRow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
   if ( ! m_xWsp.nSize() )
     return nullptr;
 
-  Row* pFirst = reinterpret_cast<Row*>(m_xWsp.aArea());
+  Entry* pFirst = reinterpret_cast<Entry*>(m_xWsp.aArea());
   
   return pFirst;
 }
@@ -267,7 +267,7 @@ i8 RowBuffer::nFreeBytes(void)
 /*----------------------------------------------------------------------------*/
 /* insert row into this buffer                                                */
 /*----------------------------------------------------------------------------*/
-bool RowBuffer::bInsertRow(TxRef* pTxRef, Str* pRecord, i8 iLength, Row** ppRow)
+bool RowBuffer::bInsertRow(TxRef* pTxRef, Str* pRecord, i8 iLength, Entry** ppRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
@@ -275,7 +275,7 @@ bool RowBuffer::bInsertRow(TxRef* pTxRef, Str* pRecord, i8 iLength, Row** ppRow)
   
   i8 nBytes = StrVal::nAreaRequired(iLength);
   
-  Row* pRow = pAllocRow(nBytes);
+  Entry* pRow = pAllocRow(nBytes);
   if (!pRow)
     return false;
   
@@ -319,13 +319,13 @@ void RowBuffer::vNextBuffer(RowBuffer* pNextBuffer)
 /*----------------------------------------------------------------------------*/
 /* next row                                                                   */
 /*----------------------------------------------------------------------------*/
-Row* RowBuffer::pNextRow(Row* pCurr)
+Entry* RowBuffer::pNextRow(Entry* pCurr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
   i8 nBytes = pCurr->nSizeRow();
   
-  Row* pNext = pAdd<Row*>(pCurr,nBytes);
+  Entry* pNext = pAdd<Entry*>(pCurr,nBytes);
   
   if ((char*)pNext >= (char*)m_xWsp.aLatter())
     return nullptr;
@@ -371,7 +371,7 @@ void RowBuffer::vRowCount(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
   m_nRows = 0;
-  for (Row* pRow = pFirstRow(); pRow; pRow = pNextRow(pRow))
+  for (Entry* pRow = pFirstRow(); pRow; pRow = pNextRow(pRow))
     m_nRows++;
   
   _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_,CN_ROWBUFFER);

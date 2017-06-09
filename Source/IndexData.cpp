@@ -192,7 +192,7 @@ i8 IndexData::nIndexBuffers(void)
 /*----------------------------------------------------------------------------*/
 /* insert an entry for given row into this index at level 0                   */
 /*----------------------------------------------------------------------------*/
-void IndexData::vInsertEntry(Row* pRow, i8 nRowNo, bn nBufferNo)
+void IndexData::vInsertEntry(Entry* pRow, i8 nRowNo, bn nBufferNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
   

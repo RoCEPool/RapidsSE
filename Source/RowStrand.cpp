@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* RowStrand.cpp -- Row Strand                                                */
+/* RowStrand.cpp -- Entry Strand                                                */
 /*============================================================================*/
 
 #include "DBobjects.h"
@@ -97,7 +97,7 @@ bool RowStrand::bInsertRow(TxRef* pTxRef, Str* pRecord, i8 iLength)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSTRAND,_FOOTER_);
   
   //m_zLock.vGrabWrite();
-  Row* pRow;
+  Entry* pRow;
   
   if (! m_pLastBuffer) {
     if (! bExtendStrand()) {

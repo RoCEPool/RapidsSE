@@ -14,7 +14,7 @@ namespace DBobjects
     Partition* m_pPartition;
     RowStrand* m_pRowStrand;
     RowBuffer* m_pRowBuffer;
-    Row*       m_pRow;
+    Entry*       m_pRow;
     
     // must be last
     Footer m_xFooter;
@@ -31,7 +31,7 @@ namespace DBobjects
     void    vEnd(void);
     void    vFirst(void);
     void    vNext(void);
-    Row*    pRow(void);
+    Entry*    pRow(void);
     Str*    aRowAsStr(void);
     RowBuffer* pRowBuffer(void);
     void       vRowBuffer(RowBuffer* pRowBuffer);

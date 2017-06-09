@@ -46,7 +46,7 @@ void Task::vRowString(NNP_Task nnpTask)
   if ( ! nnpTask->m_pDataStack->bPop(pPtrRow) )
     THROW_INVALID_DSTACK("row.string"_Str);
   
-  Row* pRow = _aRow(pPtrRow);
+  Entry* pRow = _aRow(pPtrRow);
   ASSERT(CN_ROW == pRow->eClass());
   
   StrVal* pStrVal = reinterpret_cast<StrVal*>(pRow->aRowData());

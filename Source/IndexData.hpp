@@ -39,7 +39,7 @@ namespace DBobjects
     IndexBuffer* pFirstBuffer();
     Index*       pIndex(void);
     i8           nIndexBuffers(void);
-    void         vInsertEntry(Row* pRow, i8 nRowNo, bn nBufferNo);
+    void         vInsertEntry(Entry* pRow, i8 nRowNo, bn nBufferNo);
     IndexBuffer* pPositionLevel(KeyWsp& xKeyWsp, eJC eJuxtaCompare, i8 iLevel);
     IndexBuffer* pRoot(void);
     void         vTidyUp(void);

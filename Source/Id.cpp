@@ -138,11 +138,11 @@ void Id::vId(Id& xId)
 /*----------------------------------------------------------------------------*/
 /* get row from buffer                                                        */
 /*----------------------------------------------------------------------------*/
-Row* Id::pRow(void)
+Entry* Id::pRow(void)
 {
   RowBuffer* pRowBuffer = reinterpret_cast<RowBuffer*>(gpBufferPool->pToBuffer(m_uBuffer));
   
-  Row* pRow = pRowBuffer->pFirstRow();
+  Entry* pRow = pRowBuffer->pFirstRow();
   u8 uRowNo = 0;
   while (m_uRow != uRowNo) {
     pRow = pRowBuffer->pNextRow(pRow);

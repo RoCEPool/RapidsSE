@@ -132,7 +132,7 @@ bool Partition::bInsertRow(RowBuffer* pRowBuffer, TxRef* pTxRef, Str* pRecord, i
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
   
-  Row* pRow;
+  Entry* pRow;
   
   // insert the row in the buffer
   bool bResult = pRowBuffer->bInsertRow( pTxRef, pRecord, iLength, &pRow);
@@ -200,7 +200,7 @@ void Partition::vPopulateIndex(i8 iIndexNo)
       bn nBufferNo = pRowBuffer->nBufferNo();
       
       i8 iRowNo = -1;
-      for (Row* pRow = pRowBuffer->pFirstRow();
+      for (Entry* pRow = pRowBuffer->pFirstRow();
            pRow;
            pRow = pRowBuffer->pNextRow(pRow)) {
         

@@ -46,7 +46,7 @@ void Task::vRowBufferAppend(NNP_Task nnpTask)
 ENTRY("vRowBufferAppend"_Str);
   
   Object* pPtrRowBuffer;
-  Row* pRow;
+  Entry* pRow;
   
   if ( ! nnpTask->m_pDataStack->bPop(pPtrRowBuffer) )
     THROW_INVALID_DSTACK("rowbuffer.append"_Str);
@@ -85,7 +85,7 @@ void Task::vRowBufferAppendRecord(NNP_Task nnpTask)
 {
   ENTRY("vRowBufferAppendRecord"_Str);
   
-  Row* pRow;
+  Entry* pRow;
   
   Object* pPtrRowBuffer;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrRowBuffer) )
@@ -134,7 +134,7 @@ void Task::vRowBufferDump(NNP_Task nnpTask)
   RowBuffer* pRowBuffer = _pRowBuffer(pPtrRowBuffer);
   ASSERT(CN_ROWBUFFER == pRowBuffer->eClass());
 
-  Row* pRow = pRowBuffer->pFirstRow();
+  Entry* pRow = pRowBuffer->pFirstRow();
   
   while (pRow) {
     pRow->vContentDump();

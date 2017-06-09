@@ -176,7 +176,7 @@ void SelCursor::vNext(void)
 /*----------------------------------------------------------------------------*/
 /* get current row                                                            */
 /*----------------------------------------------------------------------------*/
-Row* SelCursor::pRow(void)
+Entry* SelCursor::pRow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SELCURSOR,_FOOTER_);
   

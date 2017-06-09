@@ -137,7 +137,7 @@ void RowCursor::vNext(void)
 /*----------------------------------------------------------------------------*/
 /* get current row                                                            */
 /*----------------------------------------------------------------------------*/
-Row* RowCursor::pRow(void)
+Entry* RowCursor::pRow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCURSOR,_FOOTER_);
   

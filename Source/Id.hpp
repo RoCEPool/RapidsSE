@@ -5,7 +5,7 @@
 
 namespace DBobjects
 {
-  class Row;
+  class Entry;
   
   class Id
   {
@@ -38,7 +38,7 @@ namespace DBobjects
 
     void  vId(Id& xId);
     
-    Row*  pRow(void);
+    Entry*  pRow(void);
   };
 }
 

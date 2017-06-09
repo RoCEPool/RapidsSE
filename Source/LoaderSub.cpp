@@ -226,8 +226,8 @@ bool LoaderSub::bInsertRow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
   
-  //vTrace("Row: %s\n"_Str,pStrVal->aStr());
-  Row* pRow;
+  //vTrace("Entry: %s\n"_Str,pStrVal->aStr());
+  Entry* pRow;
   
   // check for working buffer
   if (! m_pRowBuffer[m_iPartition]) {
@@ -270,8 +270,8 @@ bool LoaderSub::bInsertRow2(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
   
-  Row* pRow;
-  //vTrace("Row: %s\n"_Str,pStrVal->aStr());
+  Entry* pRow;
+  //vTrace("Entry: %s\n"_Str,pStrVal->aStr());
   
   // check for working buffer
   if (! m_pRowBuffer[m_iPartition]) {

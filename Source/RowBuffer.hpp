@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* RowBuffer.hpp -- Row Buffer                                                */
+/* RowBuffer.hpp -- Entry Buffer                                                */
 /*============================================================================*/
 #pragma once
 
@@ -9,7 +9,7 @@ namespace DBobjects
   static const RowBuffer* C_ROWBUFFER_MARKER = (RowBuffer*)0xFFFFFFFFFFFFFFFF;
   
   
-  enum eRD // Row Buffer Durability
+  enum eRD // Entry Buffer Durability
   {
   /* 0 */ RD_NONE=0,
   /* 1 */ RD_TEMPORARY,     // rb is temporary
@@ -47,18 +47,18 @@ namespace DBobjects
     
     static void vDump(eCN eClass, Object* pObject, Str* aTab);
   
-    Row*       pAllocRow(i8 nDataBytes);
+    Entry*       pAllocRow(i8 nDataBytes);
     void       vAppendBuffer(RowBuffer* pSrcBuffer);
     void       vCopyBuffer(RowBuffer* pSrcBuffer);
     byte*      aDataArea(void);
     eRD        eDurability(void);
     void       vDurability(eRD eDurability);
-    Row*       pFirstRow(void);
+    Entry*       pFirstRow(void);
     i8         nFreeBytes(void);
-    bool       bInsertRow(TxRef* pTxRef, Str* pRecord, i8 iLength, Row** ppRow);
+    bool       bInsertRow(TxRef* pTxRef, Str* pRecord, i8 iLength, Entry** ppRow);
     RowBuffer* pNextBuffer(void);
     void       vNextBuffer(RowBuffer* pNextBuffer);
-    Row*       pNextRow(Row* pCurrRow);
+    Entry*       pNextRow(Entry* pCurrRow);
     RowBuffer* pPrevBuffer(void);
     void       vPrevBuffer(RowBuffer* pPrevBuffer);
     i8         nRows(void);

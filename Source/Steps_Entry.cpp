@@ -92,7 +92,7 @@ void Task::vEntryRow(NNP_Task nnpTask)
   
   Id xId = pEntry->xId();
   
-  Row* pRow = xId.pRow();
+  Entry* pRow = xId.pRow();
   
   nnpTask->m_pDataStack->vPushObject(pRow);
 }
