@@ -29,7 +29,16 @@ namespace DBobjects
     static i8 nBytesRequiredRow(i8 iStrLength);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // offsets
+    on     nHighestOffset(void);
+    i8     nOffsets(void);
+    i8     iRightOffset(on nOffsetNo);
+    void   vRightOffset(on nOffsetNo, i8 iRightOffset);
+    RightVec* aRightVec(void);
+  
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // entry
+    EntryData* aEntryData(void);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // row

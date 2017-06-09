@@ -23,15 +23,9 @@ namespace DBobjects
     
     void   vShow(i8 iOffset, IdxColVec* pColVec);
   
-    EntryData* aEntryData(void);
-    
-    on     nHighestOffset(void);
+     
     IndexBuffer* pIndexBuffer(void);
     Key*   aKey(void);
-    i8     nOffsets(void);
-    i8     iRightOffset(on nOffsetNo);
-    void   vRightOffset(on nOffsetNo, i8 iRightOffset);
-    RightVec* aRightVec(void);
     Id&    xId(void);
     void   vId(Id xId);
     void   vKey(EntWsp& xEntWsp);

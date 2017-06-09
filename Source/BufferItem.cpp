@@ -4,6 +4,8 @@
 
 #include "DBobjects.h"
 
+extern i8 gnIndexOffsets;
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -132,6 +134,106 @@ i8 BufferItem::nBytesRequiredRow(i8 iDataBytes)
   
   return nBytes;
 }
+
+/*----------------------------------------------------------------------------*/
+/*-- Offsets -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get highest offset                                                         */
+/*----------------------------------------------------------------------------*/
+on BufferItem::nHighestOffset(void)
+{
+  ASSERT(m_iOffsets >= 0 && m_iOffsets <= gnIndexOffsets);
+  
+  on nHighest(m_iOffsets - 1);
+  
+  return nHighest;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get nOffsets                                                               */
+/*----------------------------------------------------------------------------*/
+i8 BufferItem::nOffsets(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+  
+  return m_iOffsets;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get right offset for given level                                           */
+/*----------------------------------------------------------------------------*/
+i8 BufferItem::iRightOffset(on nOffsetNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+  
+  ASSERT(nOffsetNo >= 0_on && nOffsetNo < gnIndexOffsets);
+  
+  if (nOffsetNo >= m_iOffsets)
+    return C_NIL_OFFSET;
+  
+  EntryData* aEntryData = this->aEntryData();
+  
+  RightVec* aRightVec = aEntryData->aRightVec(m_iOffsets);
+  
+  i8 iRight = aRightVec->iOffset(nOffsetNo);
+  
+  return iRight;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set right offset for given level                                           */
+/*----------------------------------------------------------------------------*/
+void BufferItem::vRightOffset(on nOffsetNo, i8 iRightOffset)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+  
+  ASSERT(nOffsetNo >= 0_on && nOffsetNo < gnIndexOffsets);
+  
+  EntryData* aEntryData = this->aEntryData();
+  
+  RightVec* aRightVec = aEntryData->aRightVec(m_iOffsets);
+  
+  aRightVec->vOffset(nOffsetNo,iRightOffset);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the RightVec for this Entry                                            */
+/*----------------------------------------------------------------------------*/
+RightVec* BufferItem::aRightVec(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+  
+  EntryData* aEntryData = this->aEntryData();
+  
+  RightVec* aRightVec = aEntryData->aRightVec(m_iOffsets);
+  
+  return aRightVec;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Entry -------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get EntryData                                                              */
+/*----------------------------------------------------------------------------*/
+EntryData* BufferItem::aEntryData(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+  
+  EntryData* aEntryData = pAdd<EntryData*>(this,sizeof(Entry));
+  
+  return aEntryData;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*-- Row ---------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* get data                                                                   */

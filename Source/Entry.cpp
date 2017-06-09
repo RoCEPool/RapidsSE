@@ -145,18 +145,6 @@ void Entry::vShow(i8 iOffset, IdxColVec* pColVec)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get EntryData                                                              */
-/*----------------------------------------------------------------------------*/
-EntryData* Entry::aEntryData(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
-  
-  EntryData* aEntryData = pAdd<EntryData*>(this,sizeof(Entry));
-  
-  return aEntryData;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get bufferno from id of key                                                */
 /*----------------------------------------------------------------------------*/
 bn Entry::nBufferNo(void)
@@ -166,18 +154,6 @@ bn Entry::nBufferNo(void)
   bn nBufferNo = m_xId.iBuffer();
   
   return nBufferNo;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get highest offset                                                         */
-/*----------------------------------------------------------------------------*/
-on Entry::nHighestOffset(void)
-{
-  ASSERT(m_iOffsets >= 0 && m_iOffsets <= gnIndexOffsets);
-  
-  on nHighest(m_iOffsets - 1);
-  
-  return nHighest;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -206,69 +182,6 @@ Key* Entry::aKey(void)
   Key* aKey = pEntryData->aKey(m_iOffsets);
 
   return aKey;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get nOffsets                                                               */
-/*----------------------------------------------------------------------------*/
-i8 Entry::nOffsets(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
-  
-  return m_iOffsets;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get right offset for given level                                           */
-/*----------------------------------------------------------------------------*/
-i8 Entry::iRightOffset(on nOffsetNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
-  
-  ASSERT(nOffsetNo >= 0_on && nOffsetNo < gnIndexOffsets);
-  
-  if (nOffsetNo >= m_iOffsets)
-    return C_NIL_OFFSET;
-  
-  EntryData* aEntryData = this->aEntryData();
-  
-  RightVec* aRightVec = aEntryData->aRightVec(m_iOffsets);
-
-  i8 iRight = aRightVec->iOffset(nOffsetNo);
-  
-  return iRight;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set right offset for given level                                           */
-/*----------------------------------------------------------------------------*/
-void Entry::vRightOffset(on nOffsetNo, i8 iRightOffset)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
-  
-  ASSERT(nOffsetNo >= 0_on && nOffsetNo < gnIndexOffsets);
-  
-  EntryData* aEntryData = this->aEntryData();
-  
-  RightVec* aRightVec = aEntryData->aRightVec(m_iOffsets);
-  
-  aRightVec->vOffset(nOffsetNo,iRightOffset);
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the RightVec for this Entry                                            */
-/*----------------------------------------------------------------------------*/
-RightVec* Entry::aRightVec(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
-  
-  EntryData* aEntryData = this->aEntryData();
-  
-  RightVec* aRightVec = aEntryData->aRightVec(m_iOffsets);
-  
-  return aRightVec;
 }
 
 /*----------------------------------------------------------------------------*/
