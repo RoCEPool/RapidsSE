@@ -57,6 +57,7 @@ namespace DBobjects
   };
   
   BufferItem* _pBufferItem(void* aAddr);
+  Entry* _pEntry(void* aAddr);
 }
 
 /*============================================================================*/

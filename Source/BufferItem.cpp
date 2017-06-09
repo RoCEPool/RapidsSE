@@ -23,6 +23,16 @@ BufferItem* DBobjects::_pBufferItem(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
+Entry* DBobjects::_pEntry(void* aAddr)
+{
+  Entry* pEntry = reinterpret_cast<Entry*>(aAddr);
+  
+  return pEntry;
+}
+
+/*----------------------------------------------------------------------------*/
+/* safe cast                                                                  */
+/*----------------------------------------------------------------------------*/
 Row* DBobjects::_aRow(void* aAddr)
 {
   Row* aRow = reinterpret_cast<Row*>(aAddr);
