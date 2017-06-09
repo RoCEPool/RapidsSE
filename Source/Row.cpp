@@ -215,13 +215,13 @@ void Row::vExtractKey(KeyWsp& xKeyWsp, IdxColVec* pIdxColVec)
 /*----------------------------------------------------------------------------*/
 /* get size in bytes of this row                                              */
 /*----------------------------------------------------------------------------*/
-i8 Row::nSize(void)
+i8 Row::nSizeRow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
 
-  i8 iBytes = sizeof(Row) + sizeof(Footer) + m_iBytes;
+  //i8 iBytes = sizeof(Row) + sizeof(Footer) + m_iBytes;
   
-  return iBytes;
+  return m_iBytes;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -259,7 +259,11 @@ Footer* Row::pFooter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROW);
   
-  Footer* pFooter = pAdd<Footer*>(this,sizeof(Row) + m_iBytes);
+  //Footer* pFooter = pAdd<Footer*>(this,sizeof(Row) + m_iBytes);
+  
+  i8 iFooterOffset = m_iBytes - sizeof(Footer);
+  
+  Footer* pFooter = pAdd<Footer*>(this,iFooterOffset);  
   
   return pFooter;
 }

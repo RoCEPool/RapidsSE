@@ -370,6 +370,8 @@ Footer* Entry::pFooter(void)
   
   Footer* pFooter = pAdd<Footer*>(this,iFooterOffset);
   
+//  Footer* pFooter = pAdd<Footer*>(this,sizeof(Entry) + m_iBytes);
+ 
   return pFooter;
 }
 

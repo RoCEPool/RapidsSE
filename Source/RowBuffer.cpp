@@ -152,7 +152,7 @@ Row* RowBuffer::pAllocRow(i8 iStrLength)
   }
   
   Row* pRow = reinterpret_cast<Row*>(m_xWsp.aAllot(nBytesRequired));
-  new(pRow) Row(iStrLength);
+  new(pRow) Row(nBytesRequired);
   
   m_nRows++;
   
@@ -323,7 +323,7 @@ Row* RowBuffer::pNextRow(Row* pCurr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
-  i8 nBytes = pCurr->nSize();
+  i8 nBytes = pCurr->nSizeRow();
   
   Row* pNext = pAdd<Row*>(pCurr,nBytes);
   

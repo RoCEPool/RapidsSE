@@ -67,9 +67,7 @@ i8 BufferItem::nBytesRequiredEntry(i8 nOffsets, i8 nKeyBytes)
 {
   i8 nEntryDataBytes = EntryData::nBytesRequired(nOffsets,nKeyBytes);
   
-  i8 nBytes = sizeof(Entry)
-  + nEntryDataBytes
-  + sizeof(Footer);
+  i8 nBytes = sizeof(Entry) + nEntryDataBytes + sizeof(Footer);
   
   return nBytes;
 }
@@ -79,7 +77,7 @@ i8 BufferItem::nBytesRequiredEntry(i8 nOffsets, i8 nKeyBytes)
 /*----------------------------------------------------------------------------*/
 i8 BufferItem::nBytesRequiredRow(i8 iDataBytes)
 {
-  i8 nBytes = sizeof(Row) + sizeof(Footer) + iDataBytes;
+  i8 nBytes = sizeof(Row) + iDataBytes + sizeof(Footer);
   
   return nBytes;
 }

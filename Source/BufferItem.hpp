@@ -23,6 +23,12 @@ namespace DBobjects
     static i8 nBytesRequiredEntry(i8 nOffsets, i8 nKeyBytes);
   
     static i8 nBytesRequiredRow(i8 iStrLength);
+  
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // entry
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // row
   };
   
   BufferItem* _pBufferItem(void* aAddr);
