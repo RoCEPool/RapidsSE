@@ -17,6 +17,10 @@ EntryBuffer::EntryBuffer(eCN eClassNo)
   m_eDurability = BD_TEMPORARY;
   m_nEntries    = 0;
   
+  m_pPrevBuffer  = nullptr;
+  m_pNextBuffer  = nullptr;
+  m_pHigherLevel = nullptr;
+  
   _checkInitialised_(eClassNo);
 
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo,_FOOTER_);

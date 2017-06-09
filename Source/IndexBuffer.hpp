@@ -13,7 +13,6 @@ namespace DBobjects
   private:
     Index*       m_pIndex;       // index this buffer belongs to
     i8           m_nBufferLevel; // index buffer level
-    IndexBuffer* m_pHigherLevel; // higher level buffer that points to this buffer
     
     // need to add skip list head
     // head would be array of [FLAT_LEVELS - 1]

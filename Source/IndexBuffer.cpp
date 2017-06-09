@@ -59,10 +59,6 @@ IndexBuffer::IndexBuffer(Index* pIndex, i8 nBufferLevel)
 
   m_pIndex       = pIndex;
   m_nBufferLevel = nBufferLevel;
-  m_nEntries     = 0;
-  m_pPrevBuffer  = nullptr;
-  m_pNextBuffer  = nullptr;
-  m_pHigherLevel = nullptr;
   
   m_xWsp.vZero();
   
@@ -238,7 +234,7 @@ IndexBuffer* IndexBuffer::pHigherLevel(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
-  return m_pHigherLevel;
+  return (IndexBuffer*)m_pHigherLevel;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -469,7 +465,7 @@ void IndexBuffer::vShow(void)
 {
   s256 sHigherLevel;
   if (m_pHigherLevel)
-    StrLib::wToString(m_pHigherLevel->m_nBufferLevel, sHigherLevel.s());
+    StrLib::wToString(((IndexBuffer*)m_pHigherLevel)->m_nBufferLevel, sHigherLevel.s());
   else
     sHigherLevel = "..."_Str;
   
@@ -1046,7 +1042,7 @@ void IndexBuffer::vFixHigherLevel(Entry* aNewEntry)
   KeyWsp xNewKeyWsp;
   xNewKeyWsp.vAddKey(aNewEntry->aKey(), m_pIndex->pIdxColVec());
   
-  IndexBuffer* pHigherLevel = m_pHigherLevel;
+  IndexBuffer* pHigherLevel = (IndexBuffer*)m_pHigherLevel;
   
   while (pHigherLevel) {
     //pHigherLevel->vShow();
@@ -1057,7 +1053,7 @@ void IndexBuffer::vFixHigherLevel(Entry* aNewEntry)
     
     //pHigherLevel->vShow();
     ASSERT(pHigherLevel->bVerify());
-    pHigherLevel = pHigherLevel->m_pHigherLevel;
+    pHigherLevel = (IndexBuffer*)pHigherLevel->m_pHigherLevel;
   }
 }
 

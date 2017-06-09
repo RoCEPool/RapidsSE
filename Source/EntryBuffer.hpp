@@ -27,8 +27,9 @@ namespace DBobjects
     eBD   m_eDurability; // buffer durability
     i8    m_nEntries;    // number of entries in this buffer
   
-    EntryBuffer*   m_pPrevBuffer; // prev buffer
-    EntryBuffer*   m_pNextBuffer; // next buffer
+    EntryBuffer*   m_pPrevBuffer;  // prev buffer
+    EntryBuffer*   m_pNextBuffer;  // next buffer
+    EntryBuffer*   m_pHigherLevel; // higher level buffer that points to this buffer
   
   public:
     EntryBuffer(eCN eClassNo);
