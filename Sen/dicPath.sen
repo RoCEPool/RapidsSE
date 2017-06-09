@@ -149,7 +149,7 @@
   0 locals| count indexPtr |
 
   args.metadata if
-    "(name VARCHAR, isUnique BOOLEAN, isPrmaryKey BOOLEAN)" metadata!
+    "(name VARCHAR, isUnique BOOLEAN, isPrimaryKey BOOLEAN)" metadata!
     ""                              // initial contents string
     0 pathPick dic.lastWord dup
     iterate                         // setup iteration of words
