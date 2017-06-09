@@ -319,7 +319,7 @@ bool IndexBuffer::bInsert(EntWsp& xEntWsp)
   
   // create a new entry after the prior entry and set it
   //EntWsp xEntWsp(xId,xKeyWsp);
-  i8 nEntryBytes = Entry::nBytesRequired(xEntWsp);
+  i8 nEntryBytes = BufferItem::nBytesRequiredEntry(xEntWsp);
   Entry* pNewEntry = pAllotEntry(nEntryBytes, xEntWsp.nOffsets(), pAfterEntry);
   pNewEntry->vSetEntry(xEntWsp);
   
@@ -886,7 +886,7 @@ void IndexBuffer::vAllotHead(void)
   ASSERT( ! m_nEntries );
   
   // how many bytes are required
-  i8 nBytes = Entry::nBytesRequired(gnIndexOffsets, 0);
+  i8 nBytes = BufferItem::nBytesRequiredEntry(gnIndexOffsets, 0);
   
   // allot the head
   

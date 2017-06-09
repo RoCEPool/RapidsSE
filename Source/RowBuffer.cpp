@@ -140,19 +140,19 @@ void RowBuffer::vDump(eCN eClass, Object* pObject, Str* aTab)
 /*----------------------------------------------------------------------------*/
 /* allocate a row in this segmented space                                     */
 /*----------------------------------------------------------------------------*/
-Row* RowBuffer::pAllocRow(i8 iDataBytes)
+Row* RowBuffer::pAllocRow(i8 iStrLength)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
-  i8 nBytes = Row::iBytesRequired(iDataBytes);
+  i8 nBytesRequired = Row::nBytesRequiredRow(iStrLength);
   
   // test  sufficient freespace
-  if (nFreeBytes() < nBytes) {
+  if (nFreeBytes() < nBytesRequired) {
     return nullptr;
   }
   
-  Row* pRow = reinterpret_cast<Row*>(m_xWsp.aAllot(nBytes));
-  new(pRow) Row(iDataBytes);
+  Row* pRow = reinterpret_cast<Row*>(m_xWsp.aAllot(nBytesRequired));
+  new(pRow) Row(iStrLength);
   
   m_nRows++;
   

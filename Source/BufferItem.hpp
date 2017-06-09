@@ -5,6 +5,8 @@
 
 namespace DBobjects
 {
+  class EntWsp;
+  
   class BufferItem : public Object
   {
   protected:
@@ -16,6 +18,10 @@ namespace DBobjects
     BufferItem(eCN eClassNo);
     ~BufferItem(void);
   
+    static i8 nBytesRequiredEntry(EntWsp& xEntWsp);
+    static i8 nBytesRequiredEntry(i8 nOffsets, i8 nKeyBytes);
+  
+    static i8 nBytesRequiredRow(i8 iStrLength);
   };
   
   BufferItem* _pBufferItem(void* aAddr);

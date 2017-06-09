@@ -135,11 +135,11 @@ StrVal::operator Str&(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* calculate number of bytes required to hold string of given length          */
+/* calculate number of bytes required to hold str of given length             */
 /*----------------------------------------------------------------------------*/
-i8 StrVal::nAreaRequired(i8 iLength)
+i8 StrVal::nAreaRequired(i8 iStrLength)
 {
-  i8 nBytes = sizeof(StrVal) + iLength + 1;
+  i8 nBytes = sizeof(StrVal) + iStrLength + 1;
   
   return nBytes;
 }
