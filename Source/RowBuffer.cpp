@@ -57,7 +57,6 @@ RowBuffer::RowBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
 
-  m_eDurability = RD_TEMPORARY;
   m_nRows       = 0;
   m_pPrevBuffer = nullptr;
   m_pNextBuffer = nullptr;
@@ -184,16 +183,6 @@ void RowBuffer::vAppendBuffer(RowBuffer* pSrcBuffer)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get durability                                                             */
-/*----------------------------------------------------------------------------*/
-eRD RowBuffer::eDurability(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
-  
-  return m_eDurability;
-}
-
-/*----------------------------------------------------------------------------*/
 /* copy given buffer                                                          */
 /*----------------------------------------------------------------------------*/
 void RowBuffer::vCopyBuffer(RowBuffer* pSrcBuffer)
@@ -225,16 +214,6 @@ byte* RowBuffer::aDataArea(void)
   byte* pStart = reinterpret_cast<byte*>(m_xWsp.aArea());
   
   return pStart;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set durability                                                             */
-/*----------------------------------------------------------------------------*/
-void RowBuffer::vDurability(eRD eDurability)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
-  
-  m_eDurability = eDurability;
 }
 
 /*----------------------------------------------------------------------------*/

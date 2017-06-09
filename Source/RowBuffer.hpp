@@ -9,26 +9,9 @@ namespace DBobjects
   static const RowBuffer* C_ROWBUFFER_MARKER = (RowBuffer*)0xFFFFFFFFFFFFFFFF;
   
   
-  enum eRD // Entry Buffer Durability
-  {
-  /* 0 */ RD_NONE=0,
-  /* 1 */ RD_TEMPORARY,     // rb is temporary
-  /* 2 */ RD_PERMANENT,     // rb is permanent
-  /* 3 */ RD_ENUMS
-  };
-  
-  static Str* aRD[]
-  {
-  /* 0 */ "NONE"_Str,
-  /* 1 */ "TEMPORARY"_Str,
-  /* 2 */ "PERMANENT"_Str,
-  /* 3 */ "ENUMS"_Str,
-  };
-  
   class RowBuffer : public EntryBuffer
   {
   private:
-    eRD          m_eDurability; // row buffer durability
     i8           m_nRows;       // number of rows in this buffer
     RowBuffer*   m_pPrevBuffer; // prev buffer
     RowBuffer*   m_pNextBuffer; // next buffer
@@ -51,8 +34,6 @@ namespace DBobjects
     void       vAppendBuffer(RowBuffer* pSrcBuffer);
     void       vCopyBuffer(RowBuffer* pSrcBuffer);
     byte*      aDataArea(void);
-    eRD        eDurability(void);
-    void       vDurability(eRD eDurability);
     Entry*       pFirstRow(void);
     i8         nFreeBytes(void);
     bool       bInsertRow(TxRef* pTxRef, Str* pRecord, i8 iLength, Entry** ppRow);

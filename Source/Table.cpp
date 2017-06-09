@@ -309,7 +309,7 @@ void Table::vAppendBuffer(i8 iPartition, RowBuffer* pRowBuffer)
   ASSERT(iPartition < gpGrid->m_nSlots);
   
   // mark buffer as permanent
-  pRowBuffer->vDurability(RD_PERMANENT);
+  pRowBuffer->vDurability(BD_PERMANENT);
   
   Partition* pPartition = this->pPartition(iPartition);
  

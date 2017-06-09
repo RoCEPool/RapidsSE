@@ -271,7 +271,7 @@ bool RowStrand::bExtendStrand(RowBuffer* pNewRowBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSTRAND,_FOOTER_);
   
-  ASSERT(RD_PERMANENT == pNewRowBuffer->eDurability());
+  ASSERT(BD_PERMANENT == pNewRowBuffer->eDurability());
   
   // reached strand length?
   if (m_nRowBuffers >= C_STRAND_LENGTH)
