@@ -371,7 +371,7 @@ void Task::vSocketRecv(NNP_Task nnpTask)
     //******************************************************************
     // receive rowBuffer
     //******************************************************************
-    RowBuffer* pRowBuffer = new RowBuffer(iBytes);
+    RowBuffer* pRowBuffer = (RowBuffer*)new EntryBuffer(iBytes);
     bResult = pSocket->bRecvBytes(iBytes, reinterpret_cast<void*>(pRowBuffer->aDataArea()), xSysCall);
     
     if ( ! bResult )

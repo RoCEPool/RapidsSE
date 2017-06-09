@@ -7,6 +7,82 @@
 #include "StorageEngine.h"
 
 /*----------------------------------------------------------------------------*/
+/* fetch a new buffer from buffer pool                                        */
+/*----------------------------------------------------------------------------*/
+void* EntryBuffer::operator new(size_t iSize)
+{
+  RASSERT(iSize);
+  Buffer* pBuffer = (Buffer*)Heap::pAllocate(CN_ROWBUFFER);
+  
+  return pBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* fetch a new buffer from buffer pool                                        */
+/*----------------------------------------------------------------------------*/
+void* EntryBuffer::operator new(size_t iSize, void* aAddr)
+{
+  RASSERT(iSize);
+  
+  return aAddr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* return a row buffer to the buffer pool                                     */
+/*----------------------------------------------------------------------------*/
+void EntryBuffer::operator delete(void* pRowBufferAddress)
+{
+  Buffer* pBuffer = static_cast<Buffer*>(pRowBufferAddress);
+  
+  Heap::vFree(pBuffer);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+EntryBuffer::EntryBuffer(void)
+: Buffer(CN_ROWBUFFER)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
+  
+  m_pPrevBuffer = nullptr;
+  m_pNextBuffer = nullptr;
+  //m_xWsp
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
+  
+  _checkInitialised_(CN_ROWBUFFER);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+EntryBuffer::EntryBuffer(i8 iDataBytes)
+: Buffer(CN_ROWBUFFER)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
+  
+  m_xWsp.vUsed(iDataBytes);
+  
+  m_pPrevBuffer = nullptr;
+  m_pNextBuffer = nullptr;
+  
+  //m_xWsp
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
+  
+  _checkInitialised_(CN_ROWBUFFER);
+}
+
+/*----------------------------------------------------------------------------*/
+/* destructor                                                                 */
+/*----------------------------------------------------------------------------*/
+EntryBuffer::~EntryBuffer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 EntryBuffer::EntryBuffer(eCN eClassNo)

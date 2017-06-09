@@ -44,7 +44,15 @@ namespace DBobjects
     WspFxd<C_SIZE_LARGE_OBJECT - C_1KB> m_xWsp;
   
   public:
+    void* operator new(size_t);
+    void* operator new(size_t, void* aAddress);
+    void  operator delete(void*);
+  
+    EntryBuffer(void);
+    EntryBuffer(i8 iDataBytes);
+  
     EntryBuffer(eCN eClassNo);
+    ~EntryBuffer(void);
   
     eBD  eDurability(void);
     void vDurability(eBD eDurability);

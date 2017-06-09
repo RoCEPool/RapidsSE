@@ -10,14 +10,7 @@ namespace DBobjects
   private:
   
   public:
-    void* operator new(size_t);
-    void* operator new(size_t, void* aAddress);
-    void  operator delete(void*);
-    
-    RowBuffer(void);
-    RowBuffer(i8 iDataBytes);
-    ~RowBuffer(void);
-    
+  
     static RowBuffer* pNewRowBuffer(void);
     
     static void vDump(eCN eClass, Object* pObject, Str* aTab);
