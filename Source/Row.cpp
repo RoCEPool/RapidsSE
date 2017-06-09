@@ -42,7 +42,7 @@ Row::Row(i8 iDataBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROW);
   
-  m_iTxId      = -1;
+  //m_iTxId      = -1;
   m_iBytes = iDataBytes;
 
   _setFooter_();
@@ -63,7 +63,7 @@ Row::~Row(void)
 /*----------------------------------------------------------------------------*/
 /* get data                                                                   */
 /*----------------------------------------------------------------------------*/
-char* Row::pData(void)
+char* Row::aRowData(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
   
@@ -73,40 +73,20 @@ char* Row::pData(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get data bytes                                                             */
-/*----------------------------------------------------------------------------*/
-i8 Row::iDataBytes(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
-  
-  return m_iBytes;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set data bytes                                                             */
-/*----------------------------------------------------------------------------*/
-void Row::vDataBytes(i8 iDataBytes)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
-  
-  m_iBytes = iDataBytes;
-}
-
-/*----------------------------------------------------------------------------*/
 /* dump                                                                       */
 /*----------------------------------------------------------------------------*/
 void Row::vContentDump(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
   
-  StrVal* pStr = (StrVal*)pData();
+  StrVal* pStr = (StrVal*)aRowData();
   
-  vTrace("Row %p: TxId %lld DataBytes %lld %s (%lld bytes) %s\n"_Str,
+  vTrace("Row %p: DataBytes %lld %s (%lld bytes) %s\n"_Str,
          this,
-         m_iTxId,
+         //m_iTxId,
          m_iBytes,
-         pData(),
-         StrLib::iSize(pData()),
+         aRowData(),
+         StrLib::iSize(aRowData()),
          pStr->s()
          );
 }
@@ -118,14 +98,14 @@ void Row::vExtractKey(KeyWsp& xKeyWsp, IdxColVec* pIdxColVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
  
-  char* pRowData = pData();
+  char* pRowData = aRowData();
   
   i8 nCols = pIdxColVec->nItems();
   ValWsp xValWsp;
   s256 s;
 
   // get the row data
-  StrVal* pStrVal = (StrVal*)pData();
+  StrVal* pStrVal = (StrVal*)aRowData();
   
   for (i8 iColumn = 0; iColumn < nCols; iColumn++) {
     
@@ -251,7 +231,7 @@ i8 Row::iTxId(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
 
-  return m_iTxId;
+  return -1; //m_iTxId;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -261,22 +241,12 @@ void Row::vTxId(i8 iTxId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
 
-  m_iTxId = iTxId;
+  //m_iTxId = iTxId;
 }
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get bytes required for row                                                 */
-/*----------------------------------------------------------------------------*/
-i8 Row::iBytesRequired(Str* aRow)
-{
-  i8 iBytes = sizeof(Row) + sizeof(Footer) + aRow->nSize();
-  
-  return iBytes;
-}
 
 /*----------------------------------------------------------------------------*/
 /* get bytes required for row                                                 */

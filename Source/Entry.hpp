@@ -10,8 +10,6 @@ namespace DBobjects
   class Entry : public BufferItem
   {
   private:
-    Id     m_xId;      // id
-    i8     m_iOffsets; // no of offsets for this entry (0,1 or 2)
     // ..data..        // right offsets & key
     // ..footer..
   

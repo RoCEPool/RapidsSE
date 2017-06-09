@@ -5,6 +5,8 @@
 
 namespace DBobjects
 {
+  class Row;
+  
   class Id
   {
   private:

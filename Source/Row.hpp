@@ -10,7 +10,7 @@ namespace DBobjects
   class Row : public BufferItem
   {
   private:
-    i8  m_iTxId;       // transaction id
+  //i8  m_iTxId;       // transaction id
     // ..data..
     // ..footer..
 
@@ -22,15 +22,12 @@ namespace DBobjects
     ~Row(void);
     
     void  vContentDump(void);
-    char* pData(void);
-    i8    iDataBytes(void);
-    void  vDataBytes(i8 iDataBytes);
+    char* aRowData(void);
     void  vExtractKey(KeyWsp& xKeyWsp, IdxColVec* pColVec);
     i8    nSize(void);
     i8    iTxId(void);
     void  vTxId(i8 iTxId);
     
-    static i8 iBytesRequired(Str* w);
     static i8 iBytesRequired(i8 iDataBytes);
     
     Footer* pFooter(void);
