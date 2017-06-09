@@ -36,7 +36,7 @@ namespace DBobjects
     void   vId(Id xId);
     void   vKey(EntWsp& xEntWsp);
     void   vSetEntry(EntWsp& xEntWsp);
-    i8     nSize(void);
+    i8     nSizeEntry(void);
 
     Footer* pFooter(void);
     

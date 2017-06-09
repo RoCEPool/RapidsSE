@@ -117,7 +117,7 @@ void Entry::vShow(i8 iOffset, IdxColVec* pColVec)
   
   vTrace("Entry %p: Size: %llu Offsets: %llu "_Str,
          this,
-         nSize(),
+         nSizeEntry(),
          m_iOffsets
          );
   
@@ -134,7 +134,7 @@ void Entry::vShow(i8 iOffset, IdxColVec* pColVec)
            *nRight,
            iRightOffset(nRight) == C_NIL_OFFSET ?
               C_NIL_OFFSET :
-              iRightOffset(nRight) + iOffset + nSize());
+              iRightOffset(nRight) + iOffset + nSizeEntry());
   }
   
   vTrace("\n"_Str);
@@ -348,7 +348,7 @@ void Entry::vSetEntry(EntWsp& xEntWsp)
 /*----------------------------------------------------------------------------*/
 /* get size in bytes of this entry occurence incl Object & Footer             */
 /*----------------------------------------------------------------------------*/
-i8 Entry::nSize(void)
+i8 Entry::nSizeEntry(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
   

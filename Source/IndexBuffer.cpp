@@ -410,7 +410,7 @@ IndexBuffer* IndexBuffer::pNextBuffer(void)
 Entry* IndexBuffer::pNextEntry(Entry* pEntry)
 {
   // get the size of given entry
-  i8 nBytes = pEntry->nSize();
+  i8 nBytes = pEntry->nSizeEntry();
   
   // compute the address of possible next entry
   Entry* pNext = pAdd<Entry*>(pEntry,nBytes);
@@ -673,7 +673,7 @@ IndexBuffer* IndexBuffer::pSplitBuffer(void)
   // give copied bytes back to wsp of this original buffer
   i8 nBytesToGive = nSub(m_xWsp.aLatter(), aMoveEntry);
   m_xWsp.vGive(nBytesToGive);
-  ASSERT(m_xWsp.aLatter() == pAdd<void*>((void*)pSplitEntry,pSplitEntry->nSize()));
+  ASSERT(m_xWsp.aLatter() == pAdd<void*>((void*)pSplitEntry,pSplitEntry->nSizeEntry()));
   
   return pNewBuffer;
 }
@@ -864,7 +864,7 @@ Entry* IndexBuffer::pAllotEntry(i8 nBytes, i8 nOffsets, Entry* aAfterEntry)
   
   if (aAfterEntry) {
     // compute address of new entry
-    i8 nAfterBytes = aAfterEntry->nSize();
+    i8 nAfterBytes = aAfterEntry->nSizeEntry();
     pNewEntry = pAdd<Entry*>(aAfterEntry,nAfterBytes);
     
     // move subset of entries to right to make room for new entry
@@ -1198,7 +1198,7 @@ void IndexBuffer::vReplaceLargerKey(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp)
   // we need to move right nSizeDifference bytes, making room for the bigger key
   
   // calculate the pDst address
-  i8 iOldEntrySize = pOldEntry->nSize();
+  i8 iOldEntrySize = pOldEntry->nSizeEntry();
   void* pDst = pAdd<void*>(pOldEntry, iOldEntrySize);
   
   ASSERT(m_xWsp.nFree() >= nSizeDifference);
@@ -1213,7 +1213,7 @@ void IndexBuffer::vReplaceLargerKey(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp)
   // create a new entry at pNewEntry using EntWsp
   new (pNewEntry) Entry(nBytes, xEntWsp.nOffsets());
   pNewEntry->vSetEntry(xEntWsp);
-  ASSERT(pNewEntry->nSize() == nBytes);
+  ASSERT(pNewEntry->nSizeEntry() == nBytes);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // we have replaced the first entry in this buffer
@@ -1258,7 +1258,7 @@ void IndexBuffer::vReplaceSmallereKey(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp)
   // get the size of the new key
   u8 uNewKeySize = xNewKeyWsp.nWspUsed();
   
-  i8 iSize = pOldEntry->nSize();
+  i8 iSize = pOldEntry->nSizeEntry();
   
   // the old key is smaller than the new key
   i8 nSizeDifference = uOldKeySize - uNewKeySize;
@@ -1284,7 +1284,7 @@ void IndexBuffer::vReplaceSmallereKey(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp)
   // create a new entry at pNewEntry using EntWsp
   new (pNewEntry) Entry(nBytes, xEntWsp.nOffsets());
   pNewEntry->vSetEntry(xEntWsp);
-  ASSERT(pNewEntry->nSize() == nBytes);
+  ASSERT(pNewEntry->nSizeEntry() == nBytes);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // we have replaced the first entry in this buffer
@@ -1306,7 +1306,7 @@ void IndexBuffer::vFixPriorOffset(EntryVec* pPriorVec, Entry* aNewEntry)
   //vTrace("\n"_Str);
   
   // get entry size
-  i8 nNewEntryBytes = aNewEntry->nSize();
+  i8 nNewEntryBytes = aNewEntry->nSizeEntry();
   
   // iterate thru each possible offset
   for (on nOffsetNo; nOffsetNo.bInRange(); nOffsetNo++) {
@@ -1615,7 +1615,7 @@ Entry* IndexBuffer::pRightEntry(Entry* pEntry, ln nLevelNo)
     ASSERT(nOffsetNo >= 0_on && *nOffsetNo < pEntry->nOffsets());
     
     // for levels 1 & 2 the right entry is m_xWsp + rightOffset[iRight]
-    i8 iBytes = pEntry->nSize();
+    i8 iBytes = pEntry->nSizeEntry();
     i8 iRightOffset = pEntry->iRightOffset(nOffsetNo);
     if (C_NIL_OFFSET == iRightOffset)
       pRightEntry = nullptr;
@@ -1641,7 +1641,7 @@ i8 IndexBuffer::iToEndOffsetAbs(Entry* pEntry)
   
   ASSERT(iOffset >= 0 && iOffset < m_xWsp.nSize());
   
-  return iOffset + pEntry->nSize();
+  return iOffset + pEntry->nSizeEntry();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1667,7 +1667,7 @@ i8 IndexBuffer::iToRightOffsetAbs(Entry* pEntry, on nOffsetNo)
   
   i8 iEntryOffsetAbs = iToOffsetAbs(pEntry);
   i8 iRightOffset = pEntry->iRightOffset(nOffsetNo);
-  i8 iEntrySize = pEntry->nSize();
+  i8 iEntrySize = pEntry->nSizeEntry();
   
   if (iRightOffset == C_NIL_OFFSET)
     iRightOffset = 0;
