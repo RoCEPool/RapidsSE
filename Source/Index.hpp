@@ -23,13 +23,14 @@ namespace DBobjects
   class Index : public Object
   {
   private:
-    i8           m_iIndexNo;   //
-    s32          m_sIndexName; //
-    eIT          m_eIndexType; //
-    bool         m_bIsUnqiue;  //
-    Table*       m_pTable;     //
-    Dic          m_xSubDic;    // sub dictionary for this index
-    IdxColVec*   m_pIdxColVec; //
+    i8           m_iIndexNo;      //
+    s32          m_sIndexName;    //
+    eIT          m_eIndexType;    //
+    bool         m_bIsPrimaryKey; //
+    bool         m_bIsUnique;     //
+    Table*       m_pTable;        //
+    Dic          m_xSubDic;       // sub dictionary for this index
+    IdxColVec*   m_pIdxColVec;    //
   
     // must be last
     Footer m_xFooter;
@@ -56,6 +57,8 @@ namespace DBobjects
     void   vTable(Table* pTable);
     Table* pTable(void);
     void   vTidyUp(void);
+    bool   bIsPrimaryKey(void);
+    void   vIsPrimaryKey(bool bUnique);
     bool   bIsUnique(void);
     void   vIsUnique(bool bUnique);
   
