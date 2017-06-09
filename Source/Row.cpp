@@ -43,7 +43,7 @@ Row::Row(i8 iDataBytes)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROW);
   
   //m_iTxId      = -1;
-  m_iBytes = iDataBytes;
+  m_nThisBytes = iDataBytes;
 
   _setFooter_();
   
@@ -84,7 +84,7 @@ void Row::vContentDump(void)
   vTrace("Row %p: DataBytes %lld %s (%lld bytes) %s\n"_Str,
          this,
          //m_iTxId,
-         m_iBytes,
+         m_nThisBytes,
          aRowData(),
          StrLib::iSize(aRowData()),
          pStr->s()
@@ -221,7 +221,7 @@ i8 Row::nSizeRow(void)
 
   //i8 iBytes = sizeof(Row) + sizeof(Footer) + m_iBytes;
   
-  return m_iBytes;
+  return m_nThisBytes;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -242,30 +242,6 @@ void Row::vTxId(i8 iTxId)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
 
   //m_iTxId = iTxId;
-}
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/*-- Footer ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get location of footer                                                     */
-/*----------------------------------------------------------------------------*/
-Footer* Row::pFooter(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROW);
-  
-  //Footer* pFooter = pAdd<Footer*>(this,sizeof(Row) + m_iBytes);
-  
-  i8 iFooterOffset = m_iBytes - sizeof(Footer);
-  
-  Footer* pFooter = pAdd<Footer*>(this,iFooterOffset);  
-  
-  return pFooter;
 }
 
 /*============================================================================*/

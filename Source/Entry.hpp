@@ -38,7 +38,7 @@ namespace DBobjects
     void   vSetEntry(EntWsp& xEntWsp);
     i8     nSizeEntry(void);
 
-    Footer* pFooter(void);
+  //Footer* pFooter(void);
     
   private:
     bn     nBufferNo(void);

@@ -28,7 +28,7 @@ namespace DBobjects
     void  vTxId(i8 iTxId);
     
     
-    Footer* pFooter(void);
+  //Footer* pFooter(void);
   };
   
   Row* _aRow(void* aAddr);

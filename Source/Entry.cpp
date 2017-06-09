@@ -71,7 +71,7 @@ Entry::Entry(i8 nBytes, i8 iOffsets)                   //! should we pass EntWsp
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY);
   
   // initialise bytes
-  m_iBytes = nBytes;
+  m_nThisBytes = nBytes;
   
   // check initialisation of rowid
   ASSERT(0 == m_xId.iBuffer() && 0 == m_xId.iRow());
@@ -199,7 +199,7 @@ IndexBuffer* Entry::pIndexBuffer(void)
 /*----------------------------------------------------------------------------*/
 Key* Entry::aKey(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+  _precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
 
   EntryData* pEntryData = this->aEntryData();
 
@@ -298,7 +298,7 @@ void Entry::vKey(EntWsp& xEntWsp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
   
-  ASSERT(m_iBytes);
+  ASSERT(m_nThisBytes);
   
   // copy Key
   Key* aEntryKey = this->aKey();
@@ -318,7 +318,7 @@ void Entry::vSetEntry(EntWsp& xEntWsp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
 
-  ASSERT(m_iBytes);
+  ASSERT(m_nThisBytes);
   
   // set RowId
   m_xId  = xEntWsp.xId();
@@ -352,27 +352,7 @@ i8 Entry::nSizeEntry(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
   
-  return m_iBytes;
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- Footer ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get location of footer                                                     */
-/*----------------------------------------------------------------------------*/
-Footer* Entry::pFooter(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY);
-  
-  i8 iFooterOffset = m_iBytes - sizeof(Footer);
-  
-  Footer* pFooter = pAdd<Footer*>(this,iFooterOffset);
-  
-//  Footer* pFooter = pAdd<Footer*>(this,sizeof(Entry) + m_iBytes);
- 
-  return pFooter;
+  return m_nThisBytes;
 }
 
 /*============================================================================*/
