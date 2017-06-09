@@ -113,7 +113,7 @@ void Task::vIndexBuffer(NNP_Task nnpTask)
   StrVal* pStrVal = _pStrVal(xValWsp.pNestedValueSelf());
   
   xKeyWsp.vAddElement(pStrVal, pIndex->pIdxColVec()->pGet(0));
-  IndexBuffer* pIndexBuffer = pIndexData->pPositionLevel(xKeyWsp, JC_AFTER, 0);
+  EntryBuffer* pIndexBuffer = pIndexData->pPositionLevel(xKeyWsp, JC_AFTER, 0);
   
   //xKeyWsp.vShow();
   
@@ -266,7 +266,7 @@ void Task::vIndexPosition(NNP_Task nnpTask)
   if ( ! nnpTask->m_pDataStack->bPop(pPtrIndexBuffer) )
     THROW_INVALID_DSTACK("index.position"_Str);
   
-  IndexBuffer* pIndexBuffer = _pIndexBuffer(pPtrIndexBuffer);
+  EntryBuffer* pIndexBuffer = _pEntryBuffer(pPtrIndexBuffer);
   ASSERT(CN_INDEXBUFFER == pIndexBuffer->eClass());
   
   if ( ! nnpTask->m_pDataStack->bPop(xValWsp) )

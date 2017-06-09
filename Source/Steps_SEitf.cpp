@@ -255,7 +255,7 @@ void Task::vSEitfIndexBufferStore(NNP_Task nnpTask)
   if ( ! nnpTask->m_pDataStack->bPop(pPtrIndexBuffer) )
     THROW_INVALID_DSTACK("seitf.indexBuffer!"_Str);
   
-  IndexBuffer* pIndexBuffer = _pIndexBuffer(pPtrIndexBuffer);
+  EntryBuffer* pIndexBuffer = _pEntryBuffer(pPtrIndexBuffer);
   ASSERT(nullptr == pIndexBuffer || CN_INDEXBUFFER == pIndexBuffer->eClass());
   
   pSEitf->m_pIndexBuffer = pIndexBuffer;

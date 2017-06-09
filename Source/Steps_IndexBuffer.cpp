@@ -50,7 +50,7 @@ void Task::vIndexBufferNextBuffer(NNP_Task nnpTask)
   if ( ! nnpTask->m_pDataStack->bPop(pPtrIndexBuffer) )
     THROW_INVALID_DSTACK("indexBuffer.nextBuffer"_Str);
   
-  IndexBuffer* pIndexBuffer = _pIndexBuffer(pPtrIndexBuffer);
+  EntryBuffer* pIndexBuffer = _pEntryBuffer(pPtrIndexBuffer);
   ASSERT(nullptr == pIndexBuffer || CN_INDEXBUFFER == pIndexBuffer->eClass());
   
   if (pIndexBuffer->pNextBuffer()) {
@@ -75,7 +75,7 @@ void Task::vIndexBufferFirstEntry(NNP_Task nnpTask)
   if ( ! nnpTask->m_pDataStack->bPop(pPtrIndexBuffer) )
     THROW_INVALID_DSTACK("indexBuffer.firstEntry!"_Str);
   
-  IndexBuffer* pIndexBuffer = _pIndexBuffer(pPtrIndexBuffer);
+  EntryBuffer* pIndexBuffer = _pEntryBuffer(pPtrIndexBuffer);
   ASSERT(nullptr == pIndexBuffer || CN_INDEXBUFFER == pIndexBuffer->eClass());
   
   nnpTask->m_pDataStack->vPushObject(pIndexBuffer->pNextEntry(pIndexBuffer->pHead()));
@@ -96,7 +96,7 @@ void Task::vIndexBufferNextEntry(NNP_Task nnpTask)
   if ( ! nnpTask->m_pDataStack->bPop(pPtrIndexBuffer) )
     THROW_INVALID_DSTACK("indexBuffer.nextEntry"_Str);
   
-  IndexBuffer* pIndexBuffer = _pIndexBuffer(pPtrIndexBuffer);
+  EntryBuffer* pIndexBuffer = _pEntryBuffer(pPtrIndexBuffer);
   ASSERT(nullptr == pIndexBuffer || CN_INDEXBUFFER == pIndexBuffer->eClass());
   
   if ( ! nnpTask->m_pDataStack->bPop(pPtrEntry) )

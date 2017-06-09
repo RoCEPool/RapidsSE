@@ -377,13 +377,13 @@ void Entry::vShow(i8 iOffset, IdxColVec* pColVec)
 /*----------------------------------------------------------------------------*/
 /* get indexbuffer of this entry                                              */
 /*----------------------------------------------------------------------------*/
-IndexBuffer* Entry::pIndexBuffer(void)
+EntryBuffer* Entry::pIndexBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
   
   bn nBufferNo = m_xId.iBuffer();
-  IndexBuffer* pIndexBuffer =
-  reinterpret_cast<IndexBuffer*>(gpBufferPool->pToBuffer(nBufferNo));
+  EntryBuffer* pIndexBuffer =
+  reinterpret_cast<EntryBuffer*>(gpBufferPool->pToBuffer(nBufferNo));
   
   return pIndexBuffer;
 }

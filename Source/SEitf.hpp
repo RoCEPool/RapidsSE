@@ -28,7 +28,7 @@ namespace Interface
     
     Table*       m_pCurrentTable;
     Str*         m_aRowPtr;
-    IndexBuffer* m_pIndexBuffer;
+    EntryBuffer* m_pIndexBuffer;
     
     Entry* m_pEntry;
     TxRef* m_pTxRef;

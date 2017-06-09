@@ -264,7 +264,7 @@ Str* Table::pAnalyzeIndex(Index* pIndex, bool bDetailed)
     
     i8 iPartition = Partition::iSlotToPartition(iSlot);
     
-    IndexBuffer *pIndexBuffer = pPartition(iSlot)->pIndexData(pIndex->iIndexNo())->pRoot();
+    EntryBuffer *pIndexBuffer = pPartition(iSlot)->pIndexData(pIndex->iIndexNo())->pRoot();
     
     i8 nBuffers = 0;
     i8 nEntries = 0;

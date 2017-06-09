@@ -89,7 +89,7 @@ IndexData::IndexData(Index* pIndex)
   m_pIndex = pIndex;
   
   // start with a root buffer at L0
-  m_pRoot = new IndexBuffer(pIndex, 0);
+  m_pRoot = new EntryBuffer(pIndex, 0);
   
   _checkInitialised_(CN_INDEXDATA);
   
@@ -144,11 +144,11 @@ void IndexData::vDump(void)
 /*----------------------------------------------------------------------------*/
 /* get the first L0 buffer                                                    */
 /*----------------------------------------------------------------------------*/
-IndexBuffer* IndexData::pFirstBuffer(void)
+EntryBuffer* IndexData::pFirstBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
   
-  IndexBuffer* pIndexBuffer = m_pRoot;
+  EntryBuffer* pIndexBuffer = m_pRoot;
   
   if (pIndexBuffer->nBufferLevel() == 0)
     return pIndexBuffer;
@@ -214,7 +214,7 @@ void IndexData::vInsertEntry(Entry* pRow, i8 nRowNo, bn nBufferNo)
 /*----------------------------------------------------------------------------*/
 /* position the indexData at a particular level of index buffer               */
 /*----------------------------------------------------------------------------*/
-IndexBuffer* IndexData::pPositionLevel(KeyWsp& xKeyWsp, eJC eJuxtaCompare, i8 iLevel)
+EntryBuffer* IndexData::pPositionLevel(KeyWsp& xKeyWsp, eJC eJuxtaCompare, i8 iLevel)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
   
@@ -224,7 +224,7 @@ IndexBuffer* IndexData::pPositionLevel(KeyWsp& xKeyWsp, eJC eJuxtaCompare, i8 iL
 /*----------------------------------------------------------------------------*/
 /* get root entry                                                             */
 /*----------------------------------------------------------------------------*/
-IndexBuffer* IndexData::pRoot(void)
+EntryBuffer* IndexData::pRoot(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
   
@@ -289,7 +289,7 @@ bool IndexData::bVerify(void)
 
   
   // start with the root buffer  L2
-  IndexBuffer* pIndexBuffer = m_pRoot;
+  EntryBuffer* pIndexBuffer = m_pRoot;
   
   while (pIndexBuffer) {
     
@@ -303,7 +303,7 @@ bool IndexData::bVerify(void)
     // if we are at level 0 , get the next buffer at the same level
     if (pIndexBuffer->nBufferLevel() == 0) {
       // if at B1 get B2
-      pIndexBuffer = (IndexBuffer*)pIndexBuffer->pNextBuffer();
+      pIndexBuffer = (EntryBuffer*)pIndexBuffer->pNextBuffer();
       continue;
     }
     
@@ -318,7 +318,7 @@ bool IndexData::bVerify(void)
       // each entry points to another index buffer
       // get buffer first entry points to
       // if k1 we get B1
-      IndexBuffer* pIndexBufferN_1 = aEntryLN->pIndexBuffer();
+      EntryBuffer* pIndexBufferN_1 = aEntryLN->pIndexBuffer();
       
       // get the key of the first entry
       // if ka get ka
@@ -345,7 +345,7 @@ bool IndexData::bVerify(void)
     }
   
     // move to the next buffer at the same level
-    pIndexBuffer = (IndexBuffer*)pIndexBuffer->pNextBuffer();
+    pIndexBuffer = (EntryBuffer*)pIndexBuffer->pNextBuffer();
   }
   
   
@@ -359,7 +359,7 @@ bool IndexData::bVerify(void)
 /*----------------------------------------------------------------------------*/
 /* insert an entry for {key,id} into an index buffer at given level           */
 /*----------------------------------------------------------------------------*/
-void IndexData::vInsertEntry(IndexBuffer* pHigher, KeyWsp& xKeyWsp, Id xId, i8 iLevel)
+void IndexData::vInsertEntry(EntryBuffer* pHigher, KeyWsp& xKeyWsp, Id xId, i8 iLevel)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
   
@@ -368,7 +368,7 @@ void IndexData::vInsertEntry(IndexBuffer* pHigher, KeyWsp& xKeyWsp, Id xId, i8 i
   
   // find index buffer which contains the entry after which the new entry will
   // be inserted into, starting with given higher
-  IndexBuffer* pIndexBuffer = pHigher->pPositionLevel(xKeyWsp, JC_AFTER, iLevel);
+  EntryBuffer* pIndexBuffer = pHigher->pPositionLevel(xKeyWsp, JC_AFTER, iLevel);
   
   // check if found index buffer has enough space
   i8 nEntryBytes = Entry::nBytesRequiredEntry(xEntWsp);
@@ -393,7 +393,7 @@ void IndexData::vInsertEntry(IndexBuffer* pHigher, KeyWsp& xKeyWsp, Id xId, i8 i
 /*----------------------------------------------------------------------------*/
 /* add first entry of fromBuffer into the toBuffer                            */
 /*----------------------------------------------------------------------------*/
-void IndexData::vInsertFirstEntry(IndexBuffer* pToBuffer, IndexBuffer* pFromBuffer)
+void IndexData::vInsertFirstEntry(EntryBuffer* pToBuffer, EntryBuffer* pFromBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
 
@@ -422,12 +422,12 @@ void IndexData::vInsertFirstEntry(IndexBuffer* pToBuffer, IndexBuffer* pFromBuff
 /*----------------------------------------------------------------------------*/
 /* fix the higher level buffer in the given index buffer                      */
 /*----------------------------------------------------------------------------*/
-void IndexData::vFixHigherBuffer(IndexBuffer* pIndexBuffer, i8 iLevel)
+void IndexData::vFixHigherBuffer(EntryBuffer* pIndexBuffer, i8 iLevel)
 {
    _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
   
   KeyWsp xKeyWsp;
-  IndexBuffer* pRoot;
+  EntryBuffer* pRoot;
   
   // get first entry keywsp from first buffer
   Entry* aFirstEntry = pIndexBuffer->pNextEntry(pIndexBuffer->pHead());
@@ -443,27 +443,27 @@ void IndexData::vFixHigherBuffer(IndexBuffer* pIndexBuffer, i8 iLevel)
 /*----------------------------------------------------------------------------*/
 /* split a buffer                                                             */
 /*----------------------------------------------------------------------------*/
-IndexBuffer* IndexData::pSplitBuffer(IndexBuffer* pIndexBuffer)
+EntryBuffer* IndexData::pSplitBuffer(EntryBuffer* pIndexBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
   
-  IndexBuffer* pRoot;
-  IndexBuffer* pNewRoot;
+  EntryBuffer* pRoot;
+  EntryBuffer* pNewRoot;
   
   KeyWsp xFirstKeyWsp1;
   KeyWsp xFirstKeyWsp2;
   
   // split the index buffer
-  IndexBuffer* pIndexBufferNew = pIndexBuffer->pSplitBuffer();
+  EntryBuffer* pIndexBufferNew = pIndexBuffer->pSplitBuffer();
   
   // get the next level buffer
-  IndexBuffer* pHigherLevel = pIndexBuffer->pHigherLevel();
+  EntryBuffer* pHigherLevel = pIndexBuffer->pHigherLevel();
   
   // create a next level buffer if it does not exist
   if ( ! pHigherLevel ) {
     
     i8 nHigherLevel = pIndexBuffer->nBufferLevel() + 1;
-    pRoot = new IndexBuffer(m_pIndex, nHigherLevel);
+    pRoot = new EntryBuffer(m_pIndex, nHigherLevel);
     
     // insert first entry in new root from buffer we split
     vInsertFirstEntry(pRoot, pIndexBuffer);
@@ -493,7 +493,7 @@ IndexBuffer* IndexData::pSplitBuffer(IndexBuffer* pIndexBuffer)
 /*----------------------------------------------------------------------------*/
 /* visualize the index                                                        */
 /*----------------------------------------------------------------------------*/
-void IndexData::vDumpLevel(IndexBuffer* pIndexBuffer)
+void IndexData::vDumpLevel(EntryBuffer* pIndexBuffer)
 {
   
   // get the first entry
@@ -502,7 +502,7 @@ void IndexData::vDumpLevel(IndexBuffer* pIndexBuffer)
   while (pEntry) {
     
     // get the index buffer the first enetry poinst to
-    IndexBuffer* pEntryIndexBuffer = pEntry->pIndexBuffer();
+    EntryBuffer* pEntryIndexBuffer = pEntry->pIndexBuffer();
     
     // print the decile of the buffer
     vTrace("%lld"_Str, pEntryIndexBuffer->iDecile());
@@ -530,7 +530,7 @@ void IndexData::vVisualize(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
   
   // start with the root buffer
-  IndexBuffer* pIndexBuffer = m_pRoot;
+  EntryBuffer* pIndexBuffer = m_pRoot;
   
   // print the decile of the root buffer
   vTrace("%lld\n"_Str, pIndexBuffer->iDecile());
@@ -551,7 +551,7 @@ void IndexData::vVisualize(void)
 
     // if we are at level 1, iterate thru next buffers
     if (pIndexBuffer->nBufferLevel() == 1) {
-      pIndexBuffer = (IndexBuffer*)pIndexBuffer->pNextBuffer();
+      pIndexBuffer = (EntryBuffer*)pIndexBuffer->pNextBuffer();
     }
     else {
       vTrace("\n"_Str);

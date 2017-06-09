@@ -52,6 +52,7 @@ namespace DBobjects
     EntryBuffer(i8 iDataBytes);
   
     EntryBuffer(eCN eClassNo);
+    EntryBuffer(Index* pIndex, i8 nLevel);
     ~EntryBuffer(void);
   
     static EntryBuffer* pNewEntryBuffer(eCN eClassNo);
@@ -68,6 +69,7 @@ namespace DBobjects
     void         vPrevBuffer(EntryBuffer* pPrevBuffer);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // what was RowBufer
   
     static void vDump(eCN eClass, Object* pObject, Str* aTab);
     
@@ -81,6 +83,54 @@ namespace DBobjects
     Entry*       pNextRow(Entry* pCurrRow);
     void       vRowCount(void);
     i8         nUsedBytes(void);
+  
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // what was IndexBuffer
+  
+    void         vAnalyze(s48K& sAnalysis, bool bDetailed, i8& iBuffers, i8& iEntries);
+    i8           nBufferLevel(void);
+    void         vBufferCount(i8& nBufferCount);
+    i8           iDecile(void);
+    void         vDump(void);
+    Entry*       pFirstEntry(void);
+    bool         bHasSpace(i8 nBytes);
+    Entry*       pHead(void);
+    void         vHigherLevel(EntryBuffer* pHigherLevel);
+    EntryBuffer* pHigherLevel(void);
+    Index*       pIndex(void);
+    bool         bInsert(EntWsp& xEntWsp);
+    Entry*       pNextEntry(Entry* pEntry);
+    EntryBuffer* pPositionLevel(KeyWsp& xKeyWsp, eJC eJuxtaCompare, i8 iLevel);
+    Entry*       pPosition(KeyWsp& xKeyWsp, eJC eJuxtaCompare);
+    bool         bRemove(Key* aKey);
+    void         vShow(void);
+    EntryBuffer* pSplitBuffer(void);
+    void         vTruncate(void);
+    bool         bVerify(void);
+    
+    private:
+    void         vAdjustOffsets(Entry* pEntry, i8 nAdjustAmount);
+    Entry*       pAllotEntry(i8 nBytes, i8 nLevels, Entry* aAfterEntry);
+    void         vAllotHead(void);
+    i8           iCopyEntries(EntryBuffer* pFromBuffer, Entry* aFromEntry);
+    void         vDumpPrior(Entry* aPriorVec[]);
+    void         vFixHigherLevel(Entry* aNewEntry);
+    void         vFixPriorOffset(EntryVec* pPriorVec, Entry* aNewEntry);
+    Entry*       pGetEntry(i8 iEntryNo);
+    i8           iLevel(void);
+    void         vMoveLeft(void* aDst, i8 nBytes);
+    void         vMoveRight(void* aSrc, i8 nBytes);
+    u8           uOffsetBetween(Entry* pEntryA, Entry* pEntryB);
+    Entry*       pPosition(Key* aGivenKey, eJC eJuxtaCompare, EntryVec* pPriorVec, bool& bIsEqual);
+    void         vPriorVec(Entry* pEntry, EntryVec* pPriorVec);
+    void         vReplace(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp);
+    void         vReplaceEqualKey(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp);
+    void         vReplaceLargerKey(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp);
+    void         vReplaceSmallereKey(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp);
+    Entry*       pRightEntry(Entry* pEntry, ln nLevelNo);
+    i8           iToEndOffsetAbs(Entry* pEntry);
+    i8           iToOffsetAbs(Entry* pEntry);
+    i8           iToRightOffsetAbs(Entry* pEntry, on nOffsetNo);
   
   };
   

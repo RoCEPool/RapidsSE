@@ -18,7 +18,7 @@ namespace DBobjects
   private:
     Lock         m_zLock;
     Index*       m_pIndex;
-    IndexBuffer* m_pRoot;
+    EntryBuffer* m_pRoot;
   
     // must be last
     Footer m_xFooter;
@@ -36,12 +36,12 @@ namespace DBobjects
   
     Str*         pAnalyze(void);
     void         vDump(void);
-    IndexBuffer* pFirstBuffer();
+    EntryBuffer* pFirstBuffer();
     Index*       pIndex(void);
     i8           nIndexBuffers(void);
     void         vInsertEntry(Entry* pRow, i8 nRowNo, bn nBufferNo);
-    IndexBuffer* pPositionLevel(KeyWsp& xKeyWsp, eJC eJuxtaCompare, i8 iLevel);
-    IndexBuffer* pRoot(void);
+    EntryBuffer* pPositionLevel(KeyWsp& xKeyWsp, eJC eJuxtaCompare, i8 iLevel);
+    EntryBuffer* pRoot(void);
     void         vTidyUp(void);
     void         vTruncate(void);
     bool         bVerify(void);
@@ -50,11 +50,11 @@ namespace DBobjects
     Footer*      pFooter(void);
     
   private:
-    void         vFixHigherBuffer(IndexBuffer* pIndexBuffer, i8 iLevel);
-    void         vInsertEntry(IndexBuffer* pRoot,KeyWsp& xKeyWsp, Id xId, i8 iLevel);
-    void         vInsertFirstEntry(IndexBuffer* pToBuffer, IndexBuffer* pFromBuffer);
-    IndexBuffer* pSplitBuffer(IndexBuffer* pIndexBuffer);
-    void         vDumpLevel(IndexBuffer* pIndexBuffer);
+    void         vFixHigherBuffer(EntryBuffer* pIndexBuffer, i8 iLevel);
+    void         vInsertEntry(EntryBuffer* pRoot,KeyWsp& xKeyWsp, Id xId, i8 iLevel);
+    void         vInsertFirstEntry(EntryBuffer* pToBuffer, EntryBuffer* pFromBuffer);
+    EntryBuffer* pSplitBuffer(EntryBuffer* pIndexBuffer);
+    void         vDumpLevel(EntryBuffer* pIndexBuffer);
   };
   
   IndexData* _pIndexData(void* pAddr);

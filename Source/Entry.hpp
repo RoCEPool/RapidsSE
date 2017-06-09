@@ -45,7 +45,7 @@ namespace DBobjects
 
     void   vShow(i8 iOffset, IdxColVec* pColVec);
     
-    IndexBuffer* pIndexBuffer(void);
+    EntryBuffer* pIndexBuffer(void);
     Id&    xId(void);
     void   vId(Id xId);
     void   vKey(EntWsp& xEntWsp);
