@@ -875,7 +875,7 @@ Entry* IndexBuffer::pAllotEntry(i8 nBytes, i8 nOffsets, Entry* aAfterEntry)
   }
   
   // run the constructor of the new entry
-  new (pNewEntry) Entry(nBytes,nOffsets);
+  new (pNewEntry) BufferItem(nBytes,nOffsets);
   
   // increment the no of entries
   m_nEntries++;
@@ -1211,7 +1211,7 @@ void IndexBuffer::vReplaceLargerKey(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp)
   i8 nBytes =  iOldEntrySize + nSizeDifference;
   
   // create a new entry at pNewEntry using EntWsp
-  new (pNewEntry) Entry(nBytes, xEntWsp.nOffsets());
+  new (pNewEntry) BufferItem(nBytes, xEntWsp.nOffsets());
   pNewEntry->vSetEntry(xEntWsp);
   ASSERT(pNewEntry->nSizeEntry() == nBytes);
   
@@ -1282,7 +1282,7 @@ void IndexBuffer::vReplaceSmallereKey(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp)
   i8 nBytes =  iSize - (uOldKeySize - uNewKeySize);
   
   // create a new entry at pNewEntry using EntWsp
-  new (pNewEntry) Entry(nBytes, xEntWsp.nOffsets());
+  new (pNewEntry) BufferItem(nBytes, xEntWsp.nOffsets());
   pNewEntry->vSetEntry(xEntWsp);
   ASSERT(pNewEntry->nSizeEntry() == nBytes);
   

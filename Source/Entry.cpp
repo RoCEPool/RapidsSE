@@ -35,49 +35,6 @@ void* Entry::operator new(size_t iSize, Entry* pEntry)
   return pEntry;
 }
 
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-Entry::Entry(EntWsp& xEntWsp)
-: BufferItem(CN_ENTRY)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY);
-  
-  _setFooter_();
-
-  vSetEntry(xEntWsp);
-  
-  _checkInitialised_(CN_ENTRY);
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-Entry::Entry(i8 nBytes, i8 iOffsets)                   //! should we pass EntWsp?
-: BufferItem(CN_ENTRY)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY);
-  
-  // initialise bytes
-  m_nThisBytes = nBytes;
-  
-  // check initialisation of rowid
-  ASSERT(0 == m_xId.iBuffer() && 0 == m_xId.iRow());
-  
-  // initialise offsets
-  m_iOffsets = iOffsets;
-  ASSERT(m_iOffsets >= 0 && m_iOffsets <= gnIndexOffsets);
-  
-  // entry data will be initialised by vSetEntry       //! Is this correct form?
-  
-  _setFooter_();
-  
-  _checkInitialised_(CN_ENTRY);
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
-}
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
