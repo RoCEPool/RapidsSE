@@ -40,7 +40,7 @@ namespace DBobjects
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // entry
-    EntryData* aEntryData(void);
+    //EntryData* aEntryData(void);
     Key*   aKey(void);
     void   vSetEntry(EntWsp& xEntWsp);
 

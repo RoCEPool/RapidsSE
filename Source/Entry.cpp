@@ -255,7 +255,7 @@ RightVec* Entry::aRightVec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
   
-  RightVec* aRightVec = _aRightVec(aEntryData());
+  RightVec* aRightVec = _aRightVec(aVblData());
   
   return aRightVec;
 }
@@ -264,17 +264,17 @@ RightVec* Entry::aRightVec(void)
 /*-- Entry -------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* get EntryData                                                              */
-/*----------------------------------------------------------------------------*/
-EntryData* Entry::aEntryData(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
-  
-  EntryData* aEntryData = pAdd<EntryData*>(this,sizeof(Entry));
-  
-  return aEntryData;
-}
+///*----------------------------------------------------------------------------*/
+///* get EntryData                                                              */
+///*----------------------------------------------------------------------------*/
+//EntryData* Entry::aEntryData(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+//  
+//  EntryData* aEntryData = pAdd<EntryData*>(this,sizeof(Entry));
+//  
+//  return aEntryData;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* get Key                                                                    */
@@ -285,7 +285,7 @@ Key* Entry::aKey(void)
   
   i8 nOffsetBytes = RightVec::nBytesRequired(m_iOffsets);
   
-  Key* aKey = pAdd<Key*>(aEntryData(),nOffsetBytes);
+  Key* aKey = pAdd<Key*>(aVblData(),nOffsetBytes);
   
   return aKey;
 }
@@ -440,7 +440,7 @@ i8 Entry::nSizeEntry(void)
 /*----------------------------------------------------------------------------*/
 char* Entry::aVblData(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
   char* aRowData = pAdd<char*>(this,sizeof(Entry));
   
