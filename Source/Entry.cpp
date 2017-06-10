@@ -192,6 +192,104 @@ i8 Entry::nBytesRequiredRow(i8 iDataBytes)
 }
 
 /*----------------------------------------------------------------------------*/
+/*-- Entry Proper ------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get rowid                                                                  */
+/*----------------------------------------------------------------------------*/
+Id& Entry::xId(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+  
+  return m_xId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get rowid                                                                  */
+/*----------------------------------------------------------------------------*/
+void Entry::vId(Id xId)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+  
+  m_xId = xId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the index buffer that this entry references                            */
+/*----------------------------------------------------------------------------*/
+EntryBuffer* Entry::pIndexBuffer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+  
+  bn nBufferNo = m_xId.iBuffer();
+  EntryBuffer* pIndexBuffer =
+  reinterpret_cast<EntryBuffer*>(gpBufferPool->pToBuffer(nBufferNo));
+  
+  return pIndexBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set entry given entry wsp                                                  */
+/*----------------------------------------------------------------------------*/
+void Entry::vSetEntry(EntWsp& xEntWsp)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+  
+  ASSERT(m_nThisBytes);
+  
+  // set RowId
+  m_xId  = xEntWsp.xId();
+  
+  // set Offsets
+  m_iOffsets = xEntWsp.nOffsets();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // copy RightVec
+  RightVec* aEntryRightVec = this->aRightVec();
+  RightVec* aEntWspRightVec = xEntWsp.aRightVec();
+  i8 nRightBytes = xEntWsp.nRightSize();
+  
+  MemLib::vCopy(aEntryRightVec,aEntWspRightVec,nRightBytes);
+  
+  // copy Key
+  Key* aEntryKey = this->aKey();
+  Key* aEntWspKey = xEntWsp.aKey();
+  i8 nKeyBytes = xEntWsp.nKeySize();
+  
+  MemLib::vCopy(aEntryKey,aEntWspKey,nKeyBytes);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get size in bytes of this entry occurence incl Object & Footer             */
+/*----------------------------------------------------------------------------*/
+i8 Entry::nSizeEntry(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  return m_nThisBytes;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Variable data area ------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get data                                                                   */
+/*----------------------------------------------------------------------------*/
+char* Entry::aVblData(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  char* aRowData = pAdd<char*>(this,sizeof(Entry));
+  
+  return pPoolCheck<char*>(aRowData);
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Offsets -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -261,20 +359,8 @@ RightVec* Entry::aRightVec(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- Entry -------------------------------------------------------------------*/
+/*-- Key ---------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-///*----------------------------------------------------------------------------*/
-///* get EntryData                                                              */
-///*----------------------------------------------------------------------------*/
-//EntryData* Entry::aEntryData(void)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
-//  
-//  EntryData* aEntryData = pAdd<EntryData*>(this,sizeof(Entry));
-//  
-//  return aEntryData;
-//}
 
 /*----------------------------------------------------------------------------*/
 /* get Key                                                                    */
@@ -288,40 +374,6 @@ Key* Entry::aKey(void)
   Key* aKey = pAdd<Key*>(aVblData(),nOffsetBytes);
   
   return aKey;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set entry given entry wsp                                                  */
-/*----------------------------------------------------------------------------*/
-void Entry::vSetEntry(EntWsp& xEntWsp)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
-  
-  ASSERT(m_nThisBytes);
-  
-  // set RowId
-  m_xId  = xEntWsp.xId();
-  
-  // set Offsets
-  m_iOffsets = xEntWsp.nOffsets();
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  // copy RightVec
-  RightVec* aEntryRightVec = this->aRightVec();
-  RightVec* aEntWspRightVec = xEntWsp.aRightVec();
-  i8 nRightBytes = xEntWsp.nRightSize();
-  
-  MemLib::vCopy(aEntryRightVec,aEntWspRightVec,nRightBytes);
-  
-  // copy Key
-  Key* aEntryKey = this->aKey();
-  Key* aEntWspKey = xEntWsp.aKey();
-  i8 nKeyBytes = xEntWsp.nKeySize();
-  
-  MemLib::vCopy(aEntryKey,aEntWspKey,nKeyBytes);
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -368,40 +420,6 @@ void Entry::vShow(i8 iOffset, IdxColVec* pColVec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get indexbuffer of this entry                                              */
-/*----------------------------------------------------------------------------*/
-EntryBuffer* Entry::pIndexBuffer(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
-  
-  bn nBufferNo = m_xId.iBuffer();
-  EntryBuffer* pIndexBuffer =
-  reinterpret_cast<EntryBuffer*>(gpBufferPool->pToBuffer(nBufferNo));
-  
-  return pIndexBuffer;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get rowid                                                                  */
-/*----------------------------------------------------------------------------*/
-Id& Entry::xId(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
-  
-  return m_xId;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get rowid                                                                  */
-/*----------------------------------------------------------------------------*/
-void Entry::vId(Id xId)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
-  
-  m_xId = xId;
-}
-
-/*----------------------------------------------------------------------------*/
 /* set key given entry wsp                                                    */
 /*----------------------------------------------------------------------------*/
 void Entry::vKey(EntWsp& xEntWsp)
@@ -422,30 +440,8 @@ void Entry::vKey(EntWsp& xEntWsp)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get size in bytes of this entry occurence incl Object & Footer             */
+/*-- Row ---------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-i8 Entry::nSizeEntry(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-  
-  return m_nThisBytes;
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- Entry -------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get data                                                                   */
-/*----------------------------------------------------------------------------*/
-char* Entry::aVblData(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-  
-  char* aRowData = pAdd<char*>(this,sizeof(Entry));
-  
-  return pPoolCheck<char*>(aRowData);
-}
 
 /*----------------------------------------------------------------------------*/
 /* dump                                                                       */

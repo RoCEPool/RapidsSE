@@ -31,6 +31,18 @@ namespace DBobjects
     static i8 nBytesRequiredRow(i8 iStrLength);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // entry proper
+    Id&    xId(void);
+    void   vId(Id xId);
+    EntryBuffer* pIndexBuffer(void);
+    void   vSetEntry(EntWsp& xEntWsp);
+    i8     nSizeEntry(void);
+  
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // variable data area
+    char* aVblData(void);
+  
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // offsets
     on     nHighestOffset(void);
     i8     nOffsets(void);
@@ -39,23 +51,14 @@ namespace DBobjects
     RightVec* aRightVec(void);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // entry
-    //EntryData* aEntryData(void);
+    // key
     Key*   aKey(void);
-    void   vSetEntry(EntWsp& xEntWsp);
-
     void   vShow(i8 iOffset, IdxColVec* pColVec);
-    
-    EntryBuffer* pIndexBuffer(void);
-    Id&    xId(void);
-    void   vId(Id xId);
     void   vKey(EntWsp& xEntWsp);
-    i8     nSizeEntry(void);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // row
     void  vContentDump(void);
-    char* aVblData(void);
     void  vExtractKey(KeyWsp& xKeyWsp, IdxColVec* pColVec);
     i8    iTxId(void);
     void  vTxId(i8 iTxId);
