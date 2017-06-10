@@ -16,7 +16,6 @@ namespace DBobjects
     EntryData(void);
     ~EntryData(void);
   
-    void vCopyBytes(void* aSrc, i8 nBytes);
     RightVec* aRightVec(i8 nOffsets);
   
   };
