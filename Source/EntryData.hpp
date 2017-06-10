@@ -10,9 +10,7 @@ namespace DBobjects
   private:
     // ..data..
   
-  public:
-    static i8 nBytesRequired(i8 nOffsets, i8 nKeyBytes);
-  
+  public:  
     void* operator new(size_t);
   
     EntryData(void);

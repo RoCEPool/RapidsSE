@@ -171,9 +171,12 @@ i8 Entry::nBytesRequiredEntry(EntWsp& xEntWsp)
 /*----------------------------------------------------------------------------*/
 i8 Entry::nBytesRequiredEntry(i8 nOffsets, i8 nKeyBytes)
 {
-  i8 nEntryDataBytes = EntryData::nBytesRequired(nOffsets,nKeyBytes);
+  i8 nOffsetBytes = RightVec::nBytesRequired(nOffsets);
   
-  i8 nBytes = sizeof(Entry) + nEntryDataBytes + sizeof(Footer);
+  i8 nBytes = sizeof(Entry)
+               + nKeyBytes
+               + nOffsetBytes
+               + sizeof(Footer);
   
   return nBytes;
 }
