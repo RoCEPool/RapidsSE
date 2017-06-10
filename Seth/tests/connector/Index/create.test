@@ -1,0 +1,76 @@
+--------------------------------------------------------------------------------
+-- create index tests
+--------------------------------------------------------------------------------
+
+-- create a table with an index
+create table T1 (
+  idxkey  integer,
+  name    xyz(32),
+  index   index1 on idxkey
+);
+failure
+
+-- create a table with an index
+create table T1 (
+  idxkey  integer,
+  name    varchar(32),
+  index   index1 on xyz
+);
+failure
+
+-- create a table with an index
+create table T1 (
+  idxkey  integer,
+  name    varchar(32),
+  index   index1 on idxkey, xyz
+);
+failure
+
+-- create a table with an index
+create table T2 (
+  idxkey  integer,
+  name    varchar(32),
+  index   index1 on idxkey,
+  index   index1 on name
+);
+failure
+
+-- create a table with an index
+create table T1 (
+  idxkey  integer,
+  name    varchar(32),
+  index   index1 on idxkey
+);
+success
+
+-- check existence of table
+select * from rapids.system.tables where catalog_name = 'RAPIDSSE';
+rows:
+('RAPIDSSE', 'PUBLIC', 'T1', true)
+
+-- check existence of index
+select * from rapids.system.indexes;
+rows:
+('RAPIDSSE', 'PUBLIC', 'T1', 'INDEX1', false, false, 'HASH', 1, 'IDXKEY')
+
+-- drop table
+drop table T1;
+
+-- check existence of table
+select * from rapids.system.tables where catalog_name = 'rapidsse';
+affected: -1
+
+-- check existence of index
+select * from rapids.system.indexes;
+affected: -1
+
+CLEANUP {
+  -- Commands in the cleanup section always run, and do so at the end
+  -- of a test (whether successful or not). 
+
+  -- Ensure that table  ('keyIdx') is dropped.
+  -- We can set the expected result to mute if we don't want to see any warnings.
+  drop table T1;
+  mute
+}
+

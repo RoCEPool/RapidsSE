@@ -27,6 +27,7 @@ namespace Interface
     s256   m_sErrorMsg;
     
     Table*       m_pCurrentTable;
+    Index*       m_pCurrentIndex;
     Str*         m_aRowPtr;
     EntryBuffer* m_pIndexBuffer;
     
@@ -56,6 +57,9 @@ namespace Interface
     static void vDump(eCN eClass, Object* pObject, Str* aTab);
     
     DicPath* pPathStack(void);
+    
+    void   vCurrentIndex(Index* pIndex);
+    Index* pCurrentIndex(void);
     
     void   vCurrentTable(Table* pTable);
     Table* pCurrentTable(void);
@@ -127,8 +131,10 @@ namespace Interface
     
     bool bAnalyzeIndex(TokenSet& xTokenSet);
     bool bDanalyzeIndex(TokenSet& xTokenSet);
+    bool bGetIndex(TokenSet& xTokenSet);
     bool bKeySelectIndex(TokenSet& xTokenSet);
     bool bLowerSelectIndex(TokenSet& xTokenSet);
+    bool bRetIndex(TokenSet& xTokenSet);
     bool bRangeSelectIndex(TokenSet& xTokenSet);
     bool bSizeIndex(TokenSet& xTokenSet);
     bool bTruncateIndex(TokenSet& xTokenSet);

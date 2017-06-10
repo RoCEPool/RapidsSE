@@ -144,19 +144,19 @@ eEC RapidsSE_BeginInsert(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable
     CF_TABLE("e"_Str);
     
     // get a reference to the table
-    eResult = eExecuteRequest(pSEitf, "gettbl"_Str, (Str*)pTable);
-    CHECK_RESULT("f"_Str);
-    CHECK_RESPONSE("g"_Str);
+    GET_TABLE("f"_Str);
+    CHECK_RESULT("g"_Str);
+    CHECK_RESPONSE("h"_Str);
     
     // validate we have a table
-    VALIDATE_TABLE("h"_Str);
+    VALIDATE_TABLE("i"_Str);
     
     // begin a tnx
     bool bResult = pSEitf->bBeginTx();
     
     if (!bResult) {
       pSEitf->vSetLastError(EC_BEGIN_TX_FAILED);
-      TRACE_ERROR("i",EC_BEGIN_TX_FAILED);
+      TRACE_ERROR("j",EC_BEGIN_TX_FAILED);
       return EC_BEGIN_TX_FAILED;
     }
     
@@ -246,42 +246,37 @@ eEC RapidsSE_CreateIndex(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable
     CF_TABLE("f"_Str);
     
     // get pTable
-    eEC eGetResult = eExecuteRequest(pSEitf, "gettbl"_Str, (Str*)pTable);
-    
-    if (EC_NONE != eGetResult) {
-      
-      // remove the table
-      eResult = eExecuteRequest(pSEitf, "rmidx"_Str, (Str*)pTable);
-      CHECK_RESULT("g"_Str);
-      CHECK_RESPONSE("h"_Str);
-      
-      TRACE_ERROR("i"_Str, eGetResult);
-      return eGetResult;
-    }
-    
-    // check response
-    CHECK_RESPONSE("j"_Str);
+    GET_TABLE("g"_Str);
+    CHECK_RESPONSE("g"_Str);
     
     // change folder to tables
-    CF_TABLES("k"_Str);
+    CF_TABLES("h"_Str);
     
     // create an index
     eResult = eExecuteRequest(pSEitf, "mkidx"_Str, pTable, pIndex);
-    CHECK_RESULT("l"_Str);
-    CHECK_RESPONSE("m"_Str);
+    if (EC_NONE != eResult) {
+      VALIDATE_TABLE("i"_Str);
+      RETURN_TABLE();
+    }
+    
+    CHECK_RESPONSE("j"_Str);
 
     // change folder to indexes
-    CF_INDEXES("n"_Str);
+    CF_INDEXES("k"_Str);
+    
+    //GET_INDEX();
+    //CHECK_RESPONSE();
+    //VALIDATE_INDEX();
     
     if (bIsUnique) {
       // set unique index
       eResult = eExecuteRequest(pSEitf, "setidxunique"_Str, pTable, pIndex, "true"_Str);
-      CHECK_RESULT("o"_Str);
-      CHECK_RESPONSE("p"_Str);
+      if (EC_NONE != eResult) {
+        VALIDATE_TABLE("i"_Str);
+        RETURN_TABLE();
+      }
+      CHECK_RESPONSE("m"_Str);
     }
-    
-    // validate current table
-    VALIDATE_TABLE("q");
     
     TRACE_EXIT("ea"_Str);
     
@@ -450,13 +445,13 @@ eEC RapidsSE_EndCreateIndex(SEitf* pSEitf, Str* pTable, Str* pIndex, i8 iTraceLe
     
     // rettbl only if we managed to gettbl the table
     if (pSEitf->pCurrentTable()) {
-      eEC eResult = eExecuteRequest(pSEitf, "rettbl"_Str);
-      CHECK_RESULT("d"_Str);
-      CHECK_RESPONSE("e"_Str);
+      RETURN_TABLE("d"_Str);
+      CHECK_RESULT("e"_Str);
+      CHECK_RESPONSE("f"_Str);
     }
     
     // should not have a table
-    VALIDATE_NOTABLE("f"_Str);
+    VALIDATE_NOTABLE("g"_Str);
     
     TRACE_EXIT("ea"_Str);
     
@@ -504,9 +499,9 @@ eEC RapidsSE_EndCreateTable(SEitf* pSEitf, Str* pTable, i8 iTraceLevel)
 
     // rettbl only if we managed to create the table
     if (pSEitf->pCurrentTable()) {
-      eEC eResult = eExecuteRequest(pSEitf, "rettbl"_Str);
-      CHECK_RESULT("d"_Str);
-      CHECK_RESPONSE("e"_Str);
+      RETURN_TABLE("d"_Str);
+      CHECK_RESULT("e"_Str);
+      CHECK_RESPONSE("f"_Str);
     }
     
     // should not have a table
@@ -559,12 +554,13 @@ eEC RapidsSE_EndInsert(SEitf* pSEitf, i8 iTraceLevel)
       CHECK_RESPONSE("c"_Str);
     }
     
-    eResult = eExecuteRequest(pSEitf, "rettbl"_Str);
-    CHECK_RESULT("d"_Str);
-    CHECK_RESPONSE("e"_Str);
+    Table* pTable = pSEitf->pCurrentTable();
+    RETURN_TABLE("d"_Str);
+    CHECK_RESULT("e"_Str);
+    CHECK_RESPONSE("f"_Str);
     
     // validate if no table
-    VALIDATE_NOTABLE("f"_Str);
+    VALIDATE_NOTABLE("g"_Str);
     
     pSEitf->vCommitTx();
     pSEitf->vEndTx();
@@ -619,12 +615,13 @@ eEC RapidsSE_EndScan(SEitf* pSEitf, i8 iTraceLevel)
     delete pSelCursor;
     
     // return the table
-    eResult = eExecuteRequest(pSEitf, "rettbl"_Str);
-    CHECK_RESULT("c"_Str);
-    CHECK_RESPONSE("d"_Str);
+    Table* pTable = pSEitf->pCurrentTable();
+    RETURN_TABLE("c"_Str);
+    CHECK_RESULT("d"_Str);
+    CHECK_RESPONSE("e"_Str);
     
     // validate if no table
-    VALIDATE_NOTABLE("e"_Str);
+    VALIDATE_NOTABLE("f"_Str);
     
     TRACE_EXIT("ea"_Str);
     

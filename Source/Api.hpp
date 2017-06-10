@@ -57,6 +57,22 @@ bool bExecuteRequest(SEitf* pSEitf, TokenSet& xTokenSet);
 eEC eGetResponse(SEitf* pSEitf);
 
 /*----------------------------------------------------------------------------*/
+/* get table                                                                  */
+/*----------------------------------------------------------------------------*/
+#define GET_TABLE(aMarker) \
+{  \
+  eResult = eExecuteRequest(pSEitf, "gettbl"_Str, (Str*)pTable); \
+}
+
+/*----------------------------------------------------------------------------*/
+/* ret table                                                                  */
+/*----------------------------------------------------------------------------*/
+#define RETURN_TABLE(aMarker) \
+{  \
+  eResult = eExecuteRequest(pSEitf, "rettbl"_Str, (Str*)pTable); \
+}
+
+/*----------------------------------------------------------------------------*/
 /* trace API entry                                                            */
 /*----------------------------------------------------------------------------*/
 #define TRACE_ENTRY_P0() \

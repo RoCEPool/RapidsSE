@@ -2,6 +2,14 @@
 /* _test -- test                                                              */
 /*============================================================================*/
 
+create table T2 (
+idxkey  integer,
+name    varchar(32));
+
+create index index1 on T2 (idxkey);
+create index index1 on T2 (name);
+
+/*
 
 create table jidx (
 jidx_key   INTEGER NOT NULL,
@@ -17,7 +25,7 @@ lsidxcol jidx idx1;
 ld jidx "../JTEST/test.csv" ;
 dumpidx jidx idx1;
 
-/*
+
 create table boolTable (
 key   BOOLEAN NOT NULL,
 value INTEGER,

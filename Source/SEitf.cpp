@@ -81,6 +81,7 @@ SEitf::SEitf(i8 iPartition)
   m_pIndexBuffer    = nullptr;
   m_pEntry          = nullptr;
   m_pCurrentTable   = nullptr;
+  m_pCurrentIndex   = nullptr;
   m_pTxRef          = nullptr;
   m_sMetadata       = ""_Str;
   m_bDisplay        = true;
@@ -124,6 +125,23 @@ DicPath* SEitf::pPathStack(void)
 
   return &m_xPathStack;
 }
+
+/*----------------------------------------------------------------------------*/
+/* set the current index                                                      */
+/*----------------------------------------------------------------------------*/
+void SEitf::vCurrentIndex(Index* pIndex)
+{
+  m_pCurrentIndex = pIndex;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the current index                                                      */
+/*----------------------------------------------------------------------------*/
+Index* SEitf::pCurrentIndex(void)
+{
+  return m_pCurrentIndex;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* set the current table                                                      */
@@ -362,6 +380,7 @@ bool SEitf::bDecode(TokenSet& xTokenSet)
   if (xTokenSet[0]->bSame("get"_Str)) return bGet(xTokenSet);
   if (xTokenSet[0]->bSame("getFreeSpace"_Str)) return bGetFreeSpace(xTokenSet);
   if (xTokenSet[0]->bSame("getInUseSpace"_Str)) return bGetInUseSpace(xTokenSet);
+  if (xTokenSet[0]->bSame("getidx"_Str)) return bGetIndex(xTokenSet);
   if (xTokenSet[0]->bSame("gettbl"_Str)) return bGetTable(xTokenSet);
   if (xTokenSet[0]->bSame("gettsk"_Str)) return bGetTask(xTokenSet);
   if (xTokenSet[0]->bSame("getTotalSpace"_Str)) return bGetTotalSpace(xTokenSet);
@@ -390,6 +409,7 @@ bool SEitf::bDecode(TokenSet& xTokenSet)
   if (xTokenSet[0]->bSame("object"_Str)) return bObject(xTokenSet);
   if (xTokenSet[0]->bSame("pRB"_Str)) return bPrintRowBuffer(xTokenSet);
   if (xTokenSet[0]->bSame("pwf"_Str)) return bGetDicPath(xTokenSet);
+  if (xTokenSet[0]->bSame("retidx"_Str)) return bRetIndex(xTokenSet);
   if (xTokenSet[0]->bSame("rettbl"_Str)) return bRetTable(xTokenSet);
   if (xTokenSet[0]->bSame("rettsk"_Str)) return bRetTask(xTokenSet);
   if (xTokenSet[0]->bSame("rf"_Str)) return bRemoveFolder(xTokenSet);
@@ -1578,6 +1598,29 @@ bool SEitf::bRangeSelectTable(TokenSet& xTokenSet)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get address of an index                                                    */
+/*----------------------------------------------------------------------------*/
+bool SEitf::bGetIndex(TokenSet& xTokenSet)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  s256 sRequest;
+  
+  if (xTokenSet.nTokens() != 2) {
+    vSetLastError(EC_INVALID_PARAMETERS);
+    return false;
+  }
+  
+  sRequest.vCopy("\""_Str);
+  sRequest.vConcat(xTokenSet[1]);
+  sRequest.vConcat("\""_Str);
+  
+  sRequest.vConcat(" get_index"_Str);
+  
+  return bAppendRequest(sRequest);
+}
+
+/*----------------------------------------------------------------------------*/
 /* get address/reference of a table                                           */
 /*----------------------------------------------------------------------------*/
 bool SEitf::bGetTable(TokenSet& xTokenSet)
@@ -1619,6 +1662,25 @@ bool SEitf::bInUseTable(TokenSet& xTokenSet)
   sRequest.vConcat("\""_Str);
 
   sRequest.vConcat(" table_inuse"_Str);
+  
+  return bAppendRequest(sRequest);
+}
+
+/*----------------------------------------------------------------------------*/
+/* return address of an index                                                 */
+/*----------------------------------------------------------------------------*/
+bool SEitf::bRetIndex(TokenSet& xTokenSet)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  s256 sRequest;
+  
+  if (xTokenSet.nTokens() != 1) {
+    vSetLastError(EC_INVALID_PARAMETERS);
+    return false;
+  }
+  
+  sRequest.vConcat(" return_index"_Str);
   
   return bAppendRequest(sRequest);
 }

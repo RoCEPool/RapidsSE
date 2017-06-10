@@ -82,10 +82,12 @@ Index Requests:
 -----------------
 anidx     analyze_index
 dumpidx   dump_index
+getidx    get_index
 keyselidx key_select_index
 mkidx     create_index
 lsidx     list_indexes
 lwrselidx lower_select_index
+retidx    return_index
 rmidx     drop_index
 rgeselidx range_select_index
 setidxunique index_setUnique

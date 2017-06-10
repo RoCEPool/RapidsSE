@@ -42,7 +42,8 @@ void Task::vAddPrimitives_SEitf(void)
   vAddPrimitive("seitf.entry!"_Str,           &vSEitfEntryStore,       false);
   vAddPrimitive("seitf.indexBuffer@"_Str,     &vSEitfIndexBufferFetch, false);
   vAddPrimitive("seitf.indexBuffer!"_Str,     &vSEitfIndexBufferStore, false);
-  vAddPrimitive("seitf.indexRef"_Str,         &vSEitfIndexRef,         false);
+  vAddPrimitive("seitf.indexGet"_Str,         &vSEitfIndexGet,         false);
+  vAddPrimitive("seitf.indexReturn"_Str,      &vSEitfIndexReturn,      false);
   vAddPrimitive("seitf.metadata@"_Str,        &vSEitfMetadataFetch,    false);
   vAddPrimitive("seitf.metadata!"_Str,        &vSEitfMetadataStore,    false);
   vAddPrimitive("seitf.partition@"_Str,       &vSEitfPartitionFetch,   false);
@@ -264,15 +265,34 @@ void Task::vSEitfIndexBufferStore(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* seitf.indexRef -- store index in SEitf and inc reference                   */
+/* seitf.indexReturn -- clear index in SEitf                                   */
 /*----------------------------------------------------------------------------*/
-void Task::vSEitfIndexRef(NNP_Task nnpTask)
+void Task::vSEitfIndexReturn(NNP_Task nnpTask)
 {
-  ENTRY("vSEitfIndexRef"_Str);
+  ENTRY("vSEitfIndexReturn"_Str);
   
   Object* pPtrSEitf;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitf) )
-    THROW_INVALID_DSTACK("seitf.indexRef"_Str);
+    THROW_INVALID_DSTACK("seitf.indexReturn"_Str);
+  
+  SEitf* pSEitf = _pSEitf(pPtrSEitf);
+  ASSERT(CN_SEITF == pSEitf->eClass());
+  
+  pSEitf->vCurrentIndex(nullptr);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* seitf.indexGet -- store index in SEitf                                     */
+/*----------------------------------------------------------------------------*/
+void Task::vSEitfIndexGet(NNP_Task nnpTask)
+{
+  ENTRY("vSEitfIndexGet"_Str);
+  
+  Object* pPtrSEitf;
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitf) )
+    THROW_INVALID_DSTACK("seitf.indexGet"_Str);
   
   SEitf* pSEitf = _pSEitf(pPtrSEitf);
   ASSERT(CN_SEITF == pSEitf->eClass());
@@ -280,14 +300,12 @@ void Task::vSEitfIndexRef(NNP_Task nnpTask)
   Object* pPtrIndex;
   
   if ( ! nnpTask->m_pDataStack->bPop(pPtrIndex) )
-    THROW_INVALID_DSTACK("seitf.indexRef"_Str);
+    THROW_INVALID_DSTACK("seitf.indexGet"_Str);
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_TABLE == pIndex->eClass());
   
-  //pIndex->vRefInc();
-  
-  //pSEitf->vCurrentIndex(pIndex);
+  pSEitf->vCurrentIndex(pIndex);
   
   EXIT();
 }

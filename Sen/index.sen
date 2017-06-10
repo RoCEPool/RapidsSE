@@ -227,6 +227,31 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* get index pointer and put into task.seitf.currentIndex                     */
+/*----------------------------------------------------------------------------*/
+: getIndex ( "<indexNm>" -- <R> )
+
+  dup checkInIndexes not if false exit then
+
+  // get index ptr
+  findInCurrent execute
+
+  task::this task.seitf@ seitf.indexGet
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* clear task.seitf.currentIndex                                              */
+/*----------------------------------------------------------------------------*/
+: returnIndex ( )
+
+  task::this task.seitf@ seitf.indexReturn
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* make an index (run by participant)                                         */
 /*----------------------------------------------------------------------------*/
 : makeIndex allParticipants 2 checkResult ( "<tableNm>" "<indexNm>"  -- true n# true )
