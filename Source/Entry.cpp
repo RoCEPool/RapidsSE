@@ -293,9 +293,13 @@ Key* Entry::aKey(void)
 {
   _precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
   
-  EntryData* pEntryData = this->aEntryData();
+//  EntryData* pEntryData = this->aEntryData();
+//  
+//  Key* aKey = pEntryData->aKey(m_iOffsets);
+
+  i8 nOffsetBytes = RightVec::nBytesRequired(m_iOffsets);
   
-  Key* aKey = pEntryData->aKey(m_iOffsets);
+  Key* aKey = pAdd<Key*>(aEntryData(),nOffsetBytes);
   
   return aKey;
 }

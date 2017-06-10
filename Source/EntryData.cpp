@@ -50,20 +50,6 @@ void EntryData::vCopyBytes(void* aSrc, i8 nBytes)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get key                                                                    */
-/*----------------------------------------------------------------------------*/
-Key* EntryData::aKey(i8 nOffsets)
-{
-  ASSERT(nOffsets >= 0 && nOffsets <= gnIndexOffsets);
-  
-  i8 nOffsetBytes = RightVec::nBytesRequired(nOffsets);
-  
-  Key* aKey = pAdd<Key*>(this,nOffsetBytes);
-  
-  return aKey;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get offsets                                                                */
 /*----------------------------------------------------------------------------*/
 RightVec* EntryData::aRightVec(i8 nOffsets)
