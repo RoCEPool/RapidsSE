@@ -56,7 +56,6 @@ namespace DBobjects
     void  vContentDump(void);
     char* aRowData(void);
     void  vExtractKey(KeyWsp& xKeyWsp, IdxColVec* pColVec);
-    i8    nSizeRow(void);
     i8    iTxId(void);
     void  vTxId(i8 iTxId);
   

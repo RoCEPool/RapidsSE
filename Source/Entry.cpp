@@ -433,7 +433,7 @@ void Entry::vKey(EntWsp& xEntWsp)
 /*----------------------------------------------------------------------------*/
 i8 Entry::nSizeEntry(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
   return m_nThisBytes;
 }
@@ -592,16 +592,6 @@ void Entry::vExtractKey(KeyWsp& xKeyWsp, IdxColVec* pIdxColVec)
     xKeyWsp.vAddElement(xValWsp, pColumn);
   }
   
-}
-
-/*----------------------------------------------------------------------------*/
-/* get size in bytes of this row                                              */
-/*----------------------------------------------------------------------------*/
-i8 Entry::nSizeRow(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
-  
-  return m_nThisBytes;
 }
 
 /*----------------------------------------------------------------------------*/

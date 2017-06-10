@@ -373,13 +373,13 @@ bool EntryBuffer::bInsertRow(TxRef* pTxRef, Str* pRecord, i8 iLength, Entry** pp
 }
 
 /*----------------------------------------------------------------------------*/
-/* next row                                                                   */
+/* get next row                                                               */
 /*----------------------------------------------------------------------------*/
 Entry* EntryBuffer::pNextRow(Entry* pCurr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
-  i8 nBytes = pCurr->nSizeRow();
+  i8 nBytes = pCurr->nSizeEntry();
   
   Entry* pNext = pAdd<Entry*>(pCurr,nBytes);
   
