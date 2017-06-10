@@ -359,7 +359,7 @@ bool EntryBuffer::bInsertRow(TxRef* pTxRef, Str* pRecord, i8 iLength, Entry** pp
   
   pRow->vTxId(iTxId);
   
-  char* pData = pRow->aRowData();
+  char* pData = pRow->aVblData();
   
   StrVal* pStr = new((StrVal*)pData) StrVal((StrVal*)pData);
   

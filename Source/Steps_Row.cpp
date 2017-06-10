@@ -49,7 +49,7 @@ void Task::vRowString(NNP_Task nnpTask)
   Entry* pRow = _aRow(pPtrRow);
   ASSERT(CN_ROW == pRow->eClass());
   
-  StrVal* pStrVal = reinterpret_cast<StrVal*>(pRow->aRowData());
+  StrVal* pStrVal = reinterpret_cast<StrVal*>(pRow->aVblData());
   s256 sRow = pStrVal->aStr();
   
   nnpTask->m_pDataStack->vPushS256(sRow);

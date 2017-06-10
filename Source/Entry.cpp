@@ -283,10 +283,6 @@ Key* Entry::aKey(void)
 {
   _precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
   
-//  EntryData* pEntryData = this->aEntryData();
-//  
-//  Key* aKey = pEntryData->aKey(m_iOffsets);
-
   i8 nOffsetBytes = RightVec::nBytesRequired(m_iOffsets);
   
   Key* aKey = pAdd<Key*>(aEntryData(),nOffsetBytes);
@@ -436,13 +432,13 @@ i8 Entry::nSizeEntry(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- Entry ---------------------------------------------------------------------*/
+/*-- Entry -------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* get data                                                                   */
 /*----------------------------------------------------------------------------*/
-char* Entry::aRowData(void)
+char* Entry::aVblData(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
   
@@ -458,14 +454,14 @@ void Entry::vContentDump(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
   
-  StrVal* pStr = (StrVal*)aRowData();
+  StrVal* pStr = (StrVal*)aVblData();
   
-  vTrace("Entry %p: DataBytes %lld %s (%lld bytes) %s\n"_Str,
+  vTrace("Entry %p: ThisBytes %lld %s (%lld bytes) %s\n"_Str,
          this,
          //m_iTxId,
          m_nThisBytes,
-         aRowData(),
-         StrLib::iSize(aRowData()),
+         aVblData(),
+         StrLib::iSize(aVblData()),
          pStr->s()
          );
 }
@@ -477,14 +473,14 @@ void Entry::vExtractKey(KeyWsp& xKeyWsp, IdxColVec* pIdxColVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
   
-  char* pRowData = aRowData();
+  char* pRowData = aVblData();
   
   i8 nCols = pIdxColVec->nItems();
   ValWsp xValWsp;
   s256 s;
   
   // get the row data
-  StrVal* pStrVal = (StrVal*)aRowData();
+  StrVal* pStrVal = (StrVal*)aVblData();
   
   for (i8 iColumn = 0; iColumn < nCols; iColumn++) {
     

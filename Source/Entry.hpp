@@ -14,6 +14,7 @@ namespace DBobjects
     Id  m_xId;        // id
     i8  m_iOffsets;   // no of offsets for this entry (0,1 or 2)
   //i8  m_iTxId;      // transaction id
+    // ..data..       // variable data area 
 
   public:
     void* operator new(size_t);
@@ -54,7 +55,7 @@ namespace DBobjects
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // row
     void  vContentDump(void);
-    char* aRowData(void);
+    char* aVblData(void);
     void  vExtractKey(KeyWsp& xKeyWsp, IdxColVec* pColVec);
     i8    iTxId(void);
     void  vTxId(i8 iTxId);
