@@ -229,11 +229,7 @@ i8 Entry::iRightOffset(on nOffsetNo)
   if (nOffsetNo >= m_iOffsets)
     return C_NIL_OFFSET;
   
-  EntryData* aEntryData = this->aEntryData();
-  
-  RightVec* aRightVec = aEntryData->aRightVec(m_iOffsets);
-  
-  i8 iRight = aRightVec->iOffset(nOffsetNo);
+  i8 iRight = aRightVec()->iOffset(nOffsetNo);
   
   return iRight;
 }
@@ -247,11 +243,7 @@ void Entry::vRightOffset(on nOffsetNo, i8 iRightOffset)
   
   ASSERT(nOffsetNo >= 0_on && nOffsetNo < gnIndexOffsets);
   
-  EntryData* aEntryData = this->aEntryData();
-  
-  RightVec* aRightVec = aEntryData->aRightVec(m_iOffsets);
-  
-  aRightVec->vOffset(nOffsetNo,iRightOffset);
+  aRightVec()->vOffset(nOffsetNo,iRightOffset);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
 }
@@ -263,9 +255,7 @@ RightVec* Entry::aRightVec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
   
-  EntryData* aEntryData = this->aEntryData();
-  
-  RightVec* aRightVec = aEntryData->aRightVec(m_iOffsets);
+  RightVec* aRightVec = _aRightVec(aEntryData());
   
   return aRightVec;
 }

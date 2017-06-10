@@ -16,8 +16,6 @@ namespace DBobjects
     EntryData(void);
     ~EntryData(void);
   
-    RightVec* aRightVec(i8 nOffsets);
-  
   };
   
   EntryData* _aEntryData(void* aAddr);
