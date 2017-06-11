@@ -240,7 +240,7 @@ Entry* EntryBuffer::pAllocRow(i8 iStrLength)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
-  i8 nBytesRequired = Entry::nBytesRequiredEntry(0,0,iStrLength);
+  i8 nBytesRequired = Entry::nBytesRequired(0,0,iStrLength);
   
   // test  sufficient freespace
   if (nFreeBytes() < nBytesRequired) {
@@ -685,7 +685,7 @@ bool EntryBuffer::bInsert(EntWsp& xEntWsp)
   
   // create a new entry after the prior entry and set it
   //EntWsp xEntWsp(xId,xKeyWsp);
-  i8 nEntryBytes = Entry::nBytesRequiredEntry(xEntWsp);
+  i8 nEntryBytes = Entry::nBytesRequired(xEntWsp);
   Entry* pNewEntry = pAllotEntry(nEntryBytes, xEntWsp.nOffsets(), pAfterEntry);
   pNewEntry->vSetEntry(xEntWsp);
   
@@ -1246,7 +1246,7 @@ void EntryBuffer::vAllotHead(void)
   ASSERT( ! m_nEntries );
   
   // how many bytes are required
-  i8 nBytes = Entry::nBytesRequiredEntry(gnIndexOffsets,0,0);
+  i8 nBytes = Entry::nBytesRequired(gnIndexOffsets,0,0);
   
   // allot the head
   

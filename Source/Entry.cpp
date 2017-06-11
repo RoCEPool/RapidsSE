@@ -75,13 +75,13 @@ Entry::~Entry(void)
 /*----------------------------------------------------------------------------*/
 /* get bytes required for an Entry based on given EntWsp incl Object & Footer */
 /*----------------------------------------------------------------------------*/
-i8 Entry::nBytesRequiredEntry(EntWsp& xEntWsp)
+i8 Entry::nBytesRequired(EntWsp& xEntWsp)
 {
   i8 nOffsets = xEntWsp.nOffsets();
   
   i8 nKeyBytes = xEntWsp.nKeySize();
   
-  i8 nBytes = Entry::nBytesRequiredEntry(nOffsets,nKeyBytes,0);
+  i8 nBytes = Entry::nBytesRequired(nOffsets,nKeyBytes,0);
   
   return nBytes;
 }
@@ -89,7 +89,7 @@ i8 Entry::nBytesRequiredEntry(EntWsp& xEntWsp)
 /*----------------------------------------------------------------------------*/
 /* get total bytes required for entry incl Object & Footer                    */
 /*----------------------------------------------------------------------------*/
-i8 Entry::nBytesRequiredEntry(i8 nOffsets, i8 nKeyBytes, i8 nDataBytes)
+i8 Entry::nBytesRequired(i8 nOffsets, i8 nKeyBytes, i8 nDataBytes)
 {
   i8 nOffsetBytes = RightVec::nBytesRequired(nOffsets);
   

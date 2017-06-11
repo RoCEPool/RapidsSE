@@ -23,8 +23,8 @@ namespace DBobjects
     Entry(eCN eClassNo, i8 nThisBytes, i8 uOffsets);
     ~Entry(void);
   
-    static i8 nBytesRequiredEntry(EntWsp& xEntWsp);
-    static i8 nBytesRequiredEntry(i8 nOffsets, i8 nKeyBytes, i8 nDataBytes);
+    static i8 nBytesRequired(EntWsp& xEntWsp);
+    static i8 nBytesRequired(i8 nOffsets, i8 nKeyBytes, i8 nDataBytes);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // entry proper
