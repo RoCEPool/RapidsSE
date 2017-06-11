@@ -199,7 +199,7 @@ Str* Table::pAnalyze(bool bDetailed)
         }
       }
       
-      nBuffers += pStrand->nRowBuffers();
+      nBuffers += pStrand->nEntryBuffers();
       nRows += pStrand->nRows();
       pStrand = pStrand->pNextStrand();
     }
@@ -440,7 +440,7 @@ i8 Table::nRowBuffers(void)
   for (i8 iPartition = 0; iPartition < gpGrid->m_nSlots; iPartition++) {
     EbStrand *pStrand = pPartition(iPartition)->pData()->pHeadStrand();
     while (pStrand) {
-      iBuffers += pStrand->nRowBuffers();
+      iBuffers += pStrand->nEntryBuffers();
       pStrand = pStrand->pNextStrand();
     }
   }

@@ -185,7 +185,7 @@ void Partition::vPopulateIndex(i8 iIndexNo)
        pStrand = pStrand->pNextStrand()) {
     
     nStrands++;
-    nBuffers += pStrand->nRowBuffers();
+    nBuffers += pStrand->nEntryBuffers();
     
     i8 nRowsInBuffer = 0;
     i8 nRowBuffer = 0;
@@ -219,7 +219,7 @@ void Partition::vPopulateIndex(i8 iIndexNo)
       
     } // rowBuffer
     
-    ASSERT(nRowBuffer = pStrand->nRowBuffers());
+    ASSERT(nRowBuffer = pStrand->nEntryBuffers());
     
   } // strand
   

@@ -35,7 +35,7 @@ EbStrand::EbStrand(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_EBSTRAND,_FOOTER_);
   
   m_zLock.vInit("EbStrand::m_zLock"_Str);
-  m_nRowBuffers  = 0;
+  m_nEntryBuffers  = 0;
   m_pFirstBuffer = nullptr;
   m_pLastBuffer  = nullptr;
   
@@ -66,7 +66,7 @@ void EbStrand::vDump(eCN eClass, Object* pObject, Str* aTab)
   EbStrand* pEbStrand = reinterpret_cast<EbStrand*>(pObject);
   
   vTrace("rowBuffers %lld first %p next %p prevStrand %p nextStrand %p\n"_Str,
-         pEbStrand->m_nRowBuffers,
+         pEbStrand->m_nEntryBuffers,
          pEbStrand->m_pFirstBuffer,
          pEbStrand->m_pLastBuffer,
          pEbStrand->m_pPrevStrand,
@@ -145,13 +145,13 @@ i8 EbStrand::nRows(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get number of row buffers                                                  */
+/* get number of entry buffers                                                */
 /*----------------------------------------------------------------------------*/
-i8 EbStrand::nRowBuffers(void)
+i8 EbStrand::nEntryBuffers(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_EBSTRAND,_FOOTER_);
 
-  return m_nRowBuffers;
+  return m_nEntryBuffers;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -231,7 +231,7 @@ void EbStrand::vTruncate(void)
     delete pRowBufferTBD;
   }
   
-  m_nRowBuffers  = 0;
+  m_nEntryBuffers  = 0;
   m_pFirstBuffer = nullptr;
   m_pLastBuffer  = nullptr;
   
@@ -251,7 +251,7 @@ bool EbStrand::bExtendStrand(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_EBSTRAND,_FOOTER_);
   
-  if (m_nRowBuffers >= C_STRAND_LENGTH)
+  if (m_nEntryBuffers >= C_STRAND_LENGTH)
     return false;
 
   EntryBuffer* pNewBuffer = (EntryBuffer*)EntryBuffer::pNewEntryBuffer(CN_ROWBUFFER);
@@ -274,24 +274,24 @@ bool EbStrand::bExtendStrand(EntryBuffer* pNewRowBuffer)
   ASSERT(BD_PERMANENT == pNewRowBuffer->eDurability());
   
   // reached strand length?
-  if (m_nRowBuffers >= C_STRAND_LENGTH)
+  if (m_nEntryBuffers >= C_STRAND_LENGTH)
     return false;
 
   // first buffer in strand?
   if (! m_pFirstBuffer) {
     
-    ASSERT(! m_nRowBuffers);
+    ASSERT(! m_nEntryBuffers);
     ASSERT(! m_pLastBuffer);
     
     m_pFirstBuffer = pNewRowBuffer;
     m_pLastBuffer  = pNewRowBuffer;
     
-    m_nRowBuffers = 1;
+    m_nEntryBuffers = 1;
     
     return true;
   }
 
-  ASSERT(m_nRowBuffers);
+  ASSERT(m_nEntryBuffers);
   ASSERT(m_pLastBuffer);
 
   // can new buffer be copied into last buffer of this strand?
@@ -312,7 +312,7 @@ bool EbStrand::bExtendStrand(EntryBuffer* pNewRowBuffer)
   
   m_pLastBuffer = pNewRowBuffer;
   
-  m_nRowBuffers++;
+  m_nEntryBuffers++;
   
   return true;
 }
