@@ -57,7 +57,7 @@ namespace DBobjects
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // row
     void vContentDump(void);
-    void vExtractKey(KeyWsp& xKeyWsp, IdxColVec* pIdxColVec);
+    void vExtractKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec);
     i8   iTxId(void);
     void vTxId(i8 iTxId);
   

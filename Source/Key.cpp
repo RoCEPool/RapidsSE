@@ -41,9 +41,9 @@ void* Key::operator new(size_t iSize, Key* pKey)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Key::Key(KeyWsp& xKeyWsp)
+Key::Key(KeyWrk& xKeyWrk)
 {
-  vKey(xKeyWsp);
+  vKey(xKeyWrk);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -86,11 +86,11 @@ bool Key::operator <=(Key* pKeyArg)
 /*----------------------------------------------------------------------------*/
 /* set key from given key workspace                                           */
 /*----------------------------------------------------------------------------*/
-void Key::vKey(KeyWsp& xKeyWsp)
+void Key::vKey(KeyWrk& xKeyWrk)
 {
   Str* aDst = aWspStr();
-  Str* aSrc = xKeyWsp.aWspStr();
-  i8 nBytes  = xKeyWsp.nWspUsed();
+  Str* aSrc = xKeyWrk.aWspStr();
+  i8 nBytes  = xKeyWrk.nWspUsed();
   
   MemLib::vCopy(aDst,aSrc,nBytes);
 }

@@ -35,7 +35,7 @@ namespace DBobjects
     void* operator new(size_t);
     void* operator new(size_t, Key*);
   
-    Key(KeyWsp& xKeyWsp);
+    Key(KeyWrk& xKeyWrk);
     ~Key(void);
   
     bool operator <(Key* pKeyArg);
@@ -44,7 +44,7 @@ namespace DBobjects
     void  vShow(IdxColVec* pColVec);
   
     void  vKey(Key& xKey);
-    void  vKey(KeyWsp& xKeyWsp);
+    void  vKey(KeyWrk& xKeyWrk);
   
     char* aEachDatum(Column* pColumn, i8& nBytes, char** aaCursor);
   

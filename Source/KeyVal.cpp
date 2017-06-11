@@ -45,9 +45,9 @@ void KeyVal::operator delete(void* pKeyValAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-KeyVal::KeyVal(KeyWsp& xKeyWsp)
+KeyVal::KeyVal(KeyWrk& xKeyWrk)
 : Object(CN_KEYVAL),
-  m_xKey(xKeyWsp)
+  m_xKey(xKeyWrk)
 {
 }
 

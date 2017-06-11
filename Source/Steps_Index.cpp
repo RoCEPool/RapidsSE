@@ -108,14 +108,14 @@ void Task::vIndexBuffer(NNP_Task nnpTask)
   Partition* pPartition = pTable->pPartition(nnpTask->m_pSEitf->iPartition());
   IndexData* pIndexData = pPartition->pIndexData(iIndexNo);
   
-  KeyWsp xKeyWsp;
+  KeyWrk xKeyWrk;
   
   StrVal* pStrVal = _pStrVal(xValWsp.pNestedValueSelf());
   
-  xKeyWsp.vAddDatum(pStrVal, pIndex->pIdxColVec()->pGet(0));
-  EntryBuffer* pIndexBuffer = pIndexData->pPositionLevel(xKeyWsp, JC_AFTER, 0);
+  xKeyWrk.vAddDatum(pStrVal, pIndex->pIdxColVec()->pGet(0));
+  EntryBuffer* pIndexBuffer = pIndexData->pPositionLevel(xKeyWrk, JC_AFTER, 0);
   
-  //xKeyWsp.vShow();
+  //xKeyWrk.vShow();
   
   bn nBuffer = pIndexBuffer->nBufferNo();
   //vTrace("L0 Buffer: %lld\n"_Str, *nBuffer);
@@ -278,23 +278,23 @@ void Task::vIndexPosition(NNP_Task nnpTask)
   Partition* pPartition = pTable->pPartition(nnpTask->m_pSEitf->iPartition());
   IndexData* pIndexData = pPartition->pIndexData(iIndexNo);
 
-  KeyWsp xKeyWsp;
+  KeyWrk xKeyWrk;
   
   // assuming non-complex key
   //ASSERT(1 == pIndex->pIdxColVec()->nItems());
   
   StrVal* pStrVal = _pStrVal(xValWsp.pNestedValueSelf());
   
-  xKeyWsp.vAddDatum(pStrVal, pIndex->pIdxColVec()->pGet(0));
+  xKeyWrk.vAddDatum(pStrVal, pIndex->pIdxColVec()->pGet(0));
 
-  Entry* pEntry = pIndexBuffer->pPosition(xKeyWsp, JC_AFTER);
+  Entry* pEntry = pIndexBuffer->pPosition(xKeyWrk, JC_AFTER);
   
   //pEntry->aKey()->vShow(pIndex->pIdxColVec());
-  //xKeyWsp.aKey()->vShow(pIndex->pIdxColVec());
+  //xKeyWrk.aKey()->vShow(pIndex->pIdxColVec());
   
   if (pEntry) {
     bool bIsEqual = false;
-    bool bAfter = pEntry->aKey()->bJuxtaCompare(JC_AFTER, xKeyWsp.aKey(), pIndex->pIdxColVec(), bIsEqual);
+    bool bAfter = pEntry->aKey()->bJuxtaCompare(JC_AFTER, xKeyWrk.aKey(), pIndex->pIdxColVec(), bIsEqual);
     if ( ! bAfter) {
       pEntry = pIndexBuffer->pNextEntry(pEntry);
     }
@@ -634,17 +634,17 @@ void Task::vIndexUpper(NNP_Task nnpTask)
   Partition* pPartition = pTable->pPartition(nnpTask->m_pSEitf->iPartition());
   IndexData* pIndexData = pPartition->pIndexData(iIndexNo);
 
-  KeyWsp xKeyWsp;
+  KeyWrk xKeyWrk;
   
   // assuming non-complex key
   //ASSERT(1 == pIndex->pIdxColVec()->nItems());
   
   StrVal* pStrVal = _pStrVal(xValWsp.pNestedValueSelf());
   
-  xKeyWsp.vAddDatum(pStrVal, pIndex->pIdxColVec()->pGet(0));
+  xKeyWrk.vAddDatum(pStrVal, pIndex->pIdxColVec()->pGet(0));
   
   bool bIsEqual = false;
-  bool bBefore = pEntry->aKey()->bJuxtaCompare(JC_BEFORE, xKeyWsp.aKey(), pIndex->pIdxColVec(), bIsEqual);
+  bool bBefore = pEntry->aKey()->bJuxtaCompare(JC_BEFORE, xKeyWrk.aKey(), pIndex->pIdxColVec(), bIsEqual);
   
   nnpTask->m_pDataStack->vPushInt(bBefore ? 1 : 0);
   

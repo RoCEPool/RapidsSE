@@ -75,7 +75,7 @@ pFINALIZE *gpFinalize[]
   
   /*    */ &Finalize::vUndefined,         // CN_KEYVAL
   /*    */ &Finalize::vUndefined,         // CN_KEYVEC
-  /* 35 */ &Finalize::vUndefined,         // CN_KEYWSP
+  /* 35 */ &Finalize::vUndefined,         // CN_KEYWRK
   
   /* 36 */ &Finalize::vUndefined,         // CN_LOADCHUNK
   /* 37 */ &Loader::vFinalize,            // CN_LOADER

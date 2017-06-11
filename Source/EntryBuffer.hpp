@@ -100,8 +100,8 @@ namespace DBobjects
     Index*       pIndex(void);
     bool         bInsert(EntWrk& xEntWrk);
     Entry*       pNextEntry(Entry* pEntry);
-    EntryBuffer* pPositionLevel(KeyWsp& xKeyWsp, eJC eJuxtaCompare, i8 iLevel);
-    Entry*       pPosition(KeyWsp& xKeyWsp, eJC eJuxtaCompare);
+    EntryBuffer* pPositionLevel(KeyWrk& xKeyWrk, eJC eJuxtaCompare, i8 iLevel);
+    Entry*       pPosition(KeyWrk& xKeyWrk, eJC eJuxtaCompare);
     bool         bRemove(Key* aKey);
     void         vShow(void);
     EntryBuffer* pSplitBuffer(void);
@@ -123,10 +123,10 @@ namespace DBobjects
     u8           uOffsetBetween(Entry* pEntryA, Entry* pEntryB);
     Entry*       pPosition(Key* aGivenKey, eJC eJuxtaCompare, EntryVec* pPriorVec, bool& bIsEqual);
     void         vPriorVec(Entry* pEntry, EntryVec* pPriorVec);
-    void         vReplace(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp);
-    void         vReplaceEqualKey(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp);
-    void         vReplaceLargerKey(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp);
-    void         vReplaceSmallereKey(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp);
+    void         vReplace(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk);
+    void         vReplaceEqualKey(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk);
+    void         vReplaceLargerKey(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk);
+    void         vReplaceSmallereKey(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk);
     Entry*       pRightEntry(Entry* pEntry, ln nLevelNo);
     i8           iToEndOffsetAbs(Entry* pEntry);
     i8           iToOffsetAbs(Entry* pEntry);

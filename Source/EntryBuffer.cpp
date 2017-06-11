@@ -667,7 +667,7 @@ bool EntryBuffer::bInsert(EntWrk& xEntWrk)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
   //vTrace("Inserting key:\n"_Str);
-  //xKeyWsp.vShow();
+  //xKeyWrk.vShow();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // insert a new entry into the skip list
@@ -684,7 +684,7 @@ bool EntryBuffer::bInsert(EntWrk& xEntWrk)
   }
   
   // create a new entry after the prior entry and set it
-  //EntWrk xEntWrk(xId,xKeyWsp);
+  //EntWrk xEntWrk(xId,xKeyWrk);
   i8 nEntryBytes = Entry::nBytesRequired(xEntWrk);
   Entry* pNewEntry = pAllotEntry(nEntryBytes, xEntWrk.nOffsets(), pAfterEntry);
   pNewEntry->vSetEntry(xEntWrk);
@@ -775,14 +775,14 @@ Entry* EntryBuffer::pNextEntry(Entry* pEntry)
 /*----------------------------------------------------------------------------*/
 /* position at entry with lower bound at key                                  */
 /*----------------------------------------------------------------------------*/
-Entry* EntryBuffer::pPosition(KeyWsp& xKeyWsp, eJC eJuxtaCompare)
+Entry* EntryBuffer::pPosition(KeyWrk& xKeyWrk, eJC eJuxtaCompare)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
   Entry* pEntry;
   bool bIsEqual = false;
   
-  pEntry = pPosition(xKeyWsp.aKey(), eJuxtaCompare, nullptr, bIsEqual);
+  pEntry = pPosition(xKeyWrk.aKey(), eJuxtaCompare, nullptr, bIsEqual);
   
   if (pEntry == pHead())
     pEntry = pNextEntry(pEntry);
@@ -793,7 +793,7 @@ Entry* EntryBuffer::pPosition(KeyWsp& xKeyWsp, eJC eJuxtaCompare)
 /*----------------------------------------------------------------------------*/
 /* position at an index buffer at level iLevel starting from this buffer      */
 /*----------------------------------------------------------------------------*/
-EntryBuffer* EntryBuffer::pPositionLevel(KeyWsp& xKeyWsp, eJC eJuxtaCompare, i8 iLevel)
+EntryBuffer* EntryBuffer::pPositionLevel(KeyWrk& xKeyWrk, eJC eJuxtaCompare, i8 iLevel)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
@@ -809,7 +809,7 @@ EntryBuffer* EntryBuffer::pPositionLevel(KeyWsp& xKeyWsp, eJC eJuxtaCompare, i8 
       break;
     
     // get the entry
-    pEntry = pEntryBuffer->pPosition(xKeyWsp, eJuxtaCompare);
+    pEntry = pEntryBuffer->pPosition(xKeyWrk, eJuxtaCompare);
     ASSERT(pEntry);
     
     // get the index buffer of the entry
@@ -1271,11 +1271,11 @@ i8 EntryBuffer::iCopyEntries(EntryBuffer* pFromBuffer, Entry* aFromEntry)
        pEntry;
        pEntry = pFromBuffer->pNextEntry(pEntry)) {
     
-    // form keywsp from the entry
-    KeyWsp xKeyWsp(pEntry->aKey(), m_pIndex->pIdxColVec());
+    // form KeyWrk from the entry
+    KeyWrk xKeyWrk(pEntry->aKey(), m_pIndex->pIdxColVec());
     
     // form the EntWrk from the entry
-    EntWrk xEntWrk(pEntry->xId(), xKeyWsp);
+    EntWrk xEntWrk(pEntry->xId(), xKeyWrk);
     
     // insert entry into this buffer
     bInsert(xEntWrk);
@@ -1410,21 +1410,21 @@ void EntryBuffer::vFixHigherLevel(Entry* aNewEntry)
   // we need to update the higher level buffer entry key
   Entry* aOldFirstEntry = pNextEntry(aNewEntry);
   
-  KeyWsp xOldKeyWsp;
-  xOldKeyWsp.vAddKey(aOldFirstEntry->aKey(), m_pIndex->pIdxColVec());
+  KeyWrk xOldKeyWrk;
+  xOldKeyWrk.vAddKey(aOldFirstEntry->aKey(), m_pIndex->pIdxColVec());
   
-  // create akeyWsp with the newEntry key
-  KeyWsp xNewKeyWsp;
-  xNewKeyWsp.vAddKey(aNewEntry->aKey(), m_pIndex->pIdxColVec());
+  // create aKeyWrk with the newEntry key
+  KeyWrk xNewKeyWrk;
+  xNewKeyWrk.vAddKey(aNewEntry->aKey(), m_pIndex->pIdxColVec());
   
   EntryBuffer* pHigherLevel = (EntryBuffer*)m_pHigherLevel;
   
   while (pHigherLevel) {
     //pHigherLevel->vShow();
-    //xOldKeyWsp.vShow();
-    //xNewKeyWsp.vShow();
+    //xOldKeyWrk.vShow();
+    //xNewKeyWrk.vShow();
     
-    pHigherLevel->vReplace(xOldKeyWsp, xNewKeyWsp);
+    pHigherLevel->vReplace(xOldKeyWrk, xNewKeyWrk);
     
     //pHigherLevel->vShow();
     ASSERT(pHigherLevel->bVerify());
@@ -1435,34 +1435,34 @@ void EntryBuffer::vFixHigherLevel(Entry* aNewEntry)
 /*----------------------------------------------------------------------------*/
 /* replace old key with new key in the index buffer                           */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vReplace(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp)
+void EntryBuffer::vReplace(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
   // get the size of the old key
-  u8 uOldKeySize = xOldKeyWsp.nWspUsed();
+  u8 uOldKeySize = xOldKeyWrk.nWspUsed();
   
   // get the size of the new key
-  u8 uNewKeySize = xNewKeyWsp.nWspUsed();
+  u8 uNewKeySize = xNewKeyWrk.nWspUsed();
   
   if (uOldKeySize == uNewKeySize) {
-    vReplaceEqualKey(xOldKeyWsp, xNewKeyWsp);
+    vReplaceEqualKey(xOldKeyWrk, xNewKeyWrk);
     return;
   }
   
   if (uOldKeySize > uNewKeySize) {
-    vReplaceSmallereKey(xOldKeyWsp, xNewKeyWsp);
+    vReplaceSmallereKey(xOldKeyWrk, xNewKeyWrk);
     return;
   }
   
   ASSERT(uOldKeySize < uNewKeySize);
-  vReplaceLargerKey(xOldKeyWsp, xNewKeyWsp);
+  vReplaceLargerKey(xOldKeyWrk, xNewKeyWrk);
 }
 
 /*----------------------------------------------------------------------------*/
 /* replace old key with new key of same size in the index buffer              */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vReplaceEqualKey(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp)
+void EntryBuffer::vReplaceEqualKey(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
@@ -1477,17 +1477,17 @@ void EntryBuffer::vReplaceEqualKey(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp)
    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
   
   // find the oldEntry in the higher level buffer
-  Entry* pOldEntry = pPosition(xOldKeyWsp, JC_SAME);
+  Entry* pOldEntry = pPosition(xOldKeyWrk, JC_SAME);
   
   // assert that we found one
   ASSERT(pOldEntry);
   
   // assert the key of the higher level entry and the old entry match
   bool bIsEqual = false;
-  ASSERT(pOldEntry->aKey()->bJuxtaCompare(JC_SAME, xOldKeyWsp.aKey(), m_pIndex->pIdxColVec(), bIsEqual));
+  ASSERT(pOldEntry->aKey()->bJuxtaCompare(JC_SAME, xOldKeyWrk.aKey(), m_pIndex->pIdxColVec(), bIsEqual));
   
   EntWrk xEntWrk(pOldEntry);
-  xEntWrk.vAddKey(xNewKeyWsp);
+  xEntWrk.vAddKey(xNewKeyWrk);
   
   // just replace the key in the buffer
   pOldEntry->vReplaceKey(xEntWrk);
@@ -1496,7 +1496,7 @@ void EntryBuffer::vReplaceEqualKey(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp)
 /*----------------------------------------------------------------------------*/
 /* replace old key with new key in the index buffer                           */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vReplaceLargerKey(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp)
+void EntryBuffer::vReplaceLargerKey(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
@@ -1512,23 +1512,23 @@ void EntryBuffer::vReplaceLargerKey(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp)
    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
   
   // find the oldEntry in the higher level buffer
-  Entry* pOldEntry = pPosition(xOldKeyWsp, JC_SAME);
+  Entry* pOldEntry = pPosition(xOldKeyWrk, JC_SAME);
   
   // assert that we found the old key
   ASSERT(pOldEntry);
   
   // assert the key of the higher level entry and the old entry match
   bool bIsEqual = false;
-  ASSERT(pOldEntry->aKey()->bJuxtaCompare(JC_SAME, xOldKeyWsp.aKey(), m_pIndex->pIdxColVec(), bIsEqual));
+  ASSERT(pOldEntry->aKey()->bJuxtaCompare(JC_SAME, xOldKeyWrk.aKey(), m_pIndex->pIdxColVec(), bIsEqual));
   
   // create a newEntry at the same location as the pOldEntry
   Entry* pNewEntry = _pEntry(pOldEntry);
   
   // get the size of the old key
-  u8 uOldKeySize = xOldKeyWsp.nWspUsed();
+  u8 uOldKeySize = xOldKeyWrk.nWspUsed();
   
   // get the size of the new key
-  u8 uNewKeySize = xNewKeyWsp.nWspUsed();
+  u8 uNewKeySize = xNewKeyWrk.nWspUsed();
   
   // the old key is smaller than the new key
   i8 nSizeDifference = uNewKeySize - uOldKeySize;
@@ -1543,7 +1543,7 @@ void EntryBuffer::vReplaceLargerKey(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create an EntWrk from the old entry, with offsets et all
   EntWrk xEntWrk(pOldEntry);
-  xEntWrk.vAddKey(xNewKeyWsp);
+  xEntWrk.vAddKey(xNewKeyWrk);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // we need to move right nSizeDifference bytes, making room for the bigger key
@@ -1575,7 +1575,7 @@ void EntryBuffer::vReplaceLargerKey(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp)
 /*----------------------------------------------------------------------------*/
 /* replace old key with new key in the index buffer                           */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vReplaceSmallereKey(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp)
+void EntryBuffer::vReplaceSmallereKey(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
@@ -1591,23 +1591,23 @@ void EntryBuffer::vReplaceSmallereKey(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp)
    */
   
   // find the oldEntry in the higher level buffer
-  Entry* pOldEntry = pPosition(xOldKeyWsp, JC_SAME);
+  Entry* pOldEntry = pPosition(xOldKeyWrk, JC_SAME);
   
   // assert that we found one
   ASSERT(pOldEntry);
   
   // assert the key of the higher level entry and the old entry match
   bool bIsEqual = false;
-  ASSERT(pOldEntry->aKey()->bJuxtaCompare(JC_SAME, xOldKeyWsp.aKey(), m_pIndex->pIdxColVec(), bIsEqual));
+  ASSERT(pOldEntry->aKey()->bJuxtaCompare(JC_SAME, xOldKeyWrk.aKey(), m_pIndex->pIdxColVec(), bIsEqual));
   
   // create a newEntry at the same location as the foundEntry
   Entry* pNewEntry = _pEntry(pOldEntry);
   
   // get the size of the old key
-  u8 uOldKeySize = xOldKeyWsp.nWspUsed();
+  u8 uOldKeySize = xOldKeyWrk.nWspUsed();
   
   // get the size of the new key
-  u8 uNewKeySize = xNewKeyWsp.nWspUsed();
+  u8 uNewKeySize = xNewKeyWrk.nWspUsed();
   
   i8 iSize = pOldEntry->nSizeEntry();
   
@@ -1617,7 +1617,7 @@ void EntryBuffer::vReplaceSmallereKey(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create an EntWrk from the old entry, with offsets et all
   EntWrk xEntWrk(pOldEntry);
-  xEntWrk.vAddKey(xNewKeyWsp);
+  xEntWrk.vAddKey(xNewKeyWrk);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // we need to move left nSizeDifference bytes, making room for the bigger key

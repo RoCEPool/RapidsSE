@@ -35,7 +35,7 @@ typedef Vector<CN_IDXCOLVEC,Column,CN_COLUMN,1024,u8> IdxColVec;
 typedef Vector<CN_PTNCOLVEC,Column,CN_COLUMN,1024,u8> PtnColVec;
 
 #include "Id.hpp"
-#include "KeyWsp.hpp"
+#include "KeyWrk.hpp"
 #include "ln.hpp"
 #include "on.hpp"
 #include "RightVec.hpp"

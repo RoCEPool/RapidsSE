@@ -16,7 +16,7 @@ namespace DBobjects
   
 //    KeyVal(void);
 //    KeyVal(i8 iInt);
-    KeyVal(KeyWsp& xKeyWsp);
+    KeyVal(KeyWrk& xKeyWrk);
     ~KeyVal(void);
   
     char* aEachDatum (Column* pColumn, i8& nBytes, char** aaCursor);

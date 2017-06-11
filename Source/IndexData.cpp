@@ -198,10 +198,10 @@ void IndexData::vInsertEntry(Entry* pRow, i8 nRowNo, bn nBufferNo)
   
   Id xId(*nBufferNo,nRowNo);
   
-  KeyWsp xKeyWsp;
-  pRow->vExtractKey(xKeyWsp, m_pIndex->pIdxColVec());
+  KeyWrk xKeyWrk;
+  pRow->vExtractKey(xKeyWrk, m_pIndex->pIdxColVec());
     
-  vInsertEntry(m_pRoot, xKeyWsp, xId, 0);
+  vInsertEntry(m_pRoot, xKeyWrk, xId, 0);
   
   //if ( ! bVerify() ) {
   //  vTrace("Inserting row that caused verify to fail:\n"_Str);
@@ -214,11 +214,11 @@ void IndexData::vInsertEntry(Entry* pRow, i8 nRowNo, bn nBufferNo)
 /*----------------------------------------------------------------------------*/
 /* position the indexData at a particular level of index buffer               */
 /*----------------------------------------------------------------------------*/
-EntryBuffer* IndexData::pPositionLevel(KeyWsp& xKeyWsp, eJC eJuxtaCompare, i8 iLevel)
+EntryBuffer* IndexData::pPositionLevel(KeyWrk& xKeyWrk, eJC eJuxtaCompare, i8 iLevel)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
   
-  return m_pRoot->pPositionLevel(xKeyWsp, eJuxtaCompare, iLevel);
+  return m_pRoot->pPositionLevel(xKeyWrk, eJuxtaCompare, iLevel);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -359,16 +359,16 @@ bool IndexData::bVerify(void)
 /*----------------------------------------------------------------------------*/
 /* insert an entry for {key,id} into an index buffer at given level           */
 /*----------------------------------------------------------------------------*/
-void IndexData::vInsertEntry(EntryBuffer* pHigher, KeyWsp& xKeyWsp, Id xId, i8 iLevel)
+void IndexData::vInsertEntry(EntryBuffer* pHigher, KeyWrk& xKeyWrk, Id xId, i8 iLevel)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
   
   // initialize the entry wsp
-  EntWrk xEntWrk(xId,xKeyWsp);
+  EntWrk xEntWrk(xId,xKeyWrk);
   
   // find index buffer which contains the entry after which the new entry will
   // be inserted into, starting with given higher
-  EntryBuffer* pIndexBuffer = pHigher->pPositionLevel(xKeyWsp, JC_AFTER, iLevel);
+  EntryBuffer* pIndexBuffer = pHigher->pPositionLevel(xKeyWrk, JC_AFTER, iLevel);
   
   // check if found index buffer has enough space
   i8 nEntryBytes = Entry::nBytesRequired(xEntWrk);
@@ -379,7 +379,7 @@ void IndexData::vInsertEntry(EntryBuffer* pHigher, KeyWsp& xKeyWsp, Id xId, i8 i
     
     // find position again
     bool bEqual;
-    pIndexBuffer = pIndexBuffer->pHigherLevel()->pPositionLevel(xKeyWsp, JC_AFTER, iLevel);
+    pIndexBuffer = pIndexBuffer->pHigherLevel()->pPositionLevel(xKeyWrk, JC_AFTER, iLevel);
   }
   
   // assert we have a buffer
@@ -412,11 +412,11 @@ void IndexData::vInsertFirstEntry(EntryBuffer* pToBuffer, EntryBuffer* pFromBuff
   // get the key from the first entry
   Key* aKey = pFirstEntry->aKey();
   
-  // form a keyWsp from the key
-  KeyWsp xFirstKeyWsp;
-  xFirstKeyWsp.vAddKey(aKey, m_pIndex->pIdxColVec());
+  // form a KeyWrk from the key
+  KeyWrk xFirstKeyWrk;
+  xFirstKeyWrk.vAddKey(aKey, m_pIndex->pIdxColVec());
   
-  vInsertEntry(pToBuffer, xFirstKeyWsp, xNewId, pToBuffer->nBufferLevel());
+  vInsertEntry(pToBuffer, xFirstKeyWrk, xNewId, pToBuffer->nBufferLevel());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -426,16 +426,16 @@ void IndexData::vFixHigherBuffer(EntryBuffer* pIndexBuffer, i8 iLevel)
 {
    _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
   
-  KeyWsp xKeyWsp;
+  KeyWrk xKeyWrk;
   EntryBuffer* pRoot;
   
-  // get first entry keywsp from first buffer
+  // get first entry KeyWrk from first buffer
   Entry* aFirstEntry = pIndexBuffer->pNextEntry(pIndexBuffer->pHead());
 
-  // form a keyWsp from the key
-  xKeyWsp.vAddKey(aFirstEntry->aKey(), m_pIndex->pIdxColVec());
+  // form a KeyWrk from the key
+  xKeyWrk.vAddKey(aFirstEntry->aKey(), m_pIndex->pIdxColVec());
   
-  pRoot = m_pRoot->pPositionLevel(xKeyWsp, JC_AFTER, iLevel);
+  pRoot = m_pRoot->pPositionLevel(xKeyWrk, JC_AFTER, iLevel);
 
   pIndexBuffer->vHigherLevel(pRoot);
 }
@@ -450,8 +450,8 @@ EntryBuffer* IndexData::pSplitBuffer(EntryBuffer* pIndexBuffer)
   EntryBuffer* pRoot;
   EntryBuffer* pNewRoot;
   
-  KeyWsp xFirstKeyWsp1;
-  KeyWsp xFirstKeyWsp2;
+  KeyWrk xFirstKeyWrk1;
+  KeyWrk xFirstKeyWrk2;
   
   // split the index buffer
   EntryBuffer* pIndexBufferNew = pIndexBuffer->pSplitBuffer();

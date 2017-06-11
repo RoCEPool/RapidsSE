@@ -74,7 +74,7 @@ namespace Base
   
     /*    */ CN_KEYVAL,
     /*    */ CN_KEYVEC,
-    /* 35 */ CN_KEYWSP,
+    /* 35 */ CN_KEYWRK,
   
     /* 36 */ CN_LOADCHUNK,
     /* 37 */ CN_LOADER,
@@ -224,7 +224,7 @@ namespace Base
     
     /*    */ "KEYVAL"_Str,
     /*    */ "KEYVEC"_Str,
-    /* 35 */ "KEYWSP"_Str,
+    /* 35 */ "KEYWRK"_Str,
   
     /* 36 */ "LOADCHUNK"_Str,
     /* 37 */ "LOADER"_Str,

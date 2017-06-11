@@ -62,15 +62,15 @@ void Task::vEntryMatches(NNP_Task nnpTask)
   if ( ! nnpTask->m_pDataStack->bPop(xValWsp) )
     THROW_INVALID_DSTACK("entry.matches"_Str);
   
-  KeyWsp xKeyWsp;
+  KeyWrk xKeyWrk;
   
   StrVal* pStrVal = _pStrVal(xValWsp.pNestedValueSelf());
   
-  xKeyWsp.vAddDatum(pStrVal, pIndex->pIdxColVec()->pGet(0));
+  xKeyWrk.vAddDatum(pStrVal, pIndex->pIdxColVec()->pGet(0));
   
   //pEntry->vShow(0, pIndex->pIdxColVec());
   bool bIsEqual = false;
-  bool bSame = pEntry->aKey()->bJuxtaCompare(JC_SAME, xKeyWsp.aKey(), pIndex->pIdxColVec(), bIsEqual);
+  bool bSame = pEntry->aKey()->bJuxtaCompare(JC_SAME, xKeyWrk.aKey(), pIndex->pIdxColVec(), bIsEqual);
 
   nnpTask->m_pDataStack->vPushInt(bSame ? 1 : 0);
 }

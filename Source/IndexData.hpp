@@ -40,7 +40,7 @@ namespace DBobjects
     Index*       pIndex(void);
     i8           nIndexBuffers(void);
     void         vInsertEntry(Entry* pRow, i8 nRowNo, bn nBufferNo);
-    EntryBuffer* pPositionLevel(KeyWsp& xKeyWsp, eJC eJuxtaCompare, i8 iLevel);
+    EntryBuffer* pPositionLevel(KeyWrk& xKeyWrk, eJC eJuxtaCompare, i8 iLevel);
     EntryBuffer* pRoot(void);
     void         vTidyUp(void);
     void         vTruncate(void);
@@ -51,7 +51,7 @@ namespace DBobjects
     
   private:
     void         vFixHigherBuffer(EntryBuffer* pIndexBuffer, i8 iLevel);
-    void         vInsertEntry(EntryBuffer* pRoot,KeyWsp& xKeyWsp, Id xId, i8 iLevel);
+    void         vInsertEntry(EntryBuffer* pRoot,KeyWrk& xKeyWrk, Id xId, i8 iLevel);
     void         vInsertFirstEntry(EntryBuffer* pToBuffer, EntryBuffer* pFromBuffer);
     EntryBuffer* pSplitBuffer(EntryBuffer* pIndexBuffer);
     void         vDumpLevel(EntryBuffer* pIndexBuffer);

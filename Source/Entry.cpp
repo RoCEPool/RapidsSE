@@ -367,9 +367,9 @@ void Entry::vContentDump(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* extract a key into keywsp from this row using given index columns          */
+/* extract a key into KeyWrk from this row using given index columns          */
 /*----------------------------------------------------------------------------*/
-void Entry::vExtractKey(KeyWsp& xKeyWsp, IdxColVec* pIdxColVec)
+void Entry::vExtractKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_ENTRY,CN_ROW);
   
@@ -480,7 +480,7 @@ void Entry::vExtractKey(KeyWsp& xKeyWsp, IdxColVec* pIdxColVec)
     }
     
     // add the column value to the key
-    xKeyWsp.vAddDatum(xValWsp, pColumn);
+    xKeyWrk.vAddDatum(xValWsp, pColumn);
   }
   
 }

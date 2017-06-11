@@ -21,7 +21,7 @@ namespace DBobjects
     };
     union {
       Key              m_xKey;    // key
-      WspFxd<C_1KB*15> m_xKeyWsp; // key workspace
+      WspFxd<C_1KB*15> m_xKeyWrk; // key workspace
     };
     Footer m_xFooter;  // footer
   
@@ -32,11 +32,11 @@ namespace DBobjects
     EntWrk(void);
     EntWrk(i8 nOffsets);
     EntWrk(Entry* pEntry);
-    EntWrk(Id& xId, KeyWsp& xKeyWsp);
+    EntWrk(Id& xId, KeyWrk& xKeyWrk);
     ~EntWrk(void);
   
-    void   vAddKey(KeyWsp& xKeyWsp);
-    void   vForm(Id& xId, KeyWsp& xKeyWsp);
+    void   vAddKey(KeyWrk& xKeyWrk);
+    void   vForm(Id& xId, KeyWrk& xKeyWrk);
     Key*   aKey(void);
     i8     nKeySize(void);
     i8     nOffsets(void);

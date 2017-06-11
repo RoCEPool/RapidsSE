@@ -50,8 +50,8 @@ EntWrk::EntWrk(void)
   for (nOffsetNo = 0_on; nOffsetNo < gnIndexOffsets; nOffsetNo++)
     m_iOffset[*nOffsetNo] = C_NIL_OFFSET;
   
-  // m_xKeyWsp
-  m_xKeyWsp.vInit();
+  // m_xKeyWrk
+  m_xKeyWrk.vInit();
   
   _checkInitialisedSize_(sizeof(EntWrk));
   
@@ -78,8 +78,8 @@ EntWrk::EntWrk(i8 nOffsets)
   for (nOffsetNo = 0_on; nOffsetNo < gnIndexOffsets; nOffsetNo++)
     m_iOffset[*nOffsetNo] = C_NIL_OFFSET;
   
-  // m_xKeyWsp
-  m_xKeyWsp.vInit();
+  // m_xKeyWrk
+  m_xKeyWrk.vInit();
   
   _checkInitialisedSize_(sizeof(EntWrk));
   
@@ -110,8 +110,8 @@ EntWrk::EntWrk(Entry* pEntry)
     vRightOffset(nOffsetNo, pEntry->iRightOffset(nOffsetNo));
   }
   
-  // m_xKeyWsp
-  m_xKeyWsp.vInit();
+  // m_xKeyWrk
+  m_xKeyWrk.vInit();
   
   _checkInitialisedSize_(sizeof(EntWrk));
   
@@ -121,12 +121,12 @@ EntWrk::EntWrk(Entry* pEntry)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-EntWrk::EntWrk(Id& xId, KeyWsp& xKeyWsp)
+EntWrk::EntWrk(Id& xId, KeyWrk& xKeyWrk)
 : EntWrk()
 {
   _precondition_(_MAGIC_,CN_ENTWRK);
 
-  vForm(xId,xKeyWsp);
+  vForm(xId,xKeyWrk);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -144,21 +144,21 @@ EntWrk::~EntWrk(void)
 /*----------------------------------------------------------------------------*/
 /* add a key                                                                  */
 /*----------------------------------------------------------------------------*/
-void EntWrk::vAddKey(KeyWsp& xKeyWsp)
+void EntWrk::vAddKey(KeyWrk& xKeyWrk)
 {
-  Str* aKeySrc = xKeyWsp.aWspStr();
-  i8 nKeyBytes = xKeyWsp.nWspUsed();
+  Str* aKeySrc = xKeyWrk.aWspStr();
+  i8 nKeyBytes = xKeyWrk.nWspUsed();
   
-  m_xKeyWsp.vAppend(aKeySrc,nKeyBytes);
+  m_xKeyWrk.vAppend(aKeySrc,nKeyBytes);
 }
 
 /*----------------------------------------------------------------------------*/
 /* form a simple entry using given id and key                                 */
 /*----------------------------------------------------------------------------*/
-void EntWrk::vForm(Id& xId, KeyWsp& xKeyWsp)
+void EntWrk::vForm(Id& xId, KeyWrk& xKeyWrk)
 {
   m_xId = xId;
-  vAddKey(xKeyWsp);
+  vAddKey(xKeyWrk);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -176,7 +176,7 @@ Key* EntWrk::aKey(void)
 /*----------------------------------------------------------------------------*/
 i8 EntWrk::nKeySize(void)
 {
-  return m_xKeyWsp.nUsed();
+  return m_xKeyWrk.nUsed();
 }
 
 /*----------------------------------------------------------------------------*/
