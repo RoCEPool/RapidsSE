@@ -57,22 +57,6 @@ bool bExecuteRequest(SEitf* pSEitf, TokenSet& xTokenSet);
 eEC eGetResponse(SEitf* pSEitf);
 
 /*----------------------------------------------------------------------------*/
-/* get table                                                                  */
-/*----------------------------------------------------------------------------*/
-#define GET_TABLE(aMarker) \
-{  \
-  eResult = eExecuteRequest(pSEitf, "gettbl"_Str, (Str*)pTable); \
-}
-
-/*----------------------------------------------------------------------------*/
-/* ret table                                                                  */
-/*----------------------------------------------------------------------------*/
-#define RETURN_TABLE(aMarker) \
-{  \
-  eResult = eExecuteRequest(pSEitf, "rettbl"_Str, (Str*)pTable); \
-}
-
-/*----------------------------------------------------------------------------*/
 /* trace API entry                                                            */
 /*----------------------------------------------------------------------------*/
 #define TRACE_ENTRY_P0() \
@@ -140,6 +124,18 @@ eEC eGetResponse(SEitf* pSEitf);
     if ( (iTraceLevel & TL_EXIT) == TL_EXIT) \
       vTrace(">%s(%s): %p(%lld)\n"_Str,  \
         aApiCall, aMarker, pSEitf, pSEitf ? pSEitf->iPartition() : -1); \
+  }
+
+/*----------------------------------------------------------------------------*/
+/* validate index                                                             */
+/*----------------------------------------------------------------------------*/
+#define VALIDATE_INDEX(aMarker) \
+  {  \
+    if ( ! pSEitf->pCurrentTable() ) { \
+      TRACE_ERROR(aMarker, EC_NO_SUCH_TABLE); \
+      pSEitf->vSetLastError(EC_NO_SUCH_TABLE); \
+      return EC_NO_SUCH_TABLE; \
+    } \
   }
 
 /*----------------------------------------------------------------------------*/
@@ -544,6 +540,7 @@ inline eEC eChangeFolderTable(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* p
     vTraceError(iTraceLevel, "%s(fo): %p %s(%lld)\n"_Str, pSEitf, aApiCall, aEC[eResult], eResult);
     return eResult;
   }
+  
   
   // get response
   eResult = eGetResponse(pSEitf);

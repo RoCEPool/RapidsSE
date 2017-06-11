@@ -144,19 +144,19 @@ eEC RapidsSE_BeginInsert(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable
     CF_TABLE("e"_Str);
     
     // get a reference to the table
-    GET_TABLE("f"_Str);
-    CHECK_RESULT("g"_Str);
-    CHECK_RESPONSE("h"_Str);
+    eResult = eExecuteRequest(pSEitf, "gettbl"_Str, pTable);
+    CHECK_RESULT("f"_Str);
+    CHECK_RESPONSE("g"_Str);
     
     // validate we have a table
-    VALIDATE_TABLE("i"_Str);
+    VALIDATE_TABLE("h"_Str);
     
     // begin a tnx
     bool bResult = pSEitf->bBeginTx();
     
     if (!bResult) {
       pSEitf->vSetLastError(EC_BEGIN_TX_FAILED);
-      TRACE_ERROR("j",EC_BEGIN_TX_FAILED);
+      TRACE_ERROR("i",EC_BEGIN_TX_FAILED);
       return EC_BEGIN_TX_FAILED;
     }
     
@@ -241,42 +241,42 @@ eEC RapidsSE_CreateIndex(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable
     VALIDATE_PARAM("c"_Str, pSchema);
     VALIDATE_PARAM("d"_Str, pTable);
     VALIDATE_PARAM("e"_Str, pTable);
+    VALIDATE_PARAM("f"_Str, pIndex);
     
     // change folder to table
-    CF_TABLE("f"_Str);
+    CF_TABLE("g"_Str);
     
     // get pTable
-    GET_TABLE("g"_Str);
-    CHECK_RESPONSE("g"_Str);
+    eResult = eExecuteRequest(pSEitf, "gettbl"_Str, pTable);
+    CHECK_RESPONSE("h"_Str);
+    VALIDATE_TABLE("i"_Str);
     
     // change folder to tables
-    CF_TABLES("h"_Str);
+    CF_TABLES("j"_Str);
     
     // create an index
     eResult = eExecuteRequest(pSEitf, "mkidx"_Str, pTable, pIndex);
-    if (EC_NONE != eResult) {
-      VALIDATE_TABLE("i"_Str);
-      RETURN_TABLE();
-    }
+    CHECK_RESULT("k"_Str);
+    CHECK_RESPONSE("l"_Str);
     
-    CHECK_RESPONSE("j"_Str);
-
     // change folder to indexes
-    CF_INDEXES("k"_Str);
+    CF_INDEXES("m"_Str);
     
-    //GET_INDEX();
-    //CHECK_RESPONSE();
-    //VALIDATE_INDEX();
+    eResult = eExecuteRequest(pSEitf, "getidx"_Str, pIndex);
+    CHECK_RESULT("n"_Str);
+    CHECK_RESPONSE("o"_Str);
+    
+    VALIDATE_INDEX("p"_Str);
     
     if (bIsUnique) {
       // set unique index
       eResult = eExecuteRequest(pSEitf, "setidxunique"_Str, pTable, pIndex, "true"_Str);
-      if (EC_NONE != eResult) {
-        VALIDATE_TABLE("i"_Str);
-        RETURN_TABLE();
-      }
-      CHECK_RESPONSE("m"_Str);
+      CHECK_RESPONSE("q"_Str);
+      CHECK_RESPONSE("r"_Str);
     }
+    vTrace("xyz3\n"_Str);
+    
+    VALIDATE_TABLE("ff"_Str);
     
     TRACE_EXIT("ea"_Str);
     
@@ -325,12 +325,11 @@ eEC RapidsSE_CreateTable(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable
     CHECK_RESULT("f"_Str);
     CHECK_RESPONSE("g"_Str);
     
-    // change directory to tables
-    eResult = eExecuteRequest(pSEitf, "cf"_Str, (Str*)pTable);
+    // change directory to table
+    eEC eResult = eExecuteRequest(pSEitf, "cf"_Str, (Str*)pTable);
     CHECK_RESULT("h"_Str);
     CHECK_RESPONSE("i"_Str);
     
-    // get pTable
     eEC eGetResult = eExecuteRequest(pSEitf, "gettbl"_Str, (Str*)pTable);
 
     if (EC_NONE != eGetResult) {
@@ -344,8 +343,11 @@ eEC RapidsSE_CreateTable(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable
       return eGetResult;
     }
     
-    // check response
-    CHECK_RESPONSE("m"_Str);
+    eResult = eGetResponse(pSEitf);
+    if (EC_NONE != eGetResult) {
+      TRACE_ERROR("m"_Str,eGetResult);
+      return eGetResult;
+    }
     
     // validate current table
     VALIDATE_TABLE("n");
@@ -436,22 +438,30 @@ eEC RapidsSE_EndCreateIndex(SEitf* pSEitf, Str* pTable, Str* pIndex, i8 iTraceLe
     // clear the last error
     CLEAR_LASTERROR();
     
-    // endmkidx only if we managed to gettbl
-    if (pSEitf->pCurrentTable()) {
-      eEC eResult = eExecuteRequest(pSEitf, "endmkidx"_Str, pTable, pIndex);
-      CHECK_RESULT("b"_Str);
-      CHECK_RESPONSE("c"_Str);
-    }
+    VALIDATE_TABLE("b"_Str);
     
-    // rettbl only if we managed to gettbl the table
-    if (pSEitf->pCurrentTable()) {
-      RETURN_TABLE("d"_Str);
-      CHECK_RESULT("e"_Str);
-      CHECK_RESPONSE("f"_Str);
+    // endmkidx only if we managed to getidx
+    if (pSEitf->pCurrentIndex()) {
+      eEC eResult = eExecuteRequest(pSEitf, "endmkidx"_Str, pTable, pIndex);
+      CHECK_RESULT("c"_Str);
+      CHECK_RESPONSE("d"_Str);
+      
+      VALIDATE_NOTABLE("e"_Str);
+      
+      // return the index
+      eResult = eExecuteRequest(pSEitf, "retidx"_Str);
+      CHECK_RESULT("f"_Str);
+      CHECK_RESPONSE("g"_Str);
+      
+    } else {
+      // rettbl
+      eResult = eExecuteRequest(pSEitf, "rettbl"_Str);
+      CHECK_RESULT("d"_Str);
+      CHECK_RESPONSE("e"_Str);
     }
     
     // should not have a table
-    VALIDATE_NOTABLE("g"_Str);
+    VALIDATE_NOTABLE("h"_Str);
     
     TRACE_EXIT("ea"_Str);
     
@@ -499,9 +509,9 @@ eEC RapidsSE_EndCreateTable(SEitf* pSEitf, Str* pTable, i8 iTraceLevel)
 
     // rettbl only if we managed to create the table
     if (pSEitf->pCurrentTable()) {
-      RETURN_TABLE("d"_Str);
-      CHECK_RESULT("e"_Str);
-      CHECK_RESPONSE("f"_Str);
+      eResult = eExecuteRequest(pSEitf, "rettbl"_Str);
+      CHECK_RESULT("d"_Str);
+      CHECK_RESPONSE("e"_Str);
     }
     
     // should not have a table
@@ -555,12 +565,12 @@ eEC RapidsSE_EndInsert(SEitf* pSEitf, i8 iTraceLevel)
     }
     
     Table* pTable = pSEitf->pCurrentTable();
-    RETURN_TABLE("d"_Str);
-    CHECK_RESULT("e"_Str);
-    CHECK_RESPONSE("f"_Str);
+    eResult = eExecuteRequest(pSEitf, "rettbl"_Str);
+    CHECK_RESULT("d"_Str);
+    CHECK_RESPONSE("e"_Str);
     
     // validate if no table
-    VALIDATE_NOTABLE("g"_Str);
+    VALIDATE_NOTABLE("f"_Str);
     
     pSEitf->vCommitTx();
     pSEitf->vEndTx();
@@ -616,12 +626,12 @@ eEC RapidsSE_EndScan(SEitf* pSEitf, i8 iTraceLevel)
     
     // return the table
     Table* pTable = pSEitf->pCurrentTable();
-    RETURN_TABLE("c"_Str);
-    CHECK_RESULT("d"_Str);
-    CHECK_RESPONSE("e"_Str);
+    eResult = eExecuteRequest(pSEitf, "rettbl"_Str);
+    CHECK_RESULT("s"_Str);
+    CHECK_RESPONSE("d"_Str);
     
     // validate if no table
-    VALIDATE_NOTABLE("f"_Str);
+    VALIDATE_NOTABLE("d"_Str);
     
     TRACE_EXIT("ea"_Str);
     

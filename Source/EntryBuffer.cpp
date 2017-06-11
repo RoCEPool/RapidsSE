@@ -92,7 +92,7 @@ EntryBuffer::EntryBuffer(i8 iDataBytes)
 /*----------------------------------------------------------------------------*/
 EntryBuffer::~EntryBuffer(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
+  //_precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/

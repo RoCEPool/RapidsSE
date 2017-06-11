@@ -303,7 +303,7 @@ void Task::vSEitfIndexGet(NNP_Task nnpTask)
     THROW_INVALID_DSTACK("seitf.indexGet"_Str);
   
   Index* pIndex = _pIndex(pPtrIndex);
-  ASSERT(CN_TABLE == pIndex->eClass());
+  ASSERT(CN_INDEX == pIndex->eClass());
   
   pSEitf->vCurrentIndex(pIndex);
   
