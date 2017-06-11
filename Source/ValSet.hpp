@@ -11,7 +11,7 @@ namespace Values
 {
   class ValSet : public Value
   {
-    static const i8 C_VALSET_DATAAREA = C_1K * 63; // has to fit inside valwsp
+    static const i8 C_VALSET_DATAAREA = C_1K * 63; // has to fit inside ValWrk
     
   private:
     i8  m_iBytes; // bytes used in work space
@@ -40,7 +40,7 @@ namespace Values
   private:
     Str* aFirstByte(void);
     Str* aLastByte(void);
-    ValWsp* pToValWsp(Str* pCursor);
+    ValWrk* pToValWrk(Str* pCursor);
   };
   
   ValSet* _pValSet(void* aAddr);

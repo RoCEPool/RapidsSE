@@ -373,7 +373,7 @@ void Entry::vExtractKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_ENTRY,CN_ROW);
   
-  ValWsp xValWsp;
+  ValWrk xValWrk;
   s256 s;
   
   // get the data
@@ -406,7 +406,7 @@ void Entry::vExtractKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
         Bol xBol;
         bool b = DtmLib::bExtractBol(&pDst,&xBol);
         ASSERT(b);
-        xValWsp = xBol;
+        xValWrk = xBol;
         break;
       }
         
@@ -419,7 +419,7 @@ void Entry::vExtractKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
         Dte xDte;
         bool b = DtmLib::bExtractDte(&pDst,&xDte);
         ASSERT(b);
-        xValWsp = xDte;
+        xValWrk = xDte;
         break;
       }
         
@@ -432,12 +432,12 @@ void Entry::vExtractKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
         Flt xFlt;
         bool b = DtmLib::bExtractFlt(&pDst,&xFlt);
         ASSERT(b);
-        xValWsp = xFlt.dAsD8();
+        xValWrk = xFlt.dAsD8();
         break;
       }
         
       case CT_INTEGER: {
-        xValWsp = StrLib::iToI8(pDst);
+        xValWrk = StrLib::iToI8(pDst);
         break;
       }
         
@@ -445,7 +445,7 @@ void Entry::vExtractKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
         Ivl xIvl;
         bool b = DtmLib::bExtractIvl(&pDst,&xIvl);
         ASSERT(b);
-        xValWsp = xIvl;
+        xValWrk = xIvl;
         break;
       }
         
@@ -453,7 +453,7 @@ void Entry::vExtractKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
         Tme xTme;
         bool b = DtmLib::bExtractTme(&pDst,&xTme);
         ASSERT(b);
-        xValWsp = xTme;
+        xValWrk = xTme;
         break;
       }
         
@@ -461,7 +461,7 @@ void Entry::vExtractKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
         Tsp xTsp;
         bool b = DtmLib::bExtractTsp(&pDst,&xTsp);
         ASSERT(b);
-        xValWsp = xTsp;
+        xValWrk = xTsp;
         break;
       }
         
@@ -471,7 +471,7 @@ void Entry::vExtractKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
       }
         
       case CT_VARCHAR: {
-        xValWsp = s;
+        xValWrk = s;
         break;
       }
         
@@ -480,7 +480,7 @@ void Entry::vExtractKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
     }
     
     // add the column value to the key
-    xKeyWrk.vAddDatum(xValWsp, pColumn);
+    xKeyWrk.vAddDatum(xValWrk, pColumn);
   }
   
 }

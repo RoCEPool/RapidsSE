@@ -140,7 +140,7 @@ void QueueBuffer::vNext(QueueBuffer* pQbuffer)
 /*----------------------------------------------------------------------------*/
 /* pop value from this queue (there may not be any)                           */
 /*----------------------------------------------------------------------------*/
-bool QueueBuffer::bPop(ValWsp* pValWsp, bool& bDiscardable)
+bool QueueBuffer::bPop(ValWrk* pValWrk, bool& bDiscardable)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUEBUFFER,_FOOTER_);
 
@@ -153,7 +153,7 @@ bool QueueBuffer::bPop(ValWsp* pValWsp, bool& bDiscardable)
   
   i8 nBytes = ValLib::iSize(m_pTopValue);
 
-  MemLib::vCopy(pValWsp->pNestedValueSelf(),m_pTopValue,nBytes);
+  MemLib::vCopy(pValWrk->pNestedValueSelf(),m_pTopValue,nBytes);
   
   //m_pTopValue = pNextValue(m_pTopValue);
   m_pTopValue = pAdd<Value*>(m_pTopValue,nBytes);

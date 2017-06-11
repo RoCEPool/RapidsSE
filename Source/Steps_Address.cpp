@@ -50,8 +50,8 @@ void Task::vAddressEqual(NNP_Task nnpTask)
 {
   ENTRY("vAddressEql"_Str);
   
-  ValWsp xAddressA;
-  ValWsp xAddressB;
+  ValWrk xAddressA;
+  ValWrk xAddressB;
   
   if ( ! nnpTask->m_pDataStack->bPop(xAddressA,xAddressB) )
     THROW_INVALID_DSTACK("eql"_Str);
@@ -77,7 +77,7 @@ void Task::vAddressFetch(NNP_Task nnpTask)
   if ( ! nnpTask->m_pDataStack->bPop(pObject) )
     THROW_INVALID_DSTACK("@"_Str);
   
-  ValWsp xValFetched;
+  ValWrk xValFetched;
   
   eCN eClass = pObject->eClass();
   
@@ -104,7 +104,7 @@ void Task::vAddressFetch(NNP_Task nnpTask)
       THROW("Invalid eClass %lld"_Str,eClass);
   }
   
-  nnpTask->m_pDataStack->vPushValWsp(xValFetched);
+  nnpTask->m_pDataStack->vPushValWrk(xValFetched);
   
   EXIT();
 }
@@ -120,7 +120,7 @@ void Task::vAddressStore(NNP_Task nnpTask)
   if ( ! nnpTask->m_pDataStack->bPop(pObject) )
     THROW_INVALID_DSTACK("!"_Str);
   
-  ValWsp xValStored;
+  ValWrk xValStored;
   if ( ! nnpTask->m_pDataStack->bPop(xValStored) )
     THROW_INVALID_DSTACK("!"_Str);
   

@@ -162,7 +162,7 @@ void Task::vToStr(NNP_Task nnpTask)
 {
   ENTRY("vToStr"_Str);
   
-  ValWsp xVal;
+  ValWrk xVal;
   if ( ! nnpTask->m_pDataStack->bPop(xVal) )
     THROW_INVALID_DSTACK(">str"_Str);
   

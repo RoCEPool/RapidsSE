@@ -90,8 +90,8 @@ void Task::vStrAlgebra(NNP_Task nnpTask)
   // declaring a fixed length string
   s32 xString("A test"_Str);
   
-  ValWsp xValWsp;
-  StrVal* pStrVal = _pStrVal(&xValWsp);
+  ValWrk xValWrk;
+  StrVal* pStrVal = _pStrVal(&xValWrk);
   
   
   
@@ -163,8 +163,8 @@ void Task::vStrEqual(NNP_Task nnpTask)
 {
   ENTRY("vStrEql"_Str);
   
-  ValWsp xStringA;
-  ValWsp xStringB;
+  ValWrk xStringA;
+  ValWrk xStringB;
   
   // get the arguments
   if ( ! nnpTask->m_pDataStack->bPop(xStringB,xStringA) )
@@ -303,7 +303,7 @@ void Task::vStrPad(NNP_Task nnpTask)
   
   i8 iLength;
   
-  ValWsp xStringA;
+  ValWrk xStringA;
   
   // get the arguments
   if ( ! nnpTask->m_pDataStack->bPop(iLength,xStringA) )
@@ -314,7 +314,7 @@ void Task::vStrPad(NNP_Task nnpTask)
   // adjust area size
   _pStrVal(xStringA.pNestedValueSelf())->vAreaSize();
   
-  nnpTask->m_pDataStack->vPushValWsp(xStringA);
+  nnpTask->m_pDataStack->vPushValWrk(xStringA);
   
   EXIT();
 }
@@ -330,8 +330,8 @@ void Task::vStrPrepend(NNP_Task nnpTask)
   s48K xStrB;
   s48K xStrA;
   
-  ValWsp xValA;
-  ValWsp xValB;
+  ValWrk xValA;
+  ValWrk xValB;
   
   if ( ! nnpTask->m_pDataStack->bPop(xValB,xValA) )
     THROW_INVALID_DSTACK("str.prepend"_Str);

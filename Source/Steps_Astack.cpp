@@ -71,11 +71,11 @@ void Task::vAstackClass(NNP_Task nnpTask)
   if ( ! nnpTask->m_pDataStack->bPop(nTh) )
     THROW_INVALID_DSTACK("astack.class"_Str);
   
-  ValWsp xValWsp;
+  ValWrk xValWrk;
   
-  nnpTask->m_pAuxStack->vPeekValWsp(nTh,xValWsp);
+  nnpTask->m_pAuxStack->vPeekValWrk(nTh,xValWrk);
   
-  eCN eClass = xValWsp.eClass();
+  eCN eClass = xValWrk.eClass();
   
   nnpTask->m_pAuxStack->vPushInt(eClass);
   
@@ -105,7 +105,7 @@ void Task::vAstackDrop(NNP_Task nnpTask)
   
   // should just discard on stack
   
-  ValWsp xValA;
+  ValWrk xValA;
   if ( ! nnpTask->m_pAuxStack->bPop(xValA) )
     THROW_INVALID_ASTACK("adrop"_Str);
   
@@ -121,12 +121,12 @@ void Task::vAstackDup(NNP_Task nnpTask)
   
   // could just copy from stack back into stack
   
-  ValWsp xValA;
+  ValWrk xValA;
   if ( ! nnpTask->m_pAuxStack->bPop(xValA) )
   THROW_INVALID_DSTACK("adup"_Str);
   
-  nnpTask->m_pAuxStack->vPushValWsp(xValA);
-  nnpTask->m_pAuxStack->vPushValWsp(xValA);
+  nnpTask->m_pAuxStack->vPushValWrk(xValA);
+  nnpTask->m_pAuxStack->vPushValWrk(xValA);
   
   EXIT();
 }
@@ -140,11 +140,11 @@ void Task::vAstackFetch(NNP_Task nnpTask)
   
   // could do this directly on stack
   
-  ValWsp xValWsp;
+  ValWrk xValWrk;
   
-  nnpTask->m_pAuxStack->vPeekValWsp(0,xValWsp);
+  nnpTask->m_pAuxStack->vPeekValWrk(0,xValWrk);
   
-  nnpTask->m_pDataStack->vPushValWsp(xValWsp);
+  nnpTask->m_pDataStack->vPushValWrk(xValWrk);
   
   EXIT();
 }
@@ -156,13 +156,13 @@ void Task::vAstackNip(NNP_Task nnpTask)
 {
   ENTRY("vAstackNip"_Str);
   
-  ValWsp xValA;
-  ValWsp xValB;
+  ValWrk xValA;
+  ValWrk xValB;
   
   if ( ! nnpTask->m_pAuxStack->bPop(xValA,xValB) )
   THROW_INVALID_ASTACK("anip"_Str);
   
-  nnpTask->m_pAuxStack->vPushValWsp(xValA);
+  nnpTask->m_pAuxStack->vPushValWrk(xValA);
   
   EXIT();
 }
@@ -180,11 +180,11 @@ void Task::vAstackPick(NNP_Task nnpTask)
   
   // could do this directly on stack
   
-  ValWsp xValWsp;
+  ValWrk xValWrk;
   
-  nnpTask->m_pAuxStack->vPeekValWsp(iPick,xValWsp);
+  nnpTask->m_pAuxStack->vPeekValWrk(iPick,xValWrk);
   
-  nnpTask->m_pDataStack->vPushValWsp(xValWsp);
+  nnpTask->m_pDataStack->vPushValWrk(xValWrk);
   
   EXIT();
 }
@@ -196,16 +196,16 @@ void Task::vAstackReverse(NNP_Task nnpTask)
 {
   ENTRY("vAstackReverse"_Str);
   
-  ValWsp xVal0;
-  ValWsp xVal1;
-  ValWsp xVal2;
-  ValWsp xVal3;
-  ValWsp xVal4;
-  ValWsp xVal5;
-  ValWsp xVal6;
-  ValWsp xVal7;
+  ValWrk xVal0;
+  ValWrk xVal1;
+  ValWrk xVal2;
+  ValWrk xVal3;
+  ValWrk xVal4;
+  ValWrk xVal5;
+  ValWrk xVal6;
+  ValWrk xVal7;
   
-  ValWsp* apValWsp[8] = {
+  ValWrk* apValWrk[8] = {
     &xVal0, &xVal1, &xVal2, &xVal3, &xVal4, &xVal5, &xVal6, &xVal7
   };
   
@@ -214,12 +214,12 @@ void Task::vAstackReverse(NNP_Task nnpTask)
     THROW_INVALID_DSTACK("areverse"_Str);
   
   for (i8 i = 0; i < nValues; i++) {
-    if ( ! nnpTask->m_pAuxStack->bPop(apValWsp[i]) )
+    if ( ! nnpTask->m_pAuxStack->bPop(apValWrk[i]) )
       THROW_INVALID_ASTACK("areverse"_Str);
   }
   
   for (i8 i = 0; i < nValues; i++) {
-    nnpTask->m_pAuxStack->vPushValWsp(apValWsp[i]);
+    nnpTask->m_pAuxStack->vPushValWrk(apValWrk[i]);
   }
 }
 
@@ -242,14 +242,14 @@ void Task::vAstackSwap(NNP_Task nnpTask)
 {
   ENTRY("vAstackSwap"_Str);
   
-  ValWsp xValA;
-  ValWsp xValB;
+  ValWrk xValA;
+  ValWrk xValB;
   
   if ( ! nnpTask->m_pAuxStack->bPop(xValA,xValB) )
   THROW_INVALID_ASTACK("aswap"_Str);
   
-  nnpTask->m_pAuxStack->vPushValWsp(xValA);
-  nnpTask->m_pAuxStack->vPushValWsp(xValB);
+  nnpTask->m_pAuxStack->vPushValWrk(xValA);
+  nnpTask->m_pAuxStack->vPushValWrk(xValB);
   
   EXIT();
 }
@@ -272,7 +272,7 @@ void Task::vAstackToValSet(NNP_Task nnpTask)
   Str* pCursor = nullptr;
   ValSet xValSet;
   
-  ValWsp xVal;
+  ValWrk xVal;
   for (i8 iVal = 0; iVal < nVal; iVal++) {
     
     if ( ! nnpTask->m_pAuxStack->bPop(xVal) )
@@ -322,11 +322,11 @@ void Task::vAstackToA(NNP_Task nnpTask)
 {
   ENTRY("vAstackToA"_Str);
   
-  ValWsp xValOpaque;
+  ValWrk xValOpaque;
   if ( ! nnpTask->m_pDataStack->bPop(xValOpaque) )
     THROW_INVALID_DSTACK(">a"_Str);
   
-  nnpTask->m_pAuxStack->vPushValWsp(xValOpaque);
+  nnpTask->m_pAuxStack->vPushValWrk(xValOpaque);
   
   EXIT();
 }
@@ -338,11 +338,11 @@ void Task::vAstackToP(NNP_Task nnpTask)
 {
   ENTRY("vAstackToP"_Str);
   
-  ValWsp xVal;
+  ValWrk xVal;
   if ( ! nnpTask->m_pAuxStack->bPop(xVal) )
     THROW_INVALID_ASTACK("a>"_Str);
   
-  nnpTask->m_pDataStack->vPushValWsp(xVal);
+  nnpTask->m_pDataStack->vPushValWrk(xVal);
   
   EXIT();
 }
@@ -359,12 +359,12 @@ void Task::vAstackTransfer(NNP_Task nnpTask)
     THROW_INVALID_DSTACK(">auxStack"_Str);
   Task* pThatTask = _pTask(pPtrTask);
   
-  ValWsp xValWsp;
-  if ( ! nnpTask->m_pDataStack->bPop(xValWsp) )
+  ValWrk xValWrk;
+  if ( ! nnpTask->m_pDataStack->bPop(xValWrk) )
     THROW_INVALID_DSTACK(">auxStack"_Str);
   
   pThatTask->m_xLock.vGrabWrite();
-  pThatTask->m_pAuxStack->vPushValWsp(xValWsp);
+  pThatTask->m_pAuxStack->vPushValWrk(xValWrk);
   pThatTask->m_xLock.vDropWrite();
   
   EXIT();
@@ -379,11 +379,11 @@ void Task::vAstack0(NNP_Task nnpTask)
   
   // could do this directly on stack
   
-  ValWsp xValWsp;
+  ValWrk xValWrk;
   
-  nnpTask->m_pAuxStack->vPeekValWsp(0,xValWsp);
+  nnpTask->m_pAuxStack->vPeekValWrk(0,xValWrk);
   
-  nnpTask->m_pDataStack->vPushValWsp(xValWsp);
+  nnpTask->m_pDataStack->vPushValWrk(xValWrk);
   
   EXIT();
 }
@@ -397,11 +397,11 @@ void Task::vAstack1(NNP_Task nnpTask)
   
   // could do this directly on stack
   
-  ValWsp xValWsp;
+  ValWrk xValWrk;
   
-  nnpTask->m_pAuxStack->vPeekValWsp(1,xValWsp);
+  nnpTask->m_pAuxStack->vPeekValWrk(1,xValWrk);
   
-  nnpTask->m_pDataStack->vPushValWsp(xValWsp);
+  nnpTask->m_pDataStack->vPushValWrk(xValWrk);
   
   EXIT();
 }
@@ -415,11 +415,11 @@ void Task::vAstack2(NNP_Task nnpTask)
   
   // could do this directly on stack
   
-  ValWsp xValWsp;
+  ValWrk xValWrk;
   
-  nnpTask->m_pAuxStack->vPeekValWsp(2,xValWsp);
+  nnpTask->m_pAuxStack->vPeekValWrk(2,xValWrk);
   
-  nnpTask->m_pDataStack->vPushValWsp(xValWsp);
+  nnpTask->m_pDataStack->vPushValWrk(xValWrk);
   
   EXIT();
 }
@@ -433,11 +433,11 @@ void Task::vAstack3(NNP_Task nnpTask)
   
   // could do this directly on stack
   
-  ValWsp xValWsp;
+  ValWrk xValWrk;
   
-  nnpTask->m_pAuxStack->vPeekValWsp(3,xValWsp);
+  nnpTask->m_pAuxStack->vPeekValWrk(3,xValWrk);
   
-  nnpTask->m_pDataStack->vPushValWsp(xValWsp);
+  nnpTask->m_pDataStack->vPushValWrk(xValWrk);
   
   EXIT();
 }
@@ -451,11 +451,11 @@ void Task::vAstack4(NNP_Task nnpTask)
   
   // could do this directly on stack
   
-  ValWsp xValWsp;
+  ValWrk xValWrk;
   
-  nnpTask->m_pAuxStack->vPeekValWsp(4,xValWsp);
+  nnpTask->m_pAuxStack->vPeekValWrk(4,xValWrk);
   
-  nnpTask->m_pDataStack->vPushValWsp(xValWsp);
+  nnpTask->m_pDataStack->vPushValWrk(xValWrk);
   
   EXIT();
 }
@@ -469,11 +469,11 @@ void Task::vAstack5(NNP_Task nnpTask)
   
   // could do this directly on stack
   
-  ValWsp xValWsp;
+  ValWrk xValWrk;
   
-  nnpTask->m_pAuxStack->vPeekValWsp(5,xValWsp);
+  nnpTask->m_pAuxStack->vPeekValWrk(5,xValWrk);
   
-  nnpTask->m_pDataStack->vPushValWsp(xValWsp);
+  nnpTask->m_pDataStack->vPushValWrk(xValWrk);
   
   EXIT();
 }
@@ -487,11 +487,11 @@ void Task::vAstack6(NNP_Task nnpTask)
   
   // could do this directly on stack
   
-  ValWsp xValWsp;
+  ValWrk xValWrk;
   
-  nnpTask->m_pAuxStack->vPeekValWsp(6,xValWsp);
+  nnpTask->m_pAuxStack->vPeekValWrk(6,xValWrk);
   
-  nnpTask->m_pDataStack->vPushValWsp(xValWsp);
+  nnpTask->m_pDataStack->vPushValWrk(xValWrk);
   
   EXIT();
 }
@@ -505,11 +505,11 @@ void Task::vAstack7(NNP_Task nnpTask)
   
   // could do this directly on stack
   
-  ValWsp xValWsp;
+  ValWrk xValWrk;
   
-  nnpTask->m_pAuxStack->vPeekValWsp(7,xValWsp);
+  nnpTask->m_pAuxStack->vPeekValWrk(7,xValWrk);
   
-  nnpTask->m_pDataStack->vPushValWsp(xValWsp);
+  nnpTask->m_pDataStack->vPushValWrk(xValWrk);
   
   EXIT();
 }
@@ -523,11 +523,11 @@ void Task::vAstack8(NNP_Task nnpTask)
   
   // could do this directly on stack
   
-  ValWsp xValWsp;
+  ValWrk xValWrk;
   
-  nnpTask->m_pAuxStack->vPeekValWsp(8,xValWsp);
+  nnpTask->m_pAuxStack->vPeekValWrk(8,xValWrk);
   
-  nnpTask->m_pDataStack->vPushValWsp(xValWsp);
+  nnpTask->m_pDataStack->vPushValWrk(xValWrk);
   
   EXIT();
 }
@@ -541,11 +541,11 @@ void Task::vAstack9(NNP_Task nnpTask)
   
   // could do this directly on stack
   
-  ValWsp xValWsp;
+  ValWrk xValWrk;
   
-  nnpTask->m_pAuxStack->vPeekValWsp(9,xValWsp);
+  nnpTask->m_pAuxStack->vPeekValWrk(9,xValWrk);
   
-  nnpTask->m_pDataStack->vPushValWsp(xValWsp);
+  nnpTask->m_pDataStack->vPushValWrk(xValWrk);
   
   EXIT();
 }

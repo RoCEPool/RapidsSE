@@ -46,16 +46,16 @@ void Task::vQueueAppend(NNP_Task nnpTask)
 ENTRY("vQueueAppend"_Str);
   
   Object* pObject;
-  ValWsp xValWsp;
+  ValWrk xValWrk;
   
-  if ( ! nnpTask->m_pDataStack->bPop(pObject,xValWsp) )
+  if ( ! nnpTask->m_pDataStack->bPop(pObject,xValWrk) )
     THROW_INVALID_DSTACK("queue.append"_Str);
   
   Queue* pQueue = static_cast<Queue*>(pObject);
   ASSERT(pQueue);
   ASSERT(CN_QUEUE == pObject->eClass());
   
-  pQueue->bAppend(xValWsp.pNestedValue());
+  pQueue->bAppend(xValWrk.pNestedValue());
   
   EXIT();
 }
@@ -114,7 +114,7 @@ void Task::vQueuePop(NNP_Task nnpTask)
 ENTRY("vQueuePop"_Str);
   
   Object* pObject;
-  ValWsp xValWsp;
+  ValWrk xValWrk;
   
   if ( ! nnpTask->m_pDataStack->bPop(pObject) )
     THROW_INVALID_DSTACK("queue.pop"_Str);
@@ -124,8 +124,8 @@ ENTRY("vQueuePop"_Str);
   Queue* pQueue = static_cast<Queue*>(pObject);
   ASSERT(pQueue);
   
-  if (pQueue->bPop(&xValWsp)) {
-    nnpTask->m_pDataStack->vPushValWsp(xValWsp);
+  if (pQueue->bPop(&xValWrk)) {
+    nnpTask->m_pDataStack->vPushValWrk(xValWrk);
     nnpTask->m_pDataStack->vPushInt((i8)1);
   }
   else

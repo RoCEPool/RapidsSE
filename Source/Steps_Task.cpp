@@ -400,15 +400,15 @@ ENTRY("vTaskNew"_Str);
   nnpNewTask->vSeedWord(sSeed);
   
   // copy task arguments to new task (preserving stack order)
-  ValWsp xValWsp;
+  ValWrk xValWrk;
   for (i8 iTaskArg = nTaskArgs - 1; iTaskArg >= 0; iTaskArg--) {
-    nnpTask->m_pDataStack->vPeekValWsp(iTaskArg,xValWsp);
-    nnpNewTask->m_pDataStack->vPushValWsp(xValWsp);
+    nnpTask->m_pDataStack->vPeekValWrk(iTaskArg,xValWrk);
+    nnpNewTask->m_pDataStack->vPushValWrk(xValWrk);
   }
   
   // discard original task arguments
   for (i8 iTaskArg = nTaskArgs - 1; iTaskArg >= 0; iTaskArg--) {
-    bool bPopped = nnpTask->m_pDataStack->bPop(xValWsp);
+    bool bPopped = nnpTask->m_pDataStack->bPop(xValWrk);
     ASSERT(bPopped);
   }
   
@@ -525,15 +525,15 @@ ENTRY("vTaskSeed"_Str);
     THROW_INVALID_DSTACK("task.seed"_Str);
   
   // copy task arguments to new task (preserving stack order)
-  ValWsp xValWsp;
+  ValWrk xValWrk;
   for (i8 iTaskArg = nTaskArgs - 1; iTaskArg >= 0; iTaskArg--) {
-    nnpTask->m_pDataStack->vPeekValWsp(iTaskArg,xValWsp);
-    pThatTask->m_pDataStack->vPushValWsp(xValWsp);
+    nnpTask->m_pDataStack->vPeekValWrk(iTaskArg,xValWrk);
+    pThatTask->m_pDataStack->vPushValWrk(xValWrk);
   }
   
   // discard original task arguments
   for (i8 iTaskArg = nTaskArgs - 1; iTaskArg >= 0; iTaskArg--) {
-    bool bPopped = nnpTask->m_pDataStack->bPop(xValWsp);
+    bool bPopped = nnpTask->m_pDataStack->bPop(xValWrk);
     ASSERT(bPopped);
   }
   

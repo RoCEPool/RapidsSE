@@ -30,7 +30,7 @@ namespace Base
     /* 15 */ CN_TSPVAL,
     /* 16 */ CN_VALREG,
     /* 17 */ CN_VALSET,
-    /* 18 */ CN_VALWSP,
+    /* 18 */ CN_VALWRK,
   
     /*    */ CN_ACCESSPATH,
     /* 12 */ CN_ARGUMENTS,
@@ -181,7 +181,7 @@ namespace Base
     /* 15 */ "TSPVAL"_Str,
     /* 16 */ "VALREG"_Str,
     /* 17 */ "VALSET"_Str,
-    /* 18 */ "VALWSP"_Str,
+    /* 18 */ "VALWRK"_Str,
     
     /*    */ "ACCESSPATH"_Str,
     /* 12 */ "ARGUMENTS"_Str,

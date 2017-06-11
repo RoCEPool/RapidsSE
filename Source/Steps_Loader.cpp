@@ -147,7 +147,7 @@ void Task::vLoaderPathStore(NNP_Task nnpTask)
 {
   ENTRY("vLoaderPathStore"_Str);
   
-  ValWsp xWspPath;
+  ValWrk xWspPath;
   Object* pPtrLoader;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrLoader,xWspPath) )
     THROW_INVALID_DSTACK("loader.path!"_Str);

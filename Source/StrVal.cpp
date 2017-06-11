@@ -195,7 +195,7 @@ void StrVal::operator =(Str* aStr)
 /*----------------------------------------------------------------------------*/
 /* assignment operator                                                        */
 /*----------------------------------------------------------------------------*/
-void StrVal::operator =(ValWsp& rArg)
+void StrVal::operator =(ValWrk& rArg)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   

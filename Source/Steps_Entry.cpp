@@ -45,7 +45,7 @@ void Task::vEntryMatches(NNP_Task nnpTask)
   
   Object* pPtrEntry = nullptr;
   Object* pPtrIndex = nullptr;
-  ValWsp xValWsp;
+  ValWrk xValWrk;
   
   if ( ! nnpTask->m_pDataStack->bPop(pPtrEntry) )
     THROW_INVALID_DSTACK("entry.matches"_Str);
@@ -59,12 +59,12 @@ void Task::vEntryMatches(NNP_Task nnpTask)
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
   
-  if ( ! nnpTask->m_pDataStack->bPop(xValWsp) )
+  if ( ! nnpTask->m_pDataStack->bPop(xValWrk) )
     THROW_INVALID_DSTACK("entry.matches"_Str);
   
   KeyWrk xKeyWrk;
   
-  StrVal* pStrVal = _pStrVal(xValWsp.pNestedValueSelf());
+  StrVal* pStrVal = _pStrVal(xValWrk.pNestedValueSelf());
   
   xKeyWrk.vAddDatum(pStrVal, pIndex->pIdxColVec()->pGet(0));
   

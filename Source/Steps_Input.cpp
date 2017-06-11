@@ -53,7 +53,7 @@ void Task::vInputAccept(NNP_Task nnpTask)
 {
   ENTRY("vInputAccept"_Str);
   
-  ValWsp xWsp;
+  ValWrk xWsp;
   xWsp.vClass(CN_STRVAL);
   
   char* y = _pStrVal(&xWsp)->s();
@@ -64,7 +64,7 @@ void Task::vInputAccept(NNP_Task nnpTask)
   
   _pStrVal(&xWsp)->vAreaSize();
   
-  nnpTask->m_pDataStack->vPushValWsp(xWsp);
+  nnpTask->m_pDataStack->vPushValWrk(xWsp);
   
   EXIT();
 }

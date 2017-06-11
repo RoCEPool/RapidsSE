@@ -20,7 +20,7 @@ using namespace Values;
 #include "ValLib.hpp"
 
 #include "Value.hpp"
-#include "ValWsp.hpp"
+#include "ValWrk.hpp"
 #include "ValReg.hpp"
 
 #include "BcdVal.hpp"

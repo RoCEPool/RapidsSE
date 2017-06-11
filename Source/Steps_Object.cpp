@@ -108,11 +108,11 @@ void Task::vObjectFetch(NNP_Task nnpTask)
   
   i8 iPick = 0;
   
-  ValWsp xObjectWsp;
+  ValWrk xObjectWsp;
   
-  nnpTask->m_pReturnStack->vPeekValWsp(iPick,xObjectWsp);
+  nnpTask->m_pReturnStack->vPeekValWrk(iPick,xObjectWsp);
   
-  nnpTask->m_pDataStack->vPushValWsp(xObjectWsp);
+  nnpTask->m_pDataStack->vPushValWrk(xObjectWsp);
   
   EXIT();
 }
@@ -142,12 +142,12 @@ void Task::vObjectStore(NNP_Task nnpTask)
   
   i8 iPeek = 0;
   
-  ValWsp xObjectWsp;
+  ValWrk xObjectWsp;
   
   if ( ! nnpTask->m_pDataStack->bPop(xObjectWsp) )
     THROW_INVALID_DSTACK("object!"_Str);
   
-  nnpTask->m_pReturnStack->vPokeValWsp(iPeek,xObjectWsp);
+  nnpTask->m_pReturnStack->vPokeValWrk(iPeek,xObjectWsp);
   
   EXIT();
 }

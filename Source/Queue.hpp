@@ -34,7 +34,7 @@ namespace Structures
     void  vFinalize(void);
     void  vInitialize(void);
     void  vLockName(Str* aName);
-    bool  bPop(ValWsp* pValWsp);
+    bool  bPop(ValWrk* pValWrk);
     bool  bPop(ValSet* pValSet);
     
   private:

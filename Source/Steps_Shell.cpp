@@ -42,7 +42,7 @@ void Task::vShellExecute(NNP_Task nnpTask)
 {
   ENTRY("vShellExecute"_Str);
   
-  ValWsp xCommand;
+  ValWrk xCommand;
   
   if ( ! nnpTask->m_pDataStack->bPop(xCommand) )
     THROW_INVALID_DSTACK("shell.execute"_Str);

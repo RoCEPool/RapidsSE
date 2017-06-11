@@ -328,7 +328,7 @@ void Task::vEncodePushValue(NNP_Task nnpTask)
 {
   ENTRY("vEncodePushValue"_Str);
   
-  ValWsp xValA;
+  ValWrk xValA;
   if ( ! nnpTask->m_pDataStack->bPop(xValA) )
     THROW_INVALID_DSTACK("encodePushValue"_Str);
   

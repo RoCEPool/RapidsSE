@@ -109,7 +109,7 @@ void Task::vSocketConnect(NNP_Task nnpTask)
   SysCall xSysCall;
   Socket* pSocket;
   Object* pObject;
-  ValWsp xNode;
+  ValWrk xNode;
   
   i8 iPort;
   

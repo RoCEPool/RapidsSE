@@ -30,7 +30,7 @@ namespace Structures
     void     vContentDump(Str* aTab);
     QueueBuffer* pNext(void);
     void     vNext(QueueBuffer* pQbuffer);
-    bool     bPop(ValWsp* pValWsp, bool& bDiscard);
+    bool     bPop(ValWrk* pValWrk, bool& bDiscard);
     bool     bPop(ValSet* pValSet, bool& bDiscard);
 
   private:

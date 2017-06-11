@@ -330,9 +330,9 @@ void ValLib::vToString(Object* pObject, Str* aString)
       break;
     }
     
-    case CN_VALWSP: {
-      ValWsp* pValWsp = _pValWsp(pObject);
-      pValWsp->vToString(aString);
+    case CN_VALWRK: {
+      ValWrk* pValWrk = _pValWrk(pObject);
+      pValWrk->vToString(aString);
       break;
     }
       

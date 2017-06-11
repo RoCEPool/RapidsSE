@@ -2399,7 +2399,7 @@ bool SEitf::bAppendRequest(StrVal& sRequest)
   s48K sWorkspace;
   Str* aCursor = nullptr;
   
-  ValWsp xValWsp;
+  ValWrk xValWrk;
   ValSet xValSet;
   
   // Before appending request for se, ensure that se is running
@@ -2414,13 +2414,13 @@ bool SEitf::bAppendRequest(StrVal& sRequest)
   
   sWorkspace = (i8)this;
   sWorkspace.vConcat(" >seitf task::this task.seitf! "_Str);
-  xValWsp = sWorkspace;
+  xValWrk = sWorkspace;
   //vTrace("%s\n"_Str,xVal.s());
-  xValSet.vAppend(aCursor,xValWsp.pNestedValueSelf());
+  xValSet.vAppend(aCursor,xValWrk.pNestedValueSelf());
   
-  xValWsp = sRequest;
+  xValWrk = sRequest;
   //vTrace("%s\n"_Str,xVal.s());
-  xValSet.vAppend(aCursor,xValWsp.pNestedValueSelf());
+  xValSet.vAppend(aCursor,xValWrk.pNestedValueSelf());
   
   // if the current request id matches the next request id, it means
   // we have not read a response of the previous request

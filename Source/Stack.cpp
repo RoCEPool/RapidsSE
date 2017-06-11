@@ -279,7 +279,7 @@ bool Stack::bPop(i8& iArg1, Object*& pArg2)
 /*----------------------------------------------------------------------------*/
 /* pop i8,val from data stack                                                 */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPop(i8& iArg1, ValWsp& xArg2)
+bool Stack::bPop(i8& iArg1, ValWrk& xArg2)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -311,10 +311,10 @@ bool Stack::bPop(i8& iArg1, s48K& sArg2)
   
   iArg1 = xIntVal1.iInt();
   
-  ValWsp xValWsp2;
-  vPopVal(xValWsp2.pNestedValueSelf());
+  ValWrk xValWrk2;
+  vPopVal(xValWrk2.pNestedValueSelf());
   
-  sArg2 = _pStrVal(&xValWsp2);
+  sArg2 = _pStrVal(&xValWrk2);
   
   return true;
 }
@@ -411,7 +411,7 @@ bool Stack::bPop(Object*& pObject1, Object*& pObject2)
 /*----------------------------------------------------------------------------*/
 /* pop Object* from data stack                                                */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPop(Object*& pObject, ValWsp& xValWsp)
+bool Stack::bPop(Object*& pObject, ValWrk& xValWrk)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -423,7 +423,7 @@ bool Stack::bPop(Object*& pObject, ValWsp& xValWsp)
   
   pObject = xPtrVal1.pPtr();
   
-  return bPop(xValWsp);
+  return bPop(xValWrk);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -436,10 +436,10 @@ bool Stack::bPop(s32& sArg1)
   if ( ! bGuard(CN_STRVAL) )
     return false;
   
-  ValWsp xValWsp1;
-  vPopVal(xValWsp1.pNestedValueSelf());
+  ValWrk xValWrk1;
+  vPopVal(xValWrk1.pNestedValueSelf());
   
-  sArg1 = _pStrVal(xValWsp1.pNestedValueSelf());
+  sArg1 = _pStrVal(xValWrk1.pNestedValueSelf());
   
   return true;
 }
@@ -454,10 +454,10 @@ bool Stack::bPop(s256& sArg1)
   if ( ! bGuard(CN_STRVAL) )
     return false;
   
-  ValWsp xValWsp1;
-  vPopVal(xValWsp1.pNestedValueSelf());
+  ValWrk xValWrk1;
+  vPopVal(xValWrk1.pNestedValueSelf());
   
-  sArg1 = _pStrVal(xValWsp1.pNestedValueSelf());
+  sArg1 = _pStrVal(xValWrk1.pNestedValueSelf());
   
   return true;
 }
@@ -472,10 +472,10 @@ bool Stack::bPop(s48K& sArg1)
   if ( ! bGuard(CN_STRVAL) )
     return false;
   
-  ValWsp xValWsp1;
-  vPopVal(xValWsp1.pNestedValueSelf());
+  ValWrk xValWrk1;
+  vPopVal(xValWrk1.pNestedValueSelf());
   
-  sArg1 = _pStrVal(xValWsp1.pNestedValueSelf());
+  sArg1 = _pStrVal(xValWrk1.pNestedValueSelf());
   
   return true;
 }
@@ -490,10 +490,10 @@ bool Stack::bPop(s48K& sArg1, i8& iArg2)
   if ( ! bGuard(CN_STRVAL,CN_INTVAL) )
     return false;
   
-  ValWsp xValWsp1;
-  vPopVal(xValWsp1.pNestedValueSelf());
+  ValWrk xValWrk1;
+  vPopVal(xValWrk1.pNestedValueSelf());
   
-  sArg1 = _pStrVal(xValWsp1.pNestedValueSelf());
+  sArg1 = _pStrVal(xValWrk1.pNestedValueSelf());
   
   IntVal xIntVal2;
   vPopVal(&xIntVal2);
@@ -513,9 +513,9 @@ bool Stack::bPop(s48K& sArg1, i8& iArg2, i8& iArg3)
   if ( ! bGuard(CN_STRVAL,CN_INTVAL,CN_INTVAL) )
     return false;
   
-  ValWsp xValWsp1;
-  vPopVal(xValWsp1.pNestedValueSelf());
-  sArg1 = _pStrVal(xValWsp1.pNestedValueSelf());
+  ValWrk xValWrk1;
+  vPopVal(xValWrk1.pNestedValueSelf());
+  sArg1 = _pStrVal(xValWrk1.pNestedValueSelf());
   
   IntVal xIntVal2;
   vPopVal(&xIntVal2);
@@ -538,15 +538,15 @@ bool Stack::bPop(s48K& sArg1, s48K& sArg2)
   if ( ! bGuard(CN_STRVAL,CN_STRVAL) )
     return false;
   
-  ValWsp xValWsp1;
-  vPopVal(xValWsp1.pNestedValueSelf());
+  ValWrk xValWrk1;
+  vPopVal(xValWrk1.pNestedValueSelf());
   
-  sArg1 = _pStrVal(xValWsp1.pNestedValueSelf());
+  sArg1 = _pStrVal(xValWrk1.pNestedValueSelf());
   
-  ValWsp xValWsp2;
-  vPopVal(xValWsp2.pNestedValueSelf());
+  ValWrk xValWrk2;
+  vPopVal(xValWrk2.pNestedValueSelf());
   
-  sArg2 = _pStrVal(xValWsp2.pNestedValueSelf());
+  sArg2 = _pStrVal(xValWrk2.pNestedValueSelf());
   
   return true;
 }
@@ -569,7 +569,7 @@ bool Stack::bPop(ValReg* pArg1)
 /*----------------------------------------------------------------------------*/
 /* pop value from data stack                                                  */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPop(ValWsp* pArg1)
+bool Stack::bPop(ValWrk* pArg1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -584,7 +584,7 @@ bool Stack::bPop(ValWsp* pArg1)
 /*----------------------------------------------------------------------------*/
 /* pop value from data stack                                                  */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPop(ValWsp& xArg1)
+bool Stack::bPop(ValWrk& xArg1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -599,7 +599,7 @@ bool Stack::bPop(ValWsp& xArg1)
 /*----------------------------------------------------------------------------*/
 /* pop value, value from data stack                                           */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPop(ValWsp& pValue1, ValWsp& pValue2)
+bool Stack::bPop(ValWrk& pValue1, ValWrk& pValue2)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -616,7 +616,7 @@ bool Stack::bPop(ValWsp& pValue1, ValWsp& pValue2)
 /*----------------------------------------------------------------------------*/
 /* pop value, value, value from data stack                                    */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPop(ValWsp& pValue1, ValWsp& pValue2, ValWsp& pValue3)
+bool Stack::bPop(ValWrk& pValue1, ValWrk& pValue2, ValWrk& pValue3)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -657,7 +657,7 @@ bool Stack::bPopAsInt(i8& iArg1)
   if ( ! bGuard(1) )
     return false;
   
-  ValWsp xWspVal1;
+  ValWrk xWspVal1;
   vPopVal(xWspVal1.pNestedValueSelf());
   
   iArg1 = xWspVal1.iNestedAsInt();
@@ -691,7 +691,7 @@ bool Stack::bPopBinary(Object*& pObject)
   if ( ! bGuard(CN_BINVAL) )
     return false;
 
-  ValWsp xBinVal;
+  ValWrk xBinVal;
   vPopVal(xBinVal.pNestedValueSelf());
   
   pObject = _pBinVal(&xBinVal)->pNewObject();
@@ -710,10 +710,10 @@ void Stack::vPushBinary(Object* pObject)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  ValWsp xBinVal;
+  ValWrk xBinVal;
   xBinVal.vAssignBinary(pObject);
 
-  vPushValWsp(xBinVal);
+  vPushValWrk(xBinVal);
   
 }
 
@@ -765,10 +765,10 @@ void Stack::vPushS32(s32& sArg1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  ValWsp xStrVal1;
+  ValWrk xStrVal1;
   xStrVal1 = sArg1;
   
-  vPushValWsp(xStrVal1);
+  vPushValWrk(xStrVal1);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -778,10 +778,10 @@ void Stack::vPushS256(s256& sArg1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  ValWsp xStrVal1;
+  ValWrk xStrVal1;
   xStrVal1 = sArg1;
   
-  vPushValWsp(xStrVal1);
+  vPushValWrk(xStrVal1);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -791,10 +791,10 @@ void Stack::vPushS48K(s48K& sArg1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  ValWsp xStrVal1;
+  ValWrk xStrVal1;
   xStrVal1 = sArg1;
   
-  vPushValWsp(xStrVal1);
+  vPushValWrk(xStrVal1);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -834,7 +834,7 @@ void Stack::vPushValue(ValReg* pValue)
 /*----------------------------------------------------------------------------*/
 /* push value onto data stack                                                 */
 /*----------------------------------------------------------------------------*/
-void Stack::vPushValWsp(ValWsp* pValue)
+void Stack::vPushValWrk(ValWrk* pValue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -856,11 +856,11 @@ void Stack::vPushValSet(ValSet& xValSet)
 /*----------------------------------------------------------------------------*/
 /* push value onto data stack                                                 */
 /*----------------------------------------------------------------------------*/
-void Stack::vPushValWsp(ValWsp& xValWsp)
+void Stack::vPushValWrk(ValWrk& xValWrk)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  vPushVal(xValWsp.pNestedValue());
+  vPushVal(xValWrk.pNestedValue());
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
 }
@@ -895,29 +895,29 @@ void Stack::vContentDump(Str* aPrefix, Str* aTitle)
 {
   vTrace("[%s]%s:\n"_Str,aPrefix,aTitle);
   
-  ValWsp xValWsp;
+  ValWrk xValWrk;
   
   s48K sWorkspace;
   
   i8 nValues = iValues();
   for (i8 iVal = 0; iVal < nValues; iVal++) {
     
-    vPeekValWsp(iVal,xValWsp);
+    vPeekValWrk(iVal,xValWrk);
     
-    ValLib::vToString(&xValWsp,sWorkspace);
-    Str* aClass = xValWsp.aClass();
+    ValLib::vToString(&xValWrk,sWorkspace);
+    Str* aClass = xValWrk.aClass();
     
-    eCN eClass = xValWsp.eClass();
+    eCN eClass = xValWrk.eClass();
     
     if (CN_PTRVAL == eClass) {
-      PtrVal* pPtrVal = _pPtrVal(&xValWsp);
+      PtrVal* pPtrVal = _pPtrVal(&xValWrk);
       Object* pObject = pPtrVal->pPtr();
       eCN ePtdClass   = pObject->eClass();
       vTrace("[%s] [%2lld] %s (%s %s)\n"_Str,
         aPrefix,iVal,sWorkspace.s(),aClass,aCN[ePtdClass]);
     }
     else if (CN_IPVAL == eClass) {                                       //RAY??
-      IpVal* pIpVal = _pIpVal(&xValWsp);
+      IpVal* pIpVal = _pIpVal(&xValWrk);
       Cell* pCell = pIpVal->pIpPtr();
       vTrace("[%s] [%2lld] nullptr\n"_Str,aPrefix,iVal);  //RAY: should trace pIpVal
 //    vTrace("[%s] [%2lld] %p\n"_Str,aPrefix,iVal,pIpVal);
@@ -953,7 +953,7 @@ Value* Stack::pPeekValue(i8 iNthValue)
 /*----------------------------------------------------------------------------*/
 /* peek at given value on stack                                               */
 /*----------------------------------------------------------------------------*/
-void Stack::vPeekValWsp(i8 iNthValue, ValWsp& xValWsp)
+void Stack::vPeekValWrk(i8 iNthValue, ValWrk& xValWrk)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -963,21 +963,21 @@ void Stack::vPeekValWsp(i8 iNthValue, ValWsp& xValWsp)
   
   //vTrace("Peek: %lld %p %lld\n"_Str,iNthValue,pPeekedValue,iSize);
   
-  MemLib::vCopy(xValWsp.pNestedValueSelf(),pPeekedValue,iSize);
+  MemLib::vCopy(xValWrk.pNestedValueSelf(),pPeekedValue,iSize);
 }
 
 /*----------------------------------------------------------------------------*/
 /* poke at given value on stack                                               */
 /*----------------------------------------------------------------------------*/
-void Stack::vPokeValWsp(i8 iNthValue, ValWsp& xValWsp)
+void Stack::vPokeValWrk(i8 iNthValue, ValWrk& xValWrk)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
 
-  i8 iSize = ValLib::iSize(xValWsp.pNestedValueSelf());
+  i8 iSize = ValLib::iSize(xValWrk.pNestedValueSelf());
   
   Value* pPokeAddress = pPeekValue(iNthValue);
   
-  MemLib::vCopy(pPokeAddress,xValWsp.pNestedValueSelf(),iSize);
+  MemLib::vCopy(pPokeAddress,xValWrk.pNestedValueSelf(),iSize);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1121,7 +1121,7 @@ void Stack::vPushVal(Value* pValue)
   //m_xHazard.vAssertFooter();
   _hazard_();
   
-  ASSERT(CN_VALWSP != pValue->eClass());
+  ASSERT(CN_VALWRK != pValue->eClass());
   
   i8 iSize = ValLib::iSize(pValue);
   

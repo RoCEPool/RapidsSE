@@ -50,18 +50,18 @@ namespace Structures
     bool bPop(i8& iArg1);
     bool bPop(i8& iArg1, i8& iArg2);
     bool bPop(i8& iArg1, Object*& pObject);
-    bool bPop(i8& iArg1, ValWsp& xArg1);
+    bool bPop(i8& iArg1, ValWrk& xArg1);
     bool bPop(i8& iArg1, s48K& sArg2);
     bool bPop(i8& iArg1, i8& iArg2, Value& xArg3);
     bool bPop(Object*& pObject);
     bool bPop(Object*& pObject, i8& iArg);
     bool bPop(Object*& pObject1, Object*& pObject2);
-    bool bPop(Object*& pObject, ValWsp& xValWsp);
+    bool bPop(Object*& pObject, ValWrk& xValWrk);
     bool bPop(ValReg* pArg1);
-    bool bPop(ValWsp* pArg1);
-    bool bPop(ValWsp& xArg1);
-    bool bPop(ValWsp& xArg1, ValWsp& xArg2);
-    bool bPop(ValWsp& xArg1, ValWsp& xArg2, ValWsp& xArg3);
+    bool bPop(ValWrk* pArg1);
+    bool bPop(ValWrk& xArg1);
+    bool bPop(ValWrk& xArg1, ValWrk& xArg2);
+    bool bPop(ValWrk& xArg1, ValWrk& xArg2, ValWrk& xArg3);
     bool bPop(ValSet& xArg1);
     bool bPop(s32&  sArg1);
     bool bPop(s256& sArg1);
@@ -82,10 +82,10 @@ namespace Structures
     void vPushS48K(s48K& s48K);
     void vPushValue(Value* pValue);
     void vPushValue(ValReg* pValue);
-    void vPushValWsp(ValWsp* pValue);
+    void vPushValWrk(ValWrk* pValue);
     void vPushValue(Value& xValue);
     void vPushValSet(ValSet& xValSet);
-    void vPushValWsp(ValWsp& xValWsp);
+    void vPushValWrk(ValWrk& xValWrk);
   
     //-------------------------------------------------------------------------
     
@@ -93,9 +93,9 @@ namespace Structures
     void   vContentDump(Str* aPrefix, Str* aTitle);
     Value* pPeekValue(void);
     Value* pPeekValue(i8 iNthValue);
-    void   vPeekValWsp(i8 iNthValue, ValWsp& xValWsp);
+    void   vPeekValWrk(i8 iNthValue, ValWrk& xValWrk);
     bool   bPeekZero(void);
-    void   vPokeValWsp(i8 iNthValue, ValWsp& xValWsp);
+    void   vPokeValWrk(i8 iNthValue, ValWrk& xValWrk);
     void   vRetry(void);
     void   vRetryPoint(void);
     void   vReset(void);

@@ -214,10 +214,10 @@ ENTRY("vDicName"_Str);
   
   Dic* pDic = _pDic(pPtrDic);
 
-  ValWsp sName;
+  ValWrk sName;
   sName = pDic->sName();
   
-  nnpTask->m_pDataStack->vPushValWsp(sName);
+  nnpTask->m_pDataStack->vPushValWrk(sName);
   
   EXIT();
 }

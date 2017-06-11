@@ -34,12 +34,12 @@ int main(int argc, const char* argv[])
          "sizeof(eCN) %lu; sizeof(bool) %lu; \n"_Str
          "sizeof(Object) %lu; sizeof(StrVal) %lu; \n"_Str
          "sizeof(s32) %lu; sizeof(s256) %lu; \n"_Str
-         "sizeof(Value) %lu; sizeof(IntVal) %lu; sizeof(ValWsp) %lu \n"_Str
+         "sizeof(Value) %lu; sizeof(IntVal) %lu; sizeof(ValWrk) %lu \n"_Str
          "\n"_Str,
          sizeof(eCN),sizeof(bool),
          sizeof(Object),sizeof(StrVal),
          sizeof(s32),sizeof(s256),
-         sizeof(Value),sizeof(IntVal),sizeof(ValWsp)
+         sizeof(Value),sizeof(IntVal),sizeof(ValWrk)
   );
   */
   Str* aRelDbg;

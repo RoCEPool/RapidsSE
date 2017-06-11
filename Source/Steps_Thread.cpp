@@ -314,7 +314,7 @@ ENTRY("vThreadNameStore"_Str);
   Thread* pThread = static_cast<Thread*>(pObject);
   
   s32 sName;
-  ValWsp xNameWsp;
+  ValWrk xNameWsp;
   if ( ! nnpTask->m_pDataStack->bPop(xNameWsp) )
     THROW_INVALID_DSTACK("thread.name!"_Str);
   

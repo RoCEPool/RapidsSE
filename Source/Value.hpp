@@ -24,7 +24,7 @@ namespace Values
   class StrVal;
   class ValAcc;
   class ValSet;
-  class ValWsp;
+  class ValWrk;
   
   class Value : public Object
   {

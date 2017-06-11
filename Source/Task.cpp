@@ -283,7 +283,7 @@ void Task::vAddConstant(Str* aName, Str* aValue)
   
   Word* pNewWord = new(gpMainDic) Word(aName);
   
-  ValWsp xWspStr;
+  ValWrk xWspStr;
   xWspStr = aValue;
   
   pNewWord->vEncode("pushValue"_Str,&xWspStr);
@@ -436,7 +436,7 @@ void Task::vAddConstants(void)
   /*  8 */ vAddConstant("CN_STRVAL"_Str,       CN_STRVAL);
   /*  9 */ vAddConstant("CN_VALREG"_Str,       CN_VALREG);
   /* 10 */ vAddConstant("CN_VALSET"_Str,       CN_VALSET);
-  /* 11 */ vAddConstant("CN_VALWSP"_Str,       CN_VALWSP);
+  /* 11 */ vAddConstant("CN_VALWRK"_Str,       CN_VALWRK);
   
   /* 12 */ vAddConstant("CN_ARGUMENTS"_Str,    CN_ARGUMENTS);
   /* 13 */ vAddConstant("CN_ATOMIC"_Str,       CN_ATOMIC);
@@ -637,8 +637,8 @@ void Task::vAddConstants(void)
   /*  3 */ vAddConstant("SIZEOF_OBJVAL"_Str, sizeof(ObjVal));
   /*  4 */ vAddConstant("SIZEOF_PTRVAL"_Str, sizeof(PtrVal));
   /*  5 */ vAddConstant("SIZEOF_STRVAL"_Str, sizeof(StrVal));
-  /*  6 */ vAddConstant("SIZEOF_VALSET"_Str, sizeof(ValWsp)); // correct
-  /*  7 */ vAddConstant("SIZEOF_VALWSP"_Str, sizeof(ValWsp)); // correct
+  /*  6 */ vAddConstant("SIZEOF_VALSET"_Str, sizeof(ValWrk)); // correct
+  /*  7 */ vAddConstant("SIZEOF_ValWrk"_Str, sizeof(ValWrk)); // correct
   
   /*  8 */ vAddConstant("SIZEOF_ARGUMENTS"_Str,    sizeof(Arguments));
   /*  9 */ vAddConstant("SIZEOF_ATOMIC"_Str,       sizeof(Atomic));
@@ -1079,7 +1079,7 @@ Word* Task::pCompileColon(StrVal& sDefinition)
   Word* pNewWord;
   TaskStep  pStep;
   Word* pCalledWord;
-  ValWsp xValWsp;
+  ValWrk xValWrk;
   
   m_pTokeniser->vUseString(sDefinition);
   
@@ -1114,8 +1114,8 @@ Word* Task::pCompileColon(StrVal& sDefinition)
     switch (m_pTokeniser->eToken()) {
         
       case TK_INTEGER:
-        xValWsp = m_pTokeniser->sToken().iToI8();
-        pNewWord->vEncode("pushValue"_Str,&xValWsp);
+        xValWrk = m_pTokeniser->sToken().iToI8();
+        pNewWord->vEncode("pushValue"_Str,&xValWrk);
         break;
         
       case TK_NAME:
@@ -1138,8 +1138,8 @@ Word* Task::pCompileColon(StrVal& sDefinition)
         break;
         
       case TK_STRING: {
-        xValWsp = m_pTokeniser->sToken();
-        pNewWord->vEncode("pushValue"_Str,&xValWsp);
+        xValWrk = m_pTokeniser->sToken();
+        pNewWord->vEncode("pushValue"_Str,&xValWrk);
         break;
       }
         
@@ -1648,7 +1648,7 @@ void Task::vStackContents(Stack* pStack, StrVal& sStackContents)
                                       pPtr);
           //else
           //  sStackContents.vCatSprint("%p"_Str,
-          //                     pValWsp->pPtr());
+          //                     pValWrk->pPtr());
         }
       }
       else

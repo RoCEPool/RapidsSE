@@ -91,7 +91,7 @@ void Task::vIndexBuffer(NNP_Task nnpTask)
   ENTRY("vIndexBuffer"_Str);
   Object* pPtrIndex = nullptr;
   Object* pPtrTable = nullptr;
-  ValWsp xValWsp;
+  ValWrk xValWrk;
   
   if ( ! nnpTask->m_pDataStack->bPop(pPtrIndex) )
     THROW_INVALID_DSTACK("index.buffer"_Str);
@@ -99,7 +99,7 @@ void Task::vIndexBuffer(NNP_Task nnpTask)
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
   
-  if ( ! nnpTask->m_pDataStack->bPop(xValWsp) )
+  if ( ! nnpTask->m_pDataStack->bPop(xValWrk) )
     THROW_INVALID_DSTACK("index.buffer"_Str);
   
   i8 iIndexNo = pIndex->iIndexNo();
@@ -110,7 +110,7 @@ void Task::vIndexBuffer(NNP_Task nnpTask)
   
   KeyWrk xKeyWrk;
   
-  StrVal* pStrVal = _pStrVal(xValWsp.pNestedValueSelf());
+  StrVal* pStrVal = _pStrVal(xValWrk.pNestedValueSelf());
   
   xKeyWrk.vAddDatum(pStrVal, pIndex->pIdxColVec()->pGet(0));
   EntryBuffer* pIndexBuffer = pIndexData->pPositionLevel(xKeyWrk, JC_AFTER, 0);
@@ -255,7 +255,7 @@ void Task::vIndexPosition(NNP_Task nnpTask)
   ENTRY("vIndexPosition"_Str);
   Object* pPtrIndex = nullptr;
   Object* pPtrIndexBuffer = nullptr;
-  ValWsp xValWsp;
+  ValWrk xValWrk;
   
   if ( ! nnpTask->m_pDataStack->bPop(pPtrIndex) )
     THROW_INVALID_DSTACK("index.position"_Str);
@@ -269,7 +269,7 @@ void Task::vIndexPosition(NNP_Task nnpTask)
   EntryBuffer* pIndexBuffer = _pEntryBuffer(pPtrIndexBuffer);
   ASSERT(CN_INDEXBUFFER == pIndexBuffer->eClass());
   
-  if ( ! nnpTask->m_pDataStack->bPop(xValWsp) )
+  if ( ! nnpTask->m_pDataStack->bPop(xValWrk) )
     THROW_INVALID_DSTACK("index.position"_Str);
   
   i8 iIndexNo = pIndex->iIndexNo();
@@ -283,7 +283,7 @@ void Task::vIndexPosition(NNP_Task nnpTask)
   // assuming non-complex key
   //ASSERT(1 == pIndex->pIdxColVec()->nItems());
   
-  StrVal* pStrVal = _pStrVal(xValWsp.pNestedValueSelf());
+  StrVal* pStrVal = _pStrVal(xValWrk.pNestedValueSelf());
   
   xKeyWrk.vAddDatum(pStrVal, pIndex->pIdxColVec()->pGet(0));
 
@@ -314,7 +314,7 @@ void Task::vIndexPositionFirst(NNP_Task nnpTask)
   
   Object* pPtrIndex = nullptr;
   Object* pPtrTable = nullptr;
-  ValWsp xValWsp;
+  ValWrk xValWrk;
   
   if ( ! nnpTask->m_pDataStack->bPop(pPtrIndex) )
     THROW_INVALID_DSTACK("index.positionFirst"_Str);
@@ -611,7 +611,7 @@ void Task::vIndexUpper(NNP_Task nnpTask)
   Object* pPtrEntry = nullptr;
   Object* pPtrTable = nullptr;
 
-  ValWsp xValWsp;
+  ValWrk xValWrk;
   
   if ( ! nnpTask->m_pDataStack->bPop(pPtrIndex) )
     THROW_INVALID_DSTACK("index.upper"_Str);
@@ -625,7 +625,7 @@ void Task::vIndexUpper(NNP_Task nnpTask)
   Entry* pEntry = _pEntry(pPtrEntry);
   ASSERT(CN_ENTRY == pEntry->eClass());
   
-  if ( ! nnpTask->m_pDataStack->bPop(xValWsp) )
+  if ( ! nnpTask->m_pDataStack->bPop(xValWrk) )
     THROW_INVALID_DSTACK("index.upper"_Str);
   
   i8 iIndexNo = pIndex->iIndexNo();
@@ -639,7 +639,7 @@ void Task::vIndexUpper(NNP_Task nnpTask)
   // assuming non-complex key
   //ASSERT(1 == pIndex->pIdxColVec()->nItems());
   
-  StrVal* pStrVal = _pStrVal(xValWsp.pNestedValueSelf());
+  StrVal* pStrVal = _pStrVal(xValWrk.pNestedValueSelf());
   
   xKeyWrk.vAddDatum(pStrVal, pIndex->pIdxColVec()->pGet(0));
   

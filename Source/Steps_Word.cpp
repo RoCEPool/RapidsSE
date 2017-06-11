@@ -176,11 +176,11 @@ void Task::vComma(NNP_Task nnpTask)
   
   Word* pCurrentWord = nnpTask->m_pCurrentWord;
   
-  ValWsp xValWsp;
-  if ( ! nnpTask->m_pDataStack->bPop(xValWsp) )
+  ValWrk xValWrk;
+  if ( ! nnpTask->m_pDataStack->bPop(xValWrk) )
     THROW_INVALID_DSTACK("comma"_Str);
   
-  pCurrentWord->vEncode("pushValue"_Str,&xValWsp);
+  pCurrentWord->vEncode("pushValue"_Str,&xValWrk);
   pCurrentWord->vEncode("exit"_Str);
   
   EXIT();
@@ -386,7 +386,7 @@ void Task::vHashHashColon(NNP_Task nnpTask)
 {
   ENTRY("vHashHashColon"_Str);
   
-  ValWsp xWsp;
+  ValWrk xWsp;
   Cell* pOpFrameJumpArg = nullptr;
   Cell* pToColonJumpArg = nullptr;
 
@@ -710,7 +710,7 @@ void Task::vSee(NNP_Task nnpTask)
       
       pDoesCell++;
       
-      ValWsp* pValue = reinterpret_cast<ValWsp*>(pDoesCell);
+      ValWrk* pValue = reinterpret_cast<ValWrk*>(pDoesCell);
       
       if (CN_STRVAL == pValue->eClass()) {
         vTrace(" \"%s\"\n"_Str,_pStrVal(pValue)->s());
@@ -788,21 +788,21 @@ void Task::vSemicolon(NNP_Task nnpTask)
     // ** do not set as current word **
     
     // encode the word
-    ValWsp xValWsp;
+    ValWrk xValWrk;
     
-    xValWsp = sTildeName;
-    pWordTilde->vEncode("pushValue"_Str,&xValWsp);
+    xValWrk = sTildeName;
+    pWordTilde->vEncode("pushValue"_Str,&xValWrk);
     pWordTilde->vEncode("tracePoint"_Str);
     
-    xValWsp = pCurrentWord->iParams();
-    pWordTilde->vEncode("pushValue"_Str,&xValWsp);
+    xValWrk = pCurrentWord->iParams();
+    pWordTilde->vEncode("pushValue"_Str,&xValWrk);
     pWordTilde->vEncode("put$$"_Str);
     
-    xValWsp = pCurrentWord->sName();
-    pWordTilde->vEncode("pushValue"_Str,&xValWsp);
+    xValWrk = pCurrentWord->sName();
+    pWordTilde->vEncode("pushValue"_Str,&xValWrk);
     
-    xValWsp = "theIndirectCall"_Str;
-    pWordTilde->vEncode("pushValue"_Str,&xValWsp);
+    xValWrk = "theIndirectCall"_Str;
+    pWordTilde->vEncode("pushValue"_Str,&xValWrk);
     pWordTilde->vEncode("tracePoint"_Str);
     
     pWordTilde->vEncode(">>"_Str);
@@ -812,8 +812,8 @@ void Task::vSemicolon(NNP_Task nnpTask)
     else
       pWordTilde->vEncode(">>oneParticipant>"_Str);
     
-    xValWsp = sTildeName;
-    pWordTilde->vEncode("pushValue"_Str,&xValWsp);
+    xValWrk = sTildeName;
+    pWordTilde->vEncode("pushValue"_Str,&xValWrk);
     pWordTilde->vEncode("tracePoint"_Str);
     
     pWordTilde->vEncode((Str*)pCurrentWord->pFinalRoutine());

@@ -472,13 +472,13 @@ void Word::vEncode(Str* aWord, Value* pValue)
 /*----------------------------------------------------------------------------*/
 /* encode call to named word which has a value argument                       */
 /*----------------------------------------------------------------------------*/
-void Word::vEncode(Str* aWord, ValWsp* pValWsp)
+void Word::vEncode(Str* aWord, ValWrk* pValWrk)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
   vEncode(aWord);
   
-  vAppend(pValWsp->pNestedValueSelf());
+  vAppend(pValWrk->pNestedValueSelf());
 }
 
 /*----------------------------------------------------------------------------*/

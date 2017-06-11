@@ -97,7 +97,7 @@ ENTRY("vCommonSlash"_Str);
   
   //Word* pCurrentWord = nnpTask->m_pCurrentWord;
   
-  ValWsp xValWsp;
+  ValWrk xValWrk;
   
 //  for (;;) {
     
@@ -135,8 +135,8 @@ ENTRY("vCommonSlash"_Str);
     pWordCommon->vVariable(nnpTask->m_nVariables);
     
     // encode the word
-    xValWsp = nnpTask->m_nVariables;
-    pWordCommon->vEncode("pushValue"_Str,&xValWsp);
+    xValWrk = nnpTask->m_nVariables;
+    pWordCommon->vEncode("pushValue"_Str,&xValWrk);
     pWordCommon->vEncode("common.fetch"_Str);
     pWordCommon->vEncode("exit"_Str);
     
@@ -165,10 +165,10 @@ ENTRY("vCommonToCommon"_Str);
   Word* pWordCommon = nnpTask->m_xPathStack.pFindWord(nnpTask->m_pTokeniser->sToken());
   ASSERT(pWordCommon);
  
-  ValWsp xValWsp;
-  xValWsp = pWordCommon->iVariable();
+  ValWrk xValWrk;
+  xValWrk = pWordCommon->iVariable();
   
-  pCurrentWord->vEncode("pushValue"_Str,&xValWsp);
+  pCurrentWord->vEncode("pushValue"_Str,&xValWrk);
   pCurrentWord->vEncode("common.store"_Str);
 
   EXIT();

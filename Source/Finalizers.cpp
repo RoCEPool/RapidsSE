@@ -31,7 +31,7 @@ pFINALIZE *gpFinalize[]
   /* 15 */ &Finalize::vUndefined,         // CN_TSPVAL
   /* 16 */ &Finalize::vUndefined,         // CN_VALREG
   /* 17 */ &Finalize::vUndefined,         // CN_VALSET
-  /* 18 */ &Finalize::vUndefined,         // CN_VALWSP
+  /* 18 */ &Finalize::vUndefined,         // CN_VALWRK
   
   /*    */ &Finalize::vUndefined,         // CN_ACCESSPATH
   /* 12 */ &Finalize::vUndefined,         // CN_ARGUMENTS

@@ -189,7 +189,7 @@ void Queue::vLockName(Str* aName)
 /*----------------------------------------------------------------------------*/
 /* pop value from this queue (there may not be any)                           */
 /*----------------------------------------------------------------------------*/
-bool Queue::bPop(ValWsp* pValWsp)
+bool Queue::bPop(ValWrk* pValWrk)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUE,_FOOTER_);
 
@@ -202,7 +202,7 @@ bool Queue::bPop(ValWsp* pValWsp)
   }
   
   bool bDiscardable;
-  bool bPopped = m_pTopBuffer->bPop(pValWsp,bDiscardable);
+  bool bPopped = m_pTopBuffer->bPop(pValWrk,bDiscardable);
 
   if (bDiscardable) {
     ASSERT(bPopped);

@@ -37,7 +37,7 @@ void* ValSet::operator new(size_t iSize)
 ValSet::ValSet(void)
 : Value(CN_VALSET)
 {
-  ASSERT(sizeof(ValSet) <= sizeof(ValWsp));
+  ASSERT(sizeof(ValSet) <= sizeof(ValWrk));
   
   MemLib::vZero(m_wWorkspace,C_VALSET_DATAAREA);
   
@@ -71,7 +71,7 @@ void ValSet::vAppend(Str*& pCursor, Value* pValue)
       m_pRowBuffer = (EntryBuffer*)pPtrVal->pPtr();
       m_iRowBufferBytes = m_pRowBuffer->nUsedBytes();
       
-      //xValWsp = (Object*)C_ROWBUFFER_MARKER;
+      //xValWrk = (Object*)C_ROWBUFFER_MARKER;
       PtrVal xPtrVal;
       xPtrVal = (Object*)C_ROWBUFFER_MARKER;
       MemLib::vCopy(pCursor,&xPtrVal,sizeof(xPtrVal));
@@ -313,11 +313,11 @@ Str* ValSet::aLastByte(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert cursor to valwsp*                                                  */
+/* convert cursor to ValWrk*                                                  */
 /*----------------------------------------------------------------------------*/
-ValWsp* ValSet::pToValWsp(Str* pCursor)
+ValWrk* ValSet::pToValWrk(Str* pCursor)
 {
-  return reinterpret_cast<ValWsp*>(pCursor);
+  return reinterpret_cast<ValWrk*>(pCursor);
 }
 
 /*============================================================================*/

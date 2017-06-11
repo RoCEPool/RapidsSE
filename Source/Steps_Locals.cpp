@@ -93,7 +93,7 @@ ENTRY("vLocalsBar"_Str);
   
   Dic* pDic = nnpTask->m_xPathStack.pPick(0);
 
-  ValWsp xValWsp;
+  ValWrk xValWrk;
   
   for (;;) {
     
@@ -125,13 +125,13 @@ ENTRY("vLocalsBar"_Str);
     pWordLocal->vVariable(nnpTask->m_nVariables);
     
     // encode the word
-    xValWsp = nnpTask->m_nVariables;
-    pWordLocal->vEncode("pushValue"_Str,&xValWsp);
+    xValWrk = nnpTask->m_nVariables;
+    pWordLocal->vEncode("pushValue"_Str,&xValWrk);
     pWordLocal->vEncode("local.fetch"_Str);
     pWordLocal->vEncode("exit"_Str);
 
     // initialise the local from dstack
-    pCurrentWord->vEncode("pushValue"_Str,&xValWsp);
+    pCurrentWord->vEncode("pushValue"_Str,&xValWrk);
     pCurrentWord->vEncode("local.store"_Str);
     
     nnpTask->m_nVariables++;
@@ -192,10 +192,10 @@ ENTRY("vLocalsTo"_Str);
   Word* pWordVariable = nnpTask->m_xPathStack.pFindWord(nnpTask->m_pTokeniser->sToken());
   ASSERT(pWordVariable);
  
-  ValWsp xValWsp;
-  xValWsp = pWordVariable->iVariable();
+  ValWrk xValWrk;
+  xValWrk = pWordVariable->iVariable();
   
-  pCurrentWord->vEncode("pushValue"_Str,&xValWsp);
+  pCurrentWord->vEncode("pushValue"_Str,&xValWrk);
   pCurrentWord->vEncode("local.store"_Str);
 
   EXIT();
