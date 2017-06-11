@@ -1201,7 +1201,7 @@ Entry* EntryBuffer::pAllotEntry(i8 nBytes, i8 nOffsets, Entry* aAfterEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
-  // There should be  enough space for the new entry
+  // there should be enough space for the new entry
   if (m_xWsp.nFree() < nBytes)
     return nullptr;
   

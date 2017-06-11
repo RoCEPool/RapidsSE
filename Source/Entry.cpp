@@ -65,7 +65,7 @@ Entry::Entry(eCN eClassNo, i8 nThisBytes, i8 nOffsets)
 /*----------------------------------------------------------------------------*/
 Entry::~Entry(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_ENTRY,CN_ROW);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -154,7 +154,7 @@ EntryBuffer* Entry::pIndexBuffer(void)
 /*----------------------------------------------------------------------------*/
 i8 Entry::nSizeEntry(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_ENTRY,CN_ROW);
   
   return m_nThisBytes;
 }
@@ -168,7 +168,7 @@ i8 Entry::nSizeEntry(void)
 /*----------------------------------------------------------------------------*/
 char* Entry::aVblData(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_ENTRY,CN_ROW);
   
   char* aRowData = pAdd<char*>(this,sizeof(Entry));
   
@@ -184,6 +184,8 @@ char* Entry::aVblData(void)
 /*----------------------------------------------------------------------------*/
 on Entry::nHighestOffset(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_ENTRY,CN_ROW);
+  
   ASSERT(m_nOffsets >= 0 && m_nOffsets <= gnIndexOffsets);
   
   on nHighest(m_nOffsets - 1);
@@ -196,7 +198,7 @@ on Entry::nHighestOffset(void)
 /*----------------------------------------------------------------------------*/
 i8 Entry::nOffsets(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_ENTRY,CN_ROW);
   
   return m_nOffsets;
 }
@@ -206,7 +208,7 @@ i8 Entry::nOffsets(void)
 /*----------------------------------------------------------------------------*/
 i8 Entry::iRightOffset(on nOffsetNo)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_ENTRY,CN_ROW);
   
   ASSERT(nOffsetNo >= 0_on && nOffsetNo < gnIndexOffsets);
   
@@ -223,7 +225,7 @@ i8 Entry::iRightOffset(on nOffsetNo)
 /*----------------------------------------------------------------------------*/
 void Entry::vRightOffset(on nOffsetNo, i8 iRightOffset)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_ENTRY,CN_ROW);
   
   ASSERT(nOffsetNo >= 0_on && nOffsetNo < gnIndexOffsets);
   
@@ -241,7 +243,7 @@ void Entry::vRightOffset(on nOffsetNo, i8 iRightOffset)
 /*----------------------------------------------------------------------------*/
 Key* Entry::aKey(void)
 {
-  _precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_ENTRY,CN_ROW);
   
   i8 nOffsetBytes = RightVec::nBytesRequired(m_nOffsets);
   
@@ -255,7 +257,7 @@ Key* Entry::aKey(void)
 /*----------------------------------------------------------------------------*/
 void Entry::vReplaceKey(EntWsp& xEntWsp)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_ENTRY,CN_ROW);
   
   ASSERT(m_nThisBytes);
   
@@ -279,7 +281,7 @@ void Entry::vReplaceKey(EntWsp& xEntWsp)
 /*----------------------------------------------------------------------------*/
 void Entry::vSetEntry(EntWsp& xEntWsp)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_ENTRY,CN_ROW);
   
   ASSERT(m_nThisBytes);
   
@@ -313,7 +315,7 @@ void Entry::vSetEntry(EntWsp& xEntWsp)
 /*----------------------------------------------------------------------------*/
 void Entry::vShow(i8 iBase, IdxColVec* pColVec)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_ENTRY,CN_ROW);
   
   Key* aKey = this->aKey();
   i8 iKey;
@@ -359,7 +361,7 @@ void Entry::vShow(i8 iBase, IdxColVec* pColVec)
 /*----------------------------------------------------------------------------*/
 void Entry::vContentDump(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_ENTRY,CN_ROW);
   
   StrVal* pStr = (StrVal*)aVblData();
   
@@ -378,7 +380,7 @@ void Entry::vContentDump(void)
 /*----------------------------------------------------------------------------*/
 void Entry::vExtractKey(KeyWsp& xKeyWsp, IdxColVec* pIdxColVec)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_ENTRY,CN_ROW);
   
   ValWsp xValWsp;
   s256 s;
@@ -497,7 +499,7 @@ void Entry::vExtractKey(KeyWsp& xKeyWsp, IdxColVec* pIdxColVec)
 /*----------------------------------------------------------------------------*/
 i8 Entry::iTxId(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_ENTRY,CN_ROW);
   
   return -1; //m_iTxId;
 }
@@ -507,7 +509,7 @@ i8 Entry::iTxId(void)
 /*----------------------------------------------------------------------------*/
 void Entry::vTxId(i8 iTxId)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_ENTRY,CN_ROW);
   
   //m_iTxId = iTxId;
 }
@@ -521,7 +523,7 @@ void Entry::vTxId(i8 iTxId)
 /*----------------------------------------------------------------------------*/
 bn Entry::nBufferNo(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_ENTRY,CN_ROW);
   
   bn nBufferNo = m_xId.iBuffer();
   
@@ -533,7 +535,7 @@ bn Entry::nBufferNo(void)
 /*----------------------------------------------------------------------------*/
 RightVec* Entry::aRightVec(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_ENTRY,CN_ROW);
   
   RightVec* aRightVec = _aRightVec(aVblData());
   
@@ -545,11 +547,11 @@ RightVec* Entry::aRightVec(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get location of footer                                                     */
+/* get address of footer                                                      */
 /*----------------------------------------------------------------------------*/
 Footer* Entry::pFooter(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_); _class2_(CN_ENTRY,CN_ROW);
   
   i8 iFooterOffset = m_nThisBytes - sizeof(Footer);
   
