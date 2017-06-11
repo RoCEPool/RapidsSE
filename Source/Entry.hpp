@@ -70,8 +70,6 @@ namespace DBobjects
   };
   
   Entry* _pEntry(void* aAddr);
-  Entry* _aRow(void* aAddr);
-  
 }
 
 /*============================================================================*/
