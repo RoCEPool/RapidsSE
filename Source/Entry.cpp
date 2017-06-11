@@ -34,10 +34,10 @@ void* Entry::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* Entry::operator new(size_t iSize, Entry* pBufferItem)
+void* Entry::operator new(size_t iSize, Entry* pEntry)
 {
   RASSERT(iSize);
-  return pBufferItem;
+  return pEntry;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -192,7 +192,7 @@ on Entry::nHighestOffset(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get nOffsets                                                               */
+/* get number of offsets                                                      */
 /*----------------------------------------------------------------------------*/
 i8 Entry::nOffsets(void)
 {
