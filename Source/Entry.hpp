@@ -5,7 +5,7 @@
 
 namespace DBobjects
 {
-  class EntWsp;
+  class EntWrk;
   
   class Entry : public Object
   {
@@ -23,7 +23,7 @@ namespace DBobjects
     Entry(eCN eClassNo, i8 nThisBytes, i8 uOffsets);
     ~Entry(void);
   
-    static i8 nBytesRequired(EntWsp& xEntWsp);
+    static i8 nBytesRequired(EntWrk& xEntWrk);
     static i8 nBytesRequired(i8 nOffsets, i8 nKeyBytes, i8 nDataBytes);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -47,11 +47,11 @@ namespace DBobjects
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // key
     Key* aKey(void);
-    void vReplaceKey(EntWsp& xEntWsp);
+    void vReplaceKey(EntWrk& xEntWrk);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // index
-    void vSetEntry(EntWsp& xEntWsp);
+    void vSetEntry(EntWrk& xEntWrk);
     void vShow(i8 iBase, IdxColVec* pColVec);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

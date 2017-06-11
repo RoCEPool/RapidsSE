@@ -364,14 +364,14 @@ void IndexData::vInsertEntry(EntryBuffer* pHigher, KeyWsp& xKeyWsp, Id xId, i8 i
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
   
   // initialize the entry wsp
-  EntWsp xEntWsp(xId,xKeyWsp);
+  EntWrk xEntWrk(xId,xKeyWsp);
   
   // find index buffer which contains the entry after which the new entry will
   // be inserted into, starting with given higher
   EntryBuffer* pIndexBuffer = pHigher->pPositionLevel(xKeyWsp, JC_AFTER, iLevel);
   
   // check if found index buffer has enough space
-  i8 nEntryBytes = Entry::nBytesRequired(xEntWsp);
+  i8 nEntryBytes = Entry::nBytesRequired(xEntWrk);
   if ( ! pIndexBuffer->bHasSpace(nEntryBytes) ) {
     
     // not enough space, so split the index buffer
@@ -386,7 +386,7 @@ void IndexData::vInsertEntry(EntryBuffer* pHigher, KeyWsp& xKeyWsp, Id xId, i8 i
   ASSERT(pIndexBuffer);
   
   // insert entry into index buffer
-  bool bResult = pIndexBuffer->bInsert(xEntWsp);
+  bool bResult = pIndexBuffer->bInsert(xEntWrk);
   ASSERT(bResult);
 }
 

@@ -73,13 +73,13 @@ Entry::~Entry(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get bytes required for an Entry based on given EntWsp incl Object & Footer */
+/* get bytes required for an Entry based on given EntWrk incl Object & Footer */
 /*----------------------------------------------------------------------------*/
-i8 Entry::nBytesRequired(EntWsp& xEntWsp)
+i8 Entry::nBytesRequired(EntWrk& xEntWrk)
 {
-  i8 nOffsets = xEntWsp.nOffsets();
+  i8 nOffsets = xEntWrk.nOffsets();
   
-  i8 nKeyBytes = xEntWsp.nKeySize();
+  i8 nKeyBytes = xEntWrk.nKeySize();
   
   i8 nBytes = Entry::nBytesRequired(nOffsets,nKeyBytes,0);
   
@@ -246,7 +246,7 @@ Key* Entry::aKey(void)
 /*----------------------------------------------------------------------------*/
 /* replace existing key with given entry wsp                                  */
 /*----------------------------------------------------------------------------*/
-void Entry::vReplaceKey(EntWsp& xEntWsp)
+void Entry::vReplaceKey(EntWrk& xEntWrk)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_ENTRY,CN_ROW);
   
@@ -255,10 +255,10 @@ void Entry::vReplaceKey(EntWsp& xEntWsp)
   // copy Key
   Key* aEntryKey = this->aKey();
   
-  Key* aEntWspKey = xEntWsp.aKey();
-  i8 nKeyBytes = xEntWsp.nKeySize();
+  Key* aEntWrkKey = xEntWrk.aKey();
+  i8 nKeyBytes = xEntWrk.nKeySize();
   
-  MemLib::vCopy(aEntryKey,aEntWspKey,nKeyBytes);
+  MemLib::vCopy(aEntryKey,aEntWrkKey,nKeyBytes);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
 }
@@ -270,33 +270,33 @@ void Entry::vReplaceKey(EntWsp& xEntWsp)
 /*----------------------------------------------------------------------------*/
 /* set entry given entry wsp                                                  */
 /*----------------------------------------------------------------------------*/
-void Entry::vSetEntry(EntWsp& xEntWsp)
+void Entry::vSetEntry(EntWrk& xEntWrk)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_ENTRY,CN_ROW);
   
   ASSERT(m_nThisBytes);
   
   // set RowId
-  m_xId  = xEntWsp.xId();
+  m_xId  = xEntWrk.xId();
   
   // set Offsets
-  m_nOffsets = xEntWsp.nOffsets();
+  m_nOffsets = xEntWrk.nOffsets();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // copy RightVec
   RightVec* aEntryRightVec = this->aRightVec();
-  RightVec* aEntWspRightVec = xEntWsp.aRightVec();
-  i8 nRightBytes = xEntWsp.nRightSize();
+  RightVec* aEntWrkRightVec = xEntWrk.aRightVec();
+  i8 nRightBytes = xEntWrk.nRightSize();
   
-  MemLib::vCopy(aEntryRightVec,aEntWspRightVec,nRightBytes);
+  MemLib::vCopy(aEntryRightVec,aEntWrkRightVec,nRightBytes);
   
   // copy Key
   Key* aEntryKey = this->aKey();
-  Key* aEntWspKey = xEntWsp.aKey();
-  i8 nKeyBytes = xEntWsp.nKeySize();
+  Key* aEntWrkKey = xEntWrk.aKey();
+  i8 nKeyBytes = xEntWrk.nKeySize();
   
-  MemLib::vCopy(aEntryKey,aEntWspKey,nKeyBytes);
+  MemLib::vCopy(aEntryKey,aEntWrkKey,nKeyBytes);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
 }

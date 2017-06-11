@@ -662,7 +662,7 @@ void EntryBuffer::vBufferCount(i8& nBuffers)
 /*----------------------------------------------------------------------------*/
 /* insert new entry into this index buffer                                    */
 /*----------------------------------------------------------------------------*/
-bool EntryBuffer::bInsert(EntWsp& xEntWsp)
+bool EntryBuffer::bInsert(EntWrk& xEntWrk)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
@@ -675,19 +675,19 @@ bool EntryBuffer::bInsert(EntWsp& xEntWsp)
   // find the entry after which the new entry.key will be inserted
   EntryVec xPriorVec;
   bool bIsEqual = false;
-  Entry* pAfterEntry = pPosition(xEntWsp.aKey(), JC_AFTER, &xPriorVec, bIsEqual);
+  Entry* pAfterEntry = pPosition(xEntWrk.aKey(), JC_AFTER, &xPriorVec, bIsEqual);
   
   if (m_pIndex->bIsUnique() and bIsEqual) {
     vTrace("Warning: Duplicate key in unique index %s "_Str, m_pIndex->aIndexName());
-    xEntWsp.aKey()->vShow(m_pIndex->pIdxColVec());
+    xEntWrk.aKey()->vShow(m_pIndex->pIdxColVec());
     vTrace("\n"_Str);
   }
   
   // create a new entry after the prior entry and set it
-  //EntWsp xEntWsp(xId,xKeyWsp);
-  i8 nEntryBytes = Entry::nBytesRequired(xEntWsp);
-  Entry* pNewEntry = pAllotEntry(nEntryBytes, xEntWsp.nOffsets(), pAfterEntry);
-  pNewEntry->vSetEntry(xEntWsp);
+  //EntWrk xEntWrk(xId,xKeyWsp);
+  i8 nEntryBytes = Entry::nBytesRequired(xEntWrk);
+  Entry* pNewEntry = pAllotEntry(nEntryBytes, xEntWrk.nOffsets(), pAfterEntry);
+  pNewEntry->vSetEntry(xEntWrk);
   
   //vTrace("\n\n---------INDEX BUFFER AFTER MOVING --------------\n"_Str);
   //vShow();
@@ -1274,11 +1274,11 @@ i8 EntryBuffer::iCopyEntries(EntryBuffer* pFromBuffer, Entry* aFromEntry)
     // form keywsp from the entry
     KeyWsp xKeyWsp(pEntry->aKey(), m_pIndex->pIdxColVec());
     
-    // form the entwsp from the entry
-    EntWsp xEntWsp(pEntry->xId(), xKeyWsp);
+    // form the EntWrk from the entry
+    EntWrk xEntWrk(pEntry->xId(), xKeyWsp);
     
     // insert entry into this buffer
-    bInsert(xEntWsp);
+    bInsert(xEntWrk);
     
     // if this buffer is a higher level buffer,
     // set this buffer as the higher level buffer
@@ -1486,11 +1486,11 @@ void EntryBuffer::vReplaceEqualKey(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp)
   bool bIsEqual = false;
   ASSERT(pOldEntry->aKey()->bJuxtaCompare(JC_SAME, xOldKeyWsp.aKey(), m_pIndex->pIdxColVec(), bIsEqual));
   
-  EntWsp xEntWsp(pOldEntry);
-  xEntWsp.vAddKey(xNewKeyWsp);
+  EntWrk xEntWrk(pOldEntry);
+  xEntWrk.vAddKey(xNewKeyWsp);
   
   // just replace the key in the buffer
-  pOldEntry->vReplaceKey(xEntWsp);
+  pOldEntry->vReplaceKey(xEntWrk);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1541,9 +1541,9 @@ void EntryBuffer::vReplaceLargerKey(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp)
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // create an entwsp from the old entry, with offsets et all
-  EntWsp xEntWsp(pOldEntry);
-  xEntWsp.vAddKey(xNewKeyWsp);
+  // create an EntWrk from the old entry, with offsets et all
+  EntWrk xEntWrk(pOldEntry);
+  xEntWrk.vAddKey(xNewKeyWsp);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // we need to move right nSizeDifference bytes, making room for the bigger key
@@ -1561,9 +1561,9 @@ void EntryBuffer::vReplaceLargerKey(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp)
   // calculate size of new entry
   i8 nBytes =  iOldEntrySize + nSizeDifference;
   
-  // create a new entry at pNewEntry using EntWsp
-  new (pNewEntry) Entry(CN_ENTRY, nBytes, xEntWsp.nOffsets());
-  pNewEntry->vSetEntry(xEntWsp);
+  // create a new entry at pNewEntry using EntWrk
+  new (pNewEntry) Entry(CN_ENTRY, nBytes, xEntWrk.nOffsets());
+  pNewEntry->vSetEntry(xEntWrk);
   ASSERT(pNewEntry->nSizeEntry() == nBytes);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1615,9 +1615,9 @@ void EntryBuffer::vReplaceSmallereKey(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp)
   i8 nSizeDifference = uOldKeySize - uNewKeySize;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // create an entwsp from the old entry, with offsets et all
-  EntWsp xEntWsp(pOldEntry);
-  xEntWsp.vAddKey(xNewKeyWsp);
+  // create an EntWrk from the old entry, with offsets et all
+  EntWrk xEntWrk(pOldEntry);
+  xEntWrk.vAddKey(xNewKeyWsp);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // we need to move left nSizeDifference bytes, making room for the bigger key
@@ -1632,9 +1632,9 @@ void EntryBuffer::vReplaceSmallereKey(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp)
   // calculate size of new entry
   i8 nBytes =  iSize - (uOldKeySize - uNewKeySize);
   
-  // create a new entry at pNewEntry using EntWsp
-  new (pNewEntry) Entry(CN_ENTRY, nBytes, xEntWsp.nOffsets());
-  pNewEntry->vSetEntry(xEntWsp);
+  // create a new entry at pNewEntry using EntWrk
+  new (pNewEntry) Entry(CN_ENTRY, nBytes, xEntWrk.nOffsets());
+  pNewEntry->vSetEntry(xEntWrk);
   ASSERT(pNewEntry->nSizeEntry() == nBytes);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
