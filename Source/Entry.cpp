@@ -63,57 +63,15 @@ void* Entry::operator new(size_t iSize, Entry* pBufferItem)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Entry::Entry(EntWsp& xEntWsp)
-: Object(CN_ENTRY)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY);
-  
-  _setFooter_();
-  
-  vSetEntry(xEntWsp);
-  
-  _checkInitialised_(CN_ENTRY);
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-Entry::Entry(i8 nBytes, i8 iOffsets)                   //! should we pass EntWsp?
-: Object(CN_ENTRY)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY);
-  
-  // initialise bytes
-  m_nThisBytes = nBytes;
-  
-  // check initialisation of rowid
-  ASSERT(0 == m_xId.iBuffer() && 0 == m_xId.iRow());
-  
-  // initialise offsets
-  m_nOffsets = iOffsets;
-  ASSERT(m_nOffsets >= 0 && m_nOffsets <= gnIndexOffsets);
-  
-  // entry data will be initialised by vSetEntry       //! Is this correct form?
-  
-  _setFooter_();
-  
-  _checkInitialised_(CN_ENTRY);
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-Entry::Entry(eCN eClassNo, i8 nThisBytes)
-: Object(CN_ROW)
+Entry::Entry(eCN eClassNo, i8 nThisBytes, i8 nOffsets)
+: Object(eClassNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
   
   //m_iTxId      = -1;
   m_nThisBytes = nThisBytes;
+  //m_xId
+  m_nOffsets   = nOffsets;
   
   _setFooter_();
   

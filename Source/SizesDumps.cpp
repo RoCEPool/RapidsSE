@@ -200,7 +200,7 @@ i8 giClassSize[]
   /* 19 */ sizeof(DicPath),            // CN_DICPATH
   /* 20 */ sizeof(Dir),                // CN_DIR
   
-  /* 21 */ 0,                          // CN_ENTRY
+  /* 21 */ sizeof(Entry),              // CN_ENTRY
   /* 22 */ 0,                          // CN_ENTRYVEC
   
   /* 22 */ sizeof(File),               // CN_FILE

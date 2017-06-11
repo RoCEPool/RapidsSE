@@ -20,9 +20,7 @@ namespace DBobjects
     void* operator new(size_t);
     void* operator new(size_t, Entry*);
   
-    Entry(EntWsp& xEntWsp);
-    Entry(i8 nBytes, i8 uOffsets);
-    Entry(eCN eClassNo, i8 iDataBytes);
+    Entry(eCN eClassNo, i8 nThisBytes, i8 uOffsets);
     ~Entry(void);
   
     static i8 nBytesRequiredEntry(EntWsp& xEntWsp);

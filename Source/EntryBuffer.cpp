@@ -248,7 +248,7 @@ Entry* EntryBuffer::pAllocRow(i8 iStrLength)
   }
   
   Entry* pRow = reinterpret_cast<Entry*>(m_xWsp.aAllot(nBytesRequired));
-  new(pRow) Entry(CN_ROW,nBytesRequired);
+  new(pRow) Entry(CN_ROW,nBytesRequired,0);
   
   m_nEntries++;
   
@@ -1224,7 +1224,7 @@ Entry* EntryBuffer::pAllotEntry(i8 nBytes, i8 nOffsets, Entry* aAfterEntry)
   }
   
   // run the constructor of the new entry
-  new (pNewEntry) Entry(nBytes,nOffsets);
+  new (pNewEntry) Entry(CN_ENTRY,nBytes,nOffsets);
   
   // increment the no of entries
   m_nEntries++;
@@ -1560,7 +1560,7 @@ void EntryBuffer::vReplaceLargerKey(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp)
   i8 nBytes =  iOldEntrySize + nSizeDifference;
   
   // create a new entry at pNewEntry using EntWsp
-  new (pNewEntry) Entry(nBytes, xEntWsp.nOffsets());
+  new (pNewEntry) Entry(CN_ENTRY, nBytes, xEntWsp.nOffsets());
   pNewEntry->vSetEntry(xEntWsp);
   ASSERT(pNewEntry->nSizeEntry() == nBytes);
   
@@ -1631,7 +1631,7 @@ void EntryBuffer::vReplaceSmallereKey(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp)
   i8 nBytes =  iSize - (uOldKeySize - uNewKeySize);
   
   // create a new entry at pNewEntry using EntWsp
-  new (pNewEntry) Entry(nBytes, xEntWsp.nOffsets());
+  new (pNewEntry) Entry(CN_ENTRY, nBytes, xEntWsp.nOffsets());
   pNewEntry->vSetEntry(xEntWsp);
   ASSERT(pNewEntry->nSizeEntry() == nBytes);
   
