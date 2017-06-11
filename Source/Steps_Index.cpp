@@ -112,7 +112,7 @@ void Task::vIndexBuffer(NNP_Task nnpTask)
   
   StrVal* pStrVal = _pStrVal(xValWsp.pNestedValueSelf());
   
-  xKeyWsp.vAddElement(pStrVal, pIndex->pIdxColVec()->pGet(0));
+  xKeyWsp.vAddDatum(pStrVal, pIndex->pIdxColVec()->pGet(0));
   EntryBuffer* pIndexBuffer = pIndexData->pPositionLevel(xKeyWsp, JC_AFTER, 0);
   
   //xKeyWsp.vShow();
@@ -285,7 +285,7 @@ void Task::vIndexPosition(NNP_Task nnpTask)
   
   StrVal* pStrVal = _pStrVal(xValWsp.pNestedValueSelf());
   
-  xKeyWsp.vAddElement(pStrVal, pIndex->pIdxColVec()->pGet(0));
+  xKeyWsp.vAddDatum(pStrVal, pIndex->pIdxColVec()->pGet(0));
 
   Entry* pEntry = pIndexBuffer->pPosition(xKeyWsp, JC_AFTER);
   
@@ -641,7 +641,7 @@ void Task::vIndexUpper(NNP_Task nnpTask)
   
   StrVal* pStrVal = _pStrVal(xValWsp.pNestedValueSelf());
   
-  xKeyWsp.vAddElement(pStrVal, pIndex->pIdxColVec()->pGet(0));
+  xKeyWsp.vAddDatum(pStrVal, pIndex->pIdxColVec()->pGet(0));
   
   bool bIsEqual = false;
   bool bBefore = pEntry->aKey()->bJuxtaCompare(JC_BEFORE, xKeyWsp.aKey(), pIndex->pIdxColVec(), bIsEqual);

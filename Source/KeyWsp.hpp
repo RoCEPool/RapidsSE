@@ -24,8 +24,8 @@ namespace DBobjects
     void vShow(void);
     void vShow(eDM eDatum, ...);
 
-    void vAddElement(ValWsp& xValWsp, Column* pCol);
-    void vAddElement(StrVal* pValStr, Column* pCol);
+    void vAddDatum(ValWsp& xValWsp, Column* pCol);
+    void vAddDatum(StrVal* pValStr, Column* pCol);
     void vAddKey(Key* aKey, IdxColVec* pColVec);
   
     void  vReset(void);

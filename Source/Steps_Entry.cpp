@@ -66,7 +66,7 @@ void Task::vEntryMatches(NNP_Task nnpTask)
   
   StrVal* pStrVal = _pStrVal(xValWsp.pNestedValueSelf());
   
-  xKeyWsp.vAddElement(pStrVal, pIndex->pIdxColVec()->pGet(0));
+  xKeyWsp.vAddDatum(pStrVal, pIndex->pIdxColVec()->pGet(0));
   
   //pEntry->vShow(0, pIndex->pIdxColVec());
   bool bIsEqual = false;

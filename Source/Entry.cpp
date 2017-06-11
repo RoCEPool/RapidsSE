@@ -461,15 +461,13 @@ void Entry::vExtractKey(KeyWsp& xKeyWsp, IdxColVec* pIdxColVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
   
-  char* pRowData = aVblData();
-  
-  i8 nCols = pIdxColVec->nItems();
   ValWsp xValWsp;
   s256 s;
   
-  // get the row data
+  // get the data
   StrVal* pStrVal = (StrVal*)aVblData();
   
+  i8 nCols = pIdxColVec->nItems();
   for (i8 iColumn = 0; iColumn < nCols; iColumn++) {
     
     // get the column from the index column vector
@@ -570,7 +568,7 @@ void Entry::vExtractKey(KeyWsp& xKeyWsp, IdxColVec* pIdxColVec)
     }
     
     // add the column value to the key
-    xKeyWsp.vAddElement(xValWsp, pColumn);
+    xKeyWsp.vAddDatum(xValWsp, pColumn);
   }
   
 }

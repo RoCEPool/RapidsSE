@@ -165,7 +165,7 @@ void KeyWsp::vShow(eDM eDatum, ...)
 /*----------------------------------------------------------------------------*/
 /* add element to key                                                         */
 /*----------------------------------------------------------------------------*/
-void KeyWsp::vAddElement(Values::StrVal* pStrVal, Column* pCol)
+void KeyWsp::vAddDatum(Values::StrVal* pStrVal, Column* pCol)
 {
   _precondition_(_MAGIC_,CN_KEYWSP,_FOOTER_);
   
@@ -176,17 +176,21 @@ void KeyWsp::vAddElement(Values::StrVal* pStrVal, Column* pCol)
   i8 iValue;
   
   switch(pCol->eColumnType()) {
+      
     case CT_BOOLEAN:
       iValue = StrLib::iToI8(pSrc);
       nBytes = ValLib::nCopyBolDatum((char*)pDst,(char*)pSrc);
       break;
+      
     case CT_INTEGER:
       iValue = StrLib::iToI8(pSrc);
       nBytes = ValLib::nCopyIntDatum(pDst,(void*)&iValue);
       break;
+      
     case CT_VARCHAR:
       nBytes = ValLib::nCopyStrDatum(pDst,pSrc);
       break;
+      
     default:
       ASSERT(0);
   }
@@ -198,7 +202,7 @@ void KeyWsp::vAddElement(Values::StrVal* pStrVal, Column* pCol)
 /*----------------------------------------------------------------------------*/
 /* add element to key                                                         */
 /*----------------------------------------------------------------------------*/
-void KeyWsp::vAddElement(ValWsp& xValWsp, Column* pCol)
+void KeyWsp::vAddDatum(ValWsp& xValWsp, Column* pCol)
 {
   _precondition_(_MAGIC_,CN_KEYWSP,_FOOTER_);
   
