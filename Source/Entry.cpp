@@ -331,7 +331,7 @@ void Entry::vSetEntry(EntWsp& xEntWsp)
 /*----------------------------------------------------------------------------*/
 /* show content                                                               */
 /*----------------------------------------------------------------------------*/
-void Entry::vShow(i8 iOffset, IdxColVec* pColVec)
+void Entry::vShow(i8 iBase, IdxColVec* pColVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
   
@@ -358,14 +358,13 @@ void Entry::vShow(i8 iOffset, IdxColVec* pColVec)
          );
   aKey->vShow(pColVec);
   
-  on nRight;
-  for (nRight = 0_on; nRight < m_nOffsets; nRight++) {
+  for (on nRight = 0_on; nRight < m_nOffsets; nRight++) {
     
     vTrace(" Offset(%lld): %lld "_Str,
            *nRight,
            iRightOffset(nRight) == C_NIL_OFFSET ?
            C_NIL_OFFSET :
-           iRightOffset(nRight) + iOffset + nSizeEntry());
+           iBase + iRightOffset(nRight) + nSizeEntry());
   }
   
   vTrace("\n"_Str);

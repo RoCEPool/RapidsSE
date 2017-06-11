@@ -53,7 +53,7 @@ namespace DBobjects
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // index
     void vSetEntry(EntWsp& xEntWsp);
-    void vShow(i8 iOffset, IdxColVec* pColVec);
+    void vShow(i8 iBase, IdxColVec* pColVec);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // row
