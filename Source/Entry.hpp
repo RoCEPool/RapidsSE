@@ -27,7 +27,6 @@ namespace DBobjects
   
     static i8 nBytesRequiredEntry(EntWsp& xEntWsp);
     static i8 nBytesRequiredEntry(i8 nOffsets, i8 nKeyBytes);
-  
     static i8 nBytesRequiredRow(i8 iStrLength);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -35,7 +34,6 @@ namespace DBobjects
     Id&    xId(void);
     void   vId(Id xId);
     EntryBuffer* pIndexBuffer(void);
-    void   vSetEntry(EntWsp& xEntWsp);
     i8     nSizeEntry(void);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -54,7 +52,11 @@ namespace DBobjects
     // key
     Key*   aKey(void);
     void   vShow(i8 iOffset, IdxColVec* pColVec);
-    void   vKey(EntWsp& xEntWsp);
+    void   vReplaceKey(EntWsp& xEntWsp);
+  
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // index
+    void   vSetEntry(EntWsp& xEntWsp);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // row

@@ -230,40 +230,6 @@ EntryBuffer* Entry::pIndexBuffer(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set entry given entry wsp                                                  */
-/*----------------------------------------------------------------------------*/
-void Entry::vSetEntry(EntWsp& xEntWsp)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
-  
-  ASSERT(m_nThisBytes);
-  
-  // set RowId
-  m_xId  = xEntWsp.xId();
-  
-  // set Offsets
-  m_iOffsets = xEntWsp.nOffsets();
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  // copy RightVec
-  RightVec* aEntryRightVec = this->aRightVec();
-  RightVec* aEntWspRightVec = xEntWsp.aRightVec();
-  i8 nRightBytes = xEntWsp.nRightSize();
-  
-  MemLib::vCopy(aEntryRightVec,aEntWspRightVec,nRightBytes);
-  
-  // copy Key
-  Key* aEntryKey = this->aKey();
-  Key* aEntWspKey = xEntWsp.aKey();
-  i8 nKeyBytes = xEntWsp.nKeySize();
-  
-  MemLib::vCopy(aEntryKey,aEntWspKey,nKeyBytes);
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
 /* get size in bytes of this entry occurence incl Object & Footer             */
 /*----------------------------------------------------------------------------*/
 i8 Entry::nSizeEntry(void)
@@ -420,9 +386,9 @@ void Entry::vShow(i8 iOffset, IdxColVec* pColVec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set key given entry wsp                                                    */
+/* replace existing key with given entry wsp                                  */
 /*----------------------------------------------------------------------------*/
-void Entry::vKey(EntWsp& xEntWsp)
+void Entry::vReplaceKey(EntWsp& xEntWsp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
   
@@ -431,6 +397,44 @@ void Entry::vKey(EntWsp& xEntWsp)
   // copy Key
   Key* aEntryKey = this->aKey();
   
+  Key* aEntWspKey = xEntWsp.aKey();
+  i8 nKeyBytes = xEntWsp.nKeySize();
+  
+  MemLib::vCopy(aEntryKey,aEntWspKey,nKeyBytes);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Index -------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* set entry given entry wsp                                                  */
+/*----------------------------------------------------------------------------*/
+void Entry::vSetEntry(EntWsp& xEntWsp)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+  
+  ASSERT(m_nThisBytes);
+  
+  // set RowId
+  m_xId  = xEntWsp.xId();
+  
+  // set Offsets
+  m_iOffsets = xEntWsp.nOffsets();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // copy RightVec
+  RightVec* aEntryRightVec = this->aRightVec();
+  RightVec* aEntWspRightVec = xEntWsp.aRightVec();
+  i8 nRightBytes = xEntWsp.nRightSize();
+  
+  MemLib::vCopy(aEntryRightVec,aEntWspRightVec,nRightBytes);
+  
+  // copy Key
+  Key* aEntryKey = this->aKey();
   Key* aEntWspKey = xEntWsp.aKey();
   i8 nKeyBytes = xEntWsp.nKeySize();
   

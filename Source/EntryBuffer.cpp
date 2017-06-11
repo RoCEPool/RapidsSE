@@ -1488,7 +1488,7 @@ void EntryBuffer::vReplaceEqualKey(KeyWsp& xOldKeyWsp, KeyWsp& xNewKeyWsp)
   xEntWsp.vAddKey(xNewKeyWsp);
   
   // just replace the key in the buffer
-  pOldEntry->vKey(xEntWsp);
+  pOldEntry->vReplaceKey(xEntWsp);
 }
 
 /*----------------------------------------------------------------------------*/
