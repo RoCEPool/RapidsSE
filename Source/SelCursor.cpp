@@ -61,7 +61,7 @@ SelCursor::SelCursor(void)
   m_iPartition = 0;
   
   m_pPartition = nullptr;
-  m_pRowStrand = nullptr;
+  m_pEbStrand = nullptr;
   m_pRowBuffer = nullptr;
   m_pRow       = nullptr;
   
@@ -100,7 +100,7 @@ void SelCursor::vBegin(i8 iPartition)
   m_iPartition = iPartition;
   
   m_pPartition = nullptr;
-  m_pRowStrand = nullptr;
+  m_pEbStrand = nullptr;
   m_pRowBuffer = nullptr;
   m_pRow       = nullptr;
 }
@@ -113,7 +113,7 @@ void SelCursor::vEnd(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SELCURSOR,_FOOTER_);
   
   m_pPartition = nullptr;
-  m_pRowStrand = nullptr;
+  m_pEbStrand = nullptr;
   m_pRowBuffer = nullptr;
   m_pRow       = nullptr;
 }
@@ -126,9 +126,9 @@ void SelCursor::vFirst(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SELCURSOR,_FOOTER_);
   
   m_pPartition = m_pTable->pPartition(m_iPartition);
-  m_pRowStrand = m_pPartition->pData()->pHeadStrand();
-  if (m_pRowStrand) {
-    m_pRowBuffer = m_pRowStrand->pFirstBuffer();
+  m_pEbStrand = m_pPartition->pData()->pHeadStrand();
+  if (m_pEbStrand) {
+    m_pRowBuffer = m_pEbStrand->pFirstBuffer();
     if (m_pRowBuffer)
       m_pRow = m_pRowBuffer->pFirstRow();
     else
@@ -160,9 +160,9 @@ void SelCursor::vNext(void)
       return;
   }
   
-  m_pRowStrand = m_pRowStrand->pNextStrand();
-  if (m_pRowStrand) {
-    m_pRowBuffer = m_pRowStrand->pFirstBuffer();
+  m_pEbStrand = m_pEbStrand->pNextStrand();
+  if (m_pEbStrand) {
+    m_pRowBuffer = m_pEbStrand->pFirstBuffer();
     if (m_pRowBuffer) {
       m_pRow = m_pRowBuffer->pFirstRow();
       if (m_pRow)

@@ -106,7 +106,7 @@ namespace Base
     /* 55 */ CN_ROW,
     /* 56 */ CN_ROWBUFFER,
     /* 57 */ CN_ROWCURSOR,
-    /* 58 */ CN_ROWSTRAND,
+    /* 58 */ CN_EBSTRAND,
     /* 59 */ CN_ROWWSP,
     
     /* 60 */ CN_SCANBUFFER,
@@ -256,7 +256,7 @@ namespace Base
     /* 55 */ "ROW"_Str,
     /* 56 */ "ROWBUFFER"_Str,
     /* 57 */ "ROWCURSOR"_Str,
-    /* 58 */ "ROWSTRAND"_Str,
+    /* 58 */ "EBSTRAND"_Str,
     /* 59 */ "ROWWSP"_Str,
   
     /* 60 */ "SCANBUFFER"_Str,

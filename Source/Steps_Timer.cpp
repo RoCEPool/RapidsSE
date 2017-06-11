@@ -158,7 +158,7 @@ void Task::vTimerNew(NNP_Task nnpTask)
 {
 ENTRY("vTimerNew"_Str);
   
-  void* pObject = Heap::pAllocate(CN_ROWSTRAND);
+  void* pObject = Heap::pAllocate(CN_EBSTRAND);
 
   Timer* pTimer = _pTimer(Heap::pAllocate(CN_TIMER));
 

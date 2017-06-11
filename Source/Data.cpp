@@ -37,7 +37,7 @@ Data::Data(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DATA,_FOOTER_);
   
   m_zLock.vInit("Data::m_zLock"_Str);
-  m_nRowStrands = 0;
+  m_nEbStrands = 0;
   m_pHeadStrand = nullptr;
   m_pTailStrand = nullptr;
     
@@ -53,7 +53,7 @@ Data::~Data(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DATA,_FOOTER_);
   
-  ASSERT( ! m_nRowStrands );
+  ASSERT( ! m_nEbStrands );
 }
 
 /*----------------------------------------------------------------------------*/
@@ -141,7 +141,7 @@ bool Data::bInsertRow(Transactions::TxRef* pTxRef, Str* pRecord, i8 iLength)
 /*----------------------------------------------------------------------------*/
 /* get head strand                                                            */
 /*----------------------------------------------------------------------------*/
-RowStrand* Data::pHeadStrand(void)
+EbStrand* Data::pHeadStrand(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DATA,_FOOTER_);
   return m_pHeadStrand;
@@ -150,7 +150,7 @@ RowStrand* Data::pHeadStrand(void)
 /*----------------------------------------------------------------------------*/
 /* get tail strand                                                            */
 /*----------------------------------------------------------------------------*/
-RowStrand* Data::pTailStrand(void)
+EbStrand* Data::pTailStrand(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DATA,_FOOTER_);
   return m_pTailStrand;
@@ -159,10 +159,10 @@ RowStrand* Data::pTailStrand(void)
 /*----------------------------------------------------------------------------*/
 /* get number of row strands                                                  */
 /*----------------------------------------------------------------------------*/
-i8 Data::nRowStrands(void)
+i8 Data::nEbStrands(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DATA,_FOOTER_);
-  return m_nRowStrands;
+  return m_nEbStrands;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -174,17 +174,17 @@ void Data::vTruncate(void)
   
   m_zLock.vGrabWrite();
   
-  RowStrand* pNextRowStrand;
-  RowStrand* pRowStrand = m_pHeadStrand;
+  EbStrand* pNextEbStrand;
+  EbStrand* pEbStrand = m_pHeadStrand;
   
-  while (pRowStrand) {
-    pRowStrand->vTruncate();
-    pNextRowStrand = pRowStrand->pNextStrand();
-    delete pRowStrand;
-    pRowStrand = pNextRowStrand;
+  while (pEbStrand) {
+    pEbStrand->vTruncate();
+    pNextEbStrand = pEbStrand->pNextStrand();
+    delete pEbStrand;
+    pEbStrand = pNextEbStrand;
   }
   
-  m_nRowStrands = 0;
+  m_nEbStrands = 0;
   m_pHeadStrand = nullptr;
   m_pTailStrand = nullptr;
   
@@ -202,19 +202,19 @@ bool Data::bExtendPartition(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DATA,_FOOTER_);
   
-  RowStrand* pNewStrand = new RowStrand;
+  EbStrand* pNewStrand = new EbStrand;
   
   if (! m_pHeadStrand) {
-    ASSERT(! m_nRowStrands);
+    ASSERT(! m_nEbStrands);
     ASSERT(! m_pTailStrand);
     
     m_pHeadStrand = pNewStrand;
     m_pTailStrand = pNewStrand;
     
-    m_nRowStrands = 1;
+    m_nEbStrands = 1;
   }
   else {
-    ASSERT(m_nRowStrands);
+    ASSERT(m_nEbStrands);
     ASSERT(m_pTailStrand);
     
     m_pTailStrand->vNextStrand(pNewStrand);
@@ -222,7 +222,7 @@ bool Data::bExtendPartition(void)
     
     m_pTailStrand = pNewStrand;
     
-    m_nRowStrands++;
+    m_nEbStrands++;
   }
   
   return true;

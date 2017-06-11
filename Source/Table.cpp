@@ -177,7 +177,7 @@ Str* Table::pAnalyze(bool bDetailed)
     
     i8 iPartition = Partition::iSlotToPartition(iSlot);
     
-    RowStrand *pStrand = pPartition(iSlot)->pData()->pHeadStrand();
+    EbStrand *pStrand = pPartition(iSlot)->pData()->pHeadStrand();
     i8 nRows = 0;
     i8 nBuffers = 0;
     i8 nStrands = 0;
@@ -438,7 +438,7 @@ i8 Table::nRowBuffers(void)
   i8 iBuffers = 0;
   
   for (i8 iPartition = 0; iPartition < gpGrid->m_nSlots; iPartition++) {
-    RowStrand *pStrand = pPartition(iPartition)->pData()->pHeadStrand();
+    EbStrand *pStrand = pPartition(iPartition)->pData()->pHeadStrand();
     while (pStrand) {
       iBuffers += pStrand->nRowBuffers();
       pStrand = pStrand->pNextStrand();

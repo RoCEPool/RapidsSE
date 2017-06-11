@@ -9,9 +9,9 @@ namespace DBobjects
   {
   private:
     Lock       m_zLock;          // lock covers all buffers
-    i8         m_nRowStrands;    // number of row strands
-    RowStrand* m_pHeadStrand;    // first strand in list
-    RowStrand* m_pTailStrand;    // last strand in list
+    i8         m_nEbStrands;    // number of row strands
+    EbStrand* m_pHeadStrand;    // first strand in list
+    EbStrand* m_pTailStrand;    // last strand in list
   
     // must be last
     Footer m_xFooter;
@@ -28,10 +28,10 @@ namespace DBobjects
     void vAppendBuffer(EntryBuffer* pRowBuffer);
     bool bInsertRow(TxRef* pTxRef, Str* pRecord, i8 iLength);
     
-    RowStrand* pHeadStrand(void);
-    RowStrand* pTailStrand(void);
+    EbStrand* pHeadStrand(void);
+    EbStrand* pTailStrand(void);
   
-    i8 nRowStrands(void);
+    i8 nEbStrands(void);
   
     void vTruncate(void);  
   

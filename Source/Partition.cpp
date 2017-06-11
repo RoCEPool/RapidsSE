@@ -180,7 +180,7 @@ void Partition::vPopulateIndex(i8 iIndexNo)
   i8 nStrands = 0;
   i8 nBuffers = 0;
   
-  for (RowStrand* pStrand = m_pData->pHeadStrand();
+  for (EbStrand* pStrand = m_pData->pHeadStrand();
        pStrand;
        pStrand = pStrand->pNextStrand()) {
     
@@ -223,7 +223,7 @@ void Partition::vPopulateIndex(i8 iIndexNo)
     
   } // strand
   
-  ASSERT(nStrands == m_pData->nRowStrands());
+  ASSERT(nStrands == m_pData->nEbStrands());
   
   //pIndexData->vDump();
   //ASSERT(pIndexData->bVerify());
