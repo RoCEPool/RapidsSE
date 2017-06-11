@@ -58,7 +58,7 @@ namespace DBobjects
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // row
     void vContentDump(void);
-    void vExtractKey(KeyWsp& xKeyWsp, IdxColVec* pColVec);
+    void vExtractKey(KeyWsp& xKeyWsp, IdxColVec* pIdxColVec);
     i8   iTxId(void);
     void vTxId(i8 iTxId);
   
@@ -69,7 +69,6 @@ namespace DBobjects
     RightVec* aRightVec(void);
   };
   
-  Entry* _pBufferItem(void* aAddr);
   Entry* _pEntry(void* aAddr);
   Entry* _aRow(void* aAddr);
   

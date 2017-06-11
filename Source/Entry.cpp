@@ -13,16 +13,6 @@ extern i8 gnIndexOffsets;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Entry* DBobjects::_pBufferItem(void* aAddr)
-{
-  Entry* pBufferItem = reinterpret_cast<Entry*>(aAddr);
-  
-  return pBufferItem;
-}
-
-/*----------------------------------------------------------------------------*/
-/* safe cast                                                                  */
-/*----------------------------------------------------------------------------*/
 Entry* DBobjects::_pEntry(void* aAddr)
 {
   Entry* pEntry = reinterpret_cast<Entry*>(aAddr);
