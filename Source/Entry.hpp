@@ -46,17 +46,16 @@ namespace DBobjects
     i8     nOffsets(void);
     i8     iRightOffset(on nOffsetNo);
     void   vRightOffset(on nOffsetNo, i8 iRightOffset);
-    RightVec* aRightVec(void);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // key
     Key*   aKey(void);
-    void   vShow(i8 iOffset, IdxColVec* pColVec);
     void   vReplaceKey(EntWsp& xEntWsp);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // index
     void   vSetEntry(EntWsp& xEntWsp);
+    void   vShow(i8 iOffset, IdxColVec* pColVec);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // row
@@ -69,6 +68,7 @@ namespace DBobjects
   
   private:
     bn     nBufferNo(void);
+    RightVec* aRightVec(void);
   };
   
   Entry* _pBufferItem(void* aAddr);

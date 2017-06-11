@@ -313,18 +313,6 @@ void Entry::vRightOffset(on nOffsetNo, i8 iRightOffset)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the RightVec for this Entry                                            */
-/*----------------------------------------------------------------------------*/
-RightVec* Entry::aRightVec(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
-  
-  RightVec* aRightVec = _aRightVec(aVblData());
-  
-  return aRightVec;
-}
-
-/*----------------------------------------------------------------------------*/
 /*-- Key ---------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -340,49 +328,6 @@ Key* Entry::aKey(void)
   Key* aKey = pAdd<Key*>(aVblData(),nOffsetBytes);
   
   return aKey;
-}
-
-/*----------------------------------------------------------------------------*/
-/* show content                                                               */
-/*----------------------------------------------------------------------------*/
-void Entry::vShow(i8 iOffset, IdxColVec* pColVec)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
-  
-  Key* aKey = this->aKey();
-  i8 iKey;
-  
-  if (m_xId.iBuffer() == 0) {
-    ASSERT(m_xId.iRow() == 0);
-    iKey = -1;
-  }
-  else {
-    ValLib::nCopyDatum(CN_INTVAL,&iKey,aKey);
-  }
-  
-  vTrace("Entry %p: Size: %llu Offsets: %llu "_Str,
-         this,
-         nSizeEntry(),
-         m_iOffsets
-         );
-  
-  vTrace("Id %3lli.%3lli "_Str,
-         m_xId.iBuffer(),
-         m_xId.iRow()
-         );
-  aKey->vShow(pColVec);
-  
-  on nRight;
-  for (nRight = 0_on; nRight < m_iOffsets; nRight++) {
-    
-    vTrace(" Offset(%lld): %lld "_Str,
-           *nRight,
-           iRightOffset(nRight) == C_NIL_OFFSET ?
-           C_NIL_OFFSET :
-           iRightOffset(nRight) + iOffset + nSizeEntry());
-  }
-  
-  vTrace("\n"_Str);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -441,6 +386,49 @@ void Entry::vSetEntry(EntWsp& xEntWsp)
   MemLib::vCopy(aEntryKey,aEntWspKey,nKeyBytes);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* show content                                                               */
+/*----------------------------------------------------------------------------*/
+void Entry::vShow(i8 iOffset, IdxColVec* pColVec)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+  
+  Key* aKey = this->aKey();
+  i8 iKey;
+  
+  if (m_xId.iBuffer() == 0) {
+    ASSERT(m_xId.iRow() == 0);
+    iKey = -1;
+  }
+  else {
+    ValLib::nCopyDatum(CN_INTVAL,&iKey,aKey);
+  }
+  
+  vTrace("Entry %p: Size: %llu Offsets: %llu "_Str,
+         this,
+         nSizeEntry(),
+         m_iOffsets
+         );
+  
+  vTrace("Id %3lli.%3lli "_Str,
+         m_xId.iBuffer(),
+         m_xId.iRow()
+         );
+  aKey->vShow(pColVec);
+  
+  on nRight;
+  for (nRight = 0_on; nRight < m_iOffsets; nRight++) {
+    
+    vTrace(" Offset(%lld): %lld "_Str,
+           *nRight,
+           iRightOffset(nRight) == C_NIL_OFFSET ?
+           C_NIL_OFFSET :
+           iRightOffset(nRight) + iOffset + nSizeEntry());
+  }
+  
+  vTrace("\n"_Str);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -621,6 +609,18 @@ bn Entry::nBufferNo(void)
   bn nBufferNo = m_xId.iBuffer();
   
   return nBufferNo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the RightVec for this Entry                                            */
+/*----------------------------------------------------------------------------*/
+RightVec* Entry::aRightVec(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+  
+  RightVec* aRightVec = _aRightVec(aVblData());
+  
+  return aRightVec;
 }
 
 /*----------------------------------------------------------------------------*/
