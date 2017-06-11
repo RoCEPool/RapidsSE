@@ -24,8 +24,7 @@ namespace DBobjects
     ~Entry(void);
   
     static i8 nBytesRequiredEntry(EntWsp& xEntWsp);
-    static i8 nBytesRequiredEntry(i8 nOffsets, i8 nKeyBytes);
-    static i8 nBytesRequiredRow(i8 iStrSize);
+    static i8 nBytesRequiredEntry(i8 nOffsets, i8 nKeyBytes, i8 nDataBytes);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // entry proper

@@ -81,7 +81,7 @@ i8 Entry::nBytesRequiredEntry(EntWsp& xEntWsp)
   
   i8 nKeyBytes = xEntWsp.nKeySize();
   
-  i8 nBytes = Entry::nBytesRequiredEntry(nOffsets,nKeyBytes);
+  i8 nBytes = Entry::nBytesRequiredEntry(nOffsets,nKeyBytes,0);
   
   return nBytes;
 }
@@ -89,24 +89,15 @@ i8 Entry::nBytesRequiredEntry(EntWsp& xEntWsp)
 /*----------------------------------------------------------------------------*/
 /* get total bytes required for entry incl Object & Footer                    */
 /*----------------------------------------------------------------------------*/
-i8 Entry::nBytesRequiredEntry(i8 nOffsets, i8 nKeyBytes)
+i8 Entry::nBytesRequiredEntry(i8 nOffsets, i8 nKeyBytes, i8 nDataBytes)
 {
   i8 nOffsetBytes = RightVec::nBytesRequired(nOffsets);
   
   i8 nBytes = sizeof(Entry)
-               + nKeyBytes
                + nOffsetBytes
+               + nKeyBytes
+               + nDataBytes
                + sizeof(Footer);
-  
-  return nBytes;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get bytes required for row                                                 */
-/*----------------------------------------------------------------------------*/
-i8 Entry::nBytesRequiredRow(i8 iStrSize)
-{
-  i8 nBytes = sizeof(Entry) + iStrSize + sizeof(Footer);
   
   return nBytes;
 }
