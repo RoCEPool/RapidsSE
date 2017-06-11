@@ -107,24 +107,6 @@ Entry::Entry(i8 nBytes, i8 iOffsets)                   //! should we pass EntWsp
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Entry::Entry(eCN eClassNo)
-: Object(eClassNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
-    
-  m_nThisBytes = 0;
-  m_nOffsets = 0;
-  
-  //_setFooter_();
-  
-  _checkInitialised_(eClassNo);
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);
-}
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
 Entry::Entry(eCN eClassNo, i8 nThisBytes)
 : Object(CN_ROW)
 {

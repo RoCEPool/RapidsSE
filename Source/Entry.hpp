@@ -22,7 +22,6 @@ namespace DBobjects
   
     Entry(EntWsp& xEntWsp);
     Entry(i8 nBytes, i8 uOffsets);
-    Entry(eCN eClassNo);
     Entry(eCN eClassNo, i8 iDataBytes);
     ~Entry(void);
   
