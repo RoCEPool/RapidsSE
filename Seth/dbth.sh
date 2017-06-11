@@ -5,8 +5,8 @@
 DIR=$(dirname "$0")
 CLASSPATH=".:*:${DIR}:${DIR}/*"
 
-DB_HOST="localhost"
-DB_PORT="4333"
+DB_HOST="127.0.0.1"
+DB_PORT="5334"
 
 # Additional arguments for SETH. Enable as required.
 #SETH_ARGS="--clean --logtests"   # log all test executions to a file

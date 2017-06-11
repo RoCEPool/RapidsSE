@@ -231,7 +231,7 @@
 /*----------------------------------------------------------------------------*/
 : getIndex ( "<indexNm>" -- <R> )
 
-  dup checkInIndexes not if false exit then
+  checkInIndexes not if drop false exit then
 
   // get index ptr
   findInCurrent execute
