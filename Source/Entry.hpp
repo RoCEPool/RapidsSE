@@ -25,7 +25,7 @@ namespace DBobjects
   
     static i8 nBytesRequiredEntry(EntWsp& xEntWsp);
     static i8 nBytesRequiredEntry(i8 nOffsets, i8 nKeyBytes);
-    static i8 nBytesRequiredRow(i8 iStrLength);
+    static i8 nBytesRequiredRow(i8 iStrSize);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // entry proper

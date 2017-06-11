@@ -104,9 +104,9 @@ i8 Entry::nBytesRequiredEntry(i8 nOffsets, i8 nKeyBytes)
 /*----------------------------------------------------------------------------*/
 /* get bytes required for row                                                 */
 /*----------------------------------------------------------------------------*/
-i8 Entry::nBytesRequiredRow(i8 iDataBytes)
+i8 Entry::nBytesRequiredRow(i8 iStrSize)
 {
-  i8 nBytes = sizeof(Entry) + iDataBytes + sizeof(Footer);
+  i8 nBytes = sizeof(Entry) + iStrSize + sizeof(Footer);
   
   return nBytes;
 }
