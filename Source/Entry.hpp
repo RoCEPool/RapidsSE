@@ -12,13 +12,14 @@ namespace DBobjects
   protected:
     i8  m_nThisBytes; // size of this item
     Id  m_xId;        // id
-    i8  m_iOffsets;   // no of offsets for this entry (0,1 or 2)
+    i8  m_nOffsets;   // no of offsets for this entry (0,1 or 2)
   //i8  m_iTxId;      // transaction id
     // ..data..       // variable data area 
 
   public:
     void* operator new(size_t);
     void* operator new(size_t, Entry*);
+  
     Entry(EntWsp& xEntWsp);
     Entry(i8 nBytes, i8 uOffsets);
     Entry(eCN eClassNo);
@@ -31,10 +32,10 @@ namespace DBobjects
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // entry proper
-    Id&    xId(void);
-    void   vId(Id xId);
+    Id&  xId(void);
+    void vId(Id xId);
     EntryBuffer* pIndexBuffer(void);
-    i8     nSizeEntry(void);
+    i8   nSizeEntry(void);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // variable data area
@@ -42,27 +43,27 @@ namespace DBobjects
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // offsets
-    on     nHighestOffset(void);
-    i8     nOffsets(void);
-    i8     iRightOffset(on nOffsetNo);
-    void   vRightOffset(on nOffsetNo, i8 iRightOffset);
+    on   nHighestOffset(void);
+    i8   nOffsets(void);
+    i8   iRightOffset(on nOffsetNo);
+    void vRightOffset(on nOffsetNo, i8 iRightOffset);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // key
-    Key*   aKey(void);
-    void   vReplaceKey(EntWsp& xEntWsp);
+    Key* aKey(void);
+    void vReplaceKey(EntWsp& xEntWsp);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // index
-    void   vSetEntry(EntWsp& xEntWsp);
-    void   vShow(i8 iOffset, IdxColVec* pColVec);
+    void vSetEntry(EntWsp& xEntWsp);
+    void vShow(i8 iOffset, IdxColVec* pColVec);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // row
-    void  vContentDump(void);
-    void  vExtractKey(KeyWsp& xKeyWsp, IdxColVec* pColVec);
-    i8    iTxId(void);
-    void  vTxId(i8 iTxId);
+    void vContentDump(void);
+    void vExtractKey(KeyWsp& xKeyWsp, IdxColVec* pColVec);
+    i8   iTxId(void);
+    void vTxId(i8 iTxId);
   
     Footer* pFooter(void);
   

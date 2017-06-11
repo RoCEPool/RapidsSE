@@ -92,8 +92,8 @@ Entry::Entry(i8 nBytes, i8 iOffsets)                   //! should we pass EntWsp
   ASSERT(0 == m_xId.iBuffer() && 0 == m_xId.iRow());
   
   // initialise offsets
-  m_iOffsets = iOffsets;
-  ASSERT(m_iOffsets >= 0 && m_iOffsets <= gnIndexOffsets);
+  m_nOffsets = iOffsets;
+  ASSERT(m_nOffsets >= 0 && m_nOffsets <= gnIndexOffsets);
   
   // entry data will be initialised by vSetEntry       //! Is this correct form?
   
@@ -113,7 +113,7 @@ Entry::Entry(eCN eClassNo)
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
     
   m_nThisBytes = 0;
-  m_iOffsets = 0;
+  m_nOffsets = 0;
   
   //_setFooter_();
   
@@ -264,9 +264,9 @@ char* Entry::aVblData(void)
 /*----------------------------------------------------------------------------*/
 on Entry::nHighestOffset(void)
 {
-  ASSERT(m_iOffsets >= 0 && m_iOffsets <= gnIndexOffsets);
+  ASSERT(m_nOffsets >= 0 && m_nOffsets <= gnIndexOffsets);
   
-  on nHighest(m_iOffsets - 1);
+  on nHighest(m_nOffsets - 1);
   
   return nHighest;
 }
@@ -278,7 +278,7 @@ i8 Entry::nOffsets(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
   
-  return m_iOffsets;
+  return m_nOffsets;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -290,7 +290,7 @@ i8 Entry::iRightOffset(on nOffsetNo)
   
   ASSERT(nOffsetNo >= 0_on && nOffsetNo < gnIndexOffsets);
   
-  if (nOffsetNo >= m_iOffsets)
+  if (nOffsetNo >= m_nOffsets)
     return C_NIL_OFFSET;
   
   i8 iRight = aRightVec()->iOffset(nOffsetNo);
@@ -323,7 +323,7 @@ Key* Entry::aKey(void)
 {
   _precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
   
-  i8 nOffsetBytes = RightVec::nBytesRequired(m_iOffsets);
+  i8 nOffsetBytes = RightVec::nBytesRequired(m_nOffsets);
   
   Key* aKey = pAdd<Key*>(aVblData(),nOffsetBytes);
   
@@ -367,7 +367,7 @@ void Entry::vSetEntry(EntWsp& xEntWsp)
   m_xId  = xEntWsp.xId();
   
   // set Offsets
-  m_iOffsets = xEntWsp.nOffsets();
+  m_nOffsets = xEntWsp.nOffsets();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -409,7 +409,7 @@ void Entry::vShow(i8 iOffset, IdxColVec* pColVec)
   vTrace("Entry %p: Size: %llu Offsets: %llu "_Str,
          this,
          nSizeEntry(),
-         m_iOffsets
+         m_nOffsets
          );
   
   vTrace("Id %3lli.%3lli "_Str,
@@ -419,7 +419,7 @@ void Entry::vShow(i8 iOffset, IdxColVec* pColVec)
   aKey->vShow(pColVec);
   
   on nRight;
-  for (nRight = 0_on; nRight < m_iOffsets; nRight++) {
+  for (nRight = 0_on; nRight < m_nOffsets; nRight++) {
     
     vTrace(" Offset(%lld): %lld "_Str,
            *nRight,
