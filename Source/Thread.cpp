@@ -147,7 +147,7 @@ void* Thread::vEntryV2(void* pArg)
     vTrace("[[%s]] Thread::vEntryV2 %p\n"_Str,pThread->sName().s(),pThread);
   
   try {
-    pThread->vLoop();
+    pThread->vLoopV2();
   }
   catch (Error* pError) {
     char wFileName[256];
@@ -345,7 +345,7 @@ void Thread::vLoopV2(void)
   while (true) {
     
     // get next task to run
-    m_npTask = m_pTaskSet->npPop();
+    m_npTask = m_pTaskQueue->npPop();
     if ( ! m_npTask ) {
       PosixThread::vSleepMilli(1);
       continue;
