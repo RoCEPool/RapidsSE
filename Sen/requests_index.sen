@@ -575,13 +575,11 @@ timer: idxSelectTimer
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // checks
-
   checkInIndexes not if <NIP+ERROR> exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // uniqueness
-
-  bIsUnique sIndexNm traceoff setIndexIsUnique ( ) assert::stack_0
+  bIsUnique sIndexNm setIndexIsUnique ( ) assert::stack_0
 
   <OK>
 ;
