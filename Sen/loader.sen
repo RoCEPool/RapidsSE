@@ -27,39 +27,42 @@ timer: loadTimer
 /*----------------------------------------------------------------------------*/
 : tableLoader ( "<path>" "<tableNm>" -- t|f )
 
-  find execute ( "filename" table )
+  find execute ( "<path>" table )
 
   // check if path file exists
-  swap file.new >r
-  dup r0 file.path!
-  OPEN_READ r0 file.open
+  swap ( table "<path>" )
+  file.new >r ( table "<path>" ; r0: fp )
+  dup r0 file.path! ( table "<path>" ; r0: fp )
+  OPEN_READ r0 file.open ( table "<path>" t|f ; r0: fp )
   if
-    r0 file.close r0 file.delete rdrop swap
+    r0 file.close r0 file.delete rdrop swap ( "<path>" table )
   else
     r0 file.delete rdrop drop drop EC_INVALID_FILE false exit
   then
 
   loadTimer timer.start
 
-  // create a Loader
+  // create a table loader
   "__table_loader" find dup if else
     drop
     "__table_loader" :loader
   then
   execute
 
-  // put Loader into register 0
-  >r
-  // r0 ^Loader
+  // put table loader into local
+  locals| tblLoader |
+
+  "in tableLoader" .
+  assert::stack_2 ( "<path>" table )
 
   // initialise r0:Loader
-  r0 loader.table!
-  r0 loader.path!
+  tblLoader loader.table! ( "<path>" )
+  tblLoader loader.path!
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // begin a new transaction
-  beginTransaction r0 loader.txref!
+  beginTransaction tblLoader loader.txref!
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -69,7 +72,7 @@ timer: loadTimer
 
   N_GENERAL_THREADS 0 do
 
-    << r2 loader.newSub >>
+    << tblLoader loader.newSub >>
 
     pathGet >>
 
@@ -81,7 +84,7 @@ timer: loadTimer
   loop
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  begin r0 loader.findChunk while repeat
+  begin tblLoader loader.findChunk while repeat
 
 
   ackWait
@@ -92,9 +95,6 @@ timer: loadTimer
 
   // commit the transaction
   commitTransaction
-
-  // discard r0:Loader
-  rdrop
 
   // destroy Loader
   "__table_loader" find word.forget
