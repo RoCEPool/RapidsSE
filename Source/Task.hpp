@@ -250,6 +250,7 @@ namespace Tasks
     void vAddPrimitives_Task(void);
     void vAddPrimitives_TaskCursor(void);
     void vAddPrimitives_TaskList(void);
+    void vAddPrimitives_TaskQueue(void);
     void vAddPrimitives_TaskSet(void);
     void vAddPrimitives_Thread(void);
     void vAddPrimitives_ThreadCursor(void);
@@ -1003,6 +1004,11 @@ namespace Tasks
     static void vTaskListDump(NNP_Task nnpTask);
     static void vTaskListInit(NNP_Task nnpTask);
     
+    // taskQueue
+    static void vTaskQueueAppend(NNP_Task nnpTask);
+    static void vTaskQueueDump(NNP_Task nnpTask);
+    static void vTaskQueueInit(NNP_Task nnpTask);
+  
     // taskSet
     static void vTaskSetAppend(NNP_Task nnpTask); 
     static void vTaskSetDump(NNP_Task nnpTask);
