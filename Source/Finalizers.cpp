@@ -108,7 +108,6 @@ pFINALIZE *gpFinalize[]
   /* 56 */ &Finalize::vUndefined,         // CN_ROWBUFFER
   /* 57 */ &Finalize::vUndefined,         // CN_ROWCURSOR
   /* 58 */ &Finalize::vUndefined,         // CN_EBSTRAND
-  /* 59 */ &Finalize::vUndefined,         // CN_ROWWSP
   
   /* 60 */ &Finalize::vUndefined,         // CN_SCANBUFFER
   /* 61 */ &Finalize::vUndefined,         // CN_SCRATCH

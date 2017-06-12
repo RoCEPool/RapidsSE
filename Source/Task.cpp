@@ -495,7 +495,6 @@ void Task::vAddConstants(void)
   /* 50 */ vAddConstant("CN_ROWBUFFER"_Str,    CN_ROWBUFFER);
   /* 51 */ vAddConstant("CN_ROWCURSOR"_Str,    CN_ROWCURSOR);
   /* 52 */ vAddConstant("CN_EBSTRAND"_Str,    CN_EBSTRAND);
-  /* 53 */ vAddConstant("CN_ROWWSP"_Str,       CN_ROWWSP);
   
   /* 54 */ vAddConstant("CN_SCANBUFFER"_Str,   CN_SCANBUFFER);
   /* 55 */ vAddConstant("CN_SCRATCH"_Str,      CN_SCRATCH);
@@ -673,7 +672,7 @@ void Task::vAddConstants(void)
   /* 37 */ vAddConstant("SIZEOF_ROWBUFFER"_Str,    sizeof(EntryBuffer));
   /* 38 */ vAddConstant("SIZEOF_ROWCURSOR"_Str,    (i8)0);
   /* 39 */ vAddConstant("SIZEOF_EbStrand"_Str,    sizeof(EbStrand));
-  /* 40 */ vAddConstant("SIZEOF_ROWWSP"_Str,       sizeof(RowWsp));
+
   /* 41 */ vAddConstant("SIZEOF_SCANBUFFER"_Str,   sizeof(ScanBuffer));
   /* 42 */ vAddConstant("SIZEOF_SEHISTORY"_Str,    sizeof(SeHistory));
   /* 43 */ vAddConstant("SIZEOF_SEITF"_Str,        sizeof(SEitf));
