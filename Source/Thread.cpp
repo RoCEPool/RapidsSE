@@ -69,6 +69,7 @@ Thread::Thread(void)
   m_iThreadNo    = ++zThreadNo;
   m_sName        = "<no thread name>"_Str;
   m_pPosixThread = new PosixThread;
+  m_pSemaphore   = new Semaphore;
   m_pTaskQueue   = nullptr;
   m_pTaskSet     = nullptr;
   m_npTask       = nullptr;
@@ -89,6 +90,7 @@ Thread::~Thread(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
   delete m_pPosixThread;
+  delete m_pSemaphore;
 }
 
 /*----------------------------------------------------------------------------*/
