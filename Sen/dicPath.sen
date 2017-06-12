@@ -196,7 +196,7 @@
       if " primary" str.cat then
 
       object@ word.prev              // step backwards thru words
-      dup if swap "," str.cat swap then
+      dup if swap " , " str.cat swap then
       object!
       next                           //
   then

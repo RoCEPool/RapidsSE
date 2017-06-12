@@ -267,14 +267,13 @@ eEC RapidsSE_CreateIndex(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable
     CHECK_RESPONSE("o"_Str);
     
     VALIDATE_INDEX("p"_Str);
-    
+
     if (bIsUnique) {
       // set unique index
       eResult = eExecuteRequest(pSEitf, "setidxunique"_Str, pTable, pIndex, "true"_Str);
-      CHECK_RESPONSE("q"_Str);
+      CHECK_RESULT("q"_Str);
       CHECK_RESPONSE("r"_Str);
     }
-    vTrace("xyz3\n"_Str);
     
     VALIDATE_TABLE("ff"_Str);
     
