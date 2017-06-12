@@ -116,6 +116,7 @@ pFINALIZE *gpFinalize[]
   /* 64 */ &Finalize::vUndefined,         // CN_SEITFCURSOR
   /* 65 */ &Finalize::vUndefined,         // CN_SEITFLIST
   /* 66 */ &SelCursor::vFinalize,         // CN_SELCURSOR
+  /* 67 */ &Finalize::vUndefined,         // CN_SEMAPHORE
   /* 67 */ &Finalize::vUndefined,         // CN_SEPROMPT
   /* 68 */ &Finalize::vUndefined,         // CN_SINCE
   /* 69 */ &Finalize::vUndefined,         // CN_SKIPCURSOR

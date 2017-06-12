@@ -32,6 +32,7 @@ using namespace System;
 #include "Process.hpp"
 #include "Random.hpp"
 #include "Scratch.hpp"
+#include "Semaphore.hpp"
 #include "Shell.hpp"
 #include "Shm.hpp"
 #include "Synch.hpp"

@@ -1,0 +1,243 @@
+/*============================================================================*/
+/* Semaphore.cpp - a simple semaphore                                         */
+/*============================================================================*/
+
+#include "System.h"
+
+#include "StorageEngine.h"
+
+/*----------------------------------------------------------------------------*/
+/*-- LifeCycle ---------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* safe cast                                                                  */
+/*----------------------------------------------------------------------------*/
+Semaphore* System::_pSemaphore(void* aAddr)
+{
+  Semaphore* pSemaphore = reinterpret_cast<Semaphore*>(aAddr);
+  
+  RASSERT( !pSemaphore || CN_SEMAPHORE == pSemaphore->eClass() );
+  
+  return pSemaphore;
+}
+
+/*----------------------------------------------------------------------------*/
+/* new operator                                                               */
+/*----------------------------------------------------------------------------*/
+void* Semaphore::operator new(size_t iSize)
+{
+  RASSERT(iSize);
+  
+  void* pSemaphore = Heap::pAllocate(CN_SEMAPHORE);
+  
+  return pSemaphore;
+}
+
+/*----------------------------------------------------------------------------*/
+/* delete operator                                                            */
+/*----------------------------------------------------------------------------*/
+void Semaphore::operator delete(void* pSemaphoreAddress)
+{
+  Object* pObject = reinterpret_cast<Object*>(pSemaphoreAddress);
+  
+  Heap::vFree(pObject);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Semaphore::Semaphore()
+: Object(CN_SEMAPHORE)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEMAPHORE,_FOOTER_);
+  
+  m_bLocked        = false;
+
+  MemLib::vZero(&m_xMutex,sizeof(m_xMutex));
+  pthread_mutex_init(&m_xMutex,NULL);
+
+  MemLib::vZero(&m_xCond,sizeof(m_xCond));
+  pthread_cond_init(&m_xCond,NULL);
+  
+  _checkInitialised_(CN_SEMAPHORE);
+
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_SEMAPHORE,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* destructor                                                                 */
+/*----------------------------------------------------------------------------*/
+Semaphore::~Semaphore(void)
+{
+  pthread_mutex_destroy(&m_xMutex);
+  pthread_cond_destroy(&m_xCond);
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* condition broadcast                                                        */
+/*----------------------------------------------------------------------------*/
+void Semaphore::vCondBroadcast(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEMAPHORE,_FOOTER_);
+  
+  i8 rCode = pthread_cond_broadcast(&m_xCond);
+  
+  if (0 == rCode)
+    return;
+  
+  vWarn("pthread_cond_broadcast() error; rCode=%lld\n"_Str,rCode);
+}
+
+/*----------------------------------------------------------------------------*/
+/* condition signal                                                           */
+/*----------------------------------------------------------------------------*/
+void Semaphore::vCondSignal(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEMAPHORE,_FOOTER_);
+  
+  i8 rCode = pthread_cond_signal(&m_xCond);
+  
+  if (0 == rCode)
+    return;
+  
+  vWarn("pthread_cond_signal() error; rCode=%lld\n"_Str,rCode);
+}
+
+/*----------------------------------------------------------------------------*/
+/* condition wait (thread to wait will be calling thread)                     */
+/*----------------------------------------------------------------------------*/
+void Semaphore::vCondWait(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEMAPHORE,_FOOTER_);
+  
+  //
+  // Calling thread must have the mutex.  Mutex will be unlocked and the
+  // thread will block atomically, waiting on the cond varable.
+  //
+  // When signalled the thread will automatically reaquire the mutex lock.
+  // The mutex must be explicitly unlocked by the caller.
+  //
+  
+  ASSERT(m_bLocked);
+  
+  m_bLocked = false;
+  
+  i8 rCode = pthread_cond_wait(&m_xCond,&m_xMutex);
+  
+  if (0 == rCode) {
+    m_bLocked = true;
+    return;
+  }
+  
+  vWarn("pthread_cond_wait() error; rCode=%lld\n"_Str,rCode);
+}
+
+/*----------------------------------------------------------------------------*/
+/* this thread waits for signal (should be calling thread)                    */
+/*----------------------------------------------------------------------------*/
+void Semaphore::vCondTimedWait(i8 iMicroSeconds)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEMAPHORE,_FOOTER_);
+  
+  Since xSince;
+  
+  xSince.vSet();
+  
+  xSince.vAdd(iMicroSeconds);
+  
+  struct timespec xTimeSpec;
+  xTimeSpec.tv_sec  = xSince.m_iSeconds;
+  xTimeSpec.tv_nsec = xSince.m_iMicroseconds * 1000;
+  
+  ASSERT(m_bLocked);
+  
+  i8 rCode = pthread_cond_timedwait(&m_xCond,&m_xMutex,&xTimeSpec);
+  
+  if (0 == rCode || ETIMEDOUT == rCode)
+    return;
+  
+  vWarn("pthread_cond_wait() error; rCode=%lld\n"_Str,rCode);
+}
+
+/*----------------------------------------------------------------------------*/
+/* lock a threads mutex (blocking)                                            */
+/*----------------------------------------------------------------------------*/
+void Semaphore::vMutexLock(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEMAPHORE,_FOOTER_);
+  
+  // this is a blocking call
+  i8 rCode = pthread_mutex_lock(&m_xMutex);
+  //vTrace("MutexLock %p\n"_Str,this);
+  
+  if (0 == rCode) {
+    ASSERT( ! m_bLocked );
+    m_bLocked = true;
+    return;
+  }
+  
+  vWarn("pthread_mutex_lock() error; rCode=%lld\n"_Str,rCode);
+}
+
+/*----------------------------------------------------------------------------*/
+/* try and lock a threads mutex (non-blocking)                                */
+/*----------------------------------------------------------------------------*/
+bool Semaphore::bMutexLock(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEMAPHORE,_FOOTER_);
+  
+  i8 rCode = pthread_mutex_trylock(&m_xMutex);
+  
+  if (0 == rCode) {
+    m_bLocked = true;
+    return true;
+  }
+  
+  if (EBUSY == rCode)
+    return false;
+  
+  vWarn("pthread_mutex_trylock() error; rCode=%lld\n"_Str,rCode);
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* unlock a threads mutex                                                     */
+/*----------------------------------------------------------------------------*/
+void Semaphore::vMutexUnlock(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEMAPHORE,_FOOTER_);
+  
+  //vTrace("MutexUnlock %p\n"_Str,this);
+  
+  ASSERT( m_bLocked );
+  m_bLocked = false;
+  
+  i8 rCode = pthread_mutex_unlock(&m_xMutex);
+  
+  if (0 == rCode) {
+    //m_bLocked = false;
+    return;
+  }
+  
+  vWarn("pthread_mutex_unlock() error; rCode=%lld\n"_Str,rCode);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get location of footer                                                     */
+/*----------------------------------------------------------------------------*/
+Footer* Semaphore::pFooter(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEMAPHORE);
+  
+  return &m_xFooter;
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
