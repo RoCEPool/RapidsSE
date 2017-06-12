@@ -10,12 +10,14 @@ namespace System
   class PosixThread : public Object
   {
   public:
-    i8               m_iOpSysThreadId; // thread id as known by os
-    pthread_t        m_iPosixThreadId; // posix thread id
-    bool             m_bLocked;        // true if mutex is locked
-    pthread_mutex_t  m_xMutex;         // mutex variable
-    pthread_cond_t   m_xCond;          // condition variable
-    
+    i8        m_iOpSysThreadId; // thread id as known by os
+    pthread_t m_iPosixThreadId; // posix thread id
+  
+    Semaphore m_xSemaphore;    // semaphore
+//    bool             m_bLocked;        // true if mutex is locked
+//    pthread_mutex_t  m_xMutex;         // mutex variable
+//    pthread_cond_t   m_xCond;          // condition variable
+  
     // must be last
     Footer m_xFooter;
   
