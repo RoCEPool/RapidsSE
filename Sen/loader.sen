@@ -5,6 +5,11 @@
 "loader.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* loading timer                                                              */
+/*----------------------------------------------------------------------------*/
+timer: loadTimer
+
+/*----------------------------------------------------------------------------*/
 /* create a loader using name on the stack (leaves loader on stack)           */
 /*----------------------------------------------------------------------------*/
 : :loader
@@ -20,52 +25,52 @@
   does>
 ;
 
-timer: loadTimer
-
 /*----------------------------------------------------------------------------*/
 /* parallel loading of file into table                                        */
 /*----------------------------------------------------------------------------*/
 : tableLoader ( "<path>" "<tableNm>" -- t|f )
 
-  find execute ( "<path>" table )
+  assert::stack_2 ( "<path>" "<tableNm>" )
+  locals| tableNm path |
 
-  // check if path file exists
-  swap ( table "<path>" )
-  file.new >r ( table "<path>" ; r0: fp )
-  dup r0 file.path! ( table "<path>" ; r0: fp )
-  OPEN_READ r0 file.open ( table "<path>" t|f ; r0: fp )
-  if
-    r0 file.close r0 file.delete rdrop swap ( "<path>" table )
-  else
-    r0 file.delete rdrop drop drop EC_INVALID_FILE false exit
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check if path file exists                                 //! refactor this
+
+  file.new locals| fp |
+  path fp file.path!
+
+  OPEN_READ fp file.open ( t|f )
+  not if
+    fp file.delete assert::stack_0 EC_INVALID_FILE false exit
   then
 
+  fp file.close fp file.delete assert::stack_0
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create table loader
+
+  // start load timer
   loadTimer timer.start
 
-  // create a table loader
+  // create table loader
   "__table_loader" find dup if else
     drop
     "__table_loader" :loader
   then
-  execute
+  execute locals| tblLoader | assert::stack_0
 
-  // put table loader into local
-  locals| tblLoader |
+  // initialise table loader
+  tableNm find execute locals| tablePtr |
+  tablePtr tblLoader loader.table!
+  path tblLoader loader.path!
 
-  "in tableLoader" .
-  assert::stack_2 ( "<path>" table )
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create sub loaders
 
-  // initialise r0:Loader
-  tblLoader loader.table! ( "<path>" )
-  tblLoader loader.path!
-
-  //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  // begin a new transaction
+  // begin a transaction
   beginTransaction tblLoader loader.txref!
 
-  //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
+  // hold task mutex while we create sub loaders
   task::this grabMutex
 
   N_GENERAL_THREADS setAcks
@@ -83,15 +88,22 @@ timer: loadTimer
     I >genTaskSet taskSet.append
   loop
 
-  //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // break file into chunks (this causes sub loaders to load them)
+
+  // using table loader scan thru the file and find chunks for sub loaders
   begin tblLoader loader.findChunk while repeat
 
-
+  // now wait for sub loaders to complete (drops mutex for duration)
   ackWait
 
+  // at this point all sub loaders have completed and mutex was regrabbed
+
+  // drop mutex
   task::this dropMutex
 
-  //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // tidy up
 
   // commit the transaction
   commitTransaction
@@ -99,8 +111,8 @@ timer: loadTimer
   // destroy Loader
   "__table_loader" find word.forget
 
+  // print timing
   loadTimer timer.update
-
   "Load time " .put
   loadTimer timer.millisecs .put "ms" .put .\n
 
