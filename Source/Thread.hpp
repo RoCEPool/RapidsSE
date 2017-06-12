@@ -30,6 +30,7 @@ namespace Threads
     ~Thread(void);
     
     static void* vEntry(void* pArg);
+    static void* vEntryV2(void* pArg);
     static Thread* pThread(void);
     static void vRunTask(NNP_Task nnpTask);
   
@@ -38,9 +39,11 @@ namespace Threads
     i8   iCpu(void);
     void vContentDump(void) const;
     void vLoop(void);
+    void vLoopV2(void);
     StrVal&   sName(void);
     void vName(StrVal& sName);
     void vSpawn(void);
+    void vSpawnV2(void);
     i8   iThreadNo(void);
     
     Footer* pFooter(void);

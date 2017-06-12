@@ -1028,6 +1028,7 @@ namespace Tasks
     static void vThreadSleep_us(NNP_Task nnpTask);
     static void vThreadSleep_ns(NNP_Task nnpTask);
     static void vThreadSpawn(NNP_Task nnpTask);   
+    static void vThreadSpawnV2(NNP_Task nnpTask);
 
     // threadCursor
     static void vThreadCursorBegin(NNP_Task nnpTask);

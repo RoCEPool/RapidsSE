@@ -13,6 +13,7 @@ extern TaskList*    gpTaskList;
 extern NP_Task      gnpRootTask;
 
 extern bool         gbVerbose;
+extern bool         gbProgress;
 
 extern pthread_key_t  giTLS_TaskKey;
 extern pthread_key_t  giTLS_ThreadKey;
@@ -135,6 +136,47 @@ void* Thread::vEntry(void* pArg)
 }
 
 /*----------------------------------------------------------------------------*/
+/* thread entry                                                               */
+/*----------------------------------------------------------------------------*/
+void* Thread::vEntryV2(void* pArg)
+{
+  Thread* pThread = static_cast<Thread*>(pArg);
+  
+  if (gbVerbose || gbProgress)
+    vTrace("[[%s]] Thread::vEntryV2 %p\n"_Str,pThread->sName().s(),pThread);
+  
+  try {
+    pThread->vLoop();
+  }
+  catch (Error* pError) {
+    char wFileName[256];
+    
+    const char* ps;
+    
+    ps = StrLib::sLast(pError->aFileName()->s());
+    bool bBackSlash = StrLib::bBackward(&ps,(char*)pError->aFileName(),'/');
+    if (bBackSlash) {
+      StrLib::vCopy(wFileName,ps+1);
+    }
+    else {
+      StrLib::vCopy(wFileName, pError->aFileName()->s());
+    }
+    vFatal("ERROR: [ThreadLoop] %s: line %lld in %s\n"_Str,
+           pError->aErrorMsg(),
+           pError->iLineNo(),
+           wFileName);
+  }
+  
+  
+  if (gbVerbose)
+    vTrace("[[%s]] Thread:;vEntry %p exiting\n"_Str,pThread->sName().s(),pThread);
+  
+  delete pThread;
+  
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get this thread                                                            */
 /*----------------------------------------------------------------------------*/
 Thread* Thread::pThread(void)
@@ -211,7 +253,7 @@ void Thread::vLoop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
-  if (gbVerbose)
+  if (gbVerbose || gbProgress)
     vTrace("Thread %p: %s loop\n"_Str,this,m_sName.s());
   
   m_pPosixThread->vSetOSThreadId();
@@ -270,6 +312,80 @@ void Thread::vLoop(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* thread loop                                                                */
+/*----------------------------------------------------------------------------*/
+void Thread::vLoopV2(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
+  
+  if (gbVerbose || gbProgress)
+    vTrace("Thread %p: %s loopV2\n"_Str,this,m_sName.s());
+  
+  m_pPosixThread->vSetOSThreadId();
+  
+  //  vTrace("Thread %p: priority %lld\n"_Str,
+  //         this,
+  //         m_pPosixThread->iThreadPriority()
+  //         );
+  
+  //m_pPosixThread->vThreadBoost(C_THREAD_BOOST);                //! RANDOM ERROR
+  
+  //  vTrace("Thread %p: priority %lld\n"_Str,
+  //         this,
+  //         m_pPosixThread->iThreadPriority()
+  //         );
+  
+  PosixThread::vTlsSet(giTLS_ThreadKey,this);
+  ASSERT(PosixThread::pTlsGet(giTLS_ThreadKey));
+  
+  while ( ! m_pTaskSet )
+    PosixThread::vSleepNano(10_KB);
+  
+  while (true) {
+    
+    // get next task to run
+    m_npTask = m_pTaskSet->npPop();
+    if ( ! m_npTask ) {
+      PosixThread::vSleepMilli(1);
+      continue;
+    }
+    
+    // set up this thread to run task
+    PosixThread::vTlsSet(giTLS_TaskKey,*m_npTask);
+    ASSERT(PosixThread::pTlsGet(giTLS_TaskKey));
+    m_npTask->vState(TS_RUNNING);
+    m_npTask->vThread(this);
+    
+    // run the task
+    m_npTask->vLoop();
+    
+    // task forgets thread, unless waiting on ack
+    if (TS_WAITING_ACK != m_npTask->eState())
+      m_npTask->vThread(nullptr);
+    
+    // when task yields, task is put back on task set
+    if (TS_YIELDED == m_npTask->eState()) {
+      NNP_Task nnpTask = *m_npTask;
+      vAppend(nnpTask);
+      m_npTask = nullptr;
+      continue;
+    }
+    
+    // when task exits it is deleted (unless its a word)
+    if (TS_EXITED == m_npTask->eState()) {
+      NNP_Task nnpTask = *m_npTask;
+      if ( (*gnpRootTask != *m_npTask)  && (!nnpTask->bWordBody()) ) {
+        delete *m_npTask;
+        m_npTask = nullptr;
+      }
+      continue;
+    }
+
+    // loop to get next task
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* get name of this thread                                                    */
 /*----------------------------------------------------------------------------*/
 StrVal& Thread::sName(void)
@@ -297,6 +413,17 @@ void Thread::vSpawn(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
   bool bResult = m_pPosixThread->bSpawnThread(Thread::vEntry,this);
+  ASSERT(bResult);
+}
+
+/*----------------------------------------------------------------------------*/
+/* spawn the os/posix thread associated with this thread                      */
+/*----------------------------------------------------------------------------*/
+void Thread::vSpawnV2(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
+  
+  bool bResult = m_pPosixThread->bSpawnThread(Thread::vEntryV2,this);
   ASSERT(bResult);
 }
 

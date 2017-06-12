@@ -51,6 +51,7 @@ void Task::vAddPrimitives_Thread(void)
   vAddPrimitive("thread.sleep_us"_Str,    &vThreadSleep_us,    false);
   vAddPrimitive("thread.sleep_ns"_Str,    &vThreadSleep_ns,    false);
   vAddPrimitive("thread.spawn"_Str,       &vThreadSpawn,       false);
+  vAddPrimitive("thread.spawnV2"_Str,     &vThreadSpawnV2,     false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -473,6 +474,27 @@ ENTRY("vThreadSpawn"_Str);
   Thread* pThread = static_cast<Thread*>(pThreadEmb);
   
   pThread->vSpawn();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* thread.spawn -- spwan os thread associated with this thread                */
+/*----------------------------------------------------------------------------*/
+void Task::vThreadSpawnV2(NNP_Task nnpTask)
+{
+  ENTRY("vThreadSpawnV2"_Str);
+  
+  Object* pThreadEmb;
+  
+  if ( ! nnpTask->m_pDataStack->bPop(pThreadEmb) )
+    THROW_INVALID_DSTACK("thread.spawnV2"_Str);
+  
+  ASSERT(CN_THREAD == pThreadEmb->eClass());
+  
+  Thread* pThread = static_cast<Thread*>(pThreadEmb);
+  
+  pThread->vSpawnV2();
   
   EXIT();
 }

@@ -1,0 +1,70 @@
+/*============================================================================*/
+/* queryThreads.sen -- Query Processing Threads                               */
+/*============================================================================*/
+
+"queryThreads.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* compute the number of query processing threads to be created               */
+/*----------------------------------------------------------------------------*/
+: noQueryThreads ( memorySize -- noThreads )
+
+  // the number of query threads is computed based on the
+  // size of the region
+
+  // there will be 1 query thread per GB
+  // the number of threads will be limited to 80% of the number of cores
+
+  C_1GB / locals| noThreads |
+
+  noThreads 0 <= if
+    1
+  else
+    noThreads CORE_COUNT 8 * 10 / > if
+      CORE_COUNT 8 * 10 / to noThreads
+    then
+  then
+
+  noThreads
+;
+
+/*----------------------------------------------------------------------------*/
+/* define the N_QUERY_THREADS constant                                        */
+/*----------------------------------------------------------------------------*/
+args.regionSize noQueryThreads constant N_QUERY_THREADS
+
+/*----------------------------------------------------------------------------*/
+/* create and spawn the query processing threads                              */
+/*----------------------------------------------------------------------------*/
+: >qryTaskSetNm ( i -- s ) "queryTaskSet" swap >str str.cat ;
+: >qryThreadNm  ( i -- s ) "queryThread"  swap >str str.cat ;
+
+: :qryTaskSet ( i -- w ) >qryTaskSetNm :taskSet ;
+: :qryThread  ( i -- w ) >qryThreadNm  :thread  ;
+
+: >qryTaskSet ( i -- w ) >qryTaskSetNm find execute ;
+: >qryThread  ( i -- w ) >qryThreadNm  find execute ;
+
+: queryThreadsStart
+
+  args.progress if
+    N_QUERY_THREADS "Query threads: %v" str.format .
+  then
+
+  args.verbose if "N_query_THREADS " .put N_query_THREADS .put .\n then
+
+  N_query_THREADS 0 do
+
+    I :qryTaskSet  drop ( create a taskSet called queryTaskSetI )
+    I :qryThread   drop ( create a thread called queryThreadI )
+
+    I >qryTaskSet  I >qryThread thread.taskSet! ( set the threads taskset )
+    I >qryThreadNm I >qryThread thread.name!    ( set the threads name )
+    I >qryThread   thread.spawnV2               ( spawn os thread )
+
+  loop
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
