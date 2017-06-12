@@ -44,6 +44,8 @@ void Task::vAddPrimitives_Thread(void)
   vAddPrimitive("thread.mutexUnlock"_Str, &vThreadMutexUnlock, false);
   vAddPrimitive("thread.name@"_Str,       &vThreadNameFetch,   false);
   vAddPrimitive("thread.name!"_Str,       &vThreadNameStore,   false);
+  vAddPrimitive("thread.taskqueue@"_Str,  &vThreadQfetch,      false);
+  vAddPrimitive("thread.taskqueue!"_Str,  &vThreadQstore,      false);
   vAddPrimitive("thread.taskset@"_Str,    &vThreadSfetch,      false);
   vAddPrimitive("thread.taskset!"_Str,    &vThreadSstore,      false);
   vAddPrimitive("thread.sleep_s"_Str,     &vThreadSleep_s,     false);
@@ -331,8 +333,8 @@ ENTRY("vThreadNameStore"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vThreadSfetch(NNP_Task nnpTask)
 {
-ENTRY("vThreadSfetch"_Str);
- 
+  ENTRY("vThreadSfetch"_Str);
+  
   Object* pThreadEmb;
   
   if ( ! nnpTask->m_pDataStack->bPop(pThreadEmb) )
@@ -343,10 +345,65 @@ ENTRY("vThreadSfetch"_Str);
   Thread* pThread = static_cast<Thread*>(pThreadEmb);
   
   TaskSet* pTaskSet = pThread->m_pTaskSet;
-
+  
   Object* pTaskSetEmb = static_cast<Object*>(pTaskSet);;
-
+  
   nnpTask->m_pDataStack->vPushObject(pTaskSetEmb);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* thread.queueset! -- store taskqueue into thread which is on data stack     */
+/*----------------------------------------------------------------------------*/
+void Task::vThreadQstore(NNP_Task nnpTask)
+{
+  ENTRY("vThreadQstore"_Str);
+  
+  Object* pThreadEmb;
+  
+  if ( ! nnpTask->m_pDataStack->bPop(pThreadEmb) )
+    THROW_INVALID_DSTACK("thread.taskqueue!"_Str);
+  
+  ASSERT(CN_THREAD == pThreadEmb->eClass());
+  
+  Thread* pThread = static_cast<Thread*>(pThreadEmb);
+  
+  Object* pTaskQueueEmb;
+  
+  if ( ! nnpTask->m_pDataStack->bPop(pTaskQueueEmb) )
+    THROW_INVALID_DSTACK("thread.taskqueue!"_Str);
+  
+  ASSERT(CN_TASKQUEUE == pTaskQueueEmb->eClass());
+  
+  TaskQueue* pTaskQueue = static_cast<TaskQueue*>(pTaskQueueEmb);
+  
+  pThread->m_pTaskQueue = pTaskQueue;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* thread.taskqueue@ -- fetch taskqueue from thread which is on data stack    */
+/*----------------------------------------------------------------------------*/
+void Task::vThreadQfetch(NNP_Task nnpTask)
+{
+ENTRY("vThreadQfetch"_Str);
+ 
+  Object* pThreadEmb;
+  
+  if ( ! nnpTask->m_pDataStack->bPop(pThreadEmb) )
+    THROW_INVALID_DSTACK("thread.taskset@"_Str);
+  
+  ASSERT(CN_THREAD == pThreadEmb->eClass());
+  
+  Thread* pThread = static_cast<Thread*>(pThreadEmb);
+  
+  TaskQueue* pTaskQueue = pThread->m_pTaskQueue;
+
+  Object* pTaskQueueEmb = static_cast<Object*>(pTaskQueue);
+
+  nnpTask->m_pDataStack->vPushObject(pTaskQueueEmb);
   
   EXIT();
 }
