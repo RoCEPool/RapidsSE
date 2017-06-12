@@ -33,7 +33,7 @@ namespace Values
     operator Str&(void);
     operator Str*(void);
 
-    static i8 nAreaRequired(i8 iLength);
+    static i8 nBytesRequired(i8 iLength);
   
     void operator =(i8);
     void operator =(StrVal& rArg);

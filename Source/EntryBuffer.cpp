@@ -234,9 +234,9 @@ void EntryBuffer::vDump(eCN eClass, Object* pObject, Str* aTab)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* allocate a row in this segmented space                                     */
+/* allot an entry for a row in this buffer                                    */
 /*----------------------------------------------------------------------------*/
-Entry* EntryBuffer::pAllocRow(i8 iStrLength)
+Entry* EntryBuffer::pAllotEntry(i8 iStrLength)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
@@ -343,31 +343,31 @@ i8 EntryBuffer::nFreeBytes(void)
 /*----------------------------------------------------------------------------*/
 /* insert row into this buffer                                                */
 /*----------------------------------------------------------------------------*/
-bool EntryBuffer::bInsertRow(TxRef* pTxRef, Str* pRecord, i8 iLength, Entry** ppRow)
+bool EntryBuffer::bInsertRow(TxRef* pTxRef, Str* aRecord, i8 iLength, Entry** ppRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
   *ppRow = nullptr;
   
-  i8 nBytes = StrVal::nAreaRequired(iLength);
+  i8 nBytes = StrVal::nBytesRequired(iLength);
   
-  Entry* pRow = pAllocRow(nBytes);
-  if (!pRow)
+  Entry* pRowEntry = pAllotEntry(nBytes);
+  if ( ! pRowEntry )
     return false;
   
   i8 iTxId = pTxRef->iTxId();
   
-  pRow->vTxId(iTxId);
+  pRowEntry->vTxId(iTxId);
   
-  char* pData = pRow->aVblData();
+  char* aVblData = pRowEntry->aVblData();
   
-  StrVal* pStr = new((StrVal*)pData) StrVal((StrVal*)pData);
+  StrVal* pStrVal = new((StrVal*)aVblData) StrVal((StrVal*)aVblData);
   
-  pStr->vAssign(pRecord,iLength);
+  pStrVal->vAssign(aRecord,iLength);
   
   _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_,CN_ROWBUFFER);
   
-  *ppRow = pRow;
+  *ppRow = pRowEntry;
   
   return true;
 }
