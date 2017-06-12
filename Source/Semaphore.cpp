@@ -229,6 +229,18 @@ void Semaphore::vMutexUnlock(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* signal a thread (should not be calling thread)                             */
+/*----------------------------------------------------------------------------*/
+void Semaphore::vSignalThread(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEMAPHORE,_FOOTER_);
+  
+  vMutexLock();
+  vCondSignal();
+  vMutexUnlock();
+}
+
+/*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
 Footer* Semaphore::pFooter(void)

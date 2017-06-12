@@ -21,13 +21,15 @@ namespace System
     Semaphore(void);
     ~Semaphore(void);
   
-    void  vCondBroadcast(void);
-    void  vCondSignal(void);
-    void  vCondWait(void);
-    void  vCondTimedWait(i8 iNanoSeconds);
-    bool  bMutexLock(void);
-    void  vMutexLock(void);
-    void  vMutexUnlock(void);
+    void vCondBroadcast(void);
+    void vCondSignal(void);
+    void vCondWait(void);
+    void vCondTimedWait(i8 iNanoSeconds);
+    bool bMutexLock(void);
+    void vMutexLock(void);
+    void vMutexUnlock(void);
+  
+    void vSignalThread(void);
   
     Footer* pFooter(void);
   };

@@ -178,9 +178,11 @@ void PosixThread::vSignalThread(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_POSIXTHREAD,_FOOTER_);
   
-  vMutexLock();
-  vCondSignal();
-  vMutexUnlock();
+//  vMutexLock();
+//  vCondSignal();
+//  vMutexUnlock();
+
+  m_xSemaphore.vSignalThread();
 }
 
 /*----------------------------------------------------------------------------*/
