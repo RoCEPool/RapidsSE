@@ -343,40 +343,17 @@ i8 EntryBuffer::nFreeBytes(void)
 /*----------------------------------------------------------------------------*/
 /* insert row into this buffer                                                */
 /*----------------------------------------------------------------------------*/
-bool EntryBuffer::bInsertRow(TxRef* pTxRef, Str* aRecord, i8 iLength, Entry** ppRow)
+bool EntryBuffer::bInsertRow(EntWrk& xRowWrk, Entry** ppRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
-  EntWrk xRowWrk;                            //! alka here
-                                             //  at this point firstly fill in
-                                             //  xRowWrk and create an actual
-                                             //  entry using it.  You'll need to
-                                             //  add a function to allot an
-                                             //  entry using a xRowWrk
-                                             //
-                                             //  then see if you can move
-                                             //  xRowWrk to the caller of this
-                                             //  function
-  
-  xRowWrk.vTxId(pTxRef->iTxId());
-
-  *ppRow = nullptr;
-  
-  i8 nBytes = StrVal::nBytesRequired(iLength);
+  i8 nBytes = Entry::nBytesRequired(xRowWrk);
   
   Entry* pRowEntry = pAllotEntry(nBytes);
   if ( ! pRowEntry )
     return false;
   
-  i8 iTxId = pTxRef->iTxId();
-  
-  pRowEntry->vTxId(iTxId);
-  
-  char* aVblData = pRowEntry->aVblData();
-  
-  StrVal* pStrVal = new((StrVal*)aVblData) StrVal((StrVal*)aVblData);
-  
-  pStrVal->vAssign(aRecord,iLength);
+  pRowEntry->vSetEntry(xRowWrk);
   
   _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_,CN_ROWBUFFER);
   
@@ -477,6 +454,7 @@ EntryBuffer::EntryBuffer(Index* pIndex, i8 nBufferLevel)
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vAnalyze(s48K& sAnalysis, bool bDetailed, i8& iBuffers, i8& iEntries)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_INDEXBUFFER,CN_ROWBUFFER);
   
   iBuffers++;
   iEntries += (m_nEntries - 1);
@@ -519,7 +497,7 @@ i8 EntryBuffer::nBufferLevel(void)
 /*----------------------------------------------------------------------------*/
 i8 EntryBuffer::iDecile(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_INDEXBUFFER,CN_ROWBUFFER);
   
   i8 iDecile;
   
@@ -537,6 +515,8 @@ i8 EntryBuffer::iDecile(void)
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vDump(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_INDEXBUFFER,CN_ROWBUFFER);
+  
   // show this buffer
   vShow();
   
@@ -563,7 +543,7 @@ void EntryBuffer::vDump(void)
 /*----------------------------------------------------------------------------*/
 Entry* EntryBuffer::pFirstEntry(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_INDEXBUFFER,CN_ROWBUFFER);
   
   // the head entry will have been alloted during constructor
   ASSERT(m_xWsp.nUsed());
@@ -580,7 +560,7 @@ Entry* EntryBuffer::pFirstEntry(void)
 /*----------------------------------------------------------------------------*/
 bool EntryBuffer::bHasSpace(i8 nBytes)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_INDEXBUFFER,CN_ROWBUFFER);
   
   i8 iFree = m_xWsp.nFree();
   
@@ -602,7 +582,7 @@ bool EntryBuffer::bHasSpace(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 Entry* EntryBuffer::pHead(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_INDEXBUFFER,CN_ROWBUFFER);
   
   // the head entry will have been alloted during constructor
   ASSERT(m_xWsp.nUsed());
@@ -868,7 +848,7 @@ void EntryBuffer::vShow(void)
   
   for (Entry* pEntry = pHead(); pEntry != nullptr; pEntry = pNextEntry(pEntry)) {
     vTrace("%8lld: "_Str, nSub(pEntry, m_xWsp.aArea()));
-    pEntry->vShow(iToOffsetAbs(pEntry), m_pIndex->pIdxColVec());
+    pEntry->vShow(iToOffsetAbs(pEntry), m_pIndex ? m_pIndex->pIdxColVec() : nullptr);
   }
   
   vTrace("\n"_Str);
@@ -1949,7 +1929,7 @@ void EntryBuffer::vPriorVec(Entry* pEntry, EntryVec* pPriorVec)
 /*----------------------------------------------------------------------------*/
 Entry* EntryBuffer::pRightEntry(Entry* pEntry, ln nLevelNo)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_INDEXBUFFER,CN_ROWBUFFER);
   
   Entry* pRightEntry;
   
@@ -1999,7 +1979,7 @@ Entry* EntryBuffer::pRightEntry(Entry* pEntry, ln nLevelNo)
 /*----------------------------------------------------------------------------*/
 i8 EntryBuffer::iToEndOffsetAbs(Entry* pEntry)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_INDEXBUFFER,CN_ROWBUFFER);
   
   i8 iOffset = nSub(pEntry,m_xWsp.aArea());
   
@@ -2013,7 +1993,7 @@ i8 EntryBuffer::iToEndOffsetAbs(Entry* pEntry)
 /*----------------------------------------------------------------------------*/
 i8 EntryBuffer::iToOffsetAbs(Entry* pEntry)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_INDEXBUFFER,CN_ROWBUFFER);
   
   i8 iOffset = nSub(pEntry,m_xWsp.aArea());
   
@@ -2027,7 +2007,7 @@ i8 EntryBuffer::iToOffsetAbs(Entry* pEntry)
 /*----------------------------------------------------------------------------*/
 i8 EntryBuffer::iToRightOffsetAbs(Entry* pEntry, on nOffsetNo)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_INDEXBUFFER,CN_ROWBUFFER);
   
   i8 iEntryOffsetAbs = iToOffsetAbs(pEntry);
   i8 iRightOffset = pEntry->iRightOffset(nOffsetNo);

@@ -106,7 +106,11 @@ bool EbStrand::bInsertRow(TxRef* pTxRef, Str* pRecord, i8 iLength)
     }
   }
 
-  bool bInserted = m_pLastBuffer->bInsertRow(pTxRef,pRecord,iLength, &pRow);
+  // create working row
+  EntWrk xRowWrk;
+  xRowWrk.vTxId(pTxRef->iTxId());
+  xRowWrk.vData(pRecord, iLength);
+  bool bInserted = m_pLastBuffer->bInsertRow(xRowWrk, &pRow);
   
   if (bInserted) {
     //m_zLock.vDropWrite();
@@ -118,7 +122,7 @@ bool EbStrand::bInsertRow(TxRef* pTxRef, Str* pRecord, i8 iLength)
     return false;
   }
   
-  bInserted = m_pLastBuffer->bInsertRow(pTxRef,pRecord,iLength, &pRow);
+  bInserted = m_pLastBuffer->bInsertRow(xRowWrk, &pRow);
   ASSERT(bInserted);
   
   //m_zLock.vDropWrite();

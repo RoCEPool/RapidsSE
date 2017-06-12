@@ -193,7 +193,7 @@ Str* SelCursor::aRowAsStr(void)
   if (! m_pRow)
     return nullptr;
   
-  StrVal* pStrVal = reinterpret_cast<StrVal*>(m_pRow->aVblData());
+  StrVal* pStrVal = reinterpret_cast<StrVal*>(m_pRow->aRow());
   
   if (pStrVal)
     return pStrVal->aStr();

@@ -77,10 +77,10 @@ namespace DBobjects
     void       vAppendBuffer(EntryBuffer* pSrcBuffer);
     void       vCopyBuffer(EntryBuffer* pSrcBuffer);
     byte*      aDataArea(void);
-    Entry*       pFirstRow(void);
+    Entry*     pFirstRow(void);
     i8         nFreeBytes(void);
-    bool       bInsertRow(TxRef* pTxRef, Str* pRecord, i8 iLength, Entry** ppRow);
-    Entry*       pNextRow(Entry* pCurrRow);
+    bool       bInsertRow(EntWrk& xEntRow, Entry** ppRow);
+    Entry*     pNextRow(Entry* pCurrRow);
     void       vRowCount(void);
     i8         nUsedBytes(void);
   

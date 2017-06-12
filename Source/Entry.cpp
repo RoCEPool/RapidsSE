@@ -81,7 +81,9 @@ i8 Entry::nBytesRequired(EntWrk& xEntWrk)
   
   i8 nKeyBytes = xEntWrk.nKeySize();
   
-  i8 nBytes = Entry::nBytesRequired(nOffsets,nKeyBytes,0);
+  i8 nDataBytes = xEntWrk.nDataSize();
+  
+  i8 nBytes = Entry::nBytesRequired(nOffsets,nKeyBytes,nDataBytes);
   
   return nBytes;
 }
@@ -151,6 +153,36 @@ i8 Entry::nSizeEntry(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/*-- Row Data ----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/* get row data pointer                                                       */
+/*----------------------------------------------------------------------------*/
+char* Entry::aRow(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_ENTRY,CN_ROW);
+  
+  i8 nOffsetBytes = RightVec::nBytesRequired(m_nOffsets);
+  
+  char* aRow = pAdd<char*>(aVblData(),nOffsetBytes);
+  
+  return aRow;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get row data size                                                          */
+/*----------------------------------------------------------------------------*/
+i8 Entry::nRowSize(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_ENTRY,CN_ROW);
+  
+  i8 nOffsetBytes = RightVec::nBytesRequired(m_nOffsets);
+  i8 iRowSize = m_nThisBytes - (nOffsetBytes + sizeof(Entry));
+  
+  return iRowSize;
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Variable data area ------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -161,9 +193,9 @@ char* Entry::aVblData(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_ENTRY,CN_ROW);
   
-  char* aRowData = pAdd<char*>(this,sizeof(Entry));
+  char* aVblData = pAdd<char*>(this,sizeof(Entry));
   
-  return pPoolCheck<char*>(aRowData);
+  return pPoolCheck<char*>(aVblData);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -291,14 +323,26 @@ void Entry::vSetEntry(EntWrk& xEntWrk)
   
   MemLib::vCopy(aEntryRightVec,aEntWrkRightVec,nRightBytes);
   
-  // copy Key
-  Key* aEntryKey = this->aKey();
-  Key* aEntWrkKey = xEntWrk.aKey();
-  i8 nKeyBytes = xEntWrk.nKeySize();
+  // copy data
+  if (xEntWrk.bHasData()) {
+    char* aEntryData = this->aRow();
+    char* aEntWrkData = xEntWrk.aData();
+    i8 nDataSize = xEntWrk.nDataSize();
+    
+    ASSERT(nDataSize);
+    MemLib::vCopy(aEntryData,aEntWrkData,nDataSize);
+  }
+  else {
+    // copy Key
+    Key* aEntryKey = this->aKey();
+    Key* aEntWrkKey = xEntWrk.aKey();
+    i8 nKeyBytes = xEntWrk.nKeySize();
+    
+    ASSERT(nKeyBytes);
+    MemLib::vCopy(aEntryKey,aEntWrkKey,nKeyBytes);
+  }
   
-  MemLib::vCopy(aEntryKey,aEntWrkKey,nKeyBytes);
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_ENTRY,CN_ROW);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -329,7 +373,12 @@ void Entry::vShow(i8 iBase, IdxColVec* pColVec)
          m_xId.iBuffer(),
          m_xId.iRow()
          );
-  aKey->vShow(pColVec);
+  if (pColVec)
+    aKey->vShow(pColVec);
+  else {
+    StrVal* pStrVal = reinterpret_cast<StrVal*>(aRow());
+    vTrace("%s"_Str, pStrVal->aStr());
+  }
   
   for (on nRight = 0_on; nRight < m_nOffsets; nRight++) {
     
@@ -354,15 +403,26 @@ void Entry::vContentDump(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_ENTRY,CN_ROW);
   
-  StrVal* pStr = (StrVal*)aVblData();
+//  StrVal* pStr = (StrVal*)aVblData();
+//  
+//  vTrace("Entry %p: ThisBytes %lld %s (%lld bytes) %s\n"_Str,
+//         this,
+//         //m_iTxId,
+//         m_nThisBytes,
+//         aVblData(),
+//         StrLib::iSize(aVblData()),
+//         pStr->s()
+//         );
+  
+  StrVal* pStrVal = reinterpret_cast<StrVal*>(aRow());
   
   vTrace("Entry %p: ThisBytes %lld %s (%lld bytes) %s\n"_Str,
          this,
          //m_iTxId,
          m_nThisBytes,
-         aVblData(),
-         StrLib::iSize(aVblData()),
-         pStr->s()
+         aRow(),
+         nRowSize(),
+         pStrVal->aStr()
          );
 }
 
@@ -377,7 +437,7 @@ void Entry::vExtractKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
   s256 s;
   
   // get the data
-  StrVal* pStrVal = (StrVal*)aVblData();
+  StrVal* pStrVal = (StrVal*)aRow();
   
   i8 nCols = pIdxColVec->nItems();
   for (i8 iColumn = 0; iColumn < nCols; iColumn++) {

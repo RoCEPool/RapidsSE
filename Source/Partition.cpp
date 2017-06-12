@@ -128,20 +128,20 @@ void Partition::vAddIndex(IndexData* pIndexData)
 /*----------------------------------------------------------------------------*/
 /* insert a row into this strand                                              */
 /*----------------------------------------------------------------------------*/
-bool Partition::bInsertRow(EntryBuffer* pRowBuffer, TxRef* pTxRef, Str* pRecord, i8 iLength)
+bool Partition::bInsertRow(EntryBuffer* pRowBuffer, EntWrk& xRowWrk)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
   
   Entry* pRow;
   
   // insert the row in the buffer
-  bool bResult = pRowBuffer->bInsertRow( pTxRef, pRecord, iLength, &pRow);
+  bool bResult = pRowBuffer->bInsertRow(xRowWrk, &pRow);
   
   // buffer is full, return
   if (! bResult )
     return false;
   
-  // now insert an entry for the row in the indices of this table
+  // now insert an entry for the row in the indexes of this table
   i8 nIndexes = m_pIdxVec->nItems();
   
   for (i8 iIndex=0; iIndex < nIndexes; iIndex++) {
@@ -193,6 +193,8 @@ void Partition::vPopulateIndex(i8 iIndexNo)
     for (EntryBuffer* pRowBuffer = pStrand->pFirstBuffer();
          pRowBuffer;
          pRowBuffer = (EntryBuffer*)pRowBuffer->pNextBuffer()) {
+      
+      pRowBuffer->vShow();
       
       nRowBuffer++;
       nRowsInBuffer = pRowBuffer->nEntries();

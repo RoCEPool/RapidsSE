@@ -369,7 +369,12 @@ bool Table::bInsertRow(EntryBuffer* pRowBuffer, i8 iPartition, TxRef* pTxRef,
   
   Partition* pPartn = pPartition(iPartition);
   
-  bool bInserted = pPartn->bInsertRow(pRowBuffer,pTxRef,pRecord,iLength);
+  // create working row
+  EntWrk xRowWrk;
+  xRowWrk.vTxId(pTxRef->iTxId());
+  xRowWrk.vData(pRecord, iLength);
+  
+  bool bInserted = pPartn->bInsertRow(pRowBuffer,xRowWrk);
   
   return bInserted;
 }

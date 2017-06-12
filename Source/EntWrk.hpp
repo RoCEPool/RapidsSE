@@ -60,7 +60,11 @@ namespace DBobjects
     ~EntWrk(void);
   
     void   vAddKey(KeyWrk& xKeyWrk);
+    char*  aData(void);
+    i8     nDataSize(void);
+    void   vData(Str* aData, i8 iSize);
     void   vForm(Id& xId, KeyWrk& xKeyWrk);
+    bool   bHasData(void);
     Id&    xId(void);
     void   vId(Id& xId);
     Key*   aKey(void);

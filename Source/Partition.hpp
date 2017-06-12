@@ -6,6 +6,7 @@
 namespace DBobjects
 {
   class Index;
+  class EntWrk;
   
   // allow for maximum 8 indexes per table
   static const i8 C_INDEXES_PER_TABLE = 8;
@@ -36,7 +37,7 @@ namespace DBobjects
   
     void    vAddIndex(IndexData* pIndexData);
     
-    bool    bInsertRow(EntryBuffer* pRowBuffer, TxRef* pTxRef,Str* pRecord,i8 iLength);
+    bool    bInsertRow(EntryBuffer* pRowBuffer, EntWrk& xRowWrk);
     i8      iPartitionId(void);
     void    vPartitionId(i8 iPartitionId);
     void    vPopulateIndex(i8 iIndexNo);

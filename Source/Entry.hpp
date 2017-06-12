@@ -34,6 +34,11 @@ namespace DBobjects
     i8   nSizeEntry(void);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // data area
+    char* aRow(void);
+    i8    nRowSize(void);
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // variable data area
     char* aVblData(void);
   

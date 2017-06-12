@@ -65,7 +65,12 @@ ENTRY("vRowBufferAppend"_Str);
 
   i8 iLength = sRecord.iLength();
   
-  bool b = pRowBuffer->bInsertRow(pTxRef,sRecord,iLength,&pRow);
+  // create working row
+  EntWrk xRowWrk;
+  xRowWrk.vTxId(pTxRef->iTxId());
+  xRowWrk.vData(sRecord, iLength);
+  
+  bool b = pRowBuffer->bInsertRow(xRowWrk,&pRow);
   
   if (b) {
     nnpTask->m_pDataStack->vPushInt((i8)1);
@@ -109,7 +114,12 @@ void Task::vRowBufferAppendRecord(NNP_Task nnpTask)
   
   i8 iLength = pFile->iRecordLength();
   
-  bool b = pRowBuffer->bInsertRow(pTxRef,aRecord,iLength,&pRow);
+  // create working row
+  EntWrk xRowWrk;
+  xRowWrk.vTxId(pTxRef->iTxId());
+  xRowWrk.vData(aRecord, iLength);
+  
+  bool b = pRowBuffer->bInsertRow(xRowWrk,&pRow);
   
   if (b) {
     nnpTask->m_pDataStack->vPushInt((i8)1);

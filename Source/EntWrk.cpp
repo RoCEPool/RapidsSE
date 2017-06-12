@@ -55,6 +55,9 @@ EntWrk::EntWrk(void)
   // m_xKeyWrk
   m_xKeyWrk.vInit();
   
+  // m_xDataWrk
+  m_xDataWrk.vInit();
+  
   _checkInitialisedSize_(sizeof(EntWrk));
   
   _postcondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
@@ -146,6 +149,14 @@ EntWrk::~EntWrk(void)
 /*----------------------------------------------------------------------------*/
 /* get row id                                                                 */
 /*----------------------------------------------------------------------------*/
+bool EntWrk::bHasData(void)
+{
+  return m_bHasData;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get row id                                                                 */
+/*----------------------------------------------------------------------------*/
 Id& EntWrk::xId(void)
 {
   return m_xId;
@@ -198,10 +209,22 @@ void EntWrk::vShow(void)
            iRightOffset(nOffsetNo)
            );
   
-  vTrace("key (size:%lld value:%lld) "_Str,
-         nKeySize(),
-         iKey
-         );
+  if (m_bHasData) {
+    
+    StrVal* pStrVal = reinterpret_cast<StrVal*>(aData());
+
+    vTrace("data (size:%lld value:%s) "_Str,
+           nDataSize(),
+           pStrVal->aStr()
+           );
+
+  }
+  else {
+    vTrace("key (size:%lld value:%lld) "_Str,
+           nKeySize(),
+           iKey
+           );
+  }
   
   vTrace("\n"_Str);
 }
@@ -260,6 +283,44 @@ RightVec* EntWrk::aRightVec(void)
   RightVec* aRightVec = &m_xRight;
   
   return aRightVec;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Data --------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get data pointer                                                           */
+/*----------------------------------------------------------------------------*/
+char* EntWrk::aData(void)
+{
+  char* aData = reinterpret_cast<char*>(&m_xDataWrk);
+
+  return aData;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get data size                                                              */
+/*----------------------------------------------------------------------------*/
+i8 EntWrk::nDataSize(void)
+{
+  return m_xDataWrk.nUsed();
+}
+
+/*----------------------------------------------------------------------------*/
+/* copy the row data                                                          */
+/*----------------------------------------------------------------------------*/
+void EntWrk::vData(Str* aDataBytes, i8 iSize)
+{
+  i8 nBytes = StrVal::nBytesRequired(iSize);
+ 
+  StrVal* pStrVal = new((StrVal*)aData()) StrVal((StrVal*)aData());
+  pStrVal->vAssign(aDataBytes,iSize);
+  m_xDataWrk.vTake(nBytes);
+  
+  //m_xDataWrk.vAppend(aDataBytes, iSize);
+   
+  m_bHasData = true;
 }
 
 /*----------------------------------------------------------------------------*/
