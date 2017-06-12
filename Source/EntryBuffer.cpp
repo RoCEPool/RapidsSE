@@ -347,7 +347,16 @@ bool EntryBuffer::bInsertRow(TxRef* pTxRef, Str* aRecord, i8 iLength, Entry** pp
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
-  EntWrk xRowWrk;
+  EntWrk xRowWrk;                            //! alka here
+                                             //  at this point firstly fill in
+                                             //  xRowWrk and create an actual
+                                             //  entry using it.  You'll need to
+                                             //  add a function to allot an
+                                             //  entry using a xRowWrk
+                                             //
+                                             //  then see if you can move
+                                             //  xRowWrk to the caller of this
+                                             //  function
   
   xRowWrk.vTxId(pTxRef->iTxId());
 
