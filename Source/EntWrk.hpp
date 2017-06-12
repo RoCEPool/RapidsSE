@@ -18,6 +18,7 @@ namespace DBobjects
   
     Id m_xId;   // id
     i8 m_iTxId; // transaction id
+    bool m_bHasData;
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // offsets

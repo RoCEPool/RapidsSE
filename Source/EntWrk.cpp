@@ -41,6 +41,8 @@ EntWrk::EntWrk(void)
   // check initialisation of rowid
   ASSERT(0 == m_xId.iBuffer() && 0 == m_xId.iRow());
   
+  m_bHasData = false;
+  
   // generate logarithmic level for this entry
   m_iOffsets = Random::iLogLevel(gnIndexOffsets+1, C_FLAT_FREQ);
   ASSERT(m_iOffsets >= 0 && m_iOffsets <= gnIndexOffsets);
