@@ -347,6 +347,10 @@ bool EntryBuffer::bInsertRow(TxRef* pTxRef, Str* aRecord, i8 iLength, Entry** pp
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
+  EntWrk xRowWrk;
+  
+  xRowWrk.vTxId(pTxRef->iTxId());
+
   *ppRow = nullptr;
   
   i8 nBytes = StrVal::nBytesRequired(iLength);

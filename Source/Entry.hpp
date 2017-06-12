@@ -13,7 +13,7 @@ namespace DBobjects
     i8  m_nThisBytes; // size of this item
     Id  m_xId;        // id
     i8  m_nOffsets;   // no of offsets for this entry (0,1 or 2)
-  //i8  m_iTxId;      // transaction id
+    i8  m_iTxId;      // transaction id
     // ..data..       // variable data area 
 
   public:

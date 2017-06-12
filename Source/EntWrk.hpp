@@ -60,16 +60,18 @@ namespace DBobjects
   
     void   vAddKey(KeyWrk& xKeyWrk);
     void   vForm(Id& xId, KeyWrk& xKeyWrk);
+    Id&    xId(void);
+    void   vId(Id& xId);
     Key*   aKey(void);
     i8     nKeySize(void);
     i8     nOffsets(void);
     i8     iRightOffset(on nOffsetNo);
     void   vRightOffset(on nOffsetNo, u8 uRightOffset);
-    Id&    xId(void);
-    void   vId(Id& xId);
-    void   vShow(void);
     RightVec* aRightVec(void);
     i8        nRightSize(void);
+    void   vShow(void);
+    i8     iTxId(void);
+    void   vTxId(i8 iTxId);
 
     Footer* pFooter(void);
   };

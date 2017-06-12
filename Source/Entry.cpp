@@ -48,7 +48,7 @@ Entry::Entry(eCN eClassNo, i8 nThisBytes, i8 nOffsets)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
   
-  //m_iTxId      = -1;
+  m_iTxId      = -1;
   m_nThisBytes = nThisBytes;
   //m_xId
   m_nOffsets   = nOffsets;
