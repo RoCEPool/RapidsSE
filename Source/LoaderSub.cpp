@@ -289,10 +289,13 @@ bool LoaderSub::bInsertRow2(void)
   
   // get working buffer
   EntryBuffer* pRowBuffer = m_pRowBuffer[m_iPartition];
+  bn nBufferNo = pRowBuffer->nBufferNo();
   
   // create working row
   EntWrk xRowWrk;
   xRowWrk.vTxId(m_pTxRef->iTxId());
+  Id rowId(*nBufferNo, pRowBuffer->nEntries());
+  xRowWrk.vId(rowId);
   xRowWrk.vData(m_aRecord, m_iLength);
   
   // insert row into working buffer
