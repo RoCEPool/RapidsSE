@@ -38,7 +38,6 @@ args.regionSize noQueryThreads constant N_QUERY_THREADS
 /*----------------------------------------------------------------------------*/
 : >qryThreadNm ( i -- s ) "queryThread"    swap >str str.cat ;
 : :qryThread   ( i -- w ) >qryThreadNm    :thread    ;
-: >qryThread   ( i -- w ) >qryThreadNm    find execute ;
 
 : queryThreadsStart
 
