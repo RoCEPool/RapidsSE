@@ -383,8 +383,8 @@ void Thread::vLoopV2(void)
       NNP_Task nnpTask = *m_npTask;
       if ( (*gnpRootTask != *m_npTask)  && (!nnpTask->bWordBody()) ) {
         delete *m_npTask;
-        m_npTask = nullptr;
       }
+      m_npTask = nullptr;
       continue;
     }
 

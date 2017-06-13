@@ -732,15 +732,8 @@ namespace Tasks
     static void vPushValue(NNP_Task nnpTask);
     
     // scheduler
-    static void vSchedulerInit(NNP_Task nnpTask);
-    
-    static void vSchedulerDropLock(NNP_Task nnpTask);
-    static void vSchedulerGrabLock(NNP_Task nnpTask);
-    
     static void vSchedulerEnqueueTask(NNP_Task nnpTask);
     static void vSchedulerQueuedTasks(NNP_Task nnpTask);
-    
-    static void vSchedulerEnqueueThread(NNP_Task nnpTask);
     static void vSchedulerQueuedThreads(NNP_Task nnpTask);
   
     // queue

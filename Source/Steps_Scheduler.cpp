@@ -24,6 +24,7 @@ extern StepBoard*      gpStepBoard;
 extern Lock            gxDdlLock;
 extern Lock            gxDicLock;
 extern SEitfList*      gpSEitfList;
+extern Scheduler*      gpScheduler;
 
 // Scheduler: ////////////////////////////////////////////////////////////////////
 
@@ -32,66 +33,9 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Scheduler(void)
 {
-  vAddPrimitive("Scheduler.init"_Str,          &vSchedulerInit,          false);
-
-  vAddPrimitive("Scheduler.dropLock"_Str,      &vSchedulerDropLock,      false);
-  vAddPrimitive("Scheduler.grabLock"_Str,      &vSchedulerGrabLock,      false);
-  
-  vAddPrimitive("Scheduler.enqueueTask"_Str,   &vSchedulerEnqueueTask,   false);
-  vAddPrimitive("Scheduler.queuedTasks"_Str,   &vSchedulerQueuedTasks,   false);
-  
-  vAddPrimitive("Scheduler.enqueueThread"_Str, &vSchedulerEnqueueThread, false);
-  vAddPrimitive("Scheduler.queuedThreads"_Str, &vSchedulerQueuedThreads, false);
-}
-
-/*----------------------------------------------------------------------------*/
-/* Scheduler.init -- Scheduler init                                           */
-/*----------------------------------------------------------------------------*/
-void Task::vSchedulerInit(NNP_Task nnpTask)
-{
-ENTRY("vSchedulerInit"_Str);
-  
-  Object* pObject;
-  if ( ! nnpTask->m_pDataStack->bPop(pObject) )
-    THROW_INVALID_DSTACK("Scheduler.init"_Str);
-  
-  Scheduler* pScheduler = _pScheduler(pObject);
-  
-  new(pScheduler) Scheduler;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Scheduler.dropLock -- drop lock of given scheduler                         */
-/*----------------------------------------------------------------------------*/
-void Task::vSchedulerDropLock(NNP_Task nnpTask)
-{
-  ENTRY("vSchedulerDropLock"_Str);
-  
-  Object* pObject;
-  if ( ! nnpTask->m_pDataStack->bPop(pObject) )
-    THROW_INVALID_DSTACK("Scheduler.append"_Str);
-  
-  Scheduler* pScheduler = _pScheduler(pObject);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Scheduler.grabLock -- grab lock of given scheduler                         */
-/*----------------------------------------------------------------------------*/
-void Task::vSchedulerGrabLock(NNP_Task nnpTask)
-{
-  ENTRY("vSchedulerGrabLock"_Str);
-  
-  Object* pObject;
-  if ( ! nnpTask->m_pDataStack->bPop(pObject) )
-    THROW_INVALID_DSTACK("Scheduler.append"_Str);
-  
-  Scheduler* pScheduler = _pScheduler(pObject);
-  
-  EXIT();
+  vAddPrimitive("Scheduler::enqueueTask"_Str,   &vSchedulerEnqueueTask,   false);
+  vAddPrimitive("Scheduler::queuedTasks"_Str,   &vSchedulerQueuedTasks,   false);
+  vAddPrimitive("Scheduler::queuedThreads"_Str, &vSchedulerQueuedThreads, false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -103,9 +47,10 @@ void Task::vSchedulerEnqueueTask(NNP_Task nnpTask)
   
   Object* pObject;
   if ( ! nnpTask->m_pDataStack->bPop(pObject) )
-    THROW_INVALID_DSTACK("Scheduler.enqueueThread"_Str);
+    THROW_INVALID_DSTACK("Scheduler.enqueueTask"_Str);
+  Task* pTask = _pTask(pObject);
   
-  Scheduler* pScheduler = _pScheduler(pObject);
+  gpScheduler->vEnqueueTask(pTask);
   
   EXIT();
 }
@@ -117,27 +62,9 @@ void Task::vSchedulerQueuedTasks(NNP_Task nnpTask)
 {
   ENTRY("vSchedulerQueuedTasks"_Str);
   
-  Object* pSchedulerPtr;
-  if ( ! nnpTask->m_pDataStack->bPop(pSchedulerPtr) )
-    THROW_INVALID_DSTACK("Scheduler.queuedTasks"_Str);
+  i8 nTasks = gpScheduler->iQueuedTasks();
   
-  Scheduler* pScheduler = _pScheduler(pSchedulerPtr);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Scheduler.queueThread -- queue thread via scheduler                        */
-/*----------------------------------------------------------------------------*/
-void Task::vSchedulerEnqueueThread(NNP_Task nnpTask)
-{
-  ENTRY("vSchedulerEnqueueThread"_Str);
-  
-  Object* pSchedulerPtr;
-  if ( ! nnpTask->m_pDataStack->bPop(pSchedulerPtr) )
-    THROW_INVALID_DSTACK("Scheduler.enqueueThread"_Str);
-  
-  Scheduler* pScheduler = _pScheduler(pSchedulerPtr);
+  nnpTask->m_pDataStack->vPushInt(nTasks);
   
   EXIT();
 }
@@ -149,12 +76,9 @@ void Task::vSchedulerQueuedThreads(NNP_Task nnpTask)
 {
   ENTRY("vSchedulerQueuedThreads"_Str);
   
-  Object* pSchedulerPtr;
-  if ( ! nnpTask->m_pDataStack->bPop(pSchedulerPtr) )
-    THROW_INVALID_DSTACK("Scheduler.queuedThreads"_Str);
+  i8 nThreads = gpScheduler->iQueuedThreads();
   
-  Scheduler* pScheduler = _pScheduler(pSchedulerPtr);
-  
+  nnpTask->m_pDataStack->vPushInt(nThreads);
   EXIT();
 }
 
