@@ -10,6 +10,45 @@ namespace Schedulers
 
 namespace Threads
 {
+  enum eTH // thread
+  {
+  /*  0 */ TH_NONE=0,
+  /*  1 */ TH_ANSWER,
+  /*  2 */ TH_COORDINATOR,
+  /*  3 */ TH_COORDINATOR_PROXY,
+  /*  4 */ TH_GENERAL,
+  /*  5 */ TH_LISTER,
+  /*  6 */ TH_MONITOR,
+  /*  7 */ TH_QUERY,
+  /*  8 */ TH_PARTICIPANT,
+  /*  9 */ TH_PARTICIPANT_PROXY,
+  /* 10 */ TH_RECLAIM,
+  /* 11 */ TH_REQUEST,
+  /* 12 */ TH_SCANOP,
+  /* 13 */ TH_SINKOP,
+  /* 14 */ TH_WRITEOP,
+  /* 15 */ TH_ENUMS
+  };
+  
+  static Str* aAM[]
+  {
+  /*  0 */ "none"_Str,
+  /*  1 */ "ANSWER"_Str,
+  /*  2 */ "COORDINATOR"_Str,
+  /*  3 */ "COORDINATOR_PROXY"_Str,
+  /*  4 */ "GENERAL"_Str,
+  /*  5 */ "LISTER"_Str,
+  /*  6 */ "MONITOR"_Str,
+  /*  7 */ "QUERY"_Str,
+  /*  8 */ "PARTICIPANT"_Str,
+  /*  9 */ "PARTICIPANT_PROXY"_Str,
+  /* 10 */ "RECLAIM"_Str,
+  /* 11 */ "REQUEST"_Str,
+  /* 12 */ "SCANOP"_Str,
+  /* 13 */ "SINKOP"_Str,
+  /* 14 */ "WRITEOP"_Str,
+  /* 15 */ "enums"_Str
+  };
   
   class Thread : public Object,
                  public ListNode_t<Thread>

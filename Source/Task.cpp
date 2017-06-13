@@ -633,6 +633,23 @@ void Task::vAddConstants(void)
   /*  3 */ vAddConstant("TK_STRING"_Str,  TK_STRING);
   /*  4 */ vAddConstant("TK_ENUMS"_Str,   TK_ENUMS);
   
+  /*  0 */ vAddConstant("TH_NONE"_Str,                TH_NONE);
+  /*  1 */ vAddConstant("TH_ANSWER"_Str,              TH_ANSWER);
+  /*  2 */ vAddConstant("TH_COORDINATOR"_Str,         TH_COORDINATOR);
+  /*  3 */ vAddConstant("TH_COORDINATOR_PROXY"_Str,   TH_COORDINATOR_PROXY);
+  /*  4 */ vAddConstant("TH_GENERAL"_Str,             TH_GENERAL);
+  /*  5 */ vAddConstant("TH_LISTER"_Str,              TH_LISTER);
+  /*  6 */ vAddConstant("TH_MONITOR"_Str,             TH_MONITOR);
+  /*  7 */ vAddConstant("TH_QUERY"_Str,               TH_QUERY);
+  /*  8 */ vAddConstant("TH_PARTICIPANT"_Str,         TH_PARTICIPANT);
+  /*  9 */ vAddConstant("TH_PARTICIPANT_PROXY"_Str,   TH_PARTICIPANT_PROXY);
+  /* 10 */ vAddConstant("TH_RECLAIM"_Str,             TH_RECLAIM);
+  /* 11 */ vAddConstant("TH_REQUEST"_Str,             TH_REQUEST);
+  /* 12 */ vAddConstant("TH_SCANOP"_Str,              TH_SCANOP);
+  /* 13 */ vAddConstant("TH_SINKOP"_Str,              TH_SINKOP);
+  /* 14 */ vAddConstant("TH_WRITEOP"_Str,             TH_WRITEOP);
+  /* 15 */ vAddConstant("TH_ENUMS"_Str,               TH_ENUMS); 
+  
   // SIZEOF_ : C++ class sizes
   /*  1 */ vAddConstant("SIZEOF_INTVAL"_Str, sizeof(IntVal));
   /*  2 */ vAddConstant("SIZEOF_IPVAL"_Str,  sizeof(IpVal));
