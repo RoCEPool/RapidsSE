@@ -569,28 +569,37 @@ tp: analyzeTable
 : makeTable allParticipants 1 checkResult ( "<tableNm>" -- true n# true )
 
 tp: makingTable
-  locals| tableNm |
+  locals| sTableNm |
 
   args.tracepoint if
-  tableNm "MAKING TABLE " swap str.cat " on NODE " str.cat grid.thisNode@ >str str.cat .
+  sTableNm "MAKING TABLE " swap str.cat " on NODE " str.cat grid.thisNode@ >str str.cat .
   then
 
-  tableNm makeTableDic
+  sTableNm makeTableDic
 
-  tableNm
+  sTableNm
   find execute pathPush
 
-  tableNm "makeIndexes" find execute
+  sTableNm "makeIndexes" find execute
 
-  tableNm "makePartitions" find execute
+  sTableNm "makePartitions" find execute
 
-  tableNm :table ( ^table )
+  sTableNm :table ( ^table )
 
   // make partition columns
-  tableNm "makePartitionColumns" find execute
+  sTableNm "makePartitionColumns" find execute
 
   // forward reference :-(
-  tableNm "makeColumns" find execute
+  sTableNm "makeColumns" find execute
+
+  // create the hidden index for the row data
+  sTableNm "hidden" "make_index" find execute
+
+  // make the index as hidden
+  "indexes" find execute pathPush
+  "hidden" findInCurrent execute
+  true swap index.isHidden!
+  pathDrop
 
   true <SUCCESS_RESULT>
 ;

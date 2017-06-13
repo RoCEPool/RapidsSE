@@ -78,6 +78,8 @@ EntWrk::EntWrk(i8 nOffsets)
   m_iOffsets = nOffsets;
   ASSERT(m_iOffsets >= 0 && m_iOffsets <= gnIndexOffsets);
   
+  m_bHasData = false;
+  
   // set all right offsets to nil
   on nOffsetNo;
   for (nOffsetNo = 0_on; nOffsetNo < gnIndexOffsets; nOffsetNo++)
@@ -85,6 +87,9 @@ EntWrk::EntWrk(i8 nOffsets)
   
   // m_xKeyWrk
   m_xKeyWrk.vInit();
+  
+  // m_xDataWrk
+  m_xDataWrk.vInit();
   
   _checkInitialisedSize_(sizeof(EntWrk));
   
@@ -102,6 +107,8 @@ EntWrk::EntWrk(Entry* pEntry)
   // check initialisation of rowid
   ASSERT(0 == m_xId.iBuffer() && 0 == m_xId.iRow());
   
+  m_bHasData = false;
+  
   // set no of offsets
   m_iOffsets = pEntry->nOffsets();
   
@@ -117,6 +124,9 @@ EntWrk::EntWrk(Entry* pEntry)
   
   // m_xKeyWrk
   m_xKeyWrk.vInit();
+  
+  // m_xDataWrk
+  m_xDataWrk.vInit();
   
   _checkInitialisedSize_(sizeof(EntWrk));
   

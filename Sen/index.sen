@@ -104,9 +104,15 @@
   ' index ( ^word ^word )
   eql ( bool )
   if
+    indexPtr execute index.isHidden@ if
+      EC_NO_SUCH_INDEX false ( errorCode false )
+      exit
+    then
+
     true ( true )
     exit
   then
+
 
   EC_NOT_AN_INDEX false ( errorCode false )
 ;
@@ -251,27 +257,18 @@
   true
 ;
 
-/*----------------------------------------------------------------------------*/
-/* make an index (run by participant)                                         */
-/*----------------------------------------------------------------------------*/
-: makeIndex allParticipants 2 checkResult ( "<tableNm>" "<indexNm>"  -- true n# true )
 
-tp: makingIndex
+/*----------------------------------------------------------------------------*/
+/* make_index (invoked from makeIndex)                                        */
+/*----------------------------------------------------------------------------*/
+: make_index ( "<tableNm>" "<indexNm>" -- )
 
   0 0 locals| indexPtr tablePtr indexNm tableNm |
 
-  args.tracepoint if
-  "MAKING INDEX " indexNm str.cat " on NODE " str.cat grid.thisNode@ >str str.cat .
-  then
-
-  tableNm ( "<tableNm>" )
-  find execute pathPush
-
-  indexNm ( "<indexNm>" )
-
-  "indexes" find execute pathPush
+  pushIndexes
 
   // create the index
+  indexNm ( "<indexNm>" )
   :index ( ^index )
 
   // drop the index word
@@ -298,6 +295,30 @@ tp: makingIndex
 
   // add the index in the table
   indexPtr tablePtr table.addIndex
+
+  popIndexes
+
+;
+
+/*----------------------------------------------------------------------------*/
+/* make an index (run by participant)                                         */
+/*----------------------------------------------------------------------------*/
+: makeIndex allParticipants 2 checkResult ( "<tableNm>" "<indexNm>"  -- true n# true )
+
+tp: makingIndex
+
+  locals| indexNm tableNm |
+
+  args.tracepoint if
+  "MAKING INDEX " indexNm str.cat " on NODE " str.cat grid.thisNode@ >str str.cat .
+  then
+
+  tableNm ( "<tableNm>" )
+  find execute pathPush
+
+  tableNm indexNm make_index
+
+  popTable
 
   true <SUCCESS_RESULT>
 ;
@@ -453,7 +474,12 @@ tp: loadIndexes
     iterate
     object@ word.name
     find execute ( ^index )
-    index.populate
+
+    // populate only non-hidden indexes
+    dup index.isHidden@ not if
+      index.populate
+    then
+
     object@ word.prev object!
   next
 
