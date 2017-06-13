@@ -39,7 +39,7 @@ args.regionSize noQueryThreads constant N_QUERY_THREADS
 : >qryTaskQueueNm ( i -- s ) "queryTaskQueue" swap >str str.cat ;
 : >qryThreadNm    ( i -- s ) "queryThread"    swap >str str.cat ;
 
-: :qryTaskQueue ( i -- w ) >qryTaskQueueNm :TaskQueue ;
+: :qryTaskQueue ( i -- w ) >qryTaskQueueNm :QueryScheduler ;
 : :qryThread    ( i -- w ) >qryThreadNm    :thread    ;
 
 : >qryTaskQueue ( i -- w ) >qryTaskQueueNm find execute ;
@@ -55,10 +55,10 @@ args.regionSize noQueryThreads constant N_QUERY_THREADS
 
   N_query_THREADS 0 do
 
-    I :qryTaskQueue  drop ( create a TaskQueue called queryTaskQueueI )
+    I :qryTaskQueue  drop ( create a QueryScheduler called queryTaskQueueI )
     I :qryThread   drop ( create a thread called queryThreadI )
 
-  I >qryTaskQueue  I >qryThread thread.TaskQueue!  // set the threads TaskQueue
+  I >qryTaskQueue  I >qryThread thread.QueryScheduler!  // set the threads QueryScheduler
   I >qryThreadNm   I >qryThread thread.name!       // set the threads name
   I >qryThread     thread.spawnV2                  // spawn os thread
 

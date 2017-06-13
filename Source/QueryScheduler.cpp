@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* TaskQueue.cpp - queue of tasks                                             */
+/* QueryScheduler.cpp - queue of tasks meets queue of threads                 */
 /*============================================================================*/
 
 #include "Schedulers.h"
@@ -11,9 +11,9 @@ extern BufferPool*  gpBufferPool;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-TaskQueue* Tasks::_pTaskQueue(void* aAddr)
+QueryScheduler* Schedulers::_pTaskQueue(void* aAddr)
 {
-  TaskQueue* pTaskQueue = reinterpret_cast<TaskQueue*>(aAddr);
+  QueryScheduler* pTaskQueue = reinterpret_cast<QueryScheduler*>(aAddr);
   
   RASSERT( !pTaskQueue || CN_TASKQUEUE == pTaskQueue->eClass() );
   
@@ -23,7 +23,7 @@ TaskQueue* Tasks::_pTaskQueue(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* TaskQueue::operator new(size_t iSize, TaskQueue* pTaskQueue)
+void* QueryScheduler::operator new(size_t iSize, QueryScheduler* pTaskQueue)
 {
   RASSERT(iSize);
   return pTaskQueue;
@@ -32,10 +32,10 @@ void* TaskQueue::operator new(size_t iSize, TaskQueue* pTaskQueue)
 /*----------------------------------------------------------------------------*/
 /* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
-void TaskQueue::operator delete(void* aAddress)
+void QueryScheduler::operator delete(void* aAddress)
 {
   RASSERT(aAddress);
-  vFatal("fatal: TaskQueue class cannot be deleted"_Str);
+  vFatal("fatal: QueryScheduler class cannot be deleted"_Str);
   
   RASSERT(0);
 }
@@ -43,12 +43,12 @@ void TaskQueue::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-TaskQueue::TaskQueue(void)
+QueryScheduler::QueryScheduler(void)
 : Object(CN_TASKQUEUE)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASKQUEUE,_FOOTER_);
   
-  m_xLock.vInit("TaskQueue::m_xLock"_Str);
+  m_xLock.vInit("QueryScheduler::m_xLock"_Str);
   
   m_iCount = 0;
   m_npHead = nullptr;
@@ -66,7 +66,7 @@ TaskQueue::TaskQueue(void)
 /*----------------------------------------------------------------------------*/
 /* grab write lock on this task queue                                         */
 /*----------------------------------------------------------------------------*/
-void TaskQueue::vGrabLock(void)
+void QueryScheduler::vGrabLock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASKQUEUE,_FOOTER_);
 
@@ -76,7 +76,7 @@ void TaskQueue::vGrabLock(void)
 /*----------------------------------------------------------------------------*/
 /* drop write lock on this task queue                                         */
 /*----------------------------------------------------------------------------*/
-void TaskQueue::vDropLock(void)
+void QueryScheduler::vDropLock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASKQUEUE,_FOOTER_);
   
@@ -86,7 +86,7 @@ void TaskQueue::vDropLock(void)
 /*----------------------------------------------------------------------------*/
 /* queue task onto this task queue                                            */
 /*----------------------------------------------------------------------------*/
-void TaskQueue::vQueueTask(Task* pTask)
+void QueryScheduler::vQueueTask(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASKQUEUE,_FOOTER_);
   
@@ -124,7 +124,7 @@ void TaskQueue::vQueueTask(Task* pTask)
 /*----------------------------------------------------------------------------*/
 /* how many tasks are currently queued?                                       */
 /*----------------------------------------------------------------------------*/
-i8 TaskQueue::iQueuedTasks(void)
+i8 QueryScheduler::iQueuedTasks(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASKQUEUE,_FOOTER_);
   
@@ -134,7 +134,7 @@ i8 TaskQueue::iQueuedTasks(void)
 /*----------------------------------------------------------------------------*/
 /* pop a task                                                                 */
 /*----------------------------------------------------------------------------*/
-Task* TaskQueue::mpPopTask(void)
+Task* QueryScheduler::mpPopTask(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASKQUEUE,_FOOTER_);
   
@@ -160,7 +160,7 @@ Task* TaskQueue::mpPopTask(void)
 /*----------------------------------------------------------------------------*/
 /* queue thread onto this task queue                                          */
 /*----------------------------------------------------------------------------*/
-void TaskQueue::vQueueThread(Threads::Thread* npThread)
+void QueryScheduler::vQueueThread(Threads::Thread* npThread)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASKQUEUE,_FOOTER_);
   
@@ -172,7 +172,7 @@ void TaskQueue::vQueueThread(Threads::Thread* npThread)
 /*----------------------------------------------------------------------------*/
 /* how many threads are currently queued?                                     */
 /*----------------------------------------------------------------------------*/
-i8 TaskQueue::iQueuedThreads(void)
+i8 QueryScheduler::iQueuedThreads(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASKQUEUE,_FOOTER_);
   
@@ -184,7 +184,7 @@ i8 TaskQueue::iQueuedThreads(void)
 /*----------------------------------------------------------------------------*/
 /* pop a task                                                                 */
 /*----------------------------------------------------------------------------*/
-Threads::Thread* TaskQueue::mpPopThread(void)
+Thread* QueryScheduler::mpPopThread(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASKQUEUE,_FOOTER_);
   
@@ -202,7 +202,7 @@ Threads::Thread* TaskQueue::mpPopThread(void)
 /*----------------------------------------------------------------------------*/
 /* verify sequence                                                            */
 /*----------------------------------------------------------------------------*/
-void TaskQueue::vVerify(void)
+void QueryScheduler::vVerify(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASKQUEUE,_FOOTER_);
   
@@ -243,7 +243,7 @@ void TaskQueue::vVerify(void)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* TaskQueue::pFooter(void)
+Footer* QueryScheduler::pFooter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASKQUEUE);
   

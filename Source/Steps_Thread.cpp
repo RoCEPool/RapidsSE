@@ -376,7 +376,7 @@ void Task::vThreadQstore(NNP_Task nnpTask)
   
   ASSERT(CN_TASKQUEUE == pTaskQueueEmb->eClass());
   
-  TaskQueue* pTaskQueue = static_cast<TaskQueue*>(pTaskQueueEmb);
+  QueryScheduler* pTaskQueue = static_cast<QueryScheduler*>(pTaskQueueEmb);
   
   //pThread->m_pTaskQueue = pTaskQueue;
   
@@ -399,7 +399,7 @@ ENTRY("vThreadQfetch"_Str);
   
   Thread* pThread = static_cast<Thread*>(pThreadEmb);
   
-  TaskQueue* pTaskQueue = nullptr; //pThread->m_pTaskQueue;
+  QueryScheduler* pTaskQueue = nullptr; //pThread->m_pTaskQueue;
 
   Object* pTaskQueueEmb = static_cast<Object*>(pTaskQueue);
 

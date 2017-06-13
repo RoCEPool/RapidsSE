@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* TaskQueue.hpp - set of tasks                                               */
+/* QueryScheduler.hpp - queue of tasks meets queue of threads                 */
 /*============================================================================*/
 #pragma once
 
@@ -8,10 +8,10 @@ namespace Threads
   class Thread;
 }
 
-namespace Tasks
+namespace Schedulers
 {
   
-  class TaskQueue : public Object,
+  class QueryScheduler : public Object,
                     List_t<Task>
   {
   private:
@@ -20,17 +20,17 @@ namespace Tasks
     NP_Task m_npHead;
     NP_Task m_npTail;
   
-    List_t<Threads::Thread> m_xThreadQueue;
+    List_t<Thread> m_xThreadQueue;
   
     // must be last
     Footer m_xFooter;
     
   public:
-    void* operator new(size_t, TaskQueue* pTaskQueue);
+    void* operator new(size_t, QueryScheduler* pTaskQueue);
     void  operator delete(void*);
     
-    TaskQueue(void);
-    ~TaskQueue(void);
+    QueryScheduler(void);
+    ~QueryScheduler(void);
       
     void  vGrabLock(void);
     void  vDropLock(void);
@@ -39,9 +39,9 @@ namespace Tasks
     i8    iQueuedTasks(void);
     Task* mpPopTask(void);
 
-    void  vQueueThread(Threads::Thread* pThread);
+    void  vQueueThread(Thread* pThread);
     i8    iQueuedThreads(void);
-    Threads::Thread* mpPopThread(void);
+    Thread* mpPopThread(void);
   
   private:
     void vVerify(void);
@@ -49,7 +49,7 @@ namespace Tasks
     Footer* pFooter(void);
   };
 
-  TaskQueue* _pTaskQueue(void* aAddr);
+  QueryScheduler* _pTaskQueue(void* aAddr);
 }
 
 /*============================================================================*/

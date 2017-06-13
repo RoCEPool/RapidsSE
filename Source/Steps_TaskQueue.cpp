@@ -25,28 +25,28 @@ extern Lock            gxDdlLock;
 extern Lock            gxDicLock;
 extern SEitfList*      gpSEitfList;
 
-// TaskQueue: ////////////////////////////////////////////////////////////////////
+// QueryScheduler: ////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_TaskQueue(void)
 {
-  vAddPrimitive("TaskQueue.init"_Str,           &vTaskQueueInit,           false);
+  vAddPrimitive("QueryScheduler.init"_Str,           &vTaskQueueInit,           false);
 
-  vAddPrimitive("TaskQueue.dropLock"_Str,       &vTaskQueueDropLock,       false);
-  vAddPrimitive("TaskQueue.grabLock"_Str,       &vTaskQueueGrabLock,       false);
+  vAddPrimitive("QueryScheduler.dropLock"_Str,       &vTaskQueueDropLock,       false);
+  vAddPrimitive("QueryScheduler.grabLock"_Str,       &vTaskQueueGrabLock,       false);
   
-  vAddPrimitive("TaskQueue.queueTask"_Str,      &vTaskQueueQueueTask,      false);
-  vAddPrimitive("TaskQueue.queuedTasks"_Str,    &vTaskQueueQueuedTasks,    false);
+  vAddPrimitive("QueryScheduler.queueTask"_Str,      &vTaskQueueQueueTask,      false);
+  vAddPrimitive("QueryScheduler.queuedTasks"_Str,    &vTaskQueueQueuedTasks,    false);
   
-  vAddPrimitive("TaskQueue.threadsWaiting"_Str, &vTaskQueueThreadsWaiting, false);
-  vAddPrimitive("TaskQueue.queueThread"_Str,    &vTaskQueueQueueThread,    false);
-  vAddPrimitive("TaskQueue.signalThread"_Str,   &vTaskQueueSignalThread,   false);
+  vAddPrimitive("QueryScheduler.threadsWaiting"_Str, &vTaskQueueThreadsWaiting, false);
+  vAddPrimitive("QueryScheduler.queueThread"_Str,    &vTaskQueueQueueThread,    false);
+  vAddPrimitive("QueryScheduler.signalThread"_Str,   &vTaskQueueSignalThread,   false);
 }
 
 /*----------------------------------------------------------------------------*/
-/* TaskQueue.init -- TaskQueue init                                           */
+/* QueryScheduler.init -- QueryScheduler init                                           */
 /*----------------------------------------------------------------------------*/
 void Task::vTaskQueueInit(NNP_Task nnpTask)
 {
@@ -55,19 +55,19 @@ ENTRY("vTaskQueueInit"_Str);
   Object* pObject;
   
   if ( ! nnpTask->m_pDataStack->bPop(pObject) )
-    THROW_INVALID_DSTACK("TaskQueue.init"_Str);
+    THROW_INVALID_DSTACK("QueryScheduler.init"_Str);
   
   ASSERT(CN_TASKQUEUE == pObject->eClass());
   
-  TaskQueue* pTaskQueue = static_cast<TaskQueue*>(pObject);
+  QueryScheduler* pTaskQueue = static_cast<QueryScheduler*>(pObject);
   
-  new(pTaskQueue) TaskQueue;
+  new(pTaskQueue) QueryScheduler;
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* TaskQueue.dropLock -- drop lock of given task queue                        */
+/* QueryScheduler.dropLock -- drop lock of given task queue                        */
 /*----------------------------------------------------------------------------*/
 void Task::vTaskQueueDropLock(NNP_Task nnpTask)
 {
@@ -75,15 +75,15 @@ void Task::vTaskQueueDropLock(NNP_Task nnpTask)
   
   Object* pTaskQueuePtr;
   if ( ! nnpTask->m_pDataStack->bPop(pTaskQueuePtr) )
-    THROW_INVALID_DSTACK("TaskQueue.append"_Str);
+    THROW_INVALID_DSTACK("QueryScheduler.append"_Str);
   
-  TaskQueue* pTaskQueue = _pTaskQueue(pTaskQueuePtr);
+  QueryScheduler* pTaskQueue = _pTaskQueue(pTaskQueuePtr);
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* TaskQueue.grabLock -- grab lock of given task queue                        */
+/* QueryScheduler.grabLock -- grab lock of given task queue                        */
 /*----------------------------------------------------------------------------*/
 void Task::vTaskQueueGrabLock(NNP_Task nnpTask)
 {
@@ -91,15 +91,15 @@ void Task::vTaskQueueGrabLock(NNP_Task nnpTask)
   
   Object* pTaskQueuePtr;
   if ( ! nnpTask->m_pDataStack->bPop(pTaskQueuePtr) )
-    THROW_INVALID_DSTACK("TaskQueue.append"_Str);
+    THROW_INVALID_DSTACK("QueryScheduler.append"_Str);
   
-  TaskQueue* pTaskQueue = _pTaskQueue(pTaskQueuePtr);
+  QueryScheduler* pTaskQueue = _pTaskQueue(pTaskQueuePtr);
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* TaskQueue.queueTask -- queue task onto given task queue                    */
+/* QueryScheduler.queueTask -- queue task onto given task queue                    */
 /*----------------------------------------------------------------------------*/
 void Task::vTaskQueueQueueTask(NNP_Task nnpTask)
 {
@@ -107,15 +107,15 @@ void Task::vTaskQueueQueueTask(NNP_Task nnpTask)
   
   Object* pTaskQueuePtr;
   if ( ! nnpTask->m_pDataStack->bPop(pTaskQueuePtr) )
-    THROW_INVALID_DSTACK("TaskQueue.append"_Str);
+    THROW_INVALID_DSTACK("QueryScheduler.append"_Str);
   
-  TaskQueue* pTaskQueue = _pTaskQueue(pTaskQueuePtr);
+  QueryScheduler* pTaskQueue = _pTaskQueue(pTaskQueuePtr);
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* TaskQueue.queuedTasks -- get number of queued tasks in given task queue    */
+/* QueryScheduler.queuedTasks -- get number of queued tasks in given task queue    */
 /*----------------------------------------------------------------------------*/
 void Task::vTaskQueueQueuedTasks(NNP_Task nnpTask)
 {
@@ -123,15 +123,15 @@ void Task::vTaskQueueQueuedTasks(NNP_Task nnpTask)
   
   Object* pTaskQueuePtr;
   if ( ! nnpTask->m_pDataStack->bPop(pTaskQueuePtr) )
-    THROW_INVALID_DSTACK("TaskQueue.append"_Str);
+    THROW_INVALID_DSTACK("QueryScheduler.append"_Str);
   
-  TaskQueue* pTaskQueue = _pTaskQueue(pTaskQueuePtr);
+  QueryScheduler* pTaskQueue = _pTaskQueue(pTaskQueuePtr);
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* TaskQueue.threadsWaiting -- get count of threads waiting in given task que */
+/* QueryScheduler.threadsWaiting -- get count of threads waiting in given task que */
 /*----------------------------------------------------------------------------*/
 void Task::vTaskQueueThreadsWaiting(NNP_Task nnpTask)
 {
@@ -139,15 +139,15 @@ void Task::vTaskQueueThreadsWaiting(NNP_Task nnpTask)
   
   Object* pTaskQueuePtr;
   if ( ! nnpTask->m_pDataStack->bPop(pTaskQueuePtr) )
-    THROW_INVALID_DSTACK("TaskQueue.append"_Str);
+    THROW_INVALID_DSTACK("QueryScheduler.append"_Str);
   
-  TaskQueue* pTaskQueue = _pTaskQueue(pTaskQueuePtr);
+  QueryScheduler* pTaskQueue = _pTaskQueue(pTaskQueuePtr);
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* TaskQueue.queueThread -- queue thread onto give task queue                 */
+/* QueryScheduler.queueThread -- queue thread onto give task queue                 */
 /*----------------------------------------------------------------------------*/
 void Task::vTaskQueueQueueThread(NNP_Task nnpTask)
 {
@@ -155,15 +155,15 @@ void Task::vTaskQueueQueueThread(NNP_Task nnpTask)
   
   Object* pTaskQueuePtr;
   if ( ! nnpTask->m_pDataStack->bPop(pTaskQueuePtr) )
-    THROW_INVALID_DSTACK("TaskQueue.append"_Str);
+    THROW_INVALID_DSTACK("QueryScheduler.append"_Str);
   
-  TaskQueue* pTaskQueue = _pTaskQueue(pTaskQueuePtr);
+  QueryScheduler* pTaskQueue = _pTaskQueue(pTaskQueuePtr);
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* TaskQueue.signalThread -- pop task and thread and signal thread            */
+/* QueryScheduler.signalThread -- pop task and thread and signal thread            */
 /*----------------------------------------------------------------------------*/
 void Task::vTaskQueueSignalThread(NNP_Task nnpTask)
 {
@@ -171,9 +171,9 @@ void Task::vTaskQueueSignalThread(NNP_Task nnpTask)
   
   Object* pTaskQueuePtr;
   if ( ! nnpTask->m_pDataStack->bPop(pTaskQueuePtr) )
-    THROW_INVALID_DSTACK("TaskQueue.append"_Str);
+    THROW_INVALID_DSTACK("QueryScheduler.append"_Str);
   
-  TaskQueue* pTaskQueue = _pTaskQueue(pTaskQueuePtr);
+  QueryScheduler* pTaskQueue = _pTaskQueue(pTaskQueuePtr);
   
   EXIT();
 }

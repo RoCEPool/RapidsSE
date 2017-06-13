@@ -697,7 +697,7 @@ void Task::vAddConstants(void)
   /* 58 */ vAddConstant("SIZEOF_TASK"_Str,         sizeof(Task));
   /* 69 */ vAddConstant("SIZEOF_TASKCURSOR"_Str,   sizeof(TaskCursor));
   /* 60 */ vAddConstant("SIZEOF_TASKLIST"_Str,     sizeof(TaskList));
-  /* 61 */ vAddConstant("SIZEOF_TASKQUEUE"_Str,    sizeof(TaskQueue));
+  /* 61 */ vAddConstant("SIZEOF_TASKQUEUE"_Str,    sizeof(QueryScheduler));
   /* 61 */ vAddConstant("SIZEOF_TASKSET"_Str,      sizeof(TaskSet));
   /* 62 */ vAddConstant("SIZEOF_THREAD"_Str,       sizeof(Thread));
   /* 63 */ vAddConstant("SIZEOF_THREADCURSOR"_Str, sizeof(ThreadCursor));
