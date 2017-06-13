@@ -32,9 +32,19 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_TaskQueue(void)
 {
-  vAddPrimitive("TaskQueue.append"_Str,  &vTaskQueueAppend,    false);
-  vAddPrimitive("TaskQueue.dump"_Str,    &vTaskQueueDump,      false);
-  vAddPrimitive("TaskQueue.init"_Str,    &vTaskQueueInit,      false);
+  vAddPrimitive("TaskQueue.append"_Str,         &vTaskQueueAppend,         false);
+  vAddPrimitive("TaskQueue.dump"_Str,           &vTaskQueueDump,           false);
+  vAddPrimitive("TaskQueue.init"_Str,           &vTaskQueueInit,           false);
+
+  vAddPrimitive("TaskQueue.dropLock"_Str,       &vTaskQueueDropLock,       false);
+  vAddPrimitive("TaskQueue.grabLock"_Str,       &vTaskQueueGrabLock,       false);
+  
+  vAddPrimitive("TaskQueue.queueTask"_Str,      &vTaskQueueQueueTask,      false);
+  vAddPrimitive("TaskQueue.queuedTasks"_Str,    &vTaskQueueQueuedTasks,    false);
+  
+  vAddPrimitive("TaskQueue.threadsWaiting"_Str, &vTaskQueueThreadsWaiting, false);
+  vAddPrimitive("TaskQueue.queueThread"_Str,    &vTaskQueueQueueThread,    false);
+  vAddPrimitive("TaskQueue.signalThread"_Str,   &vTaskQueueSignalThread,   false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -101,6 +111,122 @@ ENTRY("vTaskQueueInit"_Str);
   TaskQueue* pTaskQueue = static_cast<TaskQueue*>(pObject);
   
   new(pTaskQueue) TaskQueue;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* TaskQueue.dropLock -- drop lock of given task queue                        */
+/*----------------------------------------------------------------------------*/
+void Task::vTaskQueueDropLock(NNP_Task nnpTask)
+{
+  ENTRY("vTaskQueueDropLock"_Str);
+  
+  Object* pTaskQueuePtr;
+  if ( ! nnpTask->m_pDataStack->bPop(pTaskQueuePtr) )
+    THROW_INVALID_DSTACK("TaskQueue.append"_Str);
+  
+  TaskQueue* pTaskQueue = _pTaskQueue(pTaskQueuePtr);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* TaskQueue.grabLock -- grab lock of given task queue                        */
+/*----------------------------------------------------------------------------*/
+void Task::vTaskQueueGrabLock(NNP_Task nnpTask)
+{
+  ENTRY("vTaskQueueGrabLock"_Str);
+  
+  Object* pTaskQueuePtr;
+  if ( ! nnpTask->m_pDataStack->bPop(pTaskQueuePtr) )
+    THROW_INVALID_DSTACK("TaskQueue.append"_Str);
+  
+  TaskQueue* pTaskQueue = _pTaskQueue(pTaskQueuePtr);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* TaskQueue.queueTask -- queue task onto given task queue                    */
+/*----------------------------------------------------------------------------*/
+void Task::vTaskQueueQueueTask(NNP_Task nnpTask)
+{
+  ENTRY("vTaskQueueQueueTask"_Str);
+  
+  Object* pTaskQueuePtr;
+  if ( ! nnpTask->m_pDataStack->bPop(pTaskQueuePtr) )
+    THROW_INVALID_DSTACK("TaskQueue.append"_Str);
+  
+  TaskQueue* pTaskQueue = _pTaskQueue(pTaskQueuePtr);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* TaskQueue.queuedTasks -- get number of queued tasks in given task queue    */
+/*----------------------------------------------------------------------------*/
+void Task::vTaskQueueQueuedTasks(NNP_Task nnpTask)
+{
+  ENTRY("vTaskQueueQueuedTasks"_Str);
+  
+  Object* pTaskQueuePtr;
+  if ( ! nnpTask->m_pDataStack->bPop(pTaskQueuePtr) )
+    THROW_INVALID_DSTACK("TaskQueue.append"_Str);
+  
+  TaskQueue* pTaskQueue = _pTaskQueue(pTaskQueuePtr);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* TaskQueue.threadsWaiting -- get count of threads waiting in given task que */
+/*----------------------------------------------------------------------------*/
+void Task::vTaskQueueThreadsWaiting(NNP_Task nnpTask)
+{
+  ENTRY("vTaskQueueThreadsWaiting"_Str);
+  
+  Object* pTaskQueuePtr;
+  if ( ! nnpTask->m_pDataStack->bPop(pTaskQueuePtr) )
+    THROW_INVALID_DSTACK("TaskQueue.append"_Str);
+  
+  TaskQueue* pTaskQueue = _pTaskQueue(pTaskQueuePtr);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* TaskQueue.queueThread -- queue thread onto give task queue                 */
+/*----------------------------------------------------------------------------*/
+void Task::vTaskQueueQueueThread(NNP_Task nnpTask)
+{
+  ENTRY("vTaskQueueQueueThread"_Str);
+  
+  Object* pTaskQueuePtr;
+  if ( ! nnpTask->m_pDataStack->bPop(pTaskQueuePtr) )
+    THROW_INVALID_DSTACK("TaskQueue.append"_Str);
+  
+  TaskQueue* pTaskQueue = _pTaskQueue(pTaskQueuePtr);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* TaskQueue.signalThread -- pop task and thread and signal thread            */
+/*----------------------------------------------------------------------------*/
+void Task::vTaskQueueSignalThread(NNP_Task nnpTask)
+{
+  ENTRY("vTaskQueuePopThread"_Str);
+  
+  Object* pTaskQueuePtr;
+  if ( ! nnpTask->m_pDataStack->bPop(pTaskQueuePtr) )
+    THROW_INVALID_DSTACK("TaskQueue.append"_Str);
+  
+  TaskQueue* pTaskQueue = _pTaskQueue(pTaskQueuePtr);
   
   EXIT();
 }

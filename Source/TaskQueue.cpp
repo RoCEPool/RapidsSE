@@ -7,6 +7,18 @@
 extern BufferPool*  gpBufferPool;
 
 /*----------------------------------------------------------------------------*/
+/* safe cast                                                                  */
+/*----------------------------------------------------------------------------*/
+TaskQueue* Tasks::_pTaskQueue(void* aAddr)
+{
+  TaskQueue* pTaskQueue = reinterpret_cast<TaskQueue*>(aAddr);
+  
+  RASSERT( !pTaskQueue || CN_TASKQUEUE == pTaskQueue->eClass() );
+  
+  return pTaskQueue;
+}
+
+/*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
 void* TaskQueue::operator new(size_t iSize, TaskQueue* pTaskQueue)

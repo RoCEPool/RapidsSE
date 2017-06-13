@@ -42,6 +42,8 @@ namespace Tasks
     
     Footer* pFooter(void);
   };
+
+  TaskQueue* _pTaskQueue(void* aAddr);
 }
 
 /*============================================================================*/
