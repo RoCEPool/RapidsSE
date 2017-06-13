@@ -13,7 +13,6 @@ namespace System
     i8        m_iOpSysThreadId; // thread id as known by os
     pthread_t m_iPosixThreadId; // posix thread id
   
-    Semaphore m_xSemaphore;    // semaphore
 //    bool             m_bLocked;        // true if mutex is locked
 //    pthread_mutex_t  m_xMutex;         // mutex variable
 //    pthread_cond_t   m_xCond;          // condition variable
@@ -29,7 +28,6 @@ namespace System
     
     bool bBindThread(i8 iCpu);
     void vSetOSThreadId(void);
-    void vSignalThread(void);
     bool bSpawnThread(void* pFun(void*), void* pArg);
     i8   iThreadCpu(void);
     void vThreadExit(void);
@@ -38,16 +36,6 @@ namespace System
     void vThreadBoost(i8 nPoints);
     void vThreadPriority(i8 iPriority);
     
-    //---------------------------------------------------------------------------
-
-    void  vCondBroadcast(void);
-    void  vCondSignal(void);
-    void  vCondWait(void);
-    void  vCondTimedWait(i8 iNanoSeconds);
-    bool  bMutexLock(void);
-    void  vMutexLock(void);
-    void  vMutexUnlock(void);
-  
     //---------------------------------------------------------------------------
     
     static void  vSleepMicro(i8 nMicroSeconds);

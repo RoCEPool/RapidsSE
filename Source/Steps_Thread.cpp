@@ -123,7 +123,7 @@ void Task::vThreadCondSignal(NNP_Task nnpTask)
   Thread* pThread = _pThread(pThreadObject);
   ASSERT(CN_THREAD == pThread->eClass());
   
-  pThread->m_pPosixThread->vCondSignal();
+  pThread->m_pSemaphore->vCondSignal();
   
   EXIT();
 }
@@ -142,7 +142,7 @@ void Task::vThreadCondWait(NNP_Task nnpTask)
   Thread* pThread = _pThread(pThreadObject);
   ASSERT(CN_THREAD == pThread->eClass());
   
-  pThread->m_pPosixThread->vCondWait();
+  pThread->m_pSemaphore->vCondWait();
   
   EXIT();
 }
@@ -252,7 +252,7 @@ ENTRY("vThreadMutexLock"_Str);
   Thread* pThread = _pThread(pThreadObject);
   ASSERT(CN_THREAD == pThread->eClass());
   
-  pThread->m_pPosixThread->vMutexLock();
+  pThread->m_pSemaphore->vMutexLock();
 
   EXIT();
 }
@@ -271,7 +271,7 @@ ENTRY("vThreadMutexUnlock"_Str);
   Thread* pThread = _pThread(pThreadObject);
   ASSERT(CN_THREAD == pThread->eClass());
   
-  pThread->m_pPosixThread->vMutexUnlock();
+  pThread->m_pSemaphore->vMutexUnlock();
   
   EXIT();
 }

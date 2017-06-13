@@ -441,6 +441,92 @@ i8 Thread::iThreadNo(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/*-- Semaphore ---------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* signal a thread (should not be calling thread)                             */
+/*----------------------------------------------------------------------------*/
+void Thread::vSignalThread(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_POSIXTHREAD,_FOOTER_);
+  
+  m_pSemaphore->vSignalThread();
+}
+
+/*----------------------------------------------------------------------------*/
+/* condition broadcast                                                        */
+/*----------------------------------------------------------------------------*/
+void Thread::vCondBroadcast(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_POSIXTHREAD,_FOOTER_);
+  
+  m_pSemaphore->vCondBroadcast();
+}
+
+/*----------------------------------------------------------------------------*/
+/* condition signal                                                           */
+/*----------------------------------------------------------------------------*/
+void Thread::vCondSignal(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_POSIXTHREAD,_FOOTER_);
+  
+  m_pSemaphore->vCondSignal();
+}
+
+/*----------------------------------------------------------------------------*/
+/* condition wait (thread to wait will be calling thread)                     */
+/*----------------------------------------------------------------------------*/
+void Thread::vCondWait(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_POSIXTHREAD,_FOOTER_);
+  
+  m_pSemaphore->vCondWait();
+}
+
+/*----------------------------------------------------------------------------*/
+/* this thread waits for signal (should be calling thread)                    */
+/*----------------------------------------------------------------------------*/
+void Thread::vCondTimedWait(i8 iMicroSeconds)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_POSIXTHREAD,_FOOTER_);
+  
+  m_pSemaphore->vCondTimedWait(iMicroSeconds);
+}
+
+/*----------------------------------------------------------------------------*/
+/* lock a threads mutex (blocking)                                            */
+/*----------------------------------------------------------------------------*/
+void Thread::vMutexLock(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_POSIXTHREAD,_FOOTER_);
+  
+  m_pSemaphore->vMutexLock();
+}
+
+/*----------------------------------------------------------------------------*/
+/* try and lock a threads mutex (non-blocking)                                */
+/*----------------------------------------------------------------------------*/
+bool Thread::bMutexLock(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_POSIXTHREAD,_FOOTER_);
+  
+  bool b = m_pSemaphore->bMutexLock();
+  
+  return b;
+}
+
+/*----------------------------------------------------------------------------*/
+/* unlock a threads mutex                                                     */
+/*----------------------------------------------------------------------------*/
+void Thread::vMutexUnlock(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_POSIXTHREAD,_FOOTER_);
+  
+  m_pSemaphore->vMutexUnlock();
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 

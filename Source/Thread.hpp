@@ -14,7 +14,7 @@ namespace Threads
     i8           m_iThreadNo;    // our thread no
     s32          m_sName;        // thread name
     PosixThread* m_pPosixThread; // its posix structure
-    Semaphore*   m_pSemaphore;   // this threads semaphore 
+    Semaphore*   m_pSemaphore;   // this threads semaphore
     TaskQueue*   m_pTaskQueue;   // task queue this thread serves
     TaskSet*     m_pTaskSet;     // task set this thread serves
     NP_Task      m_npTask;       // task current being executed
@@ -47,7 +47,18 @@ namespace Threads
     void vSpawn(void);
     void vSpawnV2(void);
     i8   iThreadNo(void);
-    
+  
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+    void  vCondBroadcast(void);
+    void  vCondSignal(void);
+    void  vCondWait(void);
+    void  vCondTimedWait(i8 iNanoSeconds);
+    bool  bMutexLock(void);
+    void  vMutexLock(void);
+    void  vMutexUnlock(void);
+    void vSignalThread(void);
+  
     Footer* pFooter(void);
   };
   
