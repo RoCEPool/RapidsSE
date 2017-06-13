@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* QueryScheduler.hpp - queue of tasks meets queue of threads                 */
+/* QueryScheduler.hpp - schedule tasks to threads                             */
 /*============================================================================*/
 #pragma once
 
@@ -10,17 +10,12 @@ namespace Threads
 
 namespace Schedulers
 {
-  
-  class Scheduler : public Object,
-                           List_t<Task>
+  class Scheduler : public Object
   {
   private:
-    Lock    m_xLock;
-    i8      m_iCount;
-    NP_Task m_npHead;
-    NP_Task m_npTail;
-  
+    Lock m_xLock;
     List_t<Thread> m_xThreadQueue;
+    List_t<Task>   m_xTaskQueue;
   
     // must be last
     Footer m_xFooter;
@@ -35,17 +30,13 @@ namespace Schedulers
     void  vGrabLock(void);
     void  vDropLock(void);
     
-    void  vQueueTask(Task* pTask);
+    void  vEnqueueTask(Task* pTask);
     i8    iQueuedTasks(void);
-    Task* mpPopTask(void);
 
-    void  vQueueThread(Thread* pThread);
+    void  vEnqueueThread(Thread* pThread);
     i8    iQueuedThreads(void);
-    Thread* mpPopThread(void);
   
-  private:
-    void vVerify(void);
-    
+  private:    
     Footer* pFooter(void);
   };
 

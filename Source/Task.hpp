@@ -735,12 +735,11 @@ namespace Tasks
     static void vSchedulerDropLock(NNP_Task nnpTask);
     static void vSchedulerGrabLock(NNP_Task nnpTask);
     
-    static void vSchedulerQueueTask(NNP_Task nnpTask);
+    static void vSchedulerEnqueueTask(NNP_Task nnpTask);
     static void vSchedulerQueuedTasks(NNP_Task nnpTask);
     
-    static void vSchedulerQueueThread(NNP_Task nnpTask);
-    static void vSchedulerThreadsWaiting(NNP_Task nnpTask);
-    static void vSchedulerSignalThread(NNP_Task nnpTask);
+    static void vSchedulerEnqueueThread(NNP_Task nnpTask);
+    static void vSchedulerQueuedThreads(NNP_Task nnpTask);
   
     // queue
     static void vQueueAppend(NNP_Task nnpTask);

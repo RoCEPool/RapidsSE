@@ -32,17 +32,16 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Scheduler(void)
 {
-  vAddPrimitive("Scheduler.init"_Str,           &vSchedulerInit,           false);
+  vAddPrimitive("Scheduler.init"_Str,          &vSchedulerInit,          false);
 
-  vAddPrimitive("Scheduler.dropLock"_Str,       &vSchedulerDropLock,       false);
-  vAddPrimitive("Scheduler.grabLock"_Str,       &vSchedulerGrabLock,       false);
+  vAddPrimitive("Scheduler.dropLock"_Str,      &vSchedulerDropLock,      false);
+  vAddPrimitive("Scheduler.grabLock"_Str,      &vSchedulerGrabLock,      false);
   
-  vAddPrimitive("Scheduler.queueTask"_Str,      &vSchedulerQueueTask,      false);
-  vAddPrimitive("Scheduler.queuedTasks"_Str,    &vSchedulerQueuedTasks,    false);
+  vAddPrimitive("Scheduler.enqueueTask"_Str,   &vSchedulerEnqueueTask,   false);
+  vAddPrimitive("Scheduler.queuedTasks"_Str,   &vSchedulerQueuedTasks,   false);
   
-  vAddPrimitive("Scheduler.threadsWaiting"_Str, &vSchedulerThreadsWaiting, false);
-  vAddPrimitive("Scheduler.queueThread"_Str,    &vSchedulerQueueThread,    false);
-  vAddPrimitive("Scheduler.signalThread"_Str,   &vSchedulerSignalThread,   false);
+  vAddPrimitive("Scheduler.enqueueThread"_Str, &vSchedulerEnqueueThread, false);
+  vAddPrimitive("Scheduler.queuedThreads"_Str, &vSchedulerQueuedThreads, false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -98,13 +97,13 @@ void Task::vSchedulerGrabLock(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* Scheduler.queueTask -- queue task onto given scheduler                     */
 /*----------------------------------------------------------------------------*/
-void Task::vSchedulerQueueTask(NNP_Task nnpTask)
+void Task::vSchedulerEnqueueTask(NNP_Task nnpTask)
 {
-  ENTRY("vSchedulerQueueTask"_Str);
+  ENTRY("vSchedulerEnqueueTask"_Str);
   
   Object* pObject;
   if ( ! nnpTask->m_pDataStack->bPop(pObject) )
-    THROW_INVALID_DSTACK("Scheduler.append"_Str);
+    THROW_INVALID_DSTACK("Scheduler.enqueueThread"_Str);
   
   Scheduler* pScheduler = _pScheduler(pObject);
   
@@ -120,23 +119,7 @@ void Task::vSchedulerQueuedTasks(NNP_Task nnpTask)
   
   Object* pSchedulerPtr;
   if ( ! nnpTask->m_pDataStack->bPop(pSchedulerPtr) )
-    THROW_INVALID_DSTACK("Scheduler.append"_Str);
-  
-  Scheduler* pScheduler = _pScheduler(pSchedulerPtr);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Scheduler.threadsWaiting -- get count of threads waiting in scheduler      */
-/*----------------------------------------------------------------------------*/
-void Task::vSchedulerThreadsWaiting(NNP_Task nnpTask)
-{
-  ENTRY("vSchedulerThreadsWaiting"_Str);
-  
-  Object* pSchedulerPtr;
-  if ( ! nnpTask->m_pDataStack->bPop(pSchedulerPtr) )
-    THROW_INVALID_DSTACK("Scheduler.append"_Str);
+    THROW_INVALID_DSTACK("Scheduler.queuedTasks"_Str);
   
   Scheduler* pScheduler = _pScheduler(pSchedulerPtr);
   
@@ -146,13 +129,13 @@ void Task::vSchedulerThreadsWaiting(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* Scheduler.queueThread -- queue thread via scheduler                        */
 /*----------------------------------------------------------------------------*/
-void Task::vSchedulerQueueThread(NNP_Task nnpTask)
+void Task::vSchedulerEnqueueThread(NNP_Task nnpTask)
 {
-  ENTRY("vSchedulerQueueThread"_Str);
+  ENTRY("vSchedulerEnqueueThread"_Str);
   
   Object* pSchedulerPtr;
   if ( ! nnpTask->m_pDataStack->bPop(pSchedulerPtr) )
-    THROW_INVALID_DSTACK("Scheduler.append"_Str);
+    THROW_INVALID_DSTACK("Scheduler.enqueueThread"_Str);
   
   Scheduler* pScheduler = _pScheduler(pSchedulerPtr);
   
@@ -160,15 +143,15 @@ void Task::vSchedulerQueueThread(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Scheduler.signalThread -- signal thread            */
+/* Scheduler.queuedThreads -- get count of threads waiting in scheduler       */
 /*----------------------------------------------------------------------------*/
-void Task::vSchedulerSignalThread(NNP_Task nnpTask)
+void Task::vSchedulerQueuedThreads(NNP_Task nnpTask)
 {
-  ENTRY("vSchedulerPopThread"_Str);
+  ENTRY("vSchedulerQueuedThreads"_Str);
   
   Object* pSchedulerPtr;
   if ( ! nnpTask->m_pDataStack->bPop(pSchedulerPtr) )
-    THROW_INVALID_DSTACK("Scheduler.append"_Str);
+    THROW_INVALID_DSTACK("Scheduler.queuedThreads"_Str);
   
   Scheduler* pScheduler = _pScheduler(pSchedulerPtr);
   
