@@ -32,28 +32,30 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Thread(void)
 {
-  vAddPrimitive("thread.append"_Str,      &vThreadAppend,      false);
-  vAddPrimitive("thread.bind"_Str,        &vThreadBind,        false);
-  vAddPrimitive("thread.condSignal"_Str,  &vThreadCondSignal,  false);
-  vAddPrimitive("thread.condWait"_Str,    &vThreadCondWait,    false);
-  vAddPrimitive("thread.cpu"_Str,         &vThreadCpu,         false);
-  vAddPrimitive("thread.dump"_Str,        &vThreadDump,        false);
-  vAddPrimitive("thread.init"_Str,        &vThreadInit,        false);
-  vAddPrimitive("thread.id"_Str,          &vThreadId,          false);
-  vAddPrimitive("thread.mutexLock"_Str,   &vThreadMutexLock,   false);
-  vAddPrimitive("thread.mutexUnlock"_Str, &vThreadMutexUnlock, false);
-  vAddPrimitive("thread.name@"_Str,       &vThreadNameFetch,   false);
-  vAddPrimitive("thread.name!"_Str,       &vThreadNameStore,   false);
+  vAddPrimitive("thread.append"_Str,      &vThreadAppend,         false);
+  vAddPrimitive("thread.bind"_Str,        &vThreadBind,           false);
+  vAddPrimitive("thread.condSignal"_Str,  &vThreadCondSignal,     false);
+  vAddPrimitive("thread.condWait"_Str,    &vThreadCondWait,       false);
+  vAddPrimitive("thread.cpu"_Str,         &vThreadCpu,            false);
+  vAddPrimitive("thread.dump"_Str,        &vThreadDump,           false);
+  vAddPrimitive("thread.init"_Str,        &vThreadInit,           false);
+  vAddPrimitive("thread.id"_Str,          &vThreadId,             false);
+  vAddPrimitive("thread.kind@"_Str,       &vThreadSchedulerFetch, false);
+  vAddPrimitive("thread.kind!"_Str,       &vThreadSchedulerStore, false);
+  vAddPrimitive("thread.mutexLock"_Str,   &vThreadMutexLock,      false);
+  vAddPrimitive("thread.mutexUnlock"_Str, &vThreadMutexUnlock,    false);
+  vAddPrimitive("thread.name@"_Str,       &vThreadNameFetch,      false);
+  vAddPrimitive("thread.name!"_Str,       &vThreadNameStore,      false);
   vAddPrimitive("thread.scheduler@"_Str,  &vThreadSchedulerFetch, false);
   vAddPrimitive("thread.scheduler!"_Str,  &vThreadSchedulerStore, false);
-  vAddPrimitive("thread.taskset@"_Str,    &vThreadSfetch,      false);
-  vAddPrimitive("thread.taskset!"_Str,    &vThreadSstore,      false);
-  vAddPrimitive("thread.sleep_s"_Str,     &vThreadSleep_s,     false);
-  vAddPrimitive("thread.sleep_ms"_Str,    &vThreadSleep_ms,    false);
-  vAddPrimitive("thread.sleep_us"_Str,    &vThreadSleep_us,    false);
-  vAddPrimitive("thread.sleep_ns"_Str,    &vThreadSleep_ns,    false);
-  vAddPrimitive("thread.spawn"_Str,       &vThreadSpawn,       false);
-  vAddPrimitive("thread.spawnV2"_Str,     &vThreadSpawnV2,     false);
+  vAddPrimitive("thread.taskset@"_Str,    &vThreadSfetch,         false);
+  vAddPrimitive("thread.taskset!"_Str,    &vThreadSstore,         false);
+  vAddPrimitive("thread.sleep_s"_Str,     &vThreadSleep_s,        false);
+  vAddPrimitive("thread.sleep_ms"_Str,    &vThreadSleep_ms,       false);
+  vAddPrimitive("thread.sleep_us"_Str,    &vThreadSleep_us,       false);
+  vAddPrimitive("thread.sleep_ns"_Str,    &vThreadSleep_ns,       false);
+  vAddPrimitive("thread.spawn"_Str,       &vThreadSpawn,          false);
+  vAddPrimitive("thread.spawnV2"_Str,     &vThreadSpawnV2,        false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -234,6 +236,44 @@ ENTRY("vThreadInit"_Str);
   sName = pWordThread->sName();
   
   pThread->vName(sName);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* thread.kind@ -- fetch thread kind from thread which is on stack            */
+/*----------------------------------------------------------------------------*/
+void Task::vThreadKindFetch(NNP_Task nnpTask)
+{
+  ENTRY("vThreadKindFetch"_Str);
+  
+  Object* pThreadEmb;
+  if ( ! nnpTask->m_pDataStack->bPop(pThreadEmb) )
+    THROW_INVALID_DSTACK("thread.kind@"_Str);
+  Thread* pThread = _pThread(pThreadEmb);
+  
+  nnpTask->m_pDataStack->vPushInt(pThread->m_eThread);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* thread.kind! -- store thread kind into thread which is on stack            */
+/*----------------------------------------------------------------------------*/
+void Task::vThreadKindStore(NNP_Task nnpTask)
+{
+  ENTRY("vThreadKindStore"_Str);
+  
+  Object* pThreadEmb;
+  if ( ! nnpTask->m_pDataStack->bPop(pThreadEmb) )
+    THROW_INVALID_DSTACK("thread.kind@"_Str);
+  Thread* pThread = _pThread(pThreadEmb);
+  
+  i8 eThread;
+  if ( ! nnpTask->m_pDataStack->bPop(eThread) )
+    THROW_INVALID_DSTACK("thread.kind!"_Str);
+  
+  pThread->m_eThread = (eTH)eThread;
   
   EXIT();
 }

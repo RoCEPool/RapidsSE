@@ -58,6 +58,7 @@ namespace Threads
   public:
     i8           m_iThreadNo;    // our thread no
     s32          m_sName;        // thread name
+    eTH          m_eThread;      // thread kind 
     PosixThread* m_pPosixThread; // its posix structure
     Semaphore*   m_pSemaphore;   // this threads semaphore
     TaskSet*     m_pTaskSet;     // task set this thread serves

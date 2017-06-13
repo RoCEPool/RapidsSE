@@ -1032,6 +1032,8 @@ namespace Tasks
     static void vThreadDump(NNP_Task nnpTask);
     static void vThreadId(NNP_Task nnpTask);
     static void vThreadInit(NNP_Task nnpTask);
+    static void vThreadKindFetch(NNP_Task nnpTask);
+    static void vThreadKindStore(NNP_Task nnpTask);
     static void vThreadMutexLock(NNP_Task nnpTask);
     static void vThreadMutexUnlock(NNP_Task nnpTask);
     static void vThreadNameFetch(NNP_Task nnpTask);

@@ -68,6 +68,7 @@ Thread::Thread(void)
   
   m_iThreadNo    = ++zThreadNo;
   m_sName        = "<no thread name>"_Str;
+  m_eThread      = TH_NONE;
   m_pPosixThread = new PosixThread;
   m_pSemaphore   = new Semaphore;
   m_pScheduler   = nullptr;
