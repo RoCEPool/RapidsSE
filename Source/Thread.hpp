@@ -5,7 +5,7 @@
 
 namespace Schedulers
 {
-  class QueryScheduler;
+  class Scheduler;
 }
 
 namespace Threads
@@ -25,7 +25,7 @@ namespace Threads
     NP_Task      m_npTask;       // task current being executed
                                  //   note that while task is being exected
                                  //   its not in task set
-    Schedulers::QueryScheduler*  m_pScheduler; // scheduler
+    Schedulers::Scheduler*  m_pScheduler; // scheduler
   
     // must be last
     Footer m_xFooter;

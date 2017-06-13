@@ -55,12 +55,14 @@ args.regionSize noQueryThreads constant N_QUERY_THREADS
 
   N_query_THREADS 0 do
 
-    I :qryTaskQueue  drop ( create a QueryScheduler called queryTaskQueueI )
+/*
+  I :qryTaskQueue  drop ( create a scheduler called queryTaskQueueI )
     I :qryThread   drop ( create a thread called queryThreadI )
 
   I >qryTaskQueue  I >qryThread thread.taskSet!  // set the threads QueryScheduler
-  I >qryThreadNm   I >qryThread thread.name!       // set the threads name
-  I >qryThread     thread.spawnV2                  // spawn os thread
+  I >qryThreadNm   I >qryThread thread.name!     // set the threads name
+  I >qryThread     thread.spawnV2                // spawn os thread
+*/
 
   loop
 ;

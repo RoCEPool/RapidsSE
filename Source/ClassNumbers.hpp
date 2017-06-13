@@ -133,7 +133,7 @@ namespace Base
     /* 80 */ CN_TASK,
     /* 81 */ CN_TASKCURSOR,
     /* 82 */ CN_TASKLIST,
-    /* 83 */ CN_TASKQUEUE,
+    /* 83 */ CN_SCHEDULER,
     /* 83 */ CN_TASKSET,
     /* 84 */ CN_THREAD,
     /* 85 */ CN_THREADCURSOR,
