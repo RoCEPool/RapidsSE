@@ -42,23 +42,30 @@ args.regionSize noQueryThreads constant N_QUERY_THREADS
 
 : queryThreadsStart
 
+  0 locals| queryThread |
+
   args.progress if
     N_QUERY_THREADS "Query threads: %v" str.format .
   then
 
-  args.verbose if "N_query_THREADS " .put N_query_THREADS .put .\n then
+  args.verbose if
+    "N_query_THREADS " .put N_query_THREADS .put .\n
+  then
 
   N_query_THREADS 0 do
-/*
+
     // create a thread called queryThreadI
-    I :qryThread drop
+    I :qryThread execute to queryThread
 
     // set the threads name
-    I >qryThreadNm I >qryThread thread.name!
+    I >qryThreadNm queryThread thread.name!
+
+    // give it a private taskset
+    taskset::new queryThread thread.taskset!
 
     // spawn os thread
-    I >qryThread thread.spawnV2
-*/
+    queryThread thread.spawnV2
+
   loop
 ;
 

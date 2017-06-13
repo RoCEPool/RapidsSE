@@ -438,7 +438,7 @@ eHT geWhichHeap[]
   /* 84 */ HT_INVALID, // CN_TASKCURSOR
   /* 85 */ HT_SMALL,   // CN_TASKLIST
   /*    */ HT_MEDIUM,  // CN_SCHEDULER
-  /* 86 */ HT_INVALID, // CN_TASKSET
+  /* 86 */ HT_SMALL,   // CN_TASKSET
   /* 87 */ HT_INVALID, // CN_THREAD
   /* 88 */ HT_SMALL,   // CN_THREADCURSOR
   /* 89 */ HT_INVALID, // CN_THREADLIST
