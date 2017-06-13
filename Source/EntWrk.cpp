@@ -74,6 +74,8 @@ EntWrk::EntWrk(i8 nOffsets)
   // check initialisation of rowid
   ASSERT(0 == m_xId.iBuffer() && 0 == m_xId.iRow());
   
+  m_bHasData = false;
+  
   // set no of offsets
   m_iOffsets = nOffsets;
   ASSERT(m_iOffsets >= 0 && m_iOffsets <= gnIndexOffsets);
@@ -86,6 +88,9 @@ EntWrk::EntWrk(i8 nOffsets)
   // m_xKeyWrk
   m_xKeyWrk.vInit();
   
+  // m_xDataWrk
+  m_xDataWrk.vInit();
+
   _checkInitialisedSize_(sizeof(EntWrk));
   
   _postcondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
@@ -101,6 +106,8 @@ EntWrk::EntWrk(Entry* pEntry)
   
   // check initialisation of rowid
   ASSERT(0 == m_xId.iBuffer() && 0 == m_xId.iRow());
+  
+  m_bHasData = false;
   
   // set no of offsets
   m_iOffsets = pEntry->nOffsets();
@@ -118,6 +125,9 @@ EntWrk::EntWrk(Entry* pEntry)
   // m_xKeyWrk
   m_xKeyWrk.vInit();
   
+  // m_xDataWrk
+  m_xDataWrk.vInit();
+
   _checkInitialisedSize_(sizeof(EntWrk));
   
   _postcondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
