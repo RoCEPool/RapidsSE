@@ -13,7 +13,7 @@ namespace Schedulers
   class Scheduler : public Object
   {
   private:
-    Lock           m_xLock;
+    Semaphore      m_xSemaphore;
     List_t<Task>   m_xTaskQueue;
     List_t<Thread> m_xThreadQueue;
   
@@ -28,15 +28,11 @@ namespace Schedulers
     Scheduler(void);
     ~Scheduler(void);
       
-    void  vEnqueueTask(Task* mpTask);
-    i8    iQueuedTasks(void);
+    void vEnqueueTask(Task* mpTask);
+    bool bGetTask(Thread* mpThread, bool bWait=true);
 
-    void  vEnqueueThread(Thread* mpThread);
-    i8    iQueuedThreads(void);
-  
-  private:
-    void  vGrabLock(void);
-    void  vDropLock(void);
+    i8   iQueuedTasks(void);
+    i8   iQueuedThreads(void);
   
     Footer* pFooter(void);
   };

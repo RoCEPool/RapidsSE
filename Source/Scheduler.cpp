@@ -61,9 +61,6 @@ Scheduler::Scheduler(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SCHEDULER,_FOOTER_);
   
-  m_xLock.vInit("Scheduler::m_xLock"_Str);
-  
-  
   _checkInitialised_(CN_SCHEDULER);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_SCHEDULER,_FOOTER_);
@@ -80,20 +77,78 @@ void Scheduler::vEnqueueTask(Task* mpTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SCHEDULER,_FOOTER_); _mp_(mpTask);
   
-  vGrabLock();
+  // lock semaphore so only this thread is running
+  // no other thread can be running the enqueue or get functions
+  m_xSemaphore.vMutexLock();
   
-  i8 iThreads = m_xThreadQueue.iCount();
-  if (iThreads) {
+  //
+  // **there will be no threads in bGetTask()**
+  //
+  
+  // get number of queued threads
+  i8 nQueuedThreads = m_xThreadQueue.iCount();
+  
+  // when there are queued threads, hand the task to first queued thread
+  if (nQueuedThreads) {
     Thread* mpThread = m_xThreadQueue.npPop();
     ASSERT(mpThread);
     mpThread->m_npTask = mpTask;
-    mpThread->m_pSemaphore->vSignalThread();
+    m_xSemaphore.vCondSignal();
+    m_xSemaphore.vMutexUnlock();
+    return;
   }
-  else {
-    m_xTaskQueue.vAppend(mpTask);
+
+  // no available threads, so queue the task
+  m_xTaskQueue.vAppend(mpTask);
+ 
+  // allow another thread to continue
+  m_xSemaphore.vMutexUnlock();
+}
+
+/*----------------------------------------------------------------------------*/
+/* queue given thread onto this schedulaers thread queue                      */
+/*----------------------------------------------------------------------------*/
+bool Scheduler::bGetTask(Threads::Thread* mpThread, bool bWait)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SCHEDULER,_FOOTER_); _mp_(mpThread);
+  
+  ASSERT( ! mpThread->m_npTask );
+  
+  Task* mpTask = nullptr;
+  
+  // lock semaphore so only this thread is running
+  // no other thread can be running the enqueue or get functions
+  m_xSemaphore.vMutexLock();
+
+  //
+  // **there will be no threads in vEnqueueTask()**
+  //
+  
+  i8 nTasksInQueue = m_xTaskQueue.iCount();
+  
+  // when there are queued tasks, hand the first task to this thread
+  if (nTasksInQueue) {
+    mpTask = m_xTaskQueue.npPop();
+    ASSERT(mpTask);
+    mpThread->m_npTask = mpTask;
+    m_xSemaphore.vMutexUnlock();
+    return true;
   }
   
-  vDropLock();
+  // when the thread is prepared to wait, put thread into queue
+  if (bWait) {
+    m_xThreadQueue.vAppend(mpThread);
+    m_xSemaphore.vCondWait();
+    m_xSemaphore.vMutexUnlock();
+    ASSERT(mpThread->m_npTask);
+    return true;
+  }
+
+  // allow another thread to continue
+  m_xSemaphore.vMutexUnlock();
+  
+  // no available task and thread was not prepared to wait
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -102,33 +157,10 @@ void Scheduler::vEnqueueTask(Task* mpTask)
 i8 Scheduler::iQueuedTasks(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SCHEDULER,_FOOTER_);
-
+  
   i8 nTasks = m_xTaskQueue.iCount();
   
   return nTasks;
-}
-
-/*----------------------------------------------------------------------------*/
-/* queue given thread onto this schedulaers thread queue                      */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vEnqueueThread(Threads::Thread* mpThread)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SCHEDULER,_FOOTER_); _mp_(mpThread);
-  
-  vGrabLock();
-  
-  i8 iTasks = m_xTaskQueue.iCount();
-  if (iTasks) {
-    Task* mpTask = m_xTaskQueue.npPop();
-    ASSERT(mpTask);
-    mpThread->m_npTask = mpTask;
-    mpThread->m_pSemaphore->vSignalThread();
-  }
-  else {
-    m_xThreadQueue.vAppend(mpThread);
-  }
-  
-  vDropLock();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -141,32 +173,6 @@ i8 Scheduler::iQueuedThreads(void)
   i8 iCount = m_xThreadQueue.iCount();
   
   return iCount;
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- Private -----------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* grab write lock on this scheduler                                          */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vGrabLock(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SCHEDULER,_FOOTER_);
-  
-  m_xLock.vGrabWrite();
-}
-
-/*----------------------------------------------------------------------------*/
-/* drop write lock on this scheduler                                          */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vDropLock(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SCHEDULER,_FOOTER_);
-  
-  ASSERT(m_xLock.bIsLocked());
-  
-  m_xLock.vDropWrite();
 }
 
 /*----------------------------------------------------------------------------*/

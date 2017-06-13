@@ -100,6 +100,10 @@ void Semaphore::vCondSignal(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEMAPHORE,_FOOTER_);
   
+  //
+  // **calling thread must have the mutex**
+  //
+  
   i8 rCode = pthread_cond_signal(&m_xCond);
   
   if (0 == rCode)
