@@ -169,7 +169,7 @@
       // add word kind to ls string
       object@ word.name
 
-      "('%v',%v,%v)\n" str.format
+      "row: ('%v',%v,%v)\n" str.format
       str.cat
 
       object@ word.prev object!       // step backwards thru words
