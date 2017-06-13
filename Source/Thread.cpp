@@ -70,7 +70,6 @@ Thread::Thread(void)
   m_sName        = "<no thread name>"_Str;
   m_pPosixThread = new PosixThread;
   m_pSemaphore   = new Semaphore;
-  m_pTaskQueue   = nullptr;
   m_pTaskSet     = nullptr;
   m_npTask       = nullptr;
 
@@ -346,10 +345,6 @@ void Thread::vLoopV2(void)
   
   while (true) {
     
-    // get next task to run
-    m_pTaskQueue->vGrabLock();
-    m_npTask = m_pTaskQueue->mpPopTask();
-    m_pTaskQueue->vDropLock();
     if ( ! m_npTask ) {
       PosixThread::vSleepMilli(1);
       continue;

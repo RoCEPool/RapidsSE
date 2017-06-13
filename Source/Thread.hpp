@@ -15,7 +15,6 @@ namespace Threads
     s32          m_sName;        // thread name
     PosixThread* m_pPosixThread; // its posix structure
     Semaphore*   m_pSemaphore;   // this threads semaphore
-    TaskQueue*   m_pTaskQueue;   // task queue this thread serves
     TaskSet*     m_pTaskSet;     // task set this thread serves
     NP_Task      m_npTask;       // task current being executed
                                  //   note that while task is being exected

@@ -3,7 +3,7 @@
 /*============================================================================*/
 
 #include "StorageEngine.h"
-//#include "Tasks.h"
+#include "Schedulers.h"
 #include "SePrompt.hpp"
 
 extern AttachMap*      gpAttachMap;
@@ -378,7 +378,7 @@ void Task::vThreadQstore(NNP_Task nnpTask)
   
   TaskQueue* pTaskQueue = static_cast<TaskQueue*>(pTaskQueueEmb);
   
-  pThread->m_pTaskQueue = pTaskQueue;
+  //pThread->m_pTaskQueue = pTaskQueue;
   
   EXIT();
 }
@@ -399,7 +399,7 @@ ENTRY("vThreadQfetch"_Str);
   
   Thread* pThread = static_cast<Thread*>(pThreadEmb);
   
-  TaskQueue* pTaskQueue = pThread->m_pTaskQueue;
+  TaskQueue* pTaskQueue = nullptr; //pThread->m_pTaskQueue;
 
   Object* pTaskQueueEmb = static_cast<Object*>(pTaskQueue);
 

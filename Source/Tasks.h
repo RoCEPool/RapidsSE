@@ -25,7 +25,6 @@ using namespace Tasks;
 #include "Task.hpp"
 #include "TaskList.hpp"
 #include "TaskSet.hpp"
-#include "TaskQueue.hpp"
 
 #include "TaskCursor.hpp"
 

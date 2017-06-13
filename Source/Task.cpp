@@ -6,6 +6,7 @@
 
 #include "StorageEngine.h"
 #include "SePrompt.hpp"
+#include "Schedulers.h"
 
 extern Arguments       gxArguments;
 
