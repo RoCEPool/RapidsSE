@@ -36,14 +36,9 @@ args.regionSize noQueryThreads constant N_QUERY_THREADS
 /*----------------------------------------------------------------------------*/
 /* create and spawn the query processing threads                              */
 /*----------------------------------------------------------------------------*/
-: >qryTaskQueueNm ( i -- s ) "queryTaskQueue" swap >str str.cat ;
-: >qryThreadNm    ( i -- s ) "queryThread"    swap >str str.cat ;
-
-: :qryTaskQueue ( i -- w ) >qryTaskQueueNm :TaskSet ;
-: :qryThread    ( i -- w ) >qryThreadNm    :thread    ;
-
-: >qryTaskQueue ( i -- w ) >qryTaskQueueNm find execute ;
-: >qryThread    ( i -- w ) >qryThreadNm    find execute ;
+: >qryThreadNm ( i -- s ) "queryThread"    swap >str str.cat ;
+: :qryThread   ( i -- w ) >qryThreadNm    :thread    ;
+: >qryThread   ( i -- w ) >qryThreadNm    find execute ;
 
 : queryThreadsStart
 
@@ -54,16 +49,16 @@ args.regionSize noQueryThreads constant N_QUERY_THREADS
   args.verbose if "N_query_THREADS " .put N_query_THREADS .put .\n then
 
   N_query_THREADS 0 do
-
 /*
-  I :qryTaskQueue  drop ( create a scheduler called queryTaskQueueI )
-    I :qryThread   drop ( create a thread called queryThreadI )
+    // create a thread called queryThreadI
+    I :qryThread drop
 
-  I >qryTaskQueue  I >qryThread thread.taskSet!  // set the threads QueryScheduler
-  I >qryThreadNm   I >qryThread thread.name!     // set the threads name
-  I >qryThread     thread.spawnV2                // spawn os thread
+    // set the threads name
+    I >qryThreadNm I >qryThread thread.name!
+
+    // spawn os thread
+    I >qryThread thread.spawnV2
 */
-
   loop
 ;
 
