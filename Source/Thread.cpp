@@ -341,44 +341,42 @@ void Thread::vLoopV2(void)
   PosixThread::vTlsSet(giTLS_ThreadKey,this);
   ASSERT(PosixThread::pTlsGet(giTLS_ThreadKey));
   
-  while ( ! m_pTaskSet )
-    PosixThread::vSleepNano(10_KB);
-  
   while (true) {
     
-    // **just a snooze loop till we get this signalled**
-    
-    if ( ! m_npTask ) {
-      m_npTask = m_pTaskSet->npPop();
-      if ( ! m_npTask ) {
-        PosixThread::vSleepMilli(1);
-        continue;
-      }
-    }
+    // get a task to run
+    ASSERT( ! *m_npTask );
+    bool b = m_pScheduler->bGetTask(this,true);
+    ASSERT( b && *m_npTask );
     
     // set up this thread to run task
     PosixThread::vTlsSet(giTLS_TaskKey,*m_npTask);
     ASSERT(PosixThread::pTlsGet(giTLS_TaskKey));
+    
     m_npTask->vState(TS_RUNNING);
     m_npTask->vThread(this);
     
     // run the task
     m_npTask->vLoop();
     
-    // unless waiting on ack, task forgets thread
-    if (TS_WAITING_ACK != m_npTask->eState())
-      m_npTask->vThread(nullptr);
+    // thread no longer running the task
+    PosixThread::vTlsSet(giTLS_TaskKey,nullptr);
     
-    // when task yields, task is put back on task set
+    // when task yields, task is put into task set
     if (TS_YIELDED == m_npTask->eState()) {
+      m_npTask->vThread(nullptr);
       NNP_Task nnpTask = *m_npTask;
       vAppend(nnpTask);
       m_npTask = nullptr;
       continue;
     }
     
+    // unless waiting on ack, task forgets thread
+    if (TS_WAITING_ACK == m_npTask->eState())
+      continue;
+    
     // when task exits, it is deleted (unless its a word)
     if (TS_EXITED == m_npTask->eState()) {
+      m_npTask->vThread(nullptr);
       NNP_Task nnpTask = *m_npTask;
       if ( (*gnpRootTask != *m_npTask)  && (!nnpTask->bWordBody()) ) {
         delete *m_npTask;
@@ -387,7 +385,7 @@ void Thread::vLoopV2(void)
       continue;
     }
 
-    // loop to get next task
+    ASSERT(0);
   }
 }
 
