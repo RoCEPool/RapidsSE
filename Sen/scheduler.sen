@@ -8,26 +8,26 @@
 /* create a task Queue using string from input stream as name                   */
 /*----------------------------------------------------------------------------*/
 
-: taskQueue:
+: scheduler:
 
   create
   WT_OBJECT word.this word.type!
-  sizeof_taskQueue allot
+  sizeof_scheduler allot
   word.this >body object.magic!
-  CN_TASKQUEUE word.this >body object.class!
-  word.this >body queryScheduler.init
+  CN_SCHEDULER word.this >body object.class!
+  word.this >body scheduler.init
   true word.this >body object.wordbody!
   does>
 ;
 
-: :taskQueue
+: :scheduler
 
   >create
   WT_OBJECT word.this word.type!
-  sizeof_taskQueue allot
+  sizeof_scheduler allot
   word.this >body object.magic!
-  CN_TASKQUEUE word.this >body object.class!
-  word.this >body queryScheduler.init
+  CN_SCHEDULER word.this >body object.class!
+  word.this >body scheduler.init
   true word.this >body object.wordbody!
   word.this
   does>

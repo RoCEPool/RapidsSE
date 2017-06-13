@@ -521,7 +521,7 @@ void Task::vAddConstants(void)
   /* 72 */ vAddConstant("CN_TASK"_Str,         CN_TASK);
   /* 73 */ vAddConstant("CN_TASKCURSOR"_Str,   CN_TASKCURSOR);
   /* 74 */ vAddConstant("CN_TASKLIST"_Str,     CN_TASKLIST);
-  /* 75 */ vAddConstant("CN_TASKQUEUE"_Str,    CN_TASKQUEUE);
+  /* 75 */ vAddConstant("CN_SCHEDULER"_Str,    CN_SCHEDULER);
   /* 75 */ vAddConstant("CN_TASKSET"_Str,      CN_TASKSET);
   /* 76 */ vAddConstant("CN_THREAD"_Str,       CN_THREAD);
   /* 77 */ vAddConstant("CN_THREADCURSOR"_Str, CN_THREADCURSOR);
@@ -697,7 +697,7 @@ void Task::vAddConstants(void)
   /* 58 */ vAddConstant("SIZEOF_TASK"_Str,         sizeof(Task));
   /* 69 */ vAddConstant("SIZEOF_TASKCURSOR"_Str,   sizeof(TaskCursor));
   /* 60 */ vAddConstant("SIZEOF_TASKLIST"_Str,     sizeof(TaskList));
-  /* 61 */ vAddConstant("SIZEOF_TASKQUEUE"_Str,    sizeof(QueryScheduler));
+  /* 61 */ vAddConstant("SIZEOF_SCHEDULER"_Str,    sizeof(Scheduler));
   /* 61 */ vAddConstant("SIZEOF_TASKSET"_Str,      sizeof(TaskSet));
   /* 62 */ vAddConstant("SIZEOF_THREAD"_Str,       sizeof(Thread));
   /* 63 */ vAddConstant("SIZEOF_THREADCURSOR"_Str, sizeof(ThreadCursor));
@@ -841,6 +841,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitives_RowCursor();
   vAddPrimitives_Reg();
   vAddPrimitives_Rstack();
+  vAddPrimitives_Scheduler();
   vAddPrimitives_SEitf();
   vAddPrimitives_SEitfCursor();
   vAddPrimitives_SEitfList();
@@ -854,7 +855,6 @@ void Task::vAddPrimitives(void)
   vAddPrimitives_Task();
   vAddPrimitives_TaskCursor();
   vAddPrimitives_TaskList();
-  vAddPrimitives_TaskQueue();
   vAddPrimitives_TaskSet();
   vAddPrimitives_Thread();
   vAddPrimitives_ThreadCursor();

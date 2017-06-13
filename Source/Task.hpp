@@ -237,6 +237,7 @@ namespace Tasks
     void vAddPrimitives_RowBuffer(void);
     void vAddPrimitives_RowCursor(void);
     void vAddPrimitives_Rstack(void);
+    void vAddPrimitives_Scheduler(void);
     void vAddPrimitives_SEitf(void);
     void vAddPrimitives_SEitfCursor(void);
     void vAddPrimitives_SEitfList(void);
@@ -250,7 +251,6 @@ namespace Tasks
     void vAddPrimitives_Task(void);
     void vAddPrimitives_TaskCursor(void);
     void vAddPrimitives_TaskList(void);
-    void vAddPrimitives_TaskQueue(void);
     void vAddPrimitives_TaskSet(void);
     void vAddPrimitives_Thread(void);
     void vAddPrimitives_ThreadCursor(void);
@@ -731,6 +731,18 @@ namespace Tasks
     static void vPushNullPtr(NNP_Task nnpTask);
     static void vPushValue(NNP_Task nnpTask);
     
+    // scheduler
+    static void vSchedulerInit(NNP_Task nnpTask);
+    
+    static void vSchedulerDropLock(NNP_Task nnpTask);
+    static void vSchedulerGrabLock(NNP_Task nnpTask);
+    
+    static void vSchedulerEnqueueTask(NNP_Task nnpTask);
+    static void vSchedulerQueuedTasks(NNP_Task nnpTask);
+    
+    static void vSchedulerEnqueueThread(NNP_Task nnpTask);
+    static void vSchedulerQueuedThreads(NNP_Task nnpTask);
+  
     // queue
     static void vQueueAppend(NNP_Task nnpTask);
     static void vQueueDump(NNP_Task nnpTask);
@@ -1006,19 +1018,6 @@ namespace Tasks
     static void vTaskListDump(NNP_Task nnpTask);
     static void vTaskListInit(NNP_Task nnpTask);
     
-    // taskQueue
-    static void vTaskQueueInit(NNP_Task nnpTask);
-
-    static void vTaskQueueDropLock(NNP_Task nnpTask);
-    static void vTaskQueueGrabLock(NNP_Task nnpTask);
-  
-    static void vTaskQueueQueueTask(NNP_Task nnpTask);
-    static void vTaskQueueQueuedTasks(NNP_Task nnpTask);
-  
-    static void vTaskQueueQueueThread(NNP_Task nnpTask);
-    static void vTaskQueueThreadsWaiting(NNP_Task nnpTask);
-    static void vTaskQueueSignalThread(NNP_Task nnpTask);
-  
     // taskSet
     static void vTaskSetAppend(NNP_Task nnpTask); 
     static void vTaskSetDump(NNP_Task nnpTask);
@@ -1037,8 +1036,8 @@ namespace Tasks
     static void vThreadMutexUnlock(NNP_Task nnpTask);
     static void vThreadNameFetch(NNP_Task nnpTask);
     static void vThreadNameStore(NNP_Task nnpTask);
-    static void vThreadQfetch(NNP_Task nnpTask);
-    static void vThreadQstore(NNP_Task nnpTask);
+    static void vThreadSchedulerFetch(NNP_Task nnpTask);
+    static void vThreadSchedulerStore(NNP_Task nnpTask);
     static void vThreadSfetch(NNP_Task nnpTask);
     static void vThreadSstore(NNP_Task nnpTask);
     static void vThreadSleep_s(NNP_Task nnpTask);

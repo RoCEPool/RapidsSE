@@ -44,8 +44,8 @@ void Task::vAddPrimitives_Thread(void)
   vAddPrimitive("thread.mutexUnlock"_Str, &vThreadMutexUnlock, false);
   vAddPrimitive("thread.name@"_Str,       &vThreadNameFetch,   false);
   vAddPrimitive("thread.name!"_Str,       &vThreadNameStore,   false);
-  vAddPrimitive("thread.taskqueue@"_Str,  &vThreadQfetch,      false);
-  vAddPrimitive("thread.taskqueue!"_Str,  &vThreadQstore,      false);
+  vAddPrimitive("thread.scheduler@"_Str,  &vThreadSchedulerFetch, false);
+  vAddPrimitive("thread.scheduler!"_Str,  &vThreadSchedulerStore, false);
   vAddPrimitive("thread.taskset@"_Str,    &vThreadSfetch,      false);
   vAddPrimitive("thread.taskset!"_Str,    &vThreadSstore,      false);
   vAddPrimitive("thread.sleep_s"_Str,     &vThreadSleep_s,     false);
@@ -301,6 +301,55 @@ ENTRY("vThreadNameFetch"_Str);
 }
 
 /*----------------------------------------------------------------------------*/
+/* thread.scheduler@ -- fetch scheduler from given thread on stack            */
+/*----------------------------------------------------------------------------*/
+void Task::vThreadSchedulerFetch(NNP_Task nnpTask)
+{
+  ENTRY("vThreadSchedulerFetch"_Str);
+  
+  Object* pThreadEmb;
+  
+  if ( ! nnpTask->m_pDataStack->bPop(pThreadEmb) )
+    THROW_INVALID_DSTACK("thread.scheduler@"_Str);
+  Thread* pThread = _pThread(pThreadEmb);
+  
+  Scheduler* pScheduler = pThread->m_pScheduler;
+  
+  Object* pSchedulerEmb = static_cast<Object*>(pScheduler);
+  
+  nnpTask->m_pDataStack->vPushObject(pSchedulerEmb);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* thread.scheduler! -- store scheduler into given thread                     */
+/*----------------------------------------------------------------------------*/
+void Task::vThreadSchedulerStore(NNP_Task nnpTask)
+{
+  ENTRY("vThreadSchedulerStore"_Str);
+  
+  Object* pThreadEmb;
+  
+  if ( ! nnpTask->m_pDataStack->bPop(pThreadEmb) )
+    THROW_INVALID_DSTACK("thread.scheduler!"_Str);
+  
+  ASSERT(CN_THREAD == pThreadEmb->eClass());
+  
+  Thread* pThread = static_cast<Thread*>(pThreadEmb);
+  
+  Object* pSchedulerEmb;
+  if ( ! nnpTask->m_pDataStack->bPop(pSchedulerEmb) )
+    THROW_INVALID_DSTACK("thread.scheduler!"_Str);
+  
+  Scheduler* pScheduler = _pScheduler(pSchedulerEmb);
+  
+  pThread->m_pScheduler = pScheduler;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* thread.name! -- store thread name                                          */
 /*----------------------------------------------------------------------------*/
 void Task::vThreadNameStore(NNP_Task nnpTask)
@@ -353,60 +402,6 @@ void Task::vThreadSfetch(NNP_Task nnpTask)
   EXIT();
 }
 
-/*----------------------------------------------------------------------------*/
-/* thread.queueset! -- store taskqueue into thread which is on data stack     */
-/*----------------------------------------------------------------------------*/
-void Task::vThreadQstore(NNP_Task nnpTask)
-{
-  ENTRY("vThreadQstore"_Str);
-  
-  Object* pThreadEmb;
-  
-  if ( ! nnpTask->m_pDataStack->bPop(pThreadEmb) )
-    THROW_INVALID_DSTACK("thread.taskqueue!"_Str);
-  
-  ASSERT(CN_THREAD == pThreadEmb->eClass());
-  
-  Thread* pThread = static_cast<Thread*>(pThreadEmb);
-  
-  Object* pTaskQueueEmb;
-  
-  if ( ! nnpTask->m_pDataStack->bPop(pTaskQueueEmb) )
-    THROW_INVALID_DSTACK("thread.taskqueue!"_Str);
-  
-  ASSERT(CN_TASKQUEUE == pTaskQueueEmb->eClass());
-  
-  QueryScheduler* pTaskQueue = static_cast<QueryScheduler*>(pTaskQueueEmb);
-  
-  //pThread->m_pTaskQueue = pTaskQueue;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* thread.taskqueue@ -- fetch taskqueue from thread which is on data stack    */
-/*----------------------------------------------------------------------------*/
-void Task::vThreadQfetch(NNP_Task nnpTask)
-{
-ENTRY("vThreadQfetch"_Str);
- 
-  Object* pThreadEmb;
-  
-  if ( ! nnpTask->m_pDataStack->bPop(pThreadEmb) )
-    THROW_INVALID_DSTACK("thread.taskset@"_Str);
-  
-  ASSERT(CN_THREAD == pThreadEmb->eClass());
-  
-  Thread* pThread = static_cast<Thread*>(pThreadEmb);
-  
-  QueryScheduler* pTaskQueue = nullptr; //pThread->m_pTaskQueue;
-
-  Object* pTaskQueueEmb = static_cast<Object*>(pTaskQueue);
-
-  nnpTask->m_pDataStack->vPushObject(pTaskQueueEmb);
-  
-  EXIT();
-}
 
 /*----------------------------------------------------------------------------*/
 /* thread.taskset! -- store taskset into the thread which is on data stack    */
