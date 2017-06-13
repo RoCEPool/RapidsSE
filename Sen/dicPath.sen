@@ -153,25 +153,30 @@
     ""                              // initial contents string
     0 pathPick dic.lastWord dup
     iterate                         // setup iteration of words
-      1 count + to count
 
       // get the index ptr
       object@ word.name findInCurrent execute to indexPtr
 
-      // index a primary key ?
-      indexPtr index.isPrimaryKey@
-      if "true" else "false" then
+      // skip hidden index
+      indexPtr index.isHidden@ not if
 
-      // index is unique ?
-      indexPtr index.isUnique@
-      if "true" else "false" then
+        // increment count
+        1 count + to count
 
-      // add word kind to ls string
-      object@ word.name
+        // index a primary key ?
+        indexPtr index.isPrimaryKey@
+        if "true" else "false" then
 
-      "row: ('%v',%v,%v)\n" str.format
-      str.cat
+        // index is unique ?
+        indexPtr index.isUnique@
+        if "true" else "false" then
 
+        // add word kind to ls string
+        object@ word.name
+
+        "row: ('%v',%v,%v)\n" str.format
+        str.cat
+      then
       object@ word.prev object!       // step backwards thru words
     next
     count task::this task.seitf@ seitf.rowsProcessed
@@ -184,21 +189,27 @@
       // get the index ptr
       object@ word.name findInCurrent execute to indexPtr
 
-      object@ word.name               // add name of the word to contents string
-      str.cat
+        // skip hidden index
+        indexPtr index.isHidden@ not if
 
-      // index is unique ?
-      indexPtr index.isUnique@
-      if " unique" str.cat then
+          object@ word.name               // add name of the word to contents string
+          str.cat
 
-      // index a primary key ?
-      indexPtr index.isPrimaryKey@
-      if " primary" str.cat then
+          count not if " , " str.cat then
 
-      object@ word.prev              // step backwards thru words
-      dup if swap " , " str.cat swap then
-      object!
-      next                           //
+          // increment count
+          1 count + to count
+
+          // index is unique ?
+          indexPtr index.isUnique@
+          if " unique" str.cat then
+
+          // index a primary key ?
+          indexPtr index.isPrimaryKey@
+          if " primary" str.cat then
+        then
+        object@ word.prev object!         // step backwards thru words
+      next
   then
 
 ;
