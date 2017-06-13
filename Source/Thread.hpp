@@ -3,8 +3,14 @@
 /*============================================================================*/
 #pragma once
 
+namespace Schedulers
+{
+  class QueryScheduler;
+}
+
 namespace Threads
 {
+  
   class Thread : public Object,
                  public ListNode_t<Thread>
   {
@@ -19,7 +25,8 @@ namespace Threads
     NP_Task      m_npTask;       // task current being executed
                                  //   note that while task is being exected
                                  //   its not in task set
-    
+    Schedulers::QueryScheduler*  m_pScheduler; // scheduler
+  
     // must be last
     Footer m_xFooter;
     

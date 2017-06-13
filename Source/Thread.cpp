@@ -70,6 +70,7 @@ Thread::Thread(void)
   m_sName        = "<no thread name>"_Str;
   m_pPosixThread = new PosixThread;
   m_pSemaphore   = new Semaphore;
+  m_pScheduler   = nullptr;
   m_pTaskSet     = nullptr;
   m_npTask       = nullptr;
 
@@ -345,9 +346,14 @@ void Thread::vLoopV2(void)
   
   while (true) {
     
+    // **just a snooze loop till we get this signalled**
+    
     if ( ! m_npTask ) {
-      PosixThread::vSleepMilli(1);
-      continue;
+      m_npTask = m_pTaskSet->npPop();
+      if ( ! m_npTask ) {
+        PosixThread::vSleepMilli(1);
+        continue;
+      }
     }
     
     // set up this thread to run task
@@ -359,7 +365,7 @@ void Thread::vLoopV2(void)
     // run the task
     m_npTask->vLoop();
     
-    // task forgets thread, unless waiting on ack
+    // unless waiting on ack, task forgets thread
     if (TS_WAITING_ACK != m_npTask->eState())
       m_npTask->vThread(nullptr);
     
@@ -371,7 +377,7 @@ void Thread::vLoopV2(void)
       continue;
     }
     
-    // when task exits it is deleted (unless its a word)
+    // when task exits, it is deleted (unless its a word)
     if (TS_EXITED == m_npTask->eState()) {
       NNP_Task nnpTask = *m_npTask;
       if ( (*gnpRootTask != *m_npTask)  && (!nnpTask->bWordBody()) ) {
