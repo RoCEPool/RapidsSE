@@ -124,6 +124,7 @@
   find execute ( ^indexPtr )
 
   0 locals| indexCols indexPtr |
+
   indexPtr index.columnCount to indexCols
 
   ""                             // initial ls string

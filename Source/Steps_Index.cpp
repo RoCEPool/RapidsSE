@@ -40,6 +40,8 @@ void Task::vAddPrimitives_Index(void)
   vAddPrimitive("index.createColumnVec"_Str, &vIndexCreateColumnVec, false);
   vAddPrimitive("index.dump"_Str,            &vIndexDump,            false);
   vAddPrimitive("index.init"_Str,            &vIndexInit,            false);
+  vAddPrimitive("index.isHidden@"_Str,       &vIndexIsHiddenFetch,   false);
+  vAddPrimitive("index.isHidden!"_Str,       &vIndexIsHiddenStore,   false);
   vAddPrimitive("index.isPrimaryKey@"_Str,   &vIndexIsPrimaryKeyFetch,   false);
   vAddPrimitive("index.isPrimaryKey!"_Str,   &vIndexIsPrimaryKeyStore,   false);
   vAddPrimitive("index.isUnique@"_Str,       &vIndexIsUniqueFetch,   false);
@@ -353,6 +355,52 @@ void Task::vIndexInit(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* index.isHidden@ -- fetch isHidden from index                               */
+/*----------------------------------------------------------------------------*/
+void Task::vIndexIsHiddenFetch(NNP_Task nnpTask)
+{
+  ENTRY("vIndexIsHiddenFetch"_Str);
+  
+  Object* pPtrIndex = nullptr;
+  
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrIndex) )
+    THROW_INVALID_DSTACK("index.isHidden@"_Str);
+  
+  Index* pIndex = _pIndex(pPtrIndex);
+  ASSERT(CN_INDEX == pIndex->eClass());
+  
+  bool bIsHidden = pIndex->bIsHidden();
+  
+  nnpTask->m_pDataStack->vPushInt(bIsHidden);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* index.isHidden! -- store isHidden into index                               */
+/*----------------------------------------------------------------------------*/
+void Task::vIndexIsHiddenStore(NNP_Task nnpTask)
+{
+  ENTRY("vIndexIsHiddenStore"_Str);
+  
+  Object* pPtrIndex = nullptr;
+  
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrIndex) )
+    THROW_INVALID_DSTACK("index.isHidden!"_Str);
+  
+  Index* pIndex = _pIndex(pPtrIndex);
+  ASSERT(CN_INDEX == pIndex->eClass());
+  
+  i8 iIsHidden;
+  if ( ! nnpTask->m_pDataStack->bPop(iIsHidden) )
+    THROW_INVALID_DSTACK("index.isHidden!"_Str);
+  
+  pIndex->vIsHidden(iIsHidden ? true : false);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* index.isPrimaryKey@ -- fetch isPrimaryKey from index                       */
 /*----------------------------------------------------------------------------*/
 void Task::vIndexIsPrimaryKeyFetch(NNP_Task nnpTask)
@@ -462,6 +510,8 @@ void Task::vIndexPopulate(NNP_Task nnpTask)
   i8 iIndexNo = pIndex->iIndexNo();
   Table* pTable = pIndex->pTable();
   
+  // not to poulate hidden index
+  ASSERT( ! pIndex->bIsHidden())
   pTable->vPopulateIndex(iIndexNo);
  
   EXIT();

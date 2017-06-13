@@ -31,6 +31,7 @@ namespace DBobjects
     Table*       m_pTable;        //
     Dic          m_xSubDic;       // sub dictionary for this index
     IdxColVec*   m_pIdxColVec;    //
+    bool         m_bIsHidden;
   
     // must be last
     Footer m_xFooter;
@@ -52,16 +53,18 @@ namespace DBobjects
     Str*   aIndexName(void);
     void   vIndexNo(i8 iIndexNo);
     i8     iIndexNo(void);
+    bool   bIsHidden(void);
+    void   vIsHidden(bool bHidden);
+    bool   bIsPrimaryKey(void);
+    void   vIsPrimaryKey(bool bUnique);
+    bool   bIsUnique(void);
+    void   vIsUnique(bool bUnique);
     void   vShowColumnVec(void);
     Dic*   pSubDic(void);
     void   vTable(Table* pTable);
     Table* pTable(void);
     void   vTidyUp(void);
-    bool   bIsPrimaryKey(void);
-    void   vIsPrimaryKey(bool bUnique);
-    bool   bIsUnique(void);
-    void   vIsUnique(bool bUnique);
-  
+    
     IdxColVec* pIdxColVec(void);
   
     Footer* pFooter(void);
