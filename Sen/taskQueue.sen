@@ -15,7 +15,7 @@
   sizeof_taskQueue allot
   word.this >body object.magic!
   CN_TASKQUEUE word.this >body object.class!
-  word.this >body taskQueue.init
+  word.this >body queryScheduler.init
   true word.this >body object.wordbody!
   does>
 ;
@@ -27,7 +27,7 @@
   sizeof_taskQueue allot
   word.this >body object.magic!
   CN_TASKQUEUE word.this >body object.class!
-  word.this >body taskQueue.init
+  word.this >body queryScheduler.init
   true word.this >body object.wordbody!
   word.this
   does>
