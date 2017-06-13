@@ -13,9 +13,9 @@ namespace Schedulers
   class Scheduler : public Object
   {
   private:
-    Lock m_xLock;
-    List_t<Thread> m_xThreadQueue;
+    Lock           m_xLock;
     List_t<Task>   m_xTaskQueue;
+    List_t<Thread> m_xThreadQueue;
   
     // must be last
     Footer m_xFooter;
@@ -27,16 +27,16 @@ namespace Schedulers
     Scheduler(void);
     ~Scheduler(void);
       
-    void  vGrabLock(void);
-    void  vDropLock(void);
-    
-    void  vEnqueueTask(Task* pTask);
+    void  vEnqueueTask(Task* mpTask);
     i8    iQueuedTasks(void);
 
-    void  vEnqueueThread(Thread* pThread);
+    void  vEnqueueThread(Thread* mpThread);
     i8    iQueuedThreads(void);
   
-  private:    
+  private:
+    void  vGrabLock(void);
+    void  vDropLock(void);
+  
     Footer* pFooter(void);
   };
 

@@ -57,43 +57,34 @@ Scheduler::Scheduler(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* grab write lock on this task queue                                         */
+/* hand given task to waiting thread or queue onto this schedulers task queue */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vGrabLock(void)
+void Scheduler::vEnqueueTask(Task* mpTask)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SCHEDULER,_FOOTER_);
-
-  m_xLock.vGrabWrite();
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SCHEDULER,_FOOTER_); _mp_(mpTask);
+  
+  vGrabLock();
+  
+  i8 iThreads = m_xThreadQueue.iCount();
+  if (iThreads) {
+    Thread* mpThread = m_xThreadQueue.pPop();
+    ASSERT(mpThread);
+    mpThread->m_npTask = mpTask;
+    mpThread->m_pSemaphore->vSignalThread();
+  }
+  else {
+    m_xTaskQueue.vAppend(mpTask);
+  }
+  
+  vDropLock();
 }
 
 /*----------------------------------------------------------------------------*/
-/* drop write lock on this task queue                                         */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vDropLock(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SCHEDULER,_FOOTER_);
-  
-  m_xLock.vDropWrite();
-}
-
-/*----------------------------------------------------------------------------*/
-/* queue task onto this schedulers task queue                                 */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vEnqueueTask(Task* pTask)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SCHEDULER,_FOOTER_);
-  
-  ASSERT(m_xLock.bIsLocked());
-  
-  m_xTaskQueue.vAppend(pTask);
-}
-
-/*----------------------------------------------------------------------------*/
-/* how many tasks are currently queued?                                       */
+/* how many tasks are currently queued within this scheduler?                 */
 /*----------------------------------------------------------------------------*/
 i8 Scheduler::iQueuedTasks(void)
 {
@@ -105,15 +96,26 @@ i8 Scheduler::iQueuedTasks(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* queue thread onto this task queue                                          */
+/* queue given thread onto this schedulaers thread queue                      */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vEnqueueThread(Threads::Thread* npThread)
+void Scheduler::vEnqueueThread(Threads::Thread* mpThread)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SCHEDULER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SCHEDULER,_FOOTER_); _mp_(mpThread);
   
-  ASSERT(m_xLock.bIsLocked());
+  vGrabLock();
   
-  m_xThreadQueue.vAppend(npThread);
+  i8 iTasks = m_xTaskQueue.iCount();
+  if (iTasks) {
+    Task* mpTask = m_xTaskQueue.pPop();
+    ASSERT(mpTask);
+    mpThread->m_npTask = mpTask;
+    mpThread->m_pSemaphore->vSignalThread();
+  }
+  else {
+    m_xThreadQueue.vAppend(mpThread);
+  }
+  
+  vDropLock();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -126,6 +128,32 @@ i8 Scheduler::iQueuedThreads(void)
   i8 iCount = m_xThreadQueue.iCount();
   
   return iCount;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Private -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* grab write lock on this scheduler                                          */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vGrabLock(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SCHEDULER,_FOOTER_);
+  
+  m_xLock.vGrabWrite();
+}
+
+/*----------------------------------------------------------------------------*/
+/* drop write lock on this scheduler                                          */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vDropLock(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SCHEDULER,_FOOTER_);
+  
+  ASSERT(m_xLock.bIsLocked());
+  
+  m_xLock.vDropWrite();
 }
 
 /*----------------------------------------------------------------------------*/

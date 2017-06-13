@@ -12,12 +12,18 @@ namespace Debugging
   void vStackDump(void);
   void vThrowTrap(void);
   
+  /*--------------------------------------------------------------------------*/
+  /* check the object has a magic marker as its first word                    */
+  /*--------------------------------------------------------------------------*/
   #ifdef MAGIC_CHECK
     #define _magic_() ASSERT(iMagic() == MAGIC);
   #else
     #define _magic_()
   #endif
     
+  /*--------------------------------------------------------------------------*/
+  /* check the object is of a known class                                     */
+  /*--------------------------------------------------------------------------*/
   #ifdef CLASS_CHECK
     #define _class_(arg) ASSERT(eClass() == arg);
     #define _class2_(arg1,arg2) ASSERT(eClass() == arg1 || eClass() == arg2);
@@ -29,27 +35,40 @@ namespace Debugging
     #define _class3_(arg)
   #endif
 
+  /*--------------------------------------------------------------------------*/
+  /* check the object has a footer marker as its last word                    */
+  /*--------------------------------------------------------------------------*/
   #ifdef FOOTER_CHECK
     #define _footer_() pFooter()->vAssertFooter();
     #define _hazard_() m_xHazard.vAssertFooter();
-  
-    #define _setFooter_() \
-      pFooter()->vSetFooter();
-
+    #define _setFooter_() pFooter()->vSetFooter();
   #else
-  
     #define _footer_()
     #define _hazard_()
     #define _setFooter_()
-  
   #endif
   
+  /*--------------------------------------------------------------------------*/
+  /* check the object is within the pool                                      */
+  /*--------------------------------------------------------------------------*/
   #ifdef ADDRESS_CHECK
     #define _poolAddress_(pArg) Base::vCheckAddress(pArg)
   #else
     #define _poolAddress_(pArg)
   #endif
   
+  /*--------------------------------------------------------------------------*/
+  /* check the object is within the pool                                      */
+  /*--------------------------------------------------------------------------*/
+  #ifdef MP_CHECK
+    #define _mp_(pArg) ASSERT(pArg)
+  #else
+    #define _mp_(pArg)
+  #endif
+    
+ /*--------------------------------------------------------------------------*/
+  /* our ASSERT macro                                                         */
+  /*--------------------------------------------------------------------------*/
   #ifdef ASSERT_CHECKS
     #define ASSERT(condition) \
     { \
@@ -70,8 +89,9 @@ namespace Debugging
     } \
   }
 
-  // precondition for any method is a valid this pointer, valid magic and a valid footer
-  
+  /*--------------------------------------------------------------------------*/
+  /* pre, post condition and check initialised                                */
+  /*--------------------------------------------------------------------------*/
   #define _ADDRESS_ 1
   #define _MAGIC_   2
   #define _FOOTER_  3
