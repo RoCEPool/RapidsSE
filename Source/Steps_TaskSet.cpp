@@ -35,6 +35,7 @@ void Task::vAddPrimitives_TaskSet(void)
   vAddPrimitive("taskSet.append"_Str,  &vTaskSetAppend,    false);
   vAddPrimitive("taskSet.dump"_Str,    &vTaskSetDump,      false);
   vAddPrimitive("taskSet.init"_Str,    &vTaskSetInit,      false);
+  vAddPrimitive("taskSet::new"_Str,    &vTaskSetNew,       false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -101,6 +102,20 @@ ENTRY("vTaskSetInit"_Str);
   TaskSet* pTaskSet = static_cast<TaskSet*>(pObject);
   
   new(pTaskSet) TaskSet;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* taskset::new -- create new taskset                                         */
+/*----------------------------------------------------------------------------*/
+void Task::vTaskSetNew(NNP_Task nnpTask)
+{
+  ENTRY("vTaskSetNew"_Str);
+
+  TaskSet* mpTaskSet = new TaskSet;
+  
+  nnpTask->m_pDataStack->vPushObject(mpTaskSet);
   
   EXIT();
 }

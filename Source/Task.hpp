@@ -1022,7 +1022,8 @@ namespace Tasks
     static void vTaskSetAppend(NNP_Task nnpTask); 
     static void vTaskSetDump(NNP_Task nnpTask);
     static void vTaskSetInit(NNP_Task nnpTask);   
-    
+    static void vTaskSetNew(NNP_Task nnpTask);
+  
     // thread
     static void vThreadAppend(NNP_Task nnpTask);  
     static void vThreadBind(NNP_Task nnpTask);

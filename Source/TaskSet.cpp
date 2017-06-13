@@ -9,6 +9,18 @@ extern BufferPool*  gpBufferPool;
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
+void* TaskSet::operator new(size_t iSize)
+{
+  RASSERT(iSize);
+  
+  TaskSet* pTaskSet = (TaskSet*)Heap::pAllocate(CN_TASKSET);
+  
+  return pTaskSet;
+}
+
+/*----------------------------------------------------------------------------*/
+/* operator new                                                               */
+/*----------------------------------------------------------------------------*/
 void* TaskSet::operator new(size_t iSize, TaskSet* pTaskSet)
 {
   RASSERT(iSize);
