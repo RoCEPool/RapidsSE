@@ -347,7 +347,9 @@ void Thread::vLoopV2(void)
   while (true) {
     
     // get next task to run
-    m_npTask = m_pTaskQueue->npPop();
+    m_pTaskQueue->vGrabLock();
+    m_npTask = m_pTaskQueue->mpPopTask();
+    m_pTaskQueue->vDropLock();
     if ( ! m_npTask ) {
       PosixThread::vSleepMilli(1);
       continue;

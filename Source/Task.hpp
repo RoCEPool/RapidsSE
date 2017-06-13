@@ -1005,8 +1005,6 @@ namespace Tasks
     static void vTaskListInit(NNP_Task nnpTask);
     
     // taskQueue
-    static void vTaskQueueAppend(NNP_Task nnpTask);
-    static void vTaskQueueDump(NNP_Task nnpTask);
     static void vTaskQueueInit(NNP_Task nnpTask);
 
     static void vTaskQueueDropLock(NNP_Task nnpTask);
@@ -1015,8 +1013,8 @@ namespace Tasks
     static void vTaskQueueQueueTask(NNP_Task nnpTask);
     static void vTaskQueueQueuedTasks(NNP_Task nnpTask);
   
-    static void vTaskQueueThreadsWaiting(NNP_Task nnpTask);
     static void vTaskQueueQueueThread(NNP_Task nnpTask);
+    static void vTaskQueueThreadsWaiting(NNP_Task nnpTask);
     static void vTaskQueueSignalThread(NNP_Task nnpTask);
   
     // taskSet

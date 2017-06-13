@@ -6,6 +6,8 @@
 
 extern BufferPool*  gpBufferPool;
 
+#include "Thread.hpp"
+
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
@@ -58,24 +60,48 @@ TaskQueue::TaskQueue(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* append task to this sequence                                               */
 /*----------------------------------------------------------------------------*/
-void TaskQueue::vAppend(NNP_Task nnpTask)
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* grab write lock on this task queue                                         */
+/*----------------------------------------------------------------------------*/
+void TaskQueue::vGrabLock(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASKQUEUE,_FOOTER_);
+
+  m_xLock.vGrabWrite();
+}
+
+/*----------------------------------------------------------------------------*/
+/* drop write lock on this task queue                                         */
+/*----------------------------------------------------------------------------*/
+void TaskQueue::vDropLock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASKQUEUE,_FOOTER_);
   
-  m_xLock.vGrabWrite();
+  m_xLock.vDropWrite();
+}
+
+/*----------------------------------------------------------------------------*/
+/* queue task onto this task queue                                            */
+/*----------------------------------------------------------------------------*/
+void TaskQueue::vQueueTask(Task* pTask)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASKQUEUE,_FOOTER_);
   
-  if ( ! m_npHead) {
+  ASSERT(m_xLock.bIsLocked());
+  
+  if ( ! m_npHead ) {
     // queue is empty
     ASSERT(0 == m_iCount);
     ASSERT( ! m_npTail );
     
-    m_npHead  = *nnpTask;
-    m_npTail  = *nnpTask;
+    m_npHead  = pTask;
+    m_npTail  = pTask;
     
-    nnpTask->vNextInSet(nullptr);
-    nnpTask->vPrevInSet(nullptr);
+    pTask->vNextInSet(nullptr);
+    pTask->vPrevInSet(nullptr);
     
     m_iCount = 1;
   }
@@ -85,100 +111,88 @@ void TaskQueue::vAppend(NNP_Task nnpTask)
     ASSERT(m_npHead);
     ASSERT(m_npTail);
     
-    nnpTask->vNextInSet(nullptr);
-    nnpTask->vPrevInSet(m_npTail);
+    pTask->vNextInSet(nullptr);
+    pTask->vPrevInSet(m_npTail);
     
-    m_npTail->vNextInSet(*nnpTask);
-    m_npTail = *nnpTask;
-
+    m_npTail->vNextInSet(pTask);
+    m_npTail = pTask;
+    
     m_iCount++;
   }
-  
-  vVerify();
-  
-  m_xLock.vDropWrite();
 }
 
 /*----------------------------------------------------------------------------*/
-/* dump this task set                                                         */
+/* how many tasks are currently queued?                                       */
 /*----------------------------------------------------------------------------*/
-void TaskQueue::vContentDump(void)
-{
-  _poolAddress_(this);
-  
-  m_xLock.vGrabWrite();
-
-  vTrace("TaskQueue %p: Count %lld Head %pd Tail %p\n"_Str,
-         this,
-         m_iCount,
-         m_npHead,
-         m_npTail
-         );
-  
-  m_xLock.vDropWrite();
-}
-
-/*----------------------------------------------------------------------------*/
-/* pop next tx from this sequence                                             */
-/*----------------------------------------------------------------------------*/
-NP_Task TaskQueue::npPop(void)
+i8 TaskQueue::iQueuedTasks(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASKQUEUE,_FOOTER_);
   
-  NP_Task npTask = nullptr;
-
-  m_xLock.vGrabWrite();
-  
-  if (m_npHead != nullptr) {
-    
-    npTask = m_npHead;
-    
-    m_npHead = m_npHead->npNextInSet();
-    
-    if (m_npHead != nullptr)
-      m_npHead->vPrevInSet(nullptr);
-    else
-      m_npTail = nullptr;
-    
-    m_iCount--;
-  }
-  
-  vVerify();
-  
-  m_xLock.vDropWrite();
-
-  return npTask;
+  return m_iCount;
 }
 
 /*----------------------------------------------------------------------------*/
-/* remove specific tx from this sequence                                      */
+/* pop a task                                                                 */
 /*----------------------------------------------------------------------------*/
-void TaskQueue::vRemove(NNP_Task nnpTask)
+Task* TaskQueue::mpPopTask(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASKQUEUE,_FOOTER_);
   
-  m_xLock.vGrabWrite();
+  ASSERT(m_xLock.bIsLocked());
   
-  NP_Task npTaskNext = nnpTask->npNextInSet();
-  NP_Task npTaskPrev = nnpTask->npPrevInSet();
+  if (m_npHead == nullptr)
+    return nullptr;
+    
+  Task* pTask = *m_npHead;
   
-  if (npTaskPrev != nullptr)
-    npTaskPrev->vNextInSet(npTaskNext);
-
-  if (npTaskNext != nullptr)
-    npTaskNext->vPrevInSet(npTaskPrev);
-
-  if (*nnpTask == *m_npHead)
-    m_npHead = npTaskNext;
-
-  if (*nnpTask == *m_npTail)
-    m_npTail = npTaskPrev;
+  m_npHead = m_npHead->npNextInSet();
+  
+  if (m_npHead != nullptr)
+    m_npHead->vPrevInSet(nullptr);
+  else
+    m_npTail = nullptr;
   
   m_iCount--;
+
+  return pTask;
+}
+
+/*----------------------------------------------------------------------------*/
+/* queue thread onto this task queue                                          */
+/*----------------------------------------------------------------------------*/
+void TaskQueue::vQueueThread(Threads::Thread* npThread)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASKQUEUE,_FOOTER_);
   
-  vVerify();
+  ASSERT(m_xLock.bIsLocked());
   
-  m_xLock.vDropWrite();
+  m_xThreadQueue.vAppend(npThread);
+}
+
+/*----------------------------------------------------------------------------*/
+/* how many threads are currently queued?                                     */
+/*----------------------------------------------------------------------------*/
+i8 TaskQueue::iQueuedThreads(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASKQUEUE,_FOOTER_);
+  
+  i8 iCount = m_xThreadQueue.iCount();
+  
+  return iCount;
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop a task                                                                 */
+/*----------------------------------------------------------------------------*/
+Threads::Thread* TaskQueue::mpPopThread(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASKQUEUE,_FOOTER_);
+  
+  ASSERT(m_xLock.bIsLocked());
+  
+  Threads::Thread* pThread = m_xThreadQueue.pPop();
+  
+  return pThread;
 }
 
 /*----------------------------------------------------------------------------*/
