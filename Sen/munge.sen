@@ -148,7 +148,7 @@
 /*----------------------------------------------------------------------------*/
 : mungeSenFile ( "<fileNm"> cppFile -- )
 
-  file.new locals| senFile cppFile |
+  file::new locals| senFile cppFile |
 
   senFile file.path!
 
@@ -190,7 +190,7 @@
 : munge
 
   // create a directory accessor
-  file.new dir.new "" locals| origDir senDir cppFile |
+  file::new dir::new "" locals| origDir senDir cppFile |
 
   // save original dir and change to ../Sen
   dir.getCurrent to OrigDir

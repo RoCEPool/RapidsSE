@@ -37,7 +37,7 @@ void Task::vAddPrimitives_Timer(void)
   vAddPrimitive("timer.microsecs"_Str, &vTimerMicrosecs,   false);
   vAddPrimitive("timer.millisecs"_Str, &vTimerMillisecs,   false);
   vAddPrimitive("timer.nanosecs"_Str,  &vTimerNanosecs,    false);
-  vAddPrimitive("timer.new"_Str,       &vTimerNew,         false);
+  vAddPrimitive("timer::new"_Str,       &vTimerNew,         false);
   vAddPrimitive("timer.reset"_Str,     &vTimerReset,       false);
   vAddPrimitive("timer.secs"_Str,      &vTimerSecs,        false);
   vAddPrimitive("timer.start"_Str,     &vTimerStart,       false);
@@ -152,7 +152,7 @@ ENTRY("vTimerNanosecs"_Str);
 }
 
 /*----------------------------------------------------------------------------*/
-/* timer.new -- new timer                                                     */
+/* timer::new -- new timer                                                     */
 /*----------------------------------------------------------------------------*/
 void Task::vTimerNew(NNP_Task nnpTask)
 {

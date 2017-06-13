@@ -283,7 +283,7 @@ void Task::vPlanNameStore(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* plan.new -- new a plan ( -- plan )                                         */
+/* plan::new -- new a plan ( -- plan )                                         */
 /*----------------------------------------------------------------------------*/
 void Task::vPlanNew(NNP_Task nnpTask)
 {

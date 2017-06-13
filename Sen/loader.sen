@@ -36,7 +36,7 @@ timer: loadTimer
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if path file exists                                 //! refactor this
 
-  file.new locals| fp |
+  file::new locals| fp |
   path fp file.path!
 
   OPEN_READ fp file.open ( t|f )
@@ -125,17 +125,17 @@ timer: loadTimer
 : tableLoaderStream ( "<path>" ^table -- t|f )
 
   // check if path file exists
-  swap file.new >r
+  swap file::new >r
   dup r0 file.path!
   OPEN_READ r0 file.open
   if r0 file.close rdrop swap else rdrop drop drop EC_INVALID_FILE false exit then
 
   reg.push
 
-  file.new >reg0         // reg0 - file
+  file::new >reg0         // reg0 - file
   >reg1                  // reg1 - table
   >reg2                  // reg2 - path
-  rowBuffer.new >reg3    // reg3 - rowbuffer
+  rowBuffer::new >reg3    // reg3 - rowbuffer
   beginTransaction >reg4 // reg4 - txref
   0 >regF                // regF - counter
 
@@ -150,7 +150,7 @@ timer: loadTimer
       reg4 reg3 rowbuffer.append
       not if
         reg3 0 reg1 table.appendBuffer
-        rowBuffer.new >reg3
+        rowBuffer::new >reg3
         reg4 reg3 rowbuffer.append
         drop
       then
@@ -183,17 +183,17 @@ timer: loadTimer
   find execute ( "filename" table )
 
   // check if path file exists
-  swap file.new >r
+  swap file::new >r
   dup r0 file.path!
   OPEN_READ r0 file.open
   if r0 file.close rdrop swap else rdrop drop drop EC_INVALID_FILE false exit then
 
   reg.push
 
-  file.new >reg0         // reg0 - file
+  file::new >reg0         // reg0 - file
   >reg1                  // reg1 - table
   >reg2                  // reg2 - path
-  rowBuffer.new >reg3    // reg3 - rowbuffer
+  rowBuffer::new >reg3    // reg3 - rowbuffer
   beginTransaction >reg4 // reg4 - txref
   0 >regF                // regF - counter
 
@@ -208,7 +208,7 @@ timer: loadTimer
       reg0 reg4 reg3 rowbuffer.appendRecord
       not if
         reg3 0 reg1 table.appendBuffer
-        rowBuffer.new >reg3
+        rowBuffer::new >reg3
         reg0 reg4 reg3 rowbuffer.appendRecord
         drop
       then

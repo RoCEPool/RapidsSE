@@ -35,7 +35,7 @@ void Task::vAddPrimitives_RowBuffer(void)
   vAddPrimitive("rowBuffer.append"_Str, &vRowBufferAppend, false);
   vAddPrimitive("rowBuffer.appendRecord"_Str, &vRowBufferAppendRecord, false);
   vAddPrimitive("rowBuffer.dump"_Str,   &vRowBufferDump,    false);
-  vAddPrimitive("rowBuffer.new"_Str,    &vRowBufferNew,    false);
+  vAddPrimitive("rowBuffer::new"_Str,    &vRowBufferNew,    false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -155,7 +155,7 @@ void Task::vRowBufferDump(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* rowbuffer.new -- new a row buffer                                          */
+/* rowbuffer::new -- new a row buffer                                          */
 /*----------------------------------------------------------------------------*/
 void Task::vRowBufferNew(NNP_Task nnpTask)
 {

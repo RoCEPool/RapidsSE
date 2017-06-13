@@ -43,7 +43,7 @@ void Task::vAddPrimitives_LoaderSub(void)
   vAddPrimitive("loaderSub.insertRow"_Str,    &vLoaderSubInsertRow,     false);
   vAddPrimitive("loaderSub.insertRow?"_Str,   &vLoaderSubInsertRow2,    false);
   vAddPrimitive("loaderSub.loader!"_Str,      &vLoaderSubLoaderStore,   false);
-  vAddPrimitive("loaderSub.new"_Str,          &vLoaderSubNew,           false);
+  vAddPrimitive("loaderSub::new"_Str,          &vLoaderSubNew,           false);
   vAddPrimitive("loaderSub.partition"_Str,    &vLoaderSubPartition,     false);
   vAddPrimitive("loaderSub.partition!"_Str,   &vLoaderSubPartitionStore,false);
   vAddPrimitive("loaderSub.rowBuffer"_Str,    &vLoaderSubRowBuffer,     false);
@@ -261,7 +261,7 @@ void Task::vLoaderSubLoaderStore(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* loaderSub.new -- new a table loader subordinate                            */
+/* loaderSub::new -- new a table loader subordinate                            */
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderSubNew(NNP_Task nnpTask)
 {

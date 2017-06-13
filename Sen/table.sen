@@ -354,7 +354,7 @@ int: queryCount
   task::this task.seitf@ seitf.table@ ( ^table )
 
   // create a selCursor
-  selCursor.new ( ^table ^selCursor )
+  selCursor::new ( ^table ^selCursor )
   to selCursor
 
   // store table into selCursor
@@ -481,7 +481,7 @@ int: queryCount
   task::this task.seitf@ seitf.table@ ( ^table )
 
   // create a selCursor
-  selCursor.new ( ^table ^selCursor )
+  selCursor::new ( ^table ^selCursor )
 
   // store table into selCursor
   dup -rot selCursor.table! ( ^selCursor )
@@ -510,7 +510,7 @@ int: queryCount
   task::this task.seitf@ seitf.table@ ( ^table )
 
   // create a selCursor
-  selCursor.new ( ^table ^selCursor )
+  selCursor::new ( ^table ^selCursor )
 
   // store table into selCursor
   dup -rot selCursor.table! ( ^selCursor )

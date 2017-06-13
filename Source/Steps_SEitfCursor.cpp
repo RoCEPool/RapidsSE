@@ -38,7 +38,7 @@ void Task::vAddPrimitives_SEitfCursor(void)
   vAddPrimitive("seitfCursor.first"_Str,  &vSEitfCursorFirst,  false);
   vAddPrimitive("seitfCursor.get"_Str,    &vSEitfCursorGet,    false);
   vAddPrimitive("seitfCursor.init"_Str,   &vSEitfCursorInit,   false);
-  vAddPrimitive("seitfCursor.new"_Str,    &vSEitfCursorNew,    false);
+  vAddPrimitive("seitfCursor::new"_Str,    &vSEitfCursorNew,    false);
   vAddPrimitive("seitfCursor.next"_Str,   &vSEitfCursorNext,   false);
 }
 
@@ -178,7 +178,7 @@ ENTRY("vSEitfCursorInit"_Str);
 }
 
 /*----------------------------------------------------------------------------*/
-/* seitfcursor.new -- new an seitf cursor                                     */
+/* seitfcursor::new -- new an seitf cursor                                     */
 /*----------------------------------------------------------------------------*/
 void Task::vSEitfCursorNew(NNP_Task nnpTask)
 {
@@ -186,7 +186,7 @@ ENTRY("vSEitfCursorNew"_Str);
   
   Object* pPtrSEitfList;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitfList) )
-    THROW_INVALID_DSTACK("seitfcursor.new"_Str);
+    THROW_INVALID_DSTACK("seitfcursor::new"_Str);
   
   SEitfList* pSEitfList = _pSEitfList(pPtrSEitfList);
   ASSERT(CN_SEITFLIST == pSEitfList->eClass());

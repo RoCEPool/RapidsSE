@@ -69,7 +69,7 @@ common/ scan rbCrs /
   profile thePlan plan.opFrame? opFrame.push // [1]
 
   // [2] create a new rowCursor and record in opFrame.rbCrs
-  rbCursor.new toCommon rbCrs
+  rbCursor::new toCommon rbCrs
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set up table in rowCursor

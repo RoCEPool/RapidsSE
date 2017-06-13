@@ -15,7 +15,7 @@ tp: gettingObject
     "GETTING OBJECT on NODE "grid.thisNode@ >str str.cat .
   then
 
-  file.new dup
+  file::new dup
   "pathXYZ" grid.thisNodeName@ str.cat swap file.path!
   >binval
 

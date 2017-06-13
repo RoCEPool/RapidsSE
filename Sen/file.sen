@@ -49,7 +49,7 @@
 /*----------------------------------------------------------------------------*/
 : fileLoad ( "<fileNm>" -- s true | false )
 
-  file.new locals| loadFile |
+  file::new locals| loadFile |
 
   loadFile file.path!
 

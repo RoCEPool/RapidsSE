@@ -35,7 +35,7 @@ void Task::vAddPrimitives_File(void)
   vAddPrimitive("file.close"_Str,      &vFileClose,        false);
   vAddPrimitive("file.delete"_Str,     &vFileDelete,       false);
   vAddPrimitive("file.init"_Str,       &vFileInit,         false);
-  vAddPrimitive("file.new"_Str,        &vFileNew,          false);
+  vAddPrimitive("file::new"_Str,        &vFileNew,          false);
   vAddPrimitive("file.open"_Str,       &vFileOpen,         false);
   vAddPrimitive("file.path@"_Str,      &vFilePathGet,      false);
   vAddPrimitive("file.path!"_Str,      &vFilePathSet,      false);
@@ -103,7 +103,7 @@ ENTRY("vFileInit"_Str);
 }
 
 /*----------------------------------------------------------------------------*/
-/* file.new -- new a file ( -- file )                                         */
+/* file::new -- new a file ( -- file )                                         */
 /*----------------------------------------------------------------------------*/
 void Task::vFileNew(NNP_Task nnpTask)
 {

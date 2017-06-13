@@ -6,7 +6,7 @@
 
 : export ( "<fileNm>" ^table )
 
-  swap file.new
+  swap file::new
 
   >r
   // r0 ^file

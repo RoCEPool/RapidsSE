@@ -38,7 +38,7 @@ void Task::vAddPrimitives_TxCursor(void)
   vAddPrimitive("txCursor.first"_Str,  &vTxCursorFirst,  false);
   vAddPrimitive("txCursor.get"_Str,    &vTxCursorGet,    false);
   vAddPrimitive("txCursor.init"_Str,   &vTxCursorInit,   false);
-  vAddPrimitive("txCursor.new"_Str,    &vTxCursorNew,    false);
+  vAddPrimitive("txCursor::new"_Str,    &vTxCursorNew,    false);
   vAddPrimitive("txCursor.next"_Str,   &vTxCursorNext,   false);
 }
 
@@ -163,7 +163,7 @@ ENTRY("vTxCursorInit"_Str);
 }
 
 /*----------------------------------------------------------------------------*/
-/* txCursor.new -- new a tx cursor                                            */
+/* txCursor::new -- new a tx cursor                                            */
 /*----------------------------------------------------------------------------*/
 void Task::vTxCursorNew(NNP_Task nnpTask)
 {

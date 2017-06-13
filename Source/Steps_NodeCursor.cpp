@@ -37,7 +37,7 @@ void Task::vAddPrimitives_NodeCursor(void)
   vAddPrimitive("nodeCursor.first"_Str,  &vNodeCursorFirst,  false);
   vAddPrimitive("nodeCursor.get"_Str,    &vNodeCursorGet,    false);
   vAddPrimitive("nodeCursor.init"_Str,   &vNodeCursorInit,   false);
-  vAddPrimitive("nodeCursor.new"_Str,    &vNodeCursorNew,    false);
+  vAddPrimitive("nodeCursor::new"_Str,    &vNodeCursorNew,    false);
   vAddPrimitive("nodeCursor.next"_Str,   &vNodeCursorNext,   false);
 }
 
@@ -162,7 +162,7 @@ ENTRY("vNodeCursorInit"_Str);
 }
 
 /*----------------------------------------------------------------------------*/
-/* nodeCursor.new -- new a node (of grid) cursor                              */
+/* nodeCursor::new -- new a node (of grid) cursor                              */
 /*----------------------------------------------------------------------------*/
 void Task::vNodeCursorNew(NNP_Task nnpTask)
 {

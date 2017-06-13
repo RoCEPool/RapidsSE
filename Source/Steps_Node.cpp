@@ -38,7 +38,7 @@ void Task::vAddPrimitives_Node(void)
   vAddPrimitive("node.init"_Str,       &vNodeInit,         false);
   vAddPrimitive("node.IP"_Str,         &vNodeIP,           false);
   vAddPrimitive("node.name"_Str,       &vNodeName,         false);
-  vAddPrimitive("node.new"_Str,        &vNodeNew,          false);
+  vAddPrimitive("node::new"_Str,        &vNodeNew,          false);
   vAddPrimitive("node.no"_Str,         &vNodeNo,           false);
   vAddPrimitive("node.port"_Str,       &vNodePort,         false);
   vAddPrimitive("node.status"_Str,     &vNodeStatus,       false);
@@ -87,7 +87,7 @@ void Task::vNodeIP(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* node.new -- new a node (of a grid)                                         */
+/* node::new -- new a node (of a grid)                                         */
 /*----------------------------------------------------------------------------*/
 void Task::vNodeNew(NNP_Task nnpTask)
 {
@@ -96,7 +96,7 @@ ENTRY("vNodeNew"_Str);
   i8 iNodeNo;
   
   if ( ! nnpTask->m_pDataStack->bPop(iNodeNo) )
-    THROW_INVALID_DSTACK("node.new"_Str);
+    THROW_INVALID_DSTACK("node::new"_Str);
   
   Node* pNode = new Node(iNodeNo,
                          gxArguments.m_xNodes[iNodeNo].m_sNodeName,

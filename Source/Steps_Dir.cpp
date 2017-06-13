@@ -49,7 +49,7 @@ void Task::vAddPrimitives_Dir(void)
   vAddPrimitive("dir.init"_Str,        &vDirInit,          false);
   vAddPrimitive("dir.isClosed"_Str,    &vDirIsClosed,      false);
   vAddPrimitive("dir.isOpen"_Str,      &vDirIsOpen,        false);
-  vAddPrimitive("dir.new"_Str,         &vDirNew,           false);
+  vAddPrimitive("dir::new"_Str,         &vDirNew,           false);
   vAddPrimitive("dir.open"_Str,        &vDirOpen,          false);
   vAddPrimitive("dir.path@"_Str,       &vDirPathGet,       false);
   vAddPrimitive("dir.path!"_Str,       &vDirPathSet,       false);
@@ -310,7 +310,7 @@ ENTRY("vDirIsOpen"_Str);
 }
 
 /*----------------------------------------------------------------------------*/
-/* dir.new -- new instance of dir                                             */
+/* dir::new -- new instance of dir                                             */
 /*----------------------------------------------------------------------------*/
 void Task::vDirNew(NNP_Task nnpTask)
 {

@@ -36,7 +36,7 @@ tp: pRB
 
   reg.push
 
-  rowBuffer.new >reg0    // reg0 - rowbuffer
+  rowBuffer::new >reg0    // reg0 - rowbuffer
   beginTransaction >reg1 // reg1 - txref
 
 /*

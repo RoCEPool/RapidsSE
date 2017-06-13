@@ -38,7 +38,7 @@ void Task::vAddPrimitives_TaskCursor(void)
   vAddPrimitive("taskCursor.first"_Str,  &vTaskCursorFirst,  false);
   vAddPrimitive("taskcursor.get"_Str,    &vTaskCursorGet,    false);
   vAddPrimitive("taskcursor.init"_Str,   &vTaskCursorInit,   false);
-  vAddPrimitive("taskcursor.new"_Str,    &vTaskCursorNew,    false);
+  vAddPrimitive("taskcursor::new"_Str,    &vTaskCursorNew,    false);
   vAddPrimitive("taskcursor.next"_Str,   &vTaskCursorNext,   false);
 }
 
@@ -168,7 +168,7 @@ ENTRY("vTaskCursorInit"_Str);
 }
 
 /*----------------------------------------------------------------------------*/
-/* taskCursor.new -- new a task cursor                                        */
+/* taskCursor::new -- new a task cursor                                        */
 /*----------------------------------------------------------------------------*/
 void Task::vTaskCursorNew(NNP_Task nnpTask)
 {

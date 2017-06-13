@@ -35,7 +35,7 @@ void Task::vAddPrimitives_Loader(void)
   vAddPrimitive("loader.delete"_Str,      &vLoaderDelete,      false);
   vAddPrimitive("loader.findChunk"_Str,   &vLoaderFindChunk,   false);
   vAddPrimitive("loader.init"_Str,        &vLoaderInit,        false);
-  vAddPrimitive("loader.new"_Str,         &vLoaderNew,         false);
+  vAddPrimitive("loader::new"_Str,         &vLoaderNew,         false);
   vAddPrimitive("loader.newSub"_Str,      &vLoaderNewSub,      false);
   vAddPrimitive("loader.path!"_Str,       &vLoaderPathStore,   false);
   vAddPrimitive("loader.table!"_Str,      &vLoaderTableStore,  false);
@@ -102,7 +102,7 @@ void Task::vLoaderInit(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* loader.new -- new a table loader                                           */
+/* loader::new -- new a table loader                                           */
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderNew(NNP_Task nnpTask)
 {

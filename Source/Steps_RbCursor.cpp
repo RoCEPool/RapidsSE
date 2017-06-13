@@ -38,7 +38,7 @@ void Task::vAddPrimitives_RbCursor(void)
   vAddPrimitive("rbCursor.first"_Str,     &vRbCursorFirst,      false);
   vAddPrimitive("rbCursor.get"_Str,       &vRbCursorGet,        false);
   vAddPrimitive("rbCursor.init"_Str,      &vRbCursorInit,       false);
-  vAddPrimitive("rbCursor.new"_Str,       &vRbCursorNew,        false);
+  vAddPrimitive("rbCursor::new"_Str,       &vRbCursorNew,        false);
   vAddPrimitive("rbCursor.next"_Str,      &vRbCursorNext,       false);
   vAddPrimitive("rbCursor.rowBuffer"_Str, &vRbCursorRowBuffer,  false);
   vAddPrimitive("rbCursor.table@"_Str,    &vRbCursorTableFetch, false);
@@ -173,7 +173,7 @@ ENTRY("vRbCursorInit"_Str);
 }
 
 /*----------------------------------------------------------------------------*/
-/* rbCursor.new -- new a row buffer cursor                                    */
+/* rbCursor::new -- new a row buffer cursor                                    */
 /*----------------------------------------------------------------------------*/
 void Task::vRbCursorNew(NNP_Task nnpTask)
 {

@@ -30,7 +30,7 @@ common/ write nStreams    /
   task::this task.dicStack dicPath.drop
 
   // create a file pointer
-  file.new toCommon filePointer
+  file::new toCommon filePointer
 
   // set file path
   filePointer file.path!
@@ -89,7 +89,7 @@ common/ write nStreams    /
 : writeToFile subDic write ( rowBuffer -- )
 
   // declare rowCrs variable
-  rowCursor.new locals| rowCrs |
+  rowCursor::new locals| rowCrs |
 
   // set row buffer in cursor
   rowCrs rowCursor.rowBuffer!
