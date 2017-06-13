@@ -21,6 +21,7 @@ namespace Schedulers
     Footer m_xFooter;
     
   public:
+    void* operator new(size_t);
     void* operator new(size_t, Scheduler*);
     void  operator delete(void*);
     

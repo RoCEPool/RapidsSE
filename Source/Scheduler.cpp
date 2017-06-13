@@ -23,6 +23,19 @@ Scheduler* Schedulers::_pScheduler(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
+void* Scheduler::operator new(size_t iSize)
+{
+  RASSERT(iSize);
+  
+  Scheduler* pScheduler =
+    reinterpret_cast<Scheduler*>(Heap::pAllocate(CN_SCHEDULER));
+  
+  return pScheduler;
+}
+
+/*----------------------------------------------------------------------------*/
+/* operator new                                                               */
+/*----------------------------------------------------------------------------*/
 void* Scheduler::operator new(size_t iSize, Scheduler* pScheduler)
 {
   RASSERT(iSize);

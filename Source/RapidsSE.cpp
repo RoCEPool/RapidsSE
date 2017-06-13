@@ -4,50 +4,51 @@
 
 #include "StorageEngine.h"
 
-Arguments gxArguments;
+Arguments     gxArguments;
 
-BufferPool*         gpBufferPool       = nullptr;
-AttachMap *         gpAttachMap        = nullptr;
-Heap*               gpJumboHeap        = nullptr;
-Heap*               gpMediumHeap       = nullptr;
-Heap*               gpSmallHeap        = nullptr;
-Dic*                gpMainDic          = nullptr;
-Word*               gpWord             = nullptr;
+BufferPool*   gpBufferPool   = nullptr;
+AttachMap *   gpAttachMap    = nullptr;
+Heap*         gpJumboHeap    = nullptr;
+Heap*         gpMediumHeap   = nullptr;
+Heap*         gpSmallHeap    = nullptr;
+Dic*          gpMainDic      = nullptr;
+Word*         gpWord         = nullptr;
 
-Grid*               gpGrid             = nullptr;
-StepArray*          gpStepArray        = nullptr;
-TaskList*           gpTaskList         = nullptr;
-PlanList*           gpPlanList         = nullptr;
-ThreadList*         gpThreadList       = nullptr;
-TxCollection*       gpTxCollection     = nullptr;
-TxMap*              gpTxMap            = nullptr;
-SEitfList*          gpSEitfList        = nullptr;
+Grid*         gpGrid         = nullptr;
+StepArray*    gpStepArray    = nullptr;
+TaskList*     gpTaskList     = nullptr;
+PlanList*     gpPlanList     = nullptr;
+ThreadList*   gpThreadList   = nullptr;
+TxCollection* gpTxCollection = nullptr;
+TxMap*        gpTxMap        = nullptr;
+SEitfList*    gpSEitfList    = nullptr;
+Scheduler*    gpScheduler    = nullptr;
 
-File*               gpTraceFile        = nullptr;
+File*         gpTraceFile    = nullptr;
 
-BPA*                gpBPA              = nullptr;
+BPA*          gpBPA          = nullptr;
 
-NP_Task             gnpRootTask        = nullptr;
-Thread*             gnpRootThread      = nullptr;
+NP_Task       gnpRootTask    = nullptr;
+Thread*       gnpRootThread  = nullptr;
 
-StepBoard*          gpStepBoard        = nullptr;
+StepBoard*    gpStepBoard    = nullptr;
 
-void*               mpRegion           = nullptr;
+void*         mpRegion       = nullptr;
 
-bool                gbVerbose          = false;
-bool                gbTracepoint       = false;
-bool                gbProgress         = false;
-bool                gbMetadata         = false;
+bool          gbVerbose      = false;
+bool          gbTracepoint   = false;
+bool          gbProgress     = false;
+bool          gbMetadata     = false;
 
-bool                gbIndexSpace       = false;
-i8                  gnIndexEntries     = 10;
-i8                  gnIndexLevels      = 3;
-i8                  gnIndexOffsets     = gnIndexLevels - 1;
+bool          gbIndexSpace   = false;
+i8            gnIndexEntries = 10;
+i8            gnIndexLevels  = 3;
+i8            gnIndexOffsets = gnIndexLevels - 1;
 
-Lock                gxDdlLock;
-Lock                gxDicLock;
+Lock          gxDdlLock;
+Lock          gxDicLock;
 
-Atomic              gzPlanId;
+Atomic        gzPlanId;
 
 /*----------------------------------------------------------------------------*/
 /* execute arguments                                                          */
@@ -383,6 +384,8 @@ void RapidsSE::vSystemInit(void)
   s32 sName;
   sName = "rootTask"_Str;
   gnpRootTask->vName(sName);
+  
+  gpScheduler = new Scheduler;
   
   vDicCompile(gnpRootTask);
   

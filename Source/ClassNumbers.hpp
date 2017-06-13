@@ -284,7 +284,7 @@ namespace Base
     /* 80 */ "TASK"_Str,
     /* 81 */ "TASKCURSOR"_Str,
     /* 82 */ "TASKLIST"_Str,
-    /*    */ "TASKQUEUE"_Str,
+    /*    */ "SCHEDULER"_Str,
     /* 83 */ "TASKSET"_Str,
     /* 84 */ "THREAD"_Str,
     /* 85 */ "THREADCURSOR"_Str,

@@ -28,6 +28,7 @@ extern StepBoard*      gpStepBoard;
 extern Lock            gxDdlLock;
 extern Lock            gxDicLock;
 extern SEitfList*      gpSEitfList;
+extern Scheduler*      gpScheduler;
 extern bool            gbVerbose;
 
 /*----------------------------------------------------------------------------*/
@@ -762,6 +763,7 @@ void Task::vAddConstants(void)
   /*  0 */ vAddConstant("CPU_COUNT"_Str,       Hardware::iCpuCount());
   /*  0 */ vAddConstant("PHYSICAL_MEMORY"_Str, Hardware::iPhysicalMemory());
   
+  // debug
   vAddConstant("listerTaskPrint"_Str,    (i8)0);
   vAddConstant("monitorTaskPrint"_Str,   (i8)0);
   vAddConstant("reclaimTaskPrint"_Str,   (i8)0);
@@ -770,6 +772,9 @@ void Task::vAddConstants(void)
   vAddConstant("connectorTaskPrint"_Str, (i8)0);
   vAddConstant("senderTaskPrint"_Str,    (i8)0);
   vAddConstant("receiverTaskPrint"_Str,  (i8)0);
+  
+  // c++ objects
+  vAddConstant("scheduler"_Str, (i8)gpScheduler);
 }
 
 /*----------------------------------------------------------------------------*/
