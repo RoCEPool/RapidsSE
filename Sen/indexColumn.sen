@@ -154,17 +154,11 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* add an index column (run by all participants)                              */
+/* add an index column (called by addIndexColumn)                             */
 /*----------------------------------------------------------------------------*/
-: addIndexColumn allParticipants 2 checkResult ( "<columnNm>" "<indexNm>" -- <result> )
+: add_indexColumn ( "<columnNm>" "<indexNm>" -- )
 
   0 locals| indexPtr indexNm columnNm |
-
-  args.tracepoint if
-    "ADDING COLUMN " indexNm str.cat " on NODE " str.cat grid.thisNode@ >str str.cat .
-  then
-
-  tp: addingIndexColumn
 
   // push the index sub folder
   indexNm
@@ -181,6 +175,25 @@
 
   // pop the index sub folder
   popIndexSub
+
+  true <SUCCESS_RESULT>
+;
+
+
+/*----------------------------------------------------------------------------*/
+/* add an index column (run by all participants)                              */
+/*----------------------------------------------------------------------------*/
+: addIndexColumn allParticipants 2 checkResult ( "<columnNm>" "<indexNm>" -- <result> )
+
+  0 locals| indexPtr indexNm columnNm |
+
+  args.tracepoint if
+    "ADDING COLUMN " indexNm str.cat " on NODE " str.cat grid.thisNode@ >str str.cat .
+  then
+
+  tp: addingIndexColumn
+
+  columnNm indexNm add_indexColumn
 
   true <SUCCESS_RESULT>
 ;

@@ -104,10 +104,10 @@
   ' index ( ^word ^word )
   eql ( bool )
   if
-    indexPtr execute index.isHidden@ if
-      EC_NO_SUCH_INDEX false ( errorCode false )
-      exit
-    then
+    //indexPtr execute index.isHidden@ if
+    //  EC_NO_SUCH_INDEX false ( errorCode false )
+    //  exit
+    //then
 
     true ( true )
     exit
@@ -297,7 +297,6 @@
   indexPtr tablePtr table.addIndex
 
   popIndexes
-
 ;
 
 /*----------------------------------------------------------------------------*/

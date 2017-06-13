@@ -78,6 +78,12 @@ Table::Table(void)
   
   m_pColumnVec = new ColumnVec;
   
+  // create the hidden column for the hidden index here
+  Column* pColumn = new Column("hidden_column"_Str);
+  pColumn->vColumnNo(-1);
+  pColumn->vColumnType(CT_INTEGER);
+  m_pColumnVec->vAdd(pColumn);
+  
   _checkInitialised_(CN_TABLE);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
@@ -355,7 +361,8 @@ void Table::vCreateColumnVec(s32& sColumnNm, s48K& sColumnDefn)
   // renumber
   for (i8 iColumn = 0; iColumn < m_pColumnVec->nItems(); iColumn++) {
     Column* pColumn = m_pColumnVec->pGet(iColumn);
-    pColumn->vColumnNo(iColumn);
+    if (pColumn->iColumnNo() != -1)
+      pColumn->vColumnNo(iColumn);
   }
 }
 

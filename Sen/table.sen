@@ -569,7 +569,7 @@ tp: analyzeTable
 : makeTable allParticipants 1 checkResult ( "<tableNm>" -- true n# true )
 
 tp: makingTable
-  locals| sTableNm |
+  0 locals| indexPtr sTableNm |
 
   args.tracepoint if
   sTableNm "MAKING TABLE " swap str.cat " on NODE " str.cat grid.thisNode@ >str str.cat .
@@ -597,9 +597,23 @@ tp: makingTable
 
   // make the index as hidden
   "indexes" find execute pathPush
-  "hidden" findInCurrent execute
-  true swap index.isHidden!
+  "hidden" findInCurrent execute to indexPtr
+  indexPtr index.isHidden!
+
+  // now add a column to the hidden index
+  "hidden_column" "hidden"
+  "add_indexColumn" find execute
+
+  // create the column vector of the index
+  indexPtr index.subDic pathPush
+
+  "columns" find execute pathPush
+
+  "integer" "hidden_column" indexPtr index.createColumnVec
   pathDrop
+
+  pathDrop
+  pathDrop  // step out of indexes
 
   true <SUCCESS_RESULT>
 ;
