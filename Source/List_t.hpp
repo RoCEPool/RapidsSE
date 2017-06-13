@@ -10,7 +10,7 @@ namespace Structures
   {
   protected:
     Lock    m_zLock;   // lock
-    i8      m_iCount;  // number of objects
+    i8      m_nCount;  // number of objects
     OBJECT* m_pHead;   // head node
     OBJECT* m_pTail;   // tail node
 
@@ -22,12 +22,12 @@ namespace Structures
     
     List_t(void);
     
-    void    vAppend(OBJECT* pNode);
+    void    vAppend(OBJECT* mpNode);
     i8      iCount(void);
     void    vContentDump(Str* aTitle, Str* aTab);
-    void    vInsert(OBJECT* pNode);
-    OBJECT* pPop(void);
-    void    vRemove(OBJECT* pNode);
+    void    vInsert(OBJECT* mpNode);
+    OBJECT* npPop(void);
+    void    vRemove(OBJECT* mpNode);
     
     void    vReadLock(void);
     void    vReadUnlock(void);
@@ -61,7 +61,7 @@ template <class OBJECT>
 List_t<OBJECT>::List_t(void)
 {
   m_zLock.vInit("List_t<OBJECT>::m_zLock"_Str);
-  m_iCount = 0;
+  m_nCount = 0;
   m_pHead  = nullptr;
   m_pTail  = nullptr;
   
@@ -72,22 +72,24 @@ List_t<OBJECT>::List_t(void)
 /* append object to end of list                                               */
 /*----------------------------------------------------------------------------*/
 template <class OBJECT>
-void List_t<OBJECT>::vAppend(OBJECT* pNode)
+void List_t<OBJECT>::vAppend(OBJECT* mpNode)
 {
+  _mp_(mpNode);
+  
   m_zLock.vGrabWrite();
   
   if (m_pTail)
-    m_pTail->vNextNode(pNode);
+    m_pTail->vNextNode(mpNode);
   
-  pNode->vPrevNode(m_pTail);
-  pNode->vNextNode(nullptr);
+  mpNode->vPrevNode(m_pTail);
+  mpNode->vNextNode(nullptr);
   
-  m_pTail = pNode;
+  m_pTail = mpNode;
   
   if (! m_pHead)
-    m_pHead = pNode;
+    m_pHead = mpNode;
   
-  m_iCount++;
+  m_nCount++;
   
   m_zLock.vDropWrite();
 }
@@ -97,7 +99,7 @@ void List_t<OBJECT>::vAppend(OBJECT* pNode)
 template <class OBJECT>
 i8 List_t<OBJECT>::iCount(void)
 {
-  return m_iCount;
+  return m_nCount;
 }
 /*----------------------------------------------------------------------------*/
 /* dump each object in list                                                   */
@@ -135,22 +137,24 @@ void List_t<OBJECT>::vContentDump(Str* aTitle, Str* aTab)
 /* insert object at head of list                                              */
 /*----------------------------------------------------------------------------*/
 template <class OBJECT>
-void List_t<OBJECT>::vInsert(OBJECT* pNode)
+void List_t<OBJECT>::vInsert(OBJECT* mpNode)
 {
-  ASSERT( ! pNode->pPrevNode() );
-  ASSERT( ! pNode->pNextNode() );
+  _mp_(mpNode);
+  
+  ASSERT( ! mpNode->pPrevNode() );
+  ASSERT( ! mpNode->pNextNode() );
   
   m_zLock.vGrabWrite();
   
   if (m_pHead)
-    m_pTail->vNextNode(pNode);
+    m_pTail->vNextNode(mpNode);
   
-  pNode->vPrevNode(nullptr);
-  pNode->vNextNode(m_pHead);
+  mpNode->vPrevNode(nullptr);
+  mpNode->vNextNode(m_pHead);
   
-  m_pHead = pNode;
+  m_pHead = mpNode;
   
-  m_iCount++;
+  m_nCount++;
   
   m_zLock.vDropWrite();
 }
@@ -159,12 +163,12 @@ void List_t<OBJECT>::vInsert(OBJECT* pNode)
 /* pop object from head of list                                               */
 /*----------------------------------------------------------------------------*/
 template <class OBJECT>
-OBJECT* List_t<OBJECT>::pPop(void)
+OBJECT* List_t<OBJECT>::npPop(void)
 {
   m_zLock.vGrabWrite();
   
   if ( ! m_pHead ) {
-    ASSERT( ! m_iCount );
+    ASSERT( ! m_nCount );
     m_zLock.vDropWrite();
     return nullptr;
   }
@@ -177,7 +181,7 @@ OBJECT* List_t<OBJECT>::pPop(void)
   else
     m_pTail = nullptr;
   
-  m_iCount--;
+  m_nCount--;
   
   m_zLock.vDropWrite();
   
@@ -210,7 +214,7 @@ void List_t<OBJECT>::vRemove(OBJECT* pNode)
   if (pNode == m_pTail)
     m_pTail = pPrev;
   
-  m_iCount--;
+  m_nCount--;
   
   m_zLock.vDropWrite();
   

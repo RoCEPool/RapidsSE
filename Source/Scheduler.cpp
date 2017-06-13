@@ -71,7 +71,7 @@ void Scheduler::vEnqueueTask(Task* mpTask)
   
   i8 iThreads = m_xThreadQueue.iCount();
   if (iThreads) {
-    Thread* mpThread = m_xThreadQueue.pPop();
+    Thread* mpThread = m_xThreadQueue.npPop();
     ASSERT(mpThread);
     mpThread->m_npTask = mpTask;
     mpThread->m_pSemaphore->vSignalThread();
@@ -106,7 +106,7 @@ void Scheduler::vEnqueueThread(Threads::Thread* mpThread)
   
   i8 iTasks = m_xTaskQueue.iCount();
   if (iTasks) {
-    Task* mpTask = m_xTaskQueue.pPop();
+    Task* mpTask = m_xTaskQueue.npPop();
     ASSERT(mpTask);
     mpThread->m_npTask = mpTask;
     mpThread->m_pSemaphore->vSignalThread();
