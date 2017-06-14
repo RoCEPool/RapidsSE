@@ -52,9 +52,6 @@ EntWrk::EntWrk(void)
   for (nOffsetNo = 0_on; nOffsetNo < gnIndexOffsets; nOffsetNo++)
     m_iOffset[*nOffsetNo] = C_NIL_OFFSET;
   
-  // m_xKeyWrk
-  m_xKeyWrk.vInit();
-  
   // m_xDataWrk
   m_xDataWrk.vInit();
   
@@ -84,9 +81,6 @@ EntWrk::EntWrk(i8 nOffsets)
   on nOffsetNo;
   for (nOffsetNo = 0_on; nOffsetNo < gnIndexOffsets; nOffsetNo++)
     m_iOffset[*nOffsetNo] = C_NIL_OFFSET;
-  
-  // m_xKeyWrk
-  m_xKeyWrk.vInit();
   
   // m_xDataWrk
   m_xDataWrk.vInit();
@@ -121,9 +115,6 @@ EntWrk::EntWrk(Entry* pEntry)
   for (on nOffsetNo; nOffsetNo < m_iOffsets; nOffsetNo++) {
     vRightOffset(nOffsetNo, pEntry->iRightOffset(nOffsetNo));
   }
-  
-  // m_xKeyWrk
-  m_xKeyWrk.vInit();
   
   // m_xDataWrk
   m_xDataWrk.vInit();
@@ -345,7 +336,7 @@ void EntWrk::vAddKey(KeyWrk& xKeyWrk)
   Str* aKeySrc = xKeyWrk.aWspStr();
   i8 nKeyBytes = xKeyWrk.nWspUsed();
   
-  m_xKeyWrk.vAppend(aKeySrc,nKeyBytes);
+  m_xDataWrk.vAppend(aKeySrc,nKeyBytes);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -372,7 +363,7 @@ Key* EntWrk::aKey(void)
 /*----------------------------------------------------------------------------*/
 i8 EntWrk::nKeySize(void)
 {
-  return m_xKeyWrk.nUsed();
+  return m_xDataWrk.nUsed();
 }
 
 /*----------------------------------------------------------------------------*/
