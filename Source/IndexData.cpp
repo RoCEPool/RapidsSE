@@ -91,6 +91,9 @@ IndexData::IndexData(Index* pIndex)
   // start with a root buffer at L0
   m_pRoot = new EntryBuffer(pIndex, 0);
   
+  /// set current buffer
+  m_pCurrentBuffer = m_pRoot;
+  
   _checkInitialised_(CN_INDEXDATA);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
@@ -187,6 +190,56 @@ i8 IndexData::nIndexBuffers(void)
   m_pRoot->vBufferCount(nBufferCount);
   
   return nBufferCount;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* insert an entry for {key,id} into an index buffer at given level           */
+/*----------------------------------------------------------------------------*/
+void IndexData::vInsertEntry(i8 iTxId, Str* pRow, i8 iLength)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
+  
+  ASSERT(m_pCurrentBuffer);
+  ASSERT(m_pCurrentBuffer->nBufferLevel() == 0);
+  
+  EntWrk xEntWrk;
+  KeyWrk xKeyWrk;
+  ValWrk xValWrk;
+  
+  // create the Id
+  i8 nRowNo = m_pCurrentBuffer->nEntries();
+  bn nBufferNo = m_pCurrentBuffer->nBufferNo();
+  Id rowId(*nBufferNo, nRowNo);
+  xEntWrk.vId(rowId);
+  
+  // add the key
+  xValWrk = nRowNo;
+  Column* pColumn = m_pIndex->pIdxColVec()->pGet(0);
+  ASSERT(pColumn->iColumnNo() == -1);
+  xKeyWrk.vAddDatum(xValWrk, pColumn);
+  xEntWrk.vAddKey(xKeyWrk);
+  
+  // add the row data
+  xEntWrk.vData(pRow, iLength);
+  xEntWrk.vShow(m_pIndex->pIdxColVec());
+  
+  // find index buffer which contains the entry after which the new entry will
+  // be inserted into, starting with given higher
+  EntryBuffer* pIndexBuffer = m_pCurrentBuffer->pPositionLevel(xKeyWrk, JC_AFTER, 0);
+  
+  // check if found index buffer has enough space
+  i8 nEntryBytes = Entry::nBytesRequired(xEntWrk);
+  if ( ! pIndexBuffer->bHasSpace(nEntryBytes) ) {
+    ASSERT(0);
+  }
+  
+  // assert we have a buffer
+  ASSERT(pIndexBuffer);
+  
+  // insert entry into index buffer
+  bool bResult = pIndexBuffer->bInsert(xEntWrk);
+  ASSERT(bResult);
 }
 
 /*----------------------------------------------------------------------------*/

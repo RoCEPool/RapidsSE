@@ -96,6 +96,27 @@ void Key::vKey(KeyWrk& xKeyWrk)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get key size                                                               */
+/*----------------------------------------------------------------------------*/
+i8 Key::nKeySize(IdxColVec* pIdxColVec)
+{
+  i8 nCols = pIdxColVec->nItems();
+  i8 nKeySize = 0;
+  i8 nBytes;
+  char* aCursor = aWspArea();
+  
+  for (i8 iColumn = 0; iColumn < nCols; iColumn++) {
+    Column* pColumn = pIdxColVec->pGet(iColumn);
+    
+    char* aElement = aEachDatum(pColumn, nBytes, &aCursor);
+    nKeySize += nBytes;
+  }
+  
+  return nKeySize;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* get next element from key                                                  */
 /*----------------------------------------------------------------------------*/
 char* Key::aEachDatum(Column* pColumn, i8& nBytes, char** aaCursor)

@@ -271,6 +271,27 @@ bool LoaderSub::bInsertRow(void)
 /*----------------------------------------------------------------------------*/
 /* insert row into working buffer                                             */
 /*----------------------------------------------------------------------------*/
+//#define HIDDEN_INDEX
+
+#ifdef HIDDEN_INDEX
+bool LoaderSub::bInsertRow2(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
+  
+  // create working row
+  //  EntWrk xRowWrk;
+  //  xRowWrk.vTxId(m_pTxRef->iTxId());
+  //  
+  //  xRowWrk.vData(m_aRecord, m_iLength);
+
+  Partition* pPartition = m_pTable->pPartition(m_iPartition);
+  IndexData* pIndexData = pPartition->pHiddenIndexData();
+  
+  pIndexData->vInsertEntry(m_pTxRef->iTxId(), m_aRecord, m_iLength);
+  return true;
+}
+
+#else
 bool LoaderSub::bInsertRow2(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
@@ -303,7 +324,7 @@ bool LoaderSub::bInsertRow2(void)
   
   return b;
 }
-
+#endif
 /*----------------------------------------------------------------------------*/
 /* set loader                                                                 */
 /*----------------------------------------------------------------------------*/

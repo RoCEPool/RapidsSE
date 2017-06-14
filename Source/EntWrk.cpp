@@ -190,11 +190,13 @@ void EntWrk::vTxId(i8 iTxId)
 /*----------------------------------------------------------------------------*/
 /* show                                                                       */
 /*----------------------------------------------------------------------------*/
-void EntWrk::vShow(void)
+void EntWrk::vShow(IdxColVec* pIdxColVec)
 {
   i8 iKey;
   
   ValLib::vCopyIntDatum(&iKey,aKey());
+  
+  vTrace("%lld\n"_Str, iKey);
   
   vTrace("EntWrk %p: Id %lli.%lli Offsets: %llu "_Str,
          this,
@@ -204,29 +206,26 @@ void EntWrk::vShow(void)
          );
   
   on nOffsetNo;
-  for (nOffsetNo = 0_on; nOffsetNo < m_iOffsets - 1; nOffsetNo++)
+  for (nOffsetNo = 0_on; nOffsetNo < m_iOffsets - 1; nOffsetNo++) {
     vTrace("R%lld: %lld "_Str,
            *nOffsetNo,
            iRightOffset(nOffsetNo)
            );
+  }
+  vTrace("key (size:%lld value:%lld) "_Str,
+         nKeySize(),
+         iKey
+         );
   
   if (m_bHasData) {
     
     StrVal* pStrVal = reinterpret_cast<StrVal*>(aData());
-
+    
     vTrace("data (size:%lld value:%s) "_Str,
            nDataSize(),
            pStrVal->aStr()
            );
-
   }
-  else {
-    vTrace("key (size:%lld value:%lld) "_Str,
-           nKeySize(),
-           iKey
-           );
-  }
-  
   vTrace("\n"_Str);
 }
 
@@ -295,8 +294,18 @@ RightVec* EntWrk::aRightVec(void)
 /*----------------------------------------------------------------------------*/
 char* EntWrk::aData(void)
 {
-  char* aData = reinterpret_cast<char*>(&m_xDataWrk);
+  ASSERT(m_bHasData);
 
+#ifdef HIDDEN_INDEX
+  
+  char* aKey = reinterpret_cast<char*>(&m_xDataWrk);
+  // assuming key of type CT_INTEGER in hidden index
+  char* aData = pAdd<char*>(aKey, sizeof(i8));                       //ALKA-TODO
+#else
+  
+  char* aData = reinterpret_cast<char*>(&m_xDataWrk);
+#endif
+  
   return aData;
 }
 
@@ -305,7 +314,15 @@ char* EntWrk::aData(void)
 /*----------------------------------------------------------------------------*/
 i8 EntWrk::nDataSize(void)
 {
+  
+#ifdef HIDDEN_INDEX
+  ASSERT(m_bHasData);
+  // assuming key of type CT_INTEGER in hidden index
+  return m_xDataWrk.nUsed() - sizeof(i8);                            //ALKA-TODO
+#else
   return m_xDataWrk.nUsed();
+#endif
+  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -315,12 +332,14 @@ void EntWrk::vData(Str* aDataBytes, i8 iSize)
 {
   i8 nBytes = StrVal::nBytesRequired(iSize);
  
-  StrVal* pStrVal = new((StrVal*)aData()) StrVal((StrVal*)aData());
+  char* aDataArea = m_xDataWrk.aLatter();
+  StrVal* pStrVal = new((StrVal*)aDataArea) StrVal((StrVal*)aDataArea);
   pStrVal->vAssign(aDataBytes,iSize);
+  
   m_xDataWrk.vTake(nBytes);
   
   //m_xDataWrk.vAppend(aDataBytes, iSize);
-   
+  
   m_bHasData = true;
 }
 
@@ -363,7 +382,10 @@ Key* EntWrk::aKey(void)
 /*----------------------------------------------------------------------------*/
 i8 EntWrk::nKeySize(void)
 {
-  return m_xDataWrk.nUsed();
+  if (m_bHasData)
+    return sizeof(i8);
+  else
+    return m_xDataWrk.nUsed();
 }
 
 /*----------------------------------------------------------------------------*/

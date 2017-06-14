@@ -43,6 +43,7 @@ namespace DBobjects
     void    vPopulateIndex(i8 iIndexNo);
     Data*   pData(void);
     IndexData*  pIndexData(i8 iIndexNo);
+    IndexData*  pHiddenIndexData(void);
     IdxVec* pIdxVec(void);
     void    vTidyUp(void);
     void    vTidyUpIndex(i8 iIndexNo);

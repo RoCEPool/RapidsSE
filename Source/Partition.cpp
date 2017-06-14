@@ -171,6 +171,68 @@ void Partition::vPartitionId(i8 iPartitionId)
 /*----------------------------------------------------------------------------*/
 /* insert entries into given index for all rows in this partition             */
 /*----------------------------------------------------------------------------*/
+#ifdef HIDDEN_INDEX
+void Partition::vPopulateIndex(i8 iIndexNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
+  
+  IndexData* pIndexData = this->pIndexData(iIndexNo);
+  
+  i8 nStrands = 0;
+  i8 nBuffers = 0;
+  
+  for (EbStrand* pStrand = m_pData->pHeadStrand();
+       pStrand;
+       pStrand = pStrand->pNextStrand()) {
+    
+    nStrands++;
+    nBuffers += pStrand->nEntryBuffers();
+    
+    i8 nRowsInBuffer = 0;
+    i8 nRowBuffer = 0;
+    
+    for (EntryBuffer* pRowBuffer = pStrand->pFirstBuffer();
+         pRowBuffer;
+         pRowBuffer = (EntryBuffer*)pRowBuffer->pNextBuffer()) {
+      
+      pRowBuffer->vShow();
+      
+      nRowBuffer++;
+      nRowsInBuffer = pRowBuffer->nEntries();
+      
+      bn nBufferNo = pRowBuffer->nBufferNo();
+      
+      i8 iRowNo = -1;
+      for (Entry* pRow = pRowBuffer->pFirstRow();
+           pRow;
+           pRow = pRowBuffer->pNextRow(pRow)) {
+        
+        iRowNo++;
+        pIndexData->vInsertEntry(pRow, iRowNo, nBufferNo);
+        
+        //if (nRowBuffer == 2) {
+        //  vTrace("************************\n"_Str);
+        //  pIndexData->vDump();
+        //  vTrace("************************\n"_Str);
+        //}
+        
+      } // row
+      
+      ASSERT(iRowNo + 1 == nRowsInBuffer);
+      
+    } // rowBuffer
+    
+    ASSERT(nRowBuffer = pStrand->nEntryBuffers());
+    
+  } // strand
+  
+  ASSERT(nStrands == m_pData->nEbStrands());
+  
+  //pIndexData->vDump();
+  //ASSERT(pIndexData->bVerify());
+}
+
+#else
 void Partition::vPopulateIndex(i8 iIndexNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
@@ -230,6 +292,7 @@ void Partition::vPopulateIndex(i8 iIndexNo)
   //pIndexData->vDump();
   //ASSERT(pIndexData->bVerify());
 }
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* get data                                                                   */
@@ -252,6 +315,17 @@ IndexData* Partition::pIndexData(i8 iIndexNo)
     if (pIndexData->pIndex()->iIndexNo() == iIndexNo)
       break;
   }
+  
+  return pIndexData;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get hidden indexData                                                       */
+/*----------------------------------------------------------------------------*/
+IndexData* Partition::pHiddenIndexData(void)
+{
+  IndexData* pIndexData = nullptr;
+  pIndexData = m_pIdxVec->pGet(0);
   
   return pIndexData;
 }

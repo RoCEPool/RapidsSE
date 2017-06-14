@@ -848,7 +848,7 @@ void EntryBuffer::vShow(void)
   
   for (Entry* pEntry = pHead(); pEntry != nullptr; pEntry = pNextEntry(pEntry)) {
     vTrace("%8lld: "_Str, nSub(pEntry, m_xWsp.aArea()));
-    pEntry->vShow(iToOffsetAbs(pEntry), m_pIndex ? m_pIndex->pIdxColVec() : nullptr);
+    pEntry->vShow(iToOffsetAbs(pEntry), m_pIndex);
   }
   
   vTrace("\n"_Str);

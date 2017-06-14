@@ -19,6 +19,7 @@ namespace DBobjects
     Lock         m_zLock;
     Index*       m_pIndex;
     EntryBuffer* m_pRoot;
+    EntryBuffer* m_pCurrentBuffer;
   
     // must be last
     Footer m_xFooter;
@@ -39,6 +40,7 @@ namespace DBobjects
     EntryBuffer* pFirstBuffer();
     Index*       pIndex(void);
     i8           nIndexBuffers(void);
+    void         vInsertEntry(i8 iTxId, Str* pRow, i8 iLength);
     void         vInsertEntry(Entry* pRow, i8 nRowNo, bn nBufferNo);
     EntryBuffer* pPositionLevel(KeyWrk& xKeyWrk, eJC eJuxtaCompare, i8 iLevel);
     EntryBuffer* pRoot(void);
