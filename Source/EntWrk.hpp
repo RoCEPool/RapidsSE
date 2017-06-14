@@ -9,7 +9,6 @@ namespace DBobjects
   
   class EntWrk : public Object
   {
-  static const i8 C_KEY_BYTES  = C_1KB*15;
   static const i8 C_DATA_BYTES = C_1KB*15;
   
   private:
@@ -31,19 +30,10 @@ namespace DBobjects
     };
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // key
-  
-    union {
-      Key m_xKey; // this key overlays into m_xKeyWrk
-      WspFxd<C_KEY_BYTES> m_xKeyWrk; // key workspace
-    };
-  
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // datums
   
     union {
-      i8 m_iInt; // this int overlays into m_xDataWrk
-      char* m_aStr; // this str overlays into m_xDataWrk
+      Key m_xKey; // this key overlays into m_xDataWrk
       WspFxd<C_DATA_BYTES> m_xDataWrk; // datum workspace
     };
   
