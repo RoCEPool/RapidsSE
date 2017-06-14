@@ -259,11 +259,7 @@ traceon
 /*----------------------------------------------------------------------------*/
 : sched
 
-  "testTask" :task execute locals| myTask |
-
-  0 "helloWorld" myTask task.seed
-
-  myTask scheduler::enqueueTask
+  0 "helloWorld" "hi" spawnTask
 ;
 
 /*============================================================================*/
