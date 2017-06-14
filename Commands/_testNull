@@ -1,0 +1,19 @@
+/*============================================================================*/
+/* _testNull -- test l;oading with nulls                                      */
+/*============================================================================*/
+
+create table jNull (
+  jNull_key   INTEGER,
+  jNull_name  VARCHAR(32) NOT NULL,
+  jNull_i     INTEGER NOT NULL
+);
+
+create index jNull_idx1 on jNull (jNull_key);
+
+ld jNull "../JTEST/jNull.csv";
+
+dumpidx jNull jNull_idx1;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
