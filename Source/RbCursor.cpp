@@ -106,6 +106,18 @@ void RbCursor::vEnd(void)
 /*----------------------------------------------------------------------------*/
 /* set to first buffer                                                        */
 /*----------------------------------------------------------------------------*/
+#ifdef HIDDEN_INDEX
+void RbCursor::vFirst(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_RBCURSOR,_FOOTER_);
+  
+  m_pPartition = m_pTable->pPartition(m_iPartition);
+  IndexData* pHiddenIndexData = m_pPartition->pHiddenIndexData();
+  
+  m_pRowBuffer = pHiddenIndexData->pFirstBuffer();
+}
+
+#else
 void RbCursor::vFirst(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RBCURSOR,_FOOTER_);
@@ -119,9 +131,23 @@ void RbCursor::vFirst(void)
     m_pRowBuffer = nullptr;
 }
 
+#endif
+
 /*----------------------------------------------------------------------------*/
 /* advance to next buffer                                                     */
 /*----------------------------------------------------------------------------*/
+#ifdef HIDDEN_INDEX
+void RbCursor::vNext(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_RBCURSOR,_FOOTER_);
+  
+  ASSERT(m_pRowBuffer);
+  
+  m_pRowBuffer = (EntryBuffer*)m_pRowBuffer->pNextBuffer();
+  if (m_pRowBuffer)
+    return;
+}
+#else
 void RbCursor::vNext(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RBCURSOR,_FOOTER_);
@@ -135,9 +161,10 @@ void RbCursor::vNext(void)
   m_pEbStrand = m_pEbStrand->pNextStrand();
   if (m_pEbStrand)
     m_pRowBuffer = m_pEbStrand->pFirstBuffer();
-  else
-    m_pRowBuffer = nullptr;
+    else
+      m_pRowBuffer = nullptr;
 }
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* get current row buffer                                                     */
