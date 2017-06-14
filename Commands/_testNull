@@ -10,7 +10,7 @@ create table jNull (
 
 create index jNull_idx1 on jNull (jNull_key);
 
-ld jNull "../JTEST/jNull.csv";
+ld jNull "../JTEST/jTestNull.csv";
 
 dumpidx jNull jNull_idx1;
 

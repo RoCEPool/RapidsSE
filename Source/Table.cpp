@@ -724,8 +724,8 @@ bool Table::bValidateRow(Str* aRow, i8& iColumn)
   
   // set up cursor, skip over leading pipe
   char* aCursor = (char*)aRow;
-  if ('|' == *aCursor)
-    aCursor++;
+  //if ('|' == *aCursor)
+  //  aCursor++;
   
   // detect end of file
   if ( ! *aCursor )

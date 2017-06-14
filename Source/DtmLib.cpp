@@ -142,9 +142,18 @@ bool DtmLib::bExtractInt(char** aaSrc, Int* aInteger)
   char xBuffer[256];
   char* aChar = xBuffer;
   
+  // skip leading whitespace
+  while (' ' == **aaSrc)
+    (*aaSrc)++;
+
+  if ('|' == **aaSrc) {
+    aInteger->vSetNull();
+    return true;
+  }
+  
   // collect the csv
   while ('\n' != **aaSrc && '\r' != **aaSrc && '|' != **aaSrc && ',' != **aaSrc) {
-    if (!StrLib::bIsDigit(**aaSrc))
+    if ( ! StrLib::bIsDigit(**aaSrc) )
       return false;
     *aChar++ = *(*aaSrc)++;
   }
