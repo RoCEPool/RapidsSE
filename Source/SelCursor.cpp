@@ -121,6 +121,23 @@ void SelCursor::vEnd(void)
 /*----------------------------------------------------------------------------*/
 /* set to first row                                                           */
 /*----------------------------------------------------------------------------*/
+#ifdef HIDDEN_INDEX
+void SelCursor::vFirst(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SELCURSOR,_FOOTER_);
+  
+  m_pPartition = m_pTable->pPartition(m_iPartition);
+  IndexData* pHiddenIndexData = m_pPartition->pHiddenIndexData();
+  
+  m_pRowBuffer = pHiddenIndexData->pFirstBuffer();
+  if (m_pRowBuffer) {
+    m_pRow = m_pRowBuffer->pNextRow(m_pRowBuffer->pFirstRow());
+  }
+  else
+    m_pRow = nullptr;
+}
+
+#else
 void SelCursor::vFirst(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SELCURSOR,_FOOTER_);
@@ -140,9 +157,35 @@ void SelCursor::vFirst(void)
   }
 }
 
+#endif
+
 /*----------------------------------------------------------------------------*/
 /* advance to next row                                                        */
 /*----------------------------------------------------------------------------*/
+#ifdef HIDDEN_INDEX
+void SelCursor::vNext(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SELCURSOR,_FOOTER_);
+  
+  ASSERT(m_pRow);
+  ASSERT(m_pRowBuffer);
+  
+  m_pRow = m_pRowBuffer->pNextRow(m_pRow);
+  if (m_pRow)
+    return;
+  
+  m_pRowBuffer = (EntryBuffer*)m_pRowBuffer->pNextBuffer();
+  if (m_pRowBuffer) {
+    m_pRow = m_pRowBuffer->pFirstRow();
+    if (m_pRow)
+      return;
+  }
+  
+  m_pRow = nullptr;
+}
+
+
+#else
 void SelCursor::vNext(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SELCURSOR,_FOOTER_);
@@ -172,7 +215,7 @@ void SelCursor::vNext(void)
   
   m_pRow = nullptr;
 }
-
+#endif
 /*----------------------------------------------------------------------------*/
 /* get current row                                                            */
 /*----------------------------------------------------------------------------*/
