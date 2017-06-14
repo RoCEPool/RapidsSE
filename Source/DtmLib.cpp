@@ -355,6 +355,7 @@ bool DtmLib::bValidateDatum(eDM eDatum, char** aaSrc)
   switch (eDatum) {
     case DM_BCD: bValid = bValidBcd(aaSrc); break;
     case DM_BOL: bValid = bValidBol(aaSrc); break;
+    case DM_CHR: bValid = bValidVch(aaSrc); break;
     case DM_DTE: bValid = bValidDte(aaSrc); break;
     case DM_FLT: bValid = bValidFlt(aaSrc); break;
     case DM_INT: bValid = bValidInt(aaSrc); break;
