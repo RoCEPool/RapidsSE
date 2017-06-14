@@ -438,6 +438,14 @@ bool LoaderSub::bValidateRow(i8& iColumn)
 
   bool bValid = m_pTable->bValidateRow(m_aRecord,iColumn);
   
+  if ( ! bValid ) {
+    vTrace("Loader:: Invalid field %lld in record: "_Str,
+           iColumn);
+    for (char* a = (char*)m_aRecord; *a && '\n' != *a; a++)
+      vTrace("%c"_Str,*a);
+    vTrace("\n"_Str);
+  }
+  
   return bValid;
 }
 

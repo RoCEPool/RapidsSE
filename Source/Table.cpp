@@ -717,9 +717,19 @@ bool Table::bValidateRow(Str* aRow, i8& iColumn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
+//  vTrace("ValidateRow: "_Str,aRow);
+//  for (char* aChr = (char*)aRow; *aChr != '\n'; aChr++)
+//    vTrace("%c"_Str,*aChr);
+//  vTrace("\n"_Str);
+  
+  // set up cursor, skip over leading pipe
   char* aCursor = (char*)aRow;
   if ('|' == *aCursor)
     aCursor++;
+  
+  // detect end of file
+  if ( ! *aCursor )
+    return true;
   
   for (iColumn = 0;
        iColumn < m_pColumnVec->nItems() && *aCursor;
@@ -729,8 +739,11 @@ bool Table::bValidateRow(Str* aRow, i8& iColumn)
     
     bool b = pColumn->bValidateField((Str**)&aCursor);
     
-    if (!b)
+    if (!b) {
+      while ('\n' != *aCursor)
+        aCursor++;
       return false;
+    }
     
     if ('|' == *aCursor)
       aCursor++;

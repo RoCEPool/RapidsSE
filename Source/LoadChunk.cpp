@@ -110,6 +110,7 @@ Str* LoadChunk::aNextRecord(i8& iRecordBytes)
   // find end of next record
   while ('\n' != *((char*)m_aNextRecord))
     m_aNextRecord++;
+  //*m_aNextRecord = '\0';
   
   // compute the number of bytes
   iRecordBytes = m_aNextRecord - pRecord;

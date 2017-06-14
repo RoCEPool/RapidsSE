@@ -378,6 +378,15 @@ bool Column::bValidateField(Str** aaSubRow)
   
   return true;
 }
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//bool Column::bValidateField(Str** aaSubRow)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+//
+//  bool b = DtmLib::bValidateDatum(m_eDatumType,(char**)aaSubRow);
+//  
+//  return b;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* column value                                                               */

@@ -143,8 +143,11 @@ bool DtmLib::bExtractInt(char** aaSrc, Int* aInteger)
   char* aChar = xBuffer;
   
   // collect the csv
-  while ('|' != **aaSrc && ',' != **aaSrc)
+  while ('\n' != **aaSrc && '\r' != **aaSrc && '|' != **aaSrc && ',' != **aaSrc) {
+    if (!StrLib::bIsDigit(**aaSrc))
+      return false;
     *aChar++ = *(*aaSrc)++;
+  }
   *aChar++ = '\0';
   
   // find first char
@@ -156,7 +159,8 @@ bool DtmLib::bExtractInt(char** aaSrc, Int* aInteger)
   
   aInteger->m_iInt = iResult;
   
-  return true;}
+  return true;
+}
 
 /*----------------------------------------------------------------------------*/
 /* extract an interval from substr                                            */
@@ -323,6 +327,50 @@ bool DtmLib::bExtractTsp(char** aaSrc, Tsp* aTimestamp)
 }
 
 /*----------------------------------------------------------------------------*/
+/* extract an varchar from substr                                             */
+/*----------------------------------------------------------------------------*/
+bool DtmLib::bExtractVch(char** aaSrc, Vch* aVch)
+{
+  char* aChar = (char*)aVch;
+  
+  // collect the csv
+  while ('|' != **aaSrc && ',' != **aaSrc)
+    *aChar++ = *(*aaSrc)++;
+  *aChar++ = '\0';
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* valid datum?                                                               */
+/*----------------------------------------------------------------------------*/
+bool DtmLib::bValidateDatum(eDM eDatum, char** aaSrc)
+{
+  bool bValid = false;
+  
+  switch (eDatum) {
+    case DM_BCD: bValid = bValidBcd(aaSrc); break;
+    case DM_BOL: bValid = bValidBol(aaSrc); break;
+    case DM_DTE: bValid = bValidDte(aaSrc); break;
+    case DM_FLT: bValid = bValidFlt(aaSrc); break;
+    case DM_INT: bValid = bValidInt(aaSrc); break;
+    case DM_IVL: bValid = bValidIvl(aaSrc); break;
+    case DM_TME: bValid = bValidTme(aaSrc); break;
+    case DM_TSP: bValid = bValidTsp(aaSrc); break;
+    case DM_VCH: bValid = bValidVch(aaSrc); break;
+    default:
+      vFatal("DtmLib::bValid: Invalid aDatum argument: %lld\n"_Str,
+             eDatum);
+  }
+  
+  return bValid;
+}
+
+/*----------------------------------------------------------------------------*/
 /* valid decimal in substr?                                                   */
 /*----------------------------------------------------------------------------*/
 bool DtmLib::bValidBcd(char** aaSrc)
@@ -417,6 +465,23 @@ bool DtmLib::bValidTsp(char** aaSrc)
   
   return bValid;
 }
+
+/*----------------------------------------------------------------------------*/
+/* valid varchar in substr?                                                   */
+/*----------------------------------------------------------------------------*/
+bool DtmLib::bValidVch(char** aaSrc)
+{
+  s48K sBuffer;
+  
+  Vch* aVch = (Vch*)sBuffer.aStr();
+  bool bValid = bExtractVch(aaSrc,aVch);
+  
+  return bValid;
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* is argA < argB?                                                            */
