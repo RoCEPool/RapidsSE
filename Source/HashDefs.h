@@ -21,6 +21,7 @@
 #endif
 
 #define VERBOSE_TRACE
+//#define HIDDEN_INDEX
 
 //#define STEP_BOARD
 

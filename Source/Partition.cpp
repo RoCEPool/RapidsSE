@@ -176,60 +176,31 @@ void Partition::vPopulateIndex(i8 iIndexNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
   
+  IndexData* pHiddenIndexData = this->pHiddenIndexData();
   IndexData* pIndexData = this->pIndexData(iIndexNo);
   
-  i8 nStrands = 0;
+  EntryBuffer* pEntryBuffer = pHiddenIndexData->pFirstBuffer();
   i8 nBuffers = 0;
   
-  for (EbStrand* pStrand = m_pData->pHeadStrand();
-       pStrand;
-       pStrand = pStrand->pNextStrand()) {
+  while (pEntryBuffer) {
     
-    nStrands++;
-    nBuffers += pStrand->nEntryBuffers();
+    bn nBufferNo = pEntryBuffer->nBufferNo();
+    
+    Entry* pEntry = pEntryBuffer->pFirstEntry();
     
     i8 nRowsInBuffer = 0;
-    i8 nRowBuffer = 0;
+    i8 iRowNo = 0;
     
-    for (EntryBuffer* pRowBuffer = pStrand->pFirstBuffer();
-         pRowBuffer;
-         pRowBuffer = (EntryBuffer*)pRowBuffer->pNextBuffer()) {
+    while (pEntry) {
       
-      pRowBuffer->vShow();
+      iRowNo++;
+      pIndexData->vInsertEntry(pEntry, iRowNo, nBufferNo);
       
-      nRowBuffer++;
-      nRowsInBuffer = pRowBuffer->nEntries();
-      
-      bn nBufferNo = pRowBuffer->nBufferNo();
-      
-      i8 iRowNo = -1;
-      for (Entry* pRow = pRowBuffer->pFirstRow();
-           pRow;
-           pRow = pRowBuffer->pNextRow(pRow)) {
-        
-        iRowNo++;
-        pIndexData->vInsertEntry(pRow, iRowNo, nBufferNo);
-        
-        //if (nRowBuffer == 2) {
-        //  vTrace("************************\n"_Str);
-        //  pIndexData->vDump();
-        //  vTrace("************************\n"_Str);
-        //}
-        
-      } // row
-      
-      ASSERT(iRowNo + 1 == nRowsInBuffer);
-      
-    } // rowBuffer
-    
-    ASSERT(nRowBuffer = pStrand->nEntryBuffers());
-    
-  } // strand
-  
-  ASSERT(nStrands == m_pData->nEbStrands());
-  
-  //pIndexData->vDump();
-  //ASSERT(pIndexData->bVerify());
+      pEntry = pEntryBuffer->pNextEntry(pEntry);
+    }
+   
+    pEntryBuffer = pEntryBuffer->pNextBuffer();
+  }
 }
 
 #else

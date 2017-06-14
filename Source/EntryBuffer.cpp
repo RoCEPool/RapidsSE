@@ -318,7 +318,7 @@ byte* EntryBuffer::aDataArea(void)
 /*----------------------------------------------------------------------------*/
 Entry* EntryBuffer::pFirstRow(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_INDEXBUFFER,CN_ROWBUFFER);
   
   if ( ! m_xWsp.nSize() )
     return nullptr;
@@ -367,7 +367,7 @@ bool EntryBuffer::bInsertRow(EntWrk& xRowWrk, Entry** ppRow)
 /*----------------------------------------------------------------------------*/
 Entry* EntryBuffer::pNextRow(Entry* pCurr)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_INDEXBUFFER,CN_ROWBUFFER);
   
   i8 nBytes = pCurr->nSizeEntry();
   

@@ -222,7 +222,7 @@ void IndexData::vInsertEntry(i8 iTxId, Str* pRow, i8 iLength)
   
   // add the row data
   xEntWrk.vData(pRow, iLength);
-  xEntWrk.vShow(m_pIndex->pIdxColVec());
+  //xEntWrk.vShow(m_pIndex->pIdxColVec());
   
   // find index buffer which contains the entry after which the new entry will
   // be inserted into, starting with given higher

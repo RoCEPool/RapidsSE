@@ -196,8 +196,6 @@ void EntWrk::vShow(IdxColVec* pIdxColVec)
   
   ValLib::vCopyIntDatum(&iKey,aKey());
   
-  vTrace("%lld\n"_Str, iKey);
-  
   vTrace("EntWrk %p: Id %lli.%lli Offsets: %llu "_Str,
          this,
          m_xId.iBuffer(),
@@ -314,11 +312,12 @@ char* EntWrk::aData(void)
 /*----------------------------------------------------------------------------*/
 i8 EntWrk::nDataSize(void)
 {
-  
 #ifdef HIDDEN_INDEX
-  ASSERT(m_bHasData);
-  // assuming key of type CT_INTEGER in hidden index
-  return m_xDataWrk.nUsed() - sizeof(i8);                            //ALKA-TODO
+  if (m_bHasData)
+    // assuming key of type CT_INTEGER in hidden index
+    return m_xDataWrk.nUsed() - sizeof(i8);                          //ALKA-TODO
+  else
+    return 0;
 #else
   return m_xDataWrk.nUsed();
 #endif

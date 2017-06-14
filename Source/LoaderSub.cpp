@@ -271,8 +271,6 @@ bool LoaderSub::bInsertRow(void)
 /*----------------------------------------------------------------------------*/
 /* insert row into working buffer                                             */
 /*----------------------------------------------------------------------------*/
-//#define HIDDEN_INDEX
-
 #ifdef HIDDEN_INDEX
 bool LoaderSub::bInsertRow2(void)
 {
