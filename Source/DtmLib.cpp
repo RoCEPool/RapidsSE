@@ -15,6 +15,16 @@ bool DtmLib::bExtractBcd(char** aaSrc, Bcd* aDecimal)
   char xBuffer[256];
   char* aChar = xBuffer;
   
+  // skip leading whitespace
+  while (' ' == **aaSrc)
+    (*aaSrc)++;
+  
+  // test for null
+  if ( ! **aaSrc || '|' == **aaSrc ) {
+    aDecimal->vSetNull();
+    return true;
+  }
+  
   // collect the csv
   while (**aaSrc && '|' != **aaSrc && ',' != **aaSrc)
     *aChar++ = *(*aaSrc)++;
@@ -66,6 +76,16 @@ bool DtmLib::bExtractBol(char** aaSrc, Bol* aBoolean)
 {
   bool bResult = false;
     
+  // skip leading whitespace
+  while (' ' == **aaSrc)
+    (*aaSrc)++;
+  
+  // test for null
+  if ( ! **aaSrc || '|' == **aaSrc ) {
+    aBoolean->vSetNull();
+    return true;
+  }
+  
   // test for true
   if ('t' == *(*aaSrc) ||
       'T' == *(*aaSrc) ||
@@ -85,6 +105,16 @@ bool DtmLib::bExtractBol(char** aaSrc, Bol* aBoolean)
 bool DtmLib::bExtractDte(char** aaSrc, Dte* aDate)
 {
   u8 uField;
+  
+  // skip leading whitespace
+  while (' ' == **aaSrc)
+    (*aaSrc)++;
+  
+  // test for null
+  if ( ! **aaSrc || '|' == **aaSrc ) {
+    aDate->vSetNull();
+    return true;
+  }
   
   aDate->vInitZero();
   
@@ -132,6 +162,16 @@ bool DtmLib::bExtractFlt(char** aaSrc, Flt* aFloat)
   char xBuffer[256];
   char* aChar = xBuffer;
   
+  // skip leading whitespace
+  while (' ' == **aaSrc)
+    (*aaSrc)++;
+  
+  // test for null
+  if ( ! **aaSrc || '|' == **aaSrc ) {
+    aFloat->vSetNull();
+    return true;
+  }
+  
   // collect the csv
   while (**aaSrc && '|' != **aaSrc && ',' != **aaSrc)
     *aChar++ = *(*aaSrc)++;
@@ -162,6 +202,7 @@ bool DtmLib::bExtractInt(char** aaSrc, Int* aInteger)
   while (' ' == **aaSrc)
     (*aaSrc)++;
 
+  // test for null
   if ( ! **aaSrc || '|' == **aaSrc ) {
     aInteger->vSetNull();
     return true;
@@ -196,6 +237,16 @@ bool DtmLib::bExtractIvl(char** aaSrc, Ivl* aInterval)
 {
   u8 uField;
   
+  // skip leading whitespace
+  while (' ' == **aaSrc)
+    (*aaSrc)++;
+  
+  // test for null
+  if ( ! **aaSrc || '|' == **aaSrc ) {
+    aInterval->vSetNull();
+    return true;
+  }
+  
   aInterval->vInitZero();
   
   if ( ! *aaSrc )
@@ -226,6 +277,16 @@ bool DtmLib::bExtractIvl(char** aaSrc, Ivl* aInterval)
 bool DtmLib::bExtractTme(char** aaSrc, Tme* aTime)
 {
   u8 uField;
+  
+  // skip leading whitespace
+  while (' ' == **aaSrc)
+    (*aaSrc)++;
+  
+  // test for null
+  if ( ! **aaSrc || '|' == **aaSrc ) {
+    aTime->vSetNull();
+    return true;
+  }
   
   aTime->vInitZero();
   
@@ -277,6 +338,16 @@ bool DtmLib::bExtractTsp(char** aaSrc, Tsp* aTimestamp)
   // refer: http://en.wikipedia.org/wiki/ISO_8601
 
   u8 uField;
+  
+  // skip leading whitespace
+  while (' ' == **aaSrc)
+    (*aaSrc)++;
+  
+  // test for null
+  if ( ! **aaSrc || '|' == **aaSrc ) {
+    aTimestamp->vSetNull();
+    return true;
+  }
   
   aTimestamp->vInitZero();
   
@@ -359,6 +430,12 @@ bool DtmLib::bExtractTsp(char** aaSrc, Tsp* aTimestamp)
 bool DtmLib::bExtractVch(char** aaSrc, Vch* aVch)
 {
   char* aChar = (char*)aVch;
+  
+  // test for null
+  if ( ! **aaSrc || '|' == **aaSrc ) {
+    aVch->vSetNull();
+    return true;
+  }
   
   // collect the csv
   while ('|' != **aaSrc && ',' != **aaSrc)
