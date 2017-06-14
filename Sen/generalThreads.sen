@@ -17,6 +17,8 @@
 
   C_1GB / locals| noThreads |
 
+  1 exit // temp
+
   noThreads 0 <= if
     1
   else

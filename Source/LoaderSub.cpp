@@ -444,6 +444,7 @@ bool LoaderSub::bValidateRow(i8& iColumn)
     for (char* a = (char*)m_aRecord; *a && '\n' != *a; a++)
       vTrace("%c"_Str,*a);
     vTrace("\n"_Str);
+    exit(-1);
   }
   
   return bValid;

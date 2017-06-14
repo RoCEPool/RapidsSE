@@ -11,7 +11,23 @@
 /*----------------------------------------------------------------------------*/
 bool DtmLib::bExtractBcd(char** aaSrc, Bcd* aDecimal)
 {
-  return false;
+  d8 dResult = 0.0;
+  char xBuffer[256];
+  char* aChar = xBuffer;
+  
+  // collect the csv
+  while (**aaSrc && '|' != **aaSrc && ',' != **aaSrc)
+    *aChar++ = *(*aaSrc)++;
+  *aChar++ = '\0';
+  
+  // find first char
+  for (aChar = xBuffer; *aChar && ' ' == *aChar; aChar++)
+    ;
+  
+  // convert
+  dResult = atof(aChar);
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -146,13 +162,15 @@ bool DtmLib::bExtractInt(char** aaSrc, Int* aInteger)
   while (' ' == **aaSrc)
     (*aaSrc)++;
 
-  if ('|' == **aaSrc) {
+  if ( ! **aaSrc || '|' == **aaSrc ) {
     aInteger->vSetNull();
     return true;
   }
   
   // collect the csv
-  while ('\n' != **aaSrc && '\r' != **aaSrc && '|' != **aaSrc && ',' != **aaSrc) {
+  while (**aaSrc && '\n' != **aaSrc && '\r' != **aaSrc && '|' != **aaSrc && ',' != **aaSrc) {
+    if ('|' == **aaSrc)
+      return true;
     if ( ! StrLib::bIsDigit(**aaSrc) )
       return false;
     *aChar++ = *(*aaSrc)++;
