@@ -498,6 +498,8 @@ void Task::vTableGenCandidatePaths(NNP_Task nnpTask)
   pPlanner->vGenPaths(pTable);
   pPlanner->vShowPaths();
   
+  pPlanner->vTest();
+  
   EXIT();
 }
 

@@ -59,6 +59,22 @@ Arg::Arg(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Arg::Arg(eAK eArgKind, Str* aArgVal)
+: Object(CN_ARG)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ARG,_FOOTER_);
+  
+  m_eArgKind = eArgKind;
+  m_sArgVal  = aArgVal;
+  
+  _checkInitialised_(CN_ARG);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ARG,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 Arg::~Arg(void)

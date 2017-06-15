@@ -34,6 +34,7 @@ namespace Plans
     void  operator delete(void*);
     
     Arg(void);
+    Arg(eAK eArgKind, Str* aArgVal);
     ~Arg(void);
   
     eAK eArgKind(void);

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Predicte.cpp - RDP predicate                                               */
+/* Predicate.cpp - RDP predicate                                               */
 /*============================================================================*/
 
 #include "Plans.h"
@@ -11,19 +11,19 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Predicte* Plans::_pPredicte(void* aAddr)
+Predicate* Plans::_pPredicate(void* aAddr)
 {
-  Predicte* pPredicte = reinterpret_cast<Predicte*>(aAddr);
+  Predicate* pPredicate = reinterpret_cast<Predicate*>(aAddr);
   
-  RASSERT( ! pPredicte || CN_PREDICATE == pPredicte->eClass() );
+  RASSERT( ! pPredicate || CN_PREDICATE == pPredicate->eClass() );
  
-  return pPredicte;
+  return pPredicate;
 }
 
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* Predicte::operator new(size_t iSize)
+void* Predicate::operator new(size_t iSize)
 {
   RASSERT(iSize);
   
@@ -35,7 +35,7 @@ void* Predicte::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 /* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
-void Predicte::operator delete(void* pDataAddress)
+void Predicate::operator delete(void* pDataAddress)
 {
   AccessPath* pAccessPath = reinterpret_cast<AccessPath*>(pDataAddress);
   
@@ -45,10 +45,31 @@ void Predicte::operator delete(void* pDataAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Predicte::Predicte(void)
+Predicate::Predicate(void)
 : Object(CN_PREDICATE)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PREDICATE,_FOOTER_);
+  
+  m_pArg1 = nullptr;
+  m_pOp   = nullptr;
+  m_pArg2 = nullptr;
+  
+  _checkInitialised_(CN_PREDICATE);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_PREDICATE,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Predicate::Predicate(Arg* pArg1, Op* pOp, Arg* pArg2)
+: Object(CN_PREDICATE)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PREDICATE,_FOOTER_);
+  
+  m_pArg1 = pArg1;
+  m_pOp   = pOp;
+  m_pArg2 = pArg2;
   
   _checkInitialised_(CN_PREDICATE);
   
@@ -58,7 +79,7 @@ Predicte::Predicte(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Predicte::~Predicte(void)
+Predicate::~Predicate(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PREDICATE,_FOOTER_);
 }
@@ -70,7 +91,7 @@ Predicte::~Predicte(void)
 /*----------------------------------------------------------------------------*/
 /* get op                                                                     */
 /*----------------------------------------------------------------------------*/
-Op* Predicte::pOp(void)
+Op* Predicate::pOp(void)
 {
   return m_pOp;
 }
@@ -78,7 +99,7 @@ Op* Predicte::pOp(void)
 /*----------------------------------------------------------------------------*/
 /* set op                                                                     */
 /*----------------------------------------------------------------------------*/
-void Predicte::vOp(Op* pOp)
+void Predicate::vOp(Op* pOp)
 {
   m_pOp = pOp;
 }
@@ -86,7 +107,7 @@ void Predicte::vOp(Op* pOp)
 /*----------------------------------------------------------------------------*/
 /* get arg1                                                                   */
 /*----------------------------------------------------------------------------*/
-Arg* Predicte::pArg1(void)
+Arg* Predicate::pArg1(void)
 {
   return m_pArg1;
 }
@@ -94,7 +115,7 @@ Arg* Predicte::pArg1(void)
 /*----------------------------------------------------------------------------*/
 /* set arg1                                                                   */
 /*----------------------------------------------------------------------------*/
-void Predicte::vArg1(Arg* pArg1)
+void Predicate::vArg1(Arg* pArg1)
 {
   m_pArg1 = pArg1;
 }
@@ -102,7 +123,7 @@ void Predicte::vArg1(Arg* pArg1)
 /*----------------------------------------------------------------------------*/
 /* get arg2                                                                   */
 /*----------------------------------------------------------------------------*/
-Arg* Predicte::pArg2(void)
+Arg* Predicate::pArg2(void)
 {
   return m_pArg2;
 }
@@ -110,7 +131,7 @@ Arg* Predicte::pArg2(void)
 /*----------------------------------------------------------------------------*/
 /* set arg2                                                                   */
 /*----------------------------------------------------------------------------*/
-void Predicte::vArg2(Arg* pArg2)
+void Predicate::vArg2(Arg* pArg2)
 {
   m_pArg1 = pArg2;
 }
@@ -122,7 +143,7 @@ void Predicte::vArg2(Arg* pArg2)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* Predicte::pFooter(void)
+Footer* Predicate::pFooter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PREDICATE);
   

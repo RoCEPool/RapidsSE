@@ -19,6 +19,7 @@ namespace Plans
     void  operator delete(void*);
     
     Op(void);
+    Op(eRO eOpKind);
     ~Op(void);
   
     eRO eOpKind(void);

@@ -30,6 +30,8 @@ namespace Plans
     void vScorePaths(void);
   
     void vShowPaths(void);
+  
+    void vTest(void);
 
   
     Footer* pFooter(void);

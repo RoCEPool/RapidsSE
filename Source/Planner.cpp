@@ -148,7 +148,23 @@ void Planner::vScorePaths(void)
     // initially just a simple scoring method 
     i8 iScore =   10 * (pIndex->bIsUnique() ? 0 : 1)
                 + pCandidatePath->nItems();
+    
+    m_iScoreVec[i_Path] = iScore;
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* test predicates                                                            */
+/*----------------------------------------------------------------------------*/
+void Planner::vTest(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
+  
+  Arg* pArg1 = new Arg(AK_COLUMNNM,"jA"_Str);
+  Op*  pOp   = new Op(RO_LESS_EQUAL);
+  Arg* pArg2 = new Arg(AK_LITERAL,"7"_Str);
+  Predicate* pPredicate = new Predicate(pArg1,pOp,pArg2);
+  
 }
 
 /*----------------------------------------------------------------------------*/

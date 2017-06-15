@@ -5,7 +5,7 @@
 
 namespace Plans
 {  
-  class Predicte : public Object
+  class Predicate : public Object
   {
   private:
     Op*  m_pOp;
@@ -20,8 +20,9 @@ namespace Plans
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Predicte(void);
-    ~Predicte(void);
+    Predicate(void);
+    Predicate(Arg* pArg1, Op* pOp, Arg* pArg2);
+    ~Predicate(void);
   
     Arg* pArg1(void);
     void vArg1(Arg* pArg1);
@@ -35,7 +36,7 @@ namespace Plans
     Footer* pFooter(void);
   };
   
-  Predicte* _pPredicte(void* aAddr);
+  Predicate* _pPredicate(void* aAddr);
 }
 
 /*============================================================================*/
