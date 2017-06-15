@@ -23,15 +23,15 @@ namespace Plans
     Predicte(void);
     ~Predicte(void);
   
-    void vArg1(Arg* pArg1);
     Arg* pArg1(void);
+    void vArg1(Arg* pArg1);
   
-    void vArg2(Arg* pArg2);
     Arg* pArg2(void);
+    void vArg2(Arg* pArg2);
   
-    void vOp(Op* pOp);
     Op* pOp(void);
-    
+    void vOp(Op* pOp);
+  
     Footer* pFooter(void);
   };
   

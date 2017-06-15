@@ -8,7 +8,7 @@ namespace Plans
   class Op : public Object
   {
   private:
-    eRO m_eOperator; // what kind of operator
+    eRO m_eOpKind; // what kind of operator
   
     // must be last
     Footer m_xFooter;
@@ -21,7 +21,8 @@ namespace Plans
     Op(void);
     ~Op(void);
   
-    void vGenPaths(void);
+    eRO eOpKind(void);
+    void vOpKind(eRO eOpKind);
   
     Footer* pFooter(void);
   };

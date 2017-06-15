@@ -36,9 +36,9 @@ namespace Plans
     Arg(void);
     ~Arg(void);
   
-    void vArgKind(eAK eArgKind);
     eAK eArgKind(void);
-    
+    void vArgKind(eAK eArgKind);
+  
     void vArgVal(s256& sArgVal);
     s256& sArgVal(void);
   

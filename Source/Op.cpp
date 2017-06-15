@@ -50,7 +50,7 @@ Op::Op(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  m_eOperator = RO_NONE;
+  m_eOpKind = RO_NONE;
   
   _checkInitialised_(CN_OP);
   
@@ -70,21 +70,19 @@ Op::~Op(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* destructor                                                                 */
+/* get op                                                                     */
 /*----------------------------------------------------------------------------*/
-void Op::vGenPaths(void)
+eRO Op::eOpKind(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
-  /*
-   
-    foreach index
-   
-      foreach column
-        recursively generate all column permutations
-          does the column subset match the lhs column of a rdp predicate?
-          yes: add possible path
-  */
+  return m_eOpKind;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set arg kind                                                               */
+/*----------------------------------------------------------------------------*/
+void Op::vOpKind(eRO eOpKind)
+{
+  m_eOpKind = eOpKind;
 }
 
 /*----------------------------------------------------------------------------*/
