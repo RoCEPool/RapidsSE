@@ -33,6 +33,7 @@ namespace Base
     /* 18 */ CN_VALWRK,
   
     /*    */ CN_ACCESSPATH,
+    /*    */ CN_ARG,
     /* 12 */ CN_ARGUMENTS,
     /* 13 */ CN_ATOMIC,
     /* 14 */ CN_ATTACHMAP,
@@ -88,13 +89,16 @@ namespace Base
 
     /* 42 */ CN_NODE,
     /* 43 */ CN_NODECURSOR,
-    
+  
+    /* 43 */ CN_OP,
+  
     /* 44 */ CN_PARSER,
     /* 45 */ CN_PARTITION,
     /* 46 */ CN_PLAN,
     /*    */ CN_PLANNER,
     /* 47 */ CN_PLANLIST,
     /*    */ CN_POSIXTHREAD,
+    /* 48 */ CN_PREDICATE,
     /* 48 */ CN_PROXY,
     /* 49 */ CN_PROXYSET,
     /*    */ CN_PTNCOLVEC,
@@ -188,6 +192,7 @@ namespace Base
     /* 18 */ "VALWRK"_Str,
     
     /*    */ "ACCESSPATH"_Str,
+    /* 12 */ "ARG"_Str,
     /* 12 */ "ARGUMENTS"_Str,
     /* 13 */ "ATOMIC"_Str,
     /* 14 */ "ATTACHMAP"_Str,
@@ -242,13 +247,16 @@ namespace Base
     
     /* 42 */ "NODE"_Str,
     /* 43 */ "NODECURSOR"_Str,
-    
+  
+    /* 43 */ "OP"_Str,
+  
     /* 44 */ "PARSER"_Str,
     /* 45 */ "PARTITION"_Str,
     /* 46 */ "PLAN"_Str,
     /*    */ "PLANNER"_Str,
     /* 47 */ "PLANLIST"_Str,
     /*    */ "POSIXTHREAD"_Str,
+    /* 48 */ "PREDICATE"_Str,
     /* 48 */ "PROXY"_Str,
     /* 49 */ "PROXYSET"_Str,
     /*    */ "PTNCOLVEC"_Str,

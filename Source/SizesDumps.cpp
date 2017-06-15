@@ -35,6 +35,7 @@ pDUMPFUN *gpDump[]
   /* 18 */ &Dump::vInvalid,         // CN_VALWRK
   
   /*    */ &Dump::vInvalid,         // CN_ACCESSPATH
+  /* 12 */ &Dump::vInvalid,         // CN_ARG
   /* 12 */ &Dump::vInvalid,         // CN_ARGUMENTS
   /* 13 */ &Dump::vInvalid,         // CN_ATOMIC
   /* 14 */ &AttachMap::vDump,       // CN_ATTACHMAP
@@ -91,11 +92,14 @@ pDUMPFUN *gpDump[]
   /* 42 */ &Node::vDump,            // CN_NODE
   /* 43 */ &NodeCursor::vDump,      // CN_NODECURSOR
   
+  /*    */ &Dump::vUndefined,       // CN_OP
+  
   /* 44 */ &Parser::vDump,          // CN_PARSER
   /* 45 */ &Partition::vDump,       // CN_PARTITION
   /* 46 */ &Plan::vDump,            // CN_PLAN
   /*    */ &Dump::vUndefined,       // CN_PLANNER
   /* 47 */ &PlanList::vDump,        // CN_PLANLIST
+  /*    */ &Dump::vUndefined,       // CN_PREDICATE
   /*    */ &Dump::vUndefined,       // CN_POSIXTHREAD
   /* 48 */ &Dump::vUndefined,       // CN_PROXY
   /* 49 */ &Dump::vUndefined,       // CN_PROXYSET
@@ -189,6 +193,7 @@ i8 giClassSize[]
   /* 18 */ sizeof(ValWrk),             // CN_VALWRK
   
   /*    */ 0,                          // CN_ACCESSPATH
+  /*    */ 0,                          // CN_ARG
   /* 12 */ sizeof(Arguments),          // CN_ARGUMENTS
   /* 13 */ sizeof(Atomic),             // CN_ATOMIC
   /* 14 */ sizeof(AttachMap),          // CN_ATTACHMAP
@@ -245,12 +250,15 @@ i8 giClassSize[]
   /* 42 */ sizeof(Node),               // CN_NODE
   /* 43 */ sizeof(NodeCursor),         // CN_NODECURSOR
   
+  /*    */ 0,                          // CN_OP
+  
   /* 44 */ sizeof(Parser),             // CN_PARSER
   /* 45 */ sizeof(Partition),          // CN_PARTITION
   /* 46 */ sizeof(Plan),               // CN_PLAN
   /* 46 */ sizeof(Planner),            // CN_PLANNER
   /* 47 */ sizeof(PlanList),           // CN_PLANLIST
   /*    */ sizeof(PosixThread),        // CN_POSIXTHREAD
+  /*    */ 0,                          // CN_PREDICATE
   /* 48 */ sizeof(Proxy),              // CN_PROXY
   /* 49 */ sizeof(ProxySet),           // CN_PROXYSET
   /*    */ 0,                          // CN_PTNCOLVEC
@@ -343,6 +351,7 @@ eHT geWhichHeap[]
   /* 18 */ HT_INVALID, // CN_VALWRK
   
   /*    */ HT_SMALL,   // CN_ACCESSPATH
+  /*    */ HT_SMALL,   // CN_ARG
   /* 12 */ HT_INVALID, // CN_ARGUMENTS
   /* 13 */ HT_INVALID, // CN_ATOMIC
   /* 14 */ HT_LARGE,   // CN_ATTACHMAP
@@ -399,11 +408,14 @@ eHT geWhichHeap[]
   /* 45 */ HT_SMALL,   // CN_NODE
   /* 46 */ HT_SMALL,   // CN_NODECURSOR
   
+  /* 45 */ HT_SMALL,   // CN_OP
+  
   /* 47 */ HT_MEDIUM,  // CN_PARSER
   /* 48 */ HT_INVALID, // CN_PARTITION
   /* 49 */ HT_MEDIUM,  // CN_PLAN
   /*    */ HT_MEDIUM,  // CN_PLANNER
   /* 50 */ HT_SMALL,   // CN_PLANLIST
+  /*    */ HT_SMALL,   // CN_PREDICATE
   /*    */ HT_SMALL,   // CN_POSIXTHREAD
   /* 51 */ HT_INVALID, // CN_PROXY
   /* 52 */ HT_INVALID, // CN_PROXYSET

@@ -34,6 +34,7 @@ pFINALIZE *gpFinalize[]
   /* 18 */ &Finalize::vUndefined,         // CN_VALWRK
   
   /*    */ &Finalize::vUndefined,         // CN_ACCESSPATH
+  /* 12 */ &Finalize::vUndefined,         // CN_ARG
   /* 12 */ &Finalize::vUndefined,         // CN_ARGUMENTS
   /* 13 */ &Finalize::vUndefined,         // CN_ATOMIC
   /* 14 */ &Finalize::vUndefined,         // CN_ATTACHMAP
@@ -90,12 +91,15 @@ pFINALIZE *gpFinalize[]
   /* 42 */ &Finalize::vUndefined,         // CN_NODE
   /* 43 */ &Finalize::vUndefined,         // CN_NODECURSOR
   
+  /* 42 */ &Finalize::vUndefined,         // CN_OP
+  
   /* 44 */ &Finalize::vUndefined,         // CN_PARSER
   /* 45 */ &Finalize::vUndefined,         // CN_PARTITION
   /* 46 */ &Finalize::vUndefined,         // CN_PLAN
   /* 46 */ &Finalize::vUndefined,         // CN_PLANNER
   /* 47 */ &Finalize::vUndefined,         // CN_PLANLIST
   /*    */ &Finalize::vUndefined,         // CN_POSIXTHREAD
+  /*    */ &Finalize::vUndefined,         // CN_PREDICATE
   /* 48 */ &Finalize::vUndefined,         // CN_PROXY
   /* 49 */ &Finalize::vUndefined,         // CN_PROXYSET
   /*    */ &Finalize::vUndefined,         // CN_PTNCOLVEC
