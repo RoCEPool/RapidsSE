@@ -115,7 +115,6 @@ create index idx3 on j10 (j10_name);                      //error: index exists
 
 drop table j10;
 
-
 cf .. ;
 rf tables ;
 
