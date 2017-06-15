@@ -40,6 +40,8 @@ namespace Base
     /* 15 */ CN_BUFFERPOOL,
     /* 16 */ CN_BPA,
   
+    /*    */ CN_CANDIDATEPATH,
+    /*    */ CN_CANDIDATEPATHS,
     /*    */ CN_COLUMN,
     /*    */ CN_COLUMNVEC,
   
@@ -193,6 +195,8 @@ namespace Base
     /* 15 */ "BUFFERPOOL"_Str,
     /* 16 */ "BPA"_Str,
   
+    /*    */ "CANDIDATEPATH"_Str,
+    /*    */ "CANDIDATEPATHS"_Str,
     /*    */ "COLUMN"_Str,
     /*    */ "COLUMNVEC"_Str,
     
