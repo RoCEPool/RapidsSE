@@ -27,6 +27,7 @@ namespace Structures
     void    vContentDump(Str* aTitle, Str* aTab);
     void    vInsert(OBJECT* mpNode);
     OBJECT* npPop(void);
+    void    vPush(OBJECT* mpNode);
     void    vRemove(OBJECT* mpNode);
     
     void    vReadLock(void);
@@ -93,6 +94,7 @@ void List_t<OBJECT>::vAppend(OBJECT* mpNode)
   
   m_zLock.vDropWrite();
 }
+
 /*----------------------------------------------------------------------------*/
 /* dump each object in list                                                   */
 /*----------------------------------------------------------------------------*/
@@ -189,6 +191,29 @@ OBJECT* List_t<OBJECT>::npPop(void)
   pNode->vNextNode(nullptr);
   
   return pNode;
+}
+
+/*----------------------------------------------------------------------------*/
+/* push object on top of list                                                 */
+/*----------------------------------------------------------------------------*/
+template <class OBJECT>
+void List_t<OBJECT>::vPush(OBJECT* mpNode)
+{
+  _mp_(mpNode);
+  
+  m_zLock.vGrabWrite();
+  
+  if (m_pHead)
+    m_pHead->vPrev(mpNode);
+  
+  mpNode->vPrevNode(nullptr);
+  mpNode->vNextNode(m_pHead);
+  
+  m_pHead = mpNode;
+  
+  m_nCount++;
+  
+  m_zLock.vDropWrite();
 }
 
 /*----------------------------------------------------------------------------*/

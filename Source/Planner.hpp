@@ -20,6 +20,8 @@ namespace Plans
     Planner(void);
     ~Planner(void);
   
+    void vGenPaths(void);
+  
     Footer* pFooter(void);
   };
   
