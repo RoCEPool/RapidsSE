@@ -39,7 +39,7 @@ lf ;
 //dumpidx supplier idx1;
 
 displayOff;
-
+/*
 print "\nSelecting rows from supplier (idx1) where S_SUPPKEY >= 9972 ...\n" ;
 lwrselidx supplier idx1 9972 ;
 
@@ -102,6 +102,7 @@ visidx supplier idx2;
 visidx supplier idx3;
 
 displayOn;
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

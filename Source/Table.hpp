@@ -20,15 +20,16 @@ namespace DBobjects
   class Table : public Object
   {
   private:
-    s32    m_sTableName;  // table name
-    eTT    m_eTableType;  // table type
-    Dic    m_xSubDic;     // sub dictionary for this table
-    Slots  m_xSlots;      // slots
+    s32    m_sTableName;   // table name
+    eTT    m_eTableType;   // table type
+    Dic    m_xSubDic;      // sub dictionary for this table
+    Slots  m_xSlots;       // slots
     Atomic m_zIndexNo;
-    Atomic m_zRefCount;   // reference count
-
+    Atomic m_zRefCount;    // reference count
+    Index* m_pHiddenIndex; // hidden index
+    
     ColumnVec* m_pColumnVec; // colummn vector
-  
+    
     // must be last
     Footer m_xFooter;
     
@@ -47,10 +48,12 @@ namespace DBobjects
     void vAddIndex(Index* pIndex);
     Str* pAnalyze(bool bDetailed);
     Str* pAnalyzeIndex(Index* pIndex, bool bDetailed);
-    void vAppendBuffer(i8 iPartition, EntryBuffer* pRowBuffer);
+    void vAppendBuffer(i8 iPartition, EntryBuffer* pRowBuffer);    
     ColumnVec* pColumnVec(void);
     void vContentDump(void);
     void vCreateColumnVec(s32& sName, s48K& sDefinition);
+    Index* pHiddenIndex(void);
+    void vHiddenIndex(Index* pHiddenIndex);
     bool bInsertRow(EntryBuffer* pRowBuffer, i8 iPartition, TxRef* pTxRef, Str* pRecord, i8 iLength);
     Partition* pPartition(i8 iSlot);
     void vPopulateIndex(i8 iIndexNo);

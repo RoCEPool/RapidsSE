@@ -951,6 +951,8 @@ namespace Tasks
     static void vTableDrop(NNP_Task nnpTask);
     static void vTableDump(NNP_Task nnpTask);
     static void vTableFirstBuffer(NNP_Task nnpTask);
+    static void vTableHiddenIndexFetch(NNP_Task nnpTask);
+    static void vTableHiddenIndexStore(NNP_Task nnpTask);
     static void vTableInit(NNP_Task nnpTask);
     static void vTableInsert(NNP_Task nnpTask);
     static void vTableList(NNP_Task nnpTask);

@@ -367,6 +367,26 @@ void Table::vCreateColumnVec(s32& sColumnNm, s48K& sColumnDefn)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get the hidden index from the table                                        */
+/*----------------------------------------------------------------------------*/
+Index* Table::pHiddenIndex(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  
+  return m_pHiddenIndex;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the hidden index in the table                                          */
+/*----------------------------------------------------------------------------*/
+void Table::vHiddenIndex(Index* pHiddenIndex)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  
+  m_pHiddenIndex = pHiddenIndex;
+}
+
+/*----------------------------------------------------------------------------*/
 /* insert a row in the table                                                  */
 /*----------------------------------------------------------------------------*/
 bool Table::bInsertRow(EntryBuffer* pRowBuffer, i8 iPartition, TxRef* pTxRef,

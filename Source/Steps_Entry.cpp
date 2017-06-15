@@ -78,17 +78,71 @@ void Task::vEntryMatches(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* entry.row -- return row from entry                                         */
 /*----------------------------------------------------------------------------*/
+#ifdef HIDDEN_INDEX
 void Task::vEntryRow(NNP_Task nnpTask)
 {
   ENTRY("vEntryRow"_Str);
   
   Object* pPtrEntry = nullptr;
+  Object* pPtrIndex = nullptr;
   
   if ( ! nnpTask->m_pDataStack->bPop(pPtrEntry) )
-    THROW_INVALID_DSTACK("index.row"_Str);
+    THROW_INVALID_DSTACK("entry.row"_Str);
   
   Entry* pEntry = _pEntry(pPtrEntry);
   ASSERT(CN_ENTRY == pEntry->eClass());
+  
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrIndex) )
+    THROW_INVALID_DSTACK("entry.row"_Str);
+  
+  Index* pIndex = _pIndex(pPtrIndex);
+  ASSERT(CN_INDEX == pIndex->eClass());
+  
+  // get the table from the index
+  Table* pTable = pIndex->pTable();
+  
+  // get the hiddenindex from the table
+  Index* pHiddenIndex = pTable->pHiddenIndex();
+  
+  // get the Id from the entry
+  Id xId = pEntry->xId();
+  
+  // find the buffer from the buffer pool given the buffer no
+  bn nBufferNo = xId.iBuffer();
+  EntryBuffer* pEntryBuffer = reinterpret_cast<EntryBuffer*>(gpBufferPool->pToBuffer(nBufferNo));
+  
+  // form the hidden index key using the row id from the entry
+  KeyWrk xKeyWrk;
+  ValWrk xValWrk;
+  xValWrk = xId.iRow();
+  xKeyWrk.vAddDatum(xValWrk, pHiddenIndex->pIdxColVec()->pGet(0));
+
+  // position in the entry buffer at the row id key
+  Entry* pRowEntry = pEntryBuffer->pPosition(xKeyWrk, JC_AFTER);
+  
+  // return the row entry
+  nnpTask->m_pDataStack->vPushObject(pRowEntry);
+}
+
+#else
+void Task::vEntryRow(NNP_Task nnpTask)
+{
+  ENTRY("vEntryRow"_Str);
+  
+  Object* pPtrEntry = nullptr;
+  Object* pPtrIndex = nullptr;
+  
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrEntry) )
+    THROW_INVALID_DSTACK("entry.row"_Str);
+  
+  Entry* pEntry = _pEntry(pPtrEntry);
+  ASSERT(CN_ENTRY == pEntry->eClass());
+  
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrIndex) )
+    THROW_INVALID_DSTACK("entry.row"_Str);
+  
+  Index* pIndex = _pIndex(pPtrIndex);
+  ASSERT(CN_INDEX == pIndex->eClass());
   
   Id xId = pEntry->xId();
   
@@ -96,7 +150,7 @@ void Task::vEntryRow(NNP_Task nnpTask)
   
   nnpTask->m_pDataStack->vPushObject(pRow);
 }
-
+#endif
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

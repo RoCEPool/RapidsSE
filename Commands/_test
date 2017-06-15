@@ -30,8 +30,11 @@ lsidxcol jidx idx3;
 
 ld jidx "../JTEST/test.csv" ;
 
-//print "\nDumping hidden index...\n";
-//dumpidx jidx hidden;
+print "\nDumping hidden index...\n";
+dumpidx jidx hidden;
+
+print "\nSelecting rows with key == 7 using idx1 ...\n" ;
+keyselidx jidx idx1 7 ;
 
 print "\nDumping index idx1...\n";
 dumpidx jidx idx1;
