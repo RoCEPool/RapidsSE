@@ -5,7 +5,8 @@
 
 namespace Plans
 {  
-  class CandidatePath : public Object
+  class CandidatePath : public Object,
+                        public List_t<Column>
   {
     private:
   

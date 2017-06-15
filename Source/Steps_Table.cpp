@@ -481,7 +481,7 @@ void Task::vTableTruncate(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* table.truncate -- release all rows/buffers in table on data stack          */
+/* table.genCandidatePaths -- gen all possible candidate path for table       */
 /*----------------------------------------------------------------------------*/
 void Task::vTableGenCandidatePaths(NNP_Task nnpTask)
 {
