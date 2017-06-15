@@ -31,8 +31,8 @@ namespace Debugging
       ASSERT(eClass() == arg1 || eClass() == arg2 || eClass() == arg3);
   #else
     #define _class_(arg)
-    #define _class2_(arg)
-    #define _class3_(arg)
+    #define _class2_(arg1,arg2)
+    #define _class3_(arg1,arg2,arg3)
   #endif
 
   /*--------------------------------------------------------------------------*/
