@@ -207,36 +207,40 @@ void IndexData::vInsertEntry(i8 iTxId, Str* pRow, i8 iLength)
   KeyWrk xKeyWrk;
   ValWrk xValWrk;
   
+  //----------------------------------------------------------------------------
   // create the Id
   i8 nRowNo = m_pCurrentBuffer->nEntries();
   bn nBufferNo = m_pCurrentBuffer->nBufferNo();
   Id rowId(*nBufferNo, nRowNo);
+  
+  // add rowId to EntWrk
   xEntWrk.vId(rowId);
   
-  // add the key
+  //----------------------------------------------------------------------------
+  // add the key to the EntWrk
   xValWrk = nRowNo;
   Column* pColumn = m_pIndex->pIdxColVec()->pGet(0);
   ASSERT(pColumn->iColumnNo() == -1);
   xKeyWrk.vAddDatum(xValWrk, pColumn);
   xEntWrk.vAddKey(xKeyWrk);
   
-  // add the row data
+  //----------------------------------------------------------------------------
+  // add the row data to the EntWrk
   xEntWrk.vData(pRow, iLength);
-  //xEntWrk.vShow(m_pIndex->pIdxColVec());
   
+  //----------------------------------------------------------------------------
   // find index buffer which contains the entry after which the new entry will
   // be inserted into, starting with given higher
   EntryBuffer* pIndexBuffer = m_pCurrentBuffer->pPositionLevel(xKeyWrk, JC_AFTER, 0);
-  
+  ASSERT(pIndexBuffer);
+
   // check if found index buffer has enough space
   i8 nEntryBytes = Entry::nBytesRequired(xEntWrk);
   if ( ! pIndexBuffer->bHasSpace(nEntryBytes) ) {
     ASSERT(0);
   }
   
-  // assert we have a buffer
-  ASSERT(pIndexBuffer);
-  
+  //----------------------------------------------------------------------------
   // insert entry into index buffer
   bool bResult = pIndexBuffer->bInsert(xEntWrk);
   ASSERT(bResult);
@@ -338,7 +342,7 @@ bool IndexData::bVerify(void)
    |ka kb   ...|-->| kj kk  ...|   Level L0 buffer
    -------------   -------------
    
-   //--------------------------------------------------------------------------*/
+  //--------------------------------------------------------------------------*/
 
   
   // start with the root buffer  L2
