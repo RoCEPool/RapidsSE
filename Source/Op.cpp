@@ -50,6 +50,8 @@ Op::Op(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
+  m_eOperator = RO_NONE;
+  
   _checkInitialised_(CN_OP);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
