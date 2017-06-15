@@ -32,24 +32,25 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Table(void)
 {
-  vAddPrimitive("table.addIndex"_Str,           &vTableAddIndex,        false);
-  vAddPrimitive("table.analyze"_Str,            &vTableAnalyze,         false);
-  vAddPrimitive("table.append"_Str,             &vTableAppend,          false);
-  vAddPrimitive("table.appendBuffer"_Str,       &vTableAppendBuffer,    false);
-  vAddPrimitive("table.createColumnVec"_Str,    &vTableCreateColumnVec, false);
-  vAddPrimitive("table.drop"_Str,               &vTableDrop,            false);
-  vAddPrimitive("table.dump"_Str,               &vTableDump,            false);
-  vAddPrimitive("table.hiddenIndex@"_Str,       &vTableHiddenIndexFetch,false);
-  vAddPrimitive("table.hiddenIndex!"_Str,       &vTableHiddenIndexStore,false);
-  vAddPrimitive("table.init"_Str,               &vTableInit,            false);
-  vAddPrimitive("table.insert"_Str,             &vTableInsert,          false);
-  vAddPrimitive("table.name"_Str,               &vTableName,            false);
-  vAddPrimitive("table.ref"_Str,                &vTableRef,             false);
-  vAddPrimitive("table.showColumnVec"_Str,      &vTableShowColumnVec,   false);
-  vAddPrimitive("table.slots"_Str,              &vTableSlots,           false);
-  vAddPrimitive("table.space"_Str,              &vTableSpace,           false);
-  vAddPrimitive("table.subDic"_Str,             &vTableSubDic,          false);
-  vAddPrimitive("table.truncate"_Str,           &vTableTruncate,        false);
+  vAddPrimitive("table.addIndex"_Str,           &vTableAddIndex,         false);
+  vAddPrimitive("table.analyze"_Str,            &vTableAnalyze,          false);
+  vAddPrimitive("table.append"_Str,             &vTableAppend,           false);
+  vAddPrimitive("table.appendBuffer"_Str,       &vTableAppendBuffer,     false);
+  vAddPrimitive("table.createColumnVec"_Str,    &vTableCreateColumnVec,  false);
+  vAddPrimitive("table.drop"_Str,               &vTableDrop,             false);
+  vAddPrimitive("table.dump"_Str,               &vTableDump,             false);
+  vAddPrimitive("table.hiddenIndex@"_Str,       &vTableHiddenIndexFetch, false);
+  vAddPrimitive("table.hiddenIndex!"_Str,       &vTableHiddenIndexStore, false);
+  vAddPrimitive("table.init"_Str,               &vTableInit,             false);
+  vAddPrimitive("table.insert"_Str,             &vTableInsert,           false);
+  vAddPrimitive("table.name"_Str,               &vTableName,             false);
+  vAddPrimitive("table.ref"_Str,                &vTableRef,              false);
+  vAddPrimitive("table.showColumnVec"_Str,      &vTableShowColumnVec,    false);
+  vAddPrimitive("table.slots"_Str,              &vTableSlots,            false);
+  vAddPrimitive("table.space"_Str,              &vTableSpace,            false);
+  vAddPrimitive("table.subDic"_Str,             &vTableSubDic,           false);
+  vAddPrimitive("table.truncate"_Str,           &vTableTruncate,         false);
+  vAddPrimitive("table.genCandidatePaths"_Str,  &vTableGenCandidatePaths,false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -475,6 +476,26 @@ void Task::vTableTruncate(NNP_Task nnpTask)
   ASSERT(CN_TABLE == pTable->eClass());
   
   pTable->vTruncate();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* table.truncate -- release all rows/buffers in table on data stack          */
+/*----------------------------------------------------------------------------*/
+void Task::vTableGenCandidatePaths(NNP_Task nnpTask)
+{
+  ENTRY("vTableGenCandidatePaths"_Str);
+  
+  Object* pPtrTable;
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrTable) )
+    THROW_INVALID_DSTACK("table.genCandidatePaths"_Str);
+  
+  Table* pTable = _pTable(pPtrTable);
+  ASSERT(CN_TABLE == pTable->eClass());
+  
+  CandidatePaths* pCandidatePaths = new CandidatePaths;
+  pCandidatePaths->vGenPaths(pTable);
   
   EXIT();
 }
