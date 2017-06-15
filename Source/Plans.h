@@ -5,7 +5,7 @@
 
 #include "DBobjects.h"
 
-//-----------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 namespace Plans
 {
@@ -14,7 +14,12 @@ namespace Plans
 
 using namespace Plans;
 
-//-----------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+
+#include "Arg.hpp"
+#include "Op.hpp"
+#include "Predicate.hpp"
+
 #include "AccessPath.hpp"
 #include "CandidatePath.hpp"
 #include "CandidatePaths.hpp"
