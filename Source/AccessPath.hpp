@@ -8,7 +8,7 @@ namespace Interface
   class SEitf;
 }
 
-namespace DBobjects
+namespace Plans
 {  
   class AccessPath : public Object
   {

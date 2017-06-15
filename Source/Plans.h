@@ -15,7 +15,7 @@ namespace Plans
 using namespace Plans;
 
 //-----------------------------------------------------------------------------
-
+#include "AccessPath.hpp"
 #include "Plan.hpp"
 #include "Planner.hpp"
 #include "PlanList.hpp"
