@@ -23,8 +23,8 @@ namespace Plans
   class Arg : public Object
   {
   private:
-    eAK   m_eArg;    // arg kind
-    s256  m_sStrVal; // the arg proper
+    eAK   m_eArgKind; // arg kind
+    s256  m_sArgVal;  // the arg proper
   
     Footer m_xFooter;
     
@@ -35,6 +35,12 @@ namespace Plans
     
     Arg(void);
     ~Arg(void);
+  
+    void vArgKind(eAK eArgKind);
+    eAK eArgKind(void);
+    
+    void vArgVal(s256& sArgVal);
+    s256& sArgVal(void);
   
     Footer* pFooter(void);
   };
