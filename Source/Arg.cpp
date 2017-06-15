@@ -50,6 +50,8 @@ Arg::Arg(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ARG,_FOOTER_);
   
+  m_eArg = AK_NONE;
+  
   _checkInitialised_(CN_ARG);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ARG,_FOOTER_);
