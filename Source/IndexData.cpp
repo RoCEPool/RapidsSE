@@ -136,12 +136,21 @@ Str* IndexData::pAnalyze(void)
 /*----------------------------------------------------------------------------*/
 /* dump the index                                                             */
 /*----------------------------------------------------------------------------*/
-void IndexData::vDump(void)
+void IndexData::vDump(bool bSameLevel)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
 
-  // start with the root
-  m_pRoot->vDump();
+  if (bSameLevel) {
+    EntryBuffer* pEntryBuffer = m_pRoot;
+    
+    while (pEntryBuffer) {
+      pEntryBuffer->vShow();
+      pEntryBuffer = pEntryBuffer->pNextBuffer();
+    }
+  }
+  else
+   // start with the root
+    m_pRoot->vDump();
 }
 
 /*----------------------------------------------------------------------------*/

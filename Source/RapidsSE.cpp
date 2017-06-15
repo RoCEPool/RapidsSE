@@ -41,11 +41,11 @@ bool          gbProgress     = false;
 bool          gbMetadata     = false;
 
 #ifdef HIDDEN_INDEX
-  bool          gbIndexSpace   = true;
+  bool          gbIndexSpace   = false;
 #else
   bool          gbIndexSpace   = false;
 #endif
-i8            gnIndexEntries = 10;
+i8            gnIndexEntries = 100;
 i8            gnIndexLevels  = 3;
 i8            gnIndexOffsets = gnIndexLevels - 1;
 

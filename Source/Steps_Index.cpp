@@ -243,7 +243,11 @@ void Task::vIndexDump(NNP_Task nnpTask)
     Partition* pPartition = pTable->pPartition(iPartition);
     IndexData* pIndexData = pPartition->pIndexData(iIndexNo);
     vTrace("Partition %lld\n"_Str, iPartition);
-    pIndexData->vDump();
+    
+    if (pIndex->bIsHidden())
+      pIndexData->vDump(true);
+    else
+      pIndexData->vDump(false);
   }
   
   EXIT();
