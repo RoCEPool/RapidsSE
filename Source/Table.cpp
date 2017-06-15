@@ -392,6 +392,16 @@ void Table::vHiddenIndex(Index* pHiddenIndex)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get the index vector from the table                                        */
+/*----------------------------------------------------------------------------*/
+IdxVec* Table::pIdxVec(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  
+  return m_pIdxVec;
+}
+
+/*----------------------------------------------------------------------------*/
 /* insert a row in the table                                                  */
 /*----------------------------------------------------------------------------*/
 bool Table::bInsertRow(EntryBuffer* pRowBuffer, i8 iPartition, TxRef* pTxRef,

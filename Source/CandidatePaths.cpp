@@ -68,7 +68,23 @@ CandidatePaths::~CandidatePaths(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* destructor                                                                 */
+/* generate the set of all paths for given table                              */
+/*----------------------------------------------------------------------------*/
+void CandidatePaths::vGenPaths(Table* pTable, Index* pIndex, Column* pColumn)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CANDIDATEPATHS,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* generate the set of all paths for given table                              */
+/*----------------------------------------------------------------------------*/
+void CandidatePaths::vGenPaths(Table* pTable, Index* pIndex)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CANDIDATEPATHS,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* generate the set of all paths for given table                              */
 /*----------------------------------------------------------------------------*/
 void CandidatePaths::vGenPaths(Table* pTable)
 {
@@ -85,6 +101,12 @@ void CandidatePaths::vGenPaths(Table* pTable)
           does the column subset match the lhs column of a rdp predicate?
           yes: add possible path
   */
+  
+  Index* pIndex = nullptr;
+  
+  for( ; pIndex; ) {
+    
+  }
 }
 
 /*----------------------------------------------------------------------------*/
