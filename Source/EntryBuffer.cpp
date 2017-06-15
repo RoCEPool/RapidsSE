@@ -202,7 +202,7 @@ EntryBuffer* EntryBuffer::pPrevBuffer(void)
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vPrevBuffer(EntryBuffer* pPrevBuffer)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
   m_pPrevBuffer = pPrevBuffer;
 }

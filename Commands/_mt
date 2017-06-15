@@ -70,6 +70,7 @@ drop index j10.idx;
 
 drop table j10;
 
+
 print "Start Test Two"  ;
 
 create table j10 (
@@ -97,9 +98,11 @@ rgeselidx j10 idx 4 8 ;
 print "\nSelecting rows with key j10_key >= 2 and j10_key <= 7 using index idx ...\n" ;
 rgeselidx j10 idx 2 7 ;
 
-tridx j10 idx;
+//tridx j10 idx;
 
 drop table j10;
+
+docol epochDump ;>R
 
 print "Start Test Three"  ;
 

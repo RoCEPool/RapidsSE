@@ -200,50 +200,86 @@ void IndexData::vInsertEntry(i8 iTxId, Str* pRow, i8 iLength)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
   
+  ASSERT(m_pIndex->bIsHidden());
+
   ASSERT(m_pCurrentBuffer);
   ASSERT(m_pCurrentBuffer->nBufferLevel() == 0);
   
-  EntWrk xEntWrk;
   KeyWrk xKeyWrk;
   ValWrk xValWrk;
   
   //----------------------------------------------------------------------------
-  // create the Id
-  i8 nRowNo = m_pCurrentBuffer->nEntries();
+  // form the rowId
   bn nBufferNo = m_pCurrentBuffer->nBufferNo();
+  i8 nRowNo = m_pCurrentBuffer->nEntries();
   Id rowId(*nBufferNo, nRowNo);
   
-  // add rowId to EntWrk
-  xEntWrk.vId(rowId);
-  
   //----------------------------------------------------------------------------
-  // add the key to the EntWrk
+  // form the key
   xValWrk = nRowNo;
   Column* pColumn = m_pIndex->pIdxColVec()->pGet(0);
   ASSERT(pColumn->iColumnNo() == -1);
   xKeyWrk.vAddDatum(xValWrk, pColumn);
-  xEntWrk.vAddKey(xKeyWrk);
   
+  //----------------------------------------------------------------------------
+  // add the id and key to EntWrk
+  EntWrk xEntWrk(rowId, xKeyWrk);
+
   //----------------------------------------------------------------------------
   // add the row data to the EntWrk
   xEntWrk.vData(pRow, iLength);
   
   //----------------------------------------------------------------------------
-  // find index buffer which contains the entry after which the new entry will
-  // be inserted into, starting with given higher
-  EntryBuffer* pIndexBuffer = m_pCurrentBuffer->pPositionLevel(xKeyWrk, JC_AFTER, 0);
-  ASSERT(pIndexBuffer);
-
-  // check if found index buffer has enough space
+  // check if current index buffer has enough space
   i8 nEntryBytes = Entry::nBytesRequired(xEntWrk);
-  if ( ! pIndexBuffer->bHasSpace(nEntryBytes) ) {
-    ASSERT(0);
+  
+  if ( ! m_pCurrentBuffer->bHasSpace(nEntryBytes) ) {
+    
+    //----------------------------------------------------------------------------
+    // create a new wntry buffer and link with current buffer
+    EntryBuffer* pNewBuffer = new EntryBuffer(m_pIndex, 0);
+    pNewBuffer->vNextBuffer(m_pCurrentBuffer->pNextBuffer());
+    pNewBuffer->vPrevBuffer(m_pCurrentBuffer);
+    m_pCurrentBuffer->vNextBuffer(pNewBuffer);
+    
+    //----------------------------------------------------------------------------
+    // toggle to the new buffer
+    m_pCurrentBuffer = pNewBuffer;
+    
+    //----------------------------------------------------------------------------
+    // form the rowId from new current buffer
+    nBufferNo = m_pCurrentBuffer->nBufferNo();
+    nRowNo = m_pCurrentBuffer->nEntries();
+    Id newRowId(*nBufferNo, nRowNo);
+    
+    //----------------------------------------------------------------------------
+    // form the new key
+    KeyWrk xNewKeyWrk;
+    xValWrk = nRowNo;
+    Column* pColumn = m_pIndex->pIdxColVec()->pGet(0);
+    ASSERT(pColumn->iColumnNo() == -1);
+    xNewKeyWrk.vAddDatum(xValWrk, pColumn);
+
+    //----------------------------------------------------------------------------
+    // add the id and key to NewEntWrk
+    EntWrk xNewEntWrk(newRowId, xNewKeyWrk);
+    
+    //----------------------------------------------------------------------------
+    // add the row data to the NewEntWrk
+    xNewEntWrk.vData(pRow, iLength);
+    
+    bool bResult = m_pCurrentBuffer->bInsert(xNewEntWrk);
+    ASSERT(bResult);
+    
+    //m_pCurrentBuffer->vShow();
+  }
+  else {
+
+    // insert entry into current index buffer
+    bool bResult = m_pCurrentBuffer->bInsert(xEntWrk);
+    ASSERT(bResult);
   }
   
-  //----------------------------------------------------------------------------
-  // insert entry into index buffer
-  bool bResult = pIndexBuffer->bInsert(xEntWrk);
-  ASSERT(bResult);
 }
 
 /*----------------------------------------------------------------------------*/
