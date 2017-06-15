@@ -8,7 +8,10 @@ namespace Plans
   class Planner : public Object
   {
   private:
+    Table*          m_pTable;
     CandidatePaths* m_pCandidatePaths;
+    Index*          m_pIndex[C_INDEXES_PER_TABLE];
+    i8              m_iScoreVec[C_INDEXES_PER_TABLE];
   
     // must be last
     Footer m_xFooter;
@@ -23,8 +26,11 @@ namespace Plans
   
     void vGenPaths(Table* pTable, Index* pIndex);
     void vGenPaths(Table* pTable);
+
+    void vScorePaths(void);
   
     void vShowPaths(void);
+
   
     Footer* pFooter(void);
   };

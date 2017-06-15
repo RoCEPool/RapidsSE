@@ -20,8 +20,8 @@ using namespace Plans;
 #include "Op.hpp"
 #include "Predicate.hpp"
 
-typedef Vector<CN_CANDIDATEPATH,Column,CN_COLUMN,8,u8> CandidatePath;
-typedef Vector<CN_CANDIDATEPATHS,CandidatePath,CN_CANDIDATEPATH,8,u8> CandidatePaths;
+typedef Vector<CN_CANDIDATEPATH,Column,CN_COLUMN,C_INDEXES_PER_TABLE,u8> CandidatePath;
+typedef Vector<CN_CANDIDATEPATHS,CandidatePath,CN_CANDIDATEPATH,C_INDEXES_PER_TABLE,u8> CandidatePaths;
 
 #include "AccessPath.hpp"
 //#include "CandidatePath.hpp"

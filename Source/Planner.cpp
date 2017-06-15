@@ -50,7 +50,12 @@ Planner::Planner(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
   
+  m_pTable          = nullptr;
   m_pCandidatePaths = nullptr;
+  for (i8 i_Score = 0; i_Score < C_INDEXES_PER_TABLE; i_Score++) {
+    m_pIndex[i_Score]    = nullptr;
+    m_iScoreVec[i_Score] = 0;
+  }
   
   _checkInitialised_(CN_PLANNER);
   
@@ -107,6 +112,7 @@ void Planner::vGenPaths(Table* pTable)
   
   for (i8 i_Idx = 0; i_Idx < pIdxVec->nItems(); i_Idx++) {
     Index* pIndex = pIdxVec->pGet(i_Idx);
+    m_pIndex[i_Idx] = pIndex;
     vGenPaths(pTable, pIndex);
   }
 }
@@ -125,6 +131,23 @@ void Planner::vShowPaths(void)
       vTrace("%s%s"_Str,i_IdxCol ? "."_Str : ""_Str,pColumn->sColumnName().aStr());
     }
     vTrace("\n"_Str);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* score the set of all paths                                                 */
+/*----------------------------------------------------------------------------*/
+void Planner::vScorePaths(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
+  
+  for (i8 i_Path = 0; i_Path < m_pCandidatePaths->nItems(); i_Path++) {
+    CandidatePath* pCandidatePath = m_pCandidatePaths->pGet(i_Path);
+    Index* pIndex = m_pIndex[i_Path];
+
+    // initially just a simple scoring method 
+    i8 iScore =   10 * (pIndex->bIsUnique() ? 0 : 1)
+                + pCandidatePath->nItems();
   }
 }
 
