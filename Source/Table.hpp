@@ -16,7 +16,9 @@ namespace DBobjects
     /* 0 */ "NONE"_Str,
     /* 1 */ "NORMAL"_Str
   };
-    
+  
+  typedef Vector<CN_IDXVEC,Index,CN_INDEX,C_INDEXES_PER_TABLE,u8> IdxVec;
+  
   class Table : public Object
   {
   private:
@@ -28,6 +30,7 @@ namespace DBobjects
     Atomic m_zRefCount;    // reference count
     Index* m_pHiddenIndex; // hidden index
     
+    IdxVec*    m_pIdxVec;    // index vector
     ColumnVec* m_pColumnVec; // colummn vector
     
     // must be last

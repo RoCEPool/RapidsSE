@@ -206,9 +206,9 @@ void Slots::vTidyUp(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SLOTS,_FOOTER_);
   
-  // get IdxVec from any one partition
-  IdxVec* pIdxVec = m_xPartition[0].pIdxVec();
-  i8 nItems = pIdxVec->nItems();
+  // get IdxDataVec from any one partition
+  IdxDataVec* pIdxDataVec = m_xPartition[0].pIdxDataVec();
+  i8 nItems = pIdxDataVec->nItems();
   
   // run the finalize for the partitions
   for (i8 iSlot = 0; iSlot < C_SLOTS_PER_NODE; iSlot++) {

@@ -76,6 +76,8 @@ Table::Table(void)
   m_zIndexNo.vCheckInit();
   m_zRefCount.vCheckInit();
   
+  m_pIdxVec = new IdxVec;
+  
   m_pColumnVec = new ColumnVec;
   
   // create the hidden column for the hidden index here
@@ -154,6 +156,9 @@ void Table::vAddIndex(Index* pIndex)
   
   // set the index no in the index
   pIndex->vIndexNo(++m_zIndexNo);
+  
+  // add index to table
+  m_pIdxVec->vAdd(pIndex);
   
   // create an IndexData for the index in each partition
   for (i8 iPartition = 0; iPartition < gpGrid->m_nSlots; iPartition++) {
@@ -695,6 +700,9 @@ void Table::vTidyUp(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
+  m_pIdxVec->vClear();
+  
+  delete m_pIdxVec;
   delete m_pColumnVec;
   
   m_xSlots.vTidyUp();

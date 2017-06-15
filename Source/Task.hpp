@@ -963,7 +963,8 @@ namespace Tasks
     static void vTableSpace(NNP_Task nnpTask);
     static void vTableSubDic(NNP_Task nnpTask);
     static void vTableTruncate(NNP_Task nnpTask);
-    
+    static void vTableGenCandidatePaths(NNP_Task nnpTask);
+  
     // task
     static void vTaskAck(NNP_Task nnpTask);
     static void vTaskAcksFetch(NNP_Task nnpTask);

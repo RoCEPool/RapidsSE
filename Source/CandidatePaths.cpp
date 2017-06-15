@@ -70,9 +70,11 @@ CandidatePaths::~CandidatePaths(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-void CandidatePaths::vGenPaths(void)
+void CandidatePaths::vGenPaths(Table* pTable)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CANDIDATEPATHS,_FOOTER_);
+  
+  vTrace("CandidatePaths::vGenPaths \n"_Str);
   
   /*
    

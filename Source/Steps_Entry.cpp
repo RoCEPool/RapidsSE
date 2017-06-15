@@ -109,13 +109,23 @@ void Task::vEntryRow(NNP_Task nnpTask)
   
   // find the buffer from the buffer pool given the buffer no
   bn nBufferNo = xId.iBuffer();
-  EntryBuffer* pEntryBuffer = reinterpret_cast<EntryBuffer*>(gpBufferPool->pToBuffer(nBufferNo));
+  EntryBuffer* pEntryBuffer = reinterpret_cast<EntryBuffer*>
+     (gpBufferPool->pToBuffer(nBufferNo));
   
   // form the hidden index key using the row id from the entry
   KeyWrk xKeyWrk;
   ValWrk xValWrk;
   xValWrk = xId.iRow();
-  xKeyWrk.vAddDatum(xValWrk, pHiddenIndex->pIdxColVec()->pGet(0));
+  
+  // hiddenIndex should have only one column
+  ASSERT(pHiddenIndex->pIdxColVec()->nItems() == 1);
+  
+  // get the 0th column of teh hidden index
+  Column* pColumn = pHiddenIndex->pIdxColVec()->pGet(0);
+  ASSERT(pColumn->iColumnNo() == -1);
+  
+  // add the rowId to the key
+  xKeyWrk.vAddDatum(xValWrk, pColumn);
 
   // position in the entry buffer at the row id key
   Entry* pRowEntry = pEntryBuffer->pPosition(xKeyWrk, JC_AFTER);

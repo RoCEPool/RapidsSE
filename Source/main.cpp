@@ -17,6 +17,7 @@ void vTest1(void);
 void vTest2(void);
 void vTest3(void);
 void vTest4(void);
+void vTest5(void);
 
 void vKillPrev(void);
 
@@ -28,6 +29,7 @@ int main(int argc, const char* argv[])
 {
   //vTest3();
   //vTest4();
+  //vTest5();
   
   /*
   vInfo(
@@ -384,6 +386,13 @@ void vTest4(void)
   vTrace("Cut: %s\n"_Str,cBitAry);
   
  
+}
+
+/*----------------------------------------------------------------------------*/
+/* test5                                                                      */
+/*----------------------------------------------------------------------------*/
+void vTest5(void)
+{
 }
 
 /*============================================================================*/

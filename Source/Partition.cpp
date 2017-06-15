@@ -93,7 +93,7 @@ Partition::Partition(void)
   
   m_iPartitionId = -1;
   m_pData        = new Data;
-  m_pIdxVec      = new IdxVec;
+  m_pIdxDataVec  = new IdxDataVec;
   
   _checkInitialised_(CN_PARTITION);
   
@@ -121,8 +121,8 @@ void Partition::vAddIndex(IndexData* pIndexData)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
   
-  ASSERT(m_pIdxVec->nItems() < C_INDEXES_PER_TABLE);
-  m_pIdxVec->vAdd(pIndexData);
+  ASSERT(m_pIdxDataVec->nItems() < C_INDEXES_PER_TABLE);
+  m_pIdxDataVec->vAdd(pIndexData);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -142,10 +142,10 @@ bool Partition::bInsertRow(EntryBuffer* pRowBuffer, EntWrk& xRowWrk)
     return false;
   
   // now insert an entry for the row in the indexes of this table
-  i8 nIndexes = m_pIdxVec->nItems();
+  i8 nIndexes = m_pIdxDataVec->nItems();
   
   for (i8 iIndex=0; iIndex < nIndexes; iIndex++) {
-    IndexData* pIndexData = m_pIdxVec->pGet(iIndex);
+    IndexData* pIndexData = m_pIdxDataVec->pGet(iIndex);
     pIndexData->vInsertEntry(pRow, pRowBuffer->nEntries(), pRowBuffer->nBufferNo());
   }
   
@@ -279,10 +279,10 @@ Data* Partition::pData(void)
 IndexData* Partition::pIndexData(i8 iIndexNo)
 {
   IndexData* pIndexData = nullptr;
-  i8 nIndexes = m_pIdxVec->nItems();
+  i8 nIndexes = m_pIdxDataVec->nItems();
   
   for (i8 iIndex=0; iIndex < nIndexes; iIndex++) {
-    pIndexData = m_pIdxVec->pGet(iIndex);
+    pIndexData = m_pIdxDataVec->pGet(iIndex);
     if (pIndexData->pIndex()->iIndexNo() == iIndexNo)
       break;
   }
@@ -296,17 +296,17 @@ IndexData* Partition::pIndexData(i8 iIndexNo)
 IndexData* Partition::pHiddenIndexData(void)
 {
   IndexData* pIndexData = nullptr;
-  pIndexData = m_pIdxVec->pGet(0);
+  pIndexData = m_pIdxDataVec->pGet(0);
   
   return pIndexData;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get index vector                                                           */
+/* get index data vector                                                      */
 /*----------------------------------------------------------------------------*/
-IdxVec* Partition::pIdxVec(void)
+IdxDataVec* Partition::pIdxDataVec(void)
 {
-  return m_pIdxVec;
+  return m_pIdxDataVec;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -316,8 +316,8 @@ void Partition::vTidyUp(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
   
-  // delete the index vector
-  delete m_pIdxVec;
+  // delete the index data vector
+  delete m_pIdxDataVec;
   
   // delete the data
   delete m_pData;
@@ -332,8 +332,8 @@ void Partition::vTidyUpIndex(i8 iIndexNo)
   
   IndexData* pIndexData = this->pIndexData(iIndexNo);
   
-  // remove the index from the IdxVec
-  m_pIdxVec->vRemove(pIndexData);
+  // remove the index from the IdxDataVec
+  m_pIdxDataVec->vRemove(pIndexData);
   delete pIndexData;
 }
 

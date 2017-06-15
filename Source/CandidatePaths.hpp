@@ -5,7 +5,8 @@
 
 namespace Plans
 {  
-  class CandidatePaths : public Object
+  class CandidatePaths : public Object,
+                         public List_t<CandidatePath>
   {
     private:
   
@@ -20,7 +21,7 @@ namespace Plans
     CandidatePaths(void);
     ~CandidatePaths(void);
   
-    void vGenPaths(void);
+    void vGenPaths(Table* pTable);
   
     Footer* pFooter(void);
   };
