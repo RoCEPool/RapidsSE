@@ -610,10 +610,13 @@ tp: makingTable
   "columns" find execute pathPush
 
   "integer" "hidden_column" indexPtr index.createColumnVec
-  pathDrop
 
-  pathDrop
+  pathDrop  // step out of columns
+  pathDrop  // step out of subdic
   pathDrop  // step out of indexes
+
+  // store the hidden index in the table
+  indexPtr sTableNm find execute table.hiddenIndex!
 
   true <SUCCESS_RESULT>
 ;

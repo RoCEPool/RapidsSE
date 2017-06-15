@@ -275,17 +275,14 @@ bool LoaderSub::bInsertRow(void)
 bool LoaderSub::bInsertRow2(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
-  
-  // create working row
-  //  EntWrk xRowWrk;
-  //  xRowWrk.vTxId(m_pTxRef->iTxId());
-  //  
-  //  xRowWrk.vData(m_aRecord, m_iLength);
-
+ 
+  // get the hidden index data
   Partition* pPartition = m_pTable->pPartition(m_iPartition);
   IndexData* pIndexData = pPartition->pHiddenIndexData();
   
+  // insert an entry into the hidden index data
   pIndexData->vInsertEntry(m_pTxRef->iTxId(), m_aRecord, m_iLength);
+  
   return true;
 }
 

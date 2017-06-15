@@ -277,13 +277,7 @@ void Task::vIndexPosition(NNP_Task nnpTask)
   i8 iIndexNo = pIndex->iIndexNo();
   Table* pTable = pIndex->pTable();
   
-  Partition* pPartition = pTable->pPartition(nnpTask->m_pSEitf->iPartition());
-  IndexData* pIndexData = pPartition->pIndexData(iIndexNo);
-
   KeyWrk xKeyWrk;
-  
-  // assuming non-complex key
-  //ASSERT(1 == pIndex->pIdxColVec()->nItems());
   
   StrVal* pStrVal = _pStrVal(xValWrk.pNestedValueSelf());
   

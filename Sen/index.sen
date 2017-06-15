@@ -423,11 +423,11 @@ tp: makingIndex
           key indexPtr entry entry.matches if
             display@ if
               args.metadata if
-                entry entry.row row.string
+                indexPtr entry entry.row row.string
                 I grid::toPartition
                 "row: (%v '%v')\n" str.format .put
               else
-                entry entry.row row.string "\n" str.cat .put
+                indexPtr entry entry.row row.string "\n" str.cat .put
               then
             then
             1 rowCount + to rowCount
@@ -583,11 +583,11 @@ tp: loadIndexes
         entry if
           display@ if
             args.metadata if
-              entry entry.row row.string
+              indexPtr entry entry.row row.string
               I grid::toPartition
               "row: (%v '%v')\n" str.format .put
             else
-              entry entry.row row.string "\n" str.cat .put
+              indexPtr entry entry.row row.string "\n" str.cat .put
             then
           then
           1 rowCount + to rowCount
@@ -714,11 +714,11 @@ tp: loadIndexes
         if
           display@ if
             args.metadata if
-              entry entry.row row.string
+              indexPtr entry entry.row row.string
               I grid::toPartition
               "row: (%v '%v')\n" str.format .put
             else
-              entry entry.row row.string "\n" str.cat .put
+              indexPtr entry entry.row row.string "\n" str.cat .put
             then
           then
           1 rowCount + to rowCount
@@ -895,11 +895,11 @@ tp: loadIndexes
 
           display@ if
             args.metadata if
-              entry entry.row row.string
+              indexPtr entry entry.row row.string
               I grid::toPartition
               "row: (%v '%v')\n" str.format .put
             else
-              entry entry.row row.string "\n" str.cat .put
+              indexPtr entry entry.row row.string "\n" str.cat .put
             then
           then
           1 rowCount + to rowCount
