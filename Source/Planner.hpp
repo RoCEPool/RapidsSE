@@ -7,12 +7,13 @@ namespace Plans
 {  
   class Planner : public Object
   {
-    private:
+  private:
+    CandidatePaths* m_pCandidatePaths;
   
     // must be last
     Footer m_xFooter;
     
-    public:
+  public:
     
     void* operator new(size_t);
     void  operator delete(void*);
@@ -20,7 +21,10 @@ namespace Plans
     Planner(void);
     ~Planner(void);
   
-    void vGenPaths(void);
+    void vGenPaths(Table* pTable, Index* pIndex);
+    void vGenPaths(Table* pTable);
+  
+    void vShowPaths(void);
   
     Footer* pFooter(void);
   };

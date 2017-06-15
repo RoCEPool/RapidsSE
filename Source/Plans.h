@@ -20,9 +20,12 @@ using namespace Plans;
 #include "Op.hpp"
 #include "Predicate.hpp"
 
+typedef Vector<CN_CANDIDATEPATH,Column,CN_COLUMN,8,u8> CandidatePath;
+typedef Vector<CN_CANDIDATEPATHS,CandidatePath,CN_CANDIDATEPATH,8,u8> CandidatePaths;
+
 #include "AccessPath.hpp"
-#include "CandidatePath.hpp"
-#include "CandidatePaths.hpp"
+//#include "CandidatePath.hpp"
+//#include "CandidatePaths.hpp"
 #include "Plan.hpp"
 #include "Planner.hpp"
 #include "PlanList.hpp"

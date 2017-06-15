@@ -493,9 +493,10 @@ void Task::vTableGenCandidatePaths(NNP_Task nnpTask)
   
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
-  
-  CandidatePaths* pCandidatePaths = new CandidatePaths;
-  pCandidatePaths->vGenPaths(pTable);
+
+  Planner* pPlanner = new Planner;
+  pPlanner->vGenPaths(pTable);
+  pPlanner->vShowPaths();
   
   EXIT();
 }

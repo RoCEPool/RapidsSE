@@ -70,17 +70,24 @@ CandidatePaths::~CandidatePaths(void)
 /*----------------------------------------------------------------------------*/
 /* generate the set of all paths for given table                              */
 /*----------------------------------------------------------------------------*/
-void CandidatePaths::vGenPaths(Table* pTable, Index* pIndex, Column* pColumn)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CANDIDATEPATHS,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* generate the set of all paths for given table                              */
-/*----------------------------------------------------------------------------*/
 void CandidatePaths::vGenPaths(Table* pTable, Index* pIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CANDIDATEPATHS,_FOOTER_);
+  
+  IdxColVec* pIdxColVec = pIndex->pIdxColVec();
+  
+  for (i8 nCols = 1; nCols <= pIdxColVec->nItems(); nCols++) {
+    
+    CandidatePath* pCandidatePath = new CandidatePath;
+    
+    for (i8 i_IdxCol = 0; i_IdxCol < nCols; i_IdxCol++) {
+      Column* pColumn = pIdxColVec->pGet(i_IdxCol);
+      pCandidatePath->vAppend(pColumn);
+    }
+    
+    this->vAppend(pCandidatePath);
+  }
+  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -102,10 +109,25 @@ void CandidatePaths::vGenPaths(Table* pTable)
           yes: add possible path
   */
   
-  Index* pIndex = nullptr;
+  IdxVec* pIdxVec = pTable->pIdxVec();
   
-  for( ; pIndex; ) {
-    
+  for (i8 i_Idx = 0; i_Idx < pIdxVec->nItems(); i_Idx++) {
+    Index* pIndex = pIdxVec->pGet(i_Idx);
+    vGenPaths(pTable, pIndex);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* generate the set of all paths for given table                              */
+/*----------------------------------------------------------------------------*/
+void CandidatePaths::vShowPaths(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CANDIDATEPATHS,_FOOTER_);
+
+  ListCursor_t<CandidatePath> xCursor(this);
+  
+  for (xCursor.vFirst(); xCursor.pObject(); xCursor.vNext()) {
+    CandidatePath* pCdt = xCursor.pObject();
   }
 }
 

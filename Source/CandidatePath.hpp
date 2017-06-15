@@ -4,8 +4,9 @@
 #pragma once
 
 namespace Plans
-{  
+{
   class CandidatePath : public Object,
+                        public ListNode_t<CandidatePaths>,
                         public List_t<Column>
   {
     private:
