@@ -1,0 +1,104 @@
+/*============================================================================*/
+/* CandidatePaths.cpp - Set of Candidate Paths                                */
+/*============================================================================*/
+
+#include "Plans.h"
+
+/*----------------------------------------------------------------------------*/
+/*-- LifeCycle ---------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* safe cast                                                                  */
+/*----------------------------------------------------------------------------*/
+CandidatePaths* Plans::_pCandidatePaths(void* aAddr)
+{
+  CandidatePaths* pCandidatePaths = reinterpret_cast<CandidatePaths*>(aAddr);
+  
+  RASSERT( ! pCandidatePaths || CN_CANDIDATEPATHS == pCandidatePaths->eClass() );
+ 
+  return pCandidatePaths;
+}
+
+/*----------------------------------------------------------------------------*/
+/* operator new                                                               */
+/*----------------------------------------------------------------------------*/
+void* CandidatePaths::operator new(size_t iSize)
+{
+  RASSERT(iSize);
+  
+  void* pObject = Heap::pAllocate(CN_CANDIDATEPATHS);
+  
+  return pObject;
+}
+
+/*----------------------------------------------------------------------------*/
+/* operator delete                                                            */
+/*----------------------------------------------------------------------------*/
+void CandidatePaths::operator delete(void* pDataAddress)
+{
+  AccessPath* pAccessPath = reinterpret_cast<AccessPath*>(pDataAddress);
+  
+  Heap::vFree(pAccessPath);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+CandidatePaths::CandidatePaths(void)
+: Object(CN_CANDIDATEPATHS)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CANDIDATEPATHS,_FOOTER_);
+  
+  _checkInitialised_(CN_CANDIDATEPATHS);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CANDIDATEPATHS,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* destructor                                                                 */
+/*----------------------------------------------------------------------------*/
+CandidatePaths::~CandidatePaths(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CANDIDATEPATHS,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* destructor                                                                 */
+/*----------------------------------------------------------------------------*/
+void CandidatePaths::vGenPaths(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CANDIDATEPATHS,_FOOTER_);
+  
+  /*
+   
+    foreach index
+   
+      foreach column
+        recursively generate all column permutations
+          does the column subset match the lhs column of a rdp predicate?
+          yes: add possible path
+  */
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Footer ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get location of footer                                                     */
+/*----------------------------------------------------------------------------*/
+Footer* CandidatePaths::pFooter(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CANDIDATEPATHS);
+  
+  return &m_xFooter;
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
