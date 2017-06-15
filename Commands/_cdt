@@ -1,0 +1,22 @@
+/*============================================================================*/
+/* _cdt -- candidate path testing                                             */
+/*============================================================================*/
+
+create table jCdt (
+  jCdt_key   INTEGER,
+  jCdt_name  VARCHAR(32) NOT NULL,
+  jCdt_i     INTEGER NOT NULL
+);
+
+create index jCdt_idx1 on jCdt (jCdt_key);
+
+ld jCdt "../JTEST/j10.csv";
+
+dumpidx jCdt jCdt_idx1;
+
+print "\nSelecting rows with key <= 7 using idx1 ...\n" ;
+uprselidx jCdt jCdt_idx1 7 ;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

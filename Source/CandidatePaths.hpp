@@ -20,7 +20,7 @@ namespace Plans
     CandidatePaths(void);
     ~CandidatePaths(void);
   
-    void vGenPaths(void);
+    void vGenPaths(Table* pTable);
   
     Footer* pFooter(void);
   };
