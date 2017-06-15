@@ -7,12 +7,15 @@ namespace Plans
 {  
   class Predicte : public Object
   {
-    private:
+  private:
+    Op*  m_pOp;
+    Arg* m_pArg1;
+    Arg* m_pArg2;
   
     // must be last
     Footer m_xFooter;
     
-    public:
+  public:
     
     void* operator new(size_t);
     void  operator delete(void*);
@@ -20,8 +23,15 @@ namespace Plans
     Predicte(void);
     ~Predicte(void);
   
-    void vGenPaths(void);
+    void vArg1(Arg* pArg1);
+    Arg* pArg1(void);
   
+    void vArg2(Arg* pArg2);
+    Arg* pArg2(void);
+  
+    void vOp(Op* pOp);
+    Op* pOp(void);
+    
     Footer* pFooter(void);
   };
   
