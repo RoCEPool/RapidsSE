@@ -15,7 +15,7 @@ Planner* Plans::_pPlanner(void* aAddr)
 {
   Planner* pPlanner = reinterpret_cast<Planner*>(aAddr);
   
-  RASSERT( ! pPlanner || CN_ACCESSPATH == pPlanner->eClass() );
+  RASSERT( ! pPlanner || CN_PLANNER == pPlanner->eClass() );
  
   return pPlanner;
 }
@@ -27,7 +27,7 @@ void* Planner::operator new(size_t iSize)
 {
   RASSERT(iSize);
   
-  void* pObject = Heap::pAllocate(CN_ACCESSPATH);
+  void* pObject = Heap::pAllocate(CN_PLANNER);
   
   return pObject;
 }
@@ -46,13 +46,13 @@ void Planner::operator delete(void* pDataAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Planner::Planner(void)
-: Object(CN_ACCESSPATH)
+: Object(CN_PLANNER)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ACCESSPATH,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
   
-  _checkInitialised_(CN_ACCESSPATH);
+  _checkInitialised_(CN_PLANNER);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_ACCESSPATH,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -60,7 +60,7 @@ Planner::Planner(void)
 /*----------------------------------------------------------------------------*/
 Planner::~Planner(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ACCESSPATH,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -76,7 +76,7 @@ Planner::~Planner(void)
 /*----------------------------------------------------------------------------*/
 Footer* Planner::pFooter(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ACCESSPATH);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER);
   
   return &m_xFooter;
 }
