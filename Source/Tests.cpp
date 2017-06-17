@@ -139,7 +139,7 @@ void Tests::vRequire(StrVal& sCommand, bool bResult, eEC eErrorExpected, i8 iExp
     bReturn = m_pSePrompt->bExecuteString(sCommand, eErrorReturned, &aRowPtr);
     
     *_pStrVal(&sCommand) = "next"_Str;
-    while(bReturn) {
+    while (bReturn) {
       iRecvdRows++;
       bReturn = m_pSePrompt->bExecuteString(sCommand, eErrorReturned, &aRowPtr);
     }

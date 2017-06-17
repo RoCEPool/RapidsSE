@@ -1192,7 +1192,7 @@ bool SePrompt::bCreateIndex(bool bUnique)
   
   // now collect the column names and their types
   i8 iCurrentToken = 6 + iIfUnique;
-  while(iCurrentToken < iNumTokens - 1) {
+  while (iCurrentToken < iNumTokens - 1) {
     
     if (iCurrentToken != 6 + iIfUnique && !m_xTokenSet2[iCurrentToken++]->bEqual(","_Str)) {
       bIndexReturnTable(m_xTokenSet2[4 + iIfUnique], m_xTokenSet2[2 + iIfUnique]);
@@ -1939,7 +1939,7 @@ bool SePrompt::bListDir(void)
   }
   
   // read the current directory
-  while(xDir.bRead()) {
+  while (xDir.bRead()) {
     sDirEntry = xDir.sEntryName();
     iEntryType = xDir.iEntryType();
     vTrace("%c %s\n"_Str, iEntryType == DT_DIR ? 'd' : 'f', sDirEntry.s());
@@ -2137,7 +2137,7 @@ bool SePrompt::bAddTableColumns(i8& iToken, i8 iNumTokens)
   // now collect the column names and their types
   i8 iCurrentToken = iToken;
   
-//  while(iCurrentToken < iNumTokens - 2) {
+//  while (iCurrentToken < iNumTokens - 2) {
 //    
 //    if (iCurrentToken != iToken && !m_xTokenSet2[iCurrentToken++]->bEqual(","_Str)) {
 //      bDropReturnTable(m_xTokenSet2[2]);
@@ -2145,7 +2145,7 @@ bool SePrompt::bAddTableColumns(i8& iToken, i8 iNumTokens)
 //      return false;
 //    }
   
-  while( ! m_xTokenSet2[iCurrentToken]->bEqual(")"_Str)) {
+  while ( ! m_xTokenSet2[iCurrentToken]->bEqual(")"_Str)) {
     
     if (iCurrentToken != iToken && ! m_xTokenSet2[iCurrentToken++]->bEqual(","_Str)) {
       bDropReturnTable(m_xTokenSet2[2]);
@@ -2506,7 +2506,7 @@ bool SePrompt::bPartitionTable(i8 iToken, i8 iNumTokens)
   // create the partition columns
   iToken = iCurrentToken;
   i8 iPartKeys = 0;
-  while(iCurrentToken < iNumTokens - 1) {
+  while (iCurrentToken < iNumTokens - 1) {
     
     if ( (iCurrentToken != iToken) &&
          !m_xTokenSet2[iCurrentToken++]->bEqual(","_Str)) {

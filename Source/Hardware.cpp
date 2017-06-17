@@ -39,7 +39,7 @@ i8 Hardware::iClockFrequency(void)
   }
   
   // look for cpu MHz
-  while(fgets(buf, C_BUFSIZ, fp) != NULL) {
+  while (fgets(buf, C_BUFSIZ, fp) != NULL) {
     if (strstr(buf, "cpu MHz") == NULL)
       continue;
     
@@ -47,7 +47,7 @@ i8 Hardware::iClockFrequency(void)
     if (p == NULL)
       continue;
     p++;
-    while(isspace(*p))
+    while (isspace(*p))
       p++;
     sscanf(p,"%lf", &dFreq);
     iFreq = static_cast<i8>(dFreq * (double)C_1M);

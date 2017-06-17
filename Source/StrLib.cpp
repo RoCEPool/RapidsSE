@@ -1376,11 +1376,11 @@ char* StrLib::wToPointer(void* pArg, char* wArg)
   do {
     *p++ = cToHex(i%16); //(i % 16) + '0';
     i /= 16ll;
-  } while(i);
+  } while (i);
   
   
   *p = '\0';
-  while(--p > q) {
+  while (--p > q) {
     char c = *p;
     *p = *q;
     *q++ = c;
@@ -1405,13 +1405,13 @@ char* StrLib::wToString(i8 i, char* w)
   do {
     *p++ = (i % 10) + '0';
     i /= 10ll;
-  } while(i);
+  } while (i);
   
   if (bNegative)
     *p++ = '-';
   
   *p = '\0';
-  while(--p > q) {
+  while (--p > q) {
     char c = *p;
     *p = *q;
     *q++ = c;

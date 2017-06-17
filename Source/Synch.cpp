@@ -205,7 +205,7 @@ u8 Synch::iLockGrabWrite(u8* pWord)
   
   uCurrent = C_WRITELOCK;
   
-  while(!bTestAndSet(pWord,uCurrent,uCurrent))
+  while (!bTestAndSet(pWord,uCurrent,uCurrent))
     ;
   
   u8 uResult = 1;

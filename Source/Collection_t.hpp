@@ -101,7 +101,7 @@ void Collection_t<OBJECT>::vContentDump(Str* aTitle)
   CollectionCursor_t<OBJECT> xCursor(this);
   
   vTrace("%s\n"_Str,aTitle);
-  for(xCursor.vFirst(); xCursor.pObject(); xCursor.vNext()) {
+  for (xCursor.vFirst(); xCursor.pObject(); xCursor.vNext()) {
     OBJECT* pObject = xCursor.pObject();
     pObject->vContentDump();
   }
