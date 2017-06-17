@@ -28,6 +28,7 @@ namespace Plans
   class Predicate : public Object
   {
   private:
+    ePK  m_ePredicate;
     Op*  m_pOp;
     Arg* m_pArg1;
     Arg* m_pArg2;
@@ -41,7 +42,7 @@ namespace Plans
     void  operator delete(void*);
     
     Predicate(void);
-    Predicate(Arg* pArg1, Op* pOp, Arg* pArg2);
+    Predicate(ePK ePredicate, Arg* pArg1, Op* pOp, Arg* pArg2);
     ~Predicate(void);
   
     Arg* pArg1(void);

@@ -163,7 +163,7 @@ void Planner::vTest(void)
   Arg* pArg1 = new Arg(AK_COLUMNNM,"jA"_Str);
   Op*  pOp   = new Op(RO_LESS_EQUAL);
   Arg* pArg2 = new Arg(AK_LITERAL,"7"_Str);
-  Predicate* pPredicate = new Predicate(pArg1,pOp,pArg2);
+  Predicate* pPredicate = new Predicate(PK_COLUMN_OP_LITERAL,pArg1,pOp,pArg2);
   
 }
 
