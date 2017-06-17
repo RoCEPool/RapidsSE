@@ -50,8 +50,8 @@ DicPath::DicPath(void)
 
   m_iTop = -1;
 
-  for (i8 i = 0; i < C_DICTIONARY_STACK; i++)
-    m_pDic[i] = nullptr;
+  for (i8 i_Dic = 0; i_Dic < C_DICTIONARY_STACK; i_Dic++)
+    m_pDic[i_Dic] = nullptr;
   
   _checkInitialised_(CN_DICPATH);
   
@@ -86,8 +86,8 @@ void DicPath::vContentDump(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICPATH,_FOOTER_);
   
-  for (i8 i = m_iTop; i >= 0; i--)
-    vTrace("Dic %p %lld %s\n"_Str,m_pDic[i],i,m_pDic[i]->sName().s());
+  for (i8 i_Dic = m_iTop; i_Dic >= 0; i_Dic--)
+    vTrace("Dic %p %lld %s\n"_Str,m_pDic[i_Dic],i_Dic,m_pDic[i_Dic]->sName().s());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -121,13 +121,13 @@ void DicPath::vDump(eCN eClass, Object* pObject, Str* aTab)
   DicPath* pDicPath = reinterpret_cast<DicPath*>(pObject);
   
   vTrace("top %p:"_Str,pDicPath->m_iTop);
-  //for (i8 i = pDicPath->m_iTop; i >= 0; i--)
-    //vTrace("%s  Dic %p %lld %s\n"_Str,aTab, pDicPath->m_pDic[i],i,
-           //pDicPath->m_pDic[i]->sName().s());
+  //for (i8 i_Dic = pDicPath->m_iTop; i_Dic >= 0; i_Dic --)
+    //vTrace("%s  Dic %p %lld %s\n"_Str,aTab, pDicPath->m_pDic[i_Dic],i,
+           //pDicPath->m_pDic[i_Dic]->sName().s());
   
-  for (i8 i = pDicPath->m_iTop; i >= 0; i--) {
-    vTrace(" dic %p %lld %s"_Str,aTab, pDicPath->m_pDic[i],i,
-           pDicPath->m_pDic[i]->sName().s());
+  for (i8 i_Dic = pDicPath->m_iTop; i_Dic >= 0; i_Dic--) {
+    vTrace(" dic %p %lld %s"_Str,aTab, pDicPath->m_pDic[i_Dic],i_Dic,
+           pDicPath->m_pDic[i_Dic]->sName().s());
     //Dic::vDump(CN_DIC, pDicPath->m_pDic[i], aTab);
   }
 
@@ -158,9 +158,9 @@ Word* DicPath::pFindWord(Str* aName)
   
   Word* pWord;
   
-  for (i8 iDic = m_iTop; iDic >= 0; iDic--) {
+  for (i8 i_Dic = m_iTop; i_Dic >= 0; i_Dic--) {
     
-    Dic* pDic = m_pDic[iDic];
+    Dic* pDic = m_pDic[i_Dic];
     
     if ( (pWord = pDic->pFindWord((Str*)aName)) )
       return pWord;
@@ -198,8 +198,8 @@ Word* DicPath::pFindStep(TaskStep pStep)
   
   Word* pWord;
   
-  for (i8 i = m_iTop; i >= 0; i--)
-    for (pWord = m_pDic[i]->pLastWord(); pWord; pWord = pWord->pPrevWord())
+  for (i8 i_Dic = m_iTop; i_Dic >= 0; i_Dic--)
+    for (pWord = m_pDic[i_Dic]->pLastWord(); pWord; pWord = pWord->pPrevWord())
       if (WT_PRIMITIVE == pWord->eWordType() && pStep == pWord->pEntryStep())
         return pWord;
 
@@ -217,8 +217,8 @@ bool DicPath::bForget(StrVal& sName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICPATH,_FOOTER_);
   
-  for (i8 i = m_iTop; i >= 0; i--)
-    if (m_pDic[i]->bForget(sName))
+  for (i8 i_Dic = m_iTop; i_Dic >= 0; i_Dic--)
+    if (m_pDic[i_Dic]->bForget(sName))
       return true;
 
   if (gpMainDic->bForget(sName))
@@ -236,8 +236,8 @@ Word* DicPath::pLocate(Cell* pCell)
 
   Word* pWord;
   
-  for (i8 i = m_iTop; i >= 0; i--)
-    for (pWord = m_pDic[i]->pLastWord(); pWord; pWord = pWord->pPrevWord())
+  for (i8 i_Dic = m_iTop; i_Dic >= 0; i_Dic--)
+    for (pWord = m_pDic[i_Dic]->pLastWord(); pWord; pWord = pWord->pPrevWord())
       if (pWord->bHasCell(pCell))
         return pWord;
 
