@@ -115,6 +115,8 @@ void Task::vAccessPathParse(NNP_Task nnpTask)
   pAccessPath->vWhereString(sWhere);
   pAccessPath->vParse();
   
+  nnpTask->m_pDataStack->vPushInt(FT_LOWER);
+  
   EXIT();
 }
 

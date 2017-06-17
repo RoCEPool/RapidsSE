@@ -555,6 +555,8 @@ ddlLock::grabRead
 
   selectTimer timer.start
 
+  locals| sTableNm sWhere |
+
   ddlLock::grabRead
 
   //
@@ -569,21 +571,29 @@ ddlLock::grabRead
   checkInTables not if <NIP+ERROR> exit then ( "<tableNm>" )
 
   // check "<tableNm>" is a table folder within ../tables
-  dup checkIsTableFolder not if <NIP+ERROR> exit then ( "<tableNm>" )
+  sTableNm checkIsTableFolder not if <NIP+ERROR> exit then ( "<tableNm>" )
 
   // push named table folder onto path
   // i.e. task.dicStack will be ../tables/<tableNm>
-  dup pushTable assert  ( "<tableNm>" )
+  sTableNm pushTable assert  ( "<tableNm>" )
 
   // check "<tablenm"> is a table in ../tables/<tableNm>
-  checkIsTable not if <NIP+ERROR> exit then ( "<tableNm>" )
+  sTableNm checkIsTable not if <NIP+ERROR> exit then ( "<tableNm>" )
 
   // get and inc table reference and put into task.seitf.currentTable
-  getTableRef not if <NIP+ERROR> exit then ( "<tableNm>" )
+  sTableNm getTableRef not if <NIP+ERROR> exit then ( "<tableNm>" )
   task::this task.seitf@ seitf.table@ assert
 
-  // fetch rows from table
-  fetchRowsTable
+  accessPath::new task::this task.seitf@ seitf.accessPath!
+
+  //
+  sWhere task::this task.seitf@ seitf.accessPath@ accessPath.parse
+  case
+    FT_LOWER of lowerSelectIndex endof
+    FT_UPPER of upperSelectIndex endof
+    FT_RANGE of rangeSelectIndex endof
+    FT_SCAN  of endof
+  endcase
 
   // pop named table folder off path
   // i.e. task.dicStack will now be back to ../tables

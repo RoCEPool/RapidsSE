@@ -11,12 +11,14 @@ create table jCdt (
 
 create index jCdt_idx1 on jCdt (jA, jB, jC, jD);
 
-//ld jCdt "../JTEST/j10.csv";
+ld jCdt "../JTEST/jCdt.csv";
 
 //dumpidx jCdt jCdt_idx1;
 
 print "\nSelecting rows with key <= 7 using idx1 ...\n" ;
 uprselidx jCdt jCdt_idx1 7 ;
+
+lwrselidx jCdt jCdt_idx1 1 ;
 
 /*============================================================================*/
 /* end                                                                        */

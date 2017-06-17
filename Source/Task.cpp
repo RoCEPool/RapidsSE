@@ -815,6 +815,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("word"_Str,            &vWord,             false);
   gpWord = gpMainDic->pFindWord("word"_Str);
 
+  vAddPrimitives_AccessPath();
   vAddPrimitives_Address();
   vAddPrimitives_Args();
   vAddPrimitives_Assert();

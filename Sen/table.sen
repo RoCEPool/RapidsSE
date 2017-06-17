@@ -521,61 +521,6 @@ int: queryCount
 ;
 
 /*----------------------------------------------------------------------------*/
-/* get lower select cursor for table ( called by range_select_table request)  */
-/*----------------------------------------------------------------------------*/
-: fetchRowsTable ( "<where>" --  )
-
-  //
-  // execution context:
-  //   this task will have a seitf
-  //   and the seitf will have a table
-  //
-
-  assert::stack_1
-
-  0 0 locals| row selCursor lower |
-
-  // for the moment just discard lower and upper
-  //stk drop
-
-  // increment query count
-  queryCount ++
-
-  // push task.seitf.table
-  task::this task.seitf@ seitf.table@ ( ^table )
-
-  // create a selCursor
-  selCursor::new ( ^table ^selCursor )
-  to selCursor
-
-  // store table into selCursor
-  selCursor selCursor.table!
-
-  grid.slots 0
-  do
-
-  I selCursor selCursor.begin
-  selCursor selCursor.first
-
-  begin
-    while
-      selCursor selCursor.get
-
-      to row
-      row str.firstCsv str.tailint assert
-      lower str.tailint assert >= if
-      row .
-      then
-
-      selCursor selCursor.next
-
-      repeat
-  loop
-
-  "ALL DONE" .
-;
-
-/*----------------------------------------------------------------------------*/
 /* truncate table                                                             */
 /*----------------------------------------------------------------------------*/
 : truncateTable ( "<tableNm>" -- )
