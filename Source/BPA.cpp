@@ -209,8 +209,8 @@ void BPA::vObjectSummary(void)
   _precondition_(_MAGIC_,CN_BPA,_FOOTER_);
   
   i8 iCountObjects[CN_ENUMS];
-  for (i8 index = 0; index < CN_ENUMS; index++)
-    iCountObjects[index] = 0;
+  for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++)
+    iCountObjects[i_Index] = 0;
   
   bn nBuffer = 0;
   bn nBufferCount = gpBufferPool->m_nBuffers - 1;
@@ -225,8 +225,8 @@ void BPA::vObjectSummary(void)
   
   vTrace("\n"_Str);
   vTrace("  BufferPool Object Summary:\n"_Str);
-  for (i8 index = 0; index < CN_ENUMS; index++) {
-    eCN eClass = (eCN)index;
+  for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++) {
+    eCN eClass = (eCN)i_Index;
     
     if (iCountObjects[eClass] == 0)
       continue;
@@ -238,8 +238,8 @@ void BPA::vObjectSummary(void)
   
   vTrace("\n"_Str);
   vTrace("  SmallHeap Object Summary:\n"_Str);
-  for (i8 index = 0; index < CN_ENUMS; index++) {
-    eCN eClass = (eCN)index;
+  for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++) {
+    eCN eClass = (eCN)i_Index;
     
     if (iCountObjects[eClass] == 0)
       continue;
@@ -251,8 +251,8 @@ void BPA::vObjectSummary(void)
   
   vTrace("\n"_Str);
   vTrace("  MediumHeap Object Summary:\n"_Str);
-  for (i8 index = 0; index < CN_ENUMS; index++) {
-    eCN eClass = (eCN)index;
+  for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++) {
+    eCN eClass = (eCN)i_Index;
     
     if (iCountObjects[eClass] == 0)
       continue;
@@ -260,15 +260,15 @@ void BPA::vObjectSummary(void)
     vTrace("  %12s %-6lld \n"_Str, aCN[eClass], iCountObjects[eClass]);
   }
   
-  for (i8 index = 0; index < CN_ENUMS; index++)
-    iCountObjects[index] = 0;
+  for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++)
+    iCountObjects[i_Index] = 0;
   
 //  gpJumboHeap->vAnalyse(iCountObjects);
 //  
 //  vTrace("\n"_Str);
 //  vTrace("  JumboHeap Object s:\n"_Str);
-//  for (i8 index = 0; index < CN_ENUMS; index++) {
-//    eCN eClass = (eCN)index;
+//  for (i8 i_Index = 0; index < CN_ENUMS; i_Index++) {
+//    eCN eClass = (eCN)i_Index;
 //    
 //    if (iCountObjects[eClass] == 0)
 //      continue;
@@ -288,8 +288,8 @@ void BPA::vObjectSnapshot(i8* pCountObjects)
   
   i8 iCountObjects[CN_ENUMS];
   
-  for (i8 index = 0; index < CN_ENUMS; index++)
-    pCountObjects[index] = 0;
+  for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++)
+    pCountObjects[i_Index] = 0;
   
   bn nBuffer = 0;
   bn nBufferCount = gpBufferPool->m_nBuffers - 1;
@@ -303,8 +303,8 @@ void BPA::vObjectSnapshot(i8* pCountObjects)
   }
   
   gpSmallHeap->vAnalyse(iCountObjects);
-  for (i8 index = 0; index < CN_ENUMS; index++) {
-    eCN eClass = (eCN)index;
+  for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++) {
+    eCN eClass = (eCN)i_Index;
     
     if (iCountObjects[eClass] == 0)
       continue;
@@ -313,8 +313,8 @@ void BPA::vObjectSnapshot(i8* pCountObjects)
   }
   
   gpMediumHeap->vAnalyse(iCountObjects);
-  for (i8 index = 0; index < CN_ENUMS; index++) {
-    eCN eClass = (eCN)index;
+  for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++) {
+    eCN eClass = (eCN)i_Index;
     
     if (iCountObjects[eClass] == 0)
       continue;
