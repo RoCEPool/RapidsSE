@@ -39,7 +39,7 @@ void Task::vAddPrimitives_SelCursor(void)
   vAddPrimitive("selCursor.get"_Str,       &vSelCursorGet,        false);
   vAddPrimitive("selCursor.hasRow"_Str,    &vSelCursorHasRow,     false);
   vAddPrimitive("selCursor.init"_Str,      &vSelCursorInit,       false);
-  vAddPrimitive("selCursor::new"_Str,       &vSelCursorNew,        false);
+  vAddPrimitive("selCursor::new"_Str,      &vSelCursorNew,        false);
   vAddPrimitive("selCursor.next"_Str,      &vSelCursorNext,       false);
   vAddPrimitive("selCursor.rowBuffer"_Str, &vSelCursorRowBuffer,  false);
   vAddPrimitive("selCursor.table@"_Str,    &vSelCursorTableFetch, false);

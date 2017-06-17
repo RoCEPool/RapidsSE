@@ -111,6 +111,8 @@ private:
 
   bool bUseSchema(void);
   
+  bool bFetchRows(void);
+  
   bool bSleep(void);
   
   //----------------------------------------------------------------------------

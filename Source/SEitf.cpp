@@ -79,6 +79,7 @@ SEitf::SEitf(i8 iPartition)
   m_sResponse       = ""_Str;
   m_aRowPtr         = nullptr;
   m_pIndexBuffer    = nullptr;
+  m_pAccessPath     = nullptr;
   m_pEntry          = nullptr;
   m_pCurrentTable   = nullptr;
   m_pCurrentIndex   = nullptr;
@@ -377,6 +378,7 @@ bool SEitf::bDecode(TokenSet& xTokenSet)
   if (xTokenSet[0]->bSame("endmkidx"_Str)) return bEndCreateIndex(xTokenSet);
   if (xTokenSet[0]->bSame("endmktbl"_Str)) return bEndCreateTable(xTokenSet);
   if (xTokenSet[0]->bSame("ex"_Str)) return bExportTable(xTokenSet);
+  if (xTokenSet[0]->bSame("fetch"_Str)) return bFetchRows(xTokenSet);
   if (xTokenSet[0]->bSame("get"_Str)) return bGet(xTokenSet);
   if (xTokenSet[0]->bSame("getFreeSpace"_Str)) return bGetFreeSpace(xTokenSet);
   if (xTokenSet[0]->bSame("getInUseSpace"_Str)) return bGetInUseSpace(xTokenSet);
@@ -1458,6 +1460,28 @@ bool SEitf::bExportTable(TokenSet& xTokenSet)
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" export_table"_Str);
+  
+  return bAppendRequest(sRequest);
+}
+
+/*----------------------------------------------------------------------------*/
+/* fetch rows from a table                                                    */
+/*----------------------------------------------------------------------------*/
+bool SEitf::bFetchRows(TokenSet& xTokenSet)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  s256 sRequest;
+  
+  sRequest.vCopy("\""_Str);
+  sRequest.vConcat(xTokenSet[2]);
+  sRequest.vConcat("\""_Str);
+  
+  sRequest.vConcat(" \""_Str);
+  sRequest.vConcat(xTokenSet[1]);
+  sRequest.vConcat("\""_Str);
+  
+  sRequest.vConcat(" fetch_rows_table"_Str);
   
   return bAppendRequest(sRequest);
 }

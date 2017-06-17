@@ -844,6 +844,8 @@ namespace Tasks
     static void vRstack9(NNP_Task nnpTask);
     
     // seitf
+    static void vSEitfAccessPathFetch(NNP_Task nnpTask);
+    static void vSEitfAccessPathStore(NNP_Task nnpTask);
     static void vSEitfCount(NNP_Task nnpTask);
     static void vSEitfDelete(NNP_Task nnpTask);
     static void vSEitfDicStack(NNP_Task nnpTask);

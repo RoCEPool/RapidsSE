@@ -30,7 +30,8 @@ namespace Interface
     Index*       m_pCurrentIndex;
     Str*         m_aRowPtr;
     EntryBuffer* m_pIndexBuffer;
-    
+    AccessPath*  m_pAccessPath;
+  
     Entry* m_pEntry;
     TxRef* m_pTxRef;
     
@@ -159,6 +160,8 @@ namespace Interface
     bool bSizeTables(TokenSet& xTokenSet);
     bool bTruncateTable(TokenSet& xTokenSet);
     
+    bool bFetchRows(TokenSet& xTokenSet);
+  
     bool bGetTask(TokenSet& xTokenSet);
     bool bRetTask(TokenSet& xTokenSet);
   

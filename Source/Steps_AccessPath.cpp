@@ -34,7 +34,7 @@ void Task::vAddPrimitives_AccessPath(void)
 {
   vAddPrimitive("accessPath.delete"_Str, &vAccessPathDelete, false);
   vAddPrimitive("accessPath::new"_Str,   &vAccessPathNew,    false);
-  vAddPrimitive("accessPath.set"_Str,    &vAccessPathSet, false);
+  vAddPrimitive("accessPath.set"_Str,    &vAccessPathSet,    false);
 }
 
 /*----------------------------------------------------------------------------*/

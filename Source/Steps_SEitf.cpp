@@ -32,6 +32,8 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_SEitf(void)
 {
+  vAddPrimitive("seitf.accessPath@"_Str,      &vSEitfAccessPathFetch, false);
+  vAddPrimitive("seitf.accessPath!"_Str,      &vSEitfAccessPathStore, false);
   vAddPrimitive("seitf.count"_Str,            &vSEitfCount,            false);
   vAddPrimitive("seitf.delete"_Str,           &vSEitfDelete,           false);
   vAddPrimitive("seitf.dicStack"_Str,         &vSEitfDicStack,         false);
@@ -58,6 +60,50 @@ void Task::vAddPrimitives_SEitf(void)
   vAddPrimitive("seitf.table@"_Str,           &vSEitfTableFetch,       false);
   vAddPrimitive("seitf.tableRef"_Str,         &vSEitfTableRef,         false);
   vAddPrimitive("seitf.tableDeref"_Str,       &vSEitfTableDeref,       false);
+}
+
+/*----------------------------------------------------------------------------*/
+/* seitf.accessPath@ -- fetch access path from SE interface                   */
+/*----------------------------------------------------------------------------*/
+void Task::vSEitfAccessPathFetch(NNP_Task nnpTask)
+{
+  ENTRY("vSEitfAccessPathFetch"_Str);
+  
+  Object* pPtrSEitf;
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitf) )
+    THROW_INVALID_DSTACK("seitf.accessPath@"_Str);
+  
+  SEitf* pSEitf = _pSEitf(pPtrSEitf);
+  ASSERT(CN_SEITF == pSEitf->eClass());
+  
+  nnpTask->m_pDataStack->vPushObject(pSEitf->m_pAccessPath);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* seitf.accessPath! -- store access path in SE interface                     */
+/*----------------------------------------------------------------------------*/
+void Task::vSEitfAccessPathStore(NNP_Task nnpTask)
+{
+  ENTRY("vSEitfAccessPathStore"_Str);
+  
+  Object* pPtrSEitf;
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitf) )
+    THROW_INVALID_DSTACK("seitf.accessPath!"_Str);
+  
+  SEitf* pSEitf = _pSEitf(pPtrSEitf);
+  ASSERT(CN_SEITF == pSEitf->eClass());
+  
+  Object* pPtrAccessPath;
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrAccessPath) )
+    THROW_INVALID_DSTACK("seitf.accessPath!"_Str);
+  
+  AccessPath* pAccessPath = _pAccessPath(pPtrAccessPath);
+  
+  pSEitf->m_pAccessPath = pAccessPath;
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/

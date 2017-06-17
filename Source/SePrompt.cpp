@@ -475,6 +475,7 @@ bool SePrompt::bProcessCommand(bool bPostProcess)
   if (bCmdIs("end"_Str)) {
     if (bOneIs("insert"_Str))   return bEndInsert();
   }
+  if (bCmdIs("fetch"_Str))      return bFetchRows();
   if (bCmdIs("first"_Str))      return bGetFirstRow();
   if (bCmdIs("history"_Str))    return bHistory();
   if (bCmdIs("insert"_Str)) {
@@ -849,6 +850,7 @@ bool SePrompt::bHelp(void)
   vTrace("dex        -- distributed export table t\n"_Str);
   vTrace("drop       -- drop tenant|catalog|schema|table|index\n"_Str);
   vTrace("ex         -- export table t\n"_Str);
+  vTrace("fetch      -- fetch t where ...\n"_Str);
   vTrace("keyselidx  -- exact key select\n"_Str);
   vTrace("ld         -- load table t\n"_Str);
   vTrace("lf         -- list folder contents\n"_Str);
@@ -1853,6 +1855,40 @@ bool SePrompt::bEndInsert(void)
   m_pSEitf->vCommitTx();
   m_pSEitf->vEndTx();
 
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* fetch rows from table                                                      */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bFetchRows(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  ASSERT(m_xTokenSet[0]->bSame("fetch"_Str));  
+  i8 i_Token;
+  
+  // copy tokens from m_xTokenSet to m_xTokenSet2
+  for (i_Token = 0; i_Token < C_TOKENS; i_Token++) {
+    if ( ! *m_xTokenSet[i_Token]->s())
+      break;
+    m_xTokenSet2[i_Token]->vCopy(m_xTokenSet[i_Token]);
+    m_xTokenSet[i_Token]->vCopy(""_Str);
+  }
+  
+  i8 iNumTokens = i_Token;
+  
+  // some validations
+  // - - - - - - - - - - - - - - - - - - - - -
+  // there should be a minumum of 4 tokens
+  if (iNumTokens < 4) {
+    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+    return false;
+  }
+  
+  if ( !bExecuteRequest() )
+    return false;
+  
   return true;
 }
 

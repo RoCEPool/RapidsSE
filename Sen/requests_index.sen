@@ -746,7 +746,7 @@ timer: idxSelectTimer
 
 
   // temp: run generate candidiate paths (ray)
-  task::this task.seitf@ seitf.table@ table.genCandidatePaths
+  //task::this task.seitf@ seitf.table@ table.genCandidatePaths
 
 
   // execute a lower bound select using index
