@@ -58,9 +58,9 @@ void KeyTest::vTest(void)
 
   // asserts that keyval(n) < keyval(n+1)
   KeyVal* pKeyValA = pKeyVec->pGet(0);
-  for (i8 i = 1; i < 10; i++) {
+  for (i8 i_Key = 1; i_Key < 10; i_Key++) {
     
-    KeyVal* pKeyValB = pKeyVec->pGet(i);
+    KeyVal* pKeyValB = pKeyVec->pGet(i_Key);
     ASSERT(pKeyValA->bLessThan(pKeyValB,pColVec));
     
     ASSERT(pKeyValA->iCmp(pKeyValB,pColVec) < 0);
@@ -79,9 +79,9 @@ void KeyTest::vTest(void)
   pOpAryFind->vAdd(RO_GREATER_EQUAL);
   
   pKeyVal = nullptr;
-  for (i8 i = 0; i < 10; i++) {
+  for (i8 i_Key = 0; i_Key < 10; i_Key++) {
 
-    pKeyVal = pKeyVec->pGet(i);
+    pKeyVal = pKeyVec->pGet(i_Key);
     
     if (pKeyVal->bMatches(pKeyValFind,pColVec,pOpAryFind))
       break;
@@ -106,9 +106,9 @@ void KeyTest::vTest(void)
   pOpAryFind->vAdd(RO_LESS_THAN);
   
   pKeyVal = nullptr;
-  for (i8 i = 0; i < 10; i++) {
+  for (i8 i_Key = 0; i_Key < 10; i_Key++) {
     
-    pKeyVal = pKeyVec->pGet(i);
+    pKeyVal = pKeyVec->pGet(i_Key);
     
     if (pKeyVal->bMatches(pKeyValFind,pColVec,pOpAryFind))
       break;
@@ -151,7 +151,7 @@ void KeyTest::vTest(void)
   StrVal* pStrVal;
   
   // generate random keyVal's and add to keyVec
-  for (i8 i = 0; i < 10; i++) {
+  for (i8 i_Key = 0; i_Key < 10; i_Key++) {
     sKey = Random::sRandomString(7);
     
     Str* ptr = sKey.aStr();
@@ -168,8 +168,8 @@ void KeyTest::vTest(void)
   }
   
   // dump the key vector
-  for (i8 i = 0; i < 10; i++) {
-    pKeyVal = pKeyVec->pGet(i);
+  for (i8 i_Key = 0; i_Key < 10; i_Key++) {
+    pKeyVal = pKeyVec->pGet(i_Key);
     pKeyVal->vShow(pColVec);
   }
 
@@ -190,9 +190,9 @@ void KeyTest::vTest(void)
   pOpAryFind->vAdd(RO_LESS_THAN);
   
   pKeyVal = nullptr;
-  for (i8 i = 0; i < 10; i++) {
+  for (i8 i_Key = 0; i_Key < 10; i_Key++) {
     
-    pKeyVal = pKeyVec->pGet(i);
+    pKeyVal = pKeyVec->pGet(i_Key);
     
     if (pKeyVal->bMatches(pKeyValFind,pColVec,pOpAryFind))
       break;
@@ -227,9 +227,9 @@ void KeyTest::vTest(void)
   pOpAryFind->vAdd(RO_GREATER_EQUAL);
   
   pKeyVal = nullptr;
-  for (i8 i = 0; i < 10; i++) {
+  for (i8 i_Key = 0; i_Key < 10; i_Key++) {
     
-    pKeyVal = pKeyVec->pGet(i);
+    pKeyVal = pKeyVec->pGet(i_Key);
     
     if (pKeyVal->bMatches(pKeyValFind,pColVec,pOpAryFind))
       break;
@@ -274,10 +274,10 @@ void KeyTest::vTest(void)
   // create a vector of key values
   // (ascending order col0: 0,1,2, ... 9)
   //                  col1: 10, 20, 30
-  for (i8 i = 0; i < 10; i++) {
+  for (i8 i_Key = 0; i_Key < 10; i_Key++) {
     
     for (i8 j = 10; j <= 30; j += 10) {
-      xValWrk = i;
+      xValWrk = i_Key;
       xKeyWrk.vReset();
       xKeyWrk.vAddDatum(xValWrk, pCol0);
       //xKeyWrk.vShow();
@@ -292,12 +292,12 @@ void KeyTest::vTest(void)
   }
   
   // dump the key vector
-  for (i8 i = 0; i < 10; i++) {
+  for (i8 i_Key = 0; i_Key < 10; i_Key++) {
     
-    pKeyVal = pKeyVec->pGet(i);
+    pKeyVal = pKeyVec->pGet(i_Key);
     pKeyVal->vShow(pColVec);
     
-    //vTrace("%lld: %lld %lld\n"_Str,i,v, v2);
+    //vTrace("%lld: %lld %lld\n"_Str,i_Key,v, v2);
   }
   
   // scan the key vector for key value: >= 2,10
@@ -315,9 +315,9 @@ void KeyTest::vTest(void)
   pOpAryFind->vAdd(RO_GREATER_EQUAL);
   
   pKeyVal = nullptr;
-  for (i8 i = 0; i < 10; i++) {
+  for (i8 i_Key = 0; i_Key < 10; i_Key++) {
     
-    pKeyVal = pKeyVec->pGet(i);
+    pKeyVal = pKeyVec->pGet(i_Key);
     
     if (pKeyVal->bMatches(pKeyValFind,pColVec,pOpAryFind))
     break;
@@ -347,9 +347,9 @@ void KeyTest::vTest(void)
   pOpAryFind->vAdd(RO_LESS_THAN);
   
   pKeyVal = nullptr;
-  for (i8 i = 0; i < 10; i++) {
+  for (i8 i_Key = 0; i_Key < 10; i_Key++) {
     
-    pKeyVal = pKeyVec->pGet(i);
+    pKeyVal = pKeyVec->pGet(i_Key);
     
     if (pKeyVal->bMatches(pKeyValFind,pColVec,pOpAryFind))
     break;
@@ -392,10 +392,10 @@ void KeyTest::vTest(void)
   // create a vector of key values
   // (ascending order col0: 0,1,2, ... 9)
   //                  col1: 10, 20, 30
-  for (i8 i = 0; i < 10; i++) {
+  for (i8 i_Key = 0; i_Key < 10; i_Key++) {
     
     for (i8 j = 10; j <= 30; j += 10) {
-      xValWrk = i;
+      xValWrk = i_Key;
       xKeyWrk.vReset();
       xKeyWrk.vAddDatum(xValWrk, pCol0);
       //xKeyWrk.vShow();
@@ -415,8 +415,8 @@ void KeyTest::vTest(void)
   }
   
   // dump the key vector
-  for (i8 i = 0; i < 10; i++) {
-    pKeyVal = pKeyVec->pGet(i);
+  for (i8 i_Key = 0; i_Key < 10; i_Key++) {
+    pKeyVal = pKeyVec->pGet(i_Key);
     pKeyVal->vShow(pColVec);
   }
 
@@ -439,9 +439,9 @@ void KeyTest::vTest(void)
   pOpAryFind->vAdd(RO_GREATER_EQUAL);
   
   pKeyVal = nullptr;
-  for (i8 i = 0; i < 10; i++) {
+  for (i8 i_Key = 0; i_Key < 10; i_Key++) {
     
-    pKeyVal = pKeyVec->pGet(i);
+    pKeyVal = pKeyVec->pGet(i_Key);
     
     if (pKeyVal->bMatches(pKeyValFind,pColVec,pOpAryFind))
     break;
@@ -464,9 +464,9 @@ void KeyTest::vTest(void)
   pOpAryFind->vAdd(RO_LESS_EQUAL);
   
   pKeyVal = nullptr;
-  for (i8 i = 0; i < 10; i++) {
+  for (i8 i_Key = 0; i_Key < 10; i_Key++) {
     
-    pKeyVal = pKeyVec->pGet(i);
+    pKeyVal = pKeyVec->pGet(i_Key);
     
     if (pKeyVal->bMatches(pKeyValFind,pColVec,pOpAryFind))
     break;

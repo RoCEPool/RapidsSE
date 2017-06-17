@@ -51,14 +51,14 @@ TxCollection::TxCollection(void)
   ASSERT( ! gpTxCollection );
   
   // we allocate all tx objects up front and push them onto free chain
-  for (i8 iTxSlot = 0; iTxSlot < C_TX_ARRAY; iTxSlot++) {
+  for (i8 i_TxSlot = 0; i_TxSlot < C_TX_ARRAY; i_TxSlot++) {
     
     // allocate tx
     Tx* pTx = reinterpret_cast<Tx*>(Heap::pAllocate(CN_TX));
     
     // initialize it
     new(pTx) Tx;
-    pTx->vTxSlot(iTxSlot);
+    pTx->vTxSlot(i_TxSlot);
     
     // push in onto the freelist
     vPushFree(pTx);

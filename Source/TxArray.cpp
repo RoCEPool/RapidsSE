@@ -37,8 +37,8 @@ TxArray::TxArray(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TXARRAY,_FOOTER_);
   
-  for (i8 iTx = 0; iTx < C_TX_ARRAY; iTx++)
-    m_pTx[iTx] = nullptr;
+  for (i8 i_Tx = 0; i_Tx < C_TX_ARRAY; i_Tx++)
+    m_pTx[i_Tx] = nullptr;
 
   _checkInitialised_(CN_TXARRAY);
   
@@ -65,8 +65,8 @@ void TxArray::vDump(eCN eClass, Object* pObject, Str* aTab)
 
   i8 iTxCount = 0;
   
-  for (i8 iTx = 0; iTx < C_TX_ARRAY; iTx++)
-    if (pTxArray->m_pTx[iTx] != nullptr)
+  for (i8 i_Tx = 0; i_Tx < C_TX_ARRAY; i_Tx++)
+    if (pTxArray->m_pTx[i_Tx] != nullptr)
       iTxCount++;
   
   vTrace("tx count %lld\n"_Str,
