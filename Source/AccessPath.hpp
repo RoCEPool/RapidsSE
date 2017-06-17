@@ -30,6 +30,8 @@ namespace Plans
   
     i8         m_iPathRating;    // rating
   
+    s48K       m_sWhereString;   // where string
+  
     // must be last
     Footer m_xFooter;
     
@@ -78,6 +80,9 @@ namespace Plans
   
     ValReg& xValReg(void);
     void vValReg(ValReg& xValReg);
+  
+    s48K& sWhereString(void);
+    void vWhereString(s48K& sWhereString);
   
     Footer* pFooter(void);
   };

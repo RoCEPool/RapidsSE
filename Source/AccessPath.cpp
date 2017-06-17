@@ -66,6 +66,8 @@ AccessPath::AccessPath(void)
   
   m_iPathRating = 0;
   
+  //m_sWhereString
+  
   _checkInitialised_(CN_ACCESSPATH);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ACCESSPATH,_FOOTER_);
@@ -341,6 +343,26 @@ void AccessPath::vValReg(ValReg& xValReg)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ACCESSPATH,_FOOTER_);
   
   m_xValReg = xValReg;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get where string                                                           */
+/*----------------------------------------------------------------------------*/
+s48K& AccessPath::sWhereString(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ACCESSPATH,_FOOTER_);
+  
+  return m_sWhereString;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set tenant name                                                            */
+/*----------------------------------------------------------------------------*/
+void AccessPath::vWhereString(s48K& sWhereString)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ACCESSPATH,_FOOTER_);
+  
+  m_sWhereString = sWhereString;
 }
 
 /*----------------------------------------------------------------------------*/
