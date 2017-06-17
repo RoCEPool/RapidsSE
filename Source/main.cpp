@@ -79,15 +79,15 @@ int main(int argc, const char* argv[])
   //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   /*
   i8 iLevels[gxArguments.m_iLevels];
-  for (i8 iLevel = 0; iLevel < gxArguments.m_iLevels; iLevel++)
-    iLevels[iLevel] = 0;
+  for (i8 i_Level = 0; i_Level < gxArguments.m_iLevels; i_Level++)
+    iLevels[i_Level] = 0;
   
   for (i8 i = 0; i < 5; i++) {
     u8 iLevel = Random::iLogLevel(gxArguments.m_iLevels, gxArguments.m_iFrequency);
     iLevels[iLevel]++;
   }
-  for (i8 uLevel = 0; uLevel < gxArguments.m_uLevels; uLevel++)
-    printf("%llu: %llu\n",uLevel,iLevels[uLevel]);
+  for (i8 u_Level = 0; u_Level < gxArguments.m_uLevels; u_Level++)
+    printf("%llu: %llu\n",u_Level,iLevels[uLevel]);
    */
   //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   
@@ -201,11 +201,11 @@ void vKillPrev(void)
   int iFD;
   bool b;
   
-  for (i8 iIndex=0; iIndex < gxArguments.m_nNodes; iIndex++) {
+  for (i8 i_Index=0; i_Index < gxArguments.m_nNodes; i_Index++) {
     
     sRegionName.vSprint("%s_%s"_Str,
                         gxArguments.m_sRegionPrefix.s(),
-                        gxArguments.m_xNodes[iIndex].m_sNodeName.s());
+                        gxArguments.m_xNodes[i_Index].m_sNodeName.s());
     
     if ( ! Region::bTest(sRegionName) )
       continue;

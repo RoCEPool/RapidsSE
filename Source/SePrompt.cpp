@@ -635,11 +635,11 @@ void SePrompt::vClipTokens(i8 nTokens)
 {
   i8 iToToken = 0;
   
-  for (i8 iFromToken = nTokens; iFromToken < C_TOKENS; iFromToken++) {
+  for (i8 i_FromToken = nTokens; i_FromToken < C_TOKENS; i_FromToken++) {
     
-    m_xTokenSet[iToToken++]->vCopy(m_xTokenSet[iFromToken]);
+    m_xTokenSet[iToToken++]->vCopy(m_xTokenSet[i_FromToken]);
     
-    if (m_xTokenSet[iFromToken]->bEqual(""_Str))
+    if (m_xTokenSet[i_FromToken]->bEqual(""_Str))
       break;
   }
   
@@ -690,10 +690,10 @@ void SePrompt::vIterateRows(void)
   
   if (gbMetadata) {
     vTrace("metadata: %s\n"_Str, m_pSEitf->m_sMetadata.aStr());
-    for (i8 iPartition = 0; iPartition < gxArguments.m_nSlots; iPartition++) {
+    for (i8 i_Partition = 0; i_Partition < gxArguments.m_nSlots; i_Partition++) {
       //vTrace("Partition %lld: \n"_Str, Partition::iSlotToPartition(iPartition));
-      i8 iPart = Partition::iSlotToPartition(iPartition);
-      pSelCursor->vBegin(iPartition);
+      i8 iPart = Partition::iSlotToPartition(i_Partition);
+      pSelCursor->vBegin(i_Partition);
       pSelCursor->vFirst();
       Str* pStr = pSelCursor->aRowAsStr();
       while (pStr) {
@@ -707,9 +707,9 @@ void SePrompt::vIterateRows(void)
     m_pSEitf->m_iRowsProcessed = iRowCount;
   }
   else {
-    for (i8 iPartition = 0; iPartition < gxArguments.m_nSlots; iPartition++) {
-      vTrace("Partition %lld: \n"_Str, Partition::iSlotToPartition(iPartition));
-      pSelCursor->vBegin(iPartition);
+    for (i8 i_Partition = 0; i_Partition < gxArguments.m_nSlots; i_Partition++) {
+      vTrace("Partition %lld: \n"_Str, Partition::iSlotToPartition(i_Partition));
+      pSelCursor->vBegin(i_Partition);
       pSelCursor->vFirst();
       Str* pStr = pSelCursor->aRowAsStr();
       while (pStr) {

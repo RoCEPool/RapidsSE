@@ -66,8 +66,8 @@ SkipList::SkipList(bool bUniqueKey, cmpFun fCompare)
   m_nObjects   = 0;
   m_iHeight    = 0;
   
-  for (i8 iLevel = 0; iLevel < C_SKIPLIST_LEVELS; iLevel++)
-    m_pHead->m_pRight[iLevel] = nullptr;
+  for (i8 i_Level = 0; i_Level < C_SKIPLIST_LEVELS; i_Level++)
+    m_pHead->m_pRight[i_Level] = nullptr;
   
   _checkInitialised_(CN_SKIPLIST);
   
@@ -294,11 +294,11 @@ bool SkipList::bRemove(void* pObjectRemove)
   ASSERT(pObjectRemove == pNodeRemove->m_pObject); // logic check
   
   // cut out the node being removed
-  for (i8 iLevel = 0;
-       iLevel <= m_iHeight &&
-         (aPrior = aPriorVec[iLevel])->m_pRight[iLevel] == pNodeRemove;
-       iLevel++)
-    aPrior->m_pRight[iLevel] = pNodeRemove->m_pRight[iLevel];
+  for (i8 i_Level = 0;
+       i_Level <= m_iHeight &&
+         (aPrior = aPriorVec[i_Level])->m_pRight[i_Level] == pNodeRemove;
+       i_Level++)
+    aPrior->m_pRight[i_Level] = pNodeRemove->m_pRight[i_Level];
   
   // correct the height if we have removed the last tallest node
   while ( ! m_pHead->m_pRight[m_iHeight] && m_iHeight > 0 )
