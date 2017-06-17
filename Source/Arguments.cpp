@@ -121,11 +121,11 @@ bool Arguments::bParse(int argc, Str* argv[])
   
   i8 iNode = 0;
   
-  for (i8 iArg = 1; iArg < argc; iArg++) {
+  for (i8 i_Arg = 1; i_Arg < argc; i_Arg++) {
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (argv[iArg]->bSame("--command"_Str)) {
-      m_sCommand = (Str*)argv[++iArg];
+    if (argv[i_Arg]->bSame("--command"_Str)) {
+      m_sCommand = (Str*)argv[++i_Arg];
       m_bCommand = true;
       m_bPrompt  = true;
       m_bWelcome = false;
@@ -133,47 +133,47 @@ bool Arguments::bParse(int argc, Str* argv[])
     }
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (argv[iArg]->bSame("--commands"_Str)) {
-      m_sCommands = (Str*)argv[++iArg];
+    if (argv[i_Arg]->bSame("--commands"_Str)) {
+      m_sCommands = (Str*)argv[++i_Arg];
       continue;
     }
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (argv[iArg]->bSame("--sen"_Str)) {
-      m_sSen = (Str*)argv[++iArg];
+    if (argv[i_Arg]->bSame("--sen"_Str)) {
+      m_sSen = (Str*)argv[++i_Arg];
       continue;
     }
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (argv[iArg]->bSame("--docol"_Str)) {
+    if (argv[i_Arg]->bSame("--docol"_Str)) {
       m_bDocol = true;
       continue;
     }
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (
-        argv[iArg]->bSame("--help"_Str)
-        || argv[iArg]->bSame("-help"_Str)
-        || argv[iArg]->bSame("help"_Str)
-        || argv[iArg]->bSame("--?"_Str)
-        || argv[iArg]->bSame("-?"_Str)
-        || argv[iArg]->bSame("?"_Str)
+        argv[i_Arg]->bSame("--help"_Str)
+        || argv[i_Arg]->bSame("-help"_Str)
+        || argv[i_Arg]->bSame("help"_Str)
+        || argv[i_Arg]->bSame("--?"_Str)
+        || argv[i_Arg]->bSame("-?"_Str)
+        || argv[i_Arg]->bSame("?"_Str)
         )  {
       vPrintHelp();
       exit(EXIT_SUCCESS);
     }
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (argv[iArg]->bSame("--name"_Str)) {
-      m_sNodeName = (Str*)argv[++iArg];
+    if (argv[i_Arg]->bSame("--name"_Str)) {
+      m_sNodeName = (Str*)argv[++i_Arg];
       continue;
     }
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (argv[iArg]->bSame("--node"_Str)) {
-      m_xNodes[iNode].m_sNodeName = (Str*)argv[++iArg];;
-      m_xNodes[iNode].m_sIPAddress = (Str*)argv[++iArg];
-      m_xNodes[iNode].m_iPortNo = argv[++iArg]->iToI8();
+    if (argv[i_Arg]->bSame("--node"_Str)) {
+      m_xNodes[iNode].m_sNodeName = (Str*)argv[++i_Arg];;
+      m_xNodes[iNode].m_sIPAddress = (Str*)argv[++i_Arg];
+      m_xNodes[iNode].m_iPortNo = argv[++i_Arg]->iToI8();
       iNode++;
       
       if (m_nNodes > C_MAX_NODES) {
@@ -184,8 +184,8 @@ bool Arguments::bParse(int argc, Str* argv[])
     }
 
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (argv[iArg]->bSame("--partitionsPerNode"_Str)) {
-      m_nSlots = argv[++iArg]->iToI8();
+    if (argv[i_Arg]->bSame("--partitionsPerNode"_Str)) {
+      m_nSlots = argv[++i_Arg]->iToI8();
       if (m_nSlots > C_SLOTS_PER_NODE) {
         vError("Maximum number of partitions allowed per node is %lld\n"_Str,
           C_SLOTS_PER_NODE);
@@ -196,14 +196,14 @@ bool Arguments::bParse(int argc, Str* argv[])
     }
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (argv[iArg]->bSame("--region"_Str)) {
-      m_sRegionName = (Str*)argv[++iArg];
+    if (argv[i_Arg]->bSame("--region"_Str)) {
+      m_sRegionName = (Str*)argv[++i_Arg];
       continue;
     }
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (argv[iArg]->bSame("--regionPrefix"_Str)) {
-      m_sRegionPrefix = (Str*)argv[++iArg];
+    if (argv[i_Arg]->bSame("--regionPrefix"_Str)) {
+      m_sRegionPrefix = (Str*)argv[++i_Arg];
       continue;
     }
     
@@ -214,24 +214,24 @@ bool Arguments::bParse(int argc, Str* argv[])
     //}
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (argv[iArg]->bSame("--seprompt"_Str)) {
+    if (argv[i_Arg]->bSame("--seprompt"_Str)) {
       m_bPrompt = true;
       continue;
     }
 
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (argv[iArg]->bSame("--prompt"_Str)) {
+    if (argv[i_Arg]->bSame("--prompt"_Str)) {
 
       if (m_bStop) {
-        vError("Incorrect argument: --stop with %s\n"_Str,argv[iArg]);
+        vError("Incorrect argument: --stop with %s\n"_Str,argv[i_Arg]);
         return false;
       }
       if (m_bStatus) {
-        vError("Incorrect argument: --status with %s\n"_Str,argv[iArg]);
+        vError("Incorrect argument: --status with %s\n"_Str,argv[i_Arg]);
         return false;
       }
       if (m_bScript) {
-        vError("Incorrect argument: --script with %s\n"_Str,argv[iArg]);
+        vError("Incorrect argument: --script with %s\n"_Str,argv[i_Arg]);
         return false;
       }
       m_bPrompt = true;
@@ -239,16 +239,16 @@ bool Arguments::bParse(int argc, Str* argv[])
     }
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (argv[iArg]->bSame("--size"_Str)) {
-      bool bResult = Magnitudes::bBytes((Str*)argv[++iArg], m_iRegionSize);
+    if (argv[i_Arg]->bSame("--size"_Str)) {
+      bool bResult = Magnitudes::bBytes((Str*)argv[++i_Arg], m_iRegionSize);
       if (!bResult) {
-        vError("Invalid size argument: --size %s\n"_Str,argv[iArg]);
+        vError("Invalid size argument: --size %s\n"_Str,argv[i_Arg]);
         return false;
       }
       
       i8 iTotalMemory = MemLib::iGetTotalMemory();
       if (m_iRegionSize > DIV(C_MEMORY_PERCENT * iTotalMemory, 100)) {
-        vError("Invalid size argument: --size %s\n"_Str,argv[iArg]);
+        vError("Invalid size argument: --size %s\n"_Str,argv[i_Arg]);
         s32 sMag;
         Magnitudes::vMagnitude(iTotalMemory,sMag);
         vError("Cannot set size > %lld%% of memory on this node (node has only %s of memory)\n"_Str,
@@ -263,14 +263,14 @@ bool Arguments::bParse(int argc, Str* argv[])
     }
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (argv[iArg]->bSame("--start"_Str)) {
+    if (argv[i_Arg]->bSame("--start"_Str)) {
 
       if (m_bStop) {
-        vError("Incorrect argument: --stop with %s\n"_Str,argv[iArg]);
+        vError("Incorrect argument: --stop with %s\n"_Str,argv[i_Arg]);
         return false;
       }
       if (m_bStatus) {
-        vError("Incorrect argument: --status with %s\n"_Str,argv[iArg]);
+        vError("Incorrect argument: --status with %s\n"_Str,argv[i_Arg]);
         return false;
       }
 
@@ -279,17 +279,17 @@ bool Arguments::bParse(int argc, Str* argv[])
     }
 
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (argv[iArg]->bSame("--status"_Str)) {
+    if (argv[i_Arg]->bSame("--status"_Str)) {
       if (m_bStop) {
-        vError("Incorrect argument: --stop with %s\n"_Str,argv[iArg]);
+        vError("Incorrect argument: --stop with %s\n"_Str,argv[i_Arg]);
         return false;
       }
       if (m_bStart) {
-        vError("Incorrect argument: --start with %s\n"_Str,argv[iArg]);
+        vError("Incorrect argument: --start with %s\n"_Str,argv[i_Arg]);
         return false;
       }
       if (m_bPrompt) {
-        vError("Incorrect argument: --prompt with %s\n"_Str,argv[iArg]);
+        vError("Incorrect argument: --prompt with %s\n"_Str,argv[i_Arg]);
         return false;
       }
 
@@ -298,18 +298,18 @@ bool Arguments::bParse(int argc, Str* argv[])
     }
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (argv[iArg]->bSame("--stop"_Str)) {
+    if (argv[i_Arg]->bSame("--stop"_Str)) {
 
       if (m_bStart) {
-        vError("Incorrect argument: --start with %s\n"_Str,argv[iArg]);
+        vError("Incorrect argument: --start with %s\n"_Str,argv[i_Arg]);
         return false;
       }
       if (m_bStatus) {
-        vError("Incorrect argument: --status with %s\n"_Str,argv[iArg]);
+        vError("Incorrect argument: --status with %s\n"_Str,argv[i_Arg]);
         return false;
       }
       if (m_bPrompt) {
-        vError("Incorrect argument: --prompt with %s\n"_Str,argv[iArg]);
+        vError("Incorrect argument: --prompt with %s\n"_Str,argv[i_Arg]);
         return false;
       }
 
@@ -318,7 +318,7 @@ bool Arguments::bParse(int argc, Str* argv[])
     }
 
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (argv[iArg]->bSame("--unlink"_Str)) {
+    if (argv[i_Arg]->bSame("--unlink"_Str)) {
       m_bUnlink = true;
       continue;
     }
@@ -326,17 +326,17 @@ bool Arguments::bParse(int argc, Str* argv[])
     // options -----------------------------------------------------------------
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (argv[iArg]->bSame("--script"_Str)) {
+    if (argv[i_Arg]->bSame("--script"_Str)) {
       if (m_bStop) {
-        vError("Incorrect argument: --stop with %s\n"_Str,argv[iArg]);
+        vError("Incorrect argument: --stop with %s\n"_Str,argv[i_Arg]);
         return false;
       }
       if (m_bStatus) {
-        vError("Incorrect argument: --status with %s\n"_Str,argv[iArg]);
+        vError("Incorrect argument: --status with %s\n"_Str,argv[i_Arg]);
         return false;
       }
       if (m_bPrompt) {
-        vError("Incorrect argument: --script with %s\n"_Str,argv[iArg]);
+        vError("Incorrect argument: --script with %s\n"_Str,argv[i_Arg]);
         return false;
       }
       m_bScript = true;
@@ -344,42 +344,42 @@ bool Arguments::bParse(int argc, Str* argv[])
       continue;
     }
 
-    if (argv[iArg]->bSame("--bgtasks"_Str)) {
+    if (argv[i_Arg]->bSame("--bgtasks"_Str)) {
       m_bBgTasks = true;
       continue;
     }
     
-    if (argv[iArg]->bSame("--config"_Str)) {
+    if (argv[i_Arg]->bSame("--config"_Str)) {
       m_bConfig = true;
       continue;
     }
     
-    if (argv[iArg]->bSame("--hugepages"_Str)) {
+    if (argv[i_Arg]->bSame("--hugepages"_Str)) {
       m_bHugePages = true;
       continue;
     }
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (argv[iArg]->bSame("--levels"_Str)) {
-      m_iLevels = argv[++iArg]->iToI8();
+    if (argv[i_Arg]->bSame("--levels"_Str)) {
+      m_iLevels = argv[++i_Arg]->iToI8();
       continue;
     }
     
-    if (argv[iArg]->bSame("--frequency"_Str)) {
-      m_iFrequency = argv[++iArg]->iToI8();
+    if (argv[i_Arg]->bSame("--frequency"_Str)) {
+      m_iFrequency = argv[++i_Arg]->iToI8();
       continue;
     }
     
-    if (argv[iArg]->bSame("--lock"_Str)) {
+    if (argv[i_Arg]->bSame("--lock"_Str)) {
       m_bLock = true;
       continue;
     }
 
-    if (argv[iArg]->bSame("--progress"_Str)) {
+    if (argv[i_Arg]->bSame("--progress"_Str)) {
       m_bProgress = true;
       continue;
     }
-    if (argv[iArg]->bSame("--noprogress"_Str)) {
+    if (argv[i_Arg]->bSame("--noprogress"_Str)) {
       m_bProgress = false;
       continue;
     }
@@ -389,77 +389,77 @@ bool Arguments::bParse(int argc, Str* argv[])
     //  continue;
     //}
     
-    if (argv[iArg]->bSame("--touch"_Str)) {
+    if (argv[i_Arg]->bSame("--touch"_Str)) {
       m_bTouch = true;
       continue;
     }
-    if (argv[iArg]->bSame("--notouch"_Str)) {
+    if (argv[i_Arg]->bSame("--notouch"_Str)) {
       m_bTouch = false;
       continue;
     }
     
-    if (argv[iArg]->bSame("--tracepoint"_Str)) {
+    if (argv[i_Arg]->bSame("--tracepoint"_Str)) {
       m_bTracepoint = true;
       continue;
     }
     
-    if (argv[iArg]->bSame("--tracing"_Str)) {
+    if (argv[i_Arg]->bSame("--tracing"_Str)) {
       m_bTracing = true;
       continue;
     }
     
-    if (argv[iArg]->bSame("--unittests"_Str)) {
+    if (argv[i_Arg]->bSame("--unittests"_Str)) {
       m_bUnitTests = true;
       continue;
     }
     
-    if (argv[iArg]->bSame("--verbose"_Str)) {
+    if (argv[i_Arg]->bSame("--verbose"_Str)) {
       m_bVerbose = true;
       continue;
     }
     
-    if (argv[iArg]->bSame("--welcome"_Str)) {
+    if (argv[i_Arg]->bSame("--welcome"_Str)) {
       m_bWelcome = true;
       continue;
     }
     
-    if (argv[iArg]->bSame("--nowelcome"_Str)) {
+    if (argv[i_Arg]->bSame("--nowelcome"_Str)) {
       m_bWelcome = false;
       continue;
     }
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (argv[iArg]->bSame("--sleep"_Str)) {
-      m_iSleep = argv[++iArg]->iToI8();
+    if (argv[i_Arg]->bSame("--sleep"_Str)) {
+      m_iSleep = argv[++i_Arg]->iToI8();
       continue;
     }
     
-    if (argv[iArg]->bSame("--metadata"_Str)) {
+    if (argv[i_Arg]->bSame("--metadata"_Str)) {
       m_bMetadata = true;
       continue;
     }
     
-    if (argv[iArg]->bSame("--munged"_Str)) {
+    if (argv[i_Arg]->bSame("--munged"_Str)) {
       m_bMunged = true;
       continue;
     }
   
-    if (argv[iArg]->bSame("--killPrev"_Str)) {
+    if (argv[i_Arg]->bSame("--killPrev"_Str)) {
       m_bKillPrev = true;
       continue;
     }
 
-    if (argv[iArg]->bSame("--dontFree"_Str)) {
+    if (argv[i_Arg]->bSame("--dontFree"_Str)) {
       m_bDontFree = true;
       continue;
     }
     
-    if (argv[iArg]->bSame("--freeRB"_Str)) {
+    if (argv[i_Arg]->bSame("--freeRB"_Str)) {
       m_bFreeRB = true;
       continue;
     }
     
-    vError("Unrecognized command argument: %s\n"_Str,argv[iArg]);
+    vError("Unrecognized command argument: %s\n"_Str,argv[i_Arg]);
     return false;
   }
   
@@ -479,8 +479,8 @@ bool Arguments::bParse(int argc, Str* argv[])
     
     // the current node should have been specfied in the --node
     bool bFound = false;
-    for (i8 iIndex = 0; iIndex < m_nNodes; iIndex++) {
-      if (m_xNodes[iIndex].m_sNodeName.bSame(m_sNodeName)) {
+    for (i8 i_Index = 0; i_Index < m_nNodes; i_Index++) {
+      if (m_xNodes[i_Index].m_sNodeName.bSame(m_sNodeName)) {
         bFound = true;
         break;
       }
@@ -536,11 +536,11 @@ void Arguments::vPrint(void)
   //vTrace("  --address %p\n"_Str,m_pRegionAddr);
   vTrace("  --size %lld\n"_Str,m_iRegionSize);
   
-  for (i8 iIndex=0; iIndex < m_nNodes; iIndex++) {
+  for (i8 i_Index = 0; i_Index < m_nNodes; i_Index++) {
     vTrace("  --node %s %s %lld\n"_Str,
-      m_xNodes[iIndex].m_sNodeName.s(),
-      m_xNodes[iIndex].m_sIPAddress.s(),
-      m_xNodes[iIndex].m_iPortNo);
+      m_xNodes[i_Index].m_sNodeName.s(),
+      m_xNodes[i_Index].m_sIPAddress.s(),
+      m_xNodes[i_Index].m_iPortNo);
   }
   
   vTrace("  --partitionsPerNode %lld\n"_Str,m_nSlots);

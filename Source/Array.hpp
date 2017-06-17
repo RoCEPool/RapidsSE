@@ -98,8 +98,8 @@ Array<ARRAY_CN, ITEM, MAX_ITEMS>::Array(void)
   
   m_nItems = 0;
   
-  for (i8 iItem = 0; iItem < MAX_ITEMS; iItem++)
-    m_xItem[iItem] = (ITEM)0;
+  for (i8 i_Item = 0; i_Item < MAX_ITEMS; i_Item++)
+    m_xItem[i_Item] = (ITEM)0;
   
   _setFooter_();
   
@@ -116,8 +116,8 @@ Array<ARRAY_CN, ITEM, MAX_ITEMS>::~Array(void)
 {
   _precondition_(_MAGIC_,ARRAY_CN,_FOOTER_);
   
-//  for (i8 iItem = 0; iItem < m_nItems; iItem++) {
-//    ITEM xItem = m_xItem[iItem];
+//  for (i8 i_Item = 0; i_Item < m_nItems; i_Item++) {
+//    ITEM xItem = m_xItem[i_Item];
 //    delete xItem;
 //  }
 }
@@ -169,8 +169,8 @@ void Array<ARRAY_CN, ITEM, MAX_ITEMS>::vClear(void)
 {
   _precondition_(_MAGIC_,ARRAY_CN,_FOOTER_);
   
-  for (i8 iItem = 0; iItem < m_nItems; iItem++) {
-    m_xItem[iItem] = (ITEM)0;
+  for (i8 i_Item = 0; i_Item < m_nItems; i_Item++) {
+    m_xItem[i_Item] = (ITEM)0;
   }
     
   m_nItems = 0;

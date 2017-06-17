@@ -67,7 +67,7 @@ void BitLib::vDump(u8 uBitMap, char cBuffer[])
   
   aChar = cBuffer;
   
-  for (i8 iBit = 0; iBit < 64; iBit++) {
+  for (i8 i_Bit = 0; i_Bit < 64; i_Bit++) {
     
     if (0 != (uBitMap & 0x8000000000000000))
       *aChar++ = '1';
@@ -132,7 +132,7 @@ i8 BitLib::iHighestBit(u8 uBitMap)
 {
   i8 iHighBit = 64;
   
-  for (i8 iBit = 0; iBit < 64; iBit++) {
+  for (i8 i_Bit = 0; i_Bit < 64; i_Bit++) {
     
     iHighBit--;
     

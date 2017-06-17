@@ -19,14 +19,14 @@ bool BndLib::bIsBefore(Key& xKeyThis, Key& xKeyThat,
   char* aCursorThis = xKeyThis.aWspArea();
   char* aCursorThat = xKeyThat.aWspArea();
   
-  for (i8 iColumn = 0; iColumn < nCols; iColumn++) {
+  for (i8 i_Column = 0; i_Column < nCols; i_Column++) {
     
-    Column* pColumn = xColVec.pGet(iColumn);
+    Column* pColumn = xColVec.pGet(i_Column);
     
     char* aDatumThis = xKeyThis.aEachDatum(pColumn,nBytesThis,&aCursorThis);
     char* aDatumThat = xKeyThat.aEachDatum(pColumn,nBytesThat,&aCursorThat);
 
-    eRO eOp = xOpAry.xGet(iColumn);
+    eRO eOp = xOpAry.xGet(i_Column);
     
     ASSERT(eOp == RO_LESS_THAN  ||
            eOp == RO_LESS_EQUAL ||
@@ -53,14 +53,14 @@ bool BndLib::bPassesFilter(Key& xKeyThis, Key& xKeyThat,
   char* aCursorThis = xKeyThis.aWspArea();
   char* aCursorThat = xKeyThat.aWspArea();
   
-  for (i8 iColumn = 0; iColumn < nCols; iColumn++) {
+  for (i8 i_Column = 0; i_Column < nCols; i_Column++) {
     
-    Column* pColumn = xColVec.pGet(iColumn);
+    Column* pColumn = xColVec.pGet(i_Column);
     
     char* aDatumThis = xKeyThis.aEachDatum(pColumn,nBytesThis,&aCursorThis);
     char* aDatumThat = xKeyThat.aEachDatum(pColumn,nBytesThat,&aCursorThat);
     
-    eRO eOp = xOpAry.xGet(iColumn);
+    eRO eOp = xOpAry.xGet(i_Column);
     
     if ( ! pColumn->bCmp(eOp,aDatumThis,nBytesThis,aDatumThat,nBytesThat))
       return false;
