@@ -115,6 +115,11 @@ void Task::vAccessPathParse(NNP_Task nnpTask)
   pAccessPath->vWhereString(sWhere);
   pAccessPath->vParse();
   
+  s32 sValue = "1"_Str;
+  s32 sIndexNm = "jCdt_idx1"_Str;
+  
+  nnpTask->m_pDataStack->vPushS32(sValue);
+  nnpTask->m_pDataStack->vPushS32(sIndexNm);
   nnpTask->m_pDataStack->vPushInt(FT_LOWER);
   
   EXIT();
