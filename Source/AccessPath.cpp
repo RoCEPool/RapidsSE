@@ -97,7 +97,7 @@ void AccessPath::vInit(Interface::SEitf* pSEitf)
   m_sIndexName    = "idx1"_Str;
   
   m_sColumnName   = "jidx_key"_Str;
-  m_eRelationalOp = RO_EQUAL;
+  m_eRelationalOp = RO_EQUAL_TO;
   m_xValReg       = 10;
   
   // find ptrs to the objects...
@@ -347,15 +347,7 @@ void AccessPath::vValReg(ValReg& xValReg)
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* get location of footer                                                     */
-/*----------------------------------------------------------------------------*/
-Footer* AccessPath::pFooter(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ACCESSPATH);
-  
-  return &m_xFooter;
-}
+_pFooter_(AccessPath)
 
 /*============================================================================*/
 /* end                                                                        */

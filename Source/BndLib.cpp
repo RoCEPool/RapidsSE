@@ -30,7 +30,7 @@ bool BndLib::bIsBefore(Key& xKeyThis, Key& xKeyThat,
     
     ASSERT(eOp == RO_LESS_THAN  ||
            eOp == RO_LESS_EQUAL ||
-           eOp == RO_EQUAL);
+           eOp == RO_EQUAL_TO);
    
     if ( ! pColumn->bCmp(eOp,aDatumThis,nBytesThis,aDatumThat,nBytesThat))
       return false;
@@ -53,14 +53,14 @@ bool BndLib::bPassesFilter(Key& xKeyThis, Key& xKeyThat,
   char* aCursorThis = xKeyThis.aWspArea();
   char* aCursorThat = xKeyThat.aWspArea();
   
-  for (i8 i_Column = 0; i_Column < nCols; i_Column++) {
+  for (i8 iColumn = 0; iColumn < nCols; iColumn++) {
     
-    Column* pColumn = xColVec.pGet(i_Column);
+    Column* pColumn = xColVec.pGet(iColumn);
     
     char* aDatumThis = xKeyThis.aEachDatum(pColumn,nBytesThis,&aCursorThis);
     char* aDatumThat = xKeyThat.aEachDatum(pColumn,nBytesThat,&aCursorThat);
     
-    eRO eOp = xOpAry.xGet(i_Column);
+    eRO eOp = xOpAry.xGet(iColumn);
     
     if ( ! pColumn->bCmp(eOp,aDatumThis,nBytesThis,aDatumThat,nBytesThat))
       return false;

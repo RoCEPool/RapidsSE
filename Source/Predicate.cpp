@@ -50,6 +50,7 @@ Predicate::Predicate(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PREDICATE,_FOOTER_);
   
+  m_eBounds = PB_NONE;
   m_ePredicate = PK_NONE;
   m_pArg1 = nullptr;
   m_pOp   = nullptr;
@@ -63,11 +64,12 @@ Predicate::Predicate(void)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Predicate::Predicate(ePK ePredicate, Arg* pArg1, Op* pOp, Arg* pArg2)
+Predicate::Predicate(ePB eBounds, ePK ePredicate, Arg* pArg1, Op* pOp, Arg* pArg2)
 : Object(CN_PREDICATE)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PREDICATE,_FOOTER_);
   
+  m_eBounds = eBounds;
   m_ePredicate = ePredicate;
   m_pArg1 = pArg1;
   m_pOp   = pOp;
@@ -89,6 +91,38 @@ Predicate::~Predicate(void)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get predicate bounds                                                       */
+/*----------------------------------------------------------------------------*/
+ePB Predicate::eBounds(void)
+{
+  return m_eBounds;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set predicate bounds                                                       */
+/*----------------------------------------------------------------------------*/
+void Predicate::vBounds(ePB eBounds)
+{
+  m_eBounds = eBounds;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get predicate kind                                                         */
+/*----------------------------------------------------------------------------*/
+ePK Predicate::ePredicate(void)
+{
+  return m_ePredicate;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set predicate kind                                                         */
+/*----------------------------------------------------------------------------*/
+void Predicate::vPredicate(ePK ePredicate)
+{
+  m_ePredicate = ePredicate;
+}
 
 /*----------------------------------------------------------------------------*/
 /* get op                                                                     */
@@ -142,15 +176,7 @@ void Predicate::vArg2(Arg* pArg2)
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* get location of footer                                                     */
-/*----------------------------------------------------------------------------*/
-Footer* Predicate::pFooter(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PREDICATE);
-  
-  return &m_xFooter;
-}
+_pFooter_(Predicate)
 
 /*============================================================================*/
 /* end                                                                        */

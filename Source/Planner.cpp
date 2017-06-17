@@ -160,10 +160,49 @@ void Planner::vTest(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
   
-  Arg* pArg1 = new Arg(AK_COLUMNNM,"jA"_Str);
+  Arg* pArg1 = new Arg(AK_NONE,"jA"_Str);
   Op*  pOp   = new Op(RO_LESS_EQUAL);
-  Arg* pArg2 = new Arg(AK_LITERAL,"7"_Str);
-  Predicate* pPredicate = new Predicate(PK_COLUMN_OP_LITERAL,pArg1,pOp,pArg2);
+  Arg* pArg2 = new Arg(AK_NONE,"7"_Str);
+  Predicate* pPredicate = new Predicate(PB_UPPER,PK_COLUMN_OP_LITERAL,pArg1,pOp,pArg2);
+  
+  IdxVec* pIdxVec = m_pTable->pIdxVec();
+  
+  bool bFoundColumn = false;
+  s256 sColumnNm;
+  for (i8 i_Idx = 0; i_Idx < pIdxVec->nItems(); i_Idx++) {
+    Index* pIndex = pIdxVec->pGet(i_Idx);
+    IdxColVec* pIdxColVec = pIndex->pIdxColVec();
+    for (i8 i_IdxCol = 0; i_IdxCol < pIdxColVec->nItems(); i_IdxCol++) {
+      Column* pColumn = pIdxColVec->pGet(i_IdxCol);
+      sColumnNm = pColumn->sColumnName();
+      if (pArg1->bIsColumnNm(sColumnNm)) {
+        pArg1->vArgKind(AK_COLUMNNM);
+        pArg2->vArgKind(AK_LITERAL);
+        pPredicate->vPredicate(PK_COLUMN_OP_LITERAL);
+      }
+      else if (pArg2->bIsColumnNm(sColumnNm)) {
+        pArg2->vArgKind(AK_COLUMNNM);
+        pArg1->vArgKind(AK_LITERAL);
+        pPredicate->vPredicate(PK_LITERAL_OP_COLUMN);
+      }
+      else
+        pPredicate->vPredicate(PK_LITERAL_OP_LITERAL);
+      
+      if (pPredicate->pOp()->eOpKind() == RO_GREATER_THAN ||
+          pPredicate->pOp()->eOpKind() == RO_GREATER_EQUAL)
+        pPredicate->vBounds(PB_LOWER);
+      else
+      if (pPredicate->pOp()->eOpKind() == RO_LESS_THAN ||
+          pPredicate->pOp()->eOpKind() == RO_LESS_EQUAL)
+        pPredicate->vBounds(PB_UPPER);
+      else
+      if (pPredicate->pOp()->eOpKind() == RO_EQUAL_TO)
+        pPredicate->vBounds(PB_EXACT);
+      else
+        pPredicate->vBounds(PB_NONE);
+    }
+    
+  }
   
 }
 
@@ -174,12 +213,7 @@ void Planner::vTest(void)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* Planner::pFooter(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER);
-  
-  return &m_xFooter;
-}
+_pFooter_(Planner)
 
 /*============================================================================*/
 /* end                                                                        */

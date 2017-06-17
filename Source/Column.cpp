@@ -601,10 +601,10 @@ bool Column::bCmp(eRO eRelnOp, char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
   switch(eRelnOp) {
     case RO_LESS_THAN:    return bLessThan    (aArgA, nBytesA, aArgB, nBytesB);
     case RO_LESS_EQUAL:   return bLessEqual   (aArgA, nBytesA, aArgB, nBytesB);
-    case RO_EQUAL:        return bEqualTo     (aArgA, nBytesA, aArgB, nBytesB);
+    case RO_EQUAL_TO:     return bEqualTo     (aArgA, nBytesA, aArgB, nBytesB);
     case RO_NOT_EQUAL:    return bNotEqual    (aArgA, nBytesA, aArgB, nBytesB);
     case RO_GREATER_EQUAL:return bGreaterEqual(aArgA, nBytesA, aArgB, nBytesB);
-    case RO_GREATER:      return bGreaterThan (aArgA, nBytesA, aArgB, nBytesB);
+    case RO_GREATER_THAN: return bGreaterThan (aArgA, nBytesA, aArgB, nBytesB);
     default: ASSERT(0);
   }
   

@@ -43,6 +43,9 @@ namespace Plans
     void vArgVal(s256& sArgVal);
     s256& sArgVal(void);
   
+    bool bIsColumnNm(s256& sName);
+  
+  
     Footer* pFooter(void);
   };
   
