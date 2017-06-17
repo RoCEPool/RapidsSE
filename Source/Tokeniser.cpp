@@ -243,9 +243,9 @@ i8 Tokeniser::iFindToken(Str* aLookFor, TokenSet& xTokenSet, i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  for (i8 iToken = 0; iToken < nTokens; iToken++)
-    if (aLookFor->bSame(xTokenSet[iToken]))
-      return iToken;
+  for (i8 i_Token = 0; i_Token < nTokens; i_Token++)
+    if (aLookFor->bSame(xTokenSet[i_Token]))
+      return i_Token;
   
   return -1;
 }
@@ -257,9 +257,9 @@ i8 Tokeniser::iCountTokens(TokenSet& xTokenSet,i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  for (i8 iToken = 0; iToken < nTokens; iToken++)
-    if (xTokenSet[iToken]->bEqual(""_Str))
-      return iToken;
+  for (i8 i_Token = 0; i_Token < nTokens; i_Token++)
+    if (xTokenSet[i_Token]->bEqual(""_Str))
+      return i_Token;
   
   ASSERT("Should never be reached"_Str);
   return -1;
@@ -274,12 +274,12 @@ void Tokeniser::vDumpTokens(Str* pTitle, TokenSet& xTokenSet, i8 nTokens)
   
   vTrace("%s"_Str,pTitle);
   
-  for (i8 iToken = 0; iToken < nTokens; iToken++) {
+  for (i8 i_Token = 0; i_Token < nTokens; i_Token++) {
     
-    if (! *xTokenSet[iToken]->s())
+    if (! *xTokenSet[i_Token]->s())
       break;
     
-    vTrace("%s "_Str, xTokenSet[iToken]->s());
+    vTrace("%s "_Str, xTokenSet[i_Token]->s());
   }
   vTrace("\n"_Str);
 }

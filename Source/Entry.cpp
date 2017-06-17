@@ -487,10 +487,10 @@ void Entry::vExtractKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
   StrVal* pStrVal = (StrVal*)aRow();
   
   i8 nCols = pIdxColVec->nItems();
-  for (i8 iColumn = 0; iColumn < nCols; iColumn++) {
+  for (i8 i_Column = 0; i_Column < nCols; i_Column++) {
     
     // get the column from the index column vector
-    Column* pColumn = pIdxColVec->pGet(iColumn);
+    Column* pColumn = pIdxColVec->pGet(i_Column);
     
     // get the column number of the column
     i8 iColumnNo = pColumn->iColumnNo();

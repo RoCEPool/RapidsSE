@@ -46,8 +46,8 @@ TokenSet::TokenSet(void)
 {
   _precondition_(_MAGIC_,CN_TOKENSET,_FOOTER_);
   
-  for (i8 iToken = 0; iToken < C_TOKENS; iToken++)
-    m_xTokenAry[iToken] = (Str*)&m_xTokenArea.aArea()[C_TOKEN_SPACE * iToken];
+  for (i8 i_Token = 0; i_Token < C_TOKENS; i_Token++)
+    m_xTokenAry[i_Token] = (Str*)&m_xTokenArea.aArea()[C_TOKEN_SPACE * i_Token];
   
   vReset();
   
@@ -67,11 +67,11 @@ TokenSet::~TokenSet(void)
 /*----------------------------------------------------------------------------*/
 /* [] operator                                                                */
 /*----------------------------------------------------------------------------*/
-Str*& TokenSet::operator [](i8 iTokenNo)
+Str*& TokenSet::operator [](i8 i_TokenNo)
 {
   _precondition_(_MAGIC_,CN_TOKENSET,_FOOTER_);
   
-  return m_xTokenAry[iTokenNo];
+  return m_xTokenAry[i_TokenNo];
 }
 
 /*----------------------------------------------------------------------------*/
@@ -114,8 +114,8 @@ void TokenSet::vReset(void)
   
   m_nTokens = 0;
   
-  for (i8 iToken = 0; iToken < C_TOKENS; iToken++)
-    m_xTokenAry[iToken]->vCopy(""_Str);
+  for (i8 i_Token = 0; i_Token < C_TOKENS; i_Token++)
+    m_xTokenAry[i_Token]->vCopy(""_Str);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -139,9 +139,9 @@ void TokenSet::vStripSemicolon(void)
 {
   _precondition_(_MAGIC_,CN_TOKENSET,_FOOTER_);
   
-  for (i8 iToken = 0; iToken < C_TOKENS; iToken++) {
-    if (m_xTokenAry[iToken]->bEqual(";"_Str)) {
-      *m_xTokenAry[iToken]->s() = '\0';
+  for (i8 i_Token = 0; i_Token < C_TOKENS; i_Token++) {
+    if (m_xTokenAry[i_Token]->bEqual(";"_Str)) {
+      *m_xTokenAry[i_Token]->s() = '\0';
       break;
     }
   }

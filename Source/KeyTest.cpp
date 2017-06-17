@@ -33,9 +33,9 @@ void KeyTest::vTest(void)
   KeyVec* pKeyVec = new KeyVec;
   
   // create a vector of key values (ascending order 0,1,2, ... 9)
-  for (i8 i = 0; i < 10; i++) {
+  for (i8 i_Key = 0; i_Key < 10; i_Key++) {
   
-    xValWrk = i;
+    xValWrk = i_Key;
     
     xKeyWrk.vReset();
     xKeyWrk.vAddDatum(xValWrk, pCol);
@@ -51,8 +51,8 @@ void KeyTest::vTest(void)
   char* aCursor;
   
   // dump the key vector
-  for (i8 i = 0; i < 10; i++) {
-    pKeyVal = pKeyVec->pGet(i);
+  for (i8 i_Key = 0; i_Key < 10; i_Key++) {
+    pKeyVal = pKeyVec->pGet(i_Key);
     pKeyVal->vShow(pColVec);
   }
 

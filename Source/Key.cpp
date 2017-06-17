@@ -105,8 +105,8 @@ i8 Key::nKeySize(IdxColVec* pIdxColVec)
   i8 nBytes;
   char* aCursor = aWspArea();
   
-  for (i8 iColumn = 0; iColumn < nCols; iColumn++) {
-    Column* pColumn = pIdxColVec->pGet(iColumn);
+  for (i8 i_Column = 0; i_Column < nCols; i_Column++) {
+    Column* pColumn = pIdxColVec->pGet(i_Column);
     
     char* aElement = aEachDatum(pColumn, nBytes, &aCursor);
     nKeySize += nBytes;
@@ -136,9 +136,9 @@ bool Key::bLessThan(Key* pKeyThat, IdxColVec* pIdxColVec)
   char* aCursorThis = aWspArea();
   char* aCursorThat = pKeyThat->aWspArea();
   
-  for (i8 iColumn = 0; iColumn < pIdxColVec->nItems(); iColumn++) {
+  for (i8 i_Column = 0; i_Column < pIdxColVec->nItems(); i_Column++) {
     
-    Column* pColumn = pIdxColVec->pGet(iColumn);
+    Column* pColumn = pIdxColVec->pGet(i_Column);
     
     i8 nBytesThis;
     i8 nBytesThat;
@@ -165,9 +165,9 @@ bool Key::bLessEqual(Key* pKeyThat, IdxColVec* pIdxColVec)
   char* aCursorThis = aWspArea();
   char* aCursorThat = pKeyThat->aWspArea();
   
-  for (i8 iColumn = 0; iColumn < pIdxColVec->nItems(); iColumn++) {
+  for (i8 i_Column = 0; i_Column < pIdxColVec->nItems(); i_Column++) {
     
-    Column* pColumn = pIdxColVec->pGet(iColumn);
+    Column* pColumn = pIdxColVec->pGet(i_Column);
     
     i8 nBytesThis;
     i8 nBytesThat;
@@ -194,9 +194,9 @@ bool Key::bEqualTo(Key* pKeyThat, IdxColVec* pIdxColVec)
   char* aCursorThis = aWspArea();
   char* aCursorThat = pKeyThat->aWspArea();
   
-  for (i8 iColumn = 0; iColumn < pIdxColVec->nItems(); iColumn++) {
+  for (i8 i_Column = 0; i_Column < pIdxColVec->nItems(); i_Column++) {
     
-    Column* pColumn = pIdxColVec->pGet(iColumn);
+    Column* pColumn = pIdxColVec->pGet(i_Column);
     
     i8 nBytesThis;
     i8 nBytesThat;
@@ -223,9 +223,9 @@ bool Key::bNotEqual(Key* pKeyThat, IdxColVec* pIdxColVec)
   char* aCursorThis = aWspArea();
   char* aCursorThat = pKeyThat->aWspArea();
   
-  for (i8 iColumn = 0; iColumn < pIdxColVec->nItems(); iColumn++) {
+  for (i8 i_Column = 0; i_Column < pIdxColVec->nItems(); i_Column++) {
     
-    Column* pColumn = pIdxColVec->pGet(iColumn);
+    Column* pColumn = pIdxColVec->pGet(i_Column);
     
     i8 nBytesThis;
     i8 nBytesThat;
@@ -252,9 +252,9 @@ bool Key::bGreaterEqual(Key* pKeyThat, IdxColVec* pIdxColVec)
   char* aCursorThis = aWspArea();
   char* aCursorThat = pKeyThat->aWspArea();
   
-  for (i8 iColumn = 0; iColumn < pIdxColVec->nItems(); iColumn++) {
+  for (i8 i_Column = 0; i_Column < pIdxColVec->nItems(); i_Column++) {
     
-    Column* pColumn = pIdxColVec->pGet(iColumn);
+    Column* pColumn = pIdxColVec->pGet(i_Column);
     
     i8 nBytesThis;
     i8 nBytesThat;
@@ -281,9 +281,9 @@ bool Key::bGreaterThan(Key* pKeyThat, IdxColVec* pIdxColVec)
   char* aCursorThis = aWspArea();
   char* aCursorThat = pKeyThat->aWspArea();
   
-  for (i8 iColumn = 0; iColumn < pIdxColVec->nItems(); iColumn++) {
+  for (i8 i_Column = 0; i_Column < pIdxColVec->nItems(); i_Column++) {
     
-    Column* pColumn = pIdxColVec->pGet(iColumn);
+    Column* pColumn = pIdxColVec->pGet(i_Column);
     
     i8 nBytesThis;
     i8 nBytesThat;
@@ -310,9 +310,9 @@ i8 Key::iCmp(Key* pKeyThat, IdxColVec* pIdxColVec)
   char* aCursorThis = aWspArea();
   char* aCursorThat = pKeyThat->aWspArea();
   
-  for (i8 iColumn = 0; iColumn < pIdxColVec->nItems(); iColumn++) {
+  for (i8 i_Column = 0; i_Column < pIdxColVec->nItems(); i_Column++) {
     
-    Column* pColumn = pIdxColVec->pGet(iColumn);
+    Column* pColumn = pIdxColVec->pGet(i_Column);
     
     i8 nBytesThis;
     i8 nBytesThat;
@@ -339,9 +339,9 @@ bool Key::bMatches(Key* pKeyThat, IdxColVec* pIdxColVec, RelOpAry* pRelOpAry)
   
   bool bCmp = false;
   
-  for (i8 iColumn = 0; iColumn < pIdxColVec->nItems(); iColumn++) {
+  for (i8 i_Column = 0; i_Column < pIdxColVec->nItems(); i_Column++) {
     
-    Column* pColumn = pIdxColVec->pGet(iColumn);
+    Column* pColumn = pIdxColVec->pGet(i_Column);
     
     i8 nBytesThis;
     i8 nBytesThat;
@@ -349,7 +349,7 @@ bool Key::bMatches(Key* pKeyThat, IdxColVec* pIdxColVec, RelOpAry* pRelOpAry)
     char* aDatumThis = aEachDatum(pColumn,nBytesThis,&aCursorThis);
     char* aDatumThat = aEachDatum(pColumn,nBytesThat,&aCursorThat);
     
-    eRO eRelOp = pRelOpAry->xGet(iColumn);
+    eRO eRelOp = pRelOpAry->xGet(i_Column);
     
     bCmp = pColumn->bCmp(eRelOp,
                          aDatumThis,nBytesThis,
@@ -417,9 +417,9 @@ bool Key::bJuxtaBefore(Key* pKeyThat, IdxColVec* pIdxColVec, bool& bIsEqual)
   
   i8 iCmp = 0;
   
-  for (i8 iColumn = 0; iColumn < pIdxColVec->nItems(); iColumn++) {
+  for (i8 i_Column = 0; i_Column < pIdxColVec->nItems(); i_Column++) {
     
-    Column* pColumn = pIdxColVec->pGet(iColumn);
+    Column* pColumn = pIdxColVec->pGet(i_Column);
     
     i8 nBytesThis;
     i8 nBytesThat;
@@ -470,9 +470,9 @@ bool Key::bJuxtaSame(Key* pKeyThat, IdxColVec* pIdxColVec, bool& bIsEqual)
   
   i8 iCmp = 0;
   
-  for (i8 iColumn = 0; iColumn < pIdxColVec->nItems(); iColumn++) {
+  for (i8 i_Column = 0; i_Column < pIdxColVec->nItems(); i_Column++) {
     
-    Column* pColumn = pIdxColVec->pGet(iColumn);
+    Column* pColumn = pIdxColVec->pGet(i_Column);
     
     i8 nBytesThis;
     i8 nBytesThat;
@@ -534,9 +534,9 @@ bool Key::bJuxtaAfter(Key* pKeyThat, IdxColVec* pIdxColVec, bool& bIsEqual)
   
   i8 iCmp = 0;
   
-  for (i8 iColumn = 0; iColumn < pIdxColVec->nItems(); iColumn++) {
+  for (i8 i_Column = 0; i_Column < pIdxColVec->nItems(); i_Column++) {
     
-    Column* pColumn = pIdxColVec->pGet(iColumn);
+    Column* pColumn = pIdxColVec->pGet(i_Column);
     
     i8 nBytesThis;
     i8 nBytesThat;
@@ -580,9 +580,9 @@ void Key::vShow(IdxColVec* pIdxColVec)
   
   sKeyString = "( "_Str;
   
-  for (i8 iColumn = 0; iColumn < pIdxColVec->nItems(); iColumn++) {
+  for (i8 i_Column = 0; i_Column < pIdxColVec->nItems(); i_Column++) {
     
-    Column* pColumn = pIdxColVec      ->pGet(iColumn);
+    Column* pColumn = pIdxColVec      ->pGet(i_Column);
     eCT eColumnType = pColumn->eColumnType();
     
     i8 nBytes;
@@ -598,7 +598,7 @@ void Key::vShow(IdxColVec* pIdxColVec)
         Dte xDte;
         xDte = *(Dte*)aEachDatum;
         vTrace("Element %lld:(size %lld value:%04lld-%02lld-%02lld) "_Str,
-               iColumn,
+               i_Column,
                nBytes,
                xDte.iYear(),
                xDte.iMonth(),
@@ -612,7 +612,7 @@ void Key::vShow(IdxColVec* pIdxColVec)
         Flt xFlt;
         xFlt = *(Flt*)aEachDatum;
         vTrace("Element %lld:(size %lld value:%llf) "_Str,
-               iColumn,
+               i_Column,
                nBytes,
                xFlt.dAsD8()
                );
@@ -623,7 +623,7 @@ void Key::vShow(IdxColVec* pIdxColVec)
       case CT_INTEGER:
         iKey = *(i8*)aEachDatum;
         vTrace("E%lld:(size %lld value:%lld) "_Str,
-               iColumn,
+               i_Column,
                nBytes,
                iKey
                );
@@ -634,7 +634,7 @@ void Key::vShow(IdxColVec* pIdxColVec)
         Ivl xIvl;
         xIvl = *(Ivl*)aEachDatum;
         vTrace("Element %lld:(size %lld value:%lld.%03lld) "_Str,
-               iColumn,
+               i_Column,
                nBytes,
                xIvl.iSecond(),
                xIvl.iMilli()
@@ -647,7 +647,7 @@ void Key::vShow(IdxColVec* pIdxColVec)
         Tme xTme;
         xTme = *(Tme*)aEachDatum;
         vTrace("Element %lld:(size %lld value:%02lld:%02lld:%02lld.%lld) "_Str,
-               iColumn,
+               i_Column,
                nBytes,
                xTme.iHour(),
                xTme.iMinute(),
@@ -662,7 +662,7 @@ void Key::vShow(IdxColVec* pIdxColVec)
         Tsp xTsp;
         xTsp = *(Tsp*)aEachDatum;
         vTrace("Element %lld:(size %lld value:%04lld-%02lld-%02lld %02lld:%02lld:%02lld.%lld) "_Str,
-               iColumn,
+               i_Column,
                nBytes,
                xTsp.iYear(),
                xTsp.iMonth(),
@@ -679,7 +679,7 @@ void Key::vShow(IdxColVec* pIdxColVec)
       case CT_VARCHAR:
         pKey = (Str*)aEachDatum;
         vTrace("E%lld:(size %lld value:%s) "_Str,
-               iColumn,
+               i_Column,
                nBytes,
                pKey
                );

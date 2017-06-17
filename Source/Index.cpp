@@ -139,8 +139,8 @@ void Index::vCreateColumnVec(s32& sColumnNm, s48K& sColumnDefn)
   i8 iColumns = m_pTable->pColumnVec()->nItems();
   
   bool bFound = false;
-  for (i8 iCol = 0; iCol < iColumns; iCol++) {
-    pColumn = m_pTable->pColumnVec()->pGet(iCol);
+  for (i8 i_Col = 0; i_Col < iColumns; i_Col++) {
+    pColumn = m_pTable->pColumnVec()->pGet(i_Col);
     if (pColumn->sColumnName().bSame(sColumnNm)) {
       bFound = true;
       break;
@@ -214,8 +214,8 @@ void Index::vShowColumnVec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
   
-  for (i8 iColumn = 0; iColumn < m_pIdxColVec->nItems(); iColumn++) {
-    Column* pColumn = m_pIdxColVec->pGet(iColumn);
+  for (i8 i_Column = 0; i_Column < m_pIdxColVec->nItems(); i_Column++) {
+    Column* pColumn = m_pIdxColVec->pGet(i_Column);
     pColumn->vShow();
   }
 }

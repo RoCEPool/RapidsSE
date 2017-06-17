@@ -696,13 +696,13 @@ bool EntryBuffer::bInsert(EntWrk& xEntWrk)
   i8 iNewEntryOffsetAbs = iToOffsetAbs(pNewEntry);
   
   // step thru each offset to be revised
-  for (on nOffsetNo = pNewEntry->nHighestOffset(); nOffsetNo.bInRange(); nOffsetNo--) {
+  for (on n_OffsetNo = pNewEntry->nHighestOffset(); n_OffsetNo.bInRange(); n_OffsetNo--) {
     
     // get prior entry being revised
-    ln nLevelNo = nOffsetNo.nToLevelNo();
+    ln nLevelNo = n_OffsetNo.nToLevelNo();
     Entry* aPriorEntry = xPriorVec[nLevelNo];
     
-    i8 iPriorsRightOffsetAbs = iToRightOffsetAbs(aPriorEntry,nOffsetNo);
+    i8 iPriorsRightOffsetAbs = iToRightOffsetAbs(aPriorEntry,n_OffsetNo);
     
     // is the prior's right offset after new entry : [PURPLE] (grey)-> [GREEN]
     if (iPriorsRightOffsetAbs > iNewEntryOffsetAbs) {
@@ -714,25 +714,25 @@ bool EntryBuffer::bInsert(EntWrk& xEntWrk)
       i8 iNewRightOffset = uOffsetBetween(pNewEntry,aPostEntry);
       
       // set right offset on new : [RED.hasoffset]
-      pNewEntry->vRightOffset(nOffsetNo,iNewRightOffset);
+      pNewEntry->vRightOffset(n_OffsetNo,iNewRightOffset);
       
       // calculate prior's revised offset : [PURPLE ARROW]
       i8 iPriorRightOffset = uOffsetBetween(aPriorEntry,pNewEntry);
       
-      aPriorEntry->vRightOffset(nOffsetNo,iPriorRightOffset);
+      aPriorEntry->vRightOffset(n_OffsetNo,iPriorRightOffset);
     }
     else {
       
       // this is the case where the prior entry now needs to point to the new
       // prior was at C_NIL_OFFSET and now needs to point to the newEntry
-      ASSERT(aPriorEntry->iRightOffset(nOffsetNo) == C_NIL_OFFSET);
-      ASSERT(pNewEntry->iRightOffset(nOffsetNo) == C_NIL_OFFSET);
+      ASSERT(aPriorEntry->iRightOffset(n_OffsetNo) == C_NIL_OFFSET);
+      ASSERT(pNewEntry->iRightOffset(n_OffsetNo) == C_NIL_OFFSET);
       
       // calculate new right offset
       i8 iNewRightOffset = uOffsetBetween(pNewEntry,aPriorEntry);
       
       // set the right offset in the prior entry to offset of new entry
-      aPriorEntry->vRightOffset(nOffsetNo, iNewRightOffset);
+      aPriorEntry->vRightOffset(n_OffsetNo, iNewRightOffset);
     }
     
   } // for
@@ -895,10 +895,10 @@ EntryBuffer* EntryBuffer::pSplitBuffer(void)
   
   //  vTrace("Split %p\n"_Str,pSplitEntry);
   //  vTrace("Move  %p\n"_Str,aMoveEntry);
-  //  for (on nOffsetNo; nOffsetNo.bInRange(); nOffsetNo++) {
-  //    ln nLevel = nOffsetNo.nToLevelNo();
-  //    vTrace("%p v %p\n"_Str,xPrevVec[nLevel],xPriorVec[nLevel]);
-  //    ASSERT(xPrevVec[nLevel] == xPriorVec[nLevel]);
+  //  for (on n_OffsetNo; n_OffsetNo.bInRange(); n_OffsetNo++) {
+  //    ln n_Level = n_OffsetNo.nToLevelNo();
+  //    vTrace("%p v %p\n"_Str,xPrevVec[nLevel],xPriorVec[n_Level]);
+  //    ASSERT(xPrevVec[n_Level] == xPriorVec[n_Level]);
   //  }
   
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
@@ -906,14 +906,14 @@ EntryBuffer* EntryBuffer::pSplitBuffer(void)
   // set any prior offset to nil if its an offset to an entry in split half
   i8 iSplitEntryOffsetAbs = iToOffsetAbs(pSplitEntry);
   
-  for (on nOffsetNo; nOffsetNo.bInRange(); nOffsetNo++) {
+  for (on n_OffsetNo; n_OffsetNo.bInRange(); n_OffsetNo++) {
     
     // calculate level into prior vector for this offset and get entry
-    ln nLevel = nOffsetNo.nToLevelNo();
-    Entry* pEntry = xPriorVec[nLevel];
+    ln n_Level = n_OffsetNo.nToLevelNo();
+    Entry* pEntry = xPriorVec[n_Level];
     
-    if (iToRightOffsetAbs(pEntry,nOffsetNo) > iSplitEntryOffsetAbs)
-      pEntry->vRightOffset(nOffsetNo, C_NIL_OFFSET);
+    if (iToRightOffsetAbs(pEntry,n_OffsetNo) > iSplitEntryOffsetAbs)
+      pEntry->vRightOffset(n_OffsetNo, C_NIL_OFFSET);
   }
   
   // set all right offsets in the split entry to C_NIL_OFFSET

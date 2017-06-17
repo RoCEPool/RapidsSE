@@ -81,8 +81,8 @@ void Grid::vInit(i8 nNodes, i8 nSlots)
   m_nPartitions = m_nSlots * m_nNodes;
     
   // initialize the partition array
-  for (i8 iPartition = 0; iPartition < C_SLOTS_PER_NODE; iPartition++) {
-    m_iPartition[iPartition] = -1;
+  for (i8 i_Partition = 0; i_Partition < C_SLOTS_PER_NODE; i_Partition++) {
+    m_iPartition[i_Partition] = -1;
   }
 }
 
@@ -106,9 +106,9 @@ void Grid::vDumpPartitioning(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
   
-  for (i8 iIndex = 0; iIndex < m_nPartitions; iIndex++)
-    vTrace("Partition: %lld; Node: %lld\n"_Str, iIndex,
-           Partition::iPartitionToNode(iIndex));
+  for (i8 i_Index = 0; i_Index < m_nPartitions; i_Index++)
+    vTrace("Partition: %lld; Node: %lld\n"_Str, i_Index,
+           Partition::iPartitionToNode(i_Index));
   vTrace("\n"_Str);
 }
 
@@ -233,8 +233,8 @@ void Grid::vThisNode(i8 iNode)
   m_pThisNode = pFindNode(iNode);
   
   // now initialize the array of partition numbers on this node
-  for (i8 iSlot = 0; iSlot < m_nSlots; iSlot++) {
-    m_iPartition[iSlot] = Partition::iSlotToPartition(iSlot);
+  for (i8 i_Slot = 0; i_Slot < m_nSlots; i_Slot++) {
+    m_iPartition[i_Slot] = Partition::iSlotToPartition(i_Slot);
   }
 
 }

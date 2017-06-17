@@ -89,15 +89,15 @@ void Heap::vDump(eCN eClass, Object* pObject, Str* aTab)
          pHeap->m_iFreeCount);
   
   i8 iCountObjects[CN_ENUMS];
-  for (i8 index = 0; index < CN_ENUMS; index++) {
-    iCountObjects[index] = 0;
+  for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++) {
+    iCountObjects[i_Index] = 0;
   }
   
 //  pHeap->vAnalyse(iCountObjects);
 //  
 //  vTrace("%s  Objects:\n"_Str, aTab);
-//  for (i8 index = 0; index < CN_ENUMS; index++) {
-//    eCN eClass = (eCN)index;
+//  for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++) {
+//    eCN eClass = (eCN)i_Index;
 //    
 //    if (iCountObjects[eClass] == 0)
 //      continue;
@@ -291,8 +291,8 @@ void Heap::vAnalyse(i8 iCounts[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
-  for (i8 index = 0; index < CN_ENUMS; index++)
-    iCounts[index] = 0;
+  for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++)
+    iCounts[i_Index] = 0;
   
   m_zLock.vGrabWrite();
   

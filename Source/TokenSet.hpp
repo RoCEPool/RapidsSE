@@ -24,7 +24,7 @@ namespace Parsing
   
     static TokenSet* _pTokenSet(void* aAddr);
   
-    Str*& operator [](i8 iTokenNo);
+    Str*& operator [](i8 i_TokenNo);
 
     void vAddToken(Str* aToken);
     i8   nTokens(void);

@@ -61,8 +61,8 @@ void InsertTests::vRun(RunTests* pRunTests)
   sCommand = "begin insert tbl;"_Str;
   vRequire(sCommand, true, EC_NONE);
   
-  for (i8 iIdx = 0; iIdx < 1000; iIdx++) {
-    sCommand.vSprint("insert row \"%lld|%s\";"_Str, iIdx, "abcdef"_Str);
+  for (i8 i_Idx = 0; i_Idx < 1000; i_Idx++) {
+    sCommand.vSprint("insert row \"%lld|%s\";"_Str, i_Idx, "abcdef"_Str);
     vRequire(sCommand, true, EC_NONE);
   }
   
@@ -75,8 +75,8 @@ void InsertTests::vRun(RunTests* pRunTests)
   sCommand = "begin insert tbl;"_Str;
   vRequire(sCommand, true, EC_NONE);
   
-  for (i8 iIdx = 1000; iIdx < 2000; iIdx++) {
-    sCommand.vSprint("insert row \"%lld|%s\";"_Str, iIdx, "abcdef"_Str);
+  for (i8 i_Idx = 1000; i_Idx < 2000; i_Idx++) {
+    sCommand.vSprint("insert row \"%lld|%s\";"_Str, i_Idx, "abcdef"_Str);
     vRequire(sCommand, true, EC_NONE);
   }
   
