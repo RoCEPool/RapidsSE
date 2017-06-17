@@ -193,7 +193,7 @@ i8 giClassSize[]
   /* 17 */ sizeof(ValWrk), // correct  // CN_VALSET
   /* 18 */ sizeof(ValWrk),             // CN_VALWRK
   
-  /*    */ 0,                          // CN_ACCESSPATH
+  /*    */ sizeof(AccessPath),         // CN_ACCESSPATH
   /*    */ 0,                          // CN_ARG
   /* 12 */ sizeof(Arguments),          // CN_ARGUMENTS
   /* 13 */ sizeof(Atomic),             // CN_ATOMIC
@@ -202,10 +202,10 @@ i8 giClassSize[]
   /* 15 */ sizeof(BufferPool),         // CN_BUFFERPOOL
   /* 16 */ sizeof(BPA),                // CN_BPA
 
-  /*    */ 0,                          // CN_CANDIDATEPATH
-  /*    */ 0,                          // CN_CANDIDATEPATHS
+  /*    */ sizeof(CandidatePath),      // CN_CANDIDATEPATH
+  /*    */ sizeof(CandidatePaths),     // CN_CANDIDATEPATHS
   /*    */ sizeof(Column),             // CN_COLUMN
-  /*    */ 0,                          // CN_COLUMNVEC
+  /*    */ sizeof(ColumnVec),          // CN_COLUMNVEC
   
   /* 17 */ sizeof(Data),               // CN_DATA
   /* 18 */ sizeof(Dic),                // CN_DIC
@@ -213,7 +213,7 @@ i8 giClassSize[]
   /* 20 */ sizeof(Dir),                // CN_DIR
   
   /* 21 */ sizeof(Entry),              // CN_ENTRY
-  /* 22 */ 0,                          // CN_ENTRYVEC
+  /* 22 */ sizeof(EntryVec),           // CN_ENTRYVEC
   
   /* 22 */ sizeof(File),               // CN_FILE
   /* 23 */ sizeof(Buffer),             // CN_FREEBUFFER
@@ -227,12 +227,12 @@ i8 giClassSize[]
   
   /* 29 */ sizeof(HeapBuffer),         // CN_HEAPBUFFER
   
-  /* 30 */ 0,                          // CN_INDEX
+  /* 30 */ sizeof(Index),              // CN_INDEX
   /* 31 */ 0,                          // CN_INDEXBUFFER
-  /* 31 */ 0,                          // CN_INDEXDATA
-  /*    */ 0,                          // CN_IDXCOLVEC
-  /*    */ 0,                          // CN_IDXDATAVEC
-  /*    */ 0,                          // CN_IDXVEC
+  /* 31 */ sizeof(IndexData),          // CN_INDEXDATA
+  /*    */ sizeof(IdxColVec),          // CN_IDXCOLVEC
+  /*    */ sizeof(IdxDataVec),         // CN_IDXDATAVEC
+  /*    */ sizeof(IdxVec),             // CN_IDXVEC
   /* 33 */ 0,                          // CN_INDEXLEVELS
   
   /* 34 */ sizeof(Heap), // correct    // CN_JUMBOHEAP
@@ -263,7 +263,7 @@ i8 giClassSize[]
   /*    */ 0,                          // CN_PREDICATE
   /* 48 */ sizeof(Proxy),              // CN_PROXY
   /* 49 */ sizeof(ProxySet),           // CN_PROXYSET
-  /*    */ 0,                          // CN_PTNCOLVEC
+  /*    */ sizeof(PtnColVec),          // CN_PTNCOLVEC
   
   /* 50 */ sizeof(Queue),              // CN_QUEUE
   /* 51 */ sizeof(QueueBuffer),        // CN_QUEUEBUFFER
@@ -274,7 +274,7 @@ i8 giClassSize[]
   /*    */ 0,                          // CN_ROARRAY
   /* 55 */ sizeof(Entry),              // CN_ROW
   /* 56 */ 0,                          // CN_ROWBUFFER
-  /* 57 */ 0,                          // CN_ROWCURSOR
+  /* 57 */ sizeof(RowCursor),          // CN_ROWCURSOR
   /* 58 */ sizeof(EbStrand),           // CN_EBSTRAND
   
   /* 60 */ sizeof(ScanBuffer),         // CN_SCANBUFFER
@@ -310,8 +310,8 @@ i8 giClassSize[]
   /* 87 */ sizeof(Time),               // CN_TIME
   /* 88 */ sizeof(Timer),              // CN_TIMER
   /* 89 */ sizeof(Tokeniser),          // CN_TOKENISER
-  /*    */ 0,                          // CN_TOKENARY
-  /*    */ 0,                          // CN_TOKENSET
+  /*    */ sizeof(TokenAry),           // CN_TOKENARY
+  /*    */ sizeof(TokenSet),           // CN_TOKENSET
   /* 90 */ sizeof(Tx),                 // CN_TX
   /* 91 */ sizeof(TxArray),            // CN_TXARRAY
   /* 92 */ sizeof(TxCollection),       // CN_TXCOLLECTION
@@ -352,7 +352,7 @@ eHT geWhichHeap[]
   /* 17 */ HT_INVALID, // CN_VALSET
   /* 18 */ HT_INVALID, // CN_VALWRK
   
-  /*    */ HT_SMALL,   // CN_ACCESSPATH
+  /*    */ HT_MEDIUM,  // CN_ACCESSPATH
   /*    */ HT_SMALL,   // CN_ARG
   /* 12 */ HT_INVALID, // CN_ARGUMENTS
   /* 13 */ HT_INVALID, // CN_ATOMIC

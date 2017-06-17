@@ -306,14 +306,41 @@ stk
   getTableRef not if <NIP+ERROR> exit then
   task::this task.seitf@ seitf.table@ assert
 
+  // create access path and put into seitf
+  accessPath::new task::this task.seitf@ seitf.accessPath!
+
+  sIndexNm task::this task.seitf@ seitf.accessPath@ accessPath.parse
+
   // execute a lower bound select using index
-  sLower sIndexNm lowerSelectIndex ( lower index )
+  case
+    FT_LOWER of
+      "case lower" .
+      sLower sIndexNm lowerSelectIndex ( lower index )
+      //"1" "jCdt_idx1" lowerSelectIndex endof
+    endof
+
+    FT_UPPER of
+      "case upper" .
+      upperSelectIndex
+    endof
+
+    FT_RANGE of
+      "case range" .
+      rangeSelectIndex
+    endof
+
+    FT_SCAN of
+      "case scan" .
+    endof
+  endcase
 
   // dec and return table reference and clear task.seitf.currentTable
   returnTableRef not if <NIP+ERROR> exit then
 
   // assert no seitf.table
   task::this task.seitf@ seitf.table@ not assert
+
+
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // restore path

@@ -61,6 +61,7 @@ AccessPath::AccessPath(void)
   m_pIndex     = nullptr;
   
   m_sColumnName   = "<notSet>"_Str;
+  m_pColumn = nullptr;
   m_eRelationalOp = RO_NONE;
   //m_xValReg
   
