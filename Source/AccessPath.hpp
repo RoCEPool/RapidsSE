@@ -9,7 +9,27 @@ namespace Interface
 }
 
 namespace Plans
-{  
+{
+  enum eFT // fetch technique
+  {
+  /* 0 */ FT_NONE=0,
+  /* 1 */ FT_LOWER,
+  /* 2 */ FT_UPPER,
+  /* 3 */ FT_RANGE,
+  /* 4 */ FT_SCAN,
+  /* 5 */ FT_ENUMS
+  };
+  
+  static Str* aFM[]
+  {
+  /* 0 */ "none"_Str,
+  /* 1 */ "lower"_Str,
+  /* 2 */ "upper"_Str,
+  /* 2 */ "range"_Str,
+  /* 2 */ "scan"_Str,
+  /* 2 */ "enums"_Str
+  };
+  
   class AccessPath : public Object
   {
     private:
@@ -83,6 +103,8 @@ namespace Plans
   
     s48K& sWhereString(void);
     void vWhereString(s48K& sWhereString);
+  
+    void vParse(void);
   
     Footer* pFooter(void);
   };

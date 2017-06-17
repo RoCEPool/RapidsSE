@@ -274,6 +274,7 @@ namespace Tasks
     // access path
     static void vAccessPathDelete(NNP_Task nnpTask);
     static void vAccessPathNew(NNP_Task nnpTask);
+    static void vAccessPathParse(NNP_Task nnpTask);
     static void vAccessPathSet(NNP_Task nnpTask);
   
     // address

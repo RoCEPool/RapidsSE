@@ -34,6 +34,7 @@ void Task::vAddPrimitives_AccessPath(void)
 {
   vAddPrimitive("accessPath.delete"_Str, &vAccessPathDelete, false);
   vAddPrimitive("accessPath::new"_Str,   &vAccessPathNew,    false);
+  vAddPrimitive("accessPath.parse"_Str,  &vAccessPathParse,  false);
   vAddPrimitive("accessPath.set"_Str,    &vAccessPathSet,    false);
 }
 
@@ -91,6 +92,28 @@ void Task::vAccessPathSet(NNP_Task nnpTask)
   SEitf* pSEitf = _pSEitf(pPtrSEitf);
   
   pAccessPath->vInit(pSEitf);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* accessPath.parse -- parse where string (where accessPath -- technique)     */
+/*----------------------------------------------------------------------------*/
+void Task::vAccessPathParse(NNP_Task nnpTask)
+{
+  ENTRY("vAccessPathSet"_Str);
+  
+  Object* pPtrAccessPath;
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrAccessPath) )
+    THROW_INVALID_DSTACK("accessPath.parse"_Str);
+  AccessPath* pAccessPath = _pAccessPath(pPtrAccessPath);
+  
+  s48K sWhere;
+  if ( ! nnpTask->m_pDataStack->bPop(sWhere) )
+    THROW_INVALID_DSTACK("accessPath.parse"_Str);
+  
+  pAccessPath->vWhereString(sWhere);
+  pAccessPath->vParse();
   
   EXIT();
 }
