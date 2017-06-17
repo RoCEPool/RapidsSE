@@ -72,8 +72,8 @@ LoaderSub::LoaderSub(void)
   m_bMoreChunks = false;
   m_pLoadChunk  = new LoadChunk;
   
-  for (i8 iPartition = 0; iPartition < C_MAX_PARTITIONS; iPartition++)
-    m_pRowBuffer[iPartition] = nullptr;
+  for (i8 i_Partition = 0; i_Partition < C_MAX_PARTITIONS; i_Partition++)
+    m_pRowBuffer[i_Partition] = nullptr;
   
   _checkInitialised_(CN_LOADERSUB);
   
@@ -154,15 +154,15 @@ void LoaderSub::vEnd(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
   
   // append any dangling buffers
-  for (i8 iPartition = 0; iPartition < C_MAX_PARTITIONS; iPartition++) {
+  for (i8 i_Partition = 0; i_Partition < C_MAX_PARTITIONS; i_Partition++) {
     /*
-    if (m_pRowBuffer[iPartition]) {
-      EntryBuffer* pRowBuffer = m_pRowBuffer[iPartition];
-      m_pRowBuffer[iPartition] = nullptr;
+    if (m_pRowBuffer[i_Partition]) {
+      EntryBuffer* pRowBuffer = m_pRowBuffer[i_Partition];
+      m_pRowBuffer[i_Partition] = nullptr;
       m_pTable->vAppendBuffer(m_iPartition,pRowBuffer);
     }
     */
-    ASSERT(! m_pRowBuffer[iPartition]);
+    ASSERT(! m_pRowBuffer[i_Partition]);
   }
   
   // close the file being loaded

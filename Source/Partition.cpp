@@ -144,8 +144,8 @@ bool Partition::bInsertRow(EntryBuffer* pRowBuffer, EntWrk& xRowWrk)
   // now insert an entry for the row in the indexes of this table
   i8 nIndexes = m_pIdxDataVec->nItems();
   
-  for (i8 iIndex=0; iIndex < nIndexes; iIndex++) {
-    IndexData* pIndexData = m_pIdxDataVec->pGet(iIndex);
+  for (i8 i_Index=0; i_Index < nIndexes; i_Index++) {
+    IndexData* pIndexData = m_pIdxDataVec->pGet(i_Index);
     pIndexData->vInsertEntry(pRow, pRowBuffer->nEntries(), pRowBuffer->nBufferNo());
   }
   
@@ -281,8 +281,8 @@ IndexData* Partition::pIndexData(i8 iIndexNo)
   IndexData* pIndexData = nullptr;
   i8 nIndexes = m_pIdxDataVec->nItems();
   
-  for (i8 iIndex=0; iIndex < nIndexes; iIndex++) {
-    pIndexData = m_pIdxDataVec->pGet(iIndex);
+  for (i8 i_Index=0; i_Index < nIndexes; i_Index++) {
+    pIndexData = m_pIdxDataVec->pGet(i_Index);
     if (pIndexData->pIndex()->iIndexNo() == iIndexNo)
       break;
   }

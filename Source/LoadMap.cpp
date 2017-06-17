@@ -55,8 +55,8 @@ LoadMap::LoadMap(void)
   m_bDone    = false;
   m_zLock.vInit("LoadMap::m_zLock"_Str);
   m_iNext    = 0;
-  for (i8 iEntry = 0; iEntry < C_LOADMAP_ENTRIES; iEntry++)
-    m_iEolOffset[iEntry] = -1;
+  for (i8 i_Entry = 0; i_Entry < C_LOADMAP_ENTRIES; i_Entry++)
+    m_iEolOffset[i_Entry] = -1;
 
   //m_xChunkFile
   m_iChunkNext = 0;

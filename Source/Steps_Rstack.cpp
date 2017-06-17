@@ -102,7 +102,7 @@ void Task::vRstackCsRoll(NNP_Task nnpTask)
     THROW_INVALID_DSTACK("cs-roll"_Str);
   
   ValWrk xValMid;
-  for (i8 iCount = 0; iCount < nValues; iCount++) {
+  for (i8 i_Count = 0; i_Count < nValues; i_Count++) {
     if ( ! nnpTask->m_pDataStack->bPop(xValMid) )
       THROW_INVALID_DSTACK("cs-roll"_Str);
     
@@ -113,7 +113,7 @@ void Task::vRstackCsRoll(NNP_Task nnpTask)
   if ( ! nnpTask->m_pDataStack->bPop(pCellZ) )
     THROW_INVALID_DSTACK("cs-roll"_Str);
   
-  for (i8 iCount = 0; iCount < nValues; iCount++) {
+  for (i8 i_Count = 0; i_Count < nValues; i_Count++) {
     if ( ! nnpTask->m_pReturnStack->bPop(xValMid) )
       THROW_INVALID_RSTACK("cs-roll"_Str);
     
@@ -268,7 +268,7 @@ void Task::vRstackRoll(NNP_Task nnpTask)
   if ( ! nnpTask->m_pReturnStack->bPop(xValA) )
     THROW_INVALID_RSTACK("rroll"_Str);
   
-  for (i8 iCount = 0; iCount < nValues; iCount++) {
+  for (i8 i_Count = 0; i_Count < nValues; i_Count++) {
     if ( ! nnpTask->m_pReturnStack->bPop(xValX) )
       THROW_INVALID_RSTACK("rroll"_Str);
     
@@ -277,7 +277,7 @@ void Task::vRstackRoll(NNP_Task nnpTask)
   
   nnpTask->m_pReturnStack->vPushValWrk(xValA);
   
-  for (i8 iCount = 0; iCount < nValues; iCount++) {
+  for (i8 i_Count = 0; i_Count < nValues; i_Count++) {
     if ( ! nnpTask->m_pDataStack->bPop(xValX) )
       THROW_INVALID_DSTACK("rroll"_Str);
     
@@ -301,7 +301,7 @@ void Task::vRstackRollInv(NNP_Task nnpTask)
   if ( ! nnpTask->m_pDataStack->bPop(nValues) )
     THROW_INVALID_DSTACK("-rroll"_Str);
   
-  for (i8 iCount = 0; iCount < nValues; iCount++) {
+  for (i8 i_Count = 0; i_Count < nValues; i_Count++) {
     if ( ! nnpTask->m_pReturnStack->bPop(xValX) )
       THROW_INVALID_RSTACK("-rroll"_Str);
     
@@ -312,7 +312,7 @@ void Task::vRstackRollInv(NNP_Task nnpTask)
     THROW_INVALID_DSTACK("-rroll"_Str);
   
   
-  for (i8 iCount = 0; iCount < nValues; iCount++) {
+  for (i8 i_Count = 0; i_Count < nValues; i_Count++) {
     if ( ! nnpTask->m_pDataStack->bPop(xValX) )
       THROW_INVALID_DSTACK("-rroll"_Str);
     

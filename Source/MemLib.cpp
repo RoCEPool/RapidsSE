@@ -49,10 +49,10 @@ void MemLib::vCheckInitialised(void* aAddress, i8 nBytes)
   u8* pMchWord = reinterpret_cast<u8*>(aAddress);
   i8  nWords = nBytes / 8;
   
-  for (i8 iWord = 0; iWord < nWords; iWord++) {
+  for (i8 i_Word = 0; i_Word < nWords; i_Word++) {
     
     if (C_SCRIBBLE_PATTERN == *pMchWord) {
-      MemLib::vWordDump(aAddress,nBytes,iWord);
+      MemLib::vWordDump(aAddress,nBytes,i_Word);
       vDebugTrap();
     }
     

@@ -48,8 +48,8 @@ void StorageEngine::vCheckAssumptions(void)
   bool bFoundEnum = false;
   
   // find number of entries in aCN
-  for (i8 i = 0; i <= CN_ENUMS; i++) {
-    if (aCN[i]->bEqual("ENUMS"_Str)) {
+  for (i8 i_Class = 0; i_Class <= CN_ENUMS; i_Class++) {
+    if (aCN[i_Class]->bEqual("ENUMS"_Str)) {
       bFoundEnum = true;
       break;
     }
@@ -66,8 +66,8 @@ void StorageEngine::vCheckAssumptions(void)
   
   bFoundEnum = false;
   // find number of entries in gpDump
-  for (i8 i = 0; i <= CN_ENUMS; i++) {
-    if (gpDump[i] == &Dump::vEnums) {
+  for (i8 i_Class = 0; i_Class <= CN_ENUMS; i_Class++) {
+    if (gpDump[i_Class] == &Dump::vEnums) {
       bFoundEnum = true;
       break;
     }
@@ -84,8 +84,8 @@ void StorageEngine::vCheckAssumptions(void)
 
   bFoundEnum = false;
   // find number of entries in giClassSize
-  for (i8 i = 0; i <= CN_ENUMS; i++) {
-    if (giClassSize[i] == -1) {
+  for (i8 i_Class = 0; i_Class <= CN_ENUMS; i_Class++) {
+    if (giClassSize[i_Class] == -1) {
       bFoundEnum = true;
       break;
     }
@@ -102,8 +102,8 @@ void StorageEngine::vCheckAssumptions(void)
   
   bFoundEnum = false;
   // find number of entries in gpDump
-  for (i8 i = 0; i <= CN_ENUMS; i++) {
-    if (gpFinalize[i] == &Finalize::vEnums) {
+  for (i8 i_Class = 0; i_Class <= CN_ENUMS; i_Class++) {
+    if (gpFinalize[i_Class] == &Finalize::vEnums) {
       bFoundEnum = true;
       break;
     }
