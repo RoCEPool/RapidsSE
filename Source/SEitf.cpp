@@ -1474,6 +1474,10 @@ bool SEitf::bFetchRows(TokenSet& xTokenSet)
   s256 sRequest;
   
   sRequest.vCopy("\""_Str);
+  sRequest.vConcat(xTokenSet[3]);
+  sRequest.vConcat("\""_Str);
+  
+  sRequest.vConcat(" \""_Str);
   sRequest.vConcat(xTokenSet[2]);
   sRequest.vConcat("\""_Str);
   
@@ -1481,7 +1485,7 @@ bool SEitf::bFetchRows(TokenSet& xTokenSet)
   sRequest.vConcat(xTokenSet[1]);
   sRequest.vConcat("\""_Str);
   
-  sRequest.vConcat(" fetch_rows_table"_Str);
+  sRequest.vConcat(" fetch_rows_index"_Str);
   
   return bAppendRequest(sRequest);
 }

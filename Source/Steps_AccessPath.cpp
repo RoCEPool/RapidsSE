@@ -101,7 +101,7 @@ void Task::vAccessPathSet(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vAccessPathParse(NNP_Task nnpTask)
 {
-  ENTRY("vAccessPathSet"_Str);
+  ENTRY("vAccessPathParse"_Str);
   
   Object* pPtrAccessPath;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrAccessPath) )

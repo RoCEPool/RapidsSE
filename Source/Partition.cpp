@@ -157,6 +157,8 @@ bool Partition::bInsertRow(EntryBuffer* pRowBuffer, EntWrk& xRowWrk)
 /*----------------------------------------------------------------------------*/
 i8 Partition::iPartitionId(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
+  
   return m_iPartitionId;
 }
 
@@ -165,6 +167,8 @@ i8 Partition::iPartitionId(void)
 /*----------------------------------------------------------------------------*/
 void Partition::vPartitionId(i8 iPartitionId)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
+  
   m_iPartitionId = iPartitionId;
 }
 
@@ -270,7 +274,9 @@ void Partition::vPopulateIndex(i8 iIndexNo)
 /*----------------------------------------------------------------------------*/
 Data* Partition::pData(void)
 {
-  return m_pData;
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
+  
+ return m_pData;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -278,12 +284,15 @@ Data* Partition::pData(void)
 /*----------------------------------------------------------------------------*/
 IndexData* Partition::pIndexData(i8 iIndexNo)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
+  
   IndexData* pIndexData = nullptr;
   i8 nIndexes = m_pIdxDataVec->nItems();
   
   for (i8 i_Index=0; i_Index < nIndexes; i_Index++) {
     pIndexData = m_pIdxDataVec->pGet(i_Index);
-    if (pIndexData->pIndex()->iIndexNo() == iIndexNo)
+    Index* pIndex = pIndexData->pIndex();
+    if (pIndex->iIndexNo() == iIndexNo)
       break;
   }
   
@@ -295,6 +304,8 @@ IndexData* Partition::pIndexData(i8 iIndexNo)
 /*----------------------------------------------------------------------------*/
 IndexData* Partition::pHiddenIndexData(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
+  
   IndexData* pIndexData = nullptr;
   pIndexData = m_pIdxDataVec->pGet(0);
   
@@ -306,6 +317,8 @@ IndexData* Partition::pHiddenIndexData(void)
 /*----------------------------------------------------------------------------*/
 IdxDataVec* Partition::pIdxDataVec(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
+  
   return m_pIdxDataVec;
 }
 

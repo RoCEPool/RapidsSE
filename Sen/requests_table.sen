@@ -547,7 +547,11 @@ ddlLock::grabRead
 /*----------------------------------------------------------------------------*/
 /* fetch rows from table using given where string                             */
 /*----------------------------------------------------------------------------*/
+/*
 : fetch_rows_table ( "<where>" "<tableNm>" -- <R> )
+
+"fetch_rows_table" .
+//traceon
 
   assert::stack_2
   CN_STRVAL assert::class_0
@@ -586,10 +590,13 @@ ddlLock::grabRead
 
   accessPath::new task::this task.seitf@ seitf.accessPath!
 
+//traceon
+stk
   //
   sWhere task::this task.seitf@ seitf.accessPath@ accessPath.parse
+stk
   case
-    FT_LOWER of lowerSelectIndex endof
+    FT_LOWER of "lower" . "1" "jCdt_idx1" lowerSelectIndex endof
     FT_UPPER of upperSelectIndex endof
     FT_RANGE of rangeSelectIndex endof
     FT_SCAN  of endof
@@ -606,6 +613,7 @@ ddlLock::grabRead
 
   <OK>
 ;
+*/
 
 /*----------------------------------------------------------------------------*/
 /* get size of table                                                          */

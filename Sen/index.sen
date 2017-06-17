@@ -531,6 +531,8 @@ tp: loadIndexes
 /*----------------------------------------------------------------------------*/
 : lowerSelectIndex ( "<lower>" "<index>" --  )
 
+"lowerSelectIndex (a)" .
+
   tp: lowerSelectIndex
   //
   // execution context:
@@ -539,7 +541,9 @@ tp: loadIndexes
   //
   assert::stack_2
 
-  0 0 0 0 locals| rowCount indexBuffer entry indexPtr indexNm lower |
+  0 0 0 0 locals| rowCount indexBuffer entry indexPtr sIndexNm lower |
+
+"lowerSelectIndex (b)" .
 
   // increment query count
   queryCount ++
@@ -548,7 +552,7 @@ tp: loadIndexes
   pushIndexes assert
 
   // find the index
-  indexNm find execute ( index^ )
+  sIndexNm find execute ( index^ )
   to indexPtr
 
   args.metadata if

@@ -475,7 +475,7 @@ bool SePrompt::bProcessCommand(bool bPostProcess)
   if (bCmdIs("end"_Str)) {
     if (bOneIs("insert"_Str))   return bEndInsert();
   }
-  if (bCmdIs("fetch"_Str))      return bFetchRows();
+  //if (bCmdIs("fetch"_Str))      return bFetchRows();
   if (bCmdIs("first"_Str))      return bGetFirstRow();
   if (bCmdIs("history"_Str))    return bHistory();
   if (bCmdIs("insert"_Str)) {
@@ -1874,17 +1874,22 @@ bool SePrompt::bFetchRows(void)
       break;
     m_xTokenSet2[i_Token]->vCopy(m_xTokenSet[i_Token]);
     m_xTokenSet[i_Token]->vCopy(""_Str);
-  }
+  } 
   
   i8 iNumTokens = i_Token;
   
   // some validations
   // - - - - - - - - - - - - - - - - - - - - -
-  // there should be a minumum of 4 tokens
-  if (iNumTokens < 4) {
+  // there should be a 4 tokens
+  if (iNumTokens != 4) {
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
   }
+  
+  m_xTokenSet[0]->vCopy("fetch"_Str);
+  m_xTokenSet[1]->vCopy(m_xTokenSet2[1]);
+  m_xTokenSet[2]->vCopy(m_xTokenSet2[2]);
+  m_xTokenSet[3]->vCopy(m_xTokenSet2[3]);
   
   if ( !bExecuteRequest() )
     return false;
