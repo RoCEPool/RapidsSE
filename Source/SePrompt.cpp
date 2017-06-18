@@ -1880,8 +1880,8 @@ bool SePrompt::bFetchRows(void)
   
   // some validations
   // - - - - - - - - - - - - - - - - - - - - -
-  // there should be a 4 tokens
-  if (iNumTokens != 4) {
+  // there should be a 3 tokens
+  if (iNumTokens != 3) {
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
   }
@@ -1889,7 +1889,7 @@ bool SePrompt::bFetchRows(void)
   m_xTokenSet[0]->vCopy("fetch"_Str);
   m_xTokenSet[1]->vCopy(m_xTokenSet2[1]);
   m_xTokenSet[2]->vCopy(m_xTokenSet2[2]);
-  m_xTokenSet[3]->vCopy(m_xTokenSet2[3]);
+  //m_xTokenSet[3]->vCopy(m_xTokenSet2[3]);
   
   if ( !bExecuteRequest() )
     return false;

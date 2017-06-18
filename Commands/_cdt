@@ -19,9 +19,10 @@ ld jCdt "../JTEST/jCdt.csv";
 //uprselidx jCdt jCdt_idx1 7 ;
 
 lwrselidx jCdt jCdt_idx1 1 ;
-fetch jCdt jCdt_idx1 1 ;
+//fetch jCdt jCdt_idx1 1 ;
 
-//fetch jCdt "jA >= 1" ;
+fetch jCdt "jA >= 5" ;
+fetch jCdt "jA <= 5" ;
 
 /*============================================================================*/
 /* end                                                                        */

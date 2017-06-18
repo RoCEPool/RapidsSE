@@ -13,21 +13,23 @@ namespace Plans
   enum eFT // fetch technique
   {
   /* 0 */ FT_NONE=0,
-  /* 1 */ FT_LOWER,
-  /* 2 */ FT_UPPER,
-  /* 3 */ FT_RANGE,
-  /* 4 */ FT_SCAN,
-  /* 5 */ FT_ENUMS
+  /* 1 */ FT_EXACT,
+  /* 2 */ FT_LOWER,
+  /* 3 */ FT_UPPER,
+  /* 4 */ FT_RANGE,
+  /* 5 */ FT_SCAN,
+  /* 6 */ FT_ENUMS
   };
   
   static Str* aFM[]
   {
   /* 0 */ "none"_Str,
-  /* 1 */ "lower"_Str,
-  /* 2 */ "upper"_Str,
-  /* 2 */ "range"_Str,
-  /* 2 */ "scan"_Str,
-  /* 2 */ "enums"_Str
+  /* 1 */ "exact"_Str,
+  /* 2 */ "lower"_Str,
+  /* 3 */ "upper"_Str,
+  /* 4 */ "range"_Str,
+  /* 5 */ "scan"_Str,
+  /* 6 */ "enums"_Str
   };
   
   class AccessPath : public Object

@@ -118,9 +118,40 @@ void Task::vAccessPathParse(NNP_Task nnpTask)
   s32 sValue = "1"_Str;
   s32 sIndexNm = "jCdt_idx1"_Str;
   
+  //nnpTask->m_pDataStack->vPushS32(sValue);
+  //  nnpTask->m_pDataStack->vPushInt(FT_LOWER);
+  
+  eFT eFetchTechnique = FT_NONE;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  TokenSet xTokenSet;
+  Tokeniser* pTokeniser = new Tokeniser;
+  pTokeniser->vPush();
+  pTokeniser->vUseString(sWhere);
+  
+  pTokeniser->vNextToken();
+  
+  pTokeniser->vNextToken();
+  if (pTokeniser->sToken().bSame(">"_Str) ||
+      pTokeniser->sToken().bSame(">="_Str))
+    eFetchTechnique = FT_LOWER;
+  else
+  if (pTokeniser->sToken().bSame("="_Str) ||
+      pTokeniser->sToken().bSame("=="_Str))
+    eFetchTechnique = FT_EXACT;
+  else
+  if (pTokeniser->sToken().bSame("<"_Str) ||
+      pTokeniser->sToken().bSame("<="_Str))
+    eFetchTechnique = FT_UPPER;
+  
+  pTokeniser->vNextToken();
+  
+  sValue = pTokeniser->sToken();
   nnpTask->m_pDataStack->vPushS32(sValue);
   nnpTask->m_pDataStack->vPushS32(sIndexNm);
-  nnpTask->m_pDataStack->vPushInt(FT_LOWER);
+  nnpTask->m_pDataStack->vPushInt(eFetchTechnique);
+
+  delete pTokeniser;
   
   EXIT();
 }

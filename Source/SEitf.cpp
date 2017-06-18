@@ -1473,9 +1473,9 @@ bool SEitf::bFetchRows(TokenSet& xTokenSet)
   
   s256 sRequest;
   
-  sRequest.vCopy("\""_Str);
-  sRequest.vConcat(xTokenSet[3]);
-  sRequest.vConcat("\""_Str);
+//  sRequest.vCopy("\""_Str);
+//  sRequest.vConcat(xTokenSet[3]);
+//  sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" \""_Str);
   sRequest.vConcat(xTokenSet[2]);
