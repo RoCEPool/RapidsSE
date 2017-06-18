@@ -26,9 +26,14 @@ namespace Plans
   
     void vGenPaths(Table* pTable, Index* pIndex);
     void vGenPaths(Table* pTable);
+    void vGenPaths(void);
 
     void vScorePaths(void);
   
+    void   vTable(Table* pTable);
+    Table* pTable(void);
+  
+ 
     void vShowPaths(void);
   
     void vTest(void);

@@ -251,7 +251,7 @@ stk
   CN_STRVAL assert::class_0
   CN_STRVAL assert::class_1
 
-  0 0 locals| pAccessPath pTable sTableNm sWhere |
+  0 0 0 locals| pPlanner pAccessPath pTable sTableNm sWhere |
 
   idxSelectTimer timer.start
 
@@ -315,6 +315,10 @@ stk
   pAccessPath task::this task.seitf@ seitf.accessPath!
 
   pTable pAccessPath accesspath.table!
+
+  planner::new to pPlanner
+  pTable pPlanner planner.table!
+//pPlanner planner.genPaths
 
   sWhere pAccessPath accessPath.parse
 

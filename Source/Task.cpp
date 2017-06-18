@@ -864,6 +864,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitives_OpFrame();
   vAddPrimitives_Plan();
   vAddPrimitives_PlanList();
+  vAddPrimitives_Planner();
   vAddPrimitives_Process();
   vAddPrimitives_Push();
   vAddPrimitives_Queue();

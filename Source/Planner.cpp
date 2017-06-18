@@ -100,7 +100,7 @@ void Planner::vGenPaths(Table* pTable, Index* pIndex)
 /*----------------------------------------------------------------------------*/
 /* generate the set of all paths for given table                              */
 /*----------------------------------------------------------------------------*/
-void Planner::vGenPaths(Table* pTable)
+void Planner::vGenPaths(Table* mpTable)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
   
@@ -108,13 +108,23 @@ void Planner::vGenPaths(Table* pTable)
   
   m_pCandidatePaths = new CandidatePaths;
   
-  IdxVec* pIdxVec = pTable->pIdxVec();
+  IdxVec* pIdxVec = mpTable->pIdxVec();
   
   for (i8 i_Idx = 0; i_Idx < pIdxVec->nItems(); i_Idx++) {
-    Index* pIndex = pIdxVec->pGet(i_Idx);
-    m_pIndex[i_Idx] = pIndex;
-    vGenPaths(pTable, pIndex);
+    Index* mpIndex = pIdxVec->pGet(i_Idx);
+    m_pIndex[i_Idx] = mpIndex;
+    vGenPaths(mpTable, mpIndex);
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* generate the set of all paths for given table                              */
+/*----------------------------------------------------------------------------*/
+void Planner::vGenPaths(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
+  
+  vGenPaths(m_pTable);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -151,6 +161,26 @@ void Planner::vScorePaths(void)
     
     m_iScoreVec[i_Path] = iScore;
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* get current table                                                          */
+/*----------------------------------------------------------------------------*/
+Table* Planner::pTable(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
+  
+  return m_pTable;
+}
+
+/*----------------------------------------------------------------------------*/
+/* score the set of all paths                                                 */
+/*----------------------------------------------------------------------------*/
+void Planner::vTable(Table* pTable)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
+  
+  m_pTable = pTable;
 }
 
 /*----------------------------------------------------------------------------*/

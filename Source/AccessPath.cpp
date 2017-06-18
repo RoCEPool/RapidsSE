@@ -367,6 +367,15 @@ void AccessPath::vWhereString(s48K& sWhereString)
 }
 
 /*----------------------------------------------------------------------------*/
+/* generate possoble access paths for table                                   */
+/*----------------------------------------------------------------------------*/
+void AccessPath::vGenPaths(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ACCESSPATH,_FOOTER_);
+  
+}
+
+/*----------------------------------------------------------------------------*/
 /* parse where string                                                         */
 /*----------------------------------------------------------------------------*/
 void AccessPath::vParse(void)

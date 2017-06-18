@@ -108,6 +108,8 @@ namespace Plans
   
     void vParse(void);
   
+    void vGenPaths(void);
+  
     Footer* pFooter(void);
   };
   

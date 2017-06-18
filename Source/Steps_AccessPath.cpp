@@ -32,12 +32,13 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_AccessPath(void)
 {
-  vAddPrimitive("accessPath.delete"_Str, &vAccessPathDelete,    false);
-  vAddPrimitive("accessPath::new"_Str,   &vAccessPathNew,       false);
-  vAddPrimitive("accessPath.parse"_Str,  &vAccessPathParse,     false);
-  vAddPrimitive("accessPath.set"_Str,    &vAccessPathSet,       false);
-  vAddPrimitive("accessPath.table@"_Str, &vAccessPathTableFetch,false);
-  vAddPrimitive("accessPath.table!"_Str, &vAccessPathTableStore,false);
+  vAddPrimitive("accessPath.delete"_Str,   &vAccessPathDelete,     false);
+  vAddPrimitive("accessPath.genPaths"_Str, &vAccessPathGenPaths,   false);
+  vAddPrimitive("accessPath::new"_Str,     &vAccessPathNew,        false);
+  vAddPrimitive("accessPath.parse"_Str,    &vAccessPathParse,      false);
+  vAddPrimitive("accessPath.set"_Str,      &vAccessPathSet,        false);
+  vAddPrimitive("accessPath.table@"_Str,   &vAccessPathTableFetch, false);
+  vAddPrimitive("accessPath.table!"_Str,   &vAccessPathTableStore, false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -55,6 +56,25 @@ ENTRY("vAccessPathDelete"_Str);
   AccessPath* pAccessPath = _pAccessPath(pPtrAccessPath);
 
   delete pAccessPath;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* accessPath.genPaths -- generate all access paths for table                 */
+/*----------------------------------------------------------------------------*/
+void Task::vAccessPathGenPaths(NNP_Task nnpTask)
+{
+  ENTRY("vAccessPathDelete"_Str);
+  
+  Object* pPtrAccessPath;
+  
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrAccessPath) )
+    THROW_INVALID_DSTACK("accessPath.delete"_Str);
+  
+  AccessPath* pAccessPath = _pAccessPath(pPtrAccessPath);
+  
+  pAccessPath->vGenPaths();
   
   EXIT();
 }
@@ -176,7 +196,7 @@ void Task::vAccessPathSet(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* accessPath.table1 -- store table into access path                          */
+/* accessPath.table! -- store table into access path                          */
 /*----------------------------------------------------------------------------*/
 void Task::vAccessPathTableStore(NNP_Task nnpTask)
 {

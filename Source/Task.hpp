@@ -228,6 +228,7 @@ namespace Tasks
     void vAddPrimitives_OpFrame(void);
     void vAddPrimitives_Plan(void);
     void vAddPrimitives_PlanList(void);
+    void vAddPrimitives_Planner(void);
     void vAddPrimitives_Process(void);
     void vAddPrimitives_Push(void);
     void vAddPrimitives_Queue(void);
@@ -273,6 +274,7 @@ namespace Tasks
 
     // access path
     static void vAccessPathDelete(NNP_Task nnpTask);
+    static void vAccessPathGenPaths(NNP_Task nnpTask);
     static void vAccessPathNew(NNP_Task nnpTask);
     static void vAccessPathParse(NNP_Task nnpTask);
     static void vAccessPathSet(NNP_Task nnpTask);
@@ -723,6 +725,13 @@ namespace Tasks
     static void vPlanListRemovePlan(NNP_Task nnpTask);
     static void vPlanListShow(NNP_Task nnpTask);
     
+    // planner
+    static void vPlannerDelete(NNP_Task nnpTask);
+    static void vPlannerGenPaths(NNP_Task nnpTask);
+    static void vPlannerNew(NNP_Task nnpTask);
+    static void vPlannerTableFetch(NNP_Task nnpTask);
+    static void vPlannerTableStore(NNP_Task nnpTask);
+  
     // process
     static void vProcessGetPid(NNP_Task nnpTask);
     static void vProcessQuit(NNP_Task nnpTask);
