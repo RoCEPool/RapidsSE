@@ -21,6 +21,7 @@ ld jCdt "../JTEST/jCdt.csv";
 lwrselidx jCdt jCdt_idx1 1 ;
 //fetch jCdt jCdt_idx1 1 ;
 
+fetch jCdt "jA >= 3 and jA <= 7" ;
 fetch jCdt "jA >= 5" ;
 fetch jCdt "jA <= 5" ;
 fetch jCdt "jA == 5" ;

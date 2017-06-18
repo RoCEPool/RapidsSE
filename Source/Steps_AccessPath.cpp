@@ -115,7 +115,8 @@ void Task::vAccessPathParse(NNP_Task nnpTask)
   pAccessPath->vWhereString(sWhere);
   pAccessPath->vParse();
   
-  s32 sValue = "1"_Str;
+  s32 sValue_low = "1"_Str;
+  s32 sValue_high  = "1"_Str;
   s32 sIndexNm = "jCdt_idx1"_Str;
   
   //nnpTask->m_pDataStack->vPushS32(sValue);
@@ -129,8 +130,10 @@ void Task::vAccessPathParse(NNP_Task nnpTask)
   pTokeniser->vPush();
   pTokeniser->vUseString(sWhere);
   
+  // column name
   pTokeniser->vNextToken();
   
+  // operator
   pTokeniser->vNextToken();
   if (pTokeniser->sToken().bSame(">"_Str) ||
       pTokeniser->sToken().bSame(">="_Str))
@@ -143,14 +146,32 @@ void Task::vAccessPathParse(NNP_Task nnpTask)
   if (pTokeniser->sToken().bSame("<"_Str) ||
       pTokeniser->sToken().bSame("<="_Str))
     eFetchTechnique = FT_UPPER;
-  
-  pTokeniser->vNextToken();
-  
-  sValue = pTokeniser->sToken();
-  nnpTask->m_pDataStack->vPushS32(sValue);
-  nnpTask->m_pDataStack->vPushS32(sIndexNm);
-  nnpTask->m_pDataStack->vPushInt(eFetchTechnique);
 
+  // value
+  pTokeniser->vNextToken();
+  sValue_low = pTokeniser->sToken();
+  
+  // and?
+  pTokeniser->vNextToken();
+  if (pTokeniser->sToken().bSame("and"_Str)) {
+    eFetchTechnique = FT_RANGE;
+    // column
+    pTokeniser->vNextToken();
+    // operator
+    pTokeniser->vNextToken();
+    // value
+    pTokeniser->vNextToken();
+    sValue_high = pTokeniser->sToken();
+    nnpTask->m_pDataStack->vPushS32(sValue_high);
+    nnpTask->m_pDataStack->vPushS32(sValue_low);
+    nnpTask->m_pDataStack->vPushS32(sIndexNm);
+    nnpTask->m_pDataStack->vPushInt(eFetchTechnique);
+  }
+  else {
+    nnpTask->m_pDataStack->vPushS32(sValue_low);
+    nnpTask->m_pDataStack->vPushS32(sIndexNm);
+    nnpTask->m_pDataStack->vPushInt(eFetchTechnique);
+  }
   delete pTokeniser;
   
   EXIT();
