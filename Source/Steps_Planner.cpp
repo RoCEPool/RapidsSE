@@ -32,11 +32,13 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Planner(void)
 {
-  vAddPrimitive("planner.delete"_Str,   &vPlannerDelete,      false);
-  vAddPrimitive("planner.genPaths"_Str, &vPlannerGenPaths,    false);
-  vAddPrimitive("planner::new"_Str,     &vPlannerNew,         false);
-  vAddPrimitive("planner.table@"_Str,   &vPlannerTableFetch,  false);
-  vAddPrimitive("planner.table!"_Str,   &vPlannerTableStore,  false);
+  vAddPrimitive("planner.delete"_Str,     &vPlannerDelete,      false);
+  vAddPrimitive("planner.genPaths"_Str,   &vPlannerGenPaths,    false);
+  vAddPrimitive("planner::new"_Str,       &vPlannerNew,         false);
+  vAddPrimitive("planner.scorePaths"_Str, &vPlannerScorePaths,  false);
+  vAddPrimitive("planner.showPaths"_Str,  &vPlannerShowPaths,   false);
+  vAddPrimitive("planner.table@"_Str,     &vPlannerTableFetch,  false);
+  vAddPrimitive("planner.table!"_Str,     &vPlannerTableStore,  false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -87,6 +89,40 @@ ENTRY("vPlannerNew"_Str);
   Planner* pPlanner = new Planner;
   
   nnpTask->m_pDataStack->vPushObject(pPlanner);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* accessPath.scorePaths -- score the generated set of paths                  */
+/*----------------------------------------------------------------------------*/
+void Task::vPlannerScorePaths(NNP_Task nnpTask)
+{
+  ENTRY("vPlannerScorePaths"_Str);
+  
+  Object* pPtrPlanner;
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrPlanner) )
+    THROW_INVALID_DSTACK("accessPath.scorePaths"_Str);
+  Planner* pPlanner = _pPlanner(pPtrPlanner);
+  
+  pPlanner->vScorePaths();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* accessPath.showPaths -- show generated paths                               */
+/*----------------------------------------------------------------------------*/
+void Task::vPlannerShowPaths(NNP_Task nnpTask)
+{
+  ENTRY("vPlannerShowPaths"_Str);
+  
+  Object* pPtrPlanner;
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrPlanner) )
+    THROW_INVALID_DSTACK("accessPath.showPaths"_Str);
+  Planner* pPlanner = _pPlanner(pPtrPlanner);
+  
+  pPlanner->vShowPaths();
   
   EXIT();
 }

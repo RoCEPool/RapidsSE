@@ -318,7 +318,8 @@ stk
 
   planner::new to pPlanner
   pTable pPlanner planner.table!
-//pPlanner planner.genPaths
+  pPlanner planner.genPaths
+  pPlanner planner.showPaths
 
   sWhere pAccessPath accessPath.parse
 

@@ -136,9 +136,10 @@ void Planner::vShowPaths(void)
  
   for (i8 i_Path = 0; i_Path < m_pCandidatePaths->nItems(); i_Path++) {
     CandidatePath* pCandidatePath = m_pCandidatePaths->pGet(i_Path);
+    vTrace("[Cdt %lld] "_Str,i_Path);
     for (i8 i_IdxCol = 0; i_IdxCol < pCandidatePath->nItems(); i_IdxCol++) {
       Column* pColumn = pCandidatePath->pGet(i_IdxCol);
-      vTrace("%s%s"_Str,i_IdxCol ? "."_Str : ""_Str,pColumn->sColumnName().aStr());
+      vTrace("%s%s"_Str,i_IdxCol ? ", "_Str : ""_Str,pColumn->sColumnName().aStr());
     }
     vTrace("\n"_Str);
   }
