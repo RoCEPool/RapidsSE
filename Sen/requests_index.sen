@@ -314,6 +314,10 @@ stk
 
   // execute a lower bound select using index
   case
+    FT_EQUAL of
+      "case equal" . keySelectIndex
+    endof
+
     FT_LOWER of
       "case lower" .
       /*sLower sIndexNm */ lowerSelectIndex ( lower index )

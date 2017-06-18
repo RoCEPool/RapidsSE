@@ -138,7 +138,7 @@ void Task::vAccessPathParse(NNP_Task nnpTask)
   else
   if (pTokeniser->sToken().bSame("="_Str) ||
       pTokeniser->sToken().bSame("=="_Str))
-    eFetchTechnique = FT_EXACT;
+    eFetchTechnique = FT_EQUAL;
   else
   if (pTokeniser->sToken().bSame("<"_Str) ||
       pTokeniser->sToken().bSame("<="_Str))

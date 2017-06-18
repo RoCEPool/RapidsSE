@@ -9,7 +9,7 @@ create table jCdt (
   jD   INTEGER
 );
 
-create index jCdt_idx1 on jCdt (jA, jB, jC, jD);
+create index jCdt_idx1 on jCdt (jA);
 
 ld jCdt "../JTEST/jCdt.csv";
 
@@ -23,6 +23,7 @@ lwrselidx jCdt jCdt_idx1 1 ;
 
 fetch jCdt "jA >= 5" ;
 fetch jCdt "jA <= 5" ;
+fetch jCdt "jA == 5" ;
 
 /*============================================================================*/
 /* end                                                                        */

@@ -13,7 +13,7 @@ namespace Plans
   enum eFT // fetch technique
   {
   /* 0 */ FT_NONE=0,
-  /* 1 */ FT_EXACT,
+  /* 1 */ FT_EQUAL,
   /* 2 */ FT_LOWER,
   /* 3 */ FT_UPPER,
   /* 4 */ FT_RANGE,

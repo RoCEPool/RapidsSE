@@ -628,11 +628,12 @@ void Task::vAddConstants(void)
 
   // FT_ : fetch techniques
   /*  0 */ vAddConstant("FT_NONE"_Str,  FT_NONE);
-  /*  1 */ vAddConstant("FT_LOWER"_Str, FT_LOWER);
-  /*  2 */ vAddConstant("FT_UPPER"_Str, FT_UPPER);
-  /*  3 */ vAddConstant("FT_RANGE"_Str, FT_RANGE);
-  /*  4 */ vAddConstant("FT_SCAN"_Str,  FT_SCAN);
-  /*  4 */ vAddConstant("FT_ENUMS"_Str, FT_ENUMS);
+  /*  1 */ vAddConstant("FT_EQUAL"_Str, FT_EQUAL);
+  /*  2 */ vAddConstant("FT_LOWER"_Str, FT_LOWER);
+  /*  3 */ vAddConstant("FT_UPPER"_Str, FT_UPPER);
+  /*  4 */ vAddConstant("FT_RANGE"_Str, FT_RANGE);
+  /*  5 */ vAddConstant("FT_SCAN"_Str,  FT_SCAN);
+  /*  6 */ vAddConstant("FT_ENUMS"_Str, FT_ENUMS);
   
   // TK_ : token types
   /*  0 */ vAddConstant("TK_NONE"_Str,    TK_NONE);
