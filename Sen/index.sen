@@ -364,11 +364,11 @@ tp: makingIndex
 ;
 
 /*----------------------------------------------------------------------------*/
-/* exact key select for index ( called by key_select_index request)           */
+/* equal key select for index ( called by key_select_index request)           */
 /*----------------------------------------------------------------------------*/
-: keySelectIndex ( "<key>" "<index>" --  )
+: equalSelectIndex ( "<key>" "<index>" --  )
 
-  tp: keySelectIndex
+  tp: equalSelectIndex
   //
   // execution context:
   //   this task will have a seitf

@@ -118,7 +118,7 @@ void Planner::vGenPaths(Table* pTable)
 }
 
 /*----------------------------------------------------------------------------*/
-/* generate the set of all paths for given table                              */
+/* show the generated set of paths                                            */
 /*----------------------------------------------------------------------------*/
 void Planner::vShowPaths(void)
 {

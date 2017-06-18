@@ -240,7 +240,7 @@ timer: idxSelectTimer
 ;
 
 /*----------------------------------------------------------------------------*/
-/* lower bound select of table given an index                                 */
+/* fetch rows using an index                                                  */
 /*----------------------------------------------------------------------------*/
 : fetch_rows_index ( "<sWhere>" "<sTableNm>" -- <R> )
                                                                     // ../tables
@@ -251,7 +251,7 @@ stk
   CN_STRVAL assert::class_0
   CN_STRVAL assert::class_1
 
-  locals| sTableNm sWhere |
+  0 0 locals| pAccessPath pTable sTableNm sWhere |
 
   idxSelectTimer timer.start
 
@@ -281,6 +281,8 @@ stk
   // check "<sTableNm"> is a table in ../tables/<sTableNm>
   sTableNm checkIsTable not if <NIP+ERROR> exit then
 
+  sTableNm find execute to pTable
+
 /*
   // push indexes folder
   pushIndexes assert                               // ../tables/sTableNm/indexes
@@ -308,30 +310,30 @@ stk
   task::this task.seitf@ seitf.table@ assert
 
   // create access path and put into seitf
-  accessPath::new task::this task.seitf@ seitf.accessPath!
+  accessPath::new to pAccessPath
 
-  sWhere task::this task.seitf@ seitf.accessPath@ accessPath.parse
+  pAccessPath task::this task.seitf@ seitf.accessPath!
+
+  pTable pAccessPath accesspath.table!
+
+  sWhere pAccessPath accessPath.parse
 
   // execute a lower bound select using index
   case
     FT_EQUAL of
-      "case equal" . keySelectIndex
+      "case equal" . equalSelectIndex
     endof
 
     FT_LOWER of
-      "case lower" .
-      /*sLower sIndexNm */ lowerSelectIndex ( lower index )
-      //"1" "jCdt_idx1" lowerSelectIndex endof
+      "case lower" . lowerSelectIndex
     endof
 
     FT_UPPER of
-      "case upper" .
-      upperSelectIndex
+      "case upper" . upperSelectIndex
     endof
 
     FT_RANGE of
-      "case range" .
-      rangeSelectIndex
+      "case range" . rangeSelectIndex
     endof
 
     FT_SCAN of
@@ -472,7 +474,7 @@ stk
   task::this task.seitf@ seitf.table@ assert
 
   // execute a exact key select using index
-  xKey sIndexNm keySelectIndex ( lower index )
+  xKey sIndexNm equalSelectIndex ( lower index )
 
   // dec and return table reference and clear task.seitf.currentTable
   returnTableRef not if <NIP+ERROR> exit then

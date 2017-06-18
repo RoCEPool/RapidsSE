@@ -32,10 +32,12 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_AccessPath(void)
 {
-  vAddPrimitive("accessPath.delete"_Str, &vAccessPathDelete, false);
-  vAddPrimitive("accessPath::new"_Str,   &vAccessPathNew,    false);
-  vAddPrimitive("accessPath.parse"_Str,  &vAccessPathParse,  false);
-  vAddPrimitive("accessPath.set"_Str,    &vAccessPathSet,    false);
+  vAddPrimitive("accessPath.delete"_Str, &vAccessPathDelete,    false);
+  vAddPrimitive("accessPath::new"_Str,   &vAccessPathNew,       false);
+  vAddPrimitive("accessPath.parse"_Str,  &vAccessPathParse,     false);
+  vAddPrimitive("accessPath.set"_Str,    &vAccessPathSet,       false);
+  vAddPrimitive("accessPath.table@"_Str, &vAccessPathTableFetch,false);
+  vAddPrimitive("accessPath.table!"_Str, &vAccessPathTableStore,false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -70,28 +72,6 @@ ENTRY("vAccessPathNew"_Str);
   pPtrAccessPath = (Object*)pAccessPath;
   
   nnpTask->m_pDataStack->vPushObject(pPtrAccessPath);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* accessPath.set -- set access path ( seitf accessPath -- )                  */
-/*----------------------------------------------------------------------------*/
-void Task::vAccessPathSet(NNP_Task nnpTask)
-{
-  ENTRY("vAccessPathSet"_Str);
-  
-  Object* pPtrAccessPath;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrAccessPath) )
-    THROW_INVALID_DSTACK("accessPath.set"_Str);
-  AccessPath* pAccessPath = _pAccessPath(pPtrAccessPath);
-  
-  Object* pPtrSEitf;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitf) )
-    THROW_INVALID_DSTACK("accessPath.set"_Str);
-  SEitf* pSEitf = _pSEitf(pPtrSEitf);
-  
-  pAccessPath->vInit(pSEitf);
   
   EXIT();
 }
@@ -173,6 +153,68 @@ void Task::vAccessPathParse(NNP_Task nnpTask)
     nnpTask->m_pDataStack->vPushInt(eFetchTechnique);
   }
   delete pTokeniser;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* accessPath.set -- set access path ( seitf accessPath -- )                  */
+/*----------------------------------------------------------------------------*/
+void Task::vAccessPathSet(NNP_Task nnpTask)
+{
+  ENTRY("vAccessPathSet"_Str);
+  
+  Object* pPtrAccessPath;
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrAccessPath) )
+    THROW_INVALID_DSTACK("accessPath.set"_Str);
+  AccessPath* pAccessPath = _pAccessPath(pPtrAccessPath);
+  
+  Table* pTable = pAccessPath->pTable();
+  nnpTask->m_pDataStack->vPushObject(pTable);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* accessPath.table1 -- store table into access path                          */
+/*----------------------------------------------------------------------------*/
+void Task::vAccessPathTableStore(NNP_Task nnpTask)
+{
+  ENTRY("vAccessPathTableStore"_Str);
+  
+  Object* pPtrAccessPath;
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrAccessPath) )
+    THROW_INVALID_DSTACK("accessPath.table!"_Str);
+  AccessPath* pAccessPath = _pAccessPath(pPtrAccessPath);
+  
+  Object* pPtrTable;
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrTable) )
+    THROW_INVALID_DSTACK("accessPath.table!"_Str);
+  Table* pTable = _pTable(pPtrTable);
+  
+  pAccessPath->vTable(pTable);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* accessPath.table@ -- fetch table from access path                          */
+/*----------------------------------------------------------------------------*/
+void Task::vAccessPathTableFetch(NNP_Task nnpTask)
+{
+  ENTRY("vAccessPathTableFetch"_Str);
+  
+  Object* pPtrAccessPath;
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrAccessPath) )
+    THROW_INVALID_DSTACK("accessPath.table@"_Str);
+  AccessPath* pAccessPath = _pAccessPath(pPtrAccessPath);
+  
+  Object* pPtrSEitf;
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitf) )
+    THROW_INVALID_DSTACK("accessPath.table@"_Str);
+  SEitf* pSEitf = _pSEitf(pPtrSEitf);
+  
+  pAccessPath->vInit(pSEitf);
   
   EXIT();
 }
