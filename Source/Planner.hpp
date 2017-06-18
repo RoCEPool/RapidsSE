@@ -4,14 +4,17 @@
 #pragma once
 
 namespace Plans
-{  
+{
   class Planner : public Object
   {
   private:
+    static const i8 C_MAX_CANDIDATES = 128;
+  
     Table*          m_pTable;
     CandidatePaths* m_pCandidatePaths;
-    Index*          m_pIndex[C_INDEXES_PER_TABLE];
-    i8              m_iScoreVec[C_INDEXES_PER_TABLE];
+    Index*          m_pIndex[C_MAX_CANDIDATES];
+    i8              m_iScoreVec[C_MAX_CANDIDATES];
+    i8              m_nCandidates;
   
     // must be last
     Footer m_xFooter;

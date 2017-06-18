@@ -320,6 +320,8 @@ stk
   pTable pPlanner planner.table!
   pPlanner planner.genPaths
   pPlanner planner.showPaths
+  pPlanner planner.scorePaths
+  pPlanner planner.showPaths
 
   sWhere pAccessPath accessPath.parse
 

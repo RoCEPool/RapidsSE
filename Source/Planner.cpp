@@ -52,10 +52,11 @@ Planner::Planner(void)
   
   m_pTable          = nullptr;
   m_pCandidatePaths = nullptr;
-  for (i8 i_Score = 0; i_Score < C_INDEXES_PER_TABLE; i_Score++) {
+  for (i8 i_Score = 0; i_Score < C_MAX_CANDIDATES; i_Score++) {
     m_pIndex[i_Score]    = nullptr;
     m_iScoreVec[i_Score] = 0;
   }
+  m_nCandidates = 0;
   
   _checkInitialised_(CN_PLANNER);
   
@@ -93,6 +94,8 @@ void Planner::vGenPaths(Table* pTable, Index* pIndex)
     }
     
     m_pCandidatePaths->vAdd(pCandidatePath);
+    m_pIndex[m_nCandidates] = pIndex;
+    m_nCandidates++;
   }
   
 }
@@ -135,8 +138,14 @@ void Planner::vShowPaths(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
  
   for (i8 i_Path = 0; i_Path < m_pCandidatePaths->nItems(); i_Path++) {
+    
     CandidatePath* pCandidatePath = m_pCandidatePaths->pGet(i_Path);
-    vTrace("[Cdt %lld] "_Str,i_Path);
+    
+    vTrace("[Cdt %2lld : index %s : score %2lld] "_Str,
+           i_Path,
+           m_pIndex[i_Path]->aIndexName(),
+           m_iScoreVec[i_Path]);
+    
     for (i8 i_IdxCol = 0; i_IdxCol < pCandidatePath->nItems(); i_IdxCol++) {
       Column* pColumn = pCandidatePath->pGet(i_IdxCol);
       vTrace("%s%s"_Str,i_IdxCol ? ", "_Str : ""_Str,pColumn->sColumnName().aStr());
