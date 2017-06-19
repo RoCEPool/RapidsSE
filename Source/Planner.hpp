@@ -50,6 +50,7 @@ namespace Plans
   
     void vTest(void);
 
+    CandidatePath* pCandidatePath(void);
     PredicateVec* pPredicateVec(void);
   
     Footer* pFooter(void);

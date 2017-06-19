@@ -426,6 +426,16 @@ void Planner::vTest(void)
 /*----------------------------------------------------------------------------*/
 /* get predicate vector                                                       */
 /*----------------------------------------------------------------------------*/
+CandidatePath* Planner::pCandidatePath(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
+  
+  return m_pCandidatePaths->pGet(m_i_Chosen);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get predicate vector                                                       */
+/*----------------------------------------------------------------------------*/
 PredicateVec* Planner::pPredicateVec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
