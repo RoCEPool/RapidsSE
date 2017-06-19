@@ -98,7 +98,13 @@ void Task::vPlannerFetchTechniqueFetch(NNP_Task nnpTask)
   Object* pPtrPlanner;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrPlanner) )
     THROW_INVALID_DSTACK("planner.fetchTechnique@"_Str);
-  Planner* pPlanner = _pPlanner(pPtrPlanner);
+  Planner* mpPlanner = _pPlanner(pPtrPlanner);
+  
+  PredicateVec* mpPredicateVec = mpPlanner->pPredicateVec();
+  Predicate* mpPredicate = mpPredicateVec->pGet(0);
+  eFT eFetchTechnique = mpPredicate->eFetchTechnique();
+  
+  nnpTask->m_pDataStack->vPushInt(eFetchTechnique);
   
   EXIT();
 }

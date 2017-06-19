@@ -100,6 +100,8 @@ namespace Plans
   
     void vShow(void);
   
+    eFT eFetchTechnique(void);
+  
     Footer* pFooter(void);
   };
   
