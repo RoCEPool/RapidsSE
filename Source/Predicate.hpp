@@ -47,7 +47,6 @@ namespace Plans
   {
   private:
     ePK  m_ePredicate;
-    ePB  m_eBounds;
     Op*  m_pOp;
     Arg* m_pArg1;
     Arg* m_pArg2;
@@ -61,12 +60,9 @@ namespace Plans
     void  operator delete(void*);
     
     Predicate(void);
-    Predicate(ePB m_eBounds, ePK ePredicate, Arg* pArg1, Op* pOp, Arg* pArg2);
+    Predicate(ePK ePredicate, Arg* pArg1, Op* pOp, Arg* pArg2);
     ~Predicate(void);
-  
-    ePB eBounds(void);
-    void vBounds(ePB eBounds);
-  
+    
     ePK ePredicate(void);
     void vPredicate(ePK ePredicate);
   

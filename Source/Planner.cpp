@@ -58,6 +58,7 @@ Planner::Planner(void)
   }
   m_nCandidates = 0;
   //m_sWhere
+  m_pPredicateVec = nullptr;
   
   _checkInitialised_(CN_PLANNER);
   
@@ -220,7 +221,65 @@ void Planner::vWhere(s48K& sWhere)
 void Planner::vParseWhere(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
+    
+  TokenSet xTokenSet;
+  Tokeniser* pTokeniser = new Tokeniser;
+  pTokeniser->vPush();
+  pTokeniser->vUseString(m_sWhere);
   
+  eFT eFetchTechnique;
+  Op* pOp;
+  
+  m_pPredicateVec = new PredicateVec;
+  for (i8 i_Predicate = 0; ; i_Predicate++) {
+    
+    if (i_Predicate) {
+      pTokeniser->vNextToken();
+      if (TK_NONE == pTokeniser->eToken())
+        break;
+      ASSERT(pTokeniser->sToken().bSame("and"_Str));
+    }
+    
+    pTokeniser->vNextToken();
+  
+    Arg* pArg1 = new Arg(AK_COLUMNNM,pTokeniser->sToken());
+
+    pTokeniser->vNextToken();
+    if (pTokeniser->sToken().bSame(">"_Str)) {
+      pOp = new Op(RO_GREATER_THAN);
+      eFetchTechnique = FT_LOWER;
+    }
+    else
+    if (pTokeniser->sToken().bSame(">="_Str)) {
+      pOp = new Op(RO_GREATER_EQUAL);
+      eFetchTechnique = FT_LOWER;
+    }
+    else
+    if (pTokeniser->sToken().bSame("="_Str) ||
+        pTokeniser->sToken().bSame("=="_Str)) {
+      pOp = new Op(RO_EQUAL_TO);
+      eFetchTechnique = FT_EQUAL;
+    }
+    else
+    if (pTokeniser->sToken().bSame("<="_Str)) {
+      pOp = new Op(RO_LESS_EQUAL);
+      eFetchTechnique = FT_UPPER;
+    }
+    else
+    if (pTokeniser->sToken().bSame("<"_Str)) {
+      pOp = new Op(RO_LESS_THAN);
+      eFetchTechnique = FT_UPPER;
+    }
+    else {
+      ASSERT(0);
+    }
+    
+    pTokeniser->vNextToken();
+    Arg* pArg2 = new Arg(AK_LITERAL,pTokeniser->sToken());
+    
+    Predicate* pPredicate = new Predicate(PK_COLUMN_OP_LITERAL,pArg1,pOp,pArg2);
+  }
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -229,7 +288,7 @@ void Planner::vParseWhere(void)
 void Planner::vTest(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
-  
+/*
   Arg* pArg1 = new Arg(AK_NONE,"jA"_Str);
   Op*  pOp   = new Op(RO_LESS_EQUAL);
   Arg* pArg2 = new Arg(AK_NONE,"7"_Str);
@@ -273,7 +332,7 @@ void Planner::vTest(void)
     }
     
   }
-  
+*/
 }
 
 /*----------------------------------------------------------------------------*/

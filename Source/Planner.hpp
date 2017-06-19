@@ -17,6 +17,8 @@ namespace Plans
     i8              m_nCandidates;
     s48K            m_sWhere;
   
+    PredicateVec*   m_pPredicateVec;
+  
     // must be last
     Footer m_xFooter;
     
