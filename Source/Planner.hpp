@@ -42,6 +42,7 @@ namespace Plans
     void  vWhere(s48K& sWhere);
     s48K& sWhere(void);
  
+    void vMatchPaths(void);
     void vParseWhere(void);
     void vShowPaths(void);
     void vShowPredicates(void);

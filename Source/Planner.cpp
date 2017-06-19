@@ -133,6 +133,15 @@ void Planner::vGenPaths(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* attempt to match predicates to paths                                       */
+/*----------------------------------------------------------------------------*/
+void Planner::vMatchPaths(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
+  
+}
+
+/*----------------------------------------------------------------------------*/
 /* show the generated set of paths                                            */
 /*----------------------------------------------------------------------------*/
 void Planner::vShowPaths(void)

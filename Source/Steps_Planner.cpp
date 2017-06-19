@@ -34,6 +34,7 @@ void Task::vAddPrimitives_Planner(void)
 {
   vAddPrimitive("planner.delete"_Str,         &vPlannerDelete,         false);
   vAddPrimitive("planner.genPaths"_Str,       &vPlannerGenPaths,       false);
+  vAddPrimitive("planner.matchPaths"_Str,     &vPlannerMatchPaths,     false);
   vAddPrimitive("planner::new"_Str,           &vPlannerNew,            false);
   vAddPrimitive("planner.parseWhere"_Str,     &vPlannerParseWhere,     false);
   vAddPrimitive("planner.scorePaths"_Str,     &vPlannerScorePaths,     false);
@@ -68,6 +69,25 @@ ENTRY("vPlannerDelete"_Str);
 void Task::vPlannerGenPaths(NNP_Task nnpTask)
 {
   ENTRY("vPlannerGenPaths"_Str);
+  
+  Object* pPtrPlanner;
+  
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrPlanner) )
+    THROW_INVALID_DSTACK("planner.delete"_Str);
+  
+  Planner* pPlanner = _pPlanner(pPtrPlanner);
+  
+  pPlanner->vGenPaths();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* planner.matchPaths -- attempt to match predicates with paths               */
+/*----------------------------------------------------------------------------*/
+void Task::vPlannerMatchPaths(NNP_Task nnpTask)
+{
+  ENTRY("vPlannerMatchnPaths"_Str);
   
   Object* pPtrPlanner;
   

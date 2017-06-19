@@ -325,8 +325,10 @@ stk
 
   sWhere pPlanner Planner.parseWhere
   pPlanner Planner.showPredicates
+  pPlanner Planner.matchPaths
 
   sWhere pAccessPath accessPath.parse
+
 
   // execute a lower bound select using index
   case
