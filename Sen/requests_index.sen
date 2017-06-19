@@ -319,11 +319,12 @@ stk
   planner::new to pPlanner
   pTable pPlanner Planner.table!
   pPlanner Planner.genPaths
-  pPlanner Planner.showPaths
+//pPlanner Planner.showPaths
   pPlanner Planner.scorePaths
   pPlanner Planner.showPaths
 
   sWhere pPlanner Planner.parseWhere
+  pPlanner Planner.showPredicates
 
   sWhere pAccessPath accessPath.parse
 

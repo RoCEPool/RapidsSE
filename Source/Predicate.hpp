@@ -75,6 +75,8 @@ namespace Plans
     Op* pOp(void);
     void vOp(Op* pOp);
   
+    void vShow(void);
+  
     Footer* pFooter(void);
   };
   

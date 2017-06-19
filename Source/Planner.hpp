@@ -44,6 +44,7 @@ namespace Plans
  
     void vParseWhere(void);
     void vShowPaths(void);
+    void vShowPredicates(void);
   
     void vTest(void);
 

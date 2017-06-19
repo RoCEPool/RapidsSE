@@ -176,6 +176,20 @@ void Planner::vScorePaths(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* show predicate vector                                                      */
+/*----------------------------------------------------------------------------*/
+void Planner::vShowPredicates(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
+  
+  ASSERT(m_pPredicateVec);
+  for (i8 i_Pred = 0; i_Pred < m_pPredicateVec->nItems(); i_Pred++) {
+    Predicate* mpPredicate = m_pPredicateVec->pGet(i_Pred);
+    mpPredicate->vShow();
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* get current table                                                          */
 /*----------------------------------------------------------------------------*/
 Table* Planner::pTable(void)
@@ -278,6 +292,7 @@ void Planner::vParseWhere(void)
     Arg* pArg2 = new Arg(AK_LITERAL,pTokeniser->sToken());
     
     Predicate* pPredicate = new Predicate(PK_COLUMN_OP_LITERAL,pArg1,pOp,pArg2);
+    m_pPredicateVec->vAdd(pPredicate);
   }
 
 }

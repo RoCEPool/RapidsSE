@@ -32,14 +32,15 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Planner(void)
 {
-  vAddPrimitive("planner.delete"_Str,     &vPlannerDelete,      false);
-  vAddPrimitive("planner.genPaths"_Str,   &vPlannerGenPaths,    false);
-  vAddPrimitive("planner::new"_Str,       &vPlannerNew,         false);
-  vAddPrimitive("planner.parseWhere"_Str, &vPlannerParseWhere,  false);
-  vAddPrimitive("planner.scorePaths"_Str, &vPlannerScorePaths,  false);
-  vAddPrimitive("planner.showPaths"_Str,  &vPlannerShowPaths,   false);
-  vAddPrimitive("planner.table@"_Str,     &vPlannerTableFetch,  false);
-  vAddPrimitive("planner.table!"_Str,     &vPlannerTableStore,  false);
+  vAddPrimitive("planner.delete"_Str,         &vPlannerDelete,         false);
+  vAddPrimitive("planner.genPaths"_Str,       &vPlannerGenPaths,       false);
+  vAddPrimitive("planner::new"_Str,           &vPlannerNew,            false);
+  vAddPrimitive("planner.parseWhere"_Str,     &vPlannerParseWhere,     false);
+  vAddPrimitive("planner.scorePaths"_Str,     &vPlannerScorePaths,     false);
+  vAddPrimitive("planner.showPaths"_Str,      &vPlannerShowPaths,      false);
+  vAddPrimitive("planner.showPredicates"_Str, &vPlannerShowPredicates, false);
+  vAddPrimitive("planner.table@"_Str,         &vPlannerTableFetch,     false);
+  vAddPrimitive("planner.table!"_Str,         &vPlannerTableStore,     false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -147,6 +148,23 @@ void Task::vPlannerShowPaths(NNP_Task nnpTask)
   Planner* pPlanner = _pPlanner(pPtrPlanner);
   
   pPlanner->vShowPaths();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* accessPath.showPredicates -- show predicates                               */
+/*----------------------------------------------------------------------------*/
+void Task::vPlannerShowPredicates(NNP_Task nnpTask)
+{
+  ENTRY("vPlannerShowPredicates"_Str);
+  
+  Object* pPtrPlanner;
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrPlanner) )
+    THROW_INVALID_DSTACK("accessPath.showPredicates"_Str);
+  Planner* pPlanner = _pPlanner(pPtrPlanner);
+  
+  pPlanner->vShowPredicates();
   
   EXIT();
 }
