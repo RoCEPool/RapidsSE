@@ -362,7 +362,9 @@ void Planner::vParseWhere(void)
     pTokeniser->vNextToken();
     Arg* pArg2 = new Arg(AK_LITERAL,pTokeniser->sToken());
     
-    Predicate* pPredicate = new Predicate(PK_COLUMN_OP_LITERAL,pArg1,pOp,pArg2);
+    Predicate* pPredicate =
+      new Predicate(PK_COLUMN_OP_LITERAL,pArg1,pOp,pArg2,eFetchTechnique);
+    
     m_pPredicateVec->vAdd(pPredicate);
   }
 

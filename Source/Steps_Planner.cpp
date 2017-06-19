@@ -34,7 +34,12 @@ void Task::vAddPrimitives_Planner(void)
 {
   vAddPrimitive("planner.choosePath"_Str,     &vPlannerChoosePath,     false);
   vAddPrimitive("planner.delete"_Str,         &vPlannerDelete,         false);
+  vAddPrimitive("planner.fetchTechnique@"_Str,&vPlannerFetchTechniqueFetch, false);
   vAddPrimitive("planner.genPaths"_Str,       &vPlannerGenPaths,       false);
+  vAddPrimitive("planner.highkey@"_Str,       &vPlannerHighKeyFetch,   false);
+  vAddPrimitive("planner.index@"_Str,         &vPlannerIndexFetch,     false);
+  vAddPrimitive("planner.key@"_Str,           &vPlannerKeyFetch,       false);
+  vAddPrimitive("planner.lowkey@"_Str,        &vPlannerLowKeyFetch,    false);
   vAddPrimitive("planner.matchPaths"_Str,     &vPlannerMatchPaths,     false);
   vAddPrimitive("planner::new"_Str,           &vPlannerNew,            false);
   vAddPrimitive("planner.parseWhere"_Str,     &vPlannerParseWhere,     false);
@@ -84,6 +89,21 @@ ENTRY("vPlannerDelete"_Str);
 }
 
 /*----------------------------------------------------------------------------*/
+/* planner.fetchTechnique@ -- fetch fetch technique ( -- )                    */
+/*----------------------------------------------------------------------------*/
+void Task::vPlannerFetchTechniqueFetch(NNP_Task nnpTask)
+{
+  ENTRY("vPlannerDelete"_Str);
+  
+  Object* pPtrPlanner;
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrPlanner) )
+    THROW_INVALID_DSTACK("planner.fetchTechnique@"_Str);
+  Planner* pPlanner = _pPlanner(pPtrPlanner);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* planner.genPaths -- generate all access paths for table                    */
 /*----------------------------------------------------------------------------*/
 void Task::vPlannerGenPaths(NNP_Task nnpTask)
@@ -98,6 +118,66 @@ void Task::vPlannerGenPaths(NNP_Task nnpTask)
   Planner* pPlanner = _pPlanner(pPtrPlanner);
   
   pPlanner->vGenPaths();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* planner.highKey@ -- fetch high key ( -- )                                  */
+/*----------------------------------------------------------------------------*/
+void Task::vPlannerHighKeyFetch(NNP_Task nnpTask)
+{
+  ENTRY("vPlannerHighKeyFetch"_Str);
+  
+  Object* pPtrPlanner;
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrPlanner) )
+    THROW_INVALID_DSTACK("planner.highKey@"_Str);
+  Planner* pPlanner = _pPlanner(pPtrPlanner);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* planner.index@ -- fetch index ( -- )                                       */
+/*----------------------------------------------------------------------------*/
+void Task::vPlannerIndexFetch(NNP_Task nnpTask)
+{
+  ENTRY("vPlannerIndexFetch"_Str);
+  
+  Object* pPtrPlanner;
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrPlanner) )
+    THROW_INVALID_DSTACK("planner.index@"_Str);
+  Planner* pPlanner = _pPlanner(pPtrPlanner);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* planner.key@ -- fetch key ( -- )                                           */
+/*----------------------------------------------------------------------------*/
+void Task::vPlannerKeyFetch(NNP_Task nnpTask)
+{
+  ENTRY("vPlannerKeyFetch"_Str);
+  
+  Object* pPtrPlanner;
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrPlanner) )
+    THROW_INVALID_DSTACK("planner.key@"_Str);
+  Planner* pPlanner = _pPlanner(pPtrPlanner);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* planner.lowKey@ -- fetch low key ( -- )                                    */
+/*----------------------------------------------------------------------------*/
+void Task::vPlannerLowKeyFetch(NNP_Task nnpTask)
+{
+  ENTRY("vPlannerLowKeyFetch"_Str);
+  
+  Object* pPtrPlanner;
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrPlanner) )
+    THROW_INVALID_DSTACK("planner.lowKey@"_Str);
+  Planner* pPlanner = _pPlanner(pPtrPlanner);
   
   EXIT();
 }

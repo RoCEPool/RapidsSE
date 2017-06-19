@@ -316,38 +316,37 @@ stk
 
   pTable pAccessPath accesspath.table!
 
-  ( 0 ) planner::new to pPlanner
-  ( 1 ) pTable pPlanner Planner.table!
+  ( cdt_0 ) planner::new to pPlanner
+  ( cdt_1 ) pTable pPlanner Planner.table!
 
-  ( 2 ) pPlanner Planner.genPaths
-  ( 3 ) pPlanner Planner.scorePaths
-  ( 4 ) pPlanner Planner.showPaths
+  ( cdt_2 ) pPlanner Planner.genPaths
+  ( cdt_3 ) pPlanner Planner.scorePaths
+  ( cdt_4 ) pPlanner Planner.showPaths
 
-  ( 5 ) sWhere pPlanner Planner.parseWhere
-  ( 6 ) pPlanner Planner.showPredicates
-  ( 7 ) pPlanner Planner.matchPaths
-  ( 8 ) pPlanner Planner.showPaths
-  ( 9 ) pPlanner Planner.choosePath
+  ( cdt_5 ) sWhere pPlanner Planner.parseWhere
+  ( cdt_6 ) pPlanner Planner.showPredicates
+  ( cdt_7 ) pPlanner Planner.matchPaths
+  ( cdt_8 ) pPlanner Planner.showPaths
+  ( cdt_9 ) pPlanner Planner.choosePath
 
   sWhere pAccessPath accessPath.parse
-
 
   // execute a lower bound select using index
   case
     FT_EQUAL of
-      "case equal" . equalSelectIndex
+      "case equal" . ( xKey pIndex ) equalSelectIndex
     endof
 
     FT_LOWER of
-      "case lower" . lowerSelectIndex
+      "case lower" . ( xKey pIndex ) lowerSelectIndex
     endof
 
     FT_UPPER of
-      "case upper" . upperSelectIndex
+      "case upper" . ( xKey pIndex ) upperSelectIndex
     endof
 
     FT_RANGE of
-      "case range" . rangeSelectIndex
+      "case range" . ( xHighKey xLowKey pIndex ) rangeSelectIndex
     endof
 
     FT_SCAN of
