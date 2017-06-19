@@ -326,6 +326,7 @@ stk
   sWhere pPlanner Planner.parseWhere
   pPlanner Planner.showPredicates
   pPlanner Planner.matchPaths
+  pPlanner Planner.showPaths
 
   sWhere pAccessPath accessPath.parse
 

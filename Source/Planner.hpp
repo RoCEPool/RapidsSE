@@ -14,6 +14,7 @@ namespace Plans
     CandidatePaths* m_pCandidatePaths;
     Index*          m_pIndex[C_MAX_CANDIDATES];
     i8              m_iScoreVec[C_MAX_CANDIDATES];
+    bool            m_bIsCandidate[C_MAX_CANDIDATES];
     i8              m_nCandidates;
     s48K            m_sWhere;
   

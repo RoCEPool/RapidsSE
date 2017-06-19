@@ -50,11 +50,12 @@ Planner::Planner(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
   
-  m_pTable          = nullptr;
+  m_pTable = nullptr;
   m_pCandidatePaths = nullptr;
-  for (i8 i_Score = 0; i_Score < C_MAX_CANDIDATES; i_Score++) {
-    m_pIndex[i_Score]    = nullptr;
-    m_iScoreVec[i_Score] = 0;
+  for (i8 i_Cdt = 0; i_Cdt < C_MAX_CANDIDATES; i_Cdt++) {
+    m_pIndex[i_Cdt] = nullptr;
+    m_iScoreVec[i_Cdt] = 0;
+    m_bIsCandidate[i_Cdt] = false;
   }
   m_nCandidates = 0;
   //m_sWhere
@@ -139,6 +140,34 @@ void Planner::vMatchPaths(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
   
+  for (i8 i_Path = 0; i_Path < m_pCandidatePaths->nItems(); i_Path++) {
+    CandidatePath* mpPath = m_pCandidatePaths->pGet(i_Path);
+    
+    bool bMatchAll = true;
+    for (i8 i_Col = 0; i_Col < mpPath->nItems(); i_Col++) {
+      Column* mpColumn = mpPath->pGet(i_Col);
+      
+      bool bHasColumn = false;
+      for (i8 i_Pred = 0; i_Pred < m_pPredicateVec->nItems(); i_Pred++) {
+        Predicate* mpPredicate = m_pPredicateVec->pGet(i_Pred);
+        
+        s256 sColumnNm = mpPredicate->pArg1()->sArgVal();
+ 
+        if (mpColumn->bIsName((s32)sColumnNm)) {
+          bHasColumn = true;
+          break;
+        }
+      }
+      
+      if (!bHasColumn) {
+        bMatchAll = false;
+        break;
+      }
+    }
+    
+    if (bMatchAll)
+      m_bIsCandidate[i_Path] = true;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -152,10 +181,11 @@ void Planner::vShowPaths(void)
     
     CandidatePath* pCandidatePath = m_pCandidatePaths->pGet(i_Path);
     
-    vTrace("[Cdt %2lld : index %s : score %2lld] "_Str,
+    vTrace("[Cdt %2lld : index %s : score %2lld : cdt %s] "_Str,
            i_Path,
            m_pIndex[i_Path]->aIndexName(),
-           m_iScoreVec[i_Path]);
+           m_iScoreVec[i_Path],
+           m_bIsCandidate[i_Path] ? "yes" : "no ");
     
     for (i8 i_IdxCol = 0; i_IdxCol < pCandidatePath->nItems(); i_IdxCol++) {
       Column* pColumn = pCandidatePath->pGet(i_IdxCol);

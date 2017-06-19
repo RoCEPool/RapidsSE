@@ -96,7 +96,7 @@ void Task::vPlannerMatchPaths(NNP_Task nnpTask)
   
   Planner* pPlanner = _pPlanner(pPtrPlanner);
   
-  pPlanner->vGenPaths();
+  pPlanner->vMatchPaths();
   
   EXIT();
 }

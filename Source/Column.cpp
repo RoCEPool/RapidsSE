@@ -240,6 +240,18 @@ void Column::vDatumType(eDM eDatumType)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is column the given name?                                                  */
+/*----------------------------------------------------------------------------*/
+bool Column::bIsName(s32 sName)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+  
+  bool b = m_sColumnName.bSame(sName);
+  
+  return b;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get is nullable?                                                           */
 /*----------------------------------------------------------------------------*/
 bool Column::bIsNullable(void)
