@@ -101,6 +101,7 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vUndefined,       // CN_PLANNER
   /* 47 */ &PlanList::vDump,        // CN_PLANLIST
   /*    */ &Dump::vUndefined,       // CN_PREDICATE
+  /*    */ &Dump::vUndefined,       // CN_PREDVEC
   /*    */ &Dump::vUndefined,       // CN_POSIXTHREAD
   /* 48 */ &Dump::vUndefined,       // CN_PROXY
   /* 49 */ &Dump::vUndefined,       // CN_PROXYSET
@@ -252,7 +253,7 @@ i8 giClassSize[]
   /* 42 */ sizeof(Node),               // CN_NODE
   /* 43 */ sizeof(NodeCursor),         // CN_NODECURSOR
   
-  /*    */ 0,                          // CN_OP
+  /*    */ sizeof(Op),                 // CN_OP
   
   /* 44 */ sizeof(Parser),             // CN_PARSER
   /* 45 */ sizeof(Partition),          // CN_PARTITION
@@ -260,7 +261,8 @@ i8 giClassSize[]
   /* 46 */ sizeof(Planner),            // CN_PLANNER
   /* 47 */ sizeof(PlanList),           // CN_PLANLIST
   /*    */ sizeof(PosixThread),        // CN_POSIXTHREAD
-  /*    */ 0,                          // CN_PREDICATE
+  /*    */ sizeof(Predicate),          // CN_PREDICATE
+  /*    */ 0,                          // CN_PREDICATEVEC
   /* 48 */ sizeof(Proxy),              // CN_PROXY
   /* 49 */ sizeof(ProxySet),           // CN_PROXYSET
   /*    */ sizeof(PtnColVec),          // CN_PTNCOLVEC
@@ -419,6 +421,7 @@ eHT geWhichHeap[]
   /*    */ HT_MEDIUM,  // CN_PLANNER
   /* 50 */ HT_SMALL,   // CN_PLANLIST
   /*    */ HT_SMALL,   // CN_PREDICATE
+  /*    */ HT_MEDIUM,  // CN_PREDICATEVEC
   /*    */ HT_SMALL,   // CN_POSIXTHREAD
   /* 51 */ HT_INVALID, // CN_PROXY
   /* 52 */ HT_INVALID, // CN_PROXYSET

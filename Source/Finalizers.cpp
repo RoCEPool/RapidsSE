@@ -101,6 +101,7 @@ pFINALIZE *gpFinalize[]
   /* 47 */ &Finalize::vUndefined,         // CN_PLANLIST
   /*    */ &Finalize::vUndefined,         // CN_POSIXTHREAD
   /*    */ &Finalize::vUndefined,         // CN_PREDICATE
+  /*    */ &Finalize::vUndefined,         // CN_PREDICATEVEC
   /* 48 */ &Finalize::vUndefined,         // CN_PROXY
   /* 49 */ &Finalize::vUndefined,         // CN_PROXYSET
   /*    */ &Finalize::vUndefined,         // CN_PTNCOLVEC

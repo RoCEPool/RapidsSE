@@ -23,6 +23,8 @@ using namespace Plans;
 typedef Vector<CN_CANDIDATEPATH,Column,CN_COLUMN,128,u8> CandidatePath;
 typedef Vector<CN_CANDIDATEPATHS,CandidatePath,CN_CANDIDATEPATH,128,u8> CandidatePaths;
 
+typedef Vector<CN_PREDICATEVEC,Predicate,CN_PREDICATE,128,u8> PredicateVec;
+
 #include "AccessPath.hpp"
 //#include "CandidatePath.hpp"
 //#include "CandidatePaths.hpp"

@@ -15,6 +15,7 @@ namespace Plans
     Index*          m_pIndex[C_MAX_CANDIDATES];
     i8              m_iScoreVec[C_MAX_CANDIDATES];
     i8              m_nCandidates;
+    s48K            m_sWhere;
   
     // must be last
     Footer m_xFooter;
@@ -36,7 +37,10 @@ namespace Plans
     void   vTable(Table* pTable);
     Table* pTable(void);
   
+    void  vWhere(s48K& sWhere);
+    s48K& sWhere(void);
  
+    void vParseWhere(void);
     void vShowPaths(void);
   
     void vTest(void);

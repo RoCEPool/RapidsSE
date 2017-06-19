@@ -729,6 +729,7 @@ namespace Tasks
     static void vPlannerDelete(NNP_Task nnpTask);
     static void vPlannerGenPaths(NNP_Task nnpTask);
     static void vPlannerNew(NNP_Task nnpTask);
+    static void vPlannerParseWhere(NNP_Task nnpTask);
     static void vPlannerScorePaths(NNP_Task nnpTask);
     static void vPlannerShowPaths(NNP_Task nnpTask);
     static void vPlannerTableFetch(NNP_Task nnpTask);

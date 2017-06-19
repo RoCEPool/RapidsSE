@@ -35,6 +35,7 @@ void Task::vAddPrimitives_Planner(void)
   vAddPrimitive("planner.delete"_Str,     &vPlannerDelete,      false);
   vAddPrimitive("planner.genPaths"_Str,   &vPlannerGenPaths,    false);
   vAddPrimitive("planner::new"_Str,       &vPlannerNew,         false);
+  vAddPrimitive("planner.parseWhere"_Str, &vPlannerParseWhere,  false);
   vAddPrimitive("planner.scorePaths"_Str, &vPlannerScorePaths,  false);
   vAddPrimitive("planner.showPaths"_Str,  &vPlannerShowPaths,   false);
   vAddPrimitive("planner.table@"_Str,     &vPlannerTableFetch,  false);
@@ -89,6 +90,29 @@ ENTRY("vPlannerNew"_Str);
   Planner* pPlanner = new Planner;
   
   nnpTask->m_pDataStack->vPushObject(pPlanner);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* accessPath.parseWhere -- parse a where clause                              */
+/*----------------------------------------------------------------------------*/
+void Task::vPlannerParseWhere(NNP_Task nnpTask)
+{
+  ENTRY("vPlannerParseWhere"_Str);
+  
+  Object* pPtrPlanner;
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrPlanner) )
+    THROW_INVALID_DSTACK("accessPath.parseWhere"_Str);
+  Planner* pPlanner = _pPlanner(pPtrPlanner);
+  
+  s48K sWhere;
+  if ( ! nnpTask->m_pDataStack->bPop(sWhere) )
+    THROW_INVALID_DSTACK("accessPath.parseWhere"_Str);
+  
+  pPlanner->vWhere(sWhere);
+  
+  pPlanner->vParseWhere();
   
   EXIT();
 }

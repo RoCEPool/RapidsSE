@@ -57,6 +57,7 @@ Planner::Planner(void)
     m_iScoreVec[i_Score] = 0;
   }
   m_nCandidates = 0;
+  //m_sWhere
   
   _checkInitialised_(CN_PLANNER);
   
@@ -191,6 +192,35 @@ void Planner::vTable(Table* pTable)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
   
   m_pTable = pTable;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get where clause                                                           */
+/*----------------------------------------------------------------------------*/
+s48K& Planner::sWhere(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
+  
+  return m_sWhere;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set where clause                                                           */
+/*----------------------------------------------------------------------------*/
+void Planner::vWhere(s48K& sWhere)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
+  
+  m_sWhere = sWhere;
+}
+
+/*----------------------------------------------------------------------------*/
+/* parse where clause                                                         */
+/*----------------------------------------------------------------------------*/
+void Planner::vParseWhere(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
+  
 }
 
 /*----------------------------------------------------------------------------*/
