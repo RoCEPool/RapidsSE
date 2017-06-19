@@ -424,6 +424,18 @@ void Planner::vTest(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get chosen index                                                           */
+/*----------------------------------------------------------------------------*/
+Index* Planner::pChosenIndex(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
+  
+  Index* pChosen = m_pIndex[m_i_Chosen];
+  
+  return pChosen;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get predicate vector                                                       */
 /*----------------------------------------------------------------------------*/
 CandidatePath* Planner::pCandidatePath(void)

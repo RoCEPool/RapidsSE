@@ -138,7 +138,14 @@ void Task::vPlannerHighKeyFetch(NNP_Task nnpTask)
   Object* pPtrPlanner;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrPlanner) )
     THROW_INVALID_DSTACK("planner.highKey@"_Str);
-  Planner* pPlanner = _pPlanner(pPtrPlanner);
+  Planner* mpPlanner = _pPlanner(pPtrPlanner);
+  
+  PredicateVec* mpPredicateVec = mpPlanner->pPredicateVec();
+  Predicate* mpPredicate = mpPredicateVec->pGet(0);
+  Arg* pArg2 = mpPredicate->pArg2();
+  s256 sHighKey = pArg2->sArgVal();
+  
+  nnpTask->m_pDataStack->vPushS256(sHighKey);
   
   EXIT();
 }
@@ -153,7 +160,11 @@ void Task::vPlannerIndexFetch(NNP_Task nnpTask)
   Object* pPtrPlanner;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrPlanner) )
     THROW_INVALID_DSTACK("planner.index@"_Str);
-  Planner* pPlanner = _pPlanner(pPtrPlanner);
+  Planner* mpPlanner = _pPlanner(pPtrPlanner);
+  
+  Index* pIndex = mpPlanner->pChosenIndex();
+  
+  nnpTask->m_pDataStack->vPushObject(pIndex);
   
   EXIT();
 }
@@ -168,7 +179,14 @@ void Task::vPlannerKeyFetch(NNP_Task nnpTask)
   Object* pPtrPlanner;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrPlanner) )
     THROW_INVALID_DSTACK("planner.key@"_Str);
-  Planner* pPlanner = _pPlanner(pPtrPlanner);
+  Planner* mpPlanner = _pPlanner(pPtrPlanner);
+  
+  PredicateVec* mpPredicateVec = mpPlanner->pPredicateVec();
+  Predicate* mpPredicate = mpPredicateVec->pGet(0);
+  Arg* pArg1 = mpPredicate->pArg1();
+  s256 sKey = pArg1->sArgVal();
+  
+  nnpTask->m_pDataStack->vPushS256(sKey);
   
   EXIT();
 }
@@ -183,7 +201,14 @@ void Task::vPlannerLowKeyFetch(NNP_Task nnpTask)
   Object* pPtrPlanner;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrPlanner) )
     THROW_INVALID_DSTACK("planner.lowKey@"_Str);
-  Planner* pPlanner = _pPlanner(pPtrPlanner);
+  Planner* mpPlanner = _pPlanner(pPtrPlanner);
+  
+  PredicateVec* mpPredicateVec = mpPlanner->pPredicateVec();
+  Predicate* mpPredicate = mpPredicateVec->pGet(0);
+  Arg* pArg1 = mpPredicate->pArg1();
+  s256 sLow = pArg1->sArgVal();
+  
+  nnpTask->m_pDataStack->vPushS256(sLow);
   
   EXIT();
 }
