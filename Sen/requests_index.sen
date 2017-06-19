@@ -316,17 +316,18 @@ stk
 
   pTable pAccessPath accesspath.table!
 
-  planner::new to pPlanner
-  pTable pPlanner Planner.table!
-  pPlanner Planner.genPaths
-//pPlanner Planner.showPaths
-  pPlanner Planner.scorePaths
-  pPlanner Planner.showPaths
+  ( 0 ) planner::new to pPlanner
+  ( 1 ) pTable pPlanner Planner.table!
 
-  sWhere pPlanner Planner.parseWhere
-  pPlanner Planner.showPredicates
-  pPlanner Planner.matchPaths
-  pPlanner Planner.showPaths
+  ( 2 ) pPlanner Planner.genPaths
+  ( 3 ) pPlanner Planner.scorePaths
+  ( 4 ) pPlanner Planner.showPaths
+
+  ( 5 ) sWhere pPlanner Planner.parseWhere
+  ( 6 ) pPlanner Planner.showPredicates
+  ( 7 ) pPlanner Planner.matchPaths
+  ( 8 ) pPlanner Planner.showPaths
+  ( 9 ) pPlanner Planner.choosePath
 
   sWhere pAccessPath accessPath.parse
 

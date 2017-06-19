@@ -726,6 +726,7 @@ namespace Tasks
     static void vPlanListShow(NNP_Task nnpTask);
     
     // planner
+    static void vPlannerChoosePath(NNP_Task nnpTask);
     static void vPlannerDelete(NNP_Task nnpTask);
     static void vPlannerGenPaths(NNP_Task nnpTask);
     static void vPlannerMatchPaths(NNP_Task nnpTask);

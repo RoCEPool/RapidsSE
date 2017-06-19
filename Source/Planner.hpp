@@ -17,7 +17,8 @@ namespace Plans
     bool            m_bIsCandidate[C_MAX_CANDIDATES];
     i8              m_nCandidates;
     s48K            m_sWhere;
-  
+    i8              m_i_Chosen;
+
     PredicateVec*   m_pPredicateVec;
   
     // must be last
@@ -31,20 +32,19 @@ namespace Plans
     Planner(void);
     ~Planner(void);
   
+    void   vTable(Table* pTable);
+    Table* pTable(void);
+    
+    void  vWhere(s48K& sWhere);
+    s48K& sWhere(void);
+    
+    void vChoosePath(void);
     void vGenPaths(Table* pTable, Index* pIndex);
     void vGenPaths(Table* pTable);
     void vGenPaths(void);
-
-    void vScorePaths(void);
-  
-    void   vTable(Table* pTable);
-    Table* pTable(void);
-  
-    void  vWhere(s48K& sWhere);
-    s48K& sWhere(void);
- 
     void vMatchPaths(void);
     void vParseWhere(void);
+    void vScorePaths(void);
     void vShowPaths(void);
     void vShowPredicates(void);
   

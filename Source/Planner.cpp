@@ -60,6 +60,7 @@ Planner::Planner(void)
   m_nCandidates = 0;
   //m_sWhere
   m_pPredicateVec = nullptr;
+  m_i_Chosen = -1;
   
   _checkInitialised_(CN_PLANNER);
   
@@ -77,6 +78,37 @@ Planner::~Planner(void)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* choose best path based on score                                            */
+/*----------------------------------------------------------------------------*/
+void Planner::vChoosePath(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
+  
+  ASSERT(m_pCandidatePaths->nItems());
+  
+  i8 i_Path;
+  i8 m_i_Chosen = -1;
+  CandidatePath* npChosenPath = nullptr;
+  
+  for (m_i_Chosen = 0; m_i_Chosen < m_pCandidatePaths->nItems(); m_i_Chosen++) {
+    if (m_bIsCandidate[m_i_Chosen]) {
+      npChosenPath = m_pCandidatePaths->pGet(m_i_Chosen);
+      break;
+    }
+  }
+  
+  for (i8 i_Test = m_i_Chosen + 1; i_Test < m_pCandidatePaths->nItems(); i_Test++) {
+    CandidatePath* npTestPath = m_pCandidatePaths->pGet(i_Test);
+    if (m_bIsCandidate[i_Test] && m_iScoreVec[i_Test] < m_iScoreVec[m_i_Chosen]) {
+      m_i_Chosen = i_Test;
+      npChosenPath = m_pCandidatePaths->pGet(m_i_Chosen);
+    }
+  }
+  
+  vTrace("Chosen: %lld\n"_Str,m_i_Chosen);
+}
 
 /*----------------------------------------------------------------------------*/
 /* generate the set of all paths for given table                              */
@@ -207,7 +239,7 @@ void Planner::vScorePaths(void)
     Index* pIndex = m_pIndex[i_Path];
 
     // initially just a simple scoring method 
-    i8 iScore =   10 * (pIndex->bIsUnique() ? 0 : 1)
+    i8 iScore = 10 * (pIndex->bIsUnique() ? 0 : 1)
                 + pCandidatePath->nItems();
     
     m_iScoreVec[i_Path] = iScore;

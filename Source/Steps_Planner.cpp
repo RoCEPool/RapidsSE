@@ -32,6 +32,7 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Planner(void)
 {
+  vAddPrimitive("planner.choosePath"_Str,     &vPlannerChoosePath,     false);
   vAddPrimitive("planner.delete"_Str,         &vPlannerDelete,         false);
   vAddPrimitive("planner.genPaths"_Str,       &vPlannerGenPaths,       false);
   vAddPrimitive("planner.matchPaths"_Str,     &vPlannerMatchPaths,     false);
@@ -42,6 +43,25 @@ void Task::vAddPrimitives_Planner(void)
   vAddPrimitive("planner.showPredicates"_Str, &vPlannerShowPredicates, false);
   vAddPrimitive("planner.table@"_Str,         &vPlannerTableFetch,     false);
   vAddPrimitive("planner.table!"_Str,         &vPlannerTableStore,     false);
+}
+
+/*----------------------------------------------------------------------------*/
+/* planner.choosePath -- choose an access path                                */
+/*----------------------------------------------------------------------------*/
+void Task::vPlannerChoosePath(NNP_Task nnpTask)
+{
+  ENTRY("vPlannerChoosePath"_Str);
+  
+  Object* mpPtrPlanner;
+  
+  if ( ! nnpTask->m_pDataStack->bPop(mpPtrPlanner) )
+    THROW_INVALID_DSTACK("planner.delete"_Str);
+  
+  Planner* mpPlanner = _pPlanner(mpPtrPlanner);
+  
+  mpPlanner->vChoosePath();
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
