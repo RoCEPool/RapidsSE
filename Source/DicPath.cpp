@@ -302,7 +302,7 @@ Dic* DicPath::pTop(void)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* DicPath::pFooter(void)
+Footer* DicPath::aFooter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICPATH);
   

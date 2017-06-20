@@ -2577,7 +2577,7 @@ void SEitf::vSetLastError(eEC eError)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* SEitf::pFooter(void)
+Footer* SEitf::aFooter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF);
   

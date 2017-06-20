@@ -214,7 +214,7 @@ void Loader::vTxRef(TxRef* pTxRef)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* Loader::pFooter(void)
+Footer* Loader::aFooter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER);
   

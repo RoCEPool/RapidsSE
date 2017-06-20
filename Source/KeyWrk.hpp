@@ -37,7 +37,7 @@ namespace DBobjects
 
     bool  bExtractElement(s48K& sRow, i8 iElement, eDM eDatum);
 
-    Footer* pFooter(void);
+    Footer* aFooter(void);
   };
 }
 

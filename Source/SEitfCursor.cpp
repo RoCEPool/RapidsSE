@@ -65,7 +65,7 @@ SEitfCursor::~SEitfCursor(void)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* SEitfCursor::pFooter(void)
+Footer* SEitfCursor::aFooter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITFCURSOR);
   

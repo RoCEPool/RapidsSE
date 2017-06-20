@@ -30,7 +30,7 @@ namespace System
     i8 operator ++(void); // increment (prefix form)
     i8 operator --(void); // decrement (prefix form)
     
-    Footer* pFooter(void);
+    Footer* aFooter(void);
   };
 }
 

@@ -631,7 +631,7 @@ bool Column::bCmp(eRO eRelnOp, char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* Column::pFooter(void)
+Footer* Column::aFooter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN);
   

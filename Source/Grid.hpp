@@ -45,7 +45,7 @@ namespace GridModel
     i8   iThisNode(void);
     Node* pThisNode(void);
     
-    Footer* pFooter(void);
+    Footer* aFooter(void);
   };
     
   Grid* _pGrid(void* aAddr);

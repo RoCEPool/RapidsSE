@@ -1900,7 +1900,7 @@ void Task::vLoop(void)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* Task::pFooter(void)
+Footer* Task::aFooter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK);
   

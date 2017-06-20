@@ -185,7 +185,7 @@ void Since::vGetTimeOfDay(i8& iSeconds, i8& iMicroseconds, SysCall& xSysCall)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* Since::pFooter(void)
+Footer* Since::aFooter(void)
 {
   _precondition_(_MAGIC_,CN_SINCE);
   

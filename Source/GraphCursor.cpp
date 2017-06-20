@@ -88,7 +88,7 @@ void GraphCursor::vDump(eCN eClass, Object* pObject, Str* aTab)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* GraphCursor::pFooter(void)
+Footer* GraphCursor::aFooter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRAPHCURSOR);
   

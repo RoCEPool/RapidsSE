@@ -26,7 +26,7 @@ namespace Structures
     
   private:
     
-    Footer* pFooter(void);
+    Footer* aFooter(void);
   };
   
   GraphCursor* _pGraphCursor(void* aAddr);

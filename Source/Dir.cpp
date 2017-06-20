@@ -420,7 +420,7 @@ i8 Dir::iTell(void)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* Dir::pFooter(void)
+Footer* Dir::aFooter(void)
 {
   _precondition_(_MAGIC_,CN_DIR);
   

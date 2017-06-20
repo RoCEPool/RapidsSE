@@ -40,7 +40,7 @@ namespace Structures
     
   private:
     
-    Footer* pFooter(void);
+    Footer* aFooter(void);
   };
   
   GraphNode* _pGraphNode(void* aAddr);

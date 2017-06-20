@@ -502,13 +502,13 @@ void StrVal::vToString(Str* aStr)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* StrVal::pFooter(void)
+Footer* StrVal::aFooter(void)
 {
   _precondition_(_MAGIC_);
   
-  Footer* pFooter = pAdd<Footer*>(this,sizeof(StrVal) + m_xWsp.nUsed());
+  Footer* aFooter = pAdd<Footer*>(this,sizeof(StrVal) + m_xWsp.nUsed());
   
-  return pFooter;
+  return aFooter;
 }
 
 /*============================================================================*/

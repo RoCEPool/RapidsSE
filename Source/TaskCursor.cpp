@@ -65,7 +65,7 @@ TaskCursor::~TaskCursor(void)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* TaskCursor::pFooter(void)
+Footer* TaskCursor::aFooter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASKCURSOR);
   

@@ -100,7 +100,7 @@ void TxCollection::vFreeTx(Tx* pTx)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* TxCollection::pFooter(void)
+Footer* TxCollection::aFooter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TXCOLLECTION);
   

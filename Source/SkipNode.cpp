@@ -103,15 +103,15 @@ i8 SkipNode::iMaxSize(void)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* SkipNode::pFooter(void)
+Footer* SkipNode::aFooter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPNODE);
   
   i8 nSizeBytes = sizeof(SkipNode) + (sizeof(SkipNode*) * (m_nRight - 1));
   
-  Footer* pFooter = pAdd<Footer*>(this,nSizeBytes);
+  Footer* aFooter = pAdd<Footer*>(this,nSizeBytes);
   
-  return pFooter;
+  return aFooter;
 }
 
 /*============================================================================*/

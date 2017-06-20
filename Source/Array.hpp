@@ -32,7 +32,7 @@ namespace Structures
     ITEM  xGet(i8 iItem);
     i8    iMaxItems(void);
   
-    Footer* pFooter(void);
+    Footer* aFooter(void);
   };
   
   template <eCN ARRAY_CN, class ITEM, i8 MAX_ITEMS>
@@ -255,7 +255,7 @@ i8 Array<ARRAY_CN, ITEM, MAX_ITEMS>::iMaxItems(void)
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
 template <eCN ARRAY_CN, class ITEM, i8 MAX_ITEMS>
-Footer* Array<ARRAY_CN, ITEM, MAX_ITEMS>::pFooter(void)
+Footer* Array<ARRAY_CN, ITEM, MAX_ITEMS>::aFooter(void)
 {
   _precondition_(_MAGIC_,ARRAY_CN);
   

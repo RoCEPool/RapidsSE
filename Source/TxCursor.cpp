@@ -86,7 +86,7 @@ void TxCursor::vInit(void)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* TxCursor::pFooter(void)
+Footer* TxCursor::aFooter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TXCURSOR);
   

@@ -104,7 +104,7 @@ namespace DBobjects
 
     bool bCmp(eRO eRelOp, char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB);
   
-    Footer* pFooter(void);
+    Footer* aFooter(void);
   };
   
   Column* _pColumn(void* aAddr);

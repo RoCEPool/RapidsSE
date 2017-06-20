@@ -43,7 +43,7 @@ namespace Structures
     i8 iRandomLevel(void);
     SkipNode* pPosition(void* Ent, bool& bEqualTo, SkipNode** pRevise);
   
-    Footer* pFooter(void);
+    Footer* aFooter(void);
   };
   
   SkipList* _pSkipList(void* aAddr);

@@ -165,7 +165,7 @@ bool TxRef::bRollbackTx(void)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* TxRef::pFooter(void)
+Footer* TxRef::aFooter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TXREF);
   

@@ -49,7 +49,7 @@ namespace DBobjects
     bool         bVerify(void);
     void         vVisualize(void);
     
-    Footer*      pFooter(void);
+    Footer*      aFooter(void);
     
   private:
     void         vFixHigherBuffer(EntryBuffer* pIndexBuffer, i8 iLevel);

@@ -69,7 +69,7 @@ namespace Values
   
 
   private:
-    Footer* pFooter(void);
+    Footer* aFooter(void);
   };
 
   StrVal* _pStrVal(void* aAddr);

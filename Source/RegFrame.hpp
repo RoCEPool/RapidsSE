@@ -42,7 +42,7 @@ namespace Dictionaries
     
     ValReg* pValReg(i8 iReg);
     
-    Footer* pFooter(void);
+    Footer* aFooter(void);
   };
   
   RegFrame* _pRegFrame(void* aAddr);

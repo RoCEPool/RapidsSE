@@ -33,7 +33,7 @@ namespace Parsing
     void vSetTokens(void);
     void vStripSemicolon(void);
 
-    Footer* pFooter(void);
+    Footer* aFooter(void);
   };
 }
 

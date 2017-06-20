@@ -265,7 +265,7 @@ void Slots::vTruncateIndex(i8 iIndexNo)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* Slots::pFooter(void)
+Footer* Slots::aFooter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SLOTS);
   

@@ -118,7 +118,7 @@ namespace Parsing
     
     bool bEndInput(void);
     
-    Footer* pFooter(void);
+    Footer* aFooter(void);
   };
 }
 

@@ -22,7 +22,7 @@ namespace Interface
     SEitfCursor(List_t<SEitf>* pList);
     ~SEitfCursor(void);
     
-    Footer* pFooter(void);
+    Footer* aFooter(void);
   };
     
   SEitfCursor* _pSEitfCursor(void* aAddr);

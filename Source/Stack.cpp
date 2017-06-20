@@ -1176,7 +1176,7 @@ Value* Stack::pTopValue(void)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* Stack::pFooter(void)
+Footer* Stack::aFooter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK);
   

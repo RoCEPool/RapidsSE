@@ -55,7 +55,7 @@ Ring::~Ring(void)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* Ring::pFooter(void)
+Footer* Ring::aFooter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RING);
   

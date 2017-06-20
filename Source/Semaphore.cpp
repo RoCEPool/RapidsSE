@@ -247,7 +247,7 @@ void Semaphore::vSignalThread(void)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* Semaphore::pFooter(void)
+Footer* Semaphore::aFooter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEMAPHORE);
   

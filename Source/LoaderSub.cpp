@@ -454,7 +454,7 @@ bool LoaderSub::bValidateRow(i8& iColumn)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* LoaderSub::pFooter(void)
+Footer* LoaderSub::aFooter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB);
   

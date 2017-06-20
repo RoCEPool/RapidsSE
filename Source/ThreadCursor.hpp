@@ -23,7 +23,7 @@ namespace Threads
     
     void vInit(void);
     
-    Footer* pFooter(void);
+    Footer* aFooter(void);
   };
   
   ThreadCursor* _pThreadCursor(void* aAddr);

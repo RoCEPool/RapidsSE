@@ -16,7 +16,7 @@ namespace GridModel
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Footer* pFooter(void);
+    Footer* aFooter(void);
   };
 }
 

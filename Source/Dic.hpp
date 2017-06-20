@@ -52,7 +52,7 @@ namespace Dictionaries
     bool  bRefOut(void);
     i8    nWords(void);
     
-    Footer* pFooter(void);
+    Footer* aFooter(void);
   };
   
   Dic* _pDic(void* aAddr);

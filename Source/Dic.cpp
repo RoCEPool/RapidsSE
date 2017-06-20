@@ -405,7 +405,7 @@ i8 Dic::nWords(void)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* Dic::pFooter(void)
+Footer* Dic::aFooter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC);
   

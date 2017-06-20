@@ -38,7 +38,7 @@ namespace System
     
     void vUTC(StrVal& sUTC);
     
-    Footer* pFooter(void);
+    Footer* aFooter(void);
   };
 
 }

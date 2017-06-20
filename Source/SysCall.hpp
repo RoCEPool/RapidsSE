@@ -42,7 +42,7 @@ namespace System
     
     bool bHadError(void);
     
-    Footer* pFooter(void);
+    Footer* aFooter(void);
   };
 }
 

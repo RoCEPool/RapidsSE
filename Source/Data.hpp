@@ -38,7 +38,7 @@ namespace DBobjects
   private:
     bool bExtendPartition(void);
   
-    Footer* pFooter(void);
+    Footer* aFooter(void);
   };
 }
 

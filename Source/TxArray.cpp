@@ -80,7 +80,7 @@ void TxArray::vDump(eCN eClass, Object* pObject, Str* aTab)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* TxArray::pFooter(void)
+Footer* TxArray::aFooter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TXARRAY);
   

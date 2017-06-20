@@ -27,7 +27,7 @@ namespace Structures
     void vNext(void);
     OBJECT* pObject(void);
     
-    Footer* pFooter(void);
+    Footer* aFooter(void);
   };
 }
 
@@ -122,7 +122,7 @@ OBJECT* CollectionCursor_t<OBJECT>::pObject(void)
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
 template <class OBJECT>
-Footer* CollectionCursor_t<OBJECT>::pFooter(void)
+Footer* CollectionCursor_t<OBJECT>::aFooter(void)
 {
   return &m_xFooter;
 }

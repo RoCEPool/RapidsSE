@@ -207,7 +207,7 @@ void RbCursor::vTable(Table* pTable)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* RbCursor::pFooter(void)
+Footer* RbCursor::aFooter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RBCURSOR);
   

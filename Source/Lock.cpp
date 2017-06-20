@@ -326,7 +326,7 @@ i8 Lock::iWriteCollisions(void)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* Lock::pFooter(void)
+Footer* Lock::aFooter(void)
 {
   _precondition_(_MAGIC_,CN_LOCK);
   

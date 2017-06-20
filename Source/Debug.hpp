@@ -39,9 +39,9 @@ namespace Debugging
   /* check the object has a footer marker as its last word                    */
   /*--------------------------------------------------------------------------*/
   #ifdef FOOTER_CHECK
-    #define _footer_() pFooter()->vAssertFooter();
+    #define _footer_() aFooter()->vAssertFooter();
     #define _hazard_() m_xHazard.vAssertFooter();
-    #define _setFooter_() pFooter()->vSetFooter();
+    #define _setFooter_() aFooter()->vSetFooter();
   #else
     #define _footer_()
     #define _hazard_()

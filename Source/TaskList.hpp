@@ -25,7 +25,7 @@ namespace Tasks
     
     void vContentDump(void);
     
-    Footer* pFooter(void);
+    Footer* aFooter(void);
   };
   
   TaskList* _pTaskList(void* aAddr);

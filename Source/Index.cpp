@@ -344,7 +344,7 @@ IdxColVec* Index::pIdxColVec(void)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* Index::pFooter(void)
+Footer* Index::aFooter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX);
   

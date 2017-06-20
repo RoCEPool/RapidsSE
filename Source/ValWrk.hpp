@@ -54,7 +54,7 @@ namespace Values
     StrVal* pNestedStrVal(void);
     void    vToString(Str* aWorkspace);
     
-    Footer* pFooter(void);
+    Footer* aFooter(void);
   };
   
   ValWrk* _pValWrk(void* aAddr);

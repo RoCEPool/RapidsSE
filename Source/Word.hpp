@@ -148,7 +148,7 @@ namespace Dictionaries
     
     static Word* pToWord(void* pData);
     
-    Footer* pFooter(void);
+    Footer* aFooter(void);
   };
   
   Word* _pWord(void* aAddr);

@@ -432,7 +432,7 @@ i8 SkipList::iRandomLevel(void)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* SkipList::pFooter(void)
+Footer* SkipList::aFooter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST);
   

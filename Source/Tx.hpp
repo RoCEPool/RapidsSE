@@ -65,7 +65,7 @@ namespace Transactions
     
     void vContentDump(void);
     
-    Footer* pFooter(void);
+    Footer* aFooter(void);
   };
     
   Tx* _pTx(void* aAddr);

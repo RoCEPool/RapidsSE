@@ -46,7 +46,7 @@ namespace Plans
     bool bIsColumnNm(s256& sName);
   
   
-    Footer* pFooter(void);
+    Footer* aFooter(void);
   };
   
   Arg* _pArg(void* aAddr);

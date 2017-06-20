@@ -2155,7 +2155,7 @@ bool SePrompt::bOneIs(Str* aArg)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* SePrompt::pFooter(void)
+Footer* SePrompt::aFooter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT);
   

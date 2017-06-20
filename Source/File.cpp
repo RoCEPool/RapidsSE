@@ -887,7 +887,7 @@ void File::vZero(void)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* File::pFooter(void)
+Footer* File::aFooter(void)
 {
   _precondition_(_MAGIC_,CN_FILE);
   

@@ -33,7 +33,7 @@ namespace Structures
     ITEM* pGet(SUB nItemNo);
     void  vRemove(ITEM* pObject);
   
-    Footer* pFooter(void);
+    Footer* aFooter(void);
   };
   
   template <eCN VEC_CN, class ITEM, eCN ITEM_CN, i8 MAX_ITEMS, class SUB>
@@ -303,7 +303,7 @@ void Vector<VEC_CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>::vRemove(ITEM* pItem)
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
 template <eCN VEC_CN, class ITEM, eCN ITEM_CN, i8 MAX_ITEMS, class SUB>
-Footer* Vector<VEC_CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>::pFooter(void)
+Footer* Vector<VEC_CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>::aFooter(void)
 {
   _precondition_(_MAGIC_,VEC_CN);
   

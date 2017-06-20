@@ -266,7 +266,7 @@ Node* Grid::pThisNode(void)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* Grid::pFooter(void)
+Footer* Grid::aFooter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID);
   

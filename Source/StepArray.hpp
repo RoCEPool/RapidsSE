@@ -29,7 +29,7 @@ namespace Tasks
     void vList(void);
     void vReset(void);
     
-    Footer* pFooter(void);
+    Footer* aFooter(void);
   };
 }
 

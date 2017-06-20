@@ -19,7 +19,7 @@ namespace GridModel
     Proxy(void);
     ~Proxy(void);
     
-    Footer* pFooter(void);
+    Footer* aFooter(void);
   };
 }
 

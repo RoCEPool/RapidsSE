@@ -537,7 +537,7 @@ void Thread::vMutexUnlock(void)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* Thread::pFooter(void)
+Footer* Thread::aFooter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD);
   

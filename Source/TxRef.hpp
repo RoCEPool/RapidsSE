@@ -30,7 +30,7 @@ namespace Transactions
     bool bEndTx(void);
     bool bRollbackTx(void);
     
-    Footer* pFooter(void);
+    Footer* aFooter(void);
   };
   
   TxRef* _pTxRef(void* aAddr);

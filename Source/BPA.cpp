@@ -484,7 +484,7 @@ void BPA::vWordList(i8 iEpoch)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* BPA::pFooter(void)
+Footer* BPA::aFooter(void)
 {
   _precondition_(_MAGIC_,CN_BPA);
   return &m_xFooter;

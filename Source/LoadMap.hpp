@@ -46,7 +46,7 @@ namespace DBobjects
     
     void vStats(void);
     
-    Footer* pFooter(void);
+    Footer* aFooter(void);
   };
   
   LoadMap* _pSeekMap(void* aAddr);

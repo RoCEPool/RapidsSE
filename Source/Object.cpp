@@ -99,7 +99,7 @@ bool Object::bWordBody(void)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* Object::pFooter(void)
+Footer* Object::aFooter(void)
 {
   return nullptr;
 }

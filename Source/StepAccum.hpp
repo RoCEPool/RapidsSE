@@ -22,7 +22,7 @@ namespace Tasks
     void vPrint(void);
     void vReset(void);
     
-    Footer* pFooter(void);
+    Footer* aFooter(void);
   };
 }
 

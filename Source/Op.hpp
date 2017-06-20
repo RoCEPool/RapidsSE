@@ -25,7 +25,7 @@ namespace Plans
     eRO eOpKind(void);
     void vOpKind(eRO eOpKind);
   
-    Footer* pFooter(void);
+    Footer* aFooter(void);
   };
   
   Op* _pOp(void* aAddr);

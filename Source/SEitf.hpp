@@ -200,7 +200,7 @@ namespace Interface
     Str* pGetLastError(void);
     void vSetLastError(eEC eInterfaceError);
     
-    Footer* pFooter(void);
+    Footer* aFooter(void);
   };
   
   SEitf* _pSEitf(void* aAddr);

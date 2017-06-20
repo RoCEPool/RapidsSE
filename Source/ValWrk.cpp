@@ -292,7 +292,7 @@ void ValWrk::vToString(Str* aWorkspace)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* ValWrk::pFooter(void)
+Footer* ValWrk::aFooter(void)
 {
   _precondition_(_MAGIC_);
   

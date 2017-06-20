@@ -34,7 +34,7 @@ namespace Schedulers
     i8   iQueuedTasks(void);
     i8   iQueuedThreads(void);
   
-    Footer* pFooter(void);
+    Footer* aFooter(void);
   };
 
   Scheduler* _pScheduler(void* aAddr);

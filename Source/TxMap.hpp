@@ -31,7 +31,7 @@ namespace Transactions
     void vFindSlot(void);
     void vTakeSlot(Tx* pTx);
     
-    Footer* pFooter(void);
+    Footer* aFooter(void);
   };
   
   TxMap* _pTxMap(void* aAddr);

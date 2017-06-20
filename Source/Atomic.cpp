@@ -137,7 +137,7 @@ i8 Atomic::operator --(void)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* Atomic::pFooter(void)
+Footer* Atomic::aFooter(void)
 {
   _precondition_(_MAGIC_,CN_ATOMIC);
   

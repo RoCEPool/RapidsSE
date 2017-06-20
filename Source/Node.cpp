@@ -167,7 +167,7 @@ i8 Node::iNodePortNo(void)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* Node::pFooter(void)
+Footer* Node::aFooter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_NODE);
   

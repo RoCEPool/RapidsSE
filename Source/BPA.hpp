@@ -31,7 +31,7 @@ namespace Pool
     void vResourceSummary(void);
     void vWordList(i8 iEpoch);
     
-    Footer* pFooter(void);
+    Footer* aFooter(void);
   };
 };
 

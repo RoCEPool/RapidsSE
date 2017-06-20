@@ -174,7 +174,7 @@ void TxMap::vTakeSlot(Tx* pTx)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* TxMap::pFooter(void)
+Footer* TxMap::aFooter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TXMAP);
   

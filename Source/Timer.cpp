@@ -200,7 +200,7 @@ i8 Timer::iTicks(void)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* Timer::pFooter(void)
+Footer* Timer::aFooter(void)
 {
   _precondition_(_MAGIC_,CN_TIMER);
   

@@ -25,7 +25,7 @@ namespace Magic
 }
 
 //template <class C>
-//Footer* <C>::pFooter(void)
+//Footer* <C>::aFooter(void)
 //{
 //  _precondition_(_MAGIC_);
 //  
@@ -33,10 +33,10 @@ namespace Magic
 //}
 
 /*----------------------------------------------------------------------------*/
-/* macro for standard pFooter() function                                      */
+/* macro for standard aFooter() function                                      */
 /*----------------------------------------------------------------------------*/
 #define _pFooter_(CLASSNM) \
-  Footer* CLASSNM::pFooter(void) \
+  Footer* CLASSNM::aFooter(void) \
   { \
     _precondition_(_MAGIC_); \
     return &m_xFooter; \

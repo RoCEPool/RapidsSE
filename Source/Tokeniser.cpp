@@ -1013,7 +1013,7 @@ bool Tokeniser::bEndInput(void)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* Tokeniser::pFooter(void)
+Footer* Tokeniser::aFooter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER);
   

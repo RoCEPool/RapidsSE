@@ -27,7 +27,7 @@ namespace Transactions
     
     static void vDump(eCN eClass, Object* pObject, Str* aTab);
     
-    Footer* pFooter(void);
+    Footer* aFooter(void);
   };
 }
 

@@ -154,7 +154,7 @@ void TokenSet::vStripSemicolon(void)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* TokenSet::pFooter(void)
+Footer* TokenSet::aFooter(void)
 {
   _precondition_(_MAGIC_,CN_TOKENSET);
   

@@ -31,7 +31,7 @@ private:
   bool bGet(i8 iCommand, TokenSet& xTokenAry);
   bool bRead(Str* aCommand);
   
-  Footer* pFooter(void);
+  Footer* aFooter(void);
 };
 
 /*============================================================================*/

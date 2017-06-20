@@ -50,7 +50,7 @@ namespace DBobjects
     void        vTidyUpIndex(i8 iIndexNo);
     
   private:
-    Footer* pFooter(void);
+    Footer* aFooter(void);
   };
 }
 

@@ -41,7 +41,7 @@ namespace Dictionaries
     void vPush(Dic* pDic);
     Dic* pTop(void);
     
-    Footer* pFooter(void);
+    Footer* aFooter(void);
   };
 }
 

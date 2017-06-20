@@ -54,7 +54,7 @@ Proxy::~Proxy(void)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* Proxy::pFooter(void)
+Footer* Proxy::aFooter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PROXY);
   

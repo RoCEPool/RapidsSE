@@ -97,7 +97,7 @@ void SEitfList::vFreeSEitf(SEitf* pSEitf)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* SEitfList::pFooter(void)
+Footer* SEitfList::aFooter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITFLIST);
   

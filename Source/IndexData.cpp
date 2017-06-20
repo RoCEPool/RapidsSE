@@ -677,7 +677,7 @@ void IndexData::vVisualize(void)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* IndexData::pFooter(void)
+Footer* IndexData::aFooter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA);
   

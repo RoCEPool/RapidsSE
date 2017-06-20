@@ -36,7 +36,7 @@ namespace Structures
     OBJECT* pHead(void);
     OBJECT* pTail(void);
     
-    Footer* pFooter(void);
+    Footer* aFooter(void);
   };
 }
 
@@ -291,7 +291,7 @@ OBJECT* List_t<OBJECT>::pTail(void)
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
 template <class OBJECT>
-Footer* List_t<OBJECT>::pFooter(void)
+Footer* List_t<OBJECT>::aFooter(void)
 {
   return &m_xFooter;
 }

@@ -539,7 +539,7 @@ void Heap::vVerify(void)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* Heap::pFooter(void)
+Footer* Heap::aFooter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   

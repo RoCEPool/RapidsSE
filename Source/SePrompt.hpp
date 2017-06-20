@@ -122,7 +122,7 @@ private:
   bool bCmdIs(Str* aArg);
   bool bOneIs(Str* aArg);
   
-  Footer* pFooter(void);
+  Footer* aFooter(void);
   
 private:
   bool bAddTableColumns(i8& i_Token, i8 iNumTokens);

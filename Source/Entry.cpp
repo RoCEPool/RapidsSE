@@ -653,15 +653,15 @@ RightVec* Entry::aRightVec(void)
 /*----------------------------------------------------------------------------*/
 /* get address of footer                                                      */
 /*----------------------------------------------------------------------------*/
-Footer* Entry::pFooter(void)
+Footer* Entry::aFooter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_); _class2_(CN_ENTRY,CN_ROW);
   
   i8 iFooterOffset = m_nThisBytes - sizeof(Footer);
   
-  Footer* pFooter = pAdd<Footer*>(this,iFooterOffset);
+  Footer* aFooter = pAdd<Footer*>(this,iFooterOffset);
   
-  return pFooter;
+  return aFooter;
 }
 
 /*============================================================================*/

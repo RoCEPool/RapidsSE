@@ -33,7 +33,7 @@ namespace System
     
     static void vGetTimeOfDay(i8& iSeconds, i8& iMicroseconds, SysCall& SysCall);
 
-    Footer* pFooter(void);
+    Footer* aFooter(void);
   };
 }
 

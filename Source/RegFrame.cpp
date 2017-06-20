@@ -183,7 +183,7 @@ ValReg* RegFrame::pValReg(i8 iReg)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* RegFrame::pFooter(void)
+Footer* RegFrame::aFooter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_REGFRAME);
   

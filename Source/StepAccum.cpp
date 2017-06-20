@@ -69,7 +69,7 @@ void StepAccum::vReset(void)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer*StepAccum::pFooter(void)
+Footer*StepAccum::aFooter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STEPACCUM);
   

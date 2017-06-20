@@ -173,7 +173,7 @@ void AttachMap::vDump(eCN eClass, Object* pObject, Str* aTab)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* AttachMap::pFooter(void)
+Footer* AttachMap::aFooter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ATTACHMAP);
   

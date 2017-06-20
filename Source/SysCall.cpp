@@ -99,7 +99,7 @@ bool SysCall::bHadError(void)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* SysCall::pFooter(void)
+Footer* SysCall::aFooter(void)
 {
   return &m_xFooter;
 }

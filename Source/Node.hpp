@@ -36,7 +36,7 @@ namespace GridModel
     i8   iNodePortNo(void);
     
     
-    Footer* pFooter(void);
+    Footer* aFooter(void);
   };
   
   Node* _pNode(void* aAddr);

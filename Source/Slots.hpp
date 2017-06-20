@@ -41,7 +41,7 @@ namespace DBobjects
     void       vTruncate(void);
     void       vTruncateIndex(i8 iIndexNo);
     
-    Footer*    pFooter(void);
+    Footer*    aFooter(void);
   };
   
   Slots* _pSlots(void* aAddr);

@@ -318,7 +318,7 @@ void Queue::vVerify(void)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* Queue::pFooter(void)
+Footer* Queue::aFooter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUE);
   

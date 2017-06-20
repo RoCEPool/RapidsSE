@@ -23,7 +23,7 @@ namespace Transactions
     
     void vInit(void);
     
-    Footer* pFooter(void);
+    Footer* aFooter(void);
   };
   
   TxCursor* _pTxCursor(void* aAddr);

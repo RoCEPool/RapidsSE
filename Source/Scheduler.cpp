@@ -182,7 +182,7 @@ i8 Scheduler::iQueuedThreads(void)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* Scheduler::pFooter(void)
+Footer* Scheduler::aFooter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SCHEDULER);
   

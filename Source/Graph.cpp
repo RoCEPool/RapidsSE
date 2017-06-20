@@ -138,7 +138,7 @@ void Graph::vRootNode(GraphNode* pRootNode)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* Graph::pFooter(void)
+Footer* Graph::aFooter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRAPH);
   

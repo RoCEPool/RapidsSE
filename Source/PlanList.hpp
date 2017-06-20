@@ -28,7 +28,7 @@ namespace Plans
     Plan* pFind(i8 iPlanId);
     void  vShow(void);
     
-    Footer* pFooter(void);
+    Footer* aFooter(void);
   };
   
   PlanList* _pPlanList(void* aAddr);

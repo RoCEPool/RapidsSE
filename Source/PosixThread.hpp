@@ -46,7 +46,7 @@ namespace System
     static void* pTlsGet(pthread_key_t iTlsKey);
     static void  vTlsSet(pthread_key_t iTlsKey, void* pArg);
   
-    Footer* pFooter(void);
+    Footer* aFooter(void);
   };
   
   PosixThread* _pPosixThread(void* aAddr);

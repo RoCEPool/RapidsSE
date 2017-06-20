@@ -18,7 +18,7 @@ namespace DBobjects
     void* operator new(size_t, User* pUser);
     void  operator delete(void*);
     
-    Footer* pFooter(void);
+    Footer* aFooter(void);
   };
 }
 

@@ -28,7 +28,7 @@ namespace Values
   
     void vTest(void);
   
-    Footer* pFooter(void);
+    Footer* aFooter(void);
   };
   
   void* _pStrVar(void* aAddr);
@@ -160,7 +160,7 @@ void StrVar<SIZE>::vTest(void)
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
 template <int SIZE>
-Footer* StrVar<SIZE>::pFooter(void)
+Footer* StrVar<SIZE>::aFooter(void)
 {
   _precondition_(_MAGIC_,CN_STRVAR);
   

@@ -864,7 +864,7 @@ void Parser::vReadLineStdin(void)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* Parser::pFooter(void)
+Footer* Parser::aFooter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER);
   

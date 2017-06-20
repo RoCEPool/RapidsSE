@@ -229,7 +229,7 @@ void TaskSet::vVerify(void)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* TaskSet::pFooter(void)
+Footer* TaskSet::aFooter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASKSET);
   

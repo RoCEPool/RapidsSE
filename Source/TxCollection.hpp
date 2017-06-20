@@ -23,7 +23,7 @@ namespace Transactions
     Tx*   pAllocTx(void);
     void  vFreeTx(Tx* pTx);
     
-    Footer* pFooter(void);
+    Footer* aFooter(void);
   };
   
   TxCollection* _pTxCollection(void* aAddr);

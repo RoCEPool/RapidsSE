@@ -101,7 +101,7 @@ void NodeCursor::vInit(void)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* NodeCursor::pFooter(void)
+Footer* NodeCursor::aFooter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_NODECURSOR);
   

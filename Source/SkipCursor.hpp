@@ -19,7 +19,7 @@ namespace Structures
     SkipCursor(void);
     ~SkipCursor(void);
     
-    Footer* pFooter(void);
+    Footer* aFooter(void);
   };
 }
 

@@ -23,7 +23,7 @@ namespace Threads
     Thread* pAllocThread(void);
     void    vFreeThread(Thread* pThread);
     
-    Footer* pFooter(void);
+    Footer* aFooter(void);
   };
     
   ThreadList* _pThreadList(void* aAddr);

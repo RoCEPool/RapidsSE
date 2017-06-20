@@ -422,7 +422,7 @@ void PosixThread::vTlsSet(pthread_key_t iTlsKey, void* pArg)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* PosixThread::pFooter(void)
+Footer* PosixThread::aFooter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_POSIXTHREAD);
   

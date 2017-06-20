@@ -102,7 +102,7 @@ namespace Plans
   
     eFT eFetchTechnique(void);
   
-    Footer* pFooter(void);
+    Footer* aFooter(void);
   };
   
   Predicate* _pPredicate(void* aAddr);

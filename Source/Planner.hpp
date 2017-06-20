@@ -55,7 +55,7 @@ namespace Plans
     CandidatePath* pCandidatePath(void);
     PredicateVec* pPredicateVec(void);
   
-    Footer* pFooter(void);
+    Footer* aFooter(void);
   };
   
   Planner* _pPlanner(void* aAddr);

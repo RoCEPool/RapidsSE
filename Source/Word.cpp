@@ -828,16 +828,16 @@ Word* Word::pToWord(void* pBody)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-//Footer* Word::pFooter(void)
+//Footer* Word::aFooter(void)
 //{
 //  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD);
 //  
-//  Footer* pFooter = pAdd<Footer*>(this,sizeof(Word)+m_iDataBytes);
+//  Footer* aFooter = pAdd<Footer*>(this,sizeof(Word)+m_iDataBytes);
 //
-//  return pFooter;
+//  return aFooter;
 //}
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Footer* Word::pFooter(void)
+Footer* Word::aFooter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD);
   

@@ -71,7 +71,7 @@ void ValReg::operator =(Object* pPtr)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-//Footer* ValReg::pFooter(void)
+//Footer* ValReg::aFooter(void)
 //{
 //  return &m_xFooter;
 //}

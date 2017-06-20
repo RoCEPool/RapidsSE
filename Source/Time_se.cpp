@@ -202,7 +202,7 @@ void Time::vUTC(StrVal& sUTC)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* Time::pFooter(void)
+Footer* Time::aFooter(void)
 {
   _precondition_(_MAGIC_,CN_TIME);
   

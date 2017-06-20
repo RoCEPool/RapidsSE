@@ -24,7 +24,7 @@ namespace System
     Str*  aWspStr(void);
     i8    nWspLength(void);
   
-    Footer* pFooter(void);
+    Footer* aFooter(void);
   };
   
   Scratch* _pScratch(void* aAddress);

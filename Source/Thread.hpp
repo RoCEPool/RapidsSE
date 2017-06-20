@@ -105,7 +105,7 @@ namespace Threads
     void  vMutexUnlock(void);
     void vSignalThread(void);
   
-    Footer* pFooter(void);
+    Footer* aFooter(void);
   };
   
   Thread* _pThread(void* aAddr);

@@ -159,7 +159,7 @@ void Tx::vDump(eCN eClass, Object* pObject, Str* aTab)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* Tx::pFooter(void)
+Footer* Tx::aFooter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TX);
   

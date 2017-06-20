@@ -123,14 +123,14 @@ void Buffer::vOverflowBuffer(bn nOverflowBuffer)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* Buffer::pFooter(void)
+Footer* Buffer::aFooter(void)
 {
   // Note: cannot check _FOOTER_ here
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  Footer* pFooter = pAdd<Footer*>(this,C_SIZE_POOL_BUFFER-sizeof(Footer));
+  Footer* aFooter = pAdd<Footer*>(this,C_SIZE_POOL_BUFFER-sizeof(Footer));
   
-  return pFooter;
+  return aFooter;
 }
 
 /*============================================================================*/

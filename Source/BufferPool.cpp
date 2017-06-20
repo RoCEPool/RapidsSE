@@ -356,7 +356,7 @@ void BufferPool::vInitialise(bool bTouch)
     
     pFreeBuffer->vSetMagic();
     pFreeBuffer->vClass(CN_FREEBUFFER);
-    //pFreeBuffer->pFooter()->vSetFooter();
+    //pFreeBuffer->aFooter()->vSetFooter();
     if (bTouch)
       pFreeBuffer->vZeroData();
     pFreeBuffer->vSetFooter();
@@ -370,7 +370,7 @@ void BufferPool::vInitialise(bool bTouch)
   FreeBuffer* pLastBuffer = pToFreeBuffer(nBufferLast());
   pLastBuffer->vSetMagic();
   pLastBuffer->vClass(CN_FREEBUFFER);
-  //pLastBuffer->pFooter()->vSetFooter();
+  //pLastBuffer->aFooter()->vSetFooter();
   if (bTouch)
     pLastBuffer->vZeroData();
   pLastBuffer->vSetFooter();
@@ -537,7 +537,7 @@ void BufferPool::vVerifyPool(void)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* BufferPool::pFooter(void)
+Footer* BufferPool::aFooter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL);
   

@@ -235,7 +235,7 @@ bool Data::bExtendPartition(void)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* Data::pFooter(void)
+Footer* Data::aFooter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DATA);
   

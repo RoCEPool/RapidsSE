@@ -696,7 +696,7 @@ bool Socket::bRecvFrom(int nBytes, void* pBuffer, i8* pRecv, SysCall& SysCall)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* Socket::pFooter(void)
+Footer* Socket::aFooter(void)
 {
   _precondition_(_MAGIC_,CN_SOCKET);
   

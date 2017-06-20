@@ -82,7 +82,7 @@ namespace System
     void vUngetChar(char cChar);
     void vZero(void);
   
-    Footer* pFooter(void);
+    Footer* aFooter(void);
   };
   
   File* _pFile(void* aAddr);

@@ -42,7 +42,7 @@ namespace Structures
     void vDiscard(void);
     void vVerify(void);
     
-    Footer* pFooter(void);
+    Footer* aFooter(void);
   };
   
   Queue* _pQueue(void* aAddr);

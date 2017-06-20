@@ -67,7 +67,7 @@ namespace DBobjects
     
     IdxColVec* pIdxColVec(void);
   
-    Footer* pFooter(void);
+    Footer* aFooter(void);
   };
   
   Index* _pIndex(void* pAddr);

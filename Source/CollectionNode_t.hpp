@@ -24,7 +24,7 @@ namespace Structures
     OBJECT* pPrevNode(void);
     void    vPrevNode(OBJECT* pPrev);
     
-    Footer* pFooter(void);
+    Footer* aFooter(void);
   };
 }
 
@@ -99,7 +99,7 @@ void CollectionNode_t<OBJECT>::vPrevNode(OBJECT* pPrev)
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
 template <class OBJECT>
-Footer* CollectionNode_t<OBJECT>::pFooter(void)
+Footer* CollectionNode_t<OBJECT>::aFooter(void)
 {
   return &m_xFooter;
 }

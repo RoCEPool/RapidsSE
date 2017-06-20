@@ -57,7 +57,7 @@ namespace Plans
     
     void vShow(void);
     
-    Footer* pFooter(void);
+    Footer* aFooter(void);
   };
   
   Plan* _pPlan(void* aAddr);

@@ -357,7 +357,7 @@ void Partition::vTidyUpIndex(i8 iIndexNo)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* Partition::pFooter(void)
+Footer* Partition::aFooter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION);
   

@@ -35,7 +35,7 @@ namespace Structures
     
   private:
     
-    Footer* pFooter(void);
+    Footer* aFooter(void);
   };
   
   Graph* _pGraph(void* aAddr);

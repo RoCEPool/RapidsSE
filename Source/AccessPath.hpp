@@ -89,7 +89,7 @@ namespace Plans
   
     void vGenPaths(void);
   
-    Footer* pFooter(void);
+    Footer* aFooter(void);
   };
   
   AccessPath* _pAccessPath(void* aAddr);

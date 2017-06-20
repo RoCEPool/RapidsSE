@@ -211,7 +211,7 @@ void SeHistory::vSeekEnd(void)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* SeHistory::pFooter(void)
+Footer* SeHistory::aFooter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEHISTORY);
   

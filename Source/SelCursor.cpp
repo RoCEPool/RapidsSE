@@ -282,7 +282,7 @@ void SelCursor::vTable(Table* pTable)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* SelCursor::pFooter(void)
+Footer* SelCursor::aFooter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SELCURSOR);
   

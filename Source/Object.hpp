@@ -30,7 +30,7 @@ namespace Magic
     bool bWordBody(void);
     void vWordBody(bool bIsWordBody);
     
-    Footer* pFooter(void);
+    Footer* aFooter(void);
   };
 }
 

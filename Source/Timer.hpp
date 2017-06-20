@@ -34,7 +34,7 @@ namespace System
     i8   iSeconds(void);
     i8   iTicks(void);
 
-    Footer* pFooter(void);
+    Footer* aFooter(void);
   };
   
   Timer* _pTimer(void* aAddr);

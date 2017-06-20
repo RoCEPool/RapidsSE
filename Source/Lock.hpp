@@ -51,7 +51,7 @@ namespace System
     i8   iWriteGrabs(void);
     i8   iWriteCollisions(void);
     
-    Footer* pFooter(void);
+    Footer* aFooter(void);
   };
   
   Lock* _pLock(void* aAddr);

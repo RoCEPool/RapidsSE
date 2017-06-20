@@ -41,7 +41,7 @@ namespace StorageEngine
     static void vSystemStop(void);
     static void vWaitFlag(void);
 
-    Footer* pFooter(void);
+    Footer* aFooter(void);
   };
 }
 

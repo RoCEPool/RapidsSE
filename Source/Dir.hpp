@@ -54,7 +54,7 @@ namespace System
     //bool bSetCurrent(void);
     i8   iTell(void);
     
-    Footer* pFooter(void);
+    Footer* aFooter(void);
   };
 
   Dir* _pDir(void* aAddr);

@@ -110,7 +110,7 @@ void StepArray::vReset(void)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* StepArray::pFooter(void)
+Footer* StepArray::aFooter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STEPARRAY);
   

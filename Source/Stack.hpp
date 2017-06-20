@@ -113,7 +113,7 @@ namespace Structures
     Value* pStackBase(void);
     Value* pStackLimit(void);
     
-    Footer* pFooter(void);
+    Footer* aFooter(void);
     Footer* pHazard(void);
   };
   

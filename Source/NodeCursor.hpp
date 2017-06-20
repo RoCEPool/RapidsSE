@@ -25,7 +25,7 @@ namespace GridModel
 
     void vInit(void);
     
-    Footer* pFooter(void);
+    Footer* aFooter(void);
   };
   
   NodeCursor* _pNodeCursor(void* aAddr);

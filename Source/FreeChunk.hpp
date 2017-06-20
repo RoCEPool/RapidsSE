@@ -24,7 +24,7 @@ namespace Pool
     FreeChunk* pNextFree(void);
     void       vNextFree(FreeChunk* pNextFree);
     
-    Footer* pFooter(void);
+    Footer* aFooter(void);
   };
 }
 

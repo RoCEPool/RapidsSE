@@ -328,7 +328,7 @@ bool EbStrand::bExtendStrand(EntryBuffer* pNewRowBuffer)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* EbStrand::pFooter(void)
+Footer* EbStrand::aFooter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_EBSTRAND);
   

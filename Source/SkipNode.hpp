@@ -24,7 +24,7 @@ namespace Structures
     
   private:
     
-    Footer* pFooter(void);
+    Footer* aFooter(void);
     
     static i8 iMaxSize(void);
   };

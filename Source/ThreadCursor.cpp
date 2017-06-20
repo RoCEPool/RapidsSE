@@ -88,7 +88,7 @@ void ThreadCursor::vInit(void)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* ThreadCursor::pFooter(void)
+Footer* ThreadCursor::aFooter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREADCURSOR);
   

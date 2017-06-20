@@ -65,7 +65,7 @@ namespace Pool
     bool bVerifyBoundaries(bool bTrace);
     void vVerifyPool(void);
     
-    Footer* pFooter(void);
+    Footer* aFooter(void);
    };
 }
 

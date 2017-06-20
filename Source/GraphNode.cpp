@@ -173,7 +173,7 @@ void GraphNode::vPrev(GraphNode* pPrev)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* GraphNode::pFooter(void)
+Footer* GraphNode::aFooter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRAPHNODE);
   

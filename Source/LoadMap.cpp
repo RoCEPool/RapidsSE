@@ -294,13 +294,13 @@ void LoadMap::vStats(void)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* LoadMap::pFooter(void)
+Footer* LoadMap::aFooter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADMAP);
   
-  Footer* pFooter = &m_xFooter;
+  Footer* aFooter = &m_xFooter;
   
-  return pFooter;
+  return aFooter;
 }
 
 /*============================================================================*/

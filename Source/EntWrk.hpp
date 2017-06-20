@@ -68,7 +68,7 @@ namespace DBobjects
     i8     iTxId(void);
     void   vTxId(i8 iTxId);
 
-    Footer* pFooter(void);
+    Footer* aFooter(void);
   };
 }
 

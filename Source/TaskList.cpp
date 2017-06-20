@@ -105,7 +105,7 @@ void TaskList::vDump(eCN eClass, Object* pObject, Str* aTab)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* TaskList::pFooter(void)
+Footer* TaskList::aFooter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASKLIST);
   

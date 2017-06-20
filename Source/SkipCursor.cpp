@@ -34,7 +34,7 @@ SkipCursor::~SkipCursor(void)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* SkipCursor::pFooter(void)
+Footer* SkipCursor::aFooter(void)
 {
   _postcondition_(_ADDRESS_,_MAGIC_,CN_SKIPCURSOR);
   

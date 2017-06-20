@@ -53,7 +53,7 @@ namespace DBobjects
     Table* pTable(void);
     bool bValidateRow(i8& iColumn);
   
-    Footer* pFooter(void);
+    Footer* aFooter(void);
   };
   
   LoaderSub* _pLoaderSub(void* aAddr);

@@ -599,7 +599,7 @@ void Arguments::vScribble(void)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* Arguments::pFooter(void)
+Footer* Arguments::aFooter(void)
 {
   return &m_xFooter;
 }

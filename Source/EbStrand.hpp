@@ -49,7 +49,7 @@ namespace DBobjects
   private:
     bool    bExtendStrand(void);
     bool    bExtendStrand(EntryBuffer* pRowBuffer);
-    Footer* pFooter(void);
+    Footer* aFooter(void);
   };
 }
 

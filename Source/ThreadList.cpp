@@ -96,7 +96,7 @@ void ThreadList::vFreeThread(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* ThreadList::pFooter(void)
+Footer* ThreadList::aFooter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREADLIST);
   

@@ -113,7 +113,7 @@ i8 Scratch::nWspLength(void)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* Scratch::pFooter(void)
+Footer* Scratch::aFooter(void)
 {
   _precondition_(_MAGIC_,CN_SCRATCH);
   

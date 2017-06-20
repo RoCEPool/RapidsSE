@@ -75,7 +75,7 @@ namespace Pool
     void vVerify(void);
     void vValidFree(FreeChunk* pFreeChunk);
     
-    Footer* pFooter(void);
+    Footer* aFooter(void);
   };
 }
 

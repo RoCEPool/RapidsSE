@@ -37,7 +37,7 @@ namespace DBobjects
     TxRef*   pTxRef(void);
     void     vTxRef(TxRef* pTxRef);
     
-    Footer* pFooter(void);
+    Footer* aFooter(void);
   };
   
   Loader* _pLoader(void* aAddr);

@@ -39,7 +39,7 @@ namespace DBobjects
     Table*  pTable(void);
     void    vTable(Table* pTable);
     
-    Footer* pFooter(void);
+    Footer* aFooter(void);
   };
   
   SelCursor* _pSelCursor(void* aAddr);

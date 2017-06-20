@@ -29,7 +29,7 @@ namespace Pool
     bn    nOverflowBuffer(void);
     void  vOverflowBuffer(bn nOverflowBuffer);
     
-    Footer* pFooter(void);
+    Footer* aFooter(void);
   };
   
 }

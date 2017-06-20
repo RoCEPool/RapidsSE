@@ -31,7 +31,7 @@ namespace System
   
     void vSignalThread(void);
   
-    Footer* pFooter(void);
+    Footer* aFooter(void);
   };
   
   Semaphore* _pSemaphore(void* aAddr);

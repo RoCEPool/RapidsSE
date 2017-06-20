@@ -797,7 +797,7 @@ bool Table::bValidateRow(Str* aRow, i8& iColumn)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* Table::pFooter(void)
+Footer* Table::aFooter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE);
   
