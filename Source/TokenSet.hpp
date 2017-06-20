@@ -8,7 +8,6 @@ namespace Parsing
   class TokenSet : public Object
   {
   private:
-    i8       m_nTokens;    // no of tokens in array
     TokenAry m_xTokenAry;  // array of tokens
     WspFxd<C_TOKEN_AREA> m_xTokenArea; // token work space
   

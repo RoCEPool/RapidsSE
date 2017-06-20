@@ -81,8 +81,11 @@ void TokenSet::vAddToken(Str* aToken)
 {
   _precondition_(_MAGIC_,CN_TOKENSET,_FOOTER_);
   
-  m_xTokenAry[m_nTokens++]->vCopy(aToken);
+  i8 i_Token = m_xTokenAry.nItems();
   
+  m_xTokenAry[i_Token]->vCopy(aToken);
+  
+  m_xTokenAry.vItems(++i_Token);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -92,7 +95,9 @@ i8 TokenSet::nTokens(void)
 {
   _precondition_(_MAGIC_,CN_TOKENSET,_FOOTER_);
   
-  return m_nTokens;
+  i8 nTokens = m_xTokenAry.nItems();
+ 
+  return nTokens;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -102,7 +107,9 @@ void TokenSet::vIncTokens(void)
 {
   _precondition_(_MAGIC_,CN_TOKENSET,_FOOTER_);
   
-  m_nTokens++;
+  i8 nTokens = m_xTokenAry.nItems();
+  
+  m_xTokenAry.vItems(++nTokens);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -112,7 +119,7 @@ void TokenSet::vReset(void)
 {
   _precondition_(_MAGIC_,CN_TOKENSET,_FOOTER_);
   
-  m_nTokens = 0;
+  m_xTokenAry.vItems(0);
   
   for (i8 i_Token = 0; i_Token < C_TOKENS; i_Token++)
     m_xTokenAry[i_Token]->vCopy(""_Str);
@@ -126,10 +133,12 @@ void TokenSet::vSetTokens(void)
   _precondition_(_MAGIC_,CN_TOKENSET,_FOOTER_);
   
    // get count of words in pWords
-  for (m_nTokens = 0; m_nTokens < C_TOKENS; m_nTokens++) {
-    if (m_xTokenAry[m_nTokens]->bEqual(""_Str))
+  i8 i_Token;
+  for (i_Token = 0; i_Token < C_TOKENS; i_Token++) {
+    if (m_xTokenAry[i_Token]->bEqual(""_Str))
       break;
   }
+  m_xTokenAry.vItems(i_Token);
 }
 
 /*----------------------------------------------------------------------------*/
