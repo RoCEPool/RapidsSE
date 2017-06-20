@@ -104,7 +104,7 @@ void Debugging::vError(Str* aFormat, ...)
 /*---------------------------------------------------------------------------*/
 /* vFatal: report a non-recoverable fatal message                            */
 /*---------------------------------------------------------------------------*/
-void Debugging::vFatal(Str* aFormat, ...)
+__attribute__((noreturn)) void Debugging::vFatal(Str* aFormat, ...)
 {
   va_list xArgs;
   

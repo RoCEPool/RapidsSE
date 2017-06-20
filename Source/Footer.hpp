@@ -35,7 +35,7 @@ namespace Magic
 /*----------------------------------------------------------------------------*/
 /* macro for standard aFooter() function                                      */
 /*----------------------------------------------------------------------------*/
-#define _pFooter_(CLASSNM) \
+#define _aFooter_(CLASSNM) \
   Footer* CLASSNM::aFooter(void) \
   { \
     _precondition_(_MAGIC_); \
