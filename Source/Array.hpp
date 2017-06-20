@@ -21,6 +21,7 @@ namespace Structures
     void  operator delete(void*);
 
     Array(void);
+    Array(eCN eClassNo);
     ~Array(void);
   
     ITEM& operator [](i8 iItemNo);
@@ -101,6 +102,27 @@ Array<ARRAY_CN, ITEM, MAX_ITEMS>::Array(void)
   
   for (i8 i_Item = 0; i_Item < MAX_ITEMS; i_Item++)
     m_xItem[i_Item] = (ITEM)0;
+  
+  _setFooter_();
+  
+  _checkInitialised_(ARRAY_CN);
+  
+  _postcondition_(_MAGIC_,ARRAY_CN,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+template <eCN ARRAY_CN, class ITEM, i8 MAX_ITEMS>
+Array<ARRAY_CN, ITEM, MAX_ITEMS>::Array(eCN eClassNo)
+: Object(ARRAY_CN)
+{
+  _precondition_(_MAGIC_,ARRAY_CN,_FOOTER_);
+  
+  m_nItems = 0;
+  
+//  for (i8 i_Item = 0; i_Item < MAX_ITEMS; i_Item++)
+//    m_xItem[i_Item] = (ITEM)0;
   
   _setFooter_();
   
