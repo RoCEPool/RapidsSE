@@ -5,7 +5,7 @@
 
 namespace Parsing
 {
-  class TokenSet : public Array<CN_TOKENSET,Token,C_TOKENS>
+  class TokenSet : public Object
   {
   private:
     TokenAry m_xTokenAry;  // array of tokens
