@@ -88,8 +88,6 @@ void Planner::vChoosePath(void)
   
   ASSERT(m_pCandidatePaths->nItems());
   
-  i8 i_Path;
-  i8 m_i_Chosen = -1;
   CandidatePath* npChosenPath = nullptr;
   
   for (m_i_Chosen = 0; m_i_Chosen < m_pCandidatePaths->nItems(); m_i_Chosen++) {

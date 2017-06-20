@@ -329,7 +329,9 @@ stk
   ( cdt_8 ) pPlanner Planner.showPaths
   ( cdt_9 ) pPlanner Planner.choosePath
 
-  sWhere pAccessPath accessPath.parse
+//sWhere pAccessPath accessPath.parse
+
+  pPlanner Planner.fetchTechnique@
 
   // execute a lower bound select using index
   case
@@ -338,7 +340,11 @@ stk
     endof
 
     FT_LOWER of
-      "case lower" . ( xKey pIndex ) lowerSelectIndex
+      "case lower" .
+      pPlanner Planner.lowKey@
+      pPlanner Planner.index@
+      stk
+      lowerSelectIndex
     endof
 
     FT_UPPER of

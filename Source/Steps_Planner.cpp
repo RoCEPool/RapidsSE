@@ -205,8 +205,8 @@ void Task::vPlannerLowKeyFetch(NNP_Task nnpTask)
   
   PredicateVec* mpPredicateVec = mpPlanner->pPredicateVec();
   Predicate* mpPredicate = mpPredicateVec->pGet(0);
-  Arg* pArg1 = mpPredicate->pArg1();
-  s256 sLow = pArg1->sArgVal();
+  Arg* pArg2 = mpPredicate->pArg2();
+  s256 sLow = pArg2->sArgVal();
   
   nnpTask->m_pDataStack->vPushS256(sLow);
   
