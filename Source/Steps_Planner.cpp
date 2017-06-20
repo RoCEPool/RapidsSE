@@ -37,7 +37,7 @@ void Task::vAddPrimitives_Planner(void)
   vAddPrimitive("planner.fetchTechnique@"_Str,&vPlannerFetchTechniqueFetch, false);
   vAddPrimitive("planner.genPaths"_Str,       &vPlannerGenPaths,       false);
   vAddPrimitive("planner.highkey@"_Str,       &vPlannerHighKeyFetch,   false);
-  vAddPrimitive("planner.index@"_Str,         &vPlannerIndexFetch,     false);
+  vAddPrimitive("planner.indexNm@"_Str,       &vPlannerIndexNmFetch,   false);
   vAddPrimitive("planner.key@"_Str,           &vPlannerKeyFetch,       false);
   vAddPrimitive("planner.lowkey@"_Str,        &vPlannerLowKeyFetch,    false);
   vAddPrimitive("planner.matchPaths"_Str,     &vPlannerMatchPaths,     false);
@@ -151,20 +151,21 @@ void Task::vPlannerHighKeyFetch(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* planner.index@ -- fetch index ( -- )                                       */
+/* planner.indexNm@ -- fetch index name ( -- )                                */
 /*----------------------------------------------------------------------------*/
-void Task::vPlannerIndexFetch(NNP_Task nnpTask)
+void Task::vPlannerIndexNmFetch(NNP_Task nnpTask)
 {
   ENTRY("vPlannerIndexFetch"_Str);
   
   Object* pPtrPlanner;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrPlanner) )
-    THROW_INVALID_DSTACK("planner.index@"_Str);
+    THROW_INVALID_DSTACK("planner.indexNm@"_Str);
   Planner* mpPlanner = _pPlanner(pPtrPlanner);
   
   Index* pIndex = mpPlanner->pChosenIndex();
   
-  nnpTask->m_pDataStack->vPushObject(pIndex);
+  s32 sIndexNm = pIndex->aIndexName();
+  nnpTask->m_pDataStack->vPushS32(sIndexNm);
   
   EXIT();
 }

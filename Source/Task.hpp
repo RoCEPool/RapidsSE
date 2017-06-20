@@ -731,7 +731,7 @@ namespace Tasks
     static void vPlannerFetchTechniqueFetch(NNP_Task nnpTask);
     static void vPlannerGenPaths(NNP_Task nnpTask);
     static void vPlannerHighKeyFetch(NNP_Task nnpTask);
-    static void vPlannerIndexFetch(NNP_Task nnpTask);
+    static void vPlannerIndexNmFetch(NNP_Task nnpTask);
     static void vPlannerKeyFetch(NNP_Task nnpTask);
     static void vPlannerLowKeyFetch(NNP_Task nnpTask);
     static void vPlannerMatchPaths(NNP_Task nnpTask);

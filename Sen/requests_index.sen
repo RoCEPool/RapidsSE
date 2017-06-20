@@ -336,19 +336,27 @@ stk
   // execute a lower bound select using index
   case
     FT_EQUAL of
-      "case equal" . ( xKey pIndex ) equalSelectIndex
+      "case equal" .
+      pPlanner Planner.key@
+      pPlanner Planner.indexNm@
+      stk
+      equalSelectIndex
     endof
 
     FT_LOWER of
       "case lower" .
       pPlanner Planner.lowKey@
-      pPlanner Planner.index@
+      pPlanner Planner.indexNm@
       stk
       lowerSelectIndex
     endof
 
     FT_UPPER of
-      "case upper" . ( xKey pIndex ) upperSelectIndex
+      "case upper" .
+      pPlanner Planner.highKey@
+      pPlanner Planner.indexNm@
+      stk
+      upperSelectIndex
     endof
 
     FT_RANGE of
