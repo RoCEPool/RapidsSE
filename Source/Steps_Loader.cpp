@@ -45,12 +45,12 @@ void Task::vAddPrimitives_Loader(void)
 /*----------------------------------------------------------------------------*/
 /* loader.delete -- delete a table loader                                     */
 /*----------------------------------------------------------------------------*/
-void Task::vLoaderDelete(NNP_Task nnpTask)
+void Task::vLoaderDelete(MP_Task mpTask)
 {
   ENTRY("vLoaderDelete"_Str);
   
   Object* pPtrLoader;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrLoader) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
     THROW_INVALID_DSTACK("loader.delete"_Str);
   
   Loader* pLoader = _pLoader(pPtrLoader);
@@ -64,12 +64,12 @@ void Task::vLoaderDelete(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* loader.findChunk -- find next chunk                                        */
 /*----------------------------------------------------------------------------*/
-void Task::vLoaderFindChunk(NNP_Task nnpTask)
+void Task::vLoaderFindChunk(MP_Task mpTask)
 {
   ENTRY("vLoaderFindChunk"_Str);
   
   Object* pPtrLoader;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrLoader) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
     THROW_INVALID_DSTACK("loader.findChunk"_Str);
   
   Loader* pLoader = _pLoader(pPtrLoader);
@@ -77,7 +77,7 @@ void Task::vLoaderFindChunk(NNP_Task nnpTask)
   
   bool bFoundChunk = pLoader->bFindChunk();
   
-  nnpTask->m_pDataStack->vPushInt(bFoundChunk);
+  mpTask->m_pDataStack->vPushInt(bFoundChunk);
  
   EXIT();
 }
@@ -85,12 +85,12 @@ void Task::vLoaderFindChunk(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* loader.init -- init a table loader                                         */
 /*----------------------------------------------------------------------------*/
-void Task::vLoaderInit(NNP_Task nnpTask)
+void Task::vLoaderInit(MP_Task mpTask)
 {
   ENTRY("vLoaderInit"_Str);
   
   Object* pPtrLoader;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrLoader) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
     THROW_INVALID_DSTACK("loader.init"_Str);
   
   Loader* pLoader = _pLoader(pPtrLoader);
@@ -104,14 +104,14 @@ void Task::vLoaderInit(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* loader::new -- new a table loader                                           */
 /*----------------------------------------------------------------------------*/
-void Task::vLoaderNew(NNP_Task nnpTask)
+void Task::vLoaderNew(MP_Task mpTask)
 {
   ENTRY("vLoaderNew"_Str);
   
   Loader* pLoader = new Loader;
   ASSERT(CN_LOADER == pLoader->eClass());
   
-  nnpTask->m_pDataStack->vPushObject(pLoader);
+  mpTask->m_pDataStack->vPushObject(pLoader);
   
   EXIT();
 }
@@ -119,12 +119,12 @@ void Task::vLoaderNew(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* loader.newSub -- new a loader sub                                          */
 /*----------------------------------------------------------------------------*/
-void Task::vLoaderNewSub(NNP_Task nnpTask)
+void Task::vLoaderNewSub(MP_Task mpTask)
 {
   ENTRY("vLoaderNewSub"_Str);
   
   Object* pPtrLoader;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrLoader) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
     THROW_INVALID_DSTACK("loader.newSub"_Str);
   
   Loader* pLoader = _pLoader(pPtrLoader);
@@ -135,7 +135,7 @@ void Task::vLoaderNewSub(NNP_Task nnpTask)
   
   pLoaderSub->vLoader(pLoader);
   
-  nnpTask->m_pDataStack->vPushObject(pLoaderSub);
+  mpTask->m_pDataStack->vPushObject(pLoaderSub);
   
   EXIT();
 }
@@ -143,13 +143,13 @@ void Task::vLoaderNewSub(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* loader.path! -- store file path into loader                                */
 /*----------------------------------------------------------------------------*/
-void Task::vLoaderPathStore(NNP_Task nnpTask)
+void Task::vLoaderPathStore(MP_Task mpTask)
 {
   ENTRY("vLoaderPathStore"_Str);
   
   ValWrk xWspPath;
   Object* pPtrLoader;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrLoader,xWspPath) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrLoader,xWspPath) )
     THROW_INVALID_DSTACK("loader.path!"_Str);
   
   Loader* pLoader = _pLoader(pPtrLoader);
@@ -166,13 +166,13 @@ void Task::vLoaderPathStore(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* loader.table! -- store table into loader                                   */
 /*----------------------------------------------------------------------------*/
-void Task::vLoaderTableStore(NNP_Task nnpTask)
+void Task::vLoaderTableStore(MP_Task mpTask)
 {
   ENTRY("vLoaderTableStore"_Str);
   
   Object* pPtrTable;
   Object* pPtrLoader;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrLoader,pPtrTable) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrLoader,pPtrTable) )
     THROW_INVALID_DSTACK("loader.tableStore"_Str);
   
   Loader* pLoader = _pLoader(pPtrLoader);
@@ -190,13 +190,13 @@ void Task::vLoaderTableStore(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* loader.txref! -- store txref into loader                                   */
 /*----------------------------------------------------------------------------*/
-void Task::vLoaderTxRefStore(NNP_Task nnpTask)
+void Task::vLoaderTxRefStore(MP_Task mpTask)
 {
   ENTRY("vLoaderTxRefStore"_Str);
   
   Object* pPtrLoader;
   Object* pPtrTxRef;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrLoader,pPtrTxRef) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrLoader,pPtrTxRef) )
     THROW_INVALID_DSTACK("loader.txref!"_Str);
   
   Loader* pLoader = _pLoader(pPtrLoader);

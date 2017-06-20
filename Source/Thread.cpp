@@ -195,13 +195,13 @@ Thread* Thread::pThread(void)
 /*----------------------------------------------------------------------------*/
 /* run given task                                                             */
 /*----------------------------------------------------------------------------*/
-void Thread::vRunTask(NNP_Task nnpTask)
+void Thread::vRunTask(MP_Task mpTask)
 {
-  PosixThread::vTlsSet(giTLS_TaskKey,*nnpTask);
+  PosixThread::vTlsSet(giTLS_TaskKey,*mpTask);
   ASSERT(PosixThread::pTlsGet(giTLS_TaskKey));
-  nnpTask->vState(TS_RUNNING);
-  nnpTask->vThread(nullptr);
-  nnpTask->vLoop();
+  mpTask->vState(TS_RUNNING);
+  mpTask->vThread(nullptr);
+  mpTask->vLoop();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -211,13 +211,13 @@ void Thread::vRunTask(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* append task to queue                                                       */
 /*----------------------------------------------------------------------------*/
-void Thread::vAppend(NNP_Task nnpTask)
+void Thread::vAppend(MP_Task mpTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
  
   //m_pTxQueue->vAppend(pTx);
 
-  m_pTaskSet->vAppend(nnpTask);
+  m_pTaskSet->vAppend(mpTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -303,13 +303,13 @@ void Thread::vLoop(void)
       m_npTask->vThread(nullptr);
     
     if (TS_YIELDED == m_npTask->eState()) {
-      NNP_Task nnpTask = *m_npTask;
-      vAppend(nnpTask);
+      MP_Task mpTask = *m_npTask;
+      vAppend(mpTask);
       m_npTask = nullptr;
     }
     else if (TS_EXITED == m_npTask->eState()) {
-      NNP_Task nnpTask = *m_npTask;
-      if ( (*gnpRootTask != *m_npTask)  && (!nnpTask->bWordBody()) ) {
+      MP_Task mpTask = *m_npTask;
+      if ( (*gnpRootTask != *m_npTask)  && (!mpTask->bWordBody()) ) {
         delete *m_npTask;
         m_npTask = nullptr;
       }
@@ -367,8 +367,8 @@ void Thread::vLoopV2(void)
     // when task yields, task is put into task set
     if (TS_YIELDED == m_npTask->eState()) {
       m_npTask->vThread(nullptr);
-      NNP_Task nnpTask = *m_npTask;
-      vAppend(nnpTask);
+      MP_Task mpTask = *m_npTask;
+      vAppend(mpTask);
       m_npTask = nullptr;
       continue;
     }
@@ -380,8 +380,8 @@ void Thread::vLoopV2(void)
     // when task exits, it is deleted (unless its a word)
     if (TS_EXITED == m_npTask->eState()) {
       m_npTask->vThread(nullptr);
-      NNP_Task nnpTask = *m_npTask;
-      if ( (*gnpRootTask != *m_npTask)  && (!nnpTask->bWordBody()) ) {
+      MP_Task mpTask = *m_npTask;
+      if ( (*gnpRootTask != *m_npTask)  && (!mpTask->bWordBody()) ) {
         delete *m_npTask;
       }
       m_npTask = nullptr;

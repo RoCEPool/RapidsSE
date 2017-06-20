@@ -70,12 +70,12 @@ void Task::vAddPrimitives_Task(void)
 /*----------------------------------------------------------------------------*/
 /* ack -- acknowledge that task of this tasks completion                      */
 /*----------------------------------------------------------------------------*/
-void Task::vTaskAck(NNP_Task nnpTask)
+void Task::vTaskAck(MP_Task mpTask)
 {
   ENTRY("vTaskAck"_Str);
   
   Object* pTaskObject;
-  if ( ! nnpTask->m_pDataStack->bPop(pTaskObject) )
+  if ( ! mpTask->m_pDataStack->bPop(pTaskObject) )
     THROW_INVALID_DSTACK("task.ack"_Str);
   Task* pThatTask = _pTask(pTaskObject);
   
@@ -83,14 +83,14 @@ void Task::vTaskAck(NNP_Task nnpTask)
   
   if ( ! iMore ) {
     //    vTrace("Task::vTaskSignal: task %p %s resuming task %p %s\n"_Str,
-    //           *nnpTask,nnpTask->m_sName.s(),
+    //           *mpTask,mpTask->m_sName.s(),
     //           pThatTask,pThatTask->m_sName.s());
     if (gbTracepoint)
       vTrace("[N%lld:%8s\\%lld %-11s] ack resumes %s\\%lld\n"_Str,
              gpGrid->iThisNode(),
-             nnpTask->m_sName.s(),
-             *nnpTask->m_zAcks,
-             nnpTask->m_sComment.s(),
+             mpTask->m_sName.s(),
+             *mpTask->m_zAcks,
+             mpTask->m_sComment.s(),
              
              pThatTask->m_sName.s(),
              *pThatTask->m_zAcks);
@@ -105,13 +105,13 @@ void Task::vTaskAck(NNP_Task nnpTask)
   }
   else {
     //    vTrace("Task::vTaskSignal: task %p %s signalled task %p\\%lld %s\n"_Str,
-    //           *nnpTask,nnpTask->m_sName.s(),
+    //           *mpTask,mpTask->m_sName.s(),
     //           pThatTask,iMore,pThatTask->m_sName.s());
 //    vTrace("[N%lld:%8s\\%lld %-11s] ack'd %s\\%lld\n"_Str,
 //           gpGrid->iThisNode(),
-//           nnpTask->m_sName.s(),
-//           *nnpTask->m_zAcks,
-//           nnpTask->m_sComment.s(),
+//           mpTask->m_sName.s(),
+//           *mpTask->m_zAcks,
+//           mpTask->m_sComment.s(),
 //           
 //           pThatTask->m_sName.s(),
 //           iMore);
@@ -124,16 +124,16 @@ void Task::vTaskAck(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* task.acks@ -- push current value of given tasks m_zAcks                    */
 /*----------------------------------------------------------------------------*/
-void Task::vTaskAcksFetch(NNP_Task nnpTask)
+void Task::vTaskAcksFetch(MP_Task mpTask)
 {
   ENTRY("vTaskAcksFetch"_Str);
   
   Object* pPtrTask;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrTask) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTask) )
     THROW_INVALID_DSTACK("task.acks@"_Str);
   Task* pGivenTask = _pTask(pPtrTask);
   
-  nnpTask->m_pDataStack->vPushInt(*pGivenTask->m_zAcks);
+  mpTask->m_pDataStack->vPushInt(*pGivenTask->m_zAcks);
   
   EXIT();
 }
@@ -141,17 +141,17 @@ void Task::vTaskAcksFetch(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* task.acks! -- store value into given tasks m_zAcks                         */
 /*----------------------------------------------------------------------------*/
-void Task::vTaskAcksStore(NNP_Task nnpTask)
+void Task::vTaskAcksStore(MP_Task mpTask)
 {
   ENTRY("vTaskAcksStore"_Str);
   
   Object* pPtrTask;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrTask) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTask) )
     THROW_INVALID_DSTACK("task.acks!"_Str);
   Task* pGivenTask = _pTask(pPtrTask);
   
   i8 iInt;
-  if ( ! nnpTask->m_pDataStack->bPopAsInt(iInt) )
+  if ( ! mpTask->m_pDataStack->bPopAsInt(iInt) )
     THROW_INVALID_DSTACK("task.acks!"_Str);
   
   ASSERT(0 == *pGivenTask->m_zAcks);
@@ -164,16 +164,16 @@ void Task::vTaskAcksStore(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* task.comment@ -- push comment of given task                                */
 /*----------------------------------------------------------------------------*/
-void Task::vTaskCommentFetch(NNP_Task nnpTask)
+void Task::vTaskCommentFetch(MP_Task mpTask)
 {
   ENTRY("vTaskCommentFetch"_Str);
   
   Object* pPtrTask;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrTask) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTask) )
     THROW_INVALID_DSTACK("task.comment@"_Str);
   Task* pGivenTask = _pTask(pPtrTask);
   
-  nnpTask->m_pDataStack->vPushS32(pGivenTask->m_sComment);
+  mpTask->m_pDataStack->vPushS32(pGivenTask->m_sComment);
   
   EXIT();
 }
@@ -181,17 +181,17 @@ void Task::vTaskCommentFetch(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* task.comment! -- store comment into given task                             */
 /*----------------------------------------------------------------------------*/
-void Task::vTaskCommentStore(NNP_Task nnpTask)
+void Task::vTaskCommentStore(MP_Task mpTask)
 {
   ENTRY("vTaskCommentStore"_Str);
   
   Object* pPtrTask;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrTask) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTask) )
     THROW_INVALID_DSTACK("task.comment!"_Str);
   Task* pGivenTask = _pTask(pPtrTask);
   
   s32 sComment;
-  if ( ! nnpTask->m_pDataStack->bPop(sComment) )
+  if ( ! mpTask->m_pDataStack->bPop(sComment) )
     THROW_INVALID_DSTACK("task.comment!"_Str);
   
   pGivenTask->m_sComment = sComment;
@@ -202,12 +202,12 @@ void Task::vTaskCommentStore(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* task.delete -- delete task on stack                                        */
 /*----------------------------------------------------------------------------*/
-void Task::vTaskDelete(NNP_Task nnpTask)
+void Task::vTaskDelete(MP_Task mpTask)
 {
   ENTRY("vTaskDelete"_Str);
   
   Object* pPtrTask;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrTask) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTask) )
     THROW_INVALID_DSTACK("task.init"_Str);
   
   Task* pThatTask = _pTask(pPtrTask);
@@ -221,12 +221,12 @@ void Task::vTaskDelete(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* task.dicStack -- push task dictionary onto data stack                      */
 /*----------------------------------------------------------------------------*/
-void Task::vTaskDicStack(NNP_Task nnpTask)
+void Task::vTaskDicStack(MP_Task mpTask)
 {
   ENTRY("vTaskDicStack"_Str);
   
   Object* pPtrTask;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrTask) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTask) )
     THROW_INVALID_DSTACK("task.init"_Str);
   
   Task* pThatTask = _pTask(pPtrTask);
@@ -234,7 +234,7 @@ void Task::vTaskDicStack(NNP_Task nnpTask)
   
   Object* pPtrDicStack = &pThatTask->m_xPathStack;
   
-  nnpTask->m_pDataStack->vPushObject(pPtrDicStack);
+  mpTask->m_pDataStack->vPushObject(pPtrDicStack);
   
   EXIT();
 }
@@ -242,12 +242,12 @@ void Task::vTaskDicStack(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* task.dump -- dump of task on data stack                                    */
 /*----------------------------------------------------------------------------*/
-void Task::vTaskDump(NNP_Task nnpTask)
+void Task::vTaskDump(MP_Task mpTask)
 {
 ENTRY("vTaskDump"_Str);
   
   Object* pObject;
-  if ( ! nnpTask->m_pDataStack->bPop(pObject) )
+  if ( ! mpTask->m_pDataStack->bPop(pObject) )
     THROW_INVALID_DSTACK("task.dump"_Str);
   Task* pThatTask = _pTask(pObject);
   
@@ -259,12 +259,12 @@ ENTRY("vTaskDump"_Str);
 /*----------------------------------------------------------------------------*/
 /* task.init -- init of task on data stack                                    */
 /*----------------------------------------------------------------------------*/
-void Task::vTaskInit(NNP_Task nnpTask)
+void Task::vTaskInit(MP_Task mpTask)
 {
 ENTRY("vTaskInit"_Str);
   
   Object* pPtrTask;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrTask) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTask) )
     THROW_INVALID_DSTACK("task.init"_Str);
   
   Task* pThatTask = _pTask(pPtrTask);
@@ -285,12 +285,12 @@ ENTRY("vTaskInit"_Str);
 /*----------------------------------------------------------------------------*/
 /* task.jobQueue@ -- push job queue of given task                             */
 /*----------------------------------------------------------------------------*/
-void Task::vTaskJobQueueFetch(NNP_Task nnpTask)
+void Task::vTaskJobQueueFetch(MP_Task mpTask)
 {
   ENTRY("vTaskJobQueueFetch"_Str);
   
   Object* pTaskObject;
-  if ( ! nnpTask->m_pDataStack->bPop(pTaskObject) )
+  if ( ! mpTask->m_pDataStack->bPop(pTaskObject) )
     THROW_INVALID_DSTACK("task.jobQueue@"_Str);
   Task* pThatTask = _pTask(pTaskObject);
   
@@ -298,7 +298,7 @@ void Task::vTaskJobQueueFetch(NNP_Task nnpTask)
   
   Object* pQueueEmb = static_cast<Object*>(pQueue);
   
-  nnpTask->m_pDataStack->vPushObject(pQueueEmb);
+  mpTask->m_pDataStack->vPushObject(pQueueEmb);
   
   EXIT();
 }
@@ -306,18 +306,18 @@ void Task::vTaskJobQueueFetch(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* task.jobQueue! -- store job quueue into given task                         */
 /*----------------------------------------------------------------------------*/
-void Task::vTaskJobQueueStore(NNP_Task nnpTask)
+void Task::vTaskJobQueueStore(MP_Task mpTask)
 {
   ENTRY("vTaskJobQueueStore"_Str);
   
   Object* pTaskObject;
-  if ( ! nnpTask->m_pDataStack->bPop(pTaskObject) )
+  if ( ! mpTask->m_pDataStack->bPop(pTaskObject) )
     THROW_INVALID_DSTACK("task.jobQueue!"_Str);
   Task* pThatTask = _pTask(pTaskObject);
   
   Object* pQueueEmb;
   
-  if ( ! nnpTask->m_pDataStack->bPop(pQueueEmb) )
+  if ( ! mpTask->m_pDataStack->bPop(pQueueEmb) )
     THROW_INVALID_DSTACK("task.jobQueue!"_Str);
   
   Queue* pQueue = static_cast<Queue*>(pQueueEmb);
@@ -330,16 +330,16 @@ void Task::vTaskJobQueueStore(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* task.name@ -- fetch task name                                              */
 /*----------------------------------------------------------------------------*/
-void Task::vTaskNameFetch(NNP_Task nnpTask)
+void Task::vTaskNameFetch(MP_Task mpTask)
 {
 ENTRY("vTaskNameFetch"_Str);
   
   Object* pTaskObject;
-  if ( ! nnpTask->m_pDataStack->bPop(pTaskObject) )
+  if ( ! mpTask->m_pDataStack->bPop(pTaskObject) )
     THROW_INVALID_DSTACK("task.name@"_Str);
   Task* pThatTask = _pTask(pTaskObject);
   
-  nnpTask->m_pDataStack->vPushS32(pThatTask->m_sName);
+  mpTask->m_pDataStack->vPushS32(pThatTask->m_sName);
   
   EXIT();
 }
@@ -347,17 +347,17 @@ ENTRY("vTaskNameFetch"_Str);
 /*----------------------------------------------------------------------------*/
 /* task.name! -- store task name                                              */
 /*----------------------------------------------------------------------------*/
-void Task::vTaskNameStore(NNP_Task nnpTask)
+void Task::vTaskNameStore(MP_Task mpTask)
 {
 ENTRY("vTaskNameStore"_Str);
   
   Object* pTaskObject;
-  if ( ! nnpTask->m_pDataStack->bPop(pTaskObject) )
+  if ( ! mpTask->m_pDataStack->bPop(pTaskObject) )
     THROW_INVALID_DSTACK("task.name!"_Str);
   Task* pThatTask = _pTask(pTaskObject);
   
   s32 sName;
-  if ( ! nnpTask->m_pDataStack->bPop(sName) )
+  if ( ! mpTask->m_pDataStack->bPop(sName) )
     THROW_INVALID_DSTACK("task.name!"_Str);
   
   pThatTask->m_sName = sName;
@@ -368,33 +368,33 @@ ENTRY("vTaskNameStore"_Str);
 /*----------------------------------------------------------------------------*/
 /* task::new -- create and seed a new task                                     */
 /*----------------------------------------------------------------------------*/
-void Task::vTaskNew(NNP_Task nnpTask)
+void Task::vTaskNew(MP_Task mpTask)
 {
 ENTRY("vTaskNew"_Str);
   //                                   pParent   sSeed     nTaskArgs
-  if ( ! nnpTask->m_pDataStack->bGuard(CN_PTRVAL,CN_STRVAL,CN_INTVAL) )
+  if ( ! mpTask->m_pDataStack->bGuard(CN_PTRVAL,CN_STRVAL,CN_INTVAL) )
     THROW_INVALID_DSTACK("task::new"_Str);
   
   Object* pParent;
-  if ( ! nnpTask->m_pDataStack->bPop(pParent) )
+  if ( ! mpTask->m_pDataStack->bPop(pParent) )
     THROW_INVALID_DSTACK("task::new"_Str);
   Task* pParentTask = _pTask(pParent);
   ASSERT( ! pParentTask || CN_TASK == pParentTask->eClass());
   
   s32 sSeed;
-  if ( ! nnpTask->m_pDataStack->bPop(sSeed) )
+  if ( ! mpTask->m_pDataStack->bPop(sSeed) )
     THROW_INVALID_DSTACK("task::new"_Str);
   
   i8 nTaskArgs;
-  if ( ! nnpTask->m_pDataStack->bPop(nTaskArgs) )
+  if ( ! mpTask->m_pDataStack->bPop(nTaskArgs) )
     THROW_INVALID_DSTACK("task::new"_Str);
   //ASSERT(! nTaskArgs);
 
-  if ( ! nnpTask->m_pDataStack->bGuard(nTaskArgs) )
+  if ( ! mpTask->m_pDataStack->bGuard(nTaskArgs) )
     THROW_INVALID_DSTACK("task::new"_Str);
   
   // create new task (will be automatically appended to task list)
-  NNP_Task nnpNewTask = new Task;
+  MP_Task nnpNewTask = new Task;
   
   nnpNewTask->m_pParentTask = pParentTask;
   nnpNewTask->vSeedWord(sSeed);
@@ -402,20 +402,20 @@ ENTRY("vTaskNew"_Str);
   // copy task arguments to new task (preserving stack order)
   ValWrk xValWrk;
   for (i8 iTaskArg = nTaskArgs - 1; iTaskArg >= 0; iTaskArg--) {
-    nnpTask->m_pDataStack->vPeekValWrk(iTaskArg,xValWrk);
+    mpTask->m_pDataStack->vPeekValWrk(iTaskArg,xValWrk);
     nnpNewTask->m_pDataStack->vPushValWrk(xValWrk);
   }
   
   // discard original task arguments
   for (i8 iTaskArg = nTaskArgs - 1; iTaskArg >= 0; iTaskArg--) {
-    bool bPopped = nnpTask->m_pDataStack->bPop(xValWrk);
+    bool bPopped = mpTask->m_pDataStack->bPop(xValWrk);
     ASSERT(bPopped);
   }
   
   Task* pNewTask = *nnpNewTask;
   
   Object* pTask = pNewTask;
-  nnpTask->m_pDataStack->vPushObject(pTask);
+  mpTask->m_pDataStack->vPushObject(pTask);
   
   EXIT();
 }
@@ -423,11 +423,11 @@ ENTRY("vTaskNew"_Str);
 /*----------------------------------------------------------------------------*/
 /* task.parent@ -- fetch parent of task on data stack                         */
 /*----------------------------------------------------------------------------*/
-void Task::vTaskParentFetch(NNP_Task nnpTask)
+void Task::vTaskParentFetch(MP_Task mpTask)
 {
   ENTRY("vTaskParentFetch"_Str);
   
-  nnpTask->m_pDataStack->vPushObject(nnpTask->m_pParentTask);
+  mpTask->m_pDataStack->vPushObject(mpTask->m_pParentTask);
   
   EXIT();
 }
@@ -435,17 +435,17 @@ void Task::vTaskParentFetch(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* task.parent! -- store parent task into this task                           */
 /*----------------------------------------------------------------------------*/
-void Task::vTaskParentStore(NNP_Task nnpTask)
+void Task::vTaskParentStore(MP_Task mpTask)
 {
   ENTRY("vTaskParentStore"_Str);
   
   Object* pParent;
-  if ( ! nnpTask->m_pDataStack->bPop(pParent) )
+  if ( ! mpTask->m_pDataStack->bPop(pParent) )
     THROW_INVALID_DSTACK("task.parent!"_Str);
   Task* pParentTask = _pTask(pParent);
   ASSERT( ! pParentTask || CN_TASK == pParentTask->eClass());
   
-  nnpTask->m_pParentTask = pParentTask;
+  mpTask->m_pParentTask = pParentTask;
   
   EXIT();
 }
@@ -453,12 +453,12 @@ void Task::vTaskParentStore(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* task.plan@ -- fetch plan of task onto data stack                           */
 /*----------------------------------------------------------------------------*/
-void Task::vTaskPlanFetch(NNP_Task nnpTask)
+void Task::vTaskPlanFetch(MP_Task mpTask)
 {
   ENTRY("vTaskPlanFetch"_Str);
   
   Object* pObject;
-  if ( ! nnpTask->m_pDataStack->bPop(pObject) )
+  if ( ! mpTask->m_pDataStack->bPop(pObject) )
     THROW_INVALID_DSTACK("task.plan@"_Str);
   Task* pThatTask = _pTask(pObject);
   
@@ -466,7 +466,7 @@ void Task::vTaskPlanFetch(NNP_Task nnpTask)
   
   Object* pPtrPlan= pPlan;
   
-  nnpTask->m_pDataStack->vPushObject(pPtrPlan);
+  mpTask->m_pDataStack->vPushObject(pPtrPlan);
   
   EXIT();
 }
@@ -474,18 +474,18 @@ void Task::vTaskPlanFetch(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* task.plan! -- store plan on data stack into task on data stack             */
 /*----------------------------------------------------------------------------*/
-void Task::vTaskPlanStore(NNP_Task nnpTask)
+void Task::vTaskPlanStore(MP_Task mpTask)
 {
   ENTRY("vTaskPlanStore"_Str);
   
   Object* pTaskObject;
-  if ( ! nnpTask->m_pDataStack->bPop(pTaskObject) )
+  if ( ! mpTask->m_pDataStack->bPop(pTaskObject) )
     THROW_INVALID_DSTACK("task.plan!"_Str);
   Task* pThatTask = _pTask(pTaskObject);
   
   Object* pPtrPlan;
   
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrPlan) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrPlan) )
     THROW_INVALID_DSTACK("task.plan!"_Str);
   
   Plan* pPlan = _pPlan(pPtrPlan);
@@ -498,42 +498,42 @@ void Task::vTaskPlanStore(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* task.seed -- set seed word and args of task                                */
 /*----------------------------------------------------------------------------*/
-void Task::vTaskSeed(NNP_Task nnpTask)
+void Task::vTaskSeed(MP_Task mpTask)
 {
 ENTRY("vTaskSeed"_Str);
   
 //  //                                   sSeed     nTaskArgs
-//  if ( ! nnpTask->m_pDataStack->bGuard(CN_STRVAL,CN_INTVAL) )
+//  if ( ! mpTask->m_pDataStack->bGuard(CN_STRVAL,CN_INTVAL) )
 //    THROW_INVALID_DSTACK("task.seed"_Str);
   
   Object* pTaskObject;
-  if ( ! nnpTask->m_pDataStack->bPop(pTaskObject) )
+  if ( ! mpTask->m_pDataStack->bPop(pTaskObject) )
     THROW_INVALID_DSTACK("task.seed"_Str);
   Task* pThatTask = _pTask(pTaskObject);
   
   s32 sSeed;
-  if ( ! nnpTask->m_pDataStack->bPop(sSeed) )
+  if ( ! mpTask->m_pDataStack->bPop(sSeed) )
     THROW_INVALID_DSTACK("task.seed"_Str);
   pThatTask->vSeedWord(sSeed);
 
   i8 nTaskArgs;
-  if ( ! nnpTask->m_pDataStack->bPop(nTaskArgs) )
+  if ( ! mpTask->m_pDataStack->bPop(nTaskArgs) )
     THROW_INVALID_DSTACK("task.seed"_Str);
   //ASSERT(! nTaskArgs);
   
-  if ( ! nnpTask->m_pDataStack->bGuard(nTaskArgs) )
+  if ( ! mpTask->m_pDataStack->bGuard(nTaskArgs) )
     THROW_INVALID_DSTACK("task.seed"_Str);
   
   // copy task arguments to new task (preserving stack order)
   ValWrk xValWrk;
   for (i8 iTaskArg = nTaskArgs - 1; iTaskArg >= 0; iTaskArg--) {
-    nnpTask->m_pDataStack->vPeekValWrk(iTaskArg,xValWrk);
+    mpTask->m_pDataStack->vPeekValWrk(iTaskArg,xValWrk);
     pThatTask->m_pDataStack->vPushValWrk(xValWrk);
   }
   
   // discard original task arguments
   for (i8 iTaskArg = nTaskArgs - 1; iTaskArg >= 0; iTaskArg--) {
-    bool bPopped = nnpTask->m_pDataStack->bPop(xValWrk);
+    bool bPopped = mpTask->m_pDataStack->bPop(xValWrk);
     ASSERT(bPopped);
   }
   
@@ -543,12 +543,12 @@ ENTRY("vTaskSeed"_Str);
 /*----------------------------------------------------------------------------*/
 /* task.seitf@ -- fetch SEitf of task on data stack                           */
 /*----------------------------------------------------------------------------*/
-void Task::vTaskSeitfFetch(NNP_Task nnpTask)
+void Task::vTaskSeitfFetch(MP_Task mpTask)
 {
   ENTRY("vTaskSeitfFetch"_Str);
   
   Object* pObject;
-  if ( ! nnpTask->m_pDataStack->bPop(pObject) )
+  if ( ! mpTask->m_pDataStack->bPop(pObject) )
     THROW_INVALID_DSTACK("task.seitf@"_Str);
   Task* pThatTask = _pTask(pObject);
   
@@ -556,7 +556,7 @@ void Task::vTaskSeitfFetch(NNP_Task nnpTask)
   
   Object* pPtrSEitf= pSEitf;
   
-  nnpTask->m_pDataStack->vPushObject(pPtrSEitf);
+  mpTask->m_pDataStack->vPushObject(pPtrSEitf);
   
   EXIT();
 }
@@ -564,18 +564,18 @@ void Task::vTaskSeitfFetch(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* task.seitf! -- store SEitf on data stack into task on data stack           */
 /*----------------------------------------------------------------------------*/
-void Task::vTaskSeitfStore(NNP_Task nnpTask)
+void Task::vTaskSeitfStore(MP_Task mpTask)
 {
   ENTRY("vTaskSeitfStore"_Str);
   
   Object* pTaskObject;
-  if ( ! nnpTask->m_pDataStack->bPop(pTaskObject) )
+  if ( ! mpTask->m_pDataStack->bPop(pTaskObject) )
     THROW_INVALID_DSTACK("task.seitf!"_Str);
   Task* pThatTask = _pTask(pTaskObject);
   
   Object* pPtrSEitf;
   
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitf) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
     THROW_INVALID_DSTACK("task.seitf!"_Str);
   
   SEitf* pSEitf = _pSEitf(pPtrSEitf);
@@ -589,12 +589,12 @@ void Task::vTaskSeitfStore(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* task.socket@ -- fetch socket of task on data stack                         */
 /*----------------------------------------------------------------------------*/
-void Task::vTaskSocketFetch(NNP_Task nnpTask)
+void Task::vTaskSocketFetch(MP_Task mpTask)
 {
   ENTRY("vTaskSocketFetch"_Str);
   
   Object* pTaskObject;
-  if ( ! nnpTask->m_pDataStack->bPop(pTaskObject) )
+  if ( ! mpTask->m_pDataStack->bPop(pTaskObject) )
     THROW_INVALID_DSTACK("task.socket@"_Str);
   Task* pThatTask = _pTask(pTaskObject);
   
@@ -602,7 +602,7 @@ void Task::vTaskSocketFetch(NNP_Task nnpTask)
   
   Object* pSocketEmb = static_cast<Object*>(pSocket);
   
-  nnpTask->m_pDataStack->vPushObject(pSocketEmb);
+  mpTask->m_pDataStack->vPushObject(pSocketEmb);
   
   EXIT();
 }
@@ -610,18 +610,18 @@ void Task::vTaskSocketFetch(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* task.socket! -- store socket on data stack into task                       */
 /*----------------------------------------------------------------------------*/
-void Task::vTaskSocketStore(NNP_Task nnpTask)
+void Task::vTaskSocketStore(MP_Task mpTask)
 {
   ENTRY("vTaskSocketStore"_Str);
   
   Object* pTaskObject;
-  if ( ! nnpTask->m_pDataStack->bPop(pTaskObject) )
+  if ( ! mpTask->m_pDataStack->bPop(pTaskObject) )
     THROW_INVALID_DSTACK("task.socket!"_Str);
   Task* pThatTask = _pTask(pTaskObject);
   
   Object* ptrSocket;
   
-  if ( ! nnpTask->m_pDataStack->bPop(ptrSocket) )
+  if ( ! mpTask->m_pDataStack->bPop(ptrSocket) )
     THROW_INVALID_DSTACK("task.socket!"_Str);
   
   Socket* pSocket = static_cast<Socket*>(ptrSocket);
@@ -634,18 +634,18 @@ void Task::vTaskSocketStore(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* task.state@ -- fetch state of task                                         */
 /*----------------------------------------------------------------------------*/
-void Task::vTaskStateFetch(NNP_Task nnpTask)
+void Task::vTaskStateFetch(MP_Task mpTask)
 {
 ENTRY("vTaskStateFetch"_Str);
   
   Object* pTaskObject;
-  if ( ! nnpTask->m_pDataStack->bPop(pTaskObject) )
+  if ( ! mpTask->m_pDataStack->bPop(pTaskObject) )
     THROW_INVALID_DSTACK("task.state@"_Str);
   Task* pThatTask = _pTask(pTaskObject);
   
   eTS eState = pThatTask->m_eState;
   
-  nnpTask->m_pDataStack->vPushInt((i8)eState);
+  mpTask->m_pDataStack->vPushInt((i8)eState);
   
   EXIT();
 }
@@ -653,18 +653,18 @@ ENTRY("vTaskStateFetch"_Str);
 /*----------------------------------------------------------------------------*/
 /* task.state! -- store state of task                                         */
 /*----------------------------------------------------------------------------*/
-void Task::vTaskStateStore(NNP_Task nnpTask)
+void Task::vTaskStateStore(MP_Task mpTask)
 {
 ENTRY("vTaskStateStore"_Str);
   
   Object* pTaskObject;
-  if ( ! nnpTask->m_pDataStack->bPop(pTaskObject) )
+  if ( ! mpTask->m_pDataStack->bPop(pTaskObject) )
     THROW_INVALID_DSTACK("task.state!"_Str);
   Task* pThatTask = _pTask(pTaskObject);
   
   i8 iState;
   
-  if ( ! nnpTask->m_pDataStack->bPop(iState) )
+  if ( ! mpTask->m_pDataStack->bPop(iState) )
     THROW_INVALID_DSTACK("task.state!"_Str);
   
   pThatTask->m_eState = (eTS)iState;
@@ -675,12 +675,12 @@ ENTRY("vTaskStateStore"_Str);
 /*----------------------------------------------------------------------------*/
 /* task.taskset@ -- fetch taskset of task on data stack                       */
 /*----------------------------------------------------------------------------*/
-void Task::vTaskTaskSetFetch(NNP_Task nnpTask)
+void Task::vTaskTaskSetFetch(MP_Task mpTask)
 {
   ENTRY("vTaskTaskSetFetch"_Str);
   
   Object* pTaskObject;
-  if ( ! nnpTask->m_pDataStack->bPop(pTaskObject) )
+  if ( ! mpTask->m_pDataStack->bPop(pTaskObject) )
     THROW_INVALID_DSTACK("task.taskset@"_Str);
   Task* pThatTask = _pTask(pTaskObject);
   
@@ -688,7 +688,7 @@ void Task::vTaskTaskSetFetch(NNP_Task nnpTask)
   
   Object* pTaskSetEmb = static_cast<Object*>(pTaskSet);
   
-  nnpTask->m_pDataStack->vPushObject(pTaskSetEmb);
+  mpTask->m_pDataStack->vPushObject(pTaskSetEmb);
   
   EXIT();
 }
@@ -696,18 +696,18 @@ void Task::vTaskTaskSetFetch(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* task.taskset! -- store taskset on data stack into task                     */
 /*----------------------------------------------------------------------------*/
-void Task::vTaskTaskSetStore(NNP_Task nnpTask)
+void Task::vTaskTaskSetStore(MP_Task mpTask)
 {
   ENTRY("vTaskTaskSetStore"_Str);
   
   Object* pTaskObject;
-  if ( ! nnpTask->m_pDataStack->bPop(pTaskObject) )
+  if ( ! mpTask->m_pDataStack->bPop(pTaskObject) )
     THROW_INVALID_DSTACK("task.taskset!"_Str);
   Task* pThatTask = _pTask(pTaskObject);
   
   Object* ptrTaskSet;
   
-  if ( ! nnpTask->m_pDataStack->bPop(ptrTaskSet) )
+  if ( ! mpTask->m_pDataStack->bPop(ptrTaskSet) )
     THROW_INVALID_DSTACK("task.taskset!"_Str);
   
   TaskSet* pTaskSet = static_cast<TaskSet*>(ptrTaskSet);
@@ -720,13 +720,13 @@ void Task::vTaskTaskSetStore(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* task::this -- push this task                                                */
 /*----------------------------------------------------------------------------*/
-void Task::vTaskThis(NNP_Task nnpTask)
+void Task::vTaskThis(MP_Task mpTask)
 {
 ENTRY("vTaskThis"_Str);
   
-  Object* pTask = *nnpTask;
+  Object* pTask = *mpTask;
   
-  nnpTask->m_pDataStack->vPushObject(pTask);
+  mpTask->m_pDataStack->vPushObject(pTask);
   
   EXIT();
 }
@@ -734,17 +734,17 @@ ENTRY("vTaskThis"_Str);
 /*----------------------------------------------------------------------------*/
 /* task.thread -- push given tasks thread                                     */
 /*----------------------------------------------------------------------------*/
-void Task::vTaskThread(NNP_Task nnpTask)
+void Task::vTaskThread(MP_Task mpTask)
 {
   ENTRY("vTaskThread"_Str);
   
   Object* pTaskObject;
-  if ( ! nnpTask->m_pDataStack->bPop(pTaskObject) )
+  if ( ! mpTask->m_pDataStack->bPop(pTaskObject) )
     THROW_INVALID_DSTACK("task.thread"_Str);
   Task* pThatTask = _pTask(pTaskObject);
 
   Thread* pThread = pThatTask->m_pThread;
-  nnpTask->m_pDataStack->vPushObject(pThread);
+  mpTask->m_pDataStack->vPushObject(pThread);
   
   EXIT();
 }
@@ -752,7 +752,7 @@ void Task::vTaskThread(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* task.wait -- this task waits for signal                                    */
 /*----------------------------------------------------------------------------*/
-void Task::vTaskWait(NNP_Task nnpTask)
+void Task::vTaskWait(MP_Task mpTask)
 {
   ENTRY("vTaskWait"_Str);
   
@@ -764,11 +764,11 @@ void Task::vTaskWait(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* task.yield -- this task yields                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vTaskYield(NNP_Task nnpTask)
+void Task::vTaskYield(MP_Task mpTask)
 {
   ENTRY("vTaskYield"_Str);
   
-  nnpTask->vState(TS_YIELDED);
+  mpTask->vState(TS_YIELDED);
   
   EXIT();
 }

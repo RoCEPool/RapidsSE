@@ -45,12 +45,12 @@ void Task::vAddPrimitives_ThreadCursor(void)
 /*----------------------------------------------------------------------------*/
 /* threadCursor.begin -- begin using thread cursor                            */
 /*----------------------------------------------------------------------------*/
-void Task::vThreadCursorBegin(NNP_Task nnpTask)
+void Task::vThreadCursorBegin(MP_Task mpTask)
 {
 ENTRY("vThreadCursorBegin"_Str);
   
   Object* pPtrThreadCursor;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrThreadCursor) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrThreadCursor) )
     THROW_INVALID_DSTACK("threadCursor.begin"_Str);
   
   ThreadCursor* pThreadCursor = _pThreadCursor(pPtrThreadCursor);
@@ -64,12 +64,12 @@ ENTRY("vThreadCursorBegin"_Str);
 /*----------------------------------------------------------------------------*/
 /* threadCursor.delete -- delete a thread cursor                              */
 /*----------------------------------------------------------------------------*/
-void Task::vThreadCursorDelete(NNP_Task nnpTask)
+void Task::vThreadCursorDelete(MP_Task mpTask)
 {
 ENTRY("vTheadCursorDelete"_Str);
   
   Object* pPtrThreadCursor;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrThreadCursor) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrThreadCursor) )
     THROW_INVALID_DSTACK("threadCursor.delete"_Str);
   
   ThreadCursor* pThreadCursor = _pThreadCursor(pPtrThreadCursor);
@@ -83,12 +83,12 @@ ENTRY("vTheadCursorDelete"_Str);
 /*----------------------------------------------------------------------------*/
 /* threadCursor.end -- end using thread cursor                                */
 /*----------------------------------------------------------------------------*/
-void Task::vThreadCursorEnd(NNP_Task nnpTask)
+void Task::vThreadCursorEnd(MP_Task mpTask)
 {
 ENTRY("vThreadCursorEnd"_Str);
   
   Object* pPtrThreadCursor;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrThreadCursor) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrThreadCursor) )
     THROW_INVALID_DSTACK("threadcursor.end"_Str);
   
   ThreadCursor* pThreadCursor = _pThreadCursor(pPtrThreadCursor);
@@ -102,12 +102,12 @@ ENTRY("vThreadCursorEnd"_Str);
 /*----------------------------------------------------------------------------*/
 /* threadCursor.first -- set to first and push thread                         */
 /*----------------------------------------------------------------------------*/
-void Task::vThreadCursorFirst(NNP_Task nnpTask)
+void Task::vThreadCursorFirst(MP_Task mpTask)
 {
 ENTRY("vThreadCursorFirst"_Str);
   
   Object* pPtrThreadCursor;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrThreadCursor) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrThreadCursor) )
     THROW_INVALID_DSTACK("threadCursor.first"_Str);
   
   ThreadCursor* pThreadCursor = _pThreadCursor(pPtrThreadCursor);
@@ -117,7 +117,7 @@ ENTRY("vThreadCursorFirst"_Str);
   
   Object* pThread = pThreadCursor->pObject();
   
-  nnpTask->m_pDataStack->vPushObject(pThread);
+  mpTask->m_pDataStack->vPushObject(pThread);
   
   EXIT();
 }
@@ -125,12 +125,12 @@ ENTRY("vThreadCursorFirst"_Str);
 /*----------------------------------------------------------------------------*/
 /* threadCursor.get -- push current thread                                    */
 /*----------------------------------------------------------------------------*/
-void Task::vThreadCursorGet(NNP_Task nnpTask)
+void Task::vThreadCursorGet(MP_Task mpTask)
 {
 ENTRY("vThreadCursorGet"_Str);
   
   Object* pPtrThreadCursor;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrThreadCursor) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrThreadCursor) )
     THROW_INVALID_DSTACK("threadCursor.get"_Str);
   
   ThreadCursor* pThreadCursor = _pThreadCursor(pPtrThreadCursor);
@@ -138,7 +138,7 @@ ENTRY("vThreadCursorGet"_Str);
   
   Object* pObject = pThreadCursor->pObject();
   
-  nnpTask->m_pDataStack->vPushObject(pObject);
+  mpTask->m_pDataStack->vPushObject(pObject);
   
   EXIT();
 }
@@ -146,12 +146,12 @@ ENTRY("vThreadCursorGet"_Str);
 /*----------------------------------------------------------------------------*/
 /* threadCursor.init -- init a thread cursor                                  */
 /*----------------------------------------------------------------------------*/
-void Task::vThreadCursorInit(NNP_Task nnpTask)
+void Task::vThreadCursorInit(MP_Task mpTask)
 {
 ENTRY("vThreadCursorInit"_Str);
   
   Object* pPtrThreadCursor;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrThreadCursor) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrThreadCursor) )
     THROW_INVALID_DSTACK("threadCursor.init"_Str);
   
   ThreadCursor* pThreadCursor = _pThreadCursor(pPtrThreadCursor);
@@ -165,14 +165,14 @@ ENTRY("vThreadCursorInit"_Str);
 /*----------------------------------------------------------------------------*/
 /* threadCursor::new -- new a thread cursor                                    */
 /*----------------------------------------------------------------------------*/
-void Task::vThreadCursorNew(NNP_Task nnpTask)
+void Task::vThreadCursorNew(MP_Task mpTask)
 {
 ENTRY("vThreadCursorNew"_Str);
   
   ThreadCursor* pThreadCursor = new ThreadCursor(gpThreadList);
   ASSERT(CN_THREADCURSOR == pThreadCursor->eClass());
   
-  nnpTask->m_pDataStack->vPushObject(pThreadCursor);
+  mpTask->m_pDataStack->vPushObject(pThreadCursor);
   
   EXIT();
 }
@@ -180,12 +180,12 @@ ENTRY("vThreadCursorNew"_Str);
 /*----------------------------------------------------------------------------*/
 /* threadCursor.next -- advance to next and push thread                       */
 /*----------------------------------------------------------------------------*/
-void Task::vThreadCursorNext(NNP_Task nnpTask)
+void Task::vThreadCursorNext(MP_Task mpTask)
 {
 ENTRY("vThreadCursorNext"_Str);
   
   Object* pPtrThreadCursor;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrThreadCursor) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrThreadCursor) )
     THROW_INVALID_DSTACK("threadCursor.next"_Str);
   
   ThreadCursor* pThreadCursor = _pThreadCursor(pPtrThreadCursor);
@@ -195,7 +195,7 @@ ENTRY("vThreadCursorNext"_Str);
   
   Object* pThread = pThreadCursor->pObject();
   
-  nnpTask->m_pDataStack->vPushObject(pThread);
+  mpTask->m_pDataStack->vPushObject(pThread);
   
   EXIT();
 }

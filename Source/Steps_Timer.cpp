@@ -48,13 +48,13 @@ void Task::vAddPrimitives_Timer(void)
 /*----------------------------------------------------------------------------*/
 /* timer.delete -- delete timer                                               */
 /*----------------------------------------------------------------------------*/
-void Task::vTimerDelete(NNP_Task nnpTask)
+void Task::vTimerDelete(MP_Task mpTask)
 {
 ENTRY("vTimeDelete"_Str);
   
   Object* pPtrTimer;
   
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrTimer) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTimer) )
     THROW_INVALID_DSTACK("timer.delete"_Str);
   
   Timer* pTimer = _pTimer(pPtrTimer);
@@ -72,12 +72,12 @@ ENTRY("vTimeDelete"_Str);
 /*----------------------------------------------------------------------------*/
 /* timer.init -- init timer                                                   */
 /*----------------------------------------------------------------------------*/
-void Task::vTimerInit(NNP_Task nnpTask)
+void Task::vTimerInit(MP_Task mpTask)
 {
 ENTRY("vTimerInit"_Str);
   
   Object* pPtrTimer;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrTimer) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTimer) )
     THROW_INVALID_DSTACK("timer.init"_Str);
   
   Timer* pTimer = _pTimer(pPtrTimer);
@@ -91,12 +91,12 @@ ENTRY("vTimerInit"_Str);
 /*----------------------------------------------------------------------------*/
 /* timer.microsecs -- get elapsed duration in microseconds                    */
 /*----------------------------------------------------------------------------*/
-void Task::vTimerMicrosecs(NNP_Task nnpTask)
+void Task::vTimerMicrosecs(MP_Task mpTask)
 {
 ENTRY("vTimerMicrosecs"_Str);
   
   Object* pPtrTimer;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrTimer) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTimer) )
     THROW_INVALID_DSTACK("timer.microsecs"_Str);
   
   Timer* pTimer = _pTimer(pPtrTimer);
@@ -104,7 +104,7 @@ ENTRY("vTimerMicrosecs"_Str);
   
   i8 iMicroseconds = pTimer->iMicroseconds();
   
-  nnpTask->m_pDataStack->vPushInt(iMicroseconds);
+  mpTask->m_pDataStack->vPushInt(iMicroseconds);
   
   EXIT();
 }
@@ -112,12 +112,12 @@ ENTRY("vTimerMicrosecs"_Str);
 /*----------------------------------------------------------------------------*/
 /* timer.millisecs -- get elapsed duration in milliseconds                    */
 /*----------------------------------------------------------------------------*/
-void Task::vTimerMillisecs(NNP_Task nnpTask)
+void Task::vTimerMillisecs(MP_Task mpTask)
 {
 ENTRY("vTimerMillisecs"_Str);
   
   Object* pPtrTimer;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrTimer) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTimer) )
     THROW_INVALID_DSTACK("timer.millisecs"_Str);
   
   Timer* pTimer = _pTimer(pPtrTimer);
@@ -125,7 +125,7 @@ ENTRY("vTimerMillisecs"_Str);
   
   i8 iMilliseconds = pTimer->iMilliseconds();
   
-  nnpTask->m_pDataStack->vPushInt(iMilliseconds);
+  mpTask->m_pDataStack->vPushInt(iMilliseconds);
   
   EXIT();
 }
@@ -133,12 +133,12 @@ ENTRY("vTimerMillisecs"_Str);
 /*----------------------------------------------------------------------------*/
 /* timer.nanosecs -- get elapsed duration in nanoseconds                      */
 /*----------------------------------------------------------------------------*/
-void Task::vTimerNanosecs(NNP_Task nnpTask)
+void Task::vTimerNanosecs(MP_Task mpTask)
 {
 ENTRY("vTimerNanosecs"_Str);
   
   Object* pPtrTimer;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrTimer) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTimer) )
     THROW_INVALID_DSTACK("timer.nanosecs"_Str);
   
   Timer* pTimer = _pTimer(pPtrTimer);
@@ -146,7 +146,7 @@ ENTRY("vTimerNanosecs"_Str);
   
   i8 iNanoseconds = pTimer->iNanoseconds();
   
-  nnpTask->m_pDataStack->vPushInt(iNanoseconds);
+  mpTask->m_pDataStack->vPushInt(iNanoseconds);
   
   EXIT();
 }
@@ -154,7 +154,7 @@ ENTRY("vTimerNanosecs"_Str);
 /*----------------------------------------------------------------------------*/
 /* timer::new -- new timer                                                     */
 /*----------------------------------------------------------------------------*/
-void Task::vTimerNew(NNP_Task nnpTask)
+void Task::vTimerNew(MP_Task mpTask)
 {
 ENTRY("vTimerNew"_Str);
   
@@ -168,7 +168,7 @@ ENTRY("vTimerNew"_Str);
   
   Object* pPtrTimer = pTimer;
   
-  nnpTask->m_pDataStack->vPushObject(pPtrTimer);
+  mpTask->m_pDataStack->vPushObject(pPtrTimer);
   
   EXIT();
 }
@@ -176,12 +176,12 @@ ENTRY("vTimerNew"_Str);
 /*----------------------------------------------------------------------------*/
 /* timer.reset -- reset timer                                                 */
 /*----------------------------------------------------------------------------*/
-void Task::vTimerReset(NNP_Task nnpTask)
+void Task::vTimerReset(MP_Task mpTask)
 {
 ENTRY("vTimerReset"_Str);
   
   Object* pPtrTimer;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrTimer) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTimer) )
     THROW_INVALID_DSTACK("timer.reset"_Str);
   
   Timer* pTimer = _pTimer(pPtrTimer);
@@ -195,12 +195,12 @@ ENTRY("vTimerReset"_Str);
 /*----------------------------------------------------------------------------*/
 /* timer.secs -- get elapsed duration in seconds                              */
 /*----------------------------------------------------------------------------*/
-void Task::vTimerSecs(NNP_Task nnpTask)
+void Task::vTimerSecs(MP_Task mpTask)
 {
 ENTRY("vTimerSecs"_Str);
   
   Object* pPtrTimer;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrTimer) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTimer) )
     THROW_INVALID_DSTACK("timer.secs"_Str);
   
   Timer* pTimer = _pTimer(pPtrTimer);
@@ -208,7 +208,7 @@ ENTRY("vTimerSecs"_Str);
   
   i8 iSeconds = pTimer->iSeconds();
   
-  nnpTask->m_pDataStack->vPushInt(iSeconds);
+  mpTask->m_pDataStack->vPushInt(iSeconds);
   
   EXIT();
 }
@@ -216,12 +216,12 @@ ENTRY("vTimerSecs"_Str);
 /*----------------------------------------------------------------------------*/
 /* timer.start -- start timer                                                 */
 /*----------------------------------------------------------------------------*/
-void Task::vTimerStart(NNP_Task nnpTask)
+void Task::vTimerStart(MP_Task mpTask)
 {
 ENTRY("vTimerStart"_Str);
   
   Object* pPtrTimer;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrTimer) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTimer) )
     THROW_INVALID_DSTACK("timer.Start"_Str);
   
   Timer* pTimer = _pTimer(pPtrTimer);
@@ -235,12 +235,12 @@ ENTRY("vTimerStart"_Str);
 /*----------------------------------------------------------------------------*/
 /* timer.ticks -- get elapsed ticks                                           */
 /*----------------------------------------------------------------------------*/
-void Task::vTimerTicks(NNP_Task nnpTask)
+void Task::vTimerTicks(MP_Task mpTask)
 {
 ENTRY("vTimerTicks"_Str);
   
   Object* pPtrTimer;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrTimer) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTimer) )
     THROW_INVALID_DSTACK("timer.ticks"_Str);
   
   Timer* pTimer = _pTimer(pPtrTimer);
@@ -248,7 +248,7 @@ ENTRY("vTimerTicks"_Str);
   
   i8 iTicks = pTimer->iTicks();
   
-  nnpTask->m_pDataStack->vPushInt(iTicks);
+  mpTask->m_pDataStack->vPushInt(iTicks);
   
   EXIT();
 }
@@ -256,12 +256,12 @@ ENTRY("vTimerTicks"_Str);
 /*----------------------------------------------------------------------------*/
 /* timer.update -- update timer                                               */
 /*----------------------------------------------------------------------------*/
-void Task::vTimerUpdate(NNP_Task nnpTask)
+void Task::vTimerUpdate(MP_Task mpTask)
 {
 ENTRY("vTimerUpdate"_Str);
   
   Object* pPtrTimer;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrTimer) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTimer) )
     THROW_INVALID_DSTACK("timer.update"_Str);
   
   Timer* pTimer = _pTimer(pPtrTimer);

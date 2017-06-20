@@ -41,11 +41,11 @@ void Task::vAddPrimitives_Docol(void)
 /*----------------------------------------------------------------------------*/
 /* ] -- enter compiler state                                                  */
 /*----------------------------------------------------------------------------*/
-void Task::vDocolCompiling(NNP_Task nnpTask)
+void Task::vDocolCompiling(MP_Task mpTask)
 {
   ENTRY("vDocolCompiling"_Str);
   
-  nnpTask->m_bCompiling = true;
+  mpTask->m_bCompiling = true;
   
   EXIT();
 }
@@ -53,11 +53,11 @@ void Task::vDocolCompiling(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* [ -- enter interpreter state                                               */
 /*----------------------------------------------------------------------------*/
-void Task::vDocolInterpreting(NNP_Task nnpTask)
+void Task::vDocolInterpreting(MP_Task mpTask)
 {
   ENTRY("vDocolInterpreting"_Str);
   
-  nnpTask->m_bCompiling = false;
+  mpTask->m_bCompiling = false;
   
   EXIT();
 }
@@ -65,13 +65,13 @@ void Task::vDocolInterpreting(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* docol.isCompiling -- currently in compiling mode?                          */
 /*----------------------------------------------------------------------------*/
-void Task::vDocolIsCompiling(NNP_Task nnpTask)
+void Task::vDocolIsCompiling(MP_Task mpTask)
 {
   ENTRY("vDocolIsCompiling"_Str);
   
-  i8 iIsCompiling = nnpTask->m_bCompiling ? 1 : 0;
+  i8 iIsCompiling = mpTask->m_bCompiling ? 1 : 0;
   
-  nnpTask->m_pDataStack->vPushInt(iIsCompiling);
+  mpTask->m_pDataStack->vPushInt(iIsCompiling);
   
   EXIT();
 }
@@ -79,13 +79,13 @@ void Task::vDocolIsCompiling(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* docol.isInterpreting -- currently in interpreting mode?                    */
 /*----------------------------------------------------------------------------*/
-void Task::vDocolIsInterpreting(NNP_Task nnpTask)
+void Task::vDocolIsInterpreting(MP_Task mpTask)
 {
   ENTRY("vDocolIsInterpreting"_Str);
   
-  i8 iIsInterpreting = nnpTask->m_bCompiling ? 0 : 1;
+  i8 iIsInterpreting = mpTask->m_bCompiling ? 0 : 1;
   
-  nnpTask->m_pDataStack->vPushInt(iIsInterpreting);
+  mpTask->m_pDataStack->vPushInt(iIsInterpreting);
   
   EXIT();
 }

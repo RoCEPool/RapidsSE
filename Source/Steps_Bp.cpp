@@ -57,7 +57,7 @@ void Task::vAddPrimitives_Bp(void)
 /*----------------------------------------------------------------------------*/
 /* bp.analyze -- buffer pool analyze                                          */
 /*----------------------------------------------------------------------------*/
-void Task::vBpAnalyze(NNP_Task nnpTask)
+void Task::vBpAnalyze(MP_Task mpTask)
 {
   ENTRY("vBpa"_Str);
   
@@ -73,7 +73,7 @@ void Task::vBpAnalyze(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* bp.dump -- dump of objects in the buffer pool                              */
 /*----------------------------------------------------------------------------*/
-void Task::vBpDump(NNP_Task nnpTask)
+void Task::vBpDump(MP_Task mpTask)
 {
   ENTRY("vBpDump"_Str);
   
@@ -89,7 +89,7 @@ void Task::vBpDump(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* epochDump -- dump an epoch                                                 */
 /*----------------------------------------------------------------------------*/
-void Task::vBpEpochDump(NNP_Task nnpTask)
+void Task::vBpEpochDump(MP_Task mpTask)
 {
   ENTRY("vBpEpochDump"_Str);
   
@@ -115,7 +115,7 @@ void Task::vBpEpochDump(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* epochTake -- take an epoch                                                 */
 /*----------------------------------------------------------------------------*/
-void Task::vBpEpochTake(NNP_Task nnpTask)
+void Task::vBpEpochTake(MP_Task mpTask)
 {
   ENTRY("vBpEpochTake"_Str);
   
@@ -131,13 +131,13 @@ void Task::vBpEpochTake(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* bp::freeBuffers -- push number of free buffers in buffer pool onto stack    */
 /*----------------------------------------------------------------------------*/
-void Task::vFreeBuffers(NNP_Task nnpTask)
+void Task::vFreeBuffers(MP_Task mpTask)
 {
   ENTRY("vFreePercent"_Str);
   
   i8 iFreeBuffers = gpBufferPool->iFreeCount();
   
-  nnpTask->m_pDataStack->vPushInt(iFreeBuffers);
+  mpTask->m_pDataStack->vPushInt(iFreeBuffers);
   
   EXIT();
 }
@@ -145,13 +145,13 @@ void Task::vFreeBuffers(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* bp::freePercent -- push free percent of buffer pool onto stack              */
 /*----------------------------------------------------------------------------*/
-void Task::vFreePercent(NNP_Task nnpTask)
+void Task::vFreePercent(MP_Task mpTask)
 {
   ENTRY("vFreePercent"_Str);
   
   i8 iFreePercent = gpBufferPool->iFreePercent();
   
-  nnpTask->m_pDataStack->vPushInt(iFreePercent);
+  mpTask->m_pDataStack->vPushInt(iFreePercent);
   
   EXIT();
 }
@@ -159,13 +159,13 @@ void Task::vFreePercent(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* bp::freeSpace -- push free space in buffer pool onto stack                  */
 /*----------------------------------------------------------------------------*/
-void Task::vFreeSpace(NNP_Task nnpTask)
+void Task::vFreeSpace(MP_Task mpTask)
 {
   ENTRY("vFreeSpace"_Str);
   
   i8 iFreeSpace = gpBufferPool->iFreeSpace();
   
-  nnpTask->m_pDataStack->vPushInt(iFreeSpace);
+  mpTask->m_pDataStack->vPushInt(iFreeSpace);
   
   EXIT();
 }
@@ -173,7 +173,7 @@ void Task::vFreeSpace(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* bp::inUseSpace -- push in-use space in buffer pool onto stack               */
 /*----------------------------------------------------------------------------*/
-void Task::vInUseSpace(NNP_Task nnpTask)
+void Task::vInUseSpace(MP_Task mpTask)
 {
   ENTRY("vInUseSpace"_Str);
   
@@ -181,7 +181,7 @@ void Task::vInUseSpace(NNP_Task nnpTask)
                      - gpAttachMap->m_iJumboSize
                      - gpBufferPool->iFreeSpace();
   
-  nnpTask->m_pDataStack->vPushInt(iInUseSpace);
+  mpTask->m_pDataStack->vPushInt(iInUseSpace);
   
   EXIT();
 }
@@ -189,7 +189,7 @@ void Task::vInUseSpace(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* bp::snapshot -- push snapshot of buffer pool onto stack                     */
 /*----------------------------------------------------------------------------*/
-void Task::vSnapshot(NNP_Task nnpTask)
+void Task::vSnapshot(MP_Task mpTask)
 {
   ENTRY("vSnapshot"_Str);
   
@@ -213,9 +213,9 @@ void Task::vSnapshot(NNP_Task nnpTask)
   gpJumboHeap->vAnalyse(iCountObjects);
 
   for (i8 index = 0; index < CN_ENUMS; index++)
-    nnpTask->m_pDataStack->vPushInt(iCountObjects[index]);
+    mpTask->m_pDataStack->vPushInt(iCountObjects[index]);
   
-  nnpTask->m_pDataStack->vPushInt(CN_ENUMS);
+  mpTask->m_pDataStack->vPushInt(CN_ENUMS);
   
   EXIT();
 }
@@ -223,13 +223,13 @@ void Task::vSnapshot(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* bp::totalSpace -- push total space in buffer pool onto stack                */
 /*----------------------------------------------------------------------------*/
-void Task::vTotalSpace(NNP_Task nnpTask)
+void Task::vTotalSpace(MP_Task mpTask)
 {
   ENTRY("vTotalSpace"_Str);
   
   i8 iTotalSpace = gpAttachMap->m_iRegionSize - gpAttachMap->m_iJumboSize;
   
-  nnpTask->m_pDataStack->vPushInt(iTotalSpace);
+  mpTask->m_pDataStack->vPushInt(iTotalSpace);
   
   EXIT();
 }

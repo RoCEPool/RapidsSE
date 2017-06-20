@@ -3,7 +3,7 @@
 /*============================================================================*/
 #include "StorageEngine.h"
 
-void Task::vAddMunged(NNP_Task nnpTask)
+void Task::vAddMunged(MP_Task mpTask)
 {
   s48K sDefinition;
 
@@ -6914,7 +6914,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "\n"
     "  \\\"#include \\\\\\\"StorageEngine.h\\\\\\\"\\\\n\\\" cppFile file.write\n"
     "  \\\"\\\\n\\\" cppFile file.write\n"
-    "  \\\"void Task::vAddMunged(NNP_Task nnpTask)\\\\n\\\" cppFile file.write\n"
+    "  \\\"void Task::vAddMunged(MP_Task mpTask)\\\\n\\\" cppFile file.write\n"
     "  \\\"{\\\\n\\\" cppFile file.write\n"
     "  \\\"  s48K sDefinition;\\\\n\\\" cppFile file.write\n"
     " ;\n"

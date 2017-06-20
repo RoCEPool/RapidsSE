@@ -38,20 +38,20 @@ void Task::vAddPrimitives_Shell(void)
 /*----------------------------------------------------------------------------*/
 /* shell.execute -- execute given shell command                               */
 /*----------------------------------------------------------------------------*/
-void Task::vShellExecute(NNP_Task nnpTask)
+void Task::vShellExecute(MP_Task mpTask)
 {
   ENTRY("vShellExecute"_Str);
   
   ValWrk xCommand;
   
-  if ( ! nnpTask->m_pDataStack->bPop(xCommand) )
+  if ( ! mpTask->m_pDataStack->bPop(xCommand) )
     THROW_INVALID_DSTACK("shell.execute"_Str);
   
   SysCall xSysCall;
   
   i8 iExitStatus = Shell::iExecute(_pStrVal(xCommand.pNestedValueSelf())->aStr(),xSysCall);
   
-  nnpTask->m_pDataStack->vPushInt(iExitStatus);
+  mpTask->m_pDataStack->vPushInt(iExitStatus);
   
   EXIT();
 }

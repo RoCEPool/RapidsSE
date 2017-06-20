@@ -40,19 +40,19 @@ void Task::vAddPrimitives_Class(void)
 /*----------------------------------------------------------------------------*/
 /* class.name -- translate class no to name                                   */
 /*----------------------------------------------------------------------------*/
-void Task::vClassName(NNP_Task nnpTask)
+void Task::vClassName(MP_Task mpTask)
 {
   ENTRY("vClassName"_Str);
   
   i8 iClassNo;
-  if ( ! nnpTask->m_pDataStack->bPop(iClassNo) )
+  if ( ! mpTask->m_pDataStack->bPop(iClassNo) )
     THROW_INVALID_DSTACK("class.name"_Str);
   
   s32 sClassName;
   
   sClassName = aCN[iClassNo];
   
-  nnpTask->m_pDataStack->vPushS32(sClassName);
+  mpTask->m_pDataStack->vPushS32(sClassName);
   
   EXIT();
 }

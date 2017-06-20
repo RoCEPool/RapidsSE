@@ -45,12 +45,12 @@ void Task::vAddPrimitives_TxCursor(void)
 /*----------------------------------------------------------------------------*/
 /* txCursor.begin -- begin using tx cursor                                    */
 /*----------------------------------------------------------------------------*/
-void Task::vTxCursorBegin(NNP_Task nnpTask)
+void Task::vTxCursorBegin(MP_Task mpTask)
 {
 ENTRY("vTxCursorBegin"_Str);
   
   Object* pPtrTxCursor;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrTxCursor) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTxCursor) )
     THROW_INVALID_DSTACK("txCursor.begin"_Str);
   
   TxCursor* pTxCursor = _pTxCursor(pPtrTxCursor);
@@ -64,12 +64,12 @@ ENTRY("vTxCursorBegin"_Str);
 /*----------------------------------------------------------------------------*/
 /* txCursor.delete -- delete a tx cursor                                      */
 /*----------------------------------------------------------------------------*/
-void Task::vTxCursorDelete(NNP_Task nnpTask)
+void Task::vTxCursorDelete(MP_Task mpTask)
 {
 ENTRY("vTxCursorDelete"_Str);
   
   Object* pPtrTxCursor;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrTxCursor) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTxCursor) )
     THROW_INVALID_DSTACK("txCursor.delete"_Str);
   
   TxCursor* pTxCursor = _pTxCursor(pPtrTxCursor);
@@ -83,12 +83,12 @@ ENTRY("vTxCursorDelete"_Str);
 /*----------------------------------------------------------------------------*/
 /* txCursor.end -- end using tx cursor                                        */
 /*----------------------------------------------------------------------------*/
-void Task::vTxCursorEnd(NNP_Task nnpTask)
+void Task::vTxCursorEnd(MP_Task mpTask)
 {
 ENTRY("vTxCursorEnd"_Str);
   
   Object* pPtrTxCursor;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrTxCursor) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTxCursor) )
     THROW_INVALID_DSTACK("txcursor.end"_Str);
   
   TxCursor* pTxCursor = _pTxCursor(pPtrTxCursor);
@@ -102,12 +102,12 @@ ENTRY("vTxCursorEnd"_Str);
 /*----------------------------------------------------------------------------*/
 /* txCursor.first -- set to first and push tx                                 */
 /*----------------------------------------------------------------------------*/
-void Task::vTxCursorFirst(NNP_Task nnpTask)
+void Task::vTxCursorFirst(MP_Task mpTask)
 {
 ENTRY("vTxCursorFirst"_Str);
   
   Object* pPtrTxCursor;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrTxCursor) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTxCursor) )
     THROW_INVALID_DSTACK("txCursor.first"_Str);
   
   TxCursor* pTxCursor = _pTxCursor(pPtrTxCursor);
@@ -117,7 +117,7 @@ ENTRY("vTxCursorFirst"_Str);
   
   Object* pObject = pTxCursor->pObject();
   
-  nnpTask->m_pDataStack->vPushObject(pObject);
+  mpTask->m_pDataStack->vPushObject(pObject);
   
   EXIT();
 }
@@ -125,12 +125,12 @@ ENTRY("vTxCursorFirst"_Str);
 /*----------------------------------------------------------------------------*/
 /* txCursor.get -- push current tx                                            */
 /*----------------------------------------------------------------------------*/
-void Task::vTxCursorGet(NNP_Task nnpTask)
+void Task::vTxCursorGet(MP_Task mpTask)
 {
 ENTRY("vTxCursorGet"_Str);
   
   Object* pPtrTxCursor;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrTxCursor) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTxCursor) )
     THROW_INVALID_DSTACK("txCursor.get"_Str);
   
   TxCursor* pTxCursor = _pTxCursor(pPtrTxCursor);
@@ -138,7 +138,7 @@ ENTRY("vTxCursorGet"_Str);
   
   Object* pObject = pTxCursor->pObject();
   
-  nnpTask->m_pDataStack->vPushObject(pObject);
+  mpTask->m_pDataStack->vPushObject(pObject);
   
   EXIT();
 }
@@ -146,12 +146,12 @@ ENTRY("vTxCursorGet"_Str);
 /*----------------------------------------------------------------------------*/
 /* txCursor.init -- init a tx cursor                                          */
 /*----------------------------------------------------------------------------*/
-void Task::vTxCursorInit(NNP_Task nnpTask)
+void Task::vTxCursorInit(MP_Task mpTask)
 {
 ENTRY("vTxCursorInit"_Str);
   
   Object* pPtrTxCursor;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrTxCursor) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTxCursor) )
     THROW_INVALID_DSTACK("txCursor.init"_Str);
   
   TxCursor* pTxCursor = _pTxCursor(pPtrTxCursor);
@@ -165,7 +165,7 @@ ENTRY("vTxCursorInit"_Str);
 /*----------------------------------------------------------------------------*/
 /* txCursor::new -- new a tx cursor                                            */
 /*----------------------------------------------------------------------------*/
-void Task::vTxCursorNew(NNP_Task nnpTask)
+void Task::vTxCursorNew(MP_Task mpTask)
 {
 ENTRY("vTxCursorNew"_Str);
   
@@ -175,12 +175,12 @@ ENTRY("vTxCursorNew"_Str);
 /*----------------------------------------------------------------------------*/
 /* txCursor.next -- advance to next and push tx                               */
 /*----------------------------------------------------------------------------*/
-void Task::vTxCursorNext(NNP_Task nnpTask)
+void Task::vTxCursorNext(MP_Task mpTask)
 {
 ENTRY("vTxCursorNext"_Str);
   
   Object* pPtrTxCursor;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrTxCursor) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTxCursor) )
     THROW_INVALID_DSTACK("txCursor.next"_Str);
   
   TxCursor* pTxCursor = _pTxCursor(pPtrTxCursor);
@@ -190,7 +190,7 @@ ENTRY("vTxCursorNext"_Str);
   
   Object* pObject = pTxCursor->pObject();
   
-  nnpTask->m_pDataStack->vPushObject(pObject);
+  mpTask->m_pDataStack->vPushObject(pObject);
   
   EXIT();
 }

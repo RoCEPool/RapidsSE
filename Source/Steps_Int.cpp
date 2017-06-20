@@ -50,28 +50,28 @@ void Task::vAddPrimitives_Int(void)
 /*----------------------------------------------------------------------------*/
 /* + -- add top two integers on stack                                         */
 /*----------------------------------------------------------------------------*/
-void Task::vIntAdd(NNP_Task nnpTask)
+void Task::vIntAdd(MP_Task mpTask)
 {
   ENTRY("vIntAdd"_Str);
   /*
   i8 r, j, i;
   
-  if ( ! nnpTask->m_pDataStack->bPop(j,i) )
+  if ( ! mpTask->m_pDataStack->bPop(j,i) )
     THROW_INVALID_DSTACK("+"_Str);
   
   r = i + j;
   
-  nnpTask->m_pDataStack->vPush(r);
+  mpTask->m_pDataStack->vPush(r);
   */
   
   // get pointer to value on the top of the stack
-  Value* j = nnpTask->m_pDataStack->pTopValue();
+  Value* j = mpTask->m_pDataStack->pTopValue();
   
   // discard the value
-  nnpTask->m_pDataStack->vDiscard();
+  mpTask->m_pDataStack->vDiscard();
   
   // get pointer to value on the top of the stack
-  Value* i = nnpTask->m_pDataStack->pTopValue();
+  Value* i = mpTask->m_pDataStack->pTopValue();
   
   // add the two values and leave the result on the stack
   *_pIntVal(i) = _pIntVal(j)->iInt() + _pIntVal(i)->iInt();
@@ -82,18 +82,18 @@ void Task::vIntAdd(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* / -- divide top integer by second integer on stack                         */
 /*----------------------------------------------------------------------------*/
-void Task::vIntDivide(NNP_Task nnpTask)
+void Task::vIntDivide(MP_Task mpTask)
 {
   ENTRY("vIntDivide"_Str);
   
   i8 r, j, i;
   
-  if ( ! nnpTask->m_pDataStack->bPop(j,i) )
+  if ( ! mpTask->m_pDataStack->bPop(j,i) )
     THROW_INVALID_DSTACK("/"_Str);
   
   r = DIV(i,j);
   
-  nnpTask->m_pDataStack->vPushInt(r);
+  mpTask->m_pDataStack->vPushInt(r);
   
   EXIT();
 }
@@ -101,18 +101,18 @@ void Task::vIntDivide(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* == -- test top two integers on data stack for equality                     */
 /*----------------------------------------------------------------------------*/
-void Task::vIntEqual(NNP_Task nnpTask)
+void Task::vIntEqual(MP_Task mpTask)
 {
   ENTRY("vIntEqual"_Str);
   
   i8 r, j, i;
   
-  if ( ! nnpTask->m_pDataStack->bPop(j,i) )
+  if ( ! mpTask->m_pDataStack->bPop(j,i) )
     THROW_INVALID_DSTACK("=="_Str);
   
   r = i == j;
   
-  nnpTask->m_pDataStack->vPushInt(r);
+  mpTask->m_pDataStack->vPushInt(r);
   
   EXIT();
 }
@@ -120,18 +120,18 @@ void Task::vIntEqual(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* > -- test top two integers on data stack for greater than                  */
 /*----------------------------------------------------------------------------*/
-void Task::vIntGreater(NNP_Task nnpTask)
+void Task::vIntGreater(MP_Task mpTask)
 {
   ENTRY("vIntGreater"_Str);
   
   i8 r, j, i;
   
-  if ( ! nnpTask->m_pDataStack->bPop(j,i) )
+  if ( ! mpTask->m_pDataStack->bPop(j,i) )
     THROW_INVALID_DSTACK(">"_Str);
   
   r = i > j;
   
-  nnpTask->m_pDataStack->vPushInt(r);
+  mpTask->m_pDataStack->vPushInt(r);
   
   EXIT();
 }
@@ -139,18 +139,18 @@ void Task::vIntGreater(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* >= -- test top two integers on data stack for greater than equal to        */
 /*----------------------------------------------------------------------------*/
-void Task::vIntGreaterEqual(NNP_Task nnpTask)
+void Task::vIntGreaterEqual(MP_Task mpTask)
 {
   ENTRY("vIntGreaterEqual"_Str);
   
   i8 r, j, i;
   
-  if ( ! nnpTask->m_pDataStack->bPop(j,i) )
+  if ( ! mpTask->m_pDataStack->bPop(j,i) )
     THROW_INVALID_DSTACK(">="_Str);
   
   r = i >= j;
   
-  nnpTask->m_pDataStack->vPushInt(r);
+  mpTask->m_pDataStack->vPushInt(r);
   
   EXIT();
 }
@@ -158,19 +158,19 @@ void Task::vIntGreaterEqual(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* hash -- get hash of string                                                 */
 /*----------------------------------------------------------------------------*/
-void Task::vIntHash(NNP_Task nnpTask)
+void Task::vIntHash(MP_Task mpTask)
 {
   ENTRY("vIntHash"_Str);
   
   s48K sString;
-  if ( ! nnpTask->m_pDataStack->bPop(sString) )
+  if ( ! mpTask->m_pDataStack->bPop(sString) )
     THROW_INVALID_DSTACK("hash"_Str);
   
   i8 iLength = sString.iLength();
   
   i8 iHash = XXH32(sString.s(),iLength,0);
   
-  nnpTask->m_pDataStack->vPushInt(iHash);
+  mpTask->m_pDataStack->vPushInt(iHash);
   
   EXIT();
 }
@@ -178,18 +178,18 @@ void Task::vIntHash(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* < -- test top two integers on data stack for less than                     */
 /*----------------------------------------------------------------------------*/
-void Task::vIntLess(NNP_Task nnpTask)
+void Task::vIntLess(MP_Task mpTask)
 {
   ENTRY("vIntLess"_Str);
   
   i8 r, j, i;
   
-  if ( ! nnpTask->m_pDataStack->bPop(j,i) )
+  if ( ! mpTask->m_pDataStack->bPop(j,i) )
     THROW_INVALID_DSTACK("<"_Str);
   
   r = i < j;
   
-  nnpTask->m_pDataStack->vPushInt(r);
+  mpTask->m_pDataStack->vPushInt(r);
   
   EXIT();
 }
@@ -197,18 +197,18 @@ void Task::vIntLess(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* <= -- test top two integers on data stack for less than equal to           */
 /*----------------------------------------------------------------------------*/
-void Task::vIntLessEqual(NNP_Task nnpTask)
+void Task::vIntLessEqual(MP_Task mpTask)
 {
   ENTRY("vIntLessEqual"_Str);
   
   i8 r, j, i;
   
-  if ( ! nnpTask->m_pDataStack->bPop(j,i) )
+  if ( ! mpTask->m_pDataStack->bPop(j,i) )
     THROW_INVALID_DSTACK("<="_Str);
   
   r = i <= j;
   
-  nnpTask->m_pDataStack->vPushInt(r);
+  mpTask->m_pDataStack->vPushInt(r);
   
   EXIT();
 }
@@ -216,18 +216,18 @@ void Task::vIntLessEqual(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* % -- modulo of top integer by second integer on stack                      */
 /*----------------------------------------------------------------------------*/
-void Task::vIntModulo(NNP_Task nnpTask)
+void Task::vIntModulo(MP_Task mpTask)
 {
   ENTRY("vIntModulo"_Str);
   
   i8 r, j, i;
   
-  if ( ! nnpTask->m_pDataStack->bPop(j,i) )
+  if ( ! mpTask->m_pDataStack->bPop(j,i) )
     THROW_INVALID_DSTACK("%"_Str);
   
   r = MOD(i,j);
   
-  nnpTask->m_pDataStack->vPushInt(r);
+  mpTask->m_pDataStack->vPushInt(r);
   
   EXIT();
 }
@@ -235,18 +235,18 @@ void Task::vIntModulo(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* * multiply second integer by top integer on stack                          */
 /*----------------------------------------------------------------------------*/
-void Task::vIntMultiply(NNP_Task nnpTask)
+void Task::vIntMultiply(MP_Task mpTask)
 {
   ENTRY("vIntMultiply"_Str);
   
   i8 r, j, i;
   
-  if ( ! nnpTask->m_pDataStack->bPop(j,i) )
+  if ( ! mpTask->m_pDataStack->bPop(j,i) )
     THROW_INVALID_DSTACK("*"_Str);
   
   r = i * j;
   
-  nnpTask->m_pDataStack->vPushInt(r);
+  mpTask->m_pDataStack->vPushInt(r);
   
   EXIT();
 }
@@ -254,18 +254,18 @@ void Task::vIntMultiply(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* neg -- gegate top integer on stack                                         */
 /*----------------------------------------------------------------------------*/
-void Task::vIntNeg(NNP_Task nnpTask)
+void Task::vIntNeg(MP_Task mpTask)
 {
   ENTRY("vIntNeg"_Str);
   
   i8 r, i;
   
-  if ( ! nnpTask->m_pDataStack->bPop(i) )
+  if ( ! mpTask->m_pDataStack->bPop(i) )
     THROW_INVALID_DSTACK("neg"_Str);
   
   r = -1 * i;
   
-  nnpTask->m_pDataStack->vPushInt(r);
+  mpTask->m_pDataStack->vPushInt(r);
   
   EXIT();
 }
@@ -273,18 +273,18 @@ void Task::vIntNeg(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* != -- test top two integers on data stack for not equal                    */
 /*----------------------------------------------------------------------------*/
-void Task::vIntNotEqual(NNP_Task nnpTask)
+void Task::vIntNotEqual(MP_Task mpTask)
 {
   ENTRY("vIntNotEqual"_Str);
   
   i8 r, j, i;
   
-  if ( ! nnpTask->m_pDataStack->bPop(j,i) )
+  if ( ! mpTask->m_pDataStack->bPop(j,i) )
     THROW_INVALID_DSTACK("!="_Str);
   
   r = i != j;
   
-  nnpTask->m_pDataStack->vPushInt(r);
+  mpTask->m_pDataStack->vPushInt(r);
   
   EXIT();
 }
@@ -292,18 +292,18 @@ void Task::vIntNotEqual(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* - -- subtract second integer from top integer on stack                     */
 /*----------------------------------------------------------------------------*/
-void Task::vIntSubtract(NNP_Task nnpTask)
+void Task::vIntSubtract(MP_Task mpTask)
 {
   ENTRY("vIntSubtract"_Str);
   
   i8 r, j, i;
   
-  if ( ! nnpTask->m_pDataStack->bPop(j,i) )
+  if ( ! mpTask->m_pDataStack->bPop(j,i) )
     THROW_INVALID_DSTACK("-"_Str);
   
   r = i - j;
   
-  nnpTask->m_pDataStack->vPushInt(r);
+  mpTask->m_pDataStack->vPushInt(r);
   
   EXIT();
 }

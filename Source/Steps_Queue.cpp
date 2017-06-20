@@ -41,14 +41,14 @@ void Task::vAddPrimitives_Queue(void)
 /*----------------------------------------------------------------------------*/
 /* queue.append -- append onto queue                                          */
 /*----------------------------------------------------------------------------*/
-void Task::vQueueAppend(NNP_Task nnpTask)
+void Task::vQueueAppend(MP_Task mpTask)
 {
 ENTRY("vQueueAppend"_Str);
   
   Object* pObject;
   ValWrk xValWrk;
   
-  if ( ! nnpTask->m_pDataStack->bPop(pObject,xValWrk) )
+  if ( ! mpTask->m_pDataStack->bPop(pObject,xValWrk) )
     THROW_INVALID_DSTACK("queue.append"_Str);
   
   Queue* pQueue = static_cast<Queue*>(pObject);
@@ -63,13 +63,13 @@ ENTRY("vQueueAppend"_Str);
 /*----------------------------------------------------------------------------*/
 /* q.dump -- queue dump                                                       */
 /*----------------------------------------------------------------------------*/
-void Task::vQueueDump(NNP_Task nnpTask)
+void Task::vQueueDump(MP_Task mpTask)
 {
 ENTRY("vQueueDump"_Str);
   
   Object* pObject;
   
-  if ( ! nnpTask->m_pDataStack->bPop(pObject) )
+  if ( ! mpTask->m_pDataStack->bPop(pObject) )
     THROW_INVALID_DSTACK("q.dump"_Str);
   
   ASSERT(CN_QUEUE == pObject->eClass());
@@ -84,13 +84,13 @@ ENTRY("vQueueDump"_Str);
 /*----------------------------------------------------------------------------*/
 /* queue.init -- queue init                                                   */
 /*----------------------------------------------------------------------------*/
-void Task::vQueueInit(NNP_Task nnpTask)
+void Task::vQueueInit(MP_Task mpTask)
 {
 ENTRY("vQueueInit"_Str);
   
   Object* pObject;
   
-  if ( ! nnpTask->m_pDataStack->bPop(pObject) )
+  if ( ! mpTask->m_pDataStack->bPop(pObject) )
     THROW_INVALID_DSTACK("queue.init"_Str);
     
   ASSERT(CN_QUEUE == pObject->eClass());
@@ -109,14 +109,14 @@ ENTRY("vQueueInit"_Str);
 /*----------------------------------------------------------------------------*/
 /* queue.pop -- queue pop                                                     */
 /*----------------------------------------------------------------------------*/
-void Task::vQueuePop(NNP_Task nnpTask)
+void Task::vQueuePop(MP_Task mpTask)
 {
 ENTRY("vQueuePop"_Str);
   
   Object* pObject;
   ValWrk xValWrk;
   
-  if ( ! nnpTask->m_pDataStack->bPop(pObject) )
+  if ( ! mpTask->m_pDataStack->bPop(pObject) )
     THROW_INVALID_DSTACK("queue.pop"_Str);
   
   ASSERT(CN_QUEUE == pObject->eClass());
@@ -125,11 +125,11 @@ ENTRY("vQueuePop"_Str);
   ASSERT(pQueue);
   
   if (pQueue->bPop(&xValWrk)) {
-    nnpTask->m_pDataStack->vPushValWrk(xValWrk);
-    nnpTask->m_pDataStack->vPushInt((i8)1);
+    mpTask->m_pDataStack->vPushValWrk(xValWrk);
+    mpTask->m_pDataStack->vPushInt((i8)1);
   }
   else
-    nnpTask->m_pDataStack->vPushInt((i8)0);
+    mpTask->m_pDataStack->vPushInt((i8)0);
   
   
   EXIT();

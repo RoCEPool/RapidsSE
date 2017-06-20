@@ -38,13 +38,13 @@ void Task::vAddPrimitives_Comment(void)
 /*----------------------------------------------------------------------------*/
 /* comment -- comment                                                         */
 /*----------------------------------------------------------------------------*/
-void Task::vComment(NNP_Task nnpTask)
+void Task::vComment(MP_Task mpTask)
 {
   ENTRY("vComment"_Str);
   
   for (;;) {
-    nnpTask->m_pTokeniser->vNextToken();
-    if (nnpTask->m_pTokeniser->sToken().bEqual(")"_Str))
+    mpTask->m_pTokeniser->vNextToken();
+    if (mpTask->m_pTokeniser->sToken().bEqual(")"_Str))
       break;
   }
   

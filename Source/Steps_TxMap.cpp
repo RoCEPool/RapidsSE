@@ -38,12 +38,12 @@ void Task::vAddPrimitives_TxMap(void)
 /*----------------------------------------------------------------------------*/
 /* txMap.init -- init of txmap on data stack                                  */
 /*----------------------------------------------------------------------------*/
-void Task::vTxMapInit(NNP_Task nnpTask)
+void Task::vTxMapInit(MP_Task mpTask)
 {
 ENTRY("vTxMapInit"_Str);
   
   Object* pPtrTxMap;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrTxMap) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTxMap) )
     THROW_INVALID_DSTACK("txMap.init"_Str);
   
   TxMap* pTxMap = _pTxMap(pPtrTxMap);

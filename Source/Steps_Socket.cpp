@@ -46,7 +46,7 @@ void Task::vAddPrimitives_Socket(void)
 /*----------------------------------------------------------------------------*/
 /* socket.accept: accept a socket connection                                  */
 /*----------------------------------------------------------------------------*/
-void Task::vSocketAccept(NNP_Task nnpTask)
+void Task::vSocketAccept(MP_Task mpTask)
 {
   SysCall xSysCall;
   Socket* pSocket;
@@ -55,7 +55,7 @@ void Task::vSocketAccept(NNP_Task nnpTask)
   
   ENTRY("vSocketAccept"_Str);
   
-  if ( ! nnpTask->m_pDataStack->bPop(pObject) )
+  if ( ! mpTask->m_pDataStack->bPop(pObject) )
     THROW_INVALID_DSTACK("socket.accept"_Str);
   
   // get pSocket
@@ -70,7 +70,7 @@ void Task::vSocketAccept(NNP_Task nnpTask)
   Task* pTask = (Task*)0x208f500c8;
   
   // return the new socket
-  nnpTask->m_pDataStack->vPushObject(new Socket(iSocketId));
+  mpTask->m_pDataStack->vPushObject(new Socket(iSocketId));
   
   EXIT();
 }
@@ -78,7 +78,7 @@ void Task::vSocketAccept(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* open a socket                                                              */
 /*----------------------------------------------------------------------------*/
-void Task::vSocketClose(NNP_Task nnpTask)
+void Task::vSocketClose(MP_Task mpTask)
 {
   SysCall xSysCall;
   Socket* pSocket;
@@ -86,7 +86,7 @@ void Task::vSocketClose(NNP_Task nnpTask)
   
   ENTRY("vSocketClose"_Str);
   
-  if ( ! nnpTask->m_pDataStack->bPop(pObject) )
+  if ( ! mpTask->m_pDataStack->bPop(pObject) )
     THROW_INVALID_DSTACK("socketclose"_Str);
   
   // get pSocket
@@ -104,7 +104,7 @@ void Task::vSocketClose(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* socket.connect: connect to a server                                        */
 /*----------------------------------------------------------------------------*/
-void Task::vSocketConnect(NNP_Task nnpTask)
+void Task::vSocketConnect(MP_Task mpTask)
 {
   SysCall xSysCall;
   Socket* pSocket;
@@ -115,13 +115,13 @@ void Task::vSocketConnect(NNP_Task nnpTask)
   
   ENTRY("vSocketConnect"_Str);
   
-  if ( ! nnpTask->m_pDataStack->bPop(pObject) )
+  if ( ! mpTask->m_pDataStack->bPop(pObject) )
     THROW_INVALID_DSTACK("socket.connect"_Str);
   
-  if ( ! nnpTask->m_pDataStack->bPop(xNode) )
+  if ( ! mpTask->m_pDataStack->bPop(xNode) )
     THROW_INVALID_DSTACK("socket.connect"_Str);
   
-  if ( ! nnpTask->m_pDataStack->bPop(iPort) )
+  if ( ! mpTask->m_pDataStack->bPop(iPort) )
     THROW_INVALID_DSTACK("socket.connect"_Str);
   
   // get address of node
@@ -161,7 +161,7 @@ void Task::vSocketConnect(NNP_Task nnpTask)
   
   // return the socket object
   Object* pPtrSocket = pSocket;
-  nnpTask->m_pDataStack->vPushObject(pPtrSocket);
+  mpTask->m_pDataStack->vPushObject(pPtrSocket);
   
   EXIT();
 }
@@ -169,7 +169,7 @@ void Task::vSocketConnect(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* socket.listen: listen in for socket connections                            */
 /*----------------------------------------------------------------------------*/
-void Task::vSocketListen(NNP_Task nnpTask)
+void Task::vSocketListen(MP_Task mpTask)
 {
   SysCall xSysCall;
   Socket* pSocket;
@@ -177,7 +177,7 @@ void Task::vSocketListen(NNP_Task nnpTask)
   
   ENTRY("vSocketListen"_Str);
   
-  if ( ! nnpTask->m_pDataStack->bPop(iPort) )
+  if ( ! mpTask->m_pDataStack->bPop(iPort) )
     THROW_INVALID_DSTACK("socketlisten"_Str);
   
   pSocket = new Socket;
@@ -188,7 +188,7 @@ void Task::vSocketListen(NNP_Task nnpTask)
   
   // return new socket
   Object* pPtrSocket = pSocket;
-  nnpTask->m_pDataStack->vPushObject(pPtrSocket);
+  mpTask->m_pDataStack->vPushObject(pPtrSocket);
   
   EXIT();
 }
@@ -196,7 +196,7 @@ void Task::vSocketListen(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* socket.open: open a socket                                                 */
 /*----------------------------------------------------------------------------*/
-void Task::vSocketOpen(NNP_Task nnpTask)
+void Task::vSocketOpen(MP_Task mpTask)
 {
   SysCall xSysCall;
   Socket* pSocket;
@@ -211,7 +211,7 @@ void Task::vSocketOpen(NNP_Task nnpTask)
   
   // return pSocket
   Object* pPtrSocket = pSocket;
-  nnpTask->m_pDataStack->vPushObject(pPtrSocket);
+  mpTask->m_pDataStack->vPushObject(pPtrSocket);
   
   EXIT();
 }
@@ -219,7 +219,7 @@ void Task::vSocketOpen(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* socket.send: send to a socket ( valset socket -- 1 )                       */
 /*----------------------------------------------------------------------------*/
-void Task::vSocketSend(NNP_Task nnpTask)
+void Task::vSocketSend(MP_Task mpTask)
 {
   ENTRY("vSocketSend"_Str);
   
@@ -229,10 +229,10 @@ void Task::vSocketSend(NNP_Task nnpTask)
   ValSet  xValSet;
   bool    bResult;
   
-  if ( ! nnpTask->m_pDataStack->bPop(pObject) )
+  if ( ! mpTask->m_pDataStack->bPop(pObject) )
     THROW_INVALID_DSTACK("socket.send"_Str);
   
-  if ( ! nnpTask->m_pDataStack->bPop(xValSet) )
+  if ( ! mpTask->m_pDataStack->bPop(xValSet) )
     THROW_INVALID_DSTACK("socket.send"_Str);
   
   pSocket = reinterpret_cast<Socket*>(pObject);
@@ -244,7 +244,7 @@ void Task::vSocketSend(NNP_Task nnpTask)
   
   if ( ! bResult ) {
     //THROW("Unable to sendTo socket: Errno %d!", xSysCall.iError());
-    nnpTask->m_pDataStack->vPushInt((i8)0);
+    mpTask->m_pDataStack->vPushInt((i8)0);
     
     //goto exit;
     EXIT();
@@ -256,7 +256,7 @@ void Task::vSocketSend(NNP_Task nnpTask)
   
   if ( ! bResult ) {
     //THROW("Unable to sendTo socket: Errno %d!", xSysCall.iError());
-    nnpTask->m_pDataStack->vPushInt((i8)0);
+    mpTask->m_pDataStack->vPushInt((i8)0);
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -277,7 +277,7 @@ void Task::vSocketSend(NNP_Task nnpTask)
         delete pRowBuffer;
       
       //THROW("Unable to sendTo socket: Errno %d!", xSysCall.iError());
-      nnpTask->m_pDataStack->vPushInt((i8)0);
+      mpTask->m_pDataStack->vPushInt((i8)0);
       
       //goto exit;
       EXIT();
@@ -297,14 +297,14 @@ void Task::vSocketSend(NNP_Task nnpTask)
     if ( ! bResult ) {
       
       //THROW("Unable to sendTo socket: Errno %d!", xSysCall.iError());
-      nnpTask->m_pDataStack->vPushInt((i8)0);
+      mpTask->m_pDataStack->vPushInt((i8)0);
       
       //goto exit;
       EXIT();
     }
   }
   
-  nnpTask->m_pDataStack->vPushInt((i8)1);
+  mpTask->m_pDataStack->vPushInt((i8)1);
   
   EXIT();
 }
@@ -312,7 +312,7 @@ void Task::vSocketSend(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* socket.recv: recv from a socket                                            */
 /*----------------------------------------------------------------------------*/
-void Task::vSocketRecv(NNP_Task nnpTask)
+void Task::vSocketRecv(MP_Task mpTask)
 {
   ENTRY("vSocketRecv"_Str);
   
@@ -323,7 +323,7 @@ void Task::vSocketRecv(NNP_Task nnpTask)
   Object* pObject;
   i8 iBytes;
   
-  if ( ! nnpTask->m_pDataStack->bPop(pObject) )
+  if ( ! mpTask->m_pDataStack->bPop(pObject) )
     THROW_INVALID_DSTACK("socketrecv"_Str);
   
   pSocket = reinterpret_cast<Socket*>(pObject);
@@ -331,9 +331,9 @@ void Task::vSocketRecv(NNP_Task nnpTask)
   if (gbTracepoint)
     vTrace("[N%lld:%8s\\%lld %-11s] receiving on %lld\n"_Str,
            gpGrid->iThisNode(),
-           nnpTask->m_sName.s(),
-           *nnpTask->m_zAcks,
-           nnpTask->m_sComment.s(),
+           mpTask->m_sName.s(),
+           *mpTask->m_zAcks,
+           mpTask->m_sComment.s(),
            
            pSocket->m_iSocketId);
   
@@ -386,7 +386,7 @@ void Task::vSocketRecv(NNP_Task nnpTask)
     ASSERT(bSet);
   }
   
-  nnpTask->m_pDataStack->vPushValSet(xValSet);
+  mpTask->m_pDataStack->vPushValSet(xValSet);
   
   EXIT();
 }

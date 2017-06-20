@@ -44,27 +44,27 @@ void Task::vAddPrimitives_AttachMap(void)
 /*----------------------------------------------------------------------------*/
 /* attachmap@ -- fetch value from attachmap                                   */
 /*----------------------------------------------------------------------------*/
-void Task::vAttachMapFetch(NNP_Task nnpTask)
+void Task::vAttachMapFetch(MP_Task mpTask)
 {
   ENTRY("vAttachMapFetch"_Str);
   
   i8  iAttachMapEnum;
   eAM eAttachMap;
   
-  if ( ! nnpTask->m_pDataStack->bPop(iAttachMapEnum) )
+  if ( ! mpTask->m_pDataStack->bPop(iAttachMapEnum) )
     THROW_INVALID_DSTACK("attachmap::attachmap@"_Str);
   
   eAttachMap = (eAM)iAttachMapEnum;
   
   switch (eAttachMap) {
     case AM_INDEXENTRIES:
-      nnpTask->m_pDataStack->vPushInt(gnIndexEntries);
+      mpTask->m_pDataStack->vPushInt(gnIndexEntries);
       break;
     case AM_INDEXLEVELS:
-      nnpTask->m_pDataStack->vPushInt(gnIndexLevels);
+      mpTask->m_pDataStack->vPushInt(gnIndexLevels);
       break;
     case AM_INDEXSPACE:
-      nnpTask->m_pDataStack->vPushInt(gbIndexSpace ? 1 : 0);
+      mpTask->m_pDataStack->vPushInt(gbIndexSpace ? 1 : 0);
       break;
     default:
       THROW_INVALID_DSTACK("attachmap::attachmap@"_Str);
@@ -76,7 +76,7 @@ void Task::vAttachMapFetch(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* attachmap! -- store value in attachmap                                     */
 /*----------------------------------------------------------------------------*/
-void Task::vAttachMapStore(NNP_Task nnpTask)
+void Task::vAttachMapStore(MP_Task mpTask)
 {
   ENTRY("vAttachMapStore"_Str);
   
@@ -85,21 +85,21 @@ void Task::vAttachMapStore(NNP_Task nnpTask)
   
   s256 sValue;
   
-  if ( ! nnpTask->m_pDataStack->bPop(iAttachMapEnum) )
+  if ( ! mpTask->m_pDataStack->bPop(iAttachMapEnum) )
     THROW_INVALID_DSTACK("attachmap::attachmap!"_Str);
   
   eAttachMap = (eAM)iAttachMapEnum;
   
   switch (eAttachMap) {
     case AM_INDEXENTRIES:
-      if ( ! nnpTask->m_pDataStack->bPop(sValue) )
+      if ( ! mpTask->m_pDataStack->bPop(sValue) )
         THROW_INVALID_DSTACK("attachmap::attachmap!"_Str);
       gnIndexEntries = StrLib::iToI8(sValue.s());
       break;
       
     case AM_INDEXLEVELS:
       i8 iIndexLevels;
-      if ( ! nnpTask->m_pDataStack->bPop(sValue) )
+      if ( ! mpTask->m_pDataStack->bPop(sValue) )
         THROW_INVALID_DSTACK("attachmap::attachmap!"_Str);
       iIndexLevels = StrLib::iToI8(sValue.s());
       if (iIndexLevels >= C_FLAT_LEVELS_MAX)
@@ -110,7 +110,7 @@ void Task::vAttachMapStore(NNP_Task nnpTask)
   
     case AM_INDEXSPACE:
       i8 iIndexSpace;
-      if ( ! nnpTask->m_pDataStack->bPop(sValue) )
+      if ( ! mpTask->m_pDataStack->bPop(sValue) )
         THROW_INVALID_DSTACK("attachmap::attachmap!"_Str);
       iIndexSpace = StrLib::iToI8(sValue.s());
       gbIndexSpace = (iIndexSpace == 1 ? true : false);

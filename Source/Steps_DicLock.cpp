@@ -39,7 +39,7 @@ void Task::vAddPrimitives_DicLock(void)
 /*----------------------------------------------------------------------------*/
 /* diclLock.dropWrite -- drop dic lock for write                              */
 /*----------------------------------------------------------------------------*/
-void Task::vDicLockDropWrite(NNP_Task nnpTask)
+void Task::vDicLockDropWrite(MP_Task mpTask)
 {
   ENTRY("vDicLockDropWrite"_Str);
   
@@ -52,7 +52,7 @@ void Task::vDicLockDropWrite(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* dicLock.grabWrite -- grab dic lock for write                               */
 /*----------------------------------------------------------------------------*/
-void Task::vDicLockGrabWrite(NNP_Task nnpTask)
+void Task::vDicLockGrabWrite(MP_Task mpTask)
 {
   ENTRY("vDicLockGrabWrite"_Str);
   

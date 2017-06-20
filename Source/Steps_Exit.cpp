@@ -38,25 +38,25 @@ void Task::vAddPrimitives_Exit(void)
 /*----------------------------------------------------------------------------*/
 /* exit -- exit from routine                                                  */
 /*----------------------------------------------------------------------------*/
-void Task::vExit(NNP_Task nnpTask)
+void Task::vExit(MP_Task mpTask)
 {
   ENTRY("vExit"_Str);
   
-  //vTrace("Exit: return stack %lld\n"_Str, nnpTask->m_pReturnStack->iValues());
+  //vTrace("Exit: return stack %lld\n"_Str, mpTask->m_pReturnStack->iValues());
   
-  if ( (nnpTask->m_iTracing & C_TRACE_ROUTINES) )
-    nnpTask->vTracePoint("<"_Str);
+  if ( (mpTask->m_iTracing & C_TRACE_ROUTINES) )
+    mpTask->vTracePoint("<"_Str);
   
-  if (nnpTask->m_pLocalsFrame &&
-      nnpTask->m_pLocalsFrame->pStackPtr() ==
-      (void*)nnpTask->m_pReturnStack->pTopValue())
-    nnpTask->vLocalsPop();
+  if (mpTask->m_pLocalsFrame &&
+      mpTask->m_pLocalsFrame->pStackPtr() ==
+      (void*)mpTask->m_pReturnStack->pTopValue())
+    mpTask->vLocalsPop();
   
   Cell* pCell;
-  if ( ! nnpTask->m_pReturnStack->bPop(pCell) )
+  if ( ! mpTask->m_pReturnStack->bPop(pCell) )
     THROW_INVALID_RSTACK("exit"_Str);
   
-  nnpTask->IP.m_pCell = pCell;
+  mpTask->IP.m_pCell = pCell;
   
   EXIT();
 }

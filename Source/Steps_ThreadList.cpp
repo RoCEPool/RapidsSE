@@ -39,12 +39,12 @@ void Task::vAddPrimitives_ThreadList(void)
 /*----------------------------------------------------------------------------*/
 /* threadlist.dump -- dump the threadList on data stack                       */
 /*----------------------------------------------------------------------------*/
-void Task::vThreadListDump(NNP_Task nnpTask)
+void Task::vThreadListDump(MP_Task mpTask)
 {
 ENTRY("vThreadListDump"_Str);
   
   Object* pPtrThreadList;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrThreadList) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrThreadList) )
     THROW_INVALID_DSTACK("threadlist.dump"_Str);
   
   ThreadList* pThreadList = _pThreadList(pPtrThreadList);
@@ -58,12 +58,12 @@ ENTRY("vThreadListDump"_Str);
 /*----------------------------------------------------------------------------*/
 /* threadlist.init -- init of threadList on data stack                        */
 /*----------------------------------------------------------------------------*/
-void Task::vThreadListInit(NNP_Task nnpTask)
+void Task::vThreadListInit(MP_Task mpTask)
 {
 ENTRY("vThreadListInit"_Str);
   
   Object* pPtrThreadList;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrThreadList) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrThreadList) )
     THROW_INVALID_DSTACK("threadlist.init"_Str);
   
   ThreadList* pThreadList = _pThreadList(pPtrThreadList);

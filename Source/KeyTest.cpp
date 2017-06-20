@@ -554,7 +554,7 @@ void KeyTest::vTestB(void)
   
   s32 sSeed = "helloWorld"_Str;
   
-  NNP_Task nnpExternalTask = new Task;
+  MP_Task nnpExternalTask = new Task;
   
   nnpExternalTask->vSeedWord(sSeed);
   

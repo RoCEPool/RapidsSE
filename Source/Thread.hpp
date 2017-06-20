@@ -80,9 +80,9 @@ namespace Threads
     static void* vEntry(void* pArg);
     static void* vEntryV2(void* pArg);
     static Thread* pThread(void);
-    static void vRunTask(NNP_Task nnpTask);
+    static void vRunTask(MP_Task mpTask);
   
-    void vAppend(NNP_Task nnpTask);
+    void vAppend(MP_Task mpTask);
     void vBind(i8 iCpu);
     i8   iCpu(void);
     void vContentDump(void) const;

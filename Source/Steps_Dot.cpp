@@ -42,14 +42,14 @@ void Task::vAddPrimitives_Dot(void)
 /*----------------------------------------------------------------------------*/
 /* . -- print top value on stack                                              */
 /*----------------------------------------------------------------------------*/
-void Task::vDot(NNP_Task nnpTask)
+void Task::vDot(MP_Task mpTask)
 {
   ENTRY("vDot"_Str);
   
   s48K sWorkspace;
   
   ValWrk xValWrk;
-  if ( ! nnpTask->m_pDataStack->bPop(xValWrk) )
+  if ( ! mpTask->m_pDataStack->bPop(xValWrk) )
     THROW_INVALID_DSTACK("."_Str);
   
   ValLib::vToString(xValWrk.pNestedValueSelf(),sWorkspace);
@@ -57,18 +57,18 @@ void Task::vDot(NNP_Task nnpTask)
   vTrace("[N%lld:%8s\\%lld %-11s] %s\n"_Str,
          
          gpGrid->iNode(),
-         nnpTask->m_sName.s(),
-         *nnpTask->m_zAcks,
-         nnpTask->m_sComment.s(),
+         mpTask->m_sName.s(),
+         *mpTask->m_zAcks,
+         mpTask->m_sComment.s(),
          
          sWorkspace.s()
          );
   */
   vTrace("[%8s\\%lld %-11s] %s\n"_Str,
          
-         nnpTask->m_sName.s(),
-         *nnpTask->m_zAcks,
-         nnpTask->m_sComment.s(),
+         mpTask->m_sName.s(),
+         *mpTask->m_zAcks,
+         mpTask->m_sComment.s(),
          
          sWorkspace.s()
          );
@@ -80,14 +80,14 @@ void Task::vDot(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* .put -- print top value on stack (no new line)                             */
 /*----------------------------------------------------------------------------*/
-void Task::vDotPut(NNP_Task nnpTask)
+void Task::vDotPut(MP_Task mpTask)
 {
   ENTRY("vDotPut"_Str);
   
   s48K sWorkspace;
   
   ValWrk xValWrk;
-  if ( ! nnpTask->m_pDataStack->bPop(xValWrk) )
+  if ( ! mpTask->m_pDataStack->bPop(xValWrk) )
     THROW_INVALID_DSTACK(".put"_Str);
   
   ValLib::vToString(xValWrk.pNestedValueSelf(),sWorkspace);
@@ -99,7 +99,7 @@ void Task::vDotPut(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* .\n -- print new line                                                      */
 /*----------------------------------------------------------------------------*/
-void Task::vDotNewline(NNP_Task nnpTask)
+void Task::vDotNewline(MP_Task mpTask)
 {
   ENTRY("vDotNewline"_Str);
   
@@ -111,19 +111,19 @@ void Task::vDotNewline(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* .verbose -- print top value on stack if arg.m_bVerbose                     */
 /*----------------------------------------------------------------------------*/
-void Task::vDotVerbose(NNP_Task nnpTask)
+void Task::vDotVerbose(MP_Task mpTask)
 {
   ENTRY("vDotVerbose"_Str);
   
   s48K sWorkspace;
   
   ValWrk xValWrk;
-  if ( ! nnpTask->m_pDataStack->bPop(xValWrk) )
+  if ( ! mpTask->m_pDataStack->bPop(xValWrk) )
     THROW_INVALID_DSTACK(".verbose"_Str);
   
   if (gbVerbose) {
     ValLib::vToString(xValWrk.pNestedValueSelf(),sWorkspace);
-    vTrace("[%p %s] %s\n"_Str,*nnpTask,nnpTask->m_sName.s(),sWorkspace.s());
+    vTrace("[%p %s] %s\n"_Str,*mpTask,mpTask->m_sName.s(),sWorkspace.s());
   }
   
   EXIT();

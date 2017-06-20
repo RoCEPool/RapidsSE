@@ -22,7 +22,7 @@
 
   "#include \"StorageEngine.h\"\n" cppFile file.write
   "\n" cppFile file.write
-  "void Task::vAddMunged(NNP_Task nnpTask)\n" cppFile file.write
+  "void Task::vAddMunged(MP_Task mpTask)\n" cppFile file.write
   "{\n" cppFile file.write
   "  s48K sDefinition;\n" cppFile file.write
 ;

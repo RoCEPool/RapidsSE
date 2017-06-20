@@ -45,12 +45,12 @@ void Task::vAddPrimitives_TaskCursor(void)
 /*----------------------------------------------------------------------------*/
 /* taskcursor.begin -- begin using task currsor                               */
 /*----------------------------------------------------------------------------*/
-void Task::vTaskCursorBegin(NNP_Task nnpTask)
+void Task::vTaskCursorBegin(MP_Task mpTask)
 {
 ENTRY("vTaskCursorBegin"_Str);
   
   Object* pPtrTaskCursor;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrTaskCursor) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTaskCursor) )
     THROW_INVALID_DSTACK("taskCursor.begin"_Str);
   
   TaskCursor* pTaskCursor = _pTaskCursor(pPtrTaskCursor);
@@ -64,12 +64,12 @@ ENTRY("vTaskCursorBegin"_Str);
 /*----------------------------------------------------------------------------*/
 /* taskCursor.delete -- delete an task cursor                                 */
 /*----------------------------------------------------------------------------*/
-void Task::vTaskCursorDelete(NNP_Task nnpTask)
+void Task::vTaskCursorDelete(MP_Task mpTask)
 {
 ENTRY("vTaskCursorDelete"_Str);
   
   Object* pPtrTaskCursor;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrTaskCursor) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTaskCursor) )
     THROW_INVALID_DSTACK("taskCursor.delete"_Str);
   
   TaskCursor* pTaskCursor = _pTaskCursor(pPtrTaskCursor);
@@ -86,12 +86,12 @@ ENTRY("vTaskCursorDelete"_Str);
 /*----------------------------------------------------------------------------*/
 /* taskCursor.end -- end using task cursor                                    */
 /*----------------------------------------------------------------------------*/
-void Task::vTaskCursorEnd(NNP_Task nnpTask)
+void Task::vTaskCursorEnd(MP_Task mpTask)
 {
 ENTRY("vTaskCursorEnd"_Str);
   
   Object* pPtrTaskCursor;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrTaskCursor) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTaskCursor) )
     THROW_INVALID_DSTACK("taskCursor.end"_Str);
   
   TaskCursor* pTaskCursor = _pTaskCursor(pPtrTaskCursor);
@@ -105,12 +105,12 @@ ENTRY("vTaskCursorEnd"_Str);
 /*----------------------------------------------------------------------------*/
 /* taskCursor.first -- set to first and get task                              */
 /*----------------------------------------------------------------------------*/
-void Task::vTaskCursorFirst(NNP_Task nnpTask)
+void Task::vTaskCursorFirst(MP_Task mpTask)
 {
 ENTRY("vTaskCursorFirst"_Str);
   
   Object* pPtrTaskCursor;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrTaskCursor) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTaskCursor) )
     THROW_INVALID_DSTACK("taskCursor.first"_Str);
   
   TaskCursor* pTaskCursor = _pTaskCursor(pPtrTaskCursor);
@@ -120,7 +120,7 @@ ENTRY("vTaskCursorFirst"_Str);
   
   Object* pPtrTask = pTaskCursor->pObject();
   
-  nnpTask->m_pDataStack->vPushObject(pPtrTask);
+  mpTask->m_pDataStack->vPushObject(pPtrTask);
   
   EXIT();
 }
@@ -128,12 +128,12 @@ ENTRY("vTaskCursorFirst"_Str);
 /*----------------------------------------------------------------------------*/
 /* taskCursor.get -- get current task of cursor                               */
 /*----------------------------------------------------------------------------*/
-void Task::vTaskCursorGet(NNP_Task nnpTask)
+void Task::vTaskCursorGet(MP_Task mpTask)
 {
 ENTRY("vTaskCursorGet"_Str);
   
   Object* pPtrTaskCursor;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrTaskCursor) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTaskCursor) )
     THROW_INVALID_DSTACK("taskCursor.get"_Str);
   
   TaskCursor* pTaskCursor = _pTaskCursor(pPtrTaskCursor);
@@ -143,7 +143,7 @@ ENTRY("vTaskCursorGet"_Str);
   
   Object* pPtrTask = pTaskCursor->pObject();
   
-  nnpTask->m_pDataStack->vPushObject(pPtrTask);
+  mpTask->m_pDataStack->vPushObject(pPtrTask);
   
   EXIT();
 }
@@ -151,12 +151,12 @@ ENTRY("vTaskCursorGet"_Str);
 /*----------------------------------------------------------------------------*/
 /* taskCursor.init -- init an task cursor                                     */
 /*----------------------------------------------------------------------------*/
-void Task::vTaskCursorInit(NNP_Task nnpTask)
+void Task::vTaskCursorInit(MP_Task mpTask)
 {
 ENTRY("vTaskCursorInit"_Str);
   
   Object* pPtrTaskCursor;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrTaskCursor) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTaskCursor) )
     THROW_INVALID_DSTACK("taskCursor.init"_Str);
     
   TaskCursor* pTaskCursor = _pTaskCursor(pPtrTaskCursor);
@@ -170,7 +170,7 @@ ENTRY("vTaskCursorInit"_Str);
 /*----------------------------------------------------------------------------*/
 /* taskCursor::new -- new a task cursor                                        */
 /*----------------------------------------------------------------------------*/
-void Task::vTaskCursorNew(NNP_Task nnpTask)
+void Task::vTaskCursorNew(MP_Task mpTask)
 {
 ENTRY("vTaskCursorNew"_Str);
   
@@ -180,12 +180,12 @@ ENTRY("vTaskCursorNew"_Str);
 /*----------------------------------------------------------------------------*/
 /* taskCursor.next -- advance to next and get task                            */
 /*----------------------------------------------------------------------------*/
-void Task::vTaskCursorNext(NNP_Task nnpTask)
+void Task::vTaskCursorNext(MP_Task mpTask)
 {
 ENTRY("vTaskCursorNext"_Str);
   
   Object* pPtrTaskCursor;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrTaskCursor) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTaskCursor) )
     THROW_INVALID_DSTACK("taskCursor.next"_Str);
   
   TaskCursor* pTaskCursor = _pTaskCursor(pPtrTaskCursor);
@@ -195,7 +195,7 @@ ENTRY("vTaskCursorNext"_Str);
   
   Object* pPtrTask = pTaskCursor->pObject();
   
-  nnpTask->m_pDataStack->vPushObject(pPtrTask);
+  mpTask->m_pDataStack->vPushObject(pPtrTask);
   
   EXIT();
 }

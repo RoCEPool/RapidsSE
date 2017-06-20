@@ -39,20 +39,20 @@ void Task::vAddPrimitives_OpFrame(void)
 /*----------------------------------------------------------------------------*/
 /* opFrame.dic -- push dic of given op frame ( opFrame -- opDic)              */
 /*----------------------------------------------------------------------------*/
-void Task::vOpFrameDic(NNP_Task nnpTask)
+void Task::vOpFrameDic(MP_Task mpTask)
 {
   ENTRY("vOpFrameDic"_Str);
   
   Object* pPtrOpFrame;
   
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrOpFrame) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrOpFrame) )
     THROW_INVALID_DSTACK("opFrame.dic"_Str);
   
   RegFrame* pOpFrame = _pRegFrame(pPtrOpFrame);
   
   Dic* pOpDic = pOpFrame->pOpDic();
   
-  nnpTask->m_pDataStack->vPushObject(pOpDic);
+  mpTask->m_pDataStack->vPushObject(pOpDic);
   
   EXIT();
 }
@@ -60,13 +60,13 @@ void Task::vOpFrameDic(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* opFrame.name -- get name of given op frame ( opFrame -- string )           */
 /*----------------------------------------------------------------------------*/
-void Task::vOpFrameName(NNP_Task nnpTask)
+void Task::vOpFrameName(MP_Task mpTask)
 {
   ENTRY("vOpFrameName"_Str);
   
   Object* pPtrOpFrame;
   
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrOpFrame) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrOpFrame) )
     THROW_INVALID_DSTACK("opFrame.dic"_Str);
   
   RegFrame* pOpFrame = _pRegFrame(pPtrOpFrame);
@@ -74,7 +74,7 @@ void Task::vOpFrameName(NNP_Task nnpTask)
   s32 sName;
   sName = pOpFrame->sName();
   
-  nnpTask->m_pDataStack->vPushS32(sName);
+  mpTask->m_pDataStack->vPushS32(sName);
   
   EXIT();
 }

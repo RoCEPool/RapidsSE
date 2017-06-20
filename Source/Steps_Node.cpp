@@ -47,13 +47,13 @@ void Task::vAddPrimitives_Node(void)
 /*----------------------------------------------------------------------------*/
 /* node.init -- initialise a node (of a grid)                                 */
 /*----------------------------------------------------------------------------*/
-void Task::vNodeInit(NNP_Task nnpTask)
+void Task::vNodeInit(MP_Task mpTask)
 {
 ENTRY("vNodeInit"_Str);
   
   Object* pPtrNode;
   
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrNode) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrNode) )
     THROW_INVALID_DSTACK("node.init"_Str);
   
   Node* pNode = _pNode(pPtrNode);
@@ -67,13 +67,13 @@ ENTRY("vNodeInit"_Str);
 /*----------------------------------------------------------------------------*/
 /* node.IP -- push IP of node                                                 */
 /*----------------------------------------------------------------------------*/
-void Task::vNodeIP(NNP_Task nnpTask)
+void Task::vNodeIP(MP_Task mpTask)
 {
   ENTRY("vNodeIP"_Str);
   
   Object* pPtrNode;
   
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrNode) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrNode) )
     THROW_INVALID_DSTACK("node.IP"_Str);
   
   Node* pNode = _pNode(pPtrNode);
@@ -81,7 +81,7 @@ void Task::vNodeIP(NNP_Task nnpTask)
   
   s256 sIP;
   sIP = pNode->aNodeIP();
-  nnpTask->m_pDataStack->vPushS256(sIP);
+  mpTask->m_pDataStack->vPushS256(sIP);
   
   EXIT();
 }
@@ -89,13 +89,13 @@ void Task::vNodeIP(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* node::new -- new a node (of a grid)                                         */
 /*----------------------------------------------------------------------------*/
-void Task::vNodeNew(NNP_Task nnpTask)
+void Task::vNodeNew(MP_Task mpTask)
 {
 ENTRY("vNodeNew"_Str);
   
   i8 iNodeNo;
   
-  if ( ! nnpTask->m_pDataStack->bPop(iNodeNo) )
+  if ( ! mpTask->m_pDataStack->bPop(iNodeNo) )
     THROW_INVALID_DSTACK("node::new"_Str);
   
   Node* pNode = new Node(iNodeNo,
@@ -104,7 +104,7 @@ ENTRY("vNodeNew"_Str);
                          gxArguments.m_xNodes[iNodeNo].m_iPortNo);
   ASSERT(CN_NODE == pNode->eClass());
 
-  nnpTask->m_pDataStack->vPushObject(pNode);
+  mpTask->m_pDataStack->vPushObject(pNode);
   
   EXIT();
 }
@@ -112,13 +112,13 @@ ENTRY("vNodeNew"_Str);
 /*----------------------------------------------------------------------------*/
 /* node.name -- push name of node                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vNodeName(NNP_Task nnpTask)
+void Task::vNodeName(MP_Task mpTask)
 {
   ENTRY("vNodeName"_Str);
   
   Object* pPtrNode;
   
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrNode) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrNode) )
     THROW_INVALID_DSTACK("node.name"_Str);
   
   Node* pNode = _pNode(pPtrNode);
@@ -126,7 +126,7 @@ void Task::vNodeName(NNP_Task nnpTask)
   
   s256 sName;
   sName = pNode->aNodeName();
-  nnpTask->m_pDataStack->vPushS256(sName);
+  mpTask->m_pDataStack->vPushS256(sName);
   
   EXIT();
 }
@@ -134,19 +134,19 @@ void Task::vNodeName(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* node.no -- push node number of node (of a grid)                            */
 /*----------------------------------------------------------------------------*/
-void Task::vNodeNo(NNP_Task nnpTask)
+void Task::vNodeNo(MP_Task mpTask)
 {
 ENTRY("vNodeNo"_Str);
   
   Object* pPtrNode;
   
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrNode) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrNode) )
     THROW_INVALID_DSTACK("node.no"_Str);
   
   Node* pNode = _pNode(pPtrNode);
   ASSERT(CN_NODE == pNode->eClass());
   
-  nnpTask->m_pDataStack->vPushInt(pNode->iNodeNo());
+  mpTask->m_pDataStack->vPushInt(pNode->iNodeNo());
   
   EXIT();
 }
@@ -154,19 +154,19 @@ ENTRY("vNodeNo"_Str);
 /*----------------------------------------------------------------------------*/
 /* node.port -- push port number of node (of a grid)                          */
 /*----------------------------------------------------------------------------*/
-void Task::vNodePort(NNP_Task nnpTask)
+void Task::vNodePort(MP_Task mpTask)
 {
   ENTRY("vNodeNo"_Str);
   
   Object* pPtrNode;
   
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrNode) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrNode) )
     THROW_INVALID_DSTACK("node.port"_Str);
   
   Node* pNode = _pNode(pPtrNode);
   ASSERT(CN_NODE == pNode->eClass());
   
-  nnpTask->m_pDataStack->vPushInt(pNode->iNodePortNo());
+  mpTask->m_pDataStack->vPushInt(pNode->iNodePortNo());
   
   EXIT();
 }
@@ -174,7 +174,7 @@ void Task::vNodePort(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* node.status -- get status of this node (of a grid)                         */
 /*----------------------------------------------------------------------------*/
-void Task::vNodeStatus(NNP_Task nnpTask)
+void Task::vNodeStatus(MP_Task mpTask)
 {
   ENTRY("vNodeStatus"_Str);
 
@@ -199,7 +199,7 @@ void Task::vNodeStatus(NNP_Task nnpTask)
                 gxArguments.m_sRegionName.s());
   }
   
-  nnpTask->m_pDataStack->vPushS256(s);
+  mpTask->m_pDataStack->vPushS256(s);
   
   EXIT();
 }

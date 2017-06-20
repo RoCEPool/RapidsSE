@@ -65,18 +65,18 @@ void Task::vAddPrimitives_SEitf(void)
 /*----------------------------------------------------------------------------*/
 /* seitf.accessPath@ -- fetch access path from SE interface                   */
 /*----------------------------------------------------------------------------*/
-void Task::vSEitfAccessPathFetch(NNP_Task nnpTask)
+void Task::vSEitfAccessPathFetch(MP_Task mpTask)
 {
   ENTRY("vSEitfAccessPathFetch"_Str);
   
   Object* pPtrSEitf;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitf) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
     THROW_INVALID_DSTACK("seitf.accessPath@"_Str);
   
   SEitf* pSEitf = _pSEitf(pPtrSEitf);
   ASSERT(CN_SEITF == pSEitf->eClass());
   
-  nnpTask->m_pDataStack->vPushObject(pSEitf->m_pAccessPath);
+  mpTask->m_pDataStack->vPushObject(pSEitf->m_pAccessPath);
   
   EXIT();
 }
@@ -84,19 +84,19 @@ void Task::vSEitfAccessPathFetch(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* seitf.accessPath! -- store access path in SE interface                     */
 /*----------------------------------------------------------------------------*/
-void Task::vSEitfAccessPathStore(NNP_Task nnpTask)
+void Task::vSEitfAccessPathStore(MP_Task mpTask)
 {
   ENTRY("vSEitfAccessPathStore"_Str);
   
   Object* pPtrSEitf;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitf) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
     THROW_INVALID_DSTACK("seitf.accessPath!"_Str);
   
   SEitf* pSEitf = _pSEitf(pPtrSEitf);
   ASSERT(CN_SEITF == pSEitf->eClass());
   
   Object* pPtrAccessPath;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrAccessPath) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrAccessPath) )
     THROW_INVALID_DSTACK("seitf.accessPath!"_Str);
   
   AccessPath* pAccessPath = _pAccessPath(pPtrAccessPath);
@@ -109,13 +109,13 @@ void Task::vSEitfAccessPathStore(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* seitf.count -- get count of SE interface's                                 */
 /*----------------------------------------------------------------------------*/
-void Task::vSEitfCount(NNP_Task nnpTask)
+void Task::vSEitfCount(MP_Task mpTask)
 {
   ENTRY("vSEitfCount"_Str);
   
   Object* pPtrSEitf;
   
-  nnpTask->m_pDataStack->vPushInt(gpSEitfList->iCount());
+  mpTask->m_pDataStack->vPushInt(gpSEitfList->iCount());
   
   EXIT();
 }
@@ -123,13 +123,13 @@ void Task::vSEitfCount(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* seitf.delete -- delete SE interface                                        */
 /*----------------------------------------------------------------------------*/
-void Task::vSEitfDelete(NNP_Task nnpTask)
+void Task::vSEitfDelete(MP_Task mpTask)
 {
 ENTRY("vSEitfDelete"_Str);
   
   Object* pPtrSEitf;
   
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitf) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
     THROW_INVALID_DSTACK("seitf.delete"_Str);
 
   SEitf* pSEitf = _pSEitf(pPtrSEitf);
@@ -143,18 +143,18 @@ ENTRY("vSEitfDelete"_Str);
 /*----------------------------------------------------------------------------*/
 /* seitf.dicStack -- get SEitf dic stack                                      */
 /*----------------------------------------------------------------------------*/
-void Task::vSEitfDicStack(NNP_Task nnpTask)
+void Task::vSEitfDicStack(MP_Task mpTask)
 {
   ENTRY("vSEitfDicStack"_Str);
   
   Object* pPtrSEitf;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitf) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
     THROW_INVALID_DSTACK("seitf.dicStack"_Str);
   
   SEitf* pSEitf = _pSEitf(pPtrSEitf);
   ASSERT(CN_SEITF == pSEitf->eClass());
   
-  nnpTask->m_pDataStack->vPushObject(pSEitf->pPathStack());
+  mpTask->m_pDataStack->vPushObject(pSEitf->pPathStack());
   
   EXIT();
 }
@@ -162,18 +162,18 @@ void Task::vSEitfDicStack(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* seitf.display@ -- get display from the SE interface                        */
 /*----------------------------------------------------------------------------*/
-void Task::vSEitfDisplayFetch(NNP_Task nnpTask)
+void Task::vSEitfDisplayFetch(MP_Task mpTask)
 {
   ENTRY("vSEitfDisplayFetch"_Str);
   
   Object* pPtrSEitf;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitf) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
     THROW_INVALID_DSTACK("seitf.display@"_Str);
   
   SEitf* pSEitf = _pSEitf(pPtrSEitf);
   ASSERT(CN_SEITF == pSEitf->eClass());
   
-  nnpTask->m_pDataStack->vPushInt(pSEitf->m_bDisplay ? 1 : 0);
+  mpTask->m_pDataStack->vPushInt(pSEitf->m_bDisplay ? 1 : 0);
   
   EXIT();
 }
@@ -181,19 +181,19 @@ void Task::vSEitfDisplayFetch(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* seitf.display! -- set display in the SE interface                          */
 /*----------------------------------------------------------------------------*/
-void Task::vSEitfDisplayStore(NNP_Task nnpTask)
+void Task::vSEitfDisplayStore(MP_Task mpTask)
 {
   ENTRY("vSEitfDisplayStore"_Str);
   
   Object* pPtrSEitf;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitf) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
     THROW_INVALID_DSTACK("seitf.display!"_Str);
   
   SEitf* pSEitf = _pSEitf(pPtrSEitf);
   ASSERT(CN_SEITF == pSEitf->eClass());
   
   i8 iDisplay;
-  if ( ! nnpTask->m_pDataStack->bPop(iDisplay) )
+  if ( ! mpTask->m_pDataStack->bPop(iDisplay) )
     THROW_INVALID_DSTACK("seitf.displayOff"_Str);
   
   pSEitf->m_bDisplay = iDisplay == 1 ? true : false;
@@ -204,12 +204,12 @@ void Task::vSEitfDisplayStore(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* seitf.dump -- dump of SE interface                                         */
 /*----------------------------------------------------------------------------*/
-void Task::vSEitfDump(NNP_Task nnpTask)
+void Task::vSEitfDump(MP_Task mpTask)
 {
 ENTRY("vSEitfDump"_Str);
   
   Object* pPtrSEitf;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitf) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
     THROW_INVALID_DSTACK("seitf.dump"_Str);
   
   SEitf* pSEitf = _pSEitf(pPtrSEitf);
@@ -223,18 +223,18 @@ ENTRY("vSEitfDump"_Str);
 /*----------------------------------------------------------------------------*/
 /* seitf.entry@ -- fetch entry from SE interface                              */
 /*----------------------------------------------------------------------------*/
-void Task::vSEitfEntryFetch(NNP_Task nnpTask)
+void Task::vSEitfEntryFetch(MP_Task mpTask)
 {
   ENTRY("vSEitfEntryFetch"_Str);
   
   Object* pPtrSEitf;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitf) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
     THROW_INVALID_DSTACK("seitf.entry@"_Str);
   
   SEitf* pSEitf = _pSEitf(pPtrSEitf);
   ASSERT(CN_SEITF == pSEitf->eClass());
   
-  nnpTask->m_pDataStack->vPushObject(pSEitf->m_pEntry);
+  mpTask->m_pDataStack->vPushObject(pSEitf->m_pEntry);
   
   EXIT();
 }
@@ -242,19 +242,19 @@ void Task::vSEitfEntryFetch(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* seitf.entry! -- store entry in SE interface                                */
 /*----------------------------------------------------------------------------*/
-void Task::vSEitfEntryStore(NNP_Task nnpTask)
+void Task::vSEitfEntryStore(MP_Task mpTask)
 {
   ENTRY("vSEitfEntryStore"_Str);
   
   Object* pPtrSEitf;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitf) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
     THROW_INVALID_DSTACK("seitf.entry!"_Str);
   
   SEitf* pSEitf = _pSEitf(pPtrSEitf);
   ASSERT(CN_SEITF == pSEitf->eClass());
   
   Object* pPtrEntry;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrEntry) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrEntry) )
     THROW_INVALID_DSTACK("seitf.entry!"_Str);
   
   Entry* pEntry = _pEntry(pPtrEntry);
@@ -268,18 +268,18 @@ void Task::vSEitfEntryStore(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* seitf.indexBuffer@ -- fetch index buffer from SE interface                 */
 /*----------------------------------------------------------------------------*/
-void Task::vSEitfIndexBufferFetch(NNP_Task nnpTask)
+void Task::vSEitfIndexBufferFetch(MP_Task mpTask)
 {
   ENTRY("vSEitfIndexBufferFetch"_Str);
   
   Object* pPtrSEitf;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitf) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
     THROW_INVALID_DSTACK("seitf.indexBuffer@"_Str);
   
   SEitf* pSEitf = _pSEitf(pPtrSEitf);
   ASSERT(CN_SEITF == pSEitf->eClass());
   
-  nnpTask->m_pDataStack->vPushObject(pSEitf->m_pIndexBuffer);
+  mpTask->m_pDataStack->vPushObject(pSEitf->m_pIndexBuffer);
   
   EXIT();
 }
@@ -287,19 +287,19 @@ void Task::vSEitfIndexBufferFetch(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* seitf.indexBuffer! -- store index buffer in SE interface                   */
 /*----------------------------------------------------------------------------*/
-void Task::vSEitfIndexBufferStore(NNP_Task nnpTask)
+void Task::vSEitfIndexBufferStore(MP_Task mpTask)
 {
   ENTRY("vSEitfIndexBufferStore"_Str);
   
   Object* pPtrSEitf;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitf) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
     THROW_INVALID_DSTACK("seitf.indexBuffer!"_Str);
   
   SEitf* pSEitf = _pSEitf(pPtrSEitf);
   ASSERT(CN_SEITF == pSEitf->eClass());
   
   Object* pPtrIndexBuffer;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrIndexBuffer) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrIndexBuffer) )
     THROW_INVALID_DSTACK("seitf.indexBuffer!"_Str);
   
   EntryBuffer* pIndexBuffer = _pEntryBuffer(pPtrIndexBuffer);
@@ -313,12 +313,12 @@ void Task::vSEitfIndexBufferStore(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* seitf.indexReturn -- clear index in SEitf                                   */
 /*----------------------------------------------------------------------------*/
-void Task::vSEitfIndexReturn(NNP_Task nnpTask)
+void Task::vSEitfIndexReturn(MP_Task mpTask)
 {
   ENTRY("vSEitfIndexReturn"_Str);
   
   Object* pPtrSEitf;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitf) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
     THROW_INVALID_DSTACK("seitf.indexReturn"_Str);
   
   SEitf* pSEitf = _pSEitf(pPtrSEitf);
@@ -332,12 +332,12 @@ void Task::vSEitfIndexReturn(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* seitf.indexGet -- store index in SEitf                                     */
 /*----------------------------------------------------------------------------*/
-void Task::vSEitfIndexGet(NNP_Task nnpTask)
+void Task::vSEitfIndexGet(MP_Task mpTask)
 {
   ENTRY("vSEitfIndexGet"_Str);
   
   Object* pPtrSEitf;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitf) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
     THROW_INVALID_DSTACK("seitf.indexGet"_Str);
   
   SEitf* pSEitf = _pSEitf(pPtrSEitf);
@@ -345,7 +345,7 @@ void Task::vSEitfIndexGet(NNP_Task nnpTask)
   
   Object* pPtrIndex;
   
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrIndex) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrIndex) )
     THROW_INVALID_DSTACK("seitf.indexGet"_Str);
   
   Index* pIndex = _pIndex(pPtrIndex);
@@ -359,12 +359,12 @@ void Task::vSEitfIndexGet(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* seitf.metadata@ -- fetch metadata in SE interface                          */
 /*----------------------------------------------------------------------------*/
-void Task::vSEitfMetadataFetch(NNP_Task nnpTask)
+void Task::vSEitfMetadataFetch(MP_Task mpTask)
 {
   ENTRY("vSEitfMetadataFetch"_Str);
   
   Object* pPtrSEitf;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitf) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
     THROW_INVALID_DSTACK("seitf.metadata@"_Str);
   
   SEitf* pSEitf = _pSEitf(pPtrSEitf);
@@ -373,7 +373,7 @@ void Task::vSEitfMetadataFetch(NNP_Task nnpTask)
   s256 sMetadata;
   
   sMetadata = pSEitf->m_sMetadata;
-  nnpTask->m_pDataStack->vPushS256(sMetadata);
+  mpTask->m_pDataStack->vPushS256(sMetadata);
   
   EXIT();
 }
@@ -381,19 +381,19 @@ void Task::vSEitfMetadataFetch(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* seitf.metadata! -- store metadata in SE interface                          */
 /*----------------------------------------------------------------------------*/
-void Task::vSEitfMetadataStore(NNP_Task nnpTask)
+void Task::vSEitfMetadataStore(MP_Task mpTask)
 {
   ENTRY("vSEitfMetadataStore"_Str);
   
   Object* pPtrSEitf;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitf) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
     THROW_INVALID_DSTACK("seitf.metadata!"_Str);
   
   SEitf* pSEitf = _pSEitf(pPtrSEitf);
   ASSERT(CN_SEITF == pSEitf->eClass());
   
   s256 sMetadata;
-  if ( ! nnpTask->m_pDataStack->bPop(sMetadata) )
+  if ( ! mpTask->m_pDataStack->bPop(sMetadata) )
     THROW_INVALID_DSTACK("seitf.metadata@"_Str);
   
   pSEitf->m_sMetadata = sMetadata;
@@ -404,18 +404,18 @@ void Task::vSEitfMetadataStore(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* seitf.partition@ -- fetch partition of SE interface                        */
 /*----------------------------------------------------------------------------*/
-void Task::vSEitfPartitionFetch(NNP_Task nnpTask)
+void Task::vSEitfPartitionFetch(MP_Task mpTask)
 {
   ENTRY("vSEitfPartitionFetch"_Str);
   
   Object* pPtrSEitf;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitf) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
     THROW_INVALID_DSTACK("seitf.partition@"_Str);
   
   SEitf* pSEitf = _pSEitf(pPtrSEitf);
   ASSERT(CN_SEITF == pSEitf->eClass());
   
-  nnpTask->m_pDataStack->vPushInt(pSEitf->m_iPartition);
+  mpTask->m_pDataStack->vPushInt(pSEitf->m_iPartition);
   
   EXIT();
 }
@@ -423,19 +423,19 @@ void Task::vSEitfPartitionFetch(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* seitf.partition! -- store partition of SE interface                        */
 /*----------------------------------------------------------------------------*/
-void Task::vSEitfPartitionStore(NNP_Task nnpTask)
+void Task::vSEitfPartitionStore(MP_Task mpTask)
 {
   ENTRY("vSEitfPartitionStore"_Str);
   
   Object* pPtrSEitf;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitf) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
     THROW_INVALID_DSTACK("seitf.partition!"_Str);
   
   SEitf* pSEitf = _pSEitf(pPtrSEitf);
   ASSERT(CN_SEITF == pSEitf->eClass());
   
   i8 iPartition;
-  if ( ! nnpTask->m_pDataStack->bPop(iPartition) )
+  if ( ! mpTask->m_pDataStack->bPop(iPartition) )
     THROW_INVALID_DSTACK("seitf.partition!"_Str);
   
   pSEitf->m_iPartition = iPartition;
@@ -446,18 +446,18 @@ void Task::vSEitfPartitionStore(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* seitf.pid -- get pid of SE interface                                       */
 /*----------------------------------------------------------------------------*/
-void Task::vSEitfPid(NNP_Task nnpTask)
+void Task::vSEitfPid(MP_Task mpTask)
 {
   ENTRY("vSEitfPid"_Str);
   
   Object* pPtrSEitf;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitf) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
     THROW_INVALID_DSTACK("seitf.pid"_Str);
   
   SEitf* pSEitf = _pSEitf(pPtrSEitf);
   ASSERT(CN_SEITF == pSEitf->eClass());
   
-  nnpTask->m_pDataStack->vPushInt(pSEitf->m_iPid);
+  mpTask->m_pDataStack->vPushInt(pSEitf->m_iPid);
   
   EXIT();
 }
@@ -465,12 +465,12 @@ void Task::vSEitfPid(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* seitf.req@ -- fetch SEitf request queue                                    */
 /*----------------------------------------------------------------------------*/
-void Task::vSEitfReqFetch(NNP_Task nnpTask)
+void Task::vSEitfReqFetch(MP_Task mpTask)
 {
 ENTRY("vSEitfReqFetch"_Str);
   
   Object* pPtrSEitf;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitf) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
     THROW_INVALID_DSTACK("seitf.req@"_Str);
   
   SEitf* pSEitf = _pSEitf(pPtrSEitf);
@@ -478,7 +478,7 @@ ENTRY("vSEitfReqFetch"_Str);
   
   Object* pPtrQueue = pSEitf->pRequestQueue();
   
-  nnpTask->m_pDataStack->vPushObject(pPtrQueue);
+  mpTask->m_pDataStack->vPushObject(pPtrQueue);
   
   EXIT();
 }
@@ -486,12 +486,12 @@ ENTRY("vSEitfReqFetch"_Str);
 /*----------------------------------------------------------------------------*/
 /* seitf.req! -- store SEitf request queue                                    */
 /*----------------------------------------------------------------------------*/
-void Task::vSEitfReqStore(NNP_Task nnpTask)
+void Task::vSEitfReqStore(MP_Task mpTask)
 {
 ENTRY("vSEitfReqStore"_Str);
   
   Object* pPtrSEitf;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitf) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
     THROW_INVALID_DSTACK("seitf.req!"_Str);
   
   SEitf* pSEitf = _pSEitf(pPtrSEitf);
@@ -499,7 +499,7 @@ ENTRY("vSEitfReqStore"_Str);
   
   Object* pPtrQueue;
   
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrQueue) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrQueue) )
     THROW_INVALID_DSTACK("seitf.req!"_Str);
   
   Queue* pQueue = _pQueue(pPtrQueue);
@@ -513,19 +513,19 @@ ENTRY("vSEitfReqStore"_Str);
 /*----------------------------------------------------------------------------*/
 /* seitf.rowsProcessed -- store rows processed in SE interface                */
 /*----------------------------------------------------------------------------*/
-void Task::vSEitfRowsProcessed(NNP_Task nnpTask)
+void Task::vSEitfRowsProcessed(MP_Task mpTask)
 {
   ENTRY("vSEitfRowsProcessed"_Str);
   
   Object* pPtrSEitf;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitf) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
     THROW_INVALID_DSTACK("seitf.rowsProcessed"_Str);
   
   SEitf* pSEitf = _pSEitf(pPtrSEitf);
   ASSERT(CN_SEITF == pSEitf->eClass());
   
   i8 iRowsProcessed;
-  if ( ! nnpTask->m_pDataStack->bPop(iRowsProcessed) )
+  if ( ! mpTask->m_pDataStack->bPop(iRowsProcessed) )
     THROW_INVALID_DSTACK("seitf.rowsProcessed"_Str);
   
   pSEitf->m_iRowsProcessed = iRowsProcessed;
@@ -536,12 +536,12 @@ void Task::vSEitfRowsProcessed(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* seitf.rsp@ -- fetch SEitf response queue                                   */
 /*----------------------------------------------------------------------------*/
-void Task::vSEitfRspFetch(NNP_Task nnpTask)
+void Task::vSEitfRspFetch(MP_Task mpTask)
 {
 ENTRY("vSEitfRspFetch"_Str);
   
   Object* pPtrSEitf;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitf) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
     THROW_INVALID_DSTACK("seitf.rsp@"_Str);
   
   SEitf* pSEitf = _pSEitf(pPtrSEitf);
@@ -549,7 +549,7 @@ ENTRY("vSEitfRspFetch"_Str);
   
   Object* pPtrQueue = pSEitf->pResponseQueue();
   
-  nnpTask->m_pDataStack->vPushObject(pPtrQueue);
+  mpTask->m_pDataStack->vPushObject(pPtrQueue);
   
   EXIT();
 }
@@ -557,12 +557,12 @@ ENTRY("vSEitfRspFetch"_Str);
 /*----------------------------------------------------------------------------*/
 /* seitf.rsp! -- store SEitf response queue                                   */
 /*----------------------------------------------------------------------------*/
-void Task::vSEitfRspStore(NNP_Task nnpTask)
+void Task::vSEitfRspStore(MP_Task mpTask)
 {
 ENTRY("vSEitfRspStore"_Str);
   
   Object* pPtrSEitf;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitf) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
     THROW_INVALID_DSTACK("seitf.rsp!"_Str);
   
   SEitf* pSEitf = _pSEitf(pPtrSEitf);
@@ -570,7 +570,7 @@ ENTRY("vSEitfRspStore"_Str);
   
   Object* pPtrQueue;
   
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrQueue) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrQueue) )
     THROW_INVALID_DSTACK("seitf.rsp!"_Str);
   
   Queue* pQueue = _pQueue(pPtrQueue);
@@ -584,18 +584,18 @@ ENTRY("vSEitfRspStore"_Str);
 /*----------------------------------------------------------------------------*/
 /* seitf.responseQueue -- get SEitf response queue                            */
 /*----------------------------------------------------------------------------*/
-void Task::vSEitfResponseQueue(NNP_Task nnpTask)
+void Task::vSEitfResponseQueue(MP_Task mpTask)
 {
   ENTRY("vSEitfeResponseQueue"_Str);
   
   Object* pPtrSEitf;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitf) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
     THROW_INVALID_DSTACK("seitf.responseQueue"_Str);
   
   SEitf* pSEitf = _pSEitf(pPtrSEitf);
   ASSERT(CN_SEITF == pSEitf->eClass());
   
-  nnpTask->m_pDataStack->vPushObject(pSEitf->pResponseQueue());
+  mpTask->m_pDataStack->vPushObject(pSEitf->pResponseQueue());
   
   EXIT();
 }
@@ -603,18 +603,18 @@ void Task::vSEitfResponseQueue(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* seitf.table@ -- fetch table from SEitf                                     */
 /*----------------------------------------------------------------------------*/
-void Task::vSEitfTableFetch(NNP_Task nnpTask)
+void Task::vSEitfTableFetch(MP_Task mpTask)
 {
   ENTRY("vSEitfTableFetch"_Str);
   
   Object* pPtrSEitf;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitf) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
     THROW_INVALID_DSTACK("seitf.rsp!"_Str);
   
   SEitf* pSEitf = _pSEitf(pPtrSEitf);
   ASSERT(CN_SEITF == pSEitf->eClass());
   
-  nnpTask->m_pDataStack->vPushObject(pSEitf->pCurrentTable());
+  mpTask->m_pDataStack->vPushObject(pSEitf->pCurrentTable());
   
   EXIT();
 }
@@ -622,12 +622,12 @@ void Task::vSEitfTableFetch(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* seitf.tableDeref -- store table in SEitf and inc reference                 */
 /*----------------------------------------------------------------------------*/
-void Task::vSEitfTableDeref(NNP_Task nnpTask)
+void Task::vSEitfTableDeref(MP_Task mpTask)
 {
   ENTRY("vSEitfRspStore"_Str);
   
   Object* pPtrSEitf;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitf) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
     THROW_INVALID_DSTACK("seitf.tableDeref"_Str);
   
   SEitf* pSEitf = _pSEitf(pPtrSEitf);
@@ -646,12 +646,12 @@ void Task::vSEitfTableDeref(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* seitf.tableRef -- store table in SEitf and inc reference                   */
 /*----------------------------------------------------------------------------*/
-void Task::vSEitfTableRef(NNP_Task nnpTask)
+void Task::vSEitfTableRef(MP_Task mpTask)
 {
   ENTRY("vSEitfTableRef"_Str);
   
   Object* pPtrSEitf;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitf) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
     THROW_INVALID_DSTACK("seitf.tableRef"_Str);
   
   SEitf* pSEitf = _pSEitf(pPtrSEitf);
@@ -659,7 +659,7 @@ void Task::vSEitfTableRef(NNP_Task nnpTask)
   
   Object* pPtrTable;
   
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrTable) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
     THROW_INVALID_DSTACK("seitf.tableRef"_Str);
   
   Table* pTable = _pTable(pPtrTable);

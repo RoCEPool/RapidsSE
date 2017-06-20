@@ -55,12 +55,12 @@ void Task::vAddPrimitives_Assert(void)
 /*----------------------------------------------------------------------------*/
 /* assert -- assert top value on stack is true                                */
 /*----------------------------------------------------------------------------*/
-void Task::vAssert(NNP_Task nnpTask)
+void Task::vAssert(MP_Task mpTask)
 {
   ENTRY("vAssert"_Str);
   
   i8 iTrue;
-  if ( ! nnpTask->m_pDataStack->bPopAsInt(iTrue) )
+  if ( ! mpTask->m_pDataStack->bPopAsInt(iTrue) )
     THROW_INVALID_DSTACK("assert"_Str);
   
   if ( ! iTrue )
@@ -72,15 +72,15 @@ void Task::vAssert(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* assert::class -- assert class of value on stack                            */
 /*----------------------------------------------------------------------------*/
-void Task::vAssertClass(NNP_Task nnpTask)
+void Task::vAssertClass(MP_Task mpTask)
 {
   ENTRY("vAssertClass"_Str);
   
   i8 iAssertClassNo;
-  if ( ! nnpTask->m_pDataStack->bPopAsInt(iAssertClassNo) )
+  if ( ! mpTask->m_pDataStack->bPopAsInt(iAssertClassNo) )
     THROW_INVALID_DSTACK("assert::class"_Str);
   
-  Value* pValue = nnpTask->m_pDataStack->pPeekValue();
+  Value* pValue = mpTask->m_pDataStack->pPeekValue();
   
   eCN eAssertClassNo = (eCN)iAssertClassNo;
   eCN eClassNo = pValue->eClass();
@@ -99,15 +99,15 @@ void Task::vAssertClass(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* assert::class_0 -- assert class of value[0] on stack                       */
 /*----------------------------------------------------------------------------*/
-void Task::vAssertClass_0(NNP_Task nnpTask)
+void Task::vAssertClass_0(MP_Task mpTask)
 {
   ENTRY("vAssertClass_0"_Str);
   
   i8 iAssertClassNo;
-  if ( ! nnpTask->m_pDataStack->bPopAsInt(iAssertClassNo) )
+  if ( ! mpTask->m_pDataStack->bPopAsInt(iAssertClassNo) )
     THROW_INVALID_DSTACK("assert::class_0"_Str);
   
-  Value* pValue = nnpTask->m_pDataStack->pPeekValue(0);
+  Value* pValue = mpTask->m_pDataStack->pPeekValue(0);
   
   eCN eAssertClassNo = (eCN)iAssertClassNo;
   eCN eClassNo = pValue->eClass();
@@ -126,15 +126,15 @@ void Task::vAssertClass_0(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* assert::class_1 -- assert class of value[1] on stack                       */
 /*----------------------------------------------------------------------------*/
-void Task::vAssertClass_1(NNP_Task nnpTask)
+void Task::vAssertClass_1(MP_Task mpTask)
 {
   ENTRY("vAssertClass_1"_Str);
   
   i8 iAssertClassNo;
-  if ( ! nnpTask->m_pDataStack->bPopAsInt(iAssertClassNo) )
+  if ( ! mpTask->m_pDataStack->bPopAsInt(iAssertClassNo) )
     THROW_INVALID_DSTACK("assert::class_1"_Str);
   
-  Value* pValue = nnpTask->m_pDataStack->pPeekValue(1);
+  Value* pValue = mpTask->m_pDataStack->pPeekValue(1);
   
   eCN eAssertClassNo = (eCN)iAssertClassNo;
   eCN eClassNo = pValue->eClass();
@@ -153,15 +153,15 @@ void Task::vAssertClass_1(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* assert::class_2 -- assert class of value[2] on stack                       */
 /*----------------------------------------------------------------------------*/
-void Task::vAssertClass_2(NNP_Task nnpTask)
+void Task::vAssertClass_2(MP_Task mpTask)
 {
   ENTRY("vAssertClass_2"_Str);
   
   i8 iAssertClassNo;
-  if ( ! nnpTask->m_pDataStack->bPopAsInt(iAssertClassNo) )
+  if ( ! mpTask->m_pDataStack->bPopAsInt(iAssertClassNo) )
     THROW_INVALID_DSTACK("assert::class_2"_Str);
   
-  Value* pValue = nnpTask->m_pDataStack->pPeekValue(2);
+  Value* pValue = mpTask->m_pDataStack->pPeekValue(2);
   
   eCN eAssertClassNo = (eCN)iAssertClassNo;
   eCN eClassNo = pValue->eClass();
@@ -180,15 +180,15 @@ void Task::vAssertClass_2(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* assert::class_3 -- assert class of value[3] on stack                       */
 /*----------------------------------------------------------------------------*/
-void Task::vAssertClass_3(NNP_Task nnpTask)
+void Task::vAssertClass_3(MP_Task mpTask)
 {
   ENTRY("vAssertClass_3"_Str);
   
   i8 iAssertClassNo;
-  if ( ! nnpTask->m_pDataStack->bPopAsInt(iAssertClassNo) )
+  if ( ! mpTask->m_pDataStack->bPopAsInt(iAssertClassNo) )
     THROW_INVALID_DSTACK("assert::class_3"_Str);
   
-  Value* pValue = nnpTask->m_pDataStack->pPeekValue(3);
+  Value* pValue = mpTask->m_pDataStack->pPeekValue(3);
   
   eCN eAssertClassNo = (eCN)iAssertClassNo;
   eCN eClassNo = pValue->eClass();
@@ -207,15 +207,15 @@ void Task::vAssertClass_3(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* assert::class_4 -- assert class of value[4] on stack                       */
 /*----------------------------------------------------------------------------*/
-void Task::vAssertClass_4(NNP_Task nnpTask)
+void Task::vAssertClass_4(MP_Task mpTask)
 {
   ENTRY("vAssertClass_4"_Str);
   
   i8 iAssertClassNo;
-  if ( ! nnpTask->m_pDataStack->bPopAsInt(iAssertClassNo) )
+  if ( ! mpTask->m_pDataStack->bPopAsInt(iAssertClassNo) )
     THROW_INVALID_DSTACK("assert::class_4"_Str);
   
-  Value* pValue = nnpTask->m_pDataStack->pPeekValue(4);
+  Value* pValue = mpTask->m_pDataStack->pPeekValue(4);
   
   eCN eAssertClassNo = (eCN)iAssertClassNo;
   eCN eClassNo = pValue->eClass();
@@ -234,11 +234,11 @@ void Task::vAssertClass_4(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* assert::stack_0 -- asssert 0 values on stack                               */
 /*----------------------------------------------------------------------------*/
-void Task::vAssertStack_0(NNP_Task nnpTask)
+void Task::vAssertStack_0(MP_Task mpTask)
 {
 ENTRY("vAssertStack_0"_Str);
 
-  i8 iStackValues = nnpTask->m_pDataStack->iValues();
+  i8 iStackValues = mpTask->m_pDataStack->iValues();
   
   if ( ! (0 == iStackValues)  )
     THROW("assert::stack_0"_Str);
@@ -249,11 +249,11 @@ ENTRY("vAssertStack_0"_Str);
 /*----------------------------------------------------------------------------*/
 /* assert::stack_0+ -- asssert 0 or more values on stack                      */
 /*----------------------------------------------------------------------------*/
-void Task::vAssertStack_0more(NNP_Task nnpTask)
+void Task::vAssertStack_0more(MP_Task mpTask)
 {
 ENTRY("vAssertStack_0more"_Str);
   
-  i8 iStackValues = nnpTask->m_pDataStack->iValues();
+  i8 iStackValues = mpTask->m_pDataStack->iValues();
   
   if ( ! (0 <= iStackValues) )
     THROW("assert::stack0+"_Str);
@@ -264,11 +264,11 @@ ENTRY("vAssertStack_0more"_Str);
 /*----------------------------------------------------------------------------*/
 /* assert::stack_1 -- asssert 1 values on stack                               */
 /*----------------------------------------------------------------------------*/
-void Task::vAssertStack_1(NNP_Task nnpTask)
+void Task::vAssertStack_1(MP_Task mpTask)
 {
 ENTRY("vAssertStack_1"_Str);
   
-  i8 iStackValues = nnpTask->m_pDataStack->iValues();
+  i8 iStackValues = mpTask->m_pDataStack->iValues();
   
   if ( ! (1 == iStackValues)  )
     THROW("assert::stack_1"_Str);
@@ -279,11 +279,11 @@ ENTRY("vAssertStack_1"_Str);
 /*----------------------------------------------------------------------------*/
 /* assert::stack_1+ -- asssert 0 or more values on stack                      */
 /*----------------------------------------------------------------------------*/
-void Task::vAssertStack_1more(NNP_Task nnpTask)
+void Task::vAssertStack_1more(MP_Task mpTask)
 {
 ENTRY("vAssertStack_1more"_Str);
   
-  i8 iStackValues = nnpTask->m_pDataStack->iValues();
+  i8 iStackValues = mpTask->m_pDataStack->iValues();
   
   if ( ! (1 <= iStackValues) )
     THROW("assert::stack1+"_Str);
@@ -294,11 +294,11 @@ ENTRY("vAssertStack_1more"_Str);
 /*----------------------------------------------------------------------------*/
 /* assert::stack_2 -- asssert 2 values on stack                               */
 /*----------------------------------------------------------------------------*/
-void Task::vAssertStack_2(NNP_Task nnpTask)
+void Task::vAssertStack_2(MP_Task mpTask)
 {
 ENTRY("vAssertStack_2"_Str);
   
-  i8 iStackValues = nnpTask->m_pDataStack->iValues();
+  i8 iStackValues = mpTask->m_pDataStack->iValues();
   
   if ( ! (2 == iStackValues)  )
     THROW("assert::stack_2"_Str);
@@ -309,11 +309,11 @@ ENTRY("vAssertStack_2"_Str);
 /*----------------------------------------------------------------------------*/
 /* assert::stack_2+ -- asssert 2 or more values on stack                      */
 /*----------------------------------------------------------------------------*/
-void Task::vAssertStack_2more(NNP_Task nnpTask)
+void Task::vAssertStack_2more(MP_Task mpTask)
 {
 ENTRY("vAssertStack_2more"_Str);
   
-  i8 iStackValues = nnpTask->m_pDataStack->iValues();
+  i8 iStackValues = mpTask->m_pDataStack->iValues();
   
   if ( ! (2 <= iStackValues) )
     THROW("assert::stack0+"_Str);
@@ -324,11 +324,11 @@ ENTRY("vAssertStack_2more"_Str);
 /*----------------------------------------------------------------------------*/
 /* assert::stack_3 -- asssert 3 values on stack                               */
 /*----------------------------------------------------------------------------*/
-void Task::vAssertStack_3(NNP_Task nnpTask)
+void Task::vAssertStack_3(MP_Task mpTask)
 {
 ENTRY("vAssertStack_3"_Str);
   
-  i8 iStackValues = nnpTask->m_pDataStack->iValues();
+  i8 iStackValues = mpTask->m_pDataStack->iValues();
   
   if ( ! (3 == iStackValues)  )
     THROW("assert::stack_3"_Str);
@@ -339,11 +339,11 @@ ENTRY("vAssertStack_3"_Str);
 /*----------------------------------------------------------------------------*/
 /* assert::stack_3+ -- asssert 3 or more values on stack                      */
 /*----------------------------------------------------------------------------*/
-void Task::vAssertStack_3more(NNP_Task nnpTask)
+void Task::vAssertStack_3more(MP_Task mpTask)
 {
 ENTRY("vAssertStack_3more"_Str);
   
-  i8 iStackValues = nnpTask->m_pDataStack->iValues();
+  i8 iStackValues = mpTask->m_pDataStack->iValues();
   
   if ( ! (3 <= iStackValues) )
     THROW("assert::stack3+"_Str);
@@ -354,11 +354,11 @@ ENTRY("vAssertStack_3more"_Str);
 /*----------------------------------------------------------------------------*/
 /* assert::stack_4 -- asssert 4 values on stack                               */
 /*----------------------------------------------------------------------------*/
-void Task::vAssertStack_4(NNP_Task nnpTask)
+void Task::vAssertStack_4(MP_Task mpTask)
 {
 ENTRY("vAssertStack_4"_Str);
   
-  i8 iStackValues = nnpTask->m_pDataStack->iValues();
+  i8 iStackValues = mpTask->m_pDataStack->iValues();
   
   if ( ! (4 == iStackValues)  )
     THROW("assert::stack_4"_Str);
@@ -369,11 +369,11 @@ ENTRY("vAssertStack_4"_Str);
 /*----------------------------------------------------------------------------*/
 /* assert::stack_4+ -- asssert 4 or more values on stack                      */
 /*----------------------------------------------------------------------------*/
-void Task::vAssertStack_4more(NNP_Task nnpTask)
+void Task::vAssertStack_4more(MP_Task mpTask)
 {
 ENTRY("vAssertStack_4more"_Str);
   
-  i8 iStackValues = nnpTask->m_pDataStack->iValues();
+  i8 iStackValues = mpTask->m_pDataStack->iValues();
   
   if ( ! (4 <= iStackValues) )
     THROW("assert::stack4+"_Str);

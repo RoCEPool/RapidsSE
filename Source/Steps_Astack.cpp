@@ -63,21 +63,21 @@ void Task::vAddPrimitives_Astack(void)
 /*----------------------------------------------------------------------------*/
 /* astack.class -- get class of nth value on aux stack                        */
 /*----------------------------------------------------------------------------*/
-void Task::vAstackClass(NNP_Task nnpTask)
+void Task::vAstackClass(MP_Task mpTask)
 {
   ENTRY("vAstackClass"_Str);
   
   i8 nTh;
-  if ( ! nnpTask->m_pDataStack->bPop(nTh) )
+  if ( ! mpTask->m_pDataStack->bPop(nTh) )
     THROW_INVALID_DSTACK("astack.class"_Str);
   
   ValWrk xValWrk;
   
-  nnpTask->m_pAuxStack->vPeekValWrk(nTh,xValWrk);
+  mpTask->m_pAuxStack->vPeekValWrk(nTh,xValWrk);
   
   eCN eClass = xValWrk.eClass();
   
-  nnpTask->m_pAuxStack->vPushInt(eClass);
+  mpTask->m_pAuxStack->vPushInt(eClass);
   
   EXIT();
 }
@@ -85,13 +85,13 @@ void Task::vAstackClass(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* adepth -- put number of values in aux stack onto data stack                */
 /*----------------------------------------------------------------------------*/
-void Task::vAstackDepth(NNP_Task nnpTask)
+void Task::vAstackDepth(MP_Task mpTask)
 {
   ENTRY("vAstackDepth"_Str);
   
-  i8 iDepth = nnpTask->m_pAuxStack->iValues();
+  i8 iDepth = mpTask->m_pAuxStack->iValues();
   
-  nnpTask->m_pDataStack->vPushInt(iDepth);
+  mpTask->m_pDataStack->vPushInt(iDepth);
   
   EXIT();
 }
@@ -99,14 +99,14 @@ void Task::vAstackDepth(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* adrop -- discard top value off astack                                      */
 /*----------------------------------------------------------------------------*/
-void Task::vAstackDrop(NNP_Task nnpTask)
+void Task::vAstackDrop(MP_Task mpTask)
 {
   ENTRY("vAstackDrop"_Str);
   
   // should just discard on stack
   
   ValWrk xValA;
-  if ( ! nnpTask->m_pAuxStack->bPop(xValA) )
+  if ( ! mpTask->m_pAuxStack->bPop(xValA) )
     THROW_INVALID_ASTACK("adrop"_Str);
   
   EXIT();
@@ -115,18 +115,18 @@ void Task::vAstackDrop(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* adup -- dup top of aux stack                                               */
 /*----------------------------------------------------------------------------*/
-void Task::vAstackDup(NNP_Task nnpTask)
+void Task::vAstackDup(MP_Task mpTask)
 {
   ENTRY("vAstackDup"_Str);
   
   // could just copy from stack back into stack
   
   ValWrk xValA;
-  if ( ! nnpTask->m_pAuxStack->bPop(xValA) )
+  if ( ! mpTask->m_pAuxStack->bPop(xValA) )
   THROW_INVALID_DSTACK("adup"_Str);
   
-  nnpTask->m_pAuxStack->vPushValWrk(xValA);
-  nnpTask->m_pAuxStack->vPushValWrk(xValA);
+  mpTask->m_pAuxStack->vPushValWrk(xValA);
+  mpTask->m_pAuxStack->vPushValWrk(xValA);
   
   EXIT();
 }
@@ -134,7 +134,7 @@ void Task::vAstackDup(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* a@ -- place copy of top value in aux stack onto data stack                 */
 /*----------------------------------------------------------------------------*/
-void Task::vAstackFetch(NNP_Task nnpTask)
+void Task::vAstackFetch(MP_Task mpTask)
 {
   ENTRY("vAstackFetch"_Str);
   
@@ -142,9 +142,9 @@ void Task::vAstackFetch(NNP_Task nnpTask)
   
   ValWrk xValWrk;
   
-  nnpTask->m_pAuxStack->vPeekValWrk(0,xValWrk);
+  mpTask->m_pAuxStack->vPeekValWrk(0,xValWrk);
   
-  nnpTask->m_pDataStack->vPushValWrk(xValWrk);
+  mpTask->m_pDataStack->vPushValWrk(xValWrk);
   
   EXIT();
 }
@@ -152,17 +152,17 @@ void Task::vAstackFetch(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* nip -- drop the 2nd value from the aux stack ( B A -- A )                  */
 /*----------------------------------------------------------------------------*/
-void Task::vAstackNip(NNP_Task nnpTask)
+void Task::vAstackNip(MP_Task mpTask)
 {
   ENTRY("vAstackNip"_Str);
   
   ValWrk xValA;
   ValWrk xValB;
   
-  if ( ! nnpTask->m_pAuxStack->bPop(xValA,xValB) )
+  if ( ! mpTask->m_pAuxStack->bPop(xValA,xValB) )
   THROW_INVALID_ASTACK("anip"_Str);
   
-  nnpTask->m_pAuxStack->vPushValWrk(xValA);
+  mpTask->m_pAuxStack->vPushValWrk(xValA);
   
   EXIT();
 }
@@ -170,21 +170,21 @@ void Task::vAstackNip(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* apick -- place copy of nth value in aux stack onto data stack              */
 /*----------------------------------------------------------------------------*/
-void Task::vAstackPick(NNP_Task nnpTask)
+void Task::vAstackPick(MP_Task mpTask)
 {
   ENTRY("vAstackPick"_Str);
   
   i8 iPick;
-  if ( ! nnpTask->m_pDataStack->bPopAsInt(iPick) )
+  if ( ! mpTask->m_pDataStack->bPopAsInt(iPick) )
     THROW_INVALID_DSTACK("apick"_Str);
   
   // could do this directly on stack
   
   ValWrk xValWrk;
   
-  nnpTask->m_pAuxStack->vPeekValWrk(iPick,xValWrk);
+  mpTask->m_pAuxStack->vPeekValWrk(iPick,xValWrk);
   
-  nnpTask->m_pDataStack->vPushValWrk(xValWrk);
+  mpTask->m_pDataStack->vPushValWrk(xValWrk);
   
   EXIT();
 }
@@ -192,7 +192,7 @@ void Task::vAstackPick(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* areverse -- reverse astack values ( ... D C B A n -- A B C D ... )         */
 /*----------------------------------------------------------------------------*/
-void Task::vAstackReverse(NNP_Task nnpTask)
+void Task::vAstackReverse(MP_Task mpTask)
 {
   ENTRY("vAstackReverse"_Str);
   
@@ -210,27 +210,27 @@ void Task::vAstackReverse(NNP_Task nnpTask)
   };
   
   i8 nValues;
-  if ( ! nnpTask->m_pDataStack->bPop(nValues) )
+  if ( ! mpTask->m_pDataStack->bPop(nValues) )
     THROW_INVALID_DSTACK("areverse"_Str);
   
   for (i8 i = 0; i < nValues; i++) {
-    if ( ! nnpTask->m_pAuxStack->bPop(apValWrk[i]) )
+    if ( ! mpTask->m_pAuxStack->bPop(apValWrk[i]) )
       THROW_INVALID_ASTACK("areverse"_Str);
   }
   
   for (i8 i = 0; i < nValues; i++) {
-    nnpTask->m_pAuxStack->vPushValWrk(apValWrk[i]);
+    mpTask->m_pAuxStack->vPushValWrk(apValWrk[i]);
   }
 }
 
 /*----------------------------------------------------------------------------*/
 /* astk -- dump the aux stack                                                 */
 /*----------------------------------------------------------------------------*/
-void Task::vAstackStk(NNP_Task nnpTask)
+void Task::vAstackStk(MP_Task mpTask)
 {
   ENTRY("vAstackStk"_Str);
   
-  nnpTask->m_pAuxStack->vContentDump(nnpTask->m_sName,"AuxStack:"_Str);
+  mpTask->m_pAuxStack->vContentDump(mpTask->m_sName,"AuxStack:"_Str);
   
   EXIT();
 }
@@ -238,18 +238,18 @@ void Task::vAstackStk(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* swap -- swap top two values on aux stack                                   */
 /*----------------------------------------------------------------------------*/
-void Task::vAstackSwap(NNP_Task nnpTask)
+void Task::vAstackSwap(MP_Task mpTask)
 {
   ENTRY("vAstackSwap"_Str);
   
   ValWrk xValA;
   ValWrk xValB;
   
-  if ( ! nnpTask->m_pAuxStack->bPop(xValA,xValB) )
+  if ( ! mpTask->m_pAuxStack->bPop(xValA,xValB) )
   THROW_INVALID_ASTACK("aswap"_Str);
   
-  nnpTask->m_pAuxStack->vPushValWrk(xValA);
-  nnpTask->m_pAuxStack->vPushValWrk(xValB);
+  mpTask->m_pAuxStack->vPushValWrk(xValA);
+  mpTask->m_pAuxStack->vPushValWrk(xValB);
   
   EXIT();
 }
@@ -257,16 +257,16 @@ void Task::vAstackSwap(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* >avalset -- collapse values on aux stack to a valset                       */
 /*----------------------------------------------------------------------------*/
-void Task::vAstackToValSet(NNP_Task nnpTask)
+void Task::vAstackToValSet(MP_Task mpTask)
 {
   ENTRY("vAstackToValSet"_Str);
   
   i8 nVal;
   
-  if ( ! nnpTask->m_pAuxStack->bPop(nVal) )
+  if ( ! mpTask->m_pAuxStack->bPop(nVal) )
   THROW_INVALID_ASTACK(">avalset"_Str);
   
-  if ( ! nnpTask->m_pAuxStack->bGuard(nVal) )
+  if ( ! mpTask->m_pAuxStack->bGuard(nVal) )
   THROW_INVALID_ASTACK(">avalset"_Str);
   
   Str* pCursor = nullptr;
@@ -275,7 +275,7 @@ void Task::vAstackToValSet(NNP_Task nnpTask)
   ValWrk xVal;
   for (i8 iVal = 0; iVal < nVal; iVal++) {
     
-    if ( ! nnpTask->m_pAuxStack->bPop(xVal) )
+    if ( ! mpTask->m_pAuxStack->bPop(xVal) )
     THROW_INVALID_ASTACK(">avalset"_Str);
     
     xValSet.vAppend(pCursor,xVal.pNestedValueSelf());
@@ -283,7 +283,7 @@ void Task::vAstackToValSet(NNP_Task nnpTask)
   
   //  vTrace("ValSet %lld bytes\n"_Str,xValSet.nSize());
   
-  nnpTask->m_pAuxStack->vPushValSet(xValSet);
+  mpTask->m_pAuxStack->vPushValSet(xValSet);
   
   EXIT();
 }
@@ -291,13 +291,13 @@ void Task::vAstackToValSet(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* >avalues -- expand valset to values on aux stack                           */
 /*----------------------------------------------------------------------------*/
-void Task::vAstackToValues(NNP_Task nnpTask)
+void Task::vAstackToValues(MP_Task mpTask)
 {
   ENTRY("vDstackToValues"_Str);
   
   ValSet xValSet;
   
-  if ( ! nnpTask->m_pAuxStack->bPop(xValSet) )
+  if ( ! mpTask->m_pAuxStack->bPop(xValSet) )
     THROW_INVALID_ASTACK(">avalues"_Str);
   
   i8 nVal = 0;
@@ -308,9 +308,9 @@ void Task::vAstackToValues(NNP_Task nnpTask)
     nVal++;
   
   for (i8 iVal = nVal - 1; iVal >= 0; iVal--)
-    nnpTask->m_pAuxStack->vPushValue(pValue[iVal]);
+    mpTask->m_pAuxStack->vPushValue(pValue[iVal]);
   
-  nnpTask->m_pAuxStack->vPushInt(nVal);
+  mpTask->m_pAuxStack->vPushInt(nVal);
   
   EXIT();
 }
@@ -318,15 +318,15 @@ void Task::vAstackToValues(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* >a -- move value from dstack to astack                                     */
 /*----------------------------------------------------------------------------*/
-void Task::vAstackToA(NNP_Task nnpTask)
+void Task::vAstackToA(MP_Task mpTask)
 {
   ENTRY("vAstackToA"_Str);
   
   ValWrk xValOpaque;
-  if ( ! nnpTask->m_pDataStack->bPop(xValOpaque) )
+  if ( ! mpTask->m_pDataStack->bPop(xValOpaque) )
     THROW_INVALID_DSTACK(">a"_Str);
   
-  nnpTask->m_pAuxStack->vPushValWrk(xValOpaque);
+  mpTask->m_pAuxStack->vPushValWrk(xValOpaque);
   
   EXIT();
 }
@@ -334,15 +334,15 @@ void Task::vAstackToA(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* a> -- move value from astack to dstack                                     */
 /*----------------------------------------------------------------------------*/
-void Task::vAstackToP(NNP_Task nnpTask)
+void Task::vAstackToP(MP_Task mpTask)
 {
   ENTRY("vAstackToP"_Str);
   
   ValWrk xVal;
-  if ( ! nnpTask->m_pAuxStack->bPop(xVal) )
+  if ( ! mpTask->m_pAuxStack->bPop(xVal) )
     THROW_INVALID_ASTACK("a>"_Str);
   
-  nnpTask->m_pDataStack->vPushValWrk(xVal);
+  mpTask->m_pDataStack->vPushValWrk(xVal);
   
   EXIT();
 }
@@ -350,17 +350,17 @@ void Task::vAstackToP(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* >auxStack -- pop stack of this task and push onto aux stack of that task   */
 /*----------------------------------------------------------------------------*/
-void Task::vAstackTransfer(NNP_Task nnpTask)
+void Task::vAstackTransfer(MP_Task mpTask)
 {
   ENTRY("vAstackTransfer"_Str);
   
   Object* pPtrTask;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrTask) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTask) )
     THROW_INVALID_DSTACK(">auxStack"_Str);
   Task* pThatTask = _pTask(pPtrTask);
   
   ValWrk xValWrk;
-  if ( ! nnpTask->m_pDataStack->bPop(xValWrk) )
+  if ( ! mpTask->m_pDataStack->bPop(xValWrk) )
     THROW_INVALID_DSTACK(">auxStack"_Str);
   
   pThatTask->m_xLock.vGrabWrite();
@@ -373,7 +373,7 @@ void Task::vAstackTransfer(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* a0 -- place copy of 0th value in aux stack onto data stack                 */
 /*----------------------------------------------------------------------------*/
-void Task::vAstack0(NNP_Task nnpTask)
+void Task::vAstack0(MP_Task mpTask)
 {
   ENTRY("vAstack0"_Str);
   
@@ -381,9 +381,9 @@ void Task::vAstack0(NNP_Task nnpTask)
   
   ValWrk xValWrk;
   
-  nnpTask->m_pAuxStack->vPeekValWrk(0,xValWrk);
+  mpTask->m_pAuxStack->vPeekValWrk(0,xValWrk);
   
-  nnpTask->m_pDataStack->vPushValWrk(xValWrk);
+  mpTask->m_pDataStack->vPushValWrk(xValWrk);
   
   EXIT();
 }
@@ -391,7 +391,7 @@ void Task::vAstack0(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* a1 -- place copy of 1st value in aux stack onto data stack                 */
 /*----------------------------------------------------------------------------*/
-void Task::vAstack1(NNP_Task nnpTask)
+void Task::vAstack1(MP_Task mpTask)
 {
   ENTRY("vAstack1"_Str);
   
@@ -399,9 +399,9 @@ void Task::vAstack1(NNP_Task nnpTask)
   
   ValWrk xValWrk;
   
-  nnpTask->m_pAuxStack->vPeekValWrk(1,xValWrk);
+  mpTask->m_pAuxStack->vPeekValWrk(1,xValWrk);
   
-  nnpTask->m_pDataStack->vPushValWrk(xValWrk);
+  mpTask->m_pDataStack->vPushValWrk(xValWrk);
   
   EXIT();
 }
@@ -409,7 +409,7 @@ void Task::vAstack1(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* r2 -- place copy of 2nd value in aux stack onto data stack                 */
 /*----------------------------------------------------------------------------*/
-void Task::vAstack2(NNP_Task nnpTask)
+void Task::vAstack2(MP_Task mpTask)
 {
   ENTRY("vAstack2"_Str);
   
@@ -417,9 +417,9 @@ void Task::vAstack2(NNP_Task nnpTask)
   
   ValWrk xValWrk;
   
-  nnpTask->m_pAuxStack->vPeekValWrk(2,xValWrk);
+  mpTask->m_pAuxStack->vPeekValWrk(2,xValWrk);
   
-  nnpTask->m_pDataStack->vPushValWrk(xValWrk);
+  mpTask->m_pDataStack->vPushValWrk(xValWrk);
   
   EXIT();
 }
@@ -427,7 +427,7 @@ void Task::vAstack2(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* r3 -- place copy of 3rd value in aux stack onto data stack                 */
 /*----------------------------------------------------------------------------*/
-void Task::vAstack3(NNP_Task nnpTask)
+void Task::vAstack3(MP_Task mpTask)
 {
   ENTRY("vAstack3"_Str);
   
@@ -435,9 +435,9 @@ void Task::vAstack3(NNP_Task nnpTask)
   
   ValWrk xValWrk;
   
-  nnpTask->m_pAuxStack->vPeekValWrk(3,xValWrk);
+  mpTask->m_pAuxStack->vPeekValWrk(3,xValWrk);
   
-  nnpTask->m_pDataStack->vPushValWrk(xValWrk);
+  mpTask->m_pDataStack->vPushValWrk(xValWrk);
   
   EXIT();
 }
@@ -445,7 +445,7 @@ void Task::vAstack3(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* r4 -- place copy of 4th value in aux stack onto data stack                 */
 /*----------------------------------------------------------------------------*/
-void Task::vAstack4(NNP_Task nnpTask)
+void Task::vAstack4(MP_Task mpTask)
 {
   ENTRY("vAstack4"_Str);
   
@@ -453,9 +453,9 @@ void Task::vAstack4(NNP_Task nnpTask)
   
   ValWrk xValWrk;
   
-  nnpTask->m_pAuxStack->vPeekValWrk(4,xValWrk);
+  mpTask->m_pAuxStack->vPeekValWrk(4,xValWrk);
   
-  nnpTask->m_pDataStack->vPushValWrk(xValWrk);
+  mpTask->m_pDataStack->vPushValWrk(xValWrk);
   
   EXIT();
 }
@@ -463,7 +463,7 @@ void Task::vAstack4(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* r5 -- place copy of 0th value in aux stack onto data stack                 */
 /*----------------------------------------------------------------------------*/
-void Task::vAstack5(NNP_Task nnpTask)
+void Task::vAstack5(MP_Task mpTask)
 {
   ENTRY("vAstack5"_Str);
   
@@ -471,9 +471,9 @@ void Task::vAstack5(NNP_Task nnpTask)
   
   ValWrk xValWrk;
   
-  nnpTask->m_pAuxStack->vPeekValWrk(5,xValWrk);
+  mpTask->m_pAuxStack->vPeekValWrk(5,xValWrk);
   
-  nnpTask->m_pDataStack->vPushValWrk(xValWrk);
+  mpTask->m_pDataStack->vPushValWrk(xValWrk);
   
   EXIT();
 }
@@ -481,7 +481,7 @@ void Task::vAstack5(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* r6 -- place copy of 6th value in aux stack onto data stack                 */
 /*----------------------------------------------------------------------------*/
-void Task::vAstack6(NNP_Task nnpTask)
+void Task::vAstack6(MP_Task mpTask)
 {
   ENTRY("vAstack6"_Str);
   
@@ -489,9 +489,9 @@ void Task::vAstack6(NNP_Task nnpTask)
   
   ValWrk xValWrk;
   
-  nnpTask->m_pAuxStack->vPeekValWrk(6,xValWrk);
+  mpTask->m_pAuxStack->vPeekValWrk(6,xValWrk);
   
-  nnpTask->m_pDataStack->vPushValWrk(xValWrk);
+  mpTask->m_pDataStack->vPushValWrk(xValWrk);
   
   EXIT();
 }
@@ -499,7 +499,7 @@ void Task::vAstack6(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* r7 -- place copy of 7th value in aux stack onto data stack                 */
 /*----------------------------------------------------------------------------*/
-void Task::vAstack7(NNP_Task nnpTask)
+void Task::vAstack7(MP_Task mpTask)
 {
   ENTRY("vAstack7"_Str);
   
@@ -507,9 +507,9 @@ void Task::vAstack7(NNP_Task nnpTask)
   
   ValWrk xValWrk;
   
-  nnpTask->m_pAuxStack->vPeekValWrk(7,xValWrk);
+  mpTask->m_pAuxStack->vPeekValWrk(7,xValWrk);
   
-  nnpTask->m_pDataStack->vPushValWrk(xValWrk);
+  mpTask->m_pDataStack->vPushValWrk(xValWrk);
   
   EXIT();
 }
@@ -517,7 +517,7 @@ void Task::vAstack7(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* r8 -- place copy of 8th value in aux stack onto data stack                 */
 /*----------------------------------------------------------------------------*/
-void Task::vAstack8(NNP_Task nnpTask)
+void Task::vAstack8(MP_Task mpTask)
 {
   ENTRY("vAstack8"_Str);
   
@@ -525,9 +525,9 @@ void Task::vAstack8(NNP_Task nnpTask)
   
   ValWrk xValWrk;
   
-  nnpTask->m_pAuxStack->vPeekValWrk(8,xValWrk);
+  mpTask->m_pAuxStack->vPeekValWrk(8,xValWrk);
   
-  nnpTask->m_pDataStack->vPushValWrk(xValWrk);
+  mpTask->m_pDataStack->vPushValWrk(xValWrk);
   
   EXIT();
 }
@@ -535,7 +535,7 @@ void Task::vAstack8(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* r9 -- place copy of 9th value in aux stack onto data stack                 */
 /*----------------------------------------------------------------------------*/
-void Task::vAstack9(NNP_Task nnpTask)
+void Task::vAstack9(MP_Task mpTask)
 {
   ENTRY("vAstack9"_Str);
   
@@ -543,9 +543,9 @@ void Task::vAstack9(NNP_Task nnpTask)
   
   ValWrk xValWrk;
   
-  nnpTask->m_pAuxStack->vPeekValWrk(9,xValWrk);
+  mpTask->m_pAuxStack->vPeekValWrk(9,xValWrk);
   
-  nnpTask->m_pDataStack->vPushValWrk(xValWrk);
+  mpTask->m_pDataStack->vPushValWrk(xValWrk);
   
   EXIT();
 }

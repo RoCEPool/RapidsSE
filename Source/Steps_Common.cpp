@@ -44,20 +44,20 @@ void Task::vAddPrimitives_Common(void)
 /*----------------------------------------------------------------------------*/
 /* common.fetch -- push commons[n] onto dstack                                */
 /*----------------------------------------------------------------------------*/
-void Task::vCommonFetch(NNP_Task nnpTask)
+void Task::vCommonFetch(MP_Task mpTask)
 {
   ENTRY("vCommonFetch"_Str);
   
-  if ( ! nnpTask->m_pOpFrame )
+  if ( ! mpTask->m_pOpFrame )
     THROW_INVALID_DSTACK("common.fetch"_Str);
   
   i8 iCommon;
-  if ( ! nnpTask->m_pDataStack->bPop(iCommon) )
+  if ( ! mpTask->m_pDataStack->bPop(iCommon) )
     THROW_INVALID_DSTACK("common.fetch"_Str);
   
-  ValReg* pValReg = nnpTask->m_pOpFrame->pValReg(iCommon);
+  ValReg* pValReg = mpTask->m_pOpFrame->pValReg(iCommon);
   
-  nnpTask->m_pDataStack->vPushValue(pValReg);
+  mpTask->m_pDataStack->vPushValue(pValReg);
   
   EXIT();
 }
@@ -65,20 +65,20 @@ void Task::vCommonFetch(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* common.store -- pop dstack into common[n]                                  */
 /*----------------------------------------------------------------------------*/
-void Task::vCommonStore(NNP_Task nnpTask)
+void Task::vCommonStore(MP_Task mpTask)
 {
   ENTRY("vCommonStore"_Str);
   
-  if ( ! nnpTask->m_pOpFrame )
+  if ( ! mpTask->m_pOpFrame )
     THROW_INVALID_DSTACK("commonStore"_Str);
   
   i8 iCommon;
-  if ( ! nnpTask->m_pDataStack->bPop(iCommon) )
+  if ( ! mpTask->m_pDataStack->bPop(iCommon) )
     THROW_INVALID_DSTACK("commonStore"_Str);
   
-  ValReg* pValReg = nnpTask->m_pOpFrame->pValReg(iCommon);
+  ValReg* pValReg = mpTask->m_pOpFrame->pValReg(iCommon);
   
-  nnpTask->m_pDataStack->bPop(pValReg);
+  mpTask->m_pDataStack->bPop(pValReg);
   
   EXIT();
 }
@@ -86,7 +86,7 @@ void Task::vCommonStore(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* common/ -- declare set of common variables                      immediate  */
 /*----------------------------------------------------------------------------*/
-void Task::vCommonSlash(NNP_Task nnpTask)
+void Task::vCommonSlash(MP_Task mpTask)
 {
 ENTRY("vCommonSlash"_Str);
 
@@ -95,22 +95,22 @@ ENTRY("vCommonSlash"_Str);
   s32 sDicName;
   s32 sVarName;
   
-  //Word* pCurrentWord = nnpTask->m_pCurrentWord;
+  //Word* pCurrentWord = mpTask->m_pCurrentWord;
   
   ValWrk xValWrk;
   
 //  for (;;) {
     
     // get name of common dictionary
-    nnpTask->m_pTokeniser->vNextToken();
-    sDicName = nnpTask->m_pTokeniser->sToken();
+    mpTask->m_pTokeniser->vNextToken();
+    sDicName = mpTask->m_pTokeniser->sToken();
     
     // test for that dictionary
-    Word* pWordDic = nnpTask->m_xPathStack.pFindWord(sDicName);
+    Word* pWordDic = mpTask->m_xPathStack.pFindWord(sDicName);
     if (pWordDic) {
       // use that dictionary
       pSubDic = _pDic(pWordDic->aBodyArea());
-      nnpTask->m_nVariables = pSubDic->nWords();
+      mpTask->m_nVariables = pSubDic->nWords();
     }
     else {
       // create a common dictionary      
@@ -119,12 +119,12 @@ ENTRY("vCommonSlash"_Str);
       pWordDic->pAllot(sizeof(Dic));
       
       pSubDic = new((Dic*)pWordDic->aBodyArea()) Dic;
-      nnpTask->m_nVariables = 0;
+      mpTask->m_nVariables = 0;
     }
     
     // get name of common variable
-    nnpTask->m_pTokeniser->vNextToken();
-    sVarName = nnpTask->m_pTokeniser->sToken();
+    mpTask->m_pTokeniser->vNextToken();
+    sVarName = mpTask->m_pTokeniser->sToken();
     
     // create new word for common in current dictionary
     Word* pWordCommon = new(pSubDic) Word(sVarName);
@@ -132,18 +132,18 @@ ENTRY("vCommonSlash"_Str);
     
     // set word as variable
     pWordCommon->vWordType(WT_VARIABLE);
-    pWordCommon->vVariable(nnpTask->m_nVariables);
+    pWordCommon->vVariable(mpTask->m_nVariables);
     
     // encode the word
-    xValWrk = nnpTask->m_nVariables;
+    xValWrk = mpTask->m_nVariables;
     pWordCommon->vEncode("pushValue"_Str,&xValWrk);
     pWordCommon->vEncode("common.fetch"_Str);
     pWordCommon->vEncode("exit"_Str);
     
     // accept /
-    nnpTask->m_pTokeniser->vNextToken();
+    mpTask->m_pTokeniser->vNextToken();
   
-    nnpTask->m_nVariables = 0;
+    mpTask->m_nVariables = 0;
 
 //  }
   
@@ -153,16 +153,16 @@ ENTRY("vCommonSlash"_Str);
 /*----------------------------------------------------------------------------*/
 /* toCommon -- compile store value into common variable             immediate */
 /*----------------------------------------------------------------------------*/
-void Task::vCommonToCommon(NNP_Task nnpTask)
+void Task::vCommonToCommon(MP_Task mpTask)
 {
 ENTRY("vCommonToCommon"_Str);
   
-  Word* pCurrentWord = nnpTask->m_pCurrentWord;
+  Word* pCurrentWord = mpTask->m_pCurrentWord;
   
   // get name of common
-  nnpTask->m_pTokeniser->vNextToken();
+  mpTask->m_pTokeniser->vNextToken();
 
-  Word* pWordCommon = nnpTask->m_xPathStack.pFindWord(nnpTask->m_pTokeniser->sToken());
+  Word* pWordCommon = mpTask->m_xPathStack.pFindWord(mpTask->m_pTokeniser->sToken());
   ASSERT(pWordCommon);
  
   ValWrk xValWrk;
@@ -177,20 +177,20 @@ ENTRY("vCommonToCommon"_Str);
 /*----------------------------------------------------------------------------*/
 /* opFrame.drop -- discard op frame, discard op dictionary                    */
 /*----------------------------------------------------------------------------*/
-void Task::vOpFrameDrop(NNP_Task nnpTask)
+void Task::vOpFrameDrop(MP_Task mpTask)
 {
   ENTRY("vOpFrameDrop"_Str);
   
-  RegFrame* pOpFrame = nnpTask->m_pOpFrame;
+  RegFrame* pOpFrame = mpTask->m_pOpFrame;
   
   if ( ! pOpFrame )
     THROW_INVALID_DSTACK("opFrame.drop"_Str);
   
   // discard op frame
-  nnpTask->m_pOpFrame = nullptr; // nnpTask->m_pOpFrame->pNext();
+  mpTask->m_pOpFrame = nullptr; // mpTask->m_pOpFrame->pNext();
   
   // discard op dic
-  nnpTask->m_xPathStack.vDiscard();
+  mpTask->m_xPathStack.vDiscard();
 
   EXIT();
 }
@@ -198,22 +198,22 @@ void Task::vOpFrameDrop(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* opFrame.push -- push op frame, push op dictionary                          */
 /*----------------------------------------------------------------------------*/
-void Task::vOpFramePush(NNP_Task nnpTask)
+void Task::vOpFramePush(MP_Task mpTask)
 {
   ENTRY("vOpFramePush"_Str);
   
   Object* pObjectOpFrame;
-  if ( ! nnpTask->m_pDataStack->bPop(pObjectOpFrame) )
+  if ( ! mpTask->m_pDataStack->bPop(pObjectOpFrame) )
     THROW_INVALID_DSTACK("opFrame.push"_Str);
   
   // push op frame
   RegFrame* pOpFrame = _pRegFrame(pObjectOpFrame);
-  //pOpFrame->vNext(nnpTask->m_pOpFrame);
-  nnpTask->m_pOpFrame = pOpFrame;
+  //pOpFrame->vNext(mpTask->m_pOpFrame);
+  mpTask->m_pOpFrame = pOpFrame;
 
   // push op dictionary
   Dic* pOpDic = pOpFrame->pOpDic();
-  nnpTask->m_xPathStack.vPush(pOpDic);
+  mpTask->m_xPathStack.vPush(pOpDic);
 
   EXIT();
 }

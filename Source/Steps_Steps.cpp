@@ -39,7 +39,7 @@ void Task::vAddPrimitives_Steps(void)
 /*----------------------------------------------------------------------------*/
 /* steps.list -- list steps                                                   */
 /*----------------------------------------------------------------------------*/
-void Task::vStepsList(NNP_Task nnpTask)
+void Task::vStepsList(MP_Task mpTask)
 {
 ENTRY("vStepsList"_Str);
 
@@ -51,7 +51,7 @@ ENTRY("vStepsList"_Str);
 /*----------------------------------------------------------------------------*/
 /* steps.reset -- reset steps                                                 */
 /*----------------------------------------------------------------------------*/
-void Task::vStepsReset(NNP_Task nnpTask)
+void Task::vStepsReset(MP_Task mpTask)
 {
   ENTRY("vStepsReset"_Str);
   

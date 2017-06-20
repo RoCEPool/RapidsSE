@@ -39,16 +39,16 @@ void Task::vAddPrimitives_Enter(void)
 /*----------------------------------------------------------------------------*/
 /* enterObject -- enter object routine   (this is the does step for a object) */
 /*----------------------------------------------------------------------------*/
-void Task::vEnterObject(NNP_Task nnpTask)
+void Task::vEnterObject(MP_Task mpTask)
 {
   ENTRY("vEnterObject"_Str);
   
-  nnpTask->m_pReturnStack->vPushCell(nnpTask->IP.m_pCell);
-  nnpTask->IP.m_pCell = *(Cell**)nnpTask->m_pEntryCell;
+  mpTask->m_pReturnStack->vPushCell(mpTask->IP.m_pCell);
+  mpTask->IP.m_pCell = *(Cell**)mpTask->m_pEntryCell;
   
-  //  Word* pWord = pAdd<Word*>(nnpTask->m_pEntryCell,-(sizeof(Word)-sizeof(Cell*)));
+  //  Word* pWord = pAdd<Word*>(mpTask->m_pEntryCell,-(sizeof(Word)-sizeof(Cell*)));
 
-  Word* pWord = pAdd<Word*>(nnpTask->m_pEntryCell,
+  Word* pWord = pAdd<Word*>(mpTask->m_pEntryCell,
                             -( sizeof(Word)
                                - sizeof(Cell*)
                                - sizeof(WspFxd<C_SIZE_MEDIUM_OBJECT - C_1KB>)
@@ -59,7 +59,7 @@ void Task::vEnterObject(NNP_Task nnpTask)
   ASSERT(WT_OBJECT == pWord->eWordType());
   
   Object* pObject = (Object*)pWord->pFirstCell();
-  nnpTask->m_pDataStack->vPushObject(pObject);
+  mpTask->m_pDataStack->vPushObject(pObject);
   
   EXIT();
 }
@@ -67,15 +67,15 @@ void Task::vEnterObject(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* enterRoutine -- enter word routine    (this is the does step for a : word) */
 /*----------------------------------------------------------------------------*/
-void Task::vEnterRoutine(NNP_Task nnpTask)
+void Task::vEnterRoutine(MP_Task mpTask)
 {
   ENTRY("vEnterRoutine"_Str);
   
-  nnpTask->m_pReturnStack->vPushCell(nnpTask->IP.m_pCell);
-  nnpTask->IP.m_pCell = *(Cell**)nnpTask->m_pEntryCell;
+  mpTask->m_pReturnStack->vPushCell(mpTask->IP.m_pCell);
+  mpTask->IP.m_pCell = *(Cell**)mpTask->m_pEntryCell;
  
-   if ( (nnpTask->m_iTracing & C_TRACE_ROUTINES) )
-    nnpTask->vTracePoint(">"_Str);
+   if ( (mpTask->m_iTracing & C_TRACE_ROUTINES) )
+    mpTask->vTracePoint(">"_Str);
   
   EXIT();
 }

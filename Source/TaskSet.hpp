@@ -25,10 +25,10 @@ namespace Tasks
     TaskSet(void);
     ~TaskSet(void);
     
-    void  vAppend(NNP_Task nnpTask);
+    void  vAppend(MP_Task mpTask);
     void  vContentDump(void);
     NP_Task npPop(void);
-    void  vRemove(NNP_Task nnpTask);
+    void  vRemove(MP_Task mpTask);
     
   private:
     void vVerify(void);

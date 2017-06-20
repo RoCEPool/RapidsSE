@@ -43,18 +43,18 @@ void Task::vAddPrimitives_Zero(void)
 /*----------------------------------------------------------------------------*/
 /* 0< -- test if top value is less than zero                                  */
 /*----------------------------------------------------------------------------*/
-void Task::vZeroLess(NNP_Task nnpTask)
+void Task::vZeroLess(MP_Task mpTask)
 {
   ENTRY("vZeroLess"_Str);
   
   i8 iZero;
-  if ( ! nnpTask->m_pDataStack->bPopAsInt(iZero) )
+  if ( ! mpTask->m_pDataStack->bPopAsInt(iZero) )
     THROW_INVALID_DSTACK("0<"_Str);
   
   if (iZero < 0)
-    nnpTask->m_pDataStack->vPushInt((i8)1);
+    mpTask->m_pDataStack->vPushInt((i8)1);
   else
-    nnpTask->m_pDataStack->vPushInt((i8)0);
+    mpTask->m_pDataStack->vPushInt((i8)0);
   
   EXIT();
 }
@@ -62,18 +62,18 @@ void Task::vZeroLess(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* 0<= -- test if top value is less than or equal to zero                     */
 /*----------------------------------------------------------------------------*/
-void Task::vZeroLessEqual(NNP_Task nnpTask)
+void Task::vZeroLessEqual(MP_Task mpTask)
 {
   ENTRY("vZeroLessEqual"_Str);
   
   i8 iZero;
-  if ( ! nnpTask->m_pDataStack->bPopAsInt(iZero) )
+  if ( ! mpTask->m_pDataStack->bPopAsInt(iZero) )
     THROW_INVALID_DSTACK("0<="_Str);
   
   if (iZero <= 0)
-    nnpTask->m_pDataStack->vPushInt((i8)1);
+    mpTask->m_pDataStack->vPushInt((i8)1);
   else
-    nnpTask->m_pDataStack->vPushInt((i8)0);
+    mpTask->m_pDataStack->vPushInt((i8)0);
   
   EXIT();
 }
@@ -81,18 +81,18 @@ void Task::vZeroLessEqual(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* 0== -- test if top value is equal to zero / nullptr                        */
 /*----------------------------------------------------------------------------*/
-void Task::vZeroEqual(NNP_Task nnpTask)
+void Task::vZeroEqual(MP_Task mpTask)
 {
   ENTRY("vZeroEqual"_Str);
   
   i8 iZero;
-  if ( ! nnpTask->m_pDataStack->bPopAsInt(iZero) )
+  if ( ! mpTask->m_pDataStack->bPopAsInt(iZero) )
     THROW_INVALID_DSTACK("0=="_Str);
   
   if (iZero == 0)
-    nnpTask->m_pDataStack->vPushInt((i8)1);
+    mpTask->m_pDataStack->vPushInt((i8)1);
   else
-    nnpTask->m_pDataStack->vPushInt((i8)0);
+    mpTask->m_pDataStack->vPushInt((i8)0);
   
   EXIT();
 }
@@ -100,18 +100,18 @@ void Task::vZeroEqual(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* 0!= -- test if top value is not equal to zero                              */
 /*----------------------------------------------------------------------------*/
-void Task::vZeroNotEqual(NNP_Task nnpTask)
+void Task::vZeroNotEqual(MP_Task mpTask)
 {
   ENTRY("vZeroNotEqual"_Str);
   
   i8 iZero;
-  if ( ! nnpTask->m_pDataStack->bPopAsInt(iZero) )
+  if ( ! mpTask->m_pDataStack->bPopAsInt(iZero) )
     THROW_INVALID_DSTACK("0!="_Str);
   
   if (iZero != 0)
-    nnpTask->m_pDataStack->vPushInt((i8)1);
+    mpTask->m_pDataStack->vPushInt((i8)1);
   else
-    nnpTask->m_pDataStack->vPushInt((i8)0);
+    mpTask->m_pDataStack->vPushInt((i8)0);
   
   EXIT();
 }
@@ -119,18 +119,18 @@ void Task::vZeroNotEqual(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* zeroGreaterEqual -- test if top value is greater than or equal to zero     */
 /*----------------------------------------------------------------------------*/
-void Task::vZeroGreaterEqual(NNP_Task nnpTask)
+void Task::vZeroGreaterEqual(MP_Task mpTask)
 {
   ENTRY("vZeroGreaterEqual"_Str);
   
   i8 iZero;
-  if ( ! nnpTask->m_pDataStack->bPopAsInt(iZero) )
+  if ( ! mpTask->m_pDataStack->bPopAsInt(iZero) )
     THROW_INVALID_DSTACK("0>="_Str);
   
   if (iZero >= 0)
-    nnpTask->m_pDataStack->vPushInt((i8)1);
+    mpTask->m_pDataStack->vPushInt((i8)1);
   else
-    nnpTask->m_pDataStack->vPushInt((i8)0);
+    mpTask->m_pDataStack->vPushInt((i8)0);
   
   EXIT();
 }
@@ -138,18 +138,18 @@ void Task::vZeroGreaterEqual(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* 0> -- test if top value is greater than zero                              */
 /*----------------------------------------------------------------------------*/
-void Task::vZeroGreater(NNP_Task nnpTask)
+void Task::vZeroGreater(MP_Task mpTask)
 {
   ENTRY("vZeroGreater"_Str);
   
   i8 iZero;
-  if ( ! nnpTask->m_pDataStack->bPopAsInt(iZero) )
+  if ( ! mpTask->m_pDataStack->bPopAsInt(iZero) )
     THROW_INVALID_DSTACK("0>"_Str);
   
   if (iZero > 0)
-    nnpTask->m_pDataStack->vPushInt((i8)1);
+    mpTask->m_pDataStack->vPushInt((i8)1);
   else
-    nnpTask->m_pDataStack->vPushInt((i8)0);
+    mpTask->m_pDataStack->vPushInt((i8)0);
   
   EXIT();
 }

@@ -62,12 +62,12 @@ void Task::vAddPrimitives_Dir(void)
 /*----------------------------------------------------------------------------*/
 /* dir.changetCurrent -- change working directory                             */
 /*----------------------------------------------------------------------------*/
-void Task::vDirChangeCurrent(NNP_Task nnpTask)
+void Task::vDirChangeCurrent(MP_Task mpTask)
 {
   ENTRY("vDirChangeCurrent"_Str);
   
   s256 sDir;
-  if ( ! nnpTask->m_pDataStack->bPop(sDir) )
+  if ( ! mpTask->m_pDataStack->bPop(sDir) )
     THROW_INVALID_DSTACK("dir.changeCurrent"_Str);
   
   Dir xDir;
@@ -80,19 +80,19 @@ void Task::vDirChangeCurrent(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* dir.exists -- test if a directory exists                                   */
 /*----------------------------------------------------------------------------*/
-void Task::vDirExists(NNP_Task nnpTask)
+void Task::vDirExists(MP_Task mpTask)
 {
 ENTRY("vDirExists"_Str);
   
   s256 sPath;
   
-  if ( ! nnpTask->m_pDataStack->bPop(sPath) )
+  if ( ! mpTask->m_pDataStack->bPop(sPath) )
     THROW_INVALID_DSTACK("dir.exists"_Str);
   
   Dir xDir;
   
   i8 iResult = xDir.bExists(sPath);
-  nnpTask->m_pDataStack->vPushInt(iResult);
+  mpTask->m_pDataStack->vPushInt(iResult);
   
   EXIT();
 }
@@ -100,7 +100,7 @@ ENTRY("vDirExists"_Str);
 /*----------------------------------------------------------------------------*/
 /* dir.getCurrent -- get working directory                                    */
 /*----------------------------------------------------------------------------*/
-void Task::vDirGetCurrent(NNP_Task nnpTask)
+void Task::vDirGetCurrent(MP_Task mpTask)
 {
   ENTRY("vDirGetCurrent"_Str);
   
@@ -111,7 +111,7 @@ void Task::vDirGetCurrent(NNP_Task nnpTask)
   
   if (xDir.bGetCurrent(xDirPath)) {
     xStrVal = xDirPath;
-    nnpTask->m_pDataStack->vPushValWrk(xStrVal);
+    mpTask->m_pDataStack->vPushValWrk(xStrVal);
   }
   else {
     THROW("Unable to get current directory"_Str);
@@ -123,19 +123,19 @@ void Task::vDirGetCurrent(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* dir.make -- make a directory                                               */
 /*----------------------------------------------------------------------------*/
-void Task::vDirMake(NNP_Task nnpTask)
+void Task::vDirMake(MP_Task mpTask)
 {
 ENTRY("vDirMake"_Str);
   
   s256 sPath;
   
-  if ( ! nnpTask->m_pDataStack->bPop(sPath) )
+  if ( ! mpTask->m_pDataStack->bPop(sPath) )
     THROW_INVALID_DSTACK("dir.make"_Str);
   
   Dir xDir;
   
   i8 iResult = xDir.bMake(sPath);
-  nnpTask->m_pDataStack->vPushInt(iResult);
+  mpTask->m_pDataStack->vPushInt(iResult);
   
   EXIT();
 }
@@ -143,19 +143,19 @@ ENTRY("vDirMake"_Str);
 /*----------------------------------------------------------------------------*/
 /* dir.remove -- remove a directory                                           */
 /*----------------------------------------------------------------------------*/
-void Task::vDirRemove(NNP_Task nnpTask)
+void Task::vDirRemove(MP_Task mpTask)
 {
 ENTRY("vDirRemove"_Str);
   
   s256 sPath;
   
-  if ( ! nnpTask->m_pDataStack->bPop(sPath) )
+  if ( ! mpTask->m_pDataStack->bPop(sPath) )
     THROW_INVALID_DSTACK("dir.remove"_Str);
   
   Dir xDir;
   
   i8 iResult = xDir.bRemove(sPath);
-  nnpTask->m_pDataStack->vPushInt(iResult);
+  mpTask->m_pDataStack->vPushInt(iResult);
   
   EXIT();
 }
@@ -165,13 +165,13 @@ ENTRY("vDirRemove"_Str);
 /*----------------------------------------------------------------------------*/
 /* dir.close -- close directory                                               */
 /*----------------------------------------------------------------------------*/
-void Task::vDirClose(NNP_Task nnpTask)
+void Task::vDirClose(MP_Task mpTask)
 {
 ENTRY("vDirClose"_Str);
   
   Object* pPtrDir;
 
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrDir) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrDir) )
     THROW_INVALID_DSTACK("dir.close"_Str);
   
   Dir* pDir = _pDir(pPtrDir);
@@ -184,13 +184,13 @@ ENTRY("vDirClose"_Str);
 /*----------------------------------------------------------------------------*/
 /* dir.delete -- delete instance of dir                                       */
 /*----------------------------------------------------------------------------*/
-void Task::vDirDelete(NNP_Task nnpTask)
+void Task::vDirDelete(MP_Task mpTask)
 {
 ENTRY("vDirDelete"_Str);
   
   Object* pPtrDir;
   
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrDir) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrDir) )
     THROW_INVALID_DSTACK("file.delete"_Str);
   
   Dir* pDir = _pDir(pPtrDir);
@@ -203,13 +203,13 @@ ENTRY("vDirDelete"_Str);
 /*----------------------------------------------------------------------------*/
 /* dir.entryName -- get dir entry name                                        */
 /*----------------------------------------------------------------------------*/
-void Task::vDirEntryName(NNP_Task nnpTask)
+void Task::vDirEntryName(MP_Task mpTask)
 {
 ENTRY("vDirEntryName"_Str);
   
   Object* pPtrDir;
   
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrDir) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrDir) )
     THROW_INVALID_DSTACK("dir.close"_Str);
   
   Dir* pDir = _pDir(pPtrDir);
@@ -218,7 +218,7 @@ ENTRY("vDirEntryName"_Str);
   
   sEntryName = pDir->sEntryName();
   
-  nnpTask->m_pDataStack->vPushS256(sEntryName);
+  mpTask->m_pDataStack->vPushS256(sEntryName);
   
   EXIT();
 }
@@ -226,13 +226,13 @@ ENTRY("vDirEntryName"_Str);
 /*----------------------------------------------------------------------------*/
 /* dir.entryType -- get dir entry type                                        */
 /*----------------------------------------------------------------------------*/
-void Task::vDirEntryType(NNP_Task nnpTask)
+void Task::vDirEntryType(MP_Task mpTask)
 {
 ENTRY("vDirEntryType"_Str);
   
   Object* pPtrDir;
   
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrDir) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrDir) )
     THROW_INVALID_DSTACK("dir.close"_Str);
   
   Dir* pDir = _pDir(pPtrDir);
@@ -241,7 +241,7 @@ ENTRY("vDirEntryType"_Str);
   
   iEntryType = pDir->iEntryType();
   
-  nnpTask->m_pDataStack->vPushInt(iEntryType);
+  mpTask->m_pDataStack->vPushInt(iEntryType);
   
   EXIT();
 }
@@ -249,13 +249,13 @@ ENTRY("vDirEntryType"_Str);
 /*----------------------------------------------------------------------------*/
 /* dir.init -- init directory                                                 */
 /*----------------------------------------------------------------------------*/
-void Task::vDirInit(NNP_Task nnpTask)
+void Task::vDirInit(MP_Task mpTask)
 {
 ENTRY("vDirInit"_Str);
   
   Object* pPtrDir;
   
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrDir) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrDir) )
     THROW_INVALID_DSTACK("dir.init"_Str);
   
   Dir* pDir = _pDir(pPtrDir);
@@ -270,20 +270,20 @@ ENTRY("vDirInit"_Str);
 /*----------------------------------------------------------------------------*/
 /* dir.isClosed -- is dir closed?                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vDirIsClosed(NNP_Task nnpTask)
+void Task::vDirIsClosed(MP_Task mpTask)
 {
 ENTRY("vDirIsClosed"_Str);
   
   Object* pPtrDir;
   
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrDir) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrDir) )
     THROW_INVALID_DSTACK("dir.close"_Str);
   
   Dir* pDir = _pDir(pPtrDir);
   
   bool bIsClosed = pDir->bIsClosed();
   
-  nnpTask->m_pDataStack->vPushInt(bIsClosed);
+  mpTask->m_pDataStack->vPushInt(bIsClosed);
   
   EXIT();
 }
@@ -291,20 +291,20 @@ ENTRY("vDirIsClosed"_Str);
 /*----------------------------------------------------------------------------*/
 /* dir.isOpen -- is dir open?                                                 */
 /*----------------------------------------------------------------------------*/
-void Task::vDirIsOpen(NNP_Task nnpTask)
+void Task::vDirIsOpen(MP_Task mpTask)
 {
 ENTRY("vDirIsOpen"_Str);
   
   Object* pPtrDir;
   
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrDir) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrDir) )
     THROW_INVALID_DSTACK("dir.close"_Str);
   
   Dir* pDir = _pDir(pPtrDir);
   
   bool bIsOpen = pDir->bIsOpen();
   
-  nnpTask->m_pDataStack->vPushInt(bIsOpen);
+  mpTask->m_pDataStack->vPushInt(bIsOpen);
   
   EXIT();
 }
@@ -312,7 +312,7 @@ ENTRY("vDirIsOpen"_Str);
 /*----------------------------------------------------------------------------*/
 /* dir::new -- new instance of dir                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vDirNew(NNP_Task nnpTask)
+void Task::vDirNew(MP_Task mpTask)
 {
 ENTRY("vDirNew"_Str);
   
@@ -321,7 +321,7 @@ ENTRY("vDirNew"_Str);
   Object* pPtrDir;
   pPtrDir = (Object*)pDir;
   
-  nnpTask->m_pDataStack->vPushObject(pPtrDir);
+  mpTask->m_pDataStack->vPushObject(pPtrDir);
   
   EXIT();
 }
@@ -329,20 +329,20 @@ ENTRY("vDirNew"_Str);
 /*----------------------------------------------------------------------------*/
 /* dir.open -- open dir for reading                                           */
 /*----------------------------------------------------------------------------*/
-void Task::vDirOpen(NNP_Task nnpTask)
+void Task::vDirOpen(MP_Task mpTask)
 {
 ENTRY("vDirOpen"_Str);
   
   Object* pPtrDir;
   
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrDir) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrDir) )
     THROW_INVALID_DSTACK("dir.open"_Str);
   
   Dir* pDir = _pDir(pPtrDir);
   
   bool bOpened = pDir->bOpen();
   
-  nnpTask->m_pDataStack->vPushInt(bOpened);
+  mpTask->m_pDataStack->vPushInt(bOpened);
   
   EXIT();
 }
@@ -350,13 +350,13 @@ ENTRY("vDirOpen"_Str);
 /*----------------------------------------------------------------------------*/
 /* dir.path@ -- get path                                                      */
 /*----------------------------------------------------------------------------*/
-void Task::vDirPathGet(NNP_Task nnpTask)
+void Task::vDirPathGet(MP_Task mpTask)
 {
 ENTRY("vDirPathGet"_Str);
   
   Object* pPtrDir;
   
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrDir) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrDir) )
     THROW_INVALID_DSTACK("dir.path@"_Str);
   
   Dir* pDir = _pDir(pPtrDir);
@@ -365,7 +365,7 @@ ENTRY("vDirPathGet"_Str);
   
   sPath = pDir->sPath();
   
-  nnpTask->m_pDataStack->vPushS256(sPath);
+  mpTask->m_pDataStack->vPushS256(sPath);
 
   
   EXIT();
@@ -374,20 +374,20 @@ ENTRY("vDirPathGet"_Str);
 /*----------------------------------------------------------------------------*/
 /* dir.path! -- set path                                                      */
 /*----------------------------------------------------------------------------*/
-void Task::vDirPathSet(NNP_Task nnpTask)
+void Task::vDirPathSet(MP_Task mpTask)
 {
 ENTRY("vDirPathSet"_Str);
   
   Object* pPtrDir;
   
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrDir) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrDir) )
     THROW_INVALID_DSTACK("dir.path!"_Str);
   
   Dir* pDir = _pDir(pPtrDir);
   
   s256 sPath;
 
-  if ( ! nnpTask->m_pDataStack->bPop(sPath) )
+  if ( ! mpTask->m_pDataStack->bPop(sPath) )
     THROW_INVALID_DSTACK("dir.path!"_Str);
   
   pDir->vPath(sPath);
@@ -398,20 +398,20 @@ ENTRY("vDirPathSet"_Str);
 /*----------------------------------------------------------------------------*/
 /* dir.read -- read next dir entry                                            */
 /*----------------------------------------------------------------------------*/
-void Task::vDirRead(NNP_Task nnpTask)
+void Task::vDirRead(MP_Task mpTask)
 {
 ENTRY("vDirRead"_Str);
   
   Object* pPtrDir;
   
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrDir) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrDir) )
     THROW_INVALID_DSTACK("dir.read"_Str);
   
   Dir* pDir = _pDir(pPtrDir);
   
   bool bRead  = pDir->bRead();
   
-  nnpTask->m_pDataStack->vPushInt(bRead);
+  mpTask->m_pDataStack->vPushInt(bRead);
   
   EXIT();
 }
@@ -419,13 +419,13 @@ ENTRY("vDirRead"_Str);
 /*----------------------------------------------------------------------------*/
 /* dir.rewind -- rewind dir pointer                                           */
 /*----------------------------------------------------------------------------*/
-void Task::vDirRewind(NNP_Task nnpTask)
+void Task::vDirRewind(MP_Task mpTask)
 {
 ENTRY("vDirRewind"_Str);
   
   Object* pPtrDir;
   
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrDir) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrDir) )
     THROW_INVALID_DSTACK("dir.rewind"_Str);
   
   Dir* pDir = _pDir(pPtrDir);
@@ -438,19 +438,19 @@ ENTRY("vDirRewind"_Str);
 /*----------------------------------------------------------------------------*/
 /* dir.seek -- seek dir ptr to a given position                               */
 /*----------------------------------------------------------------------------*/
-void Task::vDirSeek(NNP_Task nnpTask)
+void Task::vDirSeek(MP_Task mpTask)
 {
 ENTRY("vDirSeek"_Str);
   
   Object* pPtrDir;
   
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrDir) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrDir) )
     THROW_INVALID_DSTACK("dir.seek"_Str);
   
   Dir* pDir = _pDir(pPtrDir);
   
   i8 iPosition;
-  if ( ! nnpTask->m_pDataStack->bPop(iPosition) )
+  if ( ! mpTask->m_pDataStack->bPop(iPosition) )
     THROW_INVALID_DSTACK("dir.seek"_Str);
   
   pDir->vSeek(iPosition);
@@ -461,20 +461,20 @@ ENTRY("vDirSeek"_Str);
 /*----------------------------------------------------------------------------*/
 /* dir.tell -- tel current dir position                                       */
 /*----------------------------------------------------------------------------*/
-void Task::vDirTell(NNP_Task nnpTask)
+void Task::vDirTell(MP_Task mpTask)
 {
 ENTRY("vDirTell"_Str);
   
   Object* pPtrDir;
   
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrDir) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrDir) )
     THROW_INVALID_DSTACK("dir.tell"_Str);
   
   Dir* pDir = _pDir(pPtrDir);
   
   i8 iPosition = pDir->iTell();
   
-  nnpTask->m_pDataStack->vPushInt(iPosition);
+  mpTask->m_pDataStack->vPushInt(iPosition);
   
   EXIT();
 }

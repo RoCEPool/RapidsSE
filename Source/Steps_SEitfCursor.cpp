@@ -45,12 +45,12 @@ void Task::vAddPrimitives_SEitfCursor(void)
 /*----------------------------------------------------------------------------*/
 /* seitfcursor.begin -- begin using seitf currsor                             */
 /*----------------------------------------------------------------------------*/
-void Task::vSEitfCursorBegin(NNP_Task nnpTask)
+void Task::vSEitfCursorBegin(MP_Task mpTask)
 {
 ENTRY("vSEitfCursorBegin"_Str);
   
   Object* pPtrSEitfCursor;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitfCursor) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitfCursor) )
     THROW_INVALID_DSTACK("seitfcursor.begin"_Str);
   
   SEitfCursor* pSEitfCursor = _pSEitfCursor(pPtrSEitfCursor);
@@ -61,7 +61,7 @@ ENTRY("vSEitfCursorBegin"_Str);
   
   Object* pObject = pSEitfCursor->pObject();
   
-  nnpTask->m_pDataStack->vPushObject(pObject);
+  mpTask->m_pDataStack->vPushObject(pObject);
   
   EXIT();
 }
@@ -69,12 +69,12 @@ ENTRY("vSEitfCursorBegin"_Str);
 /*----------------------------------------------------------------------------*/
 /* seitfcursor.delete -- delete an seitf cursor                               */
 /*----------------------------------------------------------------------------*/
-void Task::vSEitfCursorDelete(NNP_Task nnpTask)
+void Task::vSEitfCursorDelete(MP_Task mpTask)
 {
 ENTRY("vSEitfCursorDelete"_Str);
   
   Object* pPtrSEitfCursor;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitfCursor) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitfCursor) )
     THROW_INVALID_DSTACK("seitfcursor.delete"_Str);
   
   SEitfCursor* pSEitfCursor = _pSEitfCursor(pPtrSEitfCursor);
@@ -91,12 +91,12 @@ ENTRY("vSEitfCursorDelete"_Str);
 /*----------------------------------------------------------------------------*/
 /* seitfcursor.end -- end using seitf cursor                                  */
 /*----------------------------------------------------------------------------*/
-void Task::vSEitfCursorEnd(NNP_Task nnpTask)
+void Task::vSEitfCursorEnd(MP_Task mpTask)
 {
 ENTRY("vSEitfCursorEnd"_Str);
   
   Object* pPtrSEitfCursor;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitfCursor) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitfCursor) )
     THROW_INVALID_DSTACK("seitfcursor.end"_Str);
   
   SEitfCursor* pSEitfCursor = _pSEitfCursor(pPtrSEitfCursor);
@@ -110,12 +110,12 @@ ENTRY("vSEitfCursorEnd"_Str);
 /*----------------------------------------------------------------------------*/
 /* seitfcursor.first -- set to first and get seitf                            */
 /*----------------------------------------------------------------------------*/
-void Task::vSEitfCursorFirst(NNP_Task nnpTask)
+void Task::vSEitfCursorFirst(MP_Task mpTask)
 {
 ENTRY("vSEitfCursorFirst"_Str);
   
   Object* pPtrSEitfCursor;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitfCursor) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitfCursor) )
     THROW_INVALID_DSTACK("seitfcursor.first"_Str);
   
   SEitfCursor* pSEitfCursor = _pSEitfCursor(pPtrSEitfCursor);
@@ -125,7 +125,7 @@ ENTRY("vSEitfCursorFirst"_Str);
   
   Object* pObject = pSEitfCursor->pObject();
   
-  nnpTask->m_pDataStack->vPushObject(pObject);
+  mpTask->m_pDataStack->vPushObject(pObject);
   
   EXIT();
 }
@@ -133,12 +133,12 @@ ENTRY("vSEitfCursorFirst"_Str);
 /*----------------------------------------------------------------------------*/
 /* seitfcursor.get -- get current seitf                                       */
 /*----------------------------------------------------------------------------*/
-void Task::vSEitfCursorGet(NNP_Task nnpTask)
+void Task::vSEitfCursorGet(MP_Task mpTask)
 {
 ENTRY("vSEitfCursorGet"_Str);
   
   Object* pPtrSEitfCursor;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitfCursor) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitfCursor) )
     THROW_INVALID_DSTACK("seitfcursor.get"_Str);
   
   SEitfCursor* pSEitfCursor = _pSEitfCursor(pPtrSEitfCursor);
@@ -146,7 +146,7 @@ ENTRY("vSEitfCursorGet"_Str);
   
   Object* pObject = pSEitfCursor->pObject();
   
-  nnpTask->m_pDataStack->vPushObject(pObject);
+  mpTask->m_pDataStack->vPushObject(pObject);
   
   EXIT();
 }
@@ -154,12 +154,12 @@ ENTRY("vSEitfCursorGet"_Str);
 /*----------------------------------------------------------------------------*/
 /* seitfcursor.init -- init an seitf cursor                                   */
 /*----------------------------------------------------------------------------*/
-void Task::vSEitfCursorInit(NNP_Task nnpTask)
+void Task::vSEitfCursorInit(MP_Task mpTask)
 {
 ENTRY("vSEitfCursorInit"_Str);
   
   Object* pPtrSEitfCursor;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitfCursor) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitfCursor) )
     THROW_INVALID_DSTACK("seitfcursor.init"_Str);
   
   SEitfCursor* pSEitfCursor = _pSEitfCursor(pPtrSEitfCursor);
@@ -167,7 +167,7 @@ ENTRY("vSEitfCursorInit"_Str);
   
   s32 sName;
   sName = "seitflist"_Str;
-  Word* pWord = nnpTask->m_xPathStack.pFindWord(sName);
+  Word* pWord = mpTask->m_xPathStack.pFindWord(sName);
   ASSERT(pWord);
   SEitfList* pSEitfList = reinterpret_cast<SEitfList*>(pWord->aBodyArea());
   
@@ -180,12 +180,12 @@ ENTRY("vSEitfCursorInit"_Str);
 /*----------------------------------------------------------------------------*/
 /* seitfcursor::new -- new an seitf cursor                                     */
 /*----------------------------------------------------------------------------*/
-void Task::vSEitfCursorNew(NNP_Task nnpTask)
+void Task::vSEitfCursorNew(MP_Task mpTask)
 {
 ENTRY("vSEitfCursorNew"_Str);
   
   Object* pPtrSEitfList;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitfList) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitfList) )
     THROW_INVALID_DSTACK("seitfcursor::new"_Str);
   
   SEitfList* pSEitfList = _pSEitfList(pPtrSEitfList);
@@ -197,7 +197,7 @@ ENTRY("vSEitfCursorNew"_Str);
   
   Object* pPtrSEitfCursor = pSEitfCursor;
   
-  nnpTask->m_pDataStack->vPushObject(pPtrSEitfCursor);
+  mpTask->m_pDataStack->vPushObject(pPtrSEitfCursor);
   
   EXIT();
 }
@@ -205,12 +205,12 @@ ENTRY("vSEitfCursorNew"_Str);
 /*----------------------------------------------------------------------------*/
 /* seitfcursor.next -- advance to next and get seitf                          */
 /*----------------------------------------------------------------------------*/
-void Task::vSEitfCursorNext(NNP_Task nnpTask)
+void Task::vSEitfCursorNext(MP_Task mpTask)
 {
 ENTRY("vSEitfCursorNext"_Str);
   
   Object* pPtrSEitfCursor;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitfCursor) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitfCursor) )
     THROW_INVALID_DSTACK("seitfcursor.next"_Str);
   
   SEitfCursor* pSEitfCursor = _pSEitfCursor(pPtrSEitfCursor);
@@ -220,7 +220,7 @@ ENTRY("vSEitfCursorNext"_Str);
   
   Object* pObject = pSEitfCursor->pObject();
   
-  nnpTask->m_pDataStack->vPushObject(pObject);
+  mpTask->m_pDataStack->vPushObject(pObject);
   
   EXIT();
 }

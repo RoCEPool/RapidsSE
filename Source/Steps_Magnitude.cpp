@@ -40,14 +40,14 @@ void Task::vAddPrimitives_Magnitude(void)
 /*----------------------------------------------------------------------------*/
 /* >DigitName -- convert to digit name                                        */
 /*----------------------------------------------------------------------------*/
-void Task::vToDigitName(NNP_Task nnpTask)
+void Task::vToDigitName(MP_Task mpTask)
 {
   ENTRY("vToDigitName"_Str);
   
   i8 iDigit;
   
   // get the arguments
-  if ( ! nnpTask->m_pDataStack->bPop(iDigit) )
+  if ( ! mpTask->m_pDataStack->bPop(iDigit) )
     THROW_INVALID_DSTACK(">DigitName"_Str);
   
   s32 sName;
@@ -66,7 +66,7 @@ void Task::vToDigitName(NNP_Task nnpTask)
     default:sName = "invalid"_Str; break;
   }
   
-  nnpTask->m_pDataStack->vPushS32(sName);
+  mpTask->m_pDataStack->vPushS32(sName);
   
   EXIT();
 }
@@ -74,18 +74,18 @@ void Task::vToDigitName(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* bytes.magnitude -- return magnitude of bytes                               */
 /*----------------------------------------------------------------------------*/
-void Task::vBytesMagnitude(NNP_Task nnpTask)
+void Task::vBytesMagnitude(MP_Task mpTask)
 {
   ENTRY("vBytesMagnitude"_Str);
   
   i8 iBytes;
-  if ( ! nnpTask->m_pDataStack->bPop(iBytes) )
+  if ( ! mpTask->m_pDataStack->bPop(iBytes) )
     THROW_INVALID_DSTACK("bytes.magnitude"_Str);
   
   s256 sMag;
   Magnitudes::vMagnitude(iBytes, sMag);
   
-  nnpTask->m_pDataStack->vPushS256(sMag);
+  mpTask->m_pDataStack->vPushS256(sMag);
   
   EXIT();
 }
@@ -93,24 +93,24 @@ void Task::vBytesMagnitude(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* number.magnitude -- get magnitude of number                                */
 /*----------------------------------------------------------------------------*/
-void Task::vNumberMagnitude(NNP_Task nnpTask)
+void Task::vNumberMagnitude(MP_Task mpTask)
 {
   ENTRY("vNumberMagnitude"_Str);
   
   i8 iNumber;
   i8 iScale;
   
-  if ( ! nnpTask->m_pDataStack->bPop(iNumber) )
+  if ( ! mpTask->m_pDataStack->bPop(iNumber) )
     THROW_INVALID_DSTACK("number.magnitude"_Str);
   
-  if ( ! nnpTask->m_pDataStack->bPop(iScale) )
+  if ( ! mpTask->m_pDataStack->bPop(iScale) )
     THROW_INVALID_DSTACK("number.magnitude"_Str);
   
   s256 s;
   
   Magnitudes::vMagnitude(iNumber, iScale, s);
   
-  nnpTask->m_pDataStack->vPushS256(s);
+  mpTask->m_pDataStack->vPushS256(s);
   
   EXIT();
 }

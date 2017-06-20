@@ -44,12 +44,12 @@ void Task::vAddPrimitives_NodeCursor(void)
 /*----------------------------------------------------------------------------*/
 /* nodecursor.begin -- begin using node (of grid) cursor                      */
 /*----------------------------------------------------------------------------*/
-void Task::vNodeCursorBegin(NNP_Task nnpTask)
+void Task::vNodeCursorBegin(MP_Task mpTask)
 {
 ENTRY("vNodeCursorBegin"_Str);
   
   Object* pPtrNodeCursor;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrNodeCursor) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrNodeCursor) )
     THROW_INVALID_DSTACK("nodeCursor.begin"_Str);
   
   NodeCursor* pNodeCursor = _pNodeCursor(pPtrNodeCursor);
@@ -63,12 +63,12 @@ ENTRY("vNodeCursorBegin"_Str);
 /*----------------------------------------------------------------------------*/
 /* nodecursor.delete -- delete a node (of grid) cursor                        */
 /*----------------------------------------------------------------------------*/
-void Task::vNodeCursorDelete(NNP_Task nnpTask)
+void Task::vNodeCursorDelete(MP_Task mpTask)
 {
 ENTRY("vNodeCursorDelete"_Str);
   
   Object* pPtrNodeCursor;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrNodeCursor) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrNodeCursor) )
     THROW_INVALID_DSTACK("nodeCursor.delete"_Str);
   
   NodeCursor* pNodeCursor = _pNodeCursor(pPtrNodeCursor);
@@ -82,12 +82,12 @@ ENTRY("vNodeCursorDelete"_Str);
 /*----------------------------------------------------------------------------*/
 /* nodecursor.end -- end using node (of grid) cursor                          */
 /*----------------------------------------------------------------------------*/
-void Task::vNodeCursorEnd(NNP_Task nnpTask)
+void Task::vNodeCursorEnd(MP_Task mpTask)
 {
 ENTRY("vNodeCursorEnd"_Str);
   
   Object* pPtrNodeCursor;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrNodeCursor) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrNodeCursor) )
     THROW_INVALID_DSTACK("nodecursor.end"_Str);
   
   NodeCursor* pNodeCursor = _pNodeCursor(pPtrNodeCursor);
@@ -101,12 +101,12 @@ ENTRY("vNodeCursorEnd"_Str);
 /*----------------------------------------------------------------------------*/
 /* nodeCursor.first -- set to first and push node (of grid)                   */
 /*----------------------------------------------------------------------------*/
-void Task::vNodeCursorFirst(NNP_Task nnpTask)
+void Task::vNodeCursorFirst(MP_Task mpTask)
 {
 ENTRY("vNodeCursorFirst"_Str);
   
   Object* pPtrNodeCursor;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrNodeCursor) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrNodeCursor) )
     THROW_INVALID_DSTACK("nodeCursor.first"_Str);
   
   NodeCursor* pNodeCursor = _pNodeCursor(pPtrNodeCursor);
@@ -116,7 +116,7 @@ ENTRY("vNodeCursorFirst"_Str);
   
   Object* pObject = pNodeCursor->pObject();
   
-  nnpTask->m_pDataStack->vPushObject(pObject);
+  mpTask->m_pDataStack->vPushObject(pObject);
   
   EXIT();
 }
@@ -124,12 +124,12 @@ ENTRY("vNodeCursorFirst"_Str);
 /*----------------------------------------------------------------------------*/
 /* nodeCursor.get -- push current node (of grid)                              */
 /*----------------------------------------------------------------------------*/
-void Task::vNodeCursorGet(NNP_Task nnpTask)
+void Task::vNodeCursorGet(MP_Task mpTask)
 {
 ENTRY("vNodeCursorGet"_Str);
   
   Object* pPtrNodeCursor;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrNodeCursor) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrNodeCursor) )
     THROW_INVALID_DSTACK("nodeCursor.get"_Str);
   
   NodeCursor* pNodeCursor = _pNodeCursor(pPtrNodeCursor);
@@ -137,7 +137,7 @@ ENTRY("vNodeCursorGet"_Str);
   
   Object* pObject = pNodeCursor->pObject();
   
-  nnpTask->m_pDataStack->vPushObject(pObject);
+  mpTask->m_pDataStack->vPushObject(pObject);
   
   EXIT();
 }
@@ -145,12 +145,12 @@ ENTRY("vNodeCursorGet"_Str);
 /*----------------------------------------------------------------------------*/
 /* nodeCursor.init -- init a node cursor                                      */
 /*----------------------------------------------------------------------------*/
-void Task::vNodeCursorInit(NNP_Task nnpTask)
+void Task::vNodeCursorInit(MP_Task mpTask)
 {
 ENTRY("vNodeCursorInit"_Str);
   
   Object* pPtrNodeCursor;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrNodeCursor) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrNodeCursor) )
     THROW_INVALID_DSTACK("nodeCursor.init"_Str);
   
   NodeCursor* pNodeCursor = _pNodeCursor(pPtrNodeCursor);
@@ -164,14 +164,14 @@ ENTRY("vNodeCursorInit"_Str);
 /*----------------------------------------------------------------------------*/
 /* nodeCursor::new -- new a node (of grid) cursor                              */
 /*----------------------------------------------------------------------------*/
-void Task::vNodeCursorNew(NNP_Task nnpTask)
+void Task::vNodeCursorNew(MP_Task mpTask)
 {
 ENTRY("vNodeCursorNew"_Str);
   
   NodeCursor* pNodeCursor = new NodeCursor(gpGrid);
   ASSERT(CN_NODECURSOR == pNodeCursor->eClass());
   
-  nnpTask->m_pDataStack->vPushObject(pNodeCursor);
+  mpTask->m_pDataStack->vPushObject(pNodeCursor);
   
   EXIT();
 }
@@ -179,12 +179,12 @@ ENTRY("vNodeCursorNew"_Str);
 /*----------------------------------------------------------------------------*/
 /* nodeCursor.next -- advance to next and get node (of grid)                  */
 /*----------------------------------------------------------------------------*/
-void Task::vNodeCursorNext(NNP_Task nnpTask)
+void Task::vNodeCursorNext(MP_Task mpTask)
 {
 ENTRY("vNodeCursorNext"_Str);
   
   Object* pPtrNodeCursor;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrNodeCursor) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrNodeCursor) )
     THROW_INVALID_DSTACK("nodeCursor.next"_Str);
   
   NodeCursor* pNodeCursor = _pNodeCursor(pPtrNodeCursor);
@@ -194,7 +194,7 @@ ENTRY("vNodeCursorNext"_Str);
   
   Object* pObject = pNodeCursor->pObject();
   
-  nnpTask->m_pDataStack->vPushObject(pObject);
+  mpTask->m_pDataStack->vPushObject(pObject);
   
   EXIT();
 }

@@ -42,12 +42,12 @@ void Task::vAddPrimitives_TxRef(void)
 /*----------------------------------------------------------------------------*/
 /* txRef.init -- init of txref on data stack                                  */
 /*----------------------------------------------------------------------------*/
-void Task::vTxRefInit(NNP_Task nnpTask)
+void Task::vTxRefInit(MP_Task mpTask)
 {
 ENTRY("vTxRefInit"_Str);
   
   Object* pPtrTxRef;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrTxRef) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTxRef) )
     THROW_INVALID_DSTACK("txRef.init"_Str);
   
   TxRef* pTxRef = _pTxRef(pPtrTxRef);
@@ -61,13 +61,13 @@ ENTRY("vTxRefInit"_Str);
 /*----------------------------------------------------------------------------*/
 /* txRef.begin -- begin a tx (via a txRef on stack)                           */
 /*----------------------------------------------------------------------------*/
-void Task::vTxRefBegin(NNP_Task nnpTask)
+void Task::vTxRefBegin(MP_Task mpTask)
 {
 ENTRY("vTxRefBegin"_Str);
   
   Object* pPtrTxRef;
   
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrTxRef) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTxRef) )
     THROW_INVALID_DSTACK("tx.begin"_Str);
   
   TxRef* pTxRef = _pTxRef(pPtrTxRef);
@@ -75,7 +75,7 @@ ENTRY("vTxRefBegin"_Str);
   
   bool bBegun = pTxRef->bBeginTx();
   
-  nnpTask->m_pDataStack->vPushInt(bBegun);
+  mpTask->m_pDataStack->vPushInt(bBegun);
   
   EXIT();
 }
@@ -83,13 +83,13 @@ ENTRY("vTxRefBegin"_Str);
 /*----------------------------------------------------------------------------*/
 /* txRef.end -- end a tx (via a txRef on stack)                               */
 /*----------------------------------------------------------------------------*/
-void Task::vTxRefEnd(NNP_Task nnpTask)
+void Task::vTxRefEnd(MP_Task mpTask)
 {
 ENTRY("vTxRefEnd"_Str);
   
   Object* pPtrTxRef;
   
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrTxRef) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTxRef) )
     THROW_INVALID_DSTACK("txRef.end"_Str);
   
   TxRef* pTxRef = _pTxRef(pPtrTxRef);
@@ -97,7 +97,7 @@ ENTRY("vTxRefEnd"_Str);
   
   bool bEnded = pTxRef->bEndTx();
   
-  nnpTask->m_pDataStack->vPushInt(bEnded);
+  mpTask->m_pDataStack->vPushInt(bEnded);
   
   EXIT();
 }
@@ -105,13 +105,13 @@ ENTRY("vTxRefEnd"_Str);
 /*----------------------------------------------------------------------------*/
 /* txRef.commit -- commit a tx (via a txRef on stack)                         */
 /*----------------------------------------------------------------------------*/
-void Task::vTxRefCommit(NNP_Task nnpTask)
+void Task::vTxRefCommit(MP_Task mpTask)
 {
 ENTRY("vTxRefCommit"_Str);
   
   Object* pPtrTxRef;
   
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrTxRef) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTxRef) )
     THROW_INVALID_DSTACK("txRef.commit"_Str);
   
   TxRef* pTxRef = _pTxRef(pPtrTxRef);
@@ -119,7 +119,7 @@ ENTRY("vTxRefCommit"_Str);
   
   bool bCommitted = pTxRef->bCommitTx();
   
-  nnpTask->m_pDataStack->vPushInt(bCommitted);
+  mpTask->m_pDataStack->vPushInt(bCommitted);
   
   EXIT();
 }
@@ -127,13 +127,13 @@ ENTRY("vTxRefCommit"_Str);
 /*----------------------------------------------------------------------------*/
 /* txRef.rollback -- rollback a tx (via a txRef on stack)                     */
 /*----------------------------------------------------------------------------*/
-void Task::vTxRefRollback(NNP_Task nnpTask)
+void Task::vTxRefRollback(MP_Task mpTask)
 {
 ENTRY("vTxRefRollback"_Str);
   
   Object* pPtrTxRef;
   
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrTxRef) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTxRef) )
     THROW_INVALID_DSTACK("txRef.rollback"_Str);
   
   TxRef* pTxRef = _pTxRef(pPtrTxRef);
@@ -141,7 +141,7 @@ ENTRY("vTxRefRollback"_Str);
   
   bool bRolledBack = pTxRef->bRollbackTx();
   
-  nnpTask->m_pDataStack->vPushInt(bRolledBack);
+  mpTask->m_pDataStack->vPushInt(bRolledBack);
   
   EXIT();
 }

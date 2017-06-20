@@ -42,11 +42,11 @@ void Task::vAddPrimitives_Trace(void)
 /*----------------------------------------------------------------------------*/
 /* turn tracing off                                                           */
 /*----------------------------------------------------------------------------*/
-void Task::vTraceOff(NNP_Task nnpTask)
+void Task::vTraceOff(MP_Task mpTask)
 {
   ENTRY("vTraceOff"_Str);
   
-  nnpTask->m_iTracing = 0;
+  mpTask->m_iTracing = 0;
   
   EXIT();
 }
@@ -54,11 +54,11 @@ void Task::vTraceOff(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* turn tracing on                                                            */
 /*----------------------------------------------------------------------------*/
-void Task::vTraceOn(NNP_Task nnpTask)
+void Task::vTraceOn(MP_Task mpTask)
 {
   ENTRY("vTraceOn"_Str);
   
-  nnpTask->m_iTracing = C_TRACE_STEPS;
+  mpTask->m_iTracing = C_TRACE_STEPS;
   
   EXIT();
 }
@@ -66,17 +66,17 @@ void Task::vTraceOn(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* trace point                                                                */
 /*----------------------------------------------------------------------------*/
-void Task::vTracePoint(NNP_Task nnpTask)
+void Task::vTracePoint(MP_Task mpTask)
 {
   ENTRY("vTracePoint"_Str);
   
   s256 sPointName;
   
-  if ( ! nnpTask->m_pDataStack->bPop(sPointName) )
+  if ( ! mpTask->m_pDataStack->bPop(sPointName) )
     THROW_INVALID_DSTACK("tracePoint"_Str);
   
   if (gbTracepoint)
-    nnpTask->vTracePoint(sPointName);
+    mpTask->vTracePoint(sPointName);
   
   EXIT();
 }
@@ -84,16 +84,16 @@ void Task::vTracePoint(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* set tracing                                                                */
 /*----------------------------------------------------------------------------*/
-void Task::vTraceSet(NNP_Task nnpTask)
+void Task::vTraceSet(MP_Task mpTask)
 {
   ENTRY("vTraceSet"_Str);
   
   i8 iTrace;
   
-  if ( ! nnpTask->m_pDataStack->bPop(iTrace) )
+  if ( ! mpTask->m_pDataStack->bPop(iTrace) )
     THROW_INVALID_DSTACK("trace!"_Str);
   
-  nnpTask->m_iTracing = iTrace;
+  mpTask->m_iTracing = iTrace;
   
   EXIT();
 }

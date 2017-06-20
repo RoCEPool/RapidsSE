@@ -41,15 +41,15 @@ void Task::vAddPrimitives_Cast(void)
 /*----------------------------------------------------------------------------*/
 /* (int) -- cast ptr to int                                                   */
 /*----------------------------------------------------------------------------*/
-void Task::vCastInt(NNP_Task nnpTask)
+void Task::vCastInt(MP_Task mpTask)
 {
   ENTRY("vCastInt"_Str);
   
   Object* pPtr;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtr) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtr) )
     THROW_INVALID_DSTACK("(int)"_Str);
   
-  nnpTask->m_pDataStack->vPushInt((i8)pPtr);
+  mpTask->m_pDataStack->vPushInt((i8)pPtr);
   
   EXIT();
 }
@@ -57,15 +57,15 @@ void Task::vCastInt(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* (ptr) -- cast int to ptr                                                   */
 /*----------------------------------------------------------------------------*/
-void Task::vCastPtr(NNP_Task nnpTask)
+void Task::vCastPtr(MP_Task mpTask)
 {
   ENTRY("vCastPtr"_Str);
   
   i8 iInt;
-  if ( ! nnpTask->m_pDataStack->bPop(iInt) )
+  if ( ! mpTask->m_pDataStack->bPop(iInt) )
     THROW_INVALID_DSTACK("(ptr)"_Str);
   
-  nnpTask->m_pDataStack->vPushObject((Object*)iInt);
+  mpTask->m_pDataStack->vPushObject((Object*)iInt);
   
   EXIT();
 }

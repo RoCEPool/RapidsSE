@@ -39,12 +39,12 @@ void Task::vAddPrimitives_TxCollection(void)
 /*----------------------------------------------------------------------------*/
 /* txCollection.dump -- dump of txCollection on data stack                    */
 /*----------------------------------------------------------------------------*/
-void Task::vTxCollectionDump(NNP_Task nnpTask)
+void Task::vTxCollectionDump(MP_Task mpTask)
 {
 ENTRY("vTxCollectionDump"_Str);
   
   Object* pPtrTxCollection;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrTxCollection) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTxCollection) )
     THROW_INVALID_DSTACK("txCollection.dump"_Str);
   
   TxCollection* pTxCollection = _pTxCollection(pPtrTxCollection);
@@ -58,12 +58,12 @@ ENTRY("vTxCollectionDump"_Str);
 /*----------------------------------------------------------------------------*/
 /* txCollection.init -- init of txCollection on data stack                    */
 /*----------------------------------------------------------------------------*/
-void Task::vTxCollectionInit(NNP_Task nnpTask)
+void Task::vTxCollectionInit(MP_Task mpTask)
 {
 ENTRY("vTxCollectionInit"_Str);
   
   Object* pPtrTxCollection;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrTxCollection) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTxCollection) )
     THROW_INVALID_DSTACK("txCollection.init"_Str);
   
   TxCollection* pTxCollection = _pTxCollection(pPtrTxCollection);

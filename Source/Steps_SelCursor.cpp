@@ -49,19 +49,19 @@ void Task::vAddPrimitives_SelCursor(void)
 /*----------------------------------------------------------------------------*/
 /* selCursor.begin -- begin using row cursor                                  */
 /*----------------------------------------------------------------------------*/
-void Task::vSelCursorBegin(NNP_Task nnpTask)
+void Task::vSelCursorBegin(MP_Task mpTask)
 {
 ENTRY("vSelCursorBegin"_Str);
   
   Object* pPtrSelCursor;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrSelCursor) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrSelCursor) )
     THROW_INVALID_DSTACK("selCursor.begin"_Str);
   
   SelCursor* pSelCursor = _pSelCursor(pPtrSelCursor);
   ASSERT(CN_SELCURSOR == pSelCursor->eClass());
   
   i8 iPartn;
-  if ( ! nnpTask->m_pDataStack->bPop(iPartn) )
+  if ( ! mpTask->m_pDataStack->bPop(iPartn) )
     THROW_INVALID_DSTACK("selCursor.begin"_Str);
   
   pSelCursor->vBegin(iPartn);
@@ -72,12 +72,12 @@ ENTRY("vSelCursorBegin"_Str);
 /*----------------------------------------------------------------------------*/
 /* selCursor.delete -- delete a row cursor                                    */
 /*----------------------------------------------------------------------------*/
-void Task::vSelCursorDelete(NNP_Task nnpTask)
+void Task::vSelCursorDelete(MP_Task mpTask)
 {
 ENTRY("vSelCursorDelete"_Str);
   
   Object* pPtrSelCursor;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrSelCursor) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrSelCursor) )
     THROW_INVALID_DSTACK("selCursor.delete"_Str);
   
   SelCursor* pSelCursor = _pSelCursor(pPtrSelCursor);
@@ -94,12 +94,12 @@ ENTRY("vSelCursorDelete"_Str);
 /*----------------------------------------------------------------------------*/
 /* selCursor.end -- end using row cursor                                      */
 /*----------------------------------------------------------------------------*/
-void Task::vSelCursorEnd(NNP_Task nnpTask)
+void Task::vSelCursorEnd(MP_Task mpTask)
 {
 ENTRY("vSelCursorEnd"_Str);
   
   Object* pPtrSelCursor;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrSelCursor) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrSelCursor) )
     THROW_INVALID_DSTACK("selCursor.end"_Str);
   
   SelCursor* pSelCursor = _pSelCursor(pPtrSelCursor);
@@ -113,12 +113,12 @@ ENTRY("vSelCursorEnd"_Str);
 /*----------------------------------------------------------------------------*/
 /* selCursor.first -- set to first and get row                                */
 /*----------------------------------------------------------------------------*/
-void Task::vSelCursorFirst(NNP_Task nnpTask)
+void Task::vSelCursorFirst(MP_Task mpTask)
 {
 ENTRY("vSelCursorFirst"_Str);
   
   Object* pPtrSelCursor;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrSelCursor) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrSelCursor) )
     THROW_INVALID_DSTACK("selCursor.first"_Str);
   
   SelCursor* pSelCursor = _pSelCursor(pPtrSelCursor);
@@ -128,7 +128,7 @@ ENTRY("vSelCursorFirst"_Str);
   
   i8 bRow = pSelCursor->aRowAsStr() ? 1 : 0;
   
-  nnpTask->m_pDataStack->vPushInt(bRow);
+  mpTask->m_pDataStack->vPushInt(bRow);
   
   EXIT();
 }
@@ -136,12 +136,12 @@ ENTRY("vSelCursorFirst"_Str);
 /*----------------------------------------------------------------------------*/
 /* selCursor.get -- get current row                                           */
 /*----------------------------------------------------------------------------*/
-void Task::vSelCursorGet(NNP_Task nnpTask)
+void Task::vSelCursorGet(MP_Task mpTask)
 {
 ENTRY("vSelCursorGet"_Str);
   
   Object* pPtrSelCursor;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrSelCursor) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrSelCursor) )
     THROW_INVALID_DSTACK("selCursor.get"_Str);
   
   SelCursor* pSelCursor = _pSelCursor(pPtrSelCursor);
@@ -151,7 +151,7 @@ ENTRY("vSelCursorGet"_Str);
   
   xRow = (Str*)pSelCursor->aRowAsStr();
   
-  nnpTask->m_pDataStack->vPushS48K(xRow);
+  mpTask->m_pDataStack->vPushS48K(xRow);
   
   EXIT();
 }
@@ -159,12 +159,12 @@ ENTRY("vSelCursorGet"_Str);
 /*----------------------------------------------------------------------------*/
 /* selCursor.hasRow -- is there a current row                                 */
 /*----------------------------------------------------------------------------*/
-void Task::vSelCursorHasRow(NNP_Task nnpTask)
+void Task::vSelCursorHasRow(MP_Task mpTask)
 {
   ENTRY("vSelCursorGet"_Str);
   
   Object* pPtrSelCursor;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrSelCursor) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrSelCursor) )
     THROW_INVALID_DSTACK("selCursor.get"_Str);
   
   SelCursor* pSelCursor = _pSelCursor(pPtrSelCursor);
@@ -172,7 +172,7 @@ void Task::vSelCursorHasRow(NNP_Task nnpTask)
   
   i8 bRow = pSelCursor->pRow() ? 1 : 0;
   
-  nnpTask->m_pDataStack->vPushInt(bRow);
+  mpTask->m_pDataStack->vPushInt(bRow);
   
   EXIT();
 }
@@ -180,12 +180,12 @@ void Task::vSelCursorHasRow(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* selCursor.init -- init a row cursor                                        */
 /*----------------------------------------------------------------------------*/
-void Task::vSelCursorInit(NNP_Task nnpTask)
+void Task::vSelCursorInit(MP_Task mpTask)
 {
 ENTRY("vSelCursorInit"_Str);
   
   Object* pPtrSelCursor;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrSelCursor) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrSelCursor) )
     THROW_INVALID_DSTACK("selCursor.init"_Str);
   
   SelCursor* pSelCursor = _pSelCursor(pPtrSelCursor);
@@ -199,14 +199,14 @@ ENTRY("vSelCursorInit"_Str);
 /*----------------------------------------------------------------------------*/
 /* selCursor::new -- new an row cursor                                         */
 /*----------------------------------------------------------------------------*/
-void Task::vSelCursorNew(NNP_Task nnpTask)
+void Task::vSelCursorNew(MP_Task mpTask)
 {
 ENTRY("vSelCursorNew"_Str);
   
   SelCursor* pSelCursor = new SelCursor;
   ASSERT(CN_SELCURSOR == pSelCursor->eClass());
   
-  nnpTask->m_pDataStack->vPushObject(pSelCursor);
+  mpTask->m_pDataStack->vPushObject(pSelCursor);
   
   EXIT();
 }
@@ -214,12 +214,12 @@ ENTRY("vSelCursorNew"_Str);
 /*----------------------------------------------------------------------------*/
 /* selCursor.next -- advance to next and get row                              */
 /*----------------------------------------------------------------------------*/
-void Task::vSelCursorNext(NNP_Task nnpTask)
+void Task::vSelCursorNext(MP_Task mpTask)
 {
 ENTRY("vSelCursorNext"_Str);
   
   Object* pPtrSelCursor;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrSelCursor) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrSelCursor) )
     THROW_INVALID_DSTACK("selCursor.next"_Str);
   
   SelCursor* pSelCursor = _pSelCursor(pPtrSelCursor);
@@ -229,7 +229,7 @@ ENTRY("vSelCursorNext"_Str);
   
   i8 bRow = pSelCursor->aRowAsStr() ? 1 : 0;
   
-  nnpTask->m_pDataStack->vPushInt(bRow);
+  mpTask->m_pDataStack->vPushInt(bRow);
   
   EXIT();
 }
@@ -237,12 +237,12 @@ ENTRY("vSelCursorNext"_Str);
 /*----------------------------------------------------------------------------*/
 /* selCursor.rowBuffer -- get current rowBuffer                               */
 /*----------------------------------------------------------------------------*/
-void Task::vSelCursorRowBuffer(NNP_Task nnpTask)
+void Task::vSelCursorRowBuffer(MP_Task mpTask)
 {
   ENTRY("vSelCursorRowBuffer"_Str);
   
   Object* pPtrSelCursor;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrSelCursor) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrSelCursor) )
   THROW_INVALID_DSTACK("selCursor.rowBuffer"_Str);
   
   SelCursor* pSelCursor = _pSelCursor(pPtrSelCursor);
@@ -251,7 +251,7 @@ void Task::vSelCursorRowBuffer(NNP_Task nnpTask)
   EntryBuffer* pRowBuffer;
   pRowBuffer = pSelCursor->pRowBuffer();
   
-  nnpTask->m_pDataStack->vPushObject(pRowBuffer);
+  mpTask->m_pDataStack->vPushObject(pRowBuffer);
   
   EXIT();
 }
@@ -259,12 +259,12 @@ void Task::vSelCursorRowBuffer(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* selCursor.table@ -- fetch table from row cursor                            */
 /*----------------------------------------------------------------------------*/
-void Task::vSelCursorTableFetch(NNP_Task nnpTask)
+void Task::vSelCursorTableFetch(MP_Task mpTask)
 {
 ENTRY("vSelCursorTableFetch"_Str);
   
   Object* pPtrSelCursor;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrSelCursor) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrSelCursor) )
     THROW_INVALID_DSTACK("selCursor.table@"_Str);
   
   SelCursor* pSelCursor = _pSelCursor(pPtrSelCursor);
@@ -272,7 +272,7 @@ ENTRY("vSelCursorTableFetch"_Str);
   
   Object* pPtrTable = pSelCursor->pTable();
   
-  nnpTask->m_pDataStack->vPushObject(pPtrTable);
+  mpTask->m_pDataStack->vPushObject(pPtrTable);
   
   EXIT();
 }
@@ -280,19 +280,19 @@ ENTRY("vSelCursorTableFetch"_Str);
 /*----------------------------------------------------------------------------*/
 /* selCursor.table! -- store table into row cursor                            */
 /*----------------------------------------------------------------------------*/
-void Task::vSelCursorTableStore(NNP_Task nnpTask)
+void Task::vSelCursorTableStore(MP_Task mpTask)
 {
 ENTRY("vSelCursorTableStore"_Str);
   
   Object* pPtrSelCursor;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrSelCursor) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrSelCursor) )
     THROW_INVALID_DSTACK("selCursor.table!"_Str);
   
   SelCursor* pSelCursor = _pSelCursor(pPtrSelCursor);
   ASSERT(CN_SELCURSOR == pSelCursor->eClass());
   
   Object* pPtrTable;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrTable) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
     THROW_INVALID_DSTACK("selCursor.table!"_Str);
   
   Table* pTable = _pTable(pPtrTable);

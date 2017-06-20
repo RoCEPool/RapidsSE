@@ -38,13 +38,13 @@ void Task::vAddPrimitives_Error(void)
 /*----------------------------------------------------------------------------*/
 /* error.msg -- get error message given the error code                        */
 /*----------------------------------------------------------------------------*/
-void Task::vErrorMsg(NNP_Task nnpTask)
+void Task::vErrorMsg(MP_Task mpTask)
 {
   ENTRY("vErrorMsg"_Str);
   
   
   i8 iErrorCode;
-  if ( ! nnpTask->m_pDataStack->bPop(iErrorCode) )
+  if ( ! mpTask->m_pDataStack->bPop(iErrorCode) )
     THROW_INVALID_DSTACK("error.msg"_Str);
   
   if (iErrorCode < EC_NONE || iErrorCode > EC_ENUMS)
@@ -53,7 +53,7 @@ void Task::vErrorMsg(NNP_Task nnpTask)
   s256 sErrorMsg;
   sErrorMsg = aEC[iErrorCode];
   
-  nnpTask->m_pDataStack->vPushS256(sErrorMsg);
+  mpTask->m_pDataStack->vPushS256(sErrorMsg);
   
   EXIT();
 }

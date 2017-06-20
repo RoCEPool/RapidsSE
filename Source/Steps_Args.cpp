@@ -41,7 +41,7 @@ void Task::vAddPrimitives_Args(void)
 /*----------------------------------------------------------------------------*/
 /* args.print -- print arguments                                              */
 /*----------------------------------------------------------------------------*/
-void Task::vArgsPrint(NNP_Task nnpTask)
+void Task::vArgsPrint(MP_Task mpTask)
 {
 ENTRY("vArgsPrint"_Str);
   

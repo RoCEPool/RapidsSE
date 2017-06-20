@@ -113,12 +113,12 @@ Task::Task(void)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Task::Task(NNP_Task nnpTask)
+Task::Task(MP_Task mpTask)
 : Object(CN_TASK)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  ASSERT(*nnpTask);
+  ASSERT(*mpTask);
   ASSERT(gpTaskList);
   
   vInit(""_Str);
@@ -249,10 +249,10 @@ void Task::vInitialiseMain(void)
   
   vAddRoutines();
 
-  NNP_Task nnpTask(this);
+  MP_Task mpTask(this);
   
 #ifdef MUNGED
-  vAddMunged(nnpTask);
+  vAddMunged(mpTask);
 #endif
 }
 

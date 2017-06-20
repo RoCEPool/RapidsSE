@@ -46,15 +46,15 @@ void Task::vAddPrimitives_To(void)
 /*----------------------------------------------------------------------------*/
 /* >binval -- change object to binval                                         */
 /*----------------------------------------------------------------------------*/
-void Task::vToBinVal(NNP_Task nnpTask)
+void Task::vToBinVal(MP_Task mpTask)
 {
   ENTRY("vToBinVal"_Str);
   
   Object* pObject;
-  if ( ! nnpTask->m_pDataStack->bPop(pObject) )
+  if ( ! mpTask->m_pDataStack->bPop(pObject) )
     THROW_INVALID_RSTACK(">BinVal"_Str);
   
-  nnpTask->m_pDataStack->vPushBinary(pObject);
+  mpTask->m_pDataStack->vPushBinary(pObject);
   
   EXIT();
 }
@@ -62,12 +62,12 @@ void Task::vToBinVal(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* >body -- convert word pointer to body pointer                              */
 /*----------------------------------------------------------------------------*/
-void Task::vToBody(NNP_Task nnpTask)
+void Task::vToBody(MP_Task mpTask)
 {
   ENTRY("vToBody"_Str);
   
   Object* pWordObject;
-  if ( ! nnpTask->m_pDataStack->bPop(pWordObject) )
+  if ( ! mpTask->m_pDataStack->bPop(pWordObject) )
     THROW_INVALID_DSTACK(">body"_Str);
   Word* pWord = _pWord(pWordObject);
   
@@ -76,7 +76,7 @@ void Task::vToBody(NNP_Task nnpTask)
   
   Object* pPtrBody = reinterpret_cast<Object*>(pBody);
   
-  nnpTask->m_pDataStack->vPushObject(pPtrBody);
+  mpTask->m_pDataStack->vPushObject(pPtrBody);
   
   EXIT();
 }
@@ -84,17 +84,17 @@ void Task::vToBody(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* >int -- convert value to int                                               */
 /*----------------------------------------------------------------------------*/
-void Task::vToInt(NNP_Task nnpTask)
+void Task::vToInt(MP_Task mpTask)
 {
   ENTRY("vToInt"_Str);
   
   s32 sInt;
-  if ( ! nnpTask->m_pDataStack->bPop(sInt) )
+  if ( ! mpTask->m_pDataStack->bPop(sInt) )
     THROW_INVALID_DSTACK(">int"_Str);
   
   i8 i = sInt.iToI8();
   
-  nnpTask->m_pDataStack->vPushInt(i);
+  mpTask->m_pDataStack->vPushInt(i);
   
   EXIT();
 }
@@ -102,15 +102,15 @@ void Task::vToInt(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* >object -- change binval to object                                         */
 /*----------------------------------------------------------------------------*/
-void Task::vToObject(NNP_Task nnpTask)
+void Task::vToObject(MP_Task mpTask)
 {
   ENTRY("vToObject"_Str);
   
   Object* pObject;
-  if ( ! nnpTask->m_pDataStack->bPopBinary(pObject) )
+  if ( ! mpTask->m_pDataStack->bPopBinary(pObject) )
     THROW_INVALID_RSTACK(">Object"_Str);
   
-  nnpTask->m_pDataStack->vPushObject(pObject);
+  mpTask->m_pDataStack->vPushObject(pObject);
   
   EXIT();
 }
@@ -118,17 +118,17 @@ void Task::vToObject(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* >ptr -- convert int to ptr                                                 */
 /*----------------------------------------------------------------------------*/
-void Task::vToPtr(NNP_Task nnpTask)
+void Task::vToPtr(MP_Task mpTask)
 {
   ENTRY("vToPtr"_Str);
   
   i8 iPtr;
-  if ( ! nnpTask->m_pDataStack->bPop(iPtr) )
+  if ( ! mpTask->m_pDataStack->bPop(iPtr) )
     THROW_INVALID_DSTACK(">str"_Str);
   
   Object* pPtr = (Object*)iPtr;
   
-  nnpTask->m_pDataStack->vPushObject(pPtr);
+  mpTask->m_pDataStack->vPushObject(pPtr);
   
   EXIT();
 }
@@ -136,13 +136,13 @@ void Task::vToPtr(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* >seitf -- convert int to seitf ptr                                         */
 /*----------------------------------------------------------------------------*/
-void Task::vToSEitf(NNP_Task nnpTask)
+void Task::vToSEitf(MP_Task mpTask)
 {
   ENTRY("vToSEitf"_Str);
   
   i8 iVal;
   
-  if ( ! nnpTask->m_pDataStack->bPop(iVal) )
+  if ( ! mpTask->m_pDataStack->bPop(iVal) )
     THROW_INVALID_DSTACK(">seitf"_Str);
   
   SEitf* pSEitf = _pSEitf(iVal);
@@ -150,7 +150,7 @@ void Task::vToSEitf(NNP_Task nnpTask)
   
   Object* pPtrSEitf = pSEitf;
   
-  nnpTask->m_pDataStack->vPushObject(pPtrSEitf);
+  mpTask->m_pDataStack->vPushObject(pPtrSEitf);
   
   EXIT();
 }
@@ -158,18 +158,18 @@ void Task::vToSEitf(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* >str -- convert value to str                                               */
 /*----------------------------------------------------------------------------*/
-void Task::vToStr(NNP_Task nnpTask)
+void Task::vToStr(MP_Task mpTask)
 {
   ENTRY("vToStr"_Str);
   
   ValWrk xVal;
-  if ( ! nnpTask->m_pDataStack->bPop(xVal) )
+  if ( ! mpTask->m_pDataStack->bPop(xVal) )
     THROW_INVALID_DSTACK(">str"_Str);
   
   s48K sString;
   ValLib::vToString(xVal.pNestedValueSelf(),sString);
   
-  nnpTask->m_pDataStack->vPushS48K(sString);
+  mpTask->m_pDataStack->vPushS48K(sString);
   
   EXIT();
 }
@@ -177,17 +177,17 @@ void Task::vToStr(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* >task -- convert int to task ptr                                           */
 /*----------------------------------------------------------------------------*/
-void Task::vToTask(NNP_Task nnpTask)
+void Task::vToTask(MP_Task mpTask)
 {
   ENTRY("vToTask"_Str);
   
   i8 iVal;
-  if ( ! nnpTask->m_pDataStack->bPop(iVal) )
+  if ( ! mpTask->m_pDataStack->bPop(iVal) )
     THROW_INVALID_DSTACK(">task"_Str);
   
   Object* pPtrTask = _pTask(iVal);
   
-  nnpTask->m_pDataStack->vPushObject(pPtrTask);
+  mpTask->m_pDataStack->vPushObject(pPtrTask);
   
   EXIT();
 }

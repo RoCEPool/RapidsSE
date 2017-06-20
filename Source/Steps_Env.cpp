@@ -38,13 +38,13 @@ void Task::vAddPrimitives_Env(void)
 /*----------------------------------------------------------------------------*/
 /* env@ -- get environment variable                                           */
 /*----------------------------------------------------------------------------*/
-void Task::vEnvGet(NNP_Task nnpTask)
+void Task::vEnvGet(MP_Task mpTask)
 {
   ENTRY("vEnvGet"_Str);
   
   s256 sEnvName;
   
-  if ( ! nnpTask->m_pDataStack->bPop(sEnvName) )
+  if ( ! mpTask->m_pDataStack->bPop(sEnvName) )
     THROW_INVALID_DSTACK("env@"_Str);
   
   s256 sEnvVal;
@@ -52,7 +52,7 @@ void Task::vEnvGet(NNP_Task nnpTask)
   if (! Env::bGet(sEnvName,sEnvVal))
     sEnvVal = ""_Str;
   
-  nnpTask->m_pDataStack->vPushS256(sEnvVal);
+  mpTask->m_pDataStack->vPushS256(sEnvVal);
   
   EXIT();
 }

@@ -42,12 +42,12 @@ void Task::vAddPrimitives_Lock(void)
 /*----------------------------------------------------------------------------*/
 /* lock.dropread -- drop read lock                                            */
 /*----------------------------------------------------------------------------*/
-void Task::vLockDropRead(NNP_Task nnpTask)
+void Task::vLockDropRead(MP_Task mpTask)
 {
 ENTRY("vLockDropRead"_Str);
   
   Object* pPtrLock;;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrLock) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrLock) )
     THROW_INVALID_DSTACK("lock.dropread"_Str);
   
   Lock* pLock = _pLock(pPtrLock);
@@ -62,12 +62,12 @@ ENTRY("vLockDropRead"_Str);
 /*----------------------------------------------------------------------------*/
 /* lock.dropwrite -- drop write lock                                          */
 /*----------------------------------------------------------------------------*/
-void Task::vLockDropWrite(NNP_Task nnpTask)
+void Task::vLockDropWrite(MP_Task mpTask)
 {
 ENTRY("vLockDropWrite"_Str);
 
   Object* pPtrLock;;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrLock) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrLock) )
     THROW_INVALID_DSTACK("lock.dropwrite"_Str);
   
   Lock* pLock = _pLock(pPtrLock);
@@ -82,12 +82,12 @@ ENTRY("vLockDropWrite"_Str);
 /*----------------------------------------------------------------------------*/
 /* lock.grabread -- grab read lock                                            */
 /*----------------------------------------------------------------------------*/
-void Task::vLockGrabRead(NNP_Task nnpTask)
+void Task::vLockGrabRead(MP_Task mpTask)
 {
 ENTRY("vLockGrabRead"_Str);
 
   Object* pPtrLock;;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrLock) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrLock) )
     THROW_INVALID_DSTACK("lock.grabread"_Str);
   
   Lock* pLock = _pLock(pPtrLock);
@@ -102,12 +102,12 @@ ENTRY("vLockGrabRead"_Str);
 /*----------------------------------------------------------------------------*/
 /* lock.grabwrite -- grab write lock                                          */
 /*----------------------------------------------------------------------------*/
-void Task::vLockGrabWrite(NNP_Task nnpTask)
+void Task::vLockGrabWrite(MP_Task mpTask)
 {
 ENTRY("vLockGrabWrite"_Str);
 
   Object* pPtrLock;;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrLock) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrLock) )
     THROW_INVALID_DSTACK("lock.grabwrite"_Str);
   
   Lock* pLock = _pLock(pPtrLock);
@@ -122,12 +122,12 @@ ENTRY("vLockGrabWrite"_Str);
 /*----------------------------------------------------------------------------*/
 /* lock.init -- initialise lock                                               */
 /*----------------------------------------------------------------------------*/
-void Task::vLockInit(NNP_Task nnpTask)
+void Task::vLockInit(MP_Task mpTask)
 {
 ENTRY("vLockInit"_Str);
   
   Object* pPtrLock;;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrLock) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrLock) )
     THROW_INVALID_DSTACK("lock.init"_Str);
   
   Lock* pLock = _pLock(pPtrLock);

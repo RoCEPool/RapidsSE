@@ -60,7 +60,7 @@ TaskSet::TaskSet(void)
 /*----------------------------------------------------------------------------*/
 /* append task to this sequence                                               */
 /*----------------------------------------------------------------------------*/
-void TaskSet::vAppend(NNP_Task nnpTask)
+void TaskSet::vAppend(MP_Task mpTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASKSET,_FOOTER_);
   
@@ -71,11 +71,11 @@ void TaskSet::vAppend(NNP_Task nnpTask)
     ASSERT(0 == m_iCount);
     ASSERT( ! m_npTail );
     
-    m_npHead  = *nnpTask;
-    m_npTail  = *nnpTask;
+    m_npHead  = *mpTask;
+    m_npTail  = *mpTask;
     
-    nnpTask->vNextInSet(nullptr);
-    nnpTask->vPrevInSet(nullptr);
+    mpTask->vNextInSet(nullptr);
+    mpTask->vPrevInSet(nullptr);
     
     m_iCount = 1;
   }
@@ -85,11 +85,11 @@ void TaskSet::vAppend(NNP_Task nnpTask)
     ASSERT(m_npHead);
     ASSERT(m_npTail);
     
-    nnpTask->vNextInSet(nullptr);
-    nnpTask->vPrevInSet(m_npTail);
+    mpTask->vNextInSet(nullptr);
+    mpTask->vPrevInSet(m_npTail);
     
-    m_npTail->vNextInSet(*nnpTask);
-    m_npTail = *nnpTask;
+    m_npTail->vNextInSet(*mpTask);
+    m_npTail = *mpTask;
 
     m_iCount++;
   }
@@ -153,14 +153,14 @@ NP_Task TaskSet::npPop(void)
 /*----------------------------------------------------------------------------*/
 /* remove specific tx from this sequence                                      */
 /*----------------------------------------------------------------------------*/
-void TaskSet::vRemove(NNP_Task nnpTask)
+void TaskSet::vRemove(MP_Task mpTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASKSET,_FOOTER_);
   
   m_xLock.vGrabWrite();
   
-  NP_Task npTaskNext = nnpTask->npNextInSet();
-  NP_Task npTaskPrev = nnpTask->npPrevInSet();
+  NP_Task npTaskNext = mpTask->npNextInSet();
+  NP_Task npTaskPrev = mpTask->npPrevInSet();
   
   if (npTaskPrev != nullptr)
     npTaskPrev->vNextInSet(npTaskNext);
@@ -168,10 +168,10 @@ void TaskSet::vRemove(NNP_Task nnpTask)
   if (npTaskNext != nullptr)
     npTaskNext->vPrevInSet(npTaskPrev);
 
-  if (*nnpTask == *m_npHead)
+  if (*mpTask == *m_npHead)
     m_npHead = npTaskNext;
 
-  if (*nnpTask == *m_npTail)
+  if (*mpTask == *m_npTail)
     m_npTail = npTaskPrev;
   
   m_iCount--;

@@ -49,7 +49,7 @@ void Task::vAddPrimitives_Input(void)
 /*----------------------------------------------------------------------------*/
 /* accept -- accept input string and push on stack                            */
 /*----------------------------------------------------------------------------*/
-void Task::vInputAccept(NNP_Task nnpTask)
+void Task::vInputAccept(MP_Task mpTask)
 {
   ENTRY("vInputAccept"_Str);
   
@@ -64,7 +64,7 @@ void Task::vInputAccept(NNP_Task nnpTask)
   
   _pStrVal(&xWsp)->vAreaSize();
   
-  nnpTask->m_pDataStack->vPushValWrk(xWsp);
+  mpTask->m_pDataStack->vPushValWrk(xWsp);
   
   EXIT();
 }
@@ -72,11 +72,11 @@ void Task::vInputAccept(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* input.close -- close current input stream                                  */
 /*----------------------------------------------------------------------------*/
-void Task::vInputClose(NNP_Task nnpTask)
+void Task::vInputClose(MP_Task mpTask)
 {
 ENTRY("vInputClose"_Str);
   
-  nnpTask->m_pTokeniser->vUseEnd();
+  mpTask->m_pTokeniser->vUseEnd();
   
   EXIT();
 }
@@ -84,13 +84,13 @@ ENTRY("vInputClose"_Str);
 /*----------------------------------------------------------------------------*/
 /* input.depth -- push current depth of input stream onto data stack         */
 /*----------------------------------------------------------------------------*/
-void Task::vInputDepth(NNP_Task nnpTask)
+void Task::vInputDepth(MP_Task mpTask)
 {
 ENTRY("vInputDepth"_Str);
   
-  i8 iDepth = nnpTask->m_pTokeniser->iDepth();
+  i8 iDepth = mpTask->m_pTokeniser->iDepth();
   
-  nnpTask->m_pDataStack->vPushInt(iDepth);
+  mpTask->m_pDataStack->vPushInt(iDepth);
   
   EXIT();
 }
@@ -98,17 +98,17 @@ ENTRY("vInputDepth"_Str);
 /*----------------------------------------------------------------------------*/
 /* input.next -- get next input token from current input stream               */
 /*----------------------------------------------------------------------------*/
-void Task::vInputNext(NNP_Task nnpTask)
+void Task::vInputNext(MP_Task mpTask)
 {
 ENTRY("vInputNext"_Str);
   
-  if (nnpTask->m_iTracing) {
-    ASSERT(nnpTask->m_iTracing);
+  if (mpTask->m_iTracing) {
+    ASSERT(mpTask->m_iTracing);
   }
   
-  char* aToken = nnpTask->m_pTokeniser->sToken().s();
+  char* aToken = mpTask->m_pTokeniser->sToken().s();
   
-  eTK eToken = nnpTask->m_pTokeniser->eNextToken(aToken);
+  eTK eToken = mpTask->m_pTokeniser->eNextToken(aToken);
   
   EXIT();
 }
@@ -116,16 +116,16 @@ ENTRY("vInputNext"_Str);
 /*----------------------------------------------------------------------------*/
 /* input.open -- open new input using filepath on data stack                  */
 /*----------------------------------------------------------------------------*/
-void Task::vInputOpen(NNP_Task nnpTask)
+void Task::vInputOpen(MP_Task mpTask)
 {
 ENTRY("vInputOpen"_Str);
   
   s256 sFilePath;
   
-  if ( ! nnpTask->m_pDataStack->bPop(sFilePath) )
+  if ( ! mpTask->m_pDataStack->bPop(sFilePath) )
     THROW_INVALID_DSTACK("input.open"_Str);
   
-  bool bOpened = nnpTask->m_pTokeniser->bUseFile(sFilePath);
+  bool bOpened = mpTask->m_pTokeniser->bUseFile(sFilePath);
   
   if ( ! bOpened )
     THROW("No such file: %s"_Str,sFilePath.s());
@@ -136,11 +136,11 @@ ENTRY("vInputOpen"_Str);
 /*----------------------------------------------------------------------------*/
 /* input.pop -- pop to previous input stream                                  */
 /*----------------------------------------------------------------------------*/
-void Task::vInputPop(NNP_Task nnpTask)
+void Task::vInputPop(MP_Task mpTask)
 {
 ENTRY("vInputPop"_Str);
   
-  bool bPopped = nnpTask->m_pTokeniser->bPop();
+  bool bPopped = mpTask->m_pTokeniser->bPop();
   ASSERT(bPopped);
   
   EXIT();
@@ -149,11 +149,11 @@ ENTRY("vInputPop"_Str);
 /*----------------------------------------------------------------------------*/
 /* input.push -- push input stream, allowing for new input stream             */
 /*----------------------------------------------------------------------------*/
-void Task::vInputPush(NNP_Task nnpTask)
+void Task::vInputPush(MP_Task mpTask)
 {
 ENTRY("vInputPush"_Str);
   
-  nnpTask->m_pTokeniser->vPush();
+  mpTask->m_pTokeniser->vPush();
   
   EXIT();
 }
@@ -161,11 +161,11 @@ ENTRY("vInputPush"_Str);
 /*----------------------------------------------------------------------------*/
 /* input.stdin -- use stdin as new input stream                               */
 /*----------------------------------------------------------------------------*/
-void Task::vInputStdin(NNP_Task nnpTask)
+void Task::vInputStdin(MP_Task mpTask)
 {
 ENTRY("vInputStdin"_Str);
   
-  nnpTask->m_pTokeniser->vUseStdin();
+  mpTask->m_pTokeniser->vUseStdin();
   
   EXIT();
 }
@@ -173,20 +173,20 @@ ENTRY("vInputStdin"_Str);
 /*----------------------------------------------------------------------------*/
 /* input.text -- use string as new input stream                               */
 /*----------------------------------------------------------------------------*/
-void Task::vInputText(NNP_Task nnpTask)
+void Task::vInputText(MP_Task mpTask)
 {
 ENTRY("vInputText"_Str);
   
-  if (nnpTask->m_iTracing) {
-    ASSERT(nnpTask->m_iTracing);
+  if (mpTask->m_iTracing) {
+    ASSERT(mpTask->m_iTracing);
   }
   
   s48K sInput;                                             //! NEED STACK CHECKS
   
-  if ( ! nnpTask->m_pDataStack->bPop(sInput) )
+  if ( ! mpTask->m_pDataStack->bPop(sInput) )
     THROW_INVALID_DSTACK("input.text"_Str);
     
-  nnpTask->m_pTokeniser->vUseString(sInput);
+  mpTask->m_pTokeniser->vUseString(sInput);
   
   EXIT();
 }
@@ -194,11 +194,11 @@ ENTRY("vInputText"_Str);
 /*----------------------------------------------------------------------------*/
 /* input.token -- push current token of input stream onto data stack          */
 /*----------------------------------------------------------------------------*/
-void Task::vInputToken(NNP_Task nnpTask)
+void Task::vInputToken(MP_Task mpTask)
 {
 ENTRY("vInputToken"_Str);
   
-  nnpTask->m_pDataStack->vPushS48K(nnpTask->m_pTokeniser->sToken());
+  mpTask->m_pDataStack->vPushS48K(mpTask->m_pTokeniser->sToken());
   
   EXIT();
 }
@@ -206,13 +206,13 @@ ENTRY("vInputToken"_Str);
 /*----------------------------------------------------------------------------*/
 /* input.type -- push current token type onto data stack                      */
 /*----------------------------------------------------------------------------*/
-void Task::vInputType(NNP_Task nnpTask)
+void Task::vInputType(MP_Task mpTask)
 {
 ENTRY("vInputType"_Str);
   
-  eTK eTokenType = nnpTask->m_pTokeniser->eToken();
+  eTK eTokenType = mpTask->m_pTokeniser->eToken();
   
-  nnpTask->m_pDataStack->vPushInt(eTokenType);
+  mpTask->m_pDataStack->vPushInt(eTokenType);
   
   EXIT();
 }
@@ -220,13 +220,13 @@ ENTRY("vInputType"_Str);
 /*----------------------------------------------------------------------------*/
 /* token: -- token colon                                                      */
 /*----------------------------------------------------------------------------*/
-void Task::vTokenColon(NNP_Task nnpTask)
+void Task::vTokenColon(MP_Task mpTask)
 {
   ENTRY("vTokenColon"_Str);
   
-  nnpTask->m_pTokeniser->vNextToken();
+  mpTask->m_pTokeniser->vNextToken();
   
-  nnpTask->m_pDataStack->vPushS48K(nnpTask->m_pTokeniser->sToken());
+  mpTask->m_pDataStack->vPushS48K(mpTask->m_pTokeniser->sToken());
   
   EXIT();
 }

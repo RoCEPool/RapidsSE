@@ -46,14 +46,14 @@ void Task::vAddPrimitives_Address(void)
 /*----------------------------------------------------------------------------*/
 /* eql -- test top two address on data stack for equality                     */
 /*----------------------------------------------------------------------------*/
-void Task::vAddressEqual(NNP_Task nnpTask)
+void Task::vAddressEqual(MP_Task mpTask)
 {
   ENTRY("vAddressEql"_Str);
   
   ValWrk xAddressA;
   ValWrk xAddressB;
   
-  if ( ! nnpTask->m_pDataStack->bPop(xAddressA,xAddressB) )
+  if ( ! mpTask->m_pDataStack->bPop(xAddressA,xAddressB) )
     THROW_INVALID_DSTACK("eql"_Str);
   
   i8 iA = xAddressA.iNestedAsInt();
@@ -61,7 +61,7 @@ void Task::vAddressEqual(NNP_Task nnpTask)
   
   i8 r = iA == iB;
   
-  nnpTask->m_pDataStack->vPushInt(r);
+  mpTask->m_pDataStack->vPushInt(r);
   
   EXIT();
 }
@@ -69,12 +69,12 @@ void Task::vAddressEqual(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* @ -- fetch value using pointer on stack                                    */
 /*----------------------------------------------------------------------------*/
-void Task::vAddressFetch(NNP_Task nnpTask)
+void Task::vAddressFetch(MP_Task mpTask)
 {
   ENTRY("vAddressFetch"_Str);
   
   Object* pObject;
-  if ( ! nnpTask->m_pDataStack->bPop(pObject) )
+  if ( ! mpTask->m_pDataStack->bPop(pObject) )
     THROW_INVALID_DSTACK("@"_Str);
   
   ValWrk xValFetched;
@@ -104,7 +104,7 @@ void Task::vAddressFetch(NNP_Task nnpTask)
       THROW("Invalid eClass %lld"_Str,eClass);
   }
   
-  nnpTask->m_pDataStack->vPushValWrk(xValFetched);
+  mpTask->m_pDataStack->vPushValWrk(xValFetched);
   
   EXIT();
 }
@@ -112,16 +112,16 @@ void Task::vAddressFetch(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* ! -- store value using pointer on stack                                    */
 /*----------------------------------------------------------------------------*/
-void Task::vAddressStore(NNP_Task nnpTask)
+void Task::vAddressStore(MP_Task mpTask)
 {
   ENTRY("vAddressStore"_Str);
   
   Object* pObject;
-  if ( ! nnpTask->m_pDataStack->bPop(pObject) )
+  if ( ! mpTask->m_pDataStack->bPop(pObject) )
     THROW_INVALID_DSTACK("!"_Str);
   
   ValWrk xValStored;
-  if ( ! nnpTask->m_pDataStack->bPop(xValStored) )
+  if ( ! mpTask->m_pDataStack->bPop(xValStored) )
     THROW_INVALID_DSTACK("!"_Str);
   
   Value* pValue = reinterpret_cast<Value*>(pObject);

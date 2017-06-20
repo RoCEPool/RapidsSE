@@ -38,12 +38,12 @@ void Task::vAddPrimitives_Row(void)
 /*----------------------------------------------------------------------------*/
 /* row.string -- get row as string                                            */
 /*----------------------------------------------------------------------------*/
-void Task::vRowString(NNP_Task nnpTask)
+void Task::vRowString(MP_Task mpTask)
 {
   ENTRY("vRowString"_Str);
   
   Object* pPtrRow;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrRow) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrRow) )
     THROW_INVALID_DSTACK("row.string"_Str);
   
   Entry* pRow = _pEntry(pPtrRow);
@@ -56,7 +56,7 @@ void Task::vRowString(NNP_Task nnpTask)
   StrVal* pStrVal = reinterpret_cast<StrVal*>(pRow->aRow());
   s256 sRow = pStrVal->aStr();
   
-  nnpTask->m_pDataStack->vPushS256(sRow);
+  mpTask->m_pDataStack->vPushS256(sRow);
   EXIT();
 }
 

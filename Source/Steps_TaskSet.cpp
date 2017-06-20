@@ -41,13 +41,13 @@ void Task::vAddPrimitives_TaskSet(void)
 /*----------------------------------------------------------------------------*/
 /* taskset.append -- taskset append                                           */
 /*----------------------------------------------------------------------------*/
-void Task::vTaskSetAppend(NNP_Task nnpTask)
+void Task::vTaskSetAppend(MP_Task mpTask)
 {
 ENTRY("vTaskSetAppend"_Str);
   
   Object* pObject;
   
-  if ( ! nnpTask->m_pDataStack->bPop(pObject) )
+  if ( ! mpTask->m_pDataStack->bPop(pObject) )
     THROW_INVALID_DSTACK("taskset.append"_Str);
   
   ASSERT(CN_TASKSET == pObject->eClass());
@@ -55,7 +55,7 @@ ENTRY("vTaskSetAppend"_Str);
   TaskSet* pTaskSet = static_cast<TaskSet*>(pObject);
   
   Object* pTaskObject;
-  if ( ! nnpTask->m_pDataStack->bPop(pTaskObject) )
+  if ( ! mpTask->m_pDataStack->bPop(pTaskObject) )
     THROW_INVALID_DSTACK("taskset.append"_Str);
   Task* pThatTask = _pTask(pTaskObject);
   
@@ -67,13 +67,13 @@ ENTRY("vTaskSetAppend"_Str);
 /*----------------------------------------------------------------------------*/
 /* taskset.dump -- taskset dump                                               */
 /*----------------------------------------------------------------------------*/
-void Task::vTaskSetDump(NNP_Task nnpTask)
+void Task::vTaskSetDump(MP_Task mpTask)
 {
 ENTRY("vTaskSetDump"_Str);
   
   Object* pObject;
   
-  if ( ! nnpTask->m_pDataStack->bPop(pObject) )
+  if ( ! mpTask->m_pDataStack->bPop(pObject) )
     THROW_INVALID_DSTACK("taskset.dump"_Str);
   
   ASSERT(CN_TASKSET == pObject->eClass());
@@ -88,13 +88,13 @@ ENTRY("vTaskSetDump"_Str);
 /*----------------------------------------------------------------------------*/
 /* taskset.init -- taskset init                                               */
 /*----------------------------------------------------------------------------*/
-void Task::vTaskSetInit(NNP_Task nnpTask)
+void Task::vTaskSetInit(MP_Task mpTask)
 {
 ENTRY("vTaskSetInit"_Str);
   
   Object* pObject;
   
-  if ( ! nnpTask->m_pDataStack->bPop(pObject) )
+  if ( ! mpTask->m_pDataStack->bPop(pObject) )
     THROW_INVALID_DSTACK("taskset.init"_Str);
   
   ASSERT(CN_TASKSET == pObject->eClass());
@@ -109,13 +109,13 @@ ENTRY("vTaskSetInit"_Str);
 /*----------------------------------------------------------------------------*/
 /* taskset::new -- create new taskset                                         */
 /*----------------------------------------------------------------------------*/
-void Task::vTaskSetNew(NNP_Task nnpTask)
+void Task::vTaskSetNew(MP_Task mpTask)
 {
   ENTRY("vTaskSetNew"_Str);
 
   TaskSet* mpTaskSet = new TaskSet;
   
-  nnpTask->m_pDataStack->vPushObject(mpTaskSet);
+  mpTask->m_pDataStack->vPushObject(mpTaskSet);
   
   EXIT();
 }

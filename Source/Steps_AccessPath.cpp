@@ -44,13 +44,13 @@ void Task::vAddPrimitives_AccessPath(void)
 /*----------------------------------------------------------------------------*/
 /* accessPath.delete -- delete an access path ( accessPath -- )               */
 /*----------------------------------------------------------------------------*/
-void Task::vAccessPathDelete(NNP_Task nnpTask)
+void Task::vAccessPathDelete(MP_Task mpTask)
 {
 ENTRY("vAccessPathDelete"_Str);
   
   Object* pPtrAccessPath;
   
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrAccessPath) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrAccessPath) )
     THROW_INVALID_DSTACK("accessPath.delete"_Str);
   
   AccessPath* pAccessPath = _pAccessPath(pPtrAccessPath);
@@ -63,13 +63,13 @@ ENTRY("vAccessPathDelete"_Str);
 /*----------------------------------------------------------------------------*/
 /* accessPath.genPaths -- generate all access paths for table                 */
 /*----------------------------------------------------------------------------*/
-void Task::vAccessPathGenPaths(NNP_Task nnpTask)
+void Task::vAccessPathGenPaths(MP_Task mpTask)
 {
   ENTRY("vAccessPathDelete"_Str);
   
   Object* pPtrAccessPath;
   
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrAccessPath) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrAccessPath) )
     THROW_INVALID_DSTACK("accessPath.delete"_Str);
   
   AccessPath* pAccessPath = _pAccessPath(pPtrAccessPath);
@@ -82,7 +82,7 @@ void Task::vAccessPathGenPaths(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* accessPath::New -- new a file ( -- file )                                  */
 /*----------------------------------------------------------------------------*/
-void Task::vAccessPathNew(NNP_Task nnpTask)
+void Task::vAccessPathNew(MP_Task mpTask)
 {
 ENTRY("vAccessPathNew"_Str);
   
@@ -91,7 +91,7 @@ ENTRY("vAccessPathNew"_Str);
   Object* pPtrAccessPath;
   pPtrAccessPath = (Object*)pAccessPath;
   
-  nnpTask->m_pDataStack->vPushObject(pPtrAccessPath);
+  mpTask->m_pDataStack->vPushObject(pPtrAccessPath);
   
   EXIT();
 }
@@ -99,17 +99,17 @@ ENTRY("vAccessPathNew"_Str);
 /*----------------------------------------------------------------------------*/
 /* accessPath.parse -- parse where string (where accessPath -- technique)     */
 /*----------------------------------------------------------------------------*/
-void Task::vAccessPathParse(NNP_Task nnpTask)
+void Task::vAccessPathParse(MP_Task mpTask)
 {
   ENTRY("vAccessPathParse"_Str);
   
   Object* pPtrAccessPath;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrAccessPath) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrAccessPath) )
     THROW_INVALID_DSTACK("accessPath.parse"_Str);
   AccessPath* pAccessPath = _pAccessPath(pPtrAccessPath);
   
   s48K sWhere;
-  if ( ! nnpTask->m_pDataStack->bPop(sWhere) )
+  if ( ! mpTask->m_pDataStack->bPop(sWhere) )
     THROW_INVALID_DSTACK("accessPath.parse"_Str);
   
   pAccessPath->vWhereString(sWhere);
@@ -119,8 +119,8 @@ void Task::vAccessPathParse(NNP_Task nnpTask)
   s32 sValue_high  = "1"_Str;
   s32 sIndexNm = "jCdt_idx1"_Str;
   
-  //nnpTask->m_pDataStack->vPushS32(sValue);
-  //  nnpTask->m_pDataStack->vPushInt(FT_LOWER);
+  //mpTask->m_pDataStack->vPushS32(sValue);
+  //  mpTask->m_pDataStack->vPushInt(FT_LOWER);
   
   eFT eFetchTechnique = FT_NONE;
   
@@ -162,15 +162,15 @@ void Task::vAccessPathParse(NNP_Task nnpTask)
     // value
     pTokeniser->vNextToken();
     sValue_high = pTokeniser->sToken();
-    nnpTask->m_pDataStack->vPushS32(sValue_high);
-    nnpTask->m_pDataStack->vPushS32(sValue_low);
-    nnpTask->m_pDataStack->vPushS32(sIndexNm);
-    nnpTask->m_pDataStack->vPushInt(eFetchTechnique);
+    mpTask->m_pDataStack->vPushS32(sValue_high);
+    mpTask->m_pDataStack->vPushS32(sValue_low);
+    mpTask->m_pDataStack->vPushS32(sIndexNm);
+    mpTask->m_pDataStack->vPushInt(eFetchTechnique);
   }
   else {
-    nnpTask->m_pDataStack->vPushS32(sValue_low);
-    nnpTask->m_pDataStack->vPushS32(sIndexNm);
-    nnpTask->m_pDataStack->vPushInt(eFetchTechnique);
+    mpTask->m_pDataStack->vPushS32(sValue_low);
+    mpTask->m_pDataStack->vPushS32(sIndexNm);
+    mpTask->m_pDataStack->vPushInt(eFetchTechnique);
   }
   delete pTokeniser;
   
@@ -180,17 +180,17 @@ void Task::vAccessPathParse(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* accessPath.set -- set access path ( seitf accessPath -- )                  */
 /*----------------------------------------------------------------------------*/
-void Task::vAccessPathSet(NNP_Task nnpTask)
+void Task::vAccessPathSet(MP_Task mpTask)
 {
   ENTRY("vAccessPathSet"_Str);
   
   Object* pPtrAccessPath;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrAccessPath) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrAccessPath) )
     THROW_INVALID_DSTACK("accessPath.set"_Str);
   AccessPath* pAccessPath = _pAccessPath(pPtrAccessPath);
   
   Table* pTable = pAccessPath->pTable();
-  nnpTask->m_pDataStack->vPushObject(pTable);
+  mpTask->m_pDataStack->vPushObject(pTable);
   
   EXIT();
 }
@@ -198,17 +198,17 @@ void Task::vAccessPathSet(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* accessPath.table! -- store table into access path                          */
 /*----------------------------------------------------------------------------*/
-void Task::vAccessPathTableStore(NNP_Task nnpTask)
+void Task::vAccessPathTableStore(MP_Task mpTask)
 {
   ENTRY("vAccessPathTableStore"_Str);
   
   Object* pPtrAccessPath;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrAccessPath) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrAccessPath) )
     THROW_INVALID_DSTACK("accessPath.table!"_Str);
   AccessPath* pAccessPath = _pAccessPath(pPtrAccessPath);
   
   Object* pPtrTable;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrTable) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
     THROW_INVALID_DSTACK("accessPath.table!"_Str);
   Table* pTable = _pTable(pPtrTable);
   
@@ -220,17 +220,17 @@ void Task::vAccessPathTableStore(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* accessPath.table@ -- fetch table from access path                          */
 /*----------------------------------------------------------------------------*/
-void Task::vAccessPathTableFetch(NNP_Task nnpTask)
+void Task::vAccessPathTableFetch(MP_Task mpTask)
 {
   ENTRY("vAccessPathTableFetch"_Str);
   
   Object* pPtrAccessPath;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrAccessPath) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrAccessPath) )
     THROW_INVALID_DSTACK("accessPath.table@"_Str);
   AccessPath* pAccessPath = _pAccessPath(pPtrAccessPath);
   
   Object* pPtrSEitf;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitf) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
     THROW_INVALID_DSTACK("accessPath.table@"_Str);
   SEitf* pSEitf = _pSEitf(pPtrSEitf);
   

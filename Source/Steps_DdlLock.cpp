@@ -46,15 +46,15 @@ void Task::vAddPrimitives_DdlLock(void)
 /*----------------------------------------------------------------------------*/
 /* ddlLock.dropRead -- drop ddl lock for read                                 */
 /*----------------------------------------------------------------------------*/
-void Task::vDdlLockDropRead(NNP_Task nnpTask)
+void Task::vDdlLockDropRead(MP_Task mpTask)
 {
   ENTRY("vDdlLockDropRead"_Str);
   
-  ASSERT(C_HAVE_READ_LOCK == nnpTask->m_iDdlLocked);
+  ASSERT(C_HAVE_READ_LOCK == mpTask->m_iDdlLocked);
   
   gxDdlLock.vDropRead();
   
-  nnpTask->m_iDdlLocked = 0;
+  mpTask->m_iDdlLocked = 0;
   
   EXIT();
 }
@@ -62,15 +62,15 @@ void Task::vDdlLockDropRead(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* ddlLock.dropWrite -- drop ddl lock for write                               */
 /*----------------------------------------------------------------------------*/
-void Task::vDdlLockDropWrite(NNP_Task nnpTask)
+void Task::vDdlLockDropWrite(MP_Task mpTask)
 {
   ENTRY("vDdlLockDropWrite"_Str);
   
-  ASSERT(C_HAVE_WRITE_LOCK == nnpTask->m_iDdlLocked);
+  ASSERT(C_HAVE_WRITE_LOCK == mpTask->m_iDdlLocked);
   
   gxDdlLock.vDropWrite();
   
-  nnpTask->m_iDdlLocked = 0;
+  mpTask->m_iDdlLocked = 0;
   
   EXIT();
 }
@@ -78,15 +78,15 @@ void Task::vDdlLockDropWrite(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* ddlLock.grabRead -- grab ddl lock for read                                 */
 /*----------------------------------------------------------------------------*/
-void Task::vDdlLockGrabRead(NNP_Task nnpTask)
+void Task::vDdlLockGrabRead(MP_Task mpTask)
 {
   ENTRY("vDdlLockGrabRead"_Str);
   
-  ASSERT(! nnpTask->m_iDdlLocked);
+  ASSERT(! mpTask->m_iDdlLocked);
   
   gxDdlLock.vGrabRead();
   
-  nnpTask->m_iDdlLocked = C_HAVE_READ_LOCK;
+  mpTask->m_iDdlLocked = C_HAVE_READ_LOCK;
   
   EXIT();
 }
@@ -94,15 +94,15 @@ void Task::vDdlLockGrabRead(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* ddlLock.grabWrite -- grab ddl lock for write                               */
 /*----------------------------------------------------------------------------*/
-void Task::vDdlLockGrabWrite(NNP_Task nnpTask)
+void Task::vDdlLockGrabWrite(MP_Task mpTask)
 {
   ENTRY("vDdlLockGrabWrite"_Str);
   
-  ASSERT(! nnpTask->m_iDdlLocked);
+  ASSERT(! mpTask->m_iDdlLocked);
 
   gxDdlLock.vGrabWrite();
   
-  nnpTask->m_iDdlLocked = C_HAVE_WRITE_LOCK;
+  mpTask->m_iDdlLocked = C_HAVE_WRITE_LOCK;
   
   EXIT();
 }
@@ -110,18 +110,18 @@ void Task::vDdlLockGrabWrite(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* ddlLock.testDrop -- test for ddl lock and drop if locked by task           */
 /*----------------------------------------------------------------------------*/
-void Task::vDdlLockTestDrop(NNP_Task nnpTask)
+void Task::vDdlLockTestDrop(MP_Task mpTask)
 {
   ENTRY("vDdlLockTestDrop"_Str);
   
-  if (C_HAVE_READ_LOCK == nnpTask->m_iDdlLocked) {
+  if (C_HAVE_READ_LOCK == mpTask->m_iDdlLocked) {
     gxDdlLock.vDropRead();
-    nnpTask->m_iDdlLocked = 0;
+    mpTask->m_iDdlLocked = 0;
   }
   else
-  if (C_HAVE_WRITE_LOCK == nnpTask->m_iDdlLocked) {
+  if (C_HAVE_WRITE_LOCK == mpTask->m_iDdlLocked) {
     gxDdlLock.vDropWrite();
-    nnpTask->m_iDdlLocked = 0;
+    mpTask->m_iDdlLocked = 0;
   }
   
   EXIT();

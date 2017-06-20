@@ -42,13 +42,13 @@ void Task::vAddPrimitives_PlanList(void)
 /*----------------------------------------------------------------------------*/
 /* planList.addPlan -- add a plan to plan list ( plan -- )                    */
 /*----------------------------------------------------------------------------*/
-void Task::vPlanListAddPlan(NNP_Task nnpTask)
+void Task::vPlanListAddPlan(MP_Task mpTask)
 {
   ENTRY("vPlanListAddPlan"_Str);
 
   Object* pPtrPlan;
   
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrPlan) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrPlan) )
     THROW_INVALID_DSTACK("planList.addPlan"_Str);
   
   Plan* pPlan = _pPlan(pPtrPlan);
@@ -61,23 +61,23 @@ void Task::vPlanListAddPlan(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* planList.findPlan -- find plan in list ( planId -- plan true | false )     */
 /*----------------------------------------------------------------------------*/
-void Task::vPlanListFindPlan(NNP_Task nnpTask)
+void Task::vPlanListFindPlan(MP_Task mpTask)
 {
   ENTRY("vPlanListFindPlan"_Str);
   
   i8 iPlanId;
   
-  if ( ! nnpTask->m_pDataStack->bPop(iPlanId) )
+  if ( ! mpTask->m_pDataStack->bPop(iPlanId) )
     THROW_INVALID_DSTACK("planList.findPlan"_Str);
   
   Plan* pPlan = gpPlanList->pFind((u8)iPlanId);
   
   if (pPlan) {
-    nnpTask->m_pDataStack->vPushObject(pPlan);
-    nnpTask->m_pDataStack->vPushInt((i8)1);
+    mpTask->m_pDataStack->vPushObject(pPlan);
+    mpTask->m_pDataStack->vPushInt((i8)1);
   }
   else {
-    nnpTask->m_pDataStack->vPushInt((i8)0);
+    mpTask->m_pDataStack->vPushInt((i8)0);
   }
   
   EXIT();
@@ -86,13 +86,13 @@ void Task::vPlanListFindPlan(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* planList.removePlan -- remove a plan from plan list ( plan -- )            */
 /*----------------------------------------------------------------------------*/
-void Task::vPlanListRemovePlan(NNP_Task nnpTask)
+void Task::vPlanListRemovePlan(MP_Task mpTask)
 {
   ENTRY("vPlanListRemovePlan"_Str);
   
   Object* pPtrPlan;
   
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrPlan) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrPlan) )
     THROW_INVALID_DSTACK("planList.removePlan"_Str);
   
   Plan* pPlan = _pPlan(pPtrPlan);
@@ -105,7 +105,7 @@ void Task::vPlanListRemovePlan(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* planList.show -- show plan list ( plan -- )                                */
 /*----------------------------------------------------------------------------*/
-void Task::vPlanListShow(NNP_Task nnpTask)
+void Task::vPlanListShow(MP_Task mpTask)
 {
   ENTRY("vPlanListShow"_Str);
   

@@ -39,12 +39,12 @@ void Task::vAddPrimitives_SEitfList(void)
 /*----------------------------------------------------------------------------*/
 /* seitflist.dump -- dump of seitfList on data stack                          */
 /*----------------------------------------------------------------------------*/
-void Task::vSEitfListDump(NNP_Task nnpTask)
+void Task::vSEitfListDump(MP_Task mpTask)
 {
 ENTRY("vSEitfListDump"_Str);
   
   Object* pPtrSEitfList;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitfList) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitfList) )
     THROW_INVALID_DSTACK("seitflist.dump"_Str);
   
   SEitfList* pSEitfList = _pSEitfList(pPtrSEitfList);
@@ -58,12 +58,12 @@ ENTRY("vSEitfListDump"_Str);
 /*----------------------------------------------------------------------------*/
 /* seitflist.init -- init of seitfList on data stack                          */
 /*----------------------------------------------------------------------------*/
-void Task::vSEitfListInit(NNP_Task nnpTask)
+void Task::vSEitfListInit(MP_Task mpTask)
 {
 ENTRY("vSEitfListInit"_Str);
   
   Object* pPtrSEitfList;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitfList) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitfList) )
     THROW_INVALID_DSTACK("seitflist.init"_Str);
   
   SEitfList* pSEitfList = _pSEitfList(pPtrSEitfList);

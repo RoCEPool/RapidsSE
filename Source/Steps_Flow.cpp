@@ -48,11 +48,11 @@ void Task::vAddPrimitives_Flow(void)
 /*----------------------------------------------------------------------------*/
 /* begin_ -- begin of the docol loop : docol (used only in docol)   immediate */
 /*----------------------------------------------------------------------------*/
-void Task::vFlowBegin_(NNP_Task nnpTask)
+void Task::vFlowBegin_(MP_Task mpTask)
 {
   ENTRY("vBegin_"_Str);
   
-  nnpTask->m_pBeginIP = nnpTask->IP.m_pCell;
+  mpTask->m_pBeginIP = mpTask->IP.m_pCell;
   
   EXIT();
 }
@@ -60,29 +60,29 @@ void Task::vFlowBegin_(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* execute -- execute word on data stack                                      */
 /*----------------------------------------------------------------------------*/
-void Task::vFlowExecute(NNP_Task nnpTask)
+void Task::vFlowExecute(MP_Task mpTask)
 {
   ENTRY("vFlowExecute"_Str);
   
   Object* pWordObject;
-  if ( ! nnpTask->m_pDataStack->bPop(pWordObject) )
+  if ( ! mpTask->m_pDataStack->bPop(pWordObject) )
     THROW_INVALID_DSTACK("execute"_Str);
   Word* pWord = _pWord(pWordObject);
   
   if (WT_PRIMITIVE == pWord->eWordType()) {
     TaskStep pTaskStep = pWord->pEntryStep();
-    (pTaskStep)(nnpTask);
+    (pTaskStep)(mpTask);
   }
   else if (WT_OBJECT == pWord->eWordType()) {
-    nnpTask->m_pReturnStack->vPushCell(nnpTask->IP.m_pCell);
-    nnpTask->IP.m_pCell = pWord->pEntryCell();
+    mpTask->m_pReturnStack->vPushCell(mpTask->IP.m_pCell);
+    mpTask->IP.m_pCell = pWord->pEntryCell();
     
     Object* pObject = (Object*)pWord->pFirstCell();
-    nnpTask->m_pDataStack->vPushObject(pObject);
+    mpTask->m_pDataStack->vPushObject(pObject);
   }
   else if (WT_ROUTINE == pWord->eWordType()){
-    nnpTask->m_pReturnStack->vPushCell(nnpTask->IP.m_pCell);
-    nnpTask->IP.m_pCell = pWord->pEntryCell();
+    mpTask->m_pReturnStack->vPushCell(mpTask->IP.m_pCell);
+    mpTask->IP.m_pCell = pWord->pEntryCell();
   }
   else {
     ASSERT(0);
@@ -94,7 +94,7 @@ void Task::vFlowExecute(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* hazard -- should never be called                                           */
 /*----------------------------------------------------------------------------*/
-void Task::vFlowHazard(NNP_Task nnpTask)
+void Task::vFlowHazard(MP_Task mpTask)
 {
   ENTRY("vFlowHazard"_Str);
   
@@ -106,11 +106,11 @@ void Task::vFlowHazard(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* jump -- jump to location                                                   */
 /*----------------------------------------------------------------------------*/
-void Task::vFlowJump(NNP_Task nnpTask)
+void Task::vFlowJump(MP_Task mpTask)
 {
   ENTRY("vJump"_Str);
   
-  nnpTask->IP.m_pCell = nnpTask->IP.m_pCell->m_pJumpTo;
+  mpTask->IP.m_pCell = mpTask->IP.m_pCell->m_pJumpTo;
   
   EXIT();
 }
@@ -118,11 +118,11 @@ void Task::vFlowJump(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* jumpBegin_ -- jump to begin_ (used only in : docol)              immediate */
 /*----------------------------------------------------------------------------*/
-void Task::vFlowJumpBegin_(NNP_Task nnpTask)
+void Task::vFlowJumpBegin_(MP_Task mpTask)
 {
   ENTRY("vFlowJumpBegin_"_Str);
   
-  nnpTask->IP.m_pCell = nnpTask->m_pBeginIP;
+  mpTask->IP.m_pCell = mpTask->m_pBeginIP;
   
   EXIT();
 }
@@ -130,22 +130,22 @@ void Task::vFlowJumpBegin_(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* jumpFalse -- jump on false to location                                     */
 /*----------------------------------------------------------------------------*/
-void Task::vFlowJumpFalse(NNP_Task nnpTask)
+void Task::vFlowJumpFalse(MP_Task mpTask)
 {
   ENTRY("vJumpFalse"_Str);
   
   i8 iVal;
-  if ( ! nnpTask->m_pDataStack->bPopAsInt(iVal) )
+  if ( ! mpTask->m_pDataStack->bPopAsInt(iVal) )
     THROW_INVALID_DSTACK("jumpFalse"_Str);
   
   // n.b. the IP points to the jump arg
   
   if (iVal)
     // do not jump, skip over argument
-    nnpTask->IP.m_pCell++;
+    mpTask->IP.m_pCell++;
   else
     // jump to location
-    nnpTask->IP.m_pCell = nnpTask->IP.m_pCell->m_pJumpTo;
+    mpTask->IP.m_pCell = mpTask->IP.m_pCell->m_pJumpTo;
   
   EXIT();
 }
@@ -153,22 +153,22 @@ void Task::vFlowJumpFalse(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* jumpTrue -- jump on true to location                                       */
 /*----------------------------------------------------------------------------*/
-void Task::vFlowJumpTrue(NNP_Task nnpTask)
+void Task::vFlowJumpTrue(MP_Task mpTask)
 {
   ENTRY("vJumpTrue"_Str);
   
   i8 iVal;
-  if ( ! nnpTask->m_pDataStack->bPopAsInt(iVal) )
+  if ( ! mpTask->m_pDataStack->bPopAsInt(iVal) )
     THROW_INVALID_DSTACK("jumpTrue"_Str);
   
   // n.b. the IP points to the jump arg
   
   if (iVal)
     // jump to location
-    nnpTask->IP.m_pCell = nnpTask->IP.m_pCell->m_pJumpTo;
+    mpTask->IP.m_pCell = mpTask->IP.m_pCell->m_pJumpTo;
   else
     // do not jump, skip over argument
-    nnpTask->IP.m_pCell++;
+    mpTask->IP.m_pCell++;
   
   EXIT();
 }
@@ -176,7 +176,7 @@ void Task::vFlowJumpTrue(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* nop -- no op                                                               */
 /*----------------------------------------------------------------------------*/
-void Task::vFlowNop(NNP_Task nnpTask)
+void Task::vFlowNop(MP_Task mpTask)
 {
   ENTRY("vFlowNop"_Str);
   
@@ -186,15 +186,15 @@ void Task::vFlowNop(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* retryPoint -- mark retry point                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vFlowRetryPoint(NNP_Task nnpTask)
+void Task::vFlowRetryPoint(MP_Task mpTask)
 {
   ENTRY("vFlowRetryPoint"_Str);
   
-  nnpTask->m_pResetIP = nnpTask->IP.m_pCell;
+  mpTask->m_pResetIP = mpTask->IP.m_pCell;
   
-  nnpTask->m_pDataStack->vRetryPoint();
+  mpTask->m_pDataStack->vRetryPoint();
   
-  nnpTask->m_pReturnStack->vRetryPoint();
+  mpTask->m_pReturnStack->vRetryPoint();
   
   EXIT();
 }
@@ -202,11 +202,11 @@ void Task::vFlowRetryPoint(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* test -- print test                                                         */
 /*----------------------------------------------------------------------------*/
-void Task::vFlowTest(NNP_Task nnpTask)
+void Task::vFlowTest(MP_Task mpTask)
 {
   ENTRY("vFlowTest"_Str);
   
-  vTrace("[%s] Test\n"_Str,nnpTask->m_sName.s());
+  vTrace("[%s] Test\n"_Str,mpTask->m_sName.s());
   
   EXIT();
 }
@@ -214,7 +214,7 @@ void Task::vFlowTest(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* throw -- throw c++ exception (for testing purposes)                        */
 /*----------------------------------------------------------------------------*/
-void Task::vFlowThrow(NNP_Task nnpTask)
+void Task::vFlowThrow(MP_Task mpTask)
 {
   ENTRY("vFlowThrow"_Str);
   

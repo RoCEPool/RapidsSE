@@ -61,13 +61,13 @@ void Task::vAddPrimitives_Thread(void)
 /*----------------------------------------------------------------------------*/
 /* thread.append -- append task to threads taskset                            */
 /*----------------------------------------------------------------------------*/
-void Task::vThreadAppend(NNP_Task nnpTask)
+void Task::vThreadAppend(MP_Task mpTask)
 {
 ENTRY("vThreadAppend"_Str);
   
   Object* pThreadEmb;
   
-  if ( ! nnpTask->m_pDataStack->bPop(pThreadEmb) )
+  if ( ! mpTask->m_pDataStack->bPop(pThreadEmb) )
     THROW_INVALID_DSTACK("thread.append"_Str);
   
   ASSERT(CN_THREAD == pThreadEmb->eClass());
@@ -77,7 +77,7 @@ ENTRY("vThreadAppend"_Str);
   TaskSet* pTaskSet = pThread->m_pTaskSet;
   
   Object* pTaskObject;
-  if ( ! nnpTask->m_pDataStack->bPop(pTaskObject) )
+  if ( ! mpTask->m_pDataStack->bPop(pTaskObject) )
     THROW_INVALID_DSTACK("task.dump"_Str);
   Task* pThatTask = _pTask(pTaskObject);
   
@@ -89,17 +89,17 @@ ENTRY("vThreadAppend"_Str);
 /*----------------------------------------------------------------------------*/
 /* thread.bind -- bind this thread to a cpu                                   */
 /*----------------------------------------------------------------------------*/
-void Task::vThreadBind(NNP_Task nnpTask)
+void Task::vThreadBind(MP_Task mpTask)
 {
 ENTRY("vThreadBind"_Str);
   
   i8 iCpu;
   Object* pObject;
   
-  if ( ! nnpTask->m_pDataStack->bPop(iCpu) )
+  if ( ! mpTask->m_pDataStack->bPop(iCpu) )
     THROW_INVALID_DSTACK("thread.bind"_Str);
   
-  if ( ! nnpTask->m_pDataStack->bPop(pObject) )
+  if ( ! mpTask->m_pDataStack->bPop(pObject) )
     THROW_INVALID_DSTACK("thread.bind"_Str);
   
   ASSERT(CN_THREAD == pObject->eClass());
@@ -114,12 +114,12 @@ ENTRY("vThreadBind"_Str);
 /*----------------------------------------------------------------------------*/
 /* thread.condSignal -- signal condition on threads mutex                     */
 /*----------------------------------------------------------------------------*/
-void Task::vThreadCondSignal(NNP_Task nnpTask)
+void Task::vThreadCondSignal(MP_Task mpTask)
 {
  ENTRY("vThreadCondSignal"_Str);
   
   Object* pThreadObject;
-  if ( ! nnpTask->m_pDataStack->bPop(pThreadObject) )
+  if ( ! mpTask->m_pDataStack->bPop(pThreadObject) )
     THROW_INVALID_DSTACK("thread.condSignal"_Str);
   
   Thread* pThread = _pThread(pThreadObject);
@@ -133,12 +133,12 @@ void Task::vThreadCondSignal(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* thread.condWait -- wait for cond on threads mutex                          */
 /*----------------------------------------------------------------------------*/
-void Task::vThreadCondWait(NNP_Task nnpTask)
+void Task::vThreadCondWait(MP_Task mpTask)
 {
  ENTRY("vThreadCondWait"_Str);
   
   Object* pThreadObject;
-  if ( ! nnpTask->m_pDataStack->bPop(pThreadObject) )
+  if ( ! mpTask->m_pDataStack->bPop(pThreadObject) )
     THROW_INVALID_DSTACK("thread.condWait"_Str);
   
   Thread* pThread = _pThread(pThreadObject);
@@ -152,20 +152,20 @@ void Task::vThreadCondWait(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* thread.cpu -- get the cpu this thread is running on                        */
 /*----------------------------------------------------------------------------*/
-void Task::vThreadCpu(NNP_Task nnpTask)
+void Task::vThreadCpu(MP_Task mpTask)
 {
 ENTRY("vThreadCpu"_Str);
   
   Object* pObject;
   
-  if ( ! nnpTask->m_pDataStack->bPop(pObject) )
+  if ( ! mpTask->m_pDataStack->bPop(pObject) )
     THROW_INVALID_DSTACK("thread.cpu"_Str);
   
   ASSERT(CN_THREAD == pObject->eClass());
   
   Thread* pThread = static_cast<Thread*>(pObject);
   
-  nnpTask->m_pDataStack->vPushInt(pThread->iCpu());
+  mpTask->m_pDataStack->vPushInt(pThread->iCpu());
   
   EXIT();
 }
@@ -173,13 +173,13 @@ ENTRY("vThreadCpu"_Str);
 /*----------------------------------------------------------------------------*/
 /* thread.dump -- thread dump                                                 */
 /*----------------------------------------------------------------------------*/
-void Task::vThreadDump(NNP_Task nnpTask)
+void Task::vThreadDump(MP_Task mpTask)
 {
 ENTRY("vThreadDump"_Str);
   
   Object* pObject;
   
-  if ( ! nnpTask->m_pDataStack->bPop(pObject) )
+  if ( ! mpTask->m_pDataStack->bPop(pObject) )
     THROW_INVALID_DSTACK("thread.dump"_Str);
   
   ASSERT(CN_THREAD == pObject->eClass());
@@ -194,20 +194,20 @@ ENTRY("vThreadDump"_Str);
 /*----------------------------------------------------------------------------*/
 /* thread.id -- get the id of thread                                          */
 /*----------------------------------------------------------------------------*/
-void Task::vThreadId(NNP_Task nnpTask)
+void Task::vThreadId(MP_Task mpTask)
 {
 ENTRY("vThreadId"_Str);
   
   Object* pObject;
   
-  if ( ! nnpTask->m_pDataStack->bPop(pObject) )
+  if ( ! mpTask->m_pDataStack->bPop(pObject) )
     THROW_INVALID_DSTACK("thread.id"_Str);
   
   ASSERT(CN_THREAD == pObject->eClass());
   
   Thread* pThread = static_cast<Thread*>(pObject);
   
-  nnpTask->m_pDataStack->vPushInt(pThread->m_pPosixThread->m_iOpSysThreadId);
+  mpTask->m_pDataStack->vPushInt(pThread->m_pPosixThread->m_iOpSysThreadId);
   
   EXIT();
 }
@@ -215,13 +215,13 @@ ENTRY("vThreadId"_Str);
 /*----------------------------------------------------------------------------*/
 /* thread.init -- thread init                                                 */
 /*----------------------------------------------------------------------------*/
-void Task::vThreadInit(NNP_Task nnpTask)
+void Task::vThreadInit(MP_Task mpTask)
 {
 ENTRY("vThreadInit"_Str);
   
   Object* pObject;
   
-  if ( ! nnpTask->m_pDataStack->bPop(pObject) )
+  if ( ! mpTask->m_pDataStack->bPop(pObject) )
     THROW_INVALID_DSTACK("thread.init"_Str);
   
   ASSERT(CN_THREAD == pObject->eClass());
@@ -243,16 +243,16 @@ ENTRY("vThreadInit"_Str);
 /*----------------------------------------------------------------------------*/
 /* thread.kind@ -- fetch thread kind from thread which is on stack            */
 /*----------------------------------------------------------------------------*/
-void Task::vThreadKindFetch(NNP_Task nnpTask)
+void Task::vThreadKindFetch(MP_Task mpTask)
 {
   ENTRY("vThreadKindFetch"_Str);
   
   Object* pThreadEmb;
-  if ( ! nnpTask->m_pDataStack->bPop(pThreadEmb) )
+  if ( ! mpTask->m_pDataStack->bPop(pThreadEmb) )
     THROW_INVALID_DSTACK("thread.kind@"_Str);
   Thread* pThread = _pThread(pThreadEmb);
   
-  nnpTask->m_pDataStack->vPushInt(pThread->m_eThread);
+  mpTask->m_pDataStack->vPushInt(pThread->m_eThread);
   
   EXIT();
 }
@@ -260,17 +260,17 @@ void Task::vThreadKindFetch(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* thread.kind! -- store thread kind into thread which is on stack            */
 /*----------------------------------------------------------------------------*/
-void Task::vThreadKindStore(NNP_Task nnpTask)
+void Task::vThreadKindStore(MP_Task mpTask)
 {
   ENTRY("vThreadKindStore"_Str);
   
   Object* pThreadEmb;
-  if ( ! nnpTask->m_pDataStack->bPop(pThreadEmb) )
+  if ( ! mpTask->m_pDataStack->bPop(pThreadEmb) )
     THROW_INVALID_DSTACK("thread.kind@"_Str);
   Thread* pThread = _pThread(pThreadEmb);
   
   i8 eThread;
-  if ( ! nnpTask->m_pDataStack->bPop(eThread) )
+  if ( ! mpTask->m_pDataStack->bPop(eThread) )
     THROW_INVALID_DSTACK("thread.kind!"_Str);
   
   pThread->m_eThread = (eTH)eThread;
@@ -281,12 +281,12 @@ void Task::vThreadKindStore(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* thread.mutexLock -- acquire a threads mutex lock                           */
 /*----------------------------------------------------------------------------*/
-void Task::vThreadMutexLock(NNP_Task nnpTask)
+void Task::vThreadMutexLock(MP_Task mpTask)
 {
 ENTRY("vThreadMutexLock"_Str);
   
   Object* pThreadObject;
-  if ( ! nnpTask->m_pDataStack->bPop(pThreadObject) )
+  if ( ! mpTask->m_pDataStack->bPop(pThreadObject) )
     THROW_INVALID_DSTACK("thread.mutexLock"_Str);
   
   Thread* pThread = _pThread(pThreadObject);
@@ -300,12 +300,12 @@ ENTRY("vThreadMutexLock"_Str);
 /*----------------------------------------------------------------------------*/
 /* thread.mutexUnlock -- release a threads mutex lock                         */
 /*----------------------------------------------------------------------------*/
-void Task::vThreadMutexUnlock(NNP_Task nnpTask)
+void Task::vThreadMutexUnlock(MP_Task mpTask)
 {
 ENTRY("vThreadMutexUnlock"_Str);
 
   Object* pThreadObject;
-  if ( ! nnpTask->m_pDataStack->bPop(pThreadObject) )
+  if ( ! mpTask->m_pDataStack->bPop(pThreadObject) )
     THROW_INVALID_DSTACK("thread.mutexUnlock"_Str);
   
   Thread* pThread = _pThread(pThreadObject);
@@ -319,13 +319,13 @@ ENTRY("vThreadMutexUnlock"_Str);
 /*----------------------------------------------------------------------------*/
 /* thread.name@ -- fetch thread name                                          */
 /*----------------------------------------------------------------------------*/
-void Task::vThreadNameFetch(NNP_Task nnpTask)
+void Task::vThreadNameFetch(MP_Task mpTask)
 {
 ENTRY("vThreadNameFetch"_Str);
   
   Object* pObject;
   
-  if ( ! nnpTask->m_pDataStack->bPop(pObject) )
+  if ( ! mpTask->m_pDataStack->bPop(pObject) )
     THROW_INVALID_DSTACK("thread.name@"_Str);
   
   ASSERT(CN_THREAD == pObject->eClass());
@@ -335,7 +335,7 @@ ENTRY("vThreadNameFetch"_Str);
   s32 sName;
   sName = pThread->sName();
   
-  nnpTask->m_pDataStack->vPushS32(sName);
+  mpTask->m_pDataStack->vPushS32(sName);
   
   EXIT();
 }
@@ -343,13 +343,13 @@ ENTRY("vThreadNameFetch"_Str);
 /*----------------------------------------------------------------------------*/
 /* thread.scheduler@ -- fetch scheduler from given thread on stack            */
 /*----------------------------------------------------------------------------*/
-void Task::vThreadSchedulerFetch(NNP_Task nnpTask)
+void Task::vThreadSchedulerFetch(MP_Task mpTask)
 {
   ENTRY("vThreadSchedulerFetch"_Str);
   
   Object* pThreadEmb;
   
-  if ( ! nnpTask->m_pDataStack->bPop(pThreadEmb) )
+  if ( ! mpTask->m_pDataStack->bPop(pThreadEmb) )
     THROW_INVALID_DSTACK("thread.scheduler@"_Str);
   Thread* pThread = _pThread(pThreadEmb);
   
@@ -357,7 +357,7 @@ void Task::vThreadSchedulerFetch(NNP_Task nnpTask)
   
   Object* pSchedulerEmb = static_cast<Object*>(pScheduler);
   
-  nnpTask->m_pDataStack->vPushObject(pSchedulerEmb);
+  mpTask->m_pDataStack->vPushObject(pSchedulerEmb);
   
   EXIT();
 }
@@ -365,13 +365,13 @@ void Task::vThreadSchedulerFetch(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* thread.scheduler! -- store scheduler into given thread                     */
 /*----------------------------------------------------------------------------*/
-void Task::vThreadSchedulerStore(NNP_Task nnpTask)
+void Task::vThreadSchedulerStore(MP_Task mpTask)
 {
   ENTRY("vThreadSchedulerStore"_Str);
   
   Object* pThreadEmb;
   
-  if ( ! nnpTask->m_pDataStack->bPop(pThreadEmb) )
+  if ( ! mpTask->m_pDataStack->bPop(pThreadEmb) )
     THROW_INVALID_DSTACK("thread.scheduler!"_Str);
   
   ASSERT(CN_THREAD == pThreadEmb->eClass());
@@ -379,7 +379,7 @@ void Task::vThreadSchedulerStore(NNP_Task nnpTask)
   Thread* pThread = static_cast<Thread*>(pThreadEmb);
   
   Object* pSchedulerEmb;
-  if ( ! nnpTask->m_pDataStack->bPop(pSchedulerEmb) )
+  if ( ! mpTask->m_pDataStack->bPop(pSchedulerEmb) )
     THROW_INVALID_DSTACK("thread.scheduler!"_Str);
   
   Scheduler* pScheduler = _pScheduler(pSchedulerEmb);
@@ -392,13 +392,13 @@ void Task::vThreadSchedulerStore(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* thread.name! -- store thread name                                          */
 /*----------------------------------------------------------------------------*/
-void Task::vThreadNameStore(NNP_Task nnpTask)
+void Task::vThreadNameStore(MP_Task mpTask)
 {
 ENTRY("vThreadNameStore"_Str);
   
   Object* pObject;
   
-  if ( ! nnpTask->m_pDataStack->bPop(pObject) )
+  if ( ! mpTask->m_pDataStack->bPop(pObject) )
     THROW_INVALID_DSTACK("thread.name!"_Str);
   
   ASSERT(CN_THREAD == pObject->eClass());
@@ -407,7 +407,7 @@ ENTRY("vThreadNameStore"_Str);
   
   s32 sName;
   ValWrk xNameWsp;
-  if ( ! nnpTask->m_pDataStack->bPop(xNameWsp) )
+  if ( ! mpTask->m_pDataStack->bPop(xNameWsp) )
     THROW_INVALID_DSTACK("thread.name!"_Str);
   
   sName = _pStrVal(xNameWsp.pNestedValueSelf());
@@ -420,13 +420,13 @@ ENTRY("vThreadNameStore"_Str);
 /*----------------------------------------------------------------------------*/
 /* thread.taskset@ -- fetch taskset from the thread which is on data stack    */
 /*----------------------------------------------------------------------------*/
-void Task::vThreadSfetch(NNP_Task nnpTask)
+void Task::vThreadSfetch(MP_Task mpTask)
 {
   ENTRY("vThreadSfetch"_Str);
   
   Object* pThreadEmb;
   
-  if ( ! nnpTask->m_pDataStack->bPop(pThreadEmb) )
+  if ( ! mpTask->m_pDataStack->bPop(pThreadEmb) )
     THROW_INVALID_DSTACK("thread.taskset@"_Str);
   
   ASSERT(CN_THREAD == pThreadEmb->eClass());
@@ -437,7 +437,7 @@ void Task::vThreadSfetch(NNP_Task nnpTask)
   
   Object* pTaskSetEmb = static_cast<Object*>(pTaskSet);;
   
-  nnpTask->m_pDataStack->vPushObject(pTaskSetEmb);
+  mpTask->m_pDataStack->vPushObject(pTaskSetEmb);
   
   EXIT();
 }
@@ -446,13 +446,13 @@ void Task::vThreadSfetch(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* thread.taskset! -- store taskset into the thread which is on data stack    */
 /*----------------------------------------------------------------------------*/
-void Task::vThreadSstore(NNP_Task nnpTask)
+void Task::vThreadSstore(MP_Task mpTask)
 {
 ENTRY("vThreadSstore"_Str);
   
   Object* pThreadEmb;
   
-  if ( ! nnpTask->m_pDataStack->bPop(pThreadEmb) )
+  if ( ! mpTask->m_pDataStack->bPop(pThreadEmb) )
     THROW_INVALID_DSTACK("thread.taskset!"_Str);
   
   ASSERT(CN_THREAD == pThreadEmb->eClass());
@@ -461,7 +461,7 @@ ENTRY("vThreadSstore"_Str);
   
   Object* pTaskSetEmb;
   
-  if ( ! nnpTask->m_pDataStack->bPop(pTaskSetEmb) )
+  if ( ! mpTask->m_pDataStack->bPop(pTaskSetEmb) )
     THROW_INVALID_DSTACK("thread.taskset!"_Str);
   
   ASSERT(CN_TASKSET == pTaskSetEmb->eClass());
@@ -476,13 +476,13 @@ ENTRY("vThreadSstore"_Str);
 /*----------------------------------------------------------------------------*/
 /* thread.sleep_s -- sleep for n seconds                                      */
 /*----------------------------------------------------------------------------*/
-void Task::vThreadSleep_s(NNP_Task nnpTask)
+void Task::vThreadSleep_s(MP_Task mpTask)
 {
 ENTRY("vThreadSleep_s"_Str);
   
   i8 nSeconds;
   
-  if ( ! nnpTask->m_pDataStack->bPop(nSeconds) )
+  if ( ! mpTask->m_pDataStack->bPop(nSeconds) )
     THROW_INVALID_DSTACK("sleep_s"_Str);
   
   Thread* pThread = Thread::pThread();
@@ -495,13 +495,13 @@ ENTRY("vThreadSleep_s"_Str);
 /*----------------------------------------------------------------------------*/
 /* thread.sleep_ms -- sleep for n milliseconds                                */
 /*----------------------------------------------------------------------------*/
-void Task::vThreadSleep_ms(NNP_Task nnpTask)
+void Task::vThreadSleep_ms(MP_Task mpTask)
 {
 ENTRY("vThreadSleep_ms"_Str);
   
   i8 nMilliseconds;
   
-  if ( ! nnpTask->m_pDataStack->bPop(nMilliseconds) )
+  if ( ! mpTask->m_pDataStack->bPop(nMilliseconds) )
     THROW_INVALID_DSTACK("sleep_ms"_Str);
   
   Thread* pThread = Thread::pThread();
@@ -514,13 +514,13 @@ ENTRY("vThreadSleep_ms"_Str);
 /*----------------------------------------------------------------------------*/
 /* thread.sleep_us -- sleep for n microseconds                                */
 /*----------------------------------------------------------------------------*/
-void Task::vThreadSleep_us(NNP_Task nnpTask)
+void Task::vThreadSleep_us(MP_Task mpTask)
 {
 ENTRY("vThreadSleep_us"_Str);
   
   i8 nMicroseconds;
   
-  if ( ! nnpTask->m_pDataStack->bPop(nMicroseconds) )
+  if ( ! mpTask->m_pDataStack->bPop(nMicroseconds) )
     THROW_INVALID_DSTACK("sleep_us"_Str);
   
   Thread* pThread = Thread::pThread();
@@ -533,13 +533,13 @@ ENTRY("vThreadSleep_us"_Str);
 /*----------------------------------------------------------------------------*/
 /* thread.sleep_ns -- sleep for n nanoseconds                                 */
 /*----------------------------------------------------------------------------*/
-void Task::vThreadSleep_ns(NNP_Task nnpTask)
+void Task::vThreadSleep_ns(MP_Task mpTask)
 {
 ENTRY("vThreadSleep_ns"_Str);
   
   i8 nNanoseconds;
   
-  if ( ! nnpTask->m_pDataStack->bPop(nNanoseconds) )
+  if ( ! mpTask->m_pDataStack->bPop(nNanoseconds) )
     THROW_INVALID_DSTACK("sleep_ns"_Str);
   
   Thread* pThread = Thread::pThread();
@@ -552,13 +552,13 @@ ENTRY("vThreadSleep_ns"_Str);
 /*----------------------------------------------------------------------------*/
 /* thread.spawn -- spwan os thread associated with this thread                */
 /*----------------------------------------------------------------------------*/
-void Task::vThreadSpawn(NNP_Task nnpTask)
+void Task::vThreadSpawn(MP_Task mpTask)
 {
 ENTRY("vThreadSpawn"_Str);
   
   Object* pThreadEmb;
   
-  if ( ! nnpTask->m_pDataStack->bPop(pThreadEmb) )
+  if ( ! mpTask->m_pDataStack->bPop(pThreadEmb) )
     THROW_INVALID_DSTACK("thread.spawn"_Str);
   
   ASSERT(CN_THREAD == pThreadEmb->eClass());
@@ -573,13 +573,13 @@ ENTRY("vThreadSpawn"_Str);
 /*----------------------------------------------------------------------------*/
 /* thread.spawn -- spwan os thread associated with this thread                */
 /*----------------------------------------------------------------------------*/
-void Task::vThreadSpawnV2(NNP_Task nnpTask)
+void Task::vThreadSpawnV2(MP_Task mpTask)
 {
   ENTRY("vThreadSpawnV2"_Str);
   
   Object* pThreadEmb;
   
-  if ( ! nnpTask->m_pDataStack->bPop(pThreadEmb) )
+  if ( ! mpTask->m_pDataStack->bPop(pThreadEmb) )
     THROW_INVALID_DSTACK("thread.spawnV2"_Str);
   
   ASSERT(CN_THREAD == pThreadEmb->eClass());

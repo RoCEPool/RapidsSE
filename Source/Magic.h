@@ -23,7 +23,7 @@ using namespace Magic;
 #include "WspVbl.hpp"
 
 #include "NP.hpp"
-#include "NNP.hpp"
+#include "MP.hpp"
 
 /*============================================================================*/
 /* end                                                                        */

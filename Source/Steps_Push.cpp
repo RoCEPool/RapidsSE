@@ -41,13 +41,13 @@ void Task::vAddPrimitives_Push(void)
 /*----------------------------------------------------------------------------*/
 /* i -- copy loop index from return stack onto data stack                     */
 /*----------------------------------------------------------------------------*/
-void Task::vPushI(NNP_Task nnpTask)
+void Task::vPushI(MP_Task mpTask)
 {
   ENTRY("vPushI"_Str);
   
-  Value* pI = nnpTask->m_pReturnStack->pPeekValue();
+  Value* pI = mpTask->m_pReturnStack->pPeekValue();
   
-  nnpTask->m_pDataStack->vPushValue(pI);
+  mpTask->m_pDataStack->vPushValue(pI);
   
   EXIT();
 }
@@ -55,13 +55,13 @@ void Task::vPushI(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* j -- copy 2nd loop index from return stack onto data stack                 */
 /*----------------------------------------------------------------------------*/
-void Task::vPushJ(NNP_Task nnpTask)
+void Task::vPushJ(MP_Task mpTask)
 {
   ENTRY("vPushJ"_Str);
   
-  Value* pI = nnpTask->m_pReturnStack->pPeekValue(3);
+  Value* pI = mpTask->m_pReturnStack->pPeekValue(3);
   
-  nnpTask->m_pDataStack->vPushValue(pI);
+  mpTask->m_pDataStack->vPushValue(pI);
   
   EXIT();
 }
@@ -69,14 +69,14 @@ void Task::vPushJ(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* nullPtr -- push a nullptr                                                  */
 /*----------------------------------------------------------------------------*/
-void Task::vPushNullPtr(NNP_Task nnpTask)
+void Task::vPushNullPtr(MP_Task mpTask)
 {
   ENTRY("vPushNullPtr"_Str);
   
   PtrVal xPtrVal;
   xPtrVal = (Object*)nullptr;
   
-  nnpTask->m_pDataStack->vPushValue(xPtrVal);
+  mpTask->m_pDataStack->vPushValue(xPtrVal);
   
   EXIT();
 }
@@ -84,19 +84,19 @@ void Task::vPushNullPtr(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* pushValue -- push value arg onto stack                                     */
 /*----------------------------------------------------------------------------*/
-void Task::vPushValue(NNP_Task nnpTask)
+void Task::vPushValue(MP_Task mpTask)
 {
   ENTRY("vPushValue"_Str);
   
-  if (nnpTask->m_iTracing) {
-    ASSERT(nnpTask->m_iTracing);
+  if (mpTask->m_iTracing) {
+    ASSERT(mpTask->m_iTracing);
   }
   
-  Value* pValue = nnpTask->IP.m_pValue;
+  Value* pValue = mpTask->IP.m_pValue;
   
-  nnpTask->m_pDataStack->vPushValue(pValue);
+  mpTask->m_pDataStack->vPushValue(pValue);
   
-  nnpTask->vAdjustNext(ValLib::iSize(pValue));
+  mpTask->vAdjustNext(ValLib::iSize(pValue));
   
   EXIT();
 }

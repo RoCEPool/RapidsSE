@@ -38,13 +38,13 @@ void Task::vAddPrimitives_Cpu(void)
 /*----------------------------------------------------------------------------*/
 /* cpu.rdtscp -- read cpu time stamp counter                                  */
 /*----------------------------------------------------------------------------*/
-void Task::vCpuRdtscp(NNP_Task nnpTask)
+void Task::vCpuRdtscp(MP_Task mpTask)
 {
   ENTRY("vCpuRdtscp"_Str);
   
   i8 iTscp = Synch::iTicks();
   
-  nnpTask->m_pDataStack->vPushInt(iTscp);
+  mpTask->m_pDataStack->vPushInt(iTscp);
   
   EXIT();
 }

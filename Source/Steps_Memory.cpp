@@ -39,16 +39,16 @@ void Task::vAddPrimitives_Memory(void)
 /*----------------------------------------------------------------------------*/
 /* memory.bytedump -- byte-oriented dump                                      */
 /*----------------------------------------------------------------------------*/
-void Task::vMemoryByteDump(NNP_Task nnpTask)
+void Task::vMemoryByteDump(MP_Task mpTask)
 {
 ENTRY("vMemoryByteDump"_Str);
   
   i8 iSize;
-  if ( ! nnpTask->m_pDataStack->bPop(iSize) )
+  if ( ! mpTask->m_pDataStack->bPop(iSize) )
     THROW_INVALID_DSTACK("memory.bytedump"_Str);
   
   Object* pWordObject;
-  if ( ! nnpTask->m_pDataStack->bPop(pWordObject) )
+  if ( ! mpTask->m_pDataStack->bPop(pWordObject) )
     THROW_INVALID_DSTACK("memory.bytedump"_Str);
   Word* pWord = _pWord(pWordObject);
   
@@ -61,16 +61,16 @@ ENTRY("vMemoryByteDump"_Str);
 /*----------------------------------------------------------------------------*/
 /* memory.worddump -- word-oriented dump                                      */
 /*----------------------------------------------------------------------------*/
-void Task::vMemoryWordDump(NNP_Task nnpTask)
+void Task::vMemoryWordDump(MP_Task mpTask)
 {
 ENTRY("vMemoryWordDump"_Str);
   
   i8 iSize;
-  if ( ! nnpTask->m_pDataStack->bPop(iSize) )
+  if ( ! mpTask->m_pDataStack->bPop(iSize) )
     THROW_INVALID_DSTACK("memory.worddump"_Str);
   
   Object* pWordObject;
-  if ( ! nnpTask->m_pDataStack->bPop(pWordObject) )
+  if ( ! mpTask->m_pDataStack->bPop(pWordObject) )
     THROW_INVALID_DSTACK("memory.worddump"_Str);
   Word* pWord = _pWord(pWordObject);
   

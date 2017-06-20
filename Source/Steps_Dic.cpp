@@ -48,20 +48,20 @@ void Task::vAddPrimitives_Dic(void)
 /*----------------------------------------------------------------------------*/
 /* dic.frozen@ -- get dictionary frozen?                                      */
 /*----------------------------------------------------------------------------*/
-void Task::vDicFrozenGet(NNP_Task nnpTask)
+void Task::vDicFrozenGet(MP_Task mpTask)
 {
 ENTRY("vDicFrozenGet"_Str);
   
   Object* pPtrDic;
   
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrDic) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrDic) )
     THROW_INVALID_DSTACK("dic.frozen@"_Str);
   
   Dic* pDic = _pDic(pPtrDic);
   
   bool bFrozen = pDic->bFrozen();
   
-  nnpTask->m_pDataStack->vPushInt(bFrozen);
+  mpTask->m_pDataStack->vPushInt(bFrozen);
   
   EXIT();
 }
@@ -69,14 +69,14 @@ ENTRY("vDicFrozenGet"_Str);
 /*----------------------------------------------------------------------------*/
 /* dic.frozen! -- set dictionary frozen?                                      */
 /*----------------------------------------------------------------------------*/
-void Task::vDicFrozenSet(NNP_Task nnpTask)
+void Task::vDicFrozenSet(MP_Task mpTask)
 {
 ENTRY("vDicFrozenSet"_Str);
 
   i8 iFrozen;
   Object* pPtrDic;
   
-  if ( ! nnpTask->m_pDataStack->bPop(iFrozen,pPtrDic) )
+  if ( ! mpTask->m_pDataStack->bPop(iFrozen,pPtrDic) )
     THROW_INVALID_DSTACK("dic.frozen@"_Str);
   
   Dic* pDic = _pDic(pPtrDic);
@@ -89,13 +89,13 @@ ENTRY("vDicFrozenSet"_Str);
 /*----------------------------------------------------------------------------*/
 /* dic.init -- initialise a dictionary                                        */
 /*----------------------------------------------------------------------------*/
-void Task::vDicInit(NNP_Task nnpTask)
+void Task::vDicInit(MP_Task mpTask)
 {
 ENTRY("vDicInit"_Str);
   
   Object* pPtrDic;
   
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrDic) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrDic) )
     THROW_INVALID_DSTACK("dic.init"_Str);
   
   Dic* pDic = _pDic(pPtrDic);
@@ -111,7 +111,7 @@ ENTRY("vDicInit"_Str);
 /*----------------------------------------------------------------------------*/
 /* dic.isCompiled -- has main dictionary been fully compiled?                 */
 /*----------------------------------------------------------------------------*/
-void Task::vDicIsCompiled(NNP_Task nnpTask)
+void Task::vDicIsCompiled(MP_Task mpTask)
 {
   ENTRY("vDicIsCompiled"_Str);
   
@@ -119,7 +119,7 @@ void Task::vDicIsCompiled(NNP_Task nnpTask)
   
   i8 bIsCompiled = pWord ? true : false;
   
-  nnpTask->m_pDataStack->vPushInt(bIsCompiled);
+  mpTask->m_pDataStack->vPushInt(bIsCompiled);
   
   EXIT();
 }
@@ -127,13 +127,13 @@ void Task::vDicIsCompiled(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* dic.kind@ -- get dictionary kind                                           */
 /*----------------------------------------------------------------------------*/
-void Task::vDicKindGet(NNP_Task nnpTask)
+void Task::vDicKindGet(MP_Task mpTask)
 {
   ENTRY("vDicFrozenGet"_Str);
   
   Object* pPtrDic;
   
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrDic) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrDic) )
     THROW_INVALID_DSTACK("dic.kind@"_Str);
   
   Dic* pDic = _pDic(pPtrDic);
@@ -141,7 +141,7 @@ void Task::vDicKindGet(NNP_Task nnpTask)
   Object* pPtrKind;
   pPtrKind = pDic->pDicKind();
   
-  nnpTask->m_pDataStack->vPushObject(pPtrKind);
+  mpTask->m_pDataStack->vPushObject(pPtrKind);
   
   EXIT();
 }
@@ -149,14 +149,14 @@ void Task::vDicKindGet(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* dic.kind! -- set dictionary kind                                           */
 /*----------------------------------------------------------------------------*/
-void Task::vDicKindSet(NNP_Task nnpTask)
+void Task::vDicKindSet(MP_Task mpTask)
 {
   ENTRY("vDicKindSet"_Str);
   
   Object* pPtrKind;
   Object* pPtrDic;
   
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrDic,pPtrKind) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrDic,pPtrKind) )
     THROW_INVALID_DSTACK("dic.kind@"_Str);
   
   Dic* pDic = _pDic(pPtrDic);
@@ -171,20 +171,20 @@ void Task::vDicKindSet(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* dic.lastWord -- get last word of dictionary                                */
 /*----------------------------------------------------------------------------*/
-void Task::vDicLastWord(NNP_Task nnpTask)
+void Task::vDicLastWord(MP_Task mpTask)
 {
 ENTRY("vDicLastWord"_Str);
   
   Object* pPtrDic;
   
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrDic) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrDic) )
     THROW_INVALID_DSTACK("dic.lastWord"_Str);
   
   Dic* pDic = _pDic(pPtrDic);
   
   Word* pLastWord = pDic->pLastWord();
   
-  nnpTask->m_pDataStack->vPushObject(pLastWord);
+  mpTask->m_pDataStack->vPushObject(pLastWord);
   
   EXIT();
 }
@@ -192,11 +192,11 @@ ENTRY("vDicLastWord"_Str);
 /*----------------------------------------------------------------------------*/
 /* dic.main -- push main dictionary onto stack                                */
 /*----------------------------------------------------------------------------*/
-void Task::vDicMain(NNP_Task nnpTask)
+void Task::vDicMain(MP_Task mpTask)
 {
 ENTRY("vDicMain"_Str);
   
-  nnpTask->m_pDataStack->vPushObject(gpMainDic);
+  mpTask->m_pDataStack->vPushObject(gpMainDic);
   
   EXIT();
 }
@@ -204,12 +204,12 @@ ENTRY("vDicMain"_Str);
 /*----------------------------------------------------------------------------*/
 /* dic.name -- push name of dictionary onto stack                             */
 /*----------------------------------------------------------------------------*/
-void Task::vDicName(NNP_Task nnpTask)
+void Task::vDicName(MP_Task mpTask)
 {
 ENTRY("vDicName"_Str);
  
   Object* pPtrDic;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrDic) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrDic) )
     THROW_INVALID_DSTACK("dic.name"_Str);
   
   Dic* pDic = _pDic(pPtrDic);
@@ -217,7 +217,7 @@ ENTRY("vDicName"_Str);
   ValWrk sName;
   sName = pDic->sName();
   
-  nnpTask->m_pDataStack->vPushValWrk(sName);
+  mpTask->m_pDataStack->vPushValWrk(sName);
   
   EXIT();
 }
@@ -225,20 +225,20 @@ ENTRY("vDicName"_Str);
 /*----------------------------------------------------------------------------*/
 /* dic.ref -- has dictionary got references                                   */
 /*----------------------------------------------------------------------------*/
-void Task::vDicRef(NNP_Task nnpTask)
+void Task::vDicRef(MP_Task mpTask)
 {
   ENTRY("vDicRef"_Str);
   
   Object* pPtrDic;
   
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrDic) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrDic) )
     THROW_INVALID_DSTACK("dic.ref"_Str);
   
   Dic* pDic = _pDic(pPtrDic);
 
   bool bRef = pDic->bRefOut();
   
-  nnpTask->m_pDataStack->vPushInt(bRef);
+  mpTask->m_pDataStack->vPushInt(bRef);
   
   EXIT();
 }
@@ -246,20 +246,20 @@ void Task::vDicRef(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* dic.wordCount -- get number of words in dictionary                         */
 /*----------------------------------------------------------------------------*/
-void Task::vDicWordCount(NNP_Task nnpTask)
+void Task::vDicWordCount(MP_Task mpTask)
 {
   ENTRY("vDicWordCount"_Str);
   
   Object* pPtrDic;
   
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrDic) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrDic) )
     THROW_INVALID_DSTACK("dic.ref"_Str);
   
   Dic* pDic = _pDic(pPtrDic);
   
   i8 nWords = pDic->nWords();
   
-  nnpTask->m_pDataStack->vPushInt(nWords);
+  mpTask->m_pDataStack->vPushInt(nWords);
   
   EXIT();
 }

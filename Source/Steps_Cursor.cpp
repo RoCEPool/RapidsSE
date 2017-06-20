@@ -39,7 +39,7 @@ void Task::vAddPrimitives_Cursor(void)
 /*----------------------------------------------------------------------------*/
 /* cursor@ -- fetch cursor from return stack onto data stack                  */
 /*----------------------------------------------------------------------------*/
-void Task::vCursorFetch(NNP_Task nnpTask)
+void Task::vCursorFetch(MP_Task mpTask)
 {
   ENTRY("vCursorFetch"_Str);
   
@@ -47,9 +47,9 @@ void Task::vCursorFetch(NNP_Task nnpTask)
   
   ValWrk xCursorWsp;
   
-  nnpTask->m_pReturnStack->vPeekValWrk(iPeek,xCursorWsp);
+  mpTask->m_pReturnStack->vPeekValWrk(iPeek,xCursorWsp);
   
-  nnpTask->m_pDataStack->vPushValWrk(xCursorWsp);
+  mpTask->m_pDataStack->vPushValWrk(xCursorWsp);
   
   EXIT();
 }
@@ -57,7 +57,7 @@ void Task::vCursorFetch(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* cursor! -- replace cursor on return stack from data stack                  */
 /*----------------------------------------------------------------------------*/
-void Task::vCursorStore(NNP_Task nnpTask)
+void Task::vCursorStore(MP_Task mpTask)
 {
   ENTRY("vCursorStore"_Str);
   
@@ -65,10 +65,10 @@ void Task::vCursorStore(NNP_Task nnpTask)
   
   ValWrk xCursorWsp;
   
-  if ( ! nnpTask->m_pDataStack->bPop(xCursorWsp) )
+  if ( ! mpTask->m_pDataStack->bPop(xCursorWsp) )
     THROW_INVALID_DSTACK("cursor!"_Str);
   
-  nnpTask->m_pReturnStack->vPokeValWrk(iPoke,xCursorWsp);
+  mpTask->m_pReturnStack->vPokeValWrk(iPoke,xCursorWsp);
   
   EXIT();
 }

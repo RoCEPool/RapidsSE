@@ -57,13 +57,13 @@ void Task::vAddPrimitives_Str(void)
 /*----------------------------------------------------------------------------*/
 /* s256.init -- initialise an s256                                            */
 /*----------------------------------------------------------------------------*/
-void Task::vS256Init(NNP_Task nnpTask)
+void Task::vS256Init(MP_Task mpTask)
 {
   ENTRY("vS256Init"_Str);
   
   Object* pPtrStrVal;
   
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrStrVal) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrStrVal) )
     THROW_INVALID_DSTACK("s256.init"_Str);
   
   s256* ps256 = (s256*)_pStrVar(pPtrStrVal);
@@ -80,7 +80,7 @@ void Task::vS256Init(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* str.algebra -- string algebra tests                                        */
 /*----------------------------------------------------------------------------*/
-void Task::vStrAlgebra(NNP_Task nnpTask)
+void Task::vStrAlgebra(MP_Task mpTask)
 {
   ENTRY("vStrAlgebra"_Str);
  
@@ -101,7 +101,7 @@ void Task::vStrAlgebra(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* str.cat -- concat two strings                                              */
 /*----------------------------------------------------------------------------*/
-void Task::vStrCat(NNP_Task nnpTask)
+void Task::vStrCat(MP_Task mpTask)
 {
   ENTRY("vStrCat"_Str);
   
@@ -109,14 +109,14 @@ void Task::vStrCat(NNP_Task nnpTask)
   s48K sStrB;
   s48K sStrA;
   
-  if ( ! nnpTask->m_pDataStack->bPop(sStrB,sStrA) )
+  if ( ! mpTask->m_pDataStack->bPop(sStrB,sStrA) )
     THROW_INVALID_DSTACK("str.cat"_Str);
   
   sStrR = sStrA;
   
   sStrR.vConcat(sStrB);
   
-  nnpTask->m_pDataStack->vPushS48K(sStrR);
+  mpTask->m_pDataStack->vPushS48K(sStrR);
   
   EXIT();
 }
@@ -124,7 +124,7 @@ void Task::vStrCat(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* str.clip -- returns left or right n part of a string ( length str -- str ) */
 /*----------------------------------------------------------------------------*/
-void Task::vStrClip(NNP_Task nnpTask)
+void Task::vStrClip(MP_Task mpTask)
 {
   ENTRY("vStrClip"_Str);
   
@@ -133,7 +133,7 @@ void Task::vStrClip(NNP_Task nnpTask)
   s48K sSubStr;
   
   // get the arguments
-  if ( ! nnpTask->m_pDataStack->bPop(sString,iLength) )
+  if ( ! mpTask->m_pDataStack->bPop(sString,iLength) )
     THROW_INVALID_DSTACK("str.clip"_Str);
   
   // validate length
@@ -151,7 +151,7 @@ void Task::vStrClip(NNP_Task nnpTask)
   
   StrLib::vCopyLen(sSubStr.s(),pStart,llabs(iLength));
   
-  nnpTask->m_pDataStack->vPushS48K(sSubStr);
+  mpTask->m_pDataStack->vPushS48K(sSubStr);
   
   EXIT();
 }
@@ -159,7 +159,7 @@ void Task::vStrClip(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* str.equal -- test if two strings are equal                                 */
 /*----------------------------------------------------------------------------*/
-void Task::vStrEqual(NNP_Task nnpTask)
+void Task::vStrEqual(MP_Task mpTask)
 {
   ENTRY("vStrEql"_Str);
   
@@ -167,14 +167,14 @@ void Task::vStrEqual(NNP_Task nnpTask)
   ValWrk xStringB;
   
   // get the arguments
-  if ( ! nnpTask->m_pDataStack->bPop(xStringB,xStringA) )
+  if ( ! mpTask->m_pDataStack->bPop(xStringB,xStringA) )
     THROW_INVALID_DSTACK("str.equal"_Str);
   
   i8 iEqual = StrLib::bEqualTo(_pStrVal(xStringA.pNestedValueSelf())->s(),
                                _pStrVal(xStringB.pNestedValueSelf())->s(),
                                C_NO_CASE);
   
-  nnpTask->m_pDataStack->vPushInt(iEqual);
+  mpTask->m_pDataStack->vPushInt(iEqual);
   
   EXIT();
 }
@@ -182,7 +182,7 @@ void Task::vStrEqual(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* str.escape -- put a '\\' before and '\"'                                   */
 /*----------------------------------------------------------------------------*/
-void Task::vStrEscape(NNP_Task nnpTask)
+void Task::vStrEscape(MP_Task mpTask)
 {
   ENTRY("vStrEscape"_Str);
   
@@ -190,12 +190,12 @@ void Task::vStrEscape(NNP_Task nnpTask)
   s48K xEscaped;
   
   // get the arguments
-  if ( ! nnpTask->m_pDataStack->bPop(xArg) )
+  if ( ! mpTask->m_pDataStack->bPop(xArg) )
     THROW_INVALID_DSTACK("str.escape"_Str);
   
   StrLib::vEscape(xArg.s(),xEscaped.s());
   
-  nnpTask->m_pDataStack->vPushS48K(xEscaped);
+  mpTask->m_pDataStack->vPushS48K(xEscaped);
   
   EXIT();
 }
@@ -203,12 +203,12 @@ void Task::vStrEscape(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* str.firstCsv -- get first value from csv string                            */
 /*----------------------------------------------------------------------------*/
-void Task::vStrFirstCsv(NNP_Task nnpTask)
+void Task::vStrFirstCsv(MP_Task mpTask)
 {
   ENTRY("vStrFirstCsv"_Str);
   
   s48K sStr;
-  if ( ! nnpTask->m_pDataStack->bPop(sStr) )
+  if ( ! mpTask->m_pDataStack->bPop(sStr) )
     THROW_INVALID_DSTACK("str.firstCsv"_Str);
   
   s48K sFirstValue;
@@ -218,7 +218,7 @@ void Task::vStrFirstCsv(NNP_Task nnpTask)
   if (! StrLib::bExtractItem(&aValue,sFirstValue.s(), '|'))
     sFirstValue = ""_Str;
   
-  nnpTask->m_pDataStack->vPushS48K(sFirstValue);
+  mpTask->m_pDataStack->vPushS48K(sFirstValue);
   
   EXIT();
 }
@@ -226,19 +226,19 @@ void Task::vStrFirstCsv(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* str.format -- pop format string and use it for a sprintf                   */
 /*----------------------------------------------------------------------------*/
-void Task::vStrFormat(NNP_Task nnpTask)
+void Task::vStrFormat(MP_Task mpTask)
 {
   ENTRY("vStrFormat"_Str);
   
   s48K sFormat;
-  if ( ! nnpTask->m_pDataStack->bPop(sFormat) )
+  if ( ! mpTask->m_pDataStack->bPop(sFormat) )
     THROW_INVALID_DSTACK("str.format"_Str);
   
   s48K sString;
   
-  nnpTask->vSprint(sFormat,sString);
+  mpTask->vSprint(sFormat,sString);
   
-  nnpTask->m_pDataStack->vPushS48K(sString);
+  mpTask->m_pDataStack->vPushS48K(sString);
   
   EXIT();
 }
@@ -246,7 +246,7 @@ void Task::vStrFormat(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* str.left -- returns left n part of a string ( length str -- str )          */
 /*----------------------------------------------------------------------------*/
-void Task::vStrLeft(NNP_Task nnpTask)
+void Task::vStrLeft(MP_Task mpTask)
 {
   ENTRY("vClip"_Str);
   
@@ -255,7 +255,7 @@ void Task::vStrLeft(NNP_Task nnpTask)
   s48K sSubStr;
   
   // get the arguments
-  if ( ! nnpTask->m_pDataStack->bPop(sString,iLength) )
+  if ( ! mpTask->m_pDataStack->bPop(sString,iLength) )
     THROW_INVALID_DSTACK("str.left"_Str);
   
   // validate length
@@ -268,7 +268,7 @@ void Task::vStrLeft(NNP_Task nnpTask)
   
   StrLib::vCopyLen(sSubStr.s(),pStart,iLength);
   
-  nnpTask->m_pDataStack->vPushS48K(sSubStr);
+  mpTask->m_pDataStack->vPushS48K(sSubStr);
   
   EXIT();
 }
@@ -276,7 +276,7 @@ void Task::vStrLeft(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* str.length -- string length                                                    */
 /*----------------------------------------------------------------------------*/
-void Task::vStrLength(NNP_Task nnpTask)
+void Task::vStrLength(MP_Task mpTask)
 {
   ENTRY("vStrLen"_Str);
   
@@ -284,12 +284,12 @@ void Task::vStrLength(NNP_Task nnpTask)
   s48K sString;
   
   // get the arguments
-  if ( ! nnpTask->m_pDataStack->bPop(sString) )
+  if ( ! mpTask->m_pDataStack->bPop(sString) )
     THROW_INVALID_DSTACK("str.length"_Str);
   
   iLength = sString.iLength();
   
-  nnpTask->m_pDataStack->vPushInt(iLength);
+  mpTask->m_pDataStack->vPushInt(iLength);
   
   EXIT();
 }
@@ -297,7 +297,7 @@ void Task::vStrLength(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* str.pad -- pad string to given length                                      */
 /*----------------------------------------------------------------------------*/
-void Task::vStrPad(NNP_Task nnpTask)
+void Task::vStrPad(MP_Task mpTask)
 {
   ENTRY("vStringPad"_Str);
   
@@ -306,7 +306,7 @@ void Task::vStrPad(NNP_Task nnpTask)
   ValWrk xStringA;
   
   // get the arguments
-  if ( ! nnpTask->m_pDataStack->bPop(iLength,xStringA) )
+  if ( ! mpTask->m_pDataStack->bPop(iLength,xStringA) )
     THROW_INVALID_DSTACK("str.pad"_Str);
   
   StrLib::vPad(_pStrVal(xStringA.pNestedValueSelf())->s(),iLength,' ');
@@ -314,7 +314,7 @@ void Task::vStrPad(NNP_Task nnpTask)
   // adjust area size
   _pStrVal(xStringA.pNestedValueSelf())->vAreaSize();
   
-  nnpTask->m_pDataStack->vPushValWrk(xStringA);
+  mpTask->m_pDataStack->vPushValWrk(xStringA);
   
   EXIT();
 }
@@ -322,7 +322,7 @@ void Task::vStrPad(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* str.prepend -- prepend top string before second string                     */
 /*----------------------------------------------------------------------------*/
-void Task::vStrPrepend(NNP_Task nnpTask)
+void Task::vStrPrepend(MP_Task mpTask)
 {
   ENTRY("vStrPrepend"_Str);
   
@@ -333,7 +333,7 @@ void Task::vStrPrepend(NNP_Task nnpTask)
   ValWrk xValA;
   ValWrk xValB;
   
-  if ( ! nnpTask->m_pDataStack->bPop(xValB,xValA) )
+  if ( ! mpTask->m_pDataStack->bPop(xValB,xValA) )
     THROW_INVALID_DSTACK("str.prepend"_Str);
   
   // If received INTEGER convert to STRING
@@ -360,7 +360,7 @@ void Task::vStrPrepend(NNP_Task nnpTask)
   
   xStrR.vConcat(xStrA);
   
-  nnpTask->m_pDataStack->vPushS48K(xStrR);
+  mpTask->m_pDataStack->vPushS48K(xStrR);
   
   EXIT();
 }
@@ -368,19 +368,19 @@ void Task::vStrPrepend(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* str.random-- generate random string of given length                        */
 /*----------------------------------------------------------------------------*/
-void Task::vStrRandom(NNP_Task nnpTask)
+void Task::vStrRandom(MP_Task mpTask)
 {
   ENTRY("vStrRandom"_Str);
   
   i8 iLength;
-  if ( ! nnpTask->m_pDataStack->bPop(iLength) )
+  if ( ! mpTask->m_pDataStack->bPop(iLength) )
     THROW_INVALID_DSTACK("str.random"_Str);
   
   s48K sRnd;
   
   sRnd = Random::sRandomString(iLength).aStr();
   
-  nnpTask->m_pDataStack->vPushS48K(sRnd);
+  mpTask->m_pDataStack->vPushS48K(sRnd);
   
   EXIT();
 }
@@ -388,7 +388,7 @@ void Task::vStrRandom(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* str.replace-- replace this with that within string                         */
 /*----------------------------------------------------------------------------*/
-void Task::vStrReplace(NNP_Task nnpTask)
+void Task::vStrReplace(MP_Task mpTask)
 {
   ENTRY("vStrReplace"_Str);
   
@@ -396,20 +396,20 @@ void Task::vStrReplace(NNP_Task nnpTask)
   s48K sThat;
   s48K sThis;
   
-  if ( ! nnpTask->m_pDataStack->bPop(sString) )
+  if ( ! mpTask->m_pDataStack->bPop(sString) )
     THROW_INVALID_DSTACK("str.replace"_Str);
 
-  if ( ! nnpTask->m_pDataStack->bPop(sThat) )
+  if ( ! mpTask->m_pDataStack->bPop(sThat) )
     THROW_INVALID_DSTACK("str.replace"_Str);
   
-  if ( ! nnpTask->m_pDataStack->bPop(sThis) )
+  if ( ! mpTask->m_pDataStack->bPop(sThis) )
     THROW_INVALID_DSTACK("str.replace"_Str);
   
   s48K sReplaced;
   
   StrLib::bReplace(sReplaced.s(),sString.s(),sThis.s(),sThat.s());
   
-  nnpTask->m_pDataStack->vPushS48K(sReplaced);
+  mpTask->m_pDataStack->vPushS48K(sReplaced);
   
   EXIT();
 }
@@ -417,7 +417,7 @@ void Task::vStrReplace(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* str.right -- Returns the right n part of a string ( length str -- str )    */
 /*----------------------------------------------------------------------------*/
-void Task::vStrRight(NNP_Task nnpTask)
+void Task::vStrRight(MP_Task mpTask)
 {
   ENTRY("vStrRight"_Str);
   
@@ -426,7 +426,7 @@ void Task::vStrRight(NNP_Task nnpTask)
   s48K sSubStr;
   
   // get the arguments
-  if ( ! nnpTask->m_pDataStack->bPop(sString,iLength) )
+  if ( ! mpTask->m_pDataStack->bPop(sString,iLength) )
     THROW_INVALID_DSTACK("str.right"_Str);
   
   // validate length
@@ -442,7 +442,7 @@ void Task::vStrRight(NNP_Task nnpTask)
   
   StrLib::vCopyLen(sSubStr.s(),pStart,iLength);
   
-  nnpTask->m_pDataStack->vPushS48K(sSubStr);
+  mpTask->m_pDataStack->vPushS48K(sSubStr);
   
   EXIT();
 }
@@ -450,7 +450,7 @@ void Task::vStrRight(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* substr -- substring ( length start str == substr )                         */
 /*----------------------------------------------------------------------------*/
-void Task::vStrSub(NNP_Task nnpTask)
+void Task::vStrSub(MP_Task mpTask)
 {
   ENTRY("vStrSub"_Str);
   
@@ -460,7 +460,7 @@ void Task::vStrSub(NNP_Task nnpTask)
   s48K sSubStr;
   
   // get the arguments
-  if ( ! nnpTask->m_pDataStack->bPop(sString,iStart,iLength) )
+  if ( ! mpTask->m_pDataStack->bPop(sString,iStart,iLength) )
     THROW_INVALID_DSTACK("str.sub"_Str);
   
   i8 iHasLength = sString.iLength();
@@ -480,7 +480,7 @@ void Task::vStrSub(NNP_Task nnpTask)
   
   StrLib::vCopyLen(sSubStr.s(),pStart,iLength);
   
-  nnpTask->m_pDataStack->vPushS48K(sSubStr);
+  mpTask->m_pDataStack->vPushS48K(sSubStr);
   
   EXIT();
 }
@@ -488,13 +488,13 @@ void Task::vStrSub(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* tailInt -- extract (possible) int at end of string                         */
 /*----------------------------------------------------------------------------*/
-void Task::vStrTailInt(NNP_Task nnpTask)
+void Task::vStrTailInt(MP_Task mpTask)
 {
   ENTRY("vStrTailInt"_Str);
   
   // get the string
   s48K sString;
-  if ( ! nnpTask->m_pDataStack->bPop(sString) )
+  if ( ! mpTask->m_pDataStack->bPop(sString) )
     THROW_INVALID_DSTACK("str.tailInt"_Str);
   
   // get last char in string
@@ -502,7 +502,7 @@ void Task::vStrTailInt(NNP_Task nnpTask)
   
   // return false if not a digit
   if ( ! StrLib::bIsDigit(*aLast) ) {
-    nnpTask->m_pDataStack->vPushInt((i8)0);
+    mpTask->m_pDataStack->vPushInt((i8)0);
     return;
   }
   
@@ -518,8 +518,8 @@ void Task::vStrTailInt(NNP_Task nnpTask)
     iInt = (iInt * 10) + (*aDigit++ - '0');
   
   // return ( int true )
-  nnpTask->m_pDataStack->vPushInt(iInt);
-  nnpTask->m_pDataStack->vPushInt((i8)1);
+  mpTask->m_pDataStack->vPushInt(iInt);
+  mpTask->m_pDataStack->vPushInt((i8)1);
   
   EXIT();
 }

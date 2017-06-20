@@ -38,7 +38,7 @@ void Task::vAddPrimitives_Debug(void)
 /*----------------------------------------------------------------------------*/
 /* debug.trap -- call debug trap                                              */
 /*----------------------------------------------------------------------------*/
-void Task::vDebugTrap(NNP_Task nnpTask)
+void Task::vDebugTrap(MP_Task mpTask)
 {
 ENTRY("vDebugTrap"_Str);
 

@@ -41,11 +41,11 @@ void Task::vAddPrimitives_TaskList(void)
 /*----------------------------------------------------------------------------*/
 /* tasklist -- tasklist                                                       */
 /*----------------------------------------------------------------------------*/
-void Task::vTaskList(NNP_Task nnpTask)
+void Task::vTaskList(MP_Task mpTask)
 {
 ENTRY("vTaskList"_Str);
   
-  nnpTask->m_pDataStack->vPushObject(gpTaskList);
+  mpTask->m_pDataStack->vPushObject(gpTaskList);
   
   EXIT();
 }
@@ -53,19 +53,19 @@ ENTRY("vTaskList"_Str);
 /*----------------------------------------------------------------------------*/
 /* tasklist.append -- tasklist append                                         */
 /*----------------------------------------------------------------------------*/
-void Task::vTaskListAppend(NNP_Task nnpTask)
+void Task::vTaskListAppend(MP_Task mpTask)
 {
 ENTRY("vTaskListAppend"_Str);
   
   Object* pPtrTaskList;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrTaskList) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTaskList) )
     THROW_INVALID_DSTACK("tasklist.append"_Str);
   
   TaskList* pTaskList = _pTaskList(pPtrTaskList);
   ASSERT(CN_TASKLIST == pTaskList->eClass());
   
   Object* pTaskObject;
-  if ( ! nnpTask->m_pDataStack->bPop(pTaskObject) )
+  if ( ! mpTask->m_pDataStack->bPop(pTaskObject) )
     THROW_INVALID_DSTACK("task.dump"_Str);
   Task* pThatTask = _pTask(pTaskObject);
   
@@ -77,12 +77,12 @@ ENTRY("vTaskListAppend"_Str);
 /*----------------------------------------------------------------------------*/
 /* tasklist.dump -- tasklist dump                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vTaskListDump(NNP_Task nnpTask)
+void Task::vTaskListDump(MP_Task mpTask)
 {
 ENTRY("vTaskListDump"_Str);
   
   Object* pPtrTaskList;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrTaskList) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTaskList) )
     THROW_INVALID_DSTACK("tasklist.dump"_Str);
   
   TaskList* pTaskList = _pTaskList(pPtrTaskList);
@@ -96,7 +96,7 @@ ENTRY("vTaskListDump"_Str);
 /*----------------------------------------------------------------------------*/
 /* tasklist.init -- tasklist init                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vTaskListInit(NNP_Task nnpTask)
+void Task::vTaskListInit(MP_Task mpTask)
 {
 ENTRY("vTaskListInit"_Str);
   

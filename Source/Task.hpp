@@ -44,7 +44,7 @@ namespace Tasks
   };
   
   typedef NP<Task,CN_TASK> NP_Task;
-  typedef NNP<Task,CN_TASK> NNP_Task;
+  typedef MP<Task,CN_TASK> MP_Task;
 
   class TaskSet;
   
@@ -122,7 +122,7 @@ namespace Tasks
     void  operator delete(void*);
     
     Task(void);
-    Task(NNP_Task nnpTask);
+    Task(MP_Task mpTask);
     Task(Str* aLambda);
     void vInit(Str* aLambda);
     ~Task(void);
@@ -134,7 +134,7 @@ namespace Tasks
     void vAddConstant(Str* aName, Str* aValue);
 
     void vAddConstants(void);
-    void vAddMunged(NNP_Task nnpTask);
+    void vAddMunged(MP_Task mpTask);
     void vAddPrimitive(Str* aName, TaskStep pStep, bool bImmediate);
     void vAddRoutines(void);
     Object* pArgObject(void);
@@ -273,929 +273,929 @@ namespace Tasks
     /*------------------------------------------------------------------------*/
 
     // access path
-    static void vAccessPathDelete(NNP_Task nnpTask);
-    static void vAccessPathGenPaths(NNP_Task nnpTask);
-    static void vAccessPathNew(NNP_Task nnpTask);
-    static void vAccessPathParse(NNP_Task nnpTask);
-    static void vAccessPathSet(NNP_Task nnpTask);
-    static void vAccessPathTableFetch(NNP_Task nnpTask);
-    static void vAccessPathTableStore(NNP_Task nnpTask);
+    static void vAccessPathDelete(MP_Task mpTask);
+    static void vAccessPathGenPaths(MP_Task mpTask);
+    static void vAccessPathNew(MP_Task mpTask);
+    static void vAccessPathParse(MP_Task mpTask);
+    static void vAccessPathSet(MP_Task mpTask);
+    static void vAccessPathTableFetch(MP_Task mpTask);
+    static void vAccessPathTableStore(MP_Task mpTask);
  
     // address
-    static void vAddressEqual(NNP_Task nnpTask);
-    static void vAddressFetch(NNP_Task nnpTask);
-    static void vAddressStore(NNP_Task nnpTask);
+    static void vAddressEqual(MP_Task mpTask);
+    static void vAddressFetch(MP_Task mpTask);
+    static void vAddressStore(MP_Task mpTask);
     
     // args
-    static void vArgsPrint(NNP_Task nnpTask);
+    static void vArgsPrint(MP_Task mpTask);
 
     // assert
-    static void vAssert(NNP_Task nnpTask);
+    static void vAssert(MP_Task mpTask);
 
-    static void vAssertClass(NNP_Task nnpTask);
-    static void vAssertClass_0(NNP_Task nnpTask);
-    static void vAssertClass_1(NNP_Task nnpTask);
-    static void vAssertClass_2(NNP_Task nnpTask);
-    static void vAssertClass_3(NNP_Task nnpTask);
-    static void vAssertClass_4(NNP_Task nnpTask);
+    static void vAssertClass(MP_Task mpTask);
+    static void vAssertClass_0(MP_Task mpTask);
+    static void vAssertClass_1(MP_Task mpTask);
+    static void vAssertClass_2(MP_Task mpTask);
+    static void vAssertClass_3(MP_Task mpTask);
+    static void vAssertClass_4(MP_Task mpTask);
 
-    static void vAssertStack_0(NNP_Task nnpTask);
-    static void vAssertStack_0more(NNP_Task nnpTask);
-    static void vAssertStack_1(NNP_Task nnpTask);
-    static void vAssertStack_1more(NNP_Task nnpTask);
-    static void vAssertStack_2(NNP_Task nnpTask);
-    static void vAssertStack_2more(NNP_Task nnpTask);
-    static void vAssertStack_3(NNP_Task nnpTask);
-    static void vAssertStack_3more(NNP_Task nnpTask);
-    static void vAssertStack_4(NNP_Task nnpTask);
-    static void vAssertStack_4more(NNP_Task nnpTask);
+    static void vAssertStack_0(MP_Task mpTask);
+    static void vAssertStack_0more(MP_Task mpTask);
+    static void vAssertStack_1(MP_Task mpTask);
+    static void vAssertStack_1more(MP_Task mpTask);
+    static void vAssertStack_2(MP_Task mpTask);
+    static void vAssertStack_2more(MP_Task mpTask);
+    static void vAssertStack_3(MP_Task mpTask);
+    static void vAssertStack_3more(MP_Task mpTask);
+    static void vAssertStack_4(MP_Task mpTask);
+    static void vAssertStack_4more(MP_Task mpTask);
     
     // astack
-    static void vAstackClass(NNP_Task nnpTask);
-    static void vAstackDepth(NNP_Task nnpTask);
-    static void vAstackDrop(NNP_Task nnpTask);
-    static void vAstackDup(NNP_Task nnpTask);
-    static void vAstackFetch(NNP_Task nnpTask);
-    static void vAstackNip(NNP_Task nnpTask);
-    static void vAstackPick(NNP_Task nnpTask);
-    static void vAstackReverse(NNP_Task nnpTask);
-    static void vAstackStk(NNP_Task nnpTask);
-    static void vAstackSwap(NNP_Task nnpTask);
-    static void vAstackToA(NNP_Task nnpTask);
-    static void vAstackToP(NNP_Task nnpTask);
-    static void vAstackToValSet(NNP_Task nnpTask);
-    static void vAstackToValues(NNP_Task nnpTask);
-    static void vAstackTransfer(NNP_Task nnpTask);
-    static void vAstack0(NNP_Task nnpTask);
-    static void vAstack1(NNP_Task nnpTask);
-    static void vAstack2(NNP_Task nnpTask);
-    static void vAstack3(NNP_Task nnpTask);
-    static void vAstack4(NNP_Task nnpTask);
-    static void vAstack5(NNP_Task nnpTask);
-    static void vAstack6(NNP_Task nnpTask);
-    static void vAstack7(NNP_Task nnpTask);
-    static void vAstack8(NNP_Task nnpTask);
-    static void vAstack9(NNP_Task nnpTask);
+    static void vAstackClass(MP_Task mpTask);
+    static void vAstackDepth(MP_Task mpTask);
+    static void vAstackDrop(MP_Task mpTask);
+    static void vAstackDup(MP_Task mpTask);
+    static void vAstackFetch(MP_Task mpTask);
+    static void vAstackNip(MP_Task mpTask);
+    static void vAstackPick(MP_Task mpTask);
+    static void vAstackReverse(MP_Task mpTask);
+    static void vAstackStk(MP_Task mpTask);
+    static void vAstackSwap(MP_Task mpTask);
+    static void vAstackToA(MP_Task mpTask);
+    static void vAstackToP(MP_Task mpTask);
+    static void vAstackToValSet(MP_Task mpTask);
+    static void vAstackToValues(MP_Task mpTask);
+    static void vAstackTransfer(MP_Task mpTask);
+    static void vAstack0(MP_Task mpTask);
+    static void vAstack1(MP_Task mpTask);
+    static void vAstack2(MP_Task mpTask);
+    static void vAstack3(MP_Task mpTask);
+    static void vAstack4(MP_Task mpTask);
+    static void vAstack5(MP_Task mpTask);
+    static void vAstack6(MP_Task mpTask);
+    static void vAstack7(MP_Task mpTask);
+    static void vAstack8(MP_Task mpTask);
+    static void vAstack9(MP_Task mpTask);
     
     // attachmap
-    static void vAttachMapFetch(NNP_Task nnpTask);
-    static void vAttachMapStore(NNP_Task nnpTask);
+    static void vAttachMapFetch(MP_Task mpTask);
+    static void vAttachMapStore(MP_Task mpTask);
     
     // bp
-    static void vBpAnalyze(NNP_Task nnpTask);
-    static void vBpDump(NNP_Task nnpTask);
-    static void vBpEpochDump(NNP_Task nnpTask);
-    static void vBpEpochTake(NNP_Task nnpTask);
-    static void vFreeBuffers(NNP_Task nnpTask);
-    static void vFreePercent(NNP_Task nnpTask);
-    static void vFreeSpace(NNP_Task nnpTask);
-    static void vInUseSpace(NNP_Task nnpTask);
-    static void vSnapshot(NNP_Task nnpTask);
-    static void vTotalSpace(NNP_Task nnpTask);
+    static void vBpAnalyze(MP_Task mpTask);
+    static void vBpDump(MP_Task mpTask);
+    static void vBpEpochDump(MP_Task mpTask);
+    static void vBpEpochTake(MP_Task mpTask);
+    static void vFreeBuffers(MP_Task mpTask);
+    static void vFreePercent(MP_Task mpTask);
+    static void vFreeSpace(MP_Task mpTask);
+    static void vInUseSpace(MP_Task mpTask);
+    static void vSnapshot(MP_Task mpTask);
+    static void vTotalSpace(MP_Task mpTask);
     
     // cast
-    static void vCastInt(NNP_Task nnpTask);
-    static void vCastPtr(NNP_Task nnpTask);
+    static void vCastInt(MP_Task mpTask);
+    static void vCastPtr(MP_Task mpTask);
     
     // class
-    static void vClassName(NNP_Task nnpTask);
+    static void vClassName(MP_Task mpTask);
 
     // comment
-    static void vComment(NNP_Task nnpTask);
+    static void vComment(MP_Task mpTask);
     
     // common
-    static void vCommonFetch(NNP_Task nnpTask);
-    static void vCommonStore(NNP_Task nnpTask);
-    static void vCommonSlash(NNP_Task nnpTask);
-    static void vCommonToCommon(NNP_Task nnpTask);
+    static void vCommonFetch(MP_Task mpTask);
+    static void vCommonStore(MP_Task mpTask);
+    static void vCommonSlash(MP_Task mpTask);
+    static void vCommonToCommon(MP_Task mpTask);
     
-    static void vOpFrameDrop(NNP_Task nnpTask);
-    static void vOpFramePush(NNP_Task nnpTask);
+    static void vOpFrameDrop(MP_Task mpTask);
+    static void vOpFramePush(MP_Task mpTask);
     
     
     // cpu
-    static void vCpuRdtscp(NNP_Task nnpTask);
+    static void vCpuRdtscp(MP_Task mpTask);
     
     // cursor
-    static void vCursorFetch(NNP_Task nnpTask);
-    static void vCursorStore(NNP_Task nnpTask);
+    static void vCursorFetch(MP_Task mpTask);
+    static void vCursorStore(MP_Task mpTask);
     
     
     // diclock
-    static void vDicLockDropWrite(NNP_Task nnpTask);
-    static void vDicLockGrabWrite(NNP_Task nnpTask);
+    static void vDicLockDropWrite(MP_Task mpTask);
+    static void vDicLockGrabWrite(MP_Task mpTask);
     
     // ddllock
-    static void vDdlLockDropRead(NNP_Task nnpTask);
-    static void vDdlLockDropWrite(NNP_Task nnpTask);
-    static void vDdlLockGrabRead(NNP_Task nnpTask);
-    static void vDdlLockGrabWrite(NNP_Task nnpTask);
-    static void vDdlLockTestDrop(NNP_Task nnpTask);
+    static void vDdlLockDropRead(MP_Task mpTask);
+    static void vDdlLockDropWrite(MP_Task mpTask);
+    static void vDdlLockGrabRead(MP_Task mpTask);
+    static void vDdlLockGrabWrite(MP_Task mpTask);
+    static void vDdlLockTestDrop(MP_Task mpTask);
     
     // debug
-    static void vDebugTrap(NNP_Task nnpTask);
+    static void vDebugTrap(MP_Task mpTask);
     
     // dic
-    static void vDicFrozenGet(NNP_Task nnpTask);
-    static void vDicFrozenSet(NNP_Task nnpTask);
-    static void vDicInit(NNP_Task nnpTask);
-    static void vDicIsCompiled(NNP_Task nnpTask);
-    static void vDicKindGet(NNP_Task nnpTask);
-    static void vDicKindSet(NNP_Task nnpTask);
-    static void vDicLastWord(NNP_Task nnpTask);
-    static void vDicMain(NNP_Task nnpTask);
-    static void vDicName(NNP_Task nnpTask);
-    static void vDicRef(NNP_Task nnpTask);
-    static void vDicWordCount(NNP_Task nnpTask);
+    static void vDicFrozenGet(MP_Task mpTask);
+    static void vDicFrozenSet(MP_Task mpTask);
+    static void vDicInit(MP_Task mpTask);
+    static void vDicIsCompiled(MP_Task mpTask);
+    static void vDicKindGet(MP_Task mpTask);
+    static void vDicKindSet(MP_Task mpTask);
+    static void vDicLastWord(MP_Task mpTask);
+    static void vDicMain(MP_Task mpTask);
+    static void vDicName(MP_Task mpTask);
+    static void vDicRef(MP_Task mpTask);
+    static void vDicWordCount(MP_Task mpTask);
     
     // dicPath
-    static void vDicPathDepth(NNP_Task nnpTask);
-    static void vDicPathDrop(NNP_Task nnpTask);
-    static void vDicPathDump(NNP_Task nnpTask);
-    static void vDicPathPick(NNP_Task nnpTask);
-    static void vDicPathPush(NNP_Task nnpTask);
+    static void vDicPathDepth(MP_Task mpTask);
+    static void vDicPathDrop(MP_Task mpTask);
+    static void vDicPathDump(MP_Task mpTask);
+    static void vDicPathPick(MP_Task mpTask);
+    static void vDicPathPush(MP_Task mpTask);
 
     // dir
-    static void vDirChangeCurrent(NNP_Task nnpTask);
-    static void vDirGetCurrent(NNP_Task nnpTask);
-    static void vDirExists(NNP_Task nnpTask);
-    static void vDirMake(NNP_Task nnpTask);
-    static void vDirRemove(NNP_Task nnpTask);
+    static void vDirChangeCurrent(MP_Task mpTask);
+    static void vDirGetCurrent(MP_Task mpTask);
+    static void vDirExists(MP_Task mpTask);
+    static void vDirMake(MP_Task mpTask);
+    static void vDirRemove(MP_Task mpTask);
     
-    static void vDirClose(NNP_Task nnpTask);
-    static void vDirDelete(NNP_Task nnpTask);
-    static void vDirEntryName(NNP_Task nnpTask);
-    static void vDirEntryType(NNP_Task nnpTask);
-    static void vDirInit(NNP_Task nnpTask);
-    static void vDirIsClosed(NNP_Task nnpTask);
-    static void vDirIsOpen(NNP_Task nnpTask);
-    static void vDirNew(NNP_Task nnpTask);
-    static void vDirOpen(NNP_Task nnpTask);
-    static void vDirPathGet(NNP_Task nnpTask);
-    static void vDirPathSet(NNP_Task nnpTask);
-    static void vDirRead(NNP_Task nnpTask);
-    static void vDirRewind(NNP_Task nnpTask);
-    static void vDirSeek(NNP_Task nnpTask);
-    static void vDirTell(NNP_Task nnpTask);
+    static void vDirClose(MP_Task mpTask);
+    static void vDirDelete(MP_Task mpTask);
+    static void vDirEntryName(MP_Task mpTask);
+    static void vDirEntryType(MP_Task mpTask);
+    static void vDirInit(MP_Task mpTask);
+    static void vDirIsClosed(MP_Task mpTask);
+    static void vDirIsOpen(MP_Task mpTask);
+    static void vDirNew(MP_Task mpTask);
+    static void vDirOpen(MP_Task mpTask);
+    static void vDirPathGet(MP_Task mpTask);
+    static void vDirPathSet(MP_Task mpTask);
+    static void vDirRead(MP_Task mpTask);
+    static void vDirRewind(MP_Task mpTask);
+    static void vDirSeek(MP_Task mpTask);
+    static void vDirTell(MP_Task mpTask);
     
     // docol
-    static void vDocolCompiling(NNP_Task nnpTask);
-    static void vDocolInterpreting(NNP_Task nnpTask);
-    static void vDocolIsCompiling(NNP_Task nnpTask);
-    static void vDocolIsInterpreting(NNP_Task nnpTask);
+    static void vDocolCompiling(MP_Task mpTask);
+    static void vDocolInterpreting(MP_Task mpTask);
+    static void vDocolIsCompiling(MP_Task mpTask);
+    static void vDocolIsInterpreting(MP_Task mpTask);
     
     // dot
-    static void vDot(NNP_Task nnpTask);
-    static void vDotPut(NNP_Task nnpTask);
-    static void vDotNewline(NNP_Task nnpTask);
-    static void vDotVerbose(NNP_Task nnpTask);
+    static void vDot(MP_Task mpTask);
+    static void vDotPut(MP_Task mpTask);
+    static void vDotNewline(MP_Task mpTask);
+    static void vDotVerbose(MP_Task mpTask);
     
     // dstack
-    static void vDstackClass(NNP_Task nnpTask);                 //! DUP OF class@
-    static void vDstackDepth(NNP_Task nnpTask);
-    static void vDstackDrop(NNP_Task nnpTask);
-    static void vDstackDropTwo(NNP_Task nnpTask);
-    static void vDstackDump(NNP_Task nnpTask);
-    static void vDstackDup(NNP_Task nnpTask);
-    static void vDstackDupNonZero(NNP_Task nnpTask);
-    static void vDstackNip(NNP_Task nnpTask);
-    static void vDstackOver(NNP_Task nnpTask);
-    static void vDstackPick(NNP_Task nnpTask);
-    static void vDstackReverse(NNP_Task nnpTask);
-    static void vDstackRoll(NNP_Task nnpTask);
-    static void vDstackRollInv(NNP_Task nnpTask);
-    static void vDstackRot(NNP_Task nnpTask);
-    static void vDstackRotInv(NNP_Task nnpTask);
-    static void vDstackStk(NNP_Task nnpTask);
-    static void vDstackSwap(NNP_Task nnpTask);
-    static void vDstackToValSet(NNP_Task nnpTask);
-    static void vDstackToValues(NNP_Task nnpTask);
-    static void vDstackTransfer(NNP_Task nnpTask);
-    static void vDstackTuck(NNP_Task nnpTask);
+    static void vDstackClass(MP_Task mpTask);                 //! DUP OF class@
+    static void vDstackDepth(MP_Task mpTask);
+    static void vDstackDrop(MP_Task mpTask);
+    static void vDstackDropTwo(MP_Task mpTask);
+    static void vDstackDump(MP_Task mpTask);
+    static void vDstackDup(MP_Task mpTask);
+    static void vDstackDupNonZero(MP_Task mpTask);
+    static void vDstackNip(MP_Task mpTask);
+    static void vDstackOver(MP_Task mpTask);
+    static void vDstackPick(MP_Task mpTask);
+    static void vDstackReverse(MP_Task mpTask);
+    static void vDstackRoll(MP_Task mpTask);
+    static void vDstackRollInv(MP_Task mpTask);
+    static void vDstackRot(MP_Task mpTask);
+    static void vDstackRotInv(MP_Task mpTask);
+    static void vDstackStk(MP_Task mpTask);
+    static void vDstackSwap(MP_Task mpTask);
+    static void vDstackToValSet(MP_Task mpTask);
+    static void vDstackToValues(MP_Task mpTask);
+    static void vDstackTransfer(MP_Task mpTask);
+    static void vDstackTuck(MP_Task mpTask);
     
     // encode
-    static void vEncodeAgain(NNP_Task nnpTask);
-    static void vEncodeAhead(NNP_Task nnpTask);
-    static void vEncodeCallPrimitive(NNP_Task nnpTask);
-    static void vEncodeCallRoutine(NNP_Task nnpTask);
-    static void vEncodeContinue(NNP_Task nnpTask);
-    static void vEncodeHere(NNP_Task nnpTask);
-    static void vEncodeIf(NNP_Task nnpTask);
-    static void vEncodeLoop(NNP_Task nnpTask);
-    static void vEncodeLoopPlus(NNP_Task nnpTask);
-    static void vEncodeNext(NNP_Task nnpTask);
-    static void vEncodePushValue(NNP_Task nnpTask);
-    static void vEncodeThen(NNP_Task nnpTask);
-    static void vEncodeUntil(NNP_Task nnpTask);
+    static void vEncodeAgain(MP_Task mpTask);
+    static void vEncodeAhead(MP_Task mpTask);
+    static void vEncodeCallPrimitive(MP_Task mpTask);
+    static void vEncodeCallRoutine(MP_Task mpTask);
+    static void vEncodeContinue(MP_Task mpTask);
+    static void vEncodeHere(MP_Task mpTask);
+    static void vEncodeIf(MP_Task mpTask);
+    static void vEncodeLoop(MP_Task mpTask);
+    static void vEncodeLoopPlus(MP_Task mpTask);
+    static void vEncodeNext(MP_Task mpTask);
+    static void vEncodePushValue(MP_Task mpTask);
+    static void vEncodeThen(MP_Task mpTask);
+    static void vEncodeUntil(MP_Task mpTask);
     
     // enter
-    static void vEnterObject(NNP_Task nnpTask);
-    static void vEnterRoutine(NNP_Task nnpTask);
+    static void vEnterObject(MP_Task mpTask);
+    static void vEnterRoutine(MP_Task mpTask);
     
     // entry
-    static void vEntryMatches(NNP_Task nnpTask);
-    static void vEntryRow(NNP_Task nnpTask);
+    static void vEntryMatches(MP_Task mpTask);
+    static void vEntryRow(MP_Task mpTask);
 
     // env
-    static void vEnvGet(NNP_Task nnpTask);
+    static void vEnvGet(MP_Task mpTask);
     
     // errors
-    static void vErrorMsg(NNP_Task nnpTask);
+    static void vErrorMsg(MP_Task mpTask);
     
     // exit
-    static void vExit(NNP_Task nnpTask);
+    static void vExit(MP_Task mpTask);
     
     // file
-    static void vFileClose(NNP_Task nnpTask);     
-    static void vFileDelete(NNP_Task nnpTask);
-    static void vFileInit(NNP_Task nnpTask);
-    static void vFileNew(NNP_Task nnpTask);
-    static void vFileOpen(NNP_Task nnpTask);
-    static void vFilePathGet(NNP_Task nnpTask);
-    static void vFilePathSet(NNP_Task nnpTask);   
-    static void vFileRead(NNP_Task nnpTask);
-    static void vFileReadRecord(NNP_Task nnpTask);
-    static void vFileWrite(NNP_Task nnpTask);
+    static void vFileClose(MP_Task mpTask);     
+    static void vFileDelete(MP_Task mpTask);
+    static void vFileInit(MP_Task mpTask);
+    static void vFileNew(MP_Task mpTask);
+    static void vFileOpen(MP_Task mpTask);
+    static void vFilePathGet(MP_Task mpTask);
+    static void vFilePathSet(MP_Task mpTask);   
+    static void vFileRead(MP_Task mpTask);
+    static void vFileReadRecord(MP_Task mpTask);
+    static void vFileWrite(MP_Task mpTask);
     
     // flow
-    static void vFlowBegin_(NNP_Task nnpTask);
-    static void vFlowExecute(NNP_Task nnpTask);
-    static void vFlowHazard(NNP_Task nnpTask);
-    static void vFlowJump(NNP_Task nnpTask);
-    static void vFlowJumpBegin_(NNP_Task nnpTask);
-    static void vFlowJumpFalse(NNP_Task nnpTask);
-    static void vFlowJumpTrue(NNP_Task nnpTask);
-    static void vFlowNop(NNP_Task nnpTask);
-    static void vFlowRetryPoint(NNP_Task nnpTask);
-    static void vFlowTest(NNP_Task nnpTask);
-    static void vFlowThrow(NNP_Task nnpTask);
+    static void vFlowBegin_(MP_Task mpTask);
+    static void vFlowExecute(MP_Task mpTask);
+    static void vFlowHazard(MP_Task mpTask);
+    static void vFlowJump(MP_Task mpTask);
+    static void vFlowJumpBegin_(MP_Task mpTask);
+    static void vFlowJumpFalse(MP_Task mpTask);
+    static void vFlowJumpTrue(MP_Task mpTask);
+    static void vFlowNop(MP_Task mpTask);
+    static void vFlowRetryPoint(MP_Task mpTask);
+    static void vFlowTest(MP_Task mpTask);
+    static void vFlowThrow(MP_Task mpTask);
     
     // grid    
-    static void vGridAppendNodes(NNP_Task nnpTask);
-    static void vGridFindNode(NNP_Task nnpTask);
-    static void vGridInit(NNP_Task nnpTask);
-    static void vGridNode(NNP_Task nnpTask);
-    static void vGridNodes(NNP_Task nnpTask);
-    static void vGridPartitions(NNP_Task nnpTask);
-    static void vGridSlots(NNP_Task nnpTask);
-    static void vGridStartedStore(NNP_Task nnpTask);
-    static void vGridStartedFetch(NNP_Task nnpTask);
-    static void vGridStartNodeStore(NNP_Task nnpTask);
-    static void vGridStartNodeFetch(NNP_Task nnpTask);
-    static void vGridThisNodeStore(NNP_Task nnpTask);
-    static void vGridThisNodeFetch(NNP_Task nnpTask);
-    static void vGridThisNodeNameFetch(NNP_Task nnpTask);
-    static void vGridToNode(NNP_Task nnpTask);
-    static void vGridToPartition(NNP_Task nnpTask);
-    static void vGridToSlot(NNP_Task nnpTask);
+    static void vGridAppendNodes(MP_Task mpTask);
+    static void vGridFindNode(MP_Task mpTask);
+    static void vGridInit(MP_Task mpTask);
+    static void vGridNode(MP_Task mpTask);
+    static void vGridNodes(MP_Task mpTask);
+    static void vGridPartitions(MP_Task mpTask);
+    static void vGridSlots(MP_Task mpTask);
+    static void vGridStartedStore(MP_Task mpTask);
+    static void vGridStartedFetch(MP_Task mpTask);
+    static void vGridStartNodeStore(MP_Task mpTask);
+    static void vGridStartNodeFetch(MP_Task mpTask);
+    static void vGridThisNodeStore(MP_Task mpTask);
+    static void vGridThisNodeFetch(MP_Task mpTask);
+    static void vGridThisNodeNameFetch(MP_Task mpTask);
+    static void vGridToNode(MP_Task mpTask);
+    static void vGridToPartition(MP_Task mpTask);
+    static void vGridToSlot(MP_Task mpTask);
   
     // index
-    static void vIndexAnalyze(NNP_Task nnpTask);
-    static void vIndexBuffer(NNP_Task nnpTask);
-    static void vIndexColumnCount(NNP_Task nnpTask);
-    static void vIndexColumnName(NNP_Task nnpTask);
-    static void vIndexColumnType(NNP_Task nnpTask);
-    static void vIndexCreateColumnVec(NNP_Task nnpTask);
-    static void vIndexDump(NNP_Task nnpTask);
-    static void vIndexInit(NNP_Task nnpTask);
-    static void vIndexIsHiddenFetch(NNP_Task nnpTask);
-    static void vIndexIsHiddenStore(NNP_Task nnpTask);
-    static void vIndexIsPrimaryKeyFetch(NNP_Task nnpTask);
-    static void vIndexIsPrimaryKeyStore(NNP_Task nnpTask);
-    static void vIndexIsUniqueFetch(NNP_Task nnpTask);
-    static void vIndexIsUniqueStore(NNP_Task nnpTask);
-    static void vIndexPopulate(NNP_Task nnpTask);
-    static void vIndexPosition(NNP_Task nnpTask);
-    static void vIndexPositionFirst(NNP_Task nnpTask);
-    static void vIndexShowColumnVec(NNP_Task nnpTask);
-    static void vIndexSpace(NNP_Task nnpTask);
-    static void vIndexSubDic(NNP_Task nnpTask);
-    static void vIndexTableFetch(NNP_Task nnpTask);
-    static void vIndexTableStore(NNP_Task nnpTask);
-    static void vIndexTruncate(NNP_Task nnpTask);
-    static void vIndexUpper(NNP_Task nnpTask);
-    static void vIndexVisualize(NNP_Task nnpTask);
+    static void vIndexAnalyze(MP_Task mpTask);
+    static void vIndexBuffer(MP_Task mpTask);
+    static void vIndexColumnCount(MP_Task mpTask);
+    static void vIndexColumnName(MP_Task mpTask);
+    static void vIndexColumnType(MP_Task mpTask);
+    static void vIndexCreateColumnVec(MP_Task mpTask);
+    static void vIndexDump(MP_Task mpTask);
+    static void vIndexInit(MP_Task mpTask);
+    static void vIndexIsHiddenFetch(MP_Task mpTask);
+    static void vIndexIsHiddenStore(MP_Task mpTask);
+    static void vIndexIsPrimaryKeyFetch(MP_Task mpTask);
+    static void vIndexIsPrimaryKeyStore(MP_Task mpTask);
+    static void vIndexIsUniqueFetch(MP_Task mpTask);
+    static void vIndexIsUniqueStore(MP_Task mpTask);
+    static void vIndexPopulate(MP_Task mpTask);
+    static void vIndexPosition(MP_Task mpTask);
+    static void vIndexPositionFirst(MP_Task mpTask);
+    static void vIndexShowColumnVec(MP_Task mpTask);
+    static void vIndexSpace(MP_Task mpTask);
+    static void vIndexSubDic(MP_Task mpTask);
+    static void vIndexTableFetch(MP_Task mpTask);
+    static void vIndexTableStore(MP_Task mpTask);
+    static void vIndexTruncate(MP_Task mpTask);
+    static void vIndexUpper(MP_Task mpTask);
+    static void vIndexVisualize(MP_Task mpTask);
 
     // index buffer
-    static void vIndexBufferFirstEntry(NNP_Task nnpTask);
-    static void vIndexBufferNextBuffer(NNP_Task nnpTask);
-    static void vIndexBufferNextEntry(NNP_Task nnpTask);
+    static void vIndexBufferFirstEntry(MP_Task mpTask);
+    static void vIndexBufferNextBuffer(MP_Task mpTask);
+    static void vIndexBufferNextEntry(MP_Task mpTask);
 
     // input
-    static void vInputAccept(NNP_Task nnpTask);
-    static void vInputClose(NNP_Task nnpTask);
-    static void vInputDepth(NNP_Task nnpTask);
-    static void vInputNext(NNP_Task nnpTask);
-    static void vInputOpen(NNP_Task nnpTask);
-    static void vInputPop(NNP_Task nnpTask);
-    static void vInputPush(NNP_Task nnpTask);
-    static void vInputStdin(NNP_Task nnpTask);
-    static void vInputText(NNP_Task nnpTask);
-    static void vInputToken(NNP_Task nnpTask);
-    static void vInputType(NNP_Task nnpTask);
+    static void vInputAccept(MP_Task mpTask);
+    static void vInputClose(MP_Task mpTask);
+    static void vInputDepth(MP_Task mpTask);
+    static void vInputNext(MP_Task mpTask);
+    static void vInputOpen(MP_Task mpTask);
+    static void vInputPop(MP_Task mpTask);
+    static void vInputPush(MP_Task mpTask);
+    static void vInputStdin(MP_Task mpTask);
+    static void vInputText(MP_Task mpTask);
+    static void vInputToken(MP_Task mpTask);
+    static void vInputType(MP_Task mpTask);
     
     // int
-    static void vIntAdd(NNP_Task nnpTask);
-    static void vIntDivide(NNP_Task nnpTask);
-    static void vIntEqual(NNP_Task nnpTask);
-    static void vIntGreater(NNP_Task nnpTask);
-    static void vIntGreaterEqual(NNP_Task nnpTask);
-    static void vIntHash(NNP_Task nnpTask);
-    static void vIntLess(NNP_Task nnpTask);
-    static void vIntLessEqual(NNP_Task nnpTask);
-    static void vIntModulo(NNP_Task nnpTask);
-    static void vIntMultiply(NNP_Task nnpTask);
-    static void vIntNeg(NNP_Task nnpTask);
-    static void vIntNotEqual(NNP_Task nnpTask);
-    static void vIntSubtract(NNP_Task nnpTask);
+    static void vIntAdd(MP_Task mpTask);
+    static void vIntDivide(MP_Task mpTask);
+    static void vIntEqual(MP_Task mpTask);
+    static void vIntGreater(MP_Task mpTask);
+    static void vIntGreaterEqual(MP_Task mpTask);
+    static void vIntHash(MP_Task mpTask);
+    static void vIntLess(MP_Task mpTask);
+    static void vIntLessEqual(MP_Task mpTask);
+    static void vIntModulo(MP_Task mpTask);
+    static void vIntMultiply(MP_Task mpTask);
+    static void vIntNeg(MP_Task mpTask);
+    static void vIntNotEqual(MP_Task mpTask);
+    static void vIntSubtract(MP_Task mpTask);
     
     // loader
-    static void vLoaderDelete(NNP_Task nnpTask);
-    static void vLoaderFindChunk(NNP_Task nnpTask);
-    static void vLoaderInit(NNP_Task nnpTask);
-    static void vLoaderNew(NNP_Task nnpTask);
-    static void vLoaderNewSub(NNP_Task nnpTask);
-    static void vLoaderPathStore(NNP_Task nnpTask);
-    static void vLoaderTableStore(NNP_Task nnpTask);
-    static void vLoaderTxRefStore(NNP_Task nnpTask);
+    static void vLoaderDelete(MP_Task mpTask);
+    static void vLoaderFindChunk(MP_Task mpTask);
+    static void vLoaderInit(MP_Task mpTask);
+    static void vLoaderNew(MP_Task mpTask);
+    static void vLoaderNewSub(MP_Task mpTask);
+    static void vLoaderPathStore(MP_Task mpTask);
+    static void vLoaderTableStore(MP_Task mpTask);
+    static void vLoaderTxRefStore(MP_Task mpTask);
     
     // loader sub
-    static void vLoaderSubAppendBuffer(NNP_Task nnpTask);
-    static void vLoaderSubBegin(NNP_Task nnpTask);
-    static void vLoaderSubDelete(NNP_Task nnpTask);
-    static void vLoaderSubEnd(NNP_Task nnpTask);
-    static void vLoaderSubFetchRecord(NNP_Task nnpTask);
-    static void vLoaderSubHashPartition(NNP_Task nnpTask);
-    static void vLoaderSubHashRecord(NNP_Task nnpTask);
-    static void vLoaderSubInit(NNP_Task nnpTask);
-    static void vLoaderSubInsertRow(NNP_Task nnpTask);
-    static void vLoaderSubInsertRow2(NNP_Task nnpTask);
-    static void vLoaderSubLoaderStore(NNP_Task nnpTask);
-    static void vLoaderSubNew(NNP_Task nnpTask);
-    static void vLoaderSubPartition(NNP_Task nnpTask);
-    static void vLoaderSubPartitionStore(NNP_Task nnpTask);
-    static void vLoaderSubRowBuffer(NNP_Task nnpTask);
-    static void vLoaderSubRowBufferStore(NNP_Task nnpTask);
-    static void vLoaderSubTable(NNP_Task nnpTask);
-    static void vLoaderSubValidateRow(NNP_Task nnpTask);
+    static void vLoaderSubAppendBuffer(MP_Task mpTask);
+    static void vLoaderSubBegin(MP_Task mpTask);
+    static void vLoaderSubDelete(MP_Task mpTask);
+    static void vLoaderSubEnd(MP_Task mpTask);
+    static void vLoaderSubFetchRecord(MP_Task mpTask);
+    static void vLoaderSubHashPartition(MP_Task mpTask);
+    static void vLoaderSubHashRecord(MP_Task mpTask);
+    static void vLoaderSubInit(MP_Task mpTask);
+    static void vLoaderSubInsertRow(MP_Task mpTask);
+    static void vLoaderSubInsertRow2(MP_Task mpTask);
+    static void vLoaderSubLoaderStore(MP_Task mpTask);
+    static void vLoaderSubNew(MP_Task mpTask);
+    static void vLoaderSubPartition(MP_Task mpTask);
+    static void vLoaderSubPartitionStore(MP_Task mpTask);
+    static void vLoaderSubRowBuffer(MP_Task mpTask);
+    static void vLoaderSubRowBufferStore(MP_Task mpTask);
+    static void vLoaderSubTable(MP_Task mpTask);
+    static void vLoaderSubValidateRow(MP_Task mpTask);
  
     // locals
-    static void vLocalFetch(NNP_Task nnpTask);
-    static void vLocalStore(NNP_Task nnpTask);
-    static void vLocalsBar(NNP_Task nnpTask);
-    static void vLocalsPop(NNP_Task nnpTask);
-    static void vLocalsPush(NNP_Task nnpTask);
-    static void vLocalsTo(NNP_Task nnpTask);
+    static void vLocalFetch(MP_Task mpTask);
+    static void vLocalStore(MP_Task mpTask);
+    static void vLocalsBar(MP_Task mpTask);
+    static void vLocalsPop(MP_Task mpTask);
+    static void vLocalsPush(MP_Task mpTask);
+    static void vLocalsTo(MP_Task mpTask);
    
     // lock
-    static void vLockDropRead(NNP_Task nnpTask);
-    static void vLockDropWrite(NNP_Task nnpTask);
-    static void vLockGrabRead(NNP_Task nnpTask);
-    static void vLockGrabWrite(NNP_Task nnpTask);
-    static void vLockInit(NNP_Task nnpTask);
+    static void vLockDropRead(MP_Task mpTask);
+    static void vLockDropWrite(MP_Task mpTask);
+    static void vLockGrabRead(MP_Task mpTask);
+    static void vLockGrabWrite(MP_Task mpTask);
+    static void vLockInit(MP_Task mpTask);
     
     // logic
-    static void vLogicAnd(NNP_Task nnpTask);
-    static void vLogicNot(NNP_Task nnpTask);
-    static void vLogicOr(NNP_Task nnpTask);
+    static void vLogicAnd(MP_Task mpTask);
+    static void vLogicNot(MP_Task mpTask);
+    static void vLogicOr(MP_Task mpTask);
     
     // magnitude
-    static void vBytesMagnitude(NNP_Task nnpTask);
-    static void vNumberMagnitude(NNP_Task nnpTask);
-    static void vToDigitName(NNP_Task nnpTask);
+    static void vBytesMagnitude(MP_Task mpTask);
+    static void vNumberMagnitude(MP_Task mpTask);
+    static void vToDigitName(MP_Task mpTask);
     
     // memory
-    static void vMemoryByteDump(NNP_Task nnpTask);
-    static void vMemoryWordDump(NNP_Task nnpTask);
+    static void vMemoryByteDump(MP_Task mpTask);
+    static void vMemoryWordDump(MP_Task mpTask);
     
     // node (of grid)
-    static void vNodeInit(NNP_Task nnpTask);
-    static void vNodeIP(NNP_Task nnpTask);
-    static void vNodeName(NNP_Task nnpTask);
-    static void vNodeNew(NNP_Task nnpTask);
-    static void vNodeNo(NNP_Task nnpTask);
-    static void vNodePort(NNP_Task nnpTask);
-    static void vNodeStatus(NNP_Task nnpTask);
+    static void vNodeInit(MP_Task mpTask);
+    static void vNodeIP(MP_Task mpTask);
+    static void vNodeName(MP_Task mpTask);
+    static void vNodeNew(MP_Task mpTask);
+    static void vNodeNo(MP_Task mpTask);
+    static void vNodePort(MP_Task mpTask);
+    static void vNodeStatus(MP_Task mpTask);
     
     // nodeCursor
-    static void vNodeCursorBegin(NNP_Task nnpTask);
-    static void vNodeCursorDelete(NNP_Task nnpTask);
-    static void vNodeCursorEnd(NNP_Task nnpTask);
-    static void vNodeCursorFirst(NNP_Task nnpTask);
-    static void vNodeCursorGet(NNP_Task nnpTask);
-    static void vNodeCursorInit(NNP_Task nnpTask);
-    static void vNodeCursorNew(NNP_Task nnpTask);
-    static void vNodeCursorNext(NNP_Task nnpTask);
+    static void vNodeCursorBegin(MP_Task mpTask);
+    static void vNodeCursorDelete(MP_Task mpTask);
+    static void vNodeCursorEnd(MP_Task mpTask);
+    static void vNodeCursorFirst(MP_Task mpTask);
+    static void vNodeCursorGet(MP_Task mpTask);
+    static void vNodeCursorInit(MP_Task mpTask);
+    static void vNodeCursorNew(MP_Task mpTask);
+    static void vNodeCursorNext(MP_Task mpTask);
     
     // object
-    static void vObjectClassFetch(NNP_Task nnpTask);
-    static void vObjectClassStore(NNP_Task nnpTask);
-    static void vObjectDump(NNP_Task nnpTask);
-    static void vObjectFetch(NNP_Task nnpTask);
-    static void vObjectMagicMark(NNP_Task nnpTask);
-    static void vObjectStore(NNP_Task nnpTask);
-    static void vObjectWordBodySet(NNP_Task nnpTask);
+    static void vObjectClassFetch(MP_Task mpTask);
+    static void vObjectClassStore(MP_Task mpTask);
+    static void vObjectDump(MP_Task mpTask);
+    static void vObjectFetch(MP_Task mpTask);
+    static void vObjectMagicMark(MP_Task mpTask);
+    static void vObjectStore(MP_Task mpTask);
+    static void vObjectWordBodySet(MP_Task mpTask);
     
     // opFrame
-    static void vOpFrameDic(NNP_Task nnpTask);
-    static void vOpFrameName(NNP_Task nnpTask);
+    static void vOpFrameDic(MP_Task mpTask);
+    static void vOpFrameName(MP_Task mpTask);
     
     // plan
-    static void vPlanCompile(NNP_Task nnpTask);
-    static void vPlanDelete(NNP_Task nnpTask);
-    static void vPlanDic(NNP_Task nnpTask);
-    static void vPlanExecutingTaskFetch(NNP_Task nnpTask);
-    static void vPlanExecutingTaskStore(NNP_Task nnpTask);
-    static void vPlanFinished(NNP_Task nnpTask);
-    static void vPlanIdFetch(NNP_Task nnpTask);
-    static void vPlanLambdaAppend(NNP_Task nnpTask);
-    static void vPlanLambdaFetch(NNP_Task nnpTask);
-    static void vPlanLambdaStore(NNP_Task nnpTask);
-    static void vPlanNew(NNP_Task nnpTask);
-    static void vPlanNameFetch(NNP_Task nnpTask);
-    static void vPlanNameStore(NNP_Task nnpTask);
-    static void vPlanOpFrameAdd(NNP_Task nnpTask);
-    static void vPlanOpFrameFind(NNP_Task nnpTask);
-    static void vPlanOpFrameTop(NNP_Task nnpTask);
-    static void vPlanShow(NNP_Task nnpTask);
+    static void vPlanCompile(MP_Task mpTask);
+    static void vPlanDelete(MP_Task mpTask);
+    static void vPlanDic(MP_Task mpTask);
+    static void vPlanExecutingTaskFetch(MP_Task mpTask);
+    static void vPlanExecutingTaskStore(MP_Task mpTask);
+    static void vPlanFinished(MP_Task mpTask);
+    static void vPlanIdFetch(MP_Task mpTask);
+    static void vPlanLambdaAppend(MP_Task mpTask);
+    static void vPlanLambdaFetch(MP_Task mpTask);
+    static void vPlanLambdaStore(MP_Task mpTask);
+    static void vPlanNew(MP_Task mpTask);
+    static void vPlanNameFetch(MP_Task mpTask);
+    static void vPlanNameStore(MP_Task mpTask);
+    static void vPlanOpFrameAdd(MP_Task mpTask);
+    static void vPlanOpFrameFind(MP_Task mpTask);
+    static void vPlanOpFrameTop(MP_Task mpTask);
+    static void vPlanShow(MP_Task mpTask);
     
     // plan list
-    static void vPlanListAddPlan(NNP_Task nnpTask);
-    static void vPlanListFindPlan(NNP_Task nnpTask);
-    static void vPlanListRemovePlan(NNP_Task nnpTask);
-    static void vPlanListShow(NNP_Task nnpTask);
+    static void vPlanListAddPlan(MP_Task mpTask);
+    static void vPlanListFindPlan(MP_Task mpTask);
+    static void vPlanListRemovePlan(MP_Task mpTask);
+    static void vPlanListShow(MP_Task mpTask);
     
     // planner
-    static void vPlannerChoosePath(NNP_Task nnpTask);
-    static void vPlannerDelete(NNP_Task nnpTask);
-    static void vPlannerFetchTechniqueFetch(NNP_Task nnpTask);
-    static void vPlannerGenPaths(NNP_Task nnpTask);
-    static void vPlannerHighKeyFetch(NNP_Task nnpTask);
-    static void vPlannerIndexNmFetch(NNP_Task nnpTask);
-    static void vPlannerKeyFetch(NNP_Task nnpTask);
-    static void vPlannerLowKeyFetch(NNP_Task nnpTask);
-    static void vPlannerMatchPaths(NNP_Task nnpTask);
-    static void vPlannerNew(NNP_Task nnpTask);
-    static void vPlannerParseWhere(NNP_Task nnpTask);
-    static void vPlannerScorePaths(NNP_Task nnpTask);
-    static void vPlannerShowPaths(NNP_Task nnpTask);
-    static void vPlannerShowPredicates(NNP_Task nnpTask);
-    static void vPlannerTableFetch(NNP_Task nnpTask);
-    static void vPlannerTableStore(NNP_Task nnpTask);
+    static void vPlannerChoosePath(MP_Task mpTask);
+    static void vPlannerDelete(MP_Task mpTask);
+    static void vPlannerFetchTechniqueFetch(MP_Task mpTask);
+    static void vPlannerGenPaths(MP_Task mpTask);
+    static void vPlannerHighKeyFetch(MP_Task mpTask);
+    static void vPlannerIndexNmFetch(MP_Task mpTask);
+    static void vPlannerKeyFetch(MP_Task mpTask);
+    static void vPlannerLowKeyFetch(MP_Task mpTask);
+    static void vPlannerMatchPaths(MP_Task mpTask);
+    static void vPlannerNew(MP_Task mpTask);
+    static void vPlannerParseWhere(MP_Task mpTask);
+    static void vPlannerScorePaths(MP_Task mpTask);
+    static void vPlannerShowPaths(MP_Task mpTask);
+    static void vPlannerShowPredicates(MP_Task mpTask);
+    static void vPlannerTableFetch(MP_Task mpTask);
+    static void vPlannerTableStore(MP_Task mpTask);
   
     // process
-    static void vProcessGetPid(NNP_Task nnpTask);
-    static void vProcessQuit(NNP_Task nnpTask);
-    static void vProcessTestPid(NNP_Task nnpTask);
+    static void vProcessGetPid(MP_Task mpTask);
+    static void vProcessQuit(MP_Task mpTask);
+    static void vProcessTestPid(MP_Task mpTask);
     
     // push
-    static void vPushI(NNP_Task nnpTask);
-    static void vPushJ(NNP_Task nnpTask);
-    static void vPushNullPtr(NNP_Task nnpTask);
-    static void vPushValue(NNP_Task nnpTask);
+    static void vPushI(MP_Task mpTask);
+    static void vPushJ(MP_Task mpTask);
+    static void vPushNullPtr(MP_Task mpTask);
+    static void vPushValue(MP_Task mpTask);
     
     // scheduler
-    static void vSchedulerEnqueueTask(NNP_Task nnpTask);
-    static void vSchedulerQueuedTasks(NNP_Task nnpTask);
-    static void vSchedulerQueuedThreads(NNP_Task nnpTask);
+    static void vSchedulerEnqueueTask(MP_Task mpTask);
+    static void vSchedulerQueuedTasks(MP_Task mpTask);
+    static void vSchedulerQueuedThreads(MP_Task mpTask);
   
     // queue
-    static void vQueueAppend(NNP_Task nnpTask);
-    static void vQueueDump(NNP_Task nnpTask);
-    static void vQueueInit(NNP_Task nnpTask);     
-    static void vQueuePop(NNP_Task nnpTask);      
+    static void vQueueAppend(MP_Task mpTask);
+    static void vQueueDump(MP_Task mpTask);
+    static void vQueueInit(MP_Task mpTask);     
+    static void vQueuePop(MP_Task mpTask);      
 
     // rbCursor
-    static void vRbCursorBegin(NNP_Task nnpTask);
-    static void vRbCursorDelete(NNP_Task nnpTask);
-    static void vRbCursorEnd(NNP_Task nnpTask);
-    static void vRbCursorFirst(NNP_Task nnpTask);
-    static void vRbCursorGet(NNP_Task nnpTask);
-    static void vRbCursorInit(NNP_Task nnpTask);
-    static void vRbCursorNew(NNP_Task nnpTask);
-    static void vRbCursorNext(NNP_Task nnpTask);
-    static void vRbCursorRowBuffer(NNP_Task nnpTask);
-    static void vRbCursorTableFetch(NNP_Task nnpTask);
-    static void vRbCursorTableStore(NNP_Task nnpTask);
+    static void vRbCursorBegin(MP_Task mpTask);
+    static void vRbCursorDelete(MP_Task mpTask);
+    static void vRbCursorEnd(MP_Task mpTask);
+    static void vRbCursorFirst(MP_Task mpTask);
+    static void vRbCursorGet(MP_Task mpTask);
+    static void vRbCursorInit(MP_Task mpTask);
+    static void vRbCursorNew(MP_Task mpTask);
+    static void vRbCursorNext(MP_Task mpTask);
+    static void vRbCursorRowBuffer(MP_Task mpTask);
+    static void vRbCursorTableFetch(MP_Task mpTask);
+    static void vRbCursorTableStore(MP_Task mpTask);
     
     // registers
-    static void vRegPop(NNP_Task nnpTask);
-    static void vRegPush(NNP_Task nnpTask);
-    static void vRegReg0(NNP_Task nnpTask);
-    static void vRegReg1(NNP_Task nnpTask);
-    static void vRegReg2(NNP_Task nnpTask);
-    static void vRegReg3(NNP_Task nnpTask);
-    static void vRegReg4(NNP_Task nnpTask);
-    static void vRegReg5(NNP_Task nnpTask);
-    static void vRegReg6(NNP_Task nnpTask);
-    static void vRegReg7(NNP_Task nnpTask);
-    static void vRegReg8(NNP_Task nnpTask);
-    static void vRegReg9(NNP_Task nnpTask);
-    static void vRegRegA(NNP_Task nnpTask);
-    static void vRegRegB(NNP_Task nnpTask);
-    static void vRegRegC(NNP_Task nnpTask);
-    static void vRegRegD(NNP_Task nnpTask);
-    static void vRegRegE(NNP_Task nnpTask);
-    static void vRegRegF(NNP_Task nnpTask);
-    static void vRegRegNth(NNP_Task nnpTask);
-    static void vRegToReg0(NNP_Task nnpTask);
-    static void vRegToReg1(NNP_Task nnpTask);
-    static void vRegToReg2(NNP_Task nnpTask);
-    static void vRegToReg3(NNP_Task nnpTask);
-    static void vRegToReg4(NNP_Task nnpTask);
-    static void vRegToReg5(NNP_Task nnpTask);
-    static void vRegToReg6(NNP_Task nnpTask);
-    static void vRegToReg7(NNP_Task nnpTask);
-    static void vRegToReg8(NNP_Task nnpTask);
-    static void vRegToReg9(NNP_Task nnpTask);
-    static void vRegToRegA(NNP_Task nnpTask);
-    static void vRegToRegB(NNP_Task nnpTask);
-    static void vRegToRegC(NNP_Task nnpTask);
-    static void vRegToRegD(NNP_Task nnpTask);
-    static void vRegToRegE(NNP_Task nnpTask);
-    static void vRegToRegF(NNP_Task nnpTask);
-    static void vRegToRegNth(NNP_Task nnpTask);
+    static void vRegPop(MP_Task mpTask);
+    static void vRegPush(MP_Task mpTask);
+    static void vRegReg0(MP_Task mpTask);
+    static void vRegReg1(MP_Task mpTask);
+    static void vRegReg2(MP_Task mpTask);
+    static void vRegReg3(MP_Task mpTask);
+    static void vRegReg4(MP_Task mpTask);
+    static void vRegReg5(MP_Task mpTask);
+    static void vRegReg6(MP_Task mpTask);
+    static void vRegReg7(MP_Task mpTask);
+    static void vRegReg8(MP_Task mpTask);
+    static void vRegReg9(MP_Task mpTask);
+    static void vRegRegA(MP_Task mpTask);
+    static void vRegRegB(MP_Task mpTask);
+    static void vRegRegC(MP_Task mpTask);
+    static void vRegRegD(MP_Task mpTask);
+    static void vRegRegE(MP_Task mpTask);
+    static void vRegRegF(MP_Task mpTask);
+    static void vRegRegNth(MP_Task mpTask);
+    static void vRegToReg0(MP_Task mpTask);
+    static void vRegToReg1(MP_Task mpTask);
+    static void vRegToReg2(MP_Task mpTask);
+    static void vRegToReg3(MP_Task mpTask);
+    static void vRegToReg4(MP_Task mpTask);
+    static void vRegToReg5(MP_Task mpTask);
+    static void vRegToReg6(MP_Task mpTask);
+    static void vRegToReg7(MP_Task mpTask);
+    static void vRegToReg8(MP_Task mpTask);
+    static void vRegToReg9(MP_Task mpTask);
+    static void vRegToRegA(MP_Task mpTask);
+    static void vRegToRegB(MP_Task mpTask);
+    static void vRegToRegC(MP_Task mpTask);
+    static void vRegToRegD(MP_Task mpTask);
+    static void vRegToRegE(MP_Task mpTask);
+    static void vRegToRegF(MP_Task mpTask);
+    static void vRegToRegNth(MP_Task mpTask);
     
     // row
-    static void vRowString(NNP_Task nnpTask);
+    static void vRowString(MP_Task mpTask);
     
     // rowBuffer
-    static void vRowBufferAppend(NNP_Task nnpTask);
-    static void vRowBufferAppendRecord(NNP_Task nnpTask);
-    static void vRowBufferDump(NNP_Task nnpTask);
-    static void vRowBufferNew(NNP_Task nnpTask);
+    static void vRowBufferAppend(MP_Task mpTask);
+    static void vRowBufferAppendRecord(MP_Task mpTask);
+    static void vRowBufferDump(MP_Task mpTask);
+    static void vRowBufferNew(MP_Task mpTask);
     
     // rowCursor
-    static void vRowCursorBegin(NNP_Task nnpTask);
-    static void vRowCursorDelete(NNP_Task nnpTask);
-    static void vRowCursorEnd(NNP_Task nnpTask);
-    static void vRowCursorFirst(NNP_Task nnpTask);
-    static void vRowCursorInit(NNP_Task nnpTask);
-    static void vRowCursorNew(NNP_Task nnpTask);
-    static void vRowCursorNext(NNP_Task nnpTask);
-    static void vRowCursorRow(NNP_Task nnpTask);
-    static void vRowCursorRowBufferFetch(NNP_Task nnpTask);
-    static void vRowCursorRowBufferStore(NNP_Task nnpTask);
-    static void vRowCursorTableFetch(NNP_Task nnpTask);
-    static void vRowCursorTableStore(NNP_Task nnpTask);
+    static void vRowCursorBegin(MP_Task mpTask);
+    static void vRowCursorDelete(MP_Task mpTask);
+    static void vRowCursorEnd(MP_Task mpTask);
+    static void vRowCursorFirst(MP_Task mpTask);
+    static void vRowCursorInit(MP_Task mpTask);
+    static void vRowCursorNew(MP_Task mpTask);
+    static void vRowCursorNext(MP_Task mpTask);
+    static void vRowCursorRow(MP_Task mpTask);
+    static void vRowCursorRowBufferFetch(MP_Task mpTask);
+    static void vRowCursorRowBufferStore(MP_Task mpTask);
+    static void vRowCursorTableFetch(MP_Task mpTask);
+    static void vRowCursorTableStore(MP_Task mpTask);
     
     // rstack
-    static void vRstackCsPick(NNP_Task nnpTask);
-    static void vRstackCsRoll(NNP_Task nnpTask);
-    static void vRstackDepth(NNP_Task nnpTask);
-    static void vRstackDrop(NNP_Task nnpTask);
-    static void vRstackFetch(NNP_Task nnpTask);
-    static void vRstackFetchTwo(NNP_Task nnpTask);
-    static void vRstackPick(NNP_Task nnpTask);
-    static void vRstackReverse(NNP_Task nnpTask);
-    static void vRstackRoll(NNP_Task nnpTask);
-    static void vRstackRollInv(NNP_Task nnpTask);
-    static void vRstackStk(NNP_Task nnpTask);
-    static void vRstackSwap(NNP_Task nnpTask);
-    static void vRstackToP(NNP_Task nnpTask);
-    static void vRstackToR(NNP_Task nnpTask);
-    static void vRstackToRTwo(NNP_Task nnpTask);
-    static void vRstack0(NNP_Task nnpTask);
-    static void vRstack1(NNP_Task nnpTask);
-    static void vRstack2(NNP_Task nnpTask);
-    static void vRstack3(NNP_Task nnpTask);
-    static void vRstack4(NNP_Task nnpTask);
-    static void vRstack5(NNP_Task nnpTask);
-    static void vRstack6(NNP_Task nnpTask);
-    static void vRstack7(NNP_Task nnpTask);
-    static void vRstack8(NNP_Task nnpTask);
-    static void vRstack9(NNP_Task nnpTask);
+    static void vRstackCsPick(MP_Task mpTask);
+    static void vRstackCsRoll(MP_Task mpTask);
+    static void vRstackDepth(MP_Task mpTask);
+    static void vRstackDrop(MP_Task mpTask);
+    static void vRstackFetch(MP_Task mpTask);
+    static void vRstackFetchTwo(MP_Task mpTask);
+    static void vRstackPick(MP_Task mpTask);
+    static void vRstackReverse(MP_Task mpTask);
+    static void vRstackRoll(MP_Task mpTask);
+    static void vRstackRollInv(MP_Task mpTask);
+    static void vRstackStk(MP_Task mpTask);
+    static void vRstackSwap(MP_Task mpTask);
+    static void vRstackToP(MP_Task mpTask);
+    static void vRstackToR(MP_Task mpTask);
+    static void vRstackToRTwo(MP_Task mpTask);
+    static void vRstack0(MP_Task mpTask);
+    static void vRstack1(MP_Task mpTask);
+    static void vRstack2(MP_Task mpTask);
+    static void vRstack3(MP_Task mpTask);
+    static void vRstack4(MP_Task mpTask);
+    static void vRstack5(MP_Task mpTask);
+    static void vRstack6(MP_Task mpTask);
+    static void vRstack7(MP_Task mpTask);
+    static void vRstack8(MP_Task mpTask);
+    static void vRstack9(MP_Task mpTask);
     
     // seitf
-    static void vSEitfAccessPathFetch(NNP_Task nnpTask);
-    static void vSEitfAccessPathStore(NNP_Task nnpTask);
-    static void vSEitfCount(NNP_Task nnpTask);
-    static void vSEitfDelete(NNP_Task nnpTask);
-    static void vSEitfDicStack(NNP_Task nnpTask);
-    static void vSEitfDisplayFetch(NNP_Task nnpTask);
-    static void vSEitfDisplayStore(NNP_Task nnpTask);
-    static void vSEitfDump(NNP_Task nnpTask);
-    static void vSEitfEntryFetch(NNP_Task nnpTask);
-    static void vSEitfEntryStore(NNP_Task nnpTask);
-    static void vSEitfIndexBufferFetch(NNP_Task nnpTask);
-    static void vSEitfIndexBufferStore(NNP_Task nnpTask);
-    static void vSEitfIndexGet(NNP_Task nnpTask);
-    static void vSEitfIndexReturn(NNP_Task nnpTask);
-    static void vSEitfMetadataFetch(NNP_Task nnpTask);
-    static void vSEitfMetadataStore(NNP_Task nnpTask);
-    static void vSEitfPartitionFetch(NNP_Task nnpTask);
-    static void vSEitfPartitionStore(NNP_Task nnpTask);
-    static void vSEitfPid(NNP_Task nnpTask);
-    static void vSEitfReqFetch(NNP_Task nnpTask);
-    static void vSEitfReqStore(NNP_Task nnpTask);
-    static void vSEitfRowsProcessed(NNP_Task nnpTask);
-    static void vSEitfRspFetch(NNP_Task nnpTask);
-    static void vSEitfRspStore(NNP_Task nnpTask);
-    static void vSEitfResponseQueue(NNP_Task nnpTask);
-    static void vSEitfTableFetch(NNP_Task nnpTask);
-    static void vSEitfTableRef(NNP_Task nnpTask);
-    static void vSEitfTableDeref(NNP_Task nnpTask);
+    static void vSEitfAccessPathFetch(MP_Task mpTask);
+    static void vSEitfAccessPathStore(MP_Task mpTask);
+    static void vSEitfCount(MP_Task mpTask);
+    static void vSEitfDelete(MP_Task mpTask);
+    static void vSEitfDicStack(MP_Task mpTask);
+    static void vSEitfDisplayFetch(MP_Task mpTask);
+    static void vSEitfDisplayStore(MP_Task mpTask);
+    static void vSEitfDump(MP_Task mpTask);
+    static void vSEitfEntryFetch(MP_Task mpTask);
+    static void vSEitfEntryStore(MP_Task mpTask);
+    static void vSEitfIndexBufferFetch(MP_Task mpTask);
+    static void vSEitfIndexBufferStore(MP_Task mpTask);
+    static void vSEitfIndexGet(MP_Task mpTask);
+    static void vSEitfIndexReturn(MP_Task mpTask);
+    static void vSEitfMetadataFetch(MP_Task mpTask);
+    static void vSEitfMetadataStore(MP_Task mpTask);
+    static void vSEitfPartitionFetch(MP_Task mpTask);
+    static void vSEitfPartitionStore(MP_Task mpTask);
+    static void vSEitfPid(MP_Task mpTask);
+    static void vSEitfReqFetch(MP_Task mpTask);
+    static void vSEitfReqStore(MP_Task mpTask);
+    static void vSEitfRowsProcessed(MP_Task mpTask);
+    static void vSEitfRspFetch(MP_Task mpTask);
+    static void vSEitfRspStore(MP_Task mpTask);
+    static void vSEitfResponseQueue(MP_Task mpTask);
+    static void vSEitfTableFetch(MP_Task mpTask);
+    static void vSEitfTableRef(MP_Task mpTask);
+    static void vSEitfTableDeref(MP_Task mpTask);
 
     // seitfCursor
-    static void vSEitfCursorBegin(NNP_Task nnpTask);
-    static void vSEitfCursorDelete(NNP_Task nnpTask);
-    static void vSEitfCursorEnd(NNP_Task nnpTask);
-    static void vSEitfCursorFirst(NNP_Task nnpTask);
-    static void vSEitfCursorGet(NNP_Task nnpTask);
-    static void vSEitfCursorInit(NNP_Task nnpTask);
-    static void vSEitfCursorNew(NNP_Task nnpTask);
-    static void vSEitfCursorNext(NNP_Task nnpTask);
+    static void vSEitfCursorBegin(MP_Task mpTask);
+    static void vSEitfCursorDelete(MP_Task mpTask);
+    static void vSEitfCursorEnd(MP_Task mpTask);
+    static void vSEitfCursorFirst(MP_Task mpTask);
+    static void vSEitfCursorGet(MP_Task mpTask);
+    static void vSEitfCursorInit(MP_Task mpTask);
+    static void vSEitfCursorNew(MP_Task mpTask);
+    static void vSEitfCursorNext(MP_Task mpTask);
     
     // seitfList
-    static void vSEitfListDump(NNP_Task nnpTask);
-    static void vSEitfListInit(NNP_Task nnpTask);
+    static void vSEitfListDump(MP_Task mpTask);
+    static void vSEitfListInit(MP_Task mpTask);
     
     // selCursor
-    static void vSelCursorBegin(NNP_Task nnpTask);
-    static void vSelCursorDelete(NNP_Task nnpTask);
-    static void vSelCursorEnd(NNP_Task nnpTask);
-    static void vSelCursorFirst(NNP_Task nnpTask);
-    static void vSelCursorGet(NNP_Task nnpTask);
-    static void vSelCursorHasRow(NNP_Task nnpTask);
-    static void vSelCursorInit(NNP_Task nnpTask);
-    static void vSelCursorNew(NNP_Task nnpTask);
-    static void vSelCursorNext(NNP_Task nnpTask);
-    static void vSelCursorRowBuffer(NNP_Task nnpTask);
-    static void vSelCursorTableFetch(NNP_Task nnpTask);
-    static void vSelCursorTableStore(NNP_Task nnpTask);
+    static void vSelCursorBegin(MP_Task mpTask);
+    static void vSelCursorDelete(MP_Task mpTask);
+    static void vSelCursorEnd(MP_Task mpTask);
+    static void vSelCursorFirst(MP_Task mpTask);
+    static void vSelCursorGet(MP_Task mpTask);
+    static void vSelCursorHasRow(MP_Task mpTask);
+    static void vSelCursorInit(MP_Task mpTask);
+    static void vSelCursorNew(MP_Task mpTask);
+    static void vSelCursorNext(MP_Task mpTask);
+    static void vSelCursorRowBuffer(MP_Task mpTask);
+    static void vSelCursorTableFetch(MP_Task mpTask);
+    static void vSelCursorTableStore(MP_Task mpTask);
     
     // shell
-    static void vShellExecute(NNP_Task nnpTask);
+    static void vShellExecute(MP_Task mpTask);
     
     // slots
-    static void vSlotsColumnCount(NNP_Task nnpTask);
-    static void vSlotsColumnName(NNP_Task nnpTask);
-    static void vSlotsCreateColumnVec(NNP_Task nnpTask);
-    static void vSlotsSubDic(NNP_Task nnpTask);
+    static void vSlotsColumnCount(MP_Task mpTask);
+    static void vSlotsColumnName(MP_Task mpTask);
+    static void vSlotsCreateColumnVec(MP_Task mpTask);
+    static void vSlotsSubDic(MP_Task mpTask);
     
     // socket
-    static void vSocketAccept(NNP_Task nnpTask);
-    static void vSocketClose(NNP_Task nnpTask);
-    static void vSocketConnect(NNP_Task nnpTask);
-    static void vSocketListen(NNP_Task nnpTask);
-    static void vSocketOpen(NNP_Task nnpTask);
-    static void vSocketRecv(NNP_Task nnpTask);
-    static void vSocketSend(NNP_Task nnpTask);
+    static void vSocketAccept(MP_Task mpTask);
+    static void vSocketClose(MP_Task mpTask);
+    static void vSocketConnect(MP_Task mpTask);
+    static void vSocketListen(MP_Task mpTask);
+    static void vSocketOpen(MP_Task mpTask);
+    static void vSocketRecv(MP_Task mpTask);
+    static void vSocketSend(MP_Task mpTask);
     
     // steps
-    static void vStepsList(NNP_Task nnpTask);
-    static void vStepsReset(NNP_Task nnpTask);
+    static void vStepsList(MP_Task mpTask);
+    static void vStepsReset(MP_Task mpTask);
     
     // string
 
-    static void vStrAlgebra(NNP_Task nnpTask);
-    static void vStrCat(NNP_Task nnpTask);
-    static void vStrClip(NNP_Task nnpTask);
-    static void vStrEqual(NNP_Task nnpTask);
-    static void vStrEscape(NNP_Task nnpTask);
-    static void vStrFirstCsv(NNP_Task nnpTask);
-    static void vStrFormat(NNP_Task nnpTask);
-    static void vStrLeft(NNP_Task nnpTask);
-    static void vStrLength(NNP_Task nnpTask);
-    static void vStrPad(NNP_Task nnpTask);
-    static void vStrPrepend(NNP_Task nnpTask);
-    static void vStrRandom(NNP_Task nnpTask);
-    static void vStrReplace(NNP_Task nnpTask);
-    static void vStrRight(NNP_Task nnpTask);
-    static void vStrSub(NNP_Task nnpTask);
-    static void vStrTailInt(NNP_Task nnpTask);
+    static void vStrAlgebra(MP_Task mpTask);
+    static void vStrCat(MP_Task mpTask);
+    static void vStrClip(MP_Task mpTask);
+    static void vStrEqual(MP_Task mpTask);
+    static void vStrEscape(MP_Task mpTask);
+    static void vStrFirstCsv(MP_Task mpTask);
+    static void vStrFormat(MP_Task mpTask);
+    static void vStrLeft(MP_Task mpTask);
+    static void vStrLength(MP_Task mpTask);
+    static void vStrPad(MP_Task mpTask);
+    static void vStrPrepend(MP_Task mpTask);
+    static void vStrRandom(MP_Task mpTask);
+    static void vStrReplace(MP_Task mpTask);
+    static void vStrRight(MP_Task mpTask);
+    static void vStrSub(MP_Task mpTask);
+    static void vStrTailInt(MP_Task mpTask);
 
-    static void vS256Init(NNP_Task nnpTask);
+    static void vS256Init(MP_Task mpTask);
     
     // table
-    static void vTableAddIndex(NNP_Task nnpTask);
-    static void vTableAnalyze(NNP_Task nnpTask);
-    static void vTableAppend(NNP_Task nnpTask);
-    static void vTableAppendBuffer(NNP_Task nnpTask);
-    static void vTableCreateColumnVec(NNP_Task nnpTask);
-    static void vTableDrop(NNP_Task nnpTask);
-    static void vTableDump(NNP_Task nnpTask);
-    static void vTableFirstBuffer(NNP_Task nnpTask);
-    static void vTableHiddenIndexFetch(NNP_Task nnpTask);
-    static void vTableHiddenIndexStore(NNP_Task nnpTask);
-    static void vTableInit(NNP_Task nnpTask);
-    static void vTableInsert(NNP_Task nnpTask);
-    static void vTableList(NNP_Task nnpTask);
-    static void vTableName(NNP_Task nnpTask);
-    static void vTableRef(NNP_Task nnpTask);
-    static void vTableShowColumnVec(NNP_Task nnpTask);
-    static void vTableSlots(NNP_Task nnpTask);
-    static void vTableSpace(NNP_Task nnpTask);
-    static void vTableSubDic(NNP_Task nnpTask);
-    static void vTableTruncate(NNP_Task nnpTask);
-    static void vTableGenCandidatePaths(NNP_Task nnpTask);
+    static void vTableAddIndex(MP_Task mpTask);
+    static void vTableAnalyze(MP_Task mpTask);
+    static void vTableAppend(MP_Task mpTask);
+    static void vTableAppendBuffer(MP_Task mpTask);
+    static void vTableCreateColumnVec(MP_Task mpTask);
+    static void vTableDrop(MP_Task mpTask);
+    static void vTableDump(MP_Task mpTask);
+    static void vTableFirstBuffer(MP_Task mpTask);
+    static void vTableHiddenIndexFetch(MP_Task mpTask);
+    static void vTableHiddenIndexStore(MP_Task mpTask);
+    static void vTableInit(MP_Task mpTask);
+    static void vTableInsert(MP_Task mpTask);
+    static void vTableList(MP_Task mpTask);
+    static void vTableName(MP_Task mpTask);
+    static void vTableRef(MP_Task mpTask);
+    static void vTableShowColumnVec(MP_Task mpTask);
+    static void vTableSlots(MP_Task mpTask);
+    static void vTableSpace(MP_Task mpTask);
+    static void vTableSubDic(MP_Task mpTask);
+    static void vTableTruncate(MP_Task mpTask);
+    static void vTableGenCandidatePaths(MP_Task mpTask);
   
     // task
-    static void vTaskAck(NNP_Task nnpTask);
-    static void vTaskAcksFetch(NNP_Task nnpTask);
-    static void vTaskAcksStore(NNP_Task nnpTask);
-    static void vTaskCommentFetch(NNP_Task nnpTask);
-    static void vTaskCommentStore(NNP_Task nnpTask);
-    static void vTaskDelete(NNP_Task nnpTask);
-    static void vTaskDicStack(NNP_Task nnpTask);
-    static void vTaskDump(NNP_Task nnpTask);
-    static void vTaskInit(NNP_Task nnpTask);
-    static void vTaskJobQueueFetch(NNP_Task nnpTask);
-    static void vTaskJobQueueStore(NNP_Task nnpTask);
-    static void vTaskNameFetch(NNP_Task nnpTask);
-    static void vTaskNameStore(NNP_Task nnpTask);
-    static void vTaskNew(NNP_Task nnpTask);
-    static void vTaskThis(NNP_Task nnpTask);
-    static void vTaskParentFetch(NNP_Task nnpTask);
-    static void vTaskParentStore(NNP_Task nnpTask);
-    static void vTaskPlanFetch(NNP_Task nnpTask);
-    static void vTaskPlanStore(NNP_Task nnpTask);
-    static void vTaskSeed(NNP_Task nnpTask);
-    static void vTaskSeitfFetch(NNP_Task nnpTask);
-    static void vTaskSeitfStore(NNP_Task nnpTask);
-    static void vTaskSocketFetch(NNP_Task nnpTask);
-    static void vTaskSocketStore(NNP_Task nnpTask);
-    static void vTaskStateFetch(NNP_Task nnpTask);
-    static void vTaskStateStore(NNP_Task nnpTask);
-    static void vTaskTaskSetFetch(NNP_Task nnpTask);
-    static void vTaskTaskSetStore(NNP_Task nnpTask);
-    static void vTaskThread(NNP_Task nnpTask);
-    static void vTaskWait(NNP_Task nnpTask);
-    static void vTaskYield(NNP_Task nnpTask);
+    static void vTaskAck(MP_Task mpTask);
+    static void vTaskAcksFetch(MP_Task mpTask);
+    static void vTaskAcksStore(MP_Task mpTask);
+    static void vTaskCommentFetch(MP_Task mpTask);
+    static void vTaskCommentStore(MP_Task mpTask);
+    static void vTaskDelete(MP_Task mpTask);
+    static void vTaskDicStack(MP_Task mpTask);
+    static void vTaskDump(MP_Task mpTask);
+    static void vTaskInit(MP_Task mpTask);
+    static void vTaskJobQueueFetch(MP_Task mpTask);
+    static void vTaskJobQueueStore(MP_Task mpTask);
+    static void vTaskNameFetch(MP_Task mpTask);
+    static void vTaskNameStore(MP_Task mpTask);
+    static void vTaskNew(MP_Task mpTask);
+    static void vTaskThis(MP_Task mpTask);
+    static void vTaskParentFetch(MP_Task mpTask);
+    static void vTaskParentStore(MP_Task mpTask);
+    static void vTaskPlanFetch(MP_Task mpTask);
+    static void vTaskPlanStore(MP_Task mpTask);
+    static void vTaskSeed(MP_Task mpTask);
+    static void vTaskSeitfFetch(MP_Task mpTask);
+    static void vTaskSeitfStore(MP_Task mpTask);
+    static void vTaskSocketFetch(MP_Task mpTask);
+    static void vTaskSocketStore(MP_Task mpTask);
+    static void vTaskStateFetch(MP_Task mpTask);
+    static void vTaskStateStore(MP_Task mpTask);
+    static void vTaskTaskSetFetch(MP_Task mpTask);
+    static void vTaskTaskSetStore(MP_Task mpTask);
+    static void vTaskThread(MP_Task mpTask);
+    static void vTaskWait(MP_Task mpTask);
+    static void vTaskYield(MP_Task mpTask);
     
     // taskCursor
-    static void vTaskCursorBegin(NNP_Task nnpTask);
-    static void vTaskCursorDelete(NNP_Task nnpTask);
-    static void vTaskCursorEnd(NNP_Task nnpTask);
-    static void vTaskCursorFirst(NNP_Task nnpTask);
-    static void vTaskCursorGet(NNP_Task nnpTask);
-    static void vTaskCursorInit(NNP_Task nnpTask);
-    static void vTaskCursorNew(NNP_Task nnpTask);
-    static void vTaskCursorNext(NNP_Task nnpTask);
+    static void vTaskCursorBegin(MP_Task mpTask);
+    static void vTaskCursorDelete(MP_Task mpTask);
+    static void vTaskCursorEnd(MP_Task mpTask);
+    static void vTaskCursorFirst(MP_Task mpTask);
+    static void vTaskCursorGet(MP_Task mpTask);
+    static void vTaskCursorInit(MP_Task mpTask);
+    static void vTaskCursorNew(MP_Task mpTask);
+    static void vTaskCursorNext(MP_Task mpTask);
     
     // taskList
-    static void vTaskList(NNP_Task nnpTask);
-    static void vTaskListAppend(NNP_Task nnpTask);
-    static void vTaskListDump(NNP_Task nnpTask);
-    static void vTaskListInit(NNP_Task nnpTask);
+    static void vTaskList(MP_Task mpTask);
+    static void vTaskListAppend(MP_Task mpTask);
+    static void vTaskListDump(MP_Task mpTask);
+    static void vTaskListInit(MP_Task mpTask);
     
     // taskSet
-    static void vTaskSetAppend(NNP_Task nnpTask); 
-    static void vTaskSetDump(NNP_Task nnpTask);
-    static void vTaskSetInit(NNP_Task nnpTask);   
-    static void vTaskSetNew(NNP_Task nnpTask);
+    static void vTaskSetAppend(MP_Task mpTask); 
+    static void vTaskSetDump(MP_Task mpTask);
+    static void vTaskSetInit(MP_Task mpTask);   
+    static void vTaskSetNew(MP_Task mpTask);
   
     // thread
-    static void vThreadAppend(NNP_Task nnpTask);  
-    static void vThreadBind(NNP_Task nnpTask);
-    static void vThreadCondSignal(NNP_Task nnpTask);
-    static void vThreadCondWait(NNP_Task nnpTask);
-    static void vThreadCpu(NNP_Task nnpTask);
-    static void vThreadDump(NNP_Task nnpTask);
-    static void vThreadId(NNP_Task nnpTask);
-    static void vThreadInit(NNP_Task nnpTask);
-    static void vThreadKindFetch(NNP_Task nnpTask);
-    static void vThreadKindStore(NNP_Task nnpTask);
-    static void vThreadMutexLock(NNP_Task nnpTask);
-    static void vThreadMutexUnlock(NNP_Task nnpTask);
-    static void vThreadNameFetch(NNP_Task nnpTask);
-    static void vThreadNameStore(NNP_Task nnpTask);
-    static void vThreadSchedulerFetch(NNP_Task nnpTask);
-    static void vThreadSchedulerStore(NNP_Task nnpTask);
-    static void vThreadSfetch(NNP_Task nnpTask);
-    static void vThreadSstore(NNP_Task nnpTask);
-    static void vThreadSleep_s(NNP_Task nnpTask);
-    static void vThreadSleep_ms(NNP_Task nnpTask);
-    static void vThreadSleep_us(NNP_Task nnpTask);
-    static void vThreadSleep_ns(NNP_Task nnpTask);
-    static void vThreadSpawn(NNP_Task nnpTask);   
-    static void vThreadSpawnV2(NNP_Task nnpTask);
+    static void vThreadAppend(MP_Task mpTask);  
+    static void vThreadBind(MP_Task mpTask);
+    static void vThreadCondSignal(MP_Task mpTask);
+    static void vThreadCondWait(MP_Task mpTask);
+    static void vThreadCpu(MP_Task mpTask);
+    static void vThreadDump(MP_Task mpTask);
+    static void vThreadId(MP_Task mpTask);
+    static void vThreadInit(MP_Task mpTask);
+    static void vThreadKindFetch(MP_Task mpTask);
+    static void vThreadKindStore(MP_Task mpTask);
+    static void vThreadMutexLock(MP_Task mpTask);
+    static void vThreadMutexUnlock(MP_Task mpTask);
+    static void vThreadNameFetch(MP_Task mpTask);
+    static void vThreadNameStore(MP_Task mpTask);
+    static void vThreadSchedulerFetch(MP_Task mpTask);
+    static void vThreadSchedulerStore(MP_Task mpTask);
+    static void vThreadSfetch(MP_Task mpTask);
+    static void vThreadSstore(MP_Task mpTask);
+    static void vThreadSleep_s(MP_Task mpTask);
+    static void vThreadSleep_ms(MP_Task mpTask);
+    static void vThreadSleep_us(MP_Task mpTask);
+    static void vThreadSleep_ns(MP_Task mpTask);
+    static void vThreadSpawn(MP_Task mpTask);   
+    static void vThreadSpawnV2(MP_Task mpTask);
 
     // threadCursor
-    static void vThreadCursorBegin(NNP_Task nnpTask);
-    static void vThreadCursorDelete(NNP_Task nnpTask);
-    static void vThreadCursorEnd(NNP_Task nnpTask);
-    static void vThreadCursorFirst(NNP_Task nnpTask);
-    static void vThreadCursorGet(NNP_Task nnpTask);
-    static void vThreadCursorInit(NNP_Task nnpTask);
-    static void vThreadCursorNew(NNP_Task nnpTask);
-    static void vThreadCursorNext(NNP_Task nnpTask);
+    static void vThreadCursorBegin(MP_Task mpTask);
+    static void vThreadCursorDelete(MP_Task mpTask);
+    static void vThreadCursorEnd(MP_Task mpTask);
+    static void vThreadCursorFirst(MP_Task mpTask);
+    static void vThreadCursorGet(MP_Task mpTask);
+    static void vThreadCursorInit(MP_Task mpTask);
+    static void vThreadCursorNew(MP_Task mpTask);
+    static void vThreadCursorNext(MP_Task mpTask);
     
     // threadList
-    static void vThreadListDump(NNP_Task nnpTask);
-    static void vThreadListInit(NNP_Task nnpTask);
+    static void vThreadListDump(MP_Task mpTask);
+    static void vThreadListInit(MP_Task mpTask);
     
     // timer
-    static void vTimerDelete(NNP_Task nnpTask);
-    static void vTimerInit(NNP_Task nnpTask);
-    static void vTimerMicrosecs(NNP_Task nnpTask);
-    static void vTimerMillisecs(NNP_Task nnpTask);
-    static void vTimerNanosecs(NNP_Task nnpTask);
-    static void vTimerNew(NNP_Task nnpTask);
-    static void vTimerReset(NNP_Task nnpTask);
-    static void vTimerSecs(NNP_Task nnpTask);
-    static void vTimerStart(NNP_Task nnpTask);
-    static void vTimerTicks(NNP_Task nnpTask);
-    static void vTimerUpdate(NNP_Task nnpTask);
+    static void vTimerDelete(MP_Task mpTask);
+    static void vTimerInit(MP_Task mpTask);
+    static void vTimerMicrosecs(MP_Task mpTask);
+    static void vTimerMillisecs(MP_Task mpTask);
+    static void vTimerNanosecs(MP_Task mpTask);
+    static void vTimerNew(MP_Task mpTask);
+    static void vTimerReset(MP_Task mpTask);
+    static void vTimerSecs(MP_Task mpTask);
+    static void vTimerStart(MP_Task mpTask);
+    static void vTimerTicks(MP_Task mpTask);
+    static void vTimerUpdate(MP_Task mpTask);
     
     // to
-    static void vToBinVal(NNP_Task nnpTask);
-    static void vToBody(NNP_Task nnpTask);
-    static void vToInt(NNP_Task nnpTask);
-    static void vToObject(NNP_Task nnpTask);
-    static void vToPtr(NNP_Task nnpTask);
-    static void vToSEitf(NNP_Task nnpTask);
-    static void vToStr(NNP_Task nnpTask);
-    static void vToTask(NNP_Task nnpTask);
+    static void vToBinVal(MP_Task mpTask);
+    static void vToBody(MP_Task mpTask);
+    static void vToInt(MP_Task mpTask);
+    static void vToObject(MP_Task mpTask);
+    static void vToPtr(MP_Task mpTask);
+    static void vToSEitf(MP_Task mpTask);
+    static void vToStr(MP_Task mpTask);
+    static void vToTask(MP_Task mpTask);
     
     // token
-    static void vTokenColon(NNP_Task nnpTask);
+    static void vTokenColon(MP_Task mpTask);
     
    // trace
-    static void vTraceOff(NNP_Task nnpTask);
-    static void vTraceOn(NNP_Task nnpTask);
-    static void vTracePoint(NNP_Task nnpTask);
-    static void vTraceSet(NNP_Task nnpTask);
+    static void vTraceOff(MP_Task mpTask);
+    static void vTraceOn(MP_Task mpTask);
+    static void vTracePoint(MP_Task mpTask);
+    static void vTraceSet(MP_Task mpTask);
     // tx
-    static void vTxDump(NNP_Task nnpTask);
+    static void vTxDump(MP_Task mpTask);
     
     // txCollection
-    static void vTxCollectionDump(NNP_Task nnpTask);
-    static void vTxCollectionInit(NNP_Task nnpTask);
+    static void vTxCollectionDump(MP_Task mpTask);
+    static void vTxCollectionInit(MP_Task mpTask);
     
     // txCursor
-    static void vTxCursorBegin(NNP_Task nnpTask);
-    static void vTxCursorDelete(NNP_Task nnpTask);
-    static void vTxCursorEnd(NNP_Task nnpTask);
-    static void vTxCursorFirst(NNP_Task nnpTask);
-    static void vTxCursorGet(NNP_Task nnpTask);
-    static void vTxCursorInit(NNP_Task nnpTask);
-    static void vTxCursorNew(NNP_Task nnpTask);
-    static void vTxCursorNext(NNP_Task nnpTask);
+    static void vTxCursorBegin(MP_Task mpTask);
+    static void vTxCursorDelete(MP_Task mpTask);
+    static void vTxCursorEnd(MP_Task mpTask);
+    static void vTxCursorFirst(MP_Task mpTask);
+    static void vTxCursorGet(MP_Task mpTask);
+    static void vTxCursorInit(MP_Task mpTask);
+    static void vTxCursorNew(MP_Task mpTask);
+    static void vTxCursorNext(MP_Task mpTask);
     
     // txMap
-    static void vTxMapInit(NNP_Task nnpTask);
-    static void vTxRefBegin(NNP_Task nnpTask);
-    static void vTxRefCommit(NNP_Task nnpTask);
-    static void vTxRefRollback(NNP_Task nnpTask);
-    static void vTxRefEnd(NNP_Task nnpTask);
+    static void vTxMapInit(MP_Task mpTask);
+    static void vTxRefBegin(MP_Task mpTask);
+    static void vTxRefCommit(MP_Task mpTask);
+    static void vTxRefRollback(MP_Task mpTask);
+    static void vTxRefEnd(MP_Task mpTask);
 
     // txRef
-    static void vTxRefInit(NNP_Task nnpTask);
+    static void vTxRefInit(MP_Task mpTask);
     
     // vector
-    static void vVectorDifference(NNP_Task nnpTask);
+    static void vVectorDifference(MP_Task mpTask);
     
     // word
-    static void vAllParticipants(NNP_Task nnpTask);
-    static void vAllot(NNP_Task nnpTask);
-    static void vCell(NNP_Task nnpTask);
-    static void vColon(NNP_Task nnpTask);
-    static void vComma(NNP_Task nnpTask);
-    static void vCompileComma(NNP_Task nnpTask);
-    static void vCreate(NNP_Task nnpTask);
-    static void vCreateFrom(NNP_Task nnpTask);
-    static void vDicWhich(NNP_Task nnpTask);
-    static void vDoes(NNP_Task nnpTask);
-    static void vDoes_RT(NNP_Task nnpTask);
-    static void vFind(NNP_Task nnpTask);
-    static void vFindInCurrent(NNP_Task nnpTask);
-    static void vForget(NNP_Task nnpTask);
-    static void vHashHashColon(NNP_Task nnpTask);
-    static void vIndirect(NNP_Task nnpTask);
-    static void vImmediate(NNP_Task nnpTask);
-    static void vLocalCalls(NNP_Task nnpTask);
-    static void vLocate(NNP_Task nnpTask);
-    static void vOneParticipant(NNP_Task nnpTask);
-    static void vOpDic(NNP_Task nnpTask);
-    static void vPlanDicTask(NNP_Task nnpTask);
-    static void vPostpone(NNP_Task nnpTask);
-    static void vSee(NNP_Task nnpTask);
-    static void vSemicolon(NNP_Task nnpTask);
-    static void vSubDic(NNP_Task nnpTask);
-    static void vTick(NNP_Task nnpTask);
-    static void vWord(NNP_Task nnpTask);
-    static void vWordDump(NNP_Task nnpTask);
-    static void vWordForget(NNP_Task nnpTask);
-    static void vWordImmediateGet(NNP_Task nnpTask);
-    static void vWordImmediateSet(NNP_Task nnpTask);
-    static void vWordIsImmediate(NNP_Task nnpTask);
-    static void vWordIsPrimitive(NNP_Task nnpTask);
-    static void vWordKindGet(NNP_Task nnpTask);
-    static void vWordKindSet(NNP_Task nnpTask);
-    static void vWordName(NNP_Task nnpTask);
-    static void vWordPrev(NNP_Task nnpTask);
-    static void vWordThis(NNP_Task nnpTask);
-    static void vWordTypeGet(NNP_Task nnpTask);
-    static void vWordTypeSet(NNP_Task nnpTask);
+    static void vAllParticipants(MP_Task mpTask);
+    static void vAllot(MP_Task mpTask);
+    static void vCell(MP_Task mpTask);
+    static void vColon(MP_Task mpTask);
+    static void vComma(MP_Task mpTask);
+    static void vCompileComma(MP_Task mpTask);
+    static void vCreate(MP_Task mpTask);
+    static void vCreateFrom(MP_Task mpTask);
+    static void vDicWhich(MP_Task mpTask);
+    static void vDoes(MP_Task mpTask);
+    static void vDoes_RT(MP_Task mpTask);
+    static void vFind(MP_Task mpTask);
+    static void vFindInCurrent(MP_Task mpTask);
+    static void vForget(MP_Task mpTask);
+    static void vHashHashColon(MP_Task mpTask);
+    static void vIndirect(MP_Task mpTask);
+    static void vImmediate(MP_Task mpTask);
+    static void vLocalCalls(MP_Task mpTask);
+    static void vLocate(MP_Task mpTask);
+    static void vOneParticipant(MP_Task mpTask);
+    static void vOpDic(MP_Task mpTask);
+    static void vPlanDicTask(MP_Task mpTask);
+    static void vPostpone(MP_Task mpTask);
+    static void vSee(MP_Task mpTask);
+    static void vSemicolon(MP_Task mpTask);
+    static void vSubDic(MP_Task mpTask);
+    static void vTick(MP_Task mpTask);
+    static void vWord(MP_Task mpTask);
+    static void vWordDump(MP_Task mpTask);
+    static void vWordForget(MP_Task mpTask);
+    static void vWordImmediateGet(MP_Task mpTask);
+    static void vWordImmediateSet(MP_Task mpTask);
+    static void vWordIsImmediate(MP_Task mpTask);
+    static void vWordIsPrimitive(MP_Task mpTask);
+    static void vWordKindGet(MP_Task mpTask);
+    static void vWordKindSet(MP_Task mpTask);
+    static void vWordName(MP_Task mpTask);
+    static void vWordPrev(MP_Task mpTask);
+    static void vWordThis(MP_Task mpTask);
+    static void vWordTypeGet(MP_Task mpTask);
+    static void vWordTypeSet(MP_Task mpTask);
 
     // zero
-    static void vZeroLess(NNP_Task nnpTask);
-    static void vZeroLessEqual(NNP_Task nnpTask);
-    static void vZeroEqual(NNP_Task nnpTask);
-    static void vZeroNotEqual(NNP_Task nnpTask);
-    static void vZeroGreaterEqual(NNP_Task nnpTask);
-    static void vZeroGreater(NNP_Task nnpTask);
+    static void vZeroLess(MP_Task mpTask);
+    static void vZeroLessEqual(MP_Task mpTask);
+    static void vZeroEqual(MP_Task mpTask);
+    static void vZeroNotEqual(MP_Task mpTask);
+    static void vZeroGreaterEqual(MP_Task mpTask);
+    static void vZeroGreater(MP_Task mpTask);
     
     /*------------------------------------------------------------------------*/
     
@@ -1252,12 +1252,12 @@ namespace Tasks
       #ifdef STEP_BOARD
     
         #define ENTRY(p1) \
-          gpStepBoard->vName(nnpTask->m_pThread ? nnpTask->m_pThread->iThreadNo() : 0,p1); \
+          gpStepBoard->vName(mpTask->m_pThread ? mpTask->m_pThread->iThreadNo() : 0,p1); \
           static StepAccum* pStepAccum = nullptr; \
           if (! pStepAccum) \
             pStepAccum = gpStepArray->pAllocAccum(p1); \
           i8 _iTscEntry = Synch::iTicks(); \
-          nnpTask->vPrimitive(p1);
+          mpTask->vPrimitive(p1);
     
      #else
     
@@ -1266,7 +1266,7 @@ namespace Tasks
           if (! pStepAccum) \
             pStepAccum = gpStepArray->pAllocAccum((Str*)p1); \
           i8 _iTscEntry = Synch::iTicks(); \
-          nnpTask->vPrimitive(p1);
+          mpTask->vPrimitive(p1);
      #endif
           
      #define EXIT() \
@@ -1281,7 +1281,7 @@ namespace Tasks
       #ifdef STEP_BOARD
     
         #define ENTRY(p1) \
-          gpStepBoard->vName(nnpTask->m_pThread ? nnpTask->m_pThread->iThreadNo() : 0,p1);
+          gpStepBoard->vName(mpTask->m_pThread ? mpTask->m_pThread->iThreadNo() : 0,p1);
     
       #else
 

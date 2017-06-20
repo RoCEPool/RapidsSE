@@ -39,7 +39,7 @@ void Task::vAddPrimitives_Entry(void)
 /*----------------------------------------------------------------------------*/
 /* entry.matches -- return true if entry matches key                          */
 /*----------------------------------------------------------------------------*/
-void Task::vEntryMatches(NNP_Task nnpTask)
+void Task::vEntryMatches(MP_Task mpTask)
 {
   ENTRY("vEntryMatches"_Str);
   
@@ -47,19 +47,19 @@ void Task::vEntryMatches(NNP_Task nnpTask)
   Object* pPtrIndex = nullptr;
   ValWrk xValWrk;
   
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrEntry) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrEntry) )
     THROW_INVALID_DSTACK("entry.matches"_Str);
   
   Entry* pEntry = _pEntry(pPtrEntry);
   ASSERT(CN_ENTRY == pEntry->eClass());
   
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrIndex) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrIndex) )
     THROW_INVALID_DSTACK("entry.matches"_Str);
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
   
-  if ( ! nnpTask->m_pDataStack->bPop(xValWrk) )
+  if ( ! mpTask->m_pDataStack->bPop(xValWrk) )
     THROW_INVALID_DSTACK("entry.matches"_Str);
   
   KeyWrk xKeyWrk;
@@ -72,27 +72,27 @@ void Task::vEntryMatches(NNP_Task nnpTask)
   bool bIsEqual = false;
   bool bSame = pEntry->aKey()->bJuxtaCompare(JC_SAME, xKeyWrk.aKey(), pIndex->pIdxColVec(), bIsEqual);
 
-  nnpTask->m_pDataStack->vPushInt(bSame ? 1 : 0);
+  mpTask->m_pDataStack->vPushInt(bSame ? 1 : 0);
 }
 
 /*----------------------------------------------------------------------------*/
 /* entry.row -- return row from entry                                         */
 /*----------------------------------------------------------------------------*/
 #ifdef HIDDEN_INDEX
-void Task::vEntryRow(NNP_Task nnpTask)
+void Task::vEntryRow(MP_Task mpTask)
 {
   ENTRY("vEntryRow"_Str);
   
   Object* pPtrEntry = nullptr;
   Object* pPtrIndex = nullptr;
   
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrEntry) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrEntry) )
     THROW_INVALID_DSTACK("entry.row"_Str);
   
   Entry* pEntry = _pEntry(pPtrEntry);
   ASSERT(CN_ENTRY == pEntry->eClass());
   
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrIndex) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrIndex) )
     THROW_INVALID_DSTACK("entry.row"_Str);
   
   Index* pIndex = _pIndex(pPtrIndex);
@@ -131,24 +131,24 @@ void Task::vEntryRow(NNP_Task nnpTask)
   Entry* pRowEntry = pEntryBuffer->pPosition(xKeyWrk, JC_AFTER);
   
   // return the row entry
-  nnpTask->m_pDataStack->vPushObject(pRowEntry);
+  mpTask->m_pDataStack->vPushObject(pRowEntry);
 }
 
 #else
-void Task::vEntryRow(NNP_Task nnpTask)
+void Task::vEntryRow(MP_Task mpTask)
 {
   ENTRY("vEntryRow"_Str);
   
   Object* pPtrEntry = nullptr;
   Object* pPtrIndex = nullptr;
   
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrEntry) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrEntry) )
     THROW_INVALID_DSTACK("entry.row"_Str);
   
   Entry* pEntry = _pEntry(pPtrEntry);
   ASSERT(CN_ENTRY == pEntry->eClass());
   
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrIndex) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrIndex) )
     THROW_INVALID_DSTACK("entry.row"_Str);
   
   Index* pIndex = _pIndex(pPtrIndex);
@@ -158,7 +158,7 @@ void Task::vEntryRow(NNP_Task nnpTask)
   
   Entry* pRow = xId.pRow();
   
-  nnpTask->m_pDataStack->vPushObject(pRow);
+  mpTask->m_pDataStack->vPushObject(pRow);
 }
 #endif
 /*============================================================================*/

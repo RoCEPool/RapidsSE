@@ -43,20 +43,20 @@ void Task::vAddPrimitives_Locals(void)
 /*----------------------------------------------------------------------------*/
 /* local.fetch -- push locals[n] onto dstack                                  */
 /*----------------------------------------------------------------------------*/
-void Task::vLocalFetch(NNP_Task nnpTask)
+void Task::vLocalFetch(MP_Task mpTask)
 {
   ENTRY("vLocalFetch"_Str);
   
-  if ( ! nnpTask->m_pLocalsFrame )
+  if ( ! mpTask->m_pLocalsFrame )
     THROW_INVALID_DSTACK("local.fetch"_Str);
   
   i8 iLocal;
-  if ( ! nnpTask->m_pDataStack->bPop(iLocal) )
+  if ( ! mpTask->m_pDataStack->bPop(iLocal) )
     THROW_INVALID_DSTACK("local.fetch"_Str);
   
-  ValReg* pValReg = nnpTask->m_pLocalsFrame->pValReg(iLocal);
+  ValReg* pValReg = mpTask->m_pLocalsFrame->pValReg(iLocal);
   
-  nnpTask->m_pDataStack->vPushValue(pValReg);
+  mpTask->m_pDataStack->vPushValue(pValReg);
   
   EXIT();
 }
@@ -64,20 +64,20 @@ void Task::vLocalFetch(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* localStore -- pop dstack into locals[n]                                    */
 /*----------------------------------------------------------------------------*/
-void Task::vLocalStore(NNP_Task nnpTask)
+void Task::vLocalStore(MP_Task mpTask)
 {
   ENTRY("vLocalStore"_Str);
   
-  if ( ! nnpTask->m_pLocalsFrame )
+  if ( ! mpTask->m_pLocalsFrame )
     THROW_INVALID_DSTACK("localStore"_Str);
   
   i8 iLocal;
-  if ( ! nnpTask->m_pDataStack->bPop(iLocal) )
+  if ( ! mpTask->m_pDataStack->bPop(iLocal) )
     THROW_INVALID_DSTACK("localStore"_Str);
   
-  ValReg* pValReg = nnpTask->m_pLocalsFrame->pValReg(iLocal);
+  ValReg* pValReg = mpTask->m_pLocalsFrame->pValReg(iLocal);
   
-  nnpTask->m_pDataStack->bPop(pValReg);
+  mpTask->m_pDataStack->bPop(pValReg);
   
   EXIT();
 }
@@ -85,47 +85,47 @@ void Task::vLocalStore(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* locals| -- declare set of locals                                immediate  */
 /*----------------------------------------------------------------------------*/
-void Task::vLocalsBar(NNP_Task nnpTask)
+void Task::vLocalsBar(MP_Task mpTask)
 {
 ENTRY("vLocalsBar"_Str);
   
-  Word* pCurrentWord = nnpTask->m_pCurrentWord;
+  Word* pCurrentWord = mpTask->m_pCurrentWord;
   
-  Dic* pDic = nnpTask->m_xPathStack.pPick(0);
+  Dic* pDic = mpTask->m_xPathStack.pPick(0);
 
   ValWrk xValWrk;
   
   for (;;) {
     
     // get name of local
-    nnpTask->m_pTokeniser->vNextToken();
+    mpTask->m_pTokeniser->vNextToken();
     
     // end of locals declaration?
-    if (nnpTask->m_pTokeniser->sToken().bEqual("|"_Str))
+    if (mpTask->m_pTokeniser->sToken().bEqual("|"_Str))
       break;
 
     // test for first use of locals|
-    if ( ! nnpTask->m_nVariables ) {
+    if ( ! mpTask->m_nVariables ) {
       
       // create a locals dictionary
       pDic = new Dic;
       pDic->vName("<localsDic>"_Str);
-      nnpTask->m_xPathStack.vPush(pDic);
+      mpTask->m_xPathStack.vPush(pDic);
       
       // enocde locals frame push
       pCurrentWord->vEncode("locals.push"_Str);
     }
     
     // create new word for local in current dictionary
-    Word* pWordLocal = new(pDic) Word(nnpTask->m_pTokeniser->sToken());
+    Word* pWordLocal = new(pDic) Word(mpTask->m_pTokeniser->sToken());
     // ** do not set as current word **
     
     // set word as local variable
     pWordLocal->vWordType(WT_VARIABLE);
-    pWordLocal->vVariable(nnpTask->m_nVariables);
+    pWordLocal->vVariable(mpTask->m_nVariables);
     
     // encode the word
-    xValWrk = nnpTask->m_nVariables;
+    xValWrk = mpTask->m_nVariables;
     pWordLocal->vEncode("pushValue"_Str,&xValWrk);
     pWordLocal->vEncode("local.fetch"_Str);
     pWordLocal->vEncode("exit"_Str);
@@ -134,7 +134,7 @@ ENTRY("vLocalsBar"_Str);
     pCurrentWord->vEncode("pushValue"_Str,&xValWrk);
     pCurrentWord->vEncode("local.store"_Str);
     
-    nnpTask->m_nVariables++;
+    mpTask->m_nVariables++;
   }
   
   EXIT();
@@ -143,16 +143,16 @@ ENTRY("vLocalsBar"_Str);
 /*----------------------------------------------------------------------------*/
 /* locals.pop -- pop locals frame                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vLocalsPop(NNP_Task nnpTask)
+void Task::vLocalsPop(MP_Task mpTask)
 {
 ENTRY("vLocalsPop"_Str);
   
-  RegFrame* pLocalsFrame = nnpTask->m_pLocalsFrame;
+  RegFrame* pLocalsFrame = mpTask->m_pLocalsFrame;
   
   if ( ! pLocalsFrame )
     THROW_INVALID_DSTACK("locals.pop"_Str);
   
-  nnpTask->m_pLocalsFrame = nnpTask->m_pLocalsFrame->pNext();
+  mpTask->m_pLocalsFrame = mpTask->m_pLocalsFrame->pNext();
   
   delete pLocalsFrame;
   
@@ -162,17 +162,17 @@ ENTRY("vLocalsPop"_Str);
 /*----------------------------------------------------------------------------*/
 /* locals.push -- push locals frame                                           */
 /*----------------------------------------------------------------------------*/
-void Task::vLocalsPush(NNP_Task nnpTask)
+void Task::vLocalsPush(MP_Task mpTask)
 {
 ENTRY("vLocalsPush"_Str);
   
   RegFrame* pLocalsFrame = new RegFrame;
   
-  pLocalsFrame->vStackPtr(nnpTask->m_pReturnStack->pTopValue());
+  pLocalsFrame->vStackPtr(mpTask->m_pReturnStack->pTopValue());
   
-  pLocalsFrame->vNext(nnpTask->m_pLocalsFrame);
+  pLocalsFrame->vNext(mpTask->m_pLocalsFrame);
   
-  nnpTask->m_pLocalsFrame = pLocalsFrame;
+  mpTask->m_pLocalsFrame = pLocalsFrame;
   
   EXIT();
 }
@@ -180,16 +180,16 @@ ENTRY("vLocalsPush"_Str);
 /*----------------------------------------------------------------------------*/
 /* to -- compile store value into local variable                    immediate */
 /*----------------------------------------------------------------------------*/
-void Task::vLocalsTo(NNP_Task nnpTask)
+void Task::vLocalsTo(MP_Task mpTask)
 {
 ENTRY("vLocalsTo"_Str);
   
-  Word* pCurrentWord = nnpTask->m_pCurrentWord;
+  Word* pCurrentWord = mpTask->m_pCurrentWord;
   
   // get name of local
-  nnpTask->m_pTokeniser->vNextToken();
+  mpTask->m_pTokeniser->vNextToken();
 
-  Word* pWordVariable = nnpTask->m_xPathStack.pFindWord(nnpTask->m_pTokeniser->sToken());
+  Word* pWordVariable = mpTask->m_xPathStack.pFindWord(mpTask->m_pTokeniser->sToken());
   ASSERT(pWordVariable);
  
   ValWrk xValWrk;

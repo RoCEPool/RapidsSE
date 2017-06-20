@@ -9,11 +9,11 @@
 
 namespace Tasks
 {
-  typedef NNP<Task,CN_TASK> NNP_Task;
+  typedef MP<Task,CN_TASK> MP_Task;
 }
 namespace Dictionaries
 {
-  typedef void (*TaskStep)(Tasks::NNP_Task);
+  typedef void (*TaskStep)(Tasks::MP_Task);
 }
 
 namespace Dictionaries

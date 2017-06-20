@@ -40,21 +40,21 @@ void Task::vAddPrimitives_Logic(void)
 /*----------------------------------------------------------------------------*/
 /* and -- logical and of top two values                                       */
 /*----------------------------------------------------------------------------*/
-void Task::vLogicAnd(NNP_Task nnpTask)
+void Task::vLogicAnd(MP_Task mpTask)
 {
   ENTRY("vLogicAnd"_Str);
   
   i8 iArgB;
-  if ( ! nnpTask->m_pDataStack->bPopAsInt(iArgB) )
+  if ( ! mpTask->m_pDataStack->bPopAsInt(iArgB) )
     THROW_INVALID_DSTACK("and"_Str);
   
   i8 iArgA;
-  if ( ! nnpTask->m_pDataStack->bPopAsInt(iArgA) )
+  if ( ! mpTask->m_pDataStack->bPopAsInt(iArgA) )
     THROW_INVALID_DSTACK("and"_Str);
   
   i8 iArgR = (iArgA && iArgB) ? 1 : 0;
   
-  nnpTask->m_pDataStack->vPushInt(iArgR);
+  mpTask->m_pDataStack->vPushInt(iArgR);
   
   EXIT();
 }
@@ -62,17 +62,17 @@ void Task::vLogicAnd(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* not -- not of top value                                                    */
 /*----------------------------------------------------------------------------*/
-void Task::vLogicNot(NNP_Task nnpTask)
+void Task::vLogicNot(MP_Task mpTask)
 {
   ENTRY("vLogicNot"_Str);
   
   i8 iValA;
-  if ( ! nnpTask->m_pDataStack->bPopAsInt(iValA) )
+  if ( ! mpTask->m_pDataStack->bPopAsInt(iValA) )
     THROW_INVALID_DSTACK("not"_Str);
   
   i8 iNotA = iValA ? 0 : 1;
   
-  nnpTask->m_pDataStack->vPushInt(iNotA);
+  mpTask->m_pDataStack->vPushInt(iNotA);
   
   EXIT();
 }
@@ -80,21 +80,21 @@ void Task::vLogicNot(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* or -- logical or of top two values                                         */
 /*----------------------------------------------------------------------------*/
-void Task::vLogicOr(NNP_Task nnpTask)
+void Task::vLogicOr(MP_Task mpTask)
 {
   ENTRY("vLogicOr"_Str);
   
   i8 iArgB;
-  if ( ! nnpTask->m_pDataStack->bPopAsInt(iArgB) )
+  if ( ! mpTask->m_pDataStack->bPopAsInt(iArgB) )
     THROW_INVALID_DSTACK("or"_Str);
   
   i8 iArgA;
-  if ( ! nnpTask->m_pDataStack->bPopAsInt(iArgA) )
+  if ( ! mpTask->m_pDataStack->bPopAsInt(iArgA) )
     THROW_INVALID_DSTACK("or"_Str);
   
   i8 iArgR = (iArgA || iArgB) ? 1 : 0;
   
-  nnpTask->m_pDataStack->vPushInt(iArgR);
+  mpTask->m_pDataStack->vPushInt(iArgR);
   
   EXIT();
 }
