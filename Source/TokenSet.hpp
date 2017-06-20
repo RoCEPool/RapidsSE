@@ -5,9 +5,10 @@
 
 namespace Parsing
 {
-  class TokenSet : public Object
+  class TokenSet : public Vector<CN_TOKENSET,Token,CN_TOKEN,256,u8>
   {
   private:
+  
     TokenAry m_xTokenAry;  // array of tokens
     WspFxd<C_TOKEN_AREA> m_xTokenArea; // token work space
   

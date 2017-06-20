@@ -42,7 +42,6 @@ void TokenSet::operator delete(void* pBufferAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 TokenSet::TokenSet(void)
-: Object(CN_TOKENSET)
 {
   _precondition_(_MAGIC_,CN_TOKENSET,_FOOTER_);
   
