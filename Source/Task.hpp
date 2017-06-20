@@ -1238,7 +1238,7 @@ namespace Tasks
     // throw invalid data stack
     #define THROW_INVALID_DSTACK(primitive) \
     { \
-      THROW("Invalid data stack for: %s"_Str,primitive); \
+      THROW("Invalid data stack in for: %s"_Str,primitive); \
     }
         
     // throw invalid return stack
@@ -1264,7 +1264,7 @@ namespace Tasks
         #define ENTRY(p1) \
           static StepAccum* pStepAccum = nullptr; \
           if (! pStepAccum) \
-            pStepAccum = gpStepArray->pAllocAccum(p1); \
+            pStepAccum = gpStepArray->pAllocAccum((Str*)p1); \
           i8 _iTscEntry = Synch::iTicks(); \
           nnpTask->vPrimitive(p1);
      #endif

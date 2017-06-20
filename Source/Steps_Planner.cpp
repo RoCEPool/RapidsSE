@@ -55,7 +55,7 @@ void Task::vAddPrimitives_Planner(void)
 /*----------------------------------------------------------------------------*/
 void Task::vPlannerChoosePath(NNP_Task nnpTask)
 {
-  ENTRY("vPlannerChoosePath"_Str);
+  ENTRY((Str*)__func__);                         //! needs to be tested on Linux
   
   Object* mpPtrPlanner;
   
