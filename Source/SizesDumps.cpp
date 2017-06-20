@@ -151,6 +151,7 @@ pDUMPFUN *gpDump[]
   /* 86 */ &Dump::vUndefined,       // CN_THREADLIST
   /* 87 */ &Dump::vUndefined,       // CN_TIME
   /* 88 */ &Dump::vInvalid,         // CN_TIMER
+  /* 88 */ &Dump::vInvalid,         // CN_TOKEN
   /* 89 */ &Tokeniser::vDump,       // CN_TOKENISER
   /*    */ &Dump::vInvalid,         // CN_TOKENARY
   /*    */ &Dump::vInvalid,         // CN_TOKENSET
@@ -311,6 +312,7 @@ i8 giClassSize[]
   /* 86 */ sizeof(ThreadList),         // CN_THREADLIST
   /* 87 */ sizeof(Time),               // CN_TIME
   /* 88 */ sizeof(Timer),              // CN_TIMER
+  /* 89 */ sizeof(Token),              // CN_TOKEN
   /* 89 */ sizeof(Tokeniser),          // CN_TOKENISER
   /*    */ sizeof(TokenAry),           // CN_TOKENARY
   /*    */ sizeof(TokenSet),           // CN_TOKENSET
@@ -471,6 +473,7 @@ eHT geWhichHeap[]
   /* 89 */ HT_INVALID, // CN_THREADLIST
   /* 90 */ HT_INVALID, // CN_TIME
   /* 91 */ HT_SMALL,   // CN_TIMER
+  /* 92 */ HT_SMALL,   // CN_TOKEN
   /* 92 */ HT_MEDIUM,  // CN_TOKENISER
   /*    */ HT_INVALID, // CN_TOKENARY
   /*    */ HT_INVALID, // CN_TOKENSET
