@@ -29,6 +29,7 @@ namespace Structures
     void  vClear(void);
     void  vInsert(ITEM pObject);
     i8    nItems(void);
+    void  vItems(i8 nItems);
     ITEM  xGet(i8 iItem);
     i8    iMaxItems(void);
   
@@ -219,6 +220,19 @@ i8 Array<ARRAY_CN, ITEM, MAX_ITEMS>::nItems(void)
   ASSERT(m_nItems >= 0 && m_nItems < MAX_ITEMS);
   
   return m_nItems;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set number of actual items                                                 */
+/*----------------------------------------------------------------------------*/
+template <eCN ARRAY_CN, class ITEM, i8 MAX_ITEMS>
+void Array<ARRAY_CN, ITEM, MAX_ITEMS>::vItems(i8 nItems)
+{
+  _precondition_(_MAGIC_,ARRAY_CN,_FOOTER_);
+  
+  ASSERT(nItems >= 0 && nItems < MAX_ITEMS);
+  
+  m_nItems = nItems;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -249,7 +249,8 @@ ENTRY("vPlannerNew"_Str);
 }
 
 /*----------------------------------------------------------------------------*/
-/* accessPath.parseRPN -- parse an rpn form of where clause                   */
+/* accessPath.parseRPN -- parse an rpn form of where clause 
+ */
 /*----------------------------------------------------------------------------*/
 void Task::vPlannerParseRPN(MP_Task mpTask)
 {
