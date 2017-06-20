@@ -27,6 +27,14 @@ namespace Parsing
   
     void vReset(void);
   
+    i8 iLength(void);
+    bool bSame(Str*);
+    Str* aStr(void);
+    i8 iToI8(void);
+    void vConcat(Str*);
+    void vCopy(Str*);
+    bool bIsNumeric(void);
+  
     Footer* aFooter(void);
   };
 }

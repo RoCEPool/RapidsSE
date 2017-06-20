@@ -8,10 +8,7 @@ namespace Parsing
   class TokenSet : public Vector<CN_TOKENSET,Token,CN_TOKEN,256,u8>
   {
   private:
-  
-    TokenAry m_xTokenAry;  // array of tokens
-    WspFxd<C_TOKEN_AREA> m_xTokenArea; // token work space
-  
+    
     // must be last
     Footer m_xFooter;    
     
@@ -24,8 +21,6 @@ namespace Parsing
   
     static TokenSet* _pTokenSet(void* aAddr);
   
-    Str*& operator [](i8 i_TokenNo);
-
     void vAddToken(Str* aToken);
     i8   nTokens(void);
     void vIncTokens(void);

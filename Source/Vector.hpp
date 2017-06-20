@@ -8,7 +8,7 @@ namespace Structures
   template <eCN VEC_CN, class ITEM, eCN ITEM_CN, i8 MAX_ITEMS, class SUB>
   class Vector : public Object
   {
-  private:
+  protected:
     u8     m_nItems;           // number of items currently in the vector
     ITEM*  m_pItem[MAX_ITEMS]; // vector of items (proper objects)
   
@@ -134,9 +134,9 @@ Vector<VEC_CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>::~Vector(void)
 template <eCN VEC_CN, class ITEM, eCN ITEM_CN, i8 MAX_ITEMS, class SUB>
 ITEM*& Vector<VEC_CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>::operator [](SUB nItemNo)
 {
-  _precondition_(_MAGIC_,CN_ENTRYVEC,_FOOTER_);
+  _precondition_(_MAGIC_,VEC_CN,_FOOTER_);
   
-  ASSERT(*nItemNo >= 0 and nItemNo < MAX_ITEMS);
+  //ASSERT(nItemNo >= 0 and nItemNo < MAX_ITEMS);
   
   return m_pItem[nItemNo];
 }

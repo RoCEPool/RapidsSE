@@ -40,10 +40,10 @@ void SeHistory::vAppend(TokenSet& xTokenSet)
   
   vSeekEnd();
   
-  for (i8 i = 0; *xTokenSet[i]->s(); i++) {
+  for (i8 i = 0; *(char*)xTokenSet[i]->aStr(); i++) {
     if (i)
       m_xFile.vPrint("%s"_Str," ");
-    m_xFile.vPrint("%s"_Str,xTokenSet[i]->s());
+    m_xFile.vPrint("%s"_Str,xTokenSet[i]->aStr());
   }
   m_xFile.vPrint("%s"_Str,"\n");
   m_xFile.vFlush();
@@ -109,7 +109,7 @@ bool SeHistory::bRecall(TokenSet& xTokenSet)
   
   i8 iCommand;
   
-  if (xTokenSet[0]->bEqual("!!"_Str)) {
+  if (xTokenSet[0]->bSame("!!"_Str)) {
     iCommand = m_iCommands;
     if (! iCommand)
       return false;
@@ -156,7 +156,7 @@ bool SeHistory::bGet(i8 iCommand, TokenSet& xTokenSet)
       xTokenSet.vReset();
       
       i8 i = 0;
-      while (TK_NONE != m_pTokeniser->eNextToken(xTokenSet[i]->s())) {
+      while (TK_NONE != m_pTokeniser->eNextToken((char*)xTokenSet[i]->aStr())) {
         //vTrace("Word [%lld] %s\n"_Str,i,pWords[i]);
         i++;
       }

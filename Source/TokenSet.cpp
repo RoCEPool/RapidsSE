@@ -46,7 +46,7 @@ TokenSet::TokenSet(void)
   _precondition_(_MAGIC_,CN_TOKENSET,_FOOTER_);
   
   for (i8 i_Token = 0; i_Token < C_TOKENS; i_Token++)
-    m_xTokenAry[i_Token] = (Str*)&m_xTokenArea.aArea()[C_TOKEN_SPACE * i_Token];
+    m_pItem[i_Token] = new Token;
   
   vReset();
   
@@ -64,27 +64,14 @@ TokenSet::~TokenSet(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* [] operator                                                                */
-/*----------------------------------------------------------------------------*/
-Str*& TokenSet::operator [](i8 i_TokenNo)
-{
-  _precondition_(_MAGIC_,CN_TOKENSET,_FOOTER_);
-  
-  return m_xTokenAry[i_TokenNo];
-}
-
-/*----------------------------------------------------------------------------*/
 /* add a token                                                                */
 /*----------------------------------------------------------------------------*/
-void TokenSet::vAddToken(Str* aToken)
+void TokenSet::vAddToken(Str* aStr)
 {
   _precondition_(_MAGIC_,CN_TOKENSET,_FOOTER_);
   
-  i8 i_Token = m_xTokenAry.nItems();
+  m_pItem[m_nItems++]->vCopy(aStr);
   
-  m_xTokenAry[i_Token]->vCopy(aToken);
-  
-  m_xTokenAry.vItems(++i_Token);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -94,9 +81,7 @@ i8 TokenSet::nTokens(void)
 {
   _precondition_(_MAGIC_,CN_TOKENSET,_FOOTER_);
   
-  i8 nTokens = m_xTokenAry.nItems();
- 
-  return nTokens;
+  return m_nItems;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -106,9 +91,7 @@ void TokenSet::vIncTokens(void)
 {
   _precondition_(_MAGIC_,CN_TOKENSET,_FOOTER_);
   
-  i8 nTokens = m_xTokenAry.nItems();
-  
-  m_xTokenAry.vItems(++nTokens);
+  m_nItems++;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -118,10 +101,10 @@ void TokenSet::vReset(void)
 {
   _precondition_(_MAGIC_,CN_TOKENSET,_FOOTER_);
   
-  m_xTokenAry.vItems(0);
+  m_nItems = 0;
   
   for (i8 i_Token = 0; i_Token < C_TOKENS; i_Token++)
-    m_xTokenAry[i_Token]->vCopy(""_Str);
+    m_pItem[i_Token]->vReset();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -134,10 +117,11 @@ void TokenSet::vSetTokens(void)
    // get count of words in pWords
   i8 i_Token;
   for (i_Token = 0; i_Token < C_TOKENS; i_Token++) {
-    if (m_xTokenAry[i_Token]->bEqual(""_Str))
+    if (m_pItem[i_Token]->bSame(""_Str))
       break;
   }
-  m_xTokenAry.vItems(i_Token);
+  
+  m_nItems = i_Token;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -148,8 +132,8 @@ void TokenSet::vStripSemicolon(void)
   _precondition_(_MAGIC_,CN_TOKENSET,_FOOTER_);
   
   for (i8 i_Token = 0; i_Token < C_TOKENS; i_Token++) {
-    if (m_xTokenAry[i_Token]->bEqual(";"_Str)) {
-      *m_xTokenAry[i_Token]->s() = '\0';
+    if (m_pItem[i_Token]->bSame(";"_Str)) {
+      m_pItem[i_Token]->vReset();
       break;
     }
   }

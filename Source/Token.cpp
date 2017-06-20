@@ -22,20 +22,21 @@ Token* Token::_pToken(void* aAddr)
 void* Token::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  vFatal("fatal: Token class cannot be new'd"_Str);
   
-  RASSERT(0);
+  void* pToken = Heap::pAllocate(CN_TOKEN);
+  
+  return pToken;
 }
 
 /*----------------------------------------------------------------------------*/
 /* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
-void Token::operator delete(void* pBufferAddress)
+void Token::operator delete(void* pTokenAddress)
 {
-  RASSERT(pBufferAddress);
-  vFatal("fatal: Token class cannot be deleted"_Str);
+  RASSERT(pTokenAddress);
+  Token* pToken = _pToken(pTokenAddress);
   
-  RASSERT(0);
+  Heap::vFree(pToken);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -48,7 +49,7 @@ Token::Token(void)
   
   vReset();
   
-  _checkInitialised_(CN_TOKENISER);
+  _checkInitialised_(CN_TOKEN);
   
   _postcondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
 }
@@ -70,6 +71,84 @@ void Token::vReset(void)
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
   
   m_sText = ""_Str;
+}
+
+/*----------------------------------------------------------------------------*/
+/* reset this token set                                                       */
+/*----------------------------------------------------------------------------*/
+bool Token::bIsNumeric(void)
+{
+  _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
+  
+  bool b = m_sText.bIsNumeric();
+  
+  return b;
+}
+
+/*----------------------------------------------------------------------------*/
+/* reset this token set                                                       */
+/*----------------------------------------------------------------------------*/
+bool Token::bSame(Str* aArg)
+{
+  _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
+  
+  bool b = m_sText.bSame(aArg);
+  
+  return b;
+}
+
+/*----------------------------------------------------------------------------*/
+/* reset this token set                                                       */
+/*----------------------------------------------------------------------------*/
+void Token::vCopy(Str* aArg)
+{
+  _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
+  
+  m_sText.vCopy(aArg);
+}
+
+/*----------------------------------------------------------------------------*/
+/* reset this token set                                                       */
+/*----------------------------------------------------------------------------*/
+void Token::vConcat(Str* aArg)
+{
+  _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
+  
+  m_sText.vConcat(aArg);
+}
+
+/*----------------------------------------------------------------------------*/
+/* reset this token set                                                       */
+/*----------------------------------------------------------------------------*/
+i8 Token::iToI8()
+{
+  _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
+  
+  i8 i = m_sText.iToI8();
+  
+  return i;
+}
+
+/*----------------------------------------------------------------------------*/
+/* reset this token set                                                       */
+/*----------------------------------------------------------------------------*/
+i8 Token::iLength()
+{
+  _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
+  
+  i8 iLen = m_sText.iLength();
+  
+  return iLen;
+}
+
+/*----------------------------------------------------------------------------*/
+/* reset this token set                                                       */
+/*----------------------------------------------------------------------------*/
+Str* Token::aStr(void)
+{
+  _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
+  
+  return m_sText.aStr();
 }
 
 /*----------------------------------------------------------------------------*/

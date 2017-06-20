@@ -150,6 +150,7 @@ pFINALIZE *gpFinalize[]
   /* 86 */ &Finalize::vUndefined,         // CN_THREADLIST
   /* 87 */ &Finalize::vUndefined,         // CN_TIME
   /* 88 */ &Finalize::vUndefined,         // CN_TIMER
+  /* 89 */ &Finalize::vUndefined,         // CN_TOKEN
   /* 89 */ &Finalize::vUndefined,         // CN_TOKENISER
   /*    */ &Finalize::vUndefined,         // CN_TOKENARY
   /*    */ &Finalize::vUndefined,         // CN_TOKENSET

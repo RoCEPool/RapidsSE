@@ -67,6 +67,7 @@ namespace Values
     void  vToLower(void);
     void  vToString(Str* aStr);
   
+    bool  bIsNumeric(void);
 
   private:
     Footer* aFooter(void);
