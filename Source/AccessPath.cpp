@@ -50,22 +50,28 @@ AccessPath::AccessPath(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ACCESSPATH,_FOOTER_);
   
+  m_pTable     = nullptr;
+  m_pPartition = nullptr;
+  m_pIndex     = nullptr;
+  
+  m_iPathRating = 0;
+  
+  m_eAccess = FT_NONE;
+  m_pLowerPredicates = nullptr;
+  m_pUpperPredicates = nullptr;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   m_sTenantName  = "<notSet>"_Str;
   m_sCatalogName = "<notSet>"_Str;
   m_sSchemaName  = "<notSet>"_Str;
   m_sTableName   = "<notSet>"_Str;
   m_sIndexName   = "<notSet>"_Str;
   
-  m_pTable     = nullptr;
-  m_pPartition = nullptr;
-  m_pIndex     = nullptr;
-  
   m_sColumnName   = "<notSet>"_Str;
   m_pColumn = nullptr;
   m_eRelationalOp = RO_NONE;
   //m_xValReg
-  
-  m_iPathRating = 0;
   
   //m_sWhereString
   
@@ -93,6 +99,7 @@ void AccessPath::vInit(Interface::SEitf* pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ACCESSPATH,_FOOTER_);
 
+  
   m_sTenantName   = "Boray"_Str;
   m_sCatalogName  = "RapidsSE"_Str;
   m_sSchemaName   = "public"_Str;
@@ -105,6 +112,134 @@ void AccessPath::vInit(Interface::SEitf* pSEitf)
   
   // find ptrs to the objects...
 }
+
+/*----------------------------------------------------------------------------*/
+/* get table                                                                  */
+/*----------------------------------------------------------------------------*/
+Table* AccessPath::pTable(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ACCESSPATH,_FOOTER_);
+  
+  return m_pTable;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set table                                                                  */
+/*----------------------------------------------------------------------------*/
+void AccessPath::vTable(Table* pTable)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ACCESSPATH,_FOOTER_);
+  
+  m_pTable = pTable;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get partition                                                              */
+/*----------------------------------------------------------------------------*/
+Partition* AccessPath::pPartition(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ACCESSPATH,_FOOTER_);
+  
+  return m_pPartition;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set partition                                                              */
+/*----------------------------------------------------------------------------*/
+void AccessPath::vPartition(Partition* pPartition)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ACCESSPATH,_FOOTER_);
+  
+  m_pPartition = pPartition;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get index                                                                  */
+/*----------------------------------------------------------------------------*/
+Index* AccessPath::pIndex(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ACCESSPATH,_FOOTER_);
+  
+  return m_pIndex;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set index                                                                  */
+/*----------------------------------------------------------------------------*/
+void AccessPath::vIndex(Index* pIndex)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ACCESSPATH,_FOOTER_);
+  
+  m_pIndex = pIndex;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get access technique                                                       */
+/*----------------------------------------------------------------------------*/
+eFT AccessPath::eAccess(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ACCESSPATH,_FOOTER_);
+  
+  return m_eAccess;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set access technique                                                       */
+/*----------------------------------------------------------------------------*/
+void AccessPath::vAccess(eFT eAccess)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ACCESSPATH,_FOOTER_);
+  
+  m_eAccess = eAccess;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get lower bound predicates                                                 */
+/*----------------------------------------------------------------------------*/
+PredicateVec* AccessPath::pLowerPredicates(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ACCESSPATH,_FOOTER_);
+  
+  return m_pLowerPredicates;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set lower bound predicates                                                 */
+/*----------------------------------------------------------------------------*/
+void AccessPath::vLowerPredicates(PredicateVec* pLowerPredicates)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ACCESSPATH,_FOOTER_);
+  
+  m_pLowerPredicates = pLowerPredicates;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get upper bound predicates                                                 */
+/*----------------------------------------------------------------------------*/
+PredicateVec* AccessPath::pUpperPredicates(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ACCESSPATH,_FOOTER_);
+  
+  return m_pUpperPredicates;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set upper bound predicates                                                 */
+/*----------------------------------------------------------------------------*/
+void AccessPath::vUpperPredicates(PredicateVec* pUpperPredicates)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ACCESSPATH,_FOOTER_);
+  
+  m_pUpperPredicates = pUpperPredicates;
+}
+
+
+
+
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* get tenant name                                                            */
@@ -204,66 +339,6 @@ void AccessPath::vIndexName(s32& sIndexName)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ACCESSPATH,_FOOTER_);
   
   m_sIndexName = sIndexName;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get table                                                                  */
-/*----------------------------------------------------------------------------*/
-Table* AccessPath::pTable(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ACCESSPATH,_FOOTER_);
-  
-  return m_pTable;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set table                                                                  */
-/*----------------------------------------------------------------------------*/
-void AccessPath::vTable(Table* pTable)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ACCESSPATH,_FOOTER_);
-  
-  m_pTable = pTable;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get partition                                                              */
-/*----------------------------------------------------------------------------*/
-Partition* AccessPath::pPartition(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ACCESSPATH,_FOOTER_);
-  
-  return m_pPartition;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set partition                                                              */
-/*----------------------------------------------------------------------------*/
-void AccessPath::vPartition(Partition* pPartition)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ACCESSPATH,_FOOTER_);
-  
-  m_pPartition = pPartition;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get index                                                                  */
-/*----------------------------------------------------------------------------*/
-Index* AccessPath::pIndex(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ACCESSPATH,_FOOTER_);
-  
-  return m_pIndex;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set index                                                                  */
-/*----------------------------------------------------------------------------*/
-void AccessPath::vIndex(Index* pIndex)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ACCESSPATH,_FOOTER_);
-  
-  m_pIndex = pIndex;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -13,23 +13,29 @@ namespace Plans
   
   class AccessPath : public Object
   {
-    private:
+  private:
+    Table*     m_pTable;         // table
+    Partition* m_pPartition;     // partition
+    Index*     m_pIndex;         // index
+  
+    i8         m_iPathRating;    // rating
+  
+    eFT        m_eAccess;        // access technique
+    PredicateVec*  m_pLowerPredicates;
+    PredicateVec*  m_pUpperPredicates;
+  
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
     s32        m_sTenantName;    // name of tenant
     s32        m_sCatalogName;   // name of catalog
     s32        m_sSchemaName;    // name of schema
     s32        m_sTableName;     // name of table
     s32        m_sIndexName;     // name of index
   
-    Table*     m_pTable;         // table
-    Partition* m_pPartition;     // partition
-    Index*     m_pIndex;         // index
-  
     s32        m_sColumnName;    // name of column index
     Column*    m_pColumn;        // column
     eRO        m_eRelationalOp;  // operator
     ValReg     m_xValReg;        // value
-  
-    i8         m_iPathRating;    // rating
   
     s48K       m_sWhereString;   // where string
   
@@ -46,6 +52,32 @@ namespace Plans
   
     void vInit(Interface::SEitf* pSEitf);
   
+    Table* pTable(void);
+    void vTable(Table* pTable);
+    
+    Partition* pPartition(void);
+    void vPartition(Partition* pPartition);
+    
+    Index* pIndex(void);
+    void vIndex(Index* pIndex);
+    
+    i8 iPathRating(void);
+    void vPathRating(i8 iPathRating);
+  
+    eFT eAccess(void);
+    void vAccess(eFT eAccess);
+  
+    PredicateVec* pLowerPredicates(void);
+    void vLowerPredicates(PredicateVec* pLowerPredicates);
+
+    PredicateVec* pUpperPredicates(void);
+    void vUpperPredicates(PredicateVec* pUpperPredicates);
+    
+    s48K& sWhereString(void);
+    void vWhereString(s48K& sWhereString);
+  
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
     s32& sTenantName(void);
     void vTenantName(s32& sTenantName);
 
@@ -61,15 +93,6 @@ namespace Plans
     s32& sIndexName(void);
     void vIndexName(s32& sIndexName);
   
-    Table* pTable(void);
-    void vTable(Table* pTable);
-  
-    Partition* pPartition(void);
-    void vPartition(Partition* pPartition);
-  
-    Index* pIndex(void);
-    void vIndex(Index* pIndex);
-  
     s32& sColumnName(void);
     void vColumnName(s32& sColumnName);
   
@@ -81,9 +104,6 @@ namespace Plans
   
     ValReg& xValReg(void);
     void vValReg(ValReg& xValReg);
-  
-    s48K& sWhereString(void);
-    void vWhereString(s48K& sWhereString);
   
     void vParse(void);
   
