@@ -64,7 +64,7 @@ Planner::Planner(void)
   m_pPredicateVec = nullptr;
   m_i_Chosen = -1;
   
-  m_pTokenVec = nullptr;
+  m_pWhereTokenVec = nullptr;
   
   _checkInitialised_(CN_PLANNER);
   
@@ -293,6 +293,11 @@ void Planner::vShowPredicates(void)
     Predicate* mpPredicate = m_pPredicateVec->pGet(i_Pred);
     mpPredicate->vShow();
   }
+  
+  for (i8 i_Token = 0; i_Token < m_pWhereTokenVec->nItems(); i_Token++) {
+    Token* pToken = m_pWhereTokenVec->pGet(i_Token);
+    vTrace("  %s\n"_Str,pToken->sText().aStr());
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -404,9 +409,9 @@ void Planner::vParseWhere(void)
   }
   
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
-  m_pTokenVec = Tokeniser::pTokenise(m_sWhere);
-  for (i8 i_Token = 0; i_Token < m_pTokenVec->nTokens(); i_Token++) {
-    Token* pToken = m_pTokenVec->pGet(i_Token);
+  m_pWhereTokenVec = Tokeniser::pTokenise(m_sWhere);
+  for (i8 i_Token = 0; i_Token < m_pWhereTokenVec->nTokens(); i_Token++) {
+    Token* pToken = m_pWhereTokenVec->pGet(i_Token);
   }
 
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
