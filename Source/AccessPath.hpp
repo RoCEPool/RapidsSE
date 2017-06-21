@@ -59,7 +59,9 @@ namespace Plans
 
     PredicateVec* pUpperPredicates(void);
     void vUpperPredicates(PredicateVec* pUpperPredicates);
-    
+  
+    void vShow(void);
+  
     Footer* aFooter(void);
   };
   

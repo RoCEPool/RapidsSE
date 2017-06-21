@@ -75,6 +75,22 @@ void TokenVec::vAddToken(Str* aStr)
 }
 
 /*----------------------------------------------------------------------------*/
+/* find token given text                                                      */
+/*----------------------------------------------------------------------------*/
+Token* TokenVec::pFindToken(Str* aText)
+{
+  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+  
+  for (i8 i_Token = 0; i_Token < nTokens(); i_Token++) {
+    Token* pToken = m_pItem[i_Token];
+    if (pToken->sText().bSame(aText))
+      return pToken;
+  }
+  
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get number of tokens                                                       */
 /*----------------------------------------------------------------------------*/
 i8 TokenVec::nTokens(void)

@@ -233,6 +233,20 @@ void Planner::vMatchPaths(void)
     if (bMatchAll)
       m_bIsCandidate[i_Path] = true;
   }
+  
+  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
+  for (i8 i_Path = 0; i_Path < m_pPathVec->nItems(); i_Path++) {
+    
+    CandidatePath* mpPath = m_pCandidatePaths->pGet(i_Path);
+    
+    for (i8 i_Col = 0; i_Col < mpPath->nItems(); i_Col++) {
+      Column* mpColumn = mpPath->pGet(i_Col);
+      
+      
+    }
+  }
+  
+  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
 }
 
 /*----------------------------------------------------------------------------*/
@@ -258,6 +272,14 @@ void Planner::vShowPaths(void)
     }
     vTrace("\n"_Str);
   }
+  
+  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
+  for (i8 i_Path = 0; i_Path < m_pPathVec->nItems(); i_Path++) {
+    AccessPath* pAccessPath = m_pPathVec->pGet(i_Path);
+    pAccessPath->vShow();
+  }
+  
+  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
 }
 
 /*----------------------------------------------------------------------------*/
@@ -294,10 +316,10 @@ void Planner::vShowPredicates(void)
     mpPredicate->vShow();
   }
   
-  for (i8 i_Token = 0; i_Token < m_pWhereTokenVec->nItems(); i_Token++) {
-    Token* pToken = m_pWhereTokenVec->pGet(i_Token);
-    vTrace("  %s\n"_Str,pToken->sText().aStr());
-  }
+//  for (i8 i_Token = 0; i_Token < m_pWhereTokenVec->nItems(); i_Token++) {
+//    Token* pToken = m_pWhereTokenVec->pGet(i_Token);
+//    vTrace("  %s\n"_Str,pToken->sText().aStr());
+//  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -409,10 +431,10 @@ void Planner::vParseWhere(void)
   }
   
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
-  m_pWhereTokenVec = Tokeniser::pTokenise(m_sWhere);
-  for (i8 i_Token = 0; i_Token < m_pWhereTokenVec->nTokens(); i_Token++) {
-    Token* pToken = m_pWhereTokenVec->pGet(i_Token);
-  }
+//  m_pWhereTokenVec = Tokeniser::pTokenise(m_sWhere);
+//  for (i8 i_Token = 0; i_Token < m_pWhereTokenVec->nTokens(); i_Token++) {
+//    Token* pToken = m_pWhereTokenVec->pGet(i_Token);
+//  }
 
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
 }

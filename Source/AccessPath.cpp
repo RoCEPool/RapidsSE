@@ -239,6 +239,28 @@ void AccessPath::vUpperPredicates(PredicateVec* pUpperPredicates)
 }
 
 /*----------------------------------------------------------------------------*/
+/* show                                                                       */
+/*----------------------------------------------------------------------------*/
+void AccessPath::vShow(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ACCESSPATH,_FOOTER_);
+  
+  if (m_pLowerPredicates) {
+    for (i8 i_Pred = 0; i_Pred < m_pLowerPredicates->nItems(); i_Pred++) {
+      Predicate* pLowerPredicate = m_pLowerPredicates->pGet(i_Pred);
+      pLowerPredicate->vShow();
+    }
+  }
+  
+  if (m_pUpperPredicates) {
+    for (i8 i_Pred = 0; i_Pred < m_pUpperPredicates->nItems(); i_Pred++) {
+      Predicate* pUpperPredicate = m_pUpperPredicates->pGet(i_Pred);
+      pUpperPredicate->vShow();
+    }
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
