@@ -314,8 +314,6 @@ stk
 
   pAccessPath task::this task.seitf@ seitf.accessPath!
 
-  pTable pAccessPath accesspath.table!
-
   ( cdt_0 ) planner::new to pPlanner
   ( cdt_1 ) pTable pPlanner Planner.table!
 
