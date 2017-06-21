@@ -237,14 +237,40 @@ void Planner::vMatchPaths(void)
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
   for (i8 i_Path = 0; i_Path < m_pPathVec->nItems(); i_Path++) {
     
-    CandidatePath* mpPath = m_pCandidatePaths->pGet(i_Path);
+    CandidatePath* mpCdtPath = m_pCandidatePaths->pGet(i_Path);
+    AccessPath* mpAccPath = m_pPathVec->pGet(i_Path);
+   
+    bool bMatchAll = true;
+    for (i8 i_Col = 0; i_Col < mpCdtPath->nItems(); i_Col++) {
+      Column* mpColumn = mpCdtPath->pGet(i_Col);
+      
+      s32 sColumnName = mpColumn->sColumnName();
+      
+      Token* pColNmTkn = m_pWhereTokenVec->pFindToken(sColumnName);
+      if ( ! pColNmTkn ) {
+        bMatchAll = false;
+        break;
+      }
+    } // i_Col
     
-    for (i8 i_Col = 0; i_Col < mpPath->nItems(); i_Col++) {
-      Column* mpColumn = mpPath->pGet(i_Col);
+    if ( bMatchAll ) {
       
+      mpAccPath->vIsCandidate(true);
       
+      PredicateVec* mpLowerPredicates = new PredicateVec;
+      mpAccPath->vLowerPredicates(mpLowerPredicates);
+      
+      Predicate* mpPredicate = new Predicate;
+      mpLowerPredicates->vAdd(mpPredicate);
+      
+      for (i8 i_Col = 0; i_Col < mpCdtPath->nItems(); i_Col++) {
+        Column* mpColumn = mpCdtPath->pGet(i_Col);
+        Arg* pArg1 = new Arg;
+        mpPredicate->vArg1(pArg1);
+      }
     }
-  }
+    
+  } // i_Path
   
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
 }
@@ -431,10 +457,10 @@ void Planner::vParseWhere(void)
   }
   
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
-//  m_pWhereTokenVec = Tokeniser::pTokenise(m_sWhere);
-//  for (i8 i_Token = 0; i_Token < m_pWhereTokenVec->nTokens(); i_Token++) {
-//    Token* pToken = m_pWhereTokenVec->pGet(i_Token);
-//  }
+  m_pWhereTokenVec = Tokeniser::pTokenise(m_sWhere);
+  for (i8 i_Token = 0; i_Token < m_pWhereTokenVec->nTokens(); i_Token++) {
+    Token* pToken = m_pWhereTokenVec->pGet(i_Token);
+  }
 
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
 }

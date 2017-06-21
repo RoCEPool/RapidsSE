@@ -245,6 +245,8 @@ void AccessPath::vShow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ACCESSPATH,_FOOTER_);
   
+  vTrace(" %s "_Str,m_bIsCandidate ? "cdt"_Str : "   "_Str);
+  
   if (m_pLowerPredicates) {
     for (i8 i_Pred = 0; i_Pred < m_pLowerPredicates->nItems(); i_Pred++) {
       Predicate* pLowerPredicate = m_pLowerPredicates->pGet(i_Pred);
