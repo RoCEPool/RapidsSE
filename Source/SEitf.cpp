@@ -353,7 +353,7 @@ void SEitf::vEndTx()
 /*----------------------------------------------------------------------------*/
 /* decode request                                                             */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDecode(TokenSet& xTokenSet)
+bool SEitf::bDecode(TokenVec& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -450,7 +450,7 @@ bool SEitf::bDecode(TokenSet& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* connect to se                                                              */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bConnect(TokenSet& xTokenSet)
+bool SEitf::bConnect(TokenVec& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -464,7 +464,7 @@ bool SEitf::bConnect(TokenSet& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* connect the se cluster nodes                                               */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bConnectCluster(TokenSet& xTokenSet)
+bool SEitf::bConnectCluster(TokenVec& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -478,7 +478,7 @@ bool SEitf::bConnectCluster(TokenSet& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* disconnect from se                                                         */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDisconnect(TokenSet& xTokenSet)
+bool SEitf::bDisconnect(TokenVec& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -492,7 +492,7 @@ bool SEitf::bDisconnect(TokenSet& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* get value from attachmap                                                   */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bGet(TokenSet& xTokenSet)
+bool SEitf::bGet(TokenVec& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -516,7 +516,7 @@ bool SEitf::bGet(TokenSet& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* set value in attachmap                                                     */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bSet(TokenSet& xTokenSet)
+bool SEitf::bSet(TokenVec& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -544,7 +544,7 @@ bool SEitf::bSet(TokenSet& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* remove a folder                                                            */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bRemoveFolder(TokenSet& xTokenSet)
+bool SEitf::bRemoveFolder(TokenVec& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -562,7 +562,7 @@ bool SEitf::bRemoveFolder(TokenSet& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* create a tenant                                                            */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bCreateTenant(TokenSet& xTokenSet)
+bool SEitf::bCreateTenant(TokenVec& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -585,7 +585,7 @@ bool SEitf::bCreateTenant(TokenSet& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* list tenants                                                               */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bListTenants(TokenSet& xTokenSet)
+bool SEitf::bListTenants(TokenVec& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -604,7 +604,7 @@ bool SEitf::bListTenants(TokenSet& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* drop a tenant                                                              */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDropTenant(TokenSet& xTokenSet)
+bool SEitf::bDropTenant(TokenVec& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -627,7 +627,7 @@ bool SEitf::bDropTenant(TokenSet& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* create a catalog                                                           */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bCreateCatalog(TokenSet& xTokenSet)
+bool SEitf::bCreateCatalog(TokenVec& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -650,7 +650,7 @@ bool SEitf::bCreateCatalog(TokenSet& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* list catalogs                                                              */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bListCatalogs(TokenSet& xTokenSet)
+bool SEitf::bListCatalogs(TokenVec& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -669,7 +669,7 @@ bool SEitf::bListCatalogs(TokenSet& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* drop a catalog                                                             */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDropCatalog(TokenSet& xTokenSet)
+bool SEitf::bDropCatalog(TokenVec& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -692,7 +692,7 @@ bool SEitf::bDropCatalog(TokenSet& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* create a schema                                                            */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bCreateSchema(TokenSet& xTokenSet)
+bool SEitf::bCreateSchema(TokenVec& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -717,7 +717,7 @@ bool SEitf::bCreateSchema(TokenSet& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* list schemas                                                               */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bListSchemas(TokenSet& xTokenSet)
+bool SEitf::bListSchemas(TokenVec& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -736,7 +736,7 @@ bool SEitf::bListSchemas(TokenSet& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* drop a schema                                                              */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDropSchema(TokenSet& xTokenSet)
+bool SEitf::bDropSchema(TokenVec& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -759,7 +759,7 @@ bool SEitf::bDropSchema(TokenSet& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* use a schema                                                               */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bUseSchema(TokenSet& xTokenSet)
+bool SEitf::bUseSchema(TokenVec& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -782,7 +782,7 @@ bool SEitf::bUseSchema(TokenSet& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* create an index                                                            */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bCreateIndex(TokenSet& xTokenSet)
+bool SEitf::bCreateIndex(TokenVec& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -809,7 +809,7 @@ bool SEitf::bCreateIndex(TokenSet& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* list indices                                                               */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bListIndices(TokenSet& xTokenSet)
+bool SEitf::bListIndices(TokenVec& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -834,7 +834,7 @@ bool SEitf::bListIndices(TokenSet& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* set index uniqueness                                                       */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bIndexSetUnique(TokenSet& xTokenSet)
+bool SEitf::bIndexSetUnique(TokenVec& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -867,7 +867,7 @@ bool SEitf::bIndexSetUnique(TokenSet& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* create a table                                                             */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bCreateTable(TokenSet& xTokenSet)
+bool SEitf::bCreateTable(TokenVec& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -890,7 +890,7 @@ bool SEitf::bCreateTable(TokenSet& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* list tables                                                                */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bListTables(TokenSet& xTokenSet)
+bool SEitf::bListTables(TokenVec& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -909,7 +909,7 @@ bool SEitf::bListTables(TokenSet& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* dump an index                                                              */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDumpIndex(TokenSet& xTokenSet)
+bool SEitf::bDumpIndex(TokenVec& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -936,7 +936,7 @@ bool SEitf::bDumpIndex(TokenSet& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* dump a table                                                               */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDumpTable(TokenSet& xTokenSet)
+bool SEitf::bDumpTable(TokenVec& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -959,7 +959,7 @@ bool SEitf::bDumpTable(TokenSet& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* docol                                                                      */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDocol(TokenSet& xTokenSet)
+bool SEitf::bDocol(TokenVec& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -983,7 +983,7 @@ bool SEitf::bDocol(TokenSet& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* display off selected rows                                                  */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDisplayOff(TokenSet& xTokenSet)
+bool SEitf::bDisplayOff(TokenVec& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1003,7 +1003,7 @@ bool SEitf::bDisplayOff(TokenSet& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* display selected rows                                                      */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDisplayOn(TokenSet& xTokenSet)
+bool SEitf::bDisplayOn(TokenVec& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1023,7 +1023,7 @@ bool SEitf::bDisplayOn(TokenSet& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* drop an index                                                              */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDropIndex(TokenSet& xTokenSet)
+bool SEitf::bDropIndex(TokenVec& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1051,7 +1051,7 @@ bool SEitf::bDropIndex(TokenSet& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* drop a table                                                               */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDropTable(TokenSet& xTokenSet)
+bool SEitf::bDropTable(TokenVec& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1074,7 +1074,7 @@ bool SEitf::bDropTable(TokenSet& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* add a column                                                               */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bAddColumn(TokenSet& xTokenSet)
+bool SEitf::bAddColumn(TokenVec& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1105,7 +1105,7 @@ bool SEitf::bAddColumn(TokenSet& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* add an index column                                                        */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bAddIndexColumn(TokenSet& xTokenSet)
+bool SEitf::bAddIndexColumn(TokenVec& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1136,7 +1136,7 @@ bool SEitf::bAddIndexColumn(TokenSet& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* add a partition column                                                     */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bAddPartitionColumn(TokenSet& xTokenSet)
+bool SEitf::bAddPartitionColumn(TokenVec& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1163,7 +1163,7 @@ bool SEitf::bAddPartitionColumn(TokenSet& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* end of create index sequence                                               */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bEndCreateIndex(TokenSet& xTokenSet)
+bool SEitf::bEndCreateIndex(TokenVec& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1190,7 +1190,7 @@ bool SEitf::bEndCreateIndex(TokenSet& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* end of create table sequence                                               */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bEndCreateTable(TokenSet& xTokenSet)
+bool SEitf::bEndCreateTable(TokenVec& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1213,7 +1213,7 @@ bool SEitf::bEndCreateTable(TokenSet& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* list columns                                                               */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bListColumns(TokenSet& xTokenSet)
+bool SEitf::bListColumns(TokenVec& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1236,7 +1236,7 @@ bool SEitf::bListColumns(TokenSet& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* list index columns                                                         */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bListIndexColumns(TokenSet& xTokenSet)
+bool SEitf::bListIndexColumns(TokenVec& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1263,7 +1263,7 @@ bool SEitf::bListIndexColumns(TokenSet& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* list partition columns                                                     */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bListPartitionColumns(TokenSet& xTokenSet)
+bool SEitf::bListPartitionColumns(TokenVec& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1286,7 +1286,7 @@ bool SEitf::bListPartitionColumns(TokenSet& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* analyze an index                                                           */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bAnalyzeIndex(TokenSet& xTokenSet)
+bool SEitf::bAnalyzeIndex(TokenVec& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1313,7 +1313,7 @@ bool SEitf::bAnalyzeIndex(TokenSet& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* analyze a table                                                            */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bAnalyzeTable(TokenSet& xTokenSet)
+bool SEitf::bAnalyzeTable(TokenVec& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1336,7 +1336,7 @@ bool SEitf::bAnalyzeTable(TokenSet& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* detailed analysis of an index                                              */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDanalyzeIndex(TokenSet& xTokenSet)
+bool SEitf::bDanalyzeIndex(TokenVec& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1363,7 +1363,7 @@ bool SEitf::bDanalyzeIndex(TokenSet& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* detailed analysis of a table                                               */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDanalyzeTable(TokenSet& xTokenSet)
+bool SEitf::bDanalyzeTable(TokenVec& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1386,7 +1386,7 @@ bool SEitf::bDanalyzeTable(TokenSet& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* copy a table                                                               */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bCopyTable(TokenSet& xTokenSet)
+bool SEitf::bCopyTable(TokenVec& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1413,7 +1413,7 @@ bool SEitf::bCopyTable(TokenSet& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* distributed export of a table                                              */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDistExportTable(TokenSet& xTokenSet)
+bool SEitf::bDistExportTable(TokenVec& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1440,7 +1440,7 @@ bool SEitf::bDistExportTable(TokenSet& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* export a table                                                             */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bExportTable(TokenSet& xTokenSet)
+bool SEitf::bExportTable(TokenVec& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1467,7 +1467,7 @@ bool SEitf::bExportTable(TokenSet& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* fetch rows from a table                                                    */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bFetchRows(TokenSet& xTokenSet)
+bool SEitf::bFetchRows(TokenVec& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1493,7 +1493,7 @@ bool SEitf::bFetchRows(TokenSet& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* load a table from file                                                     */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bLoadTable(TokenSet& xTokenSet)
+bool SEitf::bLoadTable(TokenVec& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1520,7 +1520,7 @@ bool SEitf::bLoadTable(TokenSet& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* load a table from stream                                                   */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bLoadTableStream(TokenSet& xTokenSet)
+bool SEitf::bLoadTableStream(TokenVec& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1547,7 +1547,7 @@ bool SEitf::bLoadTableStream(TokenSet& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* lower select rows from a table                                             */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bLowerSelectTable(TokenSet& xTokenSet)
+bool SEitf::bLowerSelectTable(TokenVec& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1574,7 +1574,7 @@ bool SEitf::bLowerSelectTable(TokenSet& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* select rows from a table                                                   */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bSelectTable(TokenSet& xTokenSet)
+bool SEitf::bSelectTable(TokenVec& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1597,7 +1597,7 @@ bool SEitf::bSelectTable(TokenSet& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* range select rows from a table                                             */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bRangeSelectTable(TokenSet& xTokenSet)
+bool SEitf::bRangeSelectTable(TokenVec& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1628,7 +1628,7 @@ bool SEitf::bRangeSelectTable(TokenSet& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* get address of an index                                                    */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bGetIndex(TokenSet& xTokenSet)
+bool SEitf::bGetIndex(TokenVec& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1651,7 +1651,7 @@ bool SEitf::bGetIndex(TokenSet& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* get address/reference of a table                                           */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bGetTable(TokenSet& xTokenSet)
+bool SEitf::bGetTable(TokenVec& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1674,7 +1674,7 @@ bool SEitf::bGetTable(TokenSet& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* return whether table is in use or not                                      */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bInUseTable(TokenSet& xTokenSet)
+bool SEitf::bInUseTable(TokenVec& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1697,7 +1697,7 @@ bool SEitf::bInUseTable(TokenSet& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* return address of an index                                                 */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bRetIndex(TokenSet& xTokenSet)
+bool SEitf::bRetIndex(TokenVec& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1716,7 +1716,7 @@ bool SEitf::bRetIndex(TokenSet& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* return address/refernce of a table                                         */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bRetTable(TokenSet& xTokenSet)
+bool SEitf::bRetTable(TokenVec& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1735,7 +1735,7 @@ bool SEitf::bRetTable(TokenSet& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* get pool space                                                             */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bPoolSpace(TokenSet& xTokenSet)
+bool SEitf::bPoolSpace(TokenVec& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1754,7 +1754,7 @@ bool SEitf::bPoolSpace(TokenSet& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* get node status                                                            */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bNodeStatus(TokenSet& xTokenSet)
+bool SEitf::bNodeStatus(TokenVec& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1773,7 +1773,7 @@ bool SEitf::bNodeStatus(TokenSet& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* exact key select from a table given an index                               */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bKeySelectIndex(TokenSet& xTokenSet)
+bool SEitf::bKeySelectIndex(TokenVec& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1804,7 +1804,7 @@ bool SEitf::bKeySelectIndex(TokenSet& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* lower select rows from a table given an index                              */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bLowerSelectIndex(TokenSet& xTokenSet)
+bool SEitf::bLowerSelectIndex(TokenVec& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1835,7 +1835,7 @@ bool SEitf::bLowerSelectIndex(TokenSet& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* range select rows from a table given an index                              */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bRangeSelectIndex(TokenSet& xTokenSet)
+bool SEitf::bRangeSelectIndex(TokenVec& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1870,7 +1870,7 @@ bool SEitf::bRangeSelectIndex(TokenSet& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* size of index                                                              */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bSizeIndex(TokenSet& xTokenSet)
+bool SEitf::bSizeIndex(TokenVec& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1897,7 +1897,7 @@ bool SEitf::bSizeIndex(TokenSet& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* size of table                                                              */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bSizeTable(TokenSet& xTokenSet)
+bool SEitf::bSizeTable(TokenVec& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1920,7 +1920,7 @@ bool SEitf::bSizeTable(TokenSet& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* size of table                                                              */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bSizeTables(TokenSet& xTokenSet)
+bool SEitf::bSizeTables(TokenVec& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1939,7 +1939,7 @@ bool SEitf::bSizeTables(TokenSet& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* truncate an index                                                          */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bTruncateIndex(TokenSet& xTokenSet)
+bool SEitf::bTruncateIndex(TokenVec& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1966,7 +1966,7 @@ bool SEitf::bTruncateIndex(TokenSet& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* upper select rows from a table on a given index                            */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bUpperSelectIndex(TokenSet& xTokenSet)
+bool SEitf::bUpperSelectIndex(TokenVec& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1997,7 +1997,7 @@ bool SEitf::bUpperSelectIndex(TokenSet& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* truncate a table                                                           */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bTruncateTable(TokenSet& xTokenSet)
+bool SEitf::bTruncateTable(TokenVec& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -2020,7 +2020,7 @@ bool SEitf::bTruncateTable(TokenSet& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* visualize an index                                                         */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bVisualizeIndex(TokenSet& xTokenSet)
+bool SEitf::bVisualizeIndex(TokenVec& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -2160,7 +2160,7 @@ bool SEitf::bInsertBuffer(EntryBuffer* pRowBuffer, i8 iPartition)
 /*----------------------------------------------------------------------------*/
 /* push dictionary                                                            */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bPushDic(TokenSet& xTokenSet)
+bool SEitf::bPushDic(TokenVec& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -2178,7 +2178,7 @@ bool SEitf::bPushDic(TokenSet& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* print                                                                      */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bPrint(TokenSet& xTokenSet)
+bool SEitf::bPrint(TokenVec& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -2190,7 +2190,7 @@ bool SEitf::bPrint(TokenSet& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* get dictionary path                                                        */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bGetDicPath(TokenSet& xTokenSet)
+bool SEitf::bGetDicPath(TokenVec& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -2204,7 +2204,7 @@ bool SEitf::bGetDicPath(TokenSet& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* get dictionary contents                                                    */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bGetDicContents(TokenSet& xTokenSet)
+bool SEitf::bGetDicContents(TokenVec& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -2218,7 +2218,7 @@ bool SEitf::bGetDicContents(TokenSet& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* get dictionary contents                                                    */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bGetDicContentsG(TokenSet& xTokenSet)
+bool SEitf::bGetDicContentsG(TokenVec& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -2232,7 +2232,7 @@ bool SEitf::bGetDicContentsG(TokenSet& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* get monitor string                                                         */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bGetMonitor(TokenSet& xTokenSet)
+bool SEitf::bGetMonitor(TokenVec& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -2246,7 +2246,7 @@ bool SEitf::bGetMonitor(TokenSet& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* get free space                                                             */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bGetFreeSpace(TokenSet& xTokenSet)
+bool SEitf::bGetFreeSpace(TokenVec& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -2260,7 +2260,7 @@ bool SEitf::bGetFreeSpace(TokenSet& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* get inUse space                                                            */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bGetInUseSpace(TokenSet& xTokenSet)
+bool SEitf::bGetInUseSpace(TokenVec& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -2274,7 +2274,7 @@ bool SEitf::bGetInUseSpace(TokenSet& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* get total space                                                            */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bGetTotalSpace(TokenSet& xTokenSet)
+bool SEitf::bGetTotalSpace(TokenVec& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -2288,7 +2288,7 @@ bool SEitf::bGetTotalSpace(TokenSet& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* get version                                                                */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bGetVersion(TokenSet& xTokenSet)
+bool SEitf::bGetVersion(TokenVec& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -2302,7 +2302,7 @@ bool SEitf::bGetVersion(TokenSet& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* ping test                                                                  */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bPing(TokenSet& xTokenSet)
+bool SEitf::bPing(TokenVec& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -2316,7 +2316,7 @@ bool SEitf::bPing(TokenSet& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* send object                                                                */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bObject(TokenSet& xTokenSet)
+bool SEitf::bObject(TokenVec& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -2330,7 +2330,7 @@ bool SEitf::bObject(TokenSet& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* print row buffer                                                           */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bPrintRowBuffer(TokenSet& xTokenSet)
+bool SEitf::bPrintRowBuffer(TokenVec& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -2349,7 +2349,7 @@ bool SEitf::bPrintRowBuffer(TokenSet& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* get seitf count                                                            */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bSeitfCount(TokenSet& xTokenSet)
+bool SEitf::bSeitfCount(TokenVec& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -2363,7 +2363,7 @@ bool SEitf::bSeitfCount(TokenSet& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* x test                                                                     */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bX(TokenSet& xTokenSet)
+bool SEitf::bX(TokenVec& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -2379,7 +2379,7 @@ bool SEitf::bX(TokenSet& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* return task                                                                */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bRetTask(TokenSet& xTokenSet)
+bool SEitf::bRetTask(TokenVec& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -2399,7 +2399,7 @@ bool SEitf::bRetTask(TokenSet& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* get task                                                                   */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bGetTask(TokenSet& xTokenSet)
+bool SEitf::bGetTask(TokenVec& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   

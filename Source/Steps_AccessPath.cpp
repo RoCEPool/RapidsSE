@@ -125,7 +125,7 @@ void Task::vAccessPathParse(MP_Task mpTask)
   eFT eFetchTechnique = FT_NONE;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  TokenSet xTokenSet;
+  TokenVec xTokenSet;
   Tokeniser* pTokeniser = new Tokeniser;
   pTokeniser->vPush();
   pTokeniser->vUseString(sWhere);

@@ -153,7 +153,7 @@ pFINALIZE *gpFinalize[]
   /* 89 */ &Finalize::vUndefined,         // CN_TOKEN
   /* 89 */ &Finalize::vUndefined,         // CN_TOKENISER
   /*    */ &Finalize::vUndefined,         // CN_TOKENARY
-  /*    */ &Finalize::vUndefined,         // CN_TOKENSET
+  /*    */ &Finalize::vUndefined,         // CN_TOKENVEC
   /* 90 */ &Finalize::vUndefined,         // CN_TX
   /* 91 */ &Finalize::vUndefined,         // CN_TXARRAY
   /* 92 */ &Finalize::vUndefined,         // CN_TXCOLLECTION

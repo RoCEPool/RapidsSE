@@ -26,8 +26,8 @@ private:
   s48K       m_sResponse;  // response from seitf
   SeHistory m_xHistory;   // command history
   
-  TokenSet   m_xTokenSet;
-  TokenSet   m_xTokenSet2;
+  TokenVec   m_xTokenSet;
+  TokenVec   m_xTokenSet2;
   
   Tokeniser* m_pTokeniser; // input stream tokeniser
   

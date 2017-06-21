@@ -1515,7 +1515,7 @@ eEC RapidsSE_SEitfNew(void** ppSEitf, i8 iPartition, i8 iTraceLevel)
 /*----------------------------------------------------------------------------*/
 /* Execute a request                                                          */
 /*----------------------------------------------------------------------------*/
-bool RapidsSE_ExecuteRequest(SEitf* pSEitf, TokenSet& xTokenSet, Str** ppResponse)
+bool RapidsSE_ExecuteRequest(SEitf* pSEitf, TokenVec& xTokenSet, Str** ppResponse)
 {
   bool bResult;
   
@@ -1548,7 +1548,7 @@ eEC eExecuteRequest(SEitf* pSEitf, Str* aCommand)
 {
   bool bResult;
   
-  TokenSet xTokenSet;
+  TokenVec xTokenSet;
   
   // execute command pCommand
   //xTokenSet[0]->vCopy(aCommand);
@@ -1572,7 +1572,7 @@ eEC eExecuteRequest(SEitf* pSEitf, Str* aCommand, Str* aParameter)
   
   bool bResult;
   
-  TokenSet xTokenSet;
+  TokenVec xTokenSet;
   
   xTokenSet.vAddToken(aCommand);
   xTokenSet.vAddToken(aParameter);
@@ -1594,7 +1594,7 @@ eEC eExecuteRequest(SEitf* pSEitf, Str* aCommand, Str* aParameter1,
   
   bool bResult;
   
-  TokenSet xTokenSet;
+  TokenVec xTokenSet;
   
   xTokenSet.vAddToken(aCommand);
   xTokenSet.vAddToken(aParameter1);
@@ -1616,7 +1616,7 @@ eEC eExecuteRequest(SEitf* pSEitf, Str* aCommand, Str* aParameter1,
   pSEitf->vClearLastError();
   
   bool bResult;
-  TokenSet xTokenSet;
+  TokenVec xTokenSet;
   
   xTokenSet.vAddToken(aCommand);
   xTokenSet.vAddToken(aParameter1);
@@ -1632,7 +1632,7 @@ eEC eExecuteRequest(SEitf* pSEitf, Str* aCommand, Str* aParameter1,
 /*----------------------------------------------------------------------------*/
 /* execute command                                                            */
 /*----------------------------------------------------------------------------*/
-bool bExecuteRequest(SEitf* pSEitf, TokenSet& xTokenSet)
+bool bExecuteRequest(SEitf* pSEitf, TokenVec& xTokenSet)
 {
   bool bResult;
   

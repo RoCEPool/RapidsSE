@@ -81,112 +81,112 @@ namespace Interface
     void vCommitTx(void);
     void vEndTx(void);
     
-    bool bDecode(TokenSet& xTokenSet);
+    bool bDecode(TokenVec& xTokenSet);
     
-    bool bConnect(TokenSet& xTokenSet);
-    bool bConnectCluster(TokenSet& xTokenSet);
-    bool bDisconnect(TokenSet& xTokenSet);
+    bool bConnect(TokenVec& xTokenSet);
+    bool bConnectCluster(TokenVec& xTokenSet);
+    bool bDisconnect(TokenVec& xTokenSet);
     
-    bool bGet(TokenSet& xTokenSet);
-    bool bSet(TokenSet& xTokenSet);
+    bool bGet(TokenVec& xTokenSet);
+    bool bSet(TokenVec& xTokenSet);
     
-    bool bRemoveFolder(TokenSet& xTokenSet);
+    bool bRemoveFolder(TokenVec& xTokenSet);
     
-    bool bCreateTenant(TokenSet& xTokenSet);
-    bool bListTenants(TokenSet& xTokenSet);
-    bool bDropTenant(TokenSet& xTokenSet);
+    bool bCreateTenant(TokenVec& xTokenSet);
+    bool bListTenants(TokenVec& xTokenSet);
+    bool bDropTenant(TokenVec& xTokenSet);
 
-    bool bCreateCatalog(TokenSet& xTokenSet);
-    bool bListCatalogs(TokenSet& xTokenSet);
-    bool bDropCatalog(TokenSet& xTokenSet);
+    bool bCreateCatalog(TokenVec& xTokenSet);
+    bool bListCatalogs(TokenVec& xTokenSet);
+    bool bDropCatalog(TokenVec& xTokenSet);
     
-    bool bCreateSchema(TokenSet& xTokenSet);
-    bool bListSchemas(TokenSet& xTokenSet);
-    bool bDropSchema(TokenSet& xTokenSet);
-    bool bUseSchema(TokenSet& xTokenSet);
+    bool bCreateSchema(TokenVec& xTokenSet);
+    bool bListSchemas(TokenVec& xTokenSet);
+    bool bDropSchema(TokenVec& xTokenSet);
+    bool bUseSchema(TokenVec& xTokenSet);
     
-    bool bCreateIndex(TokenSet& xTokenSet);
-    bool bDropIndex(TokenSet& xTokenSet);
-    bool bDumpIndex(TokenSet& xTokenSet);
-    bool bEndCreateIndex(TokenSet& xTokenSet);
-    bool bListIndices(TokenSet& xTokenSet);
-    bool bIndexSetUnique(TokenSet& xTokenSet);
-    bool bVisualizeIndex(TokenSet& xTokenSet);
+    bool bCreateIndex(TokenVec& xTokenSet);
+    bool bDropIndex(TokenVec& xTokenSet);
+    bool bDumpIndex(TokenVec& xTokenSet);
+    bool bEndCreateIndex(TokenVec& xTokenSet);
+    bool bListIndices(TokenVec& xTokenSet);
+    bool bIndexSetUnique(TokenVec& xTokenSet);
+    bool bVisualizeIndex(TokenVec& xTokenSet);
   
-    bool bCreateTable(TokenSet& xTokenSet);
-    bool bEndCreateTable(TokenSet& xTokenSet);
+    bool bCreateTable(TokenVec& xTokenSet);
+    bool bEndCreateTable(TokenVec& xTokenSet);
   
-    bool bListTables(TokenSet& xTokenSet);
-    bool bDisplayOff(TokenSet& xTokenSet);
-    bool bDisplayOn(TokenSet& xTokenSet);
-    bool bDocol(TokenSet& xTokenSet);
-    bool bDropTable(TokenSet& xTokenSet);
-    bool bDumpTable(TokenSet& xTokenSet);
+    bool bListTables(TokenVec& xTokenSet);
+    bool bDisplayOff(TokenVec& xTokenSet);
+    bool bDisplayOn(TokenVec& xTokenSet);
+    bool bDocol(TokenVec& xTokenSet);
+    bool bDropTable(TokenVec& xTokenSet);
+    bool bDumpTable(TokenVec& xTokenSet);
    
-    bool bAddColumn(TokenSet& xTokenSet);
-    bool bAddIndexColumn(TokenSet& xTokenSet);
-    bool bAddPartitionColumn(TokenSet& xTokenSet);
-    bool bListColumns(TokenSet& xTokenSet);
-    bool bListIndexColumns(TokenSet& xTokenSet);
-    bool bListPartitionColumns(TokenSet& xTokenSet);
+    bool bAddColumn(TokenVec& xTokenSet);
+    bool bAddIndexColumn(TokenVec& xTokenSet);
+    bool bAddPartitionColumn(TokenVec& xTokenSet);
+    bool bListColumns(TokenVec& xTokenSet);
+    bool bListIndexColumns(TokenVec& xTokenSet);
+    bool bListPartitionColumns(TokenVec& xTokenSet);
     
-    bool bAnalyzeIndex(TokenSet& xTokenSet);
-    bool bDanalyzeIndex(TokenSet& xTokenSet);
-    bool bGetIndex(TokenSet& xTokenSet);
-    bool bKeySelectIndex(TokenSet& xTokenSet);
-    bool bLowerSelectIndex(TokenSet& xTokenSet);
-    bool bRetIndex(TokenSet& xTokenSet);
-    bool bRangeSelectIndex(TokenSet& xTokenSet);
-    bool bSizeIndex(TokenSet& xTokenSet);
-    bool bTruncateIndex(TokenSet& xTokenSet);
-    bool bUpperSelectIndex(TokenSet& xTokenSet);
+    bool bAnalyzeIndex(TokenVec& xTokenSet);
+    bool bDanalyzeIndex(TokenVec& xTokenSet);
+    bool bGetIndex(TokenVec& xTokenSet);
+    bool bKeySelectIndex(TokenVec& xTokenSet);
+    bool bLowerSelectIndex(TokenVec& xTokenSet);
+    bool bRetIndex(TokenVec& xTokenSet);
+    bool bRangeSelectIndex(TokenVec& xTokenSet);
+    bool bSizeIndex(TokenVec& xTokenSet);
+    bool bTruncateIndex(TokenVec& xTokenSet);
+    bool bUpperSelectIndex(TokenVec& xTokenSet);
 
-    bool bAnalyzeTable(TokenSet& xTokenSet);
-    bool bCopyTable(TokenSet& xTokenSet);
-    bool bExportTable(TokenSet& xTokenSet);
-    bool bDanalyzeTable(TokenSet& xTokenSet);
-    bool bDistExportTable(TokenSet& xTokenSet);
-    bool bLoadTable(TokenSet& xTokenSet);
-    bool bLoadTableStream(TokenSet& xTokenSet);
-    bool bLowerSelectTable(TokenSet& xTokenSet);
-    bool bSelectTable(TokenSet& xTokenSet);
-    bool bRangeSelectTable(TokenSet& xTokenSet);
-    bool bGetTable(TokenSet& xTokenSet);
-    bool bInUseTable(TokenSet& xTokenSet);
-    bool bRetTable(TokenSet& xTokenSet);
-    bool bNodeStatus(TokenSet& xTokenSet);
-    bool bPoolSpace(TokenSet& xTokenSet);
-    bool bSizeTable(TokenSet& xTokenSet);
-    bool bSizeTables(TokenSet& xTokenSet);
-    bool bTruncateTable(TokenSet& xTokenSet);
+    bool bAnalyzeTable(TokenVec& xTokenSet);
+    bool bCopyTable(TokenVec& xTokenSet);
+    bool bExportTable(TokenVec& xTokenSet);
+    bool bDanalyzeTable(TokenVec& xTokenSet);
+    bool bDistExportTable(TokenVec& xTokenSet);
+    bool bLoadTable(TokenVec& xTokenSet);
+    bool bLoadTableStream(TokenVec& xTokenSet);
+    bool bLowerSelectTable(TokenVec& xTokenSet);
+    bool bSelectTable(TokenVec& xTokenSet);
+    bool bRangeSelectTable(TokenVec& xTokenSet);
+    bool bGetTable(TokenVec& xTokenSet);
+    bool bInUseTable(TokenVec& xTokenSet);
+    bool bRetTable(TokenVec& xTokenSet);
+    bool bNodeStatus(TokenVec& xTokenSet);
+    bool bPoolSpace(TokenVec& xTokenSet);
+    bool bSizeTable(TokenVec& xTokenSet);
+    bool bSizeTables(TokenVec& xTokenSet);
+    bool bTruncateTable(TokenVec& xTokenSet);
     
-    bool bFetchRows(TokenSet& xTokenSet);
+    bool bFetchRows(TokenVec& xTokenSet);
   
-    bool bGetTask(TokenSet& xTokenSet);
-    bool bRetTask(TokenSet& xTokenSet);
+    bool bGetTask(TokenVec& xTokenSet);
+    bool bRetTask(TokenVec& xTokenSet);
   
     bool bInsertRow(Str* pRow);
     bool bInsertBuffer(void);
     bool bInsertBuffer(EntryBuffer* pRowBuffer, i8 iPartition);
     
-    bool bPushDic(TokenSet& xTokenSet);
-    bool bGetDicPath(TokenSet& xTokenSet);
-    bool bGetDicContents(TokenSet& xTokenSet);
-    bool bGetDicContentsG(TokenSet& xTokenSet);
+    bool bPushDic(TokenVec& xTokenSet);
+    bool bGetDicPath(TokenVec& xTokenSet);
+    bool bGetDicContents(TokenVec& xTokenSet);
+    bool bGetDicContentsG(TokenVec& xTokenSet);
 
-    bool bGetMonitor(TokenSet& xTokenSet);
-    bool bGetFreeSpace(TokenSet& xTokenSet);
-    bool bGetInUseSpace(TokenSet& xTokenSet);
-    bool bGetTotalSpace(TokenSet& xTokenSet);
-    bool bGetVersion(TokenSet& xTokenSet);
-    bool bSeitfCount(TokenSet& xTokenSet);
+    bool bGetMonitor(TokenVec& xTokenSet);
+    bool bGetFreeSpace(TokenVec& xTokenSet);
+    bool bGetInUseSpace(TokenVec& xTokenSet);
+    bool bGetTotalSpace(TokenVec& xTokenSet);
+    bool bGetVersion(TokenVec& xTokenSet);
+    bool bSeitfCount(TokenVec& xTokenSet);
     
-    bool bObject(TokenSet& xTokenSet);
-    bool bPing(TokenSet& xTokenSet);
-    bool bPrintRowBuffer(TokenSet& xTokenSet);
+    bool bObject(TokenVec& xTokenSet);
+    bool bPing(TokenVec& xTokenSet);
+    bool bPrintRowBuffer(TokenVec& xTokenSet);
     
-    bool bX(TokenSet& xTokenSet);
-    bool bPrint(TokenSet& xTokenSet);
+    bool bX(TokenVec& xTokenSet);
+    bool bPrint(TokenVec& xTokenSet);
     
     //--------------------------------------------------------------------------
     bool bAppendRequest(StrVal& sRequest);

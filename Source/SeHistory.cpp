@@ -34,7 +34,7 @@ SeHistory::~SeHistory(void)
 /*----------------------------------------------------------------------------*/
 /* append command to history file                                             */
 /*----------------------------------------------------------------------------*/
-void SeHistory::vAppend(TokenSet& xTokenSet)
+void SeHistory::vAppend(TokenVec& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEHISTORY,_FOOTER_);
   
@@ -103,7 +103,7 @@ void SeHistory::vPrint(void)
 /*----------------------------------------------------------------------------*/
 /* recall command from history file                                           */
 /*----------------------------------------------------------------------------*/
-bool SeHistory::bRecall(TokenSet& xTokenSet)
+bool SeHistory::bRecall(TokenVec& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEHISTORY,_FOOTER_);
   
@@ -136,7 +136,7 @@ bool SeHistory::bRecall(TokenSet& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* get command from history file                                              */
 /*----------------------------------------------------------------------------*/
-bool SeHistory::bGet(i8 iCommand, TokenSet& xTokenSet)
+bool SeHistory::bGet(i8 iCommand, TokenVec& xTokenSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEHISTORY,_FOOTER_);
   

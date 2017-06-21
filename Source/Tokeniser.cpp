@@ -239,7 +239,7 @@ void Tokeniser::vNextToken(void)
 /*----------------------------------------------------------------------------*/
 /* find token in token array                                                  */
 /*----------------------------------------------------------------------------*/
-i8 Tokeniser::iFindToken(Str* aLookFor, TokenSet& xTokenSet, i8 nTokens)
+i8 Tokeniser::iFindToken(Str* aLookFor, TokenVec& xTokenSet, i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
@@ -253,7 +253,7 @@ i8 Tokeniser::iFindToken(Str* aLookFor, TokenSet& xTokenSet, i8 nTokens)
 /*----------------------------------------------------------------------------*/
 /* count tokens in token array                                                */
 /*----------------------------------------------------------------------------*/
-i8 Tokeniser::iCountTokens(TokenSet& xTokenSet,i8 nTokens)
+i8 Tokeniser::iCountTokens(TokenVec& xTokenSet,i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
@@ -268,7 +268,7 @@ i8 Tokeniser::iCountTokens(TokenSet& xTokenSet,i8 nTokens)
 /*----------------------------------------------------------------------------*/
 /* dump token array                                                           */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vDumpTokens(Str* pTitle, TokenSet& xTokenSet, i8 nTokens)
+void Tokeniser::vDumpTokens(Str* pTitle, TokenVec& xTokenSet, i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
