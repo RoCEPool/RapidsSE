@@ -15,7 +15,7 @@ namespace Magic
   class WspFxd : public Wsp
   {
   private:
-    char m_cArea[LENGTH]; // byte area
+    char m_cArea[LENGTH]; // fixed byte area
     i8   m_nAreaUsed;     // bytes used in the area (must be after m_cArea)
   
   public:
@@ -31,7 +31,6 @@ namespace Magic
     char* aLatter(void);
     i8    nLength(void);
     i8    nSize(void);
-    Str*  aStr(void);
     void  vTake(i8 nBytes);
     i8    nUsed(void);
     void  vUsed(i8 nBytes);
@@ -145,17 +144,6 @@ template<int LENGTH>
 i8 WspFxd<LENGTH>::nSize(void)
 {
   return sizeof(WspFxd<LENGTH>);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get address of byte area                                                   */
-/*----------------------------------------------------------------------------*/
-template<int LENGTH>
-Str* WspFxd<LENGTH>::aStr(void)
-{
-  Str* aArea = Wsp::aStr();
-  
-  return aArea;
 }
 
 /*----------------------------------------------------------------------------*/
