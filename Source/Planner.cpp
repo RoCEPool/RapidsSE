@@ -93,6 +93,32 @@ void Planner::vChoosePath(void)
   ASSERT(m_pCandidatePaths->nItems());
   
   CandidatePath* npChosenPath = nullptr;
+  AccessPath* npChosenAccessPath = nullptr;
+  
+  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
+  
+  for (m_i_Chosen = 0; m_i_Chosen < m_pPathVec->nItems(); m_i_Chosen++) {
+    
+    AccessPath* mpAccPath = m_pPathVec->pGet(m_i_Chosen);
+    
+    if (mpAccPath->bIsCandidate()) {
+      npChosenAccessPath = mpAccPath;
+      break;
+    }
+  }
+  
+  for (i8 i_Test = m_i_Chosen + 1; i_Test < m_pPathVec->nItems(); i_Test++) {
+    
+    AccessPath* mpAccPath = m_pPathVec->pGet(i_Test);
+    
+    if (mpAccPath->bIsCandidate() &&
+        mpAccPath->iPathRating() < npChosenAccessPath->iPathRating()) {
+      m_i_Chosen = i_Test;
+      npChosenAccessPath = mpAccPath;
+    }
+  }
+  
+  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
   
   for (m_i_Chosen = 0; m_i_Chosen < m_pCandidatePaths->nItems(); m_i_Chosen++) {
     if (m_bIsCandidate[m_i_Chosen]) {
@@ -326,6 +352,9 @@ void Planner::vScorePaths(void)
     m_iScoreVec[i_Path] = iScore;
     
     m_pPathVec->pGet(i_Path)->vPathRating(iScore);
+    
+    AccessPath* pAccessPath = m_pPathVec->pGet(i_Path);
+    pAccessPath->vPathRating(iScore);
   }
 }
 
