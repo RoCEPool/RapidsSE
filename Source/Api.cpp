@@ -1515,7 +1515,7 @@ eEC RapidsSE_SEitfNew(void** ppSEitf, i8 iPartition, i8 iTraceLevel)
 /*----------------------------------------------------------------------------*/
 /* Execute a request                                                          */
 /*----------------------------------------------------------------------------*/
-bool RapidsSE_ExecuteRequest(SEitf* pSEitf, TokenVec& xTokenSet, Str** ppResponse)
+bool RapidsSE_ExecuteRequest(SEitf* pSEitf, TokenVec& xTokenVec, Str** ppResponse)
 {
   bool bResult;
   
@@ -1523,7 +1523,7 @@ bool RapidsSE_ExecuteRequest(SEitf* pSEitf, TokenVec& xTokenSet, Str** ppRespons
   pSEitf->vClearLastError();
   
   // send request to se
-  bResult = bExecuteRequest(pSEitf, xTokenSet);
+  bResult = bExecuteRequest(pSEitf, xTokenVec);
   if (!bResult) {
     *ppResponse = nullptr;
     return bResult;
@@ -1548,16 +1548,16 @@ eEC eExecuteRequest(SEitf* pSEitf, Str* aCommand)
 {
   bool bResult;
   
-  TokenVec xTokenSet;
+  TokenVec xTokenVec;
   
   // execute command pCommand
-  //xTokenSet[0]->vCopy(aCommand);
-  //xTokenSet[1]->vCopy(""_Str);
+  //xTokenVec[0]->vCopy(aCommand);
+  //xTokenVec[1]->vCopy(""_Str);
   
-  xTokenSet.vAddToken(aCommand);
-  xTokenSet[1]->vCopy(""_Str);
+  xTokenVec.vAddToken(aCommand);
+  xTokenVec[1]->vCopy(""_Str);
   
-  bResult = pSEitf->bDecode(xTokenSet);
+  bResult = pSEitf->bDecode(xTokenVec);
   
   return pSEitf->eGetLastError();
 }
@@ -1572,13 +1572,13 @@ eEC eExecuteRequest(SEitf* pSEitf, Str* aCommand, Str* aParameter)
   
   bool bResult;
   
-  TokenVec xTokenSet;
+  TokenVec xTokenVec;
   
-  xTokenSet.vAddToken(aCommand);
-  xTokenSet.vAddToken(aParameter);
-  xTokenSet[2]->vCopy(""_Str);
+  xTokenVec.vAddToken(aCommand);
+  xTokenVec.vAddToken(aParameter);
+  xTokenVec[2]->vCopy(""_Str);
   
-  bResult = pSEitf->bDecode(xTokenSet);
+  bResult = pSEitf->bDecode(xTokenVec);
   
   return pSEitf->eGetLastError();
 }
@@ -1594,14 +1594,14 @@ eEC eExecuteRequest(SEitf* pSEitf, Str* aCommand, Str* aParameter1,
   
   bool bResult;
   
-  TokenVec xTokenSet;
+  TokenVec xTokenVec;
   
-  xTokenSet.vAddToken(aCommand);
-  xTokenSet.vAddToken(aParameter1);
-  xTokenSet.vAddToken(aParameter2);
-  xTokenSet[3]->vCopy(""_Str);
+  xTokenVec.vAddToken(aCommand);
+  xTokenVec.vAddToken(aParameter1);
+  xTokenVec.vAddToken(aParameter2);
+  xTokenVec[3]->vCopy(""_Str);
   
-  bResult = pSEitf->bDecode(xTokenSet);
+  bResult = pSEitf->bDecode(xTokenVec);
   
   return pSEitf->eGetLastError();
 }
@@ -1616,15 +1616,15 @@ eEC eExecuteRequest(SEitf* pSEitf, Str* aCommand, Str* aParameter1,
   pSEitf->vClearLastError();
   
   bool bResult;
-  TokenVec xTokenSet;
+  TokenVec xTokenVec;
   
-  xTokenSet.vAddToken(aCommand);
-  xTokenSet.vAddToken(aParameter1);
-  xTokenSet.vAddToken(aParameter2);
-  xTokenSet.vAddToken(aParameter3);
-  xTokenSet[4]->vCopy(""_Str);
+  xTokenVec.vAddToken(aCommand);
+  xTokenVec.vAddToken(aParameter1);
+  xTokenVec.vAddToken(aParameter2);
+  xTokenVec.vAddToken(aParameter3);
+  xTokenVec[4]->vCopy(""_Str);
 
-  bResult = pSEitf->bDecode(xTokenSet);
+  bResult = pSEitf->bDecode(xTokenVec);
   
   return pSEitf->eGetLastError();
 }
@@ -1632,12 +1632,12 @@ eEC eExecuteRequest(SEitf* pSEitf, Str* aCommand, Str* aParameter1,
 /*----------------------------------------------------------------------------*/
 /* execute command                                                            */
 /*----------------------------------------------------------------------------*/
-bool bExecuteRequest(SEitf* pSEitf, TokenVec& xTokenSet)
+bool bExecuteRequest(SEitf* pSEitf, TokenVec& xTokenVec)
 {
   bool bResult;
   
   // execute command
-  bResult = pSEitf->bDecode(xTokenSet);
+  bResult = pSEitf->bDecode(xTokenVec);
   
   return bResult;
 }

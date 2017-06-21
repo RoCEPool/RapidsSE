@@ -239,12 +239,12 @@ void Tokeniser::vNextToken(void)
 /*----------------------------------------------------------------------------*/
 /* find token in token array                                                  */
 /*----------------------------------------------------------------------------*/
-i8 Tokeniser::iFindToken(Str* aLookFor, TokenVec& xTokenSet, i8 nTokens)
+i8 Tokeniser::iFindToken(Str* aLookFor, TokenVec& xTokenVec, i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
   for (i8 i_Token = 0; i_Token < nTokens; i_Token++)
-    if (aLookFor->bSame(xTokenSet[i_Token]->aStr()))
+    if (aLookFor->bSame(xTokenVec[i_Token]->aStr()))
       return i_Token;
   
   return -1;
@@ -253,12 +253,12 @@ i8 Tokeniser::iFindToken(Str* aLookFor, TokenVec& xTokenSet, i8 nTokens)
 /*----------------------------------------------------------------------------*/
 /* count tokens in token array                                                */
 /*----------------------------------------------------------------------------*/
-i8 Tokeniser::iCountTokens(TokenVec& xTokenSet,i8 nTokens)
+i8 Tokeniser::iCountTokens(TokenVec& xTokenVec,i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
   for (i8 i_Token = 0; i_Token < nTokens; i_Token++)
-    if (xTokenSet[i_Token]->bSame(""_Str))
+    if (xTokenVec[i_Token]->bSame(""_Str))
       return i_Token;
   
   ASSERT("Should never be reached"_Str);
@@ -268,7 +268,7 @@ i8 Tokeniser::iCountTokens(TokenVec& xTokenSet,i8 nTokens)
 /*----------------------------------------------------------------------------*/
 /* dump token array                                                           */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vDumpTokens(Str* pTitle, TokenVec& xTokenSet, i8 nTokens)
+void Tokeniser::vDumpTokens(Str* pTitle, TokenVec& xTokenVec, i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
@@ -276,10 +276,10 @@ void Tokeniser::vDumpTokens(Str* pTitle, TokenVec& xTokenSet, i8 nTokens)
   
   for (i8 i_Token = 0; i_Token < nTokens; i_Token++) {
     
-    if (! *(char*)xTokenSet[i_Token]->aStr())
+    if (! *(char*)xTokenVec[i_Token]->aStr())
       break;
     
-    vTrace("%s "_Str, xTokenSet[i_Token]->aStr());
+    vTrace("%s "_Str, xTokenVec[i_Token]->aStr());
   }
   vTrace("\n"_Str);
 }

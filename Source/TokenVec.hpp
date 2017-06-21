@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* TokenVec.hpp -- set of tokens                                              */
+/* TokenVec.hpp -- vector of tokens                                           */
 /*============================================================================*/
 #pragma once
 
 namespace Parsing
 {
-  class TokenVec : public Vector<CN_TOKENVEC,Token,CN_TOKEN,256,u8>
+  class TokenVec : public Vector<CN_TOKENVEC,Token,CN_TOKEN,C_TOKENS,u8>
   {
   private:
     

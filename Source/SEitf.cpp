@@ -353,95 +353,95 @@ void SEitf::vEndTx()
 /*----------------------------------------------------------------------------*/
 /* decode request                                                             */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDecode(TokenVec& xTokenSet)
+bool SEitf::bDecode(TokenVec& xTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
-  if (0 == xTokenSet[0]->iLength())
+  if (0 == xTokenVec[0]->iLength())
     return false;
   
-  if (xTokenSet[0]->bSame("addcol"_Str)) return bAddColumn(xTokenSet);
-  if (xTokenSet[0]->bSame("antbl"_Str)) return bAnalyzeTable(xTokenSet);
-  if (xTokenSet[0]->bSame("anidx"_Str)) return bAnalyzeIndex(xTokenSet);
-  if (xTokenSet[0]->bSame("addidxcol"_Str)) return bAddIndexColumn(xTokenSet);
-  if (xTokenSet[0]->bSame("addpartcol"_Str)) return bAddPartitionColumn(xTokenSet);
-  if (xTokenSet[0]->bSame("cf"_Str)) return bPushDic(xTokenSet);
-  if (xTokenSet[0]->bSame("connectCluster"_Str)) return bConnectCluster(xTokenSet);
-  if (xTokenSet[0]->bSame("cp"_Str)) return bCopyTable(xTokenSet);
-  if (xTokenSet[0]->bSame("danidx"_Str)) return bDanalyzeIndex(xTokenSet);
-  if (xTokenSet[0]->bSame("dantbl"_Str)) return bDanalyzeTable(xTokenSet);
-  if (xTokenSet[0]->bSame("dex"_Str)) return bDistExportTable(xTokenSet);
-  if (xTokenSet[0]->bSame("docol"_Str)) return bDocol(xTokenSet);
-  if (xTokenSet[0]->bSame("displayOff"_Str)) return bDisplayOff(xTokenSet);
-  if (xTokenSet[0]->bSame("displayOn"_Str)) return bDisplayOn(xTokenSet);
-  if (xTokenSet[0]->bSame("dump"_Str)) return bDumpTable(xTokenSet);
-  if (xTokenSet[0]->bSame("endmkidx"_Str)) return bEndCreateIndex(xTokenSet);
-  if (xTokenSet[0]->bSame("endmktbl"_Str)) return bEndCreateTable(xTokenSet);
-  if (xTokenSet[0]->bSame("ex"_Str)) return bExportTable(xTokenSet);
-  if (xTokenSet[0]->bSame("fetch"_Str)) return bFetchRows(xTokenSet);
-  if (xTokenSet[0]->bSame("get"_Str)) return bGet(xTokenSet);
-  if (xTokenSet[0]->bSame("getFreeSpace"_Str)) return bGetFreeSpace(xTokenSet);
-  if (xTokenSet[0]->bSame("getInUseSpace"_Str)) return bGetInUseSpace(xTokenSet);
-  if (xTokenSet[0]->bSame("getidx"_Str)) return bGetIndex(xTokenSet);
-  if (xTokenSet[0]->bSame("gettbl"_Str)) return bGetTable(xTokenSet);
-  if (xTokenSet[0]->bSame("gettsk"_Str)) return bGetTask(xTokenSet);
-  if (xTokenSet[0]->bSame("getTotalSpace"_Str)) return bGetTotalSpace(xTokenSet);
-  if (xTokenSet[0]->bSame("dumpidx"_Str)) return bDumpIndex(xTokenSet);
-  if (xTokenSet[0]->bSame("TblInUse"_Str)) return bInUseTable(xTokenSet);
-  if (xTokenSet[0]->bSame("ld"_Str)) return bLoadTable(xTokenSet);
-  if (xTokenSet[0]->bSame("lds"_Str)) return bLoadTableStream(xTokenSet);
-  if (xTokenSet[0]->bSame("lf"_Str)) return bGetDicContents(xTokenSet);
-  if (xTokenSet[0]->bSame("lfG"_Str)) return bGetDicContentsG(xTokenSet);
-  if (xTokenSet[0]->bSame("keyselidx"_Str)) return bKeySelectIndex(xTokenSet);
-  if (xTokenSet[0]->bSame("lscat"_Str)) return bListCatalogs(xTokenSet);
-  if (xTokenSet[0]->bSame("lscol"_Str)) return bListColumns(xTokenSet);
-  if (xTokenSet[0]->bSame("lsidx"_Str)) return bListIndices(xTokenSet);
-  if (xTokenSet[0]->bSame("lsidxcol"_Str)) return bListIndexColumns(xTokenSet);
-  if (xTokenSet[0]->bSame("lspartcol"_Str)) return bListPartitionColumns(xTokenSet);
-  if (xTokenSet[0]->bSame("lssch"_Str)) return bListSchemas(xTokenSet);
-  if (xTokenSet[0]->bSame("lstbl"_Str)) return bListTables(xTokenSet);
-  if (xTokenSet[0]->bSame("lsten"_Str)) return bListTenants(xTokenSet);
-  if (xTokenSet[0]->bSame("lwrsel"_Str)) return bLowerSelectTable(xTokenSet);
-  if (xTokenSet[0]->bSame("lwrselidx"_Str)) return bLowerSelectIndex(xTokenSet);
-  if (xTokenSet[0]->bSame("mkcat"_Str)) return bCreateCatalog(xTokenSet);
-  if (xTokenSet[0]->bSame("mkidx"_Str)) return bCreateIndex(xTokenSet);
-  if (xTokenSet[0]->bSame("mksch"_Str)) return bCreateSchema(xTokenSet);
-  if (xTokenSet[0]->bSame("mktbl"_Str)) return bCreateTable(xTokenSet);
-  if (xTokenSet[0]->bSame("mkten"_Str)) return bCreateTenant(xTokenSet);
-  if (xTokenSet[0]->bSame("object"_Str)) return bObject(xTokenSet);
-  if (xTokenSet[0]->bSame("pRB"_Str)) return bPrintRowBuffer(xTokenSet);
-  if (xTokenSet[0]->bSame("pwf"_Str)) return bGetDicPath(xTokenSet);
-  if (xTokenSet[0]->bSame("retidx"_Str)) return bRetIndex(xTokenSet);
-  if (xTokenSet[0]->bSame("rettbl"_Str)) return bRetTable(xTokenSet);
-  if (xTokenSet[0]->bSame("rettsk"_Str)) return bRetTask(xTokenSet);
-  if (xTokenSet[0]->bSame("rf"_Str)) return bRemoveFolder(xTokenSet);
-  if (xTokenSet[0]->bSame("rgesel"_Str)) return bRangeSelectTable(xTokenSet);
-  if (xTokenSet[0]->bSame("rmcat"_Str)) return bDropCatalog(xTokenSet);
-  if (xTokenSet[0]->bSame("rmdic"_Str)) return bRemoveFolder(xTokenSet);
-  if (xTokenSet[0]->bSame("rmidx"_Str)) return bDropIndex(xTokenSet);
-  if (xTokenSet[0]->bSame("rmsch"_Str)) return bDropSchema(xTokenSet);
-  if (xTokenSet[0]->bSame("rmtbl"_Str)) return bDropTable(xTokenSet);
-  if (xTokenSet[0]->bSame("rmten"_Str)) return bDropTenant(xTokenSet);
-  if (xTokenSet[0]->bSame("rgeselidx"_Str)) return bRangeSelectIndex(xTokenSet);
-  if (xTokenSet[0]->bSame("sel"_Str)) return bSelectTable(xTokenSet);
-  if (xTokenSet[0]->bSame("set"_Str)) return bSet(xTokenSet);
-  if (xTokenSet[0]->bSame("setidxunique"_Str)) return bIndexSetUnique(xTokenSet);
-  if (xTokenSet[0]->bSame("space"_Str)) return bPoolSpace(xTokenSet);
-  if (xTokenSet[0]->bSame("status"_Str)) return bNodeStatus(xTokenSet);
-  if (xTokenSet[0]->bSame("szidx"_Str)) return bSizeIndex(xTokenSet);
-  if (xTokenSet[0]->bSame("sz"_Str)) return bSizeTable(xTokenSet);
-  if (xTokenSet[0]->bSame("tableSizes"_Str)) return bSizeTables(xTokenSet);
-  if (xTokenSet[0]->bSame("tr"_Str)) return bTruncateTable(xTokenSet);
-  if (xTokenSet[0]->bSame("tridx"_Str)) return bTruncateIndex(xTokenSet);
-  if (xTokenSet[0]->bSame("uprselidx"_Str)) return bUpperSelectIndex(xTokenSet);
-  if (xTokenSet[0]->bSame("usesch"_Str)) return bUseSchema(xTokenSet);
-  if (xTokenSet[0]->bSame("__x"_Str)) return bX(xTokenSet);
-  if (xTokenSet[0]->bSame("ping"_Str)) return bPing(xTokenSet);
-  if (xTokenSet[0]->bSame("mon"_Str)) return bGetMonitor(xTokenSet);
-  if (xTokenSet[0]->bSame("print"_Str)) return ! bPrint(xTokenSet);
-  if (xTokenSet[0]->bSame("seitf"_Str)) return bSeitfCount(xTokenSet);
-  if (xTokenSet[0]->bSame("version"_Str)) return bGetVersion(xTokenSet);
-  if (xTokenSet[0]->bSame("visidx"_Str)) return bVisualizeIndex(xTokenSet);
+  if (xTokenVec[0]->bSame("addcol"_Str)) return bAddColumn(xTokenVec);
+  if (xTokenVec[0]->bSame("antbl"_Str)) return bAnalyzeTable(xTokenVec);
+  if (xTokenVec[0]->bSame("anidx"_Str)) return bAnalyzeIndex(xTokenVec);
+  if (xTokenVec[0]->bSame("addidxcol"_Str)) return bAddIndexColumn(xTokenVec);
+  if (xTokenVec[0]->bSame("addpartcol"_Str)) return bAddPartitionColumn(xTokenVec);
+  if (xTokenVec[0]->bSame("cf"_Str)) return bPushDic(xTokenVec);
+  if (xTokenVec[0]->bSame("connectCluster"_Str)) return bConnectCluster(xTokenVec);
+  if (xTokenVec[0]->bSame("cp"_Str)) return bCopyTable(xTokenVec);
+  if (xTokenVec[0]->bSame("danidx"_Str)) return bDanalyzeIndex(xTokenVec);
+  if (xTokenVec[0]->bSame("dantbl"_Str)) return bDanalyzeTable(xTokenVec);
+  if (xTokenVec[0]->bSame("dex"_Str)) return bDistExportTable(xTokenVec);
+  if (xTokenVec[0]->bSame("docol"_Str)) return bDocol(xTokenVec);
+  if (xTokenVec[0]->bSame("displayOff"_Str)) return bDisplayOff(xTokenVec);
+  if (xTokenVec[0]->bSame("displayOn"_Str)) return bDisplayOn(xTokenVec);
+  if (xTokenVec[0]->bSame("dump"_Str)) return bDumpTable(xTokenVec);
+  if (xTokenVec[0]->bSame("endmkidx"_Str)) return bEndCreateIndex(xTokenVec);
+  if (xTokenVec[0]->bSame("endmktbl"_Str)) return bEndCreateTable(xTokenVec);
+  if (xTokenVec[0]->bSame("ex"_Str)) return bExportTable(xTokenVec);
+  if (xTokenVec[0]->bSame("fetch"_Str)) return bFetchRows(xTokenVec);
+  if (xTokenVec[0]->bSame("get"_Str)) return bGet(xTokenVec);
+  if (xTokenVec[0]->bSame("getFreeSpace"_Str)) return bGetFreeSpace(xTokenVec);
+  if (xTokenVec[0]->bSame("getInUseSpace"_Str)) return bGetInUseSpace(xTokenVec);
+  if (xTokenVec[0]->bSame("getidx"_Str)) return bGetIndex(xTokenVec);
+  if (xTokenVec[0]->bSame("gettbl"_Str)) return bGetTable(xTokenVec);
+  if (xTokenVec[0]->bSame("gettsk"_Str)) return bGetTask(xTokenVec);
+  if (xTokenVec[0]->bSame("getTotalSpace"_Str)) return bGetTotalSpace(xTokenVec);
+  if (xTokenVec[0]->bSame("dumpidx"_Str)) return bDumpIndex(xTokenVec);
+  if (xTokenVec[0]->bSame("TblInUse"_Str)) return bInUseTable(xTokenVec);
+  if (xTokenVec[0]->bSame("ld"_Str)) return bLoadTable(xTokenVec);
+  if (xTokenVec[0]->bSame("lds"_Str)) return bLoadTableStream(xTokenVec);
+  if (xTokenVec[0]->bSame("lf"_Str)) return bGetDicContents(xTokenVec);
+  if (xTokenVec[0]->bSame("lfG"_Str)) return bGetDicContentsG(xTokenVec);
+  if (xTokenVec[0]->bSame("keyselidx"_Str)) return bKeySelectIndex(xTokenVec);
+  if (xTokenVec[0]->bSame("lscat"_Str)) return bListCatalogs(xTokenVec);
+  if (xTokenVec[0]->bSame("lscol"_Str)) return bListColumns(xTokenVec);
+  if (xTokenVec[0]->bSame("lsidx"_Str)) return bListIndices(xTokenVec);
+  if (xTokenVec[0]->bSame("lsidxcol"_Str)) return bListIndexColumns(xTokenVec);
+  if (xTokenVec[0]->bSame("lspartcol"_Str)) return bListPartitionColumns(xTokenVec);
+  if (xTokenVec[0]->bSame("lssch"_Str)) return bListSchemas(xTokenVec);
+  if (xTokenVec[0]->bSame("lstbl"_Str)) return bListTables(xTokenVec);
+  if (xTokenVec[0]->bSame("lsten"_Str)) return bListTenants(xTokenVec);
+  if (xTokenVec[0]->bSame("lwrsel"_Str)) return bLowerSelectTable(xTokenVec);
+  if (xTokenVec[0]->bSame("lwrselidx"_Str)) return bLowerSelectIndex(xTokenVec);
+  if (xTokenVec[0]->bSame("mkcat"_Str)) return bCreateCatalog(xTokenVec);
+  if (xTokenVec[0]->bSame("mkidx"_Str)) return bCreateIndex(xTokenVec);
+  if (xTokenVec[0]->bSame("mksch"_Str)) return bCreateSchema(xTokenVec);
+  if (xTokenVec[0]->bSame("mktbl"_Str)) return bCreateTable(xTokenVec);
+  if (xTokenVec[0]->bSame("mkten"_Str)) return bCreateTenant(xTokenVec);
+  if (xTokenVec[0]->bSame("object"_Str)) return bObject(xTokenVec);
+  if (xTokenVec[0]->bSame("pRB"_Str)) return bPrintRowBuffer(xTokenVec);
+  if (xTokenVec[0]->bSame("pwf"_Str)) return bGetDicPath(xTokenVec);
+  if (xTokenVec[0]->bSame("retidx"_Str)) return bRetIndex(xTokenVec);
+  if (xTokenVec[0]->bSame("rettbl"_Str)) return bRetTable(xTokenVec);
+  if (xTokenVec[0]->bSame("rettsk"_Str)) return bRetTask(xTokenVec);
+  if (xTokenVec[0]->bSame("rf"_Str)) return bRemoveFolder(xTokenVec);
+  if (xTokenVec[0]->bSame("rgesel"_Str)) return bRangeSelectTable(xTokenVec);
+  if (xTokenVec[0]->bSame("rmcat"_Str)) return bDropCatalog(xTokenVec);
+  if (xTokenVec[0]->bSame("rmdic"_Str)) return bRemoveFolder(xTokenVec);
+  if (xTokenVec[0]->bSame("rmidx"_Str)) return bDropIndex(xTokenVec);
+  if (xTokenVec[0]->bSame("rmsch"_Str)) return bDropSchema(xTokenVec);
+  if (xTokenVec[0]->bSame("rmtbl"_Str)) return bDropTable(xTokenVec);
+  if (xTokenVec[0]->bSame("rmten"_Str)) return bDropTenant(xTokenVec);
+  if (xTokenVec[0]->bSame("rgeselidx"_Str)) return bRangeSelectIndex(xTokenVec);
+  if (xTokenVec[0]->bSame("sel"_Str)) return bSelectTable(xTokenVec);
+  if (xTokenVec[0]->bSame("set"_Str)) return bSet(xTokenVec);
+  if (xTokenVec[0]->bSame("setidxunique"_Str)) return bIndexSetUnique(xTokenVec);
+  if (xTokenVec[0]->bSame("space"_Str)) return bPoolSpace(xTokenVec);
+  if (xTokenVec[0]->bSame("status"_Str)) return bNodeStatus(xTokenVec);
+  if (xTokenVec[0]->bSame("szidx"_Str)) return bSizeIndex(xTokenVec);
+  if (xTokenVec[0]->bSame("sz"_Str)) return bSizeTable(xTokenVec);
+  if (xTokenVec[0]->bSame("tableSizes"_Str)) return bSizeTables(xTokenVec);
+  if (xTokenVec[0]->bSame("tr"_Str)) return bTruncateTable(xTokenVec);
+  if (xTokenVec[0]->bSame("tridx"_Str)) return bTruncateIndex(xTokenVec);
+  if (xTokenVec[0]->bSame("uprselidx"_Str)) return bUpperSelectIndex(xTokenVec);
+  if (xTokenVec[0]->bSame("usesch"_Str)) return bUseSchema(xTokenVec);
+  if (xTokenVec[0]->bSame("__x"_Str)) return bX(xTokenVec);
+  if (xTokenVec[0]->bSame("ping"_Str)) return bPing(xTokenVec);
+  if (xTokenVec[0]->bSame("mon"_Str)) return bGetMonitor(xTokenVec);
+  if (xTokenVec[0]->bSame("print"_Str)) return ! bPrint(xTokenVec);
+  if (xTokenVec[0]->bSame("seitf"_Str)) return bSeitfCount(xTokenVec);
+  if (xTokenVec[0]->bSame("version"_Str)) return bGetVersion(xTokenVec);
+  if (xTokenVec[0]->bSame("visidx"_Str)) return bVisualizeIndex(xTokenVec);
   
   vSetLastError(EC_INVALID_COMMAND);
   return false;
@@ -450,13 +450,13 @@ bool SEitf::bDecode(TokenVec& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* connect to se                                                              */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bConnect(TokenVec& xTokenSet)
+bool SEitf::bConnect(TokenVec& xTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  ASSERT(xTokenSet[0]->bSame("con"_Str));
+  ASSERT(xTokenVec[0]->bSame("con"_Str));
   sRequest = "connect"_Str;
   return bAppendRequest(sRequest);
 }
@@ -464,13 +464,13 @@ bool SEitf::bConnect(TokenVec& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* connect the se cluster nodes                                               */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bConnectCluster(TokenVec& xTokenSet)
+bool SEitf::bConnectCluster(TokenVec& xTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  ASSERT(xTokenSet[0]->bSame("connectCluster"_Str));
+  ASSERT(xTokenVec[0]->bSame("connectCluster"_Str));
   sRequest = "connectCluster"_Str;
   return bAppendRequest(sRequest);
 }
@@ -478,13 +478,13 @@ bool SEitf::bConnectCluster(TokenVec& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* disconnect from se                                                         */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDisconnect(TokenVec& xTokenSet)
+bool SEitf::bDisconnect(TokenVec& xTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  ASSERT(xTokenSet[0]->bSame("dic"_Str));
+  ASSERT(xTokenVec[0]->bSame("dic"_Str));
   sRequest = "disconnect"_Str;
   return bAppendRequest(sRequest);
 }
@@ -492,19 +492,19 @@ bool SEitf::bDisconnect(TokenVec& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* get value from attachmap                                                   */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bGet(TokenVec& xTokenSet)
+bool SEitf::bGet(TokenVec& xTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (xTokenSet.nTokens() != 2) {
+  if (xTokenVec.nTokens() != 2) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
   sRequest.vCopy("\""_Str);
-  sRequest.vConcat(xTokenSet[1]->aStr());
+  sRequest.vConcat(xTokenVec[1]->aStr());
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" get"_Str);
@@ -516,23 +516,23 @@ bool SEitf::bGet(TokenVec& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* set value in attachmap                                                     */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bSet(TokenVec& xTokenSet)
+bool SEitf::bSet(TokenVec& xTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (xTokenSet.nTokens() != 3) {
+  if (xTokenVec.nTokens() != 3) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
   sRequest.vCopy("\""_Str);
-  sRequest.vConcat(xTokenSet[1]->aStr());
+  sRequest.vConcat(xTokenVec[1]->aStr());
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat("\""_Str);
-  sRequest.vConcat(xTokenSet[2]->aStr());
+  sRequest.vConcat(xTokenVec[2]->aStr());
   sRequest.vConcat("\""_Str);
 
   sRequest.vConcat(" set"_Str);
@@ -544,14 +544,14 @@ bool SEitf::bSet(TokenVec& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* remove a folder                                                            */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bRemoveFolder(TokenVec& xTokenSet)
+bool SEitf::bRemoveFolder(TokenVec& xTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
   sRequest.vCopy("\""_Str);
-  sRequest.vConcat(xTokenSet[1]->aStr());
+  sRequest.vConcat(xTokenVec[1]->aStr());
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" remove_folder"_Str);
@@ -562,19 +562,19 @@ bool SEitf::bRemoveFolder(TokenVec& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* create a tenant                                                            */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bCreateTenant(TokenVec& xTokenSet)
+bool SEitf::bCreateTenant(TokenVec& xTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (xTokenSet.nTokens() != 2) {
+  if (xTokenVec.nTokens() != 2) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
 
   sRequest.vCopy("\""_Str);
-  sRequest.vConcat(xTokenSet[1]->aStr());
+  sRequest.vConcat(xTokenVec[1]->aStr());
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" create_tenant"_Str);
@@ -585,18 +585,18 @@ bool SEitf::bCreateTenant(TokenVec& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* list tenants                                                               */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bListTenants(TokenVec& xTokenSet)
+bool SEitf::bListTenants(TokenVec& xTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (xTokenSet.nTokens() != 1) {
+  if (xTokenVec.nTokens() != 1) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
 
-  ASSERT(xTokenSet[0]->bSame("lsten"_Str));
+  ASSERT(xTokenVec[0]->bSame("lsten"_Str));
   sRequest = "list_tenants"_Str;
   return bAppendRequest(sRequest);
 }
@@ -604,19 +604,19 @@ bool SEitf::bListTenants(TokenVec& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* drop a tenant                                                              */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDropTenant(TokenVec& xTokenSet)
+bool SEitf::bDropTenant(TokenVec& xTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (xTokenSet.nTokens() != 2) {
+  if (xTokenVec.nTokens() != 2) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
   sRequest.vCopy("\""_Str);
-  sRequest.vConcat(xTokenSet[1]->aStr());
+  sRequest.vConcat(xTokenVec[1]->aStr());
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" drop_tenant"_Str);
@@ -627,19 +627,19 @@ bool SEitf::bDropTenant(TokenVec& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* create a catalog                                                           */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bCreateCatalog(TokenVec& xTokenSet)
+bool SEitf::bCreateCatalog(TokenVec& xTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (xTokenSet.nTokens() != 2) {
+  if (xTokenVec.nTokens() != 2) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
   sRequest.vCopy("\""_Str);
-  sRequest.vConcat(xTokenSet[1]->aStr());
+  sRequest.vConcat(xTokenVec[1]->aStr());
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" create_catalog"_Str);
@@ -650,18 +650,18 @@ bool SEitf::bCreateCatalog(TokenVec& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* list catalogs                                                              */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bListCatalogs(TokenVec& xTokenSet)
+bool SEitf::bListCatalogs(TokenVec& xTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
     
-  if (xTokenSet.nTokens() != 1) {
+  if (xTokenVec.nTokens() != 1) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
-  ASSERT(xTokenSet[0]->bSame("lscat"_Str));
+  ASSERT(xTokenVec[0]->bSame("lscat"_Str));
   sRequest = "list_catalogs"_Str;
   return bAppendRequest(sRequest);
 }
@@ -669,19 +669,19 @@ bool SEitf::bListCatalogs(TokenVec& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* drop a catalog                                                             */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDropCatalog(TokenVec& xTokenSet)
+bool SEitf::bDropCatalog(TokenVec& xTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (xTokenSet.nTokens() != 2) {
+  if (xTokenVec.nTokens() != 2) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
 
   sRequest.vCopy("\""_Str);
-  sRequest.vConcat(xTokenSet[1]->aStr());
+  sRequest.vConcat(xTokenVec[1]->aStr());
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" drop_catalog"_Str);
@@ -692,19 +692,19 @@ bool SEitf::bDropCatalog(TokenVec& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* create a schema                                                            */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bCreateSchema(TokenVec& xTokenSet)
+bool SEitf::bCreateSchema(TokenVec& xTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (xTokenSet.nTokens() != 2) {
+  if (xTokenVec.nTokens() != 2) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
   sRequest.vCopy("\""_Str);
-  sRequest.vConcat(xTokenSet[1]->aStr());
+  sRequest.vConcat(xTokenVec[1]->aStr());
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" create_schema"_Str);
@@ -717,18 +717,18 @@ bool SEitf::bCreateSchema(TokenVec& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* list schemas                                                               */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bListSchemas(TokenVec& xTokenSet)
+bool SEitf::bListSchemas(TokenVec& xTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (xTokenSet.nTokens() != 1) {
+  if (xTokenVec.nTokens() != 1) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
-  ASSERT(xTokenSet[0]->bSame("lssch"_Str));
+  ASSERT(xTokenVec[0]->bSame("lssch"_Str));
   sRequest = "list_schemas"_Str;
   return bAppendRequest(sRequest);
 }
@@ -736,19 +736,19 @@ bool SEitf::bListSchemas(TokenVec& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* drop a schema                                                              */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDropSchema(TokenVec& xTokenSet)
+bool SEitf::bDropSchema(TokenVec& xTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (xTokenSet.nTokens() != 2) {
+  if (xTokenVec.nTokens() != 2) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
 
   sRequest.vCopy("\""_Str);
-  sRequest.vConcat(xTokenSet[1]->aStr());
+  sRequest.vConcat(xTokenVec[1]->aStr());
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" drop_schema"_Str);
@@ -759,19 +759,19 @@ bool SEitf::bDropSchema(TokenVec& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* use a schema                                                               */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bUseSchema(TokenVec& xTokenSet)
+bool SEitf::bUseSchema(TokenVec& xTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (xTokenSet.nTokens() != 2) {
+  if (xTokenVec.nTokens() != 2) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
   sRequest.vCopy("\""_Str);
-  sRequest.vConcat(xTokenSet[1]->aStr());
+  sRequest.vConcat(xTokenVec[1]->aStr());
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" use_schema"_Str);
@@ -782,23 +782,23 @@ bool SEitf::bUseSchema(TokenVec& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* create an index                                                            */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bCreateIndex(TokenVec& xTokenSet)
+bool SEitf::bCreateIndex(TokenVec& xTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (xTokenSet.nTokens() != 3) {
+  if (xTokenVec.nTokens() != 3) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
   sRequest.vConcat(" \""_Str);
-  sRequest.vConcat(xTokenSet[2]->aStr());
+  sRequest.vConcat(xTokenVec[2]->aStr());
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" \""_Str);
-  sRequest.vConcat(xTokenSet[1]->aStr());
+  sRequest.vConcat(xTokenVec[1]->aStr());
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" create_index"_Str);
@@ -809,22 +809,22 @@ bool SEitf::bCreateIndex(TokenVec& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* list indices                                                               */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bListIndices(TokenVec& xTokenSet)
+bool SEitf::bListIndices(TokenVec& xTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (xTokenSet.nTokens() != 2) {
+  if (xTokenVec.nTokens() != 2) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
   sRequest.vCopy("\""_Str);
-  sRequest.vConcat(xTokenSet[1]->aStr());
+  sRequest.vConcat(xTokenVec[1]->aStr());
   sRequest.vConcat("\""_Str);
 
-  ASSERT(xTokenSet[0]->bSame("lsidx"_Str));
+  ASSERT(xTokenVec[0]->bSame("lsidx"_Str));
   
   sRequest.vConcat(" list_indexes"_Str);
   
@@ -834,30 +834,30 @@ bool SEitf::bListIndices(TokenVec& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* set index uniqueness                                                       */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bIndexSetUnique(TokenVec& xTokenSet)
+bool SEitf::bIndexSetUnique(TokenVec& xTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (xTokenSet.nTokens() != 4) {
+  if (xTokenVec.nTokens() != 4) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
   //sRequest.vCopy("\""_Str);
-  sRequest.vCopy(xTokenSet[3]->aStr());
+  sRequest.vCopy(xTokenVec[3]->aStr());
   //sRequest.vConcat("\""_Str);
   
   sRequest.vConcat("\""_Str);
-  sRequest.vConcat(xTokenSet[2]->aStr());
+  sRequest.vConcat(xTokenVec[2]->aStr());
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat("\""_Str);
-  sRequest.vConcat(xTokenSet[1]->aStr());
+  sRequest.vConcat(xTokenVec[1]->aStr());
   sRequest.vConcat("\""_Str);
   
-  ASSERT(xTokenSet[0]->bSame("setidxunique"_Str));
+  ASSERT(xTokenVec[0]->bSame("setidxunique"_Str));
   
   sRequest.vConcat(" index_setUnique"_Str);
   
@@ -867,19 +867,19 @@ bool SEitf::bIndexSetUnique(TokenVec& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* create a table                                                             */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bCreateTable(TokenVec& xTokenSet)
+bool SEitf::bCreateTable(TokenVec& xTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (xTokenSet.nTokens() != 2) {
+  if (xTokenVec.nTokens() != 2) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
   sRequest.vCopy("\""_Str);
-  sRequest.vConcat(xTokenSet[1]->aStr());
+  sRequest.vConcat(xTokenVec[1]->aStr());
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" create_table"_Str);
@@ -890,18 +890,18 @@ bool SEitf::bCreateTable(TokenVec& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* list tables                                                                */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bListTables(TokenVec& xTokenSet)
+bool SEitf::bListTables(TokenVec& xTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (xTokenSet.nTokens() != 1) {
+  if (xTokenVec.nTokens() != 1) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
-  ASSERT(xTokenSet[0]->bSame("lstbl"_Str));
+  ASSERT(xTokenVec[0]->bSame("lstbl"_Str));
   sRequest = "list_tables"_Str;
   return bAppendRequest(sRequest);
 }
@@ -909,23 +909,23 @@ bool SEitf::bListTables(TokenVec& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* dump an index                                                              */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDumpIndex(TokenVec& xTokenSet)
+bool SEitf::bDumpIndex(TokenVec& xTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (xTokenSet.nTokens() != 3) {
+  if (xTokenVec.nTokens() != 3) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
   sRequest.vCopy("\""_Str);
-  sRequest.vConcat(xTokenSet[2]->aStr());
+  sRequest.vConcat(xTokenVec[2]->aStr());
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat("\""_Str);
-  sRequest.vConcat(xTokenSet[1]->aStr());
+  sRequest.vConcat(xTokenVec[1]->aStr());
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" dump_index"_Str);
@@ -936,19 +936,19 @@ bool SEitf::bDumpIndex(TokenVec& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* dump a table                                                               */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDumpTable(TokenVec& xTokenSet)
+bool SEitf::bDumpTable(TokenVec& xTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (xTokenSet.nTokens() != 2) {
+  if (xTokenVec.nTokens() != 2) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
   sRequest.vCopy("\""_Str);
-  sRequest.vConcat(xTokenSet[1]->aStr());
+  sRequest.vConcat(xTokenVec[1]->aStr());
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" dump_table"_Str);
@@ -959,19 +959,19 @@ bool SEitf::bDumpTable(TokenVec& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* docol                                                                      */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDocol(TokenVec& xTokenSet)
+bool SEitf::bDocol(TokenVec& xTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (xTokenSet.nTokens() != 2) {
+  if (xTokenVec.nTokens() != 2) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
   sRequest.vCopy("\""_Str);
-  sRequest.vConcat(xTokenSet[1]->aStr());
+  sRequest.vConcat(xTokenVec[1]->aStr());
   sRequest.vConcat("\""_Str);
   
   //
@@ -983,13 +983,13 @@ bool SEitf::bDocol(TokenVec& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* display off selected rows                                                  */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDisplayOff(TokenVec& xTokenSet)
+bool SEitf::bDisplayOff(TokenVec& xTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (xTokenSet.nTokens() != 1) {
+  if (xTokenVec.nTokens() != 1) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
@@ -1003,13 +1003,13 @@ bool SEitf::bDisplayOff(TokenVec& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* display selected rows                                                      */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDisplayOn(TokenVec& xTokenSet)
+bool SEitf::bDisplayOn(TokenVec& xTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (xTokenSet.nTokens() != 1) {
+  if (xTokenVec.nTokens() != 1) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
@@ -1023,23 +1023,23 @@ bool SEitf::bDisplayOn(TokenVec& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* drop an index                                                              */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDropIndex(TokenVec& xTokenSet)
+bool SEitf::bDropIndex(TokenVec& xTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (xTokenSet.nTokens() != 3) {
+  if (xTokenVec.nTokens() != 3) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
   sRequest.vCopy("\""_Str);
-  sRequest.vConcat(xTokenSet[2]->aStr());
+  sRequest.vConcat(xTokenVec[2]->aStr());
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat("\""_Str);
-  sRequest.vConcat(xTokenSet[1]->aStr());
+  sRequest.vConcat(xTokenVec[1]->aStr());
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" drop_index"_Str);
@@ -1051,19 +1051,19 @@ bool SEitf::bDropIndex(TokenVec& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* drop a table                                                               */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDropTable(TokenVec& xTokenSet)
+bool SEitf::bDropTable(TokenVec& xTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (xTokenSet.nTokens() != 2) {
+  if (xTokenVec.nTokens() != 2) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
   sRequest.vCopy("\""_Str);
-  sRequest.vConcat(xTokenSet[1]->aStr());
+  sRequest.vConcat(xTokenVec[1]->aStr());
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" drop_table"_Str);
@@ -1074,27 +1074,27 @@ bool SEitf::bDropTable(TokenVec& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* add a column                                                               */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bAddColumn(TokenVec& xTokenSet)
+bool SEitf::bAddColumn(TokenVec& xTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (xTokenSet.nTokens() != 4) {
+  if (xTokenVec.nTokens() != 4) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
   sRequest.vCopy("\""_Str);
-  sRequest.vConcat(xTokenSet[3]->aStr());
+  sRequest.vConcat(xTokenVec[3]->aStr());
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" \""_Str);
-  sRequest.vConcat(xTokenSet[2]->aStr());
+  sRequest.vConcat(xTokenVec[2]->aStr());
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" \""_Str);
-  sRequest.vConcat(xTokenSet[1]->aStr());
+  sRequest.vConcat(xTokenVec[1]->aStr());
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" add_column"_Str);
@@ -1105,27 +1105,27 @@ bool SEitf::bAddColumn(TokenVec& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* add an index column                                                        */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bAddIndexColumn(TokenVec& xTokenSet)
+bool SEitf::bAddIndexColumn(TokenVec& xTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (xTokenSet.nTokens() != 4) {
+  if (xTokenVec.nTokens() != 4) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
   sRequest.vCopy(" \""_Str);
-  sRequest.vConcat(xTokenSet[3]->aStr());
+  sRequest.vConcat(xTokenVec[3]->aStr());
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" \""_Str);
-  sRequest.vConcat(xTokenSet[2]->aStr());
+  sRequest.vConcat(xTokenVec[2]->aStr());
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" \""_Str);
-  sRequest.vConcat(xTokenSet[1]->aStr());
+  sRequest.vConcat(xTokenVec[1]->aStr());
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" add_idxcolumn"_Str);
@@ -1136,23 +1136,23 @@ bool SEitf::bAddIndexColumn(TokenVec& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* add a partition column                                                     */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bAddPartitionColumn(TokenVec& xTokenSet)
+bool SEitf::bAddPartitionColumn(TokenVec& xTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (xTokenSet.nTokens() != 3) {
+  if (xTokenVec.nTokens() != 3) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
   sRequest.vConcat(" \""_Str);
-  sRequest.vConcat(xTokenSet[2]->aStr());
+  sRequest.vConcat(xTokenVec[2]->aStr());
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" \""_Str);
-  sRequest.vConcat(xTokenSet[1]->aStr());
+  sRequest.vConcat(xTokenVec[1]->aStr());
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" add_partcolumn"_Str);
@@ -1163,23 +1163,23 @@ bool SEitf::bAddPartitionColumn(TokenVec& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* end of create index sequence                                               */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bEndCreateIndex(TokenVec& xTokenSet)
+bool SEitf::bEndCreateIndex(TokenVec& xTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (xTokenSet.nTokens() != 3) {
+  if (xTokenVec.nTokens() != 3) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
   sRequest.vCopy("\""_Str);
-  sRequest.vConcat(xTokenSet[2]->aStr());
+  sRequest.vConcat(xTokenVec[2]->aStr());
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat("\""_Str);
-  sRequest.vConcat(xTokenSet[1]->aStr());
+  sRequest.vConcat(xTokenVec[1]->aStr());
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" end_create_index"_Str);
@@ -1190,19 +1190,19 @@ bool SEitf::bEndCreateIndex(TokenVec& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* end of create table sequence                                               */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bEndCreateTable(TokenVec& xTokenSet)
+bool SEitf::bEndCreateTable(TokenVec& xTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (xTokenSet.nTokens() != 2) {
+  if (xTokenVec.nTokens() != 2) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
   sRequest.vCopy("\""_Str);
-  sRequest.vConcat(xTokenSet[1]->aStr());
+  sRequest.vConcat(xTokenVec[1]->aStr());
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" end_create_table"_Str);
@@ -1213,19 +1213,19 @@ bool SEitf::bEndCreateTable(TokenVec& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* list columns                                                               */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bListColumns(TokenVec& xTokenSet)
+bool SEitf::bListColumns(TokenVec& xTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (xTokenSet.nTokens() != 2) {
+  if (xTokenVec.nTokens() != 2) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
   sRequest.vCopy("\""_Str);
-  sRequest.vConcat(xTokenSet[1]->aStr());
+  sRequest.vConcat(xTokenVec[1]->aStr());
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" list_columns"_Str);
@@ -1236,23 +1236,23 @@ bool SEitf::bListColumns(TokenVec& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* list index columns                                                         */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bListIndexColumns(TokenVec& xTokenSet)
+bool SEitf::bListIndexColumns(TokenVec& xTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (xTokenSet.nTokens() != 3) {
+  if (xTokenVec.nTokens() != 3) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
   sRequest.vCopy("\""_Str);
-  sRequest.vConcat(xTokenSet[1]->aStr());
+  sRequest.vConcat(xTokenVec[1]->aStr());
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat("\""_Str);
-  sRequest.vConcat(xTokenSet[2]->aStr());
+  sRequest.vConcat(xTokenVec[2]->aStr());
   sRequest.vConcat("\""_Str);
 
   sRequest.vConcat(" list_indexcolumns"_Str);
@@ -1263,19 +1263,19 @@ bool SEitf::bListIndexColumns(TokenVec& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* list partition columns                                                     */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bListPartitionColumns(TokenVec& xTokenSet)
+bool SEitf::bListPartitionColumns(TokenVec& xTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (xTokenSet.nTokens() != 2) {
+  if (xTokenVec.nTokens() != 2) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
   sRequest.vCopy("\""_Str);
-  sRequest.vConcat(xTokenSet[1]->aStr());
+  sRequest.vConcat(xTokenVec[1]->aStr());
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" list_partitioncolumns"_Str);
@@ -1286,23 +1286,23 @@ bool SEitf::bListPartitionColumns(TokenVec& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* analyze an index                                                           */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bAnalyzeIndex(TokenVec& xTokenSet)
+bool SEitf::bAnalyzeIndex(TokenVec& xTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (xTokenSet.nTokens() != 3) {
+  if (xTokenVec.nTokens() != 3) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
   sRequest.vCopy("\""_Str);
-  sRequest.vConcat(xTokenSet[2]->aStr());
+  sRequest.vConcat(xTokenVec[2]->aStr());
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat("\""_Str);
-  sRequest.vConcat(xTokenSet[1]->aStr());
+  sRequest.vConcat(xTokenVec[1]->aStr());
   sRequest.vConcat("\""_Str);
 
   sRequest.vConcat(" analyze_Index"_Str);
@@ -1313,19 +1313,19 @@ bool SEitf::bAnalyzeIndex(TokenVec& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* analyze a table                                                            */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bAnalyzeTable(TokenVec& xTokenSet)
+bool SEitf::bAnalyzeTable(TokenVec& xTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (xTokenSet.nTokens() != 2) {
+  if (xTokenVec.nTokens() != 2) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
   sRequest.vCopy("\""_Str);
-  sRequest.vConcat(xTokenSet[1]->aStr());
+  sRequest.vConcat(xTokenVec[1]->aStr());
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" analyze_table"_Str);
@@ -1336,23 +1336,23 @@ bool SEitf::bAnalyzeTable(TokenVec& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* detailed analysis of an index                                              */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDanalyzeIndex(TokenVec& xTokenSet)
+bool SEitf::bDanalyzeIndex(TokenVec& xTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (xTokenSet.nTokens() != 3) {
+  if (xTokenVec.nTokens() != 3) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
   sRequest.vCopy("\""_Str);
-  sRequest.vConcat(xTokenSet[2]->aStr());
+  sRequest.vConcat(xTokenVec[2]->aStr());
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat("\""_Str);
-  sRequest.vConcat(xTokenSet[1]->aStr());
+  sRequest.vConcat(xTokenVec[1]->aStr());
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" danalyze_index"_Str);
@@ -1363,19 +1363,19 @@ bool SEitf::bDanalyzeIndex(TokenVec& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* detailed analysis of a table                                               */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDanalyzeTable(TokenVec& xTokenSet)
+bool SEitf::bDanalyzeTable(TokenVec& xTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (xTokenSet.nTokens() != 2) {
+  if (xTokenVec.nTokens() != 2) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
   sRequest.vCopy("\""_Str);
-  sRequest.vConcat(xTokenSet[1]->aStr());
+  sRequest.vConcat(xTokenVec[1]->aStr());
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" danalyze_table"_Str);
@@ -1386,23 +1386,23 @@ bool SEitf::bDanalyzeTable(TokenVec& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* copy a table                                                               */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bCopyTable(TokenVec& xTokenSet)
+bool SEitf::bCopyTable(TokenVec& xTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (xTokenSet.nTokens() != 3) {
+  if (xTokenVec.nTokens() != 3) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
   sRequest.vCopy("\""_Str);
-  sRequest.vConcat(xTokenSet[2]->aStr());
+  sRequest.vConcat(xTokenVec[2]->aStr());
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" \""_Str);
-  sRequest.vConcat(xTokenSet[1]->aStr());
+  sRequest.vConcat(xTokenVec[1]->aStr());
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" copy_table"_Str);
@@ -1413,23 +1413,23 @@ bool SEitf::bCopyTable(TokenVec& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* distributed export of a table                                              */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDistExportTable(TokenVec& xTokenSet)
+bool SEitf::bDistExportTable(TokenVec& xTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (xTokenSet.nTokens() != 3) {
+  if (xTokenVec.nTokens() != 3) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
   sRequest.vCopy("\""_Str);
-  sRequest.vConcat(xTokenSet[2]->aStr());
+  sRequest.vConcat(xTokenVec[2]->aStr());
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" \""_Str);
-  sRequest.vConcat(xTokenSet[1]->aStr());
+  sRequest.vConcat(xTokenVec[1]->aStr());
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" dist_export_table"_Str);
@@ -1440,23 +1440,23 @@ bool SEitf::bDistExportTable(TokenVec& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* export a table                                                             */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bExportTable(TokenVec& xTokenSet)
+bool SEitf::bExportTable(TokenVec& xTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
 
-  if (xTokenSet.nTokens() != 3) {
+  if (xTokenVec.nTokens() != 3) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
   sRequest.vCopy("\""_Str);
-  sRequest.vConcat(xTokenSet[2]->aStr());
+  sRequest.vConcat(xTokenVec[2]->aStr());
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" \""_Str);
-  sRequest.vConcat(xTokenSet[1]->aStr());
+  sRequest.vConcat(xTokenVec[1]->aStr());
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" export_table"_Str);
@@ -1467,22 +1467,22 @@ bool SEitf::bExportTable(TokenVec& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* fetch rows from a table                                                    */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bFetchRows(TokenVec& xTokenSet)
+bool SEitf::bFetchRows(TokenVec& xTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
 //  sRequest.vCopy("\""_Str);
-//  sRequest.vConcat(xTokenSet[3]);
+//  sRequest.vConcat(xTokenVec[3]);
 //  sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" \""_Str);
-  sRequest.vConcat(xTokenSet[2]->aStr());
+  sRequest.vConcat(xTokenVec[2]->aStr());
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" \""_Str);
-  sRequest.vConcat(xTokenSet[1]->aStr());
+  sRequest.vConcat(xTokenVec[1]->aStr());
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" fetch_rows_index"_Str);
@@ -1493,23 +1493,23 @@ bool SEitf::bFetchRows(TokenVec& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* load a table from file                                                     */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bLoadTable(TokenVec& xTokenSet)
+bool SEitf::bLoadTable(TokenVec& xTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (xTokenSet.nTokens() != 3) {
+  if (xTokenVec.nTokens() != 3) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
   sRequest.vCopy("\""_Str);
-  sRequest.vConcat(xTokenSet[2]->aStr());
+  sRequest.vConcat(xTokenVec[2]->aStr());
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" \""_Str);
-  sRequest.vConcat(xTokenSet[1]->aStr());
+  sRequest.vConcat(xTokenVec[1]->aStr());
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" load_table"_Str);
@@ -1520,23 +1520,23 @@ bool SEitf::bLoadTable(TokenVec& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* load a table from stream                                                   */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bLoadTableStream(TokenVec& xTokenSet)
+bool SEitf::bLoadTableStream(TokenVec& xTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (xTokenSet.nTokens() != 3) {
+  if (xTokenVec.nTokens() != 3) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
   sRequest.vCopy("\""_Str);
-  sRequest.vConcat(xTokenSet[2]->aStr());
+  sRequest.vConcat(xTokenVec[2]->aStr());
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" \""_Str);
-  sRequest.vConcat(xTokenSet[1]->aStr());
+  sRequest.vConcat(xTokenVec[1]->aStr());
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" load_table_stream"_Str);
@@ -1547,23 +1547,23 @@ bool SEitf::bLoadTableStream(TokenVec& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* lower select rows from a table                                             */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bLowerSelectTable(TokenVec& xTokenSet)
+bool SEitf::bLowerSelectTable(TokenVec& xTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (xTokenSet.nTokens() != 3) {
+  if (xTokenVec.nTokens() != 3) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
   sRequest.vConcat(" \""_Str);
-  sRequest.vConcat(xTokenSet[2]->aStr());
+  sRequest.vConcat(xTokenVec[2]->aStr());
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" \""_Str);
-  sRequest.vConcat(xTokenSet[1]->aStr());
+  sRequest.vConcat(xTokenVec[1]->aStr());
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" lower_select_table"_Str);
@@ -1574,19 +1574,19 @@ bool SEitf::bLowerSelectTable(TokenVec& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* select rows from a table                                                   */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bSelectTable(TokenVec& xTokenSet)
+bool SEitf::bSelectTable(TokenVec& xTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (xTokenSet.nTokens() != 2) {
+  if (xTokenVec.nTokens() != 2) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
   sRequest.vCopy("\""_Str);
-  sRequest.vConcat(xTokenSet[1]->aStr());
+  sRequest.vConcat(xTokenVec[1]->aStr());
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" select_table"_Str);
@@ -1597,27 +1597,27 @@ bool SEitf::bSelectTable(TokenVec& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* range select rows from a table                                             */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bRangeSelectTable(TokenVec& xTokenSet)
+bool SEitf::bRangeSelectTable(TokenVec& xTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (xTokenSet.nTokens() != 4) {
+  if (xTokenVec.nTokens() != 4) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
 
   sRequest.vCopy("\""_Str);
-  sRequest.vConcat(xTokenSet[3]->aStr());
+  sRequest.vConcat(xTokenVec[3]->aStr());
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" \""_Str);
-  sRequest.vConcat(xTokenSet[2]->aStr());
+  sRequest.vConcat(xTokenVec[2]->aStr());
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" \""_Str);
-  sRequest.vConcat(xTokenSet[1]->aStr());
+  sRequest.vConcat(xTokenVec[1]->aStr());
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" range_select_table"_Str);
@@ -1628,19 +1628,19 @@ bool SEitf::bRangeSelectTable(TokenVec& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* get address of an index                                                    */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bGetIndex(TokenVec& xTokenSet)
+bool SEitf::bGetIndex(TokenVec& xTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (xTokenSet.nTokens() != 2) {
+  if (xTokenVec.nTokens() != 2) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
   sRequest.vCopy("\""_Str);
-  sRequest.vConcat(xTokenSet[1]->aStr());
+  sRequest.vConcat(xTokenVec[1]->aStr());
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" get_index"_Str);
@@ -1651,19 +1651,19 @@ bool SEitf::bGetIndex(TokenVec& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* get address/reference of a table                                           */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bGetTable(TokenVec& xTokenSet)
+bool SEitf::bGetTable(TokenVec& xTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (xTokenSet.nTokens() != 2) {
+  if (xTokenVec.nTokens() != 2) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
   sRequest.vCopy("\""_Str);
-  sRequest.vConcat(xTokenSet[1]->aStr());
+  sRequest.vConcat(xTokenVec[1]->aStr());
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" get_table"_Str);
@@ -1674,19 +1674,19 @@ bool SEitf::bGetTable(TokenVec& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* return whether table is in use or not                                      */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bInUseTable(TokenVec& xTokenSet)
+bool SEitf::bInUseTable(TokenVec& xTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (xTokenSet.nTokens() != 2) {
+  if (xTokenVec.nTokens() != 2) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
   sRequest.vCopy("\""_Str);
-  sRequest.vConcat(xTokenSet[1]->aStr());
+  sRequest.vConcat(xTokenVec[1]->aStr());
   sRequest.vConcat("\""_Str);
 
   sRequest.vConcat(" table_inuse"_Str);
@@ -1697,13 +1697,13 @@ bool SEitf::bInUseTable(TokenVec& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* return address of an index                                                 */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bRetIndex(TokenVec& xTokenSet)
+bool SEitf::bRetIndex(TokenVec& xTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (xTokenSet.nTokens() != 1) {
+  if (xTokenVec.nTokens() != 1) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
@@ -1716,13 +1716,13 @@ bool SEitf::bRetIndex(TokenVec& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* return address/refernce of a table                                         */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bRetTable(TokenVec& xTokenSet)
+bool SEitf::bRetTable(TokenVec& xTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (xTokenSet.nTokens() != 1) {
+  if (xTokenVec.nTokens() != 1) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
@@ -1735,13 +1735,13 @@ bool SEitf::bRetTable(TokenVec& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* get pool space                                                             */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bPoolSpace(TokenVec& xTokenSet)
+bool SEitf::bPoolSpace(TokenVec& xTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (xTokenSet.nTokens() != 1) {
+  if (xTokenVec.nTokens() != 1) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
@@ -1754,13 +1754,13 @@ bool SEitf::bPoolSpace(TokenVec& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* get node status                                                            */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bNodeStatus(TokenVec& xTokenSet)
+bool SEitf::bNodeStatus(TokenVec& xTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (xTokenSet.nTokens() != 1) {
+  if (xTokenVec.nTokens() != 1) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
@@ -1773,27 +1773,27 @@ bool SEitf::bNodeStatus(TokenVec& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* exact key select from a table given an index                               */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bKeySelectIndex(TokenVec& xTokenSet)
+bool SEitf::bKeySelectIndex(TokenVec& xTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (xTokenSet.nTokens() != 4) {
+  if (xTokenVec.nTokens() != 4) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
   sRequest.vConcat(" \""_Str);
-  sRequest.vConcat(xTokenSet[3]->aStr());
+  sRequest.vConcat(xTokenVec[3]->aStr());
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" \""_Str);
-  sRequest.vConcat(xTokenSet[2]->aStr());
+  sRequest.vConcat(xTokenVec[2]->aStr());
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" \""_Str);
-  sRequest.vConcat(xTokenSet[1]->aStr());
+  sRequest.vConcat(xTokenVec[1]->aStr());
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" key_select_index"_Str);
@@ -1804,27 +1804,27 @@ bool SEitf::bKeySelectIndex(TokenVec& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* lower select rows from a table given an index                              */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bLowerSelectIndex(TokenVec& xTokenSet)
+bool SEitf::bLowerSelectIndex(TokenVec& xTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (xTokenSet.nTokens() != 4) {
+  if (xTokenVec.nTokens() != 4) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
   sRequest.vConcat(" \""_Str);
-  sRequest.vConcat(xTokenSet[3]->aStr());
+  sRequest.vConcat(xTokenVec[3]->aStr());
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" \""_Str);
-  sRequest.vConcat(xTokenSet[2]->aStr());
+  sRequest.vConcat(xTokenVec[2]->aStr());
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" \""_Str);
-  sRequest.vConcat(xTokenSet[1]->aStr());
+  sRequest.vConcat(xTokenVec[1]->aStr());
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" lower_select_index"_Str);
@@ -1835,31 +1835,31 @@ bool SEitf::bLowerSelectIndex(TokenVec& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* range select rows from a table given an index                              */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bRangeSelectIndex(TokenVec& xTokenSet)
+bool SEitf::bRangeSelectIndex(TokenVec& xTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (xTokenSet.nTokens() != 5) {
+  if (xTokenVec.nTokens() != 5) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
   sRequest.vConcat(" \""_Str);
-  sRequest.vConcat(xTokenSet[4]->aStr());
+  sRequest.vConcat(xTokenVec[4]->aStr());
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" \""_Str);
-  sRequest.vConcat(xTokenSet[3]->aStr());
+  sRequest.vConcat(xTokenVec[3]->aStr());
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" \""_Str);
-  sRequest.vConcat(xTokenSet[2]->aStr());
+  sRequest.vConcat(xTokenVec[2]->aStr());
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" \""_Str);
-  sRequest.vConcat(xTokenSet[1]->aStr());
+  sRequest.vConcat(xTokenVec[1]->aStr());
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" range_select_index"_Str);
@@ -1870,23 +1870,23 @@ bool SEitf::bRangeSelectIndex(TokenVec& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* size of index                                                              */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bSizeIndex(TokenVec& xTokenSet)
+bool SEitf::bSizeIndex(TokenVec& xTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (xTokenSet.nTokens() != 3) {
+  if (xTokenVec.nTokens() != 3) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
   sRequest.vCopy("\""_Str);
-  sRequest.vConcat(xTokenSet[2]->aStr());
+  sRequest.vConcat(xTokenVec[2]->aStr());
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat("\""_Str);
-  sRequest.vConcat(xTokenSet[1]->aStr());
+  sRequest.vConcat(xTokenVec[1]->aStr());
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" size_index"_Str);
@@ -1897,19 +1897,19 @@ bool SEitf::bSizeIndex(TokenVec& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* size of table                                                              */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bSizeTable(TokenVec& xTokenSet)
+bool SEitf::bSizeTable(TokenVec& xTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (xTokenSet.nTokens() != 2) {
+  if (xTokenVec.nTokens() != 2) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
   sRequest.vCopy("\""_Str);
-  sRequest.vConcat(xTokenSet[1]->aStr());
+  sRequest.vConcat(xTokenVec[1]->aStr());
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" size_table"_Str);
@@ -1920,13 +1920,13 @@ bool SEitf::bSizeTable(TokenVec& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* size of table                                                              */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bSizeTables(TokenVec& xTokenSet)
+bool SEitf::bSizeTables(TokenVec& xTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (xTokenSet.nTokens() != 1) {
+  if (xTokenVec.nTokens() != 1) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
@@ -1939,23 +1939,23 @@ bool SEitf::bSizeTables(TokenVec& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* truncate an index                                                          */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bTruncateIndex(TokenVec& xTokenSet)
+bool SEitf::bTruncateIndex(TokenVec& xTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (xTokenSet.nTokens() != 3) {
+  if (xTokenVec.nTokens() != 3) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
   sRequest.vCopy("\""_Str);
-  sRequest.vConcat(xTokenSet[2]->aStr());
+  sRequest.vConcat(xTokenVec[2]->aStr());
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat("\""_Str);
-  sRequest.vConcat(xTokenSet[1]->aStr());
+  sRequest.vConcat(xTokenVec[1]->aStr());
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" truncate_index"_Str);
@@ -1966,27 +1966,27 @@ bool SEitf::bTruncateIndex(TokenVec& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* upper select rows from a table on a given index                            */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bUpperSelectIndex(TokenVec& xTokenSet)
+bool SEitf::bUpperSelectIndex(TokenVec& xTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (xTokenSet.nTokens() != 4) {
+  if (xTokenVec.nTokens() != 4) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
   sRequest.vConcat(" \""_Str);
-  sRequest.vConcat(xTokenSet[3]->aStr());
+  sRequest.vConcat(xTokenVec[3]->aStr());
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" \""_Str);
-  sRequest.vConcat(xTokenSet[2]->aStr());
+  sRequest.vConcat(xTokenVec[2]->aStr());
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" \""_Str);
-  sRequest.vConcat(xTokenSet[1]->aStr());
+  sRequest.vConcat(xTokenVec[1]->aStr());
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" upper_select_index"_Str);
@@ -1997,19 +1997,19 @@ bool SEitf::bUpperSelectIndex(TokenVec& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* truncate a table                                                           */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bTruncateTable(TokenVec& xTokenSet)
+bool SEitf::bTruncateTable(TokenVec& xTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (xTokenSet.nTokens() != 2) {
+  if (xTokenVec.nTokens() != 2) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
 
   sRequest.vCopy("\""_Str);
-  sRequest.vConcat(xTokenSet[1]->aStr());
+  sRequest.vConcat(xTokenVec[1]->aStr());
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" truncate_table"_Str);
@@ -2020,23 +2020,23 @@ bool SEitf::bTruncateTable(TokenVec& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* visualize an index                                                         */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bVisualizeIndex(TokenVec& xTokenSet)
+bool SEitf::bVisualizeIndex(TokenVec& xTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  if (xTokenSet.nTokens() != 3) {
+  if (xTokenVec.nTokens() != 3) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
   sRequest.vCopy("\""_Str);
-  sRequest.vConcat(xTokenSet[2]->aStr());
+  sRequest.vConcat(xTokenVec[2]->aStr());
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat("\""_Str);
-  sRequest.vConcat(xTokenSet[1]->aStr());
+  sRequest.vConcat(xTokenVec[1]->aStr());
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" visualize_index"_Str);
@@ -2160,14 +2160,14 @@ bool SEitf::bInsertBuffer(EntryBuffer* pRowBuffer, i8 iPartition)
 /*----------------------------------------------------------------------------*/
 /* push dictionary                                                            */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bPushDic(TokenVec& xTokenSet)
+bool SEitf::bPushDic(TokenVec& xTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
   sRequest.vCopy("\""_Str);
-  sRequest.vConcat(xTokenSet[1]->aStr());
+  sRequest.vConcat(xTokenVec[1]->aStr());
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" cf"_Str);
@@ -2178,11 +2178,11 @@ bool SEitf::bPushDic(TokenVec& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* print                                                                      */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bPrint(TokenVec& xTokenSet)
+bool SEitf::bPrint(TokenVec& xTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
-  vInfo("%s\n"_Str,xTokenSet[1]->aStr());
+  vInfo("%s\n"_Str,xTokenVec[1]->aStr());
   
   return true;
 }
@@ -2190,13 +2190,13 @@ bool SEitf::bPrint(TokenVec& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* get dictionary path                                                        */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bGetDicPath(TokenVec& xTokenSet)
+bool SEitf::bGetDicPath(TokenVec& xTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  ASSERT(xTokenSet[0]->bSame("pwf"_Str));
+  ASSERT(xTokenVec[0]->bSame("pwf"_Str));
   sRequest = "pwf"_Str;
   return bAppendRequest(sRequest);
 }
@@ -2204,13 +2204,13 @@ bool SEitf::bGetDicPath(TokenVec& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* get dictionary contents                                                    */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bGetDicContents(TokenVec& xTokenSet)
+bool SEitf::bGetDicContents(TokenVec& xTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  ASSERT(xTokenSet[0]->bSame("lf"_Str));
+  ASSERT(xTokenVec[0]->bSame("lf"_Str));
   sRequest = "lf"_Str;
   return bAppendRequest(sRequest);
 }
@@ -2218,13 +2218,13 @@ bool SEitf::bGetDicContents(TokenVec& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* get dictionary contents                                                    */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bGetDicContentsG(TokenVec& xTokenSet)
+bool SEitf::bGetDicContentsG(TokenVec& xTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  ASSERT(xTokenSet[0]->bSame("lfG"_Str));
+  ASSERT(xTokenVec[0]->bSame("lfG"_Str));
   sRequest = "lfG"_Str;
   return bAppendRequest(sRequest);
 }
@@ -2232,13 +2232,13 @@ bool SEitf::bGetDicContentsG(TokenVec& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* get monitor string                                                         */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bGetMonitor(TokenVec& xTokenSet)
+bool SEitf::bGetMonitor(TokenVec& xTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  ASSERT(xTokenSet[0]->bSame("mon"_Str));
+  ASSERT(xTokenVec[0]->bSame("mon"_Str));
   sRequest = "get_monitor"_Str;
   return bAppendRequest(sRequest);
 }
@@ -2246,13 +2246,13 @@ bool SEitf::bGetMonitor(TokenVec& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* get free space                                                             */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bGetFreeSpace(TokenVec& xTokenSet)
+bool SEitf::bGetFreeSpace(TokenVec& xTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  ASSERT(xTokenSet[0]->bSame("getFreeSpace"_Str));
+  ASSERT(xTokenVec[0]->bSame("getFreeSpace"_Str));
   sRequest = "getFreeSpace"_Str;
   return bAppendRequest(sRequest);
 }
@@ -2260,13 +2260,13 @@ bool SEitf::bGetFreeSpace(TokenVec& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* get inUse space                                                            */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bGetInUseSpace(TokenVec& xTokenSet)
+bool SEitf::bGetInUseSpace(TokenVec& xTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  ASSERT(xTokenSet[0]->bSame("getInUseSpace"_Str));
+  ASSERT(xTokenVec[0]->bSame("getInUseSpace"_Str));
   sRequest = "getInUseSpace"_Str;
   return bAppendRequest(sRequest);
 }
@@ -2274,13 +2274,13 @@ bool SEitf::bGetInUseSpace(TokenVec& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* get total space                                                            */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bGetTotalSpace(TokenVec& xTokenSet)
+bool SEitf::bGetTotalSpace(TokenVec& xTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  ASSERT(xTokenSet[0]->bSame("getTotalSpace"_Str));
+  ASSERT(xTokenVec[0]->bSame("getTotalSpace"_Str));
   sRequest = "getTotalSpace"_Str;
   return bAppendRequest(sRequest);
 }
@@ -2288,13 +2288,13 @@ bool SEitf::bGetTotalSpace(TokenVec& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* get version                                                                */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bGetVersion(TokenVec& xTokenSet)
+bool SEitf::bGetVersion(TokenVec& xTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  ASSERT(xTokenSet[0]->bSame("version"_Str));
+  ASSERT(xTokenVec[0]->bSame("version"_Str));
   sRequest = "get_version"_Str;
   return bAppendRequest(sRequest);
 }
@@ -2302,13 +2302,13 @@ bool SEitf::bGetVersion(TokenVec& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* ping test                                                                  */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bPing(TokenVec& xTokenSet)
+bool SEitf::bPing(TokenVec& xTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  ASSERT(xTokenSet[0]->bSame("ping"_Str));
+  ASSERT(xTokenVec[0]->bSame("ping"_Str));
   sRequest = "ping"_Str;
   return bAppendRequest(sRequest);
 }
@@ -2316,7 +2316,7 @@ bool SEitf::bPing(TokenVec& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* send object                                                                */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bObject(TokenVec& xTokenSet)
+bool SEitf::bObject(TokenVec& xTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -2330,17 +2330,17 @@ bool SEitf::bObject(TokenVec& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* print row buffer                                                           */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bPrintRowBuffer(TokenVec& xTokenSet)
+bool SEitf::bPrintRowBuffer(TokenVec& xTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
   sRequest.vCopy("\""_Str);
-  sRequest.vConcat(xTokenSet[1]->aStr());
+  sRequest.vConcat(xTokenVec[1]->aStr());
   sRequest.vConcat("\""_Str);
 
-  ASSERT(xTokenSet[0]->bSame("pRB"_Str));
+  ASSERT(xTokenVec[0]->bSame("pRB"_Str));
   sRequest.vConcat(" pRB"_Str);
   
   return bAppendRequest(sRequest);
@@ -2349,13 +2349,13 @@ bool SEitf::bPrintRowBuffer(TokenVec& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* get seitf count                                                            */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bSeitfCount(TokenVec& xTokenSet)
+bool SEitf::bSeitfCount(TokenVec& xTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  ASSERT(xTokenSet[0]->bSame("seitf"_Str));
+  ASSERT(xTokenVec[0]->bSame("seitf"_Str));
   sRequest = "seitf_count"_Str;
   return bAppendRequest(sRequest);
 }
@@ -2363,13 +2363,13 @@ bool SEitf::bSeitfCount(TokenVec& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* x test                                                                     */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bX(TokenVec& xTokenSet)
+bool SEitf::bX(TokenVec& xTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  ASSERT(xTokenSet[0]->bSame("ping"_Str));
+  ASSERT(xTokenVec[0]->bSame("ping"_Str));
   sRequest = "ping"_Str;
   
   return bAppendRequest(sRequest);
@@ -2379,16 +2379,16 @@ bool SEitf::bX(TokenVec& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* return task                                                                */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bRetTask(TokenVec& xTokenSet)
+bool SEitf::bRetTask(TokenVec& xTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  ASSERT(xTokenSet[0]->bSame("rettsk"_Str));
+  ASSERT(xTokenVec[0]->bSame("rettsk"_Str));
   
   sRequest.vCopy("\""_Str);
-  sRequest.vConcat(xTokenSet[1]->aStr());
+  sRequest.vConcat(xTokenVec[1]->aStr());
   sRequest.vConcat("\""_Str);
   
   sRequest.vConcat(" return_task"_Str);
@@ -2399,13 +2399,13 @@ bool SEitf::bRetTask(TokenVec& xTokenSet)
 /*----------------------------------------------------------------------------*/
 /* get task                                                                   */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bGetTask(TokenVec& xTokenSet)
+bool SEitf::bGetTask(TokenVec& xTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
-  ASSERT(xTokenSet[0]->bSame("gettsk"_Str));
+  ASSERT(xTokenVec[0]->bSame("gettsk"_Str));
   
   sRequest.vCopy("get_task"_Str);
   

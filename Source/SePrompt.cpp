@@ -901,7 +901,7 @@ bool SePrompt::bBeginInsert(void)
   ASSERT(m_xTokenSet[1]->bSame("insert"_Str));
   
   for (i_Token = 0; i_Token < C_TOKENS; i_Token++) {
-    if (! *(char*)m_xTokenSet[i_Token]->aStr())
+    if (! m_xTokenSet[i_Token]->bHasText())
       break;
     m_xTokenSet2[i_Token]->vCopy(m_xTokenSet[i_Token]->aStr());
     m_xTokenSet[i_Token]->vCopy(""_Str);
@@ -969,7 +969,7 @@ bool SePrompt::bChangeWorkingDir(void)
   
   i8 i_Token;
   for (i_Token = 2; i_Token < C_TOKENS; i_Token++) {
-    if (! *(char*)m_xTokenSet[i_Token]->aStr())
+    if (! m_xTokenSet[i_Token]->bHasText())
       break;
     sDir.vConcat(m_xTokenSet[i_Token]->aStr());
   }
@@ -1037,7 +1037,7 @@ bool SePrompt::bCreateCatalog(void)
   // copy tokens from m_xTokenSet to m_xTokenSet2
   // while doing that also validate the create statament
   for (i_Token = 0; i_Token < C_TOKENS; i_Token++) {
-    if (! *(char*)m_xTokenSet[i_Token]->aStr())
+    if (! m_xTokenSet[i_Token]->bHasText())
       break;
     m_xTokenSet2[i_Token]->vCopy(m_xTokenSet[i_Token]->aStr());
     m_xTokenSet[i_Token]->vCopy(""_Str);
@@ -1083,7 +1083,7 @@ bool SePrompt::bCreateIndex(bool bUnique)
   // copy tokens from m_xTokenSet to m_xTokenSet2
   i8 i_Token;
   for (i_Token = 0; i_Token < C_TOKENS; i_Token++) {
-    if (! *(char*)m_xTokenSet[i_Token]->aStr())
+    if (! m_xTokenSet[i_Token]->bHasText())
       break;
     m_xTokenSet2[i_Token]->vCopy(m_xTokenSet[i_Token]->aStr());
     m_xTokenSet[i_Token]->vCopy(""_Str);
@@ -1332,7 +1332,7 @@ bool SePrompt::bCreateSchema(void)
   // copy tokens from m_xTokenSet to m_xTokenSet2
   // while doing that also validate the create statament
   for (i_Token = 0; i_Token < C_TOKENS; i_Token++) {
-    if (! *(char*)m_xTokenSet[i_Token]->aStr())
+    if (! m_xTokenSet[i_Token]->bHasText())
       break;
     m_xTokenSet2[i_Token]->vCopy(m_xTokenSet[i_Token]->aStr());
     m_xTokenSet[i_Token]->vCopy(""_Str);
@@ -1373,7 +1373,7 @@ bool SePrompt::bCreateTenant(void)
   // copy tokens from m_xTokenSet to m_xTokenSet2
   // while doing that also validate the create statament
   for (i_Token = 0; i_Token < C_TOKENS; i_Token++) {
-    if (! *(char*)m_xTokenSet[i_Token]->aStr())
+    if (! m_xTokenSet[i_Token]->bHasText())
       break;
     m_xTokenSet2[i_Token]->vCopy(m_xTokenSet[i_Token]->aStr());
     m_xTokenSet[i_Token]->vCopy(""_Str);
@@ -1414,7 +1414,7 @@ bool SePrompt::bCreateTable(void)
   // copy tokens from m_xTokenSet to m_xTokenSet2
   // while doing that also validate the create statament
   for (i_Token = 0; i_Token < C_TOKENS; i_Token++) {
-    if ( ! *(char*)m_xTokenSet[i_Token]->aStr())
+    if ( ! m_xTokenSet[i_Token]->bHasText())
       break;
     m_xTokenSet2[i_Token]->vCopy(m_xTokenSet[i_Token]->aStr());
     m_xTokenSet[i_Token]->vCopy(""_Str);
@@ -1563,7 +1563,7 @@ bool SePrompt::bDropCatalog(void)
   ASSERT(m_xTokenSet[1]->bSame("catalog"_Str));
   
   for (i_Token = 0; i_Token < C_TOKENS; i_Token++) {
-    if (! *(char*)m_xTokenSet[i_Token]->aStr())
+    if (! m_xTokenSet[i_Token]->bHasText())
       break;
     m_xTokenSet2[i_Token]->vCopy(m_xTokenSet[i_Token]->aStr());
     m_xTokenSet[i_Token]->vCopy(""_Str);
@@ -1602,7 +1602,7 @@ bool SePrompt::bDropIndex(void)
   ASSERT(m_xTokenSet[1]->bSame("index"_Str));
   
   for (i_Token = 0; i_Token < C_TOKENS; i_Token++) {
-    if (! *(char*)m_xTokenSet[i_Token]->aStr())
+    if (! m_xTokenSet[i_Token]->bHasText())
       break;
     m_xTokenSet2[i_Token]->vCopy(m_xTokenSet[i_Token]->aStr());
     m_xTokenSet[i_Token]->vCopy(""_Str);
@@ -1648,7 +1648,7 @@ bool SePrompt::bDropSchema(void)
   ASSERT(m_xTokenSet[1]->bSame("schema"_Str));
   
   for (i_Token = 0; i_Token < C_TOKENS; i_Token++) {
-    if (! *(char*)m_xTokenSet[i_Token]->aStr())
+    if (! m_xTokenSet[i_Token]->bHasText())
       break;
     m_xTokenSet2[i_Token]->vCopy(m_xTokenSet[i_Token]->aStr());
     m_xTokenSet[i_Token]->vCopy(""_Str);
@@ -1687,7 +1687,7 @@ bool SePrompt::bDropTable(void)
   ASSERT(m_xTokenSet[1]->bSame("table"_Str));
   
   for (i_Token = 0; i_Token < C_TOKENS; i_Token++) {
-    if (! *(char*)m_xTokenSet[i_Token]->aStr())
+    if (! m_xTokenSet[i_Token]->bHasText())
       break;
     m_xTokenSet2[i_Token]->vCopy(m_xTokenSet[i_Token]->aStr());
     m_xTokenSet[i_Token]->vCopy(""_Str);
@@ -1765,7 +1765,7 @@ bool SePrompt::bDropTenant(void)
   ASSERT(m_xTokenSet[1]->bSame("tenant"_Str));
   
   for (i_Token = 0; i_Token < C_TOKENS; i_Token++) {
-    if (! *(char*)m_xTokenSet[i_Token]->aStr())
+    if (! m_xTokenSet[i_Token]->bHasText())
       break;
     m_xTokenSet2[i_Token]->vCopy(m_xTokenSet[i_Token]->aStr());
     m_xTokenSet[i_Token]->vCopy(""_Str);
@@ -1806,7 +1806,7 @@ bool SePrompt::bEndInsert(void)
   ASSERT(m_xTokenSet[1]->bSame("insert"_Str));
   
   for (i_Token = 0; i_Token < C_TOKENS; i_Token++) {
-    if (! *(char*)m_xTokenSet[i_Token]->aStr())
+    if (! m_xTokenSet[i_Token]->bHasText())
       break;
     m_xTokenSet2[i_Token]->vCopy(m_xTokenSet[i_Token]->aStr());
     m_xTokenSet[i_Token]->vCopy(""_Str);
@@ -1874,7 +1874,7 @@ bool SePrompt::bFetchRows(void)
   
   // copy tokens from m_xTokenSet to m_xTokenSet2
   for (i_Token = 0; i_Token < C_TOKENS; i_Token++) {
-    if ( ! *(char*)m_xTokenSet[i_Token]->aStr())
+    if ( ! m_xTokenSet[i_Token]->bHasText())
       break;
     m_xTokenSet2[i_Token]->vCopy(m_xTokenSet[i_Token]->aStr());
     m_xTokenSet[i_Token]->vCopy(""_Str);
@@ -1915,7 +1915,7 @@ bool SePrompt::bInsertRow(void)
   ASSERT(m_xTokenSet[1]->bSame("row"_Str));
   
   for (i_Token = 0; i_Token < C_TOKENS; i_Token++) {
-    if (! *(char*)m_xTokenSet[i_Token]->aStr())
+    if (! m_xTokenSet[i_Token]->bHasText())
       break;
     m_xTokenSet2[i_Token]->vCopy(m_xTokenSet[i_Token]->aStr());
     m_xTokenSet[i_Token]->vCopy(""_Str);
@@ -2086,7 +2086,7 @@ bool SePrompt::bUseSchema(void)
   ASSERT(m_xTokenSet[1]->bSame("schema"_Str));
   
   for (i_Token = 0; i_Token < C_TOKENS; i_Token++) {
-    if (! *(char*)m_xTokenSet[i_Token]->aStr())
+    if (! m_xTokenSet[i_Token]->bHasText())
       break;
     m_xTokenSet2[i_Token]->vCopy(m_xTokenSet[i_Token]->aStr());
     m_xTokenSet[i_Token]->vCopy(""_Str);

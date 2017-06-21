@@ -305,7 +305,7 @@ void Planner::vParseWhere(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
     
-  TokenVec xTokenSet;
+  TokenVec xTokenVec;
   Tokeniser* pTokeniser = new Tokeniser;
   pTokeniser->vPush();
   pTokeniser->vUseString(m_sWhere);

@@ -19,11 +19,11 @@ public:
   SeHistory(void);
   ~SeHistory(void);
   
-  void vAppend(TokenVec& xTokenSet);
+  void vAppend(TokenVec& xTokenVec);
   void vClose(void);
   void vOpen(void);
   void vPrint(void);
-  bool bRecall(TokenVec& xTokenSet);
+  bool bRecall(TokenVec& xTokenVec);
   
 private:
   void vSeekStart(void);

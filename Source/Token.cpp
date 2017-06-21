@@ -100,6 +100,18 @@ bool Token::bSame(Str* aArg)
 /*----------------------------------------------------------------------------*/
 /* reset this token set                                                       */
 /*----------------------------------------------------------------------------*/
+bool Token::bHasText(void)
+{
+  _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
+  
+  bool b = *(char*)m_sText.aStr() ? true : false;
+  
+  return b;
+}
+
+/*----------------------------------------------------------------------------*/
+/* reset this token set                                                       */
+/*----------------------------------------------------------------------------*/
 void Token::vCopy(Str* aArg)
 {
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
