@@ -22,20 +22,20 @@ TokenVec* TokenVec::_pTokenSet(void* aAddr)
 void* TokenVec::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  vFatal("fatal: TokenVec class cannot be new'd"_Str);
   
-  RASSERT(0);
+  void* pObject = Heap::pAllocate(CN_TOKENVEC);
+  
+  return pObject;
 }
 
 /*----------------------------------------------------------------------------*/
 /* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
-void TokenVec::operator delete(void* pBufferAddress)
+void TokenVec::operator delete(void* pAddr)
 {
-  RASSERT(pBufferAddress);
-  vFatal("fatal: TokenVec class cannot be deleted"_Str);
+  TokenVec* pTokenVec = reinterpret_cast<TokenVec*>(pAddr);
   
-  RASSERT(0);
+  Heap::vFree(pTokenVec);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -50,7 +50,7 @@ TokenVec::TokenVec(void)
   
   vReset();
   
-  _checkInitialised_(CN_TOKENISER);
+  _checkInitialised_(CN_TOKENVEC);
   
   _postcondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
 }

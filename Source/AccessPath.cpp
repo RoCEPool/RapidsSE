@@ -159,6 +159,26 @@ void AccessPath::vIndex(Index* pIndex)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get score                                                                  */
+/*----------------------------------------------------------------------------*/
+i8 AccessPath::iPathRating(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ACCESSPATH,_FOOTER_);
+  
+  return m_iPathRating;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set score                                                                  */
+/*----------------------------------------------------------------------------*/
+void AccessPath::vPathRating(i8 iPathRating)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ACCESSPATH,_FOOTER_);
+  
+  m_iPathRating = iPathRating;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get access technique                                                       */
 /*----------------------------------------------------------------------------*/
 eFT AccessPath::eAccess(void)

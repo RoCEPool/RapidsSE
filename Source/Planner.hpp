@@ -24,6 +24,8 @@ namespace Plans
 
     PredicateVec*   m_pPredicateVec;
   
+    TokenVec*       m_pTokenVec;
+  
     // must be last
     Footer m_xFooter;
     

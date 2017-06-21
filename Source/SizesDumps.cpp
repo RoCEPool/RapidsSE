@@ -476,7 +476,7 @@ eHT geWhichHeap[]
   /* 92 */ HT_SMALL,   // CN_TOKEN
   /* 92 */ HT_MEDIUM,  // CN_TOKENISER
   /*    */ HT_INVALID, // CN_TOKENARY
-  /*    */ HT_INVALID, // CN_TOKENVEC
+  /*    */ HT_SMALL,   // CN_TOKENVEC
   /* 93 */ HT_SMALL,   // CN_TX
   /* 94 */ HT_LARGE,   // CN_TXARRAY
   /* 95 */ HT_INVALID, // CN_TXCOLLECTION

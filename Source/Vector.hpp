@@ -104,7 +104,10 @@ Vector<VEC_CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>::Vector(void)
   
   _setFooter_();
   
-  _checkInitialised_(VEC_CN);
+  // compute size of this vector proper (in case it is inherited)
+  i8 nBytes = sizeof(Vector<VEC_CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>);
+  
+  _checkInitialisedSize_(nBytes);
   
   _postcondition_(_MAGIC_,VEC_CN,_FOOTER_);
 }

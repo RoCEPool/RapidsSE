@@ -64,6 +64,8 @@ Planner::Planner(void)
   m_pPredicateVec = nullptr;
   m_i_Chosen = -1;
   
+  m_pTokenVec = nullptr;
+  
   _checkInitialised_(CN_PLANNER);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
@@ -274,6 +276,8 @@ void Planner::vScorePaths(void)
                 + pCandidatePath->nItems();
     
     m_iScoreVec[i_Path] = iScore;
+    
+    m_pPathVec->pGet(i_Path)->vPathRating(iScore);
   }
 }
 
@@ -398,7 +402,14 @@ void Planner::vParseWhere(void)
     
     m_pPredicateVec->vAdd(pPredicate);
   }
+  
+  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
+  m_pTokenVec = Tokeniser::pTokenise(m_sWhere);
+  for (i8 i_Token = 0; i_Token < m_pTokenVec->nTokens(); i_Token++) {
+    Token* pToken = m_pTokenVec->pGet(i_Token);
+  }
 
+  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
 }
 
 /*----------------------------------------------------------------------------*/

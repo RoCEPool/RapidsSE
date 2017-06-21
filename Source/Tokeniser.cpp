@@ -84,14 +84,17 @@ TokenVec* Tokeniser::pTokenise(StrVal& sString)
   pTokeniser->vPush();
   pTokeniser->vUseString(sString);
   
-  for (;;) {
+  for (i8 i_Token = 0; ; i_Token++) {
     pTokeniser->vNextToken();
     if (TK_NONE == pTokeniser->eToken())
       break;
     
-    Token* pToken = new Token;
+    pTokenVec->vIncTokens();
+    
+    Token* pToken = pTokenVec->pGet(i_Token);
     pToken->vToken(pTokeniser->eToken());
     pToken->vCopy(pTokeniser->sToken().aStr());
+    
   }
   
   return pTokenVec;
