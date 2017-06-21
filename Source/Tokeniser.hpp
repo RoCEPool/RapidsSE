@@ -5,26 +5,6 @@
 
 namespace Parsing
 {
-  enum eTK // token type
-  {
-    /*  0 */ TK_NONE=0,  // none
-    /*  1 */ TK_INTEGER, // integer literal, e.g. 1, 42
-    /*  2 */ TK_NAME,    // name token, e.g. WASHER (or ++ in special mode)
-    /*  3 */ TK_OTHER,   // other literal, e.g. {, ~
-    /*  4 */ TK_STRING,  // string literal, e.g. "the answer"
-    /*  5 */ TK_ENUMS
-  };
-  
-  static Str* aTK[]
-  {
-    /*  0 */ "NONE"_Str,
-    /*  1 */ "INTEGER"_Str,
-    /*  2 */ "NAME"_Str,
-    /*  3 */ "OTHER"_Str,
-    /*  4 */ "STRING"_Str,
-    /*  5 */ "ENUMS"_Str,
-  };
-  
   class Tokeniser : public Object
   {
   private:
@@ -48,7 +28,9 @@ namespace Parsing
     
     static Tokeniser* _pTokeniser(void* aAddr);
     static void vDump(eCN eClass, Object* pObject, Str* aTab);
-    
+  
+    static TokenVec* pTokenise(StrVal& sString);
+  
     void vPush(void);
     bool bPop(void);
     i8   iDepth(void);

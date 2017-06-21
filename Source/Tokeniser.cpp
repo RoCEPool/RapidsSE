@@ -70,6 +70,34 @@ Tokeniser::~Tokeniser(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/*-- Static ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* tokenise given string                                                      */
+/*----------------------------------------------------------------------------*/
+TokenVec* Tokeniser::pTokenise(StrVal& sString)
+{
+  TokenVec* pTokenVec = new TokenVec;
+  
+  Tokeniser* pTokeniser = new Tokeniser;
+  pTokeniser->vPush();
+  pTokeniser->vUseString(sString);
+  
+  for (;;) {
+    pTokeniser->vNextToken();
+    if (TK_NONE == pTokeniser->eToken())
+      break;
+    
+    Token* pToken = new Token;
+    pToken->vToken(pTokeniser->eToken());
+    pToken->vCopy(pTokeniser->sToken().aStr());
+  }
+  
+  return pTokenVec;
+}
+
+/*----------------------------------------------------------------------------*/
 /* dump tokeniser                                                             */
 /*----------------------------------------------------------------------------*/
 void Tokeniser::vDump(eCN eClass, Object* pObject, Str* aTab)
