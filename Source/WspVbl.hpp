@@ -28,10 +28,10 @@ namespace Magic
     char* aLatter(void);
     i8    nLength(void);
     i8    nSize(void);
-    Str*  aStr(void);
     void  vTake(i8 nBytes);
     i8    nUsed(void);
     void  vUsed(i8 nBytes);
+    char* aVblData(void);
     void  vZero(void);
   };
 }

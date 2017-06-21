@@ -91,9 +91,9 @@ i8 WspVbl::nSize(void)
 /*----------------------------------------------------------------------------*/
 /* get address of data area                                                   */
 /*----------------------------------------------------------------------------*/
-Str* WspVbl::aStr(void)
+char* WspVbl::aVblData(void)
 {
-  Str* aArea = pAdd<Str*>(&m_nAreaUsed,sizeof(m_nAreaUsed));
+  char* aArea = pAdd<char*>(&m_nAreaUsed,sizeof(m_nAreaUsed));
   
   return aArea;
 }
