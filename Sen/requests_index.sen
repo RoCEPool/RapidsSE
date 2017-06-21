@@ -310,9 +310,8 @@ stk
   task::this task.seitf@ seitf.table@ assert
 
   // create access path and put into seitf
-  accessPath::new to pAccessPath
-
-  pAccessPath task::this task.seitf@ seitf.accessPath!
+  //accessPath::new to pAccessPath
+  //pAccessPath task::this task.seitf@ seitf.accessPath!
 
   ( cdt_0 ) planner::new to pPlanner
   ( cdt_1 ) pTable pPlanner Planner.table!
@@ -326,8 +325,6 @@ stk
   ( cdt_7 ) pPlanner Planner.matchPaths
   ( cdt_8 ) pPlanner Planner.showPaths
   ( cdt_9 ) pPlanner Planner.choosePath
-
-//sWhere pAccessPath accessPath.parse
 
   pPlanner Planner.fetchTechnique@
 

@@ -11,6 +11,9 @@ namespace Plans
     static const i8 C_MAX_CANDIDATES = 128;
   
     Table*          m_pTable;
+  
+    PathVec*        m_pPathVec;
+  
     CandidatePaths* m_pCandidatePaths;
     Index*          m_pIndex[C_MAX_CANDIDATES];
     i8              m_iScoreVec[C_MAX_CANDIDATES];

@@ -51,6 +51,8 @@ Planner::Planner(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
   
   m_pTable = nullptr;
+  m_pPathVec = nullptr;
+  
   m_pCandidatePaths = nullptr;
   for (i8 i_Cdt = 0; i_Cdt < C_MAX_CANDIDATES; i_Cdt++) {
     m_pIndex[i_Cdt] = nullptr;
@@ -142,6 +144,7 @@ void Planner::vGenPaths(Table* mpTable)
   
   vTrace("CandidatePaths::vGenPaths \n"_Str);
   
+  m_pPathVec = new PathVec;
   m_pCandidatePaths = new CandidatePaths;
   
   IdxVec* pIdxVec = mpTable->pIdxVec();
