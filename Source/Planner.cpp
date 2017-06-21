@@ -119,20 +119,50 @@ void Planner::vGenPaths(Table* pTable, Index* pIndex)
   
   IdxColVec* pIdxColVec = pIndex->pIdxColVec();
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // lower bounds
+  
   for (i8 nCols = 1; nCols <= pIdxColVec->nItems(); nCols++) {
+    
+    // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
+    
+    AccessPath* pAccessPath = new AccessPath;
+    m_pPathVec->vAdd(pAccessPath);
+    
+    PredicateVec* pLowerPredicateVec = new PredicateVec;
+    pAccessPath->vLowerPredicates(pLowerPredicateVec);
+    
+    // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
     
     CandidatePath* pCandidatePath = new CandidatePath;
     
     for (i8 i_IdxCol = 0; i_IdxCol < nCols; i_IdxCol++) {
       Column* pColumn = pIdxColVec->pGet(i_IdxCol);
       pCandidatePath->vAdd(pColumn);
+      
+      // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
+      
+      Predicate* pLowerPredicate = new Predicate;
+      Arg* pColumnArg = new Arg;
+      s256 sColumnNm = pColumn->sColumnName().aStr();
+      pColumnArg->vArgVal(sColumnNm);
+      
+      pLowerPredicateVec->vAdd(pLowerPredicate);
+      
+      // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
     }
     
     m_pCandidatePaths->vAdd(pCandidatePath);
     m_pIndex[m_nCandidates] = pIndex;
+    
     m_nCandidates++;
   }
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // upper bounds
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // lower and upper bounds
 }
 
 /*----------------------------------------------------------------------------*/

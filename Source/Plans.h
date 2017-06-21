@@ -25,12 +25,14 @@ typedef Vector<CN_CANDIDATEPATHS,CandidatePath,CN_CANDIDATEPATH,128,u8> Candidat
 
 typedef Vector<CN_PREDICATEVEC,Predicate,CN_PREDICATE,128,u8> PredicateVec;
 
-typedef Vector<CN_CANDIDATEPATHS,Predicate,CN_ACCESSPATH,128,u8> PathVec;
 
 #include "AccessPath.hpp"
+typedef Vector<CN_CANDIDATEPATHS,AccessPath,CN_ACCESSPATH,128,u8> PathVec;
+
 #include "Plan.hpp"
 #include "Planner.hpp"
 #include "PlanList.hpp"
+
 
 /*============================================================================*/
 /* end                                                                        */
