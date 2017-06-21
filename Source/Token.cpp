@@ -122,6 +122,16 @@ void Token::vCopy(Str* aArg)
 /*----------------------------------------------------------------------------*/
 /* reset this token set                                                       */
 /*----------------------------------------------------------------------------*/
+void Token::vCopy(Token* pGivenToken)
+{
+  _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
+  
+  m_sText.vCopy(pGivenToken->aStr());
+}
+
+/*----------------------------------------------------------------------------*/
+/* reset this token set                                                       */
+/*----------------------------------------------------------------------------*/
 void Token::vConcat(Str* aArg)
 {
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);

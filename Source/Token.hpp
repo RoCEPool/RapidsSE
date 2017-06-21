@@ -34,6 +34,7 @@ namespace Parsing
     i8 iToI8(void);
     void vConcat(Str*);
     void vCopy(Str*);
+    void vCopy(Token*);
     bool bIsNumeric(void);
   
     Footer* aFooter(void);

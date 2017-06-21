@@ -1552,10 +1552,10 @@ eEC eExecuteRequest(SEitf* pSEitf, Str* aCommand)
   
   // execute command pCommand
   //xTokenVec[0]->vCopy(aCommand);
-  //xTokenVec[1]->vCopy(""_Str);
+  //xTokenVec[1]->vReset();
   
   xTokenVec.vAddToken(aCommand);
-  xTokenVec[1]->vCopy(""_Str);
+  xTokenVec[1]->vReset();
   
   bResult = pSEitf->bDecode(xTokenVec);
   
@@ -1576,7 +1576,7 @@ eEC eExecuteRequest(SEitf* pSEitf, Str* aCommand, Str* aParameter)
   
   xTokenVec.vAddToken(aCommand);
   xTokenVec.vAddToken(aParameter);
-  xTokenVec[2]->vCopy(""_Str);
+  xTokenVec[2]->vReset();
   
   bResult = pSEitf->bDecode(xTokenVec);
   
@@ -1599,7 +1599,7 @@ eEC eExecuteRequest(SEitf* pSEitf, Str* aCommand, Str* aParameter1,
   xTokenVec.vAddToken(aCommand);
   xTokenVec.vAddToken(aParameter1);
   xTokenVec.vAddToken(aParameter2);
-  xTokenVec[3]->vCopy(""_Str);
+  xTokenVec[3]->vReset();
   
   bResult = pSEitf->bDecode(xTokenVec);
   
@@ -1622,7 +1622,7 @@ eEC eExecuteRequest(SEitf* pSEitf, Str* aCommand, Str* aParameter1,
   xTokenVec.vAddToken(aParameter1);
   xTokenVec.vAddToken(aParameter2);
   xTokenVec.vAddToken(aParameter3);
-  xTokenVec[4]->vCopy(""_Str);
+  xTokenVec[4]->vReset();
 
   bResult = pSEitf->bDecode(xTokenVec);
   

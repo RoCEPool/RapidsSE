@@ -638,7 +638,7 @@ void SePrompt::vClipTokens(i8 nTokens)
   
   for (i8 i_FromToken = nTokens; i_FromToken < C_TOKENS; i_FromToken++) {
     
-    m_xTokenVec[iToToken++]->vCopy(m_xTokenVec[i_FromToken]->aStr());
+    m_xTokenVec[iToToken++]->vCopy(m_xTokenVec[i_FromToken]);
     
     if (m_xTokenVec[i_FromToken]->bSame(""_Str))
       break;
@@ -903,7 +903,7 @@ bool SePrompt::bBeginInsert(void)
   for (i_Token = 0; i_Token < C_TOKENS; i_Token++) {
     if (! m_xTokenVec[i_Token]->bHasText())
       break;
-    m_xTokenVec2[i_Token]->vCopy(m_xTokenVec[i_Token]->aStr());
+    m_xTokenVec2[i_Token]->vCopy(m_xTokenVec[i_Token]);
     m_xTokenVec[i_Token]->vCopy(""_Str);
   }
   
@@ -918,7 +918,7 @@ bool SePrompt::bBeginInsert(void)
   
   // get table pointer
   m_xTokenVec[0]->vCopy("gettbl"_Str);
-  m_xTokenVec[1]->vCopy(m_xTokenVec2[2]->aStr());
+  m_xTokenVec[1]->vCopy(m_xTokenVec2[2]);
   if (!bExecuteRequest()) {
     vTrace("SePrompt::bBeginInsert : gettbl FAILED!!!\n"_Str);
     return false;
@@ -1039,7 +1039,7 @@ bool SePrompt::bCreateCatalog(void)
   for (i_Token = 0; i_Token < C_TOKENS; i_Token++) {
     if (! m_xTokenVec[i_Token]->bHasText())
       break;
-    m_xTokenVec2[i_Token]->vCopy(m_xTokenVec[i_Token]->aStr());
+    m_xTokenVec2[i_Token]->vCopy(m_xTokenVec[i_Token]);
     m_xTokenVec[i_Token]->vCopy(""_Str);
   }
   
@@ -1054,7 +1054,7 @@ bool SePrompt::bCreateCatalog(void)
   
   // create a catalog
   m_xTokenVec[0]->vCopy("mkcat"_Str);
-  m_xTokenVec[1]->vCopy(m_xTokenVec2[2]->aStr());
+  m_xTokenVec[1]->vCopy(m_xTokenVec2[2]);
   
   if (!bExecuteRequest())
     return false;
@@ -1085,7 +1085,7 @@ bool SePrompt::bCreateIndex(bool bUnique)
   for (i_Token = 0; i_Token < C_TOKENS; i_Token++) {
     if (! m_xTokenVec[i_Token]->bHasText())
       break;
-    m_xTokenVec2[i_Token]->vCopy(m_xTokenVec[i_Token]->aStr());
+    m_xTokenVec2[i_Token]->vCopy(m_xTokenVec[i_Token]);
     m_xTokenVec[i_Token]->vCopy(""_Str);
   }
   
@@ -1121,7 +1121,7 @@ bool SePrompt::bCreateIndex(bool bUnique)
   
   // change folder to table
   m_xTokenVec[0]->vCopy("cf"_Str);
-  m_xTokenVec[1]->vCopy(m_xTokenVec2[4 + iIfUnique]->aStr());
+  m_xTokenVec[1]->vCopy(m_xTokenVec2[4 + iIfUnique]);
   
   if (!bExecuteRequest())
     return false;
@@ -1129,7 +1129,7 @@ bool SePrompt::bCreateIndex(bool bUnique)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get reference to pTable
   m_xTokenVec[0]->vCopy("gettbl"_Str);
-  m_xTokenVec[1]->vCopy(m_xTokenVec2[4 + iIfUnique]->aStr());
+  m_xTokenVec[1]->vCopy(m_xTokenVec2[4 + iIfUnique]);
   
   if (!bExecuteRequest()) {
     vTrace("SePrompt::bCreateIndex : gettbl FAILED!!!\n"_Str);
@@ -1147,22 +1147,22 @@ bool SePrompt::bCreateIndex(bool bUnique)
   // create the index
   
   m_xTokenVec[0]->vCopy("mkidx"_Str);
-  m_xTokenVec[1]->vCopy(m_xTokenVec2[4 + iIfUnique]->aStr());
-  m_xTokenVec[2]->vCopy(m_xTokenVec2[2 + iIfUnique]->aStr());
+  m_xTokenVec[1]->vCopy(m_xTokenVec2[4 + iIfUnique]);
+  m_xTokenVec[2]->vCopy(m_xTokenVec2[2 + iIfUnique]);
   
   if (!bExecuteRequest())
     return false;
   
   // change folder to table
   m_xTokenVec[0]->vCopy("cf"_Str);
-  m_xTokenVec[1]->vCopy(m_xTokenVec2[4 + iIfUnique]->aStr());
+  m_xTokenVec[1]->vCopy(m_xTokenVec2[4 + iIfUnique]);
   
   if (!bExecuteRequest()) {
     vTrace("SePrompt::bCreateIndex : cf FAILED!!!\n"_Str);
     
     // create the table
     m_xTokenVec[0]->vCopy("rmidx"_Str);
-    m_xTokenVec[1]->vCopy(m_xTokenVec2[2 + iIfUnique]->aStr());
+    m_xTokenVec[1]->vCopy(m_xTokenVec2[2 + iIfUnique]);
     
     if (!bExecuteRequest()) {
       return false;
@@ -1180,7 +1180,7 @@ bool SePrompt::bCreateIndex(bool bUnique)
     
     // create the table
     m_xTokenVec[0]->vCopy("rmidx"_Str);
-    m_xTokenVec[1]->vCopy(m_xTokenVec2[2 + iIfUnique]->aStr());
+    m_xTokenVec[1]->vCopy(m_xTokenVec2[2 + iIfUnique]);
     
     if (!bExecuteRequest()) {
       return false;
@@ -1206,9 +1206,9 @@ bool SePrompt::bCreateIndex(bool bUnique)
     // add columns to the table
     i8 j = 0;
     m_xTokenVec[j++]->vCopy("addidxcol"_Str);
-    m_xTokenVec[j++]->vCopy(m_xTokenVec2[4 + iIfUnique]->aStr());
-    m_xTokenVec[j++]->vCopy(m_xTokenVec2[2 + iIfUnique]->aStr());
-    m_xTokenVec[j++]->vCopy(m_xTokenVec2[iCurrentToken++]->aStr());
+    m_xTokenVec[j++]->vCopy(m_xTokenVec2[4 + iIfUnique]);
+    m_xTokenVec[j++]->vCopy(m_xTokenVec2[2 + iIfUnique]);
+    m_xTokenVec[j++]->vCopy(m_xTokenVec2[iCurrentToken++]);
   
     // add the column
     if (!bExecuteRequest()) {
@@ -1232,8 +1232,8 @@ bool SePrompt::bCreateIndex(bool bUnique)
   if (bUnique) {
     
     m_xTokenVec[0]->vCopy("setidxunique"_Str);
-    m_xTokenVec[1]->vCopy(m_xTokenVec2[4 + iIfUnique]->aStr());
-    m_xTokenVec[2]->vCopy(m_xTokenVec2[2 + iIfUnique]->aStr());
+    m_xTokenVec[1]->vCopy(m_xTokenVec2[4 + iIfUnique]);
+    m_xTokenVec[2]->vCopy(m_xTokenVec2[2 + iIfUnique]);
     m_xTokenVec[3]->vCopy("true"_Str);
     m_xTokenVec[4]->vCopy(""_Str);
     
@@ -1257,8 +1257,8 @@ bool SePrompt::bCreateIndex(bool bUnique)
   // end of make index
   
   m_xTokenVec[0]->vCopy("endmkidx"_Str);
-  m_xTokenVec[1]->vCopy(m_xTokenVec2[4 + iIfUnique]->aStr());
-  m_xTokenVec[2]->vCopy(m_xTokenVec2[2 + iIfUnique]->aStr());
+  m_xTokenVec[1]->vCopy(m_xTokenVec2[4 + iIfUnique]);
+  m_xTokenVec[2]->vCopy(m_xTokenVec2[2 + iIfUnique]);
   m_xTokenVec[3]->vCopy(""_Str);
   
   if (!bExecuteRequest()) {
@@ -1287,7 +1287,7 @@ bool SePrompt::bCreateIndex(bool bUnique)
     
     // create the table
     m_xTokenVec[0]->vCopy("rmidx"_Str);
-    m_xTokenVec[1]->vCopy(m_xTokenVec2[2 + iIfUnique]->aStr());
+    m_xTokenVec[1]->vCopy(m_xTokenVec2[2 + iIfUnique]);
     
     if (!bExecuteRequest()) {
       return false;
@@ -1305,7 +1305,7 @@ bool SePrompt::bCreateIndex(bool bUnique)
     
     // create the table
     m_xTokenVec[0]->vCopy("rmidx"_Str);
-    m_xTokenVec[1]->vCopy(m_xTokenVec2[2 + iIfUnique]->aStr());
+    m_xTokenVec[1]->vCopy(m_xTokenVec2[2 + iIfUnique]);
     
     if (!bExecuteRequest()) {
       return false;
@@ -1334,7 +1334,7 @@ bool SePrompt::bCreateSchema(void)
   for (i_Token = 0; i_Token < C_TOKENS; i_Token++) {
     if (! m_xTokenVec[i_Token]->bHasText())
       break;
-    m_xTokenVec2[i_Token]->vCopy(m_xTokenVec[i_Token]->aStr());
+    m_xTokenVec2[i_Token]->vCopy(m_xTokenVec[i_Token]);
     m_xTokenVec[i_Token]->vCopy(""_Str);
   }
   
@@ -1349,7 +1349,7 @@ bool SePrompt::bCreateSchema(void)
 
   // create a schema
   m_xTokenVec[0]->vCopy("mksch"_Str);
-  m_xTokenVec[1]->vCopy(m_xTokenVec2[2]->aStr());
+  m_xTokenVec[1]->vCopy(m_xTokenVec2[2]);
   
   if (!bExecuteRequest())
     return false;
@@ -1375,7 +1375,7 @@ bool SePrompt::bCreateTenant(void)
   for (i_Token = 0; i_Token < C_TOKENS; i_Token++) {
     if (! m_xTokenVec[i_Token]->bHasText())
       break;
-    m_xTokenVec2[i_Token]->vCopy(m_xTokenVec[i_Token]->aStr());
+    m_xTokenVec2[i_Token]->vCopy(m_xTokenVec[i_Token]);
     m_xTokenVec[i_Token]->vCopy(""_Str);
   }
   
@@ -1390,7 +1390,7 @@ bool SePrompt::bCreateTenant(void)
   
   // create a tenant
   m_xTokenVec[0]->vCopy("mkten"_Str);
-  m_xTokenVec[1]->vCopy(m_xTokenVec2[2]->aStr());
+  m_xTokenVec[1]->vCopy(m_xTokenVec2[2]);
   
   if (!bExecuteRequest())
     return false;
@@ -1416,7 +1416,7 @@ bool SePrompt::bCreateTable(void)
   for (i_Token = 0; i_Token < C_TOKENS; i_Token++) {
     if ( ! m_xTokenVec[i_Token]->bHasText())
       break;
-    m_xTokenVec2[i_Token]->vCopy(m_xTokenVec[i_Token]->aStr());
+    m_xTokenVec2[i_Token]->vCopy(m_xTokenVec[i_Token]);
     m_xTokenVec[i_Token]->vCopy(""_Str);
   }
   
@@ -1565,7 +1565,7 @@ bool SePrompt::bDropCatalog(void)
   for (i_Token = 0; i_Token < C_TOKENS; i_Token++) {
     if (! m_xTokenVec[i_Token]->bHasText())
       break;
-    m_xTokenVec2[i_Token]->vCopy(m_xTokenVec[i_Token]->aStr());
+    m_xTokenVec2[i_Token]->vCopy(m_xTokenVec[i_Token]);
     m_xTokenVec[i_Token]->vCopy(""_Str);
   }
   
@@ -1580,7 +1580,7 @@ bool SePrompt::bDropCatalog(void)
   
   // drop a catalog
   m_xTokenVec[0]->vCopy("rmcat"_Str);
-  m_xTokenVec[1]->vCopy(m_xTokenVec2[2]->aStr());
+  m_xTokenVec[1]->vCopy(m_xTokenVec2[2]);
   if (!bExecuteRequest())
     return false;
   
@@ -1604,7 +1604,7 @@ bool SePrompt::bDropIndex(void)
   for (i_Token = 0; i_Token < C_TOKENS; i_Token++) {
     if (! m_xTokenVec[i_Token]->bHasText())
       break;
-    m_xTokenVec2[i_Token]->vCopy(m_xTokenVec[i_Token]->aStr());
+    m_xTokenVec2[i_Token]->vCopy(m_xTokenVec[i_Token]);
     m_xTokenVec[i_Token]->vCopy(""_Str);
   }
   
@@ -1625,8 +1625,8 @@ bool SePrompt::bDropIndex(void)
   
   // drop a table
   m_xTokenVec[0]->vCopy("rmidx"_Str);
-  m_xTokenVec[1]->vCopy(m_xTokenVec2[2]->aStr());
-  m_xTokenVec[2]->vCopy(m_xTokenVec2[4]->aStr());
+  m_xTokenVec[1]->vCopy(m_xTokenVec2[2]);
+  m_xTokenVec[2]->vCopy(m_xTokenVec2[4]);
   if (!bExecuteRequest())
     return false;
   
@@ -1650,7 +1650,7 @@ bool SePrompt::bDropSchema(void)
   for (i_Token = 0; i_Token < C_TOKENS; i_Token++) {
     if (! m_xTokenVec[i_Token]->bHasText())
       break;
-    m_xTokenVec2[i_Token]->vCopy(m_xTokenVec[i_Token]->aStr());
+    m_xTokenVec2[i_Token]->vCopy(m_xTokenVec[i_Token]);
     m_xTokenVec[i_Token]->vCopy(""_Str);
   }
   
@@ -1665,7 +1665,7 @@ bool SePrompt::bDropSchema(void)
   
   // drop a schema
   m_xTokenVec[0]->vCopy("rmsch"_Str);
-  m_xTokenVec[1]->vCopy(m_xTokenVec2[2]->aStr());
+  m_xTokenVec[1]->vCopy(m_xTokenVec2[2]);
   if (!bExecuteRequest())
     return false;
   
@@ -1689,7 +1689,7 @@ bool SePrompt::bDropTable(void)
   for (i_Token = 0; i_Token < C_TOKENS; i_Token++) {
     if (! m_xTokenVec[i_Token]->bHasText())
       break;
-    m_xTokenVec2[i_Token]->vCopy(m_xTokenVec[i_Token]->aStr());
+    m_xTokenVec2[i_Token]->vCopy(m_xTokenVec[i_Token]);
     m_xTokenVec[i_Token]->vCopy(""_Str);
   }
   
@@ -1704,7 +1704,7 @@ bool SePrompt::bDropTable(void)
   
   // drop a table
   m_xTokenVec[0]->vCopy("rmtbl"_Str);
-  m_xTokenVec[1]->vCopy(m_xTokenVec2[2]->aStr());
+  m_xTokenVec[1]->vCopy(m_xTokenVec2[2]);
   if (!bExecuteRequest())
     return false;
   
@@ -1767,7 +1767,7 @@ bool SePrompt::bDropTenant(void)
   for (i_Token = 0; i_Token < C_TOKENS; i_Token++) {
     if (! m_xTokenVec[i_Token]->bHasText())
       break;
-    m_xTokenVec2[i_Token]->vCopy(m_xTokenVec[i_Token]->aStr());
+    m_xTokenVec2[i_Token]->vCopy(m_xTokenVec[i_Token]);
     m_xTokenVec[i_Token]->vCopy(""_Str);
   }
   
@@ -1782,7 +1782,7 @@ bool SePrompt::bDropTenant(void)
   
   // drop a tenant
   m_xTokenVec[0]->vCopy("rmten"_Str);
-  m_xTokenVec[1]->vCopy(m_xTokenVec2[2]->aStr());
+  m_xTokenVec[1]->vCopy(m_xTokenVec2[2]);
   if (!bExecuteRequest()) {
     return false;
   }
@@ -1808,7 +1808,7 @@ bool SePrompt::bEndInsert(void)
   for (i_Token = 0; i_Token < C_TOKENS; i_Token++) {
     if (! m_xTokenVec[i_Token]->bHasText())
       break;
-    m_xTokenVec2[i_Token]->vCopy(m_xTokenVec[i_Token]->aStr());
+    m_xTokenVec2[i_Token]->vCopy(m_xTokenVec[i_Token]);
     m_xTokenVec[i_Token]->vCopy(""_Str);
   }
   
@@ -1876,7 +1876,7 @@ bool SePrompt::bFetchRows(void)
   for (i_Token = 0; i_Token < C_TOKENS; i_Token++) {
     if ( ! m_xTokenVec[i_Token]->bHasText())
       break;
-    m_xTokenVec2[i_Token]->vCopy(m_xTokenVec[i_Token]->aStr());
+    m_xTokenVec2[i_Token]->vCopy(m_xTokenVec[i_Token]);
     m_xTokenVec[i_Token]->vCopy(""_Str);
   } 
   
@@ -1891,8 +1891,8 @@ bool SePrompt::bFetchRows(void)
   }
   
   m_xTokenVec[0]->vCopy("fetch"_Str);
-  m_xTokenVec[1]->vCopy(m_xTokenVec2[1]->aStr());
-  m_xTokenVec[2]->vCopy(m_xTokenVec2[2]->aStr());
+  m_xTokenVec[1]->vCopy(m_xTokenVec2[1]);
+  m_xTokenVec[2]->vCopy(m_xTokenVec2[2]);
   //m_xTokenVec[3]->vCopy(m_xTokenVec2[3]);
   
   if ( !bExecuteRequest() )
@@ -1917,7 +1917,7 @@ bool SePrompt::bInsertRow(void)
   for (i_Token = 0; i_Token < C_TOKENS; i_Token++) {
     if (! m_xTokenVec[i_Token]->bHasText())
       break;
-    m_xTokenVec2[i_Token]->vCopy(m_xTokenVec[i_Token]->aStr());
+    m_xTokenVec2[i_Token]->vCopy(m_xTokenVec[i_Token]);
     m_xTokenVec[i_Token]->vCopy(""_Str);
   }
   
@@ -2088,7 +2088,7 @@ bool SePrompt::bUseSchema(void)
   for (i_Token = 0; i_Token < C_TOKENS; i_Token++) {
     if (! m_xTokenVec[i_Token]->bHasText())
       break;
-    m_xTokenVec2[i_Token]->vCopy(m_xTokenVec[i_Token]->aStr());
+    m_xTokenVec2[i_Token]->vCopy(m_xTokenVec[i_Token]);
     m_xTokenVec[i_Token]->vCopy(""_Str);
   }
   
@@ -2103,7 +2103,7 @@ bool SePrompt::bUseSchema(void)
   
   // drop a schema
   m_xTokenVec[0]->vCopy("usesch"_Str);
-  m_xTokenVec[1]->vCopy(m_xTokenVec2[2]->aStr());
+  m_xTokenVec[1]->vCopy(m_xTokenVec2[2]);
   if (!bExecuteRequest())
     return false;
   
@@ -2201,8 +2201,8 @@ bool SePrompt::bAddTableColumns(i8& i_Token, i8 iNumTokens)
     // add columns to the table
     i8 j = 0;
     m_xTokenVec[j++]->vCopy("addcol"_Str);
-    m_xTokenVec[j++]->vCopy(m_xTokenVec2[2]->aStr());
-    m_xTokenVec[j++]->vCopy(m_xTokenVec2[iCurrentToken++]->aStr());
+    m_xTokenVec[j++]->vCopy(m_xTokenVec2[2]);
+    m_xTokenVec[j++]->vCopy(m_xTokenVec2[iCurrentToken++]);
     
     if (m_xTokenVec2[iCurrentToken]->bSame("integer"_Str) ||
         m_xTokenVec2[iCurrentToken]->bSame("varchar"_Str) ||
@@ -2211,7 +2211,7 @@ bool SePrompt::bAddTableColumns(i8& i_Token, i8 iNumTokens)
         m_xTokenVec2[iCurrentToken]->bSame("float"_Str)) {
       
       // copy varchar/char
-      m_xTokenVec[j]->vCopy(m_xTokenVec2[iCurrentToken++]->aStr());
+      m_xTokenVec[j]->vCopy(m_xTokenVec2[iCurrentToken++]);
       
       if (m_xTokenVec2[iCurrentToken]->bSame("("_Str)) {
         
@@ -2246,7 +2246,7 @@ bool SePrompt::bAddTableColumns(i8& i_Token, i8 iNumTokens)
     else if (m_xTokenVec2[iCurrentToken]->bSame("decimal"_Str)) {
       
       // copy varchar/char
-      m_xTokenVec[j]->vCopy(m_xTokenVec2[iCurrentToken++]->aStr());
+      m_xTokenVec[j]->vCopy(m_xTokenVec2[iCurrentToken++]);
       
       if (m_xTokenVec2[iCurrentToken]->bSame("("_Str)) {
         
@@ -2297,7 +2297,7 @@ bool SePrompt::bAddTableColumns(i8& i_Token, i8 iNumTokens)
              m_xTokenVec2[iCurrentToken]->bSame("timestamp"_Str) ||
              m_xTokenVec2[iCurrentToken]->bSame("interval"_Str) ||
              m_xTokenVec2[iCurrentToken]->bSame("boolean"_Str)) {
-      m_xTokenVec[j]->vCopy(m_xTokenVec2[iCurrentToken++]->aStr());
+      m_xTokenVec[j]->vCopy(m_xTokenVec2[iCurrentToken++]);
     }
     else {
       // drop the table that was created
@@ -2444,7 +2444,7 @@ bool SePrompt::bEndMakeTable()
   
   // end of make table
   m_xTokenVec[0]->vCopy("endmktbl"_Str);
-  m_xTokenVec[1]->vCopy(m_xTokenVec2[2]->aStr());
+  m_xTokenVec[1]->vCopy(m_xTokenVec2[2]);
   m_xTokenVec[2]->vCopy(""_Str);
   
   if (!bExecuteRequest()) {
@@ -2470,14 +2470,14 @@ bool SePrompt::bMakeTable()
   
   // create the table
   m_xTokenVec[0]->vCopy("mktbl"_Str);
-  m_xTokenVec[1]->vCopy(m_xTokenVec2[2]->aStr());
+  m_xTokenVec[1]->vCopy(m_xTokenVec2[2]);
   
   if (!bExecuteRequest())
     return false;
   
   // change folder to table
   m_xTokenVec[0]->vCopy("cf"_Str);
-  m_xTokenVec[1]->vCopy(m_xTokenVec2[2]->aStr());
+  m_xTokenVec[1]->vCopy(m_xTokenVec2[2]);
   
   if (!bExecuteRequest()) {
     vTrace("SePrompt::bCreateTable : cf FAILED!!!\n"_Str);
@@ -2488,7 +2488,7 @@ bool SePrompt::bMakeTable()
   
   // get reference to pTable
   m_xTokenVec[0]->vCopy("gettbl"_Str);
-  m_xTokenVec[1]->vCopy(m_xTokenVec2[2]->aStr());
+  m_xTokenVec[1]->vCopy(m_xTokenVec2[2]);
   
   if (!bExecuteRequest()) {
     vTrace("SePrompt::bCreateTable : gettbl FAILED!!!\n"_Str);
