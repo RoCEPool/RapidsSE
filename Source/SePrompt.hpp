@@ -116,7 +116,7 @@ private:
   bool bSleep(void);
   
   //----------------------------------------------------------------------------
-  void vClipTokens(i8 nTokens);
+  void vClipTokens(i8 i_FromToken);
   void vCollectStatement(void);
   bool bTokenCheck(i8 nTokens);
   bool bCmdIs(Str* aArg);

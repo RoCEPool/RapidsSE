@@ -117,7 +117,7 @@ void TokenVec::vSetTokens(void)
    // get count of words in pWords
   i8 i_Token;
   for (i_Token = 0; i_Token < C_TOKENS; i_Token++) {
-    if (m_pItem[i_Token]->bSame(""_Str))
+    if ( ! m_pItem[i_Token]->bHasText() )
       break;
   }
   

@@ -159,7 +159,7 @@ void SePrompt::vLoop(void)
     if (m_bEcho) {
       vTrace("cmd: "_Str);
       for (i8 i_Token = 0; i_Token < C_TOKENS; i_Token++) {
-        if (m_xTokenVec[i_Token]->bSame(""_Str))
+        if ( ! m_xTokenVec[i_Token]->bHasText() )
           break;
         vTrace("%s "_Str,m_xTokenVec[i_Token]);
       }
@@ -318,7 +318,7 @@ void SePrompt::vGetCommand(void)
     vGetCommandInput();
     
     // if empty line just return
-    if ( m_xTokenVec[0]->bSame(""_Str) )
+    if ( ! m_xTokenVec[0]->bHasText() )
       return;
 
     // if its a command file just return
@@ -632,15 +632,14 @@ bool SePrompt::bRecallCommand(void)
 /*----------------------------------------------------------------------------*/
 /* clip tokens                                                                */
 /*----------------------------------------------------------------------------*/
-void SePrompt::vClipTokens(i8 nTokens)
+void SePrompt::vClipTokens(i8 i_FromToken)
 {
-  i8 iToToken = 0;
-  
-  for (i8 i_FromToken = nTokens; i_FromToken < C_TOKENS; i_FromToken++) {
+  i8 i_ToToken = 0;
+  for ( ; i_FromToken < C_TOKENS; i_FromToken++) {
     
-    m_xTokenVec[iToToken++]->vCopy(m_xTokenVec[i_FromToken]);
+    m_xTokenVec[i_ToToken++]->vCopy(m_xTokenVec[i_FromToken]);
     
-    if (m_xTokenVec[i_FromToken]->bSame(""_Str))
+    if ( ! m_xTokenVec[i_FromToken]->bHasText() )
       break;
   }
   
@@ -1497,7 +1496,7 @@ void SePrompt::vCollectStatement(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   // we should have a first token (e.g. create or drop)
-  ASSERT(! m_xTokenVec[0]->bSame(""_Str));
+  ASSERT(m_xTokenVec[0]->bHasText());
 
   // have we already seen the ';'
   i8 i_Token = m_pTokeniser->iFindToken(";"_Str,m_xTokenVec,C_TOKENS);
@@ -2118,7 +2117,7 @@ bool SePrompt::bTokenCheck(i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
 
-  if ( ! m_xTokenVec[nTokens]->bSame(""_Str) ) {
+  if (m_xTokenVec[nTokens]->bHasText()) {
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
   }
