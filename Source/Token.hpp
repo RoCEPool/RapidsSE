@@ -30,7 +30,7 @@ namespace Parsing
     i8 iLength(void);
     bool bSame(Str*);
     bool bHasText(void);
-    Str* aStr(void);
+    Str* aText(void);
     i8 iToI8(void);
     void vConcat(Str*);
     void vCopy(Str*);

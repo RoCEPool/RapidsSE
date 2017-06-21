@@ -244,7 +244,7 @@ i8 Tokeniser::iFindToken(Str* aLookFor, TokenVec& xTokenVec, i8 nTokens)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
   for (i8 i_Token = 0; i_Token < nTokens; i_Token++)
-    if (aLookFor->bSame(xTokenVec[i_Token]->aStr()))
+    if (aLookFor->bSame(xTokenVec[i_Token]->aText()))
       return i_Token;
   
   return -1;
@@ -276,10 +276,10 @@ void Tokeniser::vDumpTokens(Str* pTitle, TokenVec& xTokenVec, i8 nTokens)
   
   for (i8 i_Token = 0; i_Token < nTokens; i_Token++) {
     
-    if (! *(char*)xTokenVec[i_Token]->aStr())
+    if (! *(char*)xTokenVec[i_Token]->aText())
       break;
     
-    vTrace("%s "_Str, xTokenVec[i_Token]->aStr());
+    vTrace("%s "_Str, xTokenVec[i_Token]->aText());
   }
   vTrace("\n"_Str);
 }

@@ -236,7 +236,7 @@ bool SePrompt::bExecuteString(StrVal& sRequest, eEC& eErrorCode)
   
   m_pTokeniser->vUseString(sRequest);
   i8 i_Token = 0;
-  while (TK_NONE != m_pTokeniser->eNextToken((char*)m_xTokenVec[i_Token]->aStr())) {
+  while (TK_NONE != m_pTokeniser->eNextToken((char*)m_xTokenVec[i_Token]->aText())) {
     
     //vTrace("vGetCommand : [%lld] %s\n"_Str,i_Token,m_xTokenVec[i_Token]);
     
@@ -262,7 +262,7 @@ bool SePrompt::bExecuteString(StrVal& sRequest, eEC& eErrorCode, StrVal& sRespon
   
   m_pTokeniser->vUseString(sRequest);
   i8 i_Token = 0;
-  while (TK_NONE != m_pTokeniser->eNextToken((char*)m_xTokenVec[i_Token]->aStr())) {
+  while (TK_NONE != m_pTokeniser->eNextToken((char*)m_xTokenVec[i_Token]->aText())) {
     
     //vTrace("vGetCommand : [%lld] %s\n"_Str,i_Token,m_xTokenVec[i_Token]);
     
@@ -286,7 +286,7 @@ bool SePrompt::bExecuteString(StrVal& sRequest, eEC& eErrorCode, Str** ppRowPtr)
   
   m_pTokeniser->vUseString(sRequest);
   i8 i_Token = 0;
-  while (TK_NONE != m_pTokeniser->eNextToken((char*)m_xTokenVec[i_Token]->aStr())) {
+  while (TK_NONE != m_pTokeniser->eNextToken((char*)m_xTokenVec[i_Token]->aText())) {
     
     //vTrace("vGetCommand : [%lld] %s\n"_Str,i_Token,m_xTokenVec[i_Token]);
     
@@ -322,7 +322,7 @@ void SePrompt::vGetCommand(void)
       return;
 
     // if its a command file just return
-    if (bTestFile(m_xTokenVec[0]->aStr()))
+    if (bTestFile(m_xTokenVec[0]->aText()))
       return;
     
     // collect till ;
@@ -344,7 +344,7 @@ void SePrompt::vGetCommandArgument(void)
   m_xTokenVec.vReset();
   
   while (TK_NONE !=
-           m_pTokeniser->eNextToken((char*)m_xTokenVec[m_xTokenVec.nTokens()]->aStr())) {
+           m_pTokeniser->eNextToken((char*)m_xTokenVec[m_xTokenVec.nTokens()]->aText())) {
     
     //vTrace("vGetCommand : [%lld] %s\n"_Str,i_Token,m_xTokenVec[i_Token]);
     
@@ -368,7 +368,7 @@ void SePrompt::vGetCommandInput(void)
     m_xTokenVec2.vReset();
     
     while (TK_NONE !=
-           m_pTokeniser->eNextToken((char*)m_xTokenVec[m_xTokenVec.nTokens()]->aStr())) {
+           m_pTokeniser->eNextToken((char*)m_xTokenVec[m_xTokenVec.nTokens()]->aText())) {
       
       //vTrace("vGetCommand : [%lld] %s\n"_Str,i_Token,m_xTokenVec[i_Token]);
       
@@ -446,7 +446,7 @@ bool SePrompt::bProcessCommand(bool bPostProcess)
   if (bCmdIs("?"_Str))          return bHelp();
   if (bCmdIs("help"_Str))       return bHelp();
   if (bCmdIs("!!"_Str))         return bRecallCommand();
-  if ('!' == *(char*)m_xTokenVec[0]->aStr()) return bRecallCommand();
+  if ('!' == *(char*)m_xTokenVec[0]->aText()) return bRecallCommand();
   if (bCmdIs("antbl"_Str))      return bAnalyzeTable();
   if (bCmdIs("begin"_Str)) {
     if (bOneIs("insert"_Str))   return bBeginInsert();
@@ -497,7 +497,7 @@ bool SePrompt::bProcessCommand(bool bPostProcess)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for command file
-  if (bTestFile(m_xTokenVec[0]->aStr()))
+  if (bTestFile(m_xTokenVec[0]->aText()))
     return bRunFile();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -557,7 +557,7 @@ void SePrompt::vClearEcho(void)
 /*----------------------------------------------------------------------------*/
 void SePrompt::vSetExpect(void)
 {
-  m_sExpect = m_xTokenVec[1]->aStr();
+  m_sExpect = m_xTokenVec[1]->aText();
   
   m_bExpect = true;
   
@@ -608,7 +608,7 @@ bool SePrompt::bRunFile(void)
   if ( ! bTokenCheck(1) )
     return false;
   
-  vPushFile(m_xTokenVec[0]->aStr());
+  vPushFile(m_xTokenVec[0]->aText());
   m_pTokeniser->vLineMode(true);
   m_sResponse = "<ok>"_Str;
   
@@ -965,13 +965,13 @@ bool SePrompt::bChangeWorkingDir(void)
   
   ASSERT(m_xTokenVec[0]->bSame("cd"_Str));
   
-  sDir = m_xTokenVec[1]->aStr();
+  sDir = m_xTokenVec[1]->aText();
   
   i8 i_Token;
   for (i_Token = 2; i_Token < C_TOKENS; i_Token++) {
     if (! m_xTokenVec[i_Token]->bHasText())
       break;
-    sDir.vConcat(m_xTokenVec[i_Token]->aStr());
+    sDir.vConcat(m_xTokenVec[i_Token]->aText());
   }
 
   if ( ! xDir.bChangeCurrent(sDir) ) {
@@ -1197,8 +1197,8 @@ bool SePrompt::bCreateIndex(bool bUnique)
   while (iCurrentToken < iNumTokens - 1) {
     
     if (iCurrentToken != 6 + iIfUnique && !m_xTokenVec2[iCurrentToken++]->bSame(","_Str)) {
-      bIndexReturnTable(m_xTokenVec2[4 + iIfUnique]->aStr(),
-                        m_xTokenVec2[2 + iIfUnique]->aStr());
+      bIndexReturnTable(m_xTokenVec2[4 + iIfUnique]->aText(),
+                        m_xTokenVec2[2 + iIfUnique]->aText());
       m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
       return false;
     }
@@ -1217,8 +1217,8 @@ bool SePrompt::bCreateIndex(bool bUnique)
       eEC eError = m_pSEitf->eGetLastError();
       
       // drop the table that was created
-      bIndexReturnTable(m_xTokenVec2[4 + iIfUnique]->aStr(),
-                        m_xTokenVec2[2 + iIfUnique]->aStr());
+      bIndexReturnTable(m_xTokenVec2[4 + iIfUnique]->aText(),
+                        m_xTokenVec2[2 + iIfUnique]->aText());
       
       // return error returned by addColumn
       m_pSEitf->vSetLastError(eError);
@@ -1243,8 +1243,8 @@ bool SePrompt::bCreateIndex(bool bUnique)
       eEC eError = m_pSEitf->eGetLastError();
       
       // drop the table that was created
-      bIndexReturnTable(m_xTokenVec2[4 + iIfUnique]->aStr(),
-                        m_xTokenVec2[2 + iIfUnique]->aStr());
+      bIndexReturnTable(m_xTokenVec2[4 + iIfUnique]->aText(),
+                        m_xTokenVec2[2 + iIfUnique]->aText());
       
       // return error returned by addColumn
       m_pSEitf->vSetLastError(eError);
@@ -1267,8 +1267,8 @@ bool SePrompt::bCreateIndex(bool bUnique)
     eEC eError = m_pSEitf->eGetLastError();
     
     // drop the table that was created
-    bIndexReturnTable(m_xTokenVec2[4 + iIfUnique]->aStr(),
-                      m_xTokenVec2[2 + iIfUnique]->aStr());
+    bIndexReturnTable(m_xTokenVec2[4 + iIfUnique]->aText(),
+                      m_xTokenVec2[2 + iIfUnique]->aText());
     
     // return error returned by addColumn
     m_pSEitf->vSetLastError(eError);
@@ -1447,14 +1447,14 @@ bool SePrompt::bCreateTable(void)
   
   i8 iCurrentToken = 4;
   // save current token as the first column of the table
-  Str* pFirstColumn = m_xTokenVec2[iCurrentToken]->aStr();
+  Str* pFirstColumn = m_xTokenVec2[iCurrentToken]->aText();
   
   if ( ! bAddTableColumns(iCurrentToken, iNumTokens) )
     return false;
   
   // current token should be at ')'
   if ( ! m_xTokenVec2[iCurrentToken++]->bSame(")"_Str)) {
-    bool bRemove = bRemoveTable(m_xTokenVec2[2]->aStr());
+    bool bRemove = bRemoveTable(m_xTokenVec2[2]->aText());
     ASSERT(bRemove);
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
@@ -1518,7 +1518,7 @@ void SePrompt::vCollectStatement(void)
   // get tokens delimited by ';'
   for ( ; i_Token < C_TOKENS; i_Token++) {
     
-    eTK eToken = m_pTokeniser->eNextToken((char*)m_xTokenVec[i_Token]->aStr());
+    eTK eToken = m_pTokeniser->eNextToken((char*)m_xTokenVec[i_Token]->aText());
     ASSERT(TK_NONE != eToken);
     
     // look for terminal
@@ -1943,7 +1943,7 @@ bool SePrompt::bInsertRow(void)
     return EC_NO_SUCH_TABLE;
   }
   
-  Str* pRow = m_xTokenVec2[2]->aStr();
+  Str* pRow = m_xTokenVec2[2]->aText();
   bool bResult = m_pSEitf->bInsertRow(pRow);
   
   if (!bResult) {
@@ -2193,7 +2193,7 @@ bool SePrompt::bAddTableColumns(i8& i_Token, i8 iNumTokens)
   while ( ! m_xTokenVec2[iCurrentToken]->bSame(")"_Str)) {
     
     if (iCurrentToken != i_Token && ! m_xTokenVec2[iCurrentToken++]->bSame(","_Str)) {
-      bDropReturnTable(m_xTokenVec2[2]->aStr());
+      bDropReturnTable(m_xTokenVec2[2]->aText());
       m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
       return false;
     }
@@ -2216,15 +2216,15 @@ bool SePrompt::bAddTableColumns(i8& i_Token, i8 iNumTokens)
       if (m_xTokenVec2[iCurrentToken]->bSame("("_Str)) {
         
         // str.cat '('
-        m_xTokenVec[j]->vConcat(m_xTokenVec2[iCurrentToken++]->aStr());
+        m_xTokenVec[j]->vConcat(m_xTokenVec2[iCurrentToken++]->aText());
         
         // str.cat the size
-        m_xTokenVec[j]->vConcat(m_xTokenVec2[iCurrentToken]->aStr());
+        m_xTokenVec[j]->vConcat(m_xTokenVec2[iCurrentToken]->aText());
         
         // check if it was numeric
         if ( ! m_xTokenVec2[iCurrentToken++]->bIsNumeric() ) {
           // drop the table
-          bDrop = bDropReturnTable(m_xTokenVec2[2]->aStr());
+          bDrop = bDropReturnTable(m_xTokenVec2[2]->aText());
           ASSERT(bDrop);
           m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
           return false;
@@ -2232,14 +2232,14 @@ bool SePrompt::bAddTableColumns(i8& i_Token, i8 iNumTokens)
         
         if (!m_xTokenVec2[iCurrentToken]->bSame(")"_Str)) {
           // drop the table
-          bDrop = bDropReturnTable(m_xTokenVec2[2]->aStr());
+          bDrop = bDropReturnTable(m_xTokenVec2[2]->aText());
           ASSERT(bDrop);
           m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
           return false;
         }
         
         // str.cat ')'
-        m_xTokenVec[j]->vConcat(m_xTokenVec2[iCurrentToken++]->aStr());
+        m_xTokenVec[j]->vConcat(m_xTokenVec2[iCurrentToken++]->aText());
         
       }
     }
@@ -2251,45 +2251,45 @@ bool SePrompt::bAddTableColumns(i8& i_Token, i8 iNumTokens)
       if (m_xTokenVec2[iCurrentToken]->bSame("("_Str)) {
         
         // str.cat '('
-        m_xTokenVec[j]->vConcat(m_xTokenVec2[iCurrentToken++]->aStr());
+        m_xTokenVec[j]->vConcat(m_xTokenVec2[iCurrentToken++]->aText());
         
         // str.cat the size
-        m_xTokenVec[j]->vConcat(m_xTokenVec2[iCurrentToken]->aStr());
+        m_xTokenVec[j]->vConcat(m_xTokenVec2[iCurrentToken]->aText());
         
         // check if it was numeric
         if ( ! m_xTokenVec2[iCurrentToken++]->bIsNumeric() ) {
-          bDropReturnTable(m_xTokenVec2[2]->aStr());
+          bDropReturnTable(m_xTokenVec2[2]->aText());
           m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
           return false;
         }
         
         if (!m_xTokenVec2[iCurrentToken]->bSame(","_Str)) {
-          bDropReturnTable(m_xTokenVec2[2]->aStr());
+          bDropReturnTable(m_xTokenVec2[2]->aText());
           m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
           return false;
         }
         
         // str.cat ','
-        m_xTokenVec[j]->vConcat(m_xTokenVec2[iCurrentToken++]->aStr());
+        m_xTokenVec[j]->vConcat(m_xTokenVec2[iCurrentToken++]->aText());
         
         // str.cat the size
-        m_xTokenVec[j]->vConcat(m_xTokenVec2[iCurrentToken]->aStr());
+        m_xTokenVec[j]->vConcat(m_xTokenVec2[iCurrentToken]->aText());
         
         // check if it was numeric
         if ( ! m_xTokenVec2[iCurrentToken++]->bIsNumeric() ) {
-          bDropReturnTable(m_xTokenVec2[2]->aStr());
+          bDropReturnTable(m_xTokenVec2[2]->aText());
           m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
           return false;
         }
         
         if (!m_xTokenVec2[iCurrentToken]->bSame(")"_Str)) {
-          bDropReturnTable(m_xTokenVec2[2]->aStr());
+          bDropReturnTable(m_xTokenVec2[2]->aText());
           m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
           return false;
         }
         
         // str.cat ')'
-        m_xTokenVec[j]->vConcat(m_xTokenVec2[iCurrentToken++]->aStr());
+        m_xTokenVec[j]->vConcat(m_xTokenVec2[iCurrentToken++]->aText());
       }
     }
     else if (m_xTokenVec2[iCurrentToken]->bSame("date"_Str) ||
@@ -2301,7 +2301,7 @@ bool SePrompt::bAddTableColumns(i8& i_Token, i8 iNumTokens)
     }
     else {
       // drop the table that was created
-      bDropReturnTable(m_xTokenVec2[2]->aStr());
+      bDropReturnTable(m_xTokenVec2[2]->aText());
       m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
       return false;
     }
@@ -2310,43 +2310,43 @@ bool SePrompt::bAddTableColumns(i8& i_Token, i8 iNumTokens)
     if (m_xTokenVec2[iCurrentToken]->bSame("not"_Str)) {
       
       m_xTokenVec[j]->vConcat(" "_Str);
-      m_xTokenVec[j]->vConcat(m_xTokenVec2[iCurrentToken++]->aStr());
+      m_xTokenVec[j]->vConcat(m_xTokenVec2[iCurrentToken++]->aText());
       
       if (!m_xTokenVec2[iCurrentToken]->bSame("null"_Str)) {
-        bDropReturnTable(m_xTokenVec2[2]->aStr());
+        bDropReturnTable(m_xTokenVec2[2]->aText());
         m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
         return false;
       }
       m_xTokenVec[j]->vConcat(" "_Str);
-      m_xTokenVec[j]->vConcat(m_xTokenVec2[iCurrentToken++]->aStr());
+      m_xTokenVec[j]->vConcat(m_xTokenVec2[iCurrentToken++]->aText());
     }
     
     // check for PRIMARY KEY
     if (m_xTokenVec2[iCurrentToken]->bSame("primary"_Str)) {
       
       m_xTokenVec[j]->vConcat(" "_Str);
-      m_xTokenVec[j]->vConcat(m_xTokenVec2[iCurrentToken++]->aStr());
+      m_xTokenVec[j]->vConcat(m_xTokenVec2[iCurrentToken++]->aText());
       
       if (!m_xTokenVec2[iCurrentToken]->bSame("key"_Str)) {
-        bDropReturnTable(m_xTokenVec2[2]->aStr());
+        bDropReturnTable(m_xTokenVec2[2]->aText());
         m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
         return false;
       }
       m_xTokenVec[j]->vConcat(" "_Str);
-      m_xTokenVec[j]->vConcat(m_xTokenVec2[iCurrentToken++]->aStr());
+      m_xTokenVec[j]->vConcat(m_xTokenVec2[iCurrentToken++]->aText());
     }
     
     // check for UNIQUE
     if (m_xTokenVec2[iCurrentToken]->bSame("unique"_Str)) {
       
       m_xTokenVec[j]->vConcat(" "_Str);
-      m_xTokenVec[j]->vConcat(m_xTokenVec2[iCurrentToken++]->aStr());
+      m_xTokenVec[j]->vConcat(m_xTokenVec2[iCurrentToken++]->aText());
     }
     
     
     // now we should see a column type
     // validate it
-    m_xTokenVec[j]->aStr()->vToLower();
+    m_xTokenVec[j]->aText()->vToLower();
     
     // add the column
     if (!bExecuteRequest()) {
@@ -2355,7 +2355,7 @@ bool SePrompt::bAddTableColumns(i8& i_Token, i8 iNumTokens)
       eEC eError = m_pSEitf->eGetLastError();
       
       // drop the table that was created
-      bDropReturnTable(m_xTokenVec2[2]->aStr());
+      bDropReturnTable(m_xTokenVec2[2]->aText());
       
       // return error returned by addColumn
       m_pSEitf->vSetLastError(eError);
@@ -2395,7 +2395,7 @@ bool SePrompt::bAddPartitionColumn(Str* pTable, Str* pColumn)
     }
     
     vTrace("SePrompt::bAddPartitionColumn : addpartcol FAILED!!!\n"_Str);
-    bool bDrop = bDropReturnTable(m_xTokenVec2[2]->aStr());
+    bool bDrop = bDropReturnTable(m_xTokenVec2[2]->aText());
     ASSERT(bDrop);
     
     // return error returned by addColumn
@@ -2449,7 +2449,7 @@ bool SePrompt::bEndMakeTable()
   
   if (!bExecuteRequest()) {
     vTrace("SePrompt::bCreateTable : endmktbl FAILED!!!\n"_Str);
-    bool bRemove = bRemoveTable(m_xTokenVec2[2]->aStr());
+    bool bRemove = bRemoveTable(m_xTokenVec2[2]->aText());
     ASSERT(bRemove);
     return false;
   }
@@ -2481,7 +2481,7 @@ bool SePrompt::bMakeTable()
   
   if (!bExecuteRequest()) {
     vTrace("SePrompt::bCreateTable : cf FAILED!!!\n"_Str);
-    bool bRemove = bRemoveTable(m_xTokenVec2[2]->aStr());
+    bool bRemove = bRemoveTable(m_xTokenVec2[2]->aText());
     ASSERT(bRemove);
     return false;
   }
@@ -2492,7 +2492,7 @@ bool SePrompt::bMakeTable()
   
   if (!bExecuteRequest()) {
     vTrace("SePrompt::bCreateTable : gettbl FAILED!!!\n"_Str);
-    bool bRemove = bRemoveTable(m_xTokenVec2[2]->aStr());
+    bool bRemove = bRemoveTable(m_xTokenVec2[2]->aText());
     ASSERT(bRemove);
 
     return false;
@@ -2513,7 +2513,7 @@ bool SePrompt::bPartitionTable(i8 i_Token, i8 iNumTokens)
   
   // next token should be 'by'
   if (!m_xTokenVec2[iCurrentToken++]->bSame("by"_Str)) {
-    bool bDrop = bDropReturnTable(m_xTokenVec2[2]->aStr());
+    bool bDrop = bDropReturnTable(m_xTokenVec2[2]->aText());
     ASSERT(bDrop);
     
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
@@ -2522,7 +2522,7 @@ bool SePrompt::bPartitionTable(i8 i_Token, i8 iNumTokens)
   
   // next token should be '('
   if (!m_xTokenVec2[iCurrentToken++]->bSame("("_Str)) {
-    bool bDrop = bDropReturnTable(m_xTokenVec2[2]->aStr());
+    bool bDrop = bDropReturnTable(m_xTokenVec2[2]->aText());
     ASSERT(bDrop);
     
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
@@ -2539,7 +2539,7 @@ bool SePrompt::bPartitionTable(i8 i_Token, i8 iNumTokens)
     // save error returned by addColumn
     eEC eError = m_pSEitf->eGetLastError();
     
-    bool bDrop = bDropReturnTable(m_xTokenVec2[2]->aStr());
+    bool bDrop = bDropReturnTable(m_xTokenVec2[2]->aText());
     ASSERT(bDrop);
     
     // return error returned by addColumn
@@ -2563,7 +2563,7 @@ bool SePrompt::bPartitionTable(i8 i_Token, i8 iNumTokens)
         return false;
       }
 
-      bool bDrop = bDropReturnTable(m_xTokenVec2[2]->aStr());
+      bool bDrop = bDropReturnTable(m_xTokenVec2[2]->aText());
       ASSERT(bDrop);
       
       m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
@@ -2572,8 +2572,8 @@ bool SePrompt::bPartitionTable(i8 i_Token, i8 iNumTokens)
     iPartKeys++;
     
     // add columns to the table
-    bool bAdd = bAddPartitionColumn(m_xTokenVec2[2]->aStr(),
-                                    m_xTokenVec2[iCurrentToken++]->aStr());
+    bool bAdd = bAddPartitionColumn(m_xTokenVec2[2]->aText(),
+                                    m_xTokenVec2[iCurrentToken++]->aText());
     if ( ! bAdd)
       return false;
   }
@@ -2587,7 +2587,7 @@ bool SePrompt::bPartitionTable(i8 i_Token, i8 iNumTokens)
       return false;
     }
 
-    bool bDrop = bDropReturnTable(m_xTokenVec2[2]->aStr());
+    bool bDrop = bDropReturnTable(m_xTokenVec2[2]->aText());
     ASSERT(bDrop);
     
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
@@ -2611,7 +2611,7 @@ bool SePrompt::bPartitionTable(i8 i_Token, i8 iNumTokens)
       return false;
     }
 
-    bool bDrop = bDropReturnTable(m_xTokenVec2[2]->aStr());
+    bool bDrop = bDropReturnTable(m_xTokenVec2[2]->aText());
     ASSERT(bDrop);
     
     // return error returned by addColumn
@@ -2639,7 +2639,7 @@ bool SePrompt::bPartitionTable(Str* pColumnName)
     // save error returned by addColumn
     eEC eError = m_pSEitf->eGetLastError();
     
-    bool bDrop = bDropReturnTable(m_xTokenVec2[2]->aStr());
+    bool bDrop = bDropReturnTable(m_xTokenVec2[2]->aText());
     ASSERT(bDrop);
     
     // return error returned by addColumn
@@ -2648,7 +2648,7 @@ bool SePrompt::bPartitionTable(Str* pColumnName)
   }
   
   // add columns to the table
-  bool bAdd = bAddPartitionColumn(m_xTokenVec2[2]->aStr(), pColumnName);
+  bool bAdd = bAddPartitionColumn(m_xTokenVec2[2]->aText(), pColumnName);
   if ( ! bAdd)
     return false;
   
@@ -2661,7 +2661,7 @@ bool SePrompt::bPartitionTable(Str* pColumnName)
     // save error returned by addColumn
     eEC eError = m_pSEitf->eGetLastError();
     
-    bool bDrop = bDropReturnTable(m_xTokenVec2[2]->aStr());
+    bool bDrop = bDropReturnTable(m_xTokenVec2[2]->aText());
     ASSERT(bDrop);
     
     // return error returned by addColumn

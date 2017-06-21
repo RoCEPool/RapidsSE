@@ -126,7 +126,7 @@ void Token::vCopy(Token* pGivenToken)
 {
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
   
-  m_sText.vCopy(pGivenToken->aStr());
+  m_sText.vCopy(pGivenToken->aText());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -166,7 +166,7 @@ i8 Token::iLength()
 /*----------------------------------------------------------------------------*/
 /* reset this token set                                                       */
 /*----------------------------------------------------------------------------*/
-Str* Token::aStr(void)
+Str* Token::aText(void)
 {
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
   
