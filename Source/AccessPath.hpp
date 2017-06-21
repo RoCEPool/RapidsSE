@@ -10,19 +10,20 @@ namespace Interface
 
 namespace Plans
 {
-  
   class AccessPath : public Object
   {
   private:
-    Table*     m_pTable;         // table
-    Partition* m_pPartition;     // partition
-    Index*     m_pIndex;         // index
+    Table*     m_pTable;      // table
+    Partition* m_pPartition;  // partition
+
+    bool       m_bIsCandidate; // is this path a candidate
+    i8         m_iPathRating;  // its score
+
+    Index*     m_pIndex;       // index
+    eFT        m_eAccess;      // access technique
   
-    i8         m_iPathRating;    // rating
-  
-    eFT        m_eAccess;        // access technique
-    PredicateVec*  m_pLowerPredicates;
-    PredicateVec*  m_pUpperPredicates;
+    PredicateVec*  m_pLowerPredicates; // predicates of lower/exact bound
+    PredicateVec*  m_pUpperPredicates; // predicates of upper bound
   
     // must be last
     Footer m_xFooter;
@@ -41,12 +42,15 @@ namespace Plans
     Partition* pPartition(void);
     void vPartition(Partition* pPartition);
     
-    Index* pIndex(void);
-    void vIndex(Index* pIndex);
-    
+    bool bIsCandidate(void);
+    void vIsCandidate(bool bIsCandidate);
+  
     i8 iPathRating(void);
     void vPathRating(i8 iPathRating);
   
+    Index* pIndex(void);
+    void vIndex(Index* pIndex);
+    
     eFT eAccess(void);
     void vAccess(eFT eAccess);
   
@@ -56,9 +60,6 @@ namespace Plans
     PredicateVec* pUpperPredicates(void);
     void vUpperPredicates(PredicateVec* pUpperPredicates);
     
-    s48K& sWhereString(void);
-    void vWhereString(s48K& sWhereString);
-  
     Footer* aFooter(void);
   };
   

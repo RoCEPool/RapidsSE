@@ -54,6 +54,7 @@ AccessPath::AccessPath(void)
   m_pPartition = nullptr;
   m_pIndex     = nullptr;
   
+  m_bIsCandidate = false;
   m_iPathRating = 0;
   
   m_eAccess = FT_NONE;
@@ -115,6 +116,26 @@ void AccessPath::vPartition(Partition* pPartition)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ACCESSPATH,_FOOTER_);
   
   m_pPartition = pPartition;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is candidate path?                                                         */
+/*----------------------------------------------------------------------------*/
+bool AccessPath::bIsCandidate(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ACCESSPATH,_FOOTER_);
+  
+  return m_bIsCandidate;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set is candidate path?                                                     */
+/*----------------------------------------------------------------------------*/
+void AccessPath::vIsCandidate(bool bIsCandidate)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ACCESSPATH,_FOOTER_);
+  
+  m_bIsCandidate = bIsCandidate;
 }
 
 /*----------------------------------------------------------------------------*/
