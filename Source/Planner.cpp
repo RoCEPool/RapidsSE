@@ -269,7 +269,7 @@ void Planner::vMatchPaths(void)
       pOp->vOpKind(eRelOp);
       mpLowColPred->vOp(pOp);
       
-      mpLowColPred->vPredicate(PK_COLUMN_OP_LITERAL);
+      mpLowColPred->vPredicate(PK_COLUMN_LITERAL_OP);
     
     } // i_Col
     
