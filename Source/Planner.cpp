@@ -336,6 +336,94 @@ void Planner::vMatchLowerPaths(void)
 void Planner::vMatchUpperPaths(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
+  Token* mpUppValTkn;
+  Token* mpOpTkn;
+  s256 sOpValue;
+  eRO eRelOp;
+  i8 i_Token;
+  Token* pColNmTkn;
+  Predicate* mpUppColPred;
+  s32 sColumnName;
+  Arg* pLitValue;
+  s256 sLitValue;
+  Op* pOp;
+  AccessPath* mpAccPath;
+  PredicateVec* mpUppPredVec;
+  
+  // step thru all generated access paths
+  for (i8 i_Path = 0; i_Path < m_pPathVec->nItems(); i_Path++) {
+    
+    // get access path
+    mpAccPath = m_pPathVec->pGet(i_Path);
+    
+    // test access path is an upper bound fetch
+    if ( AT_UPPER != mpAccPath->eAccess() )
+      continue;
+    
+    // get the upper bound predicate vector from the access path
+    mpUppPredVec = mpAccPath->pUpperPredicates();
+    
+    // attempt to find all access path columns
+    // in the where clause as upper predicates
+    bool bMatchAll = true;
+    for (i8 i_Col = 0; i_Col < mpAccPath->pUpperPredicates()->nItems(); i_Col++) {
+      
+      // get access path upper predicate for the column
+      mpUppColPred = mpUppPredVec->pGet(i_Col);
+      sColumnName = mpUppColPred->pArg1()->sArgVal().aStr();
+      
+      // does this column exist in the where clause as a upper predicate?
+      i_Token = -1;
+      for (;;) {
+        
+        // attempt to find the column in the where clause
+        pColNmTkn = m_pWhereTokenVec->pFindToken(sColumnName,i_Token);
+        if ( ! pColNmTkn ) {
+          bMatchAll = false;
+          goto L_MatchTest;
+        }
+        
+        // found column in where clause
+        
+        // get the associated value from the where predicate
+        // remember that predicates are in rpn form
+        mpUppValTkn = m_pWhereTokenVec->pGet(i_Token+1);
+        
+        // get the operator from the where predicate
+        mpOpTkn = m_pWhereTokenVec->pGet(i_Token+2);
+        sOpValue = mpOpTkn->aText();
+        eRelOp = Op::eDecodeText(sOpValue.aStr());
+        
+        // haver we found an upper where predicate?
+        if ( bIsUpperOp(eRelOp) )
+          break;
+      }
+      
+      // column exists in the where clause as an upper predicate
+      
+      // set the access path upper predicate value
+      pLitValue = new Arg;
+      sLitValue = mpUppValTkn->aText();
+      pLitValue->vArgVal(sLitValue);
+      mpUppColPred->vArg2(pLitValue);
+      
+      // set the access path upper predicate operator
+      pOp = new Op;
+      pOp->vOpKind(eRelOp);
+      mpUppColPred->vOp(pOp);
+      
+      // mark the access path predicate as: column literal op
+      mpUppColPred->vPredicate(PK_COLUMN_LITERAL_OP);
+      
+    } // i_Col
+    
+  L_MatchTest:
+    
+    // does this acess path qualify as a candidate upper access path?
+    if ( bMatchAll )
+      mpAccPath->vIsCandidate(true);
+    
+  } // i_Path
 }
 
 /*----------------------------------------------------------------------------*/
