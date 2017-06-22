@@ -285,9 +285,107 @@ void Planner::vGenPaths(void)
 /*----------------------------------------------------------------------------*/
 void Planner::vMatchPaths(void)
 {
+  vMatchExactPaths();
   vMatchLowerPaths();
   vMatchUpperPaths();
   vMatchRangePaths();
+}
+
+/*----------------------------------------------------------------------------*/
+/* attempt to match predicates to paths                                       */
+/*----------------------------------------------------------------------------*/
+void Planner::vMatchExactPaths(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
+  
+  Token* mpEqlValTkn;
+  Token* mpOpTkn;
+  s256 sOpValue;
+  eRO eRelOp;
+  i8 i_Token;
+  Token* pColNmTkn;
+  Predicate* mpEqlColPred;
+  s32 sColumnName;
+  Arg* pLitValue;
+  s256 sLitValue;
+  Op* pOp;
+  AccessPath* mpAccPath;
+  PredicateVec* mpEqlPredVec;
+  
+  // step thru all generated access paths
+  for (i8 i_Path = 0; i_Path < m_pPathVec->nItems(); i_Path++) {
+    
+    // get access path
+    mpAccPath = m_pPathVec->pGet(i_Path);
+    
+    // test access path is an exact bound fetch
+    if ( AT_EXACT != mpAccPath->eAccess() )
+      continue;
+    
+    // get the exact (lower) bound predicate vector from the access path
+    mpEqlPredVec = mpAccPath->pLowerPredicates();
+    
+    // attempt to find all access path columns
+    // in the where clause as exact predicates
+    bool bMatchAll = true;
+    for (i8 i_Col = 0; i_Col < mpAccPath->pLowerPredicates()->nItems(); i_Col++) {
+      
+      // get access path lower predicate for the column
+      mpEqlColPred = mpEqlPredVec->pGet(i_Col);
+      sColumnName = mpEqlColPred->pArg1()->sArgVal().aStr();
+      
+      // does this column exist in the where clause as a exact predicate?
+      i_Token = -1;
+      for (;;) {
+        
+        // attempt to find the column in the where clause
+        pColNmTkn = m_pWhereTokenVec->pFindToken(sColumnName,i_Token);
+        if ( ! pColNmTkn ) {
+          bMatchAll = false;
+          goto L_MatchTest;
+        }
+        
+        // found column in where clause
+        
+        // get the associated value from the where predicate
+        // remember that predicates are in rpn form
+        mpEqlValTkn = m_pWhereTokenVec->pGet(i_Token+1);
+        
+        // get the operator from the where predicate
+        mpOpTkn = m_pWhereTokenVec->pGet(i_Token+2);
+        sOpValue = mpOpTkn->aText();
+        eRelOp = Op::eDecodeText(sOpValue.aStr());
+        
+        // haver we found a lower where predicate?
+        if ( bIsExactOp(eRelOp) )
+          break;
+      }
+      
+      // column exists in the where clause as an exact predicate
+      
+      // set the access path lower predicate value
+      pLitValue = new Arg;
+      sLitValue = mpEqlValTkn->aText();
+      pLitValue->vArgVal(sLitValue);
+      mpEqlColPred->vArg2(pLitValue);
+      
+      // set the access path lower predicate operator
+      pOp = new Op;
+      pOp->vOpKind(eRelOp);
+      mpEqlColPred->vOp(pOp);
+      
+      // mark the access path predicate as: column literal op
+      mpEqlColPred->vPredicate(PK_COLUMN_LITERAL_OP);
+      
+    } // i_Col
+    
+  L_MatchTest:
+    
+    // does this acess path qualify as a candidate lower access path?
+    if ( bMatchAll )
+      mpAccPath->vIsCandidate(true);
+    
+  } // i_Path
 }
 
 /*----------------------------------------------------------------------------*/
@@ -327,7 +425,7 @@ void Planner::vMatchLowerPaths(void)
     // attempt to find all access path columns
     // in the where clause as lower predicates
     bool bMatchAll = true;
-    for (i8 i_Col = 0; i_Col < mpAccPath->pLowerPredicates()->nItems(); i_Col++) {
+    for (i8 i_Col = 0; i_Col < mpLowPredVec->nItems(); i_Col++) {
       
       // get access path lower predicate for the column
       mpLowColPred = mpLowPredVec->pGet(i_Col);
@@ -423,7 +521,7 @@ void Planner::vMatchUpperPaths(void)
     // attempt to find all access path columns
     // in the where clause as upper predicates
     bool bMatchAll = true;
-    for (i8 i_Col = 0; i_Col < mpAccPath->pUpperPredicates()->nItems(); i_Col++) {
+    for (i8 i_Col = 0; i_Col < mpUppPredVec->nItems(); i_Col++) {
       
       // get access path upper predicate for the column
       mpUppColPred = mpUppPredVec->pGet(i_Col);
