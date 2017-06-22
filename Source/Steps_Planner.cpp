@@ -92,7 +92,6 @@ ENTRY("vPlannerDelete"_Str);
 /*----------------------------------------------------------------------------*/
 /* planner.fetchTechnique@ -- fetch fetch technique ( -- )                    */
 /*----------------------------------------------------------------------------*/
-#ifdef RPN_PLANNER
 void Task::vPlannerFetchTechniqueFetch(MP_Task mpTask)
 {
   ENTRY("vPlannerDelete"_Str);
@@ -108,25 +107,6 @@ void Task::vPlannerFetchTechniqueFetch(MP_Task mpTask)
   
   EXIT();
 }
-#else //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-void Task::vPlannerFetchTechniqueFetch(MP_Task mpTask)
-{
-  ENTRY("vPlannerDelete"_Str);
-  
-  Object* pPtrPlanner;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrPlanner) )
-    THROW_INVALID_DSTACK("planner.fetchTechnique@"_Str);
-  Planner* mpPlanner = _pPlanner(pPtrPlanner);
-  
-  PredicateVec* mpPredicateVec = mpPlanner->pPredicateVec();
-  Predicate* mpPredicate = mpPredicateVec->pGet(0);
-  eFT eFetchTechnique = mpPredicate->eFetchTechnique();
-  
-  mpTask->m_pDataStack->vPushInt(eFetchTechnique);
-  
-  EXIT();
-}
-#endif
 
 /*----------------------------------------------------------------------------*/
 /* planner.genPaths -- generate all access paths for table                    */
@@ -172,7 +152,6 @@ void Task::vPlannerHighKeyFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* planner.indexNm@ -- fetch index name ( -- )                                */
 /*----------------------------------------------------------------------------*/
-#ifdef RPN_PLANNER
 void Task::vPlannerIndexNmFetch(MP_Task mpTask)
 {
   ENTRY("vPlannerIndexFetch"_Str);
@@ -190,25 +169,6 @@ void Task::vPlannerIndexNmFetch(MP_Task mpTask)
   
   EXIT();
 }
-#else //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-void Task::vPlannerIndexNmFetch(MP_Task mpTask)
-{
-  ENTRY("vPlannerIndexFetch"_Str);
-  
-  Object* pPtrPlanner;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrPlanner) )
-    THROW_INVALID_DSTACK("planner.indexNm@"_Str);
-  Planner* mpPlanner = _pPlanner(pPtrPlanner);
-  
-  Index* pIndex = mpPlanner->pChosenIndex();
-  
-  s32 sIndexNm = pIndex->aIndexName();
-  mpTask->m_pDataStack->vPushS32(sIndexNm);
-  
-  EXIT();
-}
-
-#endif
 
 /*----------------------------------------------------------------------------*/
 /* planner.key@ -- fetch key ( -- )                                           */
@@ -236,7 +196,6 @@ void Task::vPlannerKeyFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* planner.lowKey@ -- fetch low key ( -- )                                    */
 /*----------------------------------------------------------------------------*/
-#ifdef RPN_PLANNER
 void Task::vPlannerLowKeyFetch(MP_Task mpTask)
 {
   ENTRY("vPlannerLowKeyFetch"_Str);
@@ -255,26 +214,6 @@ void Task::vPlannerLowKeyFetch(MP_Task mpTask)
   
   EXIT();
 }
-#else //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-void Task::vPlannerLowKeyFetch(MP_Task mpTask)
-{
-  ENTRY("vPlannerLowKeyFetch"_Str);
-  
-  Object* pPtrPlanner;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrPlanner) )
-    THROW_INVALID_DSTACK("planner.lowKey@"_Str);
-  Planner* mpPlanner = _pPlanner(pPtrPlanner);
-  
-  PredicateVec* mpPredicateVec = mpPlanner->pPredicateVec();
-  Predicate* mpPredicate = mpPredicateVec->pGet(0);
-  Arg* pArg2 = mpPredicate->pArg2();
-  s256 sLow = pArg2->sArgVal();
-  
-  mpTask->m_pDataStack->vPushS256(sLow);
-  
-  EXIT();
-}
-#endif
 
 /*----------------------------------------------------------------------------*/
 /* planner.matchPaths -- attempt to match predicates with paths               */

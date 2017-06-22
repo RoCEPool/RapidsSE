@@ -86,7 +86,6 @@ Planner::~Planner(void)
 /*----------------------------------------------------------------------------*/
 /* choose best path based on score                                            */
 /*----------------------------------------------------------------------------*/
-#ifdef RPN_PLANNER
 void Planner::vChoosePath(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
@@ -124,59 +123,6 @@ void Planner::vChoosePath(void)
   
   vTrace("Chosen: %lld\n"_Str,m_i_Chosen);
 }
-#else // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-void Planner::vChoosePath(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
-  
-  ASSERT(m_pCandidatePaths->nItems());
-  
-  CandidatePath* npChosenPath = nullptr;
-  AccessPath* npChosenAccessPath = nullptr;
-  
-  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
-  
-  for (m_i_Chosen = 0; m_i_Chosen < m_pPathVec->nItems(); m_i_Chosen++) {
-    
-    AccessPath* mpAccPath = m_pPathVec->pGet(m_i_Chosen);
-    
-    if (mpAccPath->bIsCandidate()) {
-      npChosenAccessPath = mpAccPath;
-      break;
-    }
-  }
-  
-  for (i8 i_Test = m_i_Chosen + 1; i_Test < m_pPathVec->nItems(); i_Test++) {
-    
-    AccessPath* mpAccPath = m_pPathVec->pGet(i_Test);
-    
-    if (mpAccPath->bIsCandidate() &&
-        mpAccPath->iPathRating() < npChosenAccessPath->iPathRating()) {
-      m_i_Chosen = i_Test;
-      npChosenAccessPath = mpAccPath;
-    }
-  }
-  
-  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
-  
-  for (m_i_Chosen = 0; m_i_Chosen < m_pCandidatePaths->nItems(); m_i_Chosen++) {
-    if (m_bIsCandidate[m_i_Chosen]) {
-      npChosenPath = m_pCandidatePaths->pGet(m_i_Chosen);
-      break;
-    }
-  }
-  
-  for (i8 i_Test = m_i_Chosen + 1; i_Test < m_pCandidatePaths->nItems(); i_Test++) {
-    CandidatePath* npTestPath = m_pCandidatePaths->pGet(i_Test);
-    if (m_bIsCandidate[i_Test] && m_iScoreVec[i_Test] < m_iScoreVec[m_i_Chosen]) {
-      m_i_Chosen = i_Test;
-      npChosenPath = m_pCandidatePaths->pGet(m_i_Chosen);
-    }
-  }
-  
-  vTrace("Chosen: %lld\n"_Str,m_i_Chosen);
-}
-#endif
 
 /*----------------------------------------------------------------------------*/
 /* get chosen path                                                            */
@@ -194,7 +140,6 @@ AccessPath* Planner::pChosenPath(void)
 /*----------------------------------------------------------------------------*/
 /* generate the set of all paths for given table                              */
 /*----------------------------------------------------------------------------*/
-#ifdef RPN_PLANNER
 void Planner::vGenPaths(Table* pTable, Index* pIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
@@ -252,32 +197,6 @@ void Planner::vGenPaths(Table* pTable, Index* pIndex)
   
   // tbd
 }
-#else // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-void Planner::vGenPaths(Table* pTable, Index* pIndex)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
-  
-  IdxColVec* pIdxColVec = pIndex->pIdxColVec();
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // lower bounds
-  
-  for (i8 nCols = 1; nCols <= pIdxColVec->nItems(); nCols++) {
-    
-    CandidatePath* pCandidatePath = new CandidatePath;
-    
-    for (i8 i_IdxCol = 0; i_IdxCol < nCols; i_IdxCol++) {
-      Column* pColumn = pIdxColVec->pGet(i_IdxCol);
-      pCandidatePath->vAdd(pColumn);
-    }
-    
-    m_pCandidatePaths->vAdd(pCandidatePath);
-    m_pIndex[m_nCandidates] = pIndex;
-    
-    m_nCandidates++;
-  }
-}
-#endif
 
 /*----------------------------------------------------------------------------*/
 /* generate the set of all paths for given table                              */
@@ -313,7 +232,6 @@ void Planner::vGenPaths(void)
 /*----------------------------------------------------------------------------*/
 /* attempt to match predicates to paths                                       */
 /*----------------------------------------------------------------------------*/
-#ifdef RPN_PLANNER
 void Planner::vMatchPaths(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
@@ -366,56 +284,10 @@ void Planner::vMatchPaths(void)
     
   } // i_Path
 }
-#else // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-void Planner::vMatchPaths(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
-  
-  for (i8 i_Path = 0; i_Path < m_pPathVec->nItems(); i_Path++) {
-    
-    CandidatePath* mpCdtPath = m_pCandidatePaths->pGet(i_Path);
-    AccessPath* mpAccPath = m_pPathVec->pGet(i_Path);
-    
-    bool bMatchAll = true;
-    for (i8 i_Col = 0; i_Col < mpCdtPath->nItems(); i_Col++) {
-      Column* mpColumn = mpCdtPath->pGet(i_Col);
-      
-      s32 sColumnName = mpColumn->sColumnName();
-      
-      Token* pColNmTkn = m_pWhereTokenVec->pFindToken(sColumnName);
-      if ( ! pColNmTkn ) {
-        bMatchAll = false;
-        break;
-      }
-    } // i_Col
-    
-    if ( bMatchAll ) {
-      
-      mpAccPath->vIsCandidate(true);
-      
-      PredicateVec* mpLowerPredicates = new PredicateVec;
-      mpAccPath->vLowerPredicates(mpLowerPredicates);
-      
-      Predicate* mpPredicate = new Predicate;
-      mpLowerPredicates->vAdd(mpPredicate);
-      
-      for (i8 i_Col = 0; i_Col < mpCdtPath->nItems(); i_Col++) {
-        Column* mpColumn = mpCdtPath->pGet(i_Col);
-        Arg* pArg1 = new Arg;
-        mpPredicate->vArg1(pArg1);
-      }
-    }
-    
-  } // i_Path
-  
-  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
-}
-#endif
 
 /*----------------------------------------------------------------------------*/
 /* parse where clause                                                         */
 /*----------------------------------------------------------------------------*/
-#ifdef RPN_PLANNER
 void Planner::vParseWhere(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
@@ -425,85 +297,10 @@ void Planner::vParseWhere(void)
     Token* pToken = m_pWhereTokenVec->pGet(i_Token);
   }
 }
-#else // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-void Planner::vParseWhere(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
-  
-  TokenVec xTokenVec;
-  Tokeniser* pTokeniser = new Tokeniser;
-  pTokeniser->vPush();
-  pTokeniser->vUseString(m_sWhere);
-  
-  eFT eFetchTechnique;
-  Op* pOp;
-  
-  m_pPredicateVec = new PredicateVec;
-  for (i8 i_Predicate = 0; ; i_Predicate++) {
-    
-    if (i_Predicate) {
-      pTokeniser->vNextToken();
-      if (TK_NONE == pTokeniser->eToken())
-        break;
-      ASSERT(pTokeniser->sToken().bSame("and"_Str));
-    }
-    
-    pTokeniser->vNextToken();
-    
-    Arg* pArg1 = new Arg(AK_COLUMNNM,pTokeniser->sToken());
-    
-    pTokeniser->vNextToken();
-    if (pTokeniser->sToken().bSame(">"_Str)) {
-      pOp = new Op(RO_GREATER_THAN);
-      eFetchTechnique = FT_LOWER;
-    }
-    else
-      if (pTokeniser->sToken().bSame(">="_Str)) {
-        pOp = new Op(RO_GREATER_EQUAL);
-        eFetchTechnique = FT_LOWER;
-      }
-      else
-        if (pTokeniser->sToken().bSame("="_Str) ||
-            pTokeniser->sToken().bSame("=="_Str)) {
-          pOp = new Op(RO_EQUAL_TO);
-          eFetchTechnique = FT_EQUAL;
-        }
-        else
-          if (pTokeniser->sToken().bSame("<="_Str)) {
-            pOp = new Op(RO_LESS_EQUAL);
-            eFetchTechnique = FT_UPPER;
-          }
-          else
-            if (pTokeniser->sToken().bSame("<"_Str)) {
-              pOp = new Op(RO_LESS_THAN);
-              eFetchTechnique = FT_UPPER;
-            }
-            else {
-              ASSERT(0);
-            }
-    
-    pTokeniser->vNextToken();
-    Arg* pArg2 = new Arg(AK_LITERAL,pTokeniser->sToken());
-    
-    Predicate* pPredicate =
-    new Predicate(PK_COLUMN_OP_LITERAL,pArg1,pOp,pArg2,eFetchTechnique);
-    
-    m_pPredicateVec->vAdd(pPredicate);
-  }
-  
-  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
-  m_pWhereTokenVec = Tokeniser::pTokenise(m_sWhere);
-  for (i8 i_Token = 0; i_Token < m_pWhereTokenVec->nTokens(); i_Token++) {
-    Token* pToken = m_pWhereTokenVec->pGet(i_Token);
-  }
-  
-  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
-#endif
 
 /*----------------------------------------------------------------------------*/
 /* score the set of all paths                                                 */
 /*----------------------------------------------------------------------------*/
-#ifdef RPN_PLANNER
 void Planner::vScorePaths(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
@@ -524,28 +321,10 @@ void Planner::vScorePaths(void)
     pAccessPath->vPathRating(iScore);
   }
 }
-#else // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-void Planner::vScorePaths(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
-  
-  for (i8 i_Path = 0; i_Path < m_pCandidatePaths->nItems(); i_Path++) {
-    CandidatePath* pCandidatePath = m_pCandidatePaths->pGet(i_Path);
-    Index* pIndex = m_pIndex[i_Path];
-    
-    // initially just a simple scoring method
-    i8 iScore = 10 * (pIndex->bIsUnique() ? 0 : 1)
-    + pCandidatePath->nItems();
-    
-    m_iScoreVec[i_Path] = iScore;
-  }
-}
-#endif
 
 /*----------------------------------------------------------------------------*/
 /* show the generated set of paths                                            */
 /*----------------------------------------------------------------------------*/
-#ifdef RPN_PLANNER
 void Planner::vShowPaths(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
@@ -555,29 +334,6 @@ void Planner::vShowPaths(void)
     pAccessPath->vShow();
   }
 }
-#else // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-void Planner::vShowPaths(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
-  
-  for (i8 i_Path = 0; i_Path < m_pCandidatePaths->nItems(); i_Path++) {
-    
-    CandidatePath* pCandidatePath = m_pCandidatePaths->pGet(i_Path);
-    
-    vTrace("[Cdt %2lld : index %s : score %2lld : cdt %s] "_Str,
-           i_Path,
-           m_pIndex[i_Path]->aIndexName(),
-           m_iScoreVec[i_Path],
-           m_bIsCandidate[i_Path] ? "yes" : "no ");
-    
-    for (i8 i_IdxCol = 0; i_IdxCol < pCandidatePath->nItems(); i_IdxCol++) {
-      Column* pColumn = pCandidatePath->pGet(i_IdxCol);
-      vTrace("%s%s"_Str,i_IdxCol ? ", "_Str : ""_Str,pColumn->sColumnName().aStr());
-    }
-    vTrace("\n"_Str);
-  }
-}
-#endif
 
 /*----------------------------------------------------------------------------*/
 /* show predicate vector                                                      */
