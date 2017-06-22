@@ -255,14 +255,22 @@ void Planner::vMatchPaths(void)
         break;
       }
     
-      
       Token* mpLowValTkn = m_pWhereTokenVec->pGet(i_Token+1);
+      Token* mpOpTkn = m_pWhereTokenVec->pGet(i_Token+2);
       
       Arg* pLitValue = new Arg;
       s256 sLitValue = mpLowValTkn->aText();
       pLitValue->vArgVal(sLitValue);
       mpLowColPred->vArg2(pLitValue);
-
+      
+      Op* pOp = new Op;
+      s256 sOpValue = mpOpTkn->aText();
+      eRO eRelOp = Op::eDecodeText(sOpValue.aStr());
+      pOp->vOpKind(eRelOp);
+      mpLowColPred->vOp(pOp);
+      
+      mpLowColPred->vPredicate(PK_COLUMN_OP_LITERAL);
+    
     } // i_Col
     
     if ( bMatchAll )
