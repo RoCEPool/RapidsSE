@@ -182,6 +182,7 @@ void Planner::vGenPaths(Table* pTable, Index* pIndex)
       Arg* pColumnArg = new Arg;
       s256 sColumnNm = pColumn->sColumnName().aStr();
       pColumnArg->vArgVal(sColumnNm);
+      pLowerPredicate->vArg1(pColumnArg);
     }
     
   }
@@ -372,10 +373,21 @@ void Planner::vScorePaths(void)
 /*----------------------------------------------------------------------------*/
 /* show the generated set of paths                                            */
 /*----------------------------------------------------------------------------*/
+#ifdef RPN_PLANNER
 void Planner::vShowPaths(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
  
+  for (i8 i_Path = 0; i_Path < m_pPathVec->nItems(); i_Path++) {
+    AccessPath* pAccessPath = m_pPathVec->pGet(i_Path);
+    pAccessPath->vShow();
+  }
+}
+#else // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+void Planner::vShowPaths(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
+  
   for (i8 i_Path = 0; i_Path < m_pCandidatePaths->nItems(); i_Path++) {
     
     CandidatePath* pCandidatePath = m_pCandidatePaths->pGet(i_Path);
@@ -392,15 +404,8 @@ void Planner::vShowPaths(void)
     }
     vTrace("\n"_Str);
   }
-  
-  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
-  for (i8 i_Path = 0; i_Path < m_pPathVec->nItems(); i_Path++) {
-    AccessPath* pAccessPath = m_pPathVec->pGet(i_Path);
-    pAccessPath->vShow();
-  }
-  
-  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
 }
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* show predicate vector                                                      */

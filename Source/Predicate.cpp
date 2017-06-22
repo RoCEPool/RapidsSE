@@ -161,7 +161,7 @@ void Predicate::vArg2(Arg* pArg2)
 /*----------------------------------------------------------------------------*/
 void Predicate::vShow(void)
 {
-  vTrace("Predicate: %s %s %s : %s\n"_Str,
+  vTrace("  Predicate: %s %s %s : %s\n"_Str,
          aPK[m_ePredicate],
          m_pArg1 ? (char*)m_pArg1->sArgVal().aStr() : "<none>",
          m_pOp ? (char*)aRO[m_pOp->eOpKind()] : "<none>",
