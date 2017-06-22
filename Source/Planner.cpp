@@ -288,6 +288,65 @@ void Planner::vGenUpperPaths(Table* pTable, Index* pIndex)
 void Planner::vGenRangePaths(Table* pTable, Index* pIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
+  
+  //
+  // create a possible path for every index column combination
+  // for range bound
+  //
+  
+  IdxColVec* pIdxColVec = pIndex->pIdxColVec();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // range bound
+  
+  // step thru index column combinations for range bound
+  for (i8 nCols = 1; nCols <= pIdxColVec->nItems(); nCols++) {
+    
+    // create an access path for this combo
+    AccessPath* pAccessPath = new AccessPath(AT_RANGE);
+    m_pPathVec->vAdd(pAccessPath);
+    
+    // set the index in path
+    pAccessPath->vIndex(pIndex);
+    
+    // create the lower bound predicate vector
+    PredicateVec* pLowerPredicateVec = new PredicateVec;
+    pAccessPath->vLowerPredicates(pLowerPredicateVec);
+    
+    // step thru predicates of the lower bound predicate vector
+    for (i8 i_IdxCol = 0; i_IdxCol < nCols; i_IdxCol++) {
+      
+      // create a lower bound predicate
+      Predicate* pLowerPredicate = new Predicate;
+      pLowerPredicateVec->vAdd(pLowerPredicate);
+      
+      // add column arg to predicate
+      Column* pColumn = pIdxColVec->pGet(i_IdxCol);
+      Arg* pColumnArg = new Arg;
+      s256 sColumnNm = pColumn->sColumnName().aStr();
+      pColumnArg->vArgVal(sColumnNm);
+      pLowerPredicate->vArg1(pColumnArg);
+    }
+    
+    // create the upper bound predicate vector
+    PredicateVec* pUpperPredicateVec = new PredicateVec;
+    pAccessPath->vUpperPredicates(pUpperPredicateVec);
+    
+    // step thru predicates of the upper bound predicate vector
+    for (i8 i_IdxCol = 0; i_IdxCol < nCols; i_IdxCol++) {
+      
+      // create a upper bound predicate
+      Predicate* pUpperPredicate = new Predicate;
+      pUpperPredicateVec->vAdd(pUpperPredicate);
+      
+      // add column arg to predicate
+      Column* pColumn = pIdxColVec->pGet(i_IdxCol);
+      Arg* pColumnArg = new Arg;
+      s256 sColumnNm = pColumn->sColumnName().aStr();
+      pColumnArg->vArgVal(sColumnNm);
+      pUpperPredicate->vArg1(pColumnArg);
+    }
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -307,7 +366,7 @@ void Planner::vGenPaths(Table* mpTable)
     vGenExactPaths(mpTable, mpIndex);
     vGenLowerPaths(mpTable, mpIndex);
     vGenUpperPaths(mpTable, mpIndex);
-    vGenRangePaths(mpTable, mpIndex);
+    //vGenRangePaths(mpTable, mpIndex);
   }
 }
 
