@@ -137,9 +137,17 @@ AccessPath* Planner::pChosenPath(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* generate the set of all paths for given table                              */
+/* generate the set of all exact paths for given table                        */
 /*----------------------------------------------------------------------------*/
-void Planner::vGenPaths(Table* pTable, Index* pIndex)
+void Planner::vGenExactPaths(Table* pTable, Index* pIndex)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* generate the set of all lower paths for given table                        */
+/*----------------------------------------------------------------------------*/
+void Planner::vGenLowerPaths(Table* pTable, Index* pIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
   
@@ -183,16 +191,22 @@ void Planner::vGenPaths(Table* pTable, Index* pIndex)
     }
     
   }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // upper bound
-  
-  // tbd
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // range bound
-  
-  // tbd
+}
+
+/*----------------------------------------------------------------------------*/
+/* generate the set of all exact paths for given table                        */
+/*----------------------------------------------------------------------------*/
+void Planner::vGenUpperPaths(Table* pTable, Index* pIndex)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* generate the set of all range paths for given table                        */
+/*----------------------------------------------------------------------------*/
+void Planner::vGenRangePaths(Table* pTable, Index* pIndex)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -209,7 +223,10 @@ void Planner::vGenPaths(Table* mpTable)
   for (i8 i_Idx = 0; i_Idx < pIdxVec->nItems(); i_Idx++) {
     Index* mpIndex = pIdxVec->pGet(i_Idx);
     m_pIndex[i_Idx] = mpIndex;
-    vGenPaths(mpTable, mpIndex);
+    vGenExactPaths(mpTable, mpIndex);
+    vGenLowerPaths(mpTable, mpIndex);
+    vGenUpperPaths(mpTable, mpIndex);
+    vGenRangePaths(mpTable, mpIndex);
   }
 }
 

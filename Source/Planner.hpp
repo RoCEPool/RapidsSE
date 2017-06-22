@@ -43,10 +43,14 @@ namespace Plans
     s48K& sWhere(void);
     
     void vChoosePath(void);
-    void vGenPaths(Table* pTable, Index* pIndex);
-    void vGenPaths(Table* pTable);
     void vGenPaths(void);
+    void vGenPaths(Table* pTable);
+    void vGenExactPaths(Table* pTable, Index* pIndex);
+    void vGenLowerPaths(Table* pTable, Index* pIndex);
+    void vGenUpperPaths(Table* pTable, Index* pIndex);
+    void vGenRangePaths(Table* pTable, Index* pIndex);
     void vMatchPaths(void);
+    void vMatchExactPaths(void);
     void vMatchLowerPaths(void);
     void vMatchUpperPaths(void);
     void vMatchRangePaths(void);
