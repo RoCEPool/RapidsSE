@@ -118,7 +118,6 @@ void Planner::vChoosePath(void)
   }
   
   AccessPath* mpChosenPath = m_pPathVec->pGet(m_i_Chosen);
-  mpChosenPath->vAccess(AT_LOWER);
   
   vTrace("Chosen: %lld\n"_Str,m_i_Chosen);
 }
@@ -153,7 +152,7 @@ void Planner::vGenLowerPaths(Table* pTable, Index* pIndex)
   
   //
   // create a possible path for every index column combination
-  // covering lower bound, upper bound, and exact match
+  // for lower bound
   //
   
   IdxColVec* pIdxColVec = pIndex->pIdxColVec();
@@ -199,6 +198,47 @@ void Planner::vGenLowerPaths(Table* pTable, Index* pIndex)
 void Planner::vGenUpperPaths(Table* pTable, Index* pIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
+  
+  //
+  // create a possible path for every index column combination
+  // for upper bound
+  //
+  
+  IdxColVec* pIdxColVec = pIndex->pIdxColVec();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // upper bound
+  
+  // step thru index column combinations for upper bound
+  for (i8 nCols = 1; nCols <= pIdxColVec->nItems(); nCols++) {
+    
+    // create an access path for this combo
+    AccessPath* pAccessPath = new AccessPath(AT_UPPER);
+    m_pPathVec->vAdd(pAccessPath);
+    
+    // set the index in path
+    pAccessPath->vIndex(pIndex);
+    
+    // create the upper bound predicate vector
+    PredicateVec* pUpperPredicateVec = new PredicateVec;
+    pAccessPath->vUpperPredicates(pUpperPredicateVec);
+    
+    // step thru predicates of the upper bound predicate vector
+    for (i8 i_IdxCol = 0; i_IdxCol < nCols; i_IdxCol++) {
+      
+      // create a upper bound predicate
+      Predicate* pUpperPredicate = new Predicate;
+      pUpperPredicateVec->vAdd(pUpperPredicate);
+      
+      // add column arg to predicate
+      Column* pColumn = pIdxColVec->pGet(i_IdxCol);
+      Arg* pColumnArg = new Arg;
+      s256 sColumnNm = pColumn->sColumnName().aStr();
+      pColumnArg->vArgVal(sColumnNm);
+      pUpperPredicate->vArg1(pColumnArg);
+    }
+    
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -471,6 +511,7 @@ void Planner::vScorePaths(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
   
+  i8 iScore;
   // step thru paths and score them
   for (i8 i_Path = 0; i_Path < m_pPathVec->nItems(); i_Path++) {
     
@@ -481,8 +522,15 @@ void Planner::vScorePaths(void)
     Index* pIndex = pAccessPath->pIndex();
     
     // initially just a simple scoring method      //! move this into AccessPath
-    i8 iScore = 10 * (pIndex->bIsUnique() ? 0 : 1)
+    if (AT_LOWER == pAccessPath->eAccess())
+      iScore = 10 * (pIndex->bIsUnique() ? 0 : 1)
                   + pAccessPath->pLowerPredicates()->nItems();
+    else
+    if (AT_UPPER == pAccessPath->eAccess())
+      iScore = 10 * (pIndex->bIsUnique() ? 0 : 1)
+                  + pAccessPath->pUpperPredicates()->nItems();
+    else
+      iScore = 100;
     
     pAccessPath->vPathRating(iScore);
   }

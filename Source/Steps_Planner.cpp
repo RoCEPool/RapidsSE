@@ -139,10 +139,10 @@ void Task::vPlannerHighKeyFetch(MP_Task mpTask)
     THROW_INVALID_DSTACK("planner.highKey@"_Str);
   Planner* mpPlanner = _pPlanner(pPtrPlanner);
   
-  PredicateVec* mpPredicateVec = mpPlanner->pPredicateVec();
-  Predicate* mpPredicate = mpPredicateVec->pGet(0);
-  Arg* pArg2 = mpPredicate->pArg2();
-  s256 sHighKey = pArg2->sArgVal();
+  AccessPath* mpChosenPath = mpPlanner->pChosenPath();
+  PredicateVec* mpUpperPredicates = mpChosenPath->pUpperPredicates();
+  Predicate* mpUpperPredicate = mpUpperPredicates->pGet(0);
+  s256 sHighKey = mpUpperPredicate->pArg2()->sArgVal();
   
   mpTask->m_pDataStack->vPushS256(sHighKey);
   
