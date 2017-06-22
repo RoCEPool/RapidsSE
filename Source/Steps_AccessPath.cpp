@@ -32,46 +32,8 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_AccessPath(void)
 {
-  vAddPrimitive("accessPath.delete"_Str,   &vAccessPathDelete,     false);
-  vAddPrimitive("accessPath::new"_Str,     &vAccessPathNew,        false);
   vAddPrimitive("accessPath.table@"_Str,   &vAccessPathTableFetch, false);
   vAddPrimitive("accessPath.table!"_Str,   &vAccessPathTableStore, false);
-}
-
-/*----------------------------------------------------------------------------*/
-/* accessPath.delete -- delete an access path ( accessPath -- )               */
-/*----------------------------------------------------------------------------*/
-void Task::vAccessPathDelete(MP_Task mpTask)
-{
-ENTRY("vAccessPathDelete"_Str);
-  
-  Object* pPtrAccessPath;
-  
-  if ( ! mpTask->m_pDataStack->bPop(pPtrAccessPath) )
-    THROW_INVALID_DSTACK("accessPath.delete"_Str);
-  
-  AccessPath* pAccessPath = _pAccessPath(pPtrAccessPath);
-
-  delete pAccessPath;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* accessPath::New -- new a file ( -- file )                                  */
-/*----------------------------------------------------------------------------*/
-void Task::vAccessPathNew(MP_Task mpTask)
-{
-ENTRY("vAccessPathNew"_Str);
-  
-//  AccessPath* pAccessPath = new AccessPath;
-//  
-//  Object* pPtrAccessPath;
-//  pPtrAccessPath = (Object*)pAccessPath;
-//  
-//  mpTask->m_pDataStack->vPushObject(pPtrAccessPath);
-  
-  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/

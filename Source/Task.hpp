@@ -273,8 +273,6 @@ namespace Tasks
     /*------------------------------------------------------------------------*/
 
     // access path
-    static void vAccessPathDelete(MP_Task mpTask);
-    static void vAccessPathNew(MP_Task mpTask);
     static void vAccessPathTableFetch(MP_Task mpTask);
     static void vAccessPathTableStore(MP_Task mpTask);
  
