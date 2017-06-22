@@ -204,8 +204,8 @@ i8 giClassSize[]
   /* 15 */ sizeof(BufferPool),         // CN_BUFFERPOOL
   /* 16 */ sizeof(BPA),                // CN_BPA
 
-  /*    */ sizeof(CandidatePath),      // CN_CANDIDATEPATH
-  /*    */ sizeof(CandidatePaths),     // CN_CANDIDATEPATHS
+  /*    */ 0,                          // CN_CANDIDATEPATH
+  /*    */ 0,                          // CN_CANDIDATEPATHS
   /*    */ sizeof(Column),             // CN_COLUMN
   /*    */ sizeof(ColumnVec),          // CN_COLUMNVEC
   

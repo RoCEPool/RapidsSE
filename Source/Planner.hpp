@@ -14,7 +14,6 @@ namespace Plans
   
     PathVec*        m_pPathVec;
   
-    CandidatePaths* m_pCandidatePaths;
     Index*          m_pIndex[C_MAX_CANDIDATES];
     i8              m_iScoreVec[C_MAX_CANDIDATES];
     bool            m_bIsCandidate[C_MAX_CANDIDATES];
@@ -56,7 +55,6 @@ namespace Plans
     Index* pChosenIndex(void);
     AccessPath* pChosenPath(void);
   
-    CandidatePath* pCandidatePath(void);
     PredicateVec* pPredicateVec(void);
   
     Footer* aFooter(void);

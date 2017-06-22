@@ -20,9 +20,6 @@ using namespace Plans;
 #include "Op.hpp"
 #include "Predicate.hpp"
 
-typedef Vector<CN_CANDIDATEPATH,Column,CN_COLUMN,128,u8> CandidatePath;
-typedef Vector<CN_CANDIDATEPATHS,CandidatePath,CN_CANDIDATEPATH,128,u8> CandidatePaths;
-
 typedef Vector<CN_PREDICATEVEC,Predicate,CN_PREDICATE,128,u8> PredicateVec;
 
 

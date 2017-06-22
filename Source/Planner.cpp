@@ -53,7 +53,6 @@ Planner::Planner(void)
   m_pTable = nullptr;
   m_pPathVec = nullptr;
   
-  m_pCandidatePaths = nullptr;
   for (i8 i_Cdt = 0; i_Cdt < C_MAX_CANDIDATES; i_Cdt++) {
     m_pIndex[i_Cdt] = nullptr;
     m_iScoreVec[i_Cdt] = 0;
@@ -205,10 +204,7 @@ void Planner::vGenPaths(Table* mpTable)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
   
-  vTrace("CandidatePaths::vGenPaths \n"_Str);
-  
   m_pPathVec = new PathVec;
-  m_pCandidatePaths = new CandidatePaths;
   
   IdxVec* pIdxVec = mpTable->pIdxVec();
   
@@ -404,16 +400,6 @@ Index* Planner::pChosenIndex(void)
   Index* pChosen = m_pIndex[m_i_Chosen];
   
   return pChosen;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get predicate vector                                                       */
-/*----------------------------------------------------------------------------*/
-CandidatePath* Planner::pCandidatePath(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
-  
-  return m_pCandidatePaths->pGet(m_i_Chosen);
 }
 
 /*----------------------------------------------------------------------------*/
