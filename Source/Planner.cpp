@@ -154,7 +154,7 @@ void Planner::vGenPaths(Table* pTable, Index* pIndex)
   IdxColVec* pIdxColVec = pIndex->pIdxColVec();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // lower bounds
+  // lower bound
   
   // step thru index column combinations for lower bound
   for (i8 nCols = 1; nCols <= pIdxColVec->nItems(); nCols++) {
@@ -188,10 +188,10 @@ void Planner::vGenPaths(Table* pTable, Index* pIndex)
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // upper bounds
+  // upper bound
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // lower and upper bounds
+  // range bound
 }
 #else // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 void Planner::vGenPaths(Table* pTable, Index* pIndex)
@@ -254,45 +254,59 @@ void Planner::vGenPaths(void)
 /*----------------------------------------------------------------------------*/
 /* attempt to match predicates to paths                                       */
 /*----------------------------------------------------------------------------*/
+#ifdef RPN_PLANNER
 void Planner::vMatchPaths(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
   
-  for (i8 i_Path = 0; i_Path < m_pCandidatePaths->nItems(); i_Path++) {
-    CandidatePath* mpPath = m_pCandidatePaths->pGet(i_Path);
+  for (i8 i_Path = 0; i_Path < m_pPathVec->nItems(); i_Path++) {
+    
+    AccessPath* mpAccPath = m_pPathVec->pGet(i_Path);
+   
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // lower bound
+    
+    PredicateVec* mpLowPredVec = mpAccPath->pLowerPredicates();
     
     bool bMatchAll = true;
-    for (i8 i_Col = 0; i_Col < mpPath->nItems(); i_Col++) {
-      Column* mpColumn = mpPath->pGet(i_Col);
+    for (i8 i_Col = 0; i_Col < mpAccPath->pLowerPredicates()->nItems(); i_Col++) {
       
-      bool bHasColumn = false;
-      for (i8 i_Pred = 0; i_Pred < m_pPredicateVec->nItems(); i_Pred++) {
-        Predicate* mpPredicate = m_pPredicateVec->pGet(i_Pred);
-        
-        s256 sColumnNm = mpPredicate->pArg1()->sArgVal();
- 
-        if (mpColumn->bIsName((s32)sColumnNm)) {
-          bHasColumn = true;
-          break;
-        }
-      }
+      Predicate* mpLowPred = mpLowPredVec->pGet(i_Col);
       
-      if (!bHasColumn) {
+      s32 sColumnName = mpLowPred->pArg1()->sArgVal().aStr();
+      
+      Token* pColNmTkn = m_pWhereTokenVec->pFindToken(sColumnName);
+      if ( ! pColNmTkn ) {
         bMatchAll = false;
         break;
       }
-    }
+    } // i_Col
     
-    if (bMatchAll)
-      m_bIsCandidate[i_Path] = true;
-  }
+    if ( bMatchAll )
+      mpAccPath->vIsCandidate(true);
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // upper bound
+    
+    // tbd
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // range bound
+    
+    // tbd
+    
+  } // i_Path
+}
+#else // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+void Planner::vMatchPaths(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
   
-  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
   for (i8 i_Path = 0; i_Path < m_pPathVec->nItems(); i_Path++) {
     
     CandidatePath* mpCdtPath = m_pCandidatePaths->pGet(i_Path);
     AccessPath* mpAccPath = m_pPathVec->pGet(i_Path);
-   
+    
     bool bMatchAll = true;
     for (i8 i_Col = 0; i_Col < mpCdtPath->nItems(); i_Col++) {
       Column* mpColumn = mpCdtPath->pGet(i_Col);
@@ -327,6 +341,95 @@ void Planner::vMatchPaths(void)
   
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
 }
+#endif
+
+/*----------------------------------------------------------------------------*/
+/* parse where clause                                                         */
+/*----------------------------------------------------------------------------*/
+#ifdef RPN_PLANNER
+void Planner::vParseWhere(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
+  
+  m_pWhereTokenVec = Tokeniser::pTokenise(m_sWhere);
+  for (i8 i_Token = 0; i_Token < m_pWhereTokenVec->nTokens(); i_Token++) {
+    Token* pToken = m_pWhereTokenVec->pGet(i_Token);
+  }
+}
+#else // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+void Planner::vParseWhere(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
+  
+  TokenVec xTokenVec;
+  Tokeniser* pTokeniser = new Tokeniser;
+  pTokeniser->vPush();
+  pTokeniser->vUseString(m_sWhere);
+  
+  eFT eFetchTechnique;
+  Op* pOp;
+  
+  m_pPredicateVec = new PredicateVec;
+  for (i8 i_Predicate = 0; ; i_Predicate++) {
+    
+    if (i_Predicate) {
+      pTokeniser->vNextToken();
+      if (TK_NONE == pTokeniser->eToken())
+        break;
+      ASSERT(pTokeniser->sToken().bSame("and"_Str));
+    }
+    
+    pTokeniser->vNextToken();
+    
+    Arg* pArg1 = new Arg(AK_COLUMNNM,pTokeniser->sToken());
+    
+    pTokeniser->vNextToken();
+    if (pTokeniser->sToken().bSame(">"_Str)) {
+      pOp = new Op(RO_GREATER_THAN);
+      eFetchTechnique = FT_LOWER;
+    }
+    else
+      if (pTokeniser->sToken().bSame(">="_Str)) {
+        pOp = new Op(RO_GREATER_EQUAL);
+        eFetchTechnique = FT_LOWER;
+      }
+      else
+        if (pTokeniser->sToken().bSame("="_Str) ||
+            pTokeniser->sToken().bSame("=="_Str)) {
+          pOp = new Op(RO_EQUAL_TO);
+          eFetchTechnique = FT_EQUAL;
+        }
+        else
+          if (pTokeniser->sToken().bSame("<="_Str)) {
+            pOp = new Op(RO_LESS_EQUAL);
+            eFetchTechnique = FT_UPPER;
+          }
+          else
+            if (pTokeniser->sToken().bSame("<"_Str)) {
+              pOp = new Op(RO_LESS_THAN);
+              eFetchTechnique = FT_UPPER;
+            }
+            else {
+              ASSERT(0);
+            }
+    
+    pTokeniser->vNextToken();
+    Arg* pArg2 = new Arg(AK_LITERAL,pTokeniser->sToken());
+    
+    Predicate* pPredicate =
+    new Predicate(PK_COLUMN_OP_LITERAL,pArg1,pOp,pArg2,eFetchTechnique);
+    
+    m_pPredicateVec->vAdd(pPredicate);
+  }
+  
+  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
+  m_pWhereTokenVec = Tokeniser::pTokenise(m_sWhere);
+  for (i8 i_Token = 0; i_Token < m_pWhereTokenVec->nTokens(); i_Token++) {
+    Token* pToken = m_pWhereTokenVec->pGet(i_Token);
+  }
+  
+  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* score the set of all paths                                                 */
@@ -464,83 +567,6 @@ void Planner::vWhere(s48K& sWhere)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
   
   m_sWhere = sWhere;
-}
-
-/*----------------------------------------------------------------------------*/
-/* parse where clause                                                         */
-/*----------------------------------------------------------------------------*/
-void Planner::vParseWhere(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
-    
-  TokenVec xTokenVec;
-  Tokeniser* pTokeniser = new Tokeniser;
-  pTokeniser->vPush();
-  pTokeniser->vUseString(m_sWhere);
-  
-  eFT eFetchTechnique;
-  Op* pOp;
-  
-  m_pPredicateVec = new PredicateVec;
-  for (i8 i_Predicate = 0; ; i_Predicate++) {
-    
-    if (i_Predicate) {
-      pTokeniser->vNextToken();
-      if (TK_NONE == pTokeniser->eToken())
-        break;
-      ASSERT(pTokeniser->sToken().bSame("and"_Str));
-    }
-    
-    pTokeniser->vNextToken();
-  
-    Arg* pArg1 = new Arg(AK_COLUMNNM,pTokeniser->sToken());
-
-    pTokeniser->vNextToken();
-    if (pTokeniser->sToken().bSame(">"_Str)) {
-      pOp = new Op(RO_GREATER_THAN);
-      eFetchTechnique = FT_LOWER;
-    }
-    else
-    if (pTokeniser->sToken().bSame(">="_Str)) {
-      pOp = new Op(RO_GREATER_EQUAL);
-      eFetchTechnique = FT_LOWER;
-    }
-    else
-    if (pTokeniser->sToken().bSame("="_Str) ||
-        pTokeniser->sToken().bSame("=="_Str)) {
-      pOp = new Op(RO_EQUAL_TO);
-      eFetchTechnique = FT_EQUAL;
-    }
-    else
-    if (pTokeniser->sToken().bSame("<="_Str)) {
-      pOp = new Op(RO_LESS_EQUAL);
-      eFetchTechnique = FT_UPPER;
-    }
-    else
-    if (pTokeniser->sToken().bSame("<"_Str)) {
-      pOp = new Op(RO_LESS_THAN);
-      eFetchTechnique = FT_UPPER;
-    }
-    else {
-      ASSERT(0);
-    }
-    
-    pTokeniser->vNextToken();
-    Arg* pArg2 = new Arg(AK_LITERAL,pTokeniser->sToken());
-    
-    Predicate* pPredicate =
-      new Predicate(PK_COLUMN_OP_LITERAL,pArg1,pOp,pArg2,eFetchTechnique);
-    
-    m_pPredicateVec->vAdd(pPredicate);
-  }
-  
-  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
-  m_pWhereTokenVec = Tokeniser::pTokenise(m_sWhere);
-  for (i8 i_Token = 0; i_Token < m_pWhereTokenVec->nTokens(); i_Token++) {
-    Token* pToken = m_pWhereTokenVec->pGet(i_Token);
-  }
-
-  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
 }
 
 /*----------------------------------------------------------------------------*/
