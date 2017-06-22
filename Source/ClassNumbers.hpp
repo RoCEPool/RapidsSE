@@ -95,6 +95,7 @@ namespace Base
   
     /* 65 */ CN_PARSER,
     /* 66 */ CN_PARTITION,
+    /*    */ CN_PATHVEC,
     /* 67 */ CN_PLAN,
     /* 68 */ CN_PLANNER,
     /* 69 */ CN_PLANLIST,
@@ -256,6 +257,7 @@ namespace Base
   
     /* 44 */ "PARSER"_Str,
     /* 45 */ "PARTITION"_Str,
+    /*    */ "PATHVEC"_Str,
     /* 46 */ "PLAN"_Str,
     /*    */ "PLANNER"_Str,
     /* 47 */ "PLANLIST"_Str,

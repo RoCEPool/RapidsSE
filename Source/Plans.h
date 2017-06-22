@@ -24,7 +24,7 @@ typedef Vector<CN_PREDICATEVEC,Predicate,CN_PREDICATE,128,u8> PredicateVec;
 
 
 #include "AccessPath.hpp"
-typedef Vector<CN_CANDIDATEPATHS,AccessPath,CN_ACCESSPATH,128,u8> PathVec;
+typedef Vector<CN_PATHVEC,AccessPath,CN_ACCESSPATH,128,u8> PathVec;
 
 #include "Plan.hpp"
 #include "Planner.hpp"

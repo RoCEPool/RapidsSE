@@ -96,6 +96,7 @@ pFINALIZE *gpFinalize[]
   
   /* 44 */ &Finalize::vUndefined,         // CN_PARSER
   /* 45 */ &Finalize::vUndefined,         // CN_PARTITION
+  /*    */ &Finalize::vUndefined,         // CN_PATHVEC
   /* 46 */ &Finalize::vUndefined,         // CN_PLAN
   /* 46 */ &Finalize::vUndefined,         // CN_PLANNER
   /* 47 */ &Finalize::vUndefined,         // CN_PLANLIST
