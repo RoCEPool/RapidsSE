@@ -180,8 +180,6 @@ void Planner::vGenPaths(Table* pTable, Index* pIndex)
       s256 sColumnNm = pColumn->sColumnName().aStr();
       pColumnArg->vArgVal(sColumnNm);
       pLowerPredicate->vArg1(pColumnArg);
-      
-      
     }
     
   }
@@ -257,6 +255,9 @@ void Planner::vMatchPaths(void)
     
       Token* mpLowValTkn = m_pWhereTokenVec->pGet(i_Token+1);
       Token* mpOpTkn = m_pWhereTokenVec->pGet(i_Token+2);
+
+      s256 sOpValue = mpOpTkn->aText();
+      eRO eRelOp = Op::eDecodeText(sOpValue.aStr());
       
       Arg* pLitValue = new Arg;
       s256 sLitValue = mpLowValTkn->aText();
@@ -264,8 +265,6 @@ void Planner::vMatchPaths(void)
       mpLowColPred->vArg2(pLitValue);
       
       Op* pOp = new Op;
-      s256 sOpValue = mpOpTkn->aText();
-      eRO eRelOp = Op::eDecodeText(sOpValue.aStr());
       pOp->vOpKind(eRelOp);
       mpLowColPred->vOp(pOp);
       
@@ -418,6 +417,45 @@ PredicateVec* Planner::pPredicateVec(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
   
   return m_pPredicateVec;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is given relational op an exact op?                                        */
+/*----------------------------------------------------------------------------*/
+bool Planner::bIsExactOp(eRO eRelOp)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
+  
+  if (RO_EQUAL_TO == eRelOp)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is given relational op an lower op?                                        */
+/*----------------------------------------------------------------------------*/
+bool Planner::bIsLowerOp(eRO eRelOp)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
+  
+  if (RO_GREATER_EQUAL == eRelOp || RO_GREATER_THAN == eRelOp)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is given relational op a upper op?                                         */
+/*----------------------------------------------------------------------------*/
+bool Planner::bIsUpperOp(eRO eRelOp)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
+  
+  if (RO_LESS_THAN == eRelOp || RO_LESS_EQUAL == eRelOp)
+    return true;
+  else
+    return false;
 }
 
 /*----------------------------------------------------------------------------*/

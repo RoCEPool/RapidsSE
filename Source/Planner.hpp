@@ -57,6 +57,10 @@ namespace Plans
   
     PredicateVec* pPredicateVec(void);
   
+    bool bIsExactOp(eRO eRelOp);
+    bool bIsLowerOp(eRO eRelOp);
+    bool bIsUpperOp(eRO eRelOp);
+  
     Footer* aFooter(void);
   };
   
