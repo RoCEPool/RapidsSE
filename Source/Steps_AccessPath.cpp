@@ -64,12 +64,12 @@ void Task::vAccessPathNew(MP_Task mpTask)
 {
 ENTRY("vAccessPathNew"_Str);
   
-  AccessPath* pAccessPath = new AccessPath;
-  
-  Object* pPtrAccessPath;
-  pPtrAccessPath = (Object*)pAccessPath;
-  
-  mpTask->m_pDataStack->vPushObject(pPtrAccessPath);
+//  AccessPath* pAccessPath = new AccessPath;
+//  
+//  Object* pPtrAccessPath;
+//  pPtrAccessPath = (Object*)pAccessPath;
+//  
+//  mpTask->m_pDataStack->vPushObject(pPtrAccessPath);
   
   EXIT();
 }

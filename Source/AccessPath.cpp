@@ -45,7 +45,7 @@ void AccessPath::operator delete(void* pDataAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-AccessPath::AccessPath(void)
+AccessPath::AccessPath(eAT eAccess)
 : Object(CN_ACCESSPATH)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ACCESSPATH,_FOOTER_);
@@ -57,7 +57,7 @@ AccessPath::AccessPath(void)
   m_bIsCandidate = false;
   m_iPathRating = 0;
   
-  m_eAccess = AT_NONE;
+  m_eAccess = eAccess;
   m_pLowerPredicates = nullptr;
   m_pUpperPredicates = nullptr;
   
@@ -245,8 +245,9 @@ void AccessPath::vShow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ACCESSPATH,_FOOTER_);
   
-  vTrace("Path %12s %s score %d\n"_Str,
+  vTrace("Path %12s %s %s score %d\n"_Str,
          m_pIndex->aIndexName(),
+         aAT[m_eAccess],
          m_bIsCandidate ? "cdt"_Str : "not"_Str,
          m_iPathRating);
   

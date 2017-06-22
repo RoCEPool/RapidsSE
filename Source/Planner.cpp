@@ -157,7 +157,7 @@ void Planner::vGenPaths(Table* pTable, Index* pIndex)
   for (i8 nCols = 1; nCols <= pIdxColVec->nItems(); nCols++) {
     
     // create an access path for this combo
-    AccessPath* pAccessPath = new AccessPath;
+    AccessPath* pAccessPath = new AccessPath(AT_LOWER);
     m_pPathVec->vAdd(pAccessPath);
     
     // set the index in path

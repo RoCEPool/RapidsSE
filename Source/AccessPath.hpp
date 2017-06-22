@@ -21,7 +21,7 @@ namespace Plans
   /* 6 */ AT_ENUMS
   };
   
-  static Str* aFM[]
+  static Str* aAT[]
   {
   /* 0 */ "none"_Str,
   /* 1 */ "exact"_Str,
@@ -55,7 +55,7 @@ namespace Plans
     void* operator new(size_t);
     void  operator delete(void*);
     
-    AccessPath(void);
+    AccessPath(eAT eAccess);
     ~AccessPath(void);
   
     Table* pTable(void);
