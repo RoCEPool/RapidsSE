@@ -86,6 +86,45 @@ Planner::~Planner(void)
 /*----------------------------------------------------------------------------*/
 /* choose best path based on score                                            */
 /*----------------------------------------------------------------------------*/
+#ifdef RPN_PLANNER
+void Planner::vChoosePath(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
+  
+
+  AccessPath* npChosenAccessPath = nullptr;
+  
+  // step thru path vector and find first candidate               //! assumption
+  for (m_i_Chosen = 0; m_i_Chosen < m_pPathVec->nItems(); m_i_Chosen++) {
+    
+    AccessPath* mpAccPath = m_pPathVec->pGet(m_i_Chosen);
+    
+    if (mpAccPath->bIsCandidate()) {
+      npChosenAccessPath = mpAccPath;
+      break;
+    }
+  }
+  
+  ASSERT(npChosenAccessPath);
+  
+  // step thru remaining paths attempting to find a better candidate
+  for (i8 i_Test = m_i_Chosen + 1; i_Test < m_pPathVec->nItems(); i_Test++) {
+    
+    AccessPath* mpTestAccPath = m_pPathVec->pGet(i_Test);
+    
+    if (mpTestAccPath->bIsCandidate() &&
+        mpTestAccPath->iPathRating() < npChosenAccessPath->iPathRating()) {
+      m_i_Chosen = i_Test;
+      npChosenAccessPath = mpTestAccPath;
+    }
+  }
+  
+  AccessPath* mpChosenPath = m_pPathVec->pGet(m_i_Chosen);
+  mpChosenPath->vAccess(FT_LOWER);
+  
+  vTrace("Chosen: %lld\n"_Str,m_i_Chosen);
+}
+#else // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 void Planner::vChoosePath(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
@@ -136,6 +175,20 @@ void Planner::vChoosePath(void)
   }
   
   vTrace("Chosen: %lld\n"_Str,m_i_Chosen);
+}
+#endif
+
+/*----------------------------------------------------------------------------*/
+/* get chosen path                                                            */
+/*----------------------------------------------------------------------------*/
+AccessPath* Planner::pChosenPath(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
+  
+  AccessPath* pChosenPath = m_pPathVec->pGet(m_i_Chosen);
+  
+  return pChosenPath;
+  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -190,8 +243,12 @@ void Planner::vGenPaths(Table* pTable, Index* pIndex)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // upper bound
   
+  // tbd
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // range bound
+  
+  // tbd
 }
 #else // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 void Planner::vGenPaths(Table* pTable, Index* pIndex)

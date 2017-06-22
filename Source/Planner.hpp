@@ -56,6 +56,7 @@ namespace Plans
     void vTest(void);
 
     Index* pChosenIndex(void);
+    AccessPath* pChosenPath(void);
   
     CandidatePath* pCandidatePath(void);
     PredicateVec* pPredicateVec(void);

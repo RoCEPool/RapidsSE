@@ -323,10 +323,10 @@ stk
   ( cdt_5 ) sWhere pPlanner Planner.parseWhere
   ( cdt_4 ) pPlanner Planner.showPaths
   ( cdt_7 ) pPlanner Planner.matchPaths
-  ( cdt_8 ) pPlanner Planner.showPaths            <OK> exit
+  ( cdt_8 ) pPlanner Planner.showPaths
   ( cdt_9 ) pPlanner Planner.choosePath
 
-  pPlanner Planner.fetchTechnique@
+  pPlanner Planner.fetchTechnique@ . <OK> exit
 
   // execute a lower bound select using index
   case
