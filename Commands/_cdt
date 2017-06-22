@@ -28,7 +28,7 @@ lwrselidx jCdt jCdt_idx1 1 ;
 fetch jCdt "jA 5 >=" ;
 //fetch jCdt "jA 9 <= jA 5 >= and" ;
 fetch jCdt "jA 5 <=" ;
-//fetch jCdt "jA 5 =="
+fetch jCdt "jA 5 ==" ;
 
 /*============================================================================*/
 /* end                                                                        */

@@ -173,7 +173,6 @@ void Task::vPlannerIndexNmFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* planner.key@ -- fetch key ( -- )                                           */
 /*----------------------------------------------------------------------------*/
-
 void Task::vPlannerKeyFetch(MP_Task mpTask)
 {
   ENTRY("vPlannerKeyFetch"_Str);
@@ -183,12 +182,12 @@ void Task::vPlannerKeyFetch(MP_Task mpTask)
     THROW_INVALID_DSTACK("planner.key@"_Str);
   Planner* mpPlanner = _pPlanner(pPtrPlanner);
   
-  PredicateVec* mpPredicateVec = mpPlanner->pPredicateVec();
-  Predicate* mpPredicate = mpPredicateVec->pGet(0);
-  Arg* pArg2 = mpPredicate->pArg2();
-  s256 sKey = pArg2->sArgVal();
+  AccessPath* mpChosenPath = mpPlanner->pChosenPath();
+  PredicateVec* mpLowerPredicates = mpChosenPath->pLowerPredicates();
+  Predicate* mpLowerPredicate = mpLowerPredicates->pGet(0);
+  s256 sEqlKey = mpLowerPredicate->pArg2()->sArgVal();
   
-  mpTask->m_pDataStack->vPushS256(sKey);
+  mpTask->m_pDataStack->vPushS256(sEqlKey);
   
   EXIT();
 }

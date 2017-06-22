@@ -141,6 +141,47 @@ AccessPath* Planner::pChosenPath(void)
 void Planner::vGenExactPaths(Table* pTable, Index* pIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
+  
+  //
+  // create a possible path for every index column combination
+  // for exact bound
+  //
+  
+  IdxColVec* pIdxColVec = pIndex->pIdxColVec();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // exact bound
+  
+  // step thru index column combinations for exact bound
+  for (i8 nCols = 1; nCols <= pIdxColVec->nItems(); nCols++) {
+    
+    // create an access path for this combo
+    AccessPath* pAccessPath = new AccessPath(AT_EXACT);
+    m_pPathVec->vAdd(pAccessPath);
+    
+    // set the index in path
+    pAccessPath->vIndex(pIndex);
+    
+    // create the lower bound predicate vector
+    PredicateVec* pExactPredicateVec = new PredicateVec;
+    pAccessPath->vLowerPredicates(pExactPredicateVec);
+    
+    // step thru predicates of the lower bound predicate vector
+    for (i8 i_IdxCol = 0; i_IdxCol < nCols; i_IdxCol++) {
+      
+      // create a lower bound predicate
+      Predicate* pExactPredicate = new Predicate;
+      pExactPredicateVec->vAdd(pExactPredicate);
+      
+      // add column arg to predicate
+      Column* pColumn = pIdxColVec->pGet(i_IdxCol);
+      Arg* pColumnArg = new Arg;
+      s256 sColumnNm = pColumn->sColumnName().aStr();
+      pColumnArg->vArgVal(sColumnNm);
+      pExactPredicate->vArg1(pColumnArg);
+    }
+    
+  }
 }
 
 /*----------------------------------------------------------------------------*/
