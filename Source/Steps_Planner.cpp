@@ -185,8 +185,8 @@ void Task::vPlannerKeyFetch(MP_Task mpTask)
   
   PredicateVec* mpPredicateVec = mpPlanner->pPredicateVec();
   Predicate* mpPredicate = mpPredicateVec->pGet(0);
-  Arg* pArg1 = mpPredicate->pArg1();
-  s256 sKey = pArg1->sArgVal();
+  Arg* pArg2 = mpPredicate->pArg2();
+  s256 sKey = pArg2->sArgVal();
   
   mpTask->m_pDataStack->vPushS256(sKey);
   
@@ -208,7 +208,7 @@ void Task::vPlannerLowKeyFetch(MP_Task mpTask)
   AccessPath* mpChosenPath = mpPlanner->pChosenPath();
   PredicateVec* mpLowerPredicates = mpChosenPath->pLowerPredicates();
   Predicate* mpLowerPredicate = mpLowerPredicates->pGet(0);
-  s256 sLowKey = mpLowerPredicate->pArg1()->sArgVal();
+  s256 sLowKey = mpLowerPredicate->pArg2()->sArgVal();
   
   mpTask->m_pDataStack->vPushS256(sLowKey);
   

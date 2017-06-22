@@ -229,42 +229,60 @@ void Planner::vGenPaths(void)
 void Planner::vMatchPaths(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
+  Token* mpLowValTkn;
+  Token* mpOpTkn;
+  s256 sOpValue;
+  eRO eRelOp;
+  i8 i_Token;
+  Token* pColNmTkn;
+  Predicate* mpLowColPred;
+  s32 sColumnName;
+  Arg* pLitValue;
+  s256 sLitValue;
+  Op* pOp;
+  AccessPath* mpAccPath;
+  PredicateVec* mpLowPredVec;
   
   for (i8 i_Path = 0; i_Path < m_pPathVec->nItems(); i_Path++) {
     
-    AccessPath* mpAccPath = m_pPathVec->pGet(i_Path);
+    mpAccPath = m_pPathVec->pGet(i_Path);
    
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // lower bound
     
-    PredicateVec* mpLowPredVec = mpAccPath->pLowerPredicates();
+    mpLowPredVec = mpAccPath->pLowerPredicates();
     
     bool bMatchAll = true;
     for (i8 i_Col = 0; i_Col < mpAccPath->pLowerPredicates()->nItems(); i_Col++) {
       
-      Predicate* mpLowColPred = mpLowPredVec->pGet(i_Col);
+      mpLowColPred = mpLowPredVec->pGet(i_Col);
       
-      s32 sColumnName = mpLowColPred->pArg1()->sArgVal().aStr();
+      sColumnName = mpLowColPred->pArg1()->sArgVal().aStr();
       
-      i8 i_Token = 0;
-      Token* pColNmTkn = m_pWhereTokenVec->pFindToken(sColumnName,i_Token);
-      if ( ! pColNmTkn ) {
-        bMatchAll = false;
-        break;
-      }
-    
-      Token* mpLowValTkn = m_pWhereTokenVec->pGet(i_Token+1);
-      Token* mpOpTkn = m_pWhereTokenVec->pGet(i_Token+2);
+      i_Token = -1;
+      for (;;) {
+        pColNmTkn = m_pWhereTokenVec->pFindToken(sColumnName,i_Token);
+        if ( ! pColNmTkn ) {
+          bMatchAll = false;
+          goto L_LowerTest;
+        }
+      
+        mpLowValTkn = m_pWhereTokenVec->pGet(i_Token+1);
+        mpOpTkn = m_pWhereTokenVec->pGet(i_Token+2);
 
-      s256 sOpValue = mpOpTkn->aText();
-      eRO eRelOp = Op::eDecodeText(sOpValue.aStr());
+        sOpValue = mpOpTkn->aText();
+        eRelOp = Op::eDecodeText(sOpValue.aStr());
+        
+        if ( bIsLowerOp(eRelOp) )
+          break;
+      }
       
-      Arg* pLitValue = new Arg;
-      s256 sLitValue = mpLowValTkn->aText();
+      pLitValue = new Arg;
+      sLitValue = mpLowValTkn->aText();
       pLitValue->vArgVal(sLitValue);
       mpLowColPred->vArg2(pLitValue);
       
-      Op* pOp = new Op;
+      pOp = new Op;
       pOp->vOpKind(eRelOp);
       mpLowColPred->vOp(pOp);
       
@@ -272,6 +290,7 @@ void Planner::vMatchPaths(void)
     
     } // i_Col
     
+  L_LowerTest:
     if ( bMatchAll )
       mpAccPath->vIsCandidate(true);
     
@@ -433,7 +452,7 @@ bool Planner::bIsExactOp(eRO eRelOp)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is given relational op an lower op?                                        */
+/* is given relational op a lower op?                                         */
 /*----------------------------------------------------------------------------*/
 bool Planner::bIsLowerOp(eRO eRelOp)
 {
@@ -446,7 +465,7 @@ bool Planner::bIsLowerOp(eRO eRelOp)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is given relational op a upper op?                                         */
+/* is given relational op an upper op?                                        */
 /*----------------------------------------------------------------------------*/
 bool Planner::bIsUpperOp(eRO eRelOp)
 {

@@ -77,12 +77,12 @@ void TokenVec::vAddToken(Str* aStr)
 /*----------------------------------------------------------------------------*/
 /* find token given text                                                      */
 /*----------------------------------------------------------------------------*/
-Token* TokenVec::pFindToken(Str* aText, i8& i_Token)
+Token* TokenVec::pFindToken(Str* aText, i8& i_Cursor)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
-  for (i_Token = 0; i_Token < nTokens(); i_Token++) {
-    Token* pToken = m_pItem[i_Token];
+  for (i_Cursor++; i_Cursor < nTokens(); i_Cursor++) {
+    Token* pToken = m_pItem[i_Cursor];
     if (pToken->sText().bSame(aText))
       return pToken;
   }
