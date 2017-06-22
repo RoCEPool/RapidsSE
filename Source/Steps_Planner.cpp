@@ -172,6 +172,25 @@ void Task::vPlannerHighKeyFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* planner.indexNm@ -- fetch index name ( -- )                                */
 /*----------------------------------------------------------------------------*/
+#ifdef RPN_PLANNER
+void Task::vPlannerIndexNmFetch(MP_Task mpTask)
+{
+  ENTRY("vPlannerIndexFetch"_Str);
+  
+  Object* pPtrPlanner;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrPlanner) )
+    THROW_INVALID_DSTACK("planner.indexNm@"_Str);
+  Planner* mpPlanner = _pPlanner(pPtrPlanner);
+  
+  AccessPath* mpChosenPath = mpPlanner->pChosenPath();
+  Index* pChosenIndex = mpChosenPath->pIndex();
+  
+  s32 sIndexNm = pChosenIndex->aIndexName();
+  mpTask->m_pDataStack->vPushS32(sIndexNm);
+  
+  EXIT();
+}
+#else //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 void Task::vPlannerIndexNmFetch(MP_Task mpTask)
 {
   ENTRY("vPlannerIndexFetch"_Str);
@@ -189,9 +208,12 @@ void Task::vPlannerIndexNmFetch(MP_Task mpTask)
   EXIT();
 }
 
+#endif
+
 /*----------------------------------------------------------------------------*/
 /* planner.key@ -- fetch key ( -- )                                           */
 /*----------------------------------------------------------------------------*/
+
 void Task::vPlannerKeyFetch(MP_Task mpTask)
 {
   ENTRY("vPlannerKeyFetch"_Str);
@@ -214,6 +236,26 @@ void Task::vPlannerKeyFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* planner.lowKey@ -- fetch low key ( -- )                                    */
 /*----------------------------------------------------------------------------*/
+#ifdef RPN_PLANNER
+void Task::vPlannerLowKeyFetch(MP_Task mpTask)
+{
+  ENTRY("vPlannerLowKeyFetch"_Str);
+  
+  Object* pPtrPlanner;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrPlanner) )
+    THROW_INVALID_DSTACK("planner.lowKey@"_Str);
+  Planner* mpPlanner = _pPlanner(pPtrPlanner);
+  
+  AccessPath* mpChosenPath = mpPlanner->pChosenPath();
+  PredicateVec* mpLowerPredicates = mpChosenPath->pLowerPredicates();
+  Predicate* mpLowerPredicate = mpLowerPredicates->pGet(0);
+  s256 sLowKey = mpLowerPredicate->pArg1()->sArgVal();
+  
+  mpTask->m_pDataStack->vPushS256(sLowKey);
+  
+  EXIT();
+}
+#else //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 void Task::vPlannerLowKeyFetch(MP_Task mpTask)
 {
   ENTRY("vPlannerLowKeyFetch"_Str);
@@ -232,6 +274,7 @@ void Task::vPlannerLowKeyFetch(MP_Task mpTask)
   
   EXIT();
 }
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* planner.matchPaths -- attempt to match predicates with paths               */

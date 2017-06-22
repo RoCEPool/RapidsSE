@@ -326,7 +326,7 @@ stk
   ( cdt_8 ) pPlanner Planner.showPaths
   ( cdt_9 ) pPlanner Planner.choosePath
 
-  pPlanner Planner.fetchTechnique@ . <OK> exit
+  pPlanner Planner.fetchTechnique@
 
   // execute a lower bound select using index
   case
