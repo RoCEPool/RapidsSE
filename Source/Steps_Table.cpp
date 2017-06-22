@@ -50,7 +50,6 @@ void Task::vAddPrimitives_Table(void)
   vAddPrimitive("table.space"_Str,              &vTableSpace,            false);
   vAddPrimitive("table.subDic"_Str,             &vTableSubDic,           false);
   vAddPrimitive("table.truncate"_Str,           &vTableTruncate,         false);
-  vAddPrimitive("table.genCandidatePaths"_Str,  &vTableGenCandidatePaths,false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -477,27 +476,6 @@ void Task::vTableTruncate(MP_Task mpTask)
   
   pTable->vTruncate();
   
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* table.genCandidatePaths -- gen all possible candidate path for table       */
-/*----------------------------------------------------------------------------*/
-void Task::vTableGenCandidatePaths(MP_Task mpTask)
-{
-  ENTRY("vTableGenCandidatePaths"_Str);
-  
-  Object* pPtrTable;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
-    THROW_INVALID_DSTACK("table.genCandidatePaths"_Str);
-  
-  Table* pTable = _pTable(pPtrTable);
-  ASSERT(CN_TABLE == pTable->eClass());
-
-  Planner* pPlanner = new Planner;
-  pPlanner->vGenPaths(pTable);
-  pPlanner->vShowPaths();
-    
   EXIT();
 }
 
