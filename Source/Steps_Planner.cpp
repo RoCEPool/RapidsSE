@@ -101,7 +101,7 @@ void Task::vPlannerFetchTechniqueFetch(MP_Task mpTask)
     THROW_INVALID_DSTACK("planner.fetchTechnique@"_Str);
   Planner* mpPlanner = _pPlanner(pPtrPlanner);
   
-  eFT eFetchTechnique = mpPlanner->pChosenPath()->eAccess();
+  eAT eFetchTechnique = mpPlanner->pChosenPath()->eAccess();
   
   mpTask->m_pDataStack->vPushInt(eFetchTechnique);
   

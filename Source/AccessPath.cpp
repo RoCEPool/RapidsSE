@@ -57,7 +57,7 @@ AccessPath::AccessPath(void)
   m_bIsCandidate = false;
   m_iPathRating = 0;
   
-  m_eAccess = FT_NONE;
+  m_eAccess = AT_NONE;
   m_pLowerPredicates = nullptr;
   m_pUpperPredicates = nullptr;
   
@@ -181,7 +181,7 @@ void AccessPath::vPathRating(i8 iPathRating)
 /*----------------------------------------------------------------------------*/
 /* get access technique                                                       */
 /*----------------------------------------------------------------------------*/
-eFT AccessPath::eAccess(void)
+eAT AccessPath::eAccess(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ACCESSPATH,_FOOTER_);
   
@@ -191,7 +191,7 @@ eFT AccessPath::eAccess(void)
 /*----------------------------------------------------------------------------*/
 /* set access technique                                                       */
 /*----------------------------------------------------------------------------*/
-void AccessPath::vAccess(eFT eAccess)
+void AccessPath::vAccess(eAT eAccess)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ACCESSPATH,_FOOTER_);
   

@@ -10,6 +10,28 @@ namespace Interface
 
 namespace Plans
 {
+  enum eAT // access technique
+  {
+  /* 0 */ AT_NONE=0,
+  /* 1 */ AT_EXACT,
+  /* 2 */ AT_LOWER,
+  /* 3 */ AT_UPPER,
+  /* 4 */ AT_RANGE,
+  /* 5 */ AT_SCAN,
+  /* 6 */ AT_ENUMS
+  };
+  
+  static Str* aFM[]
+  {
+  /* 0 */ "none"_Str,
+  /* 1 */ "exact"_Str,
+  /* 2 */ "lower"_Str,
+  /* 3 */ "upper"_Str,
+  /* 4 */ "range"_Str,
+  /* 5 */ "scan"_Str,
+  /* 6 */ "enums"_Str
+  };
+  
   class AccessPath : public Object
   {
   private:
@@ -20,7 +42,7 @@ namespace Plans
     i8         m_iPathRating;  // its score
 
     Index*     m_pIndex;       // index
-    eFT        m_eAccess;      // access technique
+    eAT        m_eAccess;      // access technique
   
     PredicateVec*  m_pLowerPredicates; // predicates of lower/exact bound
     PredicateVec*  m_pUpperPredicates; // predicates of upper bound
@@ -51,8 +73,8 @@ namespace Plans
     Index* pIndex(void);
     void vIndex(Index* pIndex);
     
-    eFT eAccess(void);
-    void vAccess(eFT eAccess);
+    eAT eAccess(void);
+    void vAccess(eAT eAccess);
   
     PredicateVec* pLowerPredicates(void);
     void vLowerPredicates(PredicateVec* pLowerPredicates);

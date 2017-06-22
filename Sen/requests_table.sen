@@ -596,10 +596,10 @@ stk
   sWhere task::this task.seitf@ seitf.accessPath@ accessPath.parse
 stk
   case
-    FT_LOWER of "lower" . "1" "jCdt_idx1" lowerSelectIndex endof
-    FT_UPPER of upperSelectIndex endof
-    FT_RANGE of rangeSelectIndex endof
-    FT_SCAN  of endof
+    AT_LOWER of "lower" . "1" "jCdt_idx1" lowerSelectIndex endof
+    AT_UPPER of upperSelectIndex endof
+    AT_RANGE of rangeSelectIndex endof
+    AT_SCAN  of endof
   endcase
 
   // pop named table folder off path

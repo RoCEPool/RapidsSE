@@ -626,14 +626,14 @@ void Task::vAddConstants(void)
   /* 51 */ vAddConstant("EC_VERSION_MISMATCH"_Str,   EC_VERSION_MISMATCH); 
   /* 52 */ vAddConstant("EC_ENUMS"_Str,              EC_ENUMS);
 
-  // FT_ : fetch techniques
-  /*  0 */ vAddConstant("FT_NONE"_Str,  FT_NONE);
-  /*  1 */ vAddConstant("FT_EQUAL"_Str, FT_EQUAL);
-  /*  2 */ vAddConstant("FT_LOWER"_Str, FT_LOWER);
-  /*  3 */ vAddConstant("FT_UPPER"_Str, FT_UPPER);
-  /*  4 */ vAddConstant("FT_RANGE"_Str, FT_RANGE);
-  /*  5 */ vAddConstant("FT_SCAN"_Str,  FT_SCAN);
-  /*  6 */ vAddConstant("FT_ENUMS"_Str, FT_ENUMS);
+  // AT_ : fetch techniques
+  /*  0 */ vAddConstant("AT_NONE"_Str,  AT_NONE);
+  /*  1 */ vAddConstant("AT_EXACT"_Str, AT_EXACT);
+  /*  2 */ vAddConstant("AT_LOWER"_Str, AT_LOWER);
+  /*  3 */ vAddConstant("AT_UPPER"_Str, AT_UPPER);
+  /*  4 */ vAddConstant("AT_RANGE"_Str, AT_RANGE);
+  /*  5 */ vAddConstant("AT_SCAN"_Str,  AT_SCAN);
+  /*  6 */ vAddConstant("AT_ENUMS"_Str, AT_ENUMS);
   
   // TK_ : token types
   /*  0 */ vAddConstant("TK_NONE"_Str,    TK_NONE);

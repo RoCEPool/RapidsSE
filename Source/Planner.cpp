@@ -119,7 +119,7 @@ void Planner::vChoosePath(void)
   }
   
   AccessPath* mpChosenPath = m_pPathVec->pGet(m_i_Chosen);
-  mpChosenPath->vAccess(FT_LOWER);
+  mpChosenPath->vAccess(AT_LOWER);
   
   vTrace("Chosen: %lld\n"_Str,m_i_Chosen);
 }

@@ -50,7 +50,6 @@ Predicate::Predicate(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PREDICATE,_FOOTER_);
   
-  m_eFetchTechnique = FT_NONE;
   m_ePredicate = PK_NONE;
   m_pArg1 = nullptr;
   m_pOp   = nullptr;
@@ -64,12 +63,11 @@ Predicate::Predicate(void)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Predicate::Predicate(ePK ePredicate, Arg* pArg1, Op* pOp, Arg* pArg2, eFT eFetchTechnique)
+Predicate::Predicate(ePK ePredicate, Arg* pArg1, Op* pOp, Arg* pArg2)
 : Object(CN_PREDICATE)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PREDICATE,_FOOTER_);
   
-  m_eFetchTechnique = eFetchTechnique;
   m_ePredicate = ePredicate;
   m_pArg1 = pArg1;
   m_pOp   = pOp;
@@ -167,14 +165,6 @@ void Predicate::vShow(void)
          m_pOp ? (char*)aRO[m_pOp->eOpKind()] : "<none>",
          m_pArg2 ? (char*)m_pArg2->sArgVal().aStr() : "<none>"
          );
-}
-
-/*----------------------------------------------------------------------------*/
-/* get op                                                                     */
-/*----------------------------------------------------------------------------*/
-eFT Predicate::eFetchTechnique(void)
-{
-  return m_eFetchTechnique;
 }
 
 /*----------------------------------------------------------------------------*/
