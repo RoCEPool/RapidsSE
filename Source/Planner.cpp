@@ -236,6 +236,8 @@ void Planner::vGenPaths(Table* pTable, Index* pIndex)
       s256 sColumnNm = pColumn->sColumnName().aStr();
       pColumnArg->vArgVal(sColumnNm);
       pLowerPredicate->vArg1(pColumnArg);
+      
+      
     }
     
   }
@@ -328,15 +330,25 @@ void Planner::vMatchPaths(void)
     bool bMatchAll = true;
     for (i8 i_Col = 0; i_Col < mpAccPath->pLowerPredicates()->nItems(); i_Col++) {
       
-      Predicate* mpLowPred = mpLowPredVec->pGet(i_Col);
+      Predicate* mpLowColPred = mpLowPredVec->pGet(i_Col);
       
-      s32 sColumnName = mpLowPred->pArg1()->sArgVal().aStr();
+      s32 sColumnName = mpLowColPred->pArg1()->sArgVal().aStr();
       
-      Token* pColNmTkn = m_pWhereTokenVec->pFindToken(sColumnName);
+      i8 i_Token = 0;
+      Token* pColNmTkn = m_pWhereTokenVec->pFindToken(sColumnName,i_Token);
       if ( ! pColNmTkn ) {
         bMatchAll = false;
         break;
       }
+    
+      
+      Token* mpLowValTkn = m_pWhereTokenVec->pGet(i_Token+1);
+      
+      Arg* pLitValue = new Arg;
+      s256 sLitValue = mpLowValTkn->aText();
+      pLitValue->vArgVal(sLitValue);
+      mpLowColPred->vArg2(pLitValue);
+
     } // i_Col
     
     if ( bMatchAll )
