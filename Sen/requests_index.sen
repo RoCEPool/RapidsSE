@@ -316,7 +316,7 @@ stk
   ( cdt_0 ) planner::new to pPlanner
   ( cdt_1 ) pTable pPlanner Planner.table!
 
-  ( cdt_2 ) pPlanner Planner.genPaths
+  ( cdt_2 ) pPlanner Planner.genPaths            <OK> exit
   ( cdt_3 ) pPlanner Planner.scorePaths
   ( cdt_4 ) pPlanner Planner.showPaths
 
