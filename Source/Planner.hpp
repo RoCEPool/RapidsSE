@@ -53,8 +53,6 @@ namespace Plans
     void vShowPaths(void);
     void vShowPredicates(void);
   
-    void vTest(void);
-
     Index* pChosenIndex(void);
     AccessPath* pChosenPath(void);
   

@@ -25,24 +25,6 @@ namespace Plans
   /* 5 */ "enums"_Str,
   };
   
-  enum ePB // predicate bound
-  {
-  /* 0 */ PB_NONE=0,
-  /* 1 */ PB_EXACT,
-  /* 2 */ PB_LOWER,
-  /* 3 */ PB_UPPER,
-  /* 4 */ PB_ENUMS
-  };
-  
-  static Str* aPB[]
-  {
-  /* 0 */ "none"_Str,
-  /* 1 */ "exact"_Str,
-  /* 2 */ "lower"_Str,
-  /* 3 */ "upper"_Str,
-  /* 4 */ "enums"_Str,
-  };
-  
   class Predicate : public Object
   {
   private:

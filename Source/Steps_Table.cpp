@@ -497,9 +497,7 @@ void Task::vTableGenCandidatePaths(MP_Task mpTask)
   Planner* pPlanner = new Planner;
   pPlanner->vGenPaths(pTable);
   pPlanner->vShowPaths();
-  
-  pPlanner->vTest();
-  
+    
   EXIT();
 }
 
