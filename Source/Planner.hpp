@@ -47,6 +47,9 @@ namespace Plans
     void vGenPaths(Table* pTable);
     void vGenPaths(void);
     void vMatchPaths(void);
+    void vMatchLowerPaths(void);
+    void vMatchUpperPaths(void);
+    void vMatchRangePaths(void);
     void vParseWhere(void);
     void vScorePaths(void);
     void vShowPaths(void);

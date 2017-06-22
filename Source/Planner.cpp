@@ -228,7 +228,18 @@ void Planner::vGenPaths(void)
 /*----------------------------------------------------------------------------*/
 void Planner::vMatchPaths(void)
 {
+  vMatchLowerPaths();
+  vMatchUpperPaths();
+  vMatchRangePaths();
+}
+
+/*----------------------------------------------------------------------------*/
+/* attempt to match predicates to paths                                       */
+/*----------------------------------------------------------------------------*/
+void Planner::vMatchLowerPaths(void)
+{
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
+  
   Token* mpLowValTkn;
   Token* mpOpTkn;
   s256 sOpValue;
@@ -246,9 +257,6 @@ void Planner::vMatchPaths(void)
   for (i8 i_Path = 0; i_Path < m_pPathVec->nItems(); i_Path++) {
     
     mpAccPath = m_pPathVec->pGet(i_Path);
-   
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // lower bound
     
     mpLowPredVec = mpAccPath->pLowerPredicates();
     
@@ -264,7 +272,7 @@ void Planner::vMatchPaths(void)
         pColNmTkn = m_pWhereTokenVec->pFindToken(sColumnName,i_Token);
         if ( ! pColNmTkn ) {
           bMatchAll = false;
-          goto L_LowerTest;
+          goto L_MatchTest;
         }
       
         mpLowValTkn = m_pWhereTokenVec->pGet(i_Token+1);
@@ -290,21 +298,27 @@ void Planner::vMatchPaths(void)
     
     } // i_Col
     
-  L_LowerTest:
+  L_MatchTest:
     if ( bMatchAll )
       mpAccPath->vIsCandidate(true);
     
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // upper bound
-    
-    // tbd
-    
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // range bound
-    
-    // tbd
-    
   } // i_Path
+}
+
+/*----------------------------------------------------------------------------*/
+/* attempt to match predicates to paths                                       */
+/*----------------------------------------------------------------------------*/
+void Planner::vMatchUpperPaths(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* attempt to match predicates to paths                                       */
+/*----------------------------------------------------------------------------*/
+void Planner::vMatchRangePaths(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
