@@ -141,7 +141,7 @@ void Planner::vChoosePath(void)
 /*----------------------------------------------------------------------------*/
 /* generate the set of all paths for given table                              */
 /*----------------------------------------------------------------------------*/
-#ifndef RPN_PLANNER
+#ifdef RPN_PLANNER
 void Planner::vGenPaths(Table* pTable, Index* pIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
@@ -162,6 +162,9 @@ void Planner::vGenPaths(Table* pTable, Index* pIndex)
     // create an access path for this combo
     AccessPath* pAccessPath = new AccessPath;
     m_pPathVec->vAdd(pAccessPath);
+    
+    // set the index in path
+    pAccessPath->vIndex(pIndex);
     
     // create the lower bound predicate vector
     PredicateVec* pLowerPredicateVec = new PredicateVec;
@@ -189,9 +192,7 @@ void Planner::vGenPaths(Table* pTable, Index* pIndex)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // lower and upper bounds
 }
-
 #else // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
 void Planner::vGenPaths(Table* pTable, Index* pIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
@@ -327,6 +328,48 @@ void Planner::vMatchPaths(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* score the set of all paths                                                 */
+/*----------------------------------------------------------------------------*/
+#ifdef RPN_PLANNER
+void Planner::vScorePaths(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
+  
+  // step thru paths and score them
+  for (i8 i_Path = 0; i_Path < m_pPathVec->nItems(); i_Path++) {
+    
+    // get access path
+    AccessPath* pAccessPath = m_pPathVec->pGet(i_Path);
+    
+    // get index of access path
+    Index* pIndex = pAccessPath->pIndex();
+    
+    // initially just a simple scoring method      //! move this into AccessPath
+    i8 iScore = 10 * (pIndex->bIsUnique() ? 0 : 1)
+                  + pAccessPath->pLowerPredicates()->nItems();
+    
+    pAccessPath->vPathRating(iScore);
+  }
+}
+#else // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+void Planner::vScorePaths(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
+  
+  for (i8 i_Path = 0; i_Path < m_pCandidatePaths->nItems(); i_Path++) {
+    CandidatePath* pCandidatePath = m_pCandidatePaths->pGet(i_Path);
+    Index* pIndex = m_pIndex[i_Path];
+    
+    // initially just a simple scoring method
+    i8 iScore = 10 * (pIndex->bIsUnique() ? 0 : 1)
+    + pCandidatePath->nItems();
+    
+    m_iScoreVec[i_Path] = iScore;
+  }
+}
+#endif
+
+/*----------------------------------------------------------------------------*/
 /* show the generated set of paths                                            */
 /*----------------------------------------------------------------------------*/
 void Planner::vShowPaths(void)
@@ -357,30 +400,6 @@ void Planner::vShowPaths(void)
   }
   
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
-}
-
-/*----------------------------------------------------------------------------*/
-/* score the set of all paths                                                 */
-/*----------------------------------------------------------------------------*/
-void Planner::vScorePaths(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
-  
-  for (i8 i_Path = 0; i_Path < m_pCandidatePaths->nItems(); i_Path++) {
-    CandidatePath* pCandidatePath = m_pCandidatePaths->pGet(i_Path);
-    Index* pIndex = m_pIndex[i_Path];
-
-    // initially just a simple scoring method 
-    i8 iScore = 10 * (pIndex->bIsUnique() ? 0 : 1)
-                + pCandidatePath->nItems();
-    
-    m_iScoreVec[i_Path] = iScore;
-    
-    m_pPathVec->pGet(i_Path)->vPathRating(iScore);
-    
-    AccessPath* pAccessPath = m_pPathVec->pGet(i_Path);
-    pAccessPath->vPathRating(iScore);
-  }
 }
 
 /*----------------------------------------------------------------------------*/
