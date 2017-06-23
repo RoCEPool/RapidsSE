@@ -424,8 +424,7 @@ void Planner::vMatchPredicates(PredicateVec* mpPathPredVec, eBK eBound)
     Predicate* mpPathPred = mpPathPredVec->pGet(i_PathPred);
     s256 sColumnNm_PathPred = mpPathPred->sColumnNm();
     
-    i8 i_ColumnTkn_Where = -1;
-    for (;;) {
+    for (i8 i_ColumnTkn_Where = -1;;) {
       
       // attempt to find the column name in the where clause
       pColNmTkn_Where =
@@ -435,28 +434,16 @@ void Planner::vMatchPredicates(PredicateVec* mpPathPredVec, eBK eBound)
         return;
       
       mpDatumTkn_Where = m_pWhereTokenVec->pGet(i_ColumnTkn_Where+1);
-      mpOpTkn_Where = m_pWhereTokenVec->pGet(i_ColumnTkn_Where+2);
-
-      sDatumVal_Where = mpOpTkn_Where->aText();
       
+      mpOpTkn_Where = m_pWhereTokenVec->pGet(i_ColumnTkn_Where+2);
+      sDatumVal_Where = mpOpTkn_Where->aText();
       eRelOp_Where = Op::eDecode(sDatumVal_Where.aStr());
       
       // haver we found a bound where predicate?
-      if ( BK_EXACT == eBound ) {
-        if ( bIsExactOp(eRelOp_Where) )
-          break;
-      }
-      else if ( BK_LOWER == eBound ) {
-        if ( bIsLowerOp(eRelOp_Where) )
-          break;
-      }
-      else {
-        ASSERT( BK_UPPER == eBound );
-        if ( bIsUpperOp(eRelOp_Where) )
-          break;
-      }
+      if (bIsMatchingOp(eBound,eRelOp_Where))
+        break;
       
-      // the where column predicate does not have a matching op
+      // the where column predicate does not have a matching op, try again
     }
     
     // we have found a bound where predicate
@@ -652,6 +639,30 @@ bool Planner::bIsUpperOp(eRO eRelOp)
     return true;
   else
     return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* does given relational op match with given bounds?                          */
+/*----------------------------------------------------------------------------*/
+bool Planner::bIsMatchingOp(eBK eBound, eRO eRelOp)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
+  
+  if ( BK_EXACT == eBound ) {
+    if ( bIsExactOp(eRelOp) )
+      return true;
+  }
+  else if ( BK_LOWER == eBound ) {
+    if ( bIsLowerOp(eRelOp) )
+      return true;
+  }
+  else {
+    ASSERT( BK_UPPER == eBound );
+    if ( bIsUpperOp(eRelOp) )
+      return true;
+  }
+  
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/

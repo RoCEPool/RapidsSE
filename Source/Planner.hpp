@@ -86,6 +86,8 @@ namespace Plans
     bool bIsLowerOp(eRO eRelOp);
     bool bIsUpperOp(eRO eRelOp);
   
+    bool bIsMatchingOp(eBK eBound, eRO eRelOp);
+  
     Footer* aFooter(void);
   };
   
