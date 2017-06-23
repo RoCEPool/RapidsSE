@@ -62,6 +62,9 @@ namespace Plans
     s256& sColumnNm(void);
     s256& sDatumStr(void);
   
+    void vNewLitArg(s256& sDatumArg);
+    void vNewRelOp(eRO eRelOp);
+  
     Footer* aFooter(void);
   };
   
