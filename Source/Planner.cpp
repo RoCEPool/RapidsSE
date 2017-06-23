@@ -285,7 +285,7 @@ void Planner::vGenUpperPaths(Table* pTable, Index* pIndex)
 /*----------------------------------------------------------------------------*/
 /* generate the set of all range paths for given table                        */
 /*----------------------------------------------------------------------------*/
-void Planner::vGenRangePaths(Table* pTable, Index* pIndex)
+void Planner::vGenPaths(Table* pTable, Index* pIndex, eBK eBound)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
   
@@ -303,48 +303,62 @@ void Planner::vGenRangePaths(Table* pTable, Index* pIndex)
   for (i8 nCols = 1; nCols <= pIdxColVec->nItems(); nCols++) {
     
     // create an access path for this combo
-    AccessPath* pAccessPath = new AccessPath(AT_RANGE);
+    AccessPath* pAccessPath = nullptr;
+    if (BK_EXACT == eBound)
+      pAccessPath = new AccessPath(AT_EXACT);
+    else
+    if (BK_LOWER == eBound)
+      pAccessPath = new AccessPath(AT_LOWER);
+    else
+    if (BK_UPPER == eBound)
+      pAccessPath = new AccessPath(AT_UPPER);
+    
     m_pPathVec->vAdd(pAccessPath);
     
     // set the index in path
     pAccessPath->vIndex(pIndex);
     
-    // create the lower bound predicate vector
-    PredicateVec* pLowerPredicateVec = new PredicateVec;
-    pAccessPath->vLowerPredicates(pLowerPredicateVec);
-    
-    // step thru predicates of the lower bound predicate vector
-    for (i8 i_IdxCol = 0; i_IdxCol < nCols; i_IdxCol++) {
+    if (BK_EXACT == eBound || BK_LOWER == eBound) {
+      // create the lower bound predicate vector
+      PredicateVec* pLowerPredicateVec = new PredicateVec;
+      pAccessPath->vLowerPredicates(pLowerPredicateVec);
       
-      // create a lower bound predicate
-      Predicate* pLowerPredicate = new Predicate;
-      pLowerPredicateVec->vAdd(pLowerPredicate);
-      
-      // add column arg to predicate
-      Column* pColumn = pIdxColVec->pGet(i_IdxCol);
-      Arg* pColumnArg = new Arg;
-      s256 sColumnNm = pColumn->sColumnName().aStr();
-      pColumnArg->vArgVal(sColumnNm);
-      pLowerPredicate->vArg1(pColumnArg);
+      // step thru predicates of the lower bound predicate vector
+      for (i8 i_IdxCol = 0; i_IdxCol < nCols; i_IdxCol++) {
+        
+        // create a lower bound predicate
+        Predicate* pLowerPredicate = new Predicate;
+        pLowerPredicateVec->vAdd(pLowerPredicate);
+        
+        // add column arg to predicate
+        Column* pColumn = pIdxColVec->pGet(i_IdxCol);
+        Arg* pColumnArg = new Arg;
+        s256 sColumnNm = pColumn->sColumnName().aStr();
+        pColumnArg->vArgVal(sColumnNm);
+        pLowerPredicate->vArg1(pColumnArg);
+      }
     }
     
-    // create the upper bound predicate vector
-    PredicateVec* pUpperPredicateVec = new PredicateVec;
-    pAccessPath->vUpperPredicates(pUpperPredicateVec);
+    if (BK_UPPER == eBound || BK_RANGE == eBound) {
     
-    // step thru predicates of the upper bound predicate vector
-    for (i8 i_IdxCol = 0; i_IdxCol < nCols; i_IdxCol++) {
+      // create the upper bound predicate vector
+      PredicateVec* pUpperPredicateVec = new PredicateVec;
+      pAccessPath->vUpperPredicates(pUpperPredicateVec);
       
-      // create a upper bound predicate
-      Predicate* pUpperPredicate = new Predicate;
-      pUpperPredicateVec->vAdd(pUpperPredicate);
-      
-      // add column arg to predicate
-      Column* pColumn = pIdxColVec->pGet(i_IdxCol);
-      Arg* pColumnArg = new Arg;
-      s256 sColumnNm = pColumn->sColumnName().aStr();
-      pColumnArg->vArgVal(sColumnNm);
-      pUpperPredicate->vArg1(pColumnArg);
+      // step thru predicates of the upper bound predicate vector
+      for (i8 i_IdxCol = 0; i_IdxCol < nCols; i_IdxCol++) {
+        
+        // create a upper bound predicate
+        Predicate* pUpperPredicate = new Predicate;
+        pUpperPredicateVec->vAdd(pUpperPredicate);
+        
+        // add column arg to predicate
+        Column* pColumn = pIdxColVec->pGet(i_IdxCol);
+        Arg* pColumnArg = new Arg;
+        s256 sColumnNm = pColumn->sColumnName().aStr();
+        pColumnArg->vArgVal(sColumnNm);
+        pUpperPredicate->vArg1(pColumnArg);
+      }
     }
   }
 }
@@ -363,9 +377,9 @@ void Planner::vGenPaths(Table* mpTable)
   for (i8 i_Idx = 0; i_Idx < pIdxVec->nItems(); i_Idx++) {
     Index* mpIndex = pIdxVec->pGet(i_Idx);
     m_pIndex[i_Idx] = mpIndex;
-    vGenExactPaths(mpTable, mpIndex);
-    vGenLowerPaths(mpTable, mpIndex);
-    vGenUpperPaths(mpTable, mpIndex);
+    vGenPaths(mpTable, mpIndex, BK_EXACT);
+    vGenPaths(mpTable, mpIndex, BK_LOWER);
+    vGenPaths(mpTable, mpIndex, BK_UPPER);
     //vGenRangePaths(mpTable, mpIndex);
   }
 }

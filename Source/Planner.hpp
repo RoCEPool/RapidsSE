@@ -9,7 +9,8 @@ namespace Plans
   {
   /* 0 */ BK_EXACT,
   /* 1 */ BK_LOWER,
-  /* 1 */ BK_UPPER,
+  /* 2 */ BK_UPPER,
+  /* 3 */ BK_RANGE
   };
   
   static Str* aBK[]
@@ -17,6 +18,7 @@ namespace Plans
   /* 0 */ "exact"_Str,
   /* 1 */ "lower"_Str,
   /* 2 */ "upper"_Str,
+  /* 3 */ "range"_Str
   };
   
   class Planner : public Object
@@ -62,7 +64,7 @@ namespace Plans
     void vGenExactPaths(Table* pTable, Index* pIndex);
     void vGenLowerPaths(Table* pTable, Index* pIndex);
     void vGenUpperPaths(Table* pTable, Index* pIndex);
-    void vGenRangePaths(Table* pTable, Index* pIndex);
+    void vGenPaths(Table* pTable, Index* pIndex,eBK eBound);
     void vMatchPaths(void);
     void vMatchPaths(eBK eBound);
     void vParseWhere(void);
