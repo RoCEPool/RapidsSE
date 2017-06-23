@@ -21,6 +21,8 @@ namespace Parsing
     PredicateVec(void);
     ~PredicateVec(void);
   
+    void vSetMatched(i8 i_Pred);
+  
     static PredicateVec* _pPredicateVec(void* aAddr);
   
     Footer* aFooter(void);

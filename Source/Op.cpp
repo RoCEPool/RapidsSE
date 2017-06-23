@@ -83,7 +83,7 @@ Op::~Op(void)
 /*----------------------------------------------------------------------------*/
 /*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-eRO Op::eDecodeText(Str* aOpText)
+eRO Op::eDecode(Str* aOpText)
 {
   if (aOpText->bEqual("<"_Str))  return RO_LESS_THAN;
   if (aOpText->bEqual("<="_Str)) return RO_LESS_EQUAL;

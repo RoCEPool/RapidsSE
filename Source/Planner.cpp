@@ -328,7 +328,7 @@ void Planner::vMatchPaths(eBK eBound)
         // get the operator from the where predicate
         mpOpTkn = m_pWhereTokenVec->pGet(i_Token+2);
         sOpValue = mpOpTkn->aText();
-        eRelOp = Op::eDecodeText(sOpValue.aStr());
+        eRelOp = Op::eDecode(sOpValue.aStr());
         
         // haver we found a bound where predicate?
         if ( BK_EXACT == eBound ) {
@@ -406,11 +406,74 @@ void Planner::vMatchPathsV2(eBK eBound)
 }
 
 /*----------------------------------------------------------------------------*/
-/* attempt to match columns to predicates                                     */
+/* attempt to match path columns to where columns                             */
 /*----------------------------------------------------------------------------*/
-void Planner::vMatchPredicates(PredicateVec* npPredVec, eBK eBound)
+void Planner::vMatchPredicates(PredicateVec* mpPathPredVec, eBK eBound)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
+  
+  Token* pColNmTkn_Where;
+  Token* mpDatumTkn_Where;
+  Token* mpOpTkn_Where;
+  s256 sDatumVal_Where;
+  eRO eRelOp_Where;
+  
+  for (i8 i_PathPred = 0; i_PathPred < mpPathPredVec->nItems(); i_PathPred++) {
+
+    // get the column name from predicate
+    Predicate* mpPathPred = mpPathPredVec->pGet(i_PathPred);
+    s256 sColumnNm_PathPred = mpPathPred->sColumnNm();
+    
+    i8 i_ColumnTkn_Where = -1;
+    for (;;) {
+      
+      // attempt to find the column name in the where clause
+      pColNmTkn_Where =
+        m_pWhereTokenVec->pFindToken(sColumnNm_PathPred,i_ColumnTkn_Where);
+      
+      if ( ! pColNmTkn_Where )
+        return;
+      
+      mpDatumTkn_Where = m_pWhereTokenVec->pGet(i_ColumnTkn_Where+1);
+      mpOpTkn_Where = m_pWhereTokenVec->pGet(i_ColumnTkn_Where+2);
+
+      sDatumVal_Where = mpOpTkn_Where->aText();
+      
+      eRelOp_Where = Op::eDecode(sDatumVal_Where.aStr());
+      
+      // haver we found a bound where predicate?
+      if ( BK_EXACT == eBound ) {
+        if ( bIsExactOp(eRelOp_Where) )
+          break;
+      }
+      else if ( BK_LOWER == eBound ) {
+        if ( bIsLowerOp(eRelOp_Where) )
+          break;
+      }
+      else {
+        ASSERT( BK_UPPER == eBound );
+        if ( bIsUpperOp(eRelOp_Where) )
+          break;
+      }
+      
+      // the where column predicate does not have a matching op
+    }
+    
+    // we have found a bound where predicate
+    
+    // set the access path bound predicate value
+    Arg* pDatumArg = new Arg;
+    s256 sDatum = mpDatumTkn_Where->aText();
+    pDatumArg->vArgVal(sDatum);
+    mpPathPred->vArg2(pDatumArg);
+    
+    // set the access path bound predicate operator
+    Op* pPredOp_Path = new Op;
+    pPredOp_Path->vOpKind(eRelOp_Where);
+    mpPathPred->vOp(pPredOp_Path);
+    
+    mpPathPredVec->vSetMatched(i_PathPred);
+  }
 }
 
 /*----------------------------------------------------------------------------*/

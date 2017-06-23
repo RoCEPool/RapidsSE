@@ -172,7 +172,7 @@ void Predicate::vShow(void)
 /*----------------------------------------------------------------------------*/
 s256& Predicate::sColumnNm(void)
 {
-  ASSERT(PK_COLUMN_LITERAL_OP == m_ePredicate);
+  //ASSERT(PK_COLUMN_LITERAL_OP == m_ePredicate);
 
   return m_pArg1->sArgVal();
 }
