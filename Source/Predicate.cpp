@@ -52,8 +52,8 @@ Predicate::Predicate(void)
   
   m_ePredicate = PK_NONE;
   m_pArg1 = nullptr;
-  m_pOp   = nullptr;
   m_pArg2 = nullptr;
+  m_pOp   = nullptr;
   
   _checkInitialised_(CN_PREDICATE);
   
@@ -63,20 +63,20 @@ Predicate::Predicate(void)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Predicate::Predicate(ePK ePredicate, Arg* pArg1, Op* pOp, Arg* pArg2)
-: Object(CN_PREDICATE)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PREDICATE,_FOOTER_);
-  
-  m_ePredicate = ePredicate;
-  m_pArg1 = pArg1;
-  m_pOp   = pOp;
-  m_pArg2 = pArg2;
-  
-  _checkInitialised_(CN_PREDICATE);
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_PREDICATE,_FOOTER_);
-}
+//Predicate::Predicate(ePK ePredicate, Arg* pArg1, Arg* pArg2, Op* pOp)
+//: Object(CN_PREDICATE)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_PREDICATE,_FOOTER_);
+//  
+//  m_ePredicate = ePredicate;
+//  m_pArg1 = pArg1;
+//  m_pOp   = pOp;
+//  m_pArg2 = pArg2;
+//  
+//  _checkInitialised_(CN_PREDICATE);
+//  
+//  _postcondition_(_ADDRESS_,_MAGIC_,CN_PREDICATE,_FOOTER_);
+//}
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
@@ -165,6 +165,26 @@ void Predicate::vShow(void)
          m_pArg2 ? (char*)m_pArg2->sArgVal().aStr() : "<none>",
          m_pOp ? (char*)aRO[m_pOp->eOpKind()] : "<none>"
          );
+}
+
+/*----------------------------------------------------------------------------*/
+/* get column name                                                            */
+/*----------------------------------------------------------------------------*/
+s256& Predicate::sColumnNm(void)
+{
+  ASSERT(PK_COLUMN_LITERAL_OP == m_ePredicate);
+
+  return m_pArg1->sArgVal();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get literal datum                                                          */
+/*----------------------------------------------------------------------------*/
+s256& Predicate::sDatumStr(void)
+{
+  ASSERT(PK_COLUMN_LITERAL_OP == m_ePredicate);
+  
+  return m_pArg2->sArgVal();
 }
 
 /*----------------------------------------------------------------------------*/

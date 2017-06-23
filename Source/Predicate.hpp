@@ -9,7 +9,7 @@ namespace Plans
   {
   /* 0 */ PK_NONE=0,
   /* 1 */ PK_COLUMN_COLUMN_OP,
-  /* 2 */ PK_COLUMN_LITERAL_OP,
+  /* 2 */ PK_COLUMN_LITERAL_OP,   // this should always be the case
   /* 3 */ PK_LITERAL_LITERAL_OP,
   /* 4 */ PK_LITERAL_COLUMN_OP,
   /* 5 */ PK_ENUMS
@@ -29,9 +29,9 @@ namespace Plans
   {
   private:
     ePK  m_ePredicate;
-    Op*  m_pOp;
     Arg* m_pArg1;
     Arg* m_pArg2;
+    Op*  m_pOp;
   
     // must be last
     Footer m_xFooter;
@@ -42,7 +42,7 @@ namespace Plans
     void  operator delete(void*);
     
     Predicate(void);
-    Predicate(ePK ePredicate, Arg* pArg1, Op* pOp, Arg* pArg2);
+  //Predicate(ePK ePredicate, Arg* pArg1, Arg* pArg2, Op* pOp);
     ~Predicate(void);
     
     ePK ePredicate(void);
@@ -58,6 +58,9 @@ namespace Plans
     void vOp(Op* pOp);
   
     void vShow(void);
+  
+    s256& sColumnNm(void);
+    s256& sDatumStr(void);
   
     Footer* aFooter(void);
   };
