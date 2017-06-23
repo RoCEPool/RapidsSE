@@ -64,11 +64,7 @@ namespace Plans
     void vGenUpperPaths(Table* pTable, Index* pIndex);
     void vGenRangePaths(Table* pTable, Index* pIndex);
     void vMatchPaths(void);
-    void vMatchExactPaths(void);
-    void vMatchLowerPaths(void);
-    void vMatchUpperPaths(void);
-    void vMatchRangePaths(void);
-    void vMatchGivenPaths(eBK eBound);
+    void vMatchPaths(eBK eBound);
     void vParseWhere(void);
     void vScorePaths(void);
     void vShowPaths(void);

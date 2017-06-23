@@ -385,318 +385,15 @@ void Planner::vGenPaths(void)
 /*----------------------------------------------------------------------------*/
 void Planner::vMatchPaths(void)
 {
-  //vMatchExactPaths();
-  vMatchGivenPaths(BK_EXACT);
-  //vMatchLowerPaths();
-  vMatchGivenPaths(BK_LOWER);
-  //vMatchUpperPaths();
-  vMatchGivenPaths(BK_UPPER);
-  //vMatchRangePaths();
+  vMatchPaths(BK_EXACT);
+  vMatchPaths(BK_LOWER);
+  vMatchPaths(BK_UPPER);
 }
 
 /*----------------------------------------------------------------------------*/
 /* attempt to match predicates to paths                                       */
 /*----------------------------------------------------------------------------*/
-void Planner::vMatchExactPaths(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
-  
-  Token* mpEqlValTkn;
-  Token* mpOpTkn;
-  s256 sOpValue;
-  eRO eRelOp;
-  i8 i_Token;
-  Token* pColNmTkn;
-  Predicate* mpEqlColPred;
-  s32 sColumnName;
-  Arg* pLitValue;
-  s256 sLitValue;
-  Op* pOp;
-  AccessPath* mpAccPath;
-  PredicateVec* mpEqlPredVec;
-  
-  // step thru all generated access paths
-  for (i8 i_Path = 0; i_Path < m_pPathVec->nItems(); i_Path++) {
-    
-    // get access path
-    mpAccPath = m_pPathVec->pGet(i_Path);
-    
-    // test access path is an exact bound fetch
-    if ( AT_EXACT != mpAccPath->eAccess() )
-      continue;
-    
-    // get the exact (lower) bound predicate vector from the access path
-    mpEqlPredVec = mpAccPath->pLowerPredicates();
-    
-    // attempt to find all access path columns
-    // in the where clause as exact predicates
-    bool bMatchAll = true;
-    for (i8 i_Col = 0; i_Col < mpAccPath->pLowerPredicates()->nItems(); i_Col++) {
-      
-      // get access path lower predicate for the column
-      mpEqlColPred = mpEqlPredVec->pGet(i_Col);
-      sColumnName = mpEqlColPred->pArg1()->sArgVal().aStr();
-      
-      // does this column exist in the where clause as a exact predicate?
-      i_Token = -1;
-      for (;;) {
-        
-        // attempt to find the column in the where clause
-        pColNmTkn = m_pWhereTokenVec->pFindToken(sColumnName,i_Token);
-        if ( ! pColNmTkn ) {
-          bMatchAll = false;
-          goto L_MatchTest;
-        }
-        
-        // found column in where clause
-        
-        // get the associated value from the where predicate
-        // remember that predicates are in rpn form
-        mpEqlValTkn = m_pWhereTokenVec->pGet(i_Token+1);
-        
-        // get the operator from the where predicate
-        mpOpTkn = m_pWhereTokenVec->pGet(i_Token+2);
-        sOpValue = mpOpTkn->aText();
-        eRelOp = Op::eDecodeText(sOpValue.aStr());
-        
-        // haver we found a lower where predicate?
-        if ( bIsExactOp(eRelOp) )
-          break;
-      }
-      
-      // column exists in the where clause as an exact predicate
-      
-      // set the access path lower predicate value
-      pLitValue = new Arg;
-      sLitValue = mpEqlValTkn->aText();
-      pLitValue->vArgVal(sLitValue);
-      mpEqlColPred->vArg2(pLitValue);
-      
-      // set the access path lower predicate operator
-      pOp = new Op;
-      pOp->vOpKind(eRelOp);
-      mpEqlColPred->vOp(pOp);
-      
-      // mark the access path predicate as: column literal op
-      mpEqlColPred->vPredicate(PK_COLUMN_LITERAL_OP);
-      
-    } // i_Col
-    
-  L_MatchTest:
-    
-    // does this acess path qualify as a candidate lower access path?
-    if ( bMatchAll )
-      mpAccPath->vIsCandidate(true);
-    
-  } // i_Path
-}
-
-/*----------------------------------------------------------------------------*/
-/* attempt to match predicates to lower access paths                          */
-/*----------------------------------------------------------------------------*/
-void Planner::vMatchLowerPaths(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
-  
-  Token* mpLowValTkn;
-  Token* mpOpTkn;
-  s256 sOpValue;
-  eRO eRelOp;
-  i8 i_Token;
-  Token* pColNmTkn;
-  Predicate* mpLowColPred;
-  s32 sColumnName;
-  Arg* pLitValue;
-  s256 sLitValue;
-  Op* pOp;
-  AccessPath* mpAccPath;
-  PredicateVec* mpLowPredVec;
-  
-  // step thru all generated access paths
-  for (i8 i_Path = 0; i_Path < m_pPathVec->nItems(); i_Path++) {
-    
-    // get access path
-    mpAccPath = m_pPathVec->pGet(i_Path);
-    
-    // test access path is a lower bound fetch
-    if ( AT_LOWER != mpAccPath->eAccess() )
-      continue;
-    
-    // get the low bound predicate vector from the access path
-    mpLowPredVec = mpAccPath->pLowerPredicates();
-    
-    // attempt to find all access path columns
-    // in the where clause as lower predicates
-    bool bMatchAll = true;
-    for (i8 i_Col = 0; i_Col < mpLowPredVec->nItems(); i_Col++) {
-      
-      // get access path lower predicate for the column
-      mpLowColPred = mpLowPredVec->pGet(i_Col);
-      sColumnName = mpLowColPred->pArg1()->sArgVal().aStr();
-      
-      // does this column exist in the where clause as a lower predicate?
-      i_Token = -1;
-      for (;;) {
-        
-        // attempt to find the column in the where clause
-        pColNmTkn = m_pWhereTokenVec->pFindToken(sColumnName,i_Token);
-        if ( ! pColNmTkn ) {
-          bMatchAll = false;
-          goto L_MatchTest;
-        }
-      
-        // found column in where clause
-        
-        // get the associated value from the where predicate
-        // remember that predicates are in rpn form
-        mpLowValTkn = m_pWhereTokenVec->pGet(i_Token+1);
-        
-        // get the operator from the where predicate
-        mpOpTkn = m_pWhereTokenVec->pGet(i_Token+2);
-        sOpValue = mpOpTkn->aText();
-        eRelOp = Op::eDecodeText(sOpValue.aStr());
-        
-        // haver we found a lower where predicate?
-        if ( bIsLowerOp(eRelOp) )
-          break;
-      }
-      
-      // column exists in the where clause as a lower predicate
-      
-      // set the access path lower predicate value
-      pLitValue = new Arg;
-      sLitValue = mpLowValTkn->aText();
-      pLitValue->vArgVal(sLitValue);
-      mpLowColPred->vArg2(pLitValue);
-      
-      // set the access path lower predicate operator
-      pOp = new Op;
-      pOp->vOpKind(eRelOp);
-      mpLowColPred->vOp(pOp);
-      
-      // mark the access path predicate as: column literal op
-      mpLowColPred->vPredicate(PK_COLUMN_LITERAL_OP);
-    
-    } // i_Col
-    
-  L_MatchTest:
-    
-    // does this acess path qualify as a candidate lower access path?
-    if ( bMatchAll )
-      mpAccPath->vIsCandidate(true);
-    
-  } // i_Path
-}
-
-/*----------------------------------------------------------------------------*/
-/* attempt to match predicates to paths                                       */
-/*----------------------------------------------------------------------------*/
-void Planner::vMatchUpperPaths(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
-  
-  Token* mpUppValTkn;
-  Token* mpOpTkn;
-  s256 sOpValue;
-  eRO eRelOp;
-  i8 i_Token;
-  Token* pColNmTkn;
-  Predicate* mpUppColPred;
-  s32 sColumnName;
-  Arg* pLitValue;
-  s256 sLitValue;
-  Op* pOp;
-  AccessPath* mpAccPath;
-  PredicateVec* mpUppPredVec;
-  
-  // step thru all generated access paths
-  for (i8 i_Path = 0; i_Path < m_pPathVec->nItems(); i_Path++) {
-    
-    // get access path
-    mpAccPath = m_pPathVec->pGet(i_Path);
-    
-    // test access path is an upper bound fetch
-    if ( AT_UPPER != mpAccPath->eAccess() )
-      continue;
-    
-    // get the upper bound predicate vector from the access path
-    mpUppPredVec = mpAccPath->pUpperPredicates();
-    
-    // attempt to find all access path columns
-    // in the where clause as upper predicates
-    bool bMatchAll = true;
-    for (i8 i_Col = 0; i_Col < mpUppPredVec->nItems(); i_Col++) {
-      
-      // get access path upper predicate for the column
-      mpUppColPred = mpUppPredVec->pGet(i_Col);
-      sColumnName = mpUppColPred->pArg1()->sArgVal().aStr();
-      
-      // does this column exist in the where clause as a upper predicate?
-      i_Token = -1;
-      for (;;) {
-        
-        // attempt to find the column in the where clause
-        pColNmTkn = m_pWhereTokenVec->pFindToken(sColumnName,i_Token);
-        if ( ! pColNmTkn ) {
-          bMatchAll = false;
-          goto L_MatchTest;
-        }
-        
-        // found column in where clause
-        
-        // get the associated value from the where predicate
-        // remember that predicates are in rpn form
-        mpUppValTkn = m_pWhereTokenVec->pGet(i_Token+1);
-        
-        // get the operator from the where predicate
-        mpOpTkn = m_pWhereTokenVec->pGet(i_Token+2);
-        sOpValue = mpOpTkn->aText();
-        eRelOp = Op::eDecodeText(sOpValue.aStr());
-        
-        // haver we found an upper where predicate?
-        if ( bIsUpperOp(eRelOp) )
-          break;
-      }
-      
-      // column exists in the where clause as an upper predicate
-      
-      // set the access path upper predicate value
-      pLitValue = new Arg;
-      sLitValue = mpUppValTkn->aText();
-      pLitValue->vArgVal(sLitValue);
-      mpUppColPred->vArg2(pLitValue);
-      
-      // set the access path upper predicate operator
-      pOp = new Op;
-      pOp->vOpKind(eRelOp);
-      mpUppColPred->vOp(pOp);
-      
-      // mark the access path predicate as: column literal op
-      mpUppColPred->vPredicate(PK_COLUMN_LITERAL_OP);
-      
-    } // i_Col
-    
-  L_MatchTest:
-    
-    // does this acess path qualify as a candidate upper access path?
-    if ( bMatchAll )
-      mpAccPath->vIsCandidate(true);
-    
-  } // i_Path
-}
-
-/*----------------------------------------------------------------------------*/
-/* attempt to match predicates to paths                                       */
-/*----------------------------------------------------------------------------*/
-void Planner::vMatchRangePaths(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* attempt to match predicates to paths                                       */
-/*----------------------------------------------------------------------------*/
-void Planner::vMatchGivenPaths(eBK eBound)
+void Planner::vMatchPaths(eBK eBound)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
   
@@ -737,15 +434,15 @@ void Planner::vMatchGivenPaths(eBK eBound)
       mpPredVec = mpAccPath->pLowerPredicates();
     
     // attempt to find all access path columns
-    // in the where clause as upper predicates
+    // in the where clause as bound predicates
     bool bMatchAll = true;
     for (i8 i_Col = 0; i_Col < mpPredVec->nItems(); i_Col++) {
       
-      // get access path upper predicate for the column
+      // get access path bound predicate for the column
       mpColPred = mpPredVec->pGet(i_Col);
       sColumnName = mpColPred->pArg1()->sArgVal().aStr();
       
-      // does this column exist in the where clause as a upper predicate?
+      // does this column exist in the where clause as a bound predicate?
       i_Token = -1;
       for (;;) {
         
@@ -767,7 +464,7 @@ void Planner::vMatchGivenPaths(eBK eBound)
         sOpValue = mpOpTkn->aText();
         eRelOp = Op::eDecodeText(sOpValue.aStr());
         
-        // haver we found an upper where predicate?
+        // haver we found a bound where predicate?
         if ( BK_EXACT == eBound ) {
           if ( bIsExactOp(eRelOp) )
             break;
@@ -783,15 +480,15 @@ void Planner::vMatchGivenPaths(eBK eBound)
         }
       }
       
-      // column exists in the where clause as an upper predicate
+      // column exists in the where clause as a bound predicate
       
-      // set the access path upper predicate value
+      // set the access path bound predicate value
       pLitValue = new Arg;
       sLitValue = mpValTkn->aText();
       pLitValue->vArgVal(sLitValue);
       mpColPred->vArg2(pLitValue);
       
-      // set the access path upper predicate operator
+      // set the access path bound predicate operator
       pOp = new Op;
       pOp->vOpKind(eRelOp);
       mpColPred->vOp(pOp);
@@ -803,7 +500,7 @@ void Planner::vMatchGivenPaths(eBK eBound)
     
   L_MatchTest:
     
-    // does this acess path qualify as a candidate upper access path?
+    // does this acess path qualify as a candidate bound access path?
     if ( bMatchAll )
       mpAccPath->vIsCandidate(true);
     
