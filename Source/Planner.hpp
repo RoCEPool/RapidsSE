@@ -5,6 +5,20 @@
 
 namespace Plans
 {
+  enum eBK // bound kind
+  {
+  /* 0 */ BK_EXACT,
+  /* 1 */ BK_LOWER,
+  /* 1 */ BK_UPPER,
+  };
+  
+  static Str* aBK[]
+  {
+  /* 0 */ "exact"_Str,
+  /* 1 */ "lower"_Str,
+  /* 2 */ "upper"_Str,
+  };
+  
   class Planner : public Object
   {
   private:
