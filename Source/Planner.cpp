@@ -389,6 +389,28 @@ void Planner::vMatchPathsV2(void)
 void Planner::vMatchPathsV2(eBK eBound)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
+  
+  // step thru all generated access paths
+  for (i8 i_Path = 0; i_Path < m_pPathVec->nItems(); i_Path++) {
+    
+    // get access path
+    AccessPath* mpAccPath = m_pPathVec->pGet(i_Path);
+    
+    eAT eAccess = mpAccPath->eAccess();
+    PredicateVec* npLowPredVec = mpAccPath->pLowerPredicates();
+    PredicateVec* npUppPredVec = mpAccPath->pUpperPredicates();
+    
+    // match columns to predicates
+    vMatchPredicates(npLowPredVec,eBound);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* attempt to match columns to predicates                                     */
+/*----------------------------------------------------------------------------*/
+void Planner::vMatchPredicates(PredicateVec* npPredVec, eBK eBound)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
