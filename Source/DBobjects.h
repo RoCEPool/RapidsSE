@@ -21,6 +21,8 @@ namespace DBobjects
 
   static const i8 C_FLAT_FREQ    = 2;
   static const i8 C_NIL_OFFSET   = 0xFFFFFFFFFFFFFFFF;
+  
+  static const i8 C_MAX_INDEX_COLUMNS = 16;
 }
 
 using namespace DBobjects;

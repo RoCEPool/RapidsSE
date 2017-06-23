@@ -34,7 +34,6 @@ namespace Plans
   
   class AccessPath : public Object
   {
-  static const i8 C_MAX_INDEX_COLUMNS = 16;
   
   private:
     Table*     m_pTable;      // table
@@ -49,8 +48,6 @@ namespace Plans
     PredicateVec*  m_pLowerPredicates; // predicates of lower/exact bound
     PredicateVec*  m_pUpperPredicates; // predicates of upper bound
   
-    i8   m_nMatchedColumns; // number of matched columns
-    bool m_bMatchedColumn[C_MAX_INDEX_COLUMNS]; // which columns are matched so far
   
     // must be last
     Footer m_xFooter;

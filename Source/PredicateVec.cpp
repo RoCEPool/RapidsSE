@@ -45,6 +45,11 @@ PredicateVec::PredicateVec(void)
 {
   _precondition_(_MAGIC_,CN_PREDICATEVEC,_FOOTER_);
   
+  m_nMatchedPredicates = 0;
+  
+  for (i8 i_Pred = 0; i_Pred < C_MAX_INDEX_COLUMNS; i_Pred++)
+    m_bMatchedPredicate[i_Pred] = false;
+  
   _checkInitialised_(CN_PREDICATEVEC);
   
   _postcondition_(_MAGIC_,CN_PREDICATEVEC,_FOOTER_);

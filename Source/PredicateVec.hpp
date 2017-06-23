@@ -8,7 +8,9 @@ namespace Parsing
   class PredicateVec : public Vector<CN_PREDICATEVEC,Predicate,CN_PREDICATE,16,u8>
   {
   private:
-    
+    i8   m_nMatchedPredicates; // number of matched columns
+    bool m_bMatchedPredicate[C_MAX_INDEX_COLUMNS]; // which columns are matched so far
+  
     // must be last
     Footer m_xFooter;    
     

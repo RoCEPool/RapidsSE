@@ -61,11 +61,6 @@ AccessPath::AccessPath(eAT eAccess)
   m_pLowerPredicates = nullptr;
   m_pUpperPredicates = nullptr;
   
-  m_nMatchedColumns = 0;
-  
-  for (i8 i_Col = 0; i_Col < C_MAX_INDEX_COLUMNS; i_Col++)
-    m_bMatchedColumn[i_Col] = false;
-  
   _checkInitialised_(CN_ACCESSPATH);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ACCESSPATH,_FOOTER_);
