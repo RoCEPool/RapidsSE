@@ -386,9 +386,12 @@ void Planner::vGenPaths(void)
 void Planner::vMatchPaths(void)
 {
   vMatchExactPaths();
+  //vMatchGivenPaths(false);
   vMatchLowerPaths();
+  //vMatchGivenPaths(false);
   vMatchUpperPaths();
-  vMatchRangePaths();
+  //vMatchGivenPaths(true);
+  //vMatchRangePaths();
 }
 
 /*----------------------------------------------------------------------------*/
