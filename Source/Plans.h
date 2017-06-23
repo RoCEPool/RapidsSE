@@ -19,8 +19,7 @@ using namespace Plans;
 #include "Arg.hpp"
 #include "Op.hpp"
 #include "Predicate.hpp"
-
-typedef Vector<CN_PREDICATEVEC,Predicate,CN_PREDICATE,128,u8> PredicateVec;
+#include "PredicateVec.hpp"
 
 
 #include "AccessPath.hpp"
