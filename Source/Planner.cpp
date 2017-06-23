@@ -378,16 +378,6 @@ void Planner::vMatchPaths(eBK eBound)
 /*----------------------------------------------------------------------------*/
 void Planner::vMatchPathsV2(void)
 {
-  //vMatchPathsV2(BK_EXACT);
-  vMatchPathsV2(BK_LOWER);
-  //vMatchPathsV2(BK_UPPER);
-}
-
-/*----------------------------------------------------------------------------*/
-/* attempt to match predicates to paths                                       */
-/*----------------------------------------------------------------------------*/
-void Planner::vMatchPathsV2(eBK eBound)
-{
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
   
   // step thru all generated access paths
@@ -398,13 +388,30 @@ void Planner::vMatchPathsV2(eBK eBound)
     
     eAT eAccess = mpAccPath->eAccess();
     
-    if (AT_LOWER == eAccess) {
-      PredicateVec* npLowPredVec = mpAccPath->pLowerPredicates();
-      vMatchPredicates(npLowPredVec,eBound);
+    if (AT_EXACT == eAccess) {
+      PredicateVec* npUprPredVec = mpAccPath->pLowerPredicates();
+      vMatchPredicates(npUprPredVec,BK_EXACT);
       
-      if (npLowPredVec->bFullyMatched())
+      if (npUprPredVec->bFullyMatched())
         mpAccPath->vIsCandidate(true);
     }
+    else
+    if (AT_LOWER == eAccess) {
+      PredicateVec* npLwrPredVec = mpAccPath->pLowerPredicates();
+      vMatchPredicates(npLwrPredVec,BK_LOWER);
+      
+      if (npLwrPredVec->bFullyMatched())
+        mpAccPath->vIsCandidate(true);
+    }
+    else
+    if (AT_UPPER == eAccess) {
+      PredicateVec* npUprPredVec = mpAccPath->pUpperPredicates();
+      vMatchPredicates(npUprPredVec,BK_UPPER);
+      
+      if (npUprPredVec->bFullyMatched())
+        mpAccPath->vIsCandidate(true);
+    }
+    
   }
 }
 

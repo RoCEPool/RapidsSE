@@ -22,13 +22,21 @@ ld jCdt "../JTEST/jCdt.csv";
 //uprselidx jCdt jCdt_idx1 7 ;
 
 lwrselidx jCdt jCdt_idx1 1 ;
-//fetch jCdt jCdt_idx1 1 ;
+
+// lower bound
+fetch jCdt "jA 5 >=" ;
+
+// upper bound
+fetch jCdt "jA 5 <=" ;
+
+// exact bound
+fetch jCdt "jA 5 ==" ;
+
+
+//fetch jCdt "jA 9 <= jA 5 >= and" ;
+
 
 //fetch jCdt "jA >= 3 and jA <= 7" ;  // "jA 3 >= jA 7 >= and"
-fetch jCdt "jA 5 >=" ;
-//fetch jCdt "jA 9 <= jA 5 >= and" ;
-fetch jCdt "jA 5 <=" ;
-fetch jCdt "jA 5 ==" ;
 
 /*============================================================================*/
 /* end                                                                        */

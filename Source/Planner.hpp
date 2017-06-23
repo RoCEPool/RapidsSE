@@ -69,7 +69,6 @@ namespace Plans
     void vMatchPaths(eBK eBound);
   
     void vMatchPathsV2(void);
-    void vMatchPathsV2(eBK eBound);
     void vMatchPredicates(PredicateVec* mpAccPath, eBK eBound);
   
     void vParseWhere(void);

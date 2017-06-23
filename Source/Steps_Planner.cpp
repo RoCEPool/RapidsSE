@@ -228,7 +228,7 @@ void Task::vPlannerMatchPaths(MP_Task mpTask)
   
   Planner* pPlanner = _pPlanner(pPtrPlanner);
   
-  pPlanner->vMatchPaths();
+  pPlanner->vMatchPathsV2();
   
   EXIT();
 }
