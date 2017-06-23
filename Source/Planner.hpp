@@ -68,7 +68,7 @@ namespace Plans
     void vMatchLowerPaths(void);
     void vMatchUpperPaths(void);
     void vMatchRangePaths(void);
-    void vMatchGivenPaths(bool bUpper);
+    void vMatchGivenPaths(eBK eBound);
     void vParseWhere(void);
     void vScorePaths(void);
     void vShowPaths(void);

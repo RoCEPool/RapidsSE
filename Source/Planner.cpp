@@ -385,12 +385,12 @@ void Planner::vGenPaths(void)
 /*----------------------------------------------------------------------------*/
 void Planner::vMatchPaths(void)
 {
-  vMatchExactPaths();
-  //vMatchGivenPaths(false);
-  vMatchLowerPaths();
-  //vMatchGivenPaths(false);
-  vMatchUpperPaths();
-  //vMatchGivenPaths(true);
+  //vMatchExactPaths();
+  vMatchGivenPaths(BK_EXACT);
+  //vMatchLowerPaths();
+  vMatchGivenPaths(BK_LOWER);
+  //vMatchUpperPaths();
+  vMatchGivenPaths(BK_UPPER);
   //vMatchRangePaths();
 }
 
@@ -696,7 +696,7 @@ void Planner::vMatchRangePaths(void)
 /*----------------------------------------------------------------------------*/
 /* attempt to match predicates to paths                                       */
 /*----------------------------------------------------------------------------*/
-void Planner::vMatchGivenPaths(bool bUpper)
+void Planner::vMatchGivenPaths(eBK eBound)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
   
@@ -721,7 +721,7 @@ void Planner::vMatchGivenPaths(bool bUpper)
     mpAccPath = m_pPathVec->pGet(i_Path);
     
     // test access path is an upper bound fetch
-    if ( bUpper ) {
+    if ( BK_UPPER == eBound ) {
       if ( AT_UPPER != mpAccPath->eAccess() )
         continue;
     }
@@ -731,7 +731,7 @@ void Planner::vMatchGivenPaths(bool bUpper)
     }
     
     // get the bound predicate vector from the access path
-    if ( bUpper )
+    if ( BK_UPPER == eBound )
       mpPredVec = mpAccPath->pUpperPredicates();
     else
       mpPredVec = mpAccPath->pLowerPredicates();
@@ -768,12 +768,17 @@ void Planner::vMatchGivenPaths(bool bUpper)
         eRelOp = Op::eDecodeText(sOpValue.aStr());
         
         // haver we found an upper where predicate?
-        if ( bUpper ) {
-          if ( bIsUpperOp(eRelOp) )
+        if ( BK_EXACT == eBound ) {
+          if ( bIsExactOp(eRelOp) )
+            break;
+        }
+        else if ( BK_LOWER == eBound ) {
+          if ( bIsLowerOp(eRelOp) )
             break;
         }
         else {
-          if ( bIsLowerOp(eRelOp) )
+          ASSERT( BK_UPPER == eBound );
+          if ( bIsUpperOp(eRelOp) )
             break;
         }
       }
