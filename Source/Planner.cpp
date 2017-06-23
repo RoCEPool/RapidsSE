@@ -374,6 +374,24 @@ void Planner::vMatchPaths(eBK eBound)
 }
 
 /*----------------------------------------------------------------------------*/
+/* attempt to match predicates to paths                                       */
+/*----------------------------------------------------------------------------*/
+void Planner::vMatchPathsV2(void)
+{
+  vMatchPathsV2(BK_EXACT);
+  vMatchPathsV2(BK_LOWER);
+  vMatchPathsV2(BK_UPPER);
+}
+
+/*----------------------------------------------------------------------------*/
+/* attempt to match predicates to paths                                       */
+/*----------------------------------------------------------------------------*/
+void Planner::vMatchPathsV2(eBK eBound)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
 /* parse where clause                                                         */
 /*----------------------------------------------------------------------------*/
 void Planner::vParseWhere(void)
