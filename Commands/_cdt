@@ -32,11 +32,8 @@ fetch jCdt "jA 5 <=" ;
 // exact bound
 fetch jCdt "jA 5 ==" ;
 
-
-//fetch jCdt "jA 9 <= jA 5 >= and" ;
-
-
-//fetch jCdt "jA >= 3 and jA <= 7" ;  // "jA 3 >= jA 7 >= and"
+// range bound
+fetch jCdt "jA 8 <= jA 1 >= and" ;
 
 /*============================================================================*/
 /* end                                                                        */

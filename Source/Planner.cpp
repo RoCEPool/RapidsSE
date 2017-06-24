@@ -251,133 +251,6 @@ void Planner::vGenPaths(void)
 /*----------------------------------------------------------------------------*/
 void Planner::vMatchPaths(void)
 {
-  vMatchPaths(BK_EXACT);
-  vMatchPaths(BK_LOWER);
-  vMatchPaths(BK_UPPER);
-}
-
-/*----------------------------------------------------------------------------*/
-/* attempt to match predicates to paths                                       */
-/*----------------------------------------------------------------------------*/
-void Planner::vMatchPaths(eBK eBound)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
-  
-  Token* mpValTkn;
-  Token* mpOpTkn;
-  s256 sOpValue;
-  eRO eRelOp;
-  i8 i_Token;
-  Token* pColNmTkn;
-  Predicate* mpColPred;
-  s32 sColumnName;
-  Arg* pLitValue;
-  s256 sLitValue;
-  Op* pOp;
-  AccessPath* mpAccPath;
-  PredicateVec* mpPredVec;
-  
-  // step thru all generated access paths
-  for (i8 i_Path = 0; i_Path < m_pPathVec->nItems(); i_Path++) {
-    
-    // get access path
-    mpAccPath = m_pPathVec->pGet(i_Path);
-    
-    // test access path is an upper bound fetch
-    if ( BK_UPPER == eBound ) {
-      if ( AT_UPPER != mpAccPath->eAccess() )
-        continue;
-    }
-    else {
-      if ( AT_LOWER != mpAccPath->eAccess() )
-        continue;
-    }
-    
-    // get the bound predicate vector from the access path
-    if ( BK_UPPER == eBound )
-      mpPredVec = mpAccPath->pUpperPredicates();
-    else
-      mpPredVec = mpAccPath->pLowerPredicates();
-    
-    // attempt to find all access path columns
-    // in the where clause as bound predicates
-    bool bMatchAll = true;
-    for (i8 i_Col = 0; i_Col < mpPredVec->nItems(); i_Col++) {
-      
-      // get access path bound predicate for the column
-      mpColPred = mpPredVec->pGet(i_Col);
-      sColumnName = mpColPred->pArg1()->sArgVal().aStr();
-      
-      // does this column exist in the where clause as a bound predicate?
-      i_Token = -1;
-      for (;;) {
-        
-        // attempt to find the column in the where clause
-        pColNmTkn = m_pWhereTokenVec->pFindToken(sColumnName,i_Token);
-        if ( ! pColNmTkn ) {
-          bMatchAll = false;
-          goto L_MatchTest;
-        }
-        
-        // found column in where clause
-        
-        // get the associated value from the where predicate
-        // remember that predicates are in rpn form
-        mpValTkn = m_pWhereTokenVec->pGet(i_Token+1);
-        
-        // get the operator from the where predicate
-        mpOpTkn = m_pWhereTokenVec->pGet(i_Token+2);
-        sOpValue = mpOpTkn->aText();
-        eRelOp = Op::eDecode(sOpValue.aStr());
-        
-        // haver we found a bound where predicate?
-        if ( BK_EXACT == eBound ) {
-          if ( bIsExactOp(eRelOp) )
-            break;
-        }
-        else if ( BK_LOWER == eBound ) {
-          if ( bIsLowerOp(eRelOp) )
-            break;
-        }
-        else {
-          ASSERT( BK_UPPER == eBound );
-          if ( bIsUpperOp(eRelOp) )
-            break;
-        }
-      }
-      
-      // column exists in the where clause as a bound predicate
-      
-      // set the access path bound predicate value
-      pLitValue = new Arg;
-      sLitValue = mpValTkn->aText();
-      pLitValue->vArgVal(sLitValue);
-      mpColPred->vArg2(pLitValue);
-      
-      // set the access path bound predicate operator
-      pOp = new Op;
-      pOp->vOpKind(eRelOp);
-      mpColPred->vOp(pOp);
-      
-      // mark the access path predicate as: column literal op
-      mpColPred->vPredicate(PK_COLUMN_LITERAL_OP);
-      
-    } // i_Col
-    
-  L_MatchTest:
-    
-    // does this acess path qualify as a candidate bound access path?
-    if ( bMatchAll )
-      mpAccPath->vIsCandidate(true);
-    
-  } // i_Path
-}
-
-/*----------------------------------------------------------------------------*/
-/* attempt to match predicates to paths                                       */
-/*----------------------------------------------------------------------------*/
-void Planner::vMatchPathsV2(void)
-{
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
   
   // step thru all generated access paths
@@ -411,7 +284,17 @@ void Planner::vMatchPathsV2(void)
       if (npUprPredVec->bFullyMatched())
         mpAccPath->vIsCandidate(true);
     }
-    
+    else
+    if (AT_RANGE == eAccess) {
+      PredicateVec* npLwrPredVec = mpAccPath->pLowerPredicates();
+      vMatchPredicates(npLwrPredVec,BK_LOWER);
+      
+      PredicateVec* npUprPredVec = mpAccPath->pUpperPredicates();
+      vMatchPredicates(npUprPredVec,BK_UPPER);
+      
+      if (npLwrPredVec->bFullyMatched() && npUprPredVec->bFullyMatched())
+        mpAccPath->vIsCandidate(true);
+    }
   }
 }
 
