@@ -355,7 +355,12 @@ stk
     endof
 
     AT_RANGE of
-      "case range" . ( xHighKey xLowKey pIndex ) rangeSelectIndex
+      "case range" .
+      pPlanner Planner.highKey@
+      pPlanner Planner.lowKey@
+      pPlanner Planner.indexNm@
+      stk
+      rangeSelectIndex
     endof
 
     AT_SCAN of

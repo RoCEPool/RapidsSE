@@ -390,16 +390,25 @@ void Planner::vScorePaths(void)
     // get index of access path
     Index* pIndex = pAccessPath->pIndex();
     
-    // initially just a simple scoring method      //! move this into AccessPath
+    // initially just a simple scoring method   
+    if (AT_EXACT == pAccessPath->eAccess())
+      iScore = 100 + (pIndex->bIsUnique() ? 0 : 50)
+                   + pAccessPath->pLowerPredicates()->nItems();
+    else
+    if (AT_RANGE == pAccessPath->eAccess())
+      iScore = 200 + (pIndex->bIsUnique() ? 0 : 50)
+                   + pAccessPath->pUpperPredicates()->nItems()
+                   + pAccessPath->pUpperPredicates()->nItems();
+    else
     if (AT_LOWER == pAccessPath->eAccess())
-      iScore = 10 * (pIndex->bIsUnique() ? 0 : 1)
-                  + pAccessPath->pLowerPredicates()->nItems();
+      iScore = 300 + (pIndex->bIsUnique() ? 0 : 50)
+                   + pAccessPath->pLowerPredicates()->nItems();
     else
     if (AT_UPPER == pAccessPath->eAccess())
-      iScore = 10 * (pIndex->bIsUnique() ? 0 : 1)
-                  + pAccessPath->pUpperPredicates()->nItems();
+      iScore = 300 + (pIndex->bIsUnique() ? 0 : 50)
+                   + pAccessPath->pUpperPredicates()->nItems();
     else
-      iScore = 100;
+      iScore = 400;
     
     pAccessPath->vPathRating(iScore);
   }
