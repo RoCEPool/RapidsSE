@@ -164,13 +164,16 @@ void Planner::vGenPaths(Table* pTable, Index* pIndex, eBK eBound)
     else
     if (BK_UPPER == eBound)
       pAccessPath = new AccessPath(AT_UPPER);
+    else
+    if (BK_RANGE == eBound)
+      pAccessPath = new AccessPath(AT_RANGE);
     
     m_pPathVec->vAdd(pAccessPath);
     
     // set the index in path
     pAccessPath->vIndex(pIndex);
     
-    if (BK_EXACT == eBound || BK_LOWER == eBound) {
+    if (BK_EXACT == eBound || BK_LOWER == eBound || BK_RANGE == eBound) {
       // create the lower bound predicate vector
       PredicateVec* pLowerPredicateVec = new PredicateVec;
       pAccessPath->vLowerPredicates(pLowerPredicateVec);
@@ -232,7 +235,7 @@ void Planner::vGenPaths(Table* mpTable)
     vGenPaths(mpTable, mpIndex, BK_EXACT);
     vGenPaths(mpTable, mpIndex, BK_LOWER);
     vGenPaths(mpTable, mpIndex, BK_UPPER);
-    //vGenRangePaths(mpTable, mpIndex);
+    vGenPaths(mpTable, mpIndex, BK_RANGE);
   }
 }
 
