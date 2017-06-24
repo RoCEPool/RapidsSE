@@ -53,12 +53,6 @@ Planner::Planner(void)
   m_pTable = nullptr;
   m_pPathVec = nullptr;
   
-  for (i8 i_Cdt = 0; i_Cdt < C_MAX_CANDIDATES; i_Cdt++) {
-    m_pIndex[i_Cdt] = nullptr;
-    m_iScoreVec[i_Cdt] = 0;
-    m_bIsCandidate[i_Cdt] = false;
-  }
-  m_nCandidates = 0;
   //m_sWhere
   m_pPredicateVec = nullptr;
   m_i_Chosen = -1;
@@ -219,7 +213,7 @@ void Planner::vGenPaths(Table* mpTable)
   
   for (i8 i_Idx = 0; i_Idx < pIdxVec->nItems(); i_Idx++) {
     Index* mpIndex = pIdxVec->pGet(i_Idx);
-    m_pIndex[i_Idx] = mpIndex;
+    
     vGenPaths(mpTable, mpIndex, AT_EXACT);
     vGenPaths(mpTable, mpIndex, AT_LOWER);
     vGenPaths(mpTable, mpIndex, AT_UPPER);
@@ -467,18 +461,6 @@ void Planner::vWhere(s48K& sWhere)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
   
   m_sWhere = sWhere;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get chosen index                                                           */
-/*----------------------------------------------------------------------------*/
-Index* Planner::pChosenIndex(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
-  
-  Index* pChosen = m_pIndex[m_i_Chosen];
-  
-  return pChosen;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -14,10 +14,6 @@ namespace Plans
   
     PathVec*        m_pPathVec;
   
-    Index*          m_pIndex[C_MAX_CANDIDATES];
-    i8              m_iScoreVec[C_MAX_CANDIDATES];
-    bool            m_bIsCandidate[C_MAX_CANDIDATES];
-    i8              m_nCandidates;
     s48K            m_sWhere;
     i8              m_i_Chosen;
 
@@ -58,7 +54,6 @@ namespace Plans
     void vShowPaths(void);
     void vShowPredicates(void);
   
-    Index* pChosenIndex(void);
     AccessPath* pChosenPath(void);
   
     PredicateVec* pPredicateVec(void);
