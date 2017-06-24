@@ -54,7 +54,6 @@ Planner::Planner(void)
   m_pPathVec = nullptr;
   
   //m_sWhere
-  m_pPredicateVec = nullptr;
   m_i_Chosen = -1;
   
   m_pWhereTokenVec = nullptr;
@@ -426,16 +425,6 @@ void Planner::vParseWhere(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get predicate vector                                                       */
-/*----------------------------------------------------------------------------*/
-PredicateVec* Planner::pPredicateVec(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
-  
-  return m_pPredicateVec;
-}
-
-/*----------------------------------------------------------------------------*/
 /* score the set of all paths                                                 */
 /*----------------------------------------------------------------------------*/
 void Planner::vScorePaths(void)
@@ -495,20 +484,6 @@ void Planner::vShowPaths(void)
   for (i8 i_Path = 0; i_Path < m_pPathVec->nItems(); i_Path++) {
     AccessPath* pAccessPath = m_pPathVec->pGet(i_Path);
     pAccessPath->vShow();
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* show predicate vector                                                      */
-/*----------------------------------------------------------------------------*/
-void Planner::vShowPredicates(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
-  
-  ASSERT(m_pPredicateVec);
-  for (i8 i_Pred = 0; i_Pred < m_pPredicateVec->nItems(); i_Pred++) {
-    Predicate* mpPredicate = m_pPredicateVec->pGet(i_Pred);
-    mpPredicate->vShow();
   }
 }
 

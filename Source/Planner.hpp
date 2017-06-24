@@ -11,14 +11,10 @@ namespace Plans
     static const i8 C_MAX_CANDIDATES = 128;
   
     Table*          m_pTable;
-  
     PathVec*        m_pPathVec;
-  
     s48K            m_sWhere;
     i8              m_i_Chosen;
 
-    PredicateVec*   m_pPredicateVec;
-  
     TokenVec*       m_pWhereTokenVec;
   
     // must be last
@@ -52,11 +48,8 @@ namespace Plans
     void vParseWhere(void);
     void vScorePaths(void);
     void vShowPaths(void);
-    void vShowPredicates(void);
   
     AccessPath* pChosenPath(void);
-  
-    PredicateVec* pPredicateVec(void);
   
     bool bIsExactOp(eRO eRelOp);
     bool bIsLowerOp(eRO eRelOp);

@@ -46,7 +46,6 @@ void Task::vAddPrimitives_Planner(void)
   vAddPrimitive("planner.parseWhere"_Str,     &vPlannerParseWhere,     false);
   vAddPrimitive("planner.scorePaths"_Str,     &vPlannerScorePaths,     false);
   vAddPrimitive("planner.showPaths"_Str,      &vPlannerShowPaths,      false);
-  vAddPrimitive("planner.showPredicates"_Str, &vPlannerShowPredicates, false);
   vAddPrimitive("planner.table@"_Str,         &vPlannerTableFetch,     false);
   vAddPrimitive("planner.table!"_Str,         &vPlannerTableStore,     false);
 }
@@ -323,23 +322,6 @@ void Task::vPlannerShowPaths(MP_Task mpTask)
   Planner* pPlanner = _pPlanner(pPtrPlanner);
   
   pPlanner->vShowPaths();
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* accessPath.showPredicates -- show predicates                               */
-/*----------------------------------------------------------------------------*/
-void Task::vPlannerShowPredicates(MP_Task mpTask)
-{
-  ENTRY("vPlannerShowPredicates"_Str);
-  
-  Object* pPtrPlanner;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrPlanner) )
-    THROW_INVALID_DSTACK("accessPath.showPredicates"_Str);
-  Planner* pPlanner = _pPlanner(pPtrPlanner);
-  
-  pPlanner->vShowPredicates();
   
   EXIT();
 }
