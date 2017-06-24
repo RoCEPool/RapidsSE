@@ -33,6 +33,7 @@ extern SEitfList*      gpSEitfList;
 void Task::vAddPrimitives_Planner(void)
 {
   vAddPrimitive("planner.choosePath"_Str,     &vPlannerChoosePath,     false);
+  vAddPrimitive("planner.chosenPath"_Str,     &vPlannerChosenPath,     false);
   vAddPrimitive("planner.delete"_Str,         &vPlannerDelete,         false);
   vAddPrimitive("planner.fetchTechnique@"_Str,&vPlannerFetchTechniqueFetch, false);
   vAddPrimitive("planner.genPaths"_Str,       &vPlannerGenPaths,       false);
@@ -59,7 +60,7 @@ void Task::vPlannerChoosePath(MP_Task mpTask)
   Object* mpPtrPlanner;
   
   if ( ! mpTask->m_pDataStack->bPop(mpPtrPlanner) )
-    THROW_INVALID_DSTACK("planner.delete"_Str);
+    THROW_INVALID_DSTACK((Str*)__func__);
   
   Planner* mpPlanner = _pPlanner(mpPtrPlanner);
   
@@ -68,6 +69,27 @@ void Task::vPlannerChoosePath(MP_Task mpTask)
   EXIT();
 }
 
+/*----------------------------------------------------------------------------*/
+/* planner.chosenPath -- push chosen access path                              */
+/*----------------------------------------------------------------------------*/
+void Task::vPlannerChosenPath(MP_Task mpTask)
+{
+  ENTRY((Str*)__func__);                         //! needs to be tested on Linux
+  
+  Object* mpPtrPlanner;
+  
+  if ( ! mpTask->m_pDataStack->bPop(mpPtrPlanner) )
+    THROW_INVALID_DSTACK("planner.delete"_Str);
+  
+  Planner* mpPlanner = _pPlanner(mpPtrPlanner);
+  
+  AccessPath* pChosenPlan = mpPlanner->pChosenPath();
+  
+  mpTask->m_pDataStack->vPushObject(pChosenPlan);
+  
+  
+  EXIT();
+}
 /*----------------------------------------------------------------------------*/
 /* planner.delete -- delete an access path ( accessPath -- )                  */
 /*----------------------------------------------------------------------------*/

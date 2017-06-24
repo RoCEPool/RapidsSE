@@ -722,6 +722,7 @@ namespace Tasks
     
     // planner
     static void vPlannerChoosePath(MP_Task mpTask);
+    static void vPlannerChosenPath(MP_Task mpTask);
     static void vPlannerDelete(MP_Task mpTask);
     static void vPlannerFetchTechniqueFetch(MP_Task mpTask);
     static void vPlannerGenPaths(MP_Task mpTask);
