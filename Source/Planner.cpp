@@ -35,11 +35,11 @@ void* Planner::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 /* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
-void Planner::operator delete(void* pDataAddress)
+void Planner::operator delete(void* aAddr)
 {
-  AccessPath* pAccessPath = reinterpret_cast<AccessPath*>(pDataAddress);
+  Planner* pPlanner = reinterpret_cast<Planner*>(aAddr);
   
-  Heap::vFree(pAccessPath);
+  Heap::vFree(pPlanner);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -51,12 +51,10 @@ Planner::Planner(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
   
   m_pTable = nullptr;
+  //m_sWhereClause
+  m_pWhereTknVec = nullptr;
   m_pPathVec = nullptr;
-  
-  //m_sWhere
   m_i_Chosen = -1;
-  
-  m_pWhereTokenVec = nullptr;
   
   _checkInitialised_(CN_PLANNER);
   
@@ -81,11 +79,10 @@ Planner::~Planner(void)
 void Planner::vChoosePath(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
-  
 
   AccessPath* npChosenAccessPath = nullptr;
   
-  // step thru path vector and find first candidate               //! assumption
+  // step thru path vector and find first candidate
   for (m_i_Chosen = 0; m_i_Chosen < m_pPathVec->nItems(); m_i_Chosen++) {
     
     AccessPath* mpAccPath = m_pPathVec->pGet(m_i_Chosen);
@@ -110,8 +107,6 @@ void Planner::vChoosePath(void)
     }
   }
   
-  AccessPath* mpChosenPath = m_pPathVec->pGet(m_i_Chosen);
-  
   vTrace("Chosen: %lld\n"_Str,m_i_Chosen);
 }
 
@@ -130,7 +125,7 @@ AccessPath* Planner::pChosenPath(void)
 /*----------------------------------------------------------------------------*/
 /* generate the set of all range paths for given table                        */
 /*----------------------------------------------------------------------------*/
-void Planner::vGenPaths(Table* pTable, Index* pIndex, eAT eAccess)
+void Planner::vGenPaths(Index* pIndex, eAT eAccess)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
   
@@ -140,9 +135,6 @@ void Planner::vGenPaths(Table* pTable, Index* pIndex, eAT eAccess)
   //
   
   IdxColVec* pIdxColVec = pIndex->pIdxColVec();
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // range bound
   
   // step thru index column combinations for range bound
   for (i8 nCols = 1; nCols <= pIdxColVec->nItems(); nCols++) {
@@ -202,13 +194,13 @@ void Planner::vGenPaths(Table* pTable, Index* pIndex, eAT eAccess)
 /*----------------------------------------------------------------------------*/
 /* generate the set of all paths for given table                              */
 /*----------------------------------------------------------------------------*/
-void Planner::vGenPaths(Table* mpTable)
+void Planner::vGenPaths(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
   
   m_pPathVec = new PathVec;
   
-  IdxVec* pIdxVec = mpTable->pIdxVec();
+  IdxVec* pIdxVec = m_pTable->pIdxVec();
   
   for (i8 i_Idx = 0; i_Idx < pIdxVec->nItems(); i_Idx++) {
     Index* mpIndex = pIdxVec->pGet(i_Idx);
@@ -220,21 +212,11 @@ void Planner::vGenPaths(Table* mpTable)
       m_pPathVec->vAdd(mpAccessPath);
     }
     
-    vGenPaths(mpTable, mpIndex, AT_EXACT);
-    vGenPaths(mpTable, mpIndex, AT_LOWER);
-    vGenPaths(mpTable, mpIndex, AT_UPPER);
-    vGenPaths(mpTable, mpIndex, AT_RANGE);
+    vGenPaths(mpIndex, AT_EXACT);
+    vGenPaths(mpIndex, AT_LOWER);
+    vGenPaths(mpIndex, AT_UPPER);
+    vGenPaths(mpIndex, AT_RANGE);
   }
-}
-
-/*----------------------------------------------------------------------------*/
-/* generate the set of all paths for given table                              */
-/*----------------------------------------------------------------------------*/
-void Planner::vGenPaths(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
-  
-  vGenPaths(m_pTable);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -264,19 +246,6 @@ bool Planner::bIsLowerOp(eRO eRelOp)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is given relational op an upper op?                                        */
-/*----------------------------------------------------------------------------*/
-bool Planner::bIsUpperOp(eRO eRelOp)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
-  
-  if (RO_LESS_THAN == eRelOp || RO_LESS_EQUAL == eRelOp)
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* does given relational op match with given bounds?                          */
 /*----------------------------------------------------------------------------*/
 bool Planner::bIsMatchingOp(eAT eAccess, eRO eRelOp)
@@ -298,6 +267,19 @@ bool Planner::bIsMatchingOp(eAT eAccess, eRO eRelOp)
   }
   
   return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is given relational op an upper op?                                        */
+/*----------------------------------------------------------------------------*/
+bool Planner::bIsUpperOp(eRO eRelOp)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
+  
+  if (RO_LESS_THAN == eRelOp || RO_LESS_EQUAL == eRelOp)
+    return true;
+  else
+    return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -379,17 +361,17 @@ void Planner::vMatchPredicates(PredicateVec* mpPathPredVec, eAT eAccess)
       
       // get next columnNm token from where clause
       pColNmTkn_Where =
-        m_pWhereTokenVec->pFindToken(sColumnNm_Path,i_ColumnTkn_Where);
+        m_pWhereTknVec->pFindToken(sColumnNm_Path,i_ColumnTkn_Where);
       
       // unable to find a matching column
       if ( ! pColNmTkn_Where )
         return;
       
       // get the associated literal token
-      mpLitTkn_Where = m_pWhereTokenVec->pGet(i_ColumnTkn_Where+1);
+      mpLitTkn_Where = m_pWhereTknVec->pGet(i_ColumnTkn_Where+1);
       
       // get the associated op token
-      mpOpTkn_Where = m_pWhereTokenVec->pGet(i_ColumnTkn_Where+2);
+      mpOpTkn_Where = m_pWhereTknVec->pGet(i_ColumnTkn_Where+2);
       sOpDatum_Where = mpOpTkn_Where->aText();
       eRelOp_Where = Op::eDecode(sOpDatum_Where.aStr());
       
@@ -414,13 +396,13 @@ void Planner::vMatchPredicates(PredicateVec* mpPathPredVec, eAT eAccess)
 /*----------------------------------------------------------------------------*/
 /* parse where clause                                                         */
 /*----------------------------------------------------------------------------*/
-void Planner::vParseWhere(void)
+void Planner::vParseWhere(s48K& sWhereClause)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
   
-  m_pWhereTokenVec = Tokeniser::pTokenise(m_sWhereClause);
-  for (i8 i_Token = 0; i_Token < m_pWhereTokenVec->nTokens(); i_Token++) {
-    Token* pToken = m_pWhereTokenVec->pGet(i_Token);
+  m_pWhereTknVec = Tokeniser::pTokenise(sWhereClause);
+  for (i8 i_Token = 0; i_Token < m_pWhereTknVec->nTokens(); i_Token++) {
+    Token* pToken = m_pWhereTknVec->pGet(i_Token);
   }
 }
 
@@ -505,26 +487,6 @@ void Planner::vTable(Table* pTable)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
   
   m_pTable = pTable;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get where clause                                                           */
-/*----------------------------------------------------------------------------*/
-s48K& Planner::sWhere(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
-  
-  return m_sWhereClause;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set where clause                                                           */
-/*----------------------------------------------------------------------------*/
-void Planner::vWhere(s48K& sWhereClause)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
-  
-  m_sWhereClause = sWhereClause;
 }
 
 /*----------------------------------------------------------------------------*/

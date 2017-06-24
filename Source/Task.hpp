@@ -731,7 +731,6 @@ namespace Tasks
     static void vPlannerLowKeyFetch(MP_Task mpTask);
     static void vPlannerMatchPaths(MP_Task mpTask);
     static void vPlannerNew(MP_Task mpTask);
-    static void vPlannerParseRPN(MP_Task mpTask);
     static void vPlannerParseWhere(MP_Task mpTask);
     static void vPlannerScorePaths(MP_Task mpTask);
     static void vPlannerShowPaths(MP_Task mpTask);

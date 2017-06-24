@@ -42,7 +42,6 @@ void Task::vAddPrimitives_Planner(void)
   vAddPrimitive("planner.lowkey@"_Str,        &vPlannerLowKeyFetch,    false);
   vAddPrimitive("planner.matchPaths"_Str,     &vPlannerMatchPaths,     false);
   vAddPrimitive("planner::new"_Str,           &vPlannerNew,            false);
-  vAddPrimitive("planner.parseRPN"_Str,       &vPlannerParseRPN,       false);
   vAddPrimitive("planner.parseWhere"_Str,     &vPlannerParseWhere,     false);
   vAddPrimitive("planner.scorePaths"_Str,     &vPlannerScorePaths,     false);
   vAddPrimitive("planner.showPaths"_Str,      &vPlannerShowPaths,      false);
@@ -247,29 +246,6 @@ ENTRY("vPlannerNew"_Str);
 }
 
 /*----------------------------------------------------------------------------*/
-/* accessPath.parseRPN -- parse an rpn form of where clause                   */
-/*----------------------------------------------------------------------------*/
-void Task::vPlannerParseRPN(MP_Task mpTask)
-{
-  ENTRY("vPlannerParseWhere"_Str);
-  
-  Object* pPtrPlanner;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrPlanner) )
-    THROW_INVALID_DSTACK("accessPath.parseWhere"_Str);
-  Planner* pPlanner = _pPlanner(pPtrPlanner);
-  
-  s48K sWhere;
-  if ( ! mpTask->m_pDataStack->bPop(sWhere) )
-    THROW_INVALID_DSTACK("accessPath.parseWhere"_Str);
-  
-  pPlanner->vWhere(sWhere);
-  
-  pPlanner->vParseWhere();
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* accessPath.parseWhere -- parse a where clause                              */
 /*----------------------------------------------------------------------------*/
 void Task::vPlannerParseWhere(MP_Task mpTask)
@@ -285,9 +261,7 @@ void Task::vPlannerParseWhere(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(sWhere) )
     THROW_INVALID_DSTACK("accessPath.parseWhere"_Str);
   
-  pPlanner->vWhere(sWhere);
-  
-  pPlanner->vParseWhere();
+  pPlanner->vParseWhere(sWhere);
   
   EXIT();
 }
