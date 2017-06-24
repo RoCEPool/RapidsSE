@@ -40,7 +40,7 @@ namespace Plans
     Partition* m_pPartition;  // partition
 
     bool       m_bIsCandidate; // is this path a candidate
-    i8         m_iPathRating;  // its score
+    i8         m_iPathScore;   // its score
 
     Index*     m_pIndex;       // index
     eAT        m_eAccess;      // access technique
@@ -69,8 +69,8 @@ namespace Plans
     bool bIsCandidate(void);
     void vIsCandidate(bool bIsCandidate);
   
-    i8 iPathRating(void);
-    void vPathRating(i8 iPathRating);
+    i8 iPathScore(void);
+    void vPathScore(i8 iPathRating);
   
     Index* pIndex(void);
     void vIndex(Index* pIndex);

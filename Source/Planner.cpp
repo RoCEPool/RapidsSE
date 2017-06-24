@@ -87,10 +87,11 @@ void Planner::vChoosePath(void)
     
     AccessPath* mpAccPath = m_pPathVec->pGet(m_i_Chosen);
     
-    if (mpAccPath->bIsCandidate()) {
-      npChosenAccessPath = mpAccPath;
-      break;
-    }
+    if ( ! mpAccPath->bIsCandidate() )
+      continue;
+
+    npChosenAccessPath = mpAccPath;
+    break;
   }
   
   ASSERT(npChosenAccessPath);
@@ -100,8 +101,10 @@ void Planner::vChoosePath(void)
     
     AccessPath* mpTestAccPath = m_pPathVec->pGet(i_Test);
     
-    if (mpTestAccPath->bIsCandidate() &&
-        mpTestAccPath->iPathRating() < npChosenAccessPath->iPathRating()) {
+    if ( ! mpTestAccPath->bIsCandidate() )
+      continue;
+    
+    if ( mpTestAccPath->iPathScore() < npChosenAccessPath->iPathScore() ) {
       m_i_Chosen = i_Test;
       npChosenAccessPath = mpTestAccPath;
     }
@@ -123,7 +126,7 @@ AccessPath* Planner::pChosenPath(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* generate the set of all range paths for given table                        */
+/* generate the set of all paths for given index and access technique         */
 /*----------------------------------------------------------------------------*/
 void Planner::vGenPaths(Index* pIndex, eAT eAccess)
 {
@@ -131,15 +134,14 @@ void Planner::vGenPaths(Index* pIndex, eAT eAccess)
   
   //
   // create a possible path for every index column combination
-  // for range bound
   //
   
   IdxColVec* pIdxColVec = pIndex->pIdxColVec();
   
-  // step thru index column combinations for range bound
+  // step thru index column combinations
   for (i8 nCols = 1; nCols <= pIdxColVec->nItems(); nCols++) {
     
-    // create an access path for this combo
+    // first, create an access path for this combo
     AccessPath* pAccessPath = new AccessPath(eAccess);
     m_pPathVec->vAdd(pAccessPath);
     
@@ -147,6 +149,7 @@ void Planner::vGenPaths(Index* pIndex, eAT eAccess)
     pAccessPath->vIndex(pIndex);
     
     if (AT_EXACT == eAccess || AT_LOWER == eAccess || AT_RANGE == eAccess) {
+      
       // create the lower bound predicate vector
       PredicateVec* pLowerPredicateVec = new PredicateVec;
       pAccessPath->vLowerPredicates(pLowerPredicateVec);
@@ -176,7 +179,7 @@ void Planner::vGenPaths(Index* pIndex, eAT eAccess)
       // step thru predicates of the upper bound predicate vector
       for (i8 i_IdxCol = 0; i_IdxCol < nCols; i_IdxCol++) {
         
-        // create a upper bound predicate
+        // create an upper bound predicate
         Predicate* pUpperPredicate = new Predicate;
         pUpperPredicateVec->vAdd(pUpperPredicate);
         
@@ -331,6 +334,9 @@ void Planner::vMatchPaths(void)
       if (npLwrPredVec->bFullyMatched() && npUprPredVec->bFullyMatched())
         mpAccPath->vIsCandidate(true);
     }
+    else {
+      ASSERT(AT_SCAN == eAccess);
+    }
   }
 }
 
@@ -401,19 +407,17 @@ void Planner::vParseWhere(s48K& sWhereClause)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
   
   m_pWhereTknVec = Tokeniser::pTokenise(sWhereClause);
-  for (i8 i_Token = 0; i_Token < m_pWhereTknVec->nTokens(); i_Token++) {
-    Token* pToken = m_pWhereTknVec->pGet(i_Token);
-  }
 }
 
 /*----------------------------------------------------------------------------*/
-/* score the set of all paths                                                 */
+/* score the set of all paths (lower is better)                               */
 /*----------------------------------------------------------------------------*/
 void Planner::vScorePaths(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
   
   i8 iScore;
+  
   // step thru paths and score them
   for (i8 i_Path = 0; i_Path < m_pPathVec->nItems(); i_Path++) {
     
@@ -433,7 +437,7 @@ void Planner::vScorePaths(void)
         
       case AT_RANGE:
         iScore = 200 + (pIndex->bIsUnique() ? 0 : 50)
-                     + pAccessPath->pUpperPredicates()->nItems()
+                     + pAccessPath->pLowerPredicates()->nItems()
                      + pAccessPath->pUpperPredicates()->nItems();
         break;
         
@@ -452,7 +456,7 @@ void Planner::vScorePaths(void)
         iScore = 400;
     }
     
-    pAccessPath->vPathRating(iScore);
+    pAccessPath->vPathScore(iScore);
   }
 }
 

@@ -55,7 +55,7 @@ AccessPath::AccessPath(eAT eAccess)
   m_pIndex     = nullptr;
   
   m_bIsCandidate = false;
-  m_iPathRating = 0;
+  m_iPathScore = 0;
   
   m_eAccess = eAccess;
   m_pLowerPredicates = nullptr;
@@ -161,21 +161,21 @@ void AccessPath::vIndex(Index* pIndex)
 /*----------------------------------------------------------------------------*/
 /* get score                                                                  */
 /*----------------------------------------------------------------------------*/
-i8 AccessPath::iPathRating(void)
+i8 AccessPath::iPathScore(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ACCESSPATH,_FOOTER_);
   
-  return m_iPathRating;
+  return m_iPathScore;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set score                                                                  */
 /*----------------------------------------------------------------------------*/
-void AccessPath::vPathRating(i8 iPathRating)
+void AccessPath::vPathScore(i8 iPathScore)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ACCESSPATH,_FOOTER_);
   
-  m_iPathRating = iPathRating;
+  m_iPathScore = iPathScore;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -249,7 +249,7 @@ void AccessPath::vShow(void)
          m_pIndex->aIndexName(),
          aAT[m_eAccess],
          m_bIsCandidate ? "cdt"_Str : "not"_Str,
-         m_iPathRating);
+         m_iPathScore);
   
   if (m_pLowerPredicates) {
     for (i8 i_Pred = 0; i_Pred < m_pLowerPredicates->nItems(); i_Pred++) {
