@@ -418,7 +418,7 @@ void Planner::vParseWhere(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
   
-  m_pWhereTokenVec = Tokeniser::pTokenise(m_sWhere);
+  m_pWhereTokenVec = Tokeniser::pTokenise(m_sWhereClause);
   for (i8 i_Token = 0; i_Token < m_pWhereTokenVec->nTokens(); i_Token++) {
     Token* pToken = m_pWhereTokenVec->pGet(i_Token);
   }
@@ -514,17 +514,17 @@ s48K& Planner::sWhere(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
   
-  return m_sWhere;
+  return m_sWhereClause;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set where clause                                                           */
 /*----------------------------------------------------------------------------*/
-void Planner::vWhere(s48K& sWhere)
+void Planner::vWhere(s48K& sWhereClause)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
   
-  m_sWhere = sWhere;
+  m_sWhereClause = sWhereClause;
 }
 
 /*----------------------------------------------------------------------------*/
