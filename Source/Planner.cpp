@@ -137,7 +137,7 @@ AccessPath* Planner::pChosenPath(void)
 /*----------------------------------------------------------------------------*/
 /* generate the set of all range paths for given table                        */
 /*----------------------------------------------------------------------------*/
-void Planner::vGenPaths(Table* pTable, Index* pIndex, eBK eBound)
+void Planner::vGenPaths(Table* pTable, Index* pIndex, eAT eAccess)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
   
@@ -155,25 +155,13 @@ void Planner::vGenPaths(Table* pTable, Index* pIndex, eBK eBound)
   for (i8 nCols = 1; nCols <= pIdxColVec->nItems(); nCols++) {
     
     // create an access path for this combo
-    AccessPath* pAccessPath = nullptr;
-    if (BK_EXACT == eBound)
-      pAccessPath = new AccessPath(AT_EXACT);
-    else
-    if (BK_LOWER == eBound)
-      pAccessPath = new AccessPath(AT_LOWER);
-    else
-    if (BK_UPPER == eBound)
-      pAccessPath = new AccessPath(AT_UPPER);
-    else
-    if (BK_RANGE == eBound)
-      pAccessPath = new AccessPath(AT_RANGE);
-    
+    AccessPath* pAccessPath = new AccessPath(eAccess);
     m_pPathVec->vAdd(pAccessPath);
     
     // set the index in path
     pAccessPath->vIndex(pIndex);
     
-    if (BK_EXACT == eBound || BK_LOWER == eBound || BK_RANGE == eBound) {
+    if (AT_EXACT == eAccess || AT_LOWER == eAccess || AT_RANGE == eAccess) {
       // create the lower bound predicate vector
       PredicateVec* pLowerPredicateVec = new PredicateVec;
       pAccessPath->vLowerPredicates(pLowerPredicateVec);
@@ -194,7 +182,7 @@ void Planner::vGenPaths(Table* pTable, Index* pIndex, eBK eBound)
       }
     }
     
-    if (BK_UPPER == eBound || BK_RANGE == eBound) {
+    if (AT_UPPER == eAccess || AT_RANGE == eAccess) {
     
       // create the upper bound predicate vector
       PredicateVec* pUpperPredicateVec = new PredicateVec;
@@ -232,10 +220,10 @@ void Planner::vGenPaths(Table* mpTable)
   for (i8 i_Idx = 0; i_Idx < pIdxVec->nItems(); i_Idx++) {
     Index* mpIndex = pIdxVec->pGet(i_Idx);
     m_pIndex[i_Idx] = mpIndex;
-    vGenPaths(mpTable, mpIndex, BK_EXACT);
-    vGenPaths(mpTable, mpIndex, BK_LOWER);
-    vGenPaths(mpTable, mpIndex, BK_UPPER);
-    vGenPaths(mpTable, mpIndex, BK_RANGE);
+    vGenPaths(mpTable, mpIndex, AT_EXACT);
+    vGenPaths(mpTable, mpIndex, AT_LOWER);
+    vGenPaths(mpTable, mpIndex, AT_UPPER);
+    vGenPaths(mpTable, mpIndex, AT_RANGE);
   }
 }
 
@@ -266,7 +254,7 @@ void Planner::vMatchPaths(void)
     
     if (AT_EXACT == eAccess) {
       PredicateVec* npUprPredVec = mpAccPath->pLowerPredicates();
-      vMatchPredicates(npUprPredVec,BK_EXACT);
+      vMatchPredicates(npUprPredVec,AT_EXACT);
       
       if (npUprPredVec->bFullyMatched())
         mpAccPath->vIsCandidate(true);
@@ -274,7 +262,7 @@ void Planner::vMatchPaths(void)
     else
     if (AT_LOWER == eAccess) {
       PredicateVec* npLwrPredVec = mpAccPath->pLowerPredicates();
-      vMatchPredicates(npLwrPredVec,BK_LOWER);
+      vMatchPredicates(npLwrPredVec,AT_LOWER);
       
       if (npLwrPredVec->bFullyMatched())
         mpAccPath->vIsCandidate(true);
@@ -282,7 +270,7 @@ void Planner::vMatchPaths(void)
     else
     if (AT_UPPER == eAccess) {
       PredicateVec* npUprPredVec = mpAccPath->pUpperPredicates();
-      vMatchPredicates(npUprPredVec,BK_UPPER);
+      vMatchPredicates(npUprPredVec,AT_UPPER);
       
       if (npUprPredVec->bFullyMatched())
         mpAccPath->vIsCandidate(true);
@@ -290,10 +278,10 @@ void Planner::vMatchPaths(void)
     else
     if (AT_RANGE == eAccess) {
       PredicateVec* npLwrPredVec = mpAccPath->pLowerPredicates();
-      vMatchPredicates(npLwrPredVec,BK_LOWER);
+      vMatchPredicates(npLwrPredVec,AT_LOWER);
       
       PredicateVec* npUprPredVec = mpAccPath->pUpperPredicates();
-      vMatchPredicates(npUprPredVec,BK_UPPER);
+      vMatchPredicates(npUprPredVec,AT_UPPER);
       
       if (npLwrPredVec->bFullyMatched() && npUprPredVec->bFullyMatched())
         mpAccPath->vIsCandidate(true);
@@ -304,7 +292,7 @@ void Planner::vMatchPaths(void)
 /*----------------------------------------------------------------------------*/
 /* attempt to match path columns to where columns                             */
 /*----------------------------------------------------------------------------*/
-void Planner::vMatchPredicates(PredicateVec* mpPathPredVec, eBK eBound)
+void Planner::vMatchPredicates(PredicateVec* mpPathPredVec, eAT eAccess)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
   
@@ -343,7 +331,7 @@ void Planner::vMatchPredicates(PredicateVec* mpPathPredVec, eBK eBound)
       eRelOp_Where = Op::eDecode(sOpDatum_Where.aStr());
       
       // have we found a bound where predicate?
-      if (bIsMatchingOp(eBound,eRelOp_Where))
+      if (bIsMatchingOp(eAccess,eRelOp_Where))
         break;
       
       // the where column predicate does not have a matching op, try again
@@ -550,20 +538,20 @@ bool Planner::bIsUpperOp(eRO eRelOp)
 /*----------------------------------------------------------------------------*/
 /* does given relational op match with given bounds?                          */
 /*----------------------------------------------------------------------------*/
-bool Planner::bIsMatchingOp(eBK eBound, eRO eRelOp)
+bool Planner::bIsMatchingOp(eAT eAccess, eRO eRelOp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
   
-  if ( BK_EXACT == eBound ) {
+  if ( AT_EXACT == eAccess ) {
     if ( bIsExactOp(eRelOp) )
       return true;
   }
-  else if ( BK_LOWER == eBound ) {
+  else if ( AT_LOWER == eAccess ) {
     if ( bIsLowerOp(eRelOp) )
       return true;
   }
   else {
-    ASSERT( BK_UPPER == eBound );
+    ASSERT( AT_UPPER == eAccess );
     if ( bIsUpperOp(eRelOp) )
       return true;
   }
