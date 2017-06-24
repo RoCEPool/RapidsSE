@@ -88,7 +88,7 @@ ENTRY("vPlannerDelete"_Str);
 }
 
 /*----------------------------------------------------------------------------*/
-/* planner.fetchTechnique@ -- fetch fetch technique ( -- )                    */
+/* planner.fetchTechnique@ -- fetch the fetch technique ( -- )                */
 /*----------------------------------------------------------------------------*/
 void Task::vPlannerFetchTechniqueFetch(MP_Task mpTask)
 {
@@ -246,7 +246,7 @@ ENTRY("vPlannerNew"_Str);
 }
 
 /*----------------------------------------------------------------------------*/
-/* accessPath.parseWhere -- parse a where clause                              */
+/* planner.parseWhere -- parse a where clause                                 */
 /*----------------------------------------------------------------------------*/
 void Task::vPlannerParseWhere(MP_Task mpTask)
 {
@@ -254,12 +254,12 @@ void Task::vPlannerParseWhere(MP_Task mpTask)
   
   Object* pPtrPlanner;
   if ( ! mpTask->m_pDataStack->bPop(pPtrPlanner) )
-    THROW_INVALID_DSTACK("accessPath.parseWhere"_Str);
+    THROW_INVALID_DSTACK("planner.parseWhere"_Str);
   Planner* pPlanner = _pPlanner(pPtrPlanner);
   
   s48K sWhere;
   if ( ! mpTask->m_pDataStack->bPop(sWhere) )
-    THROW_INVALID_DSTACK("accessPath.parseWhere"_Str);
+    THROW_INVALID_DSTACK("planner.parseWhere"_Str);
   
   pPlanner->vParseWhere(sWhere);
   
@@ -267,7 +267,7 @@ void Task::vPlannerParseWhere(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* accessPath.scorePaths -- score the generated set of paths                  */
+/* planner.scorePaths -- score the generated set of paths                     */
 /*----------------------------------------------------------------------------*/
 void Task::vPlannerScorePaths(MP_Task mpTask)
 {
@@ -275,7 +275,7 @@ void Task::vPlannerScorePaths(MP_Task mpTask)
   
   Object* pPtrPlanner;
   if ( ! mpTask->m_pDataStack->bPop(pPtrPlanner) )
-    THROW_INVALID_DSTACK("accessPath.scorePaths"_Str);
+    THROW_INVALID_DSTACK("planner.scorePaths"_Str);
   Planner* pPlanner = _pPlanner(pPtrPlanner);
   
   pPlanner->vScorePaths();
@@ -284,7 +284,7 @@ void Task::vPlannerScorePaths(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* accessPath.showPaths -- show generated paths                               */
+/* planner.showPaths -- show generated paths                                  */
 /*----------------------------------------------------------------------------*/
 void Task::vPlannerShowPaths(MP_Task mpTask)
 {
@@ -292,7 +292,7 @@ void Task::vPlannerShowPaths(MP_Task mpTask)
   
   Object* pPtrPlanner;
   if ( ! mpTask->m_pDataStack->bPop(pPtrPlanner) )
-    THROW_INVALID_DSTACK("accessPath.showPaths"_Str);
+    THROW_INVALID_DSTACK("planner.showPaths"_Str);
   Planner* pPlanner = _pPlanner(pPtrPlanner);
   
   pPlanner->vShowPaths();
@@ -301,7 +301,7 @@ void Task::vPlannerShowPaths(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* accessPath.table@ -- fetch table from access path                          */
+/* planner.table@ -- fetch table from access path                             */
 /*----------------------------------------------------------------------------*/
 void Task::vPlannerTableFetch(MP_Task mpTask)
 {
@@ -309,7 +309,7 @@ void Task::vPlannerTableFetch(MP_Task mpTask)
   
   Object* pPtrPlanner;
   if ( ! mpTask->m_pDataStack->bPop(pPtrPlanner) )
-    THROW_INVALID_DSTACK("accessPath.table@"_Str);
+    THROW_INVALID_DSTACK("planner.table@"_Str);
   Planner* pPlanner = _pPlanner(pPtrPlanner);
   
   Table* pTable = pPlanner->pTable();
@@ -320,7 +320,7 @@ void Task::vPlannerTableFetch(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* accessPath.table! -- store table into access path                          */
+/* planner.table! -- store table into access path                             */
 /*----------------------------------------------------------------------------*/
 void Task::vPlannerTableStore(MP_Task mpTask)
 {
@@ -328,12 +328,12 @@ void Task::vPlannerTableStore(MP_Task mpTask)
   
   Object* pPtrPlanner;
   if ( ! mpTask->m_pDataStack->bPop(pPtrPlanner) )
-    THROW_INVALID_DSTACK("accessPath.table!"_Str);
+    THROW_INVALID_DSTACK("planner.table!"_Str);
   Planner* pPlanner = _pPlanner(pPtrPlanner);
   
   Object* pPtrTable;
   if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
-    THROW_INVALID_DSTACK("accessPath.table!"_Str);
+    THROW_INVALID_DSTACK("planner.table!"_Str);
   Table* pTable = _pTable(pPtrTable);
   
   pPlanner->vTable(pTable);
