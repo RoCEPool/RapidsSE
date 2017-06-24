@@ -427,11 +427,6 @@ void Planner::vShowPredicates(void)
     Predicate* mpPredicate = m_pPredicateVec->pGet(i_Pred);
     mpPredicate->vShow();
   }
-  
-//  for (i8 i_Token = 0; i_Token < m_pWhereTokenVec->nItems(); i_Token++) {
-//    Token* pToken = m_pWhereTokenVec->pGet(i_Token);
-//    vTrace("  %s\n"_Str,pToken->sText().aStr());
-//  }
 }
 
 /*----------------------------------------------------------------------------*/
