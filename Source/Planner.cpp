@@ -214,6 +214,13 @@ void Planner::vGenPaths(Table* mpTable)
   for (i8 i_Idx = 0; i_Idx < pIdxVec->nItems(); i_Idx++) {
     Index* mpIndex = pIdxVec->pGet(i_Idx);
     
+    if (mpIndex->sIndexName().bSame("hidden"_Str)) {
+      AccessPath* mpAccessPath = new AccessPath(AT_SCAN);
+      mpAccessPath->vIndex(mpIndex);
+      mpAccessPath->vIsCandidate(true);
+      m_pPathVec->vAdd(mpAccessPath);
+    }
+    
     vGenPaths(mpTable, mpIndex, AT_EXACT);
     vGenPaths(mpTable, mpIndex, AT_LOWER);
     vGenPaths(mpTable, mpIndex, AT_UPPER);
@@ -229,6 +236,69 @@ void Planner::vGenPaths(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
   
   vGenPaths(m_pTable);
+}
+
+/*----------------------------------------------------------------------------*/
+/* is given relational op an exact op?                                        */
+/*----------------------------------------------------------------------------*/
+bool Planner::bIsExactOp(eRO eRelOp)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
+  
+  if (RO_EQUAL_TO == eRelOp)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is given relational op a lower op?                                         */
+/*----------------------------------------------------------------------------*/
+bool Planner::bIsLowerOp(eRO eRelOp)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
+  
+  if (RO_GREATER_EQUAL == eRelOp || RO_GREATER_THAN == eRelOp)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is given relational op an upper op?                                        */
+/*----------------------------------------------------------------------------*/
+bool Planner::bIsUpperOp(eRO eRelOp)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
+  
+  if (RO_LESS_THAN == eRelOp || RO_LESS_EQUAL == eRelOp)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* does given relational op match with given bounds?                          */
+/*----------------------------------------------------------------------------*/
+bool Planner::bIsMatchingOp(eAT eAccess, eRO eRelOp)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
+  
+  if ( AT_EXACT == eAccess ) {
+    if ( bIsExactOp(eRelOp) )
+      return true;
+  }
+  else if ( AT_LOWER == eAccess ) {
+    if ( bIsLowerOp(eRelOp) )
+      return true;
+  }
+  else {
+    ASSERT( AT_UPPER == eAccess );
+    if ( bIsUpperOp(eRelOp) )
+      return true;
+  }
+  
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -356,6 +426,16 @@ void Planner::vParseWhere(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get predicate vector                                                       */
+/*----------------------------------------------------------------------------*/
+PredicateVec* Planner::pPredicateVec(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
+  
+  return m_pPredicateVec;
+}
+
+/*----------------------------------------------------------------------------*/
 /* score the set of all paths                                                 */
 /*----------------------------------------------------------------------------*/
 void Planner::vScorePaths(void)
@@ -372,25 +452,34 @@ void Planner::vScorePaths(void)
     // get index of access path
     Index* pIndex = pAccessPath->pIndex();
     
-    // initially just a simple scoring method   
-    if (AT_EXACT == pAccessPath->eAccess())
-      iScore = 100 + (pIndex->bIsUnique() ? 0 : 50)
-                   + pAccessPath->pLowerPredicates()->nItems();
-    else
-    if (AT_RANGE == pAccessPath->eAccess())
-      iScore = 200 + (pIndex->bIsUnique() ? 0 : 50)
-                   + pAccessPath->pUpperPredicates()->nItems()
-                   + pAccessPath->pUpperPredicates()->nItems();
-    else
-    if (AT_LOWER == pAccessPath->eAccess())
-      iScore = 300 + (pIndex->bIsUnique() ? 0 : 50)
-                   + pAccessPath->pLowerPredicates()->nItems();
-    else
-    if (AT_UPPER == pAccessPath->eAccess())
-      iScore = 300 + (pIndex->bIsUnique() ? 0 : 50)
-                   + pAccessPath->pUpperPredicates()->nItems();
-    else
-      iScore = 400;
+    // initially just a simple scoring method
+    switch (pAccessPath->eAccess()) {
+    
+      case AT_EXACT:
+        iScore = 100 + (pIndex->bIsUnique() ? 0 : 50)
+                     + pAccessPath->pLowerPredicates()->nItems();
+        break;
+        
+      case AT_RANGE:
+        iScore = 200 + (pIndex->bIsUnique() ? 0 : 50)
+                     + pAccessPath->pUpperPredicates()->nItems()
+                     + pAccessPath->pUpperPredicates()->nItems();
+        break;
+        
+      case AT_LOWER:
+        iScore = 300 + (pIndex->bIsUnique() ? 0 : 50)
+                     + pAccessPath->pLowerPredicates()->nItems();
+        break;
+        
+      case AT_UPPER:
+        iScore = 300 + (pIndex->bIsUnique() ? 0 : 50)
+                     + pAccessPath->pUpperPredicates()->nItems();
+        break;
+        
+      default:
+        ASSERT(AT_SCAN == pAccessPath->eAccess());
+        iScore = 400;
+    }
     
     pAccessPath->vPathRating(iScore);
   }
@@ -461,79 +550,6 @@ void Planner::vWhere(s48K& sWhere)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
   
   m_sWhere = sWhere;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get predicate vector                                                       */
-/*----------------------------------------------------------------------------*/
-PredicateVec* Planner::pPredicateVec(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
-  
-  return m_pPredicateVec;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is given relational op an exact op?                                        */
-/*----------------------------------------------------------------------------*/
-bool Planner::bIsExactOp(eRO eRelOp)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
-  
-  if (RO_EQUAL_TO == eRelOp)
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is given relational op a lower op?                                         */
-/*----------------------------------------------------------------------------*/
-bool Planner::bIsLowerOp(eRO eRelOp)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
-  
-  if (RO_GREATER_EQUAL == eRelOp || RO_GREATER_THAN == eRelOp)
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is given relational op an upper op?                                        */
-/*----------------------------------------------------------------------------*/
-bool Planner::bIsUpperOp(eRO eRelOp)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
-  
-  if (RO_LESS_THAN == eRelOp || RO_LESS_EQUAL == eRelOp)
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* does given relational op match with given bounds?                          */
-/*----------------------------------------------------------------------------*/
-bool Planner::bIsMatchingOp(eAT eAccess, eRO eRelOp)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
-  
-  if ( AT_EXACT == eAccess ) {
-    if ( bIsExactOp(eRelOp) )
-      return true;
-  }
-  else if ( AT_LOWER == eAccess ) {
-    if ( bIsLowerOp(eRelOp) )
-      return true;
-  }
-  else {
-    ASSERT( AT_UPPER == eAccess );
-    if ( bIsUpperOp(eRelOp) )
-      return true;
-  }
-  
-  return false;
 }
 
 /*----------------------------------------------------------------------------*/
