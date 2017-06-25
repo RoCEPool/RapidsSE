@@ -96,7 +96,7 @@ void WspFx2<LENGTH>::vAppend(void* aSrc, i8 nBytes)
 template<int LENGTH>
 char* WspFx2<LENGTH>::aArea(void)
 {
-  char* aArea = Wsp::aArea();
+  char* aArea = (char*)&m_cArea;
   
   return aArea;
 }
