@@ -15,8 +15,8 @@ namespace Magic
   class WspFx2 : public Wsp
   {
   private:
-    char m_cArea[LENGTH]; // fixed byte area
     i8   m_nAreaUsed;     // bytes used in the area (must be after m_cArea)
+    char m_cArea[LENGTH]; // fixed byte area
   
   public:
     WspFx2(void);
@@ -47,6 +47,8 @@ template<int LENGTH>
 WspFx2<LENGTH>::WspFx2(void)
 {
   m_nAreaUsed = 0;
+  
+  vZero();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -56,6 +58,8 @@ template<int LENGTH>
 void WspFx2<LENGTH>::vInit(void)
 {
   m_nAreaUsed = 0;
+  
+  vZero();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -103,7 +107,7 @@ char* WspFx2<LENGTH>::aArea(void)
 template<int LENGTH>
 void WspFx2<LENGTH>::vFill(char cByte)
 {
-  Wsp::vFill(cByte,LENGTH);
+  MemLib::vSet(aArea(),cByte,LENGTH);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -194,7 +198,7 @@ i8 WspFx2<LENGTH>::nUsed(void)
 template<int LENGTH>
 void WspFx2<LENGTH>::vZero(void)
 {
-  Wsp::vZero(LENGTH);
+  MemLib::vZero(aArea(),LENGTH);
 }
 
 /*============================================================================*/
