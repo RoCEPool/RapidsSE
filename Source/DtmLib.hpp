@@ -3,6 +3,11 @@
 /*============================================================================*/
 #pragma once
 
+namespace DBobjects
+{
+  class Column;
+}
+
 namespace Datums
 {
   class DtmLib
@@ -11,27 +16,27 @@ namespace Datums
   
   public:
 
-    static bool bExtractBcd(char** aaSrc, Bcd* aBcd);
-    static bool bExtractBol(char** aaSrc, Bol* aBol);
-    static bool bExtractDte(char** aaSrc, Dte* aDte);
-    static bool bExtractFlt(char** aaSrc, Flt* aFlt);
-    static bool bExtractInt(char** aaSrc, Int* aInt);
-    static bool bExtractIvl(char** aaSrc, Ivl* aIvl);
-    static bool bExtractTme(char** aaSrc, Tme* aTme);
-    static bool bExtractTsp(char** aaSrc, Tsp* aTsp);
-    static bool bExtractVch(char** aaSrc, Vch* aVch);
+    static bool bExtractBcd(char** aaSrc, Bcd* aBcd, DBobjects::Column* pColumn);
+    static bool bExtractBol(char** aaSrc, Bol* aBol, DBobjects::Column* pColumn);
+    static bool bExtractDte(char** aaSrc, Dte* aDte, DBobjects::Column* pColumn);
+    static bool bExtractFlt(char** aaSrc, Flt* aFlt, DBobjects::Column* pColumn);
+    static bool bExtractInt(char** aaSrc, Int* aInt, DBobjects::Column* pColumn);
+    static bool bExtractIvl(char** aaSrc, Ivl* aIvl, DBobjects::Column* pColumn);
+    static bool bExtractTme(char** aaSrc, Tme* aTme, DBobjects::Column* pColumn);
+    static bool bExtractTsp(char** aaSrc, Tsp* aTsp, DBobjects::Column* pColumn);
+    static bool bExtractVch(char** aaSrc, Vch* aVch, DBobjects::Column* pColumn);
   
-    static bool bValidateDatum(eDM eDatum, char** aaSrc);
+    static bool bValidateDatum(eDM eDatum, char** aaSrc, DBobjects::Column* pColumn);
   
-    static bool bValidBcd(char** aaSrc);
-    static bool bValidBol(char** aaSrc);
-    static bool bValidDte(char** aaSrc);
-    static bool bValidFlt(char** aaSrc);
-    static bool bValidInt(char** aaSrc);
-    static bool bValidIvl(char** aaSrc);
-    static bool bValidTme(char** aaSrc);
-    static bool bValidTsp(char** aaSrc);
-    static bool bValidVch(char** aaSrc);
+    static bool bValidBcd(char** aaSrc, DBobjects::Column* pColumn);
+    static bool bValidBol(char** aaSrc, DBobjects::Column* pColumn);
+    static bool bValidDte(char** aaSrc, DBobjects::Column* pColumn);
+    static bool bValidFlt(char** aaSrc, DBobjects::Column* pColumn);
+    static bool bValidInt(char** aaSrc, DBobjects::Column* pColumn);
+    static bool bValidIvl(char** aaSrc, DBobjects::Column* pColumn);
+    static bool bValidTme(char** aaSrc, DBobjects::Column* pColumn);
+    static bool bValidTsp(char** aaSrc, DBobjects::Column* pColumn);
+    static bool bValidVch(char** aaSrc, DBobjects::Column* pColumn);
   
     static bool bLessThan(eDM eDatum, char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB);
     static bool bLessEqual(eDM eDatum, char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB);

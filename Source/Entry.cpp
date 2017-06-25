@@ -511,7 +511,7 @@ void Entry::vExtractKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
         
       case CT_BOOLEAN: {
         Bol xBol;
-        bool b = DtmLib::bExtractBol(&pDst,&xBol);
+        bool b = DtmLib::bExtractBol(&pDst,&xBol,pColumn);
         ASSERT(b);
         xValWrk = xBol;
         break;
@@ -524,7 +524,7 @@ void Entry::vExtractKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
         
       case CT_DATE: {
         Dte xDte;
-        bool b = DtmLib::bExtractDte(&pDst,&xDte);
+        bool b = DtmLib::bExtractDte(&pDst,&xDte,pColumn);
         ASSERT(b);
         xValWrk = xDte;
         break;
@@ -537,7 +537,7 @@ void Entry::vExtractKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
         
       case CT_FLOAT: {
         Flt xFlt;
-        bool b = DtmLib::bExtractFlt(&pDst,&xFlt);
+        bool b = DtmLib::bExtractFlt(&pDst,&xFlt,pColumn);
         ASSERT(b);
         xValWrk = xFlt.dAsD8();
         break;
@@ -547,7 +547,7 @@ void Entry::vExtractKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
 //        xValWrk = StrLib::iToI8(pDst);
 //        break;
         Int xInt;
-        bool b = DtmLib::bExtractInt(&pDst,&xInt);
+        bool b = DtmLib::bExtractInt(&pDst,&xInt,pColumn);
         ASSERT(b);
         if (b)
           xValWrk = xInt.iAsI8();
@@ -556,7 +556,7 @@ void Entry::vExtractKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
         
       case CT_INTERVAL: {
         Ivl xIvl;
-        bool b = DtmLib::bExtractIvl(&pDst,&xIvl);
+        bool b = DtmLib::bExtractIvl(&pDst,&xIvl,pColumn);
         ASSERT(b);
         xValWrk = xIvl;
         break;
@@ -564,7 +564,7 @@ void Entry::vExtractKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
         
       case CT_TIME: {
         Tme xTme;
-        bool b = DtmLib::bExtractTme(&pDst,&xTme);
+        bool b = DtmLib::bExtractTme(&pDst,&xTme,pColumn);
         ASSERT(b);
         xValWrk = xTme;
         break;
@@ -572,7 +572,7 @@ void Entry::vExtractKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
         
       case CT_TIMESTAMP: {
         Tsp xTsp;
-        bool b = DtmLib::bExtractTsp(&pDst,&xTsp);
+        bool b = DtmLib::bExtractTsp(&pDst,&xTsp,pColumn);
         ASSERT(b);
         xValWrk = xTsp;
         break;

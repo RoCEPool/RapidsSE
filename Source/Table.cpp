@@ -573,7 +573,7 @@ i8 Table::iRowPartition(Str* pRow)
         
       case CT_BOOLEAN: {
         Bol xBol;
-        bool b = DtmLib::bExtractBol(&pDst,&xBol);
+        bool b = DtmLib::bExtractBol(&pDst,&xBol,pColumn);
         ASSERT(b);
         iHash += XXH32(&xBol,sizeof(Bol),0);
         break;
@@ -586,7 +586,7 @@ i8 Table::iRowPartition(Str* pRow)
         
       case CT_DATE: {
         Dte xDte;
-        bool b = DtmLib::bExtractDte(&pDst,&xDte);
+        bool b = DtmLib::bExtractDte(&pDst,&xDte,pColumn);
         ASSERT(b);
         iHash += XXH32(&xDte,sizeof(Dte),0);
         break;
@@ -599,7 +599,7 @@ i8 Table::iRowPartition(Str* pRow)
         
       case CT_FLOAT: {
         Flt xFlt;
-        bool b = DtmLib::bExtractFlt(&pDst,&xFlt);
+        bool b = DtmLib::bExtractFlt(&pDst,&xFlt,pColumn);
         ASSERT(b);
         iHash += XXH32(&xFlt,sizeof(Flt),0);
         break;
@@ -613,7 +613,7 @@ i8 Table::iRowPartition(Str* pRow)
         
       case CT_INTERVAL: {
         Ivl xIvl;
-        bool b = DtmLib::bExtractIvl(&pDst,&xIvl);
+        bool b = DtmLib::bExtractIvl(&pDst,&xIvl,pColumn);
         ASSERT(b);
         iHash += XXH32(&xIvl,sizeof(Ivl),0);
         break;
@@ -621,7 +621,7 @@ i8 Table::iRowPartition(Str* pRow)
         
       case CT_TIME: {
         Tme xTme;
-        bool b = DtmLib::bExtractTme(&pDst,&xTme);
+        bool b = DtmLib::bExtractTme(&pDst,&xTme,pColumn);
         ASSERT(b);
         iHash += XXH32(&xTme,sizeof(Tme),0);
         break;
@@ -629,7 +629,7 @@ i8 Table::iRowPartition(Str* pRow)
         
       case CT_TIMESTAMP: {
         Tsp xTsp;
-        bool b = DtmLib::bExtractTsp(&pDst,&xTsp);
+        bool b = DtmLib::bExtractTsp(&pDst,&xTsp,pColumn);
         ASSERT(b);
         iHash += XXH32(&xTsp,sizeof(Tsp),0);
         break;

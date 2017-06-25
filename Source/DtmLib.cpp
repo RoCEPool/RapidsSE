@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 /* extract a decimal from substr                                              */
 /*----------------------------------------------------------------------------*/
-bool DtmLib::bExtractBcd(char** aaSrc, Bcd* aDecimal)
+bool DtmLib::bExtractBcd(char** aaSrc, Bcd* aDecimal,DBobjects::Column* pColumn)
 {
   d8 dResult = 0.0;
   char xBuffer[256];
@@ -72,7 +72,7 @@ bool DtmLib::bExtractBol(char** aaSrc, Bol* aBoolean)
   return bResult;
 }
 */
-bool DtmLib::bExtractBol(char** aaSrc, Bol* aBoolean)
+bool DtmLib::bExtractBol(char** aaSrc, Bol* aBoolean, Column* pColumn)
 {
   bool bResult = false;
     
@@ -102,7 +102,7 @@ bool DtmLib::bExtractBol(char** aaSrc, Bol* aBoolean)
 /*----------------------------------------------------------------------------*/
 /* extract a date from substr                                     yyyy-mo-ddZ */
 /*----------------------------------------------------------------------------*/
-bool DtmLib::bExtractDte(char** aaSrc, Dte* aDate)
+bool DtmLib::bExtractDte(char** aaSrc, Dte* aDate, Column* pColumn)
 {
   u8 uField;
   
@@ -156,7 +156,7 @@ bool DtmLib::bExtractDte(char** aaSrc, Dte* aDate)
 /*----------------------------------------------------------------------------*/
 /* extract a float from substr                                                */
 /*----------------------------------------------------------------------------*/
-bool DtmLib::bExtractFlt(char** aaSrc, Flt* aFloat)
+bool DtmLib::bExtractFlt(char** aaSrc, Flt* aFloat, Column* pColumn)
 {
   d8 dResult = 0.0;
   char xBuffer[256];
@@ -192,7 +192,7 @@ bool DtmLib::bExtractFlt(char** aaSrc, Flt* aFloat)
 /*----------------------------------------------------------------------------*/
 /* extract an integer from substr                                             */
 /*----------------------------------------------------------------------------*/
-bool DtmLib::bExtractInt(char** aaSrc, Int* aInteger)
+bool DtmLib::bExtractInt(char** aaSrc, Int* aInteger, Column* pColumn)
 {
   i8 iResult = 0;
   char xBuffer[256];
@@ -233,7 +233,7 @@ bool DtmLib::bExtractInt(char** aaSrc, Int* aInteger)
 /*----------------------------------------------------------------------------*/
 /* extract an interval from substr                                            */
 /*----------------------------------------------------------------------------*/
-bool DtmLib::bExtractIvl(char** aaSrc, Ivl* aInterval)
+bool DtmLib::bExtractIvl(char** aaSrc, Ivl* aInterval, Column* pColumn)
 {
   u8 uField;
   
@@ -274,7 +274,7 @@ bool DtmLib::bExtractIvl(char** aaSrc, Ivl* aInterval)
 /*----------------------------------------------------------------------------*/
 /* extract a time from substr                                   hh:mi:ss.fffZ */
 /*----------------------------------------------------------------------------*/
-bool DtmLib::bExtractTme(char** aaSrc, Tme* aTime)
+bool DtmLib::bExtractTme(char** aaSrc, Tme* aTime, Column* pColumn)
 {
   u8 uField;
   
@@ -333,7 +333,7 @@ bool DtmLib::bExtractTme(char** aaSrc, Tme* aTime)
 /*----------------------------------------------------------------------------*/
 /* extract a timestamp from substr                   yyyy-mo-ddThh:mi:ss.fffZ */
 /*----------------------------------------------------------------------------*/
-bool DtmLib::bExtractTsp(char** aaSrc, Tsp* aTimestamp)
+bool DtmLib::bExtractTsp(char** aaSrc, Tsp* aTimestamp, Column* pColumn)
 {
   // refer: http://en.wikipedia.org/wiki/ISO_8601
 
@@ -427,7 +427,7 @@ bool DtmLib::bExtractTsp(char** aaSrc, Tsp* aTimestamp)
 /*----------------------------------------------------------------------------*/
 /* extract an varchar from substr                                             */
 /*----------------------------------------------------------------------------*/
-bool DtmLib::bExtractVch(char** aaSrc, Vch* aVch)
+bool DtmLib::bExtractVch(char** aaSrc, Vch* aVch, Column* pColumn)
 {
   char* aChar = (char*)aVch;
   
@@ -452,21 +452,21 @@ bool DtmLib::bExtractVch(char** aaSrc, Vch* aVch)
 /*----------------------------------------------------------------------------*/
 /* valid datum?                                                               */
 /*----------------------------------------------------------------------------*/
-bool DtmLib::bValidateDatum(eDM eDatum, char** aaSrc)
+bool DtmLib::bValidateDatum(eDM eDatum, char** aaSrc, Column* pColumn)
 {
   bool bValid = false;
   
   switch (eDatum) {
-    case DM_BCD: bValid = bValidBcd(aaSrc); break;
-    case DM_BOL: bValid = bValidBol(aaSrc); break;
-    case DM_CHR: bValid = bValidVch(aaSrc); break;
-    case DM_DTE: bValid = bValidDte(aaSrc); break;
-    case DM_FLT: bValid = bValidFlt(aaSrc); break;
-    case DM_INT: bValid = bValidInt(aaSrc); break;
-    case DM_IVL: bValid = bValidIvl(aaSrc); break;
-    case DM_TME: bValid = bValidTme(aaSrc); break;
-    case DM_TSP: bValid = bValidTsp(aaSrc); break;
-    case DM_VCH: bValid = bValidVch(aaSrc); break;
+    case DM_BCD: bValid = bValidBcd(aaSrc,pColumn); break;
+    case DM_BOL: bValid = bValidBol(aaSrc,pColumn); break;
+    case DM_CHR: bValid = bValidVch(aaSrc,pColumn); break;
+    case DM_DTE: bValid = bValidDte(aaSrc,pColumn); break;
+    case DM_FLT: bValid = bValidFlt(aaSrc,pColumn); break;
+    case DM_INT: bValid = bValidInt(aaSrc,pColumn); break;
+    case DM_IVL: bValid = bValidIvl(aaSrc,pColumn); break;
+    case DM_TME: bValid = bValidTme(aaSrc,pColumn); break;
+    case DM_TSP: bValid = bValidTsp(aaSrc,pColumn); break;
+    case DM_VCH: bValid = bValidVch(aaSrc,pColumn); break;
     default:
       vFatal("DtmLib::bValid: Invalid aDatum argument: %lld\n"_Str,
              eDatum);
@@ -478,11 +478,11 @@ bool DtmLib::bValidateDatum(eDM eDatum, char** aaSrc)
 /*----------------------------------------------------------------------------*/
 /* valid decimal in substr?                                                   */
 /*----------------------------------------------------------------------------*/
-bool DtmLib::bValidBcd(char** aaSrc)
+bool DtmLib::bValidBcd(char** aaSrc, Column* pColumn)
 {
   Bcd xBcd;
   
-  bool bValid = bExtractBcd(aaSrc,&xBcd);
+  bool bValid = bExtractBcd(aaSrc,&xBcd,pColumn);
   
   return bValid;
 }
@@ -490,11 +490,11 @@ bool DtmLib::bValidBcd(char** aaSrc)
 /*----------------------------------------------------------------------------*/
 /* valid boolean in substr?                                                   */
 /*----------------------------------------------------------------------------*/
-bool DtmLib::bValidBol(char** aaSrc)
+bool DtmLib::bValidBol(char** aaSrc, Column* pColumn)
 {
   Bol xBol;
   
-  bool bValid = bExtractBol(aaSrc,&xBol);
+  bool bValid = bExtractBol(aaSrc,&xBol,pColumn);
   
   return bValid;
 }
@@ -502,11 +502,11 @@ bool DtmLib::bValidBol(char** aaSrc)
 /*----------------------------------------------------------------------------*/
 /* valid date in substr?                                                      */
 /*----------------------------------------------------------------------------*/
-bool DtmLib::bValidDte(char** aaSrc)
+bool DtmLib::bValidDte(char** aaSrc, Column* pColumn)
 {
   Dte xDte;
   
-  bool bValid = bExtractDte(aaSrc,&xDte);
+  bool bValid = bExtractDte(aaSrc,&xDte,pColumn);
   
   return bValid;
 }
@@ -514,11 +514,11 @@ bool DtmLib::bValidDte(char** aaSrc)
 /*----------------------------------------------------------------------------*/
 /* valid float in substr?                                                     */
 /*----------------------------------------------------------------------------*/
-bool DtmLib::bValidFlt(char** aaSrc)
+bool DtmLib::bValidFlt(char** aaSrc, Column* pColumn)
 {
   Flt xFlt;
   
-  bool bValid = bExtractFlt(aaSrc,&xFlt);
+  bool bValid = bExtractFlt(aaSrc,&xFlt,pColumn);
   
   return bValid;
 }
@@ -526,11 +526,11 @@ bool DtmLib::bValidFlt(char** aaSrc)
 /*----------------------------------------------------------------------------*/
 /* valid integer in substr?                                                   */
 /*----------------------------------------------------------------------------*/
-bool DtmLib::bValidInt(char** aaSrc)
+bool DtmLib::bValidInt(char** aaSrc, Column* pColumn)
 {
   Int xInt;
   
-  bool bValid = bExtractInt(aaSrc,&xInt);
+  bool bValid = bExtractInt(aaSrc,&xInt,pColumn);
   
   return bValid;
 }
@@ -538,11 +538,11 @@ bool DtmLib::bValidInt(char** aaSrc)
 /*----------------------------------------------------------------------------*/
 /* valid interval in substr?                                                  */
 /*----------------------------------------------------------------------------*/
-bool DtmLib::bValidIvl(char** aaSrc)
+bool DtmLib::bValidIvl(char** aaSrc, Column* pColumn)
 {
   Ivl xIvl;
   
-  bool bValid = bExtractIvl(aaSrc,&xIvl);
+  bool bValid = bExtractIvl(aaSrc,&xIvl,pColumn);
   
   return bValid;
 }
@@ -550,11 +550,11 @@ bool DtmLib::bValidIvl(char** aaSrc)
 /*----------------------------------------------------------------------------*/
 /* valid time in substr?                                                      */
 /*----------------------------------------------------------------------------*/
-bool DtmLib::bValidTme(char** aaSrc)
+bool DtmLib::bValidTme(char** aaSrc, Column* pColumn)
 {
   Tme xTme;
   
-  bool bValid = bExtractTme(aaSrc,&xTme);
+  bool bValid = bExtractTme(aaSrc,&xTme,pColumn);
   
   return bValid;
 }
@@ -562,11 +562,11 @@ bool DtmLib::bValidTme(char** aaSrc)
 /*----------------------------------------------------------------------------*/
 /* valid timestamp in substr?                                                 */
 /*----------------------------------------------------------------------------*/
-bool DtmLib::bValidTsp(char** aaSrc)
+bool DtmLib::bValidTsp(char** aaSrc, Column* pColumn)
 {
   Tsp xTsp;
   
-  bool bValid = bExtractTsp(aaSrc,&xTsp);
+  bool bValid = bExtractTsp(aaSrc,&xTsp,pColumn);
   
   return bValid;
 }
@@ -574,12 +574,12 @@ bool DtmLib::bValidTsp(char** aaSrc)
 /*----------------------------------------------------------------------------*/
 /* valid varchar in substr?                                                   */
 /*----------------------------------------------------------------------------*/
-bool DtmLib::bValidVch(char** aaSrc)
+bool DtmLib::bValidVch(char** aaSrc, Column* pColumn)
 {
   s48K sBuffer;
   
   Vch* aVch = (Vch*)sBuffer.aStr();
-  bool bValid = bExtractVch(aaSrc,aVch);
+  bool bValid = bExtractVch(aaSrc,aVch,pColumn);
   
   return bValid;
 }
