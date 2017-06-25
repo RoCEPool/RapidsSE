@@ -312,38 +312,6 @@ i8 KeyWrk::nWspUsed(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* extract element from row                                                   */
-/*----------------------------------------------------------------------------*/
-bool KeyWrk::bExtractElement(s48K& sRow, i8 iElement, eDM eDatum)
-{
-  _precondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
-  
-  vTrace("Extracting element %lld %s from %s\n"_Str,
-         iElement,
-         aDM[eDatum],
-         sRow.s());
-  
-  Str* aElem = sRow.aStr();
-  i8 iFound = 0;
-  
-  while (iFound != iElement) {
-    if ('|' == *aElem->s())
-      iFound++;
-    aElem++;
-  }
-  
-  i8 nBytesTaken;
-  bool b = Datums::bExtractDatum((Str*)m_xWsp.aLatter(),
-                                 aElem,eDatum,nBytesTaken);
-  
-  m_xWsp.vTake(nBytesTaken);
-
-  MemLib::vHexDump(m_xWsp.aArea(),m_xWsp.nUsed());
-  
-  return b;
-}
-
-/*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 _aFooter_(KeyWrk)

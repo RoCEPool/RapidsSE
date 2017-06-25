@@ -134,24 +134,6 @@ i8 Int::iDecile(i8 iValue, i8 iMax)
 }
 
 /*----------------------------------------------------------------------------*/
-/* extract int datum                                                          */
-/*----------------------------------------------------------------------------*/
-bool Int::bExtract(Str* aDst, Str* aSrc, i8& nBytesTaken)
-{
-  char* aExt = (char*)aSrc;
-  
-  i8 iInt;
-  bool b = StrLib::bExtractI8(&aExt,&iInt);
-  if (b) {
-    MemLib::vCopy(aDst,&iInt,sizeof(i8));
-  
-    nBytesTaken = sizeof(i8);
-  }
-  
-  return b;
-}
-
-/*----------------------------------------------------------------------------*/
 /* sprint int datum                                                           */
 /*----------------------------------------------------------------------------*/
 void Int::vSprint(Str* aDst, Str* aSrc, i8& nBytesTaken)
