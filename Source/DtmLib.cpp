@@ -7,47 +7,6 @@
 #include "StorageEngine.h"
 
 /*----------------------------------------------------------------------------*/
-/* extract an interval from substr                                            */
-/*----------------------------------------------------------------------------*/
-bool DtmLib::bExtractIvl(char** aaSrc, Ivl* aInterval, Column* pColumn)
-{
-  u8 uField;
-  
-  // skip leading whitespace
-  while (' ' == **aaSrc)
-    (*aaSrc)++;
-  
-  // test for null
-  if ( ! **aaSrc || '|' == **aaSrc ) {
-    aInterval->vSetNull();
-    return true;
-  }
-  
-  aInterval->vInitZero();
-  
-  if ( ! *aaSrc )
-    return false;
-  
-  // extract second
-  if ( ! StrLib::bExtractU8(aaSrc,&uField) )
-    return true;
-  aInterval->x.m_uSecond = uField;
-  
-//  // skip . separator
-//  if ('.' != *(*aaSrc)++)
-//    return true;
-  
-  // extract fraction (assuming milliseconds)
-  if ('.' == **aaSrc) {
-    (*aaSrc)++;
-    if ( StrLib::bExtractU8(aaSrc,&uField) )
-      aInterval->x.m_uMilli = uField;
-  }
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /* extract a time from substr                                   hh:mi:ss.fffZ */
 /*----------------------------------------------------------------------------*/
 bool DtmLib::bExtractTme(char** aaSrc, Tme* aTime, Column* pColumn)
@@ -239,7 +198,7 @@ bool DtmLib::bValidateDatum(eDM eDatum, char** aaSrc, Column* pColumn)
     case DM_DTE: bValid = Dte::bValid(aaSrc,pColumn); break;
     case DM_FLT: bValid = Flt::bValid(aaSrc,pColumn); break;
     case DM_INT: bValid = Int::bValid(aaSrc,pColumn); break;
-    case DM_IVL: bValid = bValidIvl(aaSrc,pColumn); break;
+    case DM_IVL: bValid = Ivl::bValid(aaSrc,pColumn); break;
     case DM_TME: bValid = bValidTme(aaSrc,pColumn); break;
     case DM_TSP: bValid = bValidTsp(aaSrc,pColumn); break;
     case DM_VCH: bValid = bValidVch(aaSrc,pColumn); break;
@@ -252,18 +211,6 @@ bool DtmLib::bValidateDatum(eDM eDatum, char** aaSrc, Column* pColumn)
     return bValid;
   else
     return bValid;
-}
-
-/*----------------------------------------------------------------------------*/
-/* valid interval in substr?                                                  */
-/*----------------------------------------------------------------------------*/
-bool DtmLib::bValidIvl(char** aaSrc, Column* pColumn)
-{
-  Ivl xIvl;
-  
-  bool bValid = bExtractIvl(aaSrc,&xIvl,pColumn);
-  
-  return bValid;
 }
 
 /*----------------------------------------------------------------------------*/

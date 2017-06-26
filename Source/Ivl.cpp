@@ -4,6 +4,8 @@
 
 #include "Datums.h"
 
+#include "StorageEngine.h"
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -162,6 +164,59 @@ bool Ivl::bIsNull(void)
 void Ivl::vSetNull(void)
 {
   *(i8*)&x = C_NULL_INT;
+}
+
+/*----------------------------------------------------------------------------*/
+/* extract an interval from substr                                            */
+/*----------------------------------------------------------------------------*/
+bool Ivl::bExtract(char** aaSrc, Ivl* aInterval, Column* pColumn)
+{
+  u8 uField;
+  
+  // skip leading whitespace
+  while (' ' == **aaSrc)
+    (*aaSrc)++;
+  
+  // test for null
+  if ( ! **aaSrc || '|' == **aaSrc ) {
+    aInterval->vSetNull();
+    return true;
+  }
+  
+  aInterval->vInitZero();
+  
+  if ( ! *aaSrc )
+    return false;
+  
+  // extract second
+  if ( ! StrLib::bExtractU8(aaSrc,&uField) )
+    return true;
+  aInterval->x.m_uSecond = uField;
+  
+  //  // skip . separator
+  //  if ('.' != *(*aaSrc)++)
+  //    return true;
+  
+  // extract fraction (assuming milliseconds)
+  if ('.' == **aaSrc) {
+    (*aaSrc)++;
+    if ( StrLib::bExtractU8(aaSrc,&uField) )
+      aInterval->x.m_uMilli = uField;
+  }
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* valid interval in substr?                                                  */
+/*----------------------------------------------------------------------------*/
+bool Ivl::bValid(char** aaSrc, Column* pColumn)
+{
+  Ivl xIvl;
+  
+  bool bValid = bExtract(aaSrc,&xIvl,pColumn);
+  
+  return bValid;
 }
 
 /*----------------------------------------------------------------------------*/

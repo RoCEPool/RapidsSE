@@ -613,7 +613,7 @@ i8 Table::iRowPartition(Str* pRow)
         
       case CT_INTERVAL: {
         Ivl xIvl;
-        bool b = DtmLib::bExtractIvl(&pDst,&xIvl,pColumn);
+        bool b = Ivl::bExtract(&pDst,&xIvl,pColumn);
         ASSERT(b);
         iHash += XXH32(&xIvl,sizeof(Ivl),0);
         break;
