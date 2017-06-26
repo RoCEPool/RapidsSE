@@ -572,7 +572,7 @@ void Entry::vExtractKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
         
       case CT_TIMESTAMP: {
         Tsp xTsp;
-        bool b = DtmLib::bExtractTsp(&pDst,&xTsp,pColumn);
+        bool b = Tsp::bExtract(&pDst,&xTsp,pColumn);
         ASSERT(b);
         xValWrk = xTsp;
         break;

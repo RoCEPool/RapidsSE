@@ -629,7 +629,7 @@ i8 Table::iRowPartition(Str* pRow)
         
       case CT_TIMESTAMP: {
         Tsp xTsp;
-        bool b = DtmLib::bExtractTsp(&pDst,&xTsp,pColumn);
+        bool b = Tsp::bExtract(&pDst,&xTsp,pColumn);
         ASSERT(b);
         iHash += XXH32(&xTsp,sizeof(Tsp),0);
         break;

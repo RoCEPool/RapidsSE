@@ -7,100 +7,6 @@
 #include "StorageEngine.h"
 
 /*----------------------------------------------------------------------------*/
-/* extract a timestamp from substr                   yyyy-mo-ddThh:mi:ss.fffZ */
-/*----------------------------------------------------------------------------*/
-bool DtmLib::bExtractTsp(char** aaSrc, Tsp* aTimestamp, Column* pColumn)
-{
-  // refer: http://en.wikipedia.org/wiki/ISO_8601
-
-  u8 uField;
-  
-  // skip leading whitespace
-  while (' ' == **aaSrc)
-    (*aaSrc)++;
-  
-  // test for null
-  if ( ! **aaSrc || '|' == **aaSrc ) {
-    aTimestamp->vSetNull();
-    return true;
-  }
-  
-  aTimestamp->vInitZero();
-  
-  if ( ! *aaSrc )
-    return false;
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - -
-  // date portion
-  
-  // extract year
-  if ( ! StrLib::bExtractU8(aaSrc,&uField) )
-    return false;
-  aTimestamp->x.m_uYear = uField;
-  
-  // skip - separator
-  if ('-' != *(*aaSrc)++)
-    return false;
-  
-  // extract month
-  if ( ! StrLib::bExtractU8(aaSrc,&uField) )
-    return false;
-  aTimestamp->x.m_uMonth = uField;
-  
-  // skip - separator
-  if ('-' != *(*aaSrc)++) return false;
-  
-  // extract day
-  if ( ! StrLib::bExtractU8(aaSrc,&uField) )
-    return false;
-  aTimestamp->x.m_uDay = uField;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - -
-  // time portion
-  
-  // skip T or space separator
-  if ( ! ('T' == **aaSrc || ' ' == **aaSrc) )
-    return true;
-  (*aaSrc)++;
-  
-  // extract hour
-  if ( ! StrLib::bExtractU8(aaSrc,&uField) )
-    return true;
-  aTimestamp->x.m_uHour = uField;
-  
-  // skip : separator
-  if (':' != *(*aaSrc)++)
-    return true;
-  
-  // extract minute
-  if ( ! StrLib::bExtractU8(aaSrc,&uField) )
-    return true;
-  aTimestamp->x.m_uMinute = uField;
-  
-  // skip : separator
-  if (':' != *(*aaSrc)++)
-    return true;
-  
-  // extract second
-  if ( ! StrLib::bExtractU8(aaSrc,&uField) )
-    return true;
-  aTimestamp->x.m_uSecond = uField;
-  
-  // extract fraction (assuming milliseconds)
-  if ('.' == **aaSrc) {
-    (*aaSrc)++;
-    if ( StrLib::bExtractU8(aaSrc,&uField) )
-      aTimestamp->x.m_uMilli = uField;
-   }
-  
-  // skip Z separator
-  if ('Z' == **aaSrc)
-    (*aaSrc)++;
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /* extract an varchar from substr                                             */
 /*----------------------------------------------------------------------------*/
 bool DtmLib::bExtractVch(char** aaSrc, Vch* aVch, Column* pColumn)
@@ -141,7 +47,7 @@ bool DtmLib::bValidateDatum(eDM eDatum, char** aaSrc, Column* pColumn)
     case DM_INT: bValid = Int::bValid(aaSrc,pColumn); break;
     case DM_IVL: bValid = Ivl::bValid(aaSrc,pColumn); break;
     case DM_TME: bValid = Tme::bValid(aaSrc,pColumn); break;
-    case DM_TSP: bValid = bValidTsp(aaSrc,pColumn); break;
+    case DM_TSP: bValid = Tsp::bValid(aaSrc,pColumn); break;
     case DM_VCH: bValid = bValidVch(aaSrc,pColumn); break;
     default:
       vFatal("DtmLib::bValid: Invalid aDatum argument: %lld\n"_Str,
@@ -152,18 +58,6 @@ bool DtmLib::bValidateDatum(eDM eDatum, char** aaSrc, Column* pColumn)
     return bValid;
   else
     return bValid;
-}
-
-//*----------------------------------------------------------------------------*/
-/* valid timestamp in substr?                                                 */
-/*----------------------------------------------------------------------------*/
-bool DtmLib::bValidTsp(char** aaSrc, Column* pColumn)
-{
-  Tsp xTsp;
-  
-  bool bValid = bExtractTsp(aaSrc,&xTsp,pColumn);
-  
-  return bValid;
 }
 
 /*----------------------------------------------------------------------------*/

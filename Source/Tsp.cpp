@@ -4,6 +4,8 @@
 
 #include "Datums.h"
 
+#include "StorageEngine.h"
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -198,6 +200,112 @@ bool Tsp::bIsNull(void)
 void Tsp::vSetNull(void)
 {
   *(i8*)&x = C_NULL_INT;
+}
+
+/*----------------------------------------------------------------------------*/
+/* extract a timestamp from substr                   yyyy-mo-ddThh:mi:ss.fffZ */
+/*----------------------------------------------------------------------------*/
+bool Tsp::bExtract(char** aaSrc, Tsp* aTimestamp, Column* pColumn)
+{
+  // refer: http://en.wikipedia.org/wiki/ISO_8601
+  
+  u8 uField;
+  
+  // skip leading whitespace
+  while (' ' == **aaSrc)
+    (*aaSrc)++;
+  
+  // test for null
+  if ( ! **aaSrc || '|' == **aaSrc ) {
+    aTimestamp->vSetNull();
+    return true;
+  }
+  
+  aTimestamp->vInitZero();
+  
+  if ( ! *aaSrc )
+    return false;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - -
+  // date portion
+  
+  // extract year
+  if ( ! StrLib::bExtractU8(aaSrc,&uField) )
+    return false;
+  aTimestamp->x.m_uYear = uField;
+  
+  // skip - separator
+  if ('-' != *(*aaSrc)++)
+    return false;
+  
+  // extract month
+  if ( ! StrLib::bExtractU8(aaSrc,&uField) )
+    return false;
+  aTimestamp->x.m_uMonth = uField;
+  
+  // skip - separator
+  if ('-' != *(*aaSrc)++) return false;
+  
+  // extract day
+  if ( ! StrLib::bExtractU8(aaSrc,&uField) )
+    return false;
+  aTimestamp->x.m_uDay = uField;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - -
+  // time portion
+  
+  // skip T or space separator
+  if ( ! ('T' == **aaSrc || ' ' == **aaSrc) )
+    return true;
+  (*aaSrc)++;
+  
+  // extract hour
+  if ( ! StrLib::bExtractU8(aaSrc,&uField) )
+    return true;
+  aTimestamp->x.m_uHour = uField;
+  
+  // skip : separator
+  if (':' != *(*aaSrc)++)
+    return true;
+  
+  // extract minute
+  if ( ! StrLib::bExtractU8(aaSrc,&uField) )
+    return true;
+  aTimestamp->x.m_uMinute = uField;
+  
+  // skip : separator
+  if (':' != *(*aaSrc)++)
+    return true;
+  
+  // extract second
+  if ( ! StrLib::bExtractU8(aaSrc,&uField) )
+    return true;
+  aTimestamp->x.m_uSecond = uField;
+  
+  // extract fraction (assuming milliseconds)
+  if ('.' == **aaSrc) {
+    (*aaSrc)++;
+    if ( StrLib::bExtractU8(aaSrc,&uField) )
+      aTimestamp->x.m_uMilli = uField;
+  }
+  
+  // skip Z separator
+  if ('Z' == **aaSrc)
+    (*aaSrc)++;
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* valid timestamp in substr?                                                 */
+/*----------------------------------------------------------------------------*/
+bool Tsp::bValid(char** aaSrc, Column* pColumn)
+{
+  Tsp xTsp;
+  
+  bool bValid = bExtract(aaSrc,&xTsp,pColumn);
+  
+  return bValid;
 }
 
 /*----------------------------------------------------------------------------*/
