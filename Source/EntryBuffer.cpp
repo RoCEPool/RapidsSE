@@ -502,9 +502,9 @@ i8 EntryBuffer::iDecile(void)
   i8 iDecile;
   
   if (gbIndexSpace)
-    iDecile = Int::iDecile(m_xWsp.nUsed(), C_SIZE_POOL_BUFFER);
+    iDecile = IntLib::iDecile(m_xWsp.nUsed(), C_SIZE_POOL_BUFFER);
   else
-    iDecile = Int::iDecile(m_nEntries, gnIndexEntries);
+    iDecile = IntLib::iDecile(m_nEntries, gnIndexEntries);
   
   
   return iDecile;

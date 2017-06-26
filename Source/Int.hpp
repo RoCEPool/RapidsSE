@@ -17,7 +17,7 @@ namespace Datums
   
     Int(void);
     ~Int(void);
-  
+    
     bool operator <  (Int& xInt);
     bool operator <= (Int& xInt);
     bool operator == (Int& xInt);
@@ -32,7 +32,6 @@ namespace Datums
     void vIntToVlq(char* aVlq);
     void vVlqToInt(char* aVlq);
  
-    static i8   iDecile(i8 iValue, i8 iMax);
     static bool bExtract(Str* aDst, Str* aSrc, i8& nBytesTaken);
     static void vSprint(Str* aDst, Str* aSrc, i8& nBytesTaken);
   

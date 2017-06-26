@@ -21,6 +21,22 @@ const u1 C_VLQ_NULL_BIT = 6;
 
 
 /*----------------------------------------------------------------------------*/
+/* return the decile of value given its maximum                               */
+/*----------------------------------------------------------------------------*/
+i8 IntLib::iDecile(i8 iValue, i8 iMax)
+{
+  double dPercent = (iValue * 100) / iMax;
+  double dDecile = dPercent / 10;
+  
+  i8 iDecile = round(dDecile);
+  
+  if (iDecile == 10)
+    iDecile = 9;
+  
+  return iDecile;
+}
+
+/*----------------------------------------------------------------------------*/
 /* convert i8 to vlq (varying length quantity)                                */
 /*----------------------------------------------------------------------------*/
 i8 IntLib::iIntToVlq(i8 iInt, byte yVlqVec[16])
