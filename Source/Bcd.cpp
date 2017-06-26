@@ -4,6 +4,8 @@
 
 #include "Datums.h"
 
+#include "StorageEngine.h"
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -108,6 +110,59 @@ bool Bcd::bIsNull(void)
 void Bcd::vSetNull(void)
 {
   m_iBcd = C_NULL_INT;
+}
+
+/*----------------------------------------------------------------------------*/
+/* extract a decimal from substr                                              */
+/*----------------------------------------------------------------------------*/
+bool Bcd::bExtract(char** aaSrc, Bcd* aDecimal,DBobjects::Column* pColumn)
+{
+  i8 iResult = 0;
+  
+  // skip leading whitespace
+  while (' ' == **aaSrc)
+    (*aaSrc)++;
+  
+  // test for null
+  if ( ! **aaSrc || '|' == **aaSrc ) {
+    aDecimal->vSetNull();
+    return true;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // collect leading portion (till '.')
+  
+  while (**aaSrc && '|' != **aaSrc && ',' != **aaSrc
+         && StrLib::bIsDigit(**aaSrc)) {
+    iResult = iResult * 10 + StrLib::iDigitToI8(**aaSrc);
+    (*aaSrc)++;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // collect trailing portion (after '.')
+  if ('.' == **aaSrc) {
+    (*aaSrc)++; // skip '.'
+    i8 iPrecision = pColumn->iColumnPrecision();
+    while (**aaSrc && '|' != **aaSrc && ',' != **aaSrc
+           && StrLib::bIsDigit(**aaSrc) && iPrecision--) {
+      iResult = iResult * 10 + StrLib::iDigitToI8(**aaSrc);
+      (*aaSrc)++;
+    }
+  }
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* valid decimal in substr?                                                   */
+/*----------------------------------------------------------------------------*/
+bool Bcd::bValid(char** aaSrc, Column* pColumn)
+{
+  Bcd xBcd;
+  
+  bool bValid = bExtract(aaSrc,&xBcd,pColumn);
+  
+  return bValid;
 }
 
 /*----------------------------------------------------------------------------*/

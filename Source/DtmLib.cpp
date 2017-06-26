@@ -7,47 +7,6 @@
 #include "StorageEngine.h"
 
 /*----------------------------------------------------------------------------*/
-/* extract a decimal from substr                                              */
-/*----------------------------------------------------------------------------*/
-bool DtmLib::bExtractBcd(char** aaSrc, Bcd* aDecimal,DBobjects::Column* pColumn)
-{
-  i8 iResult = 0;
-
-  // skip leading whitespace
-  while (' ' == **aaSrc)
-    (*aaSrc)++;
-  
-  // test for null
-  if ( ! **aaSrc || '|' == **aaSrc ) {
-    aDecimal->vSetNull();
-    return true;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // collect leading portion (till '.')
-  
-  while (**aaSrc && '|' != **aaSrc && ',' != **aaSrc
-                 && StrLib::bIsDigit(**aaSrc)) {
-    iResult = iResult * 10 + StrLib::iDigitToI8(**aaSrc);
-    (*aaSrc)++;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // collect trailing portion (after '.')
-  if ('.' == **aaSrc) {
-    (*aaSrc)++; // skip '.'
-    i8 iPrecision = pColumn->iColumnPrecision();
-    while (**aaSrc && '|' != **aaSrc && ',' != **aaSrc
-                   && StrLib::bIsDigit(**aaSrc) && iPrecision--) {
-      iResult = iResult * 10 + StrLib::iDigitToI8(**aaSrc);
-      (*aaSrc)++;
-    }
-  }
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /* extract a boolean from substr                                              */
 /*----------------------------------------------------------------------------*/
 bool DtmLib::bExtractBol(char** aaSrc, Bol* aBoolean, Column* pColumn)
@@ -394,7 +353,7 @@ bool DtmLib::bValidateDatum(eDM eDatum, char** aaSrc, Column* pColumn)
   bool bValid = false;
   
   switch (eDatum) {
-    case DM_BCD: bValid = bValidBcd(aaSrc,pColumn); break;
+    case DM_BCD: bValid = Bcd::bValid(aaSrc,pColumn); break;
     case DM_BOL: bValid = bValidBol(aaSrc,pColumn); break;
     case DM_CHR: bValid = bValidVch(aaSrc,pColumn); break;
     case DM_DTE: bValid = bValidDte(aaSrc,pColumn); break;
@@ -408,18 +367,6 @@ bool DtmLib::bValidateDatum(eDM eDatum, char** aaSrc, Column* pColumn)
       vFatal("DtmLib::bValid: Invalid aDatum argument: %lld\n"_Str,
              eDatum);
   }
-  
-  return bValid;
-}
-
-/*----------------------------------------------------------------------------*/
-/* valid decimal in substr?                                                   */
-/*----------------------------------------------------------------------------*/
-bool DtmLib::bValidBcd(char** aaSrc, Column* pColumn)
-{
-  Bcd xBcd;
-  
-  bool bValid = bExtractBcd(aaSrc,&xBcd,pColumn);
   
   return bValid;
 }
