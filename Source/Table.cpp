@@ -599,7 +599,7 @@ i8 Table::iRowPartition(Str* pRow)
         
       case CT_FLOAT: {
         Flt xFlt;
-        bool b = DtmLib::bExtractFlt(&pDst,&xFlt,pColumn);
+        bool b = Flt::bExtract(&pDst,&xFlt,pColumn);
         ASSERT(b);
         iHash += XXH32(&xFlt,sizeof(Flt),0);
         break;

@@ -7,42 +7,6 @@
 #include "StorageEngine.h"
 
 /*----------------------------------------------------------------------------*/
-/* extract a float from substr                                                */
-/*----------------------------------------------------------------------------*/
-bool DtmLib::bExtractFlt(char** aaSrc, Flt* aFloat, Column* pColumn)
-{
-  d8 dResult = 0.0;
-  char xBuffer[256];
-  char* aChar = xBuffer;
-  
-  // skip leading whitespace
-  while (' ' == **aaSrc)
-    (*aaSrc)++;
-  
-  // test for null
-  if ( ! **aaSrc || '|' == **aaSrc ) {
-    aFloat->vSetNull();
-    return true;
-  }
-  
-  // collect the csv
-  while (**aaSrc && '|' != **aaSrc && ',' != **aaSrc)
-    *aChar++ = *(*aaSrc)++;
-  *aChar++ = '\0';
-  
-  // find first char
-  for (aChar = xBuffer; *aChar && ' ' == *aChar; aChar++)
-    ;
-  
-  // convert
-  dResult = atof(aChar);
-  
-  aFloat->m_dFlt = dResult;
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /* extract an interval from substr                                            */
 /*----------------------------------------------------------------------------*/
 bool DtmLib::bExtractIvl(char** aaSrc, Ivl* aInterval, Column* pColumn)
@@ -273,7 +237,7 @@ bool DtmLib::bValidateDatum(eDM eDatum, char** aaSrc, Column* pColumn)
     case DM_BOL: bValid = Bol::bValid(aaSrc,pColumn); break;
     case DM_CHR: bValid = bValidVch(aaSrc,pColumn); break;
     case DM_DTE: bValid = Dte::bValid(aaSrc,pColumn); break;
-    case DM_FLT: bValid = bValidFlt(aaSrc,pColumn); break;
+    case DM_FLT: bValid = Flt::bValid(aaSrc,pColumn); break;
     case DM_INT: bValid = Int::bValid(aaSrc,pColumn); break;
     case DM_IVL: bValid = bValidIvl(aaSrc,pColumn); break;
     case DM_TME: bValid = bValidTme(aaSrc,pColumn); break;
@@ -288,18 +252,6 @@ bool DtmLib::bValidateDatum(eDM eDatum, char** aaSrc, Column* pColumn)
     return bValid;
   else
     return bValid;
-}
-
-/*----------------------------------------------------------------------------*/
-/* valid float in substr?                                                     */
-/*----------------------------------------------------------------------------*/
-bool DtmLib::bValidFlt(char** aaSrc, Column* pColumn)
-{
-  Flt xFlt;
-  
-  bool bValid = bExtractFlt(aaSrc,&xFlt,pColumn);
-  
-  return bValid;
 }
 
 /*----------------------------------------------------------------------------*/

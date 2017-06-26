@@ -4,6 +4,8 @@
 
 #include "Datums.h"
 
+#include "StorageEngine.h"
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -134,6 +136,54 @@ bool Flt::bIsNull(void)
 void Flt::vSetNull(void)
 {
   m_dFlt = C_NULL_FLT;
+}
+
+/*----------------------------------------------------------------------------*/
+/* extract a float from substr                                                */
+/*----------------------------------------------------------------------------*/
+bool Flt::bExtract(char** aaSrc, Flt* aFloat, Column* pColumn)
+{
+  d8 dResult = 0.0;
+  char xBuffer[256];
+  char* aChar = xBuffer;
+  
+  // skip leading whitespace
+  while (' ' == **aaSrc)
+    (*aaSrc)++;
+  
+  // test for null
+  if ( ! **aaSrc || '|' == **aaSrc ) {
+    aFloat->vSetNull();
+    return true;
+  }
+  
+  // collect the csv
+  while (**aaSrc && '|' != **aaSrc && ',' != **aaSrc)
+    *aChar++ = *(*aaSrc)++;
+  *aChar++ = '\0';
+  
+  // find first char
+  for (aChar = xBuffer; *aChar && ' ' == *aChar; aChar++)
+    ;
+  
+  // convert
+  dResult = atof(aChar);
+  
+  aFloat->m_dFlt = dResult;
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* valid float in substr?                                                     */
+/*----------------------------------------------------------------------------*/
+bool Flt::bValid(char** aaSrc, Column* pColumn)
+{
+  Flt xFlt;
+  
+  bool bValid = bExtract(aaSrc,&xFlt,pColumn);
+  
+  return bValid;
 }
 
 /*----------------------------------------------------------------------------*/
