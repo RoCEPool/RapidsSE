@@ -4,6 +4,8 @@
 
 #include "Datums.h"
 
+#include "StorageEngine.h"
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -134,6 +136,48 @@ bool Bol::bIsNull(void)
 void Bol::vSetNull(void)
 {
   m_bBol = C_NULL_INT;
+}
+
+/*----------------------------------------------------------------------------*/
+/* extract a boolean from substr                                              */
+/*----------------------------------------------------------------------------*/
+bool Bol::bExtract(char** aaSrc, Bol* aBoolean, Column* pColumn)
+{
+  bool bResult = false;
+  
+  // skip leading whitespace
+  while (' ' == **aaSrc)
+    (*aaSrc)++;
+  
+  // test for null
+  if ( ! **aaSrc || '|' == **aaSrc ) {
+    aBoolean->vSetNull();
+    return true;
+  }
+  
+  // test for true
+  if ('t' == *(*aaSrc) ||
+      'T' == *(*aaSrc) ||
+      'y' == *(*aaSrc) ||
+      'Y' == *(*aaSrc) ||
+      '1' == *(*aaSrc))
+    bResult = true;
+  
+  aBoolean->m_bBol = bResult;
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* valid boolean in substr?                                                   */
+/*----------------------------------------------------------------------------*/
+bool Bol::bValid(char** aaSrc, Column* pColumn)
+{
+  Bol xBol;
+  
+  bool bValid = bExtract(aaSrc,&xBol,pColumn);
+  
+  return bValid;
 }
 
 /*----------------------------------------------------------------------------*/

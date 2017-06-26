@@ -511,7 +511,7 @@ void Entry::vExtractKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
         
       case CT_BOOLEAN: {
         Bol xBol;
-        bool b = DtmLib::bExtractBol(&pDst,&xBol,pColumn);
+        bool b = Bol::bExtract(&pDst,&xBol,pColumn);
         ASSERT(b);
         xValWrk = xBol;
         break;

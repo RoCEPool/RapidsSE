@@ -7,36 +7,6 @@
 #include "StorageEngine.h"
 
 /*----------------------------------------------------------------------------*/
-/* extract a boolean from substr                                              */
-/*----------------------------------------------------------------------------*/
-bool DtmLib::bExtractBol(char** aaSrc, Bol* aBoolean, Column* pColumn)
-{
-  bool bResult = false;
-    
-  // skip leading whitespace
-  while (' ' == **aaSrc)
-    (*aaSrc)++;
-  
-  // test for null
-  if ( ! **aaSrc || '|' == **aaSrc ) {
-    aBoolean->vSetNull();
-    return true;
-  }
-  
-  // test for true
-  if ('t' == *(*aaSrc) ||
-      'T' == *(*aaSrc) ||
-      'y' == *(*aaSrc) ||
-      'Y' == *(*aaSrc) ||
-      '1' == *(*aaSrc))
-  bResult = true;
-  
-  aBoolean->m_bBol = bResult;
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /* extract a date from substr                                     yyyy-mo-ddZ */
 /*----------------------------------------------------------------------------*/
 bool DtmLib::bExtractDte(char** aaSrc, Dte* aDate, Column* pColumn)
@@ -354,7 +324,7 @@ bool DtmLib::bValidateDatum(eDM eDatum, char** aaSrc, Column* pColumn)
   
   switch (eDatum) {
     case DM_BCD: bValid = Bcd::bValid(aaSrc,pColumn); break;
-    case DM_BOL: bValid = bValidBol(aaSrc,pColumn); break;
+    case DM_BOL: bValid = Bol::bValid(aaSrc,pColumn); break;
     case DM_CHR: bValid = bValidVch(aaSrc,pColumn); break;
     case DM_DTE: bValid = bValidDte(aaSrc,pColumn); break;
     case DM_FLT: bValid = bValidFlt(aaSrc,pColumn); break;
@@ -367,18 +337,6 @@ bool DtmLib::bValidateDatum(eDM eDatum, char** aaSrc, Column* pColumn)
       vFatal("DtmLib::bValid: Invalid aDatum argument: %lld\n"_Str,
              eDatum);
   }
-  
-  return bValid;
-}
-
-/*----------------------------------------------------------------------------*/
-/* valid boolean in substr?                                                   */
-/*----------------------------------------------------------------------------*/
-bool DtmLib::bValidBol(char** aaSrc, Column* pColumn)
-{
-  Bol xBol;
-  
-  bool bValid = bExtractBol(aaSrc,&xBol,pColumn);
   
   return bValid;
 }

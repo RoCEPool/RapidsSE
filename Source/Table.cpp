@@ -573,7 +573,7 @@ i8 Table::iRowPartition(Str* pRow)
         
       case CT_BOOLEAN: {
         Bol xBol;
-        bool b = DtmLib::bExtractBol(&pDst,&xBol,pColumn);
+        bool b = Bol::bExtract(&pDst,&xBol,pColumn);
         ASSERT(b);
         iHash += XXH32(&xBol,sizeof(Bol),0);
         break;
