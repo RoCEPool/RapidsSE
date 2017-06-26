@@ -7,27 +7,6 @@
 #include "StorageEngine.h"
 
 /*----------------------------------------------------------------------------*/
-/* extract an varchar from substr                                             */
-/*----------------------------------------------------------------------------*/
-bool DtmLib::bExtractVch(char** aaSrc, Vch* aVch, Column* pColumn)
-{
-  char* aChar = (char*)aVch;
-  
-  // test for null
-  if ( ! **aaSrc || '|' == **aaSrc ) {
-    aVch->vSetNull();
-    return true;
-  }
-  
-  // collect the csv
-  while ('|' != **aaSrc && ',' != **aaSrc)
-    *aChar++ = *(*aaSrc)++;
-  *aChar++ = '\0';
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -41,14 +20,14 @@ bool DtmLib::bValidateDatum(eDM eDatum, char** aaSrc, Column* pColumn)
   switch (eDatum) {
     case DM_BCD: bValid = Bcd::bValid(aaSrc,pColumn); break;
     case DM_BOL: bValid = Bol::bValid(aaSrc,pColumn); break;
-    case DM_CHR: bValid = bValidVch(aaSrc,pColumn); break;
+    case DM_CHR: ASSERT(0); break;
     case DM_DTE: bValid = Dte::bValid(aaSrc,pColumn); break;
     case DM_FLT: bValid = Flt::bValid(aaSrc,pColumn); break;
     case DM_INT: bValid = Int::bValid(aaSrc,pColumn); break;
     case DM_IVL: bValid = Ivl::bValid(aaSrc,pColumn); break;
     case DM_TME: bValid = Tme::bValid(aaSrc,pColumn); break;
     case DM_TSP: bValid = Tsp::bValid(aaSrc,pColumn); break;
-    case DM_VCH: bValid = bValidVch(aaSrc,pColumn); break;
+    case DM_VCH: bValid = Vch::bValid(aaSrc,pColumn); break;
     default:
       vFatal("DtmLib::bValid: Invalid aDatum argument: %lld\n"_Str,
              eDatum);
@@ -58,19 +37,6 @@ bool DtmLib::bValidateDatum(eDM eDatum, char** aaSrc, Column* pColumn)
     return bValid;
   else
     return bValid;
-}
-
-/*----------------------------------------------------------------------------*/
-/* valid varchar in substr?                                                   */
-/*----------------------------------------------------------------------------*/
-bool DtmLib::bValidVch(char** aaSrc, Column* pColumn)
-{
-  s48K sBuffer;
-  
-  Vch* aVch = (Vch*)sBuffer.aStr();
-  bool bValid = bExtractVch(aaSrc,aVch,pColumn);
-  
-  return bValid;
 }
 
 /*----------------------------------------------------------------------------*/

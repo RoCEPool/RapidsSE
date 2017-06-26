@@ -4,6 +4,8 @@
 
 #include "Datums.h"
 
+#include "StorageEngine.h"
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -134,29 +136,6 @@ void Vch::vInitZero(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* extract varchar datum                                                      */
-/*----------------------------------------------------------------------------*/
-bool Vch::bExtract(Str* aDst, Str* aSrc, i8& nBytesTaken)
-{
-  /*
-  char* aExt = (char*)aSrc;
-  
-  i8 iInt;
-  bool b = StrLib::bExtractI8(&aExt,&iInt);
-  if (b) {
-    MemLib::vCopy(aDst,&iInt,sizeof(i8));
-  
-    nBytesTaken = sizeof(i8);
-  }
-  
-  return b;
-  */
-  ASSERT(0);
-  
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* sprint varchar datum                                                       */
 /*----------------------------------------------------------------------------*/
 void Vch::vSprint(Str* aDst, Str* aSrc, i8& nBytesTaken)
@@ -183,6 +162,40 @@ bool Vch::bIsNull(void)
 void Vch::vSetNull(void)
 {
   *(i8*)this = C_NULL_VCH;
+}
+
+/*----------------------------------------------------------------------------*/
+/* extract an varchar from substr                                             */
+/*----------------------------------------------------------------------------*/
+bool Vch::bExtract(char** aaSrc, Vch* aVch, Column* pColumn)
+{
+  char* aChar = (char*)aVch;
+  
+  // test for null
+  if ( ! **aaSrc || '|' == **aaSrc ) {
+    aVch->vSetNull();
+    return true;
+  }
+  
+  // collect the csv
+  while ('|' != **aaSrc && ',' != **aaSrc)
+    *aChar++ = *(*aaSrc)++;
+  *aChar++ = '\0';
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* valid varchar in substr?                                                   */
+/*----------------------------------------------------------------------------*/
+bool Vch::bValid(char** aaSrc, Column* pColumn)
+{
+  s48K sBuffer;
+  
+  Vch* aVch = (Vch*)sBuffer.aStr();
+  bool bValid = bExtract(aaSrc,aVch,pColumn);
+  
+  return bValid;
 }
 
 /*----------------------------------------------------------------------------*/

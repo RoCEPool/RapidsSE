@@ -29,8 +29,10 @@ namespace Datums
     bool bIsNull(void);
     void vSetNull(void);
     
-    static bool bExtract(Str* aDst, Str* aSrc, i8& nBytesTaken);
     static void vSprint(Str* aDst, Str* aSrc, i8& nBytesTaken);
+    static bool bExtract(char** aaSrc, Vch* aVch, DBobjects::Column* pColumn);
+    static bool bValid(char** aaSrc, DBobjects::Column* pColumn);
+  
   
     static bool bLessThan(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB);
     static bool bLessEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB);
