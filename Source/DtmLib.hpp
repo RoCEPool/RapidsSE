@@ -16,7 +16,6 @@ namespace Datums
   
   public:
 
-    static bool bExtractDte(char** aaSrc, Dte* aDte, DBobjects::Column* pColumn);
     static bool bExtractFlt(char** aaSrc, Flt* aFlt, DBobjects::Column* pColumn);
     static bool bExtractIvl(char** aaSrc, Ivl* aIvl, DBobjects::Column* pColumn);
     static bool bExtractTme(char** aaSrc, Tme* aTme, DBobjects::Column* pColumn);
@@ -25,7 +24,6 @@ namespace Datums
   
     static bool bValidateDatum(eDM eDatum, char** aaSrc, DBobjects::Column* pColumn);
   
-    static bool bValidDte(char** aaSrc, DBobjects::Column* pColumn);
     static bool bValidFlt(char** aaSrc, DBobjects::Column* pColumn);
     static bool bValidIvl(char** aaSrc, DBobjects::Column* pColumn);
     static bool bValidTme(char** aaSrc, DBobjects::Column* pColumn);

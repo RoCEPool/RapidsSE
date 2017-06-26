@@ -4,6 +4,8 @@
 
 #include "Datums.h"
 
+#include "StorageEngine.h"
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -162,6 +164,72 @@ bool Dte::bIsNull(void)
 void Dte::vSetNull(void)
 {
   *(i8*)&x = C_NULL_INT;
+}
+
+/*----------------------------------------------------------------------------*/
+/* extract a date from substr                                     yyyy-mo-ddZ */
+/*----------------------------------------------------------------------------*/
+bool Dte::bExtract(char** aaSrc, Dte* aDate, Column* pColumn)
+{
+  u8 uField;
+  
+  // skip leading whitespace
+  while (' ' == **aaSrc)
+    (*aaSrc)++;
+  
+  // test for null
+  if ( ! **aaSrc || '|' == **aaSrc ) {
+    aDate->vSetNull();
+    return true;
+  }
+  
+  aDate->vInitZero();
+  
+  if ( ! *aaSrc )
+    return false;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - -
+  // date portion
+  
+  // extract year
+  if ( ! StrLib::bExtractU8(aaSrc,&uField) )
+    return false;
+  aDate->x.m_uYear = uField;
+  
+  // skip - separator
+  if ('-' != *(*aaSrc)++)
+    return false;
+  
+  // extract month
+  if ( ! StrLib::bExtractU8(aaSrc,&uField) )
+    return false;
+  aDate->x.m_uMonth = uField;
+  
+  // skip - separator
+  if ('-' != *(*aaSrc)++) return false;
+  
+  // extract day
+  if ( ! StrLib::bExtractU8(aaSrc,&uField) )
+    return false;
+  aDate->x.m_uDay = uField;
+  
+  // skip Z separator
+  if ('Z' == **aaSrc)
+    (*aaSrc)++;
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* valid date in substr?                                                      */
+/*----------------------------------------------------------------------------*/
+bool Dte::bValid(char** aaSrc, Column* pColumn)
+{
+  Dte xDte;
+  
+  bool bValid = bExtract(aaSrc,&xDte,pColumn);
+  
+  return bValid;
 }
 
 /*----------------------------------------------------------------------------*/

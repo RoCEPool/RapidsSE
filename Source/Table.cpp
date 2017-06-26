@@ -586,7 +586,7 @@ i8 Table::iRowPartition(Str* pRow)
         
       case CT_DATE: {
         Dte xDte;
-        bool b = DtmLib::bExtractDte(&pDst,&xDte,pColumn);
+        bool b = Dte::bExtract(&pDst,&xDte,pColumn);
         ASSERT(b);
         iHash += XXH32(&xDte,sizeof(Dte),0);
         break;

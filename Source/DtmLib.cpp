@@ -7,60 +7,6 @@
 #include "StorageEngine.h"
 
 /*----------------------------------------------------------------------------*/
-/* extract a date from substr                                     yyyy-mo-ddZ */
-/*----------------------------------------------------------------------------*/
-bool DtmLib::bExtractDte(char** aaSrc, Dte* aDate, Column* pColumn)
-{
-  u8 uField;
-  
-  // skip leading whitespace
-  while (' ' == **aaSrc)
-    (*aaSrc)++;
-  
-  // test for null
-  if ( ! **aaSrc || '|' == **aaSrc ) {
-    aDate->vSetNull();
-    return true;
-  }
-  
-  aDate->vInitZero();
-  
-  if ( ! *aaSrc )
-    return false;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - -
-  // date portion
-  
-  // extract year
-  if ( ! StrLib::bExtractU8(aaSrc,&uField) )
-    return false;
-  aDate->x.m_uYear = uField;
-  
-  // skip - separator
-  if ('-' != *(*aaSrc)++)
-    return false;
-  
-  // extract month
-  if ( ! StrLib::bExtractU8(aaSrc,&uField) )
-    return false;
-  aDate->x.m_uMonth = uField;
-  
-  // skip - separator
-  if ('-' != *(*aaSrc)++) return false;
-  
-  // extract day
-  if ( ! StrLib::bExtractU8(aaSrc,&uField) )
-    return false;
-  aDate->x.m_uDay = uField;
-  
-  // skip Z separator
-  if ('Z' == **aaSrc)
-    (*aaSrc)++;
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /* extract a float from substr                                                */
 /*----------------------------------------------------------------------------*/
 bool DtmLib::bExtractFlt(char** aaSrc, Flt* aFloat, Column* pColumn)
@@ -326,7 +272,7 @@ bool DtmLib::bValidateDatum(eDM eDatum, char** aaSrc, Column* pColumn)
     case DM_BCD: bValid = Bcd::bValid(aaSrc,pColumn); break;
     case DM_BOL: bValid = Bol::bValid(aaSrc,pColumn); break;
     case DM_CHR: bValid = bValidVch(aaSrc,pColumn); break;
-    case DM_DTE: bValid = bValidDte(aaSrc,pColumn); break;
+    case DM_DTE: bValid = Dte::bValid(aaSrc,pColumn); break;
     case DM_FLT: bValid = bValidFlt(aaSrc,pColumn); break;
     case DM_INT: bValid = Int::bValid(aaSrc,pColumn); break;
     case DM_IVL: bValid = bValidIvl(aaSrc,pColumn); break;
@@ -338,19 +284,10 @@ bool DtmLib::bValidateDatum(eDM eDatum, char** aaSrc, Column* pColumn)
              eDatum);
   }
   
-  return bValid;
-}
-
-/*----------------------------------------------------------------------------*/
-/* valid date in substr?                                                      */
-/*----------------------------------------------------------------------------*/
-bool DtmLib::bValidDte(char** aaSrc, Column* pColumn)
-{
-  Dte xDte;
-  
-  bool bValid = bExtractDte(aaSrc,&xDte,pColumn);
-  
-  return bValid;
+  if (!bValid)
+    return bValid;
+  else
+    return bValid;
 }
 
 /*----------------------------------------------------------------------------*/

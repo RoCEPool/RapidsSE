@@ -173,6 +173,9 @@ i8 Int::iAsI8(void)
 /*----------------------------------------------------------------------------*/
 bool Int::bExtract(char** aaSrc, Int* aInteger, Column* pColumn)
 {
+  if (pColumn->iColumnNo() == -1)
+    int a = 1;
+  
   i8 iResult = 0;
   char xBuffer[256];
   char* aChar = xBuffer;
