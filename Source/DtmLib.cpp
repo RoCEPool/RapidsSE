@@ -168,47 +168,6 @@ bool DtmLib::bExtractFlt(char** aaSrc, Flt* aFloat, Column* pColumn)
 }
 
 /*----------------------------------------------------------------------------*/
-/* extract an integer from substr                                             */
-/*----------------------------------------------------------------------------*/
-bool DtmLib::bExtractInt(char** aaSrc, Int* aInteger, Column* pColumn)
-{
-  i8 iResult = 0;
-  char xBuffer[256];
-  char* aChar = xBuffer;
-  
-  // skip leading whitespace
-  while (' ' == **aaSrc)
-    (*aaSrc)++;
-
-  // test for null
-  if ( ! **aaSrc || '|' == **aaSrc ) {
-    aInteger->vSetNull();
-    return true;
-  }
-  
-  // collect the csv
-  while (**aaSrc && '\n' != **aaSrc && '\r' != **aaSrc && '|' != **aaSrc && ',' != **aaSrc) {
-    if ('|' == **aaSrc)
-      return true;
-    if ( ! StrLib::bIsDigit(**aaSrc) )
-      return false;
-    *aChar++ = *(*aaSrc)++;
-  }
-  *aChar++ = '\0';
-  
-  // find first char
-  for (aChar = xBuffer; *aChar && ' ' == *aChar; aChar++)
-    ;
-  
-  // convert
-  iResult = atol(aChar);
-  
-  aInteger->m_iInt = iResult;
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /* extract an interval from substr                                            */
 /*----------------------------------------------------------------------------*/
 bool DtmLib::bExtractIvl(char** aaSrc, Ivl* aInterval, Column* pColumn)
@@ -440,7 +399,7 @@ bool DtmLib::bValidateDatum(eDM eDatum, char** aaSrc, Column* pColumn)
     case DM_CHR: bValid = bValidVch(aaSrc,pColumn); break;
     case DM_DTE: bValid = bValidDte(aaSrc,pColumn); break;
     case DM_FLT: bValid = bValidFlt(aaSrc,pColumn); break;
-    case DM_INT: bValid = bValidInt(aaSrc,pColumn); break;
+    case DM_INT: bValid = Int::bValid(aaSrc,pColumn); break;
     case DM_IVL: bValid = bValidIvl(aaSrc,pColumn); break;
     case DM_TME: bValid = bValidTme(aaSrc,pColumn); break;
     case DM_TSP: bValid = bValidTsp(aaSrc,pColumn); break;
@@ -497,18 +456,6 @@ bool DtmLib::bValidFlt(char** aaSrc, Column* pColumn)
   Flt xFlt;
   
   bool bValid = bExtractFlt(aaSrc,&xFlt,pColumn);
-  
-  return bValid;
-}
-
-/*----------------------------------------------------------------------------*/
-/* valid integer in substr?                                                   */
-/*----------------------------------------------------------------------------*/
-bool DtmLib::bValidInt(char** aaSrc, Column* pColumn)
-{
-  Int xInt;
-  
-  bool bValid = bExtractInt(aaSrc,&xInt,pColumn);
   
   return bValid;
 }

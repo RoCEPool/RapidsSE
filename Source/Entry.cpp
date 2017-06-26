@@ -547,7 +547,7 @@ void Entry::vExtractKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
 //        xValWrk = StrLib::iToI8(pDst);
 //        break;
         Int xInt;
-        bool b = DtmLib::bExtractInt(&pDst,&xInt,pColumn);
+        bool b = Int::bExtract(&pDst,&xInt,pColumn);
         ASSERT(b);
         if (b)
           xValWrk = xInt.iAsI8();

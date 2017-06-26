@@ -3,6 +3,11 @@
 /*============================================================================*/
 #pragma once
 
+namespace DBobjects
+{
+  class Column;
+}
+
 namespace Datums
 {
   class Int
@@ -17,7 +22,7 @@ namespace Datums
   
     Int(void);
     ~Int(void);
-    
+  
     bool operator <  (Int& xInt);
     bool operator <= (Int& xInt);
     bool operator == (Int& xInt);
@@ -25,15 +30,18 @@ namespace Datums
     bool operator >= (Int& xInt);
     bool operator >  (Int& xInt);
   
-    void vInitZero(void);
-    i8   iAsI8(void);
     bool bIsNull(void);
     void vSetNull(void);
+  
     void vIntToVlq(char* aVlq);
     void vVlqToInt(char* aVlq);
  
-    static bool bExtract(Str* aDst, Str* aSrc, i8& nBytesTaken);
+    void vInitZero(void);
+    i8   iAsI8(void);
+  
+    static bool bExtract(char** aaSrc, Int* aInt, DBobjects::Column* pColumn);
     static void vSprint(Str* aDst, Str* aSrc, i8& nBytesTaken);
+    static bool bValid(char** aaSrc, DBobjects::Column* pColumn);
   
     static bool bLessThan(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB);
     static bool bLessEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB);
