@@ -621,7 +621,7 @@ i8 Table::iRowPartition(Str* pRow)
         
       case CT_TIME: {
         Tme xTme;
-        bool b = DtmLib::bExtractTme(&pDst,&xTme,pColumn);
+        bool b = Tme::bExtract(&pDst,&xTme,pColumn);
         ASSERT(b);
         iHash += XXH32(&xTme,sizeof(Tme),0);
         break;

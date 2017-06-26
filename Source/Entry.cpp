@@ -564,7 +564,7 @@ void Entry::vExtractKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
         
       case CT_TIME: {
         Tme xTme;
-        bool b = DtmLib::bExtractTme(&pDst,&xTme,pColumn);
+        bool b = Tme::bExtract(&pDst,&xTme,pColumn);
         ASSERT(b);
         xValWrk = xTme;
         break;

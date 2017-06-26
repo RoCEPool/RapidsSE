@@ -16,13 +16,11 @@ namespace Datums
   
   public:
 
-    static bool bExtractTme(char** aaSrc, Tme* aTme, DBobjects::Column* pColumn);
     static bool bExtractTsp(char** aaSrc, Tsp* aTsp, DBobjects::Column* pColumn);
     static bool bExtractVch(char** aaSrc, Vch* aVch, DBobjects::Column* pColumn);
   
     static bool bValidateDatum(eDM eDatum, char** aaSrc, DBobjects::Column* pColumn);
   
-    static bool bValidTme(char** aaSrc, DBobjects::Column* pColumn);
     static bool bValidTsp(char** aaSrc, DBobjects::Column* pColumn);
     static bool bValidVch(char** aaSrc, DBobjects::Column* pColumn);
   

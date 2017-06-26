@@ -7,65 +7,6 @@
 #include "StorageEngine.h"
 
 /*----------------------------------------------------------------------------*/
-/* extract a time from substr                                   hh:mi:ss.fffZ */
-/*----------------------------------------------------------------------------*/
-bool DtmLib::bExtractTme(char** aaSrc, Tme* aTime, Column* pColumn)
-{
-  u8 uField;
-  
-  // skip leading whitespace
-  while (' ' == **aaSrc)
-    (*aaSrc)++;
-  
-  // test for null
-  if ( ! **aaSrc || '|' == **aaSrc ) {
-    aTime->vSetNull();
-    return true;
-  }
-  
-  aTime->vInitZero();
-  
-  if ( ! *aaSrc )
-    return false;
-  
-  // extract hour
-  if ( ! StrLib::bExtractU8(aaSrc,&uField) )
-    return true;
-  aTime->x.m_uHour = uField;
-  
-  // skip : separator
-  if (':' != *(*aaSrc)++)
-    return true;
-  
-  // extract minute
-  if ( ! StrLib::bExtractU8(aaSrc,&uField) )
-    return true;
-  aTime->x.m_uMinute = uField;
-  
-  // skip : separator
-  if (':' != *(*aaSrc)++)
-    return true;
-  
-  // extract second
-  if ( ! StrLib::bExtractU8(aaSrc,&uField) )
-    return true;
-  aTime->x.m_uSecond = uField;
-  
-  // extract fraction (assuming milliseconds)
-  if ('.' == **aaSrc) {
-    (*aaSrc)++;
-    if ( StrLib::bExtractU8(aaSrc,&uField) )
-      aTime->x.m_uMilli = uField;
-  }
-  
-  // skip Z separator
-  if ('Z' == **aaSrc)
-    (*aaSrc)++;
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /* extract a timestamp from substr                   yyyy-mo-ddThh:mi:ss.fffZ */
 /*----------------------------------------------------------------------------*/
 bool DtmLib::bExtractTsp(char** aaSrc, Tsp* aTimestamp, Column* pColumn)
@@ -199,7 +140,7 @@ bool DtmLib::bValidateDatum(eDM eDatum, char** aaSrc, Column* pColumn)
     case DM_FLT: bValid = Flt::bValid(aaSrc,pColumn); break;
     case DM_INT: bValid = Int::bValid(aaSrc,pColumn); break;
     case DM_IVL: bValid = Ivl::bValid(aaSrc,pColumn); break;
-    case DM_TME: bValid = bValidTme(aaSrc,pColumn); break;
+    case DM_TME: bValid = Tme::bValid(aaSrc,pColumn); break;
     case DM_TSP: bValid = bValidTsp(aaSrc,pColumn); break;
     case DM_VCH: bValid = bValidVch(aaSrc,pColumn); break;
     default:
@@ -213,19 +154,7 @@ bool DtmLib::bValidateDatum(eDM eDatum, char** aaSrc, Column* pColumn)
     return bValid;
 }
 
-/*----------------------------------------------------------------------------*/
-/* valid time in substr?                                                      */
-/*----------------------------------------------------------------------------*/
-bool DtmLib::bValidTme(char** aaSrc, Column* pColumn)
-{
-  Tme xTme;
-  
-  bool bValid = bExtractTme(aaSrc,&xTme,pColumn);
-  
-  return bValid;
-}
-
-/*----------------------------------------------------------------------------*/
+//*----------------------------------------------------------------------------*/
 /* valid timestamp in substr?                                                 */
 /*----------------------------------------------------------------------------*/
 bool DtmLib::bValidTsp(char** aaSrc, Column* pColumn)

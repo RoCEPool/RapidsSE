@@ -4,6 +4,8 @@
 
 #include "Datums.h"
 
+#include "StorageEngine.h"
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -171,6 +173,77 @@ bool Tme::bIsNull(void)
 void Tme::vSetNull(void)
 {
   *(i8*)&x = C_NULL_INT;
+}
+
+/*----------------------------------------------------------------------------*/
+/* extract a time from substr                                   hh:mi:ss.fffZ */
+/*----------------------------------------------------------------------------*/
+bool Tme::bExtract(char** aaSrc, Tme* aTime, Column* pColumn)
+{
+  u8 uField;
+  
+  // skip leading whitespace
+  while (' ' == **aaSrc)
+    (*aaSrc)++;
+  
+  // test for null
+  if ( ! **aaSrc || '|' == **aaSrc ) {
+    aTime->vSetNull();
+    return true;
+  }
+  
+  aTime->vInitZero();
+  
+  if ( ! *aaSrc )
+    return false;
+  
+  // extract hour
+  if ( ! StrLib::bExtractU8(aaSrc,&uField) )
+    return true;
+  aTime->x.m_uHour = uField;
+  
+  // skip : separator
+  if (':' != *(*aaSrc)++)
+    return true;
+  
+  // extract minute
+  if ( ! StrLib::bExtractU8(aaSrc,&uField) )
+    return true;
+  aTime->x.m_uMinute = uField;
+  
+  // skip : separator
+  if (':' != *(*aaSrc)++)
+    return true;
+  
+  // extract second
+  if ( ! StrLib::bExtractU8(aaSrc,&uField) )
+    return true;
+  aTime->x.m_uSecond = uField;
+  
+  // extract fraction (assuming milliseconds)
+  if ('.' == **aaSrc) {
+    (*aaSrc)++;
+    if ( StrLib::bExtractU8(aaSrc,&uField) )
+      aTime->x.m_uMilli = uField;
+  }
+  
+  // skip Z separator
+  if ('Z' == **aaSrc)
+    (*aaSrc)++;
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* valid time in substr?                                                      */
+/*----------------------------------------------------------------------------*/
+bool Tme::bValid(char** aaSrc, Column* pColumn)
+{
+  Tme xTme;
+  
+  bool bValid = bExtract(aaSrc,&xTme,pColumn);
+  
+  return bValid;
 }
 
 /*----------------------------------------------------------------------------*/
