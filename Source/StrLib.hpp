@@ -38,7 +38,8 @@ namespace Base
     static void  vCopyLen(char* psDst, const char* psSrc, i8 nBytes);
     static void  vCopySplit(char* w1, char* w2, const char* sSrc, char cSplit);
     static void  vCopyTill(char* psDst, const char* psSrc, char ccTill);
-    
+  
+    static i8    iDigitToI8(char cDigit);
     static void  vDump(const char* s, i8 nMax, const char* pSuffix);
     static char* sDupe(const char* s);
     static char* sDupeStripped(const char* s);

@@ -314,6 +314,16 @@ void StrLib::vCopyTill(char* psDst, const char* psSrc, char ccTill)
 }
 
 /*----------------------------------------------------------------------------*/
+/* convert digit arg to i8                                                    */
+/*----------------------------------------------------------------------------*/
+i8 StrLib::iDigitToI8(const char cDigit)
+{
+  i8 i = cDigit - '0';
+    
+  return i;
+}
+
+/*----------------------------------------------------------------------------*/
 /* vDump: dump string                                                         */
 /*----------------------------------------------------------------------------*/
 void StrLib::vDump(const char* s, i8 nMax, const char* pSuffix)

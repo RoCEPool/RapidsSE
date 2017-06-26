@@ -11,10 +11,8 @@
 /*----------------------------------------------------------------------------*/
 bool DtmLib::bExtractBcd(char** aaSrc, Bcd* aDecimal,DBobjects::Column* pColumn)
 {
-  d8 dResult = 0.0;
-  char xBuffer[256];
-  char* aChar = xBuffer;
-  
+  i8 iResult = 0;
+
   // skip leading whitespace
   while (' ' == **aaSrc)
     (*aaSrc)++;
@@ -25,17 +23,26 @@ bool DtmLib::bExtractBcd(char** aaSrc, Bcd* aDecimal,DBobjects::Column* pColumn)
     return true;
   }
   
-  // collect the csv
-  while (**aaSrc && '|' != **aaSrc && ',' != **aaSrc)
-    *aChar++ = *(*aaSrc)++;
-  *aChar++ = '\0';
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // collect leading portion (till '.')
   
-  // find first char
-  for (aChar = xBuffer; *aChar && ' ' == *aChar; aChar++)
-    ;
+  while (**aaSrc && '|' != **aaSrc && ',' != **aaSrc
+                 && StrLib::bIsDigit(**aaSrc)) {
+    iResult = iResult * 10 + StrLib::iDigitToI8(**aaSrc);
+    (*aaSrc)++;
+  }
   
-  // convert
-  dResult = atof(aChar);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // collect trailing portion (after '.')
+  if ('.' == **aaSrc) {
+    (*aaSrc)++; // skip '.'
+    i8 iPrecision = pColumn->iColumnPrecision();
+    while (**aaSrc && '|' != **aaSrc && ',' != **aaSrc
+                   && StrLib::bIsDigit(**aaSrc) && iPrecision--) {
+      iResult = iResult * 10 + StrLib::iDigitToI8(**aaSrc);
+      (*aaSrc)++;
+    }
+  }
   
   return true;
 }
@@ -43,35 +50,6 @@ bool DtmLib::bExtractBcd(char** aaSrc, Bcd* aDecimal,DBobjects::Column* pColumn)
 /*----------------------------------------------------------------------------*/
 /* extract a boolean from substr                                              */
 /*----------------------------------------------------------------------------*/
-/*
-bool DtmLib::bExtractBol(char** aaSrc, Bol* aBoolean)
-{
-  bool bResult = false;
-  char xBuffer[256];
-  char* aChar = xBuffer;
-  
-  // collect the csv
-  while ('|' != **aaSrc && ',' != **aaSrc)
-    *aChar++ = *(*aaSrc)++;
-  *aChar++ = '\0';
-
-  // find first char
-  for (aChar = xBuffer; *aChar && ' ' == *aChar; aChar++)
-    ;
-  
-  // test for true
-  if ('t' == *aChar ||
-      'T' == *aChar ||
-      'y' == *aChar ||
-      'Y' == *aChar ||
-      '1' == *aChar)
-    bResult = true;
-
-  aBoolean->m_bBol = bResult;
-  
-  return bResult;
-}
-*/
 bool DtmLib::bExtractBol(char** aaSrc, Bol* aBoolean, Column* pColumn)
 {
   bool bResult = false;
