@@ -30,15 +30,15 @@ namespace Datums
     bool operator >= (Int& xInt);
     bool operator >  (Int& xInt);
   
+    void vInitZero(void);
+    i8   iAsI8(void);
+  
     bool bIsNull(void);
     void vSetNull(void);
   
     void vIntToVlq(char* aVlq);
     void vVlqToInt(char* aVlq);
  
-    void vInitZero(void);
-    i8   iAsI8(void);
-  
     static bool bExtract(char** aaSrc, Int* aInt, DBobjects::Column* pColumn);
     static void vSprint(Str* aDst, Str* aSrc, i8& nBytesTaken);
     static bool bValid(char** aaSrc, DBobjects::Column* pColumn);
