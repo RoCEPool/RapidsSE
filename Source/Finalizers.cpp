@@ -80,6 +80,7 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_KEYVEC
   /* 35 */ &Finalize::vUndefined,         // CN_KEYWRK
   
+  /* 36 */ &Finalize::vUndefined,         // CN_LINEITEM
   /* 36 */ &Finalize::vUndefined,         // CN_LOADCHUNK
   /* 37 */ &Loader::vFinalize,            // CN_LOADER
   /* 38 */ &Finalize::vUndefined,         // CN_LOADERSUB

@@ -79,6 +79,7 @@ namespace Base
     /* 54 */ CN_KEYVEC,
     /* 55 */ CN_KEYWRK,
   
+    /* 56 */ CN_LINEITEM,
     /* 56 */ CN_LOADCHUNK,
     /* 57 */ CN_LOADER,
     /* 58 */ CN_LOADERSUB,
@@ -240,6 +241,7 @@ namespace Base
     /*    */ "KEYVEC"_Str,
     /* 35 */ "KEYWRK"_Str,
   
+    /* 36 */ "LINEITEM"_Str,
     /* 36 */ "LOADCHUNK"_Str,
     /* 37 */ "LOADER"_Str,
     /* 38 */ "LOADERSUB"_Str,
