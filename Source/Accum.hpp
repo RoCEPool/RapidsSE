@@ -8,11 +8,11 @@ namespace MockEE
   class Accum : public Object
   {
   public:
-    i8  iGroupNo; // which group number
-    i8  iCount;   // number of values accumulated
-    i8  iSum;     // sum of the values in the group
-    i8  iMin;     // minumum value in group
-    i8  iMax;     // maximum value in group
+    i8  m_iGroup; // which group number
+    i8  m_iCount; // number of values accumulated
+    i8  m_iSum;   // sum of the values in the group
+    i8  m_iMin;   // minumum value in group
+    i8  m_iMax;   // maximum value in group
   
     Footer m_xFooter;
     

@@ -181,6 +181,7 @@ namespace Tasks
     
     void vAddPrimitives(void);
     void vAddPrimitives_AccessPath(void);
+    void vAddPrimitives_Accum(void);
     void vAddPrimitives_Address(void);
     void vAddPrimitives_Args(void);
     void vAddPrimitives_Assert(void);
@@ -276,6 +277,22 @@ namespace Tasks
     static void vAccessPathTableFetch(MP_Task mpTask);
     static void vAccessPathTableStore(MP_Task mpTask);
  
+    // accum
+    static void vAccumDelete(MP_Task mpTask);
+    static void vAccumNew(MP_Task mpTask);
+  
+    static void vAccumAccumBuffer(MP_Task mpTask);
+    static void vAccumCountFetch(MP_Task mpTask);
+    static void vAccumCountStore(MP_Task mpTask);
+    static void vAccumGroupFetch(MP_Task mpTask);
+    static void vAccumGroupStore(MP_Task mpTask);
+    static void vAccumMaxFetch(MP_Task mpTask);
+    static void vAccumMaxStore(MP_Task mpTask);
+    static void vAccumMinFetch(MP_Task mpTask);
+    static void vAccumMinStore(MP_Task mpTask);
+    static void vAccumSumFetch(MP_Task mpTask);
+    static void vAccumSumStore(MP_Task mpTask);
+  
     // address
     static void vAddressEqual(MP_Task mpTask);
     static void vAddressFetch(MP_Task mpTask);

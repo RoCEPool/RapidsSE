@@ -50,11 +50,11 @@ Accum::Accum(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ACCUM,_FOOTER_);
   
-  iGroupNo = 0;
-  iCount   = 0;
-  iSum     = 0;
-  iMin     = 0;
-  iMax     = 0;
+  m_iGroup = 0;
+  m_iCount = 0;
+  m_iSum   = 0;
+  m_iMin   = 0;
+  m_iMax   = 0;
   
   _checkInitialised_(CN_ACCUM);
   

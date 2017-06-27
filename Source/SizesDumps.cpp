@@ -357,7 +357,7 @@ eHT geWhichHeap[]
   /* 18 */ HT_INVALID, // CN_VALWRK
   
   /*    */ HT_MEDIUM,  // CN_ACCESSPATH
-  /*    */ HT_MEDIUM,  // CN_ACCUM
+  /*    */ HT_SMALL,   // CN_ACCUM
   /*    */ HT_SMALL,   // CN_ARG
   /* 12 */ HT_INVALID, // CN_ARGUMENTS
   /* 13 */ HT_INVALID, // CN_ATOMIC
