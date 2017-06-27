@@ -90,6 +90,7 @@ lwrselidx lower_select_index
 retidx    return_index
 rmidx     drop_index
 rgeselidx range_select_index
+scnselidx scan_select_index
 setidxunique index_setUnique
 szidx     size_index
 tridx     truncate_index

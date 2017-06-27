@@ -103,6 +103,9 @@ visidx supplier idx3;
 
 displayOn;
 
+print "\nSelecting rows from supplier (idx1) where S_SUPPKEY = 5 ...\n" ;
+keyselidx supplier idx1 5 ;
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

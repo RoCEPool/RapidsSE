@@ -137,6 +137,7 @@ namespace Interface
     bool bLowerSelectIndex(TokenVec& xTokenVec);
     bool bRetIndex(TokenVec& xTokenVec);
     bool bRangeSelectIndex(TokenVec& xTokenVec);
+    bool bScanSelectIndex(TokenVec& xTokenVec);
     bool bSizeIndex(TokenVec& xTokenVec);
     bool bTruncateIndex(TokenVec& xTokenVec);
     bool bUpperSelectIndex(TokenVec& xTokenVec);

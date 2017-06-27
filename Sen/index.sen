@@ -657,6 +657,137 @@ tp: loadIndexes
 ;
 
 /*----------------------------------------------------------------------------*/
+/* position scan select cursor for table (called by scanSelectIndex request)*/
+/*----------------------------------------------------------------------------*/
+: scanSelectIdx ( ^indexPtr ^indexBuffer ^entry -- <entry> )
+
+  0 locals| row entry indexBuffer indexPtr |
+
+  tp: scanSelectIdx
+
+  indexBuffer not if
+    0 to entry
+  else
+
+    entry not if
+      // position in the index buffer
+      indexBuffer indexBuffer.firstEntry
+      to entry
+    else
+      // get next entry from the current indexBuffer
+      entry indexBuffer indexBuffer.nextEntry to entry
+    then
+
+    entry not if
+      // we may not find an entry , so need to move to next buffer
+      indexBuffer indexBuffer.nextBuffer to indexBuffer
+
+      indexBuffer not if
+        0 to entry
+      else
+        entry indexBuffer indexBuffer.nextEntry to entry
+      then
+    then
+
+  then
+
+  // return indexBuffer and entry
+  indexBuffer entry
+
+;
+
+
+/*----------------------------------------------------------------------------*/
+/* scan select for index ( called by scan_select_index request)               */
+/*----------------------------------------------------------------------------*/
+: scanSelectIndex ( "<index>" --  )
+
+"scanSelectIndex (a)" .
+
+  tp: scanSelectIndex
+  //
+  // execution context:
+  //   this task will have a seitf
+  //   and the seitf will have a table
+  //
+
+  assert::stack_1
+
+  0 0 0 0 locals| rowCount indexBuffer entry indexPtr sIndexNm |
+
+  "scanSelectIndex (b)" .
+
+  // increment query count
+  queryCount ++
+
+  // push indexes
+  pushIndexes assert
+
+  // find the index
+  sIndexNm find execute ( index^ )
+  to indexPtr
+
+  args.metadata if
+    metadata@ "metadata: %v\n" str.format .put
+  then
+
+  // for each slot
+  grid.slots 0
+  do
+    args.metadata not if
+      I grid::toPartition "Partition: %v\n" str.format .put
+    then
+
+    // put the partition in this tasks seitf
+    I task::this task.seitf@ seitf.partition!
+
+    // get the first indexBuffer
+    indexPtr index.positionFirst ( indexBuffer )
+    to indexBuffer
+
+    1
+    begin
+
+    while
+
+      indexPtr indexBuffer entry
+      scanSelectIdx  ( indexPtr indexBuffer entry )
+      to entry
+      to indexBuffer
+
+      // check if entry is null ?
+      entry if
+        display@ if
+          args.metadata if
+            indexPtr entry entry.row row.string
+            I grid::toPartition
+            "row: (%v '%v')\n" str.format .put
+          else
+            indexPtr entry entry.row row.string "\n" str.cat .put
+          then
+        then
+        1 rowCount + to rowCount
+        1
+      else
+        // null entry means done with this partition
+        0
+      then
+
+    repeat
+
+  loop
+
+  // pop indexes
+  popIndexes
+
+  args.metadata if
+    rowCount task::this task.seitf@ seitf.rowsProcessed
+  else
+    "rows selected"  rowCount "%v %v\n" str.format .put
+  then
+;
+
+/*----------------------------------------------------------------------------*/
 /* range select cursor for index ( called by range_select_index request)      */
 /*----------------------------------------------------------------------------*/
 : rangeSelectIndex ( "<upper>" "<lower>" "<index>" --  )
