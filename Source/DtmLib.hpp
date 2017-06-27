@@ -18,7 +18,6 @@ namespace Datums
 
     static bool bValidateDatum(eDM eDatum, char** aaSrc, DBobjects::Column* pColumn);
   
-  
     static bool bLessThan(eDM eDatum, char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB);
     static bool bLessEqual(eDM eDatum, char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB);
     static bool bEqualTo(eDM eDatum, char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB);
