@@ -20,7 +20,7 @@ bool DtmLib::bValidateDatum(eDM eDatum, char** aaSrc, Column* pColumn)
   switch (eDatum) {
     case DM_BCD: b = Bcd::bValid(aaSrc,pColumn); break;
     case DM_BOL: b = Bol::bValid(aaSrc,pColumn); break;
-    case DM_CHR: ASSERT(0); break;
+    case DM_CHR: b = Vch::bValid(aaSrc,pColumn); break;
     case DM_DTE: b = Dte::bValid(aaSrc,pColumn); break;
     case DM_FLT: b = Flt::bValid(aaSrc,pColumn); break;
     case DM_INT: b = Int::bValid(aaSrc,pColumn); break;

@@ -138,6 +138,7 @@ void Bcd::vSetNull(void)
 bool Bcd::bExtract(char** aaSrc, Bcd* aDecimal,DBobjects::Column* pColumn)
 {
   i8 iResult = 0;
+  bool bNegative = false;
   
   // skip leading whitespace
   while (' ' == **aaSrc)
@@ -150,6 +151,12 @@ bool Bcd::bExtract(char** aaSrc, Bcd* aDecimal,DBobjects::Column* pColumn)
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // test for negative
+  if (**aaSrc && '-' == **aaSrc ) {
+    bNegative = true;
+    (*aaSrc)++;
+  }
+  
   // collect leading portion (till '.')
   
   while (**aaSrc && '|' != **aaSrc && ',' != **aaSrc
