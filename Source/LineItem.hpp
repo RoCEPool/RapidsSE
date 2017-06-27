@@ -5,6 +5,10 @@
 
 namespace MockEE
 {
+  /*
+   * This is only the leading portion of line item.
+   */
+  
   class LineItem : public Object
   {
   public:
