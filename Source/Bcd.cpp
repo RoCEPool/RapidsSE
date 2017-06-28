@@ -46,7 +46,10 @@ Bcd::~Bcd(void)
 /*----------------------------------------------------------------------------*/
 bool Bcd::operator < (Bcd& xBcd)
 {
-  return false;                                                  //! to be coded
+  if (m_iBcd < xBcd.m_iBcd)
+    return true;
+  else
+    return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -54,7 +57,10 @@ bool Bcd::operator < (Bcd& xBcd)
 /*----------------------------------------------------------------------------*/
 bool Bcd::operator <= (Bcd& xBcd)
 {
-  return false;                                                  //! to be coded
+  if (m_iBcd <= xBcd.m_iBcd)
+    return true;
+  else
+    return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -62,7 +68,10 @@ bool Bcd::operator <= (Bcd& xBcd)
 /*----------------------------------------------------------------------------*/
 bool Bcd::operator == (Bcd& xBcd)
 {
-  return false;                                                  //! to be coded
+  if (m_iBcd == xBcd.m_iBcd)
+    return true;
+  else
+    return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -70,7 +79,10 @@ bool Bcd::operator == (Bcd& xBcd)
 /*----------------------------------------------------------------------------*/
 bool Bcd::operator != (Bcd& xBcd)
 {
-  return false;                                                  //! to be coded
+  if (m_iBcd != xBcd.m_iBcd)
+    return true;
+  else
+    return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -78,7 +90,10 @@ bool Bcd::operator != (Bcd& xBcd)
 /*----------------------------------------------------------------------------*/
 bool Bcd::operator >= (Bcd& xBcd)
 {
-  return false;                                                  //! to be coded
+  if (m_iBcd >= xBcd.m_iBcd)
+    return true;
+  else
+    return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -86,7 +101,10 @@ bool Bcd::operator >= (Bcd& xBcd)
 /*----------------------------------------------------------------------------*/
 bool Bcd::operator > (Bcd& xBcd)
 {
-  return false;                                                  //! to be coded
+  if (m_iBcd > xBcd.m_iBcd)
+    return true;
+  else
+    return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -249,7 +267,20 @@ bool Bcd::bValid(char** aaSrc, Column* pColumn)
 /*----------------------------------------------------------------------------*/
 bool Bcd::bLessThan(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
 {
-  return false;                                                  //! to be coded
+  bool bLessThan;
+  
+  ASSERT(sizeof(i8) == nBytesA);
+  ASSERT(sizeof(i8) == nBytesB);
+  
+  i8 iA = *(i8*)aArgA;
+  i8 iB = *(i8*)aArgB;
+  
+  if (iA < iB)
+    bLessThan = true;
+  else
+    bLessThan = false;
+  
+  return bLessThan;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -257,7 +288,20 @@ bool Bcd::bLessThan(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
 /*----------------------------------------------------------------------------*/
 bool Bcd::bLessEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
 {
-  return false;                                                  //! to be coded
+  bool bLessEqual;
+  
+  ASSERT(sizeof(i8) == nBytesA);
+  ASSERT(sizeof(i8) == nBytesB);
+  
+  i8 iA = *(i8*)aArgA;
+  i8 iB = *(i8*)aArgB;
+  
+  if (iA <= iB)
+    bLessEqual = true;
+  else
+    bLessEqual = false;
+  
+  return bLessEqual;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -265,7 +309,20 @@ bool Bcd::bLessEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
 /*----------------------------------------------------------------------------*/
 bool Bcd::bEqualTo(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
 {
-  return false;                                                  //! to be coded
+  bool bEqualTo;
+  
+  ASSERT(sizeof(i8) == nBytesA);
+  ASSERT(sizeof(i8) == nBytesB);
+  
+  i8 iA = *(i8*)aArgA;
+  i8 iB = *(i8*)aArgB;
+  
+  if (iA == iB)
+    bEqualTo = true;
+  else
+    bEqualTo = false;
+  
+  return bEqualTo;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -273,7 +330,20 @@ bool Bcd::bEqualTo(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
 /*----------------------------------------------------------------------------*/
 bool Bcd::bNotEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
 {
-  return false;                                                  //! to be coded
+  bool bNotEqual;
+  
+  ASSERT(sizeof(i8) == nBytesA);
+  ASSERT(sizeof(i8) == nBytesB);
+  
+  i8 iA = *(i8*)aArgA;
+  i8 iB = *(i8*)aArgB;
+  
+  if (iA != iB)
+    bNotEqual = true;
+  else
+    bNotEqual = false;
+  
+  return bNotEqual;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -281,7 +351,20 @@ bool Bcd::bNotEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
 /*----------------------------------------------------------------------------*/
 bool Bcd::bGreaterEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
 {
-  return false;                                                  //! to be coded
+  bool bGreaterEqual;
+  
+  ASSERT(sizeof(i8) == nBytesA);
+  ASSERT(sizeof(i8) == nBytesB);
+  
+  i8 iA = *(i8*)aArgA;
+  i8 iB = *(i8*)aArgB;
+  
+  if (iA >= iB)
+    bGreaterEqual = true;
+  else
+    bGreaterEqual = false;
+  
+  return bGreaterEqual;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -289,7 +372,20 @@ bool Bcd::bGreaterEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
 /*----------------------------------------------------------------------------*/
 bool Bcd::bGreaterThan(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
 {
-  return false;                                                  //! to be coded
+  bool bGreaterThan;
+  
+  ASSERT(sizeof(i8) == nBytesA);
+  ASSERT(sizeof(i8) == nBytesB);
+  
+  i8 iA = *(i8*)aArgA;
+  i8 iB = *(i8*)aArgB;
+  
+  if (iA > iB)
+    bGreaterThan = true;
+  else
+    bGreaterThan = false;
+  
+  return bGreaterThan;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -297,7 +393,15 @@ bool Bcd::bGreaterThan(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
 /*----------------------------------------------------------------------------*/
 i8 Bcd::iCmp(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
 {
-  return 0;                                                      //! to be coded
+  ASSERT(sizeof(i8) == nBytesA);
+  ASSERT(sizeof(i8) == nBytesB);
+  
+  i8 iA = *(i8*)aArgA;
+  i8 iB = *(i8*)aArgB;
+  
+  i8 iCmp = iA - iB;
+  
+  return iCmp;
 }
 
 /*============================================================================*/
