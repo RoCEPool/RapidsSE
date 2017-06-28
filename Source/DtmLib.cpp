@@ -7,6 +7,41 @@
 #include "StorageEngine.h"
 
 /*----------------------------------------------------------------------------*/
+/* copy datum (return the number of bytes copied)                             */
+/*----------------------------------------------------------------------------*/
+i8 DtmLib::nCopy(eCN eClass, void* pDst, void* pSrc)
+{
+  switch (eClass) {
+      
+    case CN_INTVAL: return Int::nCopy(pDst,pSrc);
+      
+    case CN_STRVAL: return Vch::nCopy(pDst,pSrc);
+      
+    default:
+      vFatal("ValLib::vCopyDatum: Invalid copy: eClass %lld\n"_Str,
+             eClass);
+      return -1;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* copy datum                                                                 */
+/*----------------------------------------------------------------------------*/
+void DtmLib::vCopy(eCN eClass, void* pDst, void* pSrc)
+{
+  switch (eClass) {
+      
+    case CN_INTVAL: Int::vCopy(pDst,pSrc); return;
+      
+    case CN_STRVAL: Vch::vCopy(pDst,pSrc); return;
+      
+    default:
+      vFatal("ValLib::vCopyDatum: Invalid copy: eClass %lld\n"_Str,
+             eClass);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Extract -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
