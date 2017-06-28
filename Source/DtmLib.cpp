@@ -174,7 +174,8 @@ void DtmLib::vHash(eDM eDatum, i8& iHash, Str* aScr, DBobjects::Column* pColumn)
 /*----------------------------------------------------------------------------*/
 /* s-print                                                                    */
 /*----------------------------------------------------------------------------*/
-void DtmLib::vSprint(eDM eDatum, Str* aDst, Str* aSrc, i8& nBytesTaken)
+void DtmLib::vSprint(eDM eDatum, Str* aDst, Str* aSrc, i8& nBytesTaken,
+                     DBobjects::Column* pColumn)
 {
   switch (eDatum) {
     case DM_BCD: Bcd::vSprint(aDst,aSrc,nBytesTaken); break;

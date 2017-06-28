@@ -574,96 +574,82 @@ bool Key::bJuxtaAfter(Key* pKeyThat, IdxColVec* pIdxColVec, bool& bIsEqual)
 void Key::vShow(IdxColVec* pIdxColVec)
 {
   char* aCursor = aWspArea();
-  s256 sKeyString;
   
   //vTrace("Key %p "_Str, this);
   
-  sKeyString = "( "_Str;
   
   for (i8 i_Column = 0; i_Column < pIdxColVec->nItems(); i_Column++) {
     
-    Column* pColumn = pIdxColVec      ->pGet(i_Column);
+    Column* pColumn = pIdxColVec->pGet(i_Column);
     eCT eColumnType = pColumn->eColumnType();
     
     i8 nBytes;
-    
-    char* aEachDatum = this->aEachDatum(pColumn,nBytes,&aCursor);
+    char* aDatum = this->aEachDatum(pColumn,nBytes,&aCursor);
     
     i8 iKey;
     Str* pKey;
+    
+    vTrace("Elm %lld:(size %lld value:"_Str,
+           i_Column,
+           nBytes);
     
     switch (eColumnType) {
         
       case CT_DATE: {
         Dte xDte;
-        xDte = *(Dte*)aEachDatum;
-        vTrace("Element %lld:(size %lld value:%04lld-%02lld-%02lld) "_Str,
-               i_Column,
-               nBytes,
+        xDte = *(Dte*)aDatum;
+        vTrace("%04lld-%02lld-%02lld"_Str,
                xDte.iYear(),
                xDte.iMonth(),
                xDte.iDay()
                );
-        StrLib::vSprintCat((char*)(sKeyString.aStr()), "%lld ", iKey);
         break;
       }
         
       case CT_FLOAT: {
         Flt xFlt;
-        xFlt = *(Flt*)aEachDatum;
-        vTrace("Element %lld:(size %lld value:%llf) "_Str,
-               i_Column,
-               nBytes,
+        xFlt = *(Flt*)aDatum;
+        vTrace("%llf"_Str,
                xFlt.dAsD8()
                );
-        StrLib::vSprintCat((char*)(sKeyString.aStr()), "%lld ", iKey);
         break;
       }
         
-      case CT_INTEGER:
-        iKey = *(i8*)aEachDatum;
-        vTrace("E%lld:(size %lld value:%lld) "_Str,
-               i_Column,
-               nBytes,
-               iKey
+      case CT_INTEGER: {
+        Int xInt;
+        xInt = *(Int*)aDatum;
+        vTrace("%lld"_Str,
+               xInt.iAsI8()
                );
-        StrLib::vSprintCat((char*)(sKeyString.aStr()), "%lld ", iKey);
         break;
+      }
         
       case CT_INTERVAL: {
         Ivl xIvl;
-        xIvl = *(Ivl*)aEachDatum;
-        vTrace("Element %lld:(size %lld value:%lld.%03lld) "_Str,
-               i_Column,
-               nBytes,
+        xIvl = *(Ivl*)aDatum;
+        vTrace("%lld.%03lld"_Str,
                xIvl.iSecond(),
                xIvl.iMilli()
                );
-        StrLib::vSprintCat((char*)(sKeyString.aStr()), "%lld ", iKey);
         break;
       }
         
       case CT_TIME: {
         Tme xTme;
-        xTme = *(Tme*)aEachDatum;
-        vTrace("Element %lld:(size %lld value:%02lld:%02lld:%02lld.%lld) "_Str,
-               i_Column,
-               nBytes,
+        xTme = *(Tme*)aDatum;
+        vTrace("%02lld:%02lld:%02lld.%lld"_Str,
                xTme.iHour(),
                xTme.iMinute(),
                xTme.iSecond(),
                xTme.iMilli()
                );
-        StrLib::vSprintCat((char*)(sKeyString.aStr()), "%lld ", iKey);
         break;
       }
         
       case CT_TIMESTAMP: {
         Tsp xTsp;
-        xTsp = *(Tsp*)aEachDatum;
-        vTrace("Element %lld:(size %lld value:%04lld-%02lld-%02lld %02lld:%02lld:%02lld.%lld) "_Str,
-               i_Column,
-               nBytes,
+        xTsp = *(Tsp*)aDatum;
+        vTrace("%04lld-%02lld-%02lld %02lld:%02lld:%02lld.%lld"_Str,
                xTsp.iYear(),
                xTsp.iMonth(),
                xTsp.iDay(),
@@ -672,23 +658,21 @@ void Key::vShow(IdxColVec* pIdxColVec)
                xTsp.iSecond(),
                xTsp.iMilli()
                );
-        StrLib::vSprintCat((char*)(sKeyString.aStr()), "%lld ", iKey);
         break;
       }
         
       case CT_VARCHAR:
-        pKey = (Str*)aEachDatum;
-        vTrace("E%lld:(size %lld value:%s) "_Str,
-               i_Column,
-               nBytes,
+        pKey = (Str*)aDatum;
+        vTrace("%s"_Str,
                pKey
                );
-        StrLib::vSprintCat((char*)sKeyString.aStr(), "%s ", pKey);
         break;
         
       default:
         ASSERT(0);
     }
+    
+    vTrace(") "_Str);
     
   }
 
