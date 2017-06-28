@@ -140,17 +140,17 @@ void KeyWrk::vShow(eDM eDatum, ...)
   s48K sSprintBuffer;
   
   // first element
-  Datums::vSprint(sSprintBuffer.aStr(), (Str*)m_xWsp.aArea(), eDatum, nBytesTaken);
+  DtmLib::vSprint(eDatum,sSprintBuffer.aStr(), (Str*)m_xWsp.aArea(), nullptr);
   vTrace("%s|"_Str,sSprintBuffer.s());
   
   // subsequent elements
   i8 iOffset = nBytesTaken;
   while (eDM eDatum = (eDM)va_arg(xVarArgs,int)) {
     
-    Datums::vSprint(sSprintBuffer.aStr(),
+    DtmLib::vSprint(eDatum,
+                    sSprintBuffer.aStr(),
                     (Str*)m_xWsp.aArea() + iOffset,
-                    eDatum,
-                    nBytesTaken);
+                    nullptr);
     
     vTrace("%s|"_Str,sSprintBuffer.s());
     
