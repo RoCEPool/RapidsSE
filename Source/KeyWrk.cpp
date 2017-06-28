@@ -83,13 +83,13 @@ void KeyWrk::vAddKey(Key* aKey, IdxColVec* pColVec)
     char* pSrc = aElement;
     
     switch(pColumn->eColumnType()) {
-      case CT_DATE:      ValLib::vCopyDteDatum((char*)pDst,(char*)pSrc); break;
-      case CT_FLOAT:     ValLib::vCopyFltDatum((char*)pDst,(char*)pSrc); break;
-      case CT_INTEGER:   ValLib::vCopyIntDatum((char*)pDst,(char*)pSrc); break;
-      case CT_INTERVAL:  ValLib::vCopyIvlDatum((char*)pDst,(char*)pSrc); break;
-      case CT_TIME:      ValLib::vCopyTmeDatum((char*)pDst,(char*)pSrc); break;
-      case CT_TIMESTAMP: ValLib::vCopyTspDatum((char*)pDst,(char*)pSrc); break;
-      case CT_VARCHAR:   ValLib::vCopyStrDatum((char*)pDst,(char*)pSrc); break;
+      case CT_DATE:      Dte::vCopy((char*)pDst,(char*)pSrc); break;
+      case CT_FLOAT:     Flt::vCopy((char*)pDst,(char*)pSrc); break;
+      case CT_INTEGER:   Int::vCopy((char*)pDst,(char*)pSrc); break;
+      case CT_INTERVAL:  Ivl::vCopy((char*)pDst,(char*)pSrc); break;
+      case CT_TIME:      Tme::vCopy((char*)pDst,(char*)pSrc); break;
+      case CT_TIMESTAMP: Tsp::vCopy((char*)pDst,(char*)pSrc); break;
+      case CT_VARCHAR:   Vch::vCopy((char*)pDst,(char*)pSrc); break;
       default:
         ASSERT(0);
     }
@@ -179,16 +179,16 @@ void KeyWrk::vAddDatum(Values::StrVal* pStrVal, Column* pCol)
       
     case CT_BOOLEAN:
       iValue = StrLib::iToI8(pSrc);
-      nBytes = ValLib::nCopyBolDatum((char*)pDst,(char*)pSrc);
+      nBytes = Bol::nCopy((char*)pDst,(char*)pSrc);
       break;
       
     case CT_INTEGER:
       iValue = StrLib::iToI8(pSrc);
-      nBytes = ValLib::nCopyIntDatum(pDst,(void*)&iValue);
+      nBytes = Int::nCopy(pDst,(void*)&iValue);
       break;
       
     case CT_VARCHAR:
-      nBytes = ValLib::nCopyStrDatum(pDst,pSrc);
+      nBytes = Vch::nCopy(pDst,pSrc);
       break;
       
     default:
@@ -215,42 +215,42 @@ void KeyWrk::vAddDatum(ValWrk& xValWrk, Column* pCol)
 
     case CT_BOOLEAN:
       pSrc = (char*)(_pBolVal(xValWrk.pNestedValueSelf())->aInt());
-      nBytes = ValLib::nCopyBolDatum((char*)pDst,(char*)pSrc);
+      nBytes = Bol::nCopy((char*)pDst,(char*)pSrc);
       break;
       
     case CT_DATE:
       pSrc = (char*)(_pDteVal(xValWrk.pNestedValueSelf())->aInt());
-      nBytes = ValLib::nCopyDteDatum((char*)pDst,(char*)pSrc);
+      nBytes = Dte::nCopy((char*)pDst,(char*)pSrc);
       break;
       
     case CT_FLOAT:
       pSrc = (char*)(_pFltVal(xValWrk.pNestedValueSelf())->aFlt());
-      nBytes = ValLib::nCopyFltDatum((char*)pDst,(char*)pSrc);
+      nBytes = Flt::nCopy((char*)pDst,(char*)pSrc);
       break;
       
     case CT_INTEGER:
       pSrc = (char*)(_pIntVal(xValWrk.pNestedValueSelf())->aInt());
-      nBytes = ValLib::nCopyIntDatum((char*)pDst,(char*)pSrc);
+      nBytes = Int::nCopy((char*)pDst,(char*)pSrc);
       break;
     
     case CT_INTERVAL:
       pSrc = (char*)(_pIvlVal(xValWrk.pNestedValueSelf())->aInt());
-      nBytes = ValLib::nCopyIvlDatum((char*)pDst,(char*)pSrc);
+      nBytes = Ivl::nCopy((char*)pDst,(char*)pSrc);
       break;
     
     case CT_TIME:
       pSrc = (char*)(_pTmeVal(xValWrk.pNestedValueSelf())->aInt());
-      nBytes = ValLib::nCopyTmeDatum((char*)pDst,(char*)pSrc);
+      nBytes = Tme::nCopy((char*)pDst,(char*)pSrc);
       break;
       
     case CT_TIMESTAMP:
       pSrc = (char*)(_pTspVal(xValWrk.pNestedValueSelf())->aInt());
-      nBytes = ValLib::nCopyTspDatum((char*)pDst,(char*)pSrc);
+      nBytes = Tsp::nCopy((char*)pDst,(char*)pSrc);
       break;
       
     case CT_VARCHAR:
       pSrc = (char*)(_pStrVal(xValWrk.pNestedValueSelf())->aStr());
-      nBytes = ValLib::nCopyStrDatum((char*)pDst,(char*)pSrc);
+      nBytes = Vch::nCopy((char*)pDst,(char*)pSrc);
       break;
     
     default:

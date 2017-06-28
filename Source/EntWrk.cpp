@@ -194,7 +194,7 @@ void EntWrk::vShow(IdxColVec* pIdxColVec)
 {
   i8 iKey;
   
-  ValLib::vCopyIntDatum(&iKey,aKey());
+  Int::vCopy(&iKey,aKey());
   
   vTrace("EntWrk %p: Id %lli.%lli Offsets: %llu "_Str,
          this,
