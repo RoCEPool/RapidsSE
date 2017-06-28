@@ -341,14 +341,14 @@ void Tsp::vSprint(Str* aDst, Str* aSrc)
 {
   Tsp* aTsp = (Tsp*)aSrc;
   
-  StrLib::vSprint(aDst,"%02lld-%02lld-%02lld %02lld:%02lld:%02lld%c"_Str,
-                  aTsp->x.m_uYear,
-                  aTsp->x.m_uMonth,
-                  aTsp->x.m_uDay,
-                  aTsp->x.m_uHour,
-                  aTsp->x.m_uMinute,
-                  aTsp->x.m_uSecond,
-                  aTsp->x.m_uMilli,
+  StrLib::vSprint(aDst,"%02lld-%02lld-%02lld %02lld:%02lld:%02lld.%03lld%c"_Str,
+                  (i8)aTsp->x.m_uYear,
+                  (i8)aTsp->x.m_uMonth,
+                  (i8)aTsp->x.m_uDay,
+                  (i8)aTsp->x.m_uHour,
+                  (i8)aTsp->x.m_uMinute,
+                  (i8)aTsp->x.m_uSecond,
+                  (i8)aTsp->x.m_uMilli,
                   '\0');
 }
 
