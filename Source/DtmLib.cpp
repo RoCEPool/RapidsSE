@@ -44,8 +44,7 @@ void DtmLib::vCopy(eCN eClass, void* pDst, void* pSrc)
 /*----------------------------------------------------------------------------*/
 /* s-print                                                                    */
 /*----------------------------------------------------------------------------*/
-void DtmLib::vCopy(eDM eDatum, void* aDst, void* aSrc,
-                   DBobjects::Column* pColumn)
+void DtmLib::vCopy(eDM eDatum, void* aDst, void* aSrc, DBobjects::Column* pColumn)
 {
   switch(eDatum) {
     case DM_BCD: Bcd::vCopy((char*)aDst,(char*)aSrc); break;

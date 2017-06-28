@@ -82,20 +82,7 @@ void KeyWrk::vAddKey(Key* aKey, IdxColVec* pColVec)
     char* pDst = m_xWsp.aLatter();
     char* pSrc = aElement;
     
-    switch(pColumn->eDatumType()) {
-      case DM_BCD: Bcd::vCopy((char*)pDst,(char*)pSrc); break;
-      case DM_BOL: Bol::vCopy((char*)pDst,(char*)pSrc); break;
-      case DM_DTE: Dte::vCopy((char*)pDst,(char*)pSrc); break;
-      case DM_FLT: Flt::vCopy((char*)pDst,(char*)pSrc); break;
-      case DM_INT: Int::vCopy((char*)pDst,(char*)pSrc); break;
-      case DM_IVL: Ivl::vCopy((char*)pDst,(char*)pSrc); break;
-      case DM_TME: Tme::vCopy((char*)pDst,(char*)pSrc); break;
-      case DM_TSP: Tsp::vCopy((char*)pDst,(char*)pSrc); break;
-      case DM_VCH: Vch::vCopy((char*)pDst,(char*)pSrc); break;
-      default:
-        ASSERT(0);
-    }
-    
+    DtmLib::vCopy(pColumn->eDatumType(),pDst,pSrc,pColumn);
     
     m_xWsp.vTake(nBytes);
     
