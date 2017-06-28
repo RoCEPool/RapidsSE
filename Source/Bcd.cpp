@@ -214,9 +214,18 @@ bool Bcd::bExtract(char** aaSrc, Bcd* aDecimal,DBobjects::Column* pColumn)
 /*----------------------------------------------------------------------------*/
 /* sprint bcd datum                                                           */
 /*----------------------------------------------------------------------------*/
-void Bcd::vSprint(Str* aDst, Str* aSrc)
+void Bcd::vSprint(Str* aDst, Str* aSrc, DBobjects::Column* pColumn)
 {
-  StrLib::vSprint(aDst,"%lld%c"_Str,*(i8*)aSrc,'\0');
+  i8 iBcd = *(i8*)aSrc;
+  
+  i8 iDigits = 1;
+  for (i8 i_Digit = 0; i_Digit < pColumn->iColumnPrecision(); i_Digit++)
+    iDigits *= 10;
+  
+  i8 iBcd_Whole = iBcd / iDigits;
+  i8 iBcd_Fraction = iBcd % iDigits;
+  
+  StrLib::vSprint(aDst,"%lld.%lld%c"_Str,iBcd_Whole,iBcd_Fraction,'\0');
 }
 
 /*----------------------------------------------------------------------------*/

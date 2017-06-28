@@ -178,7 +178,7 @@ void DtmLib::vSprint(eDM eDatum, Str* aDst, Str* aSrc,
                      DBobjects::Column* pColumn)
 {
   switch (eDatum) {
-    case DM_BCD: Bcd::vSprint(aDst,aSrc); break;
+    case DM_BCD: Bcd::vSprint(aDst,aSrc,pColumn); break;
     case DM_BOL: Bol::vSprint(aDst,aSrc); break;
     case DM_CHR: ASSERT(0);               break;
     case DM_DTE: Dte::vSprint(aDst,aSrc); break;
