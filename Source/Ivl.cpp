@@ -248,7 +248,7 @@ bool Ivl::bExtract(char** aaSrc, Ivl* aInterval, Column* pColumn)
 /*----------------------------------------------------------------------------*/
 /* sprint ivl datum                                                           */
 /*----------------------------------------------------------------------------*/
-void Ivl::vSprint(Str* aDst, Str* aSrc, i8& nBytesTaken)
+void Ivl::vSprint(Str* aDst, Str* aSrc)
 {
   Ivl* aIvl = (Ivl*)aSrc;
   
@@ -256,8 +256,6 @@ void Ivl::vSprint(Str* aDst, Str* aSrc, i8& nBytesTaken)
                   aIvl->x.m_uSecond,
                   aIvl->x.m_uMilli,
                   '\0');
-  
-  nBytesTaken = sizeof(i8);
 }
 
 /*----------------------------------------------------------------------------*/

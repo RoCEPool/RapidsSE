@@ -215,15 +215,13 @@ bool Flt::bExtract(char** aaSrc, Flt* aFloat, Column* pColumn)
 /*----------------------------------------------------------------------------*/
 /* sprint flt datum                                                           */
 /*----------------------------------------------------------------------------*/
-void Flt::vSprint(Str* aDst, Str* aSrc, i8& nBytesTaken)
+void Flt::vSprint(Str* aDst, Str* aSrc)
 {
   Flt* aFlt = (Flt*)aSrc;
   
   StrLib::vSprint(aDst,"%llf%c"_Str,
                   aFlt->m_dFlt,
                   '\0');
-  
-  nBytesTaken = sizeof(i8);
 }
 
 /*----------------------------------------------------------------------------*/

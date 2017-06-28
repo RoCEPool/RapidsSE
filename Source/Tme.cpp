@@ -275,7 +275,7 @@ bool Tme::bExtract(char** aaSrc, Tme* aTime, Column* pColumn)
 /*----------------------------------------------------------------------------*/
 /* sprint tme datum                                                           */
 /*----------------------------------------------------------------------------*/
-void Tme::vSprint(Str* aDst, Str* aSrc, i8& nBytesTaken)
+void Tme::vSprint(Str* aDst, Str* aSrc)
 {
   Tme* aTme = (Tme*)aSrc;
   
@@ -285,8 +285,6 @@ void Tme::vSprint(Str* aDst, Str* aSrc, i8& nBytesTaken)
                   aTme->x.m_uSecond,
                   aTme->x.m_uMilli,
                   '\0');
-  
-  nBytesTaken = sizeof(i8);
 }
 
 /*----------------------------------------------------------------------------*/

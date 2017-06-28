@@ -209,11 +209,9 @@ bool Bol::bExtract(char** aaSrc, Bol* aBoolean, Column* pColumn)
 /*----------------------------------------------------------------------------*/
 /* sprint bol datum                                                           */
 /*----------------------------------------------------------------------------*/
-void Bol::vSprint(Str* aDst, Str* aSrc, i8& nBytesTaken)
+void Bol::vSprint(Str* aDst, Str* aSrc)
 {
   StrLib::vSprint(aDst,"%lld%c"_Str,*(i8*)aSrc,'\0');
-  
-  nBytesTaken = sizeof(i8);
 }
 
 /*----------------------------------------------------------------------------*/

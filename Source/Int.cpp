@@ -237,11 +237,9 @@ bool Int::bExtract(char** aaSrc, Int* aInteger, Column* pColumn)
 /*----------------------------------------------------------------------------*/
 /* sprint int datum                                                           */
 /*----------------------------------------------------------------------------*/
-void Int::vSprint(Str* aDst, Str* aSrc, i8& nBytesTaken)
+void Int::vSprint(Str* aDst, Str* aSrc)
 {
   StrLib::vSprint(aDst,"%lld%c"_Str,*(i8*)aSrc,'\0');
-  
-  nBytesTaken = sizeof(i8);
 }
 
 /*----------------------------------------------------------------------------*/

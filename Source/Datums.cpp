@@ -21,13 +21,13 @@ void Datums::vSprint(Str* aDst, Str* aSrc, eDM eDatum, i8& nBytesTaken)
     case DM_BOL: break;
     case DM_DTE: break;
     case DM_FLT: break;
-    case DM_INT: Int::vSprint(aDst,aSrc,nBytesTaken); break;
+    case DM_INT: Int::vSprint(aDst,aSrc); break;
     case DM_IVL: break;
     case DM_TME: break;
     case DM_TSP: break;
     case DM_VBN: break;
     case DM_VCH:
-      Vch::vSprint(aDst,aSrc,nBytesTaken); break;
+      Vch::vSprint(aDst,aSrc); break;
     default:
       vFatal("Datums::bExtractDatum: Invalid aDatum argument: %lld\n"_Str,
              eDatum);

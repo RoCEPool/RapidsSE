@@ -337,7 +337,7 @@ bool Tsp::bExtract(char** aaSrc, Tsp* aTimestamp, Column* pColumn)
 /*----------------------------------------------------------------------------*/
 /* sprint tsp datum                                                           */
 /*----------------------------------------------------------------------------*/
-void Tsp::vSprint(Str* aDst, Str* aSrc, i8& nBytesTaken)
+void Tsp::vSprint(Str* aDst, Str* aSrc)
 {
   Tsp* aTsp = (Tsp*)aSrc;
   
@@ -350,8 +350,6 @@ void Tsp::vSprint(Str* aDst, Str* aSrc, i8& nBytesTaken)
                   aTsp->x.m_uSecond,
                   aTsp->x.m_uMilli,
                   '\0');
-  
-  nBytesTaken = sizeof(i8);
 }
 
 /*----------------------------------------------------------------------------*/

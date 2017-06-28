@@ -174,20 +174,20 @@ void DtmLib::vHash(eDM eDatum, i8& iHash, Str* aScr, DBobjects::Column* pColumn)
 /*----------------------------------------------------------------------------*/
 /* s-print                                                                    */
 /*----------------------------------------------------------------------------*/
-void DtmLib::vSprint(eDM eDatum, Str* aDst, Str* aSrc, i8& nBytesTaken,
+void DtmLib::vSprint(eDM eDatum, Str* aDst, Str* aSrc,
                      DBobjects::Column* pColumn)
 {
   switch (eDatum) {
-    case DM_BCD: Bcd::vSprint(aDst,aSrc,nBytesTaken); break;
-    case DM_BOL: Bol::vSprint(aDst,aSrc,nBytesTaken); break;
-    case DM_CHR: ASSERT(0);                           break;
-    case DM_DTE: Dte::vSprint(aDst,aSrc,nBytesTaken); break;
-    case DM_FLT: Flt::vSprint(aDst,aSrc,nBytesTaken); break;
-    case DM_INT: Int::vSprint(aDst,aSrc,nBytesTaken); break;
-    case DM_IVL: Ivl::vSprint(aDst,aSrc,nBytesTaken); break;
-    case DM_TME: Tme::vSprint(aDst,aSrc,nBytesTaken); break;
-    case DM_TSP: Tsp::vSprint(aDst,aSrc,nBytesTaken); break;
-    case DM_VCH: Vch::vSprint(aDst,aSrc,nBytesTaken); break;
+    case DM_BCD: Bcd::vSprint(aDst,aSrc); break;
+    case DM_BOL: Bol::vSprint(aDst,aSrc); break;
+    case DM_CHR: ASSERT(0);               break;
+    case DM_DTE: Dte::vSprint(aDst,aSrc); break;
+    case DM_FLT: Flt::vSprint(aDst,aSrc); break;
+    case DM_INT: Int::vSprint(aDst,aSrc); break;
+    case DM_IVL: Ivl::vSprint(aDst,aSrc); break;
+    case DM_TME: Tme::vSprint(aDst,aSrc); break;
+    case DM_TSP: Tsp::vSprint(aDst,aSrc); break;
+    case DM_VCH: Vch::vSprint(aDst,aSrc); break;
     default:
       vFatal("DtmLib::vSprint: Invalid aDatum argument: %lld\n"_Str,
              eDatum);

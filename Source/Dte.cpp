@@ -261,7 +261,7 @@ bool Dte::bExtract(char** aaSrc, Dte* aDate, Column* pColumn)
 /*----------------------------------------------------------------------------*/
 /* sprint dte datum                                                           */
 /*----------------------------------------------------------------------------*/
-void Dte::vSprint(Str* aDst, Str* aSrc, i8& nBytesTaken)
+void Dte::vSprint(Str* aDst, Str* aSrc)
 {
   Dte* aDte = (Dte*)aSrc;
   
@@ -270,8 +270,6 @@ void Dte::vSprint(Str* aDst, Str* aSrc, i8& nBytesTaken)
                   aDte->x.m_uMonth,
                   aDte->x.m_uDay,
                   '\0');
-  
-  nBytesTaken = sizeof(i8);
 }
 
 /*----------------------------------------------------------------------------*/

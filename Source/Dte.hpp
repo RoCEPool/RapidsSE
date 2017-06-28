@@ -45,7 +45,7 @@ namespace Datums
     static i8   nCopy(void* aDst, void* aSrc);
     static void vCopy(void* aDst, void* aSrc);
     static bool bExtract(char** aaSrc, Dte* aDte, DBobjects::Column* pColumn);
-    static void vSprint(Str* aDst, Str* aSrc, i8& nBytesTaken);
+    static void vSprint(Str* aDst, Str* aSrc);
     static bool bValid(char** aaSrc, DBobjects::Column* pColumn);
   
     static bool bLessThan(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB);

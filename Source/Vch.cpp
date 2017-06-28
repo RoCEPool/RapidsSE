@@ -218,13 +218,12 @@ bool Vch::bExtract(char** aaSrc, Vch* aVch, Column* pColumn)
 /*----------------------------------------------------------------------------*/
 /* sprint tsp datum                                                           */
 /*----------------------------------------------------------------------------*/
-void Vch::vSprint(Str* aDst, Str* aSrc, i8& nBytesTaken)
+void Vch::vSprint(Str* aDst, Str* aSrc)
 {
   StrLib::vSprint(aDst,"%s%c"_Str,
                   aSrc->s(),
                   '\0');
   
-  nBytesTaken = StrLib::iLength(aSrc->s());
 }
 
 /*----------------------------------------------------------------------------*/
