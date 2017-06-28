@@ -7,13 +7,72 @@
 #include "StorageEngine.h"
 
 /*----------------------------------------------------------------------------*/
+/*-- Extract -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* extract                                                                    */
+/*----------------------------------------------------------------------------*/
+bool DtmLib::bExtract(eDM eDatum, Str* aDst, char** aaSrc, DBobjects::Column* pColumn)
+{
+  bool b = false;
+  
+  switch (eDatum) {
+    case DM_BCD: b = Bcd::bExtract(aaSrc,(Bcd*)aDst,pColumn); break;
+    case DM_BOL: b = Bol::bExtract(aaSrc,(Bol*)aDst,pColumn); break;
+    case DM_CHR: ASSERT(0);                                   break;
+    case DM_DTE: b = Dte::bExtract(aaSrc,(Dte*)aDst,pColumn); break;
+    case DM_FLT: b = Flt::bExtract(aaSrc,(Flt*)aDst,pColumn); break;
+    case DM_INT: b = Int::bExtract(aaSrc,(Int*)aDst,pColumn); break;
+    case DM_IVL: b = Ivl::bExtract(aaSrc,(Ivl*)aDst,pColumn); break;
+    case DM_TME: b = Tme::bExtract(aaSrc,(Tme*)aDst,pColumn); break;
+    case DM_TSP: b = Tsp::bExtract(aaSrc,(Tsp*)aDst,pColumn); break;
+    case DM_VCH: b = Vch::bExtract(aaSrc,(Vch*)aDst,pColumn); break;
+    default:
+      vFatal("DtmLib::bValid: Invalid aDatum argument: %lld\n"_Str,
+             eDatum);
+  }
+  
+  if (!b)
+    return b;
+  else
+    return b;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Sprint ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* s-print                                                                    */
+/*----------------------------------------------------------------------------*/
+void DtmLib::vSprint(eDM eDatum, Str* aDst, Str* aSrc, i8& nBytesTaken)
+{
+  switch (eDatum) {
+    case DM_BCD: Bcd::vSprint(aDst,aSrc,nBytesTaken); break;
+    case DM_BOL: Bol::vSprint(aDst,aSrc,nBytesTaken); break;
+    case DM_CHR: ASSERT(0);                           break;
+    case DM_DTE: Dte::vSprint(aDst,aSrc,nBytesTaken); break;
+    case DM_FLT: Flt::vSprint(aDst,aSrc,nBytesTaken); break;
+    case DM_INT: Int::vSprint(aDst,aSrc,nBytesTaken); break;
+    case DM_IVL: Ivl::vSprint(aDst,aSrc,nBytesTaken); break;
+    case DM_TME: Tme::vSprint(aDst,aSrc,nBytesTaken); break;
+    case DM_TSP: Tsp::vSprint(aDst,aSrc,nBytesTaken); break;
+    case DM_VCH: Vch::vSprint(aDst,aSrc,nBytesTaken); break;
+    default:
+      vFatal("DtmLib::vSprint: Invalid aDatum argument: %lld\n"_Str,
+             eDatum);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Validation --------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* valid datum?                                                               */
 /*----------------------------------------------------------------------------*/
-bool DtmLib::bValidateDatum(eDM eDatum, char** aaSrc, Column* pColumn)
+bool DtmLib::bValidate(eDM eDatum, char** aaSrc, Column* pColumn)
 {
   bool b = false;
   

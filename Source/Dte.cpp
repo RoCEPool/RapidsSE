@@ -241,6 +241,22 @@ bool Dte::bExtract(char** aaSrc, Dte* aDate, Column* pColumn)
 }
 
 /*----------------------------------------------------------------------------*/
+/* sprint dte datum                                                           */
+/*----------------------------------------------------------------------------*/
+void Dte::vSprint(Str* aDst, Str* aSrc, i8& nBytesTaken)
+{
+  Dte* aDte = (Dte*)aSrc;
+  
+  StrLib::vSprint(aDst,"%02lld-%02lld-%02lld%c"_Str,
+                  aDte->x.m_uYear,
+                  aDte->x.m_uMonth,
+                  aDte->x.m_uDay,
+                  '\0');
+  
+  nBytesTaken = sizeof(i8);
+}
+
+/*----------------------------------------------------------------------------*/
 /* valid date in substr?                                                      */
 /*----------------------------------------------------------------------------*/
 bool Dte::bValid(char** aaSrc, Column* pColumn)

@@ -195,6 +195,20 @@ bool Flt::bExtract(char** aaSrc, Flt* aFloat, Column* pColumn)
 }
 
 /*----------------------------------------------------------------------------*/
+/* sprint flt datum                                                           */
+/*----------------------------------------------------------------------------*/
+void Flt::vSprint(Str* aDst, Str* aSrc, i8& nBytesTaken)
+{
+  Flt* aFlt = (Flt*)aSrc;
+  
+  StrLib::vSprint(aDst,"%llf%c"_Str,
+                  aFlt->m_dFlt,
+                  '\0');
+  
+  nBytesTaken = sizeof(i8);
+}
+
+/*----------------------------------------------------------------------------*/
 /* valid float in substr?                                                     */
 /*----------------------------------------------------------------------------*/
 bool Flt::bValid(char** aaSrc, Column* pColumn)

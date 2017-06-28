@@ -317,6 +317,26 @@ bool Tsp::bExtract(char** aaSrc, Tsp* aTimestamp, Column* pColumn)
 }
 
 /*----------------------------------------------------------------------------*/
+/* sprint tsp datum                                                           */
+/*----------------------------------------------------------------------------*/
+void Tsp::vSprint(Str* aDst, Str* aSrc, i8& nBytesTaken)
+{
+  Tsp* aTsp = (Tsp*)aSrc;
+  
+  StrLib::vSprint(aDst,"%02lld-%02lld-%02lld %02lld:%02lld:%02lld%c"_Str,
+                  aTsp->x.m_uYear,
+                  aTsp->x.m_uMonth,
+                  aTsp->x.m_uDay,
+                  aTsp->x.m_uHour,
+                  aTsp->x.m_uMinute,
+                  aTsp->x.m_uSecond,
+                  aTsp->x.m_uMilli,
+                  '\0');
+  
+  nBytesTaken = sizeof(i8);
+}
+
+/*----------------------------------------------------------------------------*/
 /* valid timestamp in substr?                                                 */
 /*----------------------------------------------------------------------------*/
 bool Tsp::bValid(char** aaSrc, Column* pColumn)

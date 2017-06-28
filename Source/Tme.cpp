@@ -255,6 +255,23 @@ bool Tme::bExtract(char** aaSrc, Tme* aTime, Column* pColumn)
 }
 
 /*----------------------------------------------------------------------------*/
+/* sprint tme datum                                                           */
+/*----------------------------------------------------------------------------*/
+void Tme::vSprint(Str* aDst, Str* aSrc, i8& nBytesTaken)
+{
+  Tme* aTme = (Tme*)aSrc;
+  
+  StrLib::vSprint(aDst,"%02lld-%02lld-%02lld.%03lld%c"_Str,
+                  aTme->x.m_uHour,
+                  aTme->x.m_uMinute,
+                  aTme->x.m_uSecond,
+                  aTme->x.m_uMilli,
+                  '\0');
+  
+  nBytesTaken = sizeof(i8);
+}
+
+/*----------------------------------------------------------------------------*/
 /* valid time in substr?                                                      */
 /*----------------------------------------------------------------------------*/
 bool Tme::bValid(char** aaSrc, Column* pColumn)

@@ -181,6 +181,16 @@ bool Bcd::bExtract(char** aaSrc, Bcd* aDecimal,DBobjects::Column* pColumn)
 }
 
 /*----------------------------------------------------------------------------*/
+/* sprint bcd datum                                                           */
+/*----------------------------------------------------------------------------*/
+void Bcd::vSprint(Str* aDst, Str* aSrc, i8& nBytesTaken)
+{
+  StrLib::vSprint(aDst,"%lld%c"_Str,*(i8*)aSrc,'\0');
+  
+  nBytesTaken = sizeof(i8);
+}
+
+/*----------------------------------------------------------------------------*/
 /* valid decimal in substr?                                                   */
 /*----------------------------------------------------------------------------*/
 bool Bcd::bValid(char** aaSrc, Column* pColumn)

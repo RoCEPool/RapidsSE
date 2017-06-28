@@ -228,6 +228,21 @@ bool Ivl::bExtract(char** aaSrc, Ivl* aInterval, Column* pColumn)
 }
 
 /*----------------------------------------------------------------------------*/
+/* sprint ivl datum                                                           */
+/*----------------------------------------------------------------------------*/
+void Ivl::vSprint(Str* aDst, Str* aSrc, i8& nBytesTaken)
+{
+  Ivl* aIvl = (Ivl*)aSrc;
+  
+  StrLib::vSprint(aDst,"%lld.03lld%c"_Str,
+                  aIvl->x.m_uSecond,
+                  aIvl->x.m_uMilli,
+                  '\0');
+  
+  nBytesTaken = sizeof(i8);
+}
+
+/*----------------------------------------------------------------------------*/
 /* valid interval in substr?                                                  */
 /*----------------------------------------------------------------------------*/
 bool Ivl::bValid(char** aaSrc, Column* pColumn)
