@@ -12,9 +12,9 @@ i8 ValLib::nCopyDatum(eCN eClass, void* pDst, void* pSrc)
 {
   switch (eClass) {
       
-    case CN_INTVAL: return nCopyIntDatum(pDst,pSrc);
+    case CN_INTVAL: return Int::nCopy(pDst,pSrc);
       
-    case CN_STRVAL: return nCopyStrDatum(pDst,pSrc);
+    case CN_STRVAL: return Vch::nCopy(pDst,pSrc);
       
     default:
       vFatal("ValLib::vCopyDatum: Invalid copy: eClass %lld\n"_Str,
@@ -30,9 +30,9 @@ void ValLib::vCopyDatum(eCN eClass, void* pDst, void* pSrc)
 {
   switch (eClass) {
 
-    case CN_INTVAL: vCopyIntDatum(pDst,pSrc); return;
+    case CN_INTVAL: Int::vCopy(pDst,pSrc); return;
       
-    case CN_STRVAL: vCopyStrDatum(pDst,pSrc); return;
+    case CN_STRVAL: Vch::vCopy(pDst,pSrc); return;
       
     default:
       vFatal("ValLib::vCopyDatum: Invalid copy: eClass %lld\n"_Str,
