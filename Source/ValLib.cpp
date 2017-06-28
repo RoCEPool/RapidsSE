@@ -6,24 +6,6 @@
 #include "StorageEngine.h"
 
 /*----------------------------------------------------------------------------*/
-/* compare datum (return -ve, 0, +ve)                                         */
-/*----------------------------------------------------------------------------*/
-i8 ValLib::iCompareDatum(eCN eClass, void* pArg1, void* pArg2)
-{
-  switch (eClass) {
-      
-    case CN_INTVAL: return iCompareIntDatum(pArg1,pArg2);
-      
-    case CN_STRVAL: return iCompareStrDatum(pArg1,pArg2);
-      
-    default:
-      vFatal("ValLib::iCompareDatum: Invalid compare: eClass %lld\n"_Str,
-             eClass);
-      return -1;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /* compare two int datums                                                     */
 /*----------------------------------------------------------------------------*/
 i8 ValLib::iCompareIntDatum(void* pArg1, void* pArg2)
