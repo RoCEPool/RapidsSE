@@ -6,26 +6,6 @@
 #include "StorageEngine.h"
 
 /*----------------------------------------------------------------------------*/
-/* compare two int datums                                                     */
-/*----------------------------------------------------------------------------*/
-i8 ValLib::iCompareIntDatum(void* pArg1, void* pArg2)
-{
-  i8 iCmp = *(i8*)pArg1 - *(i8*)pArg2;
-  
-  return iCmp;
-}
-
-/*----------------------------------------------------------------------------*/
-/* compare two str datums                                                     */
-/*----------------------------------------------------------------------------*/
-i8 ValLib::iCompareStrDatum(void* pArg1, void* pArg2)
-{
-  i8 iCmp = StrLib::iCompare((char*)pArg1,(char*)pArg2);
-  
-  return iCmp;
-}
-
-/*----------------------------------------------------------------------------*/
 /* copy datum (return the number of bytes copied)                             */
 /*----------------------------------------------------------------------------*/
 i8 ValLib::nCopyDatum(eCN eClass, void* pDst, void* pSrc)
