@@ -82,14 +82,16 @@ void KeyWrk::vAddKey(Key* aKey, IdxColVec* pColVec)
     char* pDst = m_xWsp.aLatter();
     char* pSrc = aElement;
     
-    switch(pColumn->eColumnType()) {
-      case CT_DATE:      Dte::vCopy((char*)pDst,(char*)pSrc); break;
-      case CT_FLOAT:     Flt::vCopy((char*)pDst,(char*)pSrc); break;
-      case CT_INTEGER:   Int::vCopy((char*)pDst,(char*)pSrc); break;
-      case CT_INTERVAL:  Ivl::vCopy((char*)pDst,(char*)pSrc); break;
-      case CT_TIME:      Tme::vCopy((char*)pDst,(char*)pSrc); break;
-      case CT_TIMESTAMP: Tsp::vCopy((char*)pDst,(char*)pSrc); break;
-      case CT_VARCHAR:   Vch::vCopy((char*)pDst,(char*)pSrc); break;
+    switch(pColumn->eDatumType()) {
+      case DM_BCD: Bcd::vCopy((char*)pDst,(char*)pSrc); break;
+      case DM_BOL: Bol::vCopy((char*)pDst,(char*)pSrc); break;
+      case DM_DTE: Dte::vCopy((char*)pDst,(char*)pSrc); break;
+      case DM_FLT: Flt::vCopy((char*)pDst,(char*)pSrc); break;
+      case DM_INT: Int::vCopy((char*)pDst,(char*)pSrc); break;
+      case DM_IVL: Ivl::vCopy((char*)pDst,(char*)pSrc); break;
+      case DM_TME: Tme::vCopy((char*)pDst,(char*)pSrc); break;
+      case DM_TSP: Tsp::vCopy((char*)pDst,(char*)pSrc); break;
+      case DM_VCH: Vch::vCopy((char*)pDst,(char*)pSrc); break;
       default:
         ASSERT(0);
     }
