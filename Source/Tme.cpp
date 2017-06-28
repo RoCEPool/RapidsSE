@@ -279,7 +279,7 @@ void Tme::vSprint(Str* aDst, Str* aSrc)
 {
   Tme* aTme = (Tme*)aSrc;
   
-  StrLib::vSprint(aDst,"%02lld-%02lld-%02lld.%03lld%c"_Str,
+  StrLib::vSprint(aDst,"%02lld:%02lld:%02lld.%03lld%c"_Str,
                   aTme->x.m_uHour,
                   aTme->x.m_uMinute,
                   aTme->x.m_uSecond,
