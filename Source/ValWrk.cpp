@@ -43,6 +43,20 @@ ValWrk::ValWrk(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* assign/copy a bcd into workspace                                           */
+/*----------------------------------------------------------------------------*/
+void ValWrk::operator =(Bcd xBcd)
+{
+  BcdVal* pNestedBcdVal = (BcdVal*)pNestedValue();
+  
+  // set nested class
+  pNestedBcdVal->vClass(CN_BCDVAL);
+  
+  // assign int into the nested intval
+  *pNestedBcdVal = xBcd;
+}
+
+/*----------------------------------------------------------------------------*/
 /* assign/copy a boolean into workspace                                       */
 /*----------------------------------------------------------------------------*/
 void ValWrk::operator =(Bol xBol)

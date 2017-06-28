@@ -28,12 +28,14 @@ namespace Datums
     bool operator >= (Bcd& xBcd);
     bool operator >  (Bcd& xBcd);
   
+    i8   iAsI8(void);
     void vInitZero(void);
     bool bIsNull(void);
     void vSetNull(void);
   
     static i8   nCopy(void* aDst, void* aSrc);
     static void vCopy(void* aDst, void* aSrc);
+    
     static bool bExtract(char** aaSrc, Bcd* aBcd, DBobjects::Column* pColumn);
     static void vSprint(Str* aDst, Str* aSrc);
     static bool bValid(char** aaSrc, DBobjects::Column* pColumn);

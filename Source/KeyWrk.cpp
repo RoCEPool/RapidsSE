@@ -223,6 +223,11 @@ void KeyWrk::vAddDatum(ValWrk& xValWrk, Column* pCol)
       nBytes = Dte::nCopy((char*)pDst,(char*)pSrc);
       break;
       
+    case CT_DECIMAL:
+      pSrc = (char*)(_pBcdVal(xValWrk.pNestedValueSelf())->aInt());
+      nBytes = Bcd::nCopy((char*)pDst,(char*)pSrc);
+      break;
+      
     case CT_FLOAT:
       pSrc = (char*)(_pFltVal(xValWrk.pNestedValueSelf())->aFlt());
       nBytes = Flt::nCopy((char*)pDst,(char*)pSrc);

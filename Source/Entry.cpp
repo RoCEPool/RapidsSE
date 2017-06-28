@@ -531,7 +531,10 @@ void Entry::vExtractKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
       }
         
       case CT_DECIMAL: {
-        ASSERT(0);
+        Bcd xBcd;
+        bool b = Bcd::bExtract(&pDst,&xBcd,pColumn);
+        ASSERT(b);
+        xValWrk = xBcd;
         break;
       }
         

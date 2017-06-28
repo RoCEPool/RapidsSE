@@ -15,9 +15,11 @@ namespace Values
     
     BcdVal(void);
     
+    void operator =(Bcd xBcd);
     void operator =(i8 iVal);
     
     i8 nSize(void) const;
+    i8* aInt(void);
     i8 iBcd(void) const;
     
     void vToString(Str* aWorkspace);

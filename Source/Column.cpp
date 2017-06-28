@@ -424,7 +424,7 @@ char* Column::aValue(i8& nBytes, char** aaCursor)
       break;
       
     case CT_DECIMAL:
-      ASSERT(0);
+      nBytes = sizeof(i8);
       break;
       
     case CT_FLOAT:
