@@ -252,7 +252,7 @@ void Ivl::vSprint(Str* aDst, Str* aSrc)
 {
   Ivl* aIvl = (Ivl*)aSrc;
   
-  StrLib::vSprint(aDst,"%lld.03lld%c"_Str,
+  StrLib::vSprint(aDst,"%lld.%03lld%c"_Str,
                   aIvl->x.m_uSecond,
                   aIvl->x.m_uMilli,
                   '\0');
