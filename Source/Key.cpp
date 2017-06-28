@@ -573,107 +573,23 @@ bool Key::bJuxtaAfter(Key* pKeyThat, IdxColVec* pIdxColVec, bool& bIsEqual)
 /*----------------------------------------------------------------------------*/
 void Key::vShow(IdxColVec* pIdxColVec)
 {
+  i8 nBytes;
+  i8 iKey;
+  Str* pKey;
   char* aCursor = aWspArea();
   
-  //vTrace("Key %p "_Str, this);
-  
+  char aLiteral[64];
   
   for (i8 i_Column = 0; i_Column < pIdxColVec->nItems(); i_Column++) {
     
     Column* pColumn = pIdxColVec->pGet(i_Column);
     eCT eColumnType = pColumn->eColumnType();
     
-    i8 nBytes;
     char* aDatum = this->aEachDatum(pColumn,nBytes,&aCursor);
-    
-    i8 iKey;
-    Str* pKey;
-    
-    vTrace("Elm %lld:(size %lld value:"_Str,
-           i_Column,
-           nBytes);
-    
-    switch (eColumnType) {
-        
-      case CT_DATE: {
-        Dte xDte;
-        xDte = *(Dte*)aDatum;
-        vTrace("%04lld-%02lld-%02lld"_Str,
-               xDte.iYear(),
-               xDte.iMonth(),
-               xDte.iDay()
-               );
-        break;
-      }
-        
-      case CT_FLOAT: {
-        Flt xFlt;
-        xFlt = *(Flt*)aDatum;
-        vTrace("%llf"_Str,
-               xFlt.dAsD8()
-               );
-        break;
-      }
-        
-      case CT_INTEGER: {
-        Int xInt;
-        xInt = *(Int*)aDatum;
-        vTrace("%lld"_Str,
-               xInt.iAsI8()
-               );
-        break;
-      }
-        
-      case CT_INTERVAL: {
-        Ivl xIvl;
-        xIvl = *(Ivl*)aDatum;
-        vTrace("%lld.%03lld"_Str,
-               xIvl.iSecond(),
-               xIvl.iMilli()
-               );
-        break;
-      }
-        
-      case CT_TIME: {
-        Tme xTme;
-        xTme = *(Tme*)aDatum;
-        vTrace("%02lld:%02lld:%02lld.%lld"_Str,
-               xTme.iHour(),
-               xTme.iMinute(),
-               xTme.iSecond(),
-               xTme.iMilli()
-               );
-        break;
-      }
-        
-      case CT_TIMESTAMP: {
-        Tsp xTsp;
-        xTsp = *(Tsp*)aDatum;
-        vTrace("%04lld-%02lld-%02lld %02lld:%02lld:%02lld.%lld"_Str,
-               xTsp.iYear(),
-               xTsp.iMonth(),
-               xTsp.iDay(),
-               xTsp.iHour(),
-               xTsp.iMinute(),
-               xTsp.iSecond(),
-               xTsp.iMilli()
-               );
-        break;
-      }
-        
-      case CT_VARCHAR:
-        pKey = (Str*)aDatum;
-        vTrace("%s"_Str,
-               pKey
-               );
-        break;
-        
-      default:
-        ASSERT(0);
-    }
-    
-    vTrace(") "_Str);
-    
+  
+    eDM eDatum = pColumn->eDatumType();
+    DtmLib::vSprint(eDatum,(Str*)aLiteral,(Str*)aDatum,pColumn);
+    vTrace("Elm %lld:(size %lld value:%s) "_Str,i_Column,nBytes,aLiteral);
   }
 
   //vTrace("%s)\n"_Str, sKeyString.aStr());
