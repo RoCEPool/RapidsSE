@@ -213,7 +213,8 @@ bool Int::bExtract(char** aaSrc, Int* aInteger, Column* pColumn)
   }
   
   // collect the csv
-  while (**aaSrc && '\n' != **aaSrc && '\r' != **aaSrc && '|' != **aaSrc && ',' != **aaSrc) {
+  while (**aaSrc && '\n' != **aaSrc && '\r' != **aaSrc
+           && '|' != **aaSrc && ',' != **aaSrc) {
     if ('|' == **aaSrc)
       return true;
     if ( ! StrLib::bIsDigit(**aaSrc) )

@@ -170,11 +170,13 @@ bool Bcd::bExtract(char** aaSrc, Bcd* aDecimal,DBobjects::Column* pColumn)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for negative
+  
   if (**aaSrc && '-' == **aaSrc ) {
     bNegative = true;
     (*aaSrc)++;
   }
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // collect leading portion (till '.')
   
   while (**aaSrc && '|' != **aaSrc && ',' != **aaSrc
@@ -185,6 +187,7 @@ bool Bcd::bExtract(char** aaSrc, Bcd* aDecimal,DBobjects::Column* pColumn)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // collect trailing portion (after '.')
+  
   if ('.' == **aaSrc) {
     (*aaSrc)++; // skip '.'
     i8 iPrecision = pColumn->iColumnPrecision();

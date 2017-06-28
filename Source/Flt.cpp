@@ -195,18 +195,29 @@ bool Flt::bExtract(char** aaSrc, Flt* aFloat, Column* pColumn)
     return true;
   }
   
-  // collect the csv
-  while (**aaSrc && '|' != **aaSrc && ',' != **aaSrc)
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // collect leading portion (till '.')
+  while (**aaSrc && '\n' != **aaSrc && '\r' != **aaSrc
+         && '|' != **aaSrc && ',' != **aaSrc)
     *aChar++ = *(*aaSrc)++;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // collect trailing portion (after '.')
+  
+  if ('.' == **aaSrc) {
+    (*aaSrc)++; // skip '.'
+    while (**aaSrc && '|' != **aaSrc && ',' != **aaSrc
+           && '\n' != **aaSrc && '\r' != **aaSrc
+           && StrLib::bIsDigit(**aaSrc)) {
+      *aChar++ = *(*aaSrc)++;
+    }
+  }
+  
+  // terminate
   *aChar++ = '\0';
   
-  // find first char
-  for (aChar = xBuffer; *aChar && ' ' == *aChar; aChar++)
-    ;
-  
   // convert
-  dResult = atof(aChar);
-  
+  dResult = atof(xBuffer);
   aFloat->m_dFlt = dResult;
   
   return true;
@@ -219,7 +230,7 @@ void Flt::vSprint(Str* aDst, Str* aSrc)
 {
   Flt* aFlt = (Flt*)aSrc;
   
-  StrLib::vSprint(aDst,"%llf%c"_Str,
+  StrLib::vSprint(aDst,"%.3llf%c"_Str,
                   aFlt->m_dFlt,
                   '\0');
 }
@@ -232,6 +243,9 @@ bool Flt::bValid(char** aaSrc, Column* pColumn)
   Flt xFlt;
   
   bool bValid = bExtract(aaSrc,&xFlt,pColumn);
+  
+  if (!bValid)
+    int iDebug = 0;
   
   return bValid;
 }

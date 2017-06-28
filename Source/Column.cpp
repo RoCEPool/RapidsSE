@@ -397,6 +397,9 @@ bool Column::bValidateField(Str** aaSubRow)
 
   bool b = DtmLib::bValidate(m_eDatumType,(char**)aaSubRow,this);
   
+  if (!b)
+    int iDebug = 0;
+  
   return b;
 }
 
