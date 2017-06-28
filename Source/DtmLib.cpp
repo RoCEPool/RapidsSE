@@ -40,6 +40,99 @@ bool DtmLib::bExtract(eDM eDatum, Str* aDst, char** aaSrc, DBobjects::Column* pC
 }
 
 /*----------------------------------------------------------------------------*/
+/*-- Hash --------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* hash                                                                       */
+/*----------------------------------------------------------------------------*/
+void DtmLib::vHash(eDM eDatum, i8& iHash, Str* aScr, DBobjects::Column* pColumn)
+{
+  switch (pColumn->eColumnType()) {
+      
+    case CT_BOOLEAN: {
+      Bol xBol;
+      bool b = Bol::bExtract((char**)&aScr,&xBol,pColumn);
+      ASSERT(b);
+      iHash += XXH32(&xBol,sizeof(Bol),0);
+      break;
+    }
+      
+    case CT_CHAR: {
+      ASSERT(0);
+      break;
+    }
+      
+    case CT_DATE: {
+      Dte xDte;
+      bool b = Dte::bExtract((char**)&aScr,&xDte,pColumn);
+      ASSERT(b);
+      iHash += XXH32(&xDte,sizeof(Dte),0);
+      break;
+    }
+      
+    case CT_DECIMAL: {
+      ASSERT(0);
+      break;
+    }
+      
+    case CT_FLOAT: {
+      Flt xFlt;
+      bool b = Flt::bExtract((char**)&aScr,&xFlt,pColumn);
+      ASSERT(b);
+      iHash += XXH32(&xFlt,sizeof(Flt),0);
+      break;
+    }
+      
+    case CT_INTEGER: {
+      Int xInt;
+      bool b = Int::bExtract((char**)&aScr,&xInt,pColumn);
+      ASSERT(b);
+      iHash += XXH32(&xInt,sizeof(Int),0);
+      break;
+    }
+      
+    case CT_INTERVAL: {
+      Ivl xIvl;
+      bool b = Ivl::bExtract((char**)&aScr,&xIvl,pColumn);
+      ASSERT(b);
+      iHash += XXH32(&xIvl,sizeof(Ivl),0);
+      break;
+    }
+      
+    case CT_TIME: {
+      Tme xTme;
+      bool b = Tme::bExtract((char**)&aScr,&xTme,pColumn);
+      ASSERT(b);
+      iHash += XXH32(&xTme,sizeof(Tme),0);
+      break;
+    }
+      
+    case CT_TIMESTAMP: {
+      Tsp xTsp;
+      bool b = Tsp::bExtract((char**)&aScr,&xTsp,pColumn);
+      ASSERT(b);
+      iHash += XXH32(&xTsp,sizeof(Tsp),0);
+      break;
+    }
+      
+    case CT_VARBINARY: {
+      ASSERT(0);
+      break;
+    }
+      
+    case CT_VARCHAR: {
+      iHash += XXH32((char*)aScr,StrLib::iSize((char*)aScr),0);
+      break;
+    }
+      
+    default:
+      ASSERT(0);
+  }
+  
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Sprint ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 

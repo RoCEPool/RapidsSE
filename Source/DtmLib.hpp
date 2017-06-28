@@ -17,6 +17,7 @@ namespace Datums
   public:
 
     static bool bExtract(eDM eDatum, Str* aDst, char** aSrc, DBobjects::Column* pColumn);
+    static void vHash(eDM eDatum, i8& iHash, Str* aSrc, DBobjects::Column* pColumn);
     static void vSprint(eDM eDatum, Str* aDst, Str* aSrc, i8& nBytesTaken);
     static bool bValidate(eDM eDatum, char** aaSrc, DBobjects::Column* pColumn);
   
