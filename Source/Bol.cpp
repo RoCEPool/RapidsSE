@@ -201,6 +201,11 @@ bool Bol::bExtract(char** aaSrc, Bol* aBoolean, Column* pColumn)
       '1' == *(*aaSrc))
     bResult = true;
   
+  while (**aaSrc && '|' != **aaSrc && ',' != **aaSrc
+         && '\n' != **aaSrc && '\r' != **aaSrc) {
+    (*aaSrc)++;
+  }
+  
   aBoolean->m_bBol = bResult;
   
   return true;
