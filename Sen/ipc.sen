@@ -11,7 +11,7 @@
 
 : setAcks     ( -- ) task::this task.acks! ;
 : ackWait     ( -- ) TS_WAITING_ACK setState ;
-: isAckWaiting ( task -- ) task.state@ task.acks! ;
+: isAckWaiting ( task -- ) task.state@ TS_WAITING_ACK == ;
 : ack         ( task -- ) task.ack ;
 
 : appendQueue ( task -- ) task.jobQueue@ queue.append ;
