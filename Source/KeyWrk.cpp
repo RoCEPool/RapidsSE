@@ -202,47 +202,7 @@ void KeyWrk::vAddDatum(ValWrk& xValWrk, Column* pCol)
   
   pSrc = pAdd<char*>(xValWrk.pNestedValueSelf(),sizeof(Value));
   
-  switch(pCol->eColumnType()) {
-      
-    case CT_BOOLEAN:
-      nBytes = Bol::nCopy((char*)pDst,(char*)pSrc);
-      break;
-      
-    case CT_DATE:
-      nBytes = Dte::nCopy((char*)pDst,(char*)pSrc);
-      break;
-      
-    case CT_DECIMAL:
-      nBytes = Bcd::nCopy((char*)pDst,(char*)pSrc);
-      break;
-      
-    case CT_FLOAT:
-      nBytes = Flt::nCopy((char*)pDst,(char*)pSrc);
-      break;
-      
-    case CT_INTEGER:
-      nBytes = Int::nCopy((char*)pDst,(char*)pSrc);
-      break;
-    
-    case CT_INTERVAL:
-      nBytes = Ivl::nCopy((char*)pDst,(char*)pSrc);
-      break;
-    
-    case CT_TIME:
-      nBytes = Tme::nCopy((char*)pDst,(char*)pSrc);
-      break;
-      
-    case CT_TIMESTAMP:
-      nBytes = Tsp::nCopy((char*)pDst,(char*)pSrc);
-      break;
-      
-    case CT_VARCHAR:
-//      nBytes = Vch::nCopy((char*)pDst,(char*)pSrc);
-      break;
-    
-    default:
-      ASSERT(0);
-  }
+  nBytes = DtmLib::nCopy(pCol->eDatumType(),pDst,pSrc,pCol);
   
   m_xWsp.vTake(nBytes);
   
