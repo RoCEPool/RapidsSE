@@ -360,9 +360,10 @@ tp: makingIndex
   then
 
   // iterate thru the buffer till no key match
-  1
+
   begin
-  while
+    entry
+    while
 
     // check if exact key match
     key indexPtr entry entry.matches if
@@ -399,14 +400,9 @@ tp: makingIndex
           entry indexBuffer entryBuffer.nextEntry to entry
         then
       then
-
-      entry not if
-        0
-      else
-        1
-      then
     else
-      0  // no match for entry
+      // entry did not match the key, null the entry and break from loop
+      0  to entry
     then
   repeat
 
