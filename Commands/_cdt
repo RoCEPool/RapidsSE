@@ -29,14 +29,14 @@ fetch jCdt "jA 5 >=" ;
 // upper bound
 fetch jCdt "jA 5 <=" ;
 
-// exact bound
-fetch jCdt "jA 5 ==" ;
-
 // range bound
 fetch jCdt "jA 8 <= jA 1 >= and" ;
 
 // full table
 fetch jCdt "jB 1 >=" ;
+
+// exact bound
+fetch jCdt "jA 5 ==" ;
 
 /*============================================================================*/
 /* end                                                                        */
