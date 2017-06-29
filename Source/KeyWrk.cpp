@@ -205,48 +205,39 @@ void KeyWrk::vAddDatum(ValWrk& xValWrk, Column* pCol)
   switch(pCol->eColumnType()) {
       
     case CT_BOOLEAN:
-      pSrc = (char*)(_pBolVal(xValWrk.pNestedValueSelf())->aInt());
       nBytes = Bol::nCopy((char*)pDst,(char*)pSrc);
       break;
       
     case CT_DATE:
-      pSrc = (char*)(_pDteVal(xValWrk.pNestedValueSelf())->aInt());
       nBytes = Dte::nCopy((char*)pDst,(char*)pSrc);
       break;
       
     case CT_DECIMAL:
-      pSrc = (char*)(_pBcdVal(xValWrk.pNestedValueSelf())->aInt());
       nBytes = Bcd::nCopy((char*)pDst,(char*)pSrc);
       break;
       
     case CT_FLOAT:
-      pSrc = (char*)(_pFltVal(xValWrk.pNestedValueSelf())->aFlt());
       nBytes = Flt::nCopy((char*)pDst,(char*)pSrc);
       break;
       
     case CT_INTEGER:
-      pSrc = (char*)(_pIntVal(xValWrk.pNestedValueSelf())->aInt());
       nBytes = Int::nCopy((char*)pDst,(char*)pSrc);
       break;
     
     case CT_INTERVAL:
-      pSrc = (char*)(_pIvlVal(xValWrk.pNestedValueSelf())->aInt());
       nBytes = Ivl::nCopy((char*)pDst,(char*)pSrc);
       break;
     
     case CT_TIME:
-      pSrc = (char*)(_pTmeVal(xValWrk.pNestedValueSelf())->aInt());
       nBytes = Tme::nCopy((char*)pDst,(char*)pSrc);
       break;
       
     case CT_TIMESTAMP:
-      pSrc = (char*)(_pTspVal(xValWrk.pNestedValueSelf())->aInt());
       nBytes = Tsp::nCopy((char*)pDst,(char*)pSrc);
       break;
       
     case CT_VARCHAR:
-      pSrc = (char*)(_pStrVal(xValWrk.pNestedValueSelf())->aStr());
-      nBytes = Vch::nCopy((char*)pDst,(char*)pSrc);
+//      nBytes = Vch::nCopy((char*)pDst,(char*)pSrc);
       break;
     
     default:
