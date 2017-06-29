@@ -6,6 +6,15 @@
 
 #include "StorageEngine.h"
 
+extern bool gbIndexSpace;
+extern i8   gnIndexEntries;
+extern i8   gnIndexLevels;
+extern i8   gnIndexOffsets;
+
+/*----------------------------------------------------------------------------*/
+/*-- LifeCycle ---------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
@@ -89,11 +98,25 @@ EntryBuffer::EntryBuffer(i8 iDataBytes)
 }
 
 /*----------------------------------------------------------------------------*/
-/* destructor                                                                 */
+/* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-EntryBuffer::~EntryBuffer(void)
+EntryBuffer::EntryBuffer(Index* pIndex, i8 nBufferLevel)
+: EntryBuffer(CN_ENTRYBUFFER)
 {
-  //_precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  m_pIndex       = pIndex;
+  m_nBufferLevel = nBufferLevel;
+  m_bIsLast     = false;
+  
+  m_xWsp.vZero();
+  
+  // new the head
+  vAllotHead();
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  _checkInitialised_(CN_ENTRYBUFFER);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -116,8 +139,16 @@ EntryBuffer::EntryBuffer(eCN eClassNo)
   m_pIndex       = nullptr;
   
   _checkInitialised_(eClassNo);
-
+  
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* destructor                                                                 */
+/*----------------------------------------------------------------------------*/
+EntryBuffer::~EntryBuffer(void)
+{
+  //_precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -427,42 +458,6 @@ i8 EntryBuffer::nUsedBytes(void)
   return nBytes;
 }
 
-
-
-
-
-
-
-
-extern bool gbIndexSpace;
-extern i8   gnIndexEntries;
-extern i8   gnIndexLevels;
-extern i8   gnIndexOffsets;
-/*----------------------------------------------------------------------------*/
-/*-- LifeCycle ---------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-EntryBuffer::EntryBuffer(Index* pIndex, i8 nBufferLevel)
-: EntryBuffer(CN_ENTRYBUFFER)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  m_pIndex       = pIndex;
-  m_nBufferLevel = nBufferLevel;
-  
-  m_xWsp.vZero();
-  
-  // new the head
-  vAllotHead();
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  _checkInitialised_(CN_ENTRYBUFFER);
-}
-
 /*----------------------------------------------------------------------------*/
 /*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -652,7 +647,6 @@ Index* EntryBuffer::pIndex(void)
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vBufferCount(i8& nBuffers)
 {
-  
   // count this buffer
   nBuffers++;
   
@@ -1192,7 +1186,6 @@ void EntryBuffer::vTruncate(void)
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vAdjustOffsets(Entry* pEntry, i8 nAdjustAmount)
 {
-  
   for (on nOffsetNo; nOffsetNo < pEntry->nOffsets(); nOffsetNo++) {
     
     //
@@ -2065,8 +2058,6 @@ u8 EntryBuffer::uOffsetBetween(Entry* pEntryA, Entry* pEntryB)
   
   return uOffset;
 }
-
-
 
 /*============================================================================*/
 /* end                                                                        */
