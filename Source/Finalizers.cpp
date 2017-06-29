@@ -52,6 +52,7 @@ pFINALIZE *gpFinalize[]
   /* 20 */ &Finalize::vUndefined,         // CN_DIR
   
   /* 21 */ &Finalize::vUndefined,         // CN_ENTRY
+  /*    */ &Finalize::vUndefined,         // CN_EntryBUFFER
   /*    */ &Finalize::vUndefined,         // CN_ENTRYVEC
   
   /* 22 */ &Finalize::vUndefined,         // CN_FILE
@@ -67,7 +68,6 @@ pFINALIZE *gpFinalize[]
   /* 29 */ &Finalize::vUndefined,         // CN_HEAPBUFFER
   
   /* 30 */ &Index::vFinalize,             // CN_INDEX
-  /* 31 */ &Finalize::vUndefined,         // CN_INDEXBUFFER
   /*    */ &Finalize::vUndefined,         // CN_INDEXDATA
   /*    */ &Finalize::vUndefined,         // CN_IDXCOLVEC
   /*    */ &Finalize::vUndefined,         // CN_IDXDATAVEC

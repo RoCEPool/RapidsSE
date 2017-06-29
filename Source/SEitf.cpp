@@ -2102,7 +2102,7 @@ bool SEitf::bInsertRow(Str* aRow)
                               
   // check for working buffer
   if (! m_pRowBuffer[m_iPartition]) {
-    m_pRowBuffer[m_iPartition] = (EntryBuffer*)EntryBuffer::pNewEntryBuffer(CN_ROWBUFFER);
+    m_pRowBuffer[m_iPartition] = (EntryBuffer*)EntryBuffer::pNewEntryBuffer(CN_ENTRYBUFFER);
     if (! m_pRowBuffer[m_iPartition]) {
       vTrace("EntryBuffer allocation failed\n"_Str);
       m_eErrorCode = EC_LOW_BUFFERS;
@@ -2135,7 +2135,7 @@ bool SEitf::bInsertRow(Str* aRow)
   }
   
   // get a new working buffer
-  m_pRowBuffer[m_iPartition] = (EntryBuffer*)EntryBuffer::pNewEntryBuffer(CN_ROWBUFFER);
+  m_pRowBuffer[m_iPartition] = (EntryBuffer*)EntryBuffer::pNewEntryBuffer(CN_ENTRYBUFFER);
   if (! m_pRowBuffer[m_iPartition]) {
     vTrace("EntryBuffer allocation failed\n"_Str);
     m_eErrorCode = EC_LOW_BUFFERS;

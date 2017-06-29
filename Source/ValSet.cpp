@@ -67,7 +67,7 @@ void ValSet::vAppend(Str*& pCursor, Value* pValue)
     PtrVal* pPtrVal = _pPtrVal(pValue);
     
     if (pPtrVal->pPtr() &&
-        CN_ROWBUFFER == ((Object*)pPtrVal->pPtr())->eClass()) {
+        CN_ENTRYBUFFER == ((Object*)pPtrVal->pPtr())->eClass()) {
       m_pRowBuffer = (EntryBuffer*)pPtrVal->pPtr();
       m_iRowBufferBytes = m_pRowBuffer->nUsedBytes();
       
@@ -157,7 +157,7 @@ bool ValSet::bExtractValue(Str*& pCursor, eCN& eClassNo, Value*& pValue)
   if (CN_PTRVAL == pValue->eClass()) {
     
     if ((i8)C_ROWBUFFER_MARKER == _pPtrVal(pValue)->iAsInt()) {
-      eClassNo = CN_ROWBUFFER;
+      eClassNo = CN_ENTRYBUFFER;
       return true;
     }
   }
@@ -186,7 +186,7 @@ DBobjects::EntryBuffer* ValSet::pGetRowBuffer(void)
   
   while (bExtractValue(pCursor, eClassNo, pValue)) {
     
-    if (CN_ROWBUFFER == eClassNo) {
+    if (CN_ENTRYBUFFER == eClassNo) {
       pRowBuffer = m_pRowBuffer;
       return pRowBuffer;
     }
@@ -218,7 +218,7 @@ bool ValSet::bHasRowBuffer(void)
   
   while (bExtractValue(pCursor, eClassNo, pValue)) {
     
-    if (CN_ROWBUFFER == eClassNo) {
+    if (CN_ENTRYBUFFER == eClassNo) {
       if (gbTracepoint)
         vTrace("HAS ROW BUFFER\n"_Str);
       return true;
@@ -255,7 +255,7 @@ bool ValSet::bSetRowBuffer(DBobjects::EntryBuffer* pRowBuffer)
   
   while (bExtractValue(pCursor, eClassNo, pValue)) {
     
-    if (CN_ROWBUFFER == eClassNo) {
+    if (CN_ENTRYBUFFER == eClassNo) {
       PtrVal* pPtrVal = (PtrVal*)pValue;
       //vTrace("SETTING ROW BUFFER\n"_Str);
       m_pRowBuffer = pRowBuffer;

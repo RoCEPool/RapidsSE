@@ -53,6 +53,7 @@ pDUMPFUN *gpDump[]
   /* 20 */ &Dump::vInvalid,         // CN_DIR
   
   /* 21 */ &Dump::vDummy,           // CN_ENTRY
+  /*    */ &Dump::vDummy,           // CN_ENTRYBUFFER
   /*    */ &Dump::vInvalid,         // CN_ENTRYVEC
   
   /* 22 */ &Dump::vInvalid,         // CN_FILE
@@ -68,7 +69,6 @@ pDUMPFUN *gpDump[]
   /* 29 */ &HeapBuffer::vDump,      // CN_HEAPBUFFER
   
   /* 30 */ &Dump::vDummy,           // CN_INDEX
-  /* 31 */ &Dump::vDummy,           // CN_INDEXBUFFER
   /*    */ &Dump::vDummy,           // CN_INDEXDATA
   /*    */ &Dump::vDummy,           // CN_IDXCOLVEC
   /*    */ &Dump::vDummy,           // CN_IDXDATAVEC
@@ -215,6 +215,7 @@ i8 giClassSize[]
   /* 20 */ sizeof(Dir),                // CN_DIR
   
   /* 21 */ sizeof(Entry),              // CN_ENTRY
+  /*    */ 0,                          // CN_ENTRYBUFFER
   /* 22 */ sizeof(EntryVec),           // CN_ENTRYVEC
   
   /* 22 */ sizeof(File),               // CN_FILE
@@ -230,7 +231,6 @@ i8 giClassSize[]
   /* 29 */ sizeof(HeapBuffer),         // CN_HEAPBUFFER
   
   /* 30 */ sizeof(Index),              // CN_INDEX
-  /* 31 */ 0,                          // CN_INDEXBUFFER
   /* 31 */ sizeof(IndexData),          // CN_INDEXDATA
   /*    */ sizeof(IdxColVec),          // CN_IDXCOLVEC
   /*    */ sizeof(IdxDataVec),         // CN_IDXDATAVEC
@@ -377,6 +377,7 @@ eHT geWhichHeap[]
   /* 20 */ HT_SMALL,   // CN_DIR
 
   /* 21 */ HT_INVALID, // CN_ENTRY
+  /*    */ HT_LARGE,   // CN_ENTRYBUFFER
   /*    */ HT_INVALID, // CN_ENTRYVEC
   
   /* 22 */ HT_SMALL,   // CN_FILE
@@ -392,7 +393,6 @@ eHT geWhichHeap[]
   /* 31 */ HT_LARGE,   // CN_HEAPBUFFER
   
   /* 32 */ HT_INVALID, // CN_INDEX
-  /* 33 */ HT_LARGE,   // CN_INDEXBUFFER
   /* 33 */ HT_SMALL,   // CN_INDEXDATA
   /*    */ HT_MEDIUM,  // CN_IDXCOLVEC
   /*    */ HT_SMALL,   // CN_IDXDATAVEC

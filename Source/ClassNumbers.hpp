@@ -51,6 +51,7 @@ namespace Base
     /* 33 */ CN_DIR,
   
     /* 34 */ CN_ENTRY,
+    /*    */ CN_ENTRYBUFFER,
     /* 35 */ CN_ENTRYVEC,
     
     /* 36 */ CN_FILE,
@@ -66,7 +67,6 @@ namespace Base
     /* 44 */ CN_HEAPBUFFER,
     
     /* 45 */ CN_INDEX,
-    /* 46 */ CN_INDEXBUFFER,
     /* 47 */ CN_INDEXDATA,
     /* 48 */ CN_IDXCOLVEC,
     /* 49 */ CN_IDXDATAVEC,
@@ -214,6 +214,7 @@ namespace Base
     /* 20 */ "DIR"_Str,
     
     /* 21 */ "ENTRY"_Str,
+    /*    */ "ENTRYBUFFER"_Str,
     /*    */ "ENTRYVEC"_Str,
     /* 22 */ "FILE"_Str,
     /* 23 */ "FREEBUFFER"_Str,
@@ -228,7 +229,6 @@ namespace Base
     /* 29 */ "HEAPBUFFER"_Str,
     
     /* 30 */ "INDEX"_Str,
-    /* 31 */ "INDEXBUFFER"_Str,
     /*    */ "INDEXDATA"_Str,
     /*    */ "IDXCOLVEC"_Str,
     /*    */ "IDXDATAVEC"_Str,

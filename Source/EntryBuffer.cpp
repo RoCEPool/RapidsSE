@@ -13,8 +13,7 @@ EntryBuffer* DBobjects::_pEntryBuffer(void* aAddr)
 {
   EntryBuffer* pEntryBuffer = reinterpret_cast<EntryBuffer*>(aAddr);
   
-  RASSERT( !pEntryBuffer || CN_ROWBUFFER == pEntryBuffer->eClass()
-                         || CN_INDEXBUFFER == pEntryBuffer->eClass() );
+  RASSERT( !pEntryBuffer || CN_ENTRYBUFFER == pEntryBuffer->eClass());
   
   return pEntryBuffer;
 }
@@ -25,7 +24,7 @@ EntryBuffer* DBobjects::_pEntryBuffer(void* aAddr)
 void* EntryBuffer::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  Buffer* pBuffer = (Buffer*)Heap::pAllocate(CN_ROWBUFFER);
+  Buffer* pBuffer = (Buffer*)Heap::pAllocate(CN_ENTRYBUFFER);
   
   return pBuffer;
 }
@@ -54,27 +53,27 @@ void EntryBuffer::operator delete(void* pRowBufferAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 EntryBuffer::EntryBuffer(void)
-: Buffer(CN_ROWBUFFER)
+: Buffer(CN_ENTRYBUFFER)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   m_pPrevBuffer = nullptr;
   m_pNextBuffer = nullptr;
   m_bIsLast     = false;
   //m_xWsp
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  _checkInitialised_(CN_ROWBUFFER);
+  _checkInitialised_(CN_ENTRYBUFFER);
 }
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 EntryBuffer::EntryBuffer(i8 iDataBytes)
-: Buffer(CN_ROWBUFFER)
+: Buffer(CN_ENTRYBUFFER)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   m_xWsp.vUsed(iDataBytes);
   
@@ -84,9 +83,9 @@ EntryBuffer::EntryBuffer(i8 iDataBytes)
   
   //m_xWsp
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  _checkInitialised_(CN_ROWBUFFER);
+  _checkInitialised_(CN_ENTRYBUFFER);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -94,7 +93,7 @@ EntryBuffer::EntryBuffer(i8 iDataBytes)
 /*----------------------------------------------------------------------------*/
 EntryBuffer::~EntryBuffer(void)
 {
-  //_precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
+  //_precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -130,7 +129,7 @@ EntryBuffer* EntryBuffer::pNewEntryBuffer(eCN eClassNo)
     return nullptr;
   
   EntryBuffer* pEntryBuffer =
-    reinterpret_cast<EntryBuffer*>(Heap::pAllocate(CN_ROWBUFFER));
+    reinterpret_cast<EntryBuffer*>(Heap::pAllocate(CN_ENTRYBUFFER));
   
   if (! pEntryBuffer)
     return nullptr;
@@ -145,7 +144,7 @@ EntryBuffer* EntryBuffer::pNewEntryBuffer(eCN eClassNo)
 /*----------------------------------------------------------------------------*/
 eBD EntryBuffer::eDurability(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   return m_eDurability;
 }
@@ -155,7 +154,7 @@ eBD EntryBuffer::eDurability(void)
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vDurability(eBD eDurability)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   m_eDurability = eDurability;
 }
@@ -185,7 +184,7 @@ EntryBuffer* EntryBuffer::pNextBuffer(void)
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vNextBuffer(EntryBuffer* pNextBuffer)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   m_pNextBuffer = pNextBuffer;
 }
@@ -195,7 +194,7 @@ void EntryBuffer::vNextBuffer(EntryBuffer* pNextBuffer)
 /*----------------------------------------------------------------------------*/
 EntryBuffer* EntryBuffer::pPrevBuffer(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   return m_pPrevBuffer;
 }
@@ -205,7 +204,7 @@ EntryBuffer* EntryBuffer::pPrevBuffer(void)
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vPrevBuffer(EntryBuffer* pPrevBuffer)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   m_pPrevBuffer = pPrevBuffer;
 }
@@ -219,8 +218,8 @@ void EntryBuffer::vPrevBuffer(EntryBuffer* pPrevBuffer)
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vDump(eCN eClass, Object* pObject, Str* aTab)
 {
-  ASSERT(eClass == CN_ROWBUFFER);
-  ASSERT(pObject->eClass() == CN_ROWBUFFER);
+  ASSERT(eClass == CN_ENTRYBUFFER);
+  ASSERT(pObject->eClass() == CN_ENTRYBUFFER);
   
   EntryBuffer* pRowBuffer = reinterpret_cast<EntryBuffer*>(pObject);
   
@@ -255,7 +254,7 @@ Entry* EntryBuffer::pAllotEntry(i8 iStrLength)
   
   m_nEntries++;
   
-  _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_);_class2_(CN_INDEXBUFFER,CN_ROWBUFFER);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   return pRow;
 }
@@ -265,7 +264,7 @@ Entry* EntryBuffer::pAllotEntry(i8 iStrLength)
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vAppendBuffer(EntryBuffer* pSrcBuffer)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   // how many bytes to be copied from arg buffer
   i8 nBytes  = pSrcBuffer->nUsedBytes();
@@ -287,7 +286,7 @@ void EntryBuffer::vAppendBuffer(EntryBuffer* pSrcBuffer)
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vCopyBuffer(EntryBuffer* pSrcBuffer)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   // how many bytes to be copied from src buffer
   i8 nBytes  = pSrcBuffer->nUsedBytes();
@@ -309,7 +308,7 @@ void EntryBuffer::vCopyBuffer(EntryBuffer* pSrcBuffer)
 /*----------------------------------------------------------------------------*/
 byte* EntryBuffer::aDataArea(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   byte* pStart = reinterpret_cast<byte*>(m_xWsp.aArea());
   
@@ -321,7 +320,7 @@ byte* EntryBuffer::aDataArea(void)
 /*----------------------------------------------------------------------------*/
 Entry* EntryBuffer::pFirstRow(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_INDEXBUFFER,CN_ROWBUFFER);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   if ( ! m_xWsp.nSize() )
     return nullptr;
@@ -336,7 +335,7 @@ Entry* EntryBuffer::pFirstRow(void)
 /*----------------------------------------------------------------------------*/
 i8 EntryBuffer::nFreeBytes(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_INDEXBUFFER,CN_ROWBUFFER);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   i8 nBytes = m_xWsp.nFree();
   
@@ -348,7 +347,7 @@ i8 EntryBuffer::nFreeBytes(void)
 /*----------------------------------------------------------------------------*/
 bool EntryBuffer::bInsertRow(EntWrk& xRowWrk, Entry** ppRow)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_INDEXBUFFER,CN_ROWBUFFER);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   i8 nBytes = Entry::nBytesRequired(xRowWrk);
   
@@ -358,7 +357,7 @@ bool EntryBuffer::bInsertRow(EntWrk& xRowWrk, Entry** ppRow)
   
   pRowEntry->vSetEntry(xRowWrk);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_INDEXBUFFER,CN_ROWBUFFER);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   *ppRow = pRowEntry;
   
@@ -370,7 +369,7 @@ bool EntryBuffer::bInsertRow(EntWrk& xRowWrk, Entry** ppRow)
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vIsLast(bool bIsLast)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_INDEXBUFFER,CN_ROWBUFFER);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   m_bIsLast = bIsLast;
 }
@@ -380,7 +379,7 @@ void EntryBuffer::vIsLast(bool bIsLast)
 /*----------------------------------------------------------------------------*/
 bool EntryBuffer::bIsLast(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_INDEXBUFFER,CN_ROWBUFFER);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   return m_bIsLast;
 }
@@ -390,7 +389,7 @@ bool EntryBuffer::bIsLast(void)
 /*----------------------------------------------------------------------------*/
 Entry* EntryBuffer::pNextRow(Entry* pCurr)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_INDEXBUFFER,CN_ROWBUFFER);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   i8 nBytes = pCurr->nSizeEntry();
   
@@ -407,13 +406,13 @@ Entry* EntryBuffer::pNextRow(Entry* pCurr)
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vRowCount(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   m_nEntries = 0;
   for (Entry* pRow = pFirstRow(); pRow; pRow = pNextRow(pRow))
     m_nEntries++;
   
-  _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_,CN_ROWBUFFER);
+  _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_,CN_ENTRYBUFFER);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -421,7 +420,7 @@ void EntryBuffer::vRowCount(void)
 /*----------------------------------------------------------------------------*/
 i8 EntryBuffer::nUsedBytes(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   i8 nBytes = m_xWsp.nUsed();
   
@@ -447,9 +446,9 @@ extern i8   gnIndexOffsets;
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 EntryBuffer::EntryBuffer(Index* pIndex, i8 nBufferLevel)
-: EntryBuffer(CN_INDEXBUFFER)
+: EntryBuffer(CN_ENTRYBUFFER)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   m_pIndex       = pIndex;
   m_nBufferLevel = nBufferLevel;
@@ -459,9 +458,9 @@ EntryBuffer::EntryBuffer(Index* pIndex, i8 nBufferLevel)
   // new the head
   vAllotHead();
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  _checkInitialised_(CN_INDEXBUFFER);
+  _checkInitialised_(CN_ENTRYBUFFER);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -477,7 +476,7 @@ EntryBuffer::EntryBuffer(Index* pIndex, i8 nBufferLevel)
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vAnalyze(s48K& sAnalysis, bool bDetailed, i8& iBuffers, i8& iEntries)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_INDEXBUFFER,CN_ROWBUFFER);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   iBuffers++;
   iEntries += (m_nEntries - 1);
@@ -498,7 +497,7 @@ void EntryBuffer::vAnalyze(s48K& sAnalysis, bool bDetailed, i8& iBuffers, i8& iE
       EntryBuffer* pEntryBuffer = pEntry->pIndexBuffer();;
       
       ASSERT(pEntryBuffer);
-      ASSERT(pEntryBuffer->eClass() == CN_INDEXBUFFER);
+      ASSERT(pEntryBuffer->eClass() == CN_ENTRYBUFFER);
       
       pEntryBuffer->vAnalyze(sAnalysis, bDetailed, iBuffers, iEntries);
       
@@ -520,7 +519,7 @@ i8 EntryBuffer::nBufferLevel(void)
 /*----------------------------------------------------------------------------*/
 i8 EntryBuffer::iDecile(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_INDEXBUFFER,CN_ROWBUFFER);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   i8 iDecile;
   
@@ -538,7 +537,7 @@ i8 EntryBuffer::iDecile(void)
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vDump(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_INDEXBUFFER,CN_ROWBUFFER);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   // show this buffer
   vShow();
@@ -553,7 +552,7 @@ void EntryBuffer::vDump(void)
       EntryBuffer* pEntryBuffer = pEntry->pIndexBuffer();;
       
       ASSERT(pEntryBuffer);
-      ASSERT(pEntryBuffer->eClass() == CN_INDEXBUFFER);
+      ASSERT(pEntryBuffer->eClass() == CN_ENTRYBUFFER);
       
       pEntryBuffer->vDump();
     }
@@ -566,7 +565,7 @@ void EntryBuffer::vDump(void)
 /*----------------------------------------------------------------------------*/
 Entry* EntryBuffer::pFirstEntry(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_INDEXBUFFER,CN_ROWBUFFER);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   // the head entry will have been alloted during constructor
   ASSERT(m_xWsp.nUsed());
@@ -583,7 +582,7 @@ Entry* EntryBuffer::pFirstEntry(void)
 /*----------------------------------------------------------------------------*/
 bool EntryBuffer::bHasSpace(i8 nBytes)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_INDEXBUFFER,CN_ROWBUFFER);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   i8 iFree = m_xWsp.nFree();
   
@@ -605,7 +604,7 @@ bool EntryBuffer::bHasSpace(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 Entry* EntryBuffer::pHead(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_INDEXBUFFER,CN_ROWBUFFER);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   // the head entry will have been alloted during constructor
   ASSERT(m_xWsp.nUsed());
@@ -621,7 +620,7 @@ Entry* EntryBuffer::pHead(void)
 /*----------------------------------------------------------------------------*/
 EntryBuffer* EntryBuffer::pHigherLevel(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   return (EntryBuffer*)m_pHigherLevel;
 }
@@ -631,7 +630,7 @@ EntryBuffer* EntryBuffer::pHigherLevel(void)
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vHigherLevel(EntryBuffer* pHigherLevel)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   //ASSERT( ! m_pHigherLevel);
   
@@ -643,7 +642,7 @@ void EntryBuffer::vHigherLevel(EntryBuffer* pHigherLevel)
 /*----------------------------------------------------------------------------*/
 Index* EntryBuffer::pIndex(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   return m_pIndex;
 }
@@ -667,7 +666,7 @@ void EntryBuffer::vBufferCount(i8& nBuffers)
       EntryBuffer* pEntryBuffer = pEntry->pIndexBuffer();;
       
       ASSERT(pEntryBuffer);
-      ASSERT(pEntryBuffer->eClass() == CN_INDEXBUFFER);
+      ASSERT(pEntryBuffer->eClass() == CN_ENTRYBUFFER);
       
       pEntryBuffer->vBufferCount(nBuffers);
       
@@ -680,7 +679,7 @@ void EntryBuffer::vBufferCount(i8& nBuffers)
 /*----------------------------------------------------------------------------*/
 bool EntryBuffer::bInsert(EntWrk& xEntWrk)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   //vTrace("Inserting key:\n"_Str);
   //xKeyWrk.vShow();
@@ -793,7 +792,7 @@ Entry* EntryBuffer::pNextEntry(Entry* pEntry)
 /*----------------------------------------------------------------------------*/
 Entry* EntryBuffer::pPosition(KeyWrk& xKeyWrk, eJC eJuxtaCompare)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   Entry* pEntry;
   bool bIsEqual = false;
@@ -811,7 +810,7 @@ Entry* EntryBuffer::pPosition(KeyWrk& xKeyWrk, eJC eJuxtaCompare)
 /*----------------------------------------------------------------------------*/
 EntryBuffer* EntryBuffer::pPositionLevel(KeyWrk& xKeyWrk, eJC eJuxtaCompare, i8 iLevel)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   EntryBuffer* pEntryBuffer = this;
   
@@ -831,7 +830,7 @@ EntryBuffer* EntryBuffer::pPositionLevel(KeyWrk& xKeyWrk, eJC eJuxtaCompare, i8 
     // get the index buffer of the entry
     pEntryBuffer = pEntry->pIndexBuffer();
     ASSERT(pEntryBuffer);
-    ASSERT(pEntryBuffer->eClass() == CN_INDEXBUFFER);
+    ASSERT(pEntryBuffer->eClass() == CN_ENTRYBUFFER);
   }
   
   return pEntryBuffer;
@@ -842,7 +841,7 @@ EntryBuffer* EntryBuffer::pPositionLevel(KeyWrk& xKeyWrk, eJC eJuxtaCompare, i8 
 /*----------------------------------------------------------------------------*/
 bool EntryBuffer::bRemove(Key* aKey)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   return false;
 }
@@ -885,7 +884,7 @@ void EntryBuffer::vShow(void)
 #ifndef NEW_SPLIT
 EntryBuffer* EntryBuffer::pSplitBuffer(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   EntryVec xPriorVec;
   
@@ -965,7 +964,7 @@ EntryBuffer* EntryBuffer::pSplitBuffer(void)
 #else //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 EntryBuffer* EntryBuffer::pSplitBuffer(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   EntryVec xPriorVec;
   
@@ -1049,7 +1048,7 @@ EntryBuffer* EntryBuffer::pSplitBuffer(void)
 /*----------------------------------------------------------------------------*/
 bool EntryBuffer::bVerify(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    
@@ -1164,7 +1163,7 @@ bool EntryBuffer::bVerify(void)
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vTruncate(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   if (m_nBufferLevel != 0) {
     
@@ -1176,7 +1175,7 @@ void EntryBuffer::vTruncate(void)
       EntryBuffer* pEntryBuffer = pEntry->pIndexBuffer();;
       
       ASSERT(pEntryBuffer);
-      ASSERT(pEntryBuffer->eClass() == CN_INDEXBUFFER);
+      ASSERT(pEntryBuffer->eClass() == CN_ENTRYBUFFER);
       pEntryBuffer->vTruncate();
     }
   }
@@ -1215,7 +1214,7 @@ void EntryBuffer::vAdjustOffsets(Entry* pEntry, i8 nAdjustAmount)
 /*----------------------------------------------------------------------------*/
 Entry* EntryBuffer::pAllotEntry(i8 nBytes, i8 nOffsets, Entry* aAfterEntry)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   // there should be enough space for the new entry
   if (m_xWsp.nFree() < nBytes)
@@ -1255,7 +1254,7 @@ Entry* EntryBuffer::pAllotEntry(i8 nBytes, i8 nOffsets, Entry* aAfterEntry)
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vAllotHead(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   // must be the first item in wsp
   ASSERT( ! m_xWsp.nUsed() );
@@ -1278,7 +1277,7 @@ void EntryBuffer::vAllotHead(void)
 /*----------------------------------------------------------------------------*/
 i8 EntryBuffer::iCopyEntries(EntryBuffer* pFromBuffer, Entry* aFromEntry)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   i8 nBufferLevel = pFromBuffer->nBufferLevel();
   
@@ -1358,7 +1357,7 @@ i8 EntryBuffer::iCopyEntries(EntryBuffer* pFromBuffer, Entry* aFromEntry)
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vDumpPrior(Entry* xPriorVec[])
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   for (on nOffsetNo; nOffsetNo.bInRange(); nOffsetNo++) {
     i8 iLevel = *nOffsetNo + 1;
@@ -1373,7 +1372,7 @@ void EntryBuffer::vDumpPrior(Entry* xPriorVec[])
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vFixHigherLevel(Entry* aNewEntry)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   /*
    
@@ -1453,7 +1452,7 @@ void EntryBuffer::vFixHigherLevel(Entry* aNewEntry)
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vReplace(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   // get the size of the old key
   u8 uOldKeySize = xOldKeyWrk.nWspUsed();
@@ -1480,7 +1479,7 @@ void EntryBuffer::vReplace(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk)
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vReplaceEqualKey(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    The old and new key are the same size, just change the key in the entry
@@ -1514,7 +1513,7 @@ void EntryBuffer::vReplaceEqualKey(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk)
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vReplaceLargerKey(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   
   /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1593,7 +1592,7 @@ void EntryBuffer::vReplaceLargerKey(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk)
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vReplaceSmallereKey(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   /*
    The new key is shorter than the old key
@@ -1666,7 +1665,7 @@ void EntryBuffer::vReplaceSmallereKey(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk)
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vFixPriorOffset(EntryVec* pPriorVec, Entry* aNewEntry)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   //vTrace("PRIOR VECTOR BEFORE FIXING\n"_Str);
   //vDumpPrior(xPriorVec);
@@ -1708,7 +1707,7 @@ void EntryBuffer::vFixPriorOffset(EntryVec* pPriorVec, Entry* aNewEntry)
 /*----------------------------------------------------------------------------*/
 Entry* EntryBuffer::pGetEntry(i8 iEntryNo)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   // start with the head
   Entry* pSplitEntry = pHead();
@@ -1734,7 +1733,7 @@ Entry* EntryBuffer::pGetEntry(i8 iEntryNo)
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vMoveLeft(void* aDst, i8 nBytes)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   /*
    
@@ -1783,7 +1782,7 @@ void EntryBuffer::vMoveLeft(void* aDst, i8 nBytes)
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vMoveRight(void* aSrc, i8 nBytes)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   /*
    
@@ -1838,7 +1837,7 @@ void EntryBuffer::vMoveRight(void* aSrc, i8 nBytes)
 /*----------------------------------------------------------------------------*/
 Entry* EntryBuffer::pPosition(Key* aGivenKey, eJC eJuxtaCompare, EntryVec* pPriorVec, bool& bIsEqual)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   /*
    * positioning is based on eJuxtaCompare
@@ -1920,7 +1919,7 @@ Entry* EntryBuffer::pPosition(Key* aGivenKey, eJC eJuxtaCompare, EntryVec* pPrio
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vPriorVec(Entry* pEntry, EntryVec* pPriorVec)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   ln nLevel;
   
@@ -1952,7 +1951,7 @@ void EntryBuffer::vPriorVec(Entry* pEntry, EntryVec* pPriorVec)
 /*----------------------------------------------------------------------------*/
 Entry* EntryBuffer::pRightEntry(Entry* pEntry, ln nLevelNo)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_INDEXBUFFER,CN_ROWBUFFER);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   Entry* pRightEntry;
   
@@ -2002,7 +2001,7 @@ Entry* EntryBuffer::pRightEntry(Entry* pEntry, ln nLevelNo)
 /*----------------------------------------------------------------------------*/
 i8 EntryBuffer::iToEndOffsetAbs(Entry* pEntry)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_INDEXBUFFER,CN_ROWBUFFER);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   i8 iOffset = nSub(pEntry,m_xWsp.aArea());
   
@@ -2016,7 +2015,7 @@ i8 EntryBuffer::iToEndOffsetAbs(Entry* pEntry)
 /*----------------------------------------------------------------------------*/
 i8 EntryBuffer::iToOffsetAbs(Entry* pEntry)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_INDEXBUFFER,CN_ROWBUFFER);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   i8 iOffset = nSub(pEntry,m_xWsp.aArea());
   
@@ -2030,7 +2029,7 @@ i8 EntryBuffer::iToOffsetAbs(Entry* pEntry)
 /*----------------------------------------------------------------------------*/
 i8 EntryBuffer::iToRightOffsetAbs(Entry* pEntry, on nOffsetNo)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_INDEXBUFFER,CN_ROWBUFFER);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_); 
   
   i8 iEntryOffsetAbs = iToOffsetAbs(pEntry);
   i8 iRightOffset = pEntry->iRightOffset(nOffsetNo);
@@ -2049,7 +2048,7 @@ i8 EntryBuffer::iToRightOffsetAbs(Entry* pEntry, on nOffsetNo)
 /*----------------------------------------------------------------------------*/
 u8 EntryBuffer::uOffsetBetween(Entry* pEntryA, Entry* pEntryB)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   u8 uOffset = 0;
   

@@ -496,7 +496,7 @@ void Task::vAddConstants(void)
   /* 49 */ vAddConstant("CN_ROW"_Str,          CN_ROW);
   /* 50 */ vAddConstant("CN_ROWBUFFER"_Str,    CN_ROWBUFFER);
   /* 51 */ vAddConstant("CN_ROWCURSOR"_Str,    CN_ROWCURSOR);
-  /* 52 */ vAddConstant("CN_EBSTRAND"_Str,    CN_EBSTRAND);
+  /* 52 */ vAddConstant("CN_EBSTRAND"_Str,     CN_EBSTRAND);
   
   /* 54 */ vAddConstant("CN_SCANBUFFER"_Str,   CN_SCANBUFFER);
   /* 55 */ vAddConstant("CN_SCRATCH"_Str,      CN_SCRATCH);

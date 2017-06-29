@@ -124,7 +124,7 @@ void Task::vTableAppend(MP_Task mpTask)
     THROW_INVALID_DSTACK("table.append"_Str);
   
   EntryBuffer* pRowBuffer = reinterpret_cast<EntryBuffer*>(sString.iToI8());
-  ASSERT(CN_ROWBUFFER == pRowBuffer->eClass());
+  ASSERT(CN_ENTRYBUFFER == pRowBuffer->eClass());
   
   if ( ! mpTask->m_pDataStack->bPop(sString) )
     THROW_INVALID_DSTACK("table.append"_Str);
@@ -156,7 +156,7 @@ void Task::vTableAppendBuffer(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(pPtrRowBuffer) )
     THROW_INVALID_DSTACK("table.appendBuffer"_Str);
   EntryBuffer* pRowBuffer = (EntryBuffer*)_pEntryBuffer(pPtrRowBuffer);
-  ASSERT(CN_ROWBUFFER == pRowBuffer->eClass());
+  ASSERT(CN_ENTRYBUFFER == pRowBuffer->eClass());
   
   i8 iSlot = Partition::iPartitionToSlot(iPartition);
   

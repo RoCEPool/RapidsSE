@@ -352,8 +352,7 @@ void Task::vSEitfIndexBufferStore(MP_Task mpTask)
     THROW_INVALID_DSTACK("seitf.indexBuffer!"_Str);
   
   EntryBuffer* pIndexBuffer = _pEntryBuffer(pPtrIndexBuffer);
-  ASSERT(nullptr == pIndexBuffer || CN_INDEXBUFFER == pIndexBuffer->eClass() ||
-         CN_ROWBUFFER == pIndexBuffer->eClass());
+  ASSERT(nullptr == pIndexBuffer || CN_ENTRYBUFFER == pIndexBuffer->eClass());
   
   pSEitf->m_pIndexBuffer = pIndexBuffer;
   
