@@ -429,15 +429,15 @@ Table* LoaderSub::pTable(void)
 /*----------------------------------------------------------------------------*/
 /* validate row                                                               */
 /*----------------------------------------------------------------------------*/
-bool LoaderSub::bValidateRow(i8& iColumn)
+bool LoaderSub::bValidateRow(i8& i_Column)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
 
-  bool bValid = m_pTable->bValidateRow(m_aRecord,iColumn);
+  bool bValid = m_pTable->bValidateRow(m_aRecord,i_Column);
   
   if ( ! bValid ) {
     vTrace("Loader:: Invalid field %lld in record: "_Str,
-           iColumn);
+           i_Column);
     for (char* a = (char*)m_aRecord; *a && '\n' != *a; a++)
       vTrace("%c"_Str,*a);
     vTrace("\n"_Str);

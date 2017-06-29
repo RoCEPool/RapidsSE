@@ -195,12 +195,8 @@ void Int::vCopy(void* aDst, void* aSrc)
 /*----------------------------------------------------------------------------*/
 bool Int::bExtract(char** aaSrc, Int* aInteger, Column* pColumn)
 {
-  if (pColumn->iColumnNo() == -1)
-    int a = 1;
-  
   i8 iResult = 0;
-  char xBuffer[256];
-  char* aChar = xBuffer;
+  bool bNegative = false;
   
   // skip leading whitespace
   while (' ' == **aaSrc)
@@ -212,25 +208,29 @@ bool Int::bExtract(char** aaSrc, Int* aInteger, Column* pColumn)
     return true;
   }
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // test for negative
+  
+  if (**aaSrc && '-' == **aaSrc ) {
+    bNegative = true;
+    (*aaSrc)++;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // collect the csv
+  
   while (**aaSrc && '\n' != **aaSrc && '\r' != **aaSrc
            && '|' != **aaSrc && ',' != **aaSrc) {
-    if ('|' == **aaSrc)
-      return true;
     if ( ! StrLib::bIsDigit(**aaSrc) )
       return false;
-    *aChar++ = *(*aaSrc)++;
+    iResult = iResult * 10 + StrLib::iDigitToI8(**aaSrc);
+    (*aaSrc)++;
   }
-  *aChar++ = '\0';
   
-  // find first char
-  for (aChar = xBuffer; *aChar && ' ' == *aChar; aChar++)
-    ;
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // compute final result
   
-  // convert
-  iResult = atol(aChar);
-  
-  aInteger->m_iInt = iResult;
+  aInteger->m_iInt = bNegative ? - iResult : iResult;
   
   return true;
 }

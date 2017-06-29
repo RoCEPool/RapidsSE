@@ -389,13 +389,13 @@ void Task::vLoaderSubValidateRow(MP_Task mpTask)
   LoaderSub* pLoaderSub = _pLoaderSub(pObject);
   ASSERT(CN_LOADERSUB == pLoaderSub->eClass());
   
-  i8 iColumn;
-  bool bValid = pLoaderSub->bValidateRow(iColumn);
+  i8 i_Column;
+  bool bValid = pLoaderSub->bValidateRow(i_Column);
   //ASSERT(bValid);
   
 //  vTrace("vLoaderSubValidateRow: %s %lld\n"_Str,
 //         bValid ? "Valid"_Str : "NotValid"_Str,
-//         iColumn);
+//         i_Column);
   
   mpTask->m_pDataStack->vPushInt(bValid);
   

@@ -182,6 +182,7 @@ void Flt::vCopy(void* aDst, void* aSrc)
 bool Flt::bExtract(char** aaSrc, Flt* aFloat, Column* pColumn)
 {
   d8 dResult = 0.0;
+  bool bNegative = false;
   char xBuffer[256];
   char* aChar = xBuffer;
   
@@ -193,6 +194,14 @@ bool Flt::bExtract(char** aaSrc, Flt* aFloat, Column* pColumn)
   if ( ! **aaSrc || '|' == **aaSrc ) {
     aFloat->vSetNull();
     return true;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // test for negative
+  
+  if (**aaSrc && '-' == **aaSrc ) {
+    bNegative = true;
+    (*aaSrc)++;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -216,9 +225,12 @@ bool Flt::bExtract(char** aaSrc, Flt* aFloat, Column* pColumn)
   // terminate
   *aChar++ = '\0';
   
-  // convert
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // compute final result
+  
   dResult = atof(xBuffer);
-  aFloat->m_dFlt = dResult;
+  
+  aFloat->m_dFlt = bNegative ? - dResult : dResult;
   
   return true;
 }
