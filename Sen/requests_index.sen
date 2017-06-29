@@ -375,7 +375,7 @@ timer: idxSelectTimer
   // assert no seitf.table
   task::this task.seitf@ seitf.table@ not assert
 
-
+  pPlanner planner.delete
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // restore path
