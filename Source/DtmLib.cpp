@@ -25,23 +25,6 @@ i8 DtmLib::nCopy(eCN eClass, void* pDst, void* pSrc)
 }
 
 /*----------------------------------------------------------------------------*/
-/* copy datum                                                                 */
-/*----------------------------------------------------------------------------*/
-void DtmLib::vCopy(eCN eClass, void* pDst, void* pSrc)
-{
-  switch (eClass) {
-      
-    case CN_INTVAL: Int::vCopy(pDst,pSrc); return;
-      
-    case CN_STRVAL: Vch::vCopy(pDst,pSrc); return;
-      
-    default:
-      vFatal("ValLib::vCopyDatum: Invalid copy: eClass %lld\n"_Str,
-             eClass);
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /* s-print                                                                    */
 /*----------------------------------------------------------------------------*/
 void DtmLib::vCopy(eDM eDatum, void* aDst, void* aSrc, DBobjects::Column* pColumn)
