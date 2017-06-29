@@ -31,6 +31,7 @@ namespace DBobjects
   {
   protected:
     eBD   m_eDurability; // buffer durability
+    bool  m_bIsLast;
     i8    m_nEntries;    // number of entries in this buffer
   
     EntryBuffer* m_pPrevBuffer;  // prev buffer
@@ -80,6 +81,8 @@ namespace DBobjects
     Entry*     pFirstRow(void);
     i8         nFreeBytes(void);
     bool       bInsertRow(EntWrk& xEntRow, Entry** ppRow);
+    void       vIsLast(bool bIsLast);
+    bool       bIsLast(void);
     Entry*     pNextRow(Entry* pCurrRow);
     void       vRowCount(void);
     i8         nUsedBytes(void);

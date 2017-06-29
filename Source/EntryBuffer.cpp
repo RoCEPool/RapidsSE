@@ -60,6 +60,7 @@ EntryBuffer::EntryBuffer(void)
   
   m_pPrevBuffer = nullptr;
   m_pNextBuffer = nullptr;
+  m_bIsLast     = false;
   //m_xWsp
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
@@ -79,6 +80,7 @@ EntryBuffer::EntryBuffer(i8 iDataBytes)
   
   m_pPrevBuffer = nullptr;
   m_pNextBuffer = nullptr;
+  m_bIsLast     = false;
   
   //m_xWsp
   
@@ -105,6 +107,7 @@ EntryBuffer::EntryBuffer(eCN eClassNo)
   
   m_eDurability = BD_TEMPORARY;
   m_nEntries    = 0;
+  m_bIsLast     = false;
   
   m_pPrevBuffer  = nullptr;
   m_pNextBuffer  = nullptr;
@@ -238,7 +241,7 @@ void EntryBuffer::vDump(eCN eClass, Object* pObject, Str* aTab)
 /*----------------------------------------------------------------------------*/
 Entry* EntryBuffer::pAllotEntry(i8 iStrLength)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
   i8 nBytesRequired = Entry::nBytesRequired(0,0,iStrLength);
   
@@ -252,7 +255,7 @@ Entry* EntryBuffer::pAllotEntry(i8 iStrLength)
   
   m_nEntries++;
   
-  _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_,CN_ROWBUFFER);
+  _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_);_class2_(CN_INDEXBUFFER,CN_ROWBUFFER);
   
   return pRow;
 }
@@ -333,7 +336,7 @@ Entry* EntryBuffer::pFirstRow(void)
 /*----------------------------------------------------------------------------*/
 i8 EntryBuffer::nFreeBytes(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_INDEXBUFFER,CN_ROWBUFFER);
   
   i8 nBytes = m_xWsp.nFree();
   
@@ -345,7 +348,7 @@ i8 EntryBuffer::nFreeBytes(void)
 /*----------------------------------------------------------------------------*/
 bool EntryBuffer::bInsertRow(EntWrk& xRowWrk, Entry** ppRow)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_INDEXBUFFER,CN_ROWBUFFER);
   
   i8 nBytes = Entry::nBytesRequired(xRowWrk);
   
@@ -355,11 +358,31 @@ bool EntryBuffer::bInsertRow(EntWrk& xRowWrk, Entry** ppRow)
   
   pRowEntry->vSetEntry(xRowWrk);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_,CN_ROWBUFFER);
+  _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_INDEXBUFFER,CN_ROWBUFFER);
   
   *ppRow = pRowEntry;
   
   return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set buffer is last                                                         */
+/*----------------------------------------------------------------------------*/
+void EntryBuffer::vIsLast(bool bIsLast)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_INDEXBUFFER,CN_ROWBUFFER);
+  
+  m_bIsLast = bIsLast;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get if buffer is last                                                      */
+/*----------------------------------------------------------------------------*/
+bool EntryBuffer::bIsLast(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_INDEXBUFFER,CN_ROWBUFFER);
+  
+  return m_bIsLast;
 }
 
 /*----------------------------------------------------------------------------*/
