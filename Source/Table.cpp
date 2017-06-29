@@ -161,7 +161,7 @@ void Table::vAddIndex(Index* pIndex)
   m_pIdxVec->vAdd(pIndex);
   
   // create an IndexData for the index in each partition
-  for (i8 iPartition = 0; iPartition < gpGrid->m_nSlots; iPartition++) {
+  for (i8 iPartition = 0; iPartition < gpGrid->m_nPartitions; iPartition++) {
     Partition* pPartition = this->pPartition(iPartition);
     pPartition->vAddIndex(new IndexData(pIndex));
   }
