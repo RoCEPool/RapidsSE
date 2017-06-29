@@ -9,8 +9,7 @@ namespace Values
                  public Flt
   {
   private:
-    d8 m_dFlt;
-    
+
   public:
     void* operator new(size_t);
     

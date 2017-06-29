@@ -200,8 +200,10 @@ void KeyWrk::vAddDatum(ValWrk& xValWrk, Column* pCol)
   char* pDst = m_xWsp.aLatter();
   char* pSrc;
   
+  pSrc = pAdd<char*>(xValWrk.pNestedValueSelf(),sizeof(Value));
+  
   switch(pCol->eColumnType()) {
-
+      
     case CT_BOOLEAN:
       pSrc = (char*)(_pBolVal(xValWrk.pNestedValueSelf())->aInt());
       nBytes = Bol::nCopy((char*)pDst,(char*)pSrc);
