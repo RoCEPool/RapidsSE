@@ -205,6 +205,7 @@ namespace Tasks
     void vAddPrimitives_Dstack(void);
     void vAddPrimitives_Encode(void);
     void vAddPrimitives_Entry(void);
+    void vAddPrimitives_EntryBuffer(void);
     void vAddPrimitives_Enter(void);
     void vAddPrimitives_Env(void);
     void vAddPrimitives_Error(void);
@@ -213,7 +214,6 @@ namespace Tasks
     void vAddPrimitives_Flow(void);
     void vAddPrimitives_Grid(void);
     void vAddPrimitives_Index(void);
-    void vAddPrimitives_IndexBuffer(void);
     void vAddPrimitives_Input(void);
     void vAddPrimitives_Int(void);
     void vAddPrimitives_Loader(void);
@@ -509,6 +509,16 @@ namespace Tasks
     static void vEntryMatches(MP_Task mpTask);
     static void vEntryRow(MP_Task mpTask);
 
+    // entry buffer
+    static void vEntryBufferCreate(MP_Task mpTask);
+    static void vEntryBufferDelete(MP_Task mpTask);
+    static void vEntryBufferFirstEntry(MP_Task mpTask);
+    static void vEntryBufferNextBuffer(MP_Task mpTask);
+    static void vEntryBufferInsertRow(MP_Task mpTask);
+    static void vEntryBufferIsLastFetch(MP_Task mpTask);
+    static void vEntryBufferIsLastStore(MP_Task mpTask);
+    static void vEntryBufferNextEntry(MP_Task mpTask);
+    
     // env
     static void vEnvGet(MP_Task mpTask);
     
@@ -588,16 +598,6 @@ namespace Tasks
     static void vIndexTruncate(MP_Task mpTask);
     static void vIndexUpper(MP_Task mpTask);
     static void vIndexVisualize(MP_Task mpTask);
-
-    // index buffer
-    static void vIndexBufferCreate(MP_Task mpTask);
-    static void vIndexBufferDelete(MP_Task mpTask);
-    static void vIndexBufferFirstEntry(MP_Task mpTask);
-    static void vIndexBufferNextBuffer(MP_Task mpTask);
-    static void vIndexBufferInsertRow(MP_Task mpTask);
-    static void vIndexBufferIsLastFetch(MP_Task mpTask);
-    static void vIndexBufferIsLastStore(MP_Task mpTask);
-    static void vIndexBufferNextEntry(MP_Task mpTask);
 
     // input
     static void vInputAccept(MP_Task mpTask);

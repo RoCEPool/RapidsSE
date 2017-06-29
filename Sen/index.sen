@@ -335,7 +335,7 @@ tp: makingIndex
 
   // create a temporary index buffer for the results
  "Creating a tempIndexBuffer" .
-  indexPtr indexBuffer::create to tempEntryBuffer
+  indexPtr entryBuffer::create to tempEntryBuffer
 
   indexBuffer not if
 
@@ -349,14 +349,14 @@ tp: makingIndex
 
       // mark this buffer as the last buffer
       "Marking tempIndexBuffer as last buffer" .
-      tempEntryBuffer indexBuffer.isLast!
+      tempEntryBuffer entryBuffer.isLast!
 
       "Appending tempIndexBuffer to buffer queue" .
       tempEntryBuffer seitf seitf.bufferQueue@ queue.append
       exit
     then
   else
-    indexBuffer indexBuffer.nextBuffer to indexBuffer
+    indexBuffer entryBuffer.nextBuffer to indexBuffer
   then
 
   indexBuffer if
@@ -369,7 +369,7 @@ tp: makingIndex
 
         // insert row from entry in temporary buffer
         "Inserting row into tempIndexBuffer" .
-        indexPtr entry entry.row row.string tempEntryBuffer indexBuffer.insertRow
+        indexPtr entry entry.row row.string tempEntryBuffer entryBuffer.insertRow
 
         // check if we managed to insert the entry
         not if
@@ -379,24 +379,24 @@ tp: makingIndex
           tempEntryBuffer seitf seitf.bufferQueue@ queue.append
 
           // create another temporary index buffer for the results
-          indexPtr indexBuffer::create to tempEntryBuffer
+          indexPtr entryBuffer::create to tempEntryBuffer
 
           // insert row from entry in temporary buffer
           "Inserting row into tempIndexBuffer" .
-          indexPtr entry entry.row row.string tempEntryBuffer indexBuffer.insertRow
+          indexPtr entry entry.row row.string tempEntryBuffer entryBuffer.insertRow
           assert
 
         then
 
         // move to next entry
-        entry indexBuffer indexBuffer.nextEntry to entry
+        entry indexBuffer entryBuffer.nextEntry to entry
 
         entry not if
           // get next buffer from the current indexBuffer
-          indexBuffer indexBuffer.nextBuffer to indexBuffer
+          indexBuffer entryBuffer.nextBuffer to indexBuffer
 
           indexBuffer if
-            entry indexBuffer indexBuffer.nextEntry to entry
+            entry indexBuffer entryBuffer.nextEntry to entry
           then
         then
 
@@ -413,7 +413,7 @@ tp: makingIndex
   then
   "Marking tempIndexBuffer as last buffer" .
   // mark this buffer as the last buffer
-  tempEntryBuffer indexBuffer.isLast!
+  tempEntryBuffer entryBuffer.isLast!
 
   // put the buffer in the seitf bufferQueue
   "Appending tempIndexBuffer to buffer queue" .
@@ -486,7 +486,7 @@ tp: makingIndex
       to indexBuffer
 
       "Popped tempIndexBuffer from buffer queue" .
-      indexBuffer indexBuffer.firstEntry to entry
+      indexBuffer entryBuffer.firstEntry to entry
 
       1
       begin
@@ -507,14 +507,14 @@ tp: makingIndex
           then
           1 rowCount + to rowCount
           1
-          entry indexBuffer indexBuffer.nextEntry to entry
+          entry indexBuffer entryBuffer.nextEntry to entry
         else
 
-          indexBuffer indexBuffer.isLast@ if
+          indexBuffer entryBuffer.isLast@ if
             "Reached last buffer" .
             0 to bMore
           then
-          indexBuffer indexBuffer.delete
+          indexBuffer entryBuffer.delete
           "Deleted buffer" .
           0  // no more entries, move to next buffer
         then
@@ -585,17 +585,17 @@ tp: loadIndexes
 
     // we may not find an entry , so need to move to next buffer
     else
-      entry indexBuffer indexBuffer.nextEntry to entry
+      entry indexBuffer entryBuffer.nextEntry to entry
     then
 
     entry not if
       // get next entry from the current entry of indexBuffer
-      indexBuffer indexBuffer.nextBuffer to indexBuffer
+      indexBuffer entryBuffer.nextBuffer to indexBuffer
 
       indexBuffer not if
         0 to entry
       else
-        entry indexBuffer indexBuffer.nextEntry to entry
+        entry indexBuffer entryBuffer.nextEntry to entry
       then
     then
 
@@ -713,19 +713,19 @@ tp: loadIndexes
       lower indexBuffer indexPtr index.position
       to entry
     else
-      entry indexBuffer indexBuffer.nextEntry to entry
+      entry indexBuffer entryBuffer.nextEntry to entry
     then
 
     entry not if
 
       // we may not find an entry , so need to move to next buffer
-      indexBuffer indexBuffer.nextBuffer to indexBuffer
+      indexBuffer entryBuffer.nextBuffer to indexBuffer
 
       indexBuffer not if
         0 to entry
       else
         // get next entry from the current indexBuffer
-        entry indexBuffer indexBuffer.nextEntry to entry
+        entry indexBuffer entryBuffer.nextEntry to entry
       then
     then
 
@@ -751,21 +751,21 @@ tp: loadIndexes
 
     entry not if
       // position in the index buffer
-      indexBuffer indexBuffer.firstEntry
+      indexBuffer entryBuffer.firstEntry
       to entry
     else
       // get next entry from the current indexBuffer
-      entry indexBuffer indexBuffer.nextEntry to entry
+      entry indexBuffer entryBuffer.nextEntry to entry
     then
 
     entry not if
       // we may not find an entry , so need to move to next buffer
-      indexBuffer indexBuffer.nextBuffer to indexBuffer
+      indexBuffer entryBuffer.nextBuffer to indexBuffer
 
       indexBuffer not if
         0 to entry
       else
-        entry indexBuffer indexBuffer.nextEntry to entry
+        entry indexBuffer entryBuffer.nextEntry to entry
       then
     then
 
@@ -1023,21 +1023,21 @@ tp: loadIndexes
 
     entry not if
      // position in the index buffer
-     indexBuffer indexBuffer.firstEntry
+     indexBuffer entryBuffer.firstEntry
      to entry
    else
       // get next entry from the current indexBuffer
-      entry indexBuffer indexBuffer.nextEntry to entry
+      entry indexBuffer entryBuffer.nextEntry to entry
     then
 
     entry not if
       // we may not find an entry , so need to move to next buffer
-      indexBuffer indexBuffer.nextBuffer to indexBuffer
+      indexBuffer entryBuffer.nextBuffer to indexBuffer
 
       indexBuffer not if
         0 to entry
       else
-        entry indexBuffer indexBuffer.nextEntry to entry
+        entry indexBuffer entryBuffer.nextEntry to entry
       then
     then
 
