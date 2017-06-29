@@ -497,16 +497,16 @@ tp: makingIndex
           then
           1 rowCount + to rowCount
           entry indexBuffer entryBuffer.nextEntry to entry
-      repeat
+      repeat  // end of second while
 
       indexBuffer entryBuffer.isLast@ if
         "Reached last buffer" .
         0
       else
-        indexBuffer entryBuffer.delete
-        "Deleted buffer" .
         1  // no more entries, move to next buffer
       then
+      indexBuffer entryBuffer.delete
+      "Deleted buffer" .
 
     repeat  // end of first while
   loop
@@ -552,9 +552,202 @@ tp: loadIndexes
 ;
 
 /*----------------------------------------------------------------------------*/
+/* position key select cursor for table (called by lowerSelectIndex request)  */
+/*----------------------------------------------------------------------------*/
+: lowerSelectIdxTask ( ^indexPtr "<lower>" seitf -- )
+
+  0 0 0 locals| entry tempEntryBuffer indexBuffer seitf lower indexPtr |
+
+  tp: lowerSelectIdxTask
+
+  seitf task::this task.seitf!
+
+  // create a temporary index buffer for the results
+  "Creating a tempIndexBuffer" .
+  indexPtr entryBuffer::create to tempEntryBuffer
+
+  // get the indexBuffer looking for the lower key
+  lower indexPtr index.buffer ( indexBuffer )
+  to indexBuffer
+
+  // position in the index buffer at the lower key
+  lower indexBuffer indexPtr index.position
+  to entry
+
+  // did we find an entry ?
+  entry not if
+    
+    // mark this buffer as the last buffer
+    "Marking tempEntryBuffer as last buffer" .
+    tempEntryBuffer entryBuffer.isLast!
+
+    // return the empty tempEntryBuffer
+    "Appending tempEntryBuffer to buffer queue" .
+    tempEntryBuffer seitf seitf.bufferQueue@ queue.append
+
+    exit
+  then
+
+  // iterate thru the buffer till no more entries
+  begin
+  entry
+  while
+    
+    // insert row from entry in tempEntryBuffer
+    //"Inserting row into tempEntryBuffer" .
+    indexPtr entry entry.row row.string tempEntryBuffer entryBuffer.insertRow
+
+    // check if we managed to insert the entry
+    not if
+      // buffer must be full
+      // put this tempEntryBuffer in seitf bufferQueue
+      //"Inserting row into tempEntryBuffer" .
+      tempEntryBuffer seitf seitf.bufferQueue@ queue.append
+
+      // create another temporary index buffer for the results
+      "Creating a tempIndexBuffer" .
+      indexPtr entryBuffer::create to tempEntryBuffer
+
+      // insert row from entry in temporary buffer
+      //"Inserting row into tempEntryBuffer" .
+      indexPtr entry entry.row row.string tempEntryBuffer entryBuffer.insertRow
+      assert
+      then
+
+      // move to next entry in the buffer
+      entry indexBuffer entryBuffer.nextEntry to entry
+
+      entry not if
+        // get next buffer from the current indexBuffer
+        indexBuffer entryBuffer.nextBuffer to indexBuffer
+
+        indexBuffer if
+          entry indexBuffer entryBuffer.nextEntry to entry
+        then
+      then
+
+  repeat
+
+  "Marking tempEntryBuffer as last buffer" .
+  // mark this buffer as the last buffer
+  tempEntryBuffer entryBuffer.isLast!
+
+  // put the buffer in the seitf bufferQueue
+  "Appending tempEntryBuffer to buffer queue" .
+  tempEntryBuffer seitf seitf.bufferQueue@ queue.append
+;
+
+/*----------------------------------------------------------------------------*/
+/* lower select for index ( called by lower_select_index request)             */
+/*----------------------------------------------------------------------------*/
+: lowerSelectIndex ( "<lower>" "<index>" --  )
+
+  tp: lowerSelectIndex
+  //
+  // execution context:
+  //   this task will have a seitf
+  //   and the seitf will have a table
+  //
+  assert::stack_2
+
+  0 0 0 0 0 0 0 locals| bMore seitf selectTask rowCount indexBuffer entry indexPtr indexNm lower |
+
+  // increment query count
+  queryCount ++
+
+  // push indexes
+  pushIndexes assert
+
+  // find the index
+  indexNm find execute ( index^ )
+  to indexPtr
+
+  args.metadata if
+  metadata@ "metadata: %v\n" str.format .put
+  then
+
+  task::this task.seitf@ to seitf
+
+  // create the buffer queue in the seitf
+  "selectTask.queue" :queue execute task::this task.seitf@ seitf.bufferQueue!
+
+  // for each slot
+  grid.slots 0
+  do
+
+    args.metadata not if
+    I grid::toPartition "Partition: %v\n" str.format .put
+    then
+
+    // put the partition in this tasks seitf
+    I seitf seitf.partition!
+
+    // create a selectTask to execute the key select on the index for the partition
+    indexPtr lower  seitf 3 "lowerSelectIdxTask" "selectTask" spawnTask
+    to selectTask
+
+    1
+    begin
+    while  // first while
+      
+      begin
+        // attempt to pop buffer off the tasks buffer queue
+        seitf seitf.bufferQueue@  queue.pop ( value true | false )
+
+        // try again if no value
+        not while
+          task.yield
+        args.sleep thread.sleep_ms
+      repeat
+      to indexBuffer
+
+      "Popped tempEntryBuffer from buffer queue" .
+      indexBuffer entryBuffer.firstEntry to entry
+
+      begin
+        entry
+        while // second while
+          
+          //"Get an entry from the tempEntryBuffer" .
+          display@ if
+            args.metadata if
+              entry entry.embeddedRow
+              I grid::toPartition
+              "row: (%v '%v')\n" str.format .put
+            else
+              entry entry.embeddedRow "\n" str.cat .put
+            then
+          then
+          1 rowCount + to rowCount
+          entry indexBuffer entryBuffer.nextEntry to entry
+      repeat  // end of second while
+
+      indexBuffer entryBuffer.isLast@ if
+        "Reached last buffer" .
+        0
+      else
+        1  // no more entries, move to next buffer
+      then
+
+      indexBuffer entryBuffer.delete
+      "Deleted buffer" .
+    repeat  // end of first while
+  loop
+
+  // pop indexes
+  popIndexes
+
+  args.metadata if
+    rowCount seitf seitf.rowsProcessed
+  else
+    "rows selected"  rowCount "%v %v\n" str.format .put
+  then
+;
+
+/*----------------------------------------------------------------------------*/
 /* position lower select cursor for table (called by lowerSelectIndex request)*/
 /*----------------------------------------------------------------------------*/
-: lowerSelectIdx ( ^indexPtr ^indexBuffer ^entry "<lower>" -- <entry> )
+: lowerSelectIdx2 ( ^indexPtr ^indexBuffer ^entry "<lower>" -- <entry> )
 
   0 locals| row lower entry indexBuffer indexPtr |
 
@@ -576,7 +769,7 @@ tp: loadIndexes
 
     entry not if
       // get next entry from the current entry of indexBuffer
-      indexBuffer entryBuffer.nextBuffer to indexBuffer
+    indexBuffer entryBuffer.nextBuffer to indexBuffer
 
       indexBuffer not if
         0 to entry
@@ -595,7 +788,7 @@ tp: loadIndexes
 /*----------------------------------------------------------------------------*/
 /* lower select for index ( called by lower_select_index request)             */
 /*----------------------------------------------------------------------------*/
-: lowerSelectIndex ( "<lower>" "<index>" --  )
+: lowerSelectIndex2 ( "<lower>" "<index>" --  )
 
 "lowerSelectIndex (a)" .
 
@@ -645,7 +838,7 @@ tp: loadIndexes
       while
 
         indexPtr indexBuffer entry lower
-        lowerSelectIdx  ( indexPtr indexBuffer entry lower )
+        lowerSelectIdx2  ( indexPtr indexBuffer entry lower )
         to entry
         to indexBuffer
 

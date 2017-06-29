@@ -23,9 +23,6 @@ ld jCdt "../JTEST/jCdt.csv";
 
 lwrselidx jCdt jCdt_idx1 1 ;
 
-// lower bound
-fetch jCdt "jA 5 >=" ;
-
 // upper bound
 fetch jCdt "jA 5 <=" ;
 
@@ -39,6 +36,9 @@ fetch jCdt "jB 1 >=" ;
 
 // exact bound
 fetch jCdt "jA 5 ==" ;
+
+// lower bound
+fetch jCdt "jA 5 >=" ;
 
 //docol epochDump;
 /*============================================================================*/

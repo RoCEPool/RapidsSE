@@ -173,7 +173,7 @@ void Task::vEntryBufferInsertRow(MP_Task mpTask)
   EntWrk xRowWrk(rowId, xKeyWrk);
   
   xRowWrk.vData(sRow.aStr(), sRow.iLength());
-  xRowWrk.vShow(pIndexBuffer->pIndex()->pIdxColVec());
+  //xRowWrk.vShow(pIndexBuffer->pIndex()->pIdxColVec());
   Entry* pRow;
   
   if (pIndexBuffer->bInsertRow(xRowWrk, &pRow))
@@ -181,7 +181,7 @@ void Task::vEntryBufferInsertRow(MP_Task mpTask)
   else
     mpTask->m_pDataStack->vPushInt(0);
   
-  pIndexBuffer->vShow();
+  //pIndexBuffer->vShow();
   
   EXIT();
 }
