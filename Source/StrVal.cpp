@@ -409,7 +409,7 @@ bool StrVal::bEqual(Str* aArg)
 /*----------------------------------------------------------------------------*/
 i8 StrVal::iLength(void)
 {
-  _precondition_(_MAGIC_,_FOOTER_);
+  //_precondition_(_MAGIC_,_FOOTER_);
   
   return StrLib::iLength(s());
 }

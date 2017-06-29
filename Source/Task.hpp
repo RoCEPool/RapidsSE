@@ -505,6 +505,7 @@ namespace Tasks
     static void vEnterRoutine(MP_Task mpTask);
     
     // entry
+    static void vEntryEmbeddedRow(MP_Task mpTask);
     static void vEntryMatches(MP_Task mpTask);
     static void vEntryRow(MP_Task mpTask);
 
@@ -589,8 +590,12 @@ namespace Tasks
     static void vIndexVisualize(MP_Task mpTask);
 
     // index buffer
+    static void vIndexBufferCreate(MP_Task mpTask);
     static void vIndexBufferFirstEntry(MP_Task mpTask);
     static void vIndexBufferNextBuffer(MP_Task mpTask);
+    static void vIndexBufferInsertRow(MP_Task mpTask);
+    static void vIndexBufferIsLastFetch(MP_Task mpTask);
+    static void vIndexBufferIsLastStore(MP_Task mpTask);
     static void vIndexBufferNextEntry(MP_Task mpTask);
 
     // input
@@ -881,6 +886,8 @@ namespace Tasks
     // seitf
     static void vSEitfAccessPathFetch(MP_Task mpTask);
     static void vSEitfAccessPathStore(MP_Task mpTask);
+    static void vSEitfBufferQueueFetch(MP_Task mpTask);
+    static void vSEitfBufferQueueStore(MP_Task mpTask);
     static void vSEitfCount(MP_Task mpTask);
     static void vSEitfDelete(MP_Task mpTask);
     static void vSEitfDicStack(MP_Task mpTask);

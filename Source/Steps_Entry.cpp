@@ -34,6 +34,7 @@ void Task::vAddPrimitives_Entry(void)
 {
   vAddPrimitive("entry.matches"_Str, &vEntryMatches, false);
   vAddPrimitive("entry.row"_Str,     &vEntryRow,     false);
+  vAddPrimitive("entry.embeddedRow"_Str,     &vEntryEmbeddedRow,     false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -90,7 +91,7 @@ void Task::vEntryRow(MP_Task mpTask)
     THROW_INVALID_DSTACK("entry.row"_Str);
   
   Entry* pEntry = _pEntry(pPtrEntry);
-  ASSERT(CN_ENTRY == pEntry->eClass());
+  ASSERT(CN_ENTRY == pEntry->eClass() || CN_ROW == pEntry->eClass());
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrIndex) )
     THROW_INVALID_DSTACK("entry.row"_Str);
@@ -161,6 +162,34 @@ void Task::vEntryRow(MP_Task mpTask)
   mpTask->m_pDataStack->vPushObject(pRow);
 }
 #endif
+
+/*----------------------------------------------------------------------------*/
+/* entry.embeddedRow -- return row from entry                                 */
+/*----------------------------------------------------------------------------*/
+void Task::vEntryEmbeddedRow(MP_Task mpTask)
+{
+  ENTRY("vEntryEmbeddedRow"_Str);
+  
+  Object* pPtrEntry = nullptr;
+  Object* pPtrIndex = nullptr;
+  
+  if ( ! mpTask->m_pDataStack->bPop(pPtrEntry) )
+    THROW_INVALID_DSTACK("entry.embeddedRow"_Str);
+  
+  Entry* pEntry = _pEntry(pPtrEntry);
+  ASSERT(CN_ENTRY == pEntry->eClass() || CN_ROW == pEntry->eClass());
+  
+  // get the Id from the entry
+  char* pRow = pEntry->aRow();
+  
+
+  StrVal* pStrVal = reinterpret_cast<StrVal*>(pRow);
+  s256 sRow = pStrVal->aStr();
+  
+  // return the row entry
+  mpTask->m_pDataStack->vPushS256(sRow);
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

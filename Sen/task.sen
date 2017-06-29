@@ -42,8 +42,6 @@
 
   sTaskNm :task execute locals| pTask |
 
-  task::this pTask task::parent!
-
   nArgs sSeedWord pTask task.seed
 
   pTask scheduler::enqueueTask

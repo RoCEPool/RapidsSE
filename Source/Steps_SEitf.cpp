@@ -32,8 +32,10 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_SEitf(void)
 {
-  vAddPrimitive("seitf.accessPath@"_Str,      &vSEitfAccessPathFetch, false);
-  vAddPrimitive("seitf.accessPath!"_Str,      &vSEitfAccessPathStore, false);
+  vAddPrimitive("seitf.accessPath@"_Str,      &vSEitfAccessPathFetch,  false);
+  vAddPrimitive("seitf.accessPath!"_Str,      &vSEitfAccessPathStore,  false);
+  vAddPrimitive("seitf.bufferQueue@"_Str,     &vSEitfBufferQueueFetch, false);
+  vAddPrimitive("seitf.bufferQueue!"_Str,     &vSEitfBufferQueueStore, false);
   vAddPrimitive("seitf.count"_Str,            &vSEitfCount,            false);
   vAddPrimitive("seitf.delete"_Str,           &vSEitfDelete,           false);
   vAddPrimitive("seitf.dicStack"_Str,         &vSEitfDicStack,         false);
@@ -105,6 +107,53 @@ void Task::vSEitfAccessPathStore(MP_Task mpTask)
   
   EXIT();
 }
+
+/*----------------------------------------------------------------------------*/
+/* seitf.bufferQueue@ -- get SEitf buffer queue                               */
+/*----------------------------------------------------------------------------*/
+void Task::vSEitfBufferQueueFetch(MP_Task mpTask)
+{
+  ENTRY("vSEitfBufferQueueFetch"_Str);
+  
+  Object* pPtrSEitf;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
+    THROW_INVALID_DSTACK("seitf.bufferQueue@"_Str);
+  
+  SEitf* pSEitf = _pSEitf(pPtrSEitf);
+  ASSERT(CN_SEITF == pSEitf->eClass());
+  
+  mpTask->m_pDataStack->vPushObject(pSEitf->pBufferQueue());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* seitf.bufferQueue! -- store SEitf buffer queue                             */
+/*----------------------------------------------------------------------------*/
+void Task::vSEitfBufferQueueStore(MP_Task mpTask)
+{
+  ENTRY("vSEitfBufferQueueStore"_Str);
+  
+  Object* pPtrSEitf;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
+    THROW_INVALID_DSTACK("seitf.bufferQueue!"_Str);
+  
+  SEitf* pSEitf = _pSEitf(pPtrSEitf);
+  ASSERT(CN_SEITF == pSEitf->eClass());
+  
+  Object* pPtrQueue;
+  
+  if ( ! mpTask->m_pDataStack->bPop(pPtrQueue) )
+    THROW_INVALID_DSTACK("seitf.bufferQueue!"_Str);
+  
+  Queue* pQueue = _pQueue(pPtrQueue);
+  ASSERT(CN_QUEUE == pQueue->eClass());
+  
+  pSEitf->vBufferQueue(pQueue);
+  
+  EXIT();
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* seitf.count -- get count of SE interface's                                 */
@@ -303,7 +352,8 @@ void Task::vSEitfIndexBufferStore(MP_Task mpTask)
     THROW_INVALID_DSTACK("seitf.indexBuffer!"_Str);
   
   EntryBuffer* pIndexBuffer = _pEntryBuffer(pPtrIndexBuffer);
-  ASSERT(nullptr == pIndexBuffer || CN_INDEXBUFFER == pIndexBuffer->eClass());
+  ASSERT(nullptr == pIndexBuffer || CN_INDEXBUFFER == pIndexBuffer->eClass() ||
+         CN_ROWBUFFER == pIndexBuffer->eClass());
   
   pSEitf->m_pIndexBuffer = pIndexBuffer;
   
