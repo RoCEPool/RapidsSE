@@ -73,7 +73,7 @@ Scheduler::Scheduler(void)
 /*----------------------------------------------------------------------------*/
 /* hand given task to waiting thread or queue onto this schedulers task queue */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vEnqueueTask(Task* mpTask)
+void Scheduler::vEnqueueTask_Mutex(Task* mpTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SCHEDULER,_FOOTER_); _mp_(mpTask);
   
@@ -108,7 +108,7 @@ void Scheduler::vEnqueueTask(Task* mpTask)
 /*----------------------------------------------------------------------------*/
 /* queue given thread onto this schedulaers thread queue                      */
 /*----------------------------------------------------------------------------*/
-bool Scheduler::bGetTask(Threads::Thread* mpThread, bool bWait)
+bool Scheduler::bGetTask_Mutex(Threads::Thread* mpThread, bool bWait)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SCHEDULER,_FOOTER_); _mp_(mpThread);
   

@@ -50,7 +50,7 @@ void Task::vSchedulerEnqueueTask(MP_Task mpTask)
     THROW_INVALID_DSTACK("Scheduler.enqueueTask"_Str);
   Task* pTask = _pTask(pObject);
   
-  gpScheduler->vEnqueueTask(pTask);
+  gpScheduler->vEnqueueTask_Mutex(pTask);
   
   EXIT();
 }

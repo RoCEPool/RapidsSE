@@ -28,8 +28,8 @@ namespace Schedulers
     Scheduler(void);
     ~Scheduler(void);
       
-    void vEnqueueTask(Task* mpTask);
-    bool bGetTask(Thread* mpThread, bool bWait=true);
+    void vEnqueueTask_Mutex(Task* mpTask);
+    bool bGetTask_Mutex(Thread* mpThread, bool bWait=true);
 
     i8   iQueuedTasks(void);
     i8   iQueuedThreads(void);

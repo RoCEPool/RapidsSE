@@ -253,7 +253,7 @@ void Thread::vContentDump(void) const
 }
 
 /*----------------------------------------------------------------------------*/
-/* thread loop                                                                */
+/* thread loop (sleep loop)                                                   */
 /*----------------------------------------------------------------------------*/
 void Thread::vLoop(void)
 {
@@ -279,6 +279,7 @@ void Thread::vLoop(void)
   PosixThread::vTlsSet(giTLS_ThreadKey,this);
   ASSERT(PosixThread::pTlsGet(giTLS_ThreadKey));
   
+  // sleep loop: sleep waiting for next task
   while (true) {
 
     if ( ! m_pTaskSet ) {
@@ -318,7 +319,7 @@ void Thread::vLoop(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* thread loop                                                                */
+/* thread loop (wait loop)                                                    */
 /*----------------------------------------------------------------------------*/
 void Thread::vLoopV2(void)
 {
@@ -334,7 +335,7 @@ void Thread::vLoopV2(void)
   //         m_pPosixThread->iThreadPriority()
   //         );
   
-  //m_pPosixThread->vThreadBoost(C_THREAD_BOOST);                //! RANDOM ERROR
+  //m_pPosixThread->vThreadBoost(C_THREAD_BOOST);               //! RANDOM ERROR
   
   //  vTrace("Thread %p: priority %lld\n"_Str,
   //         this,
@@ -344,26 +345,34 @@ void Thread::vLoopV2(void)
   PosixThread::vTlsSet(giTLS_ThreadKey,this);
   ASSERT(PosixThread::pTlsGet(giTLS_ThreadKey));
   
+  // wait loop: wait for signal of next task
   while (true) {
     
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // get a task to run
+    
     ASSERT( ! *m_npTask );
-    bool b = m_pScheduler->bGetTask(this,true);
+    bool b = m_pScheduler->bGetTask_Mutex(this,true);
     ASSERT( b && *m_npTask );
     
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // set up this thread to run task
+    
     PosixThread::vTlsSet(giTLS_TaskKey,*m_npTask);
     ASSERT(PosixThread::pTlsGet(giTLS_TaskKey));
     
     m_npTask->vState(TS_RUNNING);
     m_npTask->vThread(this);
     
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // run the task
     m_npTask->vLoop();
     
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // thread no longer running the task
     PosixThread::vTlsSet(giTLS_TaskKey,nullptr);
     
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // when task yields, task is put into task set
     if (TS_YIELDED == m_npTask->eState()) {
       m_npTask->vThread(nullptr);
@@ -373,10 +382,12 @@ void Thread::vLoopV2(void)
       continue;
     }
     
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // unless waiting on ack, task forgets thread
     if (TS_WAITING_ACK == m_npTask->eState())
       continue;
     
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // when task exits, it is deleted (unless its a word)
     if (TS_EXITED == m_npTask->eState()) {
       m_npTask->vThread(nullptr);
@@ -389,7 +400,8 @@ void Thread::vLoopV2(void)
     }
 
     ASSERT(0);
-  }
+    
+  } // while
 }
 
 /*----------------------------------------------------------------------------*/
