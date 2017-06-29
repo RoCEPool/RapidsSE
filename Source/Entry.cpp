@@ -396,7 +396,7 @@ void Entry::vShow(i8 iBase, Index* pIndex)
     iKey = -1;
   }
   else {
-    DtmLib::nCopy(CN_INTVAL,&iKey,aKey);
+    DtmLib::nCopy(DM_INT,&iKey,aKey,nullptr);
   }
   
   vTrace("Entry %p: Size: %llu Offsets: %llu "_Str,

@@ -15,7 +15,7 @@ namespace Datums
   private:
   
   public:
-    static i8   nCopy(eCN eClass, void* pDst, void* pSrc);  
+    static i8   nCopy(eDM eDatum, void* pDst, void* pSrc, DBobjects::Column* pColumn);
     static void vCopy(eDM eDatum,  void* aDst, void* aSrc, DBobjects::Column* pColumn);
     static bool bExtract(eDM eDatum, Str* aDst, char** aSrc, DBobjects::Column* pColumn);
     static void vHash(eDM eDatum, i8& iHash, Str* aSrc, DBobjects::Column* pColumn);

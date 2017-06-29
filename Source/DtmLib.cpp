@@ -9,17 +9,23 @@
 /*----------------------------------------------------------------------------*/
 /* copy datum (return the number of bytes copied)                             */
 /*----------------------------------------------------------------------------*/
-i8 DtmLib::nCopy(eCN eClass, void* pDst, void* pSrc)
+i8 DtmLib::nCopy(eDM eDatum, void* pDst, void* pSrc, DBobjects::Column* pColumn)
 {
-  switch (eClass) {
+  switch (eDatum) {
       
-    case CN_INTVAL: return Int::nCopy(pDst,pSrc);
-      
-    case CN_STRVAL: return Vch::nCopy(pDst,pSrc);
+    case DM_BCD: return Bcd::nCopy(pDst,pSrc);
+    case DM_BOL: return Bol::nCopy(pDst,pSrc);
+    case DM_DTE: return Dte::nCopy(pDst,pSrc);
+    case DM_FLT: return Flt::nCopy(pDst,pSrc);
+    case DM_INT: return Int::nCopy(pDst,pSrc);
+    case DM_IVL: return Ivl::nCopy(pDst,pSrc);
+    case DM_TME: return Tme::nCopy(pDst,pSrc);
+    case DM_TSP: return Tsp::nCopy(pDst,pSrc);
+    case DM_VCH: return Vch::nCopy(pDst,pSrc);
       
     default:
-      vFatal("ValLib::vCopyDatum: Invalid copy: eClass %lld\n"_Str,
-             eClass);
+      vFatal("ValLib::vCopyDatum: Invalid copy: eDatum %lld\n"_Str,
+             eDatum);
       return -1;
   }
 }
