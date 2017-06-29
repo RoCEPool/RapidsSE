@@ -21,6 +21,7 @@ namespace Interface
     
     Queue* m_pRequestQueue;    // request queue
     Queue* m_pResponseQueue;   // response queue
+    Queue* m_pBufferQueue;     // buffer queue
     s48K   m_sResponse;        // response
     
     eEC    m_eErrorCode;       //
@@ -59,6 +60,9 @@ namespace Interface
     
     DicPath* pPathStack(void);
     
+    void   vBufferQueue(Queue* pBufferQueue);
+    Queue* pBufferQueue(void);
+
     void   vCurrentIndex(Index* pIndex);
     Index* pCurrentIndex(void);
     
@@ -69,6 +73,7 @@ namespace Interface
     
     void   vInit(void);
     i8     iPartition(void);
+  
     void   vRequestQueue(Queue* pRequestQueue);
     Queue* pRequestQueue(void);
     

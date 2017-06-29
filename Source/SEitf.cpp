@@ -72,6 +72,7 @@ SEitf::SEitf(i8 iPartition)
   m_iPartition  = iPartition;
   
   //m_xPathStack;
+  m_pBufferQueue    = nullptr;
   m_pRequestQueue   = nullptr;
   m_pResponseQueue  = nullptr;
   m_eErrorCode      = EC_NONE;
@@ -115,6 +116,26 @@ SEitf::~SEitf(void)
   delete m_pResponseQueue;
   
   gpSEitfList->vRemove(pSEitf);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get buffer queue                                                           */
+/*----------------------------------------------------------------------------*/
+Queue* SEitf::pBufferQueue(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  return m_pBufferQueue;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set buffer queue                                                           */
+/*----------------------------------------------------------------------------*/
+void SEitf::vBufferQueue(Queue* pBufferQueue)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  m_pBufferQueue = pBufferQueue;
 }
 
 /*----------------------------------------------------------------------------*/
