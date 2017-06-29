@@ -245,7 +245,6 @@ timer: idxSelectTimer
 : fetch_rows_index ( "<sWhere>" "<sTableNm>" -- <R> )
                                                                     // ../tables
 "fetch_rows_index" .
-stk
 
   assert::stack_2
   CN_STRVAL assert::class_0

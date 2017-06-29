@@ -360,7 +360,6 @@ tp: makingIndex
   then
 
   // iterate thru the buffer till no key match
-
   begin
     entry
     while
@@ -482,12 +481,9 @@ tp: makingIndex
       "Popped tempEntryBuffer from buffer queue" .
       indexBuffer entryBuffer.firstEntry to entry
 
-      1
       begin
-      while // second while
-
-        // check if entry is null ?
-        entry if
+        entry
+        while // second while
  
           "Get an entry from the tempEntryBuffer" .
           display@ if
@@ -500,22 +496,18 @@ tp: makingIndex
             then
           then
           1 rowCount + to rowCount
-          1
           entry indexBuffer entryBuffer.nextEntry to entry
-        else
+      repeat
 
-          indexBuffer entryBuffer.isLast@ if
-            "Reached last buffer" .
-            0 to bMore
-          then
-          indexBuffer entryBuffer.delete
-          "Deleted buffer" .
-          0  // no more entries, move to next buffer
-        then
+      indexBuffer entryBuffer.isLast@ if
+        "Reached last buffer" .
+        0
+      else
+        indexBuffer entryBuffer.delete
+        "Deleted buffer" .
+        1  // no more entries, move to next buffer
+      then
 
-
-      repeat // end of second while
-      bMore
     repeat  // end of first while
   loop
 
