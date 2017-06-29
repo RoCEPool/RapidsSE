@@ -325,41 +325,99 @@ tp: makingIndex
 /*----------------------------------------------------------------------------*/
 /* position key select cursor for table (called by keySelectIndex request)    */
 /*----------------------------------------------------------------------------*/
-: keySelectIdx ( ^indexPtr ^indexBuffer ^entry "<key>" -- <entry> )
+: keySelectIdxTask ( ^indexPtr "<key>" seitf -- )
 
-  0 locals| row key entry indexBuffer indexPtr |
+  0 0 0 locals| entry tempEntryBuffer indexBuffer seitf key indexPtr |
 
   tp: keySelectIdx
 
+  seitf task::this task.seitf!
+
+  // create a temporary index buffer for the results
+ "Creating a tempIndexBuffer" .
+  indexPtr indexBuffer::create to tempEntryBuffer
+
   indexBuffer not if
-    0 to entry
+
+    // get the indexBuffer looking for the key
+    key indexPtr index.buffer ( indexBuffer )
+    to indexBuffer
+
+    key indexBuffer indexPtr index.position
+    to entry
+    entry not if
+
+      // mark this buffer as the last buffer
+      "Marking tempIndexBuffer as last buffer" .
+      tempEntryBuffer indexBuffer.isLast!
+
+      "Appending tempIndexBuffer to buffer queue" .
+      tempEntryBuffer seitf seitf.bufferQueue@ queue.append
+      exit
+    then
   else
-
-    entry not if
-      // position in the index buffer
-      key indexBuffer indexPtr index.position
-      to entry
-
-    // we may not find an entry , so need to move to next buffer
-    else
-      entry indexBuffer indexBuffer.nextEntry to entry
-    then
-
-    entry not if
-      // get next entry from the current entry of indexBuffer
-      indexBuffer indexBuffer.nextBuffer to indexBuffer
-
-      indexBuffer not if
-        0 to entry
-      else
-        entry indexBuffer indexBuffer.nextEntry to entry
-      then
-    then
-
+    indexBuffer indexBuffer.nextBuffer to indexBuffer
   then
 
-  // return indexBuffer and entry
-  indexBuffer entry
+  indexBuffer if
+    1
+    begin
+    while
+
+      // check if exact key match
+      key indexPtr entry entry.matches if
+
+        // insert row from entry in temporary buffer
+        "Inserting row into tempIndexBuffer" .
+        indexPtr entry entry.row row.string tempEntryBuffer indexBuffer.insertRow
+
+        // check if we managed to insert the entry
+        not if
+          // buffer must be full
+          // put this tempIndexBuffer in seitf bufferQueue
+          "Inserting row into tempIndexBuffer" .
+          tempEntryBuffer seitf seitf.bufferQueue@ queue.append
+
+          // create another temporary index buffer for the results
+          indexPtr indexBuffer::create to tempEntryBuffer
+
+          // insert row from entry in temporary buffer
+          "Inserting row into tempIndexBuffer" .
+          indexPtr entry entry.row row.string tempEntryBuffer indexBuffer.insertRow
+          assert
+
+        then
+
+        // move to next entry
+        entry indexBuffer indexBuffer.nextEntry to entry
+
+        entry not if
+          // get next buffer from the current indexBuffer
+          indexBuffer indexBuffer.nextBuffer to indexBuffer
+
+          indexBuffer if
+            entry indexBuffer indexBuffer.nextEntry to entry
+          then
+        then
+
+        entry not if
+          0
+        else
+          1
+        then
+      else
+        0  // no match for entry
+      then
+    repeat
+
+  then
+  "Marking tempIndexBuffer as last buffer" .
+  // mark this buffer as the last buffer
+  tempEntryBuffer indexBuffer.isLast!
+
+  // put the buffer in the seitf bufferQueue
+  "Appending tempIndexBuffer to buffer queue" .
+  tempEntryBuffer seitf seitf.bufferQueue@ queue.append
 
 ;
 
@@ -376,7 +434,7 @@ tp: makingIndex
   //
   assert::stack_2
 
-  0 0 0 0 locals| rowCount indexBuffer entry indexPtr indexNm key |
+  0 0 0 0 0 0 0 locals| bMore seitf selectTask rowCount indexBuffer entry indexPtr indexNm key |
 
   // increment query count
   queryCount ++
@@ -392,64 +450,89 @@ tp: makingIndex
     metadata@ "metadata: %v\n" str.format .put
   then
 
+  task::this task.seitf@ to seitf
+
+  // create the buffer queue in the seitf
+  "selectTask.queue" :queue execute task::this task.seitf@ seitf.bufferQueue!
+
   // for each slot
   grid.slots 0
   do
+
     args.metadata not if
       I grid::toPartition "Partition: %v\n" str.format .put
     then
 
     // put the partition in this tasks seitf
-    I task::this task.seitf@ seitf.partition!
+    I seitf seitf.partition!
 
-    // get the indexBuffer at the lowerBound
-    key indexPtr index.buffer ( indexBuffer )
-    to indexBuffer
+    // create a selectTask to execute the key select on the index for the partition
+    indexPtr key  seitf 3 "keySelectIdxTask" "selectTask" spawnTask
+    to selectTask
 
     1
     begin
+    while  // first while
 
-    while
+      begin
+        // attempt to pop value off the tasks job queue
+        seitf seitf.bufferQueue@  queue.pop ( value true | false )
 
-      indexPtr indexBuffer entry key
-      keySelectIdx  ( indexPtr indexBuffer entry key )
-      to entry
+        // try again of no value
+        not while
+          task.yield
+          args.sleep thread.sleep_ms
+      repeat
       to indexBuffer
 
-      // check if entry is null ?
-      entry if
+      "Popped tempIndexBuffer from buffer queue" .
+      indexBuffer indexBuffer.firstEntry to entry
 
-          // check if exact key match
-          key indexPtr entry entry.matches if
-            display@ if
-              args.metadata if
-                indexPtr entry entry.row row.string
-                I grid::toPartition
-                "row: (%v '%v')\n" str.format .put
-              else
-                indexPtr entry entry.row row.string "\n" str.cat .put
-              then
-            then
-            1 rowCount + to rowCount
-            1
-        else
-          0 to entry
-          0 // need to stop
-        then
-      else
-        // null entry means done with this partition
-        0
+      entry not if
+        // delete the buffer
       then
+      1
+      begin
+      while // second while
 
-    repeat
+        // check if entry is null ?
+        entry if
+ 
+          "Get an entry from the tempIndexBuffer" .
+          display@ if
+            args.metadata if
+              entry entry.embeddedRow
+              I grid::toPartition
+              "row: (%v '%v')\n" str.format .put
+            else
+              entry entry.embeddedRow "\n" str.cat .put
+            then
+          then
+          1 rowCount + to rowCount
+          1
+          entry indexBuffer indexBuffer.nextEntry to entry
+        else
 
+          indexBuffer indexBuffer.isLast@ if
+            "Reached last buffer" .
+            // delete the buffer
+            0 to bMore
+          else
+            // delete the buffer
+          then
+          0  // no more entries, move to next buffer
+        then
+
+      repeat // end of second while
+      bMore
+    repeat  // end of first while
   loop
 
   // pop indexes
   popIndexes
 
   args.metadata if
-    rowCount task::this task.seitf@ seitf.rowsProcessed
+    rowCount seitf seitf.rowsProcessed
   else
     "rows selected"  rowCount "%v %v\n" str.format .put
   then
