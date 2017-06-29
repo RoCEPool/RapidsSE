@@ -119,7 +119,7 @@ void Task::vIndexBufferInsertRow(MP_Task mpTask)
   
   Object* pPtrEntry = nullptr;
   Object* pPtrIndexBuffer;
-  ValWrk xRow;
+  s256 sRow;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrIndexBuffer) )
     THROW_INVALID_DSTACK("indexBuffer.insertEntry"_Str);
@@ -127,11 +127,10 @@ void Task::vIndexBufferInsertRow(MP_Task mpTask)
   EntryBuffer* pIndexBuffer = _pEntryBuffer(pPtrIndexBuffer);
   ASSERT(nullptr == pIndexBuffer || CN_INDEXBUFFER == pIndexBuffer->eClass());
   
-  if ( ! mpTask->m_pDataStack->bPop(xRow) )
+  if ( ! mpTask->m_pDataStack->bPop(sRow) )
     THROW_INVALID_DSTACK("indexBuffer.insertEntry"_Str);
   
   // create working row
-  StrVal* pStrVal = _pStrVal(xRow.pNestedValueSelf());
   ValWrk xValWrk;
   
   //----------------------------------------------------------------------------
@@ -143,6 +142,7 @@ void Task::vIndexBufferInsertRow(MP_Task mpTask)
   //----------------------------------------------------------------------------
   // form the key
   xValWrk = nRowNo;
+  
   KeyWrk xKeyWrk;
   Column* pColumn = pIndexBuffer->pIndex()->pIdxColVec()->pGet(0);
   ASSERT(pColumn->iColumnNo() == -1);
@@ -152,7 +152,7 @@ void Task::vIndexBufferInsertRow(MP_Task mpTask)
   // add the id and key to EntWrk
   EntWrk xRowWrk(rowId, xKeyWrk);
   
-  xRowWrk.vData(pStrVal->aStr(), pStrVal->iLength());
+  xRowWrk.vData(sRow.aStr(), sRow.iLength());
   xRowWrk.vShow(pIndexBuffer->pIndex()->pIdxColVec());
   Entry* pRow;
   
