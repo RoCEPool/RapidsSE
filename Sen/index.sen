@@ -337,88 +337,86 @@ tp: makingIndex
  "Creating a tempIndexBuffer" .
   indexPtr entryBuffer::create to tempEntryBuffer
 
-  indexBuffer not if
+  // get the indexBuffer looking for the key
+  key indexPtr index.buffer ( indexBuffer )
+  to indexBuffer
 
-    // get the indexBuffer looking for the key
-    key indexPtr index.buffer ( indexBuffer )
-    to indexBuffer
+  // position in the index buffer at the key
+  key indexBuffer indexPtr index.position
+  to entry
 
-    key indexBuffer indexPtr index.position
-    to entry
-    entry not if
+  // did we find an entry ?
+  entry not if
 
-      // mark this buffer as the last buffer
-      "Marking tempIndexBuffer as last buffer" .
-      tempEntryBuffer entryBuffer.isLast!
+    // mark this buffer as the last buffer
+    "Marking tempEntryBuffer as last buffer" .
+    tempEntryBuffer entryBuffer.isLast!
 
-      "Appending tempIndexBuffer to buffer queue" .
-      tempEntryBuffer seitf seitf.bufferQueue@ queue.append
-      exit
-    then
-  else
-    indexBuffer entryBuffer.nextBuffer to indexBuffer
+    // return the empty tempEntryBuffer
+    "Appending tempEntryBuffer to buffer queue" .
+    tempEntryBuffer seitf seitf.bufferQueue@ queue.append
+
+    exit
   then
 
-  indexBuffer if
-    1
-    begin
-    while
+  // iterate thru the buffer till no key match
+  1
+  begin
+  while
 
-      // check if exact key match
-      key indexPtr entry entry.matches if
+    // check if exact key match
+    key indexPtr entry entry.matches if
+
+      // insert row from entry in tempEntryBuffer
+      "Inserting row into tempEntryBuffer" .
+      indexPtr entry entry.row row.string tempEntryBuffer entryBuffer.insertRow
+
+      // check if we managed to insert the entry
+      not if
+        // buffer must be full
+        // put this tempEntryBuffer in seitf bufferQueue
+        "Inserting row into tempEntryBuffer" .
+        tempEntryBuffer seitf seitf.bufferQueue@ queue.append
+
+        // create another temporary index buffer for the results
+        "Creating a tempIndexBuffer" .
+        indexPtr entryBuffer::create to tempEntryBuffer
 
         // insert row from entry in temporary buffer
-        "Inserting row into tempIndexBuffer" .
+        "Inserting row into tempEntryBuffer" .
         indexPtr entry entry.row row.string tempEntryBuffer entryBuffer.insertRow
-
-        // check if we managed to insert the entry
-        not if
-          // buffer must be full
-          // put this tempIndexBuffer in seitf bufferQueue
-          "Inserting row into tempIndexBuffer" .
-          tempEntryBuffer seitf seitf.bufferQueue@ queue.append
-
-          // create another temporary index buffer for the results
-          indexPtr entryBuffer::create to tempEntryBuffer
-
-          // insert row from entry in temporary buffer
-          "Inserting row into tempIndexBuffer" .
-          indexPtr entry entry.row row.string tempEntryBuffer entryBuffer.insertRow
-          assert
-
-        then
-
-        // move to next entry
-        entry indexBuffer entryBuffer.nextEntry to entry
-
-        entry not if
-          // get next buffer from the current indexBuffer
-          indexBuffer entryBuffer.nextBuffer to indexBuffer
-
-          indexBuffer if
-            entry indexBuffer entryBuffer.nextEntry to entry
-          then
-        then
-
-        entry not if
-          0
-        else
-          1
-        then
-      else
-        0  // no match for entry
+        assert
       then
-    repeat
 
-  then
-  "Marking tempIndexBuffer as last buffer" .
+      // move to next entry in the buffer
+      entry indexBuffer entryBuffer.nextEntry to entry
+
+      entry not if
+        // get next buffer from the current indexBuffer
+        indexBuffer entryBuffer.nextBuffer to indexBuffer
+
+        indexBuffer if
+          entry indexBuffer entryBuffer.nextEntry to entry
+        then
+      then
+
+      entry not if
+        0
+      else
+        1
+      then
+    else
+      0  // no match for entry
+    then
+  repeat
+
+  "Marking tempEntryBuffer as last buffer" .
   // mark this buffer as the last buffer
   tempEntryBuffer entryBuffer.isLast!
 
   // put the buffer in the seitf bufferQueue
-  "Appending tempIndexBuffer to buffer queue" .
+  "Appending tempEntryBuffer to buffer queue" .
   tempEntryBuffer seitf seitf.bufferQueue@ queue.append
-
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -478,14 +476,14 @@ tp: makingIndex
         // attempt to pop buffer off the tasks buffer queue
         seitf seitf.bufferQueue@  queue.pop ( value true | false )
 
-        // try again of no value
+        // try again if no value
         not while
           task.yield
           args.sleep thread.sleep_ms
       repeat
       to indexBuffer
 
-      "Popped tempIndexBuffer from buffer queue" .
+      "Popped tempEntryBuffer from buffer queue" .
       indexBuffer entryBuffer.firstEntry to entry
 
       1
@@ -495,7 +493,7 @@ tp: makingIndex
         // check if entry is null ?
         entry if
  
-          "Get an entry from the tempIndexBuffer" .
+          "Get an entry from the tempEntryBuffer" .
           display@ if
             args.metadata if
               entry entry.embeddedRow
