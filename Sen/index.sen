@@ -475,7 +475,7 @@ tp: makingIndex
     while  // first while
 
       begin
-        // attempt to pop value off the tasks job queue
+        // attempt to pop buffer off the tasks buffer queue
         seitf seitf.bufferQueue@  queue.pop ( value true | false )
 
         // try again of no value
@@ -488,9 +488,6 @@ tp: makingIndex
       "Popped tempIndexBuffer from buffer queue" .
       indexBuffer indexBuffer.firstEntry to entry
 
-      entry not if
-        // delete the buffer
-      then
       1
       begin
       while // second while
@@ -515,13 +512,13 @@ tp: makingIndex
 
           indexBuffer indexBuffer.isLast@ if
             "Reached last buffer" .
-            // delete the buffer
             0 to bMore
-          else
-            // delete the buffer
           then
+          indexBuffer indexBuffer.delete
+          "Deleted buffer" .
           0  // no more entries, move to next buffer
         then
+
 
       repeat // end of second while
       bMore

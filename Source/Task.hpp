@@ -591,6 +591,7 @@ namespace Tasks
 
     // index buffer
     static void vIndexBufferCreate(MP_Task mpTask);
+    static void vIndexBufferDelete(MP_Task mpTask);
     static void vIndexBufferFirstEntry(MP_Task mpTask);
     static void vIndexBufferNextBuffer(MP_Task mpTask);
     static void vIndexBufferInsertRow(MP_Task mpTask);

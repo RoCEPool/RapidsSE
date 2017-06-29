@@ -33,6 +33,7 @@ extern SEitfList*      gpSEitfList;
 void Task::vAddPrimitives_IndexBuffer(void)
 {
   vAddPrimitive("indexBuffer::create"_Str,     &vIndexBufferCreate,      false);
+  vAddPrimitive("indexBuffer.delete"_Str,      &vIndexBufferDelete,      false);
   vAddPrimitive("indexBuffer.firstEntry"_Str,  &vIndexBufferFirstEntry,  false);
   vAddPrimitive("indexBuffer.insertRow"_Str,   &vIndexBufferInsertRow,   false);
   vAddPrimitive("indexBuffer.isLast@"_Str,     &vIndexBufferIsLastFetch, false);
@@ -42,7 +43,7 @@ void Task::vAddPrimitives_IndexBuffer(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* indexBuffer::create -- create a new index buffer                            */
+/* indexBuffer::create -- create a new index buffer                           */
 /*----------------------------------------------------------------------------*/
 void Task::vIndexBufferCreate(MP_Task mpTask)
 {
@@ -59,6 +60,26 @@ void Task::vIndexBufferCreate(MP_Task mpTask)
   EntryBuffer* pEntryBuffer = new EntryBuffer(pIndex->pTable()->pHiddenIndex(), 0);
   
   mpTask->m_pDataStack->vPushObject(pEntryBuffer);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* indexBuffer.delete -- delete the index buffer                              */
+/*----------------------------------------------------------------------------*/
+void Task::vIndexBufferDelete(MP_Task mpTask)
+{
+  ENTRY("vIndexBufferDelete"_Str);
+  
+  Object* pPtrIndexBuffer = nullptr;
+  
+  if ( ! mpTask->m_pDataStack->bPop(pPtrIndexBuffer) )
+    THROW_INVALID_DSTACK("indexBuffer.delete"_Str);
+  
+  EntryBuffer* pIndexBuffer = _pEntryBuffer(pPtrIndexBuffer);
+  ASSERT(CN_INDEXBUFFER == pIndexBuffer->eClass());
+  
+  delete pIndexBuffer;
   
   EXIT();
 }
