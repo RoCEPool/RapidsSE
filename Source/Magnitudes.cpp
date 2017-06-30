@@ -22,7 +22,7 @@ void Magnitudes::vMagnitude(i8 iValue, Str* psBuf)
 /*----------------------------------------------------------------------------*/
 void Magnitudes::vMagnitude(i8 iValue, i8 iDecimals, Str* psBuf)
 {
-  ASSERT(iDecimals > 0);
+  //ASSERT(iDecimals > 0);
   
   d8 dValue = (d8)iValue;
   int iDecimalPoints = (int)iDecimals;

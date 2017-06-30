@@ -135,6 +135,10 @@ timer: idxSelectTimer
     popIndexes popTable assertInTables <NIP+ERROR> exit
   then
 
+  sIndexNm "hidden" str.equal if
+    popIndexes popTable assertInTables EC_NO_SUCH_INDEX <NIP+ERROR> exit
+  then
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // remove the index
 

@@ -2,14 +2,7 @@
 /* _test -- test                                                              */
 /*============================================================================*/
 
-create table T2 (
-idxkey  integer,
-name    varchar(32));
-
-create index index1 on T2 (idxkey);
-create index index1 on T2 (name);
-
-/*
+docol epochTake;
 
 create table jidx (
 jidx_key   INTEGER NOT NULL,
@@ -25,7 +18,11 @@ lsidxcol jidx idx1;
 ld jidx "../JTEST/test.csv" ;
 dumpidx jidx idx1;
 
+//fetch jidx "jidx_key 2 >=";
+//drop table jidx;
 
+docol epochDump;
+/*
 create table boolTable (
 key   BOOLEAN NOT NULL,
 value INTEGER,
@@ -36,7 +33,16 @@ create  index idx on boolTable (key);
 ld boolTable "../Seth/tests/partitionKey/bool.csv";
 
 lwrselidx boolTable idx 1;
-*/
+
+ create table T2 (
+ idxkey  integer,
+ name    varchar(32));
+ 
+ create index index1 on T2 (idxkey);
+ create index index1 on T2 (name);
+ 
+ drop table T2;
+ */
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
