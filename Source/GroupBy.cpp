@@ -49,7 +49,9 @@ GroupBy::GroupBy(void)
 : Object(CN_GROUPBY)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GROUPBY,_FOOTER_);
-    
+  
+  m_pAccum = new Accum;
+  
   _checkInitialised_(CN_GROUPBY);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_GROUPBY,_FOOTER_);
@@ -61,6 +63,8 @@ GroupBy::GroupBy(void)
 GroupBy::~GroupBy(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GROUPBY,_FOOTER_);
+  
+  delete m_pAccum;
 }
 
 /*----------------------------------------------------------------------------*/

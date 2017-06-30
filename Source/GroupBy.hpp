@@ -11,8 +11,9 @@ namespace MockEE
   
     Footer m_xFooter;
     
-   public:
-    
+  public:
+    Accum* m_pAccum;
+  
     void* operator new(size_t);
     void  operator delete(void*);
     
