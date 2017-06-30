@@ -200,8 +200,11 @@ void KeyWrk::vAddDatum(ValWrk& xValWrk, Column* pCol)
   char* pDst = m_xWsp.aLatter();
   char* pSrc;
   
-  pSrc = pAdd<char*>(xValWrk.pNestedValueSelf(),sizeof(Value));
-  
+  if (DM_VCH == pCol->eDatumType())
+    pSrc = (char*)(_pStrVal(xValWrk.pNestedValueSelf())->aStr());
+  else
+    pSrc = pAdd<char*>(xValWrk.pNestedValueSelf(),sizeof(Value));
+
   nBytes = DtmLib::nCopy(pCol->eDatumType(),pDst,pSrc,pCol);
   
   m_xWsp.vTake(nBytes);

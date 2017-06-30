@@ -1,15 +1,8 @@
 /*============================================================================*/
-/* _test -- test                                                              */
+/* _scratch -- scratch test                                                   */
 /*============================================================================*/
 
-create table T2 (
-idxkey  integer,
-name    varchar(32));
 
-create index index1 on T2 (idxkey);
-create index index1 on T2 (name);
-
-/*
 
 create table jidx (
 jidx_key   INTEGER NOT NULL,
@@ -18,14 +11,21 @@ jidx_100   INTEGER NOT NULL,
 jidx_10    INTEGER NOT NULL
 );
 
-create unique index idx1 on jidx (jidx_10);
+create index idx1 on jidx (jidx_10);
 lsidx jidx;
 lsidxcol jidx idx1;
 
 ld jidx "../JTEST/test.csv" ;
 dumpidx jidx idx1;
 
+docol epochTake;
+fetch jidx "jidx_key 2 >=";
+docol epochDump;
 
+drop table jidx;
+
+
+/*
 create table boolTable (
 key   BOOLEAN NOT NULL,
 value INTEGER,
@@ -36,7 +36,16 @@ create  index idx on boolTable (key);
 ld boolTable "../Seth/tests/partitionKey/bool.csv";
 
 lwrselidx boolTable idx 1;
-*/
+
+ create table T2 (
+ idxkey  integer,
+ name    varchar(32));
+ 
+ create index index1 on T2 (idxkey);
+ create index index1 on T2 (name);
+ 
+ drop table T2;
+ */
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

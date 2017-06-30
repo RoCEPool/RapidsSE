@@ -638,6 +638,22 @@ void IndexData::vVisualize(void)
   // start with the root buffer
   EntryBuffer* pIndexBuffer = m_pRoot;
   
+  // hidden index has all level 0 buffers
+  if (m_pIndex->bIsHidden()) {
+    
+    do {
+      ASSERT(pIndexBuffer->nBufferLevel() == 0);
+      // print the decile of pNextBuffer
+      vTrace("%lld"_Str, pIndexBuffer->iDecile());
+      
+      pIndexBuffer = pIndexBuffer->pNextBuffer();
+      
+    } while (pIndexBuffer);
+    
+    vTrace("\n"_Str);
+    return;
+  }
+
   // print the decile of the root buffer
   vTrace("%lld\n"_Str, pIndexBuffer->iDecile());
   

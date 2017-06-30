@@ -40,9 +40,10 @@
 
   locals| sTaskNm sSeedWord nArgs |
 
-  sTaskNm :task execute locals| pTask |
+  nArgs sSeedWord nullPtr task::new locals| pTask |
+  sTaskNm pTask task.name!
 
-  nArgs sSeedWord pTask task.seed
+  //nArgs sSeedWord pTask task.seed
 
   pTask scheduler::enqueueTask
   pTask  // return the task

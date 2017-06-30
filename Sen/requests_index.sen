@@ -135,6 +135,10 @@ timer: idxSelectTimer
     popIndexes popTable assertInTables <NIP+ERROR> exit
   then
 
+  sIndexNm "hidden" str.equal if
+    popIndexes popTable assertInTables EC_NO_SUCH_INDEX <NIP+ERROR> exit
+  then
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // remove the index
 
@@ -353,15 +357,18 @@ timer: idxSelectTimer
 
     AT_UPPER of
       "case upper" .
+      "0" //key
+      "0" //lower
       pPlanner Planner.highKey@
+      "upperSelectIdxTask"
       pPlanner Planner.indexNm@
       stk
-      upperSelectIndex
+      selectIndex
     endof
 
     AT_RANGE of
       "case range" .
-      "0"
+      "0" //key
       pPlanner Planner.lowKey@
       pPlanner Planner.highKey@
       "rangeSelectIdxTask"
@@ -372,8 +379,12 @@ timer: idxSelectTimer
 
     AT_SCAN of
       "case scan" .
+      "0" //key
+      "0" //lower
+      "0" //upper
+      "scanSelectIdxTask"
       "hidden"
-      scanSelectIndex
+      selectIndex
     endof
   endcase
 
@@ -779,7 +790,7 @@ timer: idxSelectTimer
   task::this task.seitf@ seitf.table@ assert
 
   // execute a range select on idx
-  sIndexNm scanSelectIndex ( upper lower index )
+  "0" "0" "0" "scanSelectIdxTask" sIndexNm selectIndex ( upper lower index )
 
   // dec and return table reference and clear task.seitf.currentTable
   returnTableRef not if <NIP+ERROR> exit then
@@ -995,10 +1006,8 @@ timer: idxSelectTimer
   getTableRef not if <NIP+ERROR> exit then
   task::this task.seitf@ seitf.table@ assert
 
-
-
   // execute a lower bound select using index
-  sUpper sIndexNm upperSelectIndex ( upper index )
+  "0" "0" sUpper "upperSelectIdxTask" sIndexNm selectIndex ( upper index )
 
   // dec and return table reference and clear task.seitf.currentTable
   returnTableRef not if <NIP+ERROR> exit then

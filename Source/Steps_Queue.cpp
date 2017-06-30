@@ -33,8 +33,10 @@ extern SEitfList*      gpSEitfList;
 void Task::vAddPrimitives_Queue(void)
 {
   vAddPrimitive("queue.append"_Str,    &vQueueAppend,      false);
+  vAddPrimitive("queue.delete"_Str,    &vQueueDelete,      false);
   vAddPrimitive("queue.dump"_Str,      &vQueueDump,        false);
   vAddPrimitive("queue.init"_Str,      &vQueueInit,        false);
+  vAddPrimitive("queue::new"_Str,      &vQueueNew,         false);
   vAddPrimitive("queue.pop"_Str,       &vQueuePop,         false);
 }
 
@@ -56,6 +58,28 @@ ENTRY("vQueueAppend"_Str);
   ASSERT(CN_QUEUE == pObject->eClass());
   
   pQueue->bAppend(xValWrk.pNestedValue());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* queue.delete -- delete the queue                                           */
+/*----------------------------------------------------------------------------*/
+void Task::vQueueDelete(MP_Task mpTask)
+{
+  ENTRY("vQueueDelete"_Str);
+  
+  Object* pObject;
+  
+  if ( ! mpTask->m_pDataStack->bPop(pObject) )
+  THROW_INVALID_DSTACK("queue.delete"_Str);
+  
+  ASSERT(CN_QUEUE == pObject->eClass());
+  
+  Queue* pQueue = static_cast<Queue*>(pObject);
+  
+  pQueue->vFinalize();
+  delete pQueue;
   
   EXIT();
 }
@@ -107,17 +131,39 @@ ENTRY("vQueueInit"_Str);
 }
 
 /*----------------------------------------------------------------------------*/
+/* queue::new -- create a named queue                                         */
+/*----------------------------------------------------------------------------*/
+void Task::vQueueNew(MP_Task mpTask)
+{
+  ENTRY("vQueueNew"_Str);
+  
+  s256 sQueueName;
+  
+  if ( ! mpTask->m_pDataStack->bPop(sQueueName) )
+    THROW_INVALID_DSTACK("queue::new"_Str);
+  
+  Queue* pQueue = new Queue();
+  
+  pQueue->vLockName(sQueueName);
+  
+  mpTask->m_pDataStack->vPushObject(pQueue);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* queue.pop -- queue pop                                                     */
 /*----------------------------------------------------------------------------*/
 void Task::vQueuePop(MP_Task mpTask)
 {
-ENTRY("vQueuePop"_Str);
+  ENTRY("vQueuePop"_Str);
   
   Object* pObject;
   ValWrk xValWrk;
   
   if ( ! mpTask->m_pDataStack->bPop(pObject) )
     THROW_INVALID_DSTACK("queue.pop"_Str);
+  
   
   ASSERT(CN_QUEUE == pObject->eClass());
   
@@ -130,7 +176,6 @@ ENTRY("vQueuePop"_Str);
   }
   else
     mpTask->m_pDataStack->vPushInt((i8)0);
-  
   
   EXIT();
 }
