@@ -224,7 +224,10 @@ bool Bcd::bExtract(char** aaSrc, Bcd* aDecimal,DBobjects::Column* pColumn)
     }
   }
   
-  aDecimal->m_iBcd = iResult;
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // compute final result
+  
+  aDecimal->m_iBcd = bNegative ? - iResult : iResult;
   
   return true;
 }

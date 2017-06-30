@@ -67,6 +67,18 @@ Planner::Planner(void)
 Planner::~Planner(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
+  
+  for (i8 i_Token; i_Token < m_pWhereTknVec->nItems(); i_Token++) {
+    Token* pToken = m_pWhereTknVec->pGet(i_Token);
+    delete pToken;
+  }
+  delete m_pWhereTknVec;
+  
+  for (i8 i_Path; i_Path < m_pPathVec->nItems(); i_Path++) {
+    AccessPath* pPath = m_pPathVec->pGet(i_Path);
+    delete pPath;
+  }
+  delete m_pPathVec;
 }
 
 /*----------------------------------------------------------------------------*/

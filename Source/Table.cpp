@@ -672,7 +672,7 @@ void Table::vTruncateIndex(i8 iIndexNo)
 /*----------------------------------------------------------------------------*/
 /* validate a row of table                                                    */
 /*----------------------------------------------------------------------------*/
-bool Table::bValidateRow(Str* aRow, i8& iColumn)
+bool Table::bValidateRow(Str* aRow, i8& i_Column)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
@@ -690,11 +690,11 @@ bool Table::bValidateRow(Str* aRow, i8& iColumn)
   if ( ! *aCursor )
     return true;
   
-  for (iColumn = 0;
-       iColumn < m_pColumnVec->nItems() && *aCursor;
-       iColumn++) {
+  for (i_Column = 0;
+       i_Column < m_pColumnVec->nItems() && *aCursor;
+       i_Column++) {
     
-    Column* pColumn = m_pColumnVec->pGet(iColumn);
+    Column* pColumn = m_pColumnVec->pGet(i_Column);
     
     bool b = pColumn->bValidateField((Str**)&aCursor);
     

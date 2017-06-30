@@ -79,7 +79,7 @@ void Task::vPlannerChosenPath(MP_Task mpTask)
   Object* mpPtrPlanner;
   
   if ( ! mpTask->m_pDataStack->bPop(mpPtrPlanner) )
-    THROW_INVALID_DSTACK("planner.delete"_Str);
+    THROW_INVALID_DSTACK("planner.chosenPath"_Str);
   
   Planner* mpPlanner = _pPlanner(mpPtrPlanner);
   
