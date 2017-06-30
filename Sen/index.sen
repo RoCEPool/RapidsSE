@@ -202,6 +202,8 @@
 /*----------------------------------------------------------------------------*/
 : indexTidyUp ( "<indexNm>" -- )
 
+"indextdyup" .
+dup .
    find execute ( ^indexPtr )
 
    // truncate the index
@@ -635,7 +637,7 @@ tp: loadIndexes
   //
   //assert::stack_5
 
-  0 0 0 0 0 0 0 locals| bMore seitf selectTask rowCount indexBuffer entry
+  0 0 0 0 0 0 locals| seitf selectTask rowCount indexBuffer entry
     indexPtr indexNm selectTaskRequest upper lower key |
 
   // increment query count
@@ -655,7 +657,8 @@ tp: loadIndexes
   task::this task.seitf@ to seitf
 
   // create the buffer queue in the seitf
-  "selectTask.queue" :queue execute task::this task.seitf@ seitf.bufferQueue!
+  //"selectTask.queue" queue::new execute task::this task.seitf@ seitf.bufferQueue!
+  "selectTask.queue" queue::new seitf seitf.bufferQueue!
 
   // for each slot
   grid.slots 0
@@ -719,6 +722,10 @@ tp: loadIndexes
       "Deleted buffer" .
     repeat  // end of first while
   loop
+
+  // delete the buffer queue from the seitf
+  seitf seitf.bufferQueue@ queue.delete
+  0 seitf seitf.bufferQueue!
 
   // pop indexes
   popIndexes
@@ -1087,7 +1094,7 @@ tp: loadIndexes
   tp: removeIndex
   locals| indexNm |
 
-  indexNm
+  indexNm dup .
   // forward reference :-(
   "indexTidyUp" find execute
 

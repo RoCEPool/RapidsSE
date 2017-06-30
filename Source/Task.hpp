@@ -779,8 +779,10 @@ namespace Tasks
   
     // queue
     static void vQueueAppend(MP_Task mpTask);
+    static void vQueueDelete(MP_Task mpTask);
     static void vQueueDump(MP_Task mpTask);
-    static void vQueueInit(MP_Task mpTask);     
+    static void vQueueInit(MP_Task mpTask);
+    static void vQueueNew(MP_Task mpTask);
     static void vQueuePop(MP_Task mpTask);      
 
     // rbCursor

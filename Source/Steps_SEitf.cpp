@@ -147,7 +147,7 @@ void Task::vSEitfBufferQueueStore(MP_Task mpTask)
     THROW_INVALID_DSTACK("seitf.bufferQueue!"_Str);
   
   Queue* pQueue = _pQueue(pPtrQueue);
-  ASSERT(CN_QUEUE == pQueue->eClass());
+  ASSERT(nullptr == pQueue || CN_QUEUE == pQueue->eClass());
   
   pSEitf->vBufferQueue(pQueue);
   

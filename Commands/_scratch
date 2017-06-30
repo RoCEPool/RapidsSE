@@ -18,7 +18,7 @@ lsidxcol jidx idx1;
 ld jidx "../JTEST/test.csv" ;
 dumpidx jidx idx1;
 
-//fetch jidx "jidx_key 2 >=";
+fetch jidx "jidx_key 2 >=";
 //drop table jidx;
 
 docol epochDump;
