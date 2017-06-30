@@ -209,6 +209,8 @@ void IndexData::vInsertEntry(i8 iTxId, Str* pRow, i8 iLength)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
   
+  m_zLock.vGrabWrite();
+  
   ASSERT(m_pIndex->bIsHidden());
 
   ASSERT(m_pCurrentBuffer);
@@ -288,6 +290,8 @@ void IndexData::vInsertEntry(i8 iTxId, Str* pRow, i8 iLength)
     bool bResult = m_pCurrentBuffer->bInsert(xEntWrk);
     ASSERT(bResult);
   }
+  
+  m_zLock.vDropWrite();
   
 }
 
