@@ -53,8 +53,8 @@ Accum::Accum(void)
   m_iGroup = 0;
   m_iCount = 0;
   m_iSum   = 0;
-  m_iMin   = 0;
-  m_iMax   = 0;
+  m_iMin   = C_I8_MAX;
+  m_iMax   = C_I8_MIN;
   
   _checkInitialised_(CN_ACCUM);
   

@@ -72,6 +72,30 @@ GroupBy::~GroupBy(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* destructor                                                                 */
+/*----------------------------------------------------------------------------*/
+void GroupBy::vApplyBuffer(EntryBuffer* pEntryBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GROUPBY,_FOOTER_);
+
+  //
+  // we would iterate each LineItem in entry buffer and
+  // apply it to the appropriate accumulator
+  //
+  
+  LineItem* pLineItem = (LineItem*)pEntryBuffer; // temp, not correct
+  
+  m_pAccum->m_iCount++;
+  m_pAccum->m_iSum += pLineItem->m_iExtPrice.iAsI8();
+  
+  if (pLineItem->m_iExtPrice.iAsI8() < m_pAccum->m_iMin)
+    m_pAccum->m_iMin = pLineItem->m_iExtPrice.iAsI8();
+
+  if (pLineItem->m_iExtPrice.iAsI8() > m_pAccum->m_iMax)
+    m_pAccum->m_iMax = pLineItem->m_iExtPrice.iAsI8();
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 

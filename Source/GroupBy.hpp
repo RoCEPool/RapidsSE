@@ -20,6 +20,8 @@ namespace MockEE
     GroupBy(void);
     ~GroupBy(void);
   
+    void vApplyBuffer(EntryBuffer* pEntryBuffer);
+  
     Footer* aFooter(void);
   };
   
