@@ -647,23 +647,41 @@ Index* EntryBuffer::pIndex(void)
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vBufferCount(i8& nBuffers)
 {
-  // count this buffer
-  nBuffers++;
+  EntryBuffer* pNextBuffer = nullptr;
   
-  // recursively dump the lower level buffers
-  if (m_nBufferLevel != 0) {
+  if (m_pIndex->bIsHidden()) {
+    ASSERT(m_nBufferLevel == 0);
+    pNextBuffer = this->pNextBuffer();
+    nBuffers++;
     
-    for (Entry* pEntry = pNextEntry(pHead()); pEntry != nullptr;
-         pEntry = pNextEntry(pEntry)) {
+    while (pNextBuffer) {
+      ASSERT(pNextBuffer->nBufferLevel() == 0);
       
-      // get the index buffer from the entry
-      EntryBuffer* pEntryBuffer = pEntry->pIndexBuffer();;
+      EntryBuffer* pThisBuffer = pNextBuffer;
+      pNextBuffer = pNextBuffer->pNextBuffer();
+      nBuffers++;
+    }
+
+  }
+  else {
+    // count this buffer
+    nBuffers++;
+    
+    // recursively dump the lower level buffers
+    if (m_nBufferLevel != 0) {
       
-      ASSERT(pEntryBuffer);
-      ASSERT(pEntryBuffer->eClass() == CN_ENTRYBUFFER);
-      
-      pEntryBuffer->vBufferCount(nBuffers);
-      
+      for (Entry* pEntry = pNextEntry(pHead()); pEntry != nullptr;
+           pEntry = pNextEntry(pEntry)) {
+        
+        // get the index buffer from the entry
+        pNextBuffer = pEntry->pIndexBuffer();;
+        
+        ASSERT(pNextBuffer);
+        ASSERT(pNextBuffer->eClass() == CN_ENTRYBUFFER);
+        
+        pNextBuffer->vBufferCount(nBuffers);
+        
+      }
     }
   }
 }
