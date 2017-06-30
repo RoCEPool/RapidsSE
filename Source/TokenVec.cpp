@@ -126,6 +126,16 @@ void TokenVec::vReset(void)
 /*----------------------------------------------------------------------------*/
 /* set the number of tokens                                                   */
 /*----------------------------------------------------------------------------*/
+void TokenVec::vSetAllTokens(void)
+{
+  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+    
+  m_nItems = C_TOKENS;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the number of tokens                                                   */
+/*----------------------------------------------------------------------------*/
 void TokenVec::vSetTokens(void)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);

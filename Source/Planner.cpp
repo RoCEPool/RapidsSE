@@ -68,16 +68,9 @@ Planner::~Planner(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
   
-  for (i8 i_Token; i_Token < m_pWhereTknVec->nItems(); i_Token++) {
-    Token* pToken = m_pWhereTknVec->pGet(i_Token);
-    delete pToken;
-  }
+  m_pWhereTknVec->vSetAllTokens();
   delete m_pWhereTknVec;
   
-  for (i8 i_Path; i_Path < m_pPathVec->nItems(); i_Path++) {
-    AccessPath* pPath = m_pPathVec->pGet(i_Path);
-    delete pPath;
-  }
   delete m_pPathVec;
 }
 
@@ -403,8 +396,8 @@ void Planner::vMatchPredicates(PredicateVec* mpPathPredVec, eAT eAccess)
     // we have found a bound where predicate
     
     // set the access path bound predicate value
-    s256 sLtDatum_Where = mpLitTkn_Where->aText();
-    mpPathPred->vNewLitArg(sLtDatum_Where);
+    s256 sLitDatum_Where = mpLitTkn_Where->aText();
+    mpPathPred->vNewLitArg(sLitDatum_Where);
     mpPathPred->vNewRelOp(eRelOp_Where);
     
     mpPathPredVec->vSetMatched(i_PathPred);
