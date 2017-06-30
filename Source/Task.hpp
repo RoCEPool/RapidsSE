@@ -574,9 +574,12 @@ namespace Tasks
     static void vGridToSlot(MP_Task mpTask);
   
     // group by
+    static void vGroupByApplyBuffer(MP_Task mpTask);
     static void vGroupByDelete(MP_Task mpTask);
+    static void vGroupByEnd(MP_Task mpTask);
     static void vGroupByNew(MP_Task mpTask);
-    
+    static void vGroupByStart(MP_Task mpTask);
+  
     // index
     static void vIndexAnalyze(MP_Task mpTask);
     static void vIndexBuffer(MP_Task mpTask);
