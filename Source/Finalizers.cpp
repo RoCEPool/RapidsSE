@@ -35,6 +35,7 @@ pFINALIZE *gpFinalize[]
   
   /*    */ &Finalize::vUndefined,         // CN_ACCESSPATH
   /*    */ &Finalize::vUndefined,         // CN_ACCUM
+  /*    */ &Finalize::vUndefined,         // CN_ACCUMVEC
   /* 12 */ &Finalize::vUndefined,         // CN_ARG
   /* 12 */ &Finalize::vUndefined,         // CN_ARGUMENTS
   /* 13 */ &Finalize::vUndefined,         // CN_ATOMIC

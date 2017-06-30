@@ -2,13 +2,11 @@
 /* _ray -- ray's scratch test                                                 */
 /*============================================================================*/
 
-
-
 create table jidx (
-jidx_key   INTEGER NOT NULL,
-jidx_name  VARCHAR(32) NOT NULL,
-jidx_100   INTEGER NOT NULL,
-jidx_10    INTEGER NOT NULL
+  jidx_key   INTEGER NOT NULL,
+  jidx_name  VARCHAR(32) NOT NULL,
+  jidx_100   INTEGER NOT NULL,
+  jidx_10    INTEGER NOT NULL
 );
 
 create index idx1 on jidx (jidx_10);

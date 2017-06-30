@@ -19,6 +19,8 @@ using namespace MockEE;
 #include "Accum.hpp"
 #include "LineItem.hpp"
 
+typedef Vector<CN_ACCUMVEC,Accum,CN_ACCUM,1024,u8> AccumVec;
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

@@ -34,6 +34,7 @@ namespace Base
   
     /* 19 */ CN_ACCESSPATH,
     /*    */ CN_ACCUM,
+    /*    */ CN_ACCUMVEC,
     /* 20 */ CN_ARG,
     /* 21 */ CN_ARGUMENTS,
     /* 22 */ CN_ATOMIC,
@@ -197,6 +198,7 @@ namespace Base
     
     /*    */ "ACCESSPATH"_Str,
     /*    */ "ACCUM"_Str,
+    /*    */ "ACCUMVEC"_Str,
     /* 12 */ "ARG"_Str,
     /* 12 */ "ARGUMENTS"_Str,
     /* 13 */ "ATOMIC"_Str,

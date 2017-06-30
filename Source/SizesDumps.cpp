@@ -36,6 +36,7 @@ pDUMPFUN *gpDump[]
   
   /*    */ &Dump::vInvalid,         // CN_ACCESSPATH
   /*    */ &Dump::vInvalid,         // CN_ACCUM
+  /*    */ &Dump::vInvalid,         // CN_ACCUMVEC
   /* 12 */ &Dump::vInvalid,         // CN_ARG
   /* 12 */ &Dump::vInvalid,         // CN_ARGUMENTS
   /* 13 */ &Dump::vInvalid,         // CN_ATOMIC
@@ -198,6 +199,7 @@ i8 giClassSize[]
   
   /*    */ sizeof(AccessPath),         // CN_ACCESSPATH
   /*    */ sizeof(Accum),              // CN_ACCUM
+  /*    */ sizeof(AccumVec),              // CN_ACCUMVec
   /*    */ 0,                          // CN_ARG
   /* 12 */ sizeof(Arguments),          // CN_ARGUMENTS
   /* 13 */ sizeof(Atomic),             // CN_ATOMIC
@@ -360,6 +362,7 @@ eHT geWhichHeap[]
   
   /*    */ HT_MEDIUM,  // CN_ACCESSPATH
   /*    */ HT_SMALL,   // CN_ACCUM
+  /*    */ HT_MEDIUM,  // CN_ACCUMVEC
   /*    */ HT_SMALL,   // CN_ARG
   /* 12 */ HT_INVALID, // CN_ARGUMENTS
   /* 13 */ HT_INVALID, // CN_ATOMIC
