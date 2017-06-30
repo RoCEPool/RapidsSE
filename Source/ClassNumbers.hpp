@@ -64,6 +64,7 @@ namespace Base
     /* 41 */ CN_GRAPHCURSOR,
     /* 42 */ CN_GRAPHNODE,
     /* 43 */ CN_GRID,
+    /*    */ CN_GROUPBY,
   
     /* 44 */ CN_HEAPBUFFER,
     
@@ -227,7 +228,8 @@ namespace Base
     /* 26 */ "GRAPHCURSOR"_Str,
     /* 27 */ "GRAPHNODE"_Str,
     /* 28 */ "GRID"_Str,
-    
+    /*    */ "GROUPBY"_Str,
+  
     /* 29 */ "HEAPBUFFER"_Str,
     
     /* 30 */ "INDEX"_Str,

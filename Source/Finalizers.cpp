@@ -65,6 +65,7 @@ pFINALIZE *gpFinalize[]
   /* 26 */ &Finalize::vUndefined,         // CN_GRAPH
   /* 27 */ &Finalize::vUndefined,         // CN_GRAPHNODE
   /* 28 */ &Finalize::vUndefined,         // CN_GRID
+  /*    */ &Finalize::vUndefined,         // CN_GROUPBY
   
   /* 29 */ &Finalize::vUndefined,         // CN_HEAPBUFFER
   

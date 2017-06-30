@@ -66,6 +66,7 @@ pDUMPFUN *gpDump[]
   /* 26 */ &GraphCursor::vDump,     // CN_GRAPH
   /* 27 */ &GraphNode::vDump,       // CN_GRAPHNODE
   /* 28 */ &Grid::vDump,            // CN_GRID
+  /*    */ &Dump::vDummy,           // CN_GROUPBY
 
   /* 29 */ &HeapBuffer::vDump,      // CN_HEAPBUFFER
   
@@ -229,6 +230,7 @@ i8 giClassSize[]
   /* 26 */ sizeof(GraphCursor),        // CN_GRAPHCURSOR
   /* 27 */ sizeof(GraphNode),          // CN_GRAPHNODE
   /* 28 */ sizeof(Grid),               // CN_GRID
+  /* 28 */ sizeof(GroupBy),            // CN_GROUPBY
   
   /* 29 */ sizeof(HeapBuffer),         // CN_HEAPBUFFER
   
@@ -392,6 +394,7 @@ eHT geWhichHeap[]
   /* 26 */ HT_SMALL,   // CN_GRAPHCURSOR
   /* 27 */ HT_SMALL,   // CN_GRAPHNODE
   /* 28 */ HT_INVALID, // CN_GRID
+  /*    */ HT_SMALL,   // CN_GROUPBY
 
   /* 31 */ HT_LARGE,   // CN_HEAPBUFFER
   
