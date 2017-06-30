@@ -639,6 +639,23 @@ void IndexData::vVisualize(void)
   
   i8 iBufferLevel = pIndexBuffer->nBufferLevel();
   
+  // hidden index has all level 0 buffers
+  if (m_pIndex->bIsHidden()) {
+    ASSERT(iBufferLevel == 0);
+    EntryBuffer* pNextBuffer = pIndexBuffer->pNextBuffer();
+    
+    while (pNextBuffer) {
+      ASSERT(pNextBuffer->nBufferLevel() == 0);
+      
+      EntryBuffer* pThisBuffer = pNextBuffer;
+      pNextBuffer = pNextBuffer->pNextBuffer();
+      // print the decile of pThisBuffer
+      vTrace("%lld"_Str, pThisBuffer->iDecile());
+    }
+    vTrace("\n"_Str);
+    return;
+  }
+  
   // if there is only one buffer i.e root is at level 0, we are done
   if (iBufferLevel == 0) {
     vTrace("\n"_Str);
