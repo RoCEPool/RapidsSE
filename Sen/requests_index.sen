@@ -317,12 +317,12 @@ timer: idxSelectTimer
 
   ( cdt_2 ) pPlanner Planner.genPaths           "genPaths" .
   ( cdt_3 ) pPlanner Planner.scorePaths         "scorePaths" .
-  ( cdt_4 ) pPlanner Planner.showPaths
+  //( cdt_4 ) pPlanner Planner.showPaths
 
   ( cdt_5 ) sWhere pPlanner Planner.parseWhere  "parseWheres" .
-  ( cdt_4 ) pPlanner Planner.showPaths
+  //( cdt_4 ) pPlanner Planner.showPaths
   ( cdt_7 ) pPlanner Planner.matchPaths         "matchPaths" .
-  ( cdt_8 ) pPlanner Planner.showPaths
+  //( cdt_8 ) pPlanner Planner.showPaths
   ( cdt_9 ) pPlanner Planner.choosePath         "choosePaths" .
 
   pPlanner Planner.fetchTechnique@
@@ -361,11 +361,13 @@ timer: idxSelectTimer
 
     AT_RANGE of
       "case range" .
-      pPlanner Planner.highKey@
+      "0"
       pPlanner Planner.lowKey@
+      pPlanner Planner.highKey@
+      "rangeSelectIdxTask"
       pPlanner Planner.indexNm@
       stk
-      rangeSelectIndex
+      selectIndex
     endof
 
     AT_SCAN of
@@ -689,7 +691,7 @@ timer: idxSelectTimer
   task::this task.seitf@ seitf.table@ assert
 
   // execute a range select on idx
-  sUpper sLower sIndexNm rangeSelectIndex ( upper lower index )
+  "0" sLower sUpper "rangeSelectIdxTask" sIndexNm selectIndex ( upper lower index )
 
   // dec and return table reference and clear task.seitf.currentTable
   returnTableRef not if <NIP+ERROR> exit then
