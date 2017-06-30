@@ -84,6 +84,15 @@ Predicate::Predicate(void)
 Predicate::~Predicate(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PREDICATE,_FOOTER_);
+  
+  if (m_pOp)
+    delete m_pOp;
+
+  if (m_pArg1)
+    delete m_pArg1;
+  
+  if (m_pArg2)
+    delete m_pArg2;
 }
 
 /*----------------------------------------------------------------------------*/
