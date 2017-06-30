@@ -262,6 +262,19 @@ traceon
   0 "helloWorld" "hi" spawnTask drop
 ;
 
+/*----------------------------------------------------------------------------*/
+/* group by testing                                                           */
+/*----------------------------------------------------------------------------*/
+: gby
+
+  groupBy::new locals| pGroupBy |
+
+  pGroupBy groupby.start
+  pGroupBy groupby.applyBuffer
+  pGroupBy groupby.end
+  pGroupBy groupby.delete
+;
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
