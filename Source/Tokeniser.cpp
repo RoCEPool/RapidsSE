@@ -97,6 +97,8 @@ TokenVec* Tokeniser::pTokenise(StrVal& sString)
     
   }
   
+  delete pTokeniser;
+  
   return pTokenVec;
 }
 
