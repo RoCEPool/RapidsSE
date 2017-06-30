@@ -635,7 +635,7 @@ tp: removeTable
 
   //----------------------------------------------------------------------------
   // drop all rows
-  dup table.truncate ( ^table )
+  //dup table.truncate ( ^table )
 
   //----------------------------------------------------------------------------
   // drop all indexes
@@ -645,7 +645,7 @@ tp: removeTable
   0 pathPick dic.lastWord dup
     iterate                        // setup iteration of words
     object@ word.name
-
+   
     // forward reference :-(
     "indexTidyUp" find execute
 
