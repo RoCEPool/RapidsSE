@@ -332,17 +332,23 @@ timer: idxSelectTimer
     AT_EXACT of
       "case equal" .
       pPlanner Planner.key@
+      "0"  //lower
+      "0"  //upper
+      "keySelectIdxTask"
       pPlanner Planner.indexNm@
       stk
-      equalSelectIndex
+      selectIndex
     endof
 
     AT_LOWER of
       "case lower" .
+      "0" //key
       pPlanner Planner.lowKey@
+      "0" //upper
+      "lowerSelectIdxTask"
       pPlanner Planner.indexNm@
       stk
-      lowerSelectIndex
+      selectIndex
     endof
 
     AT_UPPER of
@@ -502,7 +508,7 @@ timer: idxSelectTimer
   task::this task.seitf@ seitf.table@ assert
 
   // execute a exact key select using index
-  xKey sIndexNm equalSelectIndex ( lower index )
+  xKey "0" "0" "keySelectIdxTask" sIndexNm selectIndex ( lower index )
 
   // dec and return table reference and clear task.seitf.currentTable
   returnTableRef not if <NIP+ERROR> exit then
@@ -593,7 +599,7 @@ timer: idxSelectTimer
   task::this task.seitf@ seitf.table@ assert
 
   // execute a lower bound select using index
-  sLower sIndexNm lowerSelectIndex ( lower index )
+  "0" sLower "0" "lowerSelectIdxTask" sIndexNm selectIndex ( lower index )
 
   // dec and return table reference and clear task.seitf.currentTable
   returnTableRef not if <NIP+ERROR> exit then
