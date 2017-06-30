@@ -72,6 +72,24 @@ AccessPath::AccessPath(eAT eAccess)
 AccessPath::~AccessPath(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ACCESSPATH,_FOOTER_);
+  
+  if (m_pLowerPredicates) {
+    for (i8 i_Pred; i_Pred < m_pLowerPredicates->nItems(); i_Pred++) {
+      Predicate* pPredicate = m_pLowerPredicates->pGet(i_Pred);
+      delete pPredicate;
+    }
+    
+    delete m_pLowerPredicates;
+  }
+  
+  if (m_pUpperPredicates) {
+    for (i8 i_Pred; i_Pred < m_pUpperPredicates->nItems(); i_Pred++) {
+      Predicate* pPredicate = m_pUpperPredicates->pGet(i_Pred);
+      delete pPredicate;
+    }
+    
+    delete m_pUpperPredicates;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
