@@ -473,6 +473,30 @@ void EntryBuffer::vAnalyze(s48K& sAnalysis, bool bDetailed, i8& iBuffers, i8& iE
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
+  if (m_pIndex->bIsHidden()) {
+    
+    ASSERT(m_nBufferLevel == 0);
+    EntryBuffer* pNextBuffer = this;
+    
+    do {
+      ASSERT(pNextBuffer->nBufferLevel() == 0);
+      
+      iBuffers++;
+      iEntries += (pNextBuffer->m_nEntries - 1);
+      
+      if (bDetailed)
+      sAnalysis.vCatSprint("     buffer %5lld (L%lld) : %lld entries\n"_Str,
+                           iBuffers,
+                           pNextBuffer->m_nBufferLevel,
+                           pNextBuffer->m_nEntries - 1);
+
+      EntryBuffer* pThisBuffer = pNextBuffer;
+      pNextBuffer = pNextBuffer->pNextBuffer();
+    } while (pNextBuffer);
+    
+    return;
+  }
+
   iBuffers++;
   iEntries += (m_nEntries - 1);
   
