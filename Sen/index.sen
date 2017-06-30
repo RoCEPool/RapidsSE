@@ -1046,7 +1046,7 @@ tp: loadIndexes
 /*----------------------------------------------------------------------------*/
 /* position for upper select for table (called by upperSelectIndex request)   */
 /*----------------------------------------------------------------------------*/
-: upperSelectIdx ( ^indexPtr ^indexBuffer ^entry -- <entry> )
+: upperSelectIdx2 ( ^indexPtr ^indexBuffer ^entry -- <entry> )
 
   0 locals| row entry indexBuffer indexPtr |
 
@@ -1082,6 +1082,99 @@ tp: loadIndexes
   indexBuffer entry
 
 ;
+
+/*----------------------------------------------------------------------------*/
+/* position key select cursor for table (called by selectIndex request)       */
+/*----------------------------------------------------------------------------*/
+: upperSelectIdxTask ( <"key>" "<lower>" "<upper>" ^indexPtr seitf -- )
+
+  0 0 0 locals| entry tempEntryBuffer indexBuffer seitf indexPtr upper lower key |
+
+  tp: rangeSelectIdxTask
+
+  seitf task::this task.seitf!
+
+  // create a temporary index buffer for the results
+  "Creating a tempIndexBuffer" .
+  indexPtr entryBuffer::create to tempEntryBuffer
+
+  // position in the first index buffer
+  indexPtr index.positionFirst
+  to indexBuffer
+
+  // get the first entry in the buffer
+  indexBuffer entryBuffer.firstEntry
+  to entry
+
+  // did we find an entry ?
+  entry not if
+
+    // mark this buffer as the last buffer
+    "Marking tempEntryBuffer as last buffer" .
+    tempEntryBuffer entryBuffer.isLast!
+
+    // return the empty tempEntryBuffer
+    "Appending tempEntryBuffer to buffer queue" .
+    tempEntryBuffer seitf seitf.bufferQueue@ queue.append
+
+    exit
+  then
+
+  // iterate thru the buffer till no more entries
+  begin
+  entry
+  while
+
+    // check against upper bound
+    upper entry indexPtr index.upper if
+
+      // insert row from entry in tempEntryBuffer
+      //"Inserting row into tempEntryBuffer" .
+      indexPtr entry entry.row row.string tempEntryBuffer entryBuffer.insertRow
+
+      // check if we managed to insert the entry
+      not if
+        // buffer must be full
+        // put this tempEntryBuffer in seitf bufferQueue
+        //"Inserting row into tempEntryBuffer" .
+        tempEntryBuffer seitf seitf.bufferQueue@ queue.append
+
+        // create another temporary index buffer for the results
+        "Creating a tempIndexBuffer" .
+        indexPtr entryBuffer::create to tempEntryBuffer
+
+        // insert row from entry in temporary buffer
+        //"Inserting row into tempEntryBuffer" .
+        indexPtr entry entry.row row.string tempEntryBuffer entryBuffer.insertRow
+        assert
+      then
+
+      // move to next entry in the buffer
+      entry indexBuffer entryBuffer.nextEntry to entry
+
+      entry not if
+        // get next buffer from the current indexBuffer
+        indexBuffer entryBuffer.nextBuffer to indexBuffer
+
+        indexBuffer if
+          entry indexBuffer entryBuffer.nextEntry to entry
+        then
+      then
+    else
+      // entry beyond upper, null the entry and break from loop
+      0  to entry
+    then
+  repeat
+
+  "Marking tempEntryBuffer as last buffer" .
+  // mark this buffer as the last buffer
+  tempEntryBuffer entryBuffer.isLast!
+
+  // put the buffer in the seitf bufferQueue
+  "Appending tempEntryBuffer to buffer queue" .
+  tempEntryBuffer seitf seitf.bufferQueue@ queue.append
+;
+
 
 /*----------------------------------------------------------------------------*/
 /* upper select for index ( called by lower_select_index request)             */
@@ -1133,7 +1226,7 @@ tp: loadIndexes
       while
 
       indexPtr indexBuffer entry
-      upperSelectIdx  ( indexPtr indexBuffer entry upper )
+      upperSelectIdx2  ( indexPtr indexBuffer entry upper )
       to entry
       to indexBuffer
 

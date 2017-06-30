@@ -353,10 +353,13 @@ timer: idxSelectTimer
 
     AT_UPPER of
       "case upper" .
+      "0" //key
+      "0" //lower
       pPlanner Planner.highKey@
+      "upperSelectIdxTask"
       pPlanner Planner.indexNm@
       stk
-      upperSelectIndex
+      selectIndex
     endof
 
     AT_RANGE of
@@ -995,10 +998,8 @@ timer: idxSelectTimer
   getTableRef not if <NIP+ERROR> exit then
   task::this task.seitf@ seitf.table@ assert
 
-
-
   // execute a lower bound select using index
-  sUpper sIndexNm upperSelectIndex ( upper index )
+  "0" "0" sUpper "upperSelectIdxTask" sIndexNm selectIndex ( upper index )
 
   // dec and return table reference and clear task.seitf.currentTable
   returnTableRef not if <NIP+ERROR> exit then
