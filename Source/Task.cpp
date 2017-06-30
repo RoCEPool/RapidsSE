@@ -817,18 +817,22 @@ void Task::vAddPrimitives(void)
   gpWord = gpMainDic->pFindWord("word"_Str);
 
   vAddPrimitives_AccessPath();
+  vAddPrimitives_Accum();
   vAddPrimitives_Address();
   vAddPrimitives_Args();
   vAddPrimitives_Assert();
   vAddPrimitives_Astack();
   vAddPrimitives_AttachMap();
+  
   vAddPrimitives_Bp();
+  
   vAddPrimitives_Cast();
   vAddPrimitives_Class();
   vAddPrimitives_Comment();
   vAddPrimitives_Common();
   vAddPrimitives_Cpu();
   vAddPrimitives_Cursor();
+  
   vAddPrimitives_DdlLock();
   vAddPrimitives_Debug();
   vAddPrimitives_Dic();
@@ -838,6 +842,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitives_Docol();
   vAddPrimitives_Dot();
   vAddPrimitives_Dstack();
+  
   vAddPrimitives_Encode();
   vAddPrimitives_Enter();
   vAddPrimitives_Entry();
@@ -845,35 +850,47 @@ void Task::vAddPrimitives(void)
   vAddPrimitives_Env();
   vAddPrimitives_Error();
   vAddPrimitives_Exit();
+  
   vAddPrimitives_File();
   vAddPrimitives_Flow();
+  
   vAddPrimitives_Grid();
+  vAddPrimitives_GroupBy();
+  
   vAddPrimitives_Index();
   vAddPrimitives_Input();
   vAddPrimitives_Int();
+  
   vAddPrimitives_Loader();
   vAddPrimitives_LoaderSub();
   vAddPrimitives_Locals();
   vAddPrimitives_Lock();
   vAddPrimitives_Logic();
+  
   vAddPrimitives_Magnitude();
   vAddPrimitives_Memory();
+  
   vAddPrimitives_Node();
   vAddPrimitives_NodeCursor();
+  
   vAddPrimitives_Object();
   vAddPrimitives_OpFrame();
+  
   vAddPrimitives_Plan();
   vAddPrimitives_PlanList();
   vAddPrimitives_Planner();
   vAddPrimitives_Process();
   vAddPrimitives_Push();
+  
   vAddPrimitives_Queue();
+  
   vAddPrimitives_RbCursor();
   vAddPrimitives_Row();
   vAddPrimitives_RowBuffer();
   vAddPrimitives_RowCursor();
   vAddPrimitives_Reg();
   vAddPrimitives_Rstack();
+  
   vAddPrimitives_Scheduler();
   vAddPrimitives_SEitf();
   vAddPrimitives_SEitfCursor();
@@ -884,6 +901,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitives_Socket();
   vAddPrimitives_Steps();
   vAddPrimitives_Str();
+  
   vAddPrimitives_Table();
   vAddPrimitives_Task();
   vAddPrimitives_TaskCursor();
@@ -900,8 +918,11 @@ void Task::vAddPrimitives(void)
   vAddPrimitives_TxCollection();
   vAddPrimitives_TxMap();
   vAddPrimitives_TxRef();
+  
   vAddPrimitives_Vector();
+  
   vAddPrimitives_Word();
+  
   vAddPrimitives_Zero();
 }
 
