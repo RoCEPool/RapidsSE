@@ -25,7 +25,7 @@ create table supplier (
 );
 
 print "loading supplier.tbl..." ;
-ld supplier "/tpchSF10/supplier.tbl" ;
+ld supplier "/tpch/supplier.tbl" ;
 
 pwf ;
 lf ;

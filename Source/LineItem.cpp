@@ -11,14 +11,14 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-LineItem* MockEE::_pLineItem(void* aAddr)
-{
-  LineItem* pLineItem = reinterpret_cast<LineItem*>(aAddr);
-  
-  RASSERT( ! pLineItem || CN_LINEITEM == pLineItem->eClass() );
- 
-  return pLineItem;
-}
+//LineItem* MockEE::_pLineItem(void* aAddr)
+//{
+//  LineItem* pLineItem = reinterpret_cast<LineItem*>(aAddr);
+//  
+//  RASSERT( ! pLineItem || CN_LINEITEM == pLineItem->eClass() );
+// 
+//  return pLineItem;
+//}
 
 /*============================================================================*/
 /* end                                                                        */

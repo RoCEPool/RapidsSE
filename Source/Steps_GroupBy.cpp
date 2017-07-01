@@ -49,6 +49,13 @@ void Task::vGroupByApplyBuffer(MP_Task mpTask)
     THROW_INVALID_DSTACK("groupBy.applyBuffer"_Str);
   GroupBy* pGroupBy = _pGroupBy(pPtrGroupBy);
   
+  Object* pPtrEntryBuffer;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrEntryBuffer) )
+    THROW_INVALID_DSTACK("groupBy.applyBuffer"_Str);
+  EntryBuffer* pEntryBuffer = _pEntryBuffer(pPtrEntryBuffer);
+  
+  pGroupBy->vApplyBuffer(pEntryBuffer);
+  
   EXIT();
 }
 

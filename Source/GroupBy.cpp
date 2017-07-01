@@ -83,21 +83,34 @@ void GroupBy::vApplyBuffer(EntryBuffer* pEntryBuffer)
   // apply it to the appropriate accumulator
   //
   
-  LineItem* pLineItem = (LineItem*)pEntryBuffer; // temp, not correct
+//  LineItem* pLineItem = (LineItem*)pEntryBuffer; // temp, not correct
+//  
+//  i8 i_Group = 0;
+//  
+//  Accum* pAccum = m_pAccumVec->pGet(i_Group);
+//  
+//  pAccum->m_iSum += pLineItem->m_iExtPrice.iAsI8();
+//  
+//  if (pLineItem->m_iExtPrice.iAsI8() < pAccum->m_iMin)
+//    pAccum->m_iMin = pLineItem->m_iExtPrice.iAsI8();
+//
+//  if (pLineItem->m_iExtPrice.iAsI8() > pAccum->m_iMax)
+//    pAccum->m_iMax = pLineItem->m_iExtPrice.iAsI8();
+//  
+//  pAccum->m_iCount++;
   
-  i8 i_Group = 0;
+  Entry* pEntry = pEntryBuffer->pFirstRow();
+  while( (pEntry = pEntryBuffer->pNextRow(pEntry)) ) {
+    
+    LineItem* pLineItem = (LineItem*)pEntry->aRow();
+    
+    vTrace("\nEntry: %p LineItem: %p String: %p \n>>%s<<\n"_Str,
+           pEntry,pLineItem,pLineItem->aStr(),pLineItem->aStr());
+    MemLib::vHexDump(pEntry,512);
+    vTrace("\n"_Str);
+    
+  }
   
-  Accum* pAccum = m_pAccumVec->pGet(i_Group);
-  
-  pAccum->m_iSum += pLineItem->m_iExtPrice.iAsI8();
-  
-  if (pLineItem->m_iExtPrice.iAsI8() < pAccum->m_iMin)
-    pAccum->m_iMin = pLineItem->m_iExtPrice.iAsI8();
-
-  if (pLineItem->m_iExtPrice.iAsI8() > pAccum->m_iMax)
-    pAccum->m_iMax = pLineItem->m_iExtPrice.iAsI8();
-  
-  pAccum->m_iCount++;
 }
 
 /*----------------------------------------------------------------------------*/
