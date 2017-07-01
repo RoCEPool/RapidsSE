@@ -216,7 +216,7 @@ bool Bcd::bExtract(char** aaSrc, Bcd* aDecimal,DBobjects::Column* pColumn)
   
   if ('.' == **aaSrc) {
     (*aaSrc)++; // skip '.'
-    i8 iPrecision = pColumn->iColumnPrecision();
+    i8 iPrecision = pColumn ? pColumn->iColumnPrecision() : 15;
     while (**aaSrc && '|' != **aaSrc && ',' != **aaSrc
            && StrLib::bIsDigit(**aaSrc) && iPrecision--) {
       iResult = iResult * 10 + StrLib::iDigitToI8(**aaSrc);

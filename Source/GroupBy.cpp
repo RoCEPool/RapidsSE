@@ -72,7 +72,7 @@ GroupBy::~GroupBy(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* destructor                                                                 */
+/* apply buffer or lineitems                                                  */
 /*----------------------------------------------------------------------------*/
 void GroupBy::vApplyBuffer(EntryBuffer* pEntryBuffer)
 {
@@ -89,15 +89,6 @@ void GroupBy::vApplyBuffer(EntryBuffer* pEntryBuffer)
 //  
 //  Accum* pAccum = m_pAccumVec->pGet(i_Group);
 //  
-//  pAccum->m_iSum += pLineItem->m_iExtPrice.iAsI8();
-//  
-//  if (pLineItem->m_iExtPrice.iAsI8() < pAccum->m_iMin)
-//    pAccum->m_iMin = pLineItem->m_iExtPrice.iAsI8();
-//
-//  if (pLineItem->m_iExtPrice.iAsI8() > pAccum->m_iMax)
-//    pAccum->m_iMax = pLineItem->m_iExtPrice.iAsI8();
-//  
-//  pAccum->m_iCount++;
   
   Entry* pEntry = pEntryBuffer->pFirstRow();
   while( (pEntry = pEntryBuffer->pNextRow(pEntry)) ) {
@@ -109,8 +100,63 @@ void GroupBy::vApplyBuffer(EntryBuffer* pEntryBuffer)
     MemLib::vHexDump(pEntry,512);
     vTrace("\n"_Str);
     
+    char* aCursor = pLineItem->s();
+    i8 iOrderKey;
+    bool b = DtmLib::bExtract(DM_BCD,(Str*)&iOrderKey,&aCursor,nullptr);
+    
+    aCursor = pLineItem->s();
+    i8 iQuantity;
+    b = StrLib::bFind(&aCursor,'|',5);
+    aCursor++;
+    b = DtmLib::bExtract(DM_BCD,(Str*)&iQuantity,&aCursor,nullptr);
+    
+    i8 i_Group = iOrderKey % 10;
+    Accum* pAccum = m_pAccumVec->pGet(i_Group);
+    
+    pAccum->m_iSum += iQuantity;
+
+    if (iQuantity < pAccum->m_iMin)
+      pAccum->m_iMin = iQuantity;
+
+    if (iQuantity > pAccum->m_iMax)
+      pAccum->m_iMax = iQuantity;
+
+    pAccum->m_iCount++;
   }
   
+}
+
+/*----------------------------------------------------------------------------*/
+/* end                                                                        */
+/*----------------------------------------------------------------------------*/
+void GroupBy::vEnd(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GROUPBY,_FOOTER_);
+  
+  for (i8 i_Group = 0; i_Group < m_pAccumVec->nItems(); i_Group++) {
+    Accum* pAccum = m_pAccumVec->pGet(i_Group);
+    vTrace("Group: %lld Count: %lld Sum: %lld Min: %lld Max: %lld\n"_Str,
+           pAccum->m_iGroup,
+           pAccum->m_iCount,
+           pAccum->m_iSum,
+           pAccum->m_iMin,
+           pAccum->m_iMax
+           );
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* start                                                                      */
+/*----------------------------------------------------------------------------*/
+void GroupBy::vStart(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GROUPBY,_FOOTER_);
+  
+  for (i8 i_Group = 0; i_Group < 10; i_Group++) {
+    Accum* pAccum = new Accum;
+    pAccum->m_iGroup = i_Group;
+    m_pAccumVec->vAdd(pAccum);
+  }
 }
 
 /*----------------------------------------------------------------------------*/

@@ -59,6 +59,7 @@ namespace Base
     static bool  bExtractWordString(char** ps, char* pWord);
     
     static bool  bFind(char** ps, const char cArg);
+    static bool  bFind(char** ps, const char cArg, i8 iOccurence);
     static bool  bFind(char** ps, const char* sArg);
     static bool  bFind(char** ps, const char* sArg, i8 iLenArg);
     static void  vFree(char** ps);

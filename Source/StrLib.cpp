@@ -778,6 +778,23 @@ bool StrLib::bFind(char** ps, const char cArg)
 }
 
 /*----------------------------------------------------------------------------*/
+/* bFind: find nth ScanChar in substr                                         */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bFind(char** ps, const char cArg, i8 iOccurence)
+{
+  bool b;
+  
+  for (i8 i_Count = 0; i_Count < iOccurence; i_Count++) {
+    b = bFind(ps,cArg);
+    if (! b)
+      return false;
+    (*ps)++;
+  }
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* bFind: find start of arg in substr                                         */
 /*----------------------------------------------------------------------------*/
 bool StrLib::bFind(char** ps, const char* sArg)

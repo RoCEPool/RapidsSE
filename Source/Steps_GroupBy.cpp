@@ -87,8 +87,9 @@ void Task::vGroupByEnd(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(pPtrGroupBy) )
     THROW_INVALID_DSTACK("groupBy.end"_Str);
   GroupBy* pGroupBy = _pGroupBy(pPtrGroupBy);
+
+  pGroupBy->vEnd();
   
-  vTrace("GroupBy: %lld\n"_Str,0);
   EXIT();
 }
 
@@ -117,6 +118,8 @@ void Task::vGroupByStart(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(pPtrGroupBy) )
     THROW_INVALID_DSTACK("groupBy.start"_Str);
   GroupBy* pGroupBy = _pGroupBy(pPtrGroupBy);
+  
+  pGroupBy->vStart();
   
   EXIT();
 }
