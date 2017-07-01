@@ -81,6 +81,7 @@ void Task::vGroupByEnd(MP_Task mpTask)
     THROW_INVALID_DSTACK("groupBy.end"_Str);
   GroupBy* pGroupBy = _pGroupBy(pPtrGroupBy);
   
+  vTrace("GroupBy: %lld\n"_Str,0);
   EXIT();
 }
 

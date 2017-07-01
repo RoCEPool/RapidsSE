@@ -640,6 +640,13 @@ tp: loadIndexes
   0 0 0 0 0 0 locals| seitf selectTask rowCount indexBuffer entry
     indexPtr indexNm selectTaskRequest upper lower key |
 
+  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
+
+  groupBy::new locals| pGroupBy |
+  pGroupBy groupBy.start
+
+  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
+
   // increment query count
   queryCount ++
 
@@ -690,6 +697,10 @@ tp: loadIndexes
       repeat
       to indexBuffer
 
+      // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
+      //indexBuffer pGroupBy.applyBuffer
+      // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
+
       "Popped tempEntryBuffer from buffer queue" .
       indexBuffer entryBuffer.firstEntry to entry
 
@@ -735,6 +746,13 @@ tp: loadIndexes
   else
     "rows selected"  rowCount "%v %v\n" str.format .put
   then
+
+  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
+
+  pGroupBy groupBy.end
+  pGroupBy groupBy.delete
+
+  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
 ;
 
 /*----------------------------------------------------------------------------*/
