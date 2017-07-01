@@ -50,7 +50,7 @@ GroupBy::GroupBy(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GROUPBY,_FOOTER_);
   
-  m_pAccum = new Accum;
+  m_pAccumVec = new AccumVec;
   
   _checkInitialised_(CN_GROUPBY);
   
@@ -64,7 +64,7 @@ GroupBy::~GroupBy(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GROUPBY,_FOOTER_);
   
-  delete m_pAccum;
+  delete m_pAccumVec;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -85,14 +85,19 @@ void GroupBy::vApplyBuffer(EntryBuffer* pEntryBuffer)
   
   LineItem* pLineItem = (LineItem*)pEntryBuffer; // temp, not correct
   
-  m_pAccum->m_iCount++;
-  m_pAccum->m_iSum += pLineItem->m_iExtPrice.iAsI8();
+  i8 i_Group = 0;
   
-  if (pLineItem->m_iExtPrice.iAsI8() < m_pAccum->m_iMin)
-    m_pAccum->m_iMin = pLineItem->m_iExtPrice.iAsI8();
+  Accum* pAccum = m_pAccumVec->pGet(i_Group);
+  
+  pAccum->m_iSum += pLineItem->m_iExtPrice.iAsI8();
+  
+  if (pLineItem->m_iExtPrice.iAsI8() < pAccum->m_iMin)
+    pAccum->m_iMin = pLineItem->m_iExtPrice.iAsI8();
 
-  if (pLineItem->m_iExtPrice.iAsI8() > m_pAccum->m_iMax)
-    m_pAccum->m_iMax = pLineItem->m_iExtPrice.iAsI8();
+  if (pLineItem->m_iExtPrice.iAsI8() > pAccum->m_iMax)
+    pAccum->m_iMax = pLineItem->m_iExtPrice.iAsI8();
+  
+  pAccum->m_iCount++;
 }
 
 /*----------------------------------------------------------------------------*/

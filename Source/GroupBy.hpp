@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Accum.hpp -- Accumulator                                                   */
+/* GroupBy.hpp -- Group By                                                    */
 /*============================================================================*/
 #pragma once
 
@@ -12,7 +12,7 @@ namespace MockEE
     Footer m_xFooter;
     
   public:
-    Accum* m_pAccum;
+    AccumVec* m_pAccumVec;
   
     void* operator new(size_t);
     void  operator delete(void*);
