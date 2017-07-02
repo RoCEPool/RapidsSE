@@ -36,7 +36,7 @@ void ThreadList::operator delete(void* pBufferAddress)
   RASSERT(pBufferAddress);
   vFatal("fatal: ThreadList class cannot be deleted"_Str);
   
-  RASSERT(0);
+  NEVER_REACH;
 }
 
 /*----------------------------------------------------------------------------*/

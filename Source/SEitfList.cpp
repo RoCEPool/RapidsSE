@@ -36,7 +36,7 @@ void SEitfList::operator delete(void* pBufferAddress)
   RASSERT(pBufferAddress);
   vFatal("fatal: SEitfList class cannot be deleted"_Str);
   
-  RASSERT(0);
+  NEVER_REACH;
 }
 
 /*----------------------------------------------------------------------------*/

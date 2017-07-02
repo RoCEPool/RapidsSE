@@ -26,7 +26,7 @@ void* PtrVal::operator new(size_t iSize)
   RASSERT(iSize);
   vFatal("fatal: PtrVal class cannot be new'd\n"_Str);
   
-  RASSERT(0);
+  NEVER_REACH;
 }
 
 /*----------------------------------------------------------------------------*/

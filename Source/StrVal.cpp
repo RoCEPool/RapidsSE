@@ -32,7 +32,7 @@ void* StrVal::operator new(size_t iSize)
   
   vFatal("fatal: StrVal class cannot be new'd\n"_Str);
   
-  RASSERT(0);
+  NEVER_REACH;
 }
 
 /*----------------------------------------------------------------------------*/

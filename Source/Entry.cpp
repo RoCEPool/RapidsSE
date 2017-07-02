@@ -28,7 +28,7 @@ void* Entry::operator new(size_t iSize)
   RASSERT(iSize);
   vFatal("fatal: Entry class cannot be new'd\n"_Str);
   
-  RASSERT(0);
+  NEVER_REACH;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -518,7 +518,7 @@ void Entry::vExtractKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
       }
         
       case CT_CHAR: {
-        ASSERT(0);
+        NEVER_REACH;
         break;
       }
         
@@ -582,7 +582,7 @@ void Entry::vExtractKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
       }
         
       case CT_VARBINARY: {
-        ASSERT(0);
+        NEVER_REACH;
         break;
       }
         
@@ -592,7 +592,7 @@ void Entry::vExtractKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
       }
         
       default:
-        ASSERT(0);
+        NEVER_REACH;
     }
     
     // add the column value to the key

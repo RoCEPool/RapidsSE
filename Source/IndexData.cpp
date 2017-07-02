@@ -313,7 +313,7 @@ void IndexData::vInsertEntry(Entry* pRow, i8 nRowNo, bn nBufferNo)
   //  vTrace("Inserting row that caused verify to fail:\n"_Str);
   //  pRow->vContentDump();
   //  vDump();
-  //  ASSERT(0);
+  //  NEVER_REACH;
   //}
 }
 

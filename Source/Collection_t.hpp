@@ -56,7 +56,7 @@ void* Collection_t<OBJECT>::operator new(size_t iSize)
 {
   vFatal("fatal: Collection_t class cannot be new'd"_Str);
   
-  RASSERT(0);
+  NEVER_REACH;
 }
 
 /*----------------------------------------------------------------------------*/

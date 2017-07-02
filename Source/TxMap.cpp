@@ -36,7 +36,7 @@ void TxMap::operator delete(void* pBufferAddress)
   RASSERT(pBufferAddress);
   vFatal("fatal: TxMap class cannot be deleted"_Str);
   
-  RASSERT(0);
+  NEVER_REACH;
 }
 
 /*----------------------------------------------------------------------------*/

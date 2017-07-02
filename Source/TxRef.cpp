@@ -51,7 +51,7 @@ void TxRef::operator delete(void* pBufferAddress)
   
   Heap::vFree(pTxRef);
   
-  //RASSERT(0);
+  //NEVER_REACH;
 }
 
 /*----------------------------------------------------------------------------*/

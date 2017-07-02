@@ -19,7 +19,7 @@ void* Str::operator new(size_t iSize)
   
   vFatal("fatal: Str class cannot be new'd\n"_Str);
   
-  RASSERT(0);
+  NEVER_REACH;
 }
 
 /*----------------------------------------------------------------------------*/

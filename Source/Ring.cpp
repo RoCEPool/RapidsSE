@@ -12,7 +12,7 @@ void* Ring::operator new(size_t iSize)
   RASSERT(iSize);
   vFatal("fatal: Ring class cannot be new'd"_Str);
   
-  RASSERT(0);
+  NEVER_REACH;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -23,7 +23,7 @@ void Ring::operator delete(void* pBufferAddress)
   RASSERT(pBufferAddress);
   vFatal("fatal: Ring class cannot be deleted"_Str);
   
-  RASSERT(0);
+  NEVER_REACH;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -50,7 +50,7 @@ void Scheduler::operator delete(void* aAddress)
   RASSERT(aAddress);
   vFatal("fatal: Scheduler class cannot be deleted"_Str);
   
-  RASSERT(0);
+  NEVER_REACH;
 }
 
 /*----------------------------------------------------------------------------*/

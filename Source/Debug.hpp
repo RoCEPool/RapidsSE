@@ -92,9 +92,9 @@ namespace Debugging
   /*--------------------------------------------------------------------------*/
   /* NEVER_REACH macro (point in code which should never be reached           */
   /*--------------------------------------------------------------------------*/
-  #define NEVER_REACH() \
+  #define NEVER_REACH \
     Debugging::vAssertTrap(); \
-    THROW_ERROR_MSG(EC_ASSERT,"CodePath"_Str));
+    THROW_ERROR_MSG(EC_ASSERT,"CodePath"_Str);
 
   /*--------------------------------------------------------------------------*/
   /* pre, post condition and check initialised                                */

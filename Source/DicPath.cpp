@@ -26,7 +26,7 @@ void* DicPath::operator new(size_t iSize)
   RASSERT(iSize);
   vFatal("fatal: DictionaryStack class cannot be new'd"_Str);
   
-  RASSERT(0);
+  NEVER_REACH;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -37,7 +37,7 @@ void DicPath::operator delete(void* aAddress)
   RASSERT(aAddress);
   vFatal("fatal: DictionaryStack class cannot be deleted"_Str);
   
-  RASSERT(0);
+  NEVER_REACH;
 }
 
 /*----------------------------------------------------------------------------*/

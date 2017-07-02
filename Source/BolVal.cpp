@@ -24,7 +24,7 @@ void* BolVal::operator new(size_t iSize)
   RASSERT(iSize);
   vFatal("fatal: BolVal class cannot be new'd\n"_Str);
   
-  RASSERT(0);
+  NEVER_REACH;
 }
 
 /*----------------------------------------------------------------------------*/

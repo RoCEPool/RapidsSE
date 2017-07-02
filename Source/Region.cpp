@@ -121,7 +121,7 @@ void Region::vCreate(StrVal& sRegionName, i8 iRegionSize, i8 iJumboTook,
   if ( ! bResult ) {
     vTrace("RapidsSE::vCreate: failed to create region %s\n"_Str,
            sRegionName.s());
-    ASSERT(0);
+    NEVER_REACH;
   }
   
   // allocate memory for the shm region
@@ -138,7 +138,7 @@ void Region::vCreate(StrVal& sRegionName, i8 iRegionSize, i8 iJumboTook,
   if ( ! mpRegion )  {
     vTrace("RapidsSE::vCreate failed to map!\n"_Str);
     Shm::bClose(iFD,xSysCall);
-    ASSERT(0);
+    NEVER_REACH;
   }
   
   if (gbVerbose)

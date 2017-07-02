@@ -19,7 +19,7 @@ void* Bol::operator new(size_t iSize)
   
   vFatal("fatal: Bol class cannot be new'd\n"_Str);
   
-  RASSERT(0);
+  NEVER_REACH;
 }
 
 /*----------------------------------------------------------------------------*/

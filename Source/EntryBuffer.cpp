@@ -1604,7 +1604,7 @@ void EntryBuffer::vReplaceLargerKey(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk)
   
   // ensure we have space in the buffer
   if (m_xWsp.nFree() < nSizeDifference) {
-    ASSERT(0);                                                   //ALKA: TODO
+    NEVER_REACH;                                                   //ALKA: TODO
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1995,7 +1995,7 @@ void EntryBuffer::vPriorVec(Entry* pEntry, EntryVec* pPriorVec)
     
   }
   
-  ASSERT(0);
+  NEVER_REACH;
 }
 
 /*----------------------------------------------------------------------------*/

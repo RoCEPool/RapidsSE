@@ -26,7 +26,7 @@ void* Key::operator new(size_t iSize)
   RASSERT(iSize);
   vFatal("fatal: Key class cannot be new'd\n"_Str);
   
-  RASSERT(0);
+  NEVER_REACH;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -375,7 +375,7 @@ bool Key::bJuxtaCompare(eJC eJuxtaCompare, Key* pKeyThat, IdxColVec* pIdxColVec,
     case JC_AFTER:  bJuxtaCompare = bJuxtaAfter(pKeyThat,pIdxColVec, bIsEqual);  break;
       
     default:
-      ASSERT(0);
+      NEVER_REACH;
   }
   
   return bJuxtaCompare;

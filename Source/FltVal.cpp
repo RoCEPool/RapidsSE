@@ -24,7 +24,7 @@ void* FltVal::operator new(size_t iSize)
   RASSERT(iSize);
   vFatal("fatal: FltVal class cannot be new'd\n"_Str);
   
-  RASSERT(0);
+  NEVER_REACH;
 }
 
 /*----------------------------------------------------------------------------*/

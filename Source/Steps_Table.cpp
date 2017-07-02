@@ -324,7 +324,7 @@ ENTRY("vTableInsert"_Str);
   ASSERT(CN_TXREF == pTxRef->eClass());
   
   // invoked by copy...
-  ASSERT(0);
+  NEVER_REACH;
   
   /*
   pTable->vInsertRow(iPartition,

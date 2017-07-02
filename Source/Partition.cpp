@@ -69,7 +69,7 @@ void* Partition::operator new(size_t iSize)
   RASSERT(iSize);
   vFatal("fatal: Partition class cannot be new'd"_Str);
   
-  RASSERT(0);
+  NEVER_REACH;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -80,7 +80,7 @@ void Partition::operator delete(void* pBufferAddress)
   RASSERT(pBufferAddress);
   vFatal("fatal: Partition class cannot be deleted"_Str);
   
-  RASSERT(0);
+  NEVER_REACH;
 }
 
 /*----------------------------------------------------------------------------*/

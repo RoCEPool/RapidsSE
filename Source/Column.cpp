@@ -448,7 +448,7 @@ char* Column::aValue(i8& nBytes, char** aaCursor)
       break;
       
     case CT_VARBINARY:
-      ASSERT(0);
+      NEVER_REACH;
       break;
       
     case CT_VARCHAR:
@@ -463,7 +463,7 @@ char* Column::aValue(i8& nBytes, char** aaCursor)
       break;
       
     default:
-      ASSERT(0);
+      NEVER_REACH;
   }
   
   *aaCursor = pAdd<char*>(aValue,nBytes);
@@ -563,15 +563,15 @@ i8 Column::iCmp(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
 //  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
 //  
 //  switch (m_eColumnType) {
-//    case CT_BOOLEAN:   ASSERT(0);
+//    case CT_BOOLEAN:   NEVER_REACH;
 //      
-//    case CT_CHAR:      ASSERT(0);
+//    case CT_CHAR:      NEVER_REACH;
 //      
-//    case CT_DATE:      ASSERT(0);
+//    case CT_DATE:      NEVER_REACH;
 //      
-//    case CT_DECIMAL:   ASSERT(0);
+//    case CT_DECIMAL:   NEVER_REACH;
 //      
-//    case CT_FLOAT:     ASSERT(0);
+//    case CT_FLOAT:     NEVER_REACH;
 //      
 //    case CT_INTEGER:
 //      switch(eRelnOp) {
@@ -581,16 +581,16 @@ i8 Column::iCmp(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
 //        case RO_NOT_EQUAL:    return bNotEqual    (aArgA, nBytesA, aArgB, nBytesB);
 //        case RO_GREATER_EQUAL:return bGreaterEqual(aArgA, nBytesA, aArgB, nBytesB);
 //        case RO_GREATER:      return bGreaterThan (aArgA, nBytesA, aArgB, nBytesB);
-//        default: ASSERT(0);
+//        default: NEVER_REACH;
 //      }
 //      
-//    case CT_INTERVAL:  ASSERT(0);
+//    case CT_INTERVAL:  NEVER_REACH;
 //      
-//    case CT_TIME:      ASSERT(0);
+//    case CT_TIME:      NEVER_REACH;
 //      
-//    case CT_TIMESTAMP: ASSERT(0);
+//    case CT_TIMESTAMP: NEVER_REACH;
 //      
-//    case CT_VARBINARY: ASSERT(0);
+//    case CT_VARBINARY: NEVER_REACH;
 //      
 //    case CT_VARCHAR:
 //      switch(eRelnOp) {
@@ -600,11 +600,11 @@ i8 Column::iCmp(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
 //        case RO_NOT_EQUAL:    return bNotEqual    (aArgA, nBytesA, aArgB, nBytesB);
 //        case RO_GREATER_EQUAL:return bGreaterEqual(aArgA, nBytesA, aArgB, nBytesB);
 //        case RO_GREATER:      return bGreaterThan (aArgA, nBytesA, aArgB, nBytesB);
-//        default: ASSERT(0);
+//        default: NEVER_REACH;
 //      }
 //      
 //    default:
-//      ASSERT(0);
+//      NEVER_REACH;
 //  }
 //  return true;
 //}
@@ -620,10 +620,10 @@ bool Column::bCmp(eRO eRelnOp, char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
     case RO_NOT_EQUAL:    return bNotEqual    (aArgA, nBytesA, aArgB, nBytesB);
     case RO_GREATER_EQUAL:return bGreaterEqual(aArgA, nBytesA, aArgB, nBytesB);
     case RO_GREATER_THAN: return bGreaterThan (aArgA, nBytesA, aArgB, nBytesB);
-    default: ASSERT(0);
+    default: NEVER_REACH;
   }
   
-  ASSERT(0);
+  NEVER_REACH;
   return false;
 }
 

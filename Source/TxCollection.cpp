@@ -37,7 +37,7 @@ void TxCollection::operator delete(void* pBufferAddress)
   RASSERT(pBufferAddress);
   vFatal("fatal: gpTxCollection class cannot be deleted"_Str);
   
-  RASSERT(0);
+  NEVER_REACH;
 }
 
 /*----------------------------------------------------------------------------*/

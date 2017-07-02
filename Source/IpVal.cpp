@@ -26,7 +26,7 @@ void* IpVal::operator new(size_t iSize)
   RASSERT(iSize);
   vFatal("fatal: IpVal class cannot be new'd\n"_Str);
   
-  RASSERT(0);
+  NEVER_REACH;
 }
 
 /*----------------------------------------------------------------------------*/

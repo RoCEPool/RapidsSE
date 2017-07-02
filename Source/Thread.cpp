@@ -53,7 +53,7 @@ void Thread::operator delete(void* pTxAddress)
   RASSERT(pTxAddress);
   vFatal("fatal: Thread class cannot be deleted"_Str);
 
-  RASSERT(0);
+  NEVER_REACH;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -399,7 +399,7 @@ void Thread::vLoopV2(void)
       continue;
     }
 
-    ASSERT(0);
+    NEVER_REACH;
     
   } // while
 }

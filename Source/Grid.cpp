@@ -37,7 +37,7 @@ void Grid::operator delete(void* pBufferAddress)
   RASSERT(pBufferAddress);
   vFatal("fatal: GridModel class cannot be deleted"_Str);
   
-  RASSERT(0);
+  NEVER_REACH;
 }
 
 /*----------------------------------------------------------------------------*/

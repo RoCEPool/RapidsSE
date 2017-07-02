@@ -16,7 +16,7 @@ void* Time::operator new(size_t iSize)
   RASSERT(iSize);
   vFatal("fatal: Time class cannot be new'd"_Str);
   
-  RASSERT(0);
+  NEVER_REACH;
 }
 
 /*----------------------------------------------------------------------------*/

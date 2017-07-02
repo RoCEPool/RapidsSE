@@ -26,7 +26,7 @@ void TxArray::operator delete(void* pBufferAddress)
   RASSERT(pBufferAddress);
   vFatal("fatal: TxArray class cannot be deleted"_Str);
   
-  RASSERT(0);
+  NEVER_REACH;
 }
 
 /*----------------------------------------------------------------------------*/

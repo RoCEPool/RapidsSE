@@ -27,7 +27,7 @@ void* BinVal::operator new(size_t iSize)
   RASSERT(iSize);
   vFatal("fatal: BinVal class cannot be new'd\n"_Str);
   
-  RASSERT(0);
+  NEVER_REACH;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -125,7 +125,7 @@ i8 BinVal::nSize(void) const
 /*----------------------------------------------------------------------------*/
 void BinVal::vSize(void)
 {
-  ASSERT(0);
+  NEVER_REACH;
 }
 
 /*----------------------------------------------------------------------------*/

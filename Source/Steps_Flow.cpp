@@ -85,7 +85,7 @@ void Task::vFlowExecute(MP_Task mpTask)
     mpTask->IP.m_pCell = pWord->pEntryCell();
   }
   else {
-    ASSERT(0);
+    NEVER_REACH;
   }
   
   EXIT();

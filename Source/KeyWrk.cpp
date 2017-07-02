@@ -16,7 +16,7 @@ void* KeyWrk::operator new(size_t iSize)
   RASSERT(iSize);
   vFatal("fatal: KeyWrk class cannot be new'd\n"_Str);
   
-  RASSERT(0);
+  NEVER_REACH;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -181,7 +181,7 @@ void KeyWrk::vAddDatum(Values::StrVal* pStrVal, Column* pCol)
       break;
       
     default:
-      ASSERT(0);
+      NEVER_REACH;
   }
   
   m_xWsp.vTake(nBytes);

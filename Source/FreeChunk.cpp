@@ -22,7 +22,7 @@ void FreeChunk::operator delete(void* pFreeChunkAddress)
   
   vFatal("fatal: FreeChunk class cannot be deleted"_Str);
   
-  RASSERT(0);
+  NEVER_REACH;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -41,7 +41,7 @@ FreeChunk::~FreeChunk(void)
 {
   vFatal("fatal: FreeChunk class cannot be deleted"_Str);
   
-  ASSERT(0);
+  NEVER_REACH;
 }
 
 /*----------------------------------------------------------------------------*/

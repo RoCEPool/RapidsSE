@@ -19,7 +19,7 @@ void* Dte::operator new(size_t iSize)
   
   vFatal("fatal: Dte class cannot be new'd\n"_Str);
   
-  RASSERT(0);
+  NEVER_REACH;
 }
 
 /*----------------------------------------------------------------------------*/
