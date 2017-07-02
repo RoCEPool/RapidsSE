@@ -66,7 +66,7 @@ namespace Debugging
     #define _mp_(pArg)
   #endif
     
- /*--------------------------------------------------------------------------*/
+  /*--------------------------------------------------------------------------*/
   /* our ASSERT macro                                                         */
   /*--------------------------------------------------------------------------*/
   #ifdef ASSERT_CHECKS
@@ -88,6 +88,13 @@ namespace Debugging
       THROW_ERROR_MSG(EC_ASSERT,(__builtin_expect(!(condition), 0) ? (Str*) #condition : ""_Str)); \
     } \
   }
+
+  /*--------------------------------------------------------------------------*/
+  /* NEVER_REACH macro (point in code which should never be reached           */
+  /*--------------------------------------------------------------------------*/
+  #define NEVER_REACH() \
+    Debugging::vAssertTrap(); \
+    THROW_ERROR_MSG(EC_ASSERT,"CodePath"_Str));
 
   /*--------------------------------------------------------------------------*/
   /* pre, post condition and check initialised                                */
