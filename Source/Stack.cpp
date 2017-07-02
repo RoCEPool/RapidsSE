@@ -675,12 +675,30 @@ bool Stack::bPopAsInt_Quick(i8& iArg1)
   if ( ! bGuard(1) )
     return false;
   
-  ValWrk xWspVal1;
-  vPopVal(xWspVal1.pNestedValueSelf());
+  // get pointer to value on the top of the stack
+  Value* pTop = pTopValue();
+
+  // discard the value
+  vDiscard();
+
+  eCN eClassNo = pTop->eClass();
   
-  iArg1 = xWspVal1.iNestedAsInt();
-  
-  return true;
+  switch (eClassNo) {
+      
+    case Base::CN_INTVAL:
+      iArg1 = _pIntVal(pTop)->iInt();
+      return true;
+      
+    case Base::CN_PTRVAL:
+      iArg1 = _pPtrVal(pTop)->pPtr() ? 1 : 0;
+      return true;
+      
+    default:
+      NEVER_REACH;
+  }
+
+  NEVER_REACH;
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
