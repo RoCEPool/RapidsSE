@@ -666,6 +666,24 @@ bool Stack::bPopAsInt(i8& iArg1)
 }
 
 /*----------------------------------------------------------------------------*/
+/* pop value from data stack  as integer                                      */
+/*----------------------------------------------------------------------------*/
+bool Stack::bPopAsInt_Quick(i8& iArg1)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  if ( ! bGuard(1) )
+    return false;
+  
+  ValWrk xWspVal1;
+  vPopVal(xWspVal1.pNestedValueSelf());
+  
+  iArg1 = xWspVal1.iNestedAsInt();
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* pop integer from stack                                                     */
 /*----------------------------------------------------------------------------*/
 i8 Stack::iPop(void)

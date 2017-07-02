@@ -135,7 +135,7 @@ void Task::vFlowJumpFalse(MP_Task mpTask)
   ENTRY("vJumpFalse"_Str);
   
   i8 iVal;
-  if ( ! mpTask->m_pDataStack->bPopAsInt(iVal) )
+  if ( ! mpTask->m_pDataStack->bPopAsInt_Quick(iVal) )
     THROW_INVALID_DSTACK("jumpFalse"_Str);
   
   // n.b. the IP points to the jump arg

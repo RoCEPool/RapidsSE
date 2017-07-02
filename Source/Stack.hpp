@@ -71,6 +71,7 @@ namespace Structures
     bool bPop(s48K& sArg1, s48K& sArg2);
     bool bPopBinary(Object*& pObject);
     bool bPopAsInt(i8& iArg1);
+    bool bPopAsInt_Quick(i8& iArg1);
     i8   iPop(void);
   
     void vPushBinary(Object* pObject);
