@@ -1276,7 +1276,7 @@ namespace Tasks
       THROW("Invalid return stack for: %s"_Str,primitive); \
     }
         
-    #ifdef ENTRY_EXIT
+    #ifdef __ENTRY_EXIT
         
       #ifdef STEP_BOARD
     

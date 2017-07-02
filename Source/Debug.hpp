@@ -15,7 +15,7 @@ namespace Debugging
   /*--------------------------------------------------------------------------*/
   /* check the object is within the pool                                      */
   /*--------------------------------------------------------------------------*/
-  #ifdef ADDRESS_CHECK
+  #ifdef __ADDRESS_CHECK
     #define _poolAddress_(pArg) Base::vCheckAddress(pArg)
   #else
     #define _poolAddress_(pArg)
@@ -24,7 +24,7 @@ namespace Debugging
   /*--------------------------------------------------------------------------*/
   /* our ASSERT macro                                                         */
   /*--------------------------------------------------------------------------*/
-  #ifdef ASSERT_CHECKS
+  #ifdef __ASSERT_CHECKS
     #define ASSERT(condition) \
     { \
       if ( !(condition) ) { \
@@ -49,7 +49,7 @@ namespace Debugging
   /*--------------------------------------------------------------------------*/
   /* check the object is of a known class                                     */
   /*--------------------------------------------------------------------------*/
-  #ifdef CLASS_CHECK
+  #ifdef __CLASS_CHECK
     #define _class_(arg) ASSERT(eClass() == arg);
     #define _class2_(arg1,arg2) ASSERT(eClass() == arg1 || eClass() == arg2);
     #define _class3_(arg1,arg2,arg3) \
@@ -63,7 +63,7 @@ namespace Debugging
   /*--------------------------------------------------------------------------*/
   /* check the object has a footer marker as its last word                    */
   /*--------------------------------------------------------------------------*/
-  #ifdef FOOTER_CHECK
+  #ifdef __FOOTER_CHECK
     #define _footer_() aFooter()->vAssertFooter();
     #define _hazard_() m_xHazard.vAssertFooter();
     #define _setFooter_() aFooter()->vSetFooter();
@@ -76,7 +76,7 @@ namespace Debugging
   /*--------------------------------------------------------------------------*/
   /* check the object has a magic marker as its first word                    */
   /*--------------------------------------------------------------------------*/
-  #ifdef MAGIC_CHECK
+  #ifdef __MAGIC_CHECK
     #define _magic_() ASSERT(iMagic() == MAGIC);
   #else
     #define _magic_()
@@ -117,7 +117,7 @@ namespace Debugging
               _precondition4_, _precondition3_, \
               _precondition2_, _precondition1_)(__VA_ARGS__)
   
-  #ifdef DEBUG_CHECKS
+  #ifdef __DEBUG_CHECKS
   
     #define _checkCondition_(checkValue)     \
       if (typeid(checkValue) == typeid(int)) \
