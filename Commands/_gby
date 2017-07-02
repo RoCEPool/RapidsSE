@@ -27,7 +27,7 @@ ld lineitem "/tpch/lineitem1k.tbl" ;
 create index idx1 on lineitem (L_ORDERKEY);
 
 docol epochTake;
-fetch lineitem "L_ORDERKEY 100 <=";
+fetch lineitem "L_ORDERKEY 100 >= L_ORDERKEY <= 500 and";
 docol epochDump;
 
 /*============================================================================*/
