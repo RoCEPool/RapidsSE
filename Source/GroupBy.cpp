@@ -116,12 +116,13 @@ void GroupBy::vApplyBuffer(EntryBuffer* pEntryBuffer)
 }
 
 /*----------------------------------------------------------------------------*/
-/* end                                                                        */
+/* end group by accumulation, print the accumulators                          */
 /*----------------------------------------------------------------------------*/
 void GroupBy::vEnd(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GROUPBY,_FOOTER_);
   
+  // print all the accumulators
   for (i8 i_Group = 0; i_Group < m_pAccumVec->nItems(); i_Group++) {
     Accum* pAccum = m_pAccumVec->pGet(i_Group);
     vTrace("Group: %lld Count: %lld Sum: %lld Min: %lld Max: %lld\n"_Str,
@@ -135,12 +136,13 @@ void GroupBy::vEnd(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* start                                                                      */
+/* start group by accumulation, create accumulators                           */
 /*----------------------------------------------------------------------------*/
 void GroupBy::vStart(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GROUPBY,_FOOTER_);
   
+  // create an accum for each group
   for (i8 i_Group = 0; i_Group < 10; i_Group++) {
     Accum* pAccum = new Accum;
     pAccum->m_iGroup = i_Group;
