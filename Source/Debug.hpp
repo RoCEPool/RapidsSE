@@ -83,6 +83,15 @@ namespace Debugging
   #endif
   
   /*--------------------------------------------------------------------------*/
+  /* initialise memory to zero                                                */
+  /*--------------------------------------------------------------------------*/
+  #ifdef __MEMORY_ZERO
+    #define _memzero_(pAddr,nBytes)  MemLib::vZero(pAddr,nBytes);
+  #else
+    #define _memzero_(pAddr,nBytes)
+  #endif
+  
+  /*--------------------------------------------------------------------------*/
   /* check the object is within the pool                                      */
   /*--------------------------------------------------------------------------*/
   #ifdef MP_CHECK
