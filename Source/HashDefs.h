@@ -17,6 +17,7 @@
   #define DEBUG_CHECKS    // _pre_(), _post_(), _checkInitialised_()
   #define ENTRY_EXIT      // entry exit macros
   #define FOOTER_CHECK    // footer marker check
+  #define MEMORY_INIT     // initialise wsp etc to all 0's
   #define MAGIC_CHECK     // magic marker check in header
 #endif
 

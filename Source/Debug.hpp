@@ -13,14 +13,39 @@ namespace Debugging
   void vThrowTrap(void);
   
   /*--------------------------------------------------------------------------*/
-  /* check the object has a magic marker as its first word                    */
+  /* check the object is within the pool                                      */
   /*--------------------------------------------------------------------------*/
-  #ifdef MAGIC_CHECK
-    #define _magic_() ASSERT(iMagic() == MAGIC);
+  #ifdef ADDRESS_CHECK
+    #define _poolAddress_(pArg) Base::vCheckAddress(pArg)
   #else
-    #define _magic_()
+    #define _poolAddress_(pArg)
+  #endif
+  
+  /*--------------------------------------------------------------------------*/
+  /* our ASSERT macro                                                         */
+  /*--------------------------------------------------------------------------*/
+  #ifdef ASSERT_CHECKS
+    #define ASSERT(condition) \
+    { \
+      if ( !(condition) ) { \
+        Debugging::vAssertTrap(); \
+        THROW_ERROR_MSG(EC_ASSERT,(__builtin_expect(!(condition), 0) \
+                                    ? (Str*) #condition : ""_Str)); \
+    } \
+  }
+  #else
+    #define ASSERT(condition)
   #endif
     
+  #define RASSERT(condition) \
+  { \
+    if ( !(condition) ) { \
+      Debugging::vAssertTrap(); \
+      THROW_ERROR_MSG(EC_ASSERT,(__builtin_expect(!(condition), 0) \
+                                  ? (Str*) #condition : ""_Str)); \
+    } \
+  }
+  
   /*--------------------------------------------------------------------------*/
   /* check the object is of a known class                                     */
   /*--------------------------------------------------------------------------*/
@@ -28,13 +53,13 @@ namespace Debugging
     #define _class_(arg) ASSERT(eClass() == arg);
     #define _class2_(arg1,arg2) ASSERT(eClass() == arg1 || eClass() == arg2);
     #define _class3_(arg1,arg2,arg3) \
-      ASSERT(eClass() == arg1 || eClass() == arg2 || eClass() == arg3);
+    ASSERT(eClass() == arg1 || eClass() == arg2 || eClass() == arg3);
   #else
     #define _class_(arg)
     #define _class2_(arg1,arg2)
     #define _class3_(arg1,arg2,arg3)
   #endif
-
+  
   /*--------------------------------------------------------------------------*/
   /* check the object has a footer marker as its last word                    */
   /*--------------------------------------------------------------------------*/
@@ -49,12 +74,12 @@ namespace Debugging
   #endif
   
   /*--------------------------------------------------------------------------*/
-  /* check the object is within the pool                                      */
+  /* check the object has a magic marker as its first word                    */
   /*--------------------------------------------------------------------------*/
-  #ifdef ADDRESS_CHECK
-    #define _poolAddress_(pArg) Base::vCheckAddress(pArg)
+  #ifdef MAGIC_CHECK
+    #define _magic_() ASSERT(iMagic() == MAGIC);
   #else
-    #define _poolAddress_(pArg)
+    #define _magic_()
   #endif
   
   /*--------------------------------------------------------------------------*/
@@ -66,29 +91,6 @@ namespace Debugging
     #define _mp_(pArg)
   #endif
     
-  /*--------------------------------------------------------------------------*/
-  /* our ASSERT macro                                                         */
-  /*--------------------------------------------------------------------------*/
-  #ifdef ASSERT_CHECKS
-    #define ASSERT(condition) \
-    { \
-      if ( !(condition) ) { \
-        Debugging::vAssertTrap(); \
-        THROW_ERROR_MSG(EC_ASSERT,(__builtin_expect(!(condition), 0) ? (Str*) #condition : ""_Str)); \
-      } \
-    }
-  #else
-    #define ASSERT(condition)
-  #endif
-  
-  #define RASSERT(condition) \
-  { \
-    if ( !(condition) ) { \
-      Debugging::vAssertTrap(); \
-      THROW_ERROR_MSG(EC_ASSERT,(__builtin_expect(!(condition), 0) ? (Str*) #condition : ""_Str)); \
-    } \
-  }
-
   /*--------------------------------------------------------------------------*/
   /* NEVER_REACH macro (point in code which should never be reached           */
   /*--------------------------------------------------------------------------*/
@@ -190,7 +192,10 @@ namespace Debugging
 
   #endif
   
-  // throw
+  /*--------------------------------------------------------------------------*/
+  /* throw exception macro's                                                  */
+  /*--------------------------------------------------------------------------*/
+  
   #define THROW_ERROR(exception) \
     throw new Error(exception,(Str*)__FILE__,__LINE__);
   
