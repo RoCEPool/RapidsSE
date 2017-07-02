@@ -11,13 +11,13 @@
 #define REPORT_FATAL
 
 #ifdef _DEBUG
-  #define ADDRESS_CHECK
-  #define CLASS_CHECK
-  #define DEBUG_CHECKS
-  #define MAGIC_CHECK
-  #define FOOTER_CHECK
-  #define ASSERT_CHECKS
-  #define ENTRY_EXIT
+  #define ADDRESS_CHECK   // address is in pool
+  #define ASSERT_CHECKS   // assert macro
+  #define CLASS_CHECK     // known class
+  #define DEBUG_CHECKS    // _pre_(), _post_(), _checkInitialised_()
+  #define ENTRY_EXIT      // entry exit macros
+  #define FOOTER_CHECK    // footer marker check
+  #define MAGIC_CHECK     // magic marker check in header
 #endif
 
 #define VERBOSE_TRACE
