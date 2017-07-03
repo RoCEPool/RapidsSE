@@ -26,8 +26,6 @@
 #define HIDDEN_INDEX
 #define REQUEST_LOOP2
 
-//#define STEP_BOARD
-
 #define DIV(a,b) (b ? (a / b) : 0)    // checked divide
 #define MAX(a,b) (((a)>(b))?(a):(b))  // which is smaller
 #define MIN(a,b) (((a)<(b))?(a):(b))  // which is bigger

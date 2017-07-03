@@ -31,8 +31,6 @@ BPA*          gpBPA          = nullptr;
 NP_Task       gnpRootTask    = nullptr;
 Thread*       gnpRootThread  = nullptr;
 
-StepBoard*    gpStepBoard    = nullptr;
-
 void*         mpRegion       = nullptr;
 
 bool          gbVerbose      = false;
@@ -150,11 +148,7 @@ void RapidsSE::vPoolOpen(void)
   }
   
   if (gxArguments.m_bStart || gxArguments.m_bDocol) {
-    
-#ifdef STEP_BOARD
-    gpStepBoard = new StepBoard(16);
-#endif
-    
+        
     if (! gxArguments.m_bRestart && Region::bTest(gxArguments.m_sRegionName)) {
       vFatal("Error: RapidsSE instance %s already started\n"_Str,gxArguments.m_sRegionName.s());
       exit(EXIT_FAILURE);

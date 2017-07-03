@@ -12,7 +12,7 @@ StepAccum::StepAccum(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STEPACCUM,_FOOTER_);
   
-  m_aFnName  = nullptr;
+  m_aStepNm  = nullptr;
   m_nInvoked = 0;
   m_nCycles  = 0;
   
@@ -46,7 +46,7 @@ void StepAccum::vPrint(void)
 
   
   vTrace("  %20s %12lld %12lld %8lldns\n"_Str,
-         m_aFnName,
+         m_aStepNm,
          m_nInvoked,
          m_nCycles,
          iInvokeMircos

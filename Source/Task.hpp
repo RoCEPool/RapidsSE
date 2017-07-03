@@ -1278,27 +1278,19 @@ namespace Tasks
         
     #ifdef __ENTRY_EXIT
         
-      #ifdef STEP_BOARD
-    
-        #define ENTRY(p1) \
-          gpStepBoard->vName(mpTask->m_pThread ? mpTask->m_pThread->iThreadNo() : 0,p1); \
-          static StepAccum* pStepAccum = nullptr; \
+      #define ENTRY(aStepNm) \
+        static StepAccum* pStepAccum = nullptr; \
+        if (! pStepAccum) { \
+          gpStepArray->vGrabWrite(); \
           if (! pStepAccum) \
-            pStepAccum = gpStepArray->pAllocAccum(p1); \
-          i8 _iTscEntry = Synch::iTicks(); \
-          mpTask->vPrimitive(p1);
-    
-     #else
-    
-        #define ENTRY(p1) \
-          static StepAccum* pStepAccum = nullptr; \
-          if (! pStepAccum) \
-            pStepAccum = gpStepArray->pAllocAccum((Str*)p1); \
-          i8 _iTscEntry = Synch::iTicks(); \
-          mpTask->vPrimitive(p1);
-     #endif
-          
-     #define EXIT() \
+            pStepAccum = gpStepArray->pAllocAccum(aStepNm); \
+           gpStepArray->vDropWrite(); \
+        } \
+        i8 _iTscEntry = Synch::iTicks(); \
+        mpTask->vPrimitive(aStepNm);
+  
+  
+      #define EXIT() \
         ASSERT(pStepAccum); \
         i8 _iTscExit = Synch::iTicks(); \
         i8 _iTscDiff = _iTscExit - _iTscEntry; \
@@ -1306,18 +1298,9 @@ namespace Tasks
         pStepAccum->m_nCycles += _iTscDiff;
     
     #else
-    
-      #ifdef STEP_BOARD
-    
-        #define ENTRY(p1) \
-          gpStepBoard->vName(mpTask->m_pThread ? mpTask->m_pThread->iThreadNo() : 0,p1);
-    
-      #else
-
-        #define ENTRY(p1)
-    
-      #endif
-          
+  
+      #define ENTRY(p1)
+  
       #define EXIT()
         
     #endif

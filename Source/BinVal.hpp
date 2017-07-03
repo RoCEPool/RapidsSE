@@ -18,7 +18,7 @@ namespace Values
     BinVal(void);
     BinVal(i8 iSize);
     
-    void operator =(const Object* pObject);
+    void operator =(Object* pObject);
     
     i8   iBytes(void) const;
     char* pData(void);

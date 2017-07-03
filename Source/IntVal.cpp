@@ -5,18 +5,6 @@
 #include "Values.h"
 
 /*----------------------------------------------------------------------------*/
-/* safe cast                                                                  */
-/*----------------------------------------------------------------------------*/
-IntVal* Values::_pIntVal(void* aAddr)
-{
-  IntVal* pIntVal = reinterpret_cast<IntVal*>(aAddr);
-  
-  RASSERT( !pIntVal || CN_INTVAL == pIntVal->eClass() );
-  
-  return pIntVal;
-}
-
-/*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
 void* IntVal::operator new(size_t iSize)

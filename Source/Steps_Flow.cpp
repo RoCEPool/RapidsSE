@@ -20,7 +20,6 @@ extern TaskList*       gpTaskList;
 extern TxCollection*   gpTxCollection;
 
 extern NP_Task         gnpRootTask;
-extern StepBoard*      gpStepBoard;
 extern Lock            gxDdlLock;
 extern Lock            gxDicLock;
 extern SEitfList*      gpSEitfList;
@@ -130,6 +129,51 @@ void Task::vFlowJumpBegin_(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* jumpFalse -- jump on false to location                                     */
 /*----------------------------------------------------------------------------*/
+#define JUMP_FALSE
+#ifdef JUMP_FALSE
+void Task::vFlowJumpFalse(MP_Task mpTask)
+{
+  ENTRY("vJumpFalse"_Str);
+  
+  //if ( ! bGuard(1) )
+  //  THROW_INVALID_DSTACK("jumpFalse"_Str);
+  
+  // get pointer to value on the top of the stack
+  Stack* pDataStack = mpTask->m_pDataStack;
+  Value* pTop = reinterpret_cast<Value*>(pDataStack->m_pTop);
+
+  eCN eClassNo = pTop->eClass(); // inline
+  
+  i8 iVal;
+  if (CN_INTVAL == eClassNo) {
+    iVal = _pIntVal(pTop)->iInt(); // inline
+  }
+  else
+  if (CN_PTRVAL == eClassNo) {
+    iVal = _pPtrVal(pTop)->pPtr() ? 1 : 0; // inline
+  }
+  else {
+    iVal = -1;
+    NEVER_REACH;
+  }
+  
+  pDataStack->vPopBy(sizeof(IntVal)); // inline
+  pDataStack->m_iValues--;
+  
+  // n.b. the IP points to the jump arg
+  
+  if (iVal)
+    // do not jump, skip over argument
+    mpTask->IP.m_pCell++;
+  else
+    // jump to location
+    mpTask->IP.m_pCell = mpTask->IP.m_pCell->m_pJumpTo;
+  
+  EXIT();
+}
+
+#else //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 void Task::vFlowJumpFalse(MP_Task mpTask)
 {
   ENTRY("vJumpFalse"_Str);
@@ -149,6 +193,7 @@ void Task::vFlowJumpFalse(MP_Task mpTask)
   
   EXIT();
 }
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* jumpTrue -- jump on true to location                                       */

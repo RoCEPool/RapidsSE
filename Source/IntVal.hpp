@@ -25,6 +25,19 @@ namespace Values
   };
   
   IntVal* _pIntVal(void* aAddr);
+  
+  /*----------------------------------------------------------------------------*/
+  /* safe cast                                                                  */
+  /*----------------------------------------------------------------------------*/
+  inline IntVal* _pIntVal(void* aAddr)
+  {
+  IntVal* pIntVal = reinterpret_cast<IntVal*>(aAddr);
+  
+  ASSERT( !pIntVal || CN_INTVAL == pIntVal->eClass() );
+  
+  return pIntVal;
+  }
+  
 }
 
 /*============================================================================*/

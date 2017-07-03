@@ -24,7 +24,7 @@ namespace Magic
     i8    iMagic(void) const;
   
     Str*  aClass(void);
-    eCN   eClass(void) const;
+    eCN eClass(void);
     void  vClass(eCN eClassNo);
 
     bool bWordBody(void);
@@ -32,6 +32,14 @@ namespace Magic
     
     Footer* aFooter(void);
   };
+  
+  /*--------------------------------------------------------------------------*/
+  /* get class                                                                */
+  /*--------------------------------------------------------------------------*/
+  inline eCN Object::eClass(void)
+  {
+    return m_eClass;
+  }
 }
 
 /*============================================================================*/

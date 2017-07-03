@@ -28,7 +28,10 @@ namespace Tasks
     StepAccum* pAllocAccum(Str* aFnName);
     void vList(void);
     void vReset(void);
-    
+  
+    void vGrabWrite(void);
+    void vDropWrite(void);
+  
     Footer* aFooter(void);
   };
 }

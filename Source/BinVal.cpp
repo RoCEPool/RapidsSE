@@ -67,7 +67,7 @@ BinVal::BinVal(i8 iChars)
 /*----------------------------------------------------------------------------*/
 /* assign a value                                                             */
 /*----------------------------------------------------------------------------*/
-void BinVal::operator =(const Object* pObject)
+void BinVal::operator =(Object* pObject)
 {
   m_nAreaSize = giClassSize[pObject->eClass()];
   

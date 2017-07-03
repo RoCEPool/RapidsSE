@@ -24,7 +24,6 @@ extern TaskList*       gpTaskList;
 extern TxCollection*   gpTxCollection;
 
 extern NP_Task         gnpRootTask;
-extern StepBoard*      gpStepBoard;
 extern Lock            gxDdlLock;
 extern Lock            gxDicLock;
 extern SEitfList*      gpSEitfList;

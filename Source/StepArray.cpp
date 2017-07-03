@@ -49,17 +49,15 @@ StepArray::~StepArray(void)
 /*----------------------------------------------------------------------------*/
 /* allocate a step accumulator                                                */
 /*----------------------------------------------------------------------------*/
-StepAccum* StepArray::pAllocAccum(Str* aFnName)
+StepAccum* StepArray::pAllocAccum(Str* aStepNm)
 {
-  m_zLock.vGrabWrite();
+  ASSERT(m_zLock.bIsLocked());
 
   i8 iAccum = m_iNext++;
-  
-  m_zLock.vDropWrite();
- 
+   
   ASSERT(iAccum < C_STEPS);
   
-  m_xStepAccum[iAccum].m_aFnName = aFnName;
+  m_xStepAccum[iAccum].m_aStepNm = aStepNm;
   
   return &m_xStepAccum[iAccum];
 }
@@ -103,6 +101,21 @@ void StepArray::vReset(void)
   m_zLock.vDropWrite();
 }
 
+/*----------------------------------------------------------------------------*/
+/* grab write lock                                                            */
+/*----------------------------------------------------------------------------*/
+void StepArray::vGrabWrite(void)
+{
+  m_zLock.vGrabWrite();
+}
+
+/*----------------------------------------------------------------------------*/
+/* drop write lock                                                            */
+/*----------------------------------------------------------------------------*/
+void StepArray::vDropWrite(void)
+{
+  m_zLock.vDropWrite();
+}
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/

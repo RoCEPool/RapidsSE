@@ -1116,20 +1116,6 @@ void Stack::vPushBy(i8 iBytes)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop top by given bytes                                                     */
-/*----------------------------------------------------------------------------*/
-void Stack::vPopBy(i8 iBytes)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-
-  char* pTop = reinterpret_cast<char*>(m_pTop);
-  
-  pTop += iBytes;
-  
-  m_pTop = reinterpret_cast<Value*>(pTop);
-}
-
-/*----------------------------------------------------------------------------*/
 /* pop value from stack                                                       */
 /*----------------------------------------------------------------------------*/
 void Stack::vPopVal(Value* pValue)

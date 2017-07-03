@@ -18,7 +18,6 @@ using namespace Tasks;
 
 #include "StepAccum.hpp"
 #include "StepArray.hpp"
-#include "StepBoard.hpp"
 
 #include "Socket.hpp"
 

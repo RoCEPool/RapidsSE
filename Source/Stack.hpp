@@ -3,6 +3,10 @@
 /*============================================================================*/
 #pragma once
 
+namespace Tasks
+{
+  class Task;
+}
 namespace Dictionaries
 {
   class Cell;
@@ -14,6 +18,8 @@ namespace Structures
   
   class Stack : public Buffer
   {
+  friend Tasks::Task;
+  
   private:
   
   private:
@@ -117,6 +123,20 @@ namespace Structures
     Footer* aFooter(void);
     Footer* pHazard(void);
   };
+  
+  /*----------------------------------------------------------------------------*/
+  /* pop top by given bytes                                                     */
+  /*----------------------------------------------------------------------------*/
+  inline void Stack::vPopBy(i8 iBytes)
+  {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  char* pTop = reinterpret_cast<char*>(m_pTop);
+  
+  pTop += iBytes;
+  
+  m_pTop = reinterpret_cast<Value*>(pTop);
+  }
   
 }
 
