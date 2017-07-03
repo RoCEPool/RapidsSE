@@ -53,6 +53,7 @@ void Task::vAddPrimitives_Task(void)
   vAddPrimitive("task.parent!"_Str,   &vTaskParentStore,   false);
   vAddPrimitive("task.plan@"_Str,     &vTaskPlanFetch,     false);
   vAddPrimitive("task.plan!"_Str,     &vTaskPlanStore,     false);
+  vAddPrimitive("task.request"_Str,   &vTaskRequest,       false);
   vAddPrimitive("task.seed"_Str,      &vTaskSeed,          false);
   vAddPrimitive("task.seitf@"_Str,    &vTaskSeitfFetch,    false);
   vAddPrimitive("task.seitf!"_Str,    &vTaskSeitfStore,    false);
@@ -500,6 +501,23 @@ void Task::vTaskPlanStore(MP_Task mpTask)
   Plan* pPlan = _pPlan(pPtrPlan);
   
   pThatTask->m_pPlan = pPlan;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* task.request -- get request value set from task                            */
+/*----------------------------------------------------------------------------*/
+void Task::vTaskRequest(MP_Task mpTask)
+{
+  ENTRY("vTaskRequest"_Str);
+  
+  Object* pTaskObject;
+  if ( ! mpTask->m_pDataStack->bPop(pTaskObject) )
+    THROW_INVALID_DSTACK("task.seed"_Str);
+  Task* pThatTask = _pTask(pTaskObject);
+  
+  mpTask->m_pDataStack->vPushValue(pThatTask->pRequest());
   
   EXIT();
 }

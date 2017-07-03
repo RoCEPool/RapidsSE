@@ -80,6 +80,7 @@ namespace Tasks
     RegFrame* m_pLocalsFrame; // local register frame chain
     RegFrame* m_pOpFrame;     // op frame chain
 
+    Value*     m_pRequest;   // request as a value set
     s256       m_sLambda;    // lambda input
     Tokeniser* m_pTokeniser; // input stream tokenizer
     
@@ -122,6 +123,7 @@ namespace Tasks
     void  operator delete(void*);
     
     Task(void);
+    Task(Value* pRequest);
     Task(MP_Task mpTask);
     Task(Str* aLambda);
     void vInit(Str* aLambda);
@@ -162,6 +164,7 @@ namespace Tasks
     void vPushObject(Object* pObject);
     void vPushStr(Str* aStr);
     void vPushStr(s48K& sStr);
+    Value* pRequest(void);
     void vReset(void);
     void vRetry(void);
     Threads::Thread* pRootThread(void);
@@ -1039,6 +1042,7 @@ namespace Tasks
     static void vTaskParentStore(MP_Task mpTask);
     static void vTaskPlanFetch(MP_Task mpTask);
     static void vTaskPlanStore(MP_Task mpTask);
+    static void vTaskRequest(MP_Task mpTask);
     static void vTaskSeed(MP_Task mpTask);
     static void vTaskSeitfFetch(MP_Task mpTask);
     static void vTaskSeitfStore(MP_Task mpTask);
