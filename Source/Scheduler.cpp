@@ -138,7 +138,7 @@ bool Scheduler::bGetTask_Mutex(Threads::Thread* mpThread, bool bWait)
   // when the thread is prepared to wait, put thread into queue
   if (bWait) {
     m_xThreadQueue.vAppend(mpThread);
-    m_xSemaphore.vCondWait();
+    m_xSemaphore.vCondWait_Mutex();
     m_xSemaphore.vMutexUnlock();
     ASSERT(mpThread->m_npTask);
     return true;

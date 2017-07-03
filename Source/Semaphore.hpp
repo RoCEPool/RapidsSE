@@ -23,7 +23,7 @@ namespace System
   
     void vCondBroadcast(void);
     void vCondSignal(void);
-    void vCondWait(void);
+    void vCondWait_Mutex(void);
     void vCondTimedWait(i8 iNanoSeconds);
     bool bMutexLock(void);
     void vMutexLock(void);

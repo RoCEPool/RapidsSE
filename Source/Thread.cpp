@@ -497,7 +497,7 @@ void Thread::vCondWait(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_POSIXTHREAD,_FOOTER_);
   
-  m_pSemaphore->vCondWait();
+  m_pSemaphore->vCondWait_Mutex();
 }
 
 /*----------------------------------------------------------------------------*/

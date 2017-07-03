@@ -115,7 +115,7 @@ void Semaphore::vCondSignal(void)
 /*----------------------------------------------------------------------------*/
 /* condition wait (thread to wait will be calling thread)                     */
 /*----------------------------------------------------------------------------*/
-void Semaphore::vCondWait(void)
+void Semaphore::vCondWait_Mutex(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEMAPHORE,_FOOTER_);
   
