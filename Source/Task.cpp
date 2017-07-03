@@ -132,6 +132,31 @@ Task::Task(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* constructor  (for the request task)                                        */
+/*----------------------------------------------------------------------------*/
+Task::Task(Value* pRequest)
+: Object(CN_TASK)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  ASSERT(gpTaskList);
+  
+  vInit(""_Str);
+  
+  m_pRequest = pRequest;
+  m_sName    = "req.task"_Str;
+  m_sComment = "req.loop"_Str;
+  
+  _checkInitialised_(CN_TASK);
+  
+  Task* pTask = this;
+  gpTaskList->vAppend(pTask);
+  //  gpTaskList->vDump();
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Task::Task(Str* aLambdaInput)
@@ -219,6 +244,8 @@ void Task::vInit(Str* aLambda)
   m_nVariables   = 0;
   m_pCurrentWord = nullptr;
   m_nSubDic      = 0;
+  
+  m_pRequest     = nullptr;
   
   m_sLambda = aLambda;
   if (m_sLambda.iLength())
@@ -1513,6 +1540,16 @@ void Task::vPushStr(s48K& sStr)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   m_pDataStack->vPushS48K(sStr);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the request of the task                                                */
+/*----------------------------------------------------------------------------*/
+Value* Task::pRequest(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  return m_pRequest;
 }
 
 /*----------------------------------------------------------------------------*/
