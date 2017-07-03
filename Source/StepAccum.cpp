@@ -42,14 +42,14 @@ void StepAccum::vPrint(void)
   
   i8 iTicksPerInvoke = DIV(m_nCycles,m_nInvoked);
   
-  i8 iInvokeMircos = DIV(iTicksPerInvoke,iTicksPerNanos);
+  i8 iInvokeNanos = DIV(iTicksPerInvoke,iTicksPerNanos);
 
   
-  vTrace("  %20s %12lld %12lld %8lldns\n"_Str,
+  vTrace("  %24s %12lld %12lld %8lldns\n"_Str,
          m_aStepNm,
          m_nInvoked,
          m_nCycles,
-         iInvokeMircos
+         iInvokeNanos
          );
 }
 

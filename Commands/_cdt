@@ -14,7 +14,9 @@ create index jCdt_idx2 on jCdt (jA,jB);
 create index jCdt_idx3 on jCdt (jA,jB,jC);
 create index jCdt_idx4 on jCdt (jA,jB,jC,jD);
 
+docol stepsReset;
 ld jCdt "../JTEST/jCdt.csv";
+docol stepsList;
 
 //dumpidx jCdt jCdt_idx1;
 
