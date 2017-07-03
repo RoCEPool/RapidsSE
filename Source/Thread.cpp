@@ -350,7 +350,6 @@ void Thread::vLoopV2(void)
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // get a task to run
-    
     ASSERT( ! *m_npTask );
     bool b = m_pScheduler->bGetTask_Mutex(this,true);
     ASSERT( b && *m_npTask );
@@ -384,8 +383,11 @@ void Thread::vLoopV2(void)
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // unless waiting on ack, task forgets thread
-    if (TS_WAITING_ACK == m_npTask->eState())
+    if (TS_WAITING_ACK == m_npTask->eState()) {
+      m_npTask->vThread(nullptr);
+      m_npTask = nullptr;
       continue;
+    }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // when task exits, it is deleted (unless its a word)

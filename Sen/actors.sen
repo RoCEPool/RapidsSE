@@ -7,7 +7,11 @@
 "listerTask.sen"  include
 "monitorTask.sen" include
 "reclaimTask.sen" include
+
+//REQUEST_LOOP2
 "requestTask.sen" include
+//else
+//"requestTaskOld.sen" include
 
 "generalThreads.sen" include
 "queryThreads.sen" include
@@ -34,7 +38,8 @@
 
   //dic.main true dic.frozen!
 
-  requestStart
+  //REQUEST_LOOP2
+  //requestStart
   ;
 
 /*============================================================================*/

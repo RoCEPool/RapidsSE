@@ -24,6 +24,7 @@ extern StepBoard*      gpStepBoard;
 extern Lock            gxDdlLock;
 extern Lock            gxDicLock;
 extern SEitfList*      gpSEitfList;
+extern Scheduler*      gpScheduler;
 
 extern bool            gbTracepoint;
 
@@ -100,7 +101,15 @@ void Task::vTaskAck(MP_Task mpTask)
     
     //Thread* pThread = Thread::pThread();
     //pThread->m_pTaskSet->vAppend(pThatTask);
+    
+#ifdef REQUEST_LOOP2
+    if (pThatTask->m_pSEitf)
+      gpScheduler->vEnqueueTask_Mutex(pThatTask);
+    else
+      pThatTask->m_pTaskSet->vAppend(pThatTask);
+#else
     pThatTask->m_pTaskSet->vAppend(pThatTask);
+#endif
     
   }
   else {

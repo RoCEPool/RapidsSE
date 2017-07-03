@@ -70,8 +70,9 @@ timer: loadTimer
   // begin a transaction
   beginTransaction tblLoader loader.txref!
 
+  //REQUEST_LOOP2
   // hold task mutex while we create sub loaders
-  task::this grabMutex
+  //task::this grabMutex
 
   N_GENERAL_THREADS setAcks
 
@@ -99,8 +100,9 @@ timer: loadTimer
 
   // at this point all sub loaders have completed and mutex was regrabbed
 
+  //REQUEST_LOOP2
   // drop mutex
-  task::this dropMutex
+  //task::this dropMutex
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tidy up

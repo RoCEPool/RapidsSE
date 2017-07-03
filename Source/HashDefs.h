@@ -24,6 +24,7 @@
 
 #define VERBOSE_TRACE
 #define HIDDEN_INDEX
+#define REQUEST_LOOP2
 
 //#define STEP_BOARD
 

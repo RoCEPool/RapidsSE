@@ -10,6 +10,7 @@ extern Dic*       gpMainDic;
 extern SEitfList* gpSEitfList;
 extern AttachMap* gpAttachMap;
 extern Grid*      gpGrid;
+extern Scheduler* gpScheduler;
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
@@ -2511,6 +2512,15 @@ bool SEitf::bAppendRequest(StrVal& sRequest)
   m_iCurrentRequestId = m_iNextRequestId;
   
   bool b = m_pRequestQueue->bAppend(&xValSet);
+  
+#ifdef REQUEST_LOOP2
+  // spawn a request task
+  // create new task (will be automatically appended to task list)
+  MP_Task nnpNewTask = new Task;
+  nnpNewTask->vSeedWord("req.loop"_Str);
+  
+  gpScheduler->vEnqueueTask_Mutex(*nnpNewTask);
+#endif
   
   return b;
 }

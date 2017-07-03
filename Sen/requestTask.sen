@@ -12,10 +12,6 @@ queue:   requestQueue
 
 dic:     tenants
 
-taskset: requestTaskSet
-
-thread:  requestThread
-
 /*----------------------------------------------------------------------------*/
 /* copy dictionary path from seitf to this request task                       */
 /*----------------------------------------------------------------------------*/
@@ -72,40 +68,17 @@ thread:  requestThread
 ;
 
 /*----------------------------------------------------------------------------*/
-/* start the request task                                                     */
-/*----------------------------------------------------------------------------*/
-: requestStart
-
-  // set up first request processing task
-  0 "req.loop" nullPtr task::new requestTaskSet taskSet.append
-
-  // set up second request processing task
-  0 "req.loop" nullPtr task::new requestTaskSet taskSet.append
-
-  // set up the request thread
-  requestTaskSet  requestThread thread.taskset!
-  "requestThread" requestThread thread.name!
-                  requestThread thread.spawn
-;
-
-/*----------------------------------------------------------------------------*/
 /* pop value from this tasks job queue (this is a blocking call)              */
 /*----------------------------------------------------------------------------*/
 : req> ( -- value )
 
 tp: waitNextValset
 
-  begin
+  // attempt to pop value off the tasks job queue
+  task::this task.jobQueue@ queue.pop ( value true | false )
 
-    // attempt to pop value off the tasks job queue
-    task::this task.jobQueue@ queue.pop ( value true | false )
-
-    // try again of no value
-    not while
-      task.yield
-      args.sleep thread.sleep_ms
-
-  repeat
+  // assert we should have a request
+  assert
 
 tp: poppedValset
 ;
@@ -154,7 +127,7 @@ tp: !req_exit
 /* send response                                                              */
 /*----------------------------------------------------------------------------*/
 : >rsp ( send response    )
-//traceon
+
   // check stack
   depth 3 != if "incorrect response stack depth" . process.quit then
 
@@ -173,7 +146,7 @@ tp: !req_exit
 
   // forget the seitf
   0 task::this task.seitf!
-//traceoff
+
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -181,28 +154,20 @@ tp: !req_exit
 /*----------------------------------------------------------------------------*/
 : req.loop
 
-  requestTaskSet task::this task.taskset!
-
-  "renaming to Request Task" .verbose
-
   "req.task" task::this task.name!
-
   "req.loop" task::this task.comment!
-
   requestQueue  task::this task.jobQueue!
-
   requestTaskPrint if "Request Server running..." . then
 
-  begin
-    depth 0 != if "request task has grown" . debug.trap then
+  depth 0 != if "request task has grown" . debug.trap then
 
-    req>
+  req>
 
-    !req
+  !req
 
-    >rsp
+  >rsp
+  exit
 
-  again
 ;
 
 /*============================================================================*/

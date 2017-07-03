@@ -692,7 +692,8 @@ tp: loadIndexes
 
         // try again if no value
         not while
-          task.yield
+          //REQUST_LOOP2
+          //task.yield
         args.sleep thread.sleep_ms
       repeat
       to indexBuffer
