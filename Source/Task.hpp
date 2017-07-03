@@ -1288,11 +1288,10 @@ namespace Tasks
           gpStepArray->vGrabWrite(); \
           if (! pStepAccum) \
             pStepAccum = gpStepArray->pAllocAccum(aStepNm); \
-           gpStepArray->vDropWrite(); \
+          gpStepArray->vDropWrite(); \
         } \
         i8 _iTscEntry = Synch::iTicks(); \
         mpTask->vPrimitive(aStepNm);
-  
   
       #define EXIT() \
         ASSERT(pStepAccum); \
