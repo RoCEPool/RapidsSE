@@ -153,12 +153,12 @@ void Vector<VEC_CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>::vAdd(ITEM* pItem)
   _precondition_(_MAGIC_,VEC_CN,_FOOTER_);
   
   // check we have a free slot
-  ASSERT(m_nItems >= 0 && m_nItems < MAX_ITEMS - 1);
+  ASSERT(m_nItems >= 0 && m_nItems < MAX_ITEMS);
   
   // get item number
   SUB nItemNo = m_nItems++;
   
-  ASSERT(m_nItems > 0 && m_nItems < MAX_ITEMS);
+  ASSERT(m_nItems > 0 && m_nItems <= MAX_ITEMS);
   
   // there shouldnt already be a item
   ASSERT( ! m_pItem[nItemNo] );

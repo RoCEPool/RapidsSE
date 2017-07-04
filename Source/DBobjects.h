@@ -56,8 +56,11 @@ typedef Vector<CN_ENTRYVEC,Entry,CN_ENTRY,C_FLAT_LEVELS_MAX,ln> EntryVec;
 
 
 
+// allow for maximum 8 partitions per node
+static const i8 C_SLOTS_PER_NODE = 128;
 
 #include "Partition.hpp"
+typedef Vector<CN_PARTITIONVEC,Partition,CN_PATHVEC,C_SLOTS_PER_NODE,u8> PartitionVec;
 
 #include "Slots.hpp"
 
@@ -65,7 +68,6 @@ typedef Vector<CN_ENTRYVEC,Entry,CN_ENTRY,C_FLAT_LEVELS_MAX,ln> EntryVec;
 
 
 typedef Vector<CN_KEYVEC,KeyVal,CN_KEYVAL,1024,u8> KeyVec;
-typedef Vector<CN_PARTITIONVEC,Partition,CN_PATHVEC,C_SLOTS_PER_NODE,i8> PartitionVec;
 
 #include "Table.hpp"
 #include "Index.hpp"

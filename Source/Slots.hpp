@@ -5,8 +5,6 @@
 
 namespace DBobjects
 {
-  // allow for maximum 8 partitions per node
-  static const i8 C_SLOTS_PER_NODE = 64;
   
   class Slots : public Object
   {
@@ -14,7 +12,7 @@ namespace DBobjects
     Table*     m_pTable;         // table this slots belongs to
     Dic        m_xSubDic;        // partitionn sub dictionary
     PtnColVec* m_pPtnColVec;     // partition colummn vector
-    Partition  m_xPartition[C_SLOTS_PER_NODE];
+    PartitionVec* m_pPartitionVec;
     
     // must be last
     Footer m_xFooter;

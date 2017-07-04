@@ -67,9 +67,9 @@ i8 Partition::iSlotToPartition(i8 iSlot)
 void* Partition::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  vFatal("fatal: Partition class cannot be new'd"_Str);
+  void* pObject = Heap::pAllocate(CN_PARTITION);
   
-  NEVER_REACH;
+  return pObject;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -78,9 +78,9 @@ void* Partition::operator new(size_t iSize)
 void Partition::operator delete(void* pBufferAddress)
 {
   RASSERT(pBufferAddress);
-  vFatal("fatal: Partition class cannot be deleted"_Str);
+  Object* pObject = reinterpret_cast<Object*>(pBufferAddress);
   
-  NEVER_REACH;
+  Heap::vFree(pObject);
 }
 
 /*----------------------------------------------------------------------------*/

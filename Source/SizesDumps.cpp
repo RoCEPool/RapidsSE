@@ -428,7 +428,7 @@ eHT geWhichHeap[]
   /* 45 */ HT_SMALL,   // CN_OP
   
   /* 47 */ HT_MEDIUM,  // CN_PARSER
-  /* 48 */ HT_INVALID, // CN_PARTITION
+  /* 48 */ HT_SMALL,   // CN_PARTITION
   /*    */ HT_MEDIUM,  // CN_PARTITIONVEC
   /*    */ HT_MEDIUM,  // CN_PATHVEC
   /* 49 */ HT_MEDIUM,  // CN_PLAN

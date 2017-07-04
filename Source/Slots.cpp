@@ -86,11 +86,16 @@ Slots::Slots(void)
   
   //m_xSubDic
   
+  m_pPartitionVec = new PartitionVec;
+  
   // initialize the partitionId's in the slots
   for (i8 i_Slot = 0; i_Slot < gpGrid->iSlots(); i_Slot++) {
     
+    Partition* pPartition = new Partition;
+    m_pPartitionVec->vAdd(pPartition);
+    
     i8 iPartition = Partition::iSlotToPartition(i_Slot);
-    m_xPartition[i_Slot].vPartitionId(iPartition);
+    m_pPartitionVec->pGet(i_Slot)->vPartitionId(iPartition);
     
   }
   
@@ -106,6 +111,8 @@ Slots::~Slots(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SLOTS,_FOOTER_);
   vTidyUp();
+  
+  delete m_pPartitionVec;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -142,7 +149,7 @@ Partition* Slots::pPartition(i8 iSlot)
   
   //vTrace("Partition %lld\n"_Str,iPartition);
   
-  return &m_xPartition[iSlot];
+  return m_pPartitionVec->pGet(iSlot);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -153,7 +160,7 @@ void Slots::vPopulateIndex(i8 iIndexNo)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SLOTS,_FOOTER_);
   
   for (i8 i_Partn = 0; i_Partn < gpGrid->iSlots(); i_Partn++)
-    m_xPartition[i_Partn].vPopulateIndex(iIndexNo);
+    m_pPartitionVec->pGet(i_Partn)->vPopulateIndex(iIndexNo);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -207,12 +214,12 @@ void Slots::vTidyUp(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SLOTS,_FOOTER_);
   
   // get IdxDataVec from any one partition
-  IdxDataVec* pIdxDataVec = m_xPartition[0].pIdxDataVec();
+  IdxDataVec* pIdxDataVec = m_pPartitionVec->pGet(0)->pIdxDataVec();
   i8 nItems = pIdxDataVec->nItems();
   
   // run the finalize for the partitions
   for (i8 i_Slot = 0; i_Slot < C_SLOTS_PER_NODE; i_Slot++) {
-    m_xPartition[i_Slot].vTidyUp();
+    m_pPartitionVec->pGet(i_Slot)->vTidyUp();
   }
   
   // Since the column is picked from the ColVec of table
@@ -231,7 +238,7 @@ void Slots::vTidyUpIndex(i8 iIndexNo)
   
   // run the finalize for the partitions
   for (i8 i_Slot = 0; i_Slot < gpGrid->iSlots(); i_Slot++) {
-    m_xPartition[i_Slot].vTidyUpIndex(iIndexNo);
+    m_pPartitionVec->pGet(i_Slot)->vTidyUpIndex(iIndexNo);
   }
 }
 
@@ -243,7 +250,7 @@ void Slots::vTruncate(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SLOTS,_FOOTER_);
   i8 i_Partn;
   for (i_Partn = 0; i_Partn < gpGrid->iSlots(); i_Partn++)
-    m_xPartition[i_Partn].pData()->vTruncate();
+    m_pPartitionVec->pGet(i_Partn)->pData()->vTruncate();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -255,7 +262,7 @@ void Slots::vTruncateIndex(i8 iIndexNo)
   
   i8 i_Partn;
   for (i_Partn = 0; i_Partn < gpGrid->iSlots(); i_Partn++)
-    m_xPartition[i_Partn].pIndexData(iIndexNo)->vTruncate();
+    m_pPartitionVec->pGet(i_Partn)->pIndexData(iIndexNo)->vTruncate();
 }
 
 /*----------------------------------------------------------------------------*/
