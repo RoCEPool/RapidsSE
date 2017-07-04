@@ -78,7 +78,6 @@ void Task::vEntryMatches(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* entry.row -- return row from entry                                         */
 /*----------------------------------------------------------------------------*/
-#ifdef HIDDEN_INDEX
 void Task::vEntryRow(MP_Task mpTask)
 {
   ENTRY("vEntryRow"_Str);
@@ -133,34 +132,6 @@ void Task::vEntryRow(MP_Task mpTask)
   // return the row entry
   mpTask->m_pDataStack->vPushObject(pRowEntry);
 }
-
-#else
-void Task::vEntryRow(MP_Task mpTask)
-{
-  ENTRY("vEntryRow"_Str);
-  
-  Object* pPtrEntry = nullptr;
-  Object* pPtrIndex = nullptr;
-  
-  if ( ! mpTask->m_pDataStack->bPop(pPtrEntry) )
-    THROW_INVALID_DSTACK("entry.row"_Str);
-  
-  Entry* pEntry = _pEntry(pPtrEntry);
-  ASSERT(CN_ENTRY == pEntry->eClass());
-  
-  if ( ! mpTask->m_pDataStack->bPop(pPtrIndex) )
-    THROW_INVALID_DSTACK("entry.row"_Str);
-  
-  Index* pIndex = _pIndex(pPtrIndex);
-  ASSERT(CN_INDEX == pIndex->eClass());
-  
-  Id xId = pEntry->xId();
-  
-  Entry* pRow = xId.pRow();
-  
-  mpTask->m_pDataStack->vPushObject(pRow);
-}
-#endif
 
 /*----------------------------------------------------------------------------*/
 /* entry.embeddedRow -- return row from entry                                 */

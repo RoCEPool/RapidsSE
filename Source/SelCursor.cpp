@@ -121,7 +121,6 @@ void SelCursor::vEnd(void)
 /*----------------------------------------------------------------------------*/
 /* set to first row                                                           */
 /*----------------------------------------------------------------------------*/
-#ifdef HIDDEN_INDEX
 void SelCursor::vFirst(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SELCURSOR,_FOOTER_);
@@ -137,32 +136,9 @@ void SelCursor::vFirst(void)
     m_pRow = nullptr;
 }
 
-#else
-void SelCursor::vFirst(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SELCURSOR,_FOOTER_);
-  
-  m_pPartition = m_pTable->pPartition(m_iPartition);
-  m_pEbStrand = m_pPartition->pData()->pHeadStrand();
-  if (m_pEbStrand) {
-    m_pRowBuffer = m_pEbStrand->pFirstBuffer();
-    if (m_pRowBuffer)
-      m_pRow = m_pRowBuffer->pFirstRow();
-    else
-      m_pRow = nullptr;
-  }
-  else {
-    m_pRowBuffer = nullptr;
-    m_pRow = nullptr;
-  }
-}
-
-#endif
-
 /*----------------------------------------------------------------------------*/
 /* advance to next row                                                        */
 /*----------------------------------------------------------------------------*/
-#ifdef HIDDEN_INDEX
 void SelCursor::vNext(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SELCURSOR,_FOOTER_);
@@ -184,38 +160,6 @@ void SelCursor::vNext(void)
   m_pRow = nullptr;
 }
 
-
-#else
-void SelCursor::vNext(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SELCURSOR,_FOOTER_);
-  
-  ASSERT(m_pRow);
-  
-  m_pRow = m_pRowBuffer->pNextRow(m_pRow);
-  if (m_pRow)
-    return;
-  
-  m_pRowBuffer = (EntryBuffer*)m_pRowBuffer->pNextBuffer();
-  if (m_pRowBuffer) {
-    m_pRow = m_pRowBuffer->pFirstRow();
-    if (m_pRow)
-      return;
-  }
-  
-  m_pEbStrand = m_pEbStrand->pNextStrand();
-  if (m_pEbStrand) {
-    m_pRowBuffer = m_pEbStrand->pFirstBuffer();
-    if (m_pRowBuffer) {
-      m_pRow = m_pRowBuffer->pFirstRow();
-      if (m_pRow)
-        return;
-    }
-  }
-  
-  m_pRow = nullptr;
-}
-#endif
 /*----------------------------------------------------------------------------*/
 /* get current row                                                            */
 /*----------------------------------------------------------------------------*/

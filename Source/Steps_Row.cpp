@@ -46,11 +46,7 @@ void Task::vRowString(MP_Task mpTask)
     THROW_INVALID_DSTACK("row.string"_Str);
   
   Entry* pRow = _pEntry(pPtrRow);
-#ifdef HIDDEN_INDEX
   ASSERT(CN_ENTRY == pRow->eClass());
-#else
-  ASSERT(CN_ROW == pRow->eClass());
-#endif
   
   StrVal* pStrVal = reinterpret_cast<StrVal*>(pRow->aRow());
   s256 sRow = pStrVal->aStr();

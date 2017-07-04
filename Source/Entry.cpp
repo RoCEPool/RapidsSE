@@ -164,13 +164,9 @@ char* Entry::aRow(void)
   
   i8 nOffsetBytes = RightVec::nBytesRequired(m_nOffsets);
 
-#ifdef HIDDEN_INDEX
   char* aKey = pAdd<char*>(aVblData(),nOffsetBytes);
   // assuming key is CT_INTEGER for hidden index
   char* aRow = pAdd<char*>(aKey, sizeof(i8));                        //ALKA-TODO
-#else
-  char* aRow = pAdd<char*>(aVblData(),nOffsetBytes);
-#endif
   
   return aRow;
 }
@@ -329,7 +325,6 @@ void Entry::vSetEntry(EntWrk& xEntWrk)
   
   MemLib::vCopy(aEntryRightVec,aEntWrkRightVec,nRightBytes);
  
-#ifdef HIDDEN_INDEX
   // copy Key
   Key* aEntryKey = this->aKey();
   Key* aEntWrkKey = xEntWrk.aKey();
@@ -351,33 +346,7 @@ void Entry::vSetEntry(EntWrk& xEntWrk)
     //StrVal* pStrVal = reinterpret_cast<StrVal*>(aRow);
     //vTrace("%s"_Str, pStrVal->aStr());
   }
-
-#else
-  if (xEntWrk.bHasData()) {
-    // copy data
-    
-    char* aEntryData = this->aRow();
-    char* aEntWrkData = xEntWrk.aData();
-    i8 nDataSize = xEntWrk.nDataSize();
-    
-    ASSERT(nDataSize);
-    MemLib::vCopy(aEntryData,aEntWrkData,nDataSize);
-    
-    //char* aRow = this->aRow();
-    //StrVal* pStrVal = reinterpret_cast<StrVal*>(aRow);
-    //vTrace("%s"_Str, pStrVal->aStr());
-  }
-  else {
-    // copy Key
-    Key* aEntryKey = this->aKey();
-    Key* aEntWrkKey = xEntWrk.aKey();
-    i8 nKeyBytes = xEntWrk.nKeySize();
-    
-    ASSERT(nKeyBytes);
-    MemLib::vCopy(aEntryKey,aEntWrkKey,nKeyBytes);
-  }
-#endif
-    
+  
   _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_ENTRY,CN_ROW);
 }
 
@@ -410,22 +379,12 @@ void Entry::vShow(i8 iBase, Index* pIndex)
          m_xId.iRow()
          );
   
-  #ifdef HIDDEN_INDEX
     aKey->vShow(pIndex->pIdxColVec());
     
     if (pIndex->bIsHidden()) {
       StrVal* pStrVal = reinterpret_cast<StrVal*>(aRow());
       vTrace("%s"_Str, pStrVal->aStr());
     }
-  #else
-    if (pIndex)
-      aKey->vShow(pIndex->pIdxColVec());
-    else {
-      StrVal* pStrVal = reinterpret_cast<StrVal*>(aRow());
-      vTrace("%s"_Str, pStrVal->aStr());
-    }
-
-  #endif
   
   for (on nRight = 0_on; nRight < m_nOffsets; nRight++) {
     

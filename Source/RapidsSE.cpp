@@ -38,11 +38,7 @@ bool          gbTracepoint   = false;
 bool          gbProgress     = false;
 bool          gbMetadata     = false;
 
-#ifdef HIDDEN_INDEX
-  bool          gbIndexSpace   = true;
-#else
-  bool          gbIndexSpace   = true;
-#endif
+bool          gbIndexSpace   = true;
 i8            gnIndexEntries = 100;
 i8            gnIndexLevels  = 3;
 i8            gnIndexOffsets = gnIndexLevels - 1;

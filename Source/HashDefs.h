@@ -25,7 +25,6 @@
 #endif
 
 #define VERBOSE_TRACE
-#define HIDDEN_INDEX
 #define REQUEST_LOOP2
 
 #define DIV(a,b) (b ? (a / b) : 0)    // checked divide

@@ -272,7 +272,6 @@ bool LoaderSub::bInsertRow(void)
 /*----------------------------------------------------------------------------*/
 /* insert row into working buffer                                             */
 /*----------------------------------------------------------------------------*/
-#ifdef HIDDEN_INDEX
 bool LoaderSub::bInsertRow2(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
@@ -304,40 +303,6 @@ bool LoaderSub::bInsertRow2(void)
   return true;
 }
 
-#else
-bool LoaderSub::bInsertRow2(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
-  
-  Entry* pRow;
-  //vTrace("Entry: %s\n"_Str,pStrVal->aStr());
-  
-  // check for working buffer
-  if (! m_pRowBuffer[m_iPartition]) {
-    m_pRowBuffer[m_iPartition] = (EntryBuffer*)EntryBuffer::pNewEntryBuffer(CN_ENTRYBUFFER);
-    if (! m_pRowBuffer[m_iPartition]) {
-      vTrace("EntryBuffer allocation failed\n"_Str);
-      return false;
-    }
-  }
-  
-  // get working buffer
-  EntryBuffer* pRowBuffer = m_pRowBuffer[m_iPartition];
-  bn nBufferNo = pRowBuffer->nBufferNo();
-  
-  // create working row
-  EntWrk xRowWrk;
-  xRowWrk.vTxId(m_pTxRef->iTxId());
-  Id rowId(*nBufferNo, pRowBuffer->nEntries());
-  xRowWrk.vId(rowId);
-  xRowWrk.vData(m_aRecord, m_iLength);
-  
-  // insert row into working buffer
-  bool b = pRowBuffer->bInsertRow(xRowWrk, &pRow);
-  
-  return b;
-}
-#endif
 /*----------------------------------------------------------------------------*/
 /* set loader                                                                 */
 /*----------------------------------------------------------------------------*/

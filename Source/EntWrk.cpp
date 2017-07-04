@@ -293,17 +293,11 @@ RightVec* EntWrk::aRightVec(void)
 char* EntWrk::aData(void)
 {
   ASSERT(m_bHasData);
-
-#ifdef HIDDEN_INDEX
   
   char* aKey = reinterpret_cast<char*>(&m_xDataWrk);
   // assuming key of type CT_INTEGER in hidden index
   char* aData = pAdd<char*>(aKey, sizeof(i8));                       //ALKA-TODO
-#else
-  
-  char* aData = reinterpret_cast<char*>(&m_xDataWrk);
-#endif
-  
+
   return aData;
 }
 
@@ -312,15 +306,11 @@ char* EntWrk::aData(void)
 /*----------------------------------------------------------------------------*/
 i8 EntWrk::nDataSize(void)
 {
-#ifdef HIDDEN_INDEX
   if (m_bHasData)
     // assuming key of type CT_INTEGER in hidden index
     return m_xDataWrk.nUsed() - sizeof(i8);                          //ALKA-TODO
   else
     return 0;
-#else
-  return m_xDataWrk.nUsed();
-#endif
   
 }
 
