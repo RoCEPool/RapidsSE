@@ -183,22 +183,17 @@ void Partition::vPopulateIndex(i8 iIndexNo)
   IndexData* pIndexData = this->pIndexData(iIndexNo);
   
   EntryBuffer* pEntryBuffer = pHiddenIndexData->pFirstBuffer();
-  i8 nBuffers = 0;
   
   while (pEntryBuffer) {
     
-    bn nBufferNo = pEntryBuffer->nBufferNo();
-    
     Entry* pEntry = pEntryBuffer->pFirstEntry();
-    
-    i8 nRowsInBuffer = 0;
-    i8 iRowNo = 0;
     
     while (pEntry) {
       
-      iRowNo++;
-      pIndexData->vInsertEntry(pEntry, iRowNo, nBufferNo);
+      // insert entry
+      pIndexData->vInsertEntry(pEntry);
       
+      // get next entry
       pEntry = pEntryBuffer->pNextEntry(pEntry);
     }
    
