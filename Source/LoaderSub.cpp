@@ -263,7 +263,8 @@ bool LoaderSub::bInsertRow(void)
   pRowBuffer = m_pRowBuffer[m_iPartition];
   
   // insert row into new working buffer
-  bool bInserted = pRowBuffer->bInsertRow(xRowWrk, &pRow);
+  bool bInserted
+  = pRowBuffer->bInsertRow(xRowWrk, &pRow);
   
   return bInserted;
 }
@@ -276,12 +277,29 @@ bool LoaderSub::bInsertRow2(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
  
+  //vTrace("%s\n"_Str, m_aRecord->s());
+  
   // get the hidden index data
   Partition* pPartition = m_pTable->pPartition(m_iPartition);
-  IndexData* pIndexData = pPartition->pHiddenIndexData();
   
   // insert an entry into the hidden index data
-  pIndexData->vInsertEntry(m_pTxRef->iTxId(), m_aRecord, m_iLength);
+  IndexData* pIndexData = pPartition->pHiddenIndexData();
+  Entry* pRowEntry = pIndexData->pInsertEntry(m_pTxRef->iTxId(), m_aRecord, m_iLength);
+
+  // get no of indexes of the table
+  IdxDataVec* pIdxDataVec = pPartition->pIdxDataVec();
+  i8 nIndexes = pIdxDataVec->nItems();
+
+  // insert an entry for the row in all the indexes of this table
+  for (i8 i_Index=0; i_Index < nIndexes; i_Index++) {
+    
+    IndexData* pIndexData = pIdxDataVec->pGet(i_Index);
+    Index* pIndex = pIndexData->pIndex();
+    
+    // skip the hidden index, as already inserted row in it
+    if ( ! pIndex->bIsHidden())      
+      pIndexData->vInsertEntry(pRowEntry);
+  }
   
   return true;
 }

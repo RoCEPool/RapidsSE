@@ -205,9 +205,11 @@ i8 IndexData::nIndexBuffers(void)
 /*----------------------------------------------------------------------------*/
 /* insert an entry for {key,id} into an index buffer at given level           */
 /*----------------------------------------------------------------------------*/
-void IndexData::vInsertEntry(i8 iTxId, Str* pRow, i8 iLength)
+Entry* IndexData::pInsertEntry(i8 iTxId, Str* pRow, i8 iLength)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
+  
+  Entry* pEntry;
   
   m_zLock.vGrabWrite();
   
@@ -279,22 +281,43 @@ void IndexData::vInsertEntry(i8 iTxId, Str* pRow, i8 iLength)
     // add the row data to the NewEntWrk
     xNewEntWrk.vData(pRow, iLength);
     
-    bool bResult = m_pCurrentBuffer->bInsert(xNewEntWrk);
-    ASSERT(bResult);
+    pEntry = m_pCurrentBuffer->pInsert(xNewEntWrk);
     
     //m_pCurrentBuffer->vShow();
   }
   else {
 
     // insert entry into current index buffer
-    bool bResult = m_pCurrentBuffer->bInsert(xEntWrk);
-    ASSERT(bResult);
+    pEntry = m_pCurrentBuffer->pInsert(xEntWrk);
   }
   
   m_zLock.vDropWrite();
   
+  return pEntry;
 }
 
+/*----------------------------------------------------------------------------*/
+/* insert an entry for given row into this index at level 0                   */
+/*----------------------------------------------------------------------------*/
+void IndexData::vInsertEntry(Entry* pRow)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
+  
+  m_zLock.vGrabWrite();
+  
+  KeyWrk xKeyWrk;
+  pRow->vExtractKey(xKeyWrk, m_pIndex->pIdxColVec());
+  vInsertEntry(m_pRoot, xKeyWrk, pRow->xId(), 0);
+  
+  m_zLock.vDropWrite();
+  
+  //if ( ! bVerify() ) {
+  //  vTrace("Inserting row that caused verify to fail:\n"_Str);
+  //  pRow->vContentDump();
+  //  vDump();
+  //  NEVER_REACH;
+  //}
+}
 /*----------------------------------------------------------------------------*/
 /* insert an entry for given row into this index at level 0                   */
 /*----------------------------------------------------------------------------*/
@@ -302,12 +325,16 @@ void IndexData::vInsertEntry(Entry* pRow, i8 nRowNo, bn nBufferNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
   
+  m_zLock.vGrabWrite();
+  
   Id xId(*nBufferNo,nRowNo);
   
   KeyWrk xKeyWrk;
   pRow->vExtractKey(xKeyWrk, m_pIndex->pIdxColVec());
-    
+  
   vInsertEntry(m_pRoot, xKeyWrk, xId, 0);
+  
+  m_zLock.vDropWrite();
   
   //if ( ! bVerify() ) {
   //  vTrace("Inserting row that caused verify to fail:\n"_Str);
@@ -492,8 +519,9 @@ void IndexData::vInsertEntry(EntryBuffer* pHigher, KeyWrk& xKeyWrk, Id xId, i8 i
   ASSERT(pIndexBuffer);
   
   // insert entry into index buffer
-  bool bResult = pIndexBuffer->bInsert(xEntWrk);
-  ASSERT(bResult);
+  Entry* pEntry = pIndexBuffer->pInsert(xEntWrk);
+  
+  ASSERT(pEntry);
 }
 
 /*----------------------------------------------------------------------------*/

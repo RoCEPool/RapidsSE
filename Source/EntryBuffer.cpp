@@ -713,7 +713,7 @@ void EntryBuffer::vBufferCount(i8& nBuffers)
 /*----------------------------------------------------------------------------*/
 /* insert new entry into this index buffer                                    */
 /*----------------------------------------------------------------------------*/
-bool EntryBuffer::bInsert(EntWrk& xEntWrk)
+Entry* EntryBuffer::pInsert(EntWrk& xEntWrk)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -752,6 +752,8 @@ bool EntryBuffer::bInsert(EntWrk& xEntWrk)
   
   // get the absolute offset of the new entry
   i8 iNewEntryOffsetAbs = iToOffsetAbs(pNewEntry);
+  
+  //pNewEntry->vShow(pNewEntry->nOffsets(), m_pIndex);
   
   // step thru each offset to be revised
   for (on n_OffsetNo = pNewEntry->nHighestOffset(); n_OffsetNo.bInRange(); n_OffsetNo--) {
@@ -801,7 +803,9 @@ bool EntryBuffer::bInsert(EntWrk& xEntWrk)
   //vShow();
   vFixHigherLevel(pNewEntry);
   
-  return true;
+  //pNewEntry->vShow(pNewEntry->nOffsets(), m_pIndex);
+  
+  return pNewEntry;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1345,7 +1349,7 @@ i8 EntryBuffer::iCopyEntries(EntryBuffer* pFromBuffer, Entry* aFromEntry)
     EntWrk xEntWrk(pEntry->xId(), xKeyWrk);
     
     // insert entry into this buffer
-    bInsert(xEntWrk);
+    pInsert(xEntWrk);
     
     // if this buffer is a higher level buffer,
     // set this buffer as the higher level buffer
@@ -2030,7 +2034,7 @@ Entry* EntryBuffer::pRightEntry(Entry* pEntry, ln nLevelNo)
   else {
     
     on nOffsetNo = nLevelNo.nToOffsetNo();
-    ASSERT(nOffsetNo >= 0_on && *nOffsetNo < pEntry->nOffsets());
+    //ASSERT(nOffsetNo >= 0_on && *nOffsetNo < pEntry->nOffsets());
     
     // for levels 1 & 2 the right entry is m_xWsp + rightOffset[iRight]
     i8 iBytes = pEntry->nSizeEntry();

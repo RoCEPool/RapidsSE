@@ -325,7 +325,7 @@ ddlLock::grabRead
 snap0:
 
   tableLoader   not if popTable <NIP+ERROR> exit then
-  loadIndexes
+  //loadIndexes
 
   //bp::freeSpace .
 

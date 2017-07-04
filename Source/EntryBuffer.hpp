@@ -101,7 +101,7 @@ namespace DBobjects
     void         vHigherLevel(EntryBuffer* pHigherLevel);
     EntryBuffer* pHigherLevel(void);
     Index*       pIndex(void);
-    bool         bInsert(EntWrk& xEntWrk);
+    Entry*       pInsert(EntWrk& xEntWrk);
     Entry*       pNextEntry(Entry* pEntry);
     EntryBuffer* pPositionLevel(KeyWrk& xKeyWrk, eJC eJuxtaCompare, i8 iLevel);
     Entry*       pPosition(KeyWrk& xKeyWrk, eJC eJuxtaCompare);
