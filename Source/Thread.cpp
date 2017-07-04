@@ -350,9 +350,12 @@ void Thread::vLoopV2(void)
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // get a task to run
-    ASSERT( ! *m_npTask );
-    bool b = m_pScheduler->bGetTask_Mutex(this,true);
-    ASSERT( b && *m_npTask );
+    m_npTask = m_pTaskSet->npPop();
+    if (! *m_npTask) {
+      ASSERT( ! *m_npTask );
+      bool b = m_pScheduler->bGetTask_Mutex(this,true);
+      ASSERT( b && *m_npTask );
+    }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // set up this thread to run task
