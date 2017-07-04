@@ -138,6 +138,7 @@ int main(int argc, const char* argv[])
   //vSkipListTest();
   if (xDir.bGetCurrent(sCurrent) && gxArguments.m_bWelcome)
     vInfo("\nCURRENT WORKING DIRECTORY: %s\n\n"_Str,sCurrent.aStr());
+  
   // execute the command line
   RapidsSE::vExecute();
   

@@ -95,21 +95,21 @@ grid.nodes ptrArray: senderQueues
 
 tp: >jobQueue
 
-  locals| targetTask | ( valset )
+  locals| pTargetTask | ( valset )
 
   // grab mutex of target task
-  targetTask grabMutex ( valset )
+  pTargetTask grabMutex ( valset )
 
   // append valset onto queue of target task
-  targetTask appendQueue ( )
+  pTargetTask appendQueue ( )
 
   // signal the target task if it is waiting for a valset to be queued
-  targetTask isSignalWaiting if
-    targetTask signal ( )
+  pTargetTask isSignalWaiting if
+    pTargetTask signal ( )
   then
 
   // drop mutex of target task
-  targetTask dropMutex ( )
+  pTargetTask dropMutex ( )
 ;
 
 /*----------------------------------------------------------------------------*/

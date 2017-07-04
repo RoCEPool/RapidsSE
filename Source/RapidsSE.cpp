@@ -81,7 +81,7 @@ void RapidsSE::vExecute(void)
         return;
       }
       else if (gxArguments.m_bUnitTests) {
-         ASSERT(gpBufferPool);
+        ASSERT(gpBufferPool);
         return;
       }
       else
@@ -273,6 +273,7 @@ void RapidsSE::vDicCompile(NP_Task npRootTask)
     vTrace("[[mainThread]] RapidsSE::vDicCompile running [%s] %p\n"_Str,
            npRootTask->sName().s(),
            *npRootTask);
+  
   npRootTask->vLoop();
 }
 
