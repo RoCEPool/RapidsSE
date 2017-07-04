@@ -8,24 +8,25 @@
 /* create the parts                                                           */
 /*----------------------------------------------------------------------------*/
 
-lock:    monitorLock
+lock:    zMonitorLock
 
-str:     monitorString
+str:     sMonitorString
 
-taskset: monitorTaskSet
+taskset: pMonitorTaskSet
 
-thread:  monitorThread
+thread:  pMonitorThread
 
 /*----------------------------------------------------------------------------*/
 /* start the monitor task                                                     */
 /*----------------------------------------------------------------------------*/
 : monitorStart
 
-  0 "mon.loop" nullPtr task::new monitorTaskSet taskSet.Append
+  0 "mon.loop" nullPtr task::new pMonitorTaskSet taskSet.Append
 
-  monitorTaskSet  monitorThread thread.taskset!
-  "monitorThread" monitorThread thread.name!
-                 monitorThread thread.spawn
+  pMonitorTaskSet  pMonitorThread thread.taskset!
+
+  "pMonitorThread" pMonitorThread thread.name!
+                   pMonitorThread thread.spawn
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -35,13 +36,13 @@ thread:  monitorThread
 
   "monitorTask" task::this task.name!
 
-  "" monitorString !
+  "" sMonitorString !
 
   monitorTaskPrint if "Monitor Task running..." . then
 
   begin
 
-    monitorLock lock.grabWrite
+    zMonitorLock lock.grabWrite
 
       "freespace " bp::freeSpace >str str.cat
 
@@ -49,11 +50,11 @@ thread:  monitorThread
 
       queryCount @ >str str.cat
 
-      monitorString !
+      sMonitorString !
 
-    monitorLock lock.dropWrite
+    zMonitorLock lock.dropWrite
 
-    // monitorString @ .
+    // sMonitorString @ .
 
     monitorTaskPrint if bp::analyze then
 
@@ -67,13 +68,13 @@ thread:  monitorThread
 /* get monitor string                                                         */
 /*----------------------------------------------------------------------------*/
 
-: monitorString@
+: MonitorString@
 
-  monitorLock lock.grabRead
+  zMonitorLock lock.grabRead
 
-    monitorString @
+    sMonitorString @
 
-  monitorLock lock.dropRead
+  zMonitorLock lock.dropRead
 ;
 
 /*============================================================================*/

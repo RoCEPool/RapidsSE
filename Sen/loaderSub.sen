@@ -167,6 +167,8 @@ tp: theIndirectResult
         // was buffer full?
         not if
 
+"BUFFER FULL" .
+
   tp: bufferFull
 
           // append row buffer to table/partition/strand
