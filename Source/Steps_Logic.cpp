@@ -66,7 +66,7 @@ void Task::vLogicNot(MP_Task mpTask)
   ENTRY("vLogicNot"_Str);
   
   i8 iValA;
-  if ( ! mpTask->m_pDataStack->bPopAsInt(iValA) )
+  if ( ! mpTask->m_pDataStack->bPopAsI8_Inline(iValA) )
     THROW_INVALID_DSTACK("not"_Str);
   
   i8 iNotA = iValA ? 0 : 1;

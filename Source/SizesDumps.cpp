@@ -99,6 +99,7 @@ pDUMPFUN *gpDump[]
   
   /* 44 */ &Parser::vDump,          // CN_PARSER
   /* 45 */ &Partition::vDump,       // CN_PARTITION
+  /*    */ &Dump::vDummy,           // CN_PARTITIONVEC
   /*    */ &Dump::vInvalid,         // CN_PATHVEC
   /* 46 */ &Plan::vDump,            // CN_PLAN
   /*    */ &Dump::vUndefined,       // CN_PLANNER
@@ -263,6 +264,7 @@ i8 giClassSize[]
   
   /* 44 */ sizeof(Parser),             // CN_PARSER
   /* 45 */ sizeof(Partition),          // CN_PARTITION
+  /* 45 */ sizeof(PartitionVec),       // CN_PARTITIONVEC
   /*    */ sizeof(PathVec),            // CN_PATHVEC
   /* 46 */ sizeof(Plan),               // CN_PLAN
   /* 46 */ sizeof(Planner),            // CN_PLANNER
@@ -427,6 +429,7 @@ eHT geWhichHeap[]
   
   /* 47 */ HT_MEDIUM,  // CN_PARSER
   /* 48 */ HT_INVALID, // CN_PARTITION
+  /*    */ HT_MEDIUM,  // CN_PARTITIONVEC
   /*    */ HT_MEDIUM,  // CN_PATHVEC
   /* 49 */ HT_MEDIUM,  // CN_PLAN
   /*    */ HT_MEDIUM,  // CN_PLANNER

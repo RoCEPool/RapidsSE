@@ -97,6 +97,7 @@ namespace Base
   
     /* 67 */ CN_PARSER,
     /* 68 */ CN_PARTITION,
+    /*    */ CN_PARTITIONVEC,
     /* 69 */ CN_PATHVEC,
     /* 70 */ CN_PLAN,
     /* 71 */ CN_PLANNER,
@@ -107,7 +108,7 @@ namespace Base
     /* 76 */ CN_PROXY,
     /* 77 */ CN_PROXYSET,
     /* 78 */ CN_PTNCOLVEC,
-    
+  
     /* 79 */ CN_QUEUE,
     /* 80 */ CN_QUEUEBUFFER,
     
@@ -261,6 +262,7 @@ namespace Base
   
     /* 44 */ "PARSER"_Str,
     /* 45 */ "PARTITION"_Str,
+    /*    */ "PARTITIONVEC"_Str,
     /*    */ "PATHVEC"_Str,
     /* 46 */ "PLAN"_Str,
     /*    */ "PLANNER"_Str,

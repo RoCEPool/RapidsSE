@@ -58,12 +58,14 @@ typedef Vector<CN_ENTRYVEC,Entry,CN_ENTRY,C_FLAT_LEVELS_MAX,ln> EntryVec;
 
 
 #include "Partition.hpp"
+
 #include "Slots.hpp"
 
 #include "Ring.hpp"
 
 
 typedef Vector<CN_KEYVEC,KeyVal,CN_KEYVAL,1024,u8> KeyVec;
+typedef Vector<CN_PARTITIONVEC,Partition,CN_PATHVEC,C_SLOTS_PER_NODE,i8> PartitionVec;
 
 #include "Table.hpp"
 #include "Index.hpp"

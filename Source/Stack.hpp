@@ -77,6 +77,7 @@ namespace Structures
     bool bPop(s48K& sArg1, s48K& sArg2);
     bool bPopBinary(Object*& pObject);
     bool bPopAsInt(i8& iArg1);
+    bool bPopAsI8_Inline(i8& iArg1);
     bool bPopAsInt_Quick(i8& iArg1);
     i8   iPop(void);
   
@@ -124,11 +125,13 @@ namespace Structures
     Footer* pHazard(void);
   };
   
-  /*----------------------------------------------------------------------------*/
-  /* pop top by given bytes                                                     */
-  /*----------------------------------------------------------------------------*/
-  inline void Stack::vPopBy(i8 iBytes)
-  {
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop top by given bytes                                                     */
+/*----------------------------------------------------------------------------*/
+inline void Stack::vPopBy(i8 iBytes)
+{
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   char* pTop = reinterpret_cast<char*>(m_pTop);
@@ -136,9 +139,36 @@ namespace Structures
   pTop += iBytes;
   
   m_pTop = reinterpret_cast<Value*>(pTop);
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop value from data stack  as integer                                      */
+/*----------------------------------------------------------------------------*/
+inline bool Stack::bPopAsI8_Inline(i8& iArg)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  if ( ! bGuard(1) )
+    return false;
+  
+  eCN eClassNo = m_pTop->eClass(); // inline
+  
+  if (CN_INTVAL == eClassNo)
+    iArg = _pIntVal(m_pTop)->iInt(); // inline
+  else
+  if (CN_PTRVAL == eClassNo)
+    iArg = _pPtrVal(m_pTop)->pPtr() ? 1 : 0; // inline
+  else {
+    iArg = -1;
+    NEVER_REACH;
   }
   
+  vPopBy(sizeof(IntVal)); // inline
+  m_iValues--;
+  
+  return true;
 }
+
 
 /*============================================================================*/
 /* end                                                                        */
