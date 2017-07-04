@@ -10,8 +10,6 @@
 
 //REQUEST_LOOP2
 "requestTask.sen" include
-//else
-//"requestTaskOld.sen" include
 
 "generalThreads.sen" include
 "queryThreads.sen" include
