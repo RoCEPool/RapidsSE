@@ -146,7 +146,7 @@ bool Partition::bInsertRow(EntryBuffer* pRowBuffer, EntWrk& xRowWrk)
   
   for (i8 i_Index=0; i_Index < nIndexes; i_Index++) {
     IndexData* pIndexData = m_pIdxDataVec->pGet(i_Index);
-    pIndexData->vInsertEntry(pRow, pRowBuffer->nEntries(), pRowBuffer->nBufferNo());
+    pIndexData->vInsertEntry(pRow);
   }
   
   return true;

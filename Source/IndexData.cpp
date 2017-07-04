@@ -318,31 +318,6 @@ void IndexData::vInsertEntry(Entry* pRow)
   //  NEVER_REACH;
   //}
 }
-/*----------------------------------------------------------------------------*/
-/* insert an entry for given row into this index at level 0                   */
-/*----------------------------------------------------------------------------*/
-void IndexData::vInsertEntry(Entry* pRow, i8 nRowNo, bn nBufferNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
-  
-  m_zLock.vGrabWrite();
-  
-  Id xId(*nBufferNo,nRowNo);
-  
-  KeyWrk xKeyWrk;
-  pRow->vExtractKey(xKeyWrk, m_pIndex->pIdxColVec());
-  
-  vInsertEntry(m_pRoot, xKeyWrk, xId, 0);
-  
-  m_zLock.vDropWrite();
-  
-  //if ( ! bVerify() ) {
-  //  vTrace("Inserting row that caused verify to fail:\n"_Str);
-  //  pRow->vContentDump();
-  //  vDump();
-  //  NEVER_REACH;
-  //}
-}
 
 /*----------------------------------------------------------------------------*/
 /* position the indexData at a particular level of index buffer               */
