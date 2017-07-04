@@ -39,9 +39,9 @@ void Task::vAddPrimitives_LoaderSub(void)
   vAddPrimitive("loaderSub.hashPartition"_Str,&vLoaderSubHashPartition, false);
   vAddPrimitive("loaderSub.hashRecord"_Str,   &vLoaderSubHashRecord,    false);
   vAddPrimitive("loaderSub.init"_Str,         &vLoaderSubInit,          false);
-  vAddPrimitive("loaderSub.insertRow?"_Str,   &vLoaderSubInsertRow2,    false);
+  vAddPrimitive("loaderSub.insertRow"_Str,    &vLoaderSubInsertRow,     false);
   vAddPrimitive("loaderSub.loader!"_Str,      &vLoaderSubLoaderStore,   false);
-  vAddPrimitive("loaderSub::new"_Str,          &vLoaderSubNew,           false);
+  vAddPrimitive("loaderSub::new"_Str,         &vLoaderSubNew,           false);
   vAddPrimitive("loaderSub.partition"_Str,    &vLoaderSubPartition,     false);
   vAddPrimitive("loaderSub.partition!"_Str,   &vLoaderSubPartitionStore,false);
   vAddPrimitive("loaderSub.rowBuffer"_Str,    &vLoaderSubRowBuffer,     false);
@@ -197,11 +197,11 @@ void Task::vLoaderSubInit(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* loaderSub.insertRow2 -- insert row into buffer                             */
+/* loaderSub.insertRow -- insert row into buffer                              */
 /*----------------------------------------------------------------------------*/
-void Task::vLoaderSubInsertRow2(MP_Task mpTask)
+void Task::vLoaderSubInsertRow(MP_Task mpTask)
 {
-  ENTRY("vLoaderSubInsertRow2"_Str);
+  ENTRY("vLoaderSubInsertRow"_Str);
   
   Object* pObject = _pPtrVal(mpTask->m_pRegFrame->pValReg(0))->pPtr();
   

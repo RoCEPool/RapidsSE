@@ -162,7 +162,7 @@ tp: theIndirectResult
         loaderSub.hashRecord
 
         // attempt to insert record as row into working buffer for partition
-        loaderSub.insertRow?
+        loaderSub.insertRow
 
         // was buffer full?
         not if
@@ -173,7 +173,7 @@ tp: theIndirectResult
           ~loadAppendBuffer
 
           // insert row into new working buffer
-          loaderSub.insertRow? assert
+          loaderSub.insertRow assert
 
         then // if buffer full
 

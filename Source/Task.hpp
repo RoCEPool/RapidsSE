@@ -657,7 +657,7 @@ namespace Tasks
     static void vLoaderSubHashPartition(MP_Task mpTask);
     static void vLoaderSubHashRecord(MP_Task mpTask);
     static void vLoaderSubInit(MP_Task mpTask);
-    static void vLoaderSubInsertRow2(MP_Task mpTask);
+    static void vLoaderSubInsertRow(MP_Task mpTask);
     static void vLoaderSubLoaderStore(MP_Task mpTask);
     static void vLoaderSubNew(MP_Task mpTask);
     static void vLoaderSubPartition(MP_Task mpTask);
