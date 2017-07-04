@@ -32,23 +32,31 @@ StepAccum::~StepAccum(void)
 /*----------------------------------------------------------------------------*/
 /* print                                                                      */
 /*----------------------------------------------------------------------------*/
-void StepAccum::vPrint(void)
+void StepAccum::vPrint(File& xFile)
 {
   if (0 == m_nInvoked)
     return;
   
   i8 iTicksPerSecond = Synch::iTickFrequency();
-  i8 iTicksPerNanos = DIV(iTicksPerSecond,1000000000);
+  i8 iTicksPerNanos  = DIV(iTicksPerSecond,1000000000);
   
+  i8 iStepNanos      = DIV(m_nCycles,iTicksPerNanos);
   i8 iTicksPerInvoke = DIV(m_nCycles,m_nInvoked);
   
-  i8 iInvokeNanos = DIV(iTicksPerInvoke,iTicksPerNanos);
+  i8 iInvokeNanos    = DIV(iTicksPerInvoke,iTicksPerNanos);
 
   
-  vTrace("  %24s %12lld %12lld %8lldns\n"_Str,
+//  vTrace("  %24s %12lld %12lld %8lldns\n"_Str,
+//         m_aStepNm,
+//         m_nInvoked,
+//         iStepNanos,
+//         iInvokeNanos
+//         );
+  
+  xFile.vPrint("%s, %lld, %lld, %lld\n"_Str,
          m_aStepNm,
          m_nInvoked,
-         m_nCycles,
+         iStepNanos,
          iInvokeNanos
          );
 }

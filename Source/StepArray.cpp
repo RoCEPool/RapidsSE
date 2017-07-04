@@ -78,12 +78,13 @@ void StepArray::vDump(eCN eClass, Object* pObject, Str* aTab)
 /*----------------------------------------------------------------------------*/
 /* list steps                                                                 */
 /*----------------------------------------------------------------------------*/
-void StepArray::vList(void)
+void StepArray::vList(File& xFile)
 {
   m_zLock.vGrabWrite();
   
+  xFile.vPrint("Step, Invoked, StepTotal, Per Invoke\n"_Str);
   for (i8 iStep = 0; iStep < m_iNext; iStep++)
-    m_xStepAccum[iStep].vPrint();
+    m_xStepAccum[iStep].vPrint(xFile);
   
   m_zLock.vDropWrite();
 }

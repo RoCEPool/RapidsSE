@@ -221,7 +221,7 @@ void Task::vLoaderSubInsertRow(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderSubInsertRow2(MP_Task mpTask)
 {
-  ENTRY("vLoaderSubInsertRow?"_Str);
+  ENTRY("vLoaderSubInsertRow2"_Str);
   
   Object* pObject = _pPtrVal(mpTask->m_pRegFrame->pValReg(0))->pPtr();
   

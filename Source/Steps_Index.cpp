@@ -499,7 +499,7 @@ void Task::vIndexPopulate(MP_Task mpTask)
   Object* pPtrTable = nullptr;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrIndex) )
-    THROW_INVALID_DSTACK("index.populate!"_Str);
+    THROW_INVALID_DSTACK("index.populate"_Str);
 
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());

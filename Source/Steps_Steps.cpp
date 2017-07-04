@@ -42,7 +42,12 @@ void Task::vStepsList(MP_Task mpTask)
 {
 ENTRY("vStepsList"_Str);
 
-  gpStepArray->vList();
+  File xFile;
+  xFile.bOpen("steps.csv"_Str, C_OPEN_WRITE);
+  
+  gpStepArray->vList(xFile);
+  
+  xFile.vClose();
   
   EXIT();
 }

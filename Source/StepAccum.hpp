@@ -19,7 +19,7 @@ namespace Tasks
     StepAccum(void);
     ~StepAccum(void);
     
-    void vPrint(void);
+    void vPrint(File& xFile);
     void vReset(void);
     
     Footer* aFooter(void);

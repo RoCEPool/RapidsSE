@@ -26,7 +26,7 @@ namespace Tasks
     static void vDump(eCN eClass, Object* pObject, Str* aTab);
 
     StepAccum* pAllocAccum(Str* aFnName);
-    void vList(void);
+    void vList(File& xFile);
     void vReset(void);
   
     void vGrabWrite(void);

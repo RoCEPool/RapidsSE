@@ -206,6 +206,7 @@ tp: theIndirectResult
   loaderSub.end
 
   // this sub has completed, ack the parent loader
+task::this task.name@ "%v acking parent" str.format .
   task.parent@ ack
 
   reg.pop
