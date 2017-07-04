@@ -6,7 +6,7 @@
 namespace DBobjects
 {
   // allow for maximum 8 partitions per node
-  static const i8 C_SLOTS_PER_NODE = 32;
+  static const i8 C_SLOTS_PER_NODE = 64;
   
   class Slots : public Object
   {
