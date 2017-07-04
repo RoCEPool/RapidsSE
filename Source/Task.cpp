@@ -816,7 +816,7 @@ void Task::vAddConstants(void)
   /*  0 */ vAddConstant("PHYSICAL_MEMORY"_Str, Hardware::iPhysicalMemory());
   
   // debug
-  vAddConstant("listerTaskPrint"_Str,    (i8)0);
+  vAddConstant("listerTaskPrint"_Str,    (i8)1);
   vAddConstant("monitorTaskPrint"_Str,   (i8)1);
   vAddConstant("reclaimTaskPrint"_Str,   (i8)0);
   vAddConstant("requestTaskPrint"_Str,   (i8)0);
