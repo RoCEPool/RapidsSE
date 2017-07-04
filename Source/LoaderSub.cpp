@@ -222,56 +222,6 @@ void LoaderSub::vHashRecord(void)
 /*----------------------------------------------------------------------------*/
 /* insert row into working buffer                                             */
 /*----------------------------------------------------------------------------*/
-bool LoaderSub::bInsertRow(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
-  
-  //vTrace("Entry: %s\n"_Str,pStrVal->aStr());
-  Entry* pRow;
-  
-  // check for working buffer
-  if (! m_pRowBuffer[m_iPartition]) {
-    m_pRowBuffer[m_iPartition] = (EntryBuffer*)EntryBuffer::pNewEntryBuffer(CN_ENTRYBUFFER);
-    if (! m_pRowBuffer[m_iPartition]) {
-      vTrace("EntryBuffer allocation failed\n"_Str);
-      return false;
-    }
-  }
-  
-  // get working buffer
-  EntryBuffer* pRowBuffer = m_pRowBuffer[m_iPartition];
-
-  // create working row
-  EntWrk xRowWrk;
-  xRowWrk.vTxId(m_pTxRef->iTxId());
-  xRowWrk.vData(m_aRecord, m_iLength);
-
-  // insert row into working buffer
-  if (pRowBuffer->bInsertRow(xRowWrk, &pRow))
-    return true;
-  
-  // buffer full, append working buffer into table
-  m_pTable->vAppendBuffer(m_iPartition,pRowBuffer);
-  
-  // get a new working buffer
-  m_pRowBuffer[m_iPartition] = (EntryBuffer*)EntryBuffer::pNewEntryBuffer(CN_ENTRYBUFFER);
-  if (! m_pRowBuffer[m_iPartition]) {
-    vTrace("EntryBuffer allocation failed\n"_Str);
-    return false;
-  }
-  
-  pRowBuffer = m_pRowBuffer[m_iPartition];
-  
-  // insert row into new working buffer
-  bool bInserted
-  = pRowBuffer->bInsertRow(xRowWrk, &pRow);
-  
-  return bInserted;
-}
-
-/*----------------------------------------------------------------------------*/
-/* insert row into working buffer                                             */
-/*----------------------------------------------------------------------------*/
 bool LoaderSub::bInsertRow2(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
