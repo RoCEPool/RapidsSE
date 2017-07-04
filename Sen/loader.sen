@@ -31,13 +31,13 @@ timer: loadTimer
 : tableLoader ( "<path>" "<tableNm>" -- t|f )
 
   assert::stack_2 ( "<path>" "<tableNm>" )
-  locals| tableNm path |
+  0 locals| pSubTask stableNm sPath |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if path file exists                                 //! refactor this
 
   file::new locals| fp |
-  path fp file.path!
+  sPath fp file.path!
 
   OPEN_READ fp file.open ( t|f )
   not if
@@ -60,9 +60,9 @@ timer: loadTimer
   execute locals| tblLoader | assert::stack_0
 
   // initialise table loader
-  tableNm find execute locals| tablePtr |
+  sTableNm find execute locals| tablePtr |
   tablePtr tblLoader loader.table!
-  path tblLoader loader.path!
+  sPath tblLoader loader.path!
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create sub loaders
@@ -74,19 +74,19 @@ timer: loadTimer
   // hold task mutex while we create sub loaders
   //task::this grabMutex
 
-  N_GENERAL_THREADS setAcks
+  N_QUERY_THREADS setAcks
 
-  N_GENERAL_THREADS 0 do
+  N_QUERY_THREADS 0 do
 
     << tblLoader loader.newSub >>
 
     pathGet >>
 
-    1 "loadSub" task::this task::new
+    1 "loadSub" task::this task::new to pSubTask
 
-    dup I >loadSubNm swap task.name!
+    pSubTask I >loadSubNm swap task.name!
 
-    I >genTaskSet taskSet.append
+    pSubTask scheduler::enqueueTask //I >genTaskSet taskSet.append
   loop
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
