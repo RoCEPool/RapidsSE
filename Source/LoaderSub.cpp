@@ -222,7 +222,7 @@ void LoaderSub::vHashRecord(void)
 /*----------------------------------------------------------------------------*/
 /* insert row into working buffer                                             */
 /*----------------------------------------------------------------------------*/
-bool LoaderSub::bInsertRow2(void)
+bool LoaderSub::bInsertRow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
  

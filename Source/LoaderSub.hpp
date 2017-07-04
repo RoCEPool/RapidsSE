@@ -42,7 +42,7 @@ namespace DBobjects
     void vEnd(void);
     bool bFetchRecord(void);
     void vHashRecord(void);
-    bool bInsertRow2(void);
+    bool bInsertRow(void);
     void vLoader(Loader* pLoader);
     i8   iPartition(void);
     void vPartition(i8 iPartition);

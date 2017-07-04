@@ -208,7 +208,7 @@ void Task::vLoaderSubInsertRow(MP_Task mpTask)
   LoaderSub* pLoaderSub = _pLoaderSub(pObject);
   ASSERT(CN_LOADERSUB == pLoaderSub->eClass());
   
-  bool bInserted = pLoaderSub->bInsertRow2();
+  bool bInserted = pLoaderSub->bInsertRow();
   
   mpTask->m_pDataStack->vPushInt(bInserted);
   
