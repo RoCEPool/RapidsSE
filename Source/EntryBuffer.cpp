@@ -727,7 +727,7 @@ Entry* EntryBuffer::pInsert(EntWrk& xEntWrk)
   EntryVec xPriorVec;
   bool bIsEqual = false;
   Entry* pAfterEntry = pPosition(xEntWrk.aKey(), JC_AFTER, &xPriorVec, bIsEqual);
-  
+    
   if (m_pIndex->bIsUnique() and bIsEqual) {
     vTrace("Warning: Duplicate key in unique index %s "_Str, m_pIndex->aIndexName());
     xEntWrk.aKey()->vShow(m_pIndex->pIdxColVec());
@@ -1875,18 +1875,18 @@ void EntryBuffer::vMoveRight(void* aSrc, i8 nBytes)
   // compute the destination address
   void* aDst = pAdd<void*>(aSrc,nBytes);
   
-  void* x = m_xWsp.aLatter();
-  i8 y = nSub(m_xWsp.aLatter(), aSrc);
   // bytes to copy
   i8 nBytesToCopy = nSub(m_xWsp.aLatter(), aSrc) - nBytes;
   
+  if (nBytesToCopy == 0)
+    return;
+
   // move F..Z right
   MemLib::vMove(aDst,aSrc,nBytesToCopy);
   
   // for the moment we'll zero the bytes of entry E
   MemLib::vZero(aSrc,nBytes);
 }
-
 
 /*----------------------------------------------------------------------------*/
 /* scan thru skip list and positition to entry (optionally set prior vector)  */
