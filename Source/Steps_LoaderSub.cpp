@@ -39,7 +39,6 @@ void Task::vAddPrimitives_LoaderSub(void)
   vAddPrimitive("loaderSub.hashPartition"_Str,&vLoaderSubHashPartition, false);
   vAddPrimitive("loaderSub.hashRecord"_Str,   &vLoaderSubHashRecord,    false);
   vAddPrimitive("loaderSub.init"_Str,         &vLoaderSubInit,          false);
-  vAddPrimitive("loaderSub.insertRow"_Str,    &vLoaderSubInsertRow,     false);
   vAddPrimitive("loaderSub.insertRow?"_Str,   &vLoaderSubInsertRow2,    false);
   vAddPrimitive("loaderSub.loader!"_Str,      &vLoaderSubLoaderStore,   false);
   vAddPrimitive("loaderSub::new"_Str,          &vLoaderSubNew,           false);
@@ -193,25 +192,6 @@ void Task::vLoaderSubInit(MP_Task mpTask)
   ASSERT(CN_LOADERSUB == pLoaderSub->eClass());
   
   new(pLoaderSub) LoaderSub;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* loaderSub.insertRow -- insert row into buffer (buffer into table when full)*/
-/*----------------------------------------------------------------------------*/
-void Task::vLoaderSubInsertRow(MP_Task mpTask)
-{
-  ENTRY("vLoaderSubInsertRow"_Str);
-  
-  Object* pObject = _pPtrVal(mpTask->m_pRegFrame->pValReg(0))->pPtr();
-  
-  LoaderSub* pLoaderSub = _pLoaderSub(pObject);
-  ASSERT(CN_LOADERSUB == pLoaderSub->eClass());
-  
-  bool bInserted = pLoaderSub->bInsertRow();
-  
-  mpTask->m_pDataStack->vPushInt(bInserted);
   
   EXIT();
 }
