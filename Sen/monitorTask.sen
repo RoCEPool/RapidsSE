@@ -12,21 +12,12 @@ lock:    zMonitorLock
 
 str:     sMonitorString
 
-taskset: pMonitorTaskSet
-
-thread:  pMonitorThread
-
 /*----------------------------------------------------------------------------*/
 /* start the monitor task                                                     */
 /*----------------------------------------------------------------------------*/
 : monitorStart
 
-  0 "mon.loop" nullPtr task::new pMonitorTaskSet taskSet.Append
-
-  pMonitorTaskSet  pMonitorThread thread.taskset!
-
-  "pMonitorThread" pMonitorThread thread.name!
-                   pMonitorThread thread.spawn_general
+  0 "mon.loop" nullptr "MonitorActor" spawnActorTask drop
 ;
 
 /*----------------------------------------------------------------------------*/

@@ -8,22 +8,14 @@
 /* create the parts                                                           */
 /*----------------------------------------------------------------------------*/
 
-taskset: listerTaskSet
-
-thread:  listerThread
-
-taskCursor: taskCrs
+taskCursor: pTaskCrs
 
 /*----------------------------------------------------------------------------*/
 /* start the lister task                                                      */
 /*----------------------------------------------------------------------------*/
 : listerStart
 
-  0 "lis.loop" nullPtr task::new listerTaskSet taskSet.Append
-
-  listerTaskSet  listerThread thread.taskset!
-  "listerThread" listerThread thread.name!
-                 listerThread thread.spawn_general
+  0 "lis.loop" nullptr "ListerActor" spawnActorTask drop
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -35,8 +27,8 @@ taskCursor: taskCrs
     "task list..." .
   then
 
-  taskcrs taskcrs taskcursor.begin
-          taskcrs taskcursor.first
+  pTaskCrs pTaskCrs taskcursor.begin
+          pTaskCrs taskcursor.first
   iterate
 
     listerTaskPrint if
@@ -47,7 +39,7 @@ taskCursor: taskCrs
 
   next
 
-  taskcrs taskcursor.end
+  pTaskCrs taskcursor.end
 
 ;
 
