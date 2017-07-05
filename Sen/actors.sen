@@ -1,0 +1,29 @@
+/*============================================================================*/
+/* gridModel.sen -- grid model group                                          */
+/*============================================================================*/
+
+int:  queryCount
+
+"actors.sen" .verbose
+
+"coordinatorWorker.sen" include
+"participantProxyWorker.sen" include
+"coordinatorProxyWorker.sen" include
+"participantWorker.sen" include
+"senderWorker.sen" include
+
+"connectorDrone.sen" include
+"answerDrone.sen" include
+"listerDrone.sen"  include
+"monitorDrone.sen" include
+"receiverDrone.sen" include
+"reclaimDrone.sen" include
+
+"requestServer.sen" include
+
+"gridCalls.sen" include
+"ddlLocking.sen" include
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
