@@ -70,7 +70,7 @@ rootTaskSet rootThread thread.taskSet!
 
 args.bgtasks if
 
-snooze generalThreadsStart
+snooze severThreadsStart
 snooze partitionThreadsStart
 
 snooze spawnListerDrone

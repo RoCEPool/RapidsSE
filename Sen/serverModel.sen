@@ -5,9 +5,9 @@
 "serverModel.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* compute the number of general processing threads to be created             */
+/* compute the number of server processing threads to be created              */
 /*----------------------------------------------------------------------------*/
-: noGeneralThreads ( memorySize -- noThreads )
+: nServerThreads ( memorySize -- nThreads )
 
   // the number of query threads is computed based on the
   // size of the region
@@ -15,65 +15,65 @@
   // there will be 1 query thread per GB
   // the number of threads will be limited to 80% of the number of cores
 
-  C_1GB / locals| noThreads |
+  C_1GB / locals| nThreads |
 
 //1 exit // temp
 
-  noThreads 0 <= if
+  nThreads 0 <= if
     1
   else
-    noThreads CORE_COUNT 8 * 10 / > if
-      CORE_COUNT 8 * 10 / to noThreads
+    nThreads CORE_COUNT 8 * 10 / > if
+      CORE_COUNT 8 * 10 / to nThreads
     then
   then
 
-  noThreads
+  nThreads
 ;
 
 /*----------------------------------------------------------------------------*/
-/* define the N_GENERAL_THREADS constant                                      */
+/* define the N_SERVER_THREADS constant                                       */
 /*----------------------------------------------------------------------------*/
-args.regionSize noGeneralThreads constant N_GENERAL_THREADS
+args.regionSize nServerThreads constant N_SERVER_THREADS
 
 /*----------------------------------------------------------------------------*/
-/* create and spawn the partition processing threads                          */
+/* create and spawn the server processing threads                             */
 /*----------------------------------------------------------------------------*/
-: >generalThreadNm ( i -- s ) "generalThread"    swap >str str.cat ;
-: :generalThread   ( i -- w ) >generalThreadNm    :thread    ;
+: >serverNm ( i -- s ) "generalThread"    swap >str str.cat ;
+: :serverThread   ( i -- w ) >serverNm    :thread    ;
 
-: generalThreadsStart
+: severThreadsStart
 
-  0 locals| pGeneralThread |
+  0 locals| pServerThread |
 
   args.progress if
-    N_GENERAL_THREADS "General threads: %v" str.format .
+    N_SERVER_THREADS "General threads: %v" str.format .
   then
 
   args.verbose if
-    "N_GENERAL_THREADS " .put N_GENERAL_THREADS .put .\n
+    "N_SERVER_THREADS " .put N_SERVER_THREADS .put .\n
   then
 
-  N_GENERAL_THREADS 0 do
+  N_SERVER_THREADS 0 do
 
     // create a thread called queryThreadI
-    I :generalThread execute to pGeneralThread
+    I :serverThread execute to pServerThread
 
     // set the threads name
-    I >generalThreadNm pGeneralThread thread.name!
+    I >serverNm pServerThread thread.name!
 
     // give it a private taskset
-    taskset::new pGeneralThread thread.taskset!
+    taskset::new pServerThread thread.taskset!
 
     // spawn os thread
-    pGeneralThread thread.spawn_general
+    pServerThread thread.spawn_general
 
   loop
 ;
 
 /*----------------------------------------------------------------------------*/
-/* create a task using given arguments and append to general task queue       */
+/* create an actor using given arguments and append to general task queue     */
 /*----------------------------------------------------------------------------*/
-: spawnGeneralTask ( ... nArgs sSeedWord pParentTask sTaskNm -- )
+: spawnServerActor ( ... nArgs sSeedWord pParentTask sTaskNm -- )
 
   nullptr locals| pTask sTaskNm pParent sSeedWord nArgs |
 
@@ -83,8 +83,8 @@ args.regionSize noGeneralThreads constant N_GENERAL_THREADS
   // set task name
   sTaskNm pTask task.name!
 
-  // append task onto general task queue
-  pTask scheduler::enqueueGeneralTask
+  // append task onto server task queue
+  pTask scheduler::enqueueServerTask
 
   pTask  // return the task
 ;

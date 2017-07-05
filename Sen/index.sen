@@ -679,7 +679,7 @@ tp: loadIndexes
     I seitf seitf.partition!
 
     // create a selectTask to execute the key select on the index for the partition
-    key lower upper indexPtr seitf 5 selectTaskRequest nullptr "selectTask" spawnGeneralTask
+    key lower upper indexPtr seitf 5 selectTaskRequest nullptr "selectTask" spawnServerActor
     to selectTask
 
     1

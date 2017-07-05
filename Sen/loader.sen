@@ -74,15 +74,15 @@ timer: loadTimer
   // hold task mutex while we create sub loaders
   //task::this grabMutex
 
-  N_GENERAL_THREADS setAcks
+  N_SERVER_THREADS setAcks
 
-  N_GENERAL_THREADS 0 do
+  N_SERVER_THREADS 0 do
 
     << tblLoader loader.newSub >>
 
     pathGet >>
 
-    1 "loadSub" task::this I >loadSubNm spawnGeneralTask to pSubTask
+    1 "loadSub" task::this I >loadSubNm spawnServerActor to pSubTask
 
   loop
 

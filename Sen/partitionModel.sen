@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* compute the number of partition processing threads to be created           */
 /*----------------------------------------------------------------------------*/
-: noPartitionThreads ( memorySize -- noThreads )
+: nPartitionThreads ( memorySize -- nThreads )
 
   // the number of query threads is computed based on the
   // size of the region
@@ -15,25 +15,25 @@
   // there will be 1 query thread per GB
   // the number of threads will be limited to 80% of the number of cores
 
-  C_1GB / locals| noThreads |
+  C_1GB / locals| nThreads |
 
 //1 exit // temp
 
-  noThreads 0 <= if
+  nThreads 0 <= if
     1
   else
-    noThreads CORE_COUNT 8 * 10 / > if
-      CORE_COUNT 8 * 10 / to noThreads
+    nThreads CORE_COUNT 8 * 10 / > if
+      CORE_COUNT 8 * 10 / to nThreads
     then
   then
 
-  noThreads
+  nThreads
 ;
 
 /*----------------------------------------------------------------------------*/
 /* define the N_PARTITION_THREADS constant                                    */
 /*----------------------------------------------------------------------------*/
-args.regionSize noPartitionThreads constant N_PARTITION_THREADS
+args.regionSize nPartitionThreads constant N_PARTITION_THREADS
 
 /*----------------------------------------------------------------------------*/
 /* create and spawn the partition processing threads                          */
@@ -46,7 +46,7 @@ args.regionSize noPartitionThreads constant N_PARTITION_THREADS
   0 locals| pPartitionThread |
 
   args.progress if
-    N_GENERAL_THREADS "Partition threads: %v" str.format .
+    N_SERVER_THREADS "Partition threads: %v" str.format .
   then
 
   args.verbose if
