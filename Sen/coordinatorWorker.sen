@@ -7,9 +7,9 @@
 /*----------------------------------------------------------------------------*/
 /* coordinator loop                                                           */
 /*----------------------------------------------------------------------------*/
-: c.loop
+: cLoop
 
-  "c.loop" task::this task.comment!
+  "cLoop" task::this task.comment!
 
   // push a register frame (holds CALLER etc)
   reg.push

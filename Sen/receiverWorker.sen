@@ -21,13 +21,13 @@ tp: received
 /*----------------------------------------------------------------------------*/
 /* receiver task processing loop                                              */
 /*----------------------------------------------------------------------------*/
-: rcv.loop ( socket -- )
+: receiverLoop ( socket -- )
 
 tp: rvc.loop
 
   task::this task.socket!
 
-  "rcv.loop" task::this task.comment!
+  "receiverLoop" task::this task.comment!
 
   receiverDronePrint if "Receiver Drone running on node" grid.thisNode@ >str str.cat . then
 

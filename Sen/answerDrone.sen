@@ -53,11 +53,11 @@ tp: socketAccepted
 ddlLock::grabWrite
 
     // set up the seed
-    1 "rcv.loop" ( socket 1 "rcv.loop" )
+    1 "receiverLoop" ( socket 1 "receiverLoop" )
 
     // create the receive worker
-    "rr" nConnections @ >str str.cat ( socket 1 "rcv.loop" "rrI" )
-    :job ( socket 1 "rcv.loop" "rrI" )
+    "rr" nConnections @ >str str.cat ( socket 1 "receiverLoop" "rrI" )
+    :job ( socket 1 "receiverLoop" "rrI" )
 
     // spawn the actors os thread
     workerActor.spawn

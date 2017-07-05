@@ -7,9 +7,9 @@
 /*----------------------------------------------------------------------------*/
 /* coordinator proxy processing loop                                          */
 /*----------------------------------------------------------------------------*/
-: cp.loop ( actorNo forwardTask -- )
+: cpLoop ( actorNo forwardTask -- )
 
-  "cp.loop" task::this task.comment!
+  "cpLoop" task::this task.comment!
 
 tp: coordinator
 

@@ -23,7 +23,7 @@
     // participant for node I
     //
 
-    0 "p.loop"
+    0 "pLoop"
 
     "p" I >str str.cat :job
     dup job.queue I pQueues !
@@ -34,7 +34,7 @@
     // coordinator proxy for node I
     //
 
-    I I pTasks @ 2 "cp.loop"
+    I I pTasks @ 2 "cpLoop"
     "cp" I >str str.cat :job
     dup job.queue I cpQueues !
     dup job.task  I cpTasks  !
@@ -45,9 +45,9 @@
     //
 
     I grid.thisNode@ == if
-      I I pTasks  @ 2 "pp.loop"
+      I I pTasks  @ 2 "ppLoop"
     else
-      I I cpTasks @ 2 "pp.loop"
+      I I cpTasks @ 2 "ppLoop"
     then
 
     "pp" I >str str.cat :job
@@ -60,8 +60,8 @@
   //
   // coordinator for this node
   //
-  0 "c.loop"
-  "c" :job  ( 0 "c.loop" "c" )
+  0 "cLoop"
+  "c" :job  ( 0 "cLoop" "c" )
 
   workerActor.spawn
 

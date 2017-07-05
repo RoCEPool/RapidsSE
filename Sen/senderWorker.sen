@@ -25,13 +25,13 @@
 /*----------------------------------------------------------------------------*/
 /* sender task processing loop                                                */
 /*----------------------------------------------------------------------------*/
-: snd.loop ( socket -- )
+: senderLoop ( socket -- )
 
-tp: snd.loop
+tp: senderLoop
 
   task::this task.socket!
 
-  "snd.loop" task::this task.comment!
+  "senderLoop" task::this task.comment!
 
   senderTaskPrint if "Sender running on node" grid.thisNode@ >str str.cat . then
 

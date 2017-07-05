@@ -7,9 +7,9 @@
 /*----------------------------------------------------------------------------*/
 /* execute all indirect call processing loop                                  */
 /*----------------------------------------------------------------------------*/
-: p.loop
+: pLoop
 
-  "p.loop" task::this task.comment!
+  "pLoop" task::this task.comment!
 
   // push a register frame
   reg.push

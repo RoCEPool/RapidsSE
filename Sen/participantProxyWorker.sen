@@ -7,9 +7,9 @@
 /*----------------------------------------------------------------------------*/
 /* participant proxy processing loop                                          */
 /*----------------------------------------------------------------------------*/
-: pp.loop ( actorNo forwardTask -- )
+: ppLoop ( actorNo forwardTask -- )
 
-  "pp.loop" task::this task.comment!
+  "ppLoop" task::this task.comment!
 
 tp: participantProxy
 

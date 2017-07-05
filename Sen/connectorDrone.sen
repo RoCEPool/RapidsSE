@@ -50,14 +50,14 @@ tp: spawnConnectorDrone
 ddlLock::grabWrite
 
      // set up the seed
-      1 "snd.loop" ( socket 1 "snd.loop" )
+      1 "senderLoop" ( socket 1 "senderLoop" )
 
       // create the actor
-      "sr" I >str str.cat :job ( socket 1 "snd.loop" "srI" )
+      "sr" I >str str.cat :job ( socket 1 "senderLoop" "srI" )
 
       // record the senderQueue
-      dup job.queue I senderQueues ! ( socket 1 "snd.loop" "srI" )
-      dup job.task  I senderTasks  ! ( socket 1 "snd.loop" "srI" )
+      dup job.queue I senderQueues ! ( socket 1 "senderLoop" "srI" )
+      dup job.task  I senderTasks  ! ( socket 1 "senderLoop" "srI" )
 
       // spawn the actors os thread
       workerActor.spawn
