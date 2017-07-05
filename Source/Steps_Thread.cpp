@@ -55,7 +55,7 @@ void Task::vAddPrimitives_Thread(void)
   vAddPrimitive("thread.sleep_ns"_Str,        &vThreadSleep_ns,        false);
   vAddPrimitive("thread.spawn_drone"_Str,     &vThreadSpawn_Drone,     false);
   vAddPrimitive("thread.spawn_partition"_Str, &vThreadSpawn_Partition, false);
-  vAddPrimitive("thread.spawn_general"_Str,   &vThreadSpawn_General,   false);
+  vAddPrimitive("thread.spawn_server"_Str,    &vThreadSpawn_Server,   false);
   vAddPrimitive("thread.spawn_worker"_Str,    &vThreadSpawn_Worker,    false);
 }
 
@@ -593,22 +593,22 @@ ENTRY("vThreadSpawn_Partition"_Str);
 }
 
 /*----------------------------------------------------------------------------*/
-/* thread.spawn_general -- spawn os thread associated with this thread        */
+/* thread.spawn_server -- spawn os thread associated with this thread         */
 /*----------------------------------------------------------------------------*/
-void Task::vThreadSpawn_General(MP_Task mpTask)
+void Task::vThreadSpawn_Server(MP_Task mpTask)
 {
-  ENTRY("vThreadSpawn_General"_Str);
+  ENTRY("vThreadSpawn_Server"_Str);
   
   Object* pThreadEmb;
   
   if ( ! mpTask->m_pDataStack->bPop(pThreadEmb) )
-    THROW_INVALID_DSTACK("thread.spawn_general"_Str);
+    THROW_INVALID_DSTACK("thread.spawn_server"_Str);
   
   ASSERT(CN_THREAD == pThreadEmb->eClass());
   
   Thread* pThread = static_cast<Thread*>(pThreadEmb);
   
-  pThread->vSpawn_General();
+  pThread->vSpawn_Server();
   
   EXIT();
 }

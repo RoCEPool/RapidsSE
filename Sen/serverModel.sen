@@ -41,7 +41,7 @@ args.regionSize nServerThreads constant N_SERVER_THREADS
 : >serverNm ( i -- s ) "generalThread"    swap >str str.cat ;
 : :serverThread   ( i -- w ) >serverNm    :thread    ;
 
-: severThreadsStart
+: startSeverThreads
 
   0 locals| pServerThread |
 
@@ -65,7 +65,7 @@ args.regionSize nServerThreads constant N_SERVER_THREADS
     taskset::new pServerThread thread.taskset!
 
     // spawn os thread
-    pServerThread thread.spawn_general
+    pServerThread thread.spawn_server
 
   loop
 ;

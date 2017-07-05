@@ -41,7 +41,7 @@ assert::stack_0
 //
 
 ( spawn the posix thread for the root thread )
-rootThread thread.spawn_general
+rootThread thread.spawn_server
 
 ( leave root thread on stack )
 rootThread

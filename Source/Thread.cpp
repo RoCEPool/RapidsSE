@@ -185,7 +185,7 @@ void* Thread::vEntry_Partition(void* pArg)
 /*----------------------------------------------------------------------------*/
 /* thread entry                                                               */
 /*----------------------------------------------------------------------------*/
-void* Thread::vEntry_General(void* pArg)
+void* Thread::vEntry_Server(void* pArg)
 {
   Thread* pThread = static_cast<Thread*>(pArg);
   
@@ -193,7 +193,7 @@ void* Thread::vEntry_General(void* pArg)
     vTrace("[[%s]] Thread::vEntry_General %p\n"_Str,pThread->sName().s(),pThread);
   
   try {
-    pThread->vLoop_General();
+    pThread->vLoop_Server();
   }
   catch (Error* pError) {
     char wFileName[256];
@@ -403,72 +403,6 @@ void Thread::vLoop_Drone(void)
 /*----------------------------------------------------------------------------*/
 /* thread loop (sleep loop)                                                   */
 /*----------------------------------------------------------------------------*/
-void Thread::vLoop_Worker(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
-  
-  if (gbVerbose || gbProgress)
-    vTrace("Thread %p: %s loop\n"_Str,this,m_sName.s());
-  
-  m_pPosixThread->vSetOSThreadId();
-  
-  //  vTrace("Thread %p: priority %lld\n"_Str,
-  //         this,
-  //         m_pPosixThread->iThreadPriority()
-  //         );
-  
-  //m_pPosixThread->vThreadBoost(C_THREAD_BOOST);                //! RANDOM ERROR
-  
-  //  vTrace("Thread %p: priority %lld\n"_Str,
-  //         this,
-  //         m_pPosixThread->iThreadPriority()
-  //         );
-  
-  PosixThread::vTlsSet(giTLS_ThreadKey,this);
-  ASSERT(PosixThread::pTlsGet(giTLS_ThreadKey));
-  
-  // sleep loop: sleep waiting for next task
-  while (true) {
-    
-    if ( ! m_pTaskSet ) {
-      PosixThread::vSleepNano(10_KB);
-      continue;
-    }
-    
-    m_npTask = m_pTaskSet->npPop();
-    
-    if ( ! m_npTask ) {
-      PosixThread::vSleepMilli(1);
-      continue;
-    }
-    
-    PosixThread::vTlsSet(giTLS_TaskKey,*m_npTask);
-    ASSERT(PosixThread::pTlsGet(giTLS_TaskKey));
-    m_npTask->vState(TS_RUNNING);
-    m_npTask->vThread(this);
-    m_npTask->vLoop();
-    
-    if (TS_WAITING_ACK != m_npTask->eState())
-      m_npTask->vThread(nullptr);
-    
-    if (TS_YIELDED == m_npTask->eState()) {
-      MP_Task mpTask = *m_npTask;
-      vAppend(mpTask);
-      m_npTask = nullptr;
-    }
-    else if (TS_EXITED == m_npTask->eState()) {
-      MP_Task mpTask = *m_npTask;
-      if ( (*gnpRootTask != *m_npTask)  && (!mpTask->bWordBody()) ) {
-        delete *m_npTask;
-        m_npTask = nullptr;
-      }
-    }
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* thread loop (sleep loop)                                                   */
-/*----------------------------------------------------------------------------*/
 void Thread::vLoop_Partition(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
@@ -535,12 +469,12 @@ void Thread::vLoop_Partition(void)
 /*----------------------------------------------------------------------------*/
 /* thread loop (wait loop)                                                    */
 /*----------------------------------------------------------------------------*/
-void Thread::vLoop_General(void)
+void Thread::vLoop_Server(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
   if (gbVerbose || gbProgress)
-    vTrace("Thread %p: %s General\n"_Str,this,m_sName.s());
+    vTrace("Thread %p: %s Server\n"_Str,this,m_sName.s());
   
   m_pPosixThread->vSetOSThreadId();
   
@@ -624,6 +558,72 @@ void Thread::vLoop_General(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* thread loop (sleep loop)                                                   */
+/*----------------------------------------------------------------------------*/
+void Thread::vLoop_Worker(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
+  
+  if (gbVerbose || gbProgress)
+    vTrace("Thread %p: %s loop\n"_Str,this,m_sName.s());
+  
+  m_pPosixThread->vSetOSThreadId();
+  
+  //  vTrace("Thread %p: priority %lld\n"_Str,
+  //         this,
+  //         m_pPosixThread->iThreadPriority()
+  //         );
+  
+  //m_pPosixThread->vThreadBoost(C_THREAD_BOOST);                //! RANDOM ERROR
+  
+  //  vTrace("Thread %p: priority %lld\n"_Str,
+  //         this,
+  //         m_pPosixThread->iThreadPriority()
+  //         );
+  
+  PosixThread::vTlsSet(giTLS_ThreadKey,this);
+  ASSERT(PosixThread::pTlsGet(giTLS_ThreadKey));
+  
+  // sleep loop: sleep waiting for next task
+  while (true) {
+    
+    if ( ! m_pTaskSet ) {
+      PosixThread::vSleepNano(10_KB);
+      continue;
+    }
+    
+    m_npTask = m_pTaskSet->npPop();
+    
+    if ( ! m_npTask ) {
+      PosixThread::vSleepMilli(1);
+      continue;
+    }
+    
+    PosixThread::vTlsSet(giTLS_TaskKey,*m_npTask);
+    ASSERT(PosixThread::pTlsGet(giTLS_TaskKey));
+    m_npTask->vState(TS_RUNNING);
+    m_npTask->vThread(this);
+    m_npTask->vLoop();
+    
+    if (TS_WAITING_ACK != m_npTask->eState())
+      m_npTask->vThread(nullptr);
+    
+    if (TS_YIELDED == m_npTask->eState()) {
+      MP_Task mpTask = *m_npTask;
+      vAppend(mpTask);
+      m_npTask = nullptr;
+    }
+    else if (TS_EXITED == m_npTask->eState()) {
+      MP_Task mpTask = *m_npTask;
+      if ( (*gnpRootTask != *m_npTask)  && (!mpTask->bWordBody()) ) {
+        delete *m_npTask;
+        m_npTask = nullptr;
+      }
+    }
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* get name of this thread                                                    */
 /*----------------------------------------------------------------------------*/
 StrVal& Thread::sName(void)
@@ -657,17 +657,6 @@ void Thread::vSpawn_Drone(void)
 /*----------------------------------------------------------------------------*/
 /* spawn the os/posix thread associated with this thread                      */
 /*----------------------------------------------------------------------------*/
-void Thread::vSpawn_Worker(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
-  
-  bool bResult = m_pPosixThread->bSpawnThread(Thread::vEntry_Worker,this);
-  ASSERT(bResult);
-}
-
-/*----------------------------------------------------------------------------*/
-/* spawn the os/posix thread associated with this thread                      */
-/*----------------------------------------------------------------------------*/
 void Thread::vSpawn_Partition(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
@@ -679,11 +668,22 @@ void Thread::vSpawn_Partition(void)
 /*----------------------------------------------------------------------------*/
 /* spawn the os/posix thread associated with this thread                      */
 /*----------------------------------------------------------------------------*/
-void Thread::vSpawn_General(void)
+void Thread::vSpawn_Server(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
-  bool bResult = m_pPosixThread->bSpawnThread(Thread::vEntry_General,this);
+  bool bResult = m_pPosixThread->bSpawnThread(Thread::vEntry_Server,this);
+  ASSERT(bResult);
+}
+
+/*----------------------------------------------------------------------------*/
+/* spawn the os/posix thread associated with this thread                      */
+/*----------------------------------------------------------------------------*/
+void Thread::vSpawn_Worker(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
+  
+  bool bResult = m_pPosixThread->bSpawnThread(Thread::vEntry_Worker,this);
   ASSERT(bResult);
 }
 
