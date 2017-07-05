@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* reclaimActor.sen -- seitf reclaim actor                                    */
+/* reclaimDrone.sen -- seitf reclaim drone                                    */
 /*============================================================================*/
 
-"reclaimActor.sen" .verbose
+"reclaimDrone.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* create the parts                                                           */
@@ -15,11 +15,11 @@ str:     sReclaimString
 seitfCursor: seitfCrs
 
 /*----------------------------------------------------------------------------*/
-/* start the reclaim task                                                     */
+/* start the reclaim drone                                                    */
 /*----------------------------------------------------------------------------*/
 : reclaimStart
 
-  0 "rec.loop" nullptr "ReclaimActor" spawnActorTask drop
+  0 "rec.loop" nullptr "ReclaimActor" spawnDroneActor drop
 ;
 
 /*----------------------------------------------------------------------------*/

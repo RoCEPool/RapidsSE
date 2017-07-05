@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* monitorActor.sen -- monitor actor                                          */
+/* monitorDrone.sen -- monitor drone                                          */
 /*============================================================================*/
 
-"monitorActor.sen" .verbose
+"monitorDrone.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* create the parts                                                           */
@@ -13,11 +13,11 @@ lock: zMonitorLock
 str:  sMonitorString
 
 /*----------------------------------------------------------------------------*/
-/* start the monitor task                                                     */
+/* start the monitor drone                                                    */
 /*----------------------------------------------------------------------------*/
 : monitorStart
 
-  0 "mon.loop" nullptr "MonitorActor" spawnActorTask drop
+  0 "mon.loop" nullptr "MonitorActor" spawnDroneActor drop
 ;
 
 /*----------------------------------------------------------------------------*/

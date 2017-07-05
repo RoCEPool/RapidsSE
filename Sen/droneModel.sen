@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* actorModel.sen -- actor thread model                                       */
+/* droneModel.sen -- drone actor model                                        */
 /*============================================================================*/
 
 "actorModel.sen" .verbose
@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* create a thread-task pair using given arguments                            */
 /*----------------------------------------------------------------------------*/
-: spawnActorTask ( ... nArgs sSeedWord pParentTask sTaskNm -- )
+: spawnDroneActor ( ... nArgs sSeedWord pParentTask sTaskNm -- )
 
   // save arguments
   locals| sTaskNm pParent sSeedWord nArgs |

@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* AnswerActor.sen -- answer actor                                            */
+/* AnswerDrone.sen -- answer drone                                            */
 /*============================================================================*/
 
-"AnswerTask.sen" .verbose
+"AnswerDrone.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* declare connections variable to keep the number of connections             */
@@ -10,11 +10,11 @@
 int: nConnections
 
 /*----------------------------------------------------------------------------*/
-/* start the answer task                                                      */
+/* start the answer drone                                                     */
 /*----------------------------------------------------------------------------*/
 : answerStart
 
-  0 "ans.loop" nullPtr "answerTask" spawnActorTask
+  0 "ans.loop" nullPtr "answerTask" spawnDroneActor
 ;
 
 /*----------------------------------------------------------------------------*/

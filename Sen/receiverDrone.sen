@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* ReceiverActor.sen -- receiver actor                                        */
+/* ReceiverDrone.sen -- receiver drone                                        */
 /*============================================================================*/
 
-"ReceiverActor.sen" .verbose
+"ReceiverDrone.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* recv valset from the socket                                                */

@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* connectorActorsen -- connector actor                                       */
+/* connectorDrone.sen -- connector drone                                      */
 /*============================================================================*/
 
-"connectorActor.sen" .verbose
+"connectorDrone.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* define the con actor (con.task, con.queue, con.taskset, con.thread)        */
@@ -10,13 +10,13 @@
 job: con
 
 /*----------------------------------------------------------------------------*/
-/* start the connector task                                                   */
+/* start the connector drone                                                  */
 /*----------------------------------------------------------------------------*/
 : connectorStart
 
 tp: connectorStart
 
-  0 "con.loop" nullPtr "connectorTask" spawnActorTask
+  0 "con.loop" nullPtr "connectorTask" spawnDroneActor
 ;
 
 /*----------------------------------------------------------------------------*/
