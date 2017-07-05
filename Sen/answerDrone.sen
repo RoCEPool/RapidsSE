@@ -10,17 +10,17 @@
 int: nConnections
 
 /*----------------------------------------------------------------------------*/
-/* start the answer drone                                                     */
+/* spawn the answer drone                                                     */
 /*----------------------------------------------------------------------------*/
-: answerStart
+: answerDroneSpawn
 
-  0 "ans.loop" nullPtr "answerDrone" spawnDroneActor
+  0 "answerLoop" nullPtr "answerDrone" spawnDroneActor
 ;
 
 /*----------------------------------------------------------------------------*/
-/* answer loop                                                                */
+/* accept new sockets, spawning a worker actor for each new socket            */
 /*----------------------------------------------------------------------------*/
-: ans.loop
+: answerLoop
 
   // get the listening port of this node
   grid.thisNode@ grid.node node.port locals| iPort |

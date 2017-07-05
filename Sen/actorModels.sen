@@ -77,7 +77,7 @@ snooze listerStart
 snooze monitorStart
 
 snooze reclaimStart
-snooze answerStart
+snooze answerDroneSpawn
 
 then
 
