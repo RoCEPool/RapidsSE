@@ -5,23 +5,16 @@
 "AnswerTask.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* define the ans actor (ans.task, ans.queue, ans.taskset, ans.thread)        */
-/*----------------------------------------------------------------------------*/
-actor: ans
-
-/*----------------------------------------------------------------------------*/
 /* declare connections variable to keep the number of connections             */
 /*----------------------------------------------------------------------------*/
-int: connections
+int: nConnections
 
 /*----------------------------------------------------------------------------*/
 /* start the answer task                                                      */
 /*----------------------------------------------------------------------------*/
 : answerStart
 
-  0 "ans.loop"
-
-  "ans" actor.spawn
+  0 "ans.loop" nullPtr "answerTask" spawnActorTask
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -29,12 +22,8 @@ int: connections
 /*----------------------------------------------------------------------------*/
 : ans.loop
 
-  locals| iPort |
-
   // get the listening port of this node
-  grid.thisNode@ grid.node
-  node.port
-  to iPort
+  grid.thisNode@ grid.node node.port locals| iPort |
 
   answerTaskPrint if "Answer running..." . then
 
@@ -45,7 +34,7 @@ int: connections
 
   iPort socket.listen locals| pListeningSocket |
 
-  0 connections !
+  0 nConnections !
   begin
 
 tp: waitingOnAccept
@@ -67,7 +56,7 @@ ddlLock::grabWrite
     1 "rcv.loop" ( socket 1 "rcv.loop" )
 
     // create the actor
-    "rr" connections @ >str str.cat ( socket 1 "rcv.loop" "rrI" )
+    "rr" nConnections @ >str str.cat ( socket 1 "rcv.loop" "rrI" )
     :actor ( socket 1 "rcv.loop" "rrI" )
 
     // spawn the actors os thread
@@ -75,10 +64,10 @@ ddlLock::grabWrite
 
 ddlLock::dropWrite
 
-    connections @          ( connection# )
-    1 +                    ( connections# 1 )
-    dup                    ( connections# connections# )
-    connections !          ( connections# )
+    nConnections @          ( connection# )
+    1 +                    ( nConnections# 1 )
+    dup                    ( nConnections# nConnections# )
+    nConnections !          ( nConnections# )
 
     1  == if               ( connection# )
       grid.thisNode@ grid.startNode@ != if
