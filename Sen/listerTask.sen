@@ -8,7 +8,7 @@
 /* create the parts                                                           */
 /*----------------------------------------------------------------------------*/
 
-taskCursor: taskCrs
+taskCursor: pTaskCrs
 
 /*----------------------------------------------------------------------------*/
 /* start the lister task                                                      */
@@ -27,8 +27,8 @@ taskCursor: taskCrs
     "task list..." .
   then
 
-  taskcrs taskcrs taskcursor.begin
-          taskcrs taskcursor.first
+  pTaskCrs pTaskCrs taskcursor.begin
+          pTaskCrs taskcursor.first
   iterate
 
     listerTaskPrint if
@@ -39,7 +39,7 @@ taskCursor: taskCrs
 
   next
 
-  taskcrs taskcursor.end
+  pTaskCrs taskcursor.end
 
 ;
 

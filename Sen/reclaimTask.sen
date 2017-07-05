@@ -8,9 +8,9 @@
 /* create the parts                                                           */
 /*----------------------------------------------------------------------------*/
 
-lock:    reclaimLock
+lock:    zReclaimLock
 
-str:     reclaimString
+str:     sReclaimString
 
 seitfCursor: seitfCrs
 
@@ -69,19 +69,19 @@ seitfCursor: seitfCrs
 
   "reclaimTask" task::this task.name!
 
-  "" reclaimString !
+  "" sReclaimString !
 
   reclaimTaskPrint if "reclaim Task running..." . then
 
   begin
 
-    reclaimLock lock.grabWrite
+    zReclaimLock lock.grabWrite
 
     iterateSEitfList
 
-    reclaimLock lock.dropWrite
+    zReclaimLock lock.dropWrite
 
-    // reclaimString @ .
+    // sReclaimString @ .
 
     3 thread.sleep_s
 
@@ -91,13 +91,13 @@ seitfCursor: seitfCrs
 /*----------------------------------------------------------------------------*/
 /* get reclaim string                                                         */
 /*----------------------------------------------------------------------------*/
-: reclaimString@
+: sReclaimString@
 
-  reclaimLock lock.grabRead
+  zReclaimLock lock.grabRead
 
-    reclaimString @
+    sReclaimString @
 
-  reclaimLock lock.dropRead
+  zReclaimLock lock.dropRead
 ;
 
 /*============================================================================*/
