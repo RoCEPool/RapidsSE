@@ -80,7 +80,7 @@ namespace Tasks
     RegFrame* m_pLocalsFrame; // local register frame chain
     RegFrame* m_pOpFrame;     // op frame chain
 
-    Value*     m_pRequest;   // request as a value set
+    ValSet*    m_pRequest;   // request as a value set
     s256       m_sLambda;    // lambda input
     Tokeniser* m_pTokeniser; // input stream tokenizer
     

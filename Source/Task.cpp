@@ -143,7 +143,12 @@ Task::Task(Value* pRequest)
   
   vInit(""_Str);
   
-  m_pRequest = pRequest;
+  m_pRequest = new ValSet;
+  
+  // copy the request
+  i8 nBytes = ValLib::iSize(pRequest);
+  MemLib::vCopy(m_pRequest,pRequest,nBytes);
+  
   m_sName    = "req.task"_Str;
   m_sComment = "req.loop"_Str;
   
@@ -192,6 +197,9 @@ Task::~Task(void)
   delete m_pAuxStack;
   
   delete m_pTokeniser;
+  
+  if (m_pRequest)
+    delete m_pRequest;
   
   Task* pTask = this;
   gpTaskList->vRemove(pTask);

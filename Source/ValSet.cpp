@@ -26,9 +26,19 @@ ValSet* Values::_pValSet(void* aAddr)
 void* ValSet::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  vFatal("fatal: ValSet class cannot be new'd\n"_Str);
+  ValSet* pValSet = reinterpret_cast<ValSet*>(Heap::pAllocate(CN_VALSET));
   
-  NEVER_REACH;
+  return pValSet;
+}
+
+/*----------------------------------------------------------------------------*/
+/* operator delete                                                            */
+/*----------------------------------------------------------------------------*/
+void ValSet::operator delete(void* pValSetAddress)
+{
+  ValSet* pValSet = reinterpret_cast<ValSet*>(pValSetAddress);
+  
+  Heap::vFree(pValSet);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -47,6 +57,14 @@ ValSet::ValSet(void)
   m_iRowBufferBytes = 0;
   
   _checkInitialised_(CN_VALSET);
+}
+
+/*----------------------------------------------------------------------------*/
+/* destructor                                                                 */
+/*----------------------------------------------------------------------------*/
+ValSet::~ValSet(void)
+{
+  // do nothing
 }
 
 /*----------------------------------------------------------------------------*/
