@@ -12,18 +12,20 @@ int:  queryCount
 
 "gridPrimitives.sen" include
 
-"coordinatorTask.sen" include
-"participantProxy.sen" include
-"coordinatorProxy.sen" include
-"participantTask.sen" include
-"senderJob.sen" include
+"coordinatorWorker.sen" include
+"participantProxyWorker.sen" include
+"coordinatorProxyWorker.sen" include
+"participantWorker.sen" include
+"senderWorker.sen" include
 
-"connectorActor.sen" include
-"answerActor.sen" include
-"listerActor.sen"  include
-"monitorActor.sen" include
-"receiverActor.sen" include
-"reclaimActor.sen" include
+"connectorDrone.sen" include
+"answerDrone.sen" include
+"listerDrone.sen"  include
+"monitorDrone.sen" include
+"receiverDrone.sen" include
+"reclaimDrone.sen" include
+
+"requestServer.sen" include
 
 "gridCalls.sen" include
 "ddlLocking.sen" include

@@ -1,0 +1,158 @@
+/*============================================================================*/
+/* requestTask.sen -- request processing task                                 */
+/*============================================================================*/
+
+"requestTask.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* create the parts                                                           */
+/*----------------------------------------------------------------------------*/
+
+queue:   requestQueue
+
+dic:     tenants
+
+/*----------------------------------------------------------------------------*/
+/* copy dictionary path from seitf to this request task                       */
+/*----------------------------------------------------------------------------*/
+: getPath
+
+  // local for task::this.seitf.dicStack
+  task::this task.seitf@ seitf.dicStack
+  locals| pDicStackSEitf |
+
+  // local for task::this.dicStack
+  task::this task.dicStack
+  locals| pDicStackTask |
+
+  // copy the path from seitf dic stack onto data stack
+  pDicStackSEitf dicPath.depth 0 ?do
+    I pDicStackSEitf dicPath.pick
+  loop
+
+  // clear this tasks dic stack
+  pDicStackTask dicPath.dropAll
+  //dicStackTask dicPath.dump
+
+  // copy the path from data stack onto this task dic stack
+  pDicStackSEitf dicPath.depth 0 ?do
+    pDicStackTask dicPath.push
+  loop
+;
+
+/*----------------------------------------------------------------------------*/
+/* save dictionary path of this request task back into seitf                  */
+/*----------------------------------------------------------------------------*/
+: savePath
+
+  // local for task::this.seitf.dicStack
+  task::this task.seitf@ seitf.dicStack
+  locals| pDicStackSEitf |
+
+  // local for task::this.dicStack
+  task::this task.dicStack
+  locals| pDicStackTask |
+
+  // copy the path from task dic stack onto data stack
+  pDicStackTask dicPath.depth 0 ?do
+    I pDicStackTask dicPath.pick
+  loop
+
+  // clear seitf dic stack
+  pDicStackSEitf dicPath.dropAll
+
+  // copy the path from data stack onto seitf dic stack
+  pDicStackTask dicPath.depth 0 ?do
+    pDicStackSEitf dicPath.push
+  loop
+;
+
+/*----------------------------------------------------------------------------*/
+/* process request from SEitf                                                 */
+/*----------------------------------------------------------------------------*/
+: !req 
+
+tp: !req
+
+  // get the request from the task
+  task::this task.request
+
+  valset>
+
+tp: valset
+
+  // check stack
+  depth 3 != if "incorrect request stack depth" . process.quit then
+  0 stack.class CN_INTVAL != if "incorrect request value 0" . process.quit then
+  1 stack.class CN_STRVAL != if "incorrect request value 1" . process.quit then
+  2 stack.class CN_STRVAL != if "incorrect request value 2" . process.quit then
+
+  // drop the count from stack
+  drop
+
+  // assert the task does not have an seitf
+  task::this task.seitf@ not assert
+
+  // execute the response return address (set SEitf in request task)
+  >:
+
+  // assert the task now has an seitf
+  task::this task.seitf@ assert
+
+  // assert no dictionary path
+  task::this task.dicStack dicPath.depth not assert
+
+  // copy dictionary path from seitf to this request task
+  getPath
+
+  >:   // decode/push the request
+
+tp: !req_exit
+;
+
+/*----------------------------------------------------------------------------*/
+/* send response                                                              */
+/*----------------------------------------------------------------------------*/
+: >rsp ( send response    )
+
+  // check stack
+  depth 3 != if "incorrect response stack depth" . process.quit then
+
+  0 stack.class CN_INTVAL != if "incorrect response value 0" . process.quit then
+  1 stack.class CN_INTVAL != if "incorrect response value 1" . process.quit then
+  2 stack.class CN_STRVAL != if "incorrect response value 2" . process.quit then
+
+  >valset
+
+  savePath
+
+  dicPath.clear
+
+  //"rspque" find execute queue.append
+  task::this task.seitf@ seitf.responseQueue queue.append
+
+  // forget the seitf
+  0 task::this task.seitf!
+
+;
+
+/*----------------------------------------------------------------------------*/
+/* request processing loop                                                    */
+/*----------------------------------------------------------------------------*/
+: req.loop
+
+  requestQueue  task::this task.jobQueue!
+  requestTaskPrint if "Request Server running..." . then
+
+  depth 0 != if "request task has grown" . debug.trap then
+
+  !req
+
+  >rsp
+  exit
+
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

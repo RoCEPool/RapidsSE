@@ -4,14 +4,13 @@
 
 "threadModels.sen" .verbose
 
-"actorModel.sen" include
+"droneModel.sen" include
 "generalModel.sen" include
 "partitionModel.sen" include
-"jobModel.sen" include
+"workerModel.sen" include
 
 
 //REQUEST_LOOP2
-"requestTask.sen" include
 
 
 /*============================================================================*/

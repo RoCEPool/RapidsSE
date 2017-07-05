@@ -1,50 +1,42 @@
 /*============================================================================*/
-/* SenderTask.sen -- sender task                                              */
+/* ReceiverActor.sen -- receiver actor                                        */
 /*============================================================================*/
 
-"SenderTask.sen" .verbose
+"ReceiverActor.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* send valset across the socket                                              */
+/* recv valset from the socket                                                */
 /*----------------------------------------------------------------------------*/
-: >socket ( valset -- )
+: socket> ( -- valset )
 
   task::this task.socket@
 
-  tp: sending
+  tp: receiving
 
-  socket.send ( bool )
+  socket.recv
 
-  not if
-    "send failure" . ( 0/1 )
-  then
-
-  //"Node " grid.thisNode@ >str str.cat " sent word to another node " str.cat .
+tp: received
 ;
 
 /*----------------------------------------------------------------------------*/
-/* sender task processing loop                                                */
+/* receiver task processing loop                                              */
 /*----------------------------------------------------------------------------*/
-: snd.loop ( socket -- )
+: rcv.loop ( socket -- )
 
 tp: snd.loop
 
   task::this task.socket!
 
-  "snd.loop" task::this task.comment!
+  "rcv.loop" task::this task.comment!
 
-  senderTaskPrint if "Sender running on node" grid.thisNode@ >str str.cat . then
+  receiverTaskPrint if "Receiver running on node" grid.thisNode@ >str str.cat . then
 
   begin
-    depth 0 != if "sender task has grown" . debug.trap then
+    depth 0 != if stk "stack of task has grown" . debug.trap then
 
-    // pop valset off this tasks job queue
-    jobQueue>
+    socket>
 
-tp: poppedValset
-
-    // send the valset across the connection
-    >socket
+    exeOne
 
   again
 ;

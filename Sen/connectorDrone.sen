@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* connectorTask.sen -- connector task                                        */
+/* connectorActorsen -- connector actor                                       */
 /*============================================================================*/
 
-"connectorTask.sen" .verbose
+"connectorActor.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* define the con actor (con.task, con.queue, con.taskset, con.thread)        */

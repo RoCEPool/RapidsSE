@@ -1,71 +1,64 @@
 /*============================================================================*/
-/* monitorTask.sen -- monitor task                                            */
+/* listerActor.sen -- task lister actor                                       */
 /*============================================================================*/
 
-"monitorTask.sen" .verbose
+"listerTask.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* create the parts                                                           */
 /*----------------------------------------------------------------------------*/
 
-lock: zMonitorLock
-
-str:  sMonitorString
+taskCursor: pTaskCrs
 
 /*----------------------------------------------------------------------------*/
-/* start the monitor task                                                     */
+/* start the lister task                                                      */
 /*----------------------------------------------------------------------------*/
-: monitorStart
+: listerStart
 
-  0 "mon.loop" nullptr "MonitorActor" spawnActorTask drop
+  0 "lis.loop" nullptr "ListerActor" spawnActorTask drop
 ;
 
 /*----------------------------------------------------------------------------*/
-/* monitor task loop                                                          */
+/* lister iteration                                                           */
 /*----------------------------------------------------------------------------*/
-: mon.loop
+: iterateTaskList
 
-  "monitorTask" task::this task.name!
+  listerTaskPrint if
+    "task list..." .
+  then
 
-  "" sMonitorString !
+  pTaskCrs pTaskCrs taskcursor.begin
+          pTaskCrs taskcursor.first
+  iterate
 
-  monitorTaskPrint if "Monitor Task running..." . then
+    listerTaskPrint if
+      object@ task.dump
+    then
+
+    cursor@ taskcursor.next object!
+
+  next
+
+  pTaskCrs taskcursor.end
+
+;
+
+/*----------------------------------------------------------------------------*/
+/* lister task loop                                                           */
+/*----------------------------------------------------------------------------*/
+: lis.loop
+
+  "listerTask" task::this task.name!
+
+  listerTaskPrint if "lister Task running..." . then
 
   begin
 
-    zMonitorLock lock.grabWrite
+    iterateTaskList
 
-      "freespace " bp::freeSpace >str str.cat
-
-      " queries " str.cat
-
-      queryCount @ >str str.cat
-
-      sMonitorString !
-
-    zMonitorLock lock.dropWrite
-
-    // sMonitorString @ .
-
-    monitorTaskPrint if bp::analyze then
-
-  10 thread.sleep_s
-
+    3 thread.sleep_s
 
   again
-;
-
-/*----------------------------------------------------------------------------*/
-/* get monitor string                                                         */
-/*----------------------------------------------------------------------------*/
-
-: MonitorString@
-
-  zMonitorLock lock.grabRead
-
-    sMonitorString @
-
-  zMonitorLock lock.dropRead
 ;
 
 /*============================================================================*/
