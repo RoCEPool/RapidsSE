@@ -103,56 +103,15 @@ Thread::~Thread(void)
 /*----------------------------------------------------------------------------*/
 /* thread entry                                                               */
 /*----------------------------------------------------------------------------*/
-void* Thread::vEntry_Actor(void* pArg)
+void* Thread::vEntry_Drone(void* pArg)
 {
   Thread* pThread = static_cast<Thread*>(pArg);
   
   if (gbVerbose)
-    vTrace("[[%s]] Thread::vEntry_Actor %p\n"_Str,pThread->sName().s(),pThread);
+    vTrace("[[%s]] Thread::vEntry_Drone %p\n"_Str,pThread->sName().s(),pThread);
   
   try {
-    pThread->vLoop_Actor();
-  }
-  catch (Error* pError) {
-    char wFileName[256];
-    
-    const char* ps;
-    
-    ps = StrLib::sLast(pError->aFileName()->s());
-    bool bBackSlash = StrLib::bBackward(&ps,(char*)pError->aFileName(),'/');
-    if (bBackSlash) {
-      StrLib::vCopy(wFileName,ps+1);
-    }
-    else {
-      StrLib::vCopy(wFileName, pError->aFileName()->s());
-    }
-    vFatal("ERROR: [ThreadLoop] %s: line %lld in %s\n"_Str,
-           pError->aErrorMsg(),
-           pError->iLineNo(),
-           wFileName);
-  }
-  
-  
-  if (gbVerbose)
-    vTrace("[[%s]] Thread:;vEntry %p exiting\n"_Str,pThread->sName().s(),pThread);
-  
-  delete pThread;
-  
-  return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* thread entry                                                               */
-/*----------------------------------------------------------------------------*/
-void* Thread::vEntry_Job(void* pArg)
-{
-  Thread* pThread = static_cast<Thread*>(pArg);
-  
-  if (gbVerbose)
-    vTrace("[[%s]] Thread::vEntry_Job %p\n"_Str,pThread->sName().s(),pThread);
-  
-  try {
-    pThread->vLoop_Job();
+    pThread->vLoop_Drone();
   }
   catch (Error* pError) {
     char wFileName[256];
@@ -265,6 +224,47 @@ void* Thread::vEntry_General(void* pArg)
 }
 
 /*----------------------------------------------------------------------------*/
+/* thread entry                                                               */
+/*----------------------------------------------------------------------------*/
+void* Thread::vEntry_Worker(void* pArg)
+{
+  Thread* pThread = static_cast<Thread*>(pArg);
+  
+  if (gbVerbose)
+    vTrace("[[%s]] Thread::vEntry_Job %p\n"_Str,pThread->sName().s(),pThread);
+    
+    try {
+      pThread->vLoop_Worker();
+    }
+  catch (Error* pError) {
+    char wFileName[256];
+    
+    const char* ps;
+    
+    ps = StrLib::sLast(pError->aFileName()->s());
+    bool bBackSlash = StrLib::bBackward(&ps,(char*)pError->aFileName(),'/');
+    if (bBackSlash) {
+      StrLib::vCopy(wFileName,ps+1);
+    }
+    else {
+      StrLib::vCopy(wFileName, pError->aFileName()->s());
+    }
+    vFatal("ERROR: [ThreadLoop] %s: line %lld in %s\n"_Str,
+           pError->aErrorMsg(),
+           pError->iLineNo(),
+           wFileName);
+  }
+  
+  
+  if (gbVerbose)
+    vTrace("[[%s]] Thread:;vEntry %p exiting\n"_Str,pThread->sName().s(),pThread);
+    
+    delete pThread;
+  
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get this thread                                                            */
 /*----------------------------------------------------------------------------*/
 Thread* Thread::pThread(void)
@@ -337,7 +337,7 @@ void Thread::vContentDump(void) const
 /*----------------------------------------------------------------------------*/
 /* thread loop (sleep loop)                                                   */
 /*----------------------------------------------------------------------------*/
-void Thread::vLoop_Actor(void)
+void Thread::vLoop_Drone(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
@@ -403,7 +403,7 @@ void Thread::vLoop_Actor(void)
 /*----------------------------------------------------------------------------*/
 /* thread loop (sleep loop)                                                   */
 /*----------------------------------------------------------------------------*/
-void Thread::vLoop_Job(void)
+void Thread::vLoop_Worker(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
@@ -646,22 +646,22 @@ void Thread::vName(StrVal& sName)
 /*----------------------------------------------------------------------------*/
 /* spawn the os/posix thread associated with this thread                      */
 /*----------------------------------------------------------------------------*/
-void Thread::vSpawn_Actor(void)
+void Thread::vSpawn_Drone(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
-  bool bResult = m_pPosixThread->bSpawnThread(Thread::vEntry_Actor,this);
+  bool bResult = m_pPosixThread->bSpawnThread(Thread::vEntry_Drone,this);
   ASSERT(bResult);
 }
 
 /*----------------------------------------------------------------------------*/
 /* spawn the os/posix thread associated with this thread                      */
 /*----------------------------------------------------------------------------*/
-void Thread::vSpawn_Job(void)
+void Thread::vSpawn_Worker(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
-  bool bResult = m_pPosixThread->bSpawnThread(Thread::vEntry_Actor,this);
+  bool bResult = m_pPosixThread->bSpawnThread(Thread::vEntry_Worker,this);
   ASSERT(bResult);
 }
 

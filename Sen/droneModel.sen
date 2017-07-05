@@ -36,8 +36,8 @@
   // append task into taskset
   pTask pTaskSet taskSet.append
 
-  // spawn posix thread for actor 
-  pThread thread.spawn_actor
+  // spawn posix thread for drone actor 
+  pThread thread.spawn_drone
 
   pTask
 ;
