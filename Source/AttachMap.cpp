@@ -14,6 +14,7 @@ extern Dic*         gpMainDic;
 extern TxCollection* gpTxCollection;
 extern TxMap*        gpTxMap;
 extern Grid*         gpGrid;
+extern Scheduler*    gpScheduler;
 
 extern TaskList*    gpTaskList;
 extern PlanList*    gpPlanList;
@@ -91,6 +92,7 @@ void AttachMap::vGetGlobals(void)
   gpTxCollection = m_pTxCollection;
   gpTxMap        = m_pTxMap;
   gpGrid         = m_pGrid;
+  gpScheduler    = m_pScheduler;
   gpTaskList     = m_pTaskList;
   gpPlanList     = m_pPlanList;
   gpSEitfList    = m_pSEitfList;
@@ -135,6 +137,7 @@ void AttachMap::vRecordGlobals(Str* aRegionName, i8 iRegionSize, i8 iJumboSize)
   m_pTxCollection = gpTxCollection;
   m_pTxMap        = gpTxMap;
   m_pGrid         = gpGrid;
+  m_pScheduler    = gpScheduler;
   m_pTaskList     = gpTaskList;
   m_pPlanList     = gpPlanList;
   m_pSEitfList    = gpSEitfList;

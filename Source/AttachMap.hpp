@@ -46,9 +46,11 @@ namespace StorageEngine
     TxCollection* m_pTxCollection;
     TxMap*        m_pTxMap;
     Grid*         m_pGrid;
-    TaskList*     m_pTaskList;
-    Plans::PlanList*     m_pPlanList;
-    SEitfList*    m_pSEitfList;
+    Scheduler*    m_pScheduler;
+    
+    TaskList*        m_pTaskList;
+    Plans::PlanList* m_pPlanList;
+    SEitfList*       m_pSEitfList;
     
     bool          m_bVerbose;
     bool          m_bTracepoint;
