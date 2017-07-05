@@ -54,6 +54,7 @@ void Task::vAddPrimitives_Thread(void)
   vAddPrimitive("thread.sleep_us"_Str,        &vThreadSleep_us,        false);
   vAddPrimitive("thread.sleep_ns"_Str,        &vThreadSleep_ns,        false);
   vAddPrimitive("thread.spawn_actor"_Str,     &vThreadSpawn_Actor,     false);
+  vAddPrimitive("thread.spawn_job"_Str,       &vThreadSpawn_Job,       false);
   vAddPrimitive("thread.spawn_partition"_Str, &vThreadSpawn_Partition, false);
   vAddPrimitive("thread.spawn_general"_Str,   &vThreadSpawn_General,   false);
 }
@@ -550,6 +551,27 @@ ENTRY("vThreadSleep_ns"_Str);
 }
 
 /*----------------------------------------------------------------------------*/
+/* thread.spawn_job -- spwan os thread associated with this thread            */
+/*----------------------------------------------------------------------------*/
+void Task::vThreadSpawn_Job(MP_Task mpTask)
+{
+  ENTRY("vThreadSpawn_Job"_Str);
+  
+  Object* pThreadEmb;
+  
+  if ( ! mpTask->m_pDataStack->bPop(pThreadEmb) )
+    THROW_INVALID_DSTACK("thread.spawn_job"_Str);
+  
+  ASSERT(CN_THREAD == pThreadEmb->eClass());
+  
+  Thread* pThread = static_cast<Thread*>(pThreadEmb);
+  
+  pThread->vSpawn_Actor();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* thread.spawn_actor -- spwan os thread associated with this thread          */
 /*----------------------------------------------------------------------------*/
 void Task::vThreadSpawn_Actor(MP_Task mpTask)
@@ -565,7 +587,7 @@ void Task::vThreadSpawn_Actor(MP_Task mpTask)
   
   Thread* pThread = static_cast<Thread*>(pThreadEmb);
   
-  pThread->vSpawn_Partition();
+  pThread->vSpawn_Actor();
   
   EXIT();
 }

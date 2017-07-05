@@ -78,8 +78,9 @@ namespace Threads
     ~Thread(void);
     
     static void* vEntry_Actor(void* pArg);
-    static void* vEntry_Partition(void* pArg);
     static void* vEntry_General(void* pArg);
+    static void* vEntry_Job(void* pArg);
+    static void* vEntry_Partition(void* pArg);
     static Thread* pThread(void);
     static void vRunTask(MP_Task mpTask);
   
@@ -88,13 +89,15 @@ namespace Threads
     i8   iCpu(void);
     void vContentDump(void) const;
     void vLoop_Actor(void);
-    void vLoop_Partition(void);
     void vLoop_General(void);
+    void vLoop_Job(void);
+    void vLoop_Partition(void);
     StrVal&   sName(void);
     void vName(StrVal& sName);
     void vSpawn_Actor(void);
-    void vSpawn_Partition(void);
     void vSpawn_General(void);
+    void vSpawn_Job(void);
+    void vSpawn_Partition(void);
     i8   iThreadNo(void);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

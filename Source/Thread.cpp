@@ -111,7 +111,48 @@ void* Thread::vEntry_Actor(void* pArg)
     vTrace("[[%s]] Thread::vEntry_Actor %p\n"_Str,pThread->sName().s(),pThread);
   
   try {
-    pThread->vLoop_Partition();
+    pThread->vLoop_Actor();
+  }
+  catch (Error* pError) {
+    char wFileName[256];
+    
+    const char* ps;
+    
+    ps = StrLib::sLast(pError->aFileName()->s());
+    bool bBackSlash = StrLib::bBackward(&ps,(char*)pError->aFileName(),'/');
+    if (bBackSlash) {
+      StrLib::vCopy(wFileName,ps+1);
+    }
+    else {
+      StrLib::vCopy(wFileName, pError->aFileName()->s());
+    }
+    vFatal("ERROR: [ThreadLoop] %s: line %lld in %s\n"_Str,
+           pError->aErrorMsg(),
+           pError->iLineNo(),
+           wFileName);
+  }
+  
+  
+  if (gbVerbose)
+    vTrace("[[%s]] Thread:;vEntry %p exiting\n"_Str,pThread->sName().s(),pThread);
+  
+  delete pThread;
+  
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* thread entry                                                               */
+/*----------------------------------------------------------------------------*/
+void* Thread::vEntry_Job(void* pArg)
+{
+  Thread* pThread = static_cast<Thread*>(pArg);
+  
+  if (gbVerbose)
+    vTrace("[[%s]] Thread::vEntry_Job %p\n"_Str,pThread->sName().s(),pThread);
+  
+  try {
+    pThread->vLoop_Job();
   }
   catch (Error* pError) {
     char wFileName[256];
@@ -362,6 +403,72 @@ void Thread::vLoop_Actor(void)
 /*----------------------------------------------------------------------------*/
 /* thread loop (sleep loop)                                                   */
 /*----------------------------------------------------------------------------*/
+void Thread::vLoop_Job(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
+  
+  if (gbVerbose || gbProgress)
+    vTrace("Thread %p: %s loop\n"_Str,this,m_sName.s());
+  
+  m_pPosixThread->vSetOSThreadId();
+  
+  //  vTrace("Thread %p: priority %lld\n"_Str,
+  //         this,
+  //         m_pPosixThread->iThreadPriority()
+  //         );
+  
+  //m_pPosixThread->vThreadBoost(C_THREAD_BOOST);                //! RANDOM ERROR
+  
+  //  vTrace("Thread %p: priority %lld\n"_Str,
+  //         this,
+  //         m_pPosixThread->iThreadPriority()
+  //         );
+  
+  PosixThread::vTlsSet(giTLS_ThreadKey,this);
+  ASSERT(PosixThread::pTlsGet(giTLS_ThreadKey));
+  
+  // sleep loop: sleep waiting for next task
+  while (true) {
+    
+    if ( ! m_pTaskSet ) {
+      PosixThread::vSleepNano(10_KB);
+      continue;
+    }
+    
+    m_npTask = m_pTaskSet->npPop();
+    
+    if ( ! m_npTask ) {
+      PosixThread::vSleepMilli(1);
+      continue;
+    }
+    
+    PosixThread::vTlsSet(giTLS_TaskKey,*m_npTask);
+    ASSERT(PosixThread::pTlsGet(giTLS_TaskKey));
+    m_npTask->vState(TS_RUNNING);
+    m_npTask->vThread(this);
+    m_npTask->vLoop();
+    
+    if (TS_WAITING_ACK != m_npTask->eState())
+      m_npTask->vThread(nullptr);
+    
+    if (TS_YIELDED == m_npTask->eState()) {
+      MP_Task mpTask = *m_npTask;
+      vAppend(mpTask);
+      m_npTask = nullptr;
+    }
+    else if (TS_EXITED == m_npTask->eState()) {
+      MP_Task mpTask = *m_npTask;
+      if ( (*gnpRootTask != *m_npTask)  && (!mpTask->bWordBody()) ) {
+        delete *m_npTask;
+        m_npTask = nullptr;
+      }
+    }
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* thread loop (sleep loop)                                                   */
+/*----------------------------------------------------------------------------*/
 void Thread::vLoop_Partition(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
@@ -540,6 +647,17 @@ void Thread::vName(StrVal& sName)
 /* spawn the os/posix thread associated with this thread                      */
 /*----------------------------------------------------------------------------*/
 void Thread::vSpawn_Actor(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
+  
+  bool bResult = m_pPosixThread->bSpawnThread(Thread::vEntry_Actor,this);
+  ASSERT(bResult);
+}
+
+/*----------------------------------------------------------------------------*/
+/* spawn the os/posix thread associated with this thread                      */
+/*----------------------------------------------------------------------------*/
+void Thread::vSpawn_Job(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
