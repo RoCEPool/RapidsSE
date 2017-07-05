@@ -24,7 +24,7 @@
   args.bgtasks if
 
     snooze queryThreadsStart
-    snooze generalThreadsStart
+// snooze generalThreadsStart
 
     snooze listerStart
     snooze monitorStart
