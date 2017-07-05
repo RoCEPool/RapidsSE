@@ -36,9 +36,9 @@
 args.regionSize noGeneralThreads constant N_GENERAL_THREADS
 
 /*----------------------------------------------------------------------------*/
-/* create and spawn the query processing threads                              */
+/* create and spawn the partition processing threads                          */
 /*----------------------------------------------------------------------------*/
-: >generalThreadNm ( i -- s ) "queryThread"    swap >str str.cat ;
+: >generalThreadNm ( i -- s ) "generalThread"    swap >str str.cat ;
 : :generalThread   ( i -- w ) >generalThreadNm    :thread    ;
 
 : generalThreadsStart

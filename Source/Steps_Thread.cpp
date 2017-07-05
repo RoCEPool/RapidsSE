@@ -31,30 +31,30 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Thread(void)
 {
-  vAddPrimitive("thread.append"_Str,        &vThreadAppend,         false);
-  vAddPrimitive("thread.bind"_Str,          &vThreadBind,           false);
-  vAddPrimitive("thread.condSignal"_Str,    &vThreadCondSignal,     false);
-  vAddPrimitive("thread.condWait"_Str,      &vThreadCondWait,       false);
-  vAddPrimitive("thread.cpu"_Str,           &vThreadCpu,            false);
-  vAddPrimitive("thread.dump"_Str,          &vThreadDump,           false);
-  vAddPrimitive("thread.init"_Str,          &vThreadInit,           false);
-  vAddPrimitive("thread.id"_Str,            &vThreadId,             false);
-  vAddPrimitive("thread.kind@"_Str,         &vThreadSchedulerFetch, false);
-  vAddPrimitive("thread.kind!"_Str,         &vThreadSchedulerStore, false);
-  vAddPrimitive("thread.mutexLock"_Str,     &vThreadMutexLock,      false);
-  vAddPrimitive("thread.mutexUnlock"_Str,   &vThreadMutexUnlock,    false);
-  vAddPrimitive("thread.name@"_Str,         &vThreadNameFetch,      false);
-  vAddPrimitive("thread.name!"_Str,         &vThreadNameStore,      false);
-  vAddPrimitive("thread.scheduler@"_Str,    &vThreadSchedulerFetch, false);
-  vAddPrimitive("thread.scheduler!"_Str,    &vThreadSchedulerStore, false);
-  vAddPrimitive("thread.taskset@"_Str,      &vThreadSfetch,         false);
-  vAddPrimitive("thread.taskset!"_Str,      &vThreadSstore,         false);
-  vAddPrimitive("thread.sleep_s"_Str,       &vThreadSleep_s,        false);
-  vAddPrimitive("thread.sleep_ms"_Str,      &vThreadSleep_ms,       false);
-  vAddPrimitive("thread.sleep_us"_Str,      &vThreadSleep_us,       false);
-  vAddPrimitive("thread.sleep_ns"_Str,      &vThreadSleep_ns,       false);
-  vAddPrimitive("thread.spawn"_Str,         &vThreadSpawn_Partition,false);
-  vAddPrimitive("thread.spawn_general"_Str, &vThreadSpawn_General,  false);
+  vAddPrimitive("thread.append"_Str,          &vThreadAppend,          false);
+  vAddPrimitive("thread.bind"_Str,            &vThreadBind,            false);
+  vAddPrimitive("thread.condSignal"_Str,      &vThreadCondSignal,      false);
+  vAddPrimitive("thread.condWait"_Str,        &vThreadCondWait,        false);
+  vAddPrimitive("thread.cpu"_Str,             &vThreadCpu,             false);
+  vAddPrimitive("thread.dump"_Str,            &vThreadDump,            false);
+  vAddPrimitive("thread.init"_Str,            &vThreadInit,            false);
+  vAddPrimitive("thread.id"_Str,              &vThreadId,              false);
+  vAddPrimitive("thread.kind@"_Str,           &vThreadSchedulerFetch,  false);
+  vAddPrimitive("thread.kind!"_Str,           &vThreadSchedulerStore,  false);
+  vAddPrimitive("thread.mutexLock"_Str,       &vThreadMutexLock,       false);
+  vAddPrimitive("thread.mutexUnlock"_Str,     &vThreadMutexUnlock,     false);
+  vAddPrimitive("thread.name@"_Str,           &vThreadNameFetch,       false);
+  vAddPrimitive("thread.name!"_Str,           &vThreadNameStore,       false);
+  vAddPrimitive("thread.scheduler@"_Str,      &vThreadSchedulerFetch,  false);
+  vAddPrimitive("thread.scheduler!"_Str,      &vThreadSchedulerStore,  false);
+  vAddPrimitive("thread.taskset@"_Str,        &vThreadSfetch,          false);
+  vAddPrimitive("thread.taskset!"_Str,        &vThreadSstore,          false);
+  vAddPrimitive("thread.sleep_s"_Str,         &vThreadSleep_s,         false);
+  vAddPrimitive("thread.sleep_ms"_Str,        &vThreadSleep_ms,        false);
+  vAddPrimitive("thread.sleep_us"_Str,        &vThreadSleep_us,        false);
+  vAddPrimitive("thread.sleep_ns"_Str,        &vThreadSleep_ns,        false);
+  vAddPrimitive("thread.spawn_partition"_Str, &vThreadSpawn_Partition, false);
+  vAddPrimitive("thread.spawn_general"_Str,   &vThreadSpawn_General,   false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -558,7 +558,7 @@ ENTRY("vThreadSpawn_Partition"_Str);
   Object* pThreadEmb;
   
   if ( ! mpTask->m_pDataStack->bPop(pThreadEmb) )
-    THROW_INVALID_DSTACK("thread.spawn"_Str);
+    THROW_INVALID_DSTACK("thread.spawn_partition"_Str);
   
   ASSERT(CN_THREAD == pThreadEmb->eClass());
   
@@ -579,7 +579,7 @@ void Task::vThreadSpawn_General(MP_Task mpTask)
   Object* pThreadEmb;
   
   if ( ! mpTask->m_pDataStack->bPop(pThreadEmb) )
-    THROW_INVALID_DSTACK("thread.spawnV2"_Str);
+    THROW_INVALID_DSTACK("thread.spawn_general"_Str);
   
   ASSERT(CN_THREAD == pThreadEmb->eClass());
   

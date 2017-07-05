@@ -12,6 +12,7 @@
 "requestTask.sen" include
 
 "generalThreads.sen" include
+"partitionThreads.sen" include
 
 /*----------------------------------------------------------------------------*/
 /* called by RapidsSE::vStartActors                                           */
@@ -23,6 +24,7 @@
   args.bgtasks if
 
     snooze generalThreadsStart
+    snooze partitionThreadsStart
 
     snooze listerStart
     snooze monitorStart
