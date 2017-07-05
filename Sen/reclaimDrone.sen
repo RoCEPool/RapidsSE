@@ -19,7 +19,7 @@ seitfCursor: seitfCrs
 /*----------------------------------------------------------------------------*/
 : reclaimStart
 
-  0 "rec.loop" nullptr "ReclaimActor" spawnDroneActor drop
+  0 "rec.loop" nullptr "ReclaimDrone" spawnDroneActor drop
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -31,7 +31,7 @@ seitfCursor: seitfCrs
 
   iterate
 
-    reclaimTaskPrint if
+    reclaimDronePrint if
       object@ seitf.dump
     then
 
@@ -39,19 +39,19 @@ seitfCursor: seitfCrs
       object@ seitf.pid
       0 task::this task.seitf!
 
-    reclaimTaskPrint if
+    reclaimDronePrint if
       dup .put " " .put dup process.testpid .put .\n
     then
 
     process.testpid not if
-      reclaimTaskPrint if
+      reclaimDronePrint if
         "deleting..." .
       then
       object@
       cursor@ seitfcursor.end 0 object!
       seitf.delete
     else
-      reclaimTaskPrint if
+      reclaimDronePrint if
         "not deleteing" .
       then
       cursor@ seitfcursor.next object!
@@ -71,7 +71,7 @@ seitfCursor: seitfCrs
 
   "" sReclaimString !
 
-  reclaimTaskPrint if "reclaim Task running..." . then
+  reclaimDronePrint if "reclaim Task running..." . then
 
   begin
 
