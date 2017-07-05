@@ -1,0 +1,75 @@
+/*============================================================================*/
+/* generalThreads.sen -- General Processing Threads                           */
+/*============================================================================*/
+
+"generalThreads.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* compute the number of query processing threads to be created               */
+/*----------------------------------------------------------------------------*/
+: noQueryThreads ( memorySize -- noThreads )
+
+  // the number of query threads is computed based on the
+  // size of the region
+
+  // there will be 1 query thread per GB
+  // the number of threads will be limited to 80% of the number of cores
+
+  C_1GB / locals| noThreads |
+
+//1 exit // temp
+
+  noThreads 0 <= if
+    1
+  else
+    noThreads CORE_COUNT 8 * 10 / > if
+      CORE_COUNT 8 * 10 / to noThreads
+    then
+  then
+
+  noThreads
+;
+
+/*----------------------------------------------------------------------------*/
+/* define the N_QUERY_THREADS constant                                        */
+/*----------------------------------------------------------------------------*/
+args.regionSize noQueryThreads constant N_QUERY_THREADS
+
+/*----------------------------------------------------------------------------*/
+/* create and spawn the query processing threads                              */
+/*----------------------------------------------------------------------------*/
+: >qryThreadNm ( i -- s ) "queryThread"    swap >str str.cat ;
+: :qryThread   ( i -- w ) >qryThreadNm    :thread    ;
+
+: queryThreadsStart
+
+  0 locals| queryThread |
+
+  args.progress if
+    N_QUERY_THREADS "Query threads: %v" str.format .
+  then
+
+  args.verbose if
+    "N_query_THREADS " .put N_query_THREADS .put .\n
+  then
+
+  N_query_THREADS 0 do
+
+    // create a thread called queryThreadI
+    I :qryThread execute to queryThread
+
+    // set the threads name
+    I >qryThreadNm queryThread thread.name!
+
+    // give it a private taskset
+    taskset::new queryThread thread.taskset!
+
+    // spawn os thread
+    queryThread thread.spawn_general
+
+  loop
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

@@ -11,7 +11,7 @@
 //REQUEST_LOOP2
 "requestTask.sen" include
 
-"queryThreads.sen" include
+"generalThreads.sen" include
 
 /*----------------------------------------------------------------------------*/
 /* called by RapidsSE::vStartActors                                           */
