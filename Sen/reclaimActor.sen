@@ -1,0 +1,105 @@
+/*============================================================================*/
+/* reclaimActor.sen -- seitf reclaim actor                                    */
+/*============================================================================*/
+
+"reclaimActor.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* create the parts                                                           */
+/*----------------------------------------------------------------------------*/
+
+lock:    zReclaimLock
+
+str:     sReclaimString
+
+seitfCursor: seitfCrs
+
+/*----------------------------------------------------------------------------*/
+/* start the reclaim task                                                     */
+/*----------------------------------------------------------------------------*/
+: reclaimStart
+
+  0 "rec.loop" nullptr "ReclaimActor" spawnActorTask drop
+;
+
+/*----------------------------------------------------------------------------*/
+/* reclaim task loop                                                          */
+/*----------------------------------------------------------------------------*/
+: iterateSEitfList
+
+  seitfcrs seitfcrs seitfcursor.begin
+
+  iterate
+
+    reclaimTaskPrint if
+      object@ seitf.dump
+    then
+
+    object@ task::this task.seitf!
+      object@ seitf.pid
+      0 task::this task.seitf!
+
+    reclaimTaskPrint if
+      dup .put " " .put dup process.testpid .put .\n
+    then
+
+    process.testpid not if
+      reclaimTaskPrint if
+        "deleting..." .
+      then
+      object@
+      cursor@ seitfcursor.end 0 object!
+      seitf.delete
+    else
+      reclaimTaskPrint if
+        "not deleteing" .
+      then
+      cursor@ seitfcursor.next object!
+    then
+
+  next
+
+  seitfcrs seitfcursor.end
+;
+
+/*----------------------------------------------------------------------------*/
+/* reclaim task loop                                                          */
+/*----------------------------------------------------------------------------*/
+: rec.loop
+
+  "reclaimTask" task::this task.name!
+
+  "" sReclaimString !
+
+  reclaimTaskPrint if "reclaim Task running..." . then
+
+  begin
+
+    zReclaimLock lock.grabWrite
+
+    iterateSEitfList
+
+    zReclaimLock lock.dropWrite
+
+    // sReclaimString @ .
+
+    3 thread.sleep_s
+
+  again
+;
+
+/*----------------------------------------------------------------------------*/
+/* get reclaim string                                                         */
+/*----------------------------------------------------------------------------*/
+: sReclaimString@
+
+  zReclaimLock lock.grabRead
+
+    sReclaimString @
+
+  zReclaimLock lock.dropRead
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

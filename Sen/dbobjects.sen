@@ -21,9 +21,6 @@
 "rowBuffer.sen" include
 "plan.sen" include
 
-"listerTask.sen"  include
-"monitorTask.sen" include
-"reclaimTask.sen" include
 
 /*----------------------------------------------------------------------------*/
 /* called by RapidsSE::vStartActors                                           */

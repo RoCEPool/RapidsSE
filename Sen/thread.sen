@@ -33,25 +33,6 @@
   does>
 ;
 
-/*----------------------------------------------------------------------------*/
-/* create a task using given arguments and append to general task queue       */
-/*----------------------------------------------------------------------------*/
-: spawnGeneralTask ( ... nArgs sSeedWord pParentTask sTaskNm -- )
-
-  nullptr locals| pTask sTaskNm pParent sSeedWord nArgs |
-
-  // create a new task
-  nArgs sSeedWord pParent task::new to pTask
-
-  // set task name
-  sTaskNm pTask task.name!
-
-  // append task onto general task queue
-  pTask scheduler::enqueueGeneralTask
-
-  pTask  // return the task
-;
-
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

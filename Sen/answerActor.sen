@@ -1,0 +1,83 @@
+/*============================================================================*/
+/* AnswerActor.sen -- answer actor                                            */
+/*============================================================================*/
+
+"AnswerTask.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* declare connections variable to keep the number of connections             */
+/*----------------------------------------------------------------------------*/
+int: nConnections
+
+/*----------------------------------------------------------------------------*/
+/* start the answer task                                                      */
+/*----------------------------------------------------------------------------*/
+: answerStart
+
+  0 "ans.loop" nullPtr "answerTask" spawnActorTask
+;
+
+/*----------------------------------------------------------------------------*/
+/* answer loop                                                                */
+/*----------------------------------------------------------------------------*/
+: ans.loop
+
+  // get the listening port of this node
+  grid.thisNode@ grid.node node.port locals| iPort |
+
+  answerTaskPrint if "Answer running..." . then
+
+  args.verbose if
+    "waiting for connections on port "  iPort >str str.cat .
+    iPort >str "Listening on port " swap str.cat .
+  then
+
+  iPort socket.listen locals| pListeningSocket |
+
+  0 nConnections !
+  begin
+
+tp: waitingOnAccept
+
+    pListeningSocket socket.accept
+
+tp: socketAccepted
+
+    args.verbose if
+      "accepted connection on port " iPort >str str.cat .
+    then
+
+  // start receiver
+  //"starting receiver" .
+
+ddlLock::grabWrite
+
+    // set up the seed
+    1 "rcv.loop" ( socket 1 "rcv.loop" )
+
+    // create the actor
+    "rr" nConnections @ >str str.cat ( socket 1 "rcv.loop" "rrI" )
+    :job ( socket 1 "rcv.loop" "rrI" )
+
+    // spawn the actors os thread
+    job.spawn
+
+ddlLock::dropWrite
+
+    nConnections @          ( connection# )
+    1 +                    ( nConnections# 1 )
+    dup                    ( nConnections# nConnections# )
+    nConnections !          ( nConnections# )
+
+    1  == if               ( connection# )
+      grid.thisNode@ grid.startNode@ != if
+        connectorStart
+      then
+    then
+      
+  again
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

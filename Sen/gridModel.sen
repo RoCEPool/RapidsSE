@@ -16,11 +16,14 @@ int:  queryCount
 "participantProxy.sen" include
 "coordinatorProxy.sen" include
 "participantTask.sen" include
-"receiverTask.sen" include
-"senderTask.sen" include
+"senderJob.sen" include
 
-"connectorTask.sen" include
-"answerTask.sen" include
+"connectorActor.sen" include
+"answerActor.sen" include
+"listerActor.sen"  include
+"monitorActor.sen" include
+"receiverActor.sen" include
+"reclaimActor.sen" include
 
 "gridCalls.sen" include
 "ddlLocking.sen" include
