@@ -40,11 +40,11 @@
 
   // "createOpActors" .
 
-  0 "responseOp" dup :job workerActor.spawn
-  0 "scanOp"     dup :job workerActor.spawn
-  0 "sinkOp"     dup :job workerActor.spawn
-  0 "triggerOp"  dup :job workerActor.spawn
-  0 "writeOp"    dup :job workerActor.spawn
+  0 "responseOp" dup :job spawnWorkerActor
+  0 "scanOp"     dup :job spawnWorkerActor
+  0 "sinkOp"     dup :job spawnWorkerActor
+  0 "triggerOp"  dup :job spawnWorkerActor
+  0 "writeOp"    dup :job spawnWorkerActor
 ;
 
 ////////////////////////////////////////////////////////////////////////////////

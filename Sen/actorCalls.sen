@@ -26,9 +26,9 @@
     0 "pLoop"
 
     "p" I >str str.cat :job
-    dup job.queue I pQueues !
-    dup job.task  I pTasks  !
-    workerActor.spawn
+    dup findWorkerQueue I pQueues !
+    dup findWorkerTask  I pTasks  !
+    spawnWorkerActor
 
     //
     // coordinator proxy for node I
@@ -36,9 +36,9 @@
 
     I I pTasks @ 2 "cpLoop"
     "cp" I >str str.cat :job
-    dup job.queue I cpQueues !
-    dup job.task  I cpTasks  !
-    workerActor.spawn
+    dup findWorkerQueue I cpQueues !
+    dup findWorkerTask  I cpTasks  !
+    spawnWorkerActor
 
     //
     // partitipant proxy for node I
@@ -51,9 +51,9 @@
     then
 
     "pp" I >str str.cat :job
-    dup job.queue I ppQueues !
-    dup job.task  I ppTasks  !
-    workerActor.spawn
+    dup findWorkerQueue I ppQueues !
+    dup findWorkerTask  I ppTasks  !
+    spawnWorkerActor
 
   loop
 
@@ -63,7 +63,7 @@
   0 "cLoop"
   "c" :job  ( 0 "cLoop" "c" )
 
-  workerActor.spawn
+  spawnWorkerActor
 
   args.verbose if
     cpQueuesDump

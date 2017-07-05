@@ -56,11 +56,11 @@ ddlLock::grabWrite
       "sr" I >str str.cat :job ( socket 1 "senderLoop" "srI" )
 
       // record the senderQueue
-      dup job.queue I senderQueues ! ( socket 1 "senderLoop" "srI" )
-      dup job.task  I senderTasks  ! ( socket 1 "senderLoop" "srI" )
+      dup findWorkerQueue I senderQueues ! ( socket 1 "senderLoop" "srI" )
+      dup findWorkerTask  I senderTasks  ! ( socket 1 "senderLoop" "srI" )
 
       // spawn the actors os thread
-      workerActor.spawn
+      spawnWorkerActor
 
 ddlLock::dropWrite
 

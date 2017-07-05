@@ -60,7 +60,7 @@ ddlLock::grabWrite
     :job ( socket 1 "receiverLoop" "rrI" )
 
     // spawn the actors os thread
-    workerActor.spawn
+    spawnWorkerActor
 
 ddlLock::dropWrite
 
