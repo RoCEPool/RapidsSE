@@ -1,0 +1,141 @@
+/*============================================================================*/
+/* actorModel.sen -- actor model                                              */
+/*============================================================================*/
+
+"actorPrimitives.sen" .verbose
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+: to_CALLER  >reg0 ;
+: to_QUEUE   >reg1 ;
+: to_TASKSET >reg2 ;
+: to_THREAD  >reg3 ;
+: to_SENDER  >reg4 ;
+
+: _CALLER    reg0 ;
+: _QUEUE     reg1 ;
+: _TASKSET   reg2 ;
+: _THREAD    reg3 ;
+: _SENDER    reg4 ;
+
+/*----------------------------------------------------------------------------*/
+/* interlinkParts                                                             */
+/*----------------------------------------------------------------------------*/
+: interlinkParts ( -- )
+
+  // attach queue to task
+  _QUEUE ( queue )
+  _CALLER ( queue task )
+  task.jobQueue! ( )
+
+  // put task in taskset
+  _CALLER ( task )
+  _TASKSET ( task taskset )
+  taskset.append ( )
+
+  // attach taskset to thread
+  _TASKSET ( taskset )
+  _THREAD ( taskset thread )
+  thread.taskset! ( )
+
+  // record taskset in task
+  _TASKSET ( taskset )
+  _CALLER ( task )
+  task.taskset! ( )
+;
+
+/*----------------------------------------------------------------------------*/
+/* get task of an actor                                                       */
+/*----------------------------------------------------------------------------*/
+: actor.task ( "<actorNm>" -- task )
+
+  ".task" str.cat find execute
+;
+
+/*----------------------------------------------------------------------------*/
+/* get queue of an actor                                                      */
+/*----------------------------------------------------------------------------*/
+: actor.queue ( "<actorNm>" -- queue )
+
+  ".queue" str.cat find execute
+;
+
+/*----------------------------------------------------------------------------*/
+/* get taskset of an actor                                                    */
+/*----------------------------------------------------------------------------*/
+: actor.taskset ( "<actorNm>" -- taskset )
+
+  ".taskset" str.cat find execute
+;
+
+/*----------------------------------------------------------------------------*/
+/* get thread of an actor                                                     */
+/*----------------------------------------------------------------------------*/
+: actor.thread ( "<actorNm>" -- taskset )
+
+  ".thread" str.cat find execute
+;
+
+/*----------------------------------------------------------------------------*/
+/* spawn an actor by seeding its task and spawning the os thread for it       */
+/*----------------------------------------------------------------------------*/
+: actor.spawn ( ... nArgs "<loopNm>" "<actorNm>" -- )
+
+  locals| actorNm | ( ... nArgs "<loopNm>" )
+
+  // seed the task
+  actorNm actor.task task.seed ( )
+
+  // spawn the os thread
+  actorNm actor.thread thread.spawn_actor ( )
+;
+
+/*----------------------------------------------------------------------------*/
+/* create an actor (but don't spawn thread)                                   */
+/*----------------------------------------------------------------------------*/
+: actor: ( -- )
+
+  // get token from compile stream
+  token: ( s )
+
+  locals| actorNm |
+
+  reg.push
+
+  actorNm ".task"    str.cat :task    execute to_CALLER  // reg0 has task
+  actorNm ".queue"   str.cat :queue   execute to_QUEUE   // reg1 has queue
+  actorNm ".taskset" str.cat :taskset execute to_TASKSET // reg2 has taskset
+  actorNm ".thread"  str.cat :thread  execute to_THREAD  // reg3 has thread
+
+  interlinkParts
+
+  reg.pop
+;
+
+/*----------------------------------------------------------------------------*/
+/* create an actor (but don't spawn thread)                                   */
+/*----------------------------------------------------------------------------*/
+: :actor ( "<actorNm>" -- "<actorNm>" )
+
+  locals| actorNm |
+
+  reg.push
+
+  actorNm ".task"    str.cat :task    execute to_CALLER  // reg0 has task
+  actorNm ".queue"   str.cat :queue   execute to_QUEUE   // reg1 has queue
+  actorNm ".taskset" str.cat :taskset execute to_TASKSET // reg2 has taskset
+  actorNm ".thread"  str.cat :thread  execute to_THREAD  // reg3 has thread
+
+  interlinkParts
+
+  reg.pop
+
+  actorNm
+;
+
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

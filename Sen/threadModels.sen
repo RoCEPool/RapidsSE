@@ -1,8 +1,11 @@
 /*============================================================================*/
-/* actors.sen -- actors group                                                 */
+/* threadModels.sen -- thread models                                          */
 /*============================================================================*/
 
 "actors.sen" .verbose
+
+"generalModel.sen" include
+"partitionModel.sen" include
 
 "listerTask.sen"  include
 "monitorTask.sen" include
@@ -11,8 +14,6 @@
 //REQUEST_LOOP2
 "requestTask.sen" include
 
-"generalThreads.sen" include
-"partitionThreads.sen" include
 
 /*----------------------------------------------------------------------------*/
 /* called by RapidsSE::vStartActors                                           */

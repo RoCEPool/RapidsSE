@@ -1,0 +1,75 @@
+/*============================================================================*/
+/* partitionThreads.sen -- Partition Processing Threads                       */
+/*============================================================================*/
+
+"partitionThreads.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* compute the number of partition processing threads to be created           */
+/*----------------------------------------------------------------------------*/
+: noPartitionThreads ( memorySize -- noThreads )
+
+  // the number of query threads is computed based on the
+  // size of the region
+
+  // there will be 1 query thread per GB
+  // the number of threads will be limited to 80% of the number of cores
+
+  C_1GB / locals| noThreads |
+
+//1 exit // temp
+
+  noThreads 0 <= if
+    1
+  else
+    noThreads CORE_COUNT 8 * 10 / > if
+      CORE_COUNT 8 * 10 / to noThreads
+    then
+  then
+
+  noThreads
+;
+
+/*----------------------------------------------------------------------------*/
+/* define the N_PARTITION_THREADS constant                                    */
+/*----------------------------------------------------------------------------*/
+args.regionSize noPartitionThreads constant N_PARTITION_THREADS
+
+/*----------------------------------------------------------------------------*/
+/* create and spawn the partition processing threads                          */
+/*----------------------------------------------------------------------------*/
+: >partitionThreadNm ( i -- s ) "partitionThread"    swap >str str.cat ;
+: :partitionThread   ( i -- w ) >partitionThreadNm    :thread    ;
+
+: partitionThreadsStart
+
+  0 locals| pPartitionThread |
+
+  args.progress if
+    N_GENERAL_THREADS "Partition threads: %v" str.format .
+  then
+
+  args.verbose if
+    "N_PARTITION_THREADS " .put N_PARTITION_THREADS .put .\n
+  then
+
+  N_PARTITION_THREADS 0 do
+
+    // create a thread called queryThreadI
+    I :partitionThread execute to pPartitionThread
+
+    // set the threads name
+    I >partitionThreadNm pPartitionThread thread.name!
+
+    // give it a private taskset
+    taskset::new pPartitionThread thread.taskset!
+
+    // spawn os thread
+    pPartitionThread thread.spawn_partition
+
+  loop
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

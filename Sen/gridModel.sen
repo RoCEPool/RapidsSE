@@ -8,6 +8,7 @@
 "grid.sen" include
 "nodeCursor.sen" include
 
+"jobModel.sen" include
 "gridPrimitives.sen" include
 
 "coordinatorTask.sen" include
