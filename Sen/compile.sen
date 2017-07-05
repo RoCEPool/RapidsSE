@@ -12,10 +12,9 @@
 "common.sen" include
 "structures.sen" include
 "tasks.sen" include
-"threads.sen" include
 "transactions.sen" include
 "interface.sen" include
-"systemObjects.sen" include
+"threads.sen" include
 "gridModel.sen" include
 "threadModels.sen" include
 "actors.sen" include
