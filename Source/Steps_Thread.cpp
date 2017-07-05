@@ -53,6 +53,7 @@ void Task::vAddPrimitives_Thread(void)
   vAddPrimitive("thread.sleep_ms"_Str,        &vThreadSleep_ms,        false);
   vAddPrimitive("thread.sleep_us"_Str,        &vThreadSleep_us,        false);
   vAddPrimitive("thread.sleep_ns"_Str,        &vThreadSleep_ns,        false);
+  vAddPrimitive("thread.spawn_actor"_Str,     &vThreadSpawn_Actor,     false);
   vAddPrimitive("thread.spawn_partition"_Str, &vThreadSpawn_Partition, false);
   vAddPrimitive("thread.spawn_general"_Str,   &vThreadSpawn_General,   false);
 }
@@ -549,7 +550,28 @@ ENTRY("vThreadSleep_ns"_Str);
 }
 
 /*----------------------------------------------------------------------------*/
-/* thread.spawn -- spwan os thread associated with this thread                */
+/* thread.spawn_actor -- spwan os thread associated with this thread          */
+/*----------------------------------------------------------------------------*/
+void Task::vThreadSpawn_Actor(MP_Task mpTask)
+{
+  ENTRY("vThreadSpawn_Actor"_Str);
+  
+  Object* pThreadEmb;
+  
+  if ( ! mpTask->m_pDataStack->bPop(pThreadEmb) )
+    THROW_INVALID_DSTACK("thread.spawn_actor"_Str);
+  
+  ASSERT(CN_THREAD == pThreadEmb->eClass());
+  
+  Thread* pThread = static_cast<Thread*>(pThreadEmb);
+  
+  pThread->vSpawn_Partition();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* thread.spawn_partition -- spwan os thread associated with this thread      */
 /*----------------------------------------------------------------------------*/
 void Task::vThreadSpawn_Partition(MP_Task mpTask)
 {
@@ -570,7 +592,7 @@ ENTRY("vThreadSpawn_Partition"_Str);
 }
 
 /*----------------------------------------------------------------------------*/
-/* thread.spawn -- spwan os thread associated with this thread                */
+/* thread.spawn_general -- spwan os thread associated with this thread        */
 /*----------------------------------------------------------------------------*/
 void Task::vThreadSpawn_General(MP_Task mpTask)
 {

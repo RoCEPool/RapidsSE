@@ -515,7 +515,7 @@ tp: addingPassOnToCP
   actorNm actor.task task.seed ( )
 
   // spawn the os thread
-  actorNm actor.thread thread.spawn_partition ( )
+  actorNm actor.thread thread.spawn_actor ( )
 ;
 
 /*----------------------------------------------------------------------------*/

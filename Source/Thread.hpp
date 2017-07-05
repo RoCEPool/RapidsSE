@@ -77,6 +77,7 @@ namespace Threads
     Thread(void);
     ~Thread(void);
     
+    static void* vEntry_Actor(void* pArg);
     static void* vEntry_Partition(void* pArg);
     static void* vEntry_General(void* pArg);
     static Thread* pThread(void);
@@ -86,10 +87,12 @@ namespace Threads
     void vBind(i8 iCpu);
     i8   iCpu(void);
     void vContentDump(void) const;
+    void vLoop_Actor(void);
     void vLoop_Partition(void);
     void vLoop_General(void);
     StrVal&   sName(void);
     void vName(StrVal& sName);
+    void vSpawn_Actor(void);
     void vSpawn_Partition(void);
     void vSpawn_General(void);
     i8   iThreadNo(void);
