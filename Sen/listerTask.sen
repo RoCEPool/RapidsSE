@@ -19,11 +19,15 @@ taskCursor: taskCrs
 /*----------------------------------------------------------------------------*/
 : listerStart
 
+/*
   0 "lis.loop" nullPtr task::new listerTaskSet taskSet.Append
 
   listerTaskSet  listerThread thread.taskset!
   "listerThread" listerThread thread.name!
                  listerThread thread.spawn_general
+*/
+
+  0 "lis.loop" nullptr "ListerActor" spawnActorTask drop
 ;
 
 /*----------------------------------------------------------------------------*/
