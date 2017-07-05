@@ -65,7 +65,7 @@ args.regionSize noQueryThreads constant N_QUERY_THREADS
     taskset::new queryThread thread.taskset!
 
     // spawn os thread
-    queryThread thread.spawnV2
+    queryThread thread.spawn_general
 
   loop
 ;

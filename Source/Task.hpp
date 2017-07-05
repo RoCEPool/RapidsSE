@@ -1100,8 +1100,8 @@ namespace Tasks
     static void vThreadSleep_ms(MP_Task mpTask);
     static void vThreadSleep_us(MP_Task mpTask);
     static void vThreadSleep_ns(MP_Task mpTask);
-    static void vThreadSpawn(MP_Task mpTask);   
-    static void vThreadSpawnV2(MP_Task mpTask);
+    static void vThreadSpawn_Partition(MP_Task mpTask);
+    static void vThreadSpawn_General(MP_Task mpTask);
 
     // threadCursor
     static void vThreadCursorBegin(MP_Task mpTask);

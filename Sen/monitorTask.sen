@@ -26,7 +26,7 @@ thread:  pMonitorThread
   pMonitorTaskSet  pMonitorThread thread.taskset!
 
   "pMonitorThread" pMonitorThread thread.name!
-                   pMonitorThread thread.spawnV2
+                   pMonitorThread thread.spawn_general
 ;
 
 /*----------------------------------------------------------------------------*/

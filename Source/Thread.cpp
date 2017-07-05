@@ -103,7 +103,7 @@ Thread::~Thread(void)
 /*----------------------------------------------------------------------------*/
 /* thread entry                                                               */
 /*----------------------------------------------------------------------------*/
-void* Thread::vEntry(void* pArg)
+void* Thread::vEntry_Partition(void* pArg)
 {
   Thread* pThread = static_cast<Thread*>(pArg);
   
@@ -111,7 +111,7 @@ void* Thread::vEntry(void* pArg)
     vTrace("[[%s]] Thread::vEntry %p\n"_Str,pThread->sName().s(),pThread);
   
   try {
-    pThread->vLoop();
+    pThread->vLoop_Partition();
   }
   catch (Error* pError) {
     char wFileName[256];
@@ -144,15 +144,15 @@ void* Thread::vEntry(void* pArg)
 /*----------------------------------------------------------------------------*/
 /* thread entry                                                               */
 /*----------------------------------------------------------------------------*/
-void* Thread::vEntryV2(void* pArg)
+void* Thread::vEntry_General(void* pArg)
 {
   Thread* pThread = static_cast<Thread*>(pArg);
   
   if (gbVerbose || gbProgress)
-    vTrace("[[%s]] Thread::vEntryV2 %p\n"_Str,pThread->sName().s(),pThread);
+    vTrace("[[%s]] Thread::vEntry_General%p\n"_Str,pThread->sName().s(),pThread);
   
   try {
-    pThread->vLoopV2();
+    pThread->vLoop_General();
   }
   catch (Error* pError) {
     char wFileName[256];
@@ -255,7 +255,7 @@ void Thread::vContentDump(void) const
 /*----------------------------------------------------------------------------*/
 /* thread loop (sleep loop)                                                   */
 /*----------------------------------------------------------------------------*/
-void Thread::vLoop(void)
+void Thread::vLoop_Partition(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
@@ -321,12 +321,12 @@ void Thread::vLoop(void)
 /*----------------------------------------------------------------------------*/
 /* thread loop (wait loop)                                                    */
 /*----------------------------------------------------------------------------*/
-void Thread::vLoopV2(void)
+void Thread::vLoop_General(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
   if (gbVerbose || gbProgress)
-    vTrace("Thread %p: %s loopV2\n"_Str,this,m_sName.s());
+    vTrace("Thread %p: %s General\n"_Str,this,m_sName.s());
   
   m_pPosixThread->vSetOSThreadId();
   
@@ -432,22 +432,22 @@ void Thread::vName(StrVal& sName)
 /*----------------------------------------------------------------------------*/
 /* spawn the os/posix thread associated with this thread                      */
 /*----------------------------------------------------------------------------*/
-void Thread::vSpawn(void)
+void Thread::vSpawn_Partition(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
-  bool bResult = m_pPosixThread->bSpawnThread(Thread::vEntry,this);
+  bool bResult = m_pPosixThread->bSpawnThread(Thread::vEntry_Partition,this);
   ASSERT(bResult);
 }
 
 /*----------------------------------------------------------------------------*/
 /* spawn the os/posix thread associated with this thread                      */
 /*----------------------------------------------------------------------------*/
-void Thread::vSpawnV2(void)
+void Thread::vSpawn_General(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
-  bool bResult = m_pPosixThread->bSpawnThread(Thread::vEntryV2,this);
+  bool bResult = m_pPosixThread->bSpawnThread(Thread::vEntry_General,this);
   ASSERT(bResult);
 }
 

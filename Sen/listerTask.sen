@@ -23,7 +23,7 @@ taskCursor: taskCrs
 
   listerTaskSet  listerThread thread.taskset!
   "listerThread" listerThread thread.name!
-                 listerThread thread.spawnV2
+                 listerThread thread.spawn_general
 ;
 
 /*----------------------------------------------------------------------------*/

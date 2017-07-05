@@ -27,7 +27,7 @@ seitfCursor: seitfCrs
 
   reclaimTaskSet  reclaimThread thread.taskset!
   "reclaimThread" reclaimThread thread.name!
-                 reclaimThread thread.spawnV2
+                 reclaimThread thread.spawn_general
 ;
 
 /*----------------------------------------------------------------------------*/
