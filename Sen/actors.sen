@@ -1,10 +1,11 @@
 /*============================================================================*/
-/* gridModel.sen -- grid model group                                          */
+/* actors.sen -- grid model group                                          */
 /*============================================================================*/
 
 int:  queryCount
 
 "actors.sen" .verbose
+"gridPrimitives.sen" include
 
 "coordinatorWorker.sen" include
 "participantProxyWorker.sen" include

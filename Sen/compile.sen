@@ -16,8 +16,8 @@
 "transactions.sen" include
 "interface.sen" include
 "systemObjects.sen" include
-"threadModels.sen" include
 "gridModel.sen" include
+"threadModels.sen" include
 "actors.sen" include
 "dbobjects.sen" include
 "operators.sen" include

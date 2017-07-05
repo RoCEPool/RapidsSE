@@ -10,7 +10,6 @@ int:  queryCount
 "grid.sen" include
 "nodeCursor.sen" include
 
-"gridPrimitives.sen" include
 
 /*============================================================================*/
 /* end                                                                        */
