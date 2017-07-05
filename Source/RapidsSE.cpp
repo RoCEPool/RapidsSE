@@ -324,7 +324,8 @@ void RapidsSE::vRunCommand(void)
   
   // append root task onto root thread's task set
   // root thread will pop the root task and run it
-  gnpRootThread->vAppend(*gnpRootTask);
+  //gnpRootThread->vAppend(*gnpRootTask);
+  gpScheduler->vEnqueueTask_Mutex(*gnpRootTask);
   
   // the docol interpreter is now running the commandf in root task on root thread
 }
@@ -339,7 +340,8 @@ void RapidsSE::vRunDocol(void)
   
   // append root task onto root thread's task set
   // root thread will pop the root task and run it
-  gnpRootThread->vAppend(*gnpRootTask);
+  //gnpRootThread->vAppend(*gnpRootTask);
+  gpScheduler->vEnqueueTask_Mutex(*gnpRootTask);
   
   // the docol interpreter is now running in root task on root thread
 }
@@ -421,11 +423,12 @@ void RapidsSE::vStartActors(void)
   
   // append root task onto root thread's task set
   // root thread will pop the root task and run it
-  gnpRootThread->vAppend(*gnpRootTask);
+  //gnpRootThread->vAppend(*gnpRootTask);
+  gpScheduler->vEnqueueTask_Mutex(*gnpRootTask);
   
   // the primary thread waits here till root task exits
   while (TS_EXITED != gnpRootTask->eState())
-    PosixThread::vSleepMilli(1);
+    PosixThread::vSleepMilli(1000);
   
   // the system is now running
 }
