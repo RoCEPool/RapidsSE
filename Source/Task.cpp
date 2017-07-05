@@ -829,7 +829,7 @@ void Task::vAddConstants(void)
   vAddConstant("reclaimTaskPrint"_Str,   (i8)0);
   vAddConstant("requestTaskPrint"_Str,   (i8)0);
   vAddConstant("answerTaskPrint"_Str,    (i8)1);
-  vAddConstant("connectorTaskPrint"_Str, (i8)0);
+  vAddConstant("connectorTaskPrint"_Str, (i8)1);
   vAddConstant("senderTaskPrint"_Str,    (i8)0);
   vAddConstant("receiverTaskPrint"_Str,  (i8)0);
   

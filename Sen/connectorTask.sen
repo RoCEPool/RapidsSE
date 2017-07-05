@@ -16,9 +16,7 @@ actor: con
 
 tp: connectorStart
 
-  0 "con.loop"
-
-  "con" actor.spawn
+  0 "con.loop" nullPtr "connectorTask" spawnActorTask
 ;
 
 /*----------------------------------------------------------------------------*/
