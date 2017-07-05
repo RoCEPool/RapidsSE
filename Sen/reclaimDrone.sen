@@ -15,11 +15,11 @@ str:     sReclaimString
 seitfCursor: seitfCrs
 
 /*----------------------------------------------------------------------------*/
-/* start the reclaim drone                                                    */
+/* spawn the reclaim drone                                                    */
 /*----------------------------------------------------------------------------*/
-: reclaimStart
+: spawnReclaimDrone
 
-  0 "rec.loop" nullptr "ReclaimDrone" spawnDroneActor drop
+  0 "reclaimLoop" nullptr "ReclaimDrone" spawnDroneActor drop
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -65,7 +65,7 @@ seitfCursor: seitfCrs
 /*----------------------------------------------------------------------------*/
 /* reclaim task loop                                                          */
 /*----------------------------------------------------------------------------*/
-: rec.loop
+: reclaimLoop
 
   "reclaimTask" task::this task.name!
 

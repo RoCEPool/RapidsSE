@@ -13,7 +13,7 @@ lock: zMonitorLock
 str:  sMonitorString
 
 /*----------------------------------------------------------------------------*/
-/* start the monitor drone                                                    */
+/* spawn the monitor drone                                                    */
 /*----------------------------------------------------------------------------*/
 : spawnMonitorDrone
 

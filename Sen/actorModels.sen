@@ -76,7 +76,7 @@ snooze partitionThreadsStart
 snooze spawnListerDrone
 snooze spawnMonitorDrone
 
-snooze reclaimStart
+snooze spawnReclaimDrone
 snooze answerDroneSpawn
 
 then
