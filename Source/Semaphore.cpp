@@ -54,11 +54,29 @@ Semaphore::Semaphore()
   
   m_bLocked        = false;
 
-  MemLib::vZero(&m_xMutex,sizeof(m_xMutex));
-  pthread_mutex_init(&m_xMutex,NULL);
+  // initialise attribute to mutex
+  MemLib::vZero(&m_xMutexAttr,sizeof(m_xMutexAttr));
+  i8 iResult = pthread_mutexattr_init(&m_xMutexAttr);
+  ASSERT( ! iResult);
+  
+  // set attribute to be shared
+  iResult = pthread_mutexattr_setpshared(&m_xMutexAttr,PTHREAD_PROCESS_SHARED);
+  ASSERT( ! iResult);
 
+  // initialize the mutex
+  MemLib::vZero(&m_xMutex,sizeof(m_xMutex));
+  pthread_mutex_init(&m_xMutex, &m_xMutexAttr);
+
+  // initialise attribute to condition
+  MemLib::vZero(&m_xCondAttr,sizeof(m_xCondAttr));
+  pthread_condattr_init(&m_xCondAttr);
+  
+  // set attribute to be shared
+  pthread_condattr_setpshared(&m_xCondAttr, PTHREAD_PROCESS_SHARED);
+  
+  // initialize the mutex
   MemLib::vZero(&m_xCond,sizeof(m_xCond));
-  pthread_cond_init(&m_xCond,NULL);
+  pthread_cond_init(&m_xCond, &m_xCondAttr);
   
   _checkInitialised_(CN_SEMAPHORE);
 
@@ -71,7 +89,10 @@ Semaphore::Semaphore()
 Semaphore::~Semaphore(void)
 {
   pthread_mutex_destroy(&m_xMutex);
+  pthread_mutexattr_destroy(&m_xMutexAttr);
+  
   pthread_cond_destroy(&m_xCond);
+  pthread_condattr_destroy(&m_xCondAttr);
 }
 
 /*----------------------------------------------------------------------------*/
