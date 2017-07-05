@@ -71,7 +71,7 @@ ddlLock::dropWrite
 
     1  == if               ( connection# )
       grid.thisNode@ grid.startNode@ != if
-        connectorStart
+        spawnConnectorDrone
       then
     then
       

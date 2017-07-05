@@ -5,19 +5,19 @@
 "connectorDrone.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* start the connector drone                                                  */
+/* spawn the connector drone                                                  */
 /*----------------------------------------------------------------------------*/
-: connectorStart
+: spawnConnectorDrone
 
-tp: connectorStart
+tp: spawnConnectorDrone
 
-  0 "con.loop" nullPtr "connectorDrone" spawnDroneActor
+  0 "connectorLoop" nullPtr "connectorDrone" spawnDroneActor
 ;
 
 /*----------------------------------------------------------------------------*/
 /* connector loop                                                             */
 /*----------------------------------------------------------------------------*/
-: con.loop
+: connectorLoop
 
   connectorDronePrint if "Connector Drone..." . then
 

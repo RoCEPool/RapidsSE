@@ -4,7 +4,7 @@
 
 docol spawnNodes ;
 docol setStartNode ;
-docol connectorStart ;
+docol spawnConnectorDrone ;
 
 //sleep 5 ;
 
