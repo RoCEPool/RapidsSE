@@ -12,10 +12,6 @@ lock:    zMonitorLock
 
 str:     sMonitorString
 
-"pMonitorTaskSet" :taskSet drop
-
-"pMonitorThread" :thread drop
-
 /*----------------------------------------------------------------------------*/
 /* start the monitor task                                                     */
 /*----------------------------------------------------------------------------*/

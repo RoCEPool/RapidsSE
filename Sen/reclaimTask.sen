@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* reclaimTask.sen -- reclaim task                                            */
+/* reclaimTask.sen -- seitf reclaim task                                      */
 /*============================================================================*/
 
 "reclaimTask.sen" .verbose
@@ -11,10 +11,6 @@
 lock:    reclaimLock
 
 str:     reclaimString
-
-taskset: reclaimTaskSet
-
-thread:  reclaimThread
 
 seitfCursor: seitfCrs
 
