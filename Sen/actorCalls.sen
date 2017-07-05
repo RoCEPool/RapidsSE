@@ -25,7 +25,7 @@
 
     0 "pLoop"
 
-    "p" I >str str.cat :job
+    "p" I >str str.cat :createWorkerActor
     dup findWorkerQueue I pQueues !
     dup findWorkerTask  I pTasks  !
     spawnWorkerActor
@@ -35,7 +35,7 @@
     //
 
     I I pTasks @ 2 "cpLoop"
-    "cp" I >str str.cat :job
+    "cp" I >str str.cat :createWorkerActor
     dup findWorkerQueue I cpQueues !
     dup findWorkerTask  I cpTasks  !
     spawnWorkerActor
@@ -50,7 +50,7 @@
       I I cpTasks @ 2 "ppLoop"
     then
 
-    "pp" I >str str.cat :job
+    "pp" I >str str.cat :createWorkerActor
     dup findWorkerQueue I ppQueues !
     dup findWorkerTask  I ppTasks  !
     spawnWorkerActor
@@ -61,7 +61,7 @@
   // coordinator for this node
   //
   0 "cLoop"
-  "c" :job  ( 0 "cLoop" "c" )
+  "c" :createWorkerActor  ( 0 "cLoop" "c" )
 
   spawnWorkerActor
 

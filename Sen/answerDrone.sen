@@ -57,7 +57,7 @@ ddlLock::grabWrite
 
     // create the receive worker
     "rr" nConnections @ >str str.cat ( socket 1 "receiverLoop" "rrI" )
-    :job ( socket 1 "receiverLoop" "rrI" )
+    :createWorkerActor ( socket 1 "receiverLoop" "rrI" )
 
     // spawn the actors os thread
     spawnWorkerActor
