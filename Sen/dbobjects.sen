@@ -22,32 +22,6 @@
 "plan.sen" include
 
 
-/*----------------------------------------------------------------------------*/
-/* called by RapidsSE::vStartActors                                           */
-/*----------------------------------------------------------------------------*/
-: startActors
-
-"startActors" .verbose
-
-args.bgtasks if
-
-snooze generalThreadsStart
-snooze partitionThreadsStart
-
-snooze listerStart
-snooze monitorStart
-
-snooze reclaimStart
-snooze answerStart
-
-then
-
-//dic.main true dic.frozen!
-
-//REQUEST_LOOP2
-//requestStart
-;
-
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
