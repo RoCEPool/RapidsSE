@@ -259,7 +259,7 @@ traceon
 /*----------------------------------------------------------------------------*/
 : sched
 
-  0 "helloWorld" "hi" spawnGeneralTask drop
+  0 "helloWorld" nullptr "hi" spawnGeneralTask drop
 ;
 
 /*----------------------------------------------------------------------------*/
