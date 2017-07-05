@@ -15,15 +15,15 @@ str:  sMonitorString
 /*----------------------------------------------------------------------------*/
 /* start the monitor drone                                                    */
 /*----------------------------------------------------------------------------*/
-: monitorStart
+: spawnMonitorDrone
 
-  0 "mon.loop" nullptr "MonitorDrone" spawnDroneActor drop
+  0 "monitorLoop" nullptr "MonitorDrone" spawnDroneActor drop
 ;
 
 /*----------------------------------------------------------------------------*/
 /* monitor task loop                                                          */
 /*----------------------------------------------------------------------------*/
-: mon.loop
+: monitorLoop
 
   "monitorDrone" task::this task.name!
 
