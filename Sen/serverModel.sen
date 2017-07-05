@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* generalThreads.sen -- General Processing Threads                           */
+/* serverModel.sen -- server actor model                                      */
 /*============================================================================*/
 
-"generalThreads.sen" .verbose
+"serverModel.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* compute the number of general processing threads to be created             */

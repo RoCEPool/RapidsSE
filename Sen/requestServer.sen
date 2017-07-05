@@ -1,16 +1,16 @@
 /*============================================================================*/
-/* requestTask.sen -- request processing task                                 */
+/* requestServer.sen -- request processing server                             */
 /*============================================================================*/
 
-"requestTask.sen" .verbose
+"requestServer.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* create the parts                                                           */
 /*----------------------------------------------------------------------------*/
 
-queue:   requestQueue
+queue: requestQueue
 
-dic:     tenants
+dic:   tenants
 
 /*----------------------------------------------------------------------------*/
 /* copy dictionary path from seitf to this request task                       */

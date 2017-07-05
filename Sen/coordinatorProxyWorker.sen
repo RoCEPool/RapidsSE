@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* coordinatorProxy.sen -- coordinator proxy task                             */
+/* coordinatorProxyWorker.sen -- coordinator proxy worker                     */
 /*============================================================================*/
 
-"coordinatorProxy.sen" .verbose
+"coordinatorProxyWorker.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* coordinator proxy processing loop                                          */

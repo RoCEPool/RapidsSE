@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* participantProxy.sen -- participant proxy                                  */
+/* participantProxyWorker.sen -- participant proxy worker                     */
 /*============================================================================*/
 
-"participantProxy.sen" .verbose
+"participantProxyWorker.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* participant proxy processing loop                                          */

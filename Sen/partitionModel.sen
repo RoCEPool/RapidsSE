@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* partitionThreads.sen -- Partition Processing Threads                       */
+/* partitionModel.sen -- Partition Actor Model                                */
 /*============================================================================*/
 
-"partitionThreads.sen" .verbose
+"partitionModel.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* compute the number of partition processing threads to be created           */
