@@ -2517,7 +2517,7 @@ bool SEitf::bAppendRequest(StrVal& sRequest)
   // spawn a request task, passing the request to it
   // create new task (will be automatically appended to task list)
   MP_Task nnpNewTask = new Task(&xValSet);
-  nnpNewTask->vSeedWord("req.loop"_Str);
+  nnpNewTask->vSeedWord("requestLoop"_Str);
   
   gpScheduler->vEnqueueTask_Mutex(*nnpNewTask);
   return true;

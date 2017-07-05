@@ -150,7 +150,7 @@ Task::Task(Value* pRequest)
   MemLib::vCopy(m_pRequest,pRequest,nBytes);
   
   m_sName    = "req.task"_Str;
-  m_sComment = "req.loop"_Str;
+  m_sComment = "requestLoop"_Str;
   
   _checkInitialised_(CN_TASK);
   
@@ -827,7 +827,7 @@ void Task::vAddConstants(void)
   vAddConstant("listerDronePrint"_Str,    (i8)0);
   vAddConstant("monitorDronePrint"_Str,   (i8)0);
   vAddConstant("reclaimDronePrint"_Str,   (i8)0);
-  vAddConstant("requestTaskPrint"_Str,   (i8)0);
+  vAddConstant("requestServerPrint"_Str,   (i8)0);
   vAddConstant("answerDronePrint"_Str,    (i8)0);
   vAddConstant("connectorDronePrint"_Str, (i8)0);
   vAddConstant("senderTaskPrint"_Str,    (i8)0);

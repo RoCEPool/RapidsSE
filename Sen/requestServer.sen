@@ -113,7 +113,7 @@ tp: !req_exit
 /*----------------------------------------------------------------------------*/
 /* send response                                                              */
 /*----------------------------------------------------------------------------*/
-: >rsp ( send response    )
+: >rsp
 
   // check stack
   depth 3 != if "incorrect response stack depth" . process.quit then
@@ -139,16 +139,17 @@ tp: !req_exit
 /*----------------------------------------------------------------------------*/
 /* request processing loop                                                    */
 /*----------------------------------------------------------------------------*/
-: req.loop
+: requestLoop
 
   requestQueue  task::this task.jobQueue!
-  requestTaskPrint if "Request Server running..." . then
+  requestServerPrint if "Request Server running..." . then
 
   depth 0 != if "request task has grown" . debug.trap then
 
   !req
 
   >rsp
+
   exit
 
 ;
