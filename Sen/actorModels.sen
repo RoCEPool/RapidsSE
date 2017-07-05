@@ -1,0 +1,64 @@
+/*============================================================================*/
+/* actors.sen -- grid model group                                          */
+/*============================================================================*/
+
+int:  queryCount
+
+"actors.sen" .verbose
+
+"droneModel.sen" include
+"serverModel.sen" include
+"partitionModel.sen" include
+"workerModel.sen" include
+
+
+"gridPrimitives.sen" include
+
+"coordinatorWorker.sen" include
+"participantProxyWorker.sen" include
+"coordinatorProxyWorker.sen" include
+"participantWorker.sen" include
+"senderWorker.sen" include
+
+"connectorDrone.sen" include
+"answerDrone.sen" include
+"listerDrone.sen"  include
+"monitorDrone.sen" include
+"receiverDrone.sen" include
+"reclaimDrone.sen" include
+
+"requestServer.sen" include
+
+"gridCalls.sen" include
+"ddlLocking.sen" include
+
+/*----------------------------------------------------------------------------*/
+/* called by RapidsSE::vStartActors                                           */
+/*----------------------------------------------------------------------------*/
+: startActors
+
+"startActors" .verbose
+
+args.bgtasks if
+
+snooze generalThreadsStart
+snooze partitionThreadsStart
+
+snooze listerStart
+snooze monitorStart
+
+snooze reclaimStart
+snooze answerStart
+
+then
+
+//dic.main true dic.frozen!
+
+//REQUEST_LOOP2
+//requestStart
+;
+
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

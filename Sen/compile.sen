@@ -16,9 +16,8 @@
 "interface.sen" include
 "threads.sen" include
 "gridModel.sen" include
-"threadModels.sen" include
-"actors.sen" include
-"dbobjects.sen" include
+"actorModels.sen" include
+"dbObjects.sen" include
 "operators.sen" include
 "planners.sen" include
 "utilities.sen" include
