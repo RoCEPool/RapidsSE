@@ -23,11 +23,15 @@ seitfCursor: seitfCrs
 /*----------------------------------------------------------------------------*/
 : reclaimStart
 
+/*
   0 "rec.loop" nullPtr task::new reclaimTaskSet taskSet.Append
 
   reclaimTaskSet  reclaimThread thread.taskset!
   "reclaimThread" reclaimThread thread.name!
                  reclaimThread thread.spawn_general
+*/
+
+  0 "rec.loop" nullptr "ReclaimActor" spawnActorTask drop
 ;
 
 /*----------------------------------------------------------------------------*/
