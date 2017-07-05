@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* define the con actor (con.task, con.queue, con.taskset, con.thread)        */
 /*----------------------------------------------------------------------------*/
-actor: con
+job: con
 
 /*----------------------------------------------------------------------------*/
 /* start the connector task                                                   */
@@ -58,14 +58,14 @@ ddlLock::grabWrite
       1 "snd.loop" ( socket 1 "snd.loop" )
 
       // create the actor
-      "sr" I >str str.cat :actor ( socket 1 "snd.loop" "srI" )
+      "sr" I >str str.cat :job ( socket 1 "snd.loop" "srI" )
 
       // record the senderQueue
-      dup actor.queue I senderQueues ! ( socket 1 "snd.loop" "srI" )
-      dup actor.task  I senderTasks  ! ( socket 1 "snd.loop" "srI" )
+      dup job.queue I senderQueues ! ( socket 1 "snd.loop" "srI" )
+      dup job.task  I senderTasks  ! ( socket 1 "snd.loop" "srI" )
 
       // spawn the actors os thread
-      actor.spawn
+      job.spawn
 
 ddlLock::dropWrite
 

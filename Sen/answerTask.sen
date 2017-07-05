@@ -57,10 +57,10 @@ ddlLock::grabWrite
 
     // create the actor
     "rr" nConnections @ >str str.cat ( socket 1 "rcv.loop" "rrI" )
-    :actor ( socket 1 "rcv.loop" "rrI" )
+    :job ( socket 1 "rcv.loop" "rrI" )
 
     // spawn the actors os thread
-    actor.spawn
+    job.spawn
 
 ddlLock::dropWrite
 
