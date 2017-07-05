@@ -6,13 +6,42 @@ int:  queryCount
 
 "actors.sen" .verbose
 
+"thread.sen" include
+"threadList.sen" include
+"threadCursor.sen" include
+
+( tasklist will already exist )
+
+( threadList holds all thread's )
+threadList: threadList
+
+( txMap map tx id's to tx's )
+txMap: txMap
+
+( txCollection hold all tx's )
+txCollection: txCollection
+
+( seitfList holds all seitf's )
+seitfList: seitfList
+
+( task set for root thread )
+taskSet: rootTaskSet
+
+//traceon
+( root thread and name it )
+thread: rootThread "rootThread" rootThread thread.name!
+//traceoff
+
+( give root task set to root thread )
+rootTaskSet rootThread thread.taskSet!
+
 "droneModel.sen" include
 "serverModel.sen" include
 "partitionModel.sen" include
 "workerModel.sen" include
 
 
-"gridPrimitives.sen" include
+"actorPrimitives.sen" include
 
 "coordinatorWorker.sen" include
 "participantProxyWorker.sen" include
@@ -29,7 +58,7 @@ int:  queryCount
 
 "requestServer.sen" include
 
-"gridCalls.sen" include
+"actorCalls.sen" include
 "ddlLocking.sen" include
 
 /*----------------------------------------------------------------------------*/

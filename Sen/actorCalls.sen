@@ -176,6 +176,33 @@ tp: >>allParticipants>
   drop
 ;
 
+/*----------------------------------------------------------------------------*/
+/* dispatch indirect call to given participant (for use in coordinator)       */
+/*----------------------------------------------------------------------------*/
+: dispatch ( ... #values actorNo -- ..result.. )
+
+  addSetCaller ( << <<call*>> <<caller>> >> )
+
+  // determine which queue to forward to
+  dup ( ... #values actorNo actorNo )
+  grid.thisNode@ ( ... #values actorNo actorNo grid.thisNode@ )
+  == ( ... #values actorNo true|false )
+  if ( ... #values actorNo )
+
+    // actor will be the participant for this node
+    pTasks @ ( ... #values pTask )
+
+  else
+
+    // actor will be participant proxy for other node
+    ppTasks @ ( ... #values ppTask )
+
+  then
+
+  // transfer to another actors and wait for result
+  >jobQueue;a> ( ..result.. )
+;
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

@@ -1,0 +1,540 @@
+/*============================================================================*/
+/* gridPrimitives.sen -- grid primitives                                      */
+/*============================================================================*/
+
+"gridPrimitives.sen" .verbose
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* task and queue arrays                                                      */
+/*----------------------------------------------------------------------------*/
+grid.nodes ptrArray: ppTasks
+grid.nodes ptrArray: cpTasks
+grid.nodes ptrArray: pTasks
+grid.nodes ptrArray: senderTasks
+
+grid.nodes ptrArray: ppQueues
+grid.nodes ptrArray: cpQueues
+grid.nodes ptrArray: pQueues
+grid.nodes ptrArray: senderQueues
+
+
+/*----------------------------------------------------------------------------*/
+/* dump the ppQueues array                                                    */
+/*----------------------------------------------------------------------------*/
+: ppQueuesDump
+
+  "{ " .put
+  grid.nodes 0 do
+    I ppQueues @ .put " " .put
+  loop
+
+  "}" .put .\n
+;
+
+/*----------------------------------------------------------------------------*/
+/* dump the cpQueues array                                                    */
+/*----------------------------------------------------------------------------*/
+: cpQueuesDump
+
+  "{ " .put
+  grid.nodes 0 do
+    I cpQueues @ .put " " .put
+  loop
+
+  "}" .put .\n
+;
+
+/*----------------------------------------------------------------------------*/
+/* dump the pQueues array                                                     */
+/*----------------------------------------------------------------------------*/
+: pQueuesDump
+
+  "{ " .put
+  grid.nodes 0 do
+    I pQueues @ .put " " .put
+  loop
+
+  "}" .put .\n
+;
+
+/*----------------------------------------------------------------------------*/
+/* dump the senderQueues array                                                */
+/*----------------------------------------------------------------------------*/
+: senderQDump
+
+  "{ " .put
+  grid.nodes 0 do
+    I senderQueues tp: @ .put " " .put
+  loop
+
+  "}" .put .\n
+;
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* append valset onto queue of given task and signal if its waiting           */
+/*----------------------------------------------------------------------------*/
+: >jobQueue ( valset task -- )
+
+tp: >jobQueue
+
+  locals| pTargetTask | ( valset )
+
+  // grab mutex of target task
+  pTargetTask grabMutex ( valset )
+
+  // append valset onto queue of target task
+  pTargetTask appendQueue ( )
+
+  // signal the target task if it is waiting for a valset to be queued
+  pTargetTask isSignalWaiting if
+    pTargetTask signal ( )
+  then
+
+  // drop mutex of target task
+  pTargetTask dropMutex ( )
+;
+
+/*----------------------------------------------------------------------------*/
+/* append indirect call onto queue of given task, wait for ack, move a to p   */
+/*----------------------------------------------------------------------------*/
+: >jobQueue;a> ( <<call>> task -- <<result>> )
+
+  // set this task to wait for 1 ack
+  1 setAcks ( <<call>> task )
+
+  // append indirect call onto queue of given task
+  >jobQueue ( )
+
+  tp: ackWait
+
+  // this task waits till ack'd
+  ackWait ( )
+
+  tp: running
+
+  // move indirect result from aux to data stack
+  a> ( <<result>> )
+
+tp: haveResultSet
+;
+
+/*----------------------------------------------------------------------------*/
+/* put indirect call onto queue of sender task                                */
+/*----------------------------------------------------------------------------*/
+: >sendQueue ( <<call>> nodeNo -- )
+
+  // get sender task
+  senderTasks @ ( <<call>> task )
+
+  tp: sendingViaTask
+
+  // enqueue valset onto queue of task
+  >jobQueue ( )
+;
+
+/*----------------------------------------------------------------------------*/
+/* put indirect call onto queue of sender task, suspend, move from a to p     */
+/*----------------------------------------------------------------------------*/
+: >sendQueue;a> ( <<call>> nodeNo -- )
+
+  // this task to wait for 1 ack
+  1 setAcks ( ... wordName #values queue )
+
+  // get sender task
+  senderTasks @ ( <<call>> task )
+
+tp: sendingViaTask
+
+  // enqueue valset onto queue of task
+  >jobQueue
+
+  // this task waits till ack'd
+  ackWait ( )
+
+tp: running
+
+  // move indirect result from aux to data stack 
+  a> ( <<result>> )
+
+tp: haveResultSet
+;
+
+/*----------------------------------------------------------------------------*/
+/* pop valset from this tasks job queue (this is a blocking call)             */
+/*----------------------------------------------------------------------------*/
+: jobQueue> ( -- valset )
+
+  tp: jobQueue>
+
+  // grab mutex of this task
+  task::this grabMutex
+
+  // attempt to pop from this task's job queue
+  popQueue ( value true | false )
+  not if
+    // queue empty; wait till signalled
+    signalWait
+    // pop from this tasks queue
+    popQueue assert
+  then
+
+  // grab mutex of this task
+  task::this dropMutex
+
+  tp: haveValset
+;
+
+/*----------------------------------------------------------------------------*/
+/* push indirect result onto callers aux stack and ack caller                 */
+/*----------------------------------------------------------------------------*/
+: >callerAux ( <<result>> -- )
+
+tp: >callerAux
+
+  // transfer to callers stack
+  _CALLER ( <<result>> callingTask )
+
+  tp: callingTask
+
+  >auxStack ( )
+
+  // ack caller
+  _CALLER ack ( )
+;
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* set the calling task                                                       */
+/*----------------------------------------------------------------------------*/
+: setCaller ( caller -- ; reg0 == caller )
+
+  to_CALLER ( )
+
+  tp: reg0HasCaller
+;
+
+/*----------------------------------------------------------------------------*/
+/* set sending node                                                           */
+/*----------------------------------------------------------------------------*/
+: setSender ( sender -- ; reg4 == sender )
+
+tp: setSender_name
+
+  grid.find
+  node.no
+
+tp: setSender_nodeNo
+
+  to_SENDER ( )                                   //! THIS DOESNT LOOK RIGHT -RAY
+
+  tp: reg4HasSender
+;
+
+/*----------------------------------------------------------------------------*/
+/* pass indirect call onto coordinator proxy                                  */
+/*----------------------------------------------------------------------------*/
+: passOnToCP ( valset nodeNo -- )
+
+  cpTasks @ ( valset task )
+
+  >jobQueue ( )
+;
+
+/*----------------------------------------------------------------------------*/
+/* pass indirect result back to participant proxy                             */
+/*----------------------------------------------------------------------------*/
+: passBackToPP ( <<result>> nodeName -- )
+
+  reg.push
+
+tp: passBackToPP_name
+
+  grid.find
+  node.no
+
+tp: passBackToPP_nodeNo
+
+  ppTasks @ to_CALLER
+
+  >callerAux
+
+  reg.pop
+;
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* execute indirect call on the stack                                         */
+/*----------------------------------------------------------------------------*/
+: !indirect ( ... wordName -- ... )
+
+tp: executing...
+
+  // find the word in dic stack
+  find ( word )
+                                                          //! WHAT IF NOT FOUND?
+
+  // execute it
+  execute ( ... )
+;
+
+/*----------------------------------------------------------------------------*/
+/* convert all values on stack into a result valset                           */
+/*----------------------------------------------------------------------------*/
+: >result ( ... -- valset )
+
+tp: resultIs
+
+  // put number of values onto stack
+  depth ( ... #values )
+
+  // convert to valset
+  >valset ( valset )
+
+tp: resultAsValset
+;
+
+/*----------------------------------------------------------------------------*/
+/* expand valset and execute indirect call                                    */
+/*----------------------------------------------------------------------------*/
+: exeOne ( <<call*>> )
+
+  valset> ( ... wordName nValues )
+
+  drop ( ... wordName )
+
+  tp: callSetUp
+
+  !indirect ( bool )
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute all nested valsets                                                 */
+/*----------------------------------------------------------------------------*/
+: exeAll ( ... valset -- x )
+
+tp: exeAll
+
+  // we exect at least one indirect
+  CN_VALSET isType not if assert then
+
+  // execute first indirect
+  exeOne
+
+  // execute all other indirects
+  begin
+
+    // no more to execute?
+    CN_VALSET isType not
+    if
+      exit
+    then
+
+  // execute next indirect
+  exeOne
+
+  again
+;
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* add call to send to one participant                                        */
+/*----------------------------------------------------------------------------*/
+: addSendParticipant ( valset node -- valset )
+
+  "sendParticipant" ( valset node "sendParticipant" )
+
+tp: addingSendP
+
+  >> ( valset )
+;
+
+/*----------------------------------------------------------------------------*/
+/* add call to send to all participants                                       */
+/*----------------------------------------------------------------------------*/
+: addSendParticipants ( valset -- valset )
+
+  "sendParticipants" ( valset "sendParticipants" )
+
+tp: addingSendPs
+
+  >> ( valset )
+;
+
+/*----------------------------------------------------------------------------*/
+/* add call to set caller                                                     */
+/*----------------------------------------------------------------------------*/
+: addSetCaller ( valset -- valset )
+
+  task::this "setCaller"
+
+tp: addingSetCaller
+
+  >>
+;
+
+/*----------------------------------------------------------------------------*/
+/* add call to set dic path                                                   */
+/*----------------------------------------------------------------------------*/
+: addSetDicPath ( valset -- valset )
+
+  // add dicPath.set indirect
+  pathGet ( valset path... #folders )
+  "dicPath.set" ( valset path... #folders "dicPath.set" )
+
+tp: addingSetDicPath
+
+  >> ( valset )
+;
+
+/*----------------------------------------------------------------------------*/
+/* add call to set sender                                                     */
+/*----------------------------------------------------------------------------*/
+: addSetSender ( valset -- valset )
+
+  grid.thisNodeName@ "setSender"
+
+tp: addingSetSender
+
+  >>
+;
+
+/*----------------------------------------------------------------------------*/
+/* add call to pass result back to participant proxy                          */
+/*----------------------------------------------------------------------------*/
+: addPassBackToPP ( valset -- valset )
+
+  grid.thisNodeName@ "passBackToPP"
+
+  tp: addingPassBackToPP
+
+  >>
+;
+
+/*----------------------------------------------------------------------------*/
+/* add call to pass call onto coordinator proxy                               */
+/*----------------------------------------------------------------------------*/
+: addPassOnToCP ( valset -- valset )
+
+  "passOnToCP"
+
+tp: addingPassOnToCP
+
+  >>
+;
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* path for SE                                                                */
+/*----------------------------------------------------------------------------*/
+"../OS\\ X/Build/Products/Debug/SE" constant SE_PATH
+
+/*----------------------------------------------------------------------------*/
+/* form the shell command for spawning a node                                 */
+/*----------------------------------------------------------------------------*/
+: se_command ( nodeName clusterString -- "<command>" )
+
+  locals| nodeName |
+  locals| clusterString |
+
+  to clusterString
+  to nodeName
+
+  //  "nohup "
+  ""
+  SE_PATH str.cat
+  " --start " str.cat
+  " --size " str.cat args.regionSize >str str.cat
+  //" --commands /Users/alkayamarti/rapidsSE/rapidsse/Commands" str.cat
+  " --commands /Users/ray/Desktop/rapidsse/Commands" str.cat
+  clusterString str.cat
+  " --regionPrefix " str.cat args.regionPrefix str.cat
+  " --partitionsPerNode " str.cat args.partitionsPerNode >str str.cat
+  " --name  " str.cat nodeName str.cat
+  //" --partitionsPerNode " str.cat grid.slots >str str.cat
+  " --sleep " str.cat args.sleep >str str.cat
+  args.tracepoint if " --tracepoint " str.cat then
+  args.verbose if " --verbose " str.cat then
+  args.dontFree if " --dontFree " str.cat then
+  args.freeRB if " --freeRB " str.cat then
+  args.metadata if " --metadata " str.cat then
+
+  " &" str.cat
+;
+
+/*----------------------------------------------------------------------------*/
+/* spawn all other nodes for a grid on this machine                           */
+/*----------------------------------------------------------------------------*/
+: spawnNodes ( -- )
+
+  // test for single node
+  grid.nodes 1 == if exit then
+
+  // form the --node parameter string
+  locals| clusterString |
+  locals| node |
+
+  ""
+
+  grid.nodes 0 do
+    I grid.node   ( node )
+    to node
+    node node.port
+    node node.IP
+    node node.name
+    " --node %v %v %v " str.format
+    str.cat
+  loop
+
+  to clusterString
+
+  // spawn all other nodes
+  grid.nodes 0 do
+
+    // skip this node
+    I grid.thisNode@ != if
+      
+      // form the shell command to spawn node I
+      clusterString I grid.node node.name se_command
+
+      // print the shell command
+      dup .
+
+      // execute the shell command
+      shell.execute
+
+      // check result
+      not assert
+
+   then
+
+  loop
+
+  //grid.thisNode@ grid.startNode!
+  grid.startNode@ "Cluster Start node: %v" str.format .
+;
+
+/*----------------------------------------------------------------------------*/
+/* set start node                                                             */
+/*----------------------------------------------------------------------------*/
+: setStartNode ( -- )
+  // set this node as the grid start node
+  grid.thisNode@ grid.startNode!
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
