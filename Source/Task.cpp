@@ -831,7 +831,7 @@ void Task::vAddConstants(void)
   vAddConstant("answerDronePrint"_Str,    (i8)0);
   vAddConstant("connectorDronePrint"_Str, (i8)0);
   vAddConstant("senderTaskPrint"_Str,    (i8)0);
-  vAddConstant("receiverTaskPrint"_Str,  (i8)0);
+  vAddConstant("receiverDronePrint"_Str,  (i8)0);
   
   // c++ objects
   vAddConstant("scheduler"_Str, (i8)gpScheduler);

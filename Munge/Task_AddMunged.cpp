@@ -8020,7 +8020,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "\n"
     "  \\\"rcv.loop\\\" task::this task.comment!\n"
     "\n"
-    "  receiverTaskPrint if \\\"Receiver running on node\\\" grid.thisNode@ >str str.cat . then\n"
+    "  receiverDronePrint if \\\"Receiver running on node\\\" grid.thisNode@ >str str.cat . then\n"
     "\n"
     "  begin\n"
     "    depth 0 != if stk \\\"stack of task has grown\\\" . debug.trap then\n"
