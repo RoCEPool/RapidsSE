@@ -5,9 +5,9 @@
 "generalThreads.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* compute the number of query processing threads to be created               */
+/* compute the number of general processing threads to be created             */
 /*----------------------------------------------------------------------------*/
-: noQueryThreads ( memorySize -- noThreads )
+: noGeneralThreads ( memorySize -- noThreads )
 
   // the number of query threads is computed based on the
   // size of the region
@@ -31,41 +31,41 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* define the N_QUERY_THREADS constant                                        */
+/* define the N_GENERAL_THREADS constant                                      */
 /*----------------------------------------------------------------------------*/
-args.regionSize noQueryThreads constant N_QUERY_THREADS
+args.regionSize noGeneralThreads constant N_GENERAL_THREADS
 
 /*----------------------------------------------------------------------------*/
 /* create and spawn the query processing threads                              */
 /*----------------------------------------------------------------------------*/
-: >qryThreadNm ( i -- s ) "queryThread"    swap >str str.cat ;
-: :qryThread   ( i -- w ) >qryThreadNm    :thread    ;
+: >generalThreadNm ( i -- s ) "queryThread"    swap >str str.cat ;
+: :generalThread   ( i -- w ) >generalThreadNm    :thread    ;
 
-: queryThreadsStart
+: generalThreadsStart
 
-  0 locals| queryThread |
+  0 locals| pGeneralThread |
 
   args.progress if
-    N_QUERY_THREADS "Query threads: %v" str.format .
+    N_GENERAL_THREADS "General threads: %v" str.format .
   then
 
   args.verbose if
-    "N_query_THREADS " .put N_query_THREADS .put .\n
+    "N_GENERAL_THREADS " .put N_GENERAL_THREADS .put .\n
   then
 
-  N_query_THREADS 0 do
+  N_GENERAL_THREADS 0 do
 
     // create a thread called queryThreadI
-    I :qryThread execute to queryThread
+    I :generalThread execute to pGeneralThread
 
     // set the threads name
-    I >qryThreadNm queryThread thread.name!
+    I >generalThreadNm pGeneralThread thread.name!
 
     // give it a private taskset
-    taskset::new queryThread thread.taskset!
+    taskset::new pGeneralThread thread.taskset!
 
     // spawn os thread
-    queryThread thread.spawn_general
+    pGeneralThread thread.spawn_general
 
   loop
 ;

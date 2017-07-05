@@ -149,7 +149,7 @@ void* Thread::vEntry_General(void* pArg)
   Thread* pThread = static_cast<Thread*>(pArg);
   
   if (gbVerbose || gbProgress)
-    vTrace("[[%s]] Thread::vEntry_General%p\n"_Str,pThread->sName().s(),pThread);
+    vTrace("[[%s]] Thread::vEntry_General %p\n"_Str,pThread->sName().s(),pThread);
   
   try {
     pThread->vLoop_General();

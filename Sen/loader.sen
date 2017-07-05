@@ -74,9 +74,9 @@ timer: loadTimer
   // hold task mutex while we create sub loaders
   //task::this grabMutex
 
-  N_QUERY_THREADS setAcks
+  N_GENERAL_THREADS setAcks
 
-  N_QUERY_THREADS 0 do
+  N_GENERAL_THREADS 0 do
 
     << tblLoader loader.newSub >>
 
