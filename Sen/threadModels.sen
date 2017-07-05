@@ -4,6 +4,7 @@
 
 "threadModels.sen" .verbose
 
+"actorModel.sen" include
 "generalModel.sen" include
 "partitionModel.sen" include
 "jobModel.sen" include
