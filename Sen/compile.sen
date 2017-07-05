@@ -18,7 +18,7 @@
 "systemObjects.sen" include
 "gridModel.sen" include
 "dbobjects.sen" include
-"actors.sen" include
+"threadModels.sen" include
 "operators.sen" include
 "planners.sen" include
 "utilities.sen" include
