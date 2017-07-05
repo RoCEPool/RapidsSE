@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* actors.sen -- grid model group                                          */
+/* actors.sen -- grid model group                                             */
 /*============================================================================*/
 
 int:  queryCount
@@ -66,25 +66,25 @@ rootTaskSet rootThread thread.taskSet!
 /*----------------------------------------------------------------------------*/
 : startActors
 
-"startActors" .verbose
+  "startActors" .verbose
 
-args.bgtasks if
+  args.bgtasks if
 
-snooze startSeverThreads
-snooze partitionThreadsStart
+    snooze startSeverThreads
+    snooze partitionThreadsStart
 
-snooze spawnListerDrone
-snooze spawnMonitorDrone
+    snooze spawnListerDrone
+    snooze spawnMonitorDrone
 
-snooze spawnReclaimDrone
-snooze answerDroneSpawn
+    snooze spawnReclaimDrone
+    snooze answerDroneSpawn
 
-then
+  then
 
-//dic.main true dic.frozen!
+  //dic.main true dic.frozen!
 
-//REQUEST_LOOP2
-//requestStart
+  //REQUEST_LOOP2
+  //requestStart
 ;
 
 
