@@ -21,7 +21,9 @@ namespace Values
     
   public:
     void* operator new(size_t);
+    void  operator delete(void*);
     ValSet(void);
+    ~ValSet(void);
 
     void vAppend(Str*& pCursor, Value* pValue);
     bool bExtractValue(Str*& pCursor, Value*& pValue);
