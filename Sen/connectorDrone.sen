@@ -5,18 +5,13 @@
 "connectorDrone.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* define the con actor (con.task, con.queue, con.taskset, con.thread)        */
-/*----------------------------------------------------------------------------*/
-job: con
-
-/*----------------------------------------------------------------------------*/
 /* start the connector drone                                                  */
 /*----------------------------------------------------------------------------*/
 : connectorStart
 
 tp: connectorStart
 
-  0 "con.loop" nullPtr "connectorTask" spawnDroneActor
+  0 "con.loop" nullPtr "connectorDrone" spawnDroneActor
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -24,7 +19,7 @@ tp: connectorStart
 /*----------------------------------------------------------------------------*/
 : con.loop
 
-  connectorTaskPrint if "Connector running..." . then
+  connectorDronePrint if "Connector Drone..." . then
 
   grid.nodes 0 do
 
@@ -65,7 +60,7 @@ ddlLock::grabWrite
       dup job.task  I senderTasks  ! ( socket 1 "snd.loop" "srI" )
 
       // spawn the actors os thread
-      job.spawn
+      workerActor.spawn
 
 ddlLock::dropWrite
 

@@ -23,7 +23,7 @@ tp: received
 /*----------------------------------------------------------------------------*/
 : rcv.loop ( socket -- )
 
-tp: snd.loop
+tp: rvc.loop
 
   task::this task.socket!
 

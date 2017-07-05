@@ -14,7 +14,7 @@ int: nConnections
 /*----------------------------------------------------------------------------*/
 : answerStart
 
-  0 "ans.loop" nullPtr "answerTask" spawnDroneActor
+  0 "ans.loop" nullPtr "answerDrone" spawnDroneActor
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -25,7 +25,7 @@ int: nConnections
   // get the listening port of this node
   grid.thisNode@ grid.node node.port locals| iPort |
 
-  answerTaskPrint if "Answer running..." . then
+  answerDronePrint if "Answer Drone running..." . then
 
   args.verbose if
     "waiting for connections on port "  iPort >str str.cat .
@@ -55,12 +55,12 @@ ddlLock::grabWrite
     // set up the seed
     1 "rcv.loop" ( socket 1 "rcv.loop" )
 
-    // create the actor
+    // create the receive worker
     "rr" nConnections @ >str str.cat ( socket 1 "rcv.loop" "rrI" )
     :job ( socket 1 "rcv.loop" "rrI" )
 
     // spawn the actors os thread
-    job.spawn
+    workerActor.spawn
 
 ddlLock::dropWrite
 

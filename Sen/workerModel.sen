@@ -79,9 +79,9 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* spawn job model by seeding its task and spawning the os thread for it      */
+/* spawn worker by seeding its task and spawning the os thread for it         */
 /*----------------------------------------------------------------------------*/
-: job.spawn ( ... nArgs "<loopNm>" "<jobNm>" -- )
+: workerActor.spawn ( ... nArgs "<loopNm>" "<jobNm>" -- )
 
   locals| jobNm | ( ... nArgs "<loopNm>" )
 

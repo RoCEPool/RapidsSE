@@ -28,7 +28,7 @@
     "p" I >str str.cat :job
     dup job.queue I pQueues !
     dup job.task  I pTasks  !
-    job.spawn
+    workerActor.spawn
 
     //
     // coordinator proxy for node I
@@ -38,7 +38,7 @@
     "cp" I >str str.cat :job
     dup job.queue I cpQueues !
     dup job.task  I cpTasks  !
-    job.spawn
+    workerActor.spawn
 
     //
     // partitipant proxy for node I
@@ -53,7 +53,7 @@
     "pp" I >str str.cat :job
     dup job.queue I ppQueues !
     dup job.task  I ppTasks  !
-    job.spawn
+    workerActor.spawn
 
   loop
 
@@ -63,7 +63,7 @@
   0 "c.loop"
   "c" :job  ( 0 "c.loop" "c" )
 
-  job.spawn
+  workerActor.spawn
 
   args.verbose if
     cpQueuesDump
