@@ -6,6 +6,7 @@
 
 "generalModel.sen" include
 "partitionModel.sen" include
+"jobModel.sen" include
 
 
 //REQUEST_LOOP2
