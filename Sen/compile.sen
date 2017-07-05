@@ -16,9 +16,9 @@
 "transactions.sen" include
 "interface.sen" include
 "systemObjects.sen" include
+"threadModels.sen" include
 "gridModel.sen" include
 "dbobjects.sen" include
-"threadModels.sen" include
 "operators.sen" include
 "planners.sen" include
 "utilities.sen" include

@@ -2,6 +2,8 @@
 /* gridModel.sen -- grid model group                                          */
 /*============================================================================*/
 
+int:  queryCount
+
 "gridModel.sen" .verbose
 
 "node.sen" include

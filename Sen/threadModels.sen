@@ -2,44 +2,15 @@
 /* threadModels.sen -- thread models                                          */
 /*============================================================================*/
 
-"actors.sen" .verbose
+"threadModels.sen" .verbose
 
 "generalModel.sen" include
 "partitionModel.sen" include
 
-"listerTask.sen"  include
-"monitorTask.sen" include
-"reclaimTask.sen" include
 
 //REQUEST_LOOP2
 "requestTask.sen" include
 
-
-/*----------------------------------------------------------------------------*/
-/* called by RapidsSE::vStartActors                                           */
-/*----------------------------------------------------------------------------*/
-: startActors
-
-  "startActors" .verbose
-
-  args.bgtasks if
-
-    snooze generalThreadsStart
-    snooze partitionThreadsStart
-
-    snooze listerStart
-    snooze monitorStart
-
-    snooze reclaimStart
-    snooze answerStart
-
-  then
-
-  //dic.main true dic.frozen!
-
-  //REQUEST_LOOP2
-  //requestStart
-  ;
 
 /*============================================================================*/
 /* end                                                                        */

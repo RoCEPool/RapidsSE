@@ -8,9 +8,9 @@
 /* create the parts                                                           */
 /*----------------------------------------------------------------------------*/
 
-lock:    zMonitorLock
+lock: zMonitorLock
 
-str:     sMonitorString
+str:  sMonitorString
 
 /*----------------------------------------------------------------------------*/
 /* start the monitor task                                                     */
