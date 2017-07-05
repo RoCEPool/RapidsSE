@@ -13,9 +13,9 @@ taskCursor: pTaskCrs
 /*----------------------------------------------------------------------------*/
 /* start the lister drone                                                     */
 /*----------------------------------------------------------------------------*/
-: listerStart
+: spawnListerDrone
 
-  0 "lis.loop" nullptr "ListerActor" spawnDroneActor drop
+  0 "listerLoop" nullptr "ListerActor" spawnDroneActor drop
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -46,7 +46,7 @@ taskCursor: pTaskCrs
 /*----------------------------------------------------------------------------*/
 /* lister drone loop                                                          */
 /*----------------------------------------------------------------------------*/
-: lis.loop
+: listerLoop
 
   "listerDrone" task::this task.name!
 

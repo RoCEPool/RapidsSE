@@ -73,7 +73,7 @@ args.bgtasks if
 snooze generalThreadsStart
 snooze partitionThreadsStart
 
-snooze listerStart
+snooze spawnListerDrone
 snooze monitorStart
 
 snooze reclaimStart
