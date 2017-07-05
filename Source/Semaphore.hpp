@@ -8,10 +8,12 @@ namespace System
   class Semaphore : public Object
   {
   public:
-    bool             m_bLocked;  // true if mutex is locked (debugging)
-    pthread_mutex_t  m_xMutex;   // mutex variable
-    pthread_cond_t   m_xCond;    // condition variable
-    
+    bool                m_bLocked;    // true if mutex is locked (debugging)
+    pthread_mutex_t     m_xMutex;     // mutex variable
+    pthread_mutexattr_t m_xMutexAttr; // mutex shared attribute
+    pthread_cond_t      m_xCond;      // condition variable
+    pthread_condattr_t  m_xCondAttr;  // condition shared attribute
+
     // must be last
     Footer m_xFooter;
   

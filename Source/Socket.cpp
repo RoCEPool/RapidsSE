@@ -209,7 +209,6 @@ bool Socket::bConnectServer(Str* sAddr, int iPort, SysCall& SysCall)
   
   int iResult;
   int iOpt = 1;
-  struct sockaddr_in xServerAddr;
   
   SysCall.vClear();
   
@@ -232,9 +231,25 @@ bool Socket::bConnectServer(Str* sAddr, int iPort, SysCall& SysCall)
     return false;
   }
   
-  vAddrInit(&xServerAddr,sAddr,iPort);
+  struct addrinfo  xAddrInfo;
+  struct addrinfo* pAddrInfo = NULL;
   
-  iResult = connect(m_iSocketId,(sockaddr*)&xServerAddr,sizeof(xServerAddr));
+  MemLib::vZero(&xAddrInfo,sizeof(xAddrInfo));
+  
+  xAddrInfo.ai_family   = AF_INET;
+  xAddrInfo.ai_socktype = SOCK_STREAM;
+  xAddrInfo.ai_protocol = IPPROTO_TCP;
+  xAddrInfo.ai_flags    = AI_PASSIVE;
+  
+  s256 sPort;
+  StrLib::vSprint(sPort.aStr(), "%lld"_Str, iPort);
+  
+  i8 iReturn = getaddrinfo(sAddr->s(), sPort.s(), &xAddrInfo, &pAddrInfo);
+  if (iReturn != 0) {
+    vTrace("getaddrinfo: error %lld"_Str, iReturn);
+  }
+
+  iResult = connect(m_iSocketId,(struct sockaddr*)pAddrInfo->ai_addr,sizeof(struct sockaddr));
   
   if (iResult != 0) {
     SysCall.vError(errno);
