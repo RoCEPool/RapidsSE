@@ -817,7 +817,7 @@ void Task::vAddConstants(void)
   
   // debug
   vAddConstant("listerTaskPrint"_Str,    (i8)0);
-  vAddConstant("monitorTaskPrint"_Str,   (i8)0);
+  vAddConstant("monitorTaskPrint"_Str,   (i8)1);
   vAddConstant("reclaimTaskPrint"_Str,   (i8)0);
   vAddConstant("requestTaskPrint"_Str,   (i8)0);
   vAddConstant("answerTaskPrint"_Str,    (i8)0);
