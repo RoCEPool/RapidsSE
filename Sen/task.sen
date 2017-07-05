@@ -34,18 +34,21 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* spawn a task                                                               */
+/* create a task using given arguments and append to general task queue       */
 /*----------------------------------------------------------------------------*/
-: spawnTask ( ... nArgs sSeedWord sTaskNm -- )
+: spawnGeneralTask ( ... nArgs sSeedWord sTaskNm -- )
 
-  locals| sTaskNm sSeedWord nArgs |
+  nullPtr nullptr locals| pParent pTask sTaskNm sSeedWord nArgs |
 
-  nArgs sSeedWord nullPtr task::new locals| pTask |
+  // create a new task
+  nArgs sSeedWord pParent task::new to ptask
+
+  // set task name
   sTaskNm pTask task.name!
 
-  //nArgs sSeedWord pTask task.seed
+  // append task onto general task queue
+  pTask scheduler::enqueueGeneralTask
 
-  pTask scheduler::enqueueTask
   pTask  // return the task
 ;
 

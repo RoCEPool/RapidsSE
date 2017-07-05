@@ -86,7 +86,7 @@ timer: loadTimer
 
     pSubTask I >loadSubNm swap task.name!
 
-    pSubTask scheduler::enqueueTask //I >genTaskSet taskSet.append
+    pSubTask scheduler::enqueueGeneralTask //I >genTaskSet taskSet.append
   loop
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

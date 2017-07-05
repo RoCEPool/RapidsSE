@@ -32,9 +32,9 @@ extern Scheduler*      gpScheduler;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Scheduler(void)
 {
-  vAddPrimitive("Scheduler::enqueueTask"_Str,   &vSchedulerEnqueueTask,   false);
-  vAddPrimitive("Scheduler::queuedTasks"_Str,   &vSchedulerQueuedTasks,   false);
-  vAddPrimitive("Scheduler::queuedThreads"_Str, &vSchedulerQueuedThreads, false);
+  vAddPrimitive("Scheduler::enqueueGeneralTask"_Str, &vSchedulerEnqueueTask,   false);
+  vAddPrimitive("Scheduler::queuedTasks"_Str,        &vSchedulerQueuedTasks,   false);
+  vAddPrimitive("Scheduler::queuedThreads"_Str,      &vSchedulerQueuedThreads, false);
 }
 
 /*----------------------------------------------------------------------------*/
