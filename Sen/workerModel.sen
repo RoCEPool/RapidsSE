@@ -101,6 +101,9 @@
   actorNm ".taskset" str.cat :taskset execute to_TASKSET // reg2 has taskset
   actorNm ".thread"  str.cat :thread  execute to_THREAD  // reg3 has thread
 
+  AC_WORKER reg0 task.actorModel!
+  AC_WORKER reg3 thread.actorModel!
+
   interlinkParts
 
   reg.pop
@@ -119,6 +122,9 @@
   actorNm ".queue"   str.cat :queue   execute to_QUEUE   // reg1 has queue
   actorNm ".taskset" str.cat :taskset execute to_TASKSET // reg2 has taskset
   actorNm ".thread"  str.cat :thread  execute to_THREAD  // reg3 has thread
+
+  AC_WORKER reg0 task.actorModel!
+  AC_WORKER reg3 thread.actorModel!
 
   interlinkParts
 
