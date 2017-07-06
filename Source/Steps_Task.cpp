@@ -416,8 +416,12 @@ ENTRY("vTaskNameStore"_Str);
 void Task::vTaskNew(MP_Task mpTask)
 {
 ENTRY("vTaskNew"_Str);
-  //                                   pParent   sSeed     nTaskArgs
-  if ( ! mpTask->m_pDataStack->bGuard(CN_PTRVAL,CN_STRVAL,CN_INTVAL) )
+
+  if ( ! mpTask->m_pDataStack->bGuard(4) )
+    THROW_INVALID_DSTACK("task::new"_Str);
+  
+  s32 sName;
+  if ( ! mpTask->m_pDataStack->bPop(sName) )
     THROW_INVALID_DSTACK("task::new"_Str);
   
   Object* pParent;
@@ -441,6 +445,7 @@ ENTRY("vTaskNew"_Str);
   // create new task (will be automatically appended to task list)
   MP_Task nnpNewTask = new Task;
   
+  nnpNewTask->m_sName = sName;
   nnpNewTask->m_pParentTask = pParentTask;
   nnpNewTask->vSeedWord(sSeed);
   

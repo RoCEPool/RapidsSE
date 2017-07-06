@@ -12,6 +12,7 @@
   0  // no args
   "" // no seed
   0 >ptr // no parent
+  "" // no name
 
   task::new
 

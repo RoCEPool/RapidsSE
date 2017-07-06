@@ -65,8 +65,12 @@ args.regionSize nPartitionThreads constant N_PARTITION_THREADS
     AC_PARTITION pPartitionThread thread.actorModel!
 
     // give it a private taskset
-    taskset::new pPartitionThread thread.taskset!
+    //taskset::new pPartitionThread thread.taskset!
 
+    // give it a public taskset
+    I >partitionThreadNm ".taskset" str.cat :taskset execute
+      pPartitionThread thread.taskset!
+    words
     // spawn os thread
     pPartitionThread thread.spawn_partition
 

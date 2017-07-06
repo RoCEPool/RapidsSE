@@ -257,9 +257,23 @@ traceon
 /*----------------------------------------------------------------------------*/
 /* scheduler testing                                                          */
 /*----------------------------------------------------------------------------*/
-: sched
+: schedServer
 
   0 "helloWorld" nullptr "hi" spawnServerActor drop
+;
+
+/*----------------------------------------------------------------------------*/
+/* partition testing                                                          */
+/*----------------------------------------------------------------------------*/
+: ptnTest
+
+  0 "helloWorld" nullptr "hi" task::new locals| pTask |
+
+  AC_PARTITION pTask task.actorModel!
+
+  0 >partitionThreadNm findActorTaskSet dup . locals| pTaskSet |
+
+  pTask pTaskSet taskSet.append
 ;
 
 /*----------------------------------------------------------------------------*/

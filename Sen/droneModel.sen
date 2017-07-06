@@ -16,8 +16,8 @@
   nullptr nullptr locals| pThread pTask |
 
   // create a new task and set task name and drone model
-  nArgs sSeedWord pParentTask task::new to pTask
-  sTaskNm pTask task.name!
+  nArgs sSeedWord pParentTask sTaskNm task::new to pTask
+  //sTaskNm pTask task.name!
   AC_DRONE pTask task.actorModel!
 
   // create a new thread and set thread name and drone model
