@@ -11,7 +11,7 @@
 
 tp: spawnConnectorDrone
 
-  0 "connectorLoop" nullPtr "connectorDrone" spawnDroneActor
+  0 "connectorLoop" nullPtr "ConnectorDrone" spawnDroneActor
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -19,7 +19,9 @@ tp: spawnConnectorDrone
 /*----------------------------------------------------------------------------*/
 : connectorLoop
 
-  connectorDronePrint if "Connector Drone..." . then
+  connectorDronePrint if
+    task::this task.name@ " running..." str.cat .
+  then
 
   grid.nodes 0 do
 

@@ -67,11 +67,13 @@ seitfCursor: seitfCrs
 /*----------------------------------------------------------------------------*/
 : reclaimLoop
 
-  "reclaimTask" task::this task.name!
+//"reclaimTask" task::this task.name!
+
+  reclaimDronePrint if
+    task::this task.name@ " running..." str.cat .
+  then
 
   "" sReclaimString !
-
-  reclaimDronePrint if "reclaim Task running..." . then
 
   begin
 

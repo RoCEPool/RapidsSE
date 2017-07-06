@@ -25,11 +25,13 @@ str:  sMonitorString
 /*----------------------------------------------------------------------------*/
 : monitorLoop
 
-  "monitorDrone" task::this task.name!
+//"monitorDrone" task::this task.name!
+
+  monitorDronePrint if
+    task::this task.name@ " running..." str.cat .
+  then
 
   "" sMonitorString !
-
-  monitorDronePrint if "Monitor Drone running..." . then
 
   begin
 
