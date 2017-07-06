@@ -72,12 +72,12 @@ rootTaskSet rootThread thread.taskSet!
   args.bgtasks if
 
     snooze startSeverThreads
-    snooze partitionThreadsStart
+    snooze startPartitionThreads
 
     snooze spawnListerDrone
     snooze spawnMonitorDrone
-
     snooze spawnReclaimDrone
+
     snooze answerDroneSpawn
 
   then

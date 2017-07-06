@@ -41,7 +41,7 @@ args.regionSize nPartitionThreads constant N_PARTITION_THREADS
 : >partitionThreadNm ( i -- s ) "partitionThread"    swap >str str.cat ;
 : :partitionThread   ( i -- w ) >partitionThreadNm    :thread    ;
 
-: partitionThreadsStart
+: startPartitionThreads
 
   0 locals| pPartitionThread |
 
