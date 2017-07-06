@@ -55,8 +55,10 @@ void Task::vAddPrimitives_Thread(void)
   vAddPrimitive("thread.sleep_ns"_Str,        &vThreadSleep_ns,        false);
   vAddPrimitive("thread.spawn_drone"_Str,     &vThreadSpawn_Drone,     false);
   vAddPrimitive("thread.spawn_partition"_Str, &vThreadSpawn_Partition, false);
-  vAddPrimitive("thread.spawn_server"_Str,    &vThreadSpawn_Server,   false);
+  vAddPrimitive("thread.spawn_server"_Str,    &vThreadSpawn_Server,    false);
   vAddPrimitive("thread.spawn_worker"_Str,    &vThreadSpawn_Worker,    false);
+  vAddPrimitive("thread.task@"_Str,           &vThreadTaskFetch,       false);
+  vAddPrimitive("thread.task!"_Str,           &vThreadTaskStore,       false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -630,6 +632,47 @@ void Task::vThreadSpawn_Worker(MP_Task mpTask)
   Thread* pThread = static_cast<Thread*>(pThreadEmb);
   
   pThread->vSpawn_Drone();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* thread.task@ -- fetch current task from the thread which is on data stack  */
+/*----------------------------------------------------------------------------*/
+void Task::vThreadTaskFetch(MP_Task mpTask)
+{
+  ENTRY("vThreadTaskFetch"_Str);
+  
+  Object* pThreadEmb;
+  if ( ! mpTask->m_pDataStack->bPop(pThreadEmb) )
+    THROW_INVALID_DSTACK("thread.task@"_Str);
+  Thread* pThread = _pThread(pThreadEmb);
+  
+  Task* pTask = *pThread->m_npTask;
+  
+  mpTask->m_pDataStack->vPushObject(pTask);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* thread.task! -- store current task into the thread which is on data stack  */
+/*----------------------------------------------------------------------------*/
+void Task::vThreadTaskStore(MP_Task mpTask)
+{
+  ENTRY("vThreadTaskStore"_Str);
+  
+  Object* pThreadEmb;
+  if ( ! mpTask->m_pDataStack->bPop(pThreadEmb) )
+    THROW_INVALID_DSTACK("thread.task@"_Str);
+  Thread* pThread = _pThread(pThreadEmb);
+  
+  Object* pTaskEmb;
+  if ( ! mpTask->m_pDataStack->bPop(pTaskEmb) )
+    THROW_INVALID_DSTACK("thread.task!"_Str);
+  Task* pTask = _pTask(pTaskEmb);
+  
+  pThread->m_npTask = pTask;
   
   EXIT();
 }

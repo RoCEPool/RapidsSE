@@ -360,7 +360,7 @@ void Thread::vLoop_Drone(void)
   
   PosixThread::vTlsSet(giTLS_ThreadKey,this);
   ASSERT(PosixThread::pTlsGet(giTLS_ThreadKey));
-  
+    
   // sleep loop: sleep waiting for next task
   while (true) {
     
