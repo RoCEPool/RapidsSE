@@ -346,9 +346,16 @@ void Thread::vLoop_Drone(void)
   
   m_pPosixThread->vSetOSThreadId();
   
+  // expect a task
   if (! *m_npTask) {
     vTrace("Thread %p: %s has no task\n"_Str,this,m_sName.s());
     ASSERT(*m_npTask);
+  }
+
+  // expect no taskSet
+  if (m_pTaskSet) {
+    vTrace("Thread %p: %s has a taskset\n"_Str,this,m_sName.s());
+    ASSERT(! m_pTaskSet);
   }
   
   //  vTrace("Thread %p: priority %lld\n"_Str,
@@ -368,6 +375,7 @@ void Thread::vLoop_Drone(void)
   
   PosixThread::vTlsSet(giTLS_TaskKey,*m_npTask);
   ASSERT(PosixThread::pTlsGet(giTLS_TaskKey));
+  
   m_npTask->vState(TS_RUNNING);
   m_npTask->vThread(this);
   m_npTask->vLoop();
@@ -380,7 +388,7 @@ void Thread::vLoop_Drone(void)
     m_npTask = nullptr;
   }
   
-  m_pPosixThread->vSleepSec(100000000);
+  m_pPosixThread->vSleepSec(100000000);                                 //! temp
 }
 
 /*----------------------------------------------------------------------------*/

@@ -7,34 +7,23 @@
 /*----------------------------------------------------------------------------*/
 /* create a thread-task pair using given arguments                            */
 /*----------------------------------------------------------------------------*/
-: spawnDroneActor ( ... nArgs sSeedWord pParentTask sTaskNm -- )
+: spawnDroneActor ( ... nArgs sSeedWord pParentTask sTaskNm -- pTask )
 
   // save arguments
-  locals| sTaskNm pParent sSeedWord nArgs |
+  locals| sTaskNm pParentTask sSeedWord nArgs |
 
   // local variables
-  nullptr nullptr locals| pTaskSet pThread pTask |
+  nullptr nullptr locals| pThread pTask |
 
-  // create a new task
-  nArgs sSeedWord pParent task::new to pTask
-
-  // set task name
+  // create a new task and set task name
+  nArgs sSeedWord pParentTask task::new to pTask
   sTaskNm pTask task.name!
 
-  // create a thread
+  // create a new thread and set thread name
   sTaskNm "Thread" str.cat :thread execute to pThread
-
-  // set thread name
   sTaskNm "Thread" str.cat pThread thread.name!
 
-  // create taskset
-  sTaskNm "TaskSet" str.cat :taskSet execute to ptaskSet
-
-  // attach taskset onto thread
-  pTaskSet pThread thread.taskSet!
-
-  // append task into taskset
-  //pTask pTaskSet taskSet.append
+  // setup thread with task
   pTask pThread thread.task!
 
   // spawn posix thread for drone actor 
