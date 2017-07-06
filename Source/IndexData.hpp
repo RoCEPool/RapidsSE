@@ -36,6 +36,7 @@ namespace DBobjects
     ~IndexData(void);
   
     Str*         pAnalyze(void);
+    void         vAppendBuffer(EntryBuffer* pEntryBuffer);
     void         vDump(bool bSameLevel);
     EntryBuffer* pFirstBuffer();
     Index*       pIndex(void);

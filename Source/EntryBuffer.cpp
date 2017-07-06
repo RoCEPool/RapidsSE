@@ -711,6 +711,57 @@ void EntryBuffer::vBufferCount(i8& nBuffers)
 }
 
 /*----------------------------------------------------------------------------*/
+/* insert an entry for {key,id} into an index buffer at given level           */
+/*----------------------------------------------------------------------------*/
+bool EntryBuffer::bInsertEntry(i8 iTxId, Str* pRow, i8 iLength)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  Entry* pEntry;
+  
+  ASSERT(nBufferLevel() == 0);
+  
+  KeyWrk xKeyWrk;
+  ValWrk xValWrk;
+  
+  //----------------------------------------------------------------------------
+  // form the rowId
+  bn nBufferNo = m_nBufferNo;
+  i8 nRowNo = nEntries();
+  Id rowId(*nBufferNo, nRowNo);
+  
+  //----------------------------------------------------------------------------
+  // form the key
+  xValWrk = nRowNo;
+  Column* pColumn = m_pIndex->pIdxColVec()->pGet(0);
+  ASSERT(pColumn->iColumnNo() == -1);
+  xKeyWrk.vAddDatum(xValWrk, pColumn);
+  
+  //----------------------------------------------------------------------------
+  // add the id and key to EntWrk
+  EntWrk xEntWrk(rowId, xKeyWrk);
+  
+  //----------------------------------------------------------------------------
+  // add the row data to the EntWrk
+  xEntWrk.vData(pRow, iLength);
+  
+  //----------------------------------------------------------------------------
+  // check if current index buffer has enough space
+  i8 nEntryBytes = Entry::nBytesRequired(xEntWrk);
+  
+  if ( ! bHasSpace(nEntryBytes) ) {
+    return false;
+  }
+  else {
+    
+    // insert entry into current index buffer
+    pEntry = pInsert(xEntWrk);
+  }
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* insert new entry into this index buffer                                    */
 /*----------------------------------------------------------------------------*/
 Entry* EntryBuffer::pInsert(EntWrk& xEntWrk)

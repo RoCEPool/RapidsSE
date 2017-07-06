@@ -73,7 +73,7 @@ LoaderSub::LoaderSub(void)
   m_pLoadChunk  = new LoadChunk;
   
   for (i8 i_Partition = 0; i_Partition < C_MAX_PARTITIONS; i_Partition++)
-    m_pRowBuffer[i_Partition] = nullptr;
+    m_pEntryBuffer[i_Partition] = nullptr;
   
   _checkInitialised_(CN_LOADERSUB);
   
@@ -116,11 +116,11 @@ void LoaderSub::vAppendBuffer(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
   
   // get working buffer
-  EntryBuffer* pRowBuffer = m_pRowBuffer[m_iPartition];
-  m_pRowBuffer[m_iPartition] = nullptr;
+  EntryBuffer* pEntryBuffer = m_pEntryBuffer[m_iPartition];
+  m_pEntryBuffer[m_iPartition] = nullptr;
   
   // append working buffer into table
-  m_pTable->vAppendBuffer(m_iPartition,pRowBuffer);
+  m_pTable->vAppendBuffer(m_iPartition,pEntryBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -155,14 +155,14 @@ void LoaderSub::vEnd(void)
   
   // append any dangling buffers
   for (i8 i_Partition = 0; i_Partition < C_MAX_PARTITIONS; i_Partition++) {
-    /*
-    if (m_pRowBuffer[i_Partition]) {
-      EntryBuffer* pRowBuffer = m_pRowBuffer[i_Partition];
-      m_pRowBuffer[i_Partition] = nullptr;
-      m_pTable->vAppendBuffer(m_iPartition,pRowBuffer);
+/*
+    if (m_pEntryBuffer[i_Partition]) {
+      EntryBuffer* pEntryBuffer = m_pEntryBuffer[i_Partition];
+      m_pEntryBuffer[i_Partition] = nullptr;
+      m_pTable->vAppendBuffer(m_iPartition,pEntryBuffer);
     }
-    */
-    ASSERT(! m_pRowBuffer[i_Partition]);
+*/
+    ASSERT(! m_pEntryBuffer[i_Partition]);
   }
   
   // close the file being loaded
@@ -227,7 +227,7 @@ bool LoaderSub::bInsertRow(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
  
   //vTrace("%s\n"_Str, m_aRecord->s());
-  
+  /*
   // get the hidden index data
   Partition* pPartition = m_pTable->pPartition(m_iPartition);
   
@@ -251,6 +251,25 @@ bool LoaderSub::bInsertRow(void)
   }
   
   return true;
+  */
+  //vDumpAscii(m_aRecord,m_iLength);
+  
+  // check for working buffer
+  if (! m_pEntryBuffer[m_iPartition]) {
+    m_pEntryBuffer[m_iPartition] = new EntryBuffer(m_pTable->pHiddenIndex(),0);
+    if (! m_pEntryBuffer[m_iPartition]) {
+      vTrace("EntryBuffer allocation failed\n"_Str);
+      return false;
+    }
+  }
+  
+  // get working buffer
+  EntryBuffer* pEntryBuffer = m_pEntryBuffer[m_iPartition];
+  
+  // insert row into working buffer
+  bool b = pEntryBuffer->bInsertEntry(m_pTxRef->iTxId(),m_aRecord,m_iLength);
+  
+  return b;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -331,11 +350,11 @@ EntryBuffer* LoaderSub::pRowBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
   
-  EntryBuffer* pRowBuffer = m_pRowBuffer[m_iPartition];
+  EntryBuffer* pEntryBuffer = m_pEntryBuffer[m_iPartition];
 
   //m_pRowBuffer[m_iPartition] = nullptr;
   
-  return pRowBuffer;
+  return pEntryBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -345,7 +364,7 @@ void LoaderSub::vRowBuffer(EntryBuffer* pRowBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
   
-  m_pRowBuffer[m_iPartition] = pRowBuffer;
+  m_pEntryBuffer[m_iPartition] = pRowBuffer;
   
 }
 

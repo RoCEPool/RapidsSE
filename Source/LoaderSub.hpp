@@ -22,7 +22,7 @@ namespace DBobjects
     
     bool     m_bMoreChunks;  // continue while there are more chunks
     LoadChunk* m_pLoadChunk; // chunk loading buffer
-    EntryBuffer* m_pRowBuffer[C_MAX_PARTITIONS]; // working row buffers
+    EntryBuffer* m_pEntryBuffer[C_MAX_PARTITIONS]; // working row buffers
     
     // must be last
     Footer m_xFooter;

@@ -89,11 +89,13 @@ IndexData::IndexData(Index* pIndex)
   m_pIndex = pIndex;
   
   // start with a root buffer at L0
-  m_pRoot = new EntryBuffer(pIndex, 0);
+  //m_pRoot = new EntryBuffer(pIndex, 0);
   
   /// set current buffer
-  m_pCurrentBuffer = m_pRoot;
+  //m_pCurrentBuffer = m_pRoot;
   
+  m_pRoot = nullptr;
+  m_pCurrentBuffer = nullptr;
   _checkInitialised_(CN_INDEXDATA);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
@@ -162,6 +164,9 @@ EntryBuffer* IndexData::pFirstBuffer(void)
   
   EntryBuffer* pIndexBuffer = m_pRoot;
   
+  if ( ! pIndexBuffer )
+    return nullptr;
+  
   if (pIndexBuffer->nBufferLevel() == 0)
     return pIndexBuffer;
   
@@ -201,6 +206,25 @@ i8 IndexData::nIndexBuffers(void)
   return nBufferCount;
 }
 
+/*----------------------------------------------------------------------------*/
+/* insert an entry for {key,id} into an index buffer at given level           */
+/*----------------------------------------------------------------------------*/
+void IndexData::vAppendBuffer(EntryBuffer* pEntryBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
+  
+  if (m_pRoot == nullptr) {
+    ASSERT( ! m_pCurrentBuffer )
+    m_pRoot = pEntryBuffer;
+  }
+  else {
+    pEntryBuffer->vNextBuffer(m_pCurrentBuffer->pNextBuffer());
+    pEntryBuffer->vPrevBuffer(m_pCurrentBuffer);
+    m_pCurrentBuffer->vNextBuffer(pEntryBuffer);
+  }
+  
+  m_pCurrentBuffer = pEntryBuffer;
+}
 
 /*----------------------------------------------------------------------------*/
 /* insert an entry for {key,id} into an index buffer at given level           */
@@ -307,6 +331,10 @@ void IndexData::vInsertEntry(Entry* pRow)
   
   KeyWrk xKeyWrk;
   pRow->vExtractKey(xKeyWrk, m_pIndex->pIdxColVec());
+  
+  if ( ! m_pRoot )
+    m_pRoot = new EntryBuffer(m_pIndex, 0);
+  
   vInsertEntry(m_pRoot, xKeyWrk, pRow->xId(), 0);
   
   m_zLock.vDropWrite();

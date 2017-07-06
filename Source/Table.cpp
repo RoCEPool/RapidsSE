@@ -313,18 +313,40 @@ Str* Table::pAnalyzeIndex(Index* pIndex, bool bDetailed)
 /*----------------------------------------------------------------------------*/
 /* append row buffer                                                          */
 /*----------------------------------------------------------------------------*/
-void Table::vAppendBuffer(i8 iPartition, EntryBuffer* pRowBuffer)
+void Table::vAppendBuffer(i8 iPartition, EntryBuffer* pEntryBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
   ASSERT(iPartition < gpGrid->m_nSlots);
   
   // mark buffer as permanent
-  pRowBuffer->vDurability(BD_PERMANENT);
+  pEntryBuffer->vDurability(BD_PERMANENT);
   
+  // first append buffer to the hidden index
   Partition* pPartition = this->pPartition(iPartition);
- 
-  pPartition->pData()->vAppendBuffer(pRowBuffer);
+  IndexData* pIndexData = pPartition->pHiddenIndexData();
+  pIndexData->vAppendBuffer(pEntryBuffer);
+  
+  // now iterate thru the buffer and insert entries in all other indexes
+  
+  // get no of indexes of the table
+  IdxDataVec* pIdxDataVec = pPartition->pIdxDataVec();
+  i8 nIndexes = pIdxDataVec->nItems();
+  
+  Entry* pEntry = pEntryBuffer->pFirstRow();
+  while( (pEntry = pEntryBuffer->pNextRow(pEntry)) ) {
+    
+    // insert an entry for the row in all the indexes of this table
+    for (i8 i_Index=0; i_Index < nIndexes; i_Index++) {
+      
+      IndexData* pIndexData = pIdxDataVec->pGet(i_Index);
+      Index* pIndex = pIndexData->pIndex();
+      
+      // skip the hidden index, as already inserted row in it
+      if ( ! pIndex->bIsHidden())
+        pIndexData->vInsertEntry(pEntry);
+    }
+  }
 }
 
 /*----------------------------------------------------------------------------*/
