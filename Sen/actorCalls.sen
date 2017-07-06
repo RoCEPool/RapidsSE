@@ -26,8 +26,8 @@
     0 "pLoop"
 
     "p" I >str str.cat :createWorkerActor
-    dup findWorkerQueue I pQueues !
-    dup findWorkerTask  I pTasks  !
+    dup findActorQueue I pQueues !
+    dup findActorTask  I pTasks  !
     spawnWorkerActor
 
     //
@@ -36,8 +36,8 @@
 
     I I pTasks @ 2 "cpLoop"
     "cp" I >str str.cat :createWorkerActor
-    dup findWorkerQueue I cpQueues !
-    dup findWorkerTask  I cpTasks  !
+    dup findActorQueue I cpQueues !
+    dup findActorTask  I cpTasks  !
     spawnWorkerActor
 
     //
@@ -51,8 +51,8 @@
     then
 
     "pp" I >str str.cat :createWorkerActor
-    dup findWorkerQueue I ppQueues !
-    dup findWorkerTask  I ppTasks  !
+    dup findActorQueue I ppQueues !
+    dup findActorTask  I ppTasks  !
     spawnWorkerActor
 
   loop

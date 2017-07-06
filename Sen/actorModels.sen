@@ -1,10 +1,10 @@
 /*============================================================================*/
-/* actors.sen -- grid model group                                             */
+/* actorModels.sen -- actor models group                                      */
 /*============================================================================*/
 
 int:  queryCount
 
-"actors.sen" .verbose
+"actorModels.sen" .verbose
 
 "thread.sen" include
 "threadList.sen" include

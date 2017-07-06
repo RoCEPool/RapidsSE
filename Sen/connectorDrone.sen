@@ -56,8 +56,8 @@ ddlLock::grabWrite
       "sr" I >str str.cat :createWorkerActor ( socket 1 "senderLoop" "srI" )
 
       // record the senderQueue
-      dup findWorkerQueue I senderQueues ! ( socket 1 "senderLoop" "srI" )
-      dup findWorkerTask  I senderTasks  ! ( socket 1 "senderLoop" "srI" )
+      dup findActorQueue I senderQueues ! ( socket 1 "senderLoop" "srI" )
+      dup findActorTask  I senderTasks  ! ( socket 1 "senderLoop" "srI" )
 
       // spawn the actors os thread
       spawnWorkerActor
