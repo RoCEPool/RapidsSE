@@ -153,6 +153,7 @@ namespace Tasks
     static void vDump(eCN eClass, Object* pObject, Str* aTab);
     
     eAC  eActorModel(void);
+    void vActorModel(eAC eActorModel);
     void vAdjustNext(i8 iBytes);
     void vAddConstant(Str* aName, i8 iVal);
     void vAddConstant(Str* aName, Str* aValue);

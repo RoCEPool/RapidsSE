@@ -381,6 +381,7 @@ void RapidsSE::vSystemInit(void)
   s32 sName;
   sName = "rootTask"_Str;
   gnpRootTask->vName(sName);
+  gnpRootTask->vActorModel(AC_SERVER);
   
   gpScheduler = new Scheduler;
   

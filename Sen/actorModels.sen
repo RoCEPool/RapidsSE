@@ -30,6 +30,7 @@ taskSet: rootTaskSet
 //traceon
 ( root thread and name it )
 thread: rootThread "rootThread" rootThread thread.name!
+AC_SERVER rootThread thread.actorModel!
 //traceoff
 
 ( give root task set to root thread )

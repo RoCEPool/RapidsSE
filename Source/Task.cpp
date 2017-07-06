@@ -151,6 +151,7 @@ Task::Task(Value* pRequest)
   
   m_sName    = "req.task"_Str;
   m_sComment = "requestLoop"_Str;
+  m_eActorModel = AC_SERVER;
   
   _checkInitialised_(CN_TASK);
   
@@ -303,6 +304,16 @@ eAC Task::eActorModel(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   return m_eActorModel;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set actor model                                                            */
+/*----------------------------------------------------------------------------*/
+void Task::vActorModel(eAC eActorModel)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  m_eActorModel = eActorModel;
 }
 
 /*----------------------------------------------------------------------------*/
