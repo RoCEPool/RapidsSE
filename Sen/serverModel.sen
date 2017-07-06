@@ -61,6 +61,9 @@ args.regionSize nServerThreads constant N_SERVER_THREADS
     // set the threads name
     I >serverNm pServerThread thread.name!
 
+    // set actor model in the thread
+    AC_SERVER pServerThread thread.actorModel!
+
     // give it a private taskset
     taskset::new pServerThread thread.taskset!
 
@@ -82,6 +85,9 @@ args.regionSize nServerThreads constant N_SERVER_THREADS
 
   // set task name
   sTaskNm pTask task.name!
+
+  // set actor model in task
+  AC_SERVER pTask task.actorModel!
 
   // append task onto server task queue
   pTask scheduler::enqueueServerTask

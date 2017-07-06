@@ -473,6 +473,8 @@ void Thread::vLoop_Server(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
+  ASSERT(m_eActorModel == AC_SERVER);
+  
   if (gbVerbose || gbProgress)
     vTrace("Thread %p: %s Server\n"_Str,this,m_sName.s());
   
@@ -529,6 +531,8 @@ void Thread::vLoop_Server(void)
       bool b = m_pScheduler->bGetTask_Mutex(this,true);
       ASSERT( b && *m_npTask );
     }
+    
+    ASSERT(m_npTask->eActorModel() == AC_SERVER);
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // set up this thread to run task
