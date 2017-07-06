@@ -403,6 +403,8 @@ void Thread::vLoop_Partition(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
+  ASSERT(m_eActorModel == AC_PARTITION);
+  
   if (gbVerbose || gbProgress)
     vTrace("Thread %p: %s loop\n"_Str,this,m_sName.s());
   
@@ -437,6 +439,8 @@ void Thread::vLoop_Partition(void)
       PosixThread::vSleepMilli(1);
       continue;
     }
+    
+    ASSERT(m_npTask->eActorModel() == AC_PARTITION);
     
     PosixThread::vTlsSet(giTLS_TaskKey,*m_npTask);
     ASSERT(PosixThread::pTlsGet(giTLS_TaskKey));
