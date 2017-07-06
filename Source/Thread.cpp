@@ -645,6 +645,9 @@ void Thread::vLoop_Worker(void)
     
     if (TS_WAITING_ACK != m_npTask->eState())
       m_npTask->vThread(nullptr);
+    else {
+      ASSERT(m_npTask->pThread());
+    }
     
     if (TS_YIELDED == m_npTask->eState()) {
       MP_Task mpTask = *m_npTask;
