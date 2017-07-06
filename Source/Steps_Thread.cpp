@@ -631,7 +631,7 @@ void Task::vThreadSpawn_Worker(MP_Task mpTask)
   
   Thread* pThread = static_cast<Thread*>(pThreadEmb);
   
-  pThread->vSpawn_Drone();
+  pThread->vSpawn_Worker();
   
   EXIT();
 }

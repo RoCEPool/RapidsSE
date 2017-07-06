@@ -335,7 +335,7 @@ void Thread::vContentDump(void) const
 }
 
 /*----------------------------------------------------------------------------*/
-/* thread loop (sleep loop)                                                   */
+/* drone loop (calls task loop just once)                                     */
 /*----------------------------------------------------------------------------*/
 void Thread::vLoop_Drone(void)
 {
@@ -346,12 +346,17 @@ void Thread::vLoop_Drone(void)
   
   m_pPosixThread->vSetOSThreadId();
   
+  if (! *m_npTask) {
+    vTrace("Thread %p: %s has no task\n"_Str,this,m_sName.s());
+    ASSERT(*m_npTask);
+  }
+  
   //  vTrace("Thread %p: priority %lld\n"_Str,
   //         this,
   //         m_pPosixThread->iThreadPriority()
   //         );
   
-  //m_pPosixThread->vThreadBoost(C_THREAD_BOOST);                //! RANDOM ERROR
+  //m_pPosixThread->vThreadBoost(C_THREAD_BOOST);               //! RANDOM ERROR
   
   //  vTrace("Thread %p: priority %lld\n"_Str,
   //         this,
@@ -360,44 +365,22 @@ void Thread::vLoop_Drone(void)
   
   PosixThread::vTlsSet(giTLS_ThreadKey,this);
   ASSERT(PosixThread::pTlsGet(giTLS_ThreadKey));
-    
-  // sleep loop: sleep waiting for next task
-  while (true) {
-    
-    if ( ! m_pTaskSet ) {
-      PosixThread::vSleepNano(10_KB);
-      continue;
-    }
-    
-    m_npTask = m_pTaskSet->npPop();
-    
-    if ( ! m_npTask ) {
-      PosixThread::vSleepMilli(1);
-      continue;
-    }
-    
-    PosixThread::vTlsSet(giTLS_TaskKey,*m_npTask);
-    ASSERT(PosixThread::pTlsGet(giTLS_TaskKey));
-    m_npTask->vState(TS_RUNNING);
-    m_npTask->vThread(this);
-    m_npTask->vLoop();
-    
-    if (TS_WAITING_ACK != m_npTask->eState())
-      m_npTask->vThread(nullptr);
-    
-    if (TS_YIELDED == m_npTask->eState()) {
-      MP_Task mpTask = *m_npTask;
-      vAppend(mpTask);
-      m_npTask = nullptr;
-    }
-    else if (TS_EXITED == m_npTask->eState()) {
-      MP_Task mpTask = *m_npTask;
-      if ( (*gnpRootTask != *m_npTask)  && (!mpTask->bWordBody()) ) {
-        delete *m_npTask;
-        m_npTask = nullptr;
-      }
-    }
+  
+  PosixThread::vTlsSet(giTLS_TaskKey,*m_npTask);
+  ASSERT(PosixThread::pTlsGet(giTLS_TaskKey));
+  m_npTask->vState(TS_RUNNING);
+  m_npTask->vThread(this);
+  m_npTask->vLoop();
+  
+  ASSERT(TS_EXITED == m_npTask->eState());
+  
+  MP_Task mpTask = *m_npTask;
+  if ( (*gnpRootTask != *m_npTask)  && (!mpTask->bWordBody()) ) {
+    delete *m_npTask;
+    m_npTask = nullptr;
   }
+  
+  m_pPosixThread->vSleepSec(100000000);
 }
 
 /*----------------------------------------------------------------------------*/
