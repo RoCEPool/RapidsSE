@@ -101,10 +101,13 @@ void Task::vTaskAck(MP_Task mpTask)
     while (TS_WAITING_ACK != pThatTask->m_eState)
       PosixThread::vSleepMicro(10);
     
-    //Thread* pThread = Thread::pThread();
-    //pThread->m_pTaskSet->vAppend(pThatTask);
-    
-    gpScheduler->vEnqueueTask_Mutex(pThatTask);
+    if (pThatTask->eActorModel() == AC_SERVER) {
+      gpScheduler->vEnqueueTask_Mutex(pThatTask);
+    }
+    else {
+      Thread* pThread = pThatTask->pThread();
+      pThread->m_pTaskSet->vAppend(pThatTask);
+    }
 
   }
   else {
