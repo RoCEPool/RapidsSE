@@ -424,6 +424,10 @@ ENTRY("vTaskNew"_Str);
   if ( ! mpTask->m_pDataStack->bPop(sName) )
     THROW_INVALID_DSTACK("task::new"_Str);
   
+  i8 eModel;
+  if ( ! mpTask->m_pDataStack->bPop(eModel) )
+    THROW_INVALID_DSTACK("task::new"_Str);  //ASSERT(! nTaskArgs);
+  
   Object* pParent;
   if ( ! mpTask->m_pDataStack->bPop(pParent) )
     THROW_INVALID_DSTACK("task::new"_Str);
@@ -446,6 +450,7 @@ ENTRY("vTaskNew"_Str);
   MP_Task nnpNewTask = new Task;
   
   nnpNewTask->m_sName = sName;
+  nnpNewTask->m_eActorModel = (eAC)eModel;
   nnpNewTask->m_pParentTask = pParentTask;
   nnpNewTask->vSeedWord(sSeed);
   

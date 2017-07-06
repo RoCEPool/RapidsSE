@@ -9,10 +9,11 @@
 /*----------------------------------------------------------------------------*/
 : get_task ( -- <R> )
 
-  0  // no args
-  "" // no seed
-  0 >ptr // no parent
-  "" // no name
+  0       // no args
+  ""      // no seed
+  0 >ptr  // no parent
+  AC_NONE // no model
+  ""      // no name
 
   task::new
 
