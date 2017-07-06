@@ -218,6 +218,7 @@ void Task::vInit(Str* aLambda)
   // basic state
   m_xLock.vInit("Task::m_xLock"_Str);
   m_iTaskNo     = iTaskNo++;
+  m_eActorModel = AC_NONE;
   m_sName       = "<no task name>"_Str;
   m_eState      = TS_NONE;
   m_iTxId       = -1;
@@ -453,6 +454,14 @@ void Task::vAddConstants(void)
   vAddConstant("C_64KB"_Str,  C_64KB);
   vAddConstant("C_256KB"_Str, C_256KB);
   
+  // AC_ : actor models
+  /*  0 */ vAddConstant("AC_NONE"_Str,         AC_NONE);
+  /*  1 */ vAddConstant("AC_DRONE"_Str,        AC_DRONE);
+  /*  2 */ vAddConstant("AC_PARTITION"_Str,    AC_PARTITION);
+  /*  3 */ vAddConstant("AC_SERVER"_Str,       AC_SERVER);
+  /*  4 */ vAddConstant("AC_WORKER"_Str,       AC_WORKER);
+  /*  5 */ vAddConstant("AC_ENUMS"_Str,        AC_ENUMS);
+
   // AM_ : attach map numbers
   /*  0 */ vAddConstant("AM_NONE"_Str,         AM_NONE);
   /*  1 */ vAddConstant("AM_INDEXENTRIES"_Str, AM_INDEXENTRIES);

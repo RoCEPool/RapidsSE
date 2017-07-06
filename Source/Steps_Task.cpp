@@ -37,6 +37,8 @@ void Task::vAddPrimitives_Task(void)
   vAddPrimitive("task.ack"_Str,       &vTaskAck,           false);
   vAddPrimitive("task.acks@"_Str,     &vTaskAcksFetch,     false);
   vAddPrimitive("task.acks!"_Str,     &vTaskAcksStore,     false);
+  vAddPrimitive("task.actorModel@"_Str, &vTaskActorModelFetch, false);
+  vAddPrimitive("task.actorModel!"_Str, &vTaskActorModelStore, false);
   vAddPrimitive("task.comment@"_Str,  &vTaskCommentFetch,  false);
   vAddPrimitive("task.comment!"_Str,  &vTaskCommentStore,  false);
   vAddPrimitive("task.delete"_Str,    &vTaskDelete,        false);
@@ -159,6 +161,44 @@ void Task::vTaskAcksStore(MP_Task mpTask)
   ASSERT(0 == *pGivenTask->m_zAcks);
 
   pGivenTask->m_zAcks = iInt;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* task.actorModel@ -- push actor model of given task                         */
+/*----------------------------------------------------------------------------*/
+void Task::vTaskActorModelFetch(MP_Task mpTask)
+{
+  ENTRY("vTaskActorModelFetch"_Str);
+  
+  Object* pPtrTask;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTask) )
+    THROW_INVALID_DSTACK("task.actorModel@"_Str);
+  Task* pGivenTask = _pTask(pPtrTask);
+  
+  mpTask->m_pDataStack->vPushInt(pGivenTask->m_eActorModel);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* task.actorModel! -- store actor model into given task                      */
+/*----------------------------------------------------------------------------*/
+void Task::vTaskActorModelStore(MP_Task mpTask)
+{
+  ENTRY("vTaskActorModelStore"_Str);
+  
+  Object* pPtrTask;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTask) )
+    THROW_INVALID_DSTACK("task.actorModel!"_Str);
+  Task* pGivenTask = _pTask(pPtrTask);
+  
+  i8 eActorModel;
+  if ( ! mpTask->m_pDataStack->bPop(eActorModel) )
+    THROW_INVALID_DSTACK("task.actorModel!"_Str);
+  
+  pGivenTask->m_eActorModel = (eAC)eActorModel;
   
   EXIT();
 }

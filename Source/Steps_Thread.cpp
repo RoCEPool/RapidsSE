@@ -31,6 +31,8 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Thread(void)
 {
+  vAddPrimitive("thread.actorModel@"_Str,     &vThreadActorModelFetch,       false);
+  vAddPrimitive("thread.actorModel!"_Str,     &vThreadActorModelStore,       false);
   vAddPrimitive("thread.append"_Str,          &vThreadAppend,          false);
   vAddPrimitive("thread.bind"_Str,            &vThreadBind,            false);
   vAddPrimitive("thread.condSignal"_Str,      &vThreadCondSignal,      false);
@@ -39,8 +41,8 @@ void Task::vAddPrimitives_Thread(void)
   vAddPrimitive("thread.dump"_Str,            &vThreadDump,            false);
   vAddPrimitive("thread.init"_Str,            &vThreadInit,            false);
   vAddPrimitive("thread.id"_Str,              &vThreadId,              false);
-  vAddPrimitive("thread.kind@"_Str,           &vThreadSchedulerFetch,  false);
-  vAddPrimitive("thread.kind!"_Str,           &vThreadSchedulerStore,  false);
+  vAddPrimitive("thread.kind@"_Str,           &vThreadKindFetch,       false);
+  vAddPrimitive("thread.kind!"_Str,           &vThreadKindStore,       false);
   vAddPrimitive("thread.mutexLock"_Str,       &vThreadMutexLock,       false);
   vAddPrimitive("thread.mutexUnlock"_Str,     &vThreadMutexUnlock,     false);
   vAddPrimitive("thread.name@"_Str,           &vThreadNameFetch,       false);
@@ -59,6 +61,44 @@ void Task::vAddPrimitives_Thread(void)
   vAddPrimitive("thread.spawn_worker"_Str,    &vThreadSpawn_Worker,    false);
   vAddPrimitive("thread.task@"_Str,           &vThreadTaskFetch,       false);
   vAddPrimitive("thread.task!"_Str,           &vThreadTaskStore,       false);
+}
+
+/*----------------------------------------------------------------------------*/
+/* thread.actorModel@ -- fetch thread actor model from thread on stack        */
+/*----------------------------------------------------------------------------*/
+void Task::vThreadActorModelFetch(MP_Task mpTask)
+{
+  ENTRY("vThreadActorModelFetch"_Str);
+  
+  Object* pThreadEmb;
+  if ( ! mpTask->m_pDataStack->bPop(pThreadEmb) )
+    THROW_INVALID_DSTACK("thread.actorModel@"_Str);
+  Thread* pThread = _pThread(pThreadEmb);
+  
+  mpTask->m_pDataStack->vPushInt(pThread->m_eActorModel);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* thread.actorModel! -- store thread kind into thread on stack               */
+/*----------------------------------------------------------------------------*/
+void Task::vThreadActorModelStore(MP_Task mpTask)
+{
+  ENTRY("vThreadActorModelStore"_Str);
+  
+  Object* pThreadEmb;
+  if ( ! mpTask->m_pDataStack->bPop(pThreadEmb) )
+    THROW_INVALID_DSTACK("thread.actorModel@"_Str);
+  Thread* pThread = _pThread(pThreadEmb);
+  
+  i8 eActorModel;
+  if ( ! mpTask->m_pDataStack->bPop(eActorModel) )
+    THROW_INVALID_DSTACK("thread.actorModel!"_Str);
+  
+  pThread->m_eActorModel = (eAC)eActorModel;
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/

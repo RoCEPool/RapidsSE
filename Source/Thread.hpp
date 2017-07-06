@@ -10,6 +10,7 @@ namespace Schedulers
 
 namespace Threads
 {
+    
   enum eTH // thread
   {
   /*  0 */ TH_NONE=0,
@@ -30,7 +31,7 @@ namespace Threads
   /* 15 */ TH_ENUMS
   };
   
-  static Str* aAM[]
+  static Str* aTH[]
   {
   /*  0 */ "none"_Str,
   /*  1 */ "ANSWER"_Str,
@@ -58,7 +59,8 @@ namespace Threads
   public:
     i8           m_iThreadNo;    // our thread no
     s32          m_sName;        // thread name
-    eTH          m_eThread;      // thread kind 
+    eAC          m_eActorModel;  // actor model
+    eTH          m_eThread;      // thread kind
     PosixThread* m_pPosixThread; // its posix structure
     Semaphore*   m_pSemaphore;   // this threads semaphore
     TaskSet*     m_pTaskSet;     // task set this thread serves

@@ -70,6 +70,7 @@ Thread::Thread(void)
   
   m_iThreadNo    = ++zThreadNo;
   m_sName        = "<no thread name>"_Str;
+  m_eActorModel  = AC_NONE;
   m_eThread      = TH_NONE;
   m_pPosixThread = new PosixThread;
   m_pSemaphore   = new Semaphore;

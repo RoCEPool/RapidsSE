@@ -17,6 +17,26 @@ namespace Threads
 
 namespace Tasks
 {
+  enum eAC // actor models
+  {
+    /*  0 */ AC_NONE=0,
+    /*  1 */ AC_DRONE,
+    /*  2 */ AC_PARTITION,
+    /*  3 */ AC_SERVER,
+    /*  4 */ AC_WORKER,
+    /*  5 */ AC_ENUMS
+  };
+  
+  static Str* aAC[]
+  {
+    /*  0 */ "none"_Str,
+    /*  1 */ "DRONE"_Str,
+    /*  2 */ "PARTITION"_Str,
+    /*  3 */ "SERVER"_Str,
+    /*  4 */ "WORKER"_Str,
+    /*  5 */ "enums"_Str
+  };
+  
   enum eTS // Task State
   {
   /* 0 */ TS_NONE=0,
@@ -58,6 +78,7 @@ namespace Tasks
 
     Lock    m_xLock;
     i8      m_iTaskNo;     // task
+    eAC     m_eActorModel; // actor model
     s32     m_sName;       // task name
     s32     m_sComment;    // comment
     eTS     m_eState;      // state (running, sleeping, ...)
@@ -1025,6 +1046,8 @@ namespace Tasks
     static void vTaskAck(MP_Task mpTask);
     static void vTaskAcksFetch(MP_Task mpTask);
     static void vTaskAcksStore(MP_Task mpTask);
+    static void vTaskActorModelFetch(MP_Task mpTask);
+    static void vTaskActorModelStore(MP_Task mpTask);
     static void vTaskCommentFetch(MP_Task mpTask);
     static void vTaskCommentStore(MP_Task mpTask);
     static void vTaskDelete(MP_Task mpTask);
@@ -1078,7 +1101,9 @@ namespace Tasks
     static void vTaskSetNew(MP_Task mpTask);
   
     // thread
-    static void vThreadAppend(MP_Task mpTask);  
+    static void vThreadActorModelFetch(MP_Task mpTask);
+    static void vThreadActorModelStore(MP_Task mpTask);
+    static void vThreadAppend(MP_Task mpTask);
     static void vThreadBind(MP_Task mpTask);
     static void vThreadCondSignal(MP_Task mpTask);
     static void vThreadCondWait(MP_Task mpTask);
