@@ -352,7 +352,7 @@ void Thread::vLoop_Drone(void)
     ASSERT(*m_npTask);
   }
 
-  // expect no taskSet
+  // don't expect a taskSet
   if (m_pTaskSet) {
     vTrace("Thread %p: %s has a taskset\n"_Str,this,m_sName.s());
     ASSERT(! m_pTaskSet);
@@ -458,7 +458,7 @@ void Thread::vLoop_Partition(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* thread loop (wait loop)                                                    */
+/* server loop (wait for signal loop)                                         */
 /*----------------------------------------------------------------------------*/
 void Thread::vLoop_Server(void)
 {
@@ -481,15 +481,40 @@ void Thread::vLoop_Server(void)
   //         m_pPosixThread->iThreadPriority()
   //         );
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // validate model
+  
+  // don't expect a task
+  if (*m_npTask) {
+    vTrace("Thread %p: %s has a task\n"_Str,this,m_sName.s());
+    ASSERT(! *m_npTask);
+  }
+  
+  // expect a taskSet
+  if (! m_pTaskSet) {
+    vTrace("Thread %p: %s does not have a taskset\n"_Str,this,m_sName.s());
+    ASSERT(m_pTaskSet);
+  }
+  
+  // expect a scheduler
+  if (! m_pScheduler) {
+    vTrace("Thread %p: %s does not have a scheduler\n"_Str,this,m_sName.s());
+    ASSERT(m_pScheduler);
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set up tls
+  
   PosixThread::vTlsSet(giTLS_ThreadKey,this);
   ASSERT(PosixThread::pTlsGet(giTLS_ThreadKey));
   
-  // wait loop: wait for signal of next task
+  // loop, wait for signal of next task
   while (true) {
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // get a task to run
-    m_npTask = m_pTaskSet->npPop();
+    
+    m_npTask = m_pTaskSet->npPop();               //! need to have a max taskset
     if (! *m_npTask) {
       ASSERT( ! *m_npTask );
       bool b = m_pScheduler->bGetTask_Mutex(this,true);
@@ -507,14 +532,17 @@ void Thread::vLoop_Server(void)
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // run the task
+    
     m_npTask->vLoop();
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // thread no longer running the task
+    
     PosixThread::vTlsSet(giTLS_TaskKey,nullptr);
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // when task yields, task is put into task set
+    
     if (TS_YIELDED == m_npTask->eState()) {
       m_npTask->vThread(nullptr);
       MP_Task mpTask = *m_npTask;
@@ -525,6 +553,7 @@ void Thread::vLoop_Server(void)
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // unless waiting on ack, task forgets thread
+    
     if (TS_WAITING_ACK == m_npTask->eState()) {
       m_npTask->vThread(nullptr);
       m_npTask = nullptr;
@@ -533,6 +562,7 @@ void Thread::vLoop_Server(void)
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // when task exits, it is deleted (unless its a word)
+    
     if (TS_EXITED == m_npTask->eState()) {
       m_npTask->vThread(nullptr);
       MP_Task mpTask = *m_npTask;
