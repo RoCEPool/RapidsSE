@@ -804,6 +804,7 @@ void Task::vTaskThread(MP_Task mpTask)
 
   Thread* pThread = pThatTask->m_pThread;
   mpTask->m_pDataStack->vPushObject(pThread);
+  ASSERT(pThread);
   
   EXIT();
 }
