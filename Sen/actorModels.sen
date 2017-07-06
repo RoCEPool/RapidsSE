@@ -48,7 +48,7 @@ rootTaskSet rootThread thread.taskSet!
 "participantProxyWorker.sen" include
 "coordinatorProxyWorker.sen" include
 "participantWorker.sen" include
-"receiverWorker.sen" include
+"receiverDrone.sen" include
 "senderWorker.sen" include
 
 "connectorDrone.sen" include
