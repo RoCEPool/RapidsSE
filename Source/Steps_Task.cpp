@@ -102,15 +102,8 @@ void Task::vTaskAck(MP_Task mpTask)
     //Thread* pThread = Thread::pThread();
     //pThread->m_pTaskSet->vAppend(pThatTask);
     
-#ifdef REQUEST_LOOP2
-    if (pThatTask->m_pSEitf)
-      gpScheduler->vEnqueueTask_Mutex(pThatTask);
-    else
-      pThatTask->m_pTaskSet->vAppend(pThatTask);
-#else
-    pThatTask->m_pTaskSet->vAppend(pThatTask);
-#endif
-    
+    gpScheduler->vEnqueueTask_Mutex(pThatTask);
+
   }
   else {
     //    vTrace("Task::vTaskSignal: task %p %s signalled task %p\\%lld %s\n"_Str,
