@@ -11,7 +11,7 @@
 
 tp: spawnConnectorDrone
 
-  0 "connectorLoop" nullPtr "ConnectorDrone" spawnDroneActor
+  0 "connectorLoop" "ConnectorDrone" spawnDroneActor
 ;
 
 /*----------------------------------------------------------------------------*/

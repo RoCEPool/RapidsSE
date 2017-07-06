@@ -17,7 +17,7 @@ str:  sMonitorString
 /*----------------------------------------------------------------------------*/
 : spawnMonitorDrone
 
-  0 "monitorLoop" nullptr "MonitorDrone" spawnDroneActor drop
+  0 "monitorLoop" "MonitorDrone" spawnDroneActor drop
 ;
 
 /*----------------------------------------------------------------------------*/

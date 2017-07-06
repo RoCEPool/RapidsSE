@@ -7,16 +7,16 @@
 /*----------------------------------------------------------------------------*/
 /* create a thread-task pair using given arguments                            */
 /*----------------------------------------------------------------------------*/
-: spawnDroneActor ( ... nArgs sSeedWord pParentTask sTaskNm -- pTask )
+: spawnDroneActor ( ... nArgs sSeedWord sTaskNm -- pTask )
 
   // save arguments
-  locals| sTaskNm pParentTask sSeedWord nArgs |
+  locals| sTaskNm sSeedWord nArgs |
 
   // local variables
   nullptr nullptr locals| pThread pTask |
 
   // create a new task and set task name and drone model
-  nArgs sSeedWord pParentTask AC_DRONE sTaskNm task::new to pTask
+  nArgs sSeedWord nullptr AC_DRONE sTaskNm task::new to pTask
   //sTaskNm pTask task.name!
   //AC_DRONE pTask task.actorModel!
 

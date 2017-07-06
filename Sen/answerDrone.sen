@@ -14,7 +14,7 @@ int: nConnections
 /*----------------------------------------------------------------------------*/
 : answerDroneSpawn
 
-  0 "answerLoop" nullPtr "AnswerDrone" spawnDroneActor
+  0 "answerLoop" "AnswerDrone" spawnDroneActor
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -59,10 +59,10 @@ int: nConnections
     ddlLock::grabWrite
 
     // set up the seed
-    1 "receiverLoop" nullptr ( socket 1 "receiverLoop" nullptr )
+    1 "receiverLoop" ( socket 1 "receiverLoop" )
 
     // form name of the receiver
-    "rr" nConnections @ >str str.cat ( socket 1 "receiverLoop" nullptr "rrI" )
+    "rr" nConnections @ >str str.cat ( socket 1 "receiverLoop" "rrI" )
 
     // spawn the actors os thread
     spawnDroneActor
