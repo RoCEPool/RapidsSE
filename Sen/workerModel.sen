@@ -83,6 +83,35 @@
   // spawn the os thread
   jobNm findWorkerThread thread.spawn_worker ( )
 ;
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/*
+: spawnWorkerActor ( ... nArgs sSeedWord pParentTask sTaskNm -- pTask )
+
+  // save arguments
+  locals| sTaskNm pParentTask sSeedWord nArgs |
+
+  // local variables
+  nullptr nullptr locals| pThread pTask |
+
+  // create a new task and set task name and drone model
+  nArgs sSeedWord pParentTask task::new to pTask
+  sTaskNm pTask task.name!
+  AC_DRONE pTask task.actorModel!
+
+  // create a new thread and set thread name and drone model
+  sTaskNm "Thread" str.cat :thread execute to pThread
+  sTaskNm "Thread" str.cat pThread thread.name!
+  AC_WORKER pThread thread.actorModel!
+
+  // setup thread with task
+  pTask pThread thread.task!
+
+  // spawn posix thread for drone actor
+  pThread thread.spawn_drone
+
+  pTask
+;
+*/
 
 /*----------------------------------------------------------------------------*/
 /* create a worker (but don't spawn thread)                                   */
