@@ -342,6 +342,8 @@ void Thread::vLoop_Drone(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
+  ASSERT(m_eActorModel == AC_DRONE);
+  
   if (gbVerbose || gbProgress)
     vTrace("Thread %p: %s loop\n"_Str,this,m_sName.s());
   
@@ -370,6 +372,8 @@ void Thread::vLoop_Drone(void)
   //         this,
   //         m_pPosixThread->iThreadPriority()
   //         );
+  
+  ASSERT(m_npTask->eActorModel() == AC_DRONE);
   
   PosixThread::vTlsSet(giTLS_ThreadKey,this);
   ASSERT(PosixThread::pTlsGet(giTLS_ThreadKey));

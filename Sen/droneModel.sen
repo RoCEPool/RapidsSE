@@ -15,13 +15,15 @@
   // local variables
   nullptr nullptr locals| pThread pTask |
 
-  // create a new task and set task name
+  // create a new task and set task name and drone model
   nArgs sSeedWord pParentTask task::new to pTask
   sTaskNm pTask task.name!
+  AC_DRONE pTask task.actorModel!
 
-  // create a new thread and set thread name
+  // create a new thread and set thread name and drone model
   sTaskNm "Thread" str.cat :thread execute to pThread
   sTaskNm "Thread" str.cat pThread thread.name!
+  AC_DRONE pThread thread.actorModel!
 
   // setup thread with task
   pTask pThread thread.task!
