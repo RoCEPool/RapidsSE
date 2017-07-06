@@ -34,42 +34,50 @@ int: nConnections
 
   iPort socket.listen locals| pListeningSocket |
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   0 nConnections !
   begin
 
-tp: waitingOnAccept
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // wait for next socket
+
+    tp: waitingOnAccept
 
     pListeningSocket socket.accept
 
-tp: socketAccepted
+    tp: socketAccepted
 
     args.verbose if
-      "accepted connection on port " iPort >str str.cat .
+      "answered connection on port " iPort >str str.cat .
     then
 
-  // start receiver
-  //"starting receiver" .
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // start receiver drone for the new socket
 
-ddlLock::grabWrite
+    ddlLock::grabWrite
 
     // set up the seed
-    1 "receiverLoop" ( socket 1 "receiverLoop" )
+    1 "receiverLoop" nullptr ( socket 1 "receiverLoop" nullptr )
 
-    // create the receive worker
-    "rr" nConnections @ >str str.cat ( socket 1 "receiverLoop" "rrI" )
-    :createWorkerActor ( socket 1 "receiverLoop" "rrI" )
+    // form name of the receiver
+    "rr" nConnections @ >str str.cat ( socket 1 "receiverLoop" nullptr "rrI" )
 
     // spawn the actors os thread
-    spawnWorkerActor
+    spawnDroneActor
 
-ddlLock::dropWrite
+    ddlLock::dropWrite
 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // increments connection counter
     nConnections @          ( connection# )
     1 +                    ( nConnections# 1 )
     dup                    ( nConnections# nConnections# )
     nConnections !          ( nConnections# )
 
-    1  == if               ( connection# )
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // if very first socket start connector drone
+
+    1 == if               ( connection# )
       grid.thisNode@ grid.startNode@ != if
         spawnConnectorDrone
       then

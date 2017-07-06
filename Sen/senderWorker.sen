@@ -4,6 +4,10 @@
 
 "SenderWorker.sen" .verbose
 
+/*
+ *  A sender worker is spawned by the answer drone when it gets a new socket
+ */
+
 /*----------------------------------------------------------------------------*/
 /* send valset across the socket                                              */
 /*----------------------------------------------------------------------------*/
