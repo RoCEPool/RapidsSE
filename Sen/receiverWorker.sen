@@ -29,7 +29,7 @@ tp: rvc.loop
 
   "receiverLoop" task::this task.comment!
 
-  receiverDronePrint if "Receiver Drone running on node" grid.thisNode@ >str str.cat . then
+  receiverDronePrint if "Receiver Worker running on node" grid.thisNode@ >str str.cat . then
 
   begin
     depth 0 != if stk "stack of task has grown" . debug.trap then
