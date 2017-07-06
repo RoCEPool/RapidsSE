@@ -15,7 +15,7 @@ taskCursor: pTaskCrs
 /*----------------------------------------------------------------------------*/
 : spawnListerDrone
 
-  0 "listerLoop" nullptr "ListerActor" spawnDroneActor drop
+  0 "listerLoop" nullptr "ListerDrone" spawnDroneActor drop
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -48,9 +48,9 @@ taskCursor: pTaskCrs
 /*----------------------------------------------------------------------------*/
 : listerLoop
 
-  "listerDrone" task::this task.name!
-
-  listerDronePrint if "Lister Drone running..." . then
+  listerDronePrint if
+    task::this task.name@ " running..." str.cat .
+  then
 
   begin
 

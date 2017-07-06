@@ -854,14 +854,15 @@ void Task::vAddConstants(void)
   /*  0 */ vAddConstant("PHYSICAL_MEMORY"_Str, Hardware::iPhysicalMemory());
   
   // debug
-  vAddConstant("listerDronePrint"_Str,    (i8)0);
-  vAddConstant("monitorDronePrint"_Str,   (i8)0);
-  vAddConstant("reclaimDronePrint"_Str,   (i8)0);
-  vAddConstant("requestServerPrint"_Str,   (i8)0);
-  vAddConstant("answerDronePrint"_Str,    (i8)0);
-  vAddConstant("connectorDronePrint"_Str, (i8)0);
-  vAddConstant("senderTaskPrint"_Str,    (i8)0);
-  vAddConstant("receiverDronePrint"_Str,  (i8)0);
+  vAddConstant("answerDronePrint"_Str,    (i8)1);
+  vAddConstant("connectorDronePrint"_Str, (i8)1);
+  vAddConstant("listerDronePrint"_Str,    (i8)1);
+  vAddConstant("monitorDronePrint"_Str,   (i8)1);
+  vAddConstant("reclaimDronePrint"_Str,   (i8)1);
+  vAddConstant("receiverDronePrint"_Str,  (i8)1);
+  
+  vAddConstant("requestServerPrint"_Str,  (i8)0);
+  vAddConstant("senderTaskPrint"_Str,     (i8)0);
   
   // c++ objects
   vAddConstant("scheduler"_Str, (i8)gpScheduler);
