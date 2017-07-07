@@ -47,13 +47,14 @@ namespace Tasks
   /*  5 */ TK_RECLAIM_DRONE,
   /*  6 */ TK_RECEIVER_DRONE,
   /*  7 */ TK_REQUEST_SERVER,
-  /*  8 */ TK_COORDINATOR_WORKER,
-  /*  9 */ TK_COORDINATOR_PROXY_WORKER,
-  /* 10 */ TK_PARTICIPANT_WORKER,
-  /* 11 */ TK_PARTICIPANT_PROXY_WORKER,
-  /* 12 */ TK_SENDER_WORKER,
-  /* 13 */ TK_SELECT_PART,
-  /* 14 */ TK_ENUMS
+  /*  8 */ TK_LOADSUB_SERVER,
+  /*  9 */ TK_COORDINATOR_WORKER,
+  /* 10 */ TK_COORDINATOR_PROXY_WORKER,
+  /* 11 */ TK_PARTICIPANT_WORKER,
+  /* 12 */ TK_PARTICIPANT_PROXY_WORKER,
+  /* 13 */ TK_SENDER_WORKER,
+  /* 14 */ TK_SELECT_PART,
+  /* 15 */ TK_ENUMS
   };
   
   static Str* aTK[]
@@ -66,13 +67,14 @@ namespace Tasks
   /*  5 */ "RECLAIM_DRONE"_Str,
   /*  6 */ "RECEIVER_DRONE"_Str,
   /*  7 */ "REQUEST_SERVER"_Str,
-  /*  8 */ "COORDINATOR_WORKER"_Str,
-  /*  9 */ "COORDINATOR_PROXY_WORKER"_Str,
-  /* 10 */ "PARTICIPANT_WORKER"_Str,
-  /* 11 */ "PARTICIPANT_PROXY_WORKER"_Str,
-  /* 12 */ "SENDER_WORKER"_Str,
-  /* 13 */ "SELECT_PART"_Str,
-  /* 14 */ "ENUMS"_Str
+  /*  8 */ "LOADSUB_SERVER"_Str,
+  /*  9 */ "COORDINATOR_WORKER"_Str,
+  /* 10 */ "COORDINATOR_PROXY_WORKER"_Str,
+  /* 11 */ "PARTICIPANT_WORKER"_Str,
+  /* 12 */ "PARTICIPANT_PROXY_WORKER"_Str,
+  /* 13 */ "SENDER_WORKER"_Str,
+  /* 14 */ "SELECT_PART"_Str,
+  /* 15 */ "ENUMS"_Str
   };
   enum eTS // Task State
   {
