@@ -269,7 +269,7 @@ traceon
 
   0 0 locals| nArgs iPtnNo |
 
-  nArgs "helloWorld" iPtnNo "hi" TK_NONE partitionDispatch
+  nArgs "helloWorld" iPtnNo "hi" TK_NONE spawnPartitionActor
 ;
 
 /*----------------------------------------------------------------------------*/
