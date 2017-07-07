@@ -47,6 +47,8 @@ void Task::vAddPrimitives_Task(void)
   vAddPrimitive("task.init"_Str,      &vTaskInit,          false);
   vAddPrimitive("task.jobQueue@"_Str, &vTaskJobQueueFetch, false);
   vAddPrimitive("task.jobQueue!"_Str, &vTaskJobQueueStore, false);
+  vAddPrimitive("task.kind@"_Str,     &vTaskKindFetch,     false);
+  vAddPrimitive("task.kind!"_Str,     &vTaskKindStore,     false);
   vAddPrimitive("task.name@"_Str,     &vTaskNameFetch,     false);
   vAddPrimitive("task.name!"_Str,     &vTaskNameStore,     false);
   vAddPrimitive("task::new"_Str,      &vTaskNew,           false);
@@ -323,6 +325,44 @@ ENTRY("vTaskInit"_Str);
   sName = pWordThread->sName();
   
   pThatTask->vName(sName);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* task.kind@ -- push the kind of given task                                  */
+/*----------------------------------------------------------------------------*/
+void Task::vTaskKindFetch(MP_Task mpTask)
+{
+  ENTRY("vTaskKindFetch"_Str);
+  
+  Object* pPtrTask;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTask) )
+    THROW_INVALID_DSTACK("task.kind@"_Str);
+  Task* pGivenTask = _pTask(pPtrTask);
+  
+  mpTask->m_pDataStack->vPushInt(pGivenTask->m_eTaskKind);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* task.kind! -- store task kind into given task                              */
+/*----------------------------------------------------------------------------*/
+void Task::vTaskKindStore(MP_Task mpTask)
+{
+  ENTRY("vTaskKindStore"_Str);
+  
+  Object* pPtrTask;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTask) )
+    THROW_INVALID_DSTACK("task.kind!"_Str);
+  Task* pGivenTask = _pTask(pPtrTask);
+  
+  i8 eTaskKind;
+  if ( ! mpTask->m_pDataStack->bPop(eTaskKind) )
+    THROW_INVALID_DSTACK("task.kind!"_Str);
+  
+  pGivenTask->m_eTaskKind = (eTK)eTaskKind;
   
   EXIT();
 }

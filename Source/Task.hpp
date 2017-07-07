@@ -41,7 +41,7 @@ namespace Tasks
   {
   /*  0 */ TK_NONE=0,
   /*  1 */ TK_ANSWER_DRONE,
-  /*  2 */ TK_LISTENER_DRONE,
+  /*  2 */ TK_LISTER_DRONE,
   /*  3 */ TK_CONNECTOR_DRONE,
   /*  4 */ TK_MONITOR_DRONE,
   /*  5 */ TK_RECLAIM_DRONE,
@@ -52,14 +52,15 @@ namespace Tasks
   /* 10 */ TK_PARTICIPANT_WORKER,
   /* 11 */ TK_PARTICIPANT_PROXY_WORKER,
   /* 12 */ TK_SENDER_WORKER,
-  /* 13 */ TK_ENUMS
+  /* 13 */ TK_SELECT_PART,
+  /* 14 */ TK_ENUMS
   };
   
   static Str* aTK[]
   {
   /*  0 */ "NONE"_Str,
   /*  1 */ "ANSWER_DRONE"_Str,
-  /*  2 */ "LISTENER_DRONE"_Str,
+  /*  2 */ "LISTER_DRONE"_Str,
   /*  3 */ "CONNECTOR_DRONE"_Str,
   /*  4 */ "MONITOR_DRONE"_Str,
   /*  5 */ "RECLAIM_DRONE"_Str,
@@ -70,7 +71,8 @@ namespace Tasks
   /* 10 */ "PARTICIPANT_WORKER"_Str,
   /* 11 */ "PARTICIPANT_PROXY_WORKER"_Str,
   /* 12 */ "SENDER_WORKER"_Str,
-  /* 13 */ "ENUMS"_Str
+  /* 13 */ "SELECT_PART"_Str,
+  /* 14 */ "ENUMS"_Str
   };
   enum eTS // Task State
   {
@@ -113,6 +115,7 @@ namespace Tasks
 
     Lock    m_xLock;
     i8      m_iTaskNo;     // task
+    eTK     m_eTaskKind;   // task kind
     eAC     m_eActorModel; // actor model
     s32     m_sName;       // task name
     s32     m_sComment;    // comment
@@ -233,6 +236,8 @@ namespace Tasks
     void vStackContents(Stack* pStack, StrVal& sStackContents);
     eTS  eState(void);
     void vState(eTS eState);
+    eTK  eTaskKind(void);
+    void vTaskKind(eTK eTaskKind);
     Threads::Thread* pThread(void);
     void vThread(Threads::Thread* pThread);
     void vTracePoint(Str* aMark);
@@ -1093,6 +1098,8 @@ namespace Tasks
     static void vTaskInit(MP_Task mpTask);
     static void vTaskJobQueueFetch(MP_Task mpTask);
     static void vTaskJobQueueStore(MP_Task mpTask);
+    static void vTaskKindFetch(MP_Task mpTask);
+    static void vTaskKindStore(MP_Task mpTask);
     static void vTaskNameFetch(MP_Task mpTask);
     static void vTaskNameStore(MP_Task mpTask);
     static void vTaskNew(MP_Task mpTask);

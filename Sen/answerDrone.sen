@@ -14,7 +14,7 @@ int: nConnections
 /*----------------------------------------------------------------------------*/
 : answerDroneSpawn
 
-  0 "answerLoop" "AnswerDrone" spawnDroneActor
+  0 "answerLoop" "AnswerDrone" TK_ANSWER_DRONE spawnDroneActor
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -65,7 +65,7 @@ int: nConnections
     "rr" nConnections @ >str str.cat ( socket 1 "receiverLoop" "rrI" )
 
     // spawn the actors os thread
-    spawnDroneActor
+    TK_RECEIVER_DRONE spawnDroneActor
 
     ddlLock::dropWrite
 

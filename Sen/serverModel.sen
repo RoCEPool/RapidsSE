@@ -76,12 +76,12 @@ args.regionSize nServerThreads constant N_SERVER_THREADS
 /*----------------------------------------------------------------------------*/
 /* create an actor using given arguments and append to general task queue     */
 /*----------------------------------------------------------------------------*/
-: spawnServerActor ( ... nArgs sSeedWord pParentTask sTaskNm -- )
+: spawnServerActor ( ... nArgs sSeedWord pParentTask sTaskNm eTaskKind -- )
 
-  nullptr locals| pTask sTaskNm pParent sSeedWord nArgs |
+  nullptr locals| pTask eTaskKind sTaskNm pParent sSeedWord nArgs |
 
   // create a new task
-  nArgs sSeedWord pParent AC_SERVER sTaskNm TK_NONE task::new to pTask
+  nArgs sSeedWord pParent AC_SERVER sTaskNm eTaskKind task::new to pTask
 
   // set task name
   //sTaskNm pTask task.name!

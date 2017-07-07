@@ -219,6 +219,7 @@ void Task::vInit(Str* aLambda)
   // basic state
   m_xLock.vInit("Task::m_xLock"_Str);
   m_iTaskNo     = iTaskNo++;
+  m_eTaskKind   = TK_NONE;
   m_eActorModel = AC_NONE;
   m_sName       = "<no task name>"_Str;
   m_eState      = TS_NONE;
@@ -811,7 +812,7 @@ void Task::vAddConstants(void)
   // TK_ : task kind
   /*  0 */ vAddConstant("TK_NONE"_Str,                    TK_NONE);
   /*  0 */ vAddConstant("TK_ANSWER_DRONE"_Str,            TK_ANSWER_DRONE);
-  /*  0 */ vAddConstant("TK_LISTENER_DRONE"_Str,          TK_LISTENER_DRONE);
+  /*  0 */ vAddConstant("TK_LISTER_DRONE"_Str,            TK_LISTER_DRONE);
   /*  0 */ vAddConstant("TK_CONNECTOR_DRONE"_Str,         TK_CONNECTOR_DRONE);
   /*  0 */ vAddConstant("TK_MONITOR_DRONE"_Str,           TK_MONITOR_DRONE);
   /*  0 */ vAddConstant("TK_RECLAIM_DRONE"_Str,           TK_RECLAIM_DRONE);
@@ -822,6 +823,7 @@ void Task::vAddConstants(void)
   /*  0 */ vAddConstant("TK_PARTICIPANT_WORKER"_Str,      TK_PARTICIPANT_WORKER);
   /*  0 */ vAddConstant("TK_PARTICIPANT_PROXY_WORKER"_Str,TK_PARTICIPANT_PROXY_WORKER);
   /*  0 */ vAddConstant("TK_SENDER_WORKER"_Str,           TK_SENDER_WORKER);
+  /*  0 */ vAddConstant("TK_SELECT_PART"_Str,             TK_SELECT_PART);
   /*  0 */ vAddConstant("TK_ENUMS"_Str,                   TK_ENUMS );
   
   // TS_ : task state
@@ -1847,6 +1849,26 @@ void Task::vState(eTS eState)
   m_xLock.vGrabWrite();
   m_eState = eState;
   m_xLock.vDropWrite();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get task kind                                                              */
+/*----------------------------------------------------------------------------*/
+eTK Task::eTaskKind(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  return m_eTaskKind;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set task kind                                                              */
+/*----------------------------------------------------------------------------*/
+void Task::vTaskKind(eTK eTaskKind)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  m_eTaskKind = eTaskKind;
 }
 
 /*----------------------------------------------------------------------------*/
