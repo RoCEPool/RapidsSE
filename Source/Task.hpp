@@ -716,7 +716,6 @@ namespace Tasks
     static void vLoaderTxRefStore(MP_Task mpTask);
     
     // loader sub
-    static void vLoaderSubAppendBuffer(MP_Task mpTask);
     static void vLoaderSubBegin(MP_Task mpTask);
     static void vLoaderSubDelete(MP_Task mpTask);
     static void vLoaderSubEnd(MP_Task mpTask);

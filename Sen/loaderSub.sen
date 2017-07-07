@@ -34,7 +34,7 @@
 : loadAppendBuffer$ ( rowBuffer partitionNo "<tableNm>" -- true )
 
 tp: loadAppendBuffer$
-  0 locals| tablePtr tableNm iPartitionNo rowBuffer |
+  0 locals| tablePtr tableNm iPartitionNo rowBuffer pLoaderSub |
 
   // why:
   //   loaderSub has forwarded a full rowBuffer which needs to be
@@ -95,6 +95,8 @@ tp: partitionAppendBuffer
 
 tp: ~loadAppendBuffer
 
+   locals| pLoaderSub |
+
   // why:
   //   loaderSub has a full rowBuffer which needs to be sent to participant
   //   to be appended to partition of table
@@ -116,11 +118,11 @@ tp: ~loadAppendBuffer
   //
 
   <<
-    loaderSub.rowBuffer           ( << rb )
-    nullPtr loaderSub.rowBuffer!  // set working row buffer to null
-    loaderSub.partition           ( << rb ptn )
-    loaderSub.table table.name    ( << rb ptn "<tableNm>" )
-    "loadAppendBuffer$"           ( << rb ptn "<tableNm>" "loadAppendBuffer$" )
+    pLoaderSub loaderSub.rowBuffer           ( << rb )
+    nullPtr pLoaderSub loaderSub.rowBuffer!  // set working row buffer to null
+    pLoaderSub loaderSub.partition           ( << rb ptn )
+    pLoaderSub loaderSub.table table.name    ( << rb ptn "<tableNm>" )
+    "loadAppendBuffer$"                      ( << rb ptn "<tableNm>" "loadAppendBuffer$" )
 
 tp: theIndirectCall
 
@@ -132,7 +134,7 @@ tp: theIndirectCall
   //
 
   // to which node/participant
-  loaderSub.hashPartition  ( <<loadAppendBuffer$>> node )
+  pLoaderSub loaderSub.hashPartition  ( <<loadAppendBuffer$>> node )
 
   // forward to coordinator and wait
   >>oneParticipant> ( bool )
@@ -154,7 +156,7 @@ tp: theIndirectResult
 
   // first set the taskset in this task
   // needed when being resumed by coordinator
-  0 locals| iPartitionNo |
+  0 0 locals| iPartitionNo ploaderSub |
 
   task::this task.thread thread.taskset@
   task::this task.taskset!
@@ -164,53 +166,41 @@ tp: theIndirectResult
 
   // expand args valset
   valset> drop
-
-  reg.push
-
-  // the c++ code assumes ^loaderSub is in reg0
-  >reg0
+  to pLoaderSub
 
   // get table, tx and load map from parent loader
   //   open the chunked file
   //   read first chunk
-  loaderSub.begin
+  pLoaderSub loaderSub.begin
 
   // load each record
   begin
 
     // attempt to fetch next record from file
-    loaderSub.fetchRecord
+    pLoaderSub loaderSub.fetchRecord
 
     // process record
     while
 
-      loaderSub.validateRow if
+      pLoaderSub loaderSub.validateRow if
 
         // hash the record to get partition
-        loaderSub.hashRecord
+        pLoaderSub loaderSub.hashRecord
 
         // attempt to insert record as row into working buffer for partition
-        loaderSub.insertRow
+        pLoaderSub loaderSub.insertRow
 
         // was buffer full?
         not if
 
-//"BUFFER FULL" .
-
-  tp: bufferFull
+        //"BUFFER FULL" .
+        tp: bufferFull
 
           // append row buffer to table/partition/strand
-          ~loadAppendBuffer
-          //loaderSub.partition to iPartitionNo
-          //loaderSub.rowBuffer iPartitionNo
-          //loaderSub.table //table.name    ( rb ptn "<tableNm>" )
-          //3 "partitionAppendBuffer" iPartitionNo dup >str "P" swap str.cat
-          //  TK_LOADSUB_PART spawnPartitionActor
-
-          //nullPtr loaderSub.rowBuffer!
+          pLoaderSub ~loadAppendBuffer
 
           // insert row into new working buffer
-          loaderSub.insertRow assert
+          pLoaderSub loaderSub.insertRow assert
 
         then // if buffer full
 
@@ -228,35 +218,25 @@ tp: theIndirectResult
   totalPartitions 0 do
 
     // set the partition we are using
-    I loaderSub.partition!
+    I pLoaderSub loaderSub.partition!
 
     // test for a dangling row buffer for parition I
-    loaderSub.rowBuffer
+    pLoaderSub loaderSub.rowBuffer
     if
       // append row buffer to table/partition/strand
-      ~loadAppendBuffer
-      //loaderSub.partition to iPartitionNo
-      //loaderSub.rowBuffer iPartitionNo
-      //loaderSub.table //table.name    ( rb ptn "<tableNm>" )
-      //3 "partitionAppendBuffer" iPartitionNo dup >str "P" swap str.cat
-      //  TK_LOADSUB_PART spawnPartitionActor
-
-      //nullPtr loaderSub.rowBuffer!
+      pLoaderSub ~loadAppendBuffer
 
     then
 
   loop
 
   // close the file
-  loaderSub.end
+  pLoaderSub loaderSub.end
 
   // this sub has completed, ack the parent loader
-task::this task.name@ "%v acking parent" str.format .
+  task::this task.name@ "%v acking parent" str.format .
   task.parent@ ack
 
-  reg.pop
-
-//traceOff
 ;
 
 /*============================================================================*/

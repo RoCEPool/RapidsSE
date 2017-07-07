@@ -31,7 +31,6 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_LoaderSub(void)
 {
-  vAddPrimitive("loaderSub.appendBuffer"_Str, &vLoaderSubAppendBuffer,  false);
   vAddPrimitive("loaderSub.begin"_Str,        &vLoaderSubBegin,         false);
   vAddPrimitive("loaderSub.delete"_Str,       &vLoaderSubDelete,        false);
   vAddPrimitive("loaderSub.end"_Str,          &vLoaderSubEnd,           false);
@@ -51,32 +50,17 @@ void Task::vAddPrimitives_LoaderSub(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* loaderSub.appendBuffer -- append buffer into table                         */
-/*----------------------------------------------------------------------------*/
-void Task::vLoaderSubAppendBuffer(MP_Task mpTask)
-{
-  ENTRY("vLoaderSubAppendBuffer"_Str);
-  
-  Object* pObject = _pPtrVal(mpTask->m_pRegFrame->pValReg(0))->pPtr();
-  
-  LoaderSub* pLoaderSub = _pLoaderSub(pObject);
-  ASSERT(CN_LOADERSUB == pLoaderSub->eClass());
-  
-  pLoaderSub->vAppendBuffer();
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* loaderSub.begin -- begin loading                                           */
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderSubBegin(MP_Task mpTask)
 {
   ENTRY("vLoaderSubBegin"_Str);
   
-  Object* pObject = _pPtrVal(mpTask->m_pRegFrame->pValReg(0))->pPtr();
+  Object* pPtrLoader;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
+    THROW_INVALID_DSTACK("loaderSub.begin"_Str);
+  LoaderSub* pLoaderSub = _pLoaderSub(pPtrLoader);
   
-  LoaderSub* pLoaderSub = _pLoaderSub(pObject);
   ASSERT(CN_LOADERSUB == pLoaderSub->eClass());
   
   pLoaderSub->vBegin();
@@ -89,11 +73,13 @@ void Task::vLoaderSubBegin(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderSubDelete(MP_Task mpTask)
 {
-  ENTRY("vLoade3SubDelete"_Str);
+  ENTRY("vLoaderSubDelete"_Str);
   
-  Object* pObject = _pPtrVal(mpTask->m_pRegFrame->pValReg(0))->pPtr();
+  Object* pPtrLoader;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
+    THROW_INVALID_DSTACK("loaderSub.delete"_Str);
+  LoaderSub* pLoaderSub = _pLoaderSub(pPtrLoader);
   
-  LoaderSub* pLoaderSub = _pLoaderSub(pObject);
   ASSERT(CN_LOADERSUB == pLoaderSub->eClass());
   
   delete pLoaderSub;
@@ -108,9 +94,11 @@ void Task::vLoaderSubEnd(MP_Task mpTask)
 {
   ENTRY("vLoaderSubEnd"_Str);
   
-  Object* pObject = _pPtrVal(mpTask->m_pRegFrame->pValReg(0))->pPtr();
+  Object* pPtrLoader;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
+    THROW_INVALID_DSTACK("loaderSub.end"_Str);
+  LoaderSub* pLoaderSub = _pLoaderSub(pPtrLoader);
   
-  LoaderSub* pLoaderSub = _pLoaderSub(pObject);
   ASSERT(CN_LOADERSUB == pLoaderSub->eClass());
   
   pLoaderSub->vEnd();
@@ -121,16 +109,16 @@ void Task::vLoaderSubEnd(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* loaderSub.fetchRecord -- fetch next record from file being loaded          */
+/* loaderSub.insertRow -- fetch next record from file being loaded            */
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderSubFetchRecord(MP_Task mpTask)
 {
   ENTRY("vLoaderSubFetchRecord"_Str);
   
-  Object* pObject = _pPtrVal(mpTask->m_pRegFrame->pValReg(0))->pPtr();
-  
-  LoaderSub* pLoaderSub = _pLoaderSub(pObject);
-  ASSERT(CN_LOADERSUB == pLoaderSub->eClass());
+  Object* pPtrLoader;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
+    THROW_INVALID_DSTACK("loaderSub.insertRow"_Str);
+  LoaderSub* pLoaderSub = _pLoaderSub(pPtrLoader);
   
   bool bFetched = pLoaderSub->bFetchRecord();
   
@@ -146,10 +134,10 @@ void Task::vLoaderSubHashPartition(MP_Task mpTask)
 {
   ENTRY("vLoaderSubHashRecord"_Str);
   
-  Object* pObject = _pPtrVal(mpTask->m_pRegFrame->pValReg(0))->pPtr();
-  
-  LoaderSub* pLoaderSub = _pLoaderSub(pObject);
-  ASSERT(CN_LOADERSUB == pLoaderSub->eClass());
+  Object* pPtrLoader;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
+    THROW_INVALID_DSTACK("loaderSub.hashPartition"_Str);
+  LoaderSub* pLoaderSub = _pLoaderSub(pPtrLoader);
 
   i8 iPartition = pLoaderSub->iPartition();
 
@@ -167,10 +155,10 @@ void Task::vLoaderSubHashRecord(MP_Task mpTask)
 {
   ENTRY("vLoaderSubHashRecord"_Str);
   
-  Object* pObject = _pPtrVal(mpTask->m_pRegFrame->pValReg(0))->pPtr();
-  
-  LoaderSub* pLoaderSub = _pLoaderSub(pObject);
-  ASSERT(CN_LOADERSUB == pLoaderSub->eClass());
+  Object* pPtrLoader;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
+    THROW_INVALID_DSTACK("loaderSub.hashRecord"_Str);
+  LoaderSub* pLoaderSub = _pLoaderSub(pPtrLoader);
   
   pLoaderSub->vHashRecord();
   
@@ -184,12 +172,10 @@ void Task::vLoaderSubInit(MP_Task mpTask)
 {
   ENTRY("vLoaderInit"_Str);
   
-  Object* pPtrLoaderSub;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrLoaderSub) )
+  Object* pPtrLoader;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
     THROW_INVALID_DSTACK("loaderSub.init"_Str);
-  
-  LoaderSub* pLoaderSub = _pLoaderSub(pPtrLoaderSub);
-  ASSERT(CN_LOADERSUB == pLoaderSub->eClass());
+  LoaderSub* pLoaderSub = _pLoaderSub(pPtrLoader);
   
   new(pLoaderSub) LoaderSub;
   
@@ -203,10 +189,10 @@ void Task::vLoaderSubInsertRow(MP_Task mpTask)
 {
   ENTRY("vLoaderSubInsertRow"_Str);
   
-  Object* pObject = _pPtrVal(mpTask->m_pRegFrame->pValReg(0))->pPtr();
-  
-  LoaderSub* pLoaderSub = _pLoaderSub(pObject);
-  ASSERT(CN_LOADERSUB == pLoaderSub->eClass());
+  Object* pPtrLoader;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
+    THROW_INVALID_DSTACK("loaderSub.insertRow"_Str);
+  LoaderSub* pLoaderSub = _pLoaderSub(pPtrLoader);
   
   bool bInserted = pLoaderSub->bInsertRow();
   
@@ -255,16 +241,16 @@ void Task::vLoaderSubNew(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* loaderSub.partition -- get partition number derived from hash of record    */
+/* loaderSub.partition@ -- get partition number derived from hash of record   */
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderSubPartition(MP_Task mpTask)
 {
   ENTRY("vLoaderSubPartition"_Str);
   
-  Object* pObject = _pPtrVal(mpTask->m_pRegFrame->pValReg(0))->pPtr();
-  
-  LoaderSub* pLoaderSub = _pLoaderSub(pObject);
-  ASSERT(CN_LOADERSUB == pLoaderSub->eClass());
+  Object* pPtrLoader;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
+    THROW_INVALID_DSTACK("loaderSub.partition@"_Str);
+  LoaderSub* pLoaderSub = _pLoaderSub(pPtrLoader);
   
   i8 iPartition = pLoaderSub->iPartition();
   
@@ -280,14 +266,14 @@ void Task::vLoaderSubPartitionStore(MP_Task mpTask)
 {
   ENTRY("vLoaderSubPartitionStore"_Str);
   
+  Object* pPtrLoader;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
+    THROW_INVALID_DSTACK("loaderSub.partition!"_Str);
+  LoaderSub* pLoaderSub = _pLoaderSub(pPtrLoader);
+  
   i8 iPartition;
   if ( ! mpTask->m_pDataStack->bPop(iPartition) )
     THROW_INVALID_DSTACK("loaderSub.partition!"_Str);
- 
-  Object* pObject = _pPtrVal(mpTask->m_pRegFrame->pValReg(0))->pPtr();
-  
-  LoaderSub* pLoaderSub = _pLoaderSub(pObject);
-  ASSERT(CN_LOADERSUB == pLoaderSub->eClass());
 
   pLoaderSub->vPartition(iPartition);
   
@@ -295,16 +281,16 @@ void Task::vLoaderSubPartitionStore(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* loaderSub.rowBuffer -- get row buffer of given partition                   */
+/* loaderSub.rowBuffer@ -- get row buffer of given partition                  */
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderSubRowBuffer(MP_Task mpTask)
 {
   ENTRY("vLoaderSubRowBuffer"_Str);
   
-  Object* pObject = _pPtrVal(mpTask->m_pRegFrame->pValReg(0))->pPtr();
-  
-  LoaderSub* pLoaderSub = _pLoaderSub(pObject);
-  ASSERT(CN_LOADERSUB == pLoaderSub->eClass());
+  Object* pPtrLoader;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
+    THROW_INVALID_DSTACK("loaderSub.rowBuffer@"_Str);
+  LoaderSub* pLoaderSub = _pLoaderSub(pPtrLoader);
   
   EntryBuffer* pRowBuffer = pLoaderSub->pRowBuffer();
   
@@ -320,17 +306,17 @@ void Task::vLoaderSubRowBufferStore(MP_Task mpTask)
 {
   ENTRY("vLoaderSubRowBufferStore"_Str);
   
+  Object* pPtrLoader;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
+    THROW_INVALID_DSTACK("loaderSub.rowBuffer@"_Str);
+  LoaderSub* pLoaderSub = _pLoaderSub(pPtrLoader);
+  
   Object* pPtrRowBuffer;
   if ( ! mpTask->m_pDataStack->bPop(pPtrRowBuffer) )
     THROW_INVALID_DSTACK("loaderSub.rowBuffer!"_Str);
   
   EntryBuffer* pRowBuffer = (EntryBuffer*)_pEntryBuffer(pPtrRowBuffer);
   ASSERT( !pRowBuffer || CN_ENTRYBUFFER == pRowBuffer->eClass() );
-  
-  Object* pObject = _pPtrVal(mpTask->m_pRegFrame->pValReg(0))->pPtr();
-  
-  LoaderSub* pLoaderSub = _pLoaderSub(pObject);
-  ASSERT(CN_LOADERSUB == pLoaderSub->eClass());
   
   pLoaderSub->vRowBuffer(pRowBuffer);
   
@@ -344,10 +330,10 @@ void Task::vLoaderSubTable(MP_Task mpTask)
 {
   ENTRY("vLoaderSubTable"_Str);
   
-  Object* pObject = _pPtrVal(mpTask->m_pRegFrame->pValReg(0))->pPtr();
-  
-  LoaderSub* pLoaderSub = _pLoaderSub(pObject);
-  ASSERT(CN_LOADERSUB == pLoaderSub->eClass());
+  Object* pPtrLoader;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
+    THROW_INVALID_DSTACK("loaderSub.table"_Str);
+  LoaderSub* pLoaderSub = _pLoaderSub(pPtrLoader);
   
   Table* pTable = pLoaderSub->pTable();
   
@@ -363,10 +349,10 @@ void Task::vLoaderSubValidateRow(MP_Task mpTask)
 {
   ENTRY("vLoaderSubValidateRow"_Str);
   
-  Object* pObject = _pPtrVal(mpTask->m_pRegFrame->pValReg(0))->pPtr();
-  
-  LoaderSub* pLoaderSub = _pLoaderSub(pObject);
-  ASSERT(CN_LOADERSUB == pLoaderSub->eClass());
+  Object* pPtrLoader;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
+    THROW_INVALID_DSTACK("loaderSub.validateRow"_Str);
+  LoaderSub* pLoaderSub = _pLoaderSub(pPtrLoader);
   
   i8 i_Column;
   bool bValid = pLoaderSub->bValidateRow(i_Column);
