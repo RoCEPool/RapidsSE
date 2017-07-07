@@ -267,11 +267,9 @@ traceon
 /*----------------------------------------------------------------------------*/
 : ptnTest
 
-  0 "helloWorld" nullptr AC_PARTITION "hi" task::new locals| pTask |
+  0 0 locals| nArgs iPtnNo |
 
-  0 >partitionThreadNm findActorTaskSet dup . locals| pTaskSet |
-
-  pTask pTaskSet taskSet.append
+  nArgs "helloWorld" iPtnNo "hi" partitionDispatch
 ;
 
 /*----------------------------------------------------------------------------*/

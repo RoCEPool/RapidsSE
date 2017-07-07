@@ -205,6 +205,20 @@ tp: >>allParticipants>
   >jobQueue;a> ( ..result.. )
 ;
 
+/*----------------------------------------------------------------------------*/
+/* dispatch task to partition actor for execution within given partition      */
+/*----------------------------------------------------------------------------*/
+: partitionDispatch ( ... nArgs sSeed iPtnNo sTaskNm )
+
+  locals| sTaskNm iPtnNo sSeed nArgs |
+
+  nArgs sSeed nullptr AC_PARTITION sTaskNm task::new locals| pTask |
+
+  iPtnNo >partitionThreadNm findActorTaskSet dup . locals| pTaskSet |
+
+  pTask pTaskSet taskSet.append
+;
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
