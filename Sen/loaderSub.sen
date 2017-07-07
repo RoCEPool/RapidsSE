@@ -29,12 +29,20 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* form partition task name                                                   */
+/*----------------------------------------------------------------------------*/
+: >partitionTaskNm ( i -- s )
+
+  "PT" swap >str str.cat ".task" str.cat
+;
+
+/*----------------------------------------------------------------------------*/
 /* append row buffer to partition of given named table                        */
 /*----------------------------------------------------------------------------*/
 : loadAppendBuffer$ ( rowBuffer partitionNo "<tableNm>" -- true )
 
 tp: loadAppendBuffer$
-  0 locals| tablePtr tableNm iPartitionNo rowBuffer pLoaderSub |
+  0 locals| pTable sTableNm iPartitionNo pRowBuffer pLoaderSub |
 
   // why:
   //   loaderSub has forwarded a full rowBuffer which needs to be
@@ -50,21 +58,20 @@ tp: loadAppendBuffer$
   1 task::this task.thread thread.name@ str.left "p" str.equal assert
 
   args.tracepoint if
-    tableNm "APPENDING ROWBUFFER " swap str.cat " on NODE " str.cat grid.thisNode@ >str str.cat .
+    sTableNm "APPENDING ROWBUFFER " swap str.cat " on NODE " str.cat grid.thisNode@ >str str.cat .
   then
 
   // get ^table
-  tableNm find execute ( rb ptn table )
-  to tablePtr
+  sTableNm find execute ( rb ptn table )
+  to pTable
 
   // append row buffer to partition of table
   //table.appendBuffer ( )
 
-  rowBuffer iPartitionNo 
-  tablePtr    ( rb ptn tablePtr )
+  pRowBuffer iPartitionNo  pTable    ( rb ptn tablePtr )
 
 tp: tp1
-  3 "partitionAppendBuffer" iPartitionNo grid::toSlot dup >str "P" swap str.cat
+  3 "partitionAppendBuffer" iPartitionNo grid::toSlot dup >partitionTaskNm
   TK_LOADSUB_PART
 
 tp: tp2
@@ -72,20 +79,6 @@ tp: tp2
 
 tp: tp3
   true <SUCCESS_RESULT>
-;
-
-/*----------------------------------------------------------------------------*/
-/* forward append of rowbuffer to participant for partition                   */
-/*----------------------------------------------------------------------------*/
-: partitionAppendBuffer ( rowBuffer partitionNo table^ -- )
-
-  locals| tablePtr iPartitionNo rowBuffer |
-tp: partitionAppendBuffer
-
-  //iPartitionNo task::this task.name@
-  //"%v appending buffer to partition %v..." str.format .
-
-  rowBuffer iPartitionNo tablePtr table.appendBuffer ( )
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -156,7 +149,7 @@ tp: theIndirectResult
 
   // first set the taskset in this task
   // needed when being resumed by coordinator
-  0 0 locals| iPartitionNo ploaderSub |
+  0 0 0 locals| iPartitionNo ploaderSub iTotalPartitions |
 
   task::this task.thread thread.taskset@
   task::this task.taskset!
@@ -208,14 +201,12 @@ tp: theIndirectResult
 
   repeat // for all records in chunked file
 
-  locals| totalPartitions |
-
   // calculate total partitions in the cluster
   grid.slots grid.nodes *
-  to totalPartitions
+  to iTotalPartitions
 
   // check for dangling buffers
-  totalPartitions 0 do
+  iTotalPartitions 0 do
 
     // set the partition we are using
     I pLoaderSub loaderSub.partition!
@@ -237,6 +228,17 @@ tp: theIndirectResult
   task::this task.name@ "%v acking parent" str.format .
   task.parent@ ack
 
+;
+
+/*----------------------------------------------------------------------------*/
+/* forward append of rowbuffer to participant for partition                   */
+/*----------------------------------------------------------------------------*/
+: partitionAppendBuffer ( rowBuffer partitionNo table^ -- )
+
+tp: partitionAppendBuffer
+  locals| pTable iPartitionNo pRowBuffer |
+
+  pRowBuffer iPartitionNo pTable table.appendBuffer ( )
 ;
 
 /*============================================================================*/
