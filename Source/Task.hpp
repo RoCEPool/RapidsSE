@@ -29,14 +29,49 @@ namespace Tasks
   
   static Str* aAC[]
   {
-    /*  0 */ "none"_Str,
+    /*  0 */ "NONE"_Str,
     /*  1 */ "DRONE"_Str,
     /*  2 */ "PARTITION"_Str,
     /*  3 */ "SERVER"_Str,
     /*  4 */ "WORKER"_Str,
-    /*  5 */ "enums"_Str
+    /*  5 */ "ENUMS"_Str
   };
   
+  enum eTK // task kind
+  {
+  /*  0 */ TK_NONE=0,
+  /*  1 */ TK_ANSWER_DRONE,
+  /*  2 */ TK_LISTENER_DRONE,
+  /*  3 */ TK_CONNECTOR_DRONE,
+  /*  4 */ TK_MONITOR_DRONE,
+  /*  5 */ TK_RECLAIM_DRONE,
+  /*  6 */ TK_RECEIVER_DRONE,
+  /*  7 */ TK_REQUEST_SERVER,
+  /*  8 */ TK_COORDINATOR_WORKER,
+  /*  9 */ TK_COORDINATOR_PROXY_WORKER,
+  /* 10 */ TK_PARTICIPANT_WORKER,
+  /* 11 */ TK_PARTICIPANT_PROXY_WORKER,
+  /* 12 */ TK_SENDER_WORKER,
+  /* 13 */ TK_ENUMS
+  };
+  
+  static Str* aTK[]
+  {
+  /*  0 */ "NONE"_Str,
+  /*  1 */ "ANSWER_DRONE"_Str,
+  /*  2 */ "LISTENER_DRONE"_Str,
+  /*  3 */ "CONNECTOR_DRONE"_Str,
+  /*  4 */ "MONITOR_DRONE"_Str,
+  /*  5 */ "RECLAIM_DRONE"_Str,
+  /*  6 */ "RECEIVER_DRONE"_Str,
+  /*  7 */ "REQUEST_SERVER"_Str,
+  /*  8 */ "COORDINATOR_WORKER"_Str,
+  /*  9 */ "COORDINATOR_PROXY_WORKER"_Str,
+  /* 10 */ "PARTICIPANT_WORKER"_Str,
+  /* 11 */ "PARTICIPANT_PROXY_WORKER"_Str,
+  /* 12 */ "SENDER_WORKER"_Str,
+  /* 13 */ "ENUMS"_Str
+  };
   enum eTS // Task State
   {
   /* 0 */ TS_NONE=0,
