@@ -41,7 +41,7 @@ namespace Tasks
   {
   /*  0 */ TK_NONE=0,
   /*  1 */ TK_ANSWER_DRONE,
-  /*  2 */ TK_LISTENER_DRONE,
+  /*  2 */ TK_LISTER_DRONE,
   /*  3 */ TK_CONNECTOR_DRONE,
   /*  4 */ TK_MONITOR_DRONE,
   /*  5 */ TK_RECLAIM_DRONE,
@@ -59,7 +59,7 @@ namespace Tasks
   {
   /*  0 */ "NONE"_Str,
   /*  1 */ "ANSWER_DRONE"_Str,
-  /*  2 */ "LISTENER_DRONE"_Str,
+  /*  2 */ "LISTER_DRONE"_Str,
   /*  3 */ "CONNECTOR_DRONE"_Str,
   /*  4 */ "MONITOR_DRONE"_Str,
   /*  5 */ "RECLAIM_DRONE"_Str,

@@ -19,7 +19,7 @@ seitfCursor: seitfCrs
 /*----------------------------------------------------------------------------*/
 : spawnReclaimDrone
 
-  0 "reclaimLoop" "ReclaimDrone" spawnDroneActor drop
+  0 "reclaimLoop" "ReclaimDrone" TK_RECLAIM_DRONE spawnDroneActor drop
 ;
 
 /*----------------------------------------------------------------------------*/

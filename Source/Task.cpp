@@ -812,7 +812,7 @@ void Task::vAddConstants(void)
   // TK_ : task kind
   /*  0 */ vAddConstant("TK_NONE"_Str,                    TK_NONE);
   /*  0 */ vAddConstant("TK_ANSWER_DRONE"_Str,            TK_ANSWER_DRONE);
-  /*  0 */ vAddConstant("TK_LISTENER_DRONE"_Str,          TK_LISTENER_DRONE);
+  /*  0 */ vAddConstant("TK_LISTER_DRONE"_Str,            TK_LISTER_DRONE);
   /*  0 */ vAddConstant("TK_CONNECTOR_DRONE"_Str,         TK_CONNECTOR_DRONE);
   /*  0 */ vAddConstant("TK_MONITOR_DRONE"_Str,           TK_MONITOR_DRONE);
   /*  0 */ vAddConstant("TK_RECLAIM_DRONE"_Str,           TK_RECLAIM_DRONE);

@@ -15,7 +15,7 @@ taskCursor: pTaskCrs
 /*----------------------------------------------------------------------------*/
 : spawnListerDrone
 
-  0 "listerLoop" "ListerDrone" spawnDroneActor drop
+  0 "listerLoop" "ListerDrone" TK_LISTER_DRONE spawnDroneActor drop
 ;
 
 /*----------------------------------------------------------------------------*/
