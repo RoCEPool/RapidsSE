@@ -212,7 +212,7 @@ tp: >>allParticipants>
 
   locals| sTaskNm iPtnNo sSeed nArgs |
 
-  nArgs sSeed nullptr AC_PARTITION sTaskNm task::new locals| pTask |
+  nArgs sSeed nullptr AC_PARTITION sTaskNm TK_NONE task::new locals| pTask |
 
   iPtnNo >partitionThreadNm findActorTaskSet dup . locals| pTaskSet |
 

@@ -420,6 +420,10 @@ ENTRY("vTaskNew"_Str);
   if ( ! mpTask->m_pDataStack->bGuard(4) )
     THROW_INVALID_DSTACK("task::new"_Str);
   
+  i8 eKind;
+  if ( ! mpTask->m_pDataStack->bPop(eKind) )
+    THROW_INVALID_DSTACK("task::new"_Str);  //ASSERT(! nTaskArgs);
+  
   s32 sName;
   if ( ! mpTask->m_pDataStack->bPop(sName) )
     THROW_INVALID_DSTACK("task::new"_Str);

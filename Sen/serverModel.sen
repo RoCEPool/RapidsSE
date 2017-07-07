@@ -81,7 +81,7 @@ args.regionSize nServerThreads constant N_SERVER_THREADS
   nullptr locals| pTask sTaskNm pParent sSeedWord nArgs |
 
   // create a new task
-  nArgs sSeedWord pParent sTaskNm AC_SERVER task::new to pTask
+  nArgs sSeedWord pParent AC_SERVER sTaskNm TK_NONE task::new to pTask
 
   // set task name
   //sTaskNm pTask task.name!
