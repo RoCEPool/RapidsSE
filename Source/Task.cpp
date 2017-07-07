@@ -823,6 +823,7 @@ void Task::vAddConstants(void)
   /*  0 */ vAddConstant("TK_PARTICIPANT_WORKER"_Str,      TK_PARTICIPANT_WORKER);
   /*  0 */ vAddConstant("TK_PARTICIPANT_PROXY_WORKER"_Str,TK_PARTICIPANT_PROXY_WORKER);
   /*  0 */ vAddConstant("TK_SENDER_WORKER"_Str,           TK_SENDER_WORKER);
+  /*  0 */ vAddConstant("TK_SELECT_PART"_Str,             TK_SELECT_PART);
   /*  0 */ vAddConstant("TK_ENUMS"_Str,                   TK_ENUMS );
   
   // TS_ : task state

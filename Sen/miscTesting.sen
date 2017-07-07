@@ -259,7 +259,7 @@ traceon
 /*----------------------------------------------------------------------------*/
 : schedServer
 
-  0 "helloWorld" nullptr "hi" spawnServerActor drop
+  0 "helloWorld" nullptr "hi" spawnServerActor TK_NONE drop
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -269,7 +269,7 @@ traceon
 
   0 0 locals| nArgs iPtnNo |
 
-  nArgs "helloWorld" iPtnNo "hi" partitionDispatch
+  nArgs "helloWorld" iPtnNo "hi" TK_NONE partitionDispatch
 ;
 
 /*----------------------------------------------------------------------------*/

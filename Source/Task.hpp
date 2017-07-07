@@ -52,7 +52,8 @@ namespace Tasks
   /* 10 */ TK_PARTICIPANT_WORKER,
   /* 11 */ TK_PARTICIPANT_PROXY_WORKER,
   /* 12 */ TK_SENDER_WORKER,
-  /* 13 */ TK_ENUMS
+  /* 13 */ TK_SELECT_PART,
+  /* 14 */ TK_ENUMS
   };
   
   static Str* aTK[]
@@ -70,7 +71,8 @@ namespace Tasks
   /* 10 */ "PARTICIPANT_WORKER"_Str,
   /* 11 */ "PARTICIPANT_PROXY_WORKER"_Str,
   /* 12 */ "SENDER_WORKER"_Str,
-  /* 13 */ "ENUMS"_Str
+  /* 13 */ "SELECT_PART"_Str,
+  /* 14 */ "ENUMS"_Str
   };
   enum eTS // Task State
   {

@@ -82,7 +82,7 @@ timer: loadTimer
 
     pathGet >>
 
-    1 "loadSub" task::this I >loadSubNm spawnServerActor to pSubTask
+    1 "loadSub" task::this I >loadSubNm TK_NONE spawnServerActor to pSubTask
 
   loop
 
