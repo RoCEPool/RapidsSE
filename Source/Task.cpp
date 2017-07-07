@@ -808,6 +808,22 @@ void Task::vAddConstants(void)
   /*  1 */ vAddConstant("SIZEOF_S256"_Str,         sizeof(s256));
   /*  2 */ vAddConstant("SIZEOF_S16K"_Str,         sizeof(s48K));
 
+  // TK_ : task kind
+  /*  0 */ vAddConstant("TK_NONE"_Str,                    TK_NONE);
+  /*  0 */ vAddConstant("TK_ANSWER_DRONE"_Str,            TK_ANSWER_DRONE);
+  /*  0 */ vAddConstant("TK_LISTENER_DRONE"_Str,          TK_LISTENER_DRONE);
+  /*  0 */ vAddConstant("TK_CONNECTOR_DRONE"_Str,         TK_CONNECTOR_DRONE);
+  /*  0 */ vAddConstant("TK_MONITOR_DRONE"_Str,           TK_MONITOR_DRONE);
+  /*  0 */ vAddConstant("TK_RECLAIM_DRONE"_Str,           TK_RECLAIM_DRONE);
+  /*  0 */ vAddConstant("TK_RECEIVER_DRONE"_Str,          TK_RECEIVER_DRONE );
+  /*  0 */ vAddConstant("TK_REQUEST_SERVER"_Str,          TK_REQUEST_SERVER);
+  /*  0 */ vAddConstant("TK_COORDINATOR_WORKER"_Str,      TK_COORDINATOR_WORKER);
+  /*  0 */ vAddConstant("TK_COORDINATOR_PROXY_WORKER"_Str,TK_COORDINATOR_PROXY_WORKER);
+  /*  0 */ vAddConstant("TK_PARTICIPANT_WORKER"_Str,      TK_PARTICIPANT_WORKER);
+  /*  0 */ vAddConstant("TK_PARTICIPANT_PROXY_WORKER"_Str,TK_PARTICIPANT_PROXY_WORKER);
+  /*  0 */ vAddConstant("TK_SENDER_WORKER"_Str,           TK_SENDER_WORKER);
+  /*  0 */ vAddConstant("TK_ENUMS"_Str,                   TK_ENUMS );
+  
   // TS_ : task state
   /*  0 */ vAddConstant("TS_NONE"_Str,           TS_NONE);
   /*  1 */ vAddConstant("TS_BLOCKED"_Str,        TS_BLOCKED);
