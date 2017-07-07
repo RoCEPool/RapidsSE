@@ -3,7 +3,7 @@
 /*============================================================================*/
 
 
-
+docol epochTake;
 create table jidx (
 jidx_key   INTEGER NOT NULL,
 jidx_name  VARCHAR(32) NOT NULL,
@@ -12,17 +12,13 @@ jidx_10    INTEGER NOT NULL
 );
 
 create index idx1 on jidx (jidx_10);
-lsidx jidx;
-lsidxcol jidx idx1;
 
 ld jidx "../JTEST/test.csv" ;
-dumpidx jidx idx1;
-
-docol epochTake;
-fetch jidx "jidx_key 2 >=";
-docol epochDump;
 
 drop table jidx;
+docol epochDump;
+
+
 
 
 /*

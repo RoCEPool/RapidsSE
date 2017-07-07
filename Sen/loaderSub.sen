@@ -65,9 +65,6 @@ tp: loadAppendBuffer$
   sTableNm find execute ( rb ptn table )
   to pTable
 
-  // append row buffer to partition of table
-  //table.appendBuffer ( )
-
   pRowBuffer iPartitionNo  pTable    ( rb ptn tablePtr )
 
 tp: tp1
@@ -227,11 +224,10 @@ tp: theIndirectResult
   // this sub has completed, ack the parent loader
   task::this task.name@ "%v acking parent" str.format .
   task.parent@ ack
-
 ;
 
 /*----------------------------------------------------------------------------*/
-/* forward append of rowbuffer to participant for partition                   */
+/* partition task appends the row buffer to the table                         */
 /*----------------------------------------------------------------------------*/
 : partitionAppendBuffer ( rowBuffer partitionNo table^ -- )
 
