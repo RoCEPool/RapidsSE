@@ -5,22 +5,34 @@
 "partitionModel.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* compute the number of partition processing threads to be created           */
+/* compute the number of partition threads to be created                      */
 /*----------------------------------------------------------------------------*/
-: nPartitionThreads ( memorySize -- nThreads )
 
-  // the number of query threads is computed based on the
-  // size of the region
+: nPartitionThreads ( -- nThreads )
 
-  // there will be 1 query thread per GB
-  // the number of threads will be limited to 80% of the number of cores
+  // 1 thread per partition
+  args.partitionsPerNode locals| nThreads |
 
-  C_1GB / locals| nThreads |
-
-//1 exit // temp
+  //1 exit // temp
 
   nThreads 0 <= if
     1
+  then
+
+  nThreads
+;
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+/*
+: nPartitionThreads ( -- nThreads )
+
+  args.regionSize C_1GB / locals| nThreads |
+
+  //1 exit // temp
+
+  nThreads 0 <= if
+    1 to nThreads
   else
     nThreads CORE_COUNT 8 * 10 / > if
       CORE_COUNT 8 * 10 / to nThreads
@@ -29,11 +41,12 @@
 
   nThreads
 ;
+*/
 
 /*----------------------------------------------------------------------------*/
 /* define the N_PARTITION_THREADS constant                                    */
 /*----------------------------------------------------------------------------*/
-args.regionSize nPartitionThreads constant N_PARTITION_THREADS
+nPartitionThreads constant N_PARTITION_THREADS
 
 /*----------------------------------------------------------------------------*/
 /* create and spawn the partition processing threads                          */
