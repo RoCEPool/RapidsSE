@@ -818,6 +818,7 @@ void Task::vAddConstants(void)
   /*  0 */ vAddConstant("TK_RECLAIM_DRONE"_Str,           TK_RECLAIM_DRONE);
   /*  0 */ vAddConstant("TK_RECEIVER_DRONE"_Str,          TK_RECEIVER_DRONE );
   /*  0 */ vAddConstant("TK_REQUEST_SERVER"_Str,          TK_REQUEST_SERVER);
+  /*  0 */ vAddConstant("TK_LOADSUB_SERVER"_Str,          TK_LOADSUB_SERVER);
   /*  0 */ vAddConstant("TK_COORDINATOR_WORKER"_Str,      TK_COORDINATOR_WORKER);
   /*  0 */ vAddConstant("TK_COORDINATOR_PROXY_WORKER"_Str,TK_COORDINATOR_PROXY_WORKER);
   /*  0 */ vAddConstant("TK_PARTICIPANT_WORKER"_Str,      TK_PARTICIPANT_WORKER);
