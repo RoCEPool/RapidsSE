@@ -383,7 +383,7 @@
   // delete the selcursor
   //selCursor selCursor.delete
 
-  //1 "helloWorld" nullPtr task::new to selectTask
+  //1 "helloWorld" task::new to selectTask
   //selectTask task::this task.taskset@
   //taskSet.Append
 

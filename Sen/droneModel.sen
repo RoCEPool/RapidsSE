@@ -17,8 +17,6 @@
 
   // create a new task and set task name and drone model
   nArgs sSeedWord nullptr AC_DRONE sTaskNm task::new to pTask
-  //sTaskNm pTask task.name!
-  //AC_DRONE pTask task.actorModel!
 
   // create a new thread and set thread name and drone model
   sTaskNm "Thread" str.cat :thread execute to pThread

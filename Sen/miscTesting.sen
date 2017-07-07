@@ -269,8 +269,6 @@ traceon
 
   0 "helloWorld" nullptr AC_PARTITION "hi" task::new locals| pTask |
 
-//AC_PARTITION pTask task.actorModel!
-
   0 >partitionThreadNm findActorTaskSet dup . locals| pTaskSet |
 
   pTask pTaskSet taskSet.append

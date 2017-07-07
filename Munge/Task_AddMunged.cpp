@@ -12103,7 +12103,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "\n"
     "  \\\"senderLoop\\\" task::this task.comment!\n"
     "\n"
-    "  senderTaskPrint if \\\"Sender running on node\\\" grid.thisNode@ >str str.cat . then\n"
+    "  senderWorkerPrint if \\\"Sender running on node\\\" grid.thisNode@ >str str.cat . then\n"
     "\n"
     "  begin\n"
     "    depth 0 != if \\\"sender task has grown\\\" . debug.trap then\n"
