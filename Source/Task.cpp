@@ -699,12 +699,12 @@ void Task::vAddConstants(void)
   /*  5 */ vAddConstant("AT_SCAN"_Str,  AT_SCAN);
   /*  6 */ vAddConstant("AT_ENUMS"_Str, AT_ENUMS);
   
-  // TK_ : token types
-  /*  0 */ vAddConstant("TK_NONE"_Str,    TK_NONE);
-  /*  1 */ vAddConstant("TK_NAME"_Str,    TK_NAME);
-  /*  2 */ vAddConstant("TK_INTEGER"_Str, TK_INTEGER);
-  /*  3 */ vAddConstant("TK_STRING"_Str,  TK_STRING);
-  /*  4 */ vAddConstant("TK_ENUMS"_Str,   TK_ENUMS);
+  // TN_ : token types
+  /*  0 */ vAddConstant("TN_NONE"_Str,    TN_NONE);
+  /*  1 */ vAddConstant("TN_NAME"_Str,    TN_NAME);
+  /*  2 */ vAddConstant("TN_INTEGER"_Str, TN_INTEGER);
+  /*  3 */ vAddConstant("TN_STRING"_Str,  TN_STRING);
+  /*  4 */ vAddConstant("TN_ENUMS"_Str,   TN_ENUMS);
   
   /*  0 */ vAddConstant("TH_NONE"_Str,                TH_NONE);
   /*  1 */ vAddConstant("TH_ANSWER"_Str,              TH_ANSWER);
@@ -1020,12 +1020,12 @@ void Task::vAddRoutines(void)
   "    input.next"
   
   // test for end of input?
-  "    input.type TK_NONE == if"
+  "    input.type TN_NONE == if"
   "      exit"
   "    then"
   
   // is token an integer?
-  "    input.type TK_INTEGER == if"
+  "    input.type TN_INTEGER == if"
   
   "      input.token >int"        // convert str to int, leave on stack
   
@@ -1041,7 +1041,7 @@ void Task::vAddRoutines(void)
   "    then"
   
   // is token a string?
-  "    input.type TK_STRING == if"
+  "    input.type TN_STRING == if"
   
   "      input.token"             // put str on stack
   
@@ -1057,7 +1057,7 @@ void Task::vAddRoutines(void)
   "    then"
   
   // should be a name
-  "    input.type TK_NAME != if"  // double check we have a name
+  "    input.type TN_NAME != if"  // double check we have a name
   "      \"strange token\" . input.type ."
   "      jumpBegin_"
   "    then"
@@ -1226,7 +1226,7 @@ Word* Task::pCompileColon(StrVal& sDefinition)
 
   m_pTokeniser->vNextToken();
   
-  while (TK_NONE != m_pTokeniser->eToken()) {
+  while (TN_NONE != m_pTokeniser->eToken()) {
     
     //vTrace("CompileColon: %s\n"_Str,m_sToken.s());
     
@@ -1236,12 +1236,12 @@ Word* Task::pCompileColon(StrVal& sDefinition)
     
     switch (m_pTokeniser->eToken()) {
         
-      case TK_INTEGER:
+      case TN_INTEGER:
         xValWrk = m_pTokeniser->sToken().iToI8();
         pNewWord->vEncode("pushValue"_Str,&xValWrk);
         break;
         
-      case TK_NAME:
+      case TN_NAME:
         pCalledWord = m_xPathStack.pFindWord(m_pTokeniser->sToken());
         if (WT_PRIMITIVE == pCalledWord->eWordType()) {
           pStep = pCalledWord->pEntryStep();
@@ -1260,7 +1260,7 @@ Word* Task::pCompileColon(StrVal& sDefinition)
         }
         break;
         
-      case TK_STRING: {
+      case TN_STRING: {
         xValWrk = m_pTokeniser->sToken();
         pNewWord->vEncode("pushValue"_Str,&xValWrk);
         break;

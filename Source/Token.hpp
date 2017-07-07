@@ -5,17 +5,17 @@
 
 namespace Parsing
 {
-  enum eTK // token type
+  enum eTN // token type
   {
-  /*  0 */ TK_NONE=0,  // none
-  /*  1 */ TK_INTEGER, // integer literal, e.g. 1, 42
-  /*  2 */ TK_NAME,    // name token, e.g. WASHER (or ++ in special mode)
-  /*  3 */ TK_OTHER,   // other literal, e.g. {, ~
-  /*  4 */ TK_STRING,  // string literal, e.g. "the answer"
-  /*  5 */ TK_ENUMS
+  /*  0 */ TN_NONE=0,  // none
+  /*  1 */ TN_INTEGER, // integer literal, e.g. 1, 42
+  /*  2 */ TN_NAME,    // name token, e.g. WASHER (or ++ in special mode)
+  /*  3 */ TN_OTHER,   // other literal, e.g. {, ~
+  /*  4 */ TN_STRING,  // string literal, e.g. "the answer"
+  /*  5 */ TN_ENUMS
   };
   
-  static Str* aTK[]
+  static Str* aTN[]
   {
   /*  0 */ "NONE"_Str,
   /*  1 */ "INTEGER"_Str,
@@ -28,7 +28,7 @@ namespace Parsing
   class Token : public Object
   {
   private:
-    eTK  m_eToken; // kind of token
+    eTN  m_eToken; // kind of token
     s256 m_sText;  // token text
   
     // must be last
@@ -46,8 +46,8 @@ namespace Parsing
     s256& sText(void);
     void vText(s256& sText);
 
-    eTK eToken(void);
-    void vToken(eTK eToken);
+    eTN eToken(void);
+    void vToken(eTN eToken);
   
     void vReset(void);
   

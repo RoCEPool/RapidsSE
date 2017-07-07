@@ -156,7 +156,7 @@ bool SeHistory::bGet(i8 iCommand, TokenVec& xTokenVec)
       xTokenVec.vReset();
       
       i8 i = 0;
-      while (TK_NONE != m_pTokeniser->eNextToken((char*)xTokenVec[i]->aText())) {
+      while (TN_NONE != m_pTokeniser->eNextToken((char*)xTokenVec[i]->aText())) {
         //vTrace("Word [%lld] %s\n"_Str,i,pWords[i]);
         i++;
       }

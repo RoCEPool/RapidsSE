@@ -107,7 +107,7 @@ ENTRY("vInputNext"_Str);
   
   char* aToken = mpTask->m_pTokeniser->sToken().s();
   
-  eTK eToken = mpTask->m_pTokeniser->eNextToken(aToken);
+  eTN eToken = mpTask->m_pTokeniser->eNextToken(aToken);
   
   EXIT();
 }
@@ -209,7 +209,7 @@ void Task::vInputType(MP_Task mpTask)
 {
 ENTRY("vInputType"_Str);
   
-  eTK eTokenType = mpTask->m_pTokeniser->eToken();
+  eTN eTokenType = mpTask->m_pTokeniser->eToken();
   
   mpTask->m_pDataStack->vPushInt(eTokenType);
   

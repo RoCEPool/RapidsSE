@@ -236,7 +236,7 @@ bool SePrompt::bExecuteString(StrVal& sRequest, eEC& eErrorCode)
   
   m_pTokeniser->vUseString(sRequest);
   i8 i_Token = 0;
-  while (TK_NONE != m_pTokeniser->eNextToken((char*)m_xTokenVec[i_Token]->aText())) {
+  while (TN_NONE != m_pTokeniser->eNextToken((char*)m_xTokenVec[i_Token]->aText())) {
     
     //vTrace("vGetCommand : [%lld] %s\n"_Str,i_Token,m_xTokenVec[i_Token]);
     
@@ -262,7 +262,7 @@ bool SePrompt::bExecuteString(StrVal& sRequest, eEC& eErrorCode, StrVal& sRespon
   
   m_pTokeniser->vUseString(sRequest);
   i8 i_Token = 0;
-  while (TK_NONE != m_pTokeniser->eNextToken((char*)m_xTokenVec[i_Token]->aText())) {
+  while (TN_NONE != m_pTokeniser->eNextToken((char*)m_xTokenVec[i_Token]->aText())) {
     
     //vTrace("vGetCommand : [%lld] %s\n"_Str,i_Token,m_xTokenVec[i_Token]);
     
@@ -286,7 +286,7 @@ bool SePrompt::bExecuteString(StrVal& sRequest, eEC& eErrorCode, Str** ppRowPtr)
   
   m_pTokeniser->vUseString(sRequest);
   i8 i_Token = 0;
-  while (TK_NONE != m_pTokeniser->eNextToken((char*)m_xTokenVec[i_Token]->aText())) {
+  while (TN_NONE != m_pTokeniser->eNextToken((char*)m_xTokenVec[i_Token]->aText())) {
     
     //vTrace("vGetCommand : [%lld] %s\n"_Str,i_Token,m_xTokenVec[i_Token]);
     
@@ -343,7 +343,7 @@ void SePrompt::vGetCommandArgument(void)
   
   m_xTokenVec.vReset();
   
-  while (TK_NONE !=
+  while (TN_NONE !=
            m_pTokeniser->eNextToken((char*)m_xTokenVec[m_xTokenVec.nTokens()]->aText())) {
     
     //vTrace("vGetCommand : [%lld] %s\n"_Str,i_Token,m_xTokenVec[i_Token]);
@@ -367,7 +367,7 @@ void SePrompt::vGetCommandInput(void)
     m_xTokenVec.vReset();
     m_xTokenVec2.vReset();
     
-    while (TK_NONE !=
+    while (TN_NONE !=
            m_pTokeniser->eNextToken((char*)m_xTokenVec[m_xTokenVec.nTokens()]->aText())) {
       
       //vTrace("vGetCommand : [%lld] %s\n"_Str,i_Token,m_xTokenVec[i_Token]);
@@ -1517,8 +1517,8 @@ void SePrompt::vCollectStatement(void)
   // get tokens delimited by ';'
   for ( ; i_Token < C_TOKENS; i_Token++) {
     
-    eTK eToken = m_pTokeniser->eNextToken((char*)m_xTokenVec[i_Token]->aText());
-    ASSERT(TK_NONE != eToken);
+    eTN eToken = m_pTokeniser->eNextToken((char*)m_xTokenVec[i_Token]->aText());
+    ASSERT(TN_NONE != eToken);
     
     // look for terminal
     if (m_xTokenVec[i_Token]->bSame(";"_Str))

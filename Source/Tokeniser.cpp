@@ -52,7 +52,7 @@ Tokeniser::Tokeniser(void)
   m_bNormal = false;
   
   m_sToken  = ""_Str;
-  m_eToken  = TK_NONE;
+  m_eToken  = TN_NONE;
   
   _checkInitialised_(CN_TOKENISER);
   
@@ -86,7 +86,7 @@ TokenVec* Tokeniser::pTokenise(StrVal& sString)
   
   for (i8 i_Token = 0; ; i_Token++) {
     pTokeniser->vNextToken();
-    if (TK_NONE == pTokeniser->eToken())
+    if (TN_NONE == pTokeniser->eToken())
       break;
     
     pTokenVec->vIncTokens();
@@ -247,7 +247,7 @@ void Tokeniser::vUseEnd(void)
 /*----------------------------------------------------------------------------*/
 /* parse next token into given buffer                                         */
 /*----------------------------------------------------------------------------*/
-eTK Tokeniser::eNextToken(char* aToken)
+eTN Tokeniser::eNextToken(char* aToken)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
@@ -266,7 +266,7 @@ void Tokeniser::vNextToken(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
 
-  eTK eToken = eNextToken(m_sToken.s());
+  eTN eToken = eNextToken(m_sToken.s());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -367,7 +367,7 @@ s48K& Tokeniser::sToken(void)
 /*----------------------------------------------------------------------------*/
 /* get token type                                                             */
 /*----------------------------------------------------------------------------*/
-eTK Tokeniser::eToken(void)
+eTN Tokeniser::eToken(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
@@ -381,13 +381,13 @@ eTK Tokeniser::eToken(void)
 /*----------------------------------------------------------------------------*/
 /* parse next normal token into given buffer                                  */
 /*----------------------------------------------------------------------------*/
-eTK Tokeniser::eNextNormal(char* wToken)
+eTN Tokeniser::eNextNormal(char* wToken)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
   *wToken = '\0';
   
-  eTK eToken = eParseNormal(wToken);
+  eTN eToken = eParseNormal(wToken);
   
   return eToken;
 }
@@ -395,13 +395,13 @@ eTK Tokeniser::eNextNormal(char* wToken)
 /*----------------------------------------------------------------------------*/
 /* parse next special token into given buffer                                 */
 /*----------------------------------------------------------------------------*/
-eTK Tokeniser::eNextSpecial(char* wToken)
+eTN Tokeniser::eNextSpecial(char* wToken)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
   *wToken = '\0';
 
-  eTK eToken = eParseSpecial(wToken);
+  eTN eToken = eParseSpecial(wToken);
   
   return eToken;
 }
@@ -414,7 +414,7 @@ eTK Tokeniser::eNextSpecial(char* wToken)
 /*----------------------------------------------------------------------------*/
 /* parse normal                                                               */
 /*----------------------------------------------------------------------------*/
-eTK Tokeniser::eParseNormal(char* wToken)
+eTN Tokeniser::eParseNormal(char* wToken)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
@@ -425,35 +425,35 @@ eTK Tokeniser::eParseNormal(char* wToken)
   // end of input?
   if (bEndInput()) {
     *wToken = '\0';
-    return TK_NONE;
+    return TN_NONE;
   }
   
   // collect integer literal?
   if (bStartNormalInteger()) {
-    eTK eLiteral = eParseNormalInteger(wToken);
+    eTN eLiteral = eParseNormalInteger(wToken);
     return eLiteral;
   }
   
   // collect string literal?
   if (bStartNormalString()) {
-    eTK eToken = eParseNormalString(wToken);
+    eTN eToken = eParseNormalString(wToken);
     return eToken;
   }
   
   // collect name token?
   if (bStartNormalName()) {
-    eTK eToken = eParseNormalName(wToken);
+    eTN eToken = eParseNormalName(wToken);
     return eToken;
   }
   
-  eTK eToken = eParseNormalOther(wToken);
+  eTN eToken = eParseNormalOther(wToken);
   return eToken;
 }
 
 /*----------------------------------------------------------------------------*/
 /* parse normal integer literal                                               */
 /*----------------------------------------------------------------------------*/
-eTK Tokeniser::eParseNormalInteger(char* wToken)
+eTN Tokeniser::eParseNormalInteger(char* wToken)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
@@ -491,13 +491,13 @@ eTK Tokeniser::eParseNormalInteger(char* wToken)
   // terminate the integer literal
   *z = '\0';
   
-  return TK_INTEGER;
+  return TN_INTEGER;
 }
 
 /*----------------------------------------------------------------------------*/
 /* parse normal name token                                                    */
 /*----------------------------------------------------------------------------*/
-eTK Tokeniser::eParseNormalName(char* wToken)
+eTN Tokeniser::eParseNormalName(char* wToken)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
@@ -517,13 +517,13 @@ eTK Tokeniser::eParseNormalName(char* wToken)
   // terminate the name
   *z = '\0';
   
-  return TK_NAME;
+  return TN_NAME;
 }
 
 /*----------------------------------------------------------------------------*/
 /* parse other token                                                          */
 /*----------------------------------------------------------------------------*/
-eTK Tokeniser::eParseNormalOther(char* wToken)
+eTN Tokeniser::eParseNormalOther(char* wToken)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
@@ -543,7 +543,7 @@ eTK Tokeniser::eParseNormalOther(char* wToken)
       // terminate the string token
       *z = '\0';
       
-      return TK_STRING;
+      return TN_STRING;
     }
     else {
       // push back the unconsumed char
@@ -560,13 +560,13 @@ eTK Tokeniser::eParseNormalOther(char* wToken)
   // terminate the other token
   *z = '\0';
   
-  return TK_OTHER;
+  return TN_OTHER;
 }
 
 /*----------------------------------------------------------------------------*/
 /* parse normal string literal                                                */
 /*----------------------------------------------------------------------------*/
-eTK Tokeniser::eParseNormalString(char* wToken)
+eTN Tokeniser::eParseNormalString(char* wToken)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
@@ -606,13 +606,13 @@ eTK Tokeniser::eParseNormalString(char* wToken)
   // terminate the string literal
   *z = '\0';
   
-  return TK_STRING;
+  return TN_STRING;
 }
 
 /*----------------------------------------------------------------------------*/
 /* parse special                                                              */
 /*----------------------------------------------------------------------------*/
-eTK Tokeniser::eParseSpecial(char* wToken)
+eTN Tokeniser::eParseSpecial(char* wToken)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
@@ -623,30 +623,30 @@ eTK Tokeniser::eParseSpecial(char* wToken)
   // end of input?
   if (bEndInput()) {
     *wToken = '\0';
-    return TK_NONE;
+    return TN_NONE;
   }
   
   // collect integer literal?
   if (bStartSpecialInteger()) {
-    eTK eLiteral = eParseSpecialInteger(wToken);
+    eTN eLiteral = eParseSpecialInteger(wToken);
     return eLiteral;
   }
   
   // collect string literal?
   if (bStartSpecialString()) {
-    eTK eToken = eParseSpecialString(wToken);
+    eTN eToken = eParseSpecialString(wToken);
     return eToken;
   }
   
   // collect name token
-  eTK eToken = eParseSpecialName(wToken);
+  eTN eToken = eParseSpecialName(wToken);
   return eToken;
 }
 
 /*----------------------------------------------------------------------------*/
 /* parse special integer                                                      */
 /*----------------------------------------------------------------------------*/
-eTK Tokeniser::eParseSpecialInteger(char* wToken)
+eTN Tokeniser::eParseSpecialInteger(char* wToken)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
@@ -688,18 +688,18 @@ eTK Tokeniser::eParseSpecialInteger(char* wToken)
     
     // terminate an intlit
     *z = '\0';
-    return TK_INTEGER;
+    return TN_INTEGER;
   }
   
   // its actually a name; complete parsing name
-  eTK eToken = eParseSpecialName(z);
+  eTN eToken = eParseSpecialName(z);
   return eToken;
 }
 
 /*----------------------------------------------------------------------------*/
 /* parse special name                                                         */
 /*----------------------------------------------------------------------------*/
-eTK Tokeniser::eParseSpecialName(char* wToken)
+eTN Tokeniser::eParseSpecialName(char* wToken)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
@@ -719,13 +719,13 @@ eTK Tokeniser::eParseSpecialName(char* wToken)
   // terminate a namelit
   *z = '\0';
 
-  return TK_NAME;
+  return TN_NAME;
 }
 
 /*----------------------------------------------------------------------------*/
 /* parse special string                                                       */
 /*----------------------------------------------------------------------------*/
-eTK Tokeniser::eParseSpecialString(char* wToken)
+eTN Tokeniser::eParseSpecialString(char* wToken)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
@@ -766,7 +766,7 @@ eTK Tokeniser::eParseSpecialString(char* wToken)
   // terminate the strlit
   *z = '\0';
 
-  return TK_STRING;
+  return TN_STRING;
 }
 
 

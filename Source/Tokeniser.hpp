@@ -14,7 +14,7 @@ namespace Parsing
     char    m_cParsedChar;   // character from parser
     
     s48K    m_sToken;  // current token
-    eTK     m_eToken;  // token type
+    eTN     m_eToken;  // token type
     
     // must be last
     Footer m_xFooter;    
@@ -45,7 +45,7 @@ namespace Parsing
     void vUseString(StrVal& sString);
     void vUseEnd(void);
 
-    eTK  eNextToken(char* aToken);
+    eTN  eNextToken(char* aToken);
     void vNextToken(void);
     
     i8   iFindToken(Str* pLookFor, TokenVec& xTokenVec, i8 nTokens);
@@ -57,22 +57,22 @@ namespace Parsing
     bool bStdin(void);
     
     s48K& sToken(void);
-    eTK  eToken(void);
+    eTN  eToken(void);
     
   private:
-    eTK  eNextNormal(char* aToken);
-    eTK  eNextSpecial(char* aToken);
+    eTN  eNextNormal(char* aToken);
+    eTN  eNextSpecial(char* aToken);
     
-    eTK  eParseNormal(char* aToken);
-    eTK  eParseNormalInteger(char* aToken);
-    eTK  eParseNormalName(char* aToken);
-    eTK  eParseNormalOther(char* aToken);
-    eTK  eParseNormalString(char* aToken);
+    eTN  eParseNormal(char* aToken);
+    eTN  eParseNormalInteger(char* aToken);
+    eTN  eParseNormalName(char* aToken);
+    eTN  eParseNormalOther(char* aToken);
+    eTN  eParseNormalString(char* aToken);
     
-    eTK  eParseSpecial(char* aToken);
-    eTK  eParseSpecialInteger(char* aToken);
-    eTK  eParseSpecialName(char* aToken);
-    eTK  eParseSpecialString(char* aToken);
+    eTN  eParseSpecial(char* aToken);
+    eTN  eParseSpecialInteger(char* aToken);
+    eTN  eParseSpecialName(char* aToken);
+    eTN  eParseSpecialString(char* aToken);
     
     void vSkipWhitespace(void);
     bool bHaveWhitespace(void);

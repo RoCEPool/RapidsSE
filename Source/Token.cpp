@@ -65,7 +65,7 @@ Token::~Token(void)
 /*----------------------------------------------------------------------------*/
 /* get token kind                                                             */
 /*----------------------------------------------------------------------------*/
-eTK Token::eToken(void)
+eTN Token::eToken(void)
 {
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
   
@@ -75,7 +75,7 @@ eTK Token::eToken(void)
 /*----------------------------------------------------------------------------*/
 /* set token kind                                                             */
 /*----------------------------------------------------------------------------*/
-void Token::vToken(eTK eToken)
+void Token::vToken(eTN eToken)
 {
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
   
@@ -99,7 +99,7 @@ void Token::vReset(void)
 {
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
   
-  m_eToken = TK_NONE;
+  m_eToken = TN_NONE;
   m_sText = ""_Str;
 }
 
