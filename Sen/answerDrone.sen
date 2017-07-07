@@ -70,7 +70,8 @@ int: nConnections
     ddlLock::dropWrite
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // increments connection counter
+    // increment connection counter
+
     nConnections @          ( connection# )
     1 +                    ( nConnections# 1 )
     dup                    ( nConnections# nConnections# )

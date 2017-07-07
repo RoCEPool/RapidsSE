@@ -11,9 +11,11 @@
 
   /*
 
-    r->C->PP-> (snd ... rcv) ->CP->P
+    r->C->PP->P<-CP
        |
-       +->P
+       +->PP-> (snd ... rcv) ->CP->P
+       |
+       +->PP-> (snd ... rcv) ->CP->P
 
   */
 
