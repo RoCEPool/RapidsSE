@@ -113,6 +113,7 @@ namespace Tasks
 
     Lock    m_xLock;
     i8      m_iTaskNo;     // task
+    eTK     m_eTaskKind;   // task kind
     eAC     m_eActorModel; // actor model
     s32     m_sName;       // task name
     s32     m_sComment;    // comment
@@ -233,6 +234,8 @@ namespace Tasks
     void vStackContents(Stack* pStack, StrVal& sStackContents);
     eTS  eState(void);
     void vState(eTS eState);
+    eTK  eTaskKind(void);
+    void vTaskKind(eTK eTaskKind);
     Threads::Thread* pThread(void);
     void vThread(Threads::Thread* pThread);
     void vTracePoint(Str* aMark);

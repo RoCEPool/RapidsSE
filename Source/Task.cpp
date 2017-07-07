@@ -219,6 +219,7 @@ void Task::vInit(Str* aLambda)
   // basic state
   m_xLock.vInit("Task::m_xLock"_Str);
   m_iTaskNo     = iTaskNo++;
+  m_eTaskKind   = TK_NONE;
   m_eActorModel = AC_NONE;
   m_sName       = "<no task name>"_Str;
   m_eState      = TS_NONE;
@@ -1847,6 +1848,26 @@ void Task::vState(eTS eState)
   m_xLock.vGrabWrite();
   m_eState = eState;
   m_xLock.vDropWrite();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get task kind                                                              */
+/*----------------------------------------------------------------------------*/
+eTK Task::eTaskKind(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  return m_eTaskKind;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set task kind                                                              */
+/*----------------------------------------------------------------------------*/
+void Task::vTaskKind(eTK eTaskKind)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  m_eTaskKind = eTaskKind;
 }
 
 /*----------------------------------------------------------------------------*/
