@@ -82,8 +82,8 @@ tp: tp3
   locals| tablePtr iPartitionNo rowBuffer |
 tp: partitionAppendBuffer
 
-  iPartitionNo task::this task.name@
-  "%v appending buffer to partition %v..." str.format .
+  //iPartitionNo task::this task.name@
+  //"%v appending buffer to partition %v..." str.format .
 
   rowBuffer iPartitionNo tablePtr table.appendBuffer ( )
 ;
@@ -195,7 +195,7 @@ tp: theIndirectResult
         // was buffer full?
         not if
 
-"BUFFER FULL" .
+//"BUFFER FULL" .
 
   tp: bufferFull
 

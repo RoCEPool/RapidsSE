@@ -340,7 +340,6 @@ timer: idxSelectTimer
       "0"  //upper
       "keySelectIdxTask"
       pPlanner Planner.indexNm@
-      stk
       selectIndex
     endof
 
@@ -351,7 +350,6 @@ timer: idxSelectTimer
       "0" //upper
       "lowerSelectIdxTask"
       pPlanner Planner.indexNm@
-      stk
       selectIndex
     endof
 
@@ -362,7 +360,6 @@ timer: idxSelectTimer
       pPlanner Planner.highKey@
       "upperSelectIdxTask"
       pPlanner Planner.indexNm@
-      stk
       selectIndex
     endof
 
@@ -373,7 +370,6 @@ timer: idxSelectTimer
       pPlanner Planner.highKey@
       "rangeSelectIdxTask"
       pPlanner Planner.indexNm@
-      stk
       selectIndex
     endof
 

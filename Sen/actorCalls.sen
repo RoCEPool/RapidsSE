@@ -214,7 +214,7 @@ tp: >>allParticipants>
 
   nArgs sSeed nullptr AC_PARTITION sTaskNm eTaskKind task::new locals| pTask |
 
-  iPtnNo >partitionThreadNm findActorTaskSet dup . locals| pTaskSet |
+  iPtnNo >partitionThreadNm findActorTaskSet locals| pTaskSet |
 
   pTask pTaskSet taskSet.append
 ;

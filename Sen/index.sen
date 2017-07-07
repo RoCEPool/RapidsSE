@@ -336,7 +336,7 @@ tp: makingIndex
   seitf task::this task.seitf!
 
   // create a temporary index buffer for the results
- "Creating a tempIndexBuffer" .
+ //"Creating a tempIndexBuffer" .
   indexPtr entryBuffer::create to tempEntryBuffer
 
   // get the indexBuffer looking for the key
@@ -351,11 +351,11 @@ tp: makingIndex
   entry not if
 
     // mark this buffer as the last buffer
-    "Marking tempEntryBuffer as last buffer" .
+    //"Marking tempEntryBuffer as last buffer" .
     tempEntryBuffer entryBuffer.isLast!
 
     // return the empty tempEntryBuffer
-    "Appending tempEntryBuffer to buffer queue" .
+    //"Appending tempEntryBuffer to buffer queue" .
     tempEntryBuffer seitf seitf.bufferQueue@ queue.append
 
     exit
@@ -370,22 +370,22 @@ tp: makingIndex
     key indexPtr entry entry.matches if
 
       // insert row from entry in tempEntryBuffer
-      "Inserting row into tempEntryBuffer" .
+      //"Inserting row into tempEntryBuffer" .
       indexPtr entry entry.row row.string tempEntryBuffer entryBuffer.insertRow
 
       // check if we managed to insert the entry
       not if
         // buffer must be full
         // put this tempEntryBuffer in seitf bufferQueue
-        "Inserting row into tempEntryBuffer" .
+        //"Inserting row into tempEntryBuffer" .
         tempEntryBuffer seitf seitf.bufferQueue@ queue.append
 
         // create another temporary index buffer for the results
-        "Creating a tempIndexBuffer" .
+        //"Creating a tempIndexBuffer" .
         indexPtr entryBuffer::create to tempEntryBuffer
 
         // insert row from entry in temporary buffer
-        "Inserting row into tempEntryBuffer" .
+        //"Inserting row into tempEntryBuffer" .
         indexPtr entry entry.row row.string tempEntryBuffer entryBuffer.insertRow
         assert
       then
@@ -407,12 +407,12 @@ tp: makingIndex
     then
   repeat
 
-  "Marking tempEntryBuffer as last buffer" .
+  //"Marking tempEntryBuffer as last buffer" .
   // mark this buffer as the last buffer
   tempEntryBuffer entryBuffer.isLast!
 
   // put the buffer in the seitf bufferQueue
-  "Appending tempEntryBuffer to buffer queue" .
+  //"Appending tempEntryBuffer to buffer queue" .
   tempEntryBuffer seitf seitf.bufferQueue@ queue.append
 ;
 
@@ -458,7 +458,7 @@ tp: loadIndexes
   seitf task::this task.seitf!
 
   // create a temporary index buffer for the results
-  "Creating a tempIndexBuffer" .
+  //"Creating a tempIndexBuffer" .
   indexPtr entryBuffer::create to tempEntryBuffer
 
   // get the indexBuffer looking for the lower key
@@ -473,11 +473,11 @@ tp: loadIndexes
   entry not if
     
     // mark this buffer as the last buffer
-    "Marking tempEntryBuffer as last buffer" .
+    //"Marking tempEntryBuffer as last buffer" .
     tempEntryBuffer entryBuffer.isLast!
 
     // return the empty tempEntryBuffer
-    "Appending tempEntryBuffer to buffer queue" .
+    //"Appending tempEntryBuffer to buffer queue" .
     tempEntryBuffer seitf seitf.bufferQueue@ queue.append
 
     exit
@@ -500,7 +500,7 @@ tp: loadIndexes
       tempEntryBuffer seitf seitf.bufferQueue@ queue.append
 
       // create another temporary index buffer for the results
-      "Creating a tempIndexBuffer" .
+      //"Creating a tempIndexBuffer" .
       indexPtr entryBuffer::create to tempEntryBuffer
 
       // insert row from entry in temporary buffer
@@ -523,12 +523,12 @@ tp: loadIndexes
 
   repeat
 
-  "Marking tempEntryBuffer as last buffer" .
+  //"Marking tempEntryBuffer as last buffer" .
   // mark this buffer as the last buffer
   tempEntryBuffer entryBuffer.isLast!
 
   // put the buffer in the seitf bufferQueue
-  "Appending tempEntryBuffer to buffer queue" .
+  //"Appending tempEntryBuffer to buffer queue" .
   tempEntryBuffer seitf seitf.bufferQueue@ queue.append
 ;
 
@@ -544,7 +544,7 @@ tp: loadIndexes
   seitf task::this task.seitf!
 
   // create a temporary index buffer for the results
-  "Creating a tempIndexBuffer" .
+  //"Creating a tempIndexBuffer" .
   indexPtr entryBuffer::create to tempEntryBuffer
 
   // get the indexBuffer looking for the lower key
@@ -559,11 +559,11 @@ tp: loadIndexes
   entry not if
 
     // mark this buffer as the last buffer
-    "Marking tempEntryBuffer as last buffer" .
+    //"Marking tempEntryBuffer as last buffer" .
     tempEntryBuffer entryBuffer.isLast!
 
     // return the empty tempEntryBuffer
-    "Appending tempEntryBuffer to buffer queue" .
+    //"Appending tempEntryBuffer to buffer queue" .
     tempEntryBuffer seitf seitf.bufferQueue@ queue.append
 
     exit
@@ -589,7 +589,7 @@ tp: loadIndexes
         tempEntryBuffer seitf seitf.bufferQueue@ queue.append
 
         // create another temporary index buffer for the results
-        "Creating a tempIndexBuffer" .
+        //"Creating a tempIndexBuffer" .
         indexPtr entryBuffer::create to tempEntryBuffer
 
         // insert row from entry in temporary buffer
@@ -615,12 +615,12 @@ tp: loadIndexes
     then
   repeat
 
-  "Marking tempEntryBuffer as last buffer" .
+  //"Marking tempEntryBuffer as last buffer" .
   // mark this buffer as the last buffer
   tempEntryBuffer entryBuffer.isLast!
 
   // put the buffer in the seitf bufferQueue
-  "Appending tempEntryBuffer to buffer queue" .
+  //"Appending tempEntryBuffer to buffer queue" .
   tempEntryBuffer seitf seitf.bufferQueue@ queue.append
 ;
 
@@ -703,7 +703,7 @@ tp: loadIndexes
       indexBuffer pGroupby groupBy.applyBuffer
       // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
 
-      "Popped tempEntryBuffer from buffer queue" .
+      //"Popped tempEntryBuffer from buffer queue" .
       indexBuffer entryBuffer.firstEntry to entry
 
       begin
@@ -725,14 +725,14 @@ tp: loadIndexes
       repeat  // end of second while
 
       indexBuffer entryBuffer.isLast@ if
-        "Reached last buffer" .
+        //"Reached last buffer" .
         0
       else
         1  // no more entries, move to next buffer
       then
 
       indexBuffer entryBuffer.delete
-      "Deleted buffer" .
+      //"Deleted buffer" .
     repeat  // end of first while
   loop
 
