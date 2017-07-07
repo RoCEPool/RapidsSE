@@ -313,7 +313,7 @@ Str* Table::pAnalyzeIndex(Index* pIndex, bool bDetailed)
 /*----------------------------------------------------------------------------*/
 /* append row buffer                                                          */
 /*----------------------------------------------------------------------------*/
-void Table::vAppendBuffer(i8 iPartition, EntryBuffer* pEntryBuffer)
+void Table::vAppendBuffer(i8  0, EntryBuffer* pEntryBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   

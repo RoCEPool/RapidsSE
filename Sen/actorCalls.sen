@@ -206,7 +206,7 @@ tp: >>allParticipants>
 ;
 
 /*----------------------------------------------------------------------------*/
-/* dispatch task to partition actor for execution within given partition      */
+/* create and dispatch task to partition for execution within given partition */
 /*----------------------------------------------------------------------------*/
 : partitionDispatch ( ... nArgs sSeed iPtnNo sTaskNm )
 

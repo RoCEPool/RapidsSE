@@ -64,6 +64,22 @@ tp: loadAppendBuffer$
 /*----------------------------------------------------------------------------*/
 /* forward append of rowbuffer to participant for partition                   */
 /*----------------------------------------------------------------------------*/
+: partitionAppendBuffer ( rowBuffer partitionNo table^ -- )
+
+  locals| tablePtr partitionNo rowBuffer |
+
+  // get ^table
+  //find execute ( rb ptn table )
+
+  partitionNo task::this task.name@
+  "%v appending buffer to partition %v..." str.format .
+
+  rowBuffer partitionNo tablePtr table.appendBuffer ( )
+;
+
+/*----------------------------------------------------------------------------*/
+/* forward append of rowbuffer to participant for partition                   */
+/*----------------------------------------------------------------------------*/
 : ~loadAppendBuffer ( -- )
 
 tp: ~loadAppendBuffer
@@ -81,7 +97,7 @@ tp: ~loadAppendBuffer
   //   we need to have the coordinator send the loadAppendBuffer$ indirect call
   //   to the participant via a sendParticipant call
 
-  13 task::this task.thread thread.name@ str.left "generalThread" str.equal assert
+  //13 task::this task.thread thread.name@ str.left "generalThread" str.equal assert
   task.parent@ task.name@ "req.task" str.equal assert
 
   //
@@ -127,6 +143,7 @@ tp: theIndirectResult
 
   // first set the taskset in this task
   // needed when being resumed by coordinator
+  0 locals| iPartitionNo |
 
   task::this task.thread thread.taskset@
   task::this task.taskset!
@@ -172,7 +189,13 @@ tp: theIndirectResult
   tp: bufferFull
 
           // append row buffer to table/partition/strand
-          ~loadAppendBuffer
+          //~loadAppendBuffer
+          loaderSub.partition to iPartitionNo
+          loaderSub.rowBuffer iPartitionNo
+          loaderSub.table //table.name    ( rb ptn "<tableNm>" )
+          3 "partitionAppendBuffer" iPartitionNo dup >str "P" swap str.cat partitionDispatch
+
+          nullPtr loaderSub.rowBuffer!
 
           // insert row into new working buffer
           loaderSub.insertRow assert
@@ -199,7 +222,14 @@ tp: theIndirectResult
     loaderSub.rowBuffer
     if
       // append row buffer to table/partition/strand
-      ~loadAppendBuffer
+      //~loadAppendBuffer
+      loaderSub.partition to iPartitionNo
+      loaderSub.rowBuffer iPartitionNo
+      loaderSub.table //table.name    ( rb ptn "<tableNm>" )
+      3 "partitionAppendBuffer" iPartitionNo dup >str "P" swap str.cat partitionDispatch
+
+      nullPtr loaderSub.rowBuffer!
+
     then
 
   loop
