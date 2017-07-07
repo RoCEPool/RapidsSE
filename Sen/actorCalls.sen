@@ -208,11 +208,11 @@ tp: >>allParticipants>
 /*----------------------------------------------------------------------------*/
 /* create and dispatch task to partition for execution within given partition */
 /*----------------------------------------------------------------------------*/
-: partitionDispatch ( ... nArgs sSeed iPtnNo sTaskNm )
+: partitionDispatch ( ... nArgs sSeed iPtnNo sTaskNm eTaskKind )
 
-  locals| sTaskNm iPtnNo sSeed nArgs |
+  locals| eTaskKind sTaskNm iPtnNo sSeed nArgs |
 
-  nArgs sSeed nullptr AC_PARTITION sTaskNm TK_NONE task::new locals| pTask |
+  nArgs sSeed nullptr AC_PARTITION sTaskNm eTaskKind task::new locals| pTask |
 
   iPtnNo >partitionThreadNm findActorTaskSet dup . locals| pTaskSet |
 
