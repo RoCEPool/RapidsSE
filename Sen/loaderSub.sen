@@ -34,6 +34,7 @@
 : loadAppendBuffer$ ( rowBuffer partitionNo "<tableNm>" -- true )
 
 tp: loadAppendBuffer$
+  0 locals| tablePtr tableNm iPartitionNo rowBuffer |
 
   // why:
   //   loaderSub has forwarded a full rowBuffer which needs to be
@@ -49,15 +50,27 @@ tp: loadAppendBuffer$
   1 task::this task.thread thread.name@ str.left "p" str.equal assert
 
   args.tracepoint if
-    dup "APPENDING ROWBUFFER " swap str.cat " on NODE " str.cat grid.thisNode@ >str str.cat .
+    tableNm "APPENDING ROWBUFFER " swap str.cat " on NODE " str.cat grid.thisNode@ >str str.cat .
   then
 
   // get ^table
-  find execute ( rb ptn table )
+  tableNm find execute ( rb ptn table )
+  to tablePtr
 
   // append row buffer to partition of table
-  table.appendBuffer ( )
+  //table.appendBuffer ( )
 
+  rowBuffer iPartitionNo 
+  tablePtr    ( rb ptn tablePtr )
+
+tp: tp1
+  3 "partitionAppendBuffer" iPartitionNo grid::toSlot dup >str "P" swap str.cat
+  TK_LOADSUB_PART
+
+tp: tp2
+  spawnPartitionActor
+
+tp: tp3
   true <SUCCESS_RESULT>
 ;
 
@@ -66,15 +79,13 @@ tp: loadAppendBuffer$
 /*----------------------------------------------------------------------------*/
 : partitionAppendBuffer ( rowBuffer partitionNo table^ -- )
 
-  locals| tablePtr partitionNo rowBuffer |
+  locals| tablePtr iPartitionNo rowBuffer |
+tp: partitionAppendBuffer
 
-  // get ^table
-  //find execute ( rb ptn table )
-
-  partitionNo task::this task.name@
+  iPartitionNo task::this task.name@
   "%v appending buffer to partition %v..." str.format .
 
-  rowBuffer partitionNo tablePtr table.appendBuffer ( )
+  rowBuffer iPartitionNo tablePtr table.appendBuffer ( )
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -189,14 +200,14 @@ tp: theIndirectResult
   tp: bufferFull
 
           // append row buffer to table/partition/strand
-          //~loadAppendBuffer
-          loaderSub.partition to iPartitionNo
-          loaderSub.rowBuffer iPartitionNo
-          loaderSub.table //table.name    ( rb ptn "<tableNm>" )
-          3 "partitionAppendBuffer" iPartitionNo dup >str "P" swap str.cat
-            TK_LOADSUB_PART spawnPartitionActor
+          ~loadAppendBuffer
+          //loaderSub.partition to iPartitionNo
+          //loaderSub.rowBuffer iPartitionNo
+          //loaderSub.table //table.name    ( rb ptn "<tableNm>" )
+          //3 "partitionAppendBuffer" iPartitionNo dup >str "P" swap str.cat
+          //  TK_LOADSUB_PART spawnPartitionActor
 
-          nullPtr loaderSub.rowBuffer!
+          //nullPtr loaderSub.rowBuffer!
 
           // insert row into new working buffer
           loaderSub.insertRow assert
@@ -223,14 +234,14 @@ tp: theIndirectResult
     loaderSub.rowBuffer
     if
       // append row buffer to table/partition/strand
-      //~loadAppendBuffer
-      loaderSub.partition to iPartitionNo
-      loaderSub.rowBuffer iPartitionNo
-      loaderSub.table //table.name    ( rb ptn "<tableNm>" )
-      3 "partitionAppendBuffer" iPartitionNo dup >str "P" swap str.cat
-        TK_LOADSUB_PART spawnPartitionActor
+      ~loadAppendBuffer
+      //loaderSub.partition to iPartitionNo
+      //loaderSub.rowBuffer iPartitionNo
+      //loaderSub.table //table.name    ( rb ptn "<tableNm>" )
+      //3 "partitionAppendBuffer" iPartitionNo dup >str "P" swap str.cat
+      //  TK_LOADSUB_PART spawnPartitionActor
 
-      nullPtr loaderSub.rowBuffer!
+      //nullPtr loaderSub.rowBuffer!
 
     then
 

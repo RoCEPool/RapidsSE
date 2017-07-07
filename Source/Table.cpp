@@ -311,7 +311,7 @@ Str* Table::pAnalyzeIndex(Index* pIndex, bool bDetailed)
 }
 
 /*----------------------------------------------------------------------------*/
-/* append row buffer  XYZ                                                        */
+/* append row buffer                                                          */
 /*----------------------------------------------------------------------------*/
 void Table::vAppendBuffer(i8 iPartition, EntryBuffer* pEntryBuffer)
 {
