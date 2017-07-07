@@ -194,7 +194,7 @@ tp: theIndirectResult
           loaderSub.rowBuffer iPartitionNo
           loaderSub.table //table.name    ( rb ptn "<tableNm>" )
           3 "partitionAppendBuffer" iPartitionNo dup >str "P" swap str.cat
-            TK_LOADSUB_PART partitionDispatch
+            TK_LOADSUB_PART spawnPartitionActor
 
           nullPtr loaderSub.rowBuffer!
 
@@ -228,7 +228,7 @@ tp: theIndirectResult
       loaderSub.rowBuffer iPartitionNo
       loaderSub.table //table.name    ( rb ptn "<tableNm>" )
       3 "partitionAppendBuffer" iPartitionNo dup >str "P" swap str.cat
-        TK_LOADSUB_PART partitionDispatch
+        TK_LOADSUB_PART spawnPartitionActor
 
       nullPtr loaderSub.rowBuffer!
 
