@@ -26,6 +26,7 @@ using namespace System;
 #include "Dir.hpp"
 #include "Env.hpp"
 #include "File.hpp"
+#include "LockTrack.hpp"
 #include "Lock.hpp"
 #include "Magnitudes.hpp"
 #include "Semaphore.hpp"
