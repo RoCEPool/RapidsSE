@@ -66,6 +66,8 @@ template <class OBJECT>
 Collection_t<OBJECT>::Collection_t(void)
 {
   m_zLock.vInit("Collection_t<OBJECT>::m_zLock"_Str);
+  m_zLock.vInitLock(LK_COLLECTION);
+  
   m_iCount = 0;
   m_pHead  = nullptr;
   m_pTail  = nullptr;

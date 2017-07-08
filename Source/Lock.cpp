@@ -117,6 +117,8 @@ bool Lock::bGrabRead(void)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   
+  ASSERT(m_eLockKind);
+  
   ++m_zReadGrabs;
   
   i8 rCode = Synch::iLockGrabRead(&m_uLockWord);
@@ -138,6 +140,7 @@ void Lock::vGrabRead(void)
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   
   ASSERT(m_sName);
+  ASSERT(m_eLockKind);
   
   ++m_zReadGrabs;
   
@@ -223,6 +226,8 @@ bool Lock::bGrabWrite(void)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   
+  ASSERT(m_eLockKind);
+
   ++m_zWriteGrabs;
   
   i8 rCode = Synch::iLockGrabWrite(&m_uLockWord);
@@ -244,6 +249,8 @@ void Lock::vGrabWrite(void)
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   
   ASSERT(m_sName);
+  
+  ASSERT(m_eLockKind);
   
 //  vTrace("Lock::vGrabWrite -- Grabbing write lock %p %s\n"_Str,
 //         this,

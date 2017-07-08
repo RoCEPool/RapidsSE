@@ -218,6 +218,8 @@ void Task::vInit(Str* aLambda)
   
   // basic state
   m_xLock.vInit("Task::m_xLock"_Str);
+  m_xLock.vInitLock(LK_TASK);
+  
   m_iTaskNo     = iTaskNo++;
   m_eTaskKind   = TK_NONE;
   m_eActorModel = AC_NONE;

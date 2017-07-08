@@ -13,6 +13,19 @@ namespace System
   enum eLK // lock kind
   {
   /*  0 */ LK_NONE=0,
+  /*    */ LK_BUFFER_POOL,
+  /*    */ LK_COLLECTION,
+  /*    */ LK_DDL,
+  /*    */ LK_DIC,
+  /*    */ LK_HEAP,
+  /*    */ LK_LIST,
+  /*    */ LK_LOAD_MAP,
+  /*    */ LK_QUEUE,
+  /*    */ LK_STEP_ARRAY,
+  /*    */ LK_TASK,
+  /*    */ LK_TASK_SET,
+  /*    */ LK_TX_MAP,
+  /*    */ LK_UNKNOWN,
   /*    */ LK_ENUMS
   };
   

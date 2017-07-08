@@ -49,6 +49,7 @@ Heap::Heap(eCN eClassNo, i8 iObjectSize)
   
   m_iObjectSize  = iObjectSize;
   m_zLock.vInit("Heap::m_zLock"_Str);
+  m_zLock.vInitLock(LK_HEAP);
   m_iAllocCount  = 0;
   m_iBufferCount = 0;
   m_pFirstBuffer = nullptr;
