@@ -10,12 +10,27 @@ namespace System
   static const i8 C_HAVE_READ_LOCK  = 1;
   static const i8 C_HAVE_WRITE_LOCK = 2;
   
+  enum eLK // lock kind
+  {
+  /*  0 */ LK_NONE=0,
+  /*    */ LK_ENUMS
+  };
+  
+  static Str* aLK[]
+  {
+  /*  0 */ "NONE"_Str,
+  /*    */ "ENUMS"_Str
+  };
+
+  
   class Lock : public Object
   {
   private:
     u8     m_uLockWord;        // lock word
   
     s32    m_sName;            // name
+
+    eLK    m_eLockKind;        // lock kind
   
     Atomic m_zReadGrabs;       // number of read grabs
     Atomic m_zReadCollisions;  // number of read collisions
@@ -34,6 +49,7 @@ namespace System
     ~Lock(void);
   
     void vInit(Str* aName);
+    void vInitLock(eLK eLockKind);
   
     bool bIsLocked(void);
     

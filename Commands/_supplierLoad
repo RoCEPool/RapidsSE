@@ -25,7 +25,10 @@ create table supplier (
 );
 
 print "loading supplier.tbl..." ;
+
+docol stepsReset;
 ld supplier "/tpch/supplier.tbl" ;
+docol stepsList;
 
 pwf ;
 lf ;

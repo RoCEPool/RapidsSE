@@ -331,7 +331,7 @@ bool LoaderSub::bReadChunk(void)
   }
   
   if (gbProgress) {
-    if (0 == iChunk % 1000) {
+    if (0 == iChunk % 100) {
       vInfo("read chunk %lld of %lld        \r"_Str,iChunk,nChunks);
       fflush(stdout);
     }

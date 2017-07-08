@@ -49,6 +49,7 @@ Lock::Lock(void)
   m_uLockWord = 0;
   
   m_sName = "<no-name>"_Str;
+  m_eLockKind = LK_NONE;
 
   m_zReadGrabs.vCheckInit();
   m_zReadCollisions.vCheckInit();
@@ -83,6 +84,16 @@ void Lock::vInit(Str* aName)
   m_sName = aName;
   
   ASSERT(0 == m_uLockWord); // logic check
+}
+
+/*----------------------------------------------------------------------------*/
+/* set lock kind                                                              */
+/*----------------------------------------------------------------------------*/
+void Lock::vInitLock(eLK eLockKind)
+{
+  _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
+  
+  m_eLockKind = eLockKind;
 }
 
 /*----------------------------------------------------------------------------*/

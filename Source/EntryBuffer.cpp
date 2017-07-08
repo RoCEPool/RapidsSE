@@ -862,16 +862,16 @@ Entry* EntryBuffer::pInsert(EntWrk& xEntWrk)
 /*----------------------------------------------------------------------------*/
 /* get next entry (eq to right L0) after given entry (null if no next)        */
 /*----------------------------------------------------------------------------*/
-Entry* EntryBuffer::pNextEntry(Entry* pEntry)
+Entry* EntryBuffer::pNextEntry(Entry* pEntry)                           //! tune
 {
   // get the size of given entry
-  i8 nBytes = pEntry->nSizeEntry();
+  i8 nBytes = pEntry->nSizeEntry();              // inline this
   
   // compute the address of possible next entry
-  Entry* pNext = pAdd<Entry*>(pEntry,nBytes);
+  Entry* pNext = pAdd<Entry*>(pEntry,nBytes);    // inline
   
   // check for valid entry
-  Entry* pLatter = _pEntry(m_xWsp.aLatter());
+  Entry* pLatter = _pEntry(m_xWsp.aLatter());    // inline
   if (pNext < pLatter)
     return pNext;
   else

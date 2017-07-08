@@ -36,7 +36,10 @@ create table lineitem (
 );
 
 print "loading lineitem.tbl..." ;
-ld lineitem "/tpchSF10/lineitem.tbl" ;
+
+docol stepsReset;
+ld lineitem "/tpch/lineitem.tbl" ;
+docol stepsList;
 
 pwf ;
 lf ;

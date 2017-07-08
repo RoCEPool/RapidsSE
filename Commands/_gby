@@ -25,14 +25,14 @@ print "creating index idx1..." ;
 create index idx1 on lineitem (L_ORDERKEY);
 
 print "loading lineitem.tbl..." ;
-ld lineitem "/tpch/lineitem1k.tbl" ;
+docol stepsReset;
+ld lineitem "/tpch/lineitem.tbl" ;
+docol stepsList;
 
 //print "epoch take..." ;
 //docol epochTake;
 //print "fetching..." ;
-docol stepsReset;
 fetch lineitem "L_ORDERKEY 100 >= L_ORDERKEY 500 <= and";
-docol stepsList;
 //print "epoch dump..." ;
 //docol epochDump;
 
