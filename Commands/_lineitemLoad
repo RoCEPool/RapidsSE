@@ -38,7 +38,9 @@ create table lineitem (
 print "loading lineitem.tbl..." ;
 
 docol stepsReset;
+docol locksReset;
 ld lineitem "/tpch/lineitem1k.tbl" ;
+docol locksList;
 docol stepsList;
 
 pwf ;

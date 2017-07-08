@@ -952,6 +952,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitives_LoaderSub();
   vAddPrimitives_Locals();
   vAddPrimitives_Lock();
+  vAddPrimitives_Locks();
   vAddPrimitives_Logic();
   
   vAddPrimitives_Magnitude();

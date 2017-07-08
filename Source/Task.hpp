@@ -291,6 +291,7 @@ namespace Tasks
     void vAddPrimitives_LoaderSub(void);
     void vAddPrimitives_Locals(void);
     void vAddPrimitives_Lock(void);
+    void vAddPrimitives_Locks(void);
     void vAddPrimitives_Logic(void);
     void vAddPrimitives_Magnitude(void);
     void vAddPrimitives_Memory(void);
@@ -748,6 +749,10 @@ namespace Tasks
     static void vLockGrabWrite(MP_Task mpTask);
     static void vLockInit(MP_Task mpTask);
     
+    // locks
+    static void vLocksList(MP_Task mpTask);
+    static void vLocksReset(MP_Task mpTask);
+  
     // logic
     static void vLogicAnd(MP_Task mpTask);
     static void vLogicNot(MP_Task mpTask);

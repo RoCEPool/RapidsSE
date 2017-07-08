@@ -45,6 +45,8 @@ i8            gnIndexOffsets = gnIndexLevels - 1;
 
 Lock          gxDdlLock;
 Lock          gxDicLock;
+Locks         gxLocks;
+
 
 Atomic        gzPlanId;
 

@@ -54,8 +54,6 @@ namespace System
   /* 17 */ "ENUMS"_Str
   };
 
-  LockTrack gxLockTrack[LK_ENUMS];
-  
   class Lock : public Object
   {
   private:

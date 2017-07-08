@@ -1,0 +1,71 @@
+/*============================================================================*/
+/* Steps_LockTrack.cpp - lock tracker step group                              */
+/*============================================================================*/
+
+#include "StorageEngine.h"
+//#include "Tasks.h"
+#include "SePrompt.hpp"
+
+extern AttachMap*      gpAttachMap;
+extern BufferPool*     gpBufferPool;
+extern Heap*           gpMediumHeap;
+extern BPA*            gpBPA;
+extern Dic*            gpMainDic;
+extern Word*           gpWord;
+
+extern Grid*           gpGrid;
+extern StepArray*      gpStepArray;
+extern ThreadList*     gpThreadList;
+extern TaskList*       gpTaskList;
+extern TxCollection*   gpTxCollection;
+
+extern NP_Task         gnpRootTask;
+extern Lock            gxDdlLock;
+extern Lock            gxDicLock;
+extern SEitfList*      gpSEitfList;
+
+extern Locks           gxLocks;
+
+// steps: //////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* add primitives                                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vAddPrimitives_Locks(void)
+{
+  vAddPrimitive("locks.list"_Str,  &vLocksList,  false);
+  vAddPrimitive("locks.reset"_Str, &vLocksReset, false);
+}
+
+/*----------------------------------------------------------------------------*/
+/* lockTracker.list -- list lock stats                                        */
+/*----------------------------------------------------------------------------*/
+void Task::vLocksList(MP_Task mpTask)
+{
+ENTRY("vLocksList"_Str);
+
+  File xFile;
+  xFile.bOpen("locks.csv"_Str, C_OPEN_WRITE);
+  
+  gxLocks.vList(xFile);
+  
+  xFile.vClose();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* steps.reset -- reset steps                                                 */
+/*----------------------------------------------------------------------------*/
+void Task::vLocksReset(MP_Task mpTask)
+{
+  ENTRY("vLocksReset"_Str);
+  
+  gxLocks.vReset();
+  
+  EXIT();
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
