@@ -50,7 +50,6 @@ BufferPool::BufferPool(Str* aRegionName, i8 iRegionSize, i8 iJumboTook,
   m_sShmName = aRegionName;
   m_iShmFD   = 0;
   
-  m_zFreeLock.vInit("BufferPool::m_zFreeLock"_Str);
   m_zFreeLock.vInitLock(LK_BUFFER_POOL);
   
   m_iAllocCount   = 0;

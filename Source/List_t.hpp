@@ -61,7 +61,6 @@ void* List_t<OBJECT>::operator new(size_t iSize)
 template <class OBJECT>
 List_t<OBJECT>::List_t(void)
 {
-  m_zLock.vInit("List_t<OBJECT>::m_zLock"_Str);
   m_zLock.vInitLock(LK_LIST);
   m_nCount = 0;
   m_pHead  = nullptr;

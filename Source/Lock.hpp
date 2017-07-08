@@ -13,26 +13,45 @@ namespace System
   enum eLK // lock kind
   {
   /*  0 */ LK_NONE=0,
-  /*    */ LK_BUFFER_POOL,
-  /*    */ LK_COLLECTION,
-  /*    */ LK_DDL,
-  /*    */ LK_DIC,
-  /*    */ LK_HEAP,
-  /*    */ LK_LIST,
-  /*    */ LK_LOAD_MAP,
-  /*    */ LK_QUEUE,
-  /*    */ LK_STEP_ARRAY,
-  /*    */ LK_TASK,
-  /*    */ LK_TASK_SET,
-  /*    */ LK_TX_MAP,
-  /*    */ LK_UNKNOWN,
-  /*    */ LK_ENUMS
+  /*  1 */ LK_BUFFER_POOL,
+  /*  2 */ LK_COLLECTION,
+  /*  3 */ LK_DATA,
+  /*  4 */ LK_DDL,
+  /*  5 */ LK_DIC,
+  /*  6 */ LK_EB_STRAND,
+  /*  7 */ LK_HEAP,
+  /*  8 */ LK_INDEX_DATA,
+  /*  9 */ LK_LIST,
+  /* 10 */ LK_LOAD_MAP,
+  /* 11 */ LK_QUEUE,
+  /* 12 */ LK_STEP_ARRAY,
+  /* 13 */ LK_TASK,
+  /* 14 */ LK_TASK_SET,
+  /* 15 */ LK_TX_MAP,
+  /* 16 */ LK_UNKNOWN,
+  /* 17 */ LK_ENUMS
   };
   
   static Str* aLK[]
   {
   /*  0 */ "NONE"_Str,
-  /*    */ "ENUMS"_Str
+  /*  1 */ "BUFFER_POOL"_Str,
+  /*  2 */ "COLLECTION"_Str,
+  /*  3 */ "DATA"_Str,
+  /*  4 */ "DDL"_Str,
+  /*  5 */ "DIC"_Str,
+  /*  6 */ "EB_STRAND"_Str,
+  /*  7 */ "HEAP"_Str,
+  /*  8 */ "INDEX_DATA"_Str,
+  /*  9 */ "LIST"_Str,
+  /* 10 */ "LOAD_MAP"_Str,
+  /* 11 */ "QUEUE"_Str,
+  /* 12 */ "STEP_ARRAY"_Str,
+  /* 13 */ "TASK"_Str,
+  /* 14 */ "TASK_SET"_Str,
+  /* 15 */ "TX_MAP"_Str,
+  /* 16 */ "UNKNOWN"_Str,
+  /* 17 */ "ENUMS"_Str
   };
 
   
@@ -41,8 +60,6 @@ namespace System
   private:
     u8     m_uLockWord;        // lock word
   
-    s32    m_sName;            // name
-
     eLK    m_eLockKind;        // lock kind
   
     Atomic m_zReadGrabs;       // number of read grabs
@@ -61,7 +78,6 @@ namespace System
     Lock(void);
     ~Lock(void);
   
-    void vInit(Str* aName);
     void vInitLock(eLK eLockKind);
   
     bool bIsLocked(void);

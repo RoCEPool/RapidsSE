@@ -53,7 +53,6 @@ LoadMap::LoadMap(void)
   
   m_iEntries = 0;
   m_bDone    = false;
-  m_zLock.vInit("LoadMap::m_zLock"_Str);
   m_zLock.vInitLock(LK_LOAD_MAP);
   m_iNext    = 0;
   for (i8 i_Entry = 0; i_Entry < C_LOADMAP_ENTRIES; i_Entry++)

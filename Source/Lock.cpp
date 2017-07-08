@@ -48,7 +48,6 @@ Lock::Lock(void)
   
   m_uLockWord = 0;
   
-  m_sName = "<no-name>"_Str;
   m_eLockKind = LK_NONE;
 
   m_zReadGrabs.vCheckInit();
@@ -75,23 +74,13 @@ Lock::~Lock(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* set name of lock                                                           */
-/*----------------------------------------------------------------------------*/
-void Lock::vInit(Str* aName)
-{
-  _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
-  
-  m_sName = aName;
-  
-  ASSERT(0 == m_uLockWord); // logic check
-}
-
-/*----------------------------------------------------------------------------*/
 /* set lock kind                                                              */
 /*----------------------------------------------------------------------------*/
 void Lock::vInitLock(eLK eLockKind)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
+  
+  ASSERT(0 == m_uLockWord); // logic check
   
   m_eLockKind = eLockKind;
 }
@@ -139,7 +128,6 @@ void Lock::vGrabRead(void)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   
-  ASSERT(m_sName);
   ASSERT(m_eLockKind);
   
   ++m_zReadGrabs;
@@ -162,7 +150,7 @@ void Lock::vGrabRead(void)
       bReported = true;
       vTrace("Lock::vGrabRead -- Unable to grab read lock %p %s\n"_Str,
              this,
-             m_sName.s());
+             aLK[m_eLockKind]);
     }
     
     rCode = Synch::iLockGrabRead(&m_uLockWord);
@@ -248,8 +236,6 @@ void Lock::vGrabWrite(void)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   
-  ASSERT(m_sName);
-  
   ASSERT(m_eLockKind);
   
 //  vTrace("Lock::vGrabWrite -- Grabbing write lock %p %s\n"_Str,
@@ -275,7 +261,7 @@ void Lock::vGrabWrite(void)
       bReported = true;
       vTrace("Lock::vGrabWrite -- Unable to grab write lock %p %s %p\n"_Str,
              this,
-             m_sName.s(),
+              aLK[m_eLockKind],
              m_uLockWord);
     }
     

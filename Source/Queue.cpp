@@ -170,7 +170,6 @@ void Queue::vInitialize(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUE,_FOOTER_);
   
-  m_zLock.vInit("Queue::m_zLock"_Str);
   m_zLock.vInitLock(LK_QUEUE);
   
   m_iCount = 0;
@@ -185,7 +184,9 @@ void Queue::vLockName(Str* aName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUE,_FOOTER_);
   
-  m_zLock.vInit(aName);
+  m_zLock.vInitLock(LK_QUEUE);
+  ASSERT(0); // shouldnt be called
+  //m_zLock.vInit(aName);
 }
 
 /*----------------------------------------------------------------------------*/

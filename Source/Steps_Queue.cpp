@@ -124,7 +124,8 @@ ENTRY("vQueueInit"_Str);
   
   Word* pQueueWord = Word::pToWord(pQueue);
     
-  pQueue->vLockName(pQueueWord->sName().aStr());
+  //pQueue->vLockName(pQueueWord->sName().aStr());
+
   
   EXIT();
 }
@@ -143,7 +144,7 @@ void Task::vQueueNew(MP_Task mpTask)
   
   Queue* pQueue = new Queue();
   
-  pQueue->vLockName(sQueueName);
+  //pQueue->vLockName(sQueueName);
   
   mpTask->m_pDataStack->vPushObject(pQueue);
   

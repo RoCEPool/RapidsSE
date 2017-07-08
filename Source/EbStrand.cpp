@@ -34,7 +34,8 @@ EbStrand::EbStrand(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_EBSTRAND,_FOOTER_);
   
-  m_zLock.vInit("EbStrand::m_zLock"_Str);
+  m_zLock.vInitLock(LK_EB_STRAND);
+  
   m_nEntryBuffers  = 0;
   m_pFirstBuffer = nullptr;
   m_pLastBuffer  = nullptr;

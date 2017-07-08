@@ -85,7 +85,7 @@ IndexData::IndexData(Index* pIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
   
-  m_zLock.vInit("IndexData::m_zLock"_Str);
+  m_zLock.vInitLock(LK_INDEX_DATA);
   m_pIndex = pIndex;
   
   // start with a root buffer at L0
