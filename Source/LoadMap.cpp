@@ -8,6 +8,7 @@
 
 extern Heap* gpJumboHeap;
 extern bool gbProgress;
+extern Locks gxLocks;
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
@@ -205,6 +206,8 @@ void LoadMap::vEolOffset(i8 iEolOffset)
 
   m_zLock.vGrabWrite();
   
+  ++gxLocks.m_zWorkUnits[LK_LOAD_MAP];
+  
   m_iEolOffset[m_iEntries++] = iEolOffset;
 
   m_zLock.vDropWrite();
@@ -241,6 +244,11 @@ bool LoadMap::bNextChunk(i8& iSeek, i8& nBytes, i8& iChunk, i8& nChunks)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADMAP);
 
+  // is there another entry available yet?
+  if (m_iNext == m_iEntries) {
+    return false;
+  }
+  
   // subordinates compete for next entries
   m_zLock.vGrabWrite();
  

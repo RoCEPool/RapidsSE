@@ -39,7 +39,7 @@ print "loading lineitem.tbl..." ;
 
 docol stepsReset;
 docol locksReset;
-ld lineitem "/tpch/lineitem1k.tbl" ;
+ld lineitem "/tpch/lineitem.tbl" ;
 docol locksList;
 docol stepsList;
 
