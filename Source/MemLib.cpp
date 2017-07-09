@@ -191,7 +191,7 @@ void MemLib::vMove(void* pDst, const void* pSrc, i8 nBytes, eCN eClassNo)
 /*----------------------------------------------------------------------------*/
 /* scribble on memory                                                         */
 /*----------------------------------------------------------------------------*/
-void MemLib::vScribble(void* aAddress, i8 nBytes)
+void MemLib::vScribble(void* aAddress, i8 nBytes, eCN eClassNo)
 {
   u8* pMchWord = reinterpret_cast<u8*>(aAddress);
   i8  nWords = nBytes / 8;
@@ -200,6 +200,7 @@ void MemLib::vScribble(void* aAddress, i8 nBytes)
     *pMchWord++ = C_SCRIBBLE_PATTERN;
   
   giMemScribbleBytes += nBytes;
+  gxMemScribble[eClassNo] += nBytes;
 }
 
 /*----------------------------------------------------------------------------*/

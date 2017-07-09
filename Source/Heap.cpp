@@ -261,7 +261,7 @@ Object* Heap::pAllocObject(eCN eAllocClass)
 
   m_zLock.vDropWrite();
   
-  MemLib::vScribble(pObject,m_iObjectSize);
+  MemLib::vScribble(pObject,m_iObjectSize,eAllocClass);
   
   //vVerify();
   
