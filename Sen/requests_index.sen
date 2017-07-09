@@ -4,7 +4,7 @@
 
 "requests_index.sen" .verbose
 
-timer: idxSelectTimer
+timer: pIdxSelectTimer
 
 /*----------------------------------------------------------------------------*/
 /* analyse an index of a table                                                */
@@ -244,7 +244,7 @@ timer: idxSelectTimer
 ;
 
 /*----------------------------------------------------------------------------*/
-/* fetch rows using an index                                                  */
+/* fetch rows using an index (this is request)                                */
 /*----------------------------------------------------------------------------*/
 : fetch_rows_index ( "<sWhere>" "<sTableNm>" -- <R> )
                                                                     // ../tables
@@ -259,7 +259,7 @@ timer: idxSelectTimer
 
   0 0 0 locals| pPlanner pAccessPath pTable sTableNm sWhere |
 
-  idxSelectTimer timer.start
+  pIdxSelectTimer timer.start
 
   ddlLock::grabRead
 
@@ -401,9 +401,9 @@ timer: idxSelectTimer
   popTable assertInTables                                           // ../tables
 
   args.metadata not if
-  idxSelectTimer timer.update
+  pIdxSelectTimer timer.update
   "select time " .put
-  idxSelectTimer timer.millisecs .put "ms" .put .\n
+  pIdxSelectTimer timer.millisecs .put "ms" .put .\n
   then
 
   <OK>
@@ -467,7 +467,7 @@ timer: idxSelectTimer
 
   locals| sTableNm sIndexNm xKey |
 
-  idxSelectTimer timer.start
+  pIdxSelectTimer timer.start
 
   ddlLock::grabRead
 
@@ -536,9 +536,9 @@ timer: idxSelectTimer
   popTable assertInTables                                           // ../tables
 
   args.metadata not if
-    idxSelectTimer timer.update
+    pIdxSelectTimer timer.update
     "select time " .put
-    idxSelectTimer timer.millisecs .put "ms" .put .\n
+    pIdxSelectTimer timer.millisecs .put "ms" .put .\n
   then
 
   <OK>
@@ -558,7 +558,7 @@ timer: idxSelectTimer
 
   locals| sTableNm sIndexNm sLower |
 
-  idxSelectTimer timer.start
+  pIdxSelectTimer timer.start
 
   ddlLock::grabRead
 
@@ -625,9 +625,9 @@ timer: idxSelectTimer
   popTable assertInTables                                           // ../tables
 
   args.metadata not if
-    idxSelectTimer timer.update
+    pIdxSelectTimer timer.update
     "select time " .put
-    idxSelectTimer timer.millisecs .put "ms" .put .\n
+    pIdxSelectTimer timer.millisecs .put "ms" .put .\n
   then
 
   <OK>
@@ -648,7 +648,7 @@ timer: idxSelectTimer
 
   locals| sTableNm sIndexNm sLower sUpper |
 
-  idxSelectTimer timer.start
+  pIdxSelectTimer timer.start
 
   ddlLock::grabRead
 
@@ -715,9 +715,9 @@ timer: idxSelectTimer
   popTable assertInTables                                           // ../tables
 
   args.metadata not if
-    idxSelectTimer timer.update
+    pIdxSelectTimer timer.update
     "select time " .put
-    idxSelectTimer timer.millisecs .put "ms" .put .\n
+    pIdxSelectTimer timer.millisecs .put "ms" .put .\n
   then
 
   <OK>
@@ -736,7 +736,7 @@ timer: idxSelectTimer
 
   locals| sTableNm sIndexNm |
 
-  idxSelectTimer timer.start
+  pIdxSelectTimer timer.start
 
   ddlLock::grabRead
 
@@ -803,9 +803,9 @@ timer: idxSelectTimer
   popTable assertInTables                                           // ../tables
 
   args.metadata not if
-  idxSelectTimer timer.update
+  pIdxSelectTimer timer.update
   "select time " .put
-  idxSelectTimer timer.millisecs .put "ms" .put .\n
+  pIdxSelectTimer timer.millisecs .put "ms" .put .\n
   then
 
   <OK>
@@ -953,7 +953,7 @@ timer: idxSelectTimer
 
   locals| sTableNm sIndexNm sUpper |
 
-  idxSelectTimer timer.start
+  pIdxSelectTimer timer.start
 
   ddlLock::grabRead
 
@@ -1020,9 +1020,9 @@ timer: idxSelectTimer
   popTable assertInTables                                           // ../tables
 
   args.metadata not if
-    idxSelectTimer timer.update
+    pIdxSelectTimer timer.update
     "select time " .put
-    idxSelectTimer timer.millisecs .put "ms" .put .\n
+    pIdxSelectTimer timer.millisecs .put "ms" .put .\n
   then
 
   <OK>
