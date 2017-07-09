@@ -109,7 +109,7 @@ EntryBuffer::EntryBuffer(Index* pIndex, i8 nBufferLevel)
   m_nBufferLevel = nBufferLevel;
   m_bIsLast     = false;
   
-  m_xWsp.vZero();
+  m_xWsp.vZero(CN_ENTRYBUFFER);
   
   // new the head
   vAllotHead();
@@ -1936,7 +1936,7 @@ void EntryBuffer::vMoveRight(void* aSrc, i8 nBytes)
   MemLib::vMove(aDst,aSrc,nBytesToCopy,CN_ENTRYBUFFER);
   
   // for the moment we'll zero the bytes of entry E
-  MemLib::vZero(aSrc,nBytes);
+  MemLib::vZero(aSrc,nBytes,CN_ENTRYBUFFER);
 }
 
 /*----------------------------------------------------------------------------*/

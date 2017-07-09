@@ -35,7 +35,7 @@ LoadChunk::LoadChunk(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADCHUNK,_FOOTER_);
 
-  m_xWsp.vFill(0xEF);
+  m_xWsp.vFill(0xEF,CN_LOADCHUNK);
   
   vReset();
   

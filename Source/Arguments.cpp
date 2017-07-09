@@ -589,7 +589,7 @@ void Arguments::vScribble(void)
   
   i8 nBytes = sizeof(Arguments) - sizeof(Object) - sizeof(Footer);
   
-  MemLib::vSet(aDst,0xFF,nBytes);
+  MemLib::vSet(aDst,0xFF,nBytes,CN_ARGUMENTS);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -80,7 +80,7 @@ void FreeBuffer::vZeroData(void)
   Str* aData  = pAdd<Str*>(this,sizeof(FreeBuffer));
   i8    nBytes = C_SIZE_POOL_BUFFER - sizeof(FreeBuffer) - sizeof(Footer);
   
-  MemLib::vSet(aData,0xEF,nBytes);
+  MemLib::vSet(aData,0xEF,nBytes,CN_FREEBUFFER);
 }
 
 /*============================================================================*/

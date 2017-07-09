@@ -49,7 +49,7 @@ ValSet::ValSet(void)
 {
   ASSERT(sizeof(ValSet) <= sizeof(ValWrk));
   
-  MemLib::vZero(m_wWorkspace,C_VALSET_DATAAREA);
+  MemLib::vZero(m_wWorkspace,C_VALSET_DATAAREA,CN_VALSET);
   
   m_iBytes = 0;
   

@@ -24,7 +24,7 @@ namespace Magic
     char* aAllot(i8 nBytes);
     void  vAppend(void* aSrc, i8 nBytes, eCN eClassNo);
     char* aArea(void);
-    void  vFill(char cByte);
+    void  vFill(char cByte, eCN eClassNo);
     i8    nFree(void);
     void  vGive(i8 nBytes);
     void  vInit(void);
@@ -34,7 +34,7 @@ namespace Magic
     void  vTake(i8 nBytes);
     i8    nUsed(void);
     void  vUsed(i8 nBytes);
-    void  vZero(void);
+    void  vZero(eCN eClassNo);
   };
 }
 
@@ -101,9 +101,9 @@ char* WspFxd<LENGTH>::aArea(void)
 /* fill byte area with given byte                                             */
 /*----------------------------------------------------------------------------*/
 template<int LENGTH>
-void WspFxd<LENGTH>::vFill(char cByte)
+void WspFxd<LENGTH>::vFill(char cByte, eCN eClassNo)
 {
-  Wsp::vFill(cByte,LENGTH);
+  Wsp::vFill(cByte,LENGTH,eClassNo);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -192,9 +192,9 @@ i8 WspFxd<LENGTH>::nUsed(void)
 /* zero fill the byte area                                                    */
 /*----------------------------------------------------------------------------*/
 template<int LENGTH>
-void WspFxd<LENGTH>::vZero(void)
+void WspFxd<LENGTH>::vZero(eCN eClassNo)
 {
-  Wsp::vZero(LENGTH);
+  Wsp::vZero(LENGTH,eClassNo);
 }
 
 /*============================================================================*/

@@ -64,7 +64,7 @@ StrVal::StrVal(eCN eClassNo, i8 nBytes)
   
   m_xWsp.vUsed(nBytes);
   
-  m_xWsp.vZero();
+  m_xWsp.vZero(eClassNo);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -92,7 +92,7 @@ StrVal::StrVal(StrVal* pThis, i8 nBytes)
   
   m_xWsp.vUsed(nBytes);
   
-  m_xWsp.vZero();
+  m_xWsp.vZero(CN_STRVAL);
   
   _checkInitialised_(CN_STRVAL);
 }

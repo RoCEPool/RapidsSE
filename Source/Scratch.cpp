@@ -61,7 +61,7 @@ Scratch::Scratch(void)
 {
   _precondition_(_MAGIC_,CN_SCRATCH,_FOOTER_);
 
-  m_xWsp.vFill(0x00);
+  m_xWsp.vFill(0x00,CN_SCRATCH);
   
   _checkInitialised_(CN_SCRATCH);
 

@@ -59,7 +59,7 @@ BinVal::BinVal(i8 iChars)
 {
   m_nAreaSize = iChars;
   
-  MemLib::vZero(pData(),m_nAreaSize);
+  MemLib::vZero(pData(),m_nAreaSize,CN_BINVAL);
   
   _checkInitialised_(CN_BINVAL);
 }

@@ -22,7 +22,7 @@ namespace Magic
     void  vAppend(void* aSrc, i8 nBytes);
     char* aArea(void);
     void  vFill(char cByte);
-    void  vFill(char cByte, i8 nBytes);
+    void  vFill(char cByte, i8 nBytes, eCN eClassNo);
     i8    nFree(void);
     char* aLatter(void);
     i8    nLength(void);
@@ -32,7 +32,7 @@ namespace Magic
     i8    nUsed(void);
     void  vUsed(i8 nBytes);
     void  vZero(void);
-    void  vZero(i8 nBytes);
+    void  vZero(i8 nBytes, eCN eClassNo);
   };
 }
 

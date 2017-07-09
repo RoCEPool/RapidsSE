@@ -57,7 +57,7 @@ Stack::Stack(void)
   m_pRetryTop    = pStackBase();
   m_iRetryValues = 0;
   
-  m_xWsp.vFill(0x00);
+  m_xWsp.vFill(0x00,CN_STACK);
   
   _checkInitialised_(CN_STACK);
   

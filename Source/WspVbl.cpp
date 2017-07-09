@@ -49,9 +49,9 @@ char* WspVbl::aArea(void)
 /*----------------------------------------------------------------------------*/
 /* fill data area with given byte                                             */
 /*----------------------------------------------------------------------------*/
-void WspVbl::vFill(char cByte)
+void WspVbl::vFill(char cByte, eCN eClassNo)
 {
-  MemLib::vSet(aArea(),cByte,m_nAreaUsed);
+  MemLib::vSet(aArea(),cByte,m_nAreaUsed, eClassNo);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -125,9 +125,9 @@ void WspVbl::vUsed(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* fill data area with given byte                                             */
 /*----------------------------------------------------------------------------*/
-void WspVbl::vZero(void)
+void WspVbl::vZero(eCN eClassNo)
 {
-  MemLib::vZero(aArea(),m_nAreaUsed);
+  MemLib::vZero(aArea(),m_nAreaUsed,eClassNo);
 }
 
 /*============================================================================*/

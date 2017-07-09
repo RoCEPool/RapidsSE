@@ -97,7 +97,7 @@ void Socket::vAddrInit(sockaddr_in* aAddr, int iPort)
 {
   _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
   
-  MemLib::vZero(aAddr,sizeof(sockaddr_in));
+  MemLib::vZero(aAddr,sizeof(sockaddr_in),CN_SOCKET);
   
   aAddr->sin_family      = AF_INET;
   aAddr->sin_addr.s_addr = htonl(INADDR_ANY);
@@ -111,7 +111,7 @@ void Socket::vAddrInit(sockaddr_in* aAddr, Str* sAddr, int iPort)
 {
   _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
   
-  MemLib::vZero(aAddr,sizeof(sockaddr_in));
+  MemLib::vZero(aAddr,sizeof(sockaddr_in),CN_SOCKET);
   
   aAddr->sin_family      = AF_INET;
   aAddr->sin_addr.s_addr = sAddr->s() == nullptr ? -1 : inet_addr(sAddr->s());
@@ -234,7 +234,7 @@ bool Socket::bConnectServer(Str* sAddr, int iPort, SysCall& SysCall)
   struct addrinfo  xAddrInfo;
   struct addrinfo* pAddrInfo = NULL;
   
-  MemLib::vZero(&xAddrInfo,sizeof(xAddrInfo));
+  MemLib::vZero(&xAddrInfo,sizeof(xAddrInfo),CN_SOCKET);
   
   xAddrInfo.ai_family   = AF_INET;
   xAddrInfo.ai_socktype = SOCK_STREAM;

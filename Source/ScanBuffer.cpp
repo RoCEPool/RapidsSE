@@ -334,7 +334,7 @@ void ScanBuffer::vWipe(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SCANBUFFER,_FOOTER_);
   
-  m_xWsp.vFill(0xEF);
+  m_xWsp.vFill(0xEF,CN_SCANBUFFER);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_SCANBUFFER,_FOOTER_);
 }
@@ -350,7 +350,7 @@ void ScanBuffer::vWipe(Str* aFrom)
   
   i8 nBytes = nSub(aLastByte(),aFrom) + 1;
   
-  MemLib::vSet(aFrom,0xEF,nBytes);
+  MemLib::vSet(aFrom,0xEF,nBytes,CN_SCANBUFFER);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_SCANBUFFER,_FOOTER_);
 }

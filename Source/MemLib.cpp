@@ -206,11 +206,12 @@ void MemLib::vScribble(void* aAddress, i8 nBytes, eCN eClassNo)
 /*----------------------------------------------------------------------------*/
 /* memset dst                                                                 */
 /*----------------------------------------------------------------------------*/
-void MemLib::vSet(void* pDst, char iByte, i8 nBytes)
+void MemLib::vSet(void* pDst, char iByte, i8 nBytes, eCN eClassNo)
 {
   memset(pDst,iByte,nBytes);
   
   giMemSetBytes += nBytes;
+  gxMemSet[eClassNo] += nBytes;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -325,11 +326,12 @@ void MemLib::vWordDump(void *aAddress, i8 iBytes, i8 iHighlightWord)
 /*----------------------------------------------------------------------------*/
 /* zero dst                                                                   */
 /*----------------------------------------------------------------------------*/
-void MemLib::vZero(void* pDst, i8 nBytes)
+void MemLib::vZero(void* pDst, i8 nBytes, eCN eClassNo)
 {
-  vSet(pDst,(char)0,nBytes);
+  vSet(pDst,(char)0,nBytes,eClassNo);
   
   giMemZeroBytes += nBytes;
+  gxMemZero[eClassNo] += nBytes;
 }
 
 /*============================================================================*/

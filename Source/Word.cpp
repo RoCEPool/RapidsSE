@@ -73,7 +73,7 @@ Word::Word(Str* sName)
   m_pPrevWord     = nullptr;
   m_iVariable     = 0;
 
-  m_xBody.vZero();
+  m_xBody.vZero(CN_WORD);
   
   _setFooter_();
   

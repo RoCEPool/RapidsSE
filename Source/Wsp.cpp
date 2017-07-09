@@ -48,11 +48,11 @@ void Wsp::vFill(char cByte)
 /*----------------------------------------------------------------------------*/
 /* fill byte area with given byte                                             */
 /*----------------------------------------------------------------------------*/
-void Wsp::vFill(char cByte, i8 nBytes)
+void Wsp::vFill(char cByte, i8 nBytes, eCN eClassNo)
 {
   void* aDst = aArea();
   
-  MemLib::vSet(aDst,cByte,nBytes);
+  MemLib::vSet(aDst,cByte,nBytes,eClassNo);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -140,11 +140,11 @@ void Wsp::vZero(void)
 /*----------------------------------------------------------------------------*/
 /* zero fill the byte area                                                    */
 /*----------------------------------------------------------------------------*/
-void Wsp::vZero(i8 nBytes)
+void Wsp::vZero(i8 nBytes, eCN eClassNo)
 {
   void* aDst = aArea();
   
-  MemLib::vZero(aDst,nBytes);
+  MemLib::vZero(aDst,nBytes,eClassNo);
 }
 
 /*============================================================================*/
