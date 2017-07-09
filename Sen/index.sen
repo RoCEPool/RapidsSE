@@ -655,7 +655,7 @@ tp: loadIndexes
   locals| sIndexNm sSelectTaskSeed sUpperKey sLowerKey sExactKey |
 
   // local variables
-  0 0 0 0 0 0 locals| seitf selectTask rowCount indexBuffer entry indexPtr |
+  0 0 0 0 0 0 locals| pSeitf pSelectTask nRowCount pIndexBuffer pEntry pIndex |
 
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
 
@@ -667,22 +667,20 @@ tp: loadIndexes
   // increment query count
   queryCount ++
 
-  // push indexes
+  // push into indexes folder
   pushIndexes assert
 
   // find the index
-  sIndexNm find execute ( index^ )
-  to indexPtr
+  sIndexNm find execute to pIndex
 
   args.metadata if
-  metadata@ "metadata: %v\n" str.format .put
+    metadata@ "metadata: %v\n" str.format .put
   then
 
-  task::this task.seitf@ to seitf
+  task::this task.seitf@ to pSeitf
 
   // create the buffer queue in the seitf
-  //"selectTask.queue" queue::new execute task::this task.seitf@ seitf.bufferQueue!
-  "selectTask.queue" queue::new seitf seitf.bufferQueue!
+  "selectTask.queue" queue::new pSeitf seitf.bufferQueue!
 
   // for each slot
   grid.slots 0
@@ -693,12 +691,12 @@ tp: loadIndexes
     then
 
     // put the partition in this tasks seitf
-    I seitf seitf.partition!
+    I pSeitf seitf.partition!
 
     // create a selectTask to execute the key select on the index for the partition
-    sExactKey sLowerKey sUpperKey indexPtr seitf 5
+    sExactKey sLowerKey sUpperKey pIndex pSeitf 5
       sSelectTaskSeed nullptr "selectTask" TK_SELECT_PART spawnServerActor
-        to selectTask
+        to pSelectTask
 
     1
     begin
@@ -706,7 +704,7 @@ tp: loadIndexes
       
       begin
         // attempt to pop buffer off the tasks buffer queue
-        seitf seitf.bufferQueue@  queue.pop ( value true | false )
+        pSeitf seitf.bufferQueue@  queue.pop ( value true | false )
 
         // try again if no value
         not while
@@ -714,57 +712,57 @@ tp: loadIndexes
           //task.yield
         args.sleep thread.sleep_ms
       repeat
-      to indexBuffer
+      to pIndexBuffer
 
       // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
-      indexBuffer pGroupby groupBy.applyBuffer
+      pIndexBuffer pGroupby groupBy.applyBuffer
       // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
 
       //"Popped tempEntryBuffer from buffer queue" .
 
-      indexBuffer entryBuffer.firstEntry to entry
+      pIndexBuffer entryBuffer.firstEntry to pEntry
 
       begin
-        entry
+        pEntry
         while // second while
           
           //"Get an entry from the tempEntryBuffer" .
           display@ if
             args.metadata if
-              entry entry.embeddedRow
+              pEntry entry.embeddedRow
               I grid::toPartition
               "row: (%v '%v')\n" str.format .put
             else
-              entry entry.embeddedRow "\n" str.cat .put
+              pEntry entry.embeddedRow "\n" str.cat .put
             then
           then
-          1 rowCount + to rowCount
-          entry indexBuffer entryBuffer.nextEntry to entry
+          1 nRowCount + to nRowCount
+          pEntry pIndexBuffer entryBuffer.nextEntry to pEntry
       repeat  // end of second while
 
-      indexBuffer entryBuffer.isLast@ if
+      pIndexBuffer entryBuffer.isLast@ if
         //"Reached last buffer" .
         0
       else
         1  // no more entries, move to next buffer
       then
 
-      indexBuffer entryBuffer.delete
+      pIndexBuffer entryBuffer.delete
       //"Deleted buffer" .
     repeat  // end of first while
   loop
 
   // delete the buffer queue from the seitf
-  seitf seitf.bufferQueue@ queue.delete
-  0 seitf seitf.bufferQueue!
+  pSeitf seitf.bufferQueue@ queue.delete
+  0 pSeitf seitf.bufferQueue!
 
   // pop indexes
   popIndexes
 
   args.metadata if
-    rowCount seitf seitf.rowsProcessed
+    nRowCount pSeitf seitf.rowsProcessed
   else
-    "rows selected"  rowCount "%v %v\n" str.format .put
+    "rows selected"  nRowCount "%v %v\n" str.format .put
   then
 
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
