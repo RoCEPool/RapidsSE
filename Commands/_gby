@@ -41,7 +41,7 @@ docol epochTake;
 docol stepsReset;
 docol memoryReset;
 docol schedulerReset;
-fetch lineitem "L_ORDERKEY 0 >= L_ORDERKEY 6000000 <= and";
+fetch lineitem "L_ORDERKEY 0 >= L_ORDERKEY 500 <= and";
 docol schedulerList;
 docol memoryList;
 docol stepsList;

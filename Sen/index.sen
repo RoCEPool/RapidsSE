@@ -631,9 +631,9 @@ tp: loadIndexes
 ;
 
 /*----------------------------------------------------------------------------*/
-/* select for index ( called by lower_select_index request)                   */
+/* select using index                                                         */
 /*----------------------------------------------------------------------------*/
-: selectIndex ( "<key>" "<lower>" "<upper>" "<selectTaskRequest>" "<index>" --  )
+: selectIndex ( "<key>" "<lower>" "<upper>" "<sSelectTaskSeed>" "<index>" --  )
 
   tp: selectIndex
 
@@ -650,8 +650,11 @@ tp: loadIndexes
   //
   //assert::stack_5
 
-  0 0 0 0 0 0 locals| seitf selectTask rowCount indexBuffer entry
-                      indexPtr indexNm selectTaskRequest upper lower key |
+  // save args
+  locals| indexNm sSelectTaskSeed upper lower key |
+
+  // local variables
+  0 0 0 0 0 0 locals| seitf selectTask rowCount indexBuffer entry indexPtr |
 
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
 
@@ -693,7 +696,7 @@ tp: loadIndexes
 
     // create a selectTask to execute the key select on the index for the partition
     key lower upper indexPtr seitf 5
-      selectTaskRequest nullptr "selectTask" TK_SELECT_PART spawnServerActor
+      sSelectTaskSeed nullptr "selectTask" TK_SELECT_PART spawnServerActor
         to selectTask
 
     1
@@ -717,7 +720,7 @@ tp: loadIndexes
       // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
 
       //"Popped tempEntryBuffer from buffer queue" .
-/*
+
       indexBuffer entryBuffer.firstEntry to entry
 
       begin
@@ -737,7 +740,7 @@ tp: loadIndexes
           1 rowCount + to rowCount
           entry indexBuffer entryBuffer.nextEntry to entry
       repeat  // end of second while
-*/
+
       indexBuffer entryBuffer.isLast@ if
         //"Reached last buffer" .
         0
