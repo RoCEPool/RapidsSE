@@ -14,6 +14,12 @@ extern i8 giMemScribbleBytes;
 extern i8 giMemSetBytes;
 extern i8 giMemZeroBytes;
 
+extern i8 gxMemCopy[CN_ENUMS];
+extern i8 gxMemMove[CN_ENUMS];
+extern i8 gxMemScribble[CN_ENUMS];
+extern i8 gxMemSet[CN_ENUMS];
+extern i8 gxMemZero[CN_ENUMS];
+
 /*----------------------------------------------------------------------------*/
 /* map a new an anonymous region of memory (private or shared)                */
 /*----------------------------------------------------------------------------*/

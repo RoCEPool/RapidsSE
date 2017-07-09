@@ -30,6 +30,11 @@ extern i8 giMemScribbleBytes;
 extern i8 giMemSetBytes;
 extern i8 giMemZeroBytes;
 
+extern i8 gxMemCopy[CN_ENUMS];
+extern i8 gxMemMove[CN_ENUMS];
+extern i8 gxMemScribble[CN_ENUMS];
+extern i8 gxMemSet[CN_ENUMS];
+extern i8 gxMemZero[CN_ENUMS];
 
 // memory: /////////////////////////////////////////////////////////////////////
 
@@ -79,6 +84,14 @@ void Task::vMemoryReset(MP_Task mpTask)
   giMemSetBytes  = 0;
   giMemZeroBytes = 0;
   
+  for (i8 i_Class = 0; i_Class < CN_ENUMS; i_Class++) {
+    gxMemCopy[i_Class] = 0;
+    gxMemMove[i_Class] = 0;
+    gxMemScribble[i_Class] = 0;
+    gxMemSet[i_Class] = 0;
+    gxMemZero[i_Class] = 0;
+  }
+  
   EXIT();
 }
 
@@ -93,18 +106,48 @@ void Task::vMemoryList(MP_Task mpTask)
   
   Magnitudes::vMagnitude(giMemCopyBytes, sMagnitude);
   vTrace("MemCopyBytes %s\n"_Str,sMagnitude.aStr());
+  for (i8 i_Class = 0; i_Class < CN_ENUMS; i_Class++) {
+    if (gxMemCopy[i_Class]) {
+      Magnitudes::vMagnitude(gxMemCopy[i_Class], sMagnitude);
+      vTrace("  %s\n"_Str,sMagnitude.aStr());
+    }
+  }
   
   Magnitudes::vMagnitude(giMemMoveBytes, sMagnitude);
   vTrace("MemMoveBytes %s\n"_Str,sMagnitude.aStr());
+  for (i8 i_Class = 0; i_Class < CN_ENUMS; i_Class++) {
+    if (gxMemMove[i_Class]) {
+      Magnitudes::vMagnitude(gxMemMove[i_Class], sMagnitude);
+      vTrace("  %s\n"_Str,sMagnitude.aStr());
+    }
+  }
 
   Magnitudes::vMagnitude(giMemScribbleBytes, sMagnitude);
   vTrace("MemScribbleBytes %s\n"_Str,sMagnitude.aStr());
+  for (i8 i_Class = 0; i_Class < CN_ENUMS; i_Class++) {
+    if (gxMemScribble[i_Class]) {
+      Magnitudes::vMagnitude(gxMemScribble[i_Class], sMagnitude);
+      vTrace("  %s\n"_Str,sMagnitude.aStr());
+    }
+  }
   
   Magnitudes::vMagnitude(giMemSetBytes, sMagnitude);
   vTrace("MemSetBytes %s\n"_Str,sMagnitude.aStr());
+  for (i8 i_Class = 0; i_Class < CN_ENUMS; i_Class++) {
+    if (gxMemSet[i_Class]) {
+      Magnitudes::vMagnitude(gxMemSet[i_Class], sMagnitude);
+      vTrace("  %s\n"_Str,sMagnitude.aStr());
+    }
+  }
   
   Magnitudes::vMagnitude(giMemZeroBytes, sMagnitude);
   vTrace("MemZeroBytes %s\n"_Str,sMagnitude.aStr());
+  for (i8 i_Class = 0; i_Class < CN_ENUMS; i_Class++) {
+    if (gxMemZero[i_Class]) {
+      Magnitudes::vMagnitude(gxMemZero[i_Class], sMagnitude);
+      vTrace("  %s\n"_Str,sMagnitude.aStr());
+    }
+  }
   
   EXIT();
 }
