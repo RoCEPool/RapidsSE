@@ -223,7 +223,7 @@ void Vector<VEC_CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>::vInsert(ITEM* pItem)
     char* aLst = pAdd<char*>(&m_pItem[nItemNo],sizeof(ITEM*));
     i8 nBytes = nSub(aLst,aDst);
     
-    MemLib::vMove(aDst,aSrc,nBytes);
+    MemLib::vMove(aDst,aSrc,nBytes,VEC_CN);
   }
   
   // set first item
@@ -295,7 +295,7 @@ void Vector<VEC_CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>::vRemove(ITEM* pItem)
   char* aLst = pAdd<char*>(&m_pItem[m_nItems-1],sizeof(ITEM*));
   i8 nBytes = nSub(aLst,aDst);
   
-  MemLib::vMove(aDst,aSrc,nBytes);
+  MemLib::vMove(aDst,aSrc,nBytes,VEC_CN);
 }
 
 /*----------------------------------------------------------------------------*/

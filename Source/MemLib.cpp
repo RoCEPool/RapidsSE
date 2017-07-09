@@ -180,11 +180,12 @@ void MemLib::vHexDump(void *aAddress, i8 iBytes)
 /*----------------------------------------------------------------------------*/
 /* move from src to dst                                                       */
 /*----------------------------------------------------------------------------*/
-void MemLib::vMove(void* pDst, const void* pSrc, i8 nBytes)
+void MemLib::vMove(void* pDst, const void* pSrc, i8 nBytes, eCN eClassNo)
 {
   memmove(pDst,pSrc,nBytes);
   
   giMemMoveBytes += nBytes;
+  gxMemMove[eClassNo] += nBytes;
 }
 
 /*----------------------------------------------------------------------------*/

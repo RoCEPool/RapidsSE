@@ -1874,7 +1874,7 @@ void EntryBuffer::vMoveLeft(void* aDst, i8 nBytes)
   i8 nBytesToCopy = nSub(m_xWsp.aLatter(), aSrc);
   
   // move the bytes left
-  MemLib::vMove(aDst,aSrc,nBytesToCopy);
+  MemLib::vMove(aDst,aSrc,nBytesToCopy,CN_ENTRYBUFFER);
   
   // release space back to wsp
   //m_xWsp.vGive(nBytes);
@@ -1933,7 +1933,7 @@ void EntryBuffer::vMoveRight(void* aSrc, i8 nBytes)
     return;
 
   // move F..Z right
-  MemLib::vMove(aDst,aSrc,nBytesToCopy);
+  MemLib::vMove(aDst,aSrc,nBytesToCopy,CN_ENTRYBUFFER);
   
   // for the moment we'll zero the bytes of entry E
   MemLib::vZero(aSrc,nBytes);

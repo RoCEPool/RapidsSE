@@ -202,7 +202,7 @@ void Array<ARRAY_CN, ITEM, MAX_ITEMS>::vInsert(ITEM xItem)
     char* aLst = pAdd<char*>(&m_xItem[iItem],sizeof(ITEM));
     i8 nBytes = nSub(aLst,aDst);
     
-    MemLib::vMove(aDst,aSrc,nBytes);
+    MemLib::vMove(aDst,aSrc,nBytes,ARRAY_CN);
   }
   
   // set item

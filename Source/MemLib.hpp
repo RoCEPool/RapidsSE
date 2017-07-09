@@ -40,7 +40,7 @@ namespace Base
     static void  vCopy(void* pDst, const void* pSrc, i8 nBytes, eCN eClassNo);
     static i8    iGetTotalMemory(void);
     static void  vHexDump(void *aAddress, i8 iSize);
-    static void  vMove(void* pDst, const void* pSrc, i8 nBytes);
+    static void  vMove(void* pDst, const void* pSrc, i8 nBytes, eCN eClassNo);
     static void  vScribble(void* aAddress, i8 nBytes);
     static void  vSet(void* pDst, char bByte, i8 iTimes);
     static void  vWordDump(void *aAddress, i8 iSize, i8 iHighlightWord=-1);
