@@ -541,6 +541,12 @@ tp: loadIndexes
 
   tp: rangeSelectIdxTask
 
+  //debug::trap
+
+  // task is a select participant running on server thread
+  task::this task.kind@ TK_SELECT_PART == assert
+  task::this task.thread thread.actorModel@ AC_SERVER == assert
+
   seitf task::this task.seitf!
 
   // create a temporary index buffer for the results
@@ -632,6 +638,10 @@ tp: loadIndexes
   tp: selectIndex
 
 //debug::trap
+
+  // task is a request server
+  task::this task.kind@ TK_REQUEST_SERVER == assert
+  task::this task.thread thread.actorModel@ AC_SERVER == assert
 
   //
   // execution context:

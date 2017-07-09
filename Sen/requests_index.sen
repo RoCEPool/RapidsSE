@@ -250,6 +250,9 @@ timer: idxSelectTimer
                                                                     // ../tables
 "fetch_rows_index" .
 
+  // task is a request server
+  task::this task.kind@ TK_REQUEST_SERVER == assert
+
   assert::stack_2
   CN_STRVAL assert::class_0
   CN_STRVAL assert::class_1

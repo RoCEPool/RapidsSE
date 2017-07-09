@@ -151,6 +151,7 @@ Task::Task(Value* pRequest)
   
   m_sName    = "req.task"_Str;
   m_sComment = "requestLoop"_Str;
+  m_eTaskKind = TK_REQUEST_SERVER;
   m_eActorModel = AC_SERVER;
   
   _checkInitialised_(CN_TASK);

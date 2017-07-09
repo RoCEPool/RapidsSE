@@ -494,6 +494,7 @@ ENTRY("vTaskNew"_Str);
   MP_Task nnpNewTask = new Task;
   
   nnpNewTask->m_sName = sName;
+  nnpNewTask->m_eTaskKind = (eTK)eKind;
   nnpNewTask->m_eActorModel = (eAC)eModel;
   nnpNewTask->m_pParentTask = pParentTask;
   nnpNewTask->vSeedWord(sSeed);
