@@ -327,7 +327,7 @@ tp: makingIndex
 /*----------------------------------------------------------------------------*/
 /* position key select cursor for table (called by keySelectIndex request)    */
 /*----------------------------------------------------------------------------*/
-: keySelectIdxTask ( <"key>" "<lower>" "<upper>" ^indexPtr seitf -- )
+: exactSelectIdxTask ( <"key>" "<lower>" "<upper>" ^indexPtr seitf -- )
 
   0 0 0 locals| entry tempEntryBuffer indexBuffer seitf indexPtr upper lower key |
 
@@ -631,9 +631,10 @@ tp: loadIndexes
 ;
 
 /*----------------------------------------------------------------------------*/
-/* select using index                                                         */
+/* select using index (called by fetch_rows_index)                            */
 /*----------------------------------------------------------------------------*/
-: selectIndex ( "<key>" "<lower>" "<upper>" "<sSelectTaskSeed>" "<index>" --  )
+: selectIndex ( "<sExactKey>" "<sLowerKey>" "<sUpperKey>"
+                "<sSelectTaskSeed>" "<sIndexNm>" --  )
 
   tp: selectIndex
 
@@ -651,7 +652,7 @@ tp: loadIndexes
   //assert::stack_5
 
   // save args
-  locals| indexNm sSelectTaskSeed upper lower key |
+  locals| sIndexNm sSelectTaskSeed sUpperKey sLowerKey sExactKey |
 
   // local variables
   0 0 0 0 0 0 locals| seitf selectTask rowCount indexBuffer entry indexPtr |
@@ -670,7 +671,7 @@ tp: loadIndexes
   pushIndexes assert
 
   // find the index
-  indexNm find execute ( index^ )
+  sIndexNm find execute ( index^ )
   to indexPtr
 
   args.metadata if
@@ -695,7 +696,7 @@ tp: loadIndexes
     I seitf seitf.partition!
 
     // create a selectTask to execute the key select on the index for the partition
-    key lower upper indexPtr seitf 5
+    sExactKey sLowerKey sUpperKey indexPtr seitf 5
       sSelectTaskSeed nullptr "selectTask" TK_SELECT_PART spawnServerActor
         to selectTask
 

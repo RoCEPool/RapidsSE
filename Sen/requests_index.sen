@@ -341,7 +341,7 @@ timer: idxSelectTimer
       pPlanner Planner.key@
       "0"  //lower
       "0"  //upper
-      "keySelectIdxTask"
+      "exactSelectIdxTask"
       pPlanner Planner.indexNm@
       selectIndex
     endof
@@ -520,7 +520,7 @@ timer: idxSelectTimer
   task::this task.seitf@ seitf.table@ assert
 
   // execute a exact key select using index
-  xKey "0" "0" "keySelectIdxTask" sIndexNm selectIndex ( lower index )
+  xKey "0" "0" "exactSelectIdxTask" sIndexNm selectIndex ( lower index )
 
   // dec and return table reference and clear task.seitf.currentTable
   returnTableRef not if <NIP+ERROR> exit then
