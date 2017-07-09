@@ -25,6 +25,11 @@ extern Lock            gxDicLock;
 extern SEitfList*      gpSEitfList;
 extern Scheduler*      gpScheduler;
 
+extern i8 giSchEnqueueTask;
+extern i8 giSchEnqueueTaskWait;
+extern i8 giSchGetTask;
+extern i8 giSchGetTaskWait;
+
 // Scheduler: ////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
@@ -33,8 +38,11 @@ extern Scheduler*      gpScheduler;
 void Task::vAddPrimitives_Scheduler(void)
 {
   vAddPrimitive("Scheduler::enqueueServerTask"_Str, &vSchedulerEnqueueTask,   false);
-  vAddPrimitive("Scheduler::queuedTasks"_Str,        &vSchedulerQueuedTasks,   false);
-  vAddPrimitive("Scheduler::queuedThreads"_Str,      &vSchedulerQueuedThreads, false);
+  vAddPrimitive("Scheduler::queuedTasks"_Str,       &vSchedulerQueuedTasks,   false);
+  vAddPrimitive("Scheduler::queuedThreads"_Str,     &vSchedulerQueuedThreads, false);
+  
+  vAddPrimitive("Scheduler::List"_Str,              &vSchedulerList,          false);
+  vAddPrimitive("Scheduler::Reset"_Str,             &vSchedulerReset,         false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -78,6 +86,36 @@ void Task::vSchedulerQueuedThreads(MP_Task mpTask)
   i8 nThreads = gpScheduler->iQueuedThreads();
   
   mpTask->m_pDataStack->vPushInt(nThreads);
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* scheduler.reset -- reset scheduler statistics                              */
+/*----------------------------------------------------------------------------*/
+void Task::vSchedulerReset(MP_Task mpTask)
+{
+  ENTRY("vSchedulerReset"_Str);
+  
+  giSchEnqueueTask = 0;
+  giSchEnqueueTaskWait = 0;
+  giSchGetTask = 0;
+  giSchGetTaskWait = 0;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* schedulery.list-- trace scheduler statistics                               */
+/*----------------------------------------------------------------------------*/
+void Task::vSchedulerList(MP_Task mpTask)
+{
+  ENTRY("vSchedulerList"_Str);
+  
+  vTrace("SchEnqueueTask %lld\n"_Str,giSchEnqueueTask);
+  vTrace("SchEnqueueTaskWait %lld\n"_Str,giSchEnqueueTaskWait);
+  vTrace("SchGetTask %lld\n"_Str,giSchGetTask);
+  vTrace("SchGetTaskWait %lld\n"_Str,giSchGetTaskWait);
+  
   EXIT();
 }
 

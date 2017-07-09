@@ -855,11 +855,6 @@ namespace Tasks
     static void vPushNullPtr(MP_Task mpTask);
     static void vPushValue(MP_Task mpTask);
     
-    // scheduler
-    static void vSchedulerEnqueueTask(MP_Task mpTask);
-    static void vSchedulerQueuedTasks(MP_Task mpTask);
-    static void vSchedulerQueuedThreads(MP_Task mpTask);
-  
     // queue
     static void vQueueAppend(MP_Task mpTask);
     static void vQueueDelete(MP_Task mpTask);
@@ -969,6 +964,13 @@ namespace Tasks
     static void vRstack8(MP_Task mpTask);
     static void vRstack9(MP_Task mpTask);
     
+    // scheduler
+    static void vSchedulerEnqueueTask(MP_Task mpTask);
+    static void vSchedulerList(MP_Task mpTask);
+    static void vSchedulerQueuedTasks(MP_Task mpTask);
+    static void vSchedulerQueuedThreads(MP_Task mpTask);
+    static void vSchedulerReset(MP_Task mpTask);
+  
     // seitf
     static void vSEitfAccessPathFetch(MP_Task mpTask);
     static void vSEitfAccessPathStore(MP_Task mpTask);

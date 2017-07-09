@@ -44,8 +44,8 @@ extern i8 gxMemZero[CN_ENUMS];
 void Task::vAddPrimitives_Memory(void)
 {
   vAddPrimitive("memory.byteDump"_Str,   &vMemoryByteDump,    false);
-  vAddPrimitive("memory.list"_Str,       &vMemoryList,        false);
-  vAddPrimitive("memory.reset"_Str,      &vMemoryReset,       false);
+  vAddPrimitive("memory::list"_Str,       &vMemoryList,        false);
+  vAddPrimitive("memory::reset"_Str,      &vMemoryReset,       false);
   vAddPrimitive("memory.wordDump"_Str,   &vMemoryWordDump,    false);
 }
 

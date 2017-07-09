@@ -33,12 +33,12 @@ extern Locks           gxLocks;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Locks(void)
 {
-  vAddPrimitive("locks.list"_Str,  &vLocksList,  false);
-  vAddPrimitive("locks.reset"_Str, &vLocksReset, false);
+  vAddPrimitive("locks::list"_Str,  &vLocksList,  false);
+  vAddPrimitive("locks::reset"_Str, &vLocksReset, false);
 }
 
 /*----------------------------------------------------------------------------*/
-/* lockTracker.list -- list lock stats                                        */
+/* locks::list -- list lock stats                                             */
 /*----------------------------------------------------------------------------*/
 void Task::vLocksList(MP_Task mpTask)
 {
@@ -55,7 +55,7 @@ ENTRY("vLocksList"_Str);
 }
 
 /*----------------------------------------------------------------------------*/
-/* steps.reset -- reset steps                                                 */
+/* locks::reset -- reset locks                                                 */
 /*----------------------------------------------------------------------------*/
 void Task::vLocksReset(MP_Task mpTask)
 {

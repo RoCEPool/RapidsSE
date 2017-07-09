@@ -47,6 +47,11 @@ Lock          gxDdlLock;
 Lock          gxDicLock;
 Locks         gxLocks;
 
+i8            giSchEnqueueTask = 0;
+i8            giSchEnqueueTaskWait = 0;
+i8            giSchGetTask = 0;
+i8            giSchGetTaskWait = 0;
+
 i8            giMemCopyBytes = 0;
 i8            giMemMoveBytes = 0;
 i8            giMemScribbleBytes = 0;

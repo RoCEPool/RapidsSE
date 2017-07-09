@@ -8,6 +8,11 @@ extern BufferPool*  gpBufferPool;
 
 #include "Thread.hpp"
 
+extern i8 giSchEnqueueTask;
+extern i8 giSchEnqueueTaskWait;
+extern i8 giSchGetTask;
+extern i8 giSchGetTaskWait;
+
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
@@ -81,6 +86,8 @@ void Scheduler::vEnqueueTask_Mutex(Task* mpTask)
   // no other thread can be running the enqueue or get functions
   m_xSemaphore.vMutexLock();
   
+  giSchEnqueueTask++;
+  
   //
   // **there will be no threads in bGetTask()**
   //
@@ -101,6 +108,8 @@ void Scheduler::vEnqueueTask_Mutex(Task* mpTask)
   // no available threads, so queue the task
   m_xTaskQueue.vAppend(mpTask);
  
+  giSchEnqueueTaskWait++;
+  
   // allow another thread to continue
   m_xSemaphore.vMutexUnlock();
 }
@@ -119,7 +128,7 @@ bool Scheduler::bGetTask_Mutex(Threads::Thread* mpThread, bool bWait)
   // lock semaphore so only this thread is running
   // no other thread can be running the enqueue or get functions
   m_xSemaphore.vMutexLock();
-
+  giSchGetTask++;
   //
   // **there will be no threads in vEnqueueTask()**
   //
@@ -137,6 +146,7 @@ bool Scheduler::bGetTask_Mutex(Threads::Thread* mpThread, bool bWait)
   
   // when the thread is prepared to wait, put thread into queue
   if (bWait) {
+    giSchGetTaskWait++;
     m_xThreadQueue.vAppend(mpThread);
     m_xSemaphore.vCondWait_Mutex();
     m_xSemaphore.vMutexUnlock();
