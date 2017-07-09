@@ -27,11 +27,11 @@ char* WspVbl::aAllot(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* append source bytes to data area                                           */
 /*----------------------------------------------------------------------------*/
-void WspVbl::vAppend(void* aSrc, i8 nBytes)
+void WspVbl::vAppend(void* aSrc, i8 nBytes, eCN eClassNo)
 {
   void* aDst = aLatter();
   
-  MemLib::vCopy(aDst,aSrc,nBytes);
+  MemLib::vCopy(aDst,aSrc,nBytes,eClassNo);
   
   vTake(nBytes);
 }

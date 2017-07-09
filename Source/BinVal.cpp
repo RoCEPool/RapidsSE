@@ -71,7 +71,7 @@ void BinVal::operator =(Object* pObject)
 {
   m_nAreaSize = giClassSize[pObject->eClass()];
   
-  MemLib::vCopy(m_cArea, pObject, m_nAreaSize);
+  MemLib::vCopy(m_cArea, pObject, m_nAreaSize, CN_BINVAL);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -160,7 +160,7 @@ Object* BinVal::pNewObject(void)
   
   i8 iSize = this->nSize();
   Object* pObject = Heap::pAllocate(eObjectClass());
-  MemLib::vCopy(pObject, pData(), iSize);
+  MemLib::vCopy(pObject, pData(), iSize, CN_BINVAL);
   
   return pObject;
 }

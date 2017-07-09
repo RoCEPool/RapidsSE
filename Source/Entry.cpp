@@ -292,7 +292,7 @@ void Entry::vReplaceKey(EntWrk& xEntWrk)
   Key* aEntWrkKey = xEntWrk.aKey();
   i8 nKeyBytes = xEntWrk.nKeySize();
   
-  MemLib::vCopy(aEntryKey,aEntWrkKey,nKeyBytes);
+  MemLib::vCopy(aEntryKey,aEntWrkKey,nKeyBytes,eClass());
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
 }
@@ -323,7 +323,7 @@ void Entry::vSetEntry(EntWrk& xEntWrk)
   RightVec* aEntWrkRightVec = xEntWrk.aRightVec();
   i8 nRightBytes = xEntWrk.nRightSize();
   
-  MemLib::vCopy(aEntryRightVec,aEntWrkRightVec,nRightBytes);
+  MemLib::vCopy(aEntryRightVec,aEntWrkRightVec,nRightBytes,eClass());
  
   // copy Key
   Key* aEntryKey = this->aKey();
@@ -331,7 +331,7 @@ void Entry::vSetEntry(EntWrk& xEntWrk)
   i8 nKeyBytes = xEntWrk.nKeySize();
   
   ASSERT(nKeyBytes);
-  MemLib::vCopy(aEntryKey,aEntWrkKey,nKeyBytes);
+  MemLib::vCopy(aEntryKey,aEntWrkKey,nKeyBytes,eClass());
   
   // copy data
   if (xEntWrk.bHasData()) {
@@ -340,7 +340,7 @@ void Entry::vSetEntry(EntWrk& xEntWrk)
     i8 nDataSize = xEntWrk.nDataSize();
     
     ASSERT(nDataSize);
-    MemLib::vCopy(aEntryData,aEntWrkData,nDataSize);
+    MemLib::vCopy(aEntryData,aEntWrkData,nDataSize,eClass());
     
     //char* aRow = this->aRow();
     //StrVal* pStrVal = reinterpret_cast<StrVal*>(aRow);

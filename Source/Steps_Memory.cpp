@@ -109,7 +109,7 @@ void Task::vMemoryList(MP_Task mpTask)
   for (i8 i_Class = 0; i_Class < CN_ENUMS; i_Class++) {
     if (gxMemCopy[i_Class]) {
       Magnitudes::vMagnitude(gxMemCopy[i_Class], sMagnitude);
-      vTrace("  %s\n"_Str,sMagnitude.aStr());
+      vTrace("  %s %s\n"_Str,aCN[i_Class],sMagnitude.aStr());
     }
   }
   
@@ -118,7 +118,7 @@ void Task::vMemoryList(MP_Task mpTask)
   for (i8 i_Class = 0; i_Class < CN_ENUMS; i_Class++) {
     if (gxMemMove[i_Class]) {
       Magnitudes::vMagnitude(gxMemMove[i_Class], sMagnitude);
-      vTrace("  %s\n"_Str,sMagnitude.aStr());
+      vTrace("  %s %s\n"_Str,aCN[i_Class],sMagnitude.aStr());
     }
   }
 
@@ -127,7 +127,7 @@ void Task::vMemoryList(MP_Task mpTask)
   for (i8 i_Class = 0; i_Class < CN_ENUMS; i_Class++) {
     if (gxMemScribble[i_Class]) {
       Magnitudes::vMagnitude(gxMemScribble[i_Class], sMagnitude);
-      vTrace("  %s\n"_Str,sMagnitude.aStr());
+      vTrace("  %s %s\n"_Str,aCN[i_Class],sMagnitude.aStr());
     }
   }
   
@@ -136,7 +136,7 @@ void Task::vMemoryList(MP_Task mpTask)
   for (i8 i_Class = 0; i_Class < CN_ENUMS; i_Class++) {
     if (gxMemSet[i_Class]) {
       Magnitudes::vMagnitude(gxMemSet[i_Class], sMagnitude);
-      vTrace("  %s\n"_Str,sMagnitude.aStr());
+      vTrace("  %s %s\n"_Str,aCN[i_Class],sMagnitude.aStr());
     }
   }
   
@@ -145,7 +145,7 @@ void Task::vMemoryList(MP_Task mpTask)
   for (i8 i_Class = 0; i_Class < CN_ENUMS; i_Class++) {
     if (gxMemZero[i_Class]) {
       Magnitudes::vMagnitude(gxMemZero[i_Class], sMagnitude);
-      vTrace("  %s\n"_Str,sMagnitude.aStr());
+      vTrace("  %s %s\n"_Str,aCN[i_Class],sMagnitude.aStr());
     }
   }
   

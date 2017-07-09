@@ -92,7 +92,7 @@ void Key::vKey(KeyWrk& xKeyWrk)
   Str* aSrc = xKeyWrk.aWspStr();
   i8 nBytes  = xKeyWrk.nWspUsed();
   
-  MemLib::vCopy(aDst,aSrc,nBytes);
+  MemLib::vCopy(aDst,aSrc,nBytes,CN_KEY);
 }
 
 /*----------------------------------------------------------------------------*/

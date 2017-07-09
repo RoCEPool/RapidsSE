@@ -22,7 +22,7 @@ namespace Magic
     WspFx2(void);
 
     char* aAllot(i8 nBytes);
-    void  vAppend(void* aSrc, i8 nBytes);
+    void  vAppend(void* aSrc, i8 nBytes, eCN eClassNo);
     char* aArea(void);
     void  vFill(char cByte);
     i8    nFree(void);
@@ -79,13 +79,13 @@ char* WspFx2<LENGTH>::aAllot(i8 nBytes)
 /* append source bytes to byte area                                           */
 /*----------------------------------------------------------------------------*/
 template<int LENGTH>
-void WspFx2<LENGTH>::vAppend(void* aSrc, i8 nBytes)
+void WspFx2<LENGTH>::vAppend(void* aSrc, i8 nBytes, eCN eClassNo)
 {
   ASSERT(nUsed() + nBytes <= LENGTH);
   
   void* aDst = aLatter();
 
-  MemLib::vCopy(aDst,aSrc,nBytes);
+  MemLib::vCopy(aDst,aSrc,nBytes,eClassNo);
   
   vTake(nBytes);
 }

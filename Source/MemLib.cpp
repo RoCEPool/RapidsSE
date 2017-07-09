@@ -76,11 +76,12 @@ void MemLib::vCheckInitialised(void* aAddress, i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* copy from src to dst                                                       */
 /*----------------------------------------------------------------------------*/
-void MemLib::vCopy(void* pDst, const void* pSrc, i8 nBytes)
+void MemLib::vCopy(void* pDst, const void* pSrc, i8 nBytes, eCN eClassNo)
 {
   memcpy(pDst,pSrc,nBytes);
   
   giMemCopyBytes += nBytes;
+  gxMemCopy[eClassNo] += nBytes;
 }
 
 /*----------------------------------------------------------------------------*/

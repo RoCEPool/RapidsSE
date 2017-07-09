@@ -21,7 +21,7 @@ namespace Magic
     WspVbl(void);
 
     char* aAllot(i8 nBytes);
-    void  vAppend(void* aSrc, i8 nBytes);
+    void  vAppend(void* aSrc, i8 nBytes, eCN eClassNo);
     char* aArea(void);
     void  vFill(char cByte);
     i8    nFree(void);

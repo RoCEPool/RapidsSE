@@ -147,7 +147,7 @@ Task::Task(Value* pRequest)
   
   // copy the request
   i8 nBytes = ValLib::iSize(pRequest);
-  MemLib::vCopy(m_pRequest,pRequest,nBytes);
+  MemLib::vCopy(m_pRequest,pRequest,nBytes,CN_TASK);
   
   m_sName    = "req.task"_Str;
   m_sComment = "requestLoop"_Str;

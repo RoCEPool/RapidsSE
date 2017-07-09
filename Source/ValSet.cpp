@@ -92,16 +92,16 @@ void ValSet::vAppend(Str*& pCursor, Value* pValue)
       //xValWrk = (Object*)C_ROWBUFFER_MARKER;
       PtrVal xPtrVal;
       xPtrVal = (Object*)C_ROWBUFFER_MARKER;
-      MemLib::vCopy(pCursor,&xPtrVal,sizeof(xPtrVal));
+      MemLib::vCopy(pCursor,&xPtrVal,sizeof(xPtrVal),CN_VALSET);
       //vTrace("APPEND C_ROWBUFFER_MARKER\n"_Str);
     }
     else {
-      MemLib::vCopy(pCursor,pValue,iSize);
+      MemLib::vCopy(pCursor,pValue,iSize,CN_VALSET);
     }
     
   }
   else {
-    MemLib::vCopy(pCursor,pValue,iSize);
+    MemLib::vCopy(pCursor,pValue,iSize,CN_VALSET);
   }
   
   m_iBytes += iSize;

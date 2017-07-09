@@ -305,7 +305,7 @@ void EntryBuffer::vAppendBuffer(EntryBuffer* pSrcBuffer)
   void* pDst = m_xWsp.aAllot(nBytes);
   
   // copy arg rows into this buffer
-  MemLib::vCopy(pDst,aSrc,nBytes);
+  MemLib::vCopy(pDst,aSrc,nBytes,CN_ENTRYBUFFER);
   
   // inc the number of rows in this buffer
   i8 nSrcRows = pSrcBuffer->m_nEntries;
@@ -328,7 +328,7 @@ void EntryBuffer::vCopyBuffer(EntryBuffer* pSrcBuffer)
   void* pDst = m_xWsp.aAllot(nBytes);
   
   // copy from rows into this buffer
-  MemLib::vCopy(pDst,aSrc,nBytes);
+  MemLib::vCopy(pDst,aSrc,nBytes,CN_ENTRYBUFFER);
   
   // set the number of rows in this buffer
   m_nEntries = pSrcBuffer->nEntries();

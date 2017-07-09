@@ -78,6 +78,7 @@ pFINALIZE *gpFinalize[]
   
   /* 34 */ &Finalize::vUndefined,         // CN_JUMBOHEAP
   
+  /*    */ &Finalize::vUndefined,         // CN_KEY
   /*    */ &Finalize::vUndefined,         // CN_KEYVAL
   /*    */ &Finalize::vUndefined,         // CN_KEYVEC
   /* 35 */ &Finalize::vUndefined,         // CN_KEYWRK

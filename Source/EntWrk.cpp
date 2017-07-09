@@ -344,7 +344,7 @@ void EntWrk::vAddKey(KeyWrk& xKeyWrk)
   Str* aKeySrc = xKeyWrk.aWspStr();
   i8 nKeyBytes = xKeyWrk.nWspUsed();
   
-  m_xDataWrk.vAppend(aKeySrc,nKeyBytes);
+  m_xDataWrk.vAppend(aKeySrc,nKeyBytes,CN_ENTWRK);
 }
 
 /*----------------------------------------------------------------------------*/

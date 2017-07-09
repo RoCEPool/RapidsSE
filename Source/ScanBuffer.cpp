@@ -256,7 +256,7 @@ void ScanBuffer::vCopyUp(Str* aDangling)
   i8 nDanglingBytes = nSub(aLastByte(),aDangling) + 1;
   ASSERT(nDanglingBytes <= m_xWsp.nLength());
   
-  MemLib::vCopy(aFirstByte(),aDangling,nDanglingBytes);
+  MemLib::vCopy(aFirstByte(),aDangling,nDanglingBytes,CN_SCANBUFFER);
   m_aEndData = pAdd<Str*>(aFirstByte(),nDanglingBytes - 1);
   
 //  if (iDanglingBytes < 1000) {
