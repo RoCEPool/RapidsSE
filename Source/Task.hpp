@@ -765,6 +765,8 @@ namespace Tasks
     
     // memory
     static void vMemoryByteDump(MP_Task mpTask);
+    static void vMemoryList(MP_Task mpTask);
+    static void vMemoryReset(MP_Task mpTask);
     static void vMemoryWordDump(MP_Task mpTask);
     
     // node (of grid)

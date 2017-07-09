@@ -83,8 +83,8 @@ void StepArray::vList(File& xFile)
   m_zLock.vGrabWrite();
   
   xFile.vPrint("Step, Invoked, StepTotal, Per Invoke\n"_Str);
-  for (i8 iStep = 0; iStep < m_iNext; iStep++)
-    m_xStepAccum[iStep].vPrint(xFile);
+  for (i8 i_Step = 0; i_Step < m_iNext; i_Step++)
+    m_xStepAccum[i_Step].vPrint(xFile);
   
   m_zLock.vDropWrite();
 }
@@ -96,8 +96,8 @@ void StepArray::vReset(void)
 {
   m_zLock.vGrabWrite();
   
-  for (i8 iStep = 0; iStep < m_iNext; iStep++)
-    m_xStepAccum[iStep].vReset();
+  for (i8 i_Step = 0; i_Step < m_iNext; i_Step++)
+    m_xStepAccum[i_Step].vReset();
   
   m_zLock.vDropWrite();
 }

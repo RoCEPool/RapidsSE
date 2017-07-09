@@ -704,6 +704,7 @@ tp: loadIndexes
       // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
 
       //"Popped tempEntryBuffer from buffer queue" .
+/*
       indexBuffer entryBuffer.firstEntry to entry
 
       begin
@@ -723,7 +724,7 @@ tp: loadIndexes
           1 rowCount + to rowCount
           entry indexBuffer entryBuffer.nextEntry to entry
       repeat  // end of second while
-
+*/
       indexBuffer entryBuffer.isLast@ if
         //"Reached last buffer" .
         0

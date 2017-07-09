@@ -47,6 +47,10 @@ Lock          gxDdlLock;
 Lock          gxDicLock;
 Locks         gxLocks;
 
+i8            giMemCopyBytes = 0;
+i8            giMemMoveBytes = 0;
+i8            giMemSetBytes = 0;
+i8            giMemZeroBytes = 0;
 
 Atomic        gzPlanId;
 

@@ -8,6 +8,11 @@
 
 extern i8 giClassSize[];
 
+extern i8 giMemCopyBytes;
+extern i8 giMemMoveBytes;
+extern i8 giMemSetBytes;
+extern i8 giMemZeroBytes;
+
 /*----------------------------------------------------------------------------*/
 /* map a new an anonymous region of memory (private or shared)                */
 /*----------------------------------------------------------------------------*/
@@ -64,9 +69,11 @@ void MemLib::vCheckInitialised(void* aAddress, i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* copy from src to dst                                                       */
 /*----------------------------------------------------------------------------*/
-void MemLib::vCopy(void* pDst, const void* pSrc, i8 iBytes)
+void MemLib::vCopy(void* pDst, const void* pSrc, i8 nBytes)
 {
-  memcpy(pDst,pSrc,iBytes);
+  memcpy(pDst,pSrc,nBytes);
+  
+  giMemCopyBytes += nBytes;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -163,19 +170,23 @@ void MemLib::vHexDump(void *aAddress, i8 iBytes)
 }
 
 /*----------------------------------------------------------------------------*/
-/* memset dst                                                                 */
-/*----------------------------------------------------------------------------*/
-void MemLib::vSet(void* pDst, char iByte, i8 iTimes)
-{
-  memset(pDst,iByte,iTimes);
-}
-
-/*----------------------------------------------------------------------------*/
 /* move from src to dst                                                       */
 /*----------------------------------------------------------------------------*/
 void MemLib::vMove(void* pDst, const void* pSrc, i8 nBytes)
 {
   memmove(pDst,pSrc,nBytes);
+  
+  giMemMoveBytes += nBytes;
+}
+
+/*----------------------------------------------------------------------------*/
+/* memset dst                                                                 */
+/*----------------------------------------------------------------------------*/
+void MemLib::vSet(void* pDst, char iByte, i8 nBytes)
+{
+  memset(pDst,iByte,nBytes);
+  
+  giMemSetBytes += nBytes;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -302,9 +313,11 @@ void MemLib::vWordDump(void *aAddress, i8 iBytes, i8 iHighlightWord)
 /*----------------------------------------------------------------------------*/
 /* zero dst                                                                   */
 /*----------------------------------------------------------------------------*/
-void MemLib::vZero(void* pDst, i8 iBytes)
+void MemLib::vZero(void* pDst, i8 nBytes)
 {
-  vSet(pDst,(char)0,iBytes);
+  vSet(pDst,(char)0,nBytes);
+  
+  giMemZeroBytes += nBytes;
 }
 
 /*============================================================================*/

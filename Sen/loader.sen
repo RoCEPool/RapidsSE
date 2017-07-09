@@ -92,6 +92,8 @@ timer: loadTimer
   // using table loader scan thru the file and find chunks for sub loaders
   begin tblLoader loader.findChunk while repeat
 
+  "Load file has been chunked" .
+
   // now wait for sub loaders to complete (drops mutex for duration)
   ackWait
 
