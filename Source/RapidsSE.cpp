@@ -49,6 +49,7 @@ Locks         gxLocks;
 
 i8            giMemCopyBytes = 0;
 i8            giMemMoveBytes = 0;
+i8            giMemScribbleBytes = 0;
 i8            giMemSetBytes = 0;
 i8            giMemZeroBytes = 0;
 

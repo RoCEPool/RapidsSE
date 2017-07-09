@@ -26,6 +26,7 @@ extern SEitfList*      gpSEitfList;
 
 extern i8 giMemCopyBytes;
 extern i8 giMemMoveBytes;
+extern i8 giMemScribbleBytes;
 extern i8 giMemSetBytes;
 extern i8 giMemZeroBytes;
 
@@ -74,6 +75,7 @@ void Task::vMemoryReset(MP_Task mpTask)
   
   giMemCopyBytes = 0;
   giMemMoveBytes = 0;
+  giMemScribbleBytes = 0;
   giMemSetBytes  = 0;
   giMemZeroBytes = 0;
   
@@ -95,8 +97,11 @@ void Task::vMemoryList(MP_Task mpTask)
   Magnitudes::vMagnitude(giMemMoveBytes, sMagnitude);
   vTrace("MemMoveBytes %s\n"_Str,sMagnitude.aStr());
 
+  Magnitudes::vMagnitude(giMemScribbleBytes, sMagnitude);
+  vTrace("MemScribbleBytes %s\n"_Str,sMagnitude.aStr());
+  
   Magnitudes::vMagnitude(giMemSetBytes, sMagnitude);
-  vTrace("MemSetBytes  %s\n"_Str,sMagnitude.aStr());
+  vTrace("MemSetBytes %s\n"_Str,sMagnitude.aStr());
   
   Magnitudes::vMagnitude(giMemZeroBytes, sMagnitude);
   vTrace("MemZeroBytes %s\n"_Str,sMagnitude.aStr());

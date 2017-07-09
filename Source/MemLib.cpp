@@ -10,6 +10,7 @@ extern i8 giClassSize[];
 
 extern i8 giMemCopyBytes;
 extern i8 giMemMoveBytes;
+extern i8 giMemScribbleBytes;
 extern i8 giMemSetBytes;
 extern i8 giMemZeroBytes;
 
@@ -180,16 +181,6 @@ void MemLib::vMove(void* pDst, const void* pSrc, i8 nBytes)
 }
 
 /*----------------------------------------------------------------------------*/
-/* memset dst                                                                 */
-/*----------------------------------------------------------------------------*/
-void MemLib::vSet(void* pDst, char iByte, i8 nBytes)
-{
-  memset(pDst,iByte,nBytes);
-  
-  giMemSetBytes += nBytes;
-}
-
-/*----------------------------------------------------------------------------*/
 /* scribble on memory                                                         */
 /*----------------------------------------------------------------------------*/
 void MemLib::vScribble(void* aAddress, i8 nBytes)
@@ -199,6 +190,18 @@ void MemLib::vScribble(void* aAddress, i8 nBytes)
   
   for (i8 i_Word = 0; i_Word < nWords; i_Word++)
     *pMchWord++ = C_SCRIBBLE_PATTERN;
+  
+  giMemScribbleBytes += nBytes;
+}
+
+/*----------------------------------------------------------------------------*/
+/* memset dst                                                                 */
+/*----------------------------------------------------------------------------*/
+void MemLib::vSet(void* pDst, char iByte, i8 nBytes)
+{
+  memset(pDst,iByte,nBytes);
+  
+  giMemSetBytes += nBytes;
 }
 
 /*----------------------------------------------------------------------------*/
