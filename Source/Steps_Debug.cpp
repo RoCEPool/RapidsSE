@@ -31,11 +31,11 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Debug(void)
 {
-  vAddPrimitive("debug.trap"_Str,      &vDebugTrap,        false);
+  vAddPrimitive("debug::trap"_Str,      &vDebugTrap,        false);
 }
 
 /*----------------------------------------------------------------------------*/
-/* debug.trap -- call debug trap                                              */
+/* debug::trap -- call debug trap                                              */
 /*----------------------------------------------------------------------------*/
 void Task::vDebugTrap(MP_Task mpTask)
 {

@@ -42,7 +42,7 @@ tp: senderLoop
   then
 
   begin
-    depth 0 != if "sender task has grown" . debug.trap then
+    depth 0 != if "sender task has grown" . debug::trap then
 
     // pop valset off this tasks job queue
     jobQueue>

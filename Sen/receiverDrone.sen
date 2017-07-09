@@ -32,7 +32,7 @@ tp: rvc.loop
   receiverDronePrint if "Receiver Drone running on node" grid.thisNode@ >str str.cat . then
 
   begin
-    depth 0 != if stk "stack of receiver task has grown" . debug.trap then
+    depth 0 != if stk "stack of receiver task has grown" . debug::trap then
 
     socket>
 

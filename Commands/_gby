@@ -25,26 +25,29 @@ print "creating index idx1..." ;
 create index idx1 on lineitem (L_ORDERKEY);
 
 print "loading lineitem.tbl..." ;
+//docol stepsReset;
+//docol memoryReset;
+//docol schedulerReset;
+ld lineitem "/tpch/lineitem1k.tbl" ;
+sleep 20 ;
+//docol schedulerList;
+//docol memoryList;
+//docol stepsList;
+
+//print "epoch take..." ;
+docol epochTake;
+//print "fetching..." ;
+
 docol stepsReset;
 docol memoryReset;
 docol schedulerReset;
-ld lineitem "/tpch/lineitem.tbl" ;
-sleep 20 ;
+fetch lineitem "L_ORDERKEY 0 >= L_ORDERKEY 6000000 <= and";
 docol schedulerList;
 docol memoryList;
 docol stepsList;
 
-
-//print "epoch take..." ;
-//docol epochTake;
-//print "fetching..." ;
-//docol stepsReset;
-//docol memoryReset;
-fetch lineitem "L_ORDERKEY 0 >= L_ORDERKEY 6000000 <= and";
-//docol memoryList;
-//docol stepsList;
 //print "epoch dump..." ;
-//docol epochDump;
+docol epochDump;
 
 visidx lineitem idx1;
 

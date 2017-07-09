@@ -16,7 +16,7 @@
 
   begin
 
-    depth 0 != if "stack of task has grown" . debug.trap then
+    depth 0 != if "stack of task has grown" . debug::trap then
 
     //grid.thisNode@ to_SENDER
 

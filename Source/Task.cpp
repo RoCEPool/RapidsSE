@@ -1184,7 +1184,7 @@ void Task::vAddRoutines(void)
   "      find execute include-string"
   "      exit"
   "    then"
-  "    . debug.trap"
+  "    . debug::trap"
   "  then"
   "  include-file"
   "  ;"_Str;

@@ -630,6 +630,9 @@ tp: loadIndexes
 : selectIndex ( "<key>" "<lower>" "<upper>" "<selectTaskRequest>" "<index>" --  )
 
   tp: selectIndex
+
+//debug::trap
+
   //
   // execution context:
   //   this task will have a seitf
@@ -638,7 +641,7 @@ tp: loadIndexes
   //assert::stack_5
 
   0 0 0 0 0 0 locals| seitf selectTask rowCount indexBuffer entry
-    indexPtr indexNm selectTaskRequest upper lower key |
+                      indexPtr indexNm selectTaskRequest upper lower key |
 
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
 
@@ -672,7 +675,7 @@ tp: loadIndexes
   do
 
     args.metadata not if
-    I grid::toPartition "Partition: %v\n" str.format .put
+      I grid::toPartition "Partition: %v\n" str.format .put
     then
 
     // put the partition in this tasks seitf

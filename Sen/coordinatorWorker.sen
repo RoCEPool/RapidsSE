@@ -15,7 +15,7 @@
   reg.push
 
   begin
-    depth 0 != if "stack of task has grown" . debug.trap then
+    depth 0 != if "stack of task has grown" . debug::trap then
 
     // pop indirect call this tasks queue of indirect calls
     jobQueue> ( valset )

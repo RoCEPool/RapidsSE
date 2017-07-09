@@ -146,7 +146,7 @@ tp: !req_exit
     "Request Server running..." .
   then
 
-  depth 0 != if "request task has grown" . debug.trap then
+  depth 0 != if "request task has grown" . debug::trap then
 
   !req
 

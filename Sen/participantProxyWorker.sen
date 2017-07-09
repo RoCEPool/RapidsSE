@@ -27,7 +27,7 @@ tp: participantProxy
 
   begin
 
-    depth 0 != if "stack of task has grown" . debug.trap then
+    depth 0 != if "stack of task has grown" . debug::trap then
 
     // pop valset off this tasks job queue
     jobQueue> ( valset )
