@@ -730,7 +730,7 @@ tp: loadIndexes
       //"Popped tempEntryBuffer from buffer queue" .
 
       pIndexBuffer entryBuffer.firstEntry to pEntry
-
+/*
       begin
         pEntry
         while // second while
@@ -748,6 +748,7 @@ tp: loadIndexes
           1 nRowCount + to nRowCount
           pEntry pIndexBuffer entryBuffer.nextEntry to pEntry
       repeat  // end of second while
+*/
 
       pIndexBuffer entryBuffer.isLast@ if
         //"Reached last buffer" .
