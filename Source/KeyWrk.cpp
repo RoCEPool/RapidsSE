@@ -37,7 +37,10 @@ KeyWrk::KeyWrk(void)
   _precondition_(_MAGIC_,CN_KEYWRK);
   
   _checkInitialisedSize_(sizeof(KeyWrk));
+  
+#ifdef __DEBUG_CHECKS
   m_xWsp.vFill(0,CN_KEYWRK);
+#endif
   
   _postcondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
 }
