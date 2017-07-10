@@ -1979,7 +1979,7 @@ void EntryBuffer::vMoveRight(void* aSrc, i8 nBytes)
   MemLib::vMove(aDst,aSrc,nBytesToCopy,CN_ENTRYBUFFER);
   
   // for the moment we'll zero the bytes of entry E
-  MemLib::vZero(aSrc,nBytes,CN_ENTRYBUFFER);
+  _memZero_(aSrc,nBytes,CN_ENTRYBUFFER);
 }
 
 /*----------------------------------------------------------------------------*/
