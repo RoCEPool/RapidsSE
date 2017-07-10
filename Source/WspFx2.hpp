@@ -34,7 +34,7 @@ namespace Magic
     void  vTake(i8 nBytes);
     i8    nUsed(void);
     void  vUsed(i8 nBytes);
-    void  vZero(void);
+    void  vZero(eCN eClassNo);
   };
 }
 
@@ -196,9 +196,9 @@ i8 WspFx2<LENGTH>::nUsed(void)
 /* zero fill the byte area                                                    */
 /*----------------------------------------------------------------------------*/
 template<int LENGTH>
-void WspFx2<LENGTH>::vZero(void)
+void WspFx2<LENGTH>::vZero(eCN eClassNo)
 {
-  MemLib::vZero(aArea(),LENGTH);
+  _memZero_(aArea(),LENGTH,eClassNo);
 }
 
 /*============================================================================*/
