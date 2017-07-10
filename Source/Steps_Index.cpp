@@ -92,6 +92,7 @@ void Task::vIndexBuffer(MP_Task mpTask)
   ENTRY("vIndexBuffer"_Str);
   Object* pPtrIndex = nullptr;
   Object* pPtrTable = nullptr;
+  i8 iPartition;
   ValWrk xValWrk;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrIndex) )
@@ -100,13 +101,16 @@ void Task::vIndexBuffer(MP_Task mpTask)
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
   
+  if ( ! mpTask->m_pDataStack->bPop(iPartition) )
+    THROW_INVALID_DSTACK("index.buffer"_Str);
+  
   if ( ! mpTask->m_pDataStack->bPop(xValWrk) )
     THROW_INVALID_DSTACK("index.buffer"_Str);
   
   i8 iIndexNo = pIndex->iIndexNo();
   Table* pTable = pIndex->pTable();
   
-  Partition* pPartition = pTable->pPartition(mpTask->m_pSEitf->iPartition());
+  Partition* pPartition = pTable->pPartition(iPartition);
   IndexData* pIndexData = pPartition->pIndexData(iIndexNo);
   
   KeyWrk xKeyWrk;
@@ -314,6 +318,7 @@ void Task::vIndexPositionFirst(MP_Task mpTask)
   Object* pPtrIndex = nullptr;
   Object* pPtrTable = nullptr;
   ValWrk xValWrk;
+  i8 iPartition;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrIndex) )
     THROW_INVALID_DSTACK("index.positionFirst"_Str);
@@ -321,10 +326,13 @@ void Task::vIndexPositionFirst(MP_Task mpTask)
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
   
+  if ( ! mpTask->m_pDataStack->bPop(iPartition) )
+    THROW_INVALID_DSTACK("index.positionFirst"_Str);
+  
   i8 iIndexNo = pIndex->iIndexNo();
   Table* pTable = pIndex->pTable();
   
-  Partition* pPartition = pTable->pPartition(mpTask->m_pSEitf->iPartition());
+  Partition* pPartition = pTable->pPartition(iPartition);
   IndexData* pIndexData = pPartition->pIndexData(iIndexNo);
   
   mpTask->m_pDataStack->vPushObject(pIndexData->pFirstBuffer());
@@ -659,12 +667,16 @@ void Task::vIndexUpper(MP_Task mpTask)
   Object* pPtrTable = nullptr;
 
   ValWrk xValWrk;
+  i8 iPartition;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrIndex) )
     THROW_INVALID_DSTACK("index.upper"_Str);
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
+  
+  if ( ! mpTask->m_pDataStack->bPop(iPartition) )
+    THROW_INVALID_DSTACK("index.positionFirst"_Str);
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrEntry) )
     THROW_INVALID_DSTACK("index.upper"_Str);
@@ -678,7 +690,7 @@ void Task::vIndexUpper(MP_Task mpTask)
   i8 iIndexNo = pIndex->iIndexNo();
   Table* pTable = pIndex->pTable();
   
-  Partition* pPartition = pTable->pPartition(mpTask->m_pSEitf->iPartition());
+  Partition* pPartition = pTable->pPartition(iPartition);
   IndexData* pIndexData = pPartition->pIndexData(iIndexNo);
 
   KeyWrk xKeyWrk;

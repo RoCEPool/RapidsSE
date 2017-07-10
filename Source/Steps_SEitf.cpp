@@ -43,6 +43,8 @@ void Task::vAddPrimitives_SEitf(void)
   vAddPrimitive("seitf.dump"_Str,             &vSEitfDump,             false);
   vAddPrimitive("seitf.entry@"_Str,           &vSEitfEntryFetch,       false);
   vAddPrimitive("seitf.entry!"_Str,           &vSEitfEntryStore,       false);
+  vAddPrimitive("seitf.groupBy@"_Str,         &vSEitfGroupByFetch,     false);
+  vAddPrimitive("seitf.groupBy!"_Str,         &vSEitfGroupByStore,     false);
   vAddPrimitive("seitf.indexBuffer@"_Str,     &vSEitfIndexBufferFetch, false);
   vAddPrimitive("seitf.indexBuffer!"_Str,     &vSEitfIndexBufferStore, false);
   vAddPrimitive("seitf.indexGet"_Str,         &vSEitfIndexGet,         false);
@@ -312,6 +314,60 @@ void Task::vSEitfEntryStore(MP_Task mpTask)
   
   EXIT();
 }
+
+/*----------------------------------------------------------------------------*/
+/* seitf.groupBy! -- store groupBy for slot                                   */
+/*----------------------------------------------------------------------------*/
+void Task::vSEitfGroupByStore(MP_Task mpTask)
+{
+  ENTRY("vSEitfGroupByStore"_Str);
+  
+  Object* pPtrSEitf;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
+    THROW_INVALID_DSTACK("seitf.groupBy!"_Str);
+  
+  SEitf* pSEitf = _pSEitf(pPtrSEitf);
+  ASSERT(CN_SEITF == pSEitf->eClass());
+  
+  Object* pPtrGroupBy;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrGroupBy) )
+    THROW_INVALID_DSTACK("seitf.groupBy!"_Str);
+  
+  GroupBy* pGroupBy = _pGroupBy(pPtrGroupBy);
+  ASSERT(CN_GROUPBY == pGroupBy->eClass());
+  
+  i8 iSlot;
+  if ( ! mpTask->m_pDataStack->bPop(iSlot) )
+    THROW_INVALID_DSTACK("seitf.groupBy!"_Str);
+  
+  pSEitf->m_pGroupBy[iSlot] = pGroupBy;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* seitf.groupBy@ -- fetch groupBy for slot                                   */
+/*----------------------------------------------------------------------------*/
+void Task::vSEitfGroupByFetch(MP_Task mpTask)
+{
+  ENTRY("vSEitfGroupByFetch"_Str);
+  
+  Object* pPtrSEitf;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
+    THROW_INVALID_DSTACK("seitf.groupBy@"_Str);
+  
+  SEitf* pSEitf = _pSEitf(pPtrSEitf);
+  ASSERT(CN_SEITF == pSEitf->eClass());
+  
+  i8 iSlot;
+  if ( ! mpTask->m_pDataStack->bPop(iSlot) )
+    THROW_INVALID_DSTACK("seitf.partition!"_Str);
+  
+  mpTask->m_pDataStack->vPushObject(pSEitf->m_pGroupBy[iSlot]);
+  
+  EXIT();
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* seitf.indexBuffer@ -- fetch index buffer from SE interface                 */

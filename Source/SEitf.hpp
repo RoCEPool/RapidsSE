@@ -45,6 +45,7 @@ namespace Interface
     i8     m_iRowPartition;
     
     EntryBuffer* m_pRowBuffer[C_SLOTS_PER_NODE]; // working row buffers
+    GroupBy*     m_pGroupBy[C_SLOTS_PER_NODE];   // working group by
     
     // must be last
     Footer m_xFooter;

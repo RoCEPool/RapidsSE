@@ -29,11 +29,12 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_GroupBy(void)
 {
-  vAddPrimitive("groupBy.applyBuffer"_Str, &vGroupByApplyBuffer, false);
-  vAddPrimitive("groupBy.delete"_Str,      &vGroupByDelete,      false);
-  vAddPrimitive("groupBy.end"_Str,         &vGroupByEnd,         false);
-  vAddPrimitive("groupBy::new"_Str,        &vGroupByNew,         false);
-  vAddPrimitive("groupBy.start"_Str,       &vGroupByStart,       false);
+  vAddPrimitive("groupBy.applyBuffer"_Str,  &vGroupByApplyBuffer,  false);
+  vAddPrimitive("groupBy.applyPartial"_Str, &vGroupByApplyPartial, false);
+  vAddPrimitive("groupBy.delete"_Str,       &vGroupByDelete,       false);
+  vAddPrimitive("groupBy.end"_Str,          &vGroupByEnd,          false);
+  vAddPrimitive("groupBy::new"_Str,         &vGroupByNew,          false);
+  vAddPrimitive("groupBy.start"_Str,        &vGroupByStart,        false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -54,6 +55,28 @@ void Task::vGroupByApplyBuffer(MP_Task mpTask)
   EntryBuffer* pEntryBuffer = _pEntryBuffer(pPtrEntryBuffer);
   
   pGroupBy->vApplyBuffer(pEntryBuffer);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* groupBy.applyPartial -- apply groupBy partial result of lineitems to accum  */
+/*----------------------------------------------------------------------------*/
+void Task::vGroupByApplyPartial(MP_Task mpTask)
+{
+  ENTRY("vGroupByApplyBuffer"_Str);
+  
+  Object* pPtrGroupBy;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrGroupBy) )
+    THROW_INVALID_DSTACK("groupBy.applyPartial"_Str);
+  GroupBy* pGroupBy = _pGroupBy(pPtrGroupBy);
+  
+  Object* pPtrPartialGroupBy;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrPartialGroupBy) )
+    THROW_INVALID_DSTACK("groupBy.applyPartial"_Str);
+  GroupBy* pPartialGroupBy = _pGroupBy(pPtrPartialGroupBy);
+  
+  pGroupBy->vApplyPartial(pPartialGroupBy);
   
   EXIT();
 }

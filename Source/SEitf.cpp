@@ -96,8 +96,10 @@ SEitf::SEitf(i8 iPartition)
   SEitf* pSEitf = this;
   gpSEitfList->vAppend(pSEitf);
   
-  for (i8 i_Partition = 0; i_Partition < C_SLOTS_PER_NODE; i_Partition++)
+  for (i8 i_Partition = 0; i_Partition < C_SLOTS_PER_NODE; i_Partition++) {
     m_pRowBuffer[i_Partition] = nullptr;
+    m_pGroupBy[i_Partition] = nullptr;
+  }
   
   _checkInitialised_(CN_SEITF);
   

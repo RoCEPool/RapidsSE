@@ -647,6 +647,7 @@ namespace Tasks
   
     // group by
     static void vGroupByApplyBuffer(MP_Task mpTask);
+    static void vGroupByApplyPartial(MP_Task mpTask);
     static void vGroupByDelete(MP_Task mpTask);
     static void vGroupByEnd(MP_Task mpTask);
     static void vGroupByNew(MP_Task mpTask);
@@ -985,6 +986,8 @@ namespace Tasks
     static void vSEitfDump(MP_Task mpTask);
     static void vSEitfEntryFetch(MP_Task mpTask);
     static void vSEitfEntryStore(MP_Task mpTask);
+    static void vSEitfGroupByFetch(MP_Task mpTask);
+    static void vSEitfGroupByStore(MP_Task mpTask);
     static void vSEitfIndexBufferFetch(MP_Task mpTask);
     static void vSEitfIndexBufferStore(MP_Task mpTask);
     static void vSEitfIndexGet(MP_Task mpTask);

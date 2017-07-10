@@ -116,6 +116,26 @@ void GroupBy::vApplyBuffer(EntryBuffer* pEntryBuffer)
 }
 
 /*----------------------------------------------------------------------------*/
+/* apply partial group by results                                             */
+/*----------------------------------------------------------------------------*/
+void GroupBy::vApplyPartial(GroupBy* pPartialGroupBy)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GROUPBY,_FOOTER_);
+  
+  // print all the accumulators
+  for (i8 i_Group = 0; i_Group < m_pAccumVec->nItems(); i_Group++) {
+    Accum* pAccum = m_pAccumVec->pGet(i_Group);
+    Accum* pPartialAccum = pPartialGroupBy->m_pAccumVec->pGet(i_Group);
+    pAccum->m_iCount += pPartialAccum->m_iCount;
+    pAccum->m_iSum += pPartialAccum->m_iSum;
+    pAccum->m_iMin = pAccum->m_iMin < pPartialAccum->m_iMin ?
+      pAccum->m_iMin : pPartialAccum->m_iMin;
+    pAccum->m_iMax = pAccum->m_iMax > pPartialAccum->m_iMax ?
+      pAccum->m_iMax : pPartialAccum->m_iMax;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* end group by accumulation, print the accumulators                          */
 /*----------------------------------------------------------------------------*/
 void GroupBy::vEnd(void)
