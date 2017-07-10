@@ -559,10 +559,10 @@ tp: loadIndexes
 /*----------------------------------------------------------------------------*/
 /* position key select cursor for table (called by selectIndex request)       */
 /*----------------------------------------------------------------------------*/
-: rangeSelectIdxTask ( <"key>" "<lower>" "<upper>" ^indexPtr pSeitf iPartitionNo -- )
+: rangeSelectIdxTask ( <"key>" "<lower>" "<upper>" pIndex pSeitf iPartitionNo -- )
 
   // save args
-  locals| iPartitionNo pSeitf indexPtr upper lower key |
+  locals| iPartitionNo pSeitf pIndex sUpper sLower key |
 
   // local variables
   0 0 0 0 locals| upperEntry entry tempEntryBuffer indexBuffer |
@@ -585,22 +585,22 @@ tp: loadIndexes
 
   // create a temporary index buffer for the results
   //"Creating a tempIndexBuffer" .
-  indexPtr entryBuffer::create to tempEntryBuffer
+  pIndex entryBuffer::create to tempEntryBuffer
 
   // position in the first index buffer
-  iPartitionNo indexPtr index.positionFirst
+  iPartitionNo pIndex index.positionFirst
   to indexBuffer
 
   // position at the upper bound entry
-  upper indexBuffer indexPtr index.position
+  sUpper indexBuffer pIndex index.position
   to upperEntry
 
   // get the indexBuffer looking for the lower key
-  lower iPartitionNo indexPtr index.buffer ( indexBuffer )
+  sLower iPartitionNo pIndex index.buffer ( indexBuffer )
   to indexBuffer
 
   // position in the index buffer at the lower key
-  lower indexBuffer indexPtr index.position
+  sLower indexBuffer pIndex index.position
   to entry
 
   // did we find an entry ?
@@ -624,12 +624,12 @@ tp: loadIndexes
   while
 
     // check against upper bound
-    //upper entry indexPtr index.upper if
+    //sUpper entry pIndex index.upper if
     upperEntry entry entry.same not if
 
       // insert row from entry in tempEntryBuffer
       //"Inserting row into tempEntryBuffer" .
-      indexPtr entry entry.row row.string tempEntryBuffer entryBuffer.insertRow
+      pIndex entry entry.row row.string tempEntryBuffer entryBuffer.insertRow
 
       // check if we managed to insert the entry
       not if
@@ -641,11 +641,11 @@ tp: loadIndexes
 
         // create another temporary index buffer for the results
         //"Creating a tempIndexBuffer" .
-        indexPtr entryBuffer::create to tempEntryBuffer
+        pIndex entryBuffer::create to tempEntryBuffer
 
         // insert row from entry in temporary buffer
         //"Inserting row into tempEntryBuffer" .
-        indexPtr entry entry.row row.string tempEntryBuffer entryBuffer.insertRow
+        pIndex entry entry.row row.string tempEntryBuffer entryBuffer.insertRow
         assert
       then
 
