@@ -1391,8 +1391,10 @@ Entry* EntryBuffer::pAllotEntry(i8 nBytes, i8 nOffsets, Entry* aAfterEntry)
     pNewEntry = _pEntry(m_xWsp.aArea());
   }
 
+#ifdef __DEBUG_CHECKS
   MemLib::vScribble(pNewEntry,nBytes,CN_ENTRYBUFFER);
-
+#endif
+  
   // run the constructor of the new entry
   new (pNewEntry) Entry(CN_ENTRY,nBytes,nOffsets);
   
