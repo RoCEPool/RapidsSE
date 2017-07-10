@@ -565,8 +565,7 @@ tp: loadIndexes
   locals| iPartitionNo pSeitf pIndex sUpper sLower sKey |
 
   // local variables
-  0 0 0 0 locals| upperEntry entry pTempEntryBuffer indexBuffer |
-
+  0 0 0 0 locals| pUpperEntry pEntry pTempEntryBuffer pIndexBuffer |
 
   tp: rangeSelectIdxTask
 
@@ -589,22 +588,22 @@ tp: loadIndexes
 
   // position in the first index buffer
   iPartitionNo pIndex index.positionFirst
-  to indexBuffer
+  to pIndexBuffer
 
   // position at the upper bound entry
-  sUpper indexBuffer pIndex index.position
-  to upperEntry
+  sUpper pIndexBuffer pIndex index.position
+  to pUpperEntry
 
   // get the indexBuffer looking for the lower key
-  sLower iPartitionNo pIndex index.buffer ( indexBuffer )
-  to indexBuffer
+  sLower iPartitionNo pIndex index.buffer ( pIndexBuffer )
+  to pIndexBuffer
 
   // position in the index buffer at the lower key
-  sLower indexBuffer pIndex index.position
-  to entry
+  sLower pIndexBuffer pIndex index.position
+  to pEntry
 
   // did we find an entry ?
-  entry not if
+  pEntry not if
 
     // mark this buffer as the last buffer
     //"Marking tempEntryBuffer as last buffer" .
@@ -620,16 +619,16 @@ tp: loadIndexes
 
   // iterate thru the buffer till no more entries
   begin
-  entry
+  pEntry
   while
 
     // check against upper bound
     //sUpper entry pIndex index.upper if
-    upperEntry entry entry.same not if
+    pUpperEntry pEntry entry.same not if
 
       // insert row from entry in tempEntryBuffer
       //"Inserting row into tempEntryBuffer" .
-      pIndex entry entry.row row.string pTempEntryBuffer entryBuffer.insertRow
+      pIndex pEntry entry.row row.string pTempEntryBuffer entryBuffer.insertRow
 
       // check if we managed to insert the entry
       not if
@@ -645,24 +644,24 @@ tp: loadIndexes
 
         // insert row from entry in temporary buffer
         //"Inserting row into tempEntryBuffer" .
-        pIndex entry entry.row row.string pTempEntryBuffer entryBuffer.insertRow
+        pIndex pEntry entry.row row.string pTempEntryBuffer entryBuffer.insertRow
         assert
       then
 
       // move to next entry in the buffer
-      entry indexBuffer entryBuffer.nextEntry to entry
+      pEntry pIndexBuffer entryBuffer.nextEntry to pEntry
 
-      entry not if
+      pEntry not if
         // get next buffer from the current indexBuffer
-        indexBuffer entryBuffer.nextBuffer to indexBuffer
+        pIndexBuffer entryBuffer.nextBuffer to pIndexBuffer
 
-        indexBuffer if
-         entry indexBuffer entryBuffer.nextEntry to entry
+        pIndexBuffer if
+         pEntry pIndexBuffer entryBuffer.nextEntry to pEntry
         then
       then
     else
       // entry beyond upper, null the entry and break from loop
-      0  to entry
+      0  to pEntry
     then
   repeat
 
