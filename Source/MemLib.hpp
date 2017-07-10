@@ -50,6 +50,13 @@ namespace Base
     template <class T>
     static void vPrintColor(Str* pFmt, const T& Value, Str* pColour);
   };
+  
+#ifdef __MEMORY_ZERO
+  #define _memZero_(aDst,nBytes,eClassNo)\
+            MemLib::vZero(aDst,nBytes,eClassNo);
+#else
+  #define _memZero_(aDst,nBytes,eClassNo)
+#endif
 }
 
 /*============================================================================*/
