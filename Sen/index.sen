@@ -559,9 +559,14 @@ tp: loadIndexes
 /*----------------------------------------------------------------------------*/
 /* position key select cursor for table (called by selectIndex request)       */
 /*----------------------------------------------------------------------------*/
-: rangeSelectIdxTask ( <"key>" "<lower>" "<upper>" ^indexPtr seitf partition -- )
+: rangeSelectIdxTask ( <"key>" "<lower>" "<upper>" ^indexPtr pSeitf iPartitionNo -- )
 
-  0 0 0 0 locals| upperEntry entry tempEntryBuffer indexBuffer iPartitionNo seitf indexPtr upper lower key |
+  // save args
+  locals| iPartitionNo pSeitf indexPtr upper lower key |
+
+  // local variables
+  0 0 0 0 locals| upperEntry entry tempEntryBuffer indexBuffer |
+
 
   tp: rangeSelectIdxTask
 
@@ -571,10 +576,10 @@ tp: loadIndexes
   task::this task.kind@ TK_SELECT_PART == assert
   task::this task.thread thread.actorModel@ AC_SERVER == assert
 
-  seitf task::this task.seitf!
+  pSeitf task::this task.seitf!
 
   // start groupBy for this partition
-  iPartitionNo seitf seitf.groupBy@
+  iPartitionNo pSeitf seitf.groupBy@
   locals| pGroupBy |
   pGroupBy groupBy.start
 
@@ -608,7 +613,7 @@ tp: loadIndexes
     // return the empty tempEntryBuffer
     //"Appending tempEntryBuffer to buffer queue" .
     tempEntryBuffer pGroupby groupBy.applyBuffer
-    tempEntryBuffer seitf seitf.bufferQueue@ queue.append
+    tempEntryBuffer pSeitf seitf.bufferQueue@ queue.append
 
     exit
   then
@@ -632,7 +637,7 @@ tp: loadIndexes
         // put this tempEntryBuffer in seitf bufferQueue
         //"Appending tempEntryBuffer to buffer queue" .
         tempEntryBuffer pGroupby groupBy.applyBuffer
-        tempEntryBuffer seitf seitf.bufferQueue@ queue.append
+        tempEntryBuffer pSeitf seitf.bufferQueue@ queue.append
 
         // create another temporary index buffer for the results
         //"Creating a tempIndexBuffer" .
@@ -669,7 +674,7 @@ tp: loadIndexes
   //"Appending tempEntryBuffer to buffer queue" .
   //"Appending tempEntryBuffer to buffer queue" .
   tempEntryBuffer pGroupby groupBy.applyBuffer
-  tempEntryBuffer seitf seitf.bufferQueue@ queue.append
+  tempEntryBuffer pSeitf seitf.bufferQueue@ queue.append
 ;
 
 /*----------------------------------------------------------------------------*/
