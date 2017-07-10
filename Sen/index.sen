@@ -562,10 +562,10 @@ tp: loadIndexes
 : rangeSelectIdxTask ( <"key>" "<lower>" "<upper>" pIndex pSeitf iPartitionNo -- )
 
   // save args
-  locals| iPartitionNo pSeitf pIndex sUpper sLower key |
+  locals| iPartitionNo pSeitf pIndex sUpper sLower sKey |
 
   // local variables
-  0 0 0 0 locals| upperEntry entry tempEntryBuffer indexBuffer |
+  0 0 0 0 locals| upperEntry entry pTempEntryBuffer indexBuffer |
 
 
   tp: rangeSelectIdxTask
@@ -585,7 +585,7 @@ tp: loadIndexes
 
   // create a temporary index buffer for the results
   //"Creating a tempIndexBuffer" .
-  pIndex entryBuffer::create to tempEntryBuffer
+  pIndex entryBuffer::create to pTempEntryBuffer
 
   // position in the first index buffer
   iPartitionNo pIndex index.positionFirst
@@ -608,12 +608,12 @@ tp: loadIndexes
 
     // mark this buffer as the last buffer
     //"Marking tempEntryBuffer as last buffer" .
-    tempEntryBuffer entryBuffer.isLast!
+    pTempEntryBuffer entryBuffer.isLast!
 
     // return the empty tempEntryBuffer
     //"Appending tempEntryBuffer to buffer queue" .
-    tempEntryBuffer pGroupby groupBy.applyBuffer
-    tempEntryBuffer pSeitf seitf.bufferQueue@ queue.append
+    pTempEntryBuffer pGroupby groupBy.applyBuffer
+    pTempEntryBuffer pSeitf seitf.bufferQueue@ queue.append
 
     exit
   then
@@ -629,23 +629,23 @@ tp: loadIndexes
 
       // insert row from entry in tempEntryBuffer
       //"Inserting row into tempEntryBuffer" .
-      pIndex entry entry.row row.string tempEntryBuffer entryBuffer.insertRow
+      pIndex entry entry.row row.string pTempEntryBuffer entryBuffer.insertRow
 
       // check if we managed to insert the entry
       not if
         // buffer must be full
         // put this tempEntryBuffer in seitf bufferQueue
         //"Appending tempEntryBuffer to buffer queue" .
-        tempEntryBuffer pGroupby groupBy.applyBuffer
-        tempEntryBuffer pSeitf seitf.bufferQueue@ queue.append
+        pTempEntryBuffer pGroupby groupBy.applyBuffer
+        pTempEntryBuffer pSeitf seitf.bufferQueue@ queue.append
 
         // create another temporary index buffer for the results
         //"Creating a tempIndexBuffer" .
-        pIndex entryBuffer::create to tempEntryBuffer
+        pIndex entryBuffer::create to pTempEntryBuffer
 
         // insert row from entry in temporary buffer
         //"Inserting row into tempEntryBuffer" .
-        pIndex entry entry.row row.string tempEntryBuffer entryBuffer.insertRow
+        pIndex entry entry.row row.string pTempEntryBuffer entryBuffer.insertRow
         assert
       then
 
@@ -668,13 +668,13 @@ tp: loadIndexes
 
   //"Marking tempEntryBuffer as last buffer" .
   // mark this buffer as the last buffer
-  tempEntryBuffer entryBuffer.isLast!
+  pTempEntryBuffer entryBuffer.isLast!
 
   // put the buffer in the seitf bufferQueue
   //"Appending tempEntryBuffer to buffer queue" .
   //"Appending tempEntryBuffer to buffer queue" .
-  tempEntryBuffer pGroupby groupBy.applyBuffer
-  tempEntryBuffer pSeitf seitf.bufferQueue@ queue.append
+  pTempEntryBuffer pGroupby groupBy.applyBuffer
+  pTempEntryBuffer pSeitf seitf.bufferQueue@ queue.append
 ;
 
 /*----------------------------------------------------------------------------*/
