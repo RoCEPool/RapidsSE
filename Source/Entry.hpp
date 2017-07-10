@@ -58,6 +58,7 @@ namespace DBobjects
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // index
     void vSetEntry(EntWrk& xEntWrk);
+    void vSetEntry(Id xId, i8 iKey, s256& sRow);
     void vShow(i8 iBase, Index* pIndex);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

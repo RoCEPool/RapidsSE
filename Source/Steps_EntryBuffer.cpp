@@ -132,10 +132,12 @@ void Task::vEntryBufferFirstEntry(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* entryBuffer.insertRow -- insert a row entry into the index buffer          */
 /*----------------------------------------------------------------------------*/
+//#define ENTWRK_APPEND
+#ifdef ENTWRK_APPEND
 void Task::vEntryBufferInsertRow(MP_Task mpTask)
 {
   ENTRY("vEntryBufferInsertRow"_Str);
-  
+ 
   Object* pPtrEntry = nullptr;
   Object* pPtrIndexBuffer;
   s256 sRow;
@@ -148,7 +150,7 @@ void Task::vEntryBufferInsertRow(MP_Task mpTask)
   
   if ( ! mpTask->m_pDataStack->bPop(sRow) )
     THROW_INVALID_DSTACK("entryBuffer.insertRow"_Str);
-  
+
   // create working row
   ValWrk xValWrk;
   
@@ -173,6 +175,7 @@ void Task::vEntryBufferInsertRow(MP_Task mpTask)
   
   xRowWrk.vData(sRow.aStr(), sRow.iLength());
   //xRowWrk.vShow(pIndexBuffer->pIndex()->pIdxColVec());
+  
   Entry* pRow;
   
   if (pIndexBuffer->bInsertRow(xRowWrk, &pRow))
@@ -180,11 +183,43 @@ void Task::vEntryBufferInsertRow(MP_Task mpTask)
   else
     mpTask->m_pDataStack->vPushInt(0);
   
-  //pIndexBuffer->vShow();
+  ASSERT( ! pRow->nOffsets() );
+  
+  EXIT();
+}
+#else
+void Task::vEntryBufferInsertRow(MP_Task mpTask)
+{
+  ENTRY("vEntryBufferInsertRow"_Str);
+  
+  Object* pPtrEntry = nullptr;
+  Object* pPtrIndexBuffer;
+  s256 sRow;
+  
+  if ( ! mpTask->m_pDataStack->bPop(pPtrIndexBuffer) )
+    THROW_INVALID_DSTACK("entryBuffer.insertRow"_Str);
+  
+  EntryBuffer* pIndexBuffer = _pEntryBuffer(pPtrIndexBuffer);
+  ASSERT(nullptr == pIndexBuffer || CN_ENTRYBUFFER == pIndexBuffer->eClass());
+  
+  if ( ! mpTask->m_pDataStack->bPop(sRow) )
+    THROW_INVALID_DSTACK("entryBuffer.insertRow"_Str);
+
+   Entry* pRow;
+   
+   if (pIndexBuffer->bInsertRow(sRow, &pRow))
+   mpTask->m_pDataStack->vPushInt(1);
+   else
+   mpTask->m_pDataStack->vPushInt(0);
+   
+   //pRow->vShow(0, pIndexBuffer->pIndex());
+  
+  ASSERT( ! pRow->nOffsets() );
   
   EXIT();
 }
 
+#endif
 /*----------------------------------------------------------------------------*/
 /* entryBuffer.isLast@ -- get if buffer is last                               */
 /*----------------------------------------------------------------------------*/
