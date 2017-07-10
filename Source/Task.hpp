@@ -580,6 +580,7 @@ namespace Tasks
     static void vEntryEmbeddedRow(MP_Task mpTask);
     static void vEntryMatches(MP_Task mpTask);
     static void vEntryRow(MP_Task mpTask);
+    static void vEntrySame(MP_Task mpTask);
 
     // entry buffer
     static void vEntryBufferCreate(MP_Task mpTask);

@@ -31,9 +31,10 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Entry(void)
 {
-  vAddPrimitive("entry.matches"_Str, &vEntryMatches, false);
-  vAddPrimitive("entry.row"_Str,     &vEntryRow,     false);
-  vAddPrimitive("entry.embeddedRow"_Str,     &vEntryEmbeddedRow,     false);
+  vAddPrimitive("entry.matches"_Str,      &vEntryMatches,     false);
+  vAddPrimitive("entry.row"_Str,          &vEntryRow,         false);
+  vAddPrimitive("entry.embeddedRow"_Str,  &vEntryEmbeddedRow, false);
+  vAddPrimitive("entry.same"_Str,         &vEntrySame,       false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -158,6 +159,32 @@ void Task::vEntryEmbeddedRow(MP_Task mpTask)
   
   // return the row entry
   mpTask->m_pDataStack->vPushS256(sRow);
+}
+
+/*----------------------------------------------------------------------------*/
+/* entry.same -- return true if entry is same as given entry                  */
+/*----------------------------------------------------------------------------*/
+void Task::vEntrySame(MP_Task mpTask)
+{
+  ENTRY("vEntryMatches"_Str);
+  
+  Object* pPtrEntry = nullptr;
+  Object* pPtrIndex = nullptr;
+  Object* pPtrOtherEntry = nullptr;
+  
+  if ( ! mpTask->m_pDataStack->bPop(pPtrEntry) )
+    THROW_INVALID_DSTACK("entry.same"_Str);
+  
+  Entry* pEntry = _pEntry(pPtrEntry);
+  ASSERT(CN_ENTRY == pEntry->eClass());
+  
+  if ( ! mpTask->m_pDataStack->bPop(pPtrOtherEntry) )
+    THROW_INVALID_DSTACK("entry.same"_Str);
+  
+  Entry* pOtherEntry = _pEntry(pPtrOtherEntry);
+  ASSERT(CN_ENTRY == pOtherEntry->eClass());
+  
+  mpTask->m_pDataStack->vPushInt(pEntry == pOtherEntry ? 1 : 0);
 }
 
 /*============================================================================*/

@@ -537,7 +537,7 @@ tp: loadIndexes
 /*----------------------------------------------------------------------------*/
 : rangeSelectIdxTask ( <"key>" "<lower>" "<upper>" ^indexPtr seitf -- )
 
-  0 0 0 locals| entry tempEntryBuffer indexBuffer seitf indexPtr upper lower key |
+  0 0 0 0 locals| upperEntry entry tempEntryBuffer indexBuffer seitf indexPtr upper lower key |
 
   tp: rangeSelectIdxTask
 
@@ -552,6 +552,14 @@ tp: loadIndexes
   // create a temporary index buffer for the results
   //"Creating a tempIndexBuffer" .
   indexPtr entryBuffer::create to tempEntryBuffer
+
+  // position in the first index buffer
+  indexPtr index.positionFirst
+  to indexBuffer
+
+  // position at the upper bound entry
+  upper indexBuffer indexPtr index.position
+  to upperEntry
 
   // get the indexBuffer looking for the lower key
   lower indexPtr index.buffer ( indexBuffer )
@@ -581,7 +589,8 @@ tp: loadIndexes
   while
 
     // check against upper bound
-    upper entry indexPtr index.upper if
+    //upper entry indexPtr index.upper if
+    upperEntry entry entry.same not if
 
       // insert row from entry in tempEntryBuffer
       //"Inserting row into tempEntryBuffer" .
@@ -1215,15 +1224,23 @@ tp: loadIndexes
 /*----------------------------------------------------------------------------*/
 : upperSelectIdxTask ( <"key>" "<lower>" "<upper>" ^indexPtr seitf -- )
 
-  0 0 0 locals| entry tempEntryBuffer indexBuffer seitf indexPtr upper lower key |
+  0 0 0 0 locals| upperEntry entry tempEntryBuffer indexBuffer seitf indexPtr upper lower key |
 
-  tp: rangeSelectIdxTask
+  tp: upperSelectIdxTask
 
   seitf task::this task.seitf!
 
   // create a temporary index buffer for the results
   "Creating a tempIndexBuffer" .
   indexPtr entryBuffer::create to tempEntryBuffer
+
+  // position in the first index buffer
+  indexPtr index.positionFirst
+  to indexBuffer
+
+  // position at the upper bound entry
+  upper indexBuffer indexPtr index.position
+  to upperEntry
 
   // position in the first index buffer
   indexPtr index.positionFirst
@@ -1252,8 +1269,8 @@ tp: loadIndexes
   entry
   while
 
-    // check against upper bound
-    upper entry indexPtr index.upper if
+    // check against upper entry
+    upperEntry entry entry.same not if
 
       // insert row from entry in tempEntryBuffer
       //"Inserting row into tempEntryBuffer" .
