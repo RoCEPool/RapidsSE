@@ -109,14 +109,17 @@ EntryBuffer::EntryBuffer(Index* pIndex, i8 nBufferLevel)
   m_nBufferLevel = nBufferLevel;
   m_bIsLast     = false;
   
+#ifdef __DEBUG_CHECKS
   m_xWsp.vZero(CN_ENTRYBUFFER);
+#endif
+  
+  _checkInitialised_(CN_ENTRYBUFFER);
   
   // new the head
   vAllotHead();
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  _checkInitialised_(CN_ENTRYBUFFER);
 }
 
 /*----------------------------------------------------------------------------*/
