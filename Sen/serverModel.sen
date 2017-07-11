@@ -22,8 +22,8 @@
   nThreads 0 <= if
     1
   else
-    nThreads CORE_COUNT 8 * 10 / > if
-      CORE_COUNT 8 * 10 / to nThreads
+    nThreads CORE_COUNT 6 * 10 / > if
+      CORE_COUNT 6 * 10 / to nThreads
     then
   then
 
@@ -38,7 +38,7 @@ args.regionSize nServerThreads constant N_SERVER_THREADS
 /*----------------------------------------------------------------------------*/
 /* create and spawn the server processing threads                             */
 /*----------------------------------------------------------------------------*/
-: >serverNm ( i -- s ) "generalThread"    swap >str str.cat ;
+: >serverNm ( i -- s ) "serverThread"    swap >str str.cat ;
 : :serverThread   ( i -- w ) >serverNm    :thread    ;
 
 : startSeverThreads
@@ -46,7 +46,7 @@ args.regionSize nServerThreads constant N_SERVER_THREADS
   0 locals| pServerThread |
 
   args.progress if
-    N_SERVER_THREADS "General threads: %v" str.format .
+    N_SERVER_THREADS "Server threads: %v" str.format .
   then
 
   args.verbose if

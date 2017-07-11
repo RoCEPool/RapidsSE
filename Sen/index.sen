@@ -561,6 +561,8 @@ tp: loadIndexes
 /*----------------------------------------------------------------------------*/
 : rangeSelectIdxTask ( <"key>" "<lower>" "<upper>" pIndex pSeitf iPartitionNo -- )
 
+//"rangeSelectIdxTask" .
+
   // save args
   locals| iPartitionNo pSeitf pIndex sUpper sLower sKey |
 
@@ -619,6 +621,7 @@ tp: loadIndexes
     pUpperEntry pIndexEntry entry.same not if
 
       // look up data row and insert row into result buffer
+      //"calling entry.toDataRow" .
       pIndex pIndexEntry entry.toDataRow row.string pResultBuffer entryBuffer.insertRow
 
       // check if we managed to insert the entry

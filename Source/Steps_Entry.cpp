@@ -74,6 +74,7 @@ void Task::vEntryMatches(MP_Task mpTask)
   bool bSame = pEntry->aKey()->bJuxtaCompare(JC_SAME, xKeyWrk.aKey(), pIndex->pIdxColVec(), bIsEqual);
 
   mpTask->m_pDataStack->vPushInt(bSame ? 1 : 0);
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -132,6 +133,7 @@ void Task::vEntryRow(MP_Task mpTask)
   
   // return the row entry
   mpTask->m_pDataStack->vPushObject(pRowEntry);
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -159,6 +161,7 @@ void Task::vEntryEmbeddedRow(MP_Task mpTask)
   
   // return the row entry
   mpTask->m_pDataStack->vPushS256(sRow);
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -185,6 +188,7 @@ void Task::vEntrySame(MP_Task mpTask)
   ASSERT(CN_ENTRY == pOtherEntry->eClass());
   
   mpTask->m_pDataStack->vPushInt(pEntry == pOtherEntry ? 1 : 0);
+  EXIT();
 }
 
 /*============================================================================*/
