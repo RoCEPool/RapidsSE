@@ -565,7 +565,7 @@ tp: loadIndexes
   locals| iPartitionNo pSeitf pIndex sUpper sLower sKey |
 
   // local variables
-  0 0 0 0 locals| pUpperEntry pEntry pTempEntryBuffer pIndexBuffer |
+  0 0 0 0 locals| pUpperEntry pIndexEntry pIndexBuffer pResultBuffer |
 
   tp: rangeSelectIdxTask
 
@@ -575,105 +575,90 @@ tp: loadIndexes
   task::this task.kind@ TK_SELECT_PART == assert
   task::this task.thread thread.actorModel@ AC_SERVER == assert
 
+  // save seitf into this task
   pSeitf task::this task.seitf!
 
   // start groupBy for this partition
-  iPartitionNo pSeitf seitf.groupBy@
-  locals| pGroupBy |
+  iPartitionNo pSeitf seitf.groupBy@ locals| pGroupBy |
   pGroupBy groupBy.start
 
-  // create a temporary index buffer for the results
-  //"Creating a tempIndexBuffer" .
-  pIndex entryBuffer::create to pTempEntryBuffer
+  // create a temporary buffer for the results
+  pIndex entryBuffer::create to pResultBuffer
 
   // position in the first index buffer
-  iPartitionNo pIndex index.positionFirst
-  to pIndexBuffer
+  iPartitionNo pIndex index.positionFirst to pIndexBuffer
 
   // position at the upper bound entry
-  sUpper pIndexBuffer pIndex index.position
-  to pUpperEntry
+  sUpper pIndexBuffer pIndex index.position to pUpperEntry
 
   // get the indexBuffer looking for the lower key
-  sLower iPartitionNo pIndex index.buffer ( pIndexBuffer )
-  to pIndexBuffer
+  sLower iPartitionNo pIndex index.buffer to pIndexBuffer
 
   // position in the index buffer at the lower key
-  sLower pIndexBuffer pIndex index.position
-  to pEntry
+  sLower pIndexBuffer pIndex index.position to pIndexEntry
 
   // did we find an entry ?
-  pEntry not if
+  pIndexEntry not if
 
-    // mark this buffer as the last buffer
-    //"Marking tempEntryBuffer as last buffer" .
-    pTempEntryBuffer entryBuffer.isLast!
+    // mark this result buffer as the last buffer
+    pResultBuffer entryBuffer.isLast!
 
-    // return the empty tempEntryBuffer
-    //"Appending tempEntryBuffer to buffer queue" .
-    pTempEntryBuffer pGroupby groupBy.applyBuffer
-    pTempEntryBuffer pSeitf seitf.bufferQueue@ queue.append
+    // return the empty result buffer
+    pResultBuffer pGroupby groupBy.applyBuffer
+    pResultBuffer pSeitf seitf.bufferQueue@ queue.append
 
     exit
   then
 
-  // iterate thru the buffer till no more entries
+  // iterate thru the index buffer till no more index entries
   begin
-  pEntry
+  pIndexEntry
   while
 
     // check against upper bound
-    //sUpper entry pIndex index.upper if
-    pUpperEntry pEntry entry.same not if
+    pUpperEntry pIndexEntry entry.same not if
 
-      // insert row from entry in tempEntryBuffer
-      //"Inserting row into tempEntryBuffer" .
-      pIndex pEntry entry.row row.string pTempEntryBuffer entryBuffer.insertRow
+      // look up data row and insert row into result buffer
+      pIndex pIndexEntry entry.row row.string pResultBuffer entryBuffer.insertRow
 
       // check if we managed to insert the entry
       not if
         // buffer must be full
-        // put this tempEntryBuffer in seitf bufferQueue
-        //"Appending tempEntryBuffer to buffer queue" .
-        pTempEntryBuffer pGroupby groupBy.applyBuffer
-        pTempEntryBuffer pSeitf seitf.bufferQueue@ queue.append
+        // put this result buffer in seitf buffer queue
+        pResultBuffer pGroupby groupBy.applyBuffer
+        pResultBuffer pSeitf seitf.bufferQueue@ queue.append
 
-        // create another temporary index buffer for the results
-        //"Creating a tempIndexBuffer" .
-        pIndex entryBuffer::create to pTempEntryBuffer
+        // create another result buffer
+        pIndex entryBuffer::create to pResultBuffer
 
-        // insert row from entry in temporary buffer
-        //"Inserting row into tempEntryBuffer" .
-        pIndex pEntry entry.row row.string pTempEntryBuffer entryBuffer.insertRow
+        // look up data row and insert row into result buffer
+        pIndex pIndexEntry entry.row row.string pResultBuffer entryBuffer.insertRow
         assert
       then
 
-      // move to next entry in the buffer
-      pEntry pIndexBuffer entryBuffer.nextEntry to pEntry
+      // move to next index entry in the index buffer
+      pIndexEntry pIndexBuffer entryBuffer.nextEntry to pIndexEntry
 
-      pEntry not if
-        // get next buffer from the current indexBuffer
+      pIndexEntry not if
+        // get next index buffer from the current index buffer
         pIndexBuffer entryBuffer.nextBuffer to pIndexBuffer
 
         pIndexBuffer if
-         pEntry pIndexBuffer entryBuffer.nextEntry to pEntry
+         pIndexEntry pIndexBuffer entryBuffer.nextEntry to pIndexEntry
         then
       then
     else
       // entry beyond upper, null the entry and break from loop
-      0  to pEntry
+      0  to pIndexEntry
     then
   repeat
 
-  //"Marking tempEntryBuffer as last buffer" .
-  // mark this buffer as the last buffer
-  pTempEntryBuffer entryBuffer.isLast!
+  // mark this result buffer as the last buffer
+  pResultBuffer entryBuffer.isLast!
 
-  // put the buffer in the seitf bufferQueue
-  //"Appending tempEntryBuffer to buffer queue" .
-  //"Appending tempEntryBuffer to buffer queue" .
-  pTempEntryBuffer pGroupby groupBy.applyBuffer
-  pTempEntryBuffer pSeitf seitf.bufferQueue@ queue.append
+  // put the result buffer in the seitf buffer queue
+  pResultBuffer pGroupby groupBy.applyBuffer
+  pResultBuffer pSeitf seitf.bufferQueue@ queue.append
 ;
 
 /*----------------------------------------------------------------------------*/
