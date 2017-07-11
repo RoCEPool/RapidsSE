@@ -371,9 +371,11 @@ timer: pIdxSelectTimer
       "0" //key
       pPlanner Planner.lowKey@
       pPlanner Planner.highKey@
-      "rangeSelectIdxTask"
+      //"rangeSelectIdxTask"
+      "groupByIdxTask"
       pPlanner Planner.indexNm@
-      selectIndex
+      //selectIndex
+      groupByIndex
     endof
 
     AT_SCAN of

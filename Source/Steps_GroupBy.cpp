@@ -30,6 +30,7 @@ extern SEitfList*      gpSEitfList;
 void Task::vAddPrimitives_GroupBy(void)
 {
   vAddPrimitive("groupBy.applyBuffer"_Str,  &vGroupByApplyBuffer,  false);
+  vAddPrimitive("groupBy.applyEntry"_Str,   &vGroupByApplyEntry,   false);
   vAddPrimitive("groupBy.applyPartial"_Str, &vGroupByApplyPartial, false);
   vAddPrimitive("groupBy.delete"_Str,       &vGroupByDelete,       false);
   vAddPrimitive("groupBy.end"_Str,          &vGroupByEnd,          false);
@@ -55,6 +56,28 @@ void Task::vGroupByApplyBuffer(MP_Task mpTask)
   EntryBuffer* pEntryBuffer = _pEntryBuffer(pPtrEntryBuffer);
   
   pGroupBy->vApplyBuffer(pEntryBuffer);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* groupBy.applyEntry -- apply entry of lineitems to accum                    */
+/*----------------------------------------------------------------------------*/
+void Task::vGroupByApplyEntry(MP_Task mpTask)
+{
+  ENTRY("vGroupByApplyBuffer"_Str);
+  
+  Object* pPtrGroupBy;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrGroupBy) )
+    THROW_INVALID_DSTACK("groupBy.applyEntry"_Str);
+  GroupBy* pGroupBy = _pGroupBy(pPtrGroupBy);
+  
+  Object* pPtrEntry;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrEntry) )
+    THROW_INVALID_DSTACK("groupBy.applyEntry"_Str);
+  Entry* pEntry = _pEntry(pPtrEntry);
+  
+  pGroupBy->vApplyEntry(pEntry);
   
   EXIT();
 }
