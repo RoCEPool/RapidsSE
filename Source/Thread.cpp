@@ -529,7 +529,9 @@ void Thread::vLoop_Server(void)
     if (! *m_npTask) {
       ASSERT( ! *m_npTask );
       bool b = m_pScheduler->bGetTask_Mutex(this,true);
-      ASSERT( b && *m_npTask );
+      //ASSERT( b && *m_npTask );
+      if (!b)
+        continue;
     }
     
     ASSERT(m_npTask->eActorModel() == AC_SERVER);
