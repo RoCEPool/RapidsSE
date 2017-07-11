@@ -918,7 +918,7 @@ tp: loadIndexes
 /* select using index (called by fetch_rows_index) -- groupBy                 */
 /*----------------------------------------------------------------------------*/
 : groupByIndex ( "<sExactKey>" "<sLowerKey>" "<sUpperKey>"
-"<sSelectTaskSeed>" "<sIndexNm>" --  )
+                 "<sSelectTaskSeed>" "<sIndexNm>" --  )
 
 tp: selectIndex
 
@@ -1316,3 +1316,241 @@ tp: selectIndex
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
+
+/*----------------------------------------------------------------------------*/
+/* select using index (called by fetch_rows_index) -- groupBy                 */
+/*----------------------------------------------------------------------------*/
+: groupByIndex_RH ( "<sExactKey>" "<sLowerKey>" "<sUpperKey>"
+                   "<sSelectTaskSeed>" "<sIndexNm>" --  )
+
+  tp: selectIndex
+
+  //debug::trap
+
+  // task is a request server
+  task::this task.kind@ TK_REQUEST_SERVER == assert
+  task::this task.thread thread.actorModel@ AC_SERVER == assert
+
+  //
+  // execution context:
+  //   this task will have a seitf
+  //   and the seitf will have a table
+  //
+  //assert::stack_5
+
+  // save args
+  locals| sIndexNm sSelectTaskSeed sUpperKey sLowerKey sExactKey |
+
+  // local variables
+  0 0 0 0 0 0 0 locals| pPartialGroupBy iSlots pSeitf pSelectTask nRowCount pIndexBuffer pEntry pIndex |
+
+  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
+
+  groupBy::new locals| pGroupBy |
+  pGroupBy groupBy.start
+
+  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
+
+  // increment query count
+  queryCount ++
+
+  // push into indexes folder
+  pushIndexes assert
+
+  // find the index
+  sIndexNm find execute to pIndex
+
+  args.metadata if
+    metadata@ "metadata: %v\n" str.format .put
+  then
+
+  task::this task.seitf@ to pSeitf
+
+  // create the buffer queue in the seitf
+  "selectTask.queue" queue::new pSeitf seitf.bufferQueue!
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // for each slot
+  grid.slots to iSlots
+  iSlots 0
+  do
+
+    args.metadata not if
+      I grid::toPartition "Partition: %v\n" str.format .put
+    then
+
+    // put the partition in this tasks seitf
+    //I pSeitf seitf.partition!
+
+    // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
+    I groupBy::new pSeitf seitf.groupBy!
+    // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
+
+    // create a selectTask to execute the key select on the index for the partition
+    sExactKey sLowerKey sUpperKey pIndex pSeitf I 6
+    sSelectTaskSeed nullptr "selectTask" TK_SELECT_PART spawnServerActor
+    to pSelectTask
+
+  loop
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  1
+  begin
+    while  // first while
+
+      begin
+      // attempt to pop buffer off the tasks buffer queue
+      pSeitf seitf.bufferQueue@  queue.pop ( value true | false )
+
+      // try again if no value
+      not while
+        //REQUST_LOOP2
+        //task.yield
+        args.sleep thread.sleep_ms
+      repeat
+    to pIndexBuffer
+
+    // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
+    //pIndexBuffer pGroupby groupBy.applyBuffer
+    // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
+
+    //"Popped tempEntryBuffer from buffer queue" .
+
+    pIndexBuffer entryBuffer.isLast@ if
+      //"Reached last buffer" .
+      iSlots 1 - to iSlots
+      0 iSlots == if
+        0
+      else
+        1
+      then
+    else
+      1  // no more entries, move to next buffer
+    then
+
+    pIndexBuffer entryBuffer.delete
+    //"Deleted buffer" .
+
+  repeat  // end of first while
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // delete the buffer queue from the seitf
+  pSeitf seitf.bufferQueue@ queue.delete
+  0 pSeitf seitf.bufferQueue!
+
+  // pop indexes
+  popIndexes
+
+  args.metadata if
+    nRowCount pSeitf seitf.rowsProcessed
+  else
+    "rows selected"  nRowCount "%v %v\n" str.format .put
+  then
+
+  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
+
+  grid.slots 0
+  do
+    I pSeitf seitf.groupBy@ to pPartialGroupBy
+    pPartialGroupBy pGroupby groupBy.applyPartial
+    pPartialGroupBy groupBy.delete
+  loop
+
+  pGroupBy groupBy.end
+  pGroupBy groupBy.delete
+
+  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
+;
+
+/*----------------------------------------------------------------------------*/
+/* position key select cursor for table (called by selectIndex request)       */
+/*----------------------------------------------------------------------------*/
+: groupByIdxTask_RH ( <"key>" "<lower>" "<upper>" pIndex pSeitf iPartitionNo -- )
+
+  // save args
+  locals| iPartitionNo pSeitf pIndex sUpper sLower sKey |
+
+  // local variables
+  0 0 0 0 locals| pUpperEntry pIndexEntry pIndexBuffer pResultBuffer |
+
+  tp: rangeSelectIdxTask
+
+  //debug::trap
+
+  // task is a select participant running on server thread
+  task::this task.kind@ TK_SELECT_PART == assert
+  task::this task.thread thread.actorModel@ AC_SERVER == assert
+
+  // save seitf into this task
+  pSeitf task::this task.seitf!
+
+  // start groupBy for this partition
+  iPartitionNo pSeitf seitf.groupBy@ locals| pGroupBy |
+  pGroupBy groupBy.start
+
+  // create a temporary buffer for the results
+  pIndex entryBuffer::create to pResultBuffer
+
+  // position in the first index buffer
+  iPartitionNo pIndex index.positionFirst to pIndexBuffer
+
+  // position at the upper bound entry
+  sUpper pIndexBuffer pIndex index.position to pUpperEntry
+
+  // get the indexBuffer looking for the lower key
+  sLower iPartitionNo pIndex index.buffer to pIndexBuffer
+
+  // position in the index buffer at the lower key
+  sLower pIndexBuffer pIndex index.position to pIndexEntry
+
+  // did we find an entry ?
+  pIndexEntry not if
+
+    // mark this result buffer as the last buffer
+    pResultBuffer entryBuffer.isLast!
+
+    pResultBuffer pSeitf seitf.bufferQueue@ queue.append
+
+    exit
+  then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // iterate thru all index entries
+
+  begin
+
+    pIndexEntry
+    while
+
+      // check against upper bound
+      pUpperEntry pIndexEntry entry.same if
+        // entry beyond upper, null the entry which breaks from loop
+        0 to pIndexEntry
+      else
+        // apply entry to groupBy
+        //pIndex pIndexEntry entry.toDataRow pGroupby groupBy.applyEntry
+
+        // move to next index entry in the index buffer
+        pIndexEntry pIndexBuffer entryBuffer.nextEntry to pIndexEntry
+
+        // test for end of buffer
+        pIndexEntry not if
+
+          // end of buffer, move to next entry in next index buffer
+          pIndexBuffer entryBuffer.nextBuffer to pIndexBuffer
+
+          // get first index entry
+          pIndexBuffer if
+            pIndexEntry pIndexBuffer entryBuffer.nextEntry to pIndexEntry
+          then
+        then
+      then
+  repeat
+
+  // mark this result buffer as the last buffer
+  pResultBuffer entryBuffer.isLast!
+  pResultBuffer pSeitf seitf.bufferQueue@ queue.append
+;
+

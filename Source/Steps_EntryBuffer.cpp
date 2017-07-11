@@ -37,6 +37,7 @@ void Task::vAddPrimitives_EntryBuffer(void)
   vAddPrimitive("entryBuffer.insertRow"_Str,   &vEntryBufferInsertRow,   false);
   vAddPrimitive("entryBuffer.isLast@"_Str,     &vEntryBufferIsLastFetch, false);
   vAddPrimitive("entryBuffer.isLast!"_Str,     &vEntryBufferIsLastStore, false);
+  vAddPrimitive("entryBuffer.iterate"_Str,     &vEntryBufferIterate,     false);
   vAddPrimitive("entryBuffer.nextEntry"_Str,   &vEntryBufferNextEntry,   false);
   vAddPrimitive("entryBuffer.nextBuffer"_Str,  &vEntryBufferNextBuffer,  false);
 }
@@ -258,6 +259,52 @@ void Task::vEntryBufferIsLastStore(MP_Task mpTask)
   ASSERT(nullptr == pIndexBuffer || CN_ENTRYBUFFER == pIndexBuffer->eClass());
   
   pIndexBuffer->vIsLast(true);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* entryBuffer.iterate -- iterate entry sequence                              */
+/*----------------------------------------------------------------------------*/
+void Task::vEntryBufferIterate(MP_Task mpTask)
+{
+  ENTRY("vEntryBufferIiterate"_Str);
+  
+  Object* pPtrIndexBuffer;
+  
+  if ( ! mpTask->m_pDataStack->bPop(pPtrIndexBuffer) )
+    THROW_INVALID_DSTACK("entryBuffer.iterate"_Str);
+  EntryBuffer* pIndexBuffer = _pEntryBuffer(pPtrIndexBuffer);
+  ASSERT(nullptr == pIndexBuffer || CN_ENTRYBUFFER == pIndexBuffer->eClass());
+  
+  Object* pPtrEntry = nullptr;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrEntry) )
+    THROW_INVALID_DSTACK("entryBuffer.nextEntry"_Str);
+  Entry* pUpperEntry = _pEntry(pPtrEntry);
+  
+  if ( ! mpTask->m_pDataStack->bPop(pPtrEntry) )
+    THROW_INVALID_DSTACK("entryBuffer.nextEntry"_Str);
+  Entry* pLowerEntry = _pEntry(pPtrEntry);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // iterate all entries from lower to upper
+  
+  Entry* pEntry = pLowerEntry;
+  for (;;) {
+   
+    // apply
+    
+    // test for end
+    if (pEntry == pUpperEntry)
+      break;
+    
+    // move to next entry
+    pEntry = pIndexBuffer->pNextEntry(pEntry);
+    if (! pEntry) {
+      pIndexBuffer = pIndexBuffer->pNextBuffer();
+      pEntry = pIndexBuffer->pNextEntry(pIndexBuffer->pHead());
+    }
+  }
   
   EXIT();
 }

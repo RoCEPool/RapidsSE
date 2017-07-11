@@ -590,6 +590,7 @@ namespace Tasks
     static void vEntryBufferInsertRow(MP_Task mpTask);
     static void vEntryBufferIsLastFetch(MP_Task mpTask);
     static void vEntryBufferIsLastStore(MP_Task mpTask);
+    static void vEntryBufferIterate(MP_Task mpTask);
     static void vEntryBufferNextEntry(MP_Task mpTask);
     
     // env
