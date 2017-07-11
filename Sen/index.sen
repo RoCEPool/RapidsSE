@@ -1486,7 +1486,7 @@ tp: selectIndex
   // save seitf into this task
   pSeitf task::this task.seitf!
 
-  // start groupBy for this partition
+  // start groupBy operator for this partition
   iPartitionNo pSeitf seitf.groupBy@ locals| pGroupBy |
   pGroupBy groupBy.start
 
@@ -1519,6 +1519,7 @@ tp: selectIndex
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // iterate thru all index entries
 
+/*
   begin
 
     pIndexEntry
@@ -1548,6 +1549,10 @@ tp: selectIndex
         then
       then
   repeat
+*/
+
+  pIndexEntry pUpperEntry pIndexBuffer entryBuffer.iterate
+
 
   // mark this result buffer as the last buffer
   pResultBuffer entryBuffer.isLast!

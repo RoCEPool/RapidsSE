@@ -279,11 +279,11 @@ void Task::vEntryBufferIterate(MP_Task mpTask)
   
   Object* pPtrEntry = nullptr;
   if ( ! mpTask->m_pDataStack->bPop(pPtrEntry) )
-    THROW_INVALID_DSTACK("entryBuffer.nextEntry"_Str);
+    THROW_INVALID_DSTACK("entryBuffer.iterate"_Str);
   Entry* pUpperEntry = _pEntry(pPtrEntry);
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrEntry) )
-    THROW_INVALID_DSTACK("entryBuffer.nextEntry"_Str);
+    THROW_INVALID_DSTACK("entryBuffer.iterate"_Str);
   Entry* pLowerEntry = _pEntry(pPtrEntry);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -302,6 +302,8 @@ void Task::vEntryBufferIterate(MP_Task mpTask)
     pEntry = pIndexBuffer->pNextEntry(pEntry);
     if (! pEntry) {
       pIndexBuffer = pIndexBuffer->pNextBuffer();
+      if (! pIndexBuffer)
+        break;
       pEntry = pIndexBuffer->pNextEntry(pIndexBuffer->pHead());
     }
   }

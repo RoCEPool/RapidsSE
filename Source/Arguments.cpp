@@ -5,7 +5,7 @@
 #include "StorageEngine.h"
 
 void* C_ADDR_POOL = (void*)0x204800000000;
-i8 C_MEMORY_PERCENT = 80;
+i8 C_MEMORY_PERCENT = 95;
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
