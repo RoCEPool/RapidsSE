@@ -21,6 +21,7 @@ namespace MockEE
     ~GroupBy(void);
   
     void vApplyBuffer(EntryBuffer* pEntryBuffer);
+    void vApplyEntry(Entry* pEntry);
     void vApplyPartial(GroupBy* pPartialGoupBy);
     void vEnd(void);
     void vStart(void);

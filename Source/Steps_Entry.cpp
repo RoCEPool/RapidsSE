@@ -169,7 +169,6 @@ void Task::vEntrySame(MP_Task mpTask)
   ENTRY("vEntryMatches"_Str);
   
   Object* pPtrEntry = nullptr;
-  Object* pPtrIndex = nullptr;
   Object* pPtrOtherEntry = nullptr;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrEntry) )

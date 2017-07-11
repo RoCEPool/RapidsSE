@@ -647,6 +647,7 @@ namespace Tasks
   
     // group by
     static void vGroupByApplyBuffer(MP_Task mpTask);
+    static void vGroupByApplyEntry(MP_Task mpTask);
     static void vGroupByApplyPartial(MP_Task mpTask);
     static void vGroupByDelete(MP_Task mpTask);
     static void vGroupByEnd(MP_Task mpTask);
