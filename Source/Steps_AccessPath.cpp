@@ -69,7 +69,8 @@ void Task::vAccessPathTableFetch(MP_Task mpTask)
     THROW_INVALID_DSTACK("accessPath.table@"_Str);
   AccessPath* pAccessPath = _pAccessPath(pPtrAccessPath);
   
-  Table* pTable;
+  Table* pTable = pAccessPath->pTable();
+  
   mpTask->m_pDataStack->vPushObject(pTable);
   
   EXIT();
