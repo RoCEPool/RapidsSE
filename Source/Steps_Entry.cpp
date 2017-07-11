@@ -32,7 +32,7 @@ extern SEitfList*      gpSEitfList;
 void Task::vAddPrimitives_Entry(void)
 {
   vAddPrimitive("entry.matches"_Str,      &vEntryMatches,     false);
-  vAddPrimitive("entry.row"_Str,          &vEntryRow,         false);
+  vAddPrimitive("entry.toDataRow"_Str,          &vEntryRow,         false);
   vAddPrimitive("entry.embeddedRow"_Str,  &vEntryEmbeddedRow, false);
   vAddPrimitive("entry.same"_Str,         &vEntrySame,       false);
 }
@@ -77,7 +77,7 @@ void Task::vEntryMatches(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* entry.row -- return row from entry                                         */
+/* entry.toDataRow -- return row from entry                                         */
 /*----------------------------------------------------------------------------*/
 void Task::vEntryRow(MP_Task mpTask)
 {
@@ -87,13 +87,13 @@ void Task::vEntryRow(MP_Task mpTask)
   Object* pPtrIndex = nullptr;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrEntry) )
-    THROW_INVALID_DSTACK("entry.row"_Str);
+    THROW_INVALID_DSTACK("entry.toDataRow"_Str);
   
   Entry* pEntry = _pEntry(pPtrEntry);
   ASSERT(CN_ENTRY == pEntry->eClass() || CN_ROW == pEntry->eClass());
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrIndex) )
-    THROW_INVALID_DSTACK("entry.row"_Str);
+    THROW_INVALID_DSTACK("entry.toDataRow"_Str);
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
