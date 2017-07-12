@@ -40,6 +40,7 @@ namespace Base
     /* 24 */ CN_ATOMIC,
     /* 25 */ CN_ATTACHMAP,
     
+    /*    */ CN_BITARRAY,
     /* 26 */ CN_BUFFERPOOL,
     /* 27 */ CN_BPA,
   
@@ -207,6 +208,7 @@ namespace Base
     /* 13 */ "ATOMIC"_Str,
     /* 14 */ "ATTACHMAP"_Str,
     
+    /*    */ "BITARRAY"_Str,
     /* 15 */ "BUFFERPOOL"_Str,
     /* 16 */ "BPA"_Str,
   
