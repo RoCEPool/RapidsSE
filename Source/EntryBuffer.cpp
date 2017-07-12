@@ -65,7 +65,7 @@ EntryBuffer::EntryBuffer(void)
 : Buffer(CN_ENTRYBUFFER)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
+  m_pBitArray   = new BitArray;
   m_pPrevBuffer = nullptr;
   m_pNextBuffer = nullptr;
   m_bIsLast     = false;
@@ -86,6 +86,7 @@ EntryBuffer::EntryBuffer(i8 iDataBytes)
   
   m_xWsp.vUsed(iDataBytes);
   
+  m_pBitArray   = new BitArray;
   m_pPrevBuffer = nullptr;
   m_pNextBuffer = nullptr;
   m_bIsLast     = false;
@@ -105,6 +106,7 @@ EntryBuffer::EntryBuffer(Index* pIndex, i8 nBufferLevel)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
+  m_pBitArray   = new BitArray;
   m_pIndex       = pIndex;
   m_nBufferLevel = nBufferLevel;
   m_bIsLast     = false;
@@ -130,6 +132,7 @@ EntryBuffer::EntryBuffer(eCN eClassNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo,_FOOTER_);
   
+  m_pBitArray   = new BitArray;
   m_eDurability = BD_TEMPORARY;
   m_nEntries    = 0;
   m_bIsLast     = false;
@@ -152,6 +155,8 @@ EntryBuffer::EntryBuffer(eCN eClassNo)
 EntryBuffer::~EntryBuffer(void)
 {
   //_precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+
+  delete m_pBitArray;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -171,6 +176,16 @@ EntryBuffer* EntryBuffer::pNewEntryBuffer(eCN eClassNo)
   new(pEntryBuffer) EntryBuffer(eClassNo);
   
   return pEntryBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get bit array                                                              */
+/*----------------------------------------------------------------------------*/
+BitArray* EntryBuffer::pBitArray(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  return m_pBitArray;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -30,6 +30,9 @@ namespace DBobjects
   class EntryBuffer : public Buffer
   {
   protected:
+  
+  BitArray* m_pBitArray;
+  
     eBD   m_eDurability; // buffer durability
     bool  m_bIsLast;
     i8    m_nEntries;    // number of entries in this buffer
@@ -57,6 +60,8 @@ namespace DBobjects
     ~EntryBuffer(void);
   
     static EntryBuffer* pNewEntryBuffer(eCN eClassNo);
+  
+    BitArray* pBitArray(void);
   
     eBD  eDurability(void);
     void vDurability(eBD eDurability);

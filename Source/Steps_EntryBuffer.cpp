@@ -306,6 +306,24 @@ void Task::vEntryBufferIterate(MP_Task mpTask)
     // Entry* pLineItemEntry = GroupBy::pToLineItemEntry(pIndex,pIndexEntry);
     //pGroupByOp->vApplyEntry(pLineItemEntry);
     
+    // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
+    // set bit on
+    
+    Id xId = pIndexEntry->xId();
+    
+    bn nBufferNo = xId.iBuffer();
+    i8 iRow = xId.iRow();
+    
+    EntryBuffer* pDataBuffer = _pEntryBuffer(gpBufferPool->pToBuffer(nBufferNo));
+    ASSERT(pDataBuffer);
+    
+    BitArray* pBitArray = pDataBuffer->pBitArray();
+    ASSERT(pBitArray);
+    
+    pBitArray->vSetOn(iRow);
+    
+    // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
+
     nRows++;
     
     // test for end

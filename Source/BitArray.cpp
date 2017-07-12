@@ -59,61 +59,11 @@ BitArray::~BitArray(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* set bit on                                                                 */
-/*----------------------------------------------------------------------------*/
-void BitArray::vBitOn(i8 iBitNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BITARRAY);
-  
-  i8 iByte;
-  i8 iBit;
-  char cMask;
-  
-  vDecode(iBitNo,iByte,iBit,cMask);
-
-  m_zLock.bGrabWrite();
-  
-  if (! bBitState(iBitNo)) {
-    char cChar = m_bBytes[iByte];
-    cChar |= cMask;
-    m_bBytes[iByte] = cChar;
-    m_nBitsOn++;
-  }
-  
-  m_zLock.vDropWrite();
-}
-
-/*----------------------------------------------------------------------------*/
-/* set bit off                                                                */
-/*----------------------------------------------------------------------------*/
-void BitArray::vBitOff(i8 iBitNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BITARRAY);
-  
-  i8 iByte;
-  i8 iBit;
-  char cMask;
-  
-  vDecode(iBitNo,iByte,iBit,cMask);
-  
-  m_zLock.bGrabWrite();
-  
-  if (bBitState(iBitNo)) {
-    char cChar = m_bBytes[iByte];
-    cChar &= ~cMask;
-    m_bBytes[iByte] = cChar;
-    m_nBitsOn--;
-  }
-  
-  m_zLock.vDropWrite();
-}
-
-/*----------------------------------------------------------------------------*/
 /* get number of bits that are on                                             */
 /*----------------------------------------------------------------------------*/
 i8 BitArray::nBitsOn(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BITARRAY);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BITARRAY,_FOOTER_);
   
   return m_nBitsOn;
 }
@@ -123,7 +73,7 @@ i8 BitArray::nBitsOn(void)
 /*----------------------------------------------------------------------------*/
 bool BitArray::bBitState(i8 iBitNo)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BITARRAY);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BITARRAY,_FOOTER_);
   
   i8 iByte;
   i8 iBit;
@@ -146,7 +96,7 @@ bool BitArray::bBitState(i8 iBitNo)
 /*----------------------------------------------------------------------------*/
 void BitArray::vFlipBit(i8 iBitNo)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BITARRAY);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BITARRAY,_FOOTER_);
   
   i8 iByte;
   i8 iBit;
@@ -155,9 +105,9 @@ void BitArray::vFlipBit(i8 iBitNo)
   vDecode(iBitNo,iByte,iBit,cMask);
   
   if (bBitState(iBitNo))
-    vBitOff(iBitNo);
+    vSetOff(iBitNo);
   else
-    vBitOn(iBitNo);
+    vSetOn(iBitNo);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -165,7 +115,7 @@ void BitArray::vFlipBit(i8 iBitNo)
 /*----------------------------------------------------------------------------*/
 bool BitArray::bIsOff(i8 iBitNo)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BITARRAY);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BITARRAY,_FOOTER_);
   
   i8 iByte;
   i8 iBit;
@@ -184,7 +134,7 @@ bool BitArray::bIsOff(i8 iBitNo)
 /*----------------------------------------------------------------------------*/
 bool BitArray::bIsOn(i8 iBitNo)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BITARRAY);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BITARRAY,_FOOTER_);
   
   i8 iByte;
   i8 iBit;
@@ -199,6 +149,61 @@ bool BitArray::bIsOn(i8 iBitNo)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set bit off                                                                */
+/*----------------------------------------------------------------------------*/
+void BitArray::vSetOff(i8 iBitNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BITARRAY,_FOOTER_);
+  
+  i8 iByte;
+  i8 iBit;
+  char cMask;
+  
+  vDecode(iBitNo,iByte,iBit,cMask);
+  
+  m_zLock.bGrabWrite();
+  
+  if (bBitState(iBitNo)) {
+    char cChar = m_bBytes[iByte];
+    cChar &= ~cMask;
+    m_bBytes[iByte] = cChar;
+    m_nBitsOn--;
+  }
+  
+  m_zLock.vDropWrite();
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_BITARRAY,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* set bit on                                                                 */
+/*----------------------------------------------------------------------------*/
+void BitArray::vSetOn(i8 iBitNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BITARRAY,_FOOTER_);
+  
+  i8 iByte;
+  i8 iBit;
+  char cMask;
+  
+  vDecode(iBitNo,iByte,iBit,cMask);
+  
+  //vTrace("SetOn %lld : %lld.%lld\n"_Str,iBitNo,iByte,iBit);
+  
+  m_zLock.bGrabWrite();
+  
+  if (! bBitState(iBitNo)) {
+    char cChar = m_bBytes[iByte];
+    cChar |= cMask;
+    m_bBytes[iByte] = cChar;
+    m_nBitsOn++;
+  }
+  
+  m_zLock.vDropWrite();
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_BITARRAY,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -207,8 +212,10 @@ bool BitArray::bIsOn(i8 iBitNo)
 /*----------------------------------------------------------------------------*/
 void BitArray::vDecode(i8 iBitNo, i8& iByte, i8& iBit, char& cMask)
 {
-  iByte = iByte / 8;
-  iBit  = iByte % 8;
+  iByte = iBitNo / 8;
+  ASSERT(iByte >= 0 && iByte < C_BIT_ARRAY);
+  
+  iBit  = iBitNo % 8;
   cMask = 1 << iBit;
 }
 
