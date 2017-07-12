@@ -148,13 +148,12 @@ bool Scheduler::bGetTask_Mutex(Threads::Thread* mpThread, bool bWait)
   if (bWait) {
     giSchGetTaskWait++;
     m_xThreadQueue.vAppend(mpThread);
-    m_xSemaphore.vCondWait_Mutex();
+    do {
+      m_xSemaphore.vCondWait_Mutex();
+    } while (! *mpThread->m_npTask);
     m_xSemaphore.vMutexUnlock();
-    //ASSERT(mpThread->m_npTask);
-    if (*mpThread->m_npTask)
-      return true;
-    else
-      return false;
+    ASSERT(mpThread->m_npTask);
+    return true;
   }
 
   // allow another thread to continue
