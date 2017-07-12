@@ -209,7 +209,7 @@ i8 giClassSize[]
   /* 13 */ sizeof(Atomic),             // CN_ATOMIC
   /* 14 */ sizeof(AttachMap),          // CN_ATTACHMAP
   
-  /*    */ 0,                          // CN_BITARRY
+  /*    */ sizeof(BitArray),           // CN_BITARRY
   /* 15 */ sizeof(BufferPool),         // CN_BUFFERPOOL
   /* 16 */ sizeof(BPA),                // CN_BPA
 

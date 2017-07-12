@@ -13,6 +13,7 @@ namespace System
   enum eLK // lock kind
   {
   /*  0 */ LK_NONE=0,
+  /*    */ LK_BIT_ARRAY,
   /*  1 */ LK_BUFFER_POOL,
   /*  2 */ LK_COLLECTION,
   /*  3 */ LK_DATA,
@@ -35,6 +36,7 @@ namespace System
   static Str* aLK[]
   {
   /*  0 */ "NONE"_Str,
+  /*    */ "BIT_ARRAY"_Str,
   /*  1 */ "BUFFER_POOL"_Str,
   /*  2 */ "COLLECTION"_Str,
   /*  3 */ "DATA"_Str,
