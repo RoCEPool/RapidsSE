@@ -100,7 +100,7 @@ void Scheduler::vEnqueueTask_Mutex(Task* mpTask)
     Thread* mpThread = m_xThreadQueue.npPop();
     ASSERT(mpThread);
     mpThread->m_npTask = mpTask;
-    m_xSemaphore.vCondSignal();
+    m_xSemaphore.vCondBroadcast();
     m_xSemaphore.vMutexUnlock();
     return;
   }
