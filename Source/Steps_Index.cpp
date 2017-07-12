@@ -302,9 +302,9 @@ void Task::vIndexPosition(MP_Task mpTask)
     bool bIsEqual = false;
     bool bAfter = pIndexEntry->aKey()->bJuxtaCompare(JC_AFTER, xKeyWrk.aKey(),
                                                      pIndex->pIdxColVec(), bIsEqual);
-    if ( ! bAfter) {
-      pIndexEntry = pIndexBuffer->pNextEntry(pIndexEntry);
-    }
+    //if ( ! bAfter) {
+    //  pIndexEntry = pIndexBuffer->pNextEntry(pIndexEntry);
+    //}
   }
   
   mpTask->m_pDataStack->vPushObject(pIndexEntry);
