@@ -1493,16 +1493,12 @@ tp: selectIndex
   // create a temporary buffer for the results
   pIndex entryBuffer::create to pResultBuffer
 
-  // position in the first index buffer
-  iPartitionNo pIndex index.positionFirst to pIndexBuffer
-
-  // position at the upper bound entry
+  // position the upper key
+  sUpper iPartitionNo pIndex index.buffer   to pIndexBuffer
   sUpper pIndexBuffer pIndex index.position to pUpperEntry
 
-  // get the indexBuffer looking for the lower key
-  sLower iPartitionNo pIndex index.buffer to pIndexBuffer
-
-  // position in the index buffer at the lower key
+  // position the lower key
+  sLower iPartitionNo pIndex index.buffer   to pIndexBuffer
   sLower pIndexBuffer pIndex index.position to pIndexEntry
 
   // did we find an entry ?
@@ -1551,8 +1547,7 @@ tp: selectIndex
   repeat
 */
 
-  pIndexEntry pUpperEntry pIndexBuffer entryBuffer.iterate
-
+  pGroupby pIndexEntry pUpperEntry pIndexBuffer entryBuffer.iterate
 
   // mark this result buffer as the last buffer
   pResultBuffer entryBuffer.isLast!

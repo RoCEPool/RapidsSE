@@ -72,6 +72,14 @@ GroupBy::~GroupBy(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* apply entry or lineitems                                                   */
+/*----------------------------------------------------------------------------*/
+void GroupBy::vApplyIndex(Entry* pIndexEntry)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GROUPBY,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
 /* apply buffer or lineitems                                                  */
 /*----------------------------------------------------------------------------*/
 void GroupBy::vApplyBuffer(EntryBuffer* pEntryBuffer)
@@ -118,12 +126,12 @@ void GroupBy::vApplyBuffer(EntryBuffer* pEntryBuffer)
 /*----------------------------------------------------------------------------*/
 /* apply entry or lineitems                                                   */
 /*----------------------------------------------------------------------------*/
-void GroupBy::vApplyEntry(Entry* pEntry)
+void GroupBy::vApplyEntry(Entry* pLineItemEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GROUPBY,_FOOTER_);
   
     
-  LineItem* pLineItem = (LineItem*)pEntry->aRow();
+  LineItem* pLineItem = (LineItem*)pLineItemEntry->aRow();
   
   //    vTrace("\nEntry: %p LineItem: %p String: %p \n>>%s<<\n"_Str,
   //           pEntry,pLineItem,pLineItem->aStr(),pLineItem->aStr());
@@ -217,6 +225,46 @@ void GroupBy::vStart(void)
 /*----------------------------------------------------------------------------*/
 
 _aFooter_(GroupBy);
+
+/*----------------------------------------------------------------------------*/
+/* convert index entry to line item entry                                     */
+/*----------------------------------------------------------------------------*/
+Entry* GroupBy::pToLineItemEntry(Index* pIndex, Entry* pEntry)
+{  
+  // get the table from the index
+  Table* pTable = pIndex->pTable();
+  
+  // get the hiddenindex from the table
+  Index* pHiddenIndex = pTable->pHiddenIndex();
+  
+  // get the Id from the entry
+  Id xId = pEntry->xId();
+  
+  // find the buffer from the buffer pool given the buffer no
+  bn nBufferNo = xId.iBuffer();
+  EntryBuffer* pEntryBuffer = reinterpret_cast<EntryBuffer*>
+  (gpBufferPool->pToBuffer(nBufferNo));
+  
+  // form the hidden index key using the row id from the entry
+  KeyWrk xKeyWrk;
+  ValWrk xValWrk;
+  xValWrk = xId.iRow();
+  
+  // hiddenIndex should have only one column
+  ASSERT(pHiddenIndex->pIdxColVec()->nItems() == 1);
+  
+  // get the 0th column of the hidden index
+  Column* pColumn = pHiddenIndex->pIdxColVec()->pGet(0);
+  ASSERT(pColumn->iColumnNo() == -1);
+  
+  // add the rowId to the key
+  xKeyWrk.vAddDatum(xValWrk, pColumn);
+  
+  // position in the entry buffer at the row id key
+  Entry* pLineItemEntry = pEntryBuffer->pPosition(xKeyWrk, JC_AFTER);
+  
+  return pLineItemEntry;
+}
 
 /*============================================================================*/
 /* end                                                                        */

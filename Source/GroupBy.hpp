@@ -21,12 +21,15 @@ namespace MockEE
     ~GroupBy(void);
   
     void vApplyBuffer(EntryBuffer* pEntryBuffer);
-    void vApplyEntry(Entry* pEntry);
+    void vApplyEntry(Entry* pLineItemEntry);
+    void vApplyIndex(Entry* pIndexEntry);
     void vApplyPartial(GroupBy* pPartialGoupBy);
     void vEnd(void);
     void vStart(void);
   
     Footer* aFooter(void);
+  
+    static Entry* pToLineItemEntry(Index* pIndex, Entry* pEntry);
   };
   
   GroupBy* _pGroupBy(void* aAddr);

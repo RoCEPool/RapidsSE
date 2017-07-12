@@ -271,7 +271,6 @@ void Task::vEntryBufferIterate(MP_Task mpTask)
   ENTRY("vEntryBufferIiterate"_Str);
   
   Object* pPtrIndexBuffer;
-  
   if ( ! mpTask->m_pDataStack->bPop(pPtrIndexBuffer) )
     THROW_INVALID_DSTACK("entryBuffer.iterate"_Str);
   EntryBuffer* pIndexBuffer = _pEntryBuffer(pPtrIndexBuffer);
@@ -280,33 +279,50 @@ void Task::vEntryBufferIterate(MP_Task mpTask)
   Object* pPtrEntry = nullptr;
   if ( ! mpTask->m_pDataStack->bPop(pPtrEntry) )
     THROW_INVALID_DSTACK("entryBuffer.iterate"_Str);
-  Entry* pUpperEntry = _pEntry(pPtrEntry);
+  Entry* pUpperIndexEntry = _pEntry(pPtrEntry);
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrEntry) )
     THROW_INVALID_DSTACK("entryBuffer.iterate"_Str);
-  Entry* pLowerEntry = _pEntry(pPtrEntry);
+  Entry* pLowerIndexEntry = _pEntry(pPtrEntry);
+  
+  Object* pPtrGroupBy = nullptr;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrGroupBy) )
+    THROW_INVALID_DSTACK("entryBuffer.iterate"_Str);
+  GroupBy* pGroupByOp = _pGroupBy(pPtrGroupBy);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // iterate all entries from lower to upper
   
-  Entry* pEntry = pLowerEntry;
-  for (;;) {
+  if (! pIndexBuffer)
+    return;
+  
+  Index* pIndex = pIndexBuffer->pIndex();
+  
+  i8 nRows = 0;
+  Entry* pIndexEntry = pLowerIndexEntry;
+  while (pIndexBuffer && pIndexEntry) {
    
     // apply
+    // Entry* pLineItemEntry = GroupBy::pToLineItemEntry(pIndex,pIndexEntry);
+    //pGroupByOp->vApplyEntry(pLineItemEntry);
+    
+    nRows++;
     
     // test for end
-    if (pEntry == pUpperEntry)
+    if (pIndexEntry == pUpperIndexEntry)
       break;
     
     // move to next entry
-    pEntry = pIndexBuffer->pNextEntry(pEntry);
-    if (! pEntry) {
+    pIndexEntry = pIndexBuffer->pNextEntry(pIndexEntry);
+    if (! pIndexEntry) {
       pIndexBuffer = pIndexBuffer->pNextBuffer();
       if (! pIndexBuffer)
         break;
-      pEntry = pIndexBuffer->pNextEntry(pIndexBuffer->pHead());
+      pIndexEntry = pIndexBuffer->pNextEntry(pIndexBuffer->pHead());
     }
   }
+  
+  vTrace("Rows processed: %lld\n"_Str,nRows);
   
   EXIT();
 }

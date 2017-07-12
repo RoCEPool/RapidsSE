@@ -118,9 +118,9 @@ void Task::vIndexBuffer(MP_Task mpTask)
   StrVal* pStrVal = _pStrVal(xValWrk.pNestedValueSelf());
   
   xKeyWrk.vAddDatum(pStrVal, pIndex->pIdxColVec()->pGet(0));
-  EntryBuffer* pIndexBuffer = pIndexData->pPositionLevel(xKeyWrk, JC_AFTER, 0);
+  xKeyWrk.vShow();
   
-  //xKeyWrk.vShow();
+  EntryBuffer* pIndexBuffer = pIndexData->pPositionLevel(xKeyWrk, JC_AFTER, 0);
   
   bn nBuffer = pIndexBuffer->nBufferNo();
   //vTrace("L0 Buffer: %lld\n"_Str, *nBuffer);
@@ -288,22 +288,24 @@ void Task::vIndexPosition(MP_Task mpTask)
   
   StrVal* pStrVal = _pStrVal(xValWrk.pNestedValueSelf());
   
-  xKeyWrk.vAddDatum(pStrVal, pIndex->pIdxColVec()->pGet(0));
+  Column* pColumn = pIndex->pIdxColVec()->pGet(0);
+  
+  xKeyWrk.vAddDatum(pStrVal, pColumn);
+  xKeyWrk.aKey()->vShow(pIndex->pIdxColVec());
 
-  Entry* pEntry = pIndexBuffer->pPosition(xKeyWrk, JC_AFTER);
+  Entry* pIndexEntry = pIndexBuffer->pPosition(xKeyWrk, JC_AFTER);
+  pIndexEntry->aKey()->vShow(pIndex->pIdxColVec());
   
-  //pEntry->aKey()->vShow(pIndex->pIdxColVec());
-  //xKeyWrk.aKey()->vShow(pIndex->pIdxColVec());
-  
-  if (pEntry) {
+  if (pIndexEntry) {
     bool bIsEqual = false;
-    bool bAfter = pEntry->aKey()->bJuxtaCompare(JC_AFTER, xKeyWrk.aKey(), pIndex->pIdxColVec(), bIsEqual);
+    bool bAfter = pIndexEntry->aKey()->bJuxtaCompare(JC_AFTER, xKeyWrk.aKey(),
+                                                     pIndex->pIdxColVec(), bIsEqual);
     if ( ! bAfter) {
-      pEntry = pIndexBuffer->pNextEntry(pEntry);
+      pIndexEntry = pIndexBuffer->pNextEntry(pIndexEntry);
     }
   }
   
-  mpTask->m_pDataStack->vPushObject(pEntry);
+  mpTask->m_pDataStack->vPushObject(pIndexEntry);
   
   EXIT();
 }

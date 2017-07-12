@@ -32,9 +32,9 @@ extern SEitfList*      gpSEitfList;
 void Task::vAddPrimitives_Entry(void)
 {
   vAddPrimitive("entry.matches"_Str,      &vEntryMatches,     false);
-  vAddPrimitive("entry.toDataRow"_Str,          &vEntryRow,         false);
+  vAddPrimitive("entry.toDataRow"_Str,    &vEntryToDataRow,   false);
   vAddPrimitive("entry.embeddedRow"_Str,  &vEntryEmbeddedRow, false);
-  vAddPrimitive("entry.same"_Str,         &vEntrySame,       false);
+  vAddPrimitive("entry.same"_Str,         &vEntrySame,        false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -78,9 +78,9 @@ void Task::vEntryMatches(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* entry.toDataRow -- return row from entry                                         */
+/* entry.toDataRow -- return row from entry                                   */
 /*----------------------------------------------------------------------------*/
-void Task::vEntryRow(MP_Task mpTask)
+void Task::vEntryToDataRow(MP_Task mpTask)
 {
   ENTRY("vEntryRow"_Str);
   
@@ -99,6 +99,7 @@ void Task::vEntryRow(MP_Task mpTask)
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the table from the index
   Table* pTable = pIndex->pTable();
   
@@ -121,7 +122,7 @@ void Task::vEntryRow(MP_Task mpTask)
   // hiddenIndex should have only one column
   ASSERT(pHiddenIndex->pIdxColVec()->nItems() == 1);
   
-  // get the 0th column of teh hidden index
+  // get the 0th column of the hidden index
   Column* pColumn = pHiddenIndex->pIdxColVec()->pGet(0);
   ASSERT(pColumn->iColumnNo() == -1);
   
