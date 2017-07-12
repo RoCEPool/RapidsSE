@@ -125,7 +125,7 @@ void Task::vIndexBuffer(MP_Task mpTask)
   bn nBuffer = pIndexBuffer->nBufferNo();
   vTrace("L0 Buffer: %lld\n"_Str, *nBuffer);
   
-  pIndexBuffer->vShow();
+  //pIndexBuffer->vShow();
   
   mpTask->m_pDataStack->vPushObject(pIndexBuffer);
   
