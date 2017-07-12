@@ -457,8 +457,8 @@ tp: makingIndex
   // create a temporary buffer for the results
   pIndex entryBuffer::create to pResultBuffer
 
-  // position in the first index buffer
-  iPartitionNo pIndex index.positionFirst to pIndexBuffer
+  // position at the index buffer
+  sUpper iPartitionNo pIndex index.buffer to pIndexBuffer
 
   // position at the upper bound entry
   sUpper pIndexBuffer pIndex index.position to pUpperEntry
@@ -1225,8 +1225,8 @@ tp: selectIndex
   "Creating a tempIndexBuffer" .
   indexPtr entryBuffer::create to tempEntryBuffer
 
-  // position in the first index buffer
-  iPartitionNo indexPtr index.positionFirst
+  // position in the index buffer with upper
+  upper iPartitionNo indexPtr index.buffer
   to indexBuffer
 
   // position at the upper bound entry
