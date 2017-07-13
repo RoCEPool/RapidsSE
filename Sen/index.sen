@@ -458,10 +458,10 @@ tp: makingIndex
   pIndex entryBuffer::create to pResultBuffer
 
   // position at the index buffer
-  sUpper iPartitionNo pIndex index.buffer to pIndexBuffer
+  //sUpper iPartitionNo pIndex index.buffer to pIndexBuffer
 
   // position at the upper bound entry
-  sUpper pIndexBuffer pIndex index.position to pUpperEntry
+  //sUpper pIndexBuffer pIndex index.position to pUpperEntry
 
   // get the indexBuffer looking for the lower key
   sLower iPartitionNo pIndex index.buffer to pIndexBuffer
@@ -1494,12 +1494,15 @@ tp: selectIndex
   pIndex entryBuffer::create to pResultBuffer
 
   // position the upper key
-  sUpper iPartitionNo pIndex index.buffer   to pIndexBuffer
-  sUpper pIndexBuffer pIndex index.position to pUpperEntry
+  //sUpper iPartitionNo pIndex index.buffer   to pIndexBuffer
+  //sUpper pIndexBuffer pIndex index.position to pUpperEntry
 
   // position the lower key
-  sLower iPartitionNo pIndex index.buffer   to pIndexBuffer
-  sLower pIndexBuffer pIndex index.position to pIndexEntry
+  //sLower iPartitionNo pIndex index.buffer   to pIndexBuffer
+  //sLower pIndexBuffer pIndex index.position to pIndexEntry
+
+  iPartitionNo pIndex index.positionFirst to pIndexBuffer
+  pIndexBuffer entryBuffer.firstEntry to pIndexEntry
 
   // did we find an entry ?
   pIndexEntry not if

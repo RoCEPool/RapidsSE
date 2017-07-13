@@ -373,7 +373,8 @@ timer: pIdxSelectTimer
       pPlanner Planner.highKey@
       //"rangeSelectIdxTask"
       "groupByIdxTask_RH"
-      pPlanner Planner.indexNm@
+      //pPlanner Planner.indexNm@
+      "hidden"
       //selectIndex
       groupByIndex_RH
     endof
