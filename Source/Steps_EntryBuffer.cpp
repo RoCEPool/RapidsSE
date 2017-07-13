@@ -356,7 +356,7 @@ void Task::vEntryBufferIterate(MP_Task mpTask)
     //vTrace("BitArray: %lld bits on\n"_Str,pBitArray->nBitsOn());
     Entry* pRowEntry = pRowBuffer->pFirstEntry();
     while ( (pRowEntry = pRowBuffer->pNextEntry(pRowEntry)) ) {
-      //pGroupByOp->vApplyEntry(pRowEntry);
+      pGroupByOp->vApplyEntry(pRowEntry);
     }
   }
     
