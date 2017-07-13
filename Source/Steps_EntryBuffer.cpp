@@ -329,8 +329,8 @@ void Task::vEntryBufferIterate(MP_Task mpTask)
     nRows++;
     
     // test for end
-    if (pIndexEntry == pUpperIndexEntry)
-      break;
+    //if (pIndexEntry == pUpperIndexEntry)
+    //  break;
     
     // move to next entry
     pIndexEntry = pIndexBuffer->pNextEntry(pIndexEntry);
