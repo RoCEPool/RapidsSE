@@ -42,6 +42,7 @@ pFINALIZE *gpFinalize[]
   /* 14 */ &Finalize::vUndefined,         // CN_ATTACHMAP
   
   /*    */ &Finalize::vUndefined,         // CN_BITARRAY
+  /*    */ &Finalize::vUndefined,         // CN_BITMAP
   /* 15 */ &Finalize::vUndefined,         // CN_BUFFERPOOL
   /* 16 */ &Finalize::vUndefined,         // CN_BPA
   

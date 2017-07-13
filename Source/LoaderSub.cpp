@@ -193,8 +193,9 @@ bool LoaderSub::bFetchRecord(void)
   
   // fetch first record from chunk just read
   m_aRecord = m_pLoadChunk->aNextRecord(m_iLength);
-  if (m_aRecord)
+  if (m_aRecord) {
     return true;
+  }
   
   return false;
 }
@@ -266,8 +267,27 @@ bool LoaderSub::bInsertRow(void)
   // get working buffer
   EntryBuffer* pEntryBuffer = m_pEntryBuffer[m_iPartition];
   
+  // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!truncate!!
+  
+  i8 iLength = m_iLength;
+  
+  char* aCursor = (char*)m_aRecord;
+  bool bClip = StrLib::bFind(&aCursor,'|',13);
+  iLength = nSub(aCursor,m_aRecord) - 1;
+
+  char xInsBuf[256];
+  StrLib::vCopyLen(xInsBuf,(char*)m_aRecord,iLength);
+  //vTrace("Inserting: %s %lld\n"_Str,xInsBuf,iLength);
+  
   // insert row into working buffer
-  bool b = pEntryBuffer->bInsertEntry(m_pTxRef->iTxId(),m_aRecord,m_iLength);
+  bool b = pEntryBuffer->bInsertEntry(m_pTxRef->iTxId(),m_aRecord,iLength);
+  
+  // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+  // insert row into working buffer
+  //bool b = pEntryBuffer->bInsertEntry(m_pTxRef->iTxId(),m_aRecord,m_iLength);
+  
+  // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   
   return b;
 }
@@ -397,6 +417,27 @@ bool LoaderSub::bValidateRow(i8& i_Column)
   }
   
   return bValid;
+}
+
+/*----------------------------------------------------------------------------*/
+/* truncate record from given field                                           */
+/*----------------------------------------------------------------------------*/
+void LoaderSub::vTruncateRecord(i8 iField)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
+  
+  char* aCursor = (char*)m_aRecord;
+  
+  vTrace("Before %s\n"_Str,m_aRecord);
+  
+  bool b = StrLib::bFind(&aCursor,'|',iField);
+  
+  if (b) {
+    *aCursor = '\0';
+    m_iLength = StrLib::iLength((char*)m_aRecord);
+
+    vTrace("After %s\n"_Str,m_aRecord);
+  }
 }
 
 /*----------------------------------------------------------------------------*/

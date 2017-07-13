@@ -66,6 +66,8 @@ i8            gxMemZero[CN_ENUMS];
 
 Atomic        gzPlanId;
 
+BitMap*       gpBitMap;
+
 /*----------------------------------------------------------------------------*/
 /* execute arguments                                                          */
 /*----------------------------------------------------------------------------*/
@@ -74,6 +76,8 @@ void RapidsSE::vExecute(void)
   gxDdlLock.vInitLock(LK_DDL);
   
   gxDicLock.vInitLock(LK_DIC);
+  
+  gpBitMap = new BitMap;
   
   try {
     if (gxArguments.m_bCommand) {

@@ -23,6 +23,7 @@ extern NP_Task         gnpRootTask;
 extern Lock            gxDdlLock;
 extern Lock            gxDicLock;
 extern SEitfList*      gpSEitfList;
+extern BitMap*         gpBitMap;
 
 // indexbuffer: ////////////////////////////////////////////////////////////////
 
@@ -319,8 +320,9 @@ void Task::vEntryBufferIterate(MP_Task mpTask)
     
     BitArray* pBitArray = pDataBuffer->pBitArray();
     ASSERT(pBitArray);
-    
     pBitArray->vSetOn(iRow);
+
+    //gpBitMap->vSetOn(*nBufferNo,iRow);
     
     // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
 
@@ -339,7 +341,25 @@ void Task::vEntryBufferIterate(MP_Task mpTask)
       pIndexEntry = pIndexBuffer->pNextEntry(pIndexBuffer->pHead());
     }
   }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+  Table* pTable = pIndex->pTable();
+  Slots* pSlots = pTable->pSlots();
+  Partition* pPartition = pSlots->pPartition(0);
+  IndexData* pIndexData = pPartition->pHiddenIndexData();
+  
+  EntryBuffer* pRowBuffer = pIndexData->pFirstBuffer();
+  
+  while ( (pRowBuffer = pRowBuffer->pNextBuffer()) ) {
+    BitArray* pBitArray = pRowBuffer->pBitArray();
+    //vTrace("BitArray: %lld bits on\n"_Str,pBitArray->nBitsOn());
+    Entry* pRowEntry = pRowBuffer->pFirstEntry();
+    while ( (pRowEntry = pRowBuffer->pNextEntry(pRowEntry)) ) {
+      //pGroupByOp->vApplyEntry(pRowEntry);
+    }
+  }
+    
   vTrace("Rows processed: %lld\n"_Str,nRows);
   
   EXIT();

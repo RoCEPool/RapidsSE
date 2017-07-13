@@ -109,7 +109,7 @@ void Task::vLoaderSubEnd(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* loaderSub.insertRow -- fetch next record from file being loaded            */
+/* loaderSub.fetchRecord -- fetch next record from file being loaded          */
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderSubFetchRecord(MP_Task mpTask)
 {
@@ -117,10 +117,16 @@ void Task::vLoaderSubFetchRecord(MP_Task mpTask)
   
   Object* pPtrLoader;
   if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
-    THROW_INVALID_DSTACK("loaderSub.insertRow"_Str);
+    THROW_INVALID_DSTACK("loaderSub.fetchRecord"_Str);
   LoaderSub* pLoaderSub = _pLoaderSub(pPtrLoader);
   
   bool bFetched = pLoaderSub->bFetchRecord();
+  
+  //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  
+  //pLoaderSub->vTruncateRecord(13);
+  
+  //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   
   mpTask->m_pDataStack->vPushInt(bFetched);
   

@@ -37,6 +37,7 @@ using namespace Structures;
 
 #include "Array.hpp"
 #include "BitArray.hpp"
+#include "BitMap.hpp"
 #include "Vector.hpp"
 
 #include "GraphNode.hpp"
