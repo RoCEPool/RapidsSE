@@ -304,8 +304,9 @@ void Task::vEntryBufferIterate(MP_Task mpTask)
   while (pIndexBuffer && pIndexEntry) {
    
     // apply
-    Entry* pLineItemEntry = GroupBy::pToLineItemEntry(pIndex,pIndexEntry);
-    pGroupByOp->vApplyEntry(pLineItemEntry);
+    //Entry* pLineItemEntry = GroupBy::pToLineItemEntry(pIndex,pIndexEntry);
+    //pGroupByOp->vApplyEntry(pLineItemEntry);
+    pGroupByOp->vApplyEntry(pIndexEntry);
     
     // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     // set bit on
