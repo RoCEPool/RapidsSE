@@ -304,23 +304,23 @@ void Task::vEntryBufferIterate(MP_Task mpTask)
   while (pIndexBuffer && pIndexEntry) {
    
     // apply
-    // Entry* pLineItemEntry = GroupBy::pToLineItemEntry(pIndex,pIndexEntry);
-    //pGroupByOp->vApplyEntry(pLineItemEntry);
+    Entry* pLineItemEntry = GroupBy::pToLineItemEntry(pIndex,pIndexEntry);
+    pGroupByOp->vApplyEntry(pLineItemEntry);
     
     // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     // set bit on
     
-    Id xId = pIndexEntry->xId();
-    
-    bn nBufferNo = xId.iBuffer();
-    i8 iRow = xId.iRow();
-    
-    EntryBuffer* pDataBuffer = _pEntryBuffer(gpBufferPool->pToBuffer(nBufferNo));
-    ASSERT(pDataBuffer);
-    
-    BitArray* pBitArray = pDataBuffer->pBitArray();
-    ASSERT(pBitArray);
-    pBitArray->vSetOn(iRow);
+//    Id xId = pIndexEntry->xId();
+//    
+//    bn nBufferNo = xId.iBuffer();
+//    i8 iRow = xId.iRow();
+//    
+//    EntryBuffer* pDataBuffer = _pEntryBuffer(gpBufferPool->pToBuffer(nBufferNo));
+//    ASSERT(pDataBuffer);
+//    
+//    BitArray* pBitArray = pDataBuffer->pBitArray();
+//    ASSERT(pBitArray);
+//    pBitArray->vSetOn(iRow);
 
     //gpBitMap->vSetOn(*nBufferNo,iRow);
     
@@ -344,22 +344,22 @@ void Task::vEntryBufferIterate(MP_Task mpTask)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Table* pTable = pIndex->pTable();
-  Slots* pSlots = pTable->pSlots();
-  Partition* pPartition = pSlots->pPartition(0);
-  IndexData* pIndexData = pPartition->pHiddenIndexData();
+//  Table* pTable = pIndex->pTable();
+//  Slots* pSlots = pTable->pSlots();
+//  Partition* pPartition = pSlots->pPartition(0);
+//  IndexData* pIndexData = pPartition->pHiddenIndexData();
+//  
+//  EntryBuffer* pRowBuffer = pIndexData->pFirstBuffer();
+//  
+//  while ( (pRowBuffer = pRowBuffer->pNextBuffer()) ) {
+//    BitArray* pBitArray = pRowBuffer->pBitArray();
+//    //vTrace("BitArray: %lld bits on\n"_Str,pBitArray->nBitsOn());
+//    Entry* pRowEntry = pRowBuffer->pFirstEntry();
+//    while ( (pRowEntry = pRowBuffer->pNextEntry(pRowEntry)) ) {
+//      pGroupByOp->vApplyEntry(pRowEntry);
+//    }
+//  }
   
-  EntryBuffer* pRowBuffer = pIndexData->pFirstBuffer();
-  
-  while ( (pRowBuffer = pRowBuffer->pNextBuffer()) ) {
-    BitArray* pBitArray = pRowBuffer->pBitArray();
-    //vTrace("BitArray: %lld bits on\n"_Str,pBitArray->nBitsOn());
-    Entry* pRowEntry = pRowBuffer->pFirstEntry();
-    while ( (pRowEntry = pRowBuffer->pNextEntry(pRowEntry)) ) {
-      pGroupByOp->vApplyEntry(pRowEntry);
-    }
-  }
-    
   vTrace("Rows processed: %lld\n"_Str,nRows);
   
   EXIT();
