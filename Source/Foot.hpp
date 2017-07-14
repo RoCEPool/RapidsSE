@@ -5,7 +5,7 @@
 
 namespace CorrectnessAlgebra
 {
-  static const u8 C_FOOT = 0x245245544F4F4624; // $FOOTER$
+  static const u8 C_FOOT = 0x245245544F4F4624; // $C_FOOTER$
 
   class Foot
   {

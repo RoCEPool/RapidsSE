@@ -91,7 +91,7 @@ Str* Buffer::aLastUsableByte(void)
   Str* aLastByte = reinterpret_cast<Str*>(this) + C_SIZE_POOL_BUFFER - 1;
   
   // last byte before footer
-  Str* aLastUsableByte = aLastByte - sizeof(FOOTER);
+  Str* aLastUsableByte = aLastByte - sizeof(C_FOOTER);
   
   return aLastUsableByte;
 }
