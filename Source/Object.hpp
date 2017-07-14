@@ -5,13 +5,9 @@
 
 namespace CorrectnessAlgebra
 {
-  class Object : public Magic
+  class Object :public Magic
   {
   private:
-    union {
-      u8   m_uMagic;
-      char m_sMagic[8];
-    };
     eCN  m_eClass;
     bool m_bWordBody;
     char m_sFiller[3];

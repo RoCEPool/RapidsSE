@@ -7,7 +7,12 @@ namespace CorrectnessAlgebra
 {
   class Magic
   {
-  private:
+  protected:
+  union {
+    u8   m_uMagic;
+    char m_sMagic[8];
+  };
+  
   public:
     Magic(void);
     ~Magic(void);
