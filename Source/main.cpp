@@ -44,6 +44,11 @@ int main(int argc, const char* argv[])
          sizeof(Value),sizeof(IntVal),sizeof(ValWrk)
   );
   */
+  
+  
+  vInfo("sizeof(Object) %lu; \n"_Str, sizeof(Object));
+        
+
   Str* aRelDbg;
 #ifdef _DEBUG
   aRelDbg = "debug"_Str;

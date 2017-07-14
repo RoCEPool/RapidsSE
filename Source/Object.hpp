@@ -5,10 +5,10 @@
 
 namespace CorrectnessAlgebra
 {
-  class Object :public Magic
+  class Object :public Magic,
+                public Class
   {
   private:
-    eCN  m_eClass;
     bool m_bWordBody;
     char m_sFiller[3];
   

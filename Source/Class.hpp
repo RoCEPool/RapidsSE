@@ -3,6 +3,18 @@
 /*============================================================================*/
 #pragma once
 
+namespace CorrectnessAlgebra
+{
+  class Class
+  {
+  protected:
+    eCN  m_eClass;
+  
+  public:
+  Class(void);
+  ~Class(void);
+  };
+}
 
 /*============================================================================*/
 /* end                                                                        */
