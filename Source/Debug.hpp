@@ -47,42 +47,6 @@ namespace Debugging
   }
   
   /*--------------------------------------------------------------------------*/
-  /* check the object is of a known class                                     */
-  /*--------------------------------------------------------------------------*/
-  #ifdef __CLASS_CHECK
-    #define _class_(arg) ASSERT(eClass() == arg);
-    #define _class2_(arg1,arg2) ASSERT(eClass() == arg1 || eClass() == arg2);
-    #define _class3_(arg1,arg2,arg3) \
-    ASSERT(eClass() == arg1 || eClass() == arg2 || eClass() == arg3);
-  #else
-    #define _class_(arg)
-    #define _class2_(arg1,arg2)
-    #define _class3_(arg1,arg2,arg3)
-  #endif
-  
-  /*--------------------------------------------------------------------------*/
-  /* check the object has a footer marker as its last word                    */
-  /*--------------------------------------------------------------------------*/
-  #ifdef __FOOTER_CHECK
-    #define _footer_() aFooter()->vAssertFooter();
-    #define _hazard_() m_xHazard.vAssertFooter();
-    #define _setFooter_() aFooter()->vSetFooter();
-  #else
-    #define _footer_()
-    #define _hazard_()
-    #define _setFooter_()
-  #endif
-  
-  /*--------------------------------------------------------------------------*/
-  /* check the object has a magic marker as its first word                    */
-  /*--------------------------------------------------------------------------*/
-  #ifdef __MAGIC_CHECK
-    #define _magic_() ASSERT(iMagic() == C_MAGIC);
-  #else
-    #define _magic_()
-  #endif
-  
-  /*--------------------------------------------------------------------------*/
   /* initialise memory to zero                                                */
   /*--------------------------------------------------------------------------*/
   #ifdef __MEMORY_ZERO

@@ -42,6 +42,19 @@ namespace CorrectnessAlgebra
     return &m_xFooter; \
   }
 
+/*--------------------------------------------------------------------------*/
+/* check the object has a footer marker as its last word                    */
+/*--------------------------------------------------------------------------*/
+#ifdef __FOOTER_CHECK
+  #define _footer_() aFooter()->vAssertFooter();
+  #define _hazard_() m_xHazard.vAssertFooter();
+  #define _setFooter_() aFooter()->vSetFooter();
+#else
+  #define _footer_()
+  #define _hazard_()
+  #define _setFooter_()
+#endif
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
