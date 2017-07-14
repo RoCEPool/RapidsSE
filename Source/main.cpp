@@ -47,7 +47,7 @@ int main(int argc, const char* argv[])
   
   
   vInfo("sizeof(Object) %lu; \n"_Str, sizeof(Object));
-        
+  assert(sizeof(Object) == 16);
 
   Str* aRelDbg;
 #ifdef _DEBUG
