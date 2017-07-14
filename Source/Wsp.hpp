@@ -9,7 +9,7 @@
  
  */
 
-namespace Magic
+namespace MagicAlgebra
 {
   class Wsp
   {

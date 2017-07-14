@@ -9,7 +9,7 @@
  
  */
 
-namespace Magic
+namespace MagicAlgebra
 {
   template<int LENGTH>
   class WspFx2 : public Wsp
@@ -38,7 +38,7 @@ namespace Magic
   };
 }
 
-using namespace Magic;
+using namespace MagicAlgebra;
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */

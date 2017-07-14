@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Magic
+namespace MagicAlgebra
 {
   template <class OBJECT, eCN eClassNo>
   class NP

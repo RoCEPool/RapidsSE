@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Magic
+namespace MagicAlgebra
 {
   static const u8 C_FOOT = 0x245245544F4F4624; // $FOOTER$
 

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Magic.cpp -- Magic Functions                                               */
+/* MagicAlgebra.cpp -- Correctness Functions                                  */
 /*============================================================================*/
 
 #include "MagicAlgebra.h"
@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* things to check at boot time                                               */
 /*----------------------------------------------------------------------------*/
-void Magic::vCheckAssumptions(void)
+void MagicAlgebra::vCheckAssumptions(void)
 {
   ASSERT(4  == sizeof(eCN));
   ASSERT(16 == sizeof(Object));

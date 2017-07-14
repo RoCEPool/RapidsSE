@@ -7,7 +7,7 @@
 #include "SeHistory.hpp"
 #include "Error.hpp"
 
-using namespace Magic;
+using namespace MagicAlgebra;
 
 class SePrompt : public Buffer
 {

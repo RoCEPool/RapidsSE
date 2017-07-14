@@ -7,12 +7,12 @@
 
 //-----------------------------------------------------------------------------
 
-namespace Magic
+namespace MagicAlgebra
 {
   void vCheckAssumptions(void);
 }
 
-using namespace Magic;
+using namespace MagicAlgebra;
 
 //-----------------------------------------------------------------------------
 

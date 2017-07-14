@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Magic
+namespace MagicAlgebra
 {
   class Object
   {
