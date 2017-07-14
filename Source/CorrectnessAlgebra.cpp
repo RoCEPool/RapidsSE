@@ -1,13 +1,13 @@
 /*============================================================================*/
-/* MagicAlgebra.cpp -- Correctness Functions                                  */
+/* CorrectnessAlgebra.cpp -- Correctness Functions                                  */
 /*============================================================================*/
 
-#include "MagicAlgebra.h"
+#include "CorrectnessAlgebra.h"
 
 /*----------------------------------------------------------------------------*/
 /* things to check at boot time                                               */
 /*----------------------------------------------------------------------------*/
-void MagicAlgebra::vCheckAssumptions(void)
+void CorrectnessAlgebra::vCheckAssumptions(void)
 {
   ASSERT(4  == sizeof(eCN));
   ASSERT(16 == sizeof(Object));

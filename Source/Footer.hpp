@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace MagicAlgebra
+namespace CorrectnessAlgebra
 {
   static const u8 FOOTER = 0x245245544F4F4624; // $FOOTER$
 

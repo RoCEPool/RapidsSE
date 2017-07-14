@@ -9,7 +9,7 @@
  
  */
 
-namespace MagicAlgebra
+namespace CorrectnessAlgebra
 {
   class WspVbl
   {

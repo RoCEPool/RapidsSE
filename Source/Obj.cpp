@@ -2,7 +2,7 @@
 /* Obj.hpp -- Base Class for Proper Objects (short form)                      */
 /*============================================================================*/
 
-#include "MagicAlgebra.h"
+#include "CorrectnessAlgebra.h"
 
 #include "StorageEngine.h"
 

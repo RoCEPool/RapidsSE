@@ -2,7 +2,7 @@
 /* Foot.hpp -- Foot of instances (short form)                               */
 /*============================================================================*/
 
-#include "MagicAlgebra.h"
+#include "CorrectnessAlgebra.h"
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */

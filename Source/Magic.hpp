@@ -3,9 +3,9 @@
 /*============================================================================*/
 #pragma once
 
-#include "MagicAlgebra.h"
+#include "CorrectnessAlgebra.h"
 
-namespace MagicAlgebra
+namespace CorrectnessAlgebra
 {
   class Magic
   {

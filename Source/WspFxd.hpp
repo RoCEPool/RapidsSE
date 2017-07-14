@@ -9,7 +9,7 @@
  
  */
 
-namespace MagicAlgebra
+namespace CorrectnessAlgebra
 {
   template<int LENGTH>
   class WspFxd : public Wsp
@@ -38,7 +38,7 @@ namespace MagicAlgebra
   };
 }
 
-using namespace MagicAlgebra;
+using namespace CorrectnessAlgebra;
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */

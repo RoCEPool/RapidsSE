@@ -2,7 +2,7 @@
 /* WspVbl.cpp -- variable-sized workspace                                     */
 /*============================================================================*/
 
-#include "MagicAlgebra.h"
+#include "CorrectnessAlgebra.h"
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */

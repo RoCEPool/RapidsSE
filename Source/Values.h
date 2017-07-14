@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "MagicAlgebra.h"
+#include "CorrectnessAlgebra.h"
 
 //-----------------------------------------------------------------------------
 

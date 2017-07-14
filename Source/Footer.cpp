@@ -2,7 +2,7 @@
 /* Footer.cpp -- Footer for Concrete Classes                                  */
 /*============================================================================*/
 
-#include "MagicAlgebra.h"
+#include "CorrectnessAlgebra.h"
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
