@@ -16,8 +16,10 @@ using namespace Magic;
 
 //-----------------------------------------------------------------------------
 
+#include "Class.hpp"
 #include "Foot.hpp"
 #include "Footer.hpp"
+#include "Magic.hpp"
 #include "Obj.hpp"
 #include "Object.hpp"
 #include "Wsp.hpp"
