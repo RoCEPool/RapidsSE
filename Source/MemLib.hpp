@@ -5,8 +5,6 @@
 
 namespace Base
 {
-  static const u8 MAGIC = 0x4F4E434947414D5E; // ^MAGICNO
-  
   static const u8 C_SCRIBBLE_PATTERN = 0x21454D54494E4921; // !INITME!
   static const u8 C_MEMORY_MARKER0   = 0x0706050403020100;
   static const u8 C_MEMORY_MARKER1   = 0x0706050403020101;

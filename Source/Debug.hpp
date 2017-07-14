@@ -77,7 +77,7 @@ namespace Debugging
   /* check the object has a magic marker as its first word                    */
   /*--------------------------------------------------------------------------*/
   #ifdef __MAGIC_CHECK
-    #define _magic_() ASSERT(iMagic() == MAGIC);
+    #define _magic_() ASSERT(iMagic() == C_MAGIC);
   #else
     #define _magic_()
   #endif

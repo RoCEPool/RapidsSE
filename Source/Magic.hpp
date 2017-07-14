@@ -5,7 +5,9 @@
 
 namespace CorrectnessAlgebra
 {
-  class Magic
+  static const u8 C_MAGIC = 0x4F4E434947414D5E; // ^MAGICNO
+  
+ class Magic
   {
   protected:
   union {

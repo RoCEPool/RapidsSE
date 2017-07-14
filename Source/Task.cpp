@@ -411,7 +411,7 @@ void Task::vAddConstants(void)
   vAddConstant("largebuffersize"_Str,  C_SIZE_POOL_BUFFER);
   vAddConstant("mediumbuffersize"_Str, C_SIZE_MEDIUM_OBJECT);
   vAddConstant("smallbuffersize"_Str,  C_SIZE_SMALL_OBJECT);
-  vAddConstant("magic"_Str,            MAGIC);
+  vAddConstant("magic"_Str,            C_MAGIC);
   
   // Arguments
   vAddConstant("args.bgtasks"_Str,           gxArguments.m_bBgTasks);
@@ -1798,7 +1798,7 @@ void Task::vStackContents(Stack* pStack, StrVal& sStackContents)
                                     pTask->sName().s());
         }
         else {
-          if (pPtr->iMagic() == MAGIC && pPtr->eClass() < CN_ENUMS)
+          if (pPtr->iMagic() == C_MAGIC && pPtr->eClass() < CN_ENUMS)
             sStackContents.vCatSprint("^%s=%p"_Str,
                                       aCN[ePtrClass],
                                       pPtr);
