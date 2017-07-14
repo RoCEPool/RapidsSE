@@ -2,7 +2,7 @@
 /* Object.cpp - root class for objects in buffer pool                         */
 /*============================================================================*/
 
-#include "Magic.h"
+#include "MagicAlgebra.h"
 
 #include "StorageEngine.h"
 
