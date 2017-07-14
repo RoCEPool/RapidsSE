@@ -3,14 +3,11 @@
 /*============================================================================*/
 #pragma once
 
-#include "CorrectnessAlgebra.h"
-
 namespace CorrectnessAlgebra
 {
   class Magic
   {
   private:
-    
   public:
     Magic(void);
     ~Magic(void);

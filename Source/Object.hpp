@@ -5,7 +5,7 @@
 
 namespace CorrectnessAlgebra
 {
-  class Object
+  class Object : public Magic
   {
   private:
     union {
