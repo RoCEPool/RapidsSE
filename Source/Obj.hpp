@@ -5,7 +5,7 @@
 
 namespace CorrectnessAlgebra
 {
-  class Obj
+  class Obj : public Magic
   {
   private:
     union {
@@ -18,11 +18,7 @@ namespace CorrectnessAlgebra
   
   public:
     Obj(eCN eClass);
-    void vInitMagic(void);
-  
-    void  vSetMagic(void);
-    i8    iMagic(void) const;
-  
+    
     Str*  aClass(void);
     eCN eClass(void);
     void  vClass(eCN eClassNo);
