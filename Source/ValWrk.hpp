@@ -31,7 +31,8 @@ namespace Values
     public:
     void* operator new(size_t);
     ValWrk(void);
-    
+    ~ValWrk(void);
+  
     void operator =(Bcd xBcd);
     void operator =(Bol xBol);
     void operator =(Dte xDte);
