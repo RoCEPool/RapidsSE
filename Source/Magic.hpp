@@ -19,12 +19,8 @@ namespace CorrectnessAlgebra
     Magic(void);
     ~Magic(void);
   
-  
     void  vMagic(void);
     i8    iMagic(void) const;
-  
-    void vAssertFoot(void) const;
-    void vSetFoot(void);
   };
 }
 

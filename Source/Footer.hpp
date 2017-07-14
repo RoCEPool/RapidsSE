@@ -24,14 +24,6 @@ namespace CorrectnessAlgebra
   };
 }
 
-//template <class C>
-//Footer* <C>::aFooter(void)
-//{
-//  _precondition_(_MAGIC_);
-//  
-//  return &m_xFooter;
-//}
-
 /*----------------------------------------------------------------------------*/
 /* macro for standard aFooter() function                                      */
 /*----------------------------------------------------------------------------*/
