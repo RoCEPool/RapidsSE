@@ -16,7 +16,9 @@ using namespace Magic;
 
 //-----------------------------------------------------------------------------
 
+#include "Foot.hpp"
 #include "Footer.hpp"
+#include "Obj.hpp"
 #include "Object.hpp"
 #include "Wsp.hpp"
 #include "WspFxd.hpp"
