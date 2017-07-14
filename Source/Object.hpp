@@ -15,24 +15,11 @@ namespace CorrectnessAlgebra
   public:
     Object(eCN eClass);
   
-  
-    Str*  aClass(void);
-    eCN eClass(void);
-    void  vClass(eCN eClassNo);
-
     bool bWordBody(void);
     void vWordBody(bool bIsWordBody);
     
     Footer* aFooter(void);
   };
-  
-  /*--------------------------------------------------------------------------*/
-  /* get class                                                                */
-  /*--------------------------------------------------------------------------*/
-  inline eCN Object::eClass(void)
-  {
-    return m_eClass;
-  }
 }
 
 /*============================================================================*/

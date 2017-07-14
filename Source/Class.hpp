@@ -13,7 +13,21 @@ namespace CorrectnessAlgebra
   public:
   Class(void);
   ~Class(void);
+  
+  Str* aClass(void);
+  eCN  eClass(void);
+  void vClass(eCN eClassNo);
+  
+
   };
+  
+/*--------------------------------------------------------------------------*/
+/* get class                                                                */
+/*--------------------------------------------------------------------------*/
+inline eCN Class::eClass(void)
+{
+  return m_eClass;
+}
 }
 
 /*============================================================================*/

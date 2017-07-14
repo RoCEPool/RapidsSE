@@ -454,7 +454,7 @@ bool Heap::bExtendHeap(void)
   for (pFreeChunk = pHeapBuffer->pFirstChunk();
        pFreeChunk;
        pFreeChunk = pHeapBuffer->pNextChunk(pFreeChunk,m_iObjectSize)) {
-    //pFreeChunk->vSetMagic();
+    //pFreeChunk->vMagic();
     new(pFreeChunk) FreeChunk;
     vPushFree(pFreeChunk);
     //vTrace("bExtendHeap %p : %p\n"_Str,pHeapBuffer,pFreeChunk);

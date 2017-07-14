@@ -127,7 +127,7 @@ void Task::vObjectMagicMark(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(pObject) )
     THROW_INVALID_RSTACK("object.magic!"_Str);
   
-  pObject->vSetMagic();
+  pObject->vMagic();
   
   EXIT();
 }
