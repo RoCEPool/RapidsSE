@@ -14,10 +14,7 @@ namespace CorrectnessAlgebra
   
   public:
     Object(eCN eClass);
-    void vInitMagic(void);
   
-    void  vSetMagic(void);
-    i8    iMagic(void) const;
   
     Str*  aClass(void);
     eCN eClass(void);

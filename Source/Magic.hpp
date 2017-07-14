@@ -16,7 +16,12 @@ namespace CorrectnessAlgebra
   public:
     Magic(void);
     ~Magic(void);
-    
+  
+  
+    void vInitMagic(void);
+    void  vSetMagic(void);
+    i8    iMagic(void) const;
+  
     void vAssertFoot(void) const;
     void vSetFoot(void);
   };
