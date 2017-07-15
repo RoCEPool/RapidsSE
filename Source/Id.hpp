@@ -11,10 +11,10 @@ namespace DBobjects
   {
   private:
   struct {
-    u8 m_uBuffer : 48; // which buffer
-    u8 m_uRow    : 16; // which row in buffer
-  };
-  
+    u8 m_uBuffer : 48; // which buffer                  could be: 24
+    u8 m_uRow    : 16; // which row in buffer                   : 16
+  };                   //                                         --
+                       //                                         40 bits
   public:
     void* operator new(size_t);
     void* operator new(size_t, Id*);
