@@ -19,7 +19,7 @@ namespace CorrectnessAlgebra
     Magic(void);
     ~Magic(void);
   
-    void  vMagic(void);
+    void  vSetMagic(void);
     i8    iMagic(void) const;
   };
 }

@@ -329,8 +329,8 @@ void RapidsSE::vInitJumboHeap(void)
   Buffer* pJumbo = nullptr;
   while ( (pJumbo = gpBufferPool->pNextJumbo(pJumbo)) ) {
 
-    pJumbo->vMagic();
-    pJumbo->vClass(CN_FREECHUNK);
+    pJumbo->vSetMagic();
+    pJumbo->vSetClass(CN_FREECHUNK);
 
     gpJumboHeap->vAddFree((FreeChunk*)pJumbo);
   }

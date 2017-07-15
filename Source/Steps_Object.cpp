@@ -73,7 +73,7 @@ void Task::vObjectClassStore(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(eClassNo) )
     THROW_INVALID_DSTACK("object.object.class!"_Str);
   
-  pObject->vClass(eClassNo);
+  pObject->vSetClass(eClassNo);
   
   EXIT();
 }
@@ -127,7 +127,7 @@ void Task::vObjectMagicMark(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(pObject) )
     THROW_INVALID_RSTACK("object.magic!"_Str);
   
-  pObject->vMagic();
+  pObject->vSetMagic();
   
   EXIT();
 }

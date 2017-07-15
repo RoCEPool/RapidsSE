@@ -29,7 +29,7 @@ Str* Class::aClass(void)
 /*----------------------------------------------------------------------------*/
 /* set class                                                                  */
 /*----------------------------------------------------------------------------*/
-void Class::vClass(eCN eClass)
+void Class::vSetClass(eCN eClass)
 {
   m_eClass = eClass;
 }

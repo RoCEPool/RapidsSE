@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Foot.hpp -- Foot of instances (short form)                               */
+/* Footer_Emb.hpp -- Footer of embedded instances (short form)                */
 /*============================================================================*/
 
 #include "CorrectnessAlgebra.h"
@@ -7,33 +7,33 @@
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Foot::Foot(void)
+Footer_Emb::Footer_Emb(void)
 {
-  m_uFoot = C_FOOT;
+  m_uFooter = C_FOOTER_EMB;
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Foot::~Foot(void)
+Footer_Emb::~Footer_Emb(void)
 {
-  vAssertFoot();
+  vAssertFooter();
 }
 
 /*----------------------------------------------------------------------------*/
-/* ASSERT Foot                                                                */
+/* ASSERT Footer_Emb                                                          */
 /*----------------------------------------------------------------------------*/
-void Foot::vAssertFoot(void) const
+void Footer_Emb::vAssertFooter(void) const
 {
-  ASSERT(m_uFoot == C_FOOT);
+  ASSERT(m_uFooter == C_FOOTER_EMB);
 }
 
 /*----------------------------------------------------------------------------*/
-/* set Foot                                                                   */
+/* set Footer_Emb                                                             */
 /*----------------------------------------------------------------------------*/
-void Foot::vSetFoot(void)
+void Footer_Emb::vSetFooter(void)
 {
-  m_uFoot = C_FOOT;
+  m_uFooter = C_FOOTER_EMB;
 }
 
 /*============================================================================*/

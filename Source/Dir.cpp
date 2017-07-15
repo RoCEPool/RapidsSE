@@ -146,7 +146,7 @@ void Dir::vInit(void)
 {
   _precondition_(_MAGIC_,CN_DIR,_FOOTER_);
   
-  m_xSysCall.vMagic();
+  m_xSysCall.vSetMagic();
   
   m_xDirPath = ""_Str;
   m_xSysCall.vClear();

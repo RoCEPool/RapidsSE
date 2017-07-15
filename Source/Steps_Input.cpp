@@ -53,7 +53,7 @@ void Task::vInputAccept(MP_Task mpTask)
   ENTRY("vInputAccept"_Str);
   
   ValWrk xWsp;
-  xWsp.vClass(CN_STRVAL);
+  xWsp.vSetClass(CN_STRVAL);
   
   char* y = _pStrVal(&xWsp)->s();
   

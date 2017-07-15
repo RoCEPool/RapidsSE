@@ -278,7 +278,7 @@ void File::vInit(void)
 {
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
 
-  m_xSysCall.vMagic();
+  m_xSysCall.vSetMagic();
   
   //m_sFilePath
   //m_sOpenMode

@@ -159,12 +159,12 @@ void Heap::vFree(Object* pObject)
   if (gpBufferPool->bDontFree()) {
     
     if (CN_ROWBUFFER != eAllocClass) {
-      pObject->vClass(CN_FREEDNOT);
+      pObject->vSetClass(CN_FREEDNOT);
       return;
     }
     
     if ( ! gpBufferPool->bFreeRB() ) {
-      pObject->vClass(CN_FREEDNOT);
+      pObject->vSetClass(CN_FREEDNOT);
       return;
     }
   }
@@ -454,7 +454,7 @@ bool Heap::bExtendHeap(void)
   for (pFreeChunk = pHeapBuffer->pFirstChunk();
        pFreeChunk;
        pFreeChunk = pHeapBuffer->pNextChunk(pFreeChunk,m_iObjectSize)) {
-    //pFreeChunk->vMagic();
+    //pFreeChunk->vSetMagic();
     new(pFreeChunk) FreeChunk;
     vPushFree(pFreeChunk);
     //vTrace("bExtendHeap %p : %p\n"_Str,pHeapBuffer,pFreeChunk);
@@ -491,7 +491,7 @@ void Heap::vPushFree(FreeChunk* pFreeChunk)
   if (m_iObjectSize <= C_1MB)
     vValidFree(pFreeChunk);
   
-  pFreeChunk->vClass(CN_FREECHUNK);
+  pFreeChunk->vSetClass(CN_FREECHUNK);
   pFreeChunk->vNextFree(m_pFreeHead);
   m_pFreeHead = pFreeChunk;
   

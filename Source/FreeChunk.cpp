@@ -51,8 +51,8 @@ void FreeChunk::vInit(eCN eClassNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  vMagic();
-  vClass(eClassNo);
+  vSetMagic();
+  vSetClass(eClassNo);
 }
 
 /*----------------------------------------------------------------------------*/

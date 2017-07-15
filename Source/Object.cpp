@@ -13,8 +13,8 @@ extern BufferPool*  gpBufferPool;
 /*----------------------------------------------------------------------------*/
 Object::Object(eCN eClassNo)
 {
-  vMagic();
-  vClass(eClassNo);
+  vSetMagic();
+  vSetClass(eClassNo);
   
   m_bWordBody = false;
   

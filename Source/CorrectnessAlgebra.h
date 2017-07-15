@@ -17,11 +17,11 @@ using namespace CorrectnessAlgebra;
 //-----------------------------------------------------------------------------
 
 #include "Class.hpp"
-#include "Foot.hpp"
 #include "Footer.hpp"
+#include "Footer_Emb.hpp"
 #include "Magic.hpp"
-#include "Obj.hpp"
 #include "Object.hpp"
+#include "Object_Emb.hpp"
 #include "Wsp.hpp"
 #include "WspFxd.hpp"
 #include "WspFx2.hpp"

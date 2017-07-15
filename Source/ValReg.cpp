@@ -49,7 +49,7 @@ ValReg::ValReg(void)
 /*----------------------------------------------------------------------------*/
 void ValReg::operator =(i8 iInt)
 {
-  vClass(CN_INTVAL);
+  vSetClass(CN_INTVAL);
   
   *_pIntVal(this) = iInt;
 }
@@ -59,7 +59,7 @@ void ValReg::operator =(i8 iInt)
 /*----------------------------------------------------------------------------*/
 void ValReg::operator =(Object* pPtr)
 {
-  vClass(CN_PTRVAL);
+  vSetClass(CN_PTRVAL);
   
   *_pPtrVal(this) = pPtr;
 }

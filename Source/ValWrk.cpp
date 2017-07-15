@@ -57,7 +57,7 @@ void ValWrk::operator =(Bcd xBcd)
   BcdVal* pNestedBcdVal = (BcdVal*)pNestedValue();
   
   // set nested class
-  pNestedBcdVal->vClass(CN_BCDVAL);
+  pNestedBcdVal->vSetClass(CN_BCDVAL);
   
   // assign int into the nested intval
   *pNestedBcdVal = xBcd;
@@ -71,7 +71,7 @@ void ValWrk::operator =(Bol xBol)
   BolVal* pNestedBolVal = (BolVal*)pNestedValue();
   
   // set nested class
-  pNestedBolVal->vClass(CN_BOLVAL);
+  pNestedBolVal->vSetClass(CN_BOLVAL);
   
   // assign int into the nested intval
   *pNestedBolVal = xBol;
@@ -85,7 +85,7 @@ void ValWrk::operator =(Dte xDte)
   DteVal* pNestedDteVal = (DteVal*)pNestedValue();
   
   // set nested class
-  pNestedDteVal->vClass(CN_DTEVAL);
+  pNestedDteVal->vSetClass(CN_DTEVAL);
   
   // assign int into the nested intval
   *pNestedDteVal = xDte;
@@ -99,7 +99,7 @@ void ValWrk::operator =(d8 dFlt)
   FltVal* pNestedFltVal = (FltVal*)pNestedValue();
   
   // set nested class
-  pNestedFltVal->vClass(CN_FLTVAL);
+  pNestedFltVal->vSetClass(CN_FLTVAL);
   
   // assign flt into the nested fltval
   *pNestedFltVal = dFlt;
@@ -113,7 +113,7 @@ void ValWrk::operator =(i8 iInt)
   IntVal* pNestedIntVal = (IntVal*)pNestedValue();
   
   // set nested class
-  pNestedIntVal->vClass(CN_INTVAL);
+  pNestedIntVal->vSetClass(CN_INTVAL);
   
   // assign int into the nested intval
   *pNestedIntVal = iInt;
@@ -127,7 +127,7 @@ void ValWrk::operator =(Ivl iIvl)
   IvlVal* pNestedIvlVal = (IvlVal*)pNestedValue();
   
   // set nested class
-  pNestedIvlVal->vClass(CN_IVLVAL);
+  pNestedIvlVal->vSetClass(CN_IVLVAL);
   
   // assign int into the nested intval
   *pNestedIvlVal = iIvl;
@@ -141,7 +141,7 @@ void ValWrk::operator =(Object* pPtr)
   PtrVal* pNestedPtrVal = (PtrVal*)pNestedValue();
   
   // set nested class
-  pNestedPtrVal->vClass(CN_PTRVAL);
+  pNestedPtrVal->vSetClass(CN_PTRVAL);
   
   // assign ptr into the nested ptrval
   *pNestedPtrVal = pPtr;
@@ -155,7 +155,7 @@ void ValWrk::operator =(Str* pStr)
   StrVal* pNestedStrVal = (StrVal*)pNestedValue();
   
   // set nested class
-  pNestedStrVal->vClass(CN_STRVAL);
+  pNestedStrVal->vSetClass(CN_STRVAL);
   
   pNestedStrVal->vAssign(pStr);
 }
@@ -168,7 +168,7 @@ void ValWrk::operator =(Tme xTme)
   TmeVal* pNestedTmeVal = (TmeVal*)pNestedValue();
   
   // set nested class
-  pNestedTmeVal->vClass(CN_TMEVAL);
+  pNestedTmeVal->vSetClass(CN_TMEVAL);
   
   // assign tme into the nested intval
   *pNestedTmeVal = xTme;
@@ -182,7 +182,7 @@ void ValWrk::operator =(Tsp xTsp)
   TspVal* pNestedTspVal = (TspVal*)pNestedValue();
   
   // set nested class
-  pNestedTspVal->vClass(CN_TSPVAL);
+  pNestedTspVal->vSetClass(CN_TSPVAL);
   
   // assign tsp into the nested intval
   *pNestedTspVal = xTsp;
@@ -200,7 +200,7 @@ void ValWrk::vAssignBinary(Object* pObject)
   BinVal* pNestedBinVal = (BinVal*)pNestedValue();
   
   // set nested class
-  pNestedBinVal->vClass(CN_BINVAL);
+  pNestedBinVal->vSetClass(CN_BINVAL);
   
   *pNestedBinVal = pObject;
 }
