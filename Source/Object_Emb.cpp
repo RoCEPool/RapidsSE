@@ -9,9 +9,9 @@
 extern BufferPool*  gpBufferPool;
 
 /*----------------------------------------------------------------------------*/
-/* initialize Obj                                                            */
+/* initialize object                                                          */
 /*----------------------------------------------------------------------------*/
-Obj::Obj(eCN eClassNo)
+Object_Emb::Object_Emb(eCN eClassNo)
 {
   vSetMagic();
   vSetClass(eClassNo);
@@ -21,26 +21,11 @@ Obj::Obj(eCN eClassNo)
   _precondition_(_MAGIC_,eClassNo);
 }
 
-/*----------------------------------------------------------------------------*/
-/* get class name                                                             */
-/*----------------------------------------------------------------------------*/
-Str* Obj::aClass(void)
-{
-  return aCN[eClass()];
-}
-
-/*----------------------------------------------------------------------------*/
-/* set class                                                                  */
-/*----------------------------------------------------------------------------*/
-void Obj::vSetClass(eCN eClass)
-{
-  m_eClass = eClass;
-}
 
 /*----------------------------------------------------------------------------*/
 /* set is word body                                                           */
 /*----------------------------------------------------------------------------*/
-void Obj::vWordBody(bool bWordBody)
+void Object_Emb::vWordBody(bool bWordBody)
 {
   _precondition_(_MAGIC_);
   
@@ -50,7 +35,7 @@ void Obj::vWordBody(bool bWordBody)
 /*----------------------------------------------------------------------------*/
 /* get is word body                                                           */
 /*----------------------------------------------------------------------------*/
-bool Obj::bWordBody(void)
+bool Object_Emb::bWordBody(void)
 {
   _precondition_(_MAGIC_);
   
@@ -65,10 +50,11 @@ bool Obj::bWordBody(void)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* Obj::aFooter(void)
+Footer* Object_Emb::aFooter(void)
 {
   return nullptr;
 }
+
 
 /*============================================================================*/
 /* end                                                                        */
