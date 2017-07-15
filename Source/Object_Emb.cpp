@@ -12,10 +12,8 @@ extern BufferPool*  gpBufferPool;
 /* initialize object                                                          */
 /*----------------------------------------------------------------------------*/
 Object_Emb::Object_Emb(eCN eClassNo)
+: Header_Emb(eClassNo)
 {
-  vSetMagic();
-  vSetClass(eClassNo);
-  
   m_bWordBody = false;
   
   _precondition_(_MAGIC_,eClassNo);

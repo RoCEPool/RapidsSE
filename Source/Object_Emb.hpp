@@ -5,8 +5,7 @@
 
 namespace CorrectnessAlgebra
 {
-  class Object_Emb :public Magic,
-  public Class
+  class Object_Emb : public Header_Emb
   {
     private:
     bool m_bWordBody;
