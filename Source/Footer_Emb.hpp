@@ -5,15 +5,12 @@
 
 namespace CorrectnessAlgebra
 {
-  static const u8 C_FOOTER_EMB = 0x245245544F4F4624; // $C_FOOTER$
+  static const u1 C_FOOTER_EMB = 0x73;
 
   class Footer_Emb
   {
   private:
-  union {
-    u8   m_uFooter;
-    char m_cFooter[8];
-  };
+    u1   m_uFooter;
   
   public:
     Footer_Emb(void);

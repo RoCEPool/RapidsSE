@@ -5,22 +5,48 @@
 
 namespace CorrectnessAlgebra
 {
-  class Object_Emb : public Header_Emb
+  class Object_Emb : public Magic_Emb,
+                     public Class_Emb
   {
-    private:
-    bool m_bWordBody;
-    char m_sFiller[3];
-    
-    public:
+  private:
+  
+  public:
     Object_Emb(eCN eClass);
-    
-    bool bWordBody(void);
-    void vWordBody(bool bIsWordBody);
-    
+  
     Footer* aFooter(void);
   };
 }
 
+/*--------------------------------------------------------------------------*/
+/* pre, post condition and check initialised                                */
+/*--------------------------------------------------------------------------*/
+#ifdef __DEBUG_CHECKS
+
+  #define _checkCondition_emb_(checkValue)   \
+  if (typeid(checkValue) == typeid(int)) {   \
+    if (checkValue == _MAGIC_) {             \
+      _magic_emb_();                         \
+    }                                        \
+    else if (checkValue == _ADDRESS_)        \
+    {                                        \
+      _poolAddress_emb_(this);               \
+    }                                        \
+    else if (checkValue == _FOOTER_)         \
+    {                                        \
+      _footer_emb_();                        \
+    }                                        \
+    else {                                   \
+      ASSERT("Should never be reached"_Str); \
+    }                                        \
+  }                                          \
+  else {                                     \
+    if (checkValue != CN_NONE)               \
+    {                                        \
+    _class_emb_(checkValue);                 \
+    }                                        \
+  }
+
+#endif
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

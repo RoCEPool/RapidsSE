@@ -10,14 +10,10 @@ namespace CorrectnessAlgebra
  class Magic_Emb
   {
   protected:
-  union {
-    u8   m_uMagic;
-    char m_sMagic[8];
-  };
+  u1   m_uMagic;
   
   public:
     Magic_Emb(void);
-    ~Magic_Emb(void);
   
     void  vSetMagic(void);
     i8    iMagic(void) const;
@@ -28,9 +24,9 @@ namespace CorrectnessAlgebra
 /* check the object has a magic marker as its first word                    */
 /*--------------------------------------------------------------------------*/
 #ifdef __MAGIC_CHECK
-  #define _magic_() ASSERT(iMagic() == C_MAGIC);
+  #define _magic_emb_() ASSERT(iMagic() == C_MAGIC_EMB);
 #else
-  #define _magic_()
+  #define _magic_emb_()
 #endif
 
 /*============================================================================*/

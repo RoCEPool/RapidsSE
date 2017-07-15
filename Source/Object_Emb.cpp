@@ -12,34 +12,11 @@ extern BufferPool*  gpBufferPool;
 /* initialize object                                                          */
 /*----------------------------------------------------------------------------*/
 Object_Emb::Object_Emb(eCN eClassNo)
-: Header_Emb(eClassNo)
+: Class_Emb(eClassNo)
 {
-  m_bWordBody = false;
   
   _precondition_(_MAGIC_,eClassNo);
 }
-
-
-/*----------------------------------------------------------------------------*/
-/* set is word body                                                           */
-/*----------------------------------------------------------------------------*/
-void Object_Emb::vWordBody(bool bWordBody)
-{
-  _precondition_(_MAGIC_);
-  
-  m_bWordBody = bWordBody;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get is word body                                                           */
-/*----------------------------------------------------------------------------*/
-bool Object_Emb::bWordBody(void)
-{
-  _precondition_(_MAGIC_);
-  
-  return m_bWordBody;
-}
-
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
