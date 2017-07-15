@@ -11,14 +11,12 @@ namespace CorrectnessAlgebra
     eCN  m_eClass;
   
   public:
-  Class(void);
-  ~Class(void);
+    Class(void);
+    ~Class(void);
   
-  Str* aClass(void);
-  eCN  eClass(void);
-  void vSetClass(eCN eClassNo);
-  
-
+    Str* aClass(void);
+    eCN  eClass(void);
+    void vSetClass(eCN eClassNo);
   };
   
 /*--------------------------------------------------------------------------*/

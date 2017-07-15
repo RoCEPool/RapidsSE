@@ -5,11 +5,9 @@
 
 namespace CorrectnessAlgebra
 {
-  namespace CorrectnessAlgebra
-  {
   class Object_Emb :public Magic,
   public Class
-    {
+  {
     private:
     bool m_bWordBody;
     char m_sFiller[3];
@@ -21,8 +19,7 @@ namespace CorrectnessAlgebra
     void vWordBody(bool bIsWordBody);
     
     Footer* aFooter(void);
-    };
-  }
+  };
 }
 
 /*============================================================================*/
