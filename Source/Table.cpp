@@ -562,6 +562,38 @@ i8 Table::iRowPartition(Str* pRow)
 /*----------------------------------------------------------------------------*/
 /* hash the first field of row return partition                               */
 /*----------------------------------------------------------------------------*/
+#ifdef _ROWFORMAT
+i8 Table::iRowPartition(Str* pRow, i8 iLength)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  
+  i8 nCols = m_xSlots.pPtnColVec()->nItems();
+  ValWrk xValWrk;
+  s256 s;
+  i8 iHash = 0;
+  
+  for (i8 iColumn = 0; iColumn < nCols; iColumn++) {
+    
+    // get the column from the index column vector
+    Column* pColumn = m_xSlots.pPtnColVec()->pGet(iColumn);
+    
+    // get the column number of the column
+    i8 iColumnNo = pColumn->iColumnNo();
+    
+    // get the column value
+    Str* sCursor = RowData::pColumn(pRow, iColumnNo, iLength);
+    
+    // hash the column value
+    DtmLib::vHash(pColumn->eDatumType(),iHash,sCursor,iLength,pColumn);
+  }
+  
+  // modulo to get partition number
+  i8 iPartition = iHash % (gpGrid->m_nSlots * gpGrid->iNodes());
+  
+  //vTrace("Partition: %lld\n"_Str,m_iPartition);
+  return iPartition;
+}
+#else
 i8 Table::iRowPartition(Str* pRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
@@ -599,9 +631,8 @@ i8 Table::iRowPartition(Str* pRow)
   
   //vTrace("Partition: %lld\n"_Str,m_iPartition);
   return iPartition;
-  
-
 }
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* show column vector                                                         */

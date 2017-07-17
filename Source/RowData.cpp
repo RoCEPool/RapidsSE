@@ -96,23 +96,24 @@ void RowData::vFormatData(Str* aRawData, i8 iRawLength, Str* aRowData, i8& iRowL
 /*----------------------------------------------------------------------------*/
 /* get pointer to where column starts                                         */
 /*----------------------------------------------------------------------------*/
-#ifdef _ROWDATA
+#ifdef _ROWFORMAT
 Str* RowData::pColumn(Str* aRowData, i8 iColumnNo, i8& iLength)
 {
 
   i8 iCurrentColumn = 0;
   Str* sCursor = aRowData;
   
+  i8 iRowLength = 0;
   iLength = 0;
-  while (iCurrentColumn < iColumnNo) {
-    sCursor += iLength;
-    bool bResult = Int::bExtract((char*)sCursor,sizeof(i8),(Int*)&iLength,nullptr);
+  while (iCurrentColumn <= iColumnNo) {
+    sCursor += iRowLength;
+    i8* pSeparator = (i8*)(sCursor);
+    iLength = *pSeparator;
+    iRowLength = iLength + sizeof(i8);
     iCurrentColumn++;
   }
   
   return sCursor;
-
-  return nullptr;
 }
 #else
 Str* RowData::pColumn(Str* aRowData, i8 iColumnNo, i8& iLength)

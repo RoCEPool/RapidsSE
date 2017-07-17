@@ -119,7 +119,7 @@ bool DtmLib::bExtract(eDM eDatum, Str* aDst, char** aaSrc, DBobjects::Column* pC
 /* hash                                                                       */
 /*----------------------------------------------------------------------------*/
 #ifdef _ROWFORMAT
-void DtmLib::vHash(eDM eDatum, i8& iHash, Str* aScr, DBobjects::Column* pColumn)
+void DtmLib::vHash(eDM eDatum, i8& iHash, Str* aScr, i8 iLength, DBobjects::Column* pColumn)
 {
   switch (pColumn->eColumnType()) {
       
@@ -157,13 +157,13 @@ void DtmLib::vHash(eDM eDatum, i8& iHash, Str* aScr, DBobjects::Column* pColumn)
       break;
     }
       
-//    case CT_INTEGER: {
-//      Int xInt;
-//      bool b = Int::bExtract((char**)&aScr,&xInt,pColumn);
-//      ASSERT(b);
-//      iHash += XXH32(&xInt,sizeof(Int),0);
-//      break;
-//    }
+    case CT_INTEGER: {
+      Int xInt;
+      bool b = Int::bExtract((char*)aScr,&xInt,iLength,pColumn);
+      ASSERT(b);
+      iHash += XXH32(&xInt,sizeof(Int),0);
+      break;
+    }
       
     case CT_INTERVAL: {
       Ivl xIvl;

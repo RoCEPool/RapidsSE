@@ -192,6 +192,7 @@ bool LoaderSub::bFetchRecord(void)
     //vDumpAscii(m_aRecord,m_iLength);
     // format the raw data into a record
     RowData::vFormatData(aRawData, iLength, m_aRecord.aStr(), m_iLength);
+    _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
     return true;
   }
   
@@ -205,6 +206,7 @@ bool LoaderSub::bFetchRecord(void)
   if (aRawData) {
     // format the raw data into a record
     RowData::vFormatData(aRawData, iLength, m_aRecord.aStr(), m_iLength);
+    _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
     return true;
   }
   
@@ -243,6 +245,25 @@ bool LoaderSub::bFetchRecord(void)
 /*----------------------------------------------------------------------------*/
 /* hash the first field of record                                             */
 /*----------------------------------------------------------------------------*/
+#ifdef _ROWFORMAT
+void LoaderSub::vHashRecord(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
+  
+  // calculate length of first field
+  //  i8 iLength = 0;
+  //  char* pChar = (char*)m_aRecord;
+  //  while ('|' != *pChar++)
+  //    iLength++;
+  
+  // hash the field using xxhash
+  //m_iHash = XXH32(m_aRecord,iLength,0);
+  //m_iPartition = m_iHash % (gpGrid->iSlots() * gpGrid->iNodes());
+  
+  m_iPartition = m_pTable->iRowPartition(m_aRecord.aStr(), m_iLength);
+}
+
+#else
 void LoaderSub::vHashRecord(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
@@ -257,9 +278,9 @@ void LoaderSub::vHashRecord(void)
   //m_iHash = XXH32(m_aRecord,iLength,0);
   //m_iPartition = m_iHash % (gpGrid->iSlots() * gpGrid->iNodes());
   
-  m_iPartition = m_pTable->iRowPartition(m_aRecord);
+  m_iPartition = m_pTable->iRowPartition(m_aRecord.aStr());
 }
-
+#endif
 /*----------------------------------------------------------------------------*/
 /* insert row into working buffer                                             */
 /*----------------------------------------------------------------------------*/
