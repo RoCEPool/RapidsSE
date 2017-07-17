@@ -269,23 +269,23 @@ bool LoaderSub::bInsertRow(void)
   
   // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!truncate!!
   
-  i8 iLength = m_iLength;
-  
-  char* aCursor = (char*)m_aRecord;
-  bool bClip = StrLib::bFind(&aCursor,'|',13);
-  iLength = nSub(aCursor,m_aRecord) - 1;
-
-  char xInsBuf[256];
-  StrLib::vCopyLen(xInsBuf,(char*)m_aRecord,iLength);
-  //vTrace("Inserting: %s %lld\n"_Str,xInsBuf,iLength);
-  
-  // insert row into working buffer
-  bool b = pEntryBuffer->bInsertEntry(m_pTxRef->iTxId(),m_aRecord,iLength);
+//  i8 iLength = m_iLength;
+//  
+//  char* aCursor = (char*)m_aRecord;
+//  bool bClip = StrLib::bFind(&aCursor,'|',13);
+//  iLength = nSub(aCursor,m_aRecord) - 1;
+//
+//  char xInsBuf[256];
+//  StrLib::vCopyLen(xInsBuf,(char*)m_aRecord,iLength);
+//  //vTrace("Inserting: %s %lld\n"_Str,xInsBuf,iLength);
+//  
+//  // insert row into working buffer
+//  bool b = pEntryBuffer->bInsertEntry(m_pTxRef->iTxId(),m_aRecord,iLength);
   
   // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
   // insert row into working buffer
-  //bool b = pEntryBuffer->bInsertEntry(m_pTxRef->iTxId(),m_aRecord,m_iLength);
+  bool b = pEntryBuffer->bInsertEntry(m_pTxRef->iTxId(),m_aRecord,m_iLength);
   
   // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   
