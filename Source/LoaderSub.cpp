@@ -278,7 +278,7 @@ void LoaderSub::vHashRecord(void)
   //m_iHash = XXH32(m_aRecord,iLength,0);
   //m_iPartition = m_iHash % (gpGrid->iSlots() * gpGrid->iNodes());
   
-  m_iPartition = m_pTable->iRowPartition(m_aRecord.aStr());
+  m_iPartition = m_pTable->iRowPartition(m_aRecord);
 }
 #endif
 /*----------------------------------------------------------------------------*/
