@@ -194,7 +194,7 @@ void Int::vCopy(void* aDst, void* aSrc)
 /* extract an integer from substr                                             */
 /*----------------------------------------------------------------------------*/
 #ifdef _ROWFORMAT
-bool Int::bExtract(char** aaSrc, Int* aInteger, i8 iLength, Column* pColumn)
+bool Int::bExtract(char* aSrc, Int* aInteger, i8 iLength, Column* pColumn)
 {
   i8 iResult = 0;
   bool bNegative = false;
@@ -298,6 +298,16 @@ void Int::vSprint(Str* aDst, Str* aSrc)
 /*----------------------------------------------------------------------------*/
 /* valid integer in substr?                                                   */
 /*----------------------------------------------------------------------------*/
+#ifdef _ROWFORMAT
+bool Int::bValid(char* aSrc, i8 iLength, Column* pColumn)
+{
+  Int xInt;
+  
+  bool bValid = Int::bExtract(aSrc,&xInt,iLength,pColumn);
+  
+  return bValid;
+}
+#else
 bool Int::bValid(char** aaSrc, Column* pColumn)
 {
   Int xInt;
@@ -306,7 +316,7 @@ bool Int::bValid(char** aaSrc, Column* pColumn)
   
   return bValid;
 }
-
+#endif
 /*----------------------------------------------------------------------------*/
 /*-- Embedded Comparators ----------------------------------------------------*/
 /*----------------------------------------------------------------------------*/

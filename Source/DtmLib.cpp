@@ -57,6 +57,34 @@ void DtmLib::vCopy(eDM eDatum, void* aDst, void* aSrc, DBobjects::Column* pColum
 /*----------------------------------------------------------------------------*/
 /* extract                                                                    */
 /*----------------------------------------------------------------------------*/
+#ifdef _ROWFORMAT
+bool DtmLib::bExtract(eDM eDatum, Str* aDst, char** aaSrc, DBobjects::Column* pColumn)
+{
+  bool b = false;
+  
+  switch (eDatum) {
+    case DM_BCD: b = Bcd::bExtract(aaSrc,(Bcd*)aDst,pColumn); break;
+    case DM_BOL: b = Bol::bExtract(aaSrc,(Bol*)aDst,pColumn); break;
+    case DM_CHR: NEVER_REACH;                                   break;
+    case DM_DTE: b = Dte::bExtract(aaSrc,(Dte*)aDst,pColumn); break;
+    case DM_FLT: b = Flt::bExtract(aaSrc,(Flt*)aDst,pColumn); break;
+    //case DM_INT: b = Int::bExtract(aaSrc,(Int*)aDst,pColumn); break;
+    case DM_IVL: b = Ivl::bExtract(aaSrc,(Ivl*)aDst,pColumn); break;
+    case DM_TME: b = Tme::bExtract(aaSrc,(Tme*)aDst,pColumn); break;
+    case DM_TSP: b = Tsp::bExtract(aaSrc,(Tsp*)aDst,pColumn); break;
+    case DM_VCH: b = Vch::bExtract(aaSrc,(Vch*)aDst,pColumn); break;
+    default:
+      vFatal("DtmLib::bValid: Invalid aDatum argument: %lld\n"_Str,
+             eDatum);
+  }
+  
+  if (!b)
+    return b;
+  else
+    return b;
+}
+
+#else
 bool DtmLib::bExtract(eDM eDatum, Str* aDst, char** aaSrc, DBobjects::Column* pColumn)
 {
   bool b = false;
@@ -82,7 +110,7 @@ bool DtmLib::bExtract(eDM eDatum, Str* aDst, char** aaSrc, DBobjects::Column* pC
   else
     return b;
 }
-
+#endif
 /*----------------------------------------------------------------------------*/
 /*-- Hash --------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -90,6 +118,93 @@ bool DtmLib::bExtract(eDM eDatum, Str* aDst, char** aaSrc, DBobjects::Column* pC
 /*----------------------------------------------------------------------------*/
 /* hash                                                                       */
 /*----------------------------------------------------------------------------*/
+#ifdef _ROWFORMAT
+void DtmLib::vHash(eDM eDatum, i8& iHash, Str* aScr, DBobjects::Column* pColumn)
+{
+  switch (pColumn->eColumnType()) {
+      
+    case CT_BOOLEAN: {
+      Bol xBol;
+      bool b = Bol::bExtract((char**)&aScr,&xBol,pColumn);
+      ASSERT(b);
+      iHash += XXH32(&xBol,sizeof(Bol),0);
+      break;
+    }
+      
+    case CT_CHAR: {
+      NEVER_REACH;
+      break;
+    }
+      
+    case CT_DATE: {
+      Dte xDte;
+      bool b = Dte::bExtract((char**)&aScr,&xDte,pColumn);
+      ASSERT(b);
+      iHash += XXH32(&xDte,sizeof(Dte),0);
+      break;
+    }
+      
+    case CT_DECIMAL: {
+      NEVER_REACH;
+      break;
+    }
+      
+    case CT_FLOAT: {
+      Flt xFlt;
+      bool b = Flt::bExtract((char**)&aScr,&xFlt,pColumn);
+      ASSERT(b);
+      iHash += XXH32(&xFlt,sizeof(Flt),0);
+      break;
+    }
+      
+//    case CT_INTEGER: {
+//      Int xInt;
+//      bool b = Int::bExtract((char**)&aScr,&xInt,pColumn);
+//      ASSERT(b);
+//      iHash += XXH32(&xInt,sizeof(Int),0);
+//      break;
+//    }
+      
+    case CT_INTERVAL: {
+      Ivl xIvl;
+      bool b = Ivl::bExtract((char**)&aScr,&xIvl,pColumn);
+      ASSERT(b);
+      iHash += XXH32(&xIvl,sizeof(Ivl),0);
+      break;
+    }
+      
+    case CT_TIME: {
+      Tme xTme;
+      bool b = Tme::bExtract((char**)&aScr,&xTme,pColumn);
+      ASSERT(b);
+      iHash += XXH32(&xTme,sizeof(Tme),0);
+      break;
+    }
+      
+    case CT_TIMESTAMP: {
+      Tsp xTsp;
+      bool b = Tsp::bExtract((char**)&aScr,&xTsp,pColumn);
+      ASSERT(b);
+      iHash += XXH32(&xTsp,sizeof(Tsp),0);
+      break;
+    }
+      
+    case CT_VARBINARY: {
+      NEVER_REACH;
+      break;
+    }
+      
+    case CT_VARCHAR: {
+      iHash += XXH32((char*)aScr,StrLib::iSize((char*)aScr),0);
+      break;
+    }
+      
+    default:
+      NEVER_REACH;
+  }
+  
+}
+#else
 void DtmLib::vHash(eDM eDatum, i8& iHash, Str* aScr, DBobjects::Column* pColumn)
 {
   switch (pColumn->eColumnType()) {
@@ -175,7 +290,7 @@ void DtmLib::vHash(eDM eDatum, i8& iHash, Str* aScr, DBobjects::Column* pColumn)
   }
   
 }
-
+#endif
 /*----------------------------------------------------------------------------*/
 /*-- Sprint ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -210,6 +325,34 @@ void DtmLib::vSprint(eDM eDatum, Str* aDst, Str* aSrc,
 /*----------------------------------------------------------------------------*/
 /* valid datum?                                                               */
 /*----------------------------------------------------------------------------*/
+#ifdef _ROWFORMAT
+bool DtmLib::bValidate(eDM eDatum, char** aaSrc, Column* pColumn)
+{
+  bool b = false;
+  
+  switch (eDatum) {
+    case DM_BCD: b = Bcd::bValid(aaSrc,pColumn); break;
+    case DM_BOL: b = Bol::bValid(aaSrc,pColumn); break;
+    case DM_CHR: b = Vch::bValid(aaSrc,pColumn); break;
+    case DM_DTE: b = Dte::bValid(aaSrc,pColumn); break;
+    case DM_FLT: b = Flt::bValid(aaSrc,pColumn); break;
+    //case DM_INT: b = Int::bValid(aaSrc,pColumn); break;
+    case DM_IVL: b = Ivl::bValid(aaSrc,pColumn); break;
+    case DM_TME: b = Tme::bValid(aaSrc,pColumn); break;
+    case DM_TSP: b = Tsp::bValid(aaSrc,pColumn); break;
+    case DM_VCH: b = Vch::bValid(aaSrc,pColumn); break;
+    default:
+      vFatal("DtmLib::bValid: Invalid aDatum argument: %lld\n"_Str,
+             eDatum);
+  }
+  
+  if (!b)
+    return b;
+  else
+    return b;
+}
+
+#else
 bool DtmLib::bValidate(eDM eDatum, char** aaSrc, Column* pColumn)
 {
   bool b = false;
@@ -235,7 +378,7 @@ bool DtmLib::bValidate(eDM eDatum, char** aaSrc, Column* pColumn)
   else
     return b;
 }
-
+#endif
 /*----------------------------------------------------------------------------*/
 /*-- Embedded Comparators ----------------------------------------------------*/
 /*----------------------------------------------------------------------------*/

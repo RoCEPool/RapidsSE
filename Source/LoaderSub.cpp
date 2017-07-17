@@ -65,8 +65,11 @@ LoaderSub::LoaderSub(void)
   m_pTable   = nullptr;
   m_pTxRef   = nullptr;
   m_pLoadMap = nullptr;
-  
+#ifdef _ROWFORMAT
+  //m_aRecord
+#else
   m_aRecord  = nullptr;
+#endif
   m_iLength  = 0;
   m_iPartition  = 0;
   m_bMoreChunks = false;
@@ -172,6 +175,43 @@ void LoaderSub::vEnd(void)
 /*----------------------------------------------------------------------------*/
 /* fetch next record from buffer, read next chunk if necessary                */
 /*----------------------------------------------------------------------------*/
+#ifdef _ROWFORMAT
+bool LoaderSub::bFetchRecord(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
+  
+  Str* aRawData;
+  i8 iLength;
+  
+  if (! m_bMoreChunks)
+    return false;
+  
+  // fetch next record from current chunk
+  aRawData = m_pLoadChunk->aNextRecord(iLength);
+  if (aRawData) {
+    //vDumpAscii(m_aRecord,m_iLength);
+    // format the raw data into a record
+    RowData::vFormatData(aRawData, iLength, m_aRecord.aStr(), m_iLength);
+    return true;
+  }
+  
+  // read next chunk
+  m_bMoreChunks = bReadChunk();
+  if (! m_bMoreChunks)
+    return false;
+  
+  // fetch first record from chunk just read
+  aRawData = m_pLoadChunk->aNextRecord(iLength);
+  if (aRawData) {
+    // format the raw data into a record
+    RowData::vFormatData(aRawData, iLength, m_aRecord.aStr(), m_iLength);
+    return true;
+  }
+  
+  return false;
+}
+
+#else
 bool LoaderSub::bFetchRecord(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
@@ -199,7 +239,7 @@ bool LoaderSub::bFetchRecord(void)
   
   return false;
 }
-
+#endif
 /*----------------------------------------------------------------------------*/
 /* hash the first field of record                                             */
 /*----------------------------------------------------------------------------*/
@@ -401,6 +441,26 @@ Table* LoaderSub::pTable(void)
 /*----------------------------------------------------------------------------*/
 /* validate row                                                               */
 /*----------------------------------------------------------------------------*/
+#ifdef _ROWFORMAT
+bool LoaderSub::bValidateRow(i8& i_Column)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
+  
+  bool bValid = m_pTable->bValidateRow(m_aRecord,i_Column);
+  
+  if ( ! bValid ) {
+    vTrace("Loader:: Invalid field %lld in record: "_Str,
+           i_Column);
+    for (char* a = (char*)m_aRecord.s(); *a && '\n' != *a; a++)
+      vTrace("%c"_Str,*a);
+    vTrace("\n"_Str);
+    exit(-1);
+  }
+  
+  return bValid;
+}
+
+#else
 bool LoaderSub::bValidateRow(i8& i_Column)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
@@ -418,27 +478,27 @@ bool LoaderSub::bValidateRow(i8& i_Column)
   
   return bValid;
 }
-
+#endif
 /*----------------------------------------------------------------------------*/
 /* truncate record from given field                                           */
 /*----------------------------------------------------------------------------*/
-void LoaderSub::vTruncateRecord(i8 iField)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
-  
-  char* aCursor = (char*)m_aRecord;
-  
-  vTrace("Before %s\n"_Str,m_aRecord);
-  
-  bool b = StrLib::bFind(&aCursor,'|',iField);
-  
-  if (b) {
-    *aCursor = '\0';
-    m_iLength = StrLib::iLength((char*)m_aRecord);
-
-    vTrace("After %s\n"_Str,m_aRecord);
-  }
-}
+//void LoaderSub::vTruncateRecord(i8 iField)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
+//  
+//  char* aCursor = (char*)m_aRecord;
+//  
+//  vTrace("Before %s\n"_Str,m_aRecord);
+//  
+//  bool b = StrLib::bFind(&aCursor,'|',iField);
+//  
+//  if (b) {
+//    *aCursor = '\0';
+//    m_iLength = StrLib::iLength((char*)m_aRecord);
+//
+//    vTrace("After %s\n"_Str,m_aRecord);
+//  }
+//}
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/

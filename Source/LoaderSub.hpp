@@ -58,7 +58,7 @@ namespace DBobjects
     Table* pTable(void);
     bool bValidateRow(i8& iColumn);
   
-    void vTruncateRecord(i8 iField);
+    //void vTruncateRecord(i8 iField);
   
     Footer* aFooter(void);
   };
