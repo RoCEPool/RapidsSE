@@ -7,6 +7,7 @@ namespace DBobjects
 {
   static const i8 C_MAX_NODES = 32;
   static const i8 C_MAX_PARTITIONS = C_SLOTS_PER_NODE * C_MAX_NODES;
+  static const i8 C_DATA_LENGTH = C_256K;
   
   class LoaderSub : public Object
   {
@@ -15,13 +16,18 @@ namespace DBobjects
     Table*   m_pTable;   // table being load
     TxRef*   m_pTxRef;   // tx
     LoadMap* m_pLoadMap; // load map
-    
+   
+#ifdef _ROWFORMAT
+    s48K     m_aRecord;      // formatted row
+#else
     Str*     m_aRecord;      // record from file
+#endif
     i8       m_iLength;      // length of record
     i8       m_iPartition;   // partition of record
     
     bool     m_bMoreChunks;  // continue while there are more chunks
     LoadChunk* m_pLoadChunk; // chunk loading buffer
+    
     EntryBuffer* m_pEntryBuffer[C_MAX_PARTITIONS]; // working row buffers
     
     // must be last
