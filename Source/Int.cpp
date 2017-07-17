@@ -196,10 +196,11 @@ void Int::vCopy(void* aDst, void* aSrc)
 #ifdef _ROWFORMAT
 bool Int::bExtract(char* aSrc, Int* aInteger, i8 iLength, Column* pColumn)
 {
-  i8 iResult = 0;
   bool bNegative = false;
-  i8 iCurrentChar = 0;
   bool bData = false;
+  
+  i8 iCurrentChar = 0;
+  i8 iResult = 0;
   
   for (i8 i_CurrentChar = 0; i_CurrentChar < iLength; i_CurrentChar++) {
     
@@ -210,6 +211,7 @@ bool Int::bExtract(char* aSrc, Int* aInteger, i8 iLength, Column* pColumn)
       if (bData)
         return false;
       
+      // test for null
       if (i_CurrentChar == iLength) {
         aInteger->vSetNull();
         return true;

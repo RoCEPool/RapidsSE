@@ -694,6 +694,39 @@ void Table::vTruncateIndex(i8 iIndexNo)
 /*----------------------------------------------------------------------------*/
 /* validate a row of table                                                    */
 /*----------------------------------------------------------------------------*/
+#ifdef _ROWFORMAT
+bool Table::bValidateRow(Str* aRow, i8& i_Column)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  
+  char* aCursor = (char*)aRow;
+  
+  i8* pSeparator;
+  
+  for (i_Column = 0;
+       i_Column < m_pColumnVec->nItems() && *aCursor;
+       i_Column++) {
+    
+    // get separator
+    pSeparator = (i8*)aCursor;
+    
+    // extract length of next field from separator
+    i8 iLength = *pSeparator;
+    
+    Column* pColumn = m_pColumnVec->pGet(i_Column);
+    
+    // move cursor to next field
+    aCursor += sizeof(i8);
+    bool b = pColumn->bValidateField((Str*)aCursor, iLength);
+    
+    // move cursor to next separator
+    aCursor += iLength;
+  }
+  
+  return true;
+}
+
+#else
 bool Table::bValidateRow(Str* aRow, i8& i_Column)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
@@ -732,7 +765,8 @@ bool Table::bValidateRow(Str* aRow, i8& i_Column)
 
   return true;
 }
-
+#endif
+  
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/

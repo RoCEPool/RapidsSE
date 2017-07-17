@@ -58,21 +58,21 @@ void DtmLib::vCopy(eDM eDatum, void* aDst, void* aSrc, DBobjects::Column* pColum
 /* extract                                                                    */
 /*----------------------------------------------------------------------------*/
 #ifdef _ROWFORMAT
-bool DtmLib::bExtract(eDM eDatum, Str* aDst, char** aaSrc, DBobjects::Column* pColumn)
+bool DtmLib::bExtract(eDM eDatum, Str* aDst, char* aSrc, i8 iLength, DBobjects::Column* pColumn)
 {
   bool b = false;
   
   switch (eDatum) {
-    case DM_BCD: b = Bcd::bExtract(aaSrc,(Bcd*)aDst,pColumn); break;
-    case DM_BOL: b = Bol::bExtract(aaSrc,(Bol*)aDst,pColumn); break;
-    case DM_CHR: NEVER_REACH;                                   break;
-    case DM_DTE: b = Dte::bExtract(aaSrc,(Dte*)aDst,pColumn); break;
-    case DM_FLT: b = Flt::bExtract(aaSrc,(Flt*)aDst,pColumn); break;
-    //case DM_INT: b = Int::bExtract(aaSrc,(Int*)aDst,pColumn); break;
-    case DM_IVL: b = Ivl::bExtract(aaSrc,(Ivl*)aDst,pColumn); break;
-    case DM_TME: b = Tme::bExtract(aaSrc,(Tme*)aDst,pColumn); break;
-    case DM_TSP: b = Tsp::bExtract(aaSrc,(Tsp*)aDst,pColumn); break;
-    case DM_VCH: b = Vch::bExtract(aaSrc,(Vch*)aDst,pColumn); break;
+//    case DM_BCD: b = Bcd::bExtract(aaSrc,(Bcd*)aDst,pColumn); break;
+//    case DM_BOL: b = Bol::bExtract(aaSrc,(Bol*)aDst,pColumn); break;
+//    case DM_CHR: NEVER_REACH;                                   break;
+//    case DM_DTE: b = Dte::bExtract(aaSrc,(Dte*)aDst,pColumn); break;
+//    case DM_FLT: b = Flt::bExtract(aaSrc,(Flt*)aDst,pColumn); break;
+    case DM_INT: b = Int::bExtract(aSrc,(Int*)aDst,iLength,pColumn); break;
+//    case DM_IVL: b = Ivl::bExtract(aaSrc,(Ivl*)aDst,pColumn); break;
+//    case DM_TME: b = Tme::bExtract(aaSrc,(Tme*)aDst,pColumn); break;
+//    case DM_TSP: b = Tsp::bExtract(aaSrc,(Tsp*)aDst,pColumn); break;
+    case DM_VCH: b = Vch::bExtract(aSrc,(Vch*)aDst,iLength,pColumn); break;
     default:
       vFatal("DtmLib::bValid: Invalid aDatum argument: %lld\n"_Str,
              eDatum);
@@ -326,21 +326,21 @@ void DtmLib::vSprint(eDM eDatum, Str* aDst, Str* aSrc,
 /* valid datum?                                                               */
 /*----------------------------------------------------------------------------*/
 #ifdef _ROWFORMAT
-bool DtmLib::bValidate(eDM eDatum, char** aaSrc, Column* pColumn)
+bool DtmLib::bValidate(eDM eDatum, char* aSrc, i8 iLength, Column* pColumn)
 {
   bool b = false;
   
   switch (eDatum) {
-    case DM_BCD: b = Bcd::bValid(aaSrc,pColumn); break;
-    case DM_BOL: b = Bol::bValid(aaSrc,pColumn); break;
-    case DM_CHR: b = Vch::bValid(aaSrc,pColumn); break;
-    case DM_DTE: b = Dte::bValid(aaSrc,pColumn); break;
-    case DM_FLT: b = Flt::bValid(aaSrc,pColumn); break;
-    //case DM_INT: b = Int::bValid(aaSrc,pColumn); break;
-    case DM_IVL: b = Ivl::bValid(aaSrc,pColumn); break;
-    case DM_TME: b = Tme::bValid(aaSrc,pColumn); break;
-    case DM_TSP: b = Tsp::bValid(aaSrc,pColumn); break;
-    case DM_VCH: b = Vch::bValid(aaSrc,pColumn); break;
+//    case DM_BCD: b = Bcd::bValid(aaSrc,pColumn); break;
+//    case DM_BOL: b = Bol::bValid(aaSrc,pColumn); break;
+//    case DM_CHR: b = Vch::bValid(aaSrc,pColumn); break;
+//    case DM_DTE: b = Dte::bValid(aaSrc,pColumn); break;
+//    case DM_FLT: b = Flt::bValid(aaSrc,pColumn); break;
+    case DM_INT: b = Int::bValid(aSrc,iLength,pColumn); break;
+//    case DM_IVL: b = Ivl::bValid(aaSrc,pColumn); break;
+//    case DM_TME: b = Tme::bValid(aaSrc,pColumn); break;
+//    case DM_TSP: b = Tsp::bValid(aaSrc,pColumn); break;
+    case DM_VCH: b = Vch::bValid(aSrc,iLength,pColumn); break;
     default:
       vFatal("DtmLib::bValid: Invalid aDatum argument: %lld\n"_Str,
              eDatum);
