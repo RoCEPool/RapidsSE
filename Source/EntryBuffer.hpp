@@ -86,7 +86,11 @@ namespace DBobjects
     Entry*     pFirstRow(void);
     i8         nFreeBytes(void);
     bool       bInsertRow(EntWrk& xEntRow, Entry** ppRow);
+#ifdef _ROWFORMAT
+    bool       bInsertRow(Entry* pOldRow, Entry** ppRow);
+#else
     bool       bInsertRow(s256& xRow, Entry** ppRow);
+#endif
     void       vIsLast(bool bIsLast);
     bool       bIsLast(void);
     Entry*     pNextRow(Entry* pCurrRow);

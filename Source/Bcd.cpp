@@ -179,7 +179,75 @@ void Bcd::vCopy(void* aDst, void* aSrc)
 /*----------------------------------------------------------------------------*/
 /* extract a decimal from substr                                              */
 /*----------------------------------------------------------------------------*/
-bool Bcd::bExtract(char** aaSrc, Bcd* aDecimal,DBobjects::Column* pColumn)
+#ifdef _ROWFORMAT
+bool Bcd::bExtract(char* aSrc, Bcd* aDecimal, i8 iLength, DBobjects::Column* pColumn)
+{
+  i8 iResult = 0;
+  bool bNegative = false;
+  i8 iCurrentChar = 0;
+  bool bData = false;
+  bool bDot = false;
+  i8 iPrecision = pColumn ? pColumn->iColumnPrecision() : 15;
+  
+  for (i8 i_CurrentChar = 0; i_CurrentChar < iLength; i_CurrentChar++) {
+    
+    char c = aSrc[i_CurrentChar];
+    
+    // skip leading whitespace
+    if (' ' == c) {
+      if (bData)
+        return false;
+      
+      if (i_CurrentChar == iLength) {
+        aDecimal->vSetNull();
+        return true;
+      }
+      continue;
+    }
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // test for negative
+    if (c == '-') {
+      if (bData || bDot)
+        return false;
+      bNegative = true;
+      continue;
+    }
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // collect leading portion (till '.')
+    if (StrLib::bIsDigit(c) && !bDot) {
+      bData = true;
+      iResult = iResult * 10 + StrLib::iDigitToI8(c);
+      continue;
+    }
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // collect trailing portion (after '.')
+    if ('.' ==c) {
+      bDot = true;
+      continue;
+    }
+    
+    if (bDot) {
+      if (StrLib::bIsDigit(c) && iPrecision--) {
+        iResult = iResult * 10 + StrLib::iDigitToI8(c);
+      }
+      else
+        return false;
+    }
+  }
+  
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // compute final result
+  
+  aDecimal->m_iBcd = bNegative ? - iResult : iResult;
+  
+  return true;
+}
+#else
+bool Bcd::bExtract(char** aaSrc, Bcd* aDecimal, DBobjects::Column* pColumn)
 {
   i8 iResult = 0;
   bool bNegative = false;
@@ -232,6 +300,8 @@ bool Bcd::bExtract(char** aaSrc, Bcd* aDecimal,DBobjects::Column* pColumn)
   return true;
 }
 
+#endif
+
 /*----------------------------------------------------------------------------*/
 /* sprint bcd datum                                                           */
 /*----------------------------------------------------------------------------*/
@@ -252,6 +322,17 @@ void Bcd::vSprint(Str* aDst, Str* aSrc, DBobjects::Column* pColumn)
 /*----------------------------------------------------------------------------*/
 /* valid decimal in substr?                                                   */
 /*----------------------------------------------------------------------------*/
+#ifdef _ROWFORMAT
+bool Bcd::bValid(char* aSrc, i8 iLength, Column* pColumn)
+{
+  Bcd xBcd;
+  
+  bool bValid = bExtract(aSrc,&xBcd,iLength,pColumn);
+  
+  return bValid;
+}
+
+#else
 bool Bcd::bValid(char** aaSrc, Column* pColumn)
 {
   Bcd xBcd;
@@ -260,7 +341,7 @@ bool Bcd::bValid(char** aaSrc, Column* pColumn)
   
   return bValid;
 }
-
+#endif
 /*----------------------------------------------------------------------------*/
 /*-- Embedded Comparators ----------------------------------------------------*/
 /*----------------------------------------------------------------------------*/

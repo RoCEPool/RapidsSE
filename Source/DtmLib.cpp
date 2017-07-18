@@ -63,7 +63,7 @@ bool DtmLib::bExtract(eDM eDatum, Str* aDst, char* aSrc, i8 iLength, DBobjects::
   bool b = false;
   
   switch (eDatum) {
-//    case DM_BCD: b = Bcd::bExtract(aaSrc,(Bcd*)aDst,pColumn); break;
+    case DM_BCD: b = Bcd::bExtract(aSrc,(Bcd*)aDst,iLength,pColumn); break;
 //    case DM_BOL: b = Bol::bExtract(aaSrc,(Bol*)aDst,pColumn); break;
 //    case DM_CHR: NEVER_REACH;                                   break;
 //    case DM_DTE: b = Dte::bExtract(aaSrc,(Dte*)aDst,pColumn); break;

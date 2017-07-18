@@ -18,10 +18,10 @@ docol stepsReset;
 ld jCdt "../JTEST/jCdt.csv";
 docol stepsList;
 
-//dumpidx jCdt jCdt_idx1;
+dumpidx jCdt jCdt_idx1;
 
 //print "\nSelecting rows with key <= 7 using idx1 ...\n" ;
-//uprselidx jCdt jCdt_idx1 7 ;
+uprselidx jCdt jCdt_idx1 7 ;
 
 //lwrselidx jCdt jCdt_idx1 1 ;
 
@@ -40,7 +40,7 @@ docol stepsList;
 //fetch jCdt "jA 5 >=" ;
 
 // range bound
-fetch jCdt "jA 8 <= jA 1 >= and" ;
+//fetch jCdt "jA 8 <= jA 1 >= and" ;
 
 //docol epochDump;
 /*============================================================================*/

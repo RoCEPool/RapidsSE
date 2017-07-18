@@ -71,7 +71,7 @@ void RowData::vFormatData(Str* aRawData, i8 iRawLength, Str* aRowData, i8& iRowL
     
     // collect the csv
     iColumnLength = 0;
-    while ('|' != *aSrc) {
+    while ('|' != *aSrc && '\n' != *aSrc) {
       iColumnLength++;
       *aDst++ = *(aSrc)++;
       
@@ -86,7 +86,7 @@ void RowData::vFormatData(Str* aRawData, i8 iRawLength, Str* aRowData, i8& iRowL
     
   }
   
-  ASSERT('\n' == *aSrc || '|' == *aSrc);
+  //ASSERT('\n' == *aSrc || '|' == *aSrc);
   
   vDumpAscii(aRawData,iRawLength);
   vDump(aRowData->s(), iRowLength);

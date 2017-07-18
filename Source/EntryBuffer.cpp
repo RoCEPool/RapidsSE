@@ -416,6 +416,50 @@ bool EntryBuffer::bInsertRow(EntWrk& xRowWrk, Entry** ppRow)
 /*----------------------------------------------------------------------------*/
 /* insert row into this buffer                                                */
 /*----------------------------------------------------------------------------*/
+#ifdef _ROWFORMAT
+bool EntryBuffer::bInsertRow(Entry* pOldRow, Entry** ppRow)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  // create working row
+  ValWrk xValWrk;
+  
+  //----------------------------------------------------------------------------
+  // form the rowId
+  bn nBufferNo = m_nBufferNo;
+  i8 nRowNo = nEntries();
+  Id rowId(*nBufferNo, nRowNo);
+  
+  //----------------------------------------------------------------------------
+  // form the key
+  xValWrk = nRowNo;
+  
+  KeyWrk xKeyWrk;
+  Column* pColumn = m_pIndex->pIdxColVec()->pGet(0);
+  ASSERT(pColumn->iColumnNo() == -1);
+  ASSERT(pColumn->eColumnType() == CT_INTEGER);
+  xKeyWrk.vAddDatum(xValWrk, pColumn);
+  
+  i8 nBytes = Entry::nBytesRequired(0, 8, pOldRow->nRowSize());
+  
+  Entry* pRowEntry = pAllotEntry(nBytes);
+  if ( ! pRowEntry )
+    return false;
+  
+  //----------------------------------------------------------------------------
+  // add the id and key to EntWrk
+  pRowEntry->vSetEntry(rowId, nRowNo, pOldRow);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  *ppRow = pRowEntry;
+  
+  pRowEntry->vShow(0,m_pIndex);
+  
+  return true;
+}
+
+#else
 bool EntryBuffer::bInsertRow(s256& sRow, Entry** ppRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
@@ -455,7 +499,7 @@ bool EntryBuffer::bInsertRow(s256& sRow, Entry** ppRow)
   
   return true;
 }
-
+#endif
 /*----------------------------------------------------------------------------*/
 /* set buffer is last                                                         */
 /*----------------------------------------------------------------------------*/

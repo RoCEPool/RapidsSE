@@ -350,8 +350,72 @@ void Entry::vSetEntry(EntWrk& xEntWrk)
   _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_ENTRY,CN_ROW);
 }
 /*----------------------------------------------------------------------------*/
+/* set entry given eanother entry                                             */
+/*----------------------------------------------------------------------------*/
+#ifdef _ROWFORMAT
+void Entry::vSetEntry(Id xId, i8 iKey, Entry* pOldEntry)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_ENTRY,CN_ROW);
+  
+  ASSERT(m_nThisBytes);
+  
+  // set RowId
+  m_xId  = xId;
+  
+  // copy Key
+  i8 nKeyBytes = 8;
+  Key* aEntryKey = this->aKey();
+  
+  MemLib::vCopy(aEntryKey,&iKey,nKeyBytes,eClass());
+  
+  // copy data
+  char* aEntryData = this->aRow();;
+  i8 nDataSize = pOldEntry->nRowSize();
+  
+  ASSERT(nDataSize);
+  
+  //StrVal* pStrVal = new((StrVal*)aEntryData) StrVal((StrVal*)aEntryData);
+  //pStrVal->vAssign(sRow.aStr(),nDataSize);
+  MemLib::vCopy(aEntryData,pOldEntry->aRow(),nDataSize,eClass());
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_ENTRY,CN_ROW);
+}
+#endif
+
+/*----------------------------------------------------------------------------*/
 /* set entry given entry wsp                                                  */
 /*----------------------------------------------------------------------------*/
+#ifdef _ROWFORMAT
+void Entry::vSetEntry(Id xId, i8 iKey, s256& sRow)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_ENTRY,CN_ROW);
+  
+  ASSERT(m_nThisBytes);
+  
+  // set RowId
+  m_xId  = xId;
+  
+  // copy Key
+  i8 nKeyBytes = 8;
+  Key* aEntryKey = this->aKey();
+  
+  MemLib::vCopy(aEntryKey,&iKey,nKeyBytes,eClass());
+  
+  // copy data
+  char* aEntryData = this->aRow();
+  i8 nDataSize = sRow.iLength();
+  
+  ASSERT(nDataSize);
+  i8 nBytes = StrVal::nBytesRequired(nDataSize);
+  
+  //StrVal* pStrVal = new((StrVal*)aEntryData) StrVal((StrVal*)aEntryData);
+  //pStrVal->vAssign(sRow.aStr(),nDataSize);
+  MemLib::vCopy(aEntryData,sRow.aStr(),nDataSize,eClass());
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_ENTRY,CN_ROW);
+}
+
+#else
 void Entry::vSetEntry(Id xId, i8 iKey, s256& sRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_ENTRY,CN_ROW);
@@ -377,10 +441,10 @@ void Entry::vSetEntry(Id xId, i8 iKey, s256& sRow)
   StrVal* pStrVal = new((StrVal*)aEntryData) StrVal((StrVal*)aEntryData);
   pStrVal->vAssign(sRow.aStr(),nDataSize);
   //MemLib::vCopy(aEntryData,sRow.aStr(),nDataSize,eClass());
-
   
   _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_ENTRY,CN_ROW);
 }
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* show content                                                               */
@@ -525,7 +589,7 @@ void Entry::vExtractKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
         
       case CT_DECIMAL: {
         Bcd xBcd;
-        bool b = Bcd::bExtract(&pDst,&xBcd,pColumn);
+        bool b = Bcd::bExtract(pDst,&xBcd,iLength,pColumn);
         ASSERT(b);
         xValWrk = xBcd;
         break;
