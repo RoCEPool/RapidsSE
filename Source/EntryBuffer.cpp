@@ -805,6 +805,7 @@ bool EntryBuffer::bInsertEntry(i8 iTxId, Str* pRow, i8 iLength)
   //----------------------------------------------------------------------------
   // add the row data to the EntWrk
   xEntWrk.vData(pRow, iLength);
+  //xEntWrk.vShow(m_pIndex->pIdxColVec());
   
   //----------------------------------------------------------------------------
   // check if current index buffer has enough space
@@ -818,7 +819,7 @@ bool EntryBuffer::bInsertEntry(i8 iTxId, Str* pRow, i8 iLength)
     // insert entry into current index buffer
     pEntry = pInsert(xEntWrk);
   }
-  
+  //pEntry->vShow(pEntry->nOffsets(), m_pIndex);
   return true;
 }
 

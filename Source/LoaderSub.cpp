@@ -284,37 +284,35 @@ void LoaderSub::vHashRecord(void)
 /*----------------------------------------------------------------------------*/
 /* insert row into working buffer                                             */
 /*----------------------------------------------------------------------------*/
+#ifdef _ROWFORMAT
 bool LoaderSub::bInsertRow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
- 
-  //vTrace("%s\n"_Str, m_aRecord->s());
-  /*
-  // get the hidden index data
-  Partition* pPartition = m_pTable->pPartition(m_iPartition);
   
-  // insert an entry into the hidden index data
-  IndexData* pIndexData = pPartition->pHiddenIndexData();
-  Entry* pRowEntry = pIndexData->pInsertEntry(m_pTxRef->iTxId(), m_aRecord, m_iLength);
-
-  // get no of indexes of the table
-  IdxDataVec* pIdxDataVec = pPartition->pIdxDataVec();
-  i8 nIndexes = pIdxDataVec->nItems();
-
-  // insert an entry for the row in all the indexes of this table
-  for (i8 i_Index=0; i_Index < nIndexes; i_Index++) {
-    
-    IndexData* pIndexData = pIdxDataVec->pGet(i_Index);
-    Index* pIndex = pIndexData->pIndex();
-    
-    // skip the hidden index, as already inserted row in it
-    if ( ! pIndex->bIsHidden())      
-      pIndexData->vInsertEntry(pRowEntry);
+  // check for working buffer
+  if (! m_pEntryBuffer[m_iPartition]) {
+    m_pEntryBuffer[m_iPartition] = new EntryBuffer(m_pTable->pHiddenIndex(),0);
+    if (! m_pEntryBuffer[m_iPartition]) {
+      vTrace("EntryBuffer allocation failed\n"_Str);
+      return false;
+    }
   }
   
-  return true;
-  */
-  //vDumpAscii(m_aRecord,m_iLength);
+  // get working buffer
+  EntryBuffer* pEntryBuffer = m_pEntryBuffer[m_iPartition];
+  
+  // insert row into working buffer
+  bool b = pEntryBuffer->bInsertEntry(m_pTxRef->iTxId(),m_aRecord.aStr(),m_iLength);
+  
+  pEntryBuffer->vShow();
+  
+  return b;
+}
+
+#else
+bool LoaderSub::bInsertRow(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
   
   // check for working buffer
   if (! m_pEntryBuffer[m_iPartition]) {
@@ -352,6 +350,7 @@ bool LoaderSub::bInsertRow(void)
   
   return b;
 }
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* set loader                                                                 */

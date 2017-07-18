@@ -179,7 +179,7 @@ i8 Entry::nRowSize(void)
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_ENTRY,CN_ROW);
   
   i8 nOffsetBytes = RightVec::nBytesRequired(m_nOffsets);
-  i8 iRowSize = m_nThisBytes - (nOffsetBytes + sizeof(Entry));
+  i8 iRowSize = m_nThisBytes - (nOffsetBytes + sizeof(Entry) + sizeof(Footer) + sizeof(i8));
   
   return iRowSize;
 }
@@ -411,12 +411,18 @@ void Entry::vShow(i8 iBase, Index* pIndex)
          m_xId.iRow()
          );
   
-    aKey->vShow(pIndex->pIdxColVec());
-    
-    if (pIndex->bIsHidden()) {
-      StrVal* pStrVal = reinterpret_cast<StrVal*>(aRow());
-      vTrace("%s"_Str, pStrVal->aStr());
-    }
+  aKey->vShow(pIndex->pIdxColVec());
+
+#ifdef _ROWFORMAT
+  if (pIndex->bIsHidden()) {
+    RowData::vShow(aRow(), nRowSize());
+  }
+#else
+  if (pIndex->bIsHidden()) {
+    StrVal* pStrVal = reinterpret_cast<StrVal*>(aRow());
+    vTrace("%s"_Str, pStrVal->aStr());
+  }
+#endif
   
   for (on nRight = 0_on; nRight < m_nOffsets; nRight++) {
     

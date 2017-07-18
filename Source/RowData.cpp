@@ -29,7 +29,7 @@ void RowData::vDump(char* aRowData, i8 iRowLength)
     i_RowLength += sizeof(i8);
     aRowData = (char*)pSeparator + sizeof(i8);
     
-    // dump the row filed data uoto iLength bytes
+    // dump the row data upto iLength bytes
     for (i8 i =0; i < iLength; i++)
       vTrace("%c"_Str, *(aRowData+i));
     
@@ -121,6 +121,41 @@ Str* RowData::pColumn(Str* aRowData, i8 iColumnNo, i8& iLength)
   return nullptr;
 }
 #endif
+
+/*----------------------------------------------------------------------------*/
+/* show RowData                                                               */
+/*----------------------------------------------------------------------------*/
+void RowData::vShow(char* aRowData, i8 iRowLength)
+{
+  
+  i8 i_RowLength = 0;
+  i8* pSeparator;
+  
+  while (i_RowLength < iRowLength) {
+    
+    // get separator
+    pSeparator = (i8*)aRowData;
+    
+    // extract length of next field from separator
+    i8 iLength = *pSeparator;
+    vTrace("%lld "_Str,iLength);
+    
+    // move rowData nd rowLeghth by i8
+    i_RowLength += sizeof(i8);
+    aRowData = (char*)pSeparator + sizeof(i8);
+    
+    // dump the row data upto iLength bytes
+    for (i8 i =0; i < iLength; i++)
+      vTrace("%c"_Str, *(aRowData+i));
+    
+    vTrace(" "_Str);
+    
+    // move the row pointer ahead
+    aRowData += iLength;
+    i_RowLength += iLength;
+  }
+  
+}
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
