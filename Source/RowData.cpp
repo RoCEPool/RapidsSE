@@ -97,19 +97,19 @@ void RowData::vFormatData(Str* aRawData, i8 iRawLength, Str* aRowData, i8& iRowL
 /* get pointer to where column starts                                         */
 /*----------------------------------------------------------------------------*/
 #ifdef _ROWFORMAT
-Str* RowData::pColumn(Str* aRowData, i8 iColumnNo, i8& iLength)
+Str* RowData::pColumn(Str* aRowData, i8 iColumnNo, i8& iRowLength)
 {
 
   i8 iCurrentColumn = 0;
   Str* sCursor = aRowData;
   
-  i8 iRowLength = 0;
-  iLength = 0;
+  iRowLength = 0;
+
   while (iCurrentColumn <= iColumnNo) {
     sCursor += iRowLength;
     i8* pSeparator = (i8*)(sCursor);
-    iLength = *pSeparator;
-    iRowLength = iLength + sizeof(i8);
+    iRowLength = *pSeparator;
+    sCursor += sizeof(i8);
     iCurrentColumn++;
   }
   
