@@ -493,17 +493,12 @@ void Entry::vExtractKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
     // get the column number of the column
     i8 iColumnNo = pColumn->iColumnNo();
     
-    char* pDst = s.s();
+    //char* pDst = s.s();
     char* aCursor = reinterpret_cast<char*>(pStrVal->aStr());
     
     // get the column value from the row for the iColumnNo
-    i8 iCol = -1;
-    do {
-      bool bFindPipe = StrLib::bExtractItem(&aCursor, pDst, '|');
-      ASSERT(bFindPipe);
-      iCol++;
-      aCursor++;
-    } while (iColumnNo != iCol);
+    i8 iLength;
+    char* pDst = (char*)RowData::pColumn((Str*)aRow(), i_Column, iLength);
     
     switch(pColumn->eColumnType()) {
         
@@ -545,14 +540,12 @@ void Entry::vExtractKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
       }
         
       case CT_INTEGER: {
-        //        xValWrk = StrLib::iToI8(pDst);
-        //        break;
-//        Int xInt;
-//        bool b = Int::bExtract(&pDst,&xInt,pColumn);
-//        ASSERT(b);
-//        if (b)
-//          xValWrk = xInt.iAsI8();
-//        break;
+        Int xInt;
+        bool b = Int::bExtract(pDst,&xInt,iLength,pColumn);
+        ASSERT(b);
+        if (b)
+          xValWrk = xInt.iAsI8();
+        break;
       }
         
       case CT_INTERVAL: {

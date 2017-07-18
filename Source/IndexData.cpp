@@ -150,9 +150,11 @@ void IndexData::vDump(bool bSameLevel)
       pEntryBuffer = pEntryBuffer->pNextBuffer();
     }
   }
-  else
-   // start with the root
-    m_pRoot->vDump();
+  else {
+    // start with the root
+    if (m_pRoot)
+      m_pRoot->vDump();
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -331,6 +333,8 @@ void IndexData::vInsertEntry(Entry* pRow)
   
   KeyWrk xKeyWrk;
   pRow->vExtractKey(xKeyWrk, m_pIndex->pIdxColVec());
+  
+  //xKeyWrk.vShow();
   
   if ( ! m_pRoot )
     m_pRoot = new EntryBuffer(m_pIndex, 0);
