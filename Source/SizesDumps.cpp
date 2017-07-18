@@ -426,7 +426,7 @@ eHT geWhichHeap[]
   /* 39 */ HT_LARGE,   // CN_LOADCHUNK
   /* 40 */ HT_MEDIUM,  // CN_LOADER
 #ifdef _ROWFORMAT
-  /* 41 */ HT_LARGE,  // CN_LOADERSUB
+  /* 41 */ HT_MEDIUM,  // CN_LOADERSUB
 #else
   /* 41 */ HT_MEDIUM,  // CN_LOADERSUB
 #endif

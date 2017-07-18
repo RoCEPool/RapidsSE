@@ -18,7 +18,7 @@ namespace DBobjects
     LoadMap* m_pLoadMap; // load map
    
 #ifdef _ROWFORMAT
-    s48K     m_aRecord;      // formatted row
+    s256     m_aRecord;      // formatted row
 #else
     Str*     m_aRecord;      // record from file
 #endif

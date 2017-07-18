@@ -16,6 +16,7 @@ namespace Structures
     static void vDump(char* aRowData, i8 iRowLength);
     static void vFormatData(Str* aRawData, i8 iRawLength, Str* aRowData, i8& iRowLength);
     static void vShow(char* aRowData, i8 iRowLength);
+    static void vShowData(char* aRowData, i8 iRowLength);
   };
 }
 

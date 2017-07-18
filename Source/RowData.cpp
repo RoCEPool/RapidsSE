@@ -158,6 +158,41 @@ void RowData::vShow(char* aRowData, i8 iRowLength)
 }
 
 /*----------------------------------------------------------------------------*/
+/* show RowData                                                               */
+/*----------------------------------------------------------------------------*/
+void RowData::vShowData(char* aRowData, i8 iRowLength)
+{
+  
+  i8 i_RowLength = 0;
+  i8* pSeparator;
+  
+  while (i_RowLength < iRowLength) {
+    
+    if (i_RowLength)
+      vTrace(","_Str);
+    
+    // get separator
+    pSeparator = (i8*)aRowData;
+    
+    // extract length of next field from separator
+    i8 iLength = *pSeparator;
+    
+    // move rowData nd rowLeghth by i8
+    i_RowLength += sizeof(i8);
+    aRowData = (char*)pSeparator + sizeof(i8);
+    
+    // dump the row data upto iLength bytes
+    for (i8 i =0; i < iLength; i++)
+      vTrace("%c"_Str, *(aRowData+i));
+    
+    // move the row pointer ahead
+    aRowData += iLength;
+    i_RowLength += iLength;
+  }
+  
+}
+
+/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
