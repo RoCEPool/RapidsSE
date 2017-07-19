@@ -79,18 +79,16 @@ namespace DBobjects
   
     static void vDump(eCN eClass, Object* pObject, Str* aTab);
     
-    Entry*     pAllotEntry(i8 nDataBytes);
+    Entry*     pAllotEntry(i8 nBytes);
+    Entry*     pAllotEntry(i8 nOffsets, i8 nKeyBytes, i8 nDataBytes);
     void       vAppendBuffer(EntryBuffer* pSrcBuffer);
     void       vCopyBuffer(EntryBuffer* pSrcBuffer);
     byte*      aDataArea(void);
     Entry*     pFirstRow(void);
     i8         nFreeBytes(void);
     bool       bInsertRow(EntWrk& xEntRow, Entry** ppRow);
-#ifdef _ROWFORMAT
     bool       bInsertRow(Entry* pOldRow, Entry** ppRow);
-#else
-    bool       bInsertRow(s256& xRow, Entry** ppRow);
-#endif
+
     void       vIsLast(bool bIsLast);
     bool       bIsLast(void);
     Entry*     pNextRow(Entry* pCurrRow);

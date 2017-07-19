@@ -287,11 +287,36 @@ void EntryBuffer::vDump(eCN eClass, Object* pObject, Str* aTab)
 /*----------------------------------------------------------------------------*/
 /* allot an entry for a row in this buffer                                    */
 /*----------------------------------------------------------------------------*/
-Entry* EntryBuffer::pAllotEntry(i8 iStrLength)
+Entry* EntryBuffer::pAllotEntry(i8 nBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
-  i8 nBytesRequired = Entry::nBytesRequired(0,0,iStrLength);
+  // nBytes takes care of data, offsets and key
+  i8 nBytesRequired = Entry::nBytesRequired(0,0,nBytes);
+  
+  // test  sufficient freespace
+  if (nFreeBytes() < nBytesRequired) {
+    return nullptr;
+  }
+  
+  Entry* pRow = reinterpret_cast<Entry*>(m_xWsp.aAllot(nBytesRequired));
+  new(pRow) Entry(CN_ROW,nBytesRequired,0);
+  
+  m_nEntries++;
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  return pRow;
+}
+
+/*----------------------------------------------------------------------------*/
+/* allot an entry for a row in this buffer                                    */
+/*----------------------------------------------------------------------------*/
+Entry* EntryBuffer::pAllotEntry(i8 nOffsets, i8 nKeyBytes, i8 nDataBytes)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  i8 nBytesRequired = Entry::nBytesRequired(nOffsets,nKeyBytes,nDataBytes);
   
   // test  sufficient freespace
   if (nFreeBytes() < nBytesRequired) {
@@ -416,7 +441,6 @@ bool EntryBuffer::bInsertRow(EntWrk& xRowWrk, Entry** ppRow)
 /*----------------------------------------------------------------------------*/
 /* insert row into this buffer                                                */
 /*----------------------------------------------------------------------------*/
-#ifdef _ROWFORMAT
 bool EntryBuffer::bInsertRow(Entry* pOldRow, Entry** ppRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
@@ -440,9 +464,7 @@ bool EntryBuffer::bInsertRow(Entry* pOldRow, Entry** ppRow)
   ASSERT(pColumn->eColumnType() == CT_INTEGER);
   xKeyWrk.vAddDatum(xValWrk, pColumn);
   
-  i8 nBytes = Entry::nBytesRequired(0, 8, pOldRow->nRowSize());
-  
-  Entry* pRowEntry = pAllotEntry(nBytes);
+  Entry* pRowEntry = pAllotEntry(pOldRow->nRowSize() + sizeof(i8));
   if ( ! pRowEntry )
     return false;
   
@@ -450,56 +472,13 @@ bool EntryBuffer::bInsertRow(Entry* pOldRow, Entry** ppRow)
   // add the id and key to EntWrk
   pRowEntry->vSetEntry(rowId, nRowNo, pOldRow);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  //pRowEntry->vShow(0, m_pIndex);
   
   *ppRow = pRowEntry;
-  
-  pRowEntry->vShow(0,m_pIndex);
   
   return true;
 }
 
-#else
-bool EntryBuffer::bInsertRow(s256& sRow, Entry** ppRow)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  // create working row
-  ValWrk xValWrk;
-  
-  //----------------------------------------------------------------------------
-  // form the rowId
-  bn nBufferNo = m_nBufferNo;
-  i8 nRowNo = nEntries();
-  Id rowId(*nBufferNo, nRowNo);
-  
-  //----------------------------------------------------------------------------
-  // form the key
-  xValWrk = nRowNo;
-  
-  KeyWrk xKeyWrk;
-  Column* pColumn = m_pIndex->pIdxColVec()->pGet(0);
-  ASSERT(pColumn->iColumnNo() == -1);
-  ASSERT(pColumn->eColumnType() == CT_INTEGER);
-  xKeyWrk.vAddDatum(xValWrk, pColumn);
-    
-  i8 nBytes = Entry::nBytesRequired(0, 8, StrVal::nBytesRequired(sRow.iLength()));
-  
-  Entry* pRowEntry = pAllotEntry(nBytes);
-  if ( ! pRowEntry )
-    return false;
-  
-  //----------------------------------------------------------------------------
-  // add the id and key to EntWrk
-  pRowEntry->vSetEntry(rowId, nRowNo, sRow);
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  *ppRow = pRowEntry;
-  
-  return true;
-}
-#endif
 /*----------------------------------------------------------------------------*/
 /* set buffer is last                                                         */
 /*----------------------------------------------------------------------------*/
