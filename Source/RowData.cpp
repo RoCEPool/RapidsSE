@@ -14,20 +14,20 @@ void RowData::vDump(char* aRowData, i8 iRowLength)
   
   vTrace("RowData: \n"_Str);
   i8 i_RowLength = 0;
-  i8* pSeparator;
+  char* pSeparator;
   
   while (i_RowLength < iRowLength) {
     
     // get separator
-    pSeparator = (i8*)aRowData;
+    pSeparator = (char*)aRowData;
     
     // extract length of next field from separator
     i8 iLength = *pSeparator;
     vTrace("Length %lld : value: "_Str,iLength);
     
-    // move rowData nd rowLeghth by i8
-    i_RowLength += sizeof(i8);
-    aRowData = (char*)pSeparator + sizeof(i8);
+    // move rowData nd rowLeghth by char
+    i_RowLength += sizeof(char);
+    aRowData = (char*)pSeparator + sizeof(char);
     
     // dump the row data upto iLength bytes
     for (i8 i =0; i < iLength; i++)
@@ -63,11 +63,11 @@ void RowData::vFormatData(Str* aRawData, i8 iRawLength, Str* aRowData, i8& iRowL
     
     // pre-field byte length separator format
     // offset-col0-offset-col1...
-    i8* pSeparator = (i8*)(aDst);
+    char* pSeparator = (char*)(aDst);
     
     // find location where to copy first field
-    aDst = aDst + sizeof(i8);
-    iRowLength += sizeof(i8);
+    aDst       += sizeof(char);
+    iRowLength += sizeof(char);
     
     // collect the csv
     iColumnLength = 0;
@@ -107,9 +107,9 @@ Str* RowData::pColumn(Str* aRowData, i8 iColumnNo, i8& iRowLength)
 
   while (iCurrentColumn <= iColumnNo) {
     sCursor += iRowLength;
-    i8* pSeparator = (i8*)(sCursor);
+    char* pSeparator = (char*)(sCursor);
     iRowLength = *pSeparator;
-    sCursor += sizeof(i8);
+    sCursor += sizeof(char);
     iCurrentColumn++;
   }
   
@@ -125,24 +125,58 @@ Str* RowData::pColumn(Str* aRowData, i8 iColumnNo, i8& iLength)
 /*----------------------------------------------------------------------------*/
 /* show RowData                                                               */
 /*----------------------------------------------------------------------------*/
+void RowData::vGetDataString(s256& sDataString, char* aRowData, i8 iRowLength)
+{  
+  i8 i_RowLength = 0;
+  char* pSeparator;
+  char* s = sDataString.s();
+  
+  while (i_RowLength < iRowLength) {
+    
+    if (i_RowLength)
+      *s++ = ',';
+    
+    // get separator
+    pSeparator = (char*)aRowData;
+    
+    // extract length of next field from separator
+    i8 iLength = *pSeparator;
+    
+    // move rowData nd rowLeghth by char
+    i_RowLength += sizeof(char);
+    aRowData = (char*)pSeparator + sizeof(char);
+    
+    // dump the row data upto iLength bytes
+    for (i8 i =0; i < iLength; i++)
+      *s++ = *(aRowData+i);
+    
+    // move the row pointer ahead
+    aRowData += iLength;
+    i_RowLength += iLength;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* show RowData                                                               */
+/*----------------------------------------------------------------------------*/
 void RowData::vShow(char* aRowData, i8 iRowLength)
 {
   
   i8 i_RowLength = 0;
-  i8* pSeparator;
+  char* pSeparator;
   
   while (i_RowLength < iRowLength) {
     
     // get separator
-    pSeparator = (i8*)aRowData;
+    pSeparator = (char*)aRowData;
     
     // extract length of next field from separator
     i8 iLength = *pSeparator;
     vTrace("%lld "_Str,iLength);
     
-    // move rowData nd rowLeghth by i8
-    i_RowLength += sizeof(i8);
-    aRowData = (char*)pSeparator + sizeof(i8);
+    // move rowData nd rowLeghth by char
+    i_RowLength += sizeof(char);
+    aRowData = (char*)pSeparator + sizeof(char);
     
     // dump the row data upto iLength bytes
     for (i8 i =0; i < iLength; i++)
@@ -164,7 +198,7 @@ void RowData::vShowData(char* aRowData, i8 iRowLength)
 {
   
   i8 i_RowLength = 0;
-  i8* pSeparator;
+  char* pSeparator;
   
   while (i_RowLength < iRowLength) {
     
@@ -172,14 +206,14 @@ void RowData::vShowData(char* aRowData, i8 iRowLength)
       vTrace(","_Str);
     
     // get separator
-    pSeparator = (i8*)aRowData;
+    pSeparator = (char*)aRowData;
     
     // extract length of next field from separator
     i8 iLength = *pSeparator;
     
-    // move rowData nd rowLeghth by i8
-    i_RowLength += sizeof(i8);
-    aRowData = (char*)pSeparator + sizeof(i8);
+    // move rowData nd rowLeghth by char
+    i_RowLength += sizeof(char);
+    aRowData = (char*)pSeparator + sizeof(char);
     
     // dump the row data upto iLength bytes
     for (i8 i =0; i < iLength; i++)
@@ -189,7 +223,6 @@ void RowData::vShowData(char* aRowData, i8 iRowLength)
     aRowData += iLength;
     i_RowLength += iLength;
   }
-  
 }
 
 /*----------------------------------------------------------------------------*/

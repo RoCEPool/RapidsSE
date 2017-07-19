@@ -179,6 +179,39 @@ void Bol::vCopy(void* aDst, void* aSrc)
 /*----------------------------------------------------------------------------*/
 /* extract a boolean from substr                                              */
 /*----------------------------------------------------------------------------*/
+#ifdef _ROWFORMAT
+bool Bol::bExtract(char*aSrc, Bol* aBoolean, i8 iLength, Column* pColumn)
+{
+  bool bResult = false;
+  
+  for (i8 i_CurrentChar = 0; i_CurrentChar < iLength; i_CurrentChar++) {
+  
+    char c = aSrc[i_CurrentChar];
+    
+    // skip leading whitespace
+    while (' ' == c) {
+      if (i_CurrentChar == iLength) {
+        aBoolean->vSetNull();
+        return true;
+      }
+      continue;
+    }
+    
+    // test for true
+    if ('t' == c ||
+        'T' == c ||
+        'y' == c ||
+        'Y' == c ||
+        '1' == c)
+      bResult = true;
+  }
+  
+  aBoolean->m_bBol = bResult;
+  
+  return true;
+}
+
+#else
 bool Bol::bExtract(char** aaSrc, Bol* aBoolean, Column* pColumn)
 {
   bool bResult = false;
@@ -210,6 +243,7 @@ bool Bol::bExtract(char** aaSrc, Bol* aBoolean, Column* pColumn)
   
   return true;
 }
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* sprint bol datum                                                           */
@@ -222,6 +256,16 @@ void Bol::vSprint(Str* aDst, Str* aSrc)
 /*----------------------------------------------------------------------------*/
 /* valid boolean in substr?                                                   */
 /*----------------------------------------------------------------------------*/
+#ifdef _ROWFORMAT
+bool Bol::bValid(char*aSrc, i8 iLength, Column* pColumn)
+{
+  Bol xBol;
+  
+  bool bValid = bExtract(aSrc,&xBol,iLength,pColumn);
+  
+  return bValid;
+}
+#else
 bool Bol::bValid(char** aaSrc, Column* pColumn)
 {
   Bol xBol;
@@ -230,7 +274,7 @@ bool Bol::bValid(char** aaSrc, Column* pColumn)
   
   return bValid;
 }
-
+#endif
 /*----------------------------------------------------------------------------*/
 /*-- Embedded Comparators ----------------------------------------------------*/
 /*----------------------------------------------------------------------------*/

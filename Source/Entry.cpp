@@ -352,7 +352,6 @@ void Entry::vSetEntry(EntWrk& xEntWrk)
 /*----------------------------------------------------------------------------*/
 /* set entry given eanother entry                                             */
 /*----------------------------------------------------------------------------*/
-#ifdef _ROWFORMAT
 void Entry::vSetEntry(Id xId, i8 iKey, Entry* pOldEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_ENTRY,CN_ROW);
@@ -380,71 +379,6 @@ void Entry::vSetEntry(Id xId, i8 iKey, Entry* pOldEntry)
   
   _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_ENTRY,CN_ROW);
 }
-#endif
-
-/*----------------------------------------------------------------------------*/
-/* set entry given entry wsp                                                  */
-/*----------------------------------------------------------------------------*/
-#ifdef _ROWFORMAT
-void Entry::vSetEntry(Id xId, i8 iKey, s256& sRow)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_ENTRY,CN_ROW);
-  
-  ASSERT(m_nThisBytes);
-  
-  // set RowId
-  m_xId  = xId;
-  
-  // copy Key
-  i8 nKeyBytes = 8;
-  Key* aEntryKey = this->aKey();
-  
-  MemLib::vCopy(aEntryKey,&iKey,nKeyBytes,eClass());
-  
-  // copy data
-  char* aEntryData = this->aRow();
-  i8 nDataSize = sRow.iLength();
-  
-  ASSERT(nDataSize);
-  i8 nBytes = StrVal::nBytesRequired(nDataSize);
-  
-  //StrVal* pStrVal = new((StrVal*)aEntryData) StrVal((StrVal*)aEntryData);
-  //pStrVal->vAssign(sRow.aStr(),nDataSize);
-  MemLib::vCopy(aEntryData,sRow.aStr(),nDataSize,eClass());
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_ENTRY,CN_ROW);
-}
-
-#else
-void Entry::vSetEntry(Id xId, i8 iKey, s256& sRow)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_ENTRY,CN_ROW);
-  
-  ASSERT(m_nThisBytes);
-  
-  // set RowId
-  m_xId  = xId;
-  
-  // copy Key
-  i8 nKeyBytes = 8;
-  Key* aEntryKey = this->aKey();
-
-  MemLib::vCopy(aEntryKey,&iKey,nKeyBytes,eClass());
-  
-  // copy data
-  char* aEntryData = this->aRow();
-  i8 nDataSize = sRow.iLength();
-    
-  ASSERT(nDataSize);
-  i8 nBytes = StrVal::nBytesRequired(nDataSize);
-
-  StrVal* pStrVal = new((StrVal*)aEntryData) StrVal((StrVal*)aEntryData);
-  pStrVal->vAssign(sRow.aStr(),nDataSize);
-  //MemLib::vCopy(aEntryData,sRow.aStr(),nDataSize,eClass());
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_ENTRY,CN_ROW);
-}
-#endif
 
 /*----------------------------------------------------------------------------*/
 /* show content                                                               */
@@ -543,10 +477,9 @@ void Entry::vExtractKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_ENTRY,CN_ROW);
   
   ValWrk xValWrk;
-  s256 s;
   
-  // get the data
-  StrVal* pStrVal = (StrVal*)aRow();
+  // VCH cannot be > 256 bytes
+  s256 s;                                                       //ALKA_ROWFORMAT
   
   i8 nCols = pIdxColVec->nItems();
   for (i8 i_Column = 0; i_Column < nCols; i_Column++) {
@@ -557,18 +490,15 @@ void Entry::vExtractKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
     // get the column number of the column
     i8 iColumnNo = pColumn->iColumnNo();
     
-    //char* pDst = s.s();
-    char* aCursor = reinterpret_cast<char*>(pStrVal->aStr());
-    
     // get the column value from the row for the iColumnNo
     i8 iLength;
-    char* pDst = (char*)RowData::pColumn((Str*)aRow(), i_Column, iLength);
+    char* pDst = (char*)RowData::pColumn((Str*)aRow(), iColumnNo, iLength);
     
     switch(pColumn->eColumnType()) {
         
       case CT_BOOLEAN: {
         Bol xBol;
-        bool b = Bol::bExtract(&pDst,&xBol,pColumn);
+        bool b = Bol::bExtract(pDst,&xBol,iLength,pColumn);
         ASSERT(b);
         xValWrk = xBol;
         break;
@@ -642,6 +572,7 @@ void Entry::vExtractKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
       }
         
       case CT_VARCHAR: {
+        bool b = Vch::bExtract(pDst,(Vch*)s.s(),iLength,pColumn);
         xValWrk = s;
         break;
       }

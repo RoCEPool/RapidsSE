@@ -23,21 +23,21 @@ dumpidx jCdt jCdt_idx1;
 //print "\nSelecting rows with key <= 7 using idx1 ...\n" ;
 uprselidx jCdt jCdt_idx1 7 ;
 
-//lwrselidx jCdt jCdt_idx1 1 ;
+lwrselidx jCdt jCdt_idx1 1 ;
 
 // upper bound
-//fetch jCdt "jA 5 <=" ;
+fetch jCdt "jA 5 <=" ;
 
 // full table
-//fetch jCdt "jB 1 >=" ;
+fetch jCdt "jB 1 >=" ;
 
 //docol epochTake;
 
 // exact bound
-//fetch jCdt "jA 5 ==" ;
+fetch jCdt "jA 5 ==" ;
 
 // lower bound
-//fetch jCdt "jA 5 >=" ;
+fetch jCdt "jA 5 >=" ;
 
 // range bound
 //fetch jCdt "jA 8 <= jA 1 >= and" ;
