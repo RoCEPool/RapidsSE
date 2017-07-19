@@ -190,6 +190,42 @@ void Task::vEntryBufferInsertRow(MP_Task mpTask)
   EXIT();
 }
 #else
+
+#ifdef _ROWFORMAT
+void Task::vEntryBufferInsertRow(MP_Task mpTask)
+{
+  ENTRY("vEntryBufferInsertRow"_Str);
+  
+  Object* pPtrOldEntry = nullptr;
+  Object* pPtrIndexBuffer;
+  
+  if ( ! mpTask->m_pDataStack->bPop(pPtrIndexBuffer) )
+    THROW_INVALID_DSTACK("entryBuffer.insertRow"_Str);
+  
+  EntryBuffer* pIndexBuffer = _pEntryBuffer(pPtrIndexBuffer);
+  ASSERT(nullptr == pIndexBuffer || CN_ENTRYBUFFER == pIndexBuffer->eClass());
+  
+  if ( ! mpTask->m_pDataStack->bPop(pPtrOldEntry) )
+    THROW_INVALID_DSTACK("entryBuffer.insertRow"_Str);
+  
+  Entry* pOldEntry = _pEntry(pPtrOldEntry);
+  ASSERT(CN_ENTRY == pOldEntry->eClass());
+  
+  Entry* pRow;
+  
+  if (pIndexBuffer->bInsertRow(pOldEntry, &pRow))
+    mpTask->m_pDataStack->vPushInt(1);
+  else
+    mpTask->m_pDataStack->vPushInt(0);
+  
+  //pRow->vShow(0, pIndexBuffer->pIndex());
+  
+  ASSERT( ! pRow->nOffsets() );
+  
+  EXIT();
+}
+
+#else
 void Task::vEntryBufferInsertRow(MP_Task mpTask)
 {
   ENTRY("vEntryBufferInsertRow"_Str);
@@ -220,6 +256,7 @@ void Task::vEntryBufferInsertRow(MP_Task mpTask)
   
   EXIT();
 }
+#endif
 
 #endif
 /*----------------------------------------------------------------------------*/

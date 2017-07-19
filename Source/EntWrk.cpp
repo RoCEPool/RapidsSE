@@ -215,8 +215,13 @@ void EntWrk::vShow(IdxColVec* pIdxColVec)
          iKey
          );
   
+#ifdef _ROWFORMAT
   if (m_bHasData) {
-    
+    RowData::vShow(aData(), nDataSize());
+  }
+  
+#else
+  if (m_bHasData) {
     StrVal* pStrVal = reinterpret_cast<StrVal*>(aData());
     
     vTrace("data (size:%lld value:%s) "_Str,
@@ -224,6 +229,8 @@ void EntWrk::vShow(IdxColVec* pIdxColVec)
            pStrVal->aStr()
            );
   }
+#endif
+  
   vTrace("\n"_Str);
 }
 
@@ -317,6 +324,18 @@ i8 EntWrk::nDataSize(void)
 /*----------------------------------------------------------------------------*/
 /* copy the row data                                                          */
 /*----------------------------------------------------------------------------*/
+#ifdef _ROWFORMAT
+void EntWrk::vData(Str* aDataBytes, i8 iSize)
+{
+  char* aDataArea = m_xDataWrk.aLatter();
+  MemLib::vCopy(aDataArea,aDataBytes,iSize,CN_ENTWRK);
+  
+  m_xDataWrk.vTake(iSize);
+  
+  m_bHasData = true;
+}
+
+#else
 void EntWrk::vData(Str* aDataBytes, i8 iSize)
 {
   i8 nBytes = StrVal::nBytesRequired(iSize);
@@ -331,7 +350,7 @@ void EntWrk::vData(Str* aDataBytes, i8 iSize)
   
   m_bHasData = true;
 }
-
+#endif
 /*----------------------------------------------------------------------------*/
 /*-- Key ---------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/

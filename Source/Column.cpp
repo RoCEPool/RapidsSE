@@ -391,6 +391,20 @@ void Column::vShow(void)
 //  return true;
 //}
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#ifdef _ROWFORMAT
+bool Column::bValidateField(Str* aSubRow, i8 iLength)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+  
+  bool b = DtmLib::bValidate(m_eDatumType,(char*)aSubRow,iLength,this);
+  
+  if (!b)
+    int iDebug = 0;
+  
+  return b;
+}
+
+#else
 bool Column::bValidateField(Str** aaSubRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
@@ -402,6 +416,7 @@ bool Column::bValidateField(Str** aaSubRow)
   
   return b;
 }
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* column value                                                               */

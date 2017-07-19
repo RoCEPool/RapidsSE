@@ -37,6 +37,25 @@ void Task::vAddPrimitives_Row(void)
 /*----------------------------------------------------------------------------*/
 /* row.string -- get row as string                                            */
 /*----------------------------------------------------------------------------*/
+#ifdef _ROWFORMAT
+void Task::vRowString(MP_Task mpTask)
+{
+  ENTRY("vRowString"_Str);
+  
+  Object* pPtrRow;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrRow) )
+    THROW_INVALID_DSTACK("row.string"_Str);
+  
+  Entry* pRow = _pEntry(pPtrRow);
+  ASSERT(CN_ENTRY == pRow->eClass());
+                                                                //ALKA_ROWFORMAT
+  // this should go
+  // we should not invoke row.string
+  mpTask->m_pDataStack->vPushObject(pRow);
+  EXIT();
+}
+
+#else
 void Task::vRowString(MP_Task mpTask)
 {
   ENTRY("vRowString"_Str);
@@ -54,7 +73,7 @@ void Task::vRowString(MP_Task mpTask)
   mpTask->m_pDataStack->vPushS256(sRow);
   EXIT();
 }
-
+#endif
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

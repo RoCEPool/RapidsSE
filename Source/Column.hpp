@@ -88,9 +88,12 @@ namespace DBobjects
   
     void vSet(Str* aDefinition);
     void vShow(void);
-  
+#ifdef _ROWFORMAT
+    bool bValidateField(Str* aSubRow, i8 iLength);
+#else
     bool bValidateField(Str** aaSubRow);
-  
+#endif
+    
     char* aValue(i8& nBytes, char** aaCursor);
   
     bool bLessThan(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB);

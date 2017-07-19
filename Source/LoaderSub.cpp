@@ -65,8 +65,11 @@ LoaderSub::LoaderSub(void)
   m_pTable   = nullptr;
   m_pTxRef   = nullptr;
   m_pLoadMap = nullptr;
-  
+#ifdef _ROWFORMAT
+  //m_aRecord
+#else
   m_aRecord  = nullptr;
+#endif
   m_iLength  = 0;
   m_iPartition  = 0;
   m_bMoreChunks = false;
@@ -172,6 +175,45 @@ void LoaderSub::vEnd(void)
 /*----------------------------------------------------------------------------*/
 /* fetch next record from buffer, read next chunk if necessary                */
 /*----------------------------------------------------------------------------*/
+#ifdef _ROWFORMAT
+bool LoaderSub::bFetchRecord(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
+  
+  Str* aRawData;
+  i8 iLength;
+  
+  if (! m_bMoreChunks)
+    return false;
+  
+  // fetch next record from current chunk
+  aRawData = m_pLoadChunk->aNextRecord(iLength);
+  if (aRawData) {
+    //vDumpAscii(m_aRecord,m_iLength);
+    // format the raw data into a record
+    RowData::vFormatData(aRawData, iLength, m_aRecord.aStr(), m_iLength);
+    _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
+    return true;
+  }
+  
+  // read next chunk
+  m_bMoreChunks = bReadChunk();
+  if (! m_bMoreChunks)
+    return false;
+  
+  // fetch first record from chunk just read
+  aRawData = m_pLoadChunk->aNextRecord(iLength);
+  if (aRawData) {
+    // format the raw data into a record
+    RowData::vFormatData(aRawData, iLength, m_aRecord.aStr(), m_iLength);
+    _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
+    return true;
+  }
+  
+  return false;
+}
+
+#else
 bool LoaderSub::bFetchRecord(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
@@ -199,10 +241,29 @@ bool LoaderSub::bFetchRecord(void)
   
   return false;
 }
-
+#endif
 /*----------------------------------------------------------------------------*/
 /* hash the first field of record                                             */
 /*----------------------------------------------------------------------------*/
+#ifdef _ROWFORMAT
+void LoaderSub::vHashRecord(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
+  
+  // calculate length of first field
+  //  i8 iLength = 0;
+  //  char* pChar = (char*)m_aRecord;
+  //  while ('|' != *pChar++)
+  //    iLength++;
+  
+  // hash the field using xxhash
+  //m_iHash = XXH32(m_aRecord,iLength,0);
+  //m_iPartition = m_iHash % (gpGrid->iSlots() * gpGrid->iNodes());
+  
+  m_iPartition = m_pTable->iRowPartition(m_aRecord.aStr(), m_iLength);
+}
+
+#else
 void LoaderSub::vHashRecord(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
@@ -219,41 +280,39 @@ void LoaderSub::vHashRecord(void)
   
   m_iPartition = m_pTable->iRowPartition(m_aRecord);
 }
-
+#endif
 /*----------------------------------------------------------------------------*/
 /* insert row into working buffer                                             */
 /*----------------------------------------------------------------------------*/
+#ifdef _ROWFORMAT
 bool LoaderSub::bInsertRow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
- 
-  //vTrace("%s\n"_Str, m_aRecord->s());
-  /*
-  // get the hidden index data
-  Partition* pPartition = m_pTable->pPartition(m_iPartition);
   
-  // insert an entry into the hidden index data
-  IndexData* pIndexData = pPartition->pHiddenIndexData();
-  Entry* pRowEntry = pIndexData->pInsertEntry(m_pTxRef->iTxId(), m_aRecord, m_iLength);
-
-  // get no of indexes of the table
-  IdxDataVec* pIdxDataVec = pPartition->pIdxDataVec();
-  i8 nIndexes = pIdxDataVec->nItems();
-
-  // insert an entry for the row in all the indexes of this table
-  for (i8 i_Index=0; i_Index < nIndexes; i_Index++) {
-    
-    IndexData* pIndexData = pIdxDataVec->pGet(i_Index);
-    Index* pIndex = pIndexData->pIndex();
-    
-    // skip the hidden index, as already inserted row in it
-    if ( ! pIndex->bIsHidden())      
-      pIndexData->vInsertEntry(pRowEntry);
+  // check for working buffer
+  if (! m_pEntryBuffer[m_iPartition]) {
+    m_pEntryBuffer[m_iPartition] = new EntryBuffer(m_pTable->pHiddenIndex(),0);
+    if (! m_pEntryBuffer[m_iPartition]) {
+      vTrace("EntryBuffer allocation failed\n"_Str);
+      return false;
+    }
   }
   
-  return true;
-  */
-  //vDumpAscii(m_aRecord,m_iLength);
+  // get working buffer
+  EntryBuffer* pEntryBuffer = m_pEntryBuffer[m_iPartition];
+  
+  // insert row into working buffer
+  bool b = pEntryBuffer->bInsertEntry(m_pTxRef->iTxId(),m_aRecord.aStr(),m_iLength);
+  
+  pEntryBuffer->vShow();
+  
+  return b;
+}
+
+#else
+bool LoaderSub::bInsertRow(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
   
   // check for working buffer
   if (! m_pEntryBuffer[m_iPartition]) {
@@ -269,28 +328,29 @@ bool LoaderSub::bInsertRow(void)
   
   // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!truncate!!
   
-  i8 iLength = m_iLength;
-  
-  char* aCursor = (char*)m_aRecord;
-  bool bClip = StrLib::bFind(&aCursor,'|',13);
-  iLength = nSub(aCursor,m_aRecord) - 1;
-
-  char xInsBuf[256];
-  StrLib::vCopyLen(xInsBuf,(char*)m_aRecord,iLength);
-  //vTrace("Inserting: %s %lld\n"_Str,xInsBuf,iLength);
-  
-  // insert row into working buffer
-  bool b = pEntryBuffer->bInsertEntry(m_pTxRef->iTxId(),m_aRecord,iLength);
+//  i8 iLength = m_iLength;
+//  
+//  char* aCursor = (char*)m_aRecord;
+//  bool bClip = StrLib::bFind(&aCursor,'|',13);
+//  iLength = nSub(aCursor,m_aRecord) - 1;
+//
+//  char xInsBuf[256];
+//  StrLib::vCopyLen(xInsBuf,(char*)m_aRecord,iLength);
+//  //vTrace("Inserting: %s %lld\n"_Str,xInsBuf,iLength);
+//  
+//  // insert row into working buffer
+//  bool b = pEntryBuffer->bInsertEntry(m_pTxRef->iTxId(),m_aRecord,iLength);
   
   // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
   // insert row into working buffer
-  //bool b = pEntryBuffer->bInsertEntry(m_pTxRef->iTxId(),m_aRecord,m_iLength);
+  bool b = pEntryBuffer->bInsertEntry(m_pTxRef->iTxId(),m_aRecord,m_iLength);
   
   // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   
   return b;
 }
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* set loader                                                                 */
@@ -401,6 +461,24 @@ Table* LoaderSub::pTable(void)
 /*----------------------------------------------------------------------------*/
 /* validate row                                                               */
 /*----------------------------------------------------------------------------*/
+#ifdef _ROWFORMAT
+bool LoaderSub::bValidateRow(i8& i_Column)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
+  
+  bool bValid = m_pTable->bValidateRow(m_aRecord.aStr(),i_Column);
+  
+  if ( ! bValid ) {
+    vTrace("Loader:: Invalid field %lld in record: "_Str,
+           i_Column);
+    RowData::vDump((char*)m_aRecord.aStr(), m_iLength);
+    exit(-1);
+  }
+  
+  return bValid;
+}
+
+#else
 bool LoaderSub::bValidateRow(i8& i_Column)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
@@ -418,27 +496,27 @@ bool LoaderSub::bValidateRow(i8& i_Column)
   
   return bValid;
 }
-
+#endif
 /*----------------------------------------------------------------------------*/
 /* truncate record from given field                                           */
 /*----------------------------------------------------------------------------*/
-void LoaderSub::vTruncateRecord(i8 iField)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
-  
-  char* aCursor = (char*)m_aRecord;
-  
-  vTrace("Before %s\n"_Str,m_aRecord);
-  
-  bool b = StrLib::bFind(&aCursor,'|',iField);
-  
-  if (b) {
-    *aCursor = '\0';
-    m_iLength = StrLib::iLength((char*)m_aRecord);
-
-    vTrace("After %s\n"_Str,m_aRecord);
-  }
-}
+//void LoaderSub::vTruncateRecord(i8 iField)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
+//  
+//  char* aCursor = (char*)m_aRecord;
+//  
+//  vTrace("Before %s\n"_Str,m_aRecord);
+//  
+//  bool b = StrLib::bFind(&aCursor,'|',iField);
+//  
+//  if (b) {
+//    *aCursor = '\0';
+//    m_iLength = StrLib::iLength((char*)m_aRecord);
+//
+//    vTrace("After %s\n"_Str,m_aRecord);
+//  }
+//}
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/

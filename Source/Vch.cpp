@@ -197,6 +197,30 @@ void Vch::vCopy(void* pDst, void* pSrc)
 /*----------------------------------------------------------------------------*/
 /* extract an varchar from substr                                             */
 /*----------------------------------------------------------------------------*/
+#ifdef _ROWFORMAT
+bool Vch::bExtract(char* aSrc, Vch* aVch, i8 iLength, Column* pColumn)
+{
+  char* aChar = (char*)aVch;
+  
+  for (i8 i_CurrentChar = 0; i_CurrentChar < iLength; i_CurrentChar++) {
+    
+    char c = aSrc[i_CurrentChar];
+    
+    // test for null
+    if ( ! c ) {
+      aVch->vSetNull();
+      return true;
+    }
+  
+    // collect the csv
+    *aChar++ = c;
+  }
+  *aChar++ = '\0';
+  
+  return true;
+}
+
+#else
 bool Vch::bExtract(char** aaSrc, Vch* aVch, Column* pColumn)
 {
   char* aChar = (char*)aVch;
@@ -214,6 +238,7 @@ bool Vch::bExtract(char** aaSrc, Vch* aVch, Column* pColumn)
   
   return true;
 }
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* sprint tsp datum                                                           */
@@ -229,6 +254,18 @@ void Vch::vSprint(Str* aDst, Str* aSrc)
 /*----------------------------------------------------------------------------*/
 /* valid varchar in substr?                                                   */
 /*----------------------------------------------------------------------------*/
+#ifdef _ROWFORMAT
+bool Vch::bValid(char* aSrc, i8 iLength, Column* pColumn)
+{
+  s48K sBuffer;
+  
+  Vch* aVch = (Vch*)sBuffer.aStr();
+  bool bValid = bExtract(aSrc,aVch,iLength, pColumn);
+  
+  return bValid;
+}
+
+#else
 bool Vch::bValid(char** aaSrc, Column* pColumn)
 {
   s48K sBuffer;
@@ -238,7 +275,7 @@ bool Vch::bValid(char** aaSrc, Column* pColumn)
   
   return bValid;
 }
-
+#endif
 /*----------------------------------------------------------------------------*/
 /*-- Embedded Comparators ----------------------------------------------------*/
 /*----------------------------------------------------------------------------*/

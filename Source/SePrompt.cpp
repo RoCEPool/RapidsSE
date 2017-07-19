@@ -677,6 +677,63 @@ bool SePrompt::bExecuteRequest(void)
 /*----------------------------------------------------------------------------*/
 /* iterate rows                                                               */
 /*----------------------------------------------------------------------------*/
+#ifdef _ROWFORMAT
+void SePrompt::vIterateRows(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  i8 iAddress = m_sResponse.iToI8();
+  
+  SelCursor* pSelCursor = reinterpret_cast<SelCursor*>(iAddress);
+  ASSERT(CN_SELCURSOR == pSelCursor->eClass());
+  
+  i8 iRowCount = 0;
+  
+  if (gbMetadata) {
+    vTrace("metadata: %s\n"_Str, m_pSEitf->m_sMetadata.aStr());
+    for (i8 i_Partition = 0; i_Partition < gxArguments.m_nSlots; i_Partition++) {
+      //vTrace("Partition %lld: \n"_Str, Partition::iSlotToPartition(iPartition));
+      i8 iPart = Partition::iSlotToPartition(i_Partition);
+      pSelCursor->vBegin(i_Partition);
+      pSelCursor->vFirst();
+      Entry* pRow = pSelCursor->pRow();
+      while (pRow) {
+        iRowCount++;
+        if (m_pSEitf->m_bDisplay) {
+          vTrace("row: (%lld, '"_Str, iPart);
+          RowData::vShowData(pRow->aRow(),pRow->nRowSize());
+          vTrace("')\n"_Str);
+        }
+        pSelCursor->vNext();
+        pRow = pSelCursor->pRow();
+      }
+    }
+    m_pSEitf->m_iRowsProcessed = iRowCount;
+  }
+  else {
+    for (i8 i_Partition = 0; i_Partition < gxArguments.m_nSlots; i_Partition++) {
+      vTrace("Partition %lld: \n"_Str, Partition::iSlotToPartition(i_Partition));
+      pSelCursor->vBegin(i_Partition);
+      pSelCursor->vFirst();
+      Entry* pRow = pSelCursor->pRow();
+      while (pRow) {
+        iRowCount++;
+        if (m_pSEitf->m_bDisplay) {
+          vTrace("row: ("_Str);
+          RowData::vShowData(pRow->aRow(),pRow->nRowSize());
+          vTrace(")\n"_Str);
+        }
+        pSelCursor->vNext();
+        pRow = pSelCursor->pRow();
+      }
+    }
+  }
+  
+  pSelCursor->vEnd();
+  delete pSelCursor;
+}
+
+#else
 void SePrompt::vIterateRows(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
@@ -697,14 +754,14 @@ void SePrompt::vIterateRows(void)
       pSelCursor->vFirst();
       Str* pStr = pSelCursor->aRowAsStr();
       while (pStr) {
-        iRowCount++;
-        if (m_pSEitf->m_bDisplay)
-          vTrace("row: (%lld, '%s')\n"_Str, iPart, pStr);
-        pSelCursor->vNext();
-        pStr = pSelCursor->aRowAsStr();
+          iRowCount++;
+          if (m_pSEitf->m_bDisplay)
+            vTrace("row: (%lld, '%s')\n"_Str, iPart, pStr);
+          pSelCursor->vNext();
+          pStr = pSelCursor->aRowAsStr();
+        }
       }
-    }
-    m_pSEitf->m_iRowsProcessed = iRowCount;
+      m_pSEitf->m_iRowsProcessed = iRowCount;
   }
   else {
     for (i8 i_Partition = 0; i_Partition < gxArguments.m_nSlots; i_Partition++) {
@@ -715,7 +772,7 @@ void SePrompt::vIterateRows(void)
       while (pStr) {
         iRowCount++;
         if (m_pSEitf->m_bDisplay)
-          vTrace("row: (%s)\n"_Str,pStr);
+          vTrace("row: %s\n"_Str, pStr);
         pSelCursor->vNext();
         pStr = pSelCursor->aRowAsStr();
       }
@@ -726,6 +783,7 @@ void SePrompt::vIterateRows(void)
   delete pSelCursor;
 }
 
+#endif
 /*----------------------------------------------------------------------------*/
 /* return table                                                               */
 /*----------------------------------------------------------------------------*/

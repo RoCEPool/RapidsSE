@@ -82,6 +82,54 @@ void GroupBy::vApplyIndex(Entry* pIndexEntry)
 /*----------------------------------------------------------------------------*/
 /* apply buffer or lineitems                                                  */
 /*----------------------------------------------------------------------------*/
+#ifdef _ROWFORMAT
+void GroupBy::vApplyBuffer(EntryBuffer* pEntryBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GROUPBY,_FOOTER_);
+  
+  Entry* pEntry = pEntryBuffer->pFirstRow();
+  while( (pEntry = pEntryBuffer->pNextRow(pEntry)) ) {
+    
+    LineItem* pLineItem = (LineItem*)pEntry->aRow();
+    
+    //    vTrace("\nEntry: %p LineItem: %p String: %p \n>>%s<<\n"_Str,
+    //           pEntry,pLineItem,pLineItem->aStr(),pLineItem->aStr());
+    //    MemLib::vHexDump(pEntry,512);
+    //    vTrace("\n"_Str);
+    
+    // extract the order key (its the first field)
+    char* aCursor = pLineItem->s();
+    i8 iOrderKey;
+    
+    i8 iLength = 0;
+    // get iLength for row                                      //ALKA_ROWFORMAT
+    bool b = DtmLib::bExtract(DM_BCD,(Str*)&iOrderKey,aCursor,iLength,nullptr);
+    
+    // extract the quantity (its after the fifth '|')
+    aCursor = pLineItem->s();
+    i8 iQuantity;
+    b = StrLib::bFind(&aCursor,'|',5);
+    aCursor++;
+    
+    // get iLength for row                                      //ALKA_ROWFORMAT
+    b = DtmLib::bExtract(DM_BCD,(Str*)&iQuantity,aCursor,iLength, nullptr);
+    
+    // compute which group
+    i8 i_Group = iOrderKey % 10;
+    Accum* pAccum = m_pAccumVec->pGet(i_Group);
+    
+    // accumulate
+    pAccum->m_iSum += iQuantity;
+    if (iQuantity < pAccum->m_iMin)
+      pAccum->m_iMin = iQuantity;
+    if (iQuantity > pAccum->m_iMax)
+      pAccum->m_iMax = iQuantity;
+    pAccum->m_iCount++;
+  }
+  
+}
+
+#else
 void GroupBy::vApplyBuffer(EntryBuffer* pEntryBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GROUPBY,_FOOTER_);
@@ -122,10 +170,53 @@ void GroupBy::vApplyBuffer(EntryBuffer* pEntryBuffer)
   }
   
 }
-
+#endif
 /*----------------------------------------------------------------------------*/
 /* apply entry or lineitems                                                   */
 /*----------------------------------------------------------------------------*/
+#ifdef _ROWFORMAT
+void GroupBy::vApplyEntry(Entry* pLineItemEntry)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GROUPBY,_FOOTER_);
+  
+  
+  LineItem* pLineItem = (LineItem*)pLineItemEntry->aRow();
+  
+  //    vTrace("\nEntry: %p LineItem: %p String: %p \n>>%s<<\n"_Str,
+  //           pEntry,pLineItem,pLineItem->aStr(),pLineItem->aStr());
+  //    MemLib::vHexDump(pEntry,512);
+  //    vTrace("\n"_Str);
+  
+  // extract the order key (its the first field)
+  char* aCursor = pLineItem->s();
+  i8 iOrderKey;
+  i8 iLength = 0;
+  // get iLength                                                //ALKA_ROWFORMAT
+  bool b = DtmLib::bExtract(DM_BCD,(Str*)&iOrderKey,aCursor,iLength,nullptr);
+  
+  // extract the quantity (its after the fifth '|')
+  aCursor = pLineItem->s();
+  i8 iQuantity;
+  b = StrLib::bFind(&aCursor,'|',5);
+  aCursor++;
+  // get iLength                                                //ALKA_ROWFORMAT
+  b = DtmLib::bExtract(DM_BCD,(Str*)&iQuantity,aCursor,iLength,nullptr);
+  
+  // compute which group
+  i8 i_Group = iOrderKey % 10;
+  Accum* pAccum = m_pAccumVec->pGet(i_Group);
+  
+  // accumulate
+  pAccum->m_iSum += iQuantity;
+  if (iQuantity < pAccum->m_iMin)
+    pAccum->m_iMin = iQuantity;
+  if (iQuantity > pAccum->m_iMax)
+    pAccum->m_iMax = iQuantity;
+  pAccum->m_iCount++;
+  
+}
+
+#else
 void GroupBy::vApplyEntry(Entry* pLineItemEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GROUPBY,_FOOTER_);
@@ -161,9 +252,9 @@ void GroupBy::vApplyEntry(Entry* pLineItemEntry)
   if (iQuantity > pAccum->m_iMax)
     pAccum->m_iMax = iQuantity;
   pAccum->m_iCount++;
-
   
 }
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* apply partial group by results                                             */

@@ -179,7 +179,7 @@ i8 Entry::nRowSize(void)
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_ENTRY,CN_ROW);
   
   i8 nOffsetBytes = RightVec::nBytesRequired(m_nOffsets);
-  i8 iRowSize = m_nThisBytes - (nOffsetBytes + sizeof(Entry));
+  i8 iRowSize = m_nThisBytes - (nOffsetBytes + sizeof(Entry) + sizeof(Footer) + sizeof(i8));
   
   return iRowSize;
 }
@@ -350,8 +350,72 @@ void Entry::vSetEntry(EntWrk& xEntWrk)
   _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_ENTRY,CN_ROW);
 }
 /*----------------------------------------------------------------------------*/
+/* set entry given eanother entry                                             */
+/*----------------------------------------------------------------------------*/
+#ifdef _ROWFORMAT
+void Entry::vSetEntry(Id xId, i8 iKey, Entry* pOldEntry)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_ENTRY,CN_ROW);
+  
+  ASSERT(m_nThisBytes);
+  
+  // set RowId
+  m_xId  = xId;
+  
+  // copy Key
+  i8 nKeyBytes = 8;
+  Key* aEntryKey = this->aKey();
+  
+  MemLib::vCopy(aEntryKey,&iKey,nKeyBytes,eClass());
+  
+  // copy data
+  char* aEntryData = this->aRow();;
+  i8 nDataSize = pOldEntry->nRowSize();
+  
+  ASSERT(nDataSize);
+  
+  //StrVal* pStrVal = new((StrVal*)aEntryData) StrVal((StrVal*)aEntryData);
+  //pStrVal->vAssign(sRow.aStr(),nDataSize);
+  MemLib::vCopy(aEntryData,pOldEntry->aRow(),nDataSize,eClass());
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_ENTRY,CN_ROW);
+}
+#endif
+
+/*----------------------------------------------------------------------------*/
 /* set entry given entry wsp                                                  */
 /*----------------------------------------------------------------------------*/
+#ifdef _ROWFORMAT
+void Entry::vSetEntry(Id xId, i8 iKey, s256& sRow)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_ENTRY,CN_ROW);
+  
+  ASSERT(m_nThisBytes);
+  
+  // set RowId
+  m_xId  = xId;
+  
+  // copy Key
+  i8 nKeyBytes = 8;
+  Key* aEntryKey = this->aKey();
+  
+  MemLib::vCopy(aEntryKey,&iKey,nKeyBytes,eClass());
+  
+  // copy data
+  char* aEntryData = this->aRow();
+  i8 nDataSize = sRow.iLength();
+  
+  ASSERT(nDataSize);
+  i8 nBytes = StrVal::nBytesRequired(nDataSize);
+  
+  //StrVal* pStrVal = new((StrVal*)aEntryData) StrVal((StrVal*)aEntryData);
+  //pStrVal->vAssign(sRow.aStr(),nDataSize);
+  MemLib::vCopy(aEntryData,sRow.aStr(),nDataSize,eClass());
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_ENTRY,CN_ROW);
+}
+
+#else
 void Entry::vSetEntry(Id xId, i8 iKey, s256& sRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_ENTRY,CN_ROW);
@@ -377,10 +441,10 @@ void Entry::vSetEntry(Id xId, i8 iKey, s256& sRow)
   StrVal* pStrVal = new((StrVal*)aEntryData) StrVal((StrVal*)aEntryData);
   pStrVal->vAssign(sRow.aStr(),nDataSize);
   //MemLib::vCopy(aEntryData,sRow.aStr(),nDataSize,eClass());
-
   
   _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_ENTRY,CN_ROW);
 }
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* show content                                                               */
@@ -411,12 +475,18 @@ void Entry::vShow(i8 iBase, Index* pIndex)
          m_xId.iRow()
          );
   
-    aKey->vShow(pIndex->pIdxColVec());
-    
-    if (pIndex->bIsHidden()) {
-      StrVal* pStrVal = reinterpret_cast<StrVal*>(aRow());
-      vTrace("%s"_Str, pStrVal->aStr());
-    }
+  aKey->vShow(pIndex->pIdxColVec());
+
+#ifdef _ROWFORMAT
+  if (pIndex->bIsHidden()) {
+    RowData::vShow(aRow(), nRowSize());
+  }
+#else
+  if (pIndex->bIsHidden()) {
+    StrVal* pStrVal = reinterpret_cast<StrVal*>(aRow());
+    vTrace("%s"_Str, pStrVal->aStr());
+  }
+#endif
   
   for (on nRight = 0_on; nRight < m_nOffsets; nRight++) {
     
@@ -467,6 +537,126 @@ void Entry::vContentDump(void)
 /*----------------------------------------------------------------------------*/
 /* extract a key into KeyWrk from this row using given index columns          */
 /*----------------------------------------------------------------------------*/
+#ifdef _ROWFORMAT
+void Entry::vExtractKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_ENTRY,CN_ROW);
+  
+  ValWrk xValWrk;
+  s256 s;
+  
+  // get the data
+  StrVal* pStrVal = (StrVal*)aRow();
+  
+  i8 nCols = pIdxColVec->nItems();
+  for (i8 i_Column = 0; i_Column < nCols; i_Column++) {
+    
+    // get the column from the index column vector
+    Column* pColumn = pIdxColVec->pGet(i_Column);
+    
+    // get the column number of the column
+    i8 iColumnNo = pColumn->iColumnNo();
+    
+    //char* pDst = s.s();
+    char* aCursor = reinterpret_cast<char*>(pStrVal->aStr());
+    
+    // get the column value from the row for the iColumnNo
+    i8 iLength;
+    char* pDst = (char*)RowData::pColumn((Str*)aRow(), i_Column, iLength);
+    
+    switch(pColumn->eColumnType()) {
+        
+      case CT_BOOLEAN: {
+        Bol xBol;
+        bool b = Bol::bExtract(&pDst,&xBol,pColumn);
+        ASSERT(b);
+        xValWrk = xBol;
+        break;
+      }
+        
+      case CT_CHAR: {
+        NEVER_REACH;
+        break;
+      }
+        
+      case CT_DATE: {
+        Dte xDte;
+        bool b = Dte::bExtract(&pDst,&xDte,pColumn);
+        ASSERT(b);
+        xValWrk = xDte;
+        break;
+      }
+        
+      case CT_DECIMAL: {
+        Bcd xBcd;
+        bool b = Bcd::bExtract(pDst,&xBcd,iLength,pColumn);
+        ASSERT(b);
+        xValWrk = xBcd;
+        break;
+      }
+        
+      case CT_FLOAT: {
+        Flt xFlt;
+        bool b = Flt::bExtract(&pDst,&xFlt,pColumn);
+        ASSERT(b);
+        xValWrk = xFlt.dAsD8();
+        break;
+      }
+        
+      case CT_INTEGER: {
+        Int xInt;
+        bool b = Int::bExtract(pDst,&xInt,iLength,pColumn);
+        ASSERT(b);
+        if (b)
+          xValWrk = xInt.iAsI8();
+        break;
+      }
+        
+      case CT_INTERVAL: {
+        Ivl xIvl;
+        bool b = Ivl::bExtract(&pDst,&xIvl,pColumn);
+        ASSERT(b);
+        xValWrk = xIvl;
+        break;
+      }
+        
+      case CT_TIME: {
+        Tme xTme;
+        bool b = Tme::bExtract(&pDst,&xTme,pColumn);
+        ASSERT(b);
+        xValWrk = xTme;
+        break;
+      }
+        
+      case CT_TIMESTAMP: {
+        Tsp xTsp;
+        bool b = Tsp::bExtract(&pDst,&xTsp,pColumn);
+        ASSERT(b);
+        xValWrk = xTsp;
+        break;
+      }
+        
+      case CT_VARBINARY: {
+        NEVER_REACH;
+        break;
+      }
+        
+      case CT_VARCHAR: {
+        xValWrk = s;
+        break;
+      }
+        
+      default:
+        NEVER_REACH;
+    }
+    
+    // add the column value to the key
+    xKeyWrk.vAddDatum(xValWrk, pColumn);
+  }
+  
+}
+
+#else
 void Entry::vExtractKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_ENTRY,CN_ROW);
@@ -591,6 +781,7 @@ void Entry::vExtractKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
   }
   
 }
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* get tx id                                                                  */
