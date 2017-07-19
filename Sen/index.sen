@@ -340,9 +340,9 @@ tp: makingIndex
   seitf task::this task.seitf!
 
   // start groupBy for this partition
-  iPartitionNo seitf seitf.groupBy@
-  locals| pGroupBy |
-  pGroupBy groupBy.start
+  //iPartitionNo seitf seitf.groupBy@
+  //locals| pGroupBy |
+  //pGroupBy groupBy.start
 
   // create a temporary index buffer for the results
   //"Creating a tempIndexBuffer" .
@@ -365,7 +365,7 @@ tp: makingIndex
 
     // return the empty tempEntryBuffer
     //"Appending tempEntryBuffer to buffer queue" .
-    tempEntryBuffer pGroupby groupBy.applyBuffer
+    //tempEntryBuffer pGroupby groupBy.applyBuffer
     tempEntryBuffer seitf seitf.bufferQueue@ queue.append
 
     exit
@@ -388,7 +388,7 @@ tp: makingIndex
         // buffer must be full
         // put this tempEntryBuffer in seitf bufferQueue
         //"Inserting row into tempEntryBuffer" .
-        tempEntryBuffer pGroupby groupBy.applyBuffer
+        //tempEntryBuffer pGroupby groupBy.applyBuffer
         tempEntryBuffer seitf seitf.bufferQueue@ queue.append
 
         // create another temporary index buffer for the results
@@ -424,7 +424,7 @@ tp: makingIndex
 
   // put the buffer in the seitf bufferQueue
   //"Appending tempEntryBuffer to buffer queue" .
-  tempEntryBuffer pGroupby groupBy.applyBuffer
+  //tempEntryBuffer pGroupby groupBy.applyBuffer
   tempEntryBuffer seitf seitf.bufferQueue@ queue.append
 ;
 
@@ -560,9 +560,9 @@ tp: loadIndexes
   seitf task::this task.seitf!
 
   // start groupBy for this partition
-  iPartitionNo seitf seitf.groupBy@
-  locals| pGroupBy |
-  pGroupBy groupBy.start
+  //iPartitionNo seitf seitf.groupBy@
+  //locals| pGroupBy |
+  //pGroupBy groupBy.start
 
   // create a temporary index buffer for the results
   //"Creating a tempIndexBuffer" .
@@ -585,7 +585,7 @@ tp: loadIndexes
 
     // return the empty tempEntryBuffer
     //"Appending tempEntryBuffer to buffer queue" .
-    tempEntryBuffer pGroupby groupBy.applyBuffer
+    //tempEntryBuffer pGroupby groupBy.applyBuffer
     tempEntryBuffer seitf seitf.bufferQueue@ queue.append
 
     exit
@@ -605,7 +605,7 @@ tp: loadIndexes
       // buffer must be full
       // put this tempEntryBuffer in seitf bufferQueue
       //"Inserting row into tempEntryBuffer" .
-      tempEntryBuffer pGroupby groupBy.applyBuffer
+      //tempEntryBuffer pGroupby groupBy.applyBuffer
       tempEntryBuffer seitf seitf.bufferQueue@ queue.append
 
       // create another temporary index buffer for the results
@@ -638,7 +638,7 @@ tp: loadIndexes
 
   // put the buffer in the seitf bufferQueue
   //"Appending tempEntryBuffer to buffer queue" .
-  tempEntryBuffer pGroupby groupBy.applyBuffer
+  //tempEntryBuffer pGroupby groupBy.applyBuffer
   tempEntryBuffer seitf seitf.bufferQueue@ queue.append
 ;
 
@@ -667,8 +667,8 @@ tp: loadIndexes
   pSeitf task::this task.seitf!
 
   // start groupBy for this partition
-  iPartitionNo pSeitf seitf.groupBy@ locals| pGroupBy |
-  pGroupBy groupBy.start
+  //iPartitionNo pSeitf seitf.groupBy@ locals| pGroupBy |
+  //pGroupBy groupBy.start
 
   // create a temporary buffer for the results
   pIndex entryBuffer::create to pResultBuffer
@@ -692,7 +692,7 @@ tp: loadIndexes
     pResultBuffer entryBuffer.isLast!
 
     // return the empty result buffer
-    pResultBuffer pGroupby groupBy.applyBuffer
+    //pResultBuffer pGroupby groupBy.applyBuffer
     pResultBuffer pSeitf seitf.bufferQueue@ queue.append
 
     exit
@@ -714,7 +714,7 @@ tp: loadIndexes
       not if
         // buffer must be full
         // put this result buffer in seitf buffer queue
-        pResultBuffer pGroupby groupBy.applyBuffer
+        //pResultBuffer pGroupby groupBy.applyBuffer
         pResultBuffer pSeitf seitf.bufferQueue@ queue.append
 
         // create another result buffer
@@ -746,7 +746,7 @@ tp: loadIndexes
   pResultBuffer entryBuffer.isLast!
 
   // put the result buffer in the seitf buffer queue
-  pResultBuffer pGroupby groupBy.applyBuffer
+  //pResultBuffer pGroupby groupBy.applyBuffer
   pResultBuffer pSeitf seitf.bufferQueue@ queue.append
 ;
 
@@ -775,14 +775,7 @@ tp: loadIndexes
   locals| sIndexNm sSelectTaskSeed sUpperKey sLowerKey sExactKey |
 
   // local variables
-  0 0 0 0 0 0 0 locals| pPartialGroupBy iSlots pSeitf pSelectTask nRowCount pIndexBuffer pEntry pIndex |
-
-  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
-
-  groupBy::new locals| pGroupBy |
-  pGroupBy groupBy.start
-
-  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
+  0 0 0 0 0 0 0 locals| iSlots pSeitf pSelectTask nRowCount pIndexBuffer pEntry pIndex |
 
   // increment query count
   queryCount ++
@@ -814,10 +807,6 @@ tp: loadIndexes
     // put the partition in this tasks seitf
     //I pSeitf seitf.partition!
 
-    // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
-    I groupBy::new pSeitf seitf.groupBy!
-   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
-
     // create a selectTask to execute the key select on the index for the partition
     sExactKey sLowerKey sUpperKey pIndex pSeitf I 6
       sSelectTaskSeed nullptr "selectTask" TK_SELECT_PART spawnServerActor
@@ -840,10 +829,6 @@ tp: loadIndexes
         args.sleep thread.sleep_ms
       repeat
       to pIndexBuffer
-
-      // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
-      //pIndexBuffer pGroupby groupBy.applyBuffer
-      // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
 
       //"Popped tempEntryBuffer from buffer queue" .
 
@@ -898,20 +883,6 @@ tp: loadIndexes
   else
     "rows selected"  nRowCount "%v %v\n" str.format .put
   then
-
-  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
-
-  grid.slots 0
-  do
-    I pSeitf seitf.groupBy@ to pPartialGroupBy
-    pPartialGroupBy pGroupby groupBy.applyPartial
-    pPartialGroupBy groupBy.delete
-  loop
-
-  pGroupBy groupBy.end
-  pGroupBy groupBy.delete
-
-  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -1073,9 +1044,9 @@ tp: selectIndex
   seitf task::this task.seitf!
 
   // start groupBy for this partition
-  iPartitionNo seitf seitf.groupBy@
-  locals| pGroupBy |
-  pGroupBy groupBy.start
+  //iPartitionNo seitf seitf.groupBy@
+  //locals| pGroupBy |
+  //pGroupBy groupBy.start
 
   // create a temporary index buffer for the results
   "Creating a tempIndexBuffer" .
@@ -1098,7 +1069,7 @@ tp: selectIndex
 
     // return the empty tempEntryBuffer
     //"Appending tempEntryBuffer to buffer queue" .
-    tempEntryBuffer pGroupby groupBy.applyBuffer
+    //tempEntryBuffer pGroupby groupBy.applyBuffer
     tempEntryBuffer seitf seitf.bufferQueue@ queue.append
 
     exit
@@ -1117,7 +1088,7 @@ tp: selectIndex
         // buffer must be full
         // put this tempEntryBuffer in seitf bufferQueue
         //"Inserting row into tempEntryBuffer" .
-        tempEntryBuffer pGroupby groupBy.applyBuffer
+        //tempEntryBuffer pGroupby groupBy.applyBuffer
         tempEntryBuffer seitf seitf.bufferQueue@ queue.append
 
         // create another temporary index buffer for the results
@@ -1149,7 +1120,7 @@ tp: selectIndex
 
   // put the buffer in the seitf bufferQueue
   //"Appending tempEntryBuffer to buffer queue" .
-  tempEntryBuffer pGroupby groupBy.applyBuffer
+  //tempEntryBuffer pGroupby groupBy.applyBuffer
   tempEntryBuffer seitf seitf.bufferQueue@ queue.append
 ;
 
@@ -1217,9 +1188,9 @@ tp: selectIndex
   seitf task::this task.seitf!
 
   // start groupBy for this partition
-  iPartitionNo seitf seitf.groupBy@
-  locals| pGroupBy |
-  pGroupBy groupBy.start
+  //iPartitionNo seitf seitf.groupBy@
+  //locals| pGroupBy |
+  //pGroupBy groupBy.start
 
   // create a temporary index buffer for the results
   "Creating a tempIndexBuffer" .
@@ -1250,7 +1221,7 @@ tp: selectIndex
 
     // return the empty tempEntryBuffer
     //"Appending tempEntryBuffer to buffer queue" .
-    tempEntryBuffer pGroupby groupBy.applyBuffer
+    //tempEntryBuffer pGroupby groupBy.applyBuffer
     tempEntryBuffer seitf seitf.bufferQueue@ queue.append
 
     exit
@@ -1273,7 +1244,7 @@ tp: selectIndex
         // buffer must be full
         // put this tempEntryBuffer in seitf bufferQueue
         //"Inserting row into tempEntryBuffer" .
-        tempEntryBuffer pGroupby groupBy.applyBuffer
+        //tempEntryBuffer pGroupby groupBy.applyBuffer
         tempEntryBuffer seitf seitf.bufferQueue@ queue.append
 
         // create another temporary index buffer for the results
@@ -1309,7 +1280,7 @@ tp: selectIndex
 
   // put the buffer in the seitf bufferQueue
   //"Appending tempEntryBuffer to buffer queue" .
-  tempEntryBuffer pGroupby groupBy.applyBuffer
+  //tempEntryBuffer pGroupby groupBy.applyBuffer
   tempEntryBuffer seitf seitf.bufferQueue@ queue.append
 ;
 
