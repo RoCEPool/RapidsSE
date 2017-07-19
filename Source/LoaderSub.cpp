@@ -304,7 +304,7 @@ bool LoaderSub::bInsertRow(void)
   // insert row into working buffer
   bool b = pEntryBuffer->bInsertEntry(m_pTxRef->iTxId(),m_aRecord.aStr(),m_iLength);
   
-  pEntryBuffer->vShow();
+  //pEntryBuffer->vShow();
   
   return b;
 }

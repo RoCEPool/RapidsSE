@@ -125,7 +125,7 @@ void DtmLib::vHash(eDM eDatum, i8& iHash, Str* aScr, i8 iLength, DBobjects::Colu
       
     case CT_BOOLEAN: {
       Bol xBol;
-      bool b = Bol::bExtract((char**)&aScr,&xBol,pColumn);
+      bool b = Bol::bExtract((char*)aScr,&xBol,iLength,pColumn);
       ASSERT(b);
       iHash += XXH32(&xBol,sizeof(Bol),0);
       break;
