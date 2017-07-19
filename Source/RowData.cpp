@@ -125,6 +125,40 @@ Str* RowData::pColumn(Str* aRowData, i8 iColumnNo, i8& iLength)
 /*----------------------------------------------------------------------------*/
 /* show RowData                                                               */
 /*----------------------------------------------------------------------------*/
+void RowData::vGetDataString(s256& sDataString, char* aRowData, i8 iRowLength)
+{  
+  i8 i_RowLength = 0;
+  i8* pSeparator;
+  char* s = sDataString.s();
+  
+  while (i_RowLength < iRowLength) {
+    
+    if (i_RowLength)
+      *s++ = ',';
+    
+    // get separator
+    pSeparator = (i8*)aRowData;
+    
+    // extract length of next field from separator
+    i8 iLength = *pSeparator;
+    
+    // move rowData nd rowLeghth by i8
+    i_RowLength += sizeof(i8);
+    aRowData = (char*)pSeparator + sizeof(i8);
+    
+    // dump the row data upto iLength bytes
+    for (i8 i =0; i < iLength; i++)
+      *s++ = *(aRowData+i);
+    
+    // move the row pointer ahead
+    aRowData += iLength;
+    i_RowLength += iLength;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* show RowData                                                               */
+/*----------------------------------------------------------------------------*/
 void RowData::vShow(char* aRowData, i8 iRowLength)
 {
   
@@ -189,7 +223,6 @@ void RowData::vShowData(char* aRowData, i8 iRowLength)
     aRowData += iLength;
     i_RowLength += iLength;
   }
-  
 }
 
 /*----------------------------------------------------------------------------*/
