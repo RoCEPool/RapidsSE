@@ -732,22 +732,22 @@ bool Table::bValidateRow(Str* aRow, i8& i_Column)
   
   char* aCursor = (char*)aRow;
   
-  i8* pSeparator;
+  char* pSeparator;
   
   for (i_Column = 0;
        i_Column < m_pColumnVec->nItems() && *aCursor;
        i_Column++) {
     
     // get separator
-    pSeparator = (i8*)aCursor;
+    pSeparator = (char*)aCursor;
     
     // extract length of next field from separator
-    i8 iLength = *pSeparator;
+    char iLength = *pSeparator;
     
     Column* pColumn = m_pColumnVec->pGet(i_Column);
     
     // move cursor to next field
-    aCursor += sizeof(i8);
+    aCursor += sizeof(char);
     bool b = pColumn->bValidateField((Str*)aCursor, iLength);
     
     // move cursor to next separator
