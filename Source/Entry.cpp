@@ -544,7 +544,7 @@ void Entry::vExtractKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
         
       case CT_INTERVAL: {
         Ivl xIvl;
-        bool b = Ivl::bExtract(&pDst,&xIvl,pColumn);
+        bool b = Ivl::bExtract(pDst,&xIvl,iLength,pColumn);
         ASSERT(b);
         xValWrk = xIvl;
         break;

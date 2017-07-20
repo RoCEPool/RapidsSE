@@ -69,7 +69,7 @@ bool DtmLib::bExtract(eDM eDatum, Str* aDst, char* aSrc, i8 iLength, DBobjects::
     case DM_DTE: b = Dte::bExtract(aSrc,(Dte*)aDst,iLength,pColumn); break;
 //    case DM_FLT: b = Flt::bExtract(aaSrc,(Flt*)aDst,pColumn); break;
     case DM_INT: b = Int::bExtract(aSrc,(Int*)aDst,iLength,pColumn); break;
-//    case DM_IVL: b = Ivl::bExtract(aaSrc,(Ivl*)aDst,pColumn); break;
+    case DM_IVL: b = Ivl::bExtract(aSrc,(Ivl*)aDst,iLength,pColumn); break;
     case DM_TME: b = Tme::bExtract(aSrc,(Tme*)aDst,iLength,pColumn); break;
     case DM_TSP: b = Tsp::bExtract(aSrc,(Tsp*)aDst,iLength,pColumn); break;
     case DM_VCH: b = Vch::bExtract(aSrc,(Vch*)aDst,iLength,pColumn); break;
@@ -167,7 +167,7 @@ void DtmLib::vHash(eDM eDatum, i8& iHash, Str* aScr, i8 iLength, DBobjects::Colu
       
     case CT_INTERVAL: {
       Ivl xIvl;
-      bool b = Ivl::bExtract((char**)&aScr,&xIvl,pColumn);
+      bool b = Ivl::bExtract((char*)aScr,&xIvl,iLength,pColumn);
       ASSERT(b);
       iHash += XXH32(&xIvl,sizeof(Ivl),0);
       break;
@@ -337,7 +337,7 @@ bool DtmLib::bValidate(eDM eDatum, char* aSrc, i8 iLength, Column* pColumn)
     case DM_DTE: b = Dte::bValid(aSrc,iLength,pColumn); break;
 //    case DM_FLT: b = Flt::bValid(aaSrc,pColumn); break;
     case DM_INT: b = Int::bValid(aSrc,iLength,pColumn); break;
-//    case DM_IVL: b = Ivl::bValid(aaSrc,pColumn); break;
+    case DM_IVL: b = Ivl::bValid(aSrc,iLength,pColumn); break;
     case DM_TME: b = Tme::bValid(aSrc,iLength,pColumn); break;
     case DM_TSP: b = Tsp::bValid(aSrc,iLength,pColumn); break;
     case DM_VCH: b = Vch::bValid(aSrc,iLength,pColumn); break;
