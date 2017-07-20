@@ -511,7 +511,7 @@ void Entry::vExtractKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
         
       case CT_DATE: {
         Dte xDte;
-        bool b = Dte::bExtract(&pDst,&xDte,pColumn);
+        bool b = Dte::bExtract(pDst,&xDte,iLength,pColumn);
         ASSERT(b);
         xValWrk = xDte;
         break;

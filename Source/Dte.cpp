@@ -207,6 +207,62 @@ void Dte::vCopy(void* aDst, void* aSrc)
 /*----------------------------------------------------------------------------*/
 /* extract a date from substr                                     yyyy-mo-ddZ */
 /*----------------------------------------------------------------------------*/
+#ifdef _ROWFORMAT
+bool Dte::bExtract(char*aSrc, Dte* aDate, i8 iLength, Column* pColumn)
+{
+  u8 uField;
+  i8 i_Length = 1;
+  
+  // skip leading whitespace
+  while (' ' == *aSrc) {
+    (*aSrc)++;
+    i_Length++;
+  }
+  
+  // test for null
+  if ( ! *aSrc && i_Length == iLength ) {
+    aDate->vSetNull();
+    return true;
+  }
+  
+  aDate->vInitZero();
+  
+  if ( ! *aSrc )
+    return false;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - -
+  // date portion
+  
+  // extract year
+  if ( ! StrLib::bExtractU8(&aSrc,&uField) )
+    return false;
+  aDate->x.m_uYear = uField;
+
+  // skip - separator
+  if ('-' != (*aSrc)++)
+    return false;
+  
+  // extract month
+  if ( ! StrLib::bExtractU8(&aSrc,&uField) )
+    return false;
+  aDate->x.m_uMonth = uField;
+  
+  // skip - separator
+  if ('-' != (*aSrc)++) return false;
+  
+  // extract day
+  if ( ! StrLib::bExtractU8(&aSrc,&uField) )
+    return false;
+  aDate->x.m_uDay = uField;
+  
+  // skip Z separator
+  if ('Z' == *aSrc)
+    (*aSrc)++;
+  
+  return true;
+}
+  
+#else
 bool Dte::bExtract(char** aaSrc, Dte* aDate, Column* pColumn)
 {
   u8 uField;
@@ -258,6 +314,8 @@ bool Dte::bExtract(char** aaSrc, Dte* aDate, Column* pColumn)
   return true;
 }
 
+#endif
+
 /*----------------------------------------------------------------------------*/
 /* sprint dte datum                                                           */
 /*----------------------------------------------------------------------------*/
@@ -275,6 +333,17 @@ void Dte::vSprint(Str* aDst, Str* aSrc)
 /*----------------------------------------------------------------------------*/
 /* valid date in substr?                                                      */
 /*----------------------------------------------------------------------------*/
+#ifdef _ROWFORMAT
+bool Dte::bValid(char* aSrc, i8 iLength, Column* pColumn)
+{
+  Dte xDte;
+  
+  bool bValid = bExtract(aSrc,&xDte,iLength,pColumn);
+  
+  return bValid;
+}
+
+#else
 bool Dte::bValid(char** aaSrc, Column* pColumn)
 {
   Dte xDte;
@@ -283,7 +352,7 @@ bool Dte::bValid(char** aaSrc, Column* pColumn)
   
   return bValid;
 }
-
+#endif
 /*----------------------------------------------------------------------------*/
 /*-- Embedded Comparators ----------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
