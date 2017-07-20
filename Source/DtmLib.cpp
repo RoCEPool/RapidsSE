@@ -71,7 +71,7 @@ bool DtmLib::bExtract(eDM eDatum, Str* aDst, char* aSrc, i8 iLength, DBobjects::
     case DM_INT: b = Int::bExtract(aSrc,(Int*)aDst,iLength,pColumn); break;
 //    case DM_IVL: b = Ivl::bExtract(aaSrc,(Ivl*)aDst,pColumn); break;
     case DM_TME: b = Tme::bExtract(aSrc,(Tme*)aDst,iLength,pColumn); break;
-//    case DM_TSP: b = Tsp::bExtract(aaSrc,(Tsp*)aDst,pColumn); break;
+    case DM_TSP: b = Tsp::bExtract(aSrc,(Tsp*)aDst,iLength,pColumn); break;
     case DM_VCH: b = Vch::bExtract(aSrc,(Vch*)aDst,iLength,pColumn); break;
     default:
       vFatal("DtmLib::bValid: Invalid aDatum argument: %lld\n"_Str,
@@ -183,7 +183,7 @@ void DtmLib::vHash(eDM eDatum, i8& iHash, Str* aScr, i8 iLength, DBobjects::Colu
       
     case CT_TIMESTAMP: {
       Tsp xTsp;
-      bool b = Tsp::bExtract((char**)&aScr,&xTsp,pColumn);
+      bool b = Tsp::bExtract((char*)aScr,&xTsp,iLength,pColumn);
       ASSERT(b);
       iHash += XXH32(&xTsp,sizeof(Tsp),0);
       break;
@@ -339,7 +339,7 @@ bool DtmLib::bValidate(eDM eDatum, char* aSrc, i8 iLength, Column* pColumn)
     case DM_INT: b = Int::bValid(aSrc,iLength,pColumn); break;
 //    case DM_IVL: b = Ivl::bValid(aaSrc,pColumn); break;
     case DM_TME: b = Tme::bValid(aSrc,iLength,pColumn); break;
-//    case DM_TSP: b = Tsp::bValid(aaSrc,pColumn); break;
+    case DM_TSP: b = Tsp::bValid(aSrc,iLength,pColumn); break;
     case DM_VCH: b = Vch::bValid(aSrc,iLength,pColumn); break;
     default:
       vFatal("DtmLib::bValid: Invalid aDatum argument: %lld\n"_Str,

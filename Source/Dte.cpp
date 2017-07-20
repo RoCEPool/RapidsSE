@@ -215,7 +215,7 @@ bool Dte::bExtract(char*aSrc, Dte* aDate, i8 iLength, Column* pColumn)
   
   // skip leading whitespace
   while (' ' == *aSrc) {
-    (*aSrc)++;
+    aSrc++;
     i_Length++;
   }
   
@@ -257,7 +257,7 @@ bool Dte::bExtract(char*aSrc, Dte* aDate, i8 iLength, Column* pColumn)
   
   // skip Z separator
   if ('Z' == *aSrc)
-    (*aSrc)++;
+    aSrc++;
   
   return true;
 }

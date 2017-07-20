@@ -224,7 +224,7 @@ bool Tme::bExtract(char* aSrc, Tme* aTime, i8 iLength, Column* pColumn)
   
   // skip leading whitespace
   while (' ' == *aSrc) {
-    (*aSrc)++;
+    aSrc++;
     i_Length++;
   }
   
@@ -264,14 +264,14 @@ bool Tme::bExtract(char* aSrc, Tme* aTime, i8 iLength, Column* pColumn)
   
   // extract fraction (assuming milliseconds)
   if ('.' == *aSrc) {
-    (*aSrc)++;
+    aSrc++;
     if ( StrLib::bExtractU8(&aSrc,&uField) )
       aTime->x.m_uMilli = uField;
   }
   
   // skip Z separator
   if ('Z' == *aSrc)
-    (*aSrc)++;
+    aSrc++;
   
   return true;
 }
