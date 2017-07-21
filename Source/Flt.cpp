@@ -179,6 +179,80 @@ void Flt::vCopy(void* aDst, void* aSrc)
 /*----------------------------------------------------------------------------*/
 /* extract a float from substr                                                */
 /*----------------------------------------------------------------------------*/
+#ifdef _ROWFORMAT
+bool Flt::bExtract(char* aSrc, Flt* aFloat, i8 iLength, Column* pColumn)
+{
+  d8 dResult = 0.0;
+  char xBuffer[256];
+  char* aChar = xBuffer;
+  
+  bool bNegative = false;
+  bool bData     = false;
+  bool bDot      = false;
+  
+  i8 iCurrentChar = 0;
+  i8 iResult = 0;
+  
+  for (i8 i_CurrentChar = 0; i_CurrentChar < iLength; i_CurrentChar++) {
+    
+    char c = aSrc[i_CurrentChar];
+    
+    // skip leading whitespace
+    if (' ' == c) {
+      if (bData)
+        return false;
+      
+      // test for null
+      if (i_CurrentChar == iLength) {
+        aFloat->vSetNull();
+        return true;
+      }
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // test for negative
+    if (c == '-') {
+      if (bData || bDot)
+        return false;
+      bNegative = true;
+      continue;
+    }
+  
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // test for .
+    if ('.' == c) {
+      if (bDot)
+        return false;
+      
+      bDot = true;
+      *aChar++ = c;
+      continue;
+    }
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // collect digits
+    if (StrLib::bIsDigit(c)) {
+      bData = true;
+      *aChar++ = c;
+    }
+    
+  }
+  
+  // terminate
+  *aChar++ = '\0';
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // compute final result
+  
+  dResult = atof(xBuffer);
+  
+  aFloat->m_dFlt = bNegative ? - dResult : dResult;
+  
+  return true;
+}
+
+#else
 bool Flt::bExtract(char** aaSrc, Flt* aFloat, Column* pColumn)
 {
   d8 dResult = 0.0;
@@ -234,6 +308,7 @@ bool Flt::bExtract(char** aaSrc, Flt* aFloat, Column* pColumn)
   
   return true;
 }
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* sprint flt datum                                                           */
@@ -250,6 +325,20 @@ void Flt::vSprint(Str* aDst, Str* aSrc)
 /*----------------------------------------------------------------------------*/
 /* valid float in substr?                                                     */
 /*----------------------------------------------------------------------------*/
+#ifdef _ROWFORMAT
+bool Flt::bValid(char* aSrc, i8 iLength, Column* pColumn)
+{
+  Flt xFlt;
+  
+  bool bValid = bExtract(aSrc,&xFlt,iLength,pColumn);
+  
+  if (!bValid)
+    int iDebug = 0;
+  
+  return bValid;
+}
+
+#else
 bool Flt::bValid(char** aaSrc, Column* pColumn)
 {
   Flt xFlt;
@@ -261,6 +350,7 @@ bool Flt::bValid(char** aaSrc, Column* pColumn)
   
   return bValid;
 }
+#endif
 
 /*----------------------------------------------------------------------------*/
 /*-- Embedded Comparators ----------------------------------------------------*/

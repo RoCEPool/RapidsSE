@@ -208,7 +208,7 @@ void Dte::vCopy(void* aDst, void* aSrc)
 /* extract a date from substr                                     yyyy-mo-ddZ */
 /*----------------------------------------------------------------------------*/
 #ifdef _ROWFORMAT
-bool Dte::bExtract(char*aSrc, Dte* aDate, i8 iLength, Column* pColumn)
+bool Dte::bExtract(char* aSrc, Dte* aDate, i8 iLength, Column* pColumn)
 {
   u8 uField;
   i8 i_Length = 1;
@@ -239,8 +239,10 @@ bool Dte::bExtract(char*aSrc, Dte* aDate, i8 iLength, Column* pColumn)
   aDate->x.m_uYear = uField;
 
   // skip - separator
-  if ('-' != (*aSrc)++)
+  if ('-' != *aSrc)
     return false;
+  
+  aSrc++;
   
   // extract month
   if ( ! StrLib::bExtractU8(&aSrc,&uField) )
@@ -248,7 +250,10 @@ bool Dte::bExtract(char*aSrc, Dte* aDate, i8 iLength, Column* pColumn)
   aDate->x.m_uMonth = uField;
   
   // skip - separator
-  if ('-' != (*aSrc)++) return false;
+  if ('-' != *aSrc)
+    return false;
+  
+  aSrc++;
   
   // extract day
   if ( ! StrLib::bExtractU8(&aSrc,&uField) )

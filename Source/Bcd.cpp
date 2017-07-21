@@ -213,10 +213,20 @@ bool Bcd::bExtract(char* aSrc, Bcd* aDecimal, i8 iLength, DBobjects::Column* pCo
       bNegative = true;
       continue;
     }
-    
+ 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // test for .
+    if ('.' == c) {
+      if (bDot)
+        return false;
+      bDot = true;
+      
+      continue;
+    }
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // collect leading portion (till '.')
-    if (StrLib::bIsDigit(c) && !bDot) {
+    if (!bDot && StrLib::bIsDigit(c)) {
       bData = true;
       iResult = iResult * 10 + StrLib::iDigitToI8(c);
       continue;
@@ -224,11 +234,6 @@ bool Bcd::bExtract(char* aSrc, Bcd* aDecimal, i8 iLength, DBobjects::Column* pCo
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // collect trailing portion (after '.')
-    if ('.' ==c) {
-      bDot = true;
-      continue;
-    }
-    
     if (bDot) {
       if (StrLib::bIsDigit(c) && iPrecision--) {
         iResult = iResult * 10 + StrLib::iDigitToI8(c);

@@ -527,7 +527,7 @@ void Entry::vExtractKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
         
       case CT_FLOAT: {
         Flt xFlt;
-        bool b = Flt::bExtract(&pDst,&xFlt,pColumn);
+        bool b = Flt::bExtract(pDst,&xFlt,iLength,pColumn);
         ASSERT(b);
         xValWrk = xFlt.dAsD8();
         break;
