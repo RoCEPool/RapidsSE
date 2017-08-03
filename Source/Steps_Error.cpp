@@ -31,7 +31,7 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Error(void)
 {
-  vAddPrimitive("error.msg"_Str,       &vErrorMsg,         false);
+  vAddPrimitive("error.msg"_Stz,       &vErrorMsg,         false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -39,15 +39,15 @@ void Task::vAddPrimitives_Error(void)
 /*----------------------------------------------------------------------------*/
 void Task::vErrorMsg(MP_Task mpTask)
 {
-  ENTRY("vErrorMsg"_Str);
+  ENTRY("vErrorMsg"_Stz);
   
   
   i8 iErrorCode;
   if ( ! mpTask->m_pDataStack->bPop(iErrorCode) )
-    THROW_INVALID_DSTACK("error.msg"_Str);
+    THROW_INVALID_DSTACK("error.msg"_Stz);
   
   if (iErrorCode < EC_NONE || iErrorCode > EC_ENUMS)
-    THROW("error.msg"_Str);
+    THROW("error.msg"_Stz);
 
   s256 sErrorMsg;
   sErrorMsg = aEC[iErrorCode];

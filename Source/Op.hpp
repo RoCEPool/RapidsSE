@@ -18,7 +18,7 @@ namespace Plans
     void* operator new(size_t);
     void  operator delete(void*);
   
-    static eRO eDecode(Str* aOpText);
+    static eRO eDecode(Stz* aOpText);
   
     Op(void);
     Op(eRO eOpKind);

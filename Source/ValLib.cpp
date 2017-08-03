@@ -59,7 +59,7 @@ i8 ValLib::iSize(Object* pObject)
     }
       
     default:
-      THROW("ValLib::iSize -- invalid eClass %lld"_Str,eClass);
+      THROW("ValLib::iSize -- invalid eClass %lld"_Stz,eClass);
       break;
   }
   
@@ -69,7 +69,7 @@ i8 ValLib::iSize(Object* pObject)
 /*----------------------------------------------------------------------------*/
 /* convert to string                                                          */
 /*----------------------------------------------------------------------------*/
-void ValLib::vToString(Object* pObject, Str* aString)
+void ValLib::vToString(Object* pObject, Stz* aString)
 {
   eCN eClass = pObject->eClass();
   
@@ -118,7 +118,7 @@ void ValLib::vToString(Object* pObject, Str* aString)
     }
       
     default:
-      THROW("Invalid eClass %lld"_Str,eClass);
+      THROW("Invalid eClass %lld"_Stz,eClass);
       break;
   }
 }

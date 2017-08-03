@@ -24,7 +24,7 @@ PtrVal* Values::_pPtrVal(void* aAddr)
 void* PtrVal::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  vFatal("fatal: PtrVal class cannot be new'd\n"_Str);
+  vFatal("fatal: PtrVal class cannot be new'd\n"_Stz);
   
   NEVER_REACH;
 }
@@ -75,7 +75,7 @@ Object* PtrVal::pPtr(void) const
 /*----------------------------------------------------------------------------*/
 /* convert to string                                                          */
 /*----------------------------------------------------------------------------*/
-void PtrVal::vToString(Str* aWorkspace)
+void PtrVal::vToString(Stz* aWorkspace)
 {
   *aWorkspace = reinterpret_cast<void*>(m_pPtr);
 }

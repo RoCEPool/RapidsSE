@@ -31,7 +31,7 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Comment(void)
 {
-  vAddPrimitive("("_Str,               &vComment,          true );
+  vAddPrimitive("("_Stz,               &vComment,          true );
 }
 
 /*----------------------------------------------------------------------------*/
@@ -39,11 +39,11 @@ void Task::vAddPrimitives_Comment(void)
 /*----------------------------------------------------------------------------*/
 void Task::vComment(MP_Task mpTask)
 {
-  ENTRY("vComment"_Str);
+  ENTRY("vComment"_Stz);
   
   for (;;) {
     mpTask->m_pTokeniser->vNextToken();
-    if (mpTask->m_pTokeniser->sToken().bEqual(")"_Str))
+    if (mpTask->m_pTokeniser->sToken().bEqual(")"_Stz))
       break;
   }
   

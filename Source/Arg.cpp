@@ -51,7 +51,7 @@ Arg::Arg(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ARG,_FOOTER_);
   
   m_eArgKind = AK_NONE;
-  m_sArgVal  = "<not set>"_Str;
+  m_sArgVal  = "<not set>"_Stz;
   
   _checkInitialised_(CN_ARG);
   
@@ -61,7 +61,7 @@ Arg::Arg(void)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Arg::Arg(eAK eArgKind, Str* aArgVal)
+Arg::Arg(eAK eArgKind, Stz* aArgVal)
 : Object(CN_ARG)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ARG,_FOOTER_);

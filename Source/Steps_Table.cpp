@@ -31,24 +31,24 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Table(void)
 {
-  vAddPrimitive("table.addIndex"_Str,           &vTableAddIndex,         false);
-  vAddPrimitive("table.analyze"_Str,            &vTableAnalyze,          false);
-  vAddPrimitive("table.append"_Str,             &vTableAppend,           false);
-  vAddPrimitive("table.appendBuffer"_Str,       &vTableAppendBuffer,     false);
-  vAddPrimitive("table.createColumnVec"_Str,    &vTableCreateColumnVec,  false);
-  vAddPrimitive("table.drop"_Str,               &vTableDrop,             false);
-  vAddPrimitive("table.dump"_Str,               &vTableDump,             false);
-  vAddPrimitive("table.hiddenIndex@"_Str,       &vTableHiddenIndexFetch, false);
-  vAddPrimitive("table.hiddenIndex!"_Str,       &vTableHiddenIndexStore, false);
-  vAddPrimitive("table.init"_Str,               &vTableInit,             false);
-  vAddPrimitive("table.insert"_Str,             &vTableInsert,           false);
-  vAddPrimitive("table.name"_Str,               &vTableName,             false);
-  vAddPrimitive("table.ref"_Str,                &vTableRef,              false);
-  vAddPrimitive("table.showColumnVec"_Str,      &vTableShowColumnVec,    false);
-  vAddPrimitive("table.slots"_Str,              &vTableSlots,            false);
-  vAddPrimitive("table.space"_Str,              &vTableSpace,            false);
-  vAddPrimitive("table.subDic"_Str,             &vTableSubDic,           false);
-  vAddPrimitive("table.truncate"_Str,           &vTableTruncate,         false);
+  vAddPrimitive("table.addIndex"_Stz,           &vTableAddIndex,         false);
+  vAddPrimitive("table.analyze"_Stz,            &vTableAnalyze,          false);
+  vAddPrimitive("table.append"_Stz,             &vTableAppend,           false);
+  vAddPrimitive("table.appendBuffer"_Stz,       &vTableAppendBuffer,     false);
+  vAddPrimitive("table.createColumnVec"_Stz,    &vTableCreateColumnVec,  false);
+  vAddPrimitive("table.drop"_Stz,               &vTableDrop,             false);
+  vAddPrimitive("table.dump"_Stz,               &vTableDump,             false);
+  vAddPrimitive("table.hiddenIndex@"_Stz,       &vTableHiddenIndexFetch, false);
+  vAddPrimitive("table.hiddenIndex!"_Stz,       &vTableHiddenIndexStore, false);
+  vAddPrimitive("table.init"_Stz,               &vTableInit,             false);
+  vAddPrimitive("table.insert"_Stz,             &vTableInsert,           false);
+  vAddPrimitive("table.name"_Stz,               &vTableName,             false);
+  vAddPrimitive("table.ref"_Stz,                &vTableRef,              false);
+  vAddPrimitive("table.showColumnVec"_Stz,      &vTableShowColumnVec,    false);
+  vAddPrimitive("table.slots"_Stz,              &vTableSlots,            false);
+  vAddPrimitive("table.space"_Stz,              &vTableSpace,            false);
+  vAddPrimitive("table.subDic"_Stz,             &vTableSubDic,           false);
+  vAddPrimitive("table.truncate"_Stz,           &vTableTruncate,         false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -56,19 +56,19 @@ void Task::vAddPrimitives_Table(void)
 /*----------------------------------------------------------------------------*/
 void Task::vTableAddIndex(MP_Task mpTask)
 {
-  ENTRY("vTableAddIndex"_Str);
+  ENTRY("vTableAddIndex"_Stz);
   
   Object* pPtrTable;
   Object* pPtrIndex;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
-    THROW_INVALID_DSTACK("table.addIndex"_Str);
+    THROW_INVALID_DSTACK("table.addIndex"_Stz);
   
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrIndex) )
-    THROW_INVALID_DSTACK("table.addIndex"_Str);
+    THROW_INVALID_DSTACK("table.addIndex"_Stz);
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
@@ -83,22 +83,22 @@ void Task::vTableAddIndex(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTableAnalyze(MP_Task mpTask)
 {
-  ENTRY("vTableAnalyze"_Str);
+  ENTRY("vTableAnalyze"_Stz);
   
   Object* pPtrTable;
   i8 iDetailed;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
-    THROW_INVALID_DSTACK("table.analyze"_Str);
+    THROW_INVALID_DSTACK("table.analyze"_Stz);
   
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
   
   if ( ! mpTask->m_pDataStack->bPop(iDetailed) )
-    THROW_INVALID_DSTACK("table.analyze"_Str);
+    THROW_INVALID_DSTACK("table.analyze"_Stz);
   
   s48K sAnalysis;
-  sAnalysis = (Str*)pTable->pAnalyze(iDetailed == 1 ? true : false);
+  sAnalysis = (Stz*)pTable->pAnalyze(iDetailed == 1 ? true : false);
   mpTask->m_pDataStack->vPushS48K(sAnalysis);
     
   EXIT();
@@ -109,24 +109,24 @@ void Task::vTableAnalyze(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTableAppend(MP_Task mpTask)
 {
-  ENTRY("vTableAppend"_Str);
+  ENTRY("vTableAppend"_Stz);
   i8 iPartition;
   s48K sString;
   
   if ( ! mpTask->m_pDataStack->bPop(sString) )
-    THROW_INVALID_DSTACK("table.append"_Str);
+    THROW_INVALID_DSTACK("table.append"_Stz);
   
   Table* pTable = reinterpret_cast<Table*>(sString.iToI8());
   ASSERT(CN_TABLE == pTable->eClass());
   
   if ( ! mpTask->m_pDataStack->bPop(sString) )
-    THROW_INVALID_DSTACK("table.append"_Str);
+    THROW_INVALID_DSTACK("table.append"_Stz);
   
   EntryBuffer* pRowBuffer = reinterpret_cast<EntryBuffer*>(sString.iToI8());
   ASSERT(CN_ENTRYBUFFER == pRowBuffer->eClass());
   
   if ( ! mpTask->m_pDataStack->bPop(sString) )
-    THROW_INVALID_DSTACK("table.append"_Str);
+    THROW_INVALID_DSTACK("table.append"_Stz);
   
   iPartition = sString.iToI8();
   pTable->vAppendBuffer(iPartition,pRowBuffer);
@@ -139,21 +139,21 @@ void Task::vTableAppend(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTableAppendBuffer(MP_Task mpTask)
 {
-  ENTRY("vTableAppendBuffer"_Str);
+  ENTRY("vTableAppendBuffer"_Stz);
 
   Object* pPtrTable;
   if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
-    THROW_INVALID_DSTACK("table.appendBuffer"_Str);
+    THROW_INVALID_DSTACK("table.appendBuffer"_Stz);
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
   
   i8 iPartition = 0;
   if ( ! mpTask->m_pDataStack->bPop(iPartition) )
-    THROW_INVALID_DSTACK("table.appendBuffer"_Str);
+    THROW_INVALID_DSTACK("table.appendBuffer"_Stz);
   
   Object* pPtrRowBuffer;
   if ( ! mpTask->m_pDataStack->bPop(pPtrRowBuffer) )
-    THROW_INVALID_DSTACK("table.appendBuffer"_Str);
+    THROW_INVALID_DSTACK("table.appendBuffer"_Stz);
   EntryBuffer* pRowBuffer = (EntryBuffer*)_pEntryBuffer(pPtrRowBuffer);
   ASSERT(CN_ENTRYBUFFER == pRowBuffer->eClass());
   
@@ -169,21 +169,21 @@ void Task::vTableAppendBuffer(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTableCreateColumnVec(MP_Task mpTask)
 {
-  ENTRY("vTableCreateColumnVec"_Str);
+  ENTRY("vTableCreateColumnVec"_Stz);
   
   Object* pPtrTable;
   if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
-    THROW_INVALID_DSTACK("table.createColumnVec"_Str);
+    THROW_INVALID_DSTACK("table.createColumnVec"_Stz);
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
   
   s32 sColumnNm;
   if ( ! mpTask->m_pDataStack->bPop(sColumnNm) )
-    THROW_INVALID_DSTACK("table.createColumnVec"_Str);
+    THROW_INVALID_DSTACK("table.createColumnVec"_Stz);
 
   s48K sColumnDef;
   if ( ! mpTask->m_pDataStack->bPop(sColumnDef) )
-    THROW_INVALID_DSTACK("table.createColumnVec"_Str);
+    THROW_INVALID_DSTACK("table.createColumnVec"_Stz);
   
   pTable->vCreateColumnVec(sColumnNm,sColumnDef);
   
@@ -195,11 +195,11 @@ void Task::vTableCreateColumnVec(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTableDrop(MP_Task mpTask)
 {
-ENTRY("vTableDrop"_Str);
+ENTRY("vTableDrop"_Stz);
   
   Object* pPtrTable;
   if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
-    THROW_INVALID_DSTACK("table.drop"_Str);
+    THROW_INVALID_DSTACK("table.drop"_Stz);
   
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
@@ -212,13 +212,13 @@ ENTRY("vTableDrop"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vTableDump(MP_Task mpTask)
 {
-ENTRY("vTableDump"_Str);
+ENTRY("vTableDump"_Stz);
   
-  vTrace("TableDump\n"_Str);
+  vTrace("TableDump\n"_Stz);
   
   Object* pPtrTable;
   if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
-    THROW_INVALID_DSTACK("table.dump"_Str);
+    THROW_INVALID_DSTACK("table.dump"_Stz);
   
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
@@ -233,11 +233,11 @@ ENTRY("vTableDump"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vTableHiddenIndexFetch(MP_Task mpTask)
 {
-  ENTRY("vTableHiddenIndexFetch"_Str);
+  ENTRY("vTableHiddenIndexFetch"_Stz);
   
   Object* pPtrTable;
   if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
-    THROW_INVALID_DSTACK("table.hiddenIndex@"_Str);
+    THROW_INVALID_DSTACK("table.hiddenIndex@"_Stz);
   
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
@@ -254,18 +254,18 @@ void Task::vTableHiddenIndexFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTableHiddenIndexStore(MP_Task mpTask)
 {
-  ENTRY("vTableHiddenIndexStore"_Str);
+  ENTRY("vTableHiddenIndexStore"_Stz);
   
   Object* pPtrTable;
   if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
-    THROW_INVALID_DSTACK("table.hiddenIndex!"_Str);
+    THROW_INVALID_DSTACK("table.hiddenIndex!"_Stz);
   
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
   
   Object* pPtrIndex;
   if ( ! mpTask->m_pDataStack->bPop(pPtrIndex) )
-    THROW_INVALID_DSTACK("table.hiddenIndex!"_Str);
+    THROW_INVALID_DSTACK("table.hiddenIndex!"_Stz);
   
   Index* pHiddenIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pHiddenIndex->eClass());
@@ -280,11 +280,11 @@ void Task::vTableHiddenIndexStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTableInit(MP_Task mpTask)
 {
-ENTRY("vTableInit"_Str);
+ENTRY("vTableInit"_Stz);
   
   Object* pPtrTable;
   if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
-    THROW_INVALID_DSTACK("table.init"_Str);
+    THROW_INVALID_DSTACK("table.init"_Stz);
   
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
@@ -299,22 +299,22 @@ ENTRY("vTableInit"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vTableInsert(MP_Task mpTask)
 {
-ENTRY("vTableInsert"_Str);
+ENTRY("vTableInsert"_Stz);
  
   Object* pPtrTable;
   Object* pPtrTxRef;
   ValWrk xRow;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
-    THROW_INVALID_DSTACK("table.insert"_Str);
+    THROW_INVALID_DSTACK("table.insert"_Stz);
   if ( ! mpTask->m_pDataStack->bPop(pPtrTxRef) )
-    THROW_INVALID_DSTACK("table.insert"_Str);
+    THROW_INVALID_DSTACK("table.insert"_Stz);
   if ( ! mpTask->m_pDataStack->bPop(xRow) )
-    THROW_INVALID_DSTACK("table.insert"_Str);
+    THROW_INVALID_DSTACK("table.insert"_Stz);
 
   i8 iPartition;
   if ( ! mpTask->m_pDataStack->bPop(iPartition) )
-    THROW_INVALID_DSTACK("table.insert"_Str);
+    THROW_INVALID_DSTACK("table.insert"_Stz);
   
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
@@ -340,18 +340,18 @@ ENTRY("vTableInsert"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vTableName(MP_Task mpTask)
 {
-  ENTRY("vTableName"_Str);
+  ENTRY("vTableName"_Stz);
   
   Object* pPtrTable;
   if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
-    THROW_INVALID_DSTACK("table.init"_Str);
+    THROW_INVALID_DSTACK("table.init"_Stz);
   
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
   
   s32 sName;
   
-  sName = (Str*)pTable->aTableName();
+  sName = (Stz*)pTable->aTableName();
   
   mpTask->m_pDataStack->vPushS32(sName);
 
@@ -363,12 +363,12 @@ void Task::vTableName(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTableRef(MP_Task mpTask)
 {
-  ENTRY("vTableRef"_Str);
+  ENTRY("vTableRef"_Stz);
   
   Object* pPtrTable;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
-    THROW_INVALID_DSTACK("table.ref"_Str);
+    THROW_INVALID_DSTACK("table.ref"_Stz);
   
   Table* pTable = _pTable(pPtrTable);
   
@@ -384,11 +384,11 @@ void Task::vTableRef(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTableShowColumnVec(MP_Task mpTask)
 {
-  ENTRY("vTableShowColumnVec"_Str);
+  ENTRY("vTableShowColumnVec"_Stz);
   
   Object* pPtrTable;
   if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
-    THROW_INVALID_DSTACK("table.createColumnVec"_Str);
+    THROW_INVALID_DSTACK("table.createColumnVec"_Stz);
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
   
@@ -402,11 +402,11 @@ void Task::vTableShowColumnVec(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTableSubDic(MP_Task mpTask)
 {
-  ENTRY("vTableSubDic"_Str);
+  ENTRY("vTableSubDic"_Stz);
   
   Object* pPtrTable;
   if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
-    THROW_INVALID_DSTACK("table.subDic"_Str);
+    THROW_INVALID_DSTACK("table.subDic"_Stz);
   
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
@@ -423,11 +423,11 @@ void Task::vTableSubDic(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTableSlots(MP_Task mpTask)
 {
-  ENTRY("vTableSlots"_Str);
+  ENTRY("vTableSlots"_Stz);
   
   Object* pPtrTable;
   if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
-    THROW_INVALID_DSTACK("table.slots"_Str);
+    THROW_INVALID_DSTACK("table.slots"_Stz);
   
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
@@ -442,11 +442,11 @@ void Task::vTableSlots(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTableSpace(MP_Task mpTask)
 {
-ENTRY("vTableSpace"_Str);
+ENTRY("vTableSpace"_Stz);
   
   Object* pPtrTable;
   if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
-    THROW_INVALID_DSTACK("table.space"_Str);
+    THROW_INVALID_DSTACK("table.space"_Stz);
   
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
@@ -464,11 +464,11 @@ ENTRY("vTableSpace"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vTableTruncate(MP_Task mpTask)
 {
-  ENTRY("vTableTruncate"_Str);
+  ENTRY("vTableTruncate"_Stz);
   
   Object* pPtrTable;
   if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
-    THROW_INVALID_DSTACK("table.truncate"_Str);
+    THROW_INVALID_DSTACK("table.truncate"_Stz);
   
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());

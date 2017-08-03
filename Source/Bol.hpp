@@ -40,7 +40,7 @@ namespace Datums
     static bool bValid(char** aaSrc, DBobjects::Column* pColumn);
 #endif
     
-    static void vSprint(Str* aDst, Str* aSrc);
+    static void vSprint(Stz* aDst, Stz* aSrc);
     
     static bool bLessThan(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB);
     static bool bLessEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB);

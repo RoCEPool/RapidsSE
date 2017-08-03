@@ -12,7 +12,7 @@ void StartTests::vRun(RunTests* pRunTests)
   s256 sCommand;
   s256 sResponse;
   
-  sCommand = "docol epochTake"_Str;
+  sCommand = "docol epochTake"_Stz;
   vRequire(sCommand, true, EC_NONE);
 }
 

@@ -31,9 +31,9 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Logic(void)
 {
-  vAddPrimitive("and"_Str,             &vLogicAnd,         false);
-  vAddPrimitive("not"_Str,             &vLogicNot,         false);
-  vAddPrimitive("or"_Str,              &vLogicOr,          false);
+  vAddPrimitive("and"_Stz,             &vLogicAnd,         false);
+  vAddPrimitive("not"_Stz,             &vLogicNot,         false);
+  vAddPrimitive("or"_Stz,              &vLogicOr,          false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -41,15 +41,15 @@ void Task::vAddPrimitives_Logic(void)
 /*----------------------------------------------------------------------------*/
 void Task::vLogicAnd(MP_Task mpTask)
 {
-  ENTRY("vLogicAnd"_Str);
+  ENTRY("vLogicAnd"_Stz);
   
   i8 iArgB;
   if ( ! mpTask->m_pDataStack->bPopAsInt(iArgB) )
-    THROW_INVALID_DSTACK("and"_Str);
+    THROW_INVALID_DSTACK("and"_Stz);
   
   i8 iArgA;
   if ( ! mpTask->m_pDataStack->bPopAsInt(iArgA) )
-    THROW_INVALID_DSTACK("and"_Str);
+    THROW_INVALID_DSTACK("and"_Stz);
   
   i8 iArgR = (iArgA && iArgB) ? 1 : 0;
   
@@ -63,11 +63,11 @@ void Task::vLogicAnd(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vLogicNot(MP_Task mpTask)
 {
-  ENTRY("vLogicNot"_Str);
+  ENTRY("vLogicNot"_Stz);
   
   i8 iValA;
   if ( ! mpTask->m_pDataStack->bPopAsI8_Inline(iValA) )
-    THROW_INVALID_DSTACK("not"_Str);
+    THROW_INVALID_DSTACK("not"_Stz);
   
   i8 iNotA = iValA ? 0 : 1;
   
@@ -81,15 +81,15 @@ void Task::vLogicNot(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vLogicOr(MP_Task mpTask)
 {
-  ENTRY("vLogicOr"_Str);
+  ENTRY("vLogicOr"_Stz);
   
   i8 iArgB;
   if ( ! mpTask->m_pDataStack->bPopAsInt(iArgB) )
-    THROW_INVALID_DSTACK("or"_Str);
+    THROW_INVALID_DSTACK("or"_Stz);
   
   i8 iArgA;
   if ( ! mpTask->m_pDataStack->bPopAsInt(iArgA) )
-    THROW_INVALID_DSTACK("or"_Str);
+    THROW_INVALID_DSTACK("or"_Stz);
   
   i8 iArgR = (iArgA || iArgB) ? 1 : 0;
   

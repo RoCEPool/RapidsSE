@@ -10,9 +10,9 @@
 /*----------------------------------------------------------------------------*/
 void Locks::vList(File& xFile)
 {
-  xFile.vPrint("Lock, LockNm, WorkUnits, ReadGrab, ReadCollision, WriteGrab, WriteCollision\n"_Str);
+  xFile.vPrint("Lock, LockNm, WorkUnits, ReadGrab, ReadCollision, WriteGrab, WriteCollision\n"_Stz);
   for (i8 i_Lock = 0; i_Lock < LK_ENUMS; i_Lock++)
-    xFile.vPrint("%lld, %s, %lld, %lld, %lld, %lld, %lld\n"_Str,
+    xFile.vPrint("%lld, %s, %lld, %lld, %lld, %lld, %lld\n"_Stz,
                  i_Lock,
                  aLK[i_Lock],
                  *m_zWorkUnits[i_Lock],

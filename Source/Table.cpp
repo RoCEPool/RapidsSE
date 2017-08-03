@@ -81,7 +81,7 @@ Table::Table(void)
   m_pColumnVec = new ColumnVec;
   
   // create the hidden column for the hidden index here
-  Column* pColumn = new Column("hidden_column"_Str);
+  Column* pColumn = new Column("hidden_column"_Stz);
   pColumn->vColumnNo(-1);
   pColumn->vColumnType(CT_INTEGER);
   m_pColumnVec->vAdd(pColumn);
@@ -94,7 +94,7 @@ Table::Table(void)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Table::Table(Str* pTableName)
+Table::Table(Stz* pTableName)
 : Object(CN_TABLE)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
@@ -117,14 +117,14 @@ Table::~Table(void)
 /*----------------------------------------------------------------------------*/
 /* dump table                                                                 */
 /*----------------------------------------------------------------------------*/
-void Table::vDump(eCN eClass, Object* pObject, Str* aTab)
+void Table::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
   ASSERT(eClass == CN_TABLE);
   ASSERT(pObject->eClass() == CN_TABLE);
   
   Table* pTable = reinterpret_cast<Table*>(pObject);
   
-  vTrace("name %s type %s\n"_Str,
+  vTrace("name %s type %s\n"_Stz,
          pTable->m_sTableName.s(),
          aTT[pTable->m_eTableType]->s());
 }
@@ -170,7 +170,7 @@ void Table::vAddIndex(Index* pIndex)
 /*----------------------------------------------------------------------------*/
 /* analyze table                                                              */
 /*----------------------------------------------------------------------------*/
-Str* Table::pAnalyze(bool bDetailed)
+Stz* Table::pAnalyze(bool bDetailed)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
@@ -180,7 +180,7 @@ Str* Table::pAnalyze(bool bDetailed)
   s48K sAnalysis;
   
   if ( ! gbMetadata || bDetailed)
-    sAnalysis.vCatSprint("N%lld: Analysis of Table %s\n"_Str,
+    sAnalysis.vCatSprint("N%lld: Analysis of Table %s\n"_Stz,
                          gpGrid->iThisNode(),
                          m_sTableName.s());
 
@@ -203,7 +203,7 @@ Str* Table::pAnalyze(bool bDetailed)
           nRowBuffer++;
           nRowsInBuffer = pRowBuffer->nEntries();
           pRowBuffer = (EntryBuffer*)pRowBuffer->pNextBuffer();
-          sAnalysis.vCatSprint("   strand:%lld rowBuffer%lld: %lld rows\n"_Str,
+          sAnalysis.vCatSprint("   strand:%lld rowBuffer%lld: %lld rows\n"_Stz,
                                nStrands,
                                nRowBuffer,
                                nRowsInBuffer);
@@ -217,7 +217,7 @@ Str* Table::pAnalyze(bool bDetailed)
     
     if ( !gbMetadata || bDetailed) {
       sAnalysis.vCatSprint(
-         "  partition %lld: %3lld strands; %5lld buffers; %lld rows\n"_Str,
+         "  partition %lld: %3lld strands; %5lld buffers; %lld rows\n"_Stz,
          iPartition,
          nStrands,
          nBuffers,
@@ -226,14 +226,14 @@ Str* Table::pAnalyze(bool bDetailed)
     }
     else {
       sAnalysis.vCatSprint(
-         "row: ('%s', %lld, %lld, %lld, %lld)"_Str,
+         "row: ('%s', %lld, %lld, %lld, %lld)"_Stz,
          gpGrid->pThisNode()->aNodeName(),
          iPartition,
          nStrands,
          nBuffers,
          nRows);
       if (iSlot < gpGrid->m_nSlots - 1) {
-        sAnalysis.vCatSprint("\n"_Str);
+        sAnalysis.vCatSprint("\n"_Stz);
       }
 
     }
@@ -245,7 +245,7 @@ Str* Table::pAnalyze(bool bDetailed)
   
   if ( ! gbMetadata || bDetailed) {
     sAnalysis.vCatSprint(
-      "        total: %3lld strands; %5lld buffers; %lld rows\n"_Str,
+      "        total: %3lld strands; %5lld buffers; %lld rows\n"_Stz,
       nStrandsTotal,
       nBuffersTotal,
       nRowsTotal);
@@ -257,7 +257,7 @@ Str* Table::pAnalyze(bool bDetailed)
 /*----------------------------------------------------------------------------*/
 /* analyze index                                                              */
 /*----------------------------------------------------------------------------*/
-Str* Table::pAnalyzeIndex(Index* pIndex, bool bDetailed)
+Stz* Table::pAnalyzeIndex(Index* pIndex, bool bDetailed)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
  
@@ -266,7 +266,7 @@ Str* Table::pAnalyzeIndex(Index* pIndex, bool bDetailed)
   s48K sAnalysis;
   
   if ( ! gbMetadata || bDetailed )
-    sAnalysis.vCatSprint("N%lld: Analysis of Index %s of table %s \n"_Str,
+    sAnalysis.vCatSprint("N%lld: Analysis of Index %s of table %s \n"_Stz,
                        gpGrid->iThisNode(),
                        pIndex->aIndexName()->s(),
                        m_sTableName.s());
@@ -286,12 +286,12 @@ Str* Table::pAnalyzeIndex(Index* pIndex, bool bDetailed)
     nBuffersTotal += nBuffers;
     
     if ( !gbMetadata || bDetailed ) {
-      sAnalysis.vCatSprint("partition %lld:  %3lld buffers; %5lld entries\n\n"_Str,
+      sAnalysis.vCatSprint("partition %lld:  %3lld buffers; %5lld entries\n\n"_Stz,
                            iPartition,
                            nBuffers,
                            nEntries);
     } else {
-      sAnalysis.vCatSprint("row: ('%s', %lld, %lld, %lld)\n"_Str,
+      sAnalysis.vCatSprint("row: ('%s', %lld, %lld, %lld)\n"_Stz,
                            gpGrid->pThisNode()->aNodeName(),
                            iPartition,
                            nBuffersTotal,
@@ -303,7 +303,7 @@ Str* Table::pAnalyzeIndex(Index* pIndex, bool bDetailed)
   
   if ( ! gbMetadata  || bDetailed)
     sAnalysis.vCatSprint(
-                         "        total: %3lld buffers; %5lld entries\n"_Str,
+                         "        total: %3lld buffers; %5lld entries\n"_Stz,
                          nBuffersTotal,
                          nEntriesTotal);
   
@@ -376,7 +376,7 @@ void Table::vCreateColumnVec(s32& sColumnNm, s48K& sColumnDefn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
-//  vTrace("vCreateColumnVec: table %s column %s %s\n"_Str,
+//  vTrace("vCreateColumnVec: table %s column %s %s\n"_Stz,
 //         aTableName(),
 //         sColumnNm.aStr(),
 //         sColumnDefn.aStr());
@@ -427,7 +427,7 @@ IdxVec* Table::pIdxVec(void)
 /* insert a row in the table                                                  */
 /*----------------------------------------------------------------------------*/
 bool Table::bInsertRow(EntryBuffer* pRowBuffer, i8 iPartition, TxRef* pTxRef,
-                       Str* pRecord, i8 iLength)
+                       Stz* pRecord, i8 iLength)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
@@ -539,7 +539,7 @@ i8 Table::nIndexBuffers(i8 iIndexNo)
 /* hash the first field of row return partition                               */
 /*----------------------------------------------------------------------------*/
 /*
-i8 Table::iRowPartition(Str* pRow)
+i8 Table::iRowPartition(Stz* pRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
 
@@ -555,7 +555,7 @@ i8 Table::iRowPartition(Str* pRow)
   // modulo to get partition number
   i8 iPartition = iHash % (gpGrid->m_nSlots * gpGrid->iNodes());
   
-  //vTrace("Partition: %lld\n"_Str,m_iPartition);
+  //vTrace("Partition: %lld\n"_Stz,m_iPartition);
   return iPartition;
 }
 */
@@ -563,7 +563,7 @@ i8 Table::iRowPartition(Str* pRow)
 /* hash the first field of row return partition                               */
 /*----------------------------------------------------------------------------*/
 #ifdef _ROWFORMAT
-i8 Table::iRowPartition(Str* pRow, i8 iLength)
+i8 Table::iRowPartition(Stz* pRow, i8 iLength)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
@@ -581,7 +581,7 @@ i8 Table::iRowPartition(Str* pRow, i8 iLength)
     i8 iColumnNo = pColumn->iColumnNo();
     
     // get the column value
-    Str* sCursor = RowData::pColumn(pRow, iColumnNo, iLength);
+    Stz* sCursor = RowData::pColumn(pRow, iColumnNo, iLength);
     
     // hash the column value
     DtmLib::vHash(pColumn->eDatumType(),iHash,sCursor,iLength,pColumn);
@@ -590,11 +590,11 @@ i8 Table::iRowPartition(Str* pRow, i8 iLength)
   // modulo to get partition number
   i8 iPartition = iHash % (gpGrid->m_nSlots * gpGrid->iNodes());
   
-  //vTrace("Partition: %lld\n"_Str,m_iPartition);
+  //vTrace("Partition: %lld\n"_Stz,m_iPartition);
   return iPartition;
 }
 #else
-i8 Table::iRowPartition(Str* pRow)
+i8 Table::iRowPartition(Stz* pRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
@@ -623,13 +623,13 @@ i8 Table::iRowPartition(Str* pRow)
       aCursor++;
     } while (iColumnNo != iCol);
     
-    DtmLib::vHash(pColumn->eDatumType(),iHash,(Str*)pDst,pColumn);
+    DtmLib::vHash(pColumn->eDatumType(),iHash,(Stz*)pDst,pColumn);
   }
   
   // modulo to get partition number
   i8 iPartition = iHash % (gpGrid->m_nSlots * gpGrid->iNodes());
   
-  //vTrace("Partition: %lld\n"_Str,m_iPartition);
+  //vTrace("Partition: %lld\n"_Stz,m_iPartition);
   return iPartition;
 }
 #endif
@@ -670,7 +670,7 @@ Dic* Table::pSubDic(void)
 /*----------------------------------------------------------------------------*/
 /* get the table name                                                         */
 /*----------------------------------------------------------------------------*/
-Str* Table::aTableName(void)
+Stz* Table::aTableName(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
@@ -726,7 +726,7 @@ void Table::vTruncateIndex(i8 iIndexNo)
 /* validate a row of table                                                    */
 /*----------------------------------------------------------------------------*/
 #ifdef _ROWFORMAT
-bool Table::bValidateRow(Str* aRow, i8& i_Column)
+bool Table::bValidateRow(Stz* aRow, i8& i_Column)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
@@ -748,7 +748,7 @@ bool Table::bValidateRow(Str* aRow, i8& i_Column)
     
     // move cursor to next field
     aCursor += sizeof(char);
-    bool b = pColumn->bValidateField((Str*)aCursor, iLength);
+    bool b = pColumn->bValidateField((Stz*)aCursor, iLength);
     
     // move cursor to next separator
     aCursor += iLength;
@@ -758,14 +758,14 @@ bool Table::bValidateRow(Str* aRow, i8& i_Column)
 }
 
 #else
-bool Table::bValidateRow(Str* aRow, i8& i_Column)
+bool Table::bValidateRow(Stz* aRow, i8& i_Column)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
-//  vTrace("ValidateRow: "_Str,aRow);
+//  vTrace("ValidateRow: "_Stz,aRow);
 //  for (char* aChr = (char*)aRow; *aChr != '\n'; aChr++)
-//    vTrace("%c"_Str,*aChr);
-//  vTrace("\n"_Str);
+//    vTrace("%c"_Stz,*aChr);
+//  vTrace("\n"_Stz);
   
   // set up cursor, skip over leading pipe
   char* aCursor = (char*)aRow;
@@ -782,7 +782,7 @@ bool Table::bValidateRow(Str* aRow, i8& i_Column)
     
     Column* pColumn = m_pColumnVec->pGet(i_Column);
     
-    bool b = pColumn->bValidateField((Str**)&aCursor);
+    bool b = pColumn->bValidateField((Stz**)&aCursor);
     
     if (!b) {
       while ('\n' != *aCursor)

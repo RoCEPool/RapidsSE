@@ -31,12 +31,12 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Object(void)
 {
-  vAddPrimitive("object.class@"_Str,     &vObjectClassFetch, false);
-  vAddPrimitive("object.class!"_Str,     &vObjectClassStore, false);
-  vAddPrimitive("object@"_Str,           &vObjectFetch,      false);
-  vAddPrimitive("object.magic!"_Str,    &vObjectMagicMark,  false);
-  vAddPrimitive("object!"_Str,           &vObjectStore,      false);
-  vAddPrimitive("object.wordbody!"_Str,  &vObjectWordBodySet,false);
+  vAddPrimitive("object.class@"_Stz,     &vObjectClassFetch, false);
+  vAddPrimitive("object.class!"_Stz,     &vObjectClassStore, false);
+  vAddPrimitive("object@"_Stz,           &vObjectFetch,      false);
+  vAddPrimitive("object.magic!"_Stz,    &vObjectMagicMark,  false);
+  vAddPrimitive("object!"_Stz,           &vObjectStore,      false);
+  vAddPrimitive("object.wordbody!"_Stz,  &vObjectWordBodySet,false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -44,11 +44,11 @@ void Task::vAddPrimitives_Object(void)
 /*----------------------------------------------------------------------------*/
 void Task::vObjectClassFetch(MP_Task mpTask)
 {
-  ENTRY("vObjectClassFetch"_Str);
+  ENTRY("vObjectClassFetch"_Stz);
   
   Object* pObject;
   if ( ! mpTask->m_pDataStack->bPop(pObject) )
-    THROW_INVALID_DSTACK("object.class@"_Str);
+    THROW_INVALID_DSTACK("object.class@"_Stz);
   
   eCN eClassNo;
   eClassNo = pObject->eClass();
@@ -63,15 +63,15 @@ void Task::vObjectClassFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vObjectClassStore(MP_Task mpTask)
 {
-  ENTRY("vObjectClassStore"_Str);
+  ENTRY("vObjectClassStore"_Stz);
   
   Object* pObject;
   if ( ! mpTask->m_pDataStack->bPop(pObject) )
-    THROW_INVALID_DSTACK("object.object.class!"_Str);
+    THROW_INVALID_DSTACK("object.object.class!"_Stz);
   
   eCN eClassNo;
   if ( ! mpTask->m_pDataStack->bPop(eClassNo) )
-    THROW_INVALID_DSTACK("object.object.class!"_Str);
+    THROW_INVALID_DSTACK("object.object.class!"_Stz);
   
   pObject->vSetClass(eClassNo);
   
@@ -83,11 +83,11 @@ void Task::vObjectClassStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vObjectDump(MP_Task mpTask)
 {
-  ENTRY("vObjectDump"_Str);
+  ENTRY("vObjectDump"_Stz);
   
   Object* pObject;
   if ( ! mpTask->m_pDataStack->bPop(pObject) )
-    THROW_INVALID_DSTACK("object.dump"_Str);
+    THROW_INVALID_DSTACK("object.dump"_Stz);
   
   eCN eClass = pObject->eClass();
   
@@ -103,7 +103,7 @@ void Task::vObjectDump(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vObjectFetch(MP_Task mpTask)
 {
-  ENTRY("vObjectFetch"_Str);
+  ENTRY("vObjectFetch"_Stz);
   
   i8 iPick = 0;
   
@@ -121,11 +121,11 @@ void Task::vObjectFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vObjectMagicMark(MP_Task mpTask)
 {
-  ENTRY("vObjectMagicMark"_Str);
+  ENTRY("vObjectMagicMark"_Stz);
   
   Object* pObject;
   if ( ! mpTask->m_pDataStack->bPop(pObject) )
-    THROW_INVALID_RSTACK("object.magic!"_Str);
+    THROW_INVALID_RSTACK("object.magic!"_Stz);
   
   pObject->vSetMagic();
   
@@ -137,14 +137,14 @@ void Task::vObjectMagicMark(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vObjectStore(MP_Task mpTask)
 {
-  ENTRY("vObjectStore"_Str);
+  ENTRY("vObjectStore"_Stz);
   
   i8 iPeek = 0;
   
   ValWrk xObjectWsp;
   
   if ( ! mpTask->m_pDataStack->bPop(xObjectWsp) )
-    THROW_INVALID_DSTACK("object!"_Str);
+    THROW_INVALID_DSTACK("object!"_Stz);
   
   mpTask->m_pReturnStack->vPokeValWrk(iPeek,xObjectWsp);
   
@@ -156,15 +156,15 @@ void Task::vObjectStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vObjectWordBodySet(MP_Task mpTask)
 {
-  ENTRY("vObjectWordBodySet"_Str);
+  ENTRY("vObjectWordBodySet"_Stz);
   
   Object* pObject;
   if ( ! mpTask->m_pDataStack->bPop(pObject) )
-    THROW_INVALID_DSTACK("object.wordbody!"_Str);
+    THROW_INVALID_DSTACK("object.wordbody!"_Stz);
   
   i8 iIsBody;
   if ( ! mpTask->m_pDataStack->bPop(iIsBody) )
-    THROW_INVALID_DSTACK("object.object.class!"_Str);
+    THROW_INVALID_DSTACK("object.object.class!"_Stz);
   
   pObject->vWordBody(iIsBody);
   

@@ -31,10 +31,10 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_RowBuffer(void)
 {
-  vAddPrimitive("rowBuffer.append"_Str, &vRowBufferAppend, false);
-  vAddPrimitive("rowBuffer.appendRecord"_Str, &vRowBufferAppendRecord, false);
-  vAddPrimitive("rowBuffer.dump"_Str,   &vRowBufferDump,    false);
-  vAddPrimitive("rowBuffer::new"_Str,    &vRowBufferNew,    false);
+  vAddPrimitive("rowBuffer.append"_Stz, &vRowBufferAppend, false);
+  vAddPrimitive("rowBuffer.appendRecord"_Stz, &vRowBufferAppendRecord, false);
+  vAddPrimitive("rowBuffer.dump"_Stz,   &vRowBufferDump,    false);
+  vAddPrimitive("rowBuffer::new"_Stz,    &vRowBufferNew,    false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -42,25 +42,25 @@ void Task::vAddPrimitives_RowBuffer(void)
 /*----------------------------------------------------------------------------*/
 void Task::vRowBufferAppend(MP_Task mpTask)
 {
-ENTRY("vRowBufferAppend"_Str);
+ENTRY("vRowBufferAppend"_Stz);
   
   Object* pPtrRowBuffer;
   Entry* pRow;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrRowBuffer) )
-    THROW_INVALID_DSTACK("rowbuffer.append"_Str);
+    THROW_INVALID_DSTACK("rowbuffer.append"_Stz);
   EntryBuffer* pRowBuffer = (EntryBuffer*)_pEntryBuffer(pPtrRowBuffer);
   ASSERT(CN_ROWBUFFER == pRowBuffer->eClass());
 
   Object* pPtrTxRef;
   if ( ! mpTask->m_pDataStack->bPop(pPtrTxRef) )
-    THROW_INVALID_DSTACK("rowbuffer.append"_Str);
+    THROW_INVALID_DSTACK("rowbuffer.append"_Stz);
   TxRef* pTxRef = _pTxRef(pPtrTxRef);
   ASSERT(CN_TXREF == pTxRef->eClass());
   
   s48K sRecord;
   if ( ! mpTask->m_pDataStack->bPop(sRecord) )
-    THROW_INVALID_DSTACK("rowbuffer.append"_Str);
+    THROW_INVALID_DSTACK("rowbuffer.append"_Stz);
 
   i8 iLength = sRecord.iLength();
   
@@ -87,29 +87,29 @@ ENTRY("vRowBufferAppend"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vRowBufferAppendRecord(MP_Task mpTask)
 {
-  ENTRY("vRowBufferAppendRecord"_Str);
+  ENTRY("vRowBufferAppendRecord"_Stz);
   
   Entry* pRow;
   
   Object* pPtrRowBuffer;
   if ( ! mpTask->m_pDataStack->bPop(pPtrRowBuffer) )
-    THROW_INVALID_DSTACK("rowBuffer.appendRecord"_Str);
+    THROW_INVALID_DSTACK("rowBuffer.appendRecord"_Stz);
   EntryBuffer* pRowBuffer = (EntryBuffer*)_pEntryBuffer(pPtrRowBuffer);
   ASSERT(CN_ROWBUFFER == pRowBuffer->eClass());
   
   Object* pPtrTxRef;
   if ( ! mpTask->m_pDataStack->bPop(pPtrTxRef) )
-    THROW_INVALID_DSTACK("rowBuffer.appendRecord"_Str);
+    THROW_INVALID_DSTACK("rowBuffer.appendRecord"_Stz);
   TxRef* pTxRef = _pTxRef(pPtrTxRef);
   ASSERT(CN_TXREF == pTxRef->eClass());
   
   Object* pPtrFile;
   if ( ! mpTask->m_pDataStack->bPop(pPtrFile) )
-    THROW_INVALID_DSTACK("rowBuffer.appendRecord"_Str);
+    THROW_INVALID_DSTACK("rowBuffer.appendRecord"_Stz);
   
   File* pFile = _pFile(pPtrFile);
   
-  Str* aRecord = (Str*)pFile->pRecord()->aWspStr();
+  Stz* aRecord = (Stz*)pFile->pRecord()->aWspStr();
   
   i8 iLength = pFile->iRecordLength();
   
@@ -135,11 +135,11 @@ void Task::vRowBufferAppendRecord(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRowBufferDump(MP_Task mpTask)
 {
-  ENTRY("vRowBufferDump"_Str);
+  ENTRY("vRowBufferDump"_Stz);
   
   Object* pPtrRowBuffer;
   if ( ! mpTask->m_pDataStack->bPop(pPtrRowBuffer) )
-    THROW_INVALID_DSTACK("rowbuffer.dump"_Str);
+    THROW_INVALID_DSTACK("rowbuffer.dump"_Stz);
   EntryBuffer* pRowBuffer = (EntryBuffer*)_pEntryBuffer(pPtrRowBuffer);
   ASSERT(CN_ROWBUFFER == pRowBuffer->eClass());
 
@@ -158,7 +158,7 @@ void Task::vRowBufferDump(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRowBufferNew(MP_Task mpTask)
 {
-  ENTRY("vRowBufferNew"_Str);
+  ENTRY("vRowBufferNew"_Stz);
   
   EntryBuffer* pRowBuffer = new EntryBuffer;
   ASSERT(CN_ROWBUFFER == pRowBuffer->eClass());

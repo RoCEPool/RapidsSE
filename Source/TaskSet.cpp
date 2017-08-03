@@ -33,7 +33,7 @@ void* TaskSet::operator new(size_t iSize, TaskSet* pTaskSet)
 void TaskSet::operator delete(void* aAddress)
 {
   RASSERT(aAddress);
-  vFatal("fatal: TaskSet class cannot be deleted"_Str);
+  vFatal("fatal: TaskSet class cannot be deleted"_Stz);
   
   NEVER_REACH;
 }
@@ -108,7 +108,7 @@ void TaskSet::vContentDump(void)
   
   m_xLock.vGrabWrite();
 
-  vTrace("TaskSet %p: Count %lld Head %pd Tail %p\n"_Str,
+  vTrace("TaskSet %p: Count %lld Head %pd Tail %p\n"_Stz,
          this,
          m_iCount,
          m_npHead,

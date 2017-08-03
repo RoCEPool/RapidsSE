@@ -43,10 +43,10 @@ extern i8 gxMemZero[CN_ENUMS];
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Memory(void)
 {
-  vAddPrimitive("memory.byteDump"_Str,   &vMemoryByteDump,    false);
-  vAddPrimitive("memory::list"_Str,       &vMemoryList,        false);
-  vAddPrimitive("memory::reset"_Str,      &vMemoryReset,       false);
-  vAddPrimitive("memory.wordDump"_Str,   &vMemoryWordDump,    false);
+  vAddPrimitive("memory.byteDump"_Stz,   &vMemoryByteDump,    false);
+  vAddPrimitive("memory::list"_Stz,       &vMemoryList,        false);
+  vAddPrimitive("memory::reset"_Stz,      &vMemoryReset,       false);
+  vAddPrimitive("memory.wordDump"_Stz,   &vMemoryWordDump,    false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -54,15 +54,15 @@ void Task::vAddPrimitives_Memory(void)
 /*----------------------------------------------------------------------------*/
 void Task::vMemoryByteDump(MP_Task mpTask)
 {
-ENTRY("vMemoryByteDump"_Str);
+ENTRY("vMemoryByteDump"_Stz);
   
   i8 iSize;
   if ( ! mpTask->m_pDataStack->bPop(iSize) )
-    THROW_INVALID_DSTACK("memory.bytedump"_Str);
+    THROW_INVALID_DSTACK("memory.bytedump"_Stz);
   
   Object* pWordObject;
   if ( ! mpTask->m_pDataStack->bPop(pWordObject) )
-    THROW_INVALID_DSTACK("memory.bytedump"_Str);
+    THROW_INVALID_DSTACK("memory.bytedump"_Stz);
   Word* pWord = _pWord(pWordObject);
   
   //pWord->vByteDump(iSize);
@@ -76,7 +76,7 @@ ENTRY("vMemoryByteDump"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vMemoryReset(MP_Task mpTask)
 {
-  ENTRY("vMemoryReset"_Str);
+  ENTRY("vMemoryReset"_Stz);
   
   giMemCopyBytes = 0;
   giMemMoveBytes = 0;
@@ -100,52 +100,52 @@ void Task::vMemoryReset(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vMemoryList(MP_Task mpTask)
 {
-  ENTRY("vMemoryList"_Str);
+  ENTRY("vMemoryList"_Stz);
 
   s32 sMagnitude;
   
   Magnitudes::vMagnitude(giMemCopyBytes, sMagnitude);
-  vTrace("MemCopyBytes %s\n"_Str,sMagnitude.aStr());
+  vTrace("MemCopyBytes %s\n"_Stz,sMagnitude.aStr());
   for (i8 i_Class = 0; i_Class < CN_ENUMS; i_Class++) {
     if (gxMemCopy[i_Class]) {
       Magnitudes::vMagnitude(gxMemCopy[i_Class], sMagnitude);
-      vTrace("  %s %s\n"_Str,aCN[i_Class],sMagnitude.aStr());
+      vTrace("  %s %s\n"_Stz,aCN[i_Class],sMagnitude.aStr());
     }
   }
   
   Magnitudes::vMagnitude(giMemMoveBytes, sMagnitude);
-  vTrace("MemMoveBytes %s\n"_Str,sMagnitude.aStr());
+  vTrace("MemMoveBytes %s\n"_Stz,sMagnitude.aStr());
   for (i8 i_Class = 0; i_Class < CN_ENUMS; i_Class++) {
     if (gxMemMove[i_Class]) {
       Magnitudes::vMagnitude(gxMemMove[i_Class], sMagnitude);
-      vTrace("  %s %s\n"_Str,aCN[i_Class],sMagnitude.aStr());
+      vTrace("  %s %s\n"_Stz,aCN[i_Class],sMagnitude.aStr());
     }
   }
 
   Magnitudes::vMagnitude(giMemScribbleBytes, sMagnitude);
-  vTrace("MemScribbleBytes %s\n"_Str,sMagnitude.aStr());
+  vTrace("MemScribbleBytes %s\n"_Stz,sMagnitude.aStr());
   for (i8 i_Class = 0; i_Class < CN_ENUMS; i_Class++) {
     if (gxMemScribble[i_Class]) {
       Magnitudes::vMagnitude(gxMemScribble[i_Class], sMagnitude);
-      vTrace("  %s %s\n"_Str,aCN[i_Class],sMagnitude.aStr());
+      vTrace("  %s %s\n"_Stz,aCN[i_Class],sMagnitude.aStr());
     }
   }
   
   Magnitudes::vMagnitude(giMemSetBytes, sMagnitude);
-  vTrace("MemSetBytes %s\n"_Str,sMagnitude.aStr());
+  vTrace("MemSetBytes %s\n"_Stz,sMagnitude.aStr());
   for (i8 i_Class = 0; i_Class < CN_ENUMS; i_Class++) {
     if (gxMemSet[i_Class]) {
       Magnitudes::vMagnitude(gxMemSet[i_Class], sMagnitude);
-      vTrace("  %s %s\n"_Str,aCN[i_Class],sMagnitude.aStr());
+      vTrace("  %s %s\n"_Stz,aCN[i_Class],sMagnitude.aStr());
     }
   }
   
   Magnitudes::vMagnitude(giMemZeroBytes, sMagnitude);
-  vTrace("MemZeroBytes %s\n"_Str,sMagnitude.aStr());
+  vTrace("MemZeroBytes %s\n"_Stz,sMagnitude.aStr());
   for (i8 i_Class = 0; i_Class < CN_ENUMS; i_Class++) {
     if (gxMemZero[i_Class]) {
       Magnitudes::vMagnitude(gxMemZero[i_Class], sMagnitude);
-      vTrace("  %s %s\n"_Str,aCN[i_Class],sMagnitude.aStr());
+      vTrace("  %s %s\n"_Stz,aCN[i_Class],sMagnitude.aStr());
     }
   }
   
@@ -157,15 +157,15 @@ void Task::vMemoryList(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vMemoryWordDump(MP_Task mpTask)
 {
-ENTRY("vMemoryWordDump"_Str);
+ENTRY("vMemoryWordDump"_Stz);
   
   i8 iSize;
   if ( ! mpTask->m_pDataStack->bPop(iSize) )
-    THROW_INVALID_DSTACK("memory.worddump"_Str);
+    THROW_INVALID_DSTACK("memory.worddump"_Stz);
   
   Object* pWordObject;
   if ( ! mpTask->m_pDataStack->bPop(pWordObject) )
-    THROW_INVALID_DSTACK("memory.worddump"_Str);
+    THROW_INVALID_DSTACK("memory.worddump"_Stz);
   Word* pWord = _pWord(pWordObject);
   
   //pWord->vWordDump(iSize);

@@ -17,7 +17,7 @@ void* Tme::operator new(size_t iSize)
 {
   RASSERT(iSize);
   
-  vFatal("fatal: Tme class cannot be new'd\n"_Str);
+  vFatal("fatal: Tme class cannot be new'd\n"_Stz);
   
   NEVER_REACH;
 }
@@ -337,11 +337,11 @@ bool Tme::bExtract(char** aaSrc, Tme* aTime, Column* pColumn)
 /*----------------------------------------------------------------------------*/
 /* sprint tme datum                                                           */
 /*----------------------------------------------------------------------------*/
-void Tme::vSprint(Str* aDst, Str* aSrc)
+void Tme::vSprint(Stz* aDst, Stz* aSrc)
 {
   Tme* aTme = (Tme*)aSrc;
   
-  StrLib::vSprint(aDst,"%02lld:%02lld:%02lld.%03lld%c"_Str,
+  StrLib::vSprint(aDst,"%02lld:%02lld:%02lld.%03lld%c"_Stz,
                   aTme->x.m_uHour,
                   aTme->x.m_uMinute,
                   aTme->x.m_uSecond,
@@ -484,7 +484,7 @@ bool Tme::bGreaterEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
   *(i8*)&xTmeA.x = iA;
   *(i8*)&xTmeB.x = iB;
   
-  vTrace("%d:%d:%d.%d >= %d:%d:%d.%d %s\n"_Str,
+  vTrace("%d:%d:%d.%d >= %d:%d:%d.%d %s\n"_Stz,
          xTmeA.iHour(),
          xTmeA.iMinute(),
          xTmeA.iSecond(),

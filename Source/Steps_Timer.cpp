@@ -31,17 +31,17 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Timer(void)
 {
-  vAddPrimitive("timer.delete"_Str,    &vTimerDelete,      false);
-  vAddPrimitive("timer.init"_Str,      &vTimerInit,        false);
-  vAddPrimitive("timer.microsecs"_Str, &vTimerMicrosecs,   false);
-  vAddPrimitive("timer.millisecs"_Str, &vTimerMillisecs,   false);
-  vAddPrimitive("timer.nanosecs"_Str,  &vTimerNanosecs,    false);
-  vAddPrimitive("timer::new"_Str,       &vTimerNew,         false);
-  vAddPrimitive("timer.reset"_Str,     &vTimerReset,       false);
-  vAddPrimitive("timer.secs"_Str,      &vTimerSecs,        false);
-  vAddPrimitive("timer.start"_Str,     &vTimerStart,       false);
-  vAddPrimitive("timer.ticks"_Str,     &vTimerTicks,       false);
-  vAddPrimitive("timer.update"_Str,    &vTimerUpdate,      false);
+  vAddPrimitive("timer.delete"_Stz,    &vTimerDelete,      false);
+  vAddPrimitive("timer.init"_Stz,      &vTimerInit,        false);
+  vAddPrimitive("timer.microsecs"_Stz, &vTimerMicrosecs,   false);
+  vAddPrimitive("timer.millisecs"_Stz, &vTimerMillisecs,   false);
+  vAddPrimitive("timer.nanosecs"_Stz,  &vTimerNanosecs,    false);
+  vAddPrimitive("timer::new"_Stz,       &vTimerNew,         false);
+  vAddPrimitive("timer.reset"_Stz,     &vTimerReset,       false);
+  vAddPrimitive("timer.secs"_Stz,      &vTimerSecs,        false);
+  vAddPrimitive("timer.start"_Stz,     &vTimerStart,       false);
+  vAddPrimitive("timer.ticks"_Stz,     &vTimerTicks,       false);
+  vAddPrimitive("timer.update"_Stz,    &vTimerUpdate,      false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -49,12 +49,12 @@ void Task::vAddPrimitives_Timer(void)
 /*----------------------------------------------------------------------------*/
 void Task::vTimerDelete(MP_Task mpTask)
 {
-ENTRY("vTimeDelete"_Str);
+ENTRY("vTimeDelete"_Stz);
   
   Object* pPtrTimer;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrTimer) )
-    THROW_INVALID_DSTACK("timer.delete"_Str);
+    THROW_INVALID_DSTACK("timer.delete"_Stz);
   
   Timer* pTimer = _pTimer(pPtrTimer);
   ASSERT(CN_TIMER == pTimer->eClass());
@@ -73,11 +73,11 @@ ENTRY("vTimeDelete"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vTimerInit(MP_Task mpTask)
 {
-ENTRY("vTimerInit"_Str);
+ENTRY("vTimerInit"_Stz);
   
   Object* pPtrTimer;
   if ( ! mpTask->m_pDataStack->bPop(pPtrTimer) )
-    THROW_INVALID_DSTACK("timer.init"_Str);
+    THROW_INVALID_DSTACK("timer.init"_Stz);
   
   Timer* pTimer = _pTimer(pPtrTimer);
   ASSERT(CN_TIMER == pTimer->eClass());
@@ -92,11 +92,11 @@ ENTRY("vTimerInit"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vTimerMicrosecs(MP_Task mpTask)
 {
-ENTRY("vTimerMicrosecs"_Str);
+ENTRY("vTimerMicrosecs"_Stz);
   
   Object* pPtrTimer;
   if ( ! mpTask->m_pDataStack->bPop(pPtrTimer) )
-    THROW_INVALID_DSTACK("timer.microsecs"_Str);
+    THROW_INVALID_DSTACK("timer.microsecs"_Stz);
   
   Timer* pTimer = _pTimer(pPtrTimer);
   ASSERT(CN_TIMER == pTimer->eClass());
@@ -113,11 +113,11 @@ ENTRY("vTimerMicrosecs"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vTimerMillisecs(MP_Task mpTask)
 {
-ENTRY("vTimerMillisecs"_Str);
+ENTRY("vTimerMillisecs"_Stz);
   
   Object* pPtrTimer;
   if ( ! mpTask->m_pDataStack->bPop(pPtrTimer) )
-    THROW_INVALID_DSTACK("timer.millisecs"_Str);
+    THROW_INVALID_DSTACK("timer.millisecs"_Stz);
   
   Timer* pTimer = _pTimer(pPtrTimer);
   ASSERT(CN_TIMER == pTimer->eClass());
@@ -134,11 +134,11 @@ ENTRY("vTimerMillisecs"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vTimerNanosecs(MP_Task mpTask)
 {
-ENTRY("vTimerNanosecs"_Str);
+ENTRY("vTimerNanosecs"_Stz);
   
   Object* pPtrTimer;
   if ( ! mpTask->m_pDataStack->bPop(pPtrTimer) )
-    THROW_INVALID_DSTACK("timer.nanosecs"_Str);
+    THROW_INVALID_DSTACK("timer.nanosecs"_Stz);
   
   Timer* pTimer = _pTimer(pPtrTimer);
   ASSERT(CN_TIMER == pTimer->eClass());
@@ -155,7 +155,7 @@ ENTRY("vTimerNanosecs"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vTimerNew(MP_Task mpTask)
 {
-ENTRY("vTimerNew"_Str);
+ENTRY("vTimerNew"_Stz);
   
   void* pObject = Heap::pAllocate(CN_EBSTRAND);
 
@@ -177,11 +177,11 @@ ENTRY("vTimerNew"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vTimerReset(MP_Task mpTask)
 {
-ENTRY("vTimerReset"_Str);
+ENTRY("vTimerReset"_Stz);
   
   Object* pPtrTimer;
   if ( ! mpTask->m_pDataStack->bPop(pPtrTimer) )
-    THROW_INVALID_DSTACK("timer.reset"_Str);
+    THROW_INVALID_DSTACK("timer.reset"_Stz);
   
   Timer* pTimer = _pTimer(pPtrTimer);
   ASSERT(CN_TIMER == pTimer->eClass());
@@ -196,11 +196,11 @@ ENTRY("vTimerReset"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vTimerSecs(MP_Task mpTask)
 {
-ENTRY("vTimerSecs"_Str);
+ENTRY("vTimerSecs"_Stz);
   
   Object* pPtrTimer;
   if ( ! mpTask->m_pDataStack->bPop(pPtrTimer) )
-    THROW_INVALID_DSTACK("timer.secs"_Str);
+    THROW_INVALID_DSTACK("timer.secs"_Stz);
   
   Timer* pTimer = _pTimer(pPtrTimer);
   ASSERT(CN_TIMER == pTimer->eClass());
@@ -217,11 +217,11 @@ ENTRY("vTimerSecs"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vTimerStart(MP_Task mpTask)
 {
-ENTRY("vTimerStart"_Str);
+ENTRY("vTimerStart"_Stz);
   
   Object* pPtrTimer;
   if ( ! mpTask->m_pDataStack->bPop(pPtrTimer) )
-    THROW_INVALID_DSTACK("timer.Start"_Str);
+    THROW_INVALID_DSTACK("timer.Start"_Stz);
   
   Timer* pTimer = _pTimer(pPtrTimer);
   ASSERT(CN_TIMER == pTimer->eClass());
@@ -236,11 +236,11 @@ ENTRY("vTimerStart"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vTimerTicks(MP_Task mpTask)
 {
-ENTRY("vTimerTicks"_Str);
+ENTRY("vTimerTicks"_Stz);
   
   Object* pPtrTimer;
   if ( ! mpTask->m_pDataStack->bPop(pPtrTimer) )
-    THROW_INVALID_DSTACK("timer.ticks"_Str);
+    THROW_INVALID_DSTACK("timer.ticks"_Stz);
   
   Timer* pTimer = _pTimer(pPtrTimer);
   ASSERT(CN_TIMER == pTimer->eClass());
@@ -257,11 +257,11 @@ ENTRY("vTimerTicks"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vTimerUpdate(MP_Task mpTask)
 {
-ENTRY("vTimerUpdate"_Str);
+ENTRY("vTimerUpdate"_Stz);
   
   Object* pPtrTimer;
   if ( ! mpTask->m_pDataStack->bPop(pPtrTimer) )
-    THROW_INVALID_DSTACK("timer.update"_Str);
+    THROW_INVALID_DSTACK("timer.update"_Stz);
   
   Timer* pTimer = _pTimer(pPtrTimer);
   ASSERT(CN_TIMER == pTimer->eClass());

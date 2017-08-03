@@ -20,14 +20,14 @@ namespace Dictionaries
     /*  5 */ WT_ENUMS
   };
   
-  static Str* aWT[]
+  static Stz* aWT[]
   {
-    /*  0 */ "NONE"_Str,
-    /*  1 */ "OBJECT"_Str,
-    /*  2 */ "PRIMITIVE"_Str,
-    /*  3 */ "ROUTINE"_Str,
-    /*  4 */ "LOCAL"_Str,
-    /*  5 */ "ENUMS"_Str,
+    /*  0 */ "NONE"_Stz,
+    /*  1 */ "OBJECT"_Stz,
+    /*  2 */ "PRIMITIVE"_Stz,
+    /*  3 */ "ROUTINE"_Stz,
+    /*  4 */ "LOCAL"_Stz,
+    /*  5 */ "ENUMS"_Stz,
   };
   
   enum eDT // distributed type
@@ -40,14 +40,14 @@ namespace Dictionaries
     /*  5 */ DT_ENUMS
   };
   
-  static Str* aDT[]
+  static Stz* aDT[]
   {
-    /*  0 */ "NONE"_Str,
-    /*  1 */ "ALLPARTICIPANTS"_Str,
-    /*  2 */ "ONEPARTICIPANT"_Str,
-    /*  3 */ "NOPARTICIPANT"_Str,
-    /*  4 */ "LOCALCALLS"_Str,
-    /*  5 */ "ENUMS"_Str,
+    /*  0 */ "NONE"_Stz,
+    /*  1 */ "ALLPARTICIPANTS"_Stz,
+    /*  2 */ "ONEPARTICIPANT"_Stz,
+    /*  3 */ "NOPARTICIPANT"_Stz,
+    /*  4 */ "LOCALCALLS"_Stz,
+    /*  5 */ "ENUMS"_Stz,
   };
   
   class Word : public Object
@@ -86,10 +86,10 @@ namespace Dictionaries
     void* operator new(size_t, Dic* pDic);
     void  operator delete(void* pWordAddress);
     
-    Word(Str* sName);
+    Word(Stz* sName);
     ~Word(void);
     
-    static void vDump(eCN eClass, Object* pObject, Str* aTab);
+    static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     
     char* pAllot(i8 iBytes);
     void* pAppend(Cell* pCell);
@@ -115,13 +115,13 @@ namespace Dictionaries
     void  vEntryStep(TaskStep pStep);
     TaskStep pEntryStep(void);
     TaskStep* ppEntryStep(void);
-    void  vEncode(Str* aWord);
-    void  vEncode(Str* aWord, Cell* pCell);
-    void  vEncode(Str* aWord, Word* pWord);
-    void  vEncode(Str* aWord, Value* pValue);
-    void  vEncode(Str* aWord, ValWrk* pValWrk);
+    void  vEncode(Stz* aWord);
+    void  vEncode(Stz* aWord, Cell* pCell);
+    void  vEncode(Stz* aWord, Word* pWord);
+    void  vEncode(Stz* aWord, Value* pValue);
+    void  vEncode(Stz* aWord, ValWrk* pValWrk);
     void  vEncode(TaskStep* ppEntryStep);
-    void  vFinalRoutine(Str* pRoutine);
+    void  vFinalRoutine(Stz* pRoutine);
     char* pFinalRoutine(void);
     Cell* pFirstCell(void);
     bool  bHasCell(Cell* pCell);
@@ -134,7 +134,7 @@ namespace Dictionaries
     void  vKind(Word* pKind);
     Cell* pLastCell(void);
     StrVal&    sName(void);
-    void  vObjectDump(Str* aTab);
+    void  vObjectDump(Stz* aTab);
     void  vParams(i8 iParams);
     i8    iParams(void);
     Word* pPrevWord(void);

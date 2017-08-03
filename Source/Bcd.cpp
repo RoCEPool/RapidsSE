@@ -17,7 +17,7 @@ void* Bcd::operator new(size_t iSize)
 {
   RASSERT(iSize);
   
-  vFatal("fatal: Bcd class cannot be new'd\n"_Str);
+  vFatal("fatal: Bcd class cannot be new'd\n"_Stz);
   
   NEVER_REACH;
 }
@@ -310,7 +310,7 @@ bool Bcd::bExtract(char** aaSrc, Bcd* aDecimal, DBobjects::Column* pColumn)
 /*----------------------------------------------------------------------------*/
 /* sprint bcd datum                                                           */
 /*----------------------------------------------------------------------------*/
-void Bcd::vSprint(Str* aDst, Str* aSrc, DBobjects::Column* pColumn)
+void Bcd::vSprint(Stz* aDst, Stz* aSrc, DBobjects::Column* pColumn)
 {
   i8 iBcd = *(i8*)aSrc;
   
@@ -321,7 +321,7 @@ void Bcd::vSprint(Str* aDst, Str* aSrc, DBobjects::Column* pColumn)
   i8 iBcd_Whole = iBcd / iDigits;
   i8 iBcd_Fraction = iBcd % iDigits;
   
-  StrLib::vSprint(aDst,"%lld.%lld%c"_Str,iBcd_Whole,iBcd_Fraction,'\0');
+  StrLib::vSprint(aDst,"%lld.%lld%c"_Stz,iBcd_Whole,iBcd_Fraction,'\0');
 }
 
 /*----------------------------------------------------------------------------*/

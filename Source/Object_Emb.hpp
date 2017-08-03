@@ -36,7 +36,7 @@ namespace CorrectnessAlgebra
       _footer_emb_();                        \
     }                                        \
     else {                                   \
-      ASSERT("Should never be reached"_Str); \
+      ASSERT("Should never be reached"_Stz); \
     }                                        \
   }                                          \
   else {                                     \

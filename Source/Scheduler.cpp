@@ -53,7 +53,7 @@ void* Scheduler::operator new(size_t iSize, Scheduler* pScheduler)
 void Scheduler::operator delete(void* aAddress)
 {
   RASSERT(aAddress);
-  vFatal("fatal: Scheduler class cannot be deleted"_Str);
+  vFatal("fatal: Scheduler class cannot be deleted"_Stz);
   
   NEVER_REACH;
 }

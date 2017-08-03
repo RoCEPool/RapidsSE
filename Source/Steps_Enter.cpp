@@ -31,8 +31,8 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Enter(void)
 {
-  vAddPrimitive("enterObject"_Str,     &vEnterObject,      false);
-  vAddPrimitive("enterRoutine"_Str,    &vEnterRoutine,     false);
+  vAddPrimitive("enterObject"_Stz,     &vEnterObject,      false);
+  vAddPrimitive("enterRoutine"_Stz,    &vEnterRoutine,     false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -40,7 +40,7 @@ void Task::vAddPrimitives_Enter(void)
 /*----------------------------------------------------------------------------*/
 void Task::vEnterObject(MP_Task mpTask)
 {
-  ENTRY("vEnterObject"_Str);
+  ENTRY("vEnterObject"_Stz);
   
   mpTask->m_pReturnStack->vPushCell(mpTask->IP.m_pCell);
   mpTask->IP.m_pCell = *(Cell**)mpTask->m_pEntryCell;
@@ -68,13 +68,13 @@ void Task::vEnterObject(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vEnterRoutine(MP_Task mpTask)
 {
-  ENTRY("vEnterRoutine"_Str);
+  ENTRY("vEnterRoutine"_Stz);
   
   mpTask->m_pReturnStack->vPushCell(mpTask->IP.m_pCell);
   mpTask->IP.m_pCell = *(Cell**)mpTask->m_pEntryCell;
  
    if ( (mpTask->m_iTracing & C_TRACE_ROUTINES) )
-    mpTask->vTracePoint(">"_Str);
+    mpTask->vTracePoint(">"_Stz);
   
   EXIT();
 }

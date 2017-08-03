@@ -25,15 +25,15 @@ namespace Dictionaries
     ~DicPath(void);
     
     static DicPath* _pDicStack(void* aAddr);
-    static void vDump(eCN eClass, Object* pObject, Str* aTab);
+    static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 
     i8   iCount(void);
 
     void vContentDump(void);
     void vDiscard(void);
     Word* pFindWord(StrVal& sName);
-    Word* pFindWord(Str* aName);
-    Word* pFindInCurrent(Str* aName);
+    Word* pFindWord(Stz* aName);
+    Word* pFindInCurrent(Stz* aName);
     Word* pFindStep(TaskStep pStep);
     bool  bForget(StrVal& sName);
     Word* pLocate(Cell* pCell);

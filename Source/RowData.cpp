@@ -12,7 +12,7 @@ extern BufferPool* gpBufferPool;
 void RowData::vDump(char* aRowData, i8 iRowLength)
 {
   
-  vTrace("RowData: \n"_Str);
+  vTrace("RowData: \n"_Stz);
   i8 i_RowLength = 0;
   char* pSeparator;
   
@@ -23,7 +23,7 @@ void RowData::vDump(char* aRowData, i8 iRowLength)
     
     // extract length of next field from separator
     i8 iLength = *pSeparator;
-    vTrace("Length %lld : value: "_Str,iLength);
+    vTrace("Length %lld : value: "_Stz,iLength);
     
     // move rowData nd rowLeghth by char
     i_RowLength += sizeof(char);
@@ -31,16 +31,16 @@ void RowData::vDump(char* aRowData, i8 iRowLength)
     
     // dump the row data upto iLength bytes
     for (i8 i =0; i < iLength; i++)
-      vTrace("%c"_Str, *(aRowData+i));
+      vTrace("%c"_Stz, *(aRowData+i));
     
-    vTrace("\n"_Str);
+    vTrace("\n"_Stz);
     
     // move the row pointer ahead
     aRowData += iLength;
     i_RowLength += iLength;
   }
 
-  vTrace("\n"_Str);
+  vTrace("\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -50,7 +50,7 @@ void RowData::vDump(char* aRowData, i8 iRowLength)
 /*----------------------------------------------------------------------------*/
 /* fetch next record from buffer, read next chunk if necessary                */
 /*----------------------------------------------------------------------------*/
-void RowData::vFormatData(Str* aRawData, i8 iRawLength, Str* aRowData, i8& iRowLength)
+void RowData::vFormatData(Stz* aRawData, i8 iRawLength, Stz* aRowData, i8& iRowLength)
 {
   char* aSrc = (char*)aRawData->s();
   char* aDst = (char*)aRowData->s();
@@ -97,11 +97,11 @@ void RowData::vFormatData(Str* aRawData, i8 iRawLength, Str* aRowData, i8& iRowL
 /* get pointer to where column starts                                         */
 /*----------------------------------------------------------------------------*/
 #ifdef _ROWFORMAT
-Str* RowData::pColumn(Str* aRowData, i8 iColumnNo, i8& iRowLength)
+Stz* RowData::pColumn(Stz* aRowData, i8 iColumnNo, i8& iRowLength)
 {
 
   i8 iCurrentColumn = 0;
-  Str* sCursor = aRowData;
+  Stz* sCursor = aRowData;
   
   iRowLength = 0;
 
@@ -116,7 +116,7 @@ Str* RowData::pColumn(Str* aRowData, i8 iColumnNo, i8& iRowLength)
   return sCursor;
 }
 #else
-Str* RowData::pColumn(Str* aRowData, i8 iColumnNo, i8& iLength)
+Stz* RowData::pColumn(Stz* aRowData, i8 iColumnNo, i8& iLength)
 {
   return nullptr;
 }
@@ -172,7 +172,7 @@ void RowData::vShow(char* aRowData, i8 iRowLength)
     
     // extract length of next field from separator
     i8 iLength = *pSeparator;
-    vTrace("%lld "_Str,iLength);
+    vTrace("%lld "_Stz,iLength);
     
     // move rowData nd rowLeghth by char
     i_RowLength += sizeof(char);
@@ -180,9 +180,9 @@ void RowData::vShow(char* aRowData, i8 iRowLength)
     
     // dump the row data upto iLength bytes
     for (i8 i =0; i < iLength; i++)
-      vTrace("%c"_Str, *(aRowData+i));
+      vTrace("%c"_Stz, *(aRowData+i));
     
-    vTrace(" "_Str);
+    vTrace(" "_Stz);
     
     // move the row pointer ahead
     aRowData += iLength;
@@ -203,7 +203,7 @@ void RowData::vShowData(char* aRowData, i8 iRowLength)
   while (i_RowLength < iRowLength) {
     
     if (i_RowLength)
-      vTrace(","_Str);
+      vTrace(","_Stz);
     
     // get separator
     pSeparator = (char*)aRowData;
@@ -217,7 +217,7 @@ void RowData::vShowData(char* aRowData, i8 iRowLength)
     
     // dump the row data upto iLength bytes
     for (i8 i =0; i < iLength; i++)
-      vTrace("%c"_Str, *(aRowData+i));
+      vTrace("%c"_Stz, *(aRowData+i));
     
     // move the row pointer ahead
     aRowData += iLength;

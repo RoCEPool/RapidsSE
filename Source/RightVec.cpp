@@ -26,7 +26,7 @@ RightVec* DBobjects::_aRightVec(void* aAddr)
 void* RightVec::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  vFatal("fatal: RightVec class cannot be new'd\n"_Str);
+  vFatal("fatal: RightVec class cannot be new'd\n"_Stz);
   
   NEVER_REACH;
 }

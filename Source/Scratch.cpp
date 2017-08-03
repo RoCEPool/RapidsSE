@@ -89,7 +89,7 @@ char* Scratch::aWspArea(void)
 /*----------------------------------------------------------------------------*/
 /* get work area                                                              */
 /*----------------------------------------------------------------------------*/
-Str* Scratch::aWspStr(void)
+Stz* Scratch::aWspStr(void)
 {
   _precondition_(_MAGIC_,CN_SCRATCH,_FOOTER_);
   

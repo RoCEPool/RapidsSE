@@ -24,7 +24,7 @@ namespace UnitTests
     void vRequire(StrVal& sCommand, bool bResult, eEC eErrorExpected, i8 iExpectedRows);
     void vRequire(StrVal& sCommand, bool bResult, eEC eErrorExpected, StrVal& sResponse);
     
-    Str* aRequire(StrVal& sCommand, bool bResult, eEC eErrorExpected);
+    Stz* aRequire(StrVal& sCommand, bool bResult, eEC eErrorExpected);
 
 
   };

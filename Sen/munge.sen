@@ -84,7 +84,7 @@
 
   "  \" CONSTANT " cppFile file.write
   senFile file.path@ cppFile file.write
-  "\"_Str\n" cppFile file.write
+  "\"_Stz\n" cppFile file.write
 ;
 
 /*----------------------------------------------------------------------------*/

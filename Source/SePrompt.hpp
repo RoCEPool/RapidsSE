@@ -41,12 +41,12 @@ public:
   SePrompt(void);
   ~SePrompt(void);
   
-  static void vDump(eCN eClass, Object* pObject, Str* aTab);
+  static void vDump(eCN eClass, Object* pObject, Stz* aTab);
   
   void vLoop(void);
   bool bExecuteString(StrVal& sCommand, eEC& eErrorCode);
   bool bExecuteString(StrVal& sCommand, eEC& eErrorCode, StrVal& sResponse);
-  bool bExecuteString(StrVal& sCommand, eEC& eErrorCode, Str** ppRowPtr);
+  bool bExecuteString(StrVal& sCommand, eEC& eErrorCode, Stz** ppRowPtr);
 
 private:
   void vGetCommand(void);
@@ -73,8 +73,8 @@ private:
   bool bGetNextRow(void);
   void vIterateRows(void);
   bool bHelp(void);
-  bool bTestFile(Str* aPath);
-  void vPushFile(Str* aPath);
+  bool bTestFile(Stz* aPath);
+  void vPushFile(Stz* aPath);
   
   bool bBeginInsert(void);
   bool bChangeWorkingDir(void);
@@ -94,7 +94,7 @@ private:
   bool bDropIndex(void);
   bool bDropSchema(void);
   bool bDropTable(void);
-  bool bIndexReturnTable(Str* aTableName, Str* aIndexName);
+  bool bIndexReturnTable(Stz* aTableName, Stz* aIndexName);
   bool bDropTenant(void);
   
   bool bEndInsert(void);
@@ -119,20 +119,20 @@ private:
   void vClipTokens(i8 i_FromToken);
   void vCollectStatement(void);
   bool bTokenCheck(i8 nTokens);
-  bool bCmdIs(Str* aArg);
-  bool bOneIs(Str* aArg);
+  bool bCmdIs(Stz* aArg);
+  bool bOneIs(Stz* aArg);
   
   Footer* aFooter(void);
   
 private:
   bool bAddTableColumns(i8& i_Token, i8 iNumTokens);
-  bool bAddPartitionColumn(Str* pTable, Str* pColumn);
-  bool bDropReturnTable(Str* aTableName);
+  bool bAddPartitionColumn(Stz* pTable, Stz* pColumn);
+  bool bDropReturnTable(Stz* aTableName);
   bool bEndMakeTable(void);
   bool bMakeTable(void);
   bool bPartitionTable(i8 i_Token, i8 iNumTokens);
-  bool bPartitionTable(Str* pColumnName);
-  bool bRemoveTable(Str* pTableName);
+  bool bPartitionTable(Stz* pColumnName);
+  bool bRemoveTable(Stz* pTableName);
   
 };
 

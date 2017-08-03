@@ -58,7 +58,7 @@ void Tests::vRequire(StrVal& sCommand, bool bResult, eEC eErrorExpected)
 /*----------------------------------------------------------------------------*/
 /* run unit tests                                                             */
 /*----------------------------------------------------------------------------*/
-Str* Tests::aRequire(StrVal& sCommand, bool bResult, eEC eErrorExpected)
+Stz* Tests::aRequire(StrVal& sCommand, bool bResult, eEC eErrorExpected)
 {
   eEC eErrorReturned;
   s256 sResponseReturned;
@@ -120,7 +120,7 @@ void Tests::vRequire(StrVal& sCommand, bool bResult, eEC eErrorExpected, i8 iExp
 {
   eEC eErrorReturned;
   s256 sResponseReturned;
-  Str* aRowPtr;
+  Stz* aRowPtr;
   bool bReturn;
   i8 iRecvdRows = 0;
   
@@ -135,10 +135,10 @@ void Tests::vRequire(StrVal& sCommand, bool bResult, eEC eErrorExpected, i8 iExp
       m_iTestsFailed++;
       Tests::vAssertFailed();
     }
-    *_pStrVal(&sCommand) = "first"_Str;
+    *_pStrVal(&sCommand) = "first"_Stz;
     bReturn = m_pSePrompt->bExecuteString(sCommand, eErrorReturned, &aRowPtr);
     
-    *_pStrVal(&sCommand) = "next"_Str;
+    *_pStrVal(&sCommand) = "next"_Stz;
     while (bReturn) {
       iRecvdRows++;
       bReturn = m_pSePrompt->bExecuteString(sCommand, eErrorReturned, &aRowPtr);

@@ -76,14 +76,14 @@ NodeCursor::~NodeCursor(void)
 /*----------------------------------------------------------------------------*/
 /* dump node cursor                                                           */
 /*----------------------------------------------------------------------------*/
-void NodeCursor::vDump(eCN eClass, Object* pObject, Str* aTab)
+void NodeCursor::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
   ASSERT(eClass == CN_NODECURSOR);
   ASSERT(pObject->eClass() == CN_NODECURSOR);
   
   NodeCursor* pNodeCursor = reinterpret_cast<NodeCursor*>(pObject);
   
-  vTrace("\n"_Str);
+  vTrace("\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

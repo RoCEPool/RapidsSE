@@ -22,7 +22,7 @@ FltVal* Values::_pFltVal(void* aAddr)
 void* FltVal::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  vFatal("fatal: FltVal class cannot be new'd\n"_Str);
+  vFatal("fatal: FltVal class cannot be new'd\n"_Stz);
   
   NEVER_REACH;
 }
@@ -43,7 +43,7 @@ FltVal::FltVal(void)
 /*----------------------------------------------------------------------------*/
 void FltVal::operator =(d8 dFlt)
 {
-  //vTrace("FltVal: diff %lld\n"_Str,nSub(&m_iFlt,this));
+  //vTrace("FltVal: diff %lld\n"_Stz,nSub(&m_iFlt,this));
   
   m_dFlt = dFlt;
 }
@@ -75,7 +75,7 @@ i8 FltVal::nSize(void) const
 /*----------------------------------------------------------------------------*/
 /* convert to string                                                          */
 /*----------------------------------------------------------------------------*/
-void FltVal::vToString(Str* aWorkspace)
+void FltVal::vToString(Stz* aWorkspace)
 {
   *aWorkspace = m_dFlt;
 }

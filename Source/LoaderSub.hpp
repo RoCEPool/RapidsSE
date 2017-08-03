@@ -20,7 +20,7 @@ namespace DBobjects
 #ifdef _ROWFORMAT
     s256     m_aRecord;      // formatted row
 #else
-    Str*     m_aRecord;      // record from file
+    Stz*     m_aRecord;      // record from file
 #endif
     i8       m_iLength;      // length of record
     i8       m_iPartition;   // partition of record
@@ -41,7 +41,7 @@ namespace DBobjects
     LoaderSub(void);
     ~LoaderSub(void);
     
-    static void vDump(eCN eClass, Object* pObject, Str* aTab);
+    static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     
     void vAppendBuffer(void);
     void vBegin(void);

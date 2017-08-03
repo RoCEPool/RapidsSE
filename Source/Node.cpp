@@ -56,8 +56,8 @@ Node::Node(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
   
   m_iNodeNo   = -1;
-  m_sNodeName = ""_Str;
-  m_sNodeIP   = ""_Str;
+  m_sNodeName = ""_Stz;
+  m_sNodeIP   = ""_Stz;
   m_iPortNo   = -1;
   
   _checkInitialised_(CN_NODE);
@@ -68,14 +68,14 @@ Node::Node(void)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Node::Node(i8 iNodeNo, Str* pName, Str* pIpAddress, i8 iPortNo)
+Node::Node(i8 iNodeNo, Stz* pName, Stz* pIpAddress, i8 iPortNo)
 : Object(CN_NODE)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
   
   m_iNodeNo   = iNodeNo;
-  m_sNodeName = (Str*)pName;
-  m_sNodeIP   = (Str*)pIpAddress;
+  m_sNodeName = (Stz*)pName;
+  m_sNodeIP   = (Stz*)pIpAddress;
   m_iPortNo   = iPortNo;
   
   _checkInitialised_(CN_NODE);
@@ -102,14 +102,14 @@ void Node::vInit(void)
 /*----------------------------------------------------------------------------*/
 /* dump                                                                       */
 /*----------------------------------------------------------------------------*/
-void Node::vDump(eCN eClass, Object* pObject, Str* aTab)
+void Node::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
   ASSERT(eClass == CN_NODE);
   ASSERT(pObject->eClass() == CN_NODE);
   
   Node* pNode = reinterpret_cast<Node*>(pObject);
 
-  vTrace("no %lld prev %p next %p\n"_Str,
+  vTrace("no %lld prev %p next %p\n"_Stz,
          pNode->m_iPortNo,
          pNode->pPrevNode(),
          pNode->pNextNode());
@@ -118,7 +118,7 @@ void Node::vDump(eCN eClass, Object* pObject, Str* aTab)
 /*----------------------------------------------------------------------------*/
 /* get node IP                                                                */
 /*----------------------------------------------------------------------------*/
-Str* Node::aNodeIP(void)
+Stz* Node::aNodeIP(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
   return m_sNodeIP;
@@ -127,7 +127,7 @@ Str* Node::aNodeIP(void)
 /*----------------------------------------------------------------------------*/
 /* get node name                                                              */
 /*----------------------------------------------------------------------------*/
-Str* Node::aNodeName(void)
+Stz* Node::aNodeName(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
   return m_sNodeName;

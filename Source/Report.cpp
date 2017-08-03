@@ -27,7 +27,7 @@ void Debugging::vReportOption(i8 iTrace)
 /*---------------------------------------------------------------------------*/
 /* report an information message                                             */
 /*---------------------------------------------------------------------------*/
-void Debugging::vInfo(Str* aFormat, ...)
+void Debugging::vInfo(Stz* aFormat, ...)
 {
   va_list xArgs;
   
@@ -41,7 +41,7 @@ void Debugging::vInfo(Str* aFormat, ...)
 /*---------------------------------------------------------------------------*/
 /* vPrint:write to stdout                                                    */
 /*---------------------------------------------------------------------------*/
-void Debugging::vPrint(i8 iLevel, Str* aFormat, va_list xArgs)
+void Debugging::vPrint(i8 iLevel, Stz* aFormat, va_list xArgs)
 {
   i8 iLen = 0;
   char* s = gaReportBuffer;
@@ -55,14 +55,14 @@ void Debugging::vPrint(i8 iLevel, Str* aFormat, va_list xArgs)
   fflush(stdout);
   
   if (gpTraceFile) {
-    gpTraceFile->vPrint("%s"_Str,gaReportBuffer);
+    gpTraceFile->vPrint("%s"_Stz,gaReportBuffer);
     gpTraceFile->vFlush();
   }
 }
 /*---------------------------------------------------------------------------*/
 /* report a trace message                                                    */
 /*---------------------------------------------------------------------------*/
-void Debugging::vTrace(Str* aFormat, ...)
+void Debugging::vTrace(Stz* aFormat, ...)
 {
   va_list xArgs;
   
@@ -76,7 +76,7 @@ void Debugging::vTrace(Str* aFormat, ...)
 /*---------------------------------------------------------------------------*/
 /* report a warning message                                                  */
 /*---------------------------------------------------------------------------*/
-void Debugging::vWarn(Str* aFormat, ...)
+void Debugging::vWarn(Stz* aFormat, ...)
 {
   va_list xArgs;
   
@@ -90,7 +90,7 @@ void Debugging::vWarn(Str* aFormat, ...)
 /*---------------------------------------------------------------------------*/
 /* report a recoverable error message                                        */
 /*---------------------------------------------------------------------------*/
-void Debugging::vError(Str* aFormat, ...)
+void Debugging::vError(Stz* aFormat, ...)
 {
   va_list xArgs;
   
@@ -104,7 +104,7 @@ void Debugging::vError(Str* aFormat, ...)
 /*---------------------------------------------------------------------------*/
 /* vFatal: report a non-recoverable fatal message                            */
 /*---------------------------------------------------------------------------*/
-__attribute__((noreturn)) void Debugging::vFatal(Str* aFormat, ...)
+__attribute__((noreturn)) void Debugging::vFatal(Stz* aFormat, ...)
 {
   va_list xArgs;
   
@@ -119,7 +119,7 @@ __attribute__((noreturn)) void Debugging::vFatal(Str* aFormat, ...)
 /*---------------------------------------------------------------------------*/
 /* vReport: common reporter                                                  */
 /*---------------------------------------------------------------------------*/
-void Debugging::vReport(i8 iLevel, Str* aFormat, va_list xArgs)
+void Debugging::vReport(i8 iLevel, Stz* aFormat, va_list xArgs)
 {
   i8 iLen = 0;
   char* s = gaReportBuffer;
@@ -133,7 +133,7 @@ void Debugging::vReport(i8 iLevel, Str* aFormat, va_list xArgs)
   fflush(stderr);
   
   if (gpTraceFile) {
-    gpTraceFile->vPrint("%s"_Str,gaReportBuffer);
+    gpTraceFile->vPrint("%s"_Stz,gaReportBuffer);
     gpTraceFile->vFlush();
   }
 }
@@ -141,14 +141,14 @@ void Debugging::vReport(i8 iLevel, Str* aFormat, va_list xArgs)
 /*---------------------------------------------------------------------------*/
 /* dump ascii string                                                         */
 /*---------------------------------------------------------------------------*/
-void Debugging::vDumpAscii(Str* aText, i8 nBytes)
+void Debugging::vDumpAscii(Stz* aText, i8 nBytes)
 {
-  vInfo(">>>"_Str);
+  vInfo(">>>"_Stz);
   while (nBytes--) {
-    vInfo("%c"_Str,*aText->s());
+    vInfo("%c"_Stz,*aText->s());
     aText++;
   }
-  vInfo("<<<\n"_Str);
+  vInfo("<<<\n"_Stz);
 }
 
 

@@ -35,27 +35,27 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Dir(void)
 {
-  vAddPrimitive("dir.changeCurrent"_Str, &vDirChangeCurrent, false);
-  vAddPrimitive("dir.exists"_Str,        &vDirExists,        false);
-  vAddPrimitive("dir.getCurrent"_Str,    &vDirGetCurrent,    false);
-  vAddPrimitive("dir.make"_Str,          &vDirMake,          false);
-  vAddPrimitive("dir.remove"_Str,        &vDirRemove,        false);
+  vAddPrimitive("dir.changeCurrent"_Stz, &vDirChangeCurrent, false);
+  vAddPrimitive("dir.exists"_Stz,        &vDirExists,        false);
+  vAddPrimitive("dir.getCurrent"_Stz,    &vDirGetCurrent,    false);
+  vAddPrimitive("dir.make"_Stz,          &vDirMake,          false);
+  vAddPrimitive("dir.remove"_Stz,        &vDirRemove,        false);
   
-  vAddPrimitive("dir.close"_Str,       &vDirClose,         false);
-  vAddPrimitive("dir.delete"_Str,      &vDirDelete,        false);
-  vAddPrimitive("dir.entryName"_Str,   &vDirEntryName,     false);
-  vAddPrimitive("dir.entryType"_Str,   &vDirEntryType,     false);
-  vAddPrimitive("dir.init"_Str,        &vDirInit,          false);
-  vAddPrimitive("dir.isClosed"_Str,    &vDirIsClosed,      false);
-  vAddPrimitive("dir.isOpen"_Str,      &vDirIsOpen,        false);
-  vAddPrimitive("dir::new"_Str,         &vDirNew,           false);
-  vAddPrimitive("dir.open"_Str,        &vDirOpen,          false);
-  vAddPrimitive("dir.path@"_Str,       &vDirPathGet,       false);
-  vAddPrimitive("dir.path!"_Str,       &vDirPathSet,       false);
-  vAddPrimitive("dir.read"_Str,        &vDirRead,          false);
-  vAddPrimitive("dir.rewind"_Str,      &vDirRewind,        false);
-  vAddPrimitive("dir.seek"_Str,        &vDirSeek,          false);
-  vAddPrimitive("dir.tell"_Str,        &vDirTell,          false);
+  vAddPrimitive("dir.close"_Stz,       &vDirClose,         false);
+  vAddPrimitive("dir.delete"_Stz,      &vDirDelete,        false);
+  vAddPrimitive("dir.entryName"_Stz,   &vDirEntryName,     false);
+  vAddPrimitive("dir.entryType"_Stz,   &vDirEntryType,     false);
+  vAddPrimitive("dir.init"_Stz,        &vDirInit,          false);
+  vAddPrimitive("dir.isClosed"_Stz,    &vDirIsClosed,      false);
+  vAddPrimitive("dir.isOpen"_Stz,      &vDirIsOpen,        false);
+  vAddPrimitive("dir::new"_Stz,         &vDirNew,           false);
+  vAddPrimitive("dir.open"_Stz,        &vDirOpen,          false);
+  vAddPrimitive("dir.path@"_Stz,       &vDirPathGet,       false);
+  vAddPrimitive("dir.path!"_Stz,       &vDirPathSet,       false);
+  vAddPrimitive("dir.read"_Stz,        &vDirRead,          false);
+  vAddPrimitive("dir.rewind"_Stz,      &vDirRewind,        false);
+  vAddPrimitive("dir.seek"_Stz,        &vDirSeek,          false);
+  vAddPrimitive("dir.tell"_Stz,        &vDirTell,          false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -63,15 +63,15 @@ void Task::vAddPrimitives_Dir(void)
 /*----------------------------------------------------------------------------*/
 void Task::vDirChangeCurrent(MP_Task mpTask)
 {
-  ENTRY("vDirChangeCurrent"_Str);
+  ENTRY("vDirChangeCurrent"_Stz);
   
   s256 sDir;
   if ( ! mpTask->m_pDataStack->bPop(sDir) )
-    THROW_INVALID_DSTACK("dir.changeCurrent"_Str);
+    THROW_INVALID_DSTACK("dir.changeCurrent"_Stz);
   
   Dir xDir;
   if ( ! xDir.bChangeCurrent(sDir) )
-    THROW("Unable to change current directory"_Str);
+    THROW("Unable to change current directory"_Stz);
   
   EXIT();
 }
@@ -81,12 +81,12 @@ void Task::vDirChangeCurrent(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDirExists(MP_Task mpTask)
 {
-ENTRY("vDirExists"_Str);
+ENTRY("vDirExists"_Stz);
   
   s256 sPath;
   
   if ( ! mpTask->m_pDataStack->bPop(sPath) )
-    THROW_INVALID_DSTACK("dir.exists"_Str);
+    THROW_INVALID_DSTACK("dir.exists"_Stz);
   
   Dir xDir;
   
@@ -101,7 +101,7 @@ ENTRY("vDirExists"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vDirGetCurrent(MP_Task mpTask)
 {
-  ENTRY("vDirGetCurrent"_Str);
+  ENTRY("vDirGetCurrent"_Stz);
   
   ValWrk xStrVal;
   
@@ -113,7 +113,7 @@ void Task::vDirGetCurrent(MP_Task mpTask)
     mpTask->m_pDataStack->vPushValWrk(xStrVal);
   }
   else {
-    THROW("Unable to get current directory"_Str);
+    THROW("Unable to get current directory"_Stz);
   }
   
   EXIT();
@@ -124,12 +124,12 @@ void Task::vDirGetCurrent(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDirMake(MP_Task mpTask)
 {
-ENTRY("vDirMake"_Str);
+ENTRY("vDirMake"_Stz);
   
   s256 sPath;
   
   if ( ! mpTask->m_pDataStack->bPop(sPath) )
-    THROW_INVALID_DSTACK("dir.make"_Str);
+    THROW_INVALID_DSTACK("dir.make"_Stz);
   
   Dir xDir;
   
@@ -144,12 +144,12 @@ ENTRY("vDirMake"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vDirRemove(MP_Task mpTask)
 {
-ENTRY("vDirRemove"_Str);
+ENTRY("vDirRemove"_Stz);
   
   s256 sPath;
   
   if ( ! mpTask->m_pDataStack->bPop(sPath) )
-    THROW_INVALID_DSTACK("dir.remove"_Str);
+    THROW_INVALID_DSTACK("dir.remove"_Stz);
   
   Dir xDir;
   
@@ -166,12 +166,12 @@ ENTRY("vDirRemove"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vDirClose(MP_Task mpTask)
 {
-ENTRY("vDirClose"_Str);
+ENTRY("vDirClose"_Stz);
   
   Object* pPtrDir;
 
   if ( ! mpTask->m_pDataStack->bPop(pPtrDir) )
-    THROW_INVALID_DSTACK("dir.close"_Str);
+    THROW_INVALID_DSTACK("dir.close"_Stz);
   
   Dir* pDir = _pDir(pPtrDir);
   
@@ -185,12 +185,12 @@ ENTRY("vDirClose"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vDirDelete(MP_Task mpTask)
 {
-ENTRY("vDirDelete"_Str);
+ENTRY("vDirDelete"_Stz);
   
   Object* pPtrDir;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrDir) )
-    THROW_INVALID_DSTACK("file.delete"_Str);
+    THROW_INVALID_DSTACK("file.delete"_Stz);
   
   Dir* pDir = _pDir(pPtrDir);
   
@@ -204,12 +204,12 @@ ENTRY("vDirDelete"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vDirEntryName(MP_Task mpTask)
 {
-ENTRY("vDirEntryName"_Str);
+ENTRY("vDirEntryName"_Stz);
   
   Object* pPtrDir;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrDir) )
-    THROW_INVALID_DSTACK("dir.close"_Str);
+    THROW_INVALID_DSTACK("dir.close"_Stz);
   
   Dir* pDir = _pDir(pPtrDir);
   
@@ -227,12 +227,12 @@ ENTRY("vDirEntryName"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vDirEntryType(MP_Task mpTask)
 {
-ENTRY("vDirEntryType"_Str);
+ENTRY("vDirEntryType"_Stz);
   
   Object* pPtrDir;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrDir) )
-    THROW_INVALID_DSTACK("dir.close"_Str);
+    THROW_INVALID_DSTACK("dir.close"_Stz);
   
   Dir* pDir = _pDir(pPtrDir);
   
@@ -250,12 +250,12 @@ ENTRY("vDirEntryType"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vDirInit(MP_Task mpTask)
 {
-ENTRY("vDirInit"_Str);
+ENTRY("vDirInit"_Stz);
   
   Object* pPtrDir;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrDir) )
-    THROW_INVALID_DSTACK("dir.init"_Str);
+    THROW_INVALID_DSTACK("dir.init"_Stz);
   
   Dir* pDir = _pDir(pPtrDir);
   
@@ -271,12 +271,12 @@ ENTRY("vDirInit"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vDirIsClosed(MP_Task mpTask)
 {
-ENTRY("vDirIsClosed"_Str);
+ENTRY("vDirIsClosed"_Stz);
   
   Object* pPtrDir;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrDir) )
-    THROW_INVALID_DSTACK("dir.close"_Str);
+    THROW_INVALID_DSTACK("dir.close"_Stz);
   
   Dir* pDir = _pDir(pPtrDir);
   
@@ -292,12 +292,12 @@ ENTRY("vDirIsClosed"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vDirIsOpen(MP_Task mpTask)
 {
-ENTRY("vDirIsOpen"_Str);
+ENTRY("vDirIsOpen"_Stz);
   
   Object* pPtrDir;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrDir) )
-    THROW_INVALID_DSTACK("dir.close"_Str);
+    THROW_INVALID_DSTACK("dir.close"_Stz);
   
   Dir* pDir = _pDir(pPtrDir);
   
@@ -313,7 +313,7 @@ ENTRY("vDirIsOpen"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vDirNew(MP_Task mpTask)
 {
-ENTRY("vDirNew"_Str);
+ENTRY("vDirNew"_Stz);
   
   Dir* pDir = new Dir;
   
@@ -330,12 +330,12 @@ ENTRY("vDirNew"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vDirOpen(MP_Task mpTask)
 {
-ENTRY("vDirOpen"_Str);
+ENTRY("vDirOpen"_Stz);
   
   Object* pPtrDir;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrDir) )
-    THROW_INVALID_DSTACK("dir.open"_Str);
+    THROW_INVALID_DSTACK("dir.open"_Stz);
   
   Dir* pDir = _pDir(pPtrDir);
   
@@ -351,12 +351,12 @@ ENTRY("vDirOpen"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vDirPathGet(MP_Task mpTask)
 {
-ENTRY("vDirPathGet"_Str);
+ENTRY("vDirPathGet"_Stz);
   
   Object* pPtrDir;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrDir) )
-    THROW_INVALID_DSTACK("dir.path@"_Str);
+    THROW_INVALID_DSTACK("dir.path@"_Stz);
   
   Dir* pDir = _pDir(pPtrDir);
   
@@ -375,19 +375,19 @@ ENTRY("vDirPathGet"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vDirPathSet(MP_Task mpTask)
 {
-ENTRY("vDirPathSet"_Str);
+ENTRY("vDirPathSet"_Stz);
   
   Object* pPtrDir;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrDir) )
-    THROW_INVALID_DSTACK("dir.path!"_Str);
+    THROW_INVALID_DSTACK("dir.path!"_Stz);
   
   Dir* pDir = _pDir(pPtrDir);
   
   s256 sPath;
 
   if ( ! mpTask->m_pDataStack->bPop(sPath) )
-    THROW_INVALID_DSTACK("dir.path!"_Str);
+    THROW_INVALID_DSTACK("dir.path!"_Stz);
   
   pDir->vPath(sPath);
   
@@ -399,12 +399,12 @@ ENTRY("vDirPathSet"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vDirRead(MP_Task mpTask)
 {
-ENTRY("vDirRead"_Str);
+ENTRY("vDirRead"_Stz);
   
   Object* pPtrDir;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrDir) )
-    THROW_INVALID_DSTACK("dir.read"_Str);
+    THROW_INVALID_DSTACK("dir.read"_Stz);
   
   Dir* pDir = _pDir(pPtrDir);
   
@@ -420,12 +420,12 @@ ENTRY("vDirRead"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vDirRewind(MP_Task mpTask)
 {
-ENTRY("vDirRewind"_Str);
+ENTRY("vDirRewind"_Stz);
   
   Object* pPtrDir;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrDir) )
-    THROW_INVALID_DSTACK("dir.rewind"_Str);
+    THROW_INVALID_DSTACK("dir.rewind"_Stz);
   
   Dir* pDir = _pDir(pPtrDir);
   
@@ -439,18 +439,18 @@ ENTRY("vDirRewind"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vDirSeek(MP_Task mpTask)
 {
-ENTRY("vDirSeek"_Str);
+ENTRY("vDirSeek"_Stz);
   
   Object* pPtrDir;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrDir) )
-    THROW_INVALID_DSTACK("dir.seek"_Str);
+    THROW_INVALID_DSTACK("dir.seek"_Stz);
   
   Dir* pDir = _pDir(pPtrDir);
   
   i8 iPosition;
   if ( ! mpTask->m_pDataStack->bPop(iPosition) )
-    THROW_INVALID_DSTACK("dir.seek"_Str);
+    THROW_INVALID_DSTACK("dir.seek"_Stz);
   
   pDir->vSeek(iPosition);
   
@@ -462,12 +462,12 @@ ENTRY("vDirSeek"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vDirTell(MP_Task mpTask)
 {
-ENTRY("vDirTell"_Str);
+ENTRY("vDirTell"_Stz);
   
   Object* pPtrDir;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrDir) )
-    THROW_INVALID_DSTACK("dir.tell"_Str);
+    THROW_INVALID_DSTACK("dir.tell"_Stz);
   
   Dir* pDir = _pDir(pPtrDir);
   

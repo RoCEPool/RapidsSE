@@ -7,43 +7,43 @@
 /*----------------------------------------------------------------------------*/
 /* single tab                                                                 */
 /*----------------------------------------------------------------------------*/
-Str* Debugging::aSingleTab(void)
+Stz* Debugging::aSingleTab(void)
 {
-  return "  "_Str;
+  return "  "_Stz;
 }
 
 /*----------------------------------------------------------------------------*/
 /* double tab                                                                 */
 /*----------------------------------------------------------------------------*/
-Str* Debugging::aDoubleTab(void)
+Stz* Debugging::aDoubleTab(void)
 {
-  return "      "_Str;
+  return "      "_Stz;
 }
 
 /*----------------------------------------------------------------------------*/
 /* get tab                                                                    */
 /*----------------------------------------------------------------------------*/
-Str* Debugging::aTab(i8 iDepth)
+Stz* Debugging::aTab(i8 iDepth)
 {
   switch(iDepth) {
-    case  0:  return ""_Str;
-    case  1:  return "  "_Str;
-    case  2:  return "    "_Str;
-    case  3:  return "      "_Str;
-    case  4:  return "        "_Str;
-    case  5:  return "          "_Str;
-    case  6:  return "            "_Str;
-    case  7:  return "              "_Str;
-    case  8:  return "                "_Str;
-    case  9:  return "                  "_Str;
-    case 10:  return "                    "_Str;
-    case 11:  return "                      "_Str;
-    case 12:  return "                        "_Str;
-    case 13:  return "                          "_Str;
-    case 14:  return "                            "_Str;
-    case 15:  return "                              "_Str;
-    case 16:  return "                                "_Str;
-    default:  return "  (tabbed-out)                    "_Str;
+    case  0:  return ""_Stz;
+    case  1:  return "  "_Stz;
+    case  2:  return "    "_Stz;
+    case  3:  return "      "_Stz;
+    case  4:  return "        "_Stz;
+    case  5:  return "          "_Stz;
+    case  6:  return "            "_Stz;
+    case  7:  return "              "_Stz;
+    case  8:  return "                "_Stz;
+    case  9:  return "                  "_Stz;
+    case 10:  return "                    "_Stz;
+    case 11:  return "                      "_Stz;
+    case 12:  return "                        "_Stz;
+    case 13:  return "                          "_Stz;
+    case 14:  return "                            "_Stz;
+    case 15:  return "                              "_Stz;
+    case 16:  return "                                "_Stz;
+    default:  return "  (tabbed-out)                    "_Stz;
   }
 }
 

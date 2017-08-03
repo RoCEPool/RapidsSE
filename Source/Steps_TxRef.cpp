@@ -31,11 +31,11 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_TxRef(void)
 {
-  vAddPrimitive("txRef.init"_Str,      &vTxRefInit,        false);
-  vAddPrimitive("txRef.begin"_Str,     &vTxRefBegin,       false);
-  vAddPrimitive("txRef.end"_Str,       &vTxRefEnd,         false);
-  vAddPrimitive("txRef.commit"_Str,    &vTxRefCommit,      false);
-  vAddPrimitive("txRef.rollback"_Str,  &vTxRefRollback,    false);
+  vAddPrimitive("txRef.init"_Stz,      &vTxRefInit,        false);
+  vAddPrimitive("txRef.begin"_Stz,     &vTxRefBegin,       false);
+  vAddPrimitive("txRef.end"_Stz,       &vTxRefEnd,         false);
+  vAddPrimitive("txRef.commit"_Stz,    &vTxRefCommit,      false);
+  vAddPrimitive("txRef.rollback"_Stz,  &vTxRefRollback,    false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -43,11 +43,11 @@ void Task::vAddPrimitives_TxRef(void)
 /*----------------------------------------------------------------------------*/
 void Task::vTxRefInit(MP_Task mpTask)
 {
-ENTRY("vTxRefInit"_Str);
+ENTRY("vTxRefInit"_Stz);
   
   Object* pPtrTxRef;
   if ( ! mpTask->m_pDataStack->bPop(pPtrTxRef) )
-    THROW_INVALID_DSTACK("txRef.init"_Str);
+    THROW_INVALID_DSTACK("txRef.init"_Stz);
   
   TxRef* pTxRef = _pTxRef(pPtrTxRef);
   ASSERT(CN_TXREF == pTxRef->eClass());
@@ -62,12 +62,12 @@ ENTRY("vTxRefInit"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vTxRefBegin(MP_Task mpTask)
 {
-ENTRY("vTxRefBegin"_Str);
+ENTRY("vTxRefBegin"_Stz);
   
   Object* pPtrTxRef;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrTxRef) )
-    THROW_INVALID_DSTACK("tx.begin"_Str);
+    THROW_INVALID_DSTACK("tx.begin"_Stz);
   
   TxRef* pTxRef = _pTxRef(pPtrTxRef);
   ASSERT(CN_TXREF == pTxRef->eClass());
@@ -84,12 +84,12 @@ ENTRY("vTxRefBegin"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vTxRefEnd(MP_Task mpTask)
 {
-ENTRY("vTxRefEnd"_Str);
+ENTRY("vTxRefEnd"_Stz);
   
   Object* pPtrTxRef;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrTxRef) )
-    THROW_INVALID_DSTACK("txRef.end"_Str);
+    THROW_INVALID_DSTACK("txRef.end"_Stz);
   
   TxRef* pTxRef = _pTxRef(pPtrTxRef);
   ASSERT(CN_TXREF == pTxRef->eClass());
@@ -106,12 +106,12 @@ ENTRY("vTxRefEnd"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vTxRefCommit(MP_Task mpTask)
 {
-ENTRY("vTxRefCommit"_Str);
+ENTRY("vTxRefCommit"_Stz);
   
   Object* pPtrTxRef;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrTxRef) )
-    THROW_INVALID_DSTACK("txRef.commit"_Str);
+    THROW_INVALID_DSTACK("txRef.commit"_Stz);
   
   TxRef* pTxRef = _pTxRef(pPtrTxRef);
   ASSERT(CN_TXREF == pTxRef->eClass());
@@ -128,12 +128,12 @@ ENTRY("vTxRefCommit"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vTxRefRollback(MP_Task mpTask)
 {
-ENTRY("vTxRefRollback"_Str);
+ENTRY("vTxRefRollback"_Stz);
   
   Object* pPtrTxRef;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrTxRef) )
-    THROW_INVALID_DSTACK("txRef.rollback"_Str);
+    THROW_INVALID_DSTACK("txRef.rollback"_Stz);
   
   TxRef* pTxRef = _pTxRef(pPtrTxRef);
   ASSERT(CN_TXREF == pTxRef->eClass());

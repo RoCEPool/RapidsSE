@@ -46,14 +46,14 @@ void StepAccum::vPrint(File& xFile)
   i8 iInvokeNanos    = DIV(iTicksPerInvoke,iTicksPerNanos);
 
   
-//  vTrace("  %24s %12lld %12lld %8lldns\n"_Str,
+//  vTrace("  %24s %12lld %12lld %8lldns\n"_Stz,
 //         m_aStepNm,
 //         m_nInvoked,
 //         iStepNanos,
 //         iInvokeNanos
 //         );
   
-  xFile.vPrint("%s, %lld, %lld, %lld\n"_Str,
+  xFile.vPrint("%s, %lld, %lld, %lld\n"_Stz,
          m_aStepNm,
          m_nInvoked,
          iStepNanos,

@@ -31,17 +31,17 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Dic(void)
 {
-  vAddPrimitive("dic.frozen@"_Str,     &vDicFrozenGet,     false);
-  vAddPrimitive("dic.frozen!"_Str,     &vDicFrozenSet,     false);
-  vAddPrimitive("dic.init"_Str,        &vDicInit,          false);
-  vAddPrimitive("dic.isCompiled"_Str,  &vDicIsCompiled,    false);
-  vAddPrimitive("dic.kind@"_Str,       &vDicKindGet,       false);
-  vAddPrimitive("dic.kind!"_Str,       &vDicKindSet,       false);
-  vAddPrimitive("dic.lastWord"_Str,    &vDicLastWord,      false);
-  vAddPrimitive("dic.main"_Str,        &vDicMain,          false);
-  vAddPrimitive("dic.name"_Str,        &vDicName,          false);
-  vAddPrimitive("dic.ref"_Str,         &vDicRef,           false);
-  vAddPrimitive("dic.wordCount"_Str,   &vDicWordCount,     false);
+  vAddPrimitive("dic.frozen@"_Stz,     &vDicFrozenGet,     false);
+  vAddPrimitive("dic.frozen!"_Stz,     &vDicFrozenSet,     false);
+  vAddPrimitive("dic.init"_Stz,        &vDicInit,          false);
+  vAddPrimitive("dic.isCompiled"_Stz,  &vDicIsCompiled,    false);
+  vAddPrimitive("dic.kind@"_Stz,       &vDicKindGet,       false);
+  vAddPrimitive("dic.kind!"_Stz,       &vDicKindSet,       false);
+  vAddPrimitive("dic.lastWord"_Stz,    &vDicLastWord,      false);
+  vAddPrimitive("dic.main"_Stz,        &vDicMain,          false);
+  vAddPrimitive("dic.name"_Stz,        &vDicName,          false);
+  vAddPrimitive("dic.ref"_Stz,         &vDicRef,           false);
+  vAddPrimitive("dic.wordCount"_Stz,   &vDicWordCount,     false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -49,12 +49,12 @@ void Task::vAddPrimitives_Dic(void)
 /*----------------------------------------------------------------------------*/
 void Task::vDicFrozenGet(MP_Task mpTask)
 {
-ENTRY("vDicFrozenGet"_Str);
+ENTRY("vDicFrozenGet"_Stz);
   
   Object* pPtrDic;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrDic) )
-    THROW_INVALID_DSTACK("dic.frozen@"_Str);
+    THROW_INVALID_DSTACK("dic.frozen@"_Stz);
   
   Dic* pDic = _pDic(pPtrDic);
   
@@ -70,13 +70,13 @@ ENTRY("vDicFrozenGet"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vDicFrozenSet(MP_Task mpTask)
 {
-ENTRY("vDicFrozenSet"_Str);
+ENTRY("vDicFrozenSet"_Stz);
 
   i8 iFrozen;
   Object* pPtrDic;
   
   if ( ! mpTask->m_pDataStack->bPop(iFrozen,pPtrDic) )
-    THROW_INVALID_DSTACK("dic.frozen@"_Str);
+    THROW_INVALID_DSTACK("dic.frozen@"_Stz);
   
   Dic* pDic = _pDic(pPtrDic);
   
@@ -90,12 +90,12 @@ ENTRY("vDicFrozenSet"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vDicInit(MP_Task mpTask)
 {
-ENTRY("vDicInit"_Str);
+ENTRY("vDicInit"_Stz);
   
   Object* pPtrDic;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrDic) )
-    THROW_INVALID_DSTACK("dic.init"_Str);
+    THROW_INVALID_DSTACK("dic.init"_Stz);
   
   Dic* pDic = _pDic(pPtrDic);
 
@@ -112,9 +112,9 @@ ENTRY("vDicInit"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vDicIsCompiled(MP_Task mpTask)
 {
-  ENTRY("vDicIsCompiled"_Str);
+  ENTRY("vDicIsCompiled"_Stz);
   
-  Word* pWord = gpMainDic->pFindWord("__compiled__"_Str);
+  Word* pWord = gpMainDic->pFindWord("__compiled__"_Stz);
   
   i8 bIsCompiled = pWord ? true : false;
   
@@ -128,12 +128,12 @@ void Task::vDicIsCompiled(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDicKindGet(MP_Task mpTask)
 {
-  ENTRY("vDicFrozenGet"_Str);
+  ENTRY("vDicFrozenGet"_Stz);
   
   Object* pPtrDic;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrDic) )
-    THROW_INVALID_DSTACK("dic.kind@"_Str);
+    THROW_INVALID_DSTACK("dic.kind@"_Stz);
   
   Dic* pDic = _pDic(pPtrDic);
   
@@ -150,13 +150,13 @@ void Task::vDicKindGet(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDicKindSet(MP_Task mpTask)
 {
-  ENTRY("vDicKindSet"_Str);
+  ENTRY("vDicKindSet"_Stz);
   
   Object* pPtrKind;
   Object* pPtrDic;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrDic,pPtrKind) )
-    THROW_INVALID_DSTACK("dic.kind@"_Str);
+    THROW_INVALID_DSTACK("dic.kind@"_Stz);
   
   Dic* pDic = _pDic(pPtrDic);
   
@@ -172,12 +172,12 @@ void Task::vDicKindSet(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDicLastWord(MP_Task mpTask)
 {
-ENTRY("vDicLastWord"_Str);
+ENTRY("vDicLastWord"_Stz);
   
   Object* pPtrDic;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrDic) )
-    THROW_INVALID_DSTACK("dic.lastWord"_Str);
+    THROW_INVALID_DSTACK("dic.lastWord"_Stz);
   
   Dic* pDic = _pDic(pPtrDic);
   
@@ -193,7 +193,7 @@ ENTRY("vDicLastWord"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vDicMain(MP_Task mpTask)
 {
-ENTRY("vDicMain"_Str);
+ENTRY("vDicMain"_Stz);
   
   mpTask->m_pDataStack->vPushObject(gpMainDic);
   
@@ -205,11 +205,11 @@ ENTRY("vDicMain"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vDicName(MP_Task mpTask)
 {
-ENTRY("vDicName"_Str);
+ENTRY("vDicName"_Stz);
  
   Object* pPtrDic;
   if ( ! mpTask->m_pDataStack->bPop(pPtrDic) )
-    THROW_INVALID_DSTACK("dic.name"_Str);
+    THROW_INVALID_DSTACK("dic.name"_Stz);
   
   Dic* pDic = _pDic(pPtrDic);
 
@@ -226,12 +226,12 @@ ENTRY("vDicName"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vDicRef(MP_Task mpTask)
 {
-  ENTRY("vDicRef"_Str);
+  ENTRY("vDicRef"_Stz);
   
   Object* pPtrDic;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrDic) )
-    THROW_INVALID_DSTACK("dic.ref"_Str);
+    THROW_INVALID_DSTACK("dic.ref"_Stz);
   
   Dic* pDic = _pDic(pPtrDic);
 
@@ -247,12 +247,12 @@ void Task::vDicRef(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDicWordCount(MP_Task mpTask)
 {
-  ENTRY("vDicWordCount"_Str);
+  ENTRY("vDicWordCount"_Stz);
   
   Object* pPtrDic;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrDic) )
-    THROW_INVALID_DSTACK("dic.ref"_Str);
+    THROW_INVALID_DSTACK("dic.ref"_Stz);
   
   Dic* pDic = _pDic(pPtrDic);
   

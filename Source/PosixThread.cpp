@@ -85,7 +85,7 @@ bool PosixThread::bBindThread(i8 iCpu)
   i8 iCpuCount = Hardware::iCpuCount();
   
   if (iCpu > iCpuCount) {
-    vWarn("Unable to bind to Cpu %lld on a system having %lld cores!\n"_Str, iCpu, iCpuCount);
+    vWarn("Unable to bind to Cpu %lld on a system having %lld cores!\n"_Stz, iCpu, iCpuCount);
     return false;
   }
   
@@ -93,7 +93,7 @@ bool PosixThread::bBindThread(i8 iCpu)
   
     thread_port_t mach_thread;
 
-    vWarn("binding to core %d\n"_Str, (int)iCpu);
+    vWarn("binding to core %d\n"_Stz, (int)iCpu);
   
     thread_affinity_policy_data_t policy = { (int)iCpu };
     mach_thread = pthread_mach_thread_np(m_iPosixThreadId);
@@ -114,7 +114,7 @@ bool PosixThread::bBindThread(i8 iCpu)
   
     iResult = pthread_setafffinity_np(m_iPosixThreadId, sizeof(cpu_set_t), &xAffinity);
     if (iResult == -1) {
-      vWarn("Error in pthread_setafffinity_np() : %lld\n"_Str, errno);
+      vWarn("Error in pthread_setafffinity_np() : %lld\n"_Stz, errno);
       
     }
   */
@@ -137,7 +137,7 @@ void PosixThread::vSetOSThreadId(void)
 #endif
   
   if (-1 == iOpSysThreadId)
-    vWarn("syscall(SYS_gettid) error; errno=%d\n"_Str,errno);
+    vWarn("syscall(SYS_gettid) error; errno=%d\n"_Stz,errno);
   else
     m_iOpSysThreadId = iOpSysThreadId;
 }
@@ -159,7 +159,7 @@ bool PosixThread::bSpawnThread(void* pFun(void*), void* pArg)
                              );
   
   if (rCode) {
-    vWarn("pthread_create() error; rCode=%lld\n"_Str,rCode);
+    vWarn("pthread_create() error; rCode=%lld\n"_Stz,rCode);
     return false;
   }
   
@@ -180,7 +180,7 @@ i8 PosixThread::iThreadCpu(void)
   
 #ifdef __APPLE__
   
-  vWarn("Get thread Cpu affinity not implemented!\n"_Str);
+  vWarn("Get thread Cpu affinity not implemented!\n"_Stz);
   return 0;
   
 #else
@@ -195,7 +195,7 @@ i8 PosixThread::iThreadCpu(void)
   
   iResult = pthread_getafffinity_np(m_iPosixThreadId, sizeof(cpu_set_t), &xAffinity);
   if (iResult == -1) {
-    vWarn("Error in pthread_getafffinity_np() : %lld\n"_Str, errno);
+    vWarn("Error in pthread_getafffinity_np() : %lld\n"_Stz, errno);
   }
   
   i8 cpu_set_size = static_cast<i8>(sizeof(cpu_set_t));
@@ -324,7 +324,7 @@ void PosixThread::vSleepMicro(i8 nMicroSeconds)
   i8 rCode = nanosleep(&xReq,&xRem);
   
   if (rCode && errno != EINTR) {
-    vWarn("PosixThread::vSleepMicro error; errno=%lld\n"_Str,errno);
+    vWarn("PosixThread::vSleepMicro error; errno=%lld\n"_Stz,errno);
   }
 }
 
@@ -348,7 +348,7 @@ void PosixThread::vSleepMilli(i8 nMilliSeconds)
   i8 rCode = nanosleep(&xReq,&xRem);
   
   if (rCode && errno != EINTR) {
-    vWarn("PosixThread::vSleepMilli error; errno=%lld\n"_Str,errno);
+    vWarn("PosixThread::vSleepMilli error; errno=%lld\n"_Stz,errno);
   }
 }
 
@@ -372,7 +372,7 @@ void PosixThread::vSleepNano(i8 nNanoSeconds)
   i8 rCode = nanosleep(&xReq,&xRem);
   
   if (rCode && errno != EINTR) {
-    vWarn("PosixThread::vSleepNano error; errno=%lld\n"_Str,errno);
+    vWarn("PosixThread::vSleepNano error; errno=%lld\n"_Stz,errno);
   }
 }
 

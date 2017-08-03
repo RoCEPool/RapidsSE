@@ -13,7 +13,7 @@ namespace Parsing
   
   static const i8 C_TOKENS = 256;
   
-  typedef Array<CN_TOKENARY,Str*,C_TOKENS> TokenAry;
+  typedef Array<CN_TOKENARY,Stz*,C_TOKENS> TokenAry;
 }
 
 using namespace Parsing;

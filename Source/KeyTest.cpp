@@ -10,18 +10,18 @@
 /*----------------------------------------------------------------------------*/
 void KeyTest::vTest(void)
 {
-  vTrace("\n\nKeyTest:*************************************************\n"_Str);
+  vTrace("\n\nKeyTest:*************************************************\n"_Stz);
 
   KeyWrk xKeyWrk;
   ValWrk xValWrk;
   KeyVal* pKeyVal;
   
   /*-----------------------------------------------------------------------*/
-  vTrace("\n\n--------------- Single Element Key : INTEGER ---------------\n"_Str);
+  vTrace("\n\n--------------- Single Element Key : INTEGER ---------------\n"_Stz);
   /*-----------------------------------------------------------------------*/
 
   // create the column
-  Column* pCol = new Column("Col0"_Str);
+  Column* pCol = new Column("Col0"_Stz);
   pCol->vColumnType(CT_INTEGER);
   
   // create the column vector
@@ -73,7 +73,7 @@ void KeyTest::vTest(void)
   xKeyWrk.vReset();
   xKeyWrk.vAddDatum(xValWrk, pCol);
   KeyVal* pKeyValFind = new KeyVal(xKeyWrk);
-  vTrace("Find Key value >= 3\n"_Str);
+  vTrace("Find Key value >= 3\n"_Stz);
   
   pOpAryFind->vClear();
   pOpAryFind->vAdd(RO_GREATER_EQUAL);
@@ -93,14 +93,14 @@ void KeyTest::vTest(void)
     aCursor = pKeyVal->m_xKey.aWspArea();
     v = *(i8*)pKeyVal->aEachDatum(pCol,nBytes,&aCursor);
     
-    vTrace("( %lld >= 3)\n"_Str,v);
+    vTrace("( %lld >= 3)\n"_Stz,v);
   }
   
   // scan the key vector for key value: >= 3
   xValWrk = (i8)7;
   xKeyWrk.vReset();
   xKeyWrk.vAddDatum(xValWrk, pCol);
-  vTrace("Find Key value < 7\n"_Str);
+  vTrace("Find Key value < 7\n"_Stz);
   
   pOpAryFind->vClear();
   pOpAryFind->vAdd(RO_LESS_THAN);
@@ -120,7 +120,7 @@ void KeyTest::vTest(void)
     aCursor = pKeyVal->m_xKey.aWspArea();
     v = *(i8*)pKeyVal->aEachDatum(pCol,nBytes,&aCursor);
     
-    vTrace("( %lld < 7 )\n"_Str,v);
+    vTrace("( %lld < 7 )\n"_Stz,v);
   }
 
   delete pKeyVec;
@@ -128,11 +128,11 @@ void KeyTest::vTest(void)
   delete pOpAryFind;
   
   /*-----------------------------------------------------------------------*/
-  vTrace("\n\n--------------- Single Element Key : VARCHAR ---------------\n"_Str);
+  vTrace("\n\n--------------- Single Element Key : VARCHAR ---------------\n"_Stz);
   /*-----------------------------------------------------------------------*/
 
   // create the string column
-  pCol = new Column("Col0"_Str);
+  pCol = new Column("Col0"_Stz);
   pCol->vColumnType(CT_VARCHAR);
   pCol->vDatumType(DM_VCH);
   
@@ -154,7 +154,7 @@ void KeyTest::vTest(void)
   for (i8 i_Key = 0; i_Key < 10; i_Key++) {
     sKey = Random::sRandomString(7);
     
-    Str* ptr = sKey.aStr();
+    Stz* ptr = sKey.aStr();
     
     xValWrk = ptr;
     pStrVal = _pStrVal(xValWrk.pNestedValueSelf());
@@ -175,8 +175,8 @@ void KeyTest::vTest(void)
 
   // generate a random key value to find
   sKey = Random::sRandomString(7);
-  Str* ptr = sKey.aStr();
-  vTrace("Find Key value < %s\n"_Str, ptr);
+  Stz* ptr = sKey.aStr();
+  vTrace("Find Key value < %s\n"_Stz, ptr);
   
   xValWrk = ptr;
   pStrVal = _pStrVal(xValWrk.pNestedValueSelf());
@@ -204,16 +204,16 @@ void KeyTest::vTest(void)
     aCursor = pKeyVal->m_xKey.aWspArea();
     char* p = pKeyVal->aEachDatum(pCol,nBytes,&aCursor);
     
-    vTrace("( %s < %s)\n"_Str,p,pKeyValFind->m_xKey.aWspArea());
+    vTrace("( %s < %s)\n"_Stz,p,pKeyValFind->m_xKey.aWspArea());
   }
   else {
-    vTrace("Found nothing < %s\n"_Str,pKeyValFind->m_xKey.aWspArea());
+    vTrace("Found nothing < %s\n"_Stz,pKeyValFind->m_xKey.aWspArea());
   }
   
   // generate a random key value to find
   sKey = Random::sRandomString(7);
   ptr = sKey.aStr();
-  vTrace("Find Key value >= %s\n"_Str, ptr);
+  vTrace("Find Key value >= %s\n"_Stz, ptr);
   
   xValWrk = ptr;
   pStrVal = _pStrVal(xValWrk.pNestedValueSelf());
@@ -241,10 +241,10 @@ void KeyTest::vTest(void)
     aCursor = pKeyVal->m_xKey.aWspArea();
     char* p = pKeyVal->aEachDatum(pCol,nBytes,&aCursor);
     
-    vTrace("( %s >= %s)\n"_Str,p,pKeyValFind->m_xKey.aWspArea());
+    vTrace("( %s >= %s)\n"_Stz,p,pKeyValFind->m_xKey.aWspArea());
   }
   else {
-    vTrace("Found nothing >= %s)\n"_Str,pKeyValFind->m_xKey.aWspArea());
+    vTrace("Found nothing >= %s)\n"_Stz,pKeyValFind->m_xKey.aWspArea());
   }
 
   delete pKeyVec;
@@ -252,14 +252,14 @@ void KeyTest::vTest(void)
   delete pOpAryFind;
   
   /*-----------------------------------------------------------------------*/
-  vTrace("\n\n----------- Two Element Key : INTEGER , INTEGER -------------\n"_Str);
+  vTrace("\n\n----------- Two Element Key : INTEGER , INTEGER -------------\n"_Stz);
   /*-----------------------------------------------------------------------*/
   
   // create the column
-  Column* pCol0 = new Column("Col0"_Str);
+  Column* pCol0 = new Column("Col0"_Stz);
   pCol0->vColumnType(CT_INTEGER);
   
-  Column* pCol1 = new Column("Col1"_Str);
+  Column* pCol1 = new Column("Col1"_Stz);
   pCol1->vColumnType(CT_INTEGER);
   
   // create the column vector
@@ -297,7 +297,7 @@ void KeyTest::vTest(void)
     pKeyVal = pKeyVec->pGet(i_Key);
     pKeyVal->vShow(pColVec);
     
-    //vTrace("%lld: %lld %lld\n"_Str,i_Key,v, v2);
+    //vTrace("%lld: %lld %lld\n"_Stz,i_Key,v, v2);
   }
   
   // scan the key vector for key value: >= 2,10
@@ -308,7 +308,7 @@ void KeyTest::vTest(void)
   xKeyWrk.vAddDatum(xValWrk, pCol1);
   pKeyValFind = new KeyVal(xKeyWrk);
   
-  vTrace("Find Key value >= 2,10\n"_Str);
+  vTrace("Find Key value >= 2,10\n"_Stz);
   
   pOpAryFind->vClear();
   pOpAryFind->vAdd(RO_GREATER_EQUAL);
@@ -329,7 +329,7 @@ void KeyTest::vTest(void)
     //aCursor = pKeyVal->m_xKey.aWspArea();
     //v = *(i8*)pKeyVal->aElement(pCol,nBytes,&aCursor);
     pKeyVal->vShow(pColVec);
-    vTrace("( >= 2,10)\n"_Str);
+    vTrace("( >= 2,10)\n"_Stz);
   }
   
   // scan the key vector for key value: >= 2,10
@@ -340,7 +340,7 @@ void KeyTest::vTest(void)
   xKeyWrk.vAddDatum(xValWrk, pCol1);
   pKeyValFind = new KeyVal(xKeyWrk);
   
-  vTrace("Find Key value elem1 >= 2, elem2 < 30\n"_Str);
+  vTrace("Find Key value elem1 >= 2, elem2 < 30\n"_Stz);
   
   pOpAryFind->vClear();
   pOpAryFind->vAdd(RO_GREATER_EQUAL);
@@ -361,7 +361,7 @@ void KeyTest::vTest(void)
     //aCursor = pKeyVal->m_xKey.aWspArea();
     //v = *(i8*)pKeyVal->aElement(pCol,nBytes,&aCursor);
     pKeyVal->vShow(pColVec);
-    vTrace("( elem1 >= 2, elem2 < 30)\n"_Str);
+    vTrace("( elem1 >= 2, elem2 < 30)\n"_Stz);
   }
 
   delete pKeyVec;
@@ -369,14 +369,14 @@ void KeyTest::vTest(void)
   delete pOpAryFind;
 
   /*-----------------------------------------------------------------------*/
-  vTrace("\n\n----------- Two Element Key : INTEGER , VARCHAR -------------\n"_Str);
+  vTrace("\n\n----------- Two Element Key : INTEGER , VARCHAR -------------\n"_Stz);
   /*-----------------------------------------------------------------------*/
   
   // create the column
-  pCol0 = new Column("Col0"_Str);
+  pCol0 = new Column("Col0"_Stz);
   pCol0->vColumnType(CT_INTEGER);
   
-  pCol1 = new Column("Col1"_Str);
+  pCol1 = new Column("Col1"_Stz);
   pCol1->vColumnType(CT_VARCHAR);
   pCol1->vDatumType(DM_VCH);
   
@@ -401,7 +401,7 @@ void KeyTest::vTest(void)
       //xKeyWrk.vShow();
       
       sKey = Random::sRandomString(7);
-      Str* ptr = sKey.aStr();
+      Stz* ptr = sKey.aStr();
       xValWrk = ptr;
       pStrVal = _pStrVal(xValWrk.pNestedValueSelf());
       xKeyWrk.vAddDatum(xValWrk, pCol1);
@@ -432,7 +432,7 @@ void KeyTest::vTest(void)
   
   pKeyValFind = new KeyVal(xKeyWrk);
   
-  vTrace("Find Key value >= 2,%s\n"_Str, pStrVal->aStr());
+  vTrace("Find Key value >= 2,%s\n"_Stz, pStrVal->aStr());
   
   pOpAryFind->vClear();
   pOpAryFind->vAdd(RO_GREATER_EQUAL);
@@ -453,11 +453,11 @@ void KeyTest::vTest(void)
     //aCursor = pKeyVal->m_xKey.aWspArea();
     //v = *(i8*)pKeyVal->aElement(pCol,nBytes,&aCursor);
     pKeyVal->vShow(pColVec);
-    vTrace("( >= 2,%s)\n"_Str, pStrVal->aStr());
+    vTrace("( >= 2,%s)\n"_Stz, pStrVal->aStr());
   }
   
   
-  vTrace("Find Key value <= 2,%s\n"_Str, pStrVal->aStr());
+  vTrace("Find Key value <= 2,%s\n"_Stz, pStrVal->aStr());
   
   pOpAryFind->vClear();
   pOpAryFind->vAdd(RO_LESS_EQUAL);
@@ -478,10 +478,10 @@ void KeyTest::vTest(void)
     //aCursor = pKeyVal->m_xKey.aWspArea();
     //v = *(i8*)pKeyVal->aElement(pCol,nBytes,&aCursor);
     pKeyVal->vShow(pColVec);
-    vTrace("( <= 2,%s)\n"_Str, pStrVal->aStr());
+    vTrace("( <= 2,%s)\n"_Stz, pStrVal->aStr());
   }
 
-  vTrace("\n\nEnd KeyTest**********************************************\n"_Str);
+  vTrace("\n\nEnd KeyTest**********************************************\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -489,17 +489,17 @@ void KeyTest::vTest(void)
 /*----------------------------------------------------------------------------*/
 void KeyTest::vTestA(void)
 {
-  vTrace("\n\nKeyTest A:+++++++++++++++++++++++++++++++++++++++++++++++\n"_Str);
+  vTrace("\n\nKeyTest A:+++++++++++++++++++++++++++++++++++++++++++++++\n"_Stz);
   
   bool b;
   
   // create the column vector
   IdxColVec* pColVec = new IdxColVec;
   
-  Column* pCol = new Column("Col0"_Str);
+  Column* pCol = new Column("Col0"_Stz);
   pCol->vColumnType(CT_INTEGER);
   pColVec->vAdd(pCol);
-  pCol = new Column("Col1"_Str);
+  pCol = new Column("Col1"_Stz);
   pCol->vColumnType(CT_INTEGER);
   pColVec->vAdd(pCol);
   
@@ -542,7 +542,7 @@ void KeyTest::vTestA(void)
   delete pKeyValThis;
   delete pKeyValThat;
   
-  vTrace("\n\nEnd KeyTest A++++++++++++++++++++++++++++++++++++++++++++\n"_Str);
+  vTrace("\n\nEnd KeyTest A++++++++++++++++++++++++++++++++++++++++++++\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -550,9 +550,9 @@ void KeyTest::vTestA(void)
 /*----------------------------------------------------------------------------*/
 void KeyTest::vTestB(void)
 {
-  vTrace("\n\nKeyTest B:%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n"_Str);
+  vTrace("\n\nKeyTest B:%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n"_Stz);
   
-  s32 sSeed = "helloWorld"_Str;
+  s32 sSeed = "helloWorld"_Stz;
   
   MP_Task nnpExternalTask = new Task;
   
@@ -560,8 +560,8 @@ void KeyTest::vTestB(void)
   
   Thread::vRunTask(nnpExternalTask);
 
-  sSeed = "printArg"_Str;
-  s48K sArg = "boo!"_Str;
+  sSeed = "printArg"_Stz;
+  s48K sArg = "boo!"_Stz;
   nnpExternalTask->vSeedWord(sSeed);
   nnpExternalTask->vPushStr(sArg);
   
@@ -569,7 +569,7 @@ void KeyTest::vTestB(void)
 
   delete *nnpExternalTask;
 
-  vTrace("\n\nEnd KeyTest B%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n"_Str);
+  vTrace("\n\nEnd KeyTest B%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n"_Stz);
 }
 
 /*============================================================================*/

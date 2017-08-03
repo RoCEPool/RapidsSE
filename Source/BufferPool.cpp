@@ -31,7 +31,7 @@ void BufferPool::operator delete(void* pRegion)
 /*----------------------------------------------------------------------------*/
 /* constructor (new region)                                                   */
 /*----------------------------------------------------------------------------*/
-BufferPool::BufferPool(Str* aRegionName, i8 iRegionSize, i8 iJumboTook,
+BufferPool::BufferPool(Stz* aRegionName, i8 iRegionSize, i8 iJumboTook,
                        bool bTouch, bool bDontFree, bool bFreeRB)
 : Object(CN_BUFFERPOOL)
 {
@@ -189,12 +189,12 @@ void BufferPool::vCheckAddress(const void* aAddress)
   ASSERT(m_pLimit);
   
   if (aAddress < m_pBase) {
-    vTrace("aAddress(%p) < m_pBase(%p) \n"_Str, aAddress, m_pBase);
+    vTrace("aAddress(%p) < m_pBase(%p) \n"_Stz, aAddress, m_pBase);
   }
   ASSERT(aAddress >= m_pBase);
   
   if (aAddress >= m_pLimit) {
-    vTrace("aAddress(%p) >= m_pLimit(%p) \n"_Str, aAddress, m_pLimit);
+    vTrace("aAddress(%p) >= m_pLimit(%p) \n"_Stz, aAddress, m_pLimit);
   }
   ASSERT(aAddress <  m_pLimit);
 }
@@ -330,7 +330,7 @@ void BufferPool::vInitialise(bool bTouch)
   m_iFreeCount  = 0;
   m_nFreeHead   = nBufferFirst();
   
-  //vTrace("FirstBuffer %lld LastBuffer %lld\n"_Str,*nBufferFirst(),*nBufferLast());
+  //vTrace("FirstBuffer %lld LastBuffer %lld\n"_Stz,*nBufferFirst(),*nBufferLast());
   
 //  bn nBuffer = nBufferFirst();
 //  for (FreeBuffer* pFreeBuffer : *this) {
@@ -347,7 +347,7 @@ void BufferPool::vInitialise(bool bTouch)
     if (gbProgress) {
       iBufferMod = *nBuffer % 1000;
       if (! iBufferMod) {
-        vInfo("buffer %lld of %lld             \r"_Str,*nBuffer,*nBufferLast());
+        vInfo("buffer %lld of %lld             \r"_Stz,*nBuffer,*nBufferLast());
         fflush(stdout);
       }
     }
@@ -378,7 +378,7 @@ void BufferPool::vInitialise(bool bTouch)
   pLastBuffer->vNextFree(bn::nNil());
   
   if (gbProgress)
-    vInfo("\n"_Str);
+    vInfo("\n"_Stz);
   
   //vDump();
 }
@@ -401,7 +401,7 @@ Buffer* BufferPool::pNextJumbo(Buffer* pPrev)
       pJumbo = nullptr;
   }
   
-  //vTrace("Jumbo %p %lld\n"_Str,pJumbo,iSub(pJumbo,pPrev));
+  //vTrace("Jumbo %p %lld\n"_Stz,pJumbo,iSub(pJumbo,pPrev));
   return pJumbo;
 }
 
@@ -412,8 +412,8 @@ void BufferPool::vPoolDump(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
   
-  vTrace("RegionSize %lld BufferSize %lld BufferCount %lld Base %p Limit %p\n"_Str
-         "InUse %lld FreeCount %lld FreeHead %lld\n"_Str,
+  vTrace("RegionSize %lld BufferSize %lld BufferCount %lld Base %p Limit %p\n"_Stz
+         "InUse %lld FreeCount %lld FreeHead %lld\n"_Stz,
          gpAttachMap->m_iRegionSize,
          C_SIZE_POOL_BUFFER,
          m_nBuffers,
@@ -425,7 +425,7 @@ void BufferPool::vPoolDump(void)
          );
   
   //  for (FreeBuffer* pFreeBuffer : *this)
-  //    vTrace("%p: BufferNo %lld NextFree %lld\n"_Str,
+  //    vTrace("%p: BufferNo %lld NextFree %lld\n"_Stz,
   //           pFreeBuffer,
   //           *pFreeBuffer->nBufferNo(),
   //           *pFreeBuffer->nNextFree());
@@ -433,7 +433,7 @@ void BufferPool::vPoolDump(void)
   bn nBuffer = m_nFreeHead;
   while (bn::nNil() != nBuffer) {
     FreeBuffer* pFreeBuffer = pToFreeBuffer(nBuffer);
-    vTrace("%p: BufferNo %lld NextFree %lld\n"_Str,
+    vTrace("%p: BufferNo %lld NextFree %lld\n"_Stz,
            pFreeBuffer,
            *pFreeBuffer->nBufferNo(),
            *pFreeBuffer->nNextFree());
@@ -498,7 +498,7 @@ bool BufferPool::bValidAddress(const void* aAddress)
 bool BufferPool::bVerifyBoundaries(bool bTrace)
 {
   if (bTrace)
-    vTrace("Base=%p Limit=%p\n"_Str, m_pBase, m_pLimit);
+    vTrace("Base=%p Limit=%p\n"_Stz, m_pBase, m_pLimit);
   
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
   

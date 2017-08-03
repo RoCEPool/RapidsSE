@@ -22,7 +22,7 @@ namespace Values
     i8* aInt(void);
     i8 iBol(void) const;
     
-    void vToString(Str* aWorkspace);
+    void vToString(Stz* aWorkspace);
   };
   
   BolVal* _pBolVal(void* aAddr);

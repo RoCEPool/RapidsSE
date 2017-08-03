@@ -31,12 +31,12 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Locals(void)
 {
-  vAddPrimitive("local.fetch"_Str,     &vLocalFetch,       false);
-  vAddPrimitive("local.store"_Str,     &vLocalStore,       false);
-  vAddPrimitive("locals|"_Str,         &vLocalsBar,        true);
-  vAddPrimitive("locals.pop"_Str,      &vLocalsPop,        false);
-  vAddPrimitive("locals.push"_Str,     &vLocalsPush,       false);
-  vAddPrimitive("to"_Str,              &vLocalsTo,         true);
+  vAddPrimitive("local.fetch"_Stz,     &vLocalFetch,       false);
+  vAddPrimitive("local.store"_Stz,     &vLocalStore,       false);
+  vAddPrimitive("locals|"_Stz,         &vLocalsBar,        true);
+  vAddPrimitive("locals.pop"_Stz,      &vLocalsPop,        false);
+  vAddPrimitive("locals.push"_Stz,     &vLocalsPush,       false);
+  vAddPrimitive("to"_Stz,              &vLocalsTo,         true);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -44,14 +44,14 @@ void Task::vAddPrimitives_Locals(void)
 /*----------------------------------------------------------------------------*/
 void Task::vLocalFetch(MP_Task mpTask)
 {
-  ENTRY("vLocalFetch"_Str);
+  ENTRY("vLocalFetch"_Stz);
   
   if ( ! mpTask->m_pLocalsFrame )
-    THROW_INVALID_DSTACK("local.fetch"_Str);
+    THROW_INVALID_DSTACK("local.fetch"_Stz);
   
   i8 iLocal;
   if ( ! mpTask->m_pDataStack->bPop(iLocal) )
-    THROW_INVALID_DSTACK("local.fetch"_Str);
+    THROW_INVALID_DSTACK("local.fetch"_Stz);
   
   ValReg* pValReg = mpTask->m_pLocalsFrame->pValReg(iLocal);
   
@@ -65,14 +65,14 @@ void Task::vLocalFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vLocalStore(MP_Task mpTask)
 {
-  ENTRY("vLocalStore"_Str);
+  ENTRY("vLocalStore"_Stz);
   
   if ( ! mpTask->m_pLocalsFrame )
-    THROW_INVALID_DSTACK("localStore"_Str);
+    THROW_INVALID_DSTACK("localStore"_Stz);
   
   i8 iLocal;
   if ( ! mpTask->m_pDataStack->bPop(iLocal) )
-    THROW_INVALID_DSTACK("localStore"_Str);
+    THROW_INVALID_DSTACK("localStore"_Stz);
   
   ValReg* pValReg = mpTask->m_pLocalsFrame->pValReg(iLocal);
   
@@ -86,7 +86,7 @@ void Task::vLocalStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vLocalsBar(MP_Task mpTask)
 {
-ENTRY("vLocalsBar"_Str);
+ENTRY("vLocalsBar"_Stz);
   
   Word* pCurrentWord = mpTask->m_pCurrentWord;
   
@@ -100,7 +100,7 @@ ENTRY("vLocalsBar"_Str);
     mpTask->m_pTokeniser->vNextToken();
     
     // end of locals declaration?
-    if (mpTask->m_pTokeniser->sToken().bEqual("|"_Str))
+    if (mpTask->m_pTokeniser->sToken().bEqual("|"_Stz))
       break;
 
     // test for first use of locals|
@@ -108,11 +108,11 @@ ENTRY("vLocalsBar"_Str);
       
       // create a locals dictionary
       pDic = new Dic;
-      pDic->vName("<localsDic>"_Str);
+      pDic->vName("<localsDic>"_Stz);
       mpTask->m_xPathStack.vPush(pDic);
       
       // enocde locals frame push
-      pCurrentWord->vEncode("locals.push"_Str);
+      pCurrentWord->vEncode("locals.push"_Stz);
     }
     
     // create new word for local in current dictionary
@@ -125,13 +125,13 @@ ENTRY("vLocalsBar"_Str);
     
     // encode the word
     xValWrk = mpTask->m_nVariables;
-    pWordLocal->vEncode("pushValue"_Str,&xValWrk);
-    pWordLocal->vEncode("local.fetch"_Str);
-    pWordLocal->vEncode("exit"_Str);
+    pWordLocal->vEncode("pushValue"_Stz,&xValWrk);
+    pWordLocal->vEncode("local.fetch"_Stz);
+    pWordLocal->vEncode("exit"_Stz);
 
     // initialise the local from dstack
-    pCurrentWord->vEncode("pushValue"_Str,&xValWrk);
-    pCurrentWord->vEncode("local.store"_Str);
+    pCurrentWord->vEncode("pushValue"_Stz,&xValWrk);
+    pCurrentWord->vEncode("local.store"_Stz);
     
     mpTask->m_nVariables++;
   }
@@ -144,12 +144,12 @@ ENTRY("vLocalsBar"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vLocalsPop(MP_Task mpTask)
 {
-ENTRY("vLocalsPop"_Str);
+ENTRY("vLocalsPop"_Stz);
   
   RegFrame* pLocalsFrame = mpTask->m_pLocalsFrame;
   
   if ( ! pLocalsFrame )
-    THROW_INVALID_DSTACK("locals.pop"_Str);
+    THROW_INVALID_DSTACK("locals.pop"_Stz);
   
   mpTask->m_pLocalsFrame = mpTask->m_pLocalsFrame->pNext();
   
@@ -163,7 +163,7 @@ ENTRY("vLocalsPop"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vLocalsPush(MP_Task mpTask)
 {
-ENTRY("vLocalsPush"_Str);
+ENTRY("vLocalsPush"_Stz);
   
   RegFrame* pLocalsFrame = new RegFrame;
   
@@ -181,7 +181,7 @@ ENTRY("vLocalsPush"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vLocalsTo(MP_Task mpTask)
 {
-ENTRY("vLocalsTo"_Str);
+ENTRY("vLocalsTo"_Stz);
   
   Word* pCurrentWord = mpTask->m_pCurrentWord;
   
@@ -194,8 +194,8 @@ ENTRY("vLocalsTo"_Str);
   ValWrk xValWrk;
   xValWrk = pWordVariable->iVariable();
   
-  pCurrentWord->vEncode("pushValue"_Str,&xValWrk);
-  pCurrentWord->vEncode("local.store"_Str);
+  pCurrentWord->vEncode("pushValue"_Stz,&xValWrk);
+  pCurrentWord->vEncode("local.store"_Stz);
 
   EXIT();
 }

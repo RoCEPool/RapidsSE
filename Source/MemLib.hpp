@@ -46,7 +46,7 @@ namespace Base
     
   private:
     template <class T>
-    static void vPrintColor(Str* pFmt, const T& Value, Str* pColour);
+    static void vPrintColor(Stz* pFmt, const T& Value, Stz* pColour);
   };
   
 #ifdef __MEMORY_ZERO

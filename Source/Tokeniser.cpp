@@ -51,7 +51,7 @@ Tokeniser::Tokeniser(void)
   m_bMalloc = false;
   m_bNormal = false;
   
-  m_sToken  = ""_Str;
+  m_sToken  = ""_Stz;
   m_eToken  = TN_NONE;
   
   _checkInitialised_(CN_TOKENISER);
@@ -105,16 +105,16 @@ TokenVec* Tokeniser::pTokenise(StrVal& sString)
 /*----------------------------------------------------------------------------*/
 /* dump tokeniser                                                             */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vDump(eCN eClass, Object* pObject, Str* aTab)
+void Tokeniser::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
   ASSERT(eClass == CN_TOKENISER);
   ASSERT(pObject->eClass() == CN_TOKENISER);
   
   Tokeniser* pTokeniser = reinterpret_cast<Tokeniser*>(pObject);
   
-  vTrace("parser %p %s\n"_Str,
+  vTrace("parser %p %s\n"_Stz,
          pTokeniser->m_pParser,
-         pTokeniser->m_bMalloc == true ? "malloc"_Str : "pool"_Str);
+         pTokeniser->m_bMalloc == true ? "malloc"_Stz : "pool"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -272,7 +272,7 @@ void Tokeniser::vNextToken(void)
 /*----------------------------------------------------------------------------*/
 /* find token in token array                                                  */
 /*----------------------------------------------------------------------------*/
-i8 Tokeniser::iFindToken(Str* aLookFor, TokenVec& xTokenVec, i8 nTokens)
+i8 Tokeniser::iFindToken(Stz* aLookFor, TokenVec& xTokenVec, i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
@@ -294,27 +294,27 @@ i8 Tokeniser::iCountTokens(TokenVec& xTokenVec,i8 nTokens)
     if ( ! xTokenVec[i_Token]->bHasText() )
       return i_Token;
   
-  ASSERT("Should never be reached"_Str);
+  ASSERT("Should never be reached"_Stz);
   return -1;
 }
 
 /*----------------------------------------------------------------------------*/
 /* dump token array                                                           */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vDumpTokens(Str* pTitle, TokenVec& xTokenVec, i8 nTokens)
+void Tokeniser::vDumpTokens(Stz* pTitle, TokenVec& xTokenVec, i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  vTrace("%s"_Str,pTitle);
+  vTrace("%s"_Stz,pTitle);
   
   for (i8 i_Token = 0; i_Token < nTokens; i_Token++) {
     
     if (! *(char*)xTokenVec[i_Token]->aText())
       break;
     
-    vTrace("%s "_Str, xTokenVec[i_Token]->aText());
+    vTrace("%s "_Stz, xTokenVec[i_Token]->aText());
   }
-  vTrace("\n"_Str);
+  vTrace("\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

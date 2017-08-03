@@ -22,7 +22,7 @@ namespace Structures
     GraphCursor(void);
     ~GraphCursor(void);
     
-    static void vDump(eCN eClass, Object* pObject, Str* aTab);
+    static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     
   private:
     

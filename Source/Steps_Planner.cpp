@@ -31,22 +31,22 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Planner(void)
 {
-  vAddPrimitive("planner.choosePath"_Str,     &vPlannerChoosePath,     false);
-  vAddPrimitive("planner.chosenPath"_Str,     &vPlannerChosenPath,     false);
-  vAddPrimitive("planner.delete"_Str,         &vPlannerDelete,         false);
-  vAddPrimitive("planner.fetchTechnique@"_Str,&vPlannerFetchTechniqueFetch, false);
-  vAddPrimitive("planner.genPaths"_Str,       &vPlannerGenPaths,       false);
-  vAddPrimitive("planner.highkey@"_Str,       &vPlannerHighKeyFetch,   false);
-  vAddPrimitive("planner.indexNm@"_Str,       &vPlannerIndexNmFetch,   false);
-  vAddPrimitive("planner.key@"_Str,           &vPlannerKeyFetch,       false);
-  vAddPrimitive("planner.lowkey@"_Str,        &vPlannerLowKeyFetch,    false);
-  vAddPrimitive("planner.matchPaths"_Str,     &vPlannerMatchPaths,     false);
-  vAddPrimitive("planner::new"_Str,           &vPlannerNew,            false);
-  vAddPrimitive("planner.parseWhere"_Str,     &vPlannerParseWhere,     false);
-  vAddPrimitive("planner.scorePaths"_Str,     &vPlannerScorePaths,     false);
-  vAddPrimitive("planner.showPaths"_Str,      &vPlannerShowPaths,      false);
-  vAddPrimitive("planner.table@"_Str,         &vPlannerTableFetch,     false);
-  vAddPrimitive("planner.table!"_Str,         &vPlannerTableStore,     false);
+  vAddPrimitive("planner.choosePath"_Stz,     &vPlannerChoosePath,     false);
+  vAddPrimitive("planner.chosenPath"_Stz,     &vPlannerChosenPath,     false);
+  vAddPrimitive("planner.delete"_Stz,         &vPlannerDelete,         false);
+  vAddPrimitive("planner.fetchTechnique@"_Stz,&vPlannerFetchTechniqueFetch, false);
+  vAddPrimitive("planner.genPaths"_Stz,       &vPlannerGenPaths,       false);
+  vAddPrimitive("planner.highkey@"_Stz,       &vPlannerHighKeyFetch,   false);
+  vAddPrimitive("planner.indexNm@"_Stz,       &vPlannerIndexNmFetch,   false);
+  vAddPrimitive("planner.key@"_Stz,           &vPlannerKeyFetch,       false);
+  vAddPrimitive("planner.lowkey@"_Stz,        &vPlannerLowKeyFetch,    false);
+  vAddPrimitive("planner.matchPaths"_Stz,     &vPlannerMatchPaths,     false);
+  vAddPrimitive("planner::new"_Stz,           &vPlannerNew,            false);
+  vAddPrimitive("planner.parseWhere"_Stz,     &vPlannerParseWhere,     false);
+  vAddPrimitive("planner.scorePaths"_Stz,     &vPlannerScorePaths,     false);
+  vAddPrimitive("planner.showPaths"_Stz,      &vPlannerShowPaths,      false);
+  vAddPrimitive("planner.table@"_Stz,         &vPlannerTableFetch,     false);
+  vAddPrimitive("planner.table!"_Stz,         &vPlannerTableStore,     false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -54,12 +54,12 @@ void Task::vAddPrimitives_Planner(void)
 /*----------------------------------------------------------------------------*/
 void Task::vPlannerChoosePath(MP_Task mpTask)
 {
-  ENTRY((Str*)__func__);                         //! needs to be tested on Linux
+  ENTRY((Stz*)__func__);                         //! needs to be tested on Linux
   
   Object* mpPtrPlanner;
   
   if ( ! mpTask->m_pDataStack->bPop(mpPtrPlanner) )
-    THROW_INVALID_DSTACK((Str*)__func__);
+    THROW_INVALID_DSTACK((Stz*)__func__);
   
   Planner* mpPlanner = _pPlanner(mpPtrPlanner);
   
@@ -73,12 +73,12 @@ void Task::vPlannerChoosePath(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vPlannerChosenPath(MP_Task mpTask)
 {
-  ENTRY((Str*)__func__);                         //! needs to be tested on Linux
+  ENTRY((Stz*)__func__);                         //! needs to be tested on Linux
   
   Object* mpPtrPlanner;
   
   if ( ! mpTask->m_pDataStack->bPop(mpPtrPlanner) )
-    THROW_INVALID_DSTACK("planner.chosenPath"_Str);
+    THROW_INVALID_DSTACK("planner.chosenPath"_Stz);
   
   Planner* mpPlanner = _pPlanner(mpPtrPlanner);
   
@@ -94,12 +94,12 @@ void Task::vPlannerChosenPath(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vPlannerDelete(MP_Task mpTask)
 {
-ENTRY("vPlannerDelete"_Str);
+ENTRY("vPlannerDelete"_Stz);
   
   Object* pPtrPlanner;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrPlanner) )
-    THROW_INVALID_DSTACK("planner.delete"_Str);
+    THROW_INVALID_DSTACK("planner.delete"_Stz);
   
   Planner* pPlanner = _pPlanner(pPtrPlanner);
 
@@ -113,11 +113,11 @@ ENTRY("vPlannerDelete"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vPlannerFetchTechniqueFetch(MP_Task mpTask)
 {
-  ENTRY("vPlannerDelete"_Str);
+  ENTRY("vPlannerDelete"_Stz);
   
   Object* pPtrPlanner;
   if ( ! mpTask->m_pDataStack->bPop(pPtrPlanner) )
-    THROW_INVALID_DSTACK("planner.fetchTechnique@"_Str);
+    THROW_INVALID_DSTACK("planner.fetchTechnique@"_Stz);
   Planner* mpPlanner = _pPlanner(pPtrPlanner);
   
   eAT eFetchTechnique = mpPlanner->pChosenPath()->eAccess();
@@ -132,12 +132,12 @@ void Task::vPlannerFetchTechniqueFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vPlannerGenPaths(MP_Task mpTask)
 {
-  ENTRY("vPlannerGenPaths"_Str);
+  ENTRY("vPlannerGenPaths"_Stz);
   
   Object* pPtrPlanner;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrPlanner) )
-    THROW_INVALID_DSTACK("planner.delete"_Str);
+    THROW_INVALID_DSTACK("planner.delete"_Stz);
   
   Planner* pPlanner = _pPlanner(pPtrPlanner);
   
@@ -151,11 +151,11 @@ void Task::vPlannerGenPaths(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vPlannerHighKeyFetch(MP_Task mpTask)
 {
-  ENTRY("vPlannerHighKeyFetch"_Str);
+  ENTRY("vPlannerHighKeyFetch"_Stz);
   
   Object* pPtrPlanner;
   if ( ! mpTask->m_pDataStack->bPop(pPtrPlanner) )
-    THROW_INVALID_DSTACK("planner.highKey@"_Str);
+    THROW_INVALID_DSTACK("planner.highKey@"_Stz);
   Planner* mpPlanner = _pPlanner(pPtrPlanner);
   
   AccessPath* mpChosenPath = mpPlanner->pChosenPath();
@@ -173,11 +173,11 @@ void Task::vPlannerHighKeyFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vPlannerIndexNmFetch(MP_Task mpTask)
 {
-  ENTRY("vPlannerIndexFetch"_Str);
+  ENTRY("vPlannerIndexFetch"_Stz);
   
   Object* pPtrPlanner;
   if ( ! mpTask->m_pDataStack->bPop(pPtrPlanner) )
-    THROW_INVALID_DSTACK("planner.indexNm@"_Str);
+    THROW_INVALID_DSTACK("planner.indexNm@"_Stz);
   Planner* mpPlanner = _pPlanner(pPtrPlanner);
   
   AccessPath* mpChosenPath = mpPlanner->pChosenPath();
@@ -194,11 +194,11 @@ void Task::vPlannerIndexNmFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vPlannerKeyFetch(MP_Task mpTask)
 {
-  ENTRY("vPlannerKeyFetch"_Str);
+  ENTRY("vPlannerKeyFetch"_Stz);
   
   Object* pPtrPlanner;
   if ( ! mpTask->m_pDataStack->bPop(pPtrPlanner) )
-    THROW_INVALID_DSTACK("planner.key@"_Str);
+    THROW_INVALID_DSTACK("planner.key@"_Stz);
   Planner* mpPlanner = _pPlanner(pPtrPlanner);
   
   AccessPath* mpChosenPath = mpPlanner->pChosenPath();
@@ -216,11 +216,11 @@ void Task::vPlannerKeyFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vPlannerLowKeyFetch(MP_Task mpTask)
 {
-  ENTRY("vPlannerLowKeyFetch"_Str);
+  ENTRY("vPlannerLowKeyFetch"_Stz);
   
   Object* pPtrPlanner;
   if ( ! mpTask->m_pDataStack->bPop(pPtrPlanner) )
-    THROW_INVALID_DSTACK("planner.lowKey@"_Str);
+    THROW_INVALID_DSTACK("planner.lowKey@"_Stz);
   Planner* mpPlanner = _pPlanner(pPtrPlanner);
   
   AccessPath* mpChosenPath = mpPlanner->pChosenPath();
@@ -238,12 +238,12 @@ void Task::vPlannerLowKeyFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vPlannerMatchPaths(MP_Task mpTask)
 {
-  ENTRY("vPlannerMatchnPaths"_Str);
+  ENTRY("vPlannerMatchnPaths"_Stz);
   
   Object* pPtrPlanner;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrPlanner) )
-    THROW_INVALID_DSTACK("planner.delete"_Str);
+    THROW_INVALID_DSTACK("planner.delete"_Stz);
   
   Planner* pPlanner = _pPlanner(pPtrPlanner);
   
@@ -257,7 +257,7 @@ void Task::vPlannerMatchPaths(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vPlannerNew(MP_Task mpTask)
 {
-ENTRY("vPlannerNew"_Str);
+ENTRY("vPlannerNew"_Stz);
   
   Planner* pPlanner = new Planner;
   
@@ -271,16 +271,16 @@ ENTRY("vPlannerNew"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vPlannerParseWhere(MP_Task mpTask)
 {
-  ENTRY("vPlannerParseWhere"_Str);
+  ENTRY("vPlannerParseWhere"_Stz);
   
   Object* pPtrPlanner;
   if ( ! mpTask->m_pDataStack->bPop(pPtrPlanner) )
-    THROW_INVALID_DSTACK("planner.parseWhere"_Str);
+    THROW_INVALID_DSTACK("planner.parseWhere"_Stz);
   Planner* pPlanner = _pPlanner(pPtrPlanner);
   
   s48K sWhere;
   if ( ! mpTask->m_pDataStack->bPop(sWhere) )
-    THROW_INVALID_DSTACK("planner.parseWhere"_Str);
+    THROW_INVALID_DSTACK("planner.parseWhere"_Stz);
   
   pPlanner->vParseWhere(sWhere);
   
@@ -292,11 +292,11 @@ void Task::vPlannerParseWhere(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vPlannerScorePaths(MP_Task mpTask)
 {
-  ENTRY("vPlannerScorePaths"_Str);
+  ENTRY("vPlannerScorePaths"_Stz);
   
   Object* pPtrPlanner;
   if ( ! mpTask->m_pDataStack->bPop(pPtrPlanner) )
-    THROW_INVALID_DSTACK("planner.scorePaths"_Str);
+    THROW_INVALID_DSTACK("planner.scorePaths"_Stz);
   Planner* pPlanner = _pPlanner(pPtrPlanner);
   
   pPlanner->vScorePaths();
@@ -309,11 +309,11 @@ void Task::vPlannerScorePaths(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vPlannerShowPaths(MP_Task mpTask)
 {
-  ENTRY("vPlannerShowPaths"_Str);
+  ENTRY("vPlannerShowPaths"_Stz);
   
   Object* pPtrPlanner;
   if ( ! mpTask->m_pDataStack->bPop(pPtrPlanner) )
-    THROW_INVALID_DSTACK("planner.showPaths"_Str);
+    THROW_INVALID_DSTACK("planner.showPaths"_Stz);
   Planner* pPlanner = _pPlanner(pPtrPlanner);
   
   pPlanner->vShowPaths();
@@ -326,11 +326,11 @@ void Task::vPlannerShowPaths(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vPlannerTableFetch(MP_Task mpTask)
 {
-  ENTRY("vPlannerTableFetch"_Str);
+  ENTRY("vPlannerTableFetch"_Stz);
   
   Object* pPtrPlanner;
   if ( ! mpTask->m_pDataStack->bPop(pPtrPlanner) )
-    THROW_INVALID_DSTACK("planner.table@"_Str);
+    THROW_INVALID_DSTACK("planner.table@"_Stz);
   Planner* pPlanner = _pPlanner(pPtrPlanner);
   
   Table* pTable = pPlanner->pTable();
@@ -345,16 +345,16 @@ void Task::vPlannerTableFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vPlannerTableStore(MP_Task mpTask)
 {
-  ENTRY("vPlannerTableStore"_Str);
+  ENTRY("vPlannerTableStore"_Stz);
   
   Object* pPtrPlanner;
   if ( ! mpTask->m_pDataStack->bPop(pPtrPlanner) )
-    THROW_INVALID_DSTACK("planner.table!"_Str);
+    THROW_INVALID_DSTACK("planner.table!"_Stz);
   Planner* pPlanner = _pPlanner(pPtrPlanner);
   
   Object* pPtrTable;
   if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
-    THROW_INVALID_DSTACK("planner.table!"_Str);
+    THROW_INVALID_DSTACK("planner.table!"_Stz);
   Table* pTable = _pTable(pPtrTable);
   
   pPlanner->vTable(pTable);

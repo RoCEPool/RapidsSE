@@ -115,7 +115,7 @@ void Planner::vChoosePath(void)
     }
   }
   
-  vTrace("Chosen: %lld\n"_Str,m_i_Chosen);
+  vTrace("Chosen: %lld\n"_Stz,m_i_Chosen);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -213,7 +213,7 @@ void Planner::vGenPaths(void)
   for (i8 i_Idx = 0; i_Idx < pIdxVec->nItems(); i_Idx++) {
     Index* mpIndex = pIdxVec->pGet(i_Idx);
     
-    if (mpIndex->sIndexName().bSame("hidden"_Str)) {
+    if (mpIndex->sIndexName().bSame("hidden"_Stz)) {
       AccessPath* mpAccessPath = new AccessPath(AT_SCAN);
       mpAccessPath->vIndex(mpIndex);
       mpAccessPath->vIsCandidate(true);

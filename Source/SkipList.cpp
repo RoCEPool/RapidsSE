@@ -285,7 +285,7 @@ bool SkipList::bRemove(void* pObjectRemove)
   ASSERT(pNodePrev); // logic check
   
   if ( ! bEqualTo ) {
-    vTrace("SkipList::bRemove: failed to match"_Str);
+    vTrace("SkipList::bRemove: failed to match"_Stz);
     return false;
   }
   
@@ -348,7 +348,7 @@ SkipNode* SkipList::pNext(SkipNode* pPrev, i8 iLevel)
 #define goDownLevel(iLevel) iLevel--;
 SkipNode* SkipList::pPosition(void* pObjectInsert, bool& bEqualTo, SkipNode** aPriorVec)
 {
-  vTrace("Adding %lld\n"_Str,(i8)pObjectInsert);
+  vTrace("Adding %lld\n"_Stz,(i8)pObjectInsert);
   
   // start from head at known highest level
   SkipNode* pCurrentNode = m_pHead;
@@ -367,7 +367,7 @@ SkipNode* SkipList::pPosition(void* pObjectInsert, bool& bEqualTo, SkipNode** aP
       
       if (bGreaterEqual) {
         // pObjectInsert is >= pObjectNext
-        vTrace("  %lld after %lld (level %lld)\n"_Str,
+        vTrace("  %lld after %lld (level %lld)\n"_Stz,
                (i8)pObjectInsert,(i8)pNextNode->m_pObject,iCurrentLevel);
         
         // go right one node
@@ -375,7 +375,7 @@ SkipNode* SkipList::pPosition(void* pObjectInsert, bool& bEqualTo, SkipNode** aP
       }
       else {
         // pObjectInsert is < pObjectNext or pObjectNext is null
-        vTrace("  %lld before %lld (level %lld)\n"_Str,
+        vTrace("  %lld before %lld (level %lld)\n"_Stz,
                (i8)pObjectInsert,(i8)pNextNode->m_pObject,iCurrentLevel);
         
         break;
@@ -465,28 +465,28 @@ bool bI8Compare(void* pObjectInsert, void* pObjectScan, bool& bMatch)
 
 void Structures::vSkipListDump(SkipList* pSkipList)
 {
-  vTrace("----------------------------\n"_Str);
+  vTrace("----------------------------\n"_Stz);
 
-  vTrace("HEIGHT %lld HEAD 0x%llx\n"_Str,pSkipList->m_iHeight,pSkipList->m_pHead);
+  vTrace("HEIGHT %lld HEAD 0x%llx\n"_Stz,pSkipList->m_iHeight,pSkipList->m_pHead);
   i8 iLevel = pSkipList->m_iHeight;
   do {
-    vTrace("LEVEL %lld\n"_Str, iLevel);
+    vTrace("LEVEL %lld\n"_Stz, iLevel);
     
     SkipNode* pNode = pSkipList->pFirst(iLevel);
     while (pNode) {
       i8 i = (i8)pNode->m_pObject;
-      vTrace("Node %p : %lld (L%lld)\n"_Str,pNode,(i8)pNode->m_pObject, pNode->m_nRight);
+      vTrace("Node %p : %lld (L%lld)\n"_Stz,pNode,(i8)pNode->m_pObject, pNode->m_nRight);
       pNode = pSkipList->pNext(pNode, iLevel);
     }
   } while (--iLevel >= 0);
-  vTrace("============================\n"_Str);
-  vTrace("\n"_Str);
+  vTrace("============================\n"_Stz);
+  vTrace("\n"_Stz);
 }
 
 void Structures::vSkipListTest(void)
 {
-  vTrace("SkipList Tests\n"_Str);
-  vTrace("\n"_Str);
+  vTrace("SkipList Tests\n"_Stz);
+  vTrace("\n"_Stz);
 
   SkipList* pSkipList = new SkipList(true,bI8Compare);
   

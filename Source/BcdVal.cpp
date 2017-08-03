@@ -22,7 +22,7 @@ BcdVal* Values::_pBcdVal(void* aAddr)
 void* BcdVal::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  vFatal("fatal: BcdVal class cannot be new'd\n"_Str);
+  vFatal("fatal: BcdVal class cannot be new'd\n"_Stz);
   
   NEVER_REACH;
 }
@@ -43,7 +43,7 @@ BcdVal::BcdVal(void)
 /*----------------------------------------------------------------------------*/
 void BcdVal::operator =(Bcd xBcd)
 {
-  //vTrace("BcdVal: diff %lld\n"_Str,nSub(&m_iBcd,this));
+  //vTrace("BcdVal: diff %lld\n"_Stz,nSub(&m_iBcd,this));
   
   m_iBcd = xBcd.iAsI8();
 }
@@ -53,7 +53,7 @@ void BcdVal::operator =(Bcd xBcd)
 /*----------------------------------------------------------------------------*/
 void BcdVal::operator =(i8 iBcd)
 {
-  //vTrace("BcdVal: diff %lld\n"_Str,nSub(&m_iBcd,this));
+  //vTrace("BcdVal: diff %lld\n"_Stz,nSub(&m_iBcd,this));
   
   m_iBcd = iBcd;
 }
@@ -85,7 +85,7 @@ i8 BcdVal::nSize(void) const
 /*----------------------------------------------------------------------------*/
 /* convert to string                                                          */
 /*----------------------------------------------------------------------------*/
-void BcdVal::vToString(Str* aWorkspace)
+void BcdVal::vToString(Stz* aWorkspace)
 {
   *aWorkspace = m_iBcd;
 }

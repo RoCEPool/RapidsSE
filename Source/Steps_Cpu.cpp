@@ -31,7 +31,7 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Cpu(void)
 {
-  vAddPrimitive("cpu.rdtscp"_Str,      &vCpuRdtscp,        false);
+  vAddPrimitive("cpu.rdtscp"_Stz,      &vCpuRdtscp,        false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -39,7 +39,7 @@ void Task::vAddPrimitives_Cpu(void)
 /*----------------------------------------------------------------------------*/
 void Task::vCpuRdtscp(MP_Task mpTask)
 {
-  ENTRY("vCpuRdtscp"_Str);
+  ENTRY("vCpuRdtscp"_Stz);
   
   i8 iTscp = Synch::iTicks();
   

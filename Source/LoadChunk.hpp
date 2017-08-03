@@ -11,8 +11,8 @@ namespace Structures
   {
   private:
     File m_xFile;       // file being loaded
-    Str* m_aEndChunk;   // last byte of where chunk ends
-    Str* m_aNextRecord; // first byte of next record
+    Stz* m_aEndChunk;   // last byte of where chunk ends
+    Stz* m_aNextRecord; // first byte of next record
     WspFxd<C_LOADCHUNK_LENGTH> m_xWsp; // workspace
   
   public:
@@ -22,11 +22,11 @@ namespace Structures
     LoadChunk(void);
     ~LoadChunk(void);
 
-    static void vDump(eCN eClass, Object* pObject, Str* aTab);
+    static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     
     void  vCloseFile(void);
     i8    iNextRecord(void);
-    Str*  aNextRecord(i8& iRecordBytes);
+    Stz*  aNextRecord(i8& iRecordBytes);
     void  vOpenFile(s256& sPath);
     void  vReadChunk(i8 iSeek, i8 nBytes);
     

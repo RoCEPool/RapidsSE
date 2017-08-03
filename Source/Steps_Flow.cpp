@@ -31,17 +31,17 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Flow(void)
 {
-  vAddPrimitive("begin_"_Str,          &vFlowBegin_,       false);
-  vAddPrimitive("execute"_Str,         &vFlowExecute,      false);
-  vAddPrimitive("hazard"_Str,          &vFlowHazard,       false);
-  vAddPrimitive("jump"_Str,            &vFlowJump,         false);
-  vAddPrimitive("jumpBegin_"_Str,      &vFlowJumpBegin_,   false);
-  vAddPrimitive("jumpFalse"_Str,       &vFlowJumpFalse,    false);
-  vAddPrimitive("jumpTrue"_Str,        &vFlowJumpTrue,     false);
-  vAddPrimitive("nop"_Str,             &vFlowNop,          false);
-  vAddPrimitive("retryPoint"_Str,      &vFlowRetryPoint,   false);
-  vAddPrimitive("test"_Str,            &vFlowTest,         false);
-  vAddPrimitive("throw"_Str,           &vFlowThrow,        false);
+  vAddPrimitive("begin_"_Stz,          &vFlowBegin_,       false);
+  vAddPrimitive("execute"_Stz,         &vFlowExecute,      false);
+  vAddPrimitive("hazard"_Stz,          &vFlowHazard,       false);
+  vAddPrimitive("jump"_Stz,            &vFlowJump,         false);
+  vAddPrimitive("jumpBegin_"_Stz,      &vFlowJumpBegin_,   false);
+  vAddPrimitive("jumpFalse"_Stz,       &vFlowJumpFalse,    false);
+  vAddPrimitive("jumpTrue"_Stz,        &vFlowJumpTrue,     false);
+  vAddPrimitive("nop"_Stz,             &vFlowNop,          false);
+  vAddPrimitive("retryPoint"_Stz,      &vFlowRetryPoint,   false);
+  vAddPrimitive("test"_Stz,            &vFlowTest,         false);
+  vAddPrimitive("throw"_Stz,           &vFlowThrow,        false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -49,7 +49,7 @@ void Task::vAddPrimitives_Flow(void)
 /*----------------------------------------------------------------------------*/
 void Task::vFlowBegin_(MP_Task mpTask)
 {
-  ENTRY("vBegin_"_Str);
+  ENTRY("vBegin_"_Stz);
   
   mpTask->m_pBeginIP = mpTask->IP.m_pCell;
   
@@ -61,11 +61,11 @@ void Task::vFlowBegin_(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vFlowExecute(MP_Task mpTask)
 {
-  ENTRY("vFlowExecute"_Str);
+  ENTRY("vFlowExecute"_Stz);
   
   Object* pWordObject;
   if ( ! mpTask->m_pDataStack->bPop(pWordObject) )
-    THROW_INVALID_DSTACK("execute"_Str);
+    THROW_INVALID_DSTACK("execute"_Stz);
   Word* pWord = _pWord(pWordObject);
   
   if (WT_PRIMITIVE == pWord->eWordType()) {
@@ -95,9 +95,9 @@ void Task::vFlowExecute(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vFlowHazard(MP_Task mpTask)
 {
-  ENTRY("vFlowHazard"_Str);
+  ENTRY("vFlowHazard"_Stz);
   
-  THROW("Entered hazard"_Str);
+  THROW("Entered hazard"_Stz);
   
   EXIT();
 }
@@ -107,7 +107,7 @@ void Task::vFlowHazard(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vFlowJump(MP_Task mpTask)
 {
-  ENTRY("vJump"_Str);
+  ENTRY("vJump"_Stz);
   
   mpTask->IP.m_pCell = mpTask->IP.m_pCell->m_pJumpTo;
   
@@ -119,7 +119,7 @@ void Task::vFlowJump(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vFlowJumpBegin_(MP_Task mpTask)
 {
-  ENTRY("vFlowJumpBegin_"_Str);
+  ENTRY("vFlowJumpBegin_"_Stz);
   
   mpTask->IP.m_pCell = mpTask->m_pBeginIP;
   
@@ -133,10 +133,10 @@ void Task::vFlowJumpBegin_(MP_Task mpTask)
 #ifdef JUMP_FALSE
 void Task::vFlowJumpFalse(MP_Task mpTask)
 {
-  ENTRY("vJumpFalse"_Str);
+  ENTRY("vJumpFalse"_Stz);
   
   //if ( ! bGuard(1) )
-  //  THROW_INVALID_DSTACK("jumpFalse"_Str);
+  //  THROW_INVALID_DSTACK("jumpFalse"_Stz);
   
   // get pointer to value on the top of the stack
   Stack* pDataStack = mpTask->m_pDataStack;
@@ -176,11 +176,11 @@ void Task::vFlowJumpFalse(MP_Task mpTask)
 
 void Task::vFlowJumpFalse(MP_Task mpTask)
 {
-  ENTRY("vJumpFalse"_Str);
+  ENTRY("vJumpFalse"_Stz);
   
   i8 iVal;
   if ( ! mpTask->m_pDataStack->bPopAsInt_Quick(iVal) )
-    THROW_INVALID_DSTACK("jumpFalse"_Str);
+    THROW_INVALID_DSTACK("jumpFalse"_Stz);
   
   // n.b. the IP points to the jump arg
   
@@ -200,11 +200,11 @@ void Task::vFlowJumpFalse(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vFlowJumpTrue(MP_Task mpTask)
 {
-  ENTRY("vJumpTrue"_Str);
+  ENTRY("vJumpTrue"_Stz);
   
   i8 iVal;
   if ( ! mpTask->m_pDataStack->bPopAsInt(iVal) )
-    THROW_INVALID_DSTACK("jumpTrue"_Str);
+    THROW_INVALID_DSTACK("jumpTrue"_Stz);
   
   // n.b. the IP points to the jump arg
   
@@ -223,7 +223,7 @@ void Task::vFlowJumpTrue(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vFlowNop(MP_Task mpTask)
 {
-  ENTRY("vFlowNop"_Str);
+  ENTRY("vFlowNop"_Stz);
   
   EXIT();
 }
@@ -233,7 +233,7 @@ void Task::vFlowNop(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vFlowRetryPoint(MP_Task mpTask)
 {
-  ENTRY("vFlowRetryPoint"_Str);
+  ENTRY("vFlowRetryPoint"_Stz);
   
   mpTask->m_pResetIP = mpTask->IP.m_pCell;
   
@@ -249,9 +249,9 @@ void Task::vFlowRetryPoint(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vFlowTest(MP_Task mpTask)
 {
-  ENTRY("vFlowTest"_Str);
+  ENTRY("vFlowTest"_Stz);
   
-  vTrace("[%s] Test\n"_Str,mpTask->m_sName.s());
+  vTrace("[%s] Test\n"_Stz,mpTask->m_sName.s());
   
   EXIT();
 }
@@ -261,11 +261,11 @@ void Task::vFlowTest(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vFlowThrow(MP_Task mpTask)
 {
-  ENTRY("vFlowThrow"_Str);
+  ENTRY("vFlowThrow"_Stz);
   
   char wBuffer[256];
   
-  StrLib::vSprint(wBuffer,"THROW TEST"_Str);
+  StrLib::vSprint(wBuffer,"THROW TEST"_Stz);
   
   throw wBuffer;
   

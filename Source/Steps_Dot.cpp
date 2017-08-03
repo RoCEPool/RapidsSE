@@ -32,10 +32,10 @@ extern bool            gbVerbose;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Dot(void)
 {
-  vAddPrimitive("."_Str,               &vDot,              false);
-  vAddPrimitive(".put"_Str,            &vDotPut,           false);
-  vAddPrimitive(".\\n"_Str,            &vDotNewline,       false);
-  vAddPrimitive(".verbose"_Str,     &vDotVerbose,       false);
+  vAddPrimitive("."_Stz,               &vDot,              false);
+  vAddPrimitive(".put"_Stz,            &vDotPut,           false);
+  vAddPrimitive(".\\n"_Stz,            &vDotNewline,       false);
+  vAddPrimitive(".verbose"_Stz,     &vDotVerbose,       false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -43,17 +43,17 @@ void Task::vAddPrimitives_Dot(void)
 /*----------------------------------------------------------------------------*/
 void Task::vDot(MP_Task mpTask)
 {
-  ENTRY("vDot"_Str);
+  ENTRY("vDot"_Stz);
   
   s48K sWorkspace;
   
   ValWrk xValWrk;
   if ( ! mpTask->m_pDataStack->bPop(xValWrk) )
-    THROW_INVALID_DSTACK("."_Str);
+    THROW_INVALID_DSTACK("."_Stz);
   
   ValLib::vToString(xValWrk.pNestedValueSelf(),sWorkspace);
   /*
-  vTrace("[N%lld:%8s\\%lld %-11s] %s\n"_Str,
+  vTrace("[N%lld:%8s\\%lld %-11s] %s\n"_Stz,
          
          gpGrid->iNode(),
          mpTask->m_sName.s(),
@@ -63,7 +63,7 @@ void Task::vDot(MP_Task mpTask)
          sWorkspace.s()
          );
   */
-  vTrace("[%8s\\%lld %-11s] %s\n"_Str,
+  vTrace("[%8s\\%lld %-11s] %s\n"_Stz,
          
          mpTask->m_sName.s(),
          *mpTask->m_zAcks,
@@ -81,16 +81,16 @@ void Task::vDot(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDotPut(MP_Task mpTask)
 {
-  ENTRY("vDotPut"_Str);
+  ENTRY("vDotPut"_Stz);
   
   s48K sWorkspace;
   
   ValWrk xValWrk;
   if ( ! mpTask->m_pDataStack->bPop(xValWrk) )
-    THROW_INVALID_DSTACK(".put"_Str);
+    THROW_INVALID_DSTACK(".put"_Stz);
   
   ValLib::vToString(xValWrk.pNestedValueSelf(),sWorkspace);
-  vTrace("%s"_Str,sWorkspace.s());
+  vTrace("%s"_Stz,sWorkspace.s());
   
   EXIT();
 }
@@ -100,9 +100,9 @@ void Task::vDotPut(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDotNewline(MP_Task mpTask)
 {
-  ENTRY("vDotNewline"_Str);
+  ENTRY("vDotNewline"_Stz);
   
-  vTrace("\n"_Str);
+  vTrace("\n"_Stz);
   
   EXIT();
 }
@@ -112,17 +112,17 @@ void Task::vDotNewline(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDotVerbose(MP_Task mpTask)
 {
-  ENTRY("vDotVerbose"_Str);
+  ENTRY("vDotVerbose"_Stz);
   
   s48K sWorkspace;
   
   ValWrk xValWrk;
   if ( ! mpTask->m_pDataStack->bPop(xValWrk) )
-    THROW_INVALID_DSTACK(".verbose"_Str);
+    THROW_INVALID_DSTACK(".verbose"_Stz);
   
   if (gbVerbose) {
     ValLib::vToString(xValWrk.pNestedValueSelf(),sWorkspace);
-    vTrace("[%p %s] %s\n"_Str,*mpTask,mpTask->m_sName.s(),sWorkspace.s());
+    vTrace("[%p %s] %s\n"_Stz,*mpTask,mpTask->m_sName.s(),sWorkspace.s());
   }
   
   EXIT();

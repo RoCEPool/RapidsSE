@@ -59,7 +59,7 @@ Data::~Data(void)
 /*----------------------------------------------------------------------------*/
 /* dump data                                                                  */
 /*----------------------------------------------------------------------------*/
-void Data::vDump(eCN eClass, Object* pObject, Str* aTab)
+void Data::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
   ASSERT(eClass == CN_DATA);
   ASSERT(pObject->eClass() == CN_DATA);
@@ -106,7 +106,7 @@ void Data::vAppendBuffer(EntryBuffer* pRowBuffer)
 /*----------------------------------------------------------------------------*/
 /* insert a row into this strand                                              */
 /*----------------------------------------------------------------------------*/
-bool Data::bInsertRow(Transactions::TxRef* pTxRef, Str* pRecord, i8 iLength)
+bool Data::bInsertRow(Transactions::TxRef* pTxRef, Stz* pRecord, i8 iLength)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DATA,_FOOTER_);
   

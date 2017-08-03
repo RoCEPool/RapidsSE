@@ -10,7 +10,7 @@
 void* IntVal::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  vFatal("fatal: IntVal class cannot be new'd\n"_Str);
+  vFatal("fatal: IntVal class cannot be new'd\n"_Stz);
   
   NEVER_REACH;
 }
@@ -31,7 +31,7 @@ IntVal::IntVal(void)
 /*----------------------------------------------------------------------------*/
 void IntVal::operator =(i8 iInt)
 {
-  //vTrace("IntVal: diff %lld\n"_Str,nSub(&m_iInt,this));
+  //vTrace("IntVal: diff %lld\n"_Stz,nSub(&m_iInt,this));
   
   m_iInt = iInt;
 }
@@ -63,7 +63,7 @@ i8 IntVal::nSize(void) const
 /*----------------------------------------------------------------------------*/
 /* convert to string                                                          */
 /*----------------------------------------------------------------------------*/
-void IntVal::vToString(Str* aWorkspace)
+void IntVal::vToString(Stz* aWorkspace)
 {
   *aWorkspace = m_iInt;
 }

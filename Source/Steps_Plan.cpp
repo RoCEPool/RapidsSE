@@ -31,22 +31,22 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Plan(void)
 {
-  vAddPrimitive("plan.delete"_Str,         &vPlanDelete,             false);
-  vAddPrimitive("plan.dic"_Str,            &vPlanDic,                false);
-  vAddPrimitive("plan.executingTask@"_Str, &vPlanExecutingTaskFetch, false);
-  vAddPrimitive("plan.executingTask!"_Str, &vPlanExecutingTaskStore, false);
-  vAddPrimitive("plan.finished"_Str,       &vPlanFinished,           false);
-  vAddPrimitive("plan.id@"_Str,            &vPlanIdFetch,            false);
-  vAddPrimitive("plan.lambda+"_Str,        &vPlanLambdaAppend,       false);
-  vAddPrimitive("plan.lambda@"_Str,        &vPlanLambdaFetch,        false);
-  vAddPrimitive("plan.lambda!"_Str,        &vPlanLambdaStore,        false);
-  vAddPrimitive("plan.name@"_Str,          &vPlanNameFetch,          false);
-  vAddPrimitive("plan.name!"_Str,          &vPlanNameStore,          false);
-  vAddPrimitive("plan::new"_Str,           &vPlanNew,                false);
-  vAddPrimitive("plan.opFrame++"_Str,      &vPlanOpFrameAdd,         false);
-  vAddPrimitive("plan.opFrame?"_Str,       &vPlanOpFrameFind,        false);
-  vAddPrimitive("plan.opFrame0"_Str,       &vPlanOpFrameTop,         false);
-  vAddPrimitive("plan.show"_Str,           &vPlanShow,               false);
+  vAddPrimitive("plan.delete"_Stz,         &vPlanDelete,             false);
+  vAddPrimitive("plan.dic"_Stz,            &vPlanDic,                false);
+  vAddPrimitive("plan.executingTask@"_Stz, &vPlanExecutingTaskFetch, false);
+  vAddPrimitive("plan.executingTask!"_Stz, &vPlanExecutingTaskStore, false);
+  vAddPrimitive("plan.finished"_Stz,       &vPlanFinished,           false);
+  vAddPrimitive("plan.id@"_Stz,            &vPlanIdFetch,            false);
+  vAddPrimitive("plan.lambda+"_Stz,        &vPlanLambdaAppend,       false);
+  vAddPrimitive("plan.lambda@"_Stz,        &vPlanLambdaFetch,        false);
+  vAddPrimitive("plan.lambda!"_Stz,        &vPlanLambdaStore,        false);
+  vAddPrimitive("plan.name@"_Stz,          &vPlanNameFetch,          false);
+  vAddPrimitive("plan.name!"_Stz,          &vPlanNameStore,          false);
+  vAddPrimitive("plan::new"_Stz,           &vPlanNew,                false);
+  vAddPrimitive("plan.opFrame++"_Stz,      &vPlanOpFrameAdd,         false);
+  vAddPrimitive("plan.opFrame?"_Stz,       &vPlanOpFrameFind,        false);
+  vAddPrimitive("plan.opFrame0"_Stz,       &vPlanOpFrameTop,         false);
+  vAddPrimitive("plan.show"_Stz,           &vPlanShow,               false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -54,12 +54,12 @@ void Task::vAddPrimitives_Plan(void)
 /*----------------------------------------------------------------------------*/
 void Task::vPlanDelete(MP_Task mpTask)
 {
-  ENTRY("vPlanDelete"_Str);
+  ENTRY("vPlanDelete"_Stz);
   
   Object* pPtrPlan;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrPlan) )
-    THROW_INVALID_DSTACK("plan.delete"_Str);
+    THROW_INVALID_DSTACK("plan.delete"_Stz);
   
   Plan* pPlan = _pPlan(pPtrPlan);
   
@@ -73,12 +73,12 @@ void Task::vPlanDelete(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vPlanDic(MP_Task mpTask)
 {
-  ENTRY("vPlanDic"_Str);
+  ENTRY("vPlanDic"_Stz);
   
   Object* pPtrPlan;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrPlan) )
-    THROW_INVALID_DSTACK("plan.dic"_Str);
+    THROW_INVALID_DSTACK("plan.dic"_Stz);
   
   Plan* pPlan = _pPlan(pPtrPlan);
   
@@ -94,12 +94,12 @@ void Task::vPlanDic(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vPlanExecutingTaskFetch(MP_Task mpTask)
 {
-  ENTRY("vPlanExecutingTaskFetch"_Str);
+  ENTRY("vPlanExecutingTaskFetch"_Stz);
   
   Object* pPtrPlan;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrPlan) )
-    THROW_INVALID_DSTACK("plan.executingTask@"_Str);
+    THROW_INVALID_DSTACK("plan.executingTask@"_Stz);
   
   Plan* pPlan = _pPlan(pPtrPlan);
   
@@ -115,17 +115,17 @@ void Task::vPlanExecutingTaskFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vPlanExecutingTaskStore(MP_Task mpTask)
 {
-  ENTRY("vPlanExecuteTaskStore"_Str);
+  ENTRY("vPlanExecuteTaskStore"_Stz);
   
   Object* pPtrPlan;
   Object* pPtrTask;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrPlan) )
-    THROW_INVALID_DSTACK("plan.executingTask"_Str);
+    THROW_INVALID_DSTACK("plan.executingTask"_Stz);
   Plan* pPlan = _pPlan(pPtrPlan);
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrTask) )
-    THROW_INVALID_DSTACK("plan.executingTask"_Str);
+    THROW_INVALID_DSTACK("plan.executingTask"_Stz);
   Task* pTask = _pTask(pPtrTask);
   
   pPlan->vExecutingTask(pTask);
@@ -138,11 +138,11 @@ void Task::vPlanExecutingTaskStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vPlanFinished(MP_Task mpTask)
 {
-  ENTRY("vPlanFinished"_Str);
+  ENTRY("vPlanFinished"_Stz);
   
   Object* pPtrPlan;
   if ( ! mpTask->m_pDataStack->bPop(pPtrPlan) )
-    THROW_INVALID_DSTACK("plan.dic"_Str);
+    THROW_INVALID_DSTACK("plan.dic"_Stz);
   
   Plan* pPlan = _pPlan(pPtrPlan);
   
@@ -156,12 +156,12 @@ void Task::vPlanFinished(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vPlanIdFetch(MP_Task mpTask)
 {
-  ENTRY("vPlanIdFetch"_Str);
+  ENTRY("vPlanIdFetch"_Stz);
   
   Object* pPtrPlan;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrPlan) )
-    THROW_INVALID_DSTACK("plan.id@"_Str);
+    THROW_INVALID_DSTACK("plan.id@"_Stz);
   
   Plan* pPlan = _pPlan(pPtrPlan);
   
@@ -177,16 +177,16 @@ void Task::vPlanIdFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vPlanLambdaAppend(MP_Task mpTask)
 {
-  ENTRY("vPlanLambdaAppend"_Str);
+  ENTRY("vPlanLambdaAppend"_Stz);
   
   Object* pPtrPlan;
   s48K sCode;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrPlan) )
-    THROW_INVALID_DSTACK("plan.lambda+"_Str);
+    THROW_INVALID_DSTACK("plan.lambda+"_Stz);
   
   if ( ! mpTask->m_pDataStack->bPop(sCode) )
-    THROW_INVALID_DSTACK("plan.lambda+"_Str);
+    THROW_INVALID_DSTACK("plan.lambda+"_Stz);
   
   Plan* pPlan = _pPlan(pPtrPlan);
   pPlan->vAppendToLambda(sCode);
@@ -199,13 +199,13 @@ void Task::vPlanLambdaAppend(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vPlanLambdaFetch(MP_Task mpTask)
 {
-  ENTRY("vPlanLambdaFetch"_Str);
+  ENTRY("vPlanLambdaFetch"_Stz);
   
   Object* pPtrPlan;
   s48K sCode;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrPlan) )
-    THROW_INVALID_DSTACK("plan.lambda!"_Str);
+    THROW_INVALID_DSTACK("plan.lambda!"_Stz);
   
   Plan* pPlan = _pPlan(pPtrPlan);
   s48K sLambda = pPlan->sLambda();
@@ -220,16 +220,16 @@ void Task::vPlanLambdaFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vPlanLambdaStore(MP_Task mpTask)
 {
-  ENTRY("vPlanLambdaStore"_Str);
+  ENTRY("vPlanLambdaStore"_Stz);
   
   Object* pPtrPlan;
   s48K sCode;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrPlan) )
-    THROW_INVALID_DSTACK("plan.lambda!"_Str);
+    THROW_INVALID_DSTACK("plan.lambda!"_Stz);
   
   if ( ! mpTask->m_pDataStack->bPop(sCode) )
-    THROW_INVALID_DSTACK("plan.lambda!"_Str);
+    THROW_INVALID_DSTACK("plan.lambda!"_Stz);
   
   Plan* pPlan = _pPlan(pPtrPlan);
   pPlan->vLambda(sCode);
@@ -241,12 +241,12 @@ void Task::vPlanLambdaStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vPlanNameFetch(MP_Task mpTask)
 {
-  ENTRY("vPlanNameFetch"_Str);
+  ENTRY("vPlanNameFetch"_Stz);
   
   Object* pPtrPlan;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrPlan) )
-    THROW_INVALID_DSTACK("plan.name@"_Str);
+    THROW_INVALID_DSTACK("plan.name@"_Stz);
   
   Plan* pPlan = _pPlan(pPtrPlan);
   
@@ -262,19 +262,19 @@ void Task::vPlanNameFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vPlanNameStore(MP_Task mpTask)
 {
-  ENTRY("vPlanNameStore"_Str);
+  ENTRY("vPlanNameStore"_Stz);
   
   Object* pPtrPlan;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrPlan) )
-    THROW_INVALID_DSTACK("plan.name!"_Str);
+    THROW_INVALID_DSTACK("plan.name!"_Stz);
   
   Plan* pPlan = _pPlan(pPtrPlan);
   
   s32 sName;
   
   if ( ! mpTask->m_pDataStack->bPop(sName) )
-    THROW_INVALID_DSTACK("plan.name!"_Str);
+    THROW_INVALID_DSTACK("plan.name!"_Stz);
   
   pPlan->vName(sName);
   
@@ -286,7 +286,7 @@ void Task::vPlanNameStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vPlanNew(MP_Task mpTask)
 {
-  ENTRY("vPlanNew"_Str);
+  ENTRY("vPlanNew"_Stz);
   
   Plan* pPlan = new Plan;
   
@@ -300,20 +300,20 @@ void Task::vPlanNew(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vPlanOpFrameAdd(MP_Task mpTask)
 {
-  ENTRY("vPlanOpFrameAdd"_Str);
+  ENTRY("vPlanOpFrameAdd"_Stz);
   
   Object* pPtrPlan;
   if ( ! mpTask->m_pDataStack->bPop(pPtrPlan) )
-    THROW_INVALID_DSTACK("plan.opFrame++"_Str);
+    THROW_INVALID_DSTACK("plan.opFrame++"_Stz);
   Plan* pPlan = _pPlan(pPtrPlan);
   
   s32 sNameFrame;
   if ( ! mpTask->m_pDataStack->bPop(sNameFrame) )
-    THROW_INVALID_DSTACK("plan.opFrame++"_Str);
+    THROW_INVALID_DSTACK("plan.opFrame++"_Stz);
   
   RegFrame* pRegFrame = pPlan->pRegFrameFind(sNameFrame);
   if ( pRegFrame )
-    THROW("plan.opFrame++: op frame %s already exists"_Str,sNameFrame.s());
+    THROW("plan.opFrame++: op frame %s already exists"_Stz,sNameFrame.s());
   
   pRegFrame = new RegFrame;
   pRegFrame->vName(sNameFrame);
@@ -321,7 +321,7 @@ void Task::vPlanOpFrameAdd(MP_Task mpTask)
   
   // create a op dictionary
   s32 sNameDic;
-  sNameDic.vSprint("<%s>"_Str,sNameFrame.s());
+  sNameDic.vSprint("<%s>"_Stz,sNameFrame.s());
   
   Dic* pOpDic = new Dic;
   pOpDic->vName(sNameDic);
@@ -338,20 +338,20 @@ void Task::vPlanOpFrameAdd(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vPlanOpFrameFind(MP_Task mpTask)
 {
-  ENTRY("vPlanOpFrameFind"_Str);
+  ENTRY("vPlanOpFrameFind"_Stz);
   
   
   Object* pPtrPlan;
   if ( ! mpTask->m_pDataStack->bPop(pPtrPlan) )
-    THROW_INVALID_DSTACK("plan.opFrame?"_Str);
+    THROW_INVALID_DSTACK("plan.opFrame?"_Stz);
   Plan* pPlan = _pPlan(pPtrPlan);
   
   s32 sName;
   if ( ! mpTask->m_pDataStack->bPop(sName) )
-    THROW_INVALID_DSTACK("plan.opFrame?"_Str);
+    THROW_INVALID_DSTACK("plan.opFrame?"_Stz);
   
   if (mpTask->m_iTracing) {
-    vTrace("Find frame %s\n"_Str,sName.s());
+    vTrace("Find frame %s\n"_Stz,sName.s());
     i8 i = 0;
   }
   
@@ -367,11 +367,11 @@ void Task::vPlanOpFrameFind(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vPlanOpFrameTop(MP_Task mpTask)
 {
-  ENTRY("vPlanOpFrameTop"_Str);
+  ENTRY("vPlanOpFrameTop"_Stz);
   
   Object* pPtrPlan;
   if ( ! mpTask->m_pDataStack->bPop(pPtrPlan) )
-    THROW_INVALID_DSTACK("plan.opFrame0"_Str);
+    THROW_INVALID_DSTACK("plan.opFrame0"_Stz);
   Plan* pPlan = _pPlan(pPtrPlan);
     
   RegFrame* pRegFrame = pPlan->pRegFrameTop();
@@ -386,12 +386,12 @@ void Task::vPlanOpFrameTop(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vPlanShow(MP_Task mpTask)
 {
-  ENTRY("vPlanShow"_Str);
+  ENTRY("vPlanShow"_Stz);
   
   Object* pPtrPlan;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrPlan) )
-    THROW_INVALID_DSTACK("plan.show"_Str);
+    THROW_INVALID_DSTACK("plan.show"_Stz);
   
   Plan* pPlan = _pPlan(pPtrPlan);
   

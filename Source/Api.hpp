@@ -10,48 +10,48 @@
 #define TL_POOL   8
 
 // external SE API calls
-extern "C" eEC RapidsSE_AddIndexColumn(SEitf* pSEitf, Str* pTableName, Str* pIndexName, Str* pColumnName, i8 iTraceLevel);
-extern "C" eEC RapidsSE_AddTableColumn(SEitf* pSEitf, Str* pTableName, Str* pColumnName, Str* pColumnType,
+extern "C" eEC RapidsSE_AddIndexColumn(SEitf* pSEitf, Stz* pTableName, Stz* pIndexName, Stz* pColumnName, i8 iTraceLevel);
+extern "C" eEC RapidsSE_AddTableColumn(SEitf* pSEitf, Stz* pTableName, Stz* pColumnName, Stz* pColumnType,
                                        i8 iTraceLevel);
-extern "C" eEC RapidsSE_BeginInsert(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable, i8 iTraceLevel);
-extern "C" eEC RapidsSE_CheckLibraryVersion(Str* pVersion, i8 iTraceLevel);
-extern "C" eEC RapidsSE_CreateIndex(SEitf* seitf, Str* catalog, Str* pSchema, Str* table, Str* pIndex, bool bIsUnique, i8 iTraceLevel);
-extern "C" eEC RapidsSE_CreateTable(SEitf* seitf, Str* catalog, Str* pSchema, Str* table, i8 iTraceLevel);
-extern "C" eEC RapidsSE_DropTable(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable, i8 iTraceLevel);
-extern "C" eEC RapidsSE_EndCreateIndex(SEitf* pSEitf, Str* pTable, Str* pIndexi8, i8 iTraceLevel);
-extern "C" eEC RapidsSE_EndCreateTable(SEitf* pSEitf, Str* pTable, i8 iTraceLevel);
+extern "C" eEC RapidsSE_BeginInsert(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema, Stz* pTable, i8 iTraceLevel);
+extern "C" eEC RapidsSE_CheckLibraryVersion(Stz* pVersion, i8 iTraceLevel);
+extern "C" eEC RapidsSE_CreateIndex(SEitf* seitf, Stz* catalog, Stz* pSchema, Stz* table, Stz* pIndex, bool bIsUnique, i8 iTraceLevel);
+extern "C" eEC RapidsSE_CreateTable(SEitf* seitf, Stz* catalog, Stz* pSchema, Stz* table, i8 iTraceLevel);
+extern "C" eEC RapidsSE_DropTable(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema, Stz* pTable, i8 iTraceLevel);
+extern "C" eEC RapidsSE_EndCreateIndex(SEitf* pSEitf, Stz* pTable, Stz* pIndexi8, i8 iTraceLevel);
+extern "C" eEC RapidsSE_EndCreateTable(SEitf* pSEitf, Stz* pTable, i8 iTraceLevel);
 extern "C" eEC RapidsSE_EndInsert(SEitf* pSEitf, i8 iTraceLevel);
 extern "C" eEC RapidsSE_EndScan(SEitf* pSEitf, i8 iTraceLevel);
 extern "C" eEC RapidsSE_GetCatalogs(SEitf* pSEitf, void** ppCatalog, i8 iTraceLevel);
-extern "C" eEC RapidsSE_GetColumns(SEitf* pSEitf, Str* pCatalog,  Str* pSchema,
-                                   Str* pTable, void** ppColumns, i8 iTraceLevel);
-extern "C" eEC RapidsSE_GetIndexes(SEitf* pSEitf, Str* pCatalog,  Str* pSchema,
-                                   Str* pTable, void** ppIndexes, i8 iTraceLevel);
-extern "C" eEC RapidsSE_GetIndexColumns(SEitf* pSEitf, Str* pCatalog,  Str* pSchema,
-                                        Str* pTable, Str* pIndex, void** ppColumns, i8 iTraceLevel);
+extern "C" eEC RapidsSE_GetColumns(SEitf* pSEitf, Stz* pCatalog,  Stz* pSchema,
+                                   Stz* pTable, void** ppColumns, i8 iTraceLevel);
+extern "C" eEC RapidsSE_GetIndexes(SEitf* pSEitf, Stz* pCatalog,  Stz* pSchema,
+                                   Stz* pTable, void** ppIndexes, i8 iTraceLevel);
+extern "C" eEC RapidsSE_GetIndexColumns(SEitf* pSEitf, Stz* pCatalog,  Stz* pSchema,
+                                        Stz* pTable, Stz* pIndex, void** ppColumns, i8 iTraceLevel);
 extern "C" eEC RapidsSE_GetLastError(SEitf* pSEitf, void** ppError, i8 iTraceLevel);
 extern "C" eEC RapidsSE_GetNextRow(SEitf* pSEitf, void** ppRow, i8 iTraceLevel);
 extern "C" eEC RapidsSE_GetPartitions(SEitf* pSEitf, void** ppParitions, void** ppCount, i8 iTraceLevel);
-extern "C" eEC RapidsSE_GetSchemas(SEitf* pSEitf, Str* pCatalog, void** ppSchema, i8 iTraceLevel);
+extern "C" eEC RapidsSE_GetSchemas(SEitf* pSEitf, Stz* pCatalog, void** ppSchema, i8 iTraceLevel);
 extern "C" eEC RapidsSE_GetEngineVersion(SEitf* pSEitf, void** ppVersion, i8 iTraceLevel);
-extern "C" eEC RapidsSE_GetTables(SEitf* pSEitf, Str* pCatalog, Str* pSchema, void** ppTables, i8 iTraceLevel);
-extern "C" eEC RapidsSE_HashRowPartition(SEitf* pSEitf, Str* pRow, void** ppPartition, i8 iTraceLevel);
-extern "C" eEC RapidsSE_InsertRow(SEitf* pSEitf, Str* pRow, i8 iTraceLevel);
-extern "C" eEC RapidsSE_PoolOpen(Str* pInstanceName, void** ppInstance, i8 iTraceLevel);
-extern "C" eEC RapidsSE_ScanTable(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable, Str* pRange, i8 iTraceLevel);
+extern "C" eEC RapidsSE_GetTables(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema, void** ppTables, i8 iTraceLevel);
+extern "C" eEC RapidsSE_HashRowPartition(SEitf* pSEitf, Stz* pRow, void** ppPartition, i8 iTraceLevel);
+extern "C" eEC RapidsSE_InsertRow(SEitf* pSEitf, Stz* pRow, i8 iTraceLevel);
+extern "C" eEC RapidsSE_PoolOpen(Stz* pInstanceName, void** ppInstance, i8 iTraceLevel);
+extern "C" eEC RapidsSE_ScanTable(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema, Stz* pTable, Stz* pRange, i8 iTraceLevel);
 extern "C" eEC RapidsSE_SEitfDelete(SEitf* pSEitf, i8 iTraceLevel);
 extern "C" eEC RapidsSE_SEitfNew(void** ppSEitf, i8 iPartition, i8 iTraceLevel);
 extern "C" bool RapidsSE_SEitfInvalid(int eError, i8 iTraceLevel);
 
-bool RapidsSE_ExecuteRequest(SEitf* pSEitf,TokenVec& xTokenVec, Str** ppResponse);
+bool RapidsSE_ExecuteRequest(SEitf* pSEitf,TokenVec& xTokenVec, Stz** ppResponse);
 
 // private calls
-eEC eExecuteRequest(SEitf* pSEitf, Str* aCommand);
-eEC eExecuteRequest(SEitf* pSEitf, Str* aCommand, Str* aParameter);
-eEC eExecuteRequest(SEitf* pSEitf, Str* aCommand, Str* aParameter1,
-                    Str* aParameter2);
-eEC eExecuteRequest(SEitf* pSEitf, Str* aCommand, Str* aParameter1,
-                    Str* aParameter2, Str* aParameter3);
+eEC eExecuteRequest(SEitf* pSEitf, Stz* aCommand);
+eEC eExecuteRequest(SEitf* pSEitf, Stz* aCommand, Stz* aParameter);
+eEC eExecuteRequest(SEitf* pSEitf, Stz* aCommand, Stz* aParameter1,
+                    Stz* aParameter2);
+eEC eExecuteRequest(SEitf* pSEitf, Stz* aCommand, Stz* aParameter1,
+                    Stz* aParameter2, Stz* aParameter3);
 
 bool bExecuteRequest(SEitf* pSEitf, TokenVec& xTokenVec);
 eEC eGetResponse(SEitf* pSEitf);
@@ -62,7 +62,7 @@ eEC eGetResponse(SEitf* pSEitf);
 #define TRACE_ENTRY_P0() \
   {  \
     if ( (iTraceLevel & TL_ENTRY) == TL_ENTRY) \
-      vTrace("<%s: %p(%lld)\n"_Str,  \
+      vTrace("<%s: %p(%lld)\n"_Stz,  \
         aApiCall, pSEitf, pSEitf ? pSEitf->iPartition() : -1); \
   }
 
@@ -72,7 +72,7 @@ eEC eGetResponse(SEitf* pSEitf);
 #define TRACE_ENTRY_P1(p1) \
   {  \
     if ( (iTraceLevel & TL_ENTRY) == TL_ENTRY) \
-      vTrace("<%s: %p(%lld) %s\n"_Str,  \
+      vTrace("<%s: %p(%lld) %s\n"_Stz,  \
         aApiCall, pSEitf, pSEitf ? pSEitf->iPartition() : -1, p1); \
   }
 
@@ -82,7 +82,7 @@ eEC eGetResponse(SEitf* pSEitf);
 #define TRACE_ENTRY_P2(p1, p2) \
 {  \
   if ( (iTraceLevel & TL_ENTRY) == TL_ENTRY) \
-    vTrace("<%s: %p(%lld) %s %s\n"_Str,  \
+    vTrace("<%s: %p(%lld) %s %s\n"_Stz,  \
       aApiCall, pSEitf, pSEitf ? pSEitf->iPartition() : -1, p1, p2); \
 }
 
@@ -92,7 +92,7 @@ eEC eGetResponse(SEitf* pSEitf);
 #define TRACE_ENTRY_P3(p1, p2, p3) \
 {  \
   if ( (iTraceLevel & TL_ENTRY) == TL_ENTRY) \
-    vTrace("<%s: %p(%lld) %s %s %s\n"_Str,  \
+    vTrace("<%s: %p(%lld) %s %s %s\n"_Stz,  \
       aApiCall, pSEitf, pSEitf ? pSEitf->iPartition() : -1, p1, p2, p3); \
 }
 
@@ -102,7 +102,7 @@ eEC eGetResponse(SEitf* pSEitf);
 #define TRACE_ENTRY_P4(p1, p2, p3, p4) \
 {  \
   if ( (iTraceLevel & TL_ENTRY) == TL_ENTRY) \
-    vTrace("<%s: %p(%lld) %s %s %s %s\n"_Str,  \
+    vTrace("<%s: %p(%lld) %s %s %s %s\n"_Stz,  \
       aApiCall, pSEitf, pSEitf ? pSEitf->iPartition() : -1, p1, p2, p3, p4); \
 }
 
@@ -112,7 +112,7 @@ eEC eGetResponse(SEitf* pSEitf);
 #define TRACE_ERROR(aMarker, eErrorCode) \
   {  \
     if ( (iTraceLevel & TL_ERROR) == TL_ERROR) \
-      vTrace(">%s(%s): %p(%lld) %s(%lld)\n"_Str,  \
+      vTrace(">%s(%s): %p(%lld) %s(%lld)\n"_Stz,  \
         aApiCall, aMarker, pSEitf, pSEitf ? pSEitf->iPartition() : -1, aEC[eErrorCode], (i8)eErrorCode); \
   }
 
@@ -122,7 +122,7 @@ eEC eGetResponse(SEitf* pSEitf);
 #define TRACE_EXIT(aMarker) \
   {  \
     if ( (iTraceLevel & TL_EXIT) == TL_EXIT) \
-      vTrace(">%s(%s): %p(%lld)\n"_Str,  \
+      vTrace(">%s(%s): %p(%lld)\n"_Stz,  \
         aApiCall, aMarker, pSEitf, pSEitf ? pSEitf->iPartition() : -1); \
   }
 
@@ -300,7 +300,7 @@ eEC eGetResponse(SEitf* pSEitf);
     } \
     if ( ! bPoolValid )  { \
       vTrace("Pool base and limit are not valid!!!"    \
-             "JAVA MAY HAVE RE_MAPPED MEMORY SEGMENTS!!!\n"_Str);  \
+             "JAVA MAY HAVE RE_MAPPED MEMORY SEGMENTS!!!\n"_Stz);  \
       return EC_VALIDATION_FAILURE; \
     } \
   }
@@ -309,7 +309,7 @@ eEC eGetResponse(SEitf* pSEitf);
 /*----------------------------------------------------------------------------*/
 /* trace API call entry                                                       */
 /*----------------------------------------------------------------------------*/
-inline void vTraceEntry(i8 iTraceLevel, Str* aFormat, ...)
+inline void vTraceEntry(i8 iTraceLevel, Stz* aFormat, ...)
 {
   // trace entry ?
   if ( (iTraceLevel & TL_ENTRY) != TL_ENTRY)
@@ -327,7 +327,7 @@ inline void vTraceEntry(i8 iTraceLevel, Str* aFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* trace API call exit                                                        */
 /*----------------------------------------------------------------------------*/
-inline void vTraceExit(i8 iTraceLevel, Str* aFormat, ...)
+inline void vTraceExit(i8 iTraceLevel, Stz* aFormat, ...)
 {
   // trace entry ?
   if ( (iTraceLevel & TL_EXIT) != TL_EXIT)
@@ -345,7 +345,7 @@ inline void vTraceExit(i8 iTraceLevel, Str* aFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* trace API error                                                            */
 /*----------------------------------------------------------------------------*/
-inline void vTraceError(i8 iTraceLevel, Str* aFormat, ...)
+inline void vTraceError(i8 iTraceLevel, Stz* aFormat, ...)
 {
   // trace entry ?
   if ( (iTraceLevel & TL_ERROR) != TL_ERROR)
@@ -363,7 +363,7 @@ inline void vTraceError(i8 iTraceLevel, Str* aFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* validate the SEitf                                                         */
 /*----------------------------------------------------------------------------*/
-inline eEC eValidateSEitf(SEitf* pSEitf, Str* aApiCall, i8 iTraceLevel) {
+inline eEC eValidateSEitf(SEitf* pSEitf, Stz* aApiCall, i8 iTraceLevel) {
   
   // pSEitf cannot be null
   if (pSEitf == nullptr) {
@@ -389,49 +389,49 @@ inline eEC eValidateSEitf(SEitf* pSEitf, Str* aApiCall, i8 iTraceLevel) {
 /*----------------------------------------------------------------------------*/
 /* change folder to catalogs                                                   */
 /*----------------------------------------------------------------------------*/
-inline eEC eChangeFolderCatalogs(SEitf* pSEitf, Str* aApiCall, i8 iTraceLevel)
+inline eEC eChangeFolderCatalogs(SEitf* pSEitf, Stz* aApiCall, i8 iTraceLevel)
 {
   eEC eResult;
   
   // change directory to ~
-  eResult = eExecuteRequest(pSEitf, "cf"_Str, "~"_Str);
+  eResult = eExecuteRequest(pSEitf, "cf"_Stz, "~"_Stz);
   if (EC_NONE != eResult) {
-    vTraceError(iTraceLevel, "%s(fa): %p %s(%lld)\n"_Str, pSEitf, aApiCall, aEC[eResult], eResult);
+    vTraceError(iTraceLevel, "%s(fa): %p %s(%lld)\n"_Stz, pSEitf, aApiCall, aEC[eResult], eResult);
     return eResult;
   }
   
   // get response
   eResult = eGetResponse(pSEitf);
   if (EC_NONE != eResult) {
-    vTraceError(iTraceLevel, "%s(fb): %p %s(%lld)\n"_Str, pSEitf, aApiCall, aEC[eResult], eResult);
+    vTraceError(iTraceLevel, "%s(fb): %p %s(%lld)\n"_Stz, pSEitf, aApiCall, aEC[eResult], eResult);
     return eResult;
   }
   
   // change directory to boray
-  eResult = eExecuteRequest(pSEitf, "cf"_Str, "boray"_Str);
+  eResult = eExecuteRequest(pSEitf, "cf"_Stz, "boray"_Stz);
   if (EC_NONE != eResult) {
-    vTraceError(iTraceLevel, "%s(fc): %p %s(%lld)\n"_Str, pSEitf, aApiCall, aEC[eResult], eResult);
+    vTraceError(iTraceLevel, "%s(fc): %p %s(%lld)\n"_Stz, pSEitf, aApiCall, aEC[eResult], eResult);
     return eResult;
   }
   
   // get response
   eResult = eGetResponse(pSEitf);
   if (EC_NONE != eResult) {
-    vTraceError(iTraceLevel, "%s(fd): %p %s(%lld)\n"_Str, pSEitf, aApiCall, aEC[eResult], eResult);
+    vTraceError(iTraceLevel, "%s(fd): %p %s(%lld)\n"_Stz, pSEitf, aApiCall, aEC[eResult], eResult);
     return eResult;
   }
   
   // change directory to catalogs
-  eResult = eExecuteRequest(pSEitf, "cf"_Str, "catalogs"_Str);
+  eResult = eExecuteRequest(pSEitf, "cf"_Stz, "catalogs"_Stz);
   if (EC_NONE != eResult) {
-    vTraceError(iTraceLevel, "%s(fe): %p %s(%lld)\n"_Str, pSEitf, aApiCall, aEC[eResult], eResult);
+    vTraceError(iTraceLevel, "%s(fe): %p %s(%lld)\n"_Stz, pSEitf, aApiCall, aEC[eResult], eResult);
     return eResult;
   }
   
   // get response
   eResult = eGetResponse(pSEitf);
   if (EC_NONE != eResult) {
-    vTraceError(iTraceLevel, "%s(ff): %p %s(%lld)\n"_Str, pSEitf, aApiCall, aEC[eResult], eResult);
+    vTraceError(iTraceLevel, "%s(ff): %p %s(%lld)\n"_Stz, pSEitf, aApiCall, aEC[eResult], eResult);
     return eResult;
   }
   
@@ -441,7 +441,7 @@ inline eEC eChangeFolderCatalogs(SEitf* pSEitf, Str* aApiCall, i8 iTraceLevel)
 /*----------------------------------------------------------------------------*/
 /* change folder to schemas                                                   */
 /*----------------------------------------------------------------------------*/
-inline eEC eChangeFolderSchemas(SEitf* pSEitf, Str* pCatalog, Str* aApiCall, i8 iTraceLevel)
+inline eEC eChangeFolderSchemas(SEitf* pSEitf, Stz* pCatalog, Stz* aApiCall, i8 iTraceLevel)
 {
   eEC eResult;
   
@@ -450,30 +450,30 @@ inline eEC eChangeFolderSchemas(SEitf* pSEitf, Str* pCatalog, Str* aApiCall, i8 
     return eResult;
   
   // change directory to pCatalog
-  eResult = eExecuteRequest(pSEitf, "cf"_Str, (Str*)pCatalog);
+  eResult = eExecuteRequest(pSEitf, "cf"_Stz, (Stz*)pCatalog);
   if (EC_NONE != eResult) {
-    vTraceError(iTraceLevel, "%s(fg): %p %s(%lld)\n"_Str, pSEitf, aApiCall, aEC[eResult], eResult);
+    vTraceError(iTraceLevel, "%s(fg): %p %s(%lld)\n"_Stz, pSEitf, aApiCall, aEC[eResult], eResult);
     return eResult;
   }
   
   // get response
   eResult = eGetResponse(pSEitf);
   if (EC_NONE != eResult) {
-    vTraceError(iTraceLevel, "%s(fh): %p %s(%lld)\n"_Str, pSEitf, aApiCall, aEC[eResult], eResult);
+    vTraceError(iTraceLevel, "%s(fh): %p %s(%lld)\n"_Stz, pSEitf, aApiCall, aEC[eResult], eResult);
     return eResult;
   }
   
   // change directory to schemas
-  eResult = eExecuteRequest(pSEitf, "cf"_Str, "schemas"_Str);
+  eResult = eExecuteRequest(pSEitf, "cf"_Stz, "schemas"_Stz);
   if (EC_NONE != eResult) {
-    vTraceError(iTraceLevel, "%s(fi): %p %s(%lld)\n"_Str, pSEitf, aApiCall, aEC[eResult], eResult);
+    vTraceError(iTraceLevel, "%s(fi): %p %s(%lld)\n"_Stz, pSEitf, aApiCall, aEC[eResult], eResult);
     return eResult;
   }
   
   // get response
   eResult = eGetResponse(pSEitf);
   if (EC_NONE != eResult) {
-    vTraceError(iTraceLevel, "%s(fj): %p %s(%lld)\n"_Str, pSEitf, aApiCall, aEC[eResult], eResult);
+    vTraceError(iTraceLevel, "%s(fj): %p %s(%lld)\n"_Stz, pSEitf, aApiCall, aEC[eResult], eResult);
     return eResult;
   }
   
@@ -483,7 +483,7 @@ inline eEC eChangeFolderSchemas(SEitf* pSEitf, Str* pCatalog, Str* aApiCall, i8 
 /*----------------------------------------------------------------------------*/
 /* change folder to a table                                                   */
 /*----------------------------------------------------------------------------*/
-inline eEC eChangeFolderTables(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* aApiCall, i8 iTraceLevel)
+inline eEC eChangeFolderTables(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema, Stz* aApiCall, i8 iTraceLevel)
 {
   eEC eResult;
   
@@ -492,30 +492,30 @@ inline eEC eChangeFolderTables(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* 
     return eResult;
   
   // change directory to pSchema
-  eResult = eExecuteRequest(pSEitf, "cf"_Str, (Str*)pSchema);
+  eResult = eExecuteRequest(pSEitf, "cf"_Stz, (Stz*)pSchema);
   if (EC_NONE != eResult) {
-    vTraceError(iTraceLevel, "%s(fk): %p %s(%lld)\n"_Str, pSEitf, aApiCall, aEC[eResult], eResult);
+    vTraceError(iTraceLevel, "%s(fk): %p %s(%lld)\n"_Stz, pSEitf, aApiCall, aEC[eResult], eResult);
     return eResult;
   }
   
   // get response
   eResult = eGetResponse(pSEitf);
   if (EC_NONE != eResult) {
-    vTraceError(iTraceLevel, "%s(fl): %p %s(%lld)\n"_Str, pSEitf, aApiCall, aEC[eResult], eResult);
+    vTraceError(iTraceLevel, "%s(fl): %p %s(%lld)\n"_Stz, pSEitf, aApiCall, aEC[eResult], eResult);
     return eResult;
   }
   
   // change directory to tables
-  eResult = eExecuteRequest(pSEitf, "cf"_Str, "tables"_Str);
+  eResult = eExecuteRequest(pSEitf, "cf"_Stz, "tables"_Stz);
   if (EC_NONE != eResult) {
-    vTraceError(iTraceLevel, "%s(fm): %p %s(%lld)\n"_Str, pSEitf, aApiCall, aEC[eResult], eResult);
+    vTraceError(iTraceLevel, "%s(fm): %p %s(%lld)\n"_Stz, pSEitf, aApiCall, aEC[eResult], eResult);
     return eResult;
   }
   
   // get response
   eResult = eGetResponse(pSEitf);
   if (EC_NONE != eResult) {
-    vTraceError(iTraceLevel, "%s(fn): %p %s(%lld)\n"_Str, pSEitf, aApiCall, aEC[eResult], eResult);
+    vTraceError(iTraceLevel, "%s(fn): %p %s(%lld)\n"_Stz, pSEitf, aApiCall, aEC[eResult], eResult);
     return eResult;
   }
   
@@ -525,7 +525,7 @@ inline eEC eChangeFolderTables(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* 
 /*----------------------------------------------------------------------------*/
 /* change folder to tables                                                   */
 /*----------------------------------------------------------------------------*/
-inline eEC eChangeFolderTable(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable, Str* aApiCall, i8 iTraceLevel)
+inline eEC eChangeFolderTable(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema, Stz* pTable, Stz* aApiCall, i8 iTraceLevel)
 {
   eEC eResult;
   
@@ -535,9 +535,9 @@ inline eEC eChangeFolderTable(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* p
   }
   
   // change directory to tables
-  eResult = eExecuteRequest(pSEitf, "cf"_Str, (Str*)pTable);
+  eResult = eExecuteRequest(pSEitf, "cf"_Stz, (Stz*)pTable);
   if (EC_NONE != eResult) {
-    vTraceError(iTraceLevel, "%s(fo): %p %s(%lld)\n"_Str, pSEitf, aApiCall, aEC[eResult], eResult);
+    vTraceError(iTraceLevel, "%s(fo): %p %s(%lld)\n"_Stz, pSEitf, aApiCall, aEC[eResult], eResult);
     return eResult;
   }
   
@@ -555,7 +555,7 @@ inline eEC eChangeFolderTable(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* p
 /*----------------------------------------------------------------------------*/
 /* change folder to indexes                                                   */
 /*----------------------------------------------------------------------------*/
-inline eEC eChangeFolderIndexes(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable, Str* aApiCall, i8 iTraceLevel)
+inline eEC eChangeFolderIndexes(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema, Stz* pTable, Stz* aApiCall, i8 iTraceLevel)
 {
   eEC eResult;
   
@@ -564,16 +564,16 @@ inline eEC eChangeFolderIndexes(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str*
   return eResult;
   
   // change directory to indexes
-  eResult = eExecuteRequest(pSEitf, "cf"_Str, "indexes"_Str);
+  eResult = eExecuteRequest(pSEitf, "cf"_Stz, "indexes"_Stz);
   if (EC_NONE != eResult) {
-    vTraceError(iTraceLevel, "%s(fm): %p %s(%lld)\n"_Str, pSEitf, aApiCall, aEC[eResult], eResult);
+    vTraceError(iTraceLevel, "%s(fm): %p %s(%lld)\n"_Stz, pSEitf, aApiCall, aEC[eResult], eResult);
     return eResult;
   }
   
   // get response
   eResult = eGetResponse(pSEitf);
   if (EC_NONE != eResult) {
-    vTraceError(iTraceLevel, "%s(fn): %p %s(%lld)\n"_Str, pSEitf, aApiCall, aEC[eResult], eResult);
+    vTraceError(iTraceLevel, "%s(fn): %p %s(%lld)\n"_Stz, pSEitf, aApiCall, aEC[eResult], eResult);
     return eResult;
   }
   

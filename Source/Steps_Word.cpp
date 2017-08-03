@@ -31,46 +31,46 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Word(void)
 {
-  vAddPrimitive("allParticipants"_Str, &vAllParticipants,  true );
-  vAddPrimitive("allot"_Str,           &vAllot,            false);
-  vAddPrimitive("cell"_Str,            &vCell,             false);
-  vAddPrimitive(":"_Str,               &vColon,            false);
-  vAddPrimitive(","_Str,               &vComma,            false);
-  vAddPrimitive("compile,"_Str,        &vCompileComma,     false);
-  vAddPrimitive("create"_Str,          &vCreate,           false);
-  vAddPrimitive(">create"_Str,         &vCreateFrom,       false);
-  vAddPrimitive("dic?"_Str,            &vDicWhich,         false);
-  vAddPrimitive("does>"_Str,           &vDoes,             true );
-  vAddPrimitive("does_rt"_Str,         &vDoes_RT,          false);
-  vAddPrimitive("find"_Str,            &vFind,             false);
-  vAddPrimitive("findInCurrent"_Str,   &vFindInCurrent,    false);
-  vAddPrimitive("forget"_Str,          &vForget,           false);
-  vAddPrimitive("##:"_Str,             &vHashHashColon,    true );
-  vAddPrimitive("indirect"_Str,        &vIndirect,         true );
-  vAddPrimitive("immediate"_Str,       &vImmediate,        true );
-  vAddPrimitive("localCalls"_Str,      &vLocalCalls,       true );
-  vAddPrimitive("locate"_Str,          &vLocate,           false);
-  vAddPrimitive("oneParticipant"_Str,  &vOneParticipant,   true );
-  vAddPrimitive("opDic"_Str,           &vOpDic,            true );
-  vAddPrimitive("planDic"_Str,         &vPlanDicTask,      true );
-  vAddPrimitive("postpone"_Str,        &vPostpone,         true );
-  vAddPrimitive("see"_Str,             &vSee,              false);
-  vAddPrimitive(";"_Str,               &vSemicolon,        true );
-  vAddPrimitive("subDic"_Str,          &vSubDic,           true );
-  vAddPrimitive("'"_Str,               &vTick,             true );
-  vAddPrimitive("word.dump"_Str,       &vWordDump,         false);
-  vAddPrimitive("word.forget"_Str,     &vWordForget,       false);
-  vAddPrimitive("word.immediate@"_Str, &vWordImmediateGet, false);
-  vAddPrimitive("word.immediate!"_Str, &vWordImmediateSet, false);
-  vAddPrimitive("word.isImmediate"_Str,&vWordIsImmediate,  false);
-  vAddPrimitive("word.isPrimitive"_Str,&vWordIsPrimitive,  false);
-  vAddPrimitive("word.kind@"_Str,      &vWordKindGet,      false);
-  vAddPrimitive("word.kind!"_Str,      &vWordKindSet,      false);
-  vAddPrimitive("word.name"_Str,       &vWordName,         false);
-  vAddPrimitive("word.prev"_Str,       &vWordPrev,         false);
-  vAddPrimitive("word.this"_Str,       &vWordThis,         false);
-  vAddPrimitive("word.type@"_Str,      &vWordTypeGet,      false);
-  vAddPrimitive("word.type!"_Str,      &vWordTypeSet,      false);
+  vAddPrimitive("allParticipants"_Stz, &vAllParticipants,  true );
+  vAddPrimitive("allot"_Stz,           &vAllot,            false);
+  vAddPrimitive("cell"_Stz,            &vCell,             false);
+  vAddPrimitive(":"_Stz,               &vColon,            false);
+  vAddPrimitive(","_Stz,               &vComma,            false);
+  vAddPrimitive("compile,"_Stz,        &vCompileComma,     false);
+  vAddPrimitive("create"_Stz,          &vCreate,           false);
+  vAddPrimitive(">create"_Stz,         &vCreateFrom,       false);
+  vAddPrimitive("dic?"_Stz,            &vDicWhich,         false);
+  vAddPrimitive("does>"_Stz,           &vDoes,             true );
+  vAddPrimitive("does_rt"_Stz,         &vDoes_RT,          false);
+  vAddPrimitive("find"_Stz,            &vFind,             false);
+  vAddPrimitive("findInCurrent"_Stz,   &vFindInCurrent,    false);
+  vAddPrimitive("forget"_Stz,          &vForget,           false);
+  vAddPrimitive("##:"_Stz,             &vHashHashColon,    true );
+  vAddPrimitive("indirect"_Stz,        &vIndirect,         true );
+  vAddPrimitive("immediate"_Stz,       &vImmediate,        true );
+  vAddPrimitive("localCalls"_Stz,      &vLocalCalls,       true );
+  vAddPrimitive("locate"_Stz,          &vLocate,           false);
+  vAddPrimitive("oneParticipant"_Stz,  &vOneParticipant,   true );
+  vAddPrimitive("opDic"_Stz,           &vOpDic,            true );
+  vAddPrimitive("planDic"_Stz,         &vPlanDicTask,      true );
+  vAddPrimitive("postpone"_Stz,        &vPostpone,         true );
+  vAddPrimitive("see"_Stz,             &vSee,              false);
+  vAddPrimitive(";"_Stz,               &vSemicolon,        true );
+  vAddPrimitive("subDic"_Stz,          &vSubDic,           true );
+  vAddPrimitive("'"_Stz,               &vTick,             true );
+  vAddPrimitive("word.dump"_Stz,       &vWordDump,         false);
+  vAddPrimitive("word.forget"_Stz,     &vWordForget,       false);
+  vAddPrimitive("word.immediate@"_Stz, &vWordImmediateGet, false);
+  vAddPrimitive("word.immediate!"_Stz, &vWordImmediateSet, false);
+  vAddPrimitive("word.isImmediate"_Stz,&vWordIsImmediate,  false);
+  vAddPrimitive("word.isPrimitive"_Stz,&vWordIsPrimitive,  false);
+  vAddPrimitive("word.kind@"_Stz,      &vWordKindGet,      false);
+  vAddPrimitive("word.kind!"_Stz,      &vWordKindSet,      false);
+  vAddPrimitive("word.name"_Stz,       &vWordName,         false);
+  vAddPrimitive("word.prev"_Stz,       &vWordPrev,         false);
+  vAddPrimitive("word.this"_Stz,       &vWordThis,         false);
+  vAddPrimitive("word.type@"_Stz,      &vWordTypeGet,      false);
+  vAddPrimitive("word.type!"_Stz,      &vWordTypeSet,      false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -78,11 +78,11 @@ void Task::vAddPrimitives_Word(void)
 /*----------------------------------------------------------------------------*/
 void Task::vAllParticipants(MP_Task mpTask)
 {
-  ENTRY("vAllParticipants"_Str);
+  ENTRY("vAllParticipants"_Stz);
   
   Word* pCurrentWord = mpTask->m_pCurrentWord;
   
-  //vTrace("Task::vImmediate: %s\n"_Str,pCurrentWord->sName().s());
+  //vTrace("Task::vImmediate: %s\n"_Stz,pCurrentWord->sName().s());
   
   pCurrentWord->vDistributed(DT_ALLPARTICIPANTS);
   
@@ -90,7 +90,7 @@ void Task::vAllParticipants(MP_Task mpTask)
   mpTask->m_pTokeniser->vNextToken();
   
   // convert string to integer
-  Str* aToken = mpTask->m_pTokeniser->sToken();
+  Stz* aToken = mpTask->m_pTokeniser->sToken();
   i8 iParams = aToken->iToI8();
   
   // set the number of parameters in the current word
@@ -111,12 +111,12 @@ void Task::vAllParticipants(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vAllot(MP_Task mpTask)
 {
-  ENTRY("vAllot"_Str);
+  ENTRY("vAllot"_Stz);
   
   i8 iBytes;
   
   if ( !  mpTask->m_pDataStack->bPop(iBytes) )
-    THROW_INVALID_DSTACK("allot"_Str);
+    THROW_INVALID_DSTACK("allot"_Stz);
   
   Word* pCurrentWord = mpTask->m_pCurrentWord;
   
@@ -131,7 +131,7 @@ void Task::vAllot(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vCell(MP_Task mpTask)
 {
-  ENTRY("vCell"_Str);
+  ENTRY("vCell"_Stz);
   
   i8 nBytes = sizeof(void*);
   
@@ -145,7 +145,7 @@ void Task::vCell(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vColon(MP_Task mpTask)
 {
-  ENTRY("vColon"_Str);
+  ENTRY("vColon"_Stz);
   
   s32 sName;
   
@@ -171,16 +171,16 @@ void Task::vColon(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vComma(MP_Task mpTask)
 {
-  ENTRY("vComma"_Str);
+  ENTRY("vComma"_Stz);
   
   Word* pCurrentWord = mpTask->m_pCurrentWord;
   
   ValWrk xValWrk;
   if ( ! mpTask->m_pDataStack->bPop(xValWrk) )
-    THROW_INVALID_DSTACK("comma"_Str);
+    THROW_INVALID_DSTACK("comma"_Stz);
   
-  pCurrentWord->vEncode("pushValue"_Str,&xValWrk);
-  pCurrentWord->vEncode("exit"_Str);
+  pCurrentWord->vEncode("pushValue"_Stz,&xValWrk);
+  pCurrentWord->vEncode("exit"_Stz);
   
   EXIT();
 }
@@ -190,11 +190,11 @@ void Task::vComma(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vCompileComma(MP_Task mpTask)
 {
-  ENTRY("vCompileComma"_Str);
+  ENTRY("vCompileComma"_Stz);
   
   Object* pWordObject;
   if ( ! mpTask->m_pDataStack->bPop(pWordObject) )
-    THROW_INVALID_DSTACK("compile,"_Str);
+    THROW_INVALID_DSTACK("compile,"_Stz);
   Word* pCalledWord = _pWord(pWordObject);
   
   Word* pCurrentWord = mpTask->m_pCurrentWord;
@@ -211,7 +211,7 @@ void Task::vCompileComma(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vCreate(MP_Task mpTask)
 {
-ENTRY("vCreate"_Str);
+ENTRY("vCreate"_Stz);
   
   mpTask->m_pTokeniser->vNextToken();
   
@@ -233,11 +233,11 @@ ENTRY("vCreate"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vCreateFrom(MP_Task mpTask)
 {
-ENTRY("vCreateFrom"_Str);
+ENTRY("vCreateFrom"_Stz);
 
   s32 sName;
   if ( ! mpTask->m_pDataStack->bPop(sName) )
-    THROW_INVALID_DSTACK(">create"_Str);
+    THROW_INVALID_DSTACK(">create"_Stz);
   
   Dic* pDic;
   if (mpTask->m_xPathStack.iCount())
@@ -257,12 +257,12 @@ ENTRY("vCreateFrom"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vDicWhich(MP_Task mpTask)
 {
-  ENTRY("vDicWhich"_Str);
+  ENTRY("vDicWhich"_Stz);
   
   // get current plan
   Plan* pPlan = mpTask->m_pPlan;
   if ( ! pPlan )
-    THROW("dic?: no current plan in task"_Str);
+    THROW("dic?: no current plan in task"_Stz);
   
   // sub dic is either latest op dic (if there is one), or the plan dic
   Dic* pSubDic;
@@ -287,12 +287,12 @@ void Task::vDicWhich(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDoes(MP_Task mpTask)
 {
-ENTRY("vDoes"_Str);
+ENTRY("vDoes"_Stz);
   
   Word* pCurrentWord = mpTask->m_pCurrentWord;
   
-  pCurrentWord->vEncode("does_rt"_Str);
-  pCurrentWord->vEncode("exit"_Str);
+  pCurrentWord->vEncode("does_rt"_Stz);
+  pCurrentWord->vEncode("exit"_Stz);
   
   //pCurrentWord->vEncode("pushBody");
   
@@ -304,7 +304,7 @@ ENTRY("vDoes"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vDoes_RT(MP_Task mpTask)
 {
-  ENTRY("vDoes_RT"_Str);
+  ENTRY("vDoes_RT"_Stz);
   
   Word* pCurrentWord = mpTask->m_pCurrentWord;
   
@@ -319,11 +319,11 @@ void Task::vDoes_RT(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vFind(MP_Task mpTask)
 {
-ENTRY("vFind"_Str);
+ENTRY("vFind"_Stz);
   
   s256 sName;
   if ( ! mpTask->m_pDataStack->bPop(sName) )
-    THROW_INVALID_DSTACK("find"_Str);
+    THROW_INVALID_DSTACK("find"_Stz);
  
   if (mpTask->m_iTracing) {
     i8 i = 0;
@@ -341,11 +341,11 @@ ENTRY("vFind"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vFindInCurrent(MP_Task mpTask)
 {
-  ENTRY("vFindInCurrent"_Str);
+  ENTRY("vFindInCurrent"_Stz);
   
   s256 sName;
   if ( ! mpTask->m_pDataStack->bPop(sName) )
-    THROW_INVALID_DSTACK("findInCurrent"_Str);
+    THROW_INVALID_DSTACK("findInCurrent"_Stz);
   
   if (mpTask->m_iTracing) {
     i8 i = 0; i++;
@@ -363,14 +363,14 @@ void Task::vFindInCurrent(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vForget(MP_Task mpTask)
 {
-ENTRY("vForget"_Str);
+ENTRY("vForget"_Stz);
   
   mpTask->m_pTokeniser->vNextToken();
   
   Word* pWord = mpTask->m_xPathStack.pFindWord(mpTask->m_pTokeniser->sToken());
   
   if ( ! pWord )
-    THROW("No such word: %s"_Str,mpTask->m_pTokeniser->sToken().s());
+    THROW("No such word: %s"_Stz,mpTask->m_pTokeniser->sToken().s());
   
   bool bResult = mpTask->m_xPathStack.bForget(mpTask->m_pTokeniser->sToken());
   ASSERT(bResult);
@@ -383,7 +383,7 @@ ENTRY("vForget"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vHashHashColon(MP_Task mpTask)
 {
-  ENTRY("vHashHashColon"_Str);
+  ENTRY("vHashHashColon"_Stz);
   
   ValWrk xWsp;
   Cell* pOpFrameJumpArg = nullptr;
@@ -402,54 +402,54 @@ void Task::vHashHashColon(MP_Task mpTask)
   // at runtime the dstack will be ( plan value )
   
                                   // at runtime we synthesise by:
-  pW->vEncode("dup"_Str);             //   ( value plan plan )
-  pW->vEncode("-rot"_Str);            //   ( plan value plan )
+  pW->vEncode("dup"_Stz);             //   ( value plan plan )
+  pW->vEncode("-rot"_Stz);            //   ( plan value plan )
   
-  pW->vEncode("plan.opFrame0"_Str);   //   get top opframe of plan
-  pW->vEncode("dup"_Str);             //   dup
-  pW->vEncode("jumpTrue"_Str);        //   forward jump if we have an opFrame
+  pW->vEncode("plan.opFrame0"_Stz);   //   get top opframe of plan
+  pW->vEncode("dup"_Stz);             //   dup
+  pW->vEncode("jumpTrue"_Stz);        //   forward jump if we have an opFrame
   pOpFrameJumpArg = (Cell*)pW->pAppend((Cell*)nullptr);
   
   // we dont have an opFrame, only a plan
-  pW->vEncode("drop"_Str);            //   drop the null opFrame pointer
-  xWsp = "planDic "_Str;
-  pW->vEncode("pushValue"_Str,&xWsp); //   push "planDic "
+  pW->vEncode("drop"_Stz);            //   drop the null opFrame pointer
+  xWsp = "planDic "_Stz;
+  pW->vEncode("pushValue"_Stz,&xWsp); //   push "planDic "
 
-  pW->vEncode("jump"_Str);            //   forward jump to colon etc
+  pW->vEncode("jump"_Stz);            //   forward jump to colon etc
   pToColonJumpArg = (Cell*)pW->pAppend((Cell*)nullptr);
 
   // we have an opFrame
   pOpFrameJumpArg->m_pJumpTo = pW->pLastCell();
   
-  pW->vEncode("opFrame.name"_Str);    //   get name of opframe
-  xWsp = "opDic "_Str;
-  pW->vEncode("pushValue"_Str,&xWsp); //   push "opDic "
-  pW->vEncode("str.prepend"_Str);     //   form "opDic <opDicNm>"
+  pW->vEncode("opFrame.name"_Stz);    //   get name of opframe
+  xWsp = "opDic "_Stz;
+  pW->vEncode("pushValue"_Stz,&xWsp); //   push "opDic "
+  pW->vEncode("str.prepend"_Stz);     //   form "opDic <opDicNm>"
   
   // we have an opFrame
   pToColonJumpArg->m_pJumpTo = pW->pLastCell();
   
-  xWsp = " : "_Str;
-  pW->vEncode("pushValue"_Str,&xWsp); //   push " : "
-  pW->vEncode("str.cat"_Str);         //   form "opDic <opDicNm> : "
+  xWsp = " : "_Stz;
+  pW->vEncode("pushValue"_Stz,&xWsp); //   push " : "
+  pW->vEncode("str.cat"_Stz);         //   form "opDic <opDicNm> : "
   
   xWsp = sSymbolicArg;
-  pW->vEncode("pushValue"_Str,&xWsp); //   push "<symNm>"
-  pW->vEncode("str.cat"_Str);         //   form "opDic <opDicNm> : <symNm>"
+  pW->vEncode("pushValue"_Stz,&xWsp); //   push "<symNm>"
+  pW->vEncode("str.cat"_Stz);         //   form "opDic <opDicNm> : <symNm>"
   
-  xWsp = " %V ; "_Str;
-  pW->vEncode("pushValue"_Str,&xWsp); //   push " %V ; "
-  pW->vEncode("str.cat"_Str);         //   form "opDic <opDicNm> : <symNm> %V ; "
+  xWsp = " %V ; "_Stz;
+  pW->vEncode("pushValue"_Stz,&xWsp); //   push " %V ; "
+  pW->vEncode("str.cat"_Stz);         //   form "opDic <opDicNm> : <symNm> %V ; "
   
-  pW->vEncode("str.format"_Str);      //   replace %V to yield concrete defn
+  pW->vEncode("str.format"_Stz);      //   replace %V to yield concrete defn
   
   // at runtime this should produce a code text of the form:
   //      "planDic : <symNm> <value> ; "
   //   or
   //      "opDic <opDicNm> : <symNm> <value> ; "
   
-  pW->vEncode("swap"_Str);               //   dstack is ( codeText plan )
-  pW->vEncode("plan.lambda+"_Str);       //   append to lambda text
+  pW->vEncode("swap"_Stz);               //   dstack is ( codeText plan )
+  pW->vEncode("plan.lambda+"_Stz);       //   append to lambda text
   
   // at runtime the dstack will be ( )
   
@@ -462,11 +462,11 @@ void Task::vHashHashColon(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vIndirect(MP_Task mpTask)
 {
-  ENTRY("vIndirect"_Str);
+  ENTRY("vIndirect"_Stz);
   
   Word* pCurrentWord = mpTask->m_pCurrentWord;
   
-  //vTrace("Task::vImmediate: %s\n"_Str,pCurrentWord->sName().s());
+  //vTrace("Task::vImmediate: %s\n"_Stz,pCurrentWord->sName().s());
   
   pCurrentWord->vIndirect(true);
   
@@ -478,11 +478,11 @@ void Task::vIndirect(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vImmediate(MP_Task mpTask)
 {
-  ENTRY("vImmediate"_Str);
+  ENTRY("vImmediate"_Stz);
   
   Word* pCurrentWord = mpTask->m_pCurrentWord;
   
-  //vTrace("Task::vImmediate: %s\n"_Str,pCurrentWord->sName().s());
+  //vTrace("Task::vImmediate: %s\n"_Stz,pCurrentWord->sName().s());
   
   pCurrentWord->vImmediate(true);
   
@@ -494,7 +494,7 @@ void Task::vImmediate(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vLocalCalls(MP_Task mpTask)
 {
-  ENTRY("vLocalCalls"_Str);
+  ENTRY("vLocalCalls"_Stz);
   
   Word* pCurrentWord = mpTask->m_pCurrentWord;
   
@@ -508,11 +508,11 @@ void Task::vLocalCalls(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vLocate(MP_Task mpTask)
 {
-  ENTRY("vLocate"_Str);
+  ENTRY("vLocate"_Stz);
   
   i8 iAddrAsInt;
   if ( ! mpTask->m_pDataStack->bPopAsInt(iAddrAsInt) )
-    THROW_INVALID_DSTACK("locate"_Str);
+    THROW_INVALID_DSTACK("locate"_Stz);
   
   void* pCellVoid = (void*)iAddrAsInt;
   Cell* pCell = _pCell(pCellVoid);
@@ -537,11 +537,11 @@ void Task::vLocate(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vOneParticipant(MP_Task mpTask)
 {
-  ENTRY("vAllParticipants"_Str);
+  ENTRY("vAllParticipants"_Stz);
   
   Word* pCurrentWord = mpTask->m_pCurrentWord;
   
-  //vTrace("Task::vImmediate: %s\n"_Str,pCurrentWord->sName().s());
+  //vTrace("Task::vImmediate: %s\n"_Stz,pCurrentWord->sName().s());
   
   pCurrentWord->vDistributed(DT_ONEPARTICIPANT);
   
@@ -562,7 +562,7 @@ void Task::vOneParticipant(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vOpDic(MP_Task mpTask)
 {
-  ENTRY("vOpDic"_Str);
+  ENTRY("vOpDic"_Stz);
   
   Dic* pOpDic = nullptr;
 
@@ -586,7 +586,7 @@ void Task::vOpDic(MP_Task mpTask)
     
     // create a op dictionary
     s32 sNameDic;
-    sNameDic.vSprint("<%s>"_Str,sNameOpFrame.s());
+    sNameDic.vSprint("<%s>"_Stz,sNameOpFrame.s());
     
     pOpDic = new Dic;
     pOpDic->vName(sNameDic);
@@ -605,7 +605,7 @@ void Task::vOpDic(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vPlanDicTask(MP_Task mpTask)
 {
-  ENTRY("vPlanDicTask"_Str);
+  ENTRY("vPlanDicTask"_Stz);
   
   Dic* pPlanDic = mpTask->m_pPlan->pDic();
   
@@ -621,7 +621,7 @@ void Task::vPlanDicTask(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vPostpone(MP_Task mpTask)
 {
-  ENTRY("vPostpone"_Str);
+  ENTRY("vPostpone"_Stz);
   
   Word* pCurrentWord = mpTask->m_pCurrentWord;
   
@@ -631,7 +631,7 @@ void Task::vPostpone(MP_Task mpTask)
   // find the word in dic stack
   Word* pCalledWord = mpTask->m_xPathStack.pFindWord(mpTask->m_pTokeniser->sToken());
   if ( ! pCalledWord )
-    THROW("No word: %s "_Str,mpTask->m_pTokeniser->sToken().s());
+    THROW("No word: %s "_Stz,mpTask->m_pTokeniser->sToken().s());
   
   if (pCalledWord->bImmediate()) {
     
@@ -648,11 +648,11 @@ void Task::vPostpone(MP_Task mpTask)
     // put call to normal word into some future definition
     
     // copy indirect pointer into the current word
-    pCurrentWord->vEncode("pushValue"_Str,pCalledWord);
+    pCurrentWord->vEncode("pushValue"_Stz,pCalledWord);
     if (WT_PRIMITIVE == pCalledWord->eWordType())
-      pCurrentWord->vEncode("encodeCallPrimitive"_Str);
+      pCurrentWord->vEncode("encodeCallPrimitive"_Stz);
     else
-      pCurrentWord->vEncode("encodeCallRoutine"_Str);
+      pCurrentWord->vEncode("encodeCallRoutine"_Stz);
   }
   
   EXIT();
@@ -663,7 +663,7 @@ void Task::vPostpone(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vSee(MP_Task mpTask)
 {
-  ENTRY("vSee"_Str);
+  ENTRY("vSee"_Stz);
   
   s48K sWorkspace;
   
@@ -671,11 +671,11 @@ void Task::vSee(MP_Task mpTask)
   
   Word* pWord = mpTask->m_xPathStack.pFindWord(mpTask->m_pTokeniser->sToken());
   if ( ! pWord ) {
-    vTrace("See: %s unknown\n"_Str,mpTask->m_pTokeniser->sToken().s());
+    vTrace("See: %s unknown\n"_Stz,mpTask->m_pTokeniser->sToken().s());
     return;
   }
   
-  vTrace("See: %s\n"_Str,pWord->sName().s());
+  vTrace("See: %s\n"_Stz,pWord->sName().s());
   
   Cell* pDoesCell = pWord->pEntryCell();
   
@@ -691,11 +691,11 @@ void Task::vSee(MP_Task mpTask)
         *pDoesCell->m_ppEntryStep == Task::vFlowJumpFalse ||
         *pDoesCell->m_ppEntryStep == Task::vFlowJumpTrue ) {
       
-      vTrace("%p: %s"_Str,pDoesCell,pCallsWord->sName().s());
+      vTrace("%p: %s"_Stz,pDoesCell,pCallsWord->sName().s());
       
       pDoesCell++;
       
-      vTrace(" %p\n"_Str,pDoesCell->m_pJumpTo);
+      vTrace(" %p\n"_Stz,pDoesCell->m_pJumpTo);
       
       pDoesCell++;
       
@@ -705,18 +705,18 @@ void Task::vSee(MP_Task mpTask)
     // push
     if ( *pDoesCell->m_ppEntryStep == Task::vPushValue ) {
       
-      vTrace("%p: %s"_Str,pDoesCell,pCallsWord->sName().s());
+      vTrace("%p: %s"_Stz,pDoesCell,pCallsWord->sName().s());
       
       pDoesCell++;
       
       ValWrk* pValue = reinterpret_cast<ValWrk*>(pDoesCell);
       
       if (CN_STRVAL == pValue->eClass()) {
-        vTrace(" \"%s\"\n"_Str,_pStrVal(pValue)->s());
+        vTrace(" \"%s\"\n"_Stz,_pStrVal(pValue)->s());
       }
       else {
         ValLib::vToString(pValue,sWorkspace);
-        vTrace(" %s\n"_Str,sWorkspace.s());
+        vTrace(" %s\n"_Stz,sWorkspace.s());
       }
       
       i8 iBytes = ValLib::iSize(pValue);
@@ -731,13 +731,13 @@ void Task::vSee(MP_Task mpTask)
       Word* pCallsWord = (Word*)( ((u8)pDoesCell->m_ppEntryStep & (u8)~0xFFFF)
                                  + sizeof(HeapBuffer));
       
-      vTrace("%p: %s\n"_Str,pDoesCell,pCallsWord->sName().s());
+      vTrace("%p: %s\n"_Stz,pDoesCell,pCallsWord->sName().s());
       pDoesCell++;
       continue;
     }
     
     // other
-    vTrace("%p: %s\n"_Str,pDoesCell,pCallsWord->sName().s());
+    vTrace("%p: %s\n"_Stz,pDoesCell,pCallsWord->sName().s());
     
     pDoesCell++;
   }
@@ -750,7 +750,7 @@ void Task::vSee(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vSemicolon(MP_Task mpTask)
 {
-  ENTRY("vSemicolon"_Str);
+  ENTRY("vSemicolon"_Stz);
   
   Word* pCurrentWord = mpTask->m_pCurrentWord;
   
@@ -763,10 +763,10 @@ void Task::vSemicolon(MP_Task mpTask)
     mpTask->m_xPathStack.vDiscard();
     
     // enocde locals frame pop
-    pCurrentWord->vEncode("locals.pop"_Str);
+    pCurrentWord->vEncode("locals.pop"_Stz);
   }
   
-  pCurrentWord->vEncode("exit"_Str);
+  pCurrentWord->vEncode("exit"_Stz);
   
   mpTask->m_bCompiling = false;
   
@@ -774,7 +774,7 @@ void Task::vSemicolon(MP_Task mpTask)
       DT_ONEPARTICIPANT  == pCurrentWord->eDistributed()) {
     
     s32 sTildeName;
-    sTildeName = "~"_Str;
+    sTildeName = "~"_Stz;
     sTildeName.vConcat(pCurrentWord->sName());
     
     // create new word for tilde of current word
@@ -790,34 +790,34 @@ void Task::vSemicolon(MP_Task mpTask)
     ValWrk xValWrk;
     
     xValWrk = sTildeName;
-    pWordTilde->vEncode("pushValue"_Str,&xValWrk);
-    pWordTilde->vEncode("tracePoint"_Str);
+    pWordTilde->vEncode("pushValue"_Stz,&xValWrk);
+    pWordTilde->vEncode("tracePoint"_Stz);
     
     xValWrk = pCurrentWord->iParams();
-    pWordTilde->vEncode("pushValue"_Str,&xValWrk);
-    pWordTilde->vEncode("put$$"_Str);
+    pWordTilde->vEncode("pushValue"_Stz,&xValWrk);
+    pWordTilde->vEncode("put$$"_Stz);
     
     xValWrk = pCurrentWord->sName();
-    pWordTilde->vEncode("pushValue"_Str,&xValWrk);
+    pWordTilde->vEncode("pushValue"_Stz,&xValWrk);
     
-    xValWrk = "theIndirectCall"_Str;
-    pWordTilde->vEncode("pushValue"_Str,&xValWrk);
-    pWordTilde->vEncode("tracePoint"_Str);
+    xValWrk = "theIndirectCall"_Stz;
+    pWordTilde->vEncode("pushValue"_Stz,&xValWrk);
+    pWordTilde->vEncode("tracePoint"_Stz);
     
-    pWordTilde->vEncode(">>"_Str);
+    pWordTilde->vEncode(">>"_Stz);
     
     if (DT_ALLPARTICIPANTS == pCurrentWord->eDistributed())
-      pWordTilde->vEncode(">>allParticipants>"_Str);
+      pWordTilde->vEncode(">>allParticipants>"_Stz);
     else
-      pWordTilde->vEncode(">>oneParticipant>"_Str);
+      pWordTilde->vEncode(">>oneParticipant>"_Stz);
     
     xValWrk = sTildeName;
-    pWordTilde->vEncode("pushValue"_Str,&xValWrk);
-    pWordTilde->vEncode("tracePoint"_Str);
+    pWordTilde->vEncode("pushValue"_Stz,&xValWrk);
+    pWordTilde->vEncode("tracePoint"_Stz);
     
-    pWordTilde->vEncode((Str*)pCurrentWord->pFinalRoutine());
+    pWordTilde->vEncode((Stz*)pCurrentWord->pFinalRoutine());
     
-    pWordTilde->vEncode("exit"_Str);
+    pWordTilde->vEncode("exit"_Stz);
   }
     
   // discard subDic use
@@ -834,7 +834,7 @@ void Task::vSemicolon(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vSubDic(MP_Task mpTask)
 {
-  ENTRY("vSubDic"_Str);
+  ENTRY("vSubDic"_Stz);
   
   mpTask->m_pTokeniser->vNextToken();
   
@@ -843,7 +843,7 @@ void Task::vSubDic(MP_Task mpTask)
   
   Word* pWordSubDic = mpTask->m_xPathStack.pFindWord(sNameSubDic);
   if ( ! pWordSubDic )
-    THROW("No such subDic: %s"_Str,sNameSubDic.s());
+    THROW("No such subDic: %s"_Stz,sNameSubDic.s());
   
   Dic* pDic = _pDic(pWordSubDic->aBodyArea());
   
@@ -859,7 +859,7 @@ void Task::vSubDic(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTick(MP_Task mpTask)
 {
-  ENTRY("vTick"_Str);
+  ENTRY("vTick"_Stz);
   
   mpTask->m_pTokeniser->vNextToken();
   
@@ -872,11 +872,11 @@ void Task::vTick(MP_Task mpTask)
   Word* pWord = mpTask->m_xPathStack.pFindWord(mpTask->m_pTokeniser->sToken());
   
   if ( ! pWord )
-    THROW("No word: %s "_Str,mpTask->m_pTokeniser->sToken().s());
+    THROW("No word: %s "_Stz,mpTask->m_pTokeniser->sToken().s());
   
   if (mpTask->m_bCompiling) {
     Word* pCurrentWord = mpTask->m_pCurrentWord;
-    pCurrentWord->vEncode("pushValue"_Str,pWord);
+    pCurrentWord->vEncode("pushValue"_Stz,pWord);
   }
   else {
     mpTask->m_pDataStack->vPushObject(pWord);
@@ -890,7 +890,7 @@ void Task::vTick(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vWord(MP_Task mpTask)
 {
-  ENTRY("vWord"_Str);
+  ENTRY("vWord"_Stz);
   EXIT();
 }
 
@@ -899,11 +899,11 @@ void Task::vWord(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vWordForget(MP_Task mpTask)
 {
-ENTRY("vWordForget"_Str);
+ENTRY("vWordForget"_Stz);
   
   Object* pWordObject;
   if ( ! mpTask->m_pDataStack->bPop(pWordObject) )
-    THROW_INVALID_DSTACK("vWordForget"_Str);
+    THROW_INVALID_DSTACK("vWordForget"_Stz);
   Word* pWord = _pWord(pWordObject);
   
   bool bResult = mpTask->m_xPathStack.bForget(pWord->sName());
@@ -917,11 +917,11 @@ ENTRY("vWordForget"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vWordDump(MP_Task mpTask)
 {
-ENTRY("vWordDump"_Str);
+ENTRY("vWordDump"_Stz);
   
   Object* pWordObject;
   if ( ! mpTask->m_pDataStack->bPop(pWordObject) )
-    THROW_INVALID_DSTACK("vWordDump"_Str);
+    THROW_INVALID_DSTACK("vWordDump"_Stz);
   Word* pWord = _pWord(pWordObject);
   
   pWord->vContentDump();
@@ -934,11 +934,11 @@ ENTRY("vWordDump"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vWordImmediateGet(MP_Task mpTask)
 {
-  ENTRY("vWordImmediateGet"_Str);
+  ENTRY("vWordImmediateGet"_Stz);
   
   Object* pWordObject;
   if ( ! mpTask->m_pDataStack->bPop(pWordObject) )
-    THROW_INVALID_DSTACK("word.immediate@"_Str);
+    THROW_INVALID_DSTACK("word.immediate@"_Stz);
   Word* pWord = _pWord(pWordObject);
   
   i8 iImmediate = pWord->bImmediate();
@@ -953,16 +953,16 @@ void Task::vWordImmediateGet(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vWordImmediateSet(MP_Task mpTask)
 {
-  ENTRY("vWordImmediateSet"_Str);
+  ENTRY("vWordImmediateSet"_Stz);
   
   Object* pWordObject;
   if ( ! mpTask->m_pDataStack->bPop(pWordObject) )
-    THROW_INVALID_DSTACK("word.immediate!"_Str);
+    THROW_INVALID_DSTACK("word.immediate!"_Stz);
   Word* pWord = _pWord(pWordObject);
   
   i8 iImmediate;
   if ( ! mpTask->m_pDataStack->bPop(iImmediate) )
-    THROW_INVALID_DSTACK("word.immediate!"_Str);
+    THROW_INVALID_DSTACK("word.immediate!"_Stz);
   Word* pWordKind = _pWord(pWordObject);
   
   pWord->vImmediate(iImmediate);
@@ -975,13 +975,13 @@ void Task::vWordImmediateSet(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vWordIsImmediate(MP_Task mpTask)
 {
-  ENTRY("vWordIsImmediate"_Str);
+  ENTRY("vWordIsImmediate"_Stz);
   
   // we should just modify the pointers rather than actually pop
   
   Object* pWordObject;
   if ( ! mpTask->m_pDataStack->bPop(pWordObject) )
-    THROW_INVALID_DSTACK("isImmediate"_Str);
+    THROW_INVALID_DSTACK("isImmediate"_Stz);
   Word* pWord = _pWord(pWordObject);
   
   i8 iIsImmediate = pWord->bImmediate() ? 1 : 0;
@@ -996,11 +996,11 @@ void Task::vWordIsImmediate(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vWordIsPrimitive(MP_Task mpTask)
 {
-  ENTRY("vWordIsPrimitive"_Str);
+  ENTRY("vWordIsPrimitive"_Stz);
   
   Object* pWordObject;
   if ( ! mpTask->m_pDataStack->bPop(pWordObject) )
-    THROW_INVALID_DSTACK("word.isPrimitive"_Str);
+    THROW_INVALID_DSTACK("word.isPrimitive"_Stz);
   Word* pWord = _pWord(pWordObject);
   
   i8 iIsPrimitive = WT_PRIMITIVE == pWord->eWordType() ? 1 : 0;
@@ -1015,11 +1015,11 @@ void Task::vWordIsPrimitive(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vWordKindGet(MP_Task mpTask)
 {
-ENTRY("vWordKindGet"_Str);
+ENTRY("vWordKindGet"_Stz);
   
   Object* pWordObject;
   if ( ! mpTask->m_pDataStack->bPop(pWordObject) )
-    THROW_INVALID_DSTACK("vWordKindGet"_Str);
+    THROW_INVALID_DSTACK("vWordKindGet"_Stz);
   Word* pWord = _pWord(pWordObject);
   
   Word* pWordKind = pWord->pKind();
@@ -1034,15 +1034,15 @@ ENTRY("vWordKindGet"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vWordKindSet(MP_Task mpTask)
 {
-ENTRY("vWordKindSet"_Str);
+ENTRY("vWordKindSet"_Stz);
   
   Object* pWordObject;
   if ( ! mpTask->m_pDataStack->bPop(pWordObject) )
-    THROW_INVALID_DSTACK("vWordKindSet"_Str);
+    THROW_INVALID_DSTACK("vWordKindSet"_Stz);
   Word* pWord = _pWord(pWordObject);
   
   if ( ! mpTask->m_pDataStack->bPop(pWordObject) )
-    THROW_INVALID_DSTACK("vWordKindSet"_Str);
+    THROW_INVALID_DSTACK("vWordKindSet"_Stz);
   Word* pWordKind = _pWord(pWordObject);
   
   pWord->vKind(pWordKind);
@@ -1055,11 +1055,11 @@ ENTRY("vWordKindSet"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vWordName(MP_Task mpTask)
 {
-ENTRY("vWordName"_Str);
+ENTRY("vWordName"_Stz);
   
   Object* pWordObject;
   if ( ! mpTask->m_pDataStack->bPop(pWordObject) )
-    THROW_INVALID_DSTACK("word.name"_Str);
+    THROW_INVALID_DSTACK("word.name"_Stz);
   Word* pWord = _pWord(pWordObject);
   
   s32 sWordName(pWord->sName());
@@ -1074,11 +1074,11 @@ ENTRY("vWordName"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vWordPrev(MP_Task mpTask)
 {
-  ENTRY("vWordPrev"_Str);
+  ENTRY("vWordPrev"_Stz);
   
   Object* pWordObject;
   if ( ! mpTask->m_pDataStack->bPop(pWordObject) )
-    THROW_INVALID_DSTACK("wordPrev"_Str);
+    THROW_INVALID_DSTACK("wordPrev"_Stz);
   Word* pWord = _pWord(pWordObject);
   
   Word* pPrevWord = pWord->pPrevWord();
@@ -1093,7 +1093,7 @@ void Task::vWordPrev(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vWordThis(MP_Task mpTask)
 {
-ENTRY("vWordThis"_Str);
+ENTRY("vWordThis"_Stz);
   
   Word* pWord = mpTask->m_pCurrentWord;
   
@@ -1107,11 +1107,11 @@ ENTRY("vWordThis"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vWordTypeGet(MP_Task mpTask)
 {
-  ENTRY("vWordTypeGet"_Str);
+  ENTRY("vWordTypeGet"_Stz);
   
   Object* pWordObject;
   if ( ! mpTask->m_pDataStack->bPop(pWordObject) )
-    THROW_INVALID_DSTACK("vWordTypeGet"_Str);
+    THROW_INVALID_DSTACK("vWordTypeGet"_Stz);
   Word* pWord = _pWord(pWordObject);
   
   eWT eWordType = pWord->eWordType();
@@ -1126,17 +1126,17 @@ void Task::vWordTypeGet(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vWordTypeSet(MP_Task mpTask)
 {
-  ENTRY("vWordTypeSet"_Str);
+  ENTRY("vWordTypeSet"_Stz);
   
   Object* pWordObject;
   if ( ! mpTask->m_pDataStack->bPop(pWordObject) )
-    THROW_INVALID_DSTACK("vWordTypeSet"_Str);
+    THROW_INVALID_DSTACK("vWordTypeSet"_Stz);
   Word* pWord = _pWord(pWordObject);
   
   i8 iWordType;
   
   if ( ! mpTask->m_pDataStack->bPop(iWordType) )
-    THROW_INVALID_DSTACK("vWordTypeSet"_Str);
+    THROW_INVALID_DSTACK("vWordTypeSet"_Stz);
   Word* pWordKind = _pWord(pWordObject);
   
   pWord->vWordType((eWT)iWordType);

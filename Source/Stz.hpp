@@ -1,0 +1,45 @@
+/*============================================================================*/
+/* Stz.hpp -- null terminated string datum                                    */
+/*============================================================================*/
+#pragma once
+
+namespace Base
+{
+  class Stz
+  {
+  private:
+    
+  public:
+    void* operator new(size_t);
+  
+  //Stz() = default;
+    Stz(void);
+  
+    Stz(Stz* aArg);
+
+    ~Stz(void);
+    
+    void operator =(i8);
+    void operator =(Stz*);
+    void operator =(void*);
+  
+    void vConcat(Stz* aArg);
+    void vCopy(Stz* aArg);
+    void vCopyLen(Stz* aArg, i8 nBytes);
+    bool bEqual(Stz* aArg);
+    bool bIsNumeric(void);
+    i8 iLength(void);
+    char* s(void);
+    bool bSame(Stz* aArg);
+    i8 nSize(void);
+    void vSprint(Stz* aFormat, ...);
+    i8 iToI8(void);
+    void vToLower(void);
+  };
+  
+  Stz* operator "" _Stz(const char* aLiteral, size_t nSize);
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

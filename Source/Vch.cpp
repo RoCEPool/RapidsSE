@@ -17,7 +17,7 @@ void* Vch::operator new(size_t iSize)
 {
   RASSERT(iSize);
   
-  vFatal("fatal: Vch class cannot be new'd\n"_Str);
+  vFatal("fatal: Vch class cannot be new'd\n"_Stz);
   
   NEVER_REACH;
 }
@@ -243,9 +243,9 @@ bool Vch::bExtract(char** aaSrc, Vch* aVch, Column* pColumn)
 /*----------------------------------------------------------------------------*/
 /* sprint tsp datum                                                           */
 /*----------------------------------------------------------------------------*/
-void Vch::vSprint(Str* aDst, Str* aSrc)
+void Vch::vSprint(Stz* aDst, Stz* aSrc)
 {
-  StrLib::vSprint(aDst,"%s%c"_Str,
+  StrLib::vSprint(aDst,"%s%c"_Stz,
                   aSrc->s(),
                   '\0');
   

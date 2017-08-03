@@ -31,8 +31,8 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_OpFrame(void)
 {
-  vAddPrimitive("opFrame.dic"_Str,       &vOpFrameDic,       false);
-  vAddPrimitive("opFrame.name"_Str,      &vOpFrameName,      false);
+  vAddPrimitive("opFrame.dic"_Stz,       &vOpFrameDic,       false);
+  vAddPrimitive("opFrame.name"_Stz,      &vOpFrameName,      false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -40,12 +40,12 @@ void Task::vAddPrimitives_OpFrame(void)
 /*----------------------------------------------------------------------------*/
 void Task::vOpFrameDic(MP_Task mpTask)
 {
-  ENTRY("vOpFrameDic"_Str);
+  ENTRY("vOpFrameDic"_Stz);
   
   Object* pPtrOpFrame;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrOpFrame) )
-    THROW_INVALID_DSTACK("opFrame.dic"_Str);
+    THROW_INVALID_DSTACK("opFrame.dic"_Stz);
   
   RegFrame* pOpFrame = _pRegFrame(pPtrOpFrame);
   
@@ -61,12 +61,12 @@ void Task::vOpFrameDic(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vOpFrameName(MP_Task mpTask)
 {
-  ENTRY("vOpFrameName"_Str);
+  ENTRY("vOpFrameName"_Stz);
   
   Object* pPtrOpFrame;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrOpFrame) )
-    THROW_INVALID_DSTACK("opFrame.dic"_Str);
+    THROW_INVALID_DSTACK("opFrame.dic"_Stz);
   
   RegFrame* pOpFrame = _pRegFrame(pPtrOpFrame);
   

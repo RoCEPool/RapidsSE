@@ -70,7 +70,7 @@ ValSet::~ValSet(void)
 /*----------------------------------------------------------------------------*/
 /* append value to valset                                                     */
 /*----------------------------------------------------------------------------*/
-void ValSet::vAppend(Str*& pCursor, Value* pValue)
+void ValSet::vAppend(Stz*& pCursor, Value* pValue)
 {
   i8 iSize = ValLib::iSize(pValue);
   
@@ -93,7 +93,7 @@ void ValSet::vAppend(Str*& pCursor, Value* pValue)
       PtrVal xPtrVal;
       xPtrVal = (Object*)C_ROWBUFFER_MARKER;
       MemLib::vCopy(pCursor,&xPtrVal,sizeof(xPtrVal),CN_VALSET);
-      //vTrace("APPEND C_ROWBUFFER_MARKER\n"_Str);
+      //vTrace("APPEND C_ROWBUFFER_MARKER\n"_Stz);
     }
     else {
       MemLib::vCopy(pCursor,pValue,iSize,CN_VALSET);
@@ -112,7 +112,7 @@ void ValSet::vAppend(Str*& pCursor, Value* pValue)
 /*----------------------------------------------------------------------------*/
 /* extract next value from valset                                             */
 /*----------------------------------------------------------------------------*/
-bool ValSet::bExtractValue(Str*& pCursor, Value*& pValue)
+bool ValSet::bExtractValue(Stz*& pCursor, Value*& pValue)
 {
   if ( ! pCursor )
     pCursor = aFirstByte();
@@ -123,7 +123,7 @@ bool ValSet::bExtractValue(Str*& pCursor, Value*& pValue)
     return false;
   
   pValue = (Value*)pCursor;
-  //vTrace("ValSet::bExtractValue: %lld %s\n"_Str,pValue->eClass(),aCN[pValue->eClass()]);
+  //vTrace("ValSet::bExtractValue: %lld %s\n"_Stz,pValue->eClass(),aCN[pValue->eClass()]);
   
   i8 iSize = ValLib::iSize(pValue);
   
@@ -131,10 +131,10 @@ bool ValSet::bExtractValue(Str*& pCursor, Value*& pValue)
   
   // test for a rowbuffer pointer
   if (CN_PTRVAL == pValue->eClass()) {
-    //vTrace("EXTRACT CN_PTRVAL\n"_Str);
+    //vTrace("EXTRACT CN_PTRVAL\n"_Stz);
     
     if ((i8)C_ROWBUFFER_MARKER == _pPtrVal(pValue)->iAsInt()) {
-      //vTrace("EXTRACT C_ROWBUFFER_MARKER\n"_Str);
+      //vTrace("EXTRACT C_ROWBUFFER_MARKER\n"_Stz);
       *_pPtrVal(pValue) = m_pRowBuffer;
     }
   }
@@ -155,7 +155,7 @@ bool ValSet::bExtractValue(Str*& pCursor, Value*& pValue)
 /*----------------------------------------------------------------------------*/
 /* extract next value from valset                                             */
 /*----------------------------------------------------------------------------*/
-bool ValSet::bExtractValue(Str*& pCursor, eCN& eClassNo, Value*& pValue)
+bool ValSet::bExtractValue(Stz*& pCursor, eCN& eClassNo, Value*& pValue)
 {
   if ( ! pCursor )
     pCursor = aFirstByte();
@@ -198,7 +198,7 @@ DBobjects::EntryBuffer* ValSet::pRowBuffer(void)
 DBobjects::EntryBuffer* ValSet::pGetRowBuffer(void)
 {
   eCN eClassNo;
-  Str* pCursor = nullptr;
+  Stz* pCursor = nullptr;
   Value* pValue;
   DBobjects::EntryBuffer* pRowBuffer;
   
@@ -229,7 +229,7 @@ DBobjects::EntryBuffer* ValSet::pGetRowBuffer(void)
 /*----------------------------------------------------------------------------*/
 bool ValSet::bHasRowBuffer(void)
 {
-  Str* pCursor = nullptr;
+  Stz* pCursor = nullptr;
   eCN eClassNo;
   Value* pValue;
   bool bHasRowBuffer;
@@ -238,7 +238,7 @@ bool ValSet::bHasRowBuffer(void)
     
     if (CN_ENTRYBUFFER == eClassNo) {
       if (gbTracepoint)
-        vTrace("HAS ROW BUFFER\n"_Str);
+        vTrace("HAS ROW BUFFER\n"_Stz);
       return true;
     }
     
@@ -267,7 +267,7 @@ void ValSet::vRowBuffer(DBobjects::EntryBuffer* pRowBuffer)
 bool ValSet::bSetRowBuffer(DBobjects::EntryBuffer* pRowBuffer)
 {
   eCN eClassNo;
-  Str* pCursor = nullptr;
+  Stz* pCursor = nullptr;
   Value* pValue;
   bool bSet;
   
@@ -275,7 +275,7 @@ bool ValSet::bSetRowBuffer(DBobjects::EntryBuffer* pRowBuffer)
     
     if (CN_ENTRYBUFFER == eClassNo) {
       PtrVal* pPtrVal = (PtrVal*)pValue;
-      //vTrace("SETTING ROW BUFFER\n"_Str);
+      //vTrace("SETTING ROW BUFFER\n"_Stz);
       m_pRowBuffer = pRowBuffer;
       m_iRowBufferBytes = pRowBuffer->nUsedBytes();
       return true;
@@ -305,7 +305,7 @@ i8 ValSet::nSize(void)
 /*----------------------------------------------------------------------------*/
 /* convert to string                                                          */
 /*----------------------------------------------------------------------------*/
-void ValSet::vToString(Str* aWorkspace)
+void ValSet::vToString(Stz* aWorkspace)
 {
   *aWorkspace = reinterpret_cast<void*>(this);
 }
@@ -317,23 +317,23 @@ void ValSet::vToString(Str* aWorkspace)
 /*----------------------------------------------------------------------------*/
 /* get ptr to first byte of workspace                                         */
 /*----------------------------------------------------------------------------*/
-Str* ValSet::aFirstByte(void)
+Stz* ValSet::aFirstByte(void)
 {
-  return (Str*)&m_wWorkspace[0];
+  return (Stz*)&m_wWorkspace[0];
 }
 
 /*----------------------------------------------------------------------------*/
 /* get ptr to last bytes of worksspace                                        */
 /*----------------------------------------------------------------------------*/
-Str* ValSet::aLastByte(void)
+Stz* ValSet::aLastByte(void)
 {
-  return (Str*)&m_wWorkspace[C_VALSET_DATAAREA-1];
+  return (Stz*)&m_wWorkspace[C_VALSET_DATAAREA-1];
 }
 
 /*----------------------------------------------------------------------------*/
 /* convert cursor to ValWrk*                                                  */
 /*----------------------------------------------------------------------------*/
-ValWrk* ValSet::pToValWrk(Str* pCursor)
+ValWrk* ValSet::pToValWrk(Stz* pCursor)
 {
   return reinterpret_cast<ValWrk*>(pCursor);
 }

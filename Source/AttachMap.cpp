@@ -63,7 +63,7 @@ AttachMap::AttachMap(void)
   // the attach map must always be the first buffer in the buffer pool
   ASSERT(nBufferNo() == 1_bn);
   
-  m_xMainDic.vName("<main>"_Str);
+  m_xMainDic.vName("<main>"_Stz);
   
   _checkInitialised_(CN_ATTACHMAP);
   
@@ -110,12 +110,12 @@ void AttachMap::vGetGlobals(void)
 /*----------------------------------------------------------------------------*/
 /* record all the needed globals                                              */
 /*----------------------------------------------------------------------------*/
-void AttachMap::vRecordGlobals(Str* aRegionName, i8 iRegionSize, i8 iJumboSize)
+void AttachMap::vRecordGlobals(Stz* aRegionName, i8 iRegionSize, i8 iJumboSize)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ATTACHMAP,_FOOTER_);
 
   if (gbVerbose)
-    vTrace("[[mainThread]] Recording globals...\n"_Str);
+    vTrace("[[mainThread]] Recording globals...\n"_Stz);
   
   m_iPid = Process::iGetPid();
   
@@ -157,13 +157,13 @@ void AttachMap::vRecordGlobals(Str* aRegionName, i8 iRegionSize, i8 iJumboSize)
 /*----------------------------------------------------------------------------*/
 /* dump this attachmap                                                        */
 /*----------------------------------------------------------------------------*/
-void AttachMap::vDump(eCN eClass, Object* pObject, Str* aTab)
+void AttachMap::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
   ASSERT(CN_ATTACHMAP == eClass);
   AttachMap* pAttachMap = reinterpret_cast<AttachMap*>(pObject);
   ASSERT(pAttachMap->eClass() == eClass);
   
-  vTrace("pid %lld utc %s regionSize %lld\n"_Str,
+  vTrace("pid %lld utc %s regionSize %lld\n"_Stz,
          pAttachMap->m_iPid,
          pAttachMap->m_sUTC.s(),
          pAttachMap->m_iRegionSize);

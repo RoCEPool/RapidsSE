@@ -26,7 +26,7 @@ RunTests::~RunTests(void) {
 /*----------------------------------------------------------------------------*/
 void RunTests::vRunTests(void) {
   
-  vTrace("Running Unit Tests...\n"_Str);
+  vTrace("Running Unit Tests...\n"_Stz);
   
   //ClusterTests* pClusterTests
 
@@ -54,11 +54,11 @@ void RunTests::vRunTests(void) {
   EndTests* pEndTests = new EndTests();
   pEndTests->vRun(this);
   
-  vTrace("\n--------------------------------------\n"_Str);
-  vTrace("Total Tests Executed : %lld\n"_Str, m_iTestsTotal);
-  vTrace("Total Tests Passed   : %lld\n"_Str, m_iTestsPassed);
-  vTrace("Total Tests Failed   : %lld\n"_Str, m_iTestsFailed);
-  vTrace("---------------------------------------\n"_Str);
+  vTrace("\n--------------------------------------\n"_Stz);
+  vTrace("Total Tests Executed : %lld\n"_Stz, m_iTestsTotal);
+  vTrace("Total Tests Passed   : %lld\n"_Stz, m_iTestsPassed);
+  vTrace("Total Tests Failed   : %lld\n"_Stz, m_iTestsFailed);
+  vTrace("---------------------------------------\n"_Stz);
 }
 
 /*============================================================================*/

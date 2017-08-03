@@ -11,10 +11,10 @@ namespace DBobjects
     /* 1 */ TT_NORMAL
   };
 
-  static Str* aTT[]
+  static Stz* aTT[]
   {
-    /* 0 */ "NONE"_Str,
-    /* 1 */ "NORMAL"_Str
+    /* 0 */ "NONE"_Stz,
+    /* 1 */ "NORMAL"_Stz
   };
   
   typedef Vector<CN_IDXVEC,Index,CN_INDEX,C_INDEXES_PER_TABLE,u8> IdxVec;
@@ -42,15 +42,15 @@ namespace DBobjects
     void  operator delete(void*);
     
     Table(void);
-    Table(Str* aTableName);
+    Table(Stz* aTableName);
     ~Table(void);
     
-    static void vDump(eCN eClass, Object* pObject, Str* aTab);
+    static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     static void vFinalize(eCN eClass, Object* pObject);
     
     void vAddIndex(Index* pIndex);
-    Str* pAnalyze(bool bDetailed);
-    Str* pAnalyzeIndex(Index* pIndex, bool bDetailed);
+    Stz* pAnalyze(bool bDetailed);
+    Stz* pAnalyzeIndex(Index* pIndex, bool bDetailed);
     void vAppendBuffer(i8 iPartition, EntryBuffer* pRowBuffer);    
     ColumnVec* pColumnVec(void);
     void vContentDump(void);
@@ -58,7 +58,7 @@ namespace DBobjects
     Index* pHiddenIndex(void);
     void vHiddenIndex(Index* pHiddenIndex);
     IdxVec* pIdxVec(void);
-    bool bInsertRow(EntryBuffer* pRowBuffer, i8 iPartition, TxRef* pTxRef, Str* pRecord, i8 iLength);
+    bool bInsertRow(EntryBuffer* pRowBuffer, i8 iPartition, TxRef* pTxRef, Stz* pRecord, i8 iLength);
     Partition* pPartition(i8 iSlot);
     void vPopulateIndex(i8 iIndexNo);
     void vRefDec(void);
@@ -67,19 +67,19 @@ namespace DBobjects
     i8   nRowBuffers(void);
     i8   nIndexBuffers(i8 iIndexNo);
 #ifdef _ROWFORMAT
-    i8   iRowPartition(Str* pRow, i8 iLength);
+    i8   iRowPartition(Stz* pRow, i8 iLength);
 #else
-    i8   iRowPartition(Str* pRow);
+    i8   iRowPartition(Stz* pRow);
 #endif
     void vShowColumnVec(void);
     Dic* pSubDic(void);
     Slots* pSlots(void);
-    Str* aTableName(void);
+    Stz* aTableName(void);
     void vTidyUp(void);
     void vTidyUpIndex(i8 iIndexNo);
     void vTruncate(void);
     void vTruncateIndex(i8 iIndexNo);
-    bool bValidateRow(Str* pRow, i8& iColumn);
+    bool bValidateRow(Stz* pRow, i8& iColumn);
   
     Footer* aFooter(void);
   };

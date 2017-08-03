@@ -35,11 +35,11 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_DdlLock(void)
 {
-  vAddPrimitive("ddlLock::dropRead"_Str, &vDdlLockDropRead,  false);
-  vAddPrimitive("ddlLock::dropWrite"_Str,&vDdlLockDropWrite, false);
-  vAddPrimitive("ddlLock::grabRead"_Str, &vDdlLockGrabRead,  false);
-  vAddPrimitive("ddlLock::grabWrite"_Str,&vDdlLockGrabWrite, false);
-  vAddPrimitive("ddlLock::testDrop"_Str, &vDdlLockTestDrop,  false);
+  vAddPrimitive("ddlLock::dropRead"_Stz, &vDdlLockDropRead,  false);
+  vAddPrimitive("ddlLock::dropWrite"_Stz,&vDdlLockDropWrite, false);
+  vAddPrimitive("ddlLock::grabRead"_Stz, &vDdlLockGrabRead,  false);
+  vAddPrimitive("ddlLock::grabWrite"_Stz,&vDdlLockGrabWrite, false);
+  vAddPrimitive("ddlLock::testDrop"_Stz, &vDdlLockTestDrop,  false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -47,7 +47,7 @@ void Task::vAddPrimitives_DdlLock(void)
 /*----------------------------------------------------------------------------*/
 void Task::vDdlLockDropRead(MP_Task mpTask)
 {
-  ENTRY("vDdlLockDropRead"_Str);
+  ENTRY("vDdlLockDropRead"_Stz);
   
   ASSERT(C_HAVE_READ_LOCK == mpTask->m_iDdlLocked);
   
@@ -63,7 +63,7 @@ void Task::vDdlLockDropRead(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDdlLockDropWrite(MP_Task mpTask)
 {
-  ENTRY("vDdlLockDropWrite"_Str);
+  ENTRY("vDdlLockDropWrite"_Stz);
   
   ASSERT(C_HAVE_WRITE_LOCK == mpTask->m_iDdlLocked);
   
@@ -79,7 +79,7 @@ void Task::vDdlLockDropWrite(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDdlLockGrabRead(MP_Task mpTask)
 {
-  ENTRY("vDdlLockGrabRead"_Str);
+  ENTRY("vDdlLockGrabRead"_Stz);
   
   ASSERT(! mpTask->m_iDdlLocked);
   
@@ -95,7 +95,7 @@ void Task::vDdlLockGrabRead(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDdlLockGrabWrite(MP_Task mpTask)
 {
-  ENTRY("vDdlLockGrabWrite"_Str);
+  ENTRY("vDdlLockGrabWrite"_Stz);
   
   ASSERT(! mpTask->m_iDdlLocked);
 
@@ -111,7 +111,7 @@ void Task::vDdlLockGrabWrite(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDdlLockTestDrop(MP_Task mpTask)
 {
-  ENTRY("vDdlLockTestDrop"_Str);
+  ENTRY("vDdlLockTestDrop"_Stz);
   
   if (C_HAVE_READ_LOCK == mpTask->m_iDdlLocked) {
     gxDdlLock.vDropRead();

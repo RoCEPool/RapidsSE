@@ -31,10 +31,10 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_TaskList(void)
 {
-  vAddPrimitive("taskList"_Str,        &vTaskList,         false);
-  vAddPrimitive("taskList.append"_Str, &vTaskListAppend,   false);
-  vAddPrimitive("taskList.dump"_Str,   &vTaskListDump,     false);
-  vAddPrimitive("taskList.init"_Str,   &vTaskListInit,     false);
+  vAddPrimitive("taskList"_Stz,        &vTaskList,         false);
+  vAddPrimitive("taskList.append"_Stz, &vTaskListAppend,   false);
+  vAddPrimitive("taskList.dump"_Stz,   &vTaskListDump,     false);
+  vAddPrimitive("taskList.init"_Stz,   &vTaskListInit,     false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -42,7 +42,7 @@ void Task::vAddPrimitives_TaskList(void)
 /*----------------------------------------------------------------------------*/
 void Task::vTaskList(MP_Task mpTask)
 {
-ENTRY("vTaskList"_Str);
+ENTRY("vTaskList"_Stz);
   
   mpTask->m_pDataStack->vPushObject(gpTaskList);
   
@@ -54,18 +54,18 @@ ENTRY("vTaskList"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vTaskListAppend(MP_Task mpTask)
 {
-ENTRY("vTaskListAppend"_Str);
+ENTRY("vTaskListAppend"_Stz);
   
   Object* pPtrTaskList;
   if ( ! mpTask->m_pDataStack->bPop(pPtrTaskList) )
-    THROW_INVALID_DSTACK("tasklist.append"_Str);
+    THROW_INVALID_DSTACK("tasklist.append"_Stz);
   
   TaskList* pTaskList = _pTaskList(pPtrTaskList);
   ASSERT(CN_TASKLIST == pTaskList->eClass());
   
   Object* pTaskObject;
   if ( ! mpTask->m_pDataStack->bPop(pTaskObject) )
-    THROW_INVALID_DSTACK("task.dump"_Str);
+    THROW_INVALID_DSTACK("task.dump"_Stz);
   Task* pThatTask = _pTask(pTaskObject);
   
   pTaskList->vAppend(pThatTask);
@@ -78,11 +78,11 @@ ENTRY("vTaskListAppend"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vTaskListDump(MP_Task mpTask)
 {
-ENTRY("vTaskListDump"_Str);
+ENTRY("vTaskListDump"_Stz);
   
   Object* pPtrTaskList;
   if ( ! mpTask->m_pDataStack->bPop(pPtrTaskList) )
-    THROW_INVALID_DSTACK("tasklist.dump"_Str);
+    THROW_INVALID_DSTACK("tasklist.dump"_Stz);
   
   TaskList* pTaskList = _pTaskList(pPtrTaskList);
   ASSERT(CN_TASKLIST == pTaskList->eClass());
@@ -97,7 +97,7 @@ ENTRY("vTaskListDump"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vTaskListInit(MP_Task mpTask)
 {
-ENTRY("vTaskListInit"_Str);
+ENTRY("vTaskListInit"_Stz);
   
   EXIT();
 }

@@ -37,12 +37,12 @@ extern i8 giSchGetTaskWait;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Scheduler(void)
 {
-  vAddPrimitive("Scheduler::enqueueServerTask"_Str, &vSchedulerEnqueueTask,   false);
-  vAddPrimitive("Scheduler::queuedTasks"_Str,       &vSchedulerQueuedTasks,   false);
-  vAddPrimitive("Scheduler::queuedThreads"_Str,     &vSchedulerQueuedThreads, false);
+  vAddPrimitive("Scheduler::enqueueServerTask"_Stz, &vSchedulerEnqueueTask,   false);
+  vAddPrimitive("Scheduler::queuedTasks"_Stz,       &vSchedulerQueuedTasks,   false);
+  vAddPrimitive("Scheduler::queuedThreads"_Stz,     &vSchedulerQueuedThreads, false);
   
-  vAddPrimitive("Scheduler::List"_Str,              &vSchedulerList,          false);
-  vAddPrimitive("Scheduler::Reset"_Str,             &vSchedulerReset,         false);
+  vAddPrimitive("Scheduler::List"_Stz,              &vSchedulerList,          false);
+  vAddPrimitive("Scheduler::Reset"_Stz,             &vSchedulerReset,         false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -50,11 +50,11 @@ void Task::vAddPrimitives_Scheduler(void)
 /*----------------------------------------------------------------------------*/
 void Task::vSchedulerEnqueueTask(MP_Task mpTask)
 {
-  ENTRY("vSchedulerEnqueueTask"_Str);
+  ENTRY("vSchedulerEnqueueTask"_Stz);
   
   Object* pObject;
   if ( ! mpTask->m_pDataStack->bPop(pObject) )
-    THROW_INVALID_DSTACK("Scheduler.enqueueTask"_Str);
+    THROW_INVALID_DSTACK("Scheduler.enqueueTask"_Stz);
   Task* pTask = _pTask(pObject);
   
   gpScheduler->vEnqueueTask_Mutex(pTask);
@@ -67,7 +67,7 @@ void Task::vSchedulerEnqueueTask(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vSchedulerQueuedTasks(MP_Task mpTask)
 {
-  ENTRY("vSchedulerQueuedTasks"_Str);
+  ENTRY("vSchedulerQueuedTasks"_Stz);
   
   i8 nTasks = gpScheduler->iQueuedTasks();
   
@@ -81,7 +81,7 @@ void Task::vSchedulerQueuedTasks(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vSchedulerQueuedThreads(MP_Task mpTask)
 {
-  ENTRY("vSchedulerQueuedThreads"_Str);
+  ENTRY("vSchedulerQueuedThreads"_Stz);
   
   i8 nThreads = gpScheduler->iQueuedThreads();
   
@@ -94,7 +94,7 @@ void Task::vSchedulerQueuedThreads(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vSchedulerReset(MP_Task mpTask)
 {
-  ENTRY("vSchedulerReset"_Str);
+  ENTRY("vSchedulerReset"_Stz);
   
   giSchEnqueueTask = 0;
   giSchEnqueueTaskWait = 0;
@@ -109,12 +109,12 @@ void Task::vSchedulerReset(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vSchedulerList(MP_Task mpTask)
 {
-  ENTRY("vSchedulerList"_Str);
+  ENTRY("vSchedulerList"_Stz);
   
-  vTrace("SchEnqueueTask %lld\n"_Str,giSchEnqueueTask);
-  vTrace("SchEnqueueTaskWait %lld\n"_Str,giSchEnqueueTaskWait);
-  vTrace("SchGetTask %lld\n"_Str,giSchGetTask);
-  vTrace("SchGetTaskWait %lld\n"_Str,giSchGetTaskWait);
+  vTrace("SchEnqueueTask %lld\n"_Stz,giSchEnqueueTask);
+  vTrace("SchEnqueueTaskWait %lld\n"_Stz,giSchEnqueueTaskWait);
+  vTrace("SchGetTask %lld\n"_Stz,giSchGetTask);
+  vTrace("SchGetTaskWait %lld\n"_Stz,giSchGetTaskWait);
   
   EXIT();
 }

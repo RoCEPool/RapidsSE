@@ -30,11 +30,11 @@ namespace GridModel
     Grid(i8 nNodes, i8 nSlots);
     ~Grid(void);
     
-    static void vDump(eCN eClass, Object* pObject, Str* aTab);
+    static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     void vDumpPartitioning(void);
     void vHasStarted(bool bHasStarted);
     bool bHasStarted(void);
-    Node* pFindNode(Str* pName);
+    Node* pFindNode(Stz* pName);
     Node* pFindNode(i8 iNode);
     void vInit(i8 nNodes, i8 nSlots);
     i8   iNodes(void);

@@ -90,7 +90,7 @@ void RapidsSE::vExecute(void)
       ASSERT(gpBufferPool);
       vSystemInit();
       vStartActors();
-      vTrace("RapidsSE instance %s started\n"_Str,gxArguments.m_sRegionName.s());
+      vTrace("RapidsSE instance %s started\n"_Stz,gxArguments.m_sRegionName.s());
       gpGrid->vDumpPartitioning();
       
       //vSkipListTest();
@@ -134,8 +134,8 @@ void RapidsSE::vExecute(void)
       Region::vUnlink(gxArguments.m_sRegionName);
     }
     else {
-      vError("Unknown command line argument\n"_Str);
-      vFatal("RapidsSE exits\n"_Str);
+      vError("Unknown command line argument\n"_Stz);
+      vFatal("RapidsSE exits\n"_Stz);
       exit(EXIT_FAILURE);
     }
 
@@ -168,7 +168,7 @@ void RapidsSE::vPoolOpen(void)
   if (gxArguments.m_bStart || gxArguments.m_bDocol) {
         
     if (! gxArguments.m_bRestart && Region::bTest(gxArguments.m_sRegionName)) {
-      vFatal("Error: RapidsSE instance %s already started\n"_Str,gxArguments.m_sRegionName.s());
+      vFatal("Error: RapidsSE instance %s already started\n"_Stz,gxArguments.m_sRegionName.s());
       exit(EXIT_FAILURE);
       return;
     }
@@ -191,7 +191,7 @@ void RapidsSE::vPoolOpen(void)
   
   if (gxArguments.m_bStop) {
     if (! Region::bTest(gxArguments.m_sRegionName)) {
-      vFatal("Error: RapidsSE instance %s was not started\n"_Str,gxArguments.m_sRegionName.s());
+      vFatal("Error: RapidsSE instance %s was not started\n"_Stz,gxArguments.m_sRegionName.s());
       exit(EXIT_FAILURE);
       return;
     }
@@ -203,13 +203,13 @@ void RapidsSE::vPoolOpen(void)
   
   if (gxArguments.m_bPrompt || gxArguments.m_bScript) {
     if (! Region::bTest(gxArguments.m_sRegionName)) {
-      vFatal("Error: RapidsSE instance %s was not started\n"_Str,gxArguments.m_sRegionName.s());
+      vFatal("Error: RapidsSE instance %s was not started\n"_Stz,gxArguments.m_sRegionName.s());
       exit(EXIT_FAILURE);
       return;
     }
     bResult = Region::bAttach(gxArguments.m_sRegionName, gxArguments.m_bWelcome);
     if ( ! bResult ) {
-      vFatal("Error: Unable to attach to RapidsSE instance %s\n"_Str,gxArguments.m_sRegionName.s());
+      vFatal("Error: Unable to attach to RapidsSE instance %s\n"_Stz,gxArguments.m_sRegionName.s());
       exit(EXIT_FAILURE);
       return;
 
@@ -221,7 +221,7 @@ void RapidsSE::vPoolOpen(void)
   bResult = Region::bAttach(gxArguments.m_sRegionName, gxArguments.m_bWelcome);
   ASSERT(bResult);
   vAttachObjects();
-  //vFatal("Error: RapidsSE missing arguments\n"_Str);
+  //vFatal("Error: RapidsSE missing arguments\n"_Stz);
   //exit(EXIT_FAILURE);
 }
 
@@ -285,14 +285,14 @@ void RapidsSE::vCreateObjects(void)
 void RapidsSE::vDicCompile(NP_Task npRootTask)
 {
   if (gbVerbose)
-    vTrace("[[mainThread]] DicCompile...\n"_Str);
+    vTrace("[[mainThread]] DicCompile...\n"_Stz);
   
   npRootTask->vInitialiseMain();
   
   npRootTask->vSeedDicCompileSen();
   
   if (gbVerbose)
-    vTrace("[[mainThread]] RapidsSE::vDicCompile running [%s] %p\n"_Str,
+    vTrace("[[mainThread]] RapidsSE::vDicCompile running [%s] %p\n"_Stz,
            npRootTask->sName().s(),
            *npRootTask);
   
@@ -311,7 +311,7 @@ void RapidsSE::vErrorHandler(Error* pError)
   ps = StrLib::sLast(pError->aFileName()->s());
   StrLib::bBackward(&ps,(char*)pError->aFileName(),'/');
   StrLib::vCopy(wFileName,ps+1);
-  vError("%s: line %lld in %s\n"_Str,
+  vError("%s: line %lld in %s\n"_Stz,
          pError->aErrorMsg(),
          pError->iLineNo(),
          wFileName);
@@ -374,7 +374,7 @@ void RapidsSE::vRunDocol(void)
 void RapidsSE::vSignalHandler(int iSignal)
 {
   // print out all the frames to stderr
-  vFatal("Error: signal %d:\n"_Str, iSignal);
+  vFatal("Error: signal %d:\n"_Stz, iSignal);
 
   Debugging::vStackDump();
   exit(1);
@@ -401,7 +401,7 @@ void RapidsSE::vSystemInit(void)
   
   gnpRootTask = new Task;
   s32 sName;
-  sName = "rootTask"_Str;
+  sName = "rootTask"_Stz;
   gnpRootTask->vName(sName);
   gnpRootTask->vActorModel(AC_SERVER);
   
@@ -417,7 +417,7 @@ void RapidsSE::vSystemInit(void)
   gzPlanId =  gpGrid->iThisNode() << 48;
   
   // get the trace file
-  Word* pTraceFileWord = gpMainDic->pFindWord("trace_file"_Str);
+  Word* pTraceFileWord = gpMainDic->pFindWord("trace_file"_Stz);
   gpTraceFile = reinterpret_cast<File*>(pTraceFileWord->aBodyArea());
   
   // the root thread is on dstack of root task
@@ -430,17 +430,17 @@ void RapidsSE::vSystemInit(void)
 void RapidsSE::vStartActors(void)
 {
   if (gbVerbose)
-    vTrace("Shm region initialised at: %s\n"_Str,gpAttachMap->m_sUTC.s());
+    vTrace("Shm region initialised at: %s\n"_Stz,gpAttachMap->m_sUTC.s());
 
   if (gbVerbose)
-    vTrace("Starting actors\n"_Str);
+    vTrace("Starting actors\n"_Stz);
 
   
   // seed root task to start the system
-  gnpRootTask->vSeedWord("startActors"_Str);
+  gnpRootTask->vSeedWord("startActors"_Stz);
   
   if (gbVerbose)
-    vTrace("[[mainThread]] RapidsSE::vStartActors launching [%s] %p\n"_Str,
+    vTrace("[[mainThread]] RapidsSE::vStartActors launching [%s] %p\n"_Stz,
          gnpRootTask->sName().s(),
            *gnpRootTask);
   
@@ -472,13 +472,13 @@ void RapidsSE::vSystemStatus(void)
     
     // check if the Pid in the shm is still alive
     if ( Process::bTestPid(gpAttachMap->m_iPid) ) {
-      vTrace("RapidsSE instance %s running\n"_Str,
+      vTrace("RapidsSE instance %s running\n"_Stz,
              gxArguments.m_sRegionName.s());
       return;
     }
   }
   
-  vTrace("RapidsSE instance %s not running\n"_Str,
+  vTrace("RapidsSE instance %s not running\n"_Stz,
          gxArguments.m_sRegionName.s());
 
 }
@@ -492,7 +492,7 @@ void RapidsSE::vSystemStop(void)
   
   gpAttachMap->m_iStop = 1;
   
-  vTrace("RapidsSE instance %s stopped\n"_Str,
+  vTrace("RapidsSE instance %s stopped\n"_Stz,
          gxArguments.m_sRegionName.s());
   
   // the system is now stopped
@@ -504,7 +504,7 @@ void RapidsSE::vSystemStop(void)
 void RapidsSE::vWaitFlag(void)
 {
   if (gbVerbose)
-    vTrace("[[mainThread]] Waiting on stop %s\n"_Str,"..."_Str);
+    vTrace("[[mainThread]] Waiting on stop %s\n"_Stz,"..."_Stz);
 
   // this primary thread waits for flag indicationg systems is to stop
   while ( ! gpAttachMap->m_iQuit && ! gpAttachMap->m_iStop )

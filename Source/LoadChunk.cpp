@@ -58,14 +58,14 @@ LoadChunk::~LoadChunk(void)
 /*----------------------------------------------------------------------------*/
 /* dump LoaderSub                                                             */
 /*----------------------------------------------------------------------------*/
-void LoadChunk::vDump(eCN eClass, Object* pObject, Str* aTab)
+void LoadChunk::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
   ASSERT(eClass == CN_LOADCHUNK);
   ASSERT(pObject->eClass() == CN_LOADCHUNK);
   
   LoadChunk* pLoadChunk = reinterpret_cast<LoadChunk*>(pObject);
   
-  vTrace("\n"_Str);
+  vTrace("\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -85,7 +85,7 @@ void LoadChunk::vCloseFile(void)
 /*----------------------------------------------------------------------------*/
 /* get address of next record and its byte length                             */
 /*----------------------------------------------------------------------------*/
-Str* LoadChunk::aNextRecord(i8& iRecordBytes)
+Stz* LoadChunk::aNextRecord(i8& iRecordBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADCHUNK,_FOOTER_);
   
@@ -105,7 +105,7 @@ Str* LoadChunk::aNextRecord(i8& iRecordBytes)
   }
   
   // get start address of next record
-  Str* pRecord = m_aNextRecord;
+  Stz* pRecord = m_aNextRecord;
   
   // find end of next record
   while ('\n' != *((char*)m_aNextRecord))

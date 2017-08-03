@@ -16,7 +16,7 @@ extern i8 gnIndexOffsets;
 void* EntWrk::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  vFatal("fatal: EntWrk class cannot be new'd\n"_Str);
+  vFatal("fatal: EntWrk class cannot be new'd\n"_Stz);
   
   NEVER_REACH;
 }
@@ -196,7 +196,7 @@ void EntWrk::vShow(IdxColVec* pIdxColVec)
   
   Int::vCopy(&iKey,aKey());
   
-  vTrace("EntWrk %p: Id %lli.%lli Offsets: %llu "_Str,
+  vTrace("EntWrk %p: Id %lli.%lli Offsets: %llu "_Stz,
          this,
          m_xId.iBuffer(),
          m_xId.iRow(),
@@ -205,12 +205,12 @@ void EntWrk::vShow(IdxColVec* pIdxColVec)
   
   on nOffsetNo;
   for (nOffsetNo = 0_on; nOffsetNo < m_iOffsets - 1; nOffsetNo++) {
-    vTrace("R%lld: %lld "_Str,
+    vTrace("R%lld: %lld "_Stz,
            *nOffsetNo,
            iRightOffset(nOffsetNo)
            );
   }
-  vTrace("key (size:%lld value:%lld) "_Str,
+  vTrace("key (size:%lld value:%lld) "_Stz,
          nKeySize(),
          iKey
          );
@@ -224,14 +224,14 @@ void EntWrk::vShow(IdxColVec* pIdxColVec)
   if (m_bHasData) {
     StrVal* pStrVal = reinterpret_cast<StrVal*>(aData());
     
-    vTrace("data (size:%lld value:%s) "_Str,
+    vTrace("data (size:%lld value:%s) "_Stz,
            nDataSize(),
            pStrVal->aStr()
            );
   }
 #endif
   
-  vTrace("\n"_Str);
+  vTrace("\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -325,7 +325,7 @@ i8 EntWrk::nDataSize(void)
 /* copy the row data                                                          */
 /*----------------------------------------------------------------------------*/
 #ifdef _ROWFORMAT
-void EntWrk::vData(Str* aDataBytes, i8 iSize)
+void EntWrk::vData(Stz* aDataBytes, i8 iSize)
 {
   char* aDataArea = m_xDataWrk.aLatter();
   MemLib::vCopy(aDataArea,aDataBytes,iSize,CN_ENTWRK);
@@ -336,7 +336,7 @@ void EntWrk::vData(Str* aDataBytes, i8 iSize)
 }
 
 #else
-void EntWrk::vData(Str* aDataBytes, i8 iSize)
+void EntWrk::vData(Stz* aDataBytes, i8 iSize)
 {
   i8 nBytes = StrVal::nBytesRequired(iSize);
  
@@ -360,7 +360,7 @@ void EntWrk::vData(Str* aDataBytes, i8 iSize)
 /*----------------------------------------------------------------------------*/
 void EntWrk::vAddKey(KeyWrk& xKeyWrk)
 {
-  Str* aKeySrc = xKeyWrk.aWspStr();
+  Stz* aKeySrc = xKeyWrk.aWspStr();
   i8 nKeyBytes = xKeyWrk.nWspUsed();
   
   m_xDataWrk.vAppend(aKeySrc,nKeyBytes,CN_ENTWRK);

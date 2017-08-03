@@ -14,7 +14,7 @@ namespace CorrectnessAlgebra
     Class(void);
     ~Class(void);
   
-    Str* aClass(void);
+    Stz* aClass(void);
     eCN  eClass(void);
     void vSetClass(eCN eClassNo);
   };

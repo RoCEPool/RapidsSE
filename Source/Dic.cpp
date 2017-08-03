@@ -62,7 +62,7 @@ Dic::Dic(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
-  m_sName    = "<no-name>"_Str;
+  m_sName    = "<no-name>"_Stz;
   m_pDicKind = nullptr;
   m_bFrozen  = false;
   m_zRefCount.vCheckInit();
@@ -133,14 +133,14 @@ void Dic::vDicKind(Word* pDicKind)
 /*----------------------------------------------------------------------------*/
 /* dump dictionary                                                            */
 /*----------------------------------------------------------------------------*/
-void Dic::vDump(eCN eClass, Object* pObject, Str* aTab)
+void Dic::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
   ASSERT(eClass == CN_DIC);
   ASSERT(pObject->eClass() == CN_DIC);
   
   Dic* pDic = reinterpret_cast<Dic*>(pObject);
   
-  vTrace("name %s lastWord %p\n"_Str,
+  vTrace("name %s lastWord %p\n"_Stz,
          pDic->m_sName.s(),
          pDic->m_pLastWord);
   
@@ -159,13 +159,13 @@ void Dic::vFinalize(eCN eClass, Object* pObject)
   Dic* pDic = reinterpret_cast<Dic*>(pObject);
   ASSERT(pDic->bWordBody());
   
-  //vTrace("%s %s finalize\n"_Str, aCN[eClass], pDic->m_sName.s());
+  //vTrace("%s %s finalize\n"_Stz, aCN[eClass], pDic->m_sName.s());
 }
 
 /*----------------------------------------------------------------------------*/
 /* find a word given name                                                     */
 /*----------------------------------------------------------------------------*/
-Word* Dic::pFindWord(Str* aName)
+Word* Dic::pFindWord(Stz* aName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
@@ -175,8 +175,8 @@ Word* Dic::pFindWord(Str* aName)
     if (pWord->sName().bSame(aName)) {
       m_xLock.vDropRead();
 
-      if (aName->bSame("whereAmI"_Str))
-        vTrace(": %s is in dictionary %s ---\n"_Str,aName,m_sName.aStr());
+      if (aName->bSame("whereAmI"_Stz))
+        vTrace(": %s is in dictionary %s ---\n"_Stz,aName,m_sName.aStr());
 
       return pWord;
     }
@@ -346,7 +346,7 @@ StrVal& Dic::sName(void)
 /*----------------------------------------------------------------------------*/
 /* set name of this dictionary                                                */
 /*----------------------------------------------------------------------------*/
-void Dic::vName(Str* aName)
+void Dic::vName(Stz* aName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
@@ -362,7 +362,7 @@ void Dic::vRefDec(void)
   
   u8 iRef = --m_zRefCount;
   
-  //vTrace("DIC: %s --ref : %lld\n"_Str,m_sName.s(),iRef);
+  //vTrace("DIC: %s --ref : %lld\n"_Stz,m_sName.s(),iRef);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -374,7 +374,7 @@ void Dic::vRefInc(void)
   
   u8 iRef = ++m_zRefCount;
   
-  //vTrace("DIC: %s ++ref : %lld\n"_Str,m_sName.s(),iRef);
+  //vTrace("DIC: %s ++ref : %lld\n"_Stz,m_sName.s(),iRef);
 }
 
 /*----------------------------------------------------------------------------*/

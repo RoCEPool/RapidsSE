@@ -26,7 +26,7 @@ Entry* DBobjects::_pEntry(void* aAddr)
 void* Entry::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  vFatal("fatal: Entry class cannot be new'd\n"_Str);
+  vFatal("fatal: Entry class cannot be new'd\n"_Stz);
   
   NEVER_REACH;
 }
@@ -344,7 +344,7 @@ void Entry::vSetEntry(EntWrk& xEntWrk)
     
     //char* aRow = this->aRow();
     //StrVal* pStrVal = reinterpret_cast<StrVal*>(aRow);
-    //vTrace("%s"_Str, pStrVal->aStr());
+    //vTrace("%s"_Stz, pStrVal->aStr());
   }
   
   _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_ENTRY,CN_ROW);
@@ -398,13 +398,13 @@ void Entry::vShow(i8 iBase, Index* pIndex)
     DtmLib::nCopy(DM_INT,&iKey,aKey,nullptr);
   }
   
-  vTrace("Entry %p: Size: %llu Offsets: %llu "_Str,
+  vTrace("Entry %p: Size: %llu Offsets: %llu "_Stz,
          this,
          nSizeEntry(),
          m_nOffsets
          );
   
-  vTrace("Id %3lli.%3lli "_Str,
+  vTrace("Id %3lli.%3lli "_Stz,
          m_xId.iBuffer(),
          m_xId.iRow()
          );
@@ -418,20 +418,20 @@ void Entry::vShow(i8 iBase, Index* pIndex)
 #else
   if (pIndex->bIsHidden()) {
     StrVal* pStrVal = reinterpret_cast<StrVal*>(aRow());
-    vTrace("%s"_Str, pStrVal->aStr());
+    vTrace("%s"_Stz, pStrVal->aStr());
   }
 #endif
   
   for (on nRight = 0_on; nRight < m_nOffsets; nRight++) {
     
-    vTrace(" Offset(%lld): %lld "_Str,
+    vTrace(" Offset(%lld): %lld "_Stz,
            *nRight,
            iRightOffset(nRight) == C_NIL_OFFSET ?
            C_NIL_OFFSET :
            iBase + iRightOffset(nRight) + nSizeEntry());
   }
   
-  vTrace("\n"_Str);
+  vTrace("\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -447,7 +447,7 @@ void Entry::vContentDump(void)
   
 //  StrVal* pStr = (StrVal*)aVblData();
 //  
-//  vTrace("Entry %p: ThisBytes %lld %s (%lld bytes) %s\n"_Str,
+//  vTrace("Entry %p: ThisBytes %lld %s (%lld bytes) %s\n"_Stz,
 //         this,
 //         //m_iTxId,
 //         m_nThisBytes,
@@ -458,7 +458,7 @@ void Entry::vContentDump(void)
   
   StrVal* pStrVal = reinterpret_cast<StrVal*>(aRow());
   
-  vTrace("Entry %p: ThisBytes %lld %s (%lld bytes) %s\n"_Str,
+  vTrace("Entry %p: ThisBytes %lld %s (%lld bytes) %s\n"_Stz,
          this,
          //m_iTxId,
          m_nThisBytes,
@@ -492,7 +492,7 @@ void Entry::vExtractKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
     
     // get the column value from the row for the iColumnNo
     i8 iLength;
-    char* pDst = (char*)RowData::pColumn((Str*)aRow(), iColumnNo, iLength);
+    char* pDst = (char*)RowData::pColumn((Stz*)aRow(), iColumnNo, iLength);
     
     switch(pColumn->eColumnType()) {
         

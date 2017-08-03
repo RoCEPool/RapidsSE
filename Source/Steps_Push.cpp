@@ -31,10 +31,10 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Push(void)
 {
-  vAddPrimitive("i"_Str,               &vPushI,            false);
-  vAddPrimitive("j"_Str,               &vPushJ,            false);
-  vAddPrimitive("nullPtr"_Str,         &vPushNullPtr,      false);
-  vAddPrimitive("pushValue"_Str,       &vPushValue,        false);
+  vAddPrimitive("i"_Stz,               &vPushI,            false);
+  vAddPrimitive("j"_Stz,               &vPushJ,            false);
+  vAddPrimitive("nullPtr"_Stz,         &vPushNullPtr,      false);
+  vAddPrimitive("pushValue"_Stz,       &vPushValue,        false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -42,7 +42,7 @@ void Task::vAddPrimitives_Push(void)
 /*----------------------------------------------------------------------------*/
 void Task::vPushI(MP_Task mpTask)
 {
-  ENTRY("vPushI"_Str);
+  ENTRY("vPushI"_Stz);
   
   Value* pI = mpTask->m_pReturnStack->pPeekValue();
   
@@ -56,7 +56,7 @@ void Task::vPushI(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vPushJ(MP_Task mpTask)
 {
-  ENTRY("vPushJ"_Str);
+  ENTRY("vPushJ"_Stz);
   
   Value* pI = mpTask->m_pReturnStack->pPeekValue(3);
   
@@ -70,7 +70,7 @@ void Task::vPushJ(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vPushNullPtr(MP_Task mpTask)
 {
-  ENTRY("vPushNullPtr"_Str);
+  ENTRY("vPushNullPtr"_Stz);
   
   PtrVal xPtrVal;
   xPtrVal = (Object*)nullptr;
@@ -85,7 +85,7 @@ void Task::vPushNullPtr(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vPushValue(MP_Task mpTask)
 {
-  ENTRY("vPushValue"_Str);
+  ENTRY("vPushValue"_Stz);
   
   if (mpTask->m_iTracing) {
     ASSERT(mpTask->m_iTracing);

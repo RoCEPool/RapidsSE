@@ -21,7 +21,7 @@ namespace Values
     i8* aInt(void);
     i8 iInt(void) const;
     
-    void vToString(Str* aWorkspace);
+    void vToString(Stz* aWorkspace);
   };
   
   IntVal* _pIntVal(void* aAddr);

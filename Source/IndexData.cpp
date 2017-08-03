@@ -28,7 +28,7 @@ IndexData* DBobjects::_pIndexData(void* pAddr)
 /*----------------------------------------------------------------------------*/
 /* dump data                                                                  */
 /*----------------------------------------------------------------------------*/
-void IndexData::vDump(eCN eClass, Object* pObject, Str* aTab)
+void IndexData::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
   ASSERT(eClass == CN_INDEXDATA);
   ASSERT(pObject->eClass() == CN_INDEXDATA);
@@ -118,7 +118,7 @@ IndexData::~IndexData(void)
 /*----------------------------------------------------------------------------*/
 /* analyze table                                                              */
 /*----------------------------------------------------------------------------*/
-Str* IndexData::pAnalyze(void)
+Stz* IndexData::pAnalyze(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
   
@@ -127,7 +127,7 @@ Str* IndexData::pAnalyze(void)
   i8 nStrandsTotal = 0;
   s48K sAnalysis;
   
-  sAnalysis.vCatSprint("N%lld: Analysis of Index %s of table %s\n"_Str,
+  sAnalysis.vCatSprint("N%lld: Analysis of Index %s of table %s\n"_Stz,
                        gpGrid->iThisNode(),
                        m_pIndex->aIndexName()->s(),
                        m_pIndex->pTable()->aTableName());
@@ -231,7 +231,7 @@ void IndexData::vAppendBuffer(EntryBuffer* pEntryBuffer)
 /*----------------------------------------------------------------------------*/
 /* insert an entry for {key,id} into an index buffer at given level           */
 /*----------------------------------------------------------------------------*/
-Entry* IndexData::pInsertEntry(i8 iTxId, Str* pRow, i8 iLength)
+Entry* IndexData::pInsertEntry(i8 iTxId, Stz* pRow, i8 iLength)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
   
@@ -344,7 +344,7 @@ void IndexData::vInsertEntry(Entry* pRow)
   m_zLock.vDropWrite();
   
   //if ( ! bVerify() ) {
-  //  vTrace("Inserting row that caused verify to fail:\n"_Str);
+  //  vTrace("Inserting row that caused verify to fail:\n"_Stz);
   //  pRow->vContentDump();
   //  vDump();
   //  NEVER_REACH;
@@ -646,7 +646,7 @@ void IndexData::vDumpLevel(EntryBuffer* pIndexBuffer)
     EntryBuffer* pEntryIndexBuffer = pEntry->pIndexBuffer();
     
     // print the decile of the buffer
-    vTrace("%lld"_Str, pEntryIndexBuffer->iDecile());
+    vTrace("%lld"_Stz, pEntryIndexBuffer->iDecile());
     
     // insert spaces for no of entries in buffer
     if (pEntryIndexBuffer->nBufferLevel() > 0) {
@@ -655,7 +655,7 @@ void IndexData::vDumpLevel(EntryBuffer* pIndexBuffer)
       i8 iEntries = pEntryIndexBuffer->nEntries() - 1;
       
       while (iEntries--)
-        vTrace(" "_Str);
+        vTrace(" "_Stz);
     }
     
     // move to the next entry
@@ -679,24 +679,24 @@ void IndexData::vVisualize(void)
     do {
       ASSERT(pIndexBuffer->nBufferLevel() == 0);
       // print the decile of pNextBuffer
-      vTrace("%lld"_Str, pIndexBuffer->iDecile());
+      vTrace("%lld"_Stz, pIndexBuffer->iDecile());
       
       pIndexBuffer = pIndexBuffer->pNextBuffer();
       
     } while (pIndexBuffer);
     
-    vTrace("\n"_Str);
+    vTrace("\n"_Stz);
     return;
   }
 
   // print the decile of the root buffer
-  vTrace("%lld\n"_Str, pIndexBuffer->iDecile());
+  vTrace("%lld\n"_Stz, pIndexBuffer->iDecile());
   
   i8 iBufferLevel = pIndexBuffer->nBufferLevel();
   
   // if there is only one buffer i.e root is at level 0, we are done
   if (iBufferLevel == 0) {
-    vTrace("\n"_Str);
+    vTrace("\n"_Stz);
     return;
   }
   
@@ -711,7 +711,7 @@ void IndexData::vVisualize(void)
       pIndexBuffer = (EntryBuffer*)pIndexBuffer->pNextBuffer();
     }
     else {
-      vTrace("\n"_Str);
+      vTrace("\n"_Stz);
       
       // get the first entry of the buffer
       Entry* pEntry = pIndexBuffer->pFirstEntry();
@@ -721,7 +721,7 @@ void IndexData::vVisualize(void)
     }
   }
   
-  vTrace("\n"_Str);
+  vTrace("\n"_Stz);
 }
 
 

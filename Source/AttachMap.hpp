@@ -15,13 +15,13 @@ namespace StorageEngine
     /* 4 */ AM_ENUMS
   };
   
-  static Str* aAM[]
+  static Stz* aAM[]
   {
-    /* 0 */ "none"_Str,
-    /* 1 */ "indexentries"_Str,
-    /* 2 */ "indexlevels"_Str,
-    /* 3 */ "indexspace"_Str,
-    /* 4 */ "enums"_Str
+    /* 0 */ "none"_Stz,
+    /* 1 */ "indexentries"_Stz,
+    /* 2 */ "indexlevels"_Stz,
+    /* 3 */ "indexspace"_Stz,
+    /* 4 */ "enums"_Stz
   };
   
   class AttachMap : public Buffer
@@ -76,9 +76,9 @@ namespace StorageEngine
     ~AttachMap(void);
     
     void vGetGlobals(void);
-    void vRecordGlobals(Str* sRegionName, i8 iRegionSize, i8 iJumboSize);
+    void vRecordGlobals(Stz* sRegionName, i8 iRegionSize, i8 iJumboSize);
     
-    static void vDump(eCN eClass, Object* pObject, Str* aTab);
+    static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     
     Footer* aFooter(void);
   };

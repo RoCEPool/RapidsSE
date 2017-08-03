@@ -31,9 +31,9 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Magnitude(void)
 {
-  vAddPrimitive("toDigitName"_Str,     &vToDigitName,   false);
-  vAddPrimitive("bytes.magnitude"_Str, &vBytesMagnitude,   false);
-  vAddPrimitive("number.magnitude"_Str, &vNumberMagnitude, false);
+  vAddPrimitive("toDigitName"_Stz,     &vToDigitName,   false);
+  vAddPrimitive("bytes.magnitude"_Stz, &vBytesMagnitude,   false);
+  vAddPrimitive("number.magnitude"_Stz, &vNumberMagnitude, false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -41,28 +41,28 @@ void Task::vAddPrimitives_Magnitude(void)
 /*----------------------------------------------------------------------------*/
 void Task::vToDigitName(MP_Task mpTask)
 {
-  ENTRY("vToDigitName"_Str);
+  ENTRY("vToDigitName"_Stz);
   
   i8 iDigit;
   
   // get the arguments
   if ( ! mpTask->m_pDataStack->bPop(iDigit) )
-    THROW_INVALID_DSTACK(">DigitName"_Str);
+    THROW_INVALID_DSTACK(">DigitName"_Stz);
   
   s32 sName;
   
   switch (iDigit) {
-    case 0: sName = "zero"_Str;    break;
-    case 1: sName = "one"_Str;     break;
-    case 2: sName = "two"_Str;     break;
-    case 3: sName = "three"_Str;   break;
-    case 4: sName = "four"_Str;    break;
-    case 5: sName = "five"_Str;    break;
-    case 6: sName = "six"_Str;     break;
-    case 7: sName = "seven"_Str;   break;
-    case 8: sName = "eight"_Str;   break;
-    case 9: sName = "nine"_Str;    break;
-    default:sName = "invalid"_Str; break;
+    case 0: sName = "zero"_Stz;    break;
+    case 1: sName = "one"_Stz;     break;
+    case 2: sName = "two"_Stz;     break;
+    case 3: sName = "three"_Stz;   break;
+    case 4: sName = "four"_Stz;    break;
+    case 5: sName = "five"_Stz;    break;
+    case 6: sName = "six"_Stz;     break;
+    case 7: sName = "seven"_Stz;   break;
+    case 8: sName = "eight"_Stz;   break;
+    case 9: sName = "nine"_Stz;    break;
+    default:sName = "invalid"_Stz; break;
   }
   
   mpTask->m_pDataStack->vPushS32(sName);
@@ -75,11 +75,11 @@ void Task::vToDigitName(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vBytesMagnitude(MP_Task mpTask)
 {
-  ENTRY("vBytesMagnitude"_Str);
+  ENTRY("vBytesMagnitude"_Stz);
   
   i8 iBytes;
   if ( ! mpTask->m_pDataStack->bPop(iBytes) )
-    THROW_INVALID_DSTACK("bytes.magnitude"_Str);
+    THROW_INVALID_DSTACK("bytes.magnitude"_Stz);
   
   s256 sMag;
   Magnitudes::vMagnitude(iBytes, sMag);
@@ -94,16 +94,16 @@ void Task::vBytesMagnitude(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vNumberMagnitude(MP_Task mpTask)
 {
-  ENTRY("vNumberMagnitude"_Str);
+  ENTRY("vNumberMagnitude"_Stz);
   
   i8 iNumber;
   i8 iScale;
   
   if ( ! mpTask->m_pDataStack->bPop(iNumber) )
-    THROW_INVALID_DSTACK("number.magnitude"_Str);
+    THROW_INVALID_DSTACK("number.magnitude"_Stz);
   
   if ( ! mpTask->m_pDataStack->bPop(iScale) )
-    THROW_INVALID_DSTACK("number.magnitude"_Str);
+    THROW_INVALID_DSTACK("number.magnitude"_Stz);
   
   s256 s;
   

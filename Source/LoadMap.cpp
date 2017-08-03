@@ -80,14 +80,14 @@ LoadMap::~LoadMap(void)
 /*----------------------------------------------------------------------------*/
 /* dump seekmap                                                               */
 /*----------------------------------------------------------------------------*/
-void LoadMap::vDump(eCN eClass, Object* pObject, Str* aTab)
+void LoadMap::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
   ASSERT(eClass == CN_LOADMAP);
   ASSERT(pObject->eClass() == CN_LOADMAP);
   
   LoadMap* pSeekMap = reinterpret_cast<LoadMap*>(pObject);
   
-  vTrace("\n"_Str);
+  vTrace("\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -143,7 +143,7 @@ bool LoadMap::bFindChunk(void)
   i8 nBytes = Base::nSub((void*)z,m_xBlockTest) + 1;
   
   i8 iEolOffset = iTestSeek + nBytes - 1;
-  //vTrace("EolOffset %lld\n"_Str,iEolOffset);
+  //vTrace("EolOffset %lld\n"_Stz,iEolOffset);
   vEolOffset(iEolOffset);
   
   m_iChunkNext = iEolOffset + 1;
@@ -168,12 +168,12 @@ void LoadMap::vChunkTest(void)
     
     if (gbProgress) {
       if (0 == iChunk % 1000) {
-        vInfo("chunk %lld of %lld        \r"_Str,iChunk,nChunks);
+        vInfo("chunk %lld of %lld        \r"_Stz,iChunk,nChunks);
         fflush(stdout);
       }
     }
     
-    //vTrace("Test Seek %lld Bytes %lld\n"_Str,iSeek,nBytes);
+    //vTrace("Test Seek %lld Bytes %lld\n"_Stz,iSeek,nBytes);
     
     if (iSeek) {
       m_xChunkFile.vSeek(iSeek - 1);
@@ -234,7 +234,7 @@ void LoadMap::vDone(bool bDone)
   
   m_bDone = bDone;
   
-  //vTrace("LoadMap closed with %lld entries\n"_Str,m_iEntries);
+  //vTrace("LoadMap closed with %lld entries\n"_Stz,m_iEntries);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -290,7 +290,7 @@ void LoadMap::vStats(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADMAP);
   
-  vTrace("LoadMap: lock writes %lld write collisions %lld\n"_Str,
+  vTrace("LoadMap: lock writes %lld write collisions %lld\n"_Stz,
          m_zLock.iWriteGrabs(),
          m_zLock.iWriteCollisions());
 }

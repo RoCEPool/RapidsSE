@@ -29,19 +29,19 @@ namespace DBobjects
     void* operator new(size_t, IndexData* pIndexData);
     void  operator delete(void*);
     
-    static void vDump(eCN eClass, Object* pObject, Str* aTab);
+    static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     static void vFinalize(eCN eClass, Object* pObject);
     
     IndexData(Index* pIndex);
     ~IndexData(void);
   
-    Str*         pAnalyze(void);
+    Stz*         pAnalyze(void);
     void         vAppendBuffer(EntryBuffer* pEntryBuffer);
     void         vDump(bool bSameLevel);
     EntryBuffer* pFirstBuffer();
     Index*       pIndex(void);
     i8           nIndexBuffers(void);
-    Entry*       pInsertEntry(i8 iTxId, Str* pRow, i8 iLength);
+    Entry*       pInsertEntry(i8 iTxId, Stz* pRow, i8 iLength);
     void         vInsertEntry(Entry* pRow);
     EntryBuffer* pPositionLevel(KeyWrk& xKeyWrk, eJC eJuxtaCompare, i8 iLevel);
     EntryBuffer* pRoot(void);

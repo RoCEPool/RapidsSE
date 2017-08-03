@@ -28,7 +28,7 @@ Index* DBobjects::_pIndex(void* pAddr)
 /*----------------------------------------------------------------------------*/
 /* dump data                                                                  */
 /*----------------------------------------------------------------------------*/
-void Index::vDump(eCN eClass, Object* pObject, Str* aTab)
+void Index::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
   ASSERT(eClass == CN_INDEX);
   ASSERT(pObject->eClass() == CN_INDEX);
@@ -128,7 +128,7 @@ void Index::vCreateColumnVec(s32& sColumnNm, s48K& sColumnDefn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
   
-  //vTrace("vCreateColumnVec: index %s column %s %s\n"_Str,
+  //vTrace("vCreateColumnVec: index %s column %s %s\n"_Stz,
   //        m_sIndexName.s(),
   //         sColumnNm.aStr(),
   //         sColumnDefn.aStr());
@@ -180,7 +180,7 @@ void Index::vDump(void)
 /*----------------------------------------------------------------------------*/
 /* get the index name                                                         */
 /*----------------------------------------------------------------------------*/
-Str* Index::aIndexName(void)
+Stz* Index::aIndexName(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
   

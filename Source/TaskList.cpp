@@ -87,15 +87,15 @@ void TaskList::vContentDump(void)
 /*----------------------------------------------------------------------------*/
 /* dump                                                                       */
 /*----------------------------------------------------------------------------*/
-void TaskList::vDump(eCN eClass, Object* pObject, Str* aTab)
+void TaskList::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
   ASSERT(eClass == CN_TASKLIST);
   ASSERT(pObject->eClass() == CN_TASKLIST);
   
   TaskList* pTaskList = reinterpret_cast<TaskList*>(pObject);
   
-  vTrace("\n"_Str);
-  //pTaskList->List_t<Task>::vContentDump("TaskList::"_Str, aTab);
+  vTrace("\n"_Stz);
+  //pTaskList->List_t<Task>::vContentDump("TaskList::"_Stz, aTab);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -70,14 +70,14 @@ RegFrame::~RegFrame(void)
 /*----------------------------------------------------------------------------*/
 /* dump register frame                                                        */
 /*----------------------------------------------------------------------------*/
-void RegFrame::vDump(eCN eClass, Object* pObject, Str* aTab)
+void RegFrame::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
   ASSERT(eClass == CN_REGFRAME);
   ASSERT(pObject->eClass() == CN_REGFRAME);
   
   RegFrame* pRegFrame = _pRegFrame(pObject);
   
-  vTrace("\n"_Str);
+  vTrace("\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

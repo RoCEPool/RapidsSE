@@ -140,14 +140,14 @@ void Tx::vContentDump(void)
 /*----------------------------------------------------------------------------*/
 /* dump dictionary                                                            */
 /*----------------------------------------------------------------------------*/
-void Tx::vDump(eCN eClass, Object* pObject, Str* aTab)
+void Tx::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
   ASSERT(eClass == CN_TX);
   ASSERT(pObject->eClass() == CN_TX);
   
   Tx* pTx = reinterpret_cast<Tx*>(pObject);
   
-  vTrace("id %lld phase %s\n"_Str,
+  vTrace("id %lld phase %s\n"_Stz,
          pTx->m_iTxId,
          pTP[pTx->m_ePhase]);
 }

@@ -31,18 +31,18 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_SelCursor(void)
 {
-  vAddPrimitive("selCursor.begin"_Str,     &vSelCursorBegin,      false);
-  vAddPrimitive("selCursor.delete"_Str,    &vSelCursorDelete,     false);
-  vAddPrimitive("selCursor.end"_Str,       &vSelCursorEnd,        false);
-  vAddPrimitive("selCursor.first"_Str,     &vSelCursorFirst,      false);
-  vAddPrimitive("selCursor.get"_Str,       &vSelCursorGet,        false);
-  vAddPrimitive("selCursor.hasRow"_Str,    &vSelCursorHasRow,     false);
-  vAddPrimitive("selCursor.init"_Str,      &vSelCursorInit,       false);
-  vAddPrimitive("selCursor::new"_Str,      &vSelCursorNew,        false);
-  vAddPrimitive("selCursor.next"_Str,      &vSelCursorNext,       false);
-  vAddPrimitive("selCursor.rowBuffer"_Str, &vSelCursorRowBuffer,  false);
-  vAddPrimitive("selCursor.table@"_Str,    &vSelCursorTableFetch, false);
-  vAddPrimitive("selCursor.table!"_Str,    &vSelCursorTableStore, false);
+  vAddPrimitive("selCursor.begin"_Stz,     &vSelCursorBegin,      false);
+  vAddPrimitive("selCursor.delete"_Stz,    &vSelCursorDelete,     false);
+  vAddPrimitive("selCursor.end"_Stz,       &vSelCursorEnd,        false);
+  vAddPrimitive("selCursor.first"_Stz,     &vSelCursorFirst,      false);
+  vAddPrimitive("selCursor.get"_Stz,       &vSelCursorGet,        false);
+  vAddPrimitive("selCursor.hasRow"_Stz,    &vSelCursorHasRow,     false);
+  vAddPrimitive("selCursor.init"_Stz,      &vSelCursorInit,       false);
+  vAddPrimitive("selCursor::new"_Stz,      &vSelCursorNew,        false);
+  vAddPrimitive("selCursor.next"_Stz,      &vSelCursorNext,       false);
+  vAddPrimitive("selCursor.rowBuffer"_Stz, &vSelCursorRowBuffer,  false);
+  vAddPrimitive("selCursor.table@"_Stz,    &vSelCursorTableFetch, false);
+  vAddPrimitive("selCursor.table!"_Stz,    &vSelCursorTableStore, false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -50,18 +50,18 @@ void Task::vAddPrimitives_SelCursor(void)
 /*----------------------------------------------------------------------------*/
 void Task::vSelCursorBegin(MP_Task mpTask)
 {
-ENTRY("vSelCursorBegin"_Str);
+ENTRY("vSelCursorBegin"_Stz);
   
   Object* pPtrSelCursor;
   if ( ! mpTask->m_pDataStack->bPop(pPtrSelCursor) )
-    THROW_INVALID_DSTACK("selCursor.begin"_Str);
+    THROW_INVALID_DSTACK("selCursor.begin"_Stz);
   
   SelCursor* pSelCursor = _pSelCursor(pPtrSelCursor);
   ASSERT(CN_SELCURSOR == pSelCursor->eClass());
   
   i8 iPartn;
   if ( ! mpTask->m_pDataStack->bPop(iPartn) )
-    THROW_INVALID_DSTACK("selCursor.begin"_Str);
+    THROW_INVALID_DSTACK("selCursor.begin"_Stz);
   
   pSelCursor->vBegin(iPartn);
   
@@ -73,11 +73,11 @@ ENTRY("vSelCursorBegin"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vSelCursorDelete(MP_Task mpTask)
 {
-ENTRY("vSelCursorDelete"_Str);
+ENTRY("vSelCursorDelete"_Stz);
   
   Object* pPtrSelCursor;
   if ( ! mpTask->m_pDataStack->bPop(pPtrSelCursor) )
-    THROW_INVALID_DSTACK("selCursor.delete"_Str);
+    THROW_INVALID_DSTACK("selCursor.delete"_Stz);
   
   SelCursor* pSelCursor = _pSelCursor(pPtrSelCursor);
   ASSERT(CN_SELCURSOR == pSelCursor->eClass());
@@ -95,11 +95,11 @@ ENTRY("vSelCursorDelete"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vSelCursorEnd(MP_Task mpTask)
 {
-ENTRY("vSelCursorEnd"_Str);
+ENTRY("vSelCursorEnd"_Stz);
   
   Object* pPtrSelCursor;
   if ( ! mpTask->m_pDataStack->bPop(pPtrSelCursor) )
-    THROW_INVALID_DSTACK("selCursor.end"_Str);
+    THROW_INVALID_DSTACK("selCursor.end"_Stz);
   
   SelCursor* pSelCursor = _pSelCursor(pPtrSelCursor);
   ASSERT(CN_SELCURSOR == pSelCursor->eClass());
@@ -114,11 +114,11 @@ ENTRY("vSelCursorEnd"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vSelCursorFirst(MP_Task mpTask)
 {
-ENTRY("vSelCursorFirst"_Str);
+ENTRY("vSelCursorFirst"_Stz);
   
   Object* pPtrSelCursor;
   if ( ! mpTask->m_pDataStack->bPop(pPtrSelCursor) )
-    THROW_INVALID_DSTACK("selCursor.first"_Str);
+    THROW_INVALID_DSTACK("selCursor.first"_Stz);
   
   SelCursor* pSelCursor = _pSelCursor(pPtrSelCursor);
   ASSERT(CN_SELCURSOR == pSelCursor->eClass());
@@ -137,18 +137,18 @@ ENTRY("vSelCursorFirst"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vSelCursorGet(MP_Task mpTask)
 {
-ENTRY("vSelCursorGet"_Str);
+ENTRY("vSelCursorGet"_Stz);
   
   Object* pPtrSelCursor;
   if ( ! mpTask->m_pDataStack->bPop(pPtrSelCursor) )
-    THROW_INVALID_DSTACK("selCursor.get"_Str);
+    THROW_INVALID_DSTACK("selCursor.get"_Stz);
   
   SelCursor* pSelCursor = _pSelCursor(pPtrSelCursor);
   ASSERT(CN_SELCURSOR == pSelCursor->eClass());
   
   s48K xRow;
   
-  xRow = (Str*)pSelCursor->aRowAsStr();
+  xRow = (Stz*)pSelCursor->aRowAsStr();
   
   mpTask->m_pDataStack->vPushS48K(xRow);
   
@@ -160,11 +160,11 @@ ENTRY("vSelCursorGet"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vSelCursorHasRow(MP_Task mpTask)
 {
-  ENTRY("vSelCursorGet"_Str);
+  ENTRY("vSelCursorGet"_Stz);
   
   Object* pPtrSelCursor;
   if ( ! mpTask->m_pDataStack->bPop(pPtrSelCursor) )
-    THROW_INVALID_DSTACK("selCursor.get"_Str);
+    THROW_INVALID_DSTACK("selCursor.get"_Stz);
   
   SelCursor* pSelCursor = _pSelCursor(pPtrSelCursor);
   ASSERT(CN_SELCURSOR == pSelCursor->eClass());
@@ -181,11 +181,11 @@ void Task::vSelCursorHasRow(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vSelCursorInit(MP_Task mpTask)
 {
-ENTRY("vSelCursorInit"_Str);
+ENTRY("vSelCursorInit"_Stz);
   
   Object* pPtrSelCursor;
   if ( ! mpTask->m_pDataStack->bPop(pPtrSelCursor) )
-    THROW_INVALID_DSTACK("selCursor.init"_Str);
+    THROW_INVALID_DSTACK("selCursor.init"_Stz);
   
   SelCursor* pSelCursor = _pSelCursor(pPtrSelCursor);
   ASSERT(CN_SELCURSOR == pSelCursor->eClass());
@@ -200,7 +200,7 @@ ENTRY("vSelCursorInit"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vSelCursorNew(MP_Task mpTask)
 {
-ENTRY("vSelCursorNew"_Str);
+ENTRY("vSelCursorNew"_Stz);
   
   SelCursor* pSelCursor = new SelCursor;
   ASSERT(CN_SELCURSOR == pSelCursor->eClass());
@@ -215,11 +215,11 @@ ENTRY("vSelCursorNew"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vSelCursorNext(MP_Task mpTask)
 {
-ENTRY("vSelCursorNext"_Str);
+ENTRY("vSelCursorNext"_Stz);
   
   Object* pPtrSelCursor;
   if ( ! mpTask->m_pDataStack->bPop(pPtrSelCursor) )
-    THROW_INVALID_DSTACK("selCursor.next"_Str);
+    THROW_INVALID_DSTACK("selCursor.next"_Stz);
   
   SelCursor* pSelCursor = _pSelCursor(pPtrSelCursor);
   ASSERT(CN_SELCURSOR == pSelCursor->eClass());
@@ -238,11 +238,11 @@ ENTRY("vSelCursorNext"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vSelCursorRowBuffer(MP_Task mpTask)
 {
-  ENTRY("vSelCursorRowBuffer"_Str);
+  ENTRY("vSelCursorRowBuffer"_Stz);
   
   Object* pPtrSelCursor;
   if ( ! mpTask->m_pDataStack->bPop(pPtrSelCursor) )
-  THROW_INVALID_DSTACK("selCursor.rowBuffer"_Str);
+  THROW_INVALID_DSTACK("selCursor.rowBuffer"_Stz);
   
   SelCursor* pSelCursor = _pSelCursor(pPtrSelCursor);
   ASSERT(CN_SELCURSOR == pSelCursor->eClass());
@@ -260,11 +260,11 @@ void Task::vSelCursorRowBuffer(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vSelCursorTableFetch(MP_Task mpTask)
 {
-ENTRY("vSelCursorTableFetch"_Str);
+ENTRY("vSelCursorTableFetch"_Stz);
   
   Object* pPtrSelCursor;
   if ( ! mpTask->m_pDataStack->bPop(pPtrSelCursor) )
-    THROW_INVALID_DSTACK("selCursor.table@"_Str);
+    THROW_INVALID_DSTACK("selCursor.table@"_Stz);
   
   SelCursor* pSelCursor = _pSelCursor(pPtrSelCursor);
   ASSERT(CN_SELCURSOR == pSelCursor->eClass());
@@ -281,18 +281,18 @@ ENTRY("vSelCursorTableFetch"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vSelCursorTableStore(MP_Task mpTask)
 {
-ENTRY("vSelCursorTableStore"_Str);
+ENTRY("vSelCursorTableStore"_Stz);
   
   Object* pPtrSelCursor;
   if ( ! mpTask->m_pDataStack->bPop(pPtrSelCursor) )
-    THROW_INVALID_DSTACK("selCursor.table!"_Str);
+    THROW_INVALID_DSTACK("selCursor.table!"_Stz);
   
   SelCursor* pSelCursor = _pSelCursor(pPtrSelCursor);
   ASSERT(CN_SELCURSOR == pSelCursor->eClass());
   
   Object* pPtrTable;
   if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
-    THROW_INVALID_DSTACK("selCursor.table!"_Str);
+    THROW_INVALID_DSTACK("selCursor.table!"_Stz);
   
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());

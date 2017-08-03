@@ -25,7 +25,7 @@ namespace Values
     i8      nSize(void) const;
     Dictionaries::Cell* pIpPtr(void) const;
     
-    void vToString(Str* aWorkspace);
+    void vToString(Stz* aWorkspace);
   };
   
   IpVal* _pIpVal(void* aAddr);

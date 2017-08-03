@@ -14,7 +14,7 @@
 void* Id::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  vFatal("fatal: RowId class cannot be new'd\n"_Str);
+  vFatal("fatal: RowId class cannot be new'd\n"_Stz);
   
   NEVER_REACH;
 }
@@ -78,7 +78,7 @@ void Id::operator =(Id& xId)
 /*----------------------------------------------------------------------------*/
 void Id::vContentDump(void)
 {
-  vTrace("Id %p: %llu.%llu\n"_Str,
+  vTrace("Id %p: %llu.%llu\n"_Stz,
          this,
          m_uBuffer,
          m_uRow

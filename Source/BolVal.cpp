@@ -22,7 +22,7 @@ BolVal* Values::_pBolVal(void* aAddr)
 void* BolVal::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  vFatal("fatal: BolVal class cannot be new'd\n"_Str);
+  vFatal("fatal: BolVal class cannot be new'd\n"_Stz);
   
   NEVER_REACH;
 }
@@ -51,7 +51,7 @@ i8* BolVal::aInt(void)
 /*----------------------------------------------------------------------------*/
 void BolVal::operator =(Bol xBol)
 {
-  //vTrace("IvlVal: diff %lld\n"_Str,nSub(&m_iIvl,this));
+  //vTrace("IvlVal: diff %lld\n"_Stz,nSub(&m_iIvl,this));
   
   *aInt() = xBol.iAsI8();
 }
@@ -61,7 +61,7 @@ void BolVal::operator =(Bol xBol)
 /*----------------------------------------------------------------------------*/
 void BolVal::operator =(i8 iBol)
 {
-  //vTrace("BolVal: diff %lld\n"_Str,nSub(&m_iBol,this));
+  //vTrace("BolVal: diff %lld\n"_Stz,nSub(&m_iBol,this));
   
   m_bBol = iBol;
 }
@@ -85,7 +85,7 @@ i8 BolVal::nSize(void) const
 /*----------------------------------------------------------------------------*/
 /* convert to string                                                          */
 /*----------------------------------------------------------------------------*/
-void BolVal::vToString(Str* aWorkspace)
+void BolVal::vToString(Stz* aWorkspace)
 {
   *aWorkspace = m_bBol;
 }

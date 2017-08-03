@@ -37,20 +37,20 @@ void Task::vAddPrimitives_Bp(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  vAddPrimitive("bp::analyze"_Str,     &vBpAnalyze,        false);
-  vAddPrimitive("bp::dump"_Str,        &vBpDump,           false);
-  vAddPrimitive("bp::freeBuffers"_Str, &vFreeBuffers,      false);
-  vAddPrimitive("bp::freePercent"_Str, &vFreePercent,      false);
-  vAddPrimitive("bp::freeSpace"_Str,   &vFreeSpace,        false);
-  vAddPrimitive("bp::inUseSpace"_Str,  &vInUseSpace,       false);
-  vAddPrimitive("bp::snapshot"_Str,    &vSnapshot,         false);
-  vAddPrimitive("bp::totalSpace"_Str,  &vTotalSpace,       false);
+  vAddPrimitive("bp::analyze"_Stz,     &vBpAnalyze,        false);
+  vAddPrimitive("bp::dump"_Stz,        &vBpDump,           false);
+  vAddPrimitive("bp::freeBuffers"_Stz, &vFreeBuffers,      false);
+  vAddPrimitive("bp::freePercent"_Stz, &vFreePercent,      false);
+  vAddPrimitive("bp::freeSpace"_Stz,   &vFreeSpace,        false);
+  vAddPrimitive("bp::inUseSpace"_Stz,  &vInUseSpace,       false);
+  vAddPrimitive("bp::snapshot"_Stz,    &vSnapshot,         false);
+  vAddPrimitive("bp::totalSpace"_Stz,  &vTotalSpace,       false);
 
-  vAddPrimitive("bpa"_Str,             &vBpAnalyze,        false);
-  vAddPrimitive("bpd"_Str,             &vBpDump,           false);
+  vAddPrimitive("bpa"_Stz,             &vBpAnalyze,        false);
+  vAddPrimitive("bpd"_Stz,             &vBpDump,           false);
  
-  vAddPrimitive("epochDump"_Str,       &vBpEpochDump,      false);
-  vAddPrimitive("epochTake"_Str,       &vBpEpochTake,      false);
+  vAddPrimitive("epochDump"_Stz,       &vBpEpochDump,      false);
+  vAddPrimitive("epochTake"_Stz,       &vBpEpochTake,      false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -58,7 +58,7 @@ void Task::vAddPrimitives_Bp(void)
 /*----------------------------------------------------------------------------*/
 void Task::vBpAnalyze(MP_Task mpTask)
 {
-  ENTRY("vBpa"_Str);
+  ENTRY("vBpa"_Stz);
   
   BPA* pBPA = new BPA;
   
@@ -74,7 +74,7 @@ void Task::vBpAnalyze(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vBpDump(MP_Task mpTask)
 {
-  ENTRY("vBpDump"_Str);
+  ENTRY("vBpDump"_Stz);
   
   BPA* pBPA = new BPA;
   
@@ -90,22 +90,22 @@ void Task::vBpDump(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vBpEpochDump(MP_Task mpTask)
 {
-  ENTRY("vBpEpochDump"_Str);
+  ENTRY("vBpEpochDump"_Stz);
   
   BPA* pBPA = new BPA;
   i8 iCountObjects[CN_ENUMS];
   
-  vTrace("\n"_Str);
-  vTrace("%sWords created since last epoch:\n"_Str,aSingleTab());
+  vTrace("\n"_Stz);
+  vTrace("%sWords created since last epoch:\n"_Stz,aSingleTab());
   
   pBPA->vWordList(gpAttachMap->m_iEpoch);
   pBPA->vObjectSnapshot(&iCountObjects[0]);
   
-  vTrace("\n%sObjects created since last epoch:\n\n"_Str,aSingleTab());
+  vTrace("\n%sObjects created since last epoch:\n\n"_Stz,aSingleTab());
   
   for (i8 iIndex =0 ; iIndex < CN_ENUMS; iIndex++) {
     if (iCountObjects[iIndex] != giCountObjects[iIndex])
-      vTrace("%s  %12s %-6lld \n"_Str, aSingleTab(), aCN[iIndex],
+      vTrace("%s  %12s %-6lld \n"_Stz, aSingleTab(), aCN[iIndex],
              iCountObjects[iIndex] - giCountObjects[iIndex]);
   }
   EXIT();
@@ -116,7 +116,7 @@ void Task::vBpEpochDump(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vBpEpochTake(MP_Task mpTask)
 {
-  ENTRY("vBpEpochTake"_Str);
+  ENTRY("vBpEpochTake"_Stz);
   
   // increment the epoch
   gpAttachMap->m_iEpoch++;
@@ -132,7 +132,7 @@ void Task::vBpEpochTake(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vFreeBuffers(MP_Task mpTask)
 {
-  ENTRY("vFreePercent"_Str);
+  ENTRY("vFreePercent"_Stz);
   
   i8 iFreeBuffers = gpBufferPool->iFreeCount();
   
@@ -146,7 +146,7 @@ void Task::vFreeBuffers(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vFreePercent(MP_Task mpTask)
 {
-  ENTRY("vFreePercent"_Str);
+  ENTRY("vFreePercent"_Stz);
   
   i8 iFreePercent = gpBufferPool->iFreePercent();
   
@@ -160,7 +160,7 @@ void Task::vFreePercent(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vFreeSpace(MP_Task mpTask)
 {
-  ENTRY("vFreeSpace"_Str);
+  ENTRY("vFreeSpace"_Stz);
   
   i8 iFreeSpace = gpBufferPool->iFreeSpace();
   
@@ -174,7 +174,7 @@ void Task::vFreeSpace(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vInUseSpace(MP_Task mpTask)
 {
-  ENTRY("vInUseSpace"_Str);
+  ENTRY("vInUseSpace"_Stz);
   
   i8 iInUseSpace = gpAttachMap->m_iRegionSize
                      - gpAttachMap->m_iJumboSize
@@ -190,7 +190,7 @@ void Task::vInUseSpace(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vSnapshot(MP_Task mpTask)
 {
-  ENTRY("vSnapshot"_Str);
+  ENTRY("vSnapshot"_Stz);
   
   i8 iCountObjects[CN_ENUMS];
   for (i8 index = 0; index < CN_ENUMS; index++)
@@ -224,7 +224,7 @@ void Task::vSnapshot(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTotalSpace(MP_Task mpTask)
 {
-  ENTRY("vTotalSpace"_Str);
+  ENTRY("vTotalSpace"_Stz);
   
   i8 iTotalSpace = gpAttachMap->m_iRegionSize - gpAttachMap->m_iJumboSize;
   

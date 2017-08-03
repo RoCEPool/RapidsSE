@@ -31,10 +31,10 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Entry(void)
 {
-  vAddPrimitive("entry.matches"_Str,      &vEntryMatches,     false);
-  vAddPrimitive("entry.toDataRow"_Str,    &vEntryToDataRow,   false);
-  vAddPrimitive("entry.embeddedRow"_Str,  &vEntryEmbeddedRow, false);
-  vAddPrimitive("entry.same"_Str,         &vEntrySame,        false);
+  vAddPrimitive("entry.matches"_Stz,      &vEntryMatches,     false);
+  vAddPrimitive("entry.toDataRow"_Stz,    &vEntryToDataRow,   false);
+  vAddPrimitive("entry.embeddedRow"_Stz,  &vEntryEmbeddedRow, false);
+  vAddPrimitive("entry.same"_Stz,         &vEntrySame,        false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -42,26 +42,26 @@ void Task::vAddPrimitives_Entry(void)
 /*----------------------------------------------------------------------------*/
 void Task::vEntryMatches(MP_Task mpTask)
 {
-  ENTRY("vEntryMatches"_Str);
+  ENTRY("vEntryMatches"_Stz);
   
   Object* pPtrEntry = nullptr;
   Object* pPtrIndex = nullptr;
   ValWrk xValWrk;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrEntry) )
-    THROW_INVALID_DSTACK("entry.matches"_Str);
+    THROW_INVALID_DSTACK("entry.matches"_Stz);
   
   Entry* pEntry = _pEntry(pPtrEntry);
   ASSERT(CN_ENTRY == pEntry->eClass());
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrIndex) )
-    THROW_INVALID_DSTACK("entry.matches"_Str);
+    THROW_INVALID_DSTACK("entry.matches"_Stz);
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
   
   if ( ! mpTask->m_pDataStack->bPop(xValWrk) )
-    THROW_INVALID_DSTACK("entry.matches"_Str);
+    THROW_INVALID_DSTACK("entry.matches"_Stz);
   
   KeyWrk xKeyWrk;
   
@@ -82,19 +82,19 @@ void Task::vEntryMatches(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vEntryToDataRow(MP_Task mpTask)
 {
-  ENTRY("vEntryRow"_Str);
+  ENTRY("vEntryRow"_Stz);
   
   Object* pPtrEntry = nullptr;
   Object* pPtrIndex = nullptr;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrEntry) )
-    THROW_INVALID_DSTACK("entry.toDataRow"_Str);
+    THROW_INVALID_DSTACK("entry.toDataRow"_Stz);
   
   Entry* pEntry = _pEntry(pPtrEntry);
   ASSERT(CN_ENTRY == pEntry->eClass() || CN_ROW == pEntry->eClass());
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrIndex) )
-    THROW_INVALID_DSTACK("entry.toDataRow"_Str);
+    THROW_INVALID_DSTACK("entry.toDataRow"_Stz);
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
@@ -143,13 +143,13 @@ void Task::vEntryToDataRow(MP_Task mpTask)
 #ifdef _ROWFORMAT
 void Task::vEntryEmbeddedRow(MP_Task mpTask)
 {
-  ENTRY("vEntryEmbeddedRow"_Str);
+  ENTRY("vEntryEmbeddedRow"_Stz);
   
   Object* pPtrEntry = nullptr;
   Object* pPtrIndex = nullptr;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrEntry) )
-    THROW_INVALID_DSTACK("entry.embeddedRow"_Str);
+    THROW_INVALID_DSTACK("entry.embeddedRow"_Stz);
   
   Entry* pEntry = _pEntry(pPtrEntry);
   ASSERT(CN_ENTRY == pEntry->eClass() || CN_ROW == pEntry->eClass());
@@ -165,13 +165,13 @@ void Task::vEntryEmbeddedRow(MP_Task mpTask)
 #else
 void Task::vEntryEmbeddedRow(MP_Task mpTask)
 {
-  ENTRY("vEntryEmbeddedRow"_Str);
+  ENTRY("vEntryEmbeddedRow"_Stz);
   
   Object* pPtrEntry = nullptr;
   Object* pPtrIndex = nullptr;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrEntry) )
-    THROW_INVALID_DSTACK("entry.embeddedRow"_Str);
+    THROW_INVALID_DSTACK("entry.embeddedRow"_Stz);
   
   Entry* pEntry = _pEntry(pPtrEntry);
   ASSERT(CN_ENTRY == pEntry->eClass() || CN_ROW == pEntry->eClass());
@@ -193,19 +193,19 @@ void Task::vEntryEmbeddedRow(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vEntrySame(MP_Task mpTask)
 {
-  ENTRY("vEntryMatches"_Str);
+  ENTRY("vEntryMatches"_Stz);
   
   Object* pPtrEntry = nullptr;
   Object* pPtrOtherEntry = nullptr;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrEntry) )
-    THROW_INVALID_DSTACK("entry.same"_Str);
+    THROW_INVALID_DSTACK("entry.same"_Stz);
   
   Entry* pEntry = _pEntry(pPtrEntry);
   ASSERT(CN_ENTRY == pEntry->eClass());
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrOtherEntry) )
-    THROW_INVALID_DSTACK("entry.same"_Str);
+    THROW_INVALID_DSTACK("entry.same"_Stz);
   
   Entry* pOtherEntry = _pEntry(pPtrOtherEntry);
   ASSERT(CN_ENTRY == pOtherEntry->eClass());

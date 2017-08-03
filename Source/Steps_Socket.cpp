@@ -33,13 +33,13 @@ extern bool            gbTracepoint;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Socket(void)
 {
-  vAddPrimitive("socket.accept"_Str,   &vSocketAccept,     false);
-  vAddPrimitive("socket.close"_Str,    &vSocketClose,      false);
-  vAddPrimitive("socket.connect"_Str,  &vSocketConnect,    false);
-  vAddPrimitive("socket.listen"_Str,   &vSocketListen,     false);
-  vAddPrimitive("socket.open"_Str,     &vSocketOpen,       false);
-  vAddPrimitive("socket.recv"_Str,     &vSocketRecv,       false);
-  vAddPrimitive("socket.send"_Str,     &vSocketSend,       false);
+  vAddPrimitive("socket.accept"_Stz,   &vSocketAccept,     false);
+  vAddPrimitive("socket.close"_Stz,    &vSocketClose,      false);
+  vAddPrimitive("socket.connect"_Stz,  &vSocketConnect,    false);
+  vAddPrimitive("socket.listen"_Stz,   &vSocketListen,     false);
+  vAddPrimitive("socket.open"_Stz,     &vSocketOpen,       false);
+  vAddPrimitive("socket.recv"_Stz,     &vSocketRecv,       false);
+  vAddPrimitive("socket.send"_Stz,     &vSocketSend,       false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -52,10 +52,10 @@ void Task::vSocketAccept(MP_Task mpTask)
   int     iSocketId;
   Object* pObject;
   
-  ENTRY("vSocketAccept"_Str);
+  ENTRY("vSocketAccept"_Stz);
   
   if ( ! mpTask->m_pDataStack->bPop(pObject) )
-    THROW_INVALID_DSTACK("socket.accept"_Str);
+    THROW_INVALID_DSTACK("socket.accept"_Stz);
   
   // get pSocket
   pSocket = reinterpret_cast<Socket*>(pObject);
@@ -64,7 +64,7 @@ void Task::vSocketAccept(MP_Task mpTask)
   bool bResult = pSocket->bAcceptClient(iSocketId, xSysCall);
   
   if ( ! bResult )
-    THROW("Unable to accept connection: Errno %d!"_Str, xSysCall.iError());
+    THROW("Unable to accept connection: Errno %d!"_Stz, xSysCall.iError());
   
   Task* pTask = (Task*)0x208f500c8;
   
@@ -83,10 +83,10 @@ void Task::vSocketClose(MP_Task mpTask)
   Socket* pSocket;
   Object* pObject;
   
-  ENTRY("vSocketClose"_Str);
+  ENTRY("vSocketClose"_Stz);
   
   if ( ! mpTask->m_pDataStack->bPop(pObject) )
-    THROW_INVALID_DSTACK("socketclose"_Str);
+    THROW_INVALID_DSTACK("socketclose"_Stz);
   
   // get pSocket
   pSocket = reinterpret_cast<Socket*>(pObject);
@@ -95,7 +95,7 @@ void Task::vSocketClose(MP_Task mpTask)
   bool bResult = pSocket->bClose(xSysCall);
   
   if ( ! bResult )
-    THROW("Unable to close socket: Errno %d!"_Str, xSysCall.iError());
+    THROW("Unable to close socket: Errno %d!"_Stz, xSysCall.iError());
   
   EXIT();
 }
@@ -112,19 +112,19 @@ void Task::vSocketConnect(MP_Task mpTask)
   
   i8 iPort;
   
-  ENTRY("vSocketConnect"_Str);
+  ENTRY("vSocketConnect"_Stz);
   
   if ( ! mpTask->m_pDataStack->bPop(pObject) )
-    THROW_INVALID_DSTACK("socket.connect"_Str);
+    THROW_INVALID_DSTACK("socket.connect"_Stz);
   
   if ( ! mpTask->m_pDataStack->bPop(xNode) )
-    THROW_INVALID_DSTACK("socket.connect"_Str);
+    THROW_INVALID_DSTACK("socket.connect"_Stz);
   
   if ( ! mpTask->m_pDataStack->bPop(iPort) )
-    THROW_INVALID_DSTACK("socket.connect"_Str);
+    THROW_INVALID_DSTACK("socket.connect"_Stz);
   
   // get address of node
-  Str* sAddr = reinterpret_cast<Str*>(_pStrVal(xNode.pNestedValueSelf())->s());
+  Stz* sAddr = reinterpret_cast<Stz*>(_pStrVal(xNode.pNestedValueSelf())->s());
   
   // get pSocket
   pSocket = reinterpret_cast<Socket*>(pObject);
@@ -144,17 +144,17 @@ void Task::vSocketConnect(MP_Task mpTask)
       
       if (iError == ETIMEDOUT) {
         if (0 == iTimedOutCount++)
-          vTrace("Connect timedout... retrying...\n"_Str);
+          vTrace("Connect timedout... retrying...\n"_Stz);
         continue;
       }
       
       if (iError == ECONNREFUSED) {
         if (0 == iConnRefusedCount++)
-          vTrace("Connect refused... retrying...\n"_Str);
+          vTrace("Connect refused... retrying...\n"_Stz);
         continue;
       }
       
-      THROW("Unable to connect: Errno %d!"_Str, iError);
+      THROW("Unable to connect: Errno %d!"_Stz, iError);
     }
   }
   
@@ -174,16 +174,16 @@ void Task::vSocketListen(MP_Task mpTask)
   Socket* pSocket;
   i8      iPort;
   
-  ENTRY("vSocketListen"_Str);
+  ENTRY("vSocketListen"_Stz);
   
   if ( ! mpTask->m_pDataStack->bPop(iPort) )
-    THROW_INVALID_DSTACK("socketlisten"_Str);
+    THROW_INVALID_DSTACK("socketlisten"_Stz);
   
   pSocket = new Socket;
   bool bResult = pSocket->bCreateServer((int)iPort, xSysCall);
   
   if ( ! bResult )
-    THROW("Unable to listen for connections: Errno %d!"_Str, xSysCall.iError());
+    THROW("Unable to listen for connections: Errno %d!"_Stz, xSysCall.iError());
   
   // return new socket
   Object* pPtrSocket = pSocket;
@@ -200,13 +200,13 @@ void Task::vSocketOpen(MP_Task mpTask)
   SysCall xSysCall;
   Socket* pSocket;
   
-  ENTRY("vSocketOpen"_Str);
+  ENTRY("vSocketOpen"_Stz);
   
   pSocket = new Socket;
   bool bResult = pSocket->bSocket(xSysCall);
   
   if ( ! bResult )
-    THROW("Unable to create socker: Errno %d!"_Str, xSysCall.iError());
+    THROW("Unable to create socker: Errno %d!"_Stz, xSysCall.iError());
   
   // return pSocket
   Object* pPtrSocket = pSocket;
@@ -220,7 +220,7 @@ void Task::vSocketOpen(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vSocketSend(MP_Task mpTask)
 {
-  ENTRY("vSocketSend"_Str);
+  ENTRY("vSocketSend"_Stz);
   
   SysCall xSysCall;
   Socket* pSocket;
@@ -229,10 +229,10 @@ void Task::vSocketSend(MP_Task mpTask)
   bool    bResult;
   
   if ( ! mpTask->m_pDataStack->bPop(pObject) )
-    THROW_INVALID_DSTACK("socket.send"_Str);
+    THROW_INVALID_DSTACK("socket.send"_Stz);
   
   if ( ! mpTask->m_pDataStack->bPop(xValSet) )
-    THROW_INVALID_DSTACK("socket.send"_Str);
+    THROW_INVALID_DSTACK("socket.send"_Stz);
   
   pSocket = reinterpret_cast<Socket*>(pObject);
   
@@ -313,7 +313,7 @@ void Task::vSocketSend(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vSocketRecv(MP_Task mpTask)
 {
-  ENTRY("vSocketRecv"_Str);
+  ENTRY("vSocketRecv"_Stz);
   
   SysCall xSysCall;
   Socket* pSocket;
@@ -323,12 +323,12 @@ void Task::vSocketRecv(MP_Task mpTask)
   i8 iBytes;
   
   if ( ! mpTask->m_pDataStack->bPop(pObject) )
-    THROW_INVALID_DSTACK("socketrecv"_Str);
+    THROW_INVALID_DSTACK("socketrecv"_Stz);
   
   pSocket = reinterpret_cast<Socket*>(pObject);
   
   if (gbTracepoint)
-    vTrace("[N%lld:%8s\\%lld %-11s] receiving on %lld\n"_Str,
+    vTrace("[N%lld:%8s\\%lld %-11s] receiving on %lld\n"_Stz,
            gpGrid->iThisNode(),
            mpTask->m_sName.s(),
            *mpTask->m_zAcks,
@@ -342,7 +342,7 @@ void Task::vSocketRecv(MP_Task mpTask)
   bool bResult = pSocket->bRecvBytes(sizeof(iBytes), reinterpret_cast<void*>(&iBytes), xSysCall);
   
   if ( ! bResult )
-    THROW("Unable to recvFrom socket: Errno %d!"_Str, xSysCall.iError());
+    THROW("Unable to recvFrom socket: Errno %d!"_Stz, xSysCall.iError());
   
   //******************************************************************
   // Receive the valset
@@ -350,7 +350,7 @@ void Task::vSocketRecv(MP_Task mpTask)
   bResult = pSocket->bRecvBytes(iBytes, reinterpret_cast<void*>(&xValSet), xSysCall);
   
   if ( ! bResult )
-    THROW("Unable to recvFrom socket: Errno %d!"_Str, xSysCall.iError());
+    THROW("Unable to recvFrom socket: Errno %d!"_Stz, xSysCall.iError());
   
   //******************************************************************
   // Check if valset has a row buffer
@@ -365,7 +365,7 @@ void Task::vSocketRecv(MP_Task mpTask)
     bResult = pSocket->bRecvBytes(sizeof(iBytes), reinterpret_cast<void*>(&iBytes), xSysCall);
     
     if ( ! bResult )
-      THROW("Unable to recvFrom socket: Errno %d!"_Str, xSysCall.iError());
+      THROW("Unable to recvFrom socket: Errno %d!"_Stz, xSysCall.iError());
     
     //******************************************************************
     // receive rowBuffer
@@ -374,7 +374,7 @@ void Task::vSocketRecv(MP_Task mpTask)
     bResult = pSocket->bRecvBytes(iBytes, reinterpret_cast<void*>(pRowBuffer->aDataArea()), xSysCall);
     
     if ( ! bResult )
-      THROW("Unable to recvFrom socket: Errno %d!"_Str, xSysCall.iError());
+      THROW("Unable to recvFrom socket: Errno %d!"_Stz, xSysCall.iError());
     
     pRowBuffer->vRowCount();
     

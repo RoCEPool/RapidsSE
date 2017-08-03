@@ -21,12 +21,12 @@ bool Region::bAttach(StrVal& sRegionName, bool bWecome)
   bool bResult;
   
   if (bWecome)
-    vTrace("Attaching to SE instance %s\n"_Str,sRegionName.s());
+    vTrace("Attaching to SE instance %s\n"_Stz,sRegionName.s());
   
   // open existing shm region
   bResult = Shm::bAttach(sRegionName,iFD,xSysCall);
   if ( ! bResult ) {
-    vTrace("RapidsSE::vAttach: failed to open region: %s\n"_Str,
+    vTrace("RapidsSE::vAttach: failed to open region: %s\n"_Stz,
            sRegionName.s());
     return false;
   }
@@ -39,7 +39,7 @@ bool Region::bAttach(StrVal& sRegionName, bool bWecome)
                        false,
                        xSysCall);
   if ( ! mpRegion )  {
-    vTrace("RapidsSE::vAttach failed to map\n"_Str);
+    vTrace("RapidsSE::vAttach failed to map\n"_Stz);
     Shm::bClose(iFD,xSysCall);
     return false;
   }
@@ -60,7 +60,7 @@ bool Region::bAttach(StrVal& sRegionName, bool bWecome)
   // reopen the existing shm region
   bResult = Shm::bAttach(sRegionName,iFD,xSysCall);
   if ( ! bResult ) {
-    vTrace("RapidsSE::vAttach: failed to open region: %s\n"_Str,
+    vTrace("RapidsSE::vAttach: failed to open region: %s\n"_Stz,
            sRegionName.s());
     return false;
   }
@@ -73,7 +73,7 @@ bool Region::bAttach(StrVal& sRegionName, bool bWecome)
                        false,
                        xSysCall);
   if ( ! mpRegion )  {
-    vTrace("RapidsSE::vAttach failed to map\n"_Str);
+    vTrace("RapidsSE::vAttach failed to map\n"_Stz);
     Shm::bClose(iFD,xSysCall);
     return false;
   }
@@ -82,7 +82,7 @@ bool Region::bAttach(StrVal& sRegionName, bool bWecome)
   gpBufferPool = reinterpret_cast<BufferPool*>(mpRegion);
   
   if (gbVerbose)
-    vTrace("Shm mapped at %p\n"_Str,mpRegion);
+    vTrace("Shm mapped at %p\n"_Stz,mpRegion);
   
   return true;
 }
@@ -100,13 +100,13 @@ void Region::vCreate(StrVal& sRegionName, i8 iRegionSize, i8 iJumboTook,
   
   Magnitudes::vMagnitude(iRegionSize, sSize);
 
-  vTrace("Creating RapidsSE instance %s; size %s (%lldB)...\n"_Str,
+  vTrace("Creating RapidsSE instance %s; size %s (%lldB)...\n"_Stz,
          sRegionName.s(),
          sSize.s(),
          iRegionSize);
   
   if (gbVerbose)
-    vTrace("Region::vCreate A\n"_Str);
+    vTrace("Region::vCreate A\n"_Stz);
   
   // open a new shm region
   bool bResult = Shm::bCreate(sRegionName,
@@ -116,10 +116,10 @@ void Region::vCreate(StrVal& sRegionName, i8 iRegionSize, i8 iJumboTook,
                               xSysCall);
 
   if (gbVerbose)
-    vTrace("Region::vCreate B\n"_Str);
+    vTrace("Region::vCreate B\n"_Stz);
   
   if ( ! bResult ) {
-    vTrace("RapidsSE::vCreate: failed to create region %s\n"_Str,
+    vTrace("RapidsSE::vCreate: failed to create region %s\n"_Stz,
            sRegionName.s());
     NEVER_REACH;
   }
@@ -133,25 +133,25 @@ void Region::vCreate(StrVal& sRegionName, i8 iRegionSize, i8 iJumboTook,
                        xSysCall);
   
   if (gbVerbose)
-    vTrace("Region::vCreate C; mpRegion=%p\n"_Str,mpRegion);
+    vTrace("Region::vCreate C; mpRegion=%p\n"_Stz,mpRegion);
   
   if ( ! mpRegion )  {
-    vTrace("RapidsSE::vCreate failed to map!\n"_Str);
+    vTrace("RapidsSE::vCreate failed to map!\n"_Stz);
     Shm::bClose(iFD,xSysCall);
     NEVER_REACH;
   }
   
   if (gbVerbose)
-    vTrace("Region::vCreate D\n"_Str);
+    vTrace("Region::vCreate D\n"_Stz);
   
   gpBufferPool = new(mpRegion) BufferPool(sRegionName, iRegionSize,
                                           iJumboTook, bTouch, bDontFree, bFreeRB);
 
   if (gbVerbose)
-    vTrace("Region::vCreate E\n"_Str);
+    vTrace("Region::vCreate E\n"_Stz);
   
   if (gbVerbose)
-    vTrace("Shm mapped at %p\n"_Str,mpRegion);
+    vTrace("Shm mapped at %p\n"_Stz,mpRegion);
   
   // lock the shared memory in
   if (bLock) {
@@ -160,10 +160,10 @@ void Region::vCreate(StrVal& sRegionName, i8 iRegionSize, i8 iJumboTook,
                          xSysCall);
   
     if ( ! bResult )  {
-      vFatal("RapidsSE::vAttach failed to lock\n"_Str);
+      vFatal("RapidsSE::vAttach failed to lock\n"_Stz);
       bResult = Shm::bUnmap(mpRegion, iRegionSize, xSysCall);
       if ( ! bResult )  {
-        vFatal("RapidsSE::vAttach failed to unmap\n"_Str);
+        vFatal("RapidsSE::vAttach failed to unmap\n"_Stz);
       }
       Shm::bClose(iFD,xSysCall);
       exit(EXIT_FAILURE);
@@ -171,7 +171,7 @@ void Region::vCreate(StrVal& sRegionName, i8 iRegionSize, i8 iJumboTook,
   }
   
   if (gbVerbose)
-    vTrace("Shm pages locked in memory\n"_Str);
+    vTrace("Shm pages locked in memory\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -200,9 +200,9 @@ void Region::vUnlink(StrVal& sRegionName)
   SysCall xSysCall;
   
   if (Shm::bUnlink(sRegionName,xSysCall))
-    vTrace("Region %s succesfully unlinked\n"_Str,sRegionName.s());
+    vTrace("Region %s succesfully unlinked\n"_Stz,sRegionName.s());
   else
-    vTrace("Region %s not unlinked\n"_Str,sRegionName.s());
+    vTrace("Region %s not unlinked\n"_Stz,sRegionName.s());
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -215,12 +215,12 @@ void* Region::pOpen(StrVal& sRegionName, int& iFD)
   SysCall xSysCall;
   bool bResult;
   
-  vTrace("Region::pOpen %s\n"_Str,sRegionName.s());
+  vTrace("Region::pOpen %s\n"_Stz,sRegionName.s());
   
   // open shm region
   bResult = Shm::bAttach(sRegionName,iFD,xSysCall);
   if ( ! bResult ) {
-    vTrace("Region::pOpen: failed to open region: %s\n"_Str,
+    vTrace("Region::pOpen: failed to open region: %s\n"_Stz,
            sRegionName.s());
     return nullptr;
   }
@@ -233,7 +233,7 @@ void* Region::pOpen(StrVal& sRegionName, int& iFD)
                             false,
                             xSysCall);
   if ( ! pRegion )  {
-    vTrace("Region::pOpen failed to map\n"_Str);
+    vTrace("Region::pOpen failed to map\n"_Stz);
     Shm::bClose(iFD,xSysCall);
     return nullptr;
   }

@@ -31,19 +31,19 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Int(void)
 {
-  vAddPrimitive("+"_Str,               &vIntAdd,           false);
-  vAddPrimitive("/"_Str,               &vIntDivide,        false);
-  vAddPrimitive("=="_Str,              &vIntEqual,         false);
-  vAddPrimitive(">"_Str,               &vIntGreater,       false);
-  vAddPrimitive(">="_Str,              &vIntGreaterEqual,  false);
-  vAddPrimitive("hash"_Str,            &vIntHash,          false);
-  vAddPrimitive("<"_Str,               &vIntLess,          false);
-  vAddPrimitive("<="_Str,              &vIntLessEqual,     false);
-  vAddPrimitive("%"_Str,               &vIntModulo,        false);
-  vAddPrimitive("*"_Str,               &vIntMultiply,      false);
-  vAddPrimitive("neg"_Str,             &vIntNeg,           false);
-  vAddPrimitive("!="_Str,              &vIntNotEqual,      false);
-  vAddPrimitive("-"_Str,               &vIntSubtract,      false);
+  vAddPrimitive("+"_Stz,               &vIntAdd,           false);
+  vAddPrimitive("/"_Stz,               &vIntDivide,        false);
+  vAddPrimitive("=="_Stz,              &vIntEqual,         false);
+  vAddPrimitive(">"_Stz,               &vIntGreater,       false);
+  vAddPrimitive(">="_Stz,              &vIntGreaterEqual,  false);
+  vAddPrimitive("hash"_Stz,            &vIntHash,          false);
+  vAddPrimitive("<"_Stz,               &vIntLess,          false);
+  vAddPrimitive("<="_Stz,              &vIntLessEqual,     false);
+  vAddPrimitive("%"_Stz,               &vIntModulo,        false);
+  vAddPrimitive("*"_Stz,               &vIntMultiply,      false);
+  vAddPrimitive("neg"_Stz,             &vIntNeg,           false);
+  vAddPrimitive("!="_Stz,              &vIntNotEqual,      false);
+  vAddPrimitive("-"_Stz,               &vIntSubtract,      false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -51,12 +51,12 @@ void Task::vAddPrimitives_Int(void)
 /*----------------------------------------------------------------------------*/
 void Task::vIntAdd(MP_Task mpTask)
 {
-  ENTRY("vIntAdd"_Str);
+  ENTRY("vIntAdd"_Stz);
   /*
   i8 r, j, i;
   
   if ( ! mpTask->m_pDataStack->bPop(j,i) )
-    THROW_INVALID_DSTACK("+"_Str);
+    THROW_INVALID_DSTACK("+"_Stz);
   
   r = i + j;
   
@@ -83,12 +83,12 @@ void Task::vIntAdd(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vIntDivide(MP_Task mpTask)
 {
-  ENTRY("vIntDivide"_Str);
+  ENTRY("vIntDivide"_Stz);
   
   i8 r, j, i;
   
   if ( ! mpTask->m_pDataStack->bPop(j,i) )
-    THROW_INVALID_DSTACK("/"_Str);
+    THROW_INVALID_DSTACK("/"_Stz);
   
   r = DIV(i,j);
   
@@ -102,12 +102,12 @@ void Task::vIntDivide(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vIntEqual(MP_Task mpTask)
 {
-  ENTRY("vIntEqual"_Str);
+  ENTRY("vIntEqual"_Stz);
   
   i8 r, j, i;
   
   if ( ! mpTask->m_pDataStack->bPop(j,i) )
-    THROW_INVALID_DSTACK("=="_Str);
+    THROW_INVALID_DSTACK("=="_Stz);
   
   r = i == j;
   
@@ -121,12 +121,12 @@ void Task::vIntEqual(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vIntGreater(MP_Task mpTask)
 {
-  ENTRY("vIntGreater"_Str);
+  ENTRY("vIntGreater"_Stz);
   
   i8 r, j, i;
   
   if ( ! mpTask->m_pDataStack->bPop(j,i) )
-    THROW_INVALID_DSTACK(">"_Str);
+    THROW_INVALID_DSTACK(">"_Stz);
   
   r = i > j;
   
@@ -140,12 +140,12 @@ void Task::vIntGreater(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vIntGreaterEqual(MP_Task mpTask)
 {
-  ENTRY("vIntGreaterEqual"_Str);
+  ENTRY("vIntGreaterEqual"_Stz);
   
   i8 r, j, i;
   
   if ( ! mpTask->m_pDataStack->bPop(j,i) )
-    THROW_INVALID_DSTACK(">="_Str);
+    THROW_INVALID_DSTACK(">="_Stz);
   
   r = i >= j;
   
@@ -159,11 +159,11 @@ void Task::vIntGreaterEqual(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vIntHash(MP_Task mpTask)
 {
-  ENTRY("vIntHash"_Str);
+  ENTRY("vIntHash"_Stz);
   
   s48K sString;
   if ( ! mpTask->m_pDataStack->bPop(sString) )
-    THROW_INVALID_DSTACK("hash"_Str);
+    THROW_INVALID_DSTACK("hash"_Stz);
   
   i8 iLength = sString.iLength();
   
@@ -179,12 +179,12 @@ void Task::vIntHash(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vIntLess(MP_Task mpTask)
 {
-  ENTRY("vIntLess"_Str);
+  ENTRY("vIntLess"_Stz);
   
   i8 r, j, i;
   
   if ( ! mpTask->m_pDataStack->bPop(j,i) )
-    THROW_INVALID_DSTACK("<"_Str);
+    THROW_INVALID_DSTACK("<"_Stz);
   
   r = i < j;
   
@@ -198,12 +198,12 @@ void Task::vIntLess(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vIntLessEqual(MP_Task mpTask)
 {
-  ENTRY("vIntLessEqual"_Str);
+  ENTRY("vIntLessEqual"_Stz);
   
   i8 r, j, i;
   
   if ( ! mpTask->m_pDataStack->bPop(j,i) )
-    THROW_INVALID_DSTACK("<="_Str);
+    THROW_INVALID_DSTACK("<="_Stz);
   
   r = i <= j;
   
@@ -217,12 +217,12 @@ void Task::vIntLessEqual(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vIntModulo(MP_Task mpTask)
 {
-  ENTRY("vIntModulo"_Str);
+  ENTRY("vIntModulo"_Stz);
   
   i8 r, j, i;
   
   if ( ! mpTask->m_pDataStack->bPop(j,i) )
-    THROW_INVALID_DSTACK("%"_Str);
+    THROW_INVALID_DSTACK("%"_Stz);
   
   r = MOD(i,j);
   
@@ -236,12 +236,12 @@ void Task::vIntModulo(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vIntMultiply(MP_Task mpTask)
 {
-  ENTRY("vIntMultiply"_Str);
+  ENTRY("vIntMultiply"_Stz);
   
   i8 r, j, i;
   
   if ( ! mpTask->m_pDataStack->bPop(j,i) )
-    THROW_INVALID_DSTACK("*"_Str);
+    THROW_INVALID_DSTACK("*"_Stz);
   
   r = i * j;
   
@@ -255,12 +255,12 @@ void Task::vIntMultiply(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vIntNeg(MP_Task mpTask)
 {
-  ENTRY("vIntNeg"_Str);
+  ENTRY("vIntNeg"_Stz);
   
   i8 r, i;
   
   if ( ! mpTask->m_pDataStack->bPop(i) )
-    THROW_INVALID_DSTACK("neg"_Str);
+    THROW_INVALID_DSTACK("neg"_Stz);
   
   r = -1 * i;
   
@@ -274,12 +274,12 @@ void Task::vIntNeg(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vIntNotEqual(MP_Task mpTask)
 {
-  ENTRY("vIntNotEqual"_Str);
+  ENTRY("vIntNotEqual"_Stz);
   
   i8 r, j, i;
   
   if ( ! mpTask->m_pDataStack->bPop(j,i) )
-    THROW_INVALID_DSTACK("!="_Str);
+    THROW_INVALID_DSTACK("!="_Stz);
   
   r = i != j;
   
@@ -293,12 +293,12 @@ void Task::vIntNotEqual(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vIntSubtract(MP_Task mpTask)
 {
-  ENTRY("vIntSubtract"_Str);
+  ENTRY("vIntSubtract"_Stz);
   
   i8 r, j, i;
   
   if ( ! mpTask->m_pDataStack->bPop(j,i) )
-    THROW_INVALID_DSTACK("-"_Str);
+    THROW_INVALID_DSTACK("-"_Stz);
   
   r = i - j;
   

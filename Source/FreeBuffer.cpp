@@ -28,7 +28,7 @@ FreeBuffer::FreeBuffer(void)
   
   _checkInitialised_(CN_FREEBUFFER);
   
-  ASSERT("Should never be reached"_Str);
+  ASSERT("Should never be reached"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -38,7 +38,7 @@ FreeBuffer::~FreeBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FREEBUFFER,_FOOTER_);
   
-  ASSERT("Should never be reached"_Str);
+  ASSERT("Should never be reached"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -77,7 +77,7 @@ void FreeBuffer::vSetFooter(void)
 /*----------------------------------------------------------------------------*/
 void FreeBuffer::vZeroData(void)
 {
-  Str* aData  = pAdd<Str*>(this,sizeof(FreeBuffer));
+  Stz* aData  = pAdd<Stz*>(this,sizeof(FreeBuffer));
   i8    nBytes = C_SIZE_POOL_BUFFER - sizeof(FreeBuffer) - sizeof(Footer);
   
   MemLib::vSet(aData,0xEF,nBytes,CN_FREEBUFFER);

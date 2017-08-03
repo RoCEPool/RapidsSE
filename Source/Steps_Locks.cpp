@@ -33,8 +33,8 @@ extern Locks           gxLocks;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Locks(void)
 {
-  vAddPrimitive("locks::list"_Str,  &vLocksList,  false);
-  vAddPrimitive("locks::reset"_Str, &vLocksReset, false);
+  vAddPrimitive("locks::list"_Stz,  &vLocksList,  false);
+  vAddPrimitive("locks::reset"_Stz, &vLocksReset, false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -42,10 +42,10 @@ void Task::vAddPrimitives_Locks(void)
 /*----------------------------------------------------------------------------*/
 void Task::vLocksList(MP_Task mpTask)
 {
-ENTRY("vLocksList"_Str);
+ENTRY("vLocksList"_Stz);
 
   File xFile;
-  xFile.bOpen("locks.csv"_Str, C_OPEN_WRITE);
+  xFile.bOpen("locks.csv"_Stz, C_OPEN_WRITE);
   
   gxLocks.vList(xFile);
   
@@ -59,7 +59,7 @@ ENTRY("vLocksList"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vLocksReset(MP_Task mpTask)
 {
-  ENTRY("vLocksReset"_Str);
+  ENTRY("vLocksReset"_Stz);
   
   gxLocks.vReset();
   

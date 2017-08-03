@@ -32,10 +32,10 @@ extern bool            gbTracepoint;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Trace(void)
 {
-  vAddPrimitive("traceOff"_Str,        &vTraceOff,         false);
-  vAddPrimitive("traceOn"_Str,         &vTraceOn,          false);
-  vAddPrimitive("tracePoint"_Str,      &vTracePoint,       false);
-  vAddPrimitive("trace!"_Str,          &vTraceSet,         false);
+  vAddPrimitive("traceOff"_Stz,        &vTraceOff,         false);
+  vAddPrimitive("traceOn"_Stz,         &vTraceOn,          false);
+  vAddPrimitive("tracePoint"_Stz,      &vTracePoint,       false);
+  vAddPrimitive("trace!"_Stz,          &vTraceSet,         false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -43,7 +43,7 @@ void Task::vAddPrimitives_Trace(void)
 /*----------------------------------------------------------------------------*/
 void Task::vTraceOff(MP_Task mpTask)
 {
-  ENTRY("vTraceOff"_Str);
+  ENTRY("vTraceOff"_Stz);
   
   mpTask->m_iTracing = 0;
   
@@ -55,7 +55,7 @@ void Task::vTraceOff(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTraceOn(MP_Task mpTask)
 {
-  ENTRY("vTraceOn"_Str);
+  ENTRY("vTraceOn"_Stz);
   
   mpTask->m_iTracing = C_TRACE_STEPS;
   
@@ -67,12 +67,12 @@ void Task::vTraceOn(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTracePoint(MP_Task mpTask)
 {
-  ENTRY("vTracePoint"_Str);
+  ENTRY("vTracePoint"_Stz);
   
   s256 sPointName;
   
   if ( ! mpTask->m_pDataStack->bPop(sPointName) )
-    THROW_INVALID_DSTACK("tracePoint"_Str);
+    THROW_INVALID_DSTACK("tracePoint"_Stz);
   
   if (gbTracepoint)
     mpTask->vTracePoint(sPointName);
@@ -85,12 +85,12 @@ void Task::vTracePoint(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTraceSet(MP_Task mpTask)
 {
-  ENTRY("vTraceSet"_Str);
+  ENTRY("vTraceSet"_Stz);
   
   i8 iTrace;
   
   if ( ! mpTask->m_pDataStack->bPop(iTrace) )
-    THROW_INVALID_DSTACK("trace!"_Str);
+    THROW_INVALID_DSTACK("trace!"_Stz);
   
   mpTask->m_iTracing = iTrace;
   

@@ -11,7 +11,7 @@ namespace Values
 
   public:
     static i8   iSize(Object* pObject);
-    static void vToString(Object* pObject, Str* aCharArray);
+    static void vToString(Object* pObject, Stz* aCharArray);
   };
 }
 

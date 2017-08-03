@@ -62,7 +62,7 @@ bool QueueBuffer::bAppend(Value* pValue)
   
   i8 nBytes = ValLib::iSize(pValue);
   
-  Str* aFinalByteOfValue = pAdd<Str*>(m_pNextFree,nBytes-1);
+  Stz* aFinalByteOfValue = pAdd<Stz*>(m_pNextFree,nBytes-1);
   
   if (aFinalByteOfValue > Buffer::aLastUsableByte())
     return false;
@@ -89,11 +89,11 @@ i8 QueueBuffer::iCount(void)
 /*----------------------------------------------------------------------------*/
 /* dump this queue buffer                                                     */
 /*----------------------------------------------------------------------------*/
-void QueueBuffer::vContentDump(Str* aTab)
+void QueueBuffer::vContentDump(Stz* aTab)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUEBUFFER,_FOOTER_);
   
-  vTrace("%sQueueBuffer: %p Count %lld TopValue %p NextFree %p\n"_Str,
+  vTrace("%sQueueBuffer: %p Count %lld TopValue %p NextFree %p\n"_Stz,
          aTab,
          this,
          m_nValues,
@@ -104,14 +104,14 @@ void QueueBuffer::vContentDump(Str* aTab)
 /*----------------------------------------------------------------------------*/
 /* dump grid                                                                  */
 /*----------------------------------------------------------------------------*/
-void QueueBuffer::vDump(eCN eClass, Object* pObject, Str* aTab)
+void QueueBuffer::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
   ASSERT(eClass == CN_QUEUEBUFFER);
   ASSERT(pObject->eClass() == CN_QUEUEBUFFER);
   
   QueueBuffer* pQueueBuffer = reinterpret_cast<QueueBuffer*>(pObject);
   
-  vTrace("values %lld top %p next %p\n"_Str,
+  vTrace("values %lld top %p next %p\n"_Stz,
          pQueueBuffer->m_nValues,
          pQueueBuffer->m_pTopValue,
          pQueueBuffer->m_pNextFree);

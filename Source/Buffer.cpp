@@ -83,15 +83,15 @@ void Buffer::vBufferNo(bn nBufferNo)
 /*----------------------------------------------------------------------------*/
 /* get address of last usable byte in buffer                                  */
 /*----------------------------------------------------------------------------*/
-Str* Buffer::aLastUsableByte(void)
+Stz* Buffer::aLastUsableByte(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 
   // last byte in buffer
-  Str* aLastByte = reinterpret_cast<Str*>(this) + C_SIZE_POOL_BUFFER - 1;
+  Stz* aLastByte = reinterpret_cast<Stz*>(this) + C_SIZE_POOL_BUFFER - 1;
   
   // last byte before footer
-  Str* aLastUsableByte = aLastByte - sizeof(C_FOOTER);
+  Stz* aLastUsableByte = aLastByte - sizeof(C_FOOTER);
   
   return aLastUsableByte;
 }

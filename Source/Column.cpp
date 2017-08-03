@@ -51,7 +51,7 @@ Column::Column(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
   
   m_iColumnNo   = 0;
-  m_sColumnName = "<notSet>"_Str;
+  m_sColumnName = "<notSet>"_Stz;
   m_eColumnType = CT_NONE;
   m_iColumnLength = 0;
   m_iColumnPrecision = 0;
@@ -66,7 +66,7 @@ Column::Column(void)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Column::Column(Str* aName)
+Column::Column(Stz* aName)
 : Object(CN_COLUMN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
@@ -87,7 +87,7 @@ Column::Column(Str* aName)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Column::Column(Str* aName, Str* aDefinition)
+Column::Column(Stz* aName, Stz* aDefinition)
 : Object(CN_COLUMN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
@@ -274,7 +274,7 @@ void Column::vIsNullable(bool bIsNullable)
 /*----------------------------------------------------------------------------*/
 /* parse definition and set                                                   */
 /*----------------------------------------------------------------------------*/
-void Column::vSet(Str* aDefinition)
+void Column::vSet(Stz* aDefinition)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
   
@@ -284,7 +284,7 @@ void Column::vSet(Str* aDefinition)
   char* aCursor = (char*)aDefinition;
   b = StrLib::bExtractWord(&aCursor,aBuffer);
   
-  //vTrace("Type: %s\n"_Str,aBuffer);
+  //vTrace("Type: %s\n"_Stz,aBuffer);
   
   if (StrLib::bSame(aBuffer,"boolean")) {
     m_eColumnType = CT_BOOLEAN;
@@ -364,20 +364,20 @@ void Column::vShow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
   
-  vTrace("Column %02lld %s type %s length %lld precision %lld datum %s %s\n"_Str,
+  vTrace("Column %02lld %s type %s length %lld precision %lld datum %s %s\n"_Stz,
          m_iColumnNo,
          m_sColumnName.aStr(),
          aCT[m_eColumnType],
          m_iColumnLength,
          m_iColumnPrecision,
          aDM[m_eDatumType],
-         m_bIsNullable ? "nullable"_Str : "not null"_Str);
+         m_bIsNullable ? "nullable"_Stz : "not null"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
 /* validate column field                                                      */
 /*----------------------------------------------------------------------------*/
-//bool Column::bValidateField(Str** aaSubRow)
+//bool Column::bValidateField(Stz** aaSubRow)
 //{
 //  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
 //  
@@ -386,13 +386,13 @@ void Column::vShow(void)
 //  while (*aSubRow && '|' != *aSubRow)
 //    aSubRow++;
 //  
-//  *aaSubRow = (Str*)aSubRow;
+//  *aaSubRow = (Stz*)aSubRow;
 //  
 //  return true;
 //}
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #ifdef _ROWFORMAT
-bool Column::bValidateField(Str* aSubRow, i8 iLength)
+bool Column::bValidateField(Stz* aSubRow, i8 iLength)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
   
@@ -405,7 +405,7 @@ bool Column::bValidateField(Str* aSubRow, i8 iLength)
 }
 
 #else
-bool Column::bValidateField(Str** aaSubRow)
+bool Column::bValidateField(Stz** aaSubRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
 
@@ -425,7 +425,7 @@ char* Column::aValue(i8& nBytes, char** aaCursor)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
 
-  Str* aElem;
+  Stz* aElem;
   char* aValue = *aaCursor;
   
   switch (m_eColumnType) {
@@ -467,7 +467,7 @@ char* Column::aValue(i8& nBytes, char** aaCursor)
       break;
       
     case CT_VARCHAR:
-      aElem = (Str*)aValue;
+      aElem = (Stz*)aValue;
       nBytes = 0;
       
       while (*aElem->s() != '\0') {

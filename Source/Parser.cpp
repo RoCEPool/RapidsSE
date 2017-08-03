@@ -67,7 +67,7 @@ Parser::Parser(Parser* pNext)
   //m_bMalloc set in new
   m_pNext   = pNext;
   m_iDepth  = 0;
-  m_sPrompt = "Parser> "_Str;
+  m_sPrompt = "Parser> "_Stz;
   
   vResetParser();
   
@@ -90,15 +90,15 @@ Parser::~Parser(void)
 /*----------------------------------------------------------------------------*/
 /* dump parser                                                                */
 /*----------------------------------------------------------------------------*/
-void Parser::vDump(eCN eClass, Object* pObject, Str* aTab)
+void Parser::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
   ASSERT(eClass == CN_PARSER);
   ASSERT(pObject->eClass() == CN_PARSER);
   
   Parser* pParser = _pParser(pObject);
   
-  vTrace("%s depth %lld next %p\n"_Str,
-         pParser->m_bMalloc == true ? "malloc"_Str : "pool"_Str,
+  vTrace("%s depth %lld next %p\n"_Stz,
+         pParser->m_bMalloc == true ? "malloc"_Stz : "pool"_Stz,
          pParser->m_iDepth,
          pParser->m_pNext);
 }
@@ -158,7 +158,7 @@ void Parser::vUseStdin(void)
   
   vResetParser();
   
-  m_xFile.vSet(stdin,"stdin"_Str,C_OPEN_READ);
+  m_xFile.vSet(stdin,"stdin"_Stz,C_OPEN_READ);
   m_eSource = IS_STDIN;
   m_bRead = true;
 }
@@ -324,7 +324,7 @@ void Parser::vResetParser(void)
   m_eSource   = IS_NONE;
   m_xFile.vZero();
   m_bLineMode = false;
-  m_sRawLine  = ""_Str;
+  m_sRawLine  = ""_Stz;
   m_aRawLine  = m_sRawLine.s();
   m_pRawChar  = m_sRawLine.s();
  
@@ -674,7 +674,7 @@ char Parser::cFromRawInput(void)
       break;
       
     default:
-      THROW("Invalid m_eSource %lld"_Str,m_eSource);
+      THROW("Invalid m_eSource %lld"_Stz,m_eSource);
   }
   
   return cRaw;
@@ -836,7 +836,7 @@ void Parser::vReadLineStdin(void)
     PosixThread::vSleepMilli(300);
   
   if ( ! gxArguments.m_bScript ) {
-    vInfo("%s"_Str,m_sPrompt.s());
+    vInfo("%s"_Stz,m_sPrompt.s());
     fflush(stdin);
   }
   

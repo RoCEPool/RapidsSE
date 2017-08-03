@@ -22,7 +22,7 @@ bool Shm::bAttach(StrVal& sRegionName, int& iFD, SysCall& xSysCall)
   
   if (iFD == -1) {
     xSysCall.vError(errno);
-    //vWarn("Shm::bAttach: shm_open() error; errno=%d %s\n"_Str,errno, strerror(errno));
+    //vWarn("Shm::bAttach: shm_open() error; errno=%d %s\n"_Stz,errno, strerror(errno));
     return false;
   }
   
@@ -42,7 +42,7 @@ bool Shm::bClose(int iFD, SysCall& xSysCall)
   
   if (0 != rCode) {
     xSysCall.vError(errno);
-    vWarn("Shm::bClose: munmap() error; errno=%d %s\n"_Str,errno,strerror(errno));
+    vWarn("Shm::bClose: munmap() error; errno=%d %s\n"_Stz,errno,strerror(errno));
     return false;
   }
   
@@ -64,7 +64,7 @@ bool Shm::bCreate(StrVal& sRegionName, i8 iSize, int& iFD,
   xSysCall.vClear();
   
   if (gbVerbose)
-    vTrace("Shm::bCreate A\n"_Str);
+    vTrace("Shm::bCreate A\n"_Stz);
   
   // unlink the shm region (in case created earlier; this needs work)
   if (bRecreate)
@@ -73,22 +73,22 @@ bool Shm::bCreate(StrVal& sRegionName, i8 iSize, int& iFD,
   // we ignore the error
 
   if (gbVerbose)
-    vTrace("Shm::bCreate B\n"_Str);
+    vTrace("Shm::bCreate B\n"_Stz);
   
   // open shared memory region and get a fd
   iFD = shm_open(sRegionName.s(), O_CREAT | O_EXCL | O_RDWR, S_IRUSR | S_IWUSR);
   
   if (gbVerbose)
-    vTrace("Shm::bCreate C\n"_Str);
+    vTrace("Shm::bCreate C\n"_Stz);
   
   if (iFD == -1) {
     xSysCall.vError(errno);
-    vWarn("Shm::bCreate: shm_open() error; errno=%d %s\n"_Str,errno,strerror(errno));
+    vWarn("Shm::bCreate: shm_open() error; errno=%d %s\n"_Stz,errno,strerror(errno));
     return false;
   }
   
   if (gbVerbose)
-    vTrace("Shm::bCreate D\n"_Str);
+    vTrace("Shm::bCreate D\n"_Stz);
   
   ++gzShmOpenCount;
 
@@ -96,20 +96,20 @@ bool Shm::bCreate(StrVal& sRegionName, i8 iSize, int& iFD,
   rCode = ftruncate(iFD, iSize);
   
   if (gbVerbose)
-    vTrace("Shm::bCreate E\n"_Str);
+    vTrace("Shm::bCreate E\n"_Stz);
   
   if (rCode == -1) {
     if (gbVerbose)
-      vTrace("Shm::bCreate F\n"_Str);
+      vTrace("Shm::bCreate F\n"_Stz);
    
     xSysCall.vError(errno);
-    vTrace("Shm::bCreate: ftruncate() error; errno=%d %s\n"_Str,errno,strerror(errno));
+    vTrace("Shm::bCreate: ftruncate() error; errno=%d %s\n"_Stz,errno,strerror(errno));
     
     int rCode = shm_unlink(sRegionName.s());
     
     if (0 != rCode) {
       xSysCall.vError(errno);
-      vWarn("Shm::bCreate: shm_unlink() error; errno=%d %s\n"_Str,errno,strerror(errno));
+      vWarn("Shm::bCreate: shm_unlink() error; errno=%d %s\n"_Stz,errno,strerror(errno));
       return false;
     }
     
@@ -117,7 +117,7 @@ bool Shm::bCreate(StrVal& sRegionName, i8 iSize, int& iFD,
   }
   
   if (gbVerbose)
-    vTrace("Shm::bCreate G\n"_Str);
+    vTrace("Shm::bCreate G\n"_Stz);
   return true;
 }
 
@@ -129,11 +129,11 @@ bool Shm::bLock(void* pAddress, i8 iBytes, SysCall& SysCall)
   SysCall.vClear();
   
   if (gbVerbose)
-    vTrace("Shm::vLock\n"_Str);
+    vTrace("Shm::vLock\n"_Stz);
   
   if (mlock(pAddress,iBytes) != 0) {
     SysCall.vError(errno);
-    vWarn("Shm::vLock: mlock() error; errno=%d %s line=%d\n"_Str,errno,strerror(errno), __LINE__);
+    vWarn("Shm::vLock: mlock() error; errno=%d %s line=%d\n"_Stz,errno,strerror(errno), __LINE__);
     return false;
   }
   
@@ -148,12 +148,12 @@ void* Shm::pMap(int iFd, void* aAddress, i8 iBytes, bool bShared, bool bHugeTlb,
   SysCall.vClear();
   
   if (gbVerbose)
-    vTrace("Shm::pMap A\n"_Str);
+    vTrace("Shm::pMap A\n"_Stz);
   
   int iProt = PROT_READ | PROT_WRITE;
 
   if (gbVerbose)
-    vTrace("Shm::pMap B\n"_Str);
+    vTrace("Shm::pMap B\n"_Stz);
   
 #ifdef __APPLE__
   int iFlags =   (bShared  ? MAP_SHARED : MAP_PRIVATE | MAP_ANONYMOUS)
@@ -168,7 +168,7 @@ void* Shm::pMap(int iFd, void* aAddress, i8 iBytes, bool bShared, bool bHugeTlb,
   size_t x;
   
   if (gbVerbose)
-    vTrace("Shm::pMap C\n"_Str);
+    vTrace("Shm::pMap C\n"_Stz);
   
   void* pRegion = mmap(aAddress, // starting address
                        iBytes,   // length of the region
@@ -180,12 +180,12 @@ void* Shm::pMap(int iFd, void* aAddress, i8 iBytes, bool bShared, bool bHugeTlb,
   
   if (MAP_FAILED == pRegion) {
     SysCall.vError(errno);
-    vWarn("Shm::pMap: mmap() error; errno=%d %s line=%d\n"_Str,errno,strerror(errno), __LINE__);
+    vWarn("Shm::pMap: mmap() error; errno=%d %s line=%d\n"_Stz,errno,strerror(errno), __LINE__);
     return nullptr;
   }
   
   if (gbVerbose)
-    vTrace("Shm::pMap D\n"_Str);
+    vTrace("Shm::pMap D\n"_Stz);
   
   SysCall.vSuccess();
   
@@ -205,7 +205,7 @@ bool Shm::bUnmap(void *aAddress, i8 iBytes, SysCall& xSysCall)
   
   if (0 != rCode) {
     xSysCall.vError(errno);
-    vWarn("Shm::bUnmap: munmap() error; errno=%d %s\n"_Str,errno,strerror(errno));
+    vWarn("Shm::bUnmap: munmap() error; errno=%d %s\n"_Stz,errno,strerror(errno));
     return false;
   }
   
@@ -225,7 +225,7 @@ bool Shm::bUnlink(StrVal& sRegionName, SysCall& xSysCall)
 
   if (0 != rCode) {
     xSysCall.vError(errno);
-    vWarn("Shm::bUnlink: shm_unlink() error; errno=%d %s\n"_Str,errno,strerror(errno));
+    vWarn("Shm::bUnlink: shm_unlink() error; errno=%d %s\n"_Stz,errno,strerror(errno));
     return false;
   }
   

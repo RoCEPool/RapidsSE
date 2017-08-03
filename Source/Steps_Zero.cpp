@@ -31,12 +31,12 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Zero(void)
 {
-  vAddPrimitive("0<"_Str,              &vZeroLess,         false);
-  vAddPrimitive("0<="_Str,             &vZeroLessEqual,    false);
-  vAddPrimitive("0=="_Str,             &vZeroEqual,        false);
-  vAddPrimitive("0!="_Str,             &vZeroNotEqual,     false);
-  vAddPrimitive("0>="_Str,             &vZeroGreaterEqual, false);
-  vAddPrimitive("0>"_Str,              &vZeroGreater,      false);
+  vAddPrimitive("0<"_Stz,              &vZeroLess,         false);
+  vAddPrimitive("0<="_Stz,             &vZeroLessEqual,    false);
+  vAddPrimitive("0=="_Stz,             &vZeroEqual,        false);
+  vAddPrimitive("0!="_Stz,             &vZeroNotEqual,     false);
+  vAddPrimitive("0>="_Stz,             &vZeroGreaterEqual, false);
+  vAddPrimitive("0>"_Stz,              &vZeroGreater,      false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -44,11 +44,11 @@ void Task::vAddPrimitives_Zero(void)
 /*----------------------------------------------------------------------------*/
 void Task::vZeroLess(MP_Task mpTask)
 {
-  ENTRY("vZeroLess"_Str);
+  ENTRY("vZeroLess"_Stz);
   
   i8 iZero;
   if ( ! mpTask->m_pDataStack->bPopAsInt(iZero) )
-    THROW_INVALID_DSTACK("0<"_Str);
+    THROW_INVALID_DSTACK("0<"_Stz);
   
   if (iZero < 0)
     mpTask->m_pDataStack->vPushInt((i8)1);
@@ -63,11 +63,11 @@ void Task::vZeroLess(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vZeroLessEqual(MP_Task mpTask)
 {
-  ENTRY("vZeroLessEqual"_Str);
+  ENTRY("vZeroLessEqual"_Stz);
   
   i8 iZero;
   if ( ! mpTask->m_pDataStack->bPopAsInt(iZero) )
-    THROW_INVALID_DSTACK("0<="_Str);
+    THROW_INVALID_DSTACK("0<="_Stz);
   
   if (iZero <= 0)
     mpTask->m_pDataStack->vPushInt((i8)1);
@@ -82,11 +82,11 @@ void Task::vZeroLessEqual(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vZeroEqual(MP_Task mpTask)
 {
-  ENTRY("vZeroEqual"_Str);
+  ENTRY("vZeroEqual"_Stz);
   
   i8 iZero;
   if ( ! mpTask->m_pDataStack->bPopAsInt(iZero) )
-    THROW_INVALID_DSTACK("0=="_Str);
+    THROW_INVALID_DSTACK("0=="_Stz);
   
   if (iZero == 0)
     mpTask->m_pDataStack->vPushInt((i8)1);
@@ -101,11 +101,11 @@ void Task::vZeroEqual(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vZeroNotEqual(MP_Task mpTask)
 {
-  ENTRY("vZeroNotEqual"_Str);
+  ENTRY("vZeroNotEqual"_Stz);
   
   i8 iZero;
   if ( ! mpTask->m_pDataStack->bPopAsInt(iZero) )
-    THROW_INVALID_DSTACK("0!="_Str);
+    THROW_INVALID_DSTACK("0!="_Stz);
   
   if (iZero != 0)
     mpTask->m_pDataStack->vPushInt((i8)1);
@@ -120,11 +120,11 @@ void Task::vZeroNotEqual(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vZeroGreaterEqual(MP_Task mpTask)
 {
-  ENTRY("vZeroGreaterEqual"_Str);
+  ENTRY("vZeroGreaterEqual"_Stz);
   
   i8 iZero;
   if ( ! mpTask->m_pDataStack->bPopAsInt(iZero) )
-    THROW_INVALID_DSTACK("0>="_Str);
+    THROW_INVALID_DSTACK("0>="_Stz);
   
   if (iZero >= 0)
     mpTask->m_pDataStack->vPushInt((i8)1);
@@ -139,11 +139,11 @@ void Task::vZeroGreaterEqual(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vZeroGreater(MP_Task mpTask)
 {
-  ENTRY("vZeroGreater"_Str);
+  ENTRY("vZeroGreater"_Stz);
   
   i8 iZero;
   if ( ! mpTask->m_pDataStack->bPopAsInt(iZero) )
-    THROW_INVALID_DSTACK("0>"_Str);
+    THROW_INVALID_DSTACK("0>"_Stz);
   
   if (iZero > 0)
     mpTask->m_pDataStack->vPushInt((i8)1);

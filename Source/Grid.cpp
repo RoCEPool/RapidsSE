@@ -35,7 +35,7 @@ void* Grid::operator new(size_t iSize, Grid* pGrid)
 void Grid::operator delete(void* pBufferAddress)
 {
   RASSERT(pBufferAddress);
-  vFatal("fatal: GridModel class cannot be deleted"_Str);
+  vFatal("fatal: GridModel class cannot be deleted"_Stz);
   
   NEVER_REACH;
 }
@@ -89,14 +89,14 @@ void Grid::vInit(i8 nNodes, i8 nSlots)
 /*----------------------------------------------------------------------------*/
 /* dump grid                                                                  */
 /*----------------------------------------------------------------------------*/
-void Grid::vDump(eCN eClass, Object* pObject, Str* aTab)
+void Grid::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
   ASSERT(eClass == CN_GRID);
   ASSERT(pObject->eClass() == CN_GRID);
   
   Grid* pGrid = reinterpret_cast<Grid*>(pObject);
   
-  vTrace("\n"_Str);
+  vTrace("\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -107,9 +107,9 @@ void Grid::vDumpPartitioning(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
   
   for (i8 i_Index = 0; i_Index < m_nPartitions; i_Index++)
-    vTrace("Partition: %lld; Node: %lld\n"_Str, i_Index,
+    vTrace("Partition: %lld; Node: %lld\n"_Stz, i_Index,
            Partition::iPartitionToNode(i_Index));
-  vTrace("\n"_Str);
+  vTrace("\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -135,7 +135,7 @@ bool Grid::bHasStarted(void)
 /*----------------------------------------------------------------------------*/
 /* find node                                                                  */
 /*----------------------------------------------------------------------------*/
-Node* Grid::pFindNode(Str* sName)
+Node* Grid::pFindNode(Stz* sName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
   

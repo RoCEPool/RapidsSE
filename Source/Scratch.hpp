@@ -21,7 +21,7 @@ namespace System
     ~Scratch(void);
 
     char* aWspArea(void);
-    Str*  aWspStr(void);
+    Stz*  aWspStr(void);
     i8    nWspLength(void);
   
     Footer* aFooter(void);

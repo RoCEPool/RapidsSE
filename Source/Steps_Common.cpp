@@ -31,13 +31,13 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Common(void)
 {
-  vAddPrimitive("common.fetch"_Str,    &vCommonFetch,      false);
-  vAddPrimitive("common.store"_Str,    &vCommonStore,      false);
-  vAddPrimitive("common/"_Str,         &vCommonSlash,      true);
-  vAddPrimitive("toCommon"_Str,        &vCommonToCommon,   true);
+  vAddPrimitive("common.fetch"_Stz,    &vCommonFetch,      false);
+  vAddPrimitive("common.store"_Stz,    &vCommonStore,      false);
+  vAddPrimitive("common/"_Stz,         &vCommonSlash,      true);
+  vAddPrimitive("toCommon"_Stz,        &vCommonToCommon,   true);
 
-  vAddPrimitive("opFrame.drop"_Str,    &vOpFrameDrop,      false);
-  vAddPrimitive("opFrame.push"_Str,    &vOpFramePush,      false);
+  vAddPrimitive("opFrame.drop"_Stz,    &vOpFrameDrop,      false);
+  vAddPrimitive("opFrame.push"_Stz,    &vOpFramePush,      false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -45,14 +45,14 @@ void Task::vAddPrimitives_Common(void)
 /*----------------------------------------------------------------------------*/
 void Task::vCommonFetch(MP_Task mpTask)
 {
-  ENTRY("vCommonFetch"_Str);
+  ENTRY("vCommonFetch"_Stz);
   
   if ( ! mpTask->m_pOpFrame )
-    THROW_INVALID_DSTACK("common.fetch"_Str);
+    THROW_INVALID_DSTACK("common.fetch"_Stz);
   
   i8 iCommon;
   if ( ! mpTask->m_pDataStack->bPop(iCommon) )
-    THROW_INVALID_DSTACK("common.fetch"_Str);
+    THROW_INVALID_DSTACK("common.fetch"_Stz);
   
   ValReg* pValReg = mpTask->m_pOpFrame->pValReg(iCommon);
   
@@ -66,14 +66,14 @@ void Task::vCommonFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vCommonStore(MP_Task mpTask)
 {
-  ENTRY("vCommonStore"_Str);
+  ENTRY("vCommonStore"_Stz);
   
   if ( ! mpTask->m_pOpFrame )
-    THROW_INVALID_DSTACK("commonStore"_Str);
+    THROW_INVALID_DSTACK("commonStore"_Stz);
   
   i8 iCommon;
   if ( ! mpTask->m_pDataStack->bPop(iCommon) )
-    THROW_INVALID_DSTACK("commonStore"_Str);
+    THROW_INVALID_DSTACK("commonStore"_Stz);
   
   ValReg* pValReg = mpTask->m_pOpFrame->pValReg(iCommon);
   
@@ -87,7 +87,7 @@ void Task::vCommonStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vCommonSlash(MP_Task mpTask)
 {
-ENTRY("vCommonSlash"_Str);
+ENTRY("vCommonSlash"_Stz);
 
   Dic* pSubDic;
   
@@ -135,9 +135,9 @@ ENTRY("vCommonSlash"_Str);
     
     // encode the word
     xValWrk = mpTask->m_nVariables;
-    pWordCommon->vEncode("pushValue"_Str,&xValWrk);
-    pWordCommon->vEncode("common.fetch"_Str);
-    pWordCommon->vEncode("exit"_Str);
+    pWordCommon->vEncode("pushValue"_Stz,&xValWrk);
+    pWordCommon->vEncode("common.fetch"_Stz);
+    pWordCommon->vEncode("exit"_Stz);
     
     // accept /
     mpTask->m_pTokeniser->vNextToken();
@@ -154,7 +154,7 @@ ENTRY("vCommonSlash"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vCommonToCommon(MP_Task mpTask)
 {
-ENTRY("vCommonToCommon"_Str);
+ENTRY("vCommonToCommon"_Stz);
   
   Word* pCurrentWord = mpTask->m_pCurrentWord;
   
@@ -167,8 +167,8 @@ ENTRY("vCommonToCommon"_Str);
   ValWrk xValWrk;
   xValWrk = pWordCommon->iVariable();
   
-  pCurrentWord->vEncode("pushValue"_Str,&xValWrk);
-  pCurrentWord->vEncode("common.store"_Str);
+  pCurrentWord->vEncode("pushValue"_Stz,&xValWrk);
+  pCurrentWord->vEncode("common.store"_Stz);
 
   EXIT();
 }
@@ -178,12 +178,12 @@ ENTRY("vCommonToCommon"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vOpFrameDrop(MP_Task mpTask)
 {
-  ENTRY("vOpFrameDrop"_Str);
+  ENTRY("vOpFrameDrop"_Stz);
   
   RegFrame* pOpFrame = mpTask->m_pOpFrame;
   
   if ( ! pOpFrame )
-    THROW_INVALID_DSTACK("opFrame.drop"_Str);
+    THROW_INVALID_DSTACK("opFrame.drop"_Stz);
   
   // discard op frame
   mpTask->m_pOpFrame = nullptr; // mpTask->m_pOpFrame->pNext();
@@ -199,11 +199,11 @@ void Task::vOpFrameDrop(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vOpFramePush(MP_Task mpTask)
 {
-  ENTRY("vOpFramePush"_Str);
+  ENTRY("vOpFramePush"_Stz);
   
   Object* pObjectOpFrame;
   if ( ! mpTask->m_pDataStack->bPop(pObjectOpFrame) )
-    THROW_INVALID_DSTACK("opFrame.push"_Str);
+    THROW_INVALID_DSTACK("opFrame.push"_Stz);
   
   // push op frame
   RegFrame* pOpFrame = _pRegFrame(pObjectOpFrame);

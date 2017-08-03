@@ -22,7 +22,7 @@ namespace Values
     i8* aInt(void);
     i8 iBcd(void) const;
     
-    void vToString(Str* aWorkspace);
+    void vToString(Stz* aWorkspace);
   };
   
   BcdVal* _pBcdVal(void* aAddr);

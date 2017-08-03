@@ -31,7 +31,7 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Env(void)
 {
-  vAddPrimitive("env@"_Str,            &vEnvGet,           false);
+  vAddPrimitive("env@"_Stz,            &vEnvGet,           false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -39,17 +39,17 @@ void Task::vAddPrimitives_Env(void)
 /*----------------------------------------------------------------------------*/
 void Task::vEnvGet(MP_Task mpTask)
 {
-  ENTRY("vEnvGet"_Str);
+  ENTRY("vEnvGet"_Stz);
   
   s256 sEnvName;
   
   if ( ! mpTask->m_pDataStack->bPop(sEnvName) )
-    THROW_INVALID_DSTACK("env@"_Str);
+    THROW_INVALID_DSTACK("env@"_Stz);
   
   s256 sEnvVal;
   
   if (! Env::bGet(sEnvName,sEnvVal))
-    sEnvVal = ""_Str;
+    sEnvVal = ""_Stz;
   
   mpTask->m_pDataStack->vPushS256(sEnvVal);
   

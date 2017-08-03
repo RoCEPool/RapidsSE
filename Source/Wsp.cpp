@@ -16,7 +16,7 @@ Wsp::Wsp(void)
 /*----------------------------------------------------------------------------*/
 char* Wsp::aAllot(i8 nBytes)
 {
-  vFatal("Wsp::aAllot: not overridden\n"_Str);
+  vFatal("Wsp::aAllot: not overridden\n"_Stz);
   
   return nullptr;
 }
@@ -26,7 +26,7 @@ char* Wsp::aAllot(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 void Wsp::vAppend(void* aSrc, i8 nBytes)
 {
-  vFatal("Wsp::vAppend: not overridden\n"_Str);
+  vFatal("Wsp::vAppend: not overridden\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -42,7 +42,7 @@ char* Wsp::aArea(void)
 /*----------------------------------------------------------------------------*/
 void Wsp::vFill(char cByte)
 {
-  vFatal("Wsp::vFill: not overridden\n"_Str);
+  vFatal("Wsp::vFill: not overridden\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -60,7 +60,7 @@ void Wsp::vFill(char cByte, i8 nBytes, eCN eClassNo)
 /*----------------------------------------------------------------------------*/
 i8 Wsp::nFree(void)
 {
-  vFatal("Wsp::nFree: not overridden\n"_Str);
+  vFatal("Wsp::nFree: not overridden\n"_Stz);
   
   return 0;
 }
@@ -70,7 +70,7 @@ i8 Wsp::nFree(void)
 /*----------------------------------------------------------------------------*/
 i8 Wsp::nLength(void)
 {
-  vFatal("Wsp::nLength: not overridden\n"_Str);
+  vFatal("Wsp::nLength: not overridden\n"_Stz);
   
   return 0;
 }
@@ -80,7 +80,7 @@ i8 Wsp::nLength(void)
 /*----------------------------------------------------------------------------*/
 char* Wsp::aLatter(void)
 {
-  vFatal("Wsp::nLatter: not overridden\n"_Str);
+  vFatal("Wsp::nLatter: not overridden\n"_Stz);
   
   return nullptr;
 }
@@ -90,7 +90,7 @@ char* Wsp::aLatter(void)
 /*----------------------------------------------------------------------------*/
 i8 Wsp::nSize(void)
 {
-  vFatal("Wsp::nSize: not overridden\n"_Str);
+  vFatal("Wsp::nSize: not overridden\n"_Stz);
   
   return 0;
 }
@@ -98,9 +98,9 @@ i8 Wsp::nSize(void)
 /*----------------------------------------------------------------------------*/
 /* get address of byte area                                                   */
 /*----------------------------------------------------------------------------*/
-Str* Wsp::aStr(void)
+Stz* Wsp::aStr(void)
 {
-  return reinterpret_cast<Str*>(this);
+  return reinterpret_cast<Stz*>(this);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -108,7 +108,7 @@ Str* Wsp::aStr(void)
 /*----------------------------------------------------------------------------*/
 void Wsp::vTake(i8 nBytes)
 {
-  vFatal("Wsp::vTake: not overridden\n"_Str);
+  vFatal("Wsp::vTake: not overridden\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -116,7 +116,7 @@ void Wsp::vTake(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 i8 Wsp::nUsed(void)
 {
-  vFatal("Wsp::nUsed: not overridden\n"_Str);
+  vFatal("Wsp::nUsed: not overridden\n"_Stz);
   
   return 0;
 }
@@ -126,7 +126,7 @@ i8 Wsp::nUsed(void)
 /*----------------------------------------------------------------------------*/
 void Wsp::vUsed(i8 nBytes)
 {
-  vFatal("Wsp::vUsed: not overridden\n"_Str);
+  vFatal("Wsp::vUsed: not overridden\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -134,7 +134,7 @@ void Wsp::vUsed(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 void Wsp::vZero(void)
 {
-  vFatal("Wsp::vero: not overridden\n"_Str);
+  vFatal("Wsp::vero: not overridden\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

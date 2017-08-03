@@ -26,21 +26,21 @@ namespace Datums
   /* 12 */ DM_ENUMS
   };
   
-  static Str* aDM[]
+  static Stz* aDM[]
   {
-  /*  0 */ "NONE"_Str,
-  /*  1 */ "BCD"_Str,
-  /*  2 */ "BOL"_Str,
-  /*  3 */ "CHR"_Str,
-  /*  4 */ "DTE"_Str,
-  /*  5 */ "FLT"_Str,
-  /*  6 */ "INT"_Str,
-  /*  7 */ "IVL"_Str,
-  /*  8 */ "TME"_Str,
-  /*  9 */ "TSP"_Str,
-  /* 10 */ "VBN"_Str,
-  /* 11 */ "VCH"_Str,
-  /* 12 */ "ENUMS"_Str,
+  /*  0 */ "NONE"_Stz,
+  /*  1 */ "BCD"_Stz,
+  /*  2 */ "BOL"_Stz,
+  /*  3 */ "CHR"_Stz,
+  /*  4 */ "DTE"_Stz,
+  /*  5 */ "FLT"_Stz,
+  /*  6 */ "INT"_Stz,
+  /*  7 */ "IVL"_Stz,
+  /*  8 */ "TME"_Stz,
+  /*  9 */ "TSP"_Stz,
+  /* 10 */ "VBN"_Stz,
+  /* 11 */ "VCH"_Stz,
+  /* 12 */ "ENUMS"_Stz,
   };
   
   void vCheckAssumptions(void);

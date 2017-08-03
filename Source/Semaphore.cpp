@@ -111,7 +111,7 @@ void Semaphore::vCondBroadcast(void)
   if (0 == rCode)
     return;
   
-  vWarn("pthread_cond_broadcast() error; rCode=%lld\n"_Str,rCode);
+  vWarn("pthread_cond_broadcast() error; rCode=%lld\n"_Stz,rCode);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -130,7 +130,7 @@ void Semaphore::vCondSignal(void)
   if (0 == rCode)
     return;
   
-  vWarn("pthread_cond_signal() error; rCode=%lld\n"_Str,rCode);
+  vWarn("pthread_cond_signal() error; rCode=%lld\n"_Stz,rCode);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -159,7 +159,7 @@ void Semaphore::vCondWait_Mutex(void)
     return;
   }
   
-  vWarn("pthread_cond_wait() error; rCode=%lld\n"_Str,rCode);
+  vWarn("pthread_cond_wait() error; rCode=%lld\n"_Stz,rCode);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -186,7 +186,7 @@ void Semaphore::vCondTimedWait(i8 iMicroSeconds)
   if (0 == rCode || ETIMEDOUT == rCode)
     return;
   
-  vWarn("pthread_cond_wait() error; rCode=%lld\n"_Str,rCode);
+  vWarn("pthread_cond_wait() error; rCode=%lld\n"_Stz,rCode);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -198,7 +198,7 @@ void Semaphore::vMutexLock(void)
   
   // this is a blocking call
   i8 rCode = pthread_mutex_lock(&m_xMutex);
-  //vTrace("MutexLock %p\n"_Str,this);
+  //vTrace("MutexLock %p\n"_Stz,this);
   
   if (0 == rCode) {
     ASSERT( ! m_bLocked );
@@ -206,7 +206,7 @@ void Semaphore::vMutexLock(void)
     return;
   }
   
-  vWarn("pthread_mutex_lock() error; rCode=%lld\n"_Str,rCode);
+  vWarn("pthread_mutex_lock() error; rCode=%lld\n"_Stz,rCode);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -226,7 +226,7 @@ bool Semaphore::bMutexLock(void)
   if (EBUSY == rCode)
     return false;
   
-  vWarn("pthread_mutex_trylock() error; rCode=%lld\n"_Str,rCode);
+  vWarn("pthread_mutex_trylock() error; rCode=%lld\n"_Stz,rCode);
   
   return false;
 }
@@ -238,7 +238,7 @@ void Semaphore::vMutexUnlock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEMAPHORE,_FOOTER_);
   
-  //vTrace("MutexUnlock %p\n"_Str,this);
+  //vTrace("MutexUnlock %p\n"_Stz,this);
   
   ASSERT( m_bLocked );
   m_bLocked = false;
@@ -250,7 +250,7 @@ void Semaphore::vMutexUnlock(void)
     return;
   }
   
-  vWarn("pthread_mutex_unlock() error; rCode=%lld\n"_Str,rCode);
+  vWarn("pthread_mutex_unlock() error; rCode=%lld\n"_Stz,rCode);
 }
 
 /*----------------------------------------------------------------------------*/

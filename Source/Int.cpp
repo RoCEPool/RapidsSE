@@ -17,7 +17,7 @@ void* Int::operator new(size_t iSize)
 {
   RASSERT(iSize);
   
-  vFatal("fatal: Int class cannot be new'd\n"_Str);
+  vFatal("fatal: Int class cannot be new'd\n"_Stz);
   
   NEVER_REACH;
 }
@@ -292,9 +292,9 @@ bool Int::bExtract(char** aaSrc, Int* aInteger, Column* pColumn)
 /*----------------------------------------------------------------------------*/
 /* sprint int datum                                                           */
 /*----------------------------------------------------------------------------*/
-void Int::vSprint(Str* aDst, Str* aSrc)
+void Int::vSprint(Stz* aDst, Stz* aSrc)
 {
-  StrLib::vSprint(aDst,"%lld%c"_Str,*(i8*)aSrc,'\0');
+  StrLib::vSprint(aDst,"%lld%c"_Stz,*(i8*)aSrc,'\0');
 }
 
 /*----------------------------------------------------------------------------*/

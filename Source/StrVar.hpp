@@ -9,19 +9,19 @@ namespace Values
   class StrVar : public StrVal
   {
   private:
-    char m_cArea[SIZE]; // Str byte area
+    char m_cArea[SIZE]; // Stz byte area
     
     // must be last
     Footer m_xFooter;
     
   public:    
     StrVar(void);
-    StrVar(Str* aArg);
+    StrVar(Stz* aArg);
     StrVar(StrVar* pThis);
    ~StrVar(void);
     
     void operator =(i8);
-    void operator =(Str* aArg);
+    void operator =(Stz* aArg);
     void operator =(StrVal& xArg);
     void operator =(StrVal* pArg);
     void operator =(ValWrk& rArg);
@@ -52,7 +52,7 @@ StrVar<SIZE>::StrVar(void)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 template <int SIZE>
-StrVar<SIZE>::StrVar(Str* aArg)
+StrVar<SIZE>::StrVar(Stz* aArg)
 : StrVal(CN_STRVAR,SIZE)
 {
   _precondition_(_MAGIC_,CN_STRVAR,_FOOTER_);
@@ -99,7 +99,7 @@ void StrVar<SIZE>::operator =(i8 iArg)
 /* assignment operator                                                        */
 /*----------------------------------------------------------------------------*/
 template <int SIZE>
-void StrVar<SIZE>::operator =(Str* aArg)
+void StrVar<SIZE>::operator =(Stz* aArg)
 {
   _precondition_(_MAGIC_,CN_STRVAR,_FOOTER_);
   
@@ -142,7 +142,7 @@ void StrVar<SIZE>::operator =(ValWrk& rArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* test Str                                                                   */
+/* test Stz                                                                   */
 /*----------------------------------------------------------------------------*/
 template <int SIZE>
 void StrVar<SIZE>::vTest(void)

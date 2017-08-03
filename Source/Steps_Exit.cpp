@@ -31,7 +31,7 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Exit(void)
 {
-  vAddPrimitive("exit"_Str,            &vExit,             false);
+  vAddPrimitive("exit"_Stz,            &vExit,             false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -39,12 +39,12 @@ void Task::vAddPrimitives_Exit(void)
 /*----------------------------------------------------------------------------*/
 void Task::vExit(MP_Task mpTask)
 {
-  ENTRY("vExit"_Str);
+  ENTRY("vExit"_Stz);
   
-  //vTrace("Exit: return stack %lld\n"_Str, mpTask->m_pReturnStack->iValues());
+  //vTrace("Exit: return stack %lld\n"_Stz, mpTask->m_pReturnStack->iValues());
   
   if ( (mpTask->m_iTracing & C_TRACE_ROUTINES) )
-    mpTask->vTracePoint("<"_Str);
+    mpTask->vTracePoint("<"_Stz);
   
   if (mpTask->m_pLocalsFrame &&
       mpTask->m_pLocalsFrame->pStackPtr() ==
@@ -53,7 +53,7 @@ void Task::vExit(MP_Task mpTask)
   
   Cell* pCell;
   if ( ! mpTask->m_pReturnStack->bPop(pCell) )
-    THROW_INVALID_RSTACK("exit"_Str);
+    THROW_INVALID_RSTACK("exit"_Stz);
   
   mpTask->IP.m_pCell = pCell;
   

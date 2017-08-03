@@ -40,7 +40,7 @@ namespace Values
     void operator =(i8 iInt);
     void operator =(Ivl xIvl);
     void operator =(Object* pObject);
-    void operator =(Str* aStr);
+    void operator =(Stz* aStr);
     void operator =(Tme xTme);
     void operator =(Tsp xTsp);
     void vAssignBinary(Object* pObject);
@@ -54,7 +54,7 @@ namespace Values
     IntVal* pNestedIntVal(void);
     PtrVal* pNestedPtrVal(void);
     StrVal* pNestedStrVal(void);
-    void    vToString(Str* aWorkspace);
+    void    vToString(Stz* aWorkspace);
     
     Footer* aFooter(void);
   };

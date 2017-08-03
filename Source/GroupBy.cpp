@@ -92,10 +92,10 @@ void GroupBy::vApplyBuffer(EntryBuffer* pEntryBuffer)
     
     LineItem* pLineItem = (LineItem*)pEntry->aRow();
     
-    //    vTrace("\nEntry: %p LineItem: %p String: %p \n>>%s<<\n"_Str,
+    //    vTrace("\nEntry: %p LineItem: %p String: %p \n>>%s<<\n"_Stz,
     //           pEntry,pLineItem,pLineItem->aStr(),pLineItem->aStr());
     //    MemLib::vHexDump(pEntry,512);
-    //    vTrace("\n"_Str);
+    //    vTrace("\n"_Stz);
     
     // extract the order key (its the first field)
     char* aCursor = pLineItem->s();
@@ -103,7 +103,7 @@ void GroupBy::vApplyBuffer(EntryBuffer* pEntryBuffer)
     
     i8 iLength = 0;
     // get iLength for row                                      //ALKA_ROWFORMAT
-    bool b = DtmLib::bExtract(DM_BCD,(Str*)&iOrderKey,aCursor,iLength,nullptr);
+    bool b = DtmLib::bExtract(DM_BCD,(Stz*)&iOrderKey,aCursor,iLength,nullptr);
     
     // extract the quantity (its after the fifth '|')
     aCursor = pLineItem->s();
@@ -112,7 +112,7 @@ void GroupBy::vApplyBuffer(EntryBuffer* pEntryBuffer)
     aCursor++;
     
     // get iLength for row                                      //ALKA_ROWFORMAT
-    b = DtmLib::bExtract(DM_BCD,(Str*)&iQuantity,aCursor,iLength, nullptr);
+    b = DtmLib::bExtract(DM_BCD,(Stz*)&iQuantity,aCursor,iLength, nullptr);
     
     // compute which group
     i8 i_Group = iOrderKey % 10;
@@ -139,22 +139,22 @@ void GroupBy::vApplyBuffer(EntryBuffer* pEntryBuffer)
     
     LineItem* pLineItem = (LineItem*)pEntry->aRow();
     
-//    vTrace("\nEntry: %p LineItem: %p String: %p \n>>%s<<\n"_Str,
+//    vTrace("\nEntry: %p LineItem: %p String: %p \n>>%s<<\n"_Stz,
 //           pEntry,pLineItem,pLineItem->aStr(),pLineItem->aStr());
 //    MemLib::vHexDump(pEntry,512);
-//    vTrace("\n"_Str);
+//    vTrace("\n"_Stz);
 
     // extract the order key (its the first field)
     char* aCursor = pLineItem->s();
     i8 iOrderKey;
-    bool b = DtmLib::bExtract(DM_BCD,(Str*)&iOrderKey,&aCursor,nullptr);
+    bool b = DtmLib::bExtract(DM_BCD,(Stz*)&iOrderKey,&aCursor,nullptr);
     
     // extract the quantity (its after the fifth '|')
     aCursor = pLineItem->s();
     i8 iQuantity;
     b = StrLib::bFind(&aCursor,'|',5);
     aCursor++;
-    b = DtmLib::bExtract(DM_BCD,(Str*)&iQuantity,&aCursor,nullptr);
+    b = DtmLib::bExtract(DM_BCD,(Stz*)&iQuantity,&aCursor,nullptr);
     
     // compute which group
     i8 i_Group = iOrderKey % 10;
@@ -182,17 +182,17 @@ void GroupBy::vApplyEntry(Entry* pLineItemEntry)
   
   LineItem* pLineItem = (LineItem*)pLineItemEntry->aRow();
   
-  //    vTrace("\nEntry: %p LineItem: %p String: %p \n>>%s<<\n"_Str,
+  //    vTrace("\nEntry: %p LineItem: %p String: %p \n>>%s<<\n"_Stz,
   //           pEntry,pLineItem,pLineItem->aStr(),pLineItem->aStr());
   //    MemLib::vHexDump(pEntry,512);
-  //    vTrace("\n"_Str);
+  //    vTrace("\n"_Stz);
   
   // extract the order key (its the first field)
   char* aCursor = pLineItem->s();
   i8 iOrderKey;
   i8 iLength = 0;
   // get iLength                                                //ALKA_ROWFORMAT
-  bool b = DtmLib::bExtract(DM_BCD,(Str*)&iOrderKey,aCursor,iLength,nullptr);
+  bool b = DtmLib::bExtract(DM_BCD,(Stz*)&iOrderKey,aCursor,iLength,nullptr);
   
   // extract the quantity (its after the fifth '|')
   aCursor = pLineItem->s();
@@ -200,7 +200,7 @@ void GroupBy::vApplyEntry(Entry* pLineItemEntry)
   b = StrLib::bFind(&aCursor,'|',5);
   aCursor++;
   // get iLength                                                //ALKA_ROWFORMAT
-  b = DtmLib::bExtract(DM_BCD,(Str*)&iQuantity,aCursor,iLength,nullptr);
+  b = DtmLib::bExtract(DM_BCD,(Stz*)&iQuantity,aCursor,iLength,nullptr);
   
   // compute which group
   i8 i_Group = iOrderKey % 10;
@@ -224,22 +224,22 @@ void GroupBy::vApplyEntry(Entry* pLineItemEntry)
     
   LineItem* pLineItem = (LineItem*)pLineItemEntry->aRow();
   
-  //    vTrace("\nEntry: %p LineItem: %p String: %p \n>>%s<<\n"_Str,
+  //    vTrace("\nEntry: %p LineItem: %p String: %p \n>>%s<<\n"_Stz,
   //           pEntry,pLineItem,pLineItem->aStr(),pLineItem->aStr());
   //    MemLib::vHexDump(pEntry,512);
-  //    vTrace("\n"_Str);
+  //    vTrace("\n"_Stz);
   
   // extract the order key (its the first field)
   char* aCursor = pLineItem->s();
   i8 iOrderKey;
-  bool b = DtmLib::bExtract(DM_BCD,(Str*)&iOrderKey,&aCursor,nullptr);
+  bool b = DtmLib::bExtract(DM_BCD,(Stz*)&iOrderKey,&aCursor,nullptr);
   
   // extract the quantity (its after the fifth '|')
   aCursor = pLineItem->s();
   i8 iQuantity;
   b = StrLib::bFind(&aCursor,'|',5);
   aCursor++;
-  b = DtmLib::bExtract(DM_BCD,(Str*)&iQuantity,&aCursor,nullptr);
+  b = DtmLib::bExtract(DM_BCD,(Stz*)&iQuantity,&aCursor,nullptr);
   
   // compute which group
   i8 i_Group = iOrderKey % 10;
@@ -286,7 +286,7 @@ void GroupBy::vEnd(void)
   // print all the accumulators
   for (i8 i_Group = 0; i_Group < m_pAccumVec->nItems(); i_Group++) {
     Accum* pAccum = m_pAccumVec->pGet(i_Group);
-    vTrace("Group: %lld Count: %lld Sum: %lld Min: %lld Max: %lld\n"_Str,
+    vTrace("Group: %lld Count: %lld Sum: %lld Min: %lld Max: %lld\n"_Stz,
            pAccum->m_iGroup,
            pAccum->m_iCount,
            pAccum->m_iSum,

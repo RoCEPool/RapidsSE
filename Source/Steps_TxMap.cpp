@@ -31,7 +31,7 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_TxMap(void)
 {
-  vAddPrimitive("txMap.init"_Str,      &vTxMapInit,        false);
+  vAddPrimitive("txMap.init"_Stz,      &vTxMapInit,        false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -39,11 +39,11 @@ void Task::vAddPrimitives_TxMap(void)
 /*----------------------------------------------------------------------------*/
 void Task::vTxMapInit(MP_Task mpTask)
 {
-ENTRY("vTxMapInit"_Str);
+ENTRY("vTxMapInit"_Stz);
   
   Object* pPtrTxMap;
   if ( ! mpTask->m_pDataStack->bPop(pPtrTxMap) )
-    THROW_INVALID_DSTACK("txMap.init"_Str);
+    THROW_INVALID_DSTACK("txMap.init"_Stz);
   
   TxMap* pTxMap = _pTxMap(pPtrTxMap);
   ASSERT(CN_TXMAP == pTxMap->eClass());

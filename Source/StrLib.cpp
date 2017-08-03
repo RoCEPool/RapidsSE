@@ -1246,7 +1246,7 @@ void StrLib::vSkipWhite(char** ps)
 /*----------------------------------------------------------------------------*/
 /* vSprint: formatted sprint                                                  */
 /*----------------------------------------------------------------------------*/
-void StrLib::vSprint(char* sDst, Str* aFormat, ...)
+void StrLib::vSprint(char* sDst, Stz* aFormat, ...)
 {
   va_list args;
   
@@ -1258,7 +1258,7 @@ void StrLib::vSprint(char* sDst, Str* aFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* vSprint: formatted sprint                                                  */
 /*----------------------------------------------------------------------------*/
-void StrLib::vSprint(Str* sDst, Str* aFormat, ...)
+void StrLib::vSprint(Stz* sDst, Stz* aFormat, ...)
 {
   va_list args;
   

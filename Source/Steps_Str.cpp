@@ -31,26 +31,26 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Str(void)
 {
-  vAddPrimitive("s256.init"_Str,    &vS256Init,      false);
+  vAddPrimitive("s256.init"_Stz,    &vS256Init,      false);
   
-  vAddPrimitive("str::algebra"_Str, &vStrAlgebra,    false);
-  vAddPrimitive("strAlgebra"_Str,   &vStrAlgebra,    false);
+  vAddPrimitive("str::algebra"_Stz, &vStrAlgebra,    false);
+  vAddPrimitive("strAlgebra"_Stz,   &vStrAlgebra,    false);
   
-  vAddPrimitive("str.cat"_Str,      &vStrCat,        false);
-  vAddPrimitive("str.clip"_Str,     &vStrClip,       false);
-  vAddPrimitive("str.equal"_Str,    &vStrEqual,      false);
-  vAddPrimitive("str.escape"_Str,   &vStrEscape,     false);
-  vAddPrimitive("str.firstCsv"_Str, &vStrFirstCsv,   false);
-  vAddPrimitive("str.format"_Str,   &vStrFormat,     false);
-  vAddPrimitive("str.left"_Str,     &vStrLeft,       false);
-  vAddPrimitive("str.length"_Str,   &vStrLength,     false);
-  vAddPrimitive("str.pad"_Str,      &vStrPad,        false);
-  vAddPrimitive("str.prepend"_Str,  &vStrPrepend,    false);
-  vAddPrimitive("str.random"_Str,   &vStrRandom,     false);
-  vAddPrimitive("str.replace"_Str,  &vStrReplace,    false);
-  vAddPrimitive("str.right"_Str,    &vStrRight,      false);
-  vAddPrimitive("str.sub"_Str,      &vStrSub,        false);
-  vAddPrimitive("str.tailInt"_Str,  &vStrTailInt,    false);
+  vAddPrimitive("str.cat"_Stz,      &vStrCat,        false);
+  vAddPrimitive("str.clip"_Stz,     &vStrClip,       false);
+  vAddPrimitive("str.equal"_Stz,    &vStrEqual,      false);
+  vAddPrimitive("str.escape"_Stz,   &vStrEscape,     false);
+  vAddPrimitive("str.firstCsv"_Stz, &vStrFirstCsv,   false);
+  vAddPrimitive("str.format"_Stz,   &vStrFormat,     false);
+  vAddPrimitive("str.left"_Stz,     &vStrLeft,       false);
+  vAddPrimitive("str.length"_Stz,   &vStrLength,     false);
+  vAddPrimitive("str.pad"_Stz,      &vStrPad,        false);
+  vAddPrimitive("str.prepend"_Stz,  &vStrPrepend,    false);
+  vAddPrimitive("str.random"_Stz,   &vStrRandom,     false);
+  vAddPrimitive("str.replace"_Stz,  &vStrReplace,    false);
+  vAddPrimitive("str.right"_Stz,    &vStrRight,      false);
+  vAddPrimitive("str.sub"_Stz,      &vStrSub,        false);
+  vAddPrimitive("str.tailInt"_Stz,  &vStrTailInt,    false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -58,12 +58,12 @@ void Task::vAddPrimitives_Str(void)
 /*----------------------------------------------------------------------------*/
 void Task::vS256Init(MP_Task mpTask)
 {
-  ENTRY("vS256Init"_Str);
+  ENTRY("vS256Init"_Stz);
   
   Object* pPtrStrVal;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrStrVal) )
-    THROW_INVALID_DSTACK("s256.init"_Str);
+    THROW_INVALID_DSTACK("s256.init"_Stz);
   
   s256* ps256 = (s256*)_pStrVar(pPtrStrVal);
   
@@ -81,13 +81,13 @@ void Task::vS256Init(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vStrAlgebra(MP_Task mpTask)
 {
-  ENTRY("vStrAlgebra"_Str);
+  ENTRY("vStrAlgebra"_Stz);
  
   // (1) StrVal's cannot be declared as local variables
   //StrVal xStrval;  // uncommenting this line should produce a compile error
   
   // declaring a fixed length string
-  s32 xString("A test"_Str);
+  s32 xString("A test"_Stz);
   
   ValWrk xValWrk;
   StrVal* pStrVal = _pStrVal(&xValWrk);
@@ -102,14 +102,14 @@ void Task::vStrAlgebra(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vStrCat(MP_Task mpTask)
 {
-  ENTRY("vStrCat"_Str);
+  ENTRY("vStrCat"_Stz);
   
   s48K sStrR;
   s48K sStrB;
   s48K sStrA;
   
   if ( ! mpTask->m_pDataStack->bPop(sStrB,sStrA) )
-    THROW_INVALID_DSTACK("str.cat"_Str);
+    THROW_INVALID_DSTACK("str.cat"_Stz);
   
   sStrR = sStrA;
   
@@ -125,7 +125,7 @@ void Task::vStrCat(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vStrClip(MP_Task mpTask)
 {
-  ENTRY("vStrClip"_Str);
+  ENTRY("vStrClip"_Stz);
   
   i8 iLength;
   s48K sString;
@@ -133,13 +133,13 @@ void Task::vStrClip(MP_Task mpTask)
   
   // get the arguments
   if ( ! mpTask->m_pDataStack->bPop(sString,iLength) )
-    THROW_INVALID_DSTACK("str.clip"_Str);
+    THROW_INVALID_DSTACK("str.clip"_Stz);
   
   // validate length
   i8 iHasLength = sString.iLength();
   
   if ( iLength < 0 || llabs(iLength) >= iHasLength)
-    THROW("Invalid length for: str.clip"_Str);
+    THROW("Invalid length for: str.clip"_Stz);
   
   char* pStart;
   
@@ -160,14 +160,14 @@ void Task::vStrClip(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vStrEqual(MP_Task mpTask)
 {
-  ENTRY("vStrEql"_Str);
+  ENTRY("vStrEql"_Stz);
   
   ValWrk xStringA;
   ValWrk xStringB;
   
   // get the arguments
   if ( ! mpTask->m_pDataStack->bPop(xStringB,xStringA) )
-    THROW_INVALID_DSTACK("str.equal"_Str);
+    THROW_INVALID_DSTACK("str.equal"_Stz);
   
   i8 iEqual = StrLib::bEqualTo(_pStrVal(xStringA.pNestedValueSelf())->s(),
                                _pStrVal(xStringB.pNestedValueSelf())->s(),
@@ -183,14 +183,14 @@ void Task::vStrEqual(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vStrEscape(MP_Task mpTask)
 {
-  ENTRY("vStrEscape"_Str);
+  ENTRY("vStrEscape"_Stz);
   
   s48K xArg;
   s48K xEscaped;
   
   // get the arguments
   if ( ! mpTask->m_pDataStack->bPop(xArg) )
-    THROW_INVALID_DSTACK("str.escape"_Str);
+    THROW_INVALID_DSTACK("str.escape"_Stz);
   
   StrLib::vEscape(xArg.s(),xEscaped.s());
   
@@ -204,18 +204,18 @@ void Task::vStrEscape(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vStrFirstCsv(MP_Task mpTask)
 {
-  ENTRY("vStrFirstCsv"_Str);
+  ENTRY("vStrFirstCsv"_Stz);
   
   s48K sStr;
   if ( ! mpTask->m_pDataStack->bPop(sStr) )
-    THROW_INVALID_DSTACK("str.firstCsv"_Str);
+    THROW_INVALID_DSTACK("str.firstCsv"_Stz);
   
   s48K sFirstValue;
   
   char* aValue = sStr.s();
   
   if (! StrLib::bExtractItem(&aValue,sFirstValue.s(), '|'))
-    sFirstValue = ""_Str;
+    sFirstValue = ""_Stz;
   
   mpTask->m_pDataStack->vPushS48K(sFirstValue);
   
@@ -227,11 +227,11 @@ void Task::vStrFirstCsv(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vStrFormat(MP_Task mpTask)
 {
-  ENTRY("vStrFormat"_Str);
+  ENTRY("vStrFormat"_Stz);
   
   s48K sFormat;
   if ( ! mpTask->m_pDataStack->bPop(sFormat) )
-    THROW_INVALID_DSTACK("str.format"_Str);
+    THROW_INVALID_DSTACK("str.format"_Stz);
   
   s48K sString;
   
@@ -247,7 +247,7 @@ void Task::vStrFormat(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vStrLeft(MP_Task mpTask)
 {
-  ENTRY("vClip"_Str);
+  ENTRY("vClip"_Stz);
   
   i8 iLength;
   s48K sString;
@@ -255,13 +255,13 @@ void Task::vStrLeft(MP_Task mpTask)
   
   // get the arguments
   if ( ! mpTask->m_pDataStack->bPop(sString,iLength) )
-    THROW_INVALID_DSTACK("str.left"_Str);
+    THROW_INVALID_DSTACK("str.left"_Stz);
   
   // validate length
   i8 iHasLength = sString.iLength();
   
   if ( iLength < 0)
-    THROW("Invalid length for: str.left"_Str);
+    THROW("Invalid length for: str.left"_Stz);
   
   char* pStart = sString.s();
   
@@ -277,14 +277,14 @@ void Task::vStrLeft(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vStrLength(MP_Task mpTask)
 {
-  ENTRY("vStrLen"_Str);
+  ENTRY("vStrLen"_Stz);
   
   i8 iLength;
   s48K sString;
   
   // get the arguments
   if ( ! mpTask->m_pDataStack->bPop(sString) )
-    THROW_INVALID_DSTACK("str.length"_Str);
+    THROW_INVALID_DSTACK("str.length"_Stz);
   
   iLength = sString.iLength();
   
@@ -298,7 +298,7 @@ void Task::vStrLength(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vStrPad(MP_Task mpTask)
 {
-  ENTRY("vStringPad"_Str);
+  ENTRY("vStringPad"_Stz);
   
   i8 iLength;
   
@@ -306,7 +306,7 @@ void Task::vStrPad(MP_Task mpTask)
   
   // get the arguments
   if ( ! mpTask->m_pDataStack->bPop(iLength,xStringA) )
-    THROW_INVALID_DSTACK("str.pad"_Str);
+    THROW_INVALID_DSTACK("str.pad"_Stz);
   
   StrLib::vPad(_pStrVal(xStringA.pNestedValueSelf())->s(),iLength,' ');
   
@@ -323,7 +323,7 @@ void Task::vStrPad(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vStrPrepend(MP_Task mpTask)
 {
-  ENTRY("vStrPrepend"_Str);
+  ENTRY("vStrPrepend"_Stz);
   
   s48K xStrR;
   s48K xStrB;
@@ -333,7 +333,7 @@ void Task::vStrPrepend(MP_Task mpTask)
   ValWrk xValB;
   
   if ( ! mpTask->m_pDataStack->bPop(xValB,xValA) )
-    THROW_INVALID_DSTACK("str.prepend"_Str);
+    THROW_INVALID_DSTACK("str.prepend"_Stz);
   
   // If received INTEGER convert to STRING
   if (xValA.eClass() == CN_INTVAL) {
@@ -369,11 +369,11 @@ void Task::vStrPrepend(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vStrRandom(MP_Task mpTask)
 {
-  ENTRY("vStrRandom"_Str);
+  ENTRY("vStrRandom"_Stz);
   
   i8 iLength;
   if ( ! mpTask->m_pDataStack->bPop(iLength) )
-    THROW_INVALID_DSTACK("str.random"_Str);
+    THROW_INVALID_DSTACK("str.random"_Stz);
   
   s48K sRnd;
   
@@ -389,20 +389,20 @@ void Task::vStrRandom(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vStrReplace(MP_Task mpTask)
 {
-  ENTRY("vStrReplace"_Str);
+  ENTRY("vStrReplace"_Stz);
   
   s48K sString;
   s48K sThat;
   s48K sThis;
   
   if ( ! mpTask->m_pDataStack->bPop(sString) )
-    THROW_INVALID_DSTACK("str.replace"_Str);
+    THROW_INVALID_DSTACK("str.replace"_Stz);
 
   if ( ! mpTask->m_pDataStack->bPop(sThat) )
-    THROW_INVALID_DSTACK("str.replace"_Str);
+    THROW_INVALID_DSTACK("str.replace"_Stz);
   
   if ( ! mpTask->m_pDataStack->bPop(sThis) )
-    THROW_INVALID_DSTACK("str.replace"_Str);
+    THROW_INVALID_DSTACK("str.replace"_Stz);
   
   s48K sReplaced;
   
@@ -418,7 +418,7 @@ void Task::vStrReplace(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vStrRight(MP_Task mpTask)
 {
-  ENTRY("vStrRight"_Str);
+  ENTRY("vStrRight"_Stz);
   
   i8 iLength;
   s48K sString;
@@ -426,13 +426,13 @@ void Task::vStrRight(MP_Task mpTask)
   
   // get the arguments
   if ( ! mpTask->m_pDataStack->bPop(sString,iLength) )
-    THROW_INVALID_DSTACK("str.right"_Str);
+    THROW_INVALID_DSTACK("str.right"_Stz);
   
   // validate length
   i8 iHasLength = sString.iLength();
   
   if ( iLength < 0)
-    THROW("Invalid length for: str.right"_Str);
+    THROW("Invalid length for: str.right"_Stz);
 
   if (iLength > iHasLength)
     iLength = iHasLength;
@@ -451,7 +451,7 @@ void Task::vStrRight(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vStrSub(MP_Task mpTask)
 {
-  ENTRY("vStrSub"_Str);
+  ENTRY("vStrSub"_Stz);
   
   i8 iLength;
   i8 iStart;
@@ -460,20 +460,20 @@ void Task::vStrSub(MP_Task mpTask)
   
   // get the arguments
   if ( ! mpTask->m_pDataStack->bPop(sString,iStart,iLength) )
-    THROW_INVALID_DSTACK("str.sub"_Str);
+    THROW_INVALID_DSTACK("str.sub"_Stz);
   
   i8 iHasLength = sString.iLength();
   
   // validate start index
   if ( iStart < 0 || iStart >= iHasLength)
-    THROW("Invalid start index of %lld for: str.sub"_Str,iStart);
+    THROW("Invalid start index of %lld for: str.sub"_Stz,iStart);
   
   // handle to end of string case
   if (-1 == iLength)
     iLength = iHasLength - iStart;
   
   if ( iLength <= 0 || iStart + iLength > iHasLength)
-    THROW("Invalid length of %lld for: str.sub"_Str,iLength);
+    THROW("Invalid length of %lld for: str.sub"_Stz,iLength);
   
   char* pStart = sString.s() + iStart;
   
@@ -489,12 +489,12 @@ void Task::vStrSub(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vStrTailInt(MP_Task mpTask)
 {
-  ENTRY("vStrTailInt"_Str);
+  ENTRY("vStrTailInt"_Stz);
   
   // get the string
   s48K sString;
   if ( ! mpTask->m_pDataStack->bPop(sString) )
-    THROW_INVALID_DSTACK("str.tailInt"_Str);
+    THROW_INVALID_DSTACK("str.tailInt"_Stz);
   
   // get last char in string
   char* aLast = StrLib::sLast(sString.s());

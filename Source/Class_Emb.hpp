@@ -13,7 +13,7 @@ namespace CorrectnessAlgebra
   public:
     Class_Emb(eCN m_eClass);
   
-    Str* aClass(void);
+    Stz* aClass(void);
     eCN  eClass(void);
     void vSetClass(eCN eClassNo);
   };

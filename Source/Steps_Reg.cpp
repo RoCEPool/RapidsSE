@@ -31,42 +31,42 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Reg(void)
 {
-  vAddPrimitive("reg.pop"_Str,          &vRegPop,          false);
-  vAddPrimitive("reg.push"_Str,         &vRegPush,         false);
-  vAddPrimitive("reg0"_Str,             &vRegReg0,         false);
-  vAddPrimitive("reg1"_Str,             &vRegReg1,         false);
-  vAddPrimitive("reg2"_Str,             &vRegReg2,         false);
-  vAddPrimitive("reg3"_Str,             &vRegReg3,         false);
-  vAddPrimitive("reg4"_Str,             &vRegReg4,         false);
-  vAddPrimitive("reg5"_Str,             &vRegReg5,         false);
-  vAddPrimitive("reg6"_Str,             &vRegReg6,         false);
-  vAddPrimitive("reg7"_Str,             &vRegReg7,         false);
-  vAddPrimitive("reg8"_Str,             &vRegReg8,         false);
-  vAddPrimitive("reg9"_Str,             &vRegReg9,         false);
-  vAddPrimitive("regA"_Str,             &vRegRegA,         false);
-  vAddPrimitive("regB"_Str,             &vRegRegB,         false);
-  vAddPrimitive("regC"_Str,             &vRegRegC,         false);
-  vAddPrimitive("regD"_Str,             &vRegRegD,         false);
-  vAddPrimitive("regE"_Str,             &vRegRegE,         false);
-  vAddPrimitive("regF"_Str,             &vRegRegF,         false);
-  vAddPrimitive("regN"_Str,             &vRegRegNth,       false);
-  vAddPrimitive(">reg0"_Str,            &vRegToReg0,       false);
-  vAddPrimitive(">reg1"_Str,            &vRegToReg1,       false);
-  vAddPrimitive(">reg2"_Str,            &vRegToReg2,       false);
-  vAddPrimitive(">reg3"_Str,            &vRegToReg3,       false);
-  vAddPrimitive(">reg4"_Str,            &vRegToReg4,       false);
-  vAddPrimitive(">reg5"_Str,            &vRegToReg5,       false);
-  vAddPrimitive(">reg6"_Str,            &vRegToReg6,       false);
-  vAddPrimitive(">reg7"_Str,            &vRegToReg7,       false);
-  vAddPrimitive(">reg8"_Str,            &vRegToReg8,       false);
-  vAddPrimitive(">reg9"_Str,            &vRegToReg9,       false);
-  vAddPrimitive(">regA"_Str,            &vRegToRegA,       false);
-  vAddPrimitive(">regB"_Str,            &vRegToRegB,       false);
-  vAddPrimitive(">regC"_Str,            &vRegToRegC,       false);
-  vAddPrimitive(">regD"_Str,            &vRegToRegD,       false);
-  vAddPrimitive(">regE"_Str,            &vRegToRegE,       false);
-  vAddPrimitive(">regF"_Str,            &vRegToRegF,       false);
-  vAddPrimitive(">regN"_Str,            &vRegToRegNth,     false);
+  vAddPrimitive("reg.pop"_Stz,          &vRegPop,          false);
+  vAddPrimitive("reg.push"_Stz,         &vRegPush,         false);
+  vAddPrimitive("reg0"_Stz,             &vRegReg0,         false);
+  vAddPrimitive("reg1"_Stz,             &vRegReg1,         false);
+  vAddPrimitive("reg2"_Stz,             &vRegReg2,         false);
+  vAddPrimitive("reg3"_Stz,             &vRegReg3,         false);
+  vAddPrimitive("reg4"_Stz,             &vRegReg4,         false);
+  vAddPrimitive("reg5"_Stz,             &vRegReg5,         false);
+  vAddPrimitive("reg6"_Stz,             &vRegReg6,         false);
+  vAddPrimitive("reg7"_Stz,             &vRegReg7,         false);
+  vAddPrimitive("reg8"_Stz,             &vRegReg8,         false);
+  vAddPrimitive("reg9"_Stz,             &vRegReg9,         false);
+  vAddPrimitive("regA"_Stz,             &vRegRegA,         false);
+  vAddPrimitive("regB"_Stz,             &vRegRegB,         false);
+  vAddPrimitive("regC"_Stz,             &vRegRegC,         false);
+  vAddPrimitive("regD"_Stz,             &vRegRegD,         false);
+  vAddPrimitive("regE"_Stz,             &vRegRegE,         false);
+  vAddPrimitive("regF"_Stz,             &vRegRegF,         false);
+  vAddPrimitive("regN"_Stz,             &vRegRegNth,       false);
+  vAddPrimitive(">reg0"_Stz,            &vRegToReg0,       false);
+  vAddPrimitive(">reg1"_Stz,            &vRegToReg1,       false);
+  vAddPrimitive(">reg2"_Stz,            &vRegToReg2,       false);
+  vAddPrimitive(">reg3"_Stz,            &vRegToReg3,       false);
+  vAddPrimitive(">reg4"_Stz,            &vRegToReg4,       false);
+  vAddPrimitive(">reg5"_Stz,            &vRegToReg5,       false);
+  vAddPrimitive(">reg6"_Stz,            &vRegToReg6,       false);
+  vAddPrimitive(">reg7"_Stz,            &vRegToReg7,       false);
+  vAddPrimitive(">reg8"_Stz,            &vRegToReg8,       false);
+  vAddPrimitive(">reg9"_Stz,            &vRegToReg9,       false);
+  vAddPrimitive(">regA"_Stz,            &vRegToRegA,       false);
+  vAddPrimitive(">regB"_Stz,            &vRegToRegB,       false);
+  vAddPrimitive(">regC"_Stz,            &vRegToRegC,       false);
+  vAddPrimitive(">regD"_Stz,            &vRegToRegD,       false);
+  vAddPrimitive(">regE"_Stz,            &vRegToRegE,       false);
+  vAddPrimitive(">regF"_Stz,            &vRegToRegF,       false);
+  vAddPrimitive(">regN"_Stz,            &vRegToRegNth,     false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -74,16 +74,16 @@ void Task::vAddPrimitives_Reg(void)
 /*----------------------------------------------------------------------------*/
 void Task::vRegPop(MP_Task mpTask)
 {
-  ENTRY("vRegPop"_Str);
+  ENTRY("vRegPop"_Stz);
   
   RegFrame* pRegFrame = mpTask->m_pRegFrame;
   
   if ( ! pRegFrame )
-    THROW_INVALID_DSTACK("reg.pop"_Str);
+    THROW_INVALID_DSTACK("reg.pop"_Stz);
   
   mpTask->m_pRegFrame = mpTask->m_pRegFrame->pNext();
   
-  //vTrace("Deleting frame %s\n"_Str,pRegFrame->m_sName.s());
+  //vTrace("Deleting frame %s\n"_Stz,pRegFrame->m_sName.s());
   
   delete pRegFrame;
   
@@ -95,7 +95,7 @@ void Task::vRegPop(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRegPush(MP_Task mpTask)
 {
-ENTRY("vRegPush"_Str);
+ENTRY("vRegPush"_Stz);
   
   RegFrame* pRegFrame = new RegFrame;
   
@@ -111,10 +111,10 @@ ENTRY("vRegPush"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vRegReg0(MP_Task mpTask)
 {
-ENTRY("vRegReg0"_Str);
+ENTRY("vRegReg0"_Stz);
   
   if ( ! mpTask->m_pRegFrame )
-    THROW_INVALID_DSTACK("reg0"_Str);
+    THROW_INVALID_DSTACK("reg0"_Stz);
   
   ValReg* pValReg = mpTask->m_pRegFrame->pValReg(0);
   
@@ -128,10 +128,10 @@ ENTRY("vRegReg0"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vRegReg1(MP_Task mpTask)
 {
-  ENTRY("vRegReg1"_Str);
+  ENTRY("vRegReg1"_Stz);
   
   if ( ! mpTask->m_pRegFrame )
-    THROW_INVALID_DSTACK("reg1"_Str);
+    THROW_INVALID_DSTACK("reg1"_Stz);
   
   ValReg* pValReg = mpTask->m_pRegFrame->pValReg(1);
   
@@ -145,10 +145,10 @@ void Task::vRegReg1(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRegReg2(MP_Task mpTask)
 {
-  ENTRY("vRegReg2"_Str);
+  ENTRY("vRegReg2"_Stz);
   
   if ( ! mpTask->m_pRegFrame )
-    THROW_INVALID_DSTACK("reg2"_Str);
+    THROW_INVALID_DSTACK("reg2"_Stz);
   
   ValReg* pValReg = mpTask->m_pRegFrame->pValReg(2);
   
@@ -162,10 +162,10 @@ void Task::vRegReg2(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRegReg3(MP_Task mpTask)
 {
-  ENTRY("vRegReg3"_Str);
+  ENTRY("vRegReg3"_Stz);
   
   if ( ! mpTask->m_pRegFrame )
-    THROW_INVALID_DSTACK("reg3"_Str);
+    THROW_INVALID_DSTACK("reg3"_Stz);
   
   ValReg* pValReg = mpTask->m_pRegFrame->pValReg(3);
   
@@ -179,10 +179,10 @@ void Task::vRegReg3(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRegReg4(MP_Task mpTask)
 {
-  ENTRY("vRegReg4"_Str);
+  ENTRY("vRegReg4"_Stz);
   
   if ( ! mpTask->m_pRegFrame )
-    THROW_INVALID_DSTACK("reg4"_Str);
+    THROW_INVALID_DSTACK("reg4"_Stz);
   
   ValReg* pValReg = mpTask->m_pRegFrame->pValReg(4);
   
@@ -196,10 +196,10 @@ void Task::vRegReg4(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRegReg5(MP_Task mpTask)
 {
-  ENTRY("vRegReg5"_Str);
+  ENTRY("vRegReg5"_Stz);
   
   if ( ! mpTask->m_pRegFrame )
-    THROW_INVALID_DSTACK("reg5"_Str);
+    THROW_INVALID_DSTACK("reg5"_Stz);
   
   ValReg* pValReg = mpTask->m_pRegFrame->pValReg(5);
   
@@ -213,10 +213,10 @@ void Task::vRegReg5(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRegReg6(MP_Task mpTask)
 {
-  ENTRY("vRegReg6"_Str);
+  ENTRY("vRegReg6"_Stz);
   
   if ( ! mpTask->m_pRegFrame )
-    THROW_INVALID_DSTACK("reg6"_Str);
+    THROW_INVALID_DSTACK("reg6"_Stz);
   
   ValReg* pValReg = mpTask->m_pRegFrame->pValReg(6);
   
@@ -230,10 +230,10 @@ void Task::vRegReg6(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRegReg7(MP_Task mpTask)
 {
-  ENTRY("vRegReg7"_Str);
+  ENTRY("vRegReg7"_Stz);
   
   if ( ! mpTask->m_pRegFrame )
-    THROW_INVALID_DSTACK("reg7"_Str);
+    THROW_INVALID_DSTACK("reg7"_Stz);
   
   ValReg* pValReg = mpTask->m_pRegFrame->pValReg(7);
   
@@ -247,10 +247,10 @@ void Task::vRegReg7(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRegReg8(MP_Task mpTask)
 {
-  ENTRY("vRegReg8"_Str);
+  ENTRY("vRegReg8"_Stz);
   
   if ( ! mpTask->m_pRegFrame )
-    THROW_INVALID_DSTACK("reg8"_Str);
+    THROW_INVALID_DSTACK("reg8"_Stz);
   
   ValReg* pValReg = mpTask->m_pRegFrame->pValReg(8);
   
@@ -264,10 +264,10 @@ void Task::vRegReg8(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRegReg9(MP_Task mpTask)
 {
-  ENTRY("vRegReg9"_Str);
+  ENTRY("vRegReg9"_Stz);
   
   if ( ! mpTask->m_pRegFrame )
-    THROW_INVALID_DSTACK("reg9"_Str);
+    THROW_INVALID_DSTACK("reg9"_Stz);
   
   ValReg* pValReg = mpTask->m_pRegFrame->pValReg(9);
   
@@ -281,10 +281,10 @@ void Task::vRegReg9(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRegRegA(MP_Task mpTask)
 {
-  ENTRY("vRegRegA"_Str);
+  ENTRY("vRegRegA"_Stz);
   
   if ( ! mpTask->m_pRegFrame )
-    THROW_INVALID_DSTACK("regA"_Str);
+    THROW_INVALID_DSTACK("regA"_Stz);
   
   ValReg* pValReg = mpTask->m_pRegFrame->pValReg(10);
   
@@ -298,10 +298,10 @@ void Task::vRegRegA(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRegRegB(MP_Task mpTask)
 {
-  ENTRY("vRegRegB"_Str);
+  ENTRY("vRegRegB"_Stz);
   
   if ( ! mpTask->m_pRegFrame )
-    THROW_INVALID_DSTACK("regB"_Str);
+    THROW_INVALID_DSTACK("regB"_Stz);
   
   ValReg* pValReg = mpTask->m_pRegFrame->pValReg(11);
   
@@ -315,10 +315,10 @@ void Task::vRegRegB(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRegRegC(MP_Task mpTask)
 {
-  ENTRY("vRegRegC"_Str);
+  ENTRY("vRegRegC"_Stz);
   
   if ( ! mpTask->m_pRegFrame )
-    THROW_INVALID_DSTACK("regC"_Str);
+    THROW_INVALID_DSTACK("regC"_Stz);
   
   ValReg* pValReg = mpTask->m_pRegFrame->pValReg(12);
   
@@ -332,10 +332,10 @@ void Task::vRegRegC(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRegRegD(MP_Task mpTask)
 {
-  ENTRY("vRegRegD"_Str);
+  ENTRY("vRegRegD"_Stz);
   
   if ( ! mpTask->m_pRegFrame )
-    THROW_INVALID_DSTACK("regD"_Str);
+    THROW_INVALID_DSTACK("regD"_Stz);
   
   ValReg* pValReg = mpTask->m_pRegFrame->pValReg(13);
   
@@ -349,10 +349,10 @@ void Task::vRegRegD(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRegRegE(MP_Task mpTask)
 {
-  ENTRY("vRegRegE"_Str);
+  ENTRY("vRegRegE"_Stz);
   
   if ( ! mpTask->m_pRegFrame )
-    THROW_INVALID_DSTACK("regE"_Str);
+    THROW_INVALID_DSTACK("regE"_Stz);
   
   ValReg* pValReg = mpTask->m_pRegFrame->pValReg(14);
   
@@ -366,10 +366,10 @@ void Task::vRegRegE(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRegRegF(MP_Task mpTask)
 {
-  ENTRY("vRegRegF"_Str);
+  ENTRY("vRegRegF"_Stz);
   
   if ( ! mpTask->m_pRegFrame )
-    THROW_INVALID_DSTACK("regF"_Str);
+    THROW_INVALID_DSTACK("regF"_Stz);
   
   ValReg* pValReg = mpTask->m_pRegFrame->pValReg(15);
   
@@ -383,14 +383,14 @@ void Task::vRegRegF(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRegRegNth(MP_Task mpTask)
 {
-  ENTRY("vRegRegNth"_Str);
+  ENTRY("vRegRegNth"_Stz);
   
   if ( ! mpTask->m_pRegFrame )
-    THROW_INVALID_DSTACK("regN"_Str);
+    THROW_INVALID_DSTACK("regN"_Stz);
   
   i8 iReg;
   if ( ! mpTask->m_pDataStack->bPop(iReg) )
-    THROW_INVALID_DSTACK("regN"_Str);
+    THROW_INVALID_DSTACK("regN"_Stz);
   
   ValReg* pValReg = mpTask->m_pRegFrame->pValReg(iReg);
   
@@ -404,10 +404,10 @@ void Task::vRegRegNth(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRegToReg0(MP_Task mpTask)
 {
-ENTRY("vRegToReg0"_Str);
+ENTRY("vRegToReg0"_Stz);
   
   if ( ! mpTask->m_pRegFrame )
-    THROW_INVALID_DSTACK(">reg0"_Str);
+    THROW_INVALID_DSTACK(">reg0"_Stz);
   
   ValReg* pValReg = mpTask->m_pRegFrame->pValReg(0);
   
@@ -421,10 +421,10 @@ ENTRY("vRegToReg0"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vRegToReg1(MP_Task mpTask)
 {
-  ENTRY("vRegToReg1"_Str);
+  ENTRY("vRegToReg1"_Stz);
   
   if ( ! mpTask->m_pRegFrame )
-    THROW_INVALID_DSTACK(">reg1"_Str);
+    THROW_INVALID_DSTACK(">reg1"_Stz);
   
   ValReg* pValReg = mpTask->m_pRegFrame->pValReg(1);
   
@@ -438,10 +438,10 @@ void Task::vRegToReg1(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRegToReg2(MP_Task mpTask)
 {
-  ENTRY("vRegToReg2"_Str);
+  ENTRY("vRegToReg2"_Stz);
   
   if ( ! mpTask->m_pRegFrame )
-    THROW_INVALID_DSTACK(">reg2"_Str);
+    THROW_INVALID_DSTACK(">reg2"_Stz);
   
   ValReg* pValReg = mpTask->m_pRegFrame->pValReg(2);
   
@@ -455,10 +455,10 @@ void Task::vRegToReg2(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRegToReg3(MP_Task mpTask)
 {
-  ENTRY("vRegToReg3"_Str);
+  ENTRY("vRegToReg3"_Stz);
   
   if ( ! mpTask->m_pRegFrame )
-    THROW_INVALID_DSTACK(">reg3"_Str);
+    THROW_INVALID_DSTACK(">reg3"_Stz);
   
   ValReg* pValReg = mpTask->m_pRegFrame->pValReg(3);
   
@@ -472,10 +472,10 @@ void Task::vRegToReg3(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRegToReg4(MP_Task mpTask)
 {
-  ENTRY("vRegToReg4"_Str);
+  ENTRY("vRegToReg4"_Stz);
   
   if ( ! mpTask->m_pRegFrame )
-    THROW_INVALID_DSTACK(">reg4"_Str);
+    THROW_INVALID_DSTACK(">reg4"_Stz);
   
   ValReg* pValReg = mpTask->m_pRegFrame->pValReg(4);
   
@@ -489,10 +489,10 @@ void Task::vRegToReg4(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRegToReg5(MP_Task mpTask)
 {
-  ENTRY("vRegToReg5"_Str);
+  ENTRY("vRegToReg5"_Stz);
   
   if ( ! mpTask->m_pRegFrame )
-    THROW_INVALID_DSTACK(">reg5"_Str);
+    THROW_INVALID_DSTACK(">reg5"_Stz);
   
   ValReg* pValReg = mpTask->m_pRegFrame->pValReg(5);
   
@@ -506,10 +506,10 @@ void Task::vRegToReg5(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRegToReg6(MP_Task mpTask)
 {
-  ENTRY("vRegToReg6"_Str);
+  ENTRY("vRegToReg6"_Stz);
   
   if ( ! mpTask->m_pRegFrame )
-    THROW_INVALID_DSTACK(">reg6"_Str);
+    THROW_INVALID_DSTACK(">reg6"_Stz);
   
   ValReg* pValReg = mpTask->m_pRegFrame->pValReg(6);
   
@@ -523,10 +523,10 @@ void Task::vRegToReg6(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRegToReg7(MP_Task mpTask)
 {
-  ENTRY("vRegToReg7"_Str);
+  ENTRY("vRegToReg7"_Stz);
   
   if ( ! mpTask->m_pRegFrame )
-    THROW_INVALID_DSTACK(">reg7"_Str);
+    THROW_INVALID_DSTACK(">reg7"_Stz);
   
   ValReg* pValReg = mpTask->m_pRegFrame->pValReg(7);
   
@@ -540,10 +540,10 @@ void Task::vRegToReg7(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRegToReg8(MP_Task mpTask)
 {
-  ENTRY("vRegToReg8"_Str);
+  ENTRY("vRegToReg8"_Stz);
   
   if ( ! mpTask->m_pRegFrame )
-    THROW_INVALID_DSTACK(">reg8"_Str);
+    THROW_INVALID_DSTACK(">reg8"_Stz);
   
   ValReg* pValReg = mpTask->m_pRegFrame->pValReg(8);
   
@@ -557,10 +557,10 @@ void Task::vRegToReg8(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRegToReg9(MP_Task mpTask)
 {
-  ENTRY("vRegToReg9"_Str);
+  ENTRY("vRegToReg9"_Stz);
   
   if ( ! mpTask->m_pRegFrame )
-    THROW_INVALID_DSTACK(">reg9"_Str);
+    THROW_INVALID_DSTACK(">reg9"_Stz);
   
   ValReg* pValReg = mpTask->m_pRegFrame->pValReg(9);
   
@@ -574,10 +574,10 @@ void Task::vRegToReg9(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRegToRegA(MP_Task mpTask)
 {
-  ENTRY("vRegToRegA"_Str);
+  ENTRY("vRegToRegA"_Stz);
   
   if ( ! mpTask->m_pRegFrame )
-    THROW_INVALID_DSTACK(">regA"_Str);
+    THROW_INVALID_DSTACK(">regA"_Stz);
   
   ValReg* pValReg = mpTask->m_pRegFrame->pValReg(10);
   
@@ -591,10 +591,10 @@ void Task::vRegToRegA(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRegToRegB(MP_Task mpTask)
 {
-  ENTRY("vRegToRegB"_Str);
+  ENTRY("vRegToRegB"_Stz);
   
   if ( ! mpTask->m_pRegFrame )
-    THROW_INVALID_DSTACK(">regB"_Str);
+    THROW_INVALID_DSTACK(">regB"_Stz);
   
   ValReg* pValReg = mpTask->m_pRegFrame->pValReg(11);
   
@@ -608,10 +608,10 @@ void Task::vRegToRegB(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRegToRegC(MP_Task mpTask)
 {
-  ENTRY("vRegToRegC"_Str);
+  ENTRY("vRegToRegC"_Stz);
   
   if ( ! mpTask->m_pRegFrame )
-    THROW_INVALID_DSTACK(">regC"_Str);
+    THROW_INVALID_DSTACK(">regC"_Stz);
   
   ValReg* pValReg = mpTask->m_pRegFrame->pValReg(12);
   
@@ -625,10 +625,10 @@ void Task::vRegToRegC(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRegToRegD(MP_Task mpTask)
 {
-  ENTRY("vRegToRegD"_Str);
+  ENTRY("vRegToRegD"_Stz);
   
   if ( ! mpTask->m_pRegFrame )
-    THROW_INVALID_DSTACK(">regD"_Str);
+    THROW_INVALID_DSTACK(">regD"_Stz);
   
   ValReg* pValReg = mpTask->m_pRegFrame->pValReg(13);
   
@@ -642,10 +642,10 @@ void Task::vRegToRegD(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRegToRegE(MP_Task mpTask)
 {
-  ENTRY("vRegToRegE"_Str);
+  ENTRY("vRegToRegE"_Stz);
   
   if ( ! mpTask->m_pRegFrame )
-    THROW_INVALID_DSTACK(">regE"_Str);
+    THROW_INVALID_DSTACK(">regE"_Stz);
   
   ValReg* pValReg = mpTask->m_pRegFrame->pValReg(14);
   
@@ -659,10 +659,10 @@ void Task::vRegToRegE(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRegToRegF(MP_Task mpTask)
 {
-  ENTRY("vRegToRegF"_Str);
+  ENTRY("vRegToRegF"_Stz);
   
   if ( ! mpTask->m_pRegFrame )
-    THROW_INVALID_DSTACK(">regF"_Str);
+    THROW_INVALID_DSTACK(">regF"_Stz);
   
   ValReg* pValReg = mpTask->m_pRegFrame->pValReg(15);
   
@@ -676,14 +676,14 @@ void Task::vRegToRegF(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRegToRegNth(MP_Task mpTask)
 {
-  ENTRY("vRegToRegNth"_Str);
+  ENTRY("vRegToRegNth"_Stz);
   
   if ( ! mpTask->m_pRegFrame )
-    THROW_INVALID_DSTACK(">regN"_Str);
+    THROW_INVALID_DSTACK(">regN"_Stz);
   
   i8 iReg;
   if ( ! mpTask->m_pDataStack->bPop(iReg) )
-    THROW_INVALID_DSTACK(">regNth"_Str);
+    THROW_INVALID_DSTACK(">regNth"_Stz);
   
   ValReg* pValReg = mpTask->m_pRegFrame->pValReg(iReg);
   

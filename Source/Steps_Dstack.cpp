@@ -31,27 +31,27 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Dstack(void)
 {
-  vAddPrimitive("stack.class"_Str,     &vDstackClass,      false);
-  vAddPrimitive("depth"_Str,           &vDstackDepth,      false);
-  vAddPrimitive("drop"_Str,            &vDstackDrop,       false);
-  vAddPrimitive("2drop"_Str,           &vDstackDropTwo,    false);
-  vAddPrimitive("dump"_Str,            &vDstackDump,       false);
-  vAddPrimitive("dup"_Str,             &vDstackDup,        false);
-  vAddPrimitive("?dup"_Str,            &vDstackDupNonZero, false);
-  vAddPrimitive("nip"_Str,             &vDstackNip,        false);
-  vAddPrimitive("over"_Str,            &vDstackOver,       false);
-  vAddPrimitive("pick"_Str,            &vDstackPick,       false);
-  vAddPrimitive("reverse"_Str,         &vDstackReverse,    false);
-  vAddPrimitive("roll"_Str,            &vDstackRoll,       false);
-  vAddPrimitive("-roll"_Str,           &vDstackRollInv,    false);
-  vAddPrimitive("rot"_Str,             &vDstackRot,        false);
-  vAddPrimitive("-rot"_Str,            &vDstackRotInv,     false);
-  vAddPrimitive("stk"_Str,             &vDstackStk,        false);
-  vAddPrimitive("swap"_Str,            &vDstackSwap,       false);
-  vAddPrimitive("valset>"_Str,         &vDstackToValues,   false);
-  vAddPrimitive(">valset"_Str,         &vDstackToValSet,   false);
-  vAddPrimitive(">DStack"_Str,         &vDstackTransfer,   false);
-  vAddPrimitive("tuck"_Str,            &vDstackTuck,       false);
+  vAddPrimitive("stack.class"_Stz,     &vDstackClass,      false);
+  vAddPrimitive("depth"_Stz,           &vDstackDepth,      false);
+  vAddPrimitive("drop"_Stz,            &vDstackDrop,       false);
+  vAddPrimitive("2drop"_Stz,           &vDstackDropTwo,    false);
+  vAddPrimitive("dump"_Stz,            &vDstackDump,       false);
+  vAddPrimitive("dup"_Stz,             &vDstackDup,        false);
+  vAddPrimitive("?dup"_Stz,            &vDstackDupNonZero, false);
+  vAddPrimitive("nip"_Stz,             &vDstackNip,        false);
+  vAddPrimitive("over"_Stz,            &vDstackOver,       false);
+  vAddPrimitive("pick"_Stz,            &vDstackPick,       false);
+  vAddPrimitive("reverse"_Stz,         &vDstackReverse,    false);
+  vAddPrimitive("roll"_Stz,            &vDstackRoll,       false);
+  vAddPrimitive("-roll"_Stz,           &vDstackRollInv,    false);
+  vAddPrimitive("rot"_Stz,             &vDstackRot,        false);
+  vAddPrimitive("-rot"_Stz,            &vDstackRotInv,     false);
+  vAddPrimitive("stk"_Stz,             &vDstackStk,        false);
+  vAddPrimitive("swap"_Stz,            &vDstackSwap,       false);
+  vAddPrimitive("valset>"_Stz,         &vDstackToValues,   false);
+  vAddPrimitive(">valset"_Stz,         &vDstackToValSet,   false);
+  vAddPrimitive(">DStack"_Stz,         &vDstackTransfer,   false);
+  vAddPrimitive("tuck"_Stz,            &vDstackTuck,       false);
   
 }
 
@@ -60,16 +60,16 @@ void Task::vAddPrimitives_Dstack(void)
 /*----------------------------------------------------------------------------*/
 void Task::vDstackTransfer(MP_Task mpTask)
 {
-  ENTRY("vDstackTransfer"_Str);
+  ENTRY("vDstackTransfer"_Stz);
   
   Object* pPtrTask;
   if ( ! mpTask->m_pDataStack->bPop(pPtrTask) )
-  THROW_INVALID_DSTACK(">DStack"_Str);
+  THROW_INVALID_DSTACK(">DStack"_Stz);
   Task* pThatTask = _pTask(pPtrTask);
   
   i8 iVal;
   if ( ! mpTask->m_pDataStack->bPop(iVal) )
-  THROW_INVALID_DSTACK(">DStack"_Str);
+  THROW_INVALID_DSTACK(">DStack"_Stz);
   
   pThatTask->m_xLock.vGrabWrite();
   pThatTask->m_pDataStack->vPushInt(iVal);
@@ -84,11 +84,11 @@ void Task::vDstackTransfer(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDstackClass(MP_Task mpTask)
 {
-  ENTRY("vDstackClass"_Str);
+  ENTRY("vDstackClass"_Stz);
   
   i8 nTh;
   if ( ! mpTask->m_pDataStack->bPop(nTh) )
-    THROW_INVALID_DSTACK("stack.class"_Str);
+    THROW_INVALID_DSTACK("stack.class"_Stz);
   
   ValWrk xValWrk;
   
@@ -106,7 +106,7 @@ void Task::vDstackClass(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDstackDepth(MP_Task mpTask)
 {
-  ENTRY("vDstackDepth"_Str);
+  ENTRY("vDstackDepth"_Stz);
   
   i8 iDepth = mpTask->m_pDataStack->iValues();
   
@@ -120,13 +120,13 @@ void Task::vDstackDepth(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDstackDrop(MP_Task mpTask)
 {
-  ENTRY("vDstackDrop"_Str);
+  ENTRY("vDstackDrop"_Stz);
   
   // should just discard on stack
   
   ValWrk xValA;
   if ( ! mpTask->m_pDataStack->bPop(xValA) )
-    THROW_INVALID_DSTACK("drop"_Str);
+    THROW_INVALID_DSTACK("drop"_Stz);
   
   EXIT();
 }
@@ -136,14 +136,14 @@ void Task::vDstackDrop(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDstackDropTwo(MP_Task mpTask)
 {
-  ENTRY("vDstackDrop"_Str);
+  ENTRY("vDstackDrop"_Stz);
   
   // should just discard on stack
   
   ValWrk xValA;
   ValWrk xValB;
   if ( ! mpTask->m_pDataStack->bPop(xValA,xValB) )
-    THROW_INVALID_DSTACK("2drop"_Str);
+    THROW_INVALID_DSTACK("2drop"_Stz);
   
   EXIT();
 }
@@ -153,7 +153,7 @@ void Task::vDstackDropTwo(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDstackDup(MP_Task mpTask)
 {
-  ENTRY("vDstackDup"_Str);
+  ENTRY("vDstackDup"_Stz);
   
   if (mpTask->m_iTracing) {
     ASSERT(mpTask->m_iTracing);
@@ -163,7 +163,7 @@ void Task::vDstackDup(MP_Task mpTask)
   
   ValWrk xValA;
   if ( ! mpTask->m_pDataStack->bPop(xValA) )
-    THROW_INVALID_DSTACK("dup"_Str);
+    THROW_INVALID_DSTACK("dup"_Stz);
   
   mpTask->m_pDataStack->vPushValWrk(xValA);
   mpTask->m_pDataStack->vPushValWrk(xValA);
@@ -176,13 +176,13 @@ void Task::vDstackDup(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDstackDupNonZero(MP_Task mpTask)
 {
-  ENTRY("vDstackDupNonZero"_Str);
+  ENTRY("vDstackDupNonZero"_Stz);
   
   // could just copy from stack back into stack
   
   ValWrk xValA;
   if ( ! mpTask->m_pDataStack->bPop(xValA) )
-    THROW_INVALID_DSTACK("?dup"_Str);
+    THROW_INVALID_DSTACK("?dup"_Stz);
   
   if (xValA.iNestedAsInt()) {
     mpTask->m_pDataStack->vPushValWrk(xValA);
@@ -199,16 +199,16 @@ void Task::vDstackDupNonZero(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDstackDump(MP_Task mpTask)
 {
-  ENTRY("vDstackDump"_Str);
+  ENTRY("vDstackDump"_Stz);
   
   
   ValWrk xValWrk;
   if ( ! mpTask->m_pDataStack->bPop(xValWrk) )
-    THROW_INVALID_DSTACK("dump"_Str);
+    THROW_INVALID_DSTACK("dump"_Stz);
   
   s48K sWorkspace;
   ValLib::vToString(&xValWrk,sWorkspace);
-  Str* aClass = xValWrk.aClass();
+  Stz* aClass = xValWrk.aClass();
   
   eCN eClass = xValWrk.eClass();
   
@@ -216,17 +216,17 @@ void Task::vDstackDump(MP_Task mpTask)
     PtrVal* pPtrVal = _pPtrVal(&xValWrk);
     Object* pObject = pPtrVal->pPtr();
     eCN ePtdClass   = pObject->eClass();
-    vTrace("[%s] %s (%s %s)\n"_Str,
+    vTrace("[%s] %s (%s %s)\n"_Stz,
           mpTask->m_sName.s(),sWorkspace.s(),aClass,aCN[ePtdClass]);
   }
   else if (CN_IPVAL == eClass) {                                         //RAY??
     IpVal* pIpVal = _pIpVal(&xValWrk);
     Cell* pCell = pIpVal->pIpPtr();
-    vTrace("[%s] nullptr\n"_Str,mpTask->m_sName.s());    //RAY: should trace pIpVal
-//  vTrace("[%s] %p\n"_Str,mpTask->m_sName.s(),pIpVal);
+    vTrace("[%s] nullptr\n"_Stz,mpTask->m_sName.s());    //RAY: should trace pIpVal
+//  vTrace("[%s] %p\n"_Stz,mpTask->m_sName.s(),pIpVal);
   }
   else {
-    vTrace("[%s] %s (%s)\n"_Str,
+    vTrace("[%s] %s (%s)\n"_Stz,
            mpTask->m_sName.s(),sWorkspace.s(),aClass);
   }
   
@@ -238,13 +238,13 @@ void Task::vDstackDump(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDstackNip(MP_Task mpTask)
 {
-  ENTRY("vDstackNip"_Str);
+  ENTRY("vDstackNip"_Stz);
   
   ValWrk xValA;
   ValWrk xValB;
   
   if ( ! mpTask->m_pDataStack->bPop(xValA,xValB) )
-    THROW_INVALID_DSTACK("nip"_Str);
+    THROW_INVALID_DSTACK("nip"_Stz);
   
   mpTask->m_pDataStack->vPushValWrk(xValA);
   
@@ -256,7 +256,7 @@ void Task::vDstackNip(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDstackOver(MP_Task mpTask)
 {
-  ENTRY("vDstackOver"_Str);
+  ENTRY("vDstackOver"_Stz);
   
   // could do this directly on stack
   
@@ -274,11 +274,11 @@ void Task::vDstackOver(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDstackPick(MP_Task mpTask)
 {
-  ENTRY("vDstackPick"_Str);
+  ENTRY("vDstackPick"_Stz);
   
   i8 iPick;
   if ( ! mpTask->m_pDataStack->bPopAsInt(iPick) )
-    THROW_INVALID_DSTACK("pick"_Str);
+    THROW_INVALID_DSTACK("pick"_Stz);
   
   // could do this directly on stack
   
@@ -296,7 +296,7 @@ void Task::vDstackPick(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDstackReverse(MP_Task mpTask)
 {
-  ENTRY("vDstackReverse"_Str);
+  ENTRY("vDstackReverse"_Stz);
   
   ValWrk xVal0;
   ValWrk xVal1;
@@ -313,11 +313,11 @@ void Task::vDstackReverse(MP_Task mpTask)
   
   i8 nValues;
   if ( ! mpTask->m_pDataStack->bPop(nValues) )
-    THROW_INVALID_DSTACK("reverse"_Str);
+    THROW_INVALID_DSTACK("reverse"_Stz);
   
   for (i8 i = 0; i < nValues; i++) {
     if ( ! mpTask->m_pDataStack->bPop(apValWrk[i]) )
-      THROW_INVALID_DSTACK("reverse"_Str);
+      THROW_INVALID_DSTACK("reverse"_Stz);
   }
 
   for (i8 i = 0; i < nValues; i++) {
@@ -330,21 +330,21 @@ void Task::vDstackReverse(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDstackRoll(MP_Task mpTask)
 {
-  ENTRY("vDstackRoll"_Str);
+  ENTRY("vDstackRoll"_Stz);
   
   ValWrk xValA;
   ValWrk xValX;
   
   i8 nValues;
   if ( ! mpTask->m_pDataStack->bPop(nValues) )
-    THROW_INVALID_DSTACK("roll"_Str);
+    THROW_INVALID_DSTACK("roll"_Stz);
   
   if ( ! mpTask->m_pDataStack->bPop(xValA) )
-    THROW_INVALID_DSTACK("roll"_Str);
+    THROW_INVALID_DSTACK("roll"_Stz);
   
   for (i8 iCount = 0; iCount < nValues; iCount++) {
     if ( ! mpTask->m_pDataStack->bPop(xValX) )
-      THROW_INVALID_DSTACK("roll"_Str);
+      THROW_INVALID_DSTACK("roll"_Stz);
     
     mpTask->m_pReturnStack->vPushValWrk(xValX);
   }
@@ -353,7 +353,7 @@ void Task::vDstackRoll(MP_Task mpTask)
   
   for (i8 iCount = 0; iCount < nValues; iCount++) {
     if ( ! mpTask->m_pReturnStack->bPop(xValX) )
-      THROW_INVALID_DSTACK("roll"_Str);
+      THROW_INVALID_DSTACK("roll"_Stz);
     
     mpTask->m_pDataStack->vPushValWrk(xValX);
   }
@@ -366,29 +366,29 @@ void Task::vDstackRoll(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDstackRollInv(MP_Task mpTask)
 {
-  ENTRY("vDstackRollInv"_Str);
+  ENTRY("vDstackRollInv"_Stz);
   
   ValWrk xValZ;
   ValWrk xValX;
   
   i8 nValues;
   if ( ! mpTask->m_pDataStack->bPop(nValues) )
-    THROW_INVALID_DSTACK("-roll"_Str);
+    THROW_INVALID_DSTACK("-roll"_Stz);
   
   for (i8 iCount = 0; iCount < nValues; iCount++) {
     if ( ! mpTask->m_pDataStack->bPop(xValX) )
-      THROW_INVALID_DSTACK("-roll"_Str);
+      THROW_INVALID_DSTACK("-roll"_Stz);
     
     mpTask->m_pReturnStack->vPushValWrk(xValX);
   }
   
   if ( ! mpTask->m_pDataStack->bPop(xValZ) )
-    THROW_INVALID_DSTACK("-roll"_Str);
+    THROW_INVALID_DSTACK("-roll"_Stz);
   
   
   for (i8 iCount = 0; iCount < nValues; iCount++) {
     if ( ! mpTask->m_pReturnStack->bPop(xValX) )
-      THROW_INVALID_DSTACK("-roll"_Str);
+      THROW_INVALID_DSTACK("-roll"_Stz);
     
     mpTask->m_pDataStack->vPushValWrk(xValX);
   }
@@ -403,14 +403,14 @@ void Task::vDstackRollInv(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDstackRot(MP_Task mpTask)
 {
-  ENTRY("vDstackRot"_Str);
+  ENTRY("vDstackRot"_Stz);
   
   ValWrk xValA;
   ValWrk xValB;
   ValWrk xValC;
   
   if ( ! mpTask->m_pDataStack->bPop(xValA,xValB,xValC) )
-    THROW_INVALID_DSTACK("rot"_Str);
+    THROW_INVALID_DSTACK("rot"_Stz);
   
   mpTask->m_pDataStack->vPushValWrk(xValB);
   mpTask->m_pDataStack->vPushValWrk(xValA);
@@ -424,14 +424,14 @@ void Task::vDstackRot(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDstackRotInv(MP_Task mpTask)
 {
-  ENTRY("vDstackRotInv"_Str);
+  ENTRY("vDstackRotInv"_Stz);
   
   ValWrk xValA;
   ValWrk xValB;
   ValWrk xValC;
   
   if ( ! mpTask->m_pDataStack->bPop(xValA,xValB,xValC) )
-    THROW_INVALID_DSTACK("-rot"_Str);
+    THROW_INVALID_DSTACK("-rot"_Stz);
   
   mpTask->m_pDataStack->vPushValWrk(xValA);
   mpTask->m_pDataStack->vPushValWrk(xValC);
@@ -445,9 +445,9 @@ void Task::vDstackRotInv(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDstackStk(MP_Task mpTask)
 {
-  ENTRY("vDstackStk"_Str);
+  ENTRY("vDstackStk"_Stz);
   
-  mpTask->m_pDataStack->vContentDump(mpTask->m_sName,"DataStack:"_Str);
+  mpTask->m_pDataStack->vContentDump(mpTask->m_sName,"DataStack:"_Stz);
   
   EXIT();
 }
@@ -457,13 +457,13 @@ void Task::vDstackStk(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDstackSwap(MP_Task mpTask)
 {
-  ENTRY("vDstackSwap"_Str);
+  ENTRY("vDstackSwap"_Stz);
   
   ValWrk xValA;
   ValWrk xValB;
   
   if ( ! mpTask->m_pDataStack->bPop(xValA,xValB) )
-    THROW_INVALID_DSTACK("swap"_Str);
+    THROW_INVALID_DSTACK("swap"_Stz);
   
   mpTask->m_pDataStack->vPushValWrk(xValA);
   mpTask->m_pDataStack->vPushValWrk(xValB);
@@ -476,24 +476,24 @@ void Task::vDstackSwap(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDstackToValSet(MP_Task mpTask)
 {
-  ENTRY("vDstackToValSet"_Str);
+  ENTRY("vDstackToValSet"_Stz);
   
   i8 nValues;
   
   if ( ! mpTask->m_pDataStack->bPop(nValues) )
-    THROW_INVALID_DSTACK(">valset"_Str);
+    THROW_INVALID_DSTACK(">valset"_Stz);
   
   if ( ! mpTask->m_pDataStack->bGuard(nValues) )
-    THROW_INVALID_DSTACK(">valset"_Str);
+    THROW_INVALID_DSTACK(">valset"_Stz);
   
-  Str* pCursor = nullptr;
+  Stz* pCursor = nullptr;
   ValSet xValSet;
   
   ValWrk xValWrk;
   for (i8 iValue = 0; iValue < nValues; iValue++) {
     
     if ( ! mpTask->m_pDataStack->bPop(xValWrk) )
-      THROW_INVALID_DSTACK(">valset"_Str);
+      THROW_INVALID_DSTACK(">valset"_Stz);
     
     if (xValWrk.pNestedValue()->eClass() == CN_PTRVAL) {
       PtrVal* pPtrVal = _pPtrVal(xValWrk.pNestedValue());
@@ -507,7 +507,7 @@ void Task::vDstackToValSet(MP_Task mpTask)
     xValSet.vAppend(pCursor,xValWrk.pNestedValueSelf());
   }
   
-  //  vTrace("ValSet %lld bytes\n"_Str,xValSet.nSize());
+  //  vTrace("ValSet %lld bytes\n"_Stz,xValSet.nSize());
   
   mpTask->m_pDataStack->vPushValSet(xValSet);
   
@@ -519,22 +519,22 @@ void Task::vDstackToValSet(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDstackToValues(MP_Task mpTask)
 {
-  ENTRY("vDstackToValues"_Str);
+  ENTRY("vDstackToValues"_Stz);
   
   ValSet xValSet;
   
   if ( ! mpTask->m_pDataStack->bPop(xValSet) )
-    THROW_INVALID_DSTACK(">values"_Str);
+    THROW_INVALID_DSTACK(">values"_Stz);
   
   i8 nVal = 0;
   Value* pValue[128];
   
-  Str* pCursor = nullptr;
+  Stz* pCursor = nullptr;
   while (xValSet.bExtractValue(pCursor,pValue[nVal]))
     nVal++;
   
   for (i8 iVal = nVal - 1; iVal >= 0; iVal--) {
-//    vTrace("Task::vDstackToValues: %lld %s\n"_Str,
+//    vTrace("Task::vDstackToValues: %lld %s\n"_Stz,
 //           pValue[iVal]->eClass(),
 //           aCN[pValue[iVal]->eClass()]);
     mpTask->m_pDataStack->vPushValue(pValue[iVal]);
@@ -550,13 +550,13 @@ void Task::vDstackToValues(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDstackTuck(MP_Task mpTask)
 {
-  ENTRY("vDstackTuck"_Str);
+  ENTRY("vDstackTuck"_Stz);
   
   ValWrk xValA;
   ValWrk xValB;
   
   if ( ! mpTask->m_pDataStack->bPop(xValA,xValB) )
-    THROW_INVALID_DSTACK("tuck"_Str);
+    THROW_INVALID_DSTACK("tuck"_Stz);
   
   mpTask->m_pDataStack->vPushValWrk(xValA);
   mpTask->m_pDataStack->vPushValWrk(xValB);

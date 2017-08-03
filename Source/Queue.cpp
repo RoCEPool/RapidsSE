@@ -119,14 +119,14 @@ i8 Queue::iCount(void)
 /*----------------------------------------------------------------------------*/
 /* dump the queue                                                             */
 /*----------------------------------------------------------------------------*/
-void Queue::vContentDump(Str* aTab)
+void Queue::vContentDump(Stz* aTab)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUE,_FOOTER_);
   
-  vTrace("%sQueue: %p\n"_Str, aTab, this);
-  vTrace("%s  Count %lld\n"_Str, aTab, m_iCount);
-  vTrace("%s  TopBuffer %p\n"_Str, aTab, m_pTopBuffer);
-  vTrace("%s  EndBuffer %p\n"_Str, aTab, m_pEndBuffer);
+  vTrace("%sQueue: %p\n"_Stz, aTab, this);
+  vTrace("%s  Count %lld\n"_Stz, aTab, m_iCount);
+  vTrace("%s  TopBuffer %p\n"_Stz, aTab, m_pTopBuffer);
+  vTrace("%s  EndBuffer %p\n"_Stz, aTab, m_pEndBuffer);
   
   for (QueueBuffer* pQbuffer = m_pTopBuffer; pQbuffer; pQbuffer = pQbuffer->pNext())
     pQbuffer->vContentDump(aTab);
@@ -135,14 +135,14 @@ void Queue::vContentDump(Str* aTab)
 /*----------------------------------------------------------------------------*/
 /* dump grid                                                                  */
 /*----------------------------------------------------------------------------*/
-void Queue::vDump(eCN eClass, Object* pObject, Str* aTab)
+void Queue::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
   ASSERT(eClass == CN_QUEUE);
   ASSERT(pObject->eClass() == CN_QUEUE);
   
   Queue* pQueue = reinterpret_cast<Queue*>(pObject);
   
-  vTrace("count %lld top %p end %p\n"_Str,
+  vTrace("count %lld top %p end %p\n"_Stz,
          pQueue->m_iCount,
          pQueue->m_pTopBuffer,
          pQueue->m_pEndBuffer);
@@ -180,7 +180,7 @@ void Queue::vInitialize(void)
 /*----------------------------------------------------------------------------*/
 /* rename the lock                                                            */
 /*----------------------------------------------------------------------------*/
-void Queue::vLockName(Str* aName)
+void Queue::vLockName(Stz* aName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUE,_FOOTER_);
   
@@ -284,7 +284,7 @@ void Queue::vExpand(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUE,_FOOTER_);
   
-  //vTrace("Queue::vExpand\n"_Str);
+  //vTrace("Queue::vExpand\n"_Stz);
   
   QueueBuffer* pNewQueueBuffer = new QueueBuffer;
   

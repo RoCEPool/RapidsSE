@@ -21,15 +21,15 @@ namespace Plans
   /* 6 */ AT_ENUMS
   };
   
-  static Str* aAT[]
+  static Stz* aAT[]
   {
-  /* 0 */ "none"_Str,
-  /* 1 */ "exact"_Str,
-  /* 2 */ "lower"_Str,
-  /* 3 */ "upper"_Str,
-  /* 4 */ "range"_Str,
-  /* 5 */ "scan"_Str,
-  /* 6 */ "enums"_Str
+  /* 0 */ "none"_Stz,
+  /* 1 */ "exact"_Stz,
+  /* 2 */ "lower"_Stz,
+  /* 3 */ "upper"_Stz,
+  /* 4 */ "range"_Stz,
+  /* 5 */ "scan"_Stz,
+  /* 6 */ "enums"_Stz
   };
   
   class AccessPath : public Object

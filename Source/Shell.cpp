@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* iExecute: execute shell command (returns exit code)                        */
 /*----------------------------------------------------------------------------*/
-i8 Shell::iExecute(Str* sCommand, SysCall& xSysCall)
+i8 Shell::iExecute(Stz* sCommand, SysCall& xSysCall)
 {
   xSysCall.vClear();
 
@@ -15,7 +15,7 @@ i8 Shell::iExecute(Str* sCommand, SysCall& xSysCall)
   
   if (-1 == iExit || 127 == iExit) {
     xSysCall.vError(errno);
-    vWarn("Shell::iExecute : system() error; errno=%lld"_Str,errno);
+    vWarn("Shell::iExecute : system() error; errno=%lld"_Stz,errno);
     return iExit;
   }
   

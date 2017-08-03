@@ -33,27 +33,27 @@ namespace System
   /* 17 */ LK_ENUMS
   };
   
-  static Str* aLK[]
+  static Stz* aLK[]
   {
-  /*  0 */ "NONE"_Str,
-  /*    */ "BIT_ARRAY"_Str,
-  /*  1 */ "BUFFER_POOL"_Str,
-  /*  2 */ "COLLECTION"_Str,
-  /*  3 */ "DATA"_Str,
-  /*  4 */ "DDL"_Str,
-  /*  5 */ "DIC"_Str,
-  /*  6 */ "EB_STRAND"_Str,
-  /*  7 */ "HEAP"_Str,
-  /*  8 */ "INDEX_DATA"_Str,
-  /*  9 */ "LIST"_Str,
-  /* 10 */ "LOAD_MAP"_Str,
-  /* 11 */ "QUEUE"_Str,
-  /* 12 */ "STEP_ARRAY"_Str,
-  /* 13 */ "TASK"_Str,
-  /* 14 */ "TASK_SET"_Str,
-  /* 15 */ "TX_MAP"_Str,
-  /* 16 */ "UNKNOWN"_Str,
-  /* 17 */ "ENUMS"_Str
+  /*  0 */ "NONE"_Stz,
+  /*    */ "BIT_ARRAY"_Stz,
+  /*  1 */ "BUFFER_POOL"_Stz,
+  /*  2 */ "COLLECTION"_Stz,
+  /*  3 */ "DATA"_Stz,
+  /*  4 */ "DDL"_Stz,
+  /*  5 */ "DIC"_Stz,
+  /*  6 */ "EB_STRAND"_Stz,
+  /*  7 */ "HEAP"_Stz,
+  /*  8 */ "INDEX_DATA"_Stz,
+  /*  9 */ "LIST"_Stz,
+  /* 10 */ "LOAD_MAP"_Stz,
+  /* 11 */ "QUEUE"_Stz,
+  /* 12 */ "STEP_ARRAY"_Stz,
+  /* 13 */ "TASK"_Stz,
+  /* 14 */ "TASK_SET"_Stz,
+  /* 15 */ "TX_MAP"_Stz,
+  /* 16 */ "UNKNOWN"_Stz,
+  /* 17 */ "ENUMS"_Stz
   };
 
   class Lock : public Object

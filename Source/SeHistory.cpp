@@ -42,10 +42,10 @@ void SeHistory::vAppend(TokenVec& xTokenVec)
   
   for (i8 i_Token = 0; xTokenVec[i_Token]->bHasText(); i_Token++) {
     if (i_Token)
-      m_xFile.vPrint("%s"_Str," ");
-    m_xFile.vPrint("%s"_Str,xTokenVec[i_Token]->aText());
+      m_xFile.vPrint("%s"_Stz," ");
+    m_xFile.vPrint("%s"_Stz,xTokenVec[i_Token]->aText());
   }
-  m_xFile.vPrint("%s"_Str,"\n");
+  m_xFile.vPrint("%s"_Stz,"\n");
   m_xFile.vFlush();
   
   m_iCommands++;
@@ -64,7 +64,7 @@ void SeHistory::vClose(void)
   // SHOULD REMOVE HISTORY FILE?
   bool bResult = File::bRemove(sHistory);
   if (!bResult) {
-    vWarn("Failed to delete history file: %s\n"_Str, sHistory.s());
+    vWarn("Failed to delete history file: %s\n"_Stz, sHistory.s());
   }
 }
 
@@ -77,9 +77,9 @@ void SeHistory::vOpen(void)
   
   s256 xFileName;
   
-  xFileName.vSprint("/tmp/SEitf_%lld_history.txt"_Str,Process::iGetPid());
+  xFileName.vSprint("/tmp/SEitf_%lld_history.txt"_Stz,Process::iGetPid());
   
-  bool b = m_xFile.bOpen((Str*)xFileName.s(),C_OPEN_READ_WRITE_CREATE);
+  bool b = m_xFile.bOpen((Stz*)xFileName.s(),C_OPEN_READ_WRITE_CREATE);
   ASSERT(b);
 }
 
@@ -94,8 +94,8 @@ void SeHistory::vPrint(void)
   
   vSeekStart();
   
-  for (i8 i = 1; bRead((Str*)xCommand.s()); i++)
-    vTrace("  %lld  %s\n"_Str,i,xCommand.s());
+  for (i8 i = 1; bRead((Stz*)xCommand.s()); i++)
+    vTrace("  %lld  %s\n"_Stz,i,xCommand.s());
   
   vSeekEnd();
 }
@@ -109,7 +109,7 @@ bool SeHistory::bRecall(TokenVec& xTokenVec)
   
   i8 iCommand;
   
-  if (xTokenVec[0]->bSame("!!"_Str)) {
+  if (xTokenVec[0]->bSame("!!"_Stz)) {
     iCommand = m_iCommands;
     if (! iCommand)
       return false;
@@ -122,7 +122,7 @@ bool SeHistory::bRecall(TokenVec& xTokenVec)
     iCommand = xTokenVec[1]->iToI8();
   }
   
-  vTrace("Recall: %lld\n"_Str,iCommand);
+  vTrace("Recall: %lld\n"_Stz,iCommand);
   
   bool bRecalled = bGet(iCommand,xTokenVec);
   
@@ -145,7 +145,7 @@ bool SeHistory::bGet(i8 iCommand, TokenVec& xTokenVec)
   s48K sCommand;
   
   i8 i = 0;
-  while (bRead((Str*)sCommand.s())) {
+  while (bRead((Stz*)sCommand.s())) {
     
     if (++i == iCommand) {
       
@@ -157,7 +157,7 @@ bool SeHistory::bGet(i8 iCommand, TokenVec& xTokenVec)
       
       i8 i = 0;
       while (TN_NONE != m_pTokeniser->eNextToken((char*)xTokenVec[i]->aText())) {
-        //vTrace("Word [%lld] %s\n"_Str,i,pWords[i]);
+        //vTrace("Word [%lld] %s\n"_Stz,i,pWords[i]);
         i++;
       }
       
@@ -175,7 +175,7 @@ bool SeHistory::bGet(i8 iCommand, TokenVec& xTokenVec)
 /*----------------------------------------------------------------------------*/
 /* read line from command history file                                        */
 /*----------------------------------------------------------------------------*/
-bool SeHistory::bRead(Str* aCommand)
+bool SeHistory::bRead(Stz* aCommand)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEHISTORY,_FOOTER_);
   

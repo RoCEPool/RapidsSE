@@ -31,17 +31,17 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_RbCursor(void)
 {
-  vAddPrimitive("rbCursor.begin"_Str,     &vRbCursorBegin,      false);
-  vAddPrimitive("rbCursor.delete"_Str,    &vRbCursorDelete,     false);
-  vAddPrimitive("rbCursor.end"_Str,       &vRbCursorEnd,        false);
-  vAddPrimitive("rbCursor.first"_Str,     &vRbCursorFirst,      false);
-  vAddPrimitive("rbCursor.get"_Str,       &vRbCursorGet,        false);
-  vAddPrimitive("rbCursor.init"_Str,      &vRbCursorInit,       false);
-  vAddPrimitive("rbCursor::new"_Str,       &vRbCursorNew,        false);
-  vAddPrimitive("rbCursor.next"_Str,      &vRbCursorNext,       false);
-  vAddPrimitive("rbCursor.rowBuffer"_Str, &vRbCursorRowBuffer,  false);
-  vAddPrimitive("rbCursor.table@"_Str,    &vRbCursorTableFetch, false);
-  vAddPrimitive("rbCursor.table!"_Str,    &vRbCursorTableStore, false);
+  vAddPrimitive("rbCursor.begin"_Stz,     &vRbCursorBegin,      false);
+  vAddPrimitive("rbCursor.delete"_Stz,    &vRbCursorDelete,     false);
+  vAddPrimitive("rbCursor.end"_Stz,       &vRbCursorEnd,        false);
+  vAddPrimitive("rbCursor.first"_Stz,     &vRbCursorFirst,      false);
+  vAddPrimitive("rbCursor.get"_Stz,       &vRbCursorGet,        false);
+  vAddPrimitive("rbCursor.init"_Stz,      &vRbCursorInit,       false);
+  vAddPrimitive("rbCursor::new"_Stz,       &vRbCursorNew,        false);
+  vAddPrimitive("rbCursor.next"_Stz,      &vRbCursorNext,       false);
+  vAddPrimitive("rbCursor.rowBuffer"_Stz, &vRbCursorRowBuffer,  false);
+  vAddPrimitive("rbCursor.table@"_Stz,    &vRbCursorTableFetch, false);
+  vAddPrimitive("rbCursor.table!"_Stz,    &vRbCursorTableStore, false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -49,18 +49,18 @@ void Task::vAddPrimitives_RbCursor(void)
 /*----------------------------------------------------------------------------*/
 void Task::vRbCursorBegin(MP_Task mpTask)
 {
-ENTRY("vRbCursorBegin"_Str);
+ENTRY("vRbCursorBegin"_Stz);
   
   Object* pPtrRbCursor;
   if ( ! mpTask->m_pDataStack->bPop(pPtrRbCursor) )
-    THROW_INVALID_DSTACK("rbCursor.begin"_Str);
+    THROW_INVALID_DSTACK("rbCursor.begin"_Stz);
   
   RbCursor* pRbCursor = _pRbCursor(pPtrRbCursor);
   ASSERT(CN_RBCURSOR == pRbCursor->eClass());
   
   i8 iPartn;
   if ( ! mpTask->m_pDataStack->bPop(iPartn) )
-    THROW_INVALID_DSTACK("rbCursor.begin"_Str);
+    THROW_INVALID_DSTACK("rbCursor.begin"_Stz);
   
   pRbCursor->vBegin(iPartn);
   
@@ -72,11 +72,11 @@ ENTRY("vRbCursorBegin"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vRbCursorDelete(MP_Task mpTask)
 {
-ENTRY("vRbCursorDelete"_Str);
+ENTRY("vRbCursorDelete"_Stz);
   
   Object* pPtrRbCursor;
   if ( ! mpTask->m_pDataStack->bPop(pPtrRbCursor) )
-    THROW_INVALID_DSTACK("rbCursor.delete"_Str);
+    THROW_INVALID_DSTACK("rbCursor.delete"_Stz);
   
   RbCursor* pRbCursor = _pRbCursor(pPtrRbCursor);
   ASSERT(CN_RBCURSOR == pRbCursor->eClass());
@@ -94,11 +94,11 @@ ENTRY("vRbCursorDelete"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vRbCursorEnd(MP_Task mpTask)
 {
-ENTRY("vRbCursorEnd"_Str);
+ENTRY("vRbCursorEnd"_Stz);
   
   Object* pPtrRbCursor;
   if ( ! mpTask->m_pDataStack->bPop(pPtrRbCursor) )
-    THROW_INVALID_DSTACK("rbCursor.end"_Str);
+    THROW_INVALID_DSTACK("rbCursor.end"_Stz);
   
   RbCursor* pRbCursor = _pRbCursor(pPtrRbCursor);
   ASSERT(CN_RBCURSOR == pRbCursor->eClass());
@@ -113,11 +113,11 @@ ENTRY("vRbCursorEnd"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vRbCursorFirst(MP_Task mpTask)
 {
-ENTRY("vRbCursorFirst"_Str);
+ENTRY("vRbCursorFirst"_Stz);
   
   Object* pPtrRbCursor;
   if ( ! mpTask->m_pDataStack->bPop(pPtrRbCursor) )
-    THROW_INVALID_DSTACK("rbCursor.first"_Str);
+    THROW_INVALID_DSTACK("rbCursor.first"_Stz);
   
   RbCursor* pRbCursor = _pRbCursor(pPtrRbCursor);
   ASSERT(CN_RBCURSOR == pRbCursor->eClass());
@@ -136,11 +136,11 @@ ENTRY("vRbCursorFirst"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vRbCursorGet(MP_Task mpTask)
 {
-ENTRY("vRbCursorGet"_Str);
+ENTRY("vRbCursorGet"_Stz);
   
   Object* pPtrRbCursor;
   if ( ! mpTask->m_pDataStack->bPop(pPtrRbCursor) )
-    THROW_INVALID_DSTACK("rbCursor.get"_Str);
+    THROW_INVALID_DSTACK("rbCursor.get"_Stz);
   
   RbCursor* pRbCursor = _pRbCursor(pPtrRbCursor);
   ASSERT(CN_RBCURSOR == pRbCursor->eClass());
@@ -157,11 +157,11 @@ ENTRY("vRbCursorGet"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vRbCursorInit(MP_Task mpTask)
 {
-ENTRY("vRbCursorInit"_Str);
+ENTRY("vRbCursorInit"_Stz);
   
   Object* pPtrRbCursor;
   if ( ! mpTask->m_pDataStack->bPop(pPtrRbCursor) )
-    THROW_INVALID_DSTACK("rbCursor.init"_Str);
+    THROW_INVALID_DSTACK("rbCursor.init"_Stz);
   
   RbCursor* pRbCursor = _pRbCursor(pPtrRbCursor);
   ASSERT(CN_RBCURSOR == pRbCursor->eClass());
@@ -176,7 +176,7 @@ ENTRY("vRbCursorInit"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vRbCursorNew(MP_Task mpTask)
 {
-ENTRY("vRbCursorNew"_Str);
+ENTRY("vRbCursorNew"_Stz);
   
   RbCursor* pRbCursor = new RbCursor;
   ASSERT(CN_RBCURSOR == pRbCursor->eClass());
@@ -191,11 +191,11 @@ ENTRY("vRbCursorNew"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vRbCursorNext(MP_Task mpTask)
 {
-ENTRY("vRbCursorNext"_Str);
+ENTRY("vRbCursorNext"_Stz);
   
   Object* pPtrRbCursor;
   if ( ! mpTask->m_pDataStack->bPop(pPtrRbCursor) )
-    THROW_INVALID_DSTACK("rbCursor.next"_Str);
+    THROW_INVALID_DSTACK("rbCursor.next"_Stz);
   
   RbCursor* pRbCursor = _pRbCursor(pPtrRbCursor);
   ASSERT(CN_RBCURSOR == pRbCursor->eClass());
@@ -214,11 +214,11 @@ ENTRY("vRbCursorNext"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vRbCursorRowBuffer(MP_Task mpTask)
 {
-  ENTRY("vRbCursorRowBuffer"_Str);
+  ENTRY("vRbCursorRowBuffer"_Stz);
   
   Object* pPtrRbCursor;
   if ( ! mpTask->m_pDataStack->bPop(pPtrRbCursor) )
-  THROW_INVALID_DSTACK("rbCursor.rowBuffer"_Str);
+  THROW_INVALID_DSTACK("rbCursor.rowBuffer"_Stz);
   
   RbCursor* pRbCursor = _pRbCursor(pPtrRbCursor);
   ASSERT(CN_RBCURSOR == pRbCursor->eClass());
@@ -236,11 +236,11 @@ void Task::vRbCursorRowBuffer(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRbCursorTableFetch(MP_Task mpTask)
 {
-ENTRY("vRbCursorTableFetch"_Str);
+ENTRY("vRbCursorTableFetch"_Stz);
   
   Object* pPtrRbCursor;
   if ( ! mpTask->m_pDataStack->bPop(pPtrRbCursor) )
-    THROW_INVALID_DSTACK("rbCursor.table@"_Str);
+    THROW_INVALID_DSTACK("rbCursor.table@"_Stz);
   
   RbCursor* pRbCursor = _pRbCursor(pPtrRbCursor);
   ASSERT(CN_RBCURSOR == pRbCursor->eClass());
@@ -257,18 +257,18 @@ ENTRY("vRbCursorTableFetch"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vRbCursorTableStore(MP_Task mpTask)
 {
-ENTRY("vRbCursorTableStore"_Str);
+ENTRY("vRbCursorTableStore"_Stz);
   
   Object* pPtrRbCursor;
   if ( ! mpTask->m_pDataStack->bPop(pPtrRbCursor) )
-    THROW_INVALID_DSTACK("rbCursor.table!"_Str);
+    THROW_INVALID_DSTACK("rbCursor.table!"_Stz);
   
   RbCursor* pRbCursor = _pRbCursor(pPtrRbCursor);
   ASSERT(CN_RBCURSOR == pRbCursor->eClass());
   
   Object* pPtrTable;
   if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
-    THROW_INVALID_DSTACK("rbCursor.table!"_Str);
+    THROW_INVALID_DSTACK("rbCursor.table!"_Stz);
   
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());

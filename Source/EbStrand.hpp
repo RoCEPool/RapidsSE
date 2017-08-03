@@ -28,10 +28,10 @@ namespace DBobjects
     EbStrand(void);
     ~EbStrand(void);
     
-    static void vDump(eCN eClass, Object* pObject, Str* aTab);
+    static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     
     bool bAppendBuffer(EntryBuffer* pEntryBuffer);
-    bool bInsertRow(TxRef* pTxRef, Str* pRecord, i8 iLength);
+    bool bInsertRow(TxRef* pTxRef, Stz* pRecord, i8 iLength);
     i8   nRows(void);
     i8   nEntryBuffers(void);
     

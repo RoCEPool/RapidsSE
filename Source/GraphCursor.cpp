@@ -72,9 +72,9 @@ GraphCursor::~GraphCursor(void)
 /*----------------------------------------------------------------------------*/
 /* dump the graph                                                             */
 /*----------------------------------------------------------------------------*/
-void GraphCursor::vDump(eCN eClass, Object* pObject, Str* aTab)
+void GraphCursor::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  vTrace("\n"_Str);
+  vTrace("\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

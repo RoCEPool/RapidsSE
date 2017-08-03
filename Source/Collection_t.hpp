@@ -24,7 +24,7 @@ namespace Structures
     Collection_t(void);
         
     OBJECT* pAllocObject(void);
-    void    vContentDump(Str* aTitle);
+    void    vContentDump(Stz* aTitle);
     void    vFreeObject(OBJECT* pObject);
     
     void    vAppendList(OBJECT*& pNode);
@@ -54,7 +54,7 @@ extern Heap* gpSmallHeap;
 template <class OBJECT>
 void* Collection_t<OBJECT>::operator new(size_t iSize)
 {
-  vFatal("fatal: Collection_t class cannot be new'd"_Str);
+  vFatal("fatal: Collection_t class cannot be new'd"_Stz);
   
   NEVER_REACH;
 }
@@ -95,13 +95,13 @@ OBJECT* Collection_t<OBJECT>::pAllocObject(void)
 /* dump each object in collection                                             */
 /*----------------------------------------------------------------------------*/
 template <class OBJECT>
-void Collection_t<OBJECT>::vContentDump(Str* aTitle)
+void Collection_t<OBJECT>::vContentDump(Stz* aTitle)
 {
   vReadLock();
   
   CollectionCursor_t<OBJECT> xCursor(this);
   
-  vTrace("%s\n"_Str,aTitle);
+  vTrace("%s\n"_Stz,aTitle);
   for (xCursor.vFirst(); xCursor.pObject(); xCursor.vNext()) {
     OBJECT* pObject = xCursor.pObject();
     pObject->vContentDump();

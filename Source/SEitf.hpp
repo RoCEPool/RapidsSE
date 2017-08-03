@@ -29,7 +29,7 @@ namespace Interface
     
     Table*       m_pCurrentTable;
     Index*       m_pCurrentIndex;
-    Str*         m_aRowPtr;
+    Stz*         m_aRowPtr;
     EntryBuffer* m_pIndexBuffer;
     AccessPath*  m_pAccessPath;
   
@@ -57,7 +57,7 @@ namespace Interface
     SEitf(i8 iPartition);
     ~SEitf(void);
     
-    static void vDump(eCN eClass, Object* pObject, Str* aTab);
+    static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     
     DicPath* pPathStack(void);
     
@@ -172,7 +172,7 @@ namespace Interface
     bool bGetTask(TokenVec& xTokenVec);
     bool bRetTask(TokenVec& xTokenVec);
   
-    bool bInsertRow(Str* pRow);
+    bool bInsertRow(Stz* pRow);
     bool bInsertBuffer(void);
     bool bInsertBuffer(EntryBuffer* pRowBuffer, i8 iPartition);
     
@@ -204,7 +204,7 @@ namespace Interface
     //--------------------------------------------------------------------------
     void vClearLastError(void);
     eEC  eGetLastError(void);
-    Str* pGetLastError(void);
+    Stz* pGetLastError(void);
     void vSetLastError(eEC eInterfaceError);
     
     Footer* aFooter(void);

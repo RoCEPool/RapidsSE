@@ -31,8 +31,8 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_SEitfList(void)
 {
-  vAddPrimitive("seitfList.dump"_Str,  &vSEitfListDump,    false);
-  vAddPrimitive("seitfList.init"_Str,  &vSEitfListInit,    false);
+  vAddPrimitive("seitfList.dump"_Stz,  &vSEitfListDump,    false);
+  vAddPrimitive("seitfList.init"_Stz,  &vSEitfListInit,    false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -40,16 +40,16 @@ void Task::vAddPrimitives_SEitfList(void)
 /*----------------------------------------------------------------------------*/
 void Task::vSEitfListDump(MP_Task mpTask)
 {
-ENTRY("vSEitfListDump"_Str);
+ENTRY("vSEitfListDump"_Stz);
   
   Object* pPtrSEitfList;
   if ( ! mpTask->m_pDataStack->bPop(pPtrSEitfList) )
-    THROW_INVALID_DSTACK("seitflist.dump"_Str);
+    THROW_INVALID_DSTACK("seitflist.dump"_Stz);
   
   SEitfList* pSEitfList = _pSEitfList(pPtrSEitfList);
   ASSERT(CN_SEITFLIST == pSEitfList->eClass());
   
-  pSEitfList->vContentDump("SEitfList:"_Str, aSingleTab());
+  pSEitfList->vContentDump("SEitfList:"_Stz, aSingleTab());
   
   EXIT();
 }
@@ -59,11 +59,11 @@ ENTRY("vSEitfListDump"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vSEitfListInit(MP_Task mpTask)
 {
-ENTRY("vSEitfListInit"_Str);
+ENTRY("vSEitfListInit"_Stz);
   
   Object* pPtrSEitfList;
   if ( ! mpTask->m_pDataStack->bPop(pPtrSEitfList) )
-    THROW_INVALID_DSTACK("seitflist.init"_Str);
+    THROW_INVALID_DSTACK("seitflist.init"_Stz);
   
   SEitfList* pSEitfList = _pSEitfList(pPtrSEitfList);
   ASSERT(CN_SEITFLIST == pSEitfList->eClass());

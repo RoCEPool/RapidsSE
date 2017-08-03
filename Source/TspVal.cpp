@@ -22,7 +22,7 @@ TspVal* Values::_pTspVal(void* aAddr)
 void* TspVal::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  vFatal("fatal: TspVal class cannot be new'd\n"_Str);
+  vFatal("fatal: TspVal class cannot be new'd\n"_Stz);
   
   NEVER_REACH;
 }
@@ -41,7 +41,7 @@ TspVal::TspVal(void)
 /*----------------------------------------------------------------------------*/
 void TspVal::operator =(i8 iTsp)
 {
-  //vTrace("TspVal: diff %lld\n"_Str,nSub(&m_iTsp,this));
+  //vTrace("TspVal: diff %lld\n"_Stz,nSub(&m_iTsp,this));
   
   *aInt() = iTsp;
 }
@@ -51,7 +51,7 @@ void TspVal::operator =(i8 iTsp)
 /*----------------------------------------------------------------------------*/
 void TspVal::operator =(Tsp xTsp)
 {
-  //vTrace("IvlVal: diff %lld\n"_Str,nSub(&m_iIvl,this));
+  //vTrace("IvlVal: diff %lld\n"_Stz,nSub(&m_iIvl,this));
   
   *aInt() = xTsp.iAsI8();
 }
@@ -83,7 +83,7 @@ i8* TspVal::aInt(void)
 /*----------------------------------------------------------------------------*/
 /* convert to string                                                          */
 /*----------------------------------------------------------------------------*/
-//void TspVal::vToString(Str* aWorkspace)
+//void TspVal::vToString(Stz* aWorkspace)
 //{
 //  *aWorkspace = m_iTsp;
 //}

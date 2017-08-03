@@ -71,23 +71,23 @@ Socket::~Socket()
   _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
   
   if (-1 != m_iSocketId) {
-    vWarn("Socket %d not closed!\n"_Str, m_iSocketId);
+    vWarn("Socket %d not closed!\n"_Stz, m_iSocketId);
   }
 }
 
 /*----------------------------------------------------------------------------*/
 /* dump                                                                       */
 /*----------------------------------------------------------------------------*/
-void Socket::vDump(eCN eClass, Object* pObject, Str* aTab)
+void Socket::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
   ASSERT(eClass == CN_SOCKET);
   ASSERT(pObject->eClass() == CN_SOCKET);
   
   Socket* pSocket = reinterpret_cast<Socket*>(pObject);
 
-  vTrace("id %lld %s\n"_Str,
+  vTrace("id %lld %s\n"_Stz,
          pSocket->m_iSocketId,
-         pSocket->m_bBlocking ? "blocking"_Str : "non-blocking"_Str);
+         pSocket->m_bBlocking ? "blocking"_Stz : "non-blocking"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -107,7 +107,7 @@ void Socket::vAddrInit(sockaddr_in* aAddr, int iPort)
 /*----------------------------------------------------------------------------*/
 /* initialize a sockaddr_in structure                                         */
 /*----------------------------------------------------------------------------*/
-void Socket::vAddrInit(sockaddr_in* aAddr, Str* sAddr, int iPort)
+void Socket::vAddrInit(sockaddr_in* aAddr, Stz* sAddr, int iPort)
 {
   _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
   
@@ -203,7 +203,7 @@ bool Socket::bClose(SysCall& SysCall)
 /*----------------------------------------------------------------------------*/
 /* connect this client with nominated server                                  */
 /*----------------------------------------------------------------------------*/
-bool Socket::bConnectServer(Str* sAddr, int iPort, SysCall& SysCall)
+bool Socket::bConnectServer(Stz* sAddr, int iPort, SysCall& SysCall)
 {
   _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
   
@@ -242,11 +242,11 @@ bool Socket::bConnectServer(Str* sAddr, int iPort, SysCall& SysCall)
   xAddrInfo.ai_flags    = AI_PASSIVE;
   
   s256 sPort;
-  StrLib::vSprint(sPort.aStr(), "%lld"_Str, iPort);
+  StrLib::vSprint(sPort.aStr(), "%lld"_Stz, iPort);
   
   i8 iReturn = getaddrinfo(sAddr->s(), sPort.s(), &xAddrInfo, &pAddrInfo);
   if (iReturn != 0) {
-    vTrace("getaddrinfo: error %lld"_Str, iReturn);
+    vTrace("getaddrinfo: error %lld"_Stz, iReturn);
   }
 
   iResult = connect(m_iSocketId,(struct sockaddr*)pAddrInfo->ai_addr,sizeof(struct sockaddr));
@@ -445,7 +445,7 @@ bool Socket::bTestForData(SysCall& SysCall)
 /*----------------------------------------------------------------------------*/
 /* write n bytes to this socket from given buffer                             */
 /*----------------------------------------------------------------------------*/
-bool Socket::bWriteVch(Str* aChar, SysCall& SysCall)
+bool Socket::bWriteVch(Stz* aChar, SysCall& SysCall)
 {
   _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
   
@@ -511,7 +511,7 @@ bool Socket::bBind(int iPort, SysCall& SysCall)
   
   vAddrInit(&xAddr,iPort);
   
-  vTrace("sin_port %d; sin_addr.s_add %d\n"_Str
+  vTrace("sin_port %d; sin_addr.s_add %d\n"_Stz
     ,xAddr.sin_port
     ,xAddr.sin_addr.s_addr
     );
@@ -533,7 +533,7 @@ bool Socket::bBind(int iPort, SysCall& SysCall)
 /*----------------------------------------------------------------------------*/
 /* identify (name) a UDP socket                                               */
 /*----------------------------------------------------------------------------*/
-bool Socket::bBind(Str* sAddr, int iPort, SysCall& SysCall)
+bool Socket::bBind(Stz* sAddr, int iPort, SysCall& SysCall)
 {
   _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
   
@@ -543,7 +543,7 @@ bool Socket::bBind(Str* sAddr, int iPort, SysCall& SysCall)
   
   vAddrInit(&xAddr,sAddr,iPort);
   
-  vTrace("sin_port %d; sin_addr.s_add %d\n"_Str
+  vTrace("sin_port %d; sin_addr.s_add %d\n"_Stz
     ,xAddr.sin_port
     ,xAddr.sin_addr.s_addr
     );
@@ -594,7 +594,7 @@ bool Socket::bRecvBuffer(int nBytes, SysCall& SysCall)
 /*----------------------------------------------------------------------------*/
 /* set up for sendto server                                                   */
 /*----------------------------------------------------------------------------*/
-bool Socket::bServer(Str* sAddr, int iPort, SysCall& SysCall)
+bool Socket::bServer(Stz* sAddr, int iPort, SysCall& SysCall)
 {
   _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
   
@@ -604,7 +604,7 @@ bool Socket::bServer(Str* sAddr, int iPort, SysCall& SysCall)
   
   vAddrInit(&m_xServAddr,sAddr,iPort);
   
-  vTrace("sin_port %d; sin_addr.s_add %d\n"_Str
+  vTrace("sin_port %d; sin_addr.s_add %d\n"_Stz
     ,m_xServAddr.sin_port
     ,m_xServAddr.sin_addr.s_addr
     );
@@ -660,7 +660,7 @@ bool Socket::bSendTo(i8 nBytes, void* pBuffer, SysCall& SysCall)
   
   if (iResult < nBytes)
   {
-    vWarn("sendto() less bytes sent; %lld v %lld\n"_Str
+    vWarn("sendto() less bytes sent; %lld v %lld\n"_Stz
       ,iResult
       ,nBytes
       );

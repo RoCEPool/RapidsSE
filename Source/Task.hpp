@@ -27,14 +27,14 @@ namespace Tasks
     /*  5 */ AC_ENUMS
   };
   
-  static Str* aAC[]
+  static Stz* aAC[]
   {
-    /*  0 */ "NONE"_Str,
-    /*  1 */ "DRONE"_Str,
-    /*  2 */ "PARTITION"_Str,
-    /*  3 */ "SERVER"_Str,
-    /*  4 */ "WORKER"_Str,
-    /*  5 */ "ENUMS"_Str
+    /*  0 */ "NONE"_Stz,
+    /*  1 */ "DRONE"_Stz,
+    /*  2 */ "PARTITION"_Stz,
+    /*  3 */ "SERVER"_Stz,
+    /*  4 */ "WORKER"_Stz,
+    /*  5 */ "ENUMS"_Stz
   };
   
   enum eTK // task kind
@@ -58,25 +58,25 @@ namespace Tasks
   /* 16 */ TK_ENUMS
   };
   
-  static Str* aTK[]
+  static Stz* aTK[]
   {
-  /*  0 */ "NONE"_Str,
-  /*  1 */ "ANSWER_DRONE"_Str,
-  /*  2 */ "LISTER_DRONE"_Str,
-  /*  3 */ "CONNECTOR_DRONE"_Str,
-  /*  4 */ "MONITOR_DRONE"_Str,
-  /*  5 */ "RECLAIM_DRONE"_Str,
-  /*  6 */ "RECEIVER_DRONE"_Str,
-  /*  7 */ "REQUEST_SERVER"_Str,
-  /*  8 */ "LOADSUB_SERVER"_Str,
-  /*  9 */ "COORDINATOR_WORKER"_Str,
-  /* 10 */ "COORDINATOR_PROXY_WORKER"_Str,
-  /* 11 */ "PARTICIPANT_WORKER"_Str,
-  /* 12 */ "PARTICIPANT_PROXY_WORKER"_Str,
-  /* 13 */ "SENDER_WORKER"_Str,
-  /* 14 */ "LOADSUB_PART"_Str,
-  /* 15 */ "SELECT_PART"_Str,
-  /* 16 */ "ENUMS"_Str
+  /*  0 */ "NONE"_Stz,
+  /*  1 */ "ANSWER_DRONE"_Stz,
+  /*  2 */ "LISTER_DRONE"_Stz,
+  /*  3 */ "CONNECTOR_DRONE"_Stz,
+  /*  4 */ "MONITOR_DRONE"_Stz,
+  /*  5 */ "RECLAIM_DRONE"_Stz,
+  /*  6 */ "RECEIVER_DRONE"_Stz,
+  /*  7 */ "REQUEST_SERVER"_Stz,
+  /*  8 */ "LOADSUB_SERVER"_Stz,
+  /*  9 */ "COORDINATOR_WORKER"_Stz,
+  /* 10 */ "COORDINATOR_PROXY_WORKER"_Stz,
+  /* 11 */ "PARTICIPANT_WORKER"_Stz,
+  /* 12 */ "PARTICIPANT_PROXY_WORKER"_Stz,
+  /* 13 */ "SENDER_WORKER"_Stz,
+  /* 14 */ "LOADSUB_PART"_Stz,
+  /* 15 */ "SELECT_PART"_Stz,
+  /* 16 */ "ENUMS"_Stz
   };
   enum eTS // Task State
   {
@@ -91,17 +91,17 @@ namespace Tasks
   /* 8 */ TS_ENUMS
   };
   
-  static Str* aTS[]
+  static Stz* aTS[]
   {
-    /* 0 */ "NONE"_Str,
-    /* 1 */ "BLOCKED"_Str,
-    /* 2 */ "EXITED"_Str,
-    /* 3 */ "RUNNING"_Str,
-    /* 4 */ "SLEEPING"_Str,
-    /* 5 */ "SUSPENDED"_Str,
-    /* 6 */ "WAITING"_Str,
-    /* 7 */ "YIELDED"_Str,
-    /* 8 */ "ENUMS"_Str,
+    /* 0 */ "NONE"_Stz,
+    /* 1 */ "BLOCKED"_Stz,
+    /* 2 */ "EXITED"_Stz,
+    /* 3 */ "RUNNING"_Stz,
+    /* 4 */ "SLEEPING"_Stz,
+    /* 5 */ "SUSPENDED"_Stz,
+    /* 6 */ "WAITING"_Stz,
+    /* 7 */ "YIELDED"_Stz,
+    /* 8 */ "ENUMS"_Stz,
   };
   
   typedef NP<Task,CN_TASK> NP_Task;
@@ -188,21 +188,21 @@ namespace Tasks
     Task(void);
     Task(Value* pRequest);
     Task(MP_Task mpTask);
-    Task(Str* aLambda);
-    void vInit(Str* aLambda);
+    Task(Stz* aLambda);
+    void vInit(Stz* aLambda);
     ~Task(void);
     
-    static void vDump(eCN eClass, Object* pObject, Str* aTab);
+    static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     
     eAC  eActorModel(void);
     void vActorModel(eAC eActorModel);
     void vAdjustNext(i8 iBytes);
-    void vAddConstant(Str* aName, i8 iVal);
-    void vAddConstant(Str* aName, Str* aValue);
+    void vAddConstant(Stz* aName, i8 iVal);
+    void vAddConstant(Stz* aName, Stz* aValue);
 
     void vAddConstants(void);
     void vAddMunged(MP_Task mpTask);
-    void vAddPrimitive(Str* aName, TaskStep pStep, bool bImmediate);
+    void vAddPrimitive(Stz* aName, TaskStep pStep, bool bImmediate);
     void vAddRoutines(void);
     Object* pArgObject(void);
     Word* pCompileColon(StrVal& sDefinition);
@@ -224,10 +224,10 @@ namespace Tasks
     bool bPopStr(s48K& sStr);
     NP_Task npPrevInSet(void);
     void vPrevInSet(NP_Task npPrev);
-    void vPrimitive(Str *aPrimitive);
+    void vPrimitive(Stz *aPrimitive);
     void vPushInt(i8 iInt);
     void vPushObject(Object* pObject);
-    void vPushStr(Str* aStr);
+    void vPushStr(Stz* aStr);
     void vPushStr(s48K& sStr);
     Value* pRequest(void);
     void vReset(void);
@@ -235,7 +235,7 @@ namespace Tasks
     Threads::Thread* pRootThread(void);
     void vSeedDicCompileSen(void);
     void vSeedDocol(void);
-    void vSeedWord(Str *aWord);
+    void vSeedWord(Stz *aWord);
     void vSprint(s48K& sFormat, s48K& sString);
     void vStackContents(Stack* pStack, StrVal& sStackContents);
     eTS  eState(void);
@@ -244,7 +244,7 @@ namespace Tasks
     void vTaskKind(eTK eTaskKind);
     Threads::Thread* pThread(void);
     void vThread(Threads::Thread* pThread);
-    void vTracePoint(Str* aMark);
+    void vTracePoint(Stz* aMark);
     i8   iTxId(void);
     void vTxId(i8 iTxId);
     
@@ -1332,7 +1332,7 @@ namespace Tasks
         
     #define THROW1(p1) \
     { \
-      s256 sFile((Str*)__FILE__); \
+      s256 sFile((Stz*)__FILE__); \
       s256 sException; \
       sException.vSprint(p1); \
       Task* pTask = reinterpret_cast<Task*>(PosixThread::pTlsGet(giTLS_TaskKey)); \
@@ -1343,7 +1343,7 @@ namespace Tasks
         
     #define THROW2(p1, p2) \
     { \
-      s256 sFile((Str*)__FILE__); \
+      s256 sFile((Stz*)__FILE__); \
       s256 sException; \
       sException.vSprint(p1,p2); \
       Task* pTask = reinterpret_cast<Task*>(PosixThread::pTlsGet(giTLS_TaskKey)); \
@@ -1355,19 +1355,19 @@ namespace Tasks
     // throw invalid auxiliary stack
     #define THROW_INVALID_ASTACK(primitive) \
     { \
-      THROW("Invalid aux stack for: %s"_Str,primitive); \
+      THROW("Invalid aux stack for: %s"_Stz,primitive); \
     }
         
     // throw invalid data stack
     #define THROW_INVALID_DSTACK(primitive) \
     { \
-      THROW("Invalid data stack in for: %s"_Str,primitive); \
+      THROW("Invalid data stack in for: %s"_Stz,primitive); \
     }
         
     // throw invalid return stack
     #define THROW_INVALID_RSTACK(primitive) \
     { \
-      THROW("Invalid return stack for: %s"_Str,primitive); \
+      THROW("Invalid return stack for: %s"_Stz,primitive); \
     }
         
     #ifdef __ENTRY_EXIT

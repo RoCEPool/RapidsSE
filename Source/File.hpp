@@ -3,12 +3,12 @@
 /*============================================================================*/
 #pragma once
 
-extern Str* C_OPEN_READ;
-extern Str* C_OPEN_WRITE;
-extern Str* C_OPEN_APPEND;
-extern Str* C_OPEN_READ_WRITE_EXIST;
-extern Str* C_OPEN_READ_WRITE_CREATE;
-extern Str* C_OPEN_READ_APPEND;
+extern Stz* C_OPEN_READ;
+extern Stz* C_OPEN_WRITE;
+extern Stz* C_OPEN_APPEND;
+extern Stz* C_OPEN_READ_WRITE_EXIST;
+extern Stz* C_OPEN_READ_WRITE_CREATE;
+extern Stz* C_OPEN_READ_APPEND;
 
 namespace System
 {
@@ -48,7 +48,7 @@ namespace System
     void vBuffer(i8 nBytes);
     void vClear(void);
     void vClose(void);
-    bool bExists(Str *aFilePath);
+    bool bExists(Stz *aFilePath);
     char cGetChar(void);
     void vFileDump(void);
     void vFlush(void);
@@ -58,23 +58,23 @@ namespace System
     bool bIsStdin(void);
     bool bIsStdout(void);
     bool bOpen(void);
-    bool bOpen(Str* aOpenMode, i8 iTraceLevel=0);
-    bool bOpen(Str* aFilePath, Str* aOpenMode, i8 iTraceLevel=0);
+    bool bOpen(Stz* aOpenMode, i8 iTraceLevel=0);
+    bool bOpen(Stz* aFilePath, Stz* aOpenMode, i8 iTraceLevel=0);
     s256& sPath(void);
-    void vPath(Str* aFilePath);
+    void vPath(Stz* aFilePath);
     void vPath(StrVal& sFilePath);
-    void vPrint(Str* aFormat,...);
+    void vPrint(Stz* aFormat,...);
     i8   iReadChunk(void* pChunk, i8 nBytes);
     bool bReadLine(StrVal& s);
-    bool bReadLine(Str* y);
+    bool bReadLine(Stz* y);
     bool bReadRecord(void);
     Scratch* pRecord(void);
     i8 iRecordLength(void);
     void vReset(void);
     void vSeek(i8 iOffset);
     void vSeekEnd(void);
-    void vSet(Str* aFilePath, Str* aOpenMode, i8 iTraceLevel=0);
-    void vSet(FILE* pFilePtr, Str* aFilePath, Str* aOpenMode, i8 iTraceLevel=0);
+    void vSet(Stz* aFilePath, Stz* aOpenMode, i8 iTraceLevel=0);
+    void vSet(FILE* pFilePtr, Stz* aFilePath, Stz* aOpenMode, i8 iTraceLevel=0);
     SysCall& rSysCall(void);
     i8   iTell(void);
     i8   iTraceLevel(void);

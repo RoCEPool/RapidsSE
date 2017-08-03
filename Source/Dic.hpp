@@ -30,13 +30,13 @@ namespace Dictionaries
     Dic(void);
     ~Dic(void);
     
-    static void vDump(eCN eClass, Object* pObject, Str* aTab);
+    static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     static void vFinalize(eCN eClass, Object* pObject);
     
     void  vAddWord(Word* pWord);
     Word* pDicKind(void);
     void  vDicKind(Word* pDicKind);
-    Word* pFindWord(Str* aName);
+    Word* pFindWord(Stz* aName);
     Word* pFindStep(TaskStep pStep);
     bool  bForget(StrVal& sName);
     bool  bFrozen(void);
@@ -46,7 +46,7 @@ namespace Dictionaries
     bool  bIsName(StrVal& sName);
     Word* pLastWord(void);
     StrVal&    sName(void);
-    void  vName(Str* aName);
+    void  vName(Stz* aName);
     void  vRefDec(void);
     void  vRefInc(void);
     bool  bRefOut(void);

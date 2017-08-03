@@ -13,11 +13,11 @@ namespace Plans
   /* 4 */ AK_ENUMS
   };
   
-  static Str* aAM[]
+  static Stz* aAM[]
   {
-  /* 0 */ "none"_Str,
-  /* 1 */ "columnnm"_Str,
-  /* 2 */ "literal"_Str,
+  /* 0 */ "none"_Stz,
+  /* 1 */ "columnnm"_Stz,
+  /* 2 */ "literal"_Stz,
   };
 
   class Arg : public Object
@@ -34,7 +34,7 @@ namespace Plans
     void  operator delete(void*);
     
     Arg(void);
-    Arg(eAK eArgKind, Str* aArgVal);
+    Arg(eAK eArgKind, Stz* aArgVal);
     ~Arg(void);
   
     eAK eArgKind(void);

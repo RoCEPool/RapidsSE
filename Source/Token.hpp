@@ -15,14 +15,14 @@ namespace Parsing
   /*  5 */ TN_ENUMS
   };
   
-  static Str* aTN[]
+  static Stz* aTN[]
   {
-  /*  0 */ "NONE"_Str,
-  /*  1 */ "INTEGER"_Str,
-  /*  2 */ "NAME"_Str,
-  /*  3 */ "OTHER"_Str,
-  /*  4 */ "STRING"_Str,
-  /*  5 */ "ENUMS"_Str,
+  /*  0 */ "NONE"_Stz,
+  /*  1 */ "INTEGER"_Stz,
+  /*  2 */ "NAME"_Stz,
+  /*  3 */ "OTHER"_Stz,
+  /*  4 */ "STRING"_Stz,
+  /*  5 */ "ENUMS"_Stz,
   };
   
   class Token : public Object
@@ -52,12 +52,12 @@ namespace Parsing
     void vReset(void);
   
     i8 iLength(void);
-    bool bSame(Str*);
+    bool bSame(Stz*);
     bool bHasText(void);
-    Str* aText(void);
+    Stz* aText(void);
     i8 iToI8(void);
-    void vConcat(Str*);
-    void vCopy(Str*);
+    void vConcat(Stz*);
+    void vCopy(Stz*);
     void vCopy(Token*);
     bool bIsNumeric(void);
   

@@ -22,7 +22,7 @@ namespace Values
     i8* aInt(void);
     i8 iTsp(void);
     
-    void vToString(Str* aWorkspace);
+    void vToString(Stz* aWorkspace);
   };
   
   TspVal* _pTspVal(void* aAddr);

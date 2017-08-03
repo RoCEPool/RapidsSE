@@ -29,21 +29,21 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Accum(void)
 {
-  vAddPrimitive("accum.delete"_Str, &vAccumDelete, false);
-  vAddPrimitive("accum::new"_Str,   &vAccumNew,    false);
+  vAddPrimitive("accum.delete"_Stz, &vAccumDelete, false);
+  vAddPrimitive("accum::new"_Stz,   &vAccumNew,    false);
 
-  vAddPrimitive("accum.accumBuffer@"_Str, &vAccumAccumBuffer, false);
+  vAddPrimitive("accum.accumBuffer@"_Stz, &vAccumAccumBuffer, false);
   
-  vAddPrimitive("accum.count@"_Str, &vAccumCountFetch, false);
-  vAddPrimitive("accum.count!"_Str, &vAccumCountStore, false);
-  vAddPrimitive("accum.group@"_Str, &vAccumGroupFetch, false);
-  vAddPrimitive("accum.group!"_Str, &vAccumGroupStore, false);
-  vAddPrimitive("accum.max@"_Str,   &vAccumMaxFetch,   false);
-  vAddPrimitive("accum.max!"_Str,   &vAccumMaxStore,   false);
-  vAddPrimitive("accum.min@"_Str,   &vAccumMinFetch,   false);
-  vAddPrimitive("accum.min!"_Str,   &vAccumMinStore,   false);
-  vAddPrimitive("accum.sum@"_Str,   &vAccumSumFetch,   false);
-  vAddPrimitive("accum.sum!"_Str,   &vAccumSumStore,   false);
+  vAddPrimitive("accum.count@"_Stz, &vAccumCountFetch, false);
+  vAddPrimitive("accum.count!"_Stz, &vAccumCountStore, false);
+  vAddPrimitive("accum.group@"_Stz, &vAccumGroupFetch, false);
+  vAddPrimitive("accum.group!"_Stz, &vAccumGroupStore, false);
+  vAddPrimitive("accum.max@"_Stz,   &vAccumMaxFetch,   false);
+  vAddPrimitive("accum.max!"_Stz,   &vAccumMaxStore,   false);
+  vAddPrimitive("accum.min@"_Stz,   &vAccumMinFetch,   false);
+  vAddPrimitive("accum.min!"_Stz,   &vAccumMinStore,   false);
+  vAddPrimitive("accum.sum@"_Stz,   &vAccumSumFetch,   false);
+  vAddPrimitive("accum.sum!"_Stz,   &vAccumSumStore,   false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -51,11 +51,11 @@ void Task::vAddPrimitives_Accum(void)
 /*----------------------------------------------------------------------------*/
 void Task::vAccumDelete(MP_Task mpTask)
 {
-  ENTRY("vAccumDelete"_Str);
+  ENTRY("vAccumDelete"_Stz);
   
   Object* pPtrAccum;
   if ( ! mpTask->m_pDataStack->bPop(pPtrAccum) )
-    THROW_INVALID_DSTACK("accum.delete"_Str);
+    THROW_INVALID_DSTACK("accum.delete"_Stz);
   Accum* pAccum = _pAccum(pPtrAccum);
   
   delete pAccum;
@@ -68,7 +68,7 @@ void Task::vAccumDelete(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vAccumNew(MP_Task mpTask)
 {
-  ENTRY("vAccumNew"_Str);
+  ENTRY("vAccumNew"_Stz);
   
   Accum* pAccum = new Accum;
   
@@ -82,11 +82,11 @@ void Task::vAccumNew(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vAccumAccumBuffer(MP_Task mpTask)
 {
-  ENTRY("vAccumAccumBuffer"_Str);
+  ENTRY("vAccumAccumBuffer"_Stz);
   
   Object* pPtrAccum;
   if ( ! mpTask->m_pDataStack->bPop(pPtrAccum) )
-    THROW_INVALID_DSTACK("accum.accumBuffer"_Str);
+    THROW_INVALID_DSTACK("accum.accumBuffer"_Stz);
   Accum* pAccum = _pAccum(pPtrAccum);
   
   // tbd...
@@ -99,11 +99,11 @@ void Task::vAccumAccumBuffer(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vAccumCountFetch(MP_Task mpTask)
 {
-  ENTRY("vAccumCountFetch"_Str);
+  ENTRY("vAccumCountFetch"_Stz);
   
   Object* pPtrAccum;
   if ( ! mpTask->m_pDataStack->bPop(pPtrAccum) )
-    THROW_INVALID_DSTACK("accum.count@"_Str);
+    THROW_INVALID_DSTACK("accum.count@"_Stz);
   Accum* pAccum = _pAccum(pPtrAccum);
   
   mpTask->m_pDataStack->vPushInt(pAccum->m_iCount);
@@ -116,16 +116,16 @@ void Task::vAccumCountFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vAccumCountStore(MP_Task mpTask)
 {
-  ENTRY("vAccumCountStore"_Str);
+  ENTRY("vAccumCountStore"_Stz);
   
   Object* pPtrAccum;
   if ( ! mpTask->m_pDataStack->bPop(pPtrAccum) )
-    THROW_INVALID_DSTACK("accum.count!"_Str);
+    THROW_INVALID_DSTACK("accum.count!"_Stz);
   Accum* pAccum = _pAccum(pPtrAccum);
 
   i8 iCount;
   if ( ! mpTask->m_pDataStack->bPop(iCount) )
-    THROW_INVALID_DSTACK("accum.count!"_Str);
+    THROW_INVALID_DSTACK("accum.count!"_Stz);
 
   pAccum->m_iCount = iCount;
   
@@ -137,11 +137,11 @@ void Task::vAccumCountStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vAccumGroupFetch(MP_Task mpTask)
 {
-  ENTRY("vAccumGroupFetch"_Str);
+  ENTRY("vAccumGroupFetch"_Stz);
   
   Object* pPtrAccum;
   if ( ! mpTask->m_pDataStack->bPop(pPtrAccum) )
-    THROW_INVALID_DSTACK("accum.group@"_Str);
+    THROW_INVALID_DSTACK("accum.group@"_Stz);
   Accum* pAccum = _pAccum(pPtrAccum);
   
   mpTask->m_pDataStack->vPushInt(pAccum->m_iGroup);
@@ -154,16 +154,16 @@ void Task::vAccumGroupFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vAccumGroupStore(MP_Task mpTask)
 {
-  ENTRY("vAccumGroupStore"_Str);
+  ENTRY("vAccumGroupStore"_Stz);
   
   Object* pPtrAccum;
   if ( ! mpTask->m_pDataStack->bPop(pPtrAccum) )
-    THROW_INVALID_DSTACK("accum.group!"_Str);
+    THROW_INVALID_DSTACK("accum.group!"_Stz);
   Accum* pAccum = _pAccum(pPtrAccum);
   
   i8 iGroup;
   if ( ! mpTask->m_pDataStack->bPop(iGroup) )
-    THROW_INVALID_DSTACK("accum.group!"_Str);
+    THROW_INVALID_DSTACK("accum.group!"_Stz);
   
   pAccum->m_iGroup = iGroup;
   
@@ -175,11 +175,11 @@ void Task::vAccumGroupStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vAccumMaxFetch(MP_Task mpTask)
 {
-  ENTRY("vAccumMaxFetch"_Str);
+  ENTRY("vAccumMaxFetch"_Stz);
   
   Object* pPtrAccum;
   if ( ! mpTask->m_pDataStack->bPop(pPtrAccum) )
-    THROW_INVALID_DSTACK("accum.max@"_Str);
+    THROW_INVALID_DSTACK("accum.max@"_Stz);
   Accum* pAccum = _pAccum(pPtrAccum);
   
   mpTask->m_pDataStack->vPushInt(pAccum->m_iMax);
@@ -192,16 +192,16 @@ void Task::vAccumMaxFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vAccumMaxStore(MP_Task mpTask)
 {
-  ENTRY("vAccumMaxStore"_Str);
+  ENTRY("vAccumMaxStore"_Stz);
   
   Object* pPtrAccum;
   if ( ! mpTask->m_pDataStack->bPop(pPtrAccum) )
-    THROW_INVALID_DSTACK("accum.max!"_Str);
+    THROW_INVALID_DSTACK("accum.max!"_Stz);
   Accum* pAccum = _pAccum(pPtrAccum);
   
   i8 iMax;
   if ( ! mpTask->m_pDataStack->bPop(iMax) )
-    THROW_INVALID_DSTACK("accum.max!"_Str);
+    THROW_INVALID_DSTACK("accum.max!"_Stz);
   
   pAccum->m_iMax = iMax;
   
@@ -213,11 +213,11 @@ void Task::vAccumMaxStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vAccumMinFetch(MP_Task mpTask)
 {
-  ENTRY("vAccumMinFetch"_Str);
+  ENTRY("vAccumMinFetch"_Stz);
   
   Object* pPtrAccum;
   if ( ! mpTask->m_pDataStack->bPop(pPtrAccum) )
-    THROW_INVALID_DSTACK("accum.min@"_Str);
+    THROW_INVALID_DSTACK("accum.min@"_Stz);
   Accum* pAccum = _pAccum(pPtrAccum);
   
   mpTask->m_pDataStack->vPushInt(pAccum->m_iMin);
@@ -230,16 +230,16 @@ void Task::vAccumMinFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vAccumMinStore(MP_Task mpTask)
 {
-  ENTRY("vAccumMinStore"_Str);
+  ENTRY("vAccumMinStore"_Stz);
   
   Object* pPtrAccum;
   if ( ! mpTask->m_pDataStack->bPop(pPtrAccum) )
-    THROW_INVALID_DSTACK("accum.min!"_Str);
+    THROW_INVALID_DSTACK("accum.min!"_Stz);
   Accum* pAccum = _pAccum(pPtrAccum);
   
   i8 iMin;
   if ( ! mpTask->m_pDataStack->bPop(iMin) )
-    THROW_INVALID_DSTACK("accum.min!"_Str);
+    THROW_INVALID_DSTACK("accum.min!"_Stz);
   
   pAccum->m_iMin = iMin;
   
@@ -251,11 +251,11 @@ void Task::vAccumMinStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vAccumSumFetch(MP_Task mpTask)
 {
-  ENTRY("vAccumSumFetch"_Str);
+  ENTRY("vAccumSumFetch"_Stz);
   
   Object* pPtrAccum;
   if ( ! mpTask->m_pDataStack->bPop(pPtrAccum) )
-    THROW_INVALID_DSTACK("accum.sum@"_Str);
+    THROW_INVALID_DSTACK("accum.sum@"_Stz);
   Accum* pAccum = _pAccum(pPtrAccum);
   
   mpTask->m_pDataStack->vPushInt(pAccum->m_iSum);
@@ -268,16 +268,16 @@ void Task::vAccumSumFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vAccumSumStore(MP_Task mpTask)
 {
-  ENTRY("vAccumSumStore"_Str);
+  ENTRY("vAccumSumStore"_Stz);
   
   Object* pPtrAccum;
   if ( ! mpTask->m_pDataStack->bPop(pPtrAccum) )
-    THROW_INVALID_DSTACK("accum.sum!"_Str);
+    THROW_INVALID_DSTACK("accum.sum!"_Stz);
   Accum* pAccum = _pAccum(pPtrAccum);
   
   i8 iSum;
   if ( ! mpTask->m_pDataStack->bPop(iSum) )
-    THROW_INVALID_DSTACK("accum.sum!"_Str);
+    THROW_INVALID_DSTACK("accum.sum!"_Stz);
   
   pAccum->m_iSum = iSum;
   

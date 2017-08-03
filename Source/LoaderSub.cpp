@@ -97,14 +97,14 @@ LoaderSub::~LoaderSub(void)
 /*----------------------------------------------------------------------------*/
 /* dump LoaderSub                                                             */
 /*----------------------------------------------------------------------------*/
-void LoaderSub::vDump(eCN eClass, Object* pObject, Str* aTab)
+void LoaderSub::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
   ASSERT(eClass == CN_LOADERSUB);
   ASSERT(pObject->eClass() == CN_LOADERSUB);
   
   LoaderSub* pLoader = reinterpret_cast<LoaderSub*>(pObject);
   
-  vTrace("\n"_Str);
+  vTrace("\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -180,7 +180,7 @@ bool LoaderSub::bFetchRecord(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
   
-  Str* aRawData;
+  Stz* aRawData;
   i8 iLength;
   
   if (! m_bMoreChunks)
@@ -293,7 +293,7 @@ bool LoaderSub::bInsertRow(void)
   if (! m_pEntryBuffer[m_iPartition]) {
     m_pEntryBuffer[m_iPartition] = new EntryBuffer(m_pTable->pHiddenIndex(),0);
     if (! m_pEntryBuffer[m_iPartition]) {
-      vTrace("EntryBuffer allocation failed\n"_Str);
+      vTrace("EntryBuffer allocation failed\n"_Stz);
       return false;
     }
   }
@@ -318,7 +318,7 @@ bool LoaderSub::bInsertRow(void)
   if (! m_pEntryBuffer[m_iPartition]) {
     m_pEntryBuffer[m_iPartition] = new EntryBuffer(m_pTable->pHiddenIndex(),0);
     if (! m_pEntryBuffer[m_iPartition]) {
-      vTrace("EntryBuffer allocation failed\n"_Str);
+      vTrace("EntryBuffer allocation failed\n"_Stz);
       return false;
     }
   }
@@ -336,7 +336,7 @@ bool LoaderSub::bInsertRow(void)
 //
 //  char xInsBuf[256];
 //  StrLib::vCopyLen(xInsBuf,(char*)m_aRecord,iLength);
-//  //vTrace("Inserting: %s %lld\n"_Str,xInsBuf,iLength);
+//  //vTrace("Inserting: %s %lld\n"_Stz,xInsBuf,iLength);
 //  
 //  // insert row into working buffer
 //  bool b = pEntryBuffer->bInsertEntry(m_pTxRef->iTxId(),m_aRecord,iLength);
@@ -407,12 +407,12 @@ bool LoaderSub::bReadChunk(void)
     if (bNext)
       break;
     
-    //vTrace("Waiting for map\n"_Str);
+    //vTrace("Waiting for map\n"_Stz);
   }
   
   if (gbProgress) {
     if (0 == iChunk % 100) {
-      vInfo("read chunk %lld of %lld        \r"_Str,iChunk,nChunks);
+      vInfo("read chunk %lld of %lld        \r"_Stz,iChunk,nChunks);
       fflush(stdout);
     }
   }
@@ -469,7 +469,7 @@ bool LoaderSub::bValidateRow(i8& i_Column)
   bool bValid = m_pTable->bValidateRow(m_aRecord.aStr(),i_Column);
   
   if ( ! bValid ) {
-    vTrace("Loader:: Invalid field %lld in record: "_Str,
+    vTrace("Loader:: Invalid field %lld in record: "_Stz,
            i_Column);
     RowData::vDump((char*)m_aRecord.aStr(), m_iLength);
     exit(-1);
@@ -486,11 +486,11 @@ bool LoaderSub::bValidateRow(i8& i_Column)
   bool bValid = m_pTable->bValidateRow(m_aRecord,i_Column);
   
   if ( ! bValid ) {
-    vTrace("Loader:: Invalid field %lld in record: "_Str,
+    vTrace("Loader:: Invalid field %lld in record: "_Stz,
            i_Column);
     for (char* a = (char*)m_aRecord; *a && '\n' != *a; a++)
-      vTrace("%c"_Str,*a);
-    vTrace("\n"_Str);
+      vTrace("%c"_Stz,*a);
+    vTrace("\n"_Stz);
     exit(-1);
   }
   
@@ -506,7 +506,7 @@ bool LoaderSub::bValidateRow(i8& i_Column)
 //  
 //  char* aCursor = (char*)m_aRecord;
 //  
-//  vTrace("Before %s\n"_Str,m_aRecord);
+//  vTrace("Before %s\n"_Stz,m_aRecord);
 //  
 //  bool b = StrLib::bFind(&aCursor,'|',iField);
 //  
@@ -514,7 +514,7 @@ bool LoaderSub::bValidateRow(i8& i_Column)
 //    *aCursor = '\0';
 //    m_iLength = StrLib::iLength((char*)m_aRecord);
 //
-//    vTrace("After %s\n"_Str,m_aRecord);
+//    vTrace("After %s\n"_Stz,m_aRecord);
 //  }
 //}
 

@@ -15,14 +15,14 @@ namespace Pool
     /*  5 */ HT_ENUMS
   };
   
-  static Str* aHT[]
+  static Stz* aHT[]
   {
-    /*  0 */ "INVALID"_Str,
-    /*  1 */ "SMALL"_Str,
-    /*  2 */ "MEDIUM"_Str,
-    /*  3 */ "LARGE"_Str,
-    /*  4 */ "JUMBO"_Str,
-    /*  5 */ "ENUMS"_Str
+    /*  0 */ "INVALID"_Stz,
+    /*  1 */ "SMALL"_Stz,
+    /*  2 */ "MEDIUM"_Stz,
+    /*  3 */ "LARGE"_Stz,
+    /*  4 */ "JUMBO"_Stz,
+    /*  5 */ "ENUMS"_Stz
   };
   
   class Heap : public Buffer
@@ -48,7 +48,7 @@ namespace Pool
     Heap(eCN eClass, i8 iObjectSize);
     ~Heap(void);
     
-    static void vDump(eCN eClass, Object* pObject, Str* aTab);
+    static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     static Object* pAllocate(eCN eClass);
     static void vFree(Object* pObject);
 

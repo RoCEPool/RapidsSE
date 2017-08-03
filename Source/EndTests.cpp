@@ -12,7 +12,7 @@ void EndTests::vRun(RunTests* pRunTests)
   s256 sCommand;
   s256 sResponse;
   
-  sCommand = "docol epochDump"_Str;
+  sCommand = "docol epochDump"_Stz;
   vRequire(sCommand, true, EC_NONE);
 }
 

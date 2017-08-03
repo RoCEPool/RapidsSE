@@ -78,7 +78,7 @@ SEitf::SEitf(i8 iPartition)
   m_pResponseQueue  = nullptr;
   m_eErrorCode      = EC_NONE;
   m_sErrorMsg       = aEC[m_eErrorCode];
-  m_sResponse       = ""_Str;
+  m_sResponse       = ""_Stz;
   m_aRowPtr         = nullptr;
   m_pIndexBuffer    = nullptr;
   m_pAccessPath     = nullptr;
@@ -86,7 +86,7 @@ SEitf::SEitf(i8 iPartition)
   m_pCurrentTable   = nullptr;
   m_pCurrentIndex   = nullptr;
   m_pTxRef          = nullptr;
-  m_sMetadata       = ""_Str;
+  m_sMetadata       = ""_Stz;
   m_bDisplay        = true;
   m_iRowsProcessed    = 0;
   m_iCurrentRequestId = 0;
@@ -189,13 +189,13 @@ Table* SEitf::pCurrentTable(void)
 /*----------------------------------------------------------------------------*/
 void SEitf::vContentDump(void)
 {
-  vTrace("SEitf %p: pid %lld (%s)\n"_Str,
+  vTrace("SEitf %p: pid %lld (%s)\n"_Stz,
          this,
          m_iPid,
-         Process::bTestPid(m_iPid) ? "exists"_Str : "non-existant"_Str
+         Process::bTestPid(m_iPid) ? "exists"_Stz : "non-existant"_Stz
          );
   
-  vTrace("  RequestQueue %p  ResponseQueue %p\n"_Str,
+  vTrace("  RequestQueue %p  ResponseQueue %p\n"_Stz,
          m_pRequestQueue,
          m_pResponseQueue);
 }
@@ -203,17 +203,17 @@ void SEitf::vContentDump(void)
 /*----------------------------------------------------------------------------*/
 /* dump seitf                                                                 */
 /*----------------------------------------------------------------------------*/
-void SEitf::vDump(eCN eClass, Object* pObject, Str* aTab)
+void SEitf::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
   ASSERT(eClass == CN_SEITF);
   ASSERT(pObject->eClass() == CN_SEITF);
   
   SEitf* pSEitf = reinterpret_cast<SEitf*>(pObject);
   
-  vTrace("pid %lld %s partitions %lld partition %lld"_Str
-         " requestQ %p responseQ %p response '%s'\n"_Str,
+  vTrace("pid %lld %s partitions %lld partition %lld"_Stz
+         " requestQ %p responseQ %p response '%s'\n"_Stz,
          pSEitf->m_iPid,
-         Process::bTestPid(pSEitf->m_iPid) ? "exists"_Str : "non-existant"_Str,
+         Process::bTestPid(pSEitf->m_iPid) ? "exists"_Stz : "non-existant"_Stz,
          pSEitf->m_iSlots,
          pSEitf->m_iPartition,
          pSEitf->m_pRequestQueue,
@@ -229,7 +229,7 @@ void SEitf::vInit(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   // request queue
-  Word* pReqQueWord = gpMainDic->pFindWord("requestQueue"_Str);
+  Word* pReqQueWord = gpMainDic->pFindWord("requestQueue"_Stz);
   ASSERT(pReqQueWord);
   m_pRequestQueue = reinterpret_cast<Queue*>(pReqQueWord->aBodyArea());
   
@@ -239,43 +239,43 @@ void SEitf::vInit(void)
   // set up initial default path
   
   // /tenants
-  Word* pTenants = gpMainDic->pFindWord("tenants"_Str);
+  Word* pTenants = gpMainDic->pFindWord("tenants"_Stz);
   ASSERT(pTenants);
   Cell* pCell = pTenants->pFirstCell();
   m_xPathStack.vPush(reinterpret_cast<Dic*>(pCell));
   
   // /tenants/boray
-  Word* pTenant = m_xPathStack.pFindInCurrent("boray"_Str);
+  Word* pTenant = m_xPathStack.pFindInCurrent("boray"_Stz);
   ASSERT(pTenant);
   pCell = pTenant->pFirstCell();
   m_xPathStack.vPush(reinterpret_cast<Dic*>(pCell));
   
   // /tenants/boray/catalogs
-  Word* pCatalogs = m_xPathStack.pFindInCurrent("catalogs"_Str);
+  Word* pCatalogs = m_xPathStack.pFindInCurrent("catalogs"_Stz);
   ASSERT(pCatalogs);
   pCell = pCatalogs->pFirstCell();
   m_xPathStack.vPush(reinterpret_cast<Dic*>(pCell));
  
   // /tenants/boray/catalogs/rapidsse
-  Word* pCatalog = m_xPathStack.pFindInCurrent("rapidsse"_Str);
+  Word* pCatalog = m_xPathStack.pFindInCurrent("rapidsse"_Stz);
   ASSERT(pCatalog);
   pCell = pCatalog->pFirstCell();
   m_xPathStack.vPush(reinterpret_cast<Dic*>(pCell));
   
   // /tenants/boray/catalogs/rapidsse/schemas
-  Word* pSchemas = m_xPathStack.pFindInCurrent("schemas"_Str);
+  Word* pSchemas = m_xPathStack.pFindInCurrent("schemas"_Stz);
   ASSERT(pSchemas);
   pCell = pSchemas->pFirstCell();
   m_xPathStack.vPush(reinterpret_cast<Dic*>(pCell));
   
   // /tenants/boray/catalogs/rapidsse/schemas/public
-  Word* pSchema = m_xPathStack.pFindInCurrent("public"_Str);
+  Word* pSchema = m_xPathStack.pFindInCurrent("public"_Stz);
   ASSERT(pSchema);
   pCell = pSchema->pFirstCell();
   m_xPathStack.vPush(reinterpret_cast<Dic*>(pCell));
 
   // /tenants/boray/catalogs/rapidsse/schemas/public/tables
-  Word* pTables = m_xPathStack.pFindInCurrent("tables"_Str);
+  Word* pTables = m_xPathStack.pFindInCurrent("tables"_Stz);
   ASSERT(pTables);
   
   pCell = pTables->pFirstCell();
@@ -345,7 +345,7 @@ bool SEitf::bBeginTx()
   
   m_pTxRef = new TxRef();
   
-  //vTrace("txref: %x\n"_Str, m_pTxRef);
+  //vTrace("txref: %x\n"_Stz, m_pTxRef);
   bool bResult = m_pTxRef->bBeginTx();
   return bResult;
 }
@@ -384,89 +384,89 @@ bool SEitf::bDecode(TokenVec& xTokenVec)
   if (0 == xTokenVec[0]->iLength())
     return false;
   
-  if (xTokenVec[0]->bSame("addcol"_Str)) return bAddColumn(xTokenVec);
-  if (xTokenVec[0]->bSame("antbl"_Str)) return bAnalyzeTable(xTokenVec);
-  if (xTokenVec[0]->bSame("anidx"_Str)) return bAnalyzeIndex(xTokenVec);
-  if (xTokenVec[0]->bSame("addidxcol"_Str)) return bAddIndexColumn(xTokenVec);
-  if (xTokenVec[0]->bSame("addpartcol"_Str)) return bAddPartitionColumn(xTokenVec);
-  if (xTokenVec[0]->bSame("cf"_Str)) return bPushDic(xTokenVec);
-  if (xTokenVec[0]->bSame("connectCluster"_Str)) return bConnectCluster(xTokenVec);
-  if (xTokenVec[0]->bSame("cp"_Str)) return bCopyTable(xTokenVec);
-  if (xTokenVec[0]->bSame("danidx"_Str)) return bDanalyzeIndex(xTokenVec);
-  if (xTokenVec[0]->bSame("dantbl"_Str)) return bDanalyzeTable(xTokenVec);
-  if (xTokenVec[0]->bSame("dex"_Str)) return bDistExportTable(xTokenVec);
-  if (xTokenVec[0]->bSame("docol"_Str)) return bDocol(xTokenVec);
-  if (xTokenVec[0]->bSame("displayOff"_Str)) return bDisplayOff(xTokenVec);
-  if (xTokenVec[0]->bSame("displayOn"_Str)) return bDisplayOn(xTokenVec);
-  if (xTokenVec[0]->bSame("dump"_Str)) return bDumpTable(xTokenVec);
-  if (xTokenVec[0]->bSame("endmkidx"_Str)) return bEndCreateIndex(xTokenVec);
-  if (xTokenVec[0]->bSame("endmktbl"_Str)) return bEndCreateTable(xTokenVec);
-  if (xTokenVec[0]->bSame("ex"_Str)) return bExportTable(xTokenVec);
-  if (xTokenVec[0]->bSame("fetch"_Str)) return bFetchRows(xTokenVec);
-  if (xTokenVec[0]->bSame("get"_Str)) return bGet(xTokenVec);
-  if (xTokenVec[0]->bSame("getFreeSpace"_Str)) return bGetFreeSpace(xTokenVec);
-  if (xTokenVec[0]->bSame("getInUseSpace"_Str)) return bGetInUseSpace(xTokenVec);
-  if (xTokenVec[0]->bSame("getidx"_Str)) return bGetIndex(xTokenVec);
-  if (xTokenVec[0]->bSame("gettbl"_Str)) return bGetTable(xTokenVec);
-  if (xTokenVec[0]->bSame("gettsk"_Str)) return bGetTask(xTokenVec);
-  if (xTokenVec[0]->bSame("getTotalSpace"_Str)) return bGetTotalSpace(xTokenVec);
-  if (xTokenVec[0]->bSame("dumpidx"_Str)) return bDumpIndex(xTokenVec);
-  if (xTokenVec[0]->bSame("TblInUse"_Str)) return bInUseTable(xTokenVec);
-  if (xTokenVec[0]->bSame("ld"_Str)) return bLoadTable(xTokenVec);
-  if (xTokenVec[0]->bSame("lds"_Str)) return bLoadTableStream(xTokenVec);
-  if (xTokenVec[0]->bSame("lf"_Str)) return bGetDicContents(xTokenVec);
-  if (xTokenVec[0]->bSame("lfG"_Str)) return bGetDicContentsG(xTokenVec);
-  if (xTokenVec[0]->bSame("keyselidx"_Str)) return bKeySelectIndex(xTokenVec);
-  if (xTokenVec[0]->bSame("lscat"_Str)) return bListCatalogs(xTokenVec);
-  if (xTokenVec[0]->bSame("lscol"_Str)) return bListColumns(xTokenVec);
-  if (xTokenVec[0]->bSame("lsidx"_Str)) return bListIndices(xTokenVec);
-  if (xTokenVec[0]->bSame("lsidxcol"_Str)) return bListIndexColumns(xTokenVec);
-  if (xTokenVec[0]->bSame("lspartcol"_Str)) return bListPartitionColumns(xTokenVec);
-  if (xTokenVec[0]->bSame("lssch"_Str)) return bListSchemas(xTokenVec);
-  if (xTokenVec[0]->bSame("lstbl"_Str)) return bListTables(xTokenVec);
-  if (xTokenVec[0]->bSame("lsten"_Str)) return bListTenants(xTokenVec);
-  if (xTokenVec[0]->bSame("lwrsel"_Str)) return bLowerSelectTable(xTokenVec);
-  if (xTokenVec[0]->bSame("lwrselidx"_Str)) return bLowerSelectIndex(xTokenVec);
-  if (xTokenVec[0]->bSame("mkcat"_Str)) return bCreateCatalog(xTokenVec);
-  if (xTokenVec[0]->bSame("mkidx"_Str)) return bCreateIndex(xTokenVec);
-  if (xTokenVec[0]->bSame("mksch"_Str)) return bCreateSchema(xTokenVec);
-  if (xTokenVec[0]->bSame("mktbl"_Str)) return bCreateTable(xTokenVec);
-  if (xTokenVec[0]->bSame("mkten"_Str)) return bCreateTenant(xTokenVec);
-  if (xTokenVec[0]->bSame("object"_Str)) return bObject(xTokenVec);
-  if (xTokenVec[0]->bSame("pRB"_Str)) return bPrintRowBuffer(xTokenVec);
-  if (xTokenVec[0]->bSame("pwf"_Str)) return bGetDicPath(xTokenVec);
-  if (xTokenVec[0]->bSame("retidx"_Str)) return bRetIndex(xTokenVec);
-  if (xTokenVec[0]->bSame("rettbl"_Str)) return bRetTable(xTokenVec);
-  if (xTokenVec[0]->bSame("rettsk"_Str)) return bRetTask(xTokenVec);
-  if (xTokenVec[0]->bSame("rf"_Str)) return bRemoveFolder(xTokenVec);
-  if (xTokenVec[0]->bSame("rgesel"_Str)) return bRangeSelectTable(xTokenVec);
-  if (xTokenVec[0]->bSame("scnselidx"_Str)) return bScanSelectIndex(xTokenVec);
-  if (xTokenVec[0]->bSame("rmcat"_Str)) return bDropCatalog(xTokenVec);
-  if (xTokenVec[0]->bSame("rmdic"_Str)) return bRemoveFolder(xTokenVec);
-  if (xTokenVec[0]->bSame("rmidx"_Str)) return bDropIndex(xTokenVec);
-  if (xTokenVec[0]->bSame("rmsch"_Str)) return bDropSchema(xTokenVec);
-  if (xTokenVec[0]->bSame("rmtbl"_Str)) return bDropTable(xTokenVec);
-  if (xTokenVec[0]->bSame("rmten"_Str)) return bDropTenant(xTokenVec);
-  if (xTokenVec[0]->bSame("rgeselidx"_Str)) return bRangeSelectIndex(xTokenVec);
-  if (xTokenVec[0]->bSame("sel"_Str)) return bSelectTable(xTokenVec);
-  if (xTokenVec[0]->bSame("set"_Str)) return bSet(xTokenVec);
-  if (xTokenVec[0]->bSame("setidxunique"_Str)) return bIndexSetUnique(xTokenVec);
-  if (xTokenVec[0]->bSame("space"_Str)) return bPoolSpace(xTokenVec);
-  if (xTokenVec[0]->bSame("status"_Str)) return bNodeStatus(xTokenVec);
-  if (xTokenVec[0]->bSame("szidx"_Str)) return bSizeIndex(xTokenVec);
-  if (xTokenVec[0]->bSame("sz"_Str)) return bSizeTable(xTokenVec);
-  if (xTokenVec[0]->bSame("tableSizes"_Str)) return bSizeTables(xTokenVec);
-  if (xTokenVec[0]->bSame("tr"_Str)) return bTruncateTable(xTokenVec);
-  if (xTokenVec[0]->bSame("tridx"_Str)) return bTruncateIndex(xTokenVec);
-  if (xTokenVec[0]->bSame("uprselidx"_Str)) return bUpperSelectIndex(xTokenVec);
-  if (xTokenVec[0]->bSame("usesch"_Str)) return bUseSchema(xTokenVec);
-  if (xTokenVec[0]->bSame("__x"_Str)) return bX(xTokenVec);
-  if (xTokenVec[0]->bSame("ping"_Str)) return bPing(xTokenVec);
-  if (xTokenVec[0]->bSame("mon"_Str)) return bGetMonitor(xTokenVec);
-  if (xTokenVec[0]->bSame("print"_Str)) return ! bPrint(xTokenVec);
-  if (xTokenVec[0]->bSame("seitf"_Str)) return bSeitfCount(xTokenVec);
-  if (xTokenVec[0]->bSame("version"_Str)) return bGetVersion(xTokenVec);
-  if (xTokenVec[0]->bSame("visidx"_Str)) return bVisualizeIndex(xTokenVec);
+  if (xTokenVec[0]->bSame("addcol"_Stz)) return bAddColumn(xTokenVec);
+  if (xTokenVec[0]->bSame("antbl"_Stz)) return bAnalyzeTable(xTokenVec);
+  if (xTokenVec[0]->bSame("anidx"_Stz)) return bAnalyzeIndex(xTokenVec);
+  if (xTokenVec[0]->bSame("addidxcol"_Stz)) return bAddIndexColumn(xTokenVec);
+  if (xTokenVec[0]->bSame("addpartcol"_Stz)) return bAddPartitionColumn(xTokenVec);
+  if (xTokenVec[0]->bSame("cf"_Stz)) return bPushDic(xTokenVec);
+  if (xTokenVec[0]->bSame("connectCluster"_Stz)) return bConnectCluster(xTokenVec);
+  if (xTokenVec[0]->bSame("cp"_Stz)) return bCopyTable(xTokenVec);
+  if (xTokenVec[0]->bSame("danidx"_Stz)) return bDanalyzeIndex(xTokenVec);
+  if (xTokenVec[0]->bSame("dantbl"_Stz)) return bDanalyzeTable(xTokenVec);
+  if (xTokenVec[0]->bSame("dex"_Stz)) return bDistExportTable(xTokenVec);
+  if (xTokenVec[0]->bSame("docol"_Stz)) return bDocol(xTokenVec);
+  if (xTokenVec[0]->bSame("displayOff"_Stz)) return bDisplayOff(xTokenVec);
+  if (xTokenVec[0]->bSame("displayOn"_Stz)) return bDisplayOn(xTokenVec);
+  if (xTokenVec[0]->bSame("dump"_Stz)) return bDumpTable(xTokenVec);
+  if (xTokenVec[0]->bSame("endmkidx"_Stz)) return bEndCreateIndex(xTokenVec);
+  if (xTokenVec[0]->bSame("endmktbl"_Stz)) return bEndCreateTable(xTokenVec);
+  if (xTokenVec[0]->bSame("ex"_Stz)) return bExportTable(xTokenVec);
+  if (xTokenVec[0]->bSame("fetch"_Stz)) return bFetchRows(xTokenVec);
+  if (xTokenVec[0]->bSame("get"_Stz)) return bGet(xTokenVec);
+  if (xTokenVec[0]->bSame("getFreeSpace"_Stz)) return bGetFreeSpace(xTokenVec);
+  if (xTokenVec[0]->bSame("getInUseSpace"_Stz)) return bGetInUseSpace(xTokenVec);
+  if (xTokenVec[0]->bSame("getidx"_Stz)) return bGetIndex(xTokenVec);
+  if (xTokenVec[0]->bSame("gettbl"_Stz)) return bGetTable(xTokenVec);
+  if (xTokenVec[0]->bSame("gettsk"_Stz)) return bGetTask(xTokenVec);
+  if (xTokenVec[0]->bSame("getTotalSpace"_Stz)) return bGetTotalSpace(xTokenVec);
+  if (xTokenVec[0]->bSame("dumpidx"_Stz)) return bDumpIndex(xTokenVec);
+  if (xTokenVec[0]->bSame("TblInUse"_Stz)) return bInUseTable(xTokenVec);
+  if (xTokenVec[0]->bSame("ld"_Stz)) return bLoadTable(xTokenVec);
+  if (xTokenVec[0]->bSame("lds"_Stz)) return bLoadTableStream(xTokenVec);
+  if (xTokenVec[0]->bSame("lf"_Stz)) return bGetDicContents(xTokenVec);
+  if (xTokenVec[0]->bSame("lfG"_Stz)) return bGetDicContentsG(xTokenVec);
+  if (xTokenVec[0]->bSame("keyselidx"_Stz)) return bKeySelectIndex(xTokenVec);
+  if (xTokenVec[0]->bSame("lscat"_Stz)) return bListCatalogs(xTokenVec);
+  if (xTokenVec[0]->bSame("lscol"_Stz)) return bListColumns(xTokenVec);
+  if (xTokenVec[0]->bSame("lsidx"_Stz)) return bListIndices(xTokenVec);
+  if (xTokenVec[0]->bSame("lsidxcol"_Stz)) return bListIndexColumns(xTokenVec);
+  if (xTokenVec[0]->bSame("lspartcol"_Stz)) return bListPartitionColumns(xTokenVec);
+  if (xTokenVec[0]->bSame("lssch"_Stz)) return bListSchemas(xTokenVec);
+  if (xTokenVec[0]->bSame("lstbl"_Stz)) return bListTables(xTokenVec);
+  if (xTokenVec[0]->bSame("lsten"_Stz)) return bListTenants(xTokenVec);
+  if (xTokenVec[0]->bSame("lwrsel"_Stz)) return bLowerSelectTable(xTokenVec);
+  if (xTokenVec[0]->bSame("lwrselidx"_Stz)) return bLowerSelectIndex(xTokenVec);
+  if (xTokenVec[0]->bSame("mkcat"_Stz)) return bCreateCatalog(xTokenVec);
+  if (xTokenVec[0]->bSame("mkidx"_Stz)) return bCreateIndex(xTokenVec);
+  if (xTokenVec[0]->bSame("mksch"_Stz)) return bCreateSchema(xTokenVec);
+  if (xTokenVec[0]->bSame("mktbl"_Stz)) return bCreateTable(xTokenVec);
+  if (xTokenVec[0]->bSame("mkten"_Stz)) return bCreateTenant(xTokenVec);
+  if (xTokenVec[0]->bSame("object"_Stz)) return bObject(xTokenVec);
+  if (xTokenVec[0]->bSame("pRB"_Stz)) return bPrintRowBuffer(xTokenVec);
+  if (xTokenVec[0]->bSame("pwf"_Stz)) return bGetDicPath(xTokenVec);
+  if (xTokenVec[0]->bSame("retidx"_Stz)) return bRetIndex(xTokenVec);
+  if (xTokenVec[0]->bSame("rettbl"_Stz)) return bRetTable(xTokenVec);
+  if (xTokenVec[0]->bSame("rettsk"_Stz)) return bRetTask(xTokenVec);
+  if (xTokenVec[0]->bSame("rf"_Stz)) return bRemoveFolder(xTokenVec);
+  if (xTokenVec[0]->bSame("rgesel"_Stz)) return bRangeSelectTable(xTokenVec);
+  if (xTokenVec[0]->bSame("scnselidx"_Stz)) return bScanSelectIndex(xTokenVec);
+  if (xTokenVec[0]->bSame("rmcat"_Stz)) return bDropCatalog(xTokenVec);
+  if (xTokenVec[0]->bSame("rmdic"_Stz)) return bRemoveFolder(xTokenVec);
+  if (xTokenVec[0]->bSame("rmidx"_Stz)) return bDropIndex(xTokenVec);
+  if (xTokenVec[0]->bSame("rmsch"_Stz)) return bDropSchema(xTokenVec);
+  if (xTokenVec[0]->bSame("rmtbl"_Stz)) return bDropTable(xTokenVec);
+  if (xTokenVec[0]->bSame("rmten"_Stz)) return bDropTenant(xTokenVec);
+  if (xTokenVec[0]->bSame("rgeselidx"_Stz)) return bRangeSelectIndex(xTokenVec);
+  if (xTokenVec[0]->bSame("sel"_Stz)) return bSelectTable(xTokenVec);
+  if (xTokenVec[0]->bSame("set"_Stz)) return bSet(xTokenVec);
+  if (xTokenVec[0]->bSame("setidxunique"_Stz)) return bIndexSetUnique(xTokenVec);
+  if (xTokenVec[0]->bSame("space"_Stz)) return bPoolSpace(xTokenVec);
+  if (xTokenVec[0]->bSame("status"_Stz)) return bNodeStatus(xTokenVec);
+  if (xTokenVec[0]->bSame("szidx"_Stz)) return bSizeIndex(xTokenVec);
+  if (xTokenVec[0]->bSame("sz"_Stz)) return bSizeTable(xTokenVec);
+  if (xTokenVec[0]->bSame("tableSizes"_Stz)) return bSizeTables(xTokenVec);
+  if (xTokenVec[0]->bSame("tr"_Stz)) return bTruncateTable(xTokenVec);
+  if (xTokenVec[0]->bSame("tridx"_Stz)) return bTruncateIndex(xTokenVec);
+  if (xTokenVec[0]->bSame("uprselidx"_Stz)) return bUpperSelectIndex(xTokenVec);
+  if (xTokenVec[0]->bSame("usesch"_Stz)) return bUseSchema(xTokenVec);
+  if (xTokenVec[0]->bSame("__x"_Stz)) return bX(xTokenVec);
+  if (xTokenVec[0]->bSame("ping"_Stz)) return bPing(xTokenVec);
+  if (xTokenVec[0]->bSame("mon"_Stz)) return bGetMonitor(xTokenVec);
+  if (xTokenVec[0]->bSame("print"_Stz)) return ! bPrint(xTokenVec);
+  if (xTokenVec[0]->bSame("seitf"_Stz)) return bSeitfCount(xTokenVec);
+  if (xTokenVec[0]->bSame("version"_Stz)) return bGetVersion(xTokenVec);
+  if (xTokenVec[0]->bSame("visidx"_Stz)) return bVisualizeIndex(xTokenVec);
   
   vSetLastError(EC_INVALID_COMMAND);
   return false;
@@ -481,8 +481,8 @@ bool SEitf::bConnect(TokenVec& xTokenVec)
   
   s256 sRequest;
   
-  ASSERT(xTokenVec[0]->bSame("con"_Str));
-  sRequest = "connect"_Str;
+  ASSERT(xTokenVec[0]->bSame("con"_Stz));
+  sRequest = "connect"_Stz;
   return bAppendRequest(sRequest);
 }
 
@@ -495,8 +495,8 @@ bool SEitf::bConnectCluster(TokenVec& xTokenVec)
   
   s256 sRequest;
   
-  ASSERT(xTokenVec[0]->bSame("connectCluster"_Str));
-  sRequest = "connectCluster"_Str;
+  ASSERT(xTokenVec[0]->bSame("connectCluster"_Stz));
+  sRequest = "connectCluster"_Stz;
   return bAppendRequest(sRequest);
 }
 
@@ -509,8 +509,8 @@ bool SEitf::bDisconnect(TokenVec& xTokenVec)
   
   s256 sRequest;
   
-  ASSERT(xTokenVec[0]->bSame("dic"_Str));
-  sRequest = "disconnect"_Str;
+  ASSERT(xTokenVec[0]->bSame("dic"_Stz));
+  sRequest = "disconnect"_Stz;
   return bAppendRequest(sRequest);
 }
 
@@ -528,11 +528,11 @@ bool SEitf::bGet(TokenVec& xTokenVec)
     return false;
   }
   
-  sRequest.vCopy("\""_Str);
+  sRequest.vCopy("\""_Stz);
   sRequest.vConcat(xTokenVec[1]->aText());
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" get"_Str);
+  sRequest.vConcat(" get"_Stz);
 
   
   return bAppendRequest(sRequest);
@@ -552,15 +552,15 @@ bool SEitf::bSet(TokenVec& xTokenVec)
     return false;
   }
   
-  sRequest.vCopy("\""_Str);
+  sRequest.vCopy("\""_Stz);
   sRequest.vConcat(xTokenVec[1]->aText());
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   sRequest.vConcat(xTokenVec[2]->aText());
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
 
-  sRequest.vConcat(" set"_Str);
+  sRequest.vConcat(" set"_Stz);
   
   
   return bAppendRequest(sRequest);
@@ -575,11 +575,11 @@ bool SEitf::bRemoveFolder(TokenVec& xTokenVec)
   
   s256 sRequest;
   
-  sRequest.vCopy("\""_Str);
+  sRequest.vCopy("\""_Stz);
   sRequest.vConcat(xTokenVec[1]->aText());
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" remove_folder"_Str);
+  sRequest.vConcat(" remove_folder"_Stz);
   
   return bAppendRequest(sRequest);
 }
@@ -598,11 +598,11 @@ bool SEitf::bCreateTenant(TokenVec& xTokenVec)
     return false;
   }
 
-  sRequest.vCopy("\""_Str);
+  sRequest.vCopy("\""_Stz);
   sRequest.vConcat(xTokenVec[1]->aText());
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" create_tenant"_Str);
+  sRequest.vConcat(" create_tenant"_Stz);
   
   return bAppendRequest(sRequest);
 }
@@ -621,8 +621,8 @@ bool SEitf::bListTenants(TokenVec& xTokenVec)
     return false;
   }
 
-  ASSERT(xTokenVec[0]->bSame("lsten"_Str));
-  sRequest = "list_tenants"_Str;
+  ASSERT(xTokenVec[0]->bSame("lsten"_Stz));
+  sRequest = "list_tenants"_Stz;
   return bAppendRequest(sRequest);
 }
 
@@ -640,11 +640,11 @@ bool SEitf::bDropTenant(TokenVec& xTokenVec)
     return false;
   }
   
-  sRequest.vCopy("\""_Str);
+  sRequest.vCopy("\""_Stz);
   sRequest.vConcat(xTokenVec[1]->aText());
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" drop_tenant"_Str);
+  sRequest.vConcat(" drop_tenant"_Stz);
   
   return bAppendRequest(sRequest);
 }
@@ -663,11 +663,11 @@ bool SEitf::bCreateCatalog(TokenVec& xTokenVec)
     return false;
   }
   
-  sRequest.vCopy("\""_Str);
+  sRequest.vCopy("\""_Stz);
   sRequest.vConcat(xTokenVec[1]->aText());
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" create_catalog"_Str);
+  sRequest.vConcat(" create_catalog"_Stz);
   
   return bAppendRequest(sRequest);
 }
@@ -686,8 +686,8 @@ bool SEitf::bListCatalogs(TokenVec& xTokenVec)
     return false;
   }
   
-  ASSERT(xTokenVec[0]->bSame("lscat"_Str));
-  sRequest = "list_catalogs"_Str;
+  ASSERT(xTokenVec[0]->bSame("lscat"_Stz));
+  sRequest = "list_catalogs"_Stz;
   return bAppendRequest(sRequest);
 }
 
@@ -705,11 +705,11 @@ bool SEitf::bDropCatalog(TokenVec& xTokenVec)
     return false;
   }
 
-  sRequest.vCopy("\""_Str);
+  sRequest.vCopy("\""_Stz);
   sRequest.vConcat(xTokenVec[1]->aText());
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" drop_catalog"_Str);
+  sRequest.vConcat(" drop_catalog"_Stz);
   
   return bAppendRequest(sRequest);
 }
@@ -728,11 +728,11 @@ bool SEitf::bCreateSchema(TokenVec& xTokenVec)
     return false;
   }
   
-  sRequest.vCopy("\""_Str);
+  sRequest.vCopy("\""_Stz);
   sRequest.vConcat(xTokenVec[1]->aText());
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" create_schema"_Str);
+  sRequest.vConcat(" create_schema"_Stz);
   
   return bAppendRequest(sRequest);
   
@@ -753,8 +753,8 @@ bool SEitf::bListSchemas(TokenVec& xTokenVec)
     return false;
   }
   
-  ASSERT(xTokenVec[0]->bSame("lssch"_Str));
-  sRequest = "list_schemas"_Str;
+  ASSERT(xTokenVec[0]->bSame("lssch"_Stz));
+  sRequest = "list_schemas"_Stz;
   return bAppendRequest(sRequest);
 }
 
@@ -772,11 +772,11 @@ bool SEitf::bDropSchema(TokenVec& xTokenVec)
     return false;
   }
 
-  sRequest.vCopy("\""_Str);
+  sRequest.vCopy("\""_Stz);
   sRequest.vConcat(xTokenVec[1]->aText());
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" drop_schema"_Str);
+  sRequest.vConcat(" drop_schema"_Stz);
   
   return bAppendRequest(sRequest);
 }
@@ -795,11 +795,11 @@ bool SEitf::bUseSchema(TokenVec& xTokenVec)
     return false;
   }
   
-  sRequest.vCopy("\""_Str);
+  sRequest.vCopy("\""_Stz);
   sRequest.vConcat(xTokenVec[1]->aText());
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" use_schema"_Str);
+  sRequest.vConcat(" use_schema"_Stz);
   
   return bAppendRequest(sRequest);
 }
@@ -818,15 +818,15 @@ bool SEitf::bCreateIndex(TokenVec& xTokenVec)
     return false;
   }
   
-  sRequest.vConcat(" \""_Str);
+  sRequest.vConcat(" \""_Stz);
   sRequest.vConcat(xTokenVec[2]->aText());
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" \""_Str);
+  sRequest.vConcat(" \""_Stz);
   sRequest.vConcat(xTokenVec[1]->aText());
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" create_index"_Str);
+  sRequest.vConcat(" create_index"_Stz);
   
   return bAppendRequest(sRequest);
 }
@@ -845,13 +845,13 @@ bool SEitf::bListIndices(TokenVec& xTokenVec)
     return false;
   }
   
-  sRequest.vCopy("\""_Str);
+  sRequest.vCopy("\""_Stz);
   sRequest.vConcat(xTokenVec[1]->aText());
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
 
-  ASSERT(xTokenVec[0]->bSame("lsidx"_Str));
+  ASSERT(xTokenVec[0]->bSame("lsidx"_Stz));
   
-  sRequest.vConcat(" list_indexes"_Str);
+  sRequest.vConcat(" list_indexes"_Stz);
   
   return bAppendRequest(sRequest);
 }
@@ -870,21 +870,21 @@ bool SEitf::bIndexSetUnique(TokenVec& xTokenVec)
     return false;
   }
   
-  //sRequest.vCopy("\""_Str);
+  //sRequest.vCopy("\""_Stz);
   sRequest.vCopy(xTokenVec[3]->aText());
-  //sRequest.vConcat("\""_Str);
+  //sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   sRequest.vConcat(xTokenVec[2]->aText());
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   sRequest.vConcat(xTokenVec[1]->aText());
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   
-  ASSERT(xTokenVec[0]->bSame("setidxunique"_Str));
+  ASSERT(xTokenVec[0]->bSame("setidxunique"_Stz));
   
-  sRequest.vConcat(" index_setUnique"_Str);
+  sRequest.vConcat(" index_setUnique"_Stz);
   
   return bAppendRequest(sRequest);
 }
@@ -903,11 +903,11 @@ bool SEitf::bCreateTable(TokenVec& xTokenVec)
     return false;
   }
   
-  sRequest.vCopy("\""_Str);
+  sRequest.vCopy("\""_Stz);
   sRequest.vConcat(xTokenVec[1]->aText());
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" create_table"_Str);
+  sRequest.vConcat(" create_table"_Stz);
   
   return bAppendRequest(sRequest);
 }
@@ -926,8 +926,8 @@ bool SEitf::bListTables(TokenVec& xTokenVec)
     return false;
   }
   
-  ASSERT(xTokenVec[0]->bSame("lstbl"_Str));
-  sRequest = "list_tables"_Str;
+  ASSERT(xTokenVec[0]->bSame("lstbl"_Stz));
+  sRequest = "list_tables"_Stz;
   return bAppendRequest(sRequest);
 }
 
@@ -945,15 +945,15 @@ bool SEitf::bDumpIndex(TokenVec& xTokenVec)
     return false;
   }
   
-  sRequest.vCopy("\""_Str);
+  sRequest.vCopy("\""_Stz);
   sRequest.vConcat(xTokenVec[2]->aText());
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   sRequest.vConcat(xTokenVec[1]->aText());
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" dump_index"_Str);
+  sRequest.vConcat(" dump_index"_Stz);
   
   return bAppendRequest(sRequest);
 }
@@ -972,11 +972,11 @@ bool SEitf::bDumpTable(TokenVec& xTokenVec)
     return false;
   }
   
-  sRequest.vCopy("\""_Str);
+  sRequest.vCopy("\""_Stz);
   sRequest.vConcat(xTokenVec[1]->aText());
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" dump_table"_Str);
+  sRequest.vConcat(" dump_table"_Stz);
   
   return bAppendRequest(sRequest);
 }
@@ -995,12 +995,12 @@ bool SEitf::bDocol(TokenVec& xTokenVec)
     return false;
   }
   
-  sRequest.vCopy("\""_Str);
+  sRequest.vCopy("\""_Stz);
   sRequest.vConcat(xTokenVec[1]->aText());
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   
   //
-  sRequest.vConcat(" docol_command"_Str);
+  sRequest.vConcat(" docol_command"_Stz);
   
   return bAppendRequest(sRequest);
 }
@@ -1020,7 +1020,7 @@ bool SEitf::bDisplayOff(TokenVec& xTokenVec)
   }
   
   //
-  sRequest.vConcat(" displayOff"_Str);
+  sRequest.vConcat(" displayOff"_Stz);
   
   return bAppendRequest(sRequest);
 }
@@ -1040,7 +1040,7 @@ bool SEitf::bDisplayOn(TokenVec& xTokenVec)
   }
   
   //
-  sRequest.vConcat(" displayOn"_Str);
+  sRequest.vConcat(" displayOn"_Stz);
   
   return bAppendRequest(sRequest);
 }
@@ -1059,15 +1059,15 @@ bool SEitf::bDropIndex(TokenVec& xTokenVec)
     return false;
   }
   
-  sRequest.vCopy("\""_Str);
+  sRequest.vCopy("\""_Stz);
   sRequest.vConcat(xTokenVec[2]->aText());
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   sRequest.vConcat(xTokenVec[1]->aText());
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" drop_index"_Str);
+  sRequest.vConcat(" drop_index"_Stz);
   
   return bAppendRequest(sRequest);
 }
@@ -1087,11 +1087,11 @@ bool SEitf::bDropTable(TokenVec& xTokenVec)
     return false;
   }
   
-  sRequest.vCopy("\""_Str);
+  sRequest.vCopy("\""_Stz);
   sRequest.vConcat(xTokenVec[1]->aText());
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" drop_table"_Str);
+  sRequest.vConcat(" drop_table"_Stz);
   
   return bAppendRequest(sRequest);
 }
@@ -1110,19 +1110,19 @@ bool SEitf::bAddColumn(TokenVec& xTokenVec)
     return false;
   }
   
-  sRequest.vCopy("\""_Str);
+  sRequest.vCopy("\""_Stz);
   sRequest.vConcat(xTokenVec[3]->aText());
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" \""_Str);
+  sRequest.vConcat(" \""_Stz);
   sRequest.vConcat(xTokenVec[2]->aText());
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" \""_Str);
+  sRequest.vConcat(" \""_Stz);
   sRequest.vConcat(xTokenVec[1]->aText());
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" add_column"_Str);
+  sRequest.vConcat(" add_column"_Stz);
   
   return bAppendRequest(sRequest);
 }
@@ -1141,19 +1141,19 @@ bool SEitf::bAddIndexColumn(TokenVec& xTokenVec)
     return false;
   }
   
-  sRequest.vCopy(" \""_Str);
+  sRequest.vCopy(" \""_Stz);
   sRequest.vConcat(xTokenVec[3]->aText());
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" \""_Str);
+  sRequest.vConcat(" \""_Stz);
   sRequest.vConcat(xTokenVec[2]->aText());
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" \""_Str);
+  sRequest.vConcat(" \""_Stz);
   sRequest.vConcat(xTokenVec[1]->aText());
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" add_idxcolumn"_Str);
+  sRequest.vConcat(" add_idxcolumn"_Stz);
   
   return bAppendRequest(sRequest);
 }
@@ -1172,15 +1172,15 @@ bool SEitf::bAddPartitionColumn(TokenVec& xTokenVec)
     return false;
   }
   
-  sRequest.vConcat(" \""_Str);
+  sRequest.vConcat(" \""_Stz);
   sRequest.vConcat(xTokenVec[2]->aText());
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" \""_Str);
+  sRequest.vConcat(" \""_Stz);
   sRequest.vConcat(xTokenVec[1]->aText());
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" add_partcolumn"_Str);
+  sRequest.vConcat(" add_partcolumn"_Stz);
   
   return bAppendRequest(sRequest);
 }
@@ -1199,15 +1199,15 @@ bool SEitf::bEndCreateIndex(TokenVec& xTokenVec)
     return false;
   }
   
-  sRequest.vCopy("\""_Str);
+  sRequest.vCopy("\""_Stz);
   sRequest.vConcat(xTokenVec[2]->aText());
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   sRequest.vConcat(xTokenVec[1]->aText());
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" end_create_index"_Str);
+  sRequest.vConcat(" end_create_index"_Stz);
         
   return bAppendRequest(sRequest);
 }
@@ -1226,11 +1226,11 @@ bool SEitf::bEndCreateTable(TokenVec& xTokenVec)
     return false;
   }
   
-  sRequest.vCopy("\""_Str);
+  sRequest.vCopy("\""_Stz);
   sRequest.vConcat(xTokenVec[1]->aText());
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" end_create_table"_Str);
+  sRequest.vConcat(" end_create_table"_Stz);
   
   return bAppendRequest(sRequest);
 }
@@ -1249,11 +1249,11 @@ bool SEitf::bListColumns(TokenVec& xTokenVec)
     return false;
   }
   
-  sRequest.vCopy("\""_Str);
+  sRequest.vCopy("\""_Stz);
   sRequest.vConcat(xTokenVec[1]->aText());
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" list_columns"_Str);
+  sRequest.vConcat(" list_columns"_Stz);
   
   return bAppendRequest(sRequest);
 }
@@ -1272,15 +1272,15 @@ bool SEitf::bListIndexColumns(TokenVec& xTokenVec)
     return false;
   }
   
-  sRequest.vCopy("\""_Str);
+  sRequest.vCopy("\""_Stz);
   sRequest.vConcat(xTokenVec[1]->aText());
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   sRequest.vConcat(xTokenVec[2]->aText());
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
 
-  sRequest.vConcat(" list_indexcolumns"_Str);
+  sRequest.vConcat(" list_indexcolumns"_Stz);
   
   return bAppendRequest(sRequest);
 }
@@ -1299,11 +1299,11 @@ bool SEitf::bListPartitionColumns(TokenVec& xTokenVec)
     return false;
   }
   
-  sRequest.vCopy("\""_Str);
+  sRequest.vCopy("\""_Stz);
   sRequest.vConcat(xTokenVec[1]->aText());
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" list_partitioncolumns"_Str);
+  sRequest.vConcat(" list_partitioncolumns"_Stz);
   
   return bAppendRequest(sRequest);
 }
@@ -1322,15 +1322,15 @@ bool SEitf::bAnalyzeIndex(TokenVec& xTokenVec)
     return false;
   }
   
-  sRequest.vCopy("\""_Str);
+  sRequest.vCopy("\""_Stz);
   sRequest.vConcat(xTokenVec[2]->aText());
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   sRequest.vConcat(xTokenVec[1]->aText());
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
 
-  sRequest.vConcat(" analyze_Index"_Str);
+  sRequest.vConcat(" analyze_Index"_Stz);
   
   return bAppendRequest(sRequest);
 }
@@ -1349,11 +1349,11 @@ bool SEitf::bAnalyzeTable(TokenVec& xTokenVec)
     return false;
   }
   
-  sRequest.vCopy("\""_Str);
+  sRequest.vCopy("\""_Stz);
   sRequest.vConcat(xTokenVec[1]->aText());
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" analyze_table"_Str);
+  sRequest.vConcat(" analyze_table"_Stz);
   
   return bAppendRequest(sRequest);
 }
@@ -1372,15 +1372,15 @@ bool SEitf::bDanalyzeIndex(TokenVec& xTokenVec)
     return false;
   }
   
-  sRequest.vCopy("\""_Str);
+  sRequest.vCopy("\""_Stz);
   sRequest.vConcat(xTokenVec[2]->aText());
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   sRequest.vConcat(xTokenVec[1]->aText());
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" danalyze_index"_Str);
+  sRequest.vConcat(" danalyze_index"_Stz);
   
   return bAppendRequest(sRequest);
 }
@@ -1399,11 +1399,11 @@ bool SEitf::bDanalyzeTable(TokenVec& xTokenVec)
     return false;
   }
   
-  sRequest.vCopy("\""_Str);
+  sRequest.vCopy("\""_Stz);
   sRequest.vConcat(xTokenVec[1]->aText());
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" danalyze_table"_Str);
+  sRequest.vConcat(" danalyze_table"_Stz);
   
   return bAppendRequest(sRequest);
 }
@@ -1422,15 +1422,15 @@ bool SEitf::bCopyTable(TokenVec& xTokenVec)
     return false;
   }
   
-  sRequest.vCopy("\""_Str);
+  sRequest.vCopy("\""_Stz);
   sRequest.vConcat(xTokenVec[2]->aText());
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" \""_Str);
+  sRequest.vConcat(" \""_Stz);
   sRequest.vConcat(xTokenVec[1]->aText());
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" copy_table"_Str);
+  sRequest.vConcat(" copy_table"_Stz);
   
   return bAppendRequest(sRequest);
 }
@@ -1449,15 +1449,15 @@ bool SEitf::bDistExportTable(TokenVec& xTokenVec)
     return false;
   }
   
-  sRequest.vCopy("\""_Str);
+  sRequest.vCopy("\""_Stz);
   sRequest.vConcat(xTokenVec[2]->aText());
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" \""_Str);
+  sRequest.vConcat(" \""_Stz);
   sRequest.vConcat(xTokenVec[1]->aText());
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" dist_export_table"_Str);
+  sRequest.vConcat(" dist_export_table"_Stz);
   
   return bAppendRequest(sRequest);
 }
@@ -1476,15 +1476,15 @@ bool SEitf::bExportTable(TokenVec& xTokenVec)
     return false;
   }
   
-  sRequest.vCopy("\""_Str);
+  sRequest.vCopy("\""_Stz);
   sRequest.vConcat(xTokenVec[2]->aText());
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" \""_Str);
+  sRequest.vConcat(" \""_Stz);
   sRequest.vConcat(xTokenVec[1]->aText());
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" export_table"_Str);
+  sRequest.vConcat(" export_table"_Stz);
   
   return bAppendRequest(sRequest);
 }
@@ -1498,19 +1498,19 @@ bool SEitf::bFetchRows(TokenVec& xTokenVec)
   
   s256 sRequest;
   
-//  sRequest.vCopy("\""_Str);
+//  sRequest.vCopy("\""_Stz);
 //  sRequest.vConcat(xTokenVec[3]);
-//  sRequest.vConcat("\""_Str);
+//  sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" \""_Str);
+  sRequest.vConcat(" \""_Stz);
   sRequest.vConcat(xTokenVec[2]->aText());
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" \""_Str);
+  sRequest.vConcat(" \""_Stz);
   sRequest.vConcat(xTokenVec[1]->aText());
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" fetch_rows_index"_Str);
+  sRequest.vConcat(" fetch_rows_index"_Stz);
   
   return bAppendRequest(sRequest);
 }
@@ -1529,15 +1529,15 @@ bool SEitf::bLoadTable(TokenVec& xTokenVec)
     return false;
   }
   
-  sRequest.vCopy("\""_Str);
+  sRequest.vCopy("\""_Stz);
   sRequest.vConcat(xTokenVec[2]->aText());
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" \""_Str);
+  sRequest.vConcat(" \""_Stz);
   sRequest.vConcat(xTokenVec[1]->aText());
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" load_table"_Str);
+  sRequest.vConcat(" load_table"_Stz);
   
   return bAppendRequest(sRequest);
 }
@@ -1556,15 +1556,15 @@ bool SEitf::bLoadTableStream(TokenVec& xTokenVec)
     return false;
   }
   
-  sRequest.vCopy("\""_Str);
+  sRequest.vCopy("\""_Stz);
   sRequest.vConcat(xTokenVec[2]->aText());
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" \""_Str);
+  sRequest.vConcat(" \""_Stz);
   sRequest.vConcat(xTokenVec[1]->aText());
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" load_table_stream"_Str);
+  sRequest.vConcat(" load_table_stream"_Stz);
   
   return bAppendRequest(sRequest);
 }
@@ -1583,15 +1583,15 @@ bool SEitf::bLowerSelectTable(TokenVec& xTokenVec)
     return false;
   }
   
-  sRequest.vConcat(" \""_Str);
+  sRequest.vConcat(" \""_Stz);
   sRequest.vConcat(xTokenVec[2]->aText());
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" \""_Str);
+  sRequest.vConcat(" \""_Stz);
   sRequest.vConcat(xTokenVec[1]->aText());
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" lower_select_table"_Str);
+  sRequest.vConcat(" lower_select_table"_Stz);
   
   return bAppendRequest(sRequest);
 }
@@ -1610,11 +1610,11 @@ bool SEitf::bSelectTable(TokenVec& xTokenVec)
     return false;
   }
   
-  sRequest.vCopy("\""_Str);
+  sRequest.vCopy("\""_Stz);
   sRequest.vConcat(xTokenVec[1]->aText());
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" select_table"_Str);
+  sRequest.vConcat(" select_table"_Stz);
   
   return bAppendRequest(sRequest);
 }
@@ -1633,19 +1633,19 @@ bool SEitf::bRangeSelectTable(TokenVec& xTokenVec)
     return false;
   }
 
-  sRequest.vCopy("\""_Str);
+  sRequest.vCopy("\""_Stz);
   sRequest.vConcat(xTokenVec[3]->aText());
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" \""_Str);
+  sRequest.vConcat(" \""_Stz);
   sRequest.vConcat(xTokenVec[2]->aText());
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" \""_Str);
+  sRequest.vConcat(" \""_Stz);
   sRequest.vConcat(xTokenVec[1]->aText());
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" range_select_table"_Str);
+  sRequest.vConcat(" range_select_table"_Stz);
   
   return bAppendRequest(sRequest);
 }
@@ -1664,11 +1664,11 @@ bool SEitf::bGetIndex(TokenVec& xTokenVec)
     return false;
   }
   
-  sRequest.vCopy("\""_Str);
+  sRequest.vCopy("\""_Stz);
   sRequest.vConcat(xTokenVec[1]->aText());
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" get_index"_Str);
+  sRequest.vConcat(" get_index"_Stz);
   
   return bAppendRequest(sRequest);
 }
@@ -1687,11 +1687,11 @@ bool SEitf::bGetTable(TokenVec& xTokenVec)
     return false;
   }
   
-  sRequest.vCopy("\""_Str);
+  sRequest.vCopy("\""_Stz);
   sRequest.vConcat(xTokenVec[1]->aText());
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" get_table"_Str);
+  sRequest.vConcat(" get_table"_Stz);
   
   return bAppendRequest(sRequest);
 }
@@ -1710,11 +1710,11 @@ bool SEitf::bInUseTable(TokenVec& xTokenVec)
     return false;
   }
   
-  sRequest.vCopy("\""_Str);
+  sRequest.vCopy("\""_Stz);
   sRequest.vConcat(xTokenVec[1]->aText());
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
 
-  sRequest.vConcat(" table_inuse"_Str);
+  sRequest.vConcat(" table_inuse"_Stz);
   
   return bAppendRequest(sRequest);
 }
@@ -1733,7 +1733,7 @@ bool SEitf::bRetIndex(TokenVec& xTokenVec)
     return false;
   }
   
-  sRequest.vConcat(" return_index"_Str);
+  sRequest.vConcat(" return_index"_Stz);
   
   return bAppendRequest(sRequest);
 }
@@ -1752,7 +1752,7 @@ bool SEitf::bRetTable(TokenVec& xTokenVec)
     return false;
   }
   
-  sRequest.vConcat(" return_table"_Str);
+  sRequest.vConcat(" return_table"_Stz);
   
   return bAppendRequest(sRequest);
 }
@@ -1771,7 +1771,7 @@ bool SEitf::bPoolSpace(TokenVec& xTokenVec)
     return false;
   }
   
-  sRequest.vConcat(" space"_Str);
+  sRequest.vConcat(" space"_Stz);
   
   return bAppendRequest(sRequest);
 }
@@ -1790,7 +1790,7 @@ bool SEitf::bNodeStatus(TokenVec& xTokenVec)
     return false;
   }
   
-  sRequest.vConcat(" status"_Str);
+  sRequest.vConcat(" status"_Stz);
   
   return bAppendRequest(sRequest);
 }
@@ -1809,19 +1809,19 @@ bool SEitf::bKeySelectIndex(TokenVec& xTokenVec)
     return false;
   }
   
-  sRequest.vConcat(" \""_Str);
+  sRequest.vConcat(" \""_Stz);
   sRequest.vConcat(xTokenVec[3]->aText());
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" \""_Str);
+  sRequest.vConcat(" \""_Stz);
   sRequest.vConcat(xTokenVec[2]->aText());
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" \""_Str);
+  sRequest.vConcat(" \""_Stz);
   sRequest.vConcat(xTokenVec[1]->aText());
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" key_select_index"_Str);
+  sRequest.vConcat(" key_select_index"_Stz);
   
   return bAppendRequest(sRequest);
 }
@@ -1840,19 +1840,19 @@ bool SEitf::bLowerSelectIndex(TokenVec& xTokenVec)
     return false;
   }
   
-  sRequest.vConcat(" \""_Str);
+  sRequest.vConcat(" \""_Stz);
   sRequest.vConcat(xTokenVec[3]->aText());
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" \""_Str);
+  sRequest.vConcat(" \""_Stz);
   sRequest.vConcat(xTokenVec[2]->aText());
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" \""_Str);
+  sRequest.vConcat(" \""_Stz);
   sRequest.vConcat(xTokenVec[1]->aText());
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" lower_select_index"_Str);
+  sRequest.vConcat(" lower_select_index"_Stz);
   
   return bAppendRequest(sRequest);
 }
@@ -1871,23 +1871,23 @@ bool SEitf::bRangeSelectIndex(TokenVec& xTokenVec)
     return false;
   }
   
-  sRequest.vConcat(" \""_Str);
+  sRequest.vConcat(" \""_Stz);
   sRequest.vConcat(xTokenVec[4]->aText());
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" \""_Str);
+  sRequest.vConcat(" \""_Stz);
   sRequest.vConcat(xTokenVec[3]->aText());
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" \""_Str);
+  sRequest.vConcat(" \""_Stz);
   sRequest.vConcat(xTokenVec[2]->aText());
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" \""_Str);
+  sRequest.vConcat(" \""_Stz);
   sRequest.vConcat(xTokenVec[1]->aText());
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" range_select_index"_Str);
+  sRequest.vConcat(" range_select_index"_Stz);
   
   return bAppendRequest(sRequest);
 }
@@ -1906,15 +1906,15 @@ bool SEitf::bScanSelectIndex(TokenVec& xTokenVec)
     return false;
   }
   
-  sRequest.vConcat(" \""_Str);
+  sRequest.vConcat(" \""_Stz);
   sRequest.vConcat(xTokenVec[2]->aText());
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" \""_Str);
+  sRequest.vConcat(" \""_Stz);
   sRequest.vConcat(xTokenVec[1]->aText());
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" scan_select_index"_Str);
+  sRequest.vConcat(" scan_select_index"_Stz);
   
   return bAppendRequest(sRequest);
 }
@@ -1933,15 +1933,15 @@ bool SEitf::bSizeIndex(TokenVec& xTokenVec)
     return false;
   }
   
-  sRequest.vCopy("\""_Str);
+  sRequest.vCopy("\""_Stz);
   sRequest.vConcat(xTokenVec[2]->aText());
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   sRequest.vConcat(xTokenVec[1]->aText());
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" size_index"_Str);
+  sRequest.vConcat(" size_index"_Stz);
   
   return bAppendRequest(sRequest);
 }
@@ -1960,11 +1960,11 @@ bool SEitf::bSizeTable(TokenVec& xTokenVec)
     return false;
   }
   
-  sRequest.vCopy("\""_Str);
+  sRequest.vCopy("\""_Stz);
   sRequest.vConcat(xTokenVec[1]->aText());
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" size_table"_Str);
+  sRequest.vConcat(" size_table"_Stz);
   
   return bAppendRequest(sRequest);
 }
@@ -1983,7 +1983,7 @@ bool SEitf::bSizeTables(TokenVec& xTokenVec)
     return false;
   }
   
-  sRequest.vConcat(" size_tables"_Str);
+  sRequest.vConcat(" size_tables"_Stz);
   
   return bAppendRequest(sRequest);
 }
@@ -2002,15 +2002,15 @@ bool SEitf::bTruncateIndex(TokenVec& xTokenVec)
     return false;
   }
   
-  sRequest.vCopy("\""_Str);
+  sRequest.vCopy("\""_Stz);
   sRequest.vConcat(xTokenVec[2]->aText());
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   sRequest.vConcat(xTokenVec[1]->aText());
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" truncate_index"_Str);
+  sRequest.vConcat(" truncate_index"_Stz);
   
   return bAppendRequest(sRequest);
 }
@@ -2029,19 +2029,19 @@ bool SEitf::bUpperSelectIndex(TokenVec& xTokenVec)
     return false;
   }
   
-  sRequest.vConcat(" \""_Str);
+  sRequest.vConcat(" \""_Stz);
   sRequest.vConcat(xTokenVec[3]->aText());
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" \""_Str);
+  sRequest.vConcat(" \""_Stz);
   sRequest.vConcat(xTokenVec[2]->aText());
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" \""_Str);
+  sRequest.vConcat(" \""_Stz);
   sRequest.vConcat(xTokenVec[1]->aText());
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" upper_select_index"_Str);
+  sRequest.vConcat(" upper_select_index"_Stz);
   
   return bAppendRequest(sRequest);
 }
@@ -2060,11 +2060,11 @@ bool SEitf::bTruncateTable(TokenVec& xTokenVec)
     return false;
   }
 
-  sRequest.vCopy("\""_Str);
+  sRequest.vCopy("\""_Stz);
   sRequest.vConcat(xTokenVec[1]->aText());
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" truncate_table"_Str);
+  sRequest.vConcat(" truncate_table"_Stz);
   
   return bAppendRequest(sRequest);
 }
@@ -2083,15 +2083,15 @@ bool SEitf::bVisualizeIndex(TokenVec& xTokenVec)
     return false;
   }
   
-  sRequest.vCopy("\""_Str);
+  sRequest.vCopy("\""_Stz);
   sRequest.vConcat(xTokenVec[2]->aText());
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   sRequest.vConcat(xTokenVec[1]->aText());
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" visualize_index"_Str);
+  sRequest.vConcat(" visualize_index"_Stz);
   
   return bAppendRequest(sRequest);
 }
@@ -2099,7 +2099,7 @@ bool SEitf::bVisualizeIndex(TokenVec& xTokenVec)
 /*----------------------------------------------------------------------------*/
 /* insert row into row buffer                                                 */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bInsertRow(Str* aRow)
+bool SEitf::bInsertRow(Stz* aRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
                               
@@ -2107,7 +2107,7 @@ bool SEitf::bInsertRow(Str* aRow)
   if (! m_pRowBuffer[m_iPartition]) {
     m_pRowBuffer[m_iPartition] = (EntryBuffer*)EntryBuffer::pNewEntryBuffer(CN_ENTRYBUFFER);
     if (! m_pRowBuffer[m_iPartition]) {
-      vTrace("EntryBuffer allocation failed\n"_Str);
+      vTrace("EntryBuffer allocation failed\n"_Stz);
       m_eErrorCode = EC_LOW_BUFFERS;
       return false;
     }
@@ -2115,7 +2115,7 @@ bool SEitf::bInsertRow(Str* aRow)
 
   // get working buffer
   EntryBuffer* pRowBuffer = m_pRowBuffer[m_iPartition];
-    //vTrace("Buffer: %s Partition:%d\n"_Str,pRowBuffer, m_iPartition);
+    //vTrace("Buffer: %s Partition:%d\n"_Stz,pRowBuffer, m_iPartition);
   
   // insert row into working buffer
   //if (pRowBuffer->bInsertRow(m_pTxRef,aRow,aRow->nSize()))
@@ -2124,7 +2124,7 @@ bool SEitf::bInsertRow(Str* aRow)
  if (m_pCurrentTable->bInsertRow(pRowBuffer, m_iPartition, m_pTxRef, aRow, aRow->nSize()))
    return true;
   
-  //vTrace("Buffer full... Inserting buffer\n"_Str);
+  //vTrace("Buffer full... Inserting buffer\n"_Stz);
   bool bResult = bInsertBuffer(pRowBuffer, m_iPartition);
 
   if (!bResult)
@@ -2140,7 +2140,7 @@ bool SEitf::bInsertRow(Str* aRow)
   // get a new working buffer
   m_pRowBuffer[m_iPartition] = (EntryBuffer*)EntryBuffer::pNewEntryBuffer(CN_ENTRYBUFFER);
   if (! m_pRowBuffer[m_iPartition]) {
-    vTrace("EntryBuffer allocation failed\n"_Str);
+    vTrace("EntryBuffer allocation failed\n"_Stz);
     m_eErrorCode = EC_LOW_BUFFERS;
     return false;
   }
@@ -2190,21 +2190,21 @@ bool SEitf::bInsertBuffer(EntryBuffer* pRowBuffer, i8 iPartition)
   s256 sBuffer;
 
   sBuffer = iSlot;
-  sRequest.vCopy("\""_Str);
+  sRequest.vCopy("\""_Stz);
   sRequest.vConcat(sBuffer);
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   
   sBuffer = (i8)pRowBuffer;
-  sRequest.vConcat(" \""_Str);
+  sRequest.vConcat(" \""_Stz);
   sRequest.vConcat(sBuffer);
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   
   sBuffer = (i8)m_pCurrentTable;
-  sRequest.vConcat(" \""_Str);
+  sRequest.vConcat(" \""_Stz);
   sRequest.vConcat(sBuffer);
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" append_table"_Str);
+  sRequest.vConcat(" append_table"_Stz);
   
   return bAppendRequest(sRequest);
 }
@@ -2218,11 +2218,11 @@ bool SEitf::bPushDic(TokenVec& xTokenVec)
   
   s256 sRequest;
   
-  sRequest.vCopy("\""_Str);
+  sRequest.vCopy("\""_Stz);
   sRequest.vConcat(xTokenVec[1]->aText());
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" cf"_Str);
+  sRequest.vConcat(" cf"_Stz);
   
   return bAppendRequest(sRequest);
 }
@@ -2234,7 +2234,7 @@ bool SEitf::bPrint(TokenVec& xTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
-  vInfo("%s\n"_Str,xTokenVec[1]->aText());
+  vInfo("%s\n"_Stz,xTokenVec[1]->aText());
   
   return true;
 }
@@ -2248,8 +2248,8 @@ bool SEitf::bGetDicPath(TokenVec& xTokenVec)
   
   s256 sRequest;
   
-  ASSERT(xTokenVec[0]->bSame("pwf"_Str));
-  sRequest = "pwf"_Str;
+  ASSERT(xTokenVec[0]->bSame("pwf"_Stz));
+  sRequest = "pwf"_Stz;
   return bAppendRequest(sRequest);
 }
 
@@ -2262,8 +2262,8 @@ bool SEitf::bGetDicContents(TokenVec& xTokenVec)
   
   s256 sRequest;
   
-  ASSERT(xTokenVec[0]->bSame("lf"_Str));
-  sRequest = "lf"_Str;
+  ASSERT(xTokenVec[0]->bSame("lf"_Stz));
+  sRequest = "lf"_Stz;
   return bAppendRequest(sRequest);
 }
 
@@ -2276,8 +2276,8 @@ bool SEitf::bGetDicContentsG(TokenVec& xTokenVec)
   
   s256 sRequest;
   
-  ASSERT(xTokenVec[0]->bSame("lfG"_Str));
-  sRequest = "lfG"_Str;
+  ASSERT(xTokenVec[0]->bSame("lfG"_Stz));
+  sRequest = "lfG"_Stz;
   return bAppendRequest(sRequest);
 }
 
@@ -2290,8 +2290,8 @@ bool SEitf::bGetMonitor(TokenVec& xTokenVec)
   
   s256 sRequest;
   
-  ASSERT(xTokenVec[0]->bSame("mon"_Str));
-  sRequest = "get_monitor"_Str;
+  ASSERT(xTokenVec[0]->bSame("mon"_Stz));
+  sRequest = "get_monitor"_Stz;
   return bAppendRequest(sRequest);
 }
 
@@ -2304,8 +2304,8 @@ bool SEitf::bGetFreeSpace(TokenVec& xTokenVec)
   
   s256 sRequest;
   
-  ASSERT(xTokenVec[0]->bSame("getFreeSpace"_Str));
-  sRequest = "getFreeSpace"_Str;
+  ASSERT(xTokenVec[0]->bSame("getFreeSpace"_Stz));
+  sRequest = "getFreeSpace"_Stz;
   return bAppendRequest(sRequest);
 }
 
@@ -2318,8 +2318,8 @@ bool SEitf::bGetInUseSpace(TokenVec& xTokenVec)
   
   s256 sRequest;
   
-  ASSERT(xTokenVec[0]->bSame("getInUseSpace"_Str));
-  sRequest = "getInUseSpace"_Str;
+  ASSERT(xTokenVec[0]->bSame("getInUseSpace"_Stz));
+  sRequest = "getInUseSpace"_Stz;
   return bAppendRequest(sRequest);
 }
 
@@ -2332,8 +2332,8 @@ bool SEitf::bGetTotalSpace(TokenVec& xTokenVec)
   
   s256 sRequest;
   
-  ASSERT(xTokenVec[0]->bSame("getTotalSpace"_Str));
-  sRequest = "getTotalSpace"_Str;
+  ASSERT(xTokenVec[0]->bSame("getTotalSpace"_Stz));
+  sRequest = "getTotalSpace"_Stz;
   return bAppendRequest(sRequest);
 }
 
@@ -2346,8 +2346,8 @@ bool SEitf::bGetVersion(TokenVec& xTokenVec)
   
   s256 sRequest;
   
-  ASSERT(xTokenVec[0]->bSame("version"_Str));
-  sRequest = "get_version"_Str;
+  ASSERT(xTokenVec[0]->bSame("version"_Stz));
+  sRequest = "get_version"_Stz;
   return bAppendRequest(sRequest);
 }
 
@@ -2360,8 +2360,8 @@ bool SEitf::bPing(TokenVec& xTokenVec)
   
   s256 sRequest;
   
-  ASSERT(xTokenVec[0]->bSame("ping"_Str));
-  sRequest = "ping"_Str;
+  ASSERT(xTokenVec[0]->bSame("ping"_Stz));
+  sRequest = "ping"_Stz;
   return bAppendRequest(sRequest);
 }
 
@@ -2374,7 +2374,7 @@ bool SEitf::bObject(TokenVec& xTokenVec)
   
   s256 sRequest;
   
-  sRequest.vConcat("object"_Str);
+  sRequest.vConcat("object"_Stz);
   
   return bAppendRequest(sRequest);
 }
@@ -2388,12 +2388,12 @@ bool SEitf::bPrintRowBuffer(TokenVec& xTokenVec)
   
   s256 sRequest;
   
-  sRequest.vCopy("\""_Str);
+  sRequest.vCopy("\""_Stz);
   sRequest.vConcat(xTokenVec[1]->aText());
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
 
-  ASSERT(xTokenVec[0]->bSame("pRB"_Str));
-  sRequest.vConcat(" pRB"_Str);
+  ASSERT(xTokenVec[0]->bSame("pRB"_Stz));
+  sRequest.vConcat(" pRB"_Stz);
   
   return bAppendRequest(sRequest);
 }
@@ -2407,8 +2407,8 @@ bool SEitf::bSeitfCount(TokenVec& xTokenVec)
   
   s256 sRequest;
   
-  ASSERT(xTokenVec[0]->bSame("seitf"_Str));
-  sRequest = "seitf_count"_Str;
+  ASSERT(xTokenVec[0]->bSame("seitf"_Stz));
+  sRequest = "seitf_count"_Stz;
   return bAppendRequest(sRequest);
 }
 
@@ -2421,8 +2421,8 @@ bool SEitf::bX(TokenVec& xTokenVec)
   
   s256 sRequest;
   
-  ASSERT(xTokenVec[0]->bSame("ping"_Str));
-  sRequest = "ping"_Str;
+  ASSERT(xTokenVec[0]->bSame("ping"_Stz));
+  sRequest = "ping"_Stz;
   
   return bAppendRequest(sRequest);
 }
@@ -2437,13 +2437,13 @@ bool SEitf::bRetTask(TokenVec& xTokenVec)
   
   s256 sRequest;
   
-  ASSERT(xTokenVec[0]->bSame("rettsk"_Str));
+  ASSERT(xTokenVec[0]->bSame("rettsk"_Stz));
   
-  sRequest.vCopy("\""_Str);
+  sRequest.vCopy("\""_Stz);
   sRequest.vConcat(xTokenVec[1]->aText());
-  sRequest.vConcat("\""_Str);
+  sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" return_task"_Str);
+  sRequest.vConcat(" return_task"_Stz);
   
   return bAppendRequest(sRequest);
 }
@@ -2457,9 +2457,9 @@ bool SEitf::bGetTask(TokenVec& xTokenVec)
   
   s256 sRequest;
   
-  ASSERT(xTokenVec[0]->bSame("gettsk"_Str));
+  ASSERT(xTokenVec[0]->bSame("gettsk"_Stz));
   
-  sRequest.vCopy("get_task"_Str);
+  sRequest.vCopy("get_task"_Stz);
   
   return bAppendRequest(sRequest);
 }
@@ -2477,7 +2477,7 @@ bool SEitf::bAppendRequest(StrVal& sRequest)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s48K sWorkspace;
-  Str* aCursor = nullptr;
+  Stz* aCursor = nullptr;
   
   ValWrk xValWrk;
   ValSet xValSet;
@@ -2487,25 +2487,25 @@ bool SEitf::bAppendRequest(StrVal& sRequest)
   i8 iPid = gpAttachMap->m_iPid;
   if (!Process::bTestPid(iPid)) {
     // SE is not running anymore!
-    vError("Cannot find pid %lld\n"_Str, gpAttachMap->m_iPid);
+    vError("Cannot find pid %lld\n"_Stz, gpAttachMap->m_iPid);
     vSetLastError(EC_SE_NOT_RUNNING);
     return false;
   }
   
   sWorkspace = (i8)this;
-  sWorkspace.vConcat(" >seitf task::this task.seitf! "_Str);
+  sWorkspace.vConcat(" >seitf task::this task.seitf! "_Stz);
   xValWrk = sWorkspace;
-  //vTrace("%s\n"_Str,xVal.s());
+  //vTrace("%s\n"_Stz,xVal.s());
   xValSet.vAppend(aCursor,xValWrk.pNestedValueSelf());
   
   xValWrk = sRequest;
-  //vTrace("%s\n"_Str,xVal.s());
+  //vTrace("%s\n"_Stz,xVal.s());
   xValSet.vAppend(aCursor,xValWrk.pNestedValueSelf());
   
   // if the current request id matches the next request id, it means
   // we have not read a response of the previous request
   if (m_iCurrentRequestId == m_iNextRequestId) {
-    vError("Response for previous request not retrieved. Out-Of-Sync request-response.\n"_Str);
+    vError("Response for previous request not retrieved. Out-Of-Sync request-response.\n"_Stz);
     vSetLastError(EC_RESPONSE_PENDING);
     return false;
   }
@@ -2519,7 +2519,7 @@ bool SEitf::bAppendRequest(StrVal& sRequest)
   // spawn a request task, passing the request to it
   // create new task (will be automatically appended to task list)
   MP_Task nnpNewTask = new Task(&xValSet);
-  nnpNewTask->vSeedWord("requestLoop"_Str);
+  nnpNewTask->vSeedWord("requestLoop"_Stz);
   
   gpScheduler->vEnqueueTask_Mutex(*nnpNewTask);
   return true;
@@ -2549,7 +2549,7 @@ eEC SEitf::eGetResponse(void)
     m_iNextRequestId = Random::iRandom(0,99999);
   } while (m_iNextRequestId == m_iCurrentRequestId);
 
-  //vTrace("NextRequest %lld\n"_Str, m_iNextRequestId);
+  //vTrace("NextRequest %lld\n"_Stz, m_iNextRequestId);
   
   return m_eErrorCode;
 }
@@ -2563,7 +2563,7 @@ bool SEitf::bPopResponse(eEC& eResult, StrVal& sResponse)
   
   bool b;
   ValSet xValSet;
-  Str* aCursor = nullptr;
+  Stz* aCursor = nullptr;
   
   if (! m_pResponseQueue->bPop(&xValSet))
     return false;
@@ -2581,8 +2581,8 @@ bool SEitf::bPopResponse(eEC& eResult, StrVal& sResponse)
   b = xValSet.bExtractValue(aCursor,pValue);
   ASSERT(! b);
   
-  //  vTrace("sResponse: >>>\n%s\n<<<\n\n"_Str,sResponse.s());
-  //  vTrace("\n---\n\n"_Str,sResponse.s());
+  //  vTrace("sResponse: >>>\n%s\n<<<\n\n"_Stz,sResponse.s());
+  //  vTrace("\n---\n\n"_Stz,sResponse.s());
   
   return true;
 }
@@ -2594,7 +2594,7 @@ bool SEitf::bPopResponse(eEC& eResult, StrVal& sResponse)
 /*----------------------------------------------------------------------------*/
 /* get last error                                                             */
 /*----------------------------------------------------------------------------*/
-Str* SEitf::pGetLastError(void)
+Stz* SEitf::pGetLastError(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -2609,7 +2609,7 @@ void SEitf::vClearLastError(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   m_eErrorCode = EC_NONE;
-  m_sErrorMsg = ""_Str;
+  m_sErrorMsg = ""_Stz;
 }
 
 /*----------------------------------------------------------------------------*/

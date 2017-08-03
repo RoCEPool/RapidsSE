@@ -31,10 +31,10 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_TaskSet(void)
 {
-  vAddPrimitive("taskSet.append"_Str,  &vTaskSetAppend,    false);
-  vAddPrimitive("taskSet.dump"_Str,    &vTaskSetDump,      false);
-  vAddPrimitive("taskSet.init"_Str,    &vTaskSetInit,      false);
-  vAddPrimitive("taskSet::new"_Str,    &vTaskSetNew,       false);
+  vAddPrimitive("taskSet.append"_Stz,  &vTaskSetAppend,    false);
+  vAddPrimitive("taskSet.dump"_Stz,    &vTaskSetDump,      false);
+  vAddPrimitive("taskSet.init"_Stz,    &vTaskSetInit,      false);
+  vAddPrimitive("taskSet::new"_Stz,    &vTaskSetNew,       false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -42,12 +42,12 @@ void Task::vAddPrimitives_TaskSet(void)
 /*----------------------------------------------------------------------------*/
 void Task::vTaskSetAppend(MP_Task mpTask)
 {
-ENTRY("vTaskSetAppend"_Str);
+ENTRY("vTaskSetAppend"_Stz);
   
   Object* pObject;
   
   if ( ! mpTask->m_pDataStack->bPop(pObject) )
-    THROW_INVALID_DSTACK("taskset.append"_Str);
+    THROW_INVALID_DSTACK("taskset.append"_Stz);
   
   ASSERT(CN_TASKSET == pObject->eClass());
   
@@ -55,7 +55,7 @@ ENTRY("vTaskSetAppend"_Str);
   
   Object* pTaskObject;
   if ( ! mpTask->m_pDataStack->bPop(pTaskObject) )
-    THROW_INVALID_DSTACK("taskset.append"_Str);
+    THROW_INVALID_DSTACK("taskset.append"_Stz);
   Task* pThatTask = _pTask(pTaskObject);
   
   pTaskSet->vAppend(pThatTask);
@@ -68,12 +68,12 @@ ENTRY("vTaskSetAppend"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vTaskSetDump(MP_Task mpTask)
 {
-ENTRY("vTaskSetDump"_Str);
+ENTRY("vTaskSetDump"_Stz);
   
   Object* pObject;
   
   if ( ! mpTask->m_pDataStack->bPop(pObject) )
-    THROW_INVALID_DSTACK("taskset.dump"_Str);
+    THROW_INVALID_DSTACK("taskset.dump"_Stz);
   
   ASSERT(CN_TASKSET == pObject->eClass());
   
@@ -89,12 +89,12 @@ ENTRY("vTaskSetDump"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vTaskSetInit(MP_Task mpTask)
 {
-ENTRY("vTaskSetInit"_Str);
+ENTRY("vTaskSetInit"_Stz);
   
   Object* pObject;
   
   if ( ! mpTask->m_pDataStack->bPop(pObject) )
-    THROW_INVALID_DSTACK("taskset.init"_Str);
+    THROW_INVALID_DSTACK("taskset.init"_Stz);
   
   ASSERT(CN_TASKSET == pObject->eClass());
   
@@ -110,7 +110,7 @@ ENTRY("vTaskSetInit"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vTaskSetNew(MP_Task mpTask)
 {
-  ENTRY("vTaskSetNew"_Str);
+  ENTRY("vTaskSetNew"_Stz);
 
   TaskSet* mpTaskSet = new TaskSet;
   

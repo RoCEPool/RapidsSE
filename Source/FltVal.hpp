@@ -21,7 +21,7 @@ namespace Values
     d8 dFlt(void) const;
     d8* aFlt(void);
   
-    void vToString(Str* aWorkspace);
+    void vToString(Stz* aWorkspace);
   };
   
   FltVal* _pFltVal(void* aAddr);

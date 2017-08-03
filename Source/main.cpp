@@ -33,11 +33,11 @@ int main(int argc, const char* argv[])
   
   /*
   vInfo(
-         "sizeof(eCN) %lu; sizeof(bool) %lu; \n"_Str
-         "sizeof(Object) %lu; sizeof(StrVal) %lu; \n"_Str
-         "sizeof(s32) %lu; sizeof(s256) %lu; \n"_Str
-         "sizeof(Value) %lu; sizeof(IntVal) %lu; sizeof(ValWrk) %lu \n"_Str
-         "\n"_Str,
+         "sizeof(eCN) %lu; sizeof(bool) %lu; \n"_Stz
+         "sizeof(Object) %lu; sizeof(StrVal) %lu; \n"_Stz
+         "sizeof(s32) %lu; sizeof(s256) %lu; \n"_Stz
+         "sizeof(Value) %lu; sizeof(IntVal) %lu; sizeof(ValWrk) %lu \n"_Stz
+         "\n"_Stz,
          sizeof(eCN),sizeof(bool),
          sizeof(Object),sizeof(StrVal),
          sizeof(s32),sizeof(s256),
@@ -46,17 +46,17 @@ int main(int argc, const char* argv[])
   */
   
   
-  vInfo("sizeof(Object) %lu; \n"_Str, sizeof(Object));
+  vInfo("sizeof(Object) %lu; \n"_Stz, sizeof(Object));
   assert(sizeof(Object) == 16);
   
-  vInfo("sizeof(Object_Emb) %lu; \n"_Str, sizeof(Object_Emb));
+  vInfo("sizeof(Object_Emb) %lu; \n"_Stz, sizeof(Object_Emb));
   assert(sizeof(Object_Emb) == 2);
 
-  Str* aRelDbg;
+  Stz* aRelDbg;
 #ifdef _DEBUG
-  aRelDbg = "debug"_Str;
+  aRelDbg = "debug"_Stz;
 #else
-  aRelDbg = "release"_Str;
+  aRelDbg = "release"_Stz;
 #endif
   
   vSetSignalHandlers();
@@ -66,11 +66,11 @@ int main(int argc, const char* argv[])
   
   StorageEngine::vCheckAllAssumptions();
   
-  if ( ! gxArguments.bParse(argc,(Str**)argv) )
+  if ( ! gxArguments.bParse(argc,(Stz**)argv) )
     exit(EXIT_FAILURE);
   
   if (gxArguments.m_bWelcome && ! gxArguments.m_bStatus)
-    vInfo("RapidsSE v%s (%s %s -- %s) pid %lld\n"_Str,
+    vInfo("RapidsSE v%s (%s %s -- %s) pid %lld\n"_Stz,
            RAPIDSSE_VERSION_STRING,
            __DATE__,
            __TIME__,
@@ -106,7 +106,7 @@ int main(int argc, const char* argv[])
 //    vInfo("dir: %s\n",sCurrent.s());
   
   
-//  vTrace("Task::vWord %p\n"_Str,Task::vWord);
+//  vTrace("Task::vWord %p\n"_Stz,Task::vWord);
   
 //  Timer xTimer;
 //  
@@ -116,7 +116,7 @@ int main(int argc, const char* argv[])
 //  
 //  xTimer.vUpdate();
 //  
-//  vTrace("duration %lldns\n"_Str,xTimer.iNanoseconds());
+//  vTrace("duration %lldns\n"_Stz,xTimer.iNanoseconds());
   
 //  if (gxArguments.m_bVerbose)
     if ( gxArguments.m_bWelcome)
@@ -126,10 +126,10 @@ int main(int argc, const char* argv[])
   // used by shell script to start se prompt
   if (gxArguments.m_bStart) {
     File xFile;
-    xFile.vPath("./se.region"_Str);
+    xFile.vPath("./se.region"_Stz);
     bool b = xFile.bOpen(C_OPEN_READ_WRITE_CREATE);
     ASSERT(b);
-    xFile.vPrint("%s\n"_Str,gxArguments.m_sRegionName.s());
+    xFile.vPrint("%s\n"_Stz,gxArguments.m_sRegionName.s());
     xFile.vClose();
   }
   
@@ -145,7 +145,7 @@ int main(int argc, const char* argv[])
   
   //vSkipListTest();
   if (xDir.bGetCurrent(sCurrent) && gxArguments.m_bWelcome)
-    vInfo("\nCURRENT WORKING DIRECTORY: %s\n\n"_Str,sCurrent.aStr());
+    vInfo("\nCURRENT WORKING DIRECTORY: %s\n\n"_Stz,sCurrent.aStr());
   
   // execute the command line
   RapidsSE::vExecute();
@@ -175,7 +175,7 @@ int main(int argc, const char* argv[])
 //      // ignore error
     
  //     if (xDir.bGetCurrent(sCurrent))
- //       vInfo("dir: %s\n"_Str,sCurrent.aStr());
+ //       vInfo("dir: %s\n"_Stz,sCurrent.aStr());
 //    }
     SePrompt* pSePrompt = new SePrompt();
     pSePrompt->vLoop();
@@ -186,7 +186,7 @@ int main(int argc, const char* argv[])
   RapidsSE::vPoolClose();
 
   if (gxArguments.m_bVerbose)
-    vInfo("RapidsSE exits\n"_Str);
+    vInfo("RapidsSE exits\n"_Stz);
     
   return EXIT_SUCCESS;
 }
@@ -212,7 +212,7 @@ void vKillPrev(void)
   
   for (i8 i_Index=0; i_Index < gxArguments.m_nNodes; i_Index++) {
     
-    sRegionName.vSprint("%s_%s"_Str,
+    sRegionName.vSprint("%s_%s"_Stz,
                         gxArguments.m_sRegionPrefix.s(),
                         gxArguments.m_xNodes[i_Index].m_sNodeName.s());
     
@@ -230,9 +230,9 @@ void vKillPrev(void)
       
       b = Process::bKillPid(pAttachMap->m_iPid);
       if ( b )
-        vTrace("vKillPrev: process %lld killed\n"_Str,pAttachMap->m_iPid);
+        vTrace("vKillPrev: process %lld killed\n"_Stz,pAttachMap->m_iPid);
       else
-        vTrace("vKillPrev: process %lld not killed\n"_Str,pAttachMap->m_iPid);
+        vTrace("vKillPrev: process %lld not killed\n"_Stz,pAttachMap->m_iPid);
     }
     
     Region::vClose(pRegion,iFD);
@@ -251,8 +251,8 @@ void vTest1(void)
   char buffer[iChunk];
   Timer xTimer;
   
-  vTrace("Reading lineitem.tbl in chunks of %lld\n"_Str, iChunk);
-  xFile.vPath("/Volumes/Data/Users/alkayamarti/tpch_SF10/lineitem.tbl"_Str);
+  vTrace("Reading lineitem.tbl in chunks of %lld\n"_Stz, iChunk);
+  xFile.vPath("/Volumes/Data/Users/alkayamarti/tpch_SF10/lineitem.tbl"_Stz);
   bool b = xFile.bOpen(C_OPEN_READ);
   ASSERT(b);
   
@@ -263,20 +263,20 @@ void vTest1(void)
     iBytesRead = xFile.iReadChunk(buffer,iChunk);
   }
   xTimer.vUpdate();
-  vTrace("duration %lldms\n"_Str,xTimer.iMilliseconds());
+  vTrace("duration %lldms\n"_Stz,xTimer.iMilliseconds());
   
   xFile.vClose();
 }
 
 //  i8 i = 0;
 //  Synch::uAtomicInc(&i);
-//  vInfo("AtomicInc i = %lld\n"_Str,i);
+//  vInfo("AtomicInc i = %lld\n"_Stz,i);
 //  Synch::uAtomicDec(&i);
-//  vInfo("AtomicDec i = %lld\n"_Str,i);
+//  vInfo("AtomicDec i = %lld\n"_Stz,i);
 //
 //  u8 u = 2;
 //  bool b = Synch::bTestAndSet(&u,1,3);
-//  vInfo("TestAndSet %s u = %lld\n"_Str,b ? "true"_Str : "false"_Str,u);
+//  vInfo("TestAndSet %s u = %lld\n"_Stz,b ? "true"_Stz : "false"_Stz,u);
 
 
 //  Timer xTimer;
@@ -284,14 +284,14 @@ void vTest1(void)
 //  PosixThread::vSleepMicro(500);
 //  xTimer.vUpdate();
 //
-//  vInfo("Timert %lld\n"_Str,xTimer.iMicroseconds());
+//  vInfo("Timert %lld\n"_Stz,xTimer.iMicroseconds());
 
 /*----------------------------------------------------------------------------*/
 /* test2                                                                      */
 /*----------------------------------------------------------------------------*/
 void vTest2(void)
 {
-  vTrace("-------------------------vTest2--------------------------\n"_Str);
+  vTrace("-------------------------vTest2--------------------------\n"_Stz);
 
   Ivl xIvl1;
   Ivl xIvl2;
@@ -307,7 +307,7 @@ void vTest2(void)
   assert( ! (xIvl2 < xIvl1) );
   
   
-  vTrace("-----------------------End vTest2------------------------\n"_Str);
+  vTrace("-----------------------End vTest2------------------------\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -356,43 +356,43 @@ void vTest4(void)
   assert(2 == BitLib::uBitMask(1));
   
   BitLib::vDump(0,cBitAry);
-  vTrace("BitMap: %s\n"_Str,cBitAry);
+  vTrace("BitMap: %s\n"_Stz,cBitAry);
   
   BitLib::vDump(1,cBitAry);
-  vTrace("BitMap: %s\n"_Str,cBitAry);
+  vTrace("BitMap: %s\n"_Stz,cBitAry);
   
   u8 uBitMap = 0xFEDCBA;
   BitLib::vDump(uBitMap,cBitAry);
-  vTrace("BitMap: %s\n"_Str,cBitAry);
+  vTrace("BitMap: %s\n"_Stz,cBitAry);
   
   i8 iBit = -1;
   while (BitLib::bEachBit(uBitMap,iBit))
-    vTrace("BitOn: %lld\n"_Str,iBit);
+    vTrace("BitOn: %lld\n"_Stz,iBit);
 
-  vTrace("Highest Bit: %lld\n"_Str,BitLib::iHighestBit(uBitMap));
+  vTrace("Highest Bit: %lld\n"_Stz,BitLib::iHighestBit(uBitMap));
   
-  vTrace("Bit 6 is %s\n"_Str,BitLib::bIsOn(uBitMap,6) ? "on" : "off");
-  vTrace("Bit 23 is %s\n"_Str,BitLib::bIsOn(uBitMap,23) ? "on" : "off");
+  vTrace("Bit 6 is %s\n"_Stz,BitLib::bIsOn(uBitMap,6) ? "on" : "off");
+  vTrace("Bit 23 is %s\n"_Stz,BitLib::bIsOn(uBitMap,23) ? "on" : "off");
   
   
   uBitMap = BitLib::uSetOn(uBitMap,6);
-  vTrace("Bit 6 is now %s\n"_Str,BitLib::bIsOn(uBitMap,6) ? "on" : "off");
+  vTrace("Bit 6 is now %s\n"_Stz,BitLib::bIsOn(uBitMap,6) ? "on" : "off");
   
   uBitMap = BitLib::uShuffleRight(uBitMap,2);
   BitLib::vDump(uBitMap,cBitAry);
-  vTrace("BitMap: %s\n"_Str,cBitAry);
+  vTrace("BitMap: %s\n"_Stz,cBitAry);
   
   uBitMap = BitLib::uShuffleLeft(uBitMap,8);
   BitLib::vDump(uBitMap,cBitAry);
-  vTrace("BitMap: %s\n"_Str,cBitAry);
+  vTrace("BitMap: %s\n"_Stz,cBitAry);
   
   uBitMap = BitLib::uShuffleRight(uBitMap,8);
   u8 uCut = BitLib::uCutRight(uBitMap,3);
   BitLib::vDump(uBitMap,cBitAry);
   
-  vTrace("BitMap: %s\n"_Str,cBitAry);
+  vTrace("BitMap: %s\n"_Stz,cBitAry);
   BitLib::vDump(uCut,cBitAry);
-  vTrace("Cut: %s\n"_Str,cBitAry);
+  vTrace("Cut: %s\n"_Stz,cBitAry);
   
  
 }
@@ -417,7 +417,7 @@ void vTest5(void)
       iSum += aArray[i_Int];
 
   xTimer.vUpdate();
-  vTrace("duration %lldms %lld\n"_Str,xTimer.iMilliseconds(),iSum);
+  vTrace("duration %lldms %lld\n"_Stz,xTimer.iMilliseconds(),iSum);
 }
 
 /*============================================================================*/

@@ -30,7 +30,7 @@ void* StrVal::operator new(size_t iSize)
 {
   RASSERT(iSize);
   
-  vFatal("fatal: StrVal class cannot be new'd\n"_Str);
+  vFatal("fatal: StrVal class cannot be new'd\n"_Stz);
   
   NEVER_REACH;
 }
@@ -106,26 +106,26 @@ StrVal::~StrVal(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get address of Str area                                                    */
+/* get address of Stz area                                                    */
 /*----------------------------------------------------------------------------*/
-StrVal::operator Str*(void)
+StrVal::operator Stz*(void)
 {
   _precondition_(_MAGIC_);
   
   // return address to char byte area
-  return reinterpret_cast<Str*>(pAdd<char*>(this,sizeof(StrVal)));
+  return reinterpret_cast<Stz*>(pAdd<char*>(this,sizeof(StrVal)));
 }
 
 
 /*----------------------------------------------------------------------------*/
-/* get reference to Str area                                                  */
+/* get reference to Stz area                                                  */
 /*----------------------------------------------------------------------------*/
-StrVal::operator Str&(void)
+StrVal::operator Stz&(void)
 {
   _precondition_(_MAGIC_);
   
   // return reference to char byte area
-  return reinterpret_cast<Str&>(*(pAdd<char*>(this,sizeof(StrVal))));
+  return reinterpret_cast<Stz&>(*(pAdd<char*>(this,sizeof(StrVal))));
 }
 
 
@@ -183,7 +183,7 @@ void StrVal::operator =(StrVal* pArg)
 /*----------------------------------------------------------------------------*/
 /* assignment operator                                                        */
 /*----------------------------------------------------------------------------*/
-void StrVal::operator =(Str* aStr)
+void StrVal::operator =(Stz* aStr)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -199,7 +199,7 @@ void StrVal::operator =(ValWrk& rArg)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  vCopy((Str*)rArg.aWspArea());
+  vCopy((Stz*)rArg.aWspArea());
   
   _postcondition_(_MAGIC_,_FOOTER_);
 }
@@ -245,7 +245,7 @@ void StrVal::vAreaSize(void)
 /*----------------------------------------------------------------------------*/
 /* assign given str                                                           */
 /*----------------------------------------------------------------------------*/
-void StrVal::vAssign(Str* aStr)
+void StrVal::vAssign(Stz* aStr)
 {
   //ASSERT(m_nAreaSize);
   
@@ -257,7 +257,7 @@ void StrVal::vAssign(Str* aStr)
 /*----------------------------------------------------------------------------*/
 /* assign str of given length                                                 */
 /*----------------------------------------------------------------------------*/
-void StrVal::vAssign(Str* aStr, i8 iLength)
+void StrVal::vAssign(Stz* aStr, i8 iLength)
 {
   //ASSERT(m_nAreaSize);
   
@@ -271,7 +271,7 @@ void StrVal::vAssign(Str* aStr, i8 iLength)
 /*----------------------------------------------------------------------------*/
 /* cat given variable sequence of Str's                                       */
 /*----------------------------------------------------------------------------*/
-void StrVal::vCat(Str* aStr, ...)
+void StrVal::vCat(Stz* aStr, ...)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -281,7 +281,7 @@ void StrVal::vCat(Str* aStr, ...)
 
   StrLib::vConcat(s(),aStr->s());
   
-  while (Str* aArg = va_arg(xVarArgs,Str*))
+  while (Stz* aArg = va_arg(xVarArgs,Stz*))
     StrLib::vConcat(s(),aArg->s());
   
   va_end(xVarArgs);
@@ -292,7 +292,7 @@ void StrVal::vCat(Str* aStr, ...)
 /*----------------------------------------------------------------------------*/
 /* vCatSprint: formatted concatenated sprint                                  */
 /*----------------------------------------------------------------------------*/
-void StrVal::vCatSprint(Str* aFormat, ...)
+void StrVal::vCatSprint(Stz* aFormat, ...)
 {
   va_list args;
   
@@ -304,9 +304,9 @@ void StrVal::vCatSprint(Str* aFormat, ...)
 }
 
 /*----------------------------------------------------------------------------*/
-/* concat given Str                                                           */
+/* concat given Stz                                                           */
 /*----------------------------------------------------------------------------*/
-void StrVal::vConcat(Str* aStr)
+void StrVal::vConcat(Stz* aStr)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -318,15 +318,15 @@ void StrVal::vConcat(Str* aStr)
 /*----------------------------------------------------------------------------*/
 /* bContains: test if arg is in substr                                        */
 /*----------------------------------------------------------------------------*/
-bool StrVal::bContains(Str* aArg)
+bool StrVal::bContains(Stz* aArg)
 {
   return StrLib::bContains(s(),aArg->s());
 }
 
 /*----------------------------------------------------------------------------*/
-/* copy given Str, then concat variable sequence of Str's                     */
+/* copy given Stz, then concat variable sequence of Str's                     */
 /*----------------------------------------------------------------------------*/
-void StrVal::vCopyTill(Str* aSrc, char cTill)
+void StrVal::vCopyTill(Stz* aSrc, char cTill)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -336,9 +336,9 @@ void StrVal::vCopyTill(Str* aSrc, char cTill)
 }
 
 /*----------------------------------------------------------------------------*/
-/* copy given Str                                                             */
+/* copy given Stz                                                             */
 /*----------------------------------------------------------------------------*/
-void StrVal::vCopy(Str* aStr)
+void StrVal::vCopy(Stz* aStr)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -348,9 +348,9 @@ void StrVal::vCopy(Str* aStr)
 }
 
 /*----------------------------------------------------------------------------*/
-/* copy given Str, then concat variable sequence of Str's                     */
+/* copy given Stz, then concat variable sequence of Str's                     */
 /*----------------------------------------------------------------------------*/
-void StrVal::vCopyCat(Str* aStr, ...)
+void StrVal::vCopyCat(Stz* aStr, ...)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -360,7 +360,7 @@ void StrVal::vCopyCat(Str* aStr, ...)
   
   StrLib::vCopyLen(s(),aStr->s(),m_xWsp.nSize()-1);
 
-  while (Str* aArg = va_arg(xVarArgs,Str*))
+  while (Stz* aArg = va_arg(xVarArgs,Stz*))
     StrLib::vConcat(s(),aArg->s());
   
   va_end(xVarArgs);
@@ -371,7 +371,7 @@ void StrVal::vCopyCat(Str* aStr, ...)
 /*----------------------------------------------------------------------------*/
 /* test if string ends with given suffix                                      */
 /*----------------------------------------------------------------------------*/
-bool StrVal::bEnds(Str* aSuffix)
+bool StrVal::bEnds(Stz* aSuffix)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -395,7 +395,7 @@ bool StrVal::bIsEqual(StrVal& sArg, i8 iCase)
 /*----------------------------------------------------------------------------*/
 /* is equal to given argument? (same case)                                    */
 /*----------------------------------------------------------------------------*/
-bool StrVal::bEqual(Str* aArg)
+bool StrVal::bEqual(Stz* aArg)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -427,7 +427,7 @@ char* StrVal::s(void)
 /*----------------------------------------------------------------------------*/
 /* is same as given argument?  (ignores case)                                 */
 /*----------------------------------------------------------------------------*/
-bool StrVal::bSame(Str* aArg)
+bool StrVal::bSame(Stz* aArg)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -449,7 +449,7 @@ i8 StrVal::nSize(void)
 /*----------------------------------------------------------------------------*/
 /* vSprint: formatted sprint                                                  */
 /*----------------------------------------------------------------------------*/
-void StrVal::vSprint(Str* aFormat, ...)
+void StrVal::vSprint(Stz* aFormat, ...)
 {
   va_list args;
   va_start(args,aFormat);
@@ -460,13 +460,13 @@ void StrVal::vSprint(Str* aFormat, ...)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get adddress of Str area                                                   */
+/* get adddress of Stz area                                                   */
 /*----------------------------------------------------------------------------*/
-Str* StrVal::aStr(void)
+Stz* StrVal::aStr(void)
 {
   char* aAddr = pAdd<char*>(this,sizeof(StrVal));
   
-  return reinterpret_cast<Str*>(aAddr);
+  return reinterpret_cast<Stz*>(aAddr);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -490,7 +490,7 @@ void StrVal::vToLower(void)
 /*----------------------------------------------------------------------------*/
 /* convert to string                                                          */
 /*----------------------------------------------------------------------------*/
-void StrVal::vToString(Str* aStr)
+void StrVal::vToString(Stz* aStr)
 {
   StrLib::vCopy(aStr->s(),s());
 }

@@ -32,15 +32,15 @@ extern BitMap*         gpBitMap;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_EntryBuffer(void)
 {
-  vAddPrimitive("entryBuffer::create"_Str,     &vEntryBufferCreate,      false);
-  vAddPrimitive("entryBuffer.delete"_Str,      &vEntryBufferDelete,      false);
-  vAddPrimitive("entryBuffer.firstEntry"_Str,  &vEntryBufferFirstEntry,  false);
-  vAddPrimitive("entryBuffer.insertRow"_Str,   &vEntryBufferInsertRow,   false);
-  vAddPrimitive("entryBuffer.isLast@"_Str,     &vEntryBufferIsLastFetch, false);
-  vAddPrimitive("entryBuffer.isLast!"_Str,     &vEntryBufferIsLastStore, false);
-  vAddPrimitive("entryBuffer.iterate"_Str,     &vEntryBufferIterate,     false);
-  vAddPrimitive("entryBuffer.nextEntry"_Str,   &vEntryBufferNextEntry,   false);
-  vAddPrimitive("entryBuffer.nextBuffer"_Str,  &vEntryBufferNextBuffer,  false);
+  vAddPrimitive("entryBuffer::create"_Stz,     &vEntryBufferCreate,      false);
+  vAddPrimitive("entryBuffer.delete"_Stz,      &vEntryBufferDelete,      false);
+  vAddPrimitive("entryBuffer.firstEntry"_Stz,  &vEntryBufferFirstEntry,  false);
+  vAddPrimitive("entryBuffer.insertRow"_Stz,   &vEntryBufferInsertRow,   false);
+  vAddPrimitive("entryBuffer.isLast@"_Stz,     &vEntryBufferIsLastFetch, false);
+  vAddPrimitive("entryBuffer.isLast!"_Stz,     &vEntryBufferIsLastStore, false);
+  vAddPrimitive("entryBuffer.iterate"_Stz,     &vEntryBufferIterate,     false);
+  vAddPrimitive("entryBuffer.nextEntry"_Stz,   &vEntryBufferNextEntry,   false);
+  vAddPrimitive("entryBuffer.nextBuffer"_Stz,  &vEntryBufferNextBuffer,  false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -48,12 +48,12 @@ void Task::vAddPrimitives_EntryBuffer(void)
 /*----------------------------------------------------------------------------*/
 void Task::vEntryBufferCreate(MP_Task mpTask)
 {
-  ENTRY("vEntryBufferCreate"_Str);
+  ENTRY("vEntryBufferCreate"_Stz);
   
   Object* pPtrIndex = nullptr;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrIndex) )
-    THROW_INVALID_DSTACK("entryBuffer::create"_Str);
+    THROW_INVALID_DSTACK("entryBuffer::create"_Stz);
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
@@ -70,12 +70,12 @@ void Task::vEntryBufferCreate(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vEntryBufferDelete(MP_Task mpTask)
 {
-  ENTRY("vEntryBufferDelete"_Str);
+  ENTRY("vEntryBufferDelete"_Stz);
   
   Object* pPtrIndexBuffer = nullptr;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrIndexBuffer) )
-    THROW_INVALID_DSTACK("entryBuffer.delete"_Str);
+    THROW_INVALID_DSTACK("entryBuffer.delete"_Stz);
   
   EntryBuffer* pIndexBuffer = _pEntryBuffer(pPtrIndexBuffer);
   ASSERT(CN_ENTRYBUFFER == pIndexBuffer->eClass());
@@ -90,13 +90,13 @@ void Task::vEntryBufferDelete(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vEntryBufferNextBuffer(MP_Task mpTask)
 {
-  ENTRY("vEntryBufferNextBuffer"_Str);
+  ENTRY("vEntryBufferNextBuffer"_Stz);
   
   Object* pPtrEntry = nullptr;
   Object* pPtrIndexBuffer;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrIndexBuffer) )
-    THROW_INVALID_DSTACK("entryBuffer.nextBuffer"_Str);
+    THROW_INVALID_DSTACK("entryBuffer.nextBuffer"_Stz);
   
   EntryBuffer* pIndexBuffer = _pEntryBuffer(pPtrIndexBuffer);
   ASSERT(nullptr == pIndexBuffer || CN_ENTRYBUFFER == pIndexBuffer->eClass());
@@ -115,13 +115,13 @@ void Task::vEntryBufferNextBuffer(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vEntryBufferFirstEntry(MP_Task mpTask)
 {
-  ENTRY("vEntryBufferFirstEntry"_Str);
+  ENTRY("vEntryBufferFirstEntry"_Stz);
   
   Object* pPtrEntry = nullptr;
   Object* pPtrIndexBuffer;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrIndexBuffer) )
-    THROW_INVALID_DSTACK("entryBuffer.firstEntry!"_Str);
+    THROW_INVALID_DSTACK("entryBuffer.firstEntry!"_Stz);
   
   EntryBuffer* pIndexBuffer = _pEntryBuffer(pPtrIndexBuffer);
   ASSERT(nullptr == pIndexBuffer || CN_ENTRYBUFFER == pIndexBuffer->eClass());
@@ -138,20 +138,20 @@ void Task::vEntryBufferFirstEntry(MP_Task mpTask)
 #ifdef ENTWRK_APPEND
 void Task::vEntryBufferInsertRow(MP_Task mpTask)
 {
-  ENTRY("vEntryBufferInsertRow"_Str);
+  ENTRY("vEntryBufferInsertRow"_Stz);
  
   Object* pPtrEntry = nullptr;
   Object* pPtrIndexBuffer;
   s256 sRow;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrIndexBuffer) )
-    THROW_INVALID_DSTACK("entryBuffer.insertRow"_Str);
+    THROW_INVALID_DSTACK("entryBuffer.insertRow"_Stz);
   
   EntryBuffer* pIndexBuffer = _pEntryBuffer(pPtrIndexBuffer);
   ASSERT(nullptr == pIndexBuffer || CN_ENTRYBUFFER == pIndexBuffer->eClass());
   
   if ( ! mpTask->m_pDataStack->bPop(sRow) )
-    THROW_INVALID_DSTACK("entryBuffer.insertRow"_Str);
+    THROW_INVALID_DSTACK("entryBuffer.insertRow"_Stz);
 
   // create working row
   ValWrk xValWrk;
@@ -193,19 +193,19 @@ void Task::vEntryBufferInsertRow(MP_Task mpTask)
 
 void Task::vEntryBufferInsertRow(MP_Task mpTask)
 {
-  ENTRY("vEntryBufferInsertRow"_Str);
+  ENTRY("vEntryBufferInsertRow"_Stz);
   
   Object* pPtrOldEntry = nullptr;
   Object* pPtrIndexBuffer;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrIndexBuffer) )
-    THROW_INVALID_DSTACK("entryBuffer.insertRow"_Str);
+    THROW_INVALID_DSTACK("entryBuffer.insertRow"_Stz);
   
   EntryBuffer* pIndexBuffer = _pEntryBuffer(pPtrIndexBuffer);
   ASSERT(nullptr == pIndexBuffer || CN_ENTRYBUFFER == pIndexBuffer->eClass());
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrOldEntry) )
-    THROW_INVALID_DSTACK("entryBuffer.insertRow"_Str);
+    THROW_INVALID_DSTACK("entryBuffer.insertRow"_Stz);
   
   Entry* pOldEntry = _pEntry(pPtrOldEntry);
   ASSERT(CN_ENTRY == pOldEntry->eClass());
@@ -228,13 +228,13 @@ void Task::vEntryBufferInsertRow(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vEntryBufferIsLastFetch(MP_Task mpTask)
 {
-  ENTRY("vEntryBufferIsLastFetch"_Str);
+  ENTRY("vEntryBufferIsLastFetch"_Stz);
   
   Object* pPtrEntry = nullptr;
   Object* pPtrIndexBuffer;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrIndexBuffer) )
-    THROW_INVALID_DSTACK("entryBuffer.isLast@"_Str);
+    THROW_INVALID_DSTACK("entryBuffer.isLast@"_Stz);
   
   EntryBuffer* pIndexBuffer = _pEntryBuffer(pPtrIndexBuffer);
   ASSERT(nullptr == pIndexBuffer || CN_ENTRYBUFFER == pIndexBuffer->eClass());
@@ -249,13 +249,13 @@ void Task::vEntryBufferIsLastFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vEntryBufferIsLastStore(MP_Task mpTask)
 {
-  ENTRY("vEntryBufferIsLastStore"_Str);
+  ENTRY("vEntryBufferIsLastStore"_Stz);
   
   Object* pPtrEntry = nullptr;
   Object* pPtrIndexBuffer;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrIndexBuffer) )
-    THROW_INVALID_DSTACK("entryBuffer.isLast!"_Str);
+    THROW_INVALID_DSTACK("entryBuffer.isLast!"_Stz);
   
   EntryBuffer* pIndexBuffer = _pEntryBuffer(pPtrIndexBuffer);
   ASSERT(nullptr == pIndexBuffer || CN_ENTRYBUFFER == pIndexBuffer->eClass());
@@ -270,26 +270,26 @@ void Task::vEntryBufferIsLastStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vEntryBufferIterate(MP_Task mpTask)
 {
-  ENTRY("vEntryBufferIiterate"_Str);
+  ENTRY("vEntryBufferIiterate"_Stz);
   
   Object* pPtrIndexBuffer;
   if ( ! mpTask->m_pDataStack->bPop(pPtrIndexBuffer) )
-    THROW_INVALID_DSTACK("entryBuffer.iterate"_Str);
+    THROW_INVALID_DSTACK("entryBuffer.iterate"_Stz);
   EntryBuffer* pIndexBuffer = _pEntryBuffer(pPtrIndexBuffer);
   ASSERT(nullptr == pIndexBuffer || CN_ENTRYBUFFER == pIndexBuffer->eClass());
   
   Object* pPtrEntry = nullptr;
   if ( ! mpTask->m_pDataStack->bPop(pPtrEntry) )
-    THROW_INVALID_DSTACK("entryBuffer.iterate"_Str);
+    THROW_INVALID_DSTACK("entryBuffer.iterate"_Stz);
   Entry* pUpperIndexEntry = _pEntry(pPtrEntry);
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrEntry) )
-    THROW_INVALID_DSTACK("entryBuffer.iterate"_Str);
+    THROW_INVALID_DSTACK("entryBuffer.iterate"_Stz);
   Entry* pLowerIndexEntry = _pEntry(pPtrEntry);
   
   Object* pPtrGroupBy = nullptr;
   if ( ! mpTask->m_pDataStack->bPop(pPtrGroupBy) )
-    THROW_INVALID_DSTACK("entryBuffer.iterate"_Str);
+    THROW_INVALID_DSTACK("entryBuffer.iterate"_Stz);
   GroupBy* pGroupByOp = _pGroupBy(pPtrGroupBy);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -355,14 +355,14 @@ void Task::vEntryBufferIterate(MP_Task mpTask)
 //  
 //  while ( (pRowBuffer = pRowBuffer->pNextBuffer()) ) {
 //    BitArray* pBitArray = pRowBuffer->pBitArray();
-//    //vTrace("BitArray: %lld bits on\n"_Str,pBitArray->nBitsOn());
+//    //vTrace("BitArray: %lld bits on\n"_Stz,pBitArray->nBitsOn());
 //    Entry* pRowEntry = pRowBuffer->pFirstEntry();
 //    while ( (pRowEntry = pRowBuffer->pNextEntry(pRowEntry)) ) {
 //      pGroupByOp->vApplyEntry(pRowEntry);
 //    }
 //  }
   
-  vTrace("Rows processed: %lld\n"_Str,nRows);
+  vTrace("Rows processed: %lld\n"_Stz,nRows);
   
   EXIT();
 }
@@ -372,19 +372,19 @@ void Task::vEntryBufferIterate(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vEntryBufferNextEntry(MP_Task mpTask)
 {
-  ENTRY("vEntryBufferNextEntry"_Str);
+  ENTRY("vEntryBufferNextEntry"_Stz);
   
   Object* pPtrEntry = nullptr;
   Object* pPtrIndexBuffer;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrIndexBuffer) )
-    THROW_INVALID_DSTACK("entryBuffer.nextEntry"_Str);
+    THROW_INVALID_DSTACK("entryBuffer.nextEntry"_Stz);
   
   EntryBuffer* pIndexBuffer = _pEntryBuffer(pPtrIndexBuffer);
   ASSERT(nullptr == pIndexBuffer || CN_ENTRYBUFFER == pIndexBuffer->eClass());
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrEntry) )
-    THROW_INVALID_DSTACK("entryBuffer.nextEntry"_Str);
+    THROW_INVALID_DSTACK("entryBuffer.nextEntry"_Stz);
   
   Entry* pEntry = _pEntry(pPtrEntry);
   

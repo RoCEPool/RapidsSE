@@ -22,7 +22,7 @@ TmeVal* Values::_pTmeVal(void* aAddr)
 void* TmeVal::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  vFatal("fatal: TmeVal class cannot be new'd\n"_Str);
+  vFatal("fatal: TmeVal class cannot be new'd\n"_Stz);
   
   NEVER_REACH;
 }
@@ -42,7 +42,7 @@ TmeVal::TmeVal(void)
 /*----------------------------------------------------------------------------*/
 void TmeVal::operator =(i8 iTme)
 {
-  //vTrace("TmeVal: diff %lld\n"_Str,nSub(&m_iTme,this));
+  //vTrace("TmeVal: diff %lld\n"_Stz,nSub(&m_iTme,this));
   
   *aInt() = iTme;
 }
@@ -52,7 +52,7 @@ void TmeVal::operator =(i8 iTme)
 /*----------------------------------------------------------------------------*/
 void TmeVal::operator =(Tme xTme)
 {
-  //vTrace("IvlVal: diff %lld\n"_Str,nSub(&m_iIvl,this));
+  //vTrace("IvlVal: diff %lld\n"_Stz,nSub(&m_iIvl,this));
   
   *aInt() = xTme.iAsI8();
 }
@@ -84,7 +84,7 @@ i8* TmeVal::aInt(void)
 /*----------------------------------------------------------------------------*/
 /* convert to string                                                          */
 /*----------------------------------------------------------------------------*/
-//void TmeVal::vToString(Str* aWorkspace)
+//void TmeVal::vToString(Stz* aWorkspace)
 //{
 //  *aWorkspace = m_iTme;
 //}

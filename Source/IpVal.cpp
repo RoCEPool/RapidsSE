@@ -24,7 +24,7 @@ IpVal* Values::_pIpVal(void* aAddr)
 void* IpVal::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  vFatal("fatal: IpVal class cannot be new'd\n"_Str);
+  vFatal("fatal: IpVal class cannot be new'd\n"_Stz);
   
   NEVER_REACH;
 }
@@ -67,7 +67,7 @@ Cell* IpVal::pIpPtr(void) const
 /*----------------------------------------------------------------------------*/
 /* convert to string                                                          */
 /*----------------------------------------------------------------------------*/
-void IpVal::vToString(Str* aWorkspace)
+void IpVal::vToString(Stz* aWorkspace)
 {
   *aWorkspace = reinterpret_cast<void*>(m_pPtr);
 }

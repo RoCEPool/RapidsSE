@@ -194,7 +194,7 @@ void Finalize::vEnums(eCN eClass, Object* pObject)
 void Finalize::vUndefined(eCN eClass, Object* pObject)
 {
   ASSERT(eClass != CN_NONE);
-  vTrace("%s: **finalize function not defined for class**\n"_Str, aCN[eClass]);
+  vTrace("%s: **finalize function not defined for class**\n"_Stz, aCN[eClass]);
 }
 
 /*============================================================================*/

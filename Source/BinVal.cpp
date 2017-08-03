@@ -25,7 +25,7 @@ BinVal* Values::_pBinVal(void* aAddr)
 void* BinVal::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  vFatal("fatal: BinVal class cannot be new'd\n"_Str);
+  vFatal("fatal: BinVal class cannot be new'd\n"_Stz);
   
   NEVER_REACH;
 }
@@ -139,11 +139,11 @@ void BinVal::vSize(i8 iSize)
 /*----------------------------------------------------------------------------*/
 /* convert to string                                                          */
 /*----------------------------------------------------------------------------*/
-void BinVal::vToString(Str* aWorkspace)
+void BinVal::vToString(Stz* aWorkspace)
 {
   Object* pEmbedded = (Object*)pData();
   
-  aWorkspace->vSprint("%p BinVal [%s of %lld bytes]"_Str,
+  aWorkspace->vSprint("%p BinVal [%s of %lld bytes]"_Stz,
                       this,
                       aCN[pEmbedded->eClass()],
                       m_nAreaSize);

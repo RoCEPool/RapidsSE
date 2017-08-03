@@ -171,9 +171,9 @@ Entry* SelCursor::pRow(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get current row (as a Str*)                                                */
+/* get current row (as a Stz*)                                                */
 /*----------------------------------------------------------------------------*/
-Str* SelCursor::aRowAsStr(void)
+Stz* SelCursor::aRowAsStr(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SELCURSOR,_FOOTER_);
   

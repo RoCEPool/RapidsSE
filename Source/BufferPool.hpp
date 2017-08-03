@@ -35,7 +35,7 @@ namespace Pool
     void* operator new(size_t, void* pRegion);
     void  operator delete(void* pRegion);
     
-    BufferPool(Str* aRegionName, i8 iRegionSize, i8 iJumboTook,
+    BufferPool(Stz* aRegionName, i8 iRegionSize, i8 iJumboTook,
                bool bTouch, bool bDontFree, bool bFreeRB);
     ~BufferPool(void);
     

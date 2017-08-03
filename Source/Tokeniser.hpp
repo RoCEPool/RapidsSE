@@ -27,7 +27,7 @@ namespace Parsing
     ~Tokeniser(void);
     
     static Tokeniser* _pTokeniser(void* aAddr);
-    static void vDump(eCN eClass, Object* pObject, Str* aTab);
+    static void vDump(eCN eClass, Object* pObject, Stz* aTab);
   
     static TokenVec* pTokenise(StrVal& sString);
   
@@ -48,9 +48,9 @@ namespace Parsing
     eTN  eNextToken(char* aToken);
     void vNextToken(void);
     
-    i8   iFindToken(Str* pLookFor, TokenVec& xTokenVec, i8 nTokens);
+    i8   iFindToken(Stz* pLookFor, TokenVec& xTokenVec, i8 nTokens);
     i8   iCountTokens(TokenVec& xTokenVec, i8 nTokens);
-    void vDumpTokens(Str* pTitle, TokenVec& xTokenVec, i8 nTokens);
+    void vDumpTokens(Stz* pTitle, TokenVec& xTokenVec, i8 nTokens);
     
     bool bEOF(void);
     bool bLineMode(void);

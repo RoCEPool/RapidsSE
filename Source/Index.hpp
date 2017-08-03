@@ -11,10 +11,10 @@ namespace DBobjects
     /* 1 */ IT_SKIP_LIST
   };
   
-  static Str* aIT[]
+  static Stz* aIT[]
   {
-    /* 0 */ "NONE"_Str,
-    /* 1 */ "SKIP_LIST"_Str
+    /* 0 */ "NONE"_Stz,
+    /* 1 */ "SKIP_LIST"_Stz
   };
 
   class Table;
@@ -41,16 +41,16 @@ namespace DBobjects
     void* operator new(size_t, Index* pIndex);
     void  operator delete(void*);
     
-    static void vDump(eCN eClass, Object* pObject, Str* aTab);
+    static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     static void vFinalize(eCN eClass, Object* pObject);
     
     Index(void);
     ~Index(void);
   
-    Str*   pAnalyze(void);
+    Stz*   pAnalyze(void);
     void   vCreateColumnVec(s32& sName, s48K& sDefinition);
     void   vDump(void);
-    Str*   aIndexName(void);
+    Stz*   aIndexName(void);
     s32    sIndexName(void);
     void   vIndexNo(i8 iIndexNo);
     i8     iIndexNo(void);

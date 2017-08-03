@@ -27,7 +27,7 @@ using namespace StorageEngine;
 
 #include "RapidsSE.hpp"
 
-typedef void (pDUMPFUN)(eCN eClass, Object* pObject, Str*);
+typedef void (pDUMPFUN)(eCN eClass, Object* pObject, Stz*);
 extern pDUMPFUN *gpDump[];
 
 typedef void (pFINALIZE(eCN eClass, Object* pObject));

@@ -34,13 +34,13 @@ extern bool            gbMetadata;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Node(void)
 {
-  vAddPrimitive("node.init"_Str,       &vNodeInit,         false);
-  vAddPrimitive("node.IP"_Str,         &vNodeIP,           false);
-  vAddPrimitive("node.name"_Str,       &vNodeName,         false);
-  vAddPrimitive("node::new"_Str,        &vNodeNew,          false);
-  vAddPrimitive("node.no"_Str,         &vNodeNo,           false);
-  vAddPrimitive("node.port"_Str,       &vNodePort,         false);
-  vAddPrimitive("node.status"_Str,     &vNodeStatus,       false);
+  vAddPrimitive("node.init"_Stz,       &vNodeInit,         false);
+  vAddPrimitive("node.IP"_Stz,         &vNodeIP,           false);
+  vAddPrimitive("node.name"_Stz,       &vNodeName,         false);
+  vAddPrimitive("node::new"_Stz,        &vNodeNew,          false);
+  vAddPrimitive("node.no"_Stz,         &vNodeNo,           false);
+  vAddPrimitive("node.port"_Stz,       &vNodePort,         false);
+  vAddPrimitive("node.status"_Stz,     &vNodeStatus,       false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -48,12 +48,12 @@ void Task::vAddPrimitives_Node(void)
 /*----------------------------------------------------------------------------*/
 void Task::vNodeInit(MP_Task mpTask)
 {
-ENTRY("vNodeInit"_Str);
+ENTRY("vNodeInit"_Stz);
   
   Object* pPtrNode;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrNode) )
-    THROW_INVALID_DSTACK("node.init"_Str);
+    THROW_INVALID_DSTACK("node.init"_Stz);
   
   Node* pNode = _pNode(pPtrNode);
   ASSERT(CN_NODE == pNode->eClass());
@@ -68,12 +68,12 @@ ENTRY("vNodeInit"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vNodeIP(MP_Task mpTask)
 {
-  ENTRY("vNodeIP"_Str);
+  ENTRY("vNodeIP"_Stz);
   
   Object* pPtrNode;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrNode) )
-    THROW_INVALID_DSTACK("node.IP"_Str);
+    THROW_INVALID_DSTACK("node.IP"_Stz);
   
   Node* pNode = _pNode(pPtrNode);
   ASSERT(CN_NODE == pNode->eClass());
@@ -90,12 +90,12 @@ void Task::vNodeIP(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vNodeNew(MP_Task mpTask)
 {
-ENTRY("vNodeNew"_Str);
+ENTRY("vNodeNew"_Stz);
   
   i8 iNodeNo;
   
   if ( ! mpTask->m_pDataStack->bPop(iNodeNo) )
-    THROW_INVALID_DSTACK("node::new"_Str);
+    THROW_INVALID_DSTACK("node::new"_Stz);
   
   Node* pNode = new Node(iNodeNo,
                          gxArguments.m_xNodes[iNodeNo].m_sNodeName,
@@ -113,12 +113,12 @@ ENTRY("vNodeNew"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vNodeName(MP_Task mpTask)
 {
-  ENTRY("vNodeName"_Str);
+  ENTRY("vNodeName"_Stz);
   
   Object* pPtrNode;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrNode) )
-    THROW_INVALID_DSTACK("node.name"_Str);
+    THROW_INVALID_DSTACK("node.name"_Stz);
   
   Node* pNode = _pNode(pPtrNode);
   ASSERT(CN_NODE == pNode->eClass());
@@ -135,12 +135,12 @@ void Task::vNodeName(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vNodeNo(MP_Task mpTask)
 {
-ENTRY("vNodeNo"_Str);
+ENTRY("vNodeNo"_Stz);
   
   Object* pPtrNode;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrNode) )
-    THROW_INVALID_DSTACK("node.no"_Str);
+    THROW_INVALID_DSTACK("node.no"_Stz);
   
   Node* pNode = _pNode(pPtrNode);
   ASSERT(CN_NODE == pNode->eClass());
@@ -155,12 +155,12 @@ ENTRY("vNodeNo"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vNodePort(MP_Task mpTask)
 {
-  ENTRY("vNodeNo"_Str);
+  ENTRY("vNodeNo"_Stz);
   
   Object* pPtrNode;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrNode) )
-    THROW_INVALID_DSTACK("node.port"_Str);
+    THROW_INVALID_DSTACK("node.port"_Stz);
   
   Node* pNode = _pNode(pPtrNode);
   ASSERT(CN_NODE == pNode->eClass());
@@ -175,26 +175,26 @@ void Task::vNodePort(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vNodeStatus(MP_Task mpTask)
 {
-  ENTRY("vNodeStatus"_Str);
+  ENTRY("vNodeStatus"_Stz);
 
   s256 s;
   
   if (gbMetadata) {
     if (Region::bTest(gxArguments.m_sRegionName))
-      s.vSprint("row: ('%s', '%s', 'running')"_Str,
+      s.vSprint("row: ('%s', '%s', 'running')"_Stz,
               gpGrid->pThisNode()->aNodeName(),
               gxArguments.m_sRegionName.s());
     else
-      s.vSprint("row: ('%s', '%s', 'not running')"_Str,
+      s.vSprint("row: ('%s', '%s', 'not running')"_Stz,
               gpGrid->pThisNode()->aNodeName(),
               gxArguments.m_sRegionName.s());
   }
   else {
     if (Region::bTest(gxArguments.m_sRegionName))
-      s.vSprint("RapidsSE instance %s running"_Str,
+      s.vSprint("RapidsSE instance %s running"_Stz,
                 gxArguments.m_sRegionName.s());
     else
-      s.vSprint("RapidsSE instance %s not running"_Str,
+      s.vSprint("RapidsSE instance %s not running"_Stz,
                 gxArguments.m_sRegionName.s());
   }
   

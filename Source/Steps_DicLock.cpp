@@ -31,8 +31,8 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_DicLock(void)
 {
-  vAddPrimitive("dicLock.dropWrite"_Str,&vDicLockDropWrite, false);
-  vAddPrimitive("dicLock.grabWrite"_Str,&vDicLockGrabWrite, false);
+  vAddPrimitive("dicLock.dropWrite"_Stz,&vDicLockDropWrite, false);
+  vAddPrimitive("dicLock.grabWrite"_Stz,&vDicLockGrabWrite, false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -40,7 +40,7 @@ void Task::vAddPrimitives_DicLock(void)
 /*----------------------------------------------------------------------------*/
 void Task::vDicLockDropWrite(MP_Task mpTask)
 {
-  ENTRY("vDicLockDropWrite"_Str);
+  ENTRY("vDicLockDropWrite"_Stz);
   
   gxDicLock.vDropWrite();
   
@@ -53,7 +53,7 @@ void Task::vDicLockDropWrite(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDicLockGrabWrite(MP_Task mpTask)
 {
-  ENTRY("vDicLockGrabWrite"_Str);
+  ENTRY("vDicLockGrabWrite"_Stz);
   
   gxDicLock.vGrabWrite();
     

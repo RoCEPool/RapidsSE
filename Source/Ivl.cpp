@@ -17,7 +17,7 @@ void* Ivl::operator new(size_t iSize)
 {
   RASSERT(iSize);
   
-  vFatal("fatal: Ivl class cannot be new'd\n"_Str);
+  vFatal("fatal: Ivl class cannot be new'd\n"_Stz);
   
   NEVER_REACH;
 }
@@ -292,11 +292,11 @@ bool Ivl::bExtract(char** aaSrc, Ivl* aInterval, Column* pColumn)
 /*----------------------------------------------------------------------------*/
 /* sprint ivl datum                                                           */
 /*----------------------------------------------------------------------------*/
-void Ivl::vSprint(Str* aDst, Str* aSrc)
+void Ivl::vSprint(Stz* aDst, Stz* aSrc)
 {
   Ivl* aIvl = (Ivl*)aSrc;
   
-  StrLib::vSprint(aDst,"%lld.%03lld%c"_Str,
+  StrLib::vSprint(aDst,"%lld.%03lld%c"_Stz,
                   aIvl->x.m_uSecond,
                   aIvl->x.m_uMilli,
                   '\0');

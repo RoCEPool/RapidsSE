@@ -22,7 +22,7 @@ ValWrk* Values::_pValWrk(void* aAddr)
 void* ValWrk::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  vFatal("fatal: ValWrk class cannot be new'd\n"_Str);
+  vFatal("fatal: ValWrk class cannot be new'd\n"_Stz);
   
   NEVER_REACH;
 }
@@ -150,7 +150,7 @@ void ValWrk::operator =(Object* pPtr)
 /*----------------------------------------------------------------------------*/
 /* assign/copy a string into workspace                                        */
 /*----------------------------------------------------------------------------*/
-void ValWrk::operator =(Str* pStr)
+void ValWrk::operator =(Stz* pStr)
 {
   StrVal* pNestedStrVal = (StrVal*)pNestedValue();
   
@@ -301,7 +301,7 @@ StrVal* ValWrk::pNestedStrVal(void)
 /*----------------------------------------------------------------------------*/
 /* convert to string                                                          */
 /*----------------------------------------------------------------------------*/
-void ValWrk::vToString(Str* aWorkspace)
+void ValWrk::vToString(Stz* aWorkspace)
 {
   *aWorkspace = reinterpret_cast<void*>(pNestedValue());
 }

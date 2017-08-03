@@ -19,18 +19,18 @@ namespace Transactions
     /* 9 */ TP_ENUMS
   };
   
-  static Str* pTP[]
+  static Stz* pTP[]
   {
-    /* 0 */ "FREE"_Str,
-    /* 1 */ "ALLOCATED"_Str,
-    /* 2 */ "EXECUTING"_Str,
-    /* 3 */ "COMMITTING"_Str,
-    /* 4 */ "COMMITTED"_Str,
-    /* 5 */ "PREPARING"_Str,
-    /* 6 */ "PREPARED"_Str,
-    /* 7 */ "ROLLINGBACK"_Str,
-    /* 8 */ "ROLLEDBACK"_Str,
-    /* 9 */ "ENUMS"_Str
+    /* 0 */ "FREE"_Stz,
+    /* 1 */ "ALLOCATED"_Stz,
+    /* 2 */ "EXECUTING"_Stz,
+    /* 3 */ "COMMITTING"_Stz,
+    /* 4 */ "COMMITTED"_Stz,
+    /* 5 */ "PREPARING"_Stz,
+    /* 6 */ "PREPARED"_Stz,
+    /* 7 */ "ROLLINGBACK"_Stz,
+    /* 8 */ "ROLLEDBACK"_Stz,
+    /* 9 */ "ENUMS"_Stz
   };
   
   class Tx : public Object,
@@ -52,7 +52,7 @@ namespace Transactions
     
     Tx(void);
     
-    static void vDump(eCN eClass, Object* pObject, Str* aTab);
+    static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     
     i8 iTxSlot(void);
     void vTxSlot(i8 iTxSlot);

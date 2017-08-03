@@ -100,7 +100,7 @@ void Token::vReset(void)
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
   
   m_eToken = TN_NONE;
-  m_sText = ""_Str;
+  m_sText = ""_Stz;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -118,7 +118,7 @@ bool Token::bIsNumeric(void)
 /*----------------------------------------------------------------------------*/
 /* reset this token set                                                       */
 /*----------------------------------------------------------------------------*/
-bool Token::bSame(Str* aArg)
+bool Token::bSame(Stz* aArg)
 {
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
   
@@ -142,7 +142,7 @@ bool Token::bHasText(void)
 /*----------------------------------------------------------------------------*/
 /* reset this token set                                                       */
 /*----------------------------------------------------------------------------*/
-void Token::vCopy(Str* aArg)
+void Token::vCopy(Stz* aArg)
 {
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
   
@@ -162,7 +162,7 @@ void Token::vCopy(Token* pGivenToken)
 /*----------------------------------------------------------------------------*/
 /* reset this token set                                                       */
 /*----------------------------------------------------------------------------*/
-void Token::vConcat(Str* aArg)
+void Token::vConcat(Stz* aArg)
 {
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
   
@@ -196,7 +196,7 @@ i8 Token::iLength()
 /*----------------------------------------------------------------------------*/
 /* reset this token set                                                       */
 /*----------------------------------------------------------------------------*/
-Str* Token::aText(void)
+Stz* Token::aText(void)
 {
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
   

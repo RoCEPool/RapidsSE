@@ -31,8 +31,8 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Steps(void)
 {
-  vAddPrimitive("steps::list"_Str,  &vStepsList,  false);
-  vAddPrimitive("steps::reset"_Str, &vStepsReset, false);
+  vAddPrimitive("steps::list"_Stz,  &vStepsList,  false);
+  vAddPrimitive("steps::reset"_Stz, &vStepsReset, false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -40,10 +40,10 @@ void Task::vAddPrimitives_Steps(void)
 /*----------------------------------------------------------------------------*/
 void Task::vStepsList(MP_Task mpTask)
 {
-ENTRY("vStepsList"_Str);
+ENTRY("vStepsList"_Stz);
 
   File xFile;
-  xFile.bOpen("steps.csv"_Str, C_OPEN_WRITE);
+  xFile.bOpen("steps.csv"_Stz, C_OPEN_WRITE);
   
   gpStepArray->vList(xFile);
   
@@ -57,7 +57,7 @@ ENTRY("vStepsList"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vStepsReset(MP_Task mpTask)
 {
-  ENTRY("vStepsReset"_Str);
+  ENTRY("vStepsReset"_Stz);
   
   gpStepArray->vReset();
   

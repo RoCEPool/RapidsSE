@@ -265,14 +265,14 @@ void EntryBuffer::vPrevBuffer(EntryBuffer* pPrevBuffer)
 /*----------------------------------------------------------------------------*/
 /* dump rowbuffer                                                             */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vDump(eCN eClass, Object* pObject, Str* aTab)
+void EntryBuffer::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
   ASSERT(eClass == CN_ENTRYBUFFER);
   ASSERT(pObject->eClass() == CN_ENTRYBUFFER);
   
   EntryBuffer* pRowBuffer = reinterpret_cast<EntryBuffer*>(pObject);
   
-  vTrace("rows %lld used %lld free %lld prevBuffer %p nextBuffer %p\n"_Str,
+  vTrace("rows %lld used %lld free %lld prevBuffer %p nextBuffer %p\n"_Stz,
          pRowBuffer->m_nEntries,
          pRowBuffer->m_xWsp.nUsed(),
          pRowBuffer->m_xWsp.nFree(),
@@ -569,7 +569,7 @@ void EntryBuffer::vAnalyze(s48K& sAnalysis, bool bDetailed, i8& iBuffers, i8& iE
       iEntries += (pNextBuffer->m_nEntries - 1);
       
       if (bDetailed)
-      sAnalysis.vCatSprint("     buffer %5lld (L%lld) : %lld entries\n"_Str,
+      sAnalysis.vCatSprint("     buffer %5lld (L%lld) : %lld entries\n"_Stz,
                            iBuffers,
                            pNextBuffer->m_nBufferLevel,
                            pNextBuffer->m_nEntries - 1);
@@ -585,7 +585,7 @@ void EntryBuffer::vAnalyze(s48K& sAnalysis, bool bDetailed, i8& iBuffers, i8& iE
   iEntries += (m_nEntries - 1);
   
   if (bDetailed)
-    sAnalysis.vCatSprint("     buffer %5lld (L%lld) : %lld entries\n"_Str,
+    sAnalysis.vCatSprint("     buffer %5lld (L%lld) : %lld entries\n"_Stz,
                          iBuffers,
                          m_nBufferLevel,
                          m_nEntries - 1);
@@ -797,7 +797,7 @@ void EntryBuffer::vBufferCount(i8& nBuffers)
 /*----------------------------------------------------------------------------*/
 /* insert an entry for {key,id} into an index buffer at given level           */
 /*----------------------------------------------------------------------------*/
-bool EntryBuffer::bInsertEntry(i8 iTxId, Str* pRow, i8 iLength)
+bool EntryBuffer::bInsertEntry(i8 iTxId, Stz* pRow, i8 iLength)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -853,7 +853,7 @@ Entry* EntryBuffer::pInsert(EntWrk& xEntWrk)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  //vTrace("Inserting key:\n"_Str);
+  //vTrace("Inserting key:\n"_Stz);
   //xKeyWrk.vShow();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -865,9 +865,9 @@ Entry* EntryBuffer::pInsert(EntWrk& xEntWrk)
   Entry* pAfterEntry = pPosition(xEntWrk.aKey(), JC_AFTER, &xPriorVec, bIsEqual);
     
   if (m_pIndex->bIsUnique() and bIsEqual) {
-    vTrace("Warning: Duplicate key in unique index %s "_Str, m_pIndex->aIndexName());
+    vTrace("Warning: Duplicate key in unique index %s "_Stz, m_pIndex->aIndexName());
     xEntWrk.aKey()->vShow(m_pIndex->pIdxColVec());
-    vTrace("\n"_Str);
+    vTrace("\n"_Stz);
   }
   
   // create a new entry after the prior entry and set it
@@ -876,9 +876,9 @@ Entry* EntryBuffer::pInsert(EntWrk& xEntWrk)
   Entry* pNewEntry = pAllotEntry(nEntryBytes, xEntWrk.nOffsets(), pAfterEntry);
   pNewEntry->vSetEntry(xEntWrk);
   
-  //vTrace("\n\n---------INDEX BUFFER AFTER MOVING --------------\n"_Str);
+  //vTrace("\n\n---------INDEX BUFFER AFTER MOVING --------------\n"_Stz);
   //vShow();
-  //vTrace("-----------------------\n\n"_Str);
+  //vTrace("-----------------------\n\n"_Stz);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // revise the offsets of the prior entries from the prior vector
@@ -1031,10 +1031,10 @@ void EntryBuffer::vShow(void)
   if (m_pHigherLevel)
     StrLib::wToString(((EntryBuffer*)m_pHigherLevel)->m_nBufferLevel, sHigherLevel.s());
   else
-    sHigherLevel = "..."_Str;
+    sHigherLevel = "..."_Stz;
   
   vTrace("EntryBuffer %p (buffer %lld): level L%lld HigerLevel %p (L%s) "
-         "entries %lld prevBuffer %p nextBuffer %p \n"_Str,
+         "entries %lld prevBuffer %p nextBuffer %p \n"_Stz,
          this,
          *nBufferNo(),
          m_nBufferLevel,
@@ -1045,11 +1045,11 @@ void EntryBuffer::vShow(void)
          m_pNextBuffer);
   
   for (Entry* pEntry = pHead(); pEntry != nullptr; pEntry = pNextEntry(pEntry)) {
-    vTrace("%8lld: "_Str, nSub(pEntry, m_xWsp.aArea()));
+    vTrace("%8lld: "_Stz, nSub(pEntry, m_xWsp.aArea()));
     pEntry->vShow(iToOffsetAbs(pEntry), m_pIndex);
   }
   
-  vTrace("\n"_Str);
+  vTrace("\n"_Stz);
   
 }
 
@@ -1091,11 +1091,11 @@ EntryBuffer* EntryBuffer::pSplitBuffer(void)
   EntryVec xPrevVec;
   vPriorVec(aMoveEntry,&xPrevVec);
   
-  //  vTrace("Split %p\n"_Str,pSplitEntry);
-  //  vTrace("Move  %p\n"_Str,aMoveEntry);
+  //  vTrace("Split %p\n"_Stz,pSplitEntry);
+  //  vTrace("Move  %p\n"_Stz,aMoveEntry);
   //  for (on n_OffsetNo; n_OffsetNo.bInRange(); n_OffsetNo++) {
   //    ln n_Level = n_OffsetNo.nToLevelNo();
-  //    vTrace("%p v %p\n"_Str,xPrevVec[nLevel],xPriorVec[n_Level]);
+  //    vTrace("%p v %p\n"_Stz,xPrevVec[nLevel],xPriorVec[n_Level]);
   //    ASSERT(xPrevVec[n_Level] == xPriorVec[n_Level]);
   //  }
   
@@ -1171,11 +1171,11 @@ EntryBuffer* EntryBuffer::pSplitBuffer(void)
   //EntryVec xPrevVec;
   vPriorVec(aMoveEntry,&xPriorVec);
   
-  //  vTrace("Split %p\n"_Str,pSplitEntry);
-  //  vTrace("Move  %p\n"_Str,aMoveEntry);
+  //  vTrace("Split %p\n"_Stz,pSplitEntry);
+  //  vTrace("Move  %p\n"_Stz,aMoveEntry);
   //  for (on nOffsetNo; nOffsetNo.bInRange(); nOffsetNo++) {
   //    ln nLevel = nOffsetNo.nToLevelNo();
-  //    vTrace("%p v %p\n"_Str,xPrevVec[nLevel],xPriorVec[nLevel]);
+  //    vTrace("%p v %p\n"_Stz,xPrevVec[nLevel],xPriorVec[nLevel]);
   //    ASSERT(xPrevVec[nLevel] == xPriorVec[nLevel]);
   //  }
   
@@ -1556,7 +1556,7 @@ void EntryBuffer::vDumpPrior(Entry* xPriorVec[])
   for (on nOffsetNo; nOffsetNo.bInRange(); nOffsetNo++) {
     i8 iLevel = *nOffsetNo + 1;
     i8 iReviseOffset = xPriorVec[iLevel]->iRightOffset(nOffsetNo);
-    vTrace("%p xPriorVec[%lld]->uRightOffset(%lld) = %lld\n"_Str,
+    vTrace("%p xPriorVec[%lld]->uRightOffset(%lld) = %lld\n"_Stz,
            xPriorVec[iLevel], iLevel, *nOffsetNo, iReviseOffset);
   }
 }
@@ -1861,9 +1861,9 @@ void EntryBuffer::vFixPriorOffset(EntryVec* pPriorVec, Entry* aNewEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  //vTrace("PRIOR VECTOR BEFORE FIXING\n"_Str);
+  //vTrace("PRIOR VECTOR BEFORE FIXING\n"_Stz);
   //vDumpPrior(xPriorVec);
-  //vTrace("\n"_Str);
+  //vTrace("\n"_Stz);
   
   // get entry size
   i8 nNewEntryBytes = aNewEntry->nSizeEntry();
@@ -1891,9 +1891,9 @@ void EntryBuffer::vFixPriorOffset(EntryVec* pPriorVec, Entry* aNewEntry)
     
   } // for
   
-  //vTrace("PRIOR VECTOR AFTER FIXING\n"_Str);
+  //vTrace("PRIOR VECTOR AFTER FIXING\n"_Stz);
   //vDumpPrior(xPriorVec);
-  //vTrace("\n"_Str);
+  //vTrace("\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2050,7 +2050,7 @@ Entry* EntryBuffer::pPosition(Key* aGivenKey, eJC eJuxtaCompare, EntryVec* pPrio
   nScanLevel = gnIndexLevels - 1;
   
   //aGivenKey->vShow(m_pIndex->pIdxColVec());
-  //vTrace("\n"_Str);
+  //vTrace("\n"_Stz);
   //vShow();
   
   Entry* pScanEntry_sl = pHead();
@@ -2078,7 +2078,7 @@ Entry* EntryBuffer::pPosition(Key* aGivenKey, eJC eJuxtaCompare, EntryVec* pPrio
       // juxta-compare given key with next key at this level
       bIsJuxta = aGivenKey->bJuxtaCompare(eJuxtaCompare,aNextKey,pIdxColVec, bIsEqual);
       
-      //vTrace(" %s\n"_Str,bAfter ? "after" : "before");
+      //vTrace(" %s\n"_Stz,bAfter ? "after" : "before");
       
       // if given key is not same/after next key then break to outer loop
       if (! bIsJuxta)

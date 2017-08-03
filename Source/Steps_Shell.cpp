@@ -31,7 +31,7 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Shell(void)
 {
-  vAddPrimitive("shell.execute"_Str,  &vShellExecute,  false);
+  vAddPrimitive("shell.execute"_Stz,  &vShellExecute,  false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -39,12 +39,12 @@ void Task::vAddPrimitives_Shell(void)
 /*----------------------------------------------------------------------------*/
 void Task::vShellExecute(MP_Task mpTask)
 {
-  ENTRY("vShellExecute"_Str);
+  ENTRY("vShellExecute"_Stz);
   
   ValWrk xCommand;
   
   if ( ! mpTask->m_pDataStack->bPop(xCommand) )
-    THROW_INVALID_DSTACK("shell.execute"_Str);
+    THROW_INVALID_DSTACK("shell.execute"_Stz);
   
   SysCall xSysCall;
   

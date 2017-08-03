@@ -24,7 +24,7 @@ void* TxArray::operator new(size_t iSize)
 void TxArray::operator delete(void* pBufferAddress)
 {
   RASSERT(pBufferAddress);
-  vFatal("fatal: TxArray class cannot be deleted"_Str);
+  vFatal("fatal: TxArray class cannot be deleted"_Stz);
   
   NEVER_REACH;
 }
@@ -56,7 +56,7 @@ TxArray::~TxArray(void)
 /*----------------------------------------------------------------------------*/
 /* dump                                                                       */
 /*----------------------------------------------------------------------------*/
-void TxArray::vDump(eCN eClass, Object* pObject, Str* aTab)
+void TxArray::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
   ASSERT(eClass == CN_TXARRAY);
   ASSERT(pObject->eClass() == CN_TXARRAY);
@@ -69,7 +69,7 @@ void TxArray::vDump(eCN eClass, Object* pObject, Str* aTab)
     if (pTxArray->m_pTx[i_Tx] != nullptr)
       iTxCount++;
   
-  vTrace("tx count %lld\n"_Str,
+  vTrace("tx count %lld\n"_Stz,
          iTxCount);
 }
 

@@ -30,42 +30,42 @@ namespace Values
   
     ~StrVal(void);
   
-    operator Str&(void);
-    operator Str*(void);
+    operator Stz&(void);
+    operator Stz*(void);
 
     static i8 nBytesRequired(i8 iLength);
   
     void operator =(i8);
     void operator =(StrVal& rArg);
     void operator =(StrVal* pArg);
-    void operator =(Str*);
+    void operator =(Stz*);
     void operator =(ValWrk& rArg);
   
     void  vAppend(const char cChar);
     i8    nAreaSize(void);
     void  vAreaSize(void);
-    void  vAssign(Str* aStr);
-    void  vAssign(Str* aStr, i8 iLength);
-    void  vCat(Str* aStr, ...);
-    void  vCatSprint(Str* aFormat, ...);
-    void  vConcat(Str* aStr);
-    bool  bContains(Str* aArg);
-    void  vCopy(Str* aStr);
-    void  vCopyCat(Str* aStr, ...);
-    void  vCopyTill(Str* aSrc, char cTill);
-    bool  bEnds(Str* aSuffix);
+    void  vAssign(Stz* aStr);
+    void  vAssign(Stz* aStr, i8 iLength);
+    void  vCat(Stz* aStr, ...);
+    void  vCatSprint(Stz* aFormat, ...);
+    void  vConcat(Stz* aStr);
+    bool  bContains(Stz* aArg);
+    void  vCopy(Stz* aStr);
+    void  vCopyCat(Stz* aStr, ...);
+    void  vCopyTill(Stz* aSrc, char cTill);
+    bool  bEnds(Stz* aSuffix);
     bool  bIsEqual(StrVal& sArg, i8 iCase);
-    bool  bEqual(Str* aArg);
+    bool  bEqual(Stz* aArg);
 
     i8    iLength(void);
     char* s(void);
-    bool  bSame(Str* aArg);
+    bool  bSame(Stz* aArg);
     i8    nSize(void);
-    void  vSprint(Str* aFormat, ...);
-    Str*  aStr(void);
+    void  vSprint(Stz* aFormat, ...);
+    Stz*  aStr(void);
     i8    iToI8(void);
     void  vToLower(void);
-    void  vToString(Str* aStr);
+    void  vToString(Stz* aStr);
   
     bool  bIsNumeric(void);
 

@@ -61,10 +61,10 @@ Dir::Dir(void)
 {
   _precondition_(_MAGIC_,CN_DIR,_FOOTER_);
   
-  m_xDirPath   = "<none>"_Str;
+  m_xDirPath   = "<none>"_Stz;
   
   m_pDirPtr    = nullptr;
-  m_xEntryName = "<none>"_Str;
+  m_xEntryName = "<none>"_Stz;
   m_iEntryType = 0;
   
   //m_xSysCall
@@ -111,7 +111,7 @@ bool Dir::bExists(s256& rPath)
 
   m_xSysCall.vError(errno);
   
-  vError("Dir::bExists: stat(%s) error; errno=%d"_Str,rPath.s(),errno);
+  vError("Dir::bExists: stat(%s) error; errno=%d"_Stz,rPath.s(),errno);
 
   return false;
 }
@@ -127,11 +127,11 @@ bool Dir::bGetCurrent(s256& rPath)
   
   char* aDirPath = getcwd(rPath.s(),rPath.nAreaSize());
 
-  m_xDirPath = (Str*)aDirPath;
+  m_xDirPath = (Stz*)aDirPath;
   
   if ( ! aDirPath ) {
     m_xSysCall.vError(errno);
-    vWarn("Dir::bGet: getcwd() error; errno=%d"_Str,errno);
+    vWarn("Dir::bGet: getcwd() error; errno=%d"_Stz,errno);
     return false;
   }
   
@@ -148,7 +148,7 @@ void Dir::vInit(void)
   
   m_xSysCall.vSetMagic();
   
-  m_xDirPath = ""_Str;
+  m_xDirPath = ""_Stz;
   m_xSysCall.vClear();
 }
 
@@ -165,7 +165,7 @@ bool Dir::bMake(s256& rPath)
 
   if (mkdir(aPath,0777) != 0 && EEXIST != errno) {
     m_xSysCall.vError(errno);
-    vWarn("Dir::bMake: mkdir() error; errno=%d"_Str,errno);
+    vWarn("Dir::bMake: mkdir() error; errno=%d"_Stz,errno);
     return false;
   }
 
@@ -188,7 +188,7 @@ bool Dir::bRemove(s256& rPath)
 
   if (-1 == rCode) {
     m_xSysCall.vError(errno);
-    vWarn("Dir::bRemove: rmdir() error; errno=%d"_Str,errno);
+    vWarn("Dir::bRemove: rmdir() error; errno=%d"_Stz,errno);
     return false;
   }
 
@@ -208,7 +208,7 @@ bool Dir::bChangeCurrent(s256& rPath)
   
   if (iCode) {
     m_xSysCall.vError(errno);
-    //vWarn("chdir() error; errno=%d\n"_Str,errno);
+    //vWarn("chdir() error; errno=%d\n"_Stz,errno);
     return false;
   }
 
@@ -234,7 +234,7 @@ void Dir::vClose(void)
   i8 iResult = closedir(m_pDirPtr);
   if (-1 == iResult) {
     m_xSysCall.vError(errno);
-    vWarn("Dir::vClose: closedir() error; errno=%d"_Str,errno);
+    vWarn("Dir::vClose: closedir() error; errno=%d"_Stz,errno);
     return;
   }
 
@@ -305,7 +305,7 @@ bool Dir::bOpen(void)
   m_pDirPtr = opendir(wPath);
   if (! m_pDirPtr) {
     m_xSysCall.vError(errno);
-    vWarn("Dir::bOpen: opendir() error; errno=%d"_Str,errno);
+    vWarn("Dir::bOpen: opendir() error; errno=%d"_Stz,errno);
     return false;
   }
 
@@ -352,13 +352,13 @@ bool Dir::bRead(void)
   pDirEnt = readdir(m_pDirPtr);
   
   if ( ! pDirEnt ) {
-    m_xEntryName = "<none>"_Str;
+    m_xEntryName = "<none>"_Stz;
     m_iEntryType = 0;
     m_xSysCall.vSuccess();
     return false;
   }
   
-  m_xEntryName = (Str*)pDirEnt->d_name;
+  m_xEntryName = (Stz*)pDirEnt->d_name;
   
   m_iEntryType = pDirEnt->d_type;
   

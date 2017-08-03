@@ -67,7 +67,7 @@ void HeapBuffer::vAnalyse(i8 nBytes, i8 xCounts[])
        pChunk = pNextChunk(pChunk,nBytes), iChunk++) {
 
     eCN eClass = pChunk->eClass();
-    //vTrace("Analyse %p : %p %lld\n"_Str,this,pChunk,eClass);
+    //vTrace("Analyse %p : %p %lld\n"_Stz,this,pChunk,eClass);
     
     if (CN_FREECHUNK == eClass)
       continue;
@@ -79,14 +79,14 @@ void HeapBuffer::vAnalyse(i8 nBytes, i8 xCounts[])
 /*----------------------------------------------------------------------------*/
 /* dump this heap buffer                                                      */
 /*----------------------------------------------------------------------------*/
-void HeapBuffer::vDump(eCN eClass, Object* pObject, Str* aTab)
+void HeapBuffer::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
   ASSERT(eClass == CN_HEAPBUFFER);
   ASSERT(pObject->eClass() == CN_HEAPBUFFER);
   
   HeapBuffer* pHeapBuffer = reinterpret_cast<HeapBuffer*>(pObject);
   
-  vTrace("nextBuffer %p prevBuffer %p\n"_Str,
+  vTrace("nextBuffer %p prevBuffer %p\n"_Stz,
          pHeapBuffer->m_pNextBuffer,
          pHeapBuffer->m_pPrevBuffer);
 }
@@ -184,11 +184,11 @@ void HeapBuffer::vVerify(i8 iChunkSize)
 /*----------------------------------------------------------------------------*/
 /* calculate address of the last byte of given buffer                         */
 /*----------------------------------------------------------------------------*/
-Str* HeapBuffer::aChunkEnd(FreeChunk* pChunk, i8 nBytes)
+Stz* HeapBuffer::aChunkEnd(FreeChunk* pChunk, i8 nBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_HEAPBUFFER,_FOOTER_);
   
-  Str* aChunkEnd = pAdd<Str*>(pChunk,nBytes - 1);
+  Stz* aChunkEnd = pAdd<Stz*>(pChunk,nBytes - 1);
   
   return aChunkEnd;
 }

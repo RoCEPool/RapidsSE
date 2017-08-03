@@ -80,14 +80,14 @@ Stack::~Stack(void)
 /*----------------------------------------------------------------------------*/
 /* dump grid                                                                  */
 /*----------------------------------------------------------------------------*/
-void Stack::vDump(eCN eClass, Object* pObject, Str* aTab)
+void Stack::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
   ASSERT(eClass == CN_STACK);
   ASSERT(pObject->eClass() == CN_STACK);
   
   Stack* pStack = _pStack(pObject);
   
-  vTrace("values %lld top %p\n"_Str,
+  vTrace("values %lld top %p\n"_Stz,
          pStack->m_iValues,
          pStack->m_pTop);
 }
@@ -929,9 +929,9 @@ void Stack::vDiscard(void)
 /*----------------------------------------------------------------------------*/
 /* stk -- dump the data stack                                                 */
 /*----------------------------------------------------------------------------*/
-void Stack::vContentDump(Str* aPrefix, Str* aTitle)
+void Stack::vContentDump(Stz* aPrefix, Stz* aTitle)
 {
-  vTrace("[%s]%s:\n"_Str,aPrefix,aTitle);
+  vTrace("[%s]%s:\n"_Stz,aPrefix,aTitle);
   
   ValWrk xValWrk;
   
@@ -943,7 +943,7 @@ void Stack::vContentDump(Str* aPrefix, Str* aTitle)
     vPeekValWrk(iVal,xValWrk);
     
     ValLib::vToString(&xValWrk,sWorkspace);
-    Str* aClass = xValWrk.aClass();
+    Stz* aClass = xValWrk.aClass();
     
     eCN eClass = xValWrk.eClass();
     
@@ -951,17 +951,17 @@ void Stack::vContentDump(Str* aPrefix, Str* aTitle)
       PtrVal* pPtrVal = _pPtrVal(&xValWrk);
       Object* pObject = pPtrVal->pPtr();
       eCN ePtdClass   = pObject->eClass();
-      vTrace("[%s] [%2lld] %s (%s %s)\n"_Str,
+      vTrace("[%s] [%2lld] %s (%s %s)\n"_Stz,
         aPrefix,iVal,sWorkspace.s(),aClass,aCN[ePtdClass]);
     }
     else if (CN_IPVAL == eClass) {                                       //RAY??
       IpVal* pIpVal = _pIpVal(&xValWrk);
       Cell* pCell = pIpVal->pIpPtr();
-      vTrace("[%s] [%2lld] nullptr\n"_Str,aPrefix,iVal);  //RAY: should trace pIpVal
-//    vTrace("[%s] [%2lld] %p\n"_Str,aPrefix,iVal,pIpVal);
+      vTrace("[%s] [%2lld] nullptr\n"_Stz,aPrefix,iVal);  //RAY: should trace pIpVal
+//    vTrace("[%s] [%2lld] %p\n"_Stz,aPrefix,iVal,pIpVal);
     }
     else {
-      vTrace("[%s] [%2lld] %s (%s)\n"_Str,
+      vTrace("[%s] [%2lld] %s (%s)\n"_Stz,
              aPrefix,iVal,sWorkspace.s(),aClass);
     }
   }
@@ -999,7 +999,7 @@ void Stack::vPeekValWrk(i8 iNthValue, ValWrk& xValWrk)
   
   i8 iSize = ValLib::iSize(pPeekedValue);
   
-  //vTrace("Peek: %lld %p %lld\n"_Str,iNthValue,pPeekedValue,iSize);
+  //vTrace("Peek: %lld %p %lld\n"_Stz,iNthValue,pPeekedValue,iSize);
   
   MemLib::vCopy(xValWrk.pNestedValueSelf(),pPeekedValue,iSize,CN_STACK);
 }

@@ -87,14 +87,14 @@ void PlanList::vContentDump(void)
 /*----------------------------------------------------------------------------*/
 /* dump                                                                       */
 /*----------------------------------------------------------------------------*/
-void PlanList::vDump(eCN eClass, Object* pObject, Str* aTab)
+void PlanList::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
   ASSERT(eClass == CN_PLANLIST);
   ASSERT(pObject->eClass() == CN_PLANLIST);
   
   PlanList* pPlanList = reinterpret_cast<PlanList*>(pObject);
   
-  vTrace("\n"_Str);
+  vTrace("\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -128,7 +128,7 @@ void PlanList::vShow(void)
   
   m_zLock.vGrabRead();
   
-  vTrace("  planList %p count %lld\n"_Str,
+  vTrace("  planList %p count %lld\n"_Stz,
          this,
          iCount());
   

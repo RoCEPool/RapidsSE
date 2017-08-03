@@ -251,10 +251,10 @@ void AccessPath::vShow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ACCESSPATH,_FOOTER_);
   
-  vTrace("Path %12s %s %s score %d\n"_Str,
+  vTrace("Path %12s %s %s score %d\n"_Stz,
          m_pIndex->aIndexName(),
          aAT[m_eAccess],
-         m_bIsCandidate ? "cdt"_Str : "not"_Str,
+         m_bIsCandidate ? "cdt"_Stz : "not"_Stz,
          m_iPathScore);
   
   if (m_pLowerPredicates) {
@@ -270,7 +270,7 @@ void AccessPath::vShow(void)
       pUpperPredicate->vShow();
     }
   }
-  vTrace("\n"_Str);
+  vTrace("\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

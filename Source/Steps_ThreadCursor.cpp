@@ -31,14 +31,14 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_ThreadCursor(void)
 {
-  vAddPrimitive("threadCursor.begin"_Str,  &vThreadCursorBegin,  false);
-  vAddPrimitive("threadCursor.delete"_Str, &vThreadCursorDelete, false);
-  vAddPrimitive("threadCursor.end"_Str,    &vThreadCursorEnd,    false);
-  vAddPrimitive("threadCursor.first"_Str,  &vThreadCursorFirst,  false);
-  vAddPrimitive("threadCursor.get"_Str,    &vThreadCursorGet,    false);
-  vAddPrimitive("threadCursor.init"_Str,   &vThreadCursorInit,   false);
-  vAddPrimitive("threadCursor::new"_Str,    &vThreadCursorNew,    false);
-  vAddPrimitive("threadCursor.next"_Str,   &vThreadCursorNext,   false);
+  vAddPrimitive("threadCursor.begin"_Stz,  &vThreadCursorBegin,  false);
+  vAddPrimitive("threadCursor.delete"_Stz, &vThreadCursorDelete, false);
+  vAddPrimitive("threadCursor.end"_Stz,    &vThreadCursorEnd,    false);
+  vAddPrimitive("threadCursor.first"_Stz,  &vThreadCursorFirst,  false);
+  vAddPrimitive("threadCursor.get"_Stz,    &vThreadCursorGet,    false);
+  vAddPrimitive("threadCursor.init"_Stz,   &vThreadCursorInit,   false);
+  vAddPrimitive("threadCursor::new"_Stz,    &vThreadCursorNew,    false);
+  vAddPrimitive("threadCursor.next"_Stz,   &vThreadCursorNext,   false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -46,11 +46,11 @@ void Task::vAddPrimitives_ThreadCursor(void)
 /*----------------------------------------------------------------------------*/
 void Task::vThreadCursorBegin(MP_Task mpTask)
 {
-ENTRY("vThreadCursorBegin"_Str);
+ENTRY("vThreadCursorBegin"_Stz);
   
   Object* pPtrThreadCursor;
   if ( ! mpTask->m_pDataStack->bPop(pPtrThreadCursor) )
-    THROW_INVALID_DSTACK("threadCursor.begin"_Str);
+    THROW_INVALID_DSTACK("threadCursor.begin"_Stz);
   
   ThreadCursor* pThreadCursor = _pThreadCursor(pPtrThreadCursor);
   ASSERT(CN_THREADCURSOR == pThreadCursor->eClass());
@@ -65,11 +65,11 @@ ENTRY("vThreadCursorBegin"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vThreadCursorDelete(MP_Task mpTask)
 {
-ENTRY("vTheadCursorDelete"_Str);
+ENTRY("vTheadCursorDelete"_Stz);
   
   Object* pPtrThreadCursor;
   if ( ! mpTask->m_pDataStack->bPop(pPtrThreadCursor) )
-    THROW_INVALID_DSTACK("threadCursor.delete"_Str);
+    THROW_INVALID_DSTACK("threadCursor.delete"_Stz);
   
   ThreadCursor* pThreadCursor = _pThreadCursor(pPtrThreadCursor);
   ASSERT(CN_THREADCURSOR == pThreadCursor->eClass());
@@ -84,11 +84,11 @@ ENTRY("vTheadCursorDelete"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vThreadCursorEnd(MP_Task mpTask)
 {
-ENTRY("vThreadCursorEnd"_Str);
+ENTRY("vThreadCursorEnd"_Stz);
   
   Object* pPtrThreadCursor;
   if ( ! mpTask->m_pDataStack->bPop(pPtrThreadCursor) )
-    THROW_INVALID_DSTACK("threadcursor.end"_Str);
+    THROW_INVALID_DSTACK("threadcursor.end"_Stz);
   
   ThreadCursor* pThreadCursor = _pThreadCursor(pPtrThreadCursor);
   ASSERT(CN_THREADCURSOR == pThreadCursor->eClass());
@@ -103,11 +103,11 @@ ENTRY("vThreadCursorEnd"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vThreadCursorFirst(MP_Task mpTask)
 {
-ENTRY("vThreadCursorFirst"_Str);
+ENTRY("vThreadCursorFirst"_Stz);
   
   Object* pPtrThreadCursor;
   if ( ! mpTask->m_pDataStack->bPop(pPtrThreadCursor) )
-    THROW_INVALID_DSTACK("threadCursor.first"_Str);
+    THROW_INVALID_DSTACK("threadCursor.first"_Stz);
   
   ThreadCursor* pThreadCursor = _pThreadCursor(pPtrThreadCursor);
   ASSERT(CN_THREADCURSOR == pThreadCursor->eClass());
@@ -126,11 +126,11 @@ ENTRY("vThreadCursorFirst"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vThreadCursorGet(MP_Task mpTask)
 {
-ENTRY("vThreadCursorGet"_Str);
+ENTRY("vThreadCursorGet"_Stz);
   
   Object* pPtrThreadCursor;
   if ( ! mpTask->m_pDataStack->bPop(pPtrThreadCursor) )
-    THROW_INVALID_DSTACK("threadCursor.get"_Str);
+    THROW_INVALID_DSTACK("threadCursor.get"_Stz);
   
   ThreadCursor* pThreadCursor = _pThreadCursor(pPtrThreadCursor);
   ASSERT(CN_THREADCURSOR == pThreadCursor->eClass());
@@ -147,11 +147,11 @@ ENTRY("vThreadCursorGet"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vThreadCursorInit(MP_Task mpTask)
 {
-ENTRY("vThreadCursorInit"_Str);
+ENTRY("vThreadCursorInit"_Stz);
   
   Object* pPtrThreadCursor;
   if ( ! mpTask->m_pDataStack->bPop(pPtrThreadCursor) )
-    THROW_INVALID_DSTACK("threadCursor.init"_Str);
+    THROW_INVALID_DSTACK("threadCursor.init"_Stz);
   
   ThreadCursor* pThreadCursor = _pThreadCursor(pPtrThreadCursor);
   ASSERT(CN_THREADCURSOR == pThreadCursor->eClass());
@@ -166,7 +166,7 @@ ENTRY("vThreadCursorInit"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vThreadCursorNew(MP_Task mpTask)
 {
-ENTRY("vThreadCursorNew"_Str);
+ENTRY("vThreadCursorNew"_Stz);
   
   ThreadCursor* pThreadCursor = new ThreadCursor(gpThreadList);
   ASSERT(CN_THREADCURSOR == pThreadCursor->eClass());
@@ -181,11 +181,11 @@ ENTRY("vThreadCursorNew"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vThreadCursorNext(MP_Task mpTask)
 {
-ENTRY("vThreadCursorNext"_Str);
+ENTRY("vThreadCursorNext"_Stz);
   
   Object* pPtrThreadCursor;
   if ( ! mpTask->m_pDataStack->bPop(pPtrThreadCursor) )
-    THROW_INVALID_DSTACK("threadCursor.next"_Str);
+    THROW_INVALID_DSTACK("threadCursor.next"_Stz);
   
   ThreadCursor* pThreadCursor = _pThreadCursor(pPtrThreadCursor);
   ASSERT(CN_THREADCURSOR == pThreadCursor->eClass());

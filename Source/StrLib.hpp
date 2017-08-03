@@ -97,8 +97,8 @@ namespace Base
     static bool  bSkipNonAlnum(char** ps);
     static bool  bSkipNonDigit(char** ps);
     static void  vSkipWhite(char** ps);
-    static void  vSprint(Str* sDst, Str* sFormat, ...);
-    static void  vSprint(char* sDst, Str* sFormat, ...);
+    static void  vSprint(Stz* sDst, Stz* sFormat, ...);
+    static void  vSprint(char* sDst, Stz* sFormat, ...);
     static void  vSprint(char* sDst, va_list args, const char* sFormat);
     static void  vSprintCat(char* sDst, const char* sFormat, ...);
     static void  vSprintCat(char* sDst, va_list args, const char* sFormat);

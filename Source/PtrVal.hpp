@@ -21,7 +21,7 @@ namespace Values
     Object* pPtr(void) const;
     i8      iAsInt(void);
   
-    void vToString(Str* aWorkspace);
+    void vToString(Stz* aWorkspace);
   };
   
   PtrVal* _pPtrVal(void* aAddr);

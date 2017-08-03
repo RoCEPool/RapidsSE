@@ -24,7 +24,7 @@ DicPath* DicPath::_pDicStack(void* aAddr)
 void* DicPath::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  vFatal("fatal: DictionaryStack class cannot be new'd"_Str);
+  vFatal("fatal: DictionaryStack class cannot be new'd"_Stz);
   
   NEVER_REACH;
 }
@@ -35,7 +35,7 @@ void* DicPath::operator new(size_t iSize)
 void DicPath::operator delete(void* aAddress)
 {
   RASSERT(aAddress);
-  vFatal("fatal: DictionaryStack class cannot be deleted"_Str);
+  vFatal("fatal: DictionaryStack class cannot be deleted"_Stz);
   
   NEVER_REACH;
 }
@@ -87,7 +87,7 @@ void DicPath::vContentDump(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICPATH,_FOOTER_);
   
   for (i8 i_Dic = m_iTop; i_Dic >= 0; i_Dic--)
-    vTrace("Dic %p %lld %s\n"_Str,m_pDic[i_Dic],i_Dic,m_pDic[i_Dic]->sName().s());
+    vTrace("Dic %p %lld %s\n"_Stz,m_pDic[i_Dic],i_Dic,m_pDic[i_Dic]->sName().s());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -113,25 +113,25 @@ void DicPath::vDiscard(void)
 /*----------------------------------------------------------------------------*/
 /* dump dictionary                                                            */
 /*----------------------------------------------------------------------------*/
-void DicPath::vDump(eCN eClass, Object* pObject, Str* aTab)
+void DicPath::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
   ASSERT(eClass == CN_DICPATH);
   ASSERT(pObject->eClass() == CN_DICPATH);
   
   DicPath* pDicPath = reinterpret_cast<DicPath*>(pObject);
   
-  vTrace("top %p:"_Str,pDicPath->m_iTop);
+  vTrace("top %p:"_Stz,pDicPath->m_iTop);
   //for (i8 i_Dic = pDicPath->m_iTop; i_Dic >= 0; i_Dic --)
-    //vTrace("%s  Dic %p %lld %s\n"_Str,aTab, pDicPath->m_pDic[i_Dic],i,
+    //vTrace("%s  Dic %p %lld %s\n"_Stz,aTab, pDicPath->m_pDic[i_Dic],i,
            //pDicPath->m_pDic[i_Dic]->sName().s());
   
   for (i8 i_Dic = pDicPath->m_iTop; i_Dic >= 0; i_Dic--) {
-    vTrace(" dic %p %lld %s"_Str,aTab, pDicPath->m_pDic[i_Dic],i_Dic,
+    vTrace(" dic %p %lld %s"_Stz,aTab, pDicPath->m_pDic[i_Dic],i_Dic,
            pDicPath->m_pDic[i_Dic]->sName().s());
     //Dic::vDump(CN_DIC, pDicPath->m_pDic[i], aTab);
   }
 
-  vTrace("\n"_Str);
+  vTrace("\n"_Stz);
 
   //for (Word* pWord = m_pCurrentWord; pWord; pWord = pWord->pPrevWord())
   //  pWord->vDump();
@@ -152,7 +152,7 @@ Word* DicPath::pFindWord(StrVal& sName)
 /*----------------------------------------------------------------------------*/
 /* find word in stack of dictionaries                                         */
 /*----------------------------------------------------------------------------*/
-Word* DicPath::pFindWord(Str* aName)
+Word* DicPath::pFindWord(Stz* aName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICPATH,_FOOTER_);
   
@@ -162,11 +162,11 @@ Word* DicPath::pFindWord(Str* aName)
     
     Dic* pDic = m_pDic[i_Dic];
     
-    if ( (pWord = pDic->pFindWord((Str*)aName)) )
+    if ( (pWord = pDic->pFindWord((Stz*)aName)) )
       return pWord;
   }
   
-  if ( (pWord = gpMainDic->pFindWord((Str*)aName)) )
+  if ( (pWord = gpMainDic->pFindWord((Stz*)aName)) )
     return pWord;
   
   return nullptr;
@@ -175,7 +175,7 @@ Word* DicPath::pFindWord(Str* aName)
 /*----------------------------------------------------------------------------*/
 /* find word in current dictionary                                            */
 /*----------------------------------------------------------------------------*/
-Word* DicPath::pFindInCurrent(Str* aName)
+Word* DicPath::pFindInCurrent(Stz* aName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICPATH,_FOOTER_);
   
@@ -183,7 +183,7 @@ Word* DicPath::pFindInCurrent(Str* aName)
   
   Word* pWord;
   
-  if ( (pWord = m_pDic[m_iTop]->pFindWord((Str*)aName)) )
+  if ( (pWord = m_pDic[m_iTop]->pFindWord((Stz*)aName)) )
     return pWord;
   
   return nullptr;

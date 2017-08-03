@@ -15,14 +15,14 @@ namespace Plans
   /* 5 */ PK_ENUMS
   };
   
-  static Str* aPK[]
+  static Stz* aPK[]
   {
-  /* 0 */ "none"_Str,
-  /* 1 */ "column column op"_Str,
-  /* 2 */ "column literal op"_Str,
-  /* 3 */ "literal literal op"_Str,
-  /* 4 */ "literal column op"_Str,
-  /* 5 */ "enums"_Str,
+  /* 0 */ "none"_Stz,
+  /* 1 */ "column column op"_Stz,
+  /* 2 */ "column literal op"_Stz,
+  /* 3 */ "literal literal op"_Stz,
+  /* 4 */ "literal column op"_Stz,
+  /* 5 */ "enums"_Stz,
   };
   
   class Predicate : public Object

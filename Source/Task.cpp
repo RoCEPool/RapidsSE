@@ -98,7 +98,7 @@ Task::Task(void)
 
   ASSERT(gpTaskList);
   
-  vInit(""_Str);
+  vInit(""_Stz);
     
   _checkInitialised_(CN_TASK);
   
@@ -120,7 +120,7 @@ Task::Task(MP_Task mpTask)
   ASSERT(*mpTask);
   ASSERT(gpTaskList);
   
-  vInit(""_Str);
+  vInit(""_Stz);
   
   _checkInitialised_(CN_TASK);
   
@@ -141,7 +141,7 @@ Task::Task(Value* pRequest)
   
   ASSERT(gpTaskList);
   
-  vInit(""_Str);
+  vInit(""_Stz);
   
   m_pRequest = new ValSet;
   
@@ -149,8 +149,8 @@ Task::Task(Value* pRequest)
   i8 nBytes = ValLib::iSize(pRequest);
   MemLib::vCopy(m_pRequest,pRequest,nBytes,CN_TASK);
   
-  m_sName    = "req.task"_Str;
-  m_sComment = "requestLoop"_Str;
+  m_sName    = "req.task"_Stz;
+  m_sComment = "requestLoop"_Stz;
   m_eTaskKind = TK_REQUEST_SERVER;
   m_eActorModel = AC_SERVER;
   
@@ -166,7 +166,7 @@ Task::Task(Value* pRequest)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Task::Task(Str* aLambdaInput)
+Task::Task(Stz* aLambdaInput)
 : Object(CN_TASK)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
@@ -211,7 +211,7 @@ Task::~Task(void)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-void Task::vInit(Str* aLambda)
+void Task::vInit(Stz* aLambda)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
@@ -223,7 +223,7 @@ void Task::vInit(Str* aLambda)
   m_iTaskNo     = iTaskNo++;
   m_eTaskKind   = TK_NONE;
   m_eActorModel = AC_NONE;
-  m_sName       = "<no task name>"_Str;
+  m_sName       = "<no task name>"_Stz;
   m_eState      = TS_NONE;
   m_iTxId       = -1;
   m_npNextInSet = nullptr;
@@ -234,7 +234,7 @@ void Task::vInit(Str* aLambda)
   m_pThread     = nullptr;
   m_pTaskSet    = nullptr;
   
-  m_sComment    = ""_Str;
+  m_sComment    = ""_Stz;
   
   m_pJobQueue   = nullptr;
   
@@ -262,7 +262,7 @@ void Task::vInit(Str* aLambda)
   
   m_sLambda = aLambda;
   if (m_sLambda.iLength())
-    m_sLambda.vConcat(" exit"_Str);
+    m_sLambda.vConcat(" exit"_Stz);
   
   m_pTokeniser = new Tokeniser;
   m_pTokeniser->vPush();
@@ -322,7 +322,7 @@ void Task::vActorModel(eAC eActorModel)
 /*----------------------------------------------------------------------------*/
 /* add constant to main dictionary                                            */
 /*----------------------------------------------------------------------------*/
-void Task::vAddConstant(Str* aName, i8 iVal)
+void Task::vAddConstant(Stz* aName, i8 iVal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
 
@@ -331,14 +331,14 @@ void Task::vAddConstant(Str* aName, i8 iVal)
   IntVal xIntVal;
   xIntVal = iVal;
   
-  pNewWord->vEncode("pushValue"_Str,&xIntVal);
-  pNewWord->vEncode("exit"_Str);
+  pNewWord->vEncode("pushValue"_Stz,&xIntVal);
+  pNewWord->vEncode("exit"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
 /* add constant to main dictionary                                            */
 /*----------------------------------------------------------------------------*/
-void Task::vAddConstant(Str* aName, Str* aValue)
+void Task::vAddConstant(Stz* aName, Stz* aValue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
@@ -347,14 +347,14 @@ void Task::vAddConstant(Str* aName, Str* aValue)
   ValWrk xWspStr;
   xWspStr = aValue;
   
-  pNewWord->vEncode("pushValue"_Str,&xWspStr);
-  pNewWord->vEncode("exit"_Str);
+  pNewWord->vEncode("pushValue"_Stz,&xWspStr);
+  pNewWord->vEncode("exit"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
 /* add primitive word into main dictionary                                    */
 /*----------------------------------------------------------------------------*/
-void Task::vAddPrimitive(Str* aName, TaskStep pStep, bool bImmediate)
+void Task::vAddPrimitive(Stz* aName, TaskStep pStep, bool bImmediate)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
     
@@ -397,498 +397,498 @@ void Task::vAddConstants(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   if (gbVerbose)
-    vTrace("[[mainThread]] Adding constants...\n"_Str);
+    vTrace("[[mainThread]] Adding constants...\n"_Stz);
   
 #ifdef _DEBUG
-  vAddConstant("_DEBUG"_Str,1);
+  vAddConstant("_DEBUG"_Stz,1);
 #else
-  vAddConstant("_DEBUG"_Str,(i8)0);
+  vAddConstant("_DEBUG"_Stz,(i8)0);
 #endif
   
-  vAddConstant("version"_Str,          (Str*)RAPIDSSE_VERSION_STRING);
+  vAddConstant("version"_Stz,          (Stz*)RAPIDSSE_VERSION_STRING);
   
-  vAddConstant("jumbobuffersize"_Str,  C_SIZE_JUMBO_OBJECT);
-  vAddConstant("largebuffersize"_Str,  C_SIZE_POOL_BUFFER);
-  vAddConstant("mediumbuffersize"_Str, C_SIZE_MEDIUM_OBJECT);
-  vAddConstant("smallbuffersize"_Str,  C_SIZE_SMALL_OBJECT);
-  vAddConstant("magic"_Str,            C_MAGIC);
+  vAddConstant("jumbobuffersize"_Stz,  C_SIZE_JUMBO_OBJECT);
+  vAddConstant("largebuffersize"_Stz,  C_SIZE_POOL_BUFFER);
+  vAddConstant("mediumbuffersize"_Stz, C_SIZE_MEDIUM_OBJECT);
+  vAddConstant("smallbuffersize"_Stz,  C_SIZE_SMALL_OBJECT);
+  vAddConstant("magic"_Stz,            C_MAGIC);
   
   // Arguments
-  vAddConstant("args.bgtasks"_Str,           gxArguments.m_bBgTasks);
-  vAddConstant("args.command"_Str,           gxArguments.m_sCommand);
-  vAddConstant("args.commands"_Str,          gxArguments.m_sCommands);
-  vAddConstant("args.config"_Str,            gxArguments.m_bConfig);
-  vAddConstant("args.docol"_Str,             gxArguments.m_bDocol);
-  vAddConstant("args.dontFree"_Str,          gxArguments.m_bDontFree);
-  vAddConstant("args.folder"_Str,            gxArguments.m_sFolder);
-  vAddConstant("args.freeRB"_Str,            gxArguments.m_bFreeRB);
-  vAddConstant("args.frequency"_Str,         gxArguments.m_iFrequency);
-  vAddConstant("args.help"_Str,              gxArguments.m_bHelp);
-  vAddConstant("args.hugePages"_Str,         gxArguments.m_bHugePages);
-  vAddConstant("args.jumboBuffers"_Str,      gxArguments.m_nJumboBuffers);
-  vAddConstant("args.jumboSize"_Str,         gxArguments.m_iJumboSize);
-  vAddConstant("args.jumboTook"_Str,         gxArguments.m_nJumboTook);
-  vAddConstant("args.killPrev"_Str,          gxArguments.m_bKillPrev);
-  vAddConstant("args.levels"_Str,            gxArguments.m_iLevels);
-  vAddConstant("args.lock"_Str,              gxArguments.m_bLock);
-  vAddConstant("args.metadata"_Str,          gxArguments.m_bMetadata);
-  vAddConstant("args.munged"_Str,            gxArguments.m_bMunged);
-  vAddConstant("args.nodeName"_Str,          gxArguments.m_sNodeName);
-  vAddConstant("args.nodes"_Str,             gxArguments.m_nNodes);
-  vAddConstant("args.partitionsPerNode"_Str, gxArguments.m_nSlots);
-  vAddConstant("args.progress"_Str,          gxArguments.m_bProgress);
-  vAddConstant("args.prompt"_Str,            gxArguments.m_bPrompt);
-  vAddConstant("args.regionPrefix"_Str,      gxArguments.m_sRegionPrefix);
-  vAddConstant("args.regionName"_Str,        gxArguments.m_sRegionName);
-  vAddConstant("args.regionSize"_Str,        gxArguments.m_iRegionSize
+  vAddConstant("args.bgtasks"_Stz,           gxArguments.m_bBgTasks);
+  vAddConstant("args.command"_Stz,           gxArguments.m_sCommand);
+  vAddConstant("args.commands"_Stz,          gxArguments.m_sCommands);
+  vAddConstant("args.config"_Stz,            gxArguments.m_bConfig);
+  vAddConstant("args.docol"_Stz,             gxArguments.m_bDocol);
+  vAddConstant("args.dontFree"_Stz,          gxArguments.m_bDontFree);
+  vAddConstant("args.folder"_Stz,            gxArguments.m_sFolder);
+  vAddConstant("args.freeRB"_Stz,            gxArguments.m_bFreeRB);
+  vAddConstant("args.frequency"_Stz,         gxArguments.m_iFrequency);
+  vAddConstant("args.help"_Stz,              gxArguments.m_bHelp);
+  vAddConstant("args.hugePages"_Stz,         gxArguments.m_bHugePages);
+  vAddConstant("args.jumboBuffers"_Stz,      gxArguments.m_nJumboBuffers);
+  vAddConstant("args.jumboSize"_Stz,         gxArguments.m_iJumboSize);
+  vAddConstant("args.jumboTook"_Stz,         gxArguments.m_nJumboTook);
+  vAddConstant("args.killPrev"_Stz,          gxArguments.m_bKillPrev);
+  vAddConstant("args.levels"_Stz,            gxArguments.m_iLevels);
+  vAddConstant("args.lock"_Stz,              gxArguments.m_bLock);
+  vAddConstant("args.metadata"_Stz,          gxArguments.m_bMetadata);
+  vAddConstant("args.munged"_Stz,            gxArguments.m_bMunged);
+  vAddConstant("args.nodeName"_Stz,          gxArguments.m_sNodeName);
+  vAddConstant("args.nodes"_Stz,             gxArguments.m_nNodes);
+  vAddConstant("args.partitionsPerNode"_Stz, gxArguments.m_nSlots);
+  vAddConstant("args.progress"_Stz,          gxArguments.m_bProgress);
+  vAddConstant("args.prompt"_Stz,            gxArguments.m_bPrompt);
+  vAddConstant("args.regionPrefix"_Stz,      gxArguments.m_sRegionPrefix);
+  vAddConstant("args.regionName"_Stz,        gxArguments.m_sRegionName);
+  vAddConstant("args.regionSize"_Stz,        gxArguments.m_iRegionSize
                                                - gxArguments.m_iJumboSize);
-  vAddConstant("args.restart"_Str,           gxArguments.m_bRestart);
-  vAddConstant("args.sen"_Str,               gxArguments.m_sSen);
-  vAddConstant("args.sleep"_Str,             gxArguments.m_iSleep);
-  vAddConstant("args.slots"_Str,             gxArguments.m_nSlots);
-  vAddConstant("args.start"_Str,             gxArguments.m_bStart);
-  vAddConstant("args.status"_Str,            gxArguments.m_bStatus);
-  vAddConstant("args.stop"_Str,              gxArguments.m_bStop);
-  vAddConstant("args.touch"_Str,             gxArguments.m_bTouch);
-  vAddConstant("args.tracepoint"_Str,        gxArguments.m_bTracepoint);
-  vAddConstant("args.tracing"_Str,           gxArguments.m_bTracing);
-  vAddConstant("args.unitTests"_Str,         gxArguments.m_bUnitTests);
-  vAddConstant("args.unlink"_Str,            gxArguments.m_bUnlink);
-  vAddConstant("args.verbose"_Str,           gxArguments.m_bVerbose);
-  vAddConstant("args.welcome"_Str,           gxArguments.m_bWelcome);
+  vAddConstant("args.restart"_Stz,           gxArguments.m_bRestart);
+  vAddConstant("args.sen"_Stz,               gxArguments.m_sSen);
+  vAddConstant("args.sleep"_Stz,             gxArguments.m_iSleep);
+  vAddConstant("args.slots"_Stz,             gxArguments.m_nSlots);
+  vAddConstant("args.start"_Stz,             gxArguments.m_bStart);
+  vAddConstant("args.status"_Stz,            gxArguments.m_bStatus);
+  vAddConstant("args.stop"_Stz,              gxArguments.m_bStop);
+  vAddConstant("args.touch"_Stz,             gxArguments.m_bTouch);
+  vAddConstant("args.tracepoint"_Stz,        gxArguments.m_bTracepoint);
+  vAddConstant("args.tracing"_Stz,           gxArguments.m_bTracing);
+  vAddConstant("args.unitTests"_Stz,         gxArguments.m_bUnitTests);
+  vAddConstant("args.unlink"_Stz,            gxArguments.m_bUnlink);
+  vAddConstant("args.verbose"_Stz,           gxArguments.m_bVerbose);
+  vAddConstant("args.welcome"_Stz,           gxArguments.m_bWelcome);
   
   // true / flase
-  vAddConstant("true"_Str,    (i8)1);
-  vAddConstant("false"_Str,   (i8)0);
+  vAddConstant("true"_Stz,    (i8)1);
+  vAddConstant("false"_Stz,   (i8)0);
 
   // useful numbers
-  vAddConstant("C_1KB"_Str,   C_1KB);
-  vAddConstant("C_1MB"_Str,   C_1MB);
-  vAddConstant("C_1GB"_Str,   C_1GB);
-  vAddConstant("C_1TB"_Str,   C_1TB);
-  vAddConstant("C_1PB"_Str,   C_1PB);
-  vAddConstant("C_1EB"_Str,   C_1EB);
+  vAddConstant("C_1KB"_Stz,   C_1KB);
+  vAddConstant("C_1MB"_Stz,   C_1MB);
+  vAddConstant("C_1GB"_Stz,   C_1GB);
+  vAddConstant("C_1TB"_Stz,   C_1TB);
+  vAddConstant("C_1PB"_Stz,   C_1PB);
+  vAddConstant("C_1EB"_Stz,   C_1EB);
   
-  vAddConstant("C_1K"_Str,    C_1K);
-  vAddConstant("C_1M"_Str,    C_1M);
-  vAddConstant("C_1B"_Str,    C_1B);
+  vAddConstant("C_1K"_Stz,    C_1K);
+  vAddConstant("C_1M"_Stz,    C_1M);
+  vAddConstant("C_1B"_Stz,    C_1B);
   
-  vAddConstant("C_4KB"_Str,   C_4KB);
-  vAddConstant("C_16KB"_Str,  C_16KB);
-  vAddConstant("C_64KB"_Str,  C_64KB);
-  vAddConstant("C_256KB"_Str, C_256KB);
+  vAddConstant("C_4KB"_Stz,   C_4KB);
+  vAddConstant("C_16KB"_Stz,  C_16KB);
+  vAddConstant("C_64KB"_Stz,  C_64KB);
+  vAddConstant("C_256KB"_Stz, C_256KB);
   
   // AC_ : actor models
-  /*  0 */ vAddConstant("AC_NONE"_Str,         AC_NONE);
-  /*  1 */ vAddConstant("AC_DRONE"_Str,        AC_DRONE);
-  /*  2 */ vAddConstant("AC_PARTITION"_Str,    AC_PARTITION);
-  /*  3 */ vAddConstant("AC_SERVER"_Str,       AC_SERVER);
-  /*  4 */ vAddConstant("AC_WORKER"_Str,       AC_WORKER);
-  /*  5 */ vAddConstant("AC_ENUMS"_Str,        AC_ENUMS);
+  /*  0 */ vAddConstant("AC_NONE"_Stz,         AC_NONE);
+  /*  1 */ vAddConstant("AC_DRONE"_Stz,        AC_DRONE);
+  /*  2 */ vAddConstant("AC_PARTITION"_Stz,    AC_PARTITION);
+  /*  3 */ vAddConstant("AC_SERVER"_Stz,       AC_SERVER);
+  /*  4 */ vAddConstant("AC_WORKER"_Stz,       AC_WORKER);
+  /*  5 */ vAddConstant("AC_ENUMS"_Stz,        AC_ENUMS);
 
   // AM_ : attach map numbers
-  /*  0 */ vAddConstant("AM_NONE"_Str,         AM_NONE);
-  /*  1 */ vAddConstant("AM_INDEXENTRIES"_Str, AM_INDEXENTRIES);
-  /*  2 */ vAddConstant("AM_INDEXLEVELS"_Str,  AM_INDEXLEVELS);
-  /*  3 */ vAddConstant("AM_INDEXSPACE"_Str,   AM_INDEXSPACE);
-  /*  4 */ vAddConstant("AM_ENUMS"_Str,        AM_ENUMS);
+  /*  0 */ vAddConstant("AM_NONE"_Stz,         AM_NONE);
+  /*  1 */ vAddConstant("AM_INDEXENTRIES"_Stz, AM_INDEXENTRIES);
+  /*  2 */ vAddConstant("AM_INDEXLEVELS"_Stz,  AM_INDEXLEVELS);
+  /*  3 */ vAddConstant("AM_INDEXSPACE"_Stz,   AM_INDEXSPACE);
+  /*  4 */ vAddConstant("AM_ENUMS"_Stz,        AM_ENUMS);
   
   // CN_ : class numbers
-  /*  0 */ vAddConstant("CN_NONE"_Str,         CN_NONE);
+  /*  0 */ vAddConstant("CN_NONE"_Stz,         CN_NONE);
 
-  /*    */ vAddConstant("CN_BINVAL"_Str,       CN_BINVAL);
-  /*  4 */ vAddConstant("CN_INTVAL"_Str,       CN_INTVAL);
-  /*  5 */ vAddConstant("CN_IPVAL"_Str,        CN_IPVAL);
-  /*  6 */ vAddConstant("CN_OBJVAL"_Str,       CN_OBJVAL);
-  /*  7 */ vAddConstant("CN_PTRVAL"_Str,       CN_PTRVAL);
-  /*  1 */ vAddConstant("CN_STRVAR"_Str,       CN_STRVAR);
-  /*  8 */ vAddConstant("CN_STRVAL"_Str,       CN_STRVAL);
-  /*  9 */ vAddConstant("CN_VALREG"_Str,       CN_VALREG);
-  /* 10 */ vAddConstant("CN_VALSET"_Str,       CN_VALSET);
-  /* 11 */ vAddConstant("CN_VALWRK"_Str,       CN_VALWRK);
+  /*    */ vAddConstant("CN_BINVAL"_Stz,       CN_BINVAL);
+  /*  4 */ vAddConstant("CN_INTVAL"_Stz,       CN_INTVAL);
+  /*  5 */ vAddConstant("CN_IPVAL"_Stz,        CN_IPVAL);
+  /*  6 */ vAddConstant("CN_OBJVAL"_Stz,       CN_OBJVAL);
+  /*  7 */ vAddConstant("CN_PTRVAL"_Stz,       CN_PTRVAL);
+  /*  1 */ vAddConstant("CN_STRVAR"_Stz,       CN_STRVAR);
+  /*  8 */ vAddConstant("CN_STRVAL"_Stz,       CN_STRVAL);
+  /*  9 */ vAddConstant("CN_VALREG"_Stz,       CN_VALREG);
+  /* 10 */ vAddConstant("CN_VALSET"_Stz,       CN_VALSET);
+  /* 11 */ vAddConstant("CN_VALWRK"_Stz,       CN_VALWRK);
   
-  /* 12 */ vAddConstant("CN_ARGUMENTS"_Str,    CN_ARGUMENTS);
-  /* 13 */ vAddConstant("CN_ATOMIC"_Str,       CN_ATOMIC);
-  /* 14 */ vAddConstant("CN_ATTACHMAP"_Str,    CN_ATTACHMAP);
+  /* 12 */ vAddConstant("CN_ARGUMENTS"_Stz,    CN_ARGUMENTS);
+  /* 13 */ vAddConstant("CN_ATOMIC"_Stz,       CN_ATOMIC);
+  /* 14 */ vAddConstant("CN_ATTACHMAP"_Stz,    CN_ATTACHMAP);
   
-  /* 16 */ vAddConstant("CN_BUFFERPOOL"_Str,   CN_BUFFERPOOL);
-  /* 17 */ vAddConstant("CN_BPA"_Str,          CN_BPA);
+  /* 16 */ vAddConstant("CN_BUFFERPOOL"_Stz,   CN_BUFFERPOOL);
+  /* 17 */ vAddConstant("CN_BPA"_Stz,          CN_BPA);
   
-  /* 18 */ vAddConstant("CN_DIC"_Str,          CN_DIC);
-  /* 19 */ vAddConstant("CN_DICPATH"_Str,      CN_DICPATH);
-  /* 20 */ vAddConstant("CN_DIR"_Str,          CN_DIR);
+  /* 18 */ vAddConstant("CN_DIC"_Stz,          CN_DIC);
+  /* 19 */ vAddConstant("CN_DICPATH"_Stz,      CN_DICPATH);
+  /* 20 */ vAddConstant("CN_DIR"_Stz,          CN_DIR);
   
-  /* 21 */ vAddConstant("CN_FILE"_Str,         CN_FILE);
-  /* 15 */ vAddConstant("CN_FREEBUFFER"_Str,   CN_FREEBUFFER);
-  /* 22 */ vAddConstant("CN_FREECHUNK"_Str,    CN_FREECHUNK);
+  /* 21 */ vAddConstant("CN_FILE"_Stz,         CN_FILE);
+  /* 15 */ vAddConstant("CN_FREEBUFFER"_Stz,   CN_FREEBUFFER);
+  /* 22 */ vAddConstant("CN_FREECHUNK"_Stz,    CN_FREECHUNK);
   
-  /* 23 */ vAddConstant("CN_GRAPH"_Str,        CN_GRAPH);
-  /* 24 */ vAddConstant("CN_GRAPHCURSOR"_Str,  CN_GRAPHCURSOR);
-  /* 25 */ vAddConstant("CN_GRAPHNODE"_Str,    CN_GRAPHNODE);
-  /* 26 */ vAddConstant("CN_GRID"_Str,         CN_GRID);
+  /* 23 */ vAddConstant("CN_GRAPH"_Stz,        CN_GRAPH);
+  /* 24 */ vAddConstant("CN_GRAPHCURSOR"_Stz,  CN_GRAPHCURSOR);
+  /* 25 */ vAddConstant("CN_GRAPHNODE"_Stz,    CN_GRAPHNODE);
+  /* 26 */ vAddConstant("CN_GRID"_Stz,         CN_GRID);
   
-  /* 27 */ vAddConstant("CN_HEAPBUFFER"_Str,   CN_HEAPBUFFER);
+  /* 27 */ vAddConstant("CN_HEAPBUFFER"_Stz,   CN_HEAPBUFFER);
   
-  /* 28 */ vAddConstant("CN_INDEX"_Str,        CN_INDEX);
-  /*    */ //vAddConstant("CN_INDEXDEFN"_Str,    CN_INDEXDEFN);
+  /* 28 */ vAddConstant("CN_INDEX"_Stz,        CN_INDEX);
+  /*    */ //vAddConstant("CN_INDEXDEFN"_Stz,    CN_INDEXDEFN);
 
-  /* 29 */ vAddConstant("CN_JUMBOHEAP"_Str,    CN_JUMBOHEAP);
+  /* 29 */ vAddConstant("CN_JUMBOHEAP"_Stz,    CN_JUMBOHEAP);
 
-  /* 31 */ vAddConstant("CN_KEYWRK"_Str,       CN_KEYWRK);
+  /* 31 */ vAddConstant("CN_KEYWRK"_Stz,       CN_KEYWRK);
   
-  /* 32 */ vAddConstant("CN_LOADCHUNK"_Str,    CN_LOADCHUNK);
-  /* 33 */ vAddConstant("CN_LOADER"_Str,       CN_LOADER);
-  /* 34 */ vAddConstant("CN_LOADERSUB"_Str,    CN_LOADERSUB);
-  /* 35 */ vAddConstant("CN_LOADMAP"_Str,      CN_LOADMAP);
-  /* 36 */ vAddConstant("CN_LOCK"_Str,         CN_LOCK);
+  /* 32 */ vAddConstant("CN_LOADCHUNK"_Stz,    CN_LOADCHUNK);
+  /* 33 */ vAddConstant("CN_LOADER"_Stz,       CN_LOADER);
+  /* 34 */ vAddConstant("CN_LOADERSUB"_Stz,    CN_LOADERSUB);
+  /* 35 */ vAddConstant("CN_LOADMAP"_Stz,      CN_LOADMAP);
+  /* 36 */ vAddConstant("CN_LOCK"_Stz,         CN_LOCK);
   
-  /* 37 */ vAddConstant("CN_MEDIUMHEAP"_Str,   CN_MEDIUMHEAP);
+  /* 37 */ vAddConstant("CN_MEDIUMHEAP"_Stz,   CN_MEDIUMHEAP);
   
-  /* 38 */ vAddConstant("CN_NODE"_Str,         CN_NODE);
-  /* 39 */ vAddConstant("CN_NODECURSOR"_Str,   CN_NODECURSOR);
+  /* 38 */ vAddConstant("CN_NODE"_Stz,         CN_NODE);
+  /* 39 */ vAddConstant("CN_NODECURSOR"_Stz,   CN_NODECURSOR);
   
-  /* 40 */ vAddConstant("CN_PARSER"_Str,       CN_PARSER);
-  /* 41 */ vAddConstant("CN_PARTITION"_Str,    CN_PARTITION);
-  /*    */ vAddConstant("CN_PLAN"_Str,         CN_PLAN);
-  /*    */ vAddConstant("CN_PLANLIST"_Str,     CN_PLANLIST);
-  /* 43 */ vAddConstant("CN_PROXY"_Str,        CN_PROXY);
-  /* 44 */ vAddConstant("CN_PROXYSET"_Str,     CN_PROXYSET);
+  /* 40 */ vAddConstant("CN_PARSER"_Stz,       CN_PARSER);
+  /* 41 */ vAddConstant("CN_PARTITION"_Stz,    CN_PARTITION);
+  /*    */ vAddConstant("CN_PLAN"_Stz,         CN_PLAN);
+  /*    */ vAddConstant("CN_PLANLIST"_Stz,     CN_PLANLIST);
+  /* 43 */ vAddConstant("CN_PROXY"_Stz,        CN_PROXY);
+  /* 44 */ vAddConstant("CN_PROXYSET"_Stz,     CN_PROXYSET);
   
-  /* 45 */ vAddConstant("CN_QUEUE"_Str,        CN_QUEUE);
-  /* 46 */ vAddConstant("CN_QUEUEBUFFER"_Str,  CN_QUEUEBUFFER);
+  /* 45 */ vAddConstant("CN_QUEUE"_Stz,        CN_QUEUE);
+  /* 46 */ vAddConstant("CN_QUEUEBUFFER"_Stz,  CN_QUEUEBUFFER);
   
-  /*    */ vAddConstant("CN_RBCURSOR"_Str,     CN_RBCURSOR);
-  /* 47 */ vAddConstant("CN_REGFRAME"_Str,     CN_REGFRAME);
-  /* 48 */ vAddConstant("CN_RING"_Str,         CN_RING);
-  /* 49 */ vAddConstant("CN_ROW"_Str,          CN_ROW);
-  /* 50 */ vAddConstant("CN_ROWBUFFER"_Str,    CN_ROWBUFFER);
-  /* 51 */ vAddConstant("CN_ROWCURSOR"_Str,    CN_ROWCURSOR);
-  /* 52 */ vAddConstant("CN_EBSTRAND"_Str,     CN_EBSTRAND);
+  /*    */ vAddConstant("CN_RBCURSOR"_Stz,     CN_RBCURSOR);
+  /* 47 */ vAddConstant("CN_REGFRAME"_Stz,     CN_REGFRAME);
+  /* 48 */ vAddConstant("CN_RING"_Stz,         CN_RING);
+  /* 49 */ vAddConstant("CN_ROW"_Stz,          CN_ROW);
+  /* 50 */ vAddConstant("CN_ROWBUFFER"_Stz,    CN_ROWBUFFER);
+  /* 51 */ vAddConstant("CN_ROWCURSOR"_Stz,    CN_ROWCURSOR);
+  /* 52 */ vAddConstant("CN_EBSTRAND"_Stz,     CN_EBSTRAND);
   
-  /* 54 */ vAddConstant("CN_SCANBUFFER"_Str,   CN_SCANBUFFER);
-  /* 55 */ vAddConstant("CN_SCRATCH"_Str,      CN_SCRATCH);
-  /* 56 */ vAddConstant("CN_SEHISTORY"_Str,    CN_SEHISTORY);
-  /* 57 */ vAddConstant("CN_SEITF"_Str,        CN_SEITF);
-  /* 58 */ vAddConstant("CN_SEITFCURSOR"_Str,  CN_SEITFCURSOR);
-  /* 59 */ vAddConstant("CN_SEITFLIST"_Str,    CN_SEITFLIST);
-  /*    */ vAddConstant("CN_SELCURSOR"_Str,    CN_SELCURSOR);
-  /* 60 */ vAddConstant("CN_SEPROMPT"_Str,     CN_SEPROMPT);
-  /* 61 */ vAddConstant("CN_SINCE"_Str,        CN_SINCE);
-  /* 62 */ vAddConstant("CN_SKIPCURSOR"_Str,   CN_SKIPCURSOR);
-  /* 63 */ vAddConstant("CN_SKIPLIST"_Str,     CN_SKIPLIST);
-  /* 64 */ vAddConstant("CN_SKIPNODE"_Str,     CN_SKIPNODE);
-  /*    */ vAddConstant("CN_SLOTS"_Str,        CN_SLOTS);
-  /* 65 */ vAddConstant("CN_SMALLHEAP"_Str,    CN_SMALLHEAP);
-  /* 66 */ vAddConstant("CN_SOCKET"_Str,       CN_SOCKET);
-  /* 67 */ vAddConstant("CN_STACK"_Str,        CN_STACK);
-  /* 68 */ vAddConstant("CN_STEPACCUM"_Str,    CN_STEPACCUM);
-  /* 69 */ vAddConstant("CN_STEPARRAY"_Str,    CN_STEPARRAY);
-  /* 70 */ vAddConstant("CN_SYSCALL"_Str,      CN_SYSCALL);
+  /* 54 */ vAddConstant("CN_SCANBUFFER"_Stz,   CN_SCANBUFFER);
+  /* 55 */ vAddConstant("CN_SCRATCH"_Stz,      CN_SCRATCH);
+  /* 56 */ vAddConstant("CN_SEHISTORY"_Stz,    CN_SEHISTORY);
+  /* 57 */ vAddConstant("CN_SEITF"_Stz,        CN_SEITF);
+  /* 58 */ vAddConstant("CN_SEITFCURSOR"_Stz,  CN_SEITFCURSOR);
+  /* 59 */ vAddConstant("CN_SEITFLIST"_Stz,    CN_SEITFLIST);
+  /*    */ vAddConstant("CN_SELCURSOR"_Stz,    CN_SELCURSOR);
+  /* 60 */ vAddConstant("CN_SEPROMPT"_Stz,     CN_SEPROMPT);
+  /* 61 */ vAddConstant("CN_SINCE"_Stz,        CN_SINCE);
+  /* 62 */ vAddConstant("CN_SKIPCURSOR"_Stz,   CN_SKIPCURSOR);
+  /* 63 */ vAddConstant("CN_SKIPLIST"_Stz,     CN_SKIPLIST);
+  /* 64 */ vAddConstant("CN_SKIPNODE"_Stz,     CN_SKIPNODE);
+  /*    */ vAddConstant("CN_SLOTS"_Stz,        CN_SLOTS);
+  /* 65 */ vAddConstant("CN_SMALLHEAP"_Stz,    CN_SMALLHEAP);
+  /* 66 */ vAddConstant("CN_SOCKET"_Stz,       CN_SOCKET);
+  /* 67 */ vAddConstant("CN_STACK"_Stz,        CN_STACK);
+  /* 68 */ vAddConstant("CN_STEPACCUM"_Stz,    CN_STEPACCUM);
+  /* 69 */ vAddConstant("CN_STEPARRAY"_Stz,    CN_STEPARRAY);
+  /* 70 */ vAddConstant("CN_SYSCALL"_Stz,      CN_SYSCALL);
   
-  /* 71 */ vAddConstant("CN_TABLE"_Str,        CN_TABLE);
-  /* 72 */ vAddConstant("CN_TASK"_Str,         CN_TASK);
-  /* 73 */ vAddConstant("CN_TASKCURSOR"_Str,   CN_TASKCURSOR);
-  /* 74 */ vAddConstant("CN_TASKLIST"_Str,     CN_TASKLIST);
-  /* 75 */ vAddConstant("CN_SCHEDULER"_Str,    CN_SCHEDULER);
-  /* 75 */ vAddConstant("CN_TASKSET"_Str,      CN_TASKSET);
-  /* 76 */ vAddConstant("CN_THREAD"_Str,       CN_THREAD);
-  /* 77 */ vAddConstant("CN_THREADCURSOR"_Str, CN_THREADCURSOR);
-  /* 78 */ vAddConstant("CN_THREADLIST"_Str,   CN_THREADLIST);
-  /* 79 */ vAddConstant("CN_TIME"_Str,         CN_TIME);
-  /* 80 */ vAddConstant("CN_TIMER"_Str,        CN_TIMER);
-  /* 81 */ vAddConstant("CN_TOKENISER"_Str,    CN_TOKENISER);
-  /* 82 */ vAddConstant("CN_TX"_Str,           CN_TX);
-  /* 83 */ vAddConstant("CN_TXARRAY"_Str,      CN_TXARRAY);
-  /* 84 */ vAddConstant("CN_TXCOLLECTION"_Str, CN_TXCOLLECTION);
-  /* 85 */ vAddConstant("CN_TXCURSOR"_Str,     CN_TXCURSOR);
-  /* 86 */ vAddConstant("CN_TXMAP"_Str,        CN_TXMAP);
-  /* 87 */ vAddConstant("CN_TXREF"_Str,        CN_TXREF);
+  /* 71 */ vAddConstant("CN_TABLE"_Stz,        CN_TABLE);
+  /* 72 */ vAddConstant("CN_TASK"_Stz,         CN_TASK);
+  /* 73 */ vAddConstant("CN_TASKCURSOR"_Stz,   CN_TASKCURSOR);
+  /* 74 */ vAddConstant("CN_TASKLIST"_Stz,     CN_TASKLIST);
+  /* 75 */ vAddConstant("CN_SCHEDULER"_Stz,    CN_SCHEDULER);
+  /* 75 */ vAddConstant("CN_TASKSET"_Stz,      CN_TASKSET);
+  /* 76 */ vAddConstant("CN_THREAD"_Stz,       CN_THREAD);
+  /* 77 */ vAddConstant("CN_THREADCURSOR"_Stz, CN_THREADCURSOR);
+  /* 78 */ vAddConstant("CN_THREADLIST"_Stz,   CN_THREADLIST);
+  /* 79 */ vAddConstant("CN_TIME"_Stz,         CN_TIME);
+  /* 80 */ vAddConstant("CN_TIMER"_Stz,        CN_TIMER);
+  /* 81 */ vAddConstant("CN_TOKENISER"_Stz,    CN_TOKENISER);
+  /* 82 */ vAddConstant("CN_TX"_Stz,           CN_TX);
+  /* 83 */ vAddConstant("CN_TXARRAY"_Stz,      CN_TXARRAY);
+  /* 84 */ vAddConstant("CN_TXCOLLECTION"_Stz, CN_TXCOLLECTION);
+  /* 85 */ vAddConstant("CN_TXCURSOR"_Stz,     CN_TXCURSOR);
+  /* 86 */ vAddConstant("CN_TXMAP"_Stz,        CN_TXMAP);
+  /* 87 */ vAddConstant("CN_TXREF"_Stz,        CN_TXREF);
   
-  /* 88 */ vAddConstant("CN_WORD"_Str,         CN_WORD);
+  /* 88 */ vAddConstant("CN_WORD"_Stz,         CN_WORD);
 
-  /* 89 */ vAddConstant("CN_ZSMALL_"_Str,      CN_ZSMALL_);
-  /* 90 */ vAddConstant("CN_ZMEDIUM_"_Str,     CN_ZMEDIUM_);
-  /* 91 */ vAddConstant("CN_ZLARGE_"_Str,      CN_ZLARGE_);
-  /* 92 */ vAddConstant("CN_ZJUMBO_"_Str,      CN_ZJUMBO_);
+  /* 89 */ vAddConstant("CN_ZSMALL_"_Stz,      CN_ZSMALL_);
+  /* 90 */ vAddConstant("CN_ZMEDIUM_"_Stz,     CN_ZMEDIUM_);
+  /* 91 */ vAddConstant("CN_ZLARGE_"_Stz,      CN_ZLARGE_);
+  /* 92 */ vAddConstant("CN_ZJUMBO_"_Stz,      CN_ZJUMBO_);
   
-  /* 93 */ vAddConstant("CN_ENUMS"_Str,        CN_ENUMS);
+  /* 93 */ vAddConstant("CN_ENUMS"_Stz,        CN_ENUMS);
   
   // DE_ : directory entry type -- n.b. the DT_FIFO etc are from dirent.h
-  /*  1 */ vAddConstant("DE_FIFO"_Str, DT_FIFO);
-  /*  2 */ vAddConstant("DE_CHR"_Str,  DT_CHR);
-  /*  3 */ vAddConstant("DE_DIR"_Str,  DT_DIR);
-  /*  6 */ vAddConstant("DE_BLK"_Str,  DT_BLK);
-  /*  8 */ vAddConstant("DE_REG"_Str,  DT_REG);
-  /* 10 */ vAddConstant("DE_LNK"_Str,  DT_LNK);
-  /* 12 */ vAddConstant("DE_SOCK"_Str, DT_SOCK);
+  /*  1 */ vAddConstant("DE_FIFO"_Stz, DT_FIFO);
+  /*  2 */ vAddConstant("DE_CHR"_Stz,  DT_CHR);
+  /*  3 */ vAddConstant("DE_DIR"_Stz,  DT_DIR);
+  /*  6 */ vAddConstant("DE_BLK"_Stz,  DT_BLK);
+  /*  8 */ vAddConstant("DE_REG"_Stz,  DT_REG);
+  /* 10 */ vAddConstant("DE_LNK"_Stz,  DT_LNK);
+  /* 12 */ vAddConstant("DE_SOCK"_Stz, DT_SOCK);
 
   // DM_ : datum type
-  /*  1 */ vAddConstant("DM_BCD"_Str, DM_BCD);
-  /*  2 */ vAddConstant("DM_BOL"_Str, DM_BOL);
-  /*  3 */ vAddConstant("DM_DTE"_Str, DM_DTE);
-  /*  4 */ vAddConstant("DM_FLT"_Str, DM_FLT);
-  /*  5 */ vAddConstant("DM_INT"_Str, DM_INT);
-  /*  6 */ vAddConstant("DM_IVL"_Str, DM_IVL);
-  /*  7 */ vAddConstant("DM_TME"_Str, DM_TME);
-  /*  8 */ vAddConstant("DM_TSP"_Str, DM_TSP);
+  /*  1 */ vAddConstant("DM_BCD"_Stz, DM_BCD);
+  /*  2 */ vAddConstant("DM_BOL"_Stz, DM_BOL);
+  /*  3 */ vAddConstant("DM_DTE"_Stz, DM_DTE);
+  /*  4 */ vAddConstant("DM_FLT"_Stz, DM_FLT);
+  /*  5 */ vAddConstant("DM_INT"_Stz, DM_INT);
+  /*  6 */ vAddConstant("DM_IVL"_Stz, DM_IVL);
+  /*  7 */ vAddConstant("DM_TME"_Stz, DM_TME);
+  /*  8 */ vAddConstant("DM_TSP"_Stz, DM_TSP);
   
   // EC_ : error codes
-  /*  0 */ vAddConstant("EC_NONE"_Str,               EC_NONE);
-  /*  1 */ vAddConstant("EC_ASSERT"_Str,             EC_ASSERT);
-  /*  2 */ vAddConstant("EC_BEGIN_TX_FAILED"_Str,    EC_BEGIN_TX_FAILED);
-  /*  3 */ vAddConstant("EC_CATALOG_EXISTS"_Str,     EC_CATALOG_EXISTS);
-  /*  4 */ vAddConstant("EC_CLUSTER_NOT_STARTED"_Str,EC_CLUSTER_NOT_STARTED);
-  /*  5 */ vAddConstant("EC_DUPLICATE_COLUMN"_Str,   EC_DUPLICATE_COLUMN);
-  /*  6 */ vAddConstant("EC_FOLDER_IN_USE"_Str,      EC_FOLDER_IN_USE);
-  /*  7 */ vAddConstant("EC_FOLDER_NOT_EMPTY"_Str,   EC_FOLDER_NOT_EMPTY);
-  /*  8 */ vAddConstant("EC_INDEX_EXISTS"_Str,       EC_INDEX_EXISTS);
-  /*  9 */ vAddConstant("EC_INVALID_CLASS"_Str,      EC_INVALID_CLASS);
-  /*  9 */ vAddConstant("EC_INVALID_COLUMN"_Str,     EC_INVALID_COLUMN);
-  /* 10 */ vAddConstant("EC_INVALID_COMMAND"_Str,    EC_INVALID_COMMAND);
-  /* 11 */ vAddConstant("EC_INVALID_FILE"_Str,       EC_INVALID_FILE);
-  /* 12 */ vAddConstant("EC_INVALID_INTERFACE"_Str,  EC_INVALID_INTERFACE);
-  /* 13 */ vAddConstant("EC_INVALID_PARAMETER"_Str,  EC_INVALID_PARAMETER);
-  /* 14 */ vAddConstant("EC_INVALID_PARAMETERS"_Str, EC_INVALID_PARAMETERS);
-  /* 15 */ vAddConstant("EC_INVALID_INSTANCE"_Str,   EC_INVALID_INSTANCE);
-  /* 16 */ vAddConstant("EC_INVALID_SYNTAX"_Str,     EC_INVALID_SYNTAX);
-  /* 17 */ vAddConstant("EC_LOW_BUFFERS"_Str,        EC_LOW_BUFFERS);
-  /* 18 */ vAddConstant("EC_NO_COLUMNS_DIC"_Str,     EC_NO_COLUMNS_DIC);
-  /* 19 */ vAddConstant("EC_NO_SUCH_CATALOG"_Str,    EC_NO_SUCH_CATALOG);
-  /* 20 */ vAddConstant("EC_NO_SUCH_DIRECTORY"_Str,  EC_NO_SUCH_DIRECTORY);
-  /* 21 */ vAddConstant("EC_NO_SUCH_FOLDER"_Str,     EC_NO_SUCH_FOLDER);
-  /* 22 */ vAddConstant("EC_NO_SUCH_INDEX"_Str,      EC_NO_SUCH_INDEX);
-  /* 23 */ vAddConstant("EC_NO_SUCH_SCHEMA"_Str,     EC_NO_SUCH_SCHEMA);
-  /* 24 */ vAddConstant("EC_NO_SUCH_TABLE"_Str,      EC_NO_SUCH_TABLE);
-  /* 25 */ vAddConstant("EC_NO_SUCH_TENANT"_Str,     EC_NO_SUCH_TENANT);
-  /* 26 */ vAddConstant("EC_NO_SUCH_WORD"_Str,       EC_NO_SUCH_WORD);
+  /*  0 */ vAddConstant("EC_NONE"_Stz,               EC_NONE);
+  /*  1 */ vAddConstant("EC_ASSERT"_Stz,             EC_ASSERT);
+  /*  2 */ vAddConstant("EC_BEGIN_TX_FAILED"_Stz,    EC_BEGIN_TX_FAILED);
+  /*  3 */ vAddConstant("EC_CATALOG_EXISTS"_Stz,     EC_CATALOG_EXISTS);
+  /*  4 */ vAddConstant("EC_CLUSTER_NOT_STARTED"_Stz,EC_CLUSTER_NOT_STARTED);
+  /*  5 */ vAddConstant("EC_DUPLICATE_COLUMN"_Stz,   EC_DUPLICATE_COLUMN);
+  /*  6 */ vAddConstant("EC_FOLDER_IN_USE"_Stz,      EC_FOLDER_IN_USE);
+  /*  7 */ vAddConstant("EC_FOLDER_NOT_EMPTY"_Stz,   EC_FOLDER_NOT_EMPTY);
+  /*  8 */ vAddConstant("EC_INDEX_EXISTS"_Stz,       EC_INDEX_EXISTS);
+  /*  9 */ vAddConstant("EC_INVALID_CLASS"_Stz,      EC_INVALID_CLASS);
+  /*  9 */ vAddConstant("EC_INVALID_COLUMN"_Stz,     EC_INVALID_COLUMN);
+  /* 10 */ vAddConstant("EC_INVALID_COMMAND"_Stz,    EC_INVALID_COMMAND);
+  /* 11 */ vAddConstant("EC_INVALID_FILE"_Stz,       EC_INVALID_FILE);
+  /* 12 */ vAddConstant("EC_INVALID_INTERFACE"_Stz,  EC_INVALID_INTERFACE);
+  /* 13 */ vAddConstant("EC_INVALID_PARAMETER"_Stz,  EC_INVALID_PARAMETER);
+  /* 14 */ vAddConstant("EC_INVALID_PARAMETERS"_Stz, EC_INVALID_PARAMETERS);
+  /* 15 */ vAddConstant("EC_INVALID_INSTANCE"_Stz,   EC_INVALID_INSTANCE);
+  /* 16 */ vAddConstant("EC_INVALID_SYNTAX"_Stz,     EC_INVALID_SYNTAX);
+  /* 17 */ vAddConstant("EC_LOW_BUFFERS"_Stz,        EC_LOW_BUFFERS);
+  /* 18 */ vAddConstant("EC_NO_COLUMNS_DIC"_Stz,     EC_NO_COLUMNS_DIC);
+  /* 19 */ vAddConstant("EC_NO_SUCH_CATALOG"_Stz,    EC_NO_SUCH_CATALOG);
+  /* 20 */ vAddConstant("EC_NO_SUCH_DIRECTORY"_Stz,  EC_NO_SUCH_DIRECTORY);
+  /* 21 */ vAddConstant("EC_NO_SUCH_FOLDER"_Stz,     EC_NO_SUCH_FOLDER);
+  /* 22 */ vAddConstant("EC_NO_SUCH_INDEX"_Stz,      EC_NO_SUCH_INDEX);
+  /* 23 */ vAddConstant("EC_NO_SUCH_SCHEMA"_Stz,     EC_NO_SUCH_SCHEMA);
+  /* 24 */ vAddConstant("EC_NO_SUCH_TABLE"_Stz,      EC_NO_SUCH_TABLE);
+  /* 25 */ vAddConstant("EC_NO_SUCH_TENANT"_Stz,     EC_NO_SUCH_TENANT);
+  /* 26 */ vAddConstant("EC_NO_SUCH_WORD"_Stz,       EC_NO_SUCH_WORD);
   
-  /* 27 */ vAddConstant("EC_NOT_A_CATALOG"_Str,      EC_NOT_A_CATALOG);
-  /* 28 */ vAddConstant("EC_NOT_A_FOLDER"_Str,       EC_NOT_A_FOLDER);
-  /* 29 */ vAddConstant("EC_NOT_AN_INDEX"_Str,       EC_NOT_AN_INDEX);
-  /* 30 */ vAddConstant("EC_NOT_A_SCHEMA"_Str,       EC_NOT_A_SCHEMA);
-  /* 31 */ vAddConstant("EC_NOT_A_TABLE"_Str,        EC_NOT_A_TABLE);
-  /* 32 */ vAddConstant("EC_NOT_A_TENANT"_Str,       EC_NOT_A_TENANT);
+  /* 27 */ vAddConstant("EC_NOT_A_CATALOG"_Stz,      EC_NOT_A_CATALOG);
+  /* 28 */ vAddConstant("EC_NOT_A_FOLDER"_Stz,       EC_NOT_A_FOLDER);
+  /* 29 */ vAddConstant("EC_NOT_AN_INDEX"_Stz,       EC_NOT_AN_INDEX);
+  /* 30 */ vAddConstant("EC_NOT_A_SCHEMA"_Stz,       EC_NOT_A_SCHEMA);
+  /* 31 */ vAddConstant("EC_NOT_A_TABLE"_Stz,        EC_NOT_A_TABLE);
+  /* 32 */ vAddConstant("EC_NOT_A_TENANT"_Stz,       EC_NOT_A_TENANT);
   
-  /* 33 */ vAddConstant("EC_NOT_IN_CATALOGS"_Str,    EC_NOT_IN_CATALOGS);
-  /* 34 */ vAddConstant("EC_NOT_IN_COLUMNS"_Str,     EC_NOT_IN_COLUMNS);
-  /* 35 */ vAddConstant("EC_NOT_IN_INDEXES"_Str,     EC_NOT_IN_INDEXES);
-  /*    */ vAddConstant("EC_NOT_IN_PARTITIONS"_Str,  EC_NOT_IN_PARTITIONS);
-  /* 36 */ vAddConstant("EC_NOT_IN_SCHEMAS"_Str,     EC_NOT_IN_SCHEMAS);
-  /* 37 */ vAddConstant("EC_NOT_IN_TABLE"_Str,       EC_NOT_IN_TABLE);
-  /* 38 */ vAddConstant("EC_NOT_IN_TABLES"_Str,      EC_NOT_IN_TABLES);
-  /* 39 */ vAddConstant("EC_NOT_IN_TENANTS"_Str,     EC_NOT_IN_TENANTS);
-  /* 40 */ vAddConstant("EC_NULL_INTERFACE"_Str,     EC_NULL_INTERFACE);
-  /* 41 */ vAddConstant("EC_NULLPTR"_Str,            EC_NULLPTR);
-  /* 42 */ vAddConstant("EC_RESPONSE_PENDING"_Str,   EC_RESPONSE_PENDING);
-  /* 43 */ vAddConstant("EC_SCHEMA_EXISTS"_Str,      EC_SCHEMA_EXISTS);
-  /* 44 */ vAddConstant("EC_SE_NOT_RUNNING"_Str,     EC_SE_NOT_RUNNING);
-  /* 45 */ vAddConstant("EC_SE_UNKNOWN_ERROR"_Str,   EC_SE_UNKNOWN_ERROR);
-  /* 46 */ vAddConstant("EC_SEND_FAILURE"_Str,       EC_SEND_FAILURE);
+  /* 33 */ vAddConstant("EC_NOT_IN_CATALOGS"_Stz,    EC_NOT_IN_CATALOGS);
+  /* 34 */ vAddConstant("EC_NOT_IN_COLUMNS"_Stz,     EC_NOT_IN_COLUMNS);
+  /* 35 */ vAddConstant("EC_NOT_IN_INDEXES"_Stz,     EC_NOT_IN_INDEXES);
+  /*    */ vAddConstant("EC_NOT_IN_PARTITIONS"_Stz,  EC_NOT_IN_PARTITIONS);
+  /* 36 */ vAddConstant("EC_NOT_IN_SCHEMAS"_Stz,     EC_NOT_IN_SCHEMAS);
+  /* 37 */ vAddConstant("EC_NOT_IN_TABLE"_Stz,       EC_NOT_IN_TABLE);
+  /* 38 */ vAddConstant("EC_NOT_IN_TABLES"_Stz,      EC_NOT_IN_TABLES);
+  /* 39 */ vAddConstant("EC_NOT_IN_TENANTS"_Stz,     EC_NOT_IN_TENANTS);
+  /* 40 */ vAddConstant("EC_NULL_INTERFACE"_Stz,     EC_NULL_INTERFACE);
+  /* 41 */ vAddConstant("EC_NULLPTR"_Stz,            EC_NULLPTR);
+  /* 42 */ vAddConstant("EC_RESPONSE_PENDING"_Stz,   EC_RESPONSE_PENDING);
+  /* 43 */ vAddConstant("EC_SCHEMA_EXISTS"_Stz,      EC_SCHEMA_EXISTS);
+  /* 44 */ vAddConstant("EC_SE_NOT_RUNNING"_Stz,     EC_SE_NOT_RUNNING);
+  /* 45 */ vAddConstant("EC_SE_UNKNOWN_ERROR"_Stz,   EC_SE_UNKNOWN_ERROR);
+  /* 46 */ vAddConstant("EC_SEND_FAILURE"_Stz,       EC_SEND_FAILURE);
   
-  /* 47 */ vAddConstant("EC_TABLE_EXISTS"_Str,       EC_TABLE_EXISTS);
-  /* 48 */ vAddConstant("EC_TABLE_IN_USE"_Str,       EC_TABLE_IN_USE);
-  /* 48 */ vAddConstant("EC_TABLE_NOT_EMPTY"_Str,    EC_TABLE_NOT_EMPTY);
-  /* 49 */ vAddConstant("EC_TENANT_EXISTS"_Str,      EC_TENANT_EXISTS);
-  /* 50 */ vAddConstant("EC_VALIDATION_FAILURE"_Str, EC_VALIDATION_FAILURE);
-  /* 51 */ vAddConstant("EC_VERSION_MISMATCH"_Str,   EC_VERSION_MISMATCH); 
-  /* 52 */ vAddConstant("EC_ENUMS"_Str,              EC_ENUMS);
+  /* 47 */ vAddConstant("EC_TABLE_EXISTS"_Stz,       EC_TABLE_EXISTS);
+  /* 48 */ vAddConstant("EC_TABLE_IN_USE"_Stz,       EC_TABLE_IN_USE);
+  /* 48 */ vAddConstant("EC_TABLE_NOT_EMPTY"_Stz,    EC_TABLE_NOT_EMPTY);
+  /* 49 */ vAddConstant("EC_TENANT_EXISTS"_Stz,      EC_TENANT_EXISTS);
+  /* 50 */ vAddConstant("EC_VALIDATION_FAILURE"_Stz, EC_VALIDATION_FAILURE);
+  /* 51 */ vAddConstant("EC_VERSION_MISMATCH"_Stz,   EC_VERSION_MISMATCH); 
+  /* 52 */ vAddConstant("EC_ENUMS"_Stz,              EC_ENUMS);
 
   // AT_ : fetch techniques
-  /*  0 */ vAddConstant("AT_NONE"_Str,  AT_NONE);
-  /*  1 */ vAddConstant("AT_EXACT"_Str, AT_EXACT);
-  /*  2 */ vAddConstant("AT_LOWER"_Str, AT_LOWER);
-  /*  3 */ vAddConstant("AT_UPPER"_Str, AT_UPPER);
-  /*  4 */ vAddConstant("AT_RANGE"_Str, AT_RANGE);
-  /*  5 */ vAddConstant("AT_SCAN"_Str,  AT_SCAN);
-  /*  6 */ vAddConstant("AT_ENUMS"_Str, AT_ENUMS);
+  /*  0 */ vAddConstant("AT_NONE"_Stz,  AT_NONE);
+  /*  1 */ vAddConstant("AT_EXACT"_Stz, AT_EXACT);
+  /*  2 */ vAddConstant("AT_LOWER"_Stz, AT_LOWER);
+  /*  3 */ vAddConstant("AT_UPPER"_Stz, AT_UPPER);
+  /*  4 */ vAddConstant("AT_RANGE"_Stz, AT_RANGE);
+  /*  5 */ vAddConstant("AT_SCAN"_Stz,  AT_SCAN);
+  /*  6 */ vAddConstant("AT_ENUMS"_Stz, AT_ENUMS);
   
   // TN_ : token types
-  /*  0 */ vAddConstant("TN_NONE"_Str,    TN_NONE);
-  /*  1 */ vAddConstant("TN_NAME"_Str,    TN_NAME);
-  /*  2 */ vAddConstant("TN_INTEGER"_Str, TN_INTEGER);
-  /*  3 */ vAddConstant("TN_STRING"_Str,  TN_STRING);
-  /*  4 */ vAddConstant("TN_ENUMS"_Str,   TN_ENUMS);
+  /*  0 */ vAddConstant("TN_NONE"_Stz,    TN_NONE);
+  /*  1 */ vAddConstant("TN_NAME"_Stz,    TN_NAME);
+  /*  2 */ vAddConstant("TN_INTEGER"_Stz, TN_INTEGER);
+  /*  3 */ vAddConstant("TN_STRING"_Stz,  TN_STRING);
+  /*  4 */ vAddConstant("TN_ENUMS"_Stz,   TN_ENUMS);
   
-  /*  0 */ vAddConstant("TH_NONE"_Str,                TH_NONE);
-  /*  1 */ vAddConstant("TH_ANSWER"_Str,              TH_ANSWER);
-  /*  2 */ vAddConstant("TH_COORDINATOR"_Str,         TH_COORDINATOR);
-  /*  3 */ vAddConstant("TH_COORDINATOR_PROXY"_Str,   TH_COORDINATOR_PROXY);
-  /*  4 */ vAddConstant("TH_GENERAL"_Str,             TH_GENERAL);
-  /*  5 */ vAddConstant("TH_LISTER"_Str,              TH_LISTER);
-  /*  6 */ vAddConstant("TH_MONITOR"_Str,             TH_MONITOR);
-  /*  7 */ vAddConstant("TH_QUERY"_Str,               TH_QUERY);
-  /*  8 */ vAddConstant("TH_PARTICIPANT"_Str,         TH_PARTICIPANT);
-  /*  9 */ vAddConstant("TH_PARTICIPANT_PROXY"_Str,   TH_PARTICIPANT_PROXY);
-  /* 10 */ vAddConstant("TH_RECLAIM"_Str,             TH_RECLAIM);
-  /* 11 */ vAddConstant("TH_REQUEST"_Str,             TH_REQUEST);
-  /* 12 */ vAddConstant("TH_SCANOP"_Str,              TH_SCANOP);
-  /* 13 */ vAddConstant("TH_SINKOP"_Str,              TH_SINKOP);
-  /* 14 */ vAddConstant("TH_WRITEOP"_Str,             TH_WRITEOP);
-  /* 15 */ vAddConstant("TH_ENUMS"_Str,               TH_ENUMS); 
+  /*  0 */ vAddConstant("TH_NONE"_Stz,                TH_NONE);
+  /*  1 */ vAddConstant("TH_ANSWER"_Stz,              TH_ANSWER);
+  /*  2 */ vAddConstant("TH_COORDINATOR"_Stz,         TH_COORDINATOR);
+  /*  3 */ vAddConstant("TH_COORDINATOR_PROXY"_Stz,   TH_COORDINATOR_PROXY);
+  /*  4 */ vAddConstant("TH_GENERAL"_Stz,             TH_GENERAL);
+  /*  5 */ vAddConstant("TH_LISTER"_Stz,              TH_LISTER);
+  /*  6 */ vAddConstant("TH_MONITOR"_Stz,             TH_MONITOR);
+  /*  7 */ vAddConstant("TH_QUERY"_Stz,               TH_QUERY);
+  /*  8 */ vAddConstant("TH_PARTICIPANT"_Stz,         TH_PARTICIPANT);
+  /*  9 */ vAddConstant("TH_PARTICIPANT_PROXY"_Stz,   TH_PARTICIPANT_PROXY);
+  /* 10 */ vAddConstant("TH_RECLAIM"_Stz,             TH_RECLAIM);
+  /* 11 */ vAddConstant("TH_REQUEST"_Stz,             TH_REQUEST);
+  /* 12 */ vAddConstant("TH_SCANOP"_Stz,              TH_SCANOP);
+  /* 13 */ vAddConstant("TH_SINKOP"_Stz,              TH_SINKOP);
+  /* 14 */ vAddConstant("TH_WRITEOP"_Stz,             TH_WRITEOP);
+  /* 15 */ vAddConstant("TH_ENUMS"_Stz,               TH_ENUMS); 
   
   // SIZEOF_ : C++ class sizes
-  /*  1 */ vAddConstant("SIZEOF_INTVAL"_Str, sizeof(IntVal));
-  /*  2 */ vAddConstant("SIZEOF_IPVAL"_Str,  sizeof(IpVal));
-  /*  3 */ vAddConstant("SIZEOF_OBJVAL"_Str, sizeof(ObjVal));
-  /*  4 */ vAddConstant("SIZEOF_PTRVAL"_Str, sizeof(PtrVal));
-  /*  5 */ vAddConstant("SIZEOF_STRVAL"_Str, sizeof(StrVal));
-  /*  6 */ vAddConstant("SIZEOF_VALSET"_Str, sizeof(ValWrk)); // correct
-  /*  7 */ vAddConstant("SIZEOF_ValWrk"_Str, sizeof(ValWrk)); // correct
+  /*  1 */ vAddConstant("SIZEOF_INTVAL"_Stz, sizeof(IntVal));
+  /*  2 */ vAddConstant("SIZEOF_IPVAL"_Stz,  sizeof(IpVal));
+  /*  3 */ vAddConstant("SIZEOF_OBJVAL"_Stz, sizeof(ObjVal));
+  /*  4 */ vAddConstant("SIZEOF_PTRVAL"_Stz, sizeof(PtrVal));
+  /*  5 */ vAddConstant("SIZEOF_STRVAL"_Stz, sizeof(StrVal));
+  /*  6 */ vAddConstant("SIZEOF_VALSET"_Stz, sizeof(ValWrk)); // correct
+  /*  7 */ vAddConstant("SIZEOF_ValWrk"_Stz, sizeof(ValWrk)); // correct
   
-  /*  8 */ vAddConstant("SIZEOF_ARGUMENTS"_Str,    sizeof(Arguments));
-  /*  9 */ vAddConstant("SIZEOF_ATOMIC"_Str,       sizeof(Atomic));
-  /* 10 */ vAddConstant("SIZEOF_ATTACHMAP"_Str,    sizeof(AttachMap));
-  /* 11 */ vAddConstant("SIZEOF_BUFFER"_Str,       sizeof(Buffer));
-  /* 12 */ vAddConstant("SIZEOF_BUFFERPOOL"_Str,   sizeof(BufferPool));
-  /* 13 */ vAddConstant("SIZEOF_BPA"_Str,          sizeof(BPA));
-  /* 14 */ vAddConstant("SIZEOF_DIC"_Str,          sizeof(Dic));
-  /* 15 */ vAddConstant("SIZEOF_DICPATH"_Str,      sizeof(DicPath));
-  /* 16 */ vAddConstant("SIZEOF_DIR"_Str,          sizeof(Dir));
-  /* 17 */ vAddConstant("SIZEOF_FILE"_Str,         sizeof(File));
-  /* 18 */ vAddConstant("SIZEOF_FREECHUNK"_Str,    sizeof(FreeChunk));
-  /* 19 */ vAddConstant("SIZEOF_GRID"_Str,         sizeof(Grid));
-  /* 20 */ vAddConstant("SIZEOF_HEAPBUFFER"_Str,   sizeof(HeapBuffer));
-  /*    */ vAddConstant("SIZEOF_INDEX"_Str,        sizeof(Index));
-  /* 21 */ //vAddConstant("SIZEOF_INDEXDEFN"_Str,    sizeof(IndexDefn));
-  /* 22 */ vAddConstant("SIZEOF_LOADER"_Str,       sizeof(Loader));
-  /* 23 */ vAddConstant("SIZEOF_LOADERSUB"_Str,    sizeof(LoaderSub));
-  /* 24 */ vAddConstant("SIZEOF_LOCK"_Str,         sizeof(Lock));
-  /* 25 */ vAddConstant("SIZEOF_MEDIUMHEAP"_Str,   sizeof(Heap));
-  /* 26 */ vAddConstant("SIZEOF_NODE"_Str,         sizeof(Node));
-  /* 27 */ vAddConstant("SIZEOF_NODECURSOR"_Str,   sizeof(NodeCursor));
-  /* 28 */ vAddConstant("SIZEOF_PARSER"_Str,       sizeof(Parser));
-  /* 29 */ vAddConstant("SIZEOF_PARTITION"_Str,    sizeof(Partition));
-  /*    */ vAddConstant("SIZEOF_PROXY"_Str,        sizeof(Proxy));
-  /* 32 */ vAddConstant("SIZEOF_PROXYSET"_Str,     sizeof(ProxySet));
-  /* 33 */ vAddConstant("SIZEOF_QUEUE"_Str,        sizeof(Queue));
-  /* 34 */ vAddConstant("SIZEOF_QUEUEBUFFER"_Str,  sizeof(QueueBuffer));
-  /*    */ vAddConstant("SIZEOF_RBCURSOR"_Str,     sizeof(RbCursor));
-  /* 35 */ vAddConstant("SIZEOF_RING"_Str,         sizeof(Ring));
-  /* 36 */ vAddConstant("SIZEOF_ROW"_Str,          sizeof(Entry));
-  /* 37 */ vAddConstant("SIZEOF_ROWBUFFER"_Str,    sizeof(EntryBuffer));
-  /* 38 */ vAddConstant("SIZEOF_ROWCURSOR"_Str,    (i8)0);
-  /* 39 */ vAddConstant("SIZEOF_EbStrand"_Str,    sizeof(EbStrand));
+  /*  8 */ vAddConstant("SIZEOF_ARGUMENTS"_Stz,    sizeof(Arguments));
+  /*  9 */ vAddConstant("SIZEOF_ATOMIC"_Stz,       sizeof(Atomic));
+  /* 10 */ vAddConstant("SIZEOF_ATTACHMAP"_Stz,    sizeof(AttachMap));
+  /* 11 */ vAddConstant("SIZEOF_BUFFER"_Stz,       sizeof(Buffer));
+  /* 12 */ vAddConstant("SIZEOF_BUFFERPOOL"_Stz,   sizeof(BufferPool));
+  /* 13 */ vAddConstant("SIZEOF_BPA"_Stz,          sizeof(BPA));
+  /* 14 */ vAddConstant("SIZEOF_DIC"_Stz,          sizeof(Dic));
+  /* 15 */ vAddConstant("SIZEOF_DICPATH"_Stz,      sizeof(DicPath));
+  /* 16 */ vAddConstant("SIZEOF_DIR"_Stz,          sizeof(Dir));
+  /* 17 */ vAddConstant("SIZEOF_FILE"_Stz,         sizeof(File));
+  /* 18 */ vAddConstant("SIZEOF_FREECHUNK"_Stz,    sizeof(FreeChunk));
+  /* 19 */ vAddConstant("SIZEOF_GRID"_Stz,         sizeof(Grid));
+  /* 20 */ vAddConstant("SIZEOF_HEAPBUFFER"_Stz,   sizeof(HeapBuffer));
+  /*    */ vAddConstant("SIZEOF_INDEX"_Stz,        sizeof(Index));
+  /* 21 */ //vAddConstant("SIZEOF_INDEXDEFN"_Stz,    sizeof(IndexDefn));
+  /* 22 */ vAddConstant("SIZEOF_LOADER"_Stz,       sizeof(Loader));
+  /* 23 */ vAddConstant("SIZEOF_LOADERSUB"_Stz,    sizeof(LoaderSub));
+  /* 24 */ vAddConstant("SIZEOF_LOCK"_Stz,         sizeof(Lock));
+  /* 25 */ vAddConstant("SIZEOF_MEDIUMHEAP"_Stz,   sizeof(Heap));
+  /* 26 */ vAddConstant("SIZEOF_NODE"_Stz,         sizeof(Node));
+  /* 27 */ vAddConstant("SIZEOF_NODECURSOR"_Stz,   sizeof(NodeCursor));
+  /* 28 */ vAddConstant("SIZEOF_PARSER"_Stz,       sizeof(Parser));
+  /* 29 */ vAddConstant("SIZEOF_PARTITION"_Stz,    sizeof(Partition));
+  /*    */ vAddConstant("SIZEOF_PROXY"_Stz,        sizeof(Proxy));
+  /* 32 */ vAddConstant("SIZEOF_PROXYSET"_Stz,     sizeof(ProxySet));
+  /* 33 */ vAddConstant("SIZEOF_QUEUE"_Stz,        sizeof(Queue));
+  /* 34 */ vAddConstant("SIZEOF_QUEUEBUFFER"_Stz,  sizeof(QueueBuffer));
+  /*    */ vAddConstant("SIZEOF_RBCURSOR"_Stz,     sizeof(RbCursor));
+  /* 35 */ vAddConstant("SIZEOF_RING"_Stz,         sizeof(Ring));
+  /* 36 */ vAddConstant("SIZEOF_ROW"_Stz,          sizeof(Entry));
+  /* 37 */ vAddConstant("SIZEOF_ROWBUFFER"_Stz,    sizeof(EntryBuffer));
+  /* 38 */ vAddConstant("SIZEOF_ROWCURSOR"_Stz,    (i8)0);
+  /* 39 */ vAddConstant("SIZEOF_EbStrand"_Stz,    sizeof(EbStrand));
 
-  /* 41 */ vAddConstant("SIZEOF_SCANBUFFER"_Str,   sizeof(ScanBuffer));
-  /* 42 */ vAddConstant("SIZEOF_SEHISTORY"_Str,    sizeof(SeHistory));
-  /* 43 */ vAddConstant("SIZEOF_SEITF"_Str,        sizeof(SEitf));
-  /* 44 */ vAddConstant("SIZEOF_SEITFCURSOR"_Str,  sizeof(SEitfCursor));
-  /* 45 */ vAddConstant("SIZEOF_SEITFLIST"_Str,    sizeof(SEitfList));
-  /*    */ vAddConstant("SIZEOF_SELCURSOR"_Str,    sizeof(SelCursor));
-  /* 46 */ vAddConstant("SIZEOF_SEPROMPT"_Str,     sizeof(SePrompt));
-  /* 47 */ vAddConstant("SIZEOF_SINCE"_Str,        sizeof(Since));
-  /* 48 */ vAddConstant("SIZEOF_SKIPCURSOR"_Str,   sizeof(SkipCursor));
-  /* 49 */ vAddConstant("SIZEOF_SKIPLIST"_Str,     sizeof(SkipList));
-  /* 50 */ vAddConstant("SIZEOF_SKIPNODE"_Str,     sizeof(SkipNode));
-  /*    */ vAddConstant("SIZEOF_SLOTS"_Str,        sizeof(Slots));
-  /* 51 */ vAddConstant("SIZEOF_SMALLHEAP"_Str,    sizeof(Heap));
-  /* 52 */ vAddConstant("SIZEOF_SOCKET"_Str,       sizeof(Socket));
-  /* 53 */ vAddConstant("SIZEOF_STACK"_Str,        sizeof(Stack));
-  /* 54 */ vAddConstant("SIZEOF_STEPACCUM"_Str,    sizeof(StepAccum));
-  /* 55 */ vAddConstant("SIZEOF_STEPARRAY"_Str,    sizeof(StepArray));
-  /* 56 */ vAddConstant("SIZEOF_SYSCALL"_Str,      sizeof(SysCall));
-  /* 57 */ vAddConstant("SIZEOF_TABLE"_Str,        sizeof(Table));
-  /* 58 */ vAddConstant("SIZEOF_TASK"_Str,         sizeof(Task));
-  /* 69 */ vAddConstant("SIZEOF_TASKCURSOR"_Str,   sizeof(TaskCursor));
-  /* 60 */ vAddConstant("SIZEOF_TASKLIST"_Str,     sizeof(TaskList));
-  /* 61 */ vAddConstant("SIZEOF_SCHEDULER"_Str,    sizeof(Scheduler));
-  /* 61 */ vAddConstant("SIZEOF_TASKSET"_Str,      sizeof(TaskSet));
-  /* 62 */ vAddConstant("SIZEOF_THREAD"_Str,       sizeof(Thread));
-  /* 63 */ vAddConstant("SIZEOF_THREADCURSOR"_Str, sizeof(ThreadCursor));
-  /* 64 */ vAddConstant("SIZEOF_THREADLIST"_Str,   sizeof(ThreadList));
-  /* 65 */ vAddConstant("SIZEOF_TIME"_Str,         sizeof(Time));
-  /* 66 */ vAddConstant("SIZEOF_TIMER"_Str,        sizeof(Timer));
-  /* 67 */ vAddConstant("SIZEOF_TOKENISER"_Str,    sizeof(Tokeniser));
-  /* 68 */ vAddConstant("SIZEOF_TX"_Str,           sizeof(Tx));
-  /* 69 */ vAddConstant("SIZEOF_TXARRAY"_Str,      sizeof(TxArray));
-  /* 70 */ vAddConstant("SIZEOF_TXCOLLECTION"_Str, sizeof(TxCollection));
-  /* 71 */ vAddConstant("SIZEOF_TXCURSOR"_Str,     sizeof(TxCursor));
-  /* 72 */ vAddConstant("SIZEOF_TXMAP"_Str,        sizeof(TxMap));
-  /* 73 */ vAddConstant("SIZEOF_TXREF"_Str,        sizeof(TxRef));
-  /* 74 */ vAddConstant("C_SIZEOF_WORD"_Str,         sizeof(Word));
+  /* 41 */ vAddConstant("SIZEOF_SCANBUFFER"_Stz,   sizeof(ScanBuffer));
+  /* 42 */ vAddConstant("SIZEOF_SEHISTORY"_Stz,    sizeof(SeHistory));
+  /* 43 */ vAddConstant("SIZEOF_SEITF"_Stz,        sizeof(SEitf));
+  /* 44 */ vAddConstant("SIZEOF_SEITFCURSOR"_Stz,  sizeof(SEitfCursor));
+  /* 45 */ vAddConstant("SIZEOF_SEITFLIST"_Stz,    sizeof(SEitfList));
+  /*    */ vAddConstant("SIZEOF_SELCURSOR"_Stz,    sizeof(SelCursor));
+  /* 46 */ vAddConstant("SIZEOF_SEPROMPT"_Stz,     sizeof(SePrompt));
+  /* 47 */ vAddConstant("SIZEOF_SINCE"_Stz,        sizeof(Since));
+  /* 48 */ vAddConstant("SIZEOF_SKIPCURSOR"_Stz,   sizeof(SkipCursor));
+  /* 49 */ vAddConstant("SIZEOF_SKIPLIST"_Stz,     sizeof(SkipList));
+  /* 50 */ vAddConstant("SIZEOF_SKIPNODE"_Stz,     sizeof(SkipNode));
+  /*    */ vAddConstant("SIZEOF_SLOTS"_Stz,        sizeof(Slots));
+  /* 51 */ vAddConstant("SIZEOF_SMALLHEAP"_Stz,    sizeof(Heap));
+  /* 52 */ vAddConstant("SIZEOF_SOCKET"_Stz,       sizeof(Socket));
+  /* 53 */ vAddConstant("SIZEOF_STACK"_Stz,        sizeof(Stack));
+  /* 54 */ vAddConstant("SIZEOF_STEPACCUM"_Stz,    sizeof(StepAccum));
+  /* 55 */ vAddConstant("SIZEOF_STEPARRAY"_Stz,    sizeof(StepArray));
+  /* 56 */ vAddConstant("SIZEOF_SYSCALL"_Stz,      sizeof(SysCall));
+  /* 57 */ vAddConstant("SIZEOF_TABLE"_Stz,        sizeof(Table));
+  /* 58 */ vAddConstant("SIZEOF_TASK"_Stz,         sizeof(Task));
+  /* 69 */ vAddConstant("SIZEOF_TASKCURSOR"_Stz,   sizeof(TaskCursor));
+  /* 60 */ vAddConstant("SIZEOF_TASKLIST"_Stz,     sizeof(TaskList));
+  /* 61 */ vAddConstant("SIZEOF_SCHEDULER"_Stz,    sizeof(Scheduler));
+  /* 61 */ vAddConstant("SIZEOF_TASKSET"_Stz,      sizeof(TaskSet));
+  /* 62 */ vAddConstant("SIZEOF_THREAD"_Stz,       sizeof(Thread));
+  /* 63 */ vAddConstant("SIZEOF_THREADCURSOR"_Stz, sizeof(ThreadCursor));
+  /* 64 */ vAddConstant("SIZEOF_THREADLIST"_Stz,   sizeof(ThreadList));
+  /* 65 */ vAddConstant("SIZEOF_TIME"_Stz,         sizeof(Time));
+  /* 66 */ vAddConstant("SIZEOF_TIMER"_Stz,        sizeof(Timer));
+  /* 67 */ vAddConstant("SIZEOF_TOKENISER"_Stz,    sizeof(Tokeniser));
+  /* 68 */ vAddConstant("SIZEOF_TX"_Stz,           sizeof(Tx));
+  /* 69 */ vAddConstant("SIZEOF_TXARRAY"_Stz,      sizeof(TxArray));
+  /* 70 */ vAddConstant("SIZEOF_TXCOLLECTION"_Stz, sizeof(TxCollection));
+  /* 71 */ vAddConstant("SIZEOF_TXCURSOR"_Stz,     sizeof(TxCursor));
+  /* 72 */ vAddConstant("SIZEOF_TXMAP"_Stz,        sizeof(TxMap));
+  /* 73 */ vAddConstant("SIZEOF_TXREF"_Stz,        sizeof(TxRef));
+  /* 74 */ vAddConstant("C_SIZEOF_WORD"_Stz,         sizeof(Word));
 
-  /*  0 */ vAddConstant("SIZEOF_S32"_Str,          sizeof(s32));
-  /*  1 */ vAddConstant("SIZEOF_S256"_Str,         sizeof(s256));
-  /*  2 */ vAddConstant("SIZEOF_S16K"_Str,         sizeof(s48K));
+  /*  0 */ vAddConstant("SIZEOF_S32"_Stz,          sizeof(s32));
+  /*  1 */ vAddConstant("SIZEOF_S256"_Stz,         sizeof(s256));
+  /*  2 */ vAddConstant("SIZEOF_S16K"_Stz,         sizeof(s48K));
 
   // TK_ : task kind
-  /*  0 */ vAddConstant("TK_NONE"_Str,                    TK_NONE);
-  /*  0 */ vAddConstant("TK_ANSWER_DRONE"_Str,            TK_ANSWER_DRONE);
-  /*  0 */ vAddConstant("TK_LISTER_DRONE"_Str,            TK_LISTER_DRONE);
-  /*  0 */ vAddConstant("TK_CONNECTOR_DRONE"_Str,         TK_CONNECTOR_DRONE);
-  /*  0 */ vAddConstant("TK_MONITOR_DRONE"_Str,           TK_MONITOR_DRONE);
-  /*  0 */ vAddConstant("TK_RECLAIM_DRONE"_Str,           TK_RECLAIM_DRONE);
-  /*  0 */ vAddConstant("TK_RECEIVER_DRONE"_Str,          TK_RECEIVER_DRONE );
-  /*  0 */ vAddConstant("TK_REQUEST_SERVER"_Str,          TK_REQUEST_SERVER);
-  /*  0 */ vAddConstant("TK_LOADSUB_SERVER"_Str,          TK_LOADSUB_SERVER);
-  /*  0 */ vAddConstant("TK_COORDINATOR_WORKER"_Str,      TK_COORDINATOR_WORKER);
-  /*  0 */ vAddConstant("TK_COORDINATOR_PROXY_WORKER"_Str,TK_COORDINATOR_PROXY_WORKER);
-  /*  0 */ vAddConstant("TK_PARTICIPANT_WORKER"_Str,      TK_PARTICIPANT_WORKER);
-  /*  0 */ vAddConstant("TK_PARTICIPANT_PROXY_WORKER"_Str,TK_PARTICIPANT_PROXY_WORKER);
-  /*  0 */ vAddConstant("TK_SENDER_WORKER"_Str,           TK_SENDER_WORKER);
-  /*  0 */ vAddConstant("TK_LOADSUB_PART"_Str,            TK_LOADSUB_PART);
-  /*  0 */ vAddConstant("TK_SELECT_PART"_Str,             TK_SELECT_PART);
-  /*  0 */ vAddConstant("TK_ENUMS"_Str,                   TK_ENUMS );
+  /*  0 */ vAddConstant("TK_NONE"_Stz,                    TK_NONE);
+  /*  0 */ vAddConstant("TK_ANSWER_DRONE"_Stz,            TK_ANSWER_DRONE);
+  /*  0 */ vAddConstant("TK_LISTER_DRONE"_Stz,            TK_LISTER_DRONE);
+  /*  0 */ vAddConstant("TK_CONNECTOR_DRONE"_Stz,         TK_CONNECTOR_DRONE);
+  /*  0 */ vAddConstant("TK_MONITOR_DRONE"_Stz,           TK_MONITOR_DRONE);
+  /*  0 */ vAddConstant("TK_RECLAIM_DRONE"_Stz,           TK_RECLAIM_DRONE);
+  /*  0 */ vAddConstant("TK_RECEIVER_DRONE"_Stz,          TK_RECEIVER_DRONE );
+  /*  0 */ vAddConstant("TK_REQUEST_SERVER"_Stz,          TK_REQUEST_SERVER);
+  /*  0 */ vAddConstant("TK_LOADSUB_SERVER"_Stz,          TK_LOADSUB_SERVER);
+  /*  0 */ vAddConstant("TK_COORDINATOR_WORKER"_Stz,      TK_COORDINATOR_WORKER);
+  /*  0 */ vAddConstant("TK_COORDINATOR_PROXY_WORKER"_Stz,TK_COORDINATOR_PROXY_WORKER);
+  /*  0 */ vAddConstant("TK_PARTICIPANT_WORKER"_Stz,      TK_PARTICIPANT_WORKER);
+  /*  0 */ vAddConstant("TK_PARTICIPANT_PROXY_WORKER"_Stz,TK_PARTICIPANT_PROXY_WORKER);
+  /*  0 */ vAddConstant("TK_SENDER_WORKER"_Stz,           TK_SENDER_WORKER);
+  /*  0 */ vAddConstant("TK_LOADSUB_PART"_Stz,            TK_LOADSUB_PART);
+  /*  0 */ vAddConstant("TK_SELECT_PART"_Stz,             TK_SELECT_PART);
+  /*  0 */ vAddConstant("TK_ENUMS"_Stz,                   TK_ENUMS );
   
   // TS_ : task state
-  /*  0 */ vAddConstant("TS_NONE"_Str,           TS_NONE);
-  /*  1 */ vAddConstant("TS_BLOCKED"_Str,        TS_BLOCKED);
-  /*  2 */ vAddConstant("TS_EXITED"_Str,         TS_EXITED);
-  /*  3 */ vAddConstant("TS_RUNNING"_Str,        TS_RUNNING);
-  /*  4 */ vAddConstant("TS_SLEEPING"_Str,       TS_SLEEPING);
-  /*  5 */ vAddConstant("TS_WAITING_ACK"_Str,    TS_WAITING_ACK);
-  /*  6 */ vAddConstant("TS_WAITING_SIGNAL"_Str, TS_WAITING_SIGNAL);
-  /*  7 */ vAddConstant("TS_YIELDED"_Str,        TS_YIELDED);
-  /*  8 */ vAddConstant("TS_ENUMS"_Str,          TS_ENUMS);
+  /*  0 */ vAddConstant("TS_NONE"_Stz,           TS_NONE);
+  /*  1 */ vAddConstant("TS_BLOCKED"_Stz,        TS_BLOCKED);
+  /*  2 */ vAddConstant("TS_EXITED"_Stz,         TS_EXITED);
+  /*  3 */ vAddConstant("TS_RUNNING"_Stz,        TS_RUNNING);
+  /*  4 */ vAddConstant("TS_SLEEPING"_Stz,       TS_SLEEPING);
+  /*  5 */ vAddConstant("TS_WAITING_ACK"_Stz,    TS_WAITING_ACK);
+  /*  6 */ vAddConstant("TS_WAITING_SIGNAL"_Stz, TS_WAITING_SIGNAL);
+  /*  7 */ vAddConstant("TS_YIELDED"_Stz,        TS_YIELDED);
+  /*  8 */ vAddConstant("TS_ENUMS"_Stz,          TS_ENUMS);
 
   // TP_ : transaction phase
-  /*  0 */ vAddConstant("TP_NONE"_Str,        TP_NONE);
-  /*  1 */ vAddConstant("TP_EXECUTING"_Str,   TP_EXECUTING);
-  /*  2 */ vAddConstant("TP_COMMITTING"_Str,  TP_COMMITTING);
-  /*  3 */ vAddConstant("TP_COMMITTED"_Str,   TP_COMMITTED);
-  /*  4 */ vAddConstant("TP_PREPARING"_Str,   TP_PREPARING);
-  /*  5 */ vAddConstant("TP_PREPARED"_Str,    TP_PREPARED);
-  /*  6 */ vAddConstant("TP_ROLLINGBACK"_Str, TP_ROLLINGBACK);
-  /*  7 */ vAddConstant("TP_ROLLEDBACK"_Str,  TP_ROLLEDBACK);
-  /*  8 */ vAddConstant("TP_FREE"_Str,        TP_FREE);
-  /*  9 */ vAddConstant("TP_ENUMS"_Str,       TP_ENUMS);
+  /*  0 */ vAddConstant("TP_NONE"_Stz,        TP_NONE);
+  /*  1 */ vAddConstant("TP_EXECUTING"_Stz,   TP_EXECUTING);
+  /*  2 */ vAddConstant("TP_COMMITTING"_Stz,  TP_COMMITTING);
+  /*  3 */ vAddConstant("TP_COMMITTED"_Stz,   TP_COMMITTED);
+  /*  4 */ vAddConstant("TP_PREPARING"_Stz,   TP_PREPARING);
+  /*  5 */ vAddConstant("TP_PREPARED"_Stz,    TP_PREPARED);
+  /*  6 */ vAddConstant("TP_ROLLINGBACK"_Stz, TP_ROLLINGBACK);
+  /*  7 */ vAddConstant("TP_ROLLEDBACK"_Stz,  TP_ROLLEDBACK);
+  /*  8 */ vAddConstant("TP_FREE"_Stz,        TP_FREE);
+  /*  9 */ vAddConstant("TP_ENUMS"_Stz,       TP_ENUMS);
 
   // WT_ : word type
-  /*  0 */ vAddConstant("WT_NONE"_Str,      WT_NONE);
-  /*  0 */ vAddConstant("WT_OBJECT"_Str,    WT_OBJECT);
-  /*  0 */ vAddConstant("WT_PRIMITIVE"_Str, WT_PRIMITIVE);
-  /*  0 */ vAddConstant("WT_ROUTINE"_Str,   WT_ROUTINE);
-  /*  0 */ vAddConstant("WT_VARIABLE"_Str,  WT_VARIABLE);
-  /*  0 */ vAddConstant("WT_ENUMS"_Str,     WT_ENUMS);
+  /*  0 */ vAddConstant("WT_NONE"_Stz,      WT_NONE);
+  /*  0 */ vAddConstant("WT_OBJECT"_Stz,    WT_OBJECT);
+  /*  0 */ vAddConstant("WT_PRIMITIVE"_Stz, WT_PRIMITIVE);
+  /*  0 */ vAddConstant("WT_ROUTINE"_Stz,   WT_ROUTINE);
+  /*  0 */ vAddConstant("WT_VARIABLE"_Stz,  WT_VARIABLE);
+  /*  0 */ vAddConstant("WT_ENUMS"_Stz,     WT_ENUMS);
   
   // OPEN_ : file open argument
-  /*  0 */ vAddConstant("OPEN_READ"_Str,              C_OPEN_READ);
-  /*  1 */ vAddConstant("OPEN_WRITE"_Str,             C_OPEN_WRITE);
-  /*  2 */ vAddConstant("OPEN_APPEND"_Str,            C_OPEN_APPEND);
-  /*  3 */ vAddConstant("OPEN_READ_WRITE_EXIST"_Str,  C_OPEN_READ_WRITE_EXIST);
-  /*  4 */ vAddConstant("OPEN_READ_WRITE_CREATE"_Str, C_OPEN_READ_WRITE_CREATE);
-  /*  5 */ vAddConstant("OPEN_READ_APPEND"_Str,       C_OPEN_READ_APPEND);
+  /*  0 */ vAddConstant("OPEN_READ"_Stz,              C_OPEN_READ);
+  /*  1 */ vAddConstant("OPEN_WRITE"_Stz,             C_OPEN_WRITE);
+  /*  2 */ vAddConstant("OPEN_APPEND"_Stz,            C_OPEN_APPEND);
+  /*  3 */ vAddConstant("OPEN_READ_WRITE_EXIST"_Stz,  C_OPEN_READ_WRITE_EXIST);
+  /*  4 */ vAddConstant("OPEN_READ_WRITE_CREATE"_Stz, C_OPEN_READ_WRITE_CREATE);
+  /*  5 */ vAddConstant("OPEN_READ_APPEND"_Stz,       C_OPEN_READ_APPEND);
   
   // miscellaneous
-  /*  0 */ vAddConstant("CLOCK_FREQUENCY"_Str, Synch::iTickFrequency());
-  /*  0 */ vAddConstant("CORE_COUNT"_Str,      Hardware::iCoreCount());
-  /*  0 */ vAddConstant("CPU_COUNT"_Str,       Hardware::iCpuCount());
-  /*  0 */ vAddConstant("PHYSICAL_MEMORY"_Str, Hardware::iPhysicalMemory());
+  /*  0 */ vAddConstant("CLOCK_FREQUENCY"_Stz, Synch::iTickFrequency());
+  /*  0 */ vAddConstant("CORE_COUNT"_Stz,      Hardware::iCoreCount());
+  /*  0 */ vAddConstant("CPU_COUNT"_Stz,       Hardware::iCpuCount());
+  /*  0 */ vAddConstant("PHYSICAL_MEMORY"_Stz, Hardware::iPhysicalMemory());
   
   // debug
-  vAddConstant("answerDronePrint"_Str,    (i8)0);
-  vAddConstant("connectorDronePrint"_Str, (i8)0);
-  vAddConstant("listerDronePrint"_Str,    (i8)0);
-  vAddConstant("monitorDronePrint"_Str,   (i8)0);
-  vAddConstant("reclaimDronePrint"_Str,   (i8)0);
-  vAddConstant("receiverDronePrint"_Str,  (i8)0);
+  vAddConstant("answerDronePrint"_Stz,    (i8)0);
+  vAddConstant("connectorDronePrint"_Stz, (i8)0);
+  vAddConstant("listerDronePrint"_Stz,    (i8)0);
+  vAddConstant("monitorDronePrint"_Stz,   (i8)0);
+  vAddConstant("reclaimDronePrint"_Stz,   (i8)0);
+  vAddConstant("receiverDronePrint"_Stz,  (i8)0);
   
-  vAddConstant("requestServerPrint"_Str,  (i8)0);
+  vAddConstant("requestServerPrint"_Stz,  (i8)0);
   
-  vAddConstant("senderWorkerPrint"_Str,   (i8)0);
+  vAddConstant("senderWorkerPrint"_Stz,   (i8)0);
   
   // c++ objects
-  vAddConstant("scheduler"_Str, (i8)gpScheduler);
+  vAddConstant("scheduler"_Stz, (i8)gpScheduler);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -899,10 +899,10 @@ void Task::vAddPrimitives(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   if (gbVerbose)
-    vTrace("[[mainThread]] Adding primitives...\n"_Str);
+    vTrace("[[mainThread]] Adding primitives...\n"_Stz);
   
-  vAddPrimitive("word"_Str,            &vWord,             false);
-  gpWord = gpMainDic->pFindWord("word"_Str);
+  vAddPrimitive("word"_Stz,            &vWord,             false);
+  gpWord = gpMainDic->pFindWord("word"_Stz);
 
   vAddPrimitives_AccessPath();
   vAddPrimitives_Accum();
@@ -1023,12 +1023,12 @@ void Task::vAddRoutines(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   if (gbVerbose)
-    vTrace("[[mainThread]] Adding routines...\n"_Str);
+    vTrace("[[mainThread]] Adding routines...\n"_Stz);
   
   s48K sDefinition;
 
   sDefinition =
-  ": __nil ;"_Str;
+  ": __nil ;"_Stz;
   
   pCompileColon(sDefinition);
   
@@ -1118,7 +1118,7 @@ void Task::vAddRoutines(void)
   
   "  jumpBegin_"
   
-  " ;"_Str;
+  " ;"_Stz;
   
   pCompileColon(sDefinition);
   
@@ -1126,7 +1126,7 @@ void Task::vAddRoutines(void)
   sDefinition =
   ": ::task_exit"
   "  TS_EXITED task::this task.state!"
-  "  ;"_Str;
+  "  ;"_Stz;
   
   pCompileColon(sDefinition);
   
@@ -1136,7 +1136,7 @@ void Task::vAddRoutines(void)
   //  "  input.text"
   "  docol"
   "  ::task_exit"
-  "  ;"_Str;
+  "  ;"_Stz;
   
   pCompileColon(sDefinition);
   
@@ -1147,7 +1147,7 @@ void Task::vAddRoutines(void)
   "  input.stdin"
   "  docol"
   "  ::task_exit"
-  "  ;"_Str;
+  "  ;"_Stz;
   
   pCompileColon(sDefinition);
   
@@ -1160,7 +1160,7 @@ void Task::vAddRoutines(void)
   "  docol"
   "  input.close"
   "  input.pop"
-  "  ;"_Str;
+  "  ;"_Stz;
   
   pCompileColon(sDefinition);
   
@@ -1172,7 +1172,7 @@ void Task::vAddRoutines(void)
   "  input.text"
   "  docol"
   "  input.pop"
-  "  ;"_Str;
+  "  ;"_Stz;
   
   pCompileColon(sDefinition);
   
@@ -1188,7 +1188,7 @@ void Task::vAddRoutines(void)
   "    . debug::trap"
   "  then"
   "  include-file"
-  "  ;"_Str;
+  "  ;"_Stz;
   
   pCompileColon(sDefinition);
   
@@ -1202,7 +1202,7 @@ void Task::vAddRoutines(void)
   "  \"compile.sen\" include"
   "  \"::dicCompile exit\" .verbose"
   "  ::task_exit"
-  "  ;"_Str;
+  "  ;"_Stz;
 #else
   sDefinition =
   ": ::dicCompile"
@@ -1210,7 +1210,7 @@ void Task::vAddRoutines(void)
   "  \"compile.sen\" include"
   "  \"::dicCompile exit\" .verbose"
   "  ::task_exit"
-  "  ;"_Str;
+  "  ;"_Stz;
 #endif
   pCompileColon(sDefinition);
 }
@@ -1231,11 +1231,11 @@ Word* Task::pCompileColon(StrVal& sDefinition)
   
   // get :
   m_pTokeniser->vNextToken();
-  //vTrace("CompileColon: %s\n"_Str,m_sToken.s());
+  //vTrace("CompileColon: %s\n"_Stz,m_sToken.s());
   
   // get name of word
   m_pTokeniser->vNextToken();
-  //vTrace("CompileColon: %s\n"_Str,m_sToken.s());
+  //vTrace("CompileColon: %s\n"_Stz,m_sToken.s());
   
   Dic* pDic;
   if (m_xPathStack.iCount())
@@ -1251,17 +1251,17 @@ Word* Task::pCompileColon(StrVal& sDefinition)
   
   while (TN_NONE != m_pTokeniser->eToken()) {
     
-    //vTrace("CompileColon: %s\n"_Str,m_sToken.s());
+    //vTrace("CompileColon: %s\n"_Stz,m_sToken.s());
     
 //  if (StrLib::bEqualTo(";",m_pTokeniser->sToken().s()))
-    if (m_pTokeniser->sToken().bEqual(";"_Str))
+    if (m_pTokeniser->sToken().bEqual(";"_Stz))
       break;
     
     switch (m_pTokeniser->eToken()) {
         
       case TN_INTEGER:
         xValWrk = m_pTokeniser->sToken().iToI8();
-        pNewWord->vEncode("pushValue"_Str,&xValWrk);
+        pNewWord->vEncode("pushValue"_Stz,&xValWrk);
         break;
         
       case TN_NAME:
@@ -1279,24 +1279,24 @@ Word* Task::pCompileColon(StrVal& sDefinition)
           pNewWord->vEncode(ppCalledEntryStep);
         }
         else {
-          THROW("Invalid eWordType %lld"_Str,pCalledWord->eWordType());
+          THROW("Invalid eWordType %lld"_Stz,pCalledWord->eWordType());
         }
         break;
         
       case TN_STRING: {
         xValWrk = m_pTokeniser->sToken();
-        pNewWord->vEncode("pushValue"_Str,&xValWrk);
+        pNewWord->vEncode("pushValue"_Stz,&xValWrk);
         break;
       }
         
       default:
-        THROW("Invalid m_eToken %lld"_Str,m_pTokeniser->eToken());
+        THROW("Invalid m_eToken %lld"_Stz,m_pTokeniser->eToken());
     }
     
     m_pTokeniser->vNextToken();
   }
   
-  pNewWord->vEncode("exit"_Str);
+  pNewWord->vEncode("exit"_Stz);
   
 
   // reset scanning
@@ -1321,22 +1321,22 @@ void Task::vCompileConstant(StrVal& sDefinition)
   
   // get string
   m_pTokeniser->vNextToken();
-  //vTrace("CompileConstant: %s\n"_Str,m_pTokeniser->sToken().s());
-  sConstantValue = (Str*)m_pTokeniser->sToken().s();
+  //vTrace("CompileConstant: %s\n"_Stz,m_pTokeniser->sToken().s());
+  sConstantValue = (Stz*)m_pTokeniser->sToken().s();
   
   // get CONSTANT
   m_pTokeniser->vNextToken();
-  //vTrace("CompileConstant: %s\n"_Str,m_pTokeniser->sToken().s());
+  //vTrace("CompileConstant: %s\n"_Stz,m_pTokeniser->sToken().s());
   
   // get name of word
   m_pTokeniser->vNextToken();
-  //vTrace("CompileConstant: %s\n"_Str,m_pTokeniser->sToken().s());
+  //vTrace("CompileConstant: %s\n"_Stz,m_pTokeniser->sToken().s());
 
-  Str* aName = (Str*)m_pTokeniser->sToken().s();
+  Stz* aName = (Stz*)m_pTokeniser->sToken().s();
 
-  //vTrace("CompileConstant: %s %s\n"_Str,aName,sConstantValue.s());
+  //vTrace("CompileConstant: %s %s\n"_Stz,aName,sConstantValue.s());
   
-  vAddConstant(aName,(Str*)sConstantValue.s());
+  vAddConstant(aName,(Stz*)sConstantValue.s());
   
   m_pTokeniser->vNextToken();
   
@@ -1353,14 +1353,14 @@ void Task::vDebug(void)
 /*----------------------------------------------------------------------------*/
 /* dump                                                                       */
 /*----------------------------------------------------------------------------*/
-void Task::vDump(eCN eClass, Object* pObject, Str* aTab)
+void Task::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
   ASSERT(eClass == CN_TASK);
   ASSERT(pObject->eClass() == CN_TASK);
   
   Task* pTask = reinterpret_cast<Task*>(pObject);
   
-  vTrace("%s TaskNo %lld state %s txId %lld\n"_Str,
+  vTrace("%s TaskNo %lld state %s txId %lld\n"_Stz,
          pTask->m_sName.s(),
          pTask->m_iTaskNo,
          aTS[pTask->m_eState]->s(),
@@ -1374,7 +1374,7 @@ void Task::vContentDump(void)
 {
   _poolAddress_(this);
   
-  vTrace("%sTask %02lld %p: %16s state %8s txId %lld\n"_Str,
+  vTrace("%sTask %02lld %p: %16s state %8s txId %lld\n"_Stz,
          aDoubleTab(),
          m_iTaskNo,
          this,
@@ -1534,7 +1534,7 @@ void Task::vPrevInSet(NP_Task npPrevInSet)
 /*----------------------------------------------------------------------------*/
 /* primitive entry                                                            */
 /*----------------------------------------------------------------------------*/
-void Task::vPrimitive(Str* aPrimitive)
+void Task::vPrimitive(Stz* aPrimitive)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
@@ -1548,11 +1548,11 @@ void Task::vPrimitive(Str* aPrimitive)
   if (pLocatedWord)
     sRoutine = pLocatedWord->sName();
   else
-    sRoutine = "<unknown>"_Str;
+    sRoutine = "<unknown>"_Stz;
   
   i8 iDataValues  = m_pDataStack->iValues();
   i8 iReturnValues = m_pReturnStack->iValues();
-  vTrace("%-15s %15s : r%lld ; d%2d="_Str,
+  vTrace("%-15s %15s : r%lld ; d%2d="_Stz,
          sRoutine.s(),
          aPrimitive,
          iReturnValues,
@@ -1560,7 +1560,7 @@ void Task::vPrimitive(Str* aPrimitive)
   
   s48K sStackContents;
   vStackContents(m_pDataStack, sStackContents);
-  vTrace("%s\n"_Str,sStackContents.s());
+  vTrace("%s\n"_Stz,sStackContents.s());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1586,7 +1586,7 @@ void Task::vPushObject(Object* pObject)
 /*----------------------------------------------------------------------------*/
 /* push str                                                                   */
 /*----------------------------------------------------------------------------*/
-void Task::vPushStr(Str* aStr)
+void Task::vPushStr(Stz* aStr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
@@ -1625,7 +1625,7 @@ void Task::vReset(void)
   IP.m_pCell    = m_pResetIP;
   m_pBeginIP = nullptr;
   
-  m_pTokeniser->sToken() = ""_Str;
+  m_pTokeniser->sToken() = ""_Stz;
   
   m_pDataStack->vReset();
   m_pReturnStack->vReset();
@@ -1641,7 +1641,7 @@ void Task::vRetry(void)
   IP.m_pCell    = m_pResetIP;
   m_pBeginIP = nullptr;
   
-  m_pTokeniser->sToken() = ""_Str;
+  m_pTokeniser->sToken() = ""_Stz;
   
   m_pDataStack->vRetry();
   m_pReturnStack->vRetry();
@@ -1657,8 +1657,8 @@ Thread* Task::pRootThread(void)
   Object* pThreadEmb;
   
   if ( ! m_pDataStack->bPop(pThreadEmb) ) {
-    m_sException.vSprint("Task::pRootThread: invalid data stack"_Str);
-    m_sFile = (Str*)__FILE__;
+    m_sException.vSprint("Task::pRootThread: invalid data stack"_Stz);
+    m_sFile = (Stz*)__FILE__;
     throw (i8)__LINE__;
   }
   
@@ -1677,9 +1677,9 @@ void Task::vSeedDicCompileSen(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   if (gbVerbose)
-    vTrace("[[mainThread]] Seeding Dic Compile...\n"_Str);
+    vTrace("[[mainThread]] Seeding Dic Compile...\n"_Stz);
   
-  Word* pBootSen = gpMainDic->pFindWord("::dicCompile"_Str);
+  Word* pBootSen = gpMainDic->pFindWord("::dicCompile"_Stz);
   ASSERT(pBootSen);
   
   IP.m_pCell = pBootSen->pFirstCell();
@@ -1689,7 +1689,7 @@ void Task::vSeedDicCompileSen(void)
   m_pDataStack->vReset();
   m_pReturnStack->vReset();
   
-  m_sLambda = ""_Str;
+  m_sLambda = ""_Stz;
   
   m_pTokeniser->vUseString(m_sLambda);
 }
@@ -1697,11 +1697,11 @@ void Task::vSeedDicCompileSen(void)
 /*----------------------------------------------------------------------------*/
 /* seed task to run given lambda                                              */
 /*----------------------------------------------------------------------------*/
-void Task::vSeedWord(Str* aLambda)
+void Task::vSeedWord(Stz* aLambda)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  Word* pShellEnter = gpMainDic->pFindWord("::docmd"_Str);
+  Word* pShellEnter = gpMainDic->pFindWord("::docmd"_Stz);
   
   IP.m_pCell = pShellEnter->pFirstCell();
   
@@ -1712,7 +1712,7 @@ void Task::vSeedWord(Str* aLambda)
   
   m_sLambda = aLambda;
   if (m_sLambda.iLength())
-    m_sLambda.vConcat(" ::task_exit"_Str);
+    m_sLambda.vConcat(" ::task_exit"_Stz);
   
   m_pTokeniser->vUseString(m_sLambda);
 }
@@ -1724,7 +1724,7 @@ void Task::vSeedDocol(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  Word* pShellEnter = gpMainDic->pFindWord("::enter"_Str);
+  Word* pShellEnter = gpMainDic->pFindWord("::enter"_Stz);
   
   IP.m_pCell = pShellEnter->pFirstCell();
   
@@ -1733,9 +1733,9 @@ void Task::vSeedDocol(void)
   m_pDataStack->vReset();
   m_pReturnStack->vReset();
   
-  m_sLambda = ""_Str;
+  m_sLambda = ""_Stz;
   
-  s32 sPrompt("docol> "_Str);
+  s32 sPrompt("docol> "_Stz);
   m_pTokeniser->vPrompt(sPrompt);
   
   m_pTokeniser->vUseString(m_sLambda);
@@ -1749,14 +1749,14 @@ void Task::vStackContents(Stack* pStack, StrVal& sStackContents)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  sStackContents = ""_Str;
+  sStackContents = ""_Stz;
   
   i8 iParamValues = pStack->iValues();
   
-  sStackContents.vCatSprint("("_Str);
+  sStackContents.vCatSprint("("_Stz);
   for (i8 iValue = iParamValues - 1; iValue >= 0; iValue--) {
     
-    sStackContents.vCatSprint(" "_Str);
+    sStackContents.vCatSprint(" "_Stz);
     
     Value* pValue = pStack->pPeekValue(iValue);
     
@@ -1764,12 +1764,12 @@ void Task::vStackContents(Stack* pStack, StrVal& sStackContents)
     
     if (CN_BINVAL == eClass) {
       Object* pObject = _pBinVal(pValue)->pNewObject();
-      sStackContents.vCatSprint("(BINVAL)^%s=%p"_Str,
+      sStackContents.vCatSprint("(BINVAL)^%s=%p"_Stz,
                                 aCN[pObject->eClass()],
                                 pObject);
     }
     else if (CN_INTVAL == eClass) {
-      sStackContents.vCatSprint("%lld"_Str,_pIntVal(pValue)->iInt());
+      sStackContents.vCatSprint("%lld"_Stz,_pIntVal(pValue)->iInt());
     }
     else if (CN_PTRVAL == eClass) {
       if (_pPtrVal(pValue)->pPtr()) {
@@ -1779,59 +1779,59 @@ void Task::vStackContents(Stack* pStack, StrVal& sStackContents)
         eCN ePtrClass = _pPtrVal(pValue)->pPtr()->eClass();
         
         if (CN_WORD == ePtrClass)
-          sStackContents.vCatSprint("^%s=%p:%s"_Str,
+          sStackContents.vCatSprint("^%s=%p:%s"_Stz,
                                     aCN[ePtrClass],
                                     pPtr,
                                     ((Word*)pPtr)->sName().s());
         else if (CN_QUEUE == ePtrClass) {
           Word* pWord = Word::pToWord(pPtr);
-          sStackContents.vCatSprint("^%s=%p:%s"_Str,
+          sStackContents.vCatSprint("^%s=%p:%s"_Stz,
                                     aCN[ePtrClass],
                                     pPtr,
                                     pWord->sName().s());
         }
         else if (CN_TASK == ePtrClass) {
           Task* pTask = _pTask(pPtr);
-          sStackContents.vCatSprint("^%s=%p:%s"_Str,
+          sStackContents.vCatSprint("^%s=%p:%s"_Stz,
                                     aCN[ePtrClass],
                                     pPtr,
                                     pTask->sName().s());
         }
         else {
           if (pPtr->iMagic() == C_MAGIC && pPtr->eClass() < CN_ENUMS)
-            sStackContents.vCatSprint("^%s=%p"_Str,
+            sStackContents.vCatSprint("^%s=%p"_Stz,
                                       aCN[ePtrClass],
                                       pPtr);
           //else
-          //  sStackContents.vCatSprint("%p"_Str,
+          //  sStackContents.vCatSprint("%p"_Stz,
           //                     pValWrk->pPtr());
         }
       }
       else
-        sStackContents.vCatSprint("^%s=%p"_Str,
+        sStackContents.vCatSprint("^%s=%p"_Stz,
                                   pValue->aClass(),
                                   _pPtrVal(pValue)->pPtr());
     }
     else if (CN_IPVAL == eClass) {                                      
-      sStackContents.vCatSprint("%p"_Str,
+      sStackContents.vCatSprint("%p"_Stz,
                                 _pIpVal(pValue)->pIpPtr());
     }
     else if (CN_STRVAL == eClass) {
-      sStackContents.vCatSprint("\"%lls\""_Str,
+      sStackContents.vCatSprint("\"%lls\""_Stz,
                                 _pStrVal(pValue)->s());
     }
     else if (CN_VALSET == eClass) {
-      sStackContents.vCatSprint("<%s>=%p"_Str,
+      sStackContents.vCatSprint("<%s>=%p"_Stz,
                                 pValue->aClass(),
                                 pValue);
     }
     else {
-      sStackContents.vCatSprint("<unknown:class=%lld>"_Str,
+      sStackContents.vCatSprint("<unknown:class=%lld>"_Stz,
                                 pValue->eClass());
     }
   }
   
-  sStackContents.vCatSprint(" )"_Str);
+  sStackContents.vCatSprint(" )"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1899,7 +1899,7 @@ void Task::vThread(Threads::Thread* pThread)
 /*----------------------------------------------------------------------------*/
 /* trace current point                                                        */
 /*----------------------------------------------------------------------------*/
-void Task::vTracePoint(Str* aMark)
+void Task::vTracePoint(Stz* aMark)
 {
   if (gxArguments.m_nNodes > 1) {
     i8 iPause = Random::iRandom(999,99999);
@@ -1914,12 +1914,12 @@ void Task::vTracePoint(Str* aMark)
   if (pLocatedWord)
     sRoutine = pLocatedWord->sName();
   else
-    sRoutine = "<unknown>"_Str;
+    sRoutine = "<unknown>"_Stz;
   
   i8 iAuxValues    = m_pAuxStack->iValues();
   i8 iDataValues   = m_pDataStack->iValues();
   i8 iReturnValues = m_pReturnStack->iValues();
-  vTrace("[%s(N%d):%8s\\%lld %-11s] %-16s %-16s : a%2lld="_Str,
+  vTrace("[%s(N%d):%8s\\%lld %-11s] %-16s %-16s : a%2lld="_Stz,
          
          gpGrid->pThisNode()->aNodeName(),
          gpGrid->iThisNode(),
@@ -1934,13 +1934,13 @@ void Task::vTracePoint(Str* aMark)
   s48K sStackContents;
   vStackContents(m_pAuxStack, sStackContents);
   
-  vTrace("%s"_Str,sStackContents.s());
+  vTrace("%s"_Stz,sStackContents.s());
   
-  vTrace(" r%2lld  d%2lld="_Str, iReturnValues, iDataValues);
+  vTrace(" r%2lld  d%2lld="_Stz, iReturnValues, iDataValues);
 
   vStackContents(m_pDataStack, sStackContents);
   
-  vTrace("%s\n"_Str,sStackContents.s());
+  vTrace("%s\n"_Stz,sStackContents.s());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1983,7 +1983,7 @@ void Task::vLoop(void)
     
     m_pEntryCell = IP.m_pCell->m_ppEntryStep + 1;
     
-    //vTrace("pTaskStep %p\n"_Str,pTaskStep);
+    //vTrace("pTaskStep %p\n"_Stz,pTaskStep);
     
     IP.m_pCell++;
     
@@ -2005,7 +2005,7 @@ void Task::vLoop(void)
       else {
         StrLib::vCopy(wFileName, m_sFile.s());
       }
-      vError("[%s] %s : line %lld in %s\n"_Str,
+      vError("[%s] %s : line %lld in %s\n"_Stz,
              m_sName.s(),
              m_sException.s(),
              iException,
@@ -2021,7 +2021,7 @@ void Task::vLoop(void)
       ps = StrLib::sLast(pError->aFileName()->s());
       StrLib::bBackward(&ps,(char*)pError->aFileName(),'/');
       StrLib::vCopy(wFileName,ps+1);
-      vError("[%s] %s: line %lld in %s\n"_Str,
+      vError("[%s] %s: line %lld in %s\n"_Stz,
              m_sName.s(),
              pError->aErrorMsg(),
              pError->iLineNo(),

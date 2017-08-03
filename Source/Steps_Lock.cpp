@@ -31,11 +31,11 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Lock(void)
 {
-  vAddPrimitive("lock.dropRead"_Str,   &vLockDropRead,     false);
-  vAddPrimitive("lock.dropWrite"_Str,  &vLockDropWrite,    false);
-  vAddPrimitive("lock.grabRead"_Str,   &vLockGrabRead,     false);
-  vAddPrimitive("lock.grabWrite"_Str,  &vLockGrabWrite,    false);
-  vAddPrimitive("lock.init"_Str,       &vLockInit,         false);
+  vAddPrimitive("lock.dropRead"_Stz,   &vLockDropRead,     false);
+  vAddPrimitive("lock.dropWrite"_Stz,  &vLockDropWrite,    false);
+  vAddPrimitive("lock.grabRead"_Stz,   &vLockGrabRead,     false);
+  vAddPrimitive("lock.grabWrite"_Stz,  &vLockGrabWrite,    false);
+  vAddPrimitive("lock.init"_Stz,       &vLockInit,         false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -43,11 +43,11 @@ void Task::vAddPrimitives_Lock(void)
 /*----------------------------------------------------------------------------*/
 void Task::vLockDropRead(MP_Task mpTask)
 {
-ENTRY("vLockDropRead"_Str);
+ENTRY("vLockDropRead"_Stz);
   
   Object* pPtrLock;;
   if ( ! mpTask->m_pDataStack->bPop(pPtrLock) )
-    THROW_INVALID_DSTACK("lock.dropread"_Str);
+    THROW_INVALID_DSTACK("lock.dropread"_Stz);
   
   Lock* pLock = _pLock(pPtrLock);
   ASSERT(pLock);
@@ -63,11 +63,11 @@ ENTRY("vLockDropRead"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vLockDropWrite(MP_Task mpTask)
 {
-ENTRY("vLockDropWrite"_Str);
+ENTRY("vLockDropWrite"_Stz);
 
   Object* pPtrLock;;
   if ( ! mpTask->m_pDataStack->bPop(pPtrLock) )
-    THROW_INVALID_DSTACK("lock.dropwrite"_Str);
+    THROW_INVALID_DSTACK("lock.dropwrite"_Stz);
   
   Lock* pLock = _pLock(pPtrLock);
   ASSERT(pLock);
@@ -83,11 +83,11 @@ ENTRY("vLockDropWrite"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vLockGrabRead(MP_Task mpTask)
 {
-ENTRY("vLockGrabRead"_Str);
+ENTRY("vLockGrabRead"_Stz);
 
   Object* pPtrLock;;
   if ( ! mpTask->m_pDataStack->bPop(pPtrLock) )
-    THROW_INVALID_DSTACK("lock.grabread"_Str);
+    THROW_INVALID_DSTACK("lock.grabread"_Stz);
   
   Lock* pLock = _pLock(pPtrLock);
   ASSERT(pLock);
@@ -103,11 +103,11 @@ ENTRY("vLockGrabRead"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vLockGrabWrite(MP_Task mpTask)
 {
-ENTRY("vLockGrabWrite"_Str);
+ENTRY("vLockGrabWrite"_Stz);
 
   Object* pPtrLock;;
   if ( ! mpTask->m_pDataStack->bPop(pPtrLock) )
-    THROW_INVALID_DSTACK("lock.grabwrite"_Str);
+    THROW_INVALID_DSTACK("lock.grabwrite"_Stz);
   
   Lock* pLock = _pLock(pPtrLock);
   ASSERT(pLock);
@@ -123,11 +123,11 @@ ENTRY("vLockGrabWrite"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vLockInit(MP_Task mpTask)
 {
-ENTRY("vLockInit"_Str);
+ENTRY("vLockInit"_Stz);
   
   Object* pPtrLock;;
   if ( ! mpTask->m_pDataStack->bPop(pPtrLock) )
-    THROW_INVALID_DSTACK("lock.init"_Str);
+    THROW_INVALID_DSTACK("lock.init"_Stz);
   
   Lock* pLock = _pLock(pPtrLock);
   

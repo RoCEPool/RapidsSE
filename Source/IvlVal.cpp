@@ -22,7 +22,7 @@ IvlVal* Values::_pIvlVal(void* aAddr)
 void* IvlVal::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  vFatal("fatal: IvlVal class cannot be new'd\n"_Str);
+  vFatal("fatal: IvlVal class cannot be new'd\n"_Stz);
   
   NEVER_REACH;
 }
@@ -42,7 +42,7 @@ IvlVal::IvlVal(void)
 /*----------------------------------------------------------------------------*/
 void IvlVal::operator =(i8 iIvl)
 {
-  //vTrace("IvlVal: diff %lld\n"_Str,nSub(&m_iIvl,this));
+  //vTrace("IvlVal: diff %lld\n"_Stz,nSub(&m_iIvl,this));
   
   *aInt() = iIvl;
 }
@@ -52,7 +52,7 @@ void IvlVal::operator =(i8 iIvl)
 /*----------------------------------------------------------------------------*/
 void IvlVal::operator =(Ivl xIvl)
 {
-  //vTrace("IvlVal: diff %lld\n"_Str,nSub(&m_iIvl,this));
+  //vTrace("IvlVal: diff %lld\n"_Stz,nSub(&m_iIvl,this));
   
   *aInt() = xIvl.iAsI8();
 }
@@ -84,7 +84,7 @@ i8* IvlVal::aInt(void)
 /*----------------------------------------------------------------------------*/
 /* convert to string                                                          */
 /*----------------------------------------------------------------------------*/
-//void IvlVal::vToString(Str* aWorkspace)
+//void IvlVal::vToString(Stz* aWorkspace)
 //{
 //  *aWorkspace = m_iIvl;
 //}

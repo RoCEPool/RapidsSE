@@ -83,14 +83,14 @@ Op::~Op(void)
 /*----------------------------------------------------------------------------*/
 /*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-eRO Op::eDecode(Str* aOpText)
+eRO Op::eDecode(Stz* aOpText)
 {
-  if (aOpText->bEqual("<"_Str))  return RO_LESS_THAN;
-  if (aOpText->bEqual("<="_Str)) return RO_LESS_EQUAL;
-  if (aOpText->bEqual("="_Str))  return RO_EQUAL_TO;
-  if (aOpText->bEqual("=="_Str)) return RO_EQUAL_TO;
-  if (aOpText->bEqual(">="_Str)) return RO_GREATER_EQUAL;
-  if (aOpText->bEqual(">"_Str))  return RO_GREATER_THAN;
+  if (aOpText->bEqual("<"_Stz))  return RO_LESS_THAN;
+  if (aOpText->bEqual("<="_Stz)) return RO_LESS_EQUAL;
+  if (aOpText->bEqual("="_Stz))  return RO_EQUAL_TO;
+  if (aOpText->bEqual("=="_Stz)) return RO_EQUAL_TO;
+  if (aOpText->bEqual(">="_Stz)) return RO_GREATER_EQUAL;
+  if (aOpText->bEqual(">"_Stz))  return RO_GREATER_THAN;
 
   return RO_NONE;
 }

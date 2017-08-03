@@ -34,7 +34,7 @@ void* TxMap::operator new(size_t iSize, TxMap* pTxMap)
 void TxMap::operator delete(void* pBufferAddress)
 {
   RASSERT(pBufferAddress);
-  vFatal("fatal: TxMap class cannot be deleted"_Str);
+  vFatal("fatal: TxMap class cannot be deleted"_Stz);
   
   NEVER_REACH;
 }

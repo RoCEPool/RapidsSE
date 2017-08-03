@@ -16,13 +16,13 @@ namespace DBobjects
     /*  4 */ JC_ENUMS
   };
   
-  static Str* aJC[]
+  static Stz* aJC[]
   {
-    /*  0 */ "NONE"_Str,
-    /*  1 */ "BEFORE"_Str,
-    /*  2 */ "SAME"_Str,
-    /*  3 */ "AFTER"_Str,
-    /*  4 */ "ENUMS"_Str,
+    /*  0 */ "NONE"_Stz,
+    /*  1 */ "BEFORE"_Stz,
+    /*  2 */ "SAME"_Stz,
+    /*  3 */ "AFTER"_Stz,
+    /*  4 */ "ENUMS"_Stz,
   };
   
   class Key
@@ -67,7 +67,7 @@ namespace DBobjects
     bool bJuxtaAfter(Key* pKey, IdxColVec* pColVec, bool& bIsEqual);
   
     char* aWspArea(void);
-    Str*  aWspStr(void);
+    Stz*  aWspStr(void);
   };
   
   Key* _aKey(void* aAddr);

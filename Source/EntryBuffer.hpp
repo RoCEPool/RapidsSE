@@ -15,12 +15,12 @@ namespace DBobjects
   /* 3 */ BD_ENUMS
   };
   
-  static Str* aRD[]
+  static Stz* aRD[]
   {
-  /* 0 */ "NONE"_Str,
-  /* 1 */ "TEMPORARY"_Str,
-  /* 2 */ "PERMANENT"_Str,
-  /* 3 */ "ENUMS"_Str,
+  /* 0 */ "NONE"_Stz,
+  /* 1 */ "TEMPORARY"_Stz,
+  /* 2 */ "PERMANENT"_Stz,
+  /* 3 */ "ENUMS"_Stz,
   };
   
   static const i8 C_BUFFER_THRESHOLD = 100;
@@ -77,7 +77,7 @@ namespace DBobjects
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // what was RowBufer
   
-    static void vDump(eCN eClass, Object* pObject, Str* aTab);
+    static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     
     Entry*     pAllotEntry(i8 nBytes);
     Entry*     pAllotEntry(i8 nOffsets, i8 nKeyBytes, i8 nDataBytes);
@@ -109,7 +109,7 @@ namespace DBobjects
     void         vHigherLevel(EntryBuffer* pHigherLevel);
     EntryBuffer* pHigherLevel(void);
     Index*       pIndex(void);
-    bool         bInsertEntry(i8 iTxId, Str* pRow, i8 iLength);
+    bool         bInsertEntry(i8 iTxId, Stz* pRow, i8 iLength);
     Entry*       pInsert(EntWrk& xEntWrk);
     Entry*       pNextEntry(Entry* pEntry);
     EntryBuffer* pPositionLevel(KeyWrk& xKeyWrk, eJC eJuxtaCompare, i8 iLevel);

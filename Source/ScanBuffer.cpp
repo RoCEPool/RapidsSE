@@ -56,7 +56,7 @@ ScanBuffer::~ScanBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* get into area and number of available bytes                                */
 /*----------------------------------------------------------------------------*/
-Str* ScanBuffer::aInto(i8& iAvailableBytes)
+Stz* ScanBuffer::aInto(i8& iAvailableBytes)
 {
   //
   // a) no previous dangling portion
@@ -112,27 +112,27 @@ void ScanBuffer::vMore(i8& iBytesRead)
   
   _precondition_(_ADDRESS_,_MAGIC_,CN_SCANBUFFER,_FOOTER_);
   
-  m_aEndData = pAdd<Str*>(m_aEndData,iBytesRead);
+  m_aEndData = pAdd<Stz*>(m_aEndData,iBytesRead);
   
   m_aNextMsg = aFirstByte();
   ASSERT(m_aEndData >= aFirstByte() - 1);
   ASSERT(m_aEndData <= aLastByte());
   
   
-//  vInfo("More: "_Str);
+//  vInfo("More: "_Stz);
 //  for (char* c = aFirstByte(); c <= aFirstByte() + 1000; c++) {
 //    if (*c == '\n')
 //      break;
-//    vInfo("%c"_Str,*c);
+//    vInfo("%c"_Stz,*c);
 //  }
-//  vInfo("\n"_Str);
+//  vInfo("\n"_Stz);
   
 }
 
 /*----------------------------------------------------------------------------*/
 /* scan for next message                                                      */
 /*----------------------------------------------------------------------------*/
-Str* ScanBuffer::aScan(i8& nMessageBytes)
+Stz* ScanBuffer::aScan(i8& nMessageBytes)
 {
   //
   // v- aFirstByte()                                          aLastByte() -v
@@ -153,7 +153,7 @@ Str* ScanBuffer::aScan(i8& nMessageBytes)
   }
   
   // look for end of next record
-  Str* pMsg = m_aNextMsg;
+  Stz* pMsg = m_aNextMsg;
   while (m_aNextMsg <= m_aEndData) {
   
     if (*(char*)m_aNextMsg == '\n') {
@@ -222,7 +222,7 @@ i8 ScanBuffer::iBytesAvailable(void)
 /*----------------------------------------------------------------------------*/
 /* copy dangling portion to beginning of workarea                             */
 /*----------------------------------------------------------------------------*/
-void ScanBuffer::vCopyUp(Str* aDangling)
+void ScanBuffer::vCopyUp(Stz* aDangling)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SCANBUFFER,_FOOTER_);
   
@@ -257,15 +257,15 @@ void ScanBuffer::vCopyUp(Str* aDangling)
   ASSERT(nDanglingBytes <= m_xWsp.nLength());
   
   MemLib::vCopy(aFirstByte(),aDangling,nDanglingBytes,CN_SCANBUFFER);
-  m_aEndData = pAdd<Str*>(aFirstByte(),nDanglingBytes - 1);
+  m_aEndData = pAdd<Stz*>(aFirstByte(),nDanglingBytes - 1);
   
 //  if (iDanglingBytes < 1000) {
-//    vInfo("CopyUp %lld: "_Str,nDanglingBytes);
+//    vInfo("CopyUp %lld: "_Stz,nDanglingBytes);
 //    for (char* c = aFirstByte(); c <= m_aEndData; c++) {
 //      ASSERT(*c != 0xEF);
-//      vInfo("%c"_Str,*c);
+//      vInfo("%c"_Stz,*c);
 //    }
-//    vInfo("\n"_Str);
+//    vInfo("\n"_Stz);
 //  }
   
   ASSERT(m_aEndData >= aFirstByte() - 1);
@@ -281,11 +281,11 @@ void ScanBuffer::vCopyUp(Str* aDangling)
 /*----------------------------------------------------------------------------*/
 /* first byte of workarea                                                     */
 /*----------------------------------------------------------------------------*/
-Str* ScanBuffer::aFirstByte(void)
+Stz* ScanBuffer::aFirstByte(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SCANBUFFER,_FOOTER_);
   
-  Str* pFirst = &m_xWsp.aStr()[0];
+  Stz* pFirst = &m_xWsp.aStr()[0];
   
   return pFirst;
 }
@@ -293,11 +293,11 @@ Str* ScanBuffer::aFirstByte(void)
 /*----------------------------------------------------------------------------*/
 /* last byte of workarea                                                      */
 /*----------------------------------------------------------------------------*/
-Str* ScanBuffer::aLastByte(void)
+Stz* ScanBuffer::aLastByte(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SCANBUFFER,_FOOTER_);
   
-  Str* pLast = &m_xWsp.aStr()[m_xWsp.nLength() - 1];
+  Stz* pLast = &m_xWsp.aStr()[m_xWsp.nLength() - 1];
   
   return pLast;
 }
@@ -342,7 +342,7 @@ void ScanBuffer::vWipe(void)
 /*----------------------------------------------------------------------------*/
 /* wipe work area                                                             */
 /*----------------------------------------------------------------------------*/
-void ScanBuffer::vWipe(Str* aFrom)
+void ScanBuffer::vWipe(Stz* aFrom)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SCANBUFFER,_FOOTER_);
   

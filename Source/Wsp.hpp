@@ -27,7 +27,7 @@ namespace CorrectnessAlgebra
     char* aLatter(void);
     i8    nLength(void);
     i8    nSize(void);
-    Str*  aStr(void);
+    Stz*  aStr(void);
     void  vTake(i8 nBytes);
     i8    nUsed(void);
     void  vUsed(i8 nBytes);

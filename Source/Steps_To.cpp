@@ -31,15 +31,15 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_To(void)
 {
-  vAddPrimitive(">binval"_Str,     &vToBinVal,     false);
-  vAddPrimitive(">body"_Str,       &vToBody,       false);
-  vAddPrimitive(">digitName"_Str,  &vToDigitName,  false);
-  vAddPrimitive(">int"_Str,        &vToInt,        false);
-  vAddPrimitive(">object"_Str,     &vToObject,     false);
-  vAddPrimitive(">ptr"_Str,        &vToPtr,        false);
-  vAddPrimitive(">seitf"_Str,      &vToSEitf,      false);
-  vAddPrimitive(">str"_Str,        &vToStr,        false);
-  vAddPrimitive(">task"_Str,       &vToTask,       false);
+  vAddPrimitive(">binval"_Stz,     &vToBinVal,     false);
+  vAddPrimitive(">body"_Stz,       &vToBody,       false);
+  vAddPrimitive(">digitName"_Stz,  &vToDigitName,  false);
+  vAddPrimitive(">int"_Stz,        &vToInt,        false);
+  vAddPrimitive(">object"_Stz,     &vToObject,     false);
+  vAddPrimitive(">ptr"_Stz,        &vToPtr,        false);
+  vAddPrimitive(">seitf"_Stz,      &vToSEitf,      false);
+  vAddPrimitive(">str"_Stz,        &vToStr,        false);
+  vAddPrimitive(">task"_Stz,       &vToTask,       false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -47,11 +47,11 @@ void Task::vAddPrimitives_To(void)
 /*----------------------------------------------------------------------------*/
 void Task::vToBinVal(MP_Task mpTask)
 {
-  ENTRY("vToBinVal"_Str);
+  ENTRY("vToBinVal"_Stz);
   
   Object* pObject;
   if ( ! mpTask->m_pDataStack->bPop(pObject) )
-    THROW_INVALID_RSTACK(">BinVal"_Str);
+    THROW_INVALID_RSTACK(">BinVal"_Stz);
   
   mpTask->m_pDataStack->vPushBinary(pObject);
   
@@ -63,11 +63,11 @@ void Task::vToBinVal(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vToBody(MP_Task mpTask)
 {
-  ENTRY("vToBody"_Str);
+  ENTRY("vToBody"_Stz);
   
   Object* pWordObject;
   if ( ! mpTask->m_pDataStack->bPop(pWordObject) )
-    THROW_INVALID_DSTACK(">body"_Str);
+    THROW_INVALID_DSTACK(">body"_Stz);
   Word* pWord = _pWord(pWordObject);
   
   //  char* pBody = pAdd<char*>(pWord,sizeof(Word));
@@ -85,11 +85,11 @@ void Task::vToBody(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vToInt(MP_Task mpTask)
 {
-  ENTRY("vToInt"_Str);
+  ENTRY("vToInt"_Stz);
   
   s32 sInt;
   if ( ! mpTask->m_pDataStack->bPop(sInt) )
-    THROW_INVALID_DSTACK(">int"_Str);
+    THROW_INVALID_DSTACK(">int"_Stz);
   
   i8 i = sInt.iToI8();
   
@@ -103,11 +103,11 @@ void Task::vToInt(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vToObject(MP_Task mpTask)
 {
-  ENTRY("vToObject"_Str);
+  ENTRY("vToObject"_Stz);
   
   Object* pObject;
   if ( ! mpTask->m_pDataStack->bPopBinary(pObject) )
-    THROW_INVALID_RSTACK(">Object"_Str);
+    THROW_INVALID_RSTACK(">Object"_Stz);
   
   mpTask->m_pDataStack->vPushObject(pObject);
   
@@ -119,11 +119,11 @@ void Task::vToObject(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vToPtr(MP_Task mpTask)
 {
-  ENTRY("vToPtr"_Str);
+  ENTRY("vToPtr"_Stz);
   
   i8 iPtr;
   if ( ! mpTask->m_pDataStack->bPop(iPtr) )
-    THROW_INVALID_DSTACK(">str"_Str);
+    THROW_INVALID_DSTACK(">str"_Stz);
   
   Object* pPtr = (Object*)iPtr;
   
@@ -137,12 +137,12 @@ void Task::vToPtr(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vToSEitf(MP_Task mpTask)
 {
-  ENTRY("vToSEitf"_Str);
+  ENTRY("vToSEitf"_Stz);
   
   i8 iVal;
   
   if ( ! mpTask->m_pDataStack->bPop(iVal) )
-    THROW_INVALID_DSTACK(">seitf"_Str);
+    THROW_INVALID_DSTACK(">seitf"_Stz);
   
   SEitf* pSEitf = _pSEitf(iVal);
   RASSERT(pSEitf->eClass() == CN_SEITF);
@@ -159,11 +159,11 @@ void Task::vToSEitf(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vToStr(MP_Task mpTask)
 {
-  ENTRY("vToStr"_Str);
+  ENTRY("vToStr"_Stz);
   
   ValWrk xVal;
   if ( ! mpTask->m_pDataStack->bPop(xVal) )
-    THROW_INVALID_DSTACK(">str"_Str);
+    THROW_INVALID_DSTACK(">str"_Stz);
   
   s48K sString;
   ValLib::vToString(xVal.pNestedValueSelf(),sString);
@@ -178,11 +178,11 @@ void Task::vToStr(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vToTask(MP_Task mpTask)
 {
-  ENTRY("vToTask"_Str);
+  ENTRY("vToTask"_Stz);
   
   i8 iVal;
   if ( ! mpTask->m_pDataStack->bPop(iVal) )
-    THROW_INVALID_DSTACK(">task"_Str);
+    THROW_INVALID_DSTACK(">task"_Stz);
   
   Object* pPtrTask = _pTask(iVal);
   

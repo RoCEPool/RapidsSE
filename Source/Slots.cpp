@@ -27,7 +27,7 @@ Slots* DBobjects::_pSlots(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* dump data                                                                  */
 /*----------------------------------------------------------------------------*/
-void Slots::vDump(eCN eClass, Object* pObject, Str* aTab)
+void Slots::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
   ASSERT(eClass == CN_SLOTS);
   ASSERT(pObject->eClass() == CN_SLOTS);
@@ -58,7 +58,7 @@ void Slots::vFinalize(eCN eClass, Object* pObject)
 void* Slots::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  vFatal("fatal: Slots class cannot be new'd"_Str);
+  vFatal("fatal: Slots class cannot be new'd"_Stz);
   
   NEVER_REACH;
 }
@@ -69,7 +69,7 @@ void* Slots::operator new(size_t iSize)
 void Slots::operator delete(void* pBufferAddress)
 {
   RASSERT(pBufferAddress);
-  vFatal("fatal: Slots class cannot be deleted"_Str);
+  vFatal("fatal: Slots class cannot be deleted"_Stz);
   
   NEVER_REACH;
 }
@@ -147,7 +147,7 @@ Partition* Slots::pPartition(i8 iSlot)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SLOTS,_FOOTER_);
   
-  //vTrace("Partition %lld\n"_Str,iPartition);
+  //vTrace("Partition %lld\n"_Stz,iPartition);
   
   return m_pPartitionVec->pGet(iSlot);
 }

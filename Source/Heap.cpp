@@ -77,14 +77,14 @@ Heap::~Heap(void)
 /*----------------------------------------------------------------------------*/
 /* dump this heap                                                             */
 /*----------------------------------------------------------------------------*/
-void Heap::vDump(eCN eClass, Object* pObject, Str* aTab)
+void Heap::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
   ASSERT(eClass == CN_SMALLHEAP || eClass == CN_MEDIUMHEAP);
   ASSERT(pObject->eClass() == CN_SMALLHEAP || pObject->eClass() == CN_MEDIUMHEAP);
   
   Heap* pHeap = reinterpret_cast<Heap*>(pObject);
   
-  vTrace("BufferCount %lld FreeCount %lld\n"_Str,
+  vTrace("BufferCount %lld FreeCount %lld\n"_Stz,
          pHeap->m_iBufferCount,
          pHeap->m_iFreeCount);
   
@@ -95,16 +95,16 @@ void Heap::vDump(eCN eClass, Object* pObject, Str* aTab)
   
 //  pHeap->vAnalyse(iCountObjects);
 //  
-//  vTrace("%s  Objects:\n"_Str, aTab);
+//  vTrace("%s  Objects:\n"_Stz, aTab);
 //  for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++) {
 //    eCN eClass = (eCN)i_Index;
 //    
 //    if (iCountObjects[eClass] == 0)
 //      continue;
 //    
-//    vTrace("%s    %s %lld \n"_Str, aTab, aCN[eClass], iCountObjects[eClass]);
+//    vTrace("%s    %s %lld \n"_Stz, aTab, aCN[eClass], iCountObjects[eClass]);
 //  }
-//  vTrace("\n"_Str);  
+//  vTrace("\n"_Stz);  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -118,7 +118,7 @@ Object* Heap::pAllocate(eCN eAllocClass)
   
   switch(eHeap) {
     case HT_INVALID:
-      vFatal("Heap::pAllocate: Invalid heap allocation: class %lld %lls\n"_Str,
+      vFatal("Heap::pAllocate: Invalid heap allocation: class %lld %lls\n"_Stz,
              eAllocClass,aCN[eAllocClass]);
     
     case HT_SMALL:
@@ -138,7 +138,7 @@ Object* Heap::pAllocate(eCN eAllocClass)
       return pObject;
       
     default:
-      vFatal("Heap::pAllocate: Invalid heap allocation: eHeap %lld\n"_Str,
+      vFatal("Heap::pAllocate: Invalid heap allocation: eHeap %lld\n"_Stz,
              eHeap);
   }
   
@@ -176,7 +176,7 @@ void Heap::vFree(Object* pObject)
   
   switch(eHeap) {
     case HT_INVALID:
-      vFatal("Heap::vFree: Invalid heap free: class %lld %lls\n"_Str,
+      vFatal("Heap::vFree: Invalid heap free: class %lld %lls\n"_Stz,
              eAllocClass,aCN[eAllocClass]);
       
     case HT_SMALL:
@@ -196,7 +196,7 @@ void Heap::vFree(Object* pObject)
       return;
       
     default:
-      vFatal("Heap::vFree: Invalid heap free: eHeap %lld\n"_Str,
+      vFatal("Heap::vFree: Invalid heap free: eHeap %lld\n"_Stz,
              eHeap);
       
   }
@@ -249,7 +249,7 @@ Object* Heap::pAllocObject(eCN eAllocClass)
   if (! m_pFreeHead ) {
     if (! bExtendHeap()) {
       // error: we have run out of space
-      vWarn("Heap::pAllocObject: unable to extend heap\n"_Str);
+      vWarn("Heap::pAllocObject: unable to extend heap\n"_Stz);
       m_zLock.vDropWrite();
       return nullptr;
     }
@@ -457,7 +457,7 @@ bool Heap::bExtendHeap(void)
     //pFreeChunk->vSetMagic();
     new(pFreeChunk) FreeChunk;
     vPushFree(pFreeChunk);
-    //vTrace("bExtendHeap %p : %p\n"_Str,pHeapBuffer,pFreeChunk);
+    //vTrace("bExtendHeap %p : %p\n"_Stz,pHeapBuffer,pFreeChunk);
   }
   
   return true;

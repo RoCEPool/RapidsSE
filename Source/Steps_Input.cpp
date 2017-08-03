@@ -31,18 +31,18 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Input(void)
 {
-  vAddPrimitive("accept"_Str,          &vInputAccept,      false);
-  vAddPrimitive("input.close"_Str,     &vInputClose,       false);
-  vAddPrimitive("input.depth"_Str,     &vInputDepth,       false);
-  vAddPrimitive("input.next"_Str,      &vInputNext,        false);
-  vAddPrimitive("input.open"_Str,      &vInputOpen,        false);
-  vAddPrimitive("input.pop"_Str,       &vInputPop,         false);
-  vAddPrimitive("input.push"_Str,      &vInputPush,        false);
-  vAddPrimitive("input.stdin"_Str,     &vInputStdin,       false);
-  vAddPrimitive("input.text"_Str,      &vInputText,        false);
-  vAddPrimitive("input.token"_Str,     &vInputToken,       false);
-  vAddPrimitive("input.type"_Str,      &vInputType,        false);
-  vAddPrimitive("token:"_Str,          &vTokenColon,       false);
+  vAddPrimitive("accept"_Stz,          &vInputAccept,      false);
+  vAddPrimitive("input.close"_Stz,     &vInputClose,       false);
+  vAddPrimitive("input.depth"_Stz,     &vInputDepth,       false);
+  vAddPrimitive("input.next"_Stz,      &vInputNext,        false);
+  vAddPrimitive("input.open"_Stz,      &vInputOpen,        false);
+  vAddPrimitive("input.pop"_Stz,       &vInputPop,         false);
+  vAddPrimitive("input.push"_Stz,      &vInputPush,        false);
+  vAddPrimitive("input.stdin"_Stz,     &vInputStdin,       false);
+  vAddPrimitive("input.text"_Stz,      &vInputText,        false);
+  vAddPrimitive("input.token"_Stz,     &vInputToken,       false);
+  vAddPrimitive("input.type"_Stz,      &vInputType,        false);
+  vAddPrimitive("token:"_Stz,          &vTokenColon,       false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -50,7 +50,7 @@ void Task::vAddPrimitives_Input(void)
 /*----------------------------------------------------------------------------*/
 void Task::vInputAccept(MP_Task mpTask)
 {
-  ENTRY("vInputAccept"_Str);
+  ENTRY("vInputAccept"_Stz);
   
   ValWrk xWsp;
   xWsp.vSetClass(CN_STRVAL);
@@ -73,7 +73,7 @@ void Task::vInputAccept(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vInputClose(MP_Task mpTask)
 {
-ENTRY("vInputClose"_Str);
+ENTRY("vInputClose"_Stz);
   
   mpTask->m_pTokeniser->vUseEnd();
   
@@ -85,7 +85,7 @@ ENTRY("vInputClose"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vInputDepth(MP_Task mpTask)
 {
-ENTRY("vInputDepth"_Str);
+ENTRY("vInputDepth"_Stz);
   
   i8 iDepth = mpTask->m_pTokeniser->iDepth();
   
@@ -99,7 +99,7 @@ ENTRY("vInputDepth"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vInputNext(MP_Task mpTask)
 {
-ENTRY("vInputNext"_Str);
+ENTRY("vInputNext"_Stz);
   
   if (mpTask->m_iTracing) {
     ASSERT(mpTask->m_iTracing);
@@ -117,17 +117,17 @@ ENTRY("vInputNext"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vInputOpen(MP_Task mpTask)
 {
-ENTRY("vInputOpen"_Str);
+ENTRY("vInputOpen"_Stz);
   
   s256 sFilePath;
   
   if ( ! mpTask->m_pDataStack->bPop(sFilePath) )
-    THROW_INVALID_DSTACK("input.open"_Str);
+    THROW_INVALID_DSTACK("input.open"_Stz);
   
   bool bOpened = mpTask->m_pTokeniser->bUseFile(sFilePath);
   
   if ( ! bOpened )
-    THROW("No such file: %s"_Str,sFilePath.s());
+    THROW("No such file: %s"_Stz,sFilePath.s());
   
   EXIT();
 }
@@ -137,7 +137,7 @@ ENTRY("vInputOpen"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vInputPop(MP_Task mpTask)
 {
-ENTRY("vInputPop"_Str);
+ENTRY("vInputPop"_Stz);
   
   bool bPopped = mpTask->m_pTokeniser->bPop();
   ASSERT(bPopped);
@@ -150,7 +150,7 @@ ENTRY("vInputPop"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vInputPush(MP_Task mpTask)
 {
-ENTRY("vInputPush"_Str);
+ENTRY("vInputPush"_Stz);
   
   mpTask->m_pTokeniser->vPush();
   
@@ -162,7 +162,7 @@ ENTRY("vInputPush"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vInputStdin(MP_Task mpTask)
 {
-ENTRY("vInputStdin"_Str);
+ENTRY("vInputStdin"_Stz);
   
   mpTask->m_pTokeniser->vUseStdin();
   
@@ -174,7 +174,7 @@ ENTRY("vInputStdin"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vInputText(MP_Task mpTask)
 {
-ENTRY("vInputText"_Str);
+ENTRY("vInputText"_Stz);
   
   if (mpTask->m_iTracing) {
     ASSERT(mpTask->m_iTracing);
@@ -183,7 +183,7 @@ ENTRY("vInputText"_Str);
   s48K sInput;                                             //! NEED STACK CHECKS
   
   if ( ! mpTask->m_pDataStack->bPop(sInput) )
-    THROW_INVALID_DSTACK("input.text"_Str);
+    THROW_INVALID_DSTACK("input.text"_Stz);
     
   mpTask->m_pTokeniser->vUseString(sInput);
   
@@ -195,7 +195,7 @@ ENTRY("vInputText"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vInputToken(MP_Task mpTask)
 {
-ENTRY("vInputToken"_Str);
+ENTRY("vInputToken"_Stz);
   
   mpTask->m_pDataStack->vPushS48K(mpTask->m_pTokeniser->sToken());
   
@@ -207,7 +207,7 @@ ENTRY("vInputToken"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vInputType(MP_Task mpTask)
 {
-ENTRY("vInputType"_Str);
+ENTRY("vInputType"_Stz);
   
   eTN eTokenType = mpTask->m_pTokeniser->eToken();
   
@@ -221,7 +221,7 @@ ENTRY("vInputType"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vTokenColon(MP_Task mpTask)
 {
-  ENTRY("vTokenColon"_Str);
+  ENTRY("vTokenColon"_Stz);
   
   mpTask->m_pTokeniser->vNextToken();
   

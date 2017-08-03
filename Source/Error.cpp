@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* Constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Error::Error(eEC eErrorCode, Str* aFileName, i8 iLineNo)
+Error::Error(eEC eErrorCode, Stz* aFileName, i8 iLineNo)
 {
   m_eErrorCode = eErrorCode;
   m_cErrorMsg[0] = '\0';
@@ -21,7 +21,7 @@ Error::Error(eEC eErrorCode, Str* aFileName, i8 iLineNo)
 /*----------------------------------------------------------------------------*/
 /* Constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Error::Error(eEC eErrorCode, Str* aErrorMsg, Str* aFileName, i8 iLineNo)
+Error::Error(eEC eErrorCode, Stz* aErrorMsg, Stz* aFileName, i8 iLineNo)
 {
   m_eErrorCode = eErrorCode;
   StrLib::vCopyLen(m_cErrorMsg, aErrorMsg->s(), sizeof(m_cErrorMsg));
@@ -43,17 +43,17 @@ eEC Error::eErrorCode(void)
 /*----------------------------------------------------------------------------*/
 /* return error message                                                       */
 /*----------------------------------------------------------------------------*/
-Str* Error::aErrorMsg(void)
+Stz* Error::aErrorMsg(void)
 {
-  return (Str*)m_cErrorMsg;
+  return (Stz*)m_cErrorMsg;
 }
 
 /*----------------------------------------------------------------------------*/
 /* return filename                                                            */
 /*----------------------------------------------------------------------------*/
-Str* Error::aFileName(void)
+Stz* Error::aFileName(void)
 {
-  return (Str*)m_cFileName;
+  return (Stz*)m_cFileName;
 }
 
 /*----------------------------------------------------------------------------*/

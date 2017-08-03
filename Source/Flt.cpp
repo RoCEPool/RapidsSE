@@ -17,7 +17,7 @@ void* Flt::operator new(size_t iSize)
 {
   RASSERT(iSize);
   
-  vFatal("fatal: Flt class cannot be new'd\n"_Str);
+  vFatal("fatal: Flt class cannot be new'd\n"_Stz);
   
   NEVER_REACH;
 }
@@ -313,11 +313,11 @@ bool Flt::bExtract(char** aaSrc, Flt* aFloat, Column* pColumn)
 /*----------------------------------------------------------------------------*/
 /* sprint flt datum                                                           */
 /*----------------------------------------------------------------------------*/
-void Flt::vSprint(Str* aDst, Str* aSrc)
+void Flt::vSprint(Stz* aDst, Stz* aSrc)
 {
   Flt* aFlt = (Flt*)aSrc;
   
-  StrLib::vSprint(aDst,"%.3llf%c"_Str,
+  StrLib::vSprint(aDst,"%.3llf%c"_Stz,
                   aFlt->m_dFlt,
                   '\0');
 }

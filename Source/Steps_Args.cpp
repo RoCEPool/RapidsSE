@@ -34,7 +34,7 @@ void Task::vAddPrimitives_Args(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  vAddPrimitive("args.print"_Str,      &vArgsPrint,     false);
+  vAddPrimitive("args.print"_Stz,      &vArgsPrint,     false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -42,7 +42,7 @@ void Task::vAddPrimitives_Args(void)
 /*----------------------------------------------------------------------------*/
 void Task::vArgsPrint(MP_Task mpTask)
 {
-ENTRY("vArgsPrint"_Str);
+ENTRY("vArgsPrint"_Stz);
   
   gxArguments.vPrint();
   

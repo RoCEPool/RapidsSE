@@ -30,7 +30,7 @@ namespace Debugging
       if ( !(condition) ) { \
         Debugging::vAssertTrap(); \
         THROW_ERROR_MSG(EC_ASSERT,(__builtin_expect(!(condition), 0) \
-                                    ? (Str*) #condition : ""_Str)); \
+                                    ? (Stz*) #condition : ""_Stz)); \
     } \
   }
   #else
@@ -42,7 +42,7 @@ namespace Debugging
     if ( !(condition) ) { \
       Debugging::vAssertTrap(); \
       THROW_ERROR_MSG(EC_ASSERT,(__builtin_expect(!(condition), 0) \
-                                  ? (Str*) #condition : ""_Str)); \
+                                  ? (Stz*) #condition : ""_Stz)); \
     } \
   }
   
@@ -69,17 +69,17 @@ namespace Debugging
   /*--------------------------------------------------------------------------*/
   #define NEVER_REACH \
     Debugging::vAssertTrap(); \
-    THROW_ERROR_MSG(EC_ASSERT,"CodePath"_Str);
+    THROW_ERROR_MSG(EC_ASSERT,"CodePath"_Stz);
 
   /*--------------------------------------------------------------------------*/
   /* throw exception macro's                                                  */
   /*--------------------------------------------------------------------------*/
   
   #define THROW_ERROR(exception) \
-    throw new Error(exception,(Str*)__FILE__,__LINE__);
+    throw new Error(exception,(Stz*)__FILE__,__LINE__);
   
   #define THROW_ERROR_MSG(exception, msg) \
-    throw new Error(exception,msg,(Str*)__FILE__,__LINE__);
+    throw new Error(exception,msg,(Stz*)__FILE__,__LINE__);
 
 };
 

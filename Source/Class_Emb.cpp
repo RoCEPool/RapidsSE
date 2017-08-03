@@ -15,7 +15,7 @@ Class_Emb::Class_Emb(eCN eClass)
 /*----------------------------------------------------------------------------*/
 /* get class name                                                             */
 /*----------------------------------------------------------------------------*/
-Str* Class_Emb::aClass(void)
+Stz* Class_Emb::aClass(void)
 {
   return aCN[eClass()];
 }

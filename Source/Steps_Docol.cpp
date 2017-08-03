@@ -31,10 +31,10 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Docol(void)
 {
-  vAddPrimitive("]"_Str,                     &vDocolCompiling,      false);
-  vAddPrimitive("["_Str,                     &vDocolInterpreting,   true );
-  vAddPrimitive("docol.isCompiling"_Str,     &vDocolIsCompiling,    false);
-  vAddPrimitive("docol.isInterpreting"_Str,  &vDocolIsInterpreting, false);
+  vAddPrimitive("]"_Stz,                     &vDocolCompiling,      false);
+  vAddPrimitive("["_Stz,                     &vDocolInterpreting,   true );
+  vAddPrimitive("docol.isCompiling"_Stz,     &vDocolIsCompiling,    false);
+  vAddPrimitive("docol.isInterpreting"_Stz,  &vDocolIsInterpreting, false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -42,7 +42,7 @@ void Task::vAddPrimitives_Docol(void)
 /*----------------------------------------------------------------------------*/
 void Task::vDocolCompiling(MP_Task mpTask)
 {
-  ENTRY("vDocolCompiling"_Str);
+  ENTRY("vDocolCompiling"_Stz);
   
   mpTask->m_bCompiling = true;
   
@@ -54,7 +54,7 @@ void Task::vDocolCompiling(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDocolInterpreting(MP_Task mpTask)
 {
-  ENTRY("vDocolInterpreting"_Str);
+  ENTRY("vDocolInterpreting"_Stz);
   
   mpTask->m_bCompiling = false;
   
@@ -66,7 +66,7 @@ void Task::vDocolInterpreting(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDocolIsCompiling(MP_Task mpTask)
 {
-  ENTRY("vDocolIsCompiling"_Str);
+  ENTRY("vDocolIsCompiling"_Stz);
   
   i8 iIsCompiling = mpTask->m_bCompiling ? 1 : 0;
   
@@ -80,7 +80,7 @@ void Task::vDocolIsCompiling(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDocolIsInterpreting(MP_Task mpTask)
 {
-  ENTRY("vDocolIsInterpreting"_Str);
+  ENTRY("vDocolIsInterpreting"_Stz);
   
   i8 iIsInterpreting = mpTask->m_bCompiling ? 0 : 1;
   

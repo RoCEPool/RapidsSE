@@ -14,7 +14,7 @@
 void* KeyWrk::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  vFatal("fatal: KeyWrk class cannot be new'd\n"_Str);
+  vFatal("fatal: KeyWrk class cannot be new'd\n"_Stz);
   
   NEVER_REACH;
 }
@@ -104,7 +104,7 @@ void KeyWrk::vShow(void)
   _precondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
   
   i8 iKey = *((i8*)m_xWsp.aArea());
-  vTrace("KeyWrk %p: bytesUsed %lld value %lld\n"_Str,
+  vTrace("KeyWrk %p: bytesUsed %lld value %lld\n"_Stz,
          this,
          nWspUsed(),
          iKey);
@@ -123,7 +123,7 @@ void KeyWrk::vShow(eDM eDatum, ...)
   
   va_start(xVarArgs,eDatum);
   
-  vTrace("KeyWrk %p: bytesUsed %lld "_Str,
+  vTrace("KeyWrk %p: bytesUsed %lld "_Stz,
          this,
          nWspUsed()
          );
@@ -132,8 +132,8 @@ void KeyWrk::vShow(eDM eDatum, ...)
   s48K sSprintBuffer;
   
   // first element
-  DtmLib::vSprint(eDatum,sSprintBuffer.aStr(), (Str*)m_xWsp.aArea(), nullptr);
-  vTrace("%s|"_Str,sSprintBuffer.s());
+  DtmLib::vSprint(eDatum,sSprintBuffer.aStr(), (Stz*)m_xWsp.aArea(), nullptr);
+  vTrace("%s|"_Stz,sSprintBuffer.s());
   
   // subsequent elements
   i8 iOffset = nBytesTaken;
@@ -141,17 +141,17 @@ void KeyWrk::vShow(eDM eDatum, ...)
     
     DtmLib::vSprint(eDatum,
                     sSprintBuffer.aStr(),
-                    (Str*)m_xWsp.aArea() + iOffset,
+                    (Stz*)m_xWsp.aArea() + iOffset,
                     nullptr);
     
-    vTrace("%s|"_Str,sSprintBuffer.s());
+    vTrace("%s|"_Stz,sSprintBuffer.s());
     
     iOffset += nBytesTaken;
   }
 
   va_end(xVarArgs);
 
-  vTrace("\n"_Str);
+  vTrace("\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -247,7 +247,7 @@ char* KeyWrk::aWspArea(void)
 /*----------------------------------------------------------------------------*/
 /* get wsp area                                                               */
 /*----------------------------------------------------------------------------*/
-Str* KeyWrk::aWspStr(void)
+Stz* KeyWrk::aWspStr(void)
 {
   _precondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
   

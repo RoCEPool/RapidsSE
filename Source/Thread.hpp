@@ -31,24 +31,24 @@ namespace Threads
   /* 15 */ TH_ENUMS
   };
   
-  static Str* aTH[]
+  static Stz* aTH[]
   {
-  /*  0 */ "none"_Str,
-  /*  1 */ "ANSWER"_Str,
-  /*  2 */ "COORDINATOR"_Str,
-  /*  3 */ "COORDINATOR_PROXY"_Str,
-  /*  4 */ "GENERAL"_Str,
-  /*  5 */ "LISTER"_Str,
-  /*  6 */ "MONITOR"_Str,
-  /*  7 */ "QUERY"_Str,
-  /*  8 */ "PARTICIPANT"_Str,
-  /*  9 */ "PARTICIPANT_PROXY"_Str,
-  /* 10 */ "RECLAIM"_Str,
-  /* 11 */ "REQUEST"_Str,
-  /* 12 */ "SCANOP"_Str,
-  /* 13 */ "SINKOP"_Str,
-  /* 14 */ "WRITEOP"_Str,
-  /* 15 */ "enums"_Str
+  /*  0 */ "none"_Stz,
+  /*  1 */ "ANSWER"_Stz,
+  /*  2 */ "COORDINATOR"_Stz,
+  /*  3 */ "COORDINATOR_PROXY"_Stz,
+  /*  4 */ "GENERAL"_Stz,
+  /*  5 */ "LISTER"_Stz,
+  /*  6 */ "MONITOR"_Stz,
+  /*  7 */ "QUERY"_Stz,
+  /*  8 */ "PARTICIPANT"_Stz,
+  /*  9 */ "PARTICIPANT_PROXY"_Stz,
+  /* 10 */ "RECLAIM"_Stz,
+  /* 11 */ "REQUEST"_Stz,
+  /* 12 */ "SCANOP"_Stz,
+  /* 13 */ "SINKOP"_Stz,
+  /* 14 */ "WRITEOP"_Stz,
+  /* 15 */ "enums"_Stz
   };
   
   class Thread : public Object,

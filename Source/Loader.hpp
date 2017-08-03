@@ -24,7 +24,7 @@ namespace DBobjects
     Loader(void);
     ~Loader(void);
     
-    static void vDump(eCN eClass, Object* pObject, Str* aTab);
+    static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     static void vFinalize(eCN eClass, Object* pObject);
 
     bool     bFindChunk(void);

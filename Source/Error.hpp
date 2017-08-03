@@ -77,77 +77,77 @@ namespace Debugging
   /* 52 */ EC_ENUMS
   };
   
-  static Str* aEC[]
+  static Stz* aEC[]
   {
-  /*  0 */ "none"_Str,
-  /*  1 */ "assert"_Str,
-  /*  2 */ "begin transaction failed"_Str,
-  /*  3 */ "catalog exists"_Str,
-  /*  4 */ "cluster not started"_Str,
+  /*  0 */ "none"_Stz,
+  /*  1 */ "assert"_Stz,
+  /*  2 */ "begin transaction failed"_Stz,
+  /*  3 */ "catalog exists"_Stz,
+  /*  4 */ "cluster not started"_Stz,
   
-  /*  5 */ "duplicate column"_Str,
-  /*  6 */ "folder in use"_Str,
-  /*  7 */ "folder not empty"_Str,
+  /*  5 */ "duplicate column"_Stz,
+  /*  6 */ "folder in use"_Stz,
+  /*  7 */ "folder not empty"_Stz,
   
-  /*  8 */ "index exists"_Str,
+  /*  8 */ "index exists"_Stz,
     
-  /*  9 */ "invalid class"_Str,
-  /*    */ "invalid column"_Str,
-  /* 10 */ "invalid command"_Str,
-  /* 11 */ "invalid file"_Str,
-  /* 12 */ "invalid interface"_Str,
-  /* 13 */ "invalid parameter"_Str,
-  /* 14 */ "invalid parameters"_Str,
-  /* 15 */ "invalid instance"_Str,
-  /* 16 */ "invalid syntax"_Str,
+  /*  9 */ "invalid class"_Stz,
+  /*    */ "invalid column"_Stz,
+  /* 10 */ "invalid command"_Stz,
+  /* 11 */ "invalid file"_Stz,
+  /* 12 */ "invalid interface"_Stz,
+  /* 13 */ "invalid parameter"_Stz,
+  /* 14 */ "invalid parameters"_Stz,
+  /* 15 */ "invalid instance"_Stz,
+  /* 16 */ "invalid syntax"_Stz,
   
-  /* 17 */ "low buffers"_Str,
+  /* 17 */ "low buffers"_Stz,
   
-  /* 18 */ "no columns dictionary"_Str,
+  /* 18 */ "no columns dictionary"_Stz,
   
-  /* 19 */ "no such catalog"_Str,
-  /* 20 */ "no such directory"_Str,
-  /* 21 */ "no such folder"_Str,
-  /* 22 */ "no such index"_Str,
-  /* 23 */ "no such schema"_Str,
-  /* 24 */ "no such table"_Str,
-  /* 25 */ "no such tenant"_Str,
-  /* 26 */ "no such word"_Str,
+  /* 19 */ "no such catalog"_Stz,
+  /* 20 */ "no such directory"_Stz,
+  /* 21 */ "no such folder"_Stz,
+  /* 22 */ "no such index"_Stz,
+  /* 23 */ "no such schema"_Stz,
+  /* 24 */ "no such table"_Stz,
+  /* 25 */ "no such tenant"_Stz,
+  /* 26 */ "no such word"_Stz,
   
-  /* 27 */ "not a catalog"_Str,
-  /* 28 */ "not a folder"_Str,
-  /* 29 */ "not an index"_Str,
-  /* 30 */ "not a schema"_Str,
-  /* 31 */ "not a table"_Str,
-  /* 32 */ "not a tenant"_Str,
+  /* 27 */ "not a catalog"_Stz,
+  /* 28 */ "not a folder"_Stz,
+  /* 29 */ "not an index"_Stz,
+  /* 30 */ "not a schema"_Stz,
+  /* 31 */ "not a table"_Stz,
+  /* 32 */ "not a tenant"_Stz,
     
-  /* 33 */ "not in catalogs"_Str,
-  /* 34 */ "not in columns"_Str,
-  /* 35 */ "not in indexes"_Str,
-  /*    */ "not in partitions"_Str,
-  /* 36 */ "not in schemas"_Str,
-  /* 37 */ "not in table"_Str,
-  /* 38 */ "not in tables"_Str,
-  /* 39 */ "not in tenants"_Str,
+  /* 33 */ "not in catalogs"_Stz,
+  /* 34 */ "not in columns"_Stz,
+  /* 35 */ "not in indexes"_Stz,
+  /*    */ "not in partitions"_Stz,
+  /* 36 */ "not in schemas"_Stz,
+  /* 37 */ "not in table"_Stz,
+  /* 38 */ "not in tables"_Stz,
+  /* 39 */ "not in tenants"_Stz,
   
-  /* 40 */ "null interface"_Str,
-  /* 41 */ "nullptr"_Str,
+  /* 40 */ "null interface"_Stz,
+  /* 41 */ "nullptr"_Stz,
   
-  /* 42 */ "response pending"_Str,
+  /* 42 */ "response pending"_Stz,
   
-  /* 43 */ "schema exists"_Str,
-  /* 44 */ "SE is not running"_Str,
-  /* 45 */ "SE unknown error"_Str,
-  /* 46 */ "send failure"_Str,
-  /* 47 */ "table exists"_Str,
-  /*    */ "table not empty"_Str,
-  /* 48 */ "table in use"_Str,
-  /* 49 */ "tenant exists"_Str,
+  /* 43 */ "schema exists"_Stz,
+  /* 44 */ "SE is not running"_Stz,
+  /* 45 */ "SE unknown error"_Stz,
+  /* 46 */ "send failure"_Stz,
+  /* 47 */ "table exists"_Stz,
+  /*    */ "table not empty"_Stz,
+  /* 48 */ "table in use"_Stz,
+  /* 49 */ "tenant exists"_Stz,
 
-  /* 50 */ "validation failure"_Str,
-  /* 51 */ "version mismatch"_Str,
+  /* 50 */ "validation failure"_Stz,
+  /* 51 */ "version mismatch"_Stz,
 
-  /* 52 */ "enums"_Str
+  /* 52 */ "enums"_Stz
   
   };
   
@@ -160,12 +160,12 @@ namespace Debugging
     char  m_cErrorMsg[256];
   
   public:
-    Error(eEC eErrorCode, Str* aFileName, i8 iLineNo);
-    Error(eEC eErrorCode, Str* aErrorMsg, Str* aFileName, i8 iLineNo);
+    Error(eEC eErrorCode, Stz* aFileName, i8 iLineNo);
+    Error(eEC eErrorCode, Stz* aErrorMsg, Stz* aFileName, i8 iLineNo);
     
     eEC  eErrorCode(void);
-    Str* aErrorMsg(void);
-    Str* aFileName(void);
+    Stz* aErrorMsg(void);
+    Stz* aFileName(void);
     i8   iLineNo(void);
   };
 }

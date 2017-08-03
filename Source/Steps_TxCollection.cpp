@@ -31,8 +31,8 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_TxCollection(void)
 {
-  vAddPrimitive("txCollection.dump"_Str, &vTxCollectionDump, false);
-  vAddPrimitive("txCollection.init"_Str, &vTxCollectionInit, false);
+  vAddPrimitive("txCollection.dump"_Stz, &vTxCollectionDump, false);
+  vAddPrimitive("txCollection.init"_Stz, &vTxCollectionInit, false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -40,16 +40,16 @@ void Task::vAddPrimitives_TxCollection(void)
 /*----------------------------------------------------------------------------*/
 void Task::vTxCollectionDump(MP_Task mpTask)
 {
-ENTRY("vTxCollectionDump"_Str);
+ENTRY("vTxCollectionDump"_Stz);
   
   Object* pPtrTxCollection;
   if ( ! mpTask->m_pDataStack->bPop(pPtrTxCollection) )
-    THROW_INVALID_DSTACK("txCollection.dump"_Str);
+    THROW_INVALID_DSTACK("txCollection.dump"_Stz);
   
   TxCollection* pTxCollection = _pTxCollection(pPtrTxCollection);
   ASSERT(CN_TXCOLLECTION == pTxCollection->eClass());
   
-  pTxCollection->vContentDump("gpTxCollection:"_Str);
+  pTxCollection->vContentDump("gpTxCollection:"_Stz);
   
   EXIT();
 }
@@ -59,11 +59,11 @@ ENTRY("vTxCollectionDump"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vTxCollectionInit(MP_Task mpTask)
 {
-ENTRY("vTxCollectionInit"_Str);
+ENTRY("vTxCollectionInit"_Stz);
   
   Object* pPtrTxCollection;
   if ( ! mpTask->m_pDataStack->bPop(pPtrTxCollection) )
-    THROW_INVALID_DSTACK("txCollection.init"_Str);
+    THROW_INVALID_DSTACK("txCollection.init"_Stz);
   
   TxCollection* pTxCollection = _pTxCollection(pPtrTxCollection);
   ASSERT(CN_TXCOLLECTION == pTxCollection->eClass());

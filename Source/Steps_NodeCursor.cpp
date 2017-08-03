@@ -31,13 +31,13 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_NodeCursor(void)
 {
-  vAddPrimitive("nodeCursor.begin"_Str,  &vNodeCursorBegin,  false);
-  vAddPrimitive("nodeCursor.delete"_Str, &vNodeCursorDelete, false);
-  vAddPrimitive("nodeCursor.first"_Str,  &vNodeCursorFirst,  false);
-  vAddPrimitive("nodeCursor.get"_Str,    &vNodeCursorGet,    false);
-  vAddPrimitive("nodeCursor.init"_Str,   &vNodeCursorInit,   false);
-  vAddPrimitive("nodeCursor::new"_Str,    &vNodeCursorNew,    false);
-  vAddPrimitive("nodeCursor.next"_Str,   &vNodeCursorNext,   false);
+  vAddPrimitive("nodeCursor.begin"_Stz,  &vNodeCursorBegin,  false);
+  vAddPrimitive("nodeCursor.delete"_Stz, &vNodeCursorDelete, false);
+  vAddPrimitive("nodeCursor.first"_Stz,  &vNodeCursorFirst,  false);
+  vAddPrimitive("nodeCursor.get"_Stz,    &vNodeCursorGet,    false);
+  vAddPrimitive("nodeCursor.init"_Stz,   &vNodeCursorInit,   false);
+  vAddPrimitive("nodeCursor::new"_Stz,    &vNodeCursorNew,    false);
+  vAddPrimitive("nodeCursor.next"_Stz,   &vNodeCursorNext,   false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -45,11 +45,11 @@ void Task::vAddPrimitives_NodeCursor(void)
 /*----------------------------------------------------------------------------*/
 void Task::vNodeCursorBegin(MP_Task mpTask)
 {
-ENTRY("vNodeCursorBegin"_Str);
+ENTRY("vNodeCursorBegin"_Stz);
   
   Object* pPtrNodeCursor;
   if ( ! mpTask->m_pDataStack->bPop(pPtrNodeCursor) )
-    THROW_INVALID_DSTACK("nodeCursor.begin"_Str);
+    THROW_INVALID_DSTACK("nodeCursor.begin"_Stz);
   
   NodeCursor* pNodeCursor = _pNodeCursor(pPtrNodeCursor);
   ASSERT(CN_NODECURSOR == pNodeCursor->eClass());
@@ -64,11 +64,11 @@ ENTRY("vNodeCursorBegin"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vNodeCursorDelete(MP_Task mpTask)
 {
-ENTRY("vNodeCursorDelete"_Str);
+ENTRY("vNodeCursorDelete"_Stz);
   
   Object* pPtrNodeCursor;
   if ( ! mpTask->m_pDataStack->bPop(pPtrNodeCursor) )
-    THROW_INVALID_DSTACK("nodeCursor.delete"_Str);
+    THROW_INVALID_DSTACK("nodeCursor.delete"_Stz);
   
   NodeCursor* pNodeCursor = _pNodeCursor(pPtrNodeCursor);
   ASSERT(CN_NODECURSOR == pNodeCursor->eClass());
@@ -83,11 +83,11 @@ ENTRY("vNodeCursorDelete"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vNodeCursorEnd(MP_Task mpTask)
 {
-ENTRY("vNodeCursorEnd"_Str);
+ENTRY("vNodeCursorEnd"_Stz);
   
   Object* pPtrNodeCursor;
   if ( ! mpTask->m_pDataStack->bPop(pPtrNodeCursor) )
-    THROW_INVALID_DSTACK("nodecursor.end"_Str);
+    THROW_INVALID_DSTACK("nodecursor.end"_Stz);
   
   NodeCursor* pNodeCursor = _pNodeCursor(pPtrNodeCursor);
   ASSERT(CN_NODECURSOR == pNodeCursor->eClass());
@@ -102,11 +102,11 @@ ENTRY("vNodeCursorEnd"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vNodeCursorFirst(MP_Task mpTask)
 {
-ENTRY("vNodeCursorFirst"_Str);
+ENTRY("vNodeCursorFirst"_Stz);
   
   Object* pPtrNodeCursor;
   if ( ! mpTask->m_pDataStack->bPop(pPtrNodeCursor) )
-    THROW_INVALID_DSTACK("nodeCursor.first"_Str);
+    THROW_INVALID_DSTACK("nodeCursor.first"_Stz);
   
   NodeCursor* pNodeCursor = _pNodeCursor(pPtrNodeCursor);
   ASSERT(CN_NODECURSOR == pNodeCursor->eClass());
@@ -125,11 +125,11 @@ ENTRY("vNodeCursorFirst"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vNodeCursorGet(MP_Task mpTask)
 {
-ENTRY("vNodeCursorGet"_Str);
+ENTRY("vNodeCursorGet"_Stz);
   
   Object* pPtrNodeCursor;
   if ( ! mpTask->m_pDataStack->bPop(pPtrNodeCursor) )
-    THROW_INVALID_DSTACK("nodeCursor.get"_Str);
+    THROW_INVALID_DSTACK("nodeCursor.get"_Stz);
   
   NodeCursor* pNodeCursor = _pNodeCursor(pPtrNodeCursor);
   ASSERT(CN_NODECURSOR == pNodeCursor->eClass());
@@ -146,11 +146,11 @@ ENTRY("vNodeCursorGet"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vNodeCursorInit(MP_Task mpTask)
 {
-ENTRY("vNodeCursorInit"_Str);
+ENTRY("vNodeCursorInit"_Stz);
   
   Object* pPtrNodeCursor;
   if ( ! mpTask->m_pDataStack->bPop(pPtrNodeCursor) )
-    THROW_INVALID_DSTACK("nodeCursor.init"_Str);
+    THROW_INVALID_DSTACK("nodeCursor.init"_Stz);
   
   NodeCursor* pNodeCursor = _pNodeCursor(pPtrNodeCursor);
   ASSERT(CN_NODECURSOR == pNodeCursor->eClass());
@@ -165,7 +165,7 @@ ENTRY("vNodeCursorInit"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vNodeCursorNew(MP_Task mpTask)
 {
-ENTRY("vNodeCursorNew"_Str);
+ENTRY("vNodeCursorNew"_Stz);
   
   NodeCursor* pNodeCursor = new NodeCursor(gpGrid);
   ASSERT(CN_NODECURSOR == pNodeCursor->eClass());
@@ -180,11 +180,11 @@ ENTRY("vNodeCursorNew"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vNodeCursorNext(MP_Task mpTask)
 {
-ENTRY("vNodeCursorNext"_Str);
+ENTRY("vNodeCursorNext"_Stz);
   
   Object* pPtrNodeCursor;
   if ( ! mpTask->m_pDataStack->bPop(pPtrNodeCursor) )
-    THROW_INVALID_DSTACK("nodeCursor.next"_Str);
+    THROW_INVALID_DSTACK("nodeCursor.next"_Stz);
   
   NodeCursor* pNodeCursor = _pNodeCursor(pPtrNodeCursor);
   ASSERT(CN_NODECURSOR == pNodeCursor->eClass());

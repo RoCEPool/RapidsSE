@@ -24,7 +24,7 @@ Key* DBobjects::_aKey(void* aAddr)
 void* Key::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  vFatal("fatal: Key class cannot be new'd\n"_Str);
+  vFatal("fatal: Key class cannot be new'd\n"_Stz);
   
   NEVER_REACH;
 }
@@ -88,8 +88,8 @@ bool Key::operator <=(Key* pKeyArg)
 /*----------------------------------------------------------------------------*/
 void Key::vKey(KeyWrk& xKeyWrk)
 {
-  Str* aDst = aWspStr();
-  Str* aSrc = xKeyWrk.aWspStr();
+  Stz* aDst = aWspStr();
+  Stz* aSrc = xKeyWrk.aWspStr();
   i8 nBytes  = xKeyWrk.nWspUsed();
   
   MemLib::vCopy(aDst,aSrc,nBytes,CN_KEY);
@@ -575,7 +575,7 @@ void Key::vShow(IdxColVec* pIdxColVec)
 {
   i8 nBytes;
   i8 iKey;
-  Str* pKey;
+  Stz* pKey;
   char* aCursor = aWspArea();
   
   char aLiteral[64];
@@ -588,11 +588,11 @@ void Key::vShow(IdxColVec* pIdxColVec)
     char* aDatum = this->aEachDatum(pColumn,nBytes,&aCursor);
   
     eDM eDatum = pColumn->eDatumType();
-    DtmLib::vSprint(eDatum,(Str*)aLiteral,(Str*)aDatum,pColumn);
-    vTrace("Elm %lld:(size %lld value:%s) "_Str,i_Column,nBytes,aLiteral);
+    DtmLib::vSprint(eDatum,(Stz*)aLiteral,(Stz*)aDatum,pColumn);
+    vTrace("Elm %lld:(size %lld value:%s) "_Stz,i_Column,nBytes,aLiteral);
   }
 
-  //vTrace("%s)\n"_Str, sKeyString.aStr());
+  //vTrace("%s)\n"_Stz, sKeyString.aStr());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -606,7 +606,7 @@ char* Key::aWspArea(void)
 /*----------------------------------------------------------------------------*/
 /* get wsp area                                                               */
 /*----------------------------------------------------------------------------*/
-Str* Key::aWspStr(void)
+Stz* Key::aWspStr(void)
 {
   return m_xWsp.aStr();
 }

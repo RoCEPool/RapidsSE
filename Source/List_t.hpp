@@ -24,7 +24,7 @@ namespace Structures
     
     void    vAppend(OBJECT* mpNode);
     i8      iCount(void);
-    void    vContentDump(Str* aTitle, Str* aTab);
+    void    vContentDump(Stz* aTitle, Stz* aTab);
     void    vInsert(OBJECT* mpNode);
     OBJECT* npPop(void);
     void    vPush(OBJECT* mpNode);
@@ -50,7 +50,7 @@ using namespace Structures;
 template <class OBJECT>
 void* List_t<OBJECT>::operator new(size_t iSize)
 {
-  vFatal("fatal: List_t class cannot be new'd"_Str);
+  vFatal("fatal: List_t class cannot be new'd"_Stz);
   
   NEVER_REACH;
 }
@@ -107,7 +107,7 @@ i8 List_t<OBJECT>::iCount(void)
 /* dump each object in list                                                   */
 /*----------------------------------------------------------------------------*/
 template <class OBJECT>
-void List_t<OBJECT>::vContentDump(Str* aTitle, Str* aTab)
+void List_t<OBJECT>::vContentDump(Stz* aTitle, Stz* aTab)
 {
   //vReadLock();
   
@@ -116,7 +116,7 @@ void List_t<OBJECT>::vContentDump(Str* aTitle, Str* aTab)
   
   xCursor.vBegin();
   
-  vTrace("%s%s %p: %lld tasks; head %p tail %p\n"_Str,
+  vTrace("%s%s %p: %lld tasks; head %p tail %p\n"_Stz,
          aTab,
          aTitle,
          this,
@@ -129,7 +129,7 @@ void List_t<OBJECT>::vContentDump(Str* aTitle, Str* aTab)
     pObject->vContentDump();
   }
   xCursor.vEnd();
-  vTrace("\n"_Str);
+  vTrace("\n"_Stz);
   
   //vReadUnlock();
   

@@ -53,7 +53,7 @@ void Word::operator delete(void* pWordAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Word::Word(Str* sName)
+Word::Word(Stz* sName)
 : Object(CN_WORD)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD);
@@ -68,7 +68,7 @@ Word::Word(Str* sName)
   m_bIndirect     = false;
   m_bImmediate    = false;
   m_iParams       = 0;
-  m_sFinalRoutine = ""_Str;
+  m_sFinalRoutine = ""_Stz;
 //  m_iDataBytes    = 0;
   m_pPrevWord     = nullptr;
   m_iVariable     = 0;
@@ -247,8 +247,8 @@ void Word::vContentDump(void)
   
   Word* pStepWord = gpMainDic->pFindStep(m_pEntryStep);
   
-  vTrace("Word %p: %s %s Kind %s Indirect %d Immediate %d DataBytes %lld "_Str
-         "Step %p %s ..Data.. %p\n"_Str,
+  vTrace("Word %p: %s %s Kind %s Indirect %d Immediate %d DataBytes %lld "_Stz
+         "Step %p %s ..Data.. %p\n"_Stz,
          this,
          m_sName.s(),
          aWT[m_eWordType]->s(),
@@ -415,7 +415,7 @@ void Word::vDistributed(eDT eDistributed)
 /*----------------------------------------------------------------------------*/
 /* dump dictionary                                                            */
 /*----------------------------------------------------------------------------*/
-void Word::vDump(eCN eClass, Object* pObject, Str* aTab)
+void Word::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
   ASSERT(eClass == CN_WORD);
   ASSERT(pObject->eClass() == CN_WORD);
@@ -433,7 +433,7 @@ void Word::vDump(eCN eClass, Object* pObject, Str* aTab)
 /*----------------------------------------------------------------------------*/
 /* encode call to named word                                                  */
 /*----------------------------------------------------------------------------*/
-void Word::vEncode(Str* aWord)
+void Word::vEncode(Stz* aWord)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
@@ -448,7 +448,7 @@ void Word::vEncode(Str* aWord)
 /*----------------------------------------------------------------------------*/
 /* encode call to named word which has a cell* argument                       */
 /*----------------------------------------------------------------------------*/
-void Word::vEncode(Str* aWord, Cell* pCell)
+void Word::vEncode(Stz* aWord, Cell* pCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
@@ -460,7 +460,7 @@ void Word::vEncode(Str* aWord, Cell* pCell)
 /*----------------------------------------------------------------------------*/
 /* encode call to named word which has a value argument                       */
 /*----------------------------------------------------------------------------*/
-void Word::vEncode(Str* aWord, Value* pValue)
+void Word::vEncode(Stz* aWord, Value* pValue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
 
@@ -472,7 +472,7 @@ void Word::vEncode(Str* aWord, Value* pValue)
 /*----------------------------------------------------------------------------*/
 /* encode call to named word which has a value argument                       */
 /*----------------------------------------------------------------------------*/
-void Word::vEncode(Str* aWord, ValWrk* pValWrk)
+void Word::vEncode(Stz* aWord, ValWrk* pValWrk)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
@@ -484,7 +484,7 @@ void Word::vEncode(Str* aWord, ValWrk* pValWrk)
 /*----------------------------------------------------------------------------*/
 /* encode call to named word which has a word* argument                       */
 /*----------------------------------------------------------------------------*/
-void Word::vEncode(Str* aWord, Word* pWord)
+void Word::vEncode(Stz* aWord, Word* pWord)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
@@ -507,11 +507,11 @@ void Word::vEncode(TaskStep* ppEntryStep)
 /*----------------------------------------------------------------------------*/
 /* set the final routine (invoked after all participants have responded)      */
 /*----------------------------------------------------------------------------*/
-void Word::vFinalRoutine(Str* pRoutine)
+void Word::vFinalRoutine(Stz* pRoutine)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  m_sFinalRoutine = (Str*)pRoutine;
+  m_sFinalRoutine = (Stz*)pRoutine;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -667,18 +667,18 @@ StrVal& Word::sName(void)
 /*----------------------------------------------------------------------------*/
 /* dump object word                                                           */
 /*----------------------------------------------------------------------------*/
-void Word::vObjectDump(Str* aTab)
+void Word::vObjectDump(Stz* aTab)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  vTrace("epoch %lld %s (%s) %s %s %s DataBytes %lld "_Str
-         "Step %p ..Data.. %p\n"_Str,
+  vTrace("epoch %lld %s (%s) %s %s %s DataBytes %lld "_Stz
+         "Step %p ..Data.. %p\n"_Stz,
          m_iEpoch,
          m_sName.s(),
          m_pDic->sName().s(),
          aWT[m_eWordType]->s(),
-         m_bIndirect ? "Indirect"_Str : "Not Indirect"_Str,
-         m_bImmediate ? "Immediate"_Str : "Not Immediate"_Str,
+         m_bIndirect ? "Indirect"_Stz : "Not Indirect"_Stz,
+         m_bImmediate ? "Immediate"_Stz : "Not Immediate"_Stz,
 //       m_iDataBytes,
          m_xBody.nUsed(),
          m_pEntryStep,

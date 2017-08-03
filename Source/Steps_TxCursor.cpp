@@ -31,14 +31,14 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_TxCursor(void)
 {
-  vAddPrimitive("txCursor.begin"_Str,  &vTxCursorBegin,  false);
-  vAddPrimitive("txCursor.delete"_Str, &vTxCursorDelete, false);
-  vAddPrimitive("txCursor.end"_Str,    &vTxCursorEnd,    false);
-  vAddPrimitive("txCursor.first"_Str,  &vTxCursorFirst,  false);
-  vAddPrimitive("txCursor.get"_Str,    &vTxCursorGet,    false);
-  vAddPrimitive("txCursor.init"_Str,   &vTxCursorInit,   false);
-  vAddPrimitive("txCursor::new"_Str,    &vTxCursorNew,    false);
-  vAddPrimitive("txCursor.next"_Str,   &vTxCursorNext,   false);
+  vAddPrimitive("txCursor.begin"_Stz,  &vTxCursorBegin,  false);
+  vAddPrimitive("txCursor.delete"_Stz, &vTxCursorDelete, false);
+  vAddPrimitive("txCursor.end"_Stz,    &vTxCursorEnd,    false);
+  vAddPrimitive("txCursor.first"_Stz,  &vTxCursorFirst,  false);
+  vAddPrimitive("txCursor.get"_Stz,    &vTxCursorGet,    false);
+  vAddPrimitive("txCursor.init"_Stz,   &vTxCursorInit,   false);
+  vAddPrimitive("txCursor::new"_Stz,    &vTxCursorNew,    false);
+  vAddPrimitive("txCursor.next"_Stz,   &vTxCursorNext,   false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -46,11 +46,11 @@ void Task::vAddPrimitives_TxCursor(void)
 /*----------------------------------------------------------------------------*/
 void Task::vTxCursorBegin(MP_Task mpTask)
 {
-ENTRY("vTxCursorBegin"_Str);
+ENTRY("vTxCursorBegin"_Stz);
   
   Object* pPtrTxCursor;
   if ( ! mpTask->m_pDataStack->bPop(pPtrTxCursor) )
-    THROW_INVALID_DSTACK("txCursor.begin"_Str);
+    THROW_INVALID_DSTACK("txCursor.begin"_Stz);
   
   TxCursor* pTxCursor = _pTxCursor(pPtrTxCursor);
   ASSERT(CN_TXCURSOR == pTxCursor->eClass());
@@ -65,11 +65,11 @@ ENTRY("vTxCursorBegin"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vTxCursorDelete(MP_Task mpTask)
 {
-ENTRY("vTxCursorDelete"_Str);
+ENTRY("vTxCursorDelete"_Stz);
   
   Object* pPtrTxCursor;
   if ( ! mpTask->m_pDataStack->bPop(pPtrTxCursor) )
-    THROW_INVALID_DSTACK("txCursor.delete"_Str);
+    THROW_INVALID_DSTACK("txCursor.delete"_Stz);
   
   TxCursor* pTxCursor = _pTxCursor(pPtrTxCursor);
   ASSERT(CN_TXCURSOR == pTxCursor->eClass());
@@ -84,11 +84,11 @@ ENTRY("vTxCursorDelete"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vTxCursorEnd(MP_Task mpTask)
 {
-ENTRY("vTxCursorEnd"_Str);
+ENTRY("vTxCursorEnd"_Stz);
   
   Object* pPtrTxCursor;
   if ( ! mpTask->m_pDataStack->bPop(pPtrTxCursor) )
-    THROW_INVALID_DSTACK("txcursor.end"_Str);
+    THROW_INVALID_DSTACK("txcursor.end"_Stz);
   
   TxCursor* pTxCursor = _pTxCursor(pPtrTxCursor);
   ASSERT(CN_TXCURSOR == pTxCursor->eClass());
@@ -103,11 +103,11 @@ ENTRY("vTxCursorEnd"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vTxCursorFirst(MP_Task mpTask)
 {
-ENTRY("vTxCursorFirst"_Str);
+ENTRY("vTxCursorFirst"_Stz);
   
   Object* pPtrTxCursor;
   if ( ! mpTask->m_pDataStack->bPop(pPtrTxCursor) )
-    THROW_INVALID_DSTACK("txCursor.first"_Str);
+    THROW_INVALID_DSTACK("txCursor.first"_Stz);
   
   TxCursor* pTxCursor = _pTxCursor(pPtrTxCursor);
   ASSERT(CN_TXCURSOR == pTxCursor->eClass());
@@ -126,11 +126,11 @@ ENTRY("vTxCursorFirst"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vTxCursorGet(MP_Task mpTask)
 {
-ENTRY("vTxCursorGet"_Str);
+ENTRY("vTxCursorGet"_Stz);
   
   Object* pPtrTxCursor;
   if ( ! mpTask->m_pDataStack->bPop(pPtrTxCursor) )
-    THROW_INVALID_DSTACK("txCursor.get"_Str);
+    THROW_INVALID_DSTACK("txCursor.get"_Stz);
   
   TxCursor* pTxCursor = _pTxCursor(pPtrTxCursor);
   ASSERT(CN_TXCURSOR == pTxCursor->eClass());
@@ -147,11 +147,11 @@ ENTRY("vTxCursorGet"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vTxCursorInit(MP_Task mpTask)
 {
-ENTRY("vTxCursorInit"_Str);
+ENTRY("vTxCursorInit"_Stz);
   
   Object* pPtrTxCursor;
   if ( ! mpTask->m_pDataStack->bPop(pPtrTxCursor) )
-    THROW_INVALID_DSTACK("txCursor.init"_Str);
+    THROW_INVALID_DSTACK("txCursor.init"_Stz);
   
   TxCursor* pTxCursor = _pTxCursor(pPtrTxCursor);
   ASSERT(CN_TXCURSOR == pTxCursor->eClass());
@@ -166,7 +166,7 @@ ENTRY("vTxCursorInit"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vTxCursorNew(MP_Task mpTask)
 {
-ENTRY("vTxCursorNew"_Str);
+ENTRY("vTxCursorNew"_Stz);
   
   EXIT();
 }
@@ -176,11 +176,11 @@ ENTRY("vTxCursorNew"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vTxCursorNext(MP_Task mpTask)
 {
-ENTRY("vTxCursorNext"_Str);
+ENTRY("vTxCursorNext"_Stz);
   
   Object* pPtrTxCursor;
   if ( ! mpTask->m_pDataStack->bPop(pPtrTxCursor) )
-    THROW_INVALID_DSTACK("txCursor.next"_Str);
+    THROW_INVALID_DSTACK("txCursor.next"_Stz);
   
   TxCursor* pTxCursor = _pTxCursor(pPtrTxCursor);
   ASSERT(CN_THREADCURSOR == pTxCursor->eClass());

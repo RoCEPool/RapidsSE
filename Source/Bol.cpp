@@ -17,7 +17,7 @@ void* Bol::operator new(size_t iSize)
 {
   RASSERT(iSize);
   
-  vFatal("fatal: Bol class cannot be new'd\n"_Str);
+  vFatal("fatal: Bol class cannot be new'd\n"_Stz);
   
   NEVER_REACH;
 }
@@ -248,9 +248,9 @@ bool Bol::bExtract(char** aaSrc, Bol* aBoolean, Column* pColumn)
 /*----------------------------------------------------------------------------*/
 /* sprint bol datum                                                           */
 /*----------------------------------------------------------------------------*/
-void Bol::vSprint(Str* aDst, Str* aSrc)
+void Bol::vSprint(Stz* aDst, Stz* aSrc)
 {
-  StrLib::vSprint(aDst,"%lld%c"_Str,*(i8*)aSrc,'\0');
+  StrLib::vSprint(aDst,"%lld%c"_Stz,*(i8*)aSrc,'\0');
 }
 
 /*----------------------------------------------------------------------------*/

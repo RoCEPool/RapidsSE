@@ -18,18 +18,18 @@ namespace System
     /* 79 */ RO_ENUMS
   };
   
-  static Str* aRO[]
+  static Stz* aRO[]
   {
-    /*  0 */ "NONE"_Str,
+    /*  0 */ "NONE"_Stz,
     
-    /*  1 */ "<"_Str,
-    /*  2 */ "<="_Str,
-    /*  3 */ "=="_Str,
-    /*  4 */ "!="_Str,
-    /*  5 */ ">="_Str,
-    /*  6 */ ">"_Str,
+    /*  1 */ "<"_Stz,
+    /*  2 */ "<="_Stz,
+    /*  3 */ "=="_Stz,
+    /*  4 */ "!="_Stz,
+    /*  5 */ ">="_Stz,
+    /*  6 */ ">"_Stz,
     
-    /*  7 */ "ENUMS"_Str
+    /*  7 */ "ENUMS"_Stz
   };
   
 }

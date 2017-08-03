@@ -33,8 +33,8 @@ void Task::vAddPrimitives_Cast(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  vAddPrimitive("(int)"_Str,           &vCastInt,          false);
-  vAddPrimitive("(ptr)"_Str,           &vCastPtr,          false);
+  vAddPrimitive("(int)"_Stz,           &vCastInt,          false);
+  vAddPrimitive("(ptr)"_Stz,           &vCastPtr,          false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -42,11 +42,11 @@ void Task::vAddPrimitives_Cast(void)
 /*----------------------------------------------------------------------------*/
 void Task::vCastInt(MP_Task mpTask)
 {
-  ENTRY("vCastInt"_Str);
+  ENTRY("vCastInt"_Stz);
   
   Object* pPtr;
   if ( ! mpTask->m_pDataStack->bPop(pPtr) )
-    THROW_INVALID_DSTACK("(int)"_Str);
+    THROW_INVALID_DSTACK("(int)"_Stz);
   
   mpTask->m_pDataStack->vPushInt((i8)pPtr);
   
@@ -58,11 +58,11 @@ void Task::vCastInt(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vCastPtr(MP_Task mpTask)
 {
-  ENTRY("vCastPtr"_Str);
+  ENTRY("vCastPtr"_Stz);
   
   i8 iInt;
   if ( ! mpTask->m_pDataStack->bPop(iInt) )
-    THROW_INVALID_DSTACK("(ptr)"_Str);
+    THROW_INVALID_DSTACK("(ptr)"_Stz);
   
   mpTask->m_pDataStack->vPushObject((Object*)iInt);
   

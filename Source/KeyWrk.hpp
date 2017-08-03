@@ -31,7 +31,7 @@ namespace DBobjects
     void  vReset(void);
   
     char* aWspArea(void);
-    Str*  aWspStr(void);
+    Stz*  aWspStr(void);
     i8    nWspUsed(void);
     Key*  aKey(void);
 

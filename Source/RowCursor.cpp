@@ -145,9 +145,9 @@ Entry* RowCursor::pRow(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get current row (as a Str*)                                                */
+/* get current row (as a Stz*)                                                */
 /*----------------------------------------------------------------------------*/
-Str* RowCursor::aRowAsStr(void)
+Stz* RowCursor::aRowAsStr(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCURSOR,_FOOTER_);
   

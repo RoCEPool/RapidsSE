@@ -22,7 +22,7 @@ namespace Values
     i8* aInt(void);
     i8 iTme(void);
     
-    void vToString(Str* aWorkspace);
+    void vToString(Stz* aWorkspace);
   };
   
   TmeVal* _pTmeVal(void* aAddr);

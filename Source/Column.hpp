@@ -22,21 +22,21 @@ namespace DBobjects
     /* 12 */ CT_ENUMS
   };
 
-  static Str* aCT[]
+  static Stz* aCT[]
   {
-    /*  0 */ "NONE"_Str,
-    /*  1 */ "BOOLEAN"_Str,
-    /*  2 */ "CHAR"_Str,
-    /*  3 */ "DATE"_Str,
-    /*  4 */ "DECIMAL"_Str,
-    /*  5 */ "FLOAT"_Str,
-    /*  6 */ "INTEGER"_Str,
-    /*  7 */ "INTERVAL"_Str,
-    /*  8 */ "TIME"_Str,
-    /*  9 */ "TIMESTAMP"_Str,
-    /* 10 */ "VARBINARY"_Str,
-    /* 11 */ "VARCHAR"_Str,
-    /* 12 */ "ENUMS"_Str
+    /*  0 */ "NONE"_Stz,
+    /*  1 */ "BOOLEAN"_Stz,
+    /*  2 */ "CHAR"_Stz,
+    /*  3 */ "DATE"_Stz,
+    /*  4 */ "DECIMAL"_Stz,
+    /*  5 */ "FLOAT"_Stz,
+    /*  6 */ "INTEGER"_Stz,
+    /*  7 */ "INTERVAL"_Stz,
+    /*  8 */ "TIME"_Stz,
+    /*  9 */ "TIMESTAMP"_Stz,
+    /* 10 */ "VARBINARY"_Stz,
+    /* 11 */ "VARCHAR"_Stz,
+    /* 12 */ "ENUMS"_Stz
   };
 
   class Column : public Object
@@ -59,8 +59,8 @@ namespace DBobjects
     void  operator delete(void*);
     
     Column(void);
-    Column(Str* aName);
-    Column(Str* aName, Str* aDefinition);
+    Column(Stz* aName);
+    Column(Stz* aName, Stz* aDefinition);
     ~Column(void);
   
     i8   iColumnLength(void);
@@ -86,12 +86,12 @@ namespace DBobjects
     bool bIsNullable(void);
     void vIsNullable(bool bIsNullable);
   
-    void vSet(Str* aDefinition);
+    void vSet(Stz* aDefinition);
     void vShow(void);
 #ifdef _ROWFORMAT
-    bool bValidateField(Str* aSubRow, i8 iLength);
+    bool bValidateField(Stz* aSubRow, i8 iLength);
 #else
-    bool bValidateField(Str** aaSubRow);
+    bool bValidateField(Stz** aaSubRow);
 #endif
     
     char* aValue(i8& nBytes, char** aaCursor);

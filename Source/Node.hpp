@@ -23,14 +23,14 @@ namespace GridModel
     void  operator delete(void*);
     
     Node(void);
-    Node(i8 iNodeNo, Str* aName, Str* aIpAddress, i8 iPort);
+    Node(i8 iNodeNo, Stz* aName, Stz* aIpAddress, i8 iPort);
     ~Node(void);
     
-    static void vDump(eCN eClass, Object* pObject, Str* aTab);
+    static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     
     void vInit(void);
-    Str* aNodeIP(void);
-    Str* aNodeName(void);
+    Stz* aNodeIP(void);
+    Stz* aNodeName(void);
     i8   iNodeNo(void);
     void vNodeNo(i8 iNodeNo);
     i8   iNodePortNo(void);

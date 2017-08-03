@@ -66,7 +66,7 @@ TokenVec::~TokenVec(void)
 /*----------------------------------------------------------------------------*/
 /* add a token                                                                */
 /*----------------------------------------------------------------------------*/
-void TokenVec::vAddToken(Str* aStr)
+void TokenVec::vAddToken(Stz* aStr)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
@@ -77,7 +77,7 @@ void TokenVec::vAddToken(Str* aStr)
 /*----------------------------------------------------------------------------*/
 /* find token given text                                                      */
 /*----------------------------------------------------------------------------*/
-Token* TokenVec::pFindToken(Str* aText, i8& i_Cursor)
+Token* TokenVec::pFindToken(Stz* aText, i8& i_Cursor)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
@@ -158,7 +158,7 @@ void TokenVec::vStripSemicolon(void)
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
   for (i8 i_Token = 0; i_Token < C_TOKENS; i_Token++) {
-    if (m_pItem[i_Token]->bSame(";"_Str)) {
+    if (m_pItem[i_Token]->bSame(";"_Stz)) {
       m_pItem[i_Token]->vReset();
       break;
     }

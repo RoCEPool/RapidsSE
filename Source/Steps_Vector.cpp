@@ -31,7 +31,7 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Vector(void)
 {
-  vAddPrimitive("vector.diff"_Str,     &vVectorDifference,  false );
+  vAddPrimitive("vector.diff"_Stz,     &vVectorDifference,  false );
 }
 
 /*----------------------------------------------------------------------------*/
@@ -39,22 +39,22 @@ void Task::vAddPrimitives_Vector(void)
 /*----------------------------------------------------------------------------*/
 void Task::vVectorDifference(MP_Task mpTask)
 {
-  ENTRY("vVectorDifference"_Str);
+  ENTRY("vVectorDifference"_Stz);
   
   ValSet xValSet1;
   ValSet xValSet2;
   
   if ( ! mpTask->m_pDataStack->bPop(xValSet2) )
-    THROW_INVALID_DSTACK("vector.difference"_Str);
+    THROW_INVALID_DSTACK("vector.difference"_Stz);
   
   if ( ! mpTask->m_pDataStack->bPop(xValSet1) )
-    THROW_INVALID_DSTACK("vector.difference"_Str);
+    THROW_INVALID_DSTACK("vector.difference"_Stz);
   
   Value* pValue1;
   Value* pValue2;
   
-  Str* pCursor1 = nullptr;
-  Str* pCursor2 = nullptr;
+  Stz* pCursor1 = nullptr;
+  Stz* pCursor2 = nullptr;
   i8 nVals = 0;
   while (xValSet2.bExtractValue(pCursor2,pValue2)) {
     

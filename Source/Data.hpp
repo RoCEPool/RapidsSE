@@ -20,13 +20,13 @@ namespace DBobjects
     void* operator new(size_t);
     void  operator delete(void*);
     
-    static void vDump(eCN eClass, Object* pObject, Str* aTab);
+    static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     
     Data(void);
     ~Data(void);
   
     void vAppendBuffer(EntryBuffer* pRowBuffer);
-    bool bInsertRow(TxRef* pTxRef, Str* pRecord, i8 iLength);
+    bool bInsertRow(TxRef* pTxRef, Stz* pRecord, i8 iLength);
     
     EbStrand* pHeadStrand(void);
     EbStrand* pTailStrand(void);

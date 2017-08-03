@@ -13,12 +13,12 @@ namespace System
     /* 1  */ SC_SUCCESS = 1,  // success status
   };
   
-  static Str* aSC[]
+  static Stz* aSC[]
   {
-    /* -2 */ "NOTSET"_Str,
-    /* -1 */ "ERROR"_Str,
-    /* 0  */ "FAILURE"_Str,
-    /* 1  */ "SUCCESS"_Str
+    /* -2 */ "NOTSET"_Stz,
+    /* -1 */ "ERROR"_Stz,
+    /* 0  */ "FAILURE"_Stz,
+    /* 1  */ "SUCCESS"_Stz
   };
 
   class SysCall : public Object

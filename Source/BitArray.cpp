@@ -188,7 +188,7 @@ void BitArray::vSetOn(i8 i_BitNo)
   
   vDecode(i_BitNo,i_Byte,i_Bit,cMask);
   
-  //vTrace("SetOn %lld : %lld.%lld\n"_Str,i_BitNo,i_Byte,i_Bit);
+  //vTrace("SetOn %lld : %lld.%lld\n"_Stz,i_BitNo,i_Byte,i_Bit);
   
   m_zLock.bGrabWrite();
   

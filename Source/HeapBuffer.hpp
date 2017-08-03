@@ -19,7 +19,7 @@ namespace Pool
     HeapBuffer(void);
    ~HeapBuffer(void);
     
-    static void vDump(eCN eClass, Object* pObject, Str* aTab);
+    static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     
     void vAnalyse(i8 nBytes, i8 xCounts[]);
     HeapBuffer* pNextBuffer(void);
@@ -33,7 +33,7 @@ namespace Pool
     void vVerify(i8 iChunkSize);
     
   private:
-    Str* aChunkEnd(FreeChunk* pChunk, i8 nBytes);
+    Stz* aChunkEnd(FreeChunk* pChunk, i8 nBytes);
     
   };
 }

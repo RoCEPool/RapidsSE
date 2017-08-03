@@ -40,7 +40,7 @@ namespace Datums
 #else
     static bool bExtract(char** aaSrc, Bcd* aBcd, DBobjects::Column* pColumn);
 #endif
-    static void vSprint(Str* aDst, Str* aSrc, DBobjects::Column* pColumn);
+    static void vSprint(Stz* aDst, Stz* aSrc, DBobjects::Column* pColumn);
 #ifdef _ROWFORMAT
     static bool bValid(char* aSrc, i8 iLength, DBobjects::Column* pColumn);
 #else

@@ -5,10 +5,10 @@
 
 namespace Debugging
 {
-  Str* aSingleTab(void);
-  Str* aDoubleTab(void);
+  Stz* aSingleTab(void);
+  Stz* aDoubleTab(void);
   
-  Str* aTab(i8 iDepth);
+  Stz* aTab(i8 iDepth);
 }
 
 /*============================================================================*/

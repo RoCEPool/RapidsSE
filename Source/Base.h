@@ -26,7 +26,7 @@ using namespace Base;
 #include "Hardware.hpp"
 #include "IntLib.hpp"
 #include "MemLib.hpp"
-#include "Str.hpp"
+#include "Stz.hpp"
 #include "StrLib.hpp"
 
 /*============================================================================*/

@@ -75,7 +75,7 @@ namespace StorageEngine
     
     void vEnvironmentVariables(void);
     
-    bool bParse(int argc, Str* argv[]);
+    bool bParse(int argc, Stz* argv[]);
     
     void vPrint(void);
     

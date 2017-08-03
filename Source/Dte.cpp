@@ -17,7 +17,7 @@ void* Dte::operator new(size_t iSize)
 {
   RASSERT(iSize);
   
-  vFatal("fatal: Dte class cannot be new'd\n"_Str);
+  vFatal("fatal: Dte class cannot be new'd\n"_Stz);
   
   NEVER_REACH;
 }
@@ -324,11 +324,11 @@ bool Dte::bExtract(char** aaSrc, Dte* aDate, Column* pColumn)
 /*----------------------------------------------------------------------------*/
 /* sprint dte datum                                                           */
 /*----------------------------------------------------------------------------*/
-void Dte::vSprint(Str* aDst, Str* aSrc)
+void Dte::vSprint(Stz* aDst, Stz* aSrc)
 {
   Dte* aDte = (Dte*)aSrc;
   
-  StrLib::vSprint(aDst,"%02lld-%02lld-%02lld%c"_Str,
+  StrLib::vSprint(aDst,"%02lld-%02lld-%02lld%c"_Stz,
                   aDte->x.m_uYear,
                   aDte->x.m_uMonth,
                   aDte->x.m_uDay,

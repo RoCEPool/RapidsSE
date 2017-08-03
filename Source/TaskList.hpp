@@ -21,7 +21,7 @@ namespace Tasks
     TaskList(void);
     ~TaskList(void);
     
-    static void vDump(eCN eClass, Object* pObject, Str* aTab);
+    static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     
     void vContentDump(void);
     

@@ -10,7 +10,7 @@ namespace Pool
   protected:
     bn   m_nBufferNo;        // this buffer number
     bn   m_nOverflowBuffer;  // logical overflow
-    Str* m_aLastByte;
+    Stz* m_aLastByte;
     // ..data..
     
   public:
@@ -22,7 +22,7 @@ namespace Pool
     
     bn    nBufferNo(void);
     void  vBufferNo(bn nBufferNo);
-    Str*  aLastUsableByte(void);
+    Stz*  aLastUsableByte(void);
     bn    nOverflowBuffer(void);
     void  vOverflowBuffer(bn nOverflowBuffer);
     

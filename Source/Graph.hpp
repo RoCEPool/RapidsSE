@@ -23,7 +23,7 @@ namespace Structures
     Graph(void);
     ~Graph(void);
     
-    static void vDump(eCN eClass, Object* pObject, Str* aTab);
+    static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     
     i8         iCount(void);
     

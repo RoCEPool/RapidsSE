@@ -16,16 +16,16 @@ namespace Debugging
   
   void  vReportOption(i8 iReportOption);
   
-  void  vInfo(Str* aFormat,...);
-  void  vTrace(Str* aFormat,...);
-  void  vWarn(Str* aFormat,...);
-  void  vError(Str* aFormat,...);
-  void  vFatal(Str* aFormat,...);
+  void  vInfo(Stz* aFormat,...);
+  void  vTrace(Stz* aFormat,...);
+  void  vWarn(Stz* aFormat,...);
+  void  vError(Stz* aFormat,...);
+  void  vFatal(Stz* aFormat,...);
   
-  void  vDumpAscii(Str* aText, i8 nBytes);
+  void  vDumpAscii(Stz* aText, i8 nBytes);
   
-  void  vPrint(i8 iLevel, Str* aFormat, va_list xArgs);
-  void  vReport(i8 iLevel, Str* aFormat, va_list xArgs);
+  void  vPrint(i8 iLevel, Stz* aFormat, va_list xArgs);
+  void  vReport(i8 iLevel, Stz* aFormat, va_list xArgs);
 }
 
 /*============================================================================*/

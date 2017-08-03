@@ -10,82 +10,82 @@
 void LoadTests::vRun(RunTests* pRunTests)
 {
   s48K sCommand;
-  Str* aRowPtr;
+  Stz* aRowPtr;
   
   // start with /tenants folder
-  sCommand = "cf ~"_Str;
+  sCommand = "cf ~"_Stz;
   vRequire(sCommand, true, EC_NONE);
   
-  sCommand = "create tenant ten;"_Str;
+  sCommand = "create tenant ten;"_Stz;
   vRequire(sCommand, true, EC_NONE);
   
-  sCommand = "cf ten"_Str;
+  sCommand = "cf ten"_Stz;
   vRequire(sCommand, true, EC_NONE);
   
-  sCommand = "cf catalogs"_Str;
+  sCommand = "cf catalogs"_Stz;
   vRequire(sCommand, true, EC_NONE);
   
-  sCommand = "create catalog cat;"_Str;
+  sCommand = "create catalog cat;"_Stz;
   vRequire(sCommand, true, EC_NONE);
   
-  sCommand = "cf cat"_Str;
+  sCommand = "cf cat"_Stz;
   vRequire(sCommand, true, EC_NONE);
   
-  sCommand = "cf schemas"_Str;
+  sCommand = "cf schemas"_Stz;
   vRequire(sCommand, true, EC_NONE);
   
-  sCommand = "create schema sch;"_Str;
+  sCommand = "create schema sch;"_Stz;
   vRequire(sCommand, true, EC_NONE);
   
-  sCommand = "cf sch"_Str;
+  sCommand = "cf sch"_Stz;
   vRequire(sCommand, true, EC_NONE);
   
-  sCommand = "cf tables"_Str;
+  sCommand = "cf tables"_Stz;
   vRequire(sCommand, true, EC_NONE);
   
   sCommand = "create table j10 ( "
      "j10_key   integer not null, "
-     "j10_name  varchar(32) not null);"_Str;
+     "j10_name  varchar(32) not null);"_Stz;
   vRequire(sCommand, true, EC_NONE);
   
-  sCommand = "ld j10 \"../JTEST/j10.csv\""_Str;
+  sCommand = "ld j10 \"../JTEST/j10.csv\""_Stz;
   vRequire(sCommand, true, EC_NONE);
   
-  sCommand = "sel j10"_Str;
+  sCommand = "sel j10"_Stz;
   vRequire(sCommand, true, EC_NONE, 10);
   
-  sCommand = "drop table j10;"_Str;
+  sCommand = "drop table j10;"_Stz;
   vRequire(sCommand, true, EC_NONE);
 
   sCommand = "create table j100 ("
      "j100_key   integer not null, "
      "j100_name  varchar(32) not null, "
-     "j100_j10   integer not null);"_Str;
+     "j100_j10   integer not null);"_Stz;
   vRequire(sCommand, true, EC_NONE);
   
-  sCommand = "ld j100 \"../JTEST/j100.csv\""_Str;
+  sCommand = "ld j100 \"../JTEST/j100.csv\""_Stz;
   vRequire(sCommand, true, EC_NONE);
   
-  sCommand = "sel j100"_Str;
+  sCommand = "sel j100"_Stz;
   vRequire(sCommand, true, EC_NONE, 100);
   
-  sCommand = "drop table j100;"_Str;
+  sCommand = "drop table j100;"_Stz;
   vRequire(sCommand, true, EC_NONE);
   
   sCommand = "create table j1000 ( "
      "j1000_key   integer not null, "
      "j1000_name  varchar(32) not null, "
      "j1000_j100  integer not null, "
-     "j1000_j10   integer not null);"_Str;
+     "j1000_j10   integer not null);"_Stz;
   vRequire(sCommand, true, EC_NONE);
   
-  sCommand = "ld j1000 \"../JTEST/j1000.csv\""_Str;
+  sCommand = "ld j1000 \"../JTEST/j1000.csv\""_Stz;
   vRequire(sCommand, true, EC_NONE);
   
-  sCommand = "sel j1000"_Str;
+  sCommand = "sel j1000"_Stz;
   vRequire(sCommand, true, EC_NONE, 1000);
   
-  sCommand = "drop table j1000;"_Str;
+  sCommand = "drop table j1000;"_Stz;
   vRequire(sCommand, true, EC_NONE);
   
   sCommand = "create table lineitem ( "
@@ -105,37 +105,37 @@ void LoadTests::vRun(RunTests* pRunTests)
 	 "l_shipinstruct  char(25) not null, "
 	 "l_shipmode      char(10) not null, "
 	 "l_comment       varchar(44) not null "
-   "); "_Str;
+   "); "_Stz;
   vRequire(sCommand, true, EC_NONE);
   
-  sCommand = "ld lineitem \"/tpch/lineitem.tbl\""_Str;
+  sCommand = "ld lineitem \"/tpch/lineitem.tbl\""_Stz;
   vRequire(sCommand, true, EC_NONE);
   
-  //sCommand = "getInUseSpace"_Str;
+  //sCommand = "getInUseSpace"_Stz;
   //i8 inUseSpace = 0;
-  //Str* aSpace = aRequire(sCommand, true, EC_NONE);
+  //Stz* aSpace = aRequire(sCommand, true, EC_NONE);
   //if (aSpace != nullptr)
   //  inUseSpace = aSpace->iToI8();
-  //vTrace("InUseSpace: %lld\n"_Str, inUseSpace);
+  //vTrace("InUseSpace: %lld\n"_Stz, inUseSpace);
   
-  sCommand = "sel lineitem"_Str;
+  sCommand = "sel lineitem"_Stz;
   vRequire(sCommand, true, EC_NONE, 6001215);
 
-  sCommand = "drop table lineitem;"_Str;
+  sCommand = "drop table lineitem;"_Stz;
   vRequire(sCommand, true, EC_NONE);
 
-  sCommand = "cf ~;"_Str;
+  sCommand = "cf ~;"_Stz;
   vRequire(sCommand, true, EC_NONE);
   
-  sCommand = "drop tenant ten;"_Str;
+  sCommand = "drop tenant ten;"_Stz;
   vRequire(sCommand, true, EC_NONE);
 
   pRunTests->m_iTestsTotal += m_iTestsTotal;
   pRunTests->m_iTestsPassed += m_iTestsPassed;
   pRunTests->m_iTestsFailed += m_iTestsFailed;
   
-  vTrace("%-15s - Total: %lld Passed: %lld Failed: %lld\n"_Str,
-         "Load Tests"_Str, m_iTestsTotal, m_iTestsPassed, m_iTestsFailed);}
+  vTrace("%-15s - Total: %lld Passed: %lld Failed: %lld\n"_Stz,
+         "Load Tests"_Stz, m_iTestsTotal, m_iTestsPassed, m_iTestsFailed);}
 
 /*============================================================================*/
 /* end                                                                        */

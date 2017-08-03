@@ -16,14 +16,14 @@ extern AttachMap*   gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* dump partition                                                             */
 /*----------------------------------------------------------------------------*/
-void Partition::vDump(eCN eClass, Object* pObject, Str* aTab)
+void Partition::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
   ASSERT(eClass == CN_PARTITION);
   ASSERT(pObject->eClass() == CN_PARTITION);
   
   Partition* pPartition = reinterpret_cast<Partition*>(pObject);
   
-  vTrace("Data %p\n"_Str,
+  vTrace("Data %p\n"_Stz,
          pPartition->m_pData);
 }
 

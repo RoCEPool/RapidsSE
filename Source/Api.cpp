@@ -12,42 +12,42 @@ extern Grid*       gpGrid;
 /*----------------------------------------------------------------------------*/
 /* add a column to an index                                                    */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_AddIndexColumn(SEitf* pSEitf, Str* pTableName, Str* pIndexName, Str* pColumnName, i8 iTraceLevel)
+eEC RapidsSE_AddIndexColumn(SEitf* pSEitf, Stz* pTableName, Stz* pIndexName, Stz* pColumnName, i8 iTraceLevel)
 {
   eEC eResult;
   eEC eResponse;
   
-  Str* aApiCall = "RapidsSE_AddIndexColumn"_Str;
+  Stz* aApiCall = "RapidsSE_AddIndexColumn"_Stz;
   
   try {
     TRACE_ENTRY_P3(pTableName, pIndexName, pColumnName);
     
     // validate the SEitf
-    VALIDATE_SEITF("a"_Str);
+    VALIDATE_SEITF("a"_Stz);
     
     // clear the last error
     CLEAR_LASTERROR();
     
     // validate parameters
-    VALIDATE_PARAM("b"_Str, pColumnName);
+    VALIDATE_PARAM("b"_Stz, pColumnName);
     
     // validate that we have a current table
-    VALIDATE_TABLE("d"_Str);
+    VALIDATE_TABLE("d"_Stz);
     
     // get the current table
     Table* pTable = pSEitf->pCurrentTable();
     ASSERT(pTable);
     
     // add a column
-    eResult = eExecuteRequest(pSEitf, "addidxcol"_Str,
+    eResult = eExecuteRequest(pSEitf, "addidxcol"_Stz,
                               pTableName,
                               pIndexName,
                               pColumnName);
     
-    CHECK_RESULT("e"_Str);
-    CHECK_RESPONSE("f"_Str);
+    CHECK_RESULT("e"_Stz);
+    CHECK_RESPONSE("f"_Stz);
     
-    TRACE_EXIT("ea"_Str);
+    TRACE_EXIT("ea"_Stz);
     
     return EC_NONE;
   }
@@ -66,42 +66,42 @@ eEC RapidsSE_AddIndexColumn(SEitf* pSEitf, Str* pTableName, Str* pIndexName, Str
 /*----------------------------------------------------------------------------*/
 /* add a column to a table                                                    */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_AddTableColumn(SEitf* pSEitf, Str* pTableName, Str* pColumnName, Str* pColumnType, i8 iTraceLevel)
+eEC RapidsSE_AddTableColumn(SEitf* pSEitf, Stz* pTableName, Stz* pColumnName, Stz* pColumnType, i8 iTraceLevel)
 {
   eEC eResult;
   eEC eResponse;
   
-  Str* aApiCall = "RapidsSE_AddTableColumn"_Str;
+  Stz* aApiCall = "RapidsSE_AddTableColumn"_Stz;
   
   try {
     TRACE_ENTRY_P2(pColumnName, pColumnType);
     
     // validate the SEitf
-    VALIDATE_SEITF("a"_Str);
+    VALIDATE_SEITF("a"_Stz);
     
     // clear the last error
     CLEAR_LASTERROR();
     
     // validate parameters
-    VALIDATE_PARAM("b"_Str, pColumnName);
-    VALIDATE_PARAM("c"_Str, pColumnType);
+    VALIDATE_PARAM("b"_Stz, pColumnName);
+    VALIDATE_PARAM("c"_Stz, pColumnType);
     
     // validate that we have a current table
-    VALIDATE_TABLE("d"_Str);
+    VALIDATE_TABLE("d"_Stz);
     
     // get the current table
     Table* pTable = pSEitf->pCurrentTable();
     
     // add a column
-    eResult = eExecuteRequest(pSEitf, "addcol"_Str,
+    eResult = eExecuteRequest(pSEitf, "addcol"_Stz,
                               pTableName,
                               pColumnName,
                               pColumnType);
     
-    CHECK_RESULT("e"_Str);
-    CHECK_RESPONSE("f"_Str);
+    CHECK_RESULT("e"_Stz);
+    CHECK_RESPONSE("f"_Stz);
     
-    TRACE_EXIT("ea"_Str);
+    TRACE_EXIT("ea"_Stz);
     
     return EC_NONE;
   }
@@ -119,37 +119,37 @@ eEC RapidsSE_AddTableColumn(SEitf* pSEitf, Str* pTableName, Str* pColumnName, St
 /*----------------------------------------------------------------------------*/
 /* begin insert                                                               */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_BeginInsert(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable, i8 iTraceLevel)
+eEC RapidsSE_BeginInsert(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema, Stz* pTable, i8 iTraceLevel)
 {
   eEC eResult;
   eEC eResponse;
   
-  Str* aApiCall = "RapidsSE_BeginInsert"_Str;
+  Stz* aApiCall = "RapidsSE_BeginInsert"_Stz;
   
   try {
     TRACE_ENTRY_P3(pCatalog, pSchema, pTable);
     
     // validate the SEitf
-    VALIDATE_SEITF("a"_Str);
+    VALIDATE_SEITF("a"_Stz);
     
     // clear the last error
     CLEAR_LASTERROR();
   
     // validate parameters
-    VALIDATE_PARAM("b"_Str, pCatalog);
-    VALIDATE_PARAM("c"_Str, pSchema);
-    VALIDATE_PARAM("d"_Str, pTable);
+    VALIDATE_PARAM("b"_Stz, pCatalog);
+    VALIDATE_PARAM("c"_Stz, pSchema);
+    VALIDATE_PARAM("d"_Stz, pTable);
     
     // change folder to table
-    CF_TABLE("e"_Str);
+    CF_TABLE("e"_Stz);
     
     // get a reference to the table
-    eResult = eExecuteRequest(pSEitf, "gettbl"_Str, pTable);
-    CHECK_RESULT("f"_Str);
-    CHECK_RESPONSE("g"_Str);
+    eResult = eExecuteRequest(pSEitf, "gettbl"_Stz, pTable);
+    CHECK_RESULT("f"_Stz);
+    CHECK_RESPONSE("g"_Stz);
     
     // validate we have a table
-    VALIDATE_TABLE("h"_Str);
+    VALIDATE_TABLE("h"_Stz);
     
     // begin a tnx
     bool bResult = pSEitf->bBeginTx();
@@ -160,7 +160,7 @@ eEC RapidsSE_BeginInsert(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable
       return EC_BEGIN_TX_FAILED;
     }
     
-    TRACE_EXIT("ea"_Str);
+    TRACE_EXIT("ea"_Stz);
     
     return EC_NONE;
   }
@@ -178,30 +178,30 @@ eEC RapidsSE_BeginInsert(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable
 /*----------------------------------------------------------------------------*/
 /* check the library version against version passed                           */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_CheckLibraryVersion(Str* pVersion, i8 iTraceLevel)
+eEC RapidsSE_CheckLibraryVersion(Stz* pVersion, i8 iTraceLevel)
 {
   eEC eResult;
   eEC eResponse;
   SEitf* pSEitf = nullptr;
   
-  Str* aApiCall = "RapidsSE_CheckLibraryVersion"_Str;
+  Stz* aApiCall = "RapidsSE_CheckLibraryVersion"_Stz;
   
   try {
     TRACE_ENTRY_P1(pVersion);
     
     // validate the parameter
-    VALIDATE_PARAM("a"_Str, pVersion);
+    VALIDATE_PARAM("a"_Stz, pVersion);
     
-    if ( ! pVersion->bEqual((Str*)RAPIDSSE_VERSION_STRING)) {
+    if ( ! pVersion->bEqual((Stz*)RAPIDSSE_VERSION_STRING)) {
       
-      vTrace(">RapidsSE_CheckLibraryVersion: RDP (%s) does not match RapidsSE (%s)"_Str,
+      vTrace(">RapidsSE_CheckLibraryVersion: RDP (%s) does not match RapidsSE (%s)"_Stz,
           pVersion, RAPIDSSE_VERSION_STRING);
       
-      TRACE_ERROR("b"_Str, EC_VERSION_MISMATCH);
+      TRACE_ERROR("b"_Stz, EC_VERSION_MISMATCH);
       return EC_VERSION_MISMATCH;
     }
     
-    TRACE_EXIT("ea"_Str);
+    TRACE_EXIT("ea"_Stz);
     
     return EC_NONE;
   }
@@ -219,65 +219,65 @@ eEC RapidsSE_CheckLibraryVersion(Str* pVersion, i8 iTraceLevel)
 /*----------------------------------------------------------------------------*/
 /* create index                                                               */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_CreateIndex(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable,
-                         Str* pIndex, bool bIsUnique, i8 iTraceLevel)
+eEC RapidsSE_CreateIndex(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema, Stz* pTable,
+                         Stz* pIndex, bool bIsUnique, i8 iTraceLevel)
 {
   eEC eResult;
   eEC eResponse;
   
-  Str* aApiCall = "RapidsSE_CreateIndex"_Str;
+  Stz* aApiCall = "RapidsSE_CreateIndex"_Stz;
   
   try {
     TRACE_ENTRY_P4(pCatalog, pSchema, pTable, pIndex);
     
     // validate the SEitf
-    VALIDATE_SEITF("a"_Str);
+    VALIDATE_SEITF("a"_Stz);
     
     // clear the last error
     CLEAR_LASTERROR();
     
     // validate parameters
-    VALIDATE_PARAM("b"_Str, pCatalog);
-    VALIDATE_PARAM("c"_Str, pSchema);
-    VALIDATE_PARAM("d"_Str, pTable);
-    VALIDATE_PARAM("e"_Str, pTable);
-    VALIDATE_PARAM("f"_Str, pIndex);
+    VALIDATE_PARAM("b"_Stz, pCatalog);
+    VALIDATE_PARAM("c"_Stz, pSchema);
+    VALIDATE_PARAM("d"_Stz, pTable);
+    VALIDATE_PARAM("e"_Stz, pTable);
+    VALIDATE_PARAM("f"_Stz, pIndex);
     
     // change folder to table
-    CF_TABLE("g"_Str);
+    CF_TABLE("g"_Stz);
     
     // get pTable
-    eResult = eExecuteRequest(pSEitf, "gettbl"_Str, pTable);
-    CHECK_RESPONSE("h"_Str);
-    VALIDATE_TABLE("i"_Str);
+    eResult = eExecuteRequest(pSEitf, "gettbl"_Stz, pTable);
+    CHECK_RESPONSE("h"_Stz);
+    VALIDATE_TABLE("i"_Stz);
     
     // change folder to tables
-    CF_TABLES("j"_Str);
+    CF_TABLES("j"_Stz);
     
     // create an index
-    eResult = eExecuteRequest(pSEitf, "mkidx"_Str, pTable, pIndex);
-    CHECK_RESULT("k"_Str);
-    CHECK_RESPONSE("l"_Str);
+    eResult = eExecuteRequest(pSEitf, "mkidx"_Stz, pTable, pIndex);
+    CHECK_RESULT("k"_Stz);
+    CHECK_RESPONSE("l"_Stz);
     
     // change folder to indexes
-    CF_INDEXES("m"_Str);
+    CF_INDEXES("m"_Stz);
     
-    eResult = eExecuteRequest(pSEitf, "getidx"_Str, pIndex);
-    CHECK_RESULT("n"_Str);
-    CHECK_RESPONSE("o"_Str);
+    eResult = eExecuteRequest(pSEitf, "getidx"_Stz, pIndex);
+    CHECK_RESULT("n"_Stz);
+    CHECK_RESPONSE("o"_Stz);
     
-    VALIDATE_INDEX("p"_Str);
+    VALIDATE_INDEX("p"_Stz);
 
     if (bIsUnique) {
       // set unique index
-      eResult = eExecuteRequest(pSEitf, "setidxunique"_Str, pTable, pIndex, "true"_Str);
-      CHECK_RESULT("q"_Str);
-      CHECK_RESPONSE("r"_Str);
+      eResult = eExecuteRequest(pSEitf, "setidxunique"_Stz, pTable, pIndex, "true"_Stz);
+      CHECK_RESULT("q"_Stz);
+      CHECK_RESPONSE("r"_Stz);
     }
     
-    VALIDATE_TABLE("ff"_Str);
+    VALIDATE_TABLE("ff"_Stz);
     
-    TRACE_EXIT("ea"_Str);
+    TRACE_EXIT("ea"_Stz);
     
     return EC_NONE;
   }
@@ -295,63 +295,63 @@ eEC RapidsSE_CreateIndex(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable
 /*----------------------------------------------------------------------------*/
 /* create table                                                               */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_CreateTable(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable, i8 iTraceLevel)
+eEC RapidsSE_CreateTable(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema, Stz* pTable, i8 iTraceLevel)
 {
   eEC eResult;
   eEC eResponse;
   
-  Str* aApiCall = "RapidsSE_CreateTable"_Str;
+  Stz* aApiCall = "RapidsSE_CreateTable"_Stz;
   
   try {
     TRACE_ENTRY_P3(pCatalog, pSchema, pTable);
     
     // validate the SEitf
-    VALIDATE_SEITF("a"_Str);
+    VALIDATE_SEITF("a"_Stz);
     
     // clear the last error
     CLEAR_LASTERROR();
     
     // validate parameters
-    VALIDATE_PARAM("b"_Str, pCatalog);
-    VALIDATE_PARAM("c"_Str, pSchema);
-    VALIDATE_PARAM("d"_Str, pTable);
+    VALIDATE_PARAM("b"_Stz, pCatalog);
+    VALIDATE_PARAM("c"_Stz, pSchema);
+    VALIDATE_PARAM("d"_Stz, pTable);
     
     // change folder to tables
-    CF_TABLES("e"_Str);
+    CF_TABLES("e"_Stz);
 
     // create a table
-    eResult = eExecuteRequest(pSEitf, "mktbl"_Str, (Str*)pTable);
-    CHECK_RESULT("f"_Str);
-    CHECK_RESPONSE("g"_Str);
+    eResult = eExecuteRequest(pSEitf, "mktbl"_Stz, (Stz*)pTable);
+    CHECK_RESULT("f"_Stz);
+    CHECK_RESPONSE("g"_Stz);
     
     // change directory to table
-    eEC eResult = eExecuteRequest(pSEitf, "cf"_Str, (Str*)pTable);
-    CHECK_RESULT("h"_Str);
-    CHECK_RESPONSE("i"_Str);
+    eEC eResult = eExecuteRequest(pSEitf, "cf"_Stz, (Stz*)pTable);
+    CHECK_RESULT("h"_Stz);
+    CHECK_RESPONSE("i"_Stz);
     
-    eEC eGetResult = eExecuteRequest(pSEitf, "gettbl"_Str, (Str*)pTable);
+    eEC eGetResult = eExecuteRequest(pSEitf, "gettbl"_Stz, (Stz*)pTable);
 
     if (EC_NONE != eGetResult) {
       
       // remove the table
-      eResult = eExecuteRequest(pSEitf, "rmtbl"_Str, (Str*)pTable);
-      CHECK_RESULT("j"_Str);
-      CHECK_RESPONSE("k"_Str);
+      eResult = eExecuteRequest(pSEitf, "rmtbl"_Stz, (Stz*)pTable);
+      CHECK_RESULT("j"_Stz);
+      CHECK_RESPONSE("k"_Stz);
       
-      TRACE_ERROR("l"_Str, eGetResult);
+      TRACE_ERROR("l"_Stz, eGetResult);
       return eGetResult;
     }
     
     eResult = eGetResponse(pSEitf);
     if (EC_NONE != eGetResult) {
-      TRACE_ERROR("m"_Str,eGetResult);
+      TRACE_ERROR("m"_Stz,eGetResult);
       return eGetResult;
     }
     
     // validate current table
     VALIDATE_TABLE("n");
     
-    TRACE_EXIT("ea"_Str);
+    TRACE_EXIT("ea"_Stz);
     
     return EC_NONE;
   }
@@ -369,12 +369,12 @@ eEC RapidsSE_CreateTable(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable
 /*----------------------------------------------------------------------------*/
 /* drop table                                                                 */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_DropTable(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable, i8 iTraceLevel)
+eEC RapidsSE_DropTable(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema, Stz* pTable, i8 iTraceLevel)
 {
   eEC eResult;
   eEC eResponse;
   
-  Str* aApiCall = "RapidsSE_DropTable"_Str;
+  Stz* aApiCall = "RapidsSE_DropTable"_Stz;
   
   try {
     
@@ -382,26 +382,26 @@ eEC RapidsSE_DropTable(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable, 
     TRACE_ENTRY_P3(pCatalog, pSchema, pTable);
     
     // validate the SEitf
-    VALIDATE_SEITF("a"_Str);
+    VALIDATE_SEITF("a"_Stz);
     
     // clear the last error
     CLEAR_LASTERROR();
     
     // validate parameters
-    VALIDATE_PARAM("b"_Str, pCatalog);
-    VALIDATE_PARAM("c"_Str, pSchema);
-    VALIDATE_PARAM("d"_Str, pTable);
+    VALIDATE_PARAM("b"_Stz, pCatalog);
+    VALIDATE_PARAM("c"_Stz, pSchema);
+    VALIDATE_PARAM("d"_Stz, pTable);
     
     // change folder to table
-    CF_TABLES("e"_Str);
+    CF_TABLES("e"_Stz);
     
     // drop table
-    eResult = eExecuteRequest(pSEitf, "rmtbl"_Str, (Str*)pTable);
-    CHECK_RESULT("f"_Str);
-    CHECK_RESPONSE("g"_Str);
+    eResult = eExecuteRequest(pSEitf, "rmtbl"_Stz, (Stz*)pTable);
+    CHECK_RESULT("f"_Stz);
+    CHECK_RESPONSE("g"_Stz);
     
     // trace exit
-    TRACE_EXIT("ea"_Str);
+    TRACE_EXIT("ea"_Stz);
     
     return EC_NONE;
   }
@@ -419,12 +419,12 @@ eEC RapidsSE_DropTable(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable, 
 /*----------------------------------------------------------------------------*/
 /* end create index                                                           */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_EndCreateIndex(SEitf* pSEitf, Str* pTable, Str* pIndex, i8 iTraceLevel)
+eEC RapidsSE_EndCreateIndex(SEitf* pSEitf, Stz* pTable, Stz* pIndex, i8 iTraceLevel)
 {
   eEC eResult;
   eEC eResponse;
   
-  Str* aApiCall = "RapidsSE_EndCreateIndex"_Str;
+  Stz* aApiCall = "RapidsSE_EndCreateIndex"_Stz;
   
   try {
     
@@ -432,37 +432,37 @@ eEC RapidsSE_EndCreateIndex(SEitf* pSEitf, Str* pTable, Str* pIndex, i8 iTraceLe
     TRACE_ENTRY_P0();
     
     // validate the SEitf
-    VALIDATE_SEITF("a"_Str);
+    VALIDATE_SEITF("a"_Stz);
     
     // clear the last error
     CLEAR_LASTERROR();
     
-    VALIDATE_TABLE("b"_Str);
+    VALIDATE_TABLE("b"_Stz);
     
     // endmkidx only if we managed to getidx
     if (pSEitf->pCurrentIndex()) {
-      eEC eResult = eExecuteRequest(pSEitf, "endmkidx"_Str, pTable, pIndex);
-      CHECK_RESULT("c"_Str);
-      CHECK_RESPONSE("d"_Str);
+      eEC eResult = eExecuteRequest(pSEitf, "endmkidx"_Stz, pTable, pIndex);
+      CHECK_RESULT("c"_Stz);
+      CHECK_RESPONSE("d"_Stz);
       
-      VALIDATE_NOTABLE("e"_Str);
+      VALIDATE_NOTABLE("e"_Stz);
       
       // return the index
-      eResult = eExecuteRequest(pSEitf, "retidx"_Str);
-      CHECK_RESULT("f"_Str);
-      CHECK_RESPONSE("g"_Str);
+      eResult = eExecuteRequest(pSEitf, "retidx"_Stz);
+      CHECK_RESULT("f"_Stz);
+      CHECK_RESPONSE("g"_Stz);
       
     } else {
       // rettbl
-      eResult = eExecuteRequest(pSEitf, "rettbl"_Str);
-      CHECK_RESULT("d"_Str);
-      CHECK_RESPONSE("e"_Str);
+      eResult = eExecuteRequest(pSEitf, "rettbl"_Stz);
+      CHECK_RESULT("d"_Stz);
+      CHECK_RESPONSE("e"_Stz);
     }
     
     // should not have a table
-    VALIDATE_NOTABLE("h"_Str);
+    VALIDATE_NOTABLE("h"_Stz);
     
-    TRACE_EXIT("ea"_Str);
+    TRACE_EXIT("ea"_Stz);
     
     return EC_NONE;
     
@@ -481,12 +481,12 @@ eEC RapidsSE_EndCreateIndex(SEitf* pSEitf, Str* pTable, Str* pIndex, i8 iTraceLe
 /*----------------------------------------------------------------------------*/
 /* end create table                                                           */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_EndCreateTable(SEitf* pSEitf, Str* pTable, i8 iTraceLevel)
+eEC RapidsSE_EndCreateTable(SEitf* pSEitf, Stz* pTable, i8 iTraceLevel)
 {
   eEC eResult;
   eEC eResponse;
   
-  Str* aApiCall = "RapidsSE_EndCreateTable"_Str;
+  Stz* aApiCall = "RapidsSE_EndCreateTable"_Stz;
 
   try {
     
@@ -494,29 +494,29 @@ eEC RapidsSE_EndCreateTable(SEitf* pSEitf, Str* pTable, i8 iTraceLevel)
     TRACE_ENTRY_P0();
     
     // validate the SEitf
-    VALIDATE_SEITF("a"_Str);
+    VALIDATE_SEITF("a"_Stz);
     
     // clear the last error
     CLEAR_LASTERROR();
     
     // endmktbl only if we managed to create the table
     if (pSEitf->pCurrentTable()) {
-      eEC eResult = eExecuteRequest(pSEitf, "endmktbl"_Str, pTable);
-      CHECK_RESULT("b"_Str);
-      CHECK_RESPONSE("c"_Str);
+      eEC eResult = eExecuteRequest(pSEitf, "endmktbl"_Stz, pTable);
+      CHECK_RESULT("b"_Stz);
+      CHECK_RESPONSE("c"_Stz);
     }
 
     // rettbl only if we managed to create the table
     if (pSEitf->pCurrentTable()) {
-      eResult = eExecuteRequest(pSEitf, "rettbl"_Str);
-      CHECK_RESULT("d"_Str);
-      CHECK_RESPONSE("e"_Str);
+      eResult = eExecuteRequest(pSEitf, "rettbl"_Stz);
+      CHECK_RESULT("d"_Stz);
+      CHECK_RESPONSE("e"_Stz);
     }
     
     // should not have a table
-    VALIDATE_NOTABLE("f"_Str);
+    VALIDATE_NOTABLE("f"_Stz);
     
-    TRACE_EXIT("ea"_Str);
+    TRACE_EXIT("ea"_Stz);
     
     return EC_NONE;
     
@@ -540,7 +540,7 @@ eEC RapidsSE_EndInsert(SEitf* pSEitf, i8 iTraceLevel)
   eEC eResult;
   eEC eResponse;
   
-  Str* aApiCall = "RapidsSE_EndInsert"_Str;
+  Stz* aApiCall = "RapidsSE_EndInsert"_Stz;
   
   try {
     
@@ -548,33 +548,33 @@ eEC RapidsSE_EndInsert(SEitf* pSEitf, i8 iTraceLevel)
     TRACE_ENTRY_P0();
     
     // validate the SEitf
-    VALIDATE_SEITF("a"_Str);
+    VALIDATE_SEITF("a"_Stz);
     
     // clear the last error
     CLEAR_LASTERROR();
     
     // validate we have a table
-    VALIDATE_TABLE("b"_Str);
+    VALIDATE_TABLE("b"_Stz);
     
     bool bResult = pSEitf->bInsertBuffer();
     
     // if rowBuffer request was appended to requestQ, then wait for resonse
     if (bResult) {
-      CHECK_RESPONSE("c"_Str);
+      CHECK_RESPONSE("c"_Stz);
     }
     
     Table* pTable = pSEitf->pCurrentTable();
-    eResult = eExecuteRequest(pSEitf, "rettbl"_Str);
-    CHECK_RESULT("d"_Str);
-    CHECK_RESPONSE("e"_Str);
+    eResult = eExecuteRequest(pSEitf, "rettbl"_Stz);
+    CHECK_RESULT("d"_Stz);
+    CHECK_RESPONSE("e"_Stz);
     
     // validate if no table
-    VALIDATE_NOTABLE("f"_Str);
+    VALIDATE_NOTABLE("f"_Stz);
     
     pSEitf->vCommitTx();
     pSEitf->vEndTx();
     
-    TRACE_EXIT("ea"_Str);
+    TRACE_EXIT("ea"_Stz);
     
     return EC_NONE;
     
@@ -599,7 +599,7 @@ eEC RapidsSE_EndScan(SEitf* pSEitf, i8 iTraceLevel)
   eEC eResult;
   eEC eResponse;
   
-  Str* aApiCall = "RapidsSE_EndScan"_Str;
+  Stz* aApiCall = "RapidsSE_EndScan"_Stz;
   
   try {
     
@@ -607,13 +607,13 @@ eEC RapidsSE_EndScan(SEitf* pSEitf, i8 iTraceLevel)
     TRACE_ENTRY_P0();
     
     // validate the SEitf
-    VALIDATE_SEITF("a"_Str);
+    VALIDATE_SEITF("a"_Stz);
     
     // clear the last error
     CLEAR_LASTERROR();
     
     // validate table
-    VALIDATE_TABLE("b"_Str);
+    VALIDATE_TABLE("b"_Stz);
     
     // get address of select cursor
     i8 iAddress = StrLib::iToI8( pSEitf->m_sResponse.s());
@@ -625,14 +625,14 @@ eEC RapidsSE_EndScan(SEitf* pSEitf, i8 iTraceLevel)
     
     // return the table
     Table* pTable = pSEitf->pCurrentTable();
-    eResult = eExecuteRequest(pSEitf, "rettbl"_Str);
-    CHECK_RESULT("s"_Str);
-    CHECK_RESPONSE("d"_Str);
+    eResult = eExecuteRequest(pSEitf, "rettbl"_Stz);
+    CHECK_RESULT("s"_Stz);
+    CHECK_RESPONSE("d"_Stz);
     
     // validate if no table
-    VALIDATE_NOTABLE("d"_Str);
+    VALIDATE_NOTABLE("d"_Stz);
     
-    TRACE_EXIT("ea"_Str);
+    TRACE_EXIT("ea"_Stz);
     
     return EC_NONE;
   }
@@ -655,7 +655,7 @@ eEC RapidsSE_GetCatalogs(SEitf* pSEitf, void** ppCatalogs, i8 iTraceLevel)
   eEC eResult;
   eEC eResponse;
   
-  Str* aApiCall = "RapidsSE_GetCatalogs"_Str;
+  Stz* aApiCall = "RapidsSE_GetCatalogs"_Stz;
   
   try {
     
@@ -663,26 +663,26 @@ eEC RapidsSE_GetCatalogs(SEitf* pSEitf, void** ppCatalogs, i8 iTraceLevel)
     TRACE_ENTRY_P0();
     
     // validate the SEitf
-    VALIDATE_SEITF("a"_Str);
+    VALIDATE_SEITF("a"_Stz);
 
     // valide reference pointer
-    VALIDATE_REFPOINTER("b"_Str, ppCatalogs);
+    VALIDATE_REFPOINTER("b"_Stz, ppCatalogs);
     
     // clear the last error
     CLEAR_LASTERROR();
 
     // change folder to catalogs
-    CF_CATALOGS("c"_Str);
+    CF_CATALOGS("c"_Stz);
     
     // list all catalogs
-    eResult = eExecuteRequest(pSEitf, "lscat"_Str);
-    CHECK_RESULT("d"_Str);
-    CHECK_RESPONSE("e"_Str);
+    eResult = eExecuteRequest(pSEitf, "lscat"_Stz);
+    CHECK_RESULT("d"_Stz);
+    CHECK_RESPONSE("e"_Stz);
     
     // return list of catalogs
     *ppCatalogs = pSEitf->m_sResponse.s();
     
-    TRACE_EXIT("ea"_Str);
+    TRACE_EXIT("ea"_Stz);
     
     return eResult;
   }
@@ -700,13 +700,13 @@ eEC RapidsSE_GetCatalogs(SEitf* pSEitf, void** ppCatalogs, i8 iTraceLevel)
 /*----------------------------------------------------------------------------*/
 /* get list of columns for given table of given catalog and schema            */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_GetColumns(SEitf* pSEitf, Str* pCatalog, Str* pSchema,
-                        Str* pTable, void** ppColumns, i8 iTraceLevel)
+eEC RapidsSE_GetColumns(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema,
+                        Stz* pTable, void** ppColumns, i8 iTraceLevel)
 {
   eEC eResult;
   eEC eResponse;
   
-  Str* aApiCall = "RapidsSE_GetColumns"_Str;
+  Stz* aApiCall = "RapidsSE_GetColumns"_Stz;
   
   try {
     
@@ -714,29 +714,29 @@ eEC RapidsSE_GetColumns(SEitf* pSEitf, Str* pCatalog, Str* pSchema,
     TRACE_ENTRY_P3(pCatalog, pSchema, pTable);
     
     // validate the SEitf
-    VALIDATE_SEITF("a"_Str);
+    VALIDATE_SEITF("a"_Stz);
   
     // clear the last error
     CLEAR_LASTERROR();
     
     // validate parameters
-    VALIDATE_PARAM("b"_Str, pCatalog);
-    VALIDATE_PARAM("c"_Str, pSchema);
-    VALIDATE_PARAM("d"_Str, pTable);
+    VALIDATE_PARAM("b"_Stz, pCatalog);
+    VALIDATE_PARAM("c"_Stz, pSchema);
+    VALIDATE_PARAM("d"_Stz, pTable);
     
     // change folder to table
-    CF_TABLES("e"_Str);
+    CF_TABLES("e"_Stz);
   
     // list all the columns of pTable
-    eResult = eExecuteRequest(pSEitf, "lscol"_Str, (Str*)pTable);
-    CHECK_RESULT("f"_Str);
-    CHECK_RESPONSE("g"_Str);
+    eResult = eExecuteRequest(pSEitf, "lscol"_Stz, (Stz*)pTable);
+    CHECK_RESULT("f"_Stz);
+    CHECK_RESPONSE("g"_Stz);
     
     // return the list of columns of pTable
     *ppColumns = pSEitf->m_sResponse.s();
     
     // trace exit
-    TRACE_EXIT("ea"_Str);
+    TRACE_EXIT("ea"_Stz);
     
     return eResult;
   }
@@ -754,13 +754,13 @@ eEC RapidsSE_GetColumns(SEitf* pSEitf, Str* pCatalog, Str* pSchema,
 /*----------------------------------------------------------------------------*/
 /* get list of indexes for given table of given catalog, schema and table     */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_GetIndexes(SEitf* pSEitf, Str* pCatalog, Str* pSchema,
-                        Str* pTable, void** ppColumns, i8 iTraceLevel)
+eEC RapidsSE_GetIndexes(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema,
+                        Stz* pTable, void** ppColumns, i8 iTraceLevel)
 {
   eEC eResult;
   eEC eResponse;
   
-  Str* aApiCall = "RapidsSE_GetIndexes"_Str;
+  Stz* aApiCall = "RapidsSE_GetIndexes"_Stz;
   
   try {
     
@@ -768,29 +768,29 @@ eEC RapidsSE_GetIndexes(SEitf* pSEitf, Str* pCatalog, Str* pSchema,
     TRACE_ENTRY_P3(pCatalog, pSchema, pTable);
     
     // validate the SEitf
-    VALIDATE_SEITF("a"_Str);
+    VALIDATE_SEITF("a"_Stz);
     
     // clear the last error
     CLEAR_LASTERROR();
     
     // validate parameters
-    VALIDATE_PARAM("b"_Str, pCatalog);
-    VALIDATE_PARAM("c"_Str, pSchema);
-    VALIDATE_PARAM("d"_Str, pTable);
+    VALIDATE_PARAM("b"_Stz, pCatalog);
+    VALIDATE_PARAM("c"_Stz, pSchema);
+    VALIDATE_PARAM("d"_Stz, pTable);
     
     // change folder to table
-    CF_TABLES("e"_Str);
+    CF_TABLES("e"_Stz);
     
     // list all the indexes of pTable
-    eResult = eExecuteRequest(pSEitf, "lsidx"_Str, pTable);
-    CHECK_RESULT("f"_Str);
-    CHECK_RESPONSE("g"_Str);
+    eResult = eExecuteRequest(pSEitf, "lsidx"_Stz, pTable);
+    CHECK_RESULT("f"_Stz);
+    CHECK_RESPONSE("g"_Stz);
     
     // return the list of columns of pTable
     *ppColumns = pSEitf->m_sResponse.s();
     
     // trace exit
-    TRACE_EXIT("ea"_Str);
+    TRACE_EXIT("ea"_Stz);
     
     return eResult;
   }
@@ -808,13 +808,13 @@ eEC RapidsSE_GetIndexes(SEitf* pSEitf, Str* pCatalog, Str* pSchema,
 /*----------------------------------------------------------------------------*/
 /* get list of columns for given table of given catalog, schema, table, index */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_GetIndexColumns(SEitf* pSEitf, Str* pCatalog, Str* pSchema,
-                        Str* pTable, Str* pIndex, void** ppColumns, i8 iTraceLevel)
+eEC RapidsSE_GetIndexColumns(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema,
+                        Stz* pTable, Stz* pIndex, void** ppColumns, i8 iTraceLevel)
 {
   eEC eResult;
   eEC eResponse;
   
-  Str* aApiCall = "RapidsSE_GetIndexes"_Str;
+  Stz* aApiCall = "RapidsSE_GetIndexes"_Stz;
   
   try {
     
@@ -822,29 +822,29 @@ eEC RapidsSE_GetIndexColumns(SEitf* pSEitf, Str* pCatalog, Str* pSchema,
     TRACE_ENTRY_P3(pCatalog, pSchema, pTable);
     
     // validate the SEitf
-    VALIDATE_SEITF("a"_Str);
+    VALIDATE_SEITF("a"_Stz);
     
     // clear the last error
     CLEAR_LASTERROR();
     
     // validate parameters
-    VALIDATE_PARAM("b"_Str, pCatalog);
-    VALIDATE_PARAM("c"_Str, pSchema);
-    VALIDATE_PARAM("d"_Str, pTable);
+    VALIDATE_PARAM("b"_Stz, pCatalog);
+    VALIDATE_PARAM("c"_Stz, pSchema);
+    VALIDATE_PARAM("d"_Stz, pTable);
     
     // change folder to table
-    CF_TABLES("e"_Str);
+    CF_TABLES("e"_Stz);
     
     // list all the indexes of pTable
-    eResult = eExecuteRequest(pSEitf, "lsidxcol"_Str, pTable, pIndex);
-    CHECK_RESULT("f"_Str);
-    CHECK_RESPONSE("g"_Str);
+    eResult = eExecuteRequest(pSEitf, "lsidxcol"_Stz, pTable, pIndex);
+    CHECK_RESULT("f"_Stz);
+    CHECK_RESPONSE("g"_Stz);
     
     // return the list of columns of pTable
     *ppColumns = pSEitf->m_sResponse.s();
     
     // trace exit
-    TRACE_EXIT("ea"_Str);
+    TRACE_EXIT("ea"_Stz);
     
     return eResult;
   }
@@ -867,23 +867,23 @@ eEC RapidsSE_GetLastError(SEitf* pSEitf, void** ppError, i8 iTraceLevel)
   eEC eResult;
   eEC eResponse;
   
-  Str* aApiCall = "RapidsSE_GetLastError"_Str;
+  Stz* aApiCall = "RapidsSE_GetLastError"_Stz;
   
   try {
     // trace entry
     TRACE_ENTRY_P0();
     
     // validate the SEitf
-    VALIDATE_SEITF("a"_Str);
+    VALIDATE_SEITF("a"_Stz);
     
     // validate the reference pointer
-    VALIDATE_REFPOINTER("b"_Str, ppError);
+    VALIDATE_REFPOINTER("b"_Stz, ppError);
     
     // get the error message
     *ppError = pSEitf->m_sErrorMsg.s();
     
     // trace exit
-    TRACE_EXIT("ea"_Str);
+    TRACE_EXIT("ea"_Stz);
     
     return EC_NONE;
   }
@@ -906,20 +906,20 @@ eEC RapidsSE_GetNextRow(SEitf* pSEitf, void** ppRow, i8 iTraceLevel)
   eEC eResult;
   eEC eResponse;
   
-  Str* aApiCall = "RapidsSE_GetNextRow"_Str;
+  Stz* aApiCall = "RapidsSE_GetNextRow"_Stz;
   
   try {
     // trace entry
     TRACE_ENTRY_P0();
     
     // validate the SEitf
-    VALIDATE_SEITF("a"_Str);
+    VALIDATE_SEITF("a"_Stz);
   
     // clear the last error
     CLEAR_LASTERROR();
     
     // validate the reference pointer
-    VALIDATE_REFPOINTER("b"_Str, ppRow);
+    VALIDATE_REFPOINTER("b"_Stz, ppRow);
 
     i8 iAddress = pSEitf->m_sResponse.iToI8();
     
@@ -930,7 +930,7 @@ eEC RapidsSE_GetNextRow(SEitf* pSEitf, void** ppRow, i8 iTraceLevel)
     if (!*ppRow) {
       
       // trace exit
-      TRACE_EXIT("ea"_Str);
+      TRACE_EXIT("ea"_Stz);
       
       return EC_NONE;
     }
@@ -941,7 +941,7 @@ eEC RapidsSE_GetNextRow(SEitf* pSEitf, void** ppRow, i8 iTraceLevel)
     pSelCursor->vNext();
     
     // trace exit
-    TRACE_EXIT("eb"_Str);
+    TRACE_EXIT("eb"_Stz);
     
     return EC_NONE;
   }
@@ -964,27 +964,27 @@ eEC RapidsSE_GetPartitions(SEitf* pSEitf, void** ppPartitions, void** ppCount, i
   eEC eResult;
   eEC eResponse;
   
-  Str* aApiCall = "RapidsSE_GetPartitions"_Str;
+  Stz* aApiCall = "RapidsSE_GetPartitions"_Stz;
   
   try {
     // trace entry
     TRACE_ENTRY_P0();
     
     // validate the SEitf
-    VALIDATE_SEITF("a"_Str);
+    VALIDATE_SEITF("a"_Stz);
     
     // clear the last error
     CLEAR_LASTERROR();
     
     // validate the reference pointers
-    VALIDATE_REFPOINTER("b"_Str, ppPartitions);
-    VALIDATE_REFPOINTER("c"_Str, ppCount);
+    VALIDATE_REFPOINTER("b"_Stz, ppPartitions);
+    VALIDATE_REFPOINTER("c"_Stz, ppCount);
 
     *ppCount = &gpGrid->m_nSlots;
     *ppPartitions = &gpGrid->m_iPartition;
     
     // trace exit
-    TRACE_EXIT("ea"_Str);
+    TRACE_EXIT("ea"_Stz);
     
     return EC_NONE;
   }
@@ -1002,42 +1002,42 @@ eEC RapidsSE_GetPartitions(SEitf* pSEitf, void** ppPartitions, void** ppCount, i
 /*----------------------------------------------------------------------------*/
 /* get list of schemas for given catalog                                      */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_GetSchemas(SEitf* pSEitf, Str* pCatalog, void** ppSchemas, i8 iTraceLevel)
+eEC RapidsSE_GetSchemas(SEitf* pSEitf, Stz* pCatalog, void** ppSchemas, i8 iTraceLevel)
 {
   eEC eResult;
   eEC eResponse;
   
-  Str* aApiCall = "RapidsSE_GetSchemas"_Str;
+  Stz* aApiCall = "RapidsSE_GetSchemas"_Stz;
   
   try {
     // trace entry
     TRACE_ENTRY_P1(pCatalog);
     
     // validate the SEitf
-    VALIDATE_SEITF("a"_Str);
+    VALIDATE_SEITF("a"_Stz);
     
     // clear the last error
     CLEAR_LASTERROR();
     
     // validate the reference pointers
-    VALIDATE_REFPOINTER("b"_Str, ppSchemas);
+    VALIDATE_REFPOINTER("b"_Stz, ppSchemas);
     
     // validate parameters
-    VALIDATE_PARAM("c"_Str, pCatalog);
+    VALIDATE_PARAM("c"_Stz, pCatalog);
     
     // change folder to schemas
-    CF_SCHEMAS("d"_Str);
+    CF_SCHEMAS("d"_Stz);
     
     // list all schemas in pCatalog
-    eResult = eExecuteRequest(pSEitf, "lssch"_Str);
-    CHECK_RESULT("e"_Str);
-    CHECK_RESPONSE("f"_Str);
+    eResult = eExecuteRequest(pSEitf, "lssch"_Stz);
+    CHECK_RESULT("e"_Stz);
+    CHECK_RESPONSE("f"_Stz);
     
     // return list of schemas in ppSchemas
     *ppSchemas = pSEitf->m_sResponse.s();
     
     // trace exit
-    TRACE_EXIT("ea"_Str);
+    TRACE_EXIT("ea"_Stz);
     
     return EC_NONE;
   }
@@ -1060,30 +1060,30 @@ eEC RapidsSE_GetEngineVersion(SEitf* pSEitf, void** ppVersion, i8 iTraceLevel)
   eEC eResult;
   eEC eResponse;
   
-  Str* aApiCall = "RapidsSE_GetEngineVersion"_Str;
+  Stz* aApiCall = "RapidsSE_GetEngineVersion"_Stz;
   
   try {
     // trace entry
     TRACE_ENTRY_P0();
     
     // validate the SEitf
-    VALIDATE_SEITF("a"_Str);
+    VALIDATE_SEITF("a"_Stz);
     
     // clear the last error
     CLEAR_LASTERROR();
     
     // valide reference pointer
-    VALIDATE_REFPOINTER("b"_Str, ppVersion);
+    VALIDATE_REFPOINTER("b"_Stz, ppVersion);
     
     // get the SE version
-    eResult = eExecuteRequest(pSEitf, "version"_Str);
-    CHECK_RESULT("c"_Str);
-    CHECK_RESPONSE("d"_Str);
+    eResult = eExecuteRequest(pSEitf, "version"_Stz);
+    CHECK_RESULT("c"_Stz);
+    CHECK_RESPONSE("d"_Stz);
     
     // return SE version
     *ppVersion = pSEitf->m_sResponse.s();
     
-    TRACE_EXIT("ea"_Str);
+    TRACE_EXIT("ea"_Stz);
     
     return EC_NONE;
     
@@ -1102,43 +1102,43 @@ eEC RapidsSE_GetEngineVersion(SEitf* pSEitf, void** ppVersion, i8 iTraceLevel)
 /*----------------------------------------------------------------------------*/
 /* get list of tables for given schema of given catalog                       */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_GetTables(SEitf* pSEitf, Str* pCatalog, Str* pSchema, void** ppTables, i8 iTraceLevel)
+eEC RapidsSE_GetTables(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema, void** ppTables, i8 iTraceLevel)
 {
   eEC eResult;
   eEC eResponse;
   
-  Str* aApiCall = "RapidsSE_GetTables"_Str;
+  Stz* aApiCall = "RapidsSE_GetTables"_Stz;
   
   try {
     // trace entry
     TRACE_ENTRY_P2(pCatalog, pSchema);
     
     // validate the SEitf
-    VALIDATE_SEITF("a"_Str);
+    VALIDATE_SEITF("a"_Stz);
     
     // clear the last error
     CLEAR_LASTERROR();
 
     // validate parameters
-    VALIDATE_PARAM("b"_Str, pCatalog);
-    VALIDATE_PARAM("c"_Str, pSchema);
+    VALIDATE_PARAM("b"_Stz, pCatalog);
+    VALIDATE_PARAM("c"_Stz, pSchema);
     
     // valide reference pointer
-    VALIDATE_REFPOINTER("d"_Str, ppTables);
+    VALIDATE_REFPOINTER("d"_Stz, ppTables);
     
     // change folder to tables
-    CF_TABLES("e"_Str);
+    CF_TABLES("e"_Stz);
     
     // list all the tables in pSchema of pCatalog
-    eResult = eExecuteRequest(pSEitf, "lstbl"_Str);
-    CHECK_RESULT("f"_Str);
-    CHECK_RESPONSE("g"_Str);
+    eResult = eExecuteRequest(pSEitf, "lstbl"_Stz);
+    CHECK_RESULT("f"_Stz);
+    CHECK_RESPONSE("g"_Stz);
     
     // return list of tables in ppSchemas
     *ppTables = pSEitf->m_sResponse.s();
     
     // trace exit
-    TRACE_EXIT("ea"_Str);
+    TRACE_EXIT("ea"_Stz);
 
     return eResult;
     
@@ -1157,12 +1157,12 @@ eEC RapidsSE_GetTables(SEitf* pSEitf, Str* pCatalog, Str* pSchema, void** ppTabl
 /*----------------------------------------------------------------------------*/
 /* hash the row to a partition                                                */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_HashRowPartition(SEitf* pSEitf, Str* pRow, void** ppPartition, i8 iTraceLevel)
+eEC RapidsSE_HashRowPartition(SEitf* pSEitf, Stz* pRow, void** ppPartition, i8 iTraceLevel)
 {
   eEC eResult;
   eEC eResponse;
   
-  Str* aApiCall = "RapidsSE_HashRowPartition"_Str;
+  Stz* aApiCall = "RapidsSE_HashRowPartition"_Stz;
   
   try {
     // trace entry
@@ -1171,19 +1171,19 @@ eEC RapidsSE_HashRowPartition(SEitf* pSEitf, Str* pRow, void** ppPartition, i8 i
     //TRACE_ROW();
     
     // validate the SEitf
-    VALIDATE_SEITF("a"_Str);
+    VALIDATE_SEITF("a"_Stz);
     
     // clear the last error
     CLEAR_LASTERROR();
 
     // valide reference pointer
-    VALIDATE_REFPOINTER("b"_Str, ppPartition);
+    VALIDATE_REFPOINTER("b"_Stz, ppPartition);
 
     // validate parameters
-    VALIDATE_PARAM("c"_Str, pRow);
+    VALIDATE_PARAM("c"_Stz, pRow);
     
     // validate table
-    VALIDATE_TABLE("d"_Str);
+    VALIDATE_TABLE("d"_Stz);
 #ifdef _ROWFORMAT                                                            //ALKA_ROWFORMAT
     pSEitf->m_iRowPartition = pSEitf->pCurrentTable()->iRowPartition(pRow,
                                   StrLib::iLength((char*)pRow));
@@ -1196,7 +1196,7 @@ eEC RapidsSE_HashRowPartition(SEitf* pSEitf, Str* pRow, void** ppPartition, i8 i
     //TRACE_RESULT(*ppPartition);
     
     // trace exit
-    TRACE_EXIT("ea"_Str);
+    TRACE_EXIT("ea"_Stz);
 
     return EC_NONE;
     
@@ -1215,13 +1215,13 @@ eEC RapidsSE_HashRowPartition(SEitf* pSEitf, Str* pRow, void** ppPartition, i8 i
 /*----------------------------------------------------------------------------*/
 /* insert the given row into a table                                          */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_InsertRow(SEitf* pSEitf, Str* pRow, i8 iTraceLevel)
+eEC RapidsSE_InsertRow(SEitf* pSEitf, Stz* pRow, i8 iTraceLevel)
 {
 
   eEC eResult;
   eEC eResponse;
   
-  Str* aApiCall = "RapidsSE_InsertRow"_Str;
+  Stz* aApiCall = "RapidsSE_InsertRow"_Stz;
   
   try {
     
@@ -1231,30 +1231,30 @@ eEC RapidsSE_InsertRow(SEitf* pSEitf, Str* pRow, i8 iTraceLevel)
     //TRACE_ROW();
     
     // validate the SEitf
-    VALIDATE_SEITF("a"_Str);
+    VALIDATE_SEITF("a"_Stz);
 
     // clear the last error
     CLEAR_LASTERROR();
 
     // validate parameter
-    VALIDATE_PARAM("b"_Str, pRow);
+    VALIDATE_PARAM("b"_Stz, pRow);
     
     // validate table
-    VALIDATE_TABLE("c"_Str);
+    VALIDATE_TABLE("c"_Stz);
     
     bool bResult = pSEitf->bInsertRow(pRow);
     
     if (!bResult) {
       pSEitf->vSetLastError(pSEitf->m_eErrorCode);
-      TRACE_ERROR("d"_Str, pSEitf->m_eErrorCode);
+      TRACE_ERROR("d"_Stz, pSEitf->m_eErrorCode);
       return pSEitf->m_eErrorCode;
     }
     
     // validate table
-    VALIDATE_TABLE("e"_Str);
+    VALIDATE_TABLE("e"_Stz);
 
     // trace exit
-    TRACE_EXIT("ea"_Str);
+    TRACE_EXIT("ea"_Stz);
 
     return EC_NONE;
     
@@ -1273,10 +1273,10 @@ eEC RapidsSE_InsertRow(SEitf* pSEitf, Str* pRow, i8 iTraceLevel)
 /*----------------------------------------------------------------------------*/
 /* open the shared memory buffer pool                                         */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_PoolOpen(Str* pInstanceName, void** ppInstance, i8 iTraceLevel)
+eEC RapidsSE_PoolOpen(Stz* pInstanceName, void** ppInstance, i8 iTraceLevel)
 {
   
-  Str* aApiCall = "RapidsSE_PoolOpen"_Str;
+  Stz* aApiCall = "RapidsSE_PoolOpen"_Stz;
   SEitf* pSEitf = nullptr;
   
   try {
@@ -1286,11 +1286,11 @@ eEC RapidsSE_PoolOpen(Str* pInstanceName, void** ppInstance, i8 iTraceLevel)
     // open the pool
     s256 sPoolName;
     
-    sPoolName = (Str*)pInstanceName;
+    sPoolName = (Stz*)pInstanceName;
     bool bResult = RapidsSE::bPoolOpen(sPoolName);
     
     if (!bResult) {
-      TRACE_ERROR("a"_Str, EC_INVALID_INSTANCE);
+      TRACE_ERROR("a"_Stz, EC_INVALID_INSTANCE);
       return EC_INVALID_INSTANCE;
     }
     
@@ -1299,7 +1299,7 @@ eEC RapidsSE_PoolOpen(Str* pInstanceName, void** ppInstance, i8 iTraceLevel)
     *ppInstance = gpAttachMap;
     
     // trace exit
-    TRACE_EXIT("ea"_Str);
+    TRACE_EXIT("ea"_Stz);
     
     return EC_NONE;
     
@@ -1319,39 +1319,39 @@ eEC RapidsSE_PoolOpen(Str* pInstanceName, void** ppInstance, i8 iTraceLevel)
 /*----------------------------------------------------------------------------*/
 /* scan table                                                                 */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_ScanTable(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable,
-                       Str* pRange, i8 iTraceLevel)
+eEC RapidsSE_ScanTable(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema, Stz* pTable,
+                       Stz* pRange, i8 iTraceLevel)
 {
   eEC eResult;
   eEC eResponse;
   
-  Str* aApiCall = "RapidsSE_ScanTable"_Str;
+  Stz* aApiCall = "RapidsSE_ScanTable"_Stz;
   
   try {
     
-    vTrace("Table: %s Range: %s\n"_Str, pTable, pRange);
+    vTrace("Table: %s Range: %s\n"_Stz, pTable, pRange);
     
     // trace entry
     TRACE_ENTRY_P3(pCatalog, pSchema, pTable);
     
     // validate the SEitf
-    VALIDATE_SEITF("a"_Str);
+    VALIDATE_SEITF("a"_Stz);
     
     // clear the last error
     CLEAR_LASTERROR();
 
     // validate parameters
-    VALIDATE_PARAM("b"_Str, pCatalog);
-    VALIDATE_PARAM("c"_Str, pSchema);
-    VALIDATE_PARAM("d"_Str, pTable);
+    VALIDATE_PARAM("b"_Stz, pCatalog);
+    VALIDATE_PARAM("c"_Stz, pSchema);
+    VALIDATE_PARAM("d"_Stz, pTable);
     
     // change directory to table
-    CF_TABLES("e"_Str);
+    CF_TABLES("e"_Stz);
     
     // select * from pTable
-    eResult = eExecuteRequest(pSEitf, "sel"_Str, (Str*)pTable);
-    CHECK_RESULT("f"_Str);
-    CHECK_RESPONSE("g"_Str);
+    eResult = eExecuteRequest(pSEitf, "sel"_Stz, (Stz*)pTable);
+    CHECK_RESULT("f"_Stz);
+    CHECK_RESPONSE("g"_Stz);
 
     // validate table
     VALIDATE_TABLE("h");
@@ -1373,7 +1373,7 @@ eEC RapidsSE_ScanTable(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable,
     pSelCursor->vFirst();
 
     // trace exit
-    TRACE_EXIT("ea"_Str);
+    TRACE_EXIT("ea"_Stz);
 
     return EC_NONE;
   }
@@ -1394,14 +1394,14 @@ eEC RapidsSE_ScanTable(SEitf* pSEitf, Str* pCatalog, Str* pSchema, Str* pTable,
 eEC RapidsSE_SEitfDelete(SEitf* pSEitf, i8 iTraceLevel)
 {
   eEC eResult;
-  Str* aApiCall = "RapidsSE_SEitfDelete"_Str;
+  Stz* aApiCall = "RapidsSE_SEitfDelete"_Stz;
   
   try {
     // trace entry
     TRACE_ENTRY_P0();
     
     // validate the SEitf
-    VALIDATE_SEITF("a"_Str);
+    VALIDATE_SEITF("a"_Stz);
     
     // clear the last error
     CLEAR_LASTERROR();
@@ -1413,7 +1413,7 @@ eEC RapidsSE_SEitfDelete(SEitf* pSEitf, i8 iTraceLevel)
     pSEitf = nullptr;
     
     // trace exit
-    TRACE_EXIT("ea"_Str);
+    TRACE_EXIT("ea"_Stz);
 
     return EC_NONE;
   }
@@ -1435,7 +1435,7 @@ eEC RapidsSE_SEitfDelete(SEitf* pSEitf, i8 iTraceLevel)
 bool RapidsSE_SEitfInvalid(int iError, i8 iTraceLevel)
 {
   
-  Str* aApiCall = "RapidsSE_SEitfInvalid"_Str;
+  Stz* aApiCall = "RapidsSE_SEitfInvalid"_Stz;
   SEitf* pSEitf = nullptr;
   
   try {
@@ -1444,13 +1444,13 @@ bool RapidsSE_SEitfInvalid(int iError, i8 iTraceLevel)
     
     if (iError == EC_INVALID_INTERFACE) {
       // trace exit
-      TRACE_EXIT("ea"_Str);
+      TRACE_EXIT("ea"_Stz);
 
       return true;
     }
     else {
       // trace exit
-      TRACE_EXIT("eb"_Str);
+      TRACE_EXIT("eb"_Stz);
 
       return false;
     }
@@ -1473,7 +1473,7 @@ bool RapidsSE_SEitfInvalid(int iError, i8 iTraceLevel)
 eEC RapidsSE_SEitfNew(void** ppSEitf, i8 iPartition, i8 iTraceLevel)
 {
   eEC eResult;
-  Str* aApiCall = "RapidsSE_SEitfNew"_Str;
+  Stz* aApiCall = "RapidsSE_SEitfNew"_Stz;
   SEitf* pSEitf = nullptr;
   
   try {
@@ -1482,7 +1482,7 @@ eEC RapidsSE_SEitfNew(void** ppSEitf, i8 iPartition, i8 iTraceLevel)
     TRACE_ENTRY_P0();
     
     // valide reference pointer
-    VALIDATE_REFPOINTER("a"_Str, ppSEitf);
+    VALIDATE_REFPOINTER("a"_Stz, ppSEitf);
     
     VALIDATE_POOL();
     
@@ -1491,13 +1491,13 @@ eEC RapidsSE_SEitfNew(void** ppSEitf, i8 iPartition, i8 iTraceLevel)
     pSEitf->vInit();
     
     // validate the SEitf just created
-    VALIDATE_SEITF("b"_Str);
+    VALIDATE_SEITF("b"_Stz);
     
     // return the newly created SEitf
     *ppSEitf = pSEitf;
     
     // trace exit
-    TRACE_EXIT("ea"_Str);
+    TRACE_EXIT("ea"_Stz);
 
     return EC_NONE;
     
@@ -1520,7 +1520,7 @@ eEC RapidsSE_SEitfNew(void** ppSEitf, i8 iPartition, i8 iTraceLevel)
 /*----------------------------------------------------------------------------*/
 /* Execute a request                                                          */
 /*----------------------------------------------------------------------------*/
-bool RapidsSE_ExecuteRequest(SEitf* pSEitf, TokenVec& xTokenVec, Str** ppResponse)
+bool RapidsSE_ExecuteRequest(SEitf* pSEitf, TokenVec& xTokenVec, Stz** ppResponse)
 {
   bool bResult;
   
@@ -1549,7 +1549,7 @@ bool RapidsSE_ExecuteRequest(SEitf* pSEitf, TokenVec& xTokenVec, Str** ppRespons
 /*----------------------------------------------------------------------------*/
 /* execute command                                                            */
 /*----------------------------------------------------------------------------*/
-eEC eExecuteRequest(SEitf* pSEitf, Str* aCommand)
+eEC eExecuteRequest(SEitf* pSEitf, Stz* aCommand)
 {
   bool bResult;
   
@@ -1570,7 +1570,7 @@ eEC eExecuteRequest(SEitf* pSEitf, Str* aCommand)
 /*----------------------------------------------------------------------------*/
 /* execute command                                                            */
 /*----------------------------------------------------------------------------*/
-eEC eExecuteRequest(SEitf* pSEitf, Str* aCommand, Str* aParameter)
+eEC eExecuteRequest(SEitf* pSEitf, Stz* aCommand, Stz* aParameter)
 {
   // clear the last error
   pSEitf->vClearLastError();
@@ -1591,8 +1591,8 @@ eEC eExecuteRequest(SEitf* pSEitf, Str* aCommand, Str* aParameter)
 /*----------------------------------------------------------------------------*/
 /* execute command                                                            */
 /*----------------------------------------------------------------------------*/
-eEC eExecuteRequest(SEitf* pSEitf, Str* aCommand, Str* aParameter1,
-                    Str* aParameter2)
+eEC eExecuteRequest(SEitf* pSEitf, Stz* aCommand, Stz* aParameter1,
+                    Stz* aParameter2)
 {
   // clear the last error
   pSEitf->vClearLastError();
@@ -1614,8 +1614,8 @@ eEC eExecuteRequest(SEitf* pSEitf, Str* aCommand, Str* aParameter1,
 /*----------------------------------------------------------------------------*/
 /* execute command                                                           */
 /*----------------------------------------------------------------------------*/
-eEC eExecuteRequest(SEitf* pSEitf, Str* aCommand, Str* aParameter1,
-                    Str* aParameter2, Str* aParameter3)
+eEC eExecuteRequest(SEitf* pSEitf, Stz* aCommand, Stz* aParameter1,
+                    Stz* aParameter2, Stz* aParameter3)
 {
   // clear the last error
   pSEitf->vClearLastError();
@@ -1655,7 +1655,7 @@ eEC eGetResponse(SEitf* pSEitf)
 {
   // get response
   eEC eError = pSEitf->eGetResponse();
-  //vTrace("rsp : %s %lld\n"_Str, pSEitf->m_sResponse.s(), eError);
+  //vTrace("rsp : %s %lld\n"_Stz, pSEitf->m_sResponse.s(), eError);
   
   return eError;
 }

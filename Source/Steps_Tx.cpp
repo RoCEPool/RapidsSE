@@ -31,7 +31,7 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Tx(void)
 {
-  vAddPrimitive("tx.dump"_Str,         &vTxDump,           false);
+  vAddPrimitive("tx.dump"_Stz,         &vTxDump,           false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -39,12 +39,12 @@ void Task::vAddPrimitives_Tx(void)
 /*----------------------------------------------------------------------------*/
 void Task::vTxDump(MP_Task mpTask)
 {
-ENTRY("vTxDump"_Str);
+ENTRY("vTxDump"_Stz);
   
   Object* pPtrTx;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrTx) )
-    THROW_INVALID_DSTACK("tx.delete"_Str);
+    THROW_INVALID_DSTACK("tx.delete"_Stz);
   
   Tx* pTx = _pTx(pPtrTx);
   ASSERT(CN_TX == pTx->eClass());

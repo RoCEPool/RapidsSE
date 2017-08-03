@@ -24,7 +24,7 @@ i8 DtmLib::nCopy(eDM eDatum, void* pDst, void* pSrc, DBobjects::Column* pColumn)
     case DM_VCH: return Vch::nCopy(pDst,pSrc);
       
     default:
-      vFatal("ValLib::vCopyDatum: Invalid copy: eDatum %lld\n"_Str,
+      vFatal("ValLib::vCopyDatum: Invalid copy: eDatum %lld\n"_Stz,
              eDatum);
       return -1;
   }
@@ -58,7 +58,7 @@ void DtmLib::vCopy(eDM eDatum, void* aDst, void* aSrc, DBobjects::Column* pColum
 /* extract                                                                    */
 /*----------------------------------------------------------------------------*/
 #ifdef _ROWFORMAT
-bool DtmLib::bExtract(eDM eDatum, Str* aDst, char* aSrc, i8 iLength, DBobjects::Column* pColumn)
+bool DtmLib::bExtract(eDM eDatum, Stz* aDst, char* aSrc, i8 iLength, DBobjects::Column* pColumn)
 {
   bool b = false;
   
@@ -74,7 +74,7 @@ bool DtmLib::bExtract(eDM eDatum, Str* aDst, char* aSrc, i8 iLength, DBobjects::
     case DM_TSP: b = Tsp::bExtract(aSrc,(Tsp*)aDst,iLength,pColumn); break;
     case DM_VCH: b = Vch::bExtract(aSrc,(Vch*)aDst,iLength,pColumn); break;
     default:
-      vFatal("DtmLib::bValid: Invalid aDatum argument: %lld\n"_Str,
+      vFatal("DtmLib::bValid: Invalid aDatum argument: %lld\n"_Stz,
              eDatum);
   }
   
@@ -85,7 +85,7 @@ bool DtmLib::bExtract(eDM eDatum, Str* aDst, char* aSrc, i8 iLength, DBobjects::
 }
 
 #else
-bool DtmLib::bExtract(eDM eDatum, Str* aDst, char** aaSrc, DBobjects::Column* pColumn)
+bool DtmLib::bExtract(eDM eDatum, Stz* aDst, char** aaSrc, DBobjects::Column* pColumn)
 {
   bool b = false;
   
@@ -101,7 +101,7 @@ bool DtmLib::bExtract(eDM eDatum, Str* aDst, char** aaSrc, DBobjects::Column* pC
     case DM_TSP: b = Tsp::bExtract(aaSrc,(Tsp*)aDst,pColumn); break;
     case DM_VCH: b = Vch::bExtract(aaSrc,(Vch*)aDst,pColumn); break;
     default:
-      vFatal("DtmLib::bValid: Invalid aDatum argument: %lld\n"_Str,
+      vFatal("DtmLib::bValid: Invalid aDatum argument: %lld\n"_Stz,
              eDatum);
   }
   
@@ -119,7 +119,7 @@ bool DtmLib::bExtract(eDM eDatum, Str* aDst, char** aaSrc, DBobjects::Column* pC
 /* hash                                                                       */
 /*----------------------------------------------------------------------------*/
 #ifdef _ROWFORMAT
-void DtmLib::vHash(eDM eDatum, i8& iHash, Str* aScr, i8 iLength, DBobjects::Column* pColumn)
+void DtmLib::vHash(eDM eDatum, i8& iHash, Stz* aScr, i8 iLength, DBobjects::Column* pColumn)
 {
   switch (pColumn->eColumnType()) {
       
@@ -205,7 +205,7 @@ void DtmLib::vHash(eDM eDatum, i8& iHash, Str* aScr, i8 iLength, DBobjects::Colu
   
 }
 #else
-void DtmLib::vHash(eDM eDatum, i8& iHash, Str* aScr, DBobjects::Column* pColumn)
+void DtmLib::vHash(eDM eDatum, i8& iHash, Stz* aScr, DBobjects::Column* pColumn)
 {
   switch (pColumn->eColumnType()) {
       
@@ -298,7 +298,7 @@ void DtmLib::vHash(eDM eDatum, i8& iHash, Str* aScr, DBobjects::Column* pColumn)
 /*----------------------------------------------------------------------------*/
 /* s-print                                                                    */
 /*----------------------------------------------------------------------------*/
-void DtmLib::vSprint(eDM eDatum, Str* aDst, Str* aSrc,
+void DtmLib::vSprint(eDM eDatum, Stz* aDst, Stz* aSrc,
                      DBobjects::Column* pColumn)
 {
   switch (eDatum) {
@@ -313,7 +313,7 @@ void DtmLib::vSprint(eDM eDatum, Str* aDst, Str* aSrc,
     case DM_TSP: Tsp::vSprint(aDst,aSrc); break;
     case DM_VCH: Vch::vSprint(aDst,aSrc); break;
     default:
-      vFatal("DtmLib::vSprint: Invalid aDatum argument: %lld\n"_Str,
+      vFatal("DtmLib::vSprint: Invalid aDatum argument: %lld\n"_Stz,
              eDatum);
   }
 }
@@ -342,7 +342,7 @@ bool DtmLib::bValidate(eDM eDatum, char* aSrc, i8 iLength, Column* pColumn)
     case DM_TSP: b = Tsp::bValid(aSrc,iLength,pColumn); break;
     case DM_VCH: b = Vch::bValid(aSrc,iLength,pColumn); break;
     default:
-      vFatal("DtmLib::bValid: Invalid aDatum argument: %lld\n"_Str,
+      vFatal("DtmLib::bValid: Invalid aDatum argument: %lld\n"_Stz,
              eDatum);
   }
   
@@ -369,7 +369,7 @@ bool DtmLib::bValidate(eDM eDatum, char** aaSrc, Column* pColumn)
     case DM_TSP: b = Tsp::bValid(aaSrc,pColumn); break;
     case DM_VCH: b = Vch::bValid(aaSrc,pColumn); break;
     default:
-      vFatal("DtmLib::bValid: Invalid aDatum argument: %lld\n"_Str,
+      vFatal("DtmLib::bValid: Invalid aDatum argument: %lld\n"_Stz,
              eDatum);
   }
   
@@ -404,7 +404,7 @@ bool DtmLib::bLessThan(eDM eDatum, char* aArgA, i8 nBytesA, char* aArgB, i8 nByt
     case DM_VCH: bLT = Vch::bLessThan(aArgA,nBytesA,aArgB,nBytesB); break;
       
     default:
-      THROW("DtmLib::bLessThan: Invalid eDatum %lld"_Str,eDatum);
+      THROW("DtmLib::bLessThan: Invalid eDatum %lld"_Stz,eDatum);
   }
   
   return bLT;
@@ -431,7 +431,7 @@ bool DtmLib::bLessEqual(eDM eDatum, char* aArgA, i8 nBytesA, char* aArgB, i8 nBy
     case DM_VCH: bLE = Vch::bLessEqual(aArgA,nBytesA,aArgB,nBytesB); break;
       
     default:
-      THROW("DtmLib::bLessEqual: Invalid eDatum %lld"_Str,eDatum);
+      THROW("DtmLib::bLessEqual: Invalid eDatum %lld"_Stz,eDatum);
   }
   
   return bLE;
@@ -458,7 +458,7 @@ bool DtmLib::bEqualTo(eDM eDatum, char* aArgA, i8 nBytesA, char* aArgB, i8 nByte
     case DM_VCH: bEQ = Vch::bEqualTo(aArgA,nBytesA,aArgB,nBytesB); break;
       
     default:
-      THROW("DtmLib::bEqualTo: Invalid eDatum %lld"_Str,eDatum);
+      THROW("DtmLib::bEqualTo: Invalid eDatum %lld"_Stz,eDatum);
   }
   
   return bEQ;
@@ -485,7 +485,7 @@ bool DtmLib::bNotEqual(eDM eDatum, char* aArgA, i8 nBytesA, char* aArgB, i8 nByt
     case DM_VCH: bNE = Vch::bNotEqual(aArgA,nBytesA,aArgB,nBytesB); break;
       
     default:
-      THROW("DtmLib::bNotEqual: Invalid eDatum %lld"_Str,eDatum);
+      THROW("DtmLib::bNotEqual: Invalid eDatum %lld"_Stz,eDatum);
   }
   
   return bNE;
@@ -512,7 +512,7 @@ bool DtmLib::bGreaterEqual(eDM eDatum, char* aArgA, i8 nBytesA, char* aArgB, i8 
     case DM_VCH: bGE = Vch::bGreaterEqual(aArgA,nBytesA,aArgB,nBytesB); break;
       
     default:
-      THROW("DtmLib::bGreaterEqual: Invalid eDatum %lld"_Str,eDatum);
+      THROW("DtmLib::bGreaterEqual: Invalid eDatum %lld"_Stz,eDatum);
   }
   
   return bGE;
@@ -537,7 +537,7 @@ bool DtmLib::bGreaterThan(eDM eDatum, char* aArgA, i8 nBytesA, char* aArgB, i8 n
     case DM_TSP: bGT = Tsp::bGreaterThan(aArgA,nBytesA,aArgB,nBytesB); break;
     case DM_VBN: NEVER_REACH; break;
     case DM_VCH: bGT = Vch::bGreaterThan(aArgA,nBytesA,aArgB,nBytesB); default:
-      THROW("DtmLib::bGreaterThan: Invalid eDatum %lld"_Str,eDatum);
+      THROW("DtmLib::bGreaterThan: Invalid eDatum %lld"_Stz,eDatum);
   }
   
   return bGT;
@@ -564,7 +564,7 @@ i8 DtmLib::iCmp(eDM eDatum, char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
     case DM_VCH: iCmp = Vch::iCmp(aArgA,nBytesA,aArgB,nBytesB); break;
       
     default:
-      THROW("DtmLib::iCmp: Invalid eDatum %lld"_Str,eDatum);
+      THROW("DtmLib::iCmp: Invalid eDatum %lld"_Stz,eDatum);
   }
   
   return iCmp;

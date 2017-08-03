@@ -8,7 +8,7 @@ namespace System
   class Shell
   {
   public:
-    static i8 iExecute(Str* sCommand, SysCall& SysCall);
+    static i8 iExecute(Stz* sCommand, SysCall& SysCall);
   };
 }
 

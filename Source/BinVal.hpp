@@ -27,7 +27,7 @@ namespace Values
     i8   nSize(void) const;
     void vSize(void);
     void vSize(i8 iSize);
-    void vToString(Str* aWorkspace);
+    void vToString(Stz* aWorkspace);
         
     Object* pNewObject(void);
   

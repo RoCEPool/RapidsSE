@@ -23,7 +23,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT 1m.sen"_Str
+  " CONSTANT 1m.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -257,7 +257,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT actorCalls.sen"_Str
+  " CONSTANT actorCalls.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -314,7 +314,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT actorModel.sen"_Str
+  " CONSTANT actorModel.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -418,7 +418,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT actorModels.sen"_Str
+  " CONSTANT actorModels.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -968,7 +968,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT actorPrimitives.sen"_Str
+  " CONSTANT actorPrimitives.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -994,7 +994,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT aggregateOp.sen"_Str
+  " CONSTANT aggregateOp.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -1087,7 +1087,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT answerActor.sen"_Str
+  " CONSTANT answerActor.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -1191,7 +1191,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT answerDrone.sen"_Str
+  " CONSTANT answerDrone.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -1222,7 +1222,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT arithmeticTests.sen"_Str
+  " CONSTANT arithmeticTests.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -1354,7 +1354,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT catalog.sen"_Str
+  " CONSTANT catalog.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -1620,7 +1620,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT column.sen"_Str
+  " CONSTANT column.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -1646,7 +1646,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT common.sen"_Str
+  " CONSTANT common.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -1711,7 +1711,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT compile.sen"_Str
+  " CONSTANT compile.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -1807,7 +1807,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT connectorActor.sen"_Str
+  " CONSTANT connectorActor.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -1900,7 +1900,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT connectorDrone.sen"_Str
+  " CONSTANT connectorDrone.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -1954,7 +1954,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT coordinatorProxy.sen"_Str
+  " CONSTANT coordinatorProxy.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -2008,7 +2008,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT coordinatorProxyWorker.sen"_Str
+  " CONSTANT coordinatorProxyWorker.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -2283,7 +2283,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT coordinatorTask.sen"_Str
+  " CONSTANT coordinatorTask.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -2558,7 +2558,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT coordinatorWorker.sen"_Str
+  " CONSTANT coordinatorWorker.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -2656,7 +2656,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT copier.sen"_Str
+  " CONSTANT copier.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -3228,7 +3228,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT core.sen"_Str
+  " CONSTANT core.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -3265,7 +3265,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT dbobjects.sen"_Str
+  " CONSTANT dbobjects.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -3455,7 +3455,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT ddlLocking.sen"_Str
+  " CONSTANT ddlLocking.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -3481,7 +3481,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT deciderOp.sen"_Str
+  " CONSTANT deciderOp.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -3613,7 +3613,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT dexPlanner.sen"_Str
+  " CONSTANT dexPlanner.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -3711,7 +3711,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT dic.sen"_Str
+  " CONSTANT dic.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -4037,7 +4037,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT dicPath.sen"_Str
+  " CONSTANT dicPath.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -4120,7 +4120,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT dir.sen"_Str
+  " CONSTANT dir.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -4197,7 +4197,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT distExporter.sen"_Str
+  " CONSTANT distExporter.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -4223,7 +4223,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT distinctOp.sen"_Str
+  " CONSTANT distinctOp.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -4270,7 +4270,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT droneModel.sen"_Str
+  " CONSTANT droneModel.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -4296,7 +4296,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT emitOp.sen"_Str
+  " CONSTANT emitOp.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -4388,7 +4388,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT exporter.sen"_Str
+  " CONSTANT exporter.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -4414,7 +4414,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT extractOp.sen"_Str
+  " CONSTANT extractOp.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -4440,7 +4440,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT fanOp.sen"_Str
+  " CONSTANT fanOp.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -4466,7 +4466,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT fetchOp.sen"_Str
+  " CONSTANT fetchOp.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -4551,7 +4551,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT file.sen"_Str
+  " CONSTANT file.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -4625,7 +4625,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT fileGen.sen"_Str
+  " CONSTANT fileGen.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -4651,7 +4651,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT filterOp.sen"_Str
+  " CONSTANT filterOp.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -4696,7 +4696,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT flowTests.sen"_Str
+  " CONSTANT flowTests.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -4942,7 +4942,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT grid.sen"_Str
+  " CONSTANT grid.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -4968,7 +4968,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT gridModel.sen"_Str
+  " CONSTANT gridModel.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -6508,7 +6508,7 @@ void Task::vAddMunged(MP_Task mpTask)
     " ;\n"
     "\n"
     "\""
-  " CONSTANT index.sen"_Str
+  " CONSTANT index.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -6770,7 +6770,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT indexColumn.sen"_Str
+  " CONSTANT indexColumn.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -6792,7 +6792,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT interface.sen"_Str
+  " CONSTANT interface.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -6843,7 +6843,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT ipc.sen"_Str
+  " CONSTANT ipc.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -6975,7 +6975,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT jData.sen"_Str
+  " CONSTANT jData.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -7126,7 +7126,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT jobModel.sen"_Str
+  " CONSTANT jobModel.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -7152,7 +7152,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT joinOp.sen"_Str
+  " CONSTANT joinOp.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -7178,7 +7178,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT limitOp.sen"_Str
+  " CONSTANT limitOp.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -7254,7 +7254,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT listerActor.sen"_Str
+  " CONSTANT listerActor.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -7330,7 +7330,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT listerDrone.sen"_Str
+  " CONSTANT listerDrone.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -7579,7 +7579,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT loader.sen"_Str
+  " CONSTANT loader.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -7831,7 +7831,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT loaderSub.sen"_Str
+  " CONSTANT loaderSub.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -7890,7 +7890,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT lock.sen"_Str
+  " CONSTANT lock.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -7927,7 +7927,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT logicTests.sen"_Str
+  " CONSTANT logicTests.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -7953,7 +7953,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT lowerOp.sen"_Str
+  " CONSTANT lowerOp.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -7979,7 +7979,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT markOp.sen"_Str
+  " CONSTANT markOp.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -8005,7 +8005,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT mergeOp.sen"_Str
+  " CONSTANT mergeOp.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -8348,7 +8348,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT miscTesting.sen"_Str
+  " CONSTANT miscTesting.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -8431,7 +8431,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT monitorActor.sen"_Str
+  " CONSTANT monitorActor.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -8516,7 +8516,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT monitorDrone.sen"_Str
+  " CONSTANT monitorDrone.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -8611,7 +8611,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "\n"
     "  \\\"  \\\\\\\" CONSTANT \\\" cppFile file.write\n"
     "  senFile file.path@ cppFile file.write\n"
-    "  \\\"\\\\\\\"_Str\\\\n\\\" cppFile file.write\n"
+    "  \\\"\\\\\\\"_Stz\\\\n\\\" cppFile file.write\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -8759,7 +8759,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT munge.sen"_Str
+  " CONSTANT munge.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -8785,7 +8785,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT nextOp.sen"_Str
+  " CONSTANT nextOp.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -8844,7 +8844,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT node.sen"_Str
+  " CONSTANT node.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -8929,7 +8929,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT nodeCursor.sen"_Str
+  " CONSTANT nodeCursor.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -8989,7 +8989,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT operator.sen"_Str
+  " CONSTANT operator.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -9055,7 +9055,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT operators.sen"_Str
+  " CONSTANT operators.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -9136,7 +9136,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT participantProxy.sen"_Str
+  " CONSTANT participantProxy.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -9217,7 +9217,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT participantProxyWorker.sen"_Str
+  " CONSTANT participantProxyWorker.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -9281,7 +9281,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT participantTask.sen"_Str
+  " CONSTANT participantTask.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -9345,7 +9345,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT participantWorker.sen"_Str
+  " CONSTANT participantWorker.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -9501,7 +9501,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT partition.sen"_Str
+  " CONSTANT partition.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -9746,7 +9746,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT partitionColumn.sen"_Str
+  " CONSTANT partitionColumn.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -9851,7 +9851,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT partitionModel.sen"_Str
+  " CONSTANT partitionModel.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -10063,7 +10063,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT plan.sen"_Str
+  " CONSTANT plan.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -10084,7 +10084,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT planners.sen"_Str
+  " CONSTANT planners.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -10140,7 +10140,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT planTesting.sen"_Str
+  " CONSTANT planTesting.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -10166,7 +10166,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT projectOp.sen"_Str
+  " CONSTANT projectOp.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -10214,7 +10214,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT queue.sen"_Str
+  " CONSTANT queue.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -10240,7 +10240,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT rangeOp.sen"_Str
+  " CONSTANT rangeOp.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -10266,7 +10266,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT readOp.sen"_Str
+  " CONSTANT readOp.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -10322,7 +10322,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT receiverActor.sen"_Str
+  " CONSTANT receiverActor.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -10378,7 +10378,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT receiverDrone.sen"_Str
+  " CONSTANT receiverDrone.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -10434,7 +10434,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT receiverWorker.sen"_Str
+  " CONSTANT receiverWorker.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -10549,7 +10549,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT reclaimActor.sen"_Str
+  " CONSTANT reclaimActor.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -10666,7 +10666,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT reclaimDrone.sen"_Str
+  " CONSTANT reclaimDrone.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -10692,7 +10692,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT recvOp.sen"_Str
+  " CONSTANT recvOp.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -10846,7 +10846,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT requests.sen"_Str
+  " CONSTANT requests.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -10956,7 +10956,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT requests_basics.sen"_Str
+  " CONSTANT requests_basics.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -11026,7 +11026,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT requests_catalog.sen"_Str
+  " CONSTANT requests_catalog.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -11195,7 +11195,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT requests_column.sen"_Str
+  " CONSTANT requests_column.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -11225,7 +11225,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT requests_connection.sen"_Str
+  " CONSTANT requests_connection.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -11608,7 +11608,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT requests_folder.sen"_Str
+  " CONSTANT requests_folder.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -11657,7 +11657,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT requests_grid.sen"_Str
+  " CONSTANT requests_grid.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -12748,7 +12748,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT requests_index.sen"_Str
+  " CONSTANT requests_index.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -12865,7 +12865,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT requests_misc.sen"_Str
+  " CONSTANT requests_misc.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -12936,7 +12936,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT requests_object.sen"_Str
+  " CONSTANT requests_object.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -13061,7 +13061,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT requests_rowBuffer.sen"_Str
+  " CONSTANT requests_rowBuffer.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -13172,7 +13172,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT requests_schema.sen"_Str
+  " CONSTANT requests_schema.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -13274,7 +13274,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT requests_space.sen"_Str
+  " CONSTANT requests_space.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -14076,7 +14076,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT requests_table.sen"_Str
+  " CONSTANT requests_table.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -14129,7 +14129,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT requests_task.sen"_Str
+  " CONSTANT requests_task.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -14209,7 +14209,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT requests_tenant.sen"_Str
+  " CONSTANT requests_tenant.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -14379,7 +14379,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT requestServer.sen"_Str
+  " CONSTANT requestServer.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -14547,7 +14547,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT requestTask.sen"_Str
+  " CONSTANT requestTask.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -14616,7 +14616,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT responseOp.sen"_Str
+  " CONSTANT responseOp.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -14635,7 +14635,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT row.sen"_Str
+  " CONSTANT row.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -14654,7 +14654,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT rowBuffer.sen"_Str
+  " CONSTANT rowBuffer.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -14808,7 +14808,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT scanOp.sen"_Str
+  " CONSTANT scanOp.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -14943,7 +14943,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT schema.sen"_Str
+  " CONSTANT schema.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -15028,7 +15028,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT seitfCursor.sen"_Str
+  " CONSTANT seitfCursor.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -15071,7 +15071,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT seitfList.sen"_Str
+  " CONSTANT seitfList.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -15121,7 +15121,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT selCursor.sen"_Str
+  " CONSTANT selCursor.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -15185,7 +15185,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT senderJob.sen"_Str
+  " CONSTANT senderJob.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -15255,7 +15255,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT senderWorker.sen"_Str
+  " CONSTANT senderWorker.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -15281,7 +15281,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT sendOp.sen"_Str
+  " CONSTANT sendOp.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -15391,7 +15391,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT serverModel.sen"_Str
+  " CONSTANT serverModel.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -15452,7 +15452,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT sinkOp.sen"_Str
+  " CONSTANT sinkOp.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -15478,7 +15478,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT sortOp.sen"_Str
+  " CONSTANT sortOp.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -15550,7 +15550,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT streamLoader.sen"_Str
+  " CONSTANT streamLoader.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -15571,7 +15571,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT structures.sen"_Str
+  " CONSTANT structures.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -15602,7 +15602,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT symbolicArgs.sen"_Str
+  " CONSTANT symbolicArgs.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -16312,7 +16312,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT table.sen"_Str
+  " CONSTANT table.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -16360,7 +16360,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT task.sen"_Str
+  " CONSTANT task.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -16445,7 +16445,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT taskCursor.sen"_Str
+  " CONSTANT taskCursor.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -16489,7 +16489,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT taskList.sen"_Str
+  " CONSTANT taskList.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -16514,7 +16514,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT tasks.sen"_Str
+  " CONSTANT tasks.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -16562,7 +16562,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT taskSet.sen"_Str
+  " CONSTANT taskSet.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -16588,7 +16588,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT teeOp.sen"_Str
+  " CONSTANT teeOp.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -16720,7 +16720,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT tenant.sen"_Str
+  " CONSTANT tenant.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -16745,7 +16745,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT testing.sen"_Str
+  " CONSTANT testing.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -16793,7 +16793,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT thread.sen"_Str
+  " CONSTANT thread.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -16878,7 +16878,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT threadCursor.sen"_Str
+  " CONSTANT threadCursor.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -16909,7 +16909,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT threadList.sen"_Str
+  " CONSTANT threadList.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -16969,7 +16969,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT timer.sen"_Str
+  " CONSTANT timer.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -17005,7 +17005,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT trace.sen"_Str
+  " CONSTANT trace.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -17029,7 +17029,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT transactions.sen"_Str
+  " CONSTANT transactions.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -17113,7 +17113,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT triggerOp.sen"_Str
+  " CONSTANT triggerOp.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -17144,7 +17144,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT txCollection.sen"_Str
+  " CONSTANT txCollection.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -17229,7 +17229,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT txCursor.sen"_Str
+  " CONSTANT txCursor.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -17260,7 +17260,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT txMap.sen"_Str
+  " CONSTANT txMap.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -17329,7 +17329,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT txRef.sen"_Str
+  " CONSTANT txRef.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -17367,7 +17367,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT unitTests.sen"_Str
+  " CONSTANT unitTests.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -17393,7 +17393,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT upperOp.sen"_Str
+  " CONSTANT upperOp.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -17495,7 +17495,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT useful.sen"_Str
+  " CONSTANT useful.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -17514,7 +17514,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT user.sen"_Str
+  " CONSTANT user.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -17541,7 +17541,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT utilities.sen"_Str
+  " CONSTANT utilities.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -17652,7 +17652,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT var.sen"_Str
+  " CONSTANT var.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -17809,7 +17809,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT workerModel.sen"_Str
+  " CONSTANT workerModel.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -18000,7 +18000,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT writeOp.sen"_Str
+  " CONSTANT writeOp.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);

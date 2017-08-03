@@ -31,16 +31,16 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Row(void)
 {
-  vAddPrimitive("row.string"_Str,  &vRowString, false);
+  vAddPrimitive("row.string"_Stz,  &vRowString, false);
 }
 
 void Task::vRowString(MP_Task mpTask)
 {
-  ENTRY("vRowString"_Str);
+  ENTRY("vRowString"_Stz);
   
   Object* pPtrRow;
   if ( ! mpTask->m_pDataStack->bPop(pPtrRow) )
-    THROW_INVALID_DSTACK("row.string"_Str);
+    THROW_INVALID_DSTACK("row.string"_Stz);
   
   Entry* pRow = _pEntry(pPtrRow);
   ASSERT(CN_ENTRY == pRow->eClass());

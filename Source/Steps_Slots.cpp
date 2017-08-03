@@ -31,10 +31,10 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Slots(void)
 {
-  vAddPrimitive("slots.columnCount"_Str,     &vSlotsColumnCount,     false);
-  vAddPrimitive("slots.columnName"_Str,      &vSlotsColumnName,      false);
-  vAddPrimitive("slots.createColumnVec"_Str, &vSlotsCreateColumnVec, false);
-  vAddPrimitive("slots.subDic"_Str,          &vSlotsSubDic,          false);
+  vAddPrimitive("slots.columnCount"_Stz,     &vSlotsColumnCount,     false);
+  vAddPrimitive("slots.columnName"_Stz,      &vSlotsColumnName,      false);
+  vAddPrimitive("slots.createColumnVec"_Stz, &vSlotsCreateColumnVec, false);
+  vAddPrimitive("slots.subDic"_Stz,          &vSlotsSubDic,          false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -42,11 +42,11 @@ void Task::vAddPrimitives_Slots(void)
 /*----------------------------------------------------------------------------*/
 void Task::vSlotsColumnCount(MP_Task mpTask)
 {
-  ENTRY("vSlotsColumnCount"_Str);
+  ENTRY("vSlotsColumnCount"_Stz);
   
   Object* pPtrSlots;
   if ( ! mpTask->m_pDataStack->bPop(pPtrSlots) )
-    THROW_INVALID_DSTACK("slots.columnCount"_Str);
+    THROW_INVALID_DSTACK("slots.columnCount"_Stz);
   Slots* pSlots = _pSlots(pPtrSlots);
   ASSERT(CN_SLOTS == pSlots->eClass());
   
@@ -60,17 +60,17 @@ void Task::vSlotsColumnCount(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vSlotsColumnName(MP_Task mpTask)
 {
-  ENTRY("vSlotsColumnName"_Str);
+  ENTRY("vSlotsColumnName"_Stz);
   
   Object* pPtrSlots;
   if ( ! mpTask->m_pDataStack->bPop(pPtrSlots) )
-    THROW_INVALID_DSTACK("slots.columnName"_Str);
+    THROW_INVALID_DSTACK("slots.columnName"_Stz);
   Slots* pSlots = _pSlots(pPtrSlots);
   ASSERT(CN_SLOTS == pSlots->eClass());
   
   i8 iIndex;
   if ( ! mpTask->m_pDataStack->bPop(iIndex) )
-    THROW_INVALID_DSTACK("slots.columnName"_Str);
+    THROW_INVALID_DSTACK("slots.columnName"_Stz);
   
   ASSERT(iIndex < pSlots->pPtnColVec()->nItems());
   Column* pColumn = pSlots->pPtnColVec()->pGet(iIndex);
@@ -85,21 +85,21 @@ void Task::vSlotsColumnName(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vSlotsCreateColumnVec(MP_Task mpTask)
 {
-  ENTRY("vSlotsCreateColumnVec"_Str);
+  ENTRY("vSlotsCreateColumnVec"_Stz);
   
   Object* pPtrSlots;
   if ( ! mpTask->m_pDataStack->bPop(pPtrSlots) )
-    THROW_INVALID_DSTACK("slots.createColumnVec"_Str);
+    THROW_INVALID_DSTACK("slots.createColumnVec"_Stz);
   Slots* pSlots = _pSlots(pPtrSlots);
   ASSERT(CN_SLOTS == pSlots->eClass());
   
   s32 sColumnNm;
   if ( ! mpTask->m_pDataStack->bPop(sColumnNm) )
-    THROW_INVALID_DSTACK("slots.createColumnVec"_Str);
+    THROW_INVALID_DSTACK("slots.createColumnVec"_Stz);
   
   s48K sColumnDef;
   if ( ! mpTask->m_pDataStack->bPop(sColumnDef) )
-    THROW_INVALID_DSTACK("slots.createColumnVec"_Str);
+    THROW_INVALID_DSTACK("slots.createColumnVec"_Stz);
   
   pSlots->vCreateColumnVec(sColumnNm, sColumnDef);
   
@@ -111,11 +111,11 @@ void Task::vSlotsCreateColumnVec(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vSlotsSubDic(MP_Task mpTask)
 {
-  ENTRY("vSlotsSubDic"_Str);
+  ENTRY("vSlotsSubDic"_Stz);
   
   Object* pSlotsPtr;
   if ( ! mpTask->m_pDataStack->bPop(pSlotsPtr) )
-    THROW_INVALID_DSTACK("slots.subDic"_Str);
+    THROW_INVALID_DSTACK("slots.subDic"_Stz);
   
   Slots* pSlots = _pSlots(pSlotsPtr);
   ASSERT(CN_SLOTS == pSlots->eClass());

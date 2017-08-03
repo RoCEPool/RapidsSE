@@ -31,14 +31,14 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Loader(void)
 {
-  vAddPrimitive("loader.delete"_Str,      &vLoaderDelete,      false);
-  vAddPrimitive("loader.findChunk"_Str,   &vLoaderFindChunk,   false);
-  vAddPrimitive("loader.init"_Str,        &vLoaderInit,        false);
-  vAddPrimitive("loader::new"_Str,         &vLoaderNew,         false);
-  vAddPrimitive("loader.newSub"_Str,      &vLoaderNewSub,      false);
-  vAddPrimitive("loader.path!"_Str,       &vLoaderPathStore,   false);
-  vAddPrimitive("loader.table!"_Str,      &vLoaderTableStore,  false);
-  vAddPrimitive("loader.txref!"_Str,      &vLoaderTxRefStore,  false);
+  vAddPrimitive("loader.delete"_Stz,      &vLoaderDelete,      false);
+  vAddPrimitive("loader.findChunk"_Stz,   &vLoaderFindChunk,   false);
+  vAddPrimitive("loader.init"_Stz,        &vLoaderInit,        false);
+  vAddPrimitive("loader::new"_Stz,         &vLoaderNew,         false);
+  vAddPrimitive("loader.newSub"_Stz,      &vLoaderNewSub,      false);
+  vAddPrimitive("loader.path!"_Stz,       &vLoaderPathStore,   false);
+  vAddPrimitive("loader.table!"_Stz,      &vLoaderTableStore,  false);
+  vAddPrimitive("loader.txref!"_Stz,      &vLoaderTxRefStore,  false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -46,11 +46,11 @@ void Task::vAddPrimitives_Loader(void)
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderDelete(MP_Task mpTask)
 {
-  ENTRY("vLoaderDelete"_Str);
+  ENTRY("vLoaderDelete"_Stz);
   
   Object* pPtrLoader;
   if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
-    THROW_INVALID_DSTACK("loader.delete"_Str);
+    THROW_INVALID_DSTACK("loader.delete"_Stz);
   
   Loader* pLoader = _pLoader(pPtrLoader);
   ASSERT(CN_LOADER == pLoader->eClass());
@@ -65,11 +65,11 @@ void Task::vLoaderDelete(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderFindChunk(MP_Task mpTask)
 {
-  ENTRY("vLoaderFindChunk"_Str);
+  ENTRY("vLoaderFindChunk"_Stz);
   
   Object* pPtrLoader;
   if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
-    THROW_INVALID_DSTACK("loader.findChunk"_Str);
+    THROW_INVALID_DSTACK("loader.findChunk"_Stz);
   
   Loader* pLoader = _pLoader(pPtrLoader);
   ASSERT(CN_LOADER == pLoader->eClass());
@@ -86,11 +86,11 @@ void Task::vLoaderFindChunk(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderInit(MP_Task mpTask)
 {
-  ENTRY("vLoaderInit"_Str);
+  ENTRY("vLoaderInit"_Stz);
   
   Object* pPtrLoader;
   if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
-    THROW_INVALID_DSTACK("loader.init"_Str);
+    THROW_INVALID_DSTACK("loader.init"_Stz);
   
   Loader* pLoader = _pLoader(pPtrLoader);
   ASSERT(CN_LOADER == pLoader->eClass());
@@ -105,7 +105,7 @@ void Task::vLoaderInit(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderNew(MP_Task mpTask)
 {
-  ENTRY("vLoaderNew"_Str);
+  ENTRY("vLoaderNew"_Stz);
   
   Loader* pLoader = new Loader;
   ASSERT(CN_LOADER == pLoader->eClass());
@@ -120,11 +120,11 @@ void Task::vLoaderNew(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderNewSub(MP_Task mpTask)
 {
-  ENTRY("vLoaderNewSub"_Str);
+  ENTRY("vLoaderNewSub"_Stz);
   
   Object* pPtrLoader;
   if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
-    THROW_INVALID_DSTACK("loader.newSub"_Str);
+    THROW_INVALID_DSTACK("loader.newSub"_Stz);
   
   Loader* pLoader = _pLoader(pPtrLoader);
   ASSERT(CN_LOADER == pLoader->eClass());
@@ -144,12 +144,12 @@ void Task::vLoaderNewSub(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderPathStore(MP_Task mpTask)
 {
-  ENTRY("vLoaderPathStore"_Str);
+  ENTRY("vLoaderPathStore"_Stz);
   
   ValWrk xWspPath;
   Object* pPtrLoader;
   if ( ! mpTask->m_pDataStack->bPop(pPtrLoader,xWspPath) )
-    THROW_INVALID_DSTACK("loader.path!"_Str);
+    THROW_INVALID_DSTACK("loader.path!"_Stz);
   
   Loader* pLoader = _pLoader(pPtrLoader);
   ASSERT(CN_LOADER == pLoader->eClass());
@@ -167,12 +167,12 @@ void Task::vLoaderPathStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderTableStore(MP_Task mpTask)
 {
-  ENTRY("vLoaderTableStore"_Str);
+  ENTRY("vLoaderTableStore"_Stz);
   
   Object* pPtrTable;
   Object* pPtrLoader;
   if ( ! mpTask->m_pDataStack->bPop(pPtrLoader,pPtrTable) )
-    THROW_INVALID_DSTACK("loader.tableStore"_Str);
+    THROW_INVALID_DSTACK("loader.tableStore"_Stz);
   
   Loader* pLoader = _pLoader(pPtrLoader);
   ASSERT(CN_LOADER == pLoader->eClass());
@@ -191,12 +191,12 @@ void Task::vLoaderTableStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderTxRefStore(MP_Task mpTask)
 {
-  ENTRY("vLoaderTxRefStore"_Str);
+  ENTRY("vLoaderTxRefStore"_Stz);
   
   Object* pPtrLoader;
   Object* pPtrTxRef;
   if ( ! mpTask->m_pDataStack->bPop(pPtrLoader,pPtrTxRef) )
-    THROW_INVALID_DSTACK("loader.txref!"_Str);
+    THROW_INVALID_DSTACK("loader.txref!"_Stz);
   
   Loader* pLoader = _pLoader(pPtrLoader);
   ASSERT(CN_LOADER == pLoader->eClass());

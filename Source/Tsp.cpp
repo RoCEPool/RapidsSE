@@ -17,7 +17,7 @@ void* Tsp::operator new(size_t iSize)
 {
   RASSERT(iSize);
   
-  vFatal("fatal: Tsp class cannot be new'd\n"_Str);
+  vFatal("fatal: Tsp class cannot be new'd\n"_Stz);
   
   NEVER_REACH;
 }
@@ -435,11 +435,11 @@ bool Tsp::bExtract(char** aaSrc, Tsp* aTimestamp, Column* pColumn)
 /*----------------------------------------------------------------------------*/
 /* sprint tsp datum                                                           */
 /*----------------------------------------------------------------------------*/
-void Tsp::vSprint(Str* aDst, Str* aSrc)
+void Tsp::vSprint(Stz* aDst, Stz* aSrc)
 {
   Tsp* aTsp = (Tsp*)aSrc;
   
-  StrLib::vSprint(aDst,"%02lld-%02lld-%02lld %02lld:%02lld:%02lld.%03lld%c"_Str,
+  StrLib::vSprint(aDst,"%02lld-%02lld-%02lld %02lld:%02lld:%02lld.%03lld%c"_Stz,
                   (i8)aTsp->x.m_uYear,
                   (i8)aTsp->x.m_uMonth,
                   (i8)aTsp->x.m_uDay,

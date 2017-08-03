@@ -49,7 +49,7 @@ StepArray::~StepArray(void)
 /*----------------------------------------------------------------------------*/
 /* allocate a step accumulator                                                */
 /*----------------------------------------------------------------------------*/
-StepAccum* StepArray::pAllocAccum(Str* aStepNm)
+StepAccum* StepArray::pAllocAccum(Stz* aStepNm)
 {
   ASSERT(m_zLock.bIsLocked());
 
@@ -65,14 +65,14 @@ StepAccum* StepArray::pAllocAccum(Str* aStepNm)
 /*----------------------------------------------------------------------------*/
 /* dump grid                                                                  */
 /*----------------------------------------------------------------------------*/
-void StepArray::vDump(eCN eClass, Object* pObject, Str* aTab)
+void StepArray::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
   ASSERT(eClass == CN_STEPARRAY);
   ASSERT(pObject->eClass() == CN_STEPARRAY);
   
   StepArray* pStepArray = reinterpret_cast<StepArray*>(pObject);
   
-  vTrace("\n"_Str, aTab, pStepArray);
+  vTrace("\n"_Stz, aTab, pStepArray);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -82,7 +82,7 @@ void StepArray::vList(File& xFile)
 {
   m_zLock.vGrabWrite();
   
-  xFile.vPrint("Step, Invoked, StepTotal, Per Invoke\n"_Str);
+  xFile.vPrint("Step, Invoked, StepTotal, Per Invoke\n"_Stz);
   for (i8 i_Step = 0; i_Step < m_iNext; i_Step++)
     m_xStepAccum[i_Step].vPrint(xFile);
   

@@ -59,14 +59,14 @@ EbStrand::~EbStrand(void)
 /*----------------------------------------------------------------------------*/
 /* dump rowbuffer                                                             */
 /*----------------------------------------------------------------------------*/
-void EbStrand::vDump(eCN eClass, Object* pObject, Str* aTab)
+void EbStrand::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
   ASSERT(eClass == CN_EBSTRAND);
   ASSERT(pObject->eClass() == CN_EBSTRAND);
   
   EbStrand* pEbStrand = reinterpret_cast<EbStrand*>(pObject);
   
-  vTrace("rowBuffers %lld first %p next %p prevStrand %p nextStrand %p\n"_Str,
+  vTrace("rowBuffers %lld first %p next %p prevStrand %p nextStrand %p\n"_Stz,
          pEbStrand->m_nEntryBuffers,
          pEbStrand->m_pFirstBuffer,
          pEbStrand->m_pLastBuffer,
@@ -93,7 +93,7 @@ bool EbStrand::bAppendBuffer(EntryBuffer* pRowBuffer)
 /*----------------------------------------------------------------------------*/
 /* insert a row into this strand                                              */
 /*----------------------------------------------------------------------------*/
-bool EbStrand::bInsertRow(TxRef* pTxRef, Str* pRecord, i8 iLength)
+bool EbStrand::bInsertRow(TxRef* pTxRef, Stz* pRecord, i8 iLength)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_EBSTRAND,_FOOTER_);
   
@@ -261,7 +261,7 @@ bool EbStrand::bExtendStrand(void)
 
   EntryBuffer* pNewBuffer = (EntryBuffer*)EntryBuffer::pNewEntryBuffer(CN_ROWBUFFER);
   if (! pNewBuffer) {
-    vTrace("EntryBuffer allocation failed\n"_Str);
+    vTrace("EntryBuffer allocation failed\n"_Stz);
     return false;
   }
   

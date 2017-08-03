@@ -31,9 +31,9 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Process(void)
 {
-  vAddPrimitive("process.getPid"_Str,  &vProcessGetPid,    false);
-  vAddPrimitive("process.quit"_Str,    &vProcessQuit,      false);
-  vAddPrimitive("process.testPid"_Str, &vProcessTestPid,   false);
+  vAddPrimitive("process.getPid"_Stz,  &vProcessGetPid,    false);
+  vAddPrimitive("process.quit"_Stz,    &vProcessQuit,      false);
+  vAddPrimitive("process.testPid"_Stz, &vProcessTestPid,   false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -41,7 +41,7 @@ void Task::vAddPrimitives_Process(void)
 /*----------------------------------------------------------------------------*/
 void Task::vProcessGetPid(MP_Task mpTask)
 {
-ENTRY("vProcessGetPid"_Str);
+ENTRY("vProcessGetPid"_Stz);
   
   i8 iPid = Process::iGetPid();
   
@@ -55,9 +55,9 @@ ENTRY("vProcessGetPid"_Str);
 /*----------------------------------------------------------------------------*/
 void Task::vProcessQuit(MP_Task mpTask)
 {
-  ENTRY("vProcessQuit"_Str);
+  ENTRY("vProcessQuit"_Stz);
   
-  vFatal("Process quitting\n"_Str);
+  vFatal("Process quitting\n"_Stz);
   
   exit(EXIT_FAILURE);
   
@@ -69,11 +69,11 @@ void Task::vProcessQuit(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vProcessTestPid(MP_Task mpTask)
 {
-ENTRY("vProcessTestPid"_Str);
+ENTRY("vProcessTestPid"_Stz);
 
   i8 iPid;
   if ( ! mpTask->m_pDataStack->bPop(iPid) )
-    THROW_INVALID_DSTACK("process.testpid"_Str);
+    THROW_INVALID_DSTACK("process.testpid"_Stz);
   
   i8 iExists = Process::bTestPid(iPid);
   

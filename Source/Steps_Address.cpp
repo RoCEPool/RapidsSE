@@ -37,9 +37,9 @@ void Task::vAddPrimitives_Address(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  vAddPrimitive("eql"_Str,             &vAddressEqual,     false);
-  vAddPrimitive("@"_Str,               &vAddressFetch,     false);
-  vAddPrimitive("!"_Str,               &vAddressStore,     false);
+  vAddPrimitive("eql"_Stz,             &vAddressEqual,     false);
+  vAddPrimitive("@"_Stz,               &vAddressFetch,     false);
+  vAddPrimitive("!"_Stz,               &vAddressStore,     false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -47,13 +47,13 @@ void Task::vAddPrimitives_Address(void)
 /*----------------------------------------------------------------------------*/
 void Task::vAddressEqual(MP_Task mpTask)
 {
-  ENTRY("vAddressEql"_Str);
+  ENTRY("vAddressEql"_Stz);
   
   ValWrk xAddressA;
   ValWrk xAddressB;
   
   if ( ! mpTask->m_pDataStack->bPop(xAddressA,xAddressB) )
-    THROW_INVALID_DSTACK("eql"_Str);
+    THROW_INVALID_DSTACK("eql"_Stz);
   
   i8 iA = xAddressA.iNestedAsInt();
   i8 iB = xAddressB.iNestedAsInt();
@@ -70,11 +70,11 @@ void Task::vAddressEqual(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vAddressFetch(MP_Task mpTask)
 {
-  ENTRY("vAddressFetch"_Str);
+  ENTRY("vAddressFetch"_Stz);
   
   Object* pObject;
   if ( ! mpTask->m_pDataStack->bPop(pObject) )
-    THROW_INVALID_DSTACK("@"_Str);
+    THROW_INVALID_DSTACK("@"_Stz);
   
   ValWrk xValFetched;
   
@@ -100,7 +100,7 @@ void Task::vAddressFetch(MP_Task mpTask)
       break;
   
     default:
-      THROW("Invalid eClass %lld"_Str,eClass);
+      THROW("Invalid eClass %lld"_Stz,eClass);
   }
   
   mpTask->m_pDataStack->vPushValWrk(xValFetched);
@@ -113,15 +113,15 @@ void Task::vAddressFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vAddressStore(MP_Task mpTask)
 {
-  ENTRY("vAddressStore"_Str);
+  ENTRY("vAddressStore"_Stz);
   
   Object* pObject;
   if ( ! mpTask->m_pDataStack->bPop(pObject) )
-    THROW_INVALID_DSTACK("!"_Str);
+    THROW_INVALID_DSTACK("!"_Stz);
   
   ValWrk xValStored;
   if ( ! mpTask->m_pDataStack->bPop(xValStored) )
-    THROW_INVALID_DSTACK("!"_Str);
+    THROW_INVALID_DSTACK("!"_Stz);
   
   Value* pValue = reinterpret_cast<Value*>(pObject);
   
@@ -146,7 +146,7 @@ void Task::vAddressStore(MP_Task mpTask)
       break;
   
     default:
-      THROW("Invalid eClass %lld"_Str,eClass);
+      THROW("Invalid eClass %lld"_Stz,eClass);
   }
   
   EXIT();

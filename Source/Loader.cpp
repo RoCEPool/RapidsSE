@@ -59,7 +59,7 @@ Loader::Loader(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
   
-  m_sPath    = "<none>"_Str;
+  m_sPath    = "<none>"_Stz;
   m_pTable   = nullptr;
   m_pTxRef   = nullptr;
   m_pLoadMap = new LoadMap;
@@ -82,14 +82,14 @@ Loader::~Loader(void)
 /*----------------------------------------------------------------------------*/
 /* dump Loader                                                                */
 /*----------------------------------------------------------------------------*/
-void Loader::vDump(eCN eClass, Object* pObject, Str* aTab)
+void Loader::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
   ASSERT(eClass == CN_LOADER);
   ASSERT(pObject->eClass() == CN_LOADER);
   
   Loader* pLoader = reinterpret_cast<Loader*>(pObject);
   
-  vTrace("table %s\n"_Str,pLoader->m_pTable->aTableName());
+  vTrace("table %s\n"_Stz,pLoader->m_pTable->aTableName());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -204,7 +204,7 @@ void Loader::vTxRef(TxRef* pTxRef)
 
   m_pTxRef = pTxRef;
   
-  //vTrace("TxId %lld\n"_Str,pTxRef->iTxId());
+  //vTrace("TxId %lld\n"_Stz,pTxRef->iTxId());
 }
 
 /*----------------------------------------------------------------------------*/

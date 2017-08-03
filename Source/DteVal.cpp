@@ -22,7 +22,7 @@ DteVal* Values::_pDteVal(void* aAddr)
 void* DteVal::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  vFatal("fatal: DteVal class cannot be new'd\n"_Str);
+  vFatal("fatal: DteVal class cannot be new'd\n"_Stz);
   
   NEVER_REACH;
 }
@@ -42,7 +42,7 @@ DteVal::DteVal(void)
 /*----------------------------------------------------------------------------*/
 void DteVal::operator =(Dte xDte)
 {
-  //vTrace("IvlVal: diff %lld\n"_Str,nSub(&m_iIvl,this));
+  //vTrace("IvlVal: diff %lld\n"_Stz,nSub(&m_iIvl,this));
   
   *aInt() = xDte.iAsI8();
 }
@@ -52,7 +52,7 @@ void DteVal::operator =(Dte xDte)
 /*----------------------------------------------------------------------------*/
 //void DteVal::operator =(i8 iDte)
 //{
-//  //vTrace("DteVal: diff %lld\n"_Str,nSub(&m_iDte,this));
+//  //vTrace("DteVal: diff %lld\n"_Stz,nSub(&m_iDte,this));
 //  
 //  m_iDte = iDte;
 //}
@@ -84,7 +84,7 @@ i8 DteVal::nSize(void) const
 /*----------------------------------------------------------------------------*/
 /* convert to string                                                          */
 /*----------------------------------------------------------------------------*/
-//void DteVal::vToString(Str* aWorkspace)
+//void DteVal::vToString(Stz* aWorkspace)
 //{
 //  *aWorkspace = m_iDte;
 //}
