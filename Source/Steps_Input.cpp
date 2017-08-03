@@ -55,7 +55,7 @@ void Task::vInputAccept(MP_Task mpTask)
   ValWrk xWsp;
   xWsp.vSetClass(CN_STRVAL);
   
-  char* y = _pStrVal(&xWsp)->s();
+  char* y = _pStrVal(&xWsp)->aChar();
   
   while ( '\n' != (*y++ = getc(stdin)) ) ;
   
@@ -105,7 +105,7 @@ ENTRY("vInputNext"_Stz);
     ASSERT(mpTask->m_iTracing);
   }
   
-  char* aToken = mpTask->m_pTokeniser->sToken().s();
+  char* aToken = mpTask->m_pTokeniser->sToken().aChar();
   
   eTN eToken = mpTask->m_pTokeniser->eNextToken(aToken);
   
@@ -127,7 +127,7 @@ ENTRY("vInputOpen"_Stz);
   bool bOpened = mpTask->m_pTokeniser->bUseFile(sFilePath);
   
   if ( ! bOpened )
-    THROW("No such file: %s"_Stz,sFilePath.s());
+    THROW("No such file: %s"_Stz,sFilePath.aChar());
   
   EXIT();
 }

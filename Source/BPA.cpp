@@ -389,7 +389,7 @@ void BPA::vRegionSummary()
   
   vTrace("\n"_Stz);
   vTrace("  Region %s %p size %lldB epoch %lld\n"_Stz,
-         gpAttachMap->m_sRegionName.s(),
+         gpAttachMap->m_sRegionName.aChar(),
          gpBufferPool,
          gpAttachMap->m_iRegionSize,
          gpAttachMap->m_iEpoch);
@@ -397,26 +397,26 @@ void BPA::vRegionSummary()
   vTrace("\n"_Stz);
   
   vTrace("  BufferPool (%4s) buffers %-6lld alloc %-6lld free %-6lld \n"_Stz,
-         sMagLarge.s(),
+         sMagLarge.aChar(),
          gpBufferPool->m_nBuffers,
          gpBufferPool->m_iAllocCount,
          gpBufferPool->m_iFreeCount
          );
   
   vTrace("   SmallHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
-         sMagSmall.s(),
+         sMagSmall.aChar(),
          gpSmallHeap->iBufferCount(),
          gpSmallHeap->iAllocCount(),
          gpSmallHeap->iFreeCount());
   
   vTrace("  MediumHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
-         sMagMedium.s(),
+         sMagMedium.aChar(),
          gpMediumHeap->iBufferCount(),
          gpMediumHeap->iAllocCount(),
          gpMediumHeap->iFreeCount());
   
   vTrace("   JumboHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
-         sMagJumbo.s(),
+         sMagJumbo.aChar(),
          gpJumboHeap->iBufferCount(),
          gpJumboHeap->iAllocCount(),
          gpJumboHeap->iFreeCount());

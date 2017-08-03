@@ -244,7 +244,7 @@ bool Socket::bConnectServer(Stz* sAddr, int iPort, SysCall& SysCall)
   s256 sPort;
   StrLib::vSprint(sPort.aStr(), "%lld"_Stz, iPort);
   
-  i8 iReturn = getaddrinfo(sAddr->aChar(), sPort.s(), &xAddrInfo, &pAddrInfo);
+  i8 iReturn = getaddrinfo(sAddr->aChar(), sPort.aChar(), &xAddrInfo, &pAddrInfo);
   if (iReturn != 0) {
     vTrace("getaddrinfo: error %lld"_Stz, iReturn);
   }

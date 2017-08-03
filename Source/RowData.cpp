@@ -129,7 +129,7 @@ void RowData::vGetDataString(s256& sDataString, char* aRowData, i8 iRowLength)
 {  
   i8 i_RowLength = 0;
   char* pSeparator;
-  char* s = sDataString.s();
+  char* s = sDataString.aChar();
   
   while (i_RowLength < iRowLength) {
     

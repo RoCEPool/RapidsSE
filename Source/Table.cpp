@@ -125,7 +125,7 @@ void Table::vDump(eCN eClass, Object* pObject, Stz* aTab)
   Table* pTable = reinterpret_cast<Table*>(pObject);
   
   vTrace("name %s type %s\n"_Stz,
-         pTable->m_sTableName.s(),
+         pTable->m_sTableName.aChar(),
          aTT[pTable->m_eTableType]->aChar());
 }
 
@@ -182,7 +182,7 @@ Stz* Table::pAnalyze(bool bDetailed)
   if ( ! gbMetadata || bDetailed)
     sAnalysis.vCatSprint("N%lld: Analysis of Table %s\n"_Stz,
                          gpGrid->iThisNode(),
-                         m_sTableName.s());
+                         m_sTableName.aChar());
 
   for (i8 iSlot = 0; iSlot < gpGrid->m_nSlots; iSlot++) {
     
@@ -269,7 +269,7 @@ Stz* Table::pAnalyzeIndex(Index* pIndex, bool bDetailed)
     sAnalysis.vCatSprint("N%lld: Analysis of Index %s of table %s \n"_Stz,
                        gpGrid->iThisNode(),
                        pIndex->aIndexName()->aChar(),
-                       m_sTableName.s());
+                       m_sTableName.aChar());
   
   for (i8 iSlot = 0; iSlot < gpGrid->m_nSlots; iSlot++) {
     
@@ -611,7 +611,7 @@ i8 Table::iRowPartition(Stz* pRow)
     // get the column number of the column
     i8 iColumnNo = pColumn->iColumnNo();
     
-    char* pDst = s.s();
+    char* pDst = s.aChar();
     char* aCursor = reinterpret_cast<char*>(pRow->aChar());
     
     // get the column value from the row for the iColumnNo

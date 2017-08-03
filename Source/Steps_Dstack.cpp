@@ -217,17 +217,17 @@ void Task::vDstackDump(MP_Task mpTask)
     Object* pObject = pPtrVal->pPtr();
     eCN ePtdClass   = pObject->eClass();
     vTrace("[%s] %s (%s %s)\n"_Stz,
-          mpTask->m_sName.s(),sWorkspace.s(),aClass,aCN[ePtdClass]);
+          mpTask->m_sName.aChar(),sWorkspace.aChar(),aClass,aCN[ePtdClass]);
   }
   else if (CN_IPVAL == eClass) {                                         //RAY??
     IpVal* pIpVal = _pIpVal(&xValWrk);
     Cell* pCell = pIpVal->pIpPtr();
-    vTrace("[%s] nullptr\n"_Stz,mpTask->m_sName.s());    //RAY: should trace pIpVal
-//  vTrace("[%s] %p\n"_Stz,mpTask->m_sName.s(),pIpVal);
+    vTrace("[%s] nullptr\n"_Stz,mpTask->m_sName.aChar());    //RAY: should trace pIpVal
+//  vTrace("[%s] %p\n"_Stz,mpTask->m_sName.aChar(),pIpVal);
   }
   else {
     vTrace("[%s] %s (%s)\n"_Stz,
-           mpTask->m_sName.s(),sWorkspace.s(),aClass);
+           mpTask->m_sName.aChar(),sWorkspace.aChar(),aClass);
   }
   
   EXIT();

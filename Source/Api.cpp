@@ -616,7 +616,7 @@ eEC RapidsSE_EndScan(SEitf* pSEitf, i8 iTraceLevel)
     VALIDATE_TABLE("b"_Stz);
     
     // get address of select cursor
-    i8 iAddress = StrLib::iToI8( pSEitf->m_sResponse.s());
+    i8 iAddress = StrLib::iToI8( pSEitf->m_sResponse.aChar());
     
     // delete the SelCursor
     SelCursor* pSelCursor = reinterpret_cast<SelCursor*>(iAddress);
@@ -680,7 +680,7 @@ eEC RapidsSE_GetCatalogs(SEitf* pSEitf, void** ppCatalogs, i8 iTraceLevel)
     CHECK_RESPONSE("e"_Stz);
     
     // return list of catalogs
-    *ppCatalogs = pSEitf->m_sResponse.s();
+    *ppCatalogs = pSEitf->m_sResponse.aChar();
     
     TRACE_EXIT("ea"_Stz);
     
@@ -733,7 +733,7 @@ eEC RapidsSE_GetColumns(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema,
     CHECK_RESPONSE("g"_Stz);
     
     // return the list of columns of pTable
-    *ppColumns = pSEitf->m_sResponse.s();
+    *ppColumns = pSEitf->m_sResponse.aChar();
     
     // trace exit
     TRACE_EXIT("ea"_Stz);
@@ -787,7 +787,7 @@ eEC RapidsSE_GetIndexes(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema,
     CHECK_RESPONSE("g"_Stz);
     
     // return the list of columns of pTable
-    *ppColumns = pSEitf->m_sResponse.s();
+    *ppColumns = pSEitf->m_sResponse.aChar();
     
     // trace exit
     TRACE_EXIT("ea"_Stz);
@@ -841,7 +841,7 @@ eEC RapidsSE_GetIndexColumns(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema,
     CHECK_RESPONSE("g"_Stz);
     
     // return the list of columns of pTable
-    *ppColumns = pSEitf->m_sResponse.s();
+    *ppColumns = pSEitf->m_sResponse.aChar();
     
     // trace exit
     TRACE_EXIT("ea"_Stz);
@@ -880,7 +880,7 @@ eEC RapidsSE_GetLastError(SEitf* pSEitf, void** ppError, i8 iTraceLevel)
     VALIDATE_REFPOINTER("b"_Stz, ppError);
     
     // get the error message
-    *ppError = pSEitf->m_sErrorMsg.s();
+    *ppError = pSEitf->m_sErrorMsg.aChar();
     
     // trace exit
     TRACE_EXIT("ea"_Stz);
@@ -1034,7 +1034,7 @@ eEC RapidsSE_GetSchemas(SEitf* pSEitf, Stz* pCatalog, void** ppSchemas, i8 iTrac
     CHECK_RESPONSE("f"_Stz);
     
     // return list of schemas in ppSchemas
-    *ppSchemas = pSEitf->m_sResponse.s();
+    *ppSchemas = pSEitf->m_sResponse.aChar();
     
     // trace exit
     TRACE_EXIT("ea"_Stz);
@@ -1081,7 +1081,7 @@ eEC RapidsSE_GetEngineVersion(SEitf* pSEitf, void** ppVersion, i8 iTraceLevel)
     CHECK_RESPONSE("d"_Stz);
     
     // return SE version
-    *ppVersion = pSEitf->m_sResponse.s();
+    *ppVersion = pSEitf->m_sResponse.aChar();
     
     TRACE_EXIT("ea"_Stz);
     
@@ -1135,7 +1135,7 @@ eEC RapidsSE_GetTables(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema, void** ppTabl
     CHECK_RESPONSE("g"_Stz);
     
     // return list of tables in ppSchemas
-    *ppTables = pSEitf->m_sResponse.s();
+    *ppTables = pSEitf->m_sResponse.aChar();
     
     // trace exit
     TRACE_EXIT("ea"_Stz);
@@ -1655,7 +1655,7 @@ eEC eGetResponse(SEitf* pSEitf)
 {
   // get response
   eEC eError = pSEitf->eGetResponse();
-  //vTrace("rsp : %s %lld\n"_Stz, pSEitf->m_sResponse.s(), eError);
+  //vTrace("rsp : %s %lld\n"_Stz, pSEitf->m_sResponse.aChar(), eError);
   
   return eError;
 }

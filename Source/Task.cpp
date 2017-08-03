@@ -1231,11 +1231,11 @@ Word* Task::pCompileColon(StrVal& sDefinition)
   
   // get :
   m_pTokeniser->vNextToken();
-  //vTrace("CompileColon: %s\n"_Stz,m_sToken.s());
+  //vTrace("CompileColon: %s\n"_Stz,m_sToken.aChar());
   
   // get name of word
   m_pTokeniser->vNextToken();
-  //vTrace("CompileColon: %s\n"_Stz,m_sToken.s());
+  //vTrace("CompileColon: %s\n"_Stz,m_sToken.aChar());
   
   Dic* pDic;
   if (m_xPathStack.iCount())
@@ -1251,9 +1251,9 @@ Word* Task::pCompileColon(StrVal& sDefinition)
   
   while (TN_NONE != m_pTokeniser->eToken()) {
     
-    //vTrace("CompileColon: %s\n"_Stz,m_sToken.s());
+    //vTrace("CompileColon: %s\n"_Stz,m_sToken.aChar());
     
-//  if (StrLib::bEqualTo(";",m_pTokeniser->sToken().s()))
+//  if (StrLib::bEqualTo(";",m_pTokeniser->sToken().aChar()))
     if (m_pTokeniser->sToken().bEqual(";"_Stz))
       break;
     
@@ -1321,22 +1321,22 @@ void Task::vCompileConstant(StrVal& sDefinition)
   
   // get string
   m_pTokeniser->vNextToken();
-  //vTrace("CompileConstant: %s\n"_Stz,m_pTokeniser->sToken().s());
-  sConstantValue = (Stz*)m_pTokeniser->sToken().s();
+  //vTrace("CompileConstant: %s\n"_Stz,m_pTokeniser->sToken().aChar());
+  sConstantValue = (Stz*)m_pTokeniser->sToken().aChar();
   
   // get CONSTANT
   m_pTokeniser->vNextToken();
-  //vTrace("CompileConstant: %s\n"_Stz,m_pTokeniser->sToken().s());
+  //vTrace("CompileConstant: %s\n"_Stz,m_pTokeniser->sToken().aChar());
   
   // get name of word
   m_pTokeniser->vNextToken();
-  //vTrace("CompileConstant: %s\n"_Stz,m_pTokeniser->sToken().s());
+  //vTrace("CompileConstant: %s\n"_Stz,m_pTokeniser->sToken().aChar());
 
-  Stz* aName = (Stz*)m_pTokeniser->sToken().s();
+  Stz* aName = (Stz*)m_pTokeniser->sToken().aChar();
 
-  //vTrace("CompileConstant: %s %s\n"_Stz,aName,sConstantValue.s());
+  //vTrace("CompileConstant: %s %s\n"_Stz,aName,sConstantValue.aChar());
   
-  vAddConstant(aName,(Stz*)sConstantValue.s());
+  vAddConstant(aName,(Stz*)sConstantValue.aChar());
   
   m_pTokeniser->vNextToken();
   
@@ -1361,7 +1361,7 @@ void Task::vDump(eCN eClass, Object* pObject, Stz* aTab)
   Task* pTask = reinterpret_cast<Task*>(pObject);
   
   vTrace("%s TaskNo %lld state %s txId %lld\n"_Stz,
-         pTask->m_sName.s(),
+         pTask->m_sName.aChar(),
          pTask->m_iTaskNo,
          aTS[pTask->m_eState]->aChar(),
          pTask->m_iTxId);
@@ -1378,7 +1378,7 @@ void Task::vContentDump(void)
          aDoubleTab(),
          m_iTaskNo,
          this,
-         m_sName.s(),
+         m_sName.aChar(),
          aTS[m_eState]->aChar(),
          m_iTxId);
 }
@@ -1553,14 +1553,14 @@ void Task::vPrimitive(Stz* aPrimitive)
   i8 iDataValues  = m_pDataStack->iValues();
   i8 iReturnValues = m_pReturnStack->iValues();
   vTrace("%-15s %15s : r%lld ; d%2d="_Stz,
-         sRoutine.s(),
+         sRoutine.aChar(),
          aPrimitive,
          iReturnValues,
          iDataValues);
   
   s48K sStackContents;
   vStackContents(m_pDataStack, sStackContents);
-  vTrace("%s\n"_Stz,sStackContents.s());
+  vTrace("%s\n"_Stz,sStackContents.aChar());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1782,20 +1782,20 @@ void Task::vStackContents(Stack* pStack, StrVal& sStackContents)
           sStackContents.vCatSprint("^%s=%p:%s"_Stz,
                                     aCN[ePtrClass],
                                     pPtr,
-                                    ((Word*)pPtr)->sName().s());
+                                    ((Word*)pPtr)->sName().aChar());
         else if (CN_QUEUE == ePtrClass) {
           Word* pWord = Word::pToWord(pPtr);
           sStackContents.vCatSprint("^%s=%p:%s"_Stz,
                                     aCN[ePtrClass],
                                     pPtr,
-                                    pWord->sName().s());
+                                    pWord->sName().aChar());
         }
         else if (CN_TASK == ePtrClass) {
           Task* pTask = _pTask(pPtr);
           sStackContents.vCatSprint("^%s=%p:%s"_Stz,
                                     aCN[ePtrClass],
                                     pPtr,
-                                    pTask->sName().s());
+                                    pTask->sName().aChar());
         }
         else {
           if (pPtr->iMagic() == C_MAGIC && pPtr->eClass() < CN_ENUMS)
@@ -1818,7 +1818,7 @@ void Task::vStackContents(Stack* pStack, StrVal& sStackContents)
     }
     else if (CN_STRVAL == eClass) {
       sStackContents.vCatSprint("\"%lls\""_Stz,
-                                _pStrVal(pValue)->s());
+                                _pStrVal(pValue)->aChar());
     }
     else if (CN_VALSET == eClass) {
       sStackContents.vCatSprint("<%s>=%p"_Stz,
@@ -1923,24 +1923,24 @@ void Task::vTracePoint(Stz* aMark)
          
          gpGrid->pThisNode()->aNodeName(),
          gpGrid->iThisNode(),
-         m_sName.s(),
+         m_sName.aChar(),
          *m_zAcks,
-         m_sComment.s(),
+         m_sComment.aChar(),
          
-         sRoutine.s(),
+         sRoutine.aChar(),
          aMark,
          iAuxValues);
          
   s48K sStackContents;
   vStackContents(m_pAuxStack, sStackContents);
   
-  vTrace("%s"_Stz,sStackContents.s());
+  vTrace("%s"_Stz,sStackContents.aChar());
   
   vTrace(" r%2lld  d%2lld="_Stz, iReturnValues, iDataValues);
 
   vStackContents(m_pDataStack, sStackContents);
   
-  vTrace("%s\n"_Stz,sStackContents.s());
+  vTrace("%s\n"_Stz,sStackContents.aChar());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1996,18 +1996,18 @@ void Task::vLoop(void)
       
       const char* ps;
       
-      ps = StrLib::sLast(m_sFile.s());
-      StrLib::bBackward(&ps,m_sFile.s(),'/');
-      bool bBackSlash = StrLib::bBackward(&ps,m_sFile.s(),'/');
+      ps = StrLib::sLast(m_sFile.aChar());
+      StrLib::bBackward(&ps,m_sFile.aChar(),'/');
+      bool bBackSlash = StrLib::bBackward(&ps,m_sFile.aChar(),'/');
       if (bBackSlash) {
         StrLib::vCopy(wFileName,ps+1);
       }
       else {
-        StrLib::vCopy(wFileName, m_sFile.s());
+        StrLib::vCopy(wFileName, m_sFile.aChar());
       }
       vError("[%s] %s : line %lld in %s\n"_Stz,
-             m_sName.s(),
-             m_sException.s(),
+             m_sName.aChar(),
+             m_sException.aChar(),
              iException,
              wFileName);
       vRetry();
@@ -2022,7 +2022,7 @@ void Task::vLoop(void)
       StrLib::bBackward(&ps,(char*)pError->aFileName(),'/');
       StrLib::vCopy(wFileName,ps+1);
       vError("[%s] %s: line %lld in %s\n"_Stz,
-             m_sName.s(),
+             m_sName.aChar(),
              pError->aErrorMsg(),
              pError->iLineNo(),
              wFileName);

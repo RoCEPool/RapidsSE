@@ -103,7 +103,7 @@ int main(int argc, const char* argv[])
   Dir xDir;
   s256 sCurrent;
 //  if (xDir.bGetCurrent(sCurrent))
-//    vInfo("dir: %s\n",sCurrent.s());
+//    vInfo("dir: %s\n",sCurrent.aChar());
   
   
 //  vTrace("Task::vWord %p\n"_Stz,Task::vWord);
@@ -129,7 +129,7 @@ int main(int argc, const char* argv[])
     xFile.vPath("./se.region"_Stz);
     bool b = xFile.bOpen(C_OPEN_READ_WRITE_CREATE);
     ASSERT(b);
-    xFile.vPrint("%s\n"_Stz,gxArguments.m_sRegionName.s());
+    xFile.vPrint("%s\n"_Stz,gxArguments.m_sRegionName.aChar());
     xFile.vClose();
   }
   
@@ -213,8 +213,8 @@ void vKillPrev(void)
   for (i8 i_Index=0; i_Index < gxArguments.m_nNodes; i_Index++) {
     
     sRegionName.vSprint("%s_%s"_Stz,
-                        gxArguments.m_sRegionPrefix.s(),
-                        gxArguments.m_xNodes[i_Index].m_sNodeName.s());
+                        gxArguments.m_sRegionPrefix.aChar(),
+                        gxArguments.m_xNodes[i_Index].m_sNodeName.aChar());
     
     if ( ! Region::bTest(sRegionName) )
       continue;

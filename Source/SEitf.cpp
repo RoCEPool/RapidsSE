@@ -218,7 +218,7 @@ void SEitf::vDump(eCN eClass, Object* pObject, Stz* aTab)
          pSEitf->m_iPartition,
          pSEitf->m_pRequestQueue,
          pSEitf->m_pResponseQueue,
-         pSEitf->m_sResponse.s());
+         pSEitf->m_sResponse.aChar());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2495,11 +2495,11 @@ bool SEitf::bAppendRequest(StrVal& sRequest)
   sWorkspace = (i8)this;
   sWorkspace.vConcat(" >seitf task::this task.seitf! "_Stz);
   xValWrk = sWorkspace;
-  //vTrace("%s\n"_Stz,xVal.s());
+  //vTrace("%s\n"_Stz,xVal.aChar());
   xValSet.vAppend(aCursor,xValWrk.pNestedValueSelf());
   
   xValWrk = sRequest;
-  //vTrace("%s\n"_Stz,xVal.s());
+  //vTrace("%s\n"_Stz,xVal.aChar());
   xValSet.vAppend(aCursor,xValWrk.pNestedValueSelf());
   
   // if the current request id matches the next request id, it means
@@ -2581,8 +2581,8 @@ bool SEitf::bPopResponse(eEC& eResult, StrVal& sResponse)
   b = xValSet.bExtractValue(aCursor,pValue);
   ASSERT(! b);
   
-  //  vTrace("sResponse: >>>\n%s\n<<<\n\n"_Stz,sResponse.s());
-  //  vTrace("\n---\n\n"_Stz,sResponse.s());
+  //  vTrace("sResponse: >>>\n%s\n<<<\n\n"_Stz,sResponse.aChar());
+  //  vTrace("\n---\n\n"_Stz,sResponse.aChar());
   
   return true;
 }

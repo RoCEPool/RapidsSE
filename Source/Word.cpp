@@ -250,15 +250,15 @@ void Word::vContentDump(void)
   vTrace("Word %p: %s %s Kind %s Indirect %d Immediate %d DataBytes %lld "_Stz
          "Step %p %s ..Data.. %p\n"_Stz,
          this,
-         m_sName.s(),
+         m_sName.aChar(),
          aWT[m_eWordType]->aChar(),
-         m_pKind->m_sName.s(),
+         m_pKind->m_sName.aChar(),
          m_bIndirect,
          m_bImmediate,
 //       m_iDataBytes,
          m_xBody.nUsed(),
          m_pEntryStep,
-         pStepWord ? pStepWord->sName().s() : "<not-found>",
+         pStepWord ? pStepWord->sName().aChar() : "<not-found>",
          pFirstCell()
          );
 }
@@ -521,7 +521,7 @@ char* Word::pFinalRoutine(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  return m_sFinalRoutine.s();
+  return m_sFinalRoutine.aChar();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -674,8 +674,8 @@ void Word::vObjectDump(Stz* aTab)
   vTrace("epoch %lld %s (%s) %s %s %s DataBytes %lld "_Stz
          "Step %p ..Data.. %p\n"_Stz,
          m_iEpoch,
-         m_sName.s(),
-         m_pDic->sName().s(),
+         m_sName.aChar(),
+         m_pDic->sName().aChar(),
          aWT[m_eWordType]->aChar(),
          m_bIndirect ? "Indirect"_Stz : "Not Indirect"_Stz,
          m_bImmediate ? "Immediate"_Stz : "Not Immediate"_Stz,

@@ -1029,7 +1029,7 @@ void EntryBuffer::vShow(void)
 {
   s256 sHigherLevel;
   if (m_pHigherLevel)
-    StrLib::wToString(((EntryBuffer*)m_pHigherLevel)->m_nBufferLevel, sHigherLevel.s());
+    StrLib::wToString(((EntryBuffer*)m_pHigherLevel)->m_nBufferLevel, sHigherLevel.aChar());
   else
     sHigherLevel = "..."_Stz;
   

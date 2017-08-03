@@ -167,7 +167,7 @@ void Task::vIntHash(MP_Task mpTask)
   
   i8 iLength = sString.iLength();
   
-  i8 iHash = XXH32(sString.s(),iLength,0);
+  i8 iHash = XXH32(sString.aChar(),iLength,0);
   
   mpTask->m_pDataStack->vPushInt(iHash);
   

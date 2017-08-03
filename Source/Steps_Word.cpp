@@ -82,7 +82,7 @@ void Task::vAllParticipants(MP_Task mpTask)
   
   Word* pCurrentWord = mpTask->m_pCurrentWord;
   
-  //vTrace("Task::vImmediate: %s\n"_Stz,pCurrentWord->sName().s());
+  //vTrace("Task::vImmediate: %s\n"_Stz,pCurrentWord->sName().aChar());
   
   pCurrentWord->vDistributed(DT_ALLPARTICIPANTS);
   
@@ -370,7 +370,7 @@ ENTRY("vForget"_Stz);
   Word* pWord = mpTask->m_xPathStack.pFindWord(mpTask->m_pTokeniser->sToken());
   
   if ( ! pWord )
-    THROW("No such word: %s"_Stz,mpTask->m_pTokeniser->sToken().s());
+    THROW("No such word: %s"_Stz,mpTask->m_pTokeniser->sToken().aChar());
   
   bool bResult = mpTask->m_xPathStack.bForget(mpTask->m_pTokeniser->sToken());
   ASSERT(bResult);
@@ -466,7 +466,7 @@ void Task::vIndirect(MP_Task mpTask)
   
   Word* pCurrentWord = mpTask->m_pCurrentWord;
   
-  //vTrace("Task::vImmediate: %s\n"_Stz,pCurrentWord->sName().s());
+  //vTrace("Task::vImmediate: %s\n"_Stz,pCurrentWord->sName().aChar());
   
   pCurrentWord->vIndirect(true);
   
@@ -482,7 +482,7 @@ void Task::vImmediate(MP_Task mpTask)
   
   Word* pCurrentWord = mpTask->m_pCurrentWord;
   
-  //vTrace("Task::vImmediate: %s\n"_Stz,pCurrentWord->sName().s());
+  //vTrace("Task::vImmediate: %s\n"_Stz,pCurrentWord->sName().aChar());
   
   pCurrentWord->vImmediate(true);
   
@@ -541,7 +541,7 @@ void Task::vOneParticipant(MP_Task mpTask)
   
   Word* pCurrentWord = mpTask->m_pCurrentWord;
   
-  //vTrace("Task::vImmediate: %s\n"_Stz,pCurrentWord->sName().s());
+  //vTrace("Task::vImmediate: %s\n"_Stz,pCurrentWord->sName().aChar());
   
   pCurrentWord->vDistributed(DT_ONEPARTICIPANT);
   
@@ -573,7 +573,7 @@ void Task::vOpDic(MP_Task mpTask)
   
   RegFrame* pOpFrame = mpTask->m_pPlan->pRegFrameFind(sNameOpFrame);
   //if ( ! pOpFrame )
-  //  THROW("No such op frame: %s",sNameOpFrame.s());
+  //  THROW("No such op frame: %s",sNameOpFrame.aChar());
   
   if ( pOpFrame ) {
     pOpDic = pOpFrame->pOpDic();
@@ -586,7 +586,7 @@ void Task::vOpDic(MP_Task mpTask)
     
     // create a op dictionary
     s32 sNameDic;
-    sNameDic.vSprint("<%s>"_Stz,sNameOpFrame.s());
+    sNameDic.vSprint("<%s>"_Stz,sNameOpFrame.aChar());
     
     pOpDic = new Dic;
     pOpDic->vName(sNameDic);
@@ -631,7 +631,7 @@ void Task::vPostpone(MP_Task mpTask)
   // find the word in dic stack
   Word* pCalledWord = mpTask->m_xPathStack.pFindWord(mpTask->m_pTokeniser->sToken());
   if ( ! pCalledWord )
-    THROW("No word: %s "_Stz,mpTask->m_pTokeniser->sToken().s());
+    THROW("No word: %s "_Stz,mpTask->m_pTokeniser->sToken().aChar());
   
   if (pCalledWord->bImmediate()) {
     
@@ -671,11 +671,11 @@ void Task::vSee(MP_Task mpTask)
   
   Word* pWord = mpTask->m_xPathStack.pFindWord(mpTask->m_pTokeniser->sToken());
   if ( ! pWord ) {
-    vTrace("See: %s unknown\n"_Stz,mpTask->m_pTokeniser->sToken().s());
+    vTrace("See: %s unknown\n"_Stz,mpTask->m_pTokeniser->sToken().aChar());
     return;
   }
   
-  vTrace("See: %s\n"_Stz,pWord->sName().s());
+  vTrace("See: %s\n"_Stz,pWord->sName().aChar());
   
   Cell* pDoesCell = pWord->pEntryCell();
   
@@ -691,7 +691,7 @@ void Task::vSee(MP_Task mpTask)
         *pDoesCell->m_ppEntryStep == Task::vFlowJumpFalse ||
         *pDoesCell->m_ppEntryStep == Task::vFlowJumpTrue ) {
       
-      vTrace("%p: %s"_Stz,pDoesCell,pCallsWord->sName().s());
+      vTrace("%p: %s"_Stz,pDoesCell,pCallsWord->sName().aChar());
       
       pDoesCell++;
       
@@ -705,18 +705,18 @@ void Task::vSee(MP_Task mpTask)
     // push
     if ( *pDoesCell->m_ppEntryStep == Task::vPushValue ) {
       
-      vTrace("%p: %s"_Stz,pDoesCell,pCallsWord->sName().s());
+      vTrace("%p: %s"_Stz,pDoesCell,pCallsWord->sName().aChar());
       
       pDoesCell++;
       
       ValWrk* pValue = reinterpret_cast<ValWrk*>(pDoesCell);
       
       if (CN_STRVAL == pValue->eClass()) {
-        vTrace(" \"%s\"\n"_Stz,_pStrVal(pValue)->s());
+        vTrace(" \"%s\"\n"_Stz,_pStrVal(pValue)->aChar());
       }
       else {
         ValLib::vToString(pValue,sWorkspace);
-        vTrace(" %s\n"_Stz,sWorkspace.s());
+        vTrace(" %s\n"_Stz,sWorkspace.aChar());
       }
       
       i8 iBytes = ValLib::iSize(pValue);
@@ -731,13 +731,13 @@ void Task::vSee(MP_Task mpTask)
       Word* pCallsWord = (Word*)( ((u8)pDoesCell->m_ppEntryStep & (u8)~0xFFFF)
                                  + sizeof(HeapBuffer));
       
-      vTrace("%p: %s\n"_Stz,pDoesCell,pCallsWord->sName().s());
+      vTrace("%p: %s\n"_Stz,pDoesCell,pCallsWord->sName().aChar());
       pDoesCell++;
       continue;
     }
     
     // other
-    vTrace("%p: %s\n"_Stz,pDoesCell,pCallsWord->sName().s());
+    vTrace("%p: %s\n"_Stz,pDoesCell,pCallsWord->sName().aChar());
     
     pDoesCell++;
   }
@@ -843,7 +843,7 @@ void Task::vSubDic(MP_Task mpTask)
   
   Word* pWordSubDic = mpTask->m_xPathStack.pFindWord(sNameSubDic);
   if ( ! pWordSubDic )
-    THROW("No such subDic: %s"_Stz,sNameSubDic.s());
+    THROW("No such subDic: %s"_Stz,sNameSubDic.aChar());
   
   Dic* pDic = _pDic(pWordSubDic->aBodyArea());
   
@@ -872,7 +872,7 @@ void Task::vTick(MP_Task mpTask)
   Word* pWord = mpTask->m_xPathStack.pFindWord(mpTask->m_pTokeniser->sToken());
   
   if ( ! pWord )
-    THROW("No word: %s "_Stz,mpTask->m_pTokeniser->sToken().s());
+    THROW("No word: %s "_Stz,mpTask->m_pTokeniser->sToken().aChar());
   
   if (mpTask->m_bCompiling) {
     Word* pCurrentWord = mpTask->m_pCurrentWord;

@@ -175,7 +175,7 @@ void Task::vGridThisNodeStore(MP_Task mpTask)
   Node* pThisNode = gpGrid->pFindNode(gxArguments.m_sNodeName);
   if ( ! pThisNode ) {
     THROW("Cannot fine Node %s in the cluster"_Stz,
-          gxArguments.m_sNodeName.s());
+          gxArguments.m_sNodeName.aChar());
   }
   
   i8 iNodeNo = pThisNode->iNodeNo();

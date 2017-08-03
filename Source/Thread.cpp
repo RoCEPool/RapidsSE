@@ -109,7 +109,7 @@ void* Thread::vEntry_Drone(void* pArg)
   Thread* pThread = static_cast<Thread*>(pArg);
   
   if (gbVerbose)
-    vTrace("[[%s]] Thread::vEntry_Drone %p\n"_Stz,pThread->sName().s(),pThread);
+    vTrace("[[%s]] Thread::vEntry_Drone %p\n"_Stz,pThread->sName().aChar(),pThread);
   
   try {
     pThread->vLoop_Drone();
@@ -135,7 +135,7 @@ void* Thread::vEntry_Drone(void* pArg)
   
   
   if (gbVerbose)
-    vTrace("[[%s]] Thread:;vEntry %p exiting\n"_Stz,pThread->sName().s(),pThread);
+    vTrace("[[%s]] Thread:;vEntry %p exiting\n"_Stz,pThread->sName().aChar(),pThread);
   
   delete pThread;
   
@@ -150,7 +150,7 @@ void* Thread::vEntry_Partition(void* pArg)
   Thread* pThread = static_cast<Thread*>(pArg);
   
   if (gbVerbose)
-    vTrace("[[%s]] Thread::vEntry_Partition %p\n"_Stz,pThread->sName().s(),pThread);
+    vTrace("[[%s]] Thread::vEntry_Partition %p\n"_Stz,pThread->sName().aChar(),pThread);
   
   try {
     pThread->vLoop_Partition();
@@ -176,7 +176,7 @@ void* Thread::vEntry_Partition(void* pArg)
 
 
   if (gbVerbose)
-    vTrace("[[%s]] Thread:;vEntry %p exiting\n"_Stz,pThread->sName().s(),pThread);
+    vTrace("[[%s]] Thread:;vEntry %p exiting\n"_Stz,pThread->sName().aChar(),pThread);
   
   delete pThread;
   
@@ -191,7 +191,7 @@ void* Thread::vEntry_Server(void* pArg)
   Thread* pThread = static_cast<Thread*>(pArg);
   
   if (gbVerbose || gbProgress)
-    vTrace("[[%s]] Thread::vEntry_General %p\n"_Stz,pThread->sName().s(),pThread);
+    vTrace("[[%s]] Thread::vEntry_General %p\n"_Stz,pThread->sName().aChar(),pThread);
   
   try {
     pThread->vLoop_Server();
@@ -217,7 +217,7 @@ void* Thread::vEntry_Server(void* pArg)
   
   
   if (gbVerbose)
-    vTrace("[[%s]] Thread:;vEntry %p exiting\n"_Stz,pThread->sName().s(),pThread);
+    vTrace("[[%s]] Thread:;vEntry %p exiting\n"_Stz,pThread->sName().aChar(),pThread);
   
   delete pThread;
   
@@ -232,7 +232,7 @@ void* Thread::vEntry_Worker(void* pArg)
   Thread* pThread = static_cast<Thread*>(pArg);
   
   if (gbVerbose)
-    vTrace("[[%s]] Thread::vEntry_Job %p\n"_Stz,pThread->sName().s(),pThread);
+    vTrace("[[%s]] Thread::vEntry_Job %p\n"_Stz,pThread->sName().aChar(),pThread);
     
     try {
       pThread->vLoop_Worker();
@@ -258,7 +258,7 @@ void* Thread::vEntry_Worker(void* pArg)
   
   
   if (gbVerbose)
-    vTrace("[[%s]] Thread:;vEntry %p exiting\n"_Stz,pThread->sName().s(),pThread);
+    vTrace("[[%s]] Thread:;vEntry %p exiting\n"_Stz,pThread->sName().aChar(),pThread);
     
     delete pThread;
   
@@ -345,19 +345,19 @@ void Thread::vLoop_Drone(void)
   ASSERT(m_eActorModel == AC_DRONE);
   
   if (gbVerbose || gbProgress)
-    vTrace("Thread %p: %s loop\n"_Stz,this,m_sName.s());
+    vTrace("Thread %p: %s loop\n"_Stz,this,m_sName.aChar());
   
   m_pPosixThread->vSetOSThreadId();
   
   // expect a task
   if (! *m_npTask) {
-    vTrace("Thread %p: %s has no task\n"_Stz,this,m_sName.s());
+    vTrace("Thread %p: %s has no task\n"_Stz,this,m_sName.aChar());
     ASSERT(*m_npTask);
   }
 
   // don't expect a taskSet
   if (m_pTaskSet) {
-    vTrace("Thread %p: %s has a taskset\n"_Stz,this,m_sName.s());
+    vTrace("Thread %p: %s has a taskset\n"_Stz,this,m_sName.aChar());
     ASSERT(! m_pTaskSet);
   }
   
@@ -406,7 +406,7 @@ void Thread::vLoop_Partition(void)
   ASSERT(m_eActorModel == AC_PARTITION);
   
   if (gbVerbose || gbProgress)
-    vTrace("Thread %p: %s loop\n"_Stz,this,m_sName.s());
+    vTrace("Thread %p: %s loop\n"_Stz,this,m_sName.aChar());
   
   m_pPosixThread->vSetOSThreadId();
   
@@ -476,7 +476,7 @@ void Thread::vLoop_Server(void)
   ASSERT(m_eActorModel == AC_SERVER);
   
   if (gbVerbose || gbProgress)
-    vTrace("Thread %p: %s Server\n"_Stz,this,m_sName.s());
+    vTrace("Thread %p: %s Server\n"_Stz,this,m_sName.aChar());
   
   m_pPosixThread->vSetOSThreadId();
   
@@ -497,19 +497,19 @@ void Thread::vLoop_Server(void)
   
   // don't expect a task
   if (*m_npTask) {
-    vTrace("Thread %p: %s has a task\n"_Stz,this,m_sName.s());
+    vTrace("Thread %p: %s has a task\n"_Stz,this,m_sName.aChar());
     ASSERT(! *m_npTask);
   }
   
   // expect a taskSet
   if (! m_pTaskSet) {
-    vTrace("Thread %p: %s does not have a taskset\n"_Stz,this,m_sName.s());
+    vTrace("Thread %p: %s does not have a taskset\n"_Stz,this,m_sName.aChar());
     ASSERT(m_pTaskSet);
   }
   
   // expect a scheduler
   if (! m_pScheduler) {
-    vTrace("Thread %p: %s does not have a scheduler\n"_Stz,this,m_sName.s());
+    vTrace("Thread %p: %s does not have a scheduler\n"_Stz,this,m_sName.aChar());
     ASSERT(m_pScheduler);
   }
   
@@ -601,7 +601,7 @@ void Thread::vLoop_Worker(void)
   ASSERT(m_eActorModel == AC_WORKER);
 
   if (gbVerbose || gbProgress)
-    vTrace("Thread %p: %s loop\n"_Stz,this,m_sName.s());
+    vTrace("Thread %p: %s loop\n"_Stz,this,m_sName.aChar());
   
   m_pPosixThread->vSetOSThreadId();
   

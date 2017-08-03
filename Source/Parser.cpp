@@ -325,8 +325,8 @@ void Parser::vResetParser(void)
   m_xFile.vZero();
   m_bLineMode = false;
   m_sRawLine  = ""_Stz;
-  m_aRawLine  = m_sRawLine.s();
-  m_pRawChar  = m_sRawLine.s();
+  m_aRawLine  = m_sRawLine.aChar();
+  m_pRawChar  = m_sRawLine.aChar();
  
   m_nLoaded   = 0;
   m_cFirst    = '\0';
@@ -709,7 +709,7 @@ char Parser::cFromRawFile(void)
   
   if (! m_bRead) {
     m_bRead = true;
-    m_pRawChar = m_sRawLine.s();
+    m_pRawChar = m_sRawLine.aChar();
     *m_pRawChar = '\0';
     return '\0';
   }
@@ -753,7 +753,7 @@ char Parser::cFromRawStdin(void)
   
   if (! m_bRead) {
     m_bRead = true;
-    m_pRawChar = m_sRawLine.s();
+    m_pRawChar = m_sRawLine.aChar();
     *m_pRawChar = '\0';
     ASSERT(! m_bEOF);
     return '\0';
@@ -799,7 +799,7 @@ void Parser::vReadLineFile(void)
 
   char cInput;
   
-  m_pRawChar = m_sRawLine.s();
+  m_pRawChar = m_sRawLine.aChar();
   
   do {
     
@@ -818,7 +818,7 @@ void Parser::vReadLineFile(void)
   
   *m_pRawChar++ = '\0';
   
-  m_pRawChar = m_sRawLine.s();
+  m_pRawChar = m_sRawLine.aChar();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -830,13 +830,13 @@ void Parser::vReadLineStdin(void)
   
   ASSERT(! m_bEOF);
   
-  m_pRawChar = m_sRawLine.s();
+  m_pRawChar = m_sRawLine.aChar();
   
   if (gbTracepoint)
     PosixThread::vSleepMilli(300);
   
   if ( ! gxArguments.m_bScript ) {
-    vInfo("%s"_Stz,m_sPrompt.s());
+    vInfo("%s"_Stz,m_sPrompt.aChar());
     fflush(stdin);
   }
   
@@ -852,7 +852,7 @@ void Parser::vReadLineStdin(void)
   
   *m_pRawChar++ = '\0';
   
-  m_pRawChar = m_sRawLine.s();
+  m_pRawChar = m_sRawLine.aChar();
   
   ASSERT(! m_bEOF);
 }

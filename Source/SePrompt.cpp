@@ -151,7 +151,7 @@ void SePrompt::vLoop(void)
     
     if (m_bExpect) {
       if ( ! m_sExpect.bSame(m_sResponse) ) {
-        vTrace("Expected \"%s\" : Got \"%s\"\n"_Stz,m_sExpect.s(),m_sResponse.s());
+        vTrace("Expected \"%s\" : Got \"%s\"\n"_Stz,m_sExpect.aChar(),m_sResponse.aChar());
         PosixThread::vSleepSec(10000);
       }
     }
@@ -163,7 +163,7 @@ void SePrompt::vLoop(void)
           break;
         vTrace("%s "_Stz,m_xTokenVec[i_Token]);
       }
-      vTrace(": got: %s\n"_Stz,m_sResponse.s());
+      vTrace(": got: %s\n"_Stz,m_sResponse.aChar());
       continue;
     }
     
@@ -173,7 +173,7 @@ void SePrompt::vLoop(void)
         if ( !m_sResponse.bEqual("<ok>"_Stz) ) {
           if (gbMetadata) {
             vTrace("metadata: %s\n"_Stz, m_pSEitf->m_sMetadata.aStr());
-            vTrace("%s"_Stz,m_sResponse.s());
+            vTrace("%s"_Stz,m_sResponse.aChar());
             vTrace("success: %lld rows affected\n"_Stz, m_pSEitf->m_iRowsProcessed);
             
             // reset counters
@@ -181,7 +181,7 @@ void SePrompt::vLoop(void)
             m_pSEitf->m_sMetadata      = ""_Stz;
           }
           else {
-            vTrace("%s\n"_Stz,m_sResponse.s());
+            vTrace("%s\n"_Stz,m_sResponse.aChar());
           }
         }
         else {
@@ -206,7 +206,7 @@ void SePrompt::vLoop(void)
       else {
         if ( ! m_bExpect ) {
           if ( !m_sResponse.bEqual("<ok>"_Stz) ) {
-              vTrace("%s\n"_Stz,m_sResponse.s());
+              vTrace("%s\n"_Stz,m_sResponse.aChar());
           }
         }
       }
@@ -398,7 +398,7 @@ void SePrompt::vMetaFormat(void)
     if ( !m_sResponse.bEqual("<ok>"_Stz) ) {
       if ( ! m_pSEitf->m_sMetadata.bEqual( ""_Stz))
         vTrace("metadata: %s\n"_Stz, m_pSEitf->m_sMetadata.aStr());
-      vTrace("%s"_Stz,m_sResponse.s());
+      vTrace("%s"_Stz,m_sResponse.aChar());
       vTrace("success: %lld rows affected\n"_Stz, m_pSEitf->m_iRowsProcessed);
     }
     else {
@@ -795,7 +795,7 @@ bool SePrompt::bReturnTable(void)
   m_xTokenVec[1]->vCopy(""_Stz);
   
   if (!bExecuteRequest()) {
-    vTrace("bReturnTable: (%s) Return Table FAILED!!! : %s\n"_Stz, m_sResponse.s());
+    vTrace("bReturnTable: (%s) Return Table FAILED!!! : %s\n"_Stz, m_sResponse.aChar());
     return false;
   }
   return true;
@@ -1802,7 +1802,7 @@ bool SePrompt::bIndexReturnTable(Stz* aTableName, Stz* aIndexName)
   m_xTokenVec[3]->vCopy(""_Stz);
   
   if (!bExecuteRequest()) {
-    //vFatal("Error: (%s) Drop Table %s\n"_Stz, m_sResponse.s(), pTableName);
+    //vFatal("Error: (%s) Drop Table %s\n"_Stz, m_sResponse.aChar(), pTableName);
     return false;
   }
   return true;
@@ -2044,7 +2044,7 @@ bool SePrompt::bListDir(void)
   while (xDir.bRead()) {
     sDirEntry = xDir.sEntryName();
     iEntryType = xDir.iEntryType();
-    vTrace("%c %s\n"_Stz, iEntryType == DT_DIR ? 'd' : 'f', sDirEntry.s());
+    vTrace("%c %s\n"_Stz, iEntryType == DT_DIR ? 'd' : 'f', sDirEntry.aChar());
   }
   
   // close the current directory
@@ -2120,7 +2120,7 @@ bool SePrompt::bPrintWorkingDir(void)
     return false;
   
   if (xDir.bGetCurrent(sDir)) {
-    vTrace("%s"_Stz, sDir.s());
+    vTrace("%s"_Stz, sDir.aChar());
   }
   
   // clear the respnse

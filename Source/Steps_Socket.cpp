@@ -124,7 +124,7 @@ void Task::vSocketConnect(MP_Task mpTask)
     THROW_INVALID_DSTACK("socket.connect"_Stz);
   
   // get address of node
-  Stz* sAddr = reinterpret_cast<Stz*>(_pStrVal(xNode.pNestedValueSelf())->s());
+  Stz* sAddr = reinterpret_cast<Stz*>(_pStrVal(xNode.pNestedValueSelf())->aChar());
   
   // get pSocket
   pSocket = reinterpret_cast<Socket*>(pObject);
@@ -330,9 +330,9 @@ void Task::vSocketRecv(MP_Task mpTask)
   if (gbTracepoint)
     vTrace("[N%lld:%8s\\%lld %-11s] receiving on %lld\n"_Stz,
            gpGrid->iThisNode(),
-           mpTask->m_sName.s(),
+           mpTask->m_sName.aChar(),
            *mpTask->m_zAcks,
-           mpTask->m_sComment.s(),
+           mpTask->m_sComment.aChar(),
            
            pSocket->m_iSocketId);
   

@@ -98,7 +98,7 @@ void GroupBy::vApplyBuffer(EntryBuffer* pEntryBuffer)
     //    vTrace("\n"_Stz);
     
     // extract the order key (its the first field)
-    char* aCursor = pLineItem->s();
+    char* aCursor = pLineItem->aChar();
     i8 iOrderKey;
     
     i8 iLength = 0;
@@ -106,7 +106,7 @@ void GroupBy::vApplyBuffer(EntryBuffer* pEntryBuffer)
     bool b = DtmLib::bExtract(DM_BCD,(Stz*)&iOrderKey,aCursor,iLength,nullptr);
     
     // extract the quantity (its after the fifth '|')
-    aCursor = pLineItem->s();
+    aCursor = pLineItem->aChar();
     i8 iQuantity;
     b = StrLib::bFind(&aCursor,'|',5);
     aCursor++;
@@ -145,12 +145,12 @@ void GroupBy::vApplyBuffer(EntryBuffer* pEntryBuffer)
 //    vTrace("\n"_Stz);
 
     // extract the order key (its the first field)
-    char* aCursor = pLineItem->s();
+    char* aCursor = pLineItem->aChar();
     i8 iOrderKey;
     bool b = DtmLib::bExtract(DM_BCD,(Stz*)&iOrderKey,&aCursor,nullptr);
     
     // extract the quantity (its after the fifth '|')
-    aCursor = pLineItem->s();
+    aCursor = pLineItem->aChar();
     i8 iQuantity;
     b = StrLib::bFind(&aCursor,'|',5);
     aCursor++;
@@ -188,14 +188,14 @@ void GroupBy::vApplyEntry(Entry* pLineItemEntry)
   //    vTrace("\n"_Stz);
   
   // extract the order key (its the first field)
-  char* aCursor = pLineItem->s();
+  char* aCursor = pLineItem->aChar();
   i8 iOrderKey;
   i8 iLength = 0;
   // get iLength                                                //ALKA_ROWFORMAT
   bool b = DtmLib::bExtract(DM_BCD,(Stz*)&iOrderKey,aCursor,iLength,nullptr);
   
   // extract the quantity (its after the fifth '|')
-  aCursor = pLineItem->s();
+  aCursor = pLineItem->aChar();
   i8 iQuantity;
   b = StrLib::bFind(&aCursor,'|',5);
   aCursor++;
@@ -230,12 +230,12 @@ void GroupBy::vApplyEntry(Entry* pLineItemEntry)
   //    vTrace("\n"_Stz);
   
   // extract the order key (its the first field)
-  char* aCursor = pLineItem->s();
+  char* aCursor = pLineItem->aChar();
   i8 iOrderKey;
   bool b = DtmLib::bExtract(DM_BCD,(Stz*)&iOrderKey,&aCursor,nullptr);
   
   // extract the quantity (its after the fifth '|')
-  aCursor = pLineItem->s();
+  aCursor = pLineItem->aChar();
   i8 iQuantity;
   b = StrLib::bFind(&aCursor,'|',5);
   aCursor++;

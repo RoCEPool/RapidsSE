@@ -952,7 +952,7 @@ void Stack::vContentDump(Stz* aPrefix, Stz* aTitle)
       Object* pObject = pPtrVal->pPtr();
       eCN ePtdClass   = pObject->eClass();
       vTrace("[%s] [%2lld] %s (%s %s)\n"_Stz,
-        aPrefix,iVal,sWorkspace.s(),aClass,aCN[ePtdClass]);
+        aPrefix,iVal,sWorkspace.aChar(),aClass,aCN[ePtdClass]);
     }
     else if (CN_IPVAL == eClass) {                                       //RAY??
       IpVal* pIpVal = _pIpVal(&xValWrk);
@@ -962,7 +962,7 @@ void Stack::vContentDump(Stz* aPrefix, Stz* aTitle)
     }
     else {
       vTrace("[%s] [%2lld] %s (%s)\n"_Stz,
-             aPrefix,iVal,sWorkspace.s(),aClass);
+             aPrefix,iVal,sWorkspace.aChar(),aClass);
     }
   }
   

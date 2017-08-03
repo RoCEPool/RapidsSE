@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 bool Env::bGet(s256& sName, s256& sValue)
 {
-  char* aValue = getenv(sName.s());
+  char* aValue = getenv(sName.aChar());
   if ( ! aValue )
     return false;
   

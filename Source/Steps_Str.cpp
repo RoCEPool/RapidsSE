@@ -144,11 +144,11 @@ void Task::vStrClip(MP_Task mpTask)
   char* pStart;
   
   if (iLength > 0)
-    pStart = sString.s();
+    pStart = sString.aChar();
   else
-    pStart = sString.s() + iHasLength - 1 - llabs(iLength);
+    pStart = sString.aChar() + iHasLength - 1 - llabs(iLength);
   
-  StrLib::vCopyLen(sSubStr.s(),pStart,llabs(iLength));
+  StrLib::vCopyLen(sSubStr.aChar(),pStart,llabs(iLength));
   
   mpTask->m_pDataStack->vPushS48K(sSubStr);
   
@@ -169,8 +169,8 @@ void Task::vStrEqual(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(xStringB,xStringA) )
     THROW_INVALID_DSTACK("str.equal"_Stz);
   
-  i8 iEqual = StrLib::bEqualTo(_pStrVal(xStringA.pNestedValueSelf())->s(),
-                               _pStrVal(xStringB.pNestedValueSelf())->s(),
+  i8 iEqual = StrLib::bEqualTo(_pStrVal(xStringA.pNestedValueSelf())->aChar(),
+                               _pStrVal(xStringB.pNestedValueSelf())->aChar(),
                                C_NO_CASE);
   
   mpTask->m_pDataStack->vPushInt(iEqual);
@@ -192,7 +192,7 @@ void Task::vStrEscape(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(xArg) )
     THROW_INVALID_DSTACK("str.escape"_Stz);
   
-  StrLib::vEscape(xArg.s(),xEscaped.s());
+  StrLib::vEscape(xArg.aChar(),xEscaped.aChar());
   
   mpTask->m_pDataStack->vPushS48K(xEscaped);
   
@@ -212,9 +212,9 @@ void Task::vStrFirstCsv(MP_Task mpTask)
   
   s48K sFirstValue;
   
-  char* aValue = sStr.s();
+  char* aValue = sStr.aChar();
   
-  if (! StrLib::bExtractItem(&aValue,sFirstValue.s(), '|'))
+  if (! StrLib::bExtractItem(&aValue,sFirstValue.aChar(), '|'))
     sFirstValue = ""_Stz;
   
   mpTask->m_pDataStack->vPushS48K(sFirstValue);
@@ -263,9 +263,9 @@ void Task::vStrLeft(MP_Task mpTask)
   if ( iLength < 0)
     THROW("Invalid length for: str.left"_Stz);
   
-  char* pStart = sString.s();
+  char* pStart = sString.aChar();
   
-  StrLib::vCopyLen(sSubStr.s(),pStart,iLength);
+  StrLib::vCopyLen(sSubStr.aChar(),pStart,iLength);
   
   mpTask->m_pDataStack->vPushS48K(sSubStr);
   
@@ -273,7 +273,7 @@ void Task::vStrLeft(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* str.length -- string length                                                    */
+/* str.length -- string length                                                */
 /*----------------------------------------------------------------------------*/
 void Task::vStrLength(MP_Task mpTask)
 {
@@ -308,7 +308,7 @@ void Task::vStrPad(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(iLength,xStringA) )
     THROW_INVALID_DSTACK("str.pad"_Stz);
   
-  StrLib::vPad(_pStrVal(xStringA.pNestedValueSelf())->s(),iLength,' ');
+  StrLib::vPad(_pStrVal(xStringA.pNestedValueSelf())->aChar(),iLength,' ');
   
   // adjust area size
   _pStrVal(xStringA.pNestedValueSelf())->vAreaSize();
@@ -406,7 +406,7 @@ void Task::vStrReplace(MP_Task mpTask)
   
   s48K sReplaced;
   
-  StrLib::bReplace(sReplaced.s(),sString.s(),sThis.s(),sThat.s());
+  StrLib::bReplace(sReplaced.aChar(),sString.aChar(),sThis.aChar(),sThat.aChar());
   
   mpTask->m_pDataStack->vPushS48K(sReplaced);
   
@@ -437,9 +437,9 @@ void Task::vStrRight(MP_Task mpTask)
   if (iLength > iHasLength)
     iLength = iHasLength;
   
-  char* pStart = sString.s() + iHasLength - iLength;
+  char* pStart = sString.aChar() + iHasLength - iLength;
   
-  StrLib::vCopyLen(sSubStr.s(),pStart,iLength);
+  StrLib::vCopyLen(sSubStr.aChar(),pStart,iLength);
   
   mpTask->m_pDataStack->vPushS48K(sSubStr);
   
@@ -475,9 +475,9 @@ void Task::vStrSub(MP_Task mpTask)
   if ( iLength <= 0 || iStart + iLength > iHasLength)
     THROW("Invalid length of %lld for: str.sub"_Stz,iLength);
   
-  char* pStart = sString.s() + iStart;
+  char* pStart = sString.aChar() + iStart;
   
-  StrLib::vCopyLen(sSubStr.s(),pStart,iLength);
+  StrLib::vCopyLen(sSubStr.aChar(),pStart,iLength);
   
   mpTask->m_pDataStack->vPushS48K(sSubStr);
   
@@ -497,7 +497,7 @@ void Task::vStrTailInt(MP_Task mpTask)
     THROW_INVALID_DSTACK("str.tailInt"_Stz);
   
   // get last char in string
-  char* aLast = StrLib::sLast(sString.s());
+  char* aLast = StrLib::sLast(sString.aChar());
   
   // return false if not a digit
   if ( ! StrLib::bIsDigit(*aLast) ) {
@@ -534,8 +534,8 @@ void Task::vSprint(s48K& sFormat, s48K& sString)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  char* pf = sFormat.s();
-  char* ps = sString.s();
+  char* pf = sFormat.aChar();
+  char* ps = sString.aChar();
   
   while (*pf) {
     
@@ -570,7 +570,7 @@ void Task::vSprint(s48K& sFormat, s48K& sString)
       if ('V' == *pf)
         *ps++ = '"';
       
-      for (char* pv = sValue.s(); *pv; )
+      for (char* pv = sValue.aChar(); *pv; )
       *ps++ = *pv++;
       
       if ('V' == *pf)

@@ -607,7 +607,7 @@ void Entry::vExtractKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
     // get the column number of the column
     i8 iColumnNo = pColumn->iColumnNo();
     
-    char* pDst = s.s();
+    char* pDst = s.aChar();
     char* aCursor = reinterpret_cast<char*>(pStrVal->aStr());
     
     // get the column value from the row for the iColumnNo

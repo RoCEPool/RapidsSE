@@ -133,7 +133,7 @@ void KeyWrk::vShow(eDM eDatum, ...)
   
   // first element
   DtmLib::vSprint(eDatum,sSprintBuffer.aStr(), (Stz*)m_xWsp.aArea(), nullptr);
-  vTrace("%s|"_Stz,sSprintBuffer.s());
+  vTrace("%s|"_Stz,sSprintBuffer.aChar());
   
   // subsequent elements
   i8 iOffset = nBytesTaken;
@@ -144,7 +144,7 @@ void KeyWrk::vShow(eDM eDatum, ...)
                     (Stz*)m_xWsp.aArea() + iOffset,
                     nullptr);
     
-    vTrace("%s|"_Stz,sSprintBuffer.s());
+    vTrace("%s|"_Stz,sSprintBuffer.aChar());
     
     iOffset += nBytesTaken;
   }

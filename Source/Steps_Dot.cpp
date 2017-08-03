@@ -56,20 +56,20 @@ void Task::vDot(MP_Task mpTask)
   vTrace("[N%lld:%8s\\%lld %-11s] %s\n"_Stz,
          
          gpGrid->iNode(),
-         mpTask->m_sName.s(),
+         mpTask->m_sName.aChar(),
          *mpTask->m_zAcks,
-         mpTask->m_sComment.s(),
+         mpTask->m_sComment.aChar(),
          
-         sWorkspace.s()
+         sWorkspace.aChar()
          );
   */
   vTrace("[%8s\\%lld %-11s] %s\n"_Stz,
          
-         mpTask->m_sName.s(),
+         mpTask->m_sName.aChar(),
          *mpTask->m_zAcks,
-         mpTask->m_sComment.s(),
+         mpTask->m_sComment.aChar(),
          
-         sWorkspace.s()
+         sWorkspace.aChar()
          );
 
   
@@ -90,7 +90,7 @@ void Task::vDotPut(MP_Task mpTask)
     THROW_INVALID_DSTACK(".put"_Stz);
   
   ValLib::vToString(xValWrk.pNestedValueSelf(),sWorkspace);
-  vTrace("%s"_Stz,sWorkspace.s());
+  vTrace("%s"_Stz,sWorkspace.aChar());
   
   EXIT();
 }
@@ -122,7 +122,7 @@ void Task::vDotVerbose(MP_Task mpTask)
   
   if (gbVerbose) {
     ValLib::vToString(xValWrk.pNestedValueSelf(),sWorkspace);
-    vTrace("[%p %s] %s\n"_Stz,*mpTask,mpTask->m_sName.s(),sWorkspace.s());
+    vTrace("[%p %s] %s\n"_Stz,*mpTask,mpTask->m_sName.aChar(),sWorkspace.aChar());
   }
   
   EXIT();
