@@ -126,7 +126,7 @@ void Table::vDump(eCN eClass, Object* pObject, Stz* aTab)
   
   vTrace("name %s type %s\n"_Stz,
          pTable->m_sTableName.s(),
-         aTT[pTable->m_eTableType]->s());
+         aTT[pTable->m_eTableType]->aChar());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -268,7 +268,7 @@ Stz* Table::pAnalyzeIndex(Index* pIndex, bool bDetailed)
   if ( ! gbMetadata || bDetailed )
     sAnalysis.vCatSprint("N%lld: Analysis of Index %s of table %s \n"_Stz,
                        gpGrid->iThisNode(),
-                       pIndex->aIndexName()->s(),
+                       pIndex->aIndexName()->aChar(),
                        m_sTableName.s());
   
   for (i8 iSlot = 0; iSlot < gpGrid->m_nSlots; iSlot++) {
@@ -612,7 +612,7 @@ i8 Table::iRowPartition(Stz* pRow)
     i8 iColumnNo = pColumn->iColumnNo();
     
     char* pDst = s.s();
-    char* aCursor = reinterpret_cast<char*>(pRow->s());
+    char* aCursor = reinterpret_cast<char*>(pRow->aChar());
     
     // get the column value from the row for the iColumnNo
     i8 iCol = -1;

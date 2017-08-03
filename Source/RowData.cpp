@@ -52,8 +52,8 @@ void RowData::vDump(char* aRowData, i8 iRowLength)
 /*----------------------------------------------------------------------------*/
 void RowData::vFormatData(Stz* aRawData, i8 iRawLength, Stz* aRowData, i8& iRowLength)
 {
-  char* aSrc = (char*)aRawData->s();
-  char* aDst = (char*)aRowData->s();
+  char* aSrc = (char*)aRawData->aChar();
+  char* aDst = (char*)aRowData->aChar();
   
   i8 iColumnLength = 0;
   i8 iChar = 0;
@@ -89,7 +89,7 @@ void RowData::vFormatData(Stz* aRawData, i8 iRawLength, Stz* aRowData, i8& iRowL
   //ASSERT('\n' == *aSrc || '|' == *aSrc);
   
   vDumpAscii(aRawData,iRawLength);
-  vDump(aRowData->s(), iRowLength);
+  vDump(aRowData->aChar(), iRowLength);
   
 }
 

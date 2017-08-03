@@ -246,7 +246,7 @@ bool Vch::bExtract(char** aaSrc, Vch* aVch, Column* pColumn)
 void Vch::vSprint(Stz* aDst, Stz* aSrc)
 {
   StrLib::vSprint(aDst,"%s%c"_Stz,
-                  aSrc->s(),
+                  aSrc->aChar(),
                   '\0');
   
 }

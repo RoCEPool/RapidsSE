@@ -1251,7 +1251,7 @@ void StrLib::vSprint(char* sDst, Stz* aFormat, ...)
   va_list args;
   
   va_start(args,aFormat);
-  vsprintf(sDst,aFormat->s(),args);
+  vsprintf(sDst,aFormat->aChar(),args);
   va_end(args);
 }
 
@@ -1263,7 +1263,7 @@ void StrLib::vSprint(Stz* sDst, Stz* aFormat, ...)
   va_list args;
   
   va_start(args,aFormat);
-  vsprintf(sDst->s(),aFormat->s(),args);
+  vsprintf(sDst->aChar(),aFormat->aChar(),args);
   va_end(args);
 }
 

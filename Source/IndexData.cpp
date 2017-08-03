@@ -129,7 +129,7 @@ Stz* IndexData::pAnalyze(void)
   
   sAnalysis.vCatSprint("N%lld: Analysis of Index %s of table %s\n"_Stz,
                        gpGrid->iThisNode(),
-                       m_pIndex->aIndexName()->s(),
+                       m_pIndex->aIndexName()->aChar(),
                        m_pIndex->pTable()->aTableName());
   
   return sAnalysis;

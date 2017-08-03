@@ -470,7 +470,7 @@ char* Column::aValue(i8& nBytes, char** aaCursor)
       aElem = (Stz*)aValue;
       nBytes = 0;
       
-      while (*aElem->s() != '\0') {
+      while (*aElem->aChar() != '\0') {
         nBytes++;
         aElem++;
       }

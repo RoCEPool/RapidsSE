@@ -29,7 +29,7 @@ namespace Base
     bool bEqual(Stz* aArg);
     bool bIsNumeric(void);
     i8 iLength(void);
-    char* s(void);
+    char* aChar(void);
     bool bSame(Stz* aArg);
     i8 nSize(void);
     void vSprint(Stz* aFormat, ...);

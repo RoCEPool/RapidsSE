@@ -11,7 +11,7 @@ i8 Shell::iExecute(Stz* sCommand, SysCall& xSysCall)
 {
   xSysCall.vClear();
 
-  i8 iExit = system(sCommand->s());
+  i8 iExit = system(sCommand->aChar());
   
   if (-1 == iExit || 127 == iExit) {
     xSysCall.vError(errno);

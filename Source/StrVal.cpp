@@ -249,7 +249,7 @@ void StrVal::vAssign(Stz* aStr)
 {
   //ASSERT(m_nAreaSize);
   
-  StrLib::vCopy(s(),aStr->s());
+  StrLib::vCopy(s(),aStr->aChar());
   
   vAreaSize();
 }
@@ -261,7 +261,7 @@ void StrVal::vAssign(Stz* aStr, i8 iLength)
 {
   //ASSERT(m_nAreaSize);
   
-  StrLib::vCopyLen(s(),aStr->s(),iLength);
+  StrLib::vCopyLen(s(),aStr->aChar(),iLength);
   
   s()[iLength] = '\0';
   
@@ -279,10 +279,10 @@ void StrVal::vCat(Stz* aStr, ...)
   
   va_start(xVarArgs,aStr);
 
-  StrLib::vConcat(s(),aStr->s());
+  StrLib::vConcat(s(),aStr->aChar());
   
   while (Stz* aArg = va_arg(xVarArgs,Stz*))
-    StrLib::vConcat(s(),aArg->s());
+    StrLib::vConcat(s(),aArg->aChar());
   
   va_end(xVarArgs);
   
@@ -310,7 +310,7 @@ void StrVal::vConcat(Stz* aStr)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  StrLib::vConcat(s(),aStr->s());
+  StrLib::vConcat(s(),aStr->aChar());
   
   _postcondition_(_MAGIC_,_FOOTER_);
 }
@@ -320,7 +320,7 @@ void StrVal::vConcat(Stz* aStr)
 /*----------------------------------------------------------------------------*/
 bool StrVal::bContains(Stz* aArg)
 {
-  return StrLib::bContains(s(),aArg->s());
+  return StrLib::bContains(s(),aArg->aChar());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -330,7 +330,7 @@ void StrVal::vCopyTill(Stz* aSrc, char cTill)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  StrLib::vCopyTill(s(),aSrc->s(),cTill);
+  StrLib::vCopyTill(s(),aSrc->aChar(),cTill);
   
   _postcondition_(_MAGIC_,_FOOTER_);
 }
@@ -342,7 +342,7 @@ void StrVal::vCopy(Stz* aStr)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  StrLib::vCopyLen(s(),aStr->s(),m_xWsp.nSize()-1);
+  StrLib::vCopyLen(s(),aStr->aChar(),m_xWsp.nSize()-1);
   
   _postcondition_(_MAGIC_,_FOOTER_);
 }
@@ -358,10 +358,10 @@ void StrVal::vCopyCat(Stz* aStr, ...)
   
   va_start(xVarArgs,aStr);
   
-  StrLib::vCopyLen(s(),aStr->s(),m_xWsp.nSize()-1);
+  StrLib::vCopyLen(s(),aStr->aChar(),m_xWsp.nSize()-1);
 
   while (Stz* aArg = va_arg(xVarArgs,Stz*))
-    StrLib::vConcat(s(),aArg->s());
+    StrLib::vConcat(s(),aArg->aChar());
   
   va_end(xVarArgs);
 
@@ -375,7 +375,7 @@ bool StrVal::bEnds(Stz* aSuffix)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  bool b = StrLib::bEnds(s(),aSuffix->s());
+  bool b = StrLib::bEnds(s(),aSuffix->aChar());
   
   return b;
 }
@@ -454,7 +454,7 @@ void StrVal::vSprint(Stz* aFormat, ...)
   va_list args;
   va_start(args,aFormat);
   
-  vsprintf(s(),aFormat->s(),args);
+  vsprintf(s(),aFormat->aChar(),args);
   
   va_end(args);
 }
@@ -492,7 +492,7 @@ void StrVal::vToLower(void)
 /*----------------------------------------------------------------------------*/
 void StrVal::vToString(Stz* aStr)
 {
-  StrLib::vCopy(aStr->s(),s());
+  StrLib::vCopy(aStr->aChar(),s());
 }
 
 /*----------------------------------------------------------------------------*/

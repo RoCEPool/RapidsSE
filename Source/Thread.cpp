@@ -119,13 +119,13 @@ void* Thread::vEntry_Drone(void* pArg)
     
     const char* ps;
     
-    ps = StrLib::sLast(pError->aFileName()->s());
+    ps = StrLib::sLast(pError->aFileName()->aChar());
     bool bBackSlash = StrLib::bBackward(&ps,(char*)pError->aFileName(),'/');
     if (bBackSlash) {
       StrLib::vCopy(wFileName,ps+1);
     }
     else {
-      StrLib::vCopy(wFileName, pError->aFileName()->s());
+      StrLib::vCopy(wFileName, pError->aFileName()->aChar());
     }
     vFatal("ERROR: [ThreadLoop] %s: line %lld in %s\n"_Stz,
            pError->aErrorMsg(),
@@ -160,13 +160,13 @@ void* Thread::vEntry_Partition(void* pArg)
     
     const char* ps;
     
-    ps = StrLib::sLast(pError->aFileName()->s());
+    ps = StrLib::sLast(pError->aFileName()->aChar());
     bool bBackSlash = StrLib::bBackward(&ps,(char*)pError->aFileName(),'/');
     if (bBackSlash) {
       StrLib::vCopy(wFileName,ps+1);
     }
     else {
-      StrLib::vCopy(wFileName, pError->aFileName()->s());
+      StrLib::vCopy(wFileName, pError->aFileName()->aChar());
     }
     vFatal("ERROR: [ThreadLoop] %s: line %lld in %s\n"_Stz,
           pError->aErrorMsg(),
@@ -201,13 +201,13 @@ void* Thread::vEntry_Server(void* pArg)
     
     const char* ps;
     
-    ps = StrLib::sLast(pError->aFileName()->s());
+    ps = StrLib::sLast(pError->aFileName()->aChar());
     bool bBackSlash = StrLib::bBackward(&ps,(char*)pError->aFileName(),'/');
     if (bBackSlash) {
       StrLib::vCopy(wFileName,ps+1);
     }
     else {
-      StrLib::vCopy(wFileName, pError->aFileName()->s());
+      StrLib::vCopy(wFileName, pError->aFileName()->aChar());
     }
     vFatal("ERROR: [ThreadLoop] %s: line %lld in %s\n"_Stz,
            pError->aErrorMsg(),
@@ -242,13 +242,13 @@ void* Thread::vEntry_Worker(void* pArg)
     
     const char* ps;
     
-    ps = StrLib::sLast(pError->aFileName()->s());
+    ps = StrLib::sLast(pError->aFileName()->aChar());
     bool bBackSlash = StrLib::bBackward(&ps,(char*)pError->aFileName(),'/');
     if (bBackSlash) {
       StrLib::vCopy(wFileName,ps+1);
     }
     else {
-      StrLib::vCopy(wFileName, pError->aFileName()->s());
+      StrLib::vCopy(wFileName, pError->aFileName()->aChar());
     }
     vFatal("ERROR: [ThreadLoop] %s: line %lld in %s\n"_Stz,
            pError->aErrorMsg(),

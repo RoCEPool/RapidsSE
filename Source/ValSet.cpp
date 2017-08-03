@@ -297,7 +297,7 @@ bool ValSet::bSetRowBuffer(DBobjects::EntryBuffer* pRowBuffer)
 /*----------------------------------------------------------------------------*/
 i8 ValSet::nSize(void)
 {
-  i8 iSize = aFirstByte()->s() - (char*)this + m_iBytes;
+  i8 iSize = aFirstByte()->aChar() - (char*)this + m_iBytes;
   
   return iSize;
 }

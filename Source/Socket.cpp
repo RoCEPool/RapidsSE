@@ -114,7 +114,7 @@ void Socket::vAddrInit(sockaddr_in* aAddr, Stz* sAddr, int iPort)
   MemLib::vZero(aAddr,sizeof(sockaddr_in),CN_SOCKET);
   
   aAddr->sin_family      = AF_INET;
-  aAddr->sin_addr.s_addr = sAddr->s() == nullptr ? -1 : inet_addr(sAddr->s());
+  aAddr->sin_addr.s_addr = sAddr->aChar() == nullptr ? -1 : inet_addr(sAddr->aChar());
   aAddr->sin_port        = htons((int)iPort);
 }
 
@@ -244,7 +244,7 @@ bool Socket::bConnectServer(Stz* sAddr, int iPort, SysCall& SysCall)
   s256 sPort;
   StrLib::vSprint(sPort.aStr(), "%lld"_Stz, iPort);
   
-  i8 iReturn = getaddrinfo(sAddr->s(), sPort.s(), &xAddrInfo, &pAddrInfo);
+  i8 iReturn = getaddrinfo(sAddr->aChar(), sPort.s(), &xAddrInfo, &pAddrInfo);
   if (iReturn != 0) {
     vTrace("getaddrinfo: error %lld"_Stz, iReturn);
   }
@@ -453,7 +453,7 @@ bool Socket::bWriteVch(Stz* aChar, SysCall& SysCall)
   
   i8 nBytes = aChar->iLength();
   
-  i8 nSent = send(m_iSocketId, aChar->s(), nBytes,0);
+  i8 nSent = send(m_iSocketId, aChar->aChar(), nBytes,0);
   
   if (nSent == nBytes) {
     SysCall.vSuccess();

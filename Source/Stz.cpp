@@ -34,7 +34,7 @@ Stz::Stz(void)
 /*----------------------------------------------------------------------------*/
 Stz::Stz(Stz* aArg)
 {
-  StrLib::vCopy(s(),aArg->s());
+  StrLib::vCopy(aChar(),aArg->aChar());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -47,7 +47,7 @@ Stz::~Stz(void)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-char* Stz::s(void)
+char* Stz::aChar(void)
 {
   return (char*)this;
 }
@@ -57,7 +57,7 @@ char* Stz::s(void)
 /*----------------------------------------------------------------------------*/
 void Stz::operator =(i8 iArg)
 {
-  StrLib::wToString(iArg,s());
+  StrLib::wToString(iArg,aChar());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -65,7 +65,7 @@ void Stz::operator =(i8 iArg)
 /*----------------------------------------------------------------------------*/
 void Stz::operator =(Stz* aArg)
 {
-  StrLib::vCopy(s(),aArg->s());
+  StrLib::vCopy(aChar(),aArg->aChar());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -73,7 +73,7 @@ void Stz::operator =(Stz* aArg)
 /*----------------------------------------------------------------------------*/
 void Stz::operator =(void* aArg)
 {
-  StrLib::wToPointer(aArg,s());
+  StrLib::wToPointer(aArg,aChar());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -81,7 +81,7 @@ void Stz::operator =(void* aArg)
 /*----------------------------------------------------------------------------*/
 void Stz::vConcat(Stz* aArg)
 {
-  StrLib::vConcat(s(),aArg->s());
+  StrLib::vConcat(aChar(),aArg->aChar());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -89,7 +89,7 @@ void Stz::vConcat(Stz* aArg)
 /*----------------------------------------------------------------------------*/
 void Stz::vCopy(Stz* aArg)
 {
-  StrLib::vCopy(s(),aArg->s());
+  StrLib::vCopy(aChar(),aArg->aChar());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -97,7 +97,7 @@ void Stz::vCopy(Stz* aArg)
 /*----------------------------------------------------------------------------*/
 void Stz::vCopyLen(Stz* aArg, i8 nChars)
 {
-  StrLib::vCopyLen(s(),aArg->s(),nChars);
+  StrLib::vCopyLen(aChar(),aArg->aChar(),nChars);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -105,7 +105,7 @@ void Stz::vCopyLen(Stz* aArg, i8 nChars)
 /*----------------------------------------------------------------------------*/
 bool Stz::bEqual(Stz* aArg)
 {
-  i8 iDiff = strcmp(s(),aArg->s());
+  i8 iDiff = strcmp(aChar(),aArg->aChar());
   
   if (0 == iDiff)
     return true;
@@ -118,7 +118,7 @@ bool Stz::bEqual(Stz* aArg)
 /*----------------------------------------------------------------------------*/
 bool Stz::bIsNumeric(void)
 {
-  bool bNumeric = StrLib::bIsNumeric(s());
+  bool bNumeric = StrLib::bIsNumeric(aChar());
   
   return bNumeric;
 }
@@ -128,7 +128,7 @@ bool Stz::bIsNumeric(void)
 /*----------------------------------------------------------------------------*/
 i8 Stz::iLength(void)
 {
-  i8 iLen = strlen(s());
+  i8 iLen = strlen(aChar());
   
   return iLen;
 }
@@ -138,7 +138,7 @@ i8 Stz::iLength(void)
 /*----------------------------------------------------------------------------*/
 bool Stz::bSame(Stz* aArg)
 {
-  i8 iDiff = strcasecmp(s(),aArg->s());
+  i8 iDiff = strcasecmp(aChar(),aArg->aChar());
   
   if (0 == iDiff)
     return true;
@@ -151,7 +151,7 @@ bool Stz::bSame(Stz* aArg)
 /*----------------------------------------------------------------------------*/
 i8 Stz::nSize(void)
 {
-  i8 n = StrLib::iSize(s());
+  i8 n = StrLib::iSize(aChar());
   
   return n;
 }
@@ -164,7 +164,7 @@ void Stz::vSprint(Stz* aFormat, ...)
   va_list args;
   va_start(args,aFormat);
   
-  vsprintf(s(),aFormat->s(),args);
+  vsprintf(aChar(),aFormat->aChar(),args);
   
   va_end(args);
 }
@@ -178,7 +178,7 @@ i8 Stz::iToI8(void)
   
   //return i;
   
-  const char* ps = s();
+  const char* ps = aChar();
   
   i8 i = 0;
   
@@ -208,7 +208,7 @@ i8 Stz::iToI8(void)
 /*----------------------------------------------------------------------------*/
 void Stz::vToLower(void)
 {
-  StrLib::vToLower(s());
+  StrLib::vToLower(aChar());
 }
 
 /*----------------------------------------------------------------------------*/
