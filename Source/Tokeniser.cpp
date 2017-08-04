@@ -531,6 +531,7 @@ eTN Tokeniser::eParseNormalOther(char* wToken)
   
   ASSERT(bStartNormalOther());
  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // gather .. as a string
   if (bIsDot()) {
     
@@ -554,6 +555,64 @@ eTN Tokeniser::eParseNormalOther(char* wToken)
     }
   }
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // gather == as a token
+  if (bIsEqual()) {
+    vGetNextStripped();
+    if (bIsEqual()) {
+      *z++ = '=';
+      *z++ = '=';
+      *z = '\0';
+      return TN_STRING;
+    }
+    else {
+      // push back the unconsumed char
+      vUngetStrippedChar();
+      
+      // set last single character as =
+      m_cParsedChar = '=';
+    }
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // gather <= as a token
+  if (bIsLessThan()) {
+    vGetNextStripped();
+    if (bIsEqual()) {
+      *z++ = '<';
+      *z++ = '=';
+      *z = '\0';
+      return TN_STRING;
+    }
+    else {
+      // push back the unconsumed char
+      vUngetStrippedChar();
+      
+      // set last single character as <
+      m_cParsedChar = '<';
+    }
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // gather >= as a token
+  if (bIsGreaterThan()) {
+    vGetNextStripped();
+    if (bIsEqual()) {
+      *z++ = '>';
+      *z++ = '=';
+      *z = '\0';
+      return TN_STRING;
+    }
+    else {
+      // push back the unconsumed char
+      vUngetStrippedChar();
+      
+      // set last single character as >
+      m_cParsedChar = '>';
+    }
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // collect a single character
   *z++ = m_cParsedChar;
   
@@ -958,6 +1017,19 @@ bool Tokeniser::bIsDot(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* test for a equal sign                                                      */
+/*----------------------------------------------------------------------------*/
+bool Tokeniser::bIsEqual(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
+  if ('=' == m_cParsedChar)
+    return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* test for a base-16 digit                                                   */
 /*----------------------------------------------------------------------------*/
 bool Tokeniser::bIsHex(void)
@@ -965,6 +1037,32 @@ bool Tokeniser::bIsHex(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
   if (StrLib::bIsHex(m_cParsedChar))
+    return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for a less than sign                                                  */
+/*----------------------------------------------------------------------------*/
+bool Tokeniser::bIsLessThan(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
+  if ('<' == m_cParsedChar)
+    return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for a greater than sign                                               */
+/*----------------------------------------------------------------------------*/
+bool Tokeniser::bIsGreaterThan(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
+  if ('>' == m_cParsedChar)
     return true;
   
   return false;

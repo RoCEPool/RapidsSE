@@ -990,13 +990,18 @@ bool SEitf::bDocol(TokenVec& xTokenVec)
   
   s256 sRequest;
   
-  if (xTokenVec.nTokens() != 2) {
+  if ( ! (xTokenVec.nTokens() >= 2) ) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
   sRequest.vCopy("\""_Stz);
-  sRequest.vConcat(xTokenVec[1]->aText());
+  
+  for (i8 i_Word = 1; i_Word <= xTokenVec.nTokens(); i_Word++) {
+    sRequest.vConcat(xTokenVec[i_Word]->aText());
+    sRequest.vConcat(" "_Stz);
+  }
+  
   sRequest.vConcat("\""_Stz);
   
   //

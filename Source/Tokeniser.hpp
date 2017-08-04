@@ -90,7 +90,10 @@ namespace Parsing
    
     bool bIsDigit(void);
     bool bIsDot(void);
+    bool bIsEqual(void);
     bool bIsHex(void);
+    bool bIsLessThan(void);
+    bool bIsGreaterThan(void);
     bool bIsX(void);
     bool bIsWhite(void);
 

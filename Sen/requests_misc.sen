@@ -9,8 +9,10 @@
 /*----------------------------------------------------------------------------*/
 : docol_command ( "command" -- <R> )
 
-  checkIsWord not if <NIP+ERROR> exit then
-  execute
+//checkIsWord not if <NIP+ERROR> exit then
+  //execute
+
+  >:
 
   begin
   depth while drop

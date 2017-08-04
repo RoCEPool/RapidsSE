@@ -3,6 +3,12 @@
 /*============================================================================*/
 #pragma once
 
+#ifdef STRING_LENGTH_TEST
+  #define STRLEN_TEST() ASSERT(nAreaSize() == StrLib::iLength(aStr() + 1));
+#else
+  #define STRLEN_TEST() ;
+#endif
+
 namespace Values
 {
   // the strval inspector
