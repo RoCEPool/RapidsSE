@@ -280,6 +280,7 @@ namespace Tasks
     void vAddPrimitives_Env(void);
     void vAddPrimitives_Error(void);
     void vAddPrimitives_Exit(void);
+    void vAddPrimitives_FetchTest(void);
     void vAddPrimitives_File(void);
     void vAddPrimitives_Flow(void);
     void vAddPrimitives_Grid(void);
@@ -338,6 +339,7 @@ namespace Tasks
     void vAddPrimitives_TxMap(void);
     void vAddPrimitives_TxRef(void);
     void vAddPrimitives_Vector(void);
+    void vAddPrimitives_Utility(void);
     void vAddPrimitives_Word(void);
     void vAddPrimitives_Zero(void);
 
@@ -1266,6 +1268,9 @@ namespace Tasks
     // txRef
     static void vTxRefInit(MP_Task mpTask);
     
+    // utility
+    static void vUtilityPrefetch(MP_Task mpTask);
+  
     // vector
     static void vVectorDifference(MP_Task mpTask);
     

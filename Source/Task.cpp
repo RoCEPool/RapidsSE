@@ -1008,6 +1008,8 @@ void Task::vAddPrimitives(void)
   vAddPrimitives_TxMap();
   vAddPrimitives_TxRef();
   
+  vAddPrimitives_Utility();
+  
   vAddPrimitives_Vector();
   
   vAddPrimitives_Word();

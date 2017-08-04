@@ -10,6 +10,7 @@
 "fileGen.sen" include
 "loaderSub.sen" include
 "loader.sen" include
+"prefetch.sen" include
 "streamLoader.sen" include
 
 /*============================================================================*/
