@@ -72,6 +72,7 @@ i8 Synch::iTicks(void)
 #ifdef __APPLE__
   struct timespec tp;
   int iResult = clock_gettime(CLOCK_MONOTONIC_RAW_APPROX,&tp);
+  //int iResult = clock_gettime(CLOCK_REALTIME,&tp);
 
   i8 iTicks = tp.tv_sec * C_1B;
   iTicks += tp.tv_nsec;

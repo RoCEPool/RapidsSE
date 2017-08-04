@@ -8,7 +8,8 @@ namespace Utilities
   class Prefetch
   {
   public:
-    static void Test(void);
+    static void vFill(i8* aWord, i8 nWords);
+    static void vTest(void);
   };
 }
 
