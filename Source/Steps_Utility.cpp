@@ -41,7 +41,7 @@ void Task::vUtilityPrefetch(MP_Task mpTask)
 {
   ENTRY("vUtilityPrefetch"_Stz);
   
-  vTrace("Prefetch Utility\n"_Stz);
+  Prefetch::Test();
   
   EXIT();
 }
