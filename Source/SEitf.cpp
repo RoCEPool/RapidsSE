@@ -826,7 +826,7 @@ bool SEitf::bCreateIndex(TokenVec& xTokenVec)
   sRequest.vConcat(xTokenVec[1]->aText());
   sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" create_index"_Stz);
+  sRequest.vConcat(" createIndex_req"_Stz);
   
   return bAppendRequest(sRequest);
 }
@@ -851,7 +851,7 @@ bool SEitf::bListIndices(TokenVec& xTokenVec)
 
   ASSERT(xTokenVec[0]->bSame("lsidx"_Stz));
   
-  sRequest.vConcat(" list_indexes"_Stz);
+  sRequest.vConcat(" listIndexes_req"_Stz);
   
   return bAppendRequest(sRequest);
 }
@@ -884,7 +884,7 @@ bool SEitf::bIndexSetUnique(TokenVec& xTokenVec)
   
   ASSERT(xTokenVec[0]->bSame("setidxunique"_Stz));
   
-  sRequest.vConcat(" index_setUnique"_Stz);
+  sRequest.vConcat(" indexSetUnique_req"_Stz);
   
   return bAppendRequest(sRequest);
 }
@@ -953,7 +953,7 @@ bool SEitf::bDumpIndex(TokenVec& xTokenVec)
   sRequest.vConcat(xTokenVec[1]->aText());
   sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" dump_index"_Stz);
+  sRequest.vConcat(" dumpIndex_req"_Stz);
   
   return bAppendRequest(sRequest);
 }
@@ -1072,7 +1072,7 @@ bool SEitf::bDropIndex(TokenVec& xTokenVec)
   sRequest.vConcat(xTokenVec[1]->aText());
   sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" drop_index"_Stz);
+  sRequest.vConcat(" dropIndex_req"_Stz);
   
   return bAppendRequest(sRequest);
 }
@@ -1212,7 +1212,7 @@ bool SEitf::bEndCreateIndex(TokenVec& xTokenVec)
   sRequest.vConcat(xTokenVec[1]->aText());
   sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" end_create_index"_Stz);
+  sRequest.vConcat(" endCreateIndex_req"_Stz);
         
   return bAppendRequest(sRequest);
 }
@@ -1335,7 +1335,7 @@ bool SEitf::bAnalyzeIndex(TokenVec& xTokenVec)
   sRequest.vConcat(xTokenVec[1]->aText());
   sRequest.vConcat("\""_Stz);
 
-  sRequest.vConcat(" analyze_Index"_Stz);
+  sRequest.vConcat(" analyzeIndex_req"_Stz);
   
   return bAppendRequest(sRequest);
 }
@@ -1385,7 +1385,7 @@ bool SEitf::bDanalyzeIndex(TokenVec& xTokenVec)
   sRequest.vConcat(xTokenVec[1]->aText());
   sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" danalyze_index"_Stz);
+  sRequest.vConcat(" danalyzeIndex_req"_Stz);
   
   return bAppendRequest(sRequest);
 }
@@ -1515,7 +1515,7 @@ bool SEitf::bFetchRows(TokenVec& xTokenVec)
   sRequest.vConcat(xTokenVec[1]->aText());
   sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" fetch_rows_index"_Stz);
+  sRequest.vConcat(" fetchRowsIndex_req"_Stz);
   
   return bAppendRequest(sRequest);
 }
@@ -1673,7 +1673,7 @@ bool SEitf::bGetIndex(TokenVec& xTokenVec)
   sRequest.vConcat(xTokenVec[1]->aText());
   sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" get_index"_Stz);
+  sRequest.vConcat(" getIndex_req"_Stz);
   
   return bAppendRequest(sRequest);
 }
@@ -1738,7 +1738,7 @@ bool SEitf::bRetIndex(TokenVec& xTokenVec)
     return false;
   }
   
-  sRequest.vConcat(" return_index"_Stz);
+  sRequest.vConcat(" returnIndex_req"_Stz);
   
   return bAppendRequest(sRequest);
 }
@@ -1826,7 +1826,7 @@ bool SEitf::bKeySelectIndex(TokenVec& xTokenVec)
   sRequest.vConcat(xTokenVec[1]->aText());
   sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" key_select_index"_Stz);
+  sRequest.vConcat(" keySelectIndex_req"_Stz);
   
   return bAppendRequest(sRequest);
 }
@@ -1857,7 +1857,7 @@ bool SEitf::bLowerSelectIndex(TokenVec& xTokenVec)
   sRequest.vConcat(xTokenVec[1]->aText());
   sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" lower_select_index"_Stz);
+  sRequest.vConcat(" lowerSelectIndex_req"_Stz);
   
   return bAppendRequest(sRequest);
 }
@@ -1892,7 +1892,7 @@ bool SEitf::bRangeSelectIndex(TokenVec& xTokenVec)
   sRequest.vConcat(xTokenVec[1]->aText());
   sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" range_select_index"_Stz);
+  sRequest.vConcat(" rangeSelectIndex_req"_Stz);
   
   return bAppendRequest(sRequest);
 }
@@ -1919,7 +1919,7 @@ bool SEitf::bScanSelectIndex(TokenVec& xTokenVec)
   sRequest.vConcat(xTokenVec[1]->aText());
   sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" scan_select_index"_Stz);
+  sRequest.vConcat(" scanSelectIndex_req"_Stz);
   
   return bAppendRequest(sRequest);
 }
@@ -1946,7 +1946,7 @@ bool SEitf::bSizeIndex(TokenVec& xTokenVec)
   sRequest.vConcat(xTokenVec[1]->aText());
   sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" size_index"_Stz);
+  sRequest.vConcat(" sizeIndex_req"_Stz);
   
   return bAppendRequest(sRequest);
 }
@@ -2015,7 +2015,7 @@ bool SEitf::bTruncateIndex(TokenVec& xTokenVec)
   sRequest.vConcat(xTokenVec[1]->aText());
   sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" truncate_index"_Stz);
+  sRequest.vConcat(" truncateIndex_req"_Stz);
   
   return bAppendRequest(sRequest);
 }
@@ -2046,7 +2046,7 @@ bool SEitf::bUpperSelectIndex(TokenVec& xTokenVec)
   sRequest.vConcat(xTokenVec[1]->aText());
   sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" upper_select_index"_Stz);
+  sRequest.vConcat(" upperSelectIndex_req"_Stz);
   
   return bAppendRequest(sRequest);
 }
@@ -2096,7 +2096,7 @@ bool SEitf::bVisualizeIndex(TokenVec& xTokenVec)
   sRequest.vConcat(xTokenVec[1]->aText());
   sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" visualize_index"_Stz);
+  sRequest.vConcat(" visualizeIndex_req"_Stz);
   
   return bAppendRequest(sRequest);
 }

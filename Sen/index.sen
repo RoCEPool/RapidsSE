@@ -751,7 +751,7 @@ tp: loadIndexes
 ;
 
 /*----------------------------------------------------------------------------*/
-/* select using index (called by fetch_rows_index)                            */
+/* select using index (called by fetchRowsIndex_req)                            */
 /*----------------------------------------------------------------------------*/
 : selectIndex ( "<sExactKey>" "<sLowerKey>" "<sUpperKey>"
                 "<sSelectTaskSeed>" "<sIndexNm>" --  )
@@ -886,7 +886,7 @@ tp: loadIndexes
 ;
 
 /*----------------------------------------------------------------------------*/
-/* select using index (called by fetch_rows_index) -- groupBy                 */
+/* select using index (called by fetchRowsIndex_req) -- groupBy                 */
 /*----------------------------------------------------------------------------*/
 : groupByIndex ( "<sExactKey>" "<sLowerKey>" "<sUpperKey>"
                  "<sSelectTaskSeed>" "<sIndexNm>" --  )
@@ -1289,7 +1289,7 @@ tp: selectIndex
 /*============================================================================*/
 
 /*----------------------------------------------------------------------------*/
-/* select using index (called by fetch_rows_index) -- groupBy                 */
+/* select using index (called by fetchRowsIndex_req) -- groupBy                 */
 /*----------------------------------------------------------------------------*/
 : groupByIndex_RH ( "<sExactKey>" "<sLowerKey>" "<sUpperKey>"
                    "<sSelectTaskSeed>" "<sIndexNm>" --  )

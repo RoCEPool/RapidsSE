@@ -80,21 +80,21 @@ tr      truncate_table
 -----------------
 Index Requests:
 -----------------
-anidx     analyze_index
-dumpidx   dump_index
-getidx    get_index
-keyselidx key_select_index
-mkidx     create_index
-lsidx     list_indexes
-lwrselidx lower_select_index
-retidx    return_index
-rmidx     drop_index
-rgeselidx range_select_index
-scnselidx scan_select_index
-setidxunique index_setUnique
-szidx     size_index
-tridx     truncate_index
-uprselidx upper_select_index
+anidx     analyzeIndex_req
+dumpidx   dumpIndex_req
+getidx    getIndex_req
+keyselidx keySelectIndex_req
+mkidx     createIndex_req
+lsidx     listIndexes_req
+lwrselidx lowerSelectIndex_req
+retidx    returnIndex_req
+rmidx     dropIndex_req
+rgeselidx rangeSelectIndex_req
+scnselidx scanSelectIndex_req
+setidxunique indexSetUnique_req
+szidx     sizeIndex_req
+tridx     truncateIndex_req
+uprselidx upperSelectIndex_req
  
 -----------------
 Column Requests:

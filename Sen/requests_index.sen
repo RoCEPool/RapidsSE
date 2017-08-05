@@ -64,25 +64,25 @@ timer: pIdxSelectTimer
 /*----------------------------------------------------------------------------*/
 /* analyse an index of a table                                                */
 /*----------------------------------------------------------------------------*/
-: analyze_index ( "<sIndexNm>" "<sTableNm>" -- <R> )
+: analyzeIndex_req ( "<sIndexNm>" "<sTableNm>" -- <R> )
    0 analyzeIdx
 ;
 
 /*----------------------------------------------------------------------------*/
 /* analyse an index of a table                                                */
 /*----------------------------------------------------------------------------*/
-: danalyze_index ( "<sIndexNm>" "<sTableNm>" -- <R> )
+: danalyzeIndex_req ( "<sIndexNm>" "<sTableNm>" -- <R> )
   1 analyzeIdx
 ;
 
 /*----------------------------------------------------------------------------*/
 /* create an index on a table                                                 */
 /*----------------------------------------------------------------------------*/
-: create_index ( "<sIndexNm>" "<sTableNm>" -- <R> )
+: createIndex_req ( "<sIndexNm>" "<sTableNm>" -- <R> )
                                                                     // ../tables
   locals| sTableNm sIndexNm |
 
-  tp: create_index
+  tp: createIndex_req
 
   ddlLock::grabWrite
 
@@ -109,7 +109,7 @@ timer: pIdxSelectTimer
 /*----------------------------------------------------------------------------*/
 /* drop an index                                                              */
 /*----------------------------------------------------------------------------*/
-: drop_index ( "<sIndexNm>" "<sTableNm>" -- <R> )
+: dropIndex_req ( "<sIndexNm>" "<sTableNm>" -- <R> )
                                                                     // ../tables
   tp: dropIndex
 
@@ -157,7 +157,7 @@ timer: pIdxSelectTimer
 /*----------------------------------------------------------------------------*/
 /* dump index                                                                 */
 /*----------------------------------------------------------------------------*/
-: dump_index ( "<sIndexNm>" "<sTableNm" -- <R> )
+: dumpIndex_req ( "<sIndexNm>" "<sTableNm" -- <R> )
                                                                     // ../tables
   locals| sTableNm sIndexNm |
 
@@ -201,11 +201,11 @@ timer: pIdxSelectTimer
 /*----------------------------------------------------------------------------*/
 /* end of create index sequence                                               */
 /*----------------------------------------------------------------------------*/
-: end_create_index ( "<sIndexNm>" "<sTableNm>" -- <R> )
+: endCreateIndex_req ( "<sIndexNm>" "<sTableNm>" -- <R> )
                                                     // ../tables/tableNm/indexes
   locals| sTableNm sIndexNm |
 
-  tp: end_create_index
+  tp: endCreateIndex_req
 
   ddlLock::grabWrite
 
@@ -246,9 +246,9 @@ timer: pIdxSelectTimer
 /*----------------------------------------------------------------------------*/
 /* fetch rows using an index (this is request)                                */
 /*----------------------------------------------------------------------------*/
-: fetch_rows_index ( "<sWhere>" "<sTableNm>" -- <R> )
+: fetchRowsIndex_req ( "<sWhere>" "<sTableNm>" -- <R> )
                                                                     // ../tables
-"fetch_rows_index" .
+"fetchRowsIndex_req" .
 
   // task is a request server
   task::this task.kind@ TK_REQUEST_SERVER == assert
@@ -415,7 +415,7 @@ timer: pIdxSelectTimer
 /*----------------------------------------------------------------------------*/
 /* get an index                                                               */
 /*----------------------------------------------------------------------------*/
-: get_index ( "<indexNm>" -- <R> )
+: getIndex_req ( "<indexNm>" -- <R> )
 
   getIndex not if <NIP+ERROR> exit then
 
@@ -425,7 +425,7 @@ timer: pIdxSelectTimer
 /*----------------------------------------------------------------------------*/
 /* get list of indexes                                                        */
 /*----------------------------------------------------------------------------*/
-: list_indexes ( "<sTableNm>" -- <R> )
+: listIndexes_req ( "<sTableNm>" -- <R> )
                                                                     // ../tables
   locals| sTableNm |
 
@@ -461,7 +461,7 @@ timer: pIdxSelectTimer
 /*----------------------------------------------------------------------------*/
 /* exact key select of table given an index                                   */
 /*----------------------------------------------------------------------------*/
-: key_select_index ( "<xKey>" "<sIndexNm>" "<sTableNm>" -- <R> )
+: keySelectIndex_req ( "<xKey>" "<sIndexNm>" "<sTableNm>" -- <R> )
                                                                     // ../tables
   assert::stack_3
   CN_STRVAL assert::class_0
@@ -550,9 +550,9 @@ timer: pIdxSelectTimer
 /*----------------------------------------------------------------------------*/
 /* lower bound select of table given an index                                 */
 /*----------------------------------------------------------------------------*/
-: lower_select_index ( "<sLower>" "<sIndexNm>" "<sTableNm>" -- <R> )
+: lowerSelectIndex_req ( "<sLower>" "<sIndexNm>" "<sTableNm>" -- <R> )
                                                                     // ../tables
-"lower_select_index" .
+"lowerSelectIndex_req" .
 
   assert::stack_3
   CN_STRVAL assert::class_0
@@ -639,9 +639,9 @@ timer: pIdxSelectTimer
 /*----------------------------------------------------------------------------*/
 /* range select of table given an index                                       */
 /*----------------------------------------------------------------------------*/
-: range_select_index ( "<sUpper>" "<sLower>" "<sIndexNm>" "<sTableNm>" -- <R> )
+: rangeSelectIndex_req ( "<sUpper>" "<sLower>" "<sIndexNm>" "<sTableNm>" -- <R> )
                                                                     // ../tables
-  tp: range_select_index
+  tp: rangeSelectIndex_req
 
   assert::stack_4
   CN_STRVAL assert::class_0
@@ -729,9 +729,9 @@ timer: pIdxSelectTimer
 /*----------------------------------------------------------------------------*/
 /* scan select of table given an index                                        */
 /*----------------------------------------------------------------------------*/
-: scan_select_index ( "<sIndexNm>" "<sTableNm>" -- <R> )
+: scanSelectIndex_req ( "<sIndexNm>" "<sTableNm>" -- <R> )
   // ../tables
-  tp: scan_select_index
+  tp: scanSelectIndex_req
 
   assert::stack_2
   CN_STRVAL assert::class_0
@@ -814,11 +814,10 @@ timer: pIdxSelectTimer
   <OK>
 ;
 
-
 /*----------------------------------------------------------------------------*/
 /* return an index                                                            */
 /*----------------------------------------------------------------------------*/
-: return_index ( "<indexNm>" -- <R> )
+: returnIndex_req ( "<indexNm>" -- <R> )
 
   returnIndex not if <NIP+ERROR> exit then
 
@@ -827,13 +826,13 @@ timer: pIdxSelectTimer
 /*----------------------------------------------------------------------------*/
 /* set unique property of an index                                            */
 /*----------------------------------------------------------------------------*/
-: index_setUnique ( true/false "<sIndexNm>" "<sTableNm>" -- <R> )
+: indexSetUnique_req ( true/false "<sIndexNm>" "<sTableNm>" -- <R> )
                                                    // ../tables/sTableNm/indexes
   assert::stack_3
 
   locals| sTableNm sIndexNm bIsUnique |
 
-  tp: index_setUnique
+  tp: indexSetUnique_req
 
   ddlLock::grabWrite
 
@@ -851,7 +850,7 @@ timer: pIdxSelectTimer
 /*----------------------------------------------------------------------------*/
 /* get size of index                                                          */
 /*----------------------------------------------------------------------------*/
-: size_index ( "<sIndexNm>" "<sTableNm>" -- <R> )
+: sizeIndex_req ( "<sIndexNm>" "<sTableNm>" -- <R> )
                                                                     // ../tables
   locals| sTableNm sIndexNm |
 
@@ -900,7 +899,7 @@ timer: pIdxSelectTimer
 /*----------------------------------------------------------------------------*/
 /* truncate index                                                             */
 /*----------------------------------------------------------------------------*/
-: truncate_index ( "<sIndexNm>" "<sTableNm>" -- <R> )
+: truncateIndex_req ( "<sIndexNm>" "<sTableNm>" -- <R> )
                                                                     // ../tables
   locals| sTableNm sIndexNm |
 
@@ -947,7 +946,7 @@ timer: pIdxSelectTimer
 /*----------------------------------------------------------------------------*/
 /* upper bound select of table given an index                                 */
 /*----------------------------------------------------------------------------*/
-: upper_select_index ( "<sUpper>" "<sIndexNm>" "<sTableNm>" -- <R> )
+: upperSelectIndex_req ( "<sUpper>" "<sIndexNm>" "<sTableNm>" -- <R> )
                                                                     // ../tables
   assert::stack_3
   CN_STRVAL assert::class_0
@@ -1034,7 +1033,7 @@ timer: pIdxSelectTimer
 /*----------------------------------------------------------------------------*/
 /* visualize index                                                            */
 /*----------------------------------------------------------------------------*/
-: visualize_index ( "<sIndexNm>" "<sTableNm" -- <R> )
+: visualizeIndex_req ( "<sIndexNm>" "<sTableNm" -- <R> )
   // ../tables
   locals| sTableNm sIndexNm |
 
@@ -1074,7 +1073,6 @@ timer: pIdxSelectTimer
 
   <OK>
 ;
-
 
 /*============================================================================*/
 /* end                                                                        */

@@ -182,14 +182,14 @@ rmtbl   drop_table
 
 Index Requests:
 
-anidx   analyze_index
-mkidx   create_index
-lsidx   list_indexes
-dumpidx dump_index
+anidx   analyzeIndex_req
+mkidx   createIndex_req
+lsidx   listIndexes_req
+dumpidx dumpIndex_req
 lsidxcol listIndexColumns_req
-rmidx   drop_index
-tridx   truncate_index
-visidx  visualize_index
+rmidx   dropIndex_req
+tridx   truncateIndex_req
+visidx  visualizeIndex_req
 
 Dictionary Requests:
 
