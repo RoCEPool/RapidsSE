@@ -2448,7 +2448,7 @@ bool SEitf::bRetTask(TokenVec& xTokenVec)
   sRequest.vConcat(xTokenVec[1]->aText());
   sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" return_task"_Stz);
+  sRequest.vConcat(" returnTask_req"_Stz);
   
   return bAppendRequest(sRequest);
 }
@@ -2464,7 +2464,7 @@ bool SEitf::bGetTask(TokenVec& xTokenVec)
   
   ASSERT(xTokenVec[0]->bSame("gettsk"_Stz));
   
-  sRequest.vCopy("get_task"_Stz);
+  sRequest.vCopy("getTask_req"_Stz);
   
   return bAppendRequest(sRequest);
 }
