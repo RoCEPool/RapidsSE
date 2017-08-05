@@ -732,7 +732,7 @@ bool SEitf::bCreateSchema(TokenVec& xTokenVec)
   sRequest.vConcat(xTokenVec[1]->aText());
   sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" create_schema"_Stz);
+  sRequest.vConcat(" createSchema_req"_Stz);
   
   return bAppendRequest(sRequest);
   
@@ -754,7 +754,7 @@ bool SEitf::bListSchemas(TokenVec& xTokenVec)
   }
   
   ASSERT(xTokenVec[0]->bSame("lssch"_Stz));
-  sRequest = "list_schemas"_Stz;
+  sRequest = "listSchemas_req"_Stz;
   return bAppendRequest(sRequest);
 }
 
@@ -776,7 +776,7 @@ bool SEitf::bDropSchema(TokenVec& xTokenVec)
   sRequest.vConcat(xTokenVec[1]->aText());
   sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" drop_schema"_Stz);
+  sRequest.vConcat(" dropSchema_req"_Stz);
   
   return bAppendRequest(sRequest);
 }
@@ -799,7 +799,7 @@ bool SEitf::bUseSchema(TokenVec& xTokenVec)
   sRequest.vConcat(xTokenVec[1]->aText());
   sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" use_schema"_Stz);
+  sRequest.vConcat(" useSchema_req"_Stz);
   
   return bAppendRequest(sRequest);
 }

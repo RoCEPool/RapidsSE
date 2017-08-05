@@ -48,10 +48,10 @@ rmcat   dropCatalog_req
 -----------------
 Schema Requests:
 -----------------
-lssch   list_schemas
-mksch   create_schema
-rmsch   drop_schema
-usesch  use_schema
+lssch   listSchemas_req
+mksch   createSchema_req
+rmsch   dropSchema_req
+usesch  useSchema_req
 
 -----------------
 Table Requests:
