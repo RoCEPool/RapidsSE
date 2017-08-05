@@ -390,7 +390,7 @@ bool SEitf::bDecode(TokenVec& xTokenVec)
   if (xTokenVec[0]->bSame("addidxcol"_Stz)) return bAddIndexColumn(xTokenVec);
   if (xTokenVec[0]->bSame("addpartcol"_Stz)) return bAddPartitionColumn(xTokenVec);
   if (xTokenVec[0]->bSame("cf"_Stz)) return bPushDic(xTokenVec);
-  if (xTokenVec[0]->bSame("connectCluster"_Stz)) return bConnectCluster(xTokenVec);
+  if (xTokenVec[0]->bSame("connectCluster_req"_Stz)) return bConnectCluster(xTokenVec);
   if (xTokenVec[0]->bSame("cp"_Stz)) return bCopyTable(xTokenVec);
   if (xTokenVec[0]->bSame("danidx"_Stz)) return bDanalyzeIndex(xTokenVec);
   if (xTokenVec[0]->bSame("dantbl"_Stz)) return bDanalyzeTable(xTokenVec);
@@ -495,8 +495,8 @@ bool SEitf::bConnectCluster(TokenVec& xTokenVec)
   
   s256 sRequest;
   
-  ASSERT(xTokenVec[0]->bSame("connectCluster"_Stz));
-  sRequest = "connectCluster"_Stz;
+  ASSERT(xTokenVec[0]->bSame("connectCluster_req"_Stz));
+  sRequest = "connectCluster_req"_Stz;
   return bAppendRequest(sRequest);
 }
 

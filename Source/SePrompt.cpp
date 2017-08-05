@@ -454,7 +454,7 @@ bool SePrompt::bProcessCommand(bool bPostProcess)
   if (bCmdIs("bye"_Stz))        return bBye();
   if (bCmdIs("cd"_Stz))         return bChangeWorkingDir();
 //if (bCmdIs("cf"_Stz))         return bExecuteRequest();
-//if (bCmdIs("connectCluster"_Stz)) return bConnectCluster();
+//if (bCmdIs("connectCluster_req"_Stz)) return bConnectCluster();
   if (bCmdIs("create"_Stz)) {
     if (bOneIs("tenant"_Stz))   return bCreateTenant();
     if (bOneIs("catalog"_Stz))  return bCreateCatalog();
@@ -1597,7 +1597,7 @@ bool SePrompt::bConnectCluster(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  ASSERT(m_xTokenVec[0]->bSame("connectCluster"_Stz));
+  ASSERT(m_xTokenVec[0]->bSame("connectCluster_req"_Stz));
   
   if (!bExecuteRequest()) {
     return false;
