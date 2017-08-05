@@ -146,9 +146,9 @@ rmten   drop_tenant
 
 Catalog Requests:
 
-mkcat   create_catalog
-lscat   list_catalogs
-rmcat   drop_catalog
+mkcat   createCatalog_req
+lscat   listCatalogs_req
+rmcat   dropCatalog_req
 
 Schema Requests:
 

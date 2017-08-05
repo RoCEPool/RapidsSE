@@ -667,7 +667,7 @@ bool SEitf::bCreateCatalog(TokenVec& xTokenVec)
   sRequest.vConcat(xTokenVec[1]->aText());
   sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" create_catalog"_Stz);
+  sRequest.vConcat(" createCatalog_req"_Stz);
   
   return bAppendRequest(sRequest);
 }
@@ -687,7 +687,7 @@ bool SEitf::bListCatalogs(TokenVec& xTokenVec)
   }
   
   ASSERT(xTokenVec[0]->bSame("lscat"_Stz));
-  sRequest = "list_catalogs"_Stz;
+  sRequest = "listCatalogs_req"_Stz;
   return bAppendRequest(sRequest);
 }
 
@@ -709,7 +709,7 @@ bool SEitf::bDropCatalog(TokenVec& xTokenVec)
   sRequest.vConcat(xTokenVec[1]->aText());
   sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" drop_catalog"_Stz);
+  sRequest.vConcat(" dropCatalog_req"_Stz);
   
   return bAppendRequest(sRequest);
 }
