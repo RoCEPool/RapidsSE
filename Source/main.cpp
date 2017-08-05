@@ -18,171 +18,62 @@ void vTest2(void);
 void vTest3(void);
 void vTest4(void);
 void vTest5(void);
+void vTest6(void);
+void vTest7(void);
+void vTest8(void);
+void vTest9(void);
 
+void vChangeDirectory(void);
 void vKillPrev(void);
-
+void vPrintSizes(void);
+void vPrintWelcome(void);
+void vRunPrompt(void);
+void vSetGlobals(void);
+void vUnitTests(void);
+void vWriteRegionName(void);
 
 /*----------------------------------------------------------------------------*/
 /* main                                                                       */
 /*----------------------------------------------------------------------------*/
 int main(int argc, const char* argv[])
 {
-  //vTest3();
-  //vTest4();
-  //vTest5();
+  if ( ! gxArguments.bParse(argc,(Stz**)argv) )
+    exit(EXIT_FAILURE);
   
-  /*
-  vInfo(
-         "sizeof(eCN) %lu; sizeof(bool) %lu; \n"_Stz
-         "sizeof(Object) %lu; sizeof(StrVal) %lu; \n"_Stz
-         "sizeof(s32) %lu; sizeof(s256) %lu; \n"_Stz
-         "sizeof(Value) %lu; sizeof(IntVal) %lu; sizeof(ValWrk) %lu \n"_Stz
-         "\n"_Stz,
-         sizeof(eCN),sizeof(bool),
-         sizeof(Object),sizeof(StrVal),
-         sizeof(s32),sizeof(s256),
-         sizeof(Value),sizeof(IntVal),sizeof(ValWrk)
-  );
-  */
+  vPrintWelcome();
   
+  if (gxArguments.m_bWelcome)
+    gxArguments.vPrint();
   
-  vInfo("sizeof(Object) %lu; \n"_Stz, sizeof(Object));
-  assert(sizeof(Object) == 16);
-  
-  vInfo("sizeof(Object_Emb) %lu; \n"_Stz, sizeof(Object_Emb));
-  assert(sizeof(Object_Emb) == 2);
-
-  Stz* aRelDbg;
-#ifdef _DEBUG
-  aRelDbg = "debug"_Stz;
-#else
-  aRelDbg = "release"_Stz;
-#endif
+  if (gxArguments.m_bVerbose)
+    vPrintSizes();
   
   vSetSignalHandlers();
   
   //vTest1();
   //vTest2();
-  
+  //vTest3();
+  //vTest4();
+  //vTest5();
+  //vTest6();
+  //vTest7();
+  //vTest8();
+  //vTest9();
+
   StorageEngine::vCheckAllAssumptions();
-  
-  if ( ! gxArguments.bParse(argc,(Stz**)argv) )
-    exit(EXIT_FAILURE);
-  
-  if (gxArguments.m_bWelcome && ! gxArguments.m_bStatus)
-    vInfo("RapidsSE v%s (%s %s -- %s) pid %lld\n"_Stz,
-           RAPIDSSE_VERSION_STRING,
-           __DATE__,
-           __TIME__,
-           aRelDbg,
-           Process::iGetPid()
-           );
-
-  // set globals from gxArguments
-  gbVerbose    = gxArguments.m_bVerbose;
-  gbTracepoint = gxArguments.m_bTracepoint;
-  gbProgress   = gxArguments.m_bProgress;
-  gbMetadata   = gxArguments.m_bMetadata;
-  
-  //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  /*
-  i8 iLevels[gxArguments.m_iLevels];
-  for (i8 i_Level = 0; i_Level < gxArguments.m_iLevels; i_Level++)
-    iLevels[i_Level] = 0;
-  
-  for (i8 i = 0; i < 5; i++) {
-    u8 iLevel = Random::iLogLevel(gxArguments.m_iLevels, gxArguments.m_iFrequency);
-    iLevels[iLevel]++;
-  }
-  for (i8 u_Level = 0; u_Level < gxArguments.m_uLevels; u_Level++)
-    printf("%llu: %llu\n",u_Level,iLevels[uLevel]);
-   */
-  //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  
-  
-  Dir xDir;
-  s256 sCurrent;
-//  if (xDir.bGetCurrent(sCurrent))
-//    vInfo("dir: %s\n",sCurrent.aChar());
-  
-  
-//  vTrace("Task::vWord %p\n"_Stz,Task::vWord);
-  
-//  Timer xTimer;
-//  
-//  xTimer.vStart();
-//  
-//  PosixThread::vSleepMilli(10);
-//  
-//  xTimer.vUpdate();
-//  
-//  vTrace("duration %lldns\n"_Stz,xTimer.iNanoseconds());
-  
-//  if (gxArguments.m_bVerbose)
-    if ( gxArguments.m_bWelcome)
-      gxArguments.vPrint();
-
-  // write the regionName into a se.region file
-  // used by shell script to start se prompt
-  if (gxArguments.m_bStart) {
-    File xFile;
-    xFile.vPath("./se.region"_Stz);
-    bool b = xFile.bOpen(C_OPEN_READ_WRITE_CREATE);
-    ASSERT(b);
-    xFile.vPrint("%s\n"_Stz,gxArguments.m_sRegionName.aChar());
-    xFile.vClose();
-  }
-  
-  // change working directory to commands dir
-  bool bResult = xDir.bChangeCurrent(gxArguments.m_sCommands);
-  
-  // kill previous
+  vSetGlobals();
+  vWriteRegionName();
+  vChangeDirectory();
   vKillPrev();
   
-  // either create new shm region
-  // or attach to an existing one
   RapidsSE::vPoolOpen();
   
-  //vSkipListTest();
-  if (xDir.bGetCurrent(sCurrent) && gxArguments.m_bWelcome)
-    vInfo("\nCURRENT WORKING DIRECTORY: %s\n\n"_Stz,sCurrent.aStr());
-  
-  // execute the command line
-  RapidsSE::vExecute();
-  
-  // unit tests ?
-  if (gxArguments.m_bUnitTests) {
-    RunTests* pRunTests = new RunTests();
-    pRunTests->vRunTests();
-  }
+  RapidsSE::vExecuteCmdLine();
 
-  /*
-  if (gxArguments.m_bStart) {
-    KeyTest::vTestB();
-    KeyTest::vTestA();
-    KeyTest::vTest();
-  }
-  */
-  
-  // optionally execute se> prompt
-  if (gxArguments.m_bPrompt || gxArguments.m_bScript) {
-    
-    // if only prompt then cwd to Commands
-    // (with --start sen changes cwd)
-//    if (!gxArguments.m_bStart) {
-//      // change working directory to commands dir
-//      bool bResult = xDir.bSetCurrent(gxArguments.m_sCommands);
-//      // ignore error
-    
- //     if (xDir.bGetCurrent(sCurrent))
- //       vInfo("dir: %s\n"_Stz,sCurrent.aStr());
-//    }
-    SePrompt* pSePrompt = new SePrompt();
-    pSePrompt->vLoop();
-    delete pSePrompt;
-  }
+  vUnitTests();
 
-  // unmap from shm and optionally unlink it
+  vRunPrompt();
+  
   RapidsSE::vPoolClose();
 
   if (gxArguments.m_bVerbose)
@@ -192,10 +83,29 @@ int main(int argc, const char* argv[])
 }
 
 /*----------------------------------------------------------------------------*/
+/* change current directory                                                   */
+/*----------------------------------------------------------------------------*/
+void vChangeDirectory(void)
+{
+  if (gxArguments.m_bVerbose)
+    vInfo("\n*\n* Change Working Directory\n*\n"_Stz);
+  
+  // change working directory to commands dir
+  Dir xDir;
+  s256 sCurrent;
+  bool bResult = xDir.bChangeCurrent(gxArguments.m_sCommands);
+  if (xDir.bGetCurrent(sCurrent) && gxArguments.m_bWelcome)
+    vInfo("CURRENT WORKING DIRECTORY: %s\n"_Stz,sCurrent.aStr());
+}
+
+/*----------------------------------------------------------------------------*/
 /* kill previous node instances                                               */
 /*----------------------------------------------------------------------------*/
 void vKillPrev(void)
 {
+  if (gxArguments.m_bVerbose)
+    vInfo("\n*\n* Kill Previous Occurences\n*\n"_Stz);
+  
   // only node0 does this when starting
   //if ( ! (0 == gpGrid->iThisNode() && gxArguments.m_bStart) )
   //  return;
@@ -223,7 +133,7 @@ void vKillPrev(void)
       continue;
     
     AttachMap* pAttachMap = pAdd<AttachMap*>(pRegion,C_SIZE_POOL_BUFFER);
-
+    
     if (pAttachMap->m_iPid &&
         pAttachMap->m_iPid != Process::iGetPid() &&
         Process::bTestPid(pAttachMap->m_iPid)) {
@@ -240,6 +150,141 @@ void vKillPrev(void)
     Region::vUnlink(sRegionName);
   }
 }
+
+/*----------------------------------------------------------------------------*/
+/* print size of things                                                       */
+/*----------------------------------------------------------------------------*/
+void vPrintSizes(void)
+{
+  if (gxArguments.m_bVerbose)
+    vInfo("\n*\n* Sizes\n*\n"_Stz);
+  
+  /*
+   vInfo(
+   "sizeof(eCN) %lu; sizeof(bool) %lu; \n"_Stz
+   "sizeof(Object) %lu; sizeof(StrVal) %lu; \n"_Stz
+   "sizeof(s32) %lu; sizeof(s256) %lu; \n"_Stz
+   "sizeof(Value) %lu; sizeof(IntVal) %lu; sizeof(ValWrk) %lu \n"_Stz
+   "\n"_Stz,
+   sizeof(eCN),sizeof(bool),
+   sizeof(Object),sizeof(StrVal),
+   sizeof(s32),sizeof(s256),
+   sizeof(Value),sizeof(IntVal),sizeof(ValWrk)
+   );
+   */
+  
+  vInfo("sizeof(Object) %lu; \n"_Stz, sizeof(Object));
+  assert(sizeof(Object) == 16);
+  
+  vInfo("sizeof(Object_Emb) %lu; \n"_Stz, sizeof(Object_Emb));
+  assert(sizeof(Object_Emb) == 2);
+}
+
+/*----------------------------------------------------------------------------*/
+/* print welcome                                                              */
+/*----------------------------------------------------------------------------*/
+void vPrintWelcome(void)
+{
+  Stz* aRelDbg;
+#ifdef _DEBUG
+  aRelDbg = "debug"_Stz;
+#else
+  aRelDbg = "release"_Stz;
+#endif
+  
+  if (gxArguments.m_bWelcome && ! gxArguments.m_bStatus)
+    vInfo("RapidsSE v%s (%s %s -- %s) pid %lld\n"_Stz,
+          RAPIDSSE_VERSION_STRING,
+          __DATE__,
+          __TIME__,
+          aRelDbg,
+          Process::iGetPid()
+          );
+}
+
+/*----------------------------------------------------------------------------*/
+/* run se prompt                                                              */
+/*----------------------------------------------------------------------------*/
+void vRunPrompt(void)
+{
+  // optionally execute se> prompt
+  if (gxArguments.m_bPrompt || gxArguments.m_bScript) {
+
+    if (gxArguments.m_bVerbose)
+      vInfo("\n*\n* Run Prompt\n*\n"_Stz);
+    
+    // if only prompt then cwd to Commands
+    // (with --start sen changes cwd)
+    //    if (!gxArguments.m_bStart) {
+    //      // change working directory to commands dir
+    //      bool bResult = xDir.bSetCurrent(gxArguments.m_sCommands);
+    //      // ignore error
+    
+    //     if (xDir.bGetCurrent(sCurrent))
+    //       vInfo("dir: %s\n"_Stz,sCurrent.aStr());
+    //    }
+    
+    SePrompt* pSePrompt = new SePrompt();
+    pSePrompt->vLoop();
+    delete pSePrompt;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* set globals                                                                */
+/*----------------------------------------------------------------------------*/
+void vSetGlobals(void)
+{
+  if (gxArguments.m_bVerbose)
+    vInfo("\n*\n* Set Globals From Arguments\n*\n"_Stz);
+  
+  // set globals from gxArguments
+  gbVerbose    = gxArguments.m_bVerbose;
+  gbTracepoint = gxArguments.m_bTracepoint;
+  gbProgress   = gxArguments.m_bProgress;
+  gbMetadata   = gxArguments.m_bMetadata;
+}
+
+/*----------------------------------------------------------------------------*/
+/* unit tests                                                                 */
+/*----------------------------------------------------------------------------*/
+void vUnitTests(void)
+{
+  // unit tests ?
+  if (gxArguments.m_bUnitTests) {
+    if (gxArguments.m_bVerbose)
+      vInfo("\n*\n* Unit Tests\n*\n"_Stz);
+    RunTests* pRunTests = new RunTests();
+    pRunTests->vRunTests();
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* write region name                                                          */
+/*----------------------------------------------------------------------------*/
+void vWriteRegionName(void)
+{
+  if (gxArguments.m_bVerbose)
+    vInfo("\n*\n* Write Region Name\n*\n"_Stz);
+  
+  // write the regionName into a se.region file
+  // used by shell script to start se prompt
+  if (gxArguments.m_bStart) {
+    File xFile;
+    xFile.vPath("./se.region"_Stz);
+    bool b = xFile.bOpen(C_OPEN_READ_WRITE_CREATE);
+    ASSERT(b);
+    xFile.vPrint("%s\n"_Stz,gxArguments.m_sRegionName.aChar());
+    xFile.vClose();
+  }
+  
+  if (gxArguments.m_bVerbose)
+    vInfo("REGION NAME: %s\n"_Stz,gxArguments.m_sRegionName.aChar());
+}
+
+/*----------------------------------------------------------------------------*/
+/* -- Tests ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* test1                                                                      */
@@ -418,6 +463,65 @@ void vTest5(void)
 
   xTimer.vUpdate();
   vTrace("duration %lldms %lld\n"_Stz,xTimer.iMilliseconds(),iSum);
+}
+
+/*----------------------------------------------------------------------------*/
+/* test6                                                                      */
+/*----------------------------------------------------------------------------*/
+void vTest6(void)
+{
+  //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  /*
+   i8 iLevels[gxArguments.m_iLevels];
+   for (i8 i_Level = 0; i_Level < gxArguments.m_iLevels; i_Level++)
+   iLevels[i_Level] = 0;
+   
+   for (i8 i = 0; i < 5; i++) {
+   u8 iLevel = Random::iLogLevel(gxArguments.m_iLevels, gxArguments.m_iFrequency);
+   iLevels[iLevel]++;
+   }
+   for (i8 u_Level = 0; u_Level < gxArguments.m_uLevels; u_Level++)
+   printf("%llu: %llu\n",u_Level,iLevels[uLevel]);
+   */
+  //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+}
+
+/*----------------------------------------------------------------------------*/
+/* test7                                                                      */
+/*----------------------------------------------------------------------------*/
+void vTest7(void)
+{
+  Dir xDir;
+  s256 sCurrent;
+  //  if (xDir.bGetCurrent(sCurrent))
+  //    vInfo("dir: %s\n",sCurrent.aChar());
+  
+  
+  //  vTrace("Task::vWord %p\n"_Stz,Task::vWord);
+  
+  //  Timer xTimer;
+  //
+  //  xTimer.vStart();
+  //
+  //  PosixThread::vSleepMilli(10);
+  //
+  //  xTimer.vUpdate();
+  //
+  //  vTrace("duration %lldns\n"_Stz,xTimer.iNanoseconds());
+}
+
+/*----------------------------------------------------------------------------*/
+/* test8                                                                      */
+/*----------------------------------------------------------------------------*/
+void vTest8(void)
+{
+}
+
+/*----------------------------------------------------------------------------*/
+/* test9                                                                      */
+/*----------------------------------------------------------------------------*/
+void vTest9(void)
+{
 }
 
 /*============================================================================*/

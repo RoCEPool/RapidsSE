@@ -525,11 +525,13 @@ void Arguments::vPrint(void)
   if (m_bCommand)  vTrace("  --command\n"_Stz);
   if (m_bDocol)    vTrace("  --docol\n"_Stz);
   if (m_bHelp)     vTrace("  --help\n"_Stz);
+  if (m_bProgress) vTrace("  --progress\n"_Stz);
   if (m_bPrompt)   vTrace("  --seprompt\n"_Stz);
   if (m_bScript)   vTrace("  --script\n"_Stz);
   if (m_bStart)    vTrace("  --start\n"_Stz);
   if (m_bStatus)   vTrace("  --status\n"_Stz);
   if (m_bStop)     vTrace("  --stop\n"_Stz);
+  if (m_bVerbose)  vTrace("  --verbose\n"_Stz);
 
   vTrace("  --name %s\n"_Stz,m_sNodeName.aChar());
   vTrace("  --regionPrefix %s\n"_Stz,m_sRegionPrefix.aChar());

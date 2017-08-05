@@ -4,6 +4,7 @@
 
 #include "StorageEngine.h"
 
+extern Arguments gxArguments;
 extern eHT geWhichHeap[];
 
 /*----------------------------------------------------------------------------*/
@@ -11,6 +12,9 @@ extern eHT geWhichHeap[];
 /*----------------------------------------------------------------------------*/
 void StorageEngine::vCheckAllAssumptions(void)
 {
+  if (gxArguments.m_bVerbose)
+    vInfo("\n*\n* Check All Assumptions\n*\n"_Stz);
+  
   // this is in reverse order of the spaces in the project
   Base::vCheckAssumptions();
   Debugging::vCheckAssumptions();
@@ -157,6 +161,9 @@ void StorageEngine::vCheckAssumptions(void)
 /*----------------------------------------------------------------------------*/
 void StorageEngine::vSetSignalHandlers(void)
 {
+  if (gxArguments.m_bVerbose)
+    vInfo("\n*\n* Set Signal Handlers\n*\n"_Stz);
+  
   // Segmentation Violation
   signal(SIGSEGV, RapidsSE::vSignalHandler);
 }

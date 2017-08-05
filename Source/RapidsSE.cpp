@@ -71,10 +71,12 @@ BitMap*       gpBitMap;
 /*----------------------------------------------------------------------------*/
 /* execute arguments                                                          */
 /*----------------------------------------------------------------------------*/
-void RapidsSE::vExecute(void)
+void RapidsSE::vExecuteCmdLine(void)
 {
-  gxDdlLock.vInitLock(LK_DDL);
+  if (gxArguments.m_bVerbose)
+    vInfo("\n*\n* Execute Command Line\n*\n"_Stz);
   
+  gxDdlLock.vInitLock(LK_DDL);
   gxDicLock.vInitLock(LK_DIC);
   
   gpBitMap = new BitMap;
@@ -90,8 +92,10 @@ void RapidsSE::vExecute(void)
       ASSERT(gpBufferPool);
       vSystemInit();
       vStartActors();
-      vTrace("RapidsSE instance %s started\n"_Stz,gxArguments.m_sRegionName.aChar());
-      gpGrid->vDumpPartitioning();
+      if (gxArguments.m_bVerbose) {
+        vInfo("RapidsSE instance %s started\n"_Stz,gxArguments.m_sRegionName.aChar());
+        gpGrid->vDumpPartitioning();
+      }
       
       //vSkipListTest();
       if (gxArguments.m_bDocol) {
@@ -158,6 +162,9 @@ void RapidsSE::vPoolClose(void)
 /*----------------------------------------------------------------------------*/
 void RapidsSE::vPoolOpen(void)
 {
+  if (gxArguments.m_bVerbose)
+    vInfo("\n*\n* Pool Open\n*\n"_Stz);
+
   bool bResult;
   
   if (gxArguments.m_bUnlink) {
@@ -173,6 +180,9 @@ void RapidsSE::vPoolOpen(void)
       return;
     }
     
+    if (gxArguments.m_bVerbose)
+      vInfo("\n*\n* Create Region\n*\n"_Stz);
+    
     Region::vCreate(gxArguments.m_sRegionName,
                     gxArguments.m_iRegionSize,
                     gxArguments.m_nJumboTook,
@@ -181,7 +191,11 @@ void RapidsSE::vPoolOpen(void)
                     gxArguments.m_bRestart,
                     gxArguments.m_bDontFree,
                     gxArguments.m_bFreeRB);
+    
+    if (gxArguments.m_bVerbose)
+      vInfo("\n*\n* Create Global Objects\n*\n"_Stz);
     vCreateObjects();
+    
     return;
   }
   
@@ -357,6 +371,8 @@ void RapidsSE::vRunCommand(void)
 /*----------------------------------------------------------------------------*/
 void RapidsSE::vRunDocol(void)
 {
+  vInfo("\n*\n* Run docol\n*\n"_Stz);
+  
   // seed root task to run docol interpreter
   gnpRootTask->vSeedDocol();
   
@@ -385,6 +401,9 @@ void RapidsSE::vSignalHandler(int iSignal)
 /*----------------------------------------------------------------------------*/
 void RapidsSE::vSystemInit(void)
 {
+  if (gxArguments.m_bVerbose)
+    vInfo("\n*\n* System Init\n*\n"_Stz);
+
   ASSERT( ! gpMainDic->bHasWords() );
   
   // init the tls keys
@@ -429,6 +448,9 @@ void RapidsSE::vSystemInit(void)
 /*----------------------------------------------------------------------------*/
 void RapidsSE::vStartActors(void)
 {
+  if (gxArguments.m_bVerbose)
+    vInfo("\n*\n* Start Actors\n*\n"_Stz);
+  
   if (gbVerbose)
     vTrace("Shm region initialised at: %s\n"_Stz,gpAttachMap->m_sUTC.aChar());
 

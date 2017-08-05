@@ -8,6 +8,7 @@ extern AttachMap* gpAttachMap;
 extern void*      mpRegion;
 
 extern bool      gbVerbose;
+extern Arguments gxArguments;
 
 extern void* C_ADDR_POOL;
 
@@ -100,10 +101,11 @@ void Region::vCreate(StrVal& sRegionName, i8 iRegionSize, i8 iJumboTook,
   
   Magnitudes::vMagnitude(iRegionSize, sSize);
 
-  vTrace("Creating RapidsSE instance %s; size %s (%lldB)...\n"_Stz,
-         sRegionName.aChar(),
-         sSize.aChar(),
-         iRegionSize);
+  if (gxArguments.m_bVerbose)
+    vInfo("Creating RapidsSE instance %s; size %s (%lldB)...\n"_Stz,
+           sRegionName.aChar(),
+           sSize.aChar(),
+           iRegionSize);
   
   if (gbVerbose)
     vTrace("Region::vCreate A\n"_Stz);
@@ -199,10 +201,13 @@ void Region::vUnlink(StrVal& sRegionName)
 {
   SysCall xSysCall;
   
-  if (Shm::bUnlink(sRegionName,xSysCall))
-    vTrace("Region %s succesfully unlinked\n"_Stz,sRegionName.aChar());
-  else
+  if (Shm::bUnlink(sRegionName,xSysCall)) {
+    if (gxArguments.m_bVerbose)
+      vTrace("Region %s succesfully unlinked\n"_Stz,sRegionName.aChar());
+  }
+  else {
     vTrace("Region %s not unlinked\n"_Stz,sRegionName.aChar());
+  }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -215,7 +220,8 @@ void* Region::pOpen(StrVal& sRegionName, int& iFD)
   SysCall xSysCall;
   bool bResult;
   
-  vTrace("Region::pOpen %s\n"_Stz,sRegionName.aChar());
+  if (gxArguments.m_bVerbose)
+    vInfo("Region::pOpen %s\n"_Stz,sRegionName.aChar());
   
   // open shm region
   bResult = Shm::bAttach(sRegionName,iFD,xSysCall);

@@ -19,7 +19,7 @@ namespace StorageEngine
 
   public:
     
-    static void   vExecute(void);
+    static void   vExecuteCmdLine(void);
     static void   vPoolClose(void);
     static void   vPoolOpen(void);
     static bool   bPoolOpen(StrVal& sPoolName);
