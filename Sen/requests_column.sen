@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* add a column                                                               */
 /*----------------------------------------------------------------------------*/
-: add_column ( "<columnTy>" "<sColumnNm>" "<sTableNm>" -- <R> )
+: addColumn_req ( "<columnTy>" "<sColumnNm>" "<sTableNm>" -- <R> )
 
   locals| sTableNm sColumnNm |
 
@@ -23,7 +23,7 @@
 /*----------------------------------------------------------------------------*/
 /* add an index column                                                        */
 /*----------------------------------------------------------------------------*/
-: add_idxcolumn ( "<sColumnNm>" "<sIndexNm>" "<sTableNm>" -- <R> )
+: addIdxColumn_req ( "<sColumnNm>" "<sIndexNm>" "<sTableNm>" -- <R> )
 
   locals| sTableNm sIndexNm sColumnNm  |
 
@@ -39,7 +39,7 @@
 /*----------------------------------------------------------------------------*/
 /* add a partition column                                                     */
 /*----------------------------------------------------------------------------*/
-: add_partcolumn ( "<sColumnNm>" "<sTableNm>" -- <R> )
+: addPartColumn_req ( "<sColumnNm>" "<sTableNm>" -- <R> )
 
   locals| sTableNm sColumnNm  |
 
@@ -55,7 +55,7 @@
 /*----------------------------------------------------------------------------*/
 /* get list of columns                                                        */
 /*----------------------------------------------------------------------------*/
-: list_columns ( "<sTableNm>" -- <R> )
+: listColumns_req ( "<sTableNm>" -- <R> )
 
   // should be in the tables folder
   checkInTables not if <NIP+ERROR> exit then
@@ -84,7 +84,7 @@
 /*----------------------------------------------------------------------------*/
 /* get list of index columns                                                  */
 /*----------------------------------------------------------------------------*/
-: list_indexcolumns ( "<sTableNm" "<sIndexNm>" -- <R> )
+: listIndexColumns_req ( "<sTableNm" "<sIndexNm>" -- <R> )
 
   locals| sIndexNm sTableNm |
 
@@ -127,7 +127,7 @@
 /*----------------------------------------------------------------------------*/
 /* get list of partition key columns                                          */
 /*----------------------------------------------------------------------------*/
-: list_partitioncolumns ( "<sTableNm>" -- <R> )
+: listPartitionColumns_req ( "<sTableNm>" -- <R> )
 
   // should be in the tables folder
   checkInTables not if <NIP+ERROR> exit then
@@ -152,8 +152,7 @@
 
   <SUCCESS>
 ;
-
-
+                                      
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

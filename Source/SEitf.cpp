@@ -1127,7 +1127,7 @@ bool SEitf::bAddColumn(TokenVec& xTokenVec)
   sRequest.vConcat(xTokenVec[1]->aText());
   sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" add_column"_Stz);
+  sRequest.vConcat(" addColumn_req"_Stz);
   
   return bAppendRequest(sRequest);
 }
@@ -1158,7 +1158,7 @@ bool SEitf::bAddIndexColumn(TokenVec& xTokenVec)
   sRequest.vConcat(xTokenVec[1]->aText());
   sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" add_idxcolumn"_Stz);
+  sRequest.vConcat(" addIdxColumn_req"_Stz);
   
   return bAppendRequest(sRequest);
 }
@@ -1185,7 +1185,7 @@ bool SEitf::bAddPartitionColumn(TokenVec& xTokenVec)
   sRequest.vConcat(xTokenVec[1]->aText());
   sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" add_partcolumn"_Stz);
+  sRequest.vConcat(" addPartColumn_req"_Stz);
   
   return bAppendRequest(sRequest);
 }
@@ -1258,7 +1258,7 @@ bool SEitf::bListColumns(TokenVec& xTokenVec)
   sRequest.vConcat(xTokenVec[1]->aText());
   sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" list_columns"_Stz);
+  sRequest.vConcat(" listColumns_req"_Stz);
   
   return bAppendRequest(sRequest);
 }
@@ -1285,7 +1285,7 @@ bool SEitf::bListIndexColumns(TokenVec& xTokenVec)
   sRequest.vConcat(xTokenVec[2]->aText());
   sRequest.vConcat("\""_Stz);
 
-  sRequest.vConcat(" list_indexcolumns"_Stz);
+  sRequest.vConcat(" listIndexColumns_req"_Stz);
   
   return bAppendRequest(sRequest);
 }
@@ -1308,7 +1308,7 @@ bool SEitf::bListPartitionColumns(TokenVec& xTokenVec)
   sRequest.vConcat(xTokenVec[1]->aText());
   sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" list_partitioncolumns"_Stz);
+  sRequest.vConcat(" listPartitionColumns_req"_Stz);
   
   return bAppendRequest(sRequest);
 }

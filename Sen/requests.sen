@@ -56,7 +56,7 @@ usesch  use_schema
 -----------------
 Table Requests:
 -----------------
-add     add_column
+add     addColumn_req
 antbl   analyze_table
 cp      copy_table
 dantbl  danalyze_table
@@ -99,11 +99,11 @@ uprselidx upper_select_index
 -----------------
 Column Requests:
 -----------------
-add         add_column
-addidxcol   add_idxcolumn
-addpartcol  add_partcolumn
-lscol       list_columns
-lsidxcol    list_indexcolumns
+add         addColumn_req
+addidxcol   addIdxColumn_req
+addpartcol  addPartColumn_req
+lscol       listColumns_req
+lsidxcol    listIndexColumns_req
  
 ---------------------
 Dictionary Requests:
