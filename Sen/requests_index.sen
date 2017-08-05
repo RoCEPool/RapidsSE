@@ -96,7 +96,7 @@ timer: pIdxSelectTimer
   // create index
 
   //sTableNm pushTable assert                                // ../tables/sTableNm
-  //sTableNm get_table
+  //sTableNm getTable_req
   //popTable                                                          // ../tables
 
   sTableNm sIndexNm makeIndex assertInTables

@@ -57,25 +57,25 @@ usesch  use_schema
 Table Requests:
 -----------------
 add     addColumn_req
-antbl   analyze_table
-cp      copy_table
-dantbl  danalyze_table
-dex     dist_export_table
-dump    dump_table
-ex      export_table
-gettbl  get_table
-ld      load_table
-lstbl   list_tables
+antbl   analyzeTable_req
+cp      copyTable_req
+dantbl  danalyzeTable_req
+dex     distExport_table
+dump    dumpTable_req
+ex      exportTable_req
+gettbl  getTable_req
+ld      loadTable_req
+lstbl   listTables_req
 lwrsel  lower_select
-mktbl   create_table
-rettbl  return_table
-rgesel  range_select_table
-rmtbl   drop_table
-sel     select_table
-sz      size_table
-tableSizes size_tables
-tblInUse  table_inuse
-tr      truncate_table
+mktbl   createTable_req
+rettbl  returnTable_req
+rgesel  rangeSelectTable_req
+rmtbl   dropTable_req
+sel     selectTable_req
+sz      sizeTable_req
+tableSizes sizeTables_req
+tblInUse  tableInuse_req
+tr      truncateTable_req
 
 -----------------
 Index Requests:

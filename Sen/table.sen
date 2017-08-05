@@ -328,7 +328,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* get lower select cursor for table ( called by range_select_table request)  */
+/* get lower select cursor for table ( called by rangeSelectTable_req request)  */
 /*----------------------------------------------------------------------------*/
 : lowerSelectTable ( "<lower>" --  )
 
@@ -457,7 +457,7 @@
 
 
 /*----------------------------------------------------------------------------*/
-/* get range select cursor for table ( called by range_select_table request)  */
+/* get range select cursor for table ( called by rangeSelectTable_req request)  */
 /*----------------------------------------------------------------------------*/
 : rangeSelectTable ( "<upper>" "<lower>" -- <selCursor> )
 
@@ -490,7 +490,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* get select cursor for table ( called by select_table request)              */
+/* get select cursor for table ( called by selectTable_req request)              */
 /*----------------------------------------------------------------------------*/
 : selectTable ( -- "<^selCursor>" ) ( Task.seitf.table )
 

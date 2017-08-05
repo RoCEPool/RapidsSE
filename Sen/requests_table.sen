@@ -9,7 +9,7 @@ timer: selectTimer
 /*----------------------------------------------------------------------------*/
 /* analyse a table                                                            */
 /*----------------------------------------------------------------------------*/
-: analyze_table ( "<tableNm>" -- <R> )
+: analyzeTable_req ( "<tableNm>" -- <R> )
 
 tp: analyzeTable
 
@@ -53,9 +53,9 @@ ddlLock::grabWrite
 /*----------------------------------------------------------------------------*/
 /* detailed analysis of a table                                               */
 /*----------------------------------------------------------------------------*/
-: danalyze_table ( "<tableNm>" -- <R> )
+: danalyzeTable_req ( "<tableNm>" -- <R> )
 
-  tp: danalyze_table
+  tp: danalyzeTable_req
 
   ddlLock::grabWrite
 
@@ -89,7 +89,7 @@ ddlLock::grabWrite
 /*----------------------------------------------------------------------------*/
 /* append row buffer into table                                               */
 /*----------------------------------------------------------------------------*/
-: append_table ( "table", "buffer", "partition" -- <R> )
+: appendTable_req ( "table", "buffer", "partition" -- <R> )
 
 ddlLock::grabRead
 
@@ -101,7 +101,7 @@ ddlLock::grabRead
 /*----------------------------------------------------------------------------*/
 /* copy a table. from-table must exist & to-table is created                  */
 /*----------------------------------------------------------------------------*/
-: copy_table ( "<to-tableNm>" "<from-tableNm>" -- <R> )
+: copyTable_req ( "<to-tableNm>" "<from-tableNm>" -- <R> )
 
 ddlLock::grabRead
 
@@ -137,7 +137,7 @@ ddlLock::grabRead
 /*----------------------------------------------------------------------------*/
 /* create a table                                                             */
 /*----------------------------------------------------------------------------*/
-: create_table ( "<tableNm>" -- <R> )
+: createTable_req ( "<tableNm>" -- <R> )
 
 ddlLock::grabWrite
 
@@ -152,7 +152,7 @@ ddlLock::grabWrite
 /*----------------------------------------------------------------------------*/
 /* distributed export of a table                                              */
 /*----------------------------------------------------------------------------*/
-: dist_export_table ( "<fileNm>" "<tableNm>" -- <R> )
+: distExport_table ( "<fileNm>" "<tableNm>" -- <R> )
 
 ddlLock::grabRead
 
@@ -183,7 +183,7 @@ ddlLock::grabRead
 /*----------------------------------------------------------------------------*/
 /* drop a table                                                               */
 /*----------------------------------------------------------------------------*/
-: drop_table ( "<tableNm>" -- <R> )
+: dropTable_req ( "<tableNm>" -- <R> )
 
 tp: dropTable
 
@@ -203,7 +203,7 @@ ddlLock::grabWrite
 /*----------------------------------------------------------------------------*/
 /* dump table                                                                 */
 /*----------------------------------------------------------------------------*/
-: dump_table ( "<tableNm>" -- <R> )
+: dumpTable_req ( "<tableNm>" -- <R> )
 
 ddlLock::grabRead
 
@@ -230,9 +230,9 @@ ddlLock::grabRead
 /*----------------------------------------------------------------------------*/
 /* end of create table sequence                                               */
 /*----------------------------------------------------------------------------*/
-: end_create_table ( "<tableNm>" -- <R> )
+: endCreateTable_req ( "<tableNm>" -- <R> )
 
-tp: end_create_table
+tp: endCreateTable_req
 
 ddlLock::grabWrite
 
@@ -240,7 +240,7 @@ ddlLock::grabWrite
   checkInTable not if <NIP+ERROR> exit then
   checkIsTable not if <NIP+ERROR> exit then
 
-  //"end_create_table" .
+  //"endCreateTable_req" .
 
   // create column vector of table and partition
   columnVecTable
@@ -253,7 +253,7 @@ ddlLock::grabWrite
 /*----------------------------------------------------------------------------*/
 /* export a table                                                             */
 /*----------------------------------------------------------------------------*/
-: export_table ( "<fileNm>" "<tableNm>" -- <R> )
+: exportTable_req ( "<fileNm>" "<tableNm>" -- <R> )
 
 ddlLock::grabRead
 
@@ -280,7 +280,7 @@ ddlLock::grabRead
 /*----------------------------------------------------------------------------*/
 /* get a table ref                                                            */
 /*----------------------------------------------------------------------------*/
-: get_table ( "<tableNm>" -- <R> )
+: getTable_req ( "<tableNm>" -- <R> )
 
   getTableRef not if <NIP+ERROR> exit then
 
@@ -290,7 +290,7 @@ ddlLock::grabRead
 /*----------------------------------------------------------------------------*/
 /* get list of tables                                                         */
 /*----------------------------------------------------------------------------*/
-: list_tables ( -- <R> )
+: listTables_req ( -- <R> )
 
 ddlLock::grabRead
 
@@ -304,7 +304,7 @@ ddlLock::grabRead
 /*----------------------------------------------------------------------------*/
 /* load a table                                                               */
 /*----------------------------------------------------------------------------*/
-: load_table ( "<fileNm>" "<tableNm>" -- <R> )
+: loadTable_req ( "<fileNm>" "<tableNm>" -- <R> )
 
 ddlLock::grabRead
 
@@ -340,7 +340,7 @@ snap1:
 /*----------------------------------------------------------------------------*/
 /* load a table from a stream                                                 */
 /*----------------------------------------------------------------------------*/
-: load_table_stream ( "<fileNm>" "<tableNm>" -- <R> )
+: loadTableStream_req ( "<fileNm>" "<tableNm>" -- <R> )
 
   ddlLock::grabRead
 
@@ -371,7 +371,7 @@ snap1:
 /*----------------------------------------------------------------------------*/
 /* return a table ref                                                         */
 /*----------------------------------------------------------------------------*/
-: return_table ( -- <R> )
+: returnTable_req ( -- <R> )
 
   assert::stack_0
 
@@ -389,7 +389,7 @@ snap1:
 /*----------------------------------------------------------------------------*/
 /* get sel cursor for sel of table                                            */
 /*----------------------------------------------------------------------------*/
-: select_table ( "<tableNm>" -- <R> )
+: selectTable_req ( "<tableNm>" -- <R> )
 
   assert::stack_1
   CN_STRVAL assert::class_0
@@ -443,7 +443,7 @@ ddlLock::grabRead
 /*----------------------------------------------------------------------------*/
 /* get sel cursor for rgesel of table                                         */
 /*----------------------------------------------------------------------------*/
-: range_select_table ( "<upper>" "<lower>" "<tableNm>" -- <R> )
+: rangeSelectTable_req ( "<upper>" "<lower>" "<tableNm>" -- <R> )
 
   assert::stack_3
   CN_STRVAL assert::class_0
@@ -494,7 +494,7 @@ ddlLock::grabRead
 /*----------------------------------------------------------------------------*/
 /* select from table using index given lower bound                            */
 /*----------------------------------------------------------------------------*/
-: lower_select_table ( "<lower>" "<tableNm>" -- <R> )
+: lowerSelectTable_req ( "<lower>" "<tableNm>" -- <R> )
 
   assert::stack_2
   CN_STRVAL assert::class_0
@@ -548,9 +548,9 @@ ddlLock::grabRead
 /* fetch rows from table using given where string                             */
 /*----------------------------------------------------------------------------*/
 /*
-: fetch_rows_table ( "<where>" "<tableNm>" -- <R> )
+: fetchRowsTable_req ( "<where>" "<tableNm>" -- <R> )
 
-"fetch_rows_table" .
+"fetchRowsTable_req" .
 //traceon
 
   assert::stack_2
@@ -618,7 +618,7 @@ stk
 /*----------------------------------------------------------------------------*/
 /* get size of table                                                          */
 /*----------------------------------------------------------------------------*/
-: size_table ( "<tableNm>" -- <R> )
+: sizeTable_req ( "<tableNm>" -- <R> )
 
 ddlLock::grabWrite
 
@@ -654,7 +654,7 @@ ddlLock::grabWrite
 /*----------------------------------------------------------------------------*/
 /* get size of tables in the tables folder                                    */
 /*----------------------------------------------------------------------------*/
-: size_tables (  )
+: sizeTables_req (  )
 
   0 locals| iCount |
 
@@ -733,7 +733,7 @@ ddlLock::grabWrite
 /*----------------------------------------------------------------------------*/
 /* truncate table                                                             */
 /*----------------------------------------------------------------------------*/
-: truncate_table ( "<tableNm>" -- <R> )
+: truncateTable_req ( "<tableNm>" -- <R> )
 
 ddlLock::grabRead
 
@@ -760,7 +760,7 @@ ddlLock::grabRead
 /*----------------------------------------------------------------------------*/
 /* any outstanding table references                                           */
 /*----------------------------------------------------------------------------*/
-: table_inuse ( "<tableNm>" -- <R> )
+: tableInuse_req ( "<tableNm>" -- <R> )
 
   // should be in the tables folder
   checkInTables       not if <NIP+ERROR> exit then

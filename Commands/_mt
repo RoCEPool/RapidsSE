@@ -159,26 +159,26 @@ usesch  use_schema
 
 Table Requests:
 
-antbl   analyze_table
-dantbl  danalyze_table
-gettbl  get_table
-mktbl   create_table
-lstbl   list_tables
+antbl   analyzeTable_req
+dantbl  danalyzeTable_req
+gettbl  getTable_req
+mktbl   createTable_req
+lstbl   listTables_req
 add     addColumn_req
 addidx  addIdxColumn_req
 lscol   listColumns_req
-ld      load_table
-tblInUse  table_inuse
-tableSizes size_tables
-sel     select_table
-dump    dump_table
-cp      copy_table
-dex     dist_export_table
-ex      export_table
-sz      size_table
-tr      truncate_table
-rettbl  return_table
-rmtbl   drop_table
+ld      loadTable_req
+tblInUse  tableInuse_req
+tableSizes sizeTables_req
+sel     selectTable_req
+dump    dumpTable_req
+cp      copyTable_req
+dex     distExport_table
+ex      exportTable_req
+sz      sizeTable_req
+tr      truncateTable_req
+rettbl  returnTable_req
+rmtbl   dropTable_req
 
 Index Requests:
 
