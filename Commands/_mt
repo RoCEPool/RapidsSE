@@ -140,9 +140,9 @@ docol epochDump ;
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 List of command that need to be tested:
-mkten   create_tenant
-lsten   list_tenants
-rmten   drop_tenant
+mkten   createTenant_req
+lsten   listTenants_req
+rmten   dropTenant_req
 
 Catalog Requests:
 

@@ -34,9 +34,9 @@ connectCluster_req connectCluster_req
 ------------------
 Tenant Requests:
 -----------------
-lsten   list_tenants
-mkten   create_tenant
-rmten   drop_tenant
+lsten   listTenants_req
+mkten   createTenant_req
+rmten   dropTenant_req
 
 -----------------
 Catalog Requests:

@@ -602,7 +602,7 @@ bool SEitf::bCreateTenant(TokenVec& xTokenVec)
   sRequest.vConcat(xTokenVec[1]->aText());
   sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" create_tenant"_Stz);
+  sRequest.vConcat(" createTenant_req"_Stz);
   
   return bAppendRequest(sRequest);
 }
@@ -622,7 +622,7 @@ bool SEitf::bListTenants(TokenVec& xTokenVec)
   }
 
   ASSERT(xTokenVec[0]->bSame("lsten"_Stz));
-  sRequest = "list_tenants"_Stz;
+  sRequest = "listTenants_req"_Stz;
   return bAppendRequest(sRequest);
 }
 
@@ -644,7 +644,7 @@ bool SEitf::bDropTenant(TokenVec& xTokenVec)
   sRequest.vConcat(xTokenVec[1]->aText());
   sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" drop_tenant"_Stz);
+  sRequest.vConcat(" dropTenant_req"_Stz);
   
   return bAppendRequest(sRequest);
 }
