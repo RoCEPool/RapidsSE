@@ -408,5 +408,29 @@ prefetcht0 [rdi]
 ret
 
 #-----------------------------------------------------------------------------#
+# _iTestPrefetch: test for prefetch                                           #
+#-----------------------------------------------------------------------------#
+#ifdef __APPLE__
+
+.globl _iTestPrefetch
+.intel_syntax noprefix
+
+_iTestPrefetch:
+
+#else
+
+.globl iTestPrefetch
+.intel_syntax noprefix
+
+iTestPrefetch:
+
+#endif
+
+mov ecx,0x1a4
+rdmsr 
+
+ret
+
+#-----------------------------------------------------------------------------#
 # end of file                                                                 #
 #-----------------------------------------------------------------------------#
