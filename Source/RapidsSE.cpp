@@ -441,6 +441,9 @@ void RapidsSE::vSystemInit(void)
   
   // the root thread is on dstack of root task
   gnpRootThread = gnpRootTask->pRootThread();
+  
+  if (gbVerbose)
+    vTrace("Shm region initialised at: %s\n"_Stz,gpAttachMap->m_sUTC.aChar());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -451,9 +454,6 @@ void RapidsSE::vStartActors(void)
   if (gxArguments.m_bVerbose)
     vInfo("\n*\n* Start Actors\n*\n"_Stz);
   
-  if (gbVerbose)
-    vTrace("Shm region initialised at: %s\n"_Stz,gpAttachMap->m_sUTC.aChar());
-  
   // seed root task to start the system
   gnpRootTask->vSeedWord("startActors"_Stz);
   
@@ -462,9 +462,6 @@ void RapidsSE::vStartActors(void)
            gnpRootTask->sName().aChar(),
            *gnpRootTask);
   
-  // append root task onto root thread's task set
-  // root thread will pop the root task and run it
-  //gnpRootThread->vAppend(*gnpRootTask);
   gpScheduler->vEnqueueTask_Mutex(*gnpRootTask);
   
   // the primary thread waits here till root task exits
