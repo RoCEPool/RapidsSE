@@ -18,6 +18,8 @@ namespace System
   extern "C" u8 iDropWrite(u8*);
   extern "C" u8 iGrabWrite(u8*);
   extern "C" u8 iIsLocked(u8*);
+  
+  extern "C" void vPrefetch(u8*);
 }
 
 /*============================================================================*/
