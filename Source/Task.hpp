@@ -214,7 +214,6 @@ namespace Tasks
     bool  bIsName(StrVal& sName);
     void  vLocalsPop(void);
     void  vLocalsPush(void);
-    void vLoop(void);
     NP_Task npNextInSet(void);
     StrVal&   sName(void);
     void vName(StrVal& sName);
@@ -242,6 +241,7 @@ namespace Tasks
     void vState(eTS eState);
     eTK  eTaskKind(void);
     void vTaskKind(eTK eTaskKind);
+    void vTaskLoop(void);
     Threads::Thread* pThread(void);
     void vThread(Threads::Thread* pThread);
     void vTracePoint(Stz* aMark);

@@ -284,7 +284,7 @@ void Thread::vRunTask(MP_Task mpTask)
   ASSERT(PosixThread::pTlsGet(giTLS_TaskKey));
   mpTask->vState(TS_RUNNING);
   mpTask->vThread(nullptr);
-  mpTask->vLoop();
+  mpTask->vTaskLoop();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -383,7 +383,7 @@ void Thread::vLoop_Drone(void)
   
   m_npTask->vState(TS_RUNNING);
   m_npTask->vThread(this);
-  m_npTask->vLoop();
+  m_npTask->vTaskLoop();
   
   ASSERT(TS_EXITED == m_npTask->eState());
   
@@ -446,7 +446,7 @@ void Thread::vLoop_Partition(void)
     ASSERT(PosixThread::pTlsGet(giTLS_TaskKey));
     m_npTask->vState(TS_RUNNING);
     m_npTask->vThread(this);
-    m_npTask->vLoop();
+    m_npTask->vTaskLoop();
     
     if (TS_WAITING_ACK != m_npTask->eState())
       m_npTask->vThread(nullptr);
@@ -546,7 +546,7 @@ void Thread::vLoop_Server(void)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // run the task
     
-    m_npTask->vLoop();
+    m_npTask->vTaskLoop();
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // thread no longer running the task
@@ -641,7 +641,7 @@ void Thread::vLoop_Worker(void)
     ASSERT(PosixThread::pTlsGet(giTLS_TaskKey));
     m_npTask->vState(TS_RUNNING);
     m_npTask->vThread(this);
-    m_npTask->vLoop();
+    m_npTask->vTaskLoop();
     
     if (TS_WAITING_ACK != m_npTask->eState())
       m_npTask->vThread(nullptr);

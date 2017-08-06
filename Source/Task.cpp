@@ -1973,7 +1973,7 @@ void Task::vTxId(i8 iTxId)
 /*----------------------------------------------------------------------------*/
 /* task loop                                                                  */
 /*----------------------------------------------------------------------------*/
-void Task::vLoop(void)
+void Task::vTaskLoop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   

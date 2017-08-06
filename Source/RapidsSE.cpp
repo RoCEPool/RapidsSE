@@ -310,7 +310,7 @@ void RapidsSE::vDicCompile(NP_Task npRootTask)
            npRootTask->sName().aChar(),
            *npRootTask);
   
-  npRootTask->vLoop();
+  npRootTask->vTaskLoop();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -453,17 +453,13 @@ void RapidsSE::vStartActors(void)
   
   if (gbVerbose)
     vTrace("Shm region initialised at: %s\n"_Stz,gpAttachMap->m_sUTC.aChar());
-
-  if (gbVerbose)
-    vTrace("Starting actors\n"_Stz);
-
   
   // seed root task to start the system
   gnpRootTask->vSeedWord("startActors"_Stz);
   
   if (gbVerbose)
     vTrace("[[mainThread]] RapidsSE::vStartActors launching [%s] %p\n"_Stz,
-         gnpRootTask->sName().aChar(),
+           gnpRootTask->sName().aChar(),
            *gnpRootTask);
   
   // append root task onto root thread's task set
