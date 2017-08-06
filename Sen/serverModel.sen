@@ -41,7 +41,7 @@ args.regionSize nServerThreads constant N_SERVER_THREADS
 : >serverNm ( i -- s ) "serverThread"    swap >str str.cat ;
 : :serverThread   ( i -- w ) >serverNm    :thread    ;
 
-: startSeverThreads
+: startServerThreads
 
   0 locals| pServerThread |
 
