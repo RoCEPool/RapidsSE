@@ -83,7 +83,9 @@ nPartitionThreads constant N_PARTITION_THREADS
     // give it a public taskset
     I >partitionThreadNm ".taskset" str.cat :taskset execute
       pPartitionThread thread.taskset!
-    words
+
+//words
+
     // spawn os thread
     pPartitionThread thread.spawn_partition
 

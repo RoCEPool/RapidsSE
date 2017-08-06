@@ -50,6 +50,11 @@ void Debugging::vPrint(i8 iLevel, Stz* aFormat, va_list xArgs)
   assert(iLevel != 0);
   vsnprintf(s,sizeof(gaReportBuffer)-iLen-3,aFormat->aChar(),xArgs);
   
+  if (StrLib::bContains(gaReportBuffer,"__compiled__"))
+    i8 iDebug = 1;
+  if (StrLib::bContains(gaReportBuffer,"serverThread"))
+    i8 iDebug = 1;
+
   // print to file
   fprintf(stdout,"%s",gaReportBuffer);
   fflush(stdout);
@@ -127,7 +132,10 @@ void Debugging::vReport(i8 iLevel, Stz* aFormat, va_list xArgs)
   
   assert(iLevel != 0);
   vsnprintf(s,sizeof(gaReportBuffer)-iLen-3,aFormat->aChar(),xArgs);
-    
+  
+  if (StrLib::bContains(gaReportBuffer,"__compiled__"))
+    i8 iDebug = 1;
+  
   // print to file
   fprintf(stderr,"%s",gaReportBuffer);
   fflush(stderr);
