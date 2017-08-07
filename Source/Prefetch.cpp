@@ -3,6 +3,7 @@
 /*============================================================================*/
 
 #include "Utilities.h"
+#include "Asm.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- Static ------------------------------------------------------------------*/
@@ -27,7 +28,7 @@ void Prefetch::vFill(i8* aWord, i8 nWords)
 void Prefetch::vTest(void)
 {
   i8 iSum = 0;
-  const i8 iSize = C_1GB * 16;
+  const i8 iSize = C_1GB * 2;
   const i8 nWords = iSize / 8;
   
   vTrace("Prefetch Utility\n"_Stz);
@@ -53,9 +54,13 @@ void Prefetch::vTest(void)
   xTimer.vStart();
   
   iSum = 0;
+  i8 i_Word = Random::iRandom(nWords);
   for (i8 i_WordNo = 0; i_WordNo < nWords; i_WordNo++) {
-    i8 i_Word = Random::iRandom(nWords);
+    i8 i_Word2 = Random::iRandom(nWords);
+    //__builtin_prefetch(&aWord[i_Word2]);
+    //vPrefetch((void*)(&aWord[i_Word2]));
     iSum += aWord[i_Word];
+    i_Word = i_Word2;
   }
 
   xTimer.vUpdate();
