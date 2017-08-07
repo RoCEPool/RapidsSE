@@ -390,7 +390,8 @@ void IndexData::vTruncate(void)
   
   m_zLock.vGrabWrite();
   
-  m_pRoot->vTruncate();
+  if (m_pRoot)
+    m_pRoot->vTruncate();
   
   m_pRoot = nullptr;
   

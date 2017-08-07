@@ -218,7 +218,7 @@ void Slots::vTidyUp(void)
   i8 nItems = pIdxDataVec->nItems();
   
   // run the finalize for the partitions
-  for (i8 i_Slot = 0; i_Slot < C_SLOTS_PER_NODE; i_Slot++) {
+  for (i8 i_Slot = 0; i_Slot < gpGrid->iSlots(); i_Slot++) {
     m_pPartitionVec->pGet(i_Slot)->vTidyUp();
   }
   
