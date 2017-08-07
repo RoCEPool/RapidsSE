@@ -12,7 +12,7 @@ namespace Structures
   
   public:
 
-    static Stz* pColumn(Stz* aRowData, i8 iColumnNo, i8& iLength);
+    static char* pColumn(char* aRowData, i8 iColumnNo, i8& iLength);
     static void vDump(char* aRowData, i8 iRowLength);
     static void vFormatData(Stz* aRawData, i8 iRawLength, Stz* aRowData, i8& iRowLength);
     static void vGetDataString(s256& sDataString, char* aRowData, i8 iRowLength);

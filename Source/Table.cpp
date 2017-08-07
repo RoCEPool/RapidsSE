@@ -563,7 +563,7 @@ i8 Table::iRowPartition(Stz* pRow)
 /* hash the first field of row return partition                               */
 /*----------------------------------------------------------------------------*/
 #ifdef _ROWFORMAT
-i8 Table::iRowPartition(Stz* pRow, i8 iLength)
+i8 Table::iRowPartition(char* pRow, i8 iLength)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
@@ -581,10 +581,10 @@ i8 Table::iRowPartition(Stz* pRow, i8 iLength)
     i8 iColumnNo = pColumn->iColumnNo();
     
     // get the column value
-    Stz* sCursor = RowData::pColumn(pRow, iColumnNo, iLength);
+    char* sCursor = RowData::pColumn(pRow, iColumnNo, iLength);
     
     // hash the column value
-    DtmLib::vHash(pColumn->eDatumType(),iHash,sCursor,iLength,pColumn);
+    DtmLib::vHash(pColumn->eDatumType(),iHash,(Stz*)sCursor,iLength,pColumn);
   }
   
   // modulo to get partition number

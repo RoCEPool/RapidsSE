@@ -492,7 +492,7 @@ void Entry::vExtractKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
     
     // get the column value from the row for the iColumnNo
     i8 iLength;
-    char* pDst = (char*)RowData::pColumn((Stz*)aRow(), iColumnNo, iLength);
+    char* pDst = (char*)RowData::pColumn(aRow(), iColumnNo, iLength);
     
     switch(pColumn->eColumnType()) {
         
@@ -572,7 +572,7 @@ void Entry::vExtractKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
       }
         
       case CT_VARCHAR: {
-        bool b = Vch::bExtract(pDst,(Vch*)s.s(),iLength,pColumn);
+        bool b = Vch::bExtract(pDst,(Vch*)s.aChar(),iLength,pColumn);
         xValWrk = s;
         break;
       }

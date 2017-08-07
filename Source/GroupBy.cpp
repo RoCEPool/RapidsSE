@@ -98,20 +98,23 @@ void GroupBy::vApplyBuffer(EntryBuffer* pEntryBuffer)
     //    vTrace("\n"_Stz);
     
     // extract the order key (its the first field)
-    char* aCursor = pLineItem->aChar();
-    i8 iOrderKey;
     
     i8 iLength = 0;
+    i8 iOrderKey;
+    
     // get iLength for row                                      //ALKA_ROWFORMAT
+    char* aCursor = RowData::pColumn(pEntry->aRow(), 0, iLength);
     bool b = DtmLib::bExtract(DM_BCD,(Stz*)&iOrderKey,aCursor,iLength,nullptr);
     
     // extract the quantity (its after the fifth '|')
-    aCursor = pLineItem->aChar();
-    i8 iQuantity;
-    b = StrLib::bFind(&aCursor,'|',5);
-    aCursor++;
+//    aCursor = pLineItem->aChar();
+//    i8 iQuantity;
+//    b = StrLib::bFind(&aCursor,'|',5);
+//    aCursor++;
     
     // get iLength for row                                      //ALKA_ROWFORMAT
+    i8 iQuantity;
+    aCursor = RowData::pColumn(pEntry->aRow(), 5, iLength);
     b = DtmLib::bExtract(DM_BCD,(Stz*)&iQuantity,aCursor,iLength, nullptr);
     
     // compute which group
@@ -188,18 +191,20 @@ void GroupBy::vApplyEntry(Entry* pLineItemEntry)
   //    vTrace("\n"_Stz);
   
   // extract the order key (its the first field)
-  char* aCursor = pLineItem->aChar();
+  //char* aCursor = pLineItem->aChar();
   i8 iOrderKey;
   i8 iLength = 0;
   // get iLength                                                //ALKA_ROWFORMAT
+  char* aCursor = RowData::pColumn(pLineItemEntry->aRow(), 0, iLength);
   bool b = DtmLib::bExtract(DM_BCD,(Stz*)&iOrderKey,aCursor,iLength,nullptr);
   
   // extract the quantity (its after the fifth '|')
-  aCursor = pLineItem->aChar();
+  //  aCursor = pLineItem->aChar();
   i8 iQuantity;
-  b = StrLib::bFind(&aCursor,'|',5);
-  aCursor++;
+  //  b = StrLib::bFind(&aCursor,'|',5);
+  //  aCursor++;
   // get iLength                                                //ALKA_ROWFORMAT
+  aCursor = RowData::pColumn(pLineItemEntry->aRow(), 5, iLength);
   b = DtmLib::bExtract(DM_BCD,(Stz*)&iQuantity,aCursor,iLength,nullptr);
   
   // compute which group

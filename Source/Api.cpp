@@ -1185,7 +1185,7 @@ eEC RapidsSE_HashRowPartition(SEitf* pSEitf, Stz* pRow, void** ppPartition, i8 i
     // validate table
     VALIDATE_TABLE("d"_Stz);
 #ifdef _ROWFORMAT                                                            //ALKA_ROWFORMAT
-    pSEitf->m_iRowPartition = pSEitf->pCurrentTable()->iRowPartition(pRow,
+    pSEitf->m_iRowPartition = pSEitf->pCurrentTable()->iRowPartition(pRow->aChar(),
                                   StrLib::iLength((char*)pRow));
 #else
     pSEitf->m_iRowPartition = pSEitf->pCurrentTable()->iRowPartition(pRow);

@@ -88,7 +88,7 @@ void RowData::vFormatData(Stz* aRawData, i8 iRawLength, Stz* aRowData, i8& iRowL
   
   //ASSERT('\n' == *aSrc || '|' == *aSrc);
   
-  vDumpAscii(aRawData,iRawLength);
+  //vDumpAscii(aRawData,iRawLength);
   vDump(aRowData->aChar(), iRowLength);
   
 }
@@ -97,11 +97,11 @@ void RowData::vFormatData(Stz* aRawData, i8 iRawLength, Stz* aRowData, i8& iRowL
 /* get pointer to where column starts                                         */
 /*----------------------------------------------------------------------------*/
 #ifdef _ROWFORMAT
-Stz* RowData::pColumn(Stz* aRowData, i8 iColumnNo, i8& iRowLength)
+char* RowData::pColumn(char* aRowData, i8 iColumnNo, i8& iRowLength)
 {
 
   i8 iCurrentColumn = 0;
-  Stz* sCursor = aRowData;
+  char* sCursor = aRowData;
   
   iRowLength = 0;
 
@@ -116,7 +116,7 @@ Stz* RowData::pColumn(Stz* aRowData, i8 iColumnNo, i8& iRowLength)
   return sCursor;
 }
 #else
-Stz* RowData::pColumn(Stz* aRowData, i8 iColumnNo, i8& iLength)
+char* RowData::pColumn(char* aRowData, i8 iColumnNo, i8& iLength)
 {
   return nullptr;
 }
