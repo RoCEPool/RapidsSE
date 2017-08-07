@@ -52,15 +52,12 @@ void Prefetch::vTest(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // sum randomly
   xTimer.vStart();
-  
+
   iSum = 0;
-  i8 i_Word = Random::iRandom(nWords);
+  
   for (i8 i_WordNo = 0; i_WordNo < nWords; i_WordNo++) {
-    i8 i_Word2 = Random::iRandom(nWords);
-    //__builtin_prefetch(&aWord[i_Word2]);
-    //vPrefetch((void*)(&aWord[i_Word2]));
+    i8 i_Word = Random::iRandom(nWords);
     iSum += aWord[i_Word];
-    i_Word = i_Word2;
   }
 
   xTimer.vUpdate();
@@ -70,6 +67,38 @@ void Prefetch::vTest(void)
          iSum
          );
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // fill all words
+  xTimer.vStart();
+  vFill(aWord,nWords);
+  xTimer.vUpdate();
+  
+  vTrace("Time to fill: total %lldns; perWord %lldns\n"_Stz,
+         xTimer.iNanoseconds(),
+         xTimer.iNanoseconds() / nWords
+         );
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // sum randomly with prefetch
+  xTimer.vStart();
+  
+  iSum = 0;
+  i8 i_Word = Random::iRandom(nWords);
+  for (i8 i_WordNo = 0; i_WordNo < nWords; i_WordNo++) {
+    i8 i_Word2 = Random::iRandom(nWords);
+    __builtin_prefetch(&aWord[i_Word2]);
+    //vPrefetch((void*)(&aWord[i_Word2]));
+    iSum += aWord[i_Word];
+    i_Word = i_Word2;
+  }
+  
+  xTimer.vUpdate();
+  vTrace("Time to randomly sum with prefetch: total %lldns; perWord %lldns (sum %lld)\n"_Stz,
+         xTimer.iNanoseconds(),
+         xTimer.iNanoseconds() / nWords,
+         iSum
+         );
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // fill all words
   xTimer.vStart();
