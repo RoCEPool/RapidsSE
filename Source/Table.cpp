@@ -538,32 +538,7 @@ i8 Table::nIndexBuffers(i8 iIndexNo)
 /*----------------------------------------------------------------------------*/
 /* hash the first field of row return partition                               */
 /*----------------------------------------------------------------------------*/
-/*
 i8 Table::iRowPartition(Stz* pRow)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-
-  // calculate length of first field
-  i8 iLength = 0;
-  char* pChar = (char*)pRow;
-  while ('|' != *pChar++)
-    iLength++;
-  
-  // hash the field using xxhash
-  i8 iHash = XXH32(pRow,iLength,0);
-  
-  // modulo to get partition number
-  i8 iPartition = iHash % (gpGrid->m_nSlots * gpGrid->iNodes());
-  
-  //vTrace("Partition: %lld\n"_Stz,m_iPartition);
-  return iPartition;
-}
-*/
-/*----------------------------------------------------------------------------*/
-/* hash the first field of row return partition                               */
-/*----------------------------------------------------------------------------*/
-#ifdef _ROWFORMAT
-i8 Table::iRowPartition(char* pRow, i8 iLength)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
@@ -581,7 +556,7 @@ i8 Table::iRowPartition(char* pRow, i8 iLength)
     i8 iColumnNo = pColumn->iColumnNo();
     
     // get the column value
-    char* sCursor = RowData::pColumn(pRow, iColumnNo);
+    char* sCursor = RowData::pColumn(pRow->aChar(), iColumnNo);
     
     // hash the column value
     DtmLib::vHash(pColumn->eDatumType(),iHash,(Stz*)sCursor,pColumn);
@@ -593,7 +568,7 @@ i8 Table::iRowPartition(char* pRow, i8 iLength)
   //vTrace("Partition: %lld\n"_Stz,m_iPartition);
   return iPartition;
 }
-#else
+/*
 i8 Table::iRowPartition(Stz* pRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
@@ -632,7 +607,7 @@ i8 Table::iRowPartition(Stz* pRow)
   //vTrace("Partition: %lld\n"_Stz,m_iPartition);
   return iPartition;
 }
-#endif
+*/
 
 /*----------------------------------------------------------------------------*/
 /* show column vector                                                         */

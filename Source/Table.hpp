@@ -66,11 +66,8 @@ namespace DBobjects
     bool bRefOut(void);
     i8   nRowBuffers(void);
     i8   nIndexBuffers(i8 iIndexNo);
-#ifdef _ROWFORMAT
-    i8   iRowPartition(char* pRow, i8 iLength);
-#else
     i8   iRowPartition(Stz* pRow);
-#endif
+
     void vShowColumnVec(void);
     Dic* pSubDic(void);
     Slots* pSlots(void);
