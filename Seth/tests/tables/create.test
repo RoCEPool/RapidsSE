@@ -1,0 +1,119 @@
+--------------------------------------------------------------------------------
+-- create index tests
+--------------------------------------------------------------------------------
+
+-- (1) create table t1
+create table T1 (
+  key   INTEGER NOT NULL, 
+  name  VARCHAR(32) NOT NULL
+);
+success
+
+-- (2) drop table t1
+drop table T1 ;
+success
+
+-- (3) drop a non-existent table
+drop table T1 ;
+failure: 'no such table'
+
+-- (4) create table t1 again
+create table T1 (
+  key   INTEGER NOT NULL, 
+  name  VARCHAR(32) NOT NULL
+);
+success
+
+-- (5) try create table t1 again when t1 exists
+create table T1 (
+  key   INTEGER NOT NULL, 
+  name  VARCHAR(32) NOT NULL
+);
+failure: 'table exists'
+
+-- (6) drop table t1
+drop table T1 ;
+success
+
+-- the following crashes SE
+-- create table with an name longer than 32 chars
+--(7) create table T1abcdefghijklmnopqrstuvwxyz0123456789 (
+--  key   INTEGER NOT NULL, 
+--  name  VARCHAR(32) NOT NULL
+--);
+--success
+
+-- (8) invalid syntax (missing ',')
+create table T1 (
+  key   INTEGER NOT NULL 
+  name  VARCHAR(32) NOT NULL
+);
+failure: 'invalid command'
+
+-- (9) create table with all types
+create table T1 (
+  c1  boolean     NOT NULL,
+  c2  date        NOT NULL, 
+  c3  decimal     NOT NULL, 
+  c4  float       NOT NULL, 
+  c5  integer     NOT NULL, 
+  c6  interval    NOT NULL, 
+  c7  time        NOT NULL, 
+  c8  timestamp   NOT NULL, 
+  c9  varchar(32) NOT NULL
+);
+success
+
+-- (10) drop table
+drop table T1 ;
+success
+
+-- (11) create table with two columns that have same name
+create table T1 (
+  c1   INTEGER NOT NULL, 
+  c1   VARCHAR(32) NOT NULL
+);
+failure: 'duplicate column'
+
+-- (12) try create table t1 with no columns
+create table T1 (
+);
+failure: 'invalid command'
+
+-- (13) try create table t1 with invalid table name
+create table T1$ (
+  c1   INTEGER NOT NULL
+);
+failure: 'invalid command'
+
+-- (14) try create table t1 with invalid column name
+create table T1 (
+  c1$  INTEGER NOT NULL
+);
+failure: 'invalid command'
+
+-- (15) try create table t1 with invalid column type
+create table T1 (
+  c1  NOSUCHTYPE NOT NULL
+);
+failure: 'invalid command'
+
+-- (16) try create table t1 with invalid null
+create table T1 (
+  c1  integer NOT NUKK
+);
+failure: 'invalid command'
+
+CLEANUP {
+  -- Commands in the cleanup section always run, and do so at the end
+  -- of a test (whether successful or not). 
+
+  -- Ensure that table ('t1') is dropped.
+  -- We can set the expected result to mute if we don't want to see any warnings.
+  drop table T1;
+  mute
+
+  bye;
+  mute
+}
+
