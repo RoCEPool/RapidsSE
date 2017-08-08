@@ -581,10 +581,10 @@ i8 Table::iRowPartition(char* pRow, i8 iLength)
     i8 iColumnNo = pColumn->iColumnNo();
     
     // get the column value
-    char* sCursor = RowData::pColumn(pRow, iColumnNo, iLength);
+    char* sCursor = RowData::pColumn(pRow, iColumnNo);
     
     // hash the column value
-    DtmLib::vHash(pColumn->eDatumType(),iHash,(Stz*)sCursor,iLength,pColumn);
+    DtmLib::vHash(pColumn->eDatumType(),iHash,(Stz*)sCursor,pColumn);
   }
   
   // modulo to get partition number
