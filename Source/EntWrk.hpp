@@ -64,7 +64,7 @@ namespace DBobjects
     void   vRightOffset(on nOffsetNo, u8 uRightOffset);
     RightVec* aRightVec(void);
     i8        nRightSize(void);
-    void   vShow(IdxColVec* pIdxColVec);
+    void   vShow(ColumnVec* pColVec);
     i8     iTxId(void);
     void   vTxId(i8 iTxId);
 

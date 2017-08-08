@@ -118,12 +118,12 @@ void Task::vIndexBuffer(MP_Task mpTask)
   StrVal* pStrVal = _pStrVal(xValWrk.pNestedValueSelf());
   
   xKeyWrk.vAddDatum(pStrVal, pIndex->pIdxColVec()->pGet(0));
-  xKeyWrk.vShow();
+  //xKeyWrk.vShow();
   
   EntryBuffer* pIndexBuffer = pIndexData->pPositionLevel(xKeyWrk, JC_AFTER, 0);
   
   bn nBuffer = pIndexBuffer->nBufferNo();
-  vTrace("L0 Buffer: %lld\n"_Stz, *nBuffer);
+  //vTrace("L0 Buffer: %lld\n"_Stz, *nBuffer);
   
   //pIndexBuffer->vShow();
   
@@ -293,10 +293,10 @@ void Task::vIndexPosition(MP_Task mpTask)
   Column* pColumn = pIndex->pIdxColVec()->pGet(0);
   
   xKeyWrk.vAddDatum(pStrVal, pColumn);
-  xKeyWrk.aKey()->vShow(pIndex->pIdxColVec());
+  //xKeyWrk.aKey()->vShow(pIndex->pIdxColVec());
 
   Entry* pIndexEntry = pIndexBuffer->pPosition(xKeyWrk, JC_AFTER);
-  pIndexEntry->aKey()->vShow(pIndex->pIdxColVec());
+  //pIndexEntry->aKey()->vShow(pIndex->pIdxColVec());
   
   if (pIndexEntry) {
     bool bIsEqual = false;

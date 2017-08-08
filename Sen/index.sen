@@ -775,7 +775,7 @@ tp: loadIndexes
   locals| sIndexNm sSelectTaskSeed sUpperKey sLowerKey sExactKey |
 
   // local variables
-  0 0 0 0 0 0 0 locals| iSlots pSeitf pSelectTask nRowCount pIndexBuffer pEntry pIndex |
+  0 0 0 0 0 0 0 0 locals| iPartition iSlots pSeitf pSelectTask nRowCount pIndexBuffer pEntry pIndex |
 
   // increment query count
   queryCount ++
@@ -804,16 +804,18 @@ tp: loadIndexes
       I grid::toPartition "Partition: %v\n" str.format .put
     then
 
+    // RAY: I gets corrupted in the loop ????
+    I to iPartition
+
     // put the partition in this tasks seitf
     //I pSeitf seitf.partition!
 
     // create a selectTask to execute the key select on the index for the partition
-    sExactKey sLowerKey sUpperKey pIndex pSeitf I 6
+    sExactKey sLowerKey sUpperKey pIndex pSeitf iPartition 6
       sSelectTaskSeed nullptr "selectTask" TK_SELECT_PART spawnServerActor
         to pSelectTask
 
   loop
-
     1
     begin
     while  // first while
@@ -821,7 +823,6 @@ tp: loadIndexes
       begin
         // attempt to pop buffer off the tasks buffer queue
         pSeitf seitf.bufferQueue@  queue.pop ( value true | false )
-
         // try again if no value
         not while
           //REQUST_LOOP2
@@ -841,11 +842,11 @@ tp: loadIndexes
           //"Get an entry from the tempEntryBuffer" .
           display@ if
             args.metadata if
-              pEntry entry.embeddedRow
-              I grid::toPartition
-              "row: (%v '%v')\n" str.format .put
+              pIndex pEntry entry.embeddedRow
+              iPartition grid::toPartition
+              "row: (%v,%v)\n" str.format .put
             else
-              pEntry entry.embeddedRow "\n" str.cat .put
+              pIndex pEntry entry.embeddedRow "\n" str.cat .put
             then
           then
           1 nRowCount + to nRowCount

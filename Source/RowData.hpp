@@ -5,19 +5,19 @@
 
 namespace Structures
 {
-  
+  const i8 C_COLUMN_OFFSET_SIZE = 1;
+
   class RowData
   {
   private:
-  
+    
   public:
 
-    static char* pColumn(char* aRowData, i8 iColumnNo, i8& iLength);
-    static void vDump(char* aRowData, i8 iRowLength);
-    static void vFormatData(Stz* aRawData, i8 iRawLength, Stz* aRowData, i8& iRowLength);
-    static void vGetDataString(s256& sDataString, char* aRowData, i8 iRowLength);
-    static void vShow(char* aRowData, i8 iRowLength);
-    static void vShowData(char* aRowData, i8 iRowLength);
+    static char* pColumn(char* aRowData, i8 iColumnNo);
+    static void vDump(Stz* aRowData, ColumnVec* pColVec);
+    static bool bFormatData(ColumnVec* pColVec, Stz* aRawData, i8 iRawLength, Stz* aRowData, i8& iRowLength);
+    static void vGetDataString(s256& sDataString, Stz* aRowData, ColumnVec* pColVec);
+    static void vShow(Stz* aRowData, ColumnVec* pColVec);
   };
 }
 

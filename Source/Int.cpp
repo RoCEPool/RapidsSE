@@ -193,59 +193,6 @@ void Int::vCopy(void* aDst, void* aSrc)
 /*----------------------------------------------------------------------------*/
 /* extract an integer from substr                                             */
 /*----------------------------------------------------------------------------*/
-#ifdef _ROWFORMAT
-bool Int::bExtract(char* aSrc, Int* aInteger, i8 iLength, Column* pColumn)
-{
-  bool bNegative = false;
-  bool bData = false;
-  
-  i8 iCurrentChar = 0;
-  i8 iResult = 0;
-  
-  for (i8 i_CurrentChar = 0; i_CurrentChar < iLength; i_CurrentChar++) {
-    
-    char c = aSrc[i_CurrentChar];
-    
-    // skip leading whitespace
-    if (' ' == c) {
-      if (bData)
-        return false;
-      
-      // test for null
-      if (i_CurrentChar == iLength) {
-        aInteger->vSetNull();
-        return true;
-      }
-      continue;
-    }
-    
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // test for negative
-    if (c == '-') {
-      if (bData)
-        return false;
-      bNegative = true;
-      continue;
-    }
-    
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // collect leading portion (till '.')
-    if (StrLib::bIsDigit(c)) {
-      bData = true;
-      iResult = iResult * 10 + StrLib::iDigitToI8(c);
-      continue;
-    }
-    
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // compute final result
-  aInteger->m_iInt = bNegative ? - iResult : iResult;
-  
-  return true;
-}
-
-#else
 bool Int::bExtract(char** aaSrc, Int* aInteger, Column* pColumn)
 {
   i8 iResult = 0;
@@ -287,7 +234,6 @@ bool Int::bExtract(char** aaSrc, Int* aInteger, Column* pColumn)
   
   return true;
 }
-#endif
 
 /*----------------------------------------------------------------------------*/
 /* sprint int datum                                                           */
@@ -305,7 +251,7 @@ bool Int::bValid(char* aSrc, i8 iLength, Column* pColumn)
 {
   Int xInt;
   
-  bool bValid = Int::bExtract(aSrc,&xInt,iLength,pColumn);
+  bool bValid =  true; //Int::bExtract(aSrc,&xInt,iLength,pColumn);
   
   return bValid;
 }

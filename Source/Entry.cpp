@@ -413,7 +413,9 @@ void Entry::vShow(i8 iBase, Index* pIndex)
 
 #ifdef _ROWFORMAT
   if (pIndex->bIsHidden()) {
-    RowData::vShow(aRow(), nRowSize());
+    char* pRow = aRow();
+    if (nRowSize() > 0)
+      RowData::vShow((Stz*)aRow(), pIndex->pTable()->pColumnVec());
   }
 #else
   if (pIndex->bIsHidden()) {
@@ -491,15 +493,12 @@ void Entry::vExtractKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
     i8 iColumnNo = pColumn->iColumnNo();
     
     // get the column value from the row for the iColumnNo
-    i8 iLength;
-    char* pDst = (char*)RowData::pColumn(aRow(), iColumnNo, iLength);
+    char* pDst = (char*)RowData::pColumn(aRow(), iColumnNo);
     
     switch(pColumn->eColumnType()) {
         
       case CT_BOOLEAN: {
-        Bol xBol;
-        bool b = Bol::bExtract(pDst,&xBol,iLength,pColumn);
-        ASSERT(b);
+        Bol xBol = *((Bol*)pDst);
         xValWrk = xBol;
         break;
       }
@@ -510,58 +509,47 @@ void Entry::vExtractKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
       }
         
       case CT_DATE: {
-        Dte xDte;
-        bool b = Dte::bExtract(pDst,&xDte,iLength,pColumn);
-        ASSERT(b);
+        Dte xDte = *((Dte*)pDst);
         xValWrk = xDte;
         break;
       }
         
       case CT_DECIMAL: {
-        Bcd xBcd;
-        bool b = Bcd::bExtract(pDst,&xBcd,iLength,pColumn);
-        ASSERT(b);
+        Bcd xBcd = *((Bcd*)pDst);
         xValWrk = xBcd;
         break;
       }
         
       case CT_FLOAT: {
-        Flt xFlt;
-        bool b = Flt::bExtract(pDst,&xFlt,iLength,pColumn);
-        ASSERT(b);
+        Flt xFlt = *((Flt*)pDst);
         xValWrk = xFlt.dAsD8();
         break;
       }
         
       case CT_INTEGER: {
-        Int xInt;
-        bool b = Int::bExtract(pDst,&xInt,iLength,pColumn);
-        ASSERT(b);
-        if (b)
-          xValWrk = xInt.iAsI8();
+        Int xInt = *((Int*)pDst);
+        xValWrk = xInt.iAsI8();
         break;
       }
         
       case CT_INTERVAL: {
-        Ivl xIvl;
-        bool b = Ivl::bExtract(pDst,&xIvl,iLength,pColumn);
-        ASSERT(b);
+        Ivl xIvl = *((Ivl*)pDst);
         xValWrk = xIvl;
         break;
       }
         
       case CT_TIME: {
-        Tme xTme;
-        bool b = Tme::bExtract(pDst,&xTme,iLength,pColumn);
-        ASSERT(b);
+        Tme xTme = *((Tme*)pDst);
+        //bool b = Tme::bExtract(pDst,&xTme,iLength,pColumn);
+        //ASSERT(b);
         xValWrk = xTme;
         break;
       }
         
       case CT_TIMESTAMP: {
-        Tsp xTsp;
-        bool b = Tsp::bExtract(pDst,&xTsp,iLength,pColumn);
-        ASSERT(b);
+        Tsp xTsp = *((Tsp*)pDst);
+        //bool b = Tsp::bExtract(pDst,&xTsp,iLength,pColumn);
+        //ASSERT(b);
         xValWrk = xTsp;
         break;
       }
@@ -572,7 +560,6 @@ void Entry::vExtractKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
       }
         
       case CT_VARCHAR: {
-        bool b = Vch::bExtract(pDst,(Vch*)s.aChar(),iLength,pColumn);
         xValWrk = s;
         break;
       }

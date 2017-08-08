@@ -32,11 +32,10 @@ namespace Datums
   
     static i8   nCopy(void* aDst, void* aSrc);
     static void vCopy(void* aDst, void* aSrc);
+    static bool bExtract(char** aaSrc, Bol* aBol, DBobjects::Column* pColumn);
 #ifdef _ROWFORMAT
-    static bool bExtract(char* aSrc, Bol* aBol, i8 iLength, DBobjects::Column* pColumn);
     static bool bValid(char* aSrc, i8 iLength, DBobjects::Column* pColumn);
 #else
-    static bool bExtract(char** aaSrc, Bol* aBol, DBobjects::Column* pColumn);
     static bool bValid(char** aaSrc, DBobjects::Column* pColumn);
 #endif
     

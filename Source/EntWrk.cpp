@@ -190,7 +190,7 @@ void EntWrk::vTxId(i8 iTxId)
 /*----------------------------------------------------------------------------*/
 /* show                                                                       */
 /*----------------------------------------------------------------------------*/
-void EntWrk::vShow(IdxColVec* pIdxColVec)
+void EntWrk::vShow(ColumnVec* pColVec)
 {
   i8 iKey;
   
@@ -217,7 +217,7 @@ void EntWrk::vShow(IdxColVec* pIdxColVec)
   
 #ifdef _ROWFORMAT
   if (m_bHasData) {
-    RowData::vShow(aData(), nDataSize());
+    RowData::vShow((Stz*)aData(), pColVec);
   }
   
 #else

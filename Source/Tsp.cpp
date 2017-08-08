@@ -243,103 +243,6 @@ void Tsp::vCopy(void* aDst, void* aSrc)
 /*----------------------------------------------------------------------------*/
 /* extract a timestamp from substr                   yyyy-mo-ddThh:mi:ss.fffZ */
 /*----------------------------------------------------------------------------*/
-#ifdef _ROWFORMAT
-bool Tsp::bExtract(char* aSrc, Tsp* aTimestamp, i8 iLength, Column* pColumn)
-{
-  // refer: http://en.wikipedia.org/wiki/ISO_8601
-  
-  u8 uField;
-  
-  i8 i_Length = 1;
-  
-  // skip leading whitespace
-  while (' ' == *aSrc) {
-    aSrc++;
-    i_Length++;
-  }
-  
-  // test for null
-  if ( ! *aSrc && i_Length == iLength ) {
-    aTimestamp->vSetNull();
-    return true;
-  }
-  
-  aTimestamp->vInitZero();
-  
-  if ( ! *aSrc )
-    return false;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - -
-  // date portion
-  
-  // extract year
-  if ( ! StrLib::bExtractU8(&aSrc,&uField) )
-    return false;
-  aTimestamp->x.m_uYear = uField;
-  
-  // skip - separator
-  if ('-' != (*aSrc)++)
-    return false;
-  
-  // extract month
-  if ( ! StrLib::bExtractU8(&aSrc,&uField) )
-    return false;
-  aTimestamp->x.m_uMonth = uField;
-  
-  // skip - separator
-  if ('-' != (*aSrc)++) return false;
-  
-  // extract day
-  if ( ! StrLib::bExtractU8(&aSrc,&uField) )
-    return false;
-  aTimestamp->x.m_uDay = uField;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - -
-  // time portion
-  
-  // skip T or space separator
-  if ( ! ('T' == *aSrc || ' ' == *aSrc) )
-    return true;
-  aSrc++;
-  
-  // extract hour
-  if ( ! StrLib::bExtractU8(&aSrc,&uField) )
-    return true;
-  aTimestamp->x.m_uHour = uField;
-  
-  // skip : separator
-  if (':' != (*aSrc)++)
-    return true;
-  
-  // extract minute
-  if ( ! StrLib::bExtractU8(&aSrc,&uField) )
-    return true;
-  aTimestamp->x.m_uMinute = uField;
-  
-  // skip : separator
-  if (':' != (*aSrc)++)
-    return true;
-  
-  // extract second
-  if ( ! StrLib::bExtractU8(&aSrc,&uField) )
-    return true;
-  aTimestamp->x.m_uSecond = uField;
-  
-  // extract fraction (assuming milliseconds)
-  if ('.' == *aSrc) {
-    aSrc++;
-    if ( StrLib::bExtractU8(&aSrc,&uField) )
-      aTimestamp->x.m_uMilli = uField;
-  }
-  
-  // skip Z separator
-  if ('Z' == *aSrc)
-    aSrc++;
-  
-  return true;
-}
-
-#else
 bool Tsp::bExtract(char** aaSrc, Tsp* aTimestamp, Column* pColumn)
 {
   // refer: http://en.wikipedia.org/wiki/ISO_8601
@@ -430,7 +333,6 @@ bool Tsp::bExtract(char** aaSrc, Tsp* aTimestamp, Column* pColumn)
   
   return true;
 }
-#endif
 
 /*----------------------------------------------------------------------------*/
 /* sprint tsp datum                                                           */
@@ -458,7 +360,7 @@ bool Tsp::bValid(char* aSrc, i8 iLength, Column* pColumn)
 {
   Tsp xTsp;
   
-  bool bValid = bExtract(aSrc,&xTsp,iLength,pColumn);
+  bool bValid = true; //bExtract(aSrc,&xTsp,iLength,pColumn);
   
   return bValid;
 }
