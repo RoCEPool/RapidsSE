@@ -30,8 +30,10 @@ ddlLock::grabWrite
   tp ( "<tableNm>" )
 
   args.metadata if
-    "(nodeName VARCHAR, partition INTEGER, strands INTEGER, buffers INTEGER, rowCount INTEGER)"
-      metadata!
+    args.metadata if
+       "(nodeName VARCHAR, partition INTEGER, bufferNo INTEGER, bufferLevel INTEGER, entries INTEGER)"
+       metadata!
+    then
   then
 
   analyzeTable ( )
