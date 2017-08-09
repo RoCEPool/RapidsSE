@@ -12,6 +12,94 @@ extern AttachMap* gpAttachMap;
 extern Grid*      gpGrid;
 extern Scheduler* gpScheduler;
 
+struct ReqTable {
+  const Stz* aCommand;
+  bool (SEitf::*aFunc)(TokenVec& xTokenVec);
+  const Stz* aRequest;
+};
+
+ReqTable SeRequests[] =
+{
+ { "addcol"_Stz,         &SEitf::bAddColumn,            nullptr },
+ { "antbl"_Stz,          &SEitf::bAnalyzeTable,         nullptr },
+ { "anidx"_Stz,          &SEitf::bAnalyzeIndex,         nullptr },
+ { "addidxcol"_Stz,      &SEitf::bAddIndexColumn,       nullptr },
+ { "addpartcol"_Stz,     &SEitf::bAddPartitionColumn,   nullptr },
+ { "cf"_Stz,             &SEitf::bPushDic,              nullptr },
+ { "connectCluster"_Stz, &SEitf::bConnectCluster,       nullptr },
+ { "cp"_Stz,             &SEitf::bCopyTable,            nullptr },
+ { "danidx"_Stz,         &SEitf::bDanalyzeIndex,        nullptr },
+ { "dantbl"_Stz,         &SEitf::bDanalyzeTable,        nullptr },
+ { "dex"_Stz,            &SEitf::bDistExportTable,      nullptr },
+ { "docol"_Stz,          &SEitf::bDocol,                nullptr },
+ { "displayOff"_Stz,     &SEitf::bDisplayOff,           nullptr },
+ { "displayOn"_Stz,      &SEitf::bDisplayOn,            nullptr },
+ { "dump"_Stz,           &SEitf::bDumpTable,            nullptr },
+ { "endmkidx"_Stz,       &SEitf::bEndCreateIndex,       nullptr },
+ { "endmktbl"_Stz,       &SEitf::bEndCreateTable,       nullptr },
+ { "ex"_Stz,             &SEitf::bExportTable,          nullptr },
+ { "fetch"_Stz,          &SEitf::bFetchRows,            nullptr },
+ { "get"_Stz,            &SEitf::bGet,                  nullptr },
+ { "getFreeSpace"_Stz,   &SEitf::bGetFreeSpace,         nullptr },
+ { "getInUseSpace"_Stz,  &SEitf::bGetInUseSpace,        nullptr },
+ { "getidx"_Stz,         &SEitf::bGetIndex,             nullptr },
+ { "gettbl"_Stz,         &SEitf::bGetTable,             nullptr },
+ { "gettsk"_Stz,         &SEitf::bGetTask,              nullptr },
+ { "getTotalSpace"_Stz,  &SEitf::bGetTotalSpace,        nullptr },
+ { "dumpidx"_Stz,        &SEitf::bDumpIndex,            nullptr },
+ { "TblInUse"_Stz,       &SEitf::bInUseTable,           nullptr },
+ { "ld"_Stz,             &SEitf::bLoadTable,            nullptr },
+ { "lds"_Stz,            &SEitf::bLoadTableStream,      nullptr },
+ { "lf"_Stz,             &SEitf::bGetDicContents,       nullptr },
+ { "lfG"_Stz,            &SEitf::bGetDicContentsG,      nullptr },
+ { "lscat"_Stz,          &SEitf::bListCatalogs,         nullptr },
+ { "lscol"_Stz,          &SEitf::bListColumns,          nullptr },
+ { "lsidx"_Stz,          &SEitf::bListIndices,          nullptr },
+ { "lsidxcol"_Stz,       &SEitf::bListIndexColumns,     nullptr },
+ { "lspartcol"_Stz,      &SEitf::bListPartitionColumns, nullptr },
+ { "lssch"_Stz,          &SEitf::bListSchemas,          nullptr },
+ { "lstbl"_Stz,          &SEitf::bListTables,           nullptr },
+ { "lsten"_Stz,          &SEitf::bListTenants,          nullptr },
+ { "lwrsel"_Stz,         &SEitf::bLowerSelectTable,     nullptr },
+ { "mkcat"_Stz,          &SEitf::bCreateCatalog,        nullptr },
+ { "mkidx"_Stz,          &SEitf::bCreateIndex,          nullptr },
+ { "mksch"_Stz,          &SEitf::bCreateSchema,         nullptr },
+ { "mktbl"_Stz,          &SEitf::bCreateTable,          nullptr },
+ { "mkten"_Stz,          &SEitf::bCreateTenant,         nullptr },
+ { "object"_Stz,         &SEitf::bObject,               nullptr },
+ { "pRB"_Stz,            &SEitf::bPrintRowBuffer,       nullptr },
+ { "pwf"_Stz,            &SEitf::bGetDicPath,           nullptr },
+ { "retidx"_Stz,         &SEitf::bRetIndex,             nullptr },
+ { "rettbl"_Stz,         &SEitf::bRetTable,             nullptr },
+ { "rettsk"_Stz,         &SEitf::bRetTask,              nullptr },
+ { "rf"_Stz,             &SEitf::bRemoveFolder,         nullptr },
+ { "rgesel"_Stz,         &SEitf::bRangeSelectTable,     nullptr },
+ { "rmcat"_Stz,          &SEitf::bDropCatalog,          nullptr },
+ { "rmdic"_Stz,          &SEitf::bRemoveFolder,         nullptr },
+ { "rmidx"_Stz,          &SEitf::bDropIndex,            nullptr },
+ { "rmsch"_Stz,          &SEitf::bDropSchema,           nullptr },
+ { "rmtbl"_Stz,          &SEitf::bDropTable,            nullptr },
+ { "rmten"_Stz,          &SEitf::bDropTenant,           nullptr },
+ { "sel"_Stz,            &SEitf::bSelectTable,          nullptr },
+ { "set"_Stz,            &SEitf::bSet,                  nullptr },
+ { "setidxunique"_Stz,   &SEitf::bIndexSetUnique,       nullptr },
+ { "space"_Stz,          &SEitf::bPoolSpace,            nullptr },
+ { "status"_Stz,         &SEitf::bNodeStatus,           nullptr },
+ { "szidx"_Stz,          &SEitf::bSizeIndex,            nullptr },
+ { "sz"_Stz,             &SEitf::bSizeTable,            nullptr },
+ { "tableSizes"_Stz,     &SEitf::bSizeTables,           nullptr },
+ { "tr"_Stz,             &SEitf::bTruncateTable,        nullptr },
+ { "tridx"_Stz,          &SEitf::bTruncateIndex,        nullptr },
+ { "usesch"_Stz,         &SEitf::bUseSchema,            nullptr },
+ { "__x"_Stz,            &SEitf::bX,                    nullptr },
+ { "ping"_Stz,           &SEitf::bPing,                 nullptr },
+ { "mon"_Stz,            &SEitf::bGetMonitor,           nullptr },
+ { "print"_Stz,          &SEitf::bPrint,                nullptr },
+ { "seitf"_Stz,          &SEitf::bSeitfCount,           nullptr },
+ { "version"_Stz,        &SEitf::bGetVersion,           nullptr },
+ { "visidx"_Stz,         &SEitf::bVisualizeIndex,       nullptr },
+};
+
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
@@ -390,7 +478,7 @@ bool SEitf::bDecode(TokenVec& xTokenVec)
   if (xTokenVec[0]->bSame("addidxcol"_Stz)) return bAddIndexColumn(xTokenVec);
   if (xTokenVec[0]->bSame("addpartcol"_Stz)) return bAddPartitionColumn(xTokenVec);
   if (xTokenVec[0]->bSame("cf"_Stz)) return bPushDic(xTokenVec);
-  if (xTokenVec[0]->bSame("connectCluster_req"_Stz)) return bConnectCluster(xTokenVec);
+  if (xTokenVec[0]->bSame("connectCluster"_Stz)) return bConnectCluster(xTokenVec);
   if (xTokenVec[0]->bSame("cp"_Stz)) return bCopyTable(xTokenVec);
   if (xTokenVec[0]->bSame("danidx"_Stz)) return bDanalyzeIndex(xTokenVec);
   if (xTokenVec[0]->bSame("dantbl"_Stz)) return bDanalyzeTable(xTokenVec);
@@ -490,7 +578,7 @@ bool SEitf::bConnectCluster(TokenVec& xTokenVec)
   
   s256 sRequest;
   
-  ASSERT(xTokenVec[0]->bSame("connectCluster_req"_Stz));
+  ASSERT(xTokenVec[0]->bSame("connectCluster"_Stz));
   sRequest = "connectCluster_req"_Stz;
   return bAppendRequest(sRequest);
 }

@@ -29,7 +29,7 @@ createDefaultFolders
 ---------------------
 Connection Requests:
 ---------------------
-connectCluster_req connectCluster_req
+connectCluster  connectCluster_req
 
 ------------------
 Tenant Requests:
