@@ -89,106 +89,106 @@ namespace Interface
     
     bool bDecode(TokenVec& xTokenVec);
     
-    bool bConnect(TokenVec& xTokenVec);
-    bool bConnectCluster(TokenVec& xTokenVec);
-    bool bDisconnect(TokenVec& xTokenVec);
+    bool bConnect(TokenVec& xTokenVec, i8 iReqNo);
+    bool bConnectCluster(TokenVec& xTokenVec, i8 iReqNo);
+    bool bDisconnect(TokenVec& xTokenVec, i8 iReqNo);
     
-    bool bGet(TokenVec& xTokenVec);
-    bool bSet(TokenVec& xTokenVec);
+    bool bGet(TokenVec& xTokenVec, i8 iReqNo);
+    bool bSet(TokenVec& xTokenVec, i8 iReqNo);
     
-    bool bRemoveFolder(TokenVec& xTokenVec);
+    bool bRemoveFolder(TokenVec& xTokenVec, i8 iReqNo);
     
-    bool bCreateTenant(TokenVec& xTokenVec);
-    bool bListTenants(TokenVec& xTokenVec);
-    bool bDropTenant(TokenVec& xTokenVec);
+    bool bCreateTenant(TokenVec& xTokenVec, i8 iReqNo);
+    bool bListTenants(TokenVec& xTokenVec, i8 iReqNo);
+    bool bDropTenant(TokenVec& xTokenVec, i8 iReqNo);
 
-    bool bCreateCatalog(TokenVec& xTokenVec);
-    bool bListCatalogs(TokenVec& xTokenVec);
-    bool bDropCatalog(TokenVec& xTokenVec);
+    bool bCreateCatalog(TokenVec& xTokenVec, i8 iReqNo);
+    bool bListCatalogs(TokenVec& xTokenVec, i8 iReqNo);
+    bool bDropCatalog(TokenVec& xTokenVec, i8 iReqNo);
     
-    bool bCreateSchema(TokenVec& xTokenVec);
-    bool bListSchemas(TokenVec& xTokenVec);
-    bool bDropSchema(TokenVec& xTokenVec);
-    bool bUseSchema(TokenVec& xTokenVec);
+    bool bCreateSchema(TokenVec& xTokenVec, i8 iReqNo);
+    bool bListSchemas(TokenVec& xTokenVec, i8 iReqNo);
+    bool bDropSchema(TokenVec& xTokenVec, i8 iReqNo);
+    bool bUseSchema(TokenVec& xTokenVec, i8 iReqNo);
     
-    bool bCreateIndex(TokenVec& xTokenVec);
-    bool bDropIndex(TokenVec& xTokenVec);
-    bool bDumpIndex(TokenVec& xTokenVec);
-    bool bEndCreateIndex(TokenVec& xTokenVec);
-    bool bListIndices(TokenVec& xTokenVec);
-    bool bIndexSetUnique(TokenVec& xTokenVec);
-    bool bVisualizeIndex(TokenVec& xTokenVec);
+    bool bCreateIndex(TokenVec& xTokenVec, i8 iReqNo);
+    bool bDropIndex(TokenVec& xTokenVec, i8 iReqNo);
+    bool bDumpIndex(TokenVec& xTokenVec, i8 iReqNo);
+    bool bEndCreateIndex(TokenVec& xTokenVec, i8 iReqNo);
+    bool bListIndices(TokenVec& xTokenVec, i8 iReqNo);
+    bool bIndexSetUnique(TokenVec& xTokenVec, i8 iReqNo);
+    bool bVisualizeIndex(TokenVec& xTokenVec, i8 iReqNo);
   
-    bool bCreateTable(TokenVec& xTokenVec);
-    bool bEndCreateTable(TokenVec& xTokenVec);
+    bool bCreateTable(TokenVec& xTokenVec, i8 iReqNo);
+    bool bEndCreateTable(TokenVec& xTokenVec, i8 iReqNo);
   
-    bool bListTables(TokenVec& xTokenVec);
-    bool bDisplayOff(TokenVec& xTokenVec);
-    bool bDisplayOn(TokenVec& xTokenVec);
-    bool bDocol(TokenVec& xTokenVec);
-    bool bDropTable(TokenVec& xTokenVec);
-    bool bDumpTable(TokenVec& xTokenVec);
+    bool bListTables(TokenVec& xTokenVec, i8 iReqNo);
+    bool bDisplayOff(TokenVec& xTokenVec, i8 iReqNo);
+    bool bDisplayOn(TokenVec& xTokenVec, i8 iReqNo);
+    bool bDocol(TokenVec& xTokenVec, i8 iReqNo);
+    bool bDropTable(TokenVec& xTokenVec, i8 iReqNo);
+    bool bDumpTable(TokenVec& xTokenVec, i8 iReqNo);
    
-    bool bAddColumn(TokenVec& xTokenVec);
-    bool bAddIndexColumn(TokenVec& xTokenVec);
-    bool bAddPartitionColumn(TokenVec& xTokenVec);
-    bool bListColumns(TokenVec& xTokenVec);
-    bool bListIndexColumns(TokenVec& xTokenVec);
-    bool bListPartitionColumns(TokenVec& xTokenVec);
+    bool bAddColumn(TokenVec& xTokenVec, i8 iReqNo);
+    bool bAddIndexColumn(TokenVec& xTokenVec, i8 iReqNo);
+    bool bAddPartitionColumn(TokenVec& xTokenVec, i8 iReqNo);
+    bool bListColumns(TokenVec& xTokenVec, i8 iReqNo);
+    bool bListIndexColumns(TokenVec& xTokenVec, i8 iReqNo);
+    bool bListPartitionColumns(TokenVec& xTokenVec, i8 iReqNo);
     
-    bool bAnalyzeIndex(TokenVec& xTokenVec);
-    bool bDanalyzeIndex(TokenVec& xTokenVec);
-    bool bGetIndex(TokenVec& xTokenVec);
-    bool bRetIndex(TokenVec& xTokenVec);
-    bool bSizeIndex(TokenVec& xTokenVec);
-    bool bTruncateIndex(TokenVec& xTokenVec);
+    bool bAnalyzeIndex(TokenVec& xTokenVec, i8 iReqNo);
+    bool bDanalyzeIndex(TokenVec& xTokenVec, i8 iReqNo);
+    bool bGetIndex(TokenVec& xTokenVec, i8 iReqNo);
+    bool bRetIndex(TokenVec& xTokenVec, i8 iReqNo);
+    bool bSizeIndex(TokenVec& xTokenVec, i8 iReqNo);
+    bool bTruncateIndex(TokenVec& xTokenVec, i8 iReqNo);
 
-    bool bAnalyzeTable(TokenVec& xTokenVec);
-    bool bCopyTable(TokenVec& xTokenVec);
-    bool bExportTable(TokenVec& xTokenVec);
-    bool bDanalyzeTable(TokenVec& xTokenVec);
-    bool bDistExportTable(TokenVec& xTokenVec);
-    bool bLoadTable(TokenVec& xTokenVec);
-    bool bLoadTableStream(TokenVec& xTokenVec);
-    bool bLowerSelectTable(TokenVec& xTokenVec);
-    bool bSelectTable(TokenVec& xTokenVec);
-    bool bRangeSelectTable(TokenVec& xTokenVec);
-    bool bGetTable(TokenVec& xTokenVec);
-    bool bInUseTable(TokenVec& xTokenVec);
-    bool bRetTable(TokenVec& xTokenVec);
-    bool bNodeStatus(TokenVec& xTokenVec);
-    bool bPoolSpace(TokenVec& xTokenVec);
-    bool bSizeTable(TokenVec& xTokenVec);
-    bool bSizeTables(TokenVec& xTokenVec);
-    bool bTruncateTable(TokenVec& xTokenVec);
+    bool bAnalyzeTable(TokenVec& xTokenVec, i8 iReqNo);
+    bool bCopyTable(TokenVec& xTokenVec, i8 iReqNo);
+    bool bExportTable(TokenVec& xTokenVec, i8 iReqNo);
+    bool bDanalyzeTable(TokenVec& xTokenVec, i8 iReqNo);
+    bool bDistExportTable(TokenVec& xTokenVec, i8 iReqNo);
+    bool bLoadTable(TokenVec& xTokenVec, i8 iReqNo);
+    bool bLoadTableStream(TokenVec& xTokenVec, i8 iReqNo);
+    bool bLowerSelectTable(TokenVec& xTokenVec, i8 iReqNo);
+    bool bSelectTable(TokenVec& xTokenVec, i8 iReqNo);
+    bool bRangeSelectTable(TokenVec& xTokenVec, i8 iReqNo);
+    bool bGetTable(TokenVec& xTokenVec, i8 iReqNo);
+    bool bInUseTable(TokenVec& xTokenVec, i8 iReqNo);
+    bool bRetTable(TokenVec& xTokenVec, i8 iReqNo);
+    bool bNodeStatus(TokenVec& xTokenVec, i8 iReqNo);
+    bool bPoolSpace(TokenVec& xTokenVec, i8 iReqNo);
+    bool bSizeTable(TokenVec& xTokenVec, i8 iReqNo);
+    bool bSizeTables(TokenVec& xTokenVec, i8 iReqNo);
+    bool bTruncateTable(TokenVec& xTokenVec, i8 iReqNo);
     
-    bool bFetchRows(TokenVec& xTokenVec);
+    bool bFetchRows(TokenVec& xTokenVec, i8 iReqNo);
   
-    bool bGetTask(TokenVec& xTokenVec);
-    bool bRetTask(TokenVec& xTokenVec);
+    bool bGetTask(TokenVec& xTokenVec, i8 iReqNo);
+    bool bRetTask(TokenVec& xTokenVec, i8 iReqNo);
   
     bool bInsertRow(Stz* pRow);
     bool bInsertBuffer(void);
     bool bInsertBuffer(EntryBuffer* pRowBuffer, i8 iPartition);
     
-    bool bPushDic(TokenVec& xTokenVec);
-    bool bGetDicPath(TokenVec& xTokenVec);
-    bool bGetDicContents(TokenVec& xTokenVec);
-    bool bGetDicContentsG(TokenVec& xTokenVec);
+    bool bPushDic(TokenVec& xTokenVec, i8 iReqNo);
+    bool bGetDicPath(TokenVec& xTokenVec, i8 iReqNo);
+    bool bGetDicContents(TokenVec& xTokenVec, i8 iReqNo);
+    bool bGetDicContentsG(TokenVec& xTokenVec, i8 iReqNo);
 
-    bool bGetMonitor(TokenVec& xTokenVec);
-    bool bGetFreeSpace(TokenVec& xTokenVec);
-    bool bGetInUseSpace(TokenVec& xTokenVec);
-    bool bGetTotalSpace(TokenVec& xTokenVec);
-    bool bGetVersion(TokenVec& xTokenVec);
-    bool bSeitfCount(TokenVec& xTokenVec);
+    bool bGetMonitor(TokenVec& xTokenVec, i8 iReqNo);
+    bool bGetFreeSpace(TokenVec& xTokenVec, i8 iReqNo);
+    bool bGetInUseSpace(TokenVec& xTokenVec, i8 iReqNo);
+    bool bGetTotalSpace(TokenVec& xTokenVec, i8 iReqNo);
+    bool bGetVersion(TokenVec& xTokenVec, i8 iReqNo);
+    bool bSeitfCount(TokenVec& xTokenVec, i8 iReqNo);
     
-    bool bObject(TokenVec& xTokenVec);
-    bool bPing(TokenVec& xTokenVec);
-    bool bPrintRowBuffer(TokenVec& xTokenVec);
+    bool bObject(TokenVec& xTokenVec, i8 iReqNo);
+    bool bPing(TokenVec& xTokenVec, i8 iReqNo);
+    bool bPrintRowBuffer(TokenVec& xTokenVec, i8 iReqNo);
     
-    bool bX(TokenVec& xTokenVec);
-    bool bPrint(TokenVec& xTokenVec);
+    bool bX(TokenVec& xTokenVec, i8 iReqNo);
+    bool bPrint(TokenVec& xTokenVec, i8 iReqNo);
     
     //--------------------------------------------------------------------------
     bool bAppendRequest(StrVal& sRequest);
