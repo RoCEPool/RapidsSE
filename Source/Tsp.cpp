@@ -353,30 +353,6 @@ void Tsp::vSprint(Stz* aDst, Stz* aSrc)
 }
 
 /*----------------------------------------------------------------------------*/
-/* valid timestamp in substr?                                                 */
-/*----------------------------------------------------------------------------*/
-#ifdef _ROWFORMAT
-bool Tsp::bValid(char* aSrc, i8 iLength, Column* pColumn)
-{
-  Tsp xTsp;
-  
-  bool bValid = true; //bExtract(aSrc,&xTsp,iLength,pColumn);
-  
-  return bValid;
-}
-
-#else
-bool Tsp::bValid(char** aaSrc, Column* pColumn)
-{
-  Tsp xTsp;
-  
-  bool bValid = bExtract(aaSrc,&xTsp,pColumn);
-  
-  return bValid;
-}
-#endif
-
-/*----------------------------------------------------------------------------*/
 /*-- Embedded Comparators ----------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 

@@ -738,7 +738,6 @@ namespace Tasks
     static void vLoaderSubRowBuffer(MP_Task mpTask);
     static void vLoaderSubRowBufferStore(MP_Task mpTask);
     static void vLoaderSubTable(MP_Task mpTask);
-    static void vLoaderSubValidateRow(MP_Task mpTask);
  
     // locals
     static void vLocalFetch(MP_Task mpTask);

@@ -168,93 +168,6 @@ void Table::vAddIndex(Index* pIndex)
 }
 
 /*----------------------------------------------------------------------------*/
-/* analyze table                                                              */
-/*----------------------------------------------------------------------------*/
-Stz* Table::pAnalyze(bool bDetailed)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-  
-  i8 nRowsTotal = 0;
-  i8 nBuffersTotal = 0;
-  i8 nStrandsTotal = 0;
-  s48K sAnalysis;
-  
-  if ( ! gbMetadata || bDetailed)
-    sAnalysis.vCatSprint("N%lld: Analysis of Table %s\n"_Stz,
-                         gpGrid->iThisNode(),
-                         m_sTableName.aChar());
-
-  for (i8 iSlot = 0; iSlot < gpGrid->m_nSlots; iSlot++) {
-    
-    i8 iPartition = Partition::iSlotToPartition(iSlot);
-    
-    EbStrand *pStrand = pPartition(iSlot)->pData()->pHeadStrand();
-    i8 nRows = 0;
-    i8 nBuffers = 0;
-    i8 nStrands = 0;
-    while (pStrand) {
-      nStrands++;
-      
-      if (bDetailed) {
-        EntryBuffer* pRowBuffer = pStrand->pFirstBuffer();
-        i8 nRowsInBuffer = 0;
-        i8 nRowBuffer = 0;
-        while (pRowBuffer) {
-          nRowBuffer++;
-          nRowsInBuffer = pRowBuffer->nEntries();
-          pRowBuffer = (EntryBuffer*)pRowBuffer->pNextBuffer();
-          sAnalysis.vCatSprint("   strand:%lld rowBuffer%lld: %lld rows\n"_Stz,
-                               nStrands,
-                               nRowBuffer,
-                               nRowsInBuffer);
-        }
-      }
-      
-      nBuffers += pStrand->nEntryBuffers();
-      nRows += pStrand->nRows();
-      pStrand = pStrand->pNextStrand();
-    }
-    
-    if ( !gbMetadata || bDetailed) {
-      sAnalysis.vCatSprint(
-         "  partition %lld: %3lld strands; %5lld buffers; %lld rows\n"_Stz,
-         iPartition,
-         nStrands,
-         nBuffers,
-         nRows);
-
-    }
-    else {
-      sAnalysis.vCatSprint(
-         "row: ('%s', %lld, %lld, %lld, %lld)"_Stz,
-         gpGrid->pThisNode()->aNodeName(),
-         iPartition,
-         nStrands,
-         nBuffers,
-         nRows);
-      if (iSlot < gpGrid->m_nSlots - 1) {
-        sAnalysis.vCatSprint("\n"_Stz);
-      }
-
-    }
-    
-    nRowsTotal += nRows;
-    nBuffersTotal += nBuffers;
-    nStrandsTotal += nStrands;
-  }
-  
-  if ( ! gbMetadata || bDetailed) {
-    sAnalysis.vCatSprint(
-      "        total: %3lld strands; %5lld buffers; %lld rows\n"_Stz,
-      nStrandsTotal,
-      nBuffersTotal,
-      nRowsTotal);
-  }
-  
-  return sAnalysis;
-}
-
-/*----------------------------------------------------------------------------*/
 /* analyze index                                                              */
 /*----------------------------------------------------------------------------*/
 Stz* Table::pAnalyzeIndex(Index* pIndex, bool bDetailed)
@@ -280,7 +193,8 @@ Stz* Table::pAnalyzeIndex(Index* pIndex, bool bDetailed)
     i8 nBuffers = 0;
     i8 nEntries = 0;
 
-    pIndexBuffer->vAnalyze(sAnalysis, bDetailed, nBuffers, nEntries);
+    if (pIndexBuffer)
+      pIndexBuffer->vAnalyze(sAnalysis, bDetailed, nBuffers, nEntries);
     
     nEntriesTotal += nEntries;
     nBuffersTotal += nBuffers;
@@ -697,82 +611,6 @@ void Table::vTruncateIndex(i8 iIndexNo)
   m_xSlots.vTruncateIndex(iIndexNo);
 }
 
-/*----------------------------------------------------------------------------*/
-/* validate a row of table                                                    */
-/*----------------------------------------------------------------------------*/
-#ifdef _ROWFORMAT
-bool Table::bValidateRow(Stz* aRow, i8& i_Column)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-  
-  char* aCursor = (char*)aRow;
-  
-  char* pSeparator;
-  
-  for (i_Column = 0;
-       i_Column < m_pColumnVec->nItems() && *aCursor;
-       i_Column++) {
-    
-    // get separator
-    pSeparator = (char*)aCursor;
-    
-    // extract length of next field from separator
-    char iLength = *pSeparator;
-    
-    Column* pColumn = m_pColumnVec->pGet(i_Column);
-    
-    // move cursor to next field
-    aCursor += sizeof(char);
-    bool b = pColumn->bValidateField((Stz*)aCursor, iLength);
-    
-    // move cursor to next separator
-    aCursor += iLength;
-  }
-  
-  return true;
-}
-
-#else
-bool Table::bValidateRow(Stz* aRow, i8& i_Column)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-  
-//  vTrace("ValidateRow: "_Stz,aRow);
-//  for (char* aChr = (char*)aRow; *aChr != '\n'; aChr++)
-//    vTrace("%c"_Stz,*aChr);
-//  vTrace("\n"_Stz);
-  
-  // set up cursor, skip over leading pipe
-  char* aCursor = (char*)aRow;
-  //if ('|' == *aCursor)
-  //  aCursor++;
-  
-  // detect end of file
-  if ( ! *aCursor )
-    return true;
-  
-  for (i_Column = 0;
-       i_Column < m_pColumnVec->nItems() && *aCursor;
-       i_Column++) {
-    
-    Column* pColumn = m_pColumnVec->pGet(i_Column);
-    
-    bool b = pColumn->bValidateField((Stz**)&aCursor);
-    
-    if (!b) {
-      while ('\n' != *aCursor)
-        aCursor++;
-      return false;
-    }
-    
-    if ('|' == *aCursor)
-      aCursor++;
-  }
-
-  return true;
-}
-#endif
-  
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/

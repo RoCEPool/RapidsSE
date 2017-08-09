@@ -49,7 +49,6 @@ namespace DBobjects
     static void vFinalize(eCN eClass, Object* pObject);
     
     void vAddIndex(Index* pIndex);
-    Stz* pAnalyze(bool bDetailed);
     Stz* pAnalyzeIndex(Index* pIndex, bool bDetailed);
     void vAppendBuffer(i8 iPartition, EntryBuffer* pRowBuffer);    
     ColumnVec* pColumnVec(void);
@@ -76,7 +75,6 @@ namespace DBobjects
     void vTidyUpIndex(i8 iIndexNo);
     void vTruncate(void);
     void vTruncateIndex(i8 iIndexNo);
-    bool bValidateRow(Stz* pRow, i8& iColumn);
   
     Footer* aFooter(void);
   };

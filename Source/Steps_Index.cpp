@@ -122,11 +122,6 @@ void Task::vIndexBuffer(MP_Task mpTask)
   
   EntryBuffer* pIndexBuffer = pIndexData->pPositionLevel(xKeyWrk, JC_AFTER, 0);
   
-  bn nBuffer = pIndexBuffer->nBufferNo();
-  //vTrace("L0 Buffer: %lld\n"_Stz, *nBuffer);
-  
-  //pIndexBuffer->vShow();
-  
   mpTask->m_pDataStack->vPushObject(pIndexBuffer);
   
   EXIT();

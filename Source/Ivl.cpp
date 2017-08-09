@@ -259,30 +259,6 @@ void Ivl::vSprint(Stz* aDst, Stz* aSrc)
 }
 
 /*----------------------------------------------------------------------------*/
-/* valid interval in substr?                                                  */
-/*----------------------------------------------------------------------------*/
-#ifdef _ROWFORMAT
-bool Ivl::bValid(char* aSrc, i8 iLength, Column* pColumn)
-{
-  Ivl xIvl;
-  
-  bool bValid = true; //bExtract(aSrc,&xIvl,iLength,pColumn);
-  
-  return bValid;
-}
-
-#else
-bool Ivl::bValid(char** aaSrc, Column* pColumn)
-{
-  Ivl xIvl;
-  
-  bool bValid = bExtract(aaSrc,&xIvl,pColumn);
-  
-  return bValid;
-}
-#endif
-
-/*----------------------------------------------------------------------------*/
 /*-- Embedded Comparators ----------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 

@@ -11,6 +11,7 @@ jidx_10    INTEGER NOT NULL
 
 lspartcol jpart;
 ld jpart "../JTEST/test.csv" ;
+antbl jpart;
 
 /*============================================================================*/
 /* end                                                                        */

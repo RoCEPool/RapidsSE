@@ -288,29 +288,6 @@ void Tme::vSprint(Stz* aDst, Stz* aSrc)
 }
 
 /*----------------------------------------------------------------------------*/
-/* valid time in substr?                                                      */
-/*----------------------------------------------------------------------------*/
-#ifdef _ROWFORMAT
-bool Tme::bValid(char*aSrc, i8 iLength, Column* pColumn)
-{
-  Tme xTme;
-  
-  bool bValid = true ; //bExtract(aSrc,&xTme,iLength,pColumn);
-  
-  return bValid;
-}
-#else
-bool Tme::bValid(char** aaSrc, Column* pColumn)
-{
-  Tme xTme;
-  
-  bool bValid = bExtract(aaSrc,&xTme,pColumn);
-  
-  return bValid;
-}
-#endif
-
-/*----------------------------------------------------------------------------*/
 /*-- Embedded Comparators ----------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 

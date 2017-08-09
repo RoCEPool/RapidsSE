@@ -244,28 +244,6 @@ void Int::vSprint(Stz* aDst, Stz* aSrc)
 }
 
 /*----------------------------------------------------------------------------*/
-/* valid integer in substr?                                                   */
-/*----------------------------------------------------------------------------*/
-#ifdef _ROWFORMAT
-bool Int::bValid(char* aSrc, i8 iLength, Column* pColumn)
-{
-  Int xInt;
-  
-  bool bValid =  true; //Int::bExtract(aSrc,&xInt,iLength,pColumn);
-  
-  return bValid;
-}
-#else
-bool Int::bValid(char** aaSrc, Column* pColumn)
-{
-  Int xInt;
-  
-  bool bValid = Int::bExtract(aaSrc,&xInt,pColumn);
-  
-  return bValid;
-}
-#endif
-/*----------------------------------------------------------------------------*/
 /*-- Embedded Comparators ----------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 

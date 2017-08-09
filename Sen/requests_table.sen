@@ -30,8 +30,10 @@ ddlLock::grabWrite
   tp ( "<tableNm>" )
 
   args.metadata if
-    "(nodeName VARCHAR, partition INTEGER, strands INTEGER, buffers INTEGER, rowCount INTEGER)"
-      metadata!
+    args.metadata if
+       "(nodeName VARCHAR, partition INTEGER, bufferNo INTEGER, bufferLevel INTEGER, entries INTEGER)"
+       metadata!
+    then
   then
 
   analyzeTable ( )
@@ -394,6 +396,7 @@ snap1:
   assert::stack_1
   CN_STRVAL assert::class_0
 
+  0 locals| pTable |
 ddlLock::grabRead
 
   //
@@ -419,11 +422,11 @@ ddlLock::grabRead
 
   // get and inc table reference and put into task.seitf.currentTable
   getTableRef not if <NIP+ERROR> exit then ( "<tableNm>" )
-  task::this task.seitf@ seitf.table@ assert
+  task::this task.seitf@ seitf.table@ dup assert to pTable
 
   // set the metadata string
   args.metadata if
-    "(partition INTEGER, data VARCHAR)" metadata!
+    pTable table.getColumns "(partition INTEGER,%v)" str.format metadata!
   then
 
   // get a select cursor

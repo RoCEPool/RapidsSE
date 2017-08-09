@@ -250,29 +250,6 @@ void Bcd::vSprint(Stz* aDst, Stz* aSrc, DBobjects::Column* pColumn)
 }
 
 /*----------------------------------------------------------------------------*/
-/* valid decimal in substr?                                                   */
-/*----------------------------------------------------------------------------*/
-#ifdef _ROWFORMAT
-bool Bcd::bValid(char* aSrc, i8 iLength, Column* pColumn)
-{
-  Bcd xBcd;
-  
-  bool bValid = true; //bExtract(aSrc,&xBcd,iLength,pColumn);
-  
-  return bValid;
-}
-
-#else
-bool Bcd::bValid(char** aaSrc, Column* pColumn)
-{
-  Bcd xBcd;
-  
-  bool bValid = bExtract(aaSrc,&xBcd,pColumn);
-  
-  return bValid;
-}
-#endif
-/*----------------------------------------------------------------------------*/
 /*-- Embedded Comparators ----------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 

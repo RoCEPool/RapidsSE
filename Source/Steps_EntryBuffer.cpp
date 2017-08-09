@@ -126,7 +126,10 @@ void Task::vEntryBufferFirstEntry(MP_Task mpTask)
   EntryBuffer* pIndexBuffer = _pEntryBuffer(pPtrIndexBuffer);
   ASSERT(nullptr == pIndexBuffer || CN_ENTRYBUFFER == pIndexBuffer->eClass());
   
-  mpTask->m_pDataStack->vPushObject(pIndexBuffer->pNextEntry(pIndexBuffer->pHead()));
+  if (pIndexBuffer)
+    mpTask->m_pDataStack->vPushObject(pIndexBuffer->pNextEntry(pIndexBuffer->pHead()));
+  else
+    mpTask->m_pDataStack->vPushObject(nullptr);
   
   EXIT();
 }

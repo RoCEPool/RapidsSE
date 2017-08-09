@@ -12,18 +12,13 @@ namespace DBobjects
   class LoaderSub : public Object
   {
   private:
-    Loader*  m_pLoader;  // loader parent
-    Table*   m_pTable;   // table being load
-    TxRef*   m_pTxRef;   // tx
-    LoadMap* m_pLoadMap; // load map
-   
-#ifdef _ROWFORMAT
-    s256     m_aRecord;      // formatted row
-#else
-    Stz*     m_aRecord;      // record from file
-#endif
-    i8       m_iLength;      // length of record
-    i8       m_iPartition;   // partition of record
+    Loader*  m_pLoader;    // loader parent
+    Table*   m_pTable;     // table being load
+    TxRef*   m_pTxRef;     // tx
+    LoadMap* m_pLoadMap;   // load map
+    s256     m_aRecord;    // formatted row
+    i8       m_iLength;    // length of record
+    i8       m_iPartition; // partition of record
     
     bool     m_bMoreChunks;  // continue while there are more chunks
     LoadChunk* m_pLoadChunk; // chunk loading buffer
@@ -56,7 +51,6 @@ namespace DBobjects
     EntryBuffer* pRowBuffer(void);
     void vRowBuffer(EntryBuffer* pRowBuffer);
     Table* pTable(void);
-    bool bValidateRow(i8& iColumn);
   
     //void vTruncateRecord(i8 iField);
   

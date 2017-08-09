@@ -43,11 +43,6 @@ namespace Datums
     static void vCopy(void* aDst, void* aSrc);
     static bool bExtract(char** aaSrc, Int* aInt, DBobjects::Column* pColumn);
     static void vSprint(Stz* aDst, Stz* aSrc);
-#ifdef _ROWFORMAT
-    static bool bValid(char* aSrc, i8 iLength, DBobjects::Column* pColumn);
-#else
-    static bool bValid(char** aaSrc, DBobjects::Column* pColumn);
-#endif
     static bool bLessThan(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB);
     static bool bLessEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB);
     static bool bEqualTo(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB);
