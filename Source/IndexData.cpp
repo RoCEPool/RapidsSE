@@ -358,7 +358,10 @@ EntryBuffer* IndexData::pPositionLevel(KeyWrk& xKeyWrk, eJC eJuxtaCompare, i8 iL
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
   
-  return m_pRoot->pPositionLevel(xKeyWrk, eJuxtaCompare, iLevel);
+  if (m_pRoot)
+    return m_pRoot->pPositionLevel(xKeyWrk, eJuxtaCompare, iLevel);
+  else
+    return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

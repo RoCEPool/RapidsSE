@@ -352,9 +352,12 @@ tp: makingIndex
   key iPartitionNo indexPtr index.buffer ( indexBuffer )
   to indexBuffer
 
-  // position in the index buffer at the key
-  key indexBuffer indexPtr index.position
-  to entry
+  // did we get an index buffer ?
+  indexBuffer if
+    // position in the index buffer at the key
+    key indexBuffer indexPtr index.position
+    to entry
+  then
 
   // did we find an entry ?
   entry not if
@@ -466,8 +469,11 @@ tp: makingIndex
   // get the indexBuffer looking for the lower key
   sLower iPartitionNo pIndex index.buffer to pIndexBuffer
 
-  // position in the index buffer at the lower key
-  sLower pIndexBuffer pIndex index.position to pIndexEntry
+  // did we get an index buffer ?
+  pIndexBuffer if
+    // position in the index buffer at the lower key
+    sLower pIndexBuffer pIndex index.position to pIndexEntry
+  then
 
   // did we find an entry ?
   pIndexEntry not if
@@ -572,9 +578,12 @@ tp: loadIndexes
   lower iPartitionNo indexPtr index.buffer ( indexBuffer )
   to indexBuffer
 
-  // position in the index buffer at the lower key
-  lower indexBuffer indexPtr index.position
-  to entry
+  // did we get an index buffer ?
+  indexBuffer if
+    // position in the index buffer at the lower key
+    lower indexBuffer indexPtr index.position
+    to entry
+  then
 
   // did we find an entry ?
   entry not if
@@ -676,14 +685,20 @@ tp: loadIndexes
   // position in the first index buffer
   iPartitionNo pIndex index.positionFirst to pIndexBuffer
 
-  // position at the upper bound entry
-  sUpper pIndexBuffer pIndex index.position to pUpperEntry
+  // did we get an index buffer ?
+  pIndexBuffer if
+    // position at the upper bound entry
+    sUpper pIndexBuffer pIndex index.position to pUpperEntry
+  then
 
   // get the indexBuffer looking for the lower key
   sLower iPartitionNo pIndex index.buffer to pIndexBuffer
 
-  // position in the index buffer at the lower key
-  sLower pIndexBuffer pIndex index.position to pIndexEntry
+  // did we get an index buffer ?
+  pIndexBuffer if
+    // position in the index buffer at the lower key
+    sLower pIndexBuffer pIndex index.position to pIndexEntry
+  then
 
   // did we find an entry ?
   pIndexEntry not if
@@ -1201,9 +1216,12 @@ tp: selectIndex
   upper iPartitionNo indexPtr index.buffer
   to indexBuffer
 
-  // position at the upper bound entry
-  upper indexBuffer indexPtr index.position
-  to upperEntry
+  // did we get an index buffer ?
+  indexBuffer if
+    // position at the upper bound entry
+    upper indexBuffer indexPtr index.position
+    to upperEntry
+  then
 
   // position in the first index buffer
   iPartitionNo indexPtr index.positionFirst

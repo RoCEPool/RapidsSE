@@ -26,7 +26,8 @@ ld j5 "../JTEST/j5.csv" ;
 
 cf indexes ;
 pwf ;
-idump idx ;
+dumpidx j5 idx ;
+antbl j5;
 
 /*============================================================================*/
 /* end                                                                        */
