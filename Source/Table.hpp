@@ -49,7 +49,6 @@ namespace DBobjects
     static void vFinalize(eCN eClass, Object* pObject);
     
     void vAddIndex(Index* pIndex);
-    Stz* pAnalyze(bool bDetailed);
     Stz* pAnalyzeIndex(Index* pIndex, bool bDetailed);
     void vAppendBuffer(i8 iPartition, EntryBuffer* pRowBuffer);    
     ColumnVec* pColumnVec(void);
