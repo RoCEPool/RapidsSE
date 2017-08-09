@@ -82,7 +82,7 @@ bool RowData::bFormatData(ColumnVec* pColVec, Stz* aRawData, i8 iRawLength, Stz*
     
     // is the datum valid ?
     if (!bValid) {
-      vTrace("Invalid field %lld in record: "_Stz, i_Column);
+      vTrace("Skipping row - invalid field %lld in record: "_Stz, i_Column);
       for (char* a = (char*)aRawData; *a && '\n' != *a; a++)
         vTrace("%c"_Stz,*a);
       vTrace("\n"_Stz);

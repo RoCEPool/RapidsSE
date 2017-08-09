@@ -192,8 +192,8 @@ bool LoaderSub::bFetchRecord(void)
     //vDumpAscii(m_aRecord,m_iLength);
     // format the raw data into a record
     bool bValid = RowData::bFormatData(m_pTable->pColumnVec(), aRawData, iLength, m_aRecord.aStr(), m_iLength);
-    if (!bValid)
-      exit(-1);
+    //if (!bValid)
+    //  exit(-1);
     
     return true;
   }
@@ -208,8 +208,8 @@ bool LoaderSub::bFetchRecord(void)
   if (aRawData) {
     // format the raw data into a record
     bool bValid = RowData::bFormatData(m_pTable->pColumnVec(), aRawData, iLength, m_aRecord.aStr(), m_iLength);
-    if (!bValid)
-      exit(-1);
+    //if (!bValid)
+    //  exit(-1);
     return true;
   }
   
