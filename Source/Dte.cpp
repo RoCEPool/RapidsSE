@@ -273,29 +273,6 @@ void Dte::vSprint(Stz* aDst, Stz* aSrc)
 }
 
 /*----------------------------------------------------------------------------*/
-/* valid date in substr?                                                      */
-/*----------------------------------------------------------------------------*/
-#ifdef _ROWFORMAT
-bool Dte::bValid(char* aSrc, i8 iLength, Column* pColumn)
-{
-  Dte xDte;
-  
-  bool bValid = true; //bExtract(aSrc,&xDte,iLength,pColumn);
-  
-  return bValid;
-}
-
-#else
-bool Dte::bValid(char** aaSrc, Column* pColumn)
-{
-  Dte xDte;
-  
-  bool bValid = bExtract(aaSrc,&xDte,pColumn);
-  
-  return bValid;
-}
-#endif
-/*----------------------------------------------------------------------------*/
 /*-- Embedded Comparators ----------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 

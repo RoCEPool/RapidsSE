@@ -227,31 +227,6 @@ void Vch::vSprint(Stz* aDst, Stz* aSrc)
 }
 
 /*----------------------------------------------------------------------------*/
-/* valid varchar in substr?                                                   */
-/*----------------------------------------------------------------------------*/
-#ifdef _ROWFORMAT
-bool Vch::bValid(char* aSrc, i8 iLength, Column* pColumn)
-{
-  s48K sBuffer;
-  
-  Vch* aVch = (Vch*)sBuffer.aStr();
-  bool bValid = true; //bExtract(aSrc,aVch,iLength, pColumn);
-  
-  return bValid;
-}
-
-#else
-bool Vch::bValid(char** aaSrc, Column* pColumn)
-{
-  s48K sBuffer;
-  
-  Vch* aVch = (Vch*)sBuffer.aStr();
-  bool bValid = bExtract(aaSrc,aVch,pColumn);
-  
-  return bValid;
-}
-#endif
-/*----------------------------------------------------------------------------*/
 /*-- Embedded Comparators ----------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 

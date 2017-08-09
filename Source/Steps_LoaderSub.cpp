@@ -46,7 +46,6 @@ void Task::vAddPrimitives_LoaderSub(void)
   vAddPrimitive("loaderSub.rowBuffer"_Stz,    &vLoaderSubRowBuffer,     false);
   vAddPrimitive("loaderSub.rowBuffer!"_Stz,   &vLoaderSubRowBufferStore,false);
   vAddPrimitive("loaderSub.table"_Stz,        &vLoaderSubTable,         false);
-  vAddPrimitive("loaderSub.validateRow"_Stz,  &vLoaderSubValidateRow,   false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -344,31 +343,6 @@ void Task::vLoaderSubTable(MP_Task mpTask)
   Table* pTable = pLoaderSub->pTable();
   
   mpTask->m_pDataStack->vPushObject(pTable);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* loaderSub.validateRow -- get table being loaded                            */
-/*----------------------------------------------------------------------------*/
-void Task::vLoaderSubValidateRow(MP_Task mpTask)
-{
-  ENTRY("vLoaderSubValidateRow"_Stz);
-  
-  Object* pPtrLoader;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
-    THROW_INVALID_DSTACK("loaderSub.validateRow"_Stz);
-  LoaderSub* pLoaderSub = _pLoaderSub(pPtrLoader);
-  
-  i8 i_Column;
-  bool bValid = pLoaderSub->bValidateRow(i_Column);
-  //ASSERT(bValid);
-  
-//  vTrace("vLoaderSubValidateRow: %s %lld\n"_Stz,
-//         bValid ? "Valid"_Stz : "NotValid"_Stz,
-//         i_Column);
-  
-  mpTask->m_pDataStack->vPushInt(bValid);
   
   EXIT();
 }

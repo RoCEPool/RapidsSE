@@ -220,28 +220,6 @@ void Bol::vSprint(Stz* aDst, Stz* aSrc)
 }
 
 /*----------------------------------------------------------------------------*/
-/* valid boolean in substr?                                                   */
-/*----------------------------------------------------------------------------*/
-#ifdef _ROWFORMAT
-bool Bol::bValid(char*aSrc, i8 iLength, Column* pColumn)
-{
-  Bol xBol;
-  
-  bool bValid = true; //bExtract(aSrc,&xBol,iLength,pColumn);
-  
-  return bValid;
-}
-#else
-bool Bol::bValid(char** aaSrc, Column* pColumn)
-{
-  Bol xBol;
-  
-  bool bValid = bExtract(aaSrc,&xBol,pColumn);
-  
-  return bValid;
-}
-#endif
-/*----------------------------------------------------------------------------*/
 /*-- Embedded Comparators ----------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 

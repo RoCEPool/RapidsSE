@@ -375,50 +375,6 @@ void Column::vShow(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* validate column field                                                      */
-/*----------------------------------------------------------------------------*/
-//bool Column::bValidateField(Stz** aaSubRow)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
-//  
-//  char* aSubRow = (char*)*aaSubRow;
-//
-//  while (*aSubRow && '|' != *aSubRow)
-//    aSubRow++;
-//  
-//  *aaSubRow = (Stz*)aSubRow;
-//  
-//  return true;
-//}
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#ifdef _ROWFORMAT
-bool Column::bValidateField(Stz* aSubRow, i8 iLength)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
-  
-  bool b = DtmLib::bValidate(m_eDatumType,(char*)aSubRow,iLength,this);
-  
-  if (!b)
-    int iDebug = 0;
-  
-  return b;
-}
-
-#else
-bool Column::bValidateField(Stz** aaSubRow)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
-
-  bool b = DtmLib::bValidate(m_eDatumType,(char**)aaSubRow,this);
-  
-  if (!b)
-    int iDebug = 0;
-  
-  return b;
-}
-#endif
-
-/*----------------------------------------------------------------------------*/
 /* column value                                                               */
 /*----------------------------------------------------------------------------*/
 char* Column::aValue(i8& nBytes, char** aaCursor)

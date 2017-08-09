@@ -462,66 +462,6 @@ Table* LoaderSub::pTable(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* validate row                                                               */
-/*----------------------------------------------------------------------------*/
-#ifdef _ROWFORMAT
-bool LoaderSub::bValidateRow(i8& i_Column)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
-  
-  bool bValid = m_pTable->bValidateRow(m_aRecord.aStr(),i_Column);
-  
-  if ( ! bValid ) {
-    vTrace("Loader:: Invalid field %lld in record: "_Stz,
-           i_Column);
-    //RowData::vDump((char*)m_aRecord.aStr(), m_iLength);
-    exit(-1);
-  }
-  
-  return bValid;
-}
-
-#else
-bool LoaderSub::bValidateRow(i8& i_Column)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
-
-  bool bValid = m_pTable->bValidateRow(m_aRecord,i_Column);
-  
-  if ( ! bValid ) {
-    vTrace("Loader:: Invalid field %lld in record: "_Stz,
-           i_Column);
-    for (char* a = (char*)m_aRecord; *a && '\n' != *a; a++)
-      vTrace("%c"_Stz,*a);
-    vTrace("\n"_Stz);
-    exit(-1);
-  }
-  
-  return bValid;
-}
-#endif
-/*----------------------------------------------------------------------------*/
-/* truncate record from given field                                           */
-/*----------------------------------------------------------------------------*/
-//void LoaderSub::vTruncateRecord(i8 iField)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
-//  
-//  char* aCursor = (char*)m_aRecord;
-//  
-//  vTrace("Before %s\n"_Stz,m_aRecord);
-//  
-//  bool b = StrLib::bFind(&aCursor,'|',iField);
-//  
-//  if (b) {
-//    *aCursor = '\0';
-//    m_iLength = StrLib::iLength((char*)m_aRecord);
-//
-//    vTrace("After %s\n"_Stz,m_aRecord);
-//  }
-//}
-
-/*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 

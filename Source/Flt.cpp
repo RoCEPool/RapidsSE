@@ -248,36 +248,6 @@ void Flt::vSprint(Stz* aDst, Stz* aSrc)
 }
 
 /*----------------------------------------------------------------------------*/
-/* valid float in substr?                                                     */
-/*----------------------------------------------------------------------------*/
-#ifdef _ROWFORMAT
-bool Flt::bValid(char* aSrc, i8 iLength, Column* pColumn)
-{
-  Flt xFlt;
-  
-  bool bValid = true; //bExtract(aSrc,&xFlt,iLength,pColumn);
-  
-  if (!bValid)
-    int iDebug = 0;
-  
-  return bValid;
-}
-
-#else
-bool Flt::bValid(char** aaSrc, Column* pColumn)
-{
-  Flt xFlt;
-  
-  bool bValid = bExtract(aaSrc,&xFlt,pColumn);
-  
-  if (!bValid)
-    int iDebug = 0;
-  
-  return bValid;
-}
-#endif
-
-/*----------------------------------------------------------------------------*/
 /*-- Embedded Comparators ----------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 

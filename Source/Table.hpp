@@ -76,7 +76,6 @@ namespace DBobjects
     void vTidyUpIndex(i8 iIndexNo);
     void vTruncate(void);
     void vTruncateIndex(i8 iIndexNo);
-    bool bValidateRow(Stz* pRow, i8& iColumn);
   
     Footer* aFooter(void);
   };

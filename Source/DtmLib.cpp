@@ -283,67 +283,6 @@ void DtmLib::vSprint(eDM eDatum, Stz* aDst, Stz* aSrc,
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- Validation --------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* valid datum?                                                               */
-/*----------------------------------------------------------------------------*/
-#ifdef _ROWFORMAT
-bool DtmLib::bValidate(eDM eDatum, char* aSrc, i8 iLength, Column* pColumn)
-{
-  bool b = false;
-  
-  switch (eDatum) {
-    case DM_BCD: b = Bcd::bValid(aSrc,iLength,pColumn); break;
-    case DM_BOL: b = Bol::bValid(aSrc,iLength,pColumn); break;
-    case DM_CHR: b = Vch::bValid(aSrc,iLength,pColumn); break;
-    case DM_DTE: b = Dte::bValid(aSrc,iLength,pColumn); break;
-    case DM_FLT: b = Flt::bValid(aSrc,iLength,pColumn); break;
-    case DM_INT: b = Int::bValid(aSrc,iLength,pColumn); break;
-    case DM_IVL: b = Ivl::bValid(aSrc,iLength,pColumn); break;
-    case DM_TME: b = Tme::bValid(aSrc,iLength,pColumn); break;
-    case DM_TSP: b = Tsp::bValid(aSrc,iLength,pColumn); break;
-    case DM_VCH: b = Vch::bValid(aSrc,iLength,pColumn); break;
-    default:
-      vFatal("DtmLib::bValid: Invalid aDatum argument: %lld\n"_Stz,
-             eDatum);
-  }
-  
-  if (!b)
-    return b;
-  else
-    return b;
-}
-
-#else
-bool DtmLib::bValidate(eDM eDatum, char** aaSrc, Column* pColumn)
-{
-  bool b = false;
-  
-  switch (eDatum) {
-    case DM_BCD: b = Bcd::bValid(aaSrc,pColumn); break;
-    case DM_BOL: b = Bol::bValid(aaSrc,pColumn); break;
-    case DM_CHR: b = Vch::bValid(aaSrc,pColumn); break;
-    case DM_DTE: b = Dte::bValid(aaSrc,pColumn); break;
-    case DM_FLT: b = Flt::bValid(aaSrc,pColumn); break;
-    case DM_INT: b = Int::bValid(aaSrc,pColumn); break;
-    case DM_IVL: b = Ivl::bValid(aaSrc,pColumn); break;
-    case DM_TME: b = Tme::bValid(aaSrc,pColumn); break;
-    case DM_TSP: b = Tsp::bValid(aaSrc,pColumn); break;
-    case DM_VCH: b = Vch::bValid(aaSrc,pColumn); break;
-    default:
-      vFatal("DtmLib::bValid: Invalid aDatum argument: %lld\n"_Stz,
-             eDatum);
-  }
-  
-  if (!b)
-    return b;
-  else
-    return b;
-}
-#endif
-/*----------------------------------------------------------------------------*/
 /*-- Embedded Comparators ----------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
