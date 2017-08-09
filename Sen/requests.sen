@@ -87,7 +87,6 @@ mkidx     createIndex_req
 lsidx     listIndexes_req
 retidx    returnIndex_req
 rmidx     dropIndex_req
-scnselidx scanSelectIndex_req
 setidxunique indexSetUnique_req
 szidx     sizeIndex_req
 tridx     truncateIndex_req

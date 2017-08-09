@@ -438,7 +438,6 @@ bool SEitf::bDecode(TokenVec& xTokenVec)
   if (xTokenVec[0]->bSame("rettsk"_Stz)) return bRetTask(xTokenVec);
   if (xTokenVec[0]->bSame("rf"_Stz)) return bRemoveFolder(xTokenVec);
   if (xTokenVec[0]->bSame("rgesel"_Stz)) return bRangeSelectTable(xTokenVec);
-  if (xTokenVec[0]->bSame("scnselidx"_Stz)) return bScanSelectIndex(xTokenVec);
   if (xTokenVec[0]->bSame("rmcat"_Stz)) return bDropCatalog(xTokenVec);
   if (xTokenVec[0]->bSame("rmdic"_Stz)) return bRemoveFolder(xTokenVec);
   if (xTokenVec[0]->bSame("rmidx"_Stz)) return bDropIndex(xTokenVec);
@@ -1792,33 +1791,6 @@ bool SEitf::bNodeStatus(TokenVec& xTokenVec)
   }
   
   sRequest.vConcat(" status"_Stz);
-  
-  return bAppendRequest(sRequest);
-}
-
-/*----------------------------------------------------------------------------*/
-/* scan select rows from a table given an index                              */
-/*----------------------------------------------------------------------------*/
-bool SEitf::bScanSelectIndex(TokenVec& xTokenVec)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
-  
-  s256 sRequest;
-  
-  if (xTokenVec.nTokens() != 3) {
-    vSetLastError(EC_INVALID_PARAMETERS);
-    return false;
-  }
-  
-  sRequest.vConcat(" \""_Stz);
-  sRequest.vConcat(xTokenVec[2]->aText());
-  sRequest.vConcat("\""_Stz);
-  
-  sRequest.vConcat(" \""_Stz);
-  sRequest.vConcat(xTokenVec[1]->aText());
-  sRequest.vConcat("\""_Stz);
-  
-  sRequest.vConcat(" scanSelectIndex_req"_Stz);
   
   return bAppendRequest(sRequest);
 }

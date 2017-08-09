@@ -140,7 +140,6 @@ namespace Interface
     bool bDanalyzeIndex(TokenVec& xTokenVec);
     bool bGetIndex(TokenVec& xTokenVec);
     bool bRetIndex(TokenVec& xTokenVec);
-    bool bScanSelectIndex(TokenVec& xTokenVec);
     bool bSizeIndex(TokenVec& xTokenVec);
     bool bTruncateIndex(TokenVec& xTokenVec);
 
