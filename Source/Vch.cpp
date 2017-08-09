@@ -197,30 +197,6 @@ void Vch::vCopy(void* pDst, void* pSrc)
 /*----------------------------------------------------------------------------*/
 /* extract an varchar from substr                                             */
 /*----------------------------------------------------------------------------*/
-#ifdef _ROWFORMAT
-bool Vch::bExtract(char* aSrc, Vch* aVch, i8 iLength, Column* pColumn)
-{
-  char* aChar = (char*)aVch;
-  
-  for (i8 i_CurrentChar = 0; i_CurrentChar < iLength; i_CurrentChar++) {
-    
-    char c = aSrc[i_CurrentChar];
-    
-    // test for null
-    if ( ! c ) {
-      aVch->vSetNull();
-      return true;
-    }
-  
-    // collect the csv
-    *aChar++ = c;
-  }
-  *aChar++ = '\0';
-  
-  return true;
-}
-
-#else
 bool Vch::bExtract(char** aaSrc, Vch* aVch, Column* pColumn)
 {
   char* aChar = (char*)aVch;
@@ -232,13 +208,12 @@ bool Vch::bExtract(char** aaSrc, Vch* aVch, Column* pColumn)
   }
   
   // collect the csv
-  while ('|' != **aaSrc && ',' != **aaSrc)
+  while ('|' != **aaSrc)
     *aChar++ = *(*aaSrc)++;
   *aChar++ = '\0';
   
   return true;
 }
-#endif
 
 /*----------------------------------------------------------------------------*/
 /* sprint tsp datum                                                           */
@@ -260,7 +235,7 @@ bool Vch::bValid(char* aSrc, i8 iLength, Column* pColumn)
   s48K sBuffer;
   
   Vch* aVch = (Vch*)sBuffer.aStr();
-  bool bValid = bExtract(aSrc,aVch,iLength, pColumn);
+  bool bValid = true; //bExtract(aSrc,aVch,iLength, pColumn);
   
   return bValid;
 }

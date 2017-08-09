@@ -154,8 +154,14 @@ void Task::vEntryEmbeddedRow(MP_Task mpTask)
   Entry* pEntry = _pEntry(pPtrEntry);
   ASSERT(CN_ENTRY == pEntry->eClass() || CN_ROW == pEntry->eClass());
   
+  if ( ! mpTask->m_pDataStack->bPop(pPtrIndex) )
+    THROW_INVALID_DSTACK("entry.embeddedRow"_Stz);
+  
+  Index* pIndex = _pIndex(pPtrIndex);
+  ASSERT(CN_INDEX == pIndex->eClass() || CN_INDEX == pIndex->eClass());
+  
   s256 sRow;
-  RowData::vGetDataString(sRow, pEntry->aRow(), pEntry->nRowSize());
+  RowData::vGetDataString(sRow, (Stz*)pEntry->aRow(), pIndex->pTable()->pColumnVec());
   
   // return the row entry
   mpTask->m_pDataStack->vPushS256(sRow);

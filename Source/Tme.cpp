@@ -216,67 +216,6 @@ void Tme::vCopy(void* aDst, void* aSrc)
 /*----------------------------------------------------------------------------*/
 /* extract a time from substr                                   hh:mi:ss.fffZ */
 /*----------------------------------------------------------------------------*/
-#ifdef _ROWFORMAT
-bool Tme::bExtract(char* aSrc, Tme* aTime, i8 iLength, Column* pColumn)
-{
-  u8 uField;
-  i8 i_Length = 1;
-  
-  // skip leading whitespace
-  while (' ' == *aSrc) {
-    aSrc++;
-    i_Length++;
-  }
-  
-  // test for null
-  if ( ! *aSrc && i_Length == iLength ) {
-    aTime->vSetNull();
-    return true;
-  }
-  
-  aTime->vInitZero();
-  
-  if ( ! *aSrc )
-    return false;
-  
-  // extract hour
-  if ( ! StrLib::bExtractU8(&aSrc,&uField) )
-    return true;
-  aTime->x.m_uHour = uField;
-  
-  // skip : separator
-  if (':' != (*aSrc)++)
-    return true;
-  
-  // extract minute
-  if ( ! StrLib::bExtractU8(&aSrc,&uField) )
-    return true;
-  aTime->x.m_uMinute = uField;
-  
-  // skip : separator
-  if (':' != (*aSrc)++)
-    return true;
-  
-  // extract second
-  if ( ! StrLib::bExtractU8(&aSrc,&uField) )
-    return true;
-  aTime->x.m_uSecond = uField;
-  
-  // extract fraction (assuming milliseconds)
-  if ('.' == *aSrc) {
-    aSrc++;
-    if ( StrLib::bExtractU8(&aSrc,&uField) )
-      aTime->x.m_uMilli = uField;
-  }
-  
-  // skip Z separator
-  if ('Z' == *aSrc)
-    aSrc++;
-  
-  return true;
-}
-
-#else
 bool Tme::bExtract(char** aaSrc, Tme* aTime, Column* pColumn)
 {
   u8 uField;
@@ -332,7 +271,6 @@ bool Tme::bExtract(char** aaSrc, Tme* aTime, Column* pColumn)
   
   return true;
 }
-#endif
 
 /*----------------------------------------------------------------------------*/
 /* sprint tme datum                                                           */
@@ -357,7 +295,7 @@ bool Tme::bValid(char*aSrc, i8 iLength, Column* pColumn)
 {
   Tme xTme;
   
-  bool bValid = bExtract(aSrc,&xTme,iLength,pColumn);
+  bool bValid = true ; //bExtract(aSrc,&xTme,iLength,pColumn);
   
   return bValid;
 }

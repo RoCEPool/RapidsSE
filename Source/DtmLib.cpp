@@ -57,34 +57,6 @@ void DtmLib::vCopy(eDM eDatum, void* aDst, void* aSrc, DBobjects::Column* pColum
 /*----------------------------------------------------------------------------*/
 /* extract                                                                    */
 /*----------------------------------------------------------------------------*/
-#ifdef _ROWFORMAT
-bool DtmLib::bExtract(eDM eDatum, Stz* aDst, char* aSrc, i8 iLength, DBobjects::Column* pColumn)
-{
-  bool b = false;
-  
-  switch (eDatum) {
-    case DM_BCD: b = Bcd::bExtract(aSrc,(Bcd*)aDst,iLength,pColumn); break;
-    case DM_BOL: b = Bol::bExtract(aSrc,(Bol*)aDst,iLength,pColumn); break;
-    case DM_CHR: NEVER_REACH;                                        break;
-    case DM_DTE: b = Dte::bExtract(aSrc,(Dte*)aDst,iLength,pColumn); break;
-    case DM_FLT: b = Flt::bExtract(aSrc,(Flt*)aDst,iLength,pColumn); break;
-    case DM_INT: b = Int::bExtract(aSrc,(Int*)aDst,iLength,pColumn); break;
-    case DM_IVL: b = Ivl::bExtract(aSrc,(Ivl*)aDst,iLength,pColumn); break;
-    case DM_TME: b = Tme::bExtract(aSrc,(Tme*)aDst,iLength,pColumn); break;
-    case DM_TSP: b = Tsp::bExtract(aSrc,(Tsp*)aDst,iLength,pColumn); break;
-    case DM_VCH: b = Vch::bExtract(aSrc,(Vch*)aDst,iLength,pColumn); break;
-    default:
-      vFatal("DtmLib::bValid: Invalid aDatum argument: %lld\n"_Stz,
-             eDatum);
-  }
-  
-  if (!b)
-    return b;
-  else
-    return b;
-}
-
-#else
 bool DtmLib::bExtract(eDM eDatum, Stz* aDst, char** aaSrc, DBobjects::Column* pColumn)
 {
   bool b = false;
@@ -92,7 +64,7 @@ bool DtmLib::bExtract(eDM eDatum, Stz* aDst, char** aaSrc, DBobjects::Column* pC
   switch (eDatum) {
     case DM_BCD: b = Bcd::bExtract(aaSrc,(Bcd*)aDst,pColumn); break;
     case DM_BOL: b = Bol::bExtract(aaSrc,(Bol*)aDst,pColumn); break;
-    case DM_CHR: NEVER_REACH;                                 break;
+    case DM_CHR: b = Vch::bExtract(aaSrc,(Vch*)aDst,pColumn); break;                                
     case DM_DTE: b = Dte::bExtract(aaSrc,(Dte*)aDst,pColumn); break;
     case DM_FLT: b = Flt::bExtract(aaSrc,(Flt*)aDst,pColumn); break;
     case DM_INT: b = Int::bExtract(aaSrc,(Int*)aDst,pColumn); break;
@@ -105,12 +77,15 @@ bool DtmLib::bExtract(eDM eDatum, Stz* aDst, char** aaSrc, DBobjects::Column* pC
              eDatum);
   }
   
+  // move aSrc to after the |
+  (*aaSrc)++;
+  
   if (!b)
     return b;
   else
     return b;
 }
-#endif
+
 /*----------------------------------------------------------------------------*/
 /*-- Hash --------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -119,27 +94,23 @@ bool DtmLib::bExtract(eDM eDatum, Stz* aDst, char** aaSrc, DBobjects::Column* pC
 /* hash                                                                       */
 /*----------------------------------------------------------------------------*/
 #ifdef _ROWFORMAT
-void DtmLib::vHash(eDM eDatum, i8& iHash, Stz* aScr, i8 iLength, DBobjects::Column* pColumn)
+void DtmLib::vHash(eDM eDatum, i8& iHash, Stz* aScr, DBobjects::Column* pColumn)
 {
   switch (pColumn->eColumnType()) {
       
     case CT_BOOLEAN: {
-      Bol xBol;
-      bool b = Bol::bExtract((char*)aScr,&xBol,iLength,pColumn);
-      ASSERT(b);
+      Bol xBol = *((Bol*)aScr);
       iHash += XXH32(&xBol,sizeof(Bol),0);
       break;
     }
       
     case CT_CHAR: {
-      NEVER_REACH;
+      iHash += XXH32((char*)aScr,StrLib::iSize((char*)aScr),0);
       break;
     }
       
     case CT_DATE: {
-      Dte xDte;
-      bool b = Dte::bExtract((char*)aScr,&xDte,iLength,pColumn);
-      ASSERT(b);
+      Dte xDte = *((Dte*)aScr);
       iHash += XXH32(&xDte,sizeof(Dte),0);
       break;
     }
@@ -150,41 +121,33 @@ void DtmLib::vHash(eDM eDatum, i8& iHash, Stz* aScr, i8 iLength, DBobjects::Colu
     }
       
     case CT_FLOAT: {
-      Flt xFlt;
-      bool b = Flt::bExtract((char*)aScr,&xFlt,iLength,pColumn);
-      ASSERT(b);
+      Flt xFlt = *((Flt*)aScr);
+      //bool b = Flt::bExtract((char*)aScr,&xFlt,iLength,pColumn);
+      //ASSERT(b);
       iHash += XXH32(&xFlt,sizeof(Flt),0);
       break;
     }
       
     case CT_INTEGER: {
-      Int xInt;
-      bool b = Int::bExtract((char*)aScr,&xInt,iLength,pColumn);
-      ASSERT(b);
+      Int xInt = *((Int*)aScr);
       iHash += XXH32(&xInt,sizeof(Int),0);
       break;
     }
       
     case CT_INTERVAL: {
-      Ivl xIvl;
-      bool b = Ivl::bExtract((char*)aScr,&xIvl,iLength,pColumn);
-      ASSERT(b);
+      Ivl xIvl = *((Ivl*)aScr);
       iHash += XXH32(&xIvl,sizeof(Ivl),0);
       break;
     }
       
     case CT_TIME: {
-      Tme xTme;
-      bool b = Tme::bExtract((char*)aScr,&xTme,iLength,pColumn);
-      ASSERT(b);
+      Tme xTme = *((Tme*)aScr);
       iHash += XXH32(&xTme,sizeof(Tme),0);
       break;
     }
       
     case CT_TIMESTAMP: {
-      Tsp xTsp;
-      bool b = Tsp::bExtract((char*)aScr,&xTsp,iLength,pColumn);
-      ASSERT(b);
+      Tsp xTsp = *((Tsp*)aScr);
       iHash += XXH32(&xTsp,sizeof(Tsp),0);
       break;
     }
@@ -291,6 +254,7 @@ void DtmLib::vHash(eDM eDatum, i8& iHash, Stz* aScr, DBobjects::Column* pColumn)
   
 }
 #endif
+
 /*----------------------------------------------------------------------------*/
 /*-- Sprint ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -304,7 +268,7 @@ void DtmLib::vSprint(eDM eDatum, Stz* aDst, Stz* aSrc,
   switch (eDatum) {
     case DM_BCD: Bcd::vSprint(aDst,aSrc,pColumn); break;
     case DM_BOL: Bol::vSprint(aDst,aSrc); break;
-    case DM_CHR: NEVER_REACH;               break;
+    case DM_CHR: Vch::vSprint(aDst,aSrc); break;
     case DM_DTE: Dte::vSprint(aDst,aSrc); break;
     case DM_FLT: Flt::vSprint(aDst,aSrc); break;
     case DM_INT: Int::vSprint(aDst,aSrc); break;
@@ -393,7 +357,7 @@ bool DtmLib::bLessThan(eDM eDatum, char* aArgA, i8 nBytesA, char* aArgB, i8 nByt
   switch (eDatum) {
     case DM_BCD: bLT = Bcd::bLessThan(aArgA,nBytesA,aArgB,nBytesB); break;
     case DM_BOL: bLT = Bol::bLessThan(aArgA,nBytesA,aArgB,nBytesB); break;
-    case DM_CHR: NEVER_REACH; break;
+    case DM_CHR: bLT = Vch::bLessThan(aArgA,nBytesA,aArgB,nBytesB); break;
     case DM_DTE: bLT = Dte::bLessThan(aArgA,nBytesA,aArgB,nBytesB); break;
     case DM_FLT: bLT = Flt::bLessThan(aArgA,nBytesA,aArgB,nBytesB); break;
     case DM_INT: bLT = Int::bLessThan(aArgA,nBytesA,aArgB,nBytesB); break;
@@ -420,7 +384,7 @@ bool DtmLib::bLessEqual(eDM eDatum, char* aArgA, i8 nBytesA, char* aArgB, i8 nBy
   switch (eDatum) {
     case DM_BCD: bLE = Bcd::bLessEqual(aArgA,nBytesA,aArgB,nBytesB); break;
     case DM_BOL: bLE = Bol::bLessEqual(aArgA,nBytesA,aArgB,nBytesB); break;
-    case DM_CHR: NEVER_REACH; break;
+    case DM_CHR: bLE = Vch::bLessEqual(aArgA,nBytesA,aArgB,nBytesB); break;
     case DM_DTE: bLE = Dte::bLessEqual(aArgA,nBytesA,aArgB,nBytesB); break;
     case DM_FLT: bLE = Flt::bLessEqual(aArgA,nBytesA,aArgB,nBytesB); break;
     case DM_INT: bLE = Int::bLessEqual(aArgA,nBytesA,aArgB,nBytesB); break;
@@ -447,7 +411,7 @@ bool DtmLib::bEqualTo(eDM eDatum, char* aArgA, i8 nBytesA, char* aArgB, i8 nByte
   switch (eDatum) {
     case DM_BCD: bEQ = Bcd::bEqualTo(aArgA,nBytesA,aArgB,nBytesB); break;
     case DM_BOL: bEQ = Bol::bEqualTo(aArgA,nBytesA,aArgB,nBytesB); break;
-    case DM_CHR: NEVER_REACH; break;
+    case DM_CHR: bEQ = Vch::bEqualTo(aArgA,nBytesA,aArgB,nBytesB); break;
     case DM_DTE: bEQ = Dte::bEqualTo(aArgA,nBytesA,aArgB,nBytesB); break;
     case DM_FLT: bEQ = Flt::bEqualTo(aArgA,nBytesA,aArgB,nBytesB); break;
     case DM_INT: bEQ = Int::bEqualTo(aArgA,nBytesA,aArgB,nBytesB); break;
@@ -474,7 +438,7 @@ bool DtmLib::bNotEqual(eDM eDatum, char* aArgA, i8 nBytesA, char* aArgB, i8 nByt
   switch (eDatum) {
     case DM_BCD: bNE = Bcd::bNotEqual(aArgA,nBytesA,aArgB,nBytesB); break;
     case DM_BOL: bNE = Bol::bNotEqual(aArgA,nBytesA,aArgB,nBytesB); break;
-    case DM_CHR: NEVER_REACH; break;
+    case DM_CHR: bNE = Vch::bNotEqual(aArgA,nBytesA,aArgB,nBytesB); break;
     case DM_DTE: bNE = Dte::bNotEqual(aArgA,nBytesA,aArgB,nBytesB); break;
     case DM_FLT: bNE = Flt::bNotEqual(aArgA,nBytesA,aArgB,nBytesB); break;
     case DM_INT: bNE = Int::bNotEqual(aArgA,nBytesA,aArgB,nBytesB); break;
@@ -501,7 +465,7 @@ bool DtmLib::bGreaterEqual(eDM eDatum, char* aArgA, i8 nBytesA, char* aArgB, i8 
   switch (eDatum) {
     case DM_BCD: bGE = Bcd::bGreaterEqual(aArgA,nBytesA,aArgB,nBytesB); break;
     case DM_BOL: bGE = Bol::bGreaterEqual(aArgA,nBytesA,aArgB,nBytesB); break;
-    case DM_CHR: NEVER_REACH; break;
+    case DM_CHR: bGE = Vch::bGreaterEqual(aArgA,nBytesA,aArgB,nBytesB); break;
     case DM_DTE: bGE = Dte::bGreaterEqual(aArgA,nBytesA,aArgB,nBytesB); break;
     case DM_FLT: bGE = Flt::bGreaterEqual(aArgA,nBytesA,aArgB,nBytesB); break;
     case DM_INT: bGE = Int::bGreaterEqual(aArgA,nBytesA,aArgB,nBytesB); break;
@@ -528,7 +492,7 @@ bool DtmLib::bGreaterThan(eDM eDatum, char* aArgA, i8 nBytesA, char* aArgB, i8 n
   switch (eDatum) {
     case DM_BCD: bGT = Bcd::bGreaterThan(aArgA,nBytesA,aArgB,nBytesB); break;
     case DM_BOL: bGT = Bol::bGreaterThan(aArgA,nBytesA,aArgB,nBytesB); break;
-    case DM_CHR: NEVER_REACH; break;
+    case DM_CHR: bGT = Vch::bGreaterThan(aArgA,nBytesA,aArgB,nBytesB); break;
     case DM_DTE: bGT = Dte::bGreaterThan(aArgA,nBytesA,aArgB,nBytesB); break;
     case DM_FLT: bGT = Flt::bGreaterThan(aArgA,nBytesA,aArgB,nBytesB); break;
     case DM_INT: bGT = Int::bGreaterThan(aArgA,nBytesA,aArgB,nBytesB); break;
@@ -553,7 +517,7 @@ i8 DtmLib::iCmp(eDM eDatum, char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
   switch (eDatum) {
     case DM_BCD: iCmp = Bcd::iCmp(aArgA,nBytesA,aArgB,nBytesB); break;
     case DM_BOL: iCmp = Bol::iCmp(aArgA,nBytesA,aArgB,nBytesB); break;
-    case DM_CHR: NEVER_REACH; break;
+    case DM_CHR: iCmp = Vch::iCmp(aArgA,nBytesA,aArgB,nBytesB); break;
     case DM_DTE: iCmp = Dte::iCmp(aArgA,nBytesA,aArgB,nBytesB); break;
     case DM_FLT: iCmp = Flt::iCmp(aArgA,nBytesA,aArgB,nBytesB); break;
     case DM_INT: iCmp = Int::iCmp(aArgA,nBytesA,aArgB,nBytesB); break;
@@ -562,6 +526,33 @@ i8 DtmLib::iCmp(eDM eDatum, char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
     case DM_TSP: iCmp = Tsp::iCmp(aArgA,nBytesA,aArgB,nBytesB); break;
     case DM_VBN: NEVER_REACH; break;
     case DM_VCH: iCmp = Vch::iCmp(aArgA,nBytesA,aArgB,nBytesB); break;
+      
+    default:
+      THROW("DtmLib::iCmp: Invalid eDatum %lld"_Stz,eDatum);
+  }
+  
+  return iCmp;
+}
+
+/*----------------------------------------------------------------------------*/
+/* cmp datum argA with argB (-ve: A < B, 0: A == B, +ve: A > B)               */
+/*----------------------------------------------------------------------------*/
+i8 DtmLib::iSize(eDM eDatum, char* aSrc)
+{
+  i8 iCmp = 0;
+  
+  switch (eDatum) {
+    case DM_BCD: return sizeof(Bcd); break;
+    case DM_BOL: return sizeof(Bol); break;
+    case DM_CHR: return StrLib::iSize(aSrc); break;
+    case DM_DTE: return sizeof(Dte); break;
+    case DM_FLT: return sizeof(Flt); break;
+    case DM_INT: return sizeof(Int); break;
+    case DM_IVL: return sizeof(Ivl); break;
+    case DM_TME: return sizeof(Tme); break;
+    case DM_TSP: return sizeof(Tsp); break;
+    case DM_VBN: NEVER_REACH; break;
+    case DM_VCH: return StrLib::iSize(aSrc); break;
       
     default:
       THROW("DtmLib::iCmp: Invalid eDatum %lld"_Stz,eDatum);

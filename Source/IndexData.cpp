@@ -528,6 +528,7 @@ void IndexData::vInsertEntry(EntryBuffer* pHigher, KeyWrk& xKeyWrk, Id xId, i8 i
   
   // insert entry into index buffer
   Entry* pEntry = pIndexBuffer->pInsert(xEntWrk);
+  //pEntry->vShow(0, m_pIndex);
   
   ASSERT(pEntry);
 }

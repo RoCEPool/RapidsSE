@@ -191,8 +191,10 @@ bool LoaderSub::bFetchRecord(void)
   if (aRawData) {
     //vDumpAscii(m_aRecord,m_iLength);
     // format the raw data into a record
-    RowData::vFormatData(aRawData, iLength, m_aRecord.aStr(), m_iLength);
-    _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
+    bool bValid = RowData::bFormatData(m_pTable->pColumnVec(), aRawData, iLength, m_aRecord.aStr(), m_iLength);
+    if (!bValid)
+      exit(-1);
+    
     return true;
   }
   
@@ -205,8 +207,9 @@ bool LoaderSub::bFetchRecord(void)
   aRawData = m_pLoadChunk->aNextRecord(iLength);
   if (aRawData) {
     // format the raw data into a record
-    RowData::vFormatData(aRawData, iLength, m_aRecord.aStr(), m_iLength);
-    _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
+    bool bValid = RowData::bFormatData(m_pTable->pColumnVec(), aRawData, iLength, m_aRecord.aStr(), m_iLength);
+    if (!bValid)
+      exit(-1);
     return true;
   }
   
@@ -260,7 +263,7 @@ void LoaderSub::vHashRecord(void)
   //m_iHash = XXH32(m_aRecord,iLength,0);
   //m_iPartition = m_iHash % (gpGrid->iSlots() * gpGrid->iNodes());
   
-  m_iPartition = m_pTable->iRowPartition(m_aRecord.aChar(), m_iLength);
+  m_iPartition = m_pTable->iRowPartition(m_aRecord);
 }
 
 #else
@@ -302,7 +305,7 @@ bool LoaderSub::bInsertRow(void)
   EntryBuffer* pEntryBuffer = m_pEntryBuffer[m_iPartition];
   
   // insert row into working buffer
-  bool b = pEntryBuffer->bInsertEntry(m_pTxRef->iTxId(),m_aRecord.aStr(),m_iLength);
+  bool b = pEntryBuffer->bInsertEntry(m_pTxRef->iTxId(),m_aRecord,m_iLength);
   
   //pEntryBuffer->vShow();
   
@@ -471,7 +474,7 @@ bool LoaderSub::bValidateRow(i8& i_Column)
   if ( ! bValid ) {
     vTrace("Loader:: Invalid field %lld in record: "_Stz,
            i_Column);
-    RowData::vDump((char*)m_aRecord.aStr(), m_iLength);
+    //RowData::vDump((char*)m_aRecord.aStr(), m_iLength);
     exit(-1);
   }
   

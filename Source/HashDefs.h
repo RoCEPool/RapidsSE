@@ -24,7 +24,7 @@
   #define __ENTRY_EXIT      // entry exit macros
 #endif
 
-//#define _ROWFORMAT
+#define _ROWFORMAT
 
 #define VERBOSE_TRACE
 #define REQUEST_LOOP2

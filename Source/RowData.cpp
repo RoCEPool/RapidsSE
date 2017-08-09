@@ -9,35 +9,47 @@ extern BufferPool* gpBufferPool;
 /*----------------------------------------------------------------------------*/
 /* dump RowData                                                               */
 /*----------------------------------------------------------------------------*/
-void RowData::vDump(char* aRowData, i8 iRowLength)
+void RowData::vDump(Stz* aRowData, ColumnVec* pColVec)
 {
-  
-  vTrace("RowData: \n"_Stz);
+  vTrace("RowData: "_Stz);
   i8 i_RowLength = 0;
-  char* pSeparator;
+  char* pOffset;
+  Stz* aData;
   
-  while (i_RowLength < iRowLength) {
+  // get no of columns
+  i8 nColumns = pColVec->nItems();
+  
+  // for each column except hidden column, dump teh offsets
+  for (i8 i_Column = 0; i_Column < nColumns - 1; i_Column++) {
     
-    // get separator
-    pSeparator = (char*)aRowData;
+    // calulate the offset pointer for column
+    char* pOffset = (char*)(aRowData) + i_Column*C_COLUMN_OFFSET_SIZE;
     
-    // extract length of next field from separator
-    i8 iLength = *pSeparator;
-    vTrace("Length %lld : value: "_Stz,iLength);
+    // get the column offset
+    unsigned char iOffset = *(pOffset);
     
-    // move rowData nd rowLeghth by char
-    i_RowLength += sizeof(char);
-    aRowData = (char*)pSeparator + sizeof(char);
+    vTrace("%lld|"_Stz, iOffset);
+  }
+
+  // for each column except hidden column, dump the column data
+  for (i8 i_Column = 0; i_Column < nColumns - 1; i_Column++) {
     
-    // dump the row data upto iLength bytes
-    for (i8 i =0; i < iLength; i++)
-      vTrace("%c"_Stz, *(aRowData+i));
+    // get the column
+    Column* pColumn = pColVec->pGet(i_Column);
+  
+    // calulate the offset pointer for column
+    char* pOffset = (char*)(aRowData) + i_Column*C_COLUMN_OFFSET_SIZE;
     
-    vTrace("\n"_Stz);
+    // get the column offset
+    unsigned char iOffset = *(pOffset);
     
-    // move the row pointer ahead
-    aRowData += iLength;
-    i_RowLength += iLength;
+    // let aData point to column data
+    aData = aRowData + iOffset;
+  
+    // dump the column value
+    s256 s;
+    DtmLib::vSprint(pColumn->eDatumType(), s, aData, pColumn);
+    vTrace("%s|"_Stz, s.aChar());
   }
 
   vTrace("\n"_Stz);
@@ -50,180 +62,134 @@ void RowData::vDump(char* aRowData, i8 iRowLength)
 /*----------------------------------------------------------------------------*/
 /* fetch next record from buffer, read next chunk if necessary                */
 /*----------------------------------------------------------------------------*/
-void RowData::vFormatData(Stz* aRawData, i8 iRawLength, Stz* aRowData, i8& iRowLength)
+bool RowData::bFormatData(ColumnVec* pColVec, Stz* aRawData, i8 iRawLength, Stz* aRowData, i8& iRowLength)
 {
   char* aSrc = (char*)aRawData->aChar();
-  char* aDst = (char*)aRowData->aChar();
+  i8 nColumns = pColVec->nItems() - 1;
+  
+  Stz* pOffset = aRowData;
+  Stz* aDst = pOffset + C_COLUMN_OFFSET_SIZE * nColumns;
+  iRowLength = C_COLUMN_OFFSET_SIZE * nColumns;
+  
   
   i8 iColumnLength = 0;
-  i8 iChar = 0;
   
-  iRowLength = 0;
-  while (iChar < iRawLength) {
+  for (i8 i_Column = 0; i_Column < nColumns; i_Column++) {
+    Column* pColumn = pColVec->pGet(i_Column);
     
-    // pre-field byte length separator format
-    // offset-col0-offset-col1...
-    char* pSeparator = (char*)(aDst);
+    // extract datum type
+    bool bValid = DtmLib::bExtract(pColumn->eDatumType(), aDst, &aSrc, pColumn);
     
-    // find location where to copy first field
-    aDst       += sizeof(char);
-    iRowLength += sizeof(char);
-    
-    // collect the csv
-    iColumnLength = 0;
-    while ('|' != *aSrc && '\n' != *aSrc) {
-      iColumnLength++;
-      *aDst++ = *(aSrc)++;
-      
-      iChar++;
+    // is the datum valid ?
+    if (!bValid) {
+      vTrace("Invalid field %lld in record: "_Stz, i_Column);
+      for (char* a = (char*)aRawData; *a && '\n' != *a; a++)
+        vTrace("%c"_Stz,*a);
+      vTrace("\n"_Stz);
+      return false;
     }
-    iChar++;
-    aSrc++;
+
+    // save offset
+    *(pOffset->aChar()) = iRowLength;
     
-    // now copy the length in the pre-field byte length separator
-    *pSeparator = iColumnLength;
-    iRowLength+= iColumnLength;
+    iColumnLength = DtmLib::iSize(pColumn->eDatumType(), aDst->aChar());
     
+    // move to next offset location
+    pOffset += C_COLUMN_OFFSET_SIZE;
+    
+    // increment row length
+    iRowLength += iColumnLength;
+    
+    // move to next column location
+    aDst += iColumnLength;
   }
   
-  //ASSERT('\n' == *aSrc || '|' == *aSrc);
+  vDump(aRowData, pColVec);
   
-  //vDumpAscii(aRawData,iRawLength);
-  vDump(aRowData->aChar(), iRowLength);
-  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
 /* get pointer to where column starts                                         */
 /*----------------------------------------------------------------------------*/
-#ifdef _ROWFORMAT
-char* RowData::pColumn(char* aRowData, i8 iColumnNo, i8& iRowLength)
+char* RowData::pColumn(char* aRowData, i8 iColumnNo)
 {
 
   i8 iCurrentColumn = 0;
-  char* sCursor = aRowData;
   
-  iRowLength = 0;
+  char* pOffset = (char*)(aRowData) + iColumnNo*C_COLUMN_OFFSET_SIZE;
+  unsigned char iOffset = *(pOffset);
+  
+  // move to offset
+  char* sCursor = aRowData + iOffset;
 
-  while (iCurrentColumn <= iColumnNo) {
-    sCursor += iRowLength;
-    char* pSeparator = (char*)(sCursor);
-    iRowLength = *pSeparator;
-    sCursor += sizeof(char);
-    iCurrentColumn++;
-  }
-  
   return sCursor;
 }
-#else
-char* RowData::pColumn(char* aRowData, i8 iColumnNo, i8& iLength)
-{
-  return nullptr;
-}
-#endif
 
 /*----------------------------------------------------------------------------*/
 /* show RowData                                                               */
 /*----------------------------------------------------------------------------*/
-void RowData::vGetDataString(s256& sDataString, char* aRowData, i8 iRowLength)
-{  
+void RowData::vGetDataString(s256& sDataString, Stz* aRowData, ColumnVec* pColVec)
+{
   i8 i_RowLength = 0;
-  char* pSeparator;
-  char* s = sDataString.aChar();
+  char* pOffset;
+  Stz* aData;
   
-  while (i_RowLength < iRowLength) {
+  i8 nColumns = pColVec->nItems();
+  
+  for (i8 i_Column = 0; i_Column < nColumns - 1; i_Column++) {
     
-    if (i_RowLength)
-      *s++ = ',';
+    Column* pColumn = pColVec->pGet(i_Column);
     
-    // get separator
-    pSeparator = (char*)aRowData;
+    if (i_Column != 0)
+      sDataString.vConcat(","_Stz);
+      
+    char* pOffset = (char*)(aRowData) + i_Column*C_COLUMN_OFFSET_SIZE;
+    unsigned char iOffset = *(pOffset);
     
-    // extract length of next field from separator
-    i8 iLength = *pSeparator;
+    // move to offset
+    aData = aRowData + iOffset;
     
-    // move rowData nd rowLeghth by char
-    i_RowLength += sizeof(char);
-    aRowData = (char*)pSeparator + sizeof(char);
-    
-    // dump the row data upto iLength bytes
-    for (i8 i =0; i < iLength; i++)
-      *s++ = *(aRowData+i);
-    
-    // move the row pointer ahead
-    aRowData += iLength;
-    i_RowLength += iLength;
+    s256 s;
+    DtmLib::vSprint(pColumn->eDatumType(), s, aData, pColumn);
+    if (i_Column == 0)
+      sDataString.vCopy(s);
+    else
+      sDataString.vConcat(s);
   }
+
 }
 
 /*----------------------------------------------------------------------------*/
 /* show RowData                                                               */
 /*----------------------------------------------------------------------------*/
-void RowData::vShow(char* aRowData, i8 iRowLength)
+void RowData::vShow(Stz* aRowData, ColumnVec* pColVec)
 {
   
   i8 i_RowLength = 0;
-  char* pSeparator;
+  char* pOffset;
+  Stz* aData;
   
-  while (i_RowLength < iRowLength) {
+  i8 nColumns = pColVec->nItems();
+  
+  for (i8 i_Column = 0; i_Column < nColumns - 1; i_Column++) {
     
-    // get separator
-    pSeparator = (char*)aRowData;
+    Column* pColumn = pColVec->pGet(i_Column);
     
-    // extract length of next field from separator
-    i8 iLength = *pSeparator;
-    vTrace("%lld "_Stz,iLength);
+    char* pOffset = (char*)(aRowData) + i_Column*C_COLUMN_OFFSET_SIZE;
+    unsigned char iOffset = *(pOffset);
     
-    // move rowData nd rowLeghth by char
-    i_RowLength += sizeof(char);
-    aRowData = (char*)pSeparator + sizeof(char);
+    // move to offset
+    aData = aRowData + iOffset;
     
-    // dump the row data upto iLength bytes
-    for (i8 i =0; i < iLength; i++)
-      vTrace("%c"_Stz, *(aRowData+i));
-    
-    vTrace(" "_Stz);
-    
-    // move the row pointer ahead
-    aRowData += iLength;
-    i_RowLength += iLength;
+    s256 s;
+    DtmLib::vSprint(pColumn->eDatumType(), s, aData, pColumn);
+    vTrace("%s "_Stz, s.aChar());
   }
   
+  //vTrace("\n"_Stz);
 }
 
-/*----------------------------------------------------------------------------*/
-/* show RowData                                                               */
-/*----------------------------------------------------------------------------*/
-void RowData::vShowData(char* aRowData, i8 iRowLength)
-{
-  
-  i8 i_RowLength = 0;
-  char* pSeparator;
-  
-  while (i_RowLength < iRowLength) {
-    
-    if (i_RowLength)
-      vTrace(","_Stz);
-    
-    // get separator
-    pSeparator = (char*)aRowData;
-    
-    // extract length of next field from separator
-    i8 iLength = *pSeparator;
-    
-    // move rowData nd rowLeghth by char
-    i_RowLength += sizeof(char);
-    aRowData = (char*)pSeparator + sizeof(char);
-    
-    // dump the row data upto iLength bytes
-    for (i8 i =0; i < iLength; i++)
-      vTrace("%c"_Stz, *(aRowData+i));
-    
-    // move the row pointer ahead
-    aRowData += iLength;
-    i_RowLength += iLength;
-  }
-}
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/

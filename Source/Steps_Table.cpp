@@ -38,6 +38,7 @@ void Task::vAddPrimitives_Table(void)
   vAddPrimitive("table.createColumnVec"_Stz,    &vTableCreateColumnVec,  false);
   vAddPrimitive("table.drop"_Stz,               &vTableDrop,             false);
   vAddPrimitive("table.dump"_Stz,               &vTableDump,             false);
+  vAddPrimitive("table.getColumns"_Stz,         &vTableGetColumns,       false);
   vAddPrimitive("table.hiddenIndex@"_Stz,       &vTableHiddenIndexFetch, false);
   vAddPrimitive("table.hiddenIndex!"_Stz,       &vTableHiddenIndexStore, false);
   vAddPrimitive("table.init"_Stz,               &vTableInit,             false);
@@ -224,6 +225,42 @@ ENTRY("vTableDump"_Stz);
   ASSERT(CN_TABLE == pTable->eClass());
   
   pTable->vContentDump();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* table.getColumns -- get columns as a csv string                            */
+/*----------------------------------------------------------------------------*/
+void Task::vTableGetColumns(MP_Task mpTask)
+{
+  ENTRY("vTableGetColumns"_Stz);
+  
+  Object* pPtrTable;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
+    THROW_INVALID_DSTACK("table.getColumns"_Stz);
+  Table* pTable = _pTable(pPtrTable);
+  ASSERT(CN_TABLE == pTable->eClass());
+  
+  ColumnVec* pColVec = pTable->pColumnVec();
+  i8 nColumns = pColVec->nItems();
+  
+  s256 s;
+  for (i8 i_Column = 0; i_Column < nColumns - 1; i_Column++) {
+    
+    if (i_Column != 0)
+      s.vConcat(","_Stz);
+
+    if (i_Column == 0)
+      s.vCopy(pColVec->pGet(i_Column)->sColumnName());
+    else
+      s.vConcat(pColVec->pGet(i_Column)->sColumnName());
+    
+    s.vConcat(" "_Stz);
+    s.vConcat(DBobjects::aCT[pColVec->pGet(i_Column)->eColumnType()]);
+  }
+  
+  mpTask->m_pDataStack->vPushS256(s);
   
   EXIT();
 }

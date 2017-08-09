@@ -308,7 +308,7 @@ timer: pIdxSelectTimer
 
   // set the metadata string
   args.metadata if
-  "(partition INTEGER, data VARCHAR)" metadata!
+    pTable table.getColumns "(partition INTEGER,%v)" str.format metadata!
   then
 
   // get and inc table reference and put into task.seitf.currentTable
@@ -784,7 +784,7 @@ timer: pIdxSelectTimer
 
   // set the metadata string
   args.metadata if
-  "(partition INTEGER, data VARCHAR)" metadata!
+    "(partition INTEGER, data VARCHAR)" metadata!
   then
 
   // get and inc table reference and put into task.seitf.currentTable

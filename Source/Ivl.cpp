@@ -207,49 +207,6 @@ void Ivl::vCopy(void* aDst, void* aSrc)
 /*----------------------------------------------------------------------------*/
 /* extract an interval from substr                                            */
 /*----------------------------------------------------------------------------*/
-#ifdef _ROWFORMAT
-bool Ivl::bExtract(char* aSrc, Ivl* aInterval, i8 iLength, Column* pColumn)
-{
-  u8 uField;
-  i8 i_Length = 1;
-  
-  // skip leading whitespace
-  while (' ' == *aSrc) {
-    aSrc++;
-    i_Length++;
-  }
-  
-  // test for null
-  if ( ! *aSrc && i_Length == iLength ) {
-    aInterval->vSetNull();
-    return true;
-  }
-  
-  aInterval->vInitZero();
-  
-  if ( ! *aSrc )
-    return false;
-  
-  // extract second
-  if ( ! StrLib::bExtractU8(&aSrc,&uField) )
-    return true;
-  aInterval->x.m_uSecond = uField;
-  
-  //  // skip . separator
-  //  if ('.' != *(*aaSrc)++)
-  //    return true;
-  
-  // extract fraction (assuming milliseconds)
-  if ('.' == *aSrc) {
-    aSrc++;
-    if ( StrLib::bExtractU8(&aSrc,&uField) )
-      aInterval->x.m_uMilli = uField;
-  }
-  
-  return true;
-}
-
-#else
 bool Ivl::bExtract(char** aaSrc, Ivl* aInterval, Column* pColumn)
 {
   u8 uField;
@@ -287,7 +244,6 @@ bool Ivl::bExtract(char** aaSrc, Ivl* aInterval, Column* pColumn)
   
   return true;
 }
-#endif
 
 /*----------------------------------------------------------------------------*/
 /* sprint ivl datum                                                           */
@@ -310,7 +266,7 @@ bool Ivl::bValid(char* aSrc, i8 iLength, Column* pColumn)
 {
   Ivl xIvl;
   
-  bool bValid = bExtract(aSrc,&xIvl,iLength,pColumn);
+  bool bValid = true; //bExtract(aSrc,&xIvl,iLength,pColumn);
   
   return bValid;
 }

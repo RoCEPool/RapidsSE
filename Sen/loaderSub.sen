@@ -172,7 +172,7 @@ tp: theIndirectResult
     // process record
     while
 
-      pLoaderSub loaderSub.validateRow if
+      //pLoaderSub loaderSub.validateRow if
 
         // hash the record to get partition
         pLoaderSub loaderSub.hashRecord
@@ -194,7 +194,7 @@ tp: theIndirectResult
 
         then // if buffer full
 
-      then // if row valid
+      //then // if row valid
 
   repeat // for all records in chunked file
 

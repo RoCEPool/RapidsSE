@@ -701,7 +701,7 @@ void SePrompt::vIterateRows(void)
         iRowCount++;
         if (m_pSEitf->m_bDisplay) {
           vTrace("row: (%lld, '"_Stz, iPart);
-          RowData::vShowData(pRow->aRow(),pRow->nRowSize());
+          RowData::vShow((Stz*)pRow->aRow(),m_pSEitf->m_pCurrentTable->pColumnVec());
           vTrace("')\n"_Stz);
         }
         pSelCursor->vNext();
@@ -720,7 +720,7 @@ void SePrompt::vIterateRows(void)
         iRowCount++;
         if (m_pSEitf->m_bDisplay) {
           vTrace("row: ("_Stz);
-          RowData::vShowData(pRow->aRow(),pRow->nRowSize());
+          RowData::vShow((Stz*)pRow->aRow(),m_pSEitf->m_pCurrentTable->pColumnVec());
           vTrace(")\n"_Stz);
         }
         pSelCursor->vNext();
