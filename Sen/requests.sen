@@ -93,7 +93,6 @@ scnselidx scanSelectIndex_req
 setidxunique indexSetUnique_req
 szidx     sizeIndex_req
 tridx     truncateIndex_req
-uprselidx upperSelectIndex_req
  
 -----------------
 Column Requests:

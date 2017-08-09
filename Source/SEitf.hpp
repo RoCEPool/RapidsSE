@@ -145,7 +145,6 @@ namespace Interface
     bool bScanSelectIndex(TokenVec& xTokenVec);
     bool bSizeIndex(TokenVec& xTokenVec);
     bool bTruncateIndex(TokenVec& xTokenVec);
-    bool bUpperSelectIndex(TokenVec& xTokenVec);
 
     bool bAnalyzeTable(TokenVec& xTokenVec);
     bool bCopyTable(TokenVec& xTokenVec);

@@ -1004,7 +1004,6 @@ bool SePrompt::bHelp(void)
   vTrace("tableSizes -- size of all tables\n"_Stz);
   vTrace("tr         -- truncate table\n"_Stz);
   vTrace("tridx      -- truncate table\n"_Stz);
-  vTrace("uprselidx  -- upper bound select\n"_Stz);
   vTrace("usesch     -- use schema\n"_Stz);
   vTrace("version    -- print SE version\n"_Stz);
   vTrace("?          -- print this help\n"_Stz);

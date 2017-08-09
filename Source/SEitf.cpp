@@ -457,7 +457,6 @@ bool SEitf::bDecode(TokenVec& xTokenVec)
   if (xTokenVec[0]->bSame("tableSizes"_Stz)) return bSizeTables(xTokenVec);
   if (xTokenVec[0]->bSame("tr"_Stz)) return bTruncateTable(xTokenVec);
   if (xTokenVec[0]->bSame("tridx"_Stz)) return bTruncateIndex(xTokenVec);
-  if (xTokenVec[0]->bSame("uprselidx"_Stz)) return bUpperSelectIndex(xTokenVec);
   if (xTokenVec[0]->bSame("usesch"_Stz)) return bUseSchema(xTokenVec);
   if (xTokenVec[0]->bSame("__x"_Stz)) return bX(xTokenVec);
   if (xTokenVec[0]->bSame("ping"_Stz)) return bPing(xTokenVec);
@@ -1984,37 +1983,6 @@ bool SEitf::bTruncateIndex(TokenVec& xTokenVec)
   sRequest.vConcat("\""_Stz);
   
   sRequest.vConcat(" truncateIndex_req"_Stz);
-  
-  return bAppendRequest(sRequest);
-}
-
-/*----------------------------------------------------------------------------*/
-/* upper select rows from a table on a given index                            */
-/*----------------------------------------------------------------------------*/
-bool SEitf::bUpperSelectIndex(TokenVec& xTokenVec)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
-  
-  s256 sRequest;
-  
-  if (xTokenVec.nTokens() != 4) {
-    vSetLastError(EC_INVALID_PARAMETERS);
-    return false;
-  }
-  
-  sRequest.vConcat(" \""_Stz);
-  sRequest.vConcat(xTokenVec[3]->aText());
-  sRequest.vConcat("\""_Stz);
-  
-  sRequest.vConcat(" \""_Stz);
-  sRequest.vConcat(xTokenVec[2]->aText());
-  sRequest.vConcat("\""_Stz);
-  
-  sRequest.vConcat(" \""_Stz);
-  sRequest.vConcat(xTokenVec[1]->aText());
-  sRequest.vConcat("\""_Stz);
-  
-  sRequest.vConcat(" upperSelectIndex_req"_Stz);
   
   return bAppendRequest(sRequest);
 }
