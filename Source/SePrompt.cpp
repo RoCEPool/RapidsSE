@@ -982,7 +982,6 @@ bool SePrompt::bHelp(void)
   vTrace("drop       -- drop tenant|catalog|schema|table|index\n"_Stz);
   vTrace("ex         -- export table t\n"_Stz);
   vTrace("fetch      -- fetch t where ...\n"_Stz);
-  vTrace("keyselidx  -- exact key select\n"_Stz);
   vTrace("ld         -- load table t\n"_Stz);
   vTrace("lf         -- list folder contents\n"_Stz);
   vTrace("ls         -- list directory contents\n"_Stz);

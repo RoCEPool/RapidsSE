@@ -83,7 +83,6 @@ Index Requests:
 anidx     analyzeIndex_req
 dumpidx   dumpIndex_req
 getidx    getIndex_req
-keyselidx keySelectIndex_req
 mkidx     createIndex_req
 lsidx     listIndexes_req
 retidx    returnIndex_req

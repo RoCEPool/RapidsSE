@@ -416,7 +416,6 @@ bool SEitf::bDecode(TokenVec& xTokenVec)
   if (xTokenVec[0]->bSame("lds"_Stz)) return bLoadTableStream(xTokenVec);
   if (xTokenVec[0]->bSame("lf"_Stz)) return bGetDicContents(xTokenVec);
   if (xTokenVec[0]->bSame("lfG"_Stz)) return bGetDicContentsG(xTokenVec);
-  if (xTokenVec[0]->bSame("keyselidx"_Stz)) return bKeySelectIndex(xTokenVec);
   if (xTokenVec[0]->bSame("lscat"_Stz)) return bListCatalogs(xTokenVec);
   if (xTokenVec[0]->bSame("lscol"_Stz)) return bListColumns(xTokenVec);
   if (xTokenVec[0]->bSame("lsidx"_Stz)) return bListIndices(xTokenVec);
@@ -1793,37 +1792,6 @@ bool SEitf::bNodeStatus(TokenVec& xTokenVec)
   }
   
   sRequest.vConcat(" status"_Stz);
-  
-  return bAppendRequest(sRequest);
-}
-
-/*----------------------------------------------------------------------------*/
-/* exact key select from a table given an index                               */
-/*----------------------------------------------------------------------------*/
-bool SEitf::bKeySelectIndex(TokenVec& xTokenVec)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
-  
-  s256 sRequest;
-  
-  if (xTokenVec.nTokens() != 4) {
-    vSetLastError(EC_INVALID_PARAMETERS);
-    return false;
-  }
-  
-  sRequest.vConcat(" \""_Stz);
-  sRequest.vConcat(xTokenVec[3]->aText());
-  sRequest.vConcat("\""_Stz);
-  
-  sRequest.vConcat(" \""_Stz);
-  sRequest.vConcat(xTokenVec[2]->aText());
-  sRequest.vConcat("\""_Stz);
-  
-  sRequest.vConcat(" \""_Stz);
-  sRequest.vConcat(xTokenVec[1]->aText());
-  sRequest.vConcat("\""_Stz);
-  
-  sRequest.vConcat(" keySelectIndex_req"_Stz);
   
   return bAppendRequest(sRequest);
 }
