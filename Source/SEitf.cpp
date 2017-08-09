@@ -1502,6 +1502,12 @@ bool SEitf::bFetchRows(TokenVec& xTokenVec)
 //  sRequest.vConcat(xTokenVec[3]);
 //  sRequest.vConcat("\""_Stz);
   
+  // hack for groupBy performance testing
+  if (xTokenVec.nTokens() == 4)
+    sRequest.vConcat("1"_Stz);
+  else
+    sRequest.vConcat("0"_Stz);
+  
   sRequest.vConcat(" \""_Stz);
   sRequest.vConcat(xTokenVec[2]->aText());
   sRequest.vConcat("\""_Stz);

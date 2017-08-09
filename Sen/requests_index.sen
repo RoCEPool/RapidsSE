@@ -246,18 +246,19 @@ timer: pIdxSelectTimer
 /*----------------------------------------------------------------------------*/
 /* fetch rows using an index (this is request)                                */
 /*----------------------------------------------------------------------------*/
-: fetchRowsIndex_req ( "<sWhere>" "<sTableNm>" -- <R> )
+: fetchRowsIndex_req ( "groupBy" "<sWhere>" "<sTableNm>" -- <R> )
                                                                     // ../tables
 "fetchRowsIndex_req" .
 
   // task is a request server
   task::this task.kind@ TK_REQUEST_SERVER == assert
 
-  assert::stack_2
+  assert::stack_3
   CN_STRVAL assert::class_0
   CN_STRVAL assert::class_1
+  CN_INTVAL assert::class_2
 
-  0 0 0 locals| pPlanner pAccessPath pTable sTableNm sWhere |
+  0 0 0 locals| pPlanner pAccessPath pTable sTableNm sWhere bGroupBy |
 
   pIdxSelectTimer timer.start
 
@@ -367,16 +368,21 @@ timer: pIdxSelectTimer
     endof
 
     AT_RANGE of
-      "case range" .
+
       "0" //key
       pPlanner Planner.lowKey@
       pPlanner Planner.highKey@
-      //"rangeSelectIdxTask"
-      "groupByIdxTask_RH"
-      //pPlanner Planner.indexNm@
-      "hidden"
-      //selectIndex
-      groupByIndex_RH
+      bGroupBy if
+        "case groupBy" .
+        "groupByIdxTask_RH"
+        "hidden"
+        groupByIndex_RH
+      else
+        "case range" .
+        "rangeSelectIdxTask"
+        pPlanner Planner.indexNm@
+        selectIndex
+      then
     endof
 
     AT_SCAN of
