@@ -294,8 +294,8 @@ Stz* Table::pAnalyzeIndex(Index* pIndex, bool bDetailed)
       sAnalysis.vCatSprint("row: ('%s', %lld, %lld, %lld)\n"_Stz,
                            gpGrid->pThisNode()->aNodeName(),
                            iPartition,
-                           nBuffersTotal,
-                           nEntriesTotal);
+                           nBuffers,
+                           nEntries);
 
     }
     
