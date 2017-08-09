@@ -193,7 +193,8 @@ Stz* Table::pAnalyzeIndex(Index* pIndex, bool bDetailed)
     i8 nBuffers = 0;
     i8 nEntries = 0;
 
-    pIndexBuffer->vAnalyze(sAnalysis, bDetailed, nBuffers, nEntries);
+    if (pIndexBuffer)
+      pIndexBuffer->vAnalyze(sAnalysis, bDetailed, nBuffers, nEntries);
     
     nEntriesTotal += nEntries;
     nBuffersTotal += nBuffers;
