@@ -40,7 +40,7 @@ keyselidx supplier idx1 100000 ;
 
 print "----------------------------------------------------------------------";
 print "\nLower select from supplier (idx1) where S_SUPPKEY >= 99720 ..." ;
-lwrselidx supplier idx1 99720 ;
+fetch supplier "S_SUPPKEY 99720 >=";
 
 print "----------------------------------------------------------------------";
 print "\nUpper select from supplier (idx1) where S_SUPPKEY <= 20 ..." ;
@@ -58,7 +58,7 @@ keyselidx supplier idx2 "Supplier#000001900" ;
 
 print "----------------------------------------------------------------------";
 print "\nLower select from supplier (idx2) where S_NAME >= 'Supplier#000099900' ..." ;
-lwrselidx supplier idx2 "Supplier#000099900" ;
+fetch supplier "S_NAME Supplier#000099900 >=" ;
 
 print "----------------------------------------------------------------------";
 print "\nUpper select from supplier (idx2) where S_NAME <= 'Supplier#000000009' ..." ;
@@ -83,7 +83,7 @@ displayOff;
 
 print "----------------------------------------------------------------------";
 print "\nLower select from supplier (idx3) where S_ADDRESS >= 'm' ..." ;
-lwrselidx supplier idx3 "m" ;
+fetch supplier "S_ADDRESS m >=" ;
 
 print "----------------------------------------------------------------------";
 print "\nUpper select from supplier (idx3) where S_ADDRESS <= 'p'..." ;

@@ -86,7 +86,6 @@ getidx    getIndex_req
 keyselidx keySelectIndex_req
 mkidx     createIndex_req
 lsidx     listIndexes_req
-lwrselidx lowerSelectIndex_req
 retidx    returnIndex_req
 rmidx     dropIndex_req
 rgeselidx rangeSelectIndex_req

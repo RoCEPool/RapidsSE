@@ -426,7 +426,6 @@ bool SEitf::bDecode(TokenVec& xTokenVec)
   if (xTokenVec[0]->bSame("lstbl"_Stz)) return bListTables(xTokenVec);
   if (xTokenVec[0]->bSame("lsten"_Stz)) return bListTenants(xTokenVec);
   if (xTokenVec[0]->bSame("lwrsel"_Stz)) return bLowerSelectTable(xTokenVec);
-  if (xTokenVec[0]->bSame("lwrselidx"_Stz)) return bLowerSelectIndex(xTokenVec);
   if (xTokenVec[0]->bSame("mkcat"_Stz)) return bCreateCatalog(xTokenVec);
   if (xTokenVec[0]->bSame("mkidx"_Stz)) return bCreateIndex(xTokenVec);
   if (xTokenVec[0]->bSame("mksch"_Stz)) return bCreateSchema(xTokenVec);
@@ -1827,37 +1826,6 @@ bool SEitf::bKeySelectIndex(TokenVec& xTokenVec)
   sRequest.vConcat("\""_Stz);
   
   sRequest.vConcat(" keySelectIndex_req"_Stz);
-  
-  return bAppendRequest(sRequest);
-}
-
-/*----------------------------------------------------------------------------*/
-/* lower select rows from a table given an index                              */
-/*----------------------------------------------------------------------------*/
-bool SEitf::bLowerSelectIndex(TokenVec& xTokenVec)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
-  
-  s256 sRequest;
-  
-  if (xTokenVec.nTokens() != 4) {
-    vSetLastError(EC_INVALID_PARAMETERS);
-    return false;
-  }
-  
-  sRequest.vConcat(" \""_Stz);
-  sRequest.vConcat(xTokenVec[3]->aText());
-  sRequest.vConcat("\""_Stz);
-  
-  sRequest.vConcat(" \""_Stz);
-  sRequest.vConcat(xTokenVec[2]->aText());
-  sRequest.vConcat("\""_Stz);
-  
-  sRequest.vConcat(" \""_Stz);
-  sRequest.vConcat(xTokenVec[1]->aText());
-  sRequest.vConcat("\""_Stz);
-  
-  sRequest.vConcat(" lowerSelectIndex_req"_Stz);
   
   return bAppendRequest(sRequest);
 }

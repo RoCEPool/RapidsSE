@@ -42,34 +42,34 @@ dumpidx jidx idx1;
 //anidx jidx idx ;
 
 print "\nSelecting rows with key == 7 using idx1 ...\n" ;
-keyselidx jidx idx1 7 ;
+keyselidx jidx idx1 7 >=";
 
 print "\nSelecting rows with key >= 3 using idx1 ...\n" ;
-lwrselidx jidx idx1 3 ;
+fetch jidx "jidx_key 3 >=";
 
 print "\nSelecting rows with key >= 1 using idx1 ...\n" ;
-lwrselidx jidx idx1 1 ;
+fetch jidx "jidx_key 1 >=";
 
 print "\nSelecting rows with key >= 28 using idx1 ...\n" ;
-lwrselidx jidx idx1 28 ;
+fetch jidx "jidx_key 28 >=";
 
 print "\nSelecting rows with key >= 40 using idx1 ...\n" ;
-lwrselidx jidx idx1 40 ;
+fetch jidx "jidx_key 40 >=";
 
 print "\nSelecting rows with key >= 45 using idx1 ...\n" ;
-lwrselidx jidx idx1 45 ;
+fetch jidx "jidx_key 45 >=";
 
 print "\nSelecting rows with key >= 67 using idx1 ...\n" ;
-lwrselidx jidx idx1 67 ;
+fetch jidx "jidx_key 67 >=";
 
 print "\nSelecting rows with key >= 99 using idx1 ...\n" ;
-lwrselidx jidx idx1 99 ;
+fetch jidx "jidx_key 99 >=";
 
 print "\nSelecting rows with key >= 72 using idx1 ...\n" ;
-lwrselidx jidx idx1 72 ;
+fetch jidx "jidx_key 72 >=";
 
 print "\nSelecting rows with key >= 180 using idx2 ...\n" ;
-lwrselidx jidx idx2 180 ;
+fetch jidx "jidx_100 180 >=";
 
 print "\nSelecting rows with key >= 3 and key <= 7 using idx1 ...\n" ;
 rgeselidx jidx idx1 3 7 ;

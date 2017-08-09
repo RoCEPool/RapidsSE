@@ -33,7 +33,7 @@ print "\nSelecting rows from supplier (idx1) where S_SUPPKEY == 10000...\n" ;
 keyselidx supplier idx1 10000 ;
 
 print "\nSelecting rows from supplier (idx1) where S_SUPPKEY >= 9972 ...\n" ;
-lwrselidx supplier idx1 9972 ;
+fetch supplier "S_SUPPKEY 9972 >=" ;
 
 print "\nSelecting rows from supplier (idx1) where S_SUPPKEY <= 20 ...\n" ;
 uprselidx supplier idx1 20 ;
@@ -48,7 +48,7 @@ print "\nSelecting rows from supplier (idx2) where S_NAME == 'Supplier#000001900
 keyselidx supplier idx2 "Supplier#000001900" ;
 
 print "\nSelecting rows from supplier (idx2) where S_NAME >= 'Supplier#000009900' ...\n" ;
-lwrselidx supplier idx2 "Supplier#000009900" ;
+fetch supplier "S_NAME Supplier#000009900 >=" ;
 
 print "\nSelecting rows from supplier (idx2) where S_NAME <= 'Supplier#000005400' ...\n" ;
 uprselidx supplier idx2 "Supplier#000005400" ;
@@ -66,7 +66,7 @@ print "\nSelecting rows from supplier (idx3) where S_ADDRESS == 'mX37oAzqsBPhN1L
 keyselidx supplier idx3 "mX37oAzqsBPhN1LWdzV p" ;
 
 print "\nSelecting rows from supplier (idx3) where S_ADDRESS >= 'm' ...\n" ;
-lwrselidx supplier idx3 "m" ;
+fetch supplier "S_ADDRESS m >=" ;
 
 print "\nSelecting rows from supplier (idx3) where S_ADDRESS <= 'p'...\n" ;
 uprselidx supplier idx3 "p" ;

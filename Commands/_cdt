@@ -21,9 +21,9 @@ docol stepsList;
 dumpidx jCdt jCdt_idx1;
 
 //print "\nSelecting rows with key <= 7 using idx1 ...\n" ;
-uprselidx jCdt jCdt_idx1 7 ;
+fetch jCdt "jA 7 <=" ;
 
-lwrselidx jCdt jCdt_idx1 1 ;
+fetch jCdt "jA 1 >=" ;
 
 // upper bound
 fetch jCdt "jA 5 <=" ;

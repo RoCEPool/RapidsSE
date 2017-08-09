@@ -87,10 +87,10 @@ ld j10 "../JTEST/j10.csv" ;
 anidx j10 idx ;
 
 print "\nSelecting rows with key j10_key >= 4 using index idx ...\n" ;
-lwrselidx j10 idx 4 ;
+fetch j10 "j10_key 4 >=";
 
 print "\nSelecting rows with key j10_key >= 7 using index idx ...\n" ;
-lwrselidx j10 idx 7 ;
+fetch j10 "j10_key 7 >=";
 
 print "\nSelecting rows with key j10_key >= 4 and j10_key <= 8 using index idx ...\n" ;
 rgeselidx j10 idx 4 8 ;

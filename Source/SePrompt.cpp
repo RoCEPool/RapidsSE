@@ -993,7 +993,6 @@ bool SePrompt::bHelp(void)
   vTrace("lssch      -- list schemas contents\n"_Stz);
   vTrace("lstbl      -- list tables contents\n"_Stz);
   vTrace("lsten      -- list tenants contents\n"_Stz);
-  vTrace("lwrselidx  -- lower bound select\n"_Stz);
   vTrace("print      -- print string\n"_Stz);
   vTrace("pwf        -- print working folder\n"_Stz);
   vTrace("rgeselidx  -- range select\n"_Stz);
