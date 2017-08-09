@@ -995,7 +995,6 @@ bool SePrompt::bHelp(void)
   vTrace("lsten      -- list tenants contents\n"_Stz);
   vTrace("print      -- print string\n"_Stz);
   vTrace("pwf        -- print working folder\n"_Stz);
-  vTrace("rgeselidx  -- range select\n"_Stz);
   vTrace("sel        -- select * from table\n"_Stz);
   vTrace("space      -- pool space\n"_Stz);
   vTrace("status     -- grid status\n"_Stz);

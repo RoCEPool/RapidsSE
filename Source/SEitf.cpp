@@ -446,7 +446,6 @@ bool SEitf::bDecode(TokenVec& xTokenVec)
   if (xTokenVec[0]->bSame("rmsch"_Stz)) return bDropSchema(xTokenVec);
   if (xTokenVec[0]->bSame("rmtbl"_Stz)) return bDropTable(xTokenVec);
   if (xTokenVec[0]->bSame("rmten"_Stz)) return bDropTenant(xTokenVec);
-  if (xTokenVec[0]->bSame("rgeselidx"_Stz)) return bRangeSelectIndex(xTokenVec);
   if (xTokenVec[0]->bSame("sel"_Stz)) return bSelectTable(xTokenVec);
   if (xTokenVec[0]->bSame("set"_Stz)) return bSet(xTokenVec);
   if (xTokenVec[0]->bSame("setidxunique"_Stz)) return bIndexSetUnique(xTokenVec);
@@ -1825,41 +1824,6 @@ bool SEitf::bKeySelectIndex(TokenVec& xTokenVec)
   sRequest.vConcat("\""_Stz);
   
   sRequest.vConcat(" keySelectIndex_req"_Stz);
-  
-  return bAppendRequest(sRequest);
-}
-
-/*----------------------------------------------------------------------------*/
-/* range select rows from a table given an index                              */
-/*----------------------------------------------------------------------------*/
-bool SEitf::bRangeSelectIndex(TokenVec& xTokenVec)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
-  
-  s256 sRequest;
-  
-  if (xTokenVec.nTokens() != 5) {
-    vSetLastError(EC_INVALID_PARAMETERS);
-    return false;
-  }
-  
-  sRequest.vConcat(" \""_Stz);
-  sRequest.vConcat(xTokenVec[4]->aText());
-  sRequest.vConcat("\""_Stz);
-  
-  sRequest.vConcat(" \""_Stz);
-  sRequest.vConcat(xTokenVec[3]->aText());
-  sRequest.vConcat("\""_Stz);
-  
-  sRequest.vConcat(" \""_Stz);
-  sRequest.vConcat(xTokenVec[2]->aText());
-  sRequest.vConcat("\""_Stz);
-  
-  sRequest.vConcat(" \""_Stz);
-  sRequest.vConcat(xTokenVec[1]->aText());
-  sRequest.vConcat("\""_Stz);
-  
-  sRequest.vConcat(" rangeSelectIndex_req"_Stz);
   
   return bAppendRequest(sRequest);
 }
