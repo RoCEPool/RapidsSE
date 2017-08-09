@@ -11,18 +11,6 @@ _partsuppLoad
 _regionLoad
 _supplierLoad
 
-//create index customer_idx1 on customer (c_custkey);
-//create index supplier_idx1 on supplier(s_suppkey);
-//create index part_idx1 on part(p_partkey);
-
-//create index orders_idx1 on orders(o_orderdate);
-//create index lineitem_idx1 on lineitem(l_partkey);
-//create index lineitem_idx2 on lineitem(l_shipdate);
-//create index lineitem_idx3 on lineitem(l_suppkey);
-//create index partsupp_idx1 on partsupp(ps_suppkey);
-//create index customer_idx2 on customer(c_nationkey);
-//create index supplier_idx2 on supplier(s_nationkey);
-
 pwf ;
 lf ;
 tableSizes ;

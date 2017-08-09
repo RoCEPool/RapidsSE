@@ -104,7 +104,7 @@ bool RowData::bFormatData(ColumnVec* pColVec, Stz* aRawData, i8 iRawLength, Stz*
     aDst += iColumnLength;
   }
   
-  vDump(aRowData, pColVec);
+  //vDump(aRowData, pColVec);
   
   return true;
 }
