@@ -12,7 +12,7 @@ extern Grid*        gpGrid;
 extern bool         gbMetadata;
 
 //
-// list of commands which need processing by SePrompt
+// list of commands which need intercept processing by SePrompt
 //
 const Stz* C_CMD_HELP1   = "?"_Stz;
 const Stz* C_CMD_HELP2   = "help"_Stz;
@@ -47,40 +47,41 @@ const Stz* C_ONE_UNIQUE  = "unique"_Stz;
 struct CmdTable {
   const Stz* aCommand;
   const Stz* aAlternate;
-  bool (SePrompt::*func)(void);
+  bool (SePrompt::*aFunc)(void);
 };
 
 CmdTable SePromptCommands[] =
 {
-  { C_CMD_ANTBL   , nullptr,       &SePrompt::bCmd_AnalyzeTable  },
-  { C_CMD_BEGIN   , C_ONE_INSERT,  &SePrompt::bCmd_BeginInsert   },
-  { C_CMD_BYE     , nullptr,       &SePrompt::bCmd_Bye           },
-  { C_CMD_CD      , nullptr,       &SePrompt::bCmd_ChangeDir     },
-  { C_CMD_CREATE  , C_ONE_CATALOG, &SePrompt::bCmd_CreateCatalog },
-  { C_CMD_CREATE  , C_ONE_INDEX,   &SePrompt::bCmd_CreateIndex   },
-  { C_CMD_CREATE  , C_ONE_SCHEMA,  &SePrompt::bCmd_CreateSchema  },
-  { C_CMD_CREATE  , C_ONE_TABLE,   &SePrompt::bCmd_CreateTable   },
-  { C_CMD_CREATE  , C_ONE_TENANT,  &SePrompt::bCmd_CreateTenant  },
-  { C_CMD_CREATE  , C_ONE_UNIQUE,  &SePrompt::bCmd_CreateUnique  },
-  { C_CMD_DANTBL  , nullptr,       &SePrompt::bCmd_DanalyzeTable },
-  { C_CMD_DOCOL   , nullptr,       &SePrompt::bCmd_Docol         },
-  { C_CMD_DROP    , C_ONE_CATALOG, &SePrompt::bCmd_DropCatalog   },
-  { C_CMD_DROP    , C_ONE_INDEX,   &SePrompt::bCmd_DropIndex     },
-  { C_CMD_DROP    , C_ONE_SCHEMA,  &SePrompt::bCmd_DropSchema    },
-  { C_CMD_DROP    , C_ONE_TABLE,   &SePrompt::bCmd_DropTable     },
-  { C_CMD_DROP    , C_ONE_TENANT,  &SePrompt::bCmd_DropTenant    },
-  { C_CMD_END     , C_ONE_INSERT,  &SePrompt::bCmd_EndInsert     },
-  { C_CMD_FIRST   , nullptr,       &SePrompt::bCmd_GetFirstRow   },
-  { C_CMD_HELP1   , nullptr,       &SePrompt::bCmd_Help          },
-  { C_CMD_HELP2   , nullptr,       &SePrompt::bCmd_Help          },
-  { C_CMD_HISTORY , nullptr,       &SePrompt::bCmd_History       },
-  { C_CMD_INSERT  , C_ONE_ROW,     &SePrompt::bCmd_InsertRow     },
-  { C_CMD_LS      , nullptr,       &SePrompt::bCmd_ListDir       },
-  { C_CMD_NEXT    , nullptr,       &SePrompt::bCmd_GetNextRow    },
-  { C_CMD_PWD     , nullptr,       &SePrompt::bCmd_PrintDir      },
-  { C_CMD_RECALL  , nullptr,       &SePrompt::bCmd_RecallCommand },
-  { C_CMD_SLEEP   , nullptr,       &SePrompt::bCmd_Sleep         },
-  { C_CMD_USE     , nullptr,       &SePrompt::bCmd_UseSchema     },
+  { C_CMD_ANTBL,   nullptr,       &SePrompt::bCmd_AnalyzeTable  },
+  { C_CMD_BEGIN,   C_ONE_INSERT,  &SePrompt::bCmd_BeginInsert   },
+  { C_CMD_BYE,     nullptr,       &SePrompt::bCmd_Bye           },
+  { C_CMD_CD,      nullptr,       &SePrompt::bCmd_ChangeDir     },
+  { C_CMD_CREATE,  C_ONE_CATALOG, &SePrompt::bCmd_CreateCatalog },
+  { C_CMD_CREATE,  C_ONE_INDEX,   &SePrompt::bCmd_CreateIndex   },
+  { C_CMD_CREATE,  C_ONE_SCHEMA,  &SePrompt::bCmd_CreateSchema  },
+  { C_CMD_CREATE,  C_ONE_TABLE,   &SePrompt::bCmd_CreateTable   },
+  { C_CMD_CREATE,  C_ONE_TENANT,  &SePrompt::bCmd_CreateTenant  },
+  { C_CMD_CREATE,  C_ONE_UNIQUE,  &SePrompt::bCmd_CreateUnique  },
+  { C_CMD_DANTBL,  nullptr,       &SePrompt::bCmd_DanalyzeTable },
+  { C_CMD_DOCOL,   nullptr,       &SePrompt::bCmd_Docol         },
+  { C_CMD_DROP,    C_ONE_CATALOG, &SePrompt::bCmd_DropCatalog   },
+  { C_CMD_DROP,    C_ONE_INDEX,   &SePrompt::bCmd_DropIndex     },
+  { C_CMD_DROP,    C_ONE_SCHEMA,  &SePrompt::bCmd_DropSchema    },
+  { C_CMD_DROP,    C_ONE_TABLE,   &SePrompt::bCmd_DropTable     },
+  { C_CMD_DROP,    C_ONE_TENANT,  &SePrompt::bCmd_DropTenant    },
+  { C_CMD_END,     C_ONE_INSERT,  &SePrompt::bCmd_EndInsert     },
+  { C_CMD_FIRST,   nullptr,       &SePrompt::bCmd_GetFirstRow   },
+  { C_CMD_HELP1,   nullptr,       &SePrompt::bCmd_Help          },
+  { C_CMD_HELP2,   nullptr,       &SePrompt::bCmd_Help          },
+  { C_CMD_HISTORY, nullptr,       &SePrompt::bCmd_History       },
+  { C_CMD_INSERT,  C_ONE_ROW,     &SePrompt::bCmd_InsertRow     },
+  { C_CMD_LS,      nullptr,       &SePrompt::bCmd_ListDir       },
+  { C_CMD_NEXT,    nullptr,       &SePrompt::bCmd_GetNextRow    },
+  { C_CMD_PWD,     nullptr,       &SePrompt::bCmd_PrintDir      },
+  { C_CMD_RECALL,  nullptr,       &SePrompt::bCmd_RecallCommand },
+  { C_CMD_SLEEP,   nullptr,       &SePrompt::bCmd_Sleep         },
+  { C_CMD_USE,     nullptr,       &SePrompt::bCmd_UseSchema     },
+  { nullptr,       nullptr,       nullptr                       }
 };
 
 /*----------------------------------------------------------------------------*/
@@ -514,7 +515,7 @@ bool SePrompt::bProcessCommand(bool bPostProcess)
  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for builtin commands
-  
+  //*/
   if (bCmdIs("?"_Stz))          return bHelp();
   if (bCmdIs("help"_Stz))       return bHelp();
   if (bCmdIs("!!"_Stz))         return bRecallCommand();
@@ -562,6 +563,21 @@ bool SePrompt::bProcessCommand(bool bPostProcess)
   if (bCmdIs("use"_Stz)) {
     if (bOneIs("schema"_Stz))   return bUseSchema();
   }
+  //*/
+  
+  /*
+  for (i8 i_Cmd = 0; SePromptCommands[i_Cmd].aCommand; i_Cmd++) {
+    
+    if ( ! bCmdIs((Stz*)SePromptCommands[i_Cmd].aCommand))
+      continue;
+    
+    if (! SePromptCommands[i_Cmd].aAlternate)
+      return (this->*SePromptCommands[i_Cmd].aFunc)();
+    
+    if (bOneIs((Stz*)SePromptCommands[i_Cmd].aAlternate))
+      return (this->*SePromptCommands[i_Cmd].aFunc)();
+  }
+  */
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append to history
