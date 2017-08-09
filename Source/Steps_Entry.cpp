@@ -140,7 +140,6 @@ void Task::vEntryToDataRow(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* entry.embeddedRow -- return row from entry                                 */
 /*----------------------------------------------------------------------------*/
-#ifdef _ROWFORMAT
 void Task::vEntryEmbeddedRow(MP_Task mpTask)
 {
   ENTRY("vEntryEmbeddedRow"_Stz);
@@ -167,32 +166,6 @@ void Task::vEntryEmbeddedRow(MP_Task mpTask)
   mpTask->m_pDataStack->vPushS256(sRow);
   EXIT();
 }
-
-#else
-void Task::vEntryEmbeddedRow(MP_Task mpTask)
-{
-  ENTRY("vEntryEmbeddedRow"_Stz);
-  
-  Object* pPtrEntry = nullptr;
-  Object* pPtrIndex = nullptr;
-  
-  if ( ! mpTask->m_pDataStack->bPop(pPtrEntry) )
-    THROW_INVALID_DSTACK("entry.embeddedRow"_Stz);
-  
-  Entry* pEntry = _pEntry(pPtrEntry);
-  ASSERT(CN_ENTRY == pEntry->eClass() || CN_ROW == pEntry->eClass());
-  
-  // get row data from the entry
-  char* pRow = pEntry->aRow();
-
-  StrVal* pStrVal = reinterpret_cast<StrVal*>(pRow);
-  s256 sRow = pStrVal->aStr();
-  
-  // return the row entry
-  mpTask->m_pDataStack->vPushS256(sRow);
-  EXIT();
-}
-#endif
 
 /*----------------------------------------------------------------------------*/
 /* entry.same -- return true if entry is same as given entry                  */

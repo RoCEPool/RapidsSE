@@ -411,18 +411,11 @@ void Entry::vShow(i8 iBase, Index* pIndex)
   
   aKey->vShow(pIndex->pIdxColVec());
 
-#ifdef _ROWFORMAT
   if (pIndex->bIsHidden()) {
     char* pRow = aRow();
     if (nRowSize() > 0)
       RowData::vShow((Stz*)aRow(), pIndex->pTable()->pColumnVec());
   }
-#else
-  if (pIndex->bIsHidden()) {
-    StrVal* pStrVal = reinterpret_cast<StrVal*>(aRow());
-    vTrace("%s"_Stz, pStrVal->aStr());
-  }
-#endif
   
   for (on nRight = 0_on; nRight < m_nOffsets; nRight++) {
     
@@ -473,7 +466,6 @@ void Entry::vContentDump(void)
 /*----------------------------------------------------------------------------*/
 /* extract a key into KeyWrk from this row using given index columns          */
 /*----------------------------------------------------------------------------*/
-#ifdef _ROWFORMAT
 void Entry::vExtractKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_ENTRY,CN_ROW);
@@ -504,7 +496,7 @@ void Entry::vExtractKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
       }
         
       case CT_CHAR: {
-        NEVER_REACH;
+        xValWrk = s;
         break;
       }
         
@@ -573,133 +565,6 @@ void Entry::vExtractKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
   }
   
 }
-
-#else
-void Entry::vExtractKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_ENTRY,CN_ROW);
-  
-  ValWrk xValWrk;
-  s256 s;
-  
-  // get the data
-  StrVal* pStrVal = (StrVal*)aRow();
-  
-  i8 nCols = pIdxColVec->nItems();
-  for (i8 i_Column = 0; i_Column < nCols; i_Column++) {
-    
-    // get the column from the index column vector
-    Column* pColumn = pIdxColVec->pGet(i_Column);
-    
-    // get the column number of the column
-    i8 iColumnNo = pColumn->iColumnNo();
-    
-    char* pDst = s.aChar();
-    char* aCursor = reinterpret_cast<char*>(pStrVal->aStr());
-    
-    // get the column value from the row for the iColumnNo
-    i8 iCol = -1;
-    do {
-      bool bFindPipe = StrLib::bExtractItem(&aCursor, pDst, '|');
-      ASSERT(bFindPipe);
-      iCol++;
-      aCursor++;
-    } while (iColumnNo != iCol);
-    
-    switch(pColumn->eColumnType()) {
-        
-      case CT_BOOLEAN: {
-        Bol xBol;
-        bool b = Bol::bExtract(&pDst,&xBol,pColumn);
-        ASSERT(b);
-        xValWrk = xBol;
-        break;
-      }
-        
-      case CT_CHAR: {
-        NEVER_REACH;
-        break;
-      }
-        
-      case CT_DATE: {
-        Dte xDte;
-        bool b = Dte::bExtract(&pDst,&xDte,pColumn);
-        ASSERT(b);
-        xValWrk = xDte;
-        break;
-      }
-        
-      case CT_DECIMAL: {
-        Bcd xBcd;
-        bool b = Bcd::bExtract(&pDst,&xBcd,pColumn);
-        ASSERT(b);
-        xValWrk = xBcd;
-        break;
-      }
-        
-      case CT_FLOAT: {
-        Flt xFlt;
-        bool b = Flt::bExtract(&pDst,&xFlt,pColumn);
-        ASSERT(b);
-        xValWrk = xFlt.dAsD8();
-        break;
-      }
-        
-      case CT_INTEGER: {
-//        xValWrk = StrLib::iToI8(pDst);
-//        break;
-        Int xInt;
-        bool b = Int::bExtract(&pDst,&xInt,pColumn);
-        ASSERT(b);
-        if (b)
-          xValWrk = xInt.iAsI8();
-        break;
-      }
-        
-      case CT_INTERVAL: {
-        Ivl xIvl;
-        bool b = Ivl::bExtract(&pDst,&xIvl,pColumn);
-        ASSERT(b);
-        xValWrk = xIvl;
-        break;
-      }
-        
-      case CT_TIME: {
-        Tme xTme;
-        bool b = Tme::bExtract(&pDst,&xTme,pColumn);
-        ASSERT(b);
-        xValWrk = xTme;
-        break;
-      }
-        
-      case CT_TIMESTAMP: {
-        Tsp xTsp;
-        bool b = Tsp::bExtract(&pDst,&xTsp,pColumn);
-        ASSERT(b);
-        xValWrk = xTsp;
-        break;
-      }
-        
-      case CT_VARBINARY: {
-        NEVER_REACH;
-        break;
-      }
-        
-      case CT_VARCHAR: {
-        xValWrk = s;
-        break;
-      }
-        
-      default:
-        NEVER_REACH;
-    }
-    
-    // add the column value to the key
-    xKeyWrk.vAddDatum(xValWrk, pColumn);
-  }
-  
-}
-#endif
 
 /*----------------------------------------------------------------------------*/
 /* get tx id                                                                  */

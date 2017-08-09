@@ -215,21 +215,9 @@ void EntWrk::vShow(ColumnVec* pColVec)
          iKey
          );
   
-#ifdef _ROWFORMAT
   if (m_bHasData) {
     RowData::vShow((Stz*)aData(), pColVec);
   }
-  
-#else
-  if (m_bHasData) {
-    StrVal* pStrVal = reinterpret_cast<StrVal*>(aData());
-    
-    vTrace("data (size:%lld value:%s) "_Stz,
-           nDataSize(),
-           pStrVal->aStr()
-           );
-  }
-#endif
   
   vTrace("\n"_Stz);
 }
@@ -324,7 +312,6 @@ i8 EntWrk::nDataSize(void)
 /*----------------------------------------------------------------------------*/
 /* copy the row data                                                          */
 /*----------------------------------------------------------------------------*/
-#ifdef _ROWFORMAT
 void EntWrk::vData(Stz* aDataBytes, i8 iSize)
 {
   char* aDataArea = m_xDataWrk.aLatter();
@@ -335,22 +322,6 @@ void EntWrk::vData(Stz* aDataBytes, i8 iSize)
   m_bHasData = true;
 }
 
-#else
-void EntWrk::vData(Stz* aDataBytes, i8 iSize)
-{
-  i8 nBytes = StrVal::nBytesRequired(iSize);
- 
-  char* aDataArea = m_xDataWrk.aLatter();
-  StrVal* pStrVal = new((StrVal*)aDataArea) StrVal((StrVal*)aDataArea);
-  pStrVal->vAssign(aDataBytes,iSize);
-  
-  m_xDataWrk.vTake(nBytes);
-  
-  //m_xDataWrk.vAppend(aDataBytes, iSize);
-  
-  m_bHasData = true;
-}
-#endif
 /*----------------------------------------------------------------------------*/
 /*-- Key ---------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
