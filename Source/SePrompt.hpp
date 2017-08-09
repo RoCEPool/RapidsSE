@@ -136,6 +136,40 @@ private:
   
 };
 
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+
+bool bCmd_AnalyzeTable(void);
+bool bCmd_BeginInsert(void);
+bool bCmd_Bye(void);
+bool bCmd_Help(void);
+bool bCmd_RecallCommand(void);
+bool bCmd_ChangeDir(void);
+bool bCmd_CreateCatalog(void);
+bool bCmd_CreateIndex(void);
+bool bCmd_CreateSchema(void);
+bool bCmd_CreateTable(void);
+bool bCmd_CreateTenant(void);
+bool bCmd_CreateUnique(void);
+bool bCmd_DanalyzeTable(void);
+bool bCmd_Docol(void);
+bool bCmd_DropTenant(void);
+bool bCmd_DropCatalog(void);
+bool bCmd_DropIndex(void);
+bool bCmd_DropSchema(void);
+bool bCmd_DropTable(void);
+bool bCmd_EndInsert(void);
+bool bCmd_GetFirstRow(void);
+bool bCmd_Help(void);
+bool bCmd_History(void);
+bool bCmd_InsertRow(void);
+bool bCmd_ListDir(void);
+bool bCmd_GetNextRow(void);
+bool bCmd_PrintDir(void);
+bool bCmd_Sleep(void);
+bool bCmd_UseSchema(void);
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

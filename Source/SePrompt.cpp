@@ -11,6 +11,80 @@ extern AttachMap*   gpAttachMap;
 extern Grid*        gpGrid;
 extern bool         gbMetadata;
 
+//
+// list of commands which need processing by SePrompt
+//
+const Stz* C_CMD_HELP1   = "?"_Stz;
+const Stz* C_CMD_HELP2   = "help"_Stz;
+const Stz* C_CMD_RECALL  = "!!"_Stz;
+const Stz* C_CMD_ANTBL   = "antbl"_Stz;
+const Stz* C_CMD_BEGIN   = "begin"_Stz;
+const Stz* C_CMD_BYE     = "bye"_Stz;
+const Stz* C_CMD_CD      = "cd"_Stz;
+const Stz* C_CMD_CREATE  = "create"_Stz;
+const Stz* C_CMD_DANTBL  = "dantbl"_Stz;
+const Stz* C_CMD_DOCOL   = "docol"_Stz;
+const Stz* C_CMD_DROP    = "drop"_Stz;
+const Stz* C_CMD_END     = "end"_Stz;
+const Stz* C_CMD_FIRST   = "first"_Stz;
+const Stz* C_CMD_HISTORY = "history"_Stz;
+const Stz* C_CMD_INSERT  = "insert"_Stz;
+const Stz* C_CMD_LS      = "ls"_Stz;
+const Stz* C_CMD_NEXT    = "next"_Stz;
+const Stz* C_CMD_PWD     = "pwd"_Stz;
+const Stz* C_CMD_SLEEP   = "sleep"_Stz;
+const Stz* C_CMD_USE     = "use"_Stz;
+
+const Stz* C_ONE_CATALOG = "catalog"_Stz;
+const Stz* C_ONE_INDEX   = "index"_Stz;
+const Stz* C_ONE_INSERT  = "insert"_Stz;
+const Stz* C_ONE_ROW     = "row"_Stz;
+const Stz* C_ONE_SCHEMA  = "schema"_Stz;
+const Stz* C_ONE_TABLE   = "table"_Stz;
+const Stz* C_ONE_TENANT  = "tenant"_Stz;
+const Stz* C_ONE_UNIQUE  = "unique"_Stz;
+
+struct CmdTable {
+  const Stz* aCommand;
+  const Stz* aAlternate;
+  bool (*func)(void);
+};
+
+/*
+CmdTable SePromptCommands[] =
+{
+  { C_CMD_ANTBL   , nullptr,       bCmd_AnalyzeTable  },
+  { C_CMD_BEGIN   , C_ONE_INSERT,  bCmd_BeginInsert   },
+  { C_CMD_BYE     , nullptr,       bCmd_Bye           },
+  { C_CMD_CD      , nullptr,       bCmd_ChangeDir     },
+  { C_CMD_CREATE  , C_ONE_CATALOG, bCmd_CreateCatalog },
+  { C_CMD_CREATE  , C_ONE_INDEX,   bCmd_CreateIndex   },
+  { C_CMD_CREATE  , C_ONE_SCHEMA,  bCmd_CreateSchema  },
+  { C_CMD_CREATE  , C_ONE_TABLE,   bCmd_CreateTable   },
+  { C_CMD_CREATE  , C_ONE_TENANT,  bCmd_CreateTenant  },
+  { C_CMD_CREATE  , C_ONE_UNIQUE,  bCmd_CreateUnique  },
+  { C_CMD_DANTBL  , nullptr,       bCmd_DanalyzeTable },
+  { C_CMD_DOCOL   , nullptr,       bCmd_Docol         },
+  { C_CMD_DROP    , C_ONE_CATALOG, bCmd_DropCatalog   },
+  { C_CMD_DROP    , C_ONE_INDEX,   bCmd_DropIndex     },
+  { C_CMD_DROP    , C_ONE_SCHEMA,  bCmd_DropSchema    },
+  { C_CMD_DROP    , C_ONE_TABLE,   bCmd_DropTable     },
+  { C_CMD_DROP    , C_ONE_TENANT,  bCmd_DropTenant    },
+  { C_CMD_END     , C_ONE_INSERT,  bCmd_EndInsert     },
+  { C_CMD_FIRST   , nullptr,       bCmd_GetFirstRow   },
+  { C_CMD_HELP1   , nullptr,       bCmd_Help          },
+  { C_CMD_HELP2   , nullptr,       bCmd_Help          },
+  { C_CMD_HISTORY , nullptr,       bCmd_History       },
+  { C_CMD_INSERT  , C_ONE_ROW,     bCmd_InsertRow     },
+  { C_CMD_LS      , nullptr,       bCmd_ListDir       },
+  { C_CMD_NEXT    , nullptr,       bCmd_GetNextRow    },
+  { C_CMD_PWD     , nullptr,       bCmd_PrintDir      },
+  { C_CMD_RECALL  , nullptr,       bCmd_RecallCommand },
+  { C_CMD_SLEEP   , nullptr,       bCmd_Sleep         },
+  { C_CMD_USE     , nullptr,       bCmd_UseSchema     },
+};
+*/
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
