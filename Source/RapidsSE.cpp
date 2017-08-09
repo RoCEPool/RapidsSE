@@ -37,6 +37,7 @@ bool          gbVerbose      = false;
 bool          gbTracepoint   = false;
 bool          gbProgress     = false;
 bool          gbMetadata     = false;
+bool          gbSHM          = false;
 
 bool          gbIndexSpace   = true;
 i8            gnIndexEntries = 100;

@@ -7,6 +7,8 @@
 void* C_ADDR_POOL = (void*)0x204800000000;
 i8 C_MEMORY_PERCENT = 95;
 
+extern bool gbSHM;
+
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
@@ -118,6 +120,11 @@ void Arguments::vEnvironmentVariables(void)
 bool Arguments::bParse(int argc, Stz* argv[])
 {
   _precondition_(_MAGIC_,CN_ARGUMENTS,_FOOTER_);
+  
+  if (argv[1]->bSame("shm"_Stz)) {
+    gbSHM = true;
+    return true;
+  }
   
   i8 iNode = 0;
   

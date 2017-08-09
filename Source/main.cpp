@@ -5,6 +5,7 @@
 #include "StorageEngine.h"
 #include "SePrompt.hpp"
 #include "UnitTests.h"
+#include "ShmUtility.hpp"
 
 extern Arguments gxArguments;
 extern Grid*     gpGrid;
@@ -12,6 +13,8 @@ extern bool      gbVerbose;
 extern bool      gbTracepoint;
 extern bool      gbProgress;
 extern bool      gbMetadata;
+
+extern bool gbSHM;
 
 void vTest1(void);
 void vTest2(void);
@@ -39,6 +42,11 @@ int main(int argc, const char* argv[])
 {
   if ( ! gxArguments.bParse(argc,(Stz**)argv) )
     exit(EXIT_FAILURE);
+  
+  if (gbSHM) {
+    ShmUtility::vRun(argc,(Stz**)argv);
+    exit(EXIT_SUCCESS);
+  }
   
   vPrintWelcome();
   
