@@ -416,7 +416,6 @@ bool SEitf::bDecode(TokenVec& xTokenVec)
   if (xTokenVec[0]->bSame("lds"_Stz)) return bLoadTableStream(xTokenVec);
   if (xTokenVec[0]->bSame("lf"_Stz)) return bGetDicContents(xTokenVec);
   if (xTokenVec[0]->bSame("lfG"_Stz)) return bGetDicContentsG(xTokenVec);
-  if (xTokenVec[0]->bSame("keyselidx"_Stz)) return bKeySelectIndex(xTokenVec);
   if (xTokenVec[0]->bSame("lscat"_Stz)) return bListCatalogs(xTokenVec);
   if (xTokenVec[0]->bSame("lscol"_Stz)) return bListColumns(xTokenVec);
   if (xTokenVec[0]->bSame("lsidx"_Stz)) return bListIndices(xTokenVec);
@@ -426,7 +425,6 @@ bool SEitf::bDecode(TokenVec& xTokenVec)
   if (xTokenVec[0]->bSame("lstbl"_Stz)) return bListTables(xTokenVec);
   if (xTokenVec[0]->bSame("lsten"_Stz)) return bListTenants(xTokenVec);
   if (xTokenVec[0]->bSame("lwrsel"_Stz)) return bLowerSelectTable(xTokenVec);
-  if (xTokenVec[0]->bSame("lwrselidx"_Stz)) return bLowerSelectIndex(xTokenVec);
   if (xTokenVec[0]->bSame("mkcat"_Stz)) return bCreateCatalog(xTokenVec);
   if (xTokenVec[0]->bSame("mkidx"_Stz)) return bCreateIndex(xTokenVec);
   if (xTokenVec[0]->bSame("mksch"_Stz)) return bCreateSchema(xTokenVec);
@@ -440,14 +438,12 @@ bool SEitf::bDecode(TokenVec& xTokenVec)
   if (xTokenVec[0]->bSame("rettsk"_Stz)) return bRetTask(xTokenVec);
   if (xTokenVec[0]->bSame("rf"_Stz)) return bRemoveFolder(xTokenVec);
   if (xTokenVec[0]->bSame("rgesel"_Stz)) return bRangeSelectTable(xTokenVec);
-  if (xTokenVec[0]->bSame("scnselidx"_Stz)) return bScanSelectIndex(xTokenVec);
   if (xTokenVec[0]->bSame("rmcat"_Stz)) return bDropCatalog(xTokenVec);
   if (xTokenVec[0]->bSame("rmdic"_Stz)) return bRemoveFolder(xTokenVec);
   if (xTokenVec[0]->bSame("rmidx"_Stz)) return bDropIndex(xTokenVec);
   if (xTokenVec[0]->bSame("rmsch"_Stz)) return bDropSchema(xTokenVec);
   if (xTokenVec[0]->bSame("rmtbl"_Stz)) return bDropTable(xTokenVec);
   if (xTokenVec[0]->bSame("rmten"_Stz)) return bDropTenant(xTokenVec);
-  if (xTokenVec[0]->bSame("rgeselidx"_Stz)) return bRangeSelectIndex(xTokenVec);
   if (xTokenVec[0]->bSame("sel"_Stz)) return bSelectTable(xTokenVec);
   if (xTokenVec[0]->bSame("set"_Stz)) return bSet(xTokenVec);
   if (xTokenVec[0]->bSame("setidxunique"_Stz)) return bIndexSetUnique(xTokenVec);
@@ -458,7 +454,6 @@ bool SEitf::bDecode(TokenVec& xTokenVec)
   if (xTokenVec[0]->bSame("tableSizes"_Stz)) return bSizeTables(xTokenVec);
   if (xTokenVec[0]->bSame("tr"_Stz)) return bTruncateTable(xTokenVec);
   if (xTokenVec[0]->bSame("tridx"_Stz)) return bTruncateIndex(xTokenVec);
-  if (xTokenVec[0]->bSame("uprselidx"_Stz)) return bUpperSelectIndex(xTokenVec);
   if (xTokenVec[0]->bSame("usesch"_Stz)) return bUseSchema(xTokenVec);
   if (xTokenVec[0]->bSame("__x"_Stz)) return bX(xTokenVec);
   if (xTokenVec[0]->bSame("ping"_Stz)) return bPing(xTokenVec);
@@ -1801,130 +1796,6 @@ bool SEitf::bNodeStatus(TokenVec& xTokenVec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* exact key select from a table given an index                               */
-/*----------------------------------------------------------------------------*/
-bool SEitf::bKeySelectIndex(TokenVec& xTokenVec)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
-  
-  s256 sRequest;
-  
-  if (xTokenVec.nTokens() != 4) {
-    vSetLastError(EC_INVALID_PARAMETERS);
-    return false;
-  }
-  
-  sRequest.vConcat(" \""_Stz);
-  sRequest.vConcat(xTokenVec[3]->aText());
-  sRequest.vConcat("\""_Stz);
-  
-  sRequest.vConcat(" \""_Stz);
-  sRequest.vConcat(xTokenVec[2]->aText());
-  sRequest.vConcat("\""_Stz);
-  
-  sRequest.vConcat(" \""_Stz);
-  sRequest.vConcat(xTokenVec[1]->aText());
-  sRequest.vConcat("\""_Stz);
-  
-  sRequest.vConcat(" keySelectIndex_req"_Stz);
-  
-  return bAppendRequest(sRequest);
-}
-
-/*----------------------------------------------------------------------------*/
-/* lower select rows from a table given an index                              */
-/*----------------------------------------------------------------------------*/
-bool SEitf::bLowerSelectIndex(TokenVec& xTokenVec)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
-  
-  s256 sRequest;
-  
-  if (xTokenVec.nTokens() != 4) {
-    vSetLastError(EC_INVALID_PARAMETERS);
-    return false;
-  }
-  
-  sRequest.vConcat(" \""_Stz);
-  sRequest.vConcat(xTokenVec[3]->aText());
-  sRequest.vConcat("\""_Stz);
-  
-  sRequest.vConcat(" \""_Stz);
-  sRequest.vConcat(xTokenVec[2]->aText());
-  sRequest.vConcat("\""_Stz);
-  
-  sRequest.vConcat(" \""_Stz);
-  sRequest.vConcat(xTokenVec[1]->aText());
-  sRequest.vConcat("\""_Stz);
-  
-  sRequest.vConcat(" lowerSelectIndex_req"_Stz);
-  
-  return bAppendRequest(sRequest);
-}
-
-/*----------------------------------------------------------------------------*/
-/* range select rows from a table given an index                              */
-/*----------------------------------------------------------------------------*/
-bool SEitf::bRangeSelectIndex(TokenVec& xTokenVec)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
-  
-  s256 sRequest;
-  
-  if (xTokenVec.nTokens() != 5) {
-    vSetLastError(EC_INVALID_PARAMETERS);
-    return false;
-  }
-  
-  sRequest.vConcat(" \""_Stz);
-  sRequest.vConcat(xTokenVec[4]->aText());
-  sRequest.vConcat("\""_Stz);
-  
-  sRequest.vConcat(" \""_Stz);
-  sRequest.vConcat(xTokenVec[3]->aText());
-  sRequest.vConcat("\""_Stz);
-  
-  sRequest.vConcat(" \""_Stz);
-  sRequest.vConcat(xTokenVec[2]->aText());
-  sRequest.vConcat("\""_Stz);
-  
-  sRequest.vConcat(" \""_Stz);
-  sRequest.vConcat(xTokenVec[1]->aText());
-  sRequest.vConcat("\""_Stz);
-  
-  sRequest.vConcat(" rangeSelectIndex_req"_Stz);
-  
-  return bAppendRequest(sRequest);
-}
-
-/*----------------------------------------------------------------------------*/
-/* scan select rows from a table given an index                              */
-/*----------------------------------------------------------------------------*/
-bool SEitf::bScanSelectIndex(TokenVec& xTokenVec)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
-  
-  s256 sRequest;
-  
-  if (xTokenVec.nTokens() != 3) {
-    vSetLastError(EC_INVALID_PARAMETERS);
-    return false;
-  }
-  
-  sRequest.vConcat(" \""_Stz);
-  sRequest.vConcat(xTokenVec[2]->aText());
-  sRequest.vConcat("\""_Stz);
-  
-  sRequest.vConcat(" \""_Stz);
-  sRequest.vConcat(xTokenVec[1]->aText());
-  sRequest.vConcat("\""_Stz);
-  
-  sRequest.vConcat(" scanSelectIndex_req"_Stz);
-  
-  return bAppendRequest(sRequest);
-}
-
-/*----------------------------------------------------------------------------*/
 /* size of index                                                              */
 /*----------------------------------------------------------------------------*/
 bool SEitf::bSizeIndex(TokenVec& xTokenVec)
@@ -2016,37 +1887,6 @@ bool SEitf::bTruncateIndex(TokenVec& xTokenVec)
   sRequest.vConcat("\""_Stz);
   
   sRequest.vConcat(" truncateIndex_req"_Stz);
-  
-  return bAppendRequest(sRequest);
-}
-
-/*----------------------------------------------------------------------------*/
-/* upper select rows from a table on a given index                            */
-/*----------------------------------------------------------------------------*/
-bool SEitf::bUpperSelectIndex(TokenVec& xTokenVec)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
-  
-  s256 sRequest;
-  
-  if (xTokenVec.nTokens() != 4) {
-    vSetLastError(EC_INVALID_PARAMETERS);
-    return false;
-  }
-  
-  sRequest.vConcat(" \""_Stz);
-  sRequest.vConcat(xTokenVec[3]->aText());
-  sRequest.vConcat("\""_Stz);
-  
-  sRequest.vConcat(" \""_Stz);
-  sRequest.vConcat(xTokenVec[2]->aText());
-  sRequest.vConcat("\""_Stz);
-  
-  sRequest.vConcat(" \""_Stz);
-  sRequest.vConcat(xTokenVec[1]->aText());
-  sRequest.vConcat("\""_Stz);
-  
-  sRequest.vConcat(" upperSelectIndex_req"_Stz);
   
   return bAppendRequest(sRequest);
 }

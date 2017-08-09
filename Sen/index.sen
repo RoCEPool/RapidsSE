@@ -439,7 +439,7 @@ tp: makingIndex
   // local variables
   0 0 0 0 locals| pUpperEntry pIndexEntry pIndexBuffer pResultBuffer |
 
-  tp: rangeSelectIdxTask
+  tp: groupByIdxTask
 
   //debug::trap
 

@@ -83,18 +83,13 @@ Index Requests:
 anidx     analyzeIndex_req
 dumpidx   dumpIndex_req
 getidx    getIndex_req
-keyselidx keySelectIndex_req
 mkidx     createIndex_req
 lsidx     listIndexes_req
-lwrselidx lowerSelectIndex_req
 retidx    returnIndex_req
 rmidx     dropIndex_req
-rgeselidx rangeSelectIndex_req
-scnselidx scanSelectIndex_req
 setidxunique indexSetUnique_req
 szidx     sizeIndex_req
 tridx     truncateIndex_req
-uprselidx upperSelectIndex_req
  
 -----------------
 Column Requests:

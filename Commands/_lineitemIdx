@@ -52,7 +52,7 @@ keyselidx lineitem idx1 3 ;
 
 print "----------------------------------------------------------------------";
 print "\nLower select from lineitem (idx1) where L_ORDERKEY >= 99720 ..." ;
-lwrselidx lineitem idx1 99720 ;
+fetch lineitem "L_ORDERKEY 99720 >=";
 
 print "----------------------------------------------------------------------";
 print "\nUpper select from lineitem (idx1) where L_ORDERKEY <= 20 ..." ;

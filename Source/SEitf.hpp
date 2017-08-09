@@ -139,14 +139,9 @@ namespace Interface
     bool bAnalyzeIndex(TokenVec& xTokenVec);
     bool bDanalyzeIndex(TokenVec& xTokenVec);
     bool bGetIndex(TokenVec& xTokenVec);
-    bool bKeySelectIndex(TokenVec& xTokenVec);
-    bool bLowerSelectIndex(TokenVec& xTokenVec);
     bool bRetIndex(TokenVec& xTokenVec);
-    bool bRangeSelectIndex(TokenVec& xTokenVec);
-    bool bScanSelectIndex(TokenVec& xTokenVec);
     bool bSizeIndex(TokenVec& xTokenVec);
     bool bTruncateIndex(TokenVec& xTokenVec);
-    bool bUpperSelectIndex(TokenVec& xTokenVec);
 
     bool bAnalyzeTable(TokenVec& xTokenVec);
     bool bCopyTable(TokenVec& xTokenVec);

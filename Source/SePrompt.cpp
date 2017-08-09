@@ -980,7 +980,6 @@ bool SePrompt::bHelp(void)
   vTrace("drop       -- drop tenant|catalog|schema|table|index\n"_Stz);
   vTrace("ex         -- export table t\n"_Stz);
   vTrace("fetch      -- fetch t where ...\n"_Stz);
-  vTrace("keyselidx  -- exact key select\n"_Stz);
   vTrace("ld         -- load table t\n"_Stz);
   vTrace("lf         -- list folder contents\n"_Stz);
   vTrace("ls         -- list directory contents\n"_Stz);
@@ -991,10 +990,8 @@ bool SePrompt::bHelp(void)
   vTrace("lssch      -- list schemas contents\n"_Stz);
   vTrace("lstbl      -- list tables contents\n"_Stz);
   vTrace("lsten      -- list tenants contents\n"_Stz);
-  vTrace("lwrselidx  -- lower bound select\n"_Stz);
   vTrace("print      -- print string\n"_Stz);
   vTrace("pwf        -- print working folder\n"_Stz);
-  vTrace("rgeselidx  -- range select\n"_Stz);
   vTrace("sel        -- select * from table\n"_Stz);
   vTrace("space      -- pool space\n"_Stz);
   vTrace("status     -- grid status\n"_Stz);
@@ -1003,7 +1000,6 @@ bool SePrompt::bHelp(void)
   vTrace("tableSizes -- size of all tables\n"_Stz);
   vTrace("tr         -- truncate table\n"_Stz);
   vTrace("tridx      -- truncate table\n"_Stz);
-  vTrace("uprselidx  -- upper bound select\n"_Stz);
   vTrace("usesch     -- use schema\n"_Stz);
   vTrace("version    -- print SE version\n"_Stz);
   vTrace("?          -- print this help\n"_Stz);
