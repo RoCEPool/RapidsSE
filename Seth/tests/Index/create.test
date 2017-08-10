@@ -6,6 +6,34 @@
 create index on T1 (key);
 failure: 'invalid command'
 
+// (2) create an index (syntax error)
+create index idx T1 (key);
+failure: 'invalid command'
+
+// (3) create an index (syntax error)
+create index idx on (key);
+failure: 'invalid command'
+
+// (4) create an index (syntax error)
+create idx on T1 (key);
+failure: 'invalid command'
+
+// (5) create an index (syntax error)
+create index idx on T1;
+failure: 'invalid command'
+
+// (6) create an index (syntax error)
+create index idx on T1(;
+failure: 'invalid command'
+
+// (7) create an index (syntax error)
+create index idx on T1();
+failure: 'invalid command'
+
+// (8) create an index (syntax error)
+create index idx on T1(key) junk;
+failure: 'invalid command'
+
 // create a table
 create table T1 (
   key   INTEGER NOT NULL, 
@@ -16,6 +44,7 @@ success
 // create an index
 create index Idx on T1 (key);
 affected: 0
+
 
 // check existence of index
 lsidx T1;
@@ -39,6 +68,10 @@ rows: 0
 create index Idx on noTable (key);
 failure: 'no such table'
 
+pwf;
+rows:
+  ('/tenants/boray/catalogs/rapidsse/schemas/public/tables/')
+
 // check existence of index
 lsidx T1;
 rows: 0
@@ -46,6 +79,10 @@ rows: 0
 // create index where key does not exist
 create index Idx on T1 (noKey);
 failure: 'invalid column'
+
+pwf;
+rows:
+  ('/tenants/boray/catalogs/rapidsse/schemas/public/tables/')
 
 // check existence of index
 lsidx T1;
@@ -108,8 +145,9 @@ rows:
 
 CLEANUP {
   
+  // drop the table
   drop table T1;
-  success;
+  mute
 
   bye;
   mute

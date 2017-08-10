@@ -989,8 +989,8 @@ bool SePrompt::bCreateIndex(bool bUnique)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // some validations
   
-  // there should be a minumum of 7 tokens
-  if (iNumTokens < 7 + iIfUnique) {
+  // there should be a minumum of 8 tokens
+  if (iNumTokens < 8 + iIfUnique) {
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
   }
