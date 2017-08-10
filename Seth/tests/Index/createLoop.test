@@ -11,7 +11,7 @@ success
 
 LOOP 10  {
 
--- create an index
+// create an index
 create index keyIdx on createT1 (key);
 affected: 0
 

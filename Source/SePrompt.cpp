@@ -571,7 +571,6 @@ void SePrompt::vGetCommandInput(void)
 /*----------------------------------------------------------------------------*/
 /* iterate rows                                                               */
 /*----------------------------------------------------------------------------*/
-#ifdef _ROWFORMAT
 void SePrompt::vIterateRows(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
@@ -627,57 +626,6 @@ void SePrompt::vIterateRows(void)
   delete pSelCursor;
 }
 
-#else
-void SePrompt::vIterateRows(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  i8 iAddress = m_sResponse.iToI8();
-  
-  SelCursor* pSelCursor = reinterpret_cast<SelCursor*>(iAddress);
-  ASSERT(CN_SELCURSOR == pSelCursor->eClass());
-  
-  i8 iRowCount = 0;
-  
-  if (gbMetadata) {
-    vTrace("metadata: %s\n"_Stz, m_pSEitf->m_sMetadata.aStr());
-    for (i8 i_Partition = 0; i_Partition < gxArguments.m_nSlots; i_Partition++) {
-      //vTrace("Partition %lld: \n"_Stz, Partition::iSlotToPartition(iPartition));
-      i8 iPart = Partition::iSlotToPartition(i_Partition);
-      pSelCursor->vBegin(i_Partition);
-      pSelCursor->vFirst();
-      Stz* pStr = pSelCursor->aRowAsStr();
-      while (pStr) {
-        iRowCount++;
-        if (m_pSEitf->m_bDisplay)
-          vTrace("row: (%lld, '%s')\n"_Stz, iPart, pStr);
-        pSelCursor->vNext();
-        pStr = pSelCursor->aRowAsStr();
-      }
-    }
-    m_pSEitf->m_iRowsProcessed = iRowCount;
-  }
-  else {
-    for (i8 i_Partition = 0; i_Partition < gxArguments.m_nSlots; i_Partition++) {
-      vTrace("Partition %lld: \n"_Stz, Partition::iSlotToPartition(i_Partition));
-      pSelCursor->vBegin(i_Partition);
-      pSelCursor->vFirst();
-      Stz* pStr = pSelCursor->aRowAsStr();
-      while (pStr) {
-        iRowCount++;
-        if (m_pSEitf->m_bDisplay)
-          vTrace("row: %s\n"_Stz, pStr);
-        pSelCursor->vNext();
-        pStr = pSelCursor->aRowAsStr();
-      }
-    }
-  }
-  
-  pSelCursor->vEnd();
-  delete pSelCursor;
-}
-
-#endif
 /*----------------------------------------------------------------------------*/
 /* print output in metadata format                                            */
 /*----------------------------------------------------------------------------*/

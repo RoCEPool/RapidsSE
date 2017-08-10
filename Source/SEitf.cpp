@@ -472,7 +472,7 @@ bool SEitf::bDecode(TokenVec& xTokenVec)
   
   if (0 == xTokenVec[0]->iLength())
     return false;
-  /*
+  
   if (xTokenVec[0]->bSame("addcol"_Stz)) return bAddColumn(xTokenVec,0);
   if (xTokenVec[0]->bSame("antbl"_Stz)) return bAnalyzeTable(xTokenVec,0);
   if (xTokenVec[0]->bSame("anidx"_Stz)) return bAnalyzeIndex(xTokenVec,0);
@@ -551,13 +551,15 @@ bool SEitf::bDecode(TokenVec& xTokenVec)
   if (xTokenVec[0]->bSame("seitf"_Stz)) return bSeitfCount(xTokenVec,0);
   if (xTokenVec[0]->bSame("version"_Stz)) return bGetVersion(xTokenVec,0);
   if (xTokenVec[0]->bSame("visidx"_Stz)) return bVisualizeIndex(xTokenVec,0);
-  */
+ 
+  /*
   
   for (i8 i_ReqNo = 0; SeRequests[i_ReqNo].aCommand; i_ReqNo++) {
     if (xTokenVec[0]->bSame((Stz*)SeRequests[i_ReqNo].aCommand))
       return (this->*SeRequests[i_ReqNo].aFunc)(xTokenVec,i_ReqNo);
   }
-
+  */
+  
   vSetLastError(EC_INVALID_COMMAND);
   return false;
 }
