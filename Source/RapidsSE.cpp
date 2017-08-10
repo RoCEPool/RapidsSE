@@ -300,9 +300,12 @@ void RapidsSE::vCreateObjects(void)
 void RapidsSE::vDicCompile(NP_Task npRootTask)
 {
   if (gbVerbose)
-    vTrace("[[mainThread]] DicCompile...\n"_Stz);
+    vTrace("[[mainThread]] Initialise Main Dictionary...\n"_Stz);
   
   npRootTask->vInitialiseMain();
+  
+  if (gbVerbose)
+    vTrace("[[mainThread]] DicCompile...\n"_Stz);
   
   npRootTask->vSeedDicCompileSen();
   

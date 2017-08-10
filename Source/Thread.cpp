@@ -135,7 +135,7 @@ void* Thread::vEntry_Drone(void* pArg)
   
   
   if (gbVerbose)
-    vTrace("[[%s]] Thread:;vEntry %p exiting\n"_Stz,pThread->sName().aChar(),pThread);
+    vTrace("[[%s]] Thread::vEntry_Drone %p exiting\n"_Stz,pThread->sName().aChar(),pThread);
   
   delete pThread;
   
@@ -176,7 +176,7 @@ void* Thread::vEntry_Partition(void* pArg)
 
 
   if (gbVerbose)
-    vTrace("[[%s]] Thread:;vEntry %p exiting\n"_Stz,pThread->sName().aChar(),pThread);
+    vTrace("[[%s]] Thread::vEntry_Partition %p exiting\n"_Stz,pThread->sName().aChar(),pThread);
   
   delete pThread;
   
@@ -191,7 +191,7 @@ void* Thread::vEntry_Server(void* pArg)
   Thread* pThread = static_cast<Thread*>(pArg);
   
   if (gbVerbose || gbProgress)
-    vTrace("[[%s]] Thread::vEntry_General %p\n"_Stz,pThread->sName().aChar(),pThread);
+    vTrace("[[%s]] Thread::vEntry_Server %p\n"_Stz,pThread->sName().aChar(),pThread);
   
   try {
     pThread->vLoop_Server();
@@ -217,7 +217,7 @@ void* Thread::vEntry_Server(void* pArg)
   
   
   if (gbVerbose)
-    vTrace("[[%s]] Thread:;vEntry %p exiting\n"_Stz,pThread->sName().aChar(),pThread);
+    vTrace("[[%s]] Thread::vEntry_Server %p exiting\n"_Stz,pThread->sName().aChar(),pThread);
   
   delete pThread;
   
@@ -232,7 +232,7 @@ void* Thread::vEntry_Worker(void* pArg)
   Thread* pThread = static_cast<Thread*>(pArg);
   
   if (gbVerbose)
-    vTrace("[[%s]] Thread::vEntry_Job %p\n"_Stz,pThread->sName().aChar(),pThread);
+    vTrace("[[%s]] Thread::vEntry_Worker %p\n"_Stz,pThread->sName().aChar(),pThread);
     
     try {
       pThread->vLoop_Worker();
@@ -258,7 +258,7 @@ void* Thread::vEntry_Worker(void* pArg)
   
   
   if (gbVerbose)
-    vTrace("[[%s]] Thread:;vEntry %p exiting\n"_Stz,pThread->sName().aChar(),pThread);
+    vTrace("[[%s]] Thread::vEntry_Worker %p exiting\n"_Stz,pThread->sName().aChar(),pThread);
     
     delete pThread;
   
