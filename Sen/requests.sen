@@ -69,9 +69,7 @@ lstbl   listTables_req
 lwrsel  lower_select
 mktbl   createTable_req
 rettbl  returnTable_req
-rgesel  rangeSelectTable_req
 rmtbl   dropTable_req
-sel     selectTable_req
 sz      sizeTable_req
 tableSizes sizeTables_req
 tblInUse  tableInuse_req

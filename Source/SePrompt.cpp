@@ -569,64 +569,6 @@ void SePrompt::vGetCommandInput(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* iterate rows                                                               */
-/*----------------------------------------------------------------------------*/
-void SePrompt::vIterateRows(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  i8 iAddress = m_sResponse.iToI8();
-  
-  SelCursor* pSelCursor = reinterpret_cast<SelCursor*>(iAddress);
-  ASSERT(CN_SELCURSOR == pSelCursor->eClass());
-  
-  i8 iRowCount = 0;
-  
-  if (gbMetadata) {
-    vTrace("metadata: %s\n"_Stz, m_pSEitf->m_sMetadata.aStr());
-    for (i8 i_Partition = 0; i_Partition < gxArguments.m_nSlots; i_Partition++) {
-      //vTrace("Partition %lld: \n"_Stz, Partition::iSlotToPartition(iPartition));
-      i8 iPart = Partition::iSlotToPartition(i_Partition);
-      pSelCursor->vBegin(i_Partition);
-      pSelCursor->vFirst();
-      Entry* pRow = pSelCursor->pRow();
-      while (pRow) {
-        iRowCount++;
-        if (m_pSEitf->m_bDisplay) {
-          vTrace("row: (%lld, '"_Stz, iPart);
-          RowData::vShow((Stz*)pRow->aRow(),m_pSEitf->m_pCurrentTable->pColumnVec());
-          vTrace("')\n"_Stz);
-        }
-        pSelCursor->vNext();
-        pRow = pSelCursor->pRow();
-      }
-    }
-    m_pSEitf->m_iRowsProcessed = iRowCount;
-  }
-  else {
-    for (i8 i_Partition = 0; i_Partition < gxArguments.m_nSlots; i_Partition++) {
-      vTrace("Partition %lld: \n"_Stz, Partition::iSlotToPartition(i_Partition));
-      pSelCursor->vBegin(i_Partition);
-      pSelCursor->vFirst();
-      Entry* pRow = pSelCursor->pRow();
-      while (pRow) {
-        iRowCount++;
-        if (m_pSEitf->m_bDisplay) {
-          vTrace("row: ("_Stz);
-          RowData::vShow((Stz*)pRow->aRow(),m_pSEitf->m_pCurrentTable->pColumnVec());
-          vTrace(")\n"_Stz);
-        }
-        pSelCursor->vNext();
-        pRow = pSelCursor->pRow();
-      }
-    }
-  }
-  
-  pSelCursor->vEnd();
-  delete pSelCursor;
-}
-
-/*----------------------------------------------------------------------------*/
 /* print output in metadata format                                            */
 /*----------------------------------------------------------------------------*/
 void SePrompt::vMetaFormat(void)
@@ -758,11 +700,6 @@ bool SePrompt::bProcessCommand(bool bPostProcess)
   // post process requests
   if (! bPostProcess)
     return true;
-  
-  if (m_xTokenVec[0]->bSame("sel"_Stz) || m_xTokenVec[0]->bSame("rgesel"_Stz)) {
-    vIterateRows();
-    return bReturnTable();
-  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // the following never return
@@ -1872,7 +1809,6 @@ bool SePrompt::bHelp(void)
   vTrace("lsten      -- list tenants contents\n"_Stz);
   vTrace("print      -- print string\n"_Stz);
   vTrace("pwf        -- print working folder\n"_Stz);
-  vTrace("sel        -- select * from table\n"_Stz);
   vTrace("space      -- pool space\n"_Stz);
   vTrace("status     -- grid status\n"_Stz);
   vTrace("sz         -- size of table\n"_Stz);

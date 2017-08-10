@@ -73,14 +73,12 @@ ReqTable SeRequests[] =
  { "rettbl"_Stz,         &SEitf::bRetTable,             "returnTable_req"_Stz     },
  { "rettsk"_Stz,         &SEitf::bRetTask,              "returnTask_req"_Stz      },
  { "rf"_Stz,             &SEitf::bRemoveFolder,         "remove_folder"_Stz       },
- { "rgesel"_Stz,         &SEitf::bRangeSelectTable,     "rangeSelectTable_req"_Stz },
  { "rmcat"_Stz,          &SEitf::bDropCatalog,          "dropCatalog_req"_Stz     },
  { "rmdic"_Stz,          &SEitf::bRemoveFolder,         "remove_folder"_Stz       },
  { "rmidx"_Stz,          &SEitf::bDropIndex,            "dropIndex_req"_Stz       },
  { "rmsch"_Stz,          &SEitf::bDropSchema,           "dropSchema_req"_Stz      },
  { "rmtbl"_Stz,          &SEitf::bDropTable,            "dropTable_req"_Stz       },
  { "rmten"_Stz,          &SEitf::bDropTenant,           "dropTenant_req"_Stz      },
- { "sel"_Stz,            &SEitf::bSelectTable,          "selectTable_req"_Stz     },
  { "set"_Stz,            &SEitf::bSet,                  "set"_Stz                 },
  { "setidxunique"_Stz,   &SEitf::bIndexSetUnique,       "indexSetUnique_req"_Stz  },
  { "space"_Stz,          &SEitf::bPoolSpace,            "space"_Stz               },
@@ -526,14 +524,12 @@ bool SEitf::bDecode(TokenVec& xTokenVec)
   if (xTokenVec[0]->bSame("rettbl"_Stz)) return bRetTable(xTokenVec,0);
   if (xTokenVec[0]->bSame("rettsk"_Stz)) return bRetTask(xTokenVec,0);
   if (xTokenVec[0]->bSame("rf"_Stz)) return bRemoveFolder(xTokenVec,0);
-  if (xTokenVec[0]->bSame("rgesel"_Stz)) return bRangeSelectTable(xTokenVec,0);
   if (xTokenVec[0]->bSame("rmcat"_Stz)) return bDropCatalog(xTokenVec,0);
   if (xTokenVec[0]->bSame("rmdic"_Stz)) return bRemoveFolder(xTokenVec,0);
   if (xTokenVec[0]->bSame("rmidx"_Stz)) return bDropIndex(xTokenVec,0);
   if (xTokenVec[0]->bSame("rmsch"_Stz)) return bDropSchema(xTokenVec,0);
   if (xTokenVec[0]->bSame("rmtbl"_Stz)) return bDropTable(xTokenVec,0);
   if (xTokenVec[0]->bSame("rmten"_Stz)) return bDropTenant(xTokenVec,0);
-  if (xTokenVec[0]->bSame("sel"_Stz)) return bSelectTable(xTokenVec,0);
   if (xTokenVec[0]->bSame("set"_Stz)) return bSet(xTokenVec,0);
   if (xTokenVec[0]->bSame("setidxunique"_Stz)) return bIndexSetUnique(xTokenVec,0);
   if (xTokenVec[0]->bSame("space"_Stz)) return bPoolSpace(xTokenVec,0);
@@ -1695,29 +1691,6 @@ bool SEitf::bLowerSelectTable(TokenVec& xTokenVec, i8 iReqNo)
   sRequest.vConcat("\""_Stz);
   
   sRequest.vConcat(" lowerSelectTable_req"_Stz);
-  
-  return bAppendRequest(sRequest);
-}
-
-/*----------------------------------------------------------------------------*/
-/* select rows from a table                                                   */
-/*----------------------------------------------------------------------------*/
-bool SEitf::bSelectTable(TokenVec& xTokenVec, i8 iReqNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
-  
-  s256 sRequest;
-  
-  if (xTokenVec.nTokens() != 2) {
-    vSetLastError(EC_INVALID_PARAMETERS);
-    return false;
-  }
-  
-  sRequest.vCopy("\""_Stz);
-  sRequest.vConcat(xTokenVec[1]->aText());
-  sRequest.vConcat("\""_Stz);
-  
-  sRequest.vConcat(" selectTable_req"_Stz);
   
   return bAppendRequest(sRequest);
 }

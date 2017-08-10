@@ -71,7 +71,6 @@ private:
   bool bExecuteRequest(void);
   bool bGetFirstRow(void);
   bool bGetNextRow(void);
-  void vIterateRows(void);
   bool bHelp(void);
   bool bTestFile(Stz* aPath);
   void vPushFile(Stz* aPath);

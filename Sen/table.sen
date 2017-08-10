@@ -457,68 +457,6 @@
 
 
 /*----------------------------------------------------------------------------*/
-/* get range select cursor for table ( called by rangeSelectTable_req request)  */
-/*----------------------------------------------------------------------------*/
-: rangeSelectTable ( "<upper>" "<lower>" -- <selCursor> )
-
-  //
-  // execution context:
-  //   this task will have a seitf
-  //   and the seitf will have a table
-  //
-
-  assert::stack_2
-
-  // for the moment just discard lower and upper
-  drop drop
-
-  // increment query count
-  queryCount ++
-
-  // push task.seitf.table
-  task::this task.seitf@ seitf.table@ ( ^table )
-
-  // create a selCursor
-  selCursor::new ( ^table ^selCursor )
-
-  // store table into selCursor
-  dup -rot selCursor.table! ( ^selCursor )
-
-  // convert address of selCursor into string
-  CN_SELCURSOR assert::class
-  >str ( "<^selCursor>")
-;
-
-/*----------------------------------------------------------------------------*/
-/* get select cursor for table ( called by selectTable_req request)              */
-/*----------------------------------------------------------------------------*/
-: selectTable ( -- "<^selCursor>" ) ( Task.seitf.table )
-
-  //
-  // at this point this task will have a seitf
-  // and the seitf will have a table
-  //
-
-  assert::stack_0
-
-  // increment query count
-  queryCount ++
-
-  // push task.seitf.table
-  task::this task.seitf@ seitf.table@ ( ^table )
-
-  // create a selCursor
-  selCursor::new ( ^table ^selCursor )
-
-  // store table into selCursor
-  dup -rot selCursor.table! ( ^selCursor )
-
-  // convert address of selCursor into string
-  CN_SELCURSOR assert::class
-  >str ( "<^selCursor>")
-;
-
-/*----------------------------------------------------------------------------*/
 /* truncate table                                                             */
 /*----------------------------------------------------------------------------*/
 : truncateTable ( "<tableNm>" -- )

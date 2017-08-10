@@ -170,7 +170,6 @@ lscol   listColumns_req
 ld      loadTable_req
 tblInUse  tableInuse_req
 tableSizes sizeTables_req
-sel     selectTable_req
 dump    dumpTable_req
 cp      copyTable_req
 dex     distExport_table
