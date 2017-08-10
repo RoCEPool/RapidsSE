@@ -1,115 +1,115 @@
---------------------------------------------------------------------------------
--- create index tests
---------------------------------------------------------------------------------
+/*----------------------------------------------------------------------------*/
+/* create index tests                                                         */
+/*----------------------------------------------------------------------------*/
 
--- create a table
-create table createT1 (
+// (1) create an index (syntax error)
+create index on T1 (key);
+failure: 'invalid command'
+
+// create a table
+create table T1 (
   key   INTEGER NOT NULL, 
   name  VARCHAR(32) NOT NULL
 );
 success
 
--- create an index
-create index keyIdx on createT1 (key);
+// create an index
+create index Idx on T1 (key);
 affected: 0
 
--- check existence of index
-lsidx createT1;
+// check existence of index
+lsidx T1;
 rows:
-  ('keyIdx')
+  ('Idx', false, false)
 
--- check columns of index
-lsidxcol createT1 keyIdx;
+// check columns of index
+lsidxcol T1 Idx;
 rows:
   ('key', 'INTEGER')
 
--- drop the index
-drop index createT1.keyIdx;
+// drop the index
+drop index T1.Idx;
 success
 
--- check existence of index
-lsidx createT1;
+// check existence of index
+lsidx T1;
 rows: 0
 
--- create index where table does not exist
-create index keyIdx on noTable (key);
+// create index where table does not exist
+create index Idx on noTable (key);
 failure: 'no such table'
 
--- check existence of index
-lsidx createT1;
+// check existence of index
+lsidx T1;
 rows: 0
 
--- create index where key does not exist
-create index keyIdx on createT1 (noKey);
+// create index where key does not exist
+create index Idx on T1 (noKey);
 failure: 'invalid column'
 
--- check existence of index
-lsidx createT1;
+// check existence of index
+lsidx T1;
 rows: 0
 
--- create index once
-create index keyIdx on createT1 (key);
+// create index once
+create index Idx1 on T1 (key);
 affected: 0
 
--- create same index again
-create index keyIdx on createT1 (key);
+// create same index again
+create index Idx1 on T1 (key);
 failure: 'index exists'
 
--- check existence of index
-lsidx createT1;
+// check existence of index
+lsidx T1;
 rows:
- ('keyIdx')
+ ('Idx1', false, false)
 
--- create another index with same column
-create index keyIdx1 on createT1 (key);
+// create another index with same column
+create index Idx2 on T1 (key);
 success
 
--- check existence of index
-lsidx createT1;
+// check existence of index
+lsidx T1;
 rows:
- ('keyIdx')
- ('keyIdx1')
+ ('Idx1',false,false)
+ ('Idx2',false,false)
 
--- create index with two columns
-create index keyNameIdx1 on createT1 (key, name);
+// create index with two columns
+create index Idx3 on T1 (key, name);
 success
 
--- check existence of index
-lsidx createT1;
+// check existence of index
+lsidx T1;
 rows: 3
 
--- check columns of keyNameIdx1
-lsidxcol createT1 keyNameIdx1;
+// check columns of Idx3
+lsidxcol T1 Idx3;
 rows:
  ('key', 'INTEGER')
  ('name', 'VARCHAR')
 
--- create another index with two columns
-create index keyNameIdx2 on createT1 (key, name);
+// create another index with two columns
+create index Idx4 on T1 (key, name);
 success
 
--- check existence of index
-lsidx createT1;
+// check existence of index
+lsidx T1;
 rows:
- ('keyIdx')
- ('keyIdx1')
- ('keyNameIdx1')
- ('keyNameIdx2')
+ ('Idx1',false,false)
+ ('Idx2',false,false)
+ ('Idx3',false,false)
+ ('Idx4',false,false)
 
--- check columns of keyNameIdx2
-lsidxcol createT1 keyNameIdx2;
+// check columns of Idx3
+lsidxcol T1 Idx3;
 rows:
  ('key', 'INTEGER')
  ('name', 'VARCHAR')
 
 CLEANUP {
-  -- Commands in the cleanup section always run, and do so at the end
-  -- of a test (whether successful or not). 
-
-  -- Ensure that table  ('keyIdx') is dropped.
-  -- We can set the expected result to mute if we don't want to see any warnings.
-  drop table createT1;
-  mute
+  
+  drop table T1;
+  success;
 
   bye;
   mute

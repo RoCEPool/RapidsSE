@@ -90,6 +90,7 @@ timer: pIdxSelectTimer
   // checks
 
   checkEnoughBuffers not if <NIP+ERROR> exit then
+
   sIndexNm sTableNm checkMakeIndex  not if <NIP+ERROR> exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

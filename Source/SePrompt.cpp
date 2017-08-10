@@ -1017,8 +1017,11 @@ bool SePrompt::bCreateIndex(bool bUnique)
   m_xTokenVec[0]->vCopy("cf"_Stz);
   m_xTokenVec[1]->vCopy(m_xTokenVec2[4 + iIfUnique]);
   
-  if (!bExecuteRequest())
+  if (!bExecuteRequest()) {
+    ASSERT(m_pSEitf->m_eErrorCode == EC_NO_SUCH_FOLDER);
+    m_pSEitf->vSetLastError(EC_NO_SUCH_TABLE);
     return false;
+  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get reference to pTable

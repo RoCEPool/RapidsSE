@@ -67,14 +67,11 @@ tp: loadAppendBuffer$
 
   pRowBuffer iPartitionNo  pTable    ( rb ptn tablePtr )
 
-tp: tp1
   3 "partitionAppendBuffer" iPartitionNo grid::toSlot dup >partitionTaskNm
   TK_LOADSUB_PART
 
-tp: tp2
   spawnPartitionActor
 
-tp: tp3
   true <SUCCESS_RESULT>
 ;
 

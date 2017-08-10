@@ -202,8 +202,6 @@
 /*----------------------------------------------------------------------------*/
 : indexTidyUp ( "<indexNm>" -- )
 
-"indextdyup" .
-dup .
    find execute ( ^indexPtr )
 
    // truncate the index
