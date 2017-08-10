@@ -297,9 +297,9 @@ void Task::vIndexPosition(MP_Task mpTask)
     bool bIsEqual = false;
     bool bAfter = pIndexEntry->aKey()->bJuxtaCompare(JC_AFTER, xKeyWrk.aKey(),
                                                      pIndex->pIdxColVec(), bIsEqual);
-    //if ( ! bAfter) {
-    //  pIndexEntry = pIndexBuffer->pNextEntry(pIndexEntry);
-    //}
+    if ( ! bAfter) {
+      pIndexEntry = pIndexBuffer->pNextEntry(pIndexEntry);
+    }
   }
   
   mpTask->m_pDataStack->vPushObject(pIndexEntry);
@@ -675,7 +675,7 @@ void Task::vIndexUpper(MP_Task mpTask)
   ASSERT(CN_INDEX == pIndex->eClass());
   
   if ( ! mpTask->m_pDataStack->bPop(iPartition) )
-    THROW_INVALID_DSTACK("index.positionFirst"_Stz);
+    THROW_INVALID_DSTACK("index.upper"_Stz);
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrEntry) )
     THROW_INVALID_DSTACK("index.upper"_Stz);

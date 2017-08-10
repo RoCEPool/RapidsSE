@@ -492,8 +492,9 @@ tp: makingIndex
   while
 
     // check against upper bound
-    pUpperEntry pIndexEntry entry.same not if
-
+    //pUpperEntry pIndexEntry entry.same not if
+    sUpper pIndexEntry iPartitionNo pIndex index.upper if
+      
       // apply entry to groupBy
       pIndex pIndexEntry entry.toDataRow pGroupby groupBy.applyEntry
 
@@ -683,13 +684,13 @@ tp: loadIndexes
   pIndex entryBuffer::create to pResultBuffer
 
   // position in the first index buffer
-  iPartitionNo pIndex index.positionFirst to pIndexBuffer
+  //iPartitionNo pIndex index.positionFirst to pIndexBuffer
 
   // did we get an index buffer ?
-  pIndexBuffer if
+  //pIndexBuffer if
     // position at the upper bound entry
-    sUpper pIndexBuffer pIndex index.position to pUpperEntry
-  then
+    //sUpper pIndexBuffer pIndex index.position to pUpperEntry
+  //then
 
   // get the indexBuffer looking for the lower key
   sLower iPartitionNo pIndex index.buffer to pIndexBuffer
@@ -719,8 +720,9 @@ tp: loadIndexes
   while
 
     // check against upper bound
-    pUpperEntry pIndexEntry entry.same not if
-
+    //pUpperEntry pIndexEntry entry.same not if
+    sUpper pIndexEntry iPartitionNo pIndex index.upper if
+      
       // look up data row and insert row into result buffer
       //"calling entry.toDataRow" .
       pIndex pIndexEntry entry.toDataRow pResultBuffer entryBuffer.insertRow
@@ -1213,15 +1215,15 @@ tp: selectIndex
   indexPtr entryBuffer::create to tempEntryBuffer
 
   // position in the index buffer with upper
-  upper iPartitionNo indexPtr index.buffer
-  to indexBuffer
+  //upper iPartitionNo indexPtr index.buffer
+  //to indexBuffer
 
   // did we get an index buffer ?
-  indexBuffer if
+  //indexBuffer if
     // position at the upper bound entry
-    upper indexBuffer indexPtr index.position
-    to upperEntry
-  then
+    //upper indexBuffer indexPtr index.position
+    //to upperEntry
+  //then
 
   // position in the first index buffer
   iPartitionNo indexPtr index.positionFirst
@@ -1252,8 +1254,9 @@ tp: selectIndex
   while
 
     // check against upper entry
-    upperEntry entry entry.same not if
-
+    //upperEntry entry entry.same not if
+    upper entry iPartitionNo indexPtr index.upper if
+      
       // insert row from entry in tempEntryBuffer
       //"Inserting row into tempEntryBuffer" .
       indexPtr entry entry.toDataRow tempEntryBuffer entryBuffer.insertRow
