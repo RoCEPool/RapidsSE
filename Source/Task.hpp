@@ -231,7 +231,6 @@ namespace Tasks
     Value* pRequest(void);
     void vReset(void);
     void vRetry(void);
-    Threads::Thread* pRootThread(void);
     void vSeedDicCompileSen(void);
     void vSeedDocol(void);
     void vSeedWord(Stz *aWord);

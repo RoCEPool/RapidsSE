@@ -24,18 +24,6 @@ txCollection: txCollection
 ( seitfList holds all seitf's )
 seitfList: seitfList
 
-( task set for root thread )
-taskSet: rootTaskSet
-
-//traceon
-( root thread and name it )
-thread: rootThread "rootThread" rootThread thread.name!
-AC_SERVER rootThread thread.actorModel!
-//traceoff
-
-( give root task set to root thread )
-rootTaskSet rootThread thread.taskSet!
-
 "droneModel.sen" include
 "serverModel.sen" include
 "partitionModel.sen" include

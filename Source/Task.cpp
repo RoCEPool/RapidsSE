@@ -1650,28 +1650,6 @@ void Task::vRetry(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get root thread from root tasks data stack                                 */
-/*----------------------------------------------------------------------------*/
-Thread* Task::pRootThread(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  Object* pThreadEmb;
-  
-  if ( ! m_pDataStack->bPop(pThreadEmb) ) {
-    m_sException.vSprint("Task::pRootThread: invalid data stack"_Stz);
-    m_sFile = (Stz*)__FILE__;
-    throw (i8)__LINE__;
-  }
-  
-  ASSERT(CN_THREAD == pThreadEmb->eClass());
-  
-  Thread* pThread = static_cast<Thread*>(pThreadEmb);
-  
-  return pThread;
-}
-
-/*----------------------------------------------------------------------------*/
 /* seed task to run ::dicCompile                                              */
 /*----------------------------------------------------------------------------*/
 void Task::vSeedDicCompileSen(void)

@@ -36,18 +36,6 @@ assert::stack_0
 
 assert::stack_0
 
-//
-// step 3: spawn the root thread
-//
-
-( spawn the posix thread for the root thread )
-rootThread thread.spawn_server
-
-( leave root thread on stack )
-rootThread
-
-assert::stack_1
-
 : __compiled__ ;
 
 /*============================================================================*/

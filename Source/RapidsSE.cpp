@@ -29,7 +29,6 @@ File*         gpTraceFile    = nullptr;
 BPA*          gpBPA          = nullptr;
 
 NP_Task       gnpRootTask    = nullptr;
-Thread*       gnpRootThread  = nullptr;
 
 void*         mpRegion       = nullptr;
 
@@ -364,7 +363,6 @@ void RapidsSE::vRunCommand(void)
   
   // append root task onto root thread's task set
   // root thread will pop the root task and run it
-  //gnpRootThread->vAppend(*gnpRootTask);
   gpScheduler->vEnqueueTask_Mutex(*gnpRootTask);
   
   // the docol interpreter is now running the commandf in root task on root thread
@@ -382,7 +380,6 @@ void RapidsSE::vRunDocol(void)
   
   // append root task onto root thread's task set
   // root thread will pop the root task and run it
-  //gnpRootThread->vAppend(*gnpRootTask);
   gpScheduler->vEnqueueTask_Mutex(*gnpRootTask);
   
   // the docol interpreter is now running in root task on root thread
@@ -442,10 +439,7 @@ void RapidsSE::vSystemInit(void)
   // get the trace file
   Word* pTraceFileWord = gpMainDic->pFindWord("trace_file"_Stz);
   gpTraceFile = reinterpret_cast<File*>(pTraceFileWord->aBodyArea());
-  
-  // the root thread is on dstack of root task
-  gnpRootThread = gnpRootTask->pRootThread();
-  
+    
   if (gbVerbose)
     vTrace("Shm region initialised at: %s\n"_Stz,gpAttachMap->m_sUTC.aChar());
 }
@@ -462,16 +456,18 @@ void RapidsSE::vStartActors(void)
   gnpRootTask->vSeedWord("startActors"_Stz);
   
   if (gbVerbose)
-    vTrace("[[mainThread]] RapidsSE::vStartActors launching [%s] %p\n"_Stz,
+    vTrace("[[mainThread]] RapidsSE::vStartActors launching: task %s %p\n"_Stz,
            gnpRootTask->sName().aChar(),
            *gnpRootTask);
   
-  gpScheduler->vEnqueueTask_Mutex(*gnpRootTask);
+  //gpScheduler->vEnqueueTask_Mutex(*gnpRootTask);
   
   // the primary thread waits here till root task exits
-  while (TS_EXITED != gnpRootTask->eState())
-    PosixThread::vSleepMilli(1000);
+  //while (TS_EXITED != gnpRootTask->eState())
+  //  PosixThread::vSleepMilli(1000);
   
+  gnpRootTask->vState(TS_RUNNING);
+  gnpRootTask->vTaskLoop();
   // the system is now running
 }
 
