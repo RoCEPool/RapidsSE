@@ -20,9 +20,9 @@ create unique index idx1 on jidx (jidx_key);
 lsidx jidx;
 lsidxcol jidx idx1;
 
-//create index idx2 on jidx (jidx_100);
-//lsidx jidx;
-//lsidxcol jidx idx2;
+create index idx2 on jidx (jidx_100);
+lsidx jidx;
+lsidxcol jidx idx2;
 
 create index idx3 on jidx (jidx_name);
 lsidx jidx;
@@ -34,48 +34,51 @@ print "\nDumping hidden index...\n";
 dumpidx jidx hidden;
 
 print "\nSelecting rows with key == 7 using idx1 ...\n" ;
-keyselidx jidx idx1 7 ;
+fetch jidx "jidx_key 7 ==";
 
 print "\nDumping index idx1...\n";
 dumpidx jidx idx1;
 
 //anidx jidx idx ;
 
-print "\nSelecting rows with key == 7 using idx1 ...\n" ;
-keyselidx jidx idx1 7 >=";
+print "\nSelecting rows with jidx_key == 7 using idx1 ...\n" ;
+fetch jidx "jidx_key 7 >=";
 
-print "\nSelecting rows with key >= 3 using idx1 ...\n" ;
+print "\nSelecting rows with jidx_key >= 3 using idx1 ...\n" ;
 fetch jidx "jidx_key 3 >=";
 
-print "\nSelecting rows with key >= 1 using idx1 ...\n" ;
+print "\nSelecting rows with jidx_key >= 1 using idx1 ...\n" ;
 fetch jidx "jidx_key 1 >=";
 
-print "\nSelecting rows with key >= 28 using idx1 ...\n" ;
+print "\nSelecting rows with jidx_key >= 28 using idx1 ...\n" ;
 fetch jidx "jidx_key 28 >=";
 
-print "\nSelecting rows with key >= 40 using idx1 ...\n" ;
+print "\nSelecting rows with jidx_key >= 40 using idx1 ...\n" ;
 fetch jidx "jidx_key 40 >=";
 
-print "\nSelecting rows with key >= 45 using idx1 ...\n" ;
+print "\nSelecting rows with jidx_key >= 45 using idx1 ...\n" ;
 fetch jidx "jidx_key 45 >=";
 
-print "\nSelecting rows with key >= 67 using idx1 ...\n" ;
+print "\nSelecting rows with jidx_key >= 67 using idx1 ...\n" ;
 fetch jidx "jidx_key 67 >=";
 
-print "\nSelecting rows with key >= 99 using idx1 ...\n" ;
+print "\nSelecting rows with jidx_key >= 99 using idx1 ...\n" ;
 fetch jidx "jidx_key 99 >=";
 
-print "\nSelecting rows with key >= 72 using idx1 ...\n" ;
+print "\nSelecting rows with jidx_key >= 72 using idx1 ...\n" ;
 fetch jidx "jidx_key 72 >=";
 
-print "\nSelecting rows with key >= 180 using idx2 ...\n" ;
+print "\nSelecting rows with jidx_100 >= 180 using idx2 ...\n" ;
 fetch jidx "jidx_100 180 >=";
 
-print "\nSelecting rows with key >= 3 and key <= 7 using idx1 ...\n" ;
-rgeselidx jidx idx1 3 7 ;
+print "\nSelecting rows with jidx_100 >= 97 using idx2 ...\n" ;
+fetch jidx "jidx_100 97 >=";
+
+print "\nSelecting rows with jidx_key >= 3 and jidx_key <= 7 using idx1 ...\n" ;
+fetch jidx "jidx_key 3 >= jidx_key 7 <=";
 
 print "\nSelecting rows with key <= 7 using idx1 ...\n" ;
-uprselidx jidx idx1 7 ;
+fetch jidx "jidx_key 7 <=";
 
 lspartcol jidx;
 
