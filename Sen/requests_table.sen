@@ -31,7 +31,7 @@ ddlLock::grabWrite
 
   args.metadata if
     args.metadata if
-       "(nodeName VARCHAR, partition INTEGER, bufferNo INTEGER, bufferLevel INTEGER, entries INTEGER)"
+       "(nodeName VARCHAR, partition INTEGER, buffers INTEGER, entries INTEGER)"
        metadata!
     then
   then

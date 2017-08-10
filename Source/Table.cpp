@@ -205,7 +205,7 @@ Stz* Table::pAnalyzeIndex(Index* pIndex, bool bDetailed)
                            nBuffers,
                            nEntries);
     } else {
-      sAnalysis.vCatSprint("row: ('%s', %lld, %lld, %lld)\n"_Stz,
+      sAnalysis.vCatSprint("row: ('%s',%lld,%lld,%lld)\n"_Stz,
                            gpGrid->pThisNode()->aNodeName(),
                            iPartition,
                            nBuffers,
