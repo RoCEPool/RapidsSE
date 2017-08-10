@@ -863,7 +863,7 @@ tp: loadIndexes
               iPartition grid::toPartition
               "row: (%v,%v)\n" str.format .put
             else
-              pIndex pEntry entry.embeddedRow "\n" str.cat .put
+              pIndex pEntry entry.embeddedRow "row: (%v)\n" str.format .put
             then
           then
           1 nRowCount + to nRowCount
@@ -873,7 +873,6 @@ tp: loadIndexes
       pIndexBuffer entryBuffer.isLast@ if
         //"Reached last buffer" .
         iSlots 1 - to iSlots
-        iSlots .
         0 iSlots == if
           0
         else
@@ -1211,7 +1210,7 @@ tp: selectIndex
   //pGroupBy groupBy.start
 
   // create a temporary index buffer for the results
-  "Creating a tempIndexBuffer" .
+  //"Creating a tempIndexBuffer" .
   indexPtr entryBuffer::create to tempEntryBuffer
 
   // position in the index buffer with upper

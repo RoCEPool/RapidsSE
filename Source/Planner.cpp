@@ -115,7 +115,7 @@ void Planner::vChoosePath(void)
     }
   }
   
-  vTrace("Chosen: %lld\n"_Stz,m_i_Chosen);
+  //vTrace("Chosen: %lld\n"_Stz,m_i_Chosen);
 }
 
 /*----------------------------------------------------------------------------*/
