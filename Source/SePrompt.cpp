@@ -616,6 +616,9 @@ bool SePrompt::bProcessCommand(bool bPostProcess)
   else
     vClearExpect();
   
+  vTrace("command: %s\n"_Stz,m_xTokenVec[0]->sText().aChar());
+  
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for builtin commands
   //*/

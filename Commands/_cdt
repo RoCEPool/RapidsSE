@@ -18,6 +18,8 @@ docol stepsReset;
 ld jCdt "../JTEST/jCdt.csv";
 docol stepsList;
 
+print "dumping hidden index\n" ;
+
 dumpidx jCdt jCdt_idx1;
 
 //print "\nSelecting rows with key <= 7 using idx1 ...\n" ;

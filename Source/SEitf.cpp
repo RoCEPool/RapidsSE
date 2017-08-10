@@ -13,9 +13,9 @@ extern Grid*      gpGrid;
 extern Scheduler* gpScheduler;
 
 struct ReqTable {
-  const Stz* aCommand;
+  Stz* aCommand;
   bool (SEitf::*aFunc)(TokenVec& xTokenVec, i8 iReqNo);
-  const Stz* aRequest;
+  Stz* aRequest;
 };
 
 ReqTable SeRequests[] =
@@ -470,7 +470,7 @@ bool SEitf::bDecode(TokenVec& xTokenVec)
   
   if (0 == xTokenVec[0]->iLength())
     return false;
-  
+  /*
   if (xTokenVec[0]->bSame("addcol"_Stz)) return bAddColumn(xTokenVec,0);
   if (xTokenVec[0]->bSame("antbl"_Stz)) return bAnalyzeTable(xTokenVec,0);
   if (xTokenVec[0]->bSame("anidx"_Stz)) return bAnalyzeIndex(xTokenVec,0);
@@ -547,14 +547,14 @@ bool SEitf::bDecode(TokenVec& xTokenVec)
   if (xTokenVec[0]->bSame("seitf"_Stz)) return bSeitfCount(xTokenVec,0);
   if (xTokenVec[0]->bSame("version"_Stz)) return bGetVersion(xTokenVec,0);
   if (xTokenVec[0]->bSame("visidx"_Stz)) return bVisualizeIndex(xTokenVec,0);
- 
-  /*
+  */
+  
+  vTrace("request: %s\n"_Stz,xTokenVec[0]->sText().aChar());
   
   for (i8 i_ReqNo = 0; SeRequests[i_ReqNo].aCommand; i_ReqNo++) {
     if (xTokenVec[0]->bSame((Stz*)SeRequests[i_ReqNo].aCommand))
       return (this->*SeRequests[i_ReqNo].aFunc)(xTokenVec,i_ReqNo);
   }
-  */
   
   vSetLastError(EC_INVALID_COMMAND);
   return false;
@@ -570,7 +570,9 @@ bool SEitf::bConnect(TokenVec& xTokenVec, i8 iReqNo)
   s256 sRequest;
   
   ASSERT(xTokenVec[0]->bSame("con"_Stz));
-  sRequest = "connect"_Stz;
+  
+  sRequest = SeRequests[iReqNo].aRequest;
+
   return bAppendRequest(sRequest);
 }
 
@@ -584,7 +586,9 @@ bool SEitf::bConnectCluster(TokenVec& xTokenVec, i8 iReqNo)
   s256 sRequest;
   
   ASSERT(xTokenVec[0]->bSame("connectCluster"_Stz));
-  sRequest = "connectCluster_req"_Stz;
+  
+  sRequest = SeRequests[iReqNo].aRequest;
+  
   return bAppendRequest(sRequest);
 }
 
@@ -598,7 +602,9 @@ bool SEitf::bDisconnect(TokenVec& xTokenVec, i8 iReqNo)
   s256 sRequest;
   
   ASSERT(xTokenVec[0]->bSame("dic"_Stz));
-  sRequest = "disconnect"_Stz;
+  
+  sRequest = SeRequests[iReqNo].aRequest;
+  
   return bAppendRequest(sRequest);
 }
 
@@ -620,9 +626,9 @@ bool SEitf::bGet(TokenVec& xTokenVec, i8 iReqNo)
   sRequest.vConcat(xTokenVec[1]->aText());
   sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" get"_Stz);
+  sRequest.vConcat(" "_Stz);
+  sRequest.vConcat(SeRequests[iReqNo].aRequest);
 
-  
   return bAppendRequest(sRequest);
 }
 
@@ -648,8 +654,8 @@ bool SEitf::bSet(TokenVec& xTokenVec, i8 iReqNo)
   sRequest.vConcat(xTokenVec[2]->aText());
   sRequest.vConcat("\""_Stz);
 
-  sRequest.vConcat(" set"_Stz);
-  
+  sRequest.vConcat(" "_Stz);
+  sRequest.vConcat(SeRequests[iReqNo].aRequest);
   
   return bAppendRequest(sRequest);
 }
@@ -667,7 +673,8 @@ bool SEitf::bRemoveFolder(TokenVec& xTokenVec, i8 iReqNo)
   sRequest.vConcat(xTokenVec[1]->aText());
   sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" remove_folder"_Stz);
+  sRequest.vConcat(" "_Stz);
+  sRequest.vConcat(SeRequests[iReqNo].aRequest);
   
   return bAppendRequest(sRequest);
 }
@@ -690,7 +697,8 @@ bool SEitf::bCreateTenant(TokenVec& xTokenVec, i8 iReqNo)
   sRequest.vConcat(xTokenVec[1]->aText());
   sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" createTenant_req"_Stz);
+  sRequest.vConcat(" "_Stz);
+  sRequest.vConcat(SeRequests[iReqNo].aRequest);
   
   return bAppendRequest(sRequest);
 }
@@ -710,7 +718,9 @@ bool SEitf::bListTenants(TokenVec& xTokenVec, i8 iReqNo)
   }
 
   ASSERT(xTokenVec[0]->bSame("lsten"_Stz));
-  sRequest = "listTenants_req"_Stz;
+  
+  sRequest = SeRequests[iReqNo].aRequest;
+  
   return bAppendRequest(sRequest);
 }
 
@@ -732,7 +742,8 @@ bool SEitf::bDropTenant(TokenVec& xTokenVec, i8 iReqNo)
   sRequest.vConcat(xTokenVec[1]->aText());
   sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" dropTenant_req"_Stz);
+  sRequest.vConcat(" "_Stz);
+  sRequest.vConcat(SeRequests[iReqNo].aRequest);
   
   return bAppendRequest(sRequest);
 }
@@ -755,7 +766,8 @@ bool SEitf::bCreateCatalog(TokenVec& xTokenVec, i8 iReqNo)
   sRequest.vConcat(xTokenVec[1]->aText());
   sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" createCatalog_req"_Stz);
+  sRequest.vConcat(" "_Stz);
+  sRequest.vConcat(SeRequests[iReqNo].aRequest);
   
   return bAppendRequest(sRequest);
 }
@@ -775,7 +787,9 @@ bool SEitf::bListCatalogs(TokenVec& xTokenVec, i8 iReqNo)
   }
   
   ASSERT(xTokenVec[0]->bSame("lscat"_Stz));
-  sRequest = "listCatalogs_req"_Stz;
+  
+  sRequest = SeRequests[iReqNo].aRequest;
+  
   return bAppendRequest(sRequest);
 }
 
@@ -797,7 +811,8 @@ bool SEitf::bDropCatalog(TokenVec& xTokenVec, i8 iReqNo)
   sRequest.vConcat(xTokenVec[1]->aText());
   sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" dropCatalog_req"_Stz);
+  sRequest.vConcat(" "_Stz);
+  sRequest.vConcat(SeRequests[iReqNo].aRequest);
   
   return bAppendRequest(sRequest);
 }
@@ -820,7 +835,8 @@ bool SEitf::bCreateSchema(TokenVec& xTokenVec, i8 iReqNo)
   sRequest.vConcat(xTokenVec[1]->aText());
   sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" createSchema_req"_Stz);
+  sRequest.vConcat(" "_Stz);
+  sRequest.vConcat(SeRequests[iReqNo].aRequest);
   
   return bAppendRequest(sRequest);
   
@@ -842,7 +858,9 @@ bool SEitf::bListSchemas(TokenVec& xTokenVec, i8 iReqNo)
   }
   
   ASSERT(xTokenVec[0]->bSame("lssch"_Stz));
-  sRequest = "listSchemas_req"_Stz;
+
+  sRequest = SeRequests[iReqNo].aRequest;
+  
   return bAppendRequest(sRequest);
 }
 
@@ -864,7 +882,8 @@ bool SEitf::bDropSchema(TokenVec& xTokenVec, i8 iReqNo)
   sRequest.vConcat(xTokenVec[1]->aText());
   sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" dropSchema_req"_Stz);
+  sRequest.vConcat(" "_Stz);
+  sRequest.vConcat(SeRequests[iReqNo].aRequest);
   
   return bAppendRequest(sRequest);
 }
@@ -887,7 +906,8 @@ bool SEitf::bUseSchema(TokenVec& xTokenVec, i8 iReqNo)
   sRequest.vConcat(xTokenVec[1]->aText());
   sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" useSchema_req"_Stz);
+  sRequest.vConcat(" "_Stz);
+  sRequest.vConcat(SeRequests[iReqNo].aRequest);
   
   return bAppendRequest(sRequest);
 }
@@ -914,7 +934,8 @@ bool SEitf::bCreateIndex(TokenVec& xTokenVec, i8 iReqNo)
   sRequest.vConcat(xTokenVec[1]->aText());
   sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" createIndex_req"_Stz);
+  sRequest.vConcat(" "_Stz);
+  sRequest.vConcat(SeRequests[iReqNo].aRequest);
   
   return bAppendRequest(sRequest);
 }
@@ -939,7 +960,8 @@ bool SEitf::bListIndices(TokenVec& xTokenVec, i8 iReqNo)
 
   ASSERT(xTokenVec[0]->bSame("lsidx"_Stz));
   
-  sRequest.vConcat(" listIndexes_req"_Stz);
+  sRequest.vConcat(" "_Stz);
+  sRequest.vConcat(SeRequests[iReqNo].aRequest);
   
   return bAppendRequest(sRequest);
 }
@@ -972,7 +994,8 @@ bool SEitf::bIndexSetUnique(TokenVec& xTokenVec, i8 iReqNo)
   
   ASSERT(xTokenVec[0]->bSame("setidxunique"_Stz));
   
-  sRequest.vConcat(" indexSetUnique_req"_Stz);
+  sRequest.vConcat(" "_Stz);
+  sRequest.vConcat(SeRequests[iReqNo].aRequest);
   
   return bAppendRequest(sRequest);
 }
@@ -995,7 +1018,8 @@ bool SEitf::bCreateTable(TokenVec& xTokenVec, i8 iReqNo)
   sRequest.vConcat(xTokenVec[1]->aText());
   sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" createTable_req"_Stz);
+  sRequest.vConcat(" "_Stz);
+  sRequest.vConcat(SeRequests[iReqNo].aRequest);
   
   return bAppendRequest(sRequest);
 }
@@ -1015,7 +1039,9 @@ bool SEitf::bListTables(TokenVec& xTokenVec, i8 iReqNo)
   }
   
   ASSERT(xTokenVec[0]->bSame("lstbl"_Stz));
-  sRequest = "listTables_req"_Stz;
+  
+  sRequest = SeRequests[iReqNo].aRequest;
+  
   return bAppendRequest(sRequest);
 }
 
@@ -1041,7 +1067,8 @@ bool SEitf::bDumpIndex(TokenVec& xTokenVec, i8 iReqNo)
   sRequest.vConcat(xTokenVec[1]->aText());
   sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" dumpIndex_req"_Stz);
+  sRequest.vConcat(" "_Stz);
+  sRequest.vConcat(SeRequests[iReqNo].aRequest);
   
   return bAppendRequest(sRequest);
 }
@@ -1064,7 +1091,8 @@ bool SEitf::bDumpTable(TokenVec& xTokenVec, i8 iReqNo)
   sRequest.vConcat(xTokenVec[1]->aText());
   sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" dumpTable_req"_Stz);
+  sRequest.vConcat(" "_Stz);
+  sRequest.vConcat(SeRequests[iReqNo].aRequest);
   
   return bAppendRequest(sRequest);
 }
@@ -1093,7 +1121,8 @@ bool SEitf::bDocol(TokenVec& xTokenVec, i8 iReqNo)
   sRequest.vConcat("\""_Stz);
   
   //
-  sRequest.vConcat(" docol_command"_Stz);
+  sRequest.vConcat(" "_Stz);
+  sRequest.vConcat(SeRequests[iReqNo].aRequest);
   
   return bAppendRequest(sRequest);
 }
@@ -1113,7 +1142,8 @@ bool SEitf::bDisplayOff(TokenVec& xTokenVec, i8 iReqNo)
   }
   
   //
-  sRequest.vConcat(" displayOff"_Stz);
+  sRequest.vConcat(" "_Stz);
+  sRequest.vConcat(SeRequests[iReqNo].aRequest);
   
   return bAppendRequest(sRequest);
 }
@@ -1133,7 +1163,8 @@ bool SEitf::bDisplayOn(TokenVec& xTokenVec, i8 iReqNo)
   }
   
   //
-  sRequest.vConcat(" displayOn"_Stz);
+  sRequest.vConcat(" "_Stz);
+  sRequest.vConcat(SeRequests[iReqNo].aRequest);
   
   return bAppendRequest(sRequest);
 }
@@ -1160,7 +1191,8 @@ bool SEitf::bDropIndex(TokenVec& xTokenVec, i8 iReqNo)
   sRequest.vConcat(xTokenVec[1]->aText());
   sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" dropIndex_req"_Stz);
+  sRequest.vConcat(" "_Stz);
+  sRequest.vConcat(SeRequests[iReqNo].aRequest);
   
   return bAppendRequest(sRequest);
 }
@@ -1184,7 +1216,8 @@ bool SEitf::bDropTable(TokenVec& xTokenVec, i8 iReqNo)
   sRequest.vConcat(xTokenVec[1]->aText());
   sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" dropTable_req"_Stz);
+  sRequest.vConcat(" "_Stz);
+  sRequest.vConcat(SeRequests[iReqNo].aRequest);
   
   return bAppendRequest(sRequest);
 }
@@ -1215,7 +1248,8 @@ bool SEitf::bAddColumn(TokenVec& xTokenVec, i8 iReqNo)
   sRequest.vConcat(xTokenVec[1]->aText());
   sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" addColumn_req"_Stz);
+  sRequest.vConcat(" "_Stz);
+  sRequest.vConcat(SeRequests[iReqNo].aRequest);
   
   return bAppendRequest(sRequest);
 }
@@ -1246,7 +1280,8 @@ bool SEitf::bAddIndexColumn(TokenVec& xTokenVec, i8 iReqNo)
   sRequest.vConcat(xTokenVec[1]->aText());
   sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" addIdxColumn_req"_Stz);
+  sRequest.vConcat(" "_Stz);
+  sRequest.vConcat(SeRequests[iReqNo].aRequest);
   
   return bAppendRequest(sRequest);
 }
@@ -1273,7 +1308,8 @@ bool SEitf::bAddPartitionColumn(TokenVec& xTokenVec, i8 iReqNo)
   sRequest.vConcat(xTokenVec[1]->aText());
   sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" addPartColumn_req"_Stz);
+  sRequest.vConcat(" "_Stz);
+  sRequest.vConcat(SeRequests[iReqNo].aRequest);
   
   return bAppendRequest(sRequest);
 }
@@ -1300,8 +1336,9 @@ bool SEitf::bEndCreateIndex(TokenVec& xTokenVec, i8 iReqNo)
   sRequest.vConcat(xTokenVec[1]->aText());
   sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" endCreateIndex_req"_Stz);
-        
+  sRequest.vConcat(" "_Stz);
+  sRequest.vConcat(SeRequests[iReqNo].aRequest);
+  
   return bAppendRequest(sRequest);
 }
 
@@ -1323,7 +1360,8 @@ bool SEitf::bEndCreateTable(TokenVec& xTokenVec, i8 iReqNo)
   sRequest.vConcat(xTokenVec[1]->aText());
   sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" endCreateTable_req"_Stz);
+  sRequest.vConcat(" "_Stz);
+  sRequest.vConcat(SeRequests[iReqNo].aRequest);
   
   return bAppendRequest(sRequest);
 }
@@ -1346,7 +1384,8 @@ bool SEitf::bListColumns(TokenVec& xTokenVec, i8 iReqNo)
   sRequest.vConcat(xTokenVec[1]->aText());
   sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" listColumns_req"_Stz);
+  sRequest.vConcat(" "_Stz);
+  sRequest.vConcat(SeRequests[iReqNo].aRequest);
   
   return bAppendRequest(sRequest);
 }
@@ -1373,7 +1412,8 @@ bool SEitf::bListIndexColumns(TokenVec& xTokenVec, i8 iReqNo)
   sRequest.vConcat(xTokenVec[2]->aText());
   sRequest.vConcat("\""_Stz);
 
-  sRequest.vConcat(" listIndexColumns_req"_Stz);
+  sRequest.vConcat(" "_Stz);
+  sRequest.vConcat(SeRequests[iReqNo].aRequest);
   
   return bAppendRequest(sRequest);
 }
@@ -1396,7 +1436,8 @@ bool SEitf::bListPartitionColumns(TokenVec& xTokenVec, i8 iReqNo)
   sRequest.vConcat(xTokenVec[1]->aText());
   sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" listPartitionColumns_req"_Stz);
+  sRequest.vConcat(" "_Stz);
+  sRequest.vConcat(SeRequests[iReqNo].aRequest);
   
   return bAppendRequest(sRequest);
 }
@@ -1423,7 +1464,8 @@ bool SEitf::bAnalyzeIndex(TokenVec& xTokenVec, i8 iReqNo)
   sRequest.vConcat(xTokenVec[1]->aText());
   sRequest.vConcat("\""_Stz);
 
-  sRequest.vConcat(" analyzeIndex_req"_Stz);
+  sRequest.vConcat(" "_Stz);
+  sRequest.vConcat(SeRequests[iReqNo].aRequest);
   
   return bAppendRequest(sRequest);
 }
@@ -1446,7 +1488,8 @@ bool SEitf::bAnalyzeTable(TokenVec& xTokenVec, i8 iReqNo)
   sRequest.vConcat(xTokenVec[1]->aText());
   sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" analyzeTable_req"_Stz);
+  sRequest.vConcat(" "_Stz);
+  sRequest.vConcat(SeRequests[iReqNo].aRequest);
   
   return bAppendRequest(sRequest);
 }
@@ -1473,7 +1516,8 @@ bool SEitf::bDanalyzeIndex(TokenVec& xTokenVec, i8 iReqNo)
   sRequest.vConcat(xTokenVec[1]->aText());
   sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" danalyzeIndex_req"_Stz);
+  sRequest.vConcat(" "_Stz);
+  sRequest.vConcat(SeRequests[iReqNo].aRequest);
   
   return bAppendRequest(sRequest);
 }
@@ -1496,7 +1540,8 @@ bool SEitf::bDanalyzeTable(TokenVec& xTokenVec, i8 iReqNo)
   sRequest.vConcat(xTokenVec[1]->aText());
   sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" danalyzeTable_req"_Stz);
+  sRequest.vConcat(" "_Stz);
+  sRequest.vConcat(SeRequests[iReqNo].aRequest);
   
   return bAppendRequest(sRequest);
 }
@@ -1523,7 +1568,8 @@ bool SEitf::bCopyTable(TokenVec& xTokenVec, i8 iReqNo)
   sRequest.vConcat(xTokenVec[1]->aText());
   sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" copyTable_req"_Stz);
+  sRequest.vConcat(" "_Stz);
+  sRequest.vConcat(SeRequests[iReqNo].aRequest);
   
   return bAppendRequest(sRequest);
 }
@@ -1550,7 +1596,8 @@ bool SEitf::bDistExportTable(TokenVec& xTokenVec, i8 iReqNo)
   sRequest.vConcat(xTokenVec[1]->aText());
   sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" distExport_table"_Stz);
+  sRequest.vConcat(" "_Stz);
+  sRequest.vConcat(SeRequests[iReqNo].aRequest);
   
   return bAppendRequest(sRequest);
 }
@@ -1577,7 +1624,8 @@ bool SEitf::bExportTable(TokenVec& xTokenVec, i8 iReqNo)
   sRequest.vConcat(xTokenVec[1]->aText());
   sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" exportTable_req"_Stz);
+  sRequest.vConcat(" "_Stz);
+  sRequest.vConcat(SeRequests[iReqNo].aRequest);
   
   return bAppendRequest(sRequest);
 }
@@ -1609,7 +1657,8 @@ bool SEitf::bFetchRows(TokenVec& xTokenVec, i8 iReqNo)
   sRequest.vConcat(xTokenVec[1]->aText());
   sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" fetchRowsIndex_req"_Stz);
+  sRequest.vConcat(" "_Stz);
+  sRequest.vConcat(SeRequests[iReqNo].aRequest);
   
   return bAppendRequest(sRequest);
 }
@@ -1636,7 +1685,8 @@ bool SEitf::bLoadTable(TokenVec& xTokenVec, i8 iReqNo)
   sRequest.vConcat(xTokenVec[1]->aText());
   sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" loadTable_req"_Stz);
+  sRequest.vConcat(" "_Stz);
+  sRequest.vConcat(SeRequests[iReqNo].aRequest);
   
   return bAppendRequest(sRequest);
 }
@@ -1663,7 +1713,8 @@ bool SEitf::bLoadTableStream(TokenVec& xTokenVec, i8 iReqNo)
   sRequest.vConcat(xTokenVec[1]->aText());
   sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" loadTableStream_req"_Stz);
+  sRequest.vConcat(" "_Stz);
+  sRequest.vConcat(SeRequests[iReqNo].aRequest);
   
   return bAppendRequest(sRequest);
 }
@@ -1690,7 +1741,8 @@ bool SEitf::bLowerSelectTable(TokenVec& xTokenVec, i8 iReqNo)
   sRequest.vConcat(xTokenVec[1]->aText());
   sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" lowerSelectTable_req"_Stz);
+  sRequest.vConcat(" "_Stz);
+  sRequest.vConcat(SeRequests[iReqNo].aRequest);
   
   return bAppendRequest(sRequest);
 }
@@ -1721,7 +1773,8 @@ bool SEitf::bRangeSelectTable(TokenVec& xTokenVec, i8 iReqNo)
   sRequest.vConcat(xTokenVec[1]->aText());
   sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" rangeSelectTable_req"_Stz);
+  sRequest.vConcat(" "_Stz);
+  sRequest.vConcat(SeRequests[iReqNo].aRequest);
   
   return bAppendRequest(sRequest);
 }
@@ -1744,7 +1797,8 @@ bool SEitf::bGetIndex(TokenVec& xTokenVec, i8 iReqNo)
   sRequest.vConcat(xTokenVec[1]->aText());
   sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" getIndex_req"_Stz);
+  sRequest.vConcat(" "_Stz);
+  sRequest.vConcat(SeRequests[iReqNo].aRequest);
   
   return bAppendRequest(sRequest);
 }
@@ -1767,7 +1821,8 @@ bool SEitf::bGetTable(TokenVec& xTokenVec, i8 iReqNo)
   sRequest.vConcat(xTokenVec[1]->aText());
   sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" getTable_req"_Stz);
+  sRequest.vConcat(" "_Stz);
+  sRequest.vConcat(SeRequests[iReqNo].aRequest);
   
   return bAppendRequest(sRequest);
 }
@@ -1790,7 +1845,8 @@ bool SEitf::bInUseTable(TokenVec& xTokenVec, i8 iReqNo)
   sRequest.vConcat(xTokenVec[1]->aText());
   sRequest.vConcat("\""_Stz);
 
-  sRequest.vConcat(" tableInuse_req"_Stz);
+  sRequest.vConcat(" "_Stz);
+  sRequest.vConcat(SeRequests[iReqNo].aRequest);
   
   return bAppendRequest(sRequest);
 }
@@ -1809,7 +1865,8 @@ bool SEitf::bRetIndex(TokenVec& xTokenVec, i8 iReqNo)
     return false;
   }
   
-  sRequest.vConcat(" returnIndex_req"_Stz);
+  sRequest.vConcat(" "_Stz);
+  sRequest.vConcat(SeRequests[iReqNo].aRequest);
   
   return bAppendRequest(sRequest);
 }
@@ -1828,7 +1885,8 @@ bool SEitf::bRetTable(TokenVec& xTokenVec, i8 iReqNo)
     return false;
   }
   
-  sRequest.vConcat(" returnTable_req"_Stz);
+  sRequest.vConcat(" "_Stz);
+  sRequest.vConcat(SeRequests[iReqNo].aRequest);
   
   return bAppendRequest(sRequest);
 }
@@ -1847,7 +1905,8 @@ bool SEitf::bPoolSpace(TokenVec& xTokenVec, i8 iReqNo)
     return false;
   }
   
-  sRequest.vConcat(" space"_Stz);
+  sRequest.vConcat(" "_Stz);
+  sRequest.vConcat(SeRequests[iReqNo].aRequest);
   
   return bAppendRequest(sRequest);
 }
@@ -1866,7 +1925,8 @@ bool SEitf::bNodeStatus(TokenVec& xTokenVec, i8 iReqNo)
     return false;
   }
   
-  sRequest.vConcat(" status"_Stz);
+  sRequest.vConcat(" "_Stz);
+  sRequest.vConcat(SeRequests[iReqNo].aRequest);
   
   return bAppendRequest(sRequest);
 }
@@ -1893,7 +1953,8 @@ bool SEitf::bSizeIndex(TokenVec& xTokenVec, i8 iReqNo)
   sRequest.vConcat(xTokenVec[1]->aText());
   sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" sizeIndex_req"_Stz);
+  sRequest.vConcat(" "_Stz);
+  sRequest.vConcat(SeRequests[iReqNo].aRequest);
   
   return bAppendRequest(sRequest);
 }
@@ -1916,7 +1977,8 @@ bool SEitf::bSizeTable(TokenVec& xTokenVec, i8 iReqNo)
   sRequest.vConcat(xTokenVec[1]->aText());
   sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" sizeTable_req"_Stz);
+  sRequest.vConcat(" "_Stz);
+  sRequest.vConcat(SeRequests[iReqNo].aRequest);
   
   return bAppendRequest(sRequest);
 }
@@ -1935,7 +1997,8 @@ bool SEitf::bSizeTables(TokenVec& xTokenVec, i8 iReqNo)
     return false;
   }
   
-  sRequest.vConcat(" sizeTables_req"_Stz);
+  sRequest.vConcat(" "_Stz);
+  sRequest.vConcat(SeRequests[iReqNo].aRequest);
   
   return bAppendRequest(sRequest);
 }
@@ -1962,7 +2025,8 @@ bool SEitf::bTruncateIndex(TokenVec& xTokenVec, i8 iReqNo)
   sRequest.vConcat(xTokenVec[1]->aText());
   sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" truncateIndex_req"_Stz);
+  sRequest.vConcat(" "_Stz);
+  sRequest.vConcat(SeRequests[iReqNo].aRequest);
   
   return bAppendRequest(sRequest);
 }
@@ -1985,7 +2049,8 @@ bool SEitf::bTruncateTable(TokenVec& xTokenVec, i8 iReqNo)
   sRequest.vConcat(xTokenVec[1]->aText());
   sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" truncateTable_req"_Stz);
+  sRequest.vConcat(" "_Stz);
+  sRequest.vConcat(SeRequests[iReqNo].aRequest);
   
   return bAppendRequest(sRequest);
 }
@@ -2012,7 +2077,8 @@ bool SEitf::bVisualizeIndex(TokenVec& xTokenVec, i8 iReqNo)
   sRequest.vConcat(xTokenVec[1]->aText());
   sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" visualizeIndex_req"_Stz);
+  sRequest.vConcat(" "_Stz);
+  sRequest.vConcat(SeRequests[iReqNo].aRequest);
   
   return bAppendRequest(sRequest);
 }
@@ -2143,7 +2209,8 @@ bool SEitf::bPushDic(TokenVec& xTokenVec, i8 iReqNo)
   sRequest.vConcat(xTokenVec[1]->aText());
   sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" cf"_Stz);
+  sRequest.vConcat(" "_Stz);
+  sRequest.vConcat(SeRequests[iReqNo].aRequest);
   
   return bAppendRequest(sRequest);
 }
@@ -2157,7 +2224,8 @@ bool SEitf::bPrint(TokenVec& xTokenVec, i8 iReqNo)
   
   vInfo("%s\n"_Stz,xTokenVec[1]->aText());
   
-  return true;
+  //return true;
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2170,7 +2238,9 @@ bool SEitf::bGetDicPath(TokenVec& xTokenVec, i8 iReqNo)
   s256 sRequest;
   
   ASSERT(xTokenVec[0]->bSame("pwf"_Stz));
-  sRequest = "pwf"_Stz;
+  
+  sRequest = SeRequests[iReqNo].aRequest;
+  
   return bAppendRequest(sRequest);
 }
 
@@ -2184,7 +2254,9 @@ bool SEitf::bGetDicContents(TokenVec& xTokenVec, i8 iReqNo)
   s256 sRequest;
   
   ASSERT(xTokenVec[0]->bSame("lf"_Stz));
-  sRequest = "lf"_Stz;
+  
+  sRequest = SeRequests[iReqNo].aRequest;
+  
   return bAppendRequest(sRequest);
 }
 
@@ -2198,7 +2270,9 @@ bool SEitf::bGetDicContentsG(TokenVec& xTokenVec, i8 iReqNo)
   s256 sRequest;
   
   ASSERT(xTokenVec[0]->bSame("lfG"_Stz));
-  sRequest = "lfG"_Stz;
+  
+  sRequest = SeRequests[iReqNo].aRequest;
+  
   return bAppendRequest(sRequest);
 }
 
@@ -2212,7 +2286,9 @@ bool SEitf::bGetMonitor(TokenVec& xTokenVec, i8 iReqNo)
   s256 sRequest;
   
   ASSERT(xTokenVec[0]->bSame("mon"_Stz));
-  sRequest = "get_monitor"_Stz;
+  
+  sRequest = SeRequests[iReqNo].aRequest;
+  
   return bAppendRequest(sRequest);
 }
 
@@ -2226,7 +2302,9 @@ bool SEitf::bGetFreeSpace(TokenVec& xTokenVec, i8 iReqNo)
   s256 sRequest;
   
   ASSERT(xTokenVec[0]->bSame("getFreeSpace"_Stz));
-  sRequest = "getFreeSpace"_Stz;
+  
+  sRequest = SeRequests[iReqNo].aRequest;
+
   return bAppendRequest(sRequest);
 }
 
@@ -2240,7 +2318,9 @@ bool SEitf::bGetInUseSpace(TokenVec& xTokenVec, i8 iReqNo)
   s256 sRequest;
   
   ASSERT(xTokenVec[0]->bSame("getInUseSpace"_Stz));
-  sRequest = "getInUseSpace"_Stz;
+  
+  sRequest = SeRequests[iReqNo].aRequest;
+  
   return bAppendRequest(sRequest);
 }
 
@@ -2254,7 +2334,9 @@ bool SEitf::bGetTotalSpace(TokenVec& xTokenVec, i8 iReqNo)
   s256 sRequest;
   
   ASSERT(xTokenVec[0]->bSame("getTotalSpace"_Stz));
-  sRequest = "getTotalSpace"_Stz;
+  
+  sRequest = SeRequests[iReqNo].aRequest;
+  
   return bAppendRequest(sRequest);
 }
 
@@ -2268,7 +2350,9 @@ bool SEitf::bGetVersion(TokenVec& xTokenVec, i8 iReqNo)
   s256 sRequest;
   
   ASSERT(xTokenVec[0]->bSame("version"_Stz));
-  sRequest = "get_version"_Stz;
+  
+  sRequest = SeRequests[iReqNo].aRequest;
+  
   return bAppendRequest(sRequest);
 }
 
@@ -2282,7 +2366,9 @@ bool SEitf::bPing(TokenVec& xTokenVec, i8 iReqNo)
   s256 sRequest;
   
   ASSERT(xTokenVec[0]->bSame("ping"_Stz));
-  sRequest = "ping"_Stz;
+  
+  sRequest = SeRequests[iReqNo].aRequest;
+  
   return bAppendRequest(sRequest);
 }
 
@@ -2295,7 +2381,7 @@ bool SEitf::bObject(TokenVec& xTokenVec, i8 iReqNo)
   
   s256 sRequest;
   
-  sRequest.vConcat("object"_Stz);
+  sRequest.vConcat(SeRequests[iReqNo].aRequest);
   
   return bAppendRequest(sRequest);
 }
@@ -2314,7 +2400,8 @@ bool SEitf::bPrintRowBuffer(TokenVec& xTokenVec, i8 iReqNo)
   sRequest.vConcat("\""_Stz);
 
   ASSERT(xTokenVec[0]->bSame("pRB"_Stz));
-  sRequest.vConcat(" pRB"_Stz);
+  sRequest.vConcat(" "_Stz);
+  sRequest.vConcat(SeRequests[iReqNo].aRequest);
   
   return bAppendRequest(sRequest);
 }
@@ -2329,7 +2416,9 @@ bool SEitf::bSeitfCount(TokenVec& xTokenVec, i8 iReqNo)
   s256 sRequest;
   
   ASSERT(xTokenVec[0]->bSame("seitf"_Stz));
-  sRequest = "seitf_count"_Stz;
+  
+  sRequest = SeRequests[iReqNo].aRequest;
+  
   return bAppendRequest(sRequest);
 }
 
@@ -2343,11 +2432,11 @@ bool SEitf::bX(TokenVec& xTokenVec, i8 iReqNo)
   s256 sRequest;
   
   ASSERT(xTokenVec[0]->bSame("ping"_Stz));
-  sRequest = "ping"_Stz;
+  
+  sRequest = SeRequests[iReqNo].aRequest;
   
   return bAppendRequest(sRequest);
 }
-
 
 /*----------------------------------------------------------------------------*/
 /* return task                                                                */
@@ -2364,7 +2453,8 @@ bool SEitf::bRetTask(TokenVec& xTokenVec, i8 iReqNo)
   sRequest.vConcat(xTokenVec[1]->aText());
   sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" returnTask_req"_Stz);
+  sRequest.vConcat(" "_Stz);
+  sRequest.vConcat(SeRequests[iReqNo].aRequest);
   
   return bAppendRequest(sRequest);
 }
@@ -2380,7 +2470,7 @@ bool SEitf::bGetTask(TokenVec& xTokenVec, i8 iReqNo)
   
   ASSERT(xTokenVec[0]->bSame("gettsk"_Stz));
   
-  sRequest.vCopy("getTask_req"_Stz);
+  sRequest.vConcat(SeRequests[iReqNo].aRequest);
   
   return bAppendRequest(sRequest);
 }
