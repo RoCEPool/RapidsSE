@@ -12,7 +12,7 @@ int: nConnections
 /*----------------------------------------------------------------------------*/
 /* spawn the answer drone                                                     */
 /*----------------------------------------------------------------------------*/
-: answerDroneSpawn
+: spawnAnswerDrone
 
   0 "answerLoop" "AnswerDrone" TK_ANSWER_DRONE spawnDroneActor
 ;
