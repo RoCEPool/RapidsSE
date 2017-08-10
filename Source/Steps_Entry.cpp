@@ -160,7 +160,7 @@ void Task::vEntryEmbeddedRow(MP_Task mpTask)
   ASSERT(CN_INDEX == pIndex->eClass() || CN_INDEX == pIndex->eClass());
   
   s256 sRow;
-  RowData::vGetDataString(sRow, (Stz*)pEntry->aRow(), pIndex->pTable()->pColumnVec());
+  RowData::vRowAsString(sRow, (Stz*)pEntry->aRow(), pIndex->pTable()->pColumnVec());
   
   // return the row entry
   mpTask->m_pDataStack->vPushS256(sRow);
