@@ -31,10 +31,10 @@ namespace DBobjects
     void    vEnd(void);
     void    vFirst(void);
     void    vNext(void);
-    Entry*    pRow(void);
+    Entry*  pRow(void);
     Stz*    aRowAsStr(void);
     EntryBuffer* pRowBuffer(void);
-    void       vRowBuffer(EntryBuffer* pRowBuffer);
+    void    vRowBuffer(EntryBuffer* pRowBuffer);
     Table*  pTable(void);
     void    vTable(Table* pTable);
     

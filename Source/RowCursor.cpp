@@ -114,7 +114,7 @@ void RowCursor::vFirst(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCURSOR,_FOOTER_);
   
   if (m_pRowBuffer)
-    m_pRow = m_pRowBuffer->pFirstRow();
+    m_pRow = m_pRowBuffer->pNextRow(m_pRowBuffer->pFirstRow());
   else
     m_pRow = nullptr;
 }
@@ -154,12 +154,18 @@ Stz* RowCursor::aRowAsStr(void)
   if (! m_pRow)
     return nullptr;
   
-  StrVal* pStrVal = reinterpret_cast<StrVal*>(m_pRow->aRow());
+//  StrVal* pStrVal = reinterpret_cast<StrVal*>(m_pRow->aRow());
+//  
+//  if (pStrVal)
+//    return pStrVal->aStr();
+//  else
+//    return nullptr;
   
-  if (pStrVal)
-    return pStrVal->aStr();
-  else
-    return nullptr;
+  s256 sRow;
+  ColumnVec* pColVec = m_pRowBuffer->pIndex()->pTable()->pColumnVec();
+  RowData::vGetDataString(sRow, (Stz*)m_pRow->aRow(), pColVec);
+  
+  return sRow;
 }
 
 /*----------------------------------------------------------------------------*/
