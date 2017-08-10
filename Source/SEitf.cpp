@@ -2524,9 +2524,6 @@ bool SEitf::bAppendRequest(StrVal& sRequest)
   // set the new current request id to the next one sent by previous response
   m_iCurrentRequestId = m_iNextRequestId;
   
-  
-  
-#ifdef REQUEST_LOOP2
   // spawn a request task, passing the request to it
   // create new task (will be automatically appended to task list)
   MP_Task nnpNewTask = new Task(&xValSet);
@@ -2534,13 +2531,6 @@ bool SEitf::bAppendRequest(StrVal& sRequest)
   
   gpScheduler->vEnqueueTask_Mutex(*nnpNewTask);
   return true;
-  
-#else
-  bool b = m_pRequestQueue->bAppend(&xValSet);
-  return b;
-  
-#endif
-  
 }
 
 /*----------------------------------------------------------------------------*/

@@ -28,7 +28,7 @@ File*         gpTraceFile    = nullptr;
 
 BPA*          gpBPA          = nullptr;
 
-NP_Task       gnpRootTask    = nullptr;
+NP_Task       gnpBootTask    = nullptr;
 
 void*         mpRegion       = nullptr;
 
@@ -296,24 +296,24 @@ void RapidsSE::vCreateObjects(void)
 /*----------------------------------------------------------------------------*/
 /* compile the main dictionary                                                */
 /*----------------------------------------------------------------------------*/
-void RapidsSE::vDicCompile(NP_Task npRootTask)
+void RapidsSE::vDicCompile(NP_Task npBootTask)
 {
   if (gbVerbose)
     vTrace("[[mainThread]] Initialise Main Dictionary...\n"_Stz);
   
-  npRootTask->vInitialiseMain();
+  npBootTask->vInitialiseMain();
   
   if (gbVerbose)
     vTrace("[[mainThread]] DicCompile...\n"_Stz);
   
-  npRootTask->vSeedDicCompileSen();
+  npBootTask->vSeedDicCompileSen();
   
   if (gbVerbose)
     vTrace("[[mainThread]] RapidsSE::vDicCompile running [%s] %p\n"_Stz,
-           npRootTask->sName().aChar(),
-           *npRootTask);
+           npBootTask->sName().aChar(),
+           *npBootTask);
   
-  npRootTask->vTaskLoop();
+  npBootTask->vTaskLoop();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -359,11 +359,11 @@ void RapidsSE::vInitJumboHeap(void)
 void RapidsSE::vRunCommand(void)
 {
   // seed root task to run command using the docol interpreter
-  gnpRootTask->vSeedWord(gxArguments.m_sCommand);
+  gnpBootTask->vSeedWord(gxArguments.m_sCommand);
   
   // append root task onto root thread's task set
   // root thread will pop the root task and run it
-  gpScheduler->vEnqueueTask_Mutex(*gnpRootTask);
+  gpScheduler->vEnqueueTask_Mutex(*gnpBootTask);
   
   // the docol interpreter is now running the commandf in root task on root thread
 }
@@ -376,11 +376,11 @@ void RapidsSE::vRunDocol(void)
   vInfo("\n*\n* Run docol\n*\n"_Stz);
   
   // seed root task to run docol interpreter
-  gnpRootTask->vSeedDocol();
+  gnpBootTask->vSeedDocol();
   
   // append root task onto root thread's task set
   // root thread will pop the root task and run it
-  gpScheduler->vEnqueueTask_Mutex(*gnpRootTask);
+  gpScheduler->vEnqueueTask_Mutex(*gnpBootTask);
   
   // the docol interpreter is now running in root task on root thread
 }
@@ -419,15 +419,15 @@ void RapidsSE::vSystemInit(void)
   // so as to be boot the system
   gpTaskList = new TaskList;
   
-  gnpRootTask = new Task;
+  gnpBootTask = new Task;
   s32 sName;
   sName = "rootTask"_Stz;
-  gnpRootTask->vName(sName);
-  gnpRootTask->vActorModel(AC_SERVER);
+  gnpBootTask->vName(sName);
+  gnpBootTask->vActorModel(AC_SERVER);
   
   gpScheduler = new Scheduler;
   
-  vDicCompile(gnpRootTask);
+  vDicCompile(gnpBootTask);
   
   gpAttachMap->vRecordGlobals(gxArguments.m_sRegionName,
                               gxArguments.m_iRegionSize,
@@ -453,21 +453,21 @@ void RapidsSE::vStartActors(void)
     vInfo("\n*\n* Start Actors\n*\n"_Stz);
   
   // seed root task to start the system
-  gnpRootTask->vSeedWord("startActors"_Stz);
+  gnpBootTask->vSeedWord("startActors"_Stz);
   
   if (gbVerbose)
     vTrace("[[mainThread]] RapidsSE::vStartActors launching: task %s %p\n"_Stz,
-           gnpRootTask->sName().aChar(),
-           *gnpRootTask);
+           gnpBootTask->sName().aChar(),
+           *gnpBootTask);
   
-  //gpScheduler->vEnqueueTask_Mutex(*gnpRootTask);
+  //gpScheduler->vEnqueueTask_Mutex(*gnpBootTask);
   
   // the primary thread waits here till root task exits
-  //while (TS_EXITED != gnpRootTask->eState())
+  //while (TS_EXITED != gnpBootTask->eState())
   //  PosixThread::vSleepMilli(1000);
   
-  gnpRootTask->vState(TS_RUNNING);
-  gnpRootTask->vTaskLoop();
+  gnpBootTask->vState(TS_RUNNING);
+  gnpBootTask->vTaskLoop();
   // the system is now running
 }
 

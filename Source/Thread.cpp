@@ -12,7 +12,7 @@ extern TaskList*    gpTaskList;
 
 extern Scheduler*   gpScheduler;
 
-extern NP_Task      gnpRootTask;
+extern NP_Task      gnpBootTask;
 
 extern bool         gbVerbose;
 extern bool         gbProgress;
@@ -388,7 +388,7 @@ void Thread::vLoop_Drone(void)
   ASSERT(TS_EXITED == m_npTask->eState());
   
   MP_Task mpTask = *m_npTask;
-  if ( (*gnpRootTask != *m_npTask)  && (!mpTask->bWordBody()) ) {
+  if ( (*gnpBootTask != *m_npTask)  && (!mpTask->bWordBody()) ) {
     delete *m_npTask;
     m_npTask = nullptr;
   }
@@ -458,7 +458,7 @@ void Thread::vLoop_Partition(void)
     }
     else if (TS_EXITED == m_npTask->eState()) {
       MP_Task mpTask = *m_npTask;
-      if ( (*gnpRootTask != *m_npTask)  && (!mpTask->bWordBody()) ) {
+      if ( (*gnpBootTask != *m_npTask)  && (!mpTask->bWordBody()) ) {
         delete *m_npTask;
         m_npTask = nullptr;
       }
@@ -579,7 +579,7 @@ void Thread::vLoop_Server(void)
     if (TS_EXITED == m_npTask->eState()) {
       m_npTask->vThread(nullptr);
       MP_Task mpTask = *m_npTask;
-      if ( (*gnpRootTask != *m_npTask)  && (!mpTask->bWordBody()) ) {
+      if ( (*gnpBootTask != *m_npTask)  && (!mpTask->bWordBody()) ) {
         delete *m_npTask;
       }
       m_npTask = nullptr;
@@ -656,7 +656,7 @@ void Thread::vLoop_Worker(void)
     }
     else if (TS_EXITED == m_npTask->eState()) {
       MP_Task mpTask = *m_npTask;
-      if ( (*gnpRootTask != *m_npTask)  && (!mpTask->bWordBody()) ) {
+      if ( (*gnpBootTask != *m_npTask)  && (!mpTask->bWordBody()) ) {
         delete *m_npTask;
         m_npTask = nullptr;
       }
