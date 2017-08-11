@@ -25,7 +25,7 @@ ReqTable SeRequests[] =
  { "anidx"_Stz,          &SEitf::bAnalyzeIndex,         "analyzeIndex_req"_Stz    },
  { "addidxcol"_Stz,      &SEitf::bAddIndexColumn,       "addIdxColumn_req"_Stz    },
  { "addpartcol"_Stz,     &SEitf::bAddPartitionColumn,   "addPartColumn_req"_Stz   },
- { "cf"_Stz,             &SEitf::bChangeFolder,         "cf"_Stz                  },
+ { "cf"_Stz,             &SEitf::bChangeFolder,         "cf_req"_Stz              },
  { "connectCluster"_Stz, &SEitf::bConnectCluster,       "connectCluster_req"_Stz  },
  { "cp"_Stz,             &SEitf::bCopyTable,            "copyTable_req"_Stz       },
  { "danidx"_Stz,         &SEitf::bDanalyzeIndex,        "danalyzeIndex_req"_Stz   },
