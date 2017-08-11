@@ -100,11 +100,11 @@ lsidxcol    listIndexColumns_req
 ---------------------
 Dictionary Requests:
 ---------------------
-cf      cf ..
-cf ~
-cf
-pwf     pwf
-lf      lf
+cf      cf_req ..
+cf ~    cf_req ..
+cf      cf_req
+pwf     pwf_req
+lf      lf_req
 rf      remove_folder
 
 ---------------------

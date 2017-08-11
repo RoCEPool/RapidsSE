@@ -110,7 +110,7 @@
 /*----------------------------------------------------------------------------*/
 /* list folder contents                                                       */
 /*----------------------------------------------------------------------------*/
-: lf
+: lf_req
 
   0 locals| iCount |
 
@@ -186,96 +186,9 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* list folder contents                                                       */
-/*----------------------------------------------------------------------------*/
-: ~lf ( )
-
-  tp: lfOnAll
-
-  // set indirect call to be lf_
-  << "lf_"
-
-  tp: theIndirectCall
-
-  >> ( valset )
-
-  >>allParticipants> ( bool )
-
-  tp: lfOnAllDone
-
-  checkResult
-;
-
-/*----------------------------------------------------------------------------*/
-/* list folder contents across the grid                                       */
-/*----------------------------------------------------------------------------*/
-: lfG
-
-  ~lf
-
-  <OK>
-;
-
-/*----------------------------------------------------------------------------*/
-/* list folder contents                                                       */
-/*----------------------------------------------------------------------------*/
-: lf$ ( )
-
-  tp: lf
-
-  "LISTING FOLDER on NODE " grid.thisNode@ >str str.cat .
-
-  ""
-  0 pathPick dic.lastWord dup iterate
-
-  dup str.length if "\n" str.cat then
-
-  object@ word.name 12 str.pad str.cat
-
-  "(" str.cat
-
-  object@ isTable if
-  "table " str.cat
-  object@ execute table.space bytes.magnitude str.cat
-  then
-
-  object@ isFolder if
-  object@ execute dic.kind@ word.name str.cat
-  then
-
-  ")" str.cat
-
-  object@ word.prev object!
-
-  next
-
-  .
-
-  //drop ( "<tenantNm>" )
-
-  true ( true )
-;
-
-/*----------------------------------------------------------------------------*/
-/* list folder contents                                                       */
-/*----------------------------------------------------------------------------*/
-: lf_ (  #folders -- true )
-
-  depth 0 != if
-    "dicPath.set" str.equal
-    if
-  tp: settingDicStack
-    !indirect drop
-    then
-  then
-
-  lf$
-;
-
-/*----------------------------------------------------------------------------*/
 /* print working folder                                                       */
 /*----------------------------------------------------------------------------*/
-: pwf ( - sPath <SUCCESS> )
+: pwf_req ( - sPath <SUCCESS> )
 
   // test if we need to produce meta data
   args.metadata if
