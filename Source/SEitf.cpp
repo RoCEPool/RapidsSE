@@ -59,7 +59,6 @@ ReqTable SeRequests[] =
  { "lssch"_Stz,          &SEitf::bListSchemas,          "listSchemas_req"_Stz     },
  { "lstbl"_Stz,          &SEitf::bListTables,           "listTables_req"_Stz      },
  { "lsten"_Stz,          &SEitf::bListTenants,          "listTenants_req"_Stz     },
- { "lwrsel"_Stz,         &SEitf::bLowerSelectTable,     "lowerSelectTable_req"_Stz },
  { "mkcat"_Stz,          &SEitf::bCreateCatalog,        "createCatalog_req"_Stz   },
  { "mkidx"_Stz,          &SEitf::bCreateIndex,          "createIndex_req"_Stz     },
  { "mksch"_Stz,          &SEitf::bCreateSchema,         "createSchema_req"_Stz    },
@@ -507,7 +506,6 @@ bool SEitf::bDecode(TokenVec& xTokenVec)
   if (xTokenVec[0]->bSame("lssch"_Stz)) return bListSchemas(xTokenVec,0);
   if (xTokenVec[0]->bSame("lstbl"_Stz)) return bListTables(xTokenVec,0);
   if (xTokenVec[0]->bSame("lsten"_Stz)) return bListTenants(xTokenVec,0);
-  if (xTokenVec[0]->bSame("lwrsel"_Stz)) return bLowerSelectTable(xTokenVec,0);
   if (xTokenVec[0]->bSame("mkcat"_Stz)) return bCreateCatalog(xTokenVec,0);
   if (xTokenVec[0]->bSame("mkidx"_Stz)) return bCreateIndex(xTokenVec,0);
   if (xTokenVec[0]->bSame("mksch"_Stz)) return bCreateSchema(xTokenVec,0);
@@ -1700,34 +1698,6 @@ bool SEitf::bLoadTableStream(TokenVec& xTokenVec, i8 iReqNo)
   }
   
   sRequest.vCopy("\""_Stz);
-  sRequest.vConcat(xTokenVec[2]->aText());
-  sRequest.vConcat("\""_Stz);
-  
-  sRequest.vConcat(" \""_Stz);
-  sRequest.vConcat(xTokenVec[1]->aText());
-  sRequest.vConcat("\""_Stz);
-  
-  sRequest.vConcat(" "_Stz);
-  sRequest.vConcat(SeRequests[iReqNo].aRequest);
-  
-  return bAppendRequest(sRequest);
-}
-
-/*----------------------------------------------------------------------------*/
-/* lower select rows from a table                                             */
-/*----------------------------------------------------------------------------*/
-bool SEitf::bLowerSelectTable(TokenVec& xTokenVec, i8 iReqNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
-  
-  s256 sRequest;
-  
-  if (xTokenVec.nTokens() != 3) {
-    vSetLastError(EC_INVALID_PARAMETERS);
-    return false;
-  }
-  
-  sRequest.vConcat(" \""_Stz);
   sRequest.vConcat(xTokenVec[2]->aText());
   sRequest.vConcat("\""_Stz);
   

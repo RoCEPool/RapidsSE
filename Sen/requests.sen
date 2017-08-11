@@ -66,7 +66,6 @@ ex      exportTable_req
 gettbl  getTable_req
 ld      loadTable_req
 lstbl   listTables_req
-lwrsel  lower_select
 mktbl   createTable_req
 rettbl  returnTable_req
 rmtbl   dropTable_req
