@@ -41,6 +41,8 @@
 /*----------------------------------------------------------------------------*/
 : loadAppendBuffer$ ( rowBuffer partitionNo "<tableNm>" -- true )
 
+"loadAppendBuffer$" .
+
 tp: loadAppendBuffer$
   0 locals| pTable sTableNm iPartitionNo pRowBuffer pLoaderSub |
 
@@ -79,6 +81,8 @@ tp: loadAppendBuffer$
 /* forward append of rowbuffer to participant for partition                   */
 /*----------------------------------------------------------------------------*/
 : ~loadAppendBuffer ( -- )
+
+"~loadAppendBuffer" .
 
 tp: ~loadAppendBuffer
 
@@ -228,6 +232,8 @@ tp: partitionAppendBuffer
   locals| pTable iPartitionNo pRowBuffer |
 
   pRowBuffer iPartitionNo pTable table.appendBuffer ( )
+
+  "appended buffer" .
 ;
 
 /*============================================================================*/

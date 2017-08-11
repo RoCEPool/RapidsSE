@@ -34,7 +34,7 @@ bool Region::bAttach(StrVal& sRegionName, bool bWecome)
   
   // allocate a temporary extent of memory
   mpRegion = Shm::pMap(iFD,
-                       C_ADDR_POOL,
+                       gxArguments.m_aRegionAddr,
                        10_MB,
                        C_SHARED_REGION,
                        false,
@@ -68,7 +68,7 @@ bool Region::bAttach(StrVal& sRegionName, bool bWecome)
   
   // allocate the full extent of memory required
   mpRegion = Shm::pMap(iFD,
-                       C_ADDR_POOL,
+                       gxArguments.m_aRegionAddr,
                        iRegionSize,
                        C_SHARED_REGION,
                        false,
@@ -128,7 +128,7 @@ void Region::vCreate(StrVal& sRegionName, i8 iRegionSize, i8 iJumboTook,
   
   // allocate memory for the shm region
   mpRegion = Shm::pMap(iFD,
-                       C_ADDR_POOL,
+                       gxArguments.m_aRegionAddr,
                        iRegionSize,
                        true,
                        false,
@@ -233,7 +233,7 @@ void* Region::pOpen(StrVal& sRegionName, int& iFD)
   
   // allocate a temporary extent of memory
   void* pRegion = Shm::pMap(iFD,
-                            C_ADDR_POOL,
+                            gxArguments.m_aRegionAddr,
                             10_MB,
                             C_SHARED_REGION,
                             false,

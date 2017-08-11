@@ -22,7 +22,7 @@ Arguments::Arguments(void)
   m_nJumboTook    = C_JUMBO_RATIO * m_nJumboBuffers;
   m_iJumboSize    = m_nJumboTook * C_SIZE_POOL_BUFFER;
   
-  //m_pRegionAddr = C_ADDR_POOL;
+  m_aRegionAddr = C_ADDR_POOL;
   m_sRegionName = ""_Stz;
   m_sRegionPrefix = "/SE"_Stz;
   m_iRegionSize = 1_GB * 4 + m_iJumboSize;
@@ -215,10 +215,10 @@ bool Arguments::bParse(int argc, Stz* argv[])
     }
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    //if (argv[iArg]->bSame("--address"_Stz)) {
-    //  m_pRegionAddr = (void*)argv[++iArg]->iToI8();
-    //  continue;
-    //}
+    if (argv[i_Arg]->bSame("--address"_Stz)) {
+      m_aRegionAddr = (void*)argv[++i_Arg]->iToI8();
+      continue;
+    }
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (argv[i_Arg]->bSame("--seprompt"_Stz)) {
@@ -542,7 +542,7 @@ void Arguments::vPrint(void)
 
   vTrace("  --name %s\n"_Stz,m_sNodeName.aChar());
   vTrace("  --regionPrefix %s\n"_Stz,m_sRegionPrefix.aChar());
-  //vTrace("  --address %p\n"_Stz,m_pRegionAddr);
+  vTrace("  --address %p\n"_Stz,m_aRegionAddr);
   vTrace("  --size %lld\n"_Stz,m_iRegionSize);
   
   for (i8 i_Index = 0; i_Index < m_nNodes; i_Index++) {
