@@ -31,7 +31,7 @@ ReqTable SeRequests[] =
  { "danidx"_Stz,         &SEitf::bDanalyzeIndex,        "danalyzeIndex_req"_Stz   },
  { "dantbl"_Stz,         &SEitf::bDanalyzeTable,        "danalyzeTable_req"_Stz   },
  { "dex"_Stz,            &SEitf::bDistExportTable,      "distExport_table"_Stz    },
- { "docol"_Stz,          &SEitf::bDocol,                "docol_command"_Stz       },
+ { "docol"_Stz,          &SEitf::bDocol,                "docol_req"_Stz           },
  { "displayOff"_Stz,     &SEitf::bDisplayOff,           "displayOff_req"_Stz      },
  { "displayOn"_Stz,      &SEitf::bDisplayOn,            "displayOn_req"_Stz       },
  { "dumpidx"_Stz,        &SEitf::bDumpIndex,            "dumpIndex_req"_Stz       },

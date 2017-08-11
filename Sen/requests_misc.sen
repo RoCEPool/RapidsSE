@@ -5,9 +5,9 @@
 "requests_misc.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* docol_command                                                              */
+/* docol command request                                                      */
 /*----------------------------------------------------------------------------*/
-: docol_command ( "command" -- <R> )
+: docol_req ( "command" -- <R> )
 
 //checkIsWord not if <NIP+ERROR> exit then
   //execute
