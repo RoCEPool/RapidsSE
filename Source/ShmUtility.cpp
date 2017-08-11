@@ -109,6 +109,10 @@ void ShmUtility::vAttach(void)
     vFatal("ShmUtility::vAttach failed to map\n"_Stz);
   }
 
+  memcpy(maRegion,"ABCDEFGHIJKLMNOPQRSTUVWXYZ\0", 27);
+  
+  vTrace("%p %s\n"_Stz, maRegion, maRegion);
+  
   vTrace("Region %s Attached\n"_Stz,msRegionName.aChar());
 }
 
