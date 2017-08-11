@@ -146,6 +146,7 @@ void Region::vCreate(StrVal& sRegionName, i8 iRegionSize, i8 iJumboTook,
   if (gbVerbose)
     vTrace("Region::vCreate D\n"_Stz);
   
+  vInfo("calling BufferPool constructor \n"_Stz);
   gpBufferPool = new(mpRegion) BufferPool(sRegionName, iRegionSize,
                                           iJumboTook, bTouch, bDontFree, bFreeRB);
 
