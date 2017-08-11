@@ -32,8 +32,8 @@ ReqTable SeRequests[] =
  { "dantbl"_Stz,         &SEitf::bDanalyzeTable,        "danalyzeTable_req"_Stz   },
  { "dex"_Stz,            &SEitf::bDistExportTable,      "distExport_table"_Stz    },
  { "docol"_Stz,          &SEitf::bDocol,                "docol_command"_Stz       },
- { "displayOff"_Stz,     &SEitf::bDisplayOff,           "displayOff"_Stz          },
- { "displayOn"_Stz,      &SEitf::bDisplayOn,            "displayOn"_Stz           },
+ { "displayOff"_Stz,     &SEitf::bDisplayOff,           "displayOff_req"_Stz      },
+ { "displayOn"_Stz,      &SEitf::bDisplayOn,            "displayOn_req"_Stz       },
  { "dumpidx"_Stz,        &SEitf::bDumpIndex,            "dumpIndex_req"_Stz       },
  { "dump"_Stz,           &SEitf::bDumpTable,            "dumpTable_req"_Stz       },
  { "endmkidx"_Stz,       &SEitf::bEndCreateIndex,       "endCreateIndex_req"_Stz  },
@@ -85,8 +85,7 @@ ReqTable SeRequests[] =
  { "tr"_Stz,             &SEitf::bTruncateTable,        "truncateTable_req"_Stz   },
  { "tridx"_Stz,          &SEitf::bTruncateIndex,        "truncateIndex_req"_Stz   },
  { "usesch"_Stz,         &SEitf::bUseSchema,            "useSchema_req"_Stz       },
- { "__x"_Stz,            &SEitf::bX,                    "ping"_Stz                },
- { "ping"_Stz,           &SEitf::bPing,                 "ping"_Stz                },
+ { "ping"_Stz,           &SEitf::bPing,                 "ping_req"_Stz            },
  { "mon"_Stz,            &SEitf::bGetMonitor,           "get_monitor"_Stz         },
  { "print"_Stz,          &SEitf::bPrint,                nullptr },
  { "seitf"_Stz,          &SEitf::bSeitfCount,           "seitf_count"_Stz         },
@@ -532,7 +531,6 @@ bool SEitf::bDecode(TokenVec& xTokenVec)
   if (xTokenVec[0]->bSame("tr"_Stz)) return bTruncateTable(xTokenVec,0);
   if (xTokenVec[0]->bSame("tridx"_Stz)) return bTruncateIndex(xTokenVec,0);
   if (xTokenVec[0]->bSame("usesch"_Stz)) return bUseSchema(xTokenVec,0);
-  if (xTokenVec[0]->bSame("__x"_Stz)) return bX(xTokenVec,0);
   if (xTokenVec[0]->bSame("ping"_Stz)) return bPing(xTokenVec,0);
   if (xTokenVec[0]->bSame("mon"_Stz)) return bGetMonitor(xTokenVec,0);
   if (xTokenVec[0]->bSame("print"_Stz)) return ! bPrint(xTokenVec,0);
@@ -2330,22 +2328,6 @@ bool SEitf::bSeitfCount(TokenVec& xTokenVec, i8 iReqNo)
   s256 sRequest;
   
   ASSERT(xTokenVec[0]->bSame("seitf"_Stz));
-  
-  sRequest = SeRequests[iReqNo].aRequest;
-  
-  return bAppendRequest(sRequest);
-}
-
-/*----------------------------------------------------------------------------*/
-/* x test                                                                     */
-/*----------------------------------------------------------------------------*/
-bool SEitf::bX(TokenVec& xTokenVec, i8 iReqNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
-  
-  s256 sRequest;
-  
-  ASSERT(xTokenVec[0]->bSame("ping"_Stz));
   
   sRequest = SeRequests[iReqNo].aRequest;
   

@@ -181,8 +181,7 @@ namespace Interface
     bool bSeitfCount(TokenVec& xTokenVec, i8 iReqNo);
     
     bool bPing(TokenVec& xTokenVec, i8 iReqNo);
-    
-    bool bX(TokenVec& xTokenVec, i8 iReqNo);
+
     bool bPrint(TokenVec& xTokenVec, i8 iReqNo);
     
     //--------------------------------------------------------------------------

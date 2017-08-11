@@ -116,12 +116,14 @@ status  status
 -----------------
 Misc Requests:
 -----------------
-seitf   seitf_count
-mon     get_monitor
-object  object
-ping    ping
-x       x
-display display
+displayOn  displayOn_req
+displayOff displayOff_req
+mon        get_monitor
+object     object
+ping       ping_req
+seitf      seitf_count
+x          x
+
 
 -----------------
 Grid Request:
