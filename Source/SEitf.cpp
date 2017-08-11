@@ -25,7 +25,7 @@ ReqTable SeRequests[] =
  { "anidx"_Stz,          &SEitf::bAnalyzeIndex,         "analyzeIndex_req"_Stz    },
  { "addidxcol"_Stz,      &SEitf::bAddIndexColumn,       "addIdxColumn_req"_Stz    },
  { "addpartcol"_Stz,     &SEitf::bAddPartitionColumn,   "addPartColumn_req"_Stz   },
- { "cf"_Stz,             &SEitf::bPushDic,              "cf"_Stz                  },
+ { "cf"_Stz,             &SEitf::bChangeFolder,         "cf"_Stz                  },
  { "connectCluster"_Stz, &SEitf::bConnectCluster,       "connectCluster_req"_Stz  },
  { "cp"_Stz,             &SEitf::bCopyTable,            "copyTable_req"_Stz       },
  { "danidx"_Stz,         &SEitf::bDanalyzeIndex,        "danalyzeIndex_req"_Stz   },
@@ -50,8 +50,7 @@ ReqTable SeRequests[] =
  { "TblInUse"_Stz,       &SEitf::bInUseTable,           "tableInuse_req"_Stz      },
  { "ld"_Stz,             &SEitf::bLoadTable,            "loadTable_req"_Stz       },
  { "lds"_Stz,            &SEitf::bLoadTableStream,      "loadTableStream_req"_Stz },
- { "lf"_Stz,             &SEitf::bGetDicContents,       "lf"_Stz                  },
- { "lfG"_Stz,            &SEitf::bGetDicContentsG,      "lfG"_Stz                 },
+ { "lf"_Stz,             &SEitf::bListFolder,           "lf"_Stz                  },
  { "lscat"_Stz,          &SEitf::bListCatalogs,         "listCatalogs_req"_Stz    },
  { "lscol"_Stz,          &SEitf::bListColumns,          "listColumns_req"_Stz     },
  { "lsidx"_Stz,          &SEitf::bListIndices,          "listIndexes_req"_Stz     },
@@ -66,9 +65,7 @@ ReqTable SeRequests[] =
  { "mksch"_Stz,          &SEitf::bCreateSchema,         "createSchema_req"_Stz    },
  { "mktbl"_Stz,          &SEitf::bCreateTable,          "createTable_req"_Stz     },
  { "mkten"_Stz,          &SEitf::bCreateTenant,         "createTenant_req"_Stz    },
- { "object"_Stz,         &SEitf::bObject,               "object"_Stz              },
- { "pRB"_Stz,            &SEitf::bPrintRowBuffer,       "pRB"_Stz                 },
- { "pwf"_Stz,            &SEitf::bGetDicPath,           "pwf"_Stz                 },
+ { "pwf"_Stz,            &SEitf::bPrintWorkingFolder,   "pwf"_Stz                 },
  { "retidx"_Stz,         &SEitf::bRetIndex,             "returnIndex_req"_Stz     },
  { "rettbl"_Stz,         &SEitf::bRetTable,             "returnTable_req"_Stz     },
  { "rettsk"_Stz,         &SEitf::bRetTask,              "returnTask_req"_Stz      },
@@ -476,7 +473,7 @@ bool SEitf::bDecode(TokenVec& xTokenVec)
   if (xTokenVec[0]->bSame("anidx"_Stz)) return bAnalyzeIndex(xTokenVec,0);
   if (xTokenVec[0]->bSame("addidxcol"_Stz)) return bAddIndexColumn(xTokenVec,0);
   if (xTokenVec[0]->bSame("addpartcol"_Stz)) return bAddPartitionColumn(xTokenVec,0);
-  if (xTokenVec[0]->bSame("cf"_Stz)) return bPushDic(xTokenVec,0);
+  if (xTokenVec[0]->bSame("cf"_Stz)) return bChangeFolder(xTokenVec,0);
   if (xTokenVec[0]->bSame("connectCluster"_Stz)) return bConnectCluster(xTokenVec,0);
   if (xTokenVec[0]->bSame("cp"_Stz)) return bCopyTable(xTokenVec,0);
   if (xTokenVec[0]->bSame("danidx"_Stz)) return bDanalyzeIndex(xTokenVec,0);
@@ -501,8 +498,7 @@ bool SEitf::bDecode(TokenVec& xTokenVec)
   if (xTokenVec[0]->bSame("TblInUse"_Stz)) return bInUseTable(xTokenVec,0);
   if (xTokenVec[0]->bSame("ld"_Stz)) return bLoadTable(xTokenVec,0);
   if (xTokenVec[0]->bSame("lds"_Stz)) return bLoadTableStream(xTokenVec,0);
-  if (xTokenVec[0]->bSame("lf"_Stz)) return bGetDicContents(xTokenVec,0);
-  if (xTokenVec[0]->bSame("lfG"_Stz)) return bGetDicContentsG(xTokenVec,0);
+  if (xTokenVec[0]->bSame("lf"_Stz)) return bListFolder(xTokenVec,0);
   if (xTokenVec[0]->bSame("lscat"_Stz)) return bListCatalogs(xTokenVec,0);
   if (xTokenVec[0]->bSame("lscol"_Stz)) return bListColumns(xTokenVec,0);
   if (xTokenVec[0]->bSame("lsidx"_Stz)) return bListIndices(xTokenVec,0);
@@ -517,9 +513,7 @@ bool SEitf::bDecode(TokenVec& xTokenVec)
   if (xTokenVec[0]->bSame("mksch"_Stz)) return bCreateSchema(xTokenVec,0);
   if (xTokenVec[0]->bSame("mktbl"_Stz)) return bCreateTable(xTokenVec,0);
   if (xTokenVec[0]->bSame("mkten"_Stz)) return bCreateTenant(xTokenVec,0);
-  if (xTokenVec[0]->bSame("object"_Stz)) return bObject(xTokenVec,0);
-  if (xTokenVec[0]->bSame("pRB"_Stz)) return bPrintRowBuffer(xTokenVec,0);
-  if (xTokenVec[0]->bSame("pwf"_Stz)) return bGetDicPath(xTokenVec,0);
+  if (xTokenVec[0]->bSame("pwf"_Stz)) return bPrintWorkingFolder(xTokenVec,0);
   if (xTokenVec[0]->bSame("retidx"_Stz)) return bRetIndex(xTokenVec,0);
   if (xTokenVec[0]->bSame("rettbl"_Stz)) return bRetTable(xTokenVec,0);
   if (xTokenVec[0]->bSame("rettsk"_Stz)) return bRetTask(xTokenVec,0);
@@ -2197,9 +2191,9 @@ bool SEitf::bInsertBuffer(EntryBuffer* pRowBuffer, i8 iPartition)
 }
 
 /*----------------------------------------------------------------------------*/
-/* push dictionary                                                            */
+/* change folder                                                              */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bPushDic(TokenVec& xTokenVec, i8 iReqNo)
+bool SEitf::bChangeFolder(TokenVec& xTokenVec, i8 iReqNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -2229,9 +2223,9 @@ bool SEitf::bPrint(TokenVec& xTokenVec, i8 iReqNo)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get dictionary path                                                        */
+/* print working folder                                                       */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bGetDicPath(TokenVec& xTokenVec, i8 iReqNo)
+bool SEitf::bPrintWorkingFolder(TokenVec& xTokenVec, i8 iReqNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -2245,31 +2239,15 @@ bool SEitf::bGetDicPath(TokenVec& xTokenVec, i8 iReqNo)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get dictionary contents                                                    */
+/* list folder contents                                                       */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bGetDicContents(TokenVec& xTokenVec, i8 iReqNo)
+bool SEitf::bListFolder(TokenVec& xTokenVec, i8 iReqNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
   ASSERT(xTokenVec[0]->bSame("lf"_Stz));
-  
-  sRequest = SeRequests[iReqNo].aRequest;
-  
-  return bAppendRequest(sRequest);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get dictionary contents                                                    */
-/*----------------------------------------------------------------------------*/
-bool SEitf::bGetDicContentsG(TokenVec& xTokenVec, i8 iReqNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
-  
-  s256 sRequest;
-  
-  ASSERT(xTokenVec[0]->bSame("lfG"_Stz));
   
   sRequest = SeRequests[iReqNo].aRequest;
   
@@ -2368,40 +2346,6 @@ bool SEitf::bPing(TokenVec& xTokenVec, i8 iReqNo)
   ASSERT(xTokenVec[0]->bSame("ping"_Stz));
   
   sRequest = SeRequests[iReqNo].aRequest;
-  
-  return bAppendRequest(sRequest);
-}
-
-/*----------------------------------------------------------------------------*/
-/* send object                                                                */
-/*----------------------------------------------------------------------------*/
-bool SEitf::bObject(TokenVec& xTokenVec, i8 iReqNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
-  
-  s256 sRequest;
-  
-  sRequest.vConcat(SeRequests[iReqNo].aRequest);
-  
-  return bAppendRequest(sRequest);
-}
-
-/*----------------------------------------------------------------------------*/
-/* print row buffer                                                           */
-/*----------------------------------------------------------------------------*/
-bool SEitf::bPrintRowBuffer(TokenVec& xTokenVec, i8 iReqNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
-  
-  s256 sRequest;
-  
-  sRequest.vCopy("\""_Stz);
-  sRequest.vConcat(xTokenVec[1]->aText());
-  sRequest.vConcat("\""_Stz);
-
-  ASSERT(xTokenVec[0]->bSame("pRB"_Stz));
-  sRequest.vConcat(" "_Stz);
-  sRequest.vConcat(SeRequests[iReqNo].aRequest);
   
   return bAppendRequest(sRequest);
 }

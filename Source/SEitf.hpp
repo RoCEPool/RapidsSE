@@ -170,10 +170,9 @@ namespace Interface
     bool bInsertBuffer(void);
     bool bInsertBuffer(EntryBuffer* pRowBuffer, i8 iPartition);
     
-    bool bPushDic(TokenVec& xTokenVec, i8 iReqNo);
-    bool bGetDicPath(TokenVec& xTokenVec, i8 iReqNo);
-    bool bGetDicContents(TokenVec& xTokenVec, i8 iReqNo);
-    bool bGetDicContentsG(TokenVec& xTokenVec, i8 iReqNo);
+    bool bChangeFolder(TokenVec& xTokenVec, i8 iReqNo);
+    bool bPrintWorkingFolder(TokenVec& xTokenVec, i8 iReqNo);
+    bool bListFolder(TokenVec& xTokenVec, i8 iReqNo);
 
     bool bGetMonitor(TokenVec& xTokenVec, i8 iReqNo);
     bool bGetFreeSpace(TokenVec& xTokenVec, i8 iReqNo);
@@ -182,9 +181,7 @@ namespace Interface
     bool bGetVersion(TokenVec& xTokenVec, i8 iReqNo);
     bool bSeitfCount(TokenVec& xTokenVec, i8 iReqNo);
     
-    bool bObject(TokenVec& xTokenVec, i8 iReqNo);
     bool bPing(TokenVec& xTokenVec, i8 iReqNo);
-    bool bPrintRowBuffer(TokenVec& xTokenVec, i8 iReqNo);
     
     bool bX(TokenVec& xTokenVec, i8 iReqNo);
     bool bPrint(TokenVec& xTokenVec, i8 iReqNo);
