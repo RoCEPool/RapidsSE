@@ -35,17 +35,24 @@ BufferPool::BufferPool(Stz* aRegionName, i8 iRegionSize, i8 iJumboTook,
                        bool bTouch, bool bDontFree, bool bFreeRB)
 : Object(CN_BUFFERPOOL)
 {
+  vInfo("BufferPool::BufferPool0 \n"_Stz);
+  
   gpBufferPool = this;
+  
+  vInfo("BufferPool::BufferPool1 \n"_Stz);
   
   m_nBuffers = DIV(iRegionSize,C_SIZE_POOL_BUFFER)
                  - iJumboTook;
   
-
+  vInfo("BufferPool::BufferPool2 \n"_Stz);
+  
   m_pBase  = reinterpret_cast<Buffer*>(this);
   m_pLimit = pAdd<Buffer*>(m_pBase,iRegionSize);
   m_pJumbo = pAdd<Buffer*>(m_pLimit,-(iJumboTook * C_SIZE_POOL_BUFFER));
   m_bDontFree = bDontFree;
   m_bFreeRB = bFreeRB;
+  
+  vInfo("BufferPool::BufferPool3 \n"_Stz);
   
   m_sShmName = aRegionName;
   m_iShmFD   = 0;
@@ -55,6 +62,8 @@ BufferPool::BufferPool(Stz* aRegionName, i8 iRegionSize, i8 iJumboTook,
   m_iAllocCount   = 0;
   m_iFreeCount    = 0;
   m_nFreeHead     = bn::nNil();
+  
+  vInfo("BufferPool::BufferPool4 \n"_Stz);
   
   vInitialise(bTouch);
   
@@ -325,6 +334,8 @@ void BufferPool::vInitialise(bool bTouch)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
   
+  vInfo("BufferPool::vInitialise0 \n"_Stz);
+  
   m_iAllocCount = 0;
   //m_iFreeCount  = m_nBuffers;
   m_iFreeCount  = 0;
@@ -341,9 +352,11 @@ void BufferPool::vInitialise(bool bTouch)
 
   i8 iBufferMod;
   
+  vInfo("BufferPool::vInitialise1 \n"_Stz);
+  
   bn nBuffer = nBufferFirst();
   while (bn::nNil() != nBuffer) {
-    
+    vInfo("buffer0 %lld \n"_Stz,*nBuffer);
     if (gbProgress) {
       iBufferMod = *nBuffer % 1000;
       if (! iBufferMod) {
