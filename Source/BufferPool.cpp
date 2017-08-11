@@ -389,14 +389,20 @@ void BufferPool::vInitialise(bool bTouch)
 }
   
   FreeBuffer* pLastBuffer = pToFreeBuffer(nBufferLast());
+  vInfo("buffer9 %lld \n"_Stz,*nBuffer);
+  
   pLastBuffer->vSetMagic();
   pLastBuffer->vSetClass(CN_FREEBUFFER);
   //pLastBuffer->aFooter()->vSetFooter();
   if (bTouch)
     pLastBuffer->vZeroData();
+  vInfo("buffer10 %lld \n"_Stz,*nBuffer);
   pLastBuffer->vSetFooter();
+  vInfo("buffer11 %lld \n"_Stz,*nBuffer);
   pLastBuffer->vBufferNo(nBufferLast());
   pLastBuffer->vNextFree(bn::nNil());
+  
+  vInfo("buffer12 %lld \n"_Stz,*nBuffer);
   
   if (gbProgress)
     vInfo("\n"_Stz);
