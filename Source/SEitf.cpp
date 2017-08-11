@@ -537,13 +537,15 @@ bool SEitf::bDecode(TokenVec& xTokenVec)
   if (xTokenVec[0]->bSame("seitf"_Stz)) return bSeitfCount(xTokenVec,0);
   if (xTokenVec[0]->bSame("version"_Stz)) return bGetVersion(xTokenVec,0);
   if (xTokenVec[0]->bSame("visidx"_Stz)) return bVisualizeIndex(xTokenVec,0);
-  */
   
   vTrace("request: %s\n"_Stz,xTokenVec[0]->sText().aChar());
+  */
   
   for (i8 i_ReqNo = 0; SeRequests[i_ReqNo].aCommand; i_ReqNo++) {
-    if (xTokenVec[0]->bSame((Stz*)SeRequests[i_ReqNo].aCommand))
+    if (xTokenVec[0]->bSame((Stz*)SeRequests[i_ReqNo].aCommand)) {
+      vTrace("request: %s\n"_Stz,SeRequests[i_ReqNo].aRequest);
       return (this->*SeRequests[i_ReqNo].aFunc)(xTokenVec,i_ReqNo);
+    }
   }
   
   vSetLastError(EC_INVALID_COMMAND);
