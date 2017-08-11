@@ -149,7 +149,6 @@ void Region::vCreate(StrVal& sRegionName, i8 iRegionSize, i8 iJumboTook,
   //vInfo("sleeping... \n"_Stz);
   //PosixThread::vSleepMilli(180000);
   
-  vInfo("calling BufferPool constructor \n"_Stz);
   gpBufferPool = new(mpRegion) BufferPool(sRegionName, iRegionSize,
                                           iJumboTook, bTouch, bDontFree, bFreeRB);
 
