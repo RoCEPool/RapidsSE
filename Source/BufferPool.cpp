@@ -353,16 +353,24 @@ void BufferPool::vInitialise(bool bTouch)
     }
     
     FreeBuffer* pFreeBuffer = pToFreeBuffer(nBuffer);
+    vInfo("buffer1 %lld \n"_Stz,*nBuffer);
     
     pFreeBuffer->vSetMagic();
+    vInfo("buffer2 %lld \n"_Stz,*nBuffer);
     pFreeBuffer->vSetClass(CN_FREEBUFFER);
+    vInfo("buffer3 %lld \n"_Stz,*nBuffer);
     //pFreeBuffer->aFooter()->vSetFooter();
     if (bTouch)
       pFreeBuffer->vZeroData();
+    vInfo("buffer4 %lld \n"_Stz,*nBuffer);
     pFreeBuffer->vSetFooter();
+    vInfo("buffer5 %lld \n"_Stz,*nBuffer);
     pFreeBuffer->vBufferNo(nBuffer);
+    vInfo("buffer6 %lld \n"_Stz,*nBuffer);
     nBuffer = nBufferNext(nBuffer);
+    vInfo("buffer7 %lld \n"_Stz,*nBuffer);
     pFreeBuffer->vNextFree(nBuffer);
+    vInfo("buffer8 %lld \n"_Stz,*nBuffer);
     
     m_iFreeCount++;
 }
