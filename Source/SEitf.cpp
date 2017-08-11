@@ -40,7 +40,7 @@ ReqTable SeRequests[] =
  { "endmktbl"_Stz,       &SEitf::bEndCreateTable,       "endCreateTable_req"_Stz  },
  { "ex"_Stz,             &SEitf::bExportTable,          "exportTable_req"_Stz     },
  { "fetch"_Stz,          &SEitf::bFetchRows,            "fetchRowsIndex_req"_Stz  },
- { "get"_Stz,            &SEitf::bGet,                  "get"_Stz                 },
+ { "getAttachMap"_Stz,   &SEitf::bGetAttachMap,         "getAttachMap_req"_Stz    },
  { "getFreeSpace"_Stz,   &SEitf::bGetFreeSpace,         "getFreeSpace"_Stz        },
  { "getInUseSpace"_Stz,  &SEitf::bGetInUseSpace,        "getInUseSpace"_Stz       },
  { "getidx"_Stz,         &SEitf::bGetIndex,             "getIndex_req"_Stz        },
@@ -75,7 +75,7 @@ ReqTable SeRequests[] =
  { "rmsch"_Stz,          &SEitf::bDropSchema,           "dropSchema_req"_Stz      },
  { "rmtbl"_Stz,          &SEitf::bDropTable,            "dropTable_req"_Stz       },
  { "rmten"_Stz,          &SEitf::bDropTenant,           "dropTenant_req"_Stz      },
- { "set"_Stz,            &SEitf::bSet,                  "set"_Stz                 },
+ { "setAttachMap"_Stz,   &SEitf::bSetAttachMap,         "setAttachMap_req"_Stz    },
  { "setidxunique"_Stz,   &SEitf::bIndexSetUnique,       "indexSetUnique_req"_Stz  },
  { "space"_Stz,          &SEitf::bPoolSpace,            "space"_Stz               },
  { "status"_Stz,         &SEitf::bNodeStatus,           "status"_Stz              },
@@ -485,7 +485,7 @@ bool SEitf::bDecode(TokenVec& xTokenVec)
   if (xTokenVec[0]->bSame("endmktbl"_Stz)) return bEndCreateTable(xTokenVec,0);
   if (xTokenVec[0]->bSame("ex"_Stz)) return bExportTable(xTokenVec,0);
   if (xTokenVec[0]->bSame("fetch"_Stz)) return bFetchRows(xTokenVec,0);
-  if (xTokenVec[0]->bSame("get"_Stz)) return bGet(xTokenVec,0);
+  if (xTokenVec[0]->bSame("getAttachMap"_Stz)) return bGetAttachMap(xTokenVec,0);
   if (xTokenVec[0]->bSame("getFreeSpace"_Stz)) return bGetFreeSpace(xTokenVec,0);
   if (xTokenVec[0]->bSame("getInUseSpace"_Stz)) return bGetInUseSpace(xTokenVec,0);
   if (xTokenVec[0]->bSame("getidx"_Stz)) return bGetIndex(xTokenVec,0);
@@ -601,7 +601,7 @@ bool SEitf::bDisconnect(TokenVec& xTokenVec, i8 iReqNo)
 /*----------------------------------------------------------------------------*/
 /* get value from attachmap                                                   */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bGet(TokenVec& xTokenVec, i8 iReqNo)
+bool SEitf::bGetAttachMap(TokenVec& xTokenVec, i8 iReqNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -625,7 +625,7 @@ bool SEitf::bGet(TokenVec& xTokenVec, i8 iReqNo)
 /*----------------------------------------------------------------------------*/
 /* set value in attachmap                                                     */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bSet(TokenVec& xTokenVec, i8 iReqNo)
+bool SEitf::bSetAttachMap(TokenVec& xTokenVec, i8 iReqNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   

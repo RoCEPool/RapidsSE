@@ -93,8 +93,8 @@ namespace Interface
     bool bConnectCluster(TokenVec& xTokenVec, i8 iReqNo);
     bool bDisconnect(TokenVec& xTokenVec, i8 iReqNo);
     
-    bool bGet(TokenVec& xTokenVec, i8 iReqNo);
-    bool bSet(TokenVec& xTokenVec, i8 iReqNo);
+    bool bGetAttachMap(TokenVec& xTokenVec, i8 iReqNo);
+    bool bSetAttachMap(TokenVec& xTokenVec, i8 iReqNo);
     
     bool bRemoveFolder(TokenVec& xTokenVec, i8 iReqNo);
     

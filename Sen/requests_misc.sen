@@ -78,9 +78,9 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* set : set attach map member value                                          */
+/* get : get attach map member value                                          */
 /*----------------------------------------------------------------------------*/
-: get ( am_member -- value )
+: getAttachMap_req ( am_member -- value )
 
   find
   dup not if EC_INVALID_PARAMETER <NIP+ERROR> exit then
@@ -93,7 +93,7 @@
 /*----------------------------------------------------------------------------*/
 /* set : set attach map member value                                          */
 /*----------------------------------------------------------------------------*/
-: set ( am_member -- )
+: setAttachMap_req ( am_member -- )
 
   swap
   find
