@@ -110,20 +110,18 @@ rf      remove_folder
 ---------------------
 System Requests:
 ---------------------
-space   space
-status  status
+space   poolSpace_req
+status  nodeStatus_req
  
 -----------------
 Misc Requests:
 -----------------
 displayOn  displayOn_req
 displayOff displayOff_req
-mon        get_monitor
-object     object
+mon        getMonitor_req
+object     object_req
 ping       ping_req
-seitf      seitf_count
-x          x
-
+seitf      seitfCount_req
 
 -----------------
 Grid Request:

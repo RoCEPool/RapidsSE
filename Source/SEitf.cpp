@@ -86,10 +86,10 @@ ReqTable SeRequests[] =
  { "tridx"_Stz,          &SEitf::bTruncateIndex,        "truncateIndex_req"_Stz   },
  { "usesch"_Stz,         &SEitf::bUseSchema,            "useSchema_req"_Stz       },
  { "ping"_Stz,           &SEitf::bPing,                 "ping_req"_Stz            },
- { "mon"_Stz,            &SEitf::bGetMonitor,           "get_monitor"_Stz         },
- { "print"_Stz,          &SEitf::bPrint,                nullptr },
- { "seitf"_Stz,          &SEitf::bSeitfCount,           "seitf_count"_Stz         },
- { "version"_Stz,        &SEitf::bGetVersion,           "get_version"_Stz         },
+ { "mon"_Stz,            &SEitf::bGetMonitor,           "getMonitor_req"_Stz      },
+ { "print"_Stz,          &SEitf::bPrint,                nullptr                   },
+ { "seitf"_Stz,          &SEitf::bSeitfCount,           "seitfCount_req"_Stz      },
+ { "version"_Stz,        &SEitf::bGetVersion,           "getVersion_req"_Stz      },
  { "visidx"_Stz,         &SEitf::bVisualizeIndex,       "visualizeIndex_req"_Stz  },
  { nullptr,              nullptr,                       nullptr }
 };
