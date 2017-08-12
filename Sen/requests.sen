@@ -18,7 +18,6 @@
 "requests_grid.sen"       include
 "requests_rowBuffer.sen"  include
 "requests_misc.sen"       include
-"requests_object.sen"     include
 "requests_task.sen"       include
 
 // create /tenants/boray/catalogs/rapidsse/schemas/public
