@@ -969,11 +969,12 @@ namespace Tasks
     static void vRstack9(MP_Task mpTask);
     
     // scheduler
-    static void vSchedulerEnqueueTask(MP_Task mpTask);
+    static void vSchedulerEnqueueServerTask(MP_Task mpTask);
     static void vSchedulerList(MP_Task mpTask);
     static void vSchedulerQueuedTasks(MP_Task mpTask);
     static void vSchedulerQueuedThreads(MP_Task mpTask);
     static void vSchedulerReset(MP_Task mpTask);
+    static void vSchedulerServer(MP_Task mpTask);
   
     // seitf
     static void vSEitfAccessPathFetch(MP_Task mpTask);
