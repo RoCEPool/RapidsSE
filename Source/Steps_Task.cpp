@@ -23,7 +23,7 @@ extern NP_Task         gnpBootTask;
 extern Lock            gxDdlLock;
 extern Lock            gxDicLock;
 extern SEitfList*      gpSEitfList;
-extern Scheduler*      gpScheduler;
+extern Scheduler*      gpServerScheduler;
 
 extern bool            gbTracepoint;
 
@@ -104,7 +104,7 @@ void Task::vTaskAck(MP_Task mpTask)
       PosixThread::vSleepMicro(10);
     
     if (pThatTask->eActorModel() == AC_SERVER) {
-      gpScheduler->vEnqueueTask_Mutex(pThatTask);
+      gpServerScheduler->vEnqueueTask_Mutex(pThatTask);
     }
     else {
       Thread* pThread = pThatTask->pThread();

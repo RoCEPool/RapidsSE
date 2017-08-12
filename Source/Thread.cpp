@@ -10,7 +10,7 @@ extern BufferPool*  gpBufferPool;
 extern ThreadList*  gpThreadList;
 extern TaskList*    gpTaskList;
 
-extern Scheduler*   gpScheduler;
+extern Scheduler*   gpServerScheduler;
 
 extern NP_Task      gnpBootTask;
 
@@ -74,7 +74,7 @@ Thread::Thread(void)
   m_eThread      = TH_NONE;
   m_pPosixThread = new PosixThread;
   m_pSemaphore   = new Semaphore;
-  m_pScheduler   = gpScheduler;
+  m_pScheduler   = gpServerScheduler;
   m_pTaskSet     = nullptr;
   m_npTask       = nullptr;
 

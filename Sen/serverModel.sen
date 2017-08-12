@@ -84,12 +84,6 @@ args.regionSize nServerThreads constant N_SERVER_THREADS
   // create a new task
   nArgs sSeedWord pParent AC_SERVER sTaskNm eTaskKind task::new to pTask
 
-  // set task name
-  //sTaskNm pTask task.name!
-
-  // set actor model in task
-  //AC_SERVER pTask task.actorModel!
-
   // append task onto server task queue
   pTask scheduler::enqueueServerTask
 

@@ -23,7 +23,7 @@ extern NP_Task         gnpBootTask;
 extern Lock            gxDdlLock;
 extern Lock            gxDicLock;
 extern SEitfList*      gpSEitfList;
-extern Scheduler*      gpScheduler;
+extern Scheduler*      gpServerScheduler;
 
 extern i8 giSchEnqueueTask;
 extern i8 giSchEnqueueTaskWait;
@@ -57,7 +57,7 @@ void Task::vSchedulerEnqueueTask(MP_Task mpTask)
     THROW_INVALID_DSTACK("Scheduler.enqueueTask"_Stz);
   Task* pTask = _pTask(pObject);
   
-  gpScheduler->vEnqueueTask_Mutex(pTask);
+  gpServerScheduler->vEnqueueTask_Mutex(pTask);
   
   EXIT();
 }
@@ -69,7 +69,7 @@ void Task::vSchedulerQueuedTasks(MP_Task mpTask)
 {
   ENTRY("vSchedulerQueuedTasks"_Stz);
   
-  i8 nTasks = gpScheduler->iQueuedTasks();
+  i8 nTasks = gpServerScheduler->iQueuedTasks();
   
   mpTask->m_pDataStack->vPushInt(nTasks);
   
@@ -83,7 +83,7 @@ void Task::vSchedulerQueuedThreads(MP_Task mpTask)
 {
   ENTRY("vSchedulerQueuedThreads"_Stz);
   
-  i8 nThreads = gpScheduler->iQueuedThreads();
+  i8 nThreads = gpServerScheduler->iQueuedThreads();
   
   mpTask->m_pDataStack->vPushInt(nThreads);
   EXIT();

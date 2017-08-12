@@ -10,7 +10,7 @@ extern Dic*       gpMainDic;
 extern SEitfList* gpSEitfList;
 extern AttachMap* gpAttachMap;
 extern Grid*      gpGrid;
-extern Scheduler* gpScheduler;
+extern Scheduler* gpServerScheduler;
 
 struct ReqTable {
   Stz* aCommand;
@@ -2395,7 +2395,7 @@ bool SEitf::bAppendRequest(StrVal& sRequest)
   MP_Task nnpNewTask = new Task(&xValSet);
   nnpNewTask->vSeedWord("requestLoop"_Stz);
   
-  gpScheduler->vEnqueueTask_Mutex(*nnpNewTask);
+  gpServerScheduler->vEnqueueTask_Mutex(*nnpNewTask);
   return true;
 }
 

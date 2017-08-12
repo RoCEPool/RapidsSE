@@ -46,8 +46,9 @@ namespace StorageEngine
     TxCollection* m_pTxCollection;
     TxMap*        m_pTxMap;
     Grid*         m_pGrid;
-    Scheduler*    m_pScheduler;
-    
+    Scheduler*    m_pPartitionScheduler;
+    Scheduler*    m_pServerScheduler;
+  
     TaskList*        m_pTaskList;
     Plans::PlanList* m_pPlanList;
     SEitfList*       m_pSEitfList;
