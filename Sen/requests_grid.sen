@@ -23,7 +23,7 @@ tp: gettingStatus
 /*----------------------------------------------------------------------------*/
 /* get status of the nodes                                                    */
 /*----------------------------------------------------------------------------*/
-: status ( -- <R> )
+: nodeStatus_req ( -- <R> )
 
   args.metadata if
     "(nodeName VARCHAR, instanceName VARCHAR, status VARCHAR)"  metadata!

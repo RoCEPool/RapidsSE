@@ -75,7 +75,7 @@ tp: gettingSpace
 /*----------------------------------------------------------------------------*/
 /* get space in the pool                                                      */
 /*----------------------------------------------------------------------------*/
-: space ( -- <R> )
+: poolSpace_req ( -- <R> )
 
   args.metadata if
     "(nodeName VARCHAR, poolSize STRING, inUse VARCHAR, free VARCHAR)"

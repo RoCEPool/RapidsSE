@@ -77,8 +77,8 @@ ReqTable SeRequests[] =
  { "rmten"_Stz,          &SEitf::bDropTenant,           "dropTenant_req"_Stz      },
  { "setAttachMap"_Stz,   &SEitf::bSetAttachMap,         "setAttachMap_req"_Stz    },
  { "setidxunique"_Stz,   &SEitf::bIndexSetUnique,       "indexSetUnique_req"_Stz  },
- { "space"_Stz,          &SEitf::bPoolSpace,            "space"_Stz               },
- { "status"_Stz,         &SEitf::bNodeStatus,           "status"_Stz              },
+ { "space"_Stz,          &SEitf::bPoolSpace,            "poolSpace_req"_Stz       },
+ { "status"_Stz,         &SEitf::bNodeStatus,           "nodeStatus_req"_Stz      },
  { "szidx"_Stz,          &SEitf::bSizeIndex,            "sizeIndex_req"_Stz       },
  { "sz"_Stz,             &SEitf::bSizeTable,            "sizeTable_req"_Stz       },
  { "tableSizes"_Stz,     &SEitf::bSizeTables,           "sizeTables_req"_Stz      },
@@ -1698,38 +1698,6 @@ bool SEitf::bLoadTableStream(TokenVec& xTokenVec, i8 iReqNo)
   }
   
   sRequest.vCopy("\""_Stz);
-  sRequest.vConcat(xTokenVec[2]->aText());
-  sRequest.vConcat("\""_Stz);
-  
-  sRequest.vConcat(" \""_Stz);
-  sRequest.vConcat(xTokenVec[1]->aText());
-  sRequest.vConcat("\""_Stz);
-  
-  sRequest.vConcat(" "_Stz);
-  sRequest.vConcat(SeRequests[iReqNo].aRequest);
-  
-  return bAppendRequest(sRequest);
-}
-
-/*----------------------------------------------------------------------------*/
-/* range select rows from a table                                             */
-/*----------------------------------------------------------------------------*/
-bool SEitf::bRangeSelectTable(TokenVec& xTokenVec, i8 iReqNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
-  
-  s256 sRequest;
-  
-  if (xTokenVec.nTokens() != 4) {
-    vSetLastError(EC_INVALID_PARAMETERS);
-    return false;
-  }
-
-  sRequest.vCopy("\""_Stz);
-  sRequest.vConcat(xTokenVec[3]->aText());
-  sRequest.vConcat("\""_Stz);
-  
-  sRequest.vConcat(" \""_Stz);
   sRequest.vConcat(xTokenVec[2]->aText());
   sRequest.vConcat("\""_Stz);
   
