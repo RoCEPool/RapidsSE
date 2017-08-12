@@ -39,6 +39,7 @@ args.regionSize nServerThreads constant N_SERVER_THREADS
 /* create and spawn the server processing threads                             */
 /*----------------------------------------------------------------------------*/
 : >serverNm ( i -- s ) "serverThread"    swap >str str.cat ;
+
 : :serverThread   ( i -- w ) >serverNm    :thread    ;
 
 : startServerThreads
@@ -55,7 +56,7 @@ args.regionSize nServerThreads constant N_SERVER_THREADS
 
   N_SERVER_THREADS 0 do
 
-    // create a thread called queryThreadI
+    // create a thread
     I :serverThread execute to pServerThread
 
     // set the threads name
@@ -74,9 +75,9 @@ args.regionSize nServerThreads constant N_SERVER_THREADS
 ;
 
 /*----------------------------------------------------------------------------*/
-/* create an actor using given arguments and append to general task queue     */
+/* create a task using given arguments and append to server task queue        */
 /*----------------------------------------------------------------------------*/
-: spawnServerActor ( ... nArgs sSeedWord pParentTask sTaskNm eTaskKind -- )
+: spawnServerTask ( ... nArgs sSeedWord pParentTask sTaskNm eTaskKind -- )
 
   nullptr locals| pTask eTaskKind sTaskNm pParent sSeedWord nArgs |
 

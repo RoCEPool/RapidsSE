@@ -259,7 +259,7 @@ traceon
 /*----------------------------------------------------------------------------*/
 : schedServer
 
-  0 "helloWorld" nullptr "hi" spawnServerActor TK_NONE drop
+  0 "helloWorld" nullptr "hi" spawnServerTask TK_NONE drop
 ;
 
 /*----------------------------------------------------------------------------*/

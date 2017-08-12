@@ -827,7 +827,7 @@ tp: loadIndexes
 
     // create a selectTask to execute the key select on the index for the partition
     sExactKey sLowerKey sUpperKey pIndex pSeitf iPartition 6
-      sSelectTaskSeed nullptr "selectTask" TK_SELECT_PART spawnServerActor
+      sSelectTaskSeed nullptr "selectTask" TK_SELECT_PART spawnServerTask
         to pSelectTask
 
   loop
@@ -970,7 +970,7 @@ tp: selectIndex
 
     // create a selectTask to execute the key select on the index for the partition
     sExactKey sLowerKey sUpperKey pIndex pSeitf I 6
-      sSelectTaskSeed nullptr "selectTask" TK_SELECT_PART spawnServerActor
+      sSelectTaskSeed nullptr "selectTask" TK_SELECT_PART spawnServerTask
         to pSelectTask
 
   loop
@@ -1378,7 +1378,7 @@ tp: selectIndex
 
     // create a selectTask to execute the key select on the index for the partition
     sExactKey sLowerKey sUpperKey pIndex pSeitf I 6
-    sSelectTaskSeed nullptr "selectTask" TK_SELECT_PART spawnServerActor
+    sSelectTaskSeed nullptr "selectTask" TK_SELECT_PART spawnServerTask
     to pSelectTask
 
   loop
