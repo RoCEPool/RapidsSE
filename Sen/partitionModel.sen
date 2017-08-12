@@ -51,8 +51,9 @@ nPartitionThreads constant N_PARTITION_THREADS
 /*----------------------------------------------------------------------------*/
 /* create and spawn the partition processing threads                          */
 /*----------------------------------------------------------------------------*/
-: >partitionThreadNm ( i -- s ) "partitionThread"    swap >str str.cat ;
-: :partitionThread   ( i -- w ) >partitionThreadNm    :thread    ;
+: >partitionThreadNm ( i -- s ) "partitionThread" swap >str str.cat ;
+
+: :partitionThread ( i -- w ) >partitionThreadNm :thread    ;
 
 : startPartitionThreads
 
@@ -68,7 +69,7 @@ nPartitionThreads constant N_PARTITION_THREADS
 
   N_PARTITION_THREADS 0 do
 
-    // create a thread called queryThreadI
+    // create a thread called partitionThreadI
     I :partitionThread execute to pPartitionThread
 
     // set the threads name
@@ -76,9 +77,6 @@ nPartitionThreads constant N_PARTITION_THREADS
 
     // set the actor model
     AC_PARTITION pPartitionThread thread.actorModel!
-
-    // give it a private taskset
-    //taskset::new pPartitionThread thread.taskset!
 
     // give it a public taskset
     I >partitionThreadNm ".taskset" str.cat :taskset execute

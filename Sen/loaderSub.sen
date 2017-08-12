@@ -72,7 +72,7 @@ tp: loadAppendBuffer$
   3 "partitionAppendBuffer" iPartitionNo grid::toSlot dup >partitionTaskNm
   TK_LOADSUB_PART
 
-  spawnPartitionActor
+  spawnPartitionTask
 
   true <SUCCESS_RESULT>
 ;

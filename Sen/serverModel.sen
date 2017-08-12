@@ -38,9 +38,9 @@ args.regionSize nServerThreads constant N_SERVER_THREADS
 /*----------------------------------------------------------------------------*/
 /* create and spawn the server processing threads                             */
 /*----------------------------------------------------------------------------*/
-: >serverNm ( i -- s ) "serverThread"    swap >str str.cat ;
+: >serverNm ( i -- s ) "serverThread" swap >str str.cat ;
 
-: :serverThread   ( i -- w ) >serverNm    :thread    ;
+: :serverThread ( i -- w ) >serverNm :thread    ;
 
 : startServerThreads
 

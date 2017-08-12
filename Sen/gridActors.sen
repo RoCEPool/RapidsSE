@@ -208,7 +208,7 @@ tp: >>allParticipants>
 /*----------------------------------------------------------------------------*/
 /* create and dispatch task to partition for execution within given partition */
 /*----------------------------------------------------------------------------*/
-: spawnPartitionActor ( ... nArgs sSeed iPtnNo sTaskNm eTaskKind )
+: spawnPartitionTask ( ... nArgs sSeed iPtnNo sTaskNm eTaskKind )
 
   locals| eTaskKind sTaskNm iPtnNo sSeed nArgs |
 
