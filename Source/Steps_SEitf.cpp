@@ -47,8 +47,8 @@ void Task::vAddPrimitives_SEitf(void)
   vAddPrimitive("seitf.groupBy!"_Stz,         &vSEitfGroupByStore,     false);
   vAddPrimitive("seitf.indexBuffer@"_Stz,     &vSEitfIndexBufferFetch, false);
   vAddPrimitive("seitf.indexBuffer!"_Stz,     &vSEitfIndexBufferStore, false);
-  vAddPrimitive("seitf.indexGet"_Stz,         &vSEitfIndexGet,         false);
-  vAddPrimitive("seitf.indexReturn"_Stz,      &vSEitfIndexReturn,      false);
+  vAddPrimitive("seitf.index!"_Stz,           &vSEitfIndexStore,       false);
+  vAddPrimitive("seitf.index@"_Stz,           &vSEitfIndexFetch,       false);
   vAddPrimitive("seitf.metadata@"_Stz,        &vSEitfMetadataFetch,    false);
   vAddPrimitive("seitf.metadata!"_Stz,        &vSEitfMetadataStore,    false);
   vAddPrimitive("seitf.partition@"_Stz,       &vSEitfPartitionFetch,   false);
@@ -415,34 +415,34 @@ void Task::vSEitfIndexBufferStore(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* seitf.indexReturn -- clear index in SEitf                                   */
+/* seitf.index@ -- fetch index from SEitf                                     */
 /*----------------------------------------------------------------------------*/
-void Task::vSEitfIndexReturn(MP_Task mpTask)
+void Task::vSEitfIndexFetch(MP_Task mpTask)
 {
   ENTRY("vSEitfIndexReturn"_Stz);
   
   Object* pPtrSEitf;
   if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
-    THROW_INVALID_DSTACK("seitf.indexReturn"_Stz);
+    THROW_INVALID_DSTACK("seitf.index@"_Stz);
   
   SEitf* pSEitf = _pSEitf(pPtrSEitf);
   ASSERT(CN_SEITF == pSEitf->eClass());
   
-  pSEitf->vCurrentIndex(nullptr);
+  mpTask->m_pDataStack->vPushObject(pSEitf->pCurrentIndex());
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* seitf.indexGet -- store index in SEitf                                     */
+/* seitf.index! -- store index in SEitf                                       */
 /*----------------------------------------------------------------------------*/
-void Task::vSEitfIndexGet(MP_Task mpTask)
+void Task::vSEitfIndexStore(MP_Task mpTask)
 {
-  ENTRY("vSEitfIndexGet"_Stz);
+  ENTRY("vSEitfIndexStore"_Stz);
   
   Object* pPtrSEitf;
   if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
-    THROW_INVALID_DSTACK("seitf.indexGet"_Stz);
+    THROW_INVALID_DSTACK("seitf.index!"_Stz);
   
   SEitf* pSEitf = _pSEitf(pPtrSEitf);
   ASSERT(CN_SEITF == pSEitf->eClass());
@@ -450,7 +450,7 @@ void Task::vSEitfIndexGet(MP_Task mpTask)
   Object* pPtrIndex;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrIndex) )
-    THROW_INVALID_DSTACK("seitf.indexGet"_Stz);
+    THROW_INVALID_DSTACK("seitf.index!"_Stz);
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());

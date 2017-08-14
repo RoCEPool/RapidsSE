@@ -291,20 +291,6 @@ timer: pIdxSelectTimer
 
   sTableNm find execute to pTable
 
-/*
-  // push indexes folder
-  pushIndexes assert                               // ../tables/sTableNm/indexes
-
-  // check sIndexNm is an index
-  sIndexNm checkIsIndex
-  not if
-  popIndexes popTable assertInTables <NIP+ERROR> exit
-  then
-
-  // pop indexes folder
-  popIndexes                                               // ../tables/sTableNm
-*/
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // lower bound select
 

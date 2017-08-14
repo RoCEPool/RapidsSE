@@ -605,6 +605,62 @@ eEC RapidsSE_EndCreateTable(SEitf* pSEitf, Stz* pTable, i8 iTraceLevel)
 }
 
 /*----------------------------------------------------------------------------*/
+/* end fetch                                                                  */
+/*----------------------------------------------------------------------------*/
+eEC RapidsSE_EndFetch(SEitf* pSEitf, i8 iTraceLevel)
+{
+  eEC eResult;
+  eEC eResponse;
+  
+  Stz* aApiCall = "RapidsSE_EndScan"_Stz;
+  
+  try {
+    
+    // trace entry
+    TRACE_ENTRY_P0();
+    
+    // validate the SEitf
+    VALIDATE_SEITF("a"_Stz);
+    
+    // clear the last error
+    CLEAR_LASTERROR();
+    
+    // validate table
+    VALIDATE_TABLE("b"_Stz);
+    
+    // get address of select cursor
+    i8 iAddress = StrLib::iToI8( pSEitf->m_sResponse.aChar());
+    
+    // delete the SelCursor
+    SelCursor* pSelCursor = reinterpret_cast<SelCursor*>(iAddress);
+    ASSERT(CN_SELCURSOR == pSelCursor->eClass());
+    delete pSelCursor;
+    
+    // return the table
+    Table* pTable = pSEitf->pCurrentTable();
+    eResult = eExecuteRequest(pSEitf, "rettbl"_Stz);
+    CHECK_RESULT("s"_Stz);
+    CHECK_RESPONSE("d"_Stz);
+    
+    // validate if no table
+    VALIDATE_NOTABLE("d"_Stz);
+    
+    TRACE_EXIT("ea"_Stz);
+    
+    return EC_NONE;
+  }
+  catch (Error* pError) {
+    RapidsSE::vErrorHandler(pError);
+    TRACE_ERROR("!", pError->eErrorCode());
+    return pError->eErrorCode();
+  }
+  catch (...) {
+    TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
+    return EC_SE_UNKNOWN_ERROR;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* end insert                                                                 */
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_EndInsert(SEitf* pSEitf, i8 iTraceLevel)
@@ -661,62 +717,6 @@ eEC RapidsSE_EndInsert(SEitf* pSEitf, i8 iTraceLevel)
     return EC_SE_UNKNOWN_ERROR;
   }
 
-}
-
-/*----------------------------------------------------------------------------*/
-/* end scan                                                                   */
-/*----------------------------------------------------------------------------*/
-eEC RapidsSE_EndScan(SEitf* pSEitf, i8 iTraceLevel)
-{
-  eEC eResult;
-  eEC eResponse;
-  
-  Stz* aApiCall = "RapidsSE_EndScan"_Stz;
-  
-  try {
-    
-    // trace entry
-    TRACE_ENTRY_P0();
-    
-    // validate the SEitf
-    VALIDATE_SEITF("a"_Stz);
-    
-    // clear the last error
-    CLEAR_LASTERROR();
-    
-    // validate table
-    VALIDATE_TABLE("b"_Stz);
-    
-    // get address of select cursor
-    i8 iAddress = StrLib::iToI8( pSEitf->m_sResponse.aChar());
-    
-    // delete the SelCursor
-    SelCursor* pSelCursor = reinterpret_cast<SelCursor*>(iAddress);
-    ASSERT(CN_SELCURSOR == pSelCursor->eClass());
-    delete pSelCursor;
-    
-    // return the table
-    Table* pTable = pSEitf->pCurrentTable();
-    eResult = eExecuteRequest(pSEitf, "rettbl"_Stz);
-    CHECK_RESULT("s"_Stz);
-    CHECK_RESPONSE("d"_Stz);
-    
-    // validate if no table
-    VALIDATE_NOTABLE("d"_Stz);
-    
-    TRACE_EXIT("ea"_Stz);
-    
-    return EC_NONE;
-  }
-  catch (Error* pError) {
-    RapidsSE::vErrorHandler(pError);
-    TRACE_ERROR("!", pError->eErrorCode());
-    return pError->eErrorCode();
-  }
-  catch (...) {
-    TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
-    return EC_SE_UNKNOWN_ERROR;
-  }
 }
 
 /*----------------------------------------------------------------------------*/

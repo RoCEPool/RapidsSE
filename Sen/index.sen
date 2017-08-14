@@ -242,7 +242,7 @@
   // get index ptr
   findInCurrent execute
 
-  task::this task.seitf@ seitf.indexGet
+  task::this task.seitf@ seitf.index!
 
   true
 ;
@@ -252,7 +252,7 @@
 /*----------------------------------------------------------------------------*/
 : returnIndex ( )
 
-  task::this task.seitf@ seitf.indexReturn
+  nullptr task::this task.seitf@ seitf.index!
 
   true
 ;
