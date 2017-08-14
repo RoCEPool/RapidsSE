@@ -398,7 +398,7 @@ void Task::vThreadSchedulerFetch(MP_Task mpTask)
     THROW_INVALID_DSTACK("thread.scheduler@"_Stz);
   Thread* pThread = _pThread(pThreadEmb);
   
-  ServerScheduler* pServerScheduler = pThread->m_pScheduler;
+  ServerScheduler* pServerScheduler = (ServerScheduler*)pThread->m_pScheduler;
   
   Object* pSchedulerEmb = static_cast<Object*>(pServerScheduler);
   

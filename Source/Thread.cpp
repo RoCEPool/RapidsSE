@@ -529,7 +529,7 @@ void Thread::vLoop_Server(void)
     m_npTask = m_pTaskSet->npPop();               //! need to have a max taskset
     if (! *m_npTask) {
       ASSERT( ! *m_npTask );
-      bool b = m_pScheduler->bGetTask_Mutex(this,true);
+      bool b = ((ServerScheduler*)m_pScheduler)->bGetTask_Mutex(this,true);
       ASSERT( b && *m_npTask );
     }
     
