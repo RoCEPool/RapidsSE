@@ -26,8 +26,8 @@ seitfList: seitfList
 
 "droneModel.sen" include
 "serverModel.sen" include
-"partitionModel.sen" include
 "workerModel.sen" include
+"partitionModel.sen" include
 
 
 "actorPrimitives.sen" include
