@@ -817,7 +817,7 @@ tp: loadIndexes
 /*----------------------------------------------------------------------------*/
 /* select using index (called by fetchRowsIndex_req)                          */
 /*----------------------------------------------------------------------------*/
-: selectIndex ( "<sExactKey>" "<sLowerKey>" "<sUpperKey>"
+: spawnSelectTask ( "<sExactKey>" "<sLowerKey>" "<sUpperKey>"
                 "<sSelectTaskSeed>" "<sIndexNm>" --  )
 
   tp: selectIndex
@@ -1327,9 +1327,9 @@ tp: selectIndex
 /*============================================================================*/
 
 /*----------------------------------------------------------------------------*/
-/* select using index (called by fetchRowsIndex_req) -- groupBy                 */
+/* select using index (called by fetchRowsIndex_req) -- groupBy               */
 /*----------------------------------------------------------------------------*/
-: groupByIndex_RH ( "<sExactKey>" "<sLowerKey>" "<sUpperKey>"
+: spawnGroupByTask ( "<sExactKey>" "<sLowerKey>" "<sUpperKey>"
                    "<sSelectTaskSeed>" "<sIndexNm>" --  )
 
   tp: selectIndex
