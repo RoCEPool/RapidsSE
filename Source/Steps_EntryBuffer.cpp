@@ -41,6 +41,7 @@ void Task::vAddPrimitives_EntryBuffer(void)
   vAddPrimitive("entryBuffer.iterate"_Stz,     &vEntryBufferIterate,     false);
   vAddPrimitive("entryBuffer.nextEntry"_Stz,   &vEntryBufferNextEntry,   false);
   vAddPrimitive("entryBuffer.nextBuffer"_Stz,  &vEntryBufferNextBuffer,  false);
+  vAddPrimitive("entryBuffer.partition"_Stz,   &vEntryBufferPartition,   false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -85,31 +86,6 @@ void Task::vEntryBufferDelete(MP_Task mpTask)
   ASSERT(CN_ENTRYBUFFER == pIndexBuffer->eClass());
   
   delete pIndexBuffer;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* entryBuffer.nextBuffer -- get next buffer of this index buffer             */
-/*----------------------------------------------------------------------------*/
-void Task::vEntryBufferNextBuffer(MP_Task mpTask)
-{
-  ENTRY("vEntryBufferNextBuffer"_Stz);
-  
-  Object* pPtrEntry = nullptr;
-  Object* pPtrIndexBuffer;
-  
-  if ( ! mpTask->m_pDataStack->bPop(pPtrIndexBuffer) )
-    THROW_INVALID_DSTACK("entryBuffer.nextBuffer"_Stz);
-  
-  EntryBuffer* pIndexBuffer = _pEntryBuffer(pPtrIndexBuffer);
-  ASSERT(nullptr == pIndexBuffer || CN_ENTRYBUFFER == pIndexBuffer->eClass());
-  
-  if (pIndexBuffer->pNextBuffer()) {
-    bn nBuffer = pIndexBuffer->pNextBuffer()->nBufferNo();
-  }
-  
-  mpTask->m_pDataStack->vPushObject(pIndexBuffer->pNextBuffer());
   
   EXIT();
 }
@@ -375,6 +351,31 @@ void Task::vEntryBufferIterate(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* entryBuffer.nextBuffer -- get next buffer of this index buffer             */
+/*----------------------------------------------------------------------------*/
+void Task::vEntryBufferNextBuffer(MP_Task mpTask)
+{
+  ENTRY("vEntryBufferNextBuffer"_Stz);
+  
+  Object* pPtrEntry = nullptr;
+  Object* pPtrIndexBuffer;
+  
+  if ( ! mpTask->m_pDataStack->bPop(pPtrIndexBuffer) )
+    THROW_INVALID_DSTACK("entryBuffer.nextBuffer"_Stz);
+  
+  EntryBuffer* pIndexBuffer = _pEntryBuffer(pPtrIndexBuffer);
+  ASSERT(nullptr == pIndexBuffer || CN_ENTRYBUFFER == pIndexBuffer->eClass());
+  
+  if (pIndexBuffer->pNextBuffer()) {
+    bn nBuffer = pIndexBuffer->pNextBuffer()->nBufferNo();
+  }
+  
+  mpTask->m_pDataStack->vPushObject(pIndexBuffer->pNextBuffer());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* entryBuffer.nextEntry -- get next entry from index buffer                  */
 /*----------------------------------------------------------------------------*/
 void Task::vEntryBufferNextEntry(MP_Task mpTask)
@@ -408,6 +409,28 @@ void Task::vEntryBufferNextEntry(MP_Task mpTask)
   
   EXIT();
 }
+
+/*----------------------------------------------------------------------------*/
+/* entryBuffer.partition -- get partition no of this index buffer             */
+/*----------------------------------------------------------------------------*/
+void Task::vEntryBufferPartition(MP_Task mpTask)
+{
+  ENTRY("vEntryBufferPartition"_Stz);
+  
+  Object* pPtrEntry = nullptr;
+  Object* pPtrIndexBuffer;
+  
+  if ( ! mpTask->m_pDataStack->bPop(pPtrIndexBuffer) )
+    THROW_INVALID_DSTACK("entryBuffer.partition"_Stz);
+  
+  EntryBuffer* pIndexBuffer = _pEntryBuffer(pPtrIndexBuffer);
+  ASSERT(nullptr == pIndexBuffer || CN_ENTRYBUFFER == pIndexBuffer->eClass());
+  
+  mpTask->m_pDataStack->vPushInt(pIndexBuffer->nPartitionNo());
+  
+  EXIT();
+}
+
 
 /*============================================================================*/
 /* end                                                                        */

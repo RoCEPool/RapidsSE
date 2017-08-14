@@ -586,13 +586,14 @@ namespace Tasks
     // entry buffer
     static void vEntryBufferCreate(MP_Task mpTask);
     static void vEntryBufferDelete(MP_Task mpTask);
-    static void vEntryBufferFirstEntry(MP_Task mpTask);
-    static void vEntryBufferNextBuffer(MP_Task mpTask);
+    static void vEntryBufferFirstEntry(MP_Task mpTask);    
     static void vEntryBufferInsertRow(MP_Task mpTask);
     static void vEntryBufferIsLastFetch(MP_Task mpTask);
     static void vEntryBufferIsLastStore(MP_Task mpTask);
     static void vEntryBufferIterate(MP_Task mpTask);
+    static void vEntryBufferNextBuffer(MP_Task mpTask);
     static void vEntryBufferNextEntry(MP_Task mpTask);
+    static void vEntryBufferPartition(MP_Task mpTask);
     
     // env
     static void vEnvGet(MP_Task mpTask);

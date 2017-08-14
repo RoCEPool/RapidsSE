@@ -768,10 +768,11 @@ tp: loadIndexes
 /*----------------------------------------------------------------------------*/
 /* print rows from entries of an index buffer                                 */
 /*----------------------------------------------------------------------------*/
-: printRows ( iPartition ^pIndex ^pIndexBuffer --  )
+: printRows ( ^pIndex ^pIndexBuffer --  )
 
-  0 0 locals| nRowCount pEntry pIndexBuffer pIndex iPartition |
+  0 0 locals| nRowCount pEntry pIndexBuffer pIndex iPartitionNo |
 
+  pIndexBuffer entryBuffer.partition to iPartitionNo
   pIndexBuffer entryBuffer.firstEntry to pEntry
 
   begin
@@ -781,7 +782,7 @@ tp: loadIndexes
       display@ if
         args.metadata if
           pIndex pEntry entry.embeddedRow
-          iPartition grid::toPartition
+          iPartitionNo grid::toPartition
           "row: (%v,%v)\n" str.format .put
         else
           pIndex pEntry entry.embeddedRow "row: (%v)\n" str.format .put
@@ -795,6 +796,7 @@ tp: loadIndexes
     // return nRowCount
     nRowCount
 ;
+
 /*----------------------------------------------------------------------------*/
 /* pop buffer off the buffer queue                                            */
 /*----------------------------------------------------------------------------*/
@@ -810,10 +812,10 @@ tp: loadIndexes
       //task.yield
       args.sleep thread.sleep_ms
   repeat
-
 ;
+
 /*----------------------------------------------------------------------------*/
-/* select using index (called by fetchRowsIndex_req)                            */
+/* select using index (called by fetchRowsIndex_req)                          */
 /*----------------------------------------------------------------------------*/
 : selectIndex ( "<sExactKey>" "<sLowerKey>" "<sUpperKey>"
                 "<sSelectTaskSeed>" "<sIndexNm>" --  )
@@ -837,7 +839,7 @@ tp: loadIndexes
   locals| sIndexNm sSelectTaskSeed sUpperKey sLowerKey sExactKey |
 
   // local variables
-  0 0 0 0 0 0 0 0 locals| iPartition iSlots pSeitf pSelectTask nRowCount pIndexBuffer pEntry pIndex |
+  0 0 0 0 0 0 0 0 locals| iSlots pSeitf pSelectTask nRowCount pIndexBuffer pEntry pIndex |
 
   // increment query count
   queryCount ++
@@ -866,14 +868,8 @@ tp: loadIndexes
       I grid::toPartition "Partition: %v\n" str.format .put
     then
 
-    // RAY: I gets corrupted in the loop ????
-    I to iPartition
-
-    // put the partition in this tasks seitf
-    //I pSeitf seitf.partition!
-
     // create a selectTask to execute the key select on the index for the partition
-    sExactKey sLowerKey sUpperKey pIndex pSeitf iPartition 6
+    sExactKey sLowerKey sUpperKey pIndex pSeitf I 6
       sSelectTaskSeed nullptr "selectTask" TK_SELECT_PART spawnServerTask
         to pSelectTask
 
@@ -887,7 +883,7 @@ tp: loadIndexes
       pSeitf seitf.bufferQueue@  popBuffer to pIndexBuffer
 
       // print the rows from the index buffer
-      iPartition pIndex pIndexBuffer printRows nRowCount + to nRowCount
+      pIndex pIndexBuffer printRows nRowCount + to nRowCount
 
       // check if last buffer
       pIndexBuffer entryBuffer.isLast@ if
