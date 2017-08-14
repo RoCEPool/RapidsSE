@@ -766,6 +766,53 @@ tp: loadIndexes
 ;
 
 /*----------------------------------------------------------------------------*/
+/* print rows from entries of an index buffer                                 */
+/*----------------------------------------------------------------------------*/
+: printRows ( iPartition ^pIndex ^pIndexBuffer --  )
+
+  0 0 locals| nRowCount pEntry pIndexBuffer pIndex iPartition |
+
+  pIndexBuffer entryBuffer.firstEntry to pEntry
+
+  begin
+    pEntry
+    while
+
+      display@ if
+        args.metadata if
+          pIndex pEntry entry.embeddedRow
+          iPartition grid::toPartition
+          "row: (%v,%v)\n" str.format .put
+        else
+          pIndex pEntry entry.embeddedRow "row: (%v)\n" str.format .put
+        then
+      then
+      1 nRowCount + to nRowCount
+      pEntry pIndexBuffer entryBuffer.nextEntry to pEntry
+
+    repeat
+
+    // return nRowCount
+    nRowCount
+;
+/*----------------------------------------------------------------------------*/
+/* pop buffer off the buffer queue                                            */
+/*----------------------------------------------------------------------------*/
+: popBuffer ( ^pBufferQueue --  )
+
+  locals| pBufferQueue |
+
+  begin
+    pBufferQueue queue.pop ( value true | false )
+    // try again if no value
+    not while
+      //REQUST_LOOP2
+      //task.yield
+      args.sleep thread.sleep_ms
+  repeat
+
+;
+/*----------------------------------------------------------------------------*/
 /* select using index (called by fetchRowsIndex_req)                            */
 /*----------------------------------------------------------------------------*/
 : selectIndex ( "<sExactKey>" "<sLowerKey>" "<sUpperKey>"
@@ -831,44 +878,20 @@ tp: loadIndexes
         to pSelectTask
 
   loop
+
     1
     begin
-    while  // first while
-      
-      begin
-        // attempt to pop buffer off the tasks buffer queue
-        pSeitf seitf.bufferQueue@  queue.pop ( value true | false )
-        // try again if no value
-        not while
-          //REQUST_LOOP2
-          //task.yield
-        args.sleep thread.sleep_ms
-      repeat
-      to pIndexBuffer
+    while
 
-      //"Popped tempEntryBuffer from buffer queue" .
+      // attempt to pop buffer off the tasks buffer queue
+      pSeitf seitf.bufferQueue@  popBuffer to pIndexBuffer
 
-      pIndexBuffer entryBuffer.firstEntry to pEntry
+      // print the rows from the index buffer
+      iPartition pIndex pIndexBuffer printRows nRowCount + to nRowCount
 
-      begin
-        pEntry
-        while // second while
-          
-          //"Get an entry from the tempEntryBuffer" .
-          display@ if
-            args.metadata if
-              pIndex pEntry entry.embeddedRow
-              iPartition grid::toPartition
-              "row: (%v,%v)\n" str.format .put
-            else
-              pIndex pEntry entry.embeddedRow "row: (%v)\n" str.format .put
-            then
-          then
-          1 nRowCount + to nRowCount
-          pEntry pIndexBuffer entryBuffer.nextEntry to pEntry
-      repeat  // end of second while
-
+      // check if last buffer
       pIndexBuffer entryBuffer.isLast@ if
+
         //"Reached last buffer" .
         iSlots 1 - to iSlots
         0 iSlots == if
@@ -883,7 +906,7 @@ tp: loadIndexes
       pIndexBuffer entryBuffer.delete
       //"Deleted buffer" .
 
-    repeat  // end of first while
+    repeat
 
 
   // delete the buffer queue from the seitf
