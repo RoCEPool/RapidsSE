@@ -117,6 +117,78 @@ eEC RapidsSE_AddTableColumn(SEitf* pSEitf, Stz* pTableName, Stz* pColumnName, St
 }
 
 /*----------------------------------------------------------------------------*/
+/* begin fetch table                                                          */
+/*----------------------------------------------------------------------------*/
+eEC RapidsSE_BeginFetch(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema, Stz* pTable,
+                        Stz* pRange, i8 iTraceLevel)
+{
+  eEC eResult;
+  eEC eResponse;
+  
+  Stz* aApiCall = "RapidsSE_BeginFetch"_Stz;
+  
+  try {
+    
+    vTrace("Table: %s Range: %s\n"_Stz, pTable, pRange);
+    
+    // trace entry
+    TRACE_ENTRY_P3(pCatalog, pSchema, pTable);
+    
+    // validate the SEitf
+    VALIDATE_SEITF("a"_Stz);
+    
+    // clear the last error
+    CLEAR_LASTERROR();
+    
+    // validate parameters
+    VALIDATE_PARAM("b"_Stz, pCatalog);
+    VALIDATE_PARAM("c"_Stz, pSchema);
+    VALIDATE_PARAM("d"_Stz, pTable);
+    
+    // change directory to table
+    CF_TABLES("e"_Stz);
+    
+    // select * from pTable
+    eResult = eExecuteRequest(pSEitf, "sel"_Stz, (Stz*)pTable);
+    CHECK_RESULT("f"_Stz);
+    CHECK_RESPONSE("g"_Stz);
+    
+    // validate table
+    VALIDATE_TABLE("h");
+    
+    // get response (address of selcussor)
+    i8 iAddress = pSEitf->m_sResponse.iToI8();
+    SelCursor* pSelCursor = reinterpret_cast<SelCursor*>(iAddress);
+    ASSERT(CN_SELCURSOR == pSelCursor->eClass());
+    
+    // get slot for seitf partition on this node
+    i8 iSlot = Partition::iPartitionToSlot(pSEitf->iPartition());
+    
+    // TRACE_SLOT(iSlot);
+    
+    // begin the select
+    pSelCursor->vBegin(iSlot);
+    
+    // get first row
+    pSelCursor->vFirst();
+    
+    // trace exit
+    TRACE_EXIT("ea"_Stz);
+    
+    return EC_NONE;
+  }
+  catch (Error* pError) {
+    RapidsSE::vErrorHandler(pError);
+    TRACE_ERROR("!", pError->eErrorCode());
+    return pError->eErrorCode();
+  }
+  catch (...) {
+    TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
+    return EC_SE_UNKNOWN_ERROR;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* begin insert                                                               */
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_BeginInsert(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema, Stz* pTable, i8 iTraceLevel)
@@ -1309,78 +1381,6 @@ eEC RapidsSE_PoolOpen(Stz* pInstanceName, void** ppInstance, i8 iTraceLevel)
     return EC_SE_UNKNOWN_ERROR;
   }
 
-}
-
-/*----------------------------------------------------------------------------*/
-/* scan table                                                                 */
-/*----------------------------------------------------------------------------*/
-eEC RapidsSE_ScanTable(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema, Stz* pTable,
-                       Stz* pRange, i8 iTraceLevel)
-{
-  eEC eResult;
-  eEC eResponse;
-  
-  Stz* aApiCall = "RapidsSE_ScanTable"_Stz;
-  
-  try {
-    
-    vTrace("Table: %s Range: %s\n"_Stz, pTable, pRange);
-    
-    // trace entry
-    TRACE_ENTRY_P3(pCatalog, pSchema, pTable);
-    
-    // validate the SEitf
-    VALIDATE_SEITF("a"_Stz);
-    
-    // clear the last error
-    CLEAR_LASTERROR();
-
-    // validate parameters
-    VALIDATE_PARAM("b"_Stz, pCatalog);
-    VALIDATE_PARAM("c"_Stz, pSchema);
-    VALIDATE_PARAM("d"_Stz, pTable);
-    
-    // change directory to table
-    CF_TABLES("e"_Stz);
-    
-    // select * from pTable
-    eResult = eExecuteRequest(pSEitf, "sel"_Stz, (Stz*)pTable);
-    CHECK_RESULT("f"_Stz);
-    CHECK_RESPONSE("g"_Stz);
-
-    // validate table
-    VALIDATE_TABLE("h");
-    
-    // get response (address of selcussor)
-    i8 iAddress = pSEitf->m_sResponse.iToI8();
-    SelCursor* pSelCursor = reinterpret_cast<SelCursor*>(iAddress);
-    ASSERT(CN_SELCURSOR == pSelCursor->eClass());
-    
-    // get slot for seitf partition on this node
-    i8 iSlot = Partition::iPartitionToSlot(pSEitf->iPartition());
-    
-    // TRACE_SLOT(iSlot);
-    
-    // begin the select
-    pSelCursor->vBegin(iSlot);
-    
-    // get first row
-    pSelCursor->vFirst();
-
-    // trace exit
-    TRACE_EXIT("ea"_Stz);
-
-    return EC_NONE;
-  }
-  catch (Error* pError) {
-    RapidsSE::vErrorHandler(pError);
-    TRACE_ERROR("!", pError->eErrorCode());
-    return pError->eErrorCode();
-  }
-  catch (...) {
-    TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
-    return EC_SE_UNKNOWN_ERROR;
-  }
 }
 
 /*----------------------------------------------------------------------------*/
