@@ -994,8 +994,8 @@ namespace Tasks
     static void vSEitfGroupByStore(MP_Task mpTask);
     static void vSEitfIndexBufferFetch(MP_Task mpTask);
     static void vSEitfIndexBufferStore(MP_Task mpTask);
-    static void vSEitfIndexGet(MP_Task mpTask);
-    static void vSEitfIndexReturn(MP_Task mpTask);
+    static void vSEitfIndexFetch(MP_Task mpTask);
+    static void vSEitfIndexStore(MP_Task mpTask);
     static void vSEitfMetadataFetch(MP_Task mpTask);
     static void vSEitfMetadataStore(MP_Task mpTask);
     static void vSEitfPartitionFetch(MP_Task mpTask);

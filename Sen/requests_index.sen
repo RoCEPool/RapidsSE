@@ -291,20 +291,6 @@ timer: pIdxSelectTimer
 
   sTableNm find execute to pTable
 
-/*
-  // push indexes folder
-  pushIndexes assert                               // ../tables/sTableNm/indexes
-
-  // check sIndexNm is an index
-  sIndexNm checkIsIndex
-  not if
-  popIndexes popTable assertInTables <NIP+ERROR> exit
-  then
-
-  // pop indexes folder
-  popIndexes                                               // ../tables/sTableNm
-*/
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // lower bound select
 
@@ -345,7 +331,7 @@ timer: pIdxSelectTimer
       "0"  //upper
       "exactSelectIdxTask"
       pPlanner Planner.indexNm@
-      selectIndex
+      spawnSelectTask
     endof
 
     AT_LOWER of
@@ -355,7 +341,7 @@ timer: pIdxSelectTimer
       "0" //upper
       "lowerSelectIdxTask"
       pPlanner Planner.indexNm@
-      selectIndex
+      spawnSelectTask
     endof
 
     AT_UPPER of
@@ -365,7 +351,7 @@ timer: pIdxSelectTimer
       pPlanner Planner.highKey@
       "upperSelectIdxTask"
       pPlanner Planner.indexNm@
-      selectIndex
+      spawnSelectTask
     endof
 
     AT_RANGE of
@@ -377,12 +363,12 @@ timer: pIdxSelectTimer
         "case groupBy" .
         "groupByIdxTask_RH"
         "hidden"
-        groupByIndex_RH
+        spawnGroupByTask
       else
         "case range" .
         "rangeSelectIdxTask"
         pPlanner Planner.indexNm@
-        selectIndex
+        spawnSelectTask
       then
     endof
 
@@ -393,7 +379,7 @@ timer: pIdxSelectTimer
       "0" //upper
       "scanSelectIdxTask"
       "hidden"
-      selectIndex
+      spawnSelectTask
     endof
   endcase
 
