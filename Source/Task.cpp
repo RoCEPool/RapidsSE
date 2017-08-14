@@ -27,7 +27,7 @@ extern NP_Task         gnpBootTask;
 extern Lock            gxDdlLock;
 extern Lock            gxDicLock;
 extern SEitfList*      gpSEitfList;
-extern Scheduler*      gpServerScheduler;
+extern ServerScheduler*      gpServerScheduler;
 extern bool            gbVerbose;
 
 /*----------------------------------------------------------------------------*/
@@ -589,7 +589,7 @@ void Task::vAddConstants(void)
   /* 72 */ vAddConstant("CN_TASK"_Stz,         CN_TASK);
   /* 73 */ vAddConstant("CN_TASKCURSOR"_Stz,   CN_TASKCURSOR);
   /* 74 */ vAddConstant("CN_TASKLIST"_Stz,     CN_TASKLIST);
-  /* 75 */ vAddConstant("CN_SCHEDULER"_Stz,    CN_SCHEDULER);
+  /* 75 */ vAddConstant("CN_SERVERSCHEDULER"_Stz,    CN_SERVERSCHEDULER);
   /* 75 */ vAddConstant("CN_TASKSET"_Stz,      CN_TASKSET);
   /* 76 */ vAddConstant("CN_THREAD"_Stz,       CN_THREAD);
   /* 77 */ vAddConstant("CN_THREADCURSOR"_Stz, CN_THREADCURSOR);
@@ -791,7 +791,7 @@ void Task::vAddConstants(void)
   /* 58 */ vAddConstant("SIZEOF_TASK"_Stz,         sizeof(Task));
   /* 69 */ vAddConstant("SIZEOF_TASKCURSOR"_Stz,   sizeof(TaskCursor));
   /* 60 */ vAddConstant("SIZEOF_TASKLIST"_Stz,     sizeof(TaskList));
-  /* 61 */ vAddConstant("SIZEOF_SCHEDULER"_Stz,    sizeof(Scheduler));
+  /* 61 */ vAddConstant("SIZEOF_SCHEDULER"_Stz,    sizeof(ServerScheduler));
   /* 61 */ vAddConstant("SIZEOF_TASKSET"_Stz,      sizeof(TaskSet));
   /* 62 */ vAddConstant("SIZEOF_THREAD"_Stz,       sizeof(Thread));
   /* 63 */ vAddConstant("SIZEOF_THREADCURSOR"_Stz, sizeof(ThreadCursor));

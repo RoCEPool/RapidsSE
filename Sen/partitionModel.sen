@@ -103,16 +103,16 @@ nPartitionThreads constant N_PARTITION_THREADS
 
   nArgs sSeed nullptr AC_PARTITION sTaskNm eTaskKind task::new locals| pTask |
 
-
   iPtnNo >partitionThreadNm findActorTaskSet locals| pTaskSet |
 
   pTask pTaskSet taskSet.append
 
-  /*
+/*
   iPtnNo >partitionThreadNm findActorTaskQueue locals| pTaskQueue |
-
+ 
   pTask pTaskQueue taskQueue.append
-  */
+ */
+
 ;
 
 /*============================================================================*/

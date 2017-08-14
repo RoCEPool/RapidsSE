@@ -149,7 +149,7 @@ namespace Base
     /*110 */ CN_TASK,
     /*111 */ CN_TASKCURSOR,
     /*112 */ CN_TASKLIST,
-    /*113 */ CN_SCHEDULER,
+    /*113 */ CN_SERVERSCHEDULER,
     /*114 */ CN_TASKSET,
     /*115 */ CN_THREAD,
     /*116 */ CN_THREADCURSOR,

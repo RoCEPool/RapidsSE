@@ -10,7 +10,7 @@ extern Dic*       gpMainDic;
 extern SEitfList* gpSEitfList;
 extern AttachMap* gpAttachMap;
 extern Grid*      gpGrid;
-extern Scheduler* gpServerScheduler;
+extern ServerScheduler* gpServerScheduler;
 
 struct ReqTable {
   Stz* aCommand;

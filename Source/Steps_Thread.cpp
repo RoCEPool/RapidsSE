@@ -398,9 +398,9 @@ void Task::vThreadSchedulerFetch(MP_Task mpTask)
     THROW_INVALID_DSTACK("thread.scheduler@"_Stz);
   Thread* pThread = _pThread(pThreadEmb);
   
-  Scheduler* pScheduler = pThread->m_pScheduler;
+  ServerScheduler* pServerScheduler = pThread->m_pScheduler;
   
-  Object* pSchedulerEmb = static_cast<Object*>(pScheduler);
+  Object* pSchedulerEmb = static_cast<Object*>(pServerScheduler);
   
   mpTask->m_pDataStack->vPushObject(pSchedulerEmb);
   
@@ -427,9 +427,9 @@ void Task::vThreadSchedulerStore(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(pSchedulerEmb) )
     THROW_INVALID_DSTACK("thread.scheduler!"_Stz);
   
-  Scheduler* pScheduler = _pScheduler(pSchedulerEmb);
+  ServerScheduler* pServerScheduler = _pServerScheduler(pSchedulerEmb);
   
-  pThread->m_pScheduler = pScheduler;
+  pThread->m_pScheduler = pServerScheduler;
   
   EXIT();
 }

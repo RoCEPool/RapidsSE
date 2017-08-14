@@ -10,7 +10,7 @@ extern BufferPool*  gpBufferPool;
 extern ThreadList*  gpThreadList;
 extern TaskList*    gpTaskList;
 
-extern Scheduler*   gpServerScheduler;
+extern ServerScheduler*   gpServerScheduler;
 
 extern NP_Task      gnpBootTask;
 
