@@ -80,7 +80,7 @@ void IndexData::operator delete(void* pDataAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-IndexData::IndexData(Index* pIndex)
+IndexData::IndexData(Index* pIndex, i8 nPartitionNo)
 : Object(CN_INDEXDATA)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
@@ -96,6 +96,8 @@ IndexData::IndexData(Index* pIndex)
   
   m_pRoot = nullptr;
   m_pCurrentBuffer = nullptr;
+  m_nPartitionNo = nPartitionNo;
+  
   _checkInitialised_(CN_INDEXDATA);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
@@ -276,7 +278,7 @@ Entry* IndexData::pInsertEntry(i8 iTxId, Stz* pRow, i8 iLength)
     
     //----------------------------------------------------------------------------
     // create a new wntry buffer and link with current buffer
-    EntryBuffer* pNewBuffer = new EntryBuffer(m_pIndex, 0);
+    EntryBuffer* pNewBuffer = new EntryBuffer(m_pIndex, 0, m_nPartitionNo);
     pNewBuffer->vNextBuffer(m_pCurrentBuffer->pNextBuffer());
     pNewBuffer->vPrevBuffer(m_pCurrentBuffer);
     m_pCurrentBuffer->vNextBuffer(pNewBuffer);
@@ -337,7 +339,7 @@ void IndexData::vInsertEntry(Entry* pRow)
   //xKeyWrk.vShow();
   
   if ( ! m_pRoot )
-    m_pRoot = new EntryBuffer(m_pIndex, 0);
+    m_pRoot = new EntryBuffer(m_pIndex, 0, m_nPartitionNo);
   
   vInsertEntry(m_pRoot, xKeyWrk, pRow->xId(), 0);
   
@@ -609,7 +611,7 @@ EntryBuffer* IndexData::pSplitBuffer(EntryBuffer* pIndexBuffer)
   if ( ! pHigherLevel ) {
     
     i8 nHigherLevel = pIndexBuffer->nBufferLevel() + 1;
-    pRoot = new EntryBuffer(m_pIndex, nHigherLevel);
+    pRoot = new EntryBuffer(m_pIndex, nHigherLevel, m_nPartitionNo);
     
     // insert first entry in new root from buffer we split
     vInsertFirstEntry(pRoot, pIndexBuffer);

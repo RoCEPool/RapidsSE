@@ -325,7 +325,7 @@ tp: makingIndex
 /*----------------------------------------------------------------------------*/
 /* position key select cursor for table (called by keySelectIndex request)    */
 /*----------------------------------------------------------------------------*/
-: exactSelectIdxTask ( <"key>" "<lower>" "<upper>" ^indexPtr seitf partition -- )
+: exactSelectIdxTask ( <"key>" "<lower>" "<upper>" ^indexPtr seitf iPartitionNo -- )
 
   0 0 0 locals| entry tempEntryBuffer indexBuffer iPartitionNo seitf indexPtr upper lower key |
 
@@ -344,7 +344,7 @@ tp: makingIndex
 
   // create a temporary index buffer for the results
   //"Creating a tempIndexBuffer" .
-  indexPtr entryBuffer::create to tempEntryBuffer
+  iPartitionNo indexPtr entryBuffer::create to tempEntryBuffer
 
   // get the indexBuffer looking for the key
   key iPartitionNo indexPtr index.buffer ( indexBuffer )
@@ -394,7 +394,7 @@ tp: makingIndex
 
         // create another temporary index buffer for the results
         //"Creating a tempIndexBuffer" .
-        indexPtr entryBuffer::create to tempEntryBuffer
+        iPartitionNo indexPtr entryBuffer::create to tempEntryBuffer
 
         // insert row from entry in temporary buffer
         //"Inserting row into tempEntryBuffer" .
@@ -456,7 +456,7 @@ tp: makingIndex
   pGroupBy groupBy.start
 
   // create a temporary buffer for the results
-  pIndex entryBuffer::create to pResultBuffer
+  iPartitionNo pIndex entryBuffer::create to pResultBuffer
 
   // position at the index buffer
   //sUpper iPartitionNo pIndex index.buffer to pIndexBuffer
@@ -571,7 +571,7 @@ tp: loadIndexes
 
   // create a temporary index buffer for the results
   //"Creating a tempIndexBuffer" .
-  indexPtr entryBuffer::create to tempEntryBuffer
+  iPartitionNo indexPtr entryBuffer::create to tempEntryBuffer
 
   // get the indexBuffer looking for the lower key
   lower iPartitionNo indexPtr index.buffer ( indexBuffer )
@@ -618,7 +618,7 @@ tp: loadIndexes
 
       // create another temporary index buffer for the results
       //"Creating a tempIndexBuffer" .
-      indexPtr entryBuffer::create to tempEntryBuffer
+      iPartitionNo indexPtr entryBuffer::create to tempEntryBuffer
 
       // insert row from entry in temporary buffer
       //"Inserting row into tempEntryBuffer" .
@@ -679,7 +679,7 @@ tp: loadIndexes
   //pGroupBy groupBy.start
 
   // create a temporary buffer for the results
-  pIndex entryBuffer::create to pResultBuffer
+  iPartitionNo pIndex entryBuffer::create to pResultBuffer
 
   // position in the first index buffer
   //iPartitionNo pIndex index.positionFirst to pIndexBuffer
@@ -733,7 +733,7 @@ tp: loadIndexes
         pResultBuffer pSeitf seitf.bufferQueue@ queue.append
 
         // create another result buffer
-        pIndex entryBuffer::create to pResultBuffer
+        iPartitionNo pIndex entryBuffer::create to pResultBuffer
 
         // look up data row and insert row into result buffer
         pIndex pIndexEntry entry.toDataRow pResultBuffer entryBuffer.insertRow
@@ -1069,7 +1069,7 @@ tp: selectIndex
 /*----------------------------------------------------------------------------*/
 /* position key select cursor for table (called by selectIndex request)       */
 /*----------------------------------------------------------------------------*/
-: scanSelectIdxTask ( <"key>" "<lower>" "<upper>" ^indexPtr seitf partition -- )
+: scanSelectIdxTask ( <"key>" "<lower>" "<upper>" ^indexPtr seitf iPartitionNo -- )
 
   0 0 0 locals| entry tempEntryBuffer indexBuffer iPartitionNo seitf indexPtr upper lower key |
 
@@ -1088,7 +1088,7 @@ tp: selectIndex
 
   // create a temporary index buffer for the results
   "Creating a tempIndexBuffer" .
-  indexPtr entryBuffer::create to tempEntryBuffer
+  iPartitionNo indexPtr entryBuffer::create to tempEntryBuffer
 
   // position in the first index buffer
   iPartitionNo indexPtr index.positionFirst
@@ -1131,7 +1131,7 @@ tp: selectIndex
 
         // create another temporary index buffer for the results
         //"Creating a tempIndexBuffer" .
-        indexPtr entryBuffer::create to tempEntryBuffer
+        iPartitionNo indexPtr entryBuffer::create to tempEntryBuffer
 
         // insert row from entry in temporary buffer
         //"Inserting row into tempEntryBuffer" .
@@ -1232,7 +1232,7 @@ tp: selectIndex
 
   // create a temporary index buffer for the results
   //"Creating a tempIndexBuffer" .
-  indexPtr entryBuffer::create to tempEntryBuffer
+  iPartitionNo indexPtr entryBuffer::create to tempEntryBuffer
 
   // position in the index buffer with upper
   //upper iPartitionNo indexPtr index.buffer
@@ -1291,7 +1291,7 @@ tp: selectIndex
 
         // create another temporary index buffer for the results
         //"Creating a tempIndexBuffer" .
-        indexPtr entryBuffer::create to tempEntryBuffer
+        iPartitionNo indexPtr entryBuffer::create to tempEntryBuffer
 
         // insert row from entry in temporary buffer
         //"Inserting row into tempEntryBuffer" .
@@ -1504,7 +1504,7 @@ tp: selectIndex
   pGroupBy groupBy.start
 
   // create a temporary buffer for the results
-  pIndex entryBuffer::create to pResultBuffer
+  iPartitionNo pIndex entryBuffer::create to pResultBuffer
 
   // position the upper key
   //sUpper iPartitionNo pIndex index.buffer   to pIndexBuffer

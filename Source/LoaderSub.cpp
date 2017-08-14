@@ -232,7 +232,8 @@ bool LoaderSub::bInsertRow(void)
   
   // check for working buffer
   if (! m_pEntryBuffer[m_iPartition]) {
-    m_pEntryBuffer[m_iPartition] = new EntryBuffer(m_pTable->pHiddenIndex(),0);
+    m_pEntryBuffer[m_iPartition] = new EntryBuffer(m_pTable->pHiddenIndex(),
+                                                   0, m_iPartition);
     if (! m_pEntryBuffer[m_iPartition]) {
       vTrace("EntryBuffer allocation failed\n"_Stz);
       return false;

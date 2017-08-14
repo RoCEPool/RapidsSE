@@ -20,6 +20,7 @@ namespace DBobjects
     Index*       m_pIndex;
     EntryBuffer* m_pRoot;
     EntryBuffer* m_pCurrentBuffer;
+    i8           m_nPartitionNo;
   
     // must be last
     Footer m_xFooter;
@@ -32,7 +33,7 @@ namespace DBobjects
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     static void vFinalize(eCN eClass, Object* pObject);
     
-    IndexData(Index* pIndex);
+    IndexData(Index* pIndex, i8 nPartitionNo);
     ~IndexData(void);
   
     Stz*         pAnalyze(void);

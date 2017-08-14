@@ -44,6 +44,7 @@ namespace DBobjects
   
     Index*       m_pIndex;       // index this buffer belongs to
     i8           m_nBufferLevel; // index buffer level
+    i8           m_nPartitionNo; // partition no thsi buffer belongs to
   
     WspFxd<C_SIZE_LARGE_OBJECT - C_1KB*4> m_xWsp;
   
@@ -56,7 +57,7 @@ namespace DBobjects
     EntryBuffer(i8 iDataBytes);
   
     EntryBuffer(eCN eClassNo);
-    EntryBuffer(Index* pIndex, i8 nLevel);
+    EntryBuffer(Index* pIndex, i8 nLevel, i8 nPartitionNo);
     ~EntryBuffer(void);
   
     static EntryBuffer* pNewEntryBuffer(eCN eClassNo);
@@ -92,6 +93,7 @@ namespace DBobjects
     void       vIsLast(bool bIsLast);
     bool       bIsLast(void);
     Entry*     pNextRow(Entry* pCurrRow);
+    i8         nPartitionNo(void);
     void       vRowCount(void);
     i8         nUsedBytes(void);
   

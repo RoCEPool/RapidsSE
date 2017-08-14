@@ -101,7 +101,7 @@ EntryBuffer::EntryBuffer(i8 iDataBytes)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-EntryBuffer::EntryBuffer(Index* pIndex, i8 nBufferLevel)
+EntryBuffer::EntryBuffer(Index* pIndex, i8 nBufferLevel, i8 nPartitionNo)
 : EntryBuffer(CN_ENTRYBUFFER)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
@@ -109,6 +109,7 @@ EntryBuffer::EntryBuffer(Index* pIndex, i8 nBufferLevel)
   //m_pBitArray   = new BitArray;
   m_pIndex       = pIndex;
   m_nBufferLevel = nBufferLevel;
+  m_nPartitionNo = nPartitionNo;
   m_bIsLast     = false;
   
 #ifdef __DEBUG_CHECKS
@@ -142,6 +143,7 @@ EntryBuffer::EntryBuffer(eCN eClassNo)
   m_pHigherLevel = nullptr;
   
   m_nBufferLevel = 0;
+  m_nPartitionNo = -1;
   m_pIndex       = nullptr;
   
   _checkInitialised_(eClassNo);
@@ -272,7 +274,8 @@ void EntryBuffer::vDump(eCN eClass, Object* pObject, Stz* aTab)
   
   EntryBuffer* pRowBuffer = reinterpret_cast<EntryBuffer*>(pObject);
   
-  vTrace("rows %lld used %lld free %lld prevBuffer %p nextBuffer %p\n"_Stz,
+  vTrace("partition %lld rows %lld used %lld free %lld prevBuffer %p nextBuffer %p\n"_Stz,
+         pRowBuffer->m_nPartitionNo,
          pRowBuffer->m_nEntries,
          pRowBuffer->m_xWsp.nUsed(),
          pRowBuffer->m_xWsp.nFree(),
@@ -514,6 +517,16 @@ Entry* EntryBuffer::pNextRow(Entry* pCurr)
     return nullptr;
   
   return pNext;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get partition no                                                           */
+/*----------------------------------------------------------------------------*/
+i8 EntryBuffer::nPartitionNo(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  return m_nPartitionNo;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1033,10 +1046,11 @@ void EntryBuffer::vShow(void)
   else
     sHigherLevel = "..."_Stz;
   
-  vTrace("EntryBuffer %p (buffer %lld): level L%lld HigerLevel %p (L%s) "
+  vTrace("EntryBuffer %p (buffer %lld): partition %lld level L%lld HigerLevel %p (L%s) "
          "entries %lld prevBuffer %p nextBuffer %p \n"_Stz,
          this,
          *nBufferNo(),
+         m_nPartitionNo,
          m_nBufferLevel,
          m_pHigherLevel,
          sHigherLevel.aStr(),
@@ -1202,7 +1216,7 @@ EntryBuffer* EntryBuffer::pSplitBuffer(void)
   // create new buffer and move the entries into it
   
   // create new buffer at the same index level and link the two buffers
-  EntryBuffer* pNewBuffer = new EntryBuffer(m_pIndex, m_nBufferLevel);
+  EntryBuffer* pNewBuffer = new EntryBuffer(m_pIndex, m_nBufferLevel, m_nPartitionNo);
   pNewBuffer->m_pNextBuffer = pNextBuffer();
   pNewBuffer->m_pPrevBuffer = this;
   m_pNextBuffer = pNewBuffer;

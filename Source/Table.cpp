@@ -163,7 +163,7 @@ void Table::vAddIndex(Index* pIndex)
   // create an IndexData for the index in each partition
   for (i8 iPartition = 0; iPartition < gpGrid->m_nSlots; iPartition++) {
     Partition* pPartition = this->pPartition(iPartition);
-    pPartition->vAddIndex(new IndexData(pIndex));
+    pPartition->vAddIndex(new IndexData(pIndex, iPartition));
   }
 }
 

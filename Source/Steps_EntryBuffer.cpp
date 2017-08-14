@@ -58,7 +58,11 @@ void Task::vEntryBufferCreate(MP_Task mpTask)
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
   
-  EntryBuffer* pEntryBuffer = new EntryBuffer(pIndex->pTable()->pHiddenIndex(), 0);
+  i8 nPartitionNo;
+  if ( ! mpTask->m_pDataStack->bPop(nPartitionNo) )
+    THROW_INVALID_DSTACK("entryBuffer::create"_Stz);
+  
+  EntryBuffer* pEntryBuffer = new EntryBuffer(pIndex->pTable()->pHiddenIndex(), 0, nPartitionNo);
   
   mpTask->m_pDataStack->vPushObject(pEntryBuffer);
   
