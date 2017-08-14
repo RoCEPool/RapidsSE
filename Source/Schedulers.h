@@ -16,6 +16,7 @@ using namespace Schedulers;
 //-----------------------------------------------------------------------------
 
 #include "Scheduler.hpp"
+#include "PartitionScheduler.hpp"
 #include "ServerScheduler.hpp"
 
 /*============================================================================*/

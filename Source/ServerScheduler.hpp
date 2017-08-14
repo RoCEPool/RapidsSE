@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* QueryScheduler.hpp - schedule tasks to threads                             */
+/* ServerScheduler.hpp - schedule tasks to threads                            */
 /*============================================================================*/
 #pragma once
 
