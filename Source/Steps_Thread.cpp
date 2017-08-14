@@ -49,6 +49,8 @@ void Task::vAddPrimitives_Thread(void)
   vAddPrimitive("thread.name!"_Stz,           &vThreadNameStore,       false);
   vAddPrimitive("thread.scheduler@"_Stz,      &vThreadSchedulerFetch,  false);
   vAddPrimitive("thread.scheduler!"_Stz,      &vThreadSchedulerStore,  false);
+  vAddPrimitive("thread.taskqueue@"_Stz,      &vThreadTaskQueueFetch,  false);
+  vAddPrimitive("thread.taskqueue!"_Stz,      &vThreadTaskQueueStore,  false);
   vAddPrimitive("thread.taskset@"_Stz,        &vThreadSfetch,          false);
   vAddPrimitive("thread.taskset!"_Stz,        &vThreadSstore,          false);
   vAddPrimitive("thread.sleep_s"_Stz,         &vThreadSleep_s,         false);
@@ -461,6 +463,61 @@ ENTRY("vThreadNameStore"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
+/* thread.taskqueue@ -- fetch taskqueue from thread which is on data stack    */
+/*----------------------------------------------------------------------------*/
+void Task::vThreadTaskQueueFetch(MP_Task mpTask)
+{
+  ENTRY("vThreadTaskQueueFetch"_Stz);
+  
+  Object* pThreadEmb;
+  
+  if ( ! mpTask->m_pDataStack->bPop(pThreadEmb) )
+    THROW_INVALID_DSTACK("thread.taskqueue@"_Stz);
+  
+  ASSERT(CN_THREAD == pThreadEmb->eClass());
+  
+  Thread* pThread = static_cast<Thread*>(pThreadEmb);
+  
+  TaskList* pTaskQueue = pThread->m_pTaskQueue;
+  
+  Object* pTaskQueueEmb = static_cast<Object*>(pTaskQueue);
+  
+  mpTask->m_pDataStack->vPushObject(pTaskQueueEmb);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* thread.taskqueue! -- store taskqueue into thread which is on data stack    */
+/*----------------------------------------------------------------------------*/
+void Task::vThreadTaskQueueStore(MP_Task mpTask)
+{
+  ENTRY("vThreadTaskQueueStore"_Stz);
+  
+  Object* pThreadEmb;
+  
+  if ( ! mpTask->m_pDataStack->bPop(pThreadEmb) )
+    THROW_INVALID_DSTACK("thread.taskqueue!"_Stz);
+  
+  ASSERT(CN_THREAD == pThreadEmb->eClass());
+  
+  Thread* pThread = static_cast<Thread*>(pThreadEmb);
+  
+  Object* pTaskQueueEmb;
+  
+  if ( ! mpTask->m_pDataStack->bPop(pTaskQueueEmb) )
+    THROW_INVALID_DSTACK("thread.taskqueue!"_Stz);
+  
+  ASSERT(CN_TASKLIST == pTaskQueueEmb->eClass());
+  
+  TaskList* pTaskQueue = static_cast<TaskList*>(pTaskQueueEmb);
+  
+  pThread->m_pTaskQueue = pTaskQueue;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* thread.taskset@ -- fetch taskset from the thread which is on data stack    */
 /*----------------------------------------------------------------------------*/
 void Task::vThreadSfetch(MP_Task mpTask)
@@ -484,7 +541,6 @@ void Task::vThreadSfetch(MP_Task mpTask)
   
   EXIT();
 }
-
 
 /*----------------------------------------------------------------------------*/
 /* thread.taskset! -- store taskset into the thread which is on data stack    */
