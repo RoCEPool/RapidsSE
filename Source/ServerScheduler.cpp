@@ -62,7 +62,7 @@ void ServerScheduler::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 ServerScheduler::ServerScheduler(void)
-: Object(CN_SERVERSCHEDULER)
+: Scheduler(CN_SERVERSCHEDULER)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SERVERSCHEDULER,_FOOTER_);
   

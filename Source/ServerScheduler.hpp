@@ -10,7 +10,7 @@ namespace Threads
 
 namespace Schedulers
 {
-  class ServerScheduler : public Object
+  class ServerScheduler : public Scheduler
   {
   private:
     Semaphore      m_xSemaphore;
