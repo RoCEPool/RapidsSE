@@ -75,7 +75,7 @@ Thread::Thread(void)
   m_pPosixThread = new PosixThread;
   m_pSemaphore   = new Semaphore;
   m_pScheduler   = gpServerScheduler;
-  m_pTaskQueue   = nullptr;
+  m_pTaskList    = nullptr;
   m_pTaskSet     = nullptr;
   m_npTask       = nullptr;
 
@@ -742,21 +742,21 @@ i8 Thread::iThreadNo(void)
 /*----------------------------------------------------------------------------*/
 /* get this threads task queue                                                */
 /*----------------------------------------------------------------------------*/
-TaskQueue* Thread::pTaskQueue(void)
+TaskList* Thread::pTaskList(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
-  return m_pTaskQueue;
+  return m_pTaskList;
 }
 
 /*----------------------------------------------------------------------------*/
 /* get this threads task queue                                                */
 /*----------------------------------------------------------------------------*/
-void Thread::vTaskQueue(TaskQueue* pTaskQueue)
+void Thread::vTaskList(TaskList* pTaskList)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
-  m_pTaskQueue = pTaskQueue;
+  m_pTaskList = pTaskList;
 }
 
 /*----------------------------------------------------------------------------*/
