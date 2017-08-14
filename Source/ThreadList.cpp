@@ -49,7 +49,7 @@ ThreadList::ThreadList(void)
   
   ASSERT( ! gpThreadList );
   
-  gpThreadList = this;
+  //gpThreadList = this;
   
   _checkInitialised_(CN_THREADLIST);
   

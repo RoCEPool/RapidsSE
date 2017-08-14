@@ -31,8 +31,9 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_ThreadList(void)
 {
-  vAddPrimitive("threadList.dump"_Stz, &vThreadListDump,   false);
-  vAddPrimitive("threadList.init"_Stz, &vThreadListInit,   false);
+  vAddPrimitive("threadList.dump"_Stz,    &vThreadListDump,        false);
+  vAddPrimitive("threadList.global!"_Stz, &vThreadListGlobalStore, false);
+  vAddPrimitive("threadList.init"_Stz,    &vThreadListInit,        false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -50,6 +51,25 @@ ENTRY("vThreadListDump"_Stz);
   ASSERT(CN_THREADLIST == pThreadList->eClass());
 
   pThreadList->vContentDump("ThreadList:"_Stz, aSingleTab());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* threadlist.global! -- store gpThreadList                                   */
+/*----------------------------------------------------------------------------*/
+void Task::vThreadListGlobalStore(MP_Task mpTask)
+{
+  ENTRY("vThreadListInit"_Stz);
+  
+  Object* pPtrThreadList;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrThreadList) )
+    THROW_INVALID_DSTACK("threadlist.init"_Stz);
+  
+  ThreadList* pThreadList = _pThreadList(pPtrThreadList);
+  ASSERT(CN_THREADLIST == pThreadList->eClass());
+  
+  gpThreadList = pThreadList;
   
   EXIT();
 }

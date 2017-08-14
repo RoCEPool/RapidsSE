@@ -1211,8 +1211,9 @@ namespace Tasks
     
     // threadList
     static void vThreadListDump(MP_Task mpTask);
+    static void vThreadListGlobalStore(MP_Task mpTask);
     static void vThreadListInit(MP_Task mpTask);
-    
+  
     // timer
     static void vTimerDelete(MP_Task mpTask);
     static void vTimerInit(MP_Task mpTask);
