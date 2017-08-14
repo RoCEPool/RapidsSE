@@ -102,6 +102,7 @@ pDUMPFUN *gpDump[]
   
   /* 44 */ &Parser::vDump,          // CN_PARSER
   /* 45 */ &Partition::vDump,       // CN_PARTITION
+  /*    */ &Dump::vDummy,           // CN_PARTITIONSCHEDULER
   /*    */ &Dump::vDummy,           // CN_PARTITIONVEC
   /*    */ &Dump::vInvalid,         // CN_PATHVEC
   /* 46 */ &Plan::vDump,            // CN_PLAN
@@ -270,6 +271,7 @@ i8 giClassSize[]
   
   /* 44 */ sizeof(Parser),             // CN_PARSER
   /* 45 */ sizeof(Partition),          // CN_PARTITION
+  /* 45 */ 0,                          // CN_PARTITIONSCHEDULER
   /* 45 */ sizeof(PartitionVec),       // CN_PARTITIONVEC
   /*    */ sizeof(PathVec),            // CN_PATHVEC
   /* 46 */ sizeof(Plan),               // CN_PLAN
@@ -319,7 +321,7 @@ i8 giClassSize[]
   /* 80 */ sizeof(Task),               // CN_TASK
   /* 81 */ sizeof(TaskCursor),         // CN_TASKCURSOR
   /* 82 */ sizeof(TaskList),           // CN_TASKLIST
-  /* 83 */ sizeof(TaskSet),            // CN_SERVERSCHEDULER
+  /* 83 */ sizeof(ServerScheduler),    // CN_SERVERSCHEDULER
   /* 83 */ sizeof(TaskSet),            // CN_TASKSET
   /* 84 */ sizeof(Thread),             // CN_THREAD
   /* 85 */ sizeof(ThreadCursor),       // CN_THREADCURSOR
@@ -438,6 +440,7 @@ eHT geWhichHeap[]
   
   /* 47 */ HT_MEDIUM,  // CN_PARSER
   /* 48 */ HT_SMALL,   // CN_PARTITION
+  /*    */ HT_SMALL,   // CN_PARTITIONSCHEDULER
   /*    */ HT_MEDIUM,  // CN_PARTITIONVEC
   /*    */ HT_MEDIUM,  // CN_PATHVEC
   /* 49 */ HT_MEDIUM,  // CN_PLAN

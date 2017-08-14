@@ -100,6 +100,7 @@ namespace Base
   
     /* 67 */ CN_PARSER,
     /* 68 */ CN_PARTITION,
+    /*    */ CN_PARTITIONSCHEDULER,
     /*    */ CN_PARTITIONVEC,
     /* 69 */ CN_PATHVEC,
     /* 70 */ CN_PLAN,
@@ -268,6 +269,7 @@ namespace Base
   
     /* 44 */ "PARSER"_Stz,
     /* 45 */ "PARTITION"_Stz,
+    /*    */ "PARTITIONSCHEDULER"_Stz,
     /*    */ "PARTITIONVEC"_Stz,
     /*    */ "PATHVEC"_Stz,
     /* 46 */ "PLAN"_Stz,
