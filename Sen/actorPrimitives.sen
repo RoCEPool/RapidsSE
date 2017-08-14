@@ -89,7 +89,7 @@ tp: >jobQueue
   pTargetTask grabMutex ( valset )
 
   // append valset onto queue of target task
-  pTargetTask appendQueue ( )
+  pTargetTask appendJobQueue ( )
 
   // signal the target task if it is waiting for a valset to be queued
   pTargetTask isSignalWaiting if
@@ -176,12 +176,12 @@ tp: haveResultSet
   task::this grabMutex
 
   // attempt to pop from this task's job queue
-  popQueue ( value true | false )
+  popJobQueue ( value true | false )
   not if
     // queue empty; wait till signalled
     signalWait
-    // pop from this tasks queue
-    popQueue assert
+    // pop from this tasks job queue
+    popJobQueue assert
   then
 
   // grab mutex of this task
