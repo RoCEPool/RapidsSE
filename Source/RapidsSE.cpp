@@ -422,7 +422,7 @@ void RapidsSE::vSystemInit(void)
   
   gnpBootTask = new Task;
   s32 sName;
-  sName = "rootTask"_Stz;
+  sName = "bootTask"_Stz;
   gnpBootTask->vName(sName);
   gnpBootTask->vActorModel(AC_SERVER);
   
