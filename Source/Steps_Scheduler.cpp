@@ -47,29 +47,7 @@ void Task::vAddPrimitives_Scheduler(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Scheduler.queueTask -- queue task onto given scheduler                     */
-/*----------------------------------------------------------------------------*/
-void Task::vSchedulerEnqueueServerTask(MP_Task mpTask)
-{
-  ENTRY("vSchedulerEnqueueTask"_Stz);
-  
-  Object* pObject;
-  
-  if ( ! mpTask->m_pDataStack->bPop(pObject) )
-    THROW_INVALID_DSTACK("Scheduler.enqueueTask"_Stz);
-  ServerScheduler* pServerScheduler = _pServerScheduler(pObject);
-
-  if ( ! mpTask->m_pDataStack->bPop(pObject) )
-    THROW_INVALID_DSTACK("Scheduler.enqueueTask"_Stz);
-  Task* pTask = _pTask(pObject);
-  
-  pServerScheduler->vEnqueueTask_Mutex(pTask);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* schedulery.list-- trace scheduler statistics                               */
+/* Scheduler::list -- trace scheduler statistics                              */
 /*----------------------------------------------------------------------------*/
 void Task::vSchedulerList(MP_Task mpTask)
 {
@@ -84,7 +62,7 @@ void Task::vSchedulerList(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Scheduler.queuedTasks -- get number of queued tasks in given scheduler     */
+/* Scheduler::queuedTasks -- get number of queued tasks in given scheduler    */
 /*----------------------------------------------------------------------------*/
 void Task::vSchedulerQueuedTasks(MP_Task mpTask)
 {
@@ -98,7 +76,7 @@ void Task::vSchedulerQueuedTasks(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Scheduler.queuedThreads -- get count of threads waiting in scheduler       */
+/* Scheduler::queuedThreads -- get count of threads waiting in scheduler      */
 /*----------------------------------------------------------------------------*/
 void Task::vSchedulerQueuedThreads(MP_Task mpTask)
 {
@@ -111,7 +89,7 @@ void Task::vSchedulerQueuedThreads(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* scheduler.reset -- reset scheduler statistics                              */
+/* scheduler::reset -- reset scheduler statistics                             */
 /*----------------------------------------------------------------------------*/
 void Task::vSchedulerReset(MP_Task mpTask)
 {
@@ -126,7 +104,7 @@ void Task::vSchedulerReset(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Scheduler.server -- push server scheduler                                  */
+/* Scheduler::server -- push server scheduler                                 */
 /*----------------------------------------------------------------------------*/
 void Task::vSchedulerServer(MP_Task mpTask)
 {
@@ -134,6 +112,32 @@ void Task::vSchedulerServer(MP_Task mpTask)
   
   mpTask->m_pDataStack->vPushObject(gpServerScheduler);
     
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* Scheduler.enqueueServerTask -- enqueue server task                         */
+/*----------------------------------------------------------------------------*/
+void Task::vSchedulerEnqueueServerTask(MP_Task mpTask)
+{
+  ENTRY("vSchedulerEnqueueTask"_Stz);
+  
+  Object* pObject;
+  
+  if ( ! mpTask->m_pDataStack->bPop(pObject) )
+    THROW_INVALID_DSTACK("Scheduler.enqueueTask"_Stz);
+  ServerScheduler* pServerScheduler = _pServerScheduler(pObject);
+  
+  if ( ! mpTask->m_pDataStack->bPop(pObject) )
+    THROW_INVALID_DSTACK("Scheduler.enqueueTask"_Stz);
+  Task* pTask = _pTask(pObject);
+  
+  pServerScheduler->vEnqueueTask_Mutex(pTask);
+  
   EXIT();
 }
 
