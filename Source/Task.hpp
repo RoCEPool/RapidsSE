@@ -972,6 +972,7 @@ namespace Tasks
     // scheduler
     static void vSchedulerEnqueueServerTask(MP_Task mpTask);
     static void vSchedulerList(MP_Task mpTask);
+    static void vSchedulerPartition(MP_Task mpTask);
     static void vSchedulerQueuedTasks(MP_Task mpTask);
     static void vSchedulerQueuedThreads(MP_Task mpTask);
     static void vSchedulerReset(MP_Task mpTask);

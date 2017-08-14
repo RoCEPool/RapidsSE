@@ -23,6 +23,7 @@ extern NP_Task         gnpBootTask;
 extern Lock            gxDdlLock;
 extern Lock            gxDicLock;
 extern SEitfList*      gpSEitfList;
+extern PartitionScheduler* gpPartitionScheduler;
 extern ServerScheduler* gpServerScheduler;
 
 extern i8 giSchEnqueueTask;
@@ -38,6 +39,7 @@ extern i8 giSchGetTaskWait;
 void Task::vAddPrimitives_Scheduler(void)
 {
   vAddPrimitive("Scheduler::list"_Stz,              &vSchedulerList,          false);
+  vAddPrimitive("Scheduler::partition"_Stz,         &vSchedulerPartition,     false);
   vAddPrimitive("Scheduler::queuedTasks"_Stz,       &vSchedulerQueuedTasks,   false);
   vAddPrimitive("Scheduler::queuedThreads"_Stz,     &vSchedulerQueuedThreads, false);
   vAddPrimitive("Scheduler::reset"_Stz,             &vSchedulerReset,         false);
@@ -57,6 +59,18 @@ void Task::vSchedulerList(MP_Task mpTask)
   vTrace("SchEnqueueTaskWait %lld\n"_Stz,giSchEnqueueTaskWait);
   vTrace("SchGetTask %lld\n"_Stz,giSchGetTask);
   vTrace("SchGetTaskWait %lld\n"_Stz,giSchGetTaskWait);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Scheduler::partition -- push partition scheduler                           */
+/*----------------------------------------------------------------------------*/
+void Task::vSchedulerPartition(MP_Task mpTask)
+{
+  ENTRY("vSchedulerPartition"_Stz);
+  
+  mpTask->m_pDataStack->vPushObject(gpPartitionScheduler);
   
   EXIT();
 }
