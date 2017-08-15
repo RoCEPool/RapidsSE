@@ -78,12 +78,14 @@ Index Requests:
 -----------------
 anidx     analyzeIndex_req
 dumpidx   dumpIndex_req
+fetch     fetchRowsIndex_req
 getidx    getIndex_req
 mkidx     createIndex_req
 lsidx     listIndexes_req
 retidx    returnIndex_req
 rmidx     dropIndex_req
 setidxunique indexSetUnique_req
+spnFetch  spawnFetchRows_apiReq
 szidx     sizeIndex_req
 tridx     truncateIndex_req
  

@@ -342,6 +342,69 @@ timer: pIdxSelectTimer
 ;
 
 /*----------------------------------------------------------------------------*/
+/* spawn fetch rows task (this is request)                                    */
+/*----------------------------------------------------------------------------*/
+: spawnFetchRows_apiReq ( "groupBy" "<sWhere>" "<sTableNm>" -- <R> )
+  // ../tables
+  //"fetchRowsIndex_req" .
+
+  // task is a request server
+  task::this task.kind@ TK_REQUEST_SERVER == assert
+
+  assert::stack_3
+  CN_STRVAL assert::class_0
+  CN_STRVAL assert::class_1
+  CN_INTVAL assert::class_2
+
+  0 0 locals| pPlanner pTable sTableNm sWhere bGroupBy |
+
+  pIdxSelectTimer timer.start
+
+  ddlLock::grabRead
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // checks
+
+  //
+  // task will have an seitf and a dicStack path, but seitf has no table
+  //
+
+  // assert no seitf.table
+  task::this task.seitf@ seitf.table@ not assert
+
+  // path should end in a tables folder
+  // i.e. task.dicStack should be ../tables
+  checkInTables not if <NIP+ERROR> exit then
+
+  // check "<sTableNm>" is a table folder within ../tables
+  sTableNm checkIsTableFolder not if <NIP+ERROR> exit then
+
+  // push named table folder onto path
+  // i.e. task.dicStack will be ../tables/<sTableNm>
+  sTableNm pushTable assert                                // ../tables/sTableNm
+
+  // check "<sTableNm"> is a table in ../tables/<sTableNm>
+  sTableNm checkIsTable not if <NIP+ERROR> exit then
+
+  sTableNm find execute to pTable
+
+  // get and inc table reference and put into task.seitf.currentTable
+  getTableRef not if <NIP+ERROR> exit then
+  task::this task.seitf@ seitf.table@ assert
+
+  // generate plan for the fetch
+  sWhere pTable generatePlan to pPlanner
+
+  // assert we have a plan
+  pPlanner assert
+
+  // spawn select task for the fetch
+  bGroupBy pPlanner spawnFetch
+
+  <OK>
+;
+
+/*----------------------------------------------------------------------------*/
 /* fetch rows using an index (this is request)                                */
 /*----------------------------------------------------------------------------*/
 : fetchRowsIndex_req ( "groupBy" "<sWhere>" "<sTableNm>" -- <R> )
@@ -400,6 +463,7 @@ timer: pIdxSelectTimer
   // generate plan for the fetch
   sWhere pTable generatePlan to pPlanner
 
+  // assert we have a plan
   pPlanner assert
 
   // spawn select task for the fetch

@@ -160,6 +160,7 @@ namespace Interface
     bool bTruncateTable(TokenVec& xTokenVec, i8 iReqNo);
     
     bool bFetchRows(TokenVec& xTokenVec, i8 iReqNo);
+    bool bSpawnFetchRows(TokenVec& xTokenVec, i8 iReqNo);
   
     bool bGetTask(TokenVec& xTokenVec, i8 iReqNo);
     bool bRetTask(TokenVec& xTokenVec, i8 iReqNo);

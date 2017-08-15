@@ -78,6 +78,7 @@ ReqTable SeRequests[] =
  { "setAttachMap"_Stz,   &SEitf::bSetAttachMap,         "setAttachMap_req"_Stz    },
  { "setidxunique"_Stz,   &SEitf::bIndexSetUnique,       "indexSetUnique_req"_Stz  },
  { "space"_Stz,          &SEitf::bPoolSpace,            "poolSpace_req"_Stz       },
+ { "spnFetch"_Stz,       &SEitf::bSpawnFetchRows,       "spawnfetchRows_apiReq"_Stz },
  { "status"_Stz,         &SEitf::bNodeStatus,           "nodeStatus_req"_Stz      },
  { "szidx"_Stz,          &SEitf::bSizeIndex,            "sizeIndex_req"_Stz       },
  { "sz"_Stz,             &SEitf::bSizeTable,            "sizeTable_req"_Stz       },
@@ -2336,6 +2337,39 @@ bool SEitf::bGetTask(TokenVec& xTokenVec, i8 iReqNo)
   
   ASSERT(xTokenVec[0]->bSame("gettsk"_Stz));
   
+  sRequest.vConcat(SeRequests[iReqNo].aRequest);
+  
+  return bAppendRequest(sRequest);
+}
+
+/*----------------------------------------------------------------------------*/
+/* fetch rows from a table                                                    */
+/*----------------------------------------------------------------------------*/
+bool SEitf::bSpawnFetchRows(TokenVec& xTokenVec, i8 iReqNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  s256 sRequest;
+  
+  //  sRequest.vCopy("\""_Stz);
+  //  sRequest.vConcat(xTokenVec[3]);
+  //  sRequest.vConcat("\""_Stz);
+  
+  // hack for groupBy performance testing
+  if (xTokenVec.nTokens() == 4)
+    sRequest.vConcat("1"_Stz);
+  else
+    sRequest.vConcat("0"_Stz);
+  
+  sRequest.vConcat(" \""_Stz);
+  sRequest.vConcat(xTokenVec[2]->aText());
+  sRequest.vConcat("\""_Stz);
+  
+  sRequest.vConcat(" \""_Stz);
+  sRequest.vConcat(xTokenVec[1]->aText());
+  sRequest.vConcat("\""_Stz);
+  
+  sRequest.vConcat(" "_Stz);
   sRequest.vConcat(SeRequests[iReqNo].aRequest);
   
   return bAppendRequest(sRequest);
