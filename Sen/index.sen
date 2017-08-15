@@ -728,6 +728,60 @@ tp: loadIndexes
 ;
 
 /*----------------------------------------------------------------------------*/
+/* fetch rows from buffers from teh buffer queue of the seitf                 */
+/*----------------------------------------------------------------------------*/
+: fetchQueueBufferRows ( ^pSeitf -- )
+
+  0 0 0 0 locals| iSlots nRowCount pIndex pIndexBuffer pSeitf |
+
+  // get index
+  pSeitf seitf.index@ to pIndex
+
+  // get slots
+  grid.slots to iSlots
+
+  1
+  begin
+  while
+
+    // attempt to pop buffer off the tasks buffer queue
+    pSeitf seitf.bufferQueue@  popBuffer to pIndexBuffer
+
+    // print the rows from the index buffer
+    pIndex pIndexBuffer printRows nRowCount + to nRowCount
+
+    // check if last buffer
+    pIndexBuffer entryBuffer.isLast@ if
+
+    //"Reached last buffer" .
+    iSlots 1 - to iSlots
+      0 iSlots == if
+        0
+      else
+        1
+      then
+    else
+      1  // no more entries, move to next buffer
+    then
+
+    pIndexBuffer entryBuffer.delete
+    //"Deleted buffer" .
+
+  repeat
+
+
+  // delete the buffer queue from the seitf
+  pSeitf seitf.bufferQueue@ queue.delete
+  0 pSeitf seitf.bufferQueue!
+
+  args.metadata if
+    nRowCount pSeitf seitf.rowsProcessed
+  else
+    "rows selected"  nRowCount "%v %v\n" str.format .put
+  then
+
+;
+/*----------------------------------------------------------------------------*/
 /* select using index (called by fetchRowsIndex_req)                          */
 /*----------------------------------------------------------------------------*/
 : spawnSelectTask ( "<sExactKey>" "<sLowerKey>" "<sUpperKey>"
@@ -766,6 +820,9 @@ tp: loadIndexes
   sIndexNm find execute to pIndex
   pIndex pSeitf seitf.index!
 
+  // pop indexes
+  popIndexes
+
   args.metadata if
     metadata@ "metadata: %v\n" str.format .put
   then
@@ -789,48 +846,9 @@ tp: loadIndexes
 
   loop
 
-    1
-    begin
-    while
+  // now fetch the rows from the buffers
+  pSeitf fetchQueueBufferRows
 
-      // attempt to pop buffer off the tasks buffer queue
-      pSeitf seitf.bufferQueue@  popBuffer to pIndexBuffer
-
-      // print the rows from the index buffer
-      pIndex pIndexBuffer printRows nRowCount + to nRowCount
-
-      // check if last buffer
-      pIndexBuffer entryBuffer.isLast@ if
-
-        //"Reached last buffer" .
-        iSlots 1 - to iSlots
-        0 iSlots == if
-          0
-        else
-          1
-        then
-      else
-        1  // no more entries, move to next buffer
-      then
-
-      pIndexBuffer entryBuffer.delete
-      //"Deleted buffer" .
-
-    repeat
-
-
-  // delete the buffer queue from the seitf
-  pSeitf seitf.bufferQueue@ queue.delete
-  0 pSeitf seitf.bufferQueue!
-
-  // pop indexes
-  popIndexes
-
-  args.metadata if
-    nRowCount pSeitf seitf.rowsProcessed
-  else
-    "rows selected"  nRowCount "%v %v\n" str.format .put
-  then
 ;
 
 /*----------------------------------------------------------------------------*/
