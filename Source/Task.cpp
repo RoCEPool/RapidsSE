@@ -995,6 +995,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitives_Task();
   vAddPrimitives_TaskCursor();
   vAddPrimitives_TaskList();
+  vAddPrimitives_TaskQueue();
   vAddPrimitives_TaskSet();
   vAddPrimitives_Thread();
   vAddPrimitives_ThreadCursor();
