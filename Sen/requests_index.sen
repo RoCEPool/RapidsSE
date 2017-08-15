@@ -245,6 +245,103 @@ timer: pIdxSelectTimer
 ;
 
 /*----------------------------------------------------------------------------*/
+/* generate plan for the fetch                                                */
+/*----------------------------------------------------------------------------*/
+: generatePlan ( "<sWhere>" ^pTable -- ^pPlanner )
+
+  0 0 locals| pPlanner pAccessPath pTable sWhere |
+
+  ( cdt_0 ) planner::new to pPlanner
+  ( cdt_1 ) pTable pPlanner Planner.table!
+
+  ( cdt_2 ) pPlanner Planner.genPaths           //"genPaths" .
+  ( cdt_3 ) pPlanner Planner.scorePaths         //"scorePaths" .
+  //( cdt_4 ) pPlanner Planner.showPaths
+
+  ( cdt_5 ) sWhere pPlanner Planner.parseWhere  //"parseWheres" .
+  //( cdt_4 ) pPlanner Planner.showPaths
+
+  ( cdt_7 ) pPlanner Planner.matchPaths         //"matchPaths" .
+  //( cdt_8 ) pPlanner Planner.showPaths
+
+  ( cdt_9 ) pPlanner Planner.choosePath         //"choosePaths" .
+
+  // return planner
+  pPlanner
+;
+
+/*----------------------------------------------------------------------------*/
+/* fetch rows using an index (this is request)                                */
+/*----------------------------------------------------------------------------*/
+: spawnFetch ( bGroupBy ^pPlanner -- <R> )
+
+  locals| pPlanner bGroupBy |
+
+  pPlanner Planner.fetchTechnique@
+
+  // execute a lower bound select using index
+  case
+    AT_EXACT of
+    "case equal" .
+    pPlanner Planner.key@
+    "0"  //lower
+    "0"  //upper
+    "exactSelectIdxTask"
+    pPlanner Planner.indexNm@
+    spawnSelectTask
+  endof
+
+  AT_LOWER of
+    "case lower" .
+    "0" //key
+    pPlanner Planner.lowKey@
+    "0" //upper
+    "lowerSelectIdxTask"
+    pPlanner Planner.indexNm@
+    spawnSelectTask
+  endof
+
+  AT_UPPER of
+    "case upper" .
+    "0" //key
+    "0" //lower
+    pPlanner Planner.highKey@
+    "upperSelectIdxTask"
+    pPlanner Planner.indexNm@
+    spawnSelectTask
+  endof
+
+  AT_RANGE of
+
+    "0" //key
+    pPlanner Planner.lowKey@
+    pPlanner Planner.highKey@
+    bGroupBy if
+      "case groupBy" .
+      "groupByIdxTask_RH"
+      "hidden"
+      spawnGroupByTask
+    else
+      "case range" .
+      "rangeSelectIdxTask"
+      pPlanner Planner.indexNm@
+      spawnSelectTask
+    then
+  endof
+
+  AT_SCAN of
+    "case scan" .
+    "0" //key
+    "0" //lower
+    "0" //upper
+    "scanSelectIdxTask"
+    "hidden"
+    spawnSelectTask
+    endof
+  endcase
+;
+
+/*----------------------------------------------------------------------------*/
 /* fetch rows using an index (this is request)                                */
 /*----------------------------------------------------------------------------*/
 : fetchRowsIndex_req ( "groupBy" "<sWhere>" "<sTableNm>" -- <R> )
@@ -259,7 +356,7 @@ timer: pIdxSelectTimer
   CN_STRVAL assert::class_1
   CN_INTVAL assert::class_2
 
-  0 0 0 locals| pPlanner pAccessPath pTable sTableNm sWhere bGroupBy |
+  0 0 locals| pPlanner pTable sTableNm sWhere bGroupBy |
 
   pIdxSelectTimer timer.start
 
@@ -291,9 +388,6 @@ timer: pIdxSelectTimer
 
   sTableNm find execute to pTable
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // lower bound select
-
   // set the metadata string
   args.metadata if
     pTable table.getColumns "(partition INTEGER,%v)" str.format metadata!
@@ -303,85 +397,16 @@ timer: pIdxSelectTimer
   getTableRef not if <NIP+ERROR> exit then
   task::this task.seitf@ seitf.table@ assert
 
-  // create access path and put into seitf
-  //accessPath::new to pAccessPath
-  //pAccessPath task::this task.seitf@ seitf.accessPath!
+  // generate plan for the fetch
+  sWhere pTable generatePlan to pPlanner
 
-  ( cdt_0 ) planner::new to pPlanner
-  ( cdt_1 ) pTable pPlanner Planner.table!
+  pPlanner assert
 
-  ( cdt_2 ) pPlanner Planner.genPaths           //"genPaths" .
-  ( cdt_3 ) pPlanner Planner.scorePaths         //"scorePaths" .
-  //( cdt_4 ) pPlanner Planner.showPaths
+  // spawn select task for the fetch
+  bGroupBy pPlanner spawnFetch
 
-  ( cdt_5 ) sWhere pPlanner Planner.parseWhere  //"parseWheres" .
-  //( cdt_4 ) pPlanner Planner.showPaths
-  ( cdt_7 ) pPlanner Planner.matchPaths         //"matchPaths" .
-  //( cdt_8 ) pPlanner Planner.showPaths
-  ( cdt_9 ) pPlanner Planner.choosePath         //"choosePaths" .
-
-  pPlanner Planner.fetchTechnique@
-
-  // execute a lower bound select using index
-  case
-    AT_EXACT of
-      "case equal" .
-      pPlanner Planner.key@
-      "0"  //lower
-      "0"  //upper
-      "exactSelectIdxTask"
-      pPlanner Planner.indexNm@
-      spawnSelectTask
-    endof
-
-    AT_LOWER of
-      "case lower" .
-      "0" //key
-      pPlanner Planner.lowKey@
-      "0" //upper
-      "lowerSelectIdxTask"
-      pPlanner Planner.indexNm@
-      spawnSelectTask
-    endof
-
-    AT_UPPER of
-      "case upper" .
-      "0" //key
-      "0" //lower
-      pPlanner Planner.highKey@
-      "upperSelectIdxTask"
-      pPlanner Planner.indexNm@
-      spawnSelectTask
-    endof
-
-    AT_RANGE of
-
-      "0" //key
-      pPlanner Planner.lowKey@
-      pPlanner Planner.highKey@
-      bGroupBy if
-        "case groupBy" .
-        "groupByIdxTask_RH"
-        "hidden"
-        spawnGroupByTask
-      else
-        "case range" .
-        "rangeSelectIdxTask"
-        pPlanner Planner.indexNm@
-        spawnSelectTask
-      then
-    endof
-
-    AT_SCAN of
-      "case scan" .
-      "0" //key
-      "0" //lower
-      "0" //upper
-      "scanSelectIdxTask"
-      "hidden"
-      spawnSelectTask
-    endof
-  endcase
+  // fetch rows from the buffers in the buffer queue
+  fetchQueueBufferRows
 
   // dec and return table reference and clear task.seitf.currentTable
   returnTableRef not if <NIP+ERROR> exit then
@@ -393,13 +418,12 @@ timer: pIdxSelectTimer
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // restore path
-
   popTable assertInTables                                           // ../tables
 
   args.metadata not if
-  pIdxSelectTimer timer.update
-  "select time " .put
-  pIdxSelectTimer timer.millisecs .put "ms" .put .\n
+    pIdxSelectTimer timer.update
+    "select time " .put
+    pIdxSelectTimer timer.millisecs .put "ms" .put .\n
   then
 
   <OK>
