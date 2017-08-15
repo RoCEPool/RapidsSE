@@ -1,0 +1,34 @@
+/*============================================================================*/
+/* taskQueue.sen -- task queue related words                                  */
+/*============================================================================*/
+
+"taskQueue.sen" .verbose
+
+: taskQueue:
+
+  create
+  WT_OBJECT word.this word.type!
+  sizeof_taskQueue allot
+  word.this >body object.magic!
+  CN_TASKQUEUE word.this >body object.class!
+  word.this >body taskQueue.init
+  true word.this >body object.wordbody!
+  does> 
+;
+
+: :taskQueue
+
+  >create
+  WT_OBJECT word.this word.type!
+  sizeof_taskQueue allot
+  word.this >body object.magic!
+  CN_TASKQUEUE word.this >body object.class!
+  word.this >body taskQueue.init
+  true word.this >body object.wordbody!
+  word.this
+  does>
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
