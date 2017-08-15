@@ -730,9 +730,12 @@ tp: loadIndexes
 /*----------------------------------------------------------------------------*/
 /* fetch rows from buffers from teh buffer queue of the seitf                 */
 /*----------------------------------------------------------------------------*/
-: fetchQueueBufferRows ( ^pSeitf -- )
+: fetchQueueBufferRows ( -- )
 
   0 0 0 0 locals| iSlots nRowCount pIndex pIndexBuffer pSeitf |
+
+  // get the seitf of the task
+  task::this task.seitf@ to pSeitf
 
   // get index
   pSeitf seitf.index@ to pIndex
@@ -845,10 +848,6 @@ tp: loadIndexes
         to pSelectTask
 
   loop
-
-  // now fetch the rows from the buffers
-  pSeitf fetchQueueBufferRows
-
 ;
 
 /*----------------------------------------------------------------------------*/

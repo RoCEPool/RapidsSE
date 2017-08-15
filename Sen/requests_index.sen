@@ -383,6 +383,9 @@ timer: pIdxSelectTimer
     endof
   endcase
 
+  // fetch rows from the buffers in the buffer queue
+  fetchQueueBufferRows
+
   // dec and return table reference and clear task.seitf.currentTable
   returnTableRef not if <NIP+ERROR> exit then
 
