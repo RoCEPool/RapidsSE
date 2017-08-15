@@ -157,6 +157,7 @@ pFINALIZE *gpFinalize[]
   /* 84 */ &Finalize::vUndefined,         // CN_THREAD
   /* 85 */ &Finalize::vUndefined,         // CN_THREADCURSOR
   /* 86 */ &Finalize::vUndefined,         // CN_THREADLIST
+  /*    */ &Finalize::vUndefined,         // CN_THREADQUEUE
   /* 87 */ &Finalize::vUndefined,         // CN_TIME
   /* 88 */ &Finalize::vUndefined,         // CN_TIMER
   /* 89 */ &Finalize::vUndefined,         // CN_TOKEN
