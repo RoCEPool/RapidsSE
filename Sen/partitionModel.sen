@@ -86,6 +86,11 @@ nPartitionThreads constant N_PARTITION_THREADS
     I >partitionThreadNm ".taskqueue" str.cat :taskList execute
       pPartitionThread thread.taskqueue!
 
+/*
+    pPartitionThread thread.taskqueue@ 
+      iPtnNo scheduler::partition scheduler.partitionQueue!
+ */
+
 //words
 
     // spawn os thread
@@ -111,6 +116,10 @@ nPartitionThreads constant N_PARTITION_THREADS
   iPtnNo >partitionThreadNm findActorTaskQueue locals| pTaskQueue |
  
   pTask pTaskQueue taskQueue.append
+ 
+ 
+  pTask iPtnNo scheduler::partition scheduler.enqueuePartitionTask
+
  */
 
 ;

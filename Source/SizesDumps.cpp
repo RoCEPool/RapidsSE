@@ -152,6 +152,7 @@ pDUMPFUN *gpDump[]
   /* 80 */ &Task::vDump,            // CN_TASK
   /* 81 */ &Dump::vUndefined,       // CN_TASKCURSOR
   /* 82 */ &TaskList::vDump,        // CN_TASKLIST
+  /*    */ &Dump::vUndefined,       // CN_TASKQUEUE
   /* 83 */ &Dump::vUndefined,       // CN_SERVERSCHEDULER
   /* 83 */ &Dump::vUndefined,       // CN_TASKSET
   /* 84 */ &Dump::vUndefined,       // CN_THREAD
@@ -321,6 +322,7 @@ i8 giClassSize[]
   /* 80 */ sizeof(Task),               // CN_TASK
   /* 81 */ sizeof(TaskCursor),         // CN_TASKCURSOR
   /* 82 */ sizeof(TaskList),           // CN_TASKLIST
+  /*    */ sizeof(TaskList),           // CN_TASKQUEUE                   //! fix
   /* 83 */ sizeof(ServerScheduler),    // CN_SERVERSCHEDULER
   /* 83 */ sizeof(TaskSet),            // CN_TASKSET
   /* 84 */ sizeof(Thread),             // CN_THREAD
@@ -490,6 +492,7 @@ eHT geWhichHeap[]
   /* 83 */ HT_MEDIUM,  // CN_TASK
   /* 84 */ HT_INVALID, // CN_TASKCURSOR
   /* 85 */ HT_SMALL,   // CN_TASKLIST
+  /*    */ HT_SMALL,   // CN_TASKQUEUE
   /*    */ HT_MEDIUM,  // CN_SERVERSCHEDULER
   /* 86 */ HT_SMALL,   // CN_TASKSET
   /* 87 */ HT_INVALID, // CN_THREAD

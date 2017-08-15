@@ -151,6 +151,7 @@ pFINALIZE *gpFinalize[]
   /* 80 */ &Finalize::vUndefined,         // CN_TASK
   /* 81 */ &Finalize::vUndefined,         // CN_TASKCURSOR
   /* 82 */ &Finalize::vUndefined,         // CN_TASKLIST
+  /* 82 */ &Finalize::vUndefined,         // CN_TASKQUEUE
   /*    */ &Finalize::vUndefined,         // CN_SERVERSCHEDULER
   /* 83 */ &Finalize::vUndefined,         // CN_TASKSET
   /* 84 */ &Finalize::vUndefined,         // CN_THREAD
