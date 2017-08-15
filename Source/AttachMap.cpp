@@ -14,7 +14,7 @@ extern Dic*         gpMainDic;
 extern TxCollection* gpTxCollection;
 extern TxMap*        gpTxMap;
 extern Grid*         gpGrid;
-extern ServerScheduler*    gpPartitionScheduler;
+extern PartitionScheduler*    gpPartitionScheduler;
 extern ServerScheduler*    gpServerScheduler;
 
 extern TaskList*    gpTaskList;
