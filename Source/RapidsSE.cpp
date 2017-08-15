@@ -22,7 +22,7 @@ ThreadList*   gpThreadList   = nullptr;
 TxCollection* gpTxCollection = nullptr;
 TxMap*        gpTxMap        = nullptr;
 SEitfList*    gpSEitfList    = nullptr;
-ServerScheduler*    gpPartitionScheduler = nullptr;
+PartitionScheduler*    gpPartitionScheduler = nullptr;
 ServerScheduler*    gpServerScheduler    = nullptr;
 
 File*         gpTraceFile    = nullptr;
@@ -426,6 +426,7 @@ void RapidsSE::vSystemInit(void)
   gnpBootTask->vName(sName);
   gnpBootTask->vActorModel(AC_SERVER);
   
+  gpPartitionScheduler = new PartitionScheduler;
   gpServerScheduler = new ServerScheduler;
   
   vDicCompile(gnpBootTask);
