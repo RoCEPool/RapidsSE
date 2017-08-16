@@ -479,10 +479,10 @@ bool Arguments::bParse(int argc, Stz* argv[])
     // some basic cluster validations
     
     // there should be at aleast 2 nodes ina cluster
-    if (m_nNodes < 2) {
-      vError("Minimum two nodes should be there in a cluster\n"_Stz);
-      return false;
-    }
+    // if (m_nNodes < 2) {
+    //   vError("Minimum two nodes should be there in a cluster\n"_Stz);
+    //   return false;
+    // }
     
     // the current node should have been specfied in the --node
     bool bFound = false;
