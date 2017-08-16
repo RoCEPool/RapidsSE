@@ -836,6 +836,19 @@ void Stack::vPushS48K(s48K& sArg1)
 }
 
 /*----------------------------------------------------------------------------*/
+/* push s4K onto data stack                                                   */
+/*----------------------------------------------------------------------------*/
+void Stack::vPushS4K(s4K& sArg1)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  ValWrk xStrVal1;
+  xStrVal1 = sArg1;
+  
+  vPushValWrk(xStrVal1);
+}
+
+/*----------------------------------------------------------------------------*/
 /* push value onto data stack                                                 */
 /*----------------------------------------------------------------------------*/
 void Stack::vPushValue(Value& xVal1)

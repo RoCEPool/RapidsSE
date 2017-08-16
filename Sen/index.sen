@@ -748,7 +748,7 @@ tp: loadIndexes
   while
 
     // attempt to pop buffer off the tasks buffer queue
-    pSeitf seitf.bufferQueue@  popBuffer to pIndexBuffer
+    pSeitf seitf.bufferQueue@ popBuffer to pIndexBuffer
 
     // print the rows from the index buffer
     pIndex pIndexBuffer printRows nRowCount + to nRowCount

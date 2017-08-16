@@ -23,6 +23,7 @@ extern "C" eEC RapidsSE_EndCreateIndex(SEitf* pSEitf, Stz* pTable, Stz* pIndexi8
 extern "C" eEC RapidsSE_EndCreateTable(SEitf* pSEitf, Stz* pTable, i8 iTraceLevel);
 extern "C" eEC RapidsSE_EndFetch(SEitf* pSEitf, i8 iTraceLevel);
 extern "C" eEC RapidsSE_EndInsert(SEitf* pSEitf, i8 iTraceLevel);
+extern "C" eEC RapidsSE_FetchNextRow(SEitf* pSEitf, void** ppRow, i8 iTraceLevel);
 extern "C" eEC RapidsSE_GetCatalogs(SEitf* pSEitf, void** ppCatalog, i8 iTraceLevel);
 extern "C" eEC RapidsSE_GetColumns(SEitf* pSEitf, Stz* pCatalog,  Stz* pSchema,
                                    Stz* pTable, void** ppColumns, i8 iTraceLevel);
@@ -31,7 +32,6 @@ extern "C" eEC RapidsSE_GetIndexes(SEitf* pSEitf, Stz* pCatalog,  Stz* pSchema,
 extern "C" eEC RapidsSE_GetIndexColumns(SEitf* pSEitf, Stz* pCatalog,  Stz* pSchema,
                                         Stz* pTable, Stz* pIndex, void** ppColumns, i8 iTraceLevel);
 extern "C" eEC RapidsSE_GetLastError(SEitf* pSEitf, void** ppError, i8 iTraceLevel);
-extern "C" eEC RapidsSE_GetNextRow(SEitf* pSEitf, void** ppRow, i8 iTraceLevel);
 extern "C" eEC RapidsSE_GetPartitions(SEitf* pSEitf, void** ppParitions, void** ppCount, i8 iTraceLevel);
 extern "C" eEC RapidsSE_GetSchemas(SEitf* pSEitf, Stz* pCatalog, void** ppSchema, i8 iTraceLevel);
 extern "C" eEC RapidsSE_GetEngineVersion(SEitf* pSEitf, void** ppVersion, i8 iTraceLevel);
@@ -131,12 +131,25 @@ eEC eGetResponse(SEitf* pSEitf);
 /*----------------------------------------------------------------------------*/
 #define VALIDATE_INDEX(aMarker) \
   {  \
-    if ( ! pSEitf->pCurrentTable() ) { \
-      TRACE_ERROR(aMarker, EC_NO_SUCH_TABLE); \
-      pSEitf->vSetLastError(EC_NO_SUCH_TABLE); \
-      return EC_NO_SUCH_TABLE; \
+    if ( ! pSEitf->pCurrentIndex() ) { \
+      TRACE_ERROR(aMarker, EC_VALIDATION_FAILURE); \
+      pSEitf->vSetLastError(EC_VALIDATION_FAILURE); \
+      return EC_VALIDATION_FAILURE; \
     } \
   }
+
+/*----------------------------------------------------------------------------*/
+/* validate no index                                                          */
+/*----------------------------------------------------------------------------*/
+#define VALIDATE_NOINDEX(aMarker) \
+  {  \
+    if ( pSEitf->pCurrentIndex() ) { \
+      TRACE_ERROR(aMarker, EC_VALIDATION_FAILURE); \
+      pSEitf->vSetLastError(EC_VALIDATION_FAILURE); \
+      return EC_VALIDATION_FAILURE; \
+    } \
+  }
+
 
 /*----------------------------------------------------------------------------*/
 /* validate a parameter                                                       */
@@ -168,9 +181,9 @@ eEC eGetResponse(SEitf* pSEitf);
 #define VALIDATE_TABLE(aMarker) \
   {  \
     if ( ! pSEitf->pCurrentTable() ) { \
-      TRACE_ERROR(aMarker, EC_NO_SUCH_TABLE); \
-      pSEitf->vSetLastError(EC_NO_SUCH_TABLE); \
-      return EC_NO_SUCH_TABLE; \
+      TRACE_ERROR(aMarker, EC_VALIDATION_FAILURE); \
+      pSEitf->vSetLastError(EC_VALIDATION_FAILURE); \
+      return EC_VALIDATION_FAILURE; \
     } \
   }
 
@@ -182,7 +195,7 @@ eEC eGetResponse(SEitf* pSEitf);
     if ( pSEitf->pCurrentTable() ) { \
       TRACE_ERROR(aMarker, EC_VALIDATION_FAILURE); \
       pSEitf->vSetLastError(EC_VALIDATION_FAILURE); \
-      return EC_NO_SUCH_TABLE; \
+      return EC_VALIDATION_FAILURE; \
     } \
   }
 

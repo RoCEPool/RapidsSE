@@ -129,7 +129,7 @@ char* RowData::pColumn(char* aRowData, i8 iColumnNo)
 /*----------------------------------------------------------------------------*/
 /* show RowData                                                               */
 /*----------------------------------------------------------------------------*/
-void RowData::vRowAsString(s256& sDataString, Stz* aRowData, ColumnVec* pColVec)
+void RowData::vRowAsString(s48K& sDataString, Stz* aRowData, ColumnVec* pColVec)
 {
   i8 i_RowLength = 0;
   char* pOffset;
