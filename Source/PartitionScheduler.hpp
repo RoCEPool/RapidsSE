@@ -13,9 +13,12 @@ namespace Schedulers
   class PartitionScheduler : public Scheduler
   {
   private:
-    Semaphore    m_xSemaphore;
-    TaskQueue    m_xTaskQueue;
-    ThreadQueue  m_xThreadQueue;
+  
+    struct {
+      Semaphore*   m_pSemaphore;
+      TaskQueue*   m_pTaskQueue;
+      ThreadQueue* m_pThreadQueue;
+    } m_xSlots[C_SLOTS_PER_NODE];
   
     // must be last
     Footer m_xFooter;
@@ -28,11 +31,8 @@ namespace Schedulers
     PartitionScheduler(void);
     ~PartitionScheduler(void);
       
-    void vEnqueueTask_Mutex(Task* mpTask);
-    bool bGetTask_Mutex(Thread* mpThread, bool bWait=true);
-
-    i8   iQueuedTasks(void);
-    i8   iQueuedThreads(void);
+    void vEnqueueTask_Mutex(i8 i_PtnNo, Task* mpTask);
+    bool bGetTask_Mutex(i8 i_PtnNo, Thread* mpThread, bool bWait=true);
   
     Footer* aFooter(void);
   };

@@ -51,17 +51,21 @@ void Task::vPartitionSchedulerEnqueueTask(MP_Task mpTask)
 {
   ENTRY("vPartitionSchedulerEnqueueTask"_Stz);
   
+  i8 iPtnNo;
   Object* pObject;
   
   if ( ! mpTask->m_pDataStack->bPop(pObject) )
     THROW_INVALID_DSTACK("PartitionScheduler.enqueueTask"_Stz);
   PartitionScheduler* pPartitionScheduler = _pPartitionScheduler(pObject);
   
+  if ( ! mpTask->m_pDataStack->bPop(iPtnNo) )
+    THROW_INVALID_DSTACK("PartitionScheduler.taskQueueStore"_Stz);
+
   if ( ! mpTask->m_pDataStack->bPop(pObject) )
     THROW_INVALID_DSTACK("PartitionScheduler.enqueueTask"_Stz);
   Task* pTask = _pTask(pObject);
   
-  pPartitionScheduler->vEnqueueTask_Mutex(pTask);
+  pPartitionScheduler->vEnqueueTask_Mutex(iPtnNo,pTask);
   
   EXIT();
 }
