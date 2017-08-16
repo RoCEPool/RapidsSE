@@ -33,7 +33,11 @@ extern ServerScheduler* gpServerScheduler;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_PartitionScheduler(void)
 {
-  vAddPrimitive("PartitionScheduler.enqueueTask"_Stz, &vPartitionSchedulerEnqueueTask, false);
+  vAddPrimitive("PartitionScheduler.enqueueTask"_Stz,
+                &vPartitionSchedulerEnqueueTask, false);
+  
+  vAddPrimitive("PartitionScheduler.taskQueue!"_Stz,
+                &vPartitionSchedulerTaskQueueStore, false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -58,6 +62,30 @@ void Task::vPartitionSchedulerEnqueueTask(MP_Task mpTask)
   Task* pTask = _pTask(pObject);
   
   pPartitionScheduler->vEnqueueTask_Mutex(pTask);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* PartitionScheduler.taskQueueStore -- task queue store                      */
+/*----------------------------------------------------------------------------*/
+void Task::vPartitionSchedulerTaskQueueStore(MP_Task mpTask)
+{
+  ENTRY("vPartitionSchedulerTaskQueueStore"_Stz);
+  
+  i8 iPtnNo;
+  Object* pObject;
+  
+  if ( ! mpTask->m_pDataStack->bPop(pObject) )
+    THROW_INVALID_DSTACK("PartitionScheduler.taskQueueStore"_Stz);
+  PartitionScheduler* pPartitionScheduler = _pPartitionScheduler(pObject);
+  
+  if ( ! mpTask->m_pDataStack->bPop(iPtnNo) )
+    THROW_INVALID_DSTACK("PartitionScheduler.taskQueueStore"_Stz);
+  
+  if ( ! mpTask->m_pDataStack->bPop(pObject) )
+    THROW_INVALID_DSTACK("PartitionScheduler.taskQueueStore"_Stz);
+  TaskQueue* pTaskQueue = _pTaskQueue(pObject);
   
   EXIT();
 }

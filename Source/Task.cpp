@@ -969,6 +969,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitives_Object();
   vAddPrimitives_OpFrame();
   
+  vAddPrimitives_PartitionScheduler();
   vAddPrimitives_Plan();
   vAddPrimitives_PlanList();
   vAddPrimitives_Planner();
