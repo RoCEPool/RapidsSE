@@ -7,11 +7,6 @@ int:  queryCount
 "actorModels.sen" .verbose
 
 
-( txMap map tx id's to tx's )
-txMap: txMap
-
-( txCollection hold all tx's )
-txCollection: txCollection
 
 ( seitfList holds all seitf's )
 seitfList: seitfList
