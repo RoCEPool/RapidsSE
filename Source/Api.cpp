@@ -730,7 +730,7 @@ eEC RapidsSE_FetchNextRow(SEitf* pSEitf, void** ppRow, i8 iTraceLevel)
     // get index buffer from seitf
     EntryBuffer* pEntryBuffer = pSEitf->m_pIndexBuffer;
     Entry* pEntry = nullptr;
-    
+    vTrace("AA1\n"_Stz);
     while (!pEntry) {
       
       bool bLastBuffer = pEntryBuffer ? pEntryBuffer->bIsLast() : false;
@@ -745,7 +745,7 @@ eEC RapidsSE_FetchNextRow(SEitf* pSEitf, void** ppRow, i8 iTraceLevel)
         while (!pBufferQueue->bPop(&xValWrk)) {
           PosixThread::vSleepMilli(1);
         }
-
+        
         // get entry buffer
         PtrVal* pPtrVal = xValWrk.pNestedPtrVal();
         pEntryBuffer = (EntryBuffer*)(pPtrVal->pPtr());
@@ -755,6 +755,11 @@ eEC RapidsSE_FetchNextRow(SEitf* pSEitf, void** ppRow, i8 iTraceLevel)
         
         // get first entry from buffer
         pEntry = pEntryBuffer->pFirstEntry();
+        
+        if (!pEntry) {
+          ASSERT(pEntryBuffer->bIsLast());
+          break;
+        }
       }
       else {
         
@@ -767,12 +772,11 @@ eEC RapidsSE_FetchNextRow(SEitf* pSEitf, void** ppRow, i8 iTraceLevel)
           break;
       }
     }
-    
+
     // save entry in SEitf
     pSEitf->m_pEntry = pEntry;
     
     if (pEntry) {
-      
       RowData::vRowAsString(pSEitf->m_sResponse, (Stz*)pEntry->aRow(), pSEitf->m_pCurrentTable->pColumnVec());
       *ppRow = (void*)pSEitf->m_sResponse.aChar();
     }
