@@ -38,7 +38,7 @@ namespace Interface
     
     bool   m_bDisplay;
     
-    s256   m_sMetadata;
+    s4K    m_sMetadata;
     i8     m_iRowsProcessed;
     i8     m_iCurrentRequestId;
     i8     m_iNextRequestId;

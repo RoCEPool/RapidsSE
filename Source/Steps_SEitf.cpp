@@ -474,10 +474,10 @@ void Task::vSEitfMetadataFetch(MP_Task mpTask)
   SEitf* pSEitf = _pSEitf(pPtrSEitf);
   ASSERT(CN_SEITF == pSEitf->eClass());
   
-  s256 sMetadata;
+  s4K sMetadata;
   
   sMetadata = pSEitf->m_sMetadata;
-  mpTask->m_pDataStack->vPushS256(sMetadata);
+  mpTask->m_pDataStack->vPushS4K(sMetadata);
   
   EXIT();
 }

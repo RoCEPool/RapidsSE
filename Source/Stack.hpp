@@ -88,6 +88,7 @@ namespace Structures
     void vPushS32(s32& s32);
     void vPushS256(s256& s256);
     void vPushS48K(s48K& s48K);
+    void vPushS4K(s4K& s4K);
     void vPushValue(Value* pValue);
     void vPushValue(ValReg* pValue);
     void vPushValWrk(ValWrk* pValue);
