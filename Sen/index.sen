@@ -257,7 +257,6 @@
   true
 ;
 
-
 /*----------------------------------------------------------------------------*/
 /* make_index (invoked from makeIndex)                                        */
 /*----------------------------------------------------------------------------*/
@@ -338,11 +337,6 @@ tp: makingIndex
   pSeitf task::this task.seitf!
   pSeitf seitf.index@ to pIndex
 
-  // start groupBy for this partition
-  //iPartitionNo seitf seitf.groupBy@
-  //locals| pGroupBy |
-  //pGroupBy groupBy.start
-
   // create a temporary index buffer for the results
   //"Creating a tempIndexBuffer" .
   iPartitionNo pIndex entryBuffer::create to tempEntryBuffer
@@ -367,7 +361,6 @@ tp: makingIndex
 
     // return the empty tempEntryBuffer
     //"Appending tempEntryBuffer to buffer queue" .
-    //tempEntryBuffer pGroupby groupBy.applyBuffer
     tempEntryBuffer pSeitf seitf.bufferQueue@ queue.append
 
     exit
@@ -390,7 +383,6 @@ tp: makingIndex
         // buffer must be full
         // put this tempEntryBuffer in seitf bufferQueue
         //"Inserting row into tempEntryBuffer" .
-        //tempEntryBuffer pGroupby groupBy.applyBuffer
         tempEntryBuffer pSeitf seitf.bufferQueue@ queue.append
 
         // create another temporary index buffer for the results
@@ -426,7 +418,6 @@ tp: makingIndex
 
   // put the buffer in the seitf bufferQueue
   //"Appending tempEntryBuffer to buffer queue" .
-  //tempEntryBuffer pGroupby groupBy.applyBuffer
   tempEntryBuffer pSeitf seitf.bufferQueue@ queue.append
 ;
 
@@ -476,11 +467,6 @@ tp: loadIndexes
   pSeitf task::this task.seitf!
   pSeitf seitf.index@ to pIndex
 
-  // start groupBy for this partition
-  //iPartitionNo seitf seitf.groupBy@
-  //locals| pGroupBy |
-  //pGroupBy groupBy.start
-
   // create a temporary index buffer for the results
   //"Creating a tempIndexBuffer" .
   iPartitionNo pIndex entryBuffer::create to tempEntryBuffer
@@ -505,7 +491,6 @@ tp: loadIndexes
 
     // return the empty tempEntryBuffer
     //"Appending tempEntryBuffer to buffer queue" .
-    //tempEntryBuffer pGroupby groupBy.applyBuffer
     tempEntryBuffer pSeitf seitf.bufferQueue@ queue.append
 
     exit
@@ -525,7 +510,6 @@ tp: loadIndexes
       // buffer must be full
       // put this tempEntryBuffer in seitf bufferQueue
       //"Inserting row into tempEntryBuffer" .
-      //tempEntryBuffer pGroupby groupBy.applyBuffer
       tempEntryBuffer pSeitf seitf.bufferQueue@ queue.append
 
       // create another temporary index buffer for the results
@@ -558,7 +542,6 @@ tp: loadIndexes
 
   // put the buffer in the seitf bufferQueue
   //"Appending tempEntryBuffer to buffer queue" .
-  //tempEntryBuffer pGroupby groupBy.applyBuffer
   tempEntryBuffer pSeitf seitf.bufferQueue@ queue.append
 ;
 
@@ -587,21 +570,8 @@ tp: loadIndexes
   pSeitf task::this task.seitf!
   pSeitf seitf.index@ to pIndex
 
-  // start groupBy for this partition
-  //iPartitionNo pSeitf seitf.groupBy@ locals| pGroupBy |
-  //pGroupBy groupBy.start
-
   // create a temporary buffer for the results
   iPartitionNo pIndex entryBuffer::create to pResultBuffer
-
-  // position in the first index buffer
-  //iPartitionNo pIndex index.positionFirst to pIndexBuffer
-
-  // did we get an index buffer ?
-  //pIndexBuffer if
-    // position at the upper bound entry
-    //sUpper pIndexBuffer pIndex index.position to pUpperEntry
-  //then
 
   // get the indexBuffer looking for the lower key
   sLower iPartitionNo pIndex index.buffer to pIndexBuffer
@@ -619,7 +589,6 @@ tp: loadIndexes
     pResultBuffer entryBuffer.isLast!
 
     // return the empty result buffer
-    //pResultBuffer pGroupby groupBy.applyBuffer
     pResultBuffer pSeitf seitf.bufferQueue@ queue.append
 
     exit
@@ -631,18 +600,15 @@ tp: loadIndexes
   while
 
     // check against upper bound
-    //pUpperEntry pIndexEntry entry.same not if
     sUpper pIndexEntry iPartitionNo pIndex index.upper if
       
       // look up data row and insert row into result buffer
-      //"calling entry.toDataRow" .
       pIndex pIndexEntry entry.toDataRow pResultBuffer entryBuffer.insertRow
 
       // check if we managed to insert the entry
       not if
         // buffer must be full
         // put this result buffer in seitf buffer queue
-        //pResultBuffer pGroupby groupBy.applyBuffer
         pResultBuffer pSeitf seitf.bufferQueue@ queue.append
 
         // create another result buffer
@@ -674,7 +640,6 @@ tp: loadIndexes
   pResultBuffer entryBuffer.isLast!
 
   // put the result buffer in the seitf buffer queue
-  //pResultBuffer pGroupby groupBy.applyBuffer
   pResultBuffer pSeitf seitf.bufferQueue@ queue.append
 ;
 
@@ -685,7 +650,10 @@ tp: loadIndexes
 
   0 0 locals| nRowCount pEntry pIndexBuffer pIndex iPartitionNo |
 
+  // get the partitionNo
   pIndexBuffer entryBuffer.partition to iPartitionNo
+
+  // get the entry
   pIndexBuffer entryBuffer.firstEntry to pEntry
 
   begin
@@ -786,14 +754,134 @@ tp: loadIndexes
 ;
 
 /*----------------------------------------------------------------------------*/
+/* position key select cursor for table (called by selectIndex request)       */
+/*----------------------------------------------------------------------------*/
+: scanSelectIdxTask ( <"key>" "<lower>" "<upper>" pSeitf iPartitionNo -- )
+
+  0 0 0 0 locals| pIndex entry tempEntryBuffer indexBuffer iPartitionNo pSeitf upper lower key |
+
+  tp: scanSelectIdxTask
+
+  // task is a select participant running on server thread
+  task::this task.kind@ TK_SELECT_PART == assert
+  task::this task.thread thread.actorModel@ AC_SERVER == assert
+
+  pSeitf task::this task.seitf!
+  pSeitf seitf.index@ to pIndex
+
+  // create a temporary index buffer for the results
+  "Creating a tempIndexBuffer" .
+  iPartitionNo pIndex entryBuffer::create to tempEntryBuffer
+
+  // position in the first index buffer
+  iPartitionNo pIndex index.positionFirst
+  to indexBuffer
+
+  // get the first entry in the buffer
+  indexBuffer entryBuffer.firstEntry
+  to entry
+
+  // did we find an entry ?
+  entry not if
+
+    // mark this buffer as the last buffer
+    //"Marking tempEntryBuffer as last buffer" .
+    tempEntryBuffer entryBuffer.isLast!
+
+    // return the empty tempEntryBuffer
+    //"Appending tempEntryBuffer to buffer queue" .
+    tempEntryBuffer pSeitf seitf.bufferQueue@ queue.append
+
+    exit
+  then
+
+  // iterate thru the buffer till no more entries
+  begin
+  entry
+  while
+      // insert row from entry in tempEntryBuffer
+      //"Inserting row into tempEntryBuffer" .
+      pIndex entry entry.toDataRow tempEntryBuffer entryBuffer.insertRow
+
+      // check if we managed to insert the entry
+      not if
+        // buffer must be full
+        // put this tempEntryBuffer in seitf bufferQueue
+        //"Inserting row into tempEntryBuffer" .
+        tempEntryBuffer pSeitf seitf.bufferQueue@ queue.append
+
+        // create another temporary index buffer for the results
+        //"Creating a tempIndexBuffer" .
+        iPartitionNo pIndex entryBuffer::create to tempEntryBuffer
+
+        // insert row from entry in temporary buffer
+        //"Inserting row into tempEntryBuffer" .
+        pIndex entry entry.toDataRow tempEntryBuffer entryBuffer.insertRow
+        assert
+      then
+
+      // move to next entry in the buffer
+      entry indexBuffer entryBuffer.nextEntry to entry
+
+      entry not if
+        // get next buffer from the current indexBuffer
+        indexBuffer entryBuffer.nextBuffer to indexBuffer
+
+        indexBuffer if
+          entry indexBuffer entryBuffer.nextEntry to entry
+        then
+      then
+    repeat
+
+  // mark this buffer as the last buffer
+  //"Marking tempEntryBuffer as last buffer" .
+  tempEntryBuffer entryBuffer.isLast!
+
+  // put the buffer in the seitf bufferQueue
+  //"Appending tempEntryBuffer to buffer queue" .
+  tempEntryBuffer pSeitf seitf.bufferQueue@ queue.append
+;
+
+/*----------------------------------------------------------------------------*/
+/* set isUnique property of index                                             */
+/*----------------------------------------------------------------------------*/
+: setIndexIsUnique allParticipants 2 checkResult ( "<indexNm>" true/false -- )
+
+  assert::stack_2
+
+  locals| sIndexNm bIsUnique |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  bIsUnique ( bIsUnique )
+
+  sIndexNm find execute ( bIsUnique index^ )
+
+  index.isUnique! ( )
+
+  assert::stack_0
+
+  true <SUCCESS_RESULT>
+;
+
+/*----------------------------------------------------------------------------*/
+/* get size of index                                                          */
+/*----------------------------------------------------------------------------*/
+: sizeIndex ( "<indexNm>" -- "<size>" )
+
+  find execute ( index^ )
+
+  index.space 0 swap number.magnitude >str
+;
+
+/*----------------------------------------------------------------------------*/
 /* select using index (called by fetchRowsIndex_req)                          */
 /*----------------------------------------------------------------------------*/
 : spawnSelectTask ( "<sExactKey>" "<sLowerKey>" "<sUpperKey>"
-                "<sSelectTaskSeed>" "<sIndexNm>" --  )
+"<sSelectTaskSeed>" "<sIndexNm>" --  )
 
-  tp: selectIndex
+tp: selectIndex
 
-//debug::trap
+  //debug::trap
 
   // task is a request server
   task::this task.kind@ TK_REQUEST_SERVER == assert
@@ -845,108 +933,12 @@ tp: loadIndexes
 
     // create a selectTask to execute the key select on the index for the partition
     sExactKey sLowerKey sUpperKey pSeitf I 5
-      sSelectTaskSeed nullptr "selectTask" TK_SELECT_PART spawnServerTask
-        to pSelectTask
+    sSelectTaskSeed nullptr "selectTask" TK_SELECT_PART spawnServerTask
+    to pSelectTask
 
   loop
 ;
 
-/*----------------------------------------------------------------------------*/
-/* position key select cursor for table (called by selectIndex request)       */
-/*----------------------------------------------------------------------------*/
-: scanSelectIdxTask ( <"key>" "<lower>" "<upper>" pSeitf iPartitionNo -- )
-
-  0 0 0 0 locals| pIndex entry tempEntryBuffer indexBuffer iPartitionNo pSeitf upper lower key |
-
-  tp: scanSelectIdxTask
-
-  // task is a select participant running on server thread
-  task::this task.kind@ TK_SELECT_PART == assert
-  task::this task.thread thread.actorModel@ AC_SERVER == assert
-
-  pSeitf task::this task.seitf!
-  pSeitf seitf.index@ to pIndex
-
-  // start groupBy for this partition
-  //iPartitionNo seitf seitf.groupBy@
-  //locals| pGroupBy |
-  //pGroupBy groupBy.start
-
-  // create a temporary index buffer for the results
-  "Creating a tempIndexBuffer" .
-  iPartitionNo pIndex entryBuffer::create to tempEntryBuffer
-
-  // position in the first index buffer
-  iPartitionNo pIndex index.positionFirst
-  to indexBuffer
-
-  // get the first entry in the buffer
-  indexBuffer entryBuffer.firstEntry
-  to entry
-
-  // did we find an entry ?
-  entry not if
-
-    // mark this buffer as the last buffer
-    //"Marking tempEntryBuffer as last buffer" .
-    tempEntryBuffer entryBuffer.isLast!
-
-    // return the empty tempEntryBuffer
-    //"Appending tempEntryBuffer to buffer queue" .
-    //tempEntryBuffer pGroupby groupBy.applyBuffer
-    tempEntryBuffer pSeitf seitf.bufferQueue@ queue.append
-
-    exit
-  then
-
-  // iterate thru the buffer till no more entries
-  begin
-  entry
-  while
-      // insert row from entry in tempEntryBuffer
-      //"Inserting row into tempEntryBuffer" .
-      pIndex entry entry.toDataRow tempEntryBuffer entryBuffer.insertRow
-
-      // check if we managed to insert the entry
-      not if
-        // buffer must be full
-        // put this tempEntryBuffer in seitf bufferQueue
-        //"Inserting row into tempEntryBuffer" .
-        //tempEntryBuffer pGroupby groupBy.applyBuffer
-        tempEntryBuffer pSeitf seitf.bufferQueue@ queue.append
-
-        // create another temporary index buffer for the results
-        //"Creating a tempIndexBuffer" .
-        iPartitionNo pIndex entryBuffer::create to tempEntryBuffer
-
-        // insert row from entry in temporary buffer
-        //"Inserting row into tempEntryBuffer" .
-        pIndex entry entry.toDataRow tempEntryBuffer entryBuffer.insertRow
-        assert
-      then
-
-      // move to next entry in the buffer
-      entry indexBuffer entryBuffer.nextEntry to entry
-
-      entry not if
-        // get next buffer from the current indexBuffer
-        indexBuffer entryBuffer.nextBuffer to indexBuffer
-
-        indexBuffer if
-          entry indexBuffer entryBuffer.nextEntry to entry
-        then
-      then
-    repeat
-
-  // mark this buffer as the last buffer
-  //"Marking tempEntryBuffer as last buffer" .
-  tempEntryBuffer entryBuffer.isLast!
-
-  // put the buffer in the seitf bufferQueue
-  //"Appending tempEntryBuffer to buffer queue" .
-  //tempEntryBuffer pGroupby groupBy.applyBuffer
-  tempEntryBuffer pSeitf seitf.bufferQueue@ queue.append
-;
 
 /*----------------------------------------------------------------------------*/
 /* remove an index                                                            */
@@ -963,37 +955,6 @@ tp: loadIndexes
   indexNm :forget
 
   true <SUCCESS_RESULT>
-;
-
-/*----------------------------------------------------------------------------*/
-/* set isUnique property of index                                             */
-/*----------------------------------------------------------------------------*/
-: setIndexIsUnique allParticipants 2 checkResult ( "<indexNm>" true/false -- )
-
-  assert::stack_2
-
-  locals| sIndexNm bIsUnique |
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  bIsUnique ( bIsUnique )
-
-    sIndexNm find execute ( bIsUnique index^ )
-
-  index.isUnique! ( )
-
-  assert::stack_0
-
-  true <SUCCESS_RESULT>
-;
-
-/*----------------------------------------------------------------------------*/
-/* get size of index                                                          */
-/*----------------------------------------------------------------------------*/
-: sizeIndex ( "<indexNm>" -- "<size>" )
-
-  find execute ( index^ )
-
-  index.space 0 swap number.magnitude >str
 ;
 
 /*----------------------------------------------------------------------------*/
