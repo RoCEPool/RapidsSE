@@ -7,6 +7,9 @@
 "seitfList.sen" include
 "seitfCursor.sen" include
 
+( seitfList holds all seitf's )
+seitfList: seitfList
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

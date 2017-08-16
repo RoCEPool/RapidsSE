@@ -6,11 +6,6 @@ int:  queryCount
 
 "actorModels.sen" .verbose
 
-
-
-( seitfList holds all seitf's )
-seitfList: seitfList
-
 "droneModel.sen" include
 "serverModel.sen" include
 "workerModel.sen" include
