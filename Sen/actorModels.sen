@@ -6,15 +6,6 @@ int:  queryCount
 
 "actorModels.sen" .verbose
 
-"thread.sen" include
-"threadList.sen" include
-"threadCursor.sen" include
-
-( tasklist will already exist )
-
-( threadList holds all thread's )
-threadList: threadList
-"threadlist" find execute threadlist.global!
 
 ( txMap map tx id's to tx's )
 txMap: txMap
