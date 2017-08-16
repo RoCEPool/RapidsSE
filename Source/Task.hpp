@@ -972,7 +972,6 @@ namespace Tasks
     static void vRstack9(MP_Task mpTask);
     
     // scheduler
-    static void vSchedulerEnqueueServerTask(MP_Task mpTask);
     static void vSchedulerList(MP_Task mpTask);
     static void vSchedulerPartition(MP_Task mpTask);
     static void vSchedulerQueuedTasks(MP_Task mpTask);
