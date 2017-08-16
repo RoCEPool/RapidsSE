@@ -299,6 +299,7 @@ namespace Tasks
     void vAddPrimitives_NodeCursor(void);
     void vAddPrimitives_Object(void);
     void vAddPrimitives_OpFrame(void);
+    void vAddPrimitives_PartitionScheduler(void);
     void vAddPrimitives_Plan(void);
     void vAddPrimitives_PlanList(void);
     void vAddPrimitives_Planner(void);
@@ -316,6 +317,7 @@ namespace Tasks
     void vAddPrimitives_SEitfCursor(void);
     void vAddPrimitives_SEitfList(void);
     void vAddPrimitives_SelCursor(void);
+    void vAddPrimitives_ServerScheduler(void);
     void vAddPrimitives_Shell(void);
     void vAddPrimitives_Slots(void);
     void vAddPrimitives_Socket(void);
@@ -325,6 +327,7 @@ namespace Tasks
     void vAddPrimitives_Task(void);
     void vAddPrimitives_TaskCursor(void);
     void vAddPrimitives_TaskList(void);
+    void vAddPrimitives_TaskQueue(void);
     void vAddPrimitives_TaskSet(void);
     void vAddPrimitives_Thread(void);
     void vAddPrimitives_ThreadCursor(void);
@@ -806,6 +809,9 @@ namespace Tasks
     static void vOpFrameDic(MP_Task mpTask);
     static void vOpFrameName(MP_Task mpTask);
     
+    // partition scheduler
+    static void vPartitionSchedulerEnqueueTask(MP_Task mpTask);
+  
     // plan
     static void vPlanCompile(MP_Task mpTask);
     static void vPlanDelete(MP_Task mpTask);
@@ -970,7 +976,6 @@ namespace Tasks
     static void vRstack9(MP_Task mpTask);
     
     // scheduler
-    static void vSchedulerEnqueueServerTask(MP_Task mpTask);
     static void vSchedulerList(MP_Task mpTask);
     static void vSchedulerPartition(MP_Task mpTask);
     static void vSchedulerQueuedTasks(MP_Task mpTask);
@@ -1040,6 +1045,9 @@ namespace Tasks
     static void vSelCursorTableFetch(MP_Task mpTask);
     static void vSelCursorTableStore(MP_Task mpTask);
     
+    // server scheduler
+    static void vServerSchedulerEnqueueTask(MP_Task mpTask);
+  
     // shell
     static void vShellExecute(MP_Task mpTask);
     
@@ -1160,6 +1168,12 @@ namespace Tasks
     static void vTaskListDump(MP_Task mpTask);
     static void vTaskListInit(MP_Task mpTask);
     
+    // taskQueue
+    static void vTaskQueueAppend(MP_Task mpTask);
+    static void vTaskQueueDump(MP_Task mpTask);
+    static void vTaskQueueInit(MP_Task mpTask);
+    static void vTaskQueueNew(MP_Task mpTask);
+  
     // taskSet
     static void vTaskSetAppend(MP_Task mpTask); 
     static void vTaskSetDump(MP_Task mpTask);

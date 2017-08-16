@@ -18,6 +18,7 @@ using namespace Threads;
 #include "TlsKeys.hpp"
 #include "Thread.hpp"
 #include "ThreadList.hpp"
+#include "ThreadQueue.hpp"
 #include "ThreadCursor.hpp"
 
 /*============================================================================*/

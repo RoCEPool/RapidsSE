@@ -83,8 +83,13 @@ nPartitionThreads constant N_PARTITION_THREADS
       pPartitionThread thread.taskset!
 
     // give it a public taskqueue
-    I >partitionThreadNm ".taskqueue" str.cat :taskList execute
+    I >partitionThreadNm ".taskqueue" str.cat :taskQueue execute
       pPartitionThread thread.taskqueue!
+
+/*
+    pPartitionThread thread.taskqueue@ 
+      iPtnNo scheduler::partition partitionScheduler.TaskQueue!
+ */
 
 //words
 
@@ -111,6 +116,10 @@ nPartitionThreads constant N_PARTITION_THREADS
   iPtnNo >partitionThreadNm findActorTaskQueue locals| pTaskQueue |
  
   pTask pTaskQueue taskQueue.append
+ 
+ 
+  pTask iPtnNo scheduler::partition partitionScheduler.enqueueTask
+
  */
 
 ;

@@ -13,9 +13,9 @@ namespace Schedulers
   class ServerScheduler : public Scheduler
   {
   private:
-    Semaphore      m_xSemaphore;
-    List_t<Task>   m_xTaskQueue;
-    List_t<Thread> m_xThreadQueue;
+    Semaphore    m_xSemaphore;
+    TaskQueue    m_xTaskQueue;
+    ThreadQueue  m_xThreadQueue;
   
     // must be last
     Footer m_xFooter;

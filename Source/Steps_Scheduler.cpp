@@ -44,8 +44,6 @@ void Task::vAddPrimitives_Scheduler(void)
   vAddPrimitive("Scheduler::queuedThreads"_Stz,     &vSchedulerQueuedThreads, false);
   vAddPrimitive("Scheduler::reset"_Stz,             &vSchedulerReset,         false);
   vAddPrimitive("Scheduler::server"_Stz,            &vSchedulerServer,        false);
-
-  vAddPrimitive("Scheduler.enqueueServerTask"_Stz, &vSchedulerEnqueueServerTask, false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -126,32 +124,6 @@ void Task::vSchedulerServer(MP_Task mpTask)
   
   mpTask->m_pDataStack->vPushObject(gpServerScheduler);
     
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* Scheduler.enqueueServerTask -- enqueue server task                         */
-/*----------------------------------------------------------------------------*/
-void Task::vSchedulerEnqueueServerTask(MP_Task mpTask)
-{
-  ENTRY("vSchedulerEnqueueTask"_Stz);
-  
-  Object* pObject;
-  
-  if ( ! mpTask->m_pDataStack->bPop(pObject) )
-    THROW_INVALID_DSTACK("Scheduler.enqueueTask"_Stz);
-  ServerScheduler* pServerScheduler = _pServerScheduler(pObject);
-  
-  if ( ! mpTask->m_pDataStack->bPop(pObject) )
-    THROW_INVALID_DSTACK("Scheduler.enqueueTask"_Stz);
-  Task* pTask = _pTask(pObject);
-  
-  pServerScheduler->vEnqueueTask_Mutex(pTask);
-  
   EXIT();
 }
 

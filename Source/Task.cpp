@@ -589,11 +589,13 @@ void Task::vAddConstants(void)
   /* 72 */ vAddConstant("CN_TASK"_Stz,         CN_TASK);
   /* 73 */ vAddConstant("CN_TASKCURSOR"_Stz,   CN_TASKCURSOR);
   /* 74 */ vAddConstant("CN_TASKLIST"_Stz,     CN_TASKLIST);
+  /*    */ vAddConstant("CN_TASKQUEUE"_Stz,    CN_TASKQUEUE);
   /* 75 */ vAddConstant("CN_SERVERSCHEDULER"_Stz,    CN_SERVERSCHEDULER);
   /* 75 */ vAddConstant("CN_TASKSET"_Stz,      CN_TASKSET);
   /* 76 */ vAddConstant("CN_THREAD"_Stz,       CN_THREAD);
   /* 77 */ vAddConstant("CN_THREADCURSOR"_Stz, CN_THREADCURSOR);
   /* 78 */ vAddConstant("CN_THREADLIST"_Stz,   CN_THREADLIST);
+  /*    */ vAddConstant("CN_THREADQUEUE"_Stz,  CN_THREADQUEUE);
   /* 79 */ vAddConstant("CN_TIME"_Stz,         CN_TIME);
   /* 80 */ vAddConstant("CN_TIMER"_Stz,        CN_TIMER);
   /* 81 */ vAddConstant("CN_TOKENISER"_Stz,    CN_TOKENISER);
@@ -791,11 +793,13 @@ void Task::vAddConstants(void)
   /* 58 */ vAddConstant("SIZEOF_TASK"_Stz,         sizeof(Task));
   /* 69 */ vAddConstant("SIZEOF_TASKCURSOR"_Stz,   sizeof(TaskCursor));
   /* 60 */ vAddConstant("SIZEOF_TASKLIST"_Stz,     sizeof(TaskList));
+  /*    */ vAddConstant("SIZEOF_TASKQUEUE"_Stz,    sizeof(TaskQueue));
   /* 61 */ vAddConstant("SIZEOF_SCHEDULER"_Stz,    sizeof(ServerScheduler));
   /* 61 */ vAddConstant("SIZEOF_TASKSET"_Stz,      sizeof(TaskSet));
   /* 62 */ vAddConstant("SIZEOF_THREAD"_Stz,       sizeof(Thread));
   /* 63 */ vAddConstant("SIZEOF_THREADCURSOR"_Stz, sizeof(ThreadCursor));
   /* 64 */ vAddConstant("SIZEOF_THREADLIST"_Stz,   sizeof(ThreadList));
+  /* 64 */ vAddConstant("SIZEOF_THREADQUEUE"_Stz,  sizeof(ThreadQueue));
   /* 65 */ vAddConstant("SIZEOF_TIME"_Stz,         sizeof(Time));
   /* 66 */ vAddConstant("SIZEOF_TIMER"_Stz,        sizeof(Timer));
   /* 67 */ vAddConstant("SIZEOF_TOKENISER"_Stz,    sizeof(Tokeniser));
@@ -805,7 +809,7 @@ void Task::vAddConstants(void)
   /* 71 */ vAddConstant("SIZEOF_TXCURSOR"_Stz,     sizeof(TxCursor));
   /* 72 */ vAddConstant("SIZEOF_TXMAP"_Stz,        sizeof(TxMap));
   /* 73 */ vAddConstant("SIZEOF_TXREF"_Stz,        sizeof(TxRef));
-  /* 74 */ vAddConstant("C_SIZEOF_WORD"_Stz,         sizeof(Word));
+  /* 74 */ vAddConstant("SIZEOF_WORD"_Stz,         sizeof(Word));
 
   /*  0 */ vAddConstant("SIZEOF_S32"_Stz,          sizeof(s32));
   /*  1 */ vAddConstant("SIZEOF_S256"_Stz,         sizeof(s256));
@@ -985,6 +989,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitives_SEitfCursor();
   vAddPrimitives_SEitfList();
   vAddPrimitives_SelCursor();
+  vAddPrimitives_ServerScheduler();
   vAddPrimitives_Shell();
   vAddPrimitives_Slots();
   vAddPrimitives_Socket();
@@ -995,6 +1000,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitives_Task();
   vAddPrimitives_TaskCursor();
   vAddPrimitives_TaskList();
+  vAddPrimitives_TaskQueue();
   vAddPrimitives_TaskSet();
   vAddPrimitives_Thread();
   vAddPrimitives_ThreadCursor();

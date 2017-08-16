@@ -118,6 +118,8 @@ void Task::vAllot(MP_Task mpTask)
   if ( !  mpTask->m_pDataStack->bPop(iBytes) )
     THROW_INVALID_DSTACK("allot"_Stz);
   
+  RASSERT(iBytes);
+  
   Word* pCurrentWord = mpTask->m_pCurrentWord;
   
   char* aAddress = pCurrentWord->pAllot(iBytes);

@@ -151,11 +151,13 @@ pFINALIZE *gpFinalize[]
   /* 80 */ &Finalize::vUndefined,         // CN_TASK
   /* 81 */ &Finalize::vUndefined,         // CN_TASKCURSOR
   /* 82 */ &Finalize::vUndefined,         // CN_TASKLIST
+  /* 82 */ &Finalize::vUndefined,         // CN_TASKQUEUE
   /*    */ &Finalize::vUndefined,         // CN_SERVERSCHEDULER
   /* 83 */ &Finalize::vUndefined,         // CN_TASKSET
   /* 84 */ &Finalize::vUndefined,         // CN_THREAD
   /* 85 */ &Finalize::vUndefined,         // CN_THREADCURSOR
   /* 86 */ &Finalize::vUndefined,         // CN_THREADLIST
+  /*    */ &Finalize::vUndefined,         // CN_THREADQUEUE
   /* 87 */ &Finalize::vUndefined,         // CN_TIME
   /* 88 */ &Finalize::vUndefined,         // CN_TIMER
   /* 89 */ &Finalize::vUndefined,         // CN_TOKEN
