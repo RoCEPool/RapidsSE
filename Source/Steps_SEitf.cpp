@@ -496,7 +496,7 @@ void Task::vSEitfMetadataStore(MP_Task mpTask)
   SEitf* pSEitf = _pSEitf(pPtrSEitf);
   ASSERT(CN_SEITF == pSEitf->eClass());
   
-  s256 sMetadata;
+  s4K sMetadata;
   if ( ! mpTask->m_pDataStack->bPop(sMetadata) )
     THROW_INVALID_DSTACK("seitf.metadata@"_Stz);
   

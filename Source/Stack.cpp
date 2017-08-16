@@ -467,6 +467,24 @@ bool Stack::bPop(s256& sArg1)
 /*----------------------------------------------------------------------------*/
 /* pop s from data stack                                                      */
 /*----------------------------------------------------------------------------*/
+bool Stack::bPop(s4K& sArg1)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  if ( ! bGuard(CN_STRVAL) )
+    return false;
+  
+  ValWrk xValWrk1;
+  vPopVal(xValWrk1.pNestedValueSelf());
+  
+  sArg1 = _pStrVal(xValWrk1.pNestedValueSelf());
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop s from data stack                                                      */
+/*----------------------------------------------------------------------------*/
 bool Stack::bPop(s48K& sArg1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
