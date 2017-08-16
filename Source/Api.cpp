@@ -149,7 +149,7 @@ eEC RapidsSE_BeginFetch(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema, Stz* pTable,
     CF_TABLES("e"_Stz);
     
     // select * from pTable
-    eResult = eExecuteRequest(pSEitf, "spnFetch"_Stz, (Stz*)pTable);
+    eResult = eExecuteRequest(pSEitf, "spnFetch"_Stz, pTable, pRange);
     CHECK_RESULT("f"_Stz);
     CHECK_RESPONSE("g"_Stz);
     
