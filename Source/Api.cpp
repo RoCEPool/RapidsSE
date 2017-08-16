@@ -149,28 +149,15 @@ eEC RapidsSE_BeginFetch(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema, Stz* pTable,
     CF_TABLES("e"_Stz);
     
     // select * from pTable
-    eResult = eExecuteRequest(pSEitf, "sel"_Stz, (Stz*)pTable);
+    eResult = eExecuteRequest(pSEitf, "spnFetch"_Stz, (Stz*)pTable);
     CHECK_RESULT("f"_Stz);
     CHECK_RESPONSE("g"_Stz);
     
     // validate table
-    VALIDATE_TABLE("h");
+    VALIDATE_TABLE("h"_Stz);
     
-    // get response (address of selcussor)
-    i8 iAddress = pSEitf->m_sResponse.iToI8();
-    SelCursor* pSelCursor = reinterpret_cast<SelCursor*>(iAddress);
-    ASSERT(CN_SELCURSOR == pSelCursor->eClass());
-    
-    // get slot for seitf partition on this node
-    i8 iSlot = Partition::iPartitionToSlot(pSEitf->iPartition());
-    
-    // TRACE_SLOT(iSlot);
-    
-    // begin the select
-    pSelCursor->vBegin(iSlot);
-    
-    // get first row
-    pSelCursor->vFirst();
+    // validate index
+    VALIDATE_INDEX("i"_Stz);
     
     // trace exit
     TRACE_EXIT("ea"_Stz);
@@ -337,8 +324,6 @@ eEC RapidsSE_CreateIndex(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema, Stz* pTable
     eResult = eExecuteRequest(pSEitf, "getidx"_Stz, pIndex);
     CHECK_RESULT("n"_Stz);
     CHECK_RESPONSE("o"_Stz);
-    
-    VALIDATE_INDEX("p"_Stz);
 
     if (bIsUnique) {
       // set unique index
@@ -612,7 +597,7 @@ eEC RapidsSE_EndFetch(SEitf* pSEitf, i8 iTraceLevel)
   eEC eResult;
   eEC eResponse;
   
-  Stz* aApiCall = "RapidsSE_EndScan"_Stz;
+  Stz* aApiCall = "RapidsSE_EndFetch"_Stz;
   
   try {
     
@@ -628,22 +613,23 @@ eEC RapidsSE_EndFetch(SEitf* pSEitf, i8 iTraceLevel)
     // validate table
     VALIDATE_TABLE("b"_Stz);
     
-    // get address of select cursor
-    i8 iAddress = StrLib::iToI8( pSEitf->m_sResponse.aChar());
+    // validate index
+    VALIDATE_INDEX("c"_Stz);
     
-    // delete the SelCursor
-    SelCursor* pSelCursor = reinterpret_cast<SelCursor*>(iAddress);
-    ASSERT(CN_SELCURSOR == pSelCursor->eClass());
-    delete pSelCursor;
+    // reset the index
+    pSEitf->vCurrentIndex(nullptr);
+    
+    // validate no index
+    VALIDATE_NOINDEX("d"_Stz);
     
     // return the table
     Table* pTable = pSEitf->pCurrentTable();
     eResult = eExecuteRequest(pSEitf, "rettbl"_Stz);
-    CHECK_RESULT("s"_Stz);
-    CHECK_RESPONSE("d"_Stz);
+    CHECK_RESULT("e"_Stz);
+    CHECK_RESPONSE("f"_Stz);
     
-    // validate if no table
-    VALIDATE_NOTABLE("d"_Stz);
+    // validate no table
+    VALIDATE_NOTABLE("g"_Stz);
     
     TRACE_EXIT("ea"_Stz);
     
@@ -716,7 +702,103 @@ eEC RapidsSE_EndInsert(SEitf* pSEitf, i8 iTraceLevel)
     TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
     return EC_SE_UNKNOWN_ERROR;
   }
+}
 
+/*----------------------------------------------------------------------------*/
+/* fetch next row                                                             */
+/*----------------------------------------------------------------------------*/
+eEC RapidsSE_FetchNextRow(SEitf* pSEitf, void** ppRow, i8 iTraceLevel)
+{
+  eEC eResult;
+  eEC eResponse;
+  
+  Stz* aApiCall = "RapidsSE_FetchNextRow"_Stz;
+  
+  try {
+    // trace entry
+    TRACE_ENTRY_P0();
+    
+    // validate the SEitf
+    VALIDATE_SEITF("a"_Stz);
+    
+    // clear the last error
+    CLEAR_LASTERROR();
+    
+    // validate the reference pointer
+    VALIDATE_REFPOINTER("b"_Stz, ppRow);
+    
+    // get index buffer from seitf
+    EntryBuffer* pEntryBuffer = pSEitf->m_pIndexBuffer;
+    Entry* pEntry = nullptr;
+    
+    while (!pEntry) {
+      
+      bool bLastBuffer = pEntryBuffer ? pEntryBuffer->bIsLast() : false;
+      
+      if (!pEntryBuffer || !pEntryBuffer->bIsLast()) {
+
+        // get the buffer queue from the seitf
+        Queue* pBufferQueue = pSEitf->pBufferQueue();
+      
+        // pop buffer off the buffer queue
+        ValWrk xValWrk;
+        while (!pBufferQueue->bPop(&xValWrk)) {
+          PosixThread::vSleepMilli(1);
+        }
+
+        // get entry buffer
+        PtrVal* pPtrVal = xValWrk.pNestedPtrVal();
+        pEntryBuffer = (EntryBuffer*)(pPtrVal->pPtr());
+
+        // save the entry buffer in the SEitf
+        pSEitf->m_pIndexBuffer = pEntryBuffer;
+        
+        // get first entry from buffer
+        pEntry = pEntryBuffer->pFirstEntry();
+      }
+      else {
+        
+        ASSERT(pSEitf->m_pEntry);
+        
+        // get next entry from buffer
+        pEntry = pEntryBuffer->pNextEntry(pSEitf->m_pEntry);
+        
+        if (bLastBuffer && !pEntry)
+          break;
+      }
+    }
+    
+    // save entry in SEitf
+    pSEitf->m_pEntry = pEntry;
+    
+    if (pEntry) {
+      
+      RowData::vRowAsString(pSEitf->m_sResponse, (Stz*)pEntry->aRow(), pSEitf->m_pCurrentTable->pColumnVec());
+      *ppRow = (void*)pSEitf->m_sResponse.aChar();
+    }
+    else {
+      // trace exit
+      TRACE_EXIT("ea"_Stz);
+      
+      return EC_NONE;
+    }
+    
+    //TRACE_ROW();
+    
+    // trace exit
+    TRACE_EXIT("eb"_Stz);
+    
+    return EC_NONE;
+  }
+  catch (Error* pError) {
+    RapidsSE::vErrorHandler(pError);
+    TRACE_ERROR("!", pError->eErrorCode());
+    return pError->eErrorCode();
+  }
+  catch (...) {
+    TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
+    return EC_SE_UNKNOWN_ERROR;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -956,64 +1038,6 @@ eEC RapidsSE_GetLastError(SEitf* pSEitf, void** ppError, i8 iTraceLevel)
     
     // trace exit
     TRACE_EXIT("ea"_Stz);
-    
-    return EC_NONE;
-  }
-  catch (Error* pError) {
-    RapidsSE::vErrorHandler(pError);
-    TRACE_ERROR("!", pError->eErrorCode());
-    return pError->eErrorCode();
-  }
-  catch (...) {
-    TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
-    return EC_SE_UNKNOWN_ERROR;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* get next row                                                               */
-/*----------------------------------------------------------------------------*/
-eEC RapidsSE_GetNextRow(SEitf* pSEitf, void** ppRow, i8 iTraceLevel)
-{
-  eEC eResult;
-  eEC eResponse;
-  
-  Stz* aApiCall = "RapidsSE_GetNextRow"_Stz;
-  
-  try {
-    // trace entry
-    TRACE_ENTRY_P0();
-    
-    // validate the SEitf
-    VALIDATE_SEITF("a"_Stz);
-  
-    // clear the last error
-    CLEAR_LASTERROR();
-    
-    // validate the reference pointer
-    VALIDATE_REFPOINTER("b"_Stz, ppRow);
-
-    i8 iAddress = pSEitf->m_sResponse.iToI8();
-    
-    SelCursor* pSelCursor = reinterpret_cast<SelCursor*>(iAddress);
-    ASSERT(CN_SELCURSOR == pSelCursor->eClass());
-    
-    *ppRow = pSelCursor->aRowAsStr();
-    if (!*ppRow) {
-      
-      // trace exit
-      TRACE_EXIT("ea"_Stz);
-      
-      return EC_NONE;
-    }
-    
-    //TRACE_ROW();
-    
-    // move cursor to next row
-    pSelCursor->vNext();
-    
-    // trace exit
-    TRACE_EXIT("eb"_Stz);
     
     return EC_NONE;
   }

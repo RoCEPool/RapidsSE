@@ -339,6 +339,9 @@ timer: pIdxSelectTimer
     spawnSelectTask
     endof
   endcase
+
+  // delete the planner
+  pPlanner planner.delete
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -419,7 +422,7 @@ timer: pIdxSelectTimer
   CN_STRVAL assert::class_1
   CN_INTVAL assert::class_2
 
-  0 0 locals| pPlanner pTable sTableNm sWhere bGroupBy |
+  0 0 0 locals| pSeitf pPlanner pTable sTableNm sWhere bGroupBy |
 
   pIdxSelectTimer timer.start
 
@@ -433,7 +436,8 @@ timer: pIdxSelectTimer
   //
 
   // assert no seitf.table
-  task::this task.seitf@ seitf.table@ not assert
+  task::this task.seitf@ to pSeitf
+  pSeitf seitf.table@ not assert
 
   // path should end in a tables folder
   // i.e. task.dicStack should be ../tables
@@ -472,13 +476,14 @@ timer: pIdxSelectTimer
   // fetch rows from the buffers in the buffer queue
   fetchQueueBufferRows
 
+  // clear index in seitf
+  nullptr pSeitf seitf.index!
+
   // dec and return table reference and clear task.seitf.currentTable
   returnTableRef not if <NIP+ERROR> exit then
 
   // assert no seitf.table
   task::this task.seitf@ seitf.table@ not assert
-
-  pPlanner planner.delete
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // restore path

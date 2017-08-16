@@ -453,7 +453,7 @@ void Task::vSEitfIndexStore(MP_Task mpTask)
     THROW_INVALID_DSTACK("seitf.index!"_Stz);
   
   Index* pIndex = _pIndex(pPtrIndex);
-  ASSERT(CN_INDEX == pIndex->eClass());
+  ASSERT(pIndex == nullptr || CN_INDEX == pIndex->eClass());
   
   pSEitf->vCurrentIndex(pIndex);
   

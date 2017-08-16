@@ -161,7 +161,7 @@ Stz* RowCursor::aRowAsStr(void)
 //  else
 //    return nullptr;
   
-  s256 sRow;
+  s48K sRow;
   ColumnVec* pColVec = m_pRowBuffer->pIndex()->pTable()->pColumnVec();
   RowData::vRowAsString(sRow, (Stz*)m_pRow->aRow(), pColVec);
   
