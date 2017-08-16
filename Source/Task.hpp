@@ -299,6 +299,7 @@ namespace Tasks
     void vAddPrimitives_NodeCursor(void);
     void vAddPrimitives_Object(void);
     void vAddPrimitives_OpFrame(void);
+    void vAddPrimitives_PartitionScheduler(void);
     void vAddPrimitives_Plan(void);
     void vAddPrimitives_PlanList(void);
     void vAddPrimitives_Planner(void);
@@ -808,6 +809,9 @@ namespace Tasks
     static void vOpFrameDic(MP_Task mpTask);
     static void vOpFrameName(MP_Task mpTask);
     
+    // partition scheduler
+    static void vPartitionSchedulerEnqueueTask(MP_Task mpTask);
+  
     // plan
     static void vPlanCompile(MP_Task mpTask);
     static void vPlanDelete(MP_Task mpTask);
