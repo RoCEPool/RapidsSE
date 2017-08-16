@@ -474,7 +474,11 @@ timer: pIdxSelectTimer
   bGroupBy pPlanner spawnFetch
 
   // fetch rows from the buffers in the buffer queue
-  fetchQueueBufferRows
+  bGroupBy if
+    groupByQueueBufferRows
+  else
+    fetchQueueBufferRows
+  then
 
   // clear index in seitf
   nullptr pSeitf seitf.index!
