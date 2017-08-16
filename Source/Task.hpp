@@ -1198,6 +1198,8 @@ namespace Tasks
     static void vThreadMutexUnlock(MP_Task mpTask);
     static void vThreadNameFetch(MP_Task mpTask);
     static void vThreadNameStore(MP_Task mpTask);
+    static void vThreadPartitionFetch(MP_Task mpTask);
+    static void vThreadPartitionStore(MP_Task mpTask);
     static void vThreadTaskQueueFetch(MP_Task mpTask);
     static void vThreadTaskQueueStore(MP_Task mpTask);
     static void vThreadSchedulerFetch(MP_Task mpTask);

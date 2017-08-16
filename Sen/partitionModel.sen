@@ -75,6 +75,9 @@ nPartitionThreads constant N_PARTITION_THREADS
     // set the threads name
     I >partitionThreadNm pPartitionThread thread.name!
 
+    // set the threads partition no
+    I pPartitionThread thread.partition!
+
     // set the actor model
     AC_PARTITION pPartitionThread thread.actorModel!
 

@@ -31,8 +31,8 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Thread(void)
 {
-  vAddPrimitive("thread.actorModel@"_Stz,     &vThreadActorModelFetch,       false);
-  vAddPrimitive("thread.actorModel!"_Stz,     &vThreadActorModelStore,       false);
+  vAddPrimitive("thread.actorModel@"_Stz,     &vThreadActorModelFetch, false);
+  vAddPrimitive("thread.actorModel!"_Stz,     &vThreadActorModelStore, false);
   vAddPrimitive("thread.append"_Stz,          &vThreadAppend,          false);
   vAddPrimitive("thread.bind"_Stz,            &vThreadBind,            false);
   vAddPrimitive("thread.condSignal"_Stz,      &vThreadCondSignal,      false);
@@ -47,12 +47,14 @@ void Task::vAddPrimitives_Thread(void)
   vAddPrimitive("thread.mutexUnlock"_Stz,     &vThreadMutexUnlock,     false);
   vAddPrimitive("thread.name@"_Stz,           &vThreadNameFetch,       false);
   vAddPrimitive("thread.name!"_Stz,           &vThreadNameStore,       false);
+  vAddPrimitive("thread.partition@"_Stz,      &vThreadPartitionFetch,  false);
+  vAddPrimitive("thread.partition!"_Stz,      &vThreadPartitionStore,  false);
   vAddPrimitive("thread.scheduler@"_Stz,      &vThreadSchedulerFetch,  false);
   vAddPrimitive("thread.scheduler!"_Stz,      &vThreadSchedulerStore,  false);
-  vAddPrimitive("thread.taskqueue@"_Stz,      &vThreadTaskQueueFetch,  false);
-  vAddPrimitive("thread.taskqueue!"_Stz,      &vThreadTaskQueueStore,  false);
-  vAddPrimitive("thread.taskset@"_Stz,        &vThreadSfetch,          false);
-  vAddPrimitive("thread.taskset!"_Stz,        &vThreadSstore,          false);
+  vAddPrimitive("thread.taskQueue@"_Stz,      &vThreadTaskQueueFetch,  false);
+  vAddPrimitive("thread.taskQueue!"_Stz,      &vThreadTaskQueueStore,  false);
+  vAddPrimitive("thread.taskSet@"_Stz,        &vThreadSfetch,          false);
+  vAddPrimitive("thread.taskSet!"_Stz,        &vThreadSstore,          false);
   vAddPrimitive("thread.sleep_s"_Stz,         &vThreadSleep_s,         false);
   vAddPrimitive("thread.sleep_ms"_Stz,        &vThreadSleep_ms,        false);
   vAddPrimitive("thread.sleep_us"_Stz,        &vThreadSleep_us,        false);
@@ -381,6 +383,44 @@ ENTRY("vThreadNameFetch"_Stz);
   sName = pThread->sName();
   
   mpTask->m_pDataStack->vPushS32(sName);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* thread.partition@ -- fetch partition from thread which is on stack         */
+/*----------------------------------------------------------------------------*/
+void Task::vThreadPartitionFetch(MP_Task mpTask)
+{
+  ENTRY("vThreadPartitionFetch"_Stz);
+  
+  Object* pThreadEmb;
+  if ( ! mpTask->m_pDataStack->bPop(pThreadEmb) )
+    THROW_INVALID_DSTACK("thread.partition@"_Stz);
+  Thread* pThread = _pThread(pThreadEmb);
+  
+  mpTask->m_pDataStack->vPushInt(pThread->m_iPartition);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* thread.partition! -- store partition into thread which is on stack         */
+/*----------------------------------------------------------------------------*/
+void Task::vThreadPartitionStore(MP_Task mpTask)
+{
+  ENTRY("vThreadPartitionStore"_Stz);
+  
+  Object* pThreadEmb;
+  if ( ! mpTask->m_pDataStack->bPop(pThreadEmb) )
+    THROW_INVALID_DSTACK("thread.partition@"_Stz);
+  Thread* pThread = _pThread(pThreadEmb);
+  
+  i8 iPartition;
+  if ( ! mpTask->m_pDataStack->bPop(iPartition) )
+    THROW_INVALID_DSTACK("thread.partition!"_Stz);
+  
+  pThread->m_iPartition = iPartition;
   
   EXIT();
 }
