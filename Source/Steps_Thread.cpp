@@ -478,7 +478,7 @@ void Task::vThreadTaskQueueFetch(MP_Task mpTask)
   
   Thread* pThread = static_cast<Thread*>(pThreadEmb);
   
-  TaskList* pTaskQueue = pThread->m_pTaskQueue;
+  TaskQueue* pTaskQueue = pThread->m_pTaskQueue;
   
   Object* pTaskQueueEmb = static_cast<Object*>(pTaskQueue);
   
@@ -508,9 +508,9 @@ void Task::vThreadTaskQueueStore(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(pTaskQueueEmb) )
     THROW_INVALID_DSTACK("thread.taskqueue!"_Stz);
   
-  ASSERT(CN_TASKLIST == pTaskQueueEmb->eClass());
+  ASSERT(CN_TASKQUEUE == pTaskQueueEmb->eClass());
   
-  TaskList* pTaskQueue = static_cast<TaskList*>(pTaskQueueEmb);
+  TaskQueue* pTaskQueue = _pTaskQueue(pTaskQueueEmb);
   
   pThread->m_pTaskQueue = pTaskQueue;
   

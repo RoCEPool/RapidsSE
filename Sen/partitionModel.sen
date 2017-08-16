@@ -83,7 +83,7 @@ nPartitionThreads constant N_PARTITION_THREADS
       pPartitionThread thread.taskset!
 
     // give it a public taskqueue
-    I >partitionThreadNm ".taskqueue" str.cat :taskList execute
+    I >partitionThreadNm ".taskqueue" str.cat :taskQueue execute
       pPartitionThread thread.taskqueue!
 
 /*

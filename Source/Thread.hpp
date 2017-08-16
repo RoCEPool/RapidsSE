@@ -63,7 +63,7 @@ namespace Threads
     eTH          m_eThread;      // thread kind
     PosixThread* m_pPosixThread; // its posix structure
     Semaphore*   m_pSemaphore;   // this threads semaphore
-    TaskList*    m_pTaskQueue;   // this threads task queue/list
+    TaskQueue*   m_pTaskQueue;   // this threads task queue/list
     TaskSet*     m_pTaskSet;     // task set this thread serves
     NP_Task      m_npTask;       // task current being executed
                                  //   note that while task is being exected
@@ -114,8 +114,8 @@ namespace Threads
     void  vMutexUnlock(void);
     void  vSignalThread(void);
   
-    TaskList* pTaskQueue(void);
-    void      vTaskQueue(TaskList* pTaskQueue);
+    TaskQueue* pTaskQueue(void);
+    void  vTaskQueue(TaskQueue* pTaskQueue);
   
     Footer* aFooter(void);
   };

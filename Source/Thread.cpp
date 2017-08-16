@@ -742,7 +742,7 @@ i8 Thread::iThreadNo(void)
 /*----------------------------------------------------------------------------*/
 /* get this threads task queue                                                */
 /*----------------------------------------------------------------------------*/
-TaskList* Thread::pTaskQueue(void)
+TaskQueue* Thread::pTaskQueue(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
@@ -752,7 +752,7 @@ TaskList* Thread::pTaskQueue(void)
 /*----------------------------------------------------------------------------*/
 /* get this threads task queue                                                */
 /*----------------------------------------------------------------------------*/
-void Thread::vTaskQueue(TaskList* pTaskQueue)
+void Thread::vTaskQueue(TaskQueue* pTaskQueue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
