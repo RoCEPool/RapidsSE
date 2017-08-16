@@ -61,6 +61,7 @@ namespace Threads
     s32          m_sName;        // thread name
     eAC          m_eActorModel;  // actor model
     eTH          m_eThread;      // thread kind
+    i8           m_iPartition;   // specific partition? 
     PosixThread* m_pPosixThread; // its posix structure
     Semaphore*   m_pSemaphore;   // this threads semaphore
     TaskQueue*   m_pTaskQueue;   // this threads task queue/list
@@ -95,6 +96,8 @@ namespace Threads
     void vLoop_Partition(void);
     void vLoop_Server(void);
     void vLoop_Worker(void);
+    i8   iPartition(void);
+    void vPartition(i8 iPartition);
     StrVal&   sName(void);
     void vName(StrVal& sName);
     void vSpawn_Drone(void);
