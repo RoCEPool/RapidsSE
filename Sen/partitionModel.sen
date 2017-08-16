@@ -88,7 +88,7 @@ nPartitionThreads constant N_PARTITION_THREADS
 
 /*
     pPartitionThread thread.taskqueue@ 
-      iPtnNo scheduler::partition scheduler.partitionQueue!
+      iPtnNo scheduler::partition partitionScheduler.TaskQueue!
  */
 
 //words
@@ -118,7 +118,7 @@ nPartitionThreads constant N_PARTITION_THREADS
   pTask pTaskQueue taskQueue.append
  
  
-  pTask iPtnNo scheduler::partition scheduler.enqueuePartitionTask
+  pTask iPtnNo scheduler::partition partitionScheduler.enqueueTask
 
  */
 

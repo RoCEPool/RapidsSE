@@ -989,6 +989,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitives_SEitfCursor();
   vAddPrimitives_SEitfList();
   vAddPrimitives_SelCursor();
+  vAddPrimitives_ServerScheduler();
   vAddPrimitives_Shell();
   vAddPrimitives_Slots();
   vAddPrimitives_Socket();

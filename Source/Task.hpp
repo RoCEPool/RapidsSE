@@ -316,6 +316,7 @@ namespace Tasks
     void vAddPrimitives_SEitfCursor(void);
     void vAddPrimitives_SEitfList(void);
     void vAddPrimitives_SelCursor(void);
+    void vAddPrimitives_ServerScheduler(void);
     void vAddPrimitives_Shell(void);
     void vAddPrimitives_Slots(void);
     void vAddPrimitives_Socket(void);
@@ -1041,6 +1042,9 @@ namespace Tasks
     static void vSelCursorTableFetch(MP_Task mpTask);
     static void vSelCursorTableStore(MP_Task mpTask);
     
+    // server scheduler
+    static void vServerSchedulerEnqueueTask(MP_Task mpTask);
+  
     // shell
     static void vShellExecute(MP_Task mpTask);
     
