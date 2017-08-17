@@ -30,7 +30,11 @@ namespace Schedulers
     
     PartitionScheduler(void);
     ~PartitionScheduler(void);
-      
+  
+    void vSempahore(i8 i_PtnNo, Semaphore* pSemaphore);
+    void vTaskQueue(i8 i_PtnNo, TaskQueue* pTaskQueue);
+    void vThreadQueue(i8 i_PtnNo, ThreadQueue* pThreadQueue);
+  
     void vEnqueueTask_Mutex(i8 i_PtnNo, Task* mpTask);
     bool bGetTask_Mutex(i8 i_PtnNo, Thread* mpThread, bool bWait=true);
   

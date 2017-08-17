@@ -97,6 +97,8 @@ void Task::vPartitionSchedulerSemaphoreStore(MP_Task mpTask)
     THROW_INVALID_DSTACK("PartitionScheduler.semaphoreStore"_Stz);
   Semaphore* pSemaphore = _pSemaphore(pObject);
   
+  pPartitionScheduler->vSempahore(iPtnNo,pSemaphore);
+  
   EXIT();
 }
 
@@ -121,6 +123,8 @@ void Task::vPartitionSchedulerTaskQueueStore(MP_Task mpTask)
     THROW_INVALID_DSTACK("PartitionScheduler.taskQueueStore"_Stz);
   TaskQueue* pTaskQueue = _pTaskQueue(pObject);
   
+  pPartitionScheduler->vTaskQueue(iPtnNo,pTaskQueue);
+
   EXIT();
 }
 
@@ -144,6 +148,8 @@ void Task::vPartitionSchedulerThreadQueueStore(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(pObject) )
     THROW_INVALID_DSTACK("PartitionScheduler.threadQueueStore"_Stz);
   ThreadQueue* pThreadQueue = _pThreadQueue(pObject);
+  
+  pPartitionScheduler->vThreadQueue(iPtnNo,pThreadQueue);
   
   EXIT();
 }

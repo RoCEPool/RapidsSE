@@ -82,6 +82,36 @@ PartitionScheduler::PartitionScheduler(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* set semaphore                                                              */
+/*----------------------------------------------------------------------------*/
+void PartitionScheduler::vSempahore(i8 i_PtnNo, Semaphore* mpSemaphore)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITIONSCHEDULER,_FOOTER_);
+  
+  m_xSlots[i_PtnNo].m_pSemaphore = mpSemaphore;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set task queue                                                             */
+/*----------------------------------------------------------------------------*/
+void PartitionScheduler::vTaskQueue(i8 i_PtnNo, TaskQueue* mpTaskQueue)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITIONSCHEDULER,_FOOTER_);
+  
+  m_xSlots[i_PtnNo].m_pTaskQueue = mpTaskQueue;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set thread queue                                                           */
+/*----------------------------------------------------------------------------*/
+void PartitionScheduler::vThreadQueue(i8 i_PtnNo, ThreadQueue* mpThreadQueue)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITIONSCHEDULER,_FOOTER_);
+  
+  m_xSlots[i_PtnNo].m_pThreadQueue = mpThreadQueue;
+}
+
+/*----------------------------------------------------------------------------*/
 /* hand given task to waiting thread or queue onto this schedulers task queue */
 /*----------------------------------------------------------------------------*/
 void PartitionScheduler::vEnqueueTask_Mutex(i8 i_PtnNo, Task* mpTask)
