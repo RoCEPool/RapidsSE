@@ -1,0 +1,34 @@
+/*============================================================================*/
+/* semaphore.sen -- semaphore related words                                   */
+/*============================================================================*/
+
+"semaphore.sen" .verbose
+
+: semaphore:
+
+  create
+  WT_OBJECT word.this word.type!
+  sizeof_semaphore allot
+  word.this >body object.magic!
+  CN_SEMAPHORE word.this >body object.class!
+  word.this >body semaphore.init
+  true word.this >body object.wordbody!
+  does> 
+;
+
+: :semaphore
+
+  >create
+  WT_OBJECT word.this word.type!
+  sizeof_semaphore allot
+  word.this >body object.magic!
+  CN_SEMAPHORE word.this >body object.class!
+  word.this >body semaphore.init
+  true word.this >body object.wordbody!
+  word.this
+  does>
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

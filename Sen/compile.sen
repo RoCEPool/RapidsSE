@@ -11,6 +11,7 @@
 "core.sen" include
 "common.sen" include
 "structures.sen" include
+"semaphores.sen" include
 "tasks.sen" include
 "threads.sen" include
 "transactions.sen" include
