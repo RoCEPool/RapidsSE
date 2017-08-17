@@ -184,7 +184,14 @@ OBJECT* List_t<OBJECT>::npPop(void)
     m_pTail = nullptr;
   
   m_nCount--;
-  
+  if (m_nCount) {
+    ASSERT(m_pHead);
+    ASSERT(m_pTail);
+  }
+  else {
+    ASSERT(!m_pHead);
+    ASSERT(!m_pTail)
+  }
   m_zLock.vDropWrite();
   
   pNode->vPrevNode(nullptr);
@@ -212,7 +219,9 @@ void List_t<OBJECT>::vPush(OBJECT* mpNode)
   m_pHead = mpNode;
   
   m_nCount++;
-  
+  ASSERT(m_pHead);
+  ASSERT(m_pTail)
+
   m_zLock.vDropWrite();
 }
 

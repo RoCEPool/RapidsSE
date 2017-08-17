@@ -142,12 +142,12 @@ bool Partition::bInsertRow(EntryBuffer* pRowBuffer, EntWrk& xRowWrk)
     return false;
   
   // now insert an entry for the row in the indexes of this table
-  i8 nIndexes = m_pIdxDataVec->nItems();
-  
-  for (i8 i_Index=0; i_Index < nIndexes; i_Index++) {
-    IndexData* pIndexData = m_pIdxDataVec->pGet(i_Index);
-    pIndexData->vInsertEntry(pRow);
-  }
+//  i8 nIndexes = m_pIdxDataVec->nItems();
+//  
+//  for (i8 i_Index=0; i_Index < nIndexes; i_Index++) {
+//    IndexData* pIndexData = m_pIdxDataVec->pGet(i_Index);
+//    pIndexData->vInsertEntry(pRow);
+//  }
   
   return true;
 }
