@@ -94,6 +94,7 @@ namespace Threads
     void vContentDump(void) const;
     void vLoop_Drone(void);
     void vLoop_Partition(void);
+    void vLoop_Partition2(void);
     void vLoop_Server(void);
     void vLoop_Worker(void);
     i8   iPartition(void);

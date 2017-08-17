@@ -469,6 +469,125 @@ void Thread::vLoop_Partition(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* partition loop (wait for signal loop)                                      */
+/*----------------------------------------------------------------------------*/
+void Thread::vLoop_Partition2(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
+  
+  ASSERT(m_eActorModel == AC_PARTITION);
+  
+  if (gbVerbose || gbProgress)
+    vTrace("Thread %p: %s Partition\n"_Stz,this,m_sName.aChar());
+  
+  m_pPosixThread->vSetOSThreadId();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // validate model
+  
+  // expect a valid partition
+  if (-1 == m_iPartition) {
+    vTrace("Thread %p: %s does not have a valid partition\n"_Stz,this,m_sName.aChar());
+    ASSERT(! *m_npTask);
+  }
+  
+  // don't expect a task
+  if (*m_npTask) {
+    vTrace("Thread %p: %s has a task\n"_Stz,this,m_sName.aChar());
+    ASSERT(! *m_npTask);
+  }
+  
+  // expect a taskSet
+  if (! m_pTaskSet) {
+    vTrace("Thread %p: %s does not have a taskset\n"_Stz,this,m_sName.aChar());
+    ASSERT(m_pTaskSet);
+  }
+  
+  // expect a scheduler
+  if (! m_pScheduler) {
+    vTrace("Thread %p: %s does not have a scheduler\n"_Stz,this,m_sName.aChar());
+    ASSERT(m_pScheduler);
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set up tls
+  
+  PosixThread::vTlsSet(giTLS_ThreadKey,this);
+  ASSERT(PosixThread::pTlsGet(giTLS_ThreadKey));
+  
+  // loop, wait for signal of next task
+  while (true) {
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // get a task to run
+    
+    m_npTask = m_pTaskSet->npPop();               //! need to have a max taskset
+    if (! *m_npTask) {
+      ASSERT( ! *m_npTask );
+      bool b = ((PartitionScheduler*)m_pScheduler)->bGetTask_Mutex(m_iPartition,this,true);
+      ASSERT( b && *m_npTask );
+    }
+    
+    ASSERT(m_npTask->eActorModel() == AC_PARTITION);
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // set up this thread to run task
+    
+    PosixThread::vTlsSet(giTLS_TaskKey,*m_npTask);
+    ASSERT(PosixThread::pTlsGet(giTLS_TaskKey));
+    
+    m_npTask->vState(TS_RUNNING);
+    m_npTask->vThread(this);
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // run the task
+    
+    m_npTask->vTaskLoop();
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // thread no longer running the task
+    
+    PosixThread::vTlsSet(giTLS_TaskKey,nullptr);
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // when task yields, task is put into task set
+    
+    if (TS_YIELDED == m_npTask->eState()) {
+      m_npTask->vThread(nullptr);
+      MP_Task mpTask = *m_npTask;
+      vAppend(mpTask);
+      m_npTask = nullptr;
+      continue;
+    }
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // unless waiting on ack, task forgets thread
+    
+    if (TS_WAITING_ACK == m_npTask->eState()) {
+      m_npTask->vThread(nullptr);
+      m_npTask = nullptr;
+      continue;
+    }
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // when task exits, it is deleted (unless its a word)
+    
+    if (TS_EXITED == m_npTask->eState()) {
+      m_npTask->vThread(nullptr);
+      MP_Task mpTask = *m_npTask;
+      if ( (*gnpBootTask != *m_npTask)  && (!mpTask->bWordBody()) ) {
+        delete *m_npTask;
+      }
+      m_npTask = nullptr;
+      continue;
+    }
+    
+    NEVER_REACH;
+    
+  } // while
+}
+
+/*----------------------------------------------------------------------------*/
 /* server loop (wait for signal loop)                                         */
 /*----------------------------------------------------------------------------*/
 void Thread::vLoop_Server(void)
