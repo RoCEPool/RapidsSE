@@ -1006,6 +1006,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitives_Thread();
   vAddPrimitives_ThreadCursor();
   vAddPrimitives_ThreadList();
+  vAddPrimitives_ThreadQueue();
   vAddPrimitives_Timer();
   vAddPrimitives_To();
   vAddPrimitives_Trace();

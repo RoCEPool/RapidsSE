@@ -332,6 +332,7 @@ namespace Tasks
     void vAddPrimitives_Thread(void);
     void vAddPrimitives_ThreadCursor(void);
     void vAddPrimitives_ThreadList(void);
+    void vAddPrimitives_ThreadQueue(void);
     void vAddPrimitives_Timer(void);
     void vAddPrimitives_To(void);
     void vAddPrimitives_Trace(void);
@@ -1231,6 +1232,9 @@ namespace Tasks
     static void vThreadListDump(MP_Task mpTask);
     static void vThreadListGlobalStore(MP_Task mpTask);
     static void vThreadListInit(MP_Task mpTask);
+  
+    // threadQueue
+    static void vThreadQueueInit(MP_Task mpTask);
   
     // timer
     static void vTimerDelete(MP_Task mpTask);
