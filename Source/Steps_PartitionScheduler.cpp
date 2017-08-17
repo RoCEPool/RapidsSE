@@ -36,6 +36,9 @@ void Task::vAddPrimitives_PartitionScheduler(void)
   vAddPrimitive("PartitionScheduler.enqueueTask"_Stz,
                 &vPartitionSchedulerEnqueueTask, false);
   
+  vAddPrimitive("PartitionScheduler.semaphore!"_Stz,
+                &vPartitionSchedulerSemaphoreStore, false);
+  
   vAddPrimitive("PartitionScheduler.taskQueue!"_Stz,
                 &vPartitionSchedulerTaskQueueStore, false);
 
@@ -69,6 +72,30 @@ void Task::vPartitionSchedulerEnqueueTask(MP_Task mpTask)
   Task* pTask = _pTask(pObject);
   
   pPartitionScheduler->vEnqueueTask_Mutex(iPtnNo,pTask);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* PartitionScheduler.semaphoreStore -- semaphore store                       */
+/*----------------------------------------------------------------------------*/
+void Task::vPartitionSchedulerSemaphoreStore(MP_Task mpTask)
+{
+  ENTRY("vPartitionSchedulerSemaphoreStore"_Stz);
+  
+  i8 iPtnNo;
+  Object* pObject;
+  
+  if ( ! mpTask->m_pDataStack->bPop(pObject) )
+    THROW_INVALID_DSTACK("PartitionScheduler.semaphoreStore"_Stz);
+  PartitionScheduler* pPartitionScheduler = _pPartitionScheduler(pObject);
+  
+  if ( ! mpTask->m_pDataStack->bPop(iPtnNo) )
+    THROW_INVALID_DSTACK("PartitionScheduler.semaphoreStore"_Stz);
+  
+  if ( ! mpTask->m_pDataStack->bPop(pObject) )
+    THROW_INVALID_DSTACK("PartitionScheduler.semaphoreStore"_Stz);
+  Semaphore* pSemaphore = _pSemaphore(pObject);
   
   EXIT();
 }

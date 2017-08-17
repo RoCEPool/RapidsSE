@@ -90,10 +90,13 @@ nPartitionThreads constant N_PARTITION_THREADS
       pPartitionThread thread.taskqueue!
 
     pPartitionThread thread.taskqueue@ 
-      I scheduler::partition partitionScheduler.TaskQueue!
+      I scheduler::partition partitionScheduler.taskQueue!
 
     I >partitionThreadNm ".threadQueue" str.cat :threadQueue execute
-      I scheduler::partition partitionScheduler.ThreadQueue!
+      I scheduler::partition partitionScheduler.threadQueue!
+
+    I >partitionThreadNm ".semaphore" str.cat :semaphore execute
+      I scheduler::partition partitionScheduler.semaphore!
 
     // spawn os thread
     pPartitionThread thread.spawn_partition

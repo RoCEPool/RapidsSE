@@ -572,6 +572,7 @@ void Task::vAddConstants(void)
   /* 58 */ vAddConstant("CN_SEITFCURSOR"_Stz,  CN_SEITFCURSOR);
   /* 59 */ vAddConstant("CN_SEITFLIST"_Stz,    CN_SEITFLIST);
   /*    */ vAddConstant("CN_SELCURSOR"_Stz,    CN_SELCURSOR);
+  /* 60 */ vAddConstant("CN_SEMAPHORE"_Stz,    CN_SEMAPHORE);
   /* 60 */ vAddConstant("CN_SEPROMPT"_Stz,     CN_SEPROMPT);
   /* 61 */ vAddConstant("CN_SINCE"_Stz,        CN_SINCE);
   /* 62 */ vAddConstant("CN_SKIPCURSOR"_Stz,   CN_SKIPCURSOR);
@@ -777,6 +778,7 @@ void Task::vAddConstants(void)
   /* 44 */ vAddConstant("SIZEOF_SEITFCURSOR"_Stz,  sizeof(SEitfCursor));
   /* 45 */ vAddConstant("SIZEOF_SEITFLIST"_Stz,    sizeof(SEitfList));
   /*    */ vAddConstant("SIZEOF_SELCURSOR"_Stz,    sizeof(SelCursor));
+  /*    */ vAddConstant("SIZEOF_SEMAPHORE"_Stz,    sizeof(Semaphore));
   /* 46 */ vAddConstant("SIZEOF_SEPROMPT"_Stz,     sizeof(SePrompt));
   /* 47 */ vAddConstant("SIZEOF_SINCE"_Stz,        sizeof(Since));
   /* 48 */ vAddConstant("SIZEOF_SKIPCURSOR"_Stz,   sizeof(SkipCursor));
