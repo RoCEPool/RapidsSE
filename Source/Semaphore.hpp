@@ -18,7 +18,8 @@ namespace System
     Footer m_xFooter;
   
     void* operator new(size_t);
-    void operator delete(void* pPosixThreadAddress);
+    void* operator new(size_t, Semaphore* pSemaphore);
+    void operator delete(void* pSemaphoreAddress);
 
     Semaphore(void);
     ~Semaphore(void);

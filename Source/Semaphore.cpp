@@ -35,6 +35,15 @@ void* Semaphore::operator new(size_t iSize)
 }
 
 /*----------------------------------------------------------------------------*/
+/* operator new                                                               */
+/*----------------------------------------------------------------------------*/
+void* Semaphore::operator new(size_t iSize, Semaphore* pSemaphore)
+{
+  RASSERT(iSize);
+  return pSemaphore;
+}
+
+/*----------------------------------------------------------------------------*/
 /* delete operator                                                            */
 /*----------------------------------------------------------------------------*/
 void Semaphore::operator delete(void* pSemaphoreAddress)

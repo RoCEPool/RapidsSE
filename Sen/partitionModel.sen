@@ -82,15 +82,18 @@ nPartitionThreads constant N_PARTITION_THREADS
     AC_PARTITION pPartitionThread thread.actorModel!
 
     // give it a public taskset
-    I >partitionThreadNm ".taskset" str.cat :taskset execute
+    I >partitionThreadNm ".taskSet" str.cat :taskset execute
       pPartitionThread thread.taskset!
 
     // give it a public taskqueue
-    I >partitionThreadNm ".taskqueue" str.cat :taskQueue execute
+    I >partitionThreadNm ".taskQueue" str.cat :taskQueue execute
       pPartitionThread thread.taskqueue!
 
     pPartitionThread thread.taskqueue@ 
       I scheduler::partition partitionScheduler.TaskQueue!
+
+    I >partitionThreadNm ".threadQueue" str.cat :threadQueue execute
+      I scheduler::partition partitionScheduler.ThreadQueue!
 
     // spawn os thread
     pPartitionThread thread.spawn_partition

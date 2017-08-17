@@ -813,6 +813,7 @@ namespace Tasks
     // partition scheduler
     static void vPartitionSchedulerEnqueueTask(MP_Task mpTask);
     static void vPartitionSchedulerTaskQueueStore(MP_Task mpTask);
+    static void vPartitionSchedulerThreadQueueStore(MP_Task mpTask);
   
     // plan
     static void vPlanCompile(MP_Task mpTask);
