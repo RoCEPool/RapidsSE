@@ -57,7 +57,6 @@ namespace DBobjects
     Index* pHiddenIndex(void);
     void vHiddenIndex(Index* pHiddenIndex);
     IdxVec* pIdxVec(void);
-    bool bInsertRow(EntryBuffer* pRowBuffer, i8 iPartition, TxRef* pTxRef, Stz* pRecord, i8 iLength);
     Partition* pPartition(i8 iSlot);
     void vPopulateIndex(i8 iIndexNo);
     void vRefDec(void);

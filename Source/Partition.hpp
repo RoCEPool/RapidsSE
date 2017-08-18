@@ -37,7 +37,6 @@ namespace DBobjects
   
     void    vAddIndex(IndexData* pIndexData);
     
-    bool    bInsertRow(EntryBuffer* pRowBuffer, EntWrk& xRowWrk);
     i8      iPartitionId(void);
     void    vPartitionId(i8 iPartitionId);
     void    vPopulateIndex(i8 iIndexNo);

@@ -338,26 +338,6 @@ IdxVec* Table::pIdxVec(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* insert a row in the table                                                  */
-/*----------------------------------------------------------------------------*/
-bool Table::bInsertRow(EntryBuffer* pRowBuffer, i8 iPartition, TxRef* pTxRef,
-                       Stz* pRecord, i8 iLength)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-  
-  Partition* pPartn = pPartition(iPartition);
-  
-  // create working row
-  EntWrk xRowWrk;
-  xRowWrk.vTxId(pTxRef->iTxId());
-  xRowWrk.vData(pRecord, iLength);
-  
-  bool bInserted = pPartn->bInsertRow(pRowBuffer,xRowWrk);
-  
-  return bInserted;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get a partition                                                            */
 /*----------------------------------------------------------------------------*/
 Partition* Table::pPartition(i8 iSlot)

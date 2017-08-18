@@ -125,33 +125,6 @@ void Partition::vAddIndex(IndexData* pIndexData)
 }
 
 /*----------------------------------------------------------------------------*/
-/* insert a row into this strand                                              */
-/*----------------------------------------------------------------------------*/
-bool Partition::bInsertRow(EntryBuffer* pRowBuffer, EntWrk& xRowWrk)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
-  
-  Entry* pRow;
-  
-  // insert the row in the buffer
-  bool bResult = pRowBuffer->bInsertRow(xRowWrk, &pRow);
-  
-  // buffer is full, return
-  if (! bResult )
-    return false;
-  
-  // now insert an entry for the row in the indexes of this table
-//  i8 nIndexes = m_pIdxDataVec->nItems();
-//  
-//  for (i8 i_Index=0; i_Index < nIndexes; i_Index++) {
-//    IndexData* pIndexData = m_pIdxDataVec->pGet(i_Index);
-//    pIndexData->vInsertEntry(pRow);
-//  }
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get this partitions partitionId                                            */
 /*----------------------------------------------------------------------------*/
 i8 Partition::iPartitionId(void)
