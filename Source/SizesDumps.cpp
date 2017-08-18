@@ -50,7 +50,6 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vDummy,           // CN_COLUMN
   /*    */ &Dump::vDummy,           // CN_COLUMNVEC
 
-  /* 17 */ &Dump::vDummy,           // CN_DATA
   /* 18 */ &Dic::vDump,             // CN_DIC
   /* 19 */ &DicPath::vDump,         // CN_DICPATH
   /* 20 */ &Dump::vInvalid,         // CN_DIR
@@ -125,7 +124,6 @@ pDUMPFUN *gpDump[]
   /* 55 */ &Dump::vUndefined,       // CN_ROW
   /* 56 */ &Dump::vUndefined,       // CN_ROWBUFFER
   /* 57 */ &Dump::vUndefined,       // CN_ROWCURSOR
-  /* 58 */ &EbStrand::vDump,        // CN_EBSTRAND
   
   /* 60 */ &Dump::vUndefined,       // CN_SCANBUFFER
   /* 61 */ &Dump::vUndefined,       // CN_SCRATCH
@@ -221,7 +219,6 @@ i8 giClassSize[]
   /*    */ sizeof(Column),             // CN_COLUMN
   /*    */ sizeof(ColumnVec),          // CN_COLUMNVEC
   
-  /* 17 */ sizeof(Data),               // CN_DATA
   /* 18 */ sizeof(Dic),                // CN_DIC
   /* 19 */ sizeof(DicPath),            // CN_DICPATH
   /* 20 */ sizeof(Dir),                // CN_DIR
@@ -296,7 +293,6 @@ i8 giClassSize[]
   /* 55 */ sizeof(Entry),              // CN_ROW
   /* 56 */ 0,                          // CN_ROWBUFFER
   /* 57 */ sizeof(RowCursor),          // CN_ROWCURSOR
-  /* 58 */ sizeof(EbStrand),           // CN_EBSTRAND
   
   /* 60 */ sizeof(ScanBuffer),         // CN_SCANBUFFER
   /* 61 */ sizeof(Scratch),            // CN_SCRATCH
@@ -392,7 +388,6 @@ eHT geWhichHeap[]
   /*    */ HT_SMALL,   // CN_COLUMN
   /*    */ HT_MEDIUM,  // CN_COLUMNVEC
   
-  /* 17 */ HT_SMALL,   // CN_DATA
   /* 18 */ HT_MEDIUM,  // CN_DIC
   /* 19 */ HT_INVALID, // CN_DICPATH
   /* 20 */ HT_SMALL,   // CN_DIR
@@ -467,7 +462,6 @@ eHT geWhichHeap[]
   /* 58 */ HT_INVALID, // CN_ROW
   /* 59 */ HT_LARGE,   // CN_ROWBUFFER
   /* 60 */ HT_SMALL,   // CN_ROWCURSOR
-  /* 61 */ HT_SMALL,   // CN_EBSTRAND
   
   /* 63 */ HT_LARGE,   // CN_SCANBUFFER
   /* 64 */ HT_LARGE,   // CN_SCRATCH

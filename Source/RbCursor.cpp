@@ -61,7 +61,6 @@ RbCursor::RbCursor(void)
   m_iPartition = 0;
   
   m_pPartition = nullptr;
-  m_pEbStrand = nullptr;
   m_pRowBuffer = nullptr;
   
   _checkInitialised_(CN_RBCURSOR);
@@ -87,7 +86,6 @@ void RbCursor::vBegin(i8 iPartition)
   m_iPartition = iPartition;
   
   m_pPartition = nullptr;
-  m_pEbStrand = nullptr;
   m_pRowBuffer = nullptr;
 }
 
@@ -99,7 +97,6 @@ void RbCursor::vEnd(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_RBCURSOR,_FOOTER_);
   
   m_pPartition = nullptr;
-  m_pEbStrand = nullptr;
   m_pRowBuffer = nullptr;
 }
 
@@ -160,7 +157,6 @@ void RbCursor::vTable(Table* pTable)
   m_pTable = pTable;
   
   m_pPartition = nullptr;
-  m_pEbStrand = nullptr;
   m_pRowBuffer = nullptr;
 }
 

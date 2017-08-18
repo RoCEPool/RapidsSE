@@ -21,11 +21,11 @@ void* BitArray::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 /* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
-void BitArray::operator delete(void* pDataAddress)
+void BitArray::operator delete(void* pAddress)
 {
-  Data* pData = reinterpret_cast<Data*>(pDataAddress);
+  BitArray* pBitArray = reinterpret_cast<BitArray*>(pAddress);
   
-  Heap::vFree(pData);
+  Heap::vFree(pBitArray);
 }
 
 /*----------------------------------------------------------------------------*/

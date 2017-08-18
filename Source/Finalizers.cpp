@@ -49,7 +49,6 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_COLUMN
   /*    */ &Finalize::vUndefined,         // CN_COLUMNVEC
   
-  /* 17 */ &Finalize::vUndefined,         // CN_DATA
   /* 18 */ &Dic::vFinalize,               // CN_DIC
   /* 19 */ &Finalize::vUndefined,         // CN_DICPATH
   /* 20 */ &Finalize::vUndefined,         // CN_DIR
@@ -124,7 +123,6 @@ pFINALIZE *gpFinalize[]
   /* 55 */ &Finalize::vUndefined,         // CN_ROW
   /* 56 */ &Finalize::vUndefined,         // CN_ROWBUFFER
   /* 57 */ &Finalize::vUndefined,         // CN_ROWCURSOR
-  /* 58 */ &Finalize::vUndefined,         // CN_EBSTRAND
   
   /* 60 */ &Finalize::vUndefined,         // CN_SCANBUFFER
   /* 61 */ &Finalize::vUndefined,         // CN_SCRATCH

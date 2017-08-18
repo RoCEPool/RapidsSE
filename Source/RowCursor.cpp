@@ -61,7 +61,6 @@ RowCursor::RowCursor(void)
   m_iPartition = 0;
   
   m_pPartition = nullptr;
-  m_pEbStrand = nullptr;
   m_pRowBuffer = nullptr;
   m_pRow       = nullptr;
   
@@ -88,7 +87,6 @@ void RowCursor::vBegin(i8 iPartition)
   m_iPartition = iPartition;
   
   m_pPartition = nullptr;
-  m_pEbStrand = nullptr;
   m_pRowBuffer = nullptr;
   m_pRow       = nullptr;
 }
@@ -101,7 +99,6 @@ void RowCursor::vEnd(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCURSOR,_FOOTER_);
   
   m_pPartition = nullptr;
-  m_pEbStrand = nullptr;
   m_pRowBuffer = nullptr;
   m_pRow       = nullptr;
 }

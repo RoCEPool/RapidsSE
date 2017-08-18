@@ -48,7 +48,6 @@ namespace Base
     /* 28 */ CN_COLUMN,
     /* 29 */ CN_COLUMNVEC,
   
-    /* 30 */ CN_DATA,
     /* 31 */ CN_DIC,
     /* 32 */ CN_DICPATH,
     /* 33 */ CN_DIR,
@@ -123,7 +122,6 @@ namespace Base
     /* 85 */ CN_ROW,
     /* 86 */ CN_ROWBUFFER,
     /* 87 */ CN_ROWCURSOR,
-    /* 88 */ CN_EBSTRAND,
   
     /* 89 */ CN_SCANBUFFER,
     /* 90 */ CN_SCRATCH,
@@ -220,7 +218,6 @@ namespace Base
     /*    */ "COLUMN"_Stz,
     /*    */ "COLUMNVEC"_Stz,
     
-    /* 17 */ "DATA"_Stz,
     /* 18 */ "DIC"_Stz,
     /* 19 */ "DICPATH"_Stz,
     /* 20 */ "DIR"_Stz,
@@ -294,7 +291,6 @@ namespace Base
     /* 55 */ "ROW"_Stz,
     /* 56 */ "ROWBUFFER"_Stz,
     /* 57 */ "ROWCURSOR"_Stz,
-    /* 58 */ "EBSTRAND"_Stz,
   
     /* 60 */ "SCANBUFFER"_Stz,
     /* 61 */ "SCRATCH"_Stz,

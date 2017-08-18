@@ -12,7 +12,7 @@ namespace DBobjects
     i8         m_iPartition;
     
     Partition* m_pPartition;
-    EbStrand* m_pEbStrand;
+    //EbStrand* m_pEbStrand;
     EntryBuffer* m_pRowBuffer;
     
     // must be last

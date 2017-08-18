@@ -33,7 +33,6 @@ void IndexData::vDump(eCN eClass, Object* pObject, Stz* aTab)
   ASSERT(eClass == CN_INDEXDATA);
   ASSERT(pObject->eClass() == CN_INDEXDATA);
   
-  Data* pData = reinterpret_cast<Data*>(pObject);
 }
 
 /*----------------------------------------------------------------------------*/

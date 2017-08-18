@@ -17,7 +17,7 @@ namespace DBobjects
   {
   private:
     i8           m_iPartitionId;   // partition number
-    Data*        m_pData;
+    //Data*        m_pData;
     IdxDataVec*  m_pIdxDataVec;
   
     // must be last
@@ -41,7 +41,7 @@ namespace DBobjects
     i8      iPartitionId(void);
     void    vPartitionId(i8 iPartitionId);
     void    vPopulateIndex(i8 iIndexNo);
-    Data*   pData(void);
+    //Data*   pData(void);
     
     IndexData*  pIndexData(i8 iIndexNo);
     IndexData*  pHiddenIndexData(void);

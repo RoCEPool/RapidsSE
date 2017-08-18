@@ -61,7 +61,6 @@ SelCursor::SelCursor(void)
   m_iPartition = 0;
   
   m_pPartition = nullptr;
-  m_pEbStrand = nullptr;
   m_pRowBuffer = nullptr;
   m_pRow       = nullptr;
   
@@ -100,7 +99,6 @@ void SelCursor::vBegin(i8 iPartition)
   m_iPartition = iPartition;
   
   m_pPartition = nullptr;
-  m_pEbStrand = nullptr;
   m_pRowBuffer = nullptr;
   m_pRow       = nullptr;
 }
@@ -113,7 +111,6 @@ void SelCursor::vEnd(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SELCURSOR,_FOOTER_);
   
   m_pPartition = nullptr;
-  m_pEbStrand = nullptr;
   m_pRowBuffer = nullptr;
   m_pRow       = nullptr;
 }

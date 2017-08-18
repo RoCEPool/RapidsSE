@@ -23,8 +23,8 @@ void Partition::vDump(eCN eClass, Object* pObject, Stz* aTab)
   
   Partition* pPartition = reinterpret_cast<Partition*>(pObject);
   
-  vTrace("Data %p\n"_Stz,
-         pPartition->m_pData);
+  vTrace("m_iPartitionId %lld, DataVec %p\n"_Stz,
+         pPartition->m_iPartitionId, pPartition->m_pIdxDataVec);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -92,7 +92,6 @@ Partition::Partition(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
   
   m_iPartitionId = -1;
-  m_pData        = new Data;
   m_pIdxDataVec  = new IdxDataVec;
   
   _checkInitialised_(CN_PARTITION);
@@ -201,15 +200,6 @@ void Partition::vPopulateIndex(i8 iIndexNo)
   }
 }
 
-/*----------------------------------------------------------------------------*/
-/* get data                                                                   */
-/*----------------------------------------------------------------------------*/
-Data* Partition::pData(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
-  
- return m_pData;
-}
 
 /*----------------------------------------------------------------------------*/
 /* get indexData                                                              */
@@ -263,9 +253,6 @@ void Partition::vTidyUp(void)
   
   // delete the index data vector
   delete m_pIdxDataVec;
-  
-  // delete the data
-  delete m_pData;
 }
 
 /*----------------------------------------------------------------------------*/

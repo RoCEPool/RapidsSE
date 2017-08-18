@@ -420,13 +420,13 @@ i8 Table::nRowBuffers(void)
   
   i8 iBuffers = 0;
   
-  for (i8 iPartition = 0; iPartition < gpGrid->m_nSlots; iPartition++) {
-    EbStrand *pStrand = pPartition(iPartition)->pData()->pHeadStrand();
-    while (pStrand) {
-      iBuffers += pStrand->nEntryBuffers();
-      pStrand = pStrand->pNextStrand();
-    }
-  }
+//  for (i8 iPartition = 0; iPartition < gpGrid->m_nSlots; iPartition++) {
+//    EbStrand *pStrand = pPartition(iPartition)->pData()->pHeadStrand();
+//    while (pStrand) {
+//      iBuffers += pStrand->nEntryBuffers();
+//      pStrand = pStrand->pNextStrand();
+//    }
+//  }
   
   return iBuffers;
 }

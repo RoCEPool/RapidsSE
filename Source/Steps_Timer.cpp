@@ -156,8 +156,6 @@ ENTRY("vTimerNanosecs"_Stz);
 void Task::vTimerNew(MP_Task mpTask)
 {
 ENTRY("vTimerNew"_Stz);
-  
-  void* pObject = Heap::pAllocate(CN_EBSTRAND);
 
   Timer* pTimer = _pTimer(Heap::pAllocate(CN_TIMER));
 
