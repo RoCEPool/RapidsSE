@@ -161,6 +161,9 @@ void Task::vColon(MP_Task mpTask)
     pDic = mpTask->m_xPathStack.pTop();
   else
     pDic = gpMainDic;
+  
+  //vTrace(": %s\n"_Stz,sName.aChar());
+  
   Word* pNewWord = new(pDic) Word(sName);
   
   mpTask->m_pCurrentWord = pNewWord;
@@ -223,6 +226,8 @@ ENTRY("vCreate"_Stz);
   else
     pDic = gpMainDic;
   
+  //vTrace(": %s\n"_Stz,mpTask->m_pTokeniser->sToken().aChar());
+
   Word* pNewWord = new(pDic) Word(mpTask->m_pTokeniser->sToken());
   
   mpTask->m_pCurrentWord = pNewWord;
@@ -247,6 +252,7 @@ ENTRY("vCreateFrom"_Stz);
   else
     pDic = gpMainDic;
   
+  //vTrace(": %s\n"_Stz,sName.aChar());
   Word* pNewWord = new(pDic) Word(sName);
   
   mpTask->m_pCurrentWord = pNewWord;
