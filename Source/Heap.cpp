@@ -14,6 +14,8 @@ extern Heap*       gpSmallHeap;
 extern Heap*       gpMediumHeap;
 extern Heap*       gpJumboHeap;
 
+bool gbAddrAllocated = false;
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -205,6 +207,22 @@ void Heap::vValidateTables(void)
                eHeap);
     }
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* search free list                                                           */
+/*----------------------------------------------------------------------------*/
+void Heap::vSearchFree(void)
+{
+  if (gbAddrAllocated) {
+    for (FreeChunk* pTestChunk = gpMediumHeap->m_pFreeHead;
+         pTestChunk;
+         pTestChunk = pTestChunk->pNextFree())
+      if ((void*)pTestChunk >= (void*)0x204828fc0038 &&
+          (void*)pTestChunk < (void*)0x204828fcfd30)
+        int iDebug = true;
+  }
+  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -538,8 +556,16 @@ FreeChunk* Heap::pPopFree(void)
   FreeChunk* pFreeChunk = m_pFreeHead;
   m_pFreeHead = pFreeChunk->pNextFree();
   
+  ASSERT(CN_FREECHUNK == pFreeChunk->eClass());
+  
   m_iFreeCount--;
   
+  if (m_iObjectSize <= C_1MB) {
+    vValidFree(pFreeChunk);
+    if (m_pFreeHead)
+      vValidFree(m_pFreeHead);
+  }
+    
   return pFreeChunk;
 }
 
@@ -552,6 +578,9 @@ void Heap::vPushFree(FreeChunk* pFreeChunk)
   
   if (m_iObjectSize <= C_1MB)
     vValidFree(pFreeChunk);
+  
+  if (m_iObjectSize <= C_1MB && m_pFreeHead)
+    vValidFree(m_pFreeHead);
   
   pFreeChunk->vSetClass(CN_FREECHUNK);
   pFreeChunk->vNextFree(m_pFreeHead);

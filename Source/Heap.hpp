@@ -53,6 +53,7 @@ namespace Pool
     static void vFree(Object* pObject);
 
     static void vValidateTables(void);
+    static void vSearchFree(void);
   
     void    vAddFree(FreeChunk* pFreeChunk);
     i8      iAllocCount(void);

@@ -72,7 +72,7 @@ Thread* ThreadList::pAllocThread(void)
   
   Thread* pThread = _pThread(Heap::pAllocate(CN_THREAD));
   
-  vAppend(pThread);
+  //vAppend(pThread);
   
   return pThread;
 }
@@ -84,7 +84,7 @@ void ThreadList::vFreeThread(Thread* pThread)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREADLIST,_FOOTER_);
   
-  vRemove(pThread);
+  //vRemove(pThread);
   
   Heap::vFree(pThread);
 }

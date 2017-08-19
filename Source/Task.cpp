@@ -103,7 +103,7 @@ Task::Task(void)
   _checkInitialised_(CN_TASK);
   
   Task* pTask = this;
-  gpTaskList->vAppend(pTask);
+  //  gpTaskList->vAppend(pTask);
 //  gpTaskList->vDump();
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
@@ -125,7 +125,7 @@ Task::Task(MP_Task mpTask)
   _checkInitialised_(CN_TASK);
   
   Task* pTask = this;
-  gpTaskList->vAppend(pTask);
+  //  gpTaskList->vAppend(pTask);
 //  gpTaskList->vDump();
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
@@ -157,7 +157,7 @@ Task::Task(Value* pRequest)
   _checkInitialised_(CN_TASK);
   
   Task* pTask = this;
-  gpTaskList->vAppend(pTask);
+  //  gpTaskList->vAppend(pTask);
   //  gpTaskList->vDump();
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
@@ -180,7 +180,7 @@ Task::Task(Stz* aLambdaInput)
   _checkInitialised_(CN_TASK);
   
   Task* pTask = this;
-  gpTaskList->vAppend(pTask);
+  //  gpTaskList->vAppend(pTask);
 //  gpTaskList->vDump();
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
@@ -203,8 +203,8 @@ Task::~Task(void)
   if (m_pRequest)
     delete m_pRequest;
   
-  Task* pTask = this;
-  gpTaskList->vRemove(pTask);
+  //  Task* pTask = this;
+  //  gpTaskList->vRemove(pTask);
 //  gpTaskList->vDump();
 }
 

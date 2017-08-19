@@ -76,6 +76,9 @@ void List_t<OBJECT>::vAppend(OBJECT* mpNode)
 {
   _mp_(mpNode);
   
+  ASSERT(NULL == mpNode->pPrevNode());
+  ASSERT(NULL == mpNode->pNextNode());
+  
   m_zLock.vGrabWrite();
   
   if (m_pTail)
@@ -180,6 +183,9 @@ template <class OBJECT>
 void List_t<OBJECT>::vPush(OBJECT* mpNode)
 {
   _mp_(mpNode);
+  
+  ASSERT(NULL == mpNode->pPrevNode());
+  ASSERT(NULL == mpNode->pNextNode());
   
   m_zLock.vGrabWrite();
   

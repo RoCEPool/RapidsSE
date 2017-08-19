@@ -81,7 +81,7 @@ Thread::Thread(void)
   m_npTask       = nullptr;
 
   Thread* pThread = this;
-  gpThreadList->vAppend(pThread);
+  //gpThreadList->vAppend(pThread);
   
   _checkInitialised_(CN_THREAD);
   

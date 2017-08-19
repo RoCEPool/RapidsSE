@@ -172,6 +172,9 @@ Word* Dic::pFindWord(Stz* aName)
   m_xLock.vGrabRead();
   
   for (Word* pWord = m_pLastWord; pWord; pWord = pWord->pPrevWord()) {
+    
+    void* pEndWord = pAdd<void*>(pWord,sizeof(Word));
+    
     if (pWord->sName().bSame(aName)) {
       m_xLock.vDropRead();
 
